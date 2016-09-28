@@ -1,0 +1,21 @@
+/*
+mech Mod
+Author: Subject9x
+Date: 9/2/2016
+Overview: data indices for each data file, this isn't used by qc per se'
+merely for reference
+*/
+
+//Mechs
+0 = prototype
+
+//Weapons
+0 = light atc
+1 = emp cannnon
+2 = laser
+3 = missile
+
+//Projectiles
+0 = light atc round
+1 = emp round
+2 = missile round

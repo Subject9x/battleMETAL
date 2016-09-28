@@ -1,0 +1,123 @@
+../progs.dat
+
+//defs.qc
+dp/defs.qc
+dp/dpextensions.qc
+
+//mech classes / extensions
+  mech/ext/defs_game.qc
+  mech/ext/ent_player_c.qc
+  mech/ext/ent_mech_c.qc
+  mech/ext/ent_vec_comp_c.qc
+  mech/ext/ent_wep_c.qc
+  mech/ext/ent_proj_c.qc
+//==========================
+
+//mech header files
+  mech/client_utils_h.qc
+  mech/svr/server_parmops_h.qc
+  mech/svr/server_intermsn_h.qc
+  mech/utils_h.qc
+  mech/svr/server_playermove_h.qc
+  mech/ext/eng_client_h.qc
+  mech/ext/eng_player_h.qc
+  mech/playerFactory_h.qc
+  mech/world_ext_h.qc
+  mech/vecFactory_h.qc
+  mech/ctrl/ctrl_all_h.qc
+  mech/ctrl/ctrl_weapon_h.qc
+  mech/anim/mch_anim_h.qc
+  mech/impulse_h.qc
+  mech/t_damage_h.qc
+  mech/ext/player_mech_h.qc
+//==========================
+
+//DATA FILES=================
+  mech/dat/prj/data_prj_latc.qc
+  mech/dat/prj/data_prj_emp.qc
+  mech/dat/wep/data_lightatc.qc
+  mech/dat/wep/data_emp.qc
+  mech/dat/mch/data_proto.qc
+//===========================
+
+//impl files
+  //mech/mech_anim.qc
+  mech/t_damage.qc
+  mech/svr/server_parmops_c.qc
+  mech/svr/server_intermsn_c.qc
+  mech/svr/server_playermove_c.qc
+  mech/utils_c.qc
+  mech/playerFactory_c.qc
+  mech/svr/server_playermovement_c.qc
+  mech/world_ext_c.qc
+  mech/client_utils_c.qc
+  mech/impulse_c.qc
+  //controllers
+  mech/ctrl/ctrl_weapon.qc
+  mech/ctrl/ctrl_mech.qc
+  mech/ctrl/ctrl_legs.qc
+//==========================
+
+//subs.qc
+dp/subs.qc
+
+fight.qc
+ai.qc
+combat.qc
+items.qc
+
+q1/qwep/qwep_header.qc
+q1/qwep/wep_fx.qc
+q1/qwep/q_projectiles.qc
+q1/qwep/axe.qc
+q1/qwep/glaunch.qc
+q1/qwep/lightning.qc
+q1/qwep/nails.qc
+q1/qwep/shotgun.qc
+q1/qwep/rocket.qc
+//q1/qwep/weapons.qc
+
+q1/precache_world.qc
+//============================
+  mech/precache_world.qc
+//============================
+world.qc
+//client.qc
+//============================
+  mech/map_objects_c.qc
+  mech/ext/m_client.qc
+  mech/ext/m_player.qc
+  mech/vecFactory.qc
+  //player types
+  mech/ext/player_mech.qc
+  
+  //animations
+  mech/anim/mch_leg.qc
+  mech/anim/mch_ctor.qc
+//============================
+//player.qc
+monsters.qc
+doors.qc
+buttons.qc
+triggers.qc
+plats.qc
+misc.qc
+
+/*
+q1/qmonst/ogre.qc
+q1/qmonst/demon.qc
+q1/qmonst/shambler.qc
+q1/qmonst/knight.qc
+q1/qmonst/soldier.qc
+q1/qmonst/wizard.qc
+q1/qmonst/dog.qc
+q1/qmonst/zombie.qc
+q1/qmonst/boss.qc
+
+q1/qmonst/tarbaby.qc		// registered
+q1/qmonst/hknight.qc		// registered
+q1/qmonst/fish.qc			// registered
+q1/qmonst/shalrath.qc		// registered
+q1/qmonst/enforcer.qc		// registered
+q1/qmonst/oldone.qc		// registered
+*/

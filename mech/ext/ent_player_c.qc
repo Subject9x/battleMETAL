@@ -1,0 +1,19 @@
+/*
+mech Mod
+Author: Subject9x
+Date: 8/27/2016
+Overview: extends the player's entity.
+*/
+
+.float	dmgtime; //pulled from client.qc
+
+.float playermovestate, playermovebegin; //pulled from dpqc player.qc
+
+.float p_class;      //type of player, maps to GLOBAL P_TYPES
+.float currentWeaponGroup;
+.float nextVecChoice;
+.float data_idx;
+.string faction;
+.float i_techLevel;
+
+.entity w_slot;     //use this for teh linked list goodness

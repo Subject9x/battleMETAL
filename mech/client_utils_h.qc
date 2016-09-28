@@ -1,0 +1,13 @@
+/*
+mech Mod
+Author: Subject9x
+Date: 8/27/2016
+Overview: client utility methods, pulled from client.qc
+this is the header.
+*/
+
+void() SetChangeParms;
+void() SetNewParms;
+void() DecodeLevelParms;
+void() respawn;
+entity() SelectSpawnPoint;
