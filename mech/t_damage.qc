@@ -11,6 +11,8 @@ t_damage function and 1 killed function...for some reason, maybe good house keep
 
 void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
+  local float canDamage;
+    
   if(!targ.takedamage){
     return;
   }
@@ -23,6 +25,8 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
     return;
   }
   
+  canDamage = TRUE;
+  
   if(targ.flags & FL_CLIENT){
     targ.dmg_inflictor = inflictor;
   }
@@ -32,8 +36,6 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
       targ = damage_mech(targ, inflictor, attacker, dmg_amt, dmg_type, dmg_point, force);
     }
   }
-  
-  bprint(strcat(targ.classname, "\n"));
   targ.health = targ.health - dmg_amt;
   
   if(targ.health <= 0){
@@ -67,12 +69,13 @@ entity(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_
   //check weapons first
   local entity wep, found;
   local float dist, cur_dist;
+
   found = world;
-  dist = 15;
+  dist = vlen(dmg_point - targ.origin);
   wep = targ.w_slot;
   while(wep){
-    if(wep.deadflag <= DEAD_NO){
-      cur_dist = vlen(dmg_point - wep.origin);
+    cur_dist = vlen(dmg_point - wep.origin);
+    if(found.deadflag <= DEAD_NO){
       if(cur_dist < dist){
         dist = cur_dist;
         found = wep;
@@ -81,22 +84,32 @@ entity(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_
     wep = wep.w_slot;
   }
   
-  if(targ.e_tor_l != world){
-    cur_dist = vlen(dmg_point - targ.e_tor_l.origin);
-    if(cur_dist < dist){
-      dist = cur_dist;
-      found = targ.e_tor_l;
+  if(found.deadflag == DEAD_DEAD){
+    if(found.c_parent != M_TOR_CENTER){
+      if(found.c_parent == M_TOR_LEFT){
+        if(targ.e_tor_l != world){
+          if(targ.e_tor_l.deadflag == DEAD_DEAD){
+            cur_dist = vlen(dmg_point - targ.e_tor_l.origin);
+            if(cur_dist < dist){
+              dist = cur_dist;
+              found = targ.e_tor_l;
+            }
+          }
+        }
+      }
+      else if(found.c_parent == M_TOR_RIGHT){
+        if(targ.e_tor_r != world){
+          if(targ.e_tor_l.deadflag == DEAD_DEAD){
+            cur_dist = vlen(dmg_point - targ.e_tor_l.origin);
+            if(cur_dist < dist){
+              dist = cur_dist;
+              found = targ.e_tor_l;
+            }
+          }
+        }
+      }
     }
-  }
-  
-  if(targ.e_tor_r != world){
-    cur_dist = vlen(dmg_point - targ.e_tor_r.origin);
-    if(cur_dist < dist){
-      dist = cur_dist;
-      found = targ.e_tor_r;
-    }
-  }
-  
+  }  
   /*if(targ.e_arm_l != world){
     cur_dist = vlen(dmg_point - targ.e_arm_l.origin);
     if(cur_dist < dist){
@@ -136,8 +149,8 @@ void(entity targ, entity attacker, float dmg_type) filter_killed={
   filter = targ;
   if(targ.owner.classname == "player"){
     if(targ.owner.p_class == P_MECH){
-      if(targ.classname == M_TOR_CENTER){
-        filter = targ.owner;
+      if(targ.classname == M_LEGS){
+        return;
       }
     }
   }

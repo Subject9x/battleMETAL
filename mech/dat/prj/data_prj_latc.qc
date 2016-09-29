@@ -15,6 +15,7 @@ void() prj_latc_touch={
 	}
   
   if(other.classname == "worldspawn"){
+    te_superspike(self.origin);
     remove(self);
     return;
   }
@@ -32,6 +33,7 @@ void() prj_latc_touch={
   }
   
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+  te_superspike(self.origin);
   
   remove(self);
 };

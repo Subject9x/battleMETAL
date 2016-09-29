@@ -48,9 +48,7 @@ void(entity wep) ctrl_weapon_tryFire={
 
 void() ctrl_die_weapon={
   self.w_attack = SUB_Null;
-	self.solid = SOLID_NOT;
-	self.deadflag = DEAD_DYING;
-  self.takedamage = DAMAGE_NO;
+	self.deadflag = DEAD_DEAD;
   setmodel(self, "");
   setsize(self, '0 0 0', '0 0 0');
 };

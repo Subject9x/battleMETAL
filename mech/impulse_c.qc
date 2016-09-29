@@ -45,7 +45,17 @@ void() ImpulseCommands =
 
 	if (self.impulse == 255)
 		//QuadCheat ();
-		
+    
+  if(self.impulse == 20)
+    //w group 1
+    self.currentWeaponGroup = W_GROUPA;
+  if(self.impulse == 21)
+    //w group 2
+    self.currentWeaponGroup = W_GROUPB;
+  if(self.impulse == 22)
+    //w group 3
+    self.currentWeaponGroup = W_GROUPC;
+	
 	self.impulse = 0;
 };
 

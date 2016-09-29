@@ -15,6 +15,12 @@ void() ctrl_updateCenterTorso={
       self.en_current = self.en_current - diff;
     }
   }
+  
+  
+  
+  //shield recharge
+  
+  
 };
 
 void() ctrl_dieMech={
