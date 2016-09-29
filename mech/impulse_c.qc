@@ -13,6 +13,7 @@ void() switchFireMode={};
 void() selectTarget={};
 void() toggerRadar={};
 
+
 void() playerAttack={
   local entity wep_chain;
   wep_chain = self.w_slot;
@@ -27,34 +28,40 @@ void() playerAttack={
 };
 
 
-void() ImpulseCommands =
-{
-	if (self.impulse >= 1 && self.impulse <= 8)
-    if(self.deadflag == DEAD_DEAD)
-      respawn();
+void() ImpulseCommands ={
+	//if (self.impulse >= 1 && self.impulse <= 8)
+    //if(self.deadflag == DEAD_DEAD)
+      //respawn();
 		//W_ChangeWeapon ();
 
-	if (self.impulse == 9)
+	if (self.impulse == 9){}
 		//CheatCommand ();
-	if (self.impulse == 10)
+	if (self.impulse == 10){}
 		//CycleWeaponCommand ();
-	if (self.impulse == 11)
+	if (self.impulse == 11){}
 		//ServerflagsCommand ();
-	if (self.impulse == 12)
+	if (self.impulse == 12){}
 		//CycleWeaponReverseCommand ();
 
-	if (self.impulse == 255)
+	if (self.impulse == 255){}
 		//QuadCheat ();
+   
+   //Weapon group selection
+  if(self.impulse == 20){
+    centerprint(self, "[Weapon Group 1]");
+    self.currentWeaponGroup = 1;
+  }
+
+  if(self.impulse == 21){
+    centerprint(self, "[Weapon Group 2]");
+    self.currentWeaponGroup = 2;
+  }
     
-  if(self.impulse == 20)
-    //w group 1
-    self.currentWeaponGroup = W_GROUPA;
-  if(self.impulse == 21)
-    //w group 2
-    self.currentWeaponGroup = W_GROUPB;
-  if(self.impulse == 22)
-    //w group 3
-    self.currentWeaponGroup = W_GROUPC;
+  if(self.impulse == 22){
+    centerprint(self, "[Weapon Group 3]");
+    self.currentWeaponGroup = 3;
+  }
+
 	
 	self.impulse = 0;
 };

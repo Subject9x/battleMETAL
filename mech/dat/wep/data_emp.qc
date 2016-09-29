@@ -34,6 +34,14 @@ void() emp_attack={
     util_setModel(proj.c_model, 0);
     util_setCollider(DAMAGE_NO, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     
+    self.effects = proj.effects;
+    self.modelflags = proj.modelflags;
+    self.alpha = proj.alpha;
+    self.colormod = proj.colormod;
+    self.glow_color = proj.glow_color;
+    self.glow_size = proj.glow_size;
+    self.glow_trail = proj.glow_trail;
+    
     self.velocity = normalize(dir - org);
     self.touch = proj.touch;
     util_setBoundBox('0 0 0', '0 0 0');
@@ -45,8 +53,7 @@ void() emp_attack={
     self.angles = vectoangles(self.velocity);
     
   self = oself;
-
-	sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
+	sound (self, CHAN_WEAPON, "sound/llaser.ogg", 1, ATTN_NORM);
   //mechs are accurate
 	player.punchangle_x = -1.0;
 };

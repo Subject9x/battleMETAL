@@ -46,6 +46,7 @@ void() latc_attack={
     self.angles = vectoangles(self.velocity);
     
     self = oself;
+    sound (self, CHAN_ITEM, "sound/ac5.ogg", 1, ATTN_NORM);
   }
   else{
     bprint("oops!\n");

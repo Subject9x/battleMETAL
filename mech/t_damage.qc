@@ -74,8 +74,8 @@ entity(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_
   dist = vlen(dmg_point - targ.origin);
   wep = targ.w_slot;
   while(wep){
-    cur_dist = vlen(dmg_point - wep.origin);
     if(found.deadflag <= DEAD_NO){
+      cur_dist = vlen(dmg_point - wep.origin);
       if(cur_dist < dist){
         dist = cur_dist;
         found = wep;

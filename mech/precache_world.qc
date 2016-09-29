@@ -14,6 +14,8 @@ void() mh_precache_sound={
   precache_sound ("sound/weapons/laser_3.ogg");
   precache_sound ("weapons/rocket1i.wav");
   precache_sound ("weapons/sgun1.wav");
+  precache_sound ("sound/ac5.ogg");
+  precache_sound ("sound/llaser.ogg");
 };
 
 void() mh_precache_models={

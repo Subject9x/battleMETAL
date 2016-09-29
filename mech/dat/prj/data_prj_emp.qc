@@ -15,6 +15,8 @@ void() prj_emp_touch={
 	}
   
   if(other.classname == "worldspawn"){
+    te_plasmaburn(self.origin);
+    te_spikequad(self.origin);
     remove(self);
     return;
   }
@@ -31,6 +33,7 @@ void() prj_emp_touch={
     return;
   }
   
+  te_plasmaburn(self.origin);
   t_damage(other, self, self.owner, 5, 0, self.origin, '0 0 0');
   remove(self);
 };
@@ -51,5 +54,15 @@ void() prj_emp_ini={
   self.p_damage = 0;
   self.p_dmgtype = 0;
   self.touch = prj_emp_touch;
+  
+  //cosmetics
+  self.effects = EF_BLUE | EF_ADDITIVE | EF_NOSHADOW;
+  self.modelflags = MF_TRACER3;
+  self.alpha = 0.75;
+  self.colormod = '0.15 0.15 0.45';
+  self.glow_color = 150;
+  self.glow_size = 0.05;
+  self.glow_trail = TRUE;
+  
   self = oself;
 };

@@ -80,8 +80,7 @@ void() PlayerPostThink = {
 		ImpulseCommands ();
 	
 // check for attack
-	if (self.button0)
-	{
+	if (self.button0){
     //mech mod overrides weapon behavior
 		//SuperDamageSound ();
 		//W_Attack ();

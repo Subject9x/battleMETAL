@@ -31,9 +31,9 @@ void() prj_latc_touch={
   if(other.classname == "spike"){
     return;
   }
-  
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   te_superspike(self.origin);
+  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+
   
   remove(self);
 };

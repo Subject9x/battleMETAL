@@ -47,8 +47,25 @@ void(entity wep) ctrl_weapon_tryFire={
 };
 
 void() ctrl_die_weapon={
-  self.w_attack = SUB_Null;
-	self.deadflag = DEAD_DEAD;
-  setmodel(self, "");
-  setsize(self, '0 0 0', '0 0 0');
+  if(self.deadflag <= DEAD_NO){
+    local entity oself;
+    oself = self;
+    newmis = spawn();
+    self = newmis;
+      util_setHealthArmor(10,10,10,10);
+      self.th_die = SUB_Remove;
+      setorigin(self, oself.origin);
+      util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_BOUNCE);
+      setmodel(self, oself.model);
+      setsize(self, '-3 -3 -3', '3 3 3');
+      self.velocity = '0 500 0';
+      self.think = SUB_Remove;
+      self.nextthink = time + 1000;
+    self = oself;
+
+    self.w_attack = SUB_Null;
+    self.deadflag = DEAD_DEAD;
+    setmodel(self, "");
+    setsize(self, '0 0 0', '0 0 0');
+  }
 };
