@@ -41,6 +41,7 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
   if(targ.health <= 0){
    if(targ.th_die){
       if(targ.th_die != SUB_Null){
+        
         killed(targ, attacker, dmg_type);
         return;
       }
@@ -126,13 +127,14 @@ entity(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_
     }
   }*/
 
-  if(targ.e_legs != world){
+  //legs are a special case, and not in play at the moment
+  /*if(targ.e_legs != world){
     cur_dist = vlen(dmg_point - targ.e_legs.origin);
     if(cur_dist < dist){
       dist = cur_dist;
       found = targ.e_legs;
     }
-  }
+  }*/
   
   if(found == world){
     found = targ;

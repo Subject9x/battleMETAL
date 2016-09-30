@@ -52,13 +52,14 @@ void() ctrl_die_weapon={
     oself = self;
     newmis = spawn();
     self = newmis;
+      self.angles = oself.angles;
+      self.velocity = oself.velocity;
       util_setHealthArmor(10,10,10,10);
       self.th_die = SUB_Remove;
       setorigin(self, oself.origin);
       util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_BOUNCE);
       setmodel(self, oself.model);
       setsize(self, '-3 -3 -3', '3 3 3');
-      self.velocity = '0 500 0';
       self.think = SUB_Remove;
       self.nextthink = time + 1000;
     self = oself;
