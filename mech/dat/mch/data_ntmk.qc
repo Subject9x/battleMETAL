@@ -9,18 +9,18 @@ Date: 8/27/2016
   a hit and run specialist.
 */
 
-void() prt_ini;
+void() tmk_ini;
 
-void() prt_ini={
+void() tmk_ini={
 
-  local entity oself, prt_data; 
-  local entity prt_legs, prt_ctr, prt_ltr, prt_rtr, prt_cam;
-  local entity prt_w1, prt_w2, prt_w3;
+  local entity oself, tmk_data; 
+  local entity tmk_legs, tmk_ctr, tmk_alt, tmk_art, tmk_cam;
+  local entity tmk_w1, tmk_w2, tmk_w3, tmk_w4, tmk_w5;
   
   oself = self;
-  prt_data = spawn();
-  self = prt_data;
-  self.data_idx = 1;
+  tmk_data = spawn();
+  self = tmk_data;
+  self.data_idx = 2;
   self.classname = "data";
   self.data_type = DATA_MECH;
   self.vec_name = "Prototype";
@@ -28,13 +28,13 @@ void() prt_ini={
   
   //main collider info
   //this must account for the legs as -height, and the center torso / top weapons as +height
-  self.c_bbx_n = '-12 -12 -38';//'-12 -12 -38';
-  self.c_bbx_x = '12 12 10';//'12 12 10';
+  self.c_bbx_n = '-13 -13 -40';//'-12 -12 -38';
+  self.c_bbx_x = '13 13 14';//'12 12 10';
   
   //Movement variables
-  self.m_fspeed = 175;
-  self.m_sspeed = 150;
-  self.m_bspeed = 150;
+  self.m_fspeed = 125;
+  self.m_sspeed = 100;
+  self.m_bspeed = 100;
   self.m_maccel = "1";
   self.m_rollangle = "2";
   self.m_pitch_max = "90";
@@ -51,108 +51,119 @@ void() prt_ini={
   self.m_rollangle = "2.25";
   
   //LEGS=======================
-  prt_legs = spawn();
-  self = prt_legs;
+  tmk_legs = spawn();
+  self = tmk_legs;
   self.c_name = M_LEGS;
   self.frame = 0;
   self.health = 100;
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
-  self.c_model = "q3mdl/mechs/notl/mdl_notl_legs.md3";
+  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_legs.md3";
   self.c_bbx_n = '-1 -1 -1';
   self.c_bbx_x = '1 1 1';
-  self.c_ofs = '0 -22.5 -2';
+  self.c_ofs = '0 -24 -2';
   //self.c_alt_ofs = '9 16 0';
-  prt_data.e_legs = prt_legs;
+  tmk_data.e_legs = tmk_legs;
   //===========================
   //CENTER TORSO========================
-  prt_ctr = spawn();
-  self = prt_ctr;
+  tmk_ctr = spawn();
+  self = tmk_ctr;
   self.c_name = M_TOR_CENTER;
   self.frame = 0;
   self.health = 100;
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
-  self.c_model = "q3mdl/mechs/notl/mdl_notl_t_cent.md3";
+  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_t_cent.md3";
   //self.c_ofs = '0 6.5 0';
   //self.c_alt_ofs = prt_data.e_legs.c_ofs;
   //the center torso is now the 'client'
   //self.c_bbx_n = '-6 -4 -4';
   //self.c_bbx_x = '6 4 4';
-  prt_data.e_tor_c = self;
+  tmk_data.e_tor_c = self;
   //==========================
-  //LEFT TORSO 
-  prt_ltr = spawn();
-  self = prt_ltr;
-  self.c_name = M_TOR_LEFT;
+  //LEFT ARM 
+  tmk_alt = spawn();
+  self = tmk_alt;
+  self.c_name = M_ARM_RIGHT;
   self.c_parent = M_TOR_CENTER;
   self.frame = 0;
   self.health = 100;
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
-  self.c_model = "q3mdl/mechs/notl/mdl_notl_t_left.md3";
-  self.c_ofs = '7 1 -5';
+  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_arm_r.md3";
+  self.c_ofs = '10 2 -3';
   self.c_bbx_n = '-1 -1 -1';
   self.c_bbx_x = '1 1 1';
-  prt_data.e_tor_l = self;
+  tmk_data.e_arm_l = self;
   //==========================
-  //RIGHT TORSO
-  prt_rtr = spawn();
-  self = prt_rtr;
-  self.c_name = M_TOR_RIGHT;
+  //RIGHT ARM 
+  tmk_art = spawn();
+  self = tmk_art;
+  self.c_name = M_ARM_RIGHT;
   self.c_parent = M_TOR_CENTER;
   self.frame = 0;
   self.health = 100;
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
-  self.c_model = "q3mdl/mechs/notl/mdl_notl_t_left.md3";
-  self.c_ofs = '-7 1 -5';
+  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_arm_l.md3";
+  self.c_ofs = '-10 2 -3';
   self.c_bbx_n = '-1 -1 -1';
   self.c_bbx_x = '1 1 1';
-  prt_data.e_tor_r = self;
+  tmk_data.e_arm_r = self;
   //==========================
   //cockpit
-  prt_cam = spawn();
-  self = prt_cam;
+  tmk_cam = spawn();
+  self = tmk_cam;
   self.c_name = "camera";
-  self.c_ofs = '0 1 2';
+  self.c_ofs = '0 -2 5';
   self.c_alt_ofs = '0 0 0';
   self.c_model = "q3mdl/mechs/notl/mdl_notl_cpt.md3";
-  prt_data.e_cam = prt_cam;
+  tmk_data.e_cam = tmk_cam;
   //====================================
-  prt_w1 = spawn();
-  self = prt_w1;
-  self.c_parent = M_TOR_LEFT;
+  tmk_w1 = spawn();
+  self = tmk_w1;
+  self.c_parent = M_ARM_LEFT;
   self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = '12 4 -3';
+  self.c_ofs = '10 7 2';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = 1;
-  prt_data.w_slot = prt_w1;
+  tmk_data.w_slot = tmk_w1;
   
-  prt_w2 = spawn();
-  self = prt_w2;
-  self.c_parent = M_TOR_RIGHT;
+  tmk_w2 = spawn();
+  self = tmk_w2;
+  self.c_parent = M_ARM_RIGHT;
   self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = '-12 4 -3';
+  self.c_ofs = '-10 7 2';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = 1;
-  prt_w1.w_slot = prt_w2;
+  tmk_w1.w_slot = tmk_w2;
   
-  prt_w3 = spawn();
-  self = prt_w3;
-  self.c_parent = M_TOR_CENTER;
+  tmk_w3 = spawn();
+  self = tmk_w3;
+  self.c_parent = M_ARM_LEFT;
   self.data_idx = 1; //consult weapon idx table!
-  self.c_ofs = '0 8 0';
+  self.c_ofs = '11 -4 1.5';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 0';
   self.w_group = 2;
-  prt_w2.w_slot = prt_w3;
+  tmk_w2.w_slot = tmk_w3;
+  
+  tmk_w4 = spawn();
+  self = tmk_w4;
+  self.c_parent = M_ARM_RIGHT;
+  self.data_idx = 1; //consult weapon idx table!
+  self.c_ofs = '-11 -4 1.5';
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
+  self.w_group = 2;
+  tmk_w3.w_slot = tmk_w4;
+  
   
   self = oself;
 };

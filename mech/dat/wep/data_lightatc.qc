@@ -35,6 +35,14 @@ void() latc_attack={
     util_setModel(proj.c_model, 0);
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     
+    self.effects = proj.effects;
+    self.modelflags = proj.modelflags;
+    self.alpha = proj.alpha;
+    self.colormod = proj.colormod;
+    self.glow_color = proj.glow_color;
+    self.glow_size = proj.glow_size;
+    self.glow_trail = proj.glow_trail;
+    
     self.velocity = normalize(dir - org);
     self.touch = proj.touch;
     util_setBoundBox('0 0 0', '0 0 0');
@@ -70,7 +78,7 @@ void() latc_ini={
   self.w_firerate = 0.18;
   self.w_reloadtime = 0.45;
   self.w_isfire = 0;
-  self.w_fire_ofs = '0 0 16'; //kinda important, this helps the traceline clear the player bboxes
+  self.w_fire_ofs = '0 0 12'; //kinda important, this helps the traceline clear the player bboxes
   self.health = 50;
   self.armorvalue = 50;
   self.armortype = 1;

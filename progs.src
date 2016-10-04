@@ -30,6 +30,7 @@ dp/dpextensions.qc
   mech/impulse_h.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
+  q1/qwep/wep_fx_h.qc
 //==========================
 
 //DATA FILES=================
@@ -38,6 +39,7 @@ dp/dpextensions.qc
   mech/dat/wep/data_lightatc.qc
   mech/dat/wep/data_emp.qc
   mech/dat/mch/data_proto.qc
+  mech/dat/mch/data_ntmk.qc
 //===========================
 
 //impl files

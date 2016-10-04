@@ -22,6 +22,7 @@ void() mh_precache_models={
     //mech model
   precache_model ("q3mdl/testball.md3");
   //nu outlaw
+  precache_model ("q3mdl/mechs/notl/mdl_notl_cpt.md3");
   precache_model ("q3mdl/mechs/notl/mdl_notl_t_cent.md3");
   precache_model ("q3mdl/mechs/notl/mdl_notl_t_left.md3");  
   precache_model ("q3mdl/mechs/notl/mdl_notl_legs.md3");
@@ -33,8 +34,10 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/champ/mdl_chp_a_r.md3");
   precache_model ("q3mdl/mechs/champ/mdl_chp_t_right.md3");
   
-  precache_model ("q3mdl/mechs/tmk/mdl_tmk_legs.md3");
-  precache_model ("q3mdl/mechs/tmk/mdl_tmk_t_cent.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_legs.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_t_cent.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_arm_l.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_arm_r.md3");
 
   precache_model ("q3mdl/mechs/col/mdl_col_legs.md3");
   precache_model ("q3mdl/mechs/col/mdl_col_t_cent.md3");

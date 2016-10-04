@@ -33,7 +33,10 @@ void() prj_emp_touch={
     return;
   }
   
-  te_plasmaburn(self.origin);
+  
+  
+  //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+  //te_plasmaburn(self.origin);
   t_damage(other, self, self.owner, 5, 0, self.origin, '0 0 0');
   remove(self);
 };
@@ -56,10 +59,10 @@ void() prj_emp_ini={
   self.touch = prj_emp_touch;
   
   //cosmetics
-  self.effects = EF_BLUE | EF_ADDITIVE | EF_NOSHADOW;
+  self.effects = EF_ADDITIVE | EF_NOSHADOW;
   self.modelflags = MF_TRACER3;
   self.alpha = 0.75;
-  self.colormod = '0.15 0.15 0.45';
+  self.colormod = '0.45 0.45 0.80';
   self.glow_color = 150;
   self.glow_size = 0.05;
   self.glow_trail = TRUE;

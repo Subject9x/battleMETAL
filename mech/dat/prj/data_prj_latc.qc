@@ -31,7 +31,10 @@ void() prj_latc_touch={
   if(other.classname == "spike"){
     return;
   }
+  
+  
   te_superspike(self.origin);
+  //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
 
   
@@ -53,5 +56,15 @@ void() prj_latc_ini={
   self.p_lifetime = 6;
   self.p_damage = 5;
   self.p_dmgtype = 0;
+  
+  //cosmetics
+  self.effects = EF_NOSHADOW;
+  self.modelflags = 0;
+  self.alpha = 1;
+  self.colormod = '0.85 0.45 0.45';
+  self.glow_color = 240;
+  self.glow_size = 0.005;
+  self.glow_trail = FALSE;
+  
   self = oself;
 };

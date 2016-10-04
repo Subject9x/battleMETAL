@@ -35,7 +35,11 @@ float sv_gravity;
 
 //DO NOT TOUCH THESE
 /*
+damage calcuation array
 */
+#define DAMAGE_LOCATION 3
+float location[DAMAGE_LOCATION];
+
 float P_OBS = 0;
 float P_MECH = 1;
 float P_VECH = 2;

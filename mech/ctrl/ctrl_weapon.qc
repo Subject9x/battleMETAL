@@ -16,6 +16,26 @@ void(entity wep) ctrl_weapon_think={
   }
   
   if(self.deadflag == DEAD_DEAD){
+    local entity torso;
+    if(self.c_parent == M_TOR_LEFT){
+      torso = oself.e_tor_l;
+    }
+    else if(self.c_parent == M_TOR_RIGHT){
+      torso = oself.e_tor_r;
+    }
+    
+    if(torso.deadflag <= DEAD_NO){
+      local float rng;
+      rng = random()*100;
+      if(rng > 50){
+        local vector spvel;
+        spvel = '0 0 0';
+        spvel_x = random()*100;
+        spvel_y = random()*100;
+        spvel_z = random()*100;
+        te_spark(self.origin, spvel, random()*250);
+      }
+    }
     self = oself;
     return;
   }
@@ -49,11 +69,30 @@ void(entity wep) ctrl_weapon_tryFire={
 void() ctrl_die_weapon={
   if(self.deadflag <= DEAD_NO){
     local entity oself;
+    local vector pvel;
     oself = self;
+    pvel = self.owner.velocity;
+    newmis = spawn();
+    self = newmis;
+      setorigin(newmis, oself.origin);
+      BecomeExplosion();
+    self = oself;
+    
     newmis = spawn();
     self = newmis;
       self.angles = oself.angles;
-      self.velocity = oself.velocity;
+      if(pvel_x > 0 || pvel_y > 0 || pvel_z > 0){
+        self.velocity = pvel + VelocityForDamage (100);
+        self.avelocity_x = random()*600;
+        self.avelocity_y = random()*600;
+        self.avelocity_z = random()*600;
+      }
+      else{
+        self.velocity = VelocityForDamage (100);
+        self.avelocity_x = random()*600;
+        self.avelocity_y = random()*600;
+        self.avelocity_z = random()*600;
+      }      
       util_setHealthArmor(10,10,10,10);
       self.th_die = SUB_Remove;
       setorigin(self, oself.origin);
@@ -66,7 +105,8 @@ void() ctrl_die_weapon={
 
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
-    setmodel(self, "");
+    self.effects = EF_NODRAW;
+    //setmodel(self, "");
     setsize(self, '0 0 0', '0 0 0');
   }
 };

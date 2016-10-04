@@ -64,12 +64,13 @@ void() leg_walk7 = [$l_walk7, leg_walk1]{};
 
 
 void() leg_die1 = [$l_die1, leg_die2]{
-  self.movetype = MOVETYPE_NONE;
+  setsize(self, '-12 -12 -4','12 12 1');
+  self.movetype = MOVETYPE_BOUNCE;
 };
 void() leg_die2 = [$l_die2, leg_die3]{};
 void() leg_die3 = [$l_die3, leg_die4]{};
 void() leg_die4 = [$l_die4, leg_die4]{
-
+  
   self.deadflag = DEAD_DEAD;
   self.nextthink = -1;
 };

@@ -9,6 +9,20 @@ t_damage function and 1 killed function...for some reason, maybe good house keep
 */
 
 
+void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_filter={
+
+  local float shotdir;
+  local vector dir;
+  /*
+    1) get shot point
+    2) find angle
+    3) draw halfway point
+    4) 
+  
+  */
+
+};
+
 void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
   local float canDamage;
@@ -33,9 +47,10 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
 
   if(targ.classname == "player"){
     if(targ.p_class == P_MECH){
-      targ = damage_mech(targ, inflictor, attacker, dmg_amt, dmg_type, dmg_point, force);
+      targ = damage_mech(targ, inflictor, attacker, dmg_point);
     }
   }
+
   targ.health = targ.health - dmg_amt;
   
   if(targ.health <= 0){
@@ -61,86 +76,58 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
   }
 };
 
-entity(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) damage_mech={
+/*
+  this is some ugly code...
+*/
+entity(entity targ, entity inflictor, entity attacker, vector dmg_point) damage_mech={
 
-  //todo
-    //run shield check
-  
-  //if shields are down, find the closest entity
-  //check weapons first
-  local entity wep, found;
-  local float dist, cur_dist;
-
-  found = world;
-  dist = vlen(dmg_point - targ.origin);
-  wep = targ.w_slot;
-  while(wep){
-    if(found.deadflag <= DEAD_NO){
-      cur_dist = vlen(dmg_point - wep.origin);
-      if(cur_dist < dist){
-        dist = cur_dist;
-        found = wep;
-      }
-    }
-    wep = wep.w_slot;
-  }
-  
-  if(found.deadflag == DEAD_DEAD){
-    if(found.c_parent != M_TOR_CENTER){
-      if(found.c_parent == M_TOR_LEFT){
-        if(targ.e_tor_l != world){
-          if(targ.e_tor_l.deadflag == DEAD_DEAD){
-            cur_dist = vlen(dmg_point - targ.e_tor_l.origin);
-            if(cur_dist < dist){
-              dist = cur_dist;
-              found = targ.e_tor_l;
-            }
-          }
-        }
-      }
-      else if(found.c_parent == M_TOR_RIGHT){
-        if(targ.e_tor_r != world){
-          if(targ.e_tor_l.deadflag == DEAD_DEAD){
-            cur_dist = vlen(dmg_point - targ.e_tor_l.origin);
-            if(cur_dist < dist){
-              dist = cur_dist;
-              found = targ.e_tor_l;
-            }
-          }
-        }
-      }
-    }
-  }  
-  /*if(targ.e_arm_l != world){
-    cur_dist = vlen(dmg_point - targ.e_arm_l.origin);
-    if(cur_dist < dist){
-      dist = cur_dist;
-      found = targ.e_arm_l;
-    }
-  }
-  
-  if(targ.e_arm_r != world){
-    cur_dist = vlen(dmg_point - targ.e_arm_r.origin);
-    if(cur_dist < dist){
-      dist = cur_dist;
-      found = targ.e_arm_r;
-    }
-  }*/
-
-  //legs are a special case, and not in play at the moment
-  /*if(targ.e_legs != world){
-    cur_dist = vlen(dmg_point - targ.e_legs.origin);
-    if(cur_dist < dist){
-      dist = cur_dist;
-      found = targ.e_legs;
-    }
-  }*/
+  local entity found;
+  local float radi;
+  radi = vlen(targ.origin - dmg_point);
+  found = t_find_recurse(dmg_point, radi, targ, targ);
+  bprint(strcat(found.classname, "\n"));
   
   if(found == world){
     found = targ;
   }
   return found;
 };
+
+entity(vector point, float rad, entity src, entity own) t_find_recurse={
+
+  local entity found, elm;
+  local float rad_dist, cur_dist;
+  found = world;
+  rad_dist = vlen(src.origin - point);
+  elm = findradius(src.origin, rad_dist);
+  while(elm){
+    if(elm != world){
+      if(elm.owner == own){
+        if(elm.c_name){
+          cur_dist =  vlen(elm.origin - point);
+          if(cur_dist < rad_dist){
+            rad_dist = cur_dist;
+            if(elm.deadflag <= DEAD_NO){
+              found = elm;
+            }else{
+              found = t_find_recurse(found.origin, rad_dist, found, own);
+            }
+          } 
+        }
+      }
+    }
+    elm = elm.chain;
+  }
+
+  if(!found){
+    return src;
+  }
+  
+  return found;
+};
+
+
+
 
 /*
 add game logic here to catch what is 'killed' and adjust that based on logic
