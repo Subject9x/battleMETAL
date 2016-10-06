@@ -1,12 +1,11 @@
 /*
 mech mod
 Author: Subject9x
-Date: 8/27/2016
+Date: 10/04/2016
   mech definition file to hold the stock data for a mech.
-  MECH: OUTLAW
+  MECH: TOMAHAWK
   ROLE: Striker
-  DESC: Fast, low health, moderate damage. This mech is
-  a hit and run specialist.
+  DESC: medium level skirmisher.
 */
 
 void() tmk_ini;
@@ -23,7 +22,7 @@ void() tmk_ini={
   self.data_idx = 2;
   self.classname = "data";
   self.data_type = DATA_MECH;
-  self.vec_name = "Prototype";
+  self.vec_name = "Tomahawk";
   self.m_rot_speed = 6;
   
   //main collider info
@@ -164,6 +163,15 @@ void() tmk_ini={
   self.w_group = 2;
   tmk_w3.w_slot = tmk_w4;
   
+  tmk_w5 = spawn();
+  self = tmk_w5;
+  self.c_parent = M_TOR_CENTER;
+  self.data_idx = 2; //consult weapon idx table!
+  self.c_ofs = '0 10 -4';
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
+  self.w_group = 3;
+  tmk_w4.w_slot = tmk_w5;
   
   self = oself;
 };

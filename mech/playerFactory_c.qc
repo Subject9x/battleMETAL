@@ -14,8 +14,9 @@ void(entity ent) mh_makeObserver={
   self.flags = self.flags & FL_FLY;
   util_setHealthArmor(1,1,1,0);
   util_setCollider(DAMAGE_NO, SOLID_TRIGGER, MOVETYPE_FLY);
-  setmodel(self, "");
-  util_setBoundBox('-1 -1 -1', '1 1 1');
+  setmodel(self, "q3mdl/testball.md3");
+  self.effects = EF_NODRAW;
+  util_setBoundBox('-3 -3 -3', '3 3 3');
   self = oself;
 };
 

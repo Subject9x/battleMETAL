@@ -10,6 +10,7 @@ Overview: extends the player's entity.
 .float playermovestate, playermovebegin; //pulled from dpqc player.qc
 
 .float p_class;      //type of player, maps to GLOBAL P_TYPES
+.float p_class_prev;  // previous player class, needed for cleanup checks
 .float currentWeaponGroup;
 .float nextVecChoice;
 .float data_idx;

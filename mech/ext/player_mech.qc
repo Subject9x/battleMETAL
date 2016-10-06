@@ -62,7 +62,7 @@ void() mech_player_die={
   //oself = self;
   mech_player_cameradie();
   
-  mech_player_compdie(self.e_tor_c);
+  //mech_player_compdie(self.e_tor_c);
   mech_player_compdie(self.e_tor_l);
   mech_player_compdie(self.e_tor_r);
   mech_player_compdie(self.e_arm_l);

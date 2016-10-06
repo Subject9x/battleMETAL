@@ -16,8 +16,9 @@ void() ClientConnect = {
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
   
-  self.p_class = P_MECH;
-  self.nextVecChoice = 2;
+  self.p_class = P_OBS;
+  self.p_class_prev = P_OBS;
+  self.nextVecChoice = 0;
   self.data_idx = 0;
   self.currentWeaponGroup = 1;
   
@@ -107,24 +108,34 @@ void() ClientKill = {
   if(self.deadflag){
     return;
   }
+  
+  if(self.p_class_prev == P_OBS){
+    self.effects = EF_NODRAW;
+    respawn ();
+    return;
+  }
+  
   if ((intermission_running)&&((coop)||(deathmatch)))  // not allowed during intermission
 		return;
 	bprint (self.netname);
 	bprint (" suicides\n");
 
-  if(self.p_class == P_MECH){
+  if((self.p_class == P_MECH) || (self.p_class_prev == P_MECH)){
     mech_player_die();
   } 
-  if(self.p_class == P_MECH){
+  if((self.p_class == P_MECH) || (self.p_class_prev == P_MECH)){
     cleanup_mech();
   }
   self.frame = $ctorstand1;
-	self.solid = SOLID_NOT;
+	self.solid = SOLID_CORPSE;
+  setsize(self, '-3 -3 -3', '3 3 3');
 	self.movetype = MOVETYPE_TOSS;
 	self.deadflag = DEAD_DEAD;
   self.nextthink = -1;
-	self.frags = self.frags - 2;	// extra penalty
-  
+  if((self.p_class != P_OBS) || (self.p_class_prev != P_OBS)){
+  	self.frags = self.frags - 2;
+  }
+
 	respawn ();
 };
 

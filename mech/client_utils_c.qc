@@ -7,8 +7,7 @@ Overview: client utility methods, pulled from client.qc
 void() respawn={
   if (coop){
 		// make a copy of the dead body for appearances sake
-		CopyToBodyQue (self);
-  
+    CopyToBodyQue (self);
 		// get the spawn parms as they were at level start
 		setspawnparms (self);
 		// respawn		
@@ -16,8 +15,8 @@ void() respawn={
 	}
 	else if (deathmatch){
 		// make a copy of the dead body for appearances sake
-		CopyToBodyQue (self);
-    
+    CopyToBodyQue (self);
+
 		// set default spawn parms
 		SetNewParms ();
 		// respawn		

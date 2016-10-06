@@ -62,7 +62,46 @@ void() ImpulseCommands ={
     self.currentWeaponGroup = 3;
   }
 
+  
+  local float change;
+  change = 0;
+  
+  if(self.impulse == 23){
+    change = 1;
+    self.nextVecChoice = self.nextVecChoice - 1;
+  }
+  
+  if(self.impulse == 24){
+    change = 1;
+    self.nextVecChoice = self.nextVecChoice + 1;
+  }
+  
+  //abstract out into handler at some point
+
+  if(self.nextVecChoice > 2){
+    self.nextVecChoice = 0;
+  }
+  else if(self.nextVecChoice < 0){
+    self.nextVecChoice = 2;
+  }
 	
+  if(change == 1){
+    if( self.nextVecChoice == 0){
+      centerprint(self, "Spawn as Observer");
+      self.p_class_prev = self.p_class;
+      self.p_class = P_OBS;
+    }else{
+      self.p_class_prev = self.p_class;
+      self.p_class = P_MECH;
+      local entity e;
+      e = mh_world_findData(self.nextVecChoice, DATA_MECH);
+      centerprint(self, strcat("Spawn as ", e.vec_name));
+    }
+    change = 0;
+  }
+
+
+
 	self.impulse = 0;
 };
 

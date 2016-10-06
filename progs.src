@@ -36,8 +36,10 @@ dp/dpextensions.qc
 //DATA FILES=================
   mech/dat/prj/data_prj_latc.qc
   mech/dat/prj/data_prj_emp.qc
+  mech/dat/prj/data_prj_mis.qc
   mech/dat/wep/data_lightatc.qc
   mech/dat/wep/data_emp.qc
+  mech/dat/wep/data_mis.qc
   mech/dat/mch/data_proto.qc
   mech/dat/mch/data_ntmk.qc
 //===========================

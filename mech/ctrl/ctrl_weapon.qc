@@ -99,7 +99,7 @@ void() ctrl_die_weapon={
       util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_BOUNCE);
       setmodel(self, oself.model);
       setsize(self, '-3 -3 -3', '3 3 3');
-      self.think = SUB_Remove;
+      self.think = BecomeExplosion;
       self.nextthink = time + 1000;
     self = oself;
 

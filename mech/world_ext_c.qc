@@ -13,9 +13,11 @@ void() mh_world_iniData={
   //projectile data
   prj_latc_ini();
   prj_emp_ini();
+  prj_mis_ini();
   //weapon data
   latc_ini();
   emp_ini();
+  mis_ini();
   //mech data
   prt_ini();
   tmk_ini();

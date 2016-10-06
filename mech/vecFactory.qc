@@ -193,7 +193,7 @@ entity(entity data) buildVehicleWeapon={
   oself = self;
   self  = new_wep;
   self.deadflag = DEAD_NO;
-  self.classname = "weapon";
+  self.classname = self.c_name = "weapon";
   self.c_parent = data.c_parent;
   self.data_idx = data.data_idx;
   self.c_ofs = data.c_ofs;

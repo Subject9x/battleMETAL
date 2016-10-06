@@ -3,9 +3,9 @@ mech mod
 Author: Subject9x
 Date: 9/3/2016
   weapo definition file
-  WEAPON: EMP Cannon
+  WEAPON: EMP Cannon projectile
   ROLE: Indirect effect
-  DESC: low rof, inhibits movement
+  DESC: low rof, inhibits movement?
 */
 
 void() prj_emp_touch={
