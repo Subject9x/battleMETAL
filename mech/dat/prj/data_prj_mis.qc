@@ -32,7 +32,7 @@ void() prj_mis_touch={
     return;
   }
   
-  t_damage(other, self, self.owner, 5, 0, self.origin, '0 0 0');
+  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   
   BecomeExplosion ();
 };

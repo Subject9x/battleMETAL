@@ -132,7 +132,7 @@ void() ClientKill = {
 	self.movetype = MOVETYPE_TOSS;
 	self.deadflag = DEAD_DEAD;
   self.nextthink = -1;
-  if((self.p_class != P_OBS) || (self.p_class_prev != P_OBS)){
+  if(self.p_class != P_OBS){
   	self.frags = self.frags - 2;
   }
 

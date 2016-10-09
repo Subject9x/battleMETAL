@@ -18,6 +18,7 @@ void() mh_world_iniData={
   latc_ini();
   emp_ini();
   mis_ini();
+  las_ini();
   //mech data
   prt_ini();
   tmk_ini();

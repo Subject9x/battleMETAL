@@ -40,6 +40,7 @@ dp/dpextensions.qc
   mech/dat/wep/data_lightatc.qc
   mech/dat/wep/data_emp.qc
   mech/dat/wep/data_mis.qc
+  mech/dat/wep/data_las.qc
   mech/dat/mch/data_proto.qc
   mech/dat/mch/data_ntmk.qc
 //===========================
