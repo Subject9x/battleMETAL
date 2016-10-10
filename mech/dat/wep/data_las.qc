@@ -22,7 +22,7 @@ void() las_attack={
   traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
   end = trace_endpos;
   
-  adj = self.c_ofs + self.c_alt_ofs + self.w_fire_ofs;
+  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
   makevectors(player.angles);
   org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   traceline(org, end, FALSE, player);
@@ -68,8 +68,8 @@ void() las_ini={
   self.w_firetime = 0;
   self.w_clipsize = 1;
   self.w_currentammo = 1;
-  self.w_firerate = 0.15;
-  self.w_reloadtime = 0.15;
+  self.w_firerate = 0.25;
+  self.w_reloadtime = 0.25;
   self.w_isfire = 0;
   self.w_fire_ofs = '0 0 16'; //kinda important, this helps the traceline clear the player bboxes
   self.health = 75;

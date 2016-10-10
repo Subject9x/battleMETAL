@@ -88,11 +88,9 @@ void() ImpulseCommands ={
   if(change == 1){
     if( self.nextVecChoice == 0){
       centerprint(self, "Spawn as Observer");
-      self.p_class_prev = self.p_class;
-      self.p_class = P_OBS;
+      self.p_class_next = P_OBS;
     }else{
-      self.p_class_prev = self.p_class;
-      self.p_class = P_MECH;
+      self.p_class_next = P_MECH;
       local entity e;
       e = mh_world_findData(self.nextVecChoice, DATA_MECH);
       centerprint(self, strcat("Spawn as ", e.vec_name));

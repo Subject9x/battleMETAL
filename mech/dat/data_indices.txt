@@ -7,13 +7,15 @@ merely for reference
 */
 
 //Mechs
-0 = prototype
+0 = observer
+1 = notlaw prototype
+2 = notomhawk
 
 //Weapons
 0 = light atc
 1 = emp cannnon
-2 = laser
-3 = missile
+2 = missile
+3 = laser
 
 //Projectiles
 0 = light atc round

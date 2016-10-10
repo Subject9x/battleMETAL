@@ -17,7 +17,7 @@ void() ClientConnect = {
   bprint(" has deployed to the combat zone\n");
   
   self.p_class = P_OBS;
-  self.p_class_prev = P_OBS;
+  self.p_class_next = P_OBS;
   self.nextVecChoice = 0;
   self.data_idx = 0;
   self.currentWeaponGroup = 1;
@@ -109,21 +109,22 @@ void() ClientKill = {
     return;
   }
   
-  if(self.p_class_prev == P_OBS){
-    self.effects = EF_NODRAW;
-    respawn ();
-    return;
-  }
-  
   if ((intermission_running)&&((coop)||(deathmatch)))  // not allowed during intermission
 		return;
-	bprint (self.netname);
-	bprint (" suicides\n");
 
-  if((self.p_class == P_MECH) || (self.p_class_prev == P_MECH)){
+  //if player is an observer and their next class is still observer
+  //don't let them suicide
+  if(self.p_class == P_OBS){
+    if(self.p_class_next == P_OBS){
+      return;
+    }
+  }
+  
+  bprint (self.netname);
+	bprint (" cowardly ejects!\n");
+
+  if(self.p_class == P_MECH){
     mech_player_die();
-  } 
-  if((self.p_class == P_MECH) || (self.p_class_prev == P_MECH)){
     cleanup_mech();
   }
   self.frame = $ctorstand1;
@@ -132,10 +133,16 @@ void() ClientKill = {
 	self.movetype = MOVETYPE_TOSS;
 	self.deadflag = DEAD_DEAD;
   self.nextthink = -1;
-  if(self.p_class != P_OBS){
-  	self.frags = self.frags - 2;
-  }
 
+  //only deduct frags of player is going from !observer to another !observer
+  if(self.p_class != P_OBS){
+    if(self.p_class_next != P_OBS){
+      self.frags = self.frags - 2;
+    }
+  }
+  
+  self.p_class = self.p_class_next;
+  
 	respawn ();
 };
 
@@ -154,9 +161,9 @@ void() ClientDisconnect = {
     return;
   }
   bprint (self.netname);
-	bprint (" left the game with ");
-	bprint (ftos(self.frags));
-	bprint (" frags\n");
+	bprint (" has fled the field of battle!\n");
+	//bprint (ftos(self.frags));
+	//bprint (" frags\n");
   
   if(self.p_class == P_MECH){
     mech_player_die();
