@@ -1,7 +1,9 @@
 ../../csprogs.dat
 
-csprogsdefs.qc
-csvars.qc
-gamesettings.qc
-csmain.qc
-
+csplat.qc
+m_csdefs.qc
+//defsHud.qc
+//updateStats.qc
+//drawHud.qc
+Main.qc
+View.qc
