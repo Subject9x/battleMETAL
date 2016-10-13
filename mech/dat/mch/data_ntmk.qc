@@ -24,6 +24,12 @@ void() tmk_ini={
   self.data_type = DATA_MECH;
   self.vec_name = "Tomahawk";
   self.m_rot_speed = 6;
+  self.en_cur = 100;
+  self.en_max = 100;
+  self.en_rate = 0.009;
+  self.sh_cur = 50;
+  self.sh_max = 50;
+  self.sh_rate = 1;
   
   //main collider info
   //this must account for the legs as -height, and the center torso / top weapons as +height

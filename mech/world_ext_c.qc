@@ -6,6 +6,11 @@ Overview: function extensions to world.qc
 */
 
 void() mh_world_ini={
+
+  addstat(STAT_ENERGY_CUR, 2, en_cur);
+  addstat(STAT_ENERGY_MAX, 2, en_max);
+  addstat(STAT_SHIELD_CUR, 2, sh_cur);
+  addstat(STAT_SHIELD_MAX, 2, sh_max);
   mh_world_iniData();
 };
 

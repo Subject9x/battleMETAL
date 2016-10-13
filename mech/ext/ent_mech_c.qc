@@ -9,9 +9,9 @@ commented vars mean they're already implemented and are here for reference!
 
 //local vars
 //reactor
-.float en_master;   //max amount
-.float en_current;  //current amount
-.float en_recharge; //how much energy built per frame
+.float en_max;   //max amount
+.float en_cur;  //current amount
+.float en_rate; //how much energy built per frame
 
 .float sh_max;    //max shields
 .float sh_cur;    //current amount of shields

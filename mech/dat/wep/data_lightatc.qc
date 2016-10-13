@@ -87,6 +87,7 @@ void() latc_ini={
   self.c_model = "q3mdl/weapons/w_atc.md3";
   self.w_attack = latc_attack;
   self.w_proj = 0;
+  self.en_max = 0;
   
   self = oself;
 };

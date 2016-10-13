@@ -7,7 +7,7 @@
 
 void CSQC_Init(float apilevel, string enginename, float engineversion)
 {
-
+  ENG_COLOR_CURRENT = DMG_COLOR_GRAY;
 }
 // CSQC_Shutdown : Called every time the CSQC code is shutdown (changing maps, quitting, etc)
 void CSQC_Shutdown(void)

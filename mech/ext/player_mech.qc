@@ -8,6 +8,7 @@ Overview: implementation of mech player functions,
 void() ctrl_update_mechplayer={
   local entity oself;
   oself = self;
+  ctrl_updateCenterTorso();
   if(oself.e_legs){
     if(oself.e_legs != world && oself.e_legs.owner == oself){
       self = oself.e_legs;

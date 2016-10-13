@@ -84,6 +84,7 @@ void() emp_ini={
   self.c_model = "q3mdl/weapons/w_emp.md3";
   self.w_attack = emp_attack;
   self.w_proj = 1;
+  self.en_max = 25;    //energy cost
   
   self = oself;
 };

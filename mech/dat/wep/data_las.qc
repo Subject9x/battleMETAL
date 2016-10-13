@@ -80,6 +80,7 @@ void() las_ini={
   self.c_model = "q3mdl/weapons/w_laser.md3";
   self.w_attack = las_attack;
   self.w_proj = 0;
+  self.en_max = 10;
   
   self = oself;
 };

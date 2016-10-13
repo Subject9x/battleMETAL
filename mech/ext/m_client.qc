@@ -22,6 +22,14 @@ void() ClientConnect = {
   self.data_idx = 0;
   self.currentWeaponGroup = 1;
   
+  //energy / shield stats
+  self.en_cur = 0;
+  self.en_max = 0;
+  self.en_rate = 0;
+  self.sh_cur = 0;
+  self.sh_max = 0;
+  self.sh_rate = 0;
+  
   if (intermission_running){
     ExitIntermission();
   }

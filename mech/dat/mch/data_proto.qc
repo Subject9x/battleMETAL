@@ -25,6 +25,13 @@ void() prt_ini={
   self.data_type = DATA_MECH;
   self.vec_name = "Prototype";
   self.m_rot_speed = 6;
+  self.en_cur = 75;
+  self.en_max = 75;
+  self.en_rate = 0.02;
+  self.sh_cur = 25;
+  self.sh_max = 25;
+  self.sh_rate = 2;
+  
   
   //main collider info
   //this must account for the legs as -height, and the center torso / top weapons as +height

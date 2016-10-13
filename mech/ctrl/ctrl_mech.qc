@@ -7,12 +7,12 @@ Overview: implementation for center torso updates
 
 void() ctrl_updateCenterTorso={
 
-  if(self.en_current < self.en_master){
-    self.en_current = self.en_current + self.en_recharge;
-    if(self.en_current > self.en_master){
+  if(self.en_cur < self.en_max){
+    self.en_cur = self.en_cur + self.en_rate;
+    if(self.en_cur > self.en_max){
       local float diff;
-      diff = self.en_current - self.en_master;
-      self.en_current = self.en_current - diff;
+      diff = self.en_cur - self.en_max;
+      self.en_cur = self.en_cur - diff;
     }
   }
   

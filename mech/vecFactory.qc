@@ -22,6 +22,7 @@ void(entity data) buildVehicle={
     if(ltor != world && (ltor.c_name)){
       self.e_tor_l = buildSideTorso(ltor);
     }
+    
     rtor = data.e_tor_r;
     if(rtor != world && (rtor.c_name)){
       self.e_tor_r = buildSideTorso(rtor);
@@ -93,6 +94,13 @@ void(entity dat ,entity ct_dat)buildCenterTorso={
   //oself = self;
   //self = ct;
 
+  self.en_cur = dat.en_cur;
+  self.en_max = dat.en_max ;
+  self.en_rate = dat.en_rate;
+  self.sh_cur = dat.sh_cur;
+  self.sh_max = dat.sh_max;
+  self.sh_rate = dat.sh_rate;
+  
   //self.classname = self.c_name = ct_dat.c_name;
   self.c_ofs = ct_dat.c_ofs;
   self.c_alt_ofs = ct_dat.c_alt_ofs;
@@ -208,7 +216,7 @@ entity(entity data) buildVehicleWeapon={
   self.w_reloadtime = data_wep.w_reloadtime;
   self.w_isfire = data_wep.w_isfire;
   self.w_fire_ofs = data_wep.w_fire_ofs;
-  
+  self.en_max  = data_wep.en_max;
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
   util_setModel(data_wep.c_model, 0);
   util_setBoundBox(data_wep.c_bbx_n, data_wep.c_bbx_x);

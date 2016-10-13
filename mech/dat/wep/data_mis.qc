@@ -85,6 +85,6 @@ void() mis_ini={
   self.c_model = "q3mdl/weapons/w_mis.md3";
   self.w_attack = mis_attack;
   self.w_proj = 2;
-  
+  self.en_max = 0;
   self = oself;
 };

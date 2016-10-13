@@ -6,11 +6,13 @@ dp/dpextensions.qc
 
 //mech classes / extensions
   mech/ext/defs_game.qc
+  mech/ext/defs_cs.qc
   mech/ext/ent_player_c.qc
   mech/ext/ent_mech_c.qc
   mech/ext/ent_vec_comp_c.qc
   mech/ext/ent_wep_c.qc
   mech/ext/ent_proj_c.qc
+  
 //==========================
 
 //mech header files
