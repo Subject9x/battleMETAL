@@ -50,7 +50,7 @@ void() prj_mis_ini={
   self.p_velocity = 900;
   self.c_model = "q3mdl/proj_mis.md3";
   self.p_lifetime = 4;
-  self.p_damage = 0;
+  self.p_damage = 20;
   self.p_dmgtype = 0;
   self.touch = prj_mis_touch;
   

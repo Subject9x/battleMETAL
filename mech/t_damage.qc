@@ -56,7 +56,6 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
   if(targ.health <= 0){
    if(targ.th_die){
       if(targ.th_die != SUB_Null){
-        
         killed(targ, attacker, dmg_type);
         return;
       }
@@ -85,7 +84,6 @@ entity(entity targ, entity inflictor, entity attacker, vector dmg_point) damage_
   local float radi;
   radi = vlen(targ.origin - dmg_point);
   found = t_find_recurse(dmg_point, radi, targ, targ);
-  bprint(strcat(found.classname, "\n"));
   
   if(found == world){
     found = targ;

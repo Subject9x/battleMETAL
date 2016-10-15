@@ -232,7 +232,7 @@ void		end_sys_fields;			// flag for structure dumping
 //
 
 float	FALSE					= 0;
-float 	TRUE					= 1;
+float TRUE					= 1;
 
 // edict.flags
 float	FL_FLY					= 1;

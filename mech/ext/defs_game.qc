@@ -76,4 +76,5 @@ float W_GROUPC = 3;
 //class vars
 .string data_type;
 .string vec_name;
+.float max_armor; //why wasn't this ever included!?
 

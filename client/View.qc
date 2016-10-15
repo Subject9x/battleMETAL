@@ -60,5 +60,7 @@ void CSQC_UpdateView(float vwidth, float vheight, float notmenu)
   drawstring('0 16 0', ftos(en_cr), '8 8 0', '1 1 1', 1, 0);
   drawstring('0 26 0', ftos(en_mx), '8 8 0', '1 1 1', 1, 0);
   
+  drawstring('0 36 0', strcat("LEGS: ",ftos(LEG_ARM_CUR), "/",ftos(LEG_ARM_MX)), '8 8 0', '1 1 1', 1, 0);
+  
   //drawstring('0 0 0', ftos(hp), '8 8 0', '1 1 1', 1, 0);
 }

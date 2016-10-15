@@ -74,13 +74,14 @@ void() las_ini={
   self.w_fire_ofs = '0 0 16'; //kinda important, this helps the traceline clear the player bboxes
   self.health = 75;
   self.armorvalue = 75;
+  self.max_armor = 75;
   self.armortype = 1;
   self.c_bbx_n = '-1 -1 -1';
   self.c_bbx_x = '1 1 1';
   self.c_model = "q3mdl/weapons/w_laser.md3";
   self.w_attack = las_attack;
   self.w_proj = 0;
-  self.en_max = 10;
+  self.en_max = 5;
   
   self = oself;
 };

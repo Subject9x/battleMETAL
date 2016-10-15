@@ -83,6 +83,20 @@ entity(entity leg_data) buildLegs={
   self.th_die = ctrl_dieLegs;
   
   self = oself;
+  
+  local entity d;
+  d = spawn();
+  self = d;
+    self.c_name = leg_data.c_name;
+    setmodel(self, leg_ent.model);
+    util_setHealthArmor(leg_data.health, leg_data.max_health, leg_data.armortype, leg_data.armorvalue);
+    self.csqc_sendToEnt = oself;
+  self = oself;
+  self.SendEntity = csqc_SendVecComp;
+  d.SendFlags |= 1;
+  
+  //d.SendEntity();
+  
   return leg_ent;
 };
 

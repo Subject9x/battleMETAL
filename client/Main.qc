@@ -111,8 +111,20 @@ float CSQC_InputEvent(float eventType, float scanCode, float unicode, float devi
 
 void CSQC_Ent_Update(float bIsNewEntity)
 {
-	float i;
+	local float i;
 	i = readbyte();
+  if(i == ENT_ADDVECCOMP){
+    if(bIsNewEntity){
+      local string n;
+      n = readstring();
+      if(n == M_LEGS){
+        LEG_HP_MX = readbyte();
+        LEG_HP_CUR = readbyte();
+        LEG_ARM_CUR = readbyte();
+        LEG_ARM_MX = readbyte();
+      }
+    }
+  }
 }
 // CSQC_Ent_Remove : Called when the server requests a SSQC / CSQC entity to be removed.  Essentially call remove(self) as well.
 void CSQC_Ent_Remove()

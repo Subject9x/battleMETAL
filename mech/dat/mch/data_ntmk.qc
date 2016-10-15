@@ -26,15 +26,15 @@ void() tmk_ini={
   self.m_rot_speed = 6;
   self.en_cur = 100;
   self.en_max = 100;
-  self.en_rate = 0.009;
+  self.en_rate = 0.075;
   self.sh_cur = 50;
   self.sh_max = 50;
   self.sh_rate = 1;
   
   //main collider info
   //this must account for the legs as -height, and the center torso / top weapons as +height
-  self.c_bbx_n = '-13 -13 -40';//'-12 -12 -38';
-  self.c_bbx_x = '13 13 14';//'12 12 10';
+  self.c_bbx_n = '-12 -12 -40';//'-12 -12 -38';
+  self.c_bbx_x = '12 12 14';//'12 12 10';
   
   //Movement variables
   self.m_fspeed = 125;
@@ -64,6 +64,7 @@ void() tmk_ini={
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
+  self.max_armor = 100;
   self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_legs.md3";
   self.c_bbx_n = '-1 -1 -1';
   self.c_bbx_x = '1 1 1';
@@ -80,6 +81,7 @@ void() tmk_ini={
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
+  self.max_armor = 100;
   self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_t_cent.md3";
   //self.c_ofs = '0 6.5 0';
   //self.c_alt_ofs = prt_data.e_legs.c_ofs;
@@ -98,6 +100,7 @@ void() tmk_ini={
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
+  self.max_armor = 100;
   self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_arm_r.md3";
   self.c_ofs = '10 2 -3';
   self.c_bbx_n = '-1 -1 -1';
@@ -114,6 +117,7 @@ void() tmk_ini={
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
+  self.max_armor = 100;
   self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_arm_l.md3";
   self.c_ofs = '-10 2 -3';
   self.c_bbx_n = '-1 -1 -1';

@@ -37,6 +37,7 @@ void(float hp, float max_hp, float arm_type, float arm_val) util_setHealthArmor=
   self.max_health = max_hp;
   self.armortype = arm_type;
   self.armorvalue = arm_val;
+  self.max_armor = arm_val;
 };
 
 /*
