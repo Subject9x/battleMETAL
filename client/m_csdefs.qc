@@ -27,7 +27,9 @@ float ENT_GAMESETTINGS = 1; // provide game parameters such as frag limit, time 
 float ENT_PLAYER = 2; // player entity (origin, aimdir, active weapon, etc)
 float ENT_INVENTORYITEM = 3; // inventory items in this player's inventory are networked this way
 float ENT_ADDVECCOMP = 4; //mod: add vehicle component to cs
-float ENT_ADDWEPCOMP = 5;
+float ENT_ADDWEPCOMP = 5; //mod: add weapon component to cs
+float ENT_UPDATECOMP = 6; //update component
+
 
 //stat channgels
 float STAT_CPIT_MDL = 33;

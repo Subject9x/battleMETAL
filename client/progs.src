@@ -1,9 +1,5 @@
 ../../csprogs.dat
 
-csplat.qc
+../dp/csprogsdefs.qc
 m_csdefs.qc
-//defsHud.qc
-//updateStats.qc
-//drawHud.qc
-Main.qc
-View.qc
+csmain.qc

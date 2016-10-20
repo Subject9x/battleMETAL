@@ -40,10 +40,10 @@ void(entity data) buildVehicle={
     buildCenterTorso(data, ctor);
     self.clientcamera = buildCameraEnt(data.e_cam);
     self.view_ofs = self.clientcamera.c_ofs;
-    self.e_legs = buildLegs(legs);
+    self.e_legs = buildLegs(legs);    
     self = self.e_legs;
        leg_stand1();
-    self = oself;
+    self = oself;    
   }
   wep_slot = data.w_slot;
   plr_slot = self;
@@ -83,20 +83,6 @@ entity(entity leg_data) buildLegs={
   self.th_die = ctrl_dieLegs;
   
   self = oself;
-  
-  local entity d;
-  d = spawn();
-  self = d;
-    self.c_name = leg_data.c_name;
-    setmodel(self, leg_ent.model);
-    util_setHealthArmor(leg_data.health, leg_data.max_health, leg_data.armortype, leg_data.armorvalue);
-    self.csqc_sendToEnt = oself;
-  self = oself;
-  self.SendEntity = csqc_SendVecComp;
-  d.SendFlags |= 1;
-  
-  //d.SendEntity();
-  
   return leg_ent;
 };
 
@@ -174,6 +160,7 @@ entity(entity dat) buildSideTorso={
   self.th_die = ctrl_die_weapon;
   
   self = oself;
+  
   return tor_ent;
 };
 

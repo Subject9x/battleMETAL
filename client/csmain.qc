@@ -5,10 +5,13 @@ void() CSQC_Init =
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity"))
 		maxclients = maxclients + 1;
-
+    
 	// this is the place to do any registercmd() calls we want for custom csqc commands (like replacing +showscores) so that they tab-complete properly
-
 	// we can precache_sound and precache_model and precache_pic here
+  precache_model ("q3mdl/mechs/notl/mdl_notl_cpt.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_notl_t_cent.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_notl_t_left.md3");  
+  precache_model ("q3mdl/mechs/notl/mdl_notl_legs.md3");
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -32,16 +35,16 @@ void(float w, float h) CSQC_UpdateView =
 	local vector vf_size;
 	local vector vf_min;
 	local vector fovvec;
-	local float chasecam;
+	local float chasecam, vid_width, vid_height,vid_conwidth,vid_conheight,vid_pixelheight;
 	vf_size = getpropertyvec(VF_SIZE);
 	vf_min = getpropertyvec(VF_MIN);
 	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
 	vid_width = w;
 	vid_height = h;
-	vid_conwidth = autocvar_vid_conwidth;
-	vid_conheight = autocvar_vid_conheight;
-	vid_pixelheight = autocvar_vid_pixelheight;
-	chasecam = autocvar_chase_active != 0;
+	//vid_conwidth = autocvar_vid_conwidth;
+	//vid_conheight = autocvar_vid_conheight;
+	//vid_pixelheight = autocvar_vid_pixelheight;
+	//chasecam = autocvar_chase_active != 0;
 
 	// do any manipulation we want on fov here (weapon zoom, respawn zoom, etc)
 	// nothing right now
@@ -55,7 +58,7 @@ void(float w, float h) CSQC_UpdateView =
 	setproperty(VF_FOV, fovvec);
 	setproperty(VF_DRAWWORLD, 1);
 	setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
-	setproperty(VF_DRAWENGINESBAR, 1); // TODO custom hud
+	setproperty(VF_DRAWENGINESBAR, 0); // TODO custom hud
 
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
@@ -70,12 +73,45 @@ void(float w, float h) CSQC_UpdateView =
 
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
-	drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
+	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
 
 	// draw custom hud
-  local float mech_en;
-  mech_en = 
-  drawString(')
+ //draw hud
+  local float hp, en_mx, en_cr, sh_mx, sh_cr;
+  hp = getstatf(STAT_HEALTH);
+  en_cr = getstatf(STAT_ENERGY_CUR);
+  en_mx = getstatf(STAT_ENERGY_MAX);
+  //drawfill float(vector position, vector size, vector rgb, float alpha,  float flag) 
+  
+  //vector ENG_COLOR_CURRENT;
+  //vector SHD_COLOR_CURRENT;
+  //vector DMG_COLOR_CURRENT;
+  if(en_cr <= (en_mx/2)){
+    ENG_COLOR_CURRENT = DMG_COLOR_YELLOW;
+    if(en_cr <= (en_mx/4)){
+      ENG_COLOR_CURRENT = DMG_COLOR_RED;
+      if(en_cr <= 0){
+        ENG_COLOR_CURRENT = DMG_COLOR_GRAY;
+      }
+    }
+  }
+  else{
+    ENG_COLOR_CURRENT = DMG_COLOR_GREEN;
+  }
+  local vector shl_loc;
+  shl_loc = '0 0 0';
+  shl_loc_x = shl_loc_x + 250;
+  shl_loc_y = shl_loc_y + (vid_height/2) - 48;
+  drawfill(shl_loc, '48 48 0', ENG_COLOR_CURRENT, 1, 0 );
+  drawstring((shl_loc + '1 20 0'), "ENERGY", '8 8 0', '1 1 1', 1, 0);
+  
+  drawstring('0 16 0', ftos(en_cr), '8 8 0', '1 1 1', 1, 0);
+  drawstring('0 26 0', ftos(en_mx), '8 8 0', '1 1 1', 1, 0);
+  
+  
+  drawstring(shl_loc - '100 0 0', strcat("LEGS: ",ftos(LEG_ARM_CUR), "/",ftos(LEG_ARM_MX)), '8 8 0', '1 1 1', 1, 0);
+  
+  
 	// draw custom crosshair
 };
 
@@ -137,17 +173,28 @@ entity(float entnum) CSQC_Ent_Spawn =
 // if you wish to do interpolation, be sure to make use the proper time variables: time is previous packet time, servertime is new packet time, so the tick time between packets is servertime - time and the interpolation should begin the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
-	local float t;
-	t = ReadByte();
-	if (t == ENT_GAMESETTINGS) EntUpdate_GameSettings(isnew);
-	else error(_("Parse error: unknown entity type\n"));
+  
+  local float ev, sentFlags;
+  ev = ReadByte();
+  centerprint(ftos(ev));
+  if(ev == 5){
+    sentFlags = ReadByte();
+    if(sentFlags & 1){
+      local float av, ax;
+      av = ReadByte();
+      ax = ReadByte();
+      LEG_ARM_MX = ax;
+      LEG_ARM_CUR = av;
+      centerprint(strcat(ftos(ev),"\n",ftos(sentFlags),"\n",ftos(av),"\n",ftos(ax)));
+    }
+  }
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not
 void() CSQC_Ent_Remove =
 {
-	if (self.t_remove)
-		if (self.t_remove())
+	//if (self.t_remove)
+		//if (self.t_remove())
 			remove(self);
 };
 

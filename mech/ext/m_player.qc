@@ -44,9 +44,10 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
-  	local	float	mspeed, aspeed;
+  local entity senda;
+  local	float	mspeed, aspeed;
 	local	float	r;
-  
+ 
 	if (self.view_ofs == '0 0 0'){
 		return;		// intermission or finale
   }
@@ -107,6 +108,27 @@ void() PlayerPostThink = {
 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
+    
+  if(self.SENDDATA){
+  local entity oself;
+    oself = self;
+    senda = spawn();
+    self = senda;
+      self.deadflag = 0;
+      self.classname = "missile";
+      self.walkframe = 1;
+      util_setHealthArmor(oself.e_legs.health, oself.e_legs.max_health, oself.e_legs.armortype, oself.e_legs.armorvalue);
+      util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
+      util_setModel(oself.e_legs.c_model, 0);
+      util_setBoundBox('-1 -1 -1', '1 1 1');
+      setorigin(self, oself.origin);
+      self.SendEntity = csqc_SendVecComp;
+      self.SendFlags = 1;
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.1;
+    self = oself;
+    self.SENDDATA = FALSE;
+  }
 };
 
 

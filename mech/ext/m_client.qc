@@ -89,11 +89,13 @@ void() PutClientInServer = {
 	
   if(self.p_class == P_OBS){
     mh_makeObserver(self);
-  }else if(self.p_class == P_MECH){
+  }
+  else if(self.p_class == P_MECH){
     mh_makeMech(self);
+    self.SENDDATA = TRUE;
   }
   
-  
+
 	//player_stand1 ();
 	if (deathmatch || coop)
 	{
