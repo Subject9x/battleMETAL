@@ -64,7 +64,7 @@ void() leg_walk7 = [$l_walk7, leg_walk1]{};
 
 
 void() leg_die1 = [$l_die1, leg_die2]{
-  setsize(self, '-12 -12 -4','12 12 1');
+  setsize(self, '-12 -12 -4','12 12 4');
   self.movetype = MOVETYPE_BOUNCE;
 };
 void() leg_die2 = [$l_die2, leg_die3]{};

@@ -7,10 +7,25 @@ Overview: function extensions to world.qc
 
 void() mh_world_ini={
 
-  addstat(STAT_ENERGY_CUR, 2, en_cur);
-  addstat(STAT_ENERGY_MAX, 2, en_max);
-  addstat(STAT_SHIELD_CUR, 2, sh_cur);
-  addstat(STAT_SHIELD_MAX, 2, sh_max);
+  addstat(STAT_ENTITY_ID, AS_INT, stat_eid);
+  addstat(STAT_PCLASS, AS_INT, p_class);
+  
+  addstat(STAT_ENERGY, AS_INT, stat_en);
+  addstat(STAT_SHIELD, AS_INT, stat_sh);
+  
+  addstat(STAT_LEG_HP, AS_FLOAT, stat_legs_hp);
+  addstat(STAT_LEG_AM, AS_FLOAT, stat_legs_am);  
+  addstat(STAT_CTOR_HP, AS_FLOAT, stat_ctor_hp);
+  addstat(STAT_CTOR_AM, AS_FLOAT, stat_ctor_am);  
+  addstat(STAT_LTOR_HP, AS_FLOAT, stat_ltor_hp);
+  addstat(STAT_LTOR_AM, AS_FLOAT, stat_ltor_am); 
+  addstat(STAT_RTOR_HP, AS_FLOAT, stat_rtor_hp);
+  addstat(STAT_RTOR_AM, AS_FLOAT, stat_rtor_am);  
+  addstat(STAT_LARM_HP, AS_FLOAT, stat_larm_hp);
+  addstat(STAT_LARM_AM, AS_FLOAT, stat_larm_am);  
+  addstat(STAT_RARM_HP, AS_FLOAT, stat_rarm_hp);
+  addstat(STAT_RARM_AM, AS_FLOAT, stat_rarm_am);
+
   mh_world_iniData();
 };
 

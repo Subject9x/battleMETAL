@@ -26,6 +26,7 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
 void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
   local float canDamage;
+  local entity oself;
     
   if(!targ.takedamage){
     return;
@@ -60,6 +61,10 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
         return;
       }
     }
+  }
+  
+  if(targ.classname == MECH_PIECE){
+    csqc_SendMechData(targ.owner, ENT_PLR, FLAG_UPD_MCH);
   }
   
   if((targ.flags & FL_MONSTER) && attacker != world){

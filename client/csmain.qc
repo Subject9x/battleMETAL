@@ -5,7 +5,7 @@ void() CSQC_Init =
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity"))
 		maxclients = maxclients + 1;
-    
+  
 	// this is the place to do any registercmd() calls we want for custom csqc commands (like replacing +showscores) so that they tab-complete properly
 	// we can precache_sound and precache_model and precache_pic here
   precache_model ("q3mdl/mechs/notl/mdl_notl_cpt.md3");
@@ -77,10 +77,10 @@ void(float w, float h) CSQC_UpdateView =
 
 	// draw custom hud
  //draw hud
-  local float hp, en_mx, en_cr, sh_mx, sh_cr;
-  hp = getstatf(STAT_HEALTH);
-  en_cr = getstatf(STAT_ENERGY_CUR);
-  en_mx = getstatf(STAT_ENERGY_MAX);
+  local float eid, en_mx, en_cr, sh_mx, sh_cr;
+  en_cr = getstati(STAT_ENERGY);
+  en_mx = getstati(STAT_SHIELD);
+  eid = getstati(STAT_ENTITY_ID);
   //drawfill float(vector position, vector size, vector rgb, float alpha,  float flag) 
   
   //vector ENG_COLOR_CURRENT;
@@ -108,9 +108,18 @@ void(float w, float h) CSQC_UpdateView =
   drawstring('0 16 0', ftos(en_cr), '8 8 0', '1 1 1', 1, 0);
   drawstring('0 26 0', ftos(en_mx), '8 8 0', '1 1 1', 1, 0);
   
+  /*
+  if(plr.LT_AM_CR > 0){
+    drawstring(shl_loc - '150 0 0', strcat("L TORS: ",ftos(plr.LT_AM_CR), "/",ftos(plr.LT_AM_MX)), '8 8 0', '1 1 1', 1, 0);
+  }
   
-  drawstring(shl_loc - '100 0 0', strcat("LEGS: ",ftos(LEG_ARM_CUR), "/",ftos(LEG_ARM_MX)), '8 8 0', '1 1 1', 1, 0);
-  
+  if(plr.RT_AM_CR > 0){
+    drawstring(shl_loc - '150 -10 0', strcat("R TORS: ",ftos(plr.RT_AM_CR), "/",ftos(plr.RT_AM_MX)), '8 8 0', '1 1 1', 1, 0);
+  }
+
+
+  drawstring(shl_loc - '150 -20 0', strcat("LEGS: ",ftos(plr.LG_AM_CR), "/",ftos(plr.LG_AM_MX)), '8 8 0', '1 1 1', 1, 0);
+  */
   
 	// draw custom crosshair
 };
@@ -125,6 +134,9 @@ float(string s) CSQC_ConsoleCommand =
 // parse tempentity if it suits your fancy, return TRUE to tell engine you have finished parsing the tempentity, return FALSE to tell engine to parse tempentity itself (it will reset parse position automatically)
 float() CSQC_Parse_TempEntity =
 {
+  local float id;
+  id = ReadByte();
+  
 	return FALSE;
 };
 
@@ -173,21 +185,51 @@ entity(float entnum) CSQC_Ent_Spawn =
 // if you wish to do interpolation, be sure to make use the proper time variables: time is previous packet time, servertime is new packet time, so the tick time between packets is servertime - time and the interpolation should begin the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
-  
-  local float ev, sentFlags;
-  ev = ReadByte();
-  centerprint(ftos(ev));
-  if(ev == 5){
-    sentFlags = ReadByte();
-    if(sentFlags & 1){
-      local float av, ax;
-      av = ReadByte();
-      ax = ReadByte();
-      LEG_ARM_MX = ax;
-      LEG_ARM_CUR = av;
-      centerprint(strcat(ftos(ev),"\n",ftos(sentFlags),"\n",ftos(av),"\n",ftos(ax)));
+  /*local float eid, ent, flg;
+  eid = ReadByte();
+  if(eid == player_localentnum){
+    ent = ReadByte();
+    switch(ent){
+      case ENT_PLR:
+        flg = ReadByte();
+        local entity plr;
+        plr = findfloat(world, entnum, plr_info_num);
+        if(flg & FLAG_INI_MCH){
+          /*plr.LG_HP_CR = plr.LG_HP_MX = ReadByte();
+          plr.LG_AM_CR = plr.LG_AM_MX = ReadByte();
+
+          plr.LT_HP_CR = plr.LT_HP_MX = ReadByte();
+          plr.LT_AM_CR = plr.LT_AM_MX = ReadByte();
+          
+          plr.RT_HP_CR = plr.RT_HP_MX = ReadByte();
+          plr.RT_AM_CR = plr.RT_AM_MX = ReadByte();
+          
+          plr.LA_HP_CR = plr.LA_HP_MX = ReadByte();
+          plr.LA_AM_CR = plr.LA_AM_MX = ReadByte();
+          
+          plr.RA_HP_CR = plr.RA_HP_MX = ReadByte();
+          plr.RA_AM_CR = plr.RA_AM_MX = ReadByte();
+        }
+        else if(flg & FLAG_UPD_MCH){
+          /*centerprint("updating!");
+          plr.LG_HP_CR = ReadByte();
+          plr.LG_AM_CR = ReadByte();
+
+          plr.LT_HP_CR = ReadByte();
+          plr.LT_AM_CR = ReadByte();
+          
+          plr.RT_HP_CR = ReadByte();
+          plr.RT_AM_CR = ReadByte();
+          
+          plr.LA_HP_CR = ReadByte();
+          plr.LA_AM_CR = ReadByte();
+          
+          plr.RA_HP_CR = ReadByte();
+          plr.RA_AM_CR = ReadByte();
+        }
+      break;
     }
-  }
+  }*/
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

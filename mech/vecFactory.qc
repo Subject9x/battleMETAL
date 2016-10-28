@@ -34,7 +34,7 @@ void(entity data) buildVehicle={
     }
     rarm = data.e_arm_r;
     if(rarm != world && (rarm.c_name)){
-      self.e_tor_r = buildSideTorso(rarm);
+      self.e_arm_r = buildSideTorso(rarm);
     }
     
     buildCenterTorso(data, ctor);
@@ -62,7 +62,8 @@ entity(entity leg_data) buildLegs={
   leg_ent = spawn();
   self = leg_ent;
   self.deadflag = DEAD_NO;
-  self.classname = self.c_name = leg_data.c_name;
+  self.classname = MECH_PIECE;
+  self.c_name = leg_data.c_name;
   self.walkframe = 8;
   
   util_setHealthArmor(leg_data.health, leg_data.max_health, leg_data.armortype, leg_data.armorvalue);
@@ -101,6 +102,7 @@ void(entity dat ,entity ct_dat)buildCenterTorso={
   self.sh_max = dat.sh_max;
   self.sh_rate = dat.sh_rate;
   
+  self.c_name = "player";
   //self.classname = self.c_name = ct_dat.c_name;
   self.c_ofs = ct_dat.c_ofs;
   self.c_alt_ofs = ct_dat.c_alt_ofs;
@@ -139,7 +141,8 @@ entity(entity dat) buildSideTorso={
   tor_ent = spawn();
   self = tor_ent;
   self.deadflag = DEAD_NO;
-  self.classname = self.c_name = dat.c_name;
+  self.classname = MECH_PIECE; 
+  self.c_name = dat.c_name;
   //self.walkframe = 8;
   
   util_setHealthArmor(dat.health, dat.max_health, dat.armortype,  dat.armorvalue);
@@ -175,7 +178,8 @@ entity(entity cam_dat) buildCameraEnt={
   self.c_ofs = cam_dat.c_ofs;
   
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(cam_dat.c_model, 0);
+  util_setModel(cam_dat.c_model, EF_ADDITIVE);
+  self.alpha = 0;
   util_setBoundBox('-1 -1 -1', '1 1 1');
   util_setOffsetOrigin(self, oself, self.c_ofs);
   
@@ -187,8 +191,6 @@ entity(entity cam_dat) buildCameraEnt={
   self.v_angle = self.angles - oself.angles;
 
   self = oself;
-  
-  
   return cam;
 };
 
@@ -202,7 +204,8 @@ entity(entity data) buildVehicleWeapon={
   oself = self;
   self  = new_wep;
   self.deadflag = DEAD_NO;
-  self.classname = self.c_name = "weapon";
+  self.classname = MECH_PIECE; 
+  self.c_name = "weapon";
   self.c_parent = data.c_parent;
   self.data_idx = data.data_idx;
   self.c_ofs = data.c_ofs;

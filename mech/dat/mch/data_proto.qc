@@ -132,7 +132,7 @@ void() prt_ini={
   self.c_name = "camera";
   self.c_ofs = '0 1 2';
   self.c_alt_ofs = '0 0 0';
-  self.c_model = "q3mdl/mechs/notl/mdl_notl_cpt.md3";
+  self.c_model = "q3mdl/testball.md3";
   prt_data.e_cam = prt_cam;
   //====================================
   prt_w1 = spawn();

@@ -22,6 +22,7 @@ dp/dpextensions.qc
   mech/svr/server_playermove_h.qc
   mech/ext/eng_client_h.qc
   mech/ext/eng_player_h.qc
+  mech/svr/server_csqchandler_h.qc
   mech/playerFactory_h.qc
   mech/world_ext_h.qc
   mech/vecFactory_h.qc
@@ -52,6 +53,7 @@ dp/dpextensions.qc
   mech/svr/server_parmops_c.qc
   mech/svr/server_intermsn_c.qc
   mech/svr/server_playermove_c.qc
+  mech/svr/server_csqchandler_C.qc
   mech/utils_c.qc
   mech/playerFactory_c.qc
   mech/svr/server_playermovement_c.qc

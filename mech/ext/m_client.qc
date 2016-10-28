@@ -21,7 +21,7 @@ void() ClientConnect = {
   self.nextVecChoice = 0;
   self.data_idx = 0;
   self.currentWeaponGroup = 1;
-  
+  self.stat_eid = num_for_edict(self);
   //energy / shield stats
   self.en_cur = 0;
   self.en_max = 0;
@@ -29,6 +29,18 @@ void() ClientConnect = {
   self.sh_cur = 0;
   self.sh_max = 0;
   self.sh_rate = 0;
+  self.stat_legs_hp = 0;
+  self.stat_legs_am = 0;
+  self.stat_ctor_hp = 0;
+  self.stat_ctor_am = 0;
+  self.stat_ltor_hp = 0;
+  self.stat_ltor_am = 0;
+  self.stat_rtor_hp = 0;
+  self.stat_rtor_am = 0;
+  self.stat_larm_hp = 0;
+  self.stat_larm_am = 0;
+  self.stat_rarm_hp = 0;
+  self.stat_rarm_am = 0;
   
   if (intermission_running){
     ExitIntermission();
@@ -92,7 +104,8 @@ void() PutClientInServer = {
   }
   else if(self.p_class == P_MECH){
     mh_makeMech(self);
-    self.SENDDATA = TRUE;
+    //self.SENDDATA = TRUE;
+    csqc_SendMechData(self, ENT_PLR, FLAG_INI_MCH);//FLAG_INI_MCH);
   }
   
 

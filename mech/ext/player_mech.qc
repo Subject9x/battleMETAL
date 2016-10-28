@@ -58,12 +58,9 @@ void() cleanup_mech={
 
 
 void() mech_player_die={
-
-  local entity oself, w_chain, next;
-  //oself = self;
+  local entity w_chain, next;
   mech_player_cameradie();
-  
-  //mech_player_compdie(self.e_tor_c);
+
   mech_player_compdie(self.e_tor_l);
   mech_player_compdie(self.e_tor_r);
   mech_player_compdie(self.e_arm_l);
@@ -75,7 +72,6 @@ void() mech_player_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  //self = oself;
   ctor_die1();
 };
 
@@ -96,21 +92,20 @@ void(entity comp) mech_player_compdie={
 };
 
 void() mech_player_cameradie={
-  local entity os;
-  os = self;
-  self = os.clientcamera;
-    setmodel(self, "");
-  self = os;
   msg_entity = self;
   WriteByte(MSG_ONE, SVC_SETVIEWPORT);
   WriteEntity(MSG_ONE, self);
+
 }
 
 void() mech_player_removecamera={
   local entity old;
-  if(self.clientcamera.model){
+  if(self.clientcamera.classname){
     old = self;
-    self = self.clientcamera;
+    msg_entity = old;
+      WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+      WriteEntity(MSG_ONE, old);
+    self = old.clientcamera;
       remove(self);
     self = old;
   }

@@ -108,9 +108,20 @@ void() PlayerPostThink = {
 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
-    
+  
+  
+  
+  //STAT UPDATE
+  self.stat_en = self.en_cur;
+  self.stat_sh = self.sh_cur;
+  self.stat_legs_hp = (self.e_legs.max_health / self.e_legs.health);
+  self.stat_legs_am = (self.e_legs.armorvalue / self.e_legs.max_armor);
+  
+  
   if(self.SENDDATA){
-  local entity oself;
+  
+    //csqc_SendMechData(ENT_PLR, FLAG_INI_MCH);
+  /*local entity oself;
     oself = self;
     senda = spawn();
     self = senda;
@@ -126,7 +137,7 @@ void() PlayerPostThink = {
       self.SendFlags = 1;
       self.think = SUB_Remove;
       self.nextthink = time + 0.1;
-    self = oself;
+    self = oself;*/
     self.SENDDATA = FALSE;
   }
 };

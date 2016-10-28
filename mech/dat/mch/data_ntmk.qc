@@ -130,7 +130,7 @@ void() tmk_ini={
   self.c_name = "camera";
   self.c_ofs = '0 -2 5';
   self.c_alt_ofs = '0 0 0';
-  self.c_model = "q3mdl/mechs/notl/mdl_notl_cpt.md3";
+  self.c_model = "q3mdl/testball.md3";
   tmk_data.e_cam = tmk_cam;
   //====================================
   tmk_w1 = spawn();

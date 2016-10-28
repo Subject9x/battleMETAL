@@ -18,7 +18,7 @@ void() respawn={
     CopyToBodyQue (self);
 
 		// set default spawn parms
-		SetNewParms ();
+		//SetNewParms ();
 		// respawn		
 		PutClientInServer ();
 	}

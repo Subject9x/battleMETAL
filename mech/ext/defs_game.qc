@@ -54,6 +54,7 @@ string DATA_WEPN = "data_wepn";
 string DATA_PROJ = "data_proj";
 
 //mech piece classname constants
+string MECH_PIECE = "mech_piece";
 string M_TOR_CENTER = "tor_center";
 string M_TOR_RIGHT = "tor_right";
 string M_TOR_LEFT = "tor_left";

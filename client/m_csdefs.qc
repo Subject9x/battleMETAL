@@ -4,40 +4,116 @@ Author: Subject9x
 Date: 10/11/2016
 Overview: csqc defs for the mod
 */
+float plr_info_num;
+.float() t_remove; // called by CSQC_Ent_Remove to clean up this entity, return TRUE if remove(self) should be performed afterward
+// protocol bytes
+float SVC_SETVIEWPORT = 5;
+float SVC_SETANGLES = 10;
+float	SVC_TEMPENTITY		= 23;
+float	SVC_KILLEDMONSTER	= 27;
+float	SVC_FOUNDSECRET		= 28;
+float	SVC_INTERMISSION	= 30;
+float	SVC_FINALE			= 31;
+float	SVC_CDTRACK			= 32;
+float	SVC_SELLSCREEN		= 33;
+
+//ENT_TYPE
+float ENT_PLR = 34; // scope of ent is the player
+float ENT_TRG = 35; //scope is the player’s target
+float ENT_WEP = 36; //scope is a player weapon sub-component
+float ENT_CMP_LEG = 37; //scope is a player sub-component    
+float ENT_CMP_CTOR = 38; //scope is a player sub-component    
+float ENT_CMP_LTOR = 39; //scope is a player sub-component    
+float ENT_CMP_RTOR = 40; //scope is a player sub-component    
+float ENT_CMP_LARM = 41; //scope is a player sub-component    
+float ENT_CMP_RARM = 42; //scope is a player sub-component    
+
+//UPDATE FLAGS
+float FLAG_INI_MCH = 1;
+float FLAG_UPD_MCH = 2;
+
+float FLAG_ORIGIN = 8;
+float FLAG_ANGLE = 16;
+float FLAG_ENTID = 32;
+
+//COMP_TYPE
+float m_tor_c = 0;
+float m_tor_l = 1;
+float m_tor_r = 2;
+float m_legs = 3;
+float m_arm_r = 4;
+float m_arm_l = 5;
+float m_wep = 6;
 
 //player vars
-float LEG_ARM_MX;
-float LEG_ARM_CUR;
-float LEG_HP_MX;
-float LEG_HP_CUR;
+.float LG_AM_MX;
+.float LG_AM_CR;
+.float LG_HP_MX;
+.float LG_HP_CR;
 
-float TOR_L_ARM_MX;
-float TOR_L_ARM_CUR;
-float TOR_L_HP_MX;
-float TOR_L_HP_CUR;
+.float LT_AM_MX;
+.float LT_AM_CR;
+.float LT_HP_MX;
+.float LT_HP_CR;
 
-float TOR_R_ARM_MX;
-float TOR_R_ARM_CUR;
-float TOR_R_HP_MX;
-float TOR_R_HP_CUR;
+.float RT_AM_MX;
+.float RT_AM_CR;
+.float RT_HP_MX;
+.float RT_HP_CR;
 
-//ent broadcast flags
-float ENT_INVALID = 0; // never used
-float ENT_GAMESETTINGS = 1; // provide game parameters such as frag limit, time limit, etc...
-float ENT_PLAYER = 2; // player entity (origin, aimdir, active weapon, etc)
-float ENT_INVENTORYITEM = 3; // inventory items in this player's inventory are networked this way
-float ENT_ADDVECCOMP = 4; //mod: add vehicle component to cs
-float ENT_ADDWEPCOMP = 5; //mod: add weapon component to cs
-float ENT_UPDATECOMP = 6; //update component
+.float LA_AM_MX;
+.float LA_AM_CR;
+.float LA_HP_MX;
+.float LA_HP_CR;
+
+.float RA_AM_MX;
+.float RA_AM_CR;
+.float RA_HP_MX;
+.float RA_HP_CR;
 
 
-//stat channgels
-float STAT_CPIT_MDL = 33;
+//stat channels
+//stat channels
+float STAT_ENTITY_ID = 33;
+float STAT_PCLASS = 34;
+float STAT_SPREADX = 35;
+float STAT_SPREADY = 36;
+float STAT_ENERGY = 37;
+float STAT_SHIELD = 38;
 
-float STAT_ENERGY_CUR = 34;
-float STAT_ENERGY_MAX = 35;
-float STAT_SHIELD_CUR = 36;
-float STAT_SHIELD_MAX = 37;
+float STAT_LEG_HP = 39;
+float STAT_LEG_AM = 40;
+float STAT_CTOR_HP = 41;
+float STAT_CTOR_AM = 42;
+float STAT_LTOR_HP = 43;
+float STAT_LTOR_AM = 44;
+float STAT_RTOR_HP = 45;
+float STAT_RTOR_AM = 46;
+float STAT_LARM_HP = 47;
+float STAT_LARM_AM = 48;
+float STAT_RARM_HP = 49;
+float STAT_RARM_AM = 50;
+
+float STAT_WEP1_HP = 51;
+float STAT_WEP1_RL = 52;
+float STAT_WEP2_HP = 53;
+float STAT_WEP2_RL = 54;
+float STAT_WEP3_HP = 55;
+float STAT_WEP3_RL = 56;
+float STAT_WEP4_HP = 57;
+float STAT_WEP4_RL = 58;
+float STAT_WEP5_HP = 59;
+float STAT_WEP5_RL = 60;
+float STAT_WEP6_HP = 61;
+float STAT_WEP6_RL = 62;
+float STAT_WEP7_HP = 63;
+float STAT_WEP7_RL = 64;
+float STAT_WEP8_HP = 65;
+float STAT_WEP8_RL = 66;
+float STAT_WEP9_HP = 67;
+float STAT_WEP9_RL = 68;
+
+float STAT_TARG_EID = 69;
 
 //actual csqc constants
 vector ENG_COLOR_CURRENT;
