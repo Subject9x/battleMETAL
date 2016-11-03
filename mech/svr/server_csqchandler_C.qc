@@ -5,6 +5,21 @@ Date: 10/21/2016
 Overview: csqc handler
 */
 
+float(entity piece) csqc_updateCompStat={
+
+  if(piece){
+    if(piece.owner == self || piece == self){
+      if(piece.health){
+        local float perc;
+        perc = (piece.health / piece.max_health)*100;
+        return perc;
+      }
+    }
+  }
+  return -1;
+};
+
+
 entity() csqc_setHeader={
   local entity data, oself;
   data = spawn();
@@ -75,12 +90,7 @@ void(entity to, float entType, float flagType) csqc_SendMechData={
 
 };
 
-void(entity to, float sendFlags) send_DataTE={
-
-  //msg_entity = self.owner;
-  //WriteByte(MSG_ENTITY, SVC_TEMPENTITY);
-  
-
+void(entity to, float sendFlags) sendPlayer={
 };
 
 //float(entity to, float sendFlags) sendData={

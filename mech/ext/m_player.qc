@@ -52,6 +52,20 @@ void() PlayerPostThink = {
 		return;		// intermission or finale
   }
   
+  //STAT UPDATE
+
+  
+  if(self.p_class == P_MECH){
+    self.stat_en = (self.en_cur / self.en_max)*100;
+    self.stat_sh = self.sh_cur;
+    self.stat_legs_hp = csqc_updateCompStat(self.e_legs);
+    self.stat_ctor_hp = csqc_updateCompStat(self);
+    self.stat_ltor_hp = csqc_updateCompStat(self.e_tor_l);
+    self.stat_rtor_hp = csqc_updateCompStat(self.e_tor_r);
+    self.stat_larm_hp = csqc_updateCompStat(self.e_arm_l);
+    self.stat_rarm_hp = csqc_updateCompStat(self.e_arm_r);
+  }
+
 	if (self.deadflag){
     return;
   }
@@ -87,8 +101,7 @@ void() PlayerPostThink = {
 		//W_Attack ();
     playerAttack();
 	}
-  
-  
+
 // check to see if player landed and play landing sound	
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
 	{
@@ -108,17 +121,8 @@ void() PlayerPostThink = {
 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
-  
-  
-  
-  //STAT UPDATE
-  self.stat_en = self.en_cur;
-  self.stat_sh = self.sh_cur;
-  self.stat_legs_hp = (self.e_legs.max_health / self.e_legs.health);
-  self.stat_legs_am = (self.e_legs.armorvalue / self.e_legs.max_armor);
-  
-  
-  if(self.SENDDATA){
+
+  //if(self.SENDDATA){
   
     //csqc_SendMechData(ENT_PLR, FLAG_INI_MCH);
   /*local entity oself;
@@ -138,8 +142,8 @@ void() PlayerPostThink = {
       self.think = SUB_Remove;
       self.nextthink = time + 0.1;
     self = oself;*/
-    self.SENDDATA = FALSE;
-  }
+    //self.SENDDATA = FALSE;
+  //}
 };
 
 

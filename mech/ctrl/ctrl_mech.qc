@@ -6,7 +6,6 @@ Overview: implementation for center torso updates
 */
 
 void() ctrl_updateCenterTorso={
-
   if(self.en_cur < self.en_max){
     self.en_cur = self.en_cur + self.en_rate;
     if(self.en_cur > self.en_max){
@@ -15,12 +14,8 @@ void() ctrl_updateCenterTorso={
       self.en_cur = self.en_cur - diff;
     }
   }
-  
-  
-  
+ 
   //shield recharge
-  
-  
 };
 
 void() ctrl_dieMech={

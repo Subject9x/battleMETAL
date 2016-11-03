@@ -25,7 +25,7 @@ void() mh_world_ini={
   addstat(STAT_LARM_AM, AS_FLOAT, stat_larm_am);  
   addstat(STAT_RARM_HP, AS_FLOAT, stat_rarm_hp);
   addstat(STAT_RARM_AM, AS_FLOAT, stat_rarm_am);
-
+  addstat(STAT_VID, AS_INT, data_idx);
   mh_world_iniData();
 };
 

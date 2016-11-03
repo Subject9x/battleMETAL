@@ -38,8 +38,7 @@ void(entity data) buildVehicle={
     }
     
     buildCenterTorso(data, ctor);
-    self.clientcamera = buildCameraEnt(data.e_cam);
-    self.view_ofs = self.clientcamera.c_ofs;
+    self.e_cam = buildCameraEnt(data.e_cam);
     self.e_legs = buildLegs(legs);    
     self = self.e_legs;
        leg_stand1();
@@ -87,7 +86,7 @@ entity(entity leg_data) buildLegs={
   return leg_ent;
 };
 
-void(entity dat ,entity ct_dat)buildCenterTorso={
+void(entity dat ,entity ct_dat) buildCenterTorso={
   //local entity ct, oself;
   //local vector ofs;
   
@@ -174,22 +173,22 @@ entity(entity cam_dat) buildCameraEnt={
   cam = spawn();
   oself = self;
   self = cam;
-  self.classname = self.c_name = cam_dat.classname;
-  self.c_ofs = cam_dat.c_ofs;
-  
-  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(cam_dat.c_model, EF_ADDITIVE);
-  self.alpha = 0;
-  util_setBoundBox('-1 -1 -1', '1 1 1');
-  util_setOffsetOrigin(self, oself, self.c_ofs);
-  
-  self.aiment = oself;
-  self.owner = oself;
-  self.punchangle = oself.angles;
-  self.view_ofs = self.origin - oself.origin;
-  self.angles = oself.angles;
-  self.v_angle = self.angles - oself.angles;
-
+    self.classname = "camera";
+    self.c_name = "cpit";
+    self.c_ofs = cam_dat.c_ofs;
+    
+    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+    util_setModel(cam_dat.c_model, 0);
+    self.alpha = 0;
+    util_setBoundBox('-1 -1 -1', '1 1 1');
+    util_setOffsetOrigin(self, oself, self.c_ofs);
+    
+    self.aiment = oself;
+    self.owner = oself;
+    self.punchangle = oself.angles;
+    self.view_ofs = self.origin - oself.origin;
+    self.angles = oself.angles;
+    self.v_angle = self.angles - oself.angles;
   self = oself;
   return cam;
 };

@@ -64,7 +64,7 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
   }
   
   if(targ.classname == MECH_PIECE){
-    csqc_SendMechData(targ.owner, ENT_PLR, FLAG_UPD_MCH);
+
   }
   
   if((targ.flags & FL_MONSTER) && attacker != world){
@@ -189,7 +189,21 @@ void(entity targ, entity attacker, float dmg_type) killed={
   
   self.doobits = 0;
   
+  if((self.classname == MECH_PIECE) && (self.c_name != "weapon")){
+      local entity wep;
+      wep = self.owner;
+      while(wep){
+        wep = wep.w_slot;
+        if(wep.c_parent == self.c_name){
+          if(wep.deadflag <= DEAD_NO){
+              killed(wep, attacker, 0);      
+          }
+        }
+      }
+  }
+  
+  
   self.th_die();
-
+  
   self = oself;
 };

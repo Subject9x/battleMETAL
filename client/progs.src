@@ -2,4 +2,10 @@
 
 ../dp/csprogsdefs.qc
 m_csdefs.qc
+m_entdefs.qc
+m_renderfuncs_h.qc
+hd_otl.qc
+cs_precache.qc
+cs_mechhud_h.qc
+m_renderfuncs_c.qc
 csmain.qc

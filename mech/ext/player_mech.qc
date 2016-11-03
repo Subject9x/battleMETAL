@@ -25,7 +25,7 @@ void() cleanup_mech={
   
   local entity oself, w_chain, next, lstp;
   oself = self;
-  //mech_player_removecomp(oself.e_tor_c);
+  mech_player_removecamera();
   mech_player_removecomp(oself.e_tor_l);
   mech_player_removecomp(oself.e_tor_r);
   mech_player_removecomp(oself.e_arm_l);
@@ -53,25 +53,26 @@ void() cleanup_mech={
     w_chain = next;
   }
   self = oself;
-  mech_player_removecamera();
+
 };
 
 
 void() mech_player_die={
   local entity w_chain, next;
   mech_player_cameradie();
-
-  mech_player_compdie(self.e_tor_l);
-  mech_player_compdie(self.e_tor_r);
-  mech_player_compdie(self.e_arm_l);
-  mech_player_compdie(self.e_arm_r);
-  mech_player_compdie(self.e_legs);
   
   w_chain = self.w_slot;
   while(w_chain){
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
+  
+  mech_player_compdie(self.e_tor_l);
+  mech_player_compdie(self.e_tor_r);
+  mech_player_compdie(self.e_arm_l);
+  mech_player_compdie(self.e_arm_r);
+  mech_player_compdie(self.e_legs);
+  
   ctor_die1();
 };
 
@@ -92,22 +93,24 @@ void(entity comp) mech_player_compdie={
 };
 
 void() mech_player_cameradie={
-  msg_entity = self;
-  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-  WriteEntity(MSG_ONE, self);
-
+  //msg_entity = self;
+  //WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+  //WriteEntity(MSG_ONE, self);
+  self.view_ofs = '0 0 1';
 }
 
 void() mech_player_removecamera={
   local entity old;
-  if(self.clientcamera.classname){
-    old = self;
-    msg_entity = old;
-      WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-      WriteEntity(MSG_ONE, old);
-    self = old.clientcamera;
-      remove(self);
-    self = old;
+  if(self.e_cam.classname){
+    remove(self.e_cam);
+    //.clientcamera.classname){
+    //old = self;
+    //msg_entity = old;
+      //WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+      //WriteEntity(MSG_ONE, old);
+    //self = old.e_cam;//clientcamera;
+     // remove(self);
+    //self = old;
   }
 };
 

@@ -90,3 +90,4 @@ float STAT_WEP9_HP = 67;
 float STAT_WEP9_RL = 68;
 
 float STAT_TARG_EID = 69;
+float STAT_VID = 70;

@@ -48,6 +48,7 @@ void(entity wep) ctrl_weapon_think={
           self.w_currentammo = self.w_currentammo - 1;
           self.w_firetime = time + self.w_firerate;
           oself.en_cur = oself.en_cur - self.en_max;
+
         }
       }
     }

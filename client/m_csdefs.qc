@@ -4,6 +4,9 @@ Author: Subject9x
 Date: 10/11/2016
 Overview: csqc defs for the mod
 */
+vector plr_orig;
+vector plr_angles;
+.entity cpit_mdl;
 float plr_info_num;
 .float() t_remove; // called by CSQC_Ent_Remove to clean up this entity, return TRUE if remove(self) should be performed afterward
 // protocol bytes
@@ -71,9 +74,11 @@ float m_wep = 6;
 .float RA_HP_MX;
 .float RA_HP_CR;
 
+//PLAYER CLASSES
+float P_OBS = 0;
+float P_MECH = 1;
 
-//stat channels
-//stat channels
+//STAT CHANNEL
 float STAT_ENTITY_ID = 33;
 float STAT_PCLASS = 34;
 float STAT_SPREADX = 35;
@@ -114,7 +119,7 @@ float STAT_WEP9_HP = 67;
 float STAT_WEP9_RL = 68;
 
 float STAT_TARG_EID = 69;
-
+float STAT_VID = 70;
 //actual csqc constants
 vector ENG_COLOR_CURRENT;
 vector SHD_COLOR_CURRENT;

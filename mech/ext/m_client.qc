@@ -105,7 +105,7 @@ void() PutClientInServer = {
   else if(self.p_class == P_MECH){
     mh_makeMech(self);
     //self.SENDDATA = TRUE;
-    csqc_SendMechData(self, ENT_PLR, FLAG_INI_MCH);//FLAG_INI_MCH);
+    //csqc_SendMechData(self, ENT_PLR, FLAG_INI_MCH);//FLAG_INI_MCH);
   }
   
 
@@ -143,8 +143,14 @@ void() ClientKill = {
     }
   }
   
+
   bprint (self.netname);
-	bprint (" cowardly ejects!\n");
+  if(self.p_class != P_OBS){
+    	bprint (" cowardly ejects!\n");
+  }else{
+  
+  }
+
 
   if(self.p_class == P_MECH){
     mech_player_die();

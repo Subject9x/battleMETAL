@@ -18,7 +18,7 @@ void() las_attack={
   player = self.owner;
   
   makevectors(player.v_angle);
-  cam = player.clientcamera;
+  cam = player.e_cam;//.clientcamera;
   traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
   end = trace_endpos;
   

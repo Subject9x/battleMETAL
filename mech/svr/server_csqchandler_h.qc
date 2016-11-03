@@ -14,6 +14,7 @@ float MSG_ENTITY = 5;
 .float csqc_datType;
 .float csqc_flgType;
 
+float(entity piece) csqc_updateCompStat;
 entity() csqc_setHeader;
 void(entity to, float sendFlags) send_DataTE;
 void(entity to, float entType, float flagType) csqc_SendMechData;

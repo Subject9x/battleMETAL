@@ -30,6 +30,7 @@ void(entity ent) mh_makeMech={
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   oself = self;
   self = ent;
+  self.data_idx = dat.data_idx;
   self.flags = oself.flags;
   
   buildVehicle(dat);
@@ -40,5 +41,11 @@ void(entity ent) mh_makeMech={
   mh_world_updateClientSpeed(dat.m_fspeed, dat.m_sspeed, dat.m_bspeed, dat.m_maccel, dat.m_rollangle) ;
   mh_world_updateClientViewBob(dat.m_bob, dat.m_bcycle, dat.m_bup) ;
   mh_world_updateClientModelBob(dat.m_bmodel, dat.m_bside, dat.m_bobspd) ;
+  
+    
+  msg_entity = self;
+  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+  WriteEntity(MSG_ONE, self.e_cam);
+  
   self = oself;
 };
