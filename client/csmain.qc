@@ -11,9 +11,6 @@ void() CSQC_Init =
   plr_orig = '0 0 0';
   plr_angles = '0 0 0';
   cs_precache();
-  precache_model ("q3mdl/mechs/notl/mdl_notl_t_cent.md3");
-  precache_model ("q3mdl/mechs/notl/mdl_notl_t_left.md3");  
-  precache_model ("q3mdl/mechs/notl/mdl_notl_legs.md3");
   //hud_ini();
 };
 
@@ -84,6 +81,11 @@ void(float w, float h) CSQC_UpdateView =
   local float p_class;
   p_class = getstati(STAT_PCLASS);
  
+  drawstring('0 0 0', ftos(vid_width), '8 8 0', '1 1 1', 1, 0);
+  drawstring('0 8 0', ftos(vid_height), '8 8 0', '1 1 1', 1, 0);
+  drawstring('0 16 0', vtos(vf_size), '8 8 0', '1 1 1', 1, 0);
+  drawstring('0 24 0', vtos(vf_min), '8 8 0', '1 1 1', 1, 0);
+ 
   if(p_class != P_OBS){
     local float eid, en_mx, en_cr, sh_mx, sh_cr;
     en_cr = getstati(STAT_ENERGY);
@@ -102,11 +104,34 @@ void(float w, float h) CSQC_UpdateView =
     drawstring('0 26 0', ftos(en_mx), '8 8 0', '1 1 1', 1, 0);
   */
     local float vid;
-    local entity hud, oself;
+    local entity hud, oself, plr;
     vid = getstati(STAT_VID);
     hud = m_findData(vid);
     if(hud != world){
       oself = self;
+      local vector plr_org, plr_ang;
+      plr_org = '0 0 0';
+      plr_ang = '0 0 0';
+      plr_org_x = getstatf(STAT_ORG_X);
+      plr_org_y = getstatf(STAT_ORG_Y);
+      plr_org_z = getstatf(STAT_ORG_Z);
+      plr_ang_x = getstatf(STAT_ANG_X);
+      plr_ang_y = getstatf(STAT_ANG_Y);
+      plr_ang_z = getstatf(STAT_ANG_Z);
+      
+      hud.angles = plr_ang;
+      setorigin(hud, plr_org);
+      
+      local vector hdsize;
+      local float v_halfw, v_halfh;
+      v_halfw = vid_width / 2;
+      v_halfh = vid_height / 2;
+      hdsize = draw_getimagesize(hud.hud_img);
+      local vector hd_loc;
+      hd_loc = '64 0 0';
+      //hd_loc_x = w;//hd_loc_x + v_halfw;
+      hd_loc_y = vid_height - 128;
+      drawpic(hd_loc, hud.hud_img, '512 128 0', '1 1 1', 1, 0);
       self = hud.wdg_en;
         self.actionCallback();
       self = oself;
@@ -205,7 +230,7 @@ entity(float entnum) CSQC_Ent_Spawn =
 // if you wish to do interpolation, be sure to make use the proper time variables: time is previous packet time, servertime is new packet time, so the tick time between packets is servertime - time and the interpolation should begin the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
-
+  
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

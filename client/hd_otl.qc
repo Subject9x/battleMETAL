@@ -16,15 +16,17 @@ void() otl_hud_ini={
   self.classname = "hud";
   self.data_type = DATA_HUD;
   self.data_idx = 1;
+  self.c_mdl = "q3mdl/mechs/notl/mdl_notl_cpt.md3";
   self.drawmask = MASK_ENGINE;
-  
+  self.hud_img = "gfx/hud/hud_prt.png";
   otl_en = spawn();
   self = otl_en;
     self.classname = "widget";
     self.obj_type = OBJ_METER;
     self.drawme = TRUE;
     self.value1 = 0;
-    self.drawcolor = '0 0 0';
+    self.drawcolor1 = '0.26 0.4 0.68';
+    self.drawcolor2 = '0.23 0.74 0.84';
     self.drawsize = '16 48 0';
     self.actionCallback = hud_renderEnergy;
     setorigin(self, '0 150 0');
@@ -36,7 +38,7 @@ void() otl_hud_ini={
     self.obj_type = OBJ_METER;
     self.drawme = TRUE;
     self.value1 = 0;
-    self.drawcolor = '0 0 0';
+    self.drawcolor1 = '0 0 0';
     self.drawsize = '48 16 0';
     self.actionCallback = hud_renderShield;
     setorigin(self, '0 0 0');
@@ -56,5 +58,6 @@ void() otl_hud_ini={
   otl_hud.wdg_pd = otl_pd;
   
   self = oself;
+  setmodel(otl_hud, otl_hud.c_mdl);
   addentity(otl_hud);
 };

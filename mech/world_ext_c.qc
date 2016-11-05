@@ -26,6 +26,13 @@ void() mh_world_ini={
   addstat(STAT_RARM_HP, AS_FLOAT, stat_rarm_hp);
   addstat(STAT_RARM_AM, AS_FLOAT, stat_rarm_am);
   addstat(STAT_VID, AS_INT, data_idx);
+  addstat(STAT_ANG_X, AS_FLOAT, stat_ang_x);
+  addstat(STAT_ANG_Y, AS_FLOAT, stat_ang_y);
+  addstat(STAT_ANG_Z, AS_FLOAT, stat_ang_z);
+  addstat(STAT_ORG_X, AS_FLOAT, stat_org_x);
+  addstat(STAT_ORG_Y, AS_FLOAT, stat_org_y);
+  addstat(STAT_ORG_Z, AS_FLOAT, stat_org_z);
+  
   mh_world_iniData();
 };
 

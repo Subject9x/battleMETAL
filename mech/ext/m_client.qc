@@ -41,7 +41,12 @@ void() ClientConnect = {
   self.stat_larm_am = 0;
   self.stat_rarm_hp = 0;
   self.stat_rarm_am = 0;
-  
+  self.stat_ang_x = 0;
+  self.stat_ang_y = 0; 
+  self.stat_ang_z = 0; 
+  self.stat_org_x = 0; 
+  self.stat_org_y = 0; 
+  self.stat_org_z = 0; 
   if (intermission_running){
     ExitIntermission();
   }

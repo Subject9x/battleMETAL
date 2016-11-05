@@ -12,6 +12,9 @@ void() cs_precache={
   precache_model ("q3mdl/mdl_tmk_cpit.md3");
   precache_model ("q3mdl/mechs/col/mdl_col_cpit.md3");
 
+  //cockpit images
+  precache_pic("gfx/hud/hud_prt.png", 0);
+  
   //hud data
   otl_hud_ini();
 };

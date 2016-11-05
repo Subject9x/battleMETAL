@@ -91,3 +91,10 @@ float STAT_WEP9_RL = 68;
 
 float STAT_TARG_EID = 69;
 float STAT_VID = 70;
+//send ent is for the weak!
+float STAT_ANG_X = 71;
+float STAT_ANG_Y = 72;
+float STAT_ANG_Z = 73;
+float STAT_ORG_X = 74;
+float STAT_ORG_Y = 75;
+float STAT_ORG_Z = 76;

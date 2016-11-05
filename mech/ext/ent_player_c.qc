@@ -6,7 +6,6 @@ Overview: extends the player's entity.
 */
 
 .float	dmgtime; //pulled from client.qc
-
 .float playermovestate, playermovebegin; //pulled from dpqc player.qc
 
 .float p_class;      //type of player, maps to GLOBAL P_TYPES
@@ -18,3 +17,11 @@ Overview: extends the player's entity.
 .float i_techLevel;
 
 .entity w_slot;     //use this for teh linked list goodness
+
+//oh this is gross
+.float stat_ang_x;
+.float stat_ang_y;
+.float stat_ang_z;
+.float stat_org_x;
+.float stat_org_y;
+.float stat_org_z;

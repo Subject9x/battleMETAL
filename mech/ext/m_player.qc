@@ -54,6 +54,17 @@ void() PlayerPostThink = {
   
   //STAT UPDATE
 
+  local vector v_ofs;
+  makevectors(self.angles);
+  v_ofs = self.origin + (v_right * self.e_cam.c_ofs_x) 
+                      + (v_up * self.e_cam.c_ofs_y) 
+                      + (v_forward * self.e_cam.c_ofs_z);
+  self.stat_ang_x = self.angles_x;
+  self.stat_ang_y = self.angles_y; 
+  self.stat_ang_z = self.angles_z;
+  self.stat_org_x = v_ofs_x; 
+  self.stat_org_y = v_ofs_y; 
+  self.stat_org_z = v_ofs_z; 
   
   if(self.p_class == P_MECH){
     self.stat_en = (self.en_cur / self.en_max)*100;

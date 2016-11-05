@@ -16,14 +16,17 @@ float OBJ_SPHRS = 2;
 .entity wdg_pd; //paper doll widget
 .entity wdg_wp; //weapons list widget
 
+.string c_mdl;
 .float data_idx;
 .float data_type;
 .float obj_type;
 .float scale;
+.string hud_img;
 .float() actionCallback;
 .float drawme;
 .vector drawsize;
-.vector drawcolor;
+.vector drawcolor1;
+.vector drawcolor2;
 .float value1;
 .float value2;
 .float value3;
