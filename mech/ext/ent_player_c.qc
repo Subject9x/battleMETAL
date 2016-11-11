@@ -19,9 +19,9 @@ Overview: extends the player's entity.
 .entity w_slot;     //use this for teh linked list goodness
 
 //oh this is gross
-.float stat_ang_x;
+/*.float stat_ang_x;
 .float stat_ang_y;
 .float stat_ang_z;
 .float stat_org_x;
 .float stat_org_y;
-.float stat_org_z;
+.float stat_org_z;*/

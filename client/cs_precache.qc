@@ -12,8 +12,13 @@ void() cs_precache={
   precache_model ("q3mdl/mdl_tmk_cpit.md3");
   precache_model ("q3mdl/mechs/col/mdl_col_cpit.md3");
 
-  //cockpit images
-  precache_pic("gfx/hud/hud_prt.png", 0);
+  //cockpit images  
+  precache_pic("gfx/hud/otl/otl_am.png", 0);
+  precache_pic("gfx/hud/otl/otl_en.png", 0);
+  precache_pic("gfx/hud/otl/otl_rd.png", 0);
+  precache_pic("gfx/hud/otl/otl_sl.png", 0);
+  precache_pic("gfx/hud/otl/otl_sp.png", 0);
+  precache_pic("gfx/hud/otl/otl_wp.png", 0);
   
   //hud data
   otl_hud_ini();

@@ -10,8 +10,10 @@ void() CSQC_Init =
 	// we can precache_sound and precache_model and precache_pic here
   plr_orig = '0 0 0';
   plr_angles = '0 0 0';
+  VIEW_ORG = '0 0';
+  
   cs_precache();
-  //hud_ini();
+  hud_ini();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -30,36 +32,47 @@ float(float typ, float x, float y) CSQC_InputEvent =
 };
 
 // the most important function in CSQC...
-void(float w, float h) CSQC_UpdateView =
+void(float w, float h, float menushown) CSQC_UpdateView =
 {
-	local vector vf_size;
+	/*local vector vf_size;
 	local vector vf_min;
-	local vector fovvec;
+	
 	local float chasecam, vid_width, vid_height,vid_conwidth,vid_conheight,vid_pixelheight;
 	vf_size = getpropertyvec(VF_SIZE);
 	vf_min = getpropertyvec(VF_MIN);
-	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
-	vid_width = w;
-	vid_height = h;
-	//vid_conwidth = autocvar_vid_conwidth;
-	//vid_conheight = autocvar_vid_conheight;
-	//vid_pixelheight = autocvar_vid_pixelheight;
-	//chasecam = autocvar_chase_active != 0;
+CON_W = vid_conwidth = cvar("vid_conwidth");
+	CON_H = vid_conheight = cvar("vid_conheight");
+	vid_pixelheight = cvar("vid_pixelheight");
+  VIEW_SCALE = (w/h)/10;
+	chasecam = cvar("chase_active") != 0;*/
 
 	// do any manipulation we want on fov here (weapon zoom, respawn zoom, etc)
 	// nothing right now
 
 	// clear the scene information (entities, polygons, etc)
 	clearscene();
-
+  local vector fovvec,
+                vf_sz,
+                vf_mn;
+	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
+	vf_sz_x = w;
+  vf_sz_y = h;
+  vf_sz_z = 0;
+  vf_mn = '0 0 0';
 	// set up the scene parameters
-	setproperty(VF_SIZE, vf_size);
-	setproperty(VF_MIN, vf_min);
-	setproperty(VF_FOV, fovvec);
-	setproperty(VF_DRAWWORLD, 1);
+	//setproperty(VF_SIZE, vf_size);
+	//setproperty(VF_MIN, vf_min);
+  setproperty(VF_MIN, vf_mn);   //set the left of the view
+  setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
+  
+  //setproperty(VF_FOV, fovvec);
+  setproperty(VF_DRAWWORLD, 1);
 	setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
 	setproperty(VF_DRAWENGINESBAR, 0); // TODO custom hud
-
+  VIEW_ORG = '0 0';
+  VIEW_MAX_x = cvar("vid_conwidth");
+  VIEW_MAX_y = cvar("vid_conheight");
+  VIEW_SCALE = 0.35;
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
@@ -78,94 +91,29 @@ void(float w, float h) CSQC_UpdateView =
 	// draw custom hud
  //draw hud
  
-  local float p_class;
+  local float p_class, eid;
+  local vector vforg;
+  vforg = getpropertyvec(VF_ANGLES);
   p_class = getstati(STAT_PCLASS);
- 
-  drawstring('0 0 0', ftos(vid_width), '8 8 0', '1 1 1', 1, 0);
-  drawstring('0 8 0', ftos(vid_height), '8 8 0', '1 1 1', 1, 0);
-  drawstring('0 16 0', vtos(vf_size), '8 8 0', '1 1 1', 1, 0);
-  drawstring('0 24 0', vtos(vf_min), '8 8 0', '1 1 1', 1, 0);
- 
+   eid = getstati(STAT_ENTITY_ID);
+  /*drawstring('0 0 0', vtos(VIEW_ORG), '8 8 0', '1 1 1', 1, 0);
+  drawstring('0 8 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
+  drawstring('0 16 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
+ */
   if(p_class != P_OBS){
-    local float eid, en_mx, en_cr, sh_mx, sh_cr;
-    en_cr = getstati(STAT_ENERGY);
-    //en_mx = getstati(STAT_SHIELD);
-    eid = getstati(STAT_ENTITY_ID);
-    //drawfill float(vector position, vector size, vector rgb, float alpha,  float flag) 
-    //ENG_COLOR_CURRENT = colorForVal(en_cr);
-    local vector shl_loc;
-    shl_loc = '0 0 0';
-    shl_loc_x = shl_loc_x + 250;
-    shl_loc_y = shl_loc_y + (vid_height/2) - 48;
-    /*drawfill(shl_loc, '48 48 0', ENG_COLOR_CURRENT, 1, 0 );
-    drawstring((shl_loc + '1 20 0'), "ENERGY", '8 8 0', '1 1 1', 1, 0);
-    
-    drawstring('0 16 0', ftos(en_cr), '8 8 0', '1 1 1', 1, 0);
-    drawstring('0 26 0', ftos(en_mx), '8 8 0', '1 1 1', 1, 0);
-  */
     local float vid;
     local entity hud, oself, plr;
     vid = getstati(STAT_VID);
     hud = m_findData(vid);
     if(hud != world){
       oself = self;
-      local vector plr_org, plr_ang;
-      plr_org = '0 0 0';
-      plr_ang = '0 0 0';
-      plr_org_x = getstatf(STAT_ORG_X);
-      plr_org_y = getstatf(STAT_ORG_Y);
-      plr_org_z = getstatf(STAT_ORG_Z);
-      plr_ang_x = getstatf(STAT_ANG_X);
-      plr_ang_y = getstatf(STAT_ANG_Y);
-      plr_ang_z = getstatf(STAT_ANG_Z);
-      
-      hud.angles = plr_ang;
-      setorigin(hud, plr_org);
-      
-      local vector hdsize;
-      local float v_halfw, v_halfh;
-      v_halfw = vid_width / 2;
-      v_halfh = vid_height / 2;
-      hdsize = draw_getimagesize(hud.hud_img);
-      local vector hd_loc;
-      hd_loc = '64 0 0';
-      //hd_loc_x = w;//hd_loc_x + v_halfw;
-      hd_loc_y = vid_height - 128;
-      drawpic(hd_loc, hud.hud_img, '512 128 0', '1 1 1', 1, 0);
-      self = hud.wdg_en;
-        self.actionCallback();
+      self = hud;
+        hud_renderEnergy();
+        hud_renderPaper();
+        hud_renderShield();
       self = oself;
-    }
+   }
   }
-  
-  if(p_class == P_MECH){
-    local float lg_hp,ctr_hp,ltr_hp,rtr_hp,lam_hp,ram_hp;
-    lg_hp = getstatf(STAT_LEG_HP);
-    ctr_hp = getstatf(STAT_CTOR_HP);
-    ltr_hp = getstatf(STAT_LTOR_HP);
-    rtr_hp = getstatf(STAT_RTOR_HP);
-    lam_hp = getstatf(STAT_LARM_HP);
-    ram_hp = getstatf(STAT_RARM_HP);
-    local vector hp_loc;
-    hp_loc = shl_loc - '100 -25 0';
-    hud_paperdoll(lg_hp, hp_loc, '24 48 0');
-    
-    hp_loc = shl_loc - '100 0 0';
-    hud_paperdoll(ctr_hp, hp_loc, '24 24 0');
-    
-    hp_loc = shl_loc - '117 0 0';
-    hud_paperdoll(ltr_hp, hp_loc, '16 24 0');
-    
-    hp_loc = shl_loc - '75 0 0';
-    hud_paperdoll(rtr_hp, hp_loc, '16 24 0');
-    
-    hp_loc = shl_loc - '134 0 0';
-    hud_paperdoll(lam_hp, hp_loc, '16 16 0');
-    
-    hp_loc = shl_loc - '58 0 0';
-    hud_paperdoll(ram_hp, hp_loc, '16 16 0');
-  }
-  
 	// draw custom crosshair
 };
 

@@ -16,10 +16,10 @@ void() ClientConnect = {
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
   
-  self.p_class = P_OBS;
-  self.p_class_next = P_OBS;
-  self.nextVecChoice = 0;
-  self.data_idx = 0;
+  self.p_class = P_MECH;
+  self.p_class_next = P_MECH;
+  self.nextVecChoice = 1;
+  self.data_idx = 1;
   self.currentWeaponGroup = 1;
   self.stat_eid = num_for_edict(self);
   //energy / shield stats
@@ -41,12 +41,15 @@ void() ClientConnect = {
   self.stat_larm_am = 0;
   self.stat_rarm_hp = 0;
   self.stat_rarm_am = 0;
-  self.stat_ang_x = 0;
+  /*self.stat_ang_x = 0;
   self.stat_ang_y = 0; 
   self.stat_ang_z = 0; 
   self.stat_org_x = 0; 
   self.stat_org_y = 0; 
-  self.stat_org_z = 0; 
+  self.stat_org_z = 0;*/ 
+  self.stat_cofs_x = 0;
+  self.stat_cofs_y = 0;
+  self.stat_cofs_z = 0;
   if (intermission_running){
     ExitIntermission();
   }

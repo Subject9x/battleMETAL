@@ -3,6 +3,7 @@
 ../dp/csprogsdefs.qc
 m_csdefs.qc
 m_entdefs.qc
+m_cssqc.qc
 m_renderfuncs_h.qc
 hd_otl.qc
 cs_precache.qc

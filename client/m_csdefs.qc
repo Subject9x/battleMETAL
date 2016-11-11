@@ -4,6 +4,11 @@ Author: Subject9x
 Date: 10/11/2016
 Overview: csqc defs for the mod
 */
+float CON_W;
+float CON_H;
+float CON_CW;
+float CON_CH;
+
 vector plr_orig;
 vector plr_angles;
 .entity cpit_mdl;
@@ -19,17 +24,6 @@ float	SVC_INTERMISSION	= 30;
 float	SVC_FINALE			= 31;
 float	SVC_CDTRACK			= 32;
 float	SVC_SELLSCREEN		= 33;
-
-//ENT_TYPE
-float ENT_PLR = 34; // scope of ent is the player
-float ENT_TRG = 35; //scope is the player’s target
-float ENT_WEP = 36; //scope is a player weapon sub-component
-float ENT_CMP_LEG = 37; //scope is a player sub-component    
-float ENT_CMP_CTOR = 38; //scope is a player sub-component    
-float ENT_CMP_LTOR = 39; //scope is a player sub-component    
-float ENT_CMP_RTOR = 40; //scope is a player sub-component    
-float ENT_CMP_LARM = 41; //scope is a player sub-component    
-float ENT_CMP_RARM = 42; //scope is a player sub-component    
 
 //UPDATE FLAGS
 float FLAG_INI_MCH = 1;
@@ -121,20 +115,18 @@ float STAT_WEP9_RL = 68;
 float STAT_TARG_EID = 69;
 float STAT_VID = 70;
 //send ent is for the weak!
-float STAT_ANG_X = 71;
-float STAT_ANG_Y = 72;
-float STAT_ANG_Z = 73;
-float STAT_ORG_X = 74;
-float STAT_ORG_Y = 75;
-float STAT_ORG_Z = 76;
+float STAT_CAM_ORG_X = 71;
+float STAT_CAM_ORG_Y = 72;
+float STAT_CAM_ORG_Z = 73;
+
 //actual csqc constants
-vector ENG_COLOR_CURRENT;
+/*vector ENG_COLOR_CURRENT;
 vector SHD_COLOR_CURRENT;
 vector DMG_COLOR_CURRENT;
 vector DMG_COLOR_GREEN = '0 1 0';
 vector DMG_COLOR_YELLOW = '1 1 0';
 vector DMG_COLOR_RED = '1 0 0';
-vector DMG_COLOR_GRAY = '0.1 0.1 0.1';
+vector DMG_COLOR_GRAY = '0.1 0.1 0.1';*/
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";

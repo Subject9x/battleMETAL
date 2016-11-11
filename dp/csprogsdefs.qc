@@ -47,7 +47,7 @@ float		trace_inwater;
 void()		CSQC_Init;
 void()		CSQC_Shutdown;
 float(float f, float t, float n)	CSQC_InputEvent;
-void(float w, float h)		CSQC_UpdateView;
+void(float w, float h, float m)		CSQC_UpdateView;
 float(string s)	CSQC_ConsoleCommand;
 
 //these fields are read and set by the default player physics

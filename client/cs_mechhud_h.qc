@@ -57,7 +57,7 @@ void(float val, vector loc, vector sz) hud_paperdoll={
 };
 
 vector(float val) colorForVal={
-  if(val <= 50){
+/*  if(val <= 50){
     if(val <= 25){
       if(val <= 0){
         return DMG_COLOR_GRAY;
@@ -68,5 +68,5 @@ vector(float val) colorForVal={
   }
   else{
     return DMG_COLOR_GREEN;
-  }
+  }*/
 };

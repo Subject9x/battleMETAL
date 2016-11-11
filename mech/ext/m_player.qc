@@ -52,23 +52,17 @@ void() PlayerPostThink = {
 		return;		// intermission or finale
   }
   
-  //STAT UPDATE
-
-  local vector v_ofs;
-  makevectors(self.angles);
-  v_ofs = self.origin + (v_right * self.e_cam.c_ofs_x) 
-                      + (v_up * self.e_cam.c_ofs_y) 
-                      + (v_forward * self.e_cam.c_ofs_z);
-  self.stat_ang_x = self.angles_x;
-  self.stat_ang_y = self.angles_y; 
-  self.stat_ang_z = self.angles_z;
-  self.stat_org_x = v_ofs_x; 
-  self.stat_org_y = v_ofs_y; 
-  self.stat_org_z = v_ofs_z; 
-  
+  //STAT UPDATE  
   if(self.p_class == P_MECH){
+    msg_entity = self;
+    WriteByte (MSG_ONE, SVC_SETVIEWPORT);
+    WriteEntity (MSG_ONE, self.e_cam);
+    
+    self.stat_cofs_x = self.e_cam.origin_x;
+    self.stat_cofs_y = self.e_cam.origin_y;
+    self.stat_cofs_z = self.e_cam.origin_z;
     self.stat_en = (self.en_cur / self.en_max)*100;
-    self.stat_sh = self.sh_cur;
+    self.stat_sh = (self.sh_cur / self.sh_max)*100;
     self.stat_legs_hp = csqc_updateCompStat(self.e_legs);
     self.stat_ctor_hp = csqc_updateCompStat(self);
     self.stat_ltor_hp = csqc_updateCompStat(self.e_tor_l);
