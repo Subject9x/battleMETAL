@@ -33,6 +33,7 @@ void() otl_hud_ini={
   self.en_pnl_aln = self.en_pnl_aln | VIEW_BOT | VIEW_LFT;
   
   //shield
+  //outlaw doesn't have a separate shield meter panel
   
   //armor
   self.am_pnl_img = "gfx/hud/otl/otl_am.png";
@@ -47,7 +48,7 @@ void() otl_hud_ini={
     self.owner = otl_hud;
     self.otype = OBJ_METER;
     self.drawsize = '23 85 0';
-    self.margin_ins = '6 6 0';
+    self.margin_ins = '6 10 0';
     self.axis = self.axis | AXIS_DOWN;
     self.pattern = PAT_BAR;
     self.pos = '0 0 0';
@@ -74,24 +75,18 @@ void() otl_hud_ini={
   
   otl_pd = spawn();
   self = otl_pd;
-     /*self.classname = "widget";
+    self.classname = "widget";
     self.owner = otl_hud;
-    self.obj_type = OBJ_METER;
-    self.drawme = TRUE;
+    self.otype = OBJ_METER;
+    self.drawsize = '108 20 0';
+    self.margin_ins = '15 17 0';
+    self.axis = self.axis | AXIS_LEFT;
+    self.pattern = PAT_BAR;
+    self.pos = '0 0 0';
     self.drawcolor1 = '0.7 0.11 0.23'; //179,30,60
     self.drawcolor2 = '0.215 0.709 0.29'; //(55,181,74)
-    self.actionCallback = hud_renderPaper;
-    self.posvec = '24 128 0';
-    self.drawsize = '128 128 0';
-    self.scale = 0.24;
-    self.img1 = "gfx/hud/otl/otl_am.png";
-    self.value1 = 0;
-    self.value2 = 0;
-    self.value3 = 0;
-    self.value4 = 0;
-    self.value5 = 0;
-    self.value6 = 0;
-    self.actionCallback = hud_renderPaper;*/
+    self.drawme = TRUE;
+    self.align = self.align | VIEW_BOT | VIEW_LFT;
   otl_hud.wdg_pd = otl_pd;
   
   self = oself;
