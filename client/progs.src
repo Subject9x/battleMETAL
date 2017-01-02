@@ -6,6 +6,7 @@ m_entdefs.qc
 m_cssqc.qc
 m_renderfuncs_h.qc
 hd_otl.qc
+hd_tmk.qc
 cs_precache.qc
 cs_mechhud_h.qc
 m_renderfuncs_c.qc

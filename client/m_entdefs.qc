@@ -40,6 +40,11 @@ float DATA_HUD = 0;
 .vector wp_pnl_ofs;
 .float  wp_pnl_aln;
 
+.string rd_pnl_img;
+.vector rd_pnl_org;
+.vector rd_pnl_ofs;
+.float  rd_pnl_aln;
+
 //widget vars
 .string c_mdl;
 .float scale;

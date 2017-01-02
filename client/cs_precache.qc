@@ -14,6 +14,7 @@ void() cs_precache={
 
   //cockpit images  
   precache_pic("gfx/hud/otl/otl_am.png", 0);
+  precache_pic("gfx/hud/otl/otl_hd.png", 0);
   precache_pic("gfx/hud/otl/otl_en.png", 0);
   precache_pic("gfx/hud/otl/otl_rd.png", 0);
   precache_pic("gfx/hud/otl/otl_sl.png", 0);

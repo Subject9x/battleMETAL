@@ -36,6 +36,7 @@ float OBJ_LIST = 3;
 float PAT_BAR = 1;
 float PAT_SPH = 2;
 float PAT_BOX = 3;
+float HUD_ALPHA = 0.9;
 
 //common ent vars
 .float data_idx;

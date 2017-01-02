@@ -5,7 +5,7 @@ Date: 11/02/2016
 Overview: Hud Layout data for mech 'outlaw'
 */
 
-void() otl_hud_ini;
+void() tmk_hud_ini;
 /*
 "gfx/hud/otl/otl_am.png"
 "gfx/hud/otl/otl_en.png"
@@ -14,18 +14,19 @@ void() otl_hud_ini;
 "gfx/hud/otl/otl_sp.png"
 "gfx/hud/otl/otl_wp.png"
 */
-void() otl_hud_ini={
+void() tmk_hud_ini={
 
-  local entity oself, otl_hud, otl_en, otl_sh, otl_pd, otl_wp;
-  otl_hud = spawn();
+  local entity oself, tmk_hud, tmk_en, tmk_sh, tmk_pd, tmk_wp;
+  tmk_hud = spawn();
   oself = self;
-  self = otl_hud;
+  self = tmk_hud;
   self.classname = "hud";
   self.data_type = DATA_HUD;
-  self.data_idx = 1;
-  self.c_mdl = "q3mdl/mechs/notl/mdl_notl_cpt.md3";
+  self.data_idx = 2;
+  //self.c_mdl = "q3mdl/mechs/notl/mdl_notl_cpt.md3";
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/otl/otl_hd.png";
+  
   // energy
   self.en_pnl_img = "gfx/hud/otl/otl_en_2.png";
   self.en_pnl_ofs = '152 12';
@@ -49,10 +50,10 @@ void() otl_hud_ini={
   self.rd_pnl_ofs = '221 0';
   self.rd_pnl_aln = self.rd_pnl_aln | VIEW_BOT | VIEW_LFT;
   
-  otl_en = spawn();
-  self = otl_en;
+  tmk_en = spawn();
+  self = tmk_en;
     self.classname = "widget";
-    self.owner = otl_hud;
+    self.owner = tmk_hud;
     self.otype = OBJ_METER;
     self.drawsize = '23 76';
     self.margin_ins = '4 8';
@@ -62,12 +63,12 @@ void() otl_hud_ini={
     self.drawcolor1 = '0.18 0.32 0.6';
     self.drawcolor2 = '0.23 0.74 0.84';
     self.drawme = TRUE;
- otl_hud.wdg_en = otl_en;
+ tmk_hud.wdg_en = tmk_en;
   
-  otl_sh = spawn();
-  self = otl_sh;
+  tmk_sh = spawn();
+  self = tmk_sh;
     self.classname = "widget";
-    self.owner = otl_hud;
+    self.owner = tmk_hud;
     self.otype = OBJ_METER;
     self.drawsize = '82 16 0';
     self.margin_ins = '12 13';
@@ -78,12 +79,12 @@ void() otl_hud_ini={
     self.drawcolor2 = '0.215 0.709 0.29'; //(55,181,74)
     self.drawme = TRUE;
     self.align = self.align | VIEW_BOT | VIEW_LFT;
-  otl_hud.wdg_sh = otl_sh;
+  tmk_hud.wdg_sh = tmk_sh;
   
-  otl_pd = spawn();
-  self = otl_pd;
+  tmk_pd = spawn();
+  self = tmk_pd;
     self.classname = "widget";
-    self.owner = otl_hud;
+    self.owner = tmk_hud;
     self.otype = OBJ_METER;
     self.drawsize = '108 20 0';
     self.margin_ins = '15 17 0';
@@ -94,19 +95,19 @@ void() otl_hud_ini={
     self.drawcolor2 = '0.215 0.709 0.29'; //(55,181,74)
     self.drawme = TRUE;
     self.align = self.align | VIEW_BOT | VIEW_LFT;
-  otl_hud.wdg_pd = otl_pd;
+  tmk_hud.wdg_pd = tmk_pd;
   
-  otl_wp = spawn();
-  self = otl_wp;
+  tmk_wp = spawn();
+  self = tmk_wp;
     self.classname = "widget";
-    self.owner = otl_hud;
+    self.owner = tmk_hud;
     self.otype = OBJ_LIST;
     self.margin_ins = '6 6';
     self.drawcolor1 = '0.7 0.11 0.23';
     self.drawme = TRUE;
     self.align = self.align | VIEW_TOP | VIEW_LFT;
-  otl_hud.wdg_wp = otl_wp;
+  tmk_hud.wdg_wp = tmk_wp;
   
   self = oself;
-  addentity(otl_hud);
-};
+  addentity(tmk_hud);
+ }

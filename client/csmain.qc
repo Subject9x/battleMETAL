@@ -72,6 +72,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
+  VIEW_CTR_x = VIEW_MAX_x / 2;
+  VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_SCALE = 0.35;
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
@@ -108,9 +110,12 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     if(hud != world){
       oself = self;
       self = hud;
+        hud_renderHelmet();
         hud_renderEnergy();
         hud_renderPaper();
         hud_renderShield();
+        hud_renderWeapons();
+        hud_renderRadar();
       self = oself;
    }
   }
