@@ -51,7 +51,7 @@ void() mis_attack={
     setorigin(self, org);
     
     self.velocity = self.velocity * proj.p_velocity;
-    self.angles = vectoangles(self.velocity);
+    self.angles = self.c_iang = vectoangles(self.velocity);
     
   self = oself;
 	sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);

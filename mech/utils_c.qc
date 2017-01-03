@@ -48,3 +48,23 @@ void(vector bbx_min, vector bbx_max) util_setBoundBox={
   self.c_bbx_x = bbx_max;
   setsize(self, bbx_min, bbx_max);
 };
+
+/*
+  checks to see if a point is within bounds
+*/
+float(vector p, vector min, vector max) util_checkInBounds={
+  if(
+    ((p_x >= min_x) &&
+    (p_y >= min_y) &&
+    (p_z >= min_z))
+    &&
+    ((p_x <= max_x) &&
+    (p_y <= max_y) &&
+    (p_z <= max_z))
+  ){
+    return TRUE;
+  }
+  else{
+    return FALSE;
+  }
+};

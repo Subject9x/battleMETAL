@@ -26,6 +26,8 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/notl/mdl_notl_t_cent.md3");
   precache_model ("q3mdl/mechs/notl/mdl_notl_t_left.md3");  
   precache_model ("q3mdl/mechs/notl/mdl_notl_legs.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_notl_l_arm.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_notl_r_arm.md3");
   
   /*precache_model ("q3mdl/mechs/champ/mdl_chp_legs.md3");
   precache_model ("q3mdl/mechs/champ/mdl_chp_t_cent.md3");

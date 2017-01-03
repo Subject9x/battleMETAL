@@ -68,7 +68,7 @@ entity(entity leg_data) buildLegs={
   util_setHealthArmor(leg_data.health, leg_data.max_health, leg_data.armortype, leg_data.armorvalue);
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
   util_setModel(leg_data.c_model, 0);
-  util_setBoundBox('-1 -1 -1', '1 1 1');
+  util_setBoundBox('-1 -1 -1','1 1 1');
   
   self.c_ofs = leg_data.c_ofs;
   util_setOffsetOrigin(self, oself, self.c_ofs);
@@ -147,7 +147,7 @@ entity(entity dat) buildSideTorso={
   util_setHealthArmor(dat.health, dat.max_health, dat.armortype,  dat.armorvalue);
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
   util_setModel(dat.c_model, 0);
-  util_setBoundBox(dat.c_bbx_n, dat.c_bbx_x);
+  util_setBoundBox('-1 -1 -1','1 1 1');
   
   self.c_ofs = dat.c_ofs;
   util_setOffsetOrigin(self, oself, self.c_ofs);
@@ -222,7 +222,7 @@ entity(entity data) buildVehicleWeapon={
   self.en_max  = data_wep.en_max;
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
   util_setModel(data_wep.c_model, 0);
-  util_setBoundBox(data_wep.c_bbx_n, data_wep.c_bbx_x);
+  util_setBoundBox('-1 -1 -1','1 1 1');
   util_setHealthArmor(data_wep.health, data_wep.max_health, data_wep.armortype, data_wep.armorvalue);
   
   ofs = self.c_ofs + self.c_alt_ofs;

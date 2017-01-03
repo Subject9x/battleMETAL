@@ -8,21 +8,6 @@ according to the original source code, there should only be one
 t_damage function and 1 killed function...for some reason, maybe good house keeping?
 */
 
-
-void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_filter={
-
-  local float shotdir;
-  local vector dir;
-  /*
-    1) get shot point
-    2) find angle
-    3) draw halfway point
-    4) 
-  
-  */
-
-};
-
 void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
   local float canDamage;
@@ -46,11 +31,21 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
     targ.dmg_inflictor = inflictor;
   }
 
-  if(targ.classname == "player"){
-    if(targ.p_class == P_MECH){
-      targ = damage_mech(targ, inflictor, attacker, dmg_point);
+  //if(targ.classname == "player"){
+  if(targ.p_class == P_MECH){
+
+    //filter out leg hits
+    if(dmg_point_z < targ.origin_z - 10){
+      targ = targ.e_legs;
+    }
+    else{
+      local float irad;
+      irad = vlen(targ.origin - dmg_point);
+      targ = t_find_part(dmg_point, irad, targ);
+      //targ = damage_mech(targ, inflictor, attacker, dmg_point);
     }
   }
+  //}
 
   targ.health = targ.health - dmg_amt;
   
@@ -62,11 +57,7 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
       }
     }
   }
-  
-  if(targ.classname == MECH_PIECE){
 
-  }
-  
   if((targ.flags & FL_MONSTER) && attacker != world){
     if(attacker.takedamage){
       if(targ.enemy == world){
@@ -80,55 +71,94 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
   }
 };
 
+
 /*
-  this is some ugly code...
-*/
-entity(entity targ, entity inflictor, entity attacker, vector dmg_point) damage_mech={
-
-  local entity found;
-  local float radi;
-  radi = vlen(targ.origin - dmg_point);
-  found = t_find_recurse(dmg_point, radi, targ, targ);
+  2 jan 2017
+  quake c is beyond subtetly - its not worth the effort to really make this 
+  code nice. This func brute forces a search for the closest mech component
+  when a shot hits the player's main bbox.
   
-  if(found == world){
-    found = targ;
-  }
-  return found;
-};
-
-entity(vector point, float rad, entity src, entity own) t_find_recurse={
-
-  local entity found, elm;
-  local float rad_dist, cur_dist;
-  found = world;
-  rad_dist = vlen(src.origin - point);
-  elm = findradius(src.origin, rad_dist);
-  while(elm){
-    if(elm != world){
-      if(elm.owner == own){
-        if(elm.c_name){
-          cur_dist =  vlen(elm.origin - point);
-          if(cur_dist < rad_dist){
-            rad_dist = cur_dist;
-            if(elm.deadflag <= DEAD_NO){
-              found = elm;
-            }else{
-              found = t_find_recurse(found.origin, rad_dist, found, own);
-            }
-          } 
-        }
+  many a clever approach was attempted before I sank into exhaustion to use this.
+  :(
+*/
+entity(vector point, float rad, entity own) t_find_part={
+  
+  local float cur_dist, rad, w_rad, a_rad, t_rad, c1_rad,c2_rad;
+  local entity wep, fwep, farm, ftor,c1,c2;
+  w_rad = t_rad = rad;
+  wep = own.w_slot;
+  while(wep){
+    cur_dist = vlen(point - wep.origin);
+    if(wep.deadflag <= DEAD_NO){
+      if(cur_dist < w_rad){
+        w_rad = cur_dist;
+        fwep = wep;
       }
     }
-    elm = elm.chain;
-  }
-
-  if(!found){
-    return src;
+    wep = wep.w_slot;
   }
   
-  return found;
+  cur_dist = vlen(point - own.e_arm_l.origin);
+  if(own.e_arm_l.deadflag <= DEAD_NO){
+    if(cur_dist < rad){
+      a_rad = cur_dist;
+      farm = own.e_arm_l;
+    }
+  }
+  
+  cur_dist = vlen(point - own.e_arm_r.origin);
+  if(own.e_arm_r.deadflag <= DEAD_NO){
+    if(cur_dist < rad){
+      a_rad = cur_dist;
+      farm = own.e_arm_r;
+    }
+  }
+  
+  cur_dist = vlen(point - own.e_tor_l.origin);
+  if(own.e_tor_l.deadflag <= DEAD_NO){
+    if(cur_dist < rad){
+      t_rad = cur_dist;
+      ftor = own.e_tor_l;
+    }
+  }
+  
+  cur_dist = vlen(point - own.e_tor_r.origin);
+  if(own.e_tor_r.deadflag <= DEAD_NO){
+    if(cur_dist < rad){
+      t_rad = cur_dist;
+      ftor = own.e_tor_r;
+    }
+  }
+  
+  cur_dist = vlen(point - own.origin);
+  if(cur_dist < rad){
+    t_rad = cur_dist;
+    return own;
+  }
+  
+  if((fwep != world)&&(farm != world)&&(ftor!=world)){
+    if(w_rad < a_rad){
+      c1 = fwep;
+      c1_rad = w_rad;
+    }
+    else if(a_rad < w_rad){
+      c1 = farm;
+      c1_rad = a_rad;
+    }
+    if(c1_rad < t_rad){
+      return c1;
+    }
+    else if(t_rad < c1_rad){
+      return ftor;
+    }
+    else{
+      return own;
+    }
+  }
+  else{
+    return own;
+  } 
 };
-
 
 
 
@@ -162,7 +192,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
 	// infact I've never seen a case where the number shows,
 	// always hidden by the score bar stuff.
 	// if (self.health < -99)
-	//         self.health = -99;              // don't let sbar look bad if a player
+	//         self.health = -99;              // don't let sbar look bad if a player - not Roohr
 
   if (self.health < -99)
 		self.health = -99;		// don't let sbar look bad if a player
@@ -207,3 +237,64 @@ void(entity targ, entity attacker, float dmg_type) killed={
   
   self = oself;
 };
+
+
+/*
+  2 Jan 2017
+    kept here for posterity, apparently agile recursion has no
+    place in quake C, the dream was just too beautiful.
+
+
+  this is some ugly code...
+
+entity(entity targ, entity inflictor, entity attacker, vector dmg_point) damage_mech={
+
+  local entity found;
+  local float radi;
+  radi = vlen(targ.origin - dmg_point);
+  found = t_find_recurse(dmg_point, radi, targ, targ,targ);
+  
+  if(found == world){
+    found = targ;
+  }
+  if(found.c_name == "cpit"){
+    found = targ;
+  }
+  return found;
+};
+
+entity(vector point, float rad, entity src, entity own, entity prev) t_find_recurse={
+
+  local entity found, elm;
+  local float rad_dist, cur_dist;
+  found = world;
+  prev = own;
+  rad_dist = vlen(src.origin - point);
+  elm = findradius(src.origin, rad_dist);
+  while(elm){
+    if(elm != world){
+      if(elm.owner == own){
+        if((elm.c_name) && (elm.c_name != "cpit")){
+          cur_dist =  vlen(elm.origin - point);
+          if(cur_dist < rad_dist){
+            rad_dist = cur_dist;
+            if(elm.deadflag <= DEAD_NO){
+              found = elm;
+            }else{
+              prev = elm;
+              found = t_find_recurse(found.origin, rad_dist, found, own, prev); 
+            }
+          }
+        }
+      }
+    }
+    elm = elm.chain;
+  }
+
+  if(!found){
+    return prev;
+  }
+  
+  return found;
+};
+*/

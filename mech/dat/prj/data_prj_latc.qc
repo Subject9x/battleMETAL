@@ -33,7 +33,7 @@ void() prj_latc_touch={
   }
   
   
-  te_superspike(self.origin);
+  //te_superspike(self.origin);
   //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
 

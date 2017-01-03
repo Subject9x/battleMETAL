@@ -7,6 +7,8 @@ Overview: 'class' for weapon data /ents
 commented vars mean they're already implemented and are here for reference!
 */
 
+.vector c_iang; //initial angle
+
 //.string faction;
 //.float i_techLevel;
 //.string data_type;

@@ -14,7 +14,7 @@ void() prt_ini;
 void() prt_ini={
 
   local entity oself, prt_data; 
-  local entity prt_legs, prt_ctr, prt_ltr, prt_rtr, prt_cam;
+  local entity prt_legs, prt_ctr, prt_ltr, prt_rtr, prt_rar, prt_lar, prt_cam;
   local entity prt_w1, prt_w2, prt_w3;
   
   oself = self;
@@ -35,8 +35,8 @@ void() prt_ini={
   
   //main collider info
   //this must account for the legs as -height, and the center torso / top weapons as +height
-  self.c_bbx_n = '-12 -12 -38';//'-12 -12 -38';
-  self.c_bbx_x = '12 12 10';//'12 12 10';
+  self.c_bbx_n = '-13 -13 -38';//'-12 -12 -38';
+  self.c_bbx_x = '13 13 10';//'12 12 10';
   
   //Movement variables
   self.m_fspeed = 175;
@@ -68,8 +68,8 @@ void() prt_ini={
   self.armorvalue = 100;
   self.max_armor = 100;
   self.c_model = "q3mdl/mechs/notl/mdl_notl_legs.md3";
-  self.c_bbx_n = '-1 -1 -1';
-  self.c_bbx_x = '1 1 1';
+  //self.c_bbx_n = '-8 -8 -10';
+  //self.c_bbx_x = '8 8 10';
   self.c_ofs = '0 -22.5 -2';
   //self.c_alt_ofs = '9 16 0';
   prt_data.e_legs = prt_legs;
@@ -104,9 +104,9 @@ void() prt_ini={
   self.armorvalue = 100;
   self.max_armor = 100;
   self.c_model = "q3mdl/mechs/notl/mdl_notl_t_left.md3";
-  self.c_ofs = '7 1 -5';
-  self.c_bbx_n = '-1 -1 -1';
-  self.c_bbx_x = '1 1 1';
+  self.c_ofs = '8 1 -4';
+  //self.c_bbx_n = '-1 -1 -1';
+  //self.c_bbx_x = '1 1 1';
   prt_data.e_tor_l = self;
   //==========================
   //RIGHT TORSO
@@ -121,10 +121,40 @@ void() prt_ini={
   self.armorvalue = 100;
   self.max_armor = 100;
   self.c_model = "q3mdl/mechs/notl/mdl_notl_t_left.md3";
-  self.c_ofs = '-7 1 -5';
-  self.c_bbx_n = '-1 -1 -1';
-  self.c_bbx_x = '1 1 1';
+  self.c_ofs = '-8 1 -4';
+  //self.c_bbx_n = '-1 -1 -1';
+  //self.c_bbx_x = '1 1 1';
   prt_data.e_tor_r = self;
+  //==========================
+  //LEFT ARM
+  prt_rar = spawn();
+  self = prt_rar;
+  self.c_name = M_ARM_RIGHT;
+  self.c_parent = M_TOR_RIGHT;
+  self.frame = 0;
+  self.health = 100;
+  self.max_health = 100;
+  self.armortype = 1;
+  self.armorvalue = 100;
+  self.max_armor = 100;
+  self.c_model = "q3mdl/mechs/notl/mdl_notl_l_arm.md3";
+  self.c_ofs = '-12.75 0 -4';
+  prt_data.e_arm_r = self;
+  //==========================
+  //RIGHT ARM
+  prt_lar = spawn();
+  self = prt_lar;
+  self.c_name = M_ARM_LEFT;
+  self.c_parent = M_TOR_LEFT;
+  self.frame = 0;
+  self.health = 100;
+  self.max_health = 100;
+  self.armortype = 1;
+  self.armorvalue = 100;
+  self.max_armor = 100;
+  self.c_model = "q3mdl/mechs/notl/mdl_notl_r_arm.md3";
+  self.c_ofs = '12.75 0 -4';
+  prt_data.e_arm_l = self;
   //==========================
   //cockpit
   prt_cam = spawn();
@@ -137,9 +167,9 @@ void() prt_ini={
   //====================================
   prt_w1 = spawn();
   self = prt_w1;
-  self.c_parent = M_TOR_LEFT;
+  self.c_parent = M_ARM_LEFT;
   self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = '12 4 -3';
+  self.c_ofs = '13 -3 1';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = 1;
@@ -147,9 +177,9 @@ void() prt_ini={
   
   prt_w2 = spawn();
   self = prt_w2;
-  self.c_parent = M_TOR_RIGHT;
+  self.c_parent = M_ARM_RIGHT;
   self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = '-12 4 -3';
+  self.c_ofs = '-13 -3 1';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = 1;
