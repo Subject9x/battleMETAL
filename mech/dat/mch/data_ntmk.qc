@@ -13,7 +13,7 @@ void() tmk_ini;
 void() tmk_ini={
 
   local entity oself, tmk_data; 
-  local entity tmk_legs, tmk_ctr, tmk_alt, tmk_art, tmk_cam;
+  local entity tmk_legs, tmk_ctr, tmk_ltr, tmk_rtr, tmk_alt, tmk_art, tmk_cam;
   local entity tmk_w1, tmk_w2, tmk_w3, tmk_w4, tmk_w5;
   
   oself = self;
@@ -23,6 +23,8 @@ void() tmk_ini={
   self.classname = "data";
   self.data_type = DATA_MECH;
   self.vec_name = "Tomahawk";
+  self.i_techlvl = 0;
+  self.i_reserve = 200;
   self.m_rot_speed = 6;
   self.en_cur = 100;
   self.en_max = 100;
@@ -33,7 +35,7 @@ void() tmk_ini={
   
   //main collider info
   //this must account for the legs as -height, and the center torso / top weapons as +height
-  self.c_bbx_n = '-12 -12 -40';//'-12 -12 -38';
+  self.c_bbx_n = '-12 -12 -40.5';//'-12 -12 -38';
   self.c_bbx_x = '12 12 14';//'12 12 10';
   
   //Movement variables
@@ -83,17 +85,13 @@ void() tmk_ini={
   self.armorvalue = 100;
   self.max_armor = 100;
   self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_t_cent.md3";
-  //self.c_ofs = '0 6.5 0';
-  //self.c_alt_ofs = prt_data.e_legs.c_ofs;
-  //the center torso is now the 'client'
-  //self.c_bbx_n = '-6 -4 -4';
-  //self.c_bbx_x = '6 4 4';
   tmk_data.e_tor_c = self;
   //==========================
-  //LEFT ARM 
-  tmk_alt = spawn();
-  self = tmk_alt;
-  self.c_name = M_ARM_RIGHT;
+  //tmk_ltr, ,
+  //LEFT TORSO
+  tmk_ltr = spawn();
+  self = tmk_ltr;
+  self.c_name = M_TOR_LEFT;
   self.c_parent = M_TOR_CENTER;
   self.frame = 0;
   self.health = 100;
@@ -101,8 +99,38 @@ void() tmk_ini={
   self.armortype = 1;
   self.armorvalue = 100;
   self.max_armor = 100;
-  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_arm_r.md3";
-  self.c_ofs = '10 2 -3';
+  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_t_left.md3";
+  self.c_ofs = '-9 2.75 -4';
+  tmk_data.e_tor_l = self;
+  //==========================
+  //RIGHT TORSO
+  tmk_rtr = spawn();
+  self = tmk_rtr;
+  self.c_name = M_TOR_RIGHT;
+  self.c_parent = M_TOR_CENTER;
+  self.frame = 0;
+  self.health = 100;
+  self.max_health = 100;
+  self.armortype = 1;
+  self.armorvalue = 100;
+  self.max_armor = 100;
+  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_t_right.md3";
+  self.c_ofs = '9 2.75 -4';
+  tmk_data.e_tor_r = self;
+  //=========================
+  //LEFT ARM 
+  tmk_alt = spawn();
+  self = tmk_alt;
+  self.c_name = M_ARM_LEFT;
+  self.c_parent = M_TOR_LEFT;
+  self.frame = 0;
+  self.health = 100;
+  self.max_health = 100;
+  self.armortype = 1;
+  self.armorvalue = 100;
+  self.max_armor = 100;
+  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_l_arm.md3";
+  self.c_ofs = '-14.5 -0.5 -4';
   self.c_bbx_n = '-1 -1 -1';
   self.c_bbx_x = '1 1 1';
   tmk_data.e_arm_l = self;
@@ -111,15 +139,15 @@ void() tmk_ini={
   tmk_art = spawn();
   self = tmk_art;
   self.c_name = M_ARM_RIGHT;
-  self.c_parent = M_TOR_CENTER;
+  self.c_parent = M_TOR_RIGHT;
   self.frame = 0;
   self.health = 100;
   self.max_health = 100;
   self.armortype = 1;
   self.armorvalue = 100;
   self.max_armor = 100;
-  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_arm_l.md3";
-  self.c_ofs = '-10 2 -3';
+  self.c_model = "q3mdl/mechs/ntmk/mdl_ntmk_r_arm.md3";
+  self.c_ofs = '14.5 -0.5 -4';
   self.c_bbx_n = '-1 -1 -1';
   self.c_bbx_x = '1 1 1';
   tmk_data.e_arm_r = self;
@@ -128,16 +156,16 @@ void() tmk_ini={
   tmk_cam = spawn();
   self = tmk_cam;
   self.c_name = "camera";
-  self.c_ofs = '0 1 4';
+  self.c_ofs = '0 3 4';
   self.c_alt_ofs = '0 0 0';
   self.c_model = "q3mdl/testball.md3";
   tmk_data.e_cam = tmk_cam;
   //====================================
   tmk_w1 = spawn();
   self = tmk_w1;
-  self.c_parent = M_ARM_LEFT;
+  self.c_parent = M_TOR_RIGHT;
   self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = '10 7 2';
+  self.c_ofs = '9 9 -1';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = 1;
@@ -145,9 +173,9 @@ void() tmk_ini={
   
   tmk_w2 = spawn();
   self = tmk_w2;
-  self.c_parent = M_ARM_RIGHT;
+  self.c_parent = M_TOR_LEFT;
   self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = '-10 7 2';
+  self.c_ofs = '-9 9 -1';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = 1;
@@ -157,7 +185,7 @@ void() tmk_ini={
   self = tmk_w3;
   self.c_parent = M_ARM_LEFT;
   self.data_idx = 3; //consult weapon idx table!
-  self.c_ofs = '11 -4 1.5';
+  self.c_ofs = '-15 -4 1.5';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 0';
   self.w_group = 2;
@@ -167,7 +195,7 @@ void() tmk_ini={
   self = tmk_w4;
   self.c_parent = M_ARM_RIGHT;
   self.data_idx = 3; //consult weapon idx table!
-  self.c_ofs = '-11 -4 1.5';
+  self.c_ofs = '15 -4 1.5';
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 0';
   self.w_group = 2;

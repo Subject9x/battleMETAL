@@ -68,7 +68,8 @@ void() emp_ini={
   self.data_type = DATA_WEPN;
   self.data_idx = 1;
   self.w_name = "EMP CANNON";
-  
+    self.i_techlvl = 0;
+  self.i_reserve = 100;
   self.w_firetime = 0;
   self.w_clipsize = 1;
   self.w_currentammo = 1;

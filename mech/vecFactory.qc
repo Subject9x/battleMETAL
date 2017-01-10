@@ -159,7 +159,8 @@ entity(entity dat) buildSideTorso={
   self.angles = oself.angles;
   self.v_angle = self.angles - oself.angles;
    
-  self.th_die = ctrl_die_weapon;
+  //self.th_die = ctrl_die_weapon;
+  self.th_die = ctrl_die_comp;
   
   self = oself;
   
@@ -176,7 +177,7 @@ entity(entity cam_dat) buildCameraEnt={
     self.classname = "camera";
     self.c_name = "cpit";
     self.c_ofs = cam_dat.c_ofs;
-    
+    self.scale = 0.05;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
     util_setModel(cam_dat.c_model, 0);
     self.alpha = 0;

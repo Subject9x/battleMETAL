@@ -69,7 +69,8 @@ void() mis_ini={
   self.data_type = DATA_WEPN;
   self.data_idx = 2;
   self.w_name = "MIS LAUNCHER";
-  
+  self.i_techlvl = 0;
+  self.i_reserve = 100;
   self.w_firetime = 0;
   self.w_clipsize = 6;
   self.w_currentammo = 6;

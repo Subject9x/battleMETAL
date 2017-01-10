@@ -37,6 +37,17 @@ void() mh_world_ini={
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_cofs_y);
   addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_cofs_z);
   
+  /*addstat(STAT_WEP1_ID, AS_INT, STAT_WEP1_ID);
+  addstat(STAT_WEP2_ID, AS_INT, STAT_WEP2_ID);
+  addstat(STAT_WEP3_ID, AS_INT, );
+  addstat(STAT_WEP4_ID, AS_INT, );
+  addstat(STAT_WEP5_ID, AS_INT, );
+  addstat(STAT_WEP6_ID, AS_INT, );
+  addstat(STAT_WEP7_ID, AS_INT, );
+  addstat(STAT_WEP8_ID, AS_INT, );
+  addstat(STAT_WEP9_ID, AS_INT, );*/
+  
+  
   mh_world_iniData();
 };
 

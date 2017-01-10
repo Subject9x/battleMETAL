@@ -79,3 +79,14 @@ float W_GROUPC = 3;
 .string vec_name;
 .float max_armor; //why wasn't this ever included!?
 
+//Damage types
+float DMG_BAL = 1;  //ballstic damage
+float DMG_ENE = 2;  //energy damage
+float DMG_EXP = 4;  //explosive damage
+float EFF_PRC = 8;  //piercing damage
+float EFF_RAM = 16; //ram / blunt damage
+
+//Armor Types
+float ARM_LIT = 1;  //light armor
+float ARM_HVY = 2;  //heavy armor;
+float ARM_RAD = 4;  //radiation armor

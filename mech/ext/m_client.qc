@@ -18,8 +18,8 @@ void() ClientConnect = {
   
   self.p_class = P_MECH;
   self.p_class_next = P_MECH;
-  self.nextVecChoice = 1;
-  self.data_idx = 1;
+  self.nextVecChoice = 2;
+  self.data_idx = 2;
   self.currentWeaponGroup = 1;
   self.stat_eid = num_for_edict(self);
   //energy / shield stats

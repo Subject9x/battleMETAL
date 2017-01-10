@@ -11,7 +11,7 @@ t_damage function and 1 killed function...for some reason, maybe good house keep
 void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
   local float canDamage;
-  local entity oself;
+  local entity oself, targ_act;
     
   if(!targ.takedamage){
     return;
@@ -35,13 +35,18 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
   if(targ.p_class == P_MECH){
 
     //filter out leg hits
-    if(dmg_point_z < targ.origin_z - 10){
+    if(dmg_point_z < (targ.origin_z - 10)){
       targ = targ.e_legs;
     }
     else{
       local float irad;
       irad = vlen(targ.origin - dmg_point);
-      targ = t_find_part(dmg_point, irad, targ);
+      targ_act = t_find_part(dmg_point, irad, targ);
+      if(targ_act != world){
+        if(targ_act.deadflag <= DEAD_NO){
+          targ = targ_act;
+        }
+      }
       //targ = damage_mech(targ, inflictor, attacker, dmg_point);
     }
   }
@@ -84,10 +89,10 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
 entity(vector point, float rad, entity own) t_find_part={
   
   local float cur_dist, rad, w_rad, a_rad, t_rad, c1_rad,c2_rad;
-  local entity wep, fwep, farm, ftor,c1,c2;
+  local entity  farm, ftor, c1, toSender; //wep, fwep,
   w_rad = t_rad = rad;
-  wep = own.w_slot;
-  while(wep){
+ // wep = own.w_slot;
+  /*(while(wep){
     cur_dist = vlen(point - wep.origin);
     if(wep.deadflag <= DEAD_NO){
       if(cur_dist < w_rad){
@@ -96,47 +101,75 @@ entity(vector point, float rad, entity own) t_find_part={
       }
     }
     wep = wep.w_slot;
-  }
+  }*/
   
   cur_dist = vlen(point - own.e_arm_l.origin);
-  if(own.e_arm_l.deadflag <= DEAD_NO){
-    if(cur_dist < rad){
-      a_rad = cur_dist;
-      farm = own.e_arm_l;
-    }
+  if(cur_dist < rad){
+    a_rad = cur_dist;
+    farm = own.e_arm_l;
   }
-  
+
   cur_dist = vlen(point - own.e_arm_r.origin);
-  if(own.e_arm_r.deadflag <= DEAD_NO){
-    if(cur_dist < rad){
-      a_rad = cur_dist;
-      farm = own.e_arm_r;
-    }
+  if(cur_dist < rad){
+    a_rad = cur_dist;
+    farm = own.e_arm_r;
   }
   
   cur_dist = vlen(point - own.e_tor_l.origin);
-  if(own.e_tor_l.deadflag <= DEAD_NO){
-    if(cur_dist < rad){
-      t_rad = cur_dist;
-      ftor = own.e_tor_l;
-    }
+  if(cur_dist < rad){
+    t_rad = cur_dist;
+    ftor = own.e_tor_l;
   }
   
   cur_dist = vlen(point - own.e_tor_r.origin);
-  if(own.e_tor_r.deadflag <= DEAD_NO){
-    if(cur_dist < rad){
-      t_rad = cur_dist;
-      ftor = own.e_tor_r;
-    }
+  if(cur_dist < rad){
+    t_rad = cur_dist;
+    ftor = own.e_tor_r;
   }
-  
-  cur_dist = vlen(point - own.origin);
+
+  /*cur_dist = vlen(point - own.origin);
   if(cur_dist < rad){
     t_rad = cur_dist;
     return own;
+  }*/
+  
+  if(a_rad < t_rad){
+    if(farm.deadflag <= DEAD_NO){
+      c1_rad = a_rad;
+      c1 = farm;
+    }
+    else{
+      c1_rad = t_rad;
+      c1 = ftor;
+    }
+  }
+  else if(t_rad < a_rad){
+    if(ftor.deadflag <= DEAD_NO){
+      c1_rad = t_rad;
+      c1 = ftor;
+    }
+    else{
+      c1_rad = a_rad;
+      c1 = farm;
+    }
+  } 
+  
+  if(c1_rad < rad){
+    if(c1.deadflag <= DEAD_NO){
+      toSender =  c1;
+    }
+    else{
+      toSender = own;
+    }
+  }
+  else{
+    toSender = own;
   }
   
-  if((fwep != world)&&(farm != world)&&(ftor!=world)){
+  return toSender;
+  
+  //(fwep != world)&&
+  /*if((farm != world)&&(ftor!=world)){
     if(w_rad < a_rad){
       c1 = fwep;
       c1_rad = w_rad;
@@ -157,7 +190,7 @@ entity(vector point, float rad, entity own) t_find_part={
   }
   else{
     return own;
-  } 
+  } */
 };
 
 

@@ -13,8 +13,10 @@ Overview: extends the player's entity.
 .float currentWeaponGroup;
 .float nextVecChoice;
 .float data_idx;
-.string faction;
-.float i_techLevel;
+
+.float faction;   //which faction? consult table
+.float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
+.float i_reserve; //how many reserve points does the unit cost?
 
 .entity w_slot;     //use this for teh linked list goodness
 

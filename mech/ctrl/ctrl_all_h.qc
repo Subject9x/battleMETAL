@@ -10,3 +10,4 @@ void() ctrl_dieMech;
 void() ctrl_updateLegs;
 void() ctrl_dieLegs;
 void() ctrl_die_weapon;
+void() ctrl_die_comp;

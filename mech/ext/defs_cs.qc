@@ -103,3 +103,13 @@ float STAT_ORG_Z = 76;*/
 float STAT_CAM_ORG_X = 71;
 float STAT_CAM_ORG_Y = 72;
 float STAT_CAM_ORG_Z = 73;
+
+float STAT_WEP1_ID = 74;
+float STAT_WEP2_ID = 75;
+float STAT_WEP3_ID = 76;
+float STAT_WEP4_ID = 77;
+float STAT_WEP5_ID = 78;
+float STAT_WEP6_ID = 79;
+float STAT_WEP7_ID = 80;
+float STAT_WEP8_ID = 81;
+float STAT_WEP9_ID = 82;

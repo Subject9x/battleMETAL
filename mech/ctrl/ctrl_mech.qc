@@ -18,6 +18,68 @@ void() ctrl_updateCenterTorso={
   //shield recharge
 };
 
+void() ctrl_die_comp={
+  if(self.deadflag <= DEAD_NO){
+    local entity oself, tmp;
+    local vector pvel;
+    local string compType;
+    compType = self.c_name;
+    oself = self;
+    pvel = self.owner.velocity;
+    newmis = spawn();
+    self = newmis;
+      setorigin(newmis, oself.origin);
+      BecomeExplosion();
+    self = oself;
+    
+    newmis = spawn();
+    self = newmis;
+      self.angles = oself.angles;
+      if(pvel_x > 0 || pvel_y > 0 || pvel_z > 0){
+        self.velocity = pvel + VelocityForDamage (100);
+        self.avelocity_x = random()*600;
+        self.avelocity_y = random()*600;
+        self.avelocity_z = random()*600;
+      }
+      else{
+        self.velocity = VelocityForDamage (100);
+        self.avelocity_x = random()*600;
+        self.avelocity_y = random()*600;
+        self.avelocity_z = random()*600;
+      }      
+      util_setHealthArmor(10,10,10,10);
+      self.th_die = SUB_Remove;
+      setorigin(self, oself.origin);
+      util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_BOUNCE);
+      setmodel(self, oself.model);
+      setsize(self, '-3 -3 -3', '3 3 3');
+      self.think = BecomeExplosion;
+      self.nextthink = time + 1000;
+    self = oself;
+
+    self.deadflag = DEAD_DEAD;
+    self.effects = EF_NODRAW;
+    //setmodel(self, "");
+    setsize(self, '0 0 0', '0 0 0');
+    
+    if(compType == M_TOR_LEFT){
+      killed(self.owner.e_arm_l, self, 0);
+    }
+    else if(compType == M_TOR_RIGHT){
+      killed(self.owner.e_arm_r, self, 0);
+    }
+    
+    local entity c;
+    c = self.owner.w_slot;
+    while(c){
+      if(c.c_parent == compType){
+        killed(c, self, 0);
+      }
+      c = c.w_slot;
+    }
+  }
+}
+
 void() ctrl_dieMech={
   /*if(self.deadflag <= DEAD_NO){
     self.solid = SOLID_NOT;

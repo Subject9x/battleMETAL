@@ -73,14 +73,10 @@ void() hud_renderPaper={
   self = oself.wdg_pd;
     css_renderMeter(hp_ct, (pnl_ctr + '-6 -16'), '12 40', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
     css_renderMeter(hp_lg, (pnl_ctr + '-28 26'), '56 16', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-    
-    css_renderMeter(hp_lt, (pnl_ctr + '8 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-    
-    css_renderMeter(hp_rt, (pnl_ctr + '-20 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-
-    css_renderMeter(hp_la, (pnl_ctr + '22 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-
-    css_renderMeter(hp_ra, (pnl_ctr + '-34 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    css_renderMeter(hp_rt, (pnl_ctr + '8 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    css_renderMeter(hp_lt, (pnl_ctr + '-20 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    css_renderMeter(hp_ra, (pnl_ctr + '22 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    css_renderMeter(hp_la, (pnl_ctr + '-34 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
   self = oself;
 };
 

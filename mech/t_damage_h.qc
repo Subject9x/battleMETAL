@@ -13,6 +13,7 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
 void(entity targ, entity attacker, float dmg_type) killed;
 void(entity targ, entity attacker, float dmg_type) filter_killed;
 
+//kept for posterity, see the impl file for detials
 //entity(vector point, float rad, entity src, entity own, entity prev) t_find_recurse;
 //entity(entity targ, entity inflictor, entity attacker, vector dmg_point) damage_mech;
 
