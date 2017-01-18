@@ -55,7 +55,7 @@ void() prj_latc_ini={
   self.c_model = "progs/casing.mdl";
   self.p_lifetime = 6;
   self.p_damage = 5;
-  self.p_dmgtype = 0;
+  self.p_dmgtype = DMG_BAL;
   
   //cosmetics
   self.effects = EF_NOSHADOW;

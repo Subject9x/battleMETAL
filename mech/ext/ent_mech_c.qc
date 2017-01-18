@@ -16,6 +16,8 @@ commented vars mean they're already implemented and are here for reference!
 .float sh_max;    //max shields
 .float sh_cur;    //current amount of shields
 .float sh_rate;   //shield recharge rate
+.float sh_hit;
+
 
 .float l_dmg;
 .float m_rot_speed;

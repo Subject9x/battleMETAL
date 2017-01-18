@@ -37,7 +37,7 @@ void() prj_emp_touch={
   
   //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   //te_plasmaburn(self.origin);
-  t_damage(other, self, self.owner, 5, 0, self.origin, '0 0 0');
+  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   remove(self);
 };
 
@@ -51,11 +51,11 @@ void() prj_emp_ini={
   self.classname = "data";
   self.data_type = DATA_PROJ;
   self.data_idx = 1;
-  self.p_velocity = 800;
+  self.p_velocity = 750;
   self.c_model = "q3mdl/proj_emp.md3";
   self.p_lifetime = 6;
-  self.p_damage = 0;
-  self.p_dmgtype = 0;
+  self.p_damage = 25;
+  self.p_dmgtype = DMG_ENE | EFF_RAM;
   self.touch = prj_emp_touch;
   
   //cosmetics

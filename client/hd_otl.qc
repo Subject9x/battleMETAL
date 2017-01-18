@@ -6,14 +6,7 @@ Overview: Hud Layout data for mech 'outlaw'
 */
 
 void() otl_hud_ini;
-/*
-"gfx/hud/otl/otl_am.png"
-"gfx/hud/otl/otl_en.png"
-"gfx/hud/otl/otl_rd.png"
-"gfx/hud/otl/otl_sl.png"
-"gfx/hud/otl/otl_sp.png"
-"gfx/hud/otl/otl_wp.png"
-*/
+
 void() otl_hud_ini={
 
   local entity oself, otl_hud, otl_en, otl_sh, otl_pd, otl_wp;

@@ -29,10 +29,10 @@ void() prt_ini={
   self.m_rot_speed = 6;
   self.en_cur = 75;
   self.en_max = 75;
-  self.en_rate = 0.095;
-  self.sh_cur = 25;
-  self.sh_max = 25;
-  self.sh_rate = 2;
+  self.en_rate = 0.095; //0.095
+  self.sh_cur = 50;
+  self.sh_max = 50;
+  self.sh_rate = 0.075;
   
   
   //main collider info

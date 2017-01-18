@@ -7,15 +7,36 @@ Overview: implementation for center torso updates
 
 void() ctrl_updateCenterTorso={
   if(self.en_cur < self.en_max){
-    self.en_cur = self.en_cur + self.en_rate;
-    if(self.en_cur > self.en_max){
-      local float diff;
-      diff = self.en_cur - self.en_max;
-      self.en_cur = self.en_cur - diff;
+      self.en_cur = self.en_cur + self.en_rate;
+      if(self.en_cur > self.en_max){
+        local float diff;
+        diff = self.en_cur - self.en_max;
+        self.en_cur = self.en_cur - diff;
+      }
+  }
+  if(self.sh_cur < self.sh_max){
+    if(time >= self.sh_hit){
+      if(self.en_cur > (self.sh_rate*3)){
+        self.sh_cur = self.sh_cur + self.sh_rate;
+        self.en_cur = self.en_cur - (self.sh_rate*3);
+        if(self.sh_cur > self.sh_max){
+          local float diff;
+          diff = self.sh_cur - self.sh_max;
+          self.sh_cur = self.sh_cur - diff;
+        }
+      }
     }
   }
- 
-  //shield recharge
+  
+  if((self.velocity_x != 0) || (self.velocity_y != 0)){
+    
+    self.en_cur = self.en_cur - (self.en_rate/3);
+    
+  }
+  
+  if(self.en_cur < 0){
+    self.en_cur = 0;
+  }
 };
 
 void() ctrl_die_comp={

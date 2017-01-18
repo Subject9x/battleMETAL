@@ -10,7 +10,7 @@ t_damage function and 1 killed function...for some reason, maybe good house keep
 
 void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
-  local float canDamage;
+  local float canDamage, new_dmg;
   local entity oself, targ_act;
     
   if(!targ.takedamage){
@@ -31,9 +31,47 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
     targ.dmg_inflictor = inflictor;
   }
 
-  //if(targ.classname == "player"){
+  //check shields
+  if(targ.sh_cur > 0){
+    targ.sh_hit = time + 5;
+    if(dmg_type & DMG_ENE){
+      if(dmg_type & EFF_RAM){
+         bprint(strcat(ftos(dmg_amt),"\n",ftos(targ.sh_cur),"\n"));
+        targ.sh_cur = targ.sh_cur - dmg_amt;
+        if(targ.sh_cur < 0 ){
+          targ.sh_cur = 0;
+        }
+        return;
+      }
+      else if(dmg_type & EFF_PRC){
+        targ.sh_cur = targ.sh_cur - (dmg_amt/4);
+        if(targ.sh_cur < 0 ){
+          targ.sh_cur = 0;
+        }
+        dmg_amt = dmg_amt - (dmg_amt/4);
+      }
+    }
+    else{
+      if(!(dmg_type & EFF_PRC)){
+        targ.sh_cur = targ.sh_cur - (dmg_amt/4);
+        if(targ.sh_cur < 0 ){
+          targ.sh_cur = 0;
+        }
+        return;
+      }
+      else{
+        targ.sh_cur = targ.sh_cur - (dmg_amt/4);
+        if(targ.sh_cur < 0 ){
+          targ.sh_cur = 0;
+        }
+        dmg_amt = dmg_amt - (dmg_amt/4);
+      }
+    }
+  } 
+  
+  //the special hit-location calculator is only run for P_MECH
+  //units
   if(targ.p_class == P_MECH){
-
     //filter out leg hits
     if(dmg_point_z < (targ.origin_z - 10)){
       targ = targ.e_legs;
@@ -47,11 +85,11 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
           targ = targ_act;
         }
       }
-      //targ = damage_mech(targ, inflictor, attacker, dmg_point);
     }
   }
-  //}
 
+
+  
   targ.health = targ.health - dmg_amt;
   
   if(targ.health <= 0){
@@ -88,21 +126,9 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
 */
 entity(vector point, float rad, entity own) t_find_part={
   
-  local float cur_dist, rad, w_rad, a_rad, t_rad, c1_rad,c2_rad;
-  local entity  farm, ftor, c1, toSender; //wep, fwep,
-  w_rad = t_rad = rad;
- // wep = own.w_slot;
-  /*(while(wep){
-    cur_dist = vlen(point - wep.origin);
-    if(wep.deadflag <= DEAD_NO){
-      if(cur_dist < w_rad){
-        w_rad = cur_dist;
-        fwep = wep;
-      }
-    }
-    wep = wep.w_slot;
-  }*/
-  
+  local float cur_dist, rad, a_rad, t_rad, c1_rad,c2_rad;
+  local entity  farm, ftor, c1, toSender;
+  t_rad = rad;
   cur_dist = vlen(point - own.e_arm_l.origin);
   if(cur_dist < rad){
     a_rad = cur_dist;
@@ -126,12 +152,6 @@ entity(vector point, float rad, entity own) t_find_part={
     t_rad = cur_dist;
     ftor = own.e_tor_r;
   }
-
-  /*cur_dist = vlen(point - own.origin);
-  if(cur_dist < rad){
-    t_rad = cur_dist;
-    return own;
-  }*/
   
   if(a_rad < t_rad){
     if(farm.deadflag <= DEAD_NO){
@@ -167,30 +187,6 @@ entity(vector point, float rad, entity own) t_find_part={
   }
   
   return toSender;
-  
-  //(fwep != world)&&
-  /*if((farm != world)&&(ftor!=world)){
-    if(w_rad < a_rad){
-      c1 = fwep;
-      c1_rad = w_rad;
-    }
-    else if(a_rad < w_rad){
-      c1 = farm;
-      c1_rad = a_rad;
-    }
-    if(c1_rad < t_rad){
-      return c1;
-    }
-    else if(t_rad < c1_rad){
-      return ftor;
-    }
-    else{
-      return own;
-    }
-  }
-  else{
-    return own;
-  } */
 };
 
 

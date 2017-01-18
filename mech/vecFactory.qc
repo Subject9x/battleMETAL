@@ -13,6 +13,7 @@ void(entity data) buildVehicle={
   configVehicleSpeeds(data);
   
   if(data.data_type == DATA_MECH){
+    self.sh_hit = 0;
     local entity legs, ctor, ltor, rtor, larm, rarm;
     local vector bb_n, bb_x;
     legs = data.e_legs;

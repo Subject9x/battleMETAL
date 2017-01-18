@@ -31,6 +31,8 @@ void() emp_attack={
   oself = self;
   self = newmis;
     self.owner = player;
+    self.p_damage = proj.p_damage;
+    self.p_dmgtype = proj.p_dmgtype;
     util_setModel(proj.c_model, 0);
     util_setCollider(DAMAGE_NO, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     
@@ -86,7 +88,7 @@ void() emp_ini={
   self.c_model = "q3mdl/weapons/w_emp.md3";
   self.w_attack = emp_attack;
   self.w_proj = 1;
-  self.en_max = 25;    //energy cost
+  self.en_max = 30;    //energy cost
   
   self = oself;
 };
