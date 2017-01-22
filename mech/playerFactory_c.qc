@@ -15,8 +15,9 @@ void(entity ent) mh_makeObserver={
   util_setHealthArmor(1,1,1,0);
   util_setCollider(DAMAGE_NO, SOLID_TRIGGER, MOVETYPE_FLY);
   setmodel(self, "q3mdl/testball.md3");
-  self.effects = EF_NODRAW;
-  util_setBoundBox('-3 -3 -3', '3 3 3');
+  self.scale = 0.005;
+
+  util_setBoundBox('-1 -1 -1', '1 1 1');
   self = oself;
 };
 
@@ -30,22 +31,15 @@ void(entity ent) mh_makeMech={
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   oself = self;
   self = ent;
-  self.data_idx = dat.data_idx;
-  self.flags = oself.flags;
-  
-  buildVehicle(dat);
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_WALK);
-  util_setModel(self.c_model, 0);
-  util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
-  
-  mh_world_updateClientSpeed(dat.m_fspeed, dat.m_sspeed, dat.m_bspeed, dat.m_maccel, dat.m_rollangle) ;
-  mh_world_updateClientViewBob(dat.m_bob, dat.m_bcycle, dat.m_bup) ;
-  mh_world_updateClientModelBob(dat.m_bmodel, dat.m_bside, dat.m_bobspd) ;
-  
+    self.flags = oself.flags;
+    buildVehicle(dat);
+    mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, self.m_maccel, self.m_rollangle) ;
+    mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup) ;
+    mh_world_updateClientModelBob(self.m_bmodel, self.m_bside, self.m_bobspd) ;
     
-  msg_entity = self;
-  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-  WriteEntity(MSG_ONE, self.e_cam);
-  
+    msg_entity = self;
+    WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+    WriteEntity(MSG_ONE, self.e_cam);
+    
   self = oself;
 };

@@ -2,13 +2,18 @@
 mech Mod
 Author: Subject9x
 Date: 8/31/2016
+mod:  1/21/2017 - refactored due to new data value storage methods
 Overview: used to build vehicles for players, this is the header
 */
 
 void(entity data) buildVehicle;
 void(entity data) configVehicleSpeeds;
 entity(entity leg_data) buildLegs;
-void(entity dat ,entity ct_dat) buildCenterTorso;
-entity(entity sdat) buildSideTorso;
-entity(entity cam_dat) buildCameraEnt;
-entity(entity data) buildVehicleWeapon;
+void(entity own) buildUnitPiece;
+void(entity data) buildCenterTorso;
+entity(entity data, entity own) buildLeftTorso;
+entity(entity data, entity own) buildRightTorso;
+entity(entity data, entity own) buildLeftArm;
+entity(entity data, entity own) buildRightArm;
+entity(entity data, entity own) buildCameraEnt;
+entity(entity data, entity own) buildVehicleWeapon;

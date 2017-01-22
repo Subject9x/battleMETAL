@@ -7,6 +7,24 @@ Overview: 'class' for mech data / actual ents
 commented vars mean they're already implemented and are here for reference!
 */
 
+.void() unit_ini;
+.void() unit_legs;
+.void() unit_ctor;
+.void() unit_ltor;
+.void() unit_rtor;
+.void() unit_larm;
+.void() unit_rarm;
+.void() unit_cam;
+.void() unit_wep1;
+.void() unit_wep2;
+.void() unit_wep3;
+.void() unit_wep4;
+.void() unit_wep5;
+.void() unit_wep6;
+.void() unit_wep7;
+.void() unit_wep8;
+.void() unit_wep9;
+
 //local vars
 //reactor
 .float en_max;   //max amount

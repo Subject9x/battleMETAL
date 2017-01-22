@@ -93,24 +93,20 @@ void(entity comp) mech_player_compdie={
 };
 
 void() mech_player_cameradie={
-  //msg_entity = self;
-  //WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-  //WriteEntity(MSG_ONE, self);
   self.view_ofs = '0 0 1';
+  msg_entity = self;
+  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+  WriteEntity(MSG_ONE, self);
 }
 
 void() mech_player_removecamera={
   local entity old;
   if(self.e_cam.classname){
+    self.view_ofs = '0 0 1';
+    msg_entity = self;
+    WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+    WriteEntity(MSG_ONE, self);
     remove(self.e_cam);
-    //.clientcamera.classname){
-    //old = self;
-    //msg_entity = old;
-      //WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-      //WriteEntity(MSG_ONE, old);
-    //self = old.e_cam;//clientcamera;
-     // remove(self);
-    //self = old;
   }
 };
 

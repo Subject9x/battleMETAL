@@ -36,6 +36,9 @@ dp/dpextensions.qc
 //==========================
 
 //DATA FILES=================
+  mech/dat/mch/data_outlaw_val.qc
+  mech/dat/mch/data_matok_val.qc
+
   mech/dat/prj/data_prj_latc.qc
   mech/dat/prj/data_prj_emp.qc
   mech/dat/prj/data_prj_mis.qc
@@ -45,6 +48,7 @@ dp/dpextensions.qc
   mech/dat/wep/data_las.qc
   mech/dat/mch/data_proto.qc
   mech/dat/mch/data_ntmk.qc
+  mech/dat/bld/data_h_radar.qc
 //===========================
 
 //impl files

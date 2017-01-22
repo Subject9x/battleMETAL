@@ -19,11 +19,3 @@ Overview: extends the player's entity.
 .float i_reserve; //how many reserve points does the unit cost?
 
 .entity w_slot;     //use this for teh linked list goodness
-
-//oh this is gross
-/*.float stat_ang_x;
-.float stat_ang_y;
-.float stat_ang_z;
-.float stat_org_x;
-.float stat_org_y;
-.float stat_org_z;*/

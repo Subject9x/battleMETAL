@@ -62,8 +62,10 @@ void() mh_world_iniData={
   mis_ini();
   las_ini();
   //mech data
-  prt_ini();
-  tmk_ini();
+  data_mech_otl();
+  data_mech_mtk();
+  //prt_ini();
+  //tmk_ini();
 };
 
 entity(float id, string dat_type) mh_world_findData={

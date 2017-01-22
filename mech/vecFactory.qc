@@ -7,24 +7,46 @@ Overview: builds player vehicle
 
 void(entity data) buildVehicle={
   local entity oself, wep_slot, plr_slot;
-  oself = self;
-  self.vec_name = data.vec_name;
-  self.m_rot_speed = data.m_rot_speed;
-  configVehicleSpeeds(data);
+  //oself = self;
+  data.unit_ini();
   
   if(data.data_type == DATA_MECH){
+  
     self.sh_hit = 0;
-    local entity legs, ctor, ltor, rtor, larm, rarm;
-    local vector bb_n, bb_x;
-    legs = data.e_legs;
-    ctor = data.e_tor_c;
     
-    ltor = data.e_tor_l;
+    if(data.unit_ctor){
+      buildCenterTorso(data);
+    }
+    if(data.unit_ltor){
+      self.e_tor_l = buildLeftTorso(data, self);
+    }
+    if(data.unit_rtor){
+      self.e_tor_r = buildRightTorso(data, self);
+    }
+    if(data.unit_larm){
+      self.e_arm_l = buildLeftArm(data, self);
+    }
+    if(data.unit_rarm){
+      self.e_arm_r = buildRightArm(data, self);
+    }
+    if(data.unit_cam){
+      self.e_cam = buildCameraEnt(data, self);
+    }
+    if(data.unit_legs){
+       self.e_legs = buildLegs(data); 
+    }
+    self = self.e_legs;
+       leg_stand1();
+    self = oself;   
+    //local entity legs, ctor, ltor, rtor, larm, rarm;
+    //local vector bb_n, bb_x;
+    //legs = data.e_legs;
+    //ctor = data.e_tor_c;    
+    /*
+    //ltor = data.e_tor_l;
     if(ltor != world && (ltor.c_name)){
       self.e_tor_l = buildSideTorso(ltor);
-    }
-    
-    rtor = data.e_tor_r;
+    }rtor = data.e_tor_r;
     if(rtor != world && (rtor.c_name)){
       self.e_tor_r = buildSideTorso(rtor);
     }
@@ -36,166 +58,136 @@ void(entity data) buildVehicle={
     rarm = data.e_arm_r;
     if(rarm != world && (rarm.c_name)){
       self.e_arm_r = buildSideTorso(rarm);
-    }
+    }*/
     
-    buildCenterTorso(data, ctor);
-    self.e_cam = buildCameraEnt(data.e_cam);
-    self.e_legs = buildLegs(legs);    
-    self = self.e_legs;
-       leg_stand1();
-    self = oself;    
+    //buildCenterTorso(data, ctor);
+    //self.e_cam = buildCameraEnt(data.e_cam);   
+    //self.e_legs = buildLegs(legs);    
   }
-  wep_slot = data.w_slot;
+  /*wep_slot = data.w_slot;
   plr_slot = self;
   while(wep_slot){
     plr_slot.w_slot = buildVehicleWeapon(wep_slot);
     plr_slot = plr_slot.w_slot;
     plr_slot.lst_p = plr_slot;
     wep_slot = wep_slot.w_slot;
-  }
+  }*/
 };
 
-entity(entity leg_data) buildLegs={
+entity(entity data) buildLegs={
   local entity oself, leg_ent;
-  
   oself = self;
   leg_ent = spawn();
   self = leg_ent;
-  self.deadflag = DEAD_NO;
-  self.classname = MECH_PIECE;
-  self.c_name = leg_data.c_name;
-  self.walkframe = 8;
-  
-  util_setHealthArmor(leg_data.health, leg_data.max_health, leg_data.armortype, leg_data.armorvalue);
-  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(leg_data.c_model, 0);
-  util_setBoundBox('-1 -1 -1','1 1 1');
-  
-  self.c_ofs = leg_data.c_ofs;
-  util_setOffsetOrigin(self, oself, self.c_ofs);
-  
-  self.aiment = oself;
-  self.owner = oself;
-  self.punchangle = oself.angles;
-  self.view_ofs = self.origin - oself.origin;
-  self.angles = oself.angles;
-  self.v_angle = self.angles - oself.angles;
-   
-  self.th_die = ctrl_dieLegs;
-  
-  self = oself;
-  return leg_ent;
-};
-
-void(entity dat ,entity ct_dat) buildCenterTorso={
-  //local entity ct, oself;
-  //local vector ofs;
-  
-  //ct = spawn();
-  //oself = self;
-  //self = ct;
-
-  self.en_cur = dat.en_cur;
-  self.en_max = dat.en_max ;
-  self.en_rate = dat.en_rate;
-  self.sh_cur = dat.sh_cur;
-  self.sh_max = dat.sh_max;
-  self.sh_rate = dat.sh_rate;
-  
-  self.c_name = "player";
-  //self.classname = self.c_name = ct_dat.c_name;
-  self.c_ofs = ct_dat.c_ofs;
-  self.c_alt_ofs = ct_dat.c_alt_ofs;
-  
-  self.c_bbx_n = dat.c_bbx_n;//'-12 -12 -38';
-  self.c_bbx_x = dat.c_bbx_x;//'12 12 8';
-  
-  self.c_model = ct_dat.c_model;
-  
-  ctor_stand();
-  
-  
- //util_setCollider(DAMAGE_AIM, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setHealthArmor(ct_dat.health, ct_dat.max_health, ct_dat.armortype, ct_dat.armorvalue);
-
-  //ofs = self.c_alt_ofs + self.c_ofs;
-  //util_setOffsetOrigin(self, oself, ofs);
-  
-  /*self.aiment = oself;
-  self.owner = oself;
-  self.punchangle = oself.angles;
-  self.view_ofs = self.origin - oself.origin;
-  self.angles = oself.angles;
-  self.v_angle = self.angles - oself.angles;
-  
-  self.th_die = ctrl_dieMech;*/
-  
-  //self = oself;
-  //return ct;
-};
-
-entity(entity dat) buildSideTorso={
-  local entity oself, tor_ent;
-  
-  oself = self;
-  tor_ent = spawn();
-  self = tor_ent;
-  self.deadflag = DEAD_NO;
-  self.classname = MECH_PIECE; 
-  self.c_name = dat.c_name;
-  //self.walkframe = 8;
-  
-  util_setHealthArmor(dat.health, dat.max_health, dat.armortype,  dat.armorvalue);
-  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(dat.c_model, 0);
-  util_setBoundBox('-1 -1 -1','1 1 1');
-  
-  self.c_ofs = dat.c_ofs;
-  util_setOffsetOrigin(self, oself, self.c_ofs);
-  
-  self.aiment = oself;
-  self.owner = oself;
-  self.punchangle = oself.angles;
-  self.view_ofs = self.origin - oself.origin;
-  self.angles = oself.angles;
-  self.v_angle = self.angles - oself.angles;
-   
-  //self.th_die = ctrl_die_weapon;
-  self.th_die = ctrl_die_comp;
-  
-  self = oself;
-  
-  return tor_ent;
-};
-
-entity(entity cam_dat) buildCameraEnt={
-  local entity oself, cam;
- // local vector ofs;
-  
-  cam = spawn();
-  oself = self;
-  self = cam;
-    self.classname = "camera";
-    self.c_name = "cpit";
-    self.c_ofs = cam_dat.c_ofs;
-    self.scale = 0.05;
+    data.unit_legs();
+    self.deadflag = DEAD_NO;
+    self.classname = MECH_PIECE;
+    self.walkframe = 8;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(cam_dat.c_model, 0);
-    self.alpha = 0;
-    util_setBoundBox('-1 -1 -1', '1 1 1');
+    util_setModel(self.c_model, 0);
+    util_setBoundBox('-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, oself, self.c_ofs);
-    
     self.aiment = oself;
     self.owner = oself;
     self.punchangle = oself.angles;
     self.view_ofs = self.origin - oself.origin;
     self.angles = oself.angles;
-    self.v_angle = self.angles - oself.angles;
+    self.v_angle = self.angles - oself.angles; 
+    self.th_die = ctrl_dieLegs;   
+  self = oself;
+  return leg_ent;
+};
+
+void(entity data) buildCenterTorso={
+  data.unit_ctor();
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_WALK);
+  util_setModel(self.c_model, 0);
+  util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
+  ctor_stand();
+};
+
+entity(entity dat, entity own) buildLeftTorso={
+  local entity oself, comp;
+  oself = self;
+  comp = spawn();
+  self = comp;
+    dat.unit_ltor(comp);
+    buildUnitPiece(own);
+  self = oself;
+  return comp;
+};
+entity(entity dat, entity own) buildRightTorso={
+  local entity oself, comp;
+  oself = self;
+  comp = spawn();
+  self = comp;
+    dat.unit_rtor(comp);
+    buildUnitPiece(own);
+  self = oself;
+  return comp;
+};
+entity(entity dat, entity own) buildLeftArm={
+  local entity oself, comp;
+  oself = self;
+  comp = spawn();
+  self = comp;
+    dat.unit_larm(comp);
+    buildUnitPiece(own);
+  self = oself;
+  return comp;
+};
+entity(entity dat, entity own) buildRightArm={
+  local entity oself, comp;
+  oself = self;
+  comp = spawn();
+  self = comp;
+    dat.unit_rarm(comp);
+    buildUnitPiece(own);
+  self = oself;
+  return comp;
+};
+
+void(entity own) buildUnitPiece={
+  self.deadflag = DEAD_NO;
+  self.classname = MECH_PIECE; 
+  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+  util_setModel(self.c_model, 0);
+  util_setBoundBox('-1 -1 -1','1 1 1');
+  util_setOffsetOrigin(self, own, self.c_ofs);
+  self.aiment = own;
+  self.owner = own;
+  self.punchangle = own.angles;
+  self.view_ofs = self.origin - own.origin;
+  self.angles = own.angles;
+  self.v_angle = self.angles - own.angles;
+  self.th_die = ctrl_die_comp;
+};
+
+entity(entity data, entity own) buildCameraEnt={
+  local entity oself, cam;
+  cam = spawn();
+  oself = self;
+  self = cam;
+    self.classname = "camera";
+    self.scale = 0.05;
+    data.unit_cam(cam);
+    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+    util_setModel(self.c_model, 0);
+    self.alpha = 0;
+    util_setBoundBox('-1 -1 -1', '1 1 1');
+    util_setOffsetOrigin(self, own, self.c_ofs);
+    
+    self.aiment = own;
+    self.owner = own;
+    self.punchangle = own.angles;
+    self.view_ofs = self.origin - own.origin;
+    self.angles = own.angles;
+    self.v_angle = self.angles - own.angles;
   self = oself;
   return cam;
 };
 
-entity(entity data) buildVehicleWeapon={
+entity(entity data, entity own) buildVehicleWeapon={
   local entity new_wep, oself, data_wep;
   local vector ofs;
   
