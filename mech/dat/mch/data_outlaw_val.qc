@@ -9,7 +9,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 */
 
 //OUTLAW MECH=============================
-float DAT_OTL_IDX = 1;
+float DAT_OTL_IDX = ID_MCH_OUTLAW;
 string DAT_OTL_VEC_NAME = "Outlaw";
 float DAT_OTL_TECH_LEVEL = 1;
 float DAT_OTL_RESERVE_COST = 100;
@@ -25,6 +25,41 @@ string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_cent.md3";
 float DAT_OTL_M_FSPEED=175;
 float DAT_OTL_M_SSPEED=150;
 float DAT_OTL_M_BSPEED=150;
+
+float DAT_OTL_LEG_HP = 100;
+float DAT_OTL_LEG_HPMAX= 100;
+float DAT_OTL_CTOR_HP = 100;
+float DAT_OTL_CTOR_HPMAX= 100;
+float DAT_OTL_LTOR_HP = 100;
+float DAT_OTL_LTOR_HPMAX= 100;
+float DAT_OTL_RTOR_HP = 100;
+float DAT_OTL_RTOR_HPMAX= 100;
+float DAT_OTL_LARM_HP = 100;
+float DAT_OTL_LARM_HPMAX= 100;
+float DAT_OTL_RARM_HP = 100;
+float DAT_OTL_RARM_HPMAX= 100;
+
+float DAT_OTL_LEG_ARMOR= 100;
+float DAT_OTL_LEG_ARMMAX= 100;
+float DAT_OTL_CTOR_ARMOR= 100;
+float DAT_OTL_CTOR_ARMMAX= 100;
+float DAT_OTL_LTOR_ARMOR= 100;
+float DAT_OTL_LTOR_ARMMAX= 100;
+float DAT_OTL_RTOR_ARMOR= 100;
+float DAT_OTL_RTOR_ARMMAX= 100;
+float DAT_OTL_LARM_ARMOR= 100;
+float DAT_OTL_LARM_ARMMAX= 100;
+float DAT_OTL_RARM_ARMOR= 100;
+float DAT_OTL_RARM_ARMMAX= 100;
+
+float DAT_OTL_WEP1_IDX= ID_WEP_LATC;
+float DAT_OTL_WEP2_IDX= ID_WEP_LATC;
+float DAT_OTL_WEP3_IDX= ID_WEP_EMP;
+
+float DAT_OTL_WEP1_GROUP= 1;
+float DAT_OTL_WEP2_GROUP= 1;
+float DAT_OTL_WEP3_GROUP= 2;
+
 string DAT_OTL_M_ACCEL="1";
 string DAT_OTL_M_ROLLANGLE="2";
 string DAT_OTL_M_PITCH_N="90";
@@ -38,59 +73,36 @@ string DAT_OTL_M_BSPD = "6.55";
 
 //LEGS
 string DAT_OTL_LEG_CNAME= M_LEGS;
-float DAT_OTL_LEG_HP = 100;
-float DAT_OTL_LEG_HPMAX= 100;
-float DAT_OTL_LEG_ARMOR= 100;
-float DAT_OTL_LEG_ARMMAX= 100;
 string DAT_OTL_LEG_MODEL= "q3mdl/mechs/notl/mdl_notl_legs.md3";
 vector DAT_OTL_LEG_OFFSET= '0 -19.5 -4';
 
 //CENTER TORSO
 string DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
-float DAT_OTL_CTOR_HP = 100;
-float DAT_OTL_CTOR_HPMAX= 100;
-float DAT_OTL_CTOR_ARMOR= 100;
-float DAT_OTL_CTOR_ARMMAX= 100;
 
 //LEFT TORSO
 string DAT_OTL_LTOR_CNAME= M_TOR_LEFT;
 string DAT_OTL_LTOR_CPARENT= M_TOR_CENTER;
-float DAT_OTL_LTOR_HP = 100;
-float DAT_OTL_LTOR_HPMAX= 100;
-float DAT_OTL_LTOR_ARMOR= 100;
-float DAT_OTL_LTOR_ARMMAX= 100;
 string DAT_OTL_LTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_left.md3";
-vector DAT_OTL_LTOR_OFFSET= '-6.5 1 -4';
+vector DAT_OTL_LTOR_OFFSET= '-6.5 1 -2';
 
 //RIGHT TORSO
 string DAT_OTL_RTOR_CNAME= M_TOR_RIGHT;
 string DAT_OTL_RTOR_CPARENT= M_TOR_CENTER; 
-float DAT_OTL_RTOR_HP = 100;
-float DAT_OTL_RTOR_HPMAX= 100;
-float DAT_OTL_RTOR_ARMOR= 100;
-float DAT_OTL_RTOR_ARMMAX= 100;
 string DAT_OTL_RTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_right.md3";
-vector DAT_OTL_RTOR_OFFSET= '6.5 1 -4';
+vector DAT_OTL_RTOR_OFFSET= '6.5 1 -2';
 
 //LEFT ARM 
 string DAT_OTL_LARM_CNAME= M_ARM_LEFT;
 string DAT_OTL_LARM_CPARENT= M_TOR_LEFT;
-float DAT_OTL_LARM_HP = 100;
-float DAT_OTL_LARM_HPMAX= 100;
-float DAT_OTL_LARM_ARMOR= 100;
-float DAT_OTL_LARM_ARMMAX= 100;
+
 string DAT_OTL_LARM_MODEL= "q3mdl/mechs/notl/mdl_notl_l_arm.md3";
-vector DAT_OTL_LARM_OFFSET= '-11 -0.5 -2.5';
+vector DAT_OTL_LARM_OFFSET= '-11 -0.5 -0.5';
 
 //RIGHT ARM
 string DAT_OTL_RARM_CNAME= M_ARM_RIGHT;
 string DAT_OTL_RARM_CPARENT= M_TOR_RIGHT;
-float DAT_OTL_RARM_HP = 100;
-float DAT_OTL_RARM_HPMAX= 100;
-float DAT_OTL_RARM_ARMOR= 100;
-float DAT_OTL_RARM_ARMMAX= 100;
 string DAT_OTL_RARM_MODEL= "q3mdl/mechs/notl/mdl_notl_r_arm.md3";
-vector DAT_OTL_RARM_OFFSET= '11 -0.5 -2.5';
+vector DAT_OTL_RARM_OFFSET= '11 -0.5 -0.5';
 
 //CAMERA
 string DAT_OTL_CAM_CNAME= "camera";
@@ -100,27 +112,21 @@ vector DAT_OTL_CAM_OFFSET_ALT= '0 1 0';
 
 //WEAPON1
 string DAT_OTL_WEP1_CPARENT= M_ARM_LEFT;
-float DAT_OTL_WEP1_IDX= 0;
 vector DAT_OTL_WEP1_OFFSET= '-14 -3 1';
 vector DAT_OTL_WEP1_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP1_ADJ_ANG= '0 0 90';
-float DAT_OTL_WEP1_GROUP= 1;
 
 //WEAPON2
 string DAT_OTL_WEP2_CPARENT= M_ARM_RIGHT;
-float DAT_OTL_WEP2_IDX= 0;
 vector DAT_OTL_WEP2_OFFSET= '14 -3 1';
 vector DAT_OTL_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP2_ADJ_ANG= '0 0 90';
-float DAT_OTL_WEP2_GROUP= 1;
 
 //WEAPON3
 string DAT_OTL_WEP3_CPARENT= M_TOR_CENTER;
-float DAT_OTL_WEP3_IDX= 1;
 vector DAT_OTL_WEP3_OFFSET= '0 8 0';
 vector DAT_OTL_WEP3_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
-float DAT_OTL_WEP3_GROUP=2;
 
 //=========================================
 

@@ -7,7 +7,7 @@ Overview: builds player vehicle
 
 void(entity data) buildVehicle={
   local entity oself, wep_slot, plr_slot;
-  //oself = self;
+  oself = self;
   data.unit_ini();
   
   if(data.data_type == DATA_MECH){
@@ -64,6 +64,9 @@ void(entity data) buildVehicle={
     //self.e_cam = buildCameraEnt(data.e_cam);   
     //self.e_legs = buildLegs(legs);    
   }
+  buildWeaponList(data, self);
+  
+  
   /*wep_slot = data.w_slot;
   plr_slot = self;
   while(wep_slot){
@@ -187,55 +190,137 @@ entity(entity data, entity own) buildCameraEnt={
   return cam;
 };
 
-entity(entity data, entity own) buildVehicleWeapon={
-  local entity new_wep, oself, data_wep;
+//im outta tricks, brute force away
+void(entity mechData, entity own)buildWeaponList={
+  local entity point, oself;
+  point = own;
+  if(mechData.unit_wep1){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep1();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+  if(mechData.unit_wep2){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep2();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+  if(mechData.unit_wep3){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep3();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+  if(mechData.unit_wep4){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep4();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+  if(mechData.unit_wep5){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep5();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+  if(mechData.unit_wep6){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep6();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+  if(mechData.unit_wep7){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep7();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+  if(mechData.unit_wep8){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep8();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+  if(mechData.unit_wep9){
+    local entity wep;
+    wep = spawn();
+    oself = self;
+    self = wep;
+      mechData.unit_wep9();
+      buildVehicleWeapon(mechData, own);
+    self = oself;
+    point.w_slot = wep;
+    point = point.w_slot;
+  }
+};
+
+
+void(entity mechData, entity own) buildVehicleWeapon={
+  local entity wepData;
   local vector ofs;
-  
-  data_wep = mh_world_findData(data.data_idx, DATA_WEPN);
-  
-  new_wep = spawn();
-  oself = self;
-  self  = new_wep;
+ 
+  wepData = mh_world_findData(self.data_idx, DATA_WEPN);
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
   self.c_name = "weapon";
-  self.c_parent = data.c_parent;
-  self.data_idx = data.data_idx;
-  self.c_ofs = data.c_ofs;
-  self.c_alt_ofs = data.c_alt_ofs;
-  self.w_name = data_wep.w_name;
-  self.w_group = data.w_group;
-  self.w_proj = data_wep.w_proj;
-  self.w_firetime = data_wep.w_firetime;
-  self.w_clipsize = data_wep.w_clipsize;
-  self.w_currentammo = data_wep.w_currentammo;
-  self.w_firerate = data_wep.w_firerate;
-  self.w_reloadtime = data_wep.w_reloadtime;
-  self.w_isfire = data_wep.w_isfire;
-  self.w_fire_ofs = data_wep.w_fire_ofs;
-  self.en_max  = data_wep.en_max;
-  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(data_wep.c_model, 0);
-  util_setBoundBox('-1 -1 -1','1 1 1');
-  util_setHealthArmor(data_wep.health, data_wep.max_health, data_wep.armortype, data_wep.armorvalue);
-  
-  ofs = self.c_ofs + self.c_alt_ofs;
-  util_setOffsetOrigin(self, oself, ofs);
-  
-  self.punchangle = self.angles = data.angles;
-  
-  self.aiment = oself;
-  self.owner = oself;
-  self.punchangle = oself.angles;
-  self.view_ofs = self.origin - oself.origin;
-  self.angles = oself.angles;
-  self.v_angle = self.angles - oself.angles;
 
-  self.w_attack = data_wep.w_attack;
-  self.th_die = ctrl_die_weapon;
+  wepData.unit_ini();
+
+  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+  util_setModel(self.c_model, 0);
+  util_setBoundBox('-1 -1 -1','1 1 1');
+  ofs = self.c_ofs + self.c_alt_ofs;
+  util_setOffsetOrigin(self, own, ofs);
   
-  self = oself;
-  return new_wep;
+  self.punchangle = self.angles = mechData.angles;
+  self.aiment = own;
+  self.owner = own;
+  self.punchangle = own.angles;
+  self.view_ofs = self.origin - own.origin;
+  self.angles = own.angles;
+  self.v_angle = self.angles - own.angles;
+  self.th_die = ctrl_die_weapon;
 };
 
 void(entity data) configVehicleSpeeds={

@@ -13,7 +13,6 @@ void() switchFireMode={};
 void() selectTarget={};
 void() toggerRadar={};
 
-
 void() playerAttack={
   local entity wep_chain;
   wep_chain = self.w_slot;

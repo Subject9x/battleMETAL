@@ -6,6 +6,7 @@ Overview: 'class' for weapon data /ents
 
 commented vars mean they're already implemented and are here for reference!
 */
+.string fire_sound;
 
 .vector c_iang; //initial angle
 
@@ -35,5 +36,6 @@ commented vars mean they're already implemented and are here for reference!
 .float w_isfire;
 .float w_slotnum;
 .float w_spread;
-.float w_group;     //weapon group, only 1-3
+
+.float w_group;     //weapon group, only 1-3 - SET BY PARENT
 

@@ -9,7 +9,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 */
 
 //MATOK MECH=============================
-float DAT_MTK_IDX = 2;
+float DAT_MTK_IDX = ID_MCH_MATOK;
 string DAT_MTK_VEC_NAME = "MATOK";
 float DAT_MTK_TECH_LEVEL = 1;
 float DAT_MTK_RESERVE_COST = 200;
@@ -21,10 +21,53 @@ float DAT_MTK_SHIELD_MAX = 150;
 float DAT_MTK_SHIELD_RATE = 0.065;
 vector DAT_MTK_CTOR_BBX_N ='-12 -12 -35';
 vector DAT_MTK_CTOR_BBX_X ='12 12 14';
-string DAT_MTK_CTOR_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_t_cent.md3";
+
 float DAT_MTK_M_FSPEED=125;
 float DAT_MTK_M_SSPEED=100;
 float DAT_MTK_M_BSPEED=100;
+
+//HITPOINT VALUES
+float DAT_MTK_CTOR_HP = 100;
+float DAT_MTK_CTOR_HPMAX= 100;
+float DAT_MTK_LEG_HP = 100;
+float DAT_MTK_LEG_HPMAX= 100;
+float DAT_MTK_LTOR_HP = 100;
+float DAT_MTK_LTOR_HPMAX= 100;
+float DAT_MTK_RTOR_HP = 100;
+float DAT_MTK_RTOR_HPMAX= 100;
+float DAT_MTK_LARM_HP = 100;
+float DAT_MTK_LARM_HPMAX= 100;
+float DAT_MTK_RARM_HP = 100;
+float DAT_MTK_RARM_HPMAX= 100;
+
+//ARMOR VALUES
+float DAT_MTK_CTOR_ARMOR= 100;
+float DAT_MTK_CTOR_ARMMAX= 100;
+float DAT_MTK_RARM_ARMOR= 100;
+float DAT_MTK_RARM_ARMMAX= 100;
+float DAT_MTK_LARM_ARMOR= 100;
+float DAT_MTK_LARM_ARMMAX= 100;
+float DAT_MTK_RTOR_ARMOR= 100;
+float DAT_MTK_RTOR_ARMMAX= 100;
+float DAT_MTK_LTOR_ARMOR= 100;
+float DAT_MTK_LTOR_ARMMAX= 100;
+float DAT_MTK_LEG_ARMOR= 100;
+float DAT_MTK_LEG_ARMMAX= 100;
+
+//WEAOPON GROUPS
+float DAT_MTK_WEP1_IDX= ID_WEP_LATC;
+float DAT_MTK_WEP2_IDX= ID_WEP_LATC;
+float DAT_MTK_WEP3_IDX= ID_WEP_LAS;
+float DAT_MTK_WEP4_IDX= ID_WEP_LAS;
+float DAT_MTK_WEP5_IDX= ID_WEP_EMP;
+float DAT_MTK_WEP1_GROUP= 1;
+float DAT_MTK_WEP2_GROUP= 1;
+float DAT_MTK_WEP3_GROUP= 2;
+float DAT_MTK_WEP4_GROUP= 2;
+float DAT_MTK_WEP5_GROUP= 3;
+
+//this is mostly cosmetics
+string DAT_MTK_CTOR_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_t_cent.md3";
 string DAT_MTK_M_ACCEL="1";
 string DAT_MTK_M_ROLLANGLE="2.25";
 string DAT_MTK_M_PITCH_N="90";
@@ -38,57 +81,37 @@ string DAT_MTK_M_BSPD = "6.55";
 
 //LEGS
 string DAT_MTK_LEG_CNAME= M_LEGS;
-float DAT_MTK_LEG_HP = 100;
-float DAT_MTK_LEG_HPMAX= 100;
-float DAT_MTK_LEG_ARMOR= 100;
-float DAT_MTK_LEG_ARMMAX= 100;
 string DAT_MTK_LEG_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_legs.md3";
 vector DAT_MTK_LEG_OFFSET= '0 -21 0';
 
 //CENTER TORSO
 string DAT_MTK_CTOR_CNAME= M_TOR_CENTER;
-float DAT_MTK_CTOR_HP = 100;
-float DAT_MTK_CTOR_HPMAX= 100;
-float DAT_MTK_CTOR_ARMOR= 100;
-float DAT_MTK_CTOR_ARMMAX= 100;
 
 //LEFT TORSO
 string DAT_MTK_LTOR_CNAME= M_TOR_LEFT;
 string DAT_MTK_LTOR_CPARENT= M_TOR_CENTER;
-float DAT_MTK_LTOR_HP = 100;
-float DAT_MTK_LTOR_HPMAX= 100;
-float DAT_MTK_LTOR_ARMOR= 100;
-float DAT_MTK_LTOR_ARMMAX= 100;
+
 string DAT_MTK_LTOR_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_t_left.md3";
 vector DAT_MTK_LTOR_OFFSET= '-8 3 -1.5';
 
 //RIGHT TORSO
 string DAT_MTK_RTOR_CNAME= M_TOR_RIGHT;
 string DAT_MTK_RTOR_CPARENT= M_TOR_CENTER; 
-float DAT_MTK_RTOR_HP = 100;
-float DAT_MTK_RTOR_HPMAX= 100;
-float DAT_MTK_RTOR_ARMOR= 100;
-float DAT_MTK_RTOR_ARMMAX= 100;
+
 string DAT_MTK_RTOR_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_t_right.md3";
 vector DAT_MTK_RTOR_OFFSET= '8 3 -1.5';
 
 //LEFT ARM 
 string DAT_MTK_LARM_CNAME= M_ARM_LEFT;
 string DAT_MTK_LARM_CPARENT= M_TOR_LEFT;
-float DAT_MTK_LARM_HP = 100;
-float DAT_MTK_LARM_HPMAX= 100;
-float DAT_MTK_LARM_ARMOR= 100;
-float DAT_MTK_LARM_ARMMAX= 100;
+
 string DAT_MTK_LARM_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_l_arm.md3";
 vector DAT_MTK_LARM_OFFSET= '-13 -0.5 -2.25';
 
 //RIGHT ARM
 string DAT_MTK_RARM_CNAME= M_ARM_RIGHT;
 string DAT_MTK_RARM_CPARENT= M_TOR_RIGHT;
-float DAT_MTK_RARM_HP = 100;
-float DAT_MTK_RARM_HPMAX= 100;
-float DAT_MTK_RARM_ARMOR= 100;
-float DAT_MTK_RARM_ARMMAX= 100;
+
 string DAT_MTK_RARM_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_r_arm.md3";
 vector DAT_MTK_RARM_OFFSET= '13 -0.5 -2.25';
 
@@ -100,43 +123,33 @@ vector DAT_MTK_CAM_OFFSET_ALT= '0 1 0';
 
 //WEAPON1
 string DAT_MTK_WEP1_CPARENT= M_TOR_RIGHT;
-float DAT_MTK_WEP1_IDX= 0;
 vector DAT_MTK_WEP1_OFFSET= '9 9 -1';
 vector DAT_MTK_WEP1_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP1_ADJ_ANG= '0 0 90';
-float DAT_MTK_WEP1_GROUP= 1;
 
 //WEAPON2
 string DAT_MTK_WEP2_CPARENT= M_TOR_LEFT;
-float DAT_MTK_WEP2_IDX= 0;
 vector DAT_MTK_WEP2_OFFSET= '-9 9 -1';
 vector DAT_MTK_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP2_ADJ_ANG= '0 0 90';
-float DAT_MTK_WEP2_GROUP= 1;
 
 //WEAPON3
 string DAT_MTK_WEP3_CPARENT= M_ARM_RIGHT;
-float DAT_MTK_WEP3_IDX= 3;
 vector DAT_MTK_WEP3_OFFSET= '15 -4 1.5';
 vector DAT_MTK_WEP3_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP3_ADJ_ANG= '0 0 90';
-float DAT_MTK_WEP3_GROUP= 2;
 
 //WEAPON4
 string DAT_MTK_WEP4_CPARENT= M_ARM_LEFT;
-float DAT_MTK_WEP4_IDX= 3;
 vector DAT_MTK_WEP4_OFFSET= '-15 -4 1.5';
 vector DAT_MTK_WEP4_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP4_ADJ_ANG= '0 0 0';
-float DAT_MTK_WEP4_GROUP= 2;
 
 //WEAPON5
 string DAT_MTK_WEP5_CPARENT= M_TOR_CENTER;
-float DAT_MTK_WEP5_IDX= 2;
 vector DAT_MTK_WEP5_OFFSET= '0 10 -4';
 vector DAT_MTK_WEP5_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP5_ADJ_ANG= '0 0 0';
-float DAT_MTK_WEP5_GROUP= 3;
 
 //=========================================
 void() data_mech_mtk;

@@ -16,4 +16,5 @@ entity(entity data, entity own) buildRightTorso;
 entity(entity data, entity own) buildLeftArm;
 entity(entity data, entity own) buildRightArm;
 entity(entity data, entity own) buildCameraEnt;
-entity(entity data, entity own) buildVehicleWeapon;
+void(entity data, entity own) buildWeaponList;
+void(entity data, entity own) buildVehicleWeapon;

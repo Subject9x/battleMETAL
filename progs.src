@@ -12,6 +12,7 @@ dp/dpextensions.qc
   mech/ext/ent_wep_c.qc
   mech/ext/ent_proj_c.qc
   mech/ext/defs_cs.qc
+  mech/ext/defs_data.qc
 //==========================
 
 //mech header files
@@ -36,18 +37,22 @@ dp/dpextensions.qc
 //==========================
 
 //DATA FILES=================
+  //projectiles
+  mech/dat/prj/data_prj_latc_val.qc
+  mech/dat/prj/data_prj_emp_val.qc
+  mech/dat/prj/data_prj_mis_val.qc
+  
+  //weapons
+  mech/dat/wep/data_latc_val.qc
+  mech/dat/wep/data_emp_val.qc
+  mech/dat/wep/data_mis_val.qc
+  mech/dat/wep/data_las_val.qc
+  
+  //mechs
   mech/dat/mch/data_outlaw_val.qc
   mech/dat/mch/data_matok_val.qc
-
-  mech/dat/prj/data_prj_latc.qc
-  mech/dat/prj/data_prj_emp.qc
-  mech/dat/prj/data_prj_mis.qc
-  mech/dat/wep/data_lightatc.qc
-  mech/dat/wep/data_emp.qc
-  mech/dat/wep/data_mis.qc
-  mech/dat/wep/data_las.qc
-  mech/dat/mch/data_proto.qc
-  mech/dat/mch/data_ntmk.qc
+  
+  //buildings
   mech/dat/bld/data_h_radar.qc
 //===========================
 

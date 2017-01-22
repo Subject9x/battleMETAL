@@ -26,46 +26,28 @@ void() mh_world_ini={
   addstat(STAT_RARM_HP, AS_FLOAT, stat_rarm_hp);
   addstat(STAT_RARM_AM, AS_FLOAT, stat_rarm_am);
   addstat(STAT_VID, AS_INT, data_idx);
-  
-  /*addstat(STAT_ANG_X, AS_FLOAT, stat_ang_x);
-  addstat(STAT_ANG_Y, AS_FLOAT, stat_ang_y);
-  addstat(STAT_ANG_Z, AS_FLOAT, stat_ang_z);
-  addstat(STAT_ORG_X, AS_FLOAT, stat_org_x);
-  addstat(STAT_ORG_Y, AS_FLOAT, stat_org_y);
-  addstat(STAT_ORG_Z, AS_FLOAT, stat_org_z);*/
   addstat(STAT_CAM_ORG_X, AS_FLOAT, stat_cofs_x);
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_cofs_y);
   addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_cofs_z);
-  
-  /*addstat(STAT_WEP1_ID, AS_INT, STAT_WEP1_ID);
-  addstat(STAT_WEP2_ID, AS_INT, STAT_WEP2_ID);
-  addstat(STAT_WEP3_ID, AS_INT, );
-  addstat(STAT_WEP4_ID, AS_INT, );
-  addstat(STAT_WEP5_ID, AS_INT, );
-  addstat(STAT_WEP6_ID, AS_INT, );
-  addstat(STAT_WEP7_ID, AS_INT, );
-  addstat(STAT_WEP8_ID, AS_INT, );
-  addstat(STAT_WEP9_ID, AS_INT, );*/
-  
   
   mh_world_iniData();
 };
 
 void() mh_world_iniData={
   //projectile data
-  prj_latc_ini();
-  prj_emp_ini();
-  prj_mis_ini();
+  data_prj_latc();
+  data_prj_emp();
+  data_prj_mis();
+
   //weapon data
-  latc_ini();
-  emp_ini();
-  mis_ini();
-  las_ini();
+  data_wep_latc();
+  data_wep_emp();
+  data_wep_mis();
+  data_wep_las();
+
   //mech data
   data_mech_otl();
   data_mech_mtk();
-  //prt_ini();
-  //tmk_ini();
 };
 
 entity(float id, string dat_type) mh_world_findData={
