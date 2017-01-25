@@ -23,6 +23,7 @@ Overview: master data ID lists for all the game data
 .void() unit_wep8;
 .void() unit_wep9;
 
+//UPDATE CSQC cs_datadefs.qc if you mod this!
 //MECHS==================================
 float ID_MCH_OUTLAW= 1;
 float ID_MCH_MATOK= 2;

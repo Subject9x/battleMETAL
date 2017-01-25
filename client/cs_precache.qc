@@ -21,12 +21,30 @@ void() cs_precache={
   precache_pic("gfx/hud/otl/otl_sp.png", 0);
   precache_pic("gfx/hud/otl/otl_wp.png", 0);
   
+  //wep data
+  data_wep_latc();
+  data_wep_emp();
+  data_wep_mis();
+  data_wep_las();
+  
   //hud data
   otl_hud_ini();
+  tmk_hud_ini();
+  
 };
 
-entity(float id) m_findData={
-  local entity found;
-  found = findfloat(world, data_idx, id);
-  return found;
+entity(float id, string dat_type) m_findData={
+  local entity found, data_chain;
+  data_chain = findchain(classname, "data");
+  while(data_chain){
+    local float idx;
+    idx = data_chain.data_idx;
+    if(data_chain.data_type == dat_type){
+      if(id == idx){
+        return data_chain;
+      }
+    }
+    data_chain = data_chain.chain;
+  }
+  return data_chain;
 };

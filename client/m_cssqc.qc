@@ -40,7 +40,7 @@ float HUD_ALPHA = 0.9;
 
 //common ent vars
 .float data_idx;
-.float data_type;
+.string data_type;
 .string img;
 .vector parent_org;
 .vector pos;

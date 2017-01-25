@@ -5,8 +5,6 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
-float DATA_HUD = 0;
-
 .entity wdg_sh; //shield widget
 .entity wdg_en; //energy widget
 .entity wdg_pd; //paper doll widget
@@ -63,6 +61,17 @@ float DATA_HUD = 0;
 .float value4;
 .float value5;
 .float value6;
+
+.vector w1_ofs;
+.vector w2_ofs;
+.vector w3_ofs;
+.vector w4_ofs;
+.vector w5_ofs;
+.vector w6_ofs;
+.vector w7_ofs;
+.vector w8_ofs;
+.vector w9_ofs;
+
 
 
 

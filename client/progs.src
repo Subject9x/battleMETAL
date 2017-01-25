@@ -3,10 +3,22 @@
 ../dp/csprogsdefs.qc
 m_csdefs.qc
 m_entdefs.qc
+m_datadefs.qc
 m_cssqc.qc
 m_renderfuncs_h.qc
-hd_otl.qc
-hd_tmk.qc
+
+//DATA FILES==========
+  //HUD
+  data/hud/data_hud_otl.qc
+  data/hud/data_hud_mtk.qc
+  
+  //Weapons
+  data/wep/data_latc_val.qc
+  data/wep/data_emp_val.qc
+  data/wep/data_mis_val.qc
+  data/wep/data_las_val.qc
+//=======================
+
 cs_precache.qc
 cs_mechhud_h.qc
 m_renderfuncs_c.qc

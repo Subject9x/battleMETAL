@@ -42,6 +42,19 @@ float m_arm_r = 4;
 float m_arm_l = 5;
 float m_wep = 6;
 
+.string c_model;
+.string w_name;       //label for weapon, need to keep 'classname' reserved for actual class    
+.float w_firerate;
+.float w_firemod;     //used for modifying fire rate;
+.float w_firemoddur;  //duration of effect;
+.float w_reloadtime;
+.float w_clipsize;
+.float w_ammotype;
+.float w_spread;
+.float en_max;
+.float i_techlvl;
+.string data_type;
+
 //player vars
 .float LG_AM_MX;
 .float LG_AM_CR;
@@ -68,6 +81,8 @@ float m_wep = 6;
 .float RA_HP_MX;
 .float RA_HP_CR;
 
+
+
 //PLAYER CLASSES
 float P_OBS = 0;
 float P_MECH = 1;
@@ -80,54 +95,55 @@ float STAT_SPREADY = 36;
 float STAT_ENERGY = 37;
 float STAT_SHIELD = 38;
 
-float STAT_LEG_HP = 39;
-float STAT_LEG_AM = 40;
-float STAT_CTOR_HP = 41;
-float STAT_CTOR_AM = 42;
-float STAT_LTOR_HP = 43;
-float STAT_LTOR_AM = 44;
-float STAT_RTOR_HP = 45;
-float STAT_RTOR_AM = 46;
-float STAT_LARM_HP = 47;
-float STAT_LARM_AM = 48;
-float STAT_RARM_HP = 49;
-float STAT_RARM_AM = 50;
-
-float STAT_WEP1_HP = 51;
-float STAT_WEP1_RL = 52;
-float STAT_WEP2_HP = 53;
-float STAT_WEP2_RL = 54;
-float STAT_WEP3_HP = 55;
-float STAT_WEP3_RL = 56;
-float STAT_WEP4_HP = 57;
-float STAT_WEP4_RL = 58;
-float STAT_WEP5_HP = 59;
-float STAT_WEP5_RL = 60;
-float STAT_WEP6_HP = 61;
-float STAT_WEP6_RL = 62;
-float STAT_WEP7_HP = 63;
-float STAT_WEP7_RL = 64;
-float STAT_WEP8_HP = 65;
-float STAT_WEP8_RL = 66;
-float STAT_WEP9_HP = 67;
-float STAT_WEP9_RL = 68;
-
-float STAT_TARG_EID = 69;
-float STAT_VID = 70;
+float STAT_TARG_EID = 39;
+float STAT_VID = 40;
 //send ent is for the weak!
-float STAT_CAM_ORG_X = 71;
-float STAT_CAM_ORG_Y = 72;
-float STAT_CAM_ORG_Z = 73;
+float STAT_CAM_ORG_X = 41;
+float STAT_CAM_ORG_Y = 42;
+float STAT_CAM_ORG_Z = 43;
 
-float STAT_WEP1_ID = 74;
-float STAT_WEP2_ID = 75;
-float STAT_WEP3_ID = 76;
-float STAT_WEP4_ID = 77;
-float STAT_WEP5_ID = 78;
-float STAT_WEP6_ID = 79;
-float STAT_WEP7_ID = 80;
-float STAT_WEP8_ID = 81;
-float STAT_WEP9_ID = 82;
+float STAT_LEG_HP = 44;
+float STAT_LEG_AM = 45;
+float STAT_CTOR_HP = 46;
+float STAT_CTOR_AM = 47;
+float STAT_LTOR_HP = 48;
+float STAT_LTOR_AM = 49;
+float STAT_RTOR_HP = 50;
+float STAT_RTOR_AM = 51;
+float STAT_LARM_HP = 52;
+float STAT_LARM_AM = 53;
+float STAT_RARM_HP = 54;
+float STAT_RARM_AM = 55;
+
+float STAT_WEP1_ID = 56;
+float STAT_WEP1_GR = 57;
+float STAT_WEP1_ST = 58;
+float STAT_WEP2_ID = 59;
+float STAT_WEP2_GR = 60;
+float STAT_WEP2_ST = 61;
+float STAT_WEP3_ID = 62;
+float STAT_WEP3_GR = 63;
+float STAT_WEP3_ST = 64;
+float STAT_WEP4_ID = 65;
+float STAT_WEP4_GR = 66;
+float STAT_WEP4_ST = 67;
+float STAT_WEP5_ID = 68;
+float STAT_WEP5_GR = 69;
+float STAT_WEP5_ST = 70;
+float STAT_WEP6_ID = 71;
+float STAT_WEP6_GR = 72;
+float STAT_WEP6_ST = 73;
+float STAT_WEP7_ID = 74;
+float STAT_WEP7_GR = 75;
+float STAT_WEP7_ST = 76;
+float STAT_WEP8_ID = 77;
+float STAT_WEP8_GR = 78;
+float STAT_WEP8_ST = 79;
+float STAT_WEP9_ID = 80;
+float STAT_WEP9_GR = 81;
+float STAT_WEP9_ST = 82;
+
+float STAT_WEP_GRP = 83;
 
 //actual csqc constants
 /*vector ENG_COLOR_CURRENT;

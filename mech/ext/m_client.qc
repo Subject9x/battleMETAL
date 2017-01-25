@@ -43,6 +43,34 @@ void() ClientConnect = {
   self.stat_cofs_x = 0;
   self.stat_cofs_y = 0;
   self.stat_cofs_z = 0;
+  self.stat_w1_id = -1;
+  self.stat_w1_gr = -1;
+  self.stat_w1_st = -1;
+  self.stat_w2_id = -1;
+  self.stat_w2_gr = -1;
+  self.stat_w2_st = -1;
+  self.stat_w3_id = -1;
+  self.stat_w3_gr = -1;
+  self.stat_w3_st = -1;
+  self.stat_w4_id = -1;
+  self.stat_w4_gr = -1;
+  self.stat_w4_st = -1;
+  self.stat_w5_id = -1;
+  self.stat_w5_gr = -1;
+  self.stat_w5_st = -1;
+  self.stat_w6_id = -1;
+  self.stat_w6_gr = -1;
+  self.stat_w6_st = -1;
+  self.stat_w7_id = -1;
+  self.stat_w7_gr = -1;
+  self.stat_w7_st = -1;
+  self.stat_w8_id = -1;
+  self.stat_w8_gr = -1;
+  self.stat_w8_st = -1;
+  self.stat_w9_id = -1;
+  self.stat_w9_gr = -1;
+  self.stat_w9_st = -1;
+  
   if (intermission_running){
     ExitIntermission();
   }
@@ -78,8 +106,6 @@ void() PutClientInServer = {
   self.classname = "player";
   
   DecodeLevelParms ();
-	
-	//W_SetCurrentAmmo ();
 
 	self.attack_finished = time;
 	//self.th_pain = player_pain;
@@ -88,15 +114,6 @@ void() PutClientInServer = {
 
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
-
-// oh, this is a hack!
-	//setmodel (self, "progs/eyes.mdl");
-	//modelindex_eyes = self.modelindex;
-
-	//setmodel (self, "progs/player.mdl");
-	//modelindex_player = self.modelindex;
-
-	//setsize (self, VEC_HULL_MIN, VEC_HULL_MAX);
 	
 	self.view_ofs = '0 0 1';
 	
@@ -105,19 +122,12 @@ void() PutClientInServer = {
   }
   else if(self.p_class == P_MECH){
     mh_makeMech(self);
-    //self.SENDDATA = TRUE;
-    //csqc_SendMechData(self, ENT_PLR, FLAG_INI_MCH);//FLAG_INI_MCH);
   }
-  
-
-	//player_stand1 ();
+ 
 	if (deathmatch || coop)
 	{
 		makevectors(self.angles);
-		//spawn_tfog (self.origin + v_forward*20);
 	}
-
-	//spawn_tdeath (self.origin, self);
 };
 
 /*
@@ -192,8 +202,6 @@ void() ClientDisconnect = {
   }
   bprint (self.netname);
 	bprint (" has fled the field of battle!\n");
-	//bprint (ftos(self.frags));
-	//bprint (" frags\n");
   
   if(self.p_class == P_MECH){
     mech_player_die();

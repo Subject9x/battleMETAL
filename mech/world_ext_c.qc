@@ -30,6 +30,37 @@ void() mh_world_ini={
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_cofs_y);
   addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_cofs_z);
   
+  addstat(STAT_WEP1_ID, AS_INT,stat_w1_id);
+  addstat(STAT_WEP1_GR, AS_INT,stat_w1_gr);
+  addstat(STAT_WEP1_ST, AS_INT,stat_w1_st);
+  addstat(STAT_WEP2_ID, AS_INT,stat_w2_id);
+  addstat(STAT_WEP2_GR, AS_INT,stat_w2_gr);
+  addstat(STAT_WEP2_ST, AS_INT,stat_w2_st);
+  addstat(STAT_WEP3_ID, AS_INT,stat_w3_id);
+  addstat(STAT_WEP3_GR, AS_INT,stat_w3_gr);
+  addstat(STAT_WEP3_ST, AS_INT,stat_w3_st);
+  addstat(STAT_WEP4_ID, AS_INT,stat_w4_id);
+  addstat(STAT_WEP4_GR, AS_INT,stat_w4_gr);
+  addstat(STAT_WEP4_ST, AS_INT,stat_w4_st);
+  addstat(STAT_WEP5_ID, AS_INT,stat_w5_id);
+  addstat(STAT_WEP5_GR, AS_INT,stat_w5_gr);
+  addstat(STAT_WEP5_ST, AS_INT,stat_w5_st);
+  addstat(STAT_WEP6_ID, AS_INT,stat_w6_id);
+  addstat(STAT_WEP6_GR, AS_INT,stat_w6_gr);
+  addstat(STAT_WEP6_ST, AS_INT,stat_w6_st);
+  addstat(STAT_WEP7_ID, AS_INT,stat_w7_id);
+  addstat(STAT_WEP7_GR, AS_INT,stat_w7_gr);
+  addstat(STAT_WEP7_ST, AS_INT,stat_w7_st);
+  addstat(STAT_WEP8_ID, AS_INT,stat_w8_id);
+  addstat(STAT_WEP8_GR, AS_INT,stat_w8_gr);
+  addstat(STAT_WEP8_ST, AS_INT,stat_w8_st);
+  addstat(STAT_WEP9_ID, AS_INT,stat_w9_id);
+  addstat(STAT_WEP9_GR, AS_INT,stat_w9_gr);
+  addstat(STAT_WEP9_ST, AS_INT,stat_w9_st);
+  
+  addstat(STAT_WEP_GRP, AS_INT, currentWeaponGroup);
+  
+  
   mh_world_iniData();
 };
 

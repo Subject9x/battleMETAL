@@ -468,7 +468,9 @@ void() R_EndPolygon = #308;
 vector (vector v) cs_unproject = #310;
 vector (vector v) cs_project = #311;
 
-void(float width, vector pos1, vector pos2, float flag) drawline = #315;
+//void(float width, vector pos1, vector pos2, float flag) drawline = #315;
+void (float width, vector pos1, vector pos2, vector rgb, float alpha, float flags)drawline = #315;
+
 float(string name) iscachedpic = #316;
 string(string name, ...) precache_pic = #317;
 string(string name) precache_cubemap = #317;

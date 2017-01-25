@@ -36,7 +36,6 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
     targ.sh_hit = time + 5;
     if(dmg_type & DMG_ENE){
       if(dmg_type & EFF_RAM){
-         bprint(strcat(ftos(dmg_amt),"\n",ftos(targ.sh_cur),"\n"));
         targ.sh_cur = targ.sh_cur - dmg_amt;
         if(targ.sh_cur < 0 ){
           targ.sh_cur = 0;
@@ -60,8 +59,8 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
         return;
       }
       else{
-        targ.sh_cur = targ.sh_cur - (dmg_amt/4);
-        if(targ.sh_cur < 0 ){
+        targ.sh_cur = targ.sh_cur - dmg_amt;
+        if(targ.sh_cur < 0){
           targ.sh_cur = 0;
         }
         dmg_amt = dmg_amt - (dmg_amt/4);

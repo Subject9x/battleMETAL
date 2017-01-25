@@ -48,7 +48,6 @@ void(entity wep) ctrl_weapon_think={
           self.w_currentammo = self.w_currentammo - 1;
           self.w_firetime = time + self.w_firerate;
           oself.en_cur = oself.en_cur - self.en_max;
-
         }
       }
     }
@@ -82,7 +81,7 @@ void() ctrl_die_weapon={
       BecomeExplosion();
     self = oself;
     
-    newmis = spawn();
+    /*newmis = spawn();
     self = newmis;
       self.angles = oself.angles;
       if(pvel_x > 0 || pvel_y > 0 || pvel_z > 0){
@@ -105,12 +104,11 @@ void() ctrl_die_weapon={
       setsize(self, '-3 -3 -3', '3 3 3');
       self.think = BecomeExplosion;
       self.nextthink = time + 1000;
-    self = oself;
+    self = oself;*/
 
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;
-    //setmodel(self, "");
     setsize(self, '0 0 0', '0 0 0');
   }
 };

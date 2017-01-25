@@ -13,7 +13,7 @@ void() CSQC_Init =
   VIEW_ORG = '0 0';
   
   cs_precache();
-  hud_ini();
+  //hud_ini();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -103,10 +103,11 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   drawstring('0 16 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
  */
   if(p_class != P_OBS){
-    local float vid;
+    local float vid, wgrp;
     local entity hud, oself, plr;
     vid = getstati(STAT_VID);
-    hud = m_findData(vid);
+    wgrp = getstati(STAT_WEP_GRP);
+    hud = m_findData(vid, DATA_HUD);
     if(hud != world){
       oself = self;
       self = hud;
@@ -114,7 +115,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         hud_renderEnergy();
         hud_renderPaper();
         hud_renderShield();
-        hud_renderWeapons();
+        hud_renderWeapons(wgrp);
         hud_renderRadar();
       self = oself;
    }

@@ -17,23 +17,13 @@ void() hud_ini;
 void() hud_ini={
   local float mindx;
   mindx = getstati(STAT_VID);
-  if(mindx == 1){
-    setmodel(self.cpit_mdl, "q3mdl/mechs/notl/mdl_notl_cpt.md3");
-  }
-  else if(mindx == 2){
-    setmodel(self.cpit_mdl, "q3mdl/mechs/notl/mdl_notl_cpt.md3");
-  }
+
 };
 
 void() hud_updatecpit={
   local float mindx;
   mindx = getstati(STAT_VID);
-  if(mindx == 1){
-    setmodel(self.cpit_mdl, "q3mdl/mechs/notl/mdl_notl_cpt.md3");
-  }
-  else if(mindx == 2){
-    setmodel(self.cpit_mdl, "q3mdl/mdl_tmk_cpit.md3");
-  }
+
 };
 
 //put in own class

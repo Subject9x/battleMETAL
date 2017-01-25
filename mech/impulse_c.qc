@@ -60,7 +60,6 @@ void() ImpulseCommands ={
     centerprint(self, "[Weapon Group 3]");
     self.currentWeaponGroup = 3;
   }
-
   
   local float change;
   change = 0;
@@ -74,6 +73,11 @@ void() ImpulseCommands ={
     change = 1;
     self.nextVecChoice = self.nextVecChoice + 1;
   }
+  
+  if(self.impulse == 25){
+    ClientKill();
+  }
+  
   
   //abstract out into handler at some point
 

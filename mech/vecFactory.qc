@@ -38,43 +38,8 @@ void(entity data) buildVehicle={
     self = self.e_legs;
        leg_stand1();
     self = oself;   
-    //local entity legs, ctor, ltor, rtor, larm, rarm;
-    //local vector bb_n, bb_x;
-    //legs = data.e_legs;
-    //ctor = data.e_tor_c;    
-    /*
-    //ltor = data.e_tor_l;
-    if(ltor != world && (ltor.c_name)){
-      self.e_tor_l = buildSideTorso(ltor);
-    }rtor = data.e_tor_r;
-    if(rtor != world && (rtor.c_name)){
-      self.e_tor_r = buildSideTorso(rtor);
-    }
-    
-    larm = data.e_arm_l;
-    if(larm != world && (larm.c_name)){
-      self.e_arm_l = buildSideTorso(larm);
-    }
-    rarm = data.e_arm_r;
-    if(rarm != world && (rarm.c_name)){
-      self.e_arm_r = buildSideTorso(rarm);
-    }*/
-    
-    //buildCenterTorso(data, ctor);
-    //self.e_cam = buildCameraEnt(data.e_cam);   
-    //self.e_legs = buildLegs(legs);    
   }
   buildWeaponList(data, self);
-  
-  
-  /*wep_slot = data.w_slot;
-  plr_slot = self;
-  while(wep_slot){
-    plr_slot.w_slot = buildVehicleWeapon(wep_slot);
-    plr_slot = plr_slot.w_slot;
-    plr_slot.lst_p = plr_slot;
-    wep_slot = wep_slot.w_slot;
-  }*/
 };
 
 entity(entity data) buildLegs={
@@ -202,6 +167,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep1();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w1_id = wep.data_idx;
+    self.stat_w1_gr = wep.w_group;
+    self.stat_w1_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -213,6 +181,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep2();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w2_id = wep.data_idx;
+    self.stat_w2_gr = wep.w_group;
+    self.stat_w2_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -224,6 +195,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep3();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w3_id = wep.data_idx;
+    self.stat_w3_gr = wep.w_group;
+    self.stat_w3_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -235,6 +209,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep4();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w4_id = wep.data_idx;
+    self.stat_w4_gr = wep.w_group;
+    self.stat_w4_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -246,6 +223,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep5();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w5_id = wep.data_idx;
+    self.stat_w5_gr = wep.w_group;
+    self.stat_w5_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -257,6 +237,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep6();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w6_id = wep.data_idx;
+    self.stat_w6_gr = wep.w_group;
+    self.stat_w6_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -268,6 +251,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep7();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w7_id = wep.data_idx;
+    self.stat_w7_gr = wep.w_group;
+    self.stat_w7_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -279,6 +265,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep8();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w8_id = wep.data_idx;
+    self.stat_w8_gr = wep.w_group;
+    self.stat_w8_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -290,6 +279,9 @@ void(entity mechData, entity own)buildWeaponList={
       mechData.unit_wep9();
       buildVehicleWeapon(mechData, own);
     self = oself;
+    self.stat_w9_id = wep.data_idx;
+    self.stat_w9_gr = wep.w_group;
+    self.stat_w9_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
