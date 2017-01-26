@@ -43,6 +43,11 @@ Overview: hud data ents field vars
 .vector rd_pnl_ofs;
 .float  rd_pnl_aln;
 
+.string tg_pnl_img;
+.vector tg_pnl_org;
+.vector tg_pnl_ofs;
+.float tg_pnl_aln;
+
 //widget vars
 .string c_mdl;
 .float scale;

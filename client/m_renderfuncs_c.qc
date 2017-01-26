@@ -17,14 +17,6 @@ void() hud_renderHelmet={
   ofs_y = ofs_y + pnl_sz_y;
   org = css_calcAlign(ofs, aln);
   drawpic(org, self.img, pnl_sz, '1 1 1', 1, 0);
-  
-  local float tvid;
-  tvid = getstati(STAT_TRG_VID);
-  if(tvid > -1){
-    local entity data;
-    data = m_findData(tvid, DATA_MECH);
-    drawstring('2 2 0', data.vec_name, '8 8 0', '1 1 1', HUD_ALPHA, 0);
-  }
 };
 
 void() hud_renderEnergy={
@@ -136,6 +128,40 @@ void(float cur_group) hud_renderWeapons={
   if(getstati(STAT_WEP9_ID) > -1){
     hud_renderWeapon(cur_group, getstati(STAT_WEP9_ID),getstati(STAT_WEP9_GR),getstati(STAT_WEP9_ST), self.wdg_wp.w9_ofs, self);
   }  
+};
+
+void() hud_renderTarget={
+ local vector pnl_sz, img_sz, ofs;
+  img_sz = draw_getimagesize(self.tg_pnl_img);
+  pnl_sz = css_scaleSize(img_sz,VIEW_SCALE);
+  ofs = self.tg_pnl_ofs;
+  ofs_y = ofs_y + pnl_sz_y;
+  self.tg_pnl_org = css_calcAlign(ofs, self.tg_pnl_aln);
+  drawpic(self.tg_pnl_org, self.tg_pnl_img, pnl_sz, '1 1 1', 1, 0);
+  
+  local float tvid;
+  tvid = getstati(STAT_TRG_VID);
+  if(tvid > -1){
+    local entity data;
+    data = m_findData(tvid, DATA_MECH);
+    drawstring('2 2 0', data.vec_name, '8 8 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  
+  local float tshd;
+  tshd = getstatf(STAT_TRG_SH);
+  if(tshd > -1){
+    local entity oself;
+    local vector ofs, torg, pos;
+    oself = self;
+    self = oself.wdg_sh;
+      pos = oself.tg_pnl_org + self.margin_ins;
+      self.value1 = tshd;
+      css_renderMeter(tshd, pos, self.drawsize, self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
+      torg = pos- '0 8';
+      drawstring(torg, "SHIELD", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    self = oself;
+  }
+    
 };
 
 void() hud_renderSpeed={

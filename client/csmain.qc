@@ -117,6 +117,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         hud_renderShield();
         hud_renderWeapons(wgrp);
         hud_renderRadar();
+        hud_renderTarget();
       self = oself;
    }
   }

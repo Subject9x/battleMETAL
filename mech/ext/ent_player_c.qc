@@ -19,3 +19,4 @@ Overview: extends the player's entity.
 .float i_reserve; //how many reserve points does the unit cost?
 
 .entity w_slot;     //use this for teh linked list goodness
+.entity targ;     //use this for player-initiated target tracking

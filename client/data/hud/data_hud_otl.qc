@@ -42,6 +42,11 @@ void() otl_hud_ini={
   self.rd_pnl_ofs = '221 0';
   self.rd_pnl_aln = self.rd_pnl_aln | VIEW_BOT | VIEW_LFT;
   
+  //target panel
+  self.tg_pnl_img = "gfx/hud/otl/otl_am_2.png";
+  self.tg_pnl_ofs = '221 0';
+  self.tg_pnl_aln = VIEW_BOT | VIEW_RGT;
+    
   otl_en = spawn();
   self = otl_en;
     self.classname = "widget";

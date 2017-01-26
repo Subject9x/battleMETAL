@@ -93,6 +93,20 @@ void() PlayerPostThink = {
 	if (self.impulse)
 		ImpulseCommands ();
 	
+  if(self.targ != world){
+    if(self.targ.p_class != P_OBS){
+       self.stat_trg_vid = self.targ.data_idx;
+      if(self.targ.sh_cur){
+        self.stat_trg_sh = (self.targ.sh_cur / self.targ.sh_max) * 100;
+      }
+    }
+  }
+  else{
+    self.stat_trg_sh = -1;
+    self.stat_trg_vid = -1;
+  }
+
+  
 // check for attack
 	if (self.button0){
     playerAttack();
