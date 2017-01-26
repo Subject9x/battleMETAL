@@ -8,15 +8,24 @@ m_cssqc.qc
 m_renderfuncs_h.qc
 
 //DATA FILES==========
-  //HUD
-  data/hud/data_hud_otl.qc
-  data/hud/data_hud_mtk.qc
-  
   //Weapons
   data/wep/data_latc_val.qc
   data/wep/data_emp_val.qc
   data/wep/data_mis_val.qc
   data/wep/data_las_val.qc
+  
+  //Mechs
+  data/mch/data_matok_val.qc
+  data/mch/data_outlaw_val.qc
+  
+  //Buildings
+  //data/bld/data_h_power.qc
+  //data/bld/data_h_shield.qc
+  //data/bld/data_h_radar.qc
+
+  //HUD
+  data/hud/data_hud_otl.qc
+  data/hud/data_hud_mtk.qc
 //=======================
 
 cs_precache.qc

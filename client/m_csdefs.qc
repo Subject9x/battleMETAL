@@ -54,7 +54,22 @@ float m_wep = 6;
 .float en_max;
 .float i_techlvl;
 .string data_type;
-
+.float faction;   //which faction? consult table
+.float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
+.float i_reserve; //how many reserve points does the unit cost?
+.float en_max;   //max amount
+.float en_cur;  //current amount
+.float en_rate; //how much energy built per frame
+.float sh_max;    //max shields
+.float sh_cur;    //current amount of shields
+.float sh_rate;   //shield recharge rate
+.float sh_hit;
+.float m_fspeed; //forward speed
+.float m_sspeed; //side strafe speed
+.float m_bspeed; //backward speed
+.string m_maccel;
+.string m_pitch_min;
+.string m_pitch_max;
 //player vars
 .float LG_AM_MX;
 .float LG_AM_CR;
@@ -80,8 +95,6 @@ float m_wep = 6;
 .float RA_AM_CR;
 .float RA_HP_MX;
 .float RA_HP_CR;
-
-
 
 //PLAYER CLASSES
 float P_OBS = 0;
@@ -144,6 +157,10 @@ float STAT_WEP9_GR = 81;
 float STAT_WEP9_ST = 82;
 
 float STAT_WEP_GRP = 83;
+
+float STAT_TRG_VID = 84;
+float STAT_TRG_SH = 85;
+float STAT_TRG_AM = 86;
 
 //actual csqc constants
 /*vector ENG_COLOR_CURRENT;

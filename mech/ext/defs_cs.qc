@@ -58,7 +58,10 @@ float AS_FLOAT = 8;
 .float stat_w9_id;
 .float stat_w9_gr;
 .float stat_w9_st;
-  
+.float stat_trg_vid;
+.float stat_trg_sh;
+.float stat_trg_am;
+
 //ENT_TYPE
 float ENT_PLR = 34; // scope of ent is the player
 float ENT_TRG = 35; //scope is the player’s target
@@ -135,3 +138,8 @@ float STAT_WEP9_GR = 81;
 float STAT_WEP9_ST = 82;
 
 float STAT_WEP_GRP =83;
+
+//Targeting stuff
+float STAT_TRG_VID = 84;
+float STAT_TRG_SH = 85;
+float STAT_TRG_AM = 86;

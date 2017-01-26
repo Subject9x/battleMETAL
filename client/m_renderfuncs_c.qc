@@ -18,6 +18,13 @@ void() hud_renderHelmet={
   org = css_calcAlign(ofs, aln);
   drawpic(org, self.img, pnl_sz, '1 1 1', 1, 0);
   
+  local float tvid;
+  tvid = getstati(STAT_TRG_VID);
+  if(tvid > -1){
+    local entity data;
+    data = m_findData(tvid, DATA_MECH);
+    drawstring('2 2 0', data.vec_name, '8 8 0', '1 1 1', HUD_ALPHA, 0);
+  }
 };
 
 void() hud_renderEnergy={

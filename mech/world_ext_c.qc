@@ -60,6 +60,9 @@ void() mh_world_ini={
   
   addstat(STAT_WEP_GRP, AS_INT, currentWeaponGroup);
   
+  addstat(STAT_TRG_VID, AS_INT, stat_trg_vid);
+  addstat(STAT_TRG_SH, AS_FLOAT, stat_trg_sh);
+  addstat(STAT_TRG_AM, AS_FLOAT, stat_trg_am);
   
   mh_world_iniData();
 };

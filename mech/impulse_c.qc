@@ -78,6 +78,25 @@ void() ImpulseCommands ={
     ClientKill();
   }
   
+  if(self.impulse == 26){
+    centerprint(self,"target?");
+    local entity src;
+    makevectors(self.v_angle);
+    if(self.e_cam != world){
+      src = self.e_cam;
+    }
+    else{
+      src = self;
+    }
+    traceline(src.origin, src.origin + v_forward*10000, FALSE, self);
+    if(trace_ent.p_class != P_OBS){
+      self.stat_trg_vid = trace_ent.data_idx;
+      if(trace_ent.sh_cur){
+        self.stat_trg_sh = (trace_ent.sh_cur / trace_ent.sh_max) * 100;
+      }
+    }
+  }
+  
   
   //abstract out into handler at some point
 

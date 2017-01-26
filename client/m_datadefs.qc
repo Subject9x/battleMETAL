@@ -4,6 +4,10 @@ Author: Subject9x
 Date: 01/24/2017
 Overview: really should have been synced with file of the same name serverside....
 */
+
+.string vec_name;
+.string c_name;
+
 string DATA = "data";
 string DATA_MECH = "data_mech";
 string DATA_VEHC = "data_vehc";

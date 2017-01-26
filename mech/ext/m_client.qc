@@ -71,6 +71,10 @@ void() ClientConnect = {
   self.stat_w9_gr = -1;
   self.stat_w9_st = -1;
   
+  self.stat_trg_vid = -1;
+  self.stat_trg_sh = -1;
+  self.stat_trg_am = -1;
+  
   if (intermission_running){
     ExitIntermission();
   }

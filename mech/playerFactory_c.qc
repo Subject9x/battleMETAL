@@ -32,6 +32,7 @@ void(entity ent) mh_makeMech={
   oself = self;
   self = ent;
     self.flags = oself.flags;
+    self.data_idx = dat.data_idx;
     buildVehicle(dat);
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, self.m_maccel, self.m_rollangle) ;
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup) ;

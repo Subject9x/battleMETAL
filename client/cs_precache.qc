@@ -21,6 +21,10 @@ void() cs_precache={
   precache_pic("gfx/hud/otl/otl_sp.png", 0);
   precache_pic("gfx/hud/otl/otl_wp.png", 0);
   
+  //mech data
+  data_mech_mtk();
+  data_mech_otl();
+  
   //wep data
   data_wep_latc();
   data_wep_emp();
