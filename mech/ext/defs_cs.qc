@@ -61,6 +61,7 @@ float AS_FLOAT = 8;
 .float stat_trg_vid;
 .float stat_trg_sh;
 .float stat_trg_am;
+.float stat_trg_dat;
 
 //ENT_TYPE
 float ENT_PLR = 34; // scope of ent is the player
@@ -143,3 +144,4 @@ float STAT_WEP_GRP =83;
 float STAT_TRG_VID = 84;
 float STAT_TRG_SH = 85;
 float STAT_TRG_AM = 86;
+float STAT_TRG_DAT = 87;

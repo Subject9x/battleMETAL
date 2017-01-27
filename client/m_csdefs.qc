@@ -53,7 +53,7 @@ float m_wep = 6;
 .float w_spread;
 .float en_max;
 .float i_techlvl;
-.string data_type;
+.float data_type;
 .float faction;   //which faction? consult table
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
 .float i_reserve; //how many reserve points does the unit cost?
@@ -161,6 +161,7 @@ float STAT_WEP_GRP = 83;
 float STAT_TRG_VID = 84;
 float STAT_TRG_SH = 85;
 float STAT_TRG_AM = 86;
+float STAT_TRG_DAT = 87;
 
 //actual csqc constants
 /*vector ENG_COLOR_CURRENT;

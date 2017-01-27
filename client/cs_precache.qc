@@ -21,6 +21,11 @@ void() cs_precache={
   precache_pic("gfx/hud/otl/otl_sp.png", 0);
   precache_pic("gfx/hud/otl/otl_wp.png", 0);
   
+  //buildings
+  building_power();
+  building_shield();
+  building_radar();
+  
   //mech data
   data_mech_mtk();
   data_mech_otl();
@@ -37,7 +42,7 @@ void() cs_precache={
   
 };
 
-entity(float id, string dat_type) m_findData={
+entity(float id, float dat_type) m_findData={
   local entity found, data_chain;
   data_chain = findchain(classname, "data");
   while(data_chain){

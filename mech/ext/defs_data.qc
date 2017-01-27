@@ -43,3 +43,6 @@ float ID_PRJ_MIS=3;
 //VEHICLES===============================
 
 //BUILDINGS==============================
+float ID_BLD_H_RADAR = 1;
+float ID_BLD_H_SHIELD = 2;
+float ID_BLD_H_POWER = 3;

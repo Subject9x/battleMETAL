@@ -23,6 +23,7 @@ void() tmk_hud_ini={
   self.classname = "data";
   self.data_type = DATA_HUD;
   self.data_idx = 2;
+    self.vec_name = "Matok";
   //self.c_mdl = "q3mdl/mechs/notl/mdl_notl_cpt.md3";
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/otl/otl_hd.png";
@@ -50,9 +51,9 @@ void() tmk_hud_ini={
   self.rd_pnl_ofs = '221 0';
   self.rd_pnl_aln = self.rd_pnl_aln | VIEW_BOT | VIEW_LFT;
   
-    //target panel
+  //target panel
   self.tg_pnl_img = "gfx/hud/otl/otl_am_2.png";
-  self.tg_pnl_ofs = '48 0';
+  self.tg_pnl_ofs = '221 0';
   self.tg_pnl_aln = VIEW_BOT | VIEW_RGT;
   
   tmk_en = spawn();

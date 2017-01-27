@@ -170,6 +170,7 @@ void() data_mech_otl={
 void() data_otl_ini={
   self.data_idx= DAT_OTL_IDX;
   self.vec_name= DAT_OTL_VEC_NAME;
+  self.data_type = DATA_MECH;
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
   self.i_reserve= DAT_OTL_RESERVE_COST;
   self.en_cur= DAT_OTL_ENERGY_CUR;

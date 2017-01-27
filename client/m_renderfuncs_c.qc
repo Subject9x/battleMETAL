@@ -70,13 +70,29 @@ void() hud_renderPaper={
   local entity oself;
   oself = self;
   self = oself.wdg_pd;
-    css_renderMeter(hp_ct, (pnl_ctr + '-6 -16'), '12 40', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-    css_renderMeter(hp_lg, (pnl_ctr + '-28 26'), '56 16', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-    css_renderMeter(hp_rt, (pnl_ctr + '8 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-    css_renderMeter(hp_lt, (pnl_ctr + '-20 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-    css_renderMeter(hp_ra, (pnl_ctr + '22 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-    css_renderMeter(hp_la, (pnl_ctr + '-34 -16'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    drawstring((pnl_ctr + '-4 -18'), "CT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    css_renderMeter(hp_ct, (pnl_ctr + '-6 -12'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    css_renderMeter(hp_lg, (pnl_ctr + '-28 30'), '56 16', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    css_renderMeter(hp_rt, (pnl_ctr + '8 -12'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    css_renderMeter(hp_lt, (pnl_ctr + '-20 -12'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    css_renderMeter(hp_ra, (pnl_ctr + '22 -12'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    css_renderMeter(hp_la, (pnl_ctr + '-34 -12'), '12 36', self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
   self = oself;
+  local float nlen;
+  local vector title;
+  nlen = stringwidth(strcat(self.vec_name, "(YOU)"), 0, '4 4 0');
+  title_x = pnl_ctr_x - nlen;
+  title_y = self.am_pnl_org_y + 8;
+  drawstring(title, strcat(self.vec_name, "(YOU)"), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 void() hud_renderShield={
@@ -87,8 +103,8 @@ void() hud_renderShield={
     self.pos = oself.am_pnl_org + self.margin_ins;
     self.value1 = getstati(STAT_SHIELD);
     css_renderMeter(self.value1, self.pos, self.drawsize, self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
-    torg = self.pos - '0 8';
-    drawstring(torg, "SHIELD", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    torg = self.pos - '0 4';
+    drawstring(torg, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
   self = oself;
 };
 
@@ -139,17 +155,11 @@ void() hud_renderTarget={
   self.tg_pnl_org = css_calcAlign(ofs, self.tg_pnl_aln);
   drawpic(self.tg_pnl_org, self.tg_pnl_img, pnl_sz, '1 1 1', 1, 0);
   
-  local float tvid;
+  local float tvid, tdat, tshd;
   tvid = getstati(STAT_TRG_VID);
-  if(tvid > -1){
-    local entity data;
-    data = m_findData(tvid, DATA_MECH);
-    drawstring('2 2 0', data.vec_name, '8 8 0', '1 1 1', HUD_ALPHA, 0);
-  }
-  
-  local float tshd;
+  tdat = getstati(STAT_TRG_DAT);
   tshd = getstatf(STAT_TRG_SH);
-  if(tshd > -1){
+  if(tvid > -1){
     local entity oself;
     local vector ofs, torg, pos;
     oself = self;
@@ -157,11 +167,16 @@ void() hud_renderTarget={
       pos = oself.tg_pnl_org + self.margin_ins;
       self.value1 = tshd;
       css_renderMeter(tshd, pos, self.drawsize, self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
-      torg = pos- '0 8';
-      drawstring(torg, "SHIELD", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+      torg = pos - '0 8';
+      drawstring(torg, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
     self = oself;
-  }
     
+    local entity data;
+    data = m_findData(tvid, tdat);
+    local vector nofs;
+    nofs = torg + '0 24 0';
+    drawstring(nofs, data.vec_name, '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  }
 };
 
 void() hud_renderSpeed={
@@ -217,6 +232,10 @@ void(float cgrp, float wid, float wgr, float wst, vector ofs, entity src) hud_re
   }
   else{
     color = '0 1 0';
+  }
+  
+  if(wgr != cgrp){
+    color = '0 0.75 0';
   }
   
   drawstring(ofsact, data.w_name, '4 4 0', color, HUD_ALPHA, 0);

@@ -12,6 +12,9 @@ Overview: data file for building
 */
 void() building_radar;
 void() building_radar={
+  self.data_idx = ID_BLD_H_RADAR;
+  self.data_type = DATA_BLD;
+  self.vec_name = "Listening Post";
   util_setModel("q3mdl/buildings/mdl_bld_h_radar.md3", 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(100, 100, 1, 100) ;

@@ -48,10 +48,12 @@ float GAME_M = 2;
 
 //data class constants
 string DATA = "data";
-string DATA_MECH = "data_mech";
-string DATA_VEHC = "data_vehc";
-string DATA_WEPN = "data_wepn";
-string DATA_PROJ = "data_proj";
+float DATA_MECH = 1;
+float DATA_VEHC = 2;
+float DATA_WEPN = 3;
+float DATA_PROJ = 4;
+float DATA_HUD = 5;
+float DATA_BLD = 6;
 
 //mech piece classname constants
 string MECH_PIECE = "mech_piece";
@@ -75,7 +77,7 @@ float W_GROUPB = 2;
 float W_GROUPC = 3;
 
 //class vars
-.string data_type;
+.float data_type;
 .string vec_name;
 .float max_armor; //why wasn't this ever included!?
 

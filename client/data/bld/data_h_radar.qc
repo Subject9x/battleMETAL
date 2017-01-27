@@ -12,12 +12,13 @@ Overview: data file for building
 */
 void() building_radar;
 void() building_radar={
-  util_setModel("q3mdl/buildings/mdl_bld_h_radar.md3", 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
-  util_setHealthArmor(100, 100, 1, 100) ;
-  util_setBoundBox('-16 -16 0', '16 16 20');
-  self.scale = 1;
-  droptofloor();
-  self.think = SUB_Null;
-  self.nextthink = time + 10000000;
+  local entity oself, bld;
+  oself = self;
+  bld = spawn();
+  self = bld;
+    self.classname = "data";
+    self.data_idx = ID_BLD_H_RADAR;
+    self.data_type = DATA_BLD;
+    self.vec_name = "Listening Post";
+  self = oself;
 };

@@ -19,6 +19,7 @@ dp/dpextensions.qc
   mech/client_utils_h.qc
   mech/svr/server_parmops_h.qc
   mech/svr/server_intermsn_h.qc
+  mech/svr/server_sensors_h.qc
   mech/utils_h.qc
   mech/svr/server_playermove_h.qc
   mech/ext/eng_client_h.qc
@@ -53,6 +54,7 @@ dp/dpextensions.qc
   mech/dat/mch/data_matok_val.qc
   
   //buildings
+  mech/dat/bld/data_h_buildings.qc
   mech/dat/bld/data_h_radar.qc
   mech/dat/bld/data_h_shield.qc
   mech/dat/bld/data_h_power.qc
@@ -65,6 +67,7 @@ dp/dpextensions.qc
   mech/svr/server_intermsn_c.qc
   mech/svr/server_playermove_c.qc
   mech/svr/server_csqchandler_C.qc
+  mech/svr/server_sensors_c.qc
   mech/utils_c.qc
   mech/playerFactory_c.qc
   mech/svr/server_playermovement_c.qc

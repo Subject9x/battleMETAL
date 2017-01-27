@@ -11,7 +11,11 @@ Overview: data file for building
 /*QUAKED building_shield (.1 .1 .1) (-12 -12 0) (12 12 15)
 */
 void() building_shield;
+
 void() building_shield={
+  self.data_idx = ID_BLD_H_SHIELD;
+  self.data_type = DATA_BLD;
+  self.vec_name = "Shield Generator";
   util_setModel("q3mdl/buildings/mdl_bld_h_shield.md3", 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(100, 100, 1, 100) ;

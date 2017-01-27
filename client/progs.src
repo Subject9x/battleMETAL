@@ -8,6 +8,11 @@ m_cssqc.qc
 m_renderfuncs_h.qc
 
 //DATA FILES==========
+  //buildings
+  data/bld/data_h_power.qc
+  data/bld/data_h_radar.qc
+  data/bld/data_h_shield.qc
+  
   //Weapons
   data/wep/data_latc_val.qc
   data/wep/data_emp_val.qc

@@ -79,17 +79,7 @@ void() ImpulseCommands ={
   }
   
   if(self.impulse == 26){
-    centerprint(self,"target?");
-    local entity src;
-    makevectors(self.v_angle);
-    if(self.e_cam != world){
-      src = self.e_cam;
-    }
-    else{
-      src = self;
-    }
-    traceline(src.origin, src.origin + v_forward*10000, FALSE, self);
-    self.targ = trace_ent;
+    server_getTarget();
   }
   
   
