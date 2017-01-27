@@ -10,7 +10,7 @@ float DAT_PRJ_EMP_IDX = ID_PRJ_EMP;
 float DAT_PRJ_EMP_VELOCITY = 750;
 string DAT_PRJ_EMP_MODEL = "q3mdl/proj_emp.md3";
 float DAT_PRJ_EMP_LIFETIME = 6;
-float DAT_PRJ_EMP_DAMAGE = 25;
+float DAT_PRJ_EMP_DAMAGE = 65;
 float DAT_PRJ_EMP_DMGTYPE = 0;  //see data_prj_emp
 
 float DAT_PRJ_EMP_EFFECTS = 0; //see data_prj_emp
@@ -44,8 +44,8 @@ void() data_prj_emp_ini={
   self.p_velocity = DAT_PRJ_EMP_VELOCITY;
   self.c_model = DAT_PRJ_EMP_MODEL;
   self.p_lifetime = DAT_PRJ_EMP_LIFETIME;
-  self.p_damage = DMG_ENE | EFF_RAM;
-  self.p_dmgtype = DAT_PRJ_EMP_DMGTYPE;
+  self.p_damage =  DAT_PRJ_EMP_DAMAGE;
+  self.p_dmgtype = DMG_ENE | EFF_RAM;
   
   //cosmetics
   self.effects = EF_ADDITIVE | EF_NOSHADOW;
