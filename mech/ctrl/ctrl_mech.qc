@@ -18,7 +18,7 @@ void() ctrl_updateCenterTorso={
     if(time >= self.sh_hit){
       if(self.en_cur > (self.sh_rate*3)){
         self.sh_cur = self.sh_cur + self.sh_rate;
-        self.en_cur = self.en_cur - (self.sh_rate*3);
+        self.en_cur = self.en_cur - (self.sh_rate/4);
         if(self.sh_cur > self.sh_max){
           local float diff;
           diff = self.sh_cur - self.sh_max;

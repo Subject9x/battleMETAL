@@ -33,47 +33,23 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
 
   //check shields
   if(targ.sh_cur >= 0){
-    targ.sh_hit = time + SHIELD_DELAY;
-    if((dmg_type & DMG_ENE)){
-      if((dmg_type & EFF_RAM)){
-        centerprint(self, "ram!");
-        targ.sh_cur = targ.sh_cur - dmg_amt;
-        if(targ.sh_cur < 0 ){
-          targ.sh_cur = 0;
-        }
-        return;
-      }
-      else if((dmg_type & EFF_PRC)){
-        targ.sh_cur = targ.sh_cur - (dmg_amt/SHIELD_SOAK);
-        if(targ.sh_cur < 0 ){
-          targ.sh_cur = 0;
-        }
-        dmg_amt = dmg_amt - (dmg_amt/4);
-      }
-    }
-    else{
-      if((dmg_type & EFF_PRC)){
-        targ.sh_cur = targ.sh_cur - (dmg_amt/SHIELD_SOAK);
-        dmg_amt = dmg_amt - (dmg_amt/SHIELD_SOAK);
-        if(targ.sh_cur < 0 ){
-          targ.sh_cur = 0;
-        }
-      }
-      else if((dmg_type & EFF_RAM)){
-        targ.sh_cur = targ.sh_cur;
-        if(targ.sh_cur < 0 ){
-          targ.sh_cur = 0;
-        }
-        return;
-      }
-      else{
-        targ.sh_cur = targ.sh_cur - (dmg_amt/SHIELD_SOAK);
-        if(targ.sh_cur < 0 ){
-          targ.sh_cur = 0;
-        }
-      }
-    }
+    new_dmg = damage_shield(targ, attacker, dmg_amt, dmg_type);
   } 
+  
+  if(targ.sh_cur < 0){
+    targ.sh_cur = 0;
+    te_explosionquad(targ.origin);
+  }
+  
+  if(new_dmg > 0){
+    dmg_amt = new_dmg;
+  }
+  else{
+    te_superspikequad(dmg_point);
+    return;
+  }
+  
+  te_spark(dmg_point, attacker.velocity, new_dmg); 
   
   //the special hit-location calculator is only run for P_MECH
   //units
@@ -271,6 +247,55 @@ void(entity targ, entity attacker, float dmg_type) killed={
   self.th_die();
   
   self = oself;
+};
+
+//returns remain damage to be passed on to armor
+float(entity targ, entity attacker, float dmg, float dmg_type) damage_shield={
+  
+  if(targ.sh_max){
+    targ.sh_hit = time + SHIELD_DELAY;
+    if((dmg_type & DMG_ENE)){
+      if((dmg_type & EFF_RAM)){
+        targ.sh_cur = targ.sh_cur - dmg;
+        return 0;
+      }
+      if((dmg_type & EFF_PRC)){
+        targ.sh_cur = targ.sh_cur - (dmg/SHIELD_SOAK);
+        return (dmg - (dmg/SHIELD_SOAK));
+      }
+      if(targ.sh_cur < dmg){
+        dmg = dmg - targ.sh_cur;
+        targ.sh_cur = 0;
+        return dmg;
+      }
+      else{
+        targ.sh_cur = targ.sh_cur - (dmg/2);
+        return 0;
+      }
+    }
+    else if((dmg_type & DMG_BAL)){
+      if((dmg_type & EFF_RAM)){
+        targ.sh_cur = targ.sh_cur - (dmg + (dmg * 1.5));
+        return 0;
+      }
+      if((dmg_type & EFF_PRC)){
+        return dmg;
+      }
+      if(targ.sh_cur < dmg){
+        dmg = dmg - targ.sh_cur;
+        targ.sh_cur = 0;
+        return dmg;
+      }
+      else{
+        targ.sh_cur = targ.sh_cur - (dmg/2);
+        return 0;
+      }
+    }
+    else if((dmg_type & DMG_EXP)){
+    
+    }
+  }
+  return dmg;
 };
 
 

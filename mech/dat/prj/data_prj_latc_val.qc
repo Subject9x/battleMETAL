@@ -45,7 +45,7 @@ void() data_prj_latc_ini={
   self.c_model = DAT_PRJ_LATC_MODEL;
   self.p_lifetime = DAT_PRJ_LATC_LIFETIME;
   self.p_damage = DAT_PRJ_LATC_DAMAGE;
-  self.p_dmgtype = DAT_PRJ_LATC_DMGTYPE;
+  self.p_dmgtype = DMG_BAL;
   
   //cosmetics
   self.effects = self.effects | DAT_PRJ_LATC_EFFECTS;

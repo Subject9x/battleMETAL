@@ -8,20 +8,20 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LAS_IDX = ID_WEP_LAS;
 string DAT_LAS_NAME = "Light Laser";
+float DAT_LAS_DMG = 5;
 float DAT_LAS_FIRETIME = 0;
-float DAT_LAS_CLIPSIZE = 1;
-float DAT_LAS_CURRENTAMMO = 1;
+float DAT_LAS_CLIPSIZE = 5;
+float DAT_LAS_CURRENTAMMO = 5;
 float DAT_LAS_FIRERATE = 0.25;
-float DAT_LAS_RELOADTIME = 0.25;
+float DAT_LAS_RELOADTIME = 0.8;
 float DAT_LAS_ISFIRE = 0;
-vector DAT_LAS_FIRE_OFS = '0 0 12';
+vector DAT_LAS_FIRE_OFS = '0 0 6';
 float DAT_LAS_HP = 50;
 float DAT_LAS_HPMAX = 50;
 float DAT_LAS_ARMOR = 50;
 float DAT_LAS_ARMORMAX = 50;
 string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
-//float DAT_LAS_PROJ_ID= ID_PRJ_LAS;
-float DAT_LAS_EN_COST= 5;
+float DAT_LAS_EN_COST = 1;
 string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
 
@@ -97,10 +97,12 @@ void() data_las_atk={
   
   //T_Damage(trace_ent, self.owner, self.owner, 12, 12, "", DT_IMPACT, other.origin, '0 0 0', Obituary_Generic);
   //damage_mech_main(trace_ent, self.owner, self.owner, 12, 0);
-  t_damage(trace_ent, self, player, 10, 0, dir, '0 0 0');
+  local float dtype;
+  dtype = DMG_ENE;
+  t_damage(trace_ent, self, player, DAT_LAS_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/weapons/laser_3.ogg", 1, ATTN_NORM); 
-  te_lightning2(laser_org, laser_org.origin, dir); 
-  te_spark(laser_org.origin, '0 0 0',25);
+  te_lightning1(laser_org, laser_org.origin, dir); 
+  te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);
  
   laser_org.think = SUB_Remove;
