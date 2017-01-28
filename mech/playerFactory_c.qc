@@ -37,7 +37,7 @@ void(entity ent) mh_makeMech={
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, self.m_maccel, self.m_rollangle) ;
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup) ;
     mh_world_updateClientModelBob(self.m_bmodel, self.m_bside, self.m_bobspd) ;
-    
+    //1/27/2017
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);

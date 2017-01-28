@@ -8,12 +8,12 @@ according to the original source code, there should only be one
 t_damage function and 1 killed function...for some reason, maybe good house keeping?
 */
 
-void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
+void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
   local float canDamage, new_dmg;
   local entity oself, targ_act;
     
-  if(!targ.takedamage){
+  if(!trg.takedamage){
     return;
   }
   
@@ -21,31 +21,31 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
   
   //add in ignore team damage
   
-  if(targ.flags & FL_GODMODE){
+  if(trg.flags & FL_GODMODE){
     return;
   }
   
   canDamage = TRUE;
   
-  if(targ.flags & FL_CLIENT){
-    targ.dmg_inflictor = inflictor;
+  if(trg.flags & FL_CLIENT){
+    trg.dmg_inflictor = inflictor;
   }
 
   //check shields
-  if(targ.sh_cur >= 0){
-    new_dmg = damage_shield(targ, attacker, dmg_amt, dmg_type);
+  if(trg.sh_cur >= 0){
+    new_dmg = damage_shield(trg, attacker, dmg_amt, dmg_type);
   } 
   
-  if(targ.sh_cur < 0){
-    targ.sh_cur = 0;
-    te_explosionquad(targ.origin);
+  if(trg.sh_cur <= 0){
+    trg.sh_cur = 0;
+    te_tarexplosion(trg.origin);
   }
   
   if(new_dmg > 0){
     dmg_amt = new_dmg;
   }
   else{
-    te_superspikequad(dmg_point);
+    te_knightspike(dmg_point);(dmg_point);
     return;
   }
   
@@ -53,41 +53,39 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
   
   //the special hit-location calculator is only run for P_MECH
   //units
-  if(targ.p_class == P_MECH){
+  if(trg.p_class == P_MECH){
     //filter out leg hits
-    if(dmg_point_z < (targ.origin_z - 10)){
-      targ = targ.e_legs;
+    if(dmg_point_z < (trg.origin_z - 10)){
+      trg = trg.e_legs;
     }
     else{
       local float irad;
-      irad = vlen(targ.origin - dmg_point);
-      targ_act = t_find_part(dmg_point, irad, targ);
+      irad = vlen(trg.origin - dmg_point);
+      targ_act = t_find_part(dmg_point, irad, trg);
       if(targ_act != world){
         if(targ_act.deadflag <= DEAD_NO){
-          targ = targ_act;
+          trg = targ_act;
         }
       }
     }
   }
-
-
   
-  targ.health = targ.health - dmg_amt;
+  trg.health = trg.health - dmg_amt;
   
-  if(targ.health <= 0){
-   if(targ.th_die){
-      if(targ.th_die != SUB_Null){
-        killed(targ, attacker, dmg_type);
+  if(trg.health <= 0){
+   if(trg.th_die){
+      if(trg.th_die != SUB_Null){
+        killed(trg, attacker, dmg_type);
         return;
       }
     }
   }
 
-  if((targ.flags & FL_MONSTER) && attacker != world){
+  if((trg.flags & FL_MONSTER) && attacker != world){
     if(attacker.takedamage){
-      if(targ.enemy == world){
-        if(targ != attacker && attacker != targ.enemy){
-          if ( (targ.classname != attacker.classname) || (targ.classname == "monster_army" ) ){
+      if(trg.enemy == world){
+        if(trg != attacker && attacker != trg.enemy){
+          if ( (trg.classname != attacker.classname) || (trg.classname == "monster_army" ) ){
             
           }
         }
@@ -243,7 +241,13 @@ void(entity targ, entity attacker, float dmg_type) killed={
       }
   }
   
-  
+  if(self.enemy.enemy == self){
+    self.enemy.stat_trg_vid = -1;
+    self.enemy.stat_trg_sh = -1;
+    self.enemy.stat_trg_am = -1;
+    self.enemy.enemy = world;
+  }
+
   self.th_die();
   
   self = oself;
@@ -252,25 +256,28 @@ void(entity targ, entity attacker, float dmg_type) killed={
 //returns remain damage to be passed on to armor
 float(entity targ, entity attacker, float dmg, float dmg_type) damage_shield={
   
-  if(targ.sh_max){
+  if(targ.sh_cur >= 0){
     targ.sh_hit = time + SHIELD_DELAY;
     if((dmg_type & DMG_ENE)){
       if((dmg_type & EFF_RAM)){
         targ.sh_cur = targ.sh_cur - dmg;
+        centerprint(attacker, ftos(targ.sh_cur));
         return 0;
       }
-      if((dmg_type & EFF_PRC)){
+      else if((dmg_type & EFF_PRC)){
         targ.sh_cur = targ.sh_cur - (dmg/SHIELD_SOAK);
         return (dmg - (dmg/SHIELD_SOAK));
       }
-      if(targ.sh_cur < dmg){
-        dmg = dmg - targ.sh_cur;
-        targ.sh_cur = 0;
-        return dmg;
-      }
       else{
-        targ.sh_cur = targ.sh_cur - (dmg/2);
-        return 0;
+        if(targ.sh_cur < dmg){
+          targ.sh_cur = 0;
+          dmg = dmg - targ.sh_cur;
+          return dmg;
+        }
+        else{
+          targ.sh_cur = targ.sh_cur - dmg;
+          return 0;
+        }
       }
     }
     else if((dmg_type & DMG_BAL)){
@@ -283,7 +290,6 @@ float(entity targ, entity attacker, float dmg, float dmg_type) damage_shield={
       }
       if(targ.sh_cur < dmg){
         dmg = dmg - targ.sh_cur;
-        targ.sh_cur = 0;
         return dmg;
       }
       else{

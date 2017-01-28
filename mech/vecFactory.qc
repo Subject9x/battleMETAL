@@ -39,6 +39,7 @@ void(entity data) buildVehicle={
        leg_stand1();
     self = oself;   
   }
+  self = oself;
   buildWeaponList(data, self);
 };
 

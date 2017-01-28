@@ -19,6 +19,9 @@ void() mh_precache_sound={
 };
 
 void() mh_precache_models={
+
+  precache_model("progs/v_dpshot.mdl");
+  
     //mech model
   precache_model ("q3mdl/testball.md3");
   //nu outlaw

@@ -49,8 +49,6 @@ float GAME_M = 2;
 float SHIELD_DELAY = 5;
 float SHIELD_SOAK = 4;
 
-
-
 //data class constants
 string DATA = "data";
 float DATA_MECH = 1;

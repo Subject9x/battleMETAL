@@ -147,35 +147,51 @@ void(float cur_group) hud_renderWeapons={
 };
 
 void() hud_renderTarget={
- local vector pnl_sz, img_sz, ofs;
+  local float tvid, tdat, tshd;
+  tvid = getstati(STAT_TRG_VID);
+  drawstring('0 0 0', ftos(tvid), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  tdat = getstati(STAT_TRG_DAT);
+  drawstring('0 8 0', ftos(tdat), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  tshd = getstatf(STAT_TRG_SH);
+  drawstring('0 16 0', ftos(tshd), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  local vector pnl_sz, img_sz, ofs;
   img_sz = draw_getimagesize(self.tg_pnl_img);
   pnl_sz = css_scaleSize(img_sz,VIEW_SCALE);
   ofs = self.tg_pnl_ofs;
   ofs_y = ofs_y + pnl_sz_y;
   self.tg_pnl_org = css_calcAlign(ofs, self.tg_pnl_aln);
   drawpic(self.tg_pnl_org, self.tg_pnl_img, pnl_sz, '1 1 1', 1, 0);
-  
-  local float tvid, tdat, tshd;
-  tvid = getstati(STAT_TRG_VID);
-  tdat = getstati(STAT_TRG_DAT);
-  tshd = getstatf(STAT_TRG_SH);
-  if(tvid > -1){
-    local entity oself;
-    local vector ofs, torg, pos;
+  if(tvid > -1){ 
+    local entity oself, data;
+    local vector ofs, torg, pos, title, pnl_ctr, pnl_sz;
+    local float nlen;
+    data = m_findData(tvid, tdat);
+    
+    if(data == world){
+      return;
+    }
+    if(tshd == 0 ){
+      tshd = 0;
+    }
     oself = self;
     self = oself.wdg_sh;
       pos = oself.tg_pnl_org + self.margin_ins;
-      self.value1 = tshd;
-      css_renderMeter(tshd, pos, self.drawsize, self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
-      torg = pos - '0 8';
-      drawstring(torg, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+      if(tshd > -1){
+        css_renderMeter(tshd, pos, self.drawsize, self.drawcolor1, self.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
+        torg = pos - '0 4';
+        drawstring(torg, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+      }
     self = oself;
-    
-    local entity data;
-    data = m_findData(tvid, tdat);
-    local vector nofs;
-    nofs = torg + '0 24 0';
-    drawstring(nofs, data.vec_name, '4 4 0', '1 1 1', HUD_ALPHA, 0);
+   
+    pnl_ctr_x = self.tg_pnl_org_x + (pnl_sz_x/2);
+    pnl_ctr_y = self.tg_pnl_org_y + (pnl_sz_y/2);
+    pnl_ctr_x = pos + (pnl_sz_x/2);
+    nlen = stringwidth(strcat("[Target] ", self.vec_name), 0, '4 4 0');
+    title_x = pnl_ctr_x - nlen;
+    title_y = self.tg_pnl_org_y + 8;
+    drawstring(title, strcat("[Target] ", data.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   }
 };
 

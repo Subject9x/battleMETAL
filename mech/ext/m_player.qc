@@ -32,6 +32,9 @@ void() PlayerPreThink = {
     return;	// dying, so do nothing
   }
   
+  //
+  server_updateTargetInfo();
+  
 	if (self.button2){
 		PlayerJump();
 	}
@@ -54,13 +57,11 @@ void() PlayerPostThink = {
   
   //STAT UPDATE  
   if(self.p_class == P_MECH){
-    msg_entity = self;
-    WriteByte (MSG_ONE, SVC_SETVIEWPORT);
-    WriteEntity (MSG_ONE, self.e_cam);
+    //1/27/2017
+    //msg_entity = self;
+    //WriteByte (MSG_ONE, SVC_SETVIEWPORT);
+    //WriteEntity (MSG_ONE, self.e_cam);
     
-    self.stat_cofs_x = self.e_cam.origin_x;
-    self.stat_cofs_y = self.e_cam.origin_y;
-    self.stat_cofs_z = self.e_cam.origin_z;
     self.stat_en = (self.en_cur / self.en_max)*100;
     self.stat_sh = (self.sh_cur / self.sh_max)*100;
     self.stat_legs_hp = csqc_updateCompStat(self.e_legs);
@@ -92,10 +93,7 @@ void() PlayerPostThink = {
 
 	if (self.impulse)
 		ImpulseCommands ();
-	
-  server_updateTargetInfo();
-
-  
+    
 // check for attack
 	if (self.button0){
     playerAttack();

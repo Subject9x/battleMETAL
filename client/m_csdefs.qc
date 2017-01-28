@@ -163,6 +163,10 @@ float STAT_TRG_SH = 85;
 float STAT_TRG_AM = 86;
 float STAT_TRG_DAT = 87;
 
+float STAT_VANG_X = 88;
+float STAT_VANG_Y = 89;
+float STAT_VANG_Z = 90;
+
 //actual csqc constants
 /*vector ENG_COLOR_CURRENT;
 vector SHD_COLOR_CURRENT;
