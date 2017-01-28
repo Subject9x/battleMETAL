@@ -21,7 +21,7 @@ float DAT_MTK_SHIELD_MAX = 150;
 float DAT_MTK_SHIELD_RATE = 5;
 vector DAT_MTK_CTOR_BBX_N ='-12 -12 -35';
 vector DAT_MTK_CTOR_BBX_X ='12 12 14';
-
+string DAT_MTK_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3";
 float DAT_MTK_M_FSPEED=125;
 float DAT_MTK_M_SSPEED=100;
 float DAT_MTK_M_BSPEED=100;
@@ -208,7 +208,8 @@ void() data_mtk_ini={
   self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
   self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
   self.c_model = DAT_MTK_CTOR_MODEL;
-  
+  self.weaponmodel = DAT_MTK_CPIT_MODEL;
+  self.weaponframe = 0;
   self.m_fspeed = DAT_MTK_M_FSPEED;
   self.m_sspeed = DAT_MTK_M_SSPEED;
   self.m_bspeed = DAT_MTK_M_BSPEED;

@@ -22,6 +22,7 @@ float DAT_OTL_SHIELD_RATE = 3;
 vector DAT_OTL_CTOR_BBX_N ='-11 -11 -34';
 vector DAT_OTL_CTOR_BBX_X ='11 11 12';
 string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_cent.md3";
+string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_notl_cpt.md3";
 float DAT_OTL_M_FSPEED=175;
 float DAT_OTL_M_SSPEED=150;
 float DAT_OTL_M_BSPEED=150;
@@ -182,7 +183,8 @@ void() data_otl_ini={
   self.c_bbx_n = DAT_OTL_CTOR_BBX_N;
   self.c_bbx_x = DAT_OTL_CTOR_BBX_X;
   self.c_model = DAT_OTL_CTOR_MODEL;
-  
+  self.weaponmodel = DAT_OTL_CPIT_MODEL;
+  self.weaponframe = 0;
   self.m_fspeed = DAT_OTL_M_FSPEED;
   self.m_sspeed = DAT_OTL_M_SSPEED;
   self.m_bspeed = DAT_OTL_M_BSPEED;

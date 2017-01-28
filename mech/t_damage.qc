@@ -188,8 +188,6 @@ void(entity targ, entity attacker, float dmg_type) filter_killed={
   killed(filter, attacker, dmg_type);
 };
 
-
-
 void(entity targ, entity attacker, float dmg_type) killed={
   local entity oself;
   
@@ -261,7 +259,6 @@ float(entity targ, entity attacker, float dmg, float dmg_type) damage_shield={
     if((dmg_type & DMG_ENE)){
       if((dmg_type & EFF_RAM)){
         targ.sh_cur = targ.sh_cur - dmg;
-        centerprint(attacker, ftos(targ.sh_cur));
         return 0;
       }
       else if((dmg_type & EFF_PRC)){
