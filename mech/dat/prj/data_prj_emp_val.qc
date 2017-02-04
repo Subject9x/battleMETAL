@@ -7,7 +7,7 @@ Overview: data def file for a weapon projectile
 
 //EMP CANNON SHOT=======================
 float DAT_PRJ_EMP_IDX = ID_PRJ_EMP;
-float DAT_PRJ_EMP_VELOCITY = 750;
+float DAT_PRJ_EMP_VELOCITY = 1500;
 string DAT_PRJ_EMP_MODEL = "q3mdl/proj_emp.md3";
 float DAT_PRJ_EMP_LIFETIME = 6;
 float DAT_PRJ_EMP_DAMAGE = 65;

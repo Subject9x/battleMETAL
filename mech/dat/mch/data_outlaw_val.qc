@@ -67,10 +67,10 @@ string DAT_OTL_M_PITCH_N="90";
 string DAT_OTL_M_PITCH_X="-90";
 string DAT_OTL_M_BOB = "0.0008";
 string DAT_OTL_M_BCYCLE =  "0.5";
-string DAT_OTL_M_BUP = "0.5";
+string DAT_OTL_M_BUP = "0.15";
 string DAT_OTL_M_BMODEL = "1";
-string DAT_OTL_M_BSIDE = "0.35";
-string DAT_OTL_M_BSPD = "6.55";
+string DAT_OTL_M_BSIDE = "0.09";
+string DAT_OTL_M_BSPD = "6";
 
 //LEGS
 string DAT_OTL_LEG_CNAME= M_LEGS;

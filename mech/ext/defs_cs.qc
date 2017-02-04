@@ -63,24 +63,33 @@ float AS_FLOAT = 8;
 .float stat_trg_am;
 .float stat_trg_dat;
 
-//ENT_TYPE
-float ENT_PLR = 34; // scope of ent is the player
-float ENT_TRG = 35; //scope is the player’s target
-float ENT_WEP = 36; //scope is a player weapon sub-component
-float ENT_CMP_LEG = 37; //scope is a player sub-component    
-float ENT_CMP_CTOR = 38; //scope is a player sub-component    
-float ENT_CMP_LTOR = 39; //scope is a player sub-component    
-float ENT_CMP_RTOR = 40; //scope is a player sub-component    
-float ENT_CMP_LARM = 41; //scope is a player sub-component    
-float ENT_CMP_RARM = 42; //scope is a player sub-component    
+//status floats specific components
+float COMP_OK = 5;
+float COMP_DMG = 6;
+float COMP_DYN = 7;
+float COMP_REL = 8;
+float COMP_RDY = 9;
 
-//UPDATE FLAGS
-float FLAG_INI_MCH = 1;
-float FLAG_UPD_MCH = 2;
+//allows us to track all of a targets health states over a single float channel
+float TARG_CT_OK = 1;
+float TARG_CT_DM = 2;
+float TARG_CT_DD = 4;
+float TARG_RT_OK = 8;
+float TARG_RT_DM = 16;
+float TARG_RT_DD = 32;
+float TARG_LT_OK = 64;
+float TARG_LT_DM = 128;
+float TARG_LT_DD = 256;
+float TARG_RA_OK = 512;
+float TARG_RA_DM = 1024;
+float TARG_RA_DD = 2048;
+float TARG_LA_OK = 4096;
+float TARG_LA_DM = 8192;
+float TARG_LA_DD = 16384;
+float TARG_LG_OK = 32768;
+float TARG_LG_DM = 65536;
+float TARG_LG_DD = 131072;
 
-float FLAG_ORIGIN = 8;
-float FLAG_ANGLE = 16;
-float FLAG_ENTID = 32;
 
 //stat channels
 float STAT_ENTITY_ID = 33;
@@ -145,3 +154,5 @@ float STAT_TRG_VID = 84;
 float STAT_TRG_SH = 85;
 float STAT_TRG_AM = 86;
 float STAT_TRG_DAT = 87;
+
+float STAT_RDR_FRNT = 88;

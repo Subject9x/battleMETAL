@@ -33,13 +33,7 @@ float sv_gravity;
 .float gravity;
 //======================
 
-//DO NOT TOUCH THESE
-/*
-damage calcuation array
-*/
-#define DAMAGE_LOCATION 3
-float location[DAMAGE_LOCATION];
-
+//DO NOT TOUCH THESE - bad things will happen if you mod these
 float P_OBS = 0;
 float P_MECH = 1;
 float P_VECH = 2;

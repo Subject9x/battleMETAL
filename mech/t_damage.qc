@@ -45,7 +45,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     dmg_amt = new_dmg;
   }
   else{
-    te_knightspike(dmg_point);(dmg_point);
+    te_knightspike(dmg_point);
     return;
   }
   
@@ -106,7 +106,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
 */
 entity(vector point, float rad, entity own) t_find_part={
   
-  local float cur_dist, rad, a_rad, t_rad, c1_rad,c2_rad;
+  local float cur_dist, a_rad, t_rad, c1_rad,c2_rad;
   local entity  farm, ftor, c1, toSender;
   t_rad = rad;
   cur_dist = vlen(point - own.e_arm_l.origin);
@@ -252,45 +252,45 @@ void(entity targ, entity attacker, float dmg_type) killed={
 };
 
 //returns remain damage to be passed on to armor
-float(entity targ, entity attacker, float dmg, float dmg_type) damage_shield={
+float(entity targ, entity attacker, float dmg_amt, float dmg_type) damage_shield={
   
   if(targ.sh_cur >= 0){
     targ.sh_hit = time + SHIELD_DELAY;
     if((dmg_type & DMG_ENE)){
       if((dmg_type & EFF_RAM)){
-        targ.sh_cur = targ.sh_cur - dmg;
+        targ.sh_cur = targ.sh_cur - dmg_amt;
         return 0;
       }
       else if((dmg_type & EFF_PRC)){
-        targ.sh_cur = targ.sh_cur - (dmg/SHIELD_SOAK);
-        return (dmg - (dmg/SHIELD_SOAK));
+        targ.sh_cur = targ.sh_cur - (dmg_amt/SHIELD_SOAK);
+        return (dmg_amt - (dmg_amt/SHIELD_SOAK));
       }
       else{
-        if(targ.sh_cur < dmg){
+        if(targ.sh_cur < dmg_amt){
           targ.sh_cur = 0;
-          dmg = dmg - targ.sh_cur;
-          return dmg;
+          dmg_amt = dmg_amt - targ.sh_cur;
+          return dmg_amt;
         }
         else{
-          targ.sh_cur = targ.sh_cur - dmg;
+          targ.sh_cur = targ.sh_cur - dmg_amt;
           return 0;
         }
       }
     }
     else if((dmg_type & DMG_BAL)){
       if((dmg_type & EFF_RAM)){
-        targ.sh_cur = targ.sh_cur - (dmg + (dmg * 1.5));
+        targ.sh_cur = targ.sh_cur - (dmg_amt + (dmg_amt * 1.5));
         return 0;
       }
       if((dmg_type & EFF_PRC)){
-        return dmg;
+        return dmg_amt;
       }
-      if(targ.sh_cur < dmg){
-        dmg = dmg - targ.sh_cur;
-        return dmg;
+      if(targ.sh_cur < dmg_amt){
+        dmg_amt = dmg_amt - targ.sh_cur;
+        return dmg_amt;
       }
       else{
-        targ.sh_cur = targ.sh_cur - (dmg/2);
+        targ.sh_cur = targ.sh_cur - (dmg_amt/2);
         return 0;
       }
     }
@@ -298,7 +298,7 @@ float(entity targ, entity attacker, float dmg, float dmg_type) damage_shield={
     
     }
   }
-  return dmg;
+  return dmg_amt;
 };
 
 

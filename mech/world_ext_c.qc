@@ -59,8 +59,10 @@ void() mh_world_ini={
   
   addstat(STAT_TRG_VID, AS_INT, stat_trg_vid);
   addstat(STAT_TRG_SH, AS_FLOAT, stat_trg_sh);
-  addstat(STAT_TRG_AM, AS_FLOAT, stat_trg_am);
+  addstat(STAT_TRG_AM, AS_INT, stat_trg_am);
   addstat(STAT_TRG_DAT, AS_INT, stat_trg_dat);
+  
+  addstat(STAT_RDR_FRNT, AS_FLOAT, radar_front);
   mh_world_iniData();
 };
 
@@ -87,7 +89,7 @@ void() mh_world_iniData={
 };
 
 entity(float id, float dat_type) mh_world_findData={
-  local entity found, data_chain;
+  local entity data_chain;
   data_chain = findchain(classname, "data");
   while(data_chain){
     local float idx;

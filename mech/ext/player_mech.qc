@@ -25,7 +25,9 @@ void() cleanup_mech={
   
   local entity oself, w_chain, next, lstp;
   oself = self;
-  mech_player_removecamera();
+  if(self.flags & FL_CLIENT){
+    mech_player_removecamera();
+  }
   mech_player_removecomp(oself.e_tor_l);
   mech_player_removecomp(oself.e_tor_r);
   mech_player_removecomp(oself.e_arm_l);
@@ -59,7 +61,11 @@ void() cleanup_mech={
 
 void() mech_player_die={
   local entity w_chain, next;
-  mech_player_cameradie();
+  
+  if(self.flags & FL_CLIENT){
+    mech_player_cameradie();
+  }
+
   
   w_chain = self.w_slot;
   while(w_chain){

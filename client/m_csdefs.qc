@@ -25,13 +25,12 @@ float	SVC_FINALE			= 31;
 float	SVC_CDTRACK			= 32;
 float	SVC_SELLSCREEN		= 33;
 
-//UPDATE FLAGS
-float FLAG_INI_MCH = 1;
-float FLAG_UPD_MCH = 2;
-
-float FLAG_ORIGIN = 8;
-float FLAG_ANGLE = 16;
-float FLAG_ENTID = 32;
+//satus colors
+vector STATUS_AOK = '0.13 0.6 0.329';
+vector STATUS_DMG = '0.952 0.611 0.07';
+vector STATUS_DED = '0.2 0.286 0.368';
+vector STATUS_REL = '0.18 0.525 0.756';
+vector STATUS_RNG = '0.513 0.568 0.572';
 
 //COMP_TYPE
 float m_tor_c = 0;
@@ -163,18 +162,7 @@ float STAT_TRG_SH = 85;
 float STAT_TRG_AM = 86;
 float STAT_TRG_DAT = 87;
 
-float STAT_VANG_X = 88;
-float STAT_VANG_Y = 89;
-float STAT_VANG_Z = 90;
-
-//actual csqc constants
-/*vector ENG_COLOR_CURRENT;
-vector SHD_COLOR_CURRENT;
-vector DMG_COLOR_CURRENT;
-vector DMG_COLOR_GREEN = '0 1 0';
-vector DMG_COLOR_YELLOW = '1 1 0';
-vector DMG_COLOR_RED = '1 0 0';
-vector DMG_COLOR_GRAY = '0.1 0.1 0.1';*/
+float STAT_RDR_FRNT = 88;
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
@@ -185,3 +173,30 @@ string M_LEG_L = "legs_l";
 string M_LEG_R = "legs_r";
 string M_ARM_LEFT = "arm_left";
 string M_ARM_RIGHT = "arm_right";
+
+//status floats specific components
+float COMP_OK = 5;
+float COMP_DMG = 6;
+float COMP_DYN = 7;
+float COMP_REL = 8;
+float COMP_RDY = 9;
+
+//allows us to track all of a targets health states over a single float channel
+float TARG_CT_OK = 1;
+float TARG_CT_DM = 2;
+float TARG_CT_DD = 4;
+float TARG_RT_OK = 8;
+float TARG_RT_DM = 16;
+float TARG_RT_DD = 32;
+float TARG_LT_OK = 64;
+float TARG_LT_DM = 128;
+float TARG_LT_DD = 256;
+float TARG_RA_OK = 512;
+float TARG_RA_DM = 1024;
+float TARG_RA_DD = 2048;
+float TARG_LA_OK = 4096;
+float TARG_LA_DM = 8192;
+float TARG_LA_DD = 16384;
+float TARG_LG_OK = 32768;
+float TARG_LG_DM = 65536;
+float TARG_LG_DD = 131072;

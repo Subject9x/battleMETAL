@@ -81,31 +81,6 @@ void() ctrl_die_weapon={
       BecomeExplosion();
     self = oself;
     
-    /*newmis = spawn();
-    self = newmis;
-      self.angles = oself.angles;
-      if(pvel_x > 0 || pvel_y > 0 || pvel_z > 0){
-        self.velocity = pvel + VelocityForDamage (100);
-        self.avelocity_x = random()*600;
-        self.avelocity_y = random()*600;
-        self.avelocity_z = random()*600;
-      }
-      else{
-        self.velocity = VelocityForDamage (100);
-        self.avelocity_x = random()*600;
-        self.avelocity_y = random()*600;
-        self.avelocity_z = random()*600;
-      }      
-      util_setHealthArmor(10,10,10,10);
-      self.th_die = SUB_Remove;
-      setorigin(self, oself.origin);
-      util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_BOUNCE);
-      setmodel(self, oself.model);
-      setsize(self, '-3 -3 -3', '3 3 3');
-      self.think = BecomeExplosion;
-      self.nextthink = time + 1000;
-    self = oself;*/
-
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;

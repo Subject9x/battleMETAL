@@ -75,7 +75,7 @@ void() ctrl_die_comp={
       setmodel(self, oself.model);
       setsize(self, '-3 -3 -3', '3 3 3');
       self.think = BecomeExplosion;
-      self.nextthink = time + 1000;
+      self.nextthink = time + 100;
     self = oself;
 
     self.deadflag = DEAD_DEAD;

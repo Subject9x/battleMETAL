@@ -21,7 +21,7 @@ float DAT_EMP_ARMOR = 50;
 float DAT_EMP_ARMORMAX = 50;
 string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
 float DAT_EMP_PROJ_ID= ID_PRJ_EMP;
-float DAT_EMP_EN_COST= 30;
+float DAT_EMP_EN_COST= 15;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 

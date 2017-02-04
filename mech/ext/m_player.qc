@@ -34,6 +34,7 @@ void() PlayerPreThink = {
   
   //
   server_updateTargetInfo();
+  server_updateRadarInfo();
   
 	if (self.button2){
 		PlayerJump();

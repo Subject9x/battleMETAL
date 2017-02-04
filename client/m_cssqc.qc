@@ -4,7 +4,7 @@ Author: Subject9x
 Date: 11/08/2016
 Overview: csscsqc? csqccss? cssqc?
 */
-
+vector(float val, float type) css_getStatusColor;
 vector(vector vec, float scle) css_scaleSize;
 vector(vector vec, float algn) css_calcAlign;
 vector(vector org, vector sz, float axs) css_calcAxis;
@@ -51,6 +51,19 @@ float HUD_ALPHA = 0.9;
 .float otype;
 .vector margin_ins;
 .float pattern;
+
+
+vector(float val, float type) css_getStatusColor={
+	if(val == 0){
+		return STATUS_DED;
+	}
+	else if(val == 1){
+		return STATUS_DMG;
+	}
+	else if(val == 2){
+		return STATUS_AOK;
+	}
+};
 
 
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float dir) css_renderMeter={

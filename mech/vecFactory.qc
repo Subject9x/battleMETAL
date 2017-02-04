@@ -80,7 +80,7 @@ entity(entity dat, entity own) buildLeftTorso={
   oself = self;
   comp = spawn();
   self = comp;
-    dat.unit_ltor(comp);
+    dat.unit_ltor();
     buildUnitPiece(own);
   self = oself;
   return comp;
@@ -90,7 +90,7 @@ entity(entity dat, entity own) buildRightTorso={
   oself = self;
   comp = spawn();
   self = comp;
-    dat.unit_rtor(comp);
+    dat.unit_rtor();
     buildUnitPiece(own);
   self = oself;
   return comp;
@@ -100,7 +100,7 @@ entity(entity dat, entity own) buildLeftArm={
   oself = self;
   comp = spawn();
   self = comp;
-    dat.unit_larm(comp);
+    dat.unit_larm();
     buildUnitPiece(own);
   self = oself;
   return comp;
@@ -110,7 +110,7 @@ entity(entity dat, entity own) buildRightArm={
   oself = self;
   comp = spawn();
   self = comp;
-    dat.unit_rarm(comp);
+    dat.unit_rarm();
     buildUnitPiece(own);
   self = oself;
   return comp;

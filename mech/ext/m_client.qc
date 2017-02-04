@@ -21,6 +21,7 @@ void() ClientConnect = {
   self.nextVecChoice = 1;
   self.data_idx = 0;
   self.currentWeaponGroup = 1;
+  self.faction = 1;
   self.stat_eid = num_for_edict(self);
   self.en_cur = 0;
   self.en_max = 0;
@@ -75,6 +76,10 @@ void() ClientConnect = {
   self.stat_trg_sh = -1;
   self.stat_trg_am = -1;
   self.stat_trg_dat = -1;
+  
+  self.radar_range = 100;
+  self.radar_front = 0;
+  
   
   if (intermission_running){
     ExitIntermission();
@@ -133,6 +138,8 @@ void() PutClientInServer = {
 	{
 		makevectors(self.angles);
 	}
+  
+  dummyConnect();
 };
 
 /*
