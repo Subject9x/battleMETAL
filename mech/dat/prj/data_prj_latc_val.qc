@@ -9,7 +9,7 @@ Overview: data def file for a weapon projectile
 float DAT_PRJ_LATC_IDX = ID_PRJ_LATC;
 float DAT_PRJ_LATC_VELOCITY = 2000;
 string DAT_PRJ_LATC_MODEL = "progs/casing.mdl";
-float DAT_PRJ_LATC_LIFETIME = 6;
+float DAT_PRJ_LATC_LIFETIME = 4;
 float DAT_PRJ_LATC_DAMAGE = 5;
 float DAT_PRJ_LATC_DMGTYPE = DMG_BAL;
 

@@ -4,6 +4,8 @@
 dp/defs.qc
 dp/dpextensions.qc
 
+fight_h.qc
+
 //mech classes / extensions
   mech/ext/defs_game.qc
   mech/ext/ent_player_c.qc

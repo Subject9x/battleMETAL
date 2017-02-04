@@ -28,7 +28,7 @@ float	SVC_SELLSCREEN		= 33;
 //satus colors
 vector STATUS_AOK = '0.13 0.6 0.329';
 vector STATUS_DMG = '0.952 0.611 0.07';
-vector STATUS_DED = '0.2 0.286 0.368';
+vector STATUS_DED = '0.2 0.286 0.368'; //change to this soon 95, 106, 106
 vector STATUS_REL = '0.18 0.525 0.756';
 vector STATUS_RNG = '0.513 0.568 0.572';
 
@@ -163,6 +163,7 @@ float STAT_TRG_AM = 86;
 float STAT_TRG_DAT = 87;
 
 float STAT_RDR_FRNT = 88;
+float STAT_RDR_BACK = 89;
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";

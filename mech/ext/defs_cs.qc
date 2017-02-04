@@ -156,3 +156,4 @@ float STAT_TRG_AM = 86;
 float STAT_TRG_DAT = 87;
 
 float STAT_RDR_FRNT = 88;
+float STAT_RDR_BACK = 89;

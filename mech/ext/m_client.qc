@@ -77,8 +77,9 @@ void() ClientConnect = {
   self.stat_trg_am = -1;
   self.stat_trg_dat = -1;
   
-  self.radar_range = 100;
+  self.radar_range = 800;
   self.radar_front = 0;
+  self.radar_rear = 0;
   
   
   if (intermission_running){

@@ -9,7 +9,7 @@ vector(vector vec, float scle) css_scaleSize;
 vector(vector vec, float algn) css_calcAlign;
 vector(vector org, vector sz, float axs) css_calcAxis;
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float dir) css_renderMeter;
-
+vector(float val) css_calcRadarHeat;
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;
@@ -147,3 +147,18 @@ vector(vector vec, float scle) css_scaleSize={
   
   return toSender;
 };
+
+vector(float val) css_calcRadarHeat={
+  local vector toSender;
+	if(val <= 2){
+    toSender = STATUS_AOK;
+  }
+  if(val > 2){
+    toSender = STATUS_DMG;
+  }
+  if(val >= 15){
+    toSender = '0.7 0.11 0.23';
+  }
+  return toSender;
+};
+

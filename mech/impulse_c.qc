@@ -20,7 +20,9 @@ void() playerAttack={
     local float wpgrp;
     wpgrp = wep_chain.w_group;
     if(wpgrp == self.currentWeaponGroup){
-      wep_chain.w_isfire = 1;
+      if(wep_chain.w_isfire != 1){
+        wep_chain.w_isfire = 1;
+      }
     }
     wep_chain = wep_chain.w_slot;
   }

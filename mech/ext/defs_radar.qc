@@ -17,7 +17,7 @@ float RADAR_ISVEC = 1;
 float RADAR_ISNEAR = 3;
 float RADAR_ISCLOSE = 2;
 float RADAR_ISFAR = 1;
-float RADAR_ETOT_RATIO = 0.25; //ration of contact points per game unit for how far apart the enemy is to the target
+float RADAR_ETOT_RATIO = 100; //ration of contact points per game unit for how far apart the enemy is to the target
 float RADAR_ETOE_RATIO = 0.5; //ratio of contact points per game unit for how far apart enemies are
 
 //SUBTYPES
@@ -36,50 +36,3 @@ float() radar_calcEnemyDist;
 float() radar_calcUnitValue;
 
 //scope - self = unit making the sweep
-float() radar_MakeSweep={
-
-  local entity oself, contact, root;
-  local float heat_front, heat_back;
-  heat_front = 0;
-  heat_back = 0;
-  root = contact = findradius(self.origin, self.radar_range);
-  while(contact){
-    local float current_total;
-    current_total = radar_calcPlayerDist()
-  }
-
-};
-
-float(entity contact, float current_total) radar_calcPlayerDist={
-  local float dist;
-  dist = vlen(contact.origin - self.origin);
-  return (current_total + (dist * RADAR_ETOT_RATIO));
-};
-
-float(entity root, entity contact, float current_total) radar_calcEnemyDist={
-  local entity oself, sub;
-  local float total;
-  total = 0;
-  sub = root;
-  while(sub){
-    if(sub!=contact){
-      if(sub.faction == contact.faction){
-        if((sub.p_class != P_OBS) &&(sub.p_class != P_BLD)){
-          local float dist;
-          dist = vlen(sub.origin - contact.origin);
-          dist = dist * RADAR_ETOE_RATIO;
-        }
-      }
-    }
-    sub = sub.chain;
-  }
-  return (current_total - total);
-};
-
-float(entity contact, float current_total) radar_calcUnitValue={
-  local float 
-  if(contact.p_class == P_MECH){
-    
-  }
-
-};

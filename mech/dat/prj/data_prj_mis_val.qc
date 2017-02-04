@@ -7,7 +7,7 @@ Overview: data def file for a weapon projectile
 
 //MIS CANNON SHOT=======================
 float DAT_PRJ_MIS_IDX = ID_PRJ_MIS;
-float DAT_PRJ_MIS_VELOCITY = 900;
+float DAT_PRJ_MIS_VELOCITY = 1500;
 string DAT_PRJ_MIS_MODEL = "q3mdl/proj_mis.md3";
 float DAT_PRJ_MIS_LIFETIME = 4;
 float DAT_PRJ_MIS_DAMAGE = 20;

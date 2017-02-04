@@ -9,10 +9,10 @@ Overview: weapon  values are being reorganized to ease maintenance
 float DAT_LATC_IDX = ID_WEP_LATC;
 string DAT_LATC_NAME = "Light Autocannon";
 float DAT_LATC_FIRETIME = 0;
-float DAT_LATC_CLIPSIZE = 4;
-float DAT_LATC_CURRENTAMMO = 4;
-float DAT_LATC_FIRERATE = 0.18;
-float DAT_LATC_RELOADTIME = 0.45;
+float DAT_LATC_CLIPSIZE = 3;
+float DAT_LATC_CURRENTAMMO = 3;
+float DAT_LATC_FIRERATE = 0.1;
+float DAT_LATC_RELOADTIME = 0.5;
 float DAT_LATC_ISFIRE = 0;
 vector DAT_LATC_FIRE_OFS = '0 0 12';
 float DAT_LATC_HP = 50;
@@ -81,7 +81,7 @@ void() data_latc_atk={
     org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
     traceline(org, end, FALSE, player);
     dir = trace_endpos;
-    
+
     newmis = spawn();
     oself = self;
     self = newmis;

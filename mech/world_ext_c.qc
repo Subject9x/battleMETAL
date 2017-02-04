@@ -63,6 +63,7 @@ void() mh_world_ini={
   addstat(STAT_TRG_DAT, AS_INT, stat_trg_dat);
   
   addstat(STAT_RDR_FRNT, AS_FLOAT, radar_front);
+  addstat(STAT_RDR_BACK, AS_FLOAT, radar_rear);
   mh_world_iniData();
 };
 

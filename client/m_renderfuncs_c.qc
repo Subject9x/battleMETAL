@@ -294,10 +294,29 @@ void() hud_renderRadar={
   ofs_y = ofs_y + pnl_sz_y;
   self.rd_pnl_org = css_calcAlign(ofs, self.rd_pnl_aln);
   drawpic(self.rd_pnl_org, self.rd_pnl_img, pnl_sz, '1 1 1', 1, 0);
-  local float rating;
-  rating = getstatf(STAT_RDR_FRNT);
+  local float front, back;
+  front = getstatf(STAT_RDR_FRNT);
+  back = getstatf(STAT_RDR_BACK);
+  drawstring(self.rd_pnl_org + '8 15', "[RADAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  drawstring(ofs, ftos(rating), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
+  local vector pnl_ctr, heat_f, heat_r;
+  pnl_ctr_x = (pnl_sz_x/2);
+  pnl_ctr_y = (pnl_sz_y/2);
+  
+  drawfill((self.rd_pnl_org + pnl_ctr + '-8 -8'), '16 16', '0.18 0.32 0.6', HUD_ALPHA, 0);
+  
+  
+  heat_f = css_calcRadarHeat(front);
+  heat_r = css_calcRadarHeat(back);
+  
+  drawfill((self.rd_pnl_org + pnl_ctr + '-32 -32'), '64 16', heat_f, HUD_ALPHA, 0);
+  
+  drawfill((self.rd_pnl_org + pnl_ctr + '-32 16'), '64 16', heat_r, HUD_ALPHA, 0);
+  
+  
+  drawstring(self.rd_pnl_org + '25 50', ftos(front), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
+  
+  drawstring(self.rd_pnl_org + '25 60', ftos(back), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
 };
 
 void(float cgrp, float wid, float wgr, float wst, vector ofs, entity src) hud_renderWeapon={

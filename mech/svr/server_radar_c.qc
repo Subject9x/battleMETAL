@@ -10,7 +10,7 @@ Overview: the defintion file for my radar idea
 float() radar_MakeSweep={
 
   local entity oself, contact, root;
-  local float heat_front, heat_back;
+  local float heat_front, heat_back, ht, face;
   heat_front = 0;
   heat_back = 0;
   contact = findradius(self.origin, self.radar_range);
@@ -19,21 +19,36 @@ float() radar_MakeSweep={
     if(contact != world){
       if(contact.classname != MECH_PIECE){
         if(contact.p_class != P_OBS){
-          heat_front = radar_calcPlayerDist(contact, heat_front);
-          heat_front = radar_calcEnemyDist(root, contact, heat_front);
-          heat_front = radar_calcUnitValue(contact, heat_front) ;
+          if(contact.deadflag <= DEAD_NO){
+            ht = 0;
+            ht = radar_calcPlayerDist(contact, ht);
+            ht = radar_calcEnemyDist(root, contact, ht);
+            ht = radar_calcUnitValue(contact, ht) ;
+            face = infront(contact); //oh look an actual use for original qc code
+            if(face == 0){
+              heat_back =  heat_back + ht;
+            }
+            else{
+              heat_front =  heat_front + ht;
+            }
+          }
         }
       }
     }
     contact = contact.chain;
   }
+  
+  self.radar_front = heat_front;
+  self.radar_rear = heat_back;
+  
   return heat_front;
 };
 
 float(entity contact, float current_total) radar_calcPlayerDist={
-  local float dist;
+  local float dist, mod;
   dist = vlen(contact.origin - self.origin);
-  return (current_total + (dist * RADAR_ETOT_RATIO));
+  mod = (RADAR_ETOT_RATIO / dist) * 10000;
+  return (current_total + mod);
 };
 
 float(entity root, entity contact, float current_total) radar_calcEnemyDist={

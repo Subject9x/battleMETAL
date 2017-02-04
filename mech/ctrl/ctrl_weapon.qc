@@ -16,48 +16,28 @@ void(entity wep) ctrl_weapon_think={
   }
   
   if(self.deadflag == DEAD_DEAD){
-    local entity torso;
-    if(self.c_parent == M_TOR_LEFT){
-      torso = oself.e_tor_l;
-    }
-    else if(self.c_parent == M_TOR_RIGHT){
-      torso = oself.e_tor_r;
-    }
-    
-    if(torso.deadflag <= DEAD_NO){
-      local float rng;
-      rng = random()*100;
-      if(rng > 50){
-        local vector spvel;
-        spvel = '0 0 0';
-        spvel_x = random()*100;
-        spvel_y = random()*100;
-        spvel_z = random()*100;
-        te_spark(self.origin, spvel, random()*250);
-      }
-    }
     self = oself;
     return;
   }
   
   if(self.w_isfire == 1){
-    if(self.w_currentammo > 0){
-      if(time >= self.w_firetime){
-        if(oself.en_cur >= self.en_max){
-          self.w_attack();
-          self.w_currentammo = self.w_currentammo - 1;
-          self.w_firetime = time + self.w_firerate;
-          oself.en_cur = oself.en_cur - self.en_max;
+    if(time > self.w_firetime){
+      if(self.w_currentammo > 0){
+        self.w_currentammo = self.w_currentammo - 1;
+        self.w_attack();
+        if(self.w_currentammo < 0){
+          self.w_currentammo = 0;
         }
+        self.w_firetime = time + self.w_firerate;
+        oself.en_cur = oself.en_cur - self.en_max;
+      }
+      else{
+        self.w_firetime = time + self.w_reloadtime;
+        self.w_currentammo = self.w_currentammo + self.w_clipsize;
+        self.w_isfire = 0;
       }
     }
-    else{
-      self.w_firetime = time + self.w_reloadtime;
-      self.w_currentammo = self.w_clipsize;
-    }
-    self.w_isfire = 0;
   }
- 
   self = oself;
 };
 
