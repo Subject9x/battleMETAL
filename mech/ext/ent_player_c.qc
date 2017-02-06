@@ -5,6 +5,9 @@ Date: 8/27/2016
 Overview: extends the player's entity.
 */
 
+.float was_hit; //used for hit direction calculation mostly
+.float hitdir_buffer; //used for hit direction, is cleared every frame
+
 .float	dmgtime; //pulled from client.qc
 .float playermovestate, playermovebegin; //pulled from dpqc player.qc
 

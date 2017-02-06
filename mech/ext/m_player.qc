@@ -34,7 +34,13 @@ void() PlayerPreThink = {
   
   //
   server_updateTargetInfo();
-  server_updateRadarInfo();
+  
+  self.stat_hit_dirs = self.hitdir_buffer;
+  
+  if(self.hitdir_buffer & STAT_HIT_LF){
+    self.hitdir_buffer = self.hitdir_buffer - STAT_HIT_LF;
+    bprint(strcat("cleared buffer: ",ftos(self.hitdir_buffer), " \n"));
+  }
   
 	if (self.button2){
 		PlayerJump();
@@ -55,14 +61,15 @@ void() PlayerPostThink = {
 	if (self.view_ofs == '0 0 0'){
 		return;		// intermission or finale
   }
-  
+    
+	if (self.deadflag){
+    return;
+  }
+
+// do weapon stuff
+
   //STAT UPDATE  
   if(self.p_class == P_MECH){
-    //1/27/2017
-    //msg_entity = self;
-    //WriteByte (MSG_ONE, SVC_SETVIEWPORT);
-    //WriteEntity (MSG_ONE, self.e_cam);
-    
     self.stat_en = (self.en_cur / self.en_max)*100;
     self.stat_sh = (self.sh_cur / self.sh_max)*100;
     self.stat_legs_hp = csqc_updateCompStat(self.e_legs);
@@ -71,18 +78,14 @@ void() PlayerPostThink = {
     self.stat_rtor_hp = csqc_updateCompStat(self.e_tor_r);
     self.stat_larm_hp = csqc_updateCompStat(self.e_arm_l);
     self.stat_rarm_hp = csqc_updateCompStat(self.e_arm_r);
-  }
-
-	if (self.deadflag){
-    return;
-  }
-
-// do weapon stuff
-
-  if(self.p_class == P_MECH){
     ctrl_update_mechplayer();
   }
-
+  
+  local vector radar;
+  radar = server_updateRadarInfo();
+  self.radar_front = radar_x;
+  self.radar_rear = radar_y;
+  
   if(self.p_class != P_OBS){
     local entity wep_chain;
     wep_chain = self.w_slot;

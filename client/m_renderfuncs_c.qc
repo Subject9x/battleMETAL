@@ -17,6 +17,23 @@ void() hud_renderHelmet={
   ofs_y = ofs_y + pnl_sz_y;
   org = css_calcAlign(ofs, aln);
   drawpic(org, self.img, pnl_sz, '1 1 1', 1, 0);
+  
+  local float hitdir, l_fade;
+  hitdir = getstatf(STAT_HIT_DIR);
+  
+  if(hitdir & STAT_HIT_LF){
+    local vector lorg;
+    lorg_x = VIEW_ORG_x + 10;
+    lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
+    drawfill((lorg + '0 -24'), '8 48', STATUS_DMG, HUD_ALPHA, 0);
+  }
+  
+  /*if(hitdir & STAT_HIT_RT){
+    local vector rorg;
+    rorg_x = VIEW_MAX_x - 18;
+    rorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
+    drawfill((rorg + '0 -24'), '8 48', STATUS_DMG, HUD_ALPHA, 0);
+  }*/
 };
 
 void() hud_renderEnergy={
@@ -149,14 +166,8 @@ void(float cur_group) hud_renderWeapons={
 void() hud_renderTarget={
   local float tvid, tdat, tshd, tam;
   tvid = getstati(STAT_TRG_VID);
-  drawstring('0 0 0', ftos(tvid), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
   tdat = getstati(STAT_TRG_DAT);
-  drawstring('0 8 0', ftos(tdat), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
   tshd = getstatf(STAT_TRG_SH);
-  drawstring('0 16 0', ftos(tshd), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
   tam = getstati(STAT_TRG_AM);
   local vector pnl_sz, img_sz, ofs;
   img_sz = draw_getimagesize(self.tg_pnl_img);
@@ -297,7 +308,7 @@ void() hud_renderRadar={
   local float front, back;
   front = getstatf(STAT_RDR_FRNT);
   back = getstatf(STAT_RDR_BACK);
-  drawstring(self.rd_pnl_org + '8 15', "[RADAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(self.rd_pnl_org + '32 10', "[RADAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   local vector pnl_ctr, heat_f, heat_r;
   pnl_ctr_x = (pnl_sz_x/2);

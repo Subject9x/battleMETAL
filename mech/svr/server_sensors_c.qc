@@ -148,6 +148,8 @@ void() server_radarSweep={
   
 };
 
-void() server_updateRadarInfo={
-  self.radar_front = radar_MakeSweep();  
+vector() server_updateRadarInfo={
+  local vector toSender;
+  toSender = radar_MakeSweep();
+  return toSender;
 };

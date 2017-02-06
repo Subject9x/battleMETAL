@@ -62,6 +62,13 @@ float AS_FLOAT = 8;
 .float stat_trg_sh;
 .float stat_trg_am;
 .float stat_trg_dat;
+.float stat_hit_dirs;
+
+//hit direction bit flags
+float STAT_HIT_CL = 1;
+float STAT_HIT_LF = 2;
+float STAT_HIT_RT = 4;
+float STAT_HIT_BK = 8;
 
 //status floats specific components
 float COMP_OK = 5;
@@ -89,7 +96,6 @@ float TARG_LA_DD = 16384;
 float TARG_LG_OK = 32768;
 float TARG_LG_DM = 65536;
 float TARG_LG_DD = 131072;
-
 
 //stat channels
 float STAT_ENTITY_ID = 33;
@@ -157,3 +163,5 @@ float STAT_TRG_DAT = 87;
 
 float STAT_RDR_FRNT = 88;
 float STAT_RDR_BACK = 89;
+
+float STAT_HIT_DIR = 90;

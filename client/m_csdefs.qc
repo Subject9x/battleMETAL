@@ -164,6 +164,7 @@ float STAT_TRG_DAT = 87;
 
 float STAT_RDR_FRNT = 88;
 float STAT_RDR_BACK = 89;
+float STAT_HIT_DIR = 90;
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
@@ -174,6 +175,12 @@ string M_LEG_L = "legs_l";
 string M_LEG_R = "legs_r";
 string M_ARM_LEFT = "arm_left";
 string M_ARM_RIGHT = "arm_right";
+
+//hit direction bit flags
+float STAT_HIT_CL = 1;
+float STAT_HIT_LF = 2;
+float STAT_HIT_RT = 4;
+float STAT_HIT_BK = 8;
 
 //status floats specific components
 float COMP_OK = 5;

@@ -9,4 +9,4 @@ void() server_getTarget;
 void() server_updateTargetInfo;
 
 void() server_radarSweep;
-void() server_updateRadarInfo;
+vector() server_updateRadarInfo;

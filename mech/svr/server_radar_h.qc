@@ -30,7 +30,7 @@ float RADAR_ISHMCH = 6;
 
 //functions
 
-float() radar_MakeSweep;
+vector() radar_MakeSweep;
 float(entity contact, float current_total) radar_calcPlayerDist;
 float(entity root, entity contact, float current_total) radar_calcEnemyDist;
 float(entity contact, float current_total)  radar_calcUnitValue;
