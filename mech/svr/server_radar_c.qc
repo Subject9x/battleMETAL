@@ -16,20 +16,21 @@ vector() radar_MakeSweep={
   contact = findradius(self.origin, self.radar_range);
   root = contact;
   while(contact){
-    if(contact != world){
-      if(contact.classname != MECH_PIECE){
+    if(contact.data_idx){
+      if(contact.faction != self.faction){
         if(contact.p_class != P_OBS){
           if(contact.deadflag <= DEAD_NO){
+            local float ht;
             ht = 0;
             ht = ht + radar_calcPlayerDist(contact, ht);
             ht = ht + radar_calcEnemyDist(root, contact, ht);
             ht = ht + radar_calcUnitValue(contact, ht) ;
             face = infront(contact); //oh look an actual use for original qc code
-            if(face == 0){
-              heat_back =  heat_back + ht;
+            if(face){
+              heat_front =  heat_front + ht;
             }
             else{
-              heat_front =  heat_front + ht;
+              heat_back =  heat_back + ht;
             }
           }
         }
@@ -48,10 +49,10 @@ vector() radar_MakeSweep={
 float(entity contact, float current_total) radar_calcPlayerDist={
   local float dist, mod;
   dist = vlen(contact.origin - self.origin);
-  if(dist == 0){
+  if(dist <= 0){
     dist = 1;
   }
-  mod = (RADAR_ETOT_RATIO / dist) * 100;
+  mod = (1 / (dist *dist)); 
   return mod;
 };
 
@@ -61,18 +62,24 @@ float(entity root, entity contact, float current_total) radar_calcEnemyDist={
   total = 0;
   sub = root;
   while(sub){
-    if(sub != world){
-      if(sub.classname != MECH_PIECE){
-        if(sub.p_class != P_OBS){
-          local float dist;
-          dist = vlen(sub.origin - contact.origin);
-          dist = dist * RADAR_ETOE_RATIO;
+    if(sub.classname == "player"){
+      if(sub.p_class != P_OBS){
+        if(sub != self){
+          if(sub.faction == contact.faction){
+            local float dist, mod;
+            dist = vlen(sub.origin - contact.origin);
+            if(dist == 0){
+              dist = 1;
+            }
+            mod = 1;
+            total = total + mod;
+          }
         }
       }
     }
     sub = sub.chain;
   }
-  return -total;
+  return total;
 };
 
 float(entity contact, float current_total) radar_calcUnitValue={

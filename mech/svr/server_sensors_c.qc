@@ -35,12 +35,14 @@ void() server_updateTargetInfo={
     self.stat_trg_dat = -1;
     self.stat_trg_sh = -1;
     self.stat_trg_am = -1;
+    self.stat_trg_dist = -1;
     return;
   }
   
   self.stat_trg_vid = self.enemy.data_idx;
   self.stat_trg_dat = self.enemy.data_type;
   self.stat_trg_am = 0;
+  self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
   server_calcTargetArmor();
   if(self.enemy.sh_cur > -1){
     if(self.enemy.sh_cur == 0){

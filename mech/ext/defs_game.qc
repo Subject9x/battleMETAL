@@ -68,10 +68,16 @@ string V_CHASSIS = "v_chas";
 string V_TUR_MAIN = "v_tur_main";
 string V_TUR_AUX = "v_tur_aux";
 
-//weapon group contants
-float W_GROUPA = 1;
-float W_GROUPB = 2;
-float W_GROUPC = 3;
+//weapon slot bits
+float WEAPON1 = 1;
+float WEAPON2 = 2;
+float WEAPON3 = 4;
+float WEAPON4 = 8;
+float WEAPON5 = 16;
+float WEAPON6 = 32;
+float WEAPON7 = 64;
+float WEAPON8 = 128;
+float WEAPON9 = 256;
 
 //class vars
 .float data_type;

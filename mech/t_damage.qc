@@ -40,34 +40,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
   prj_yaw = vectoyaw(inflictor.velocity);
   fr = anglemod(trg_yaw + 45);
   fl = anglemod(trg_yaw - 45);
-  //bprint(strcat("fr ", ftos(fr), "\n"));
-  //bprint(strcat("trg_yaw ", ftos(trg_yaw), "\n"));
-  //bprint(strcat("fl ", ftos(fl), "\n"));
- 
-  //bprint(strcat("prj_yaw ", ftos(prj_yaw), "\n"));
-  flg = trg.hitdir_buffer;
-  bprint(strcat("hitbuffer: ", ftos(flg), "\n"));
- // if((prj_yaw > fl) && (prj_yaw < fr)){
-    bprint("in range \n");
-   if(!(trg.hitdir_buffer & STAT_HIT_LF)){
-      trg.hitdir_buffer = trg.hitdir_buffer | STAT_HIT_LF;
-       bprint(strcat("assign to buffer: ",ftos(trg.hitdir_buffer), " \n"));
-    }
- // }
-  
-  
-  /*if(yaw_diff > 45 &&  yaw_diff < 315){
-    if(!(trg.hitdir_buffer & STAT_HIT_LF)){
-      trg.hitdir_buffer = trg.hitdir_buffer & STAT_HIT_LF;
-    }
-  }
-  if((yaw_diff < nw) && (yaw_diff > sw)){
-    if(!(trg.hitdir_buffer & STAT_HIT_RT)){
-      trg.hitdir_buffer = trg.hitdir_buffer & STAT_HIT_RT;
-    }
-  }*/
-  
-  
+
   
   //check shields
   if(trg.sh_cur >= 0){

@@ -9,7 +9,6 @@ void(entity data) buildVehicle={
   local entity oself, wep_slot, plr_slot;
   oself = self;
   data.unit_ini();
-  
   if(data.data_type == DATA_MECH){
   
     self.sh_hit = 0;
@@ -166,11 +165,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep1();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own, WEAPON1_OK, WEAPON1_DD);
     self = oself;
     self.stat_w1_id = wep.data_idx;
-    self.stat_w1_gr = wep.w_group;
-    self.stat_w1_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -180,11 +177,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep2();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own,  WEAPON2_OK, WEAPON2_DD);
     self = oself;
     self.stat_w2_id = wep.data_idx;
-    self.stat_w2_gr = wep.w_group;
-    self.stat_w2_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -194,11 +189,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep3();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own,  WEAPON3_OK, WEAPON3_DD);
     self = oself;
     self.stat_w3_id = wep.data_idx;
-    self.stat_w3_gr = wep.w_group;
-    self.stat_w3_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -208,11 +201,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep4();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own,  WEAPON4_OK, WEAPON4_DD);
     self = oself;
     self.stat_w4_id = wep.data_idx;
-    self.stat_w4_gr = wep.w_group;
-    self.stat_w4_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -222,11 +213,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep5();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own,  WEAPON5_OK, WEAPON5_DD);
     self = oself;
     self.stat_w5_id = wep.data_idx;
-    self.stat_w5_gr = wep.w_group;
-    self.stat_w5_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -236,11 +225,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep6();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own,  WEAPON6_OK, WEAPON6_DD);
     self = oself;
     self.stat_w6_id = wep.data_idx;
-    self.stat_w6_gr = wep.w_group;
-    self.stat_w6_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -250,11 +237,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep7();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own,  WEAPON7_OK, WEAPON7_DD);
     self = oself;
     self.stat_w7_id = wep.data_idx;
-    self.stat_w7_gr = wep.w_group;
-    self.stat_w7_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -264,11 +249,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep8();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own,  WEAPON8_OK, WEAPON8_DD);
     self = oself;
     self.stat_w8_id = wep.data_idx;
-    self.stat_w8_gr = wep.w_group;
-    self.stat_w8_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
@@ -278,18 +261,16 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep9();
-      buildVehicleWeapon(mechData, own);
+      buildVehicleWeapon(mechData, own,  WEAPON9_OK, WEAPON9_DD);
     self = oself;
     self.stat_w9_id = wep.data_idx;
-    self.stat_w9_gr = wep.w_group;
-    self.stat_w9_st = DEAD_NO;
     point.w_slot = wep;
     point = point.w_slot;
   }
 };
 
 
-void(entity mechData, entity own) buildVehicleWeapon={
+void(entity mechData, entity own, float state1, float state2) buildVehicleWeapon={
   local entity wepData;
   local vector ofs;
  
@@ -314,6 +295,10 @@ void(entity mechData, entity own) buildVehicleWeapon={
   self.angles = own.angles;
   self.v_angle = self.angles - own.angles;
   self.th_die = ctrl_die_weapon;
+  self.state_1 = state1;
+  self.state_2 = state2;
+  ctrl_weapon_clearState(self, self.state_1, self.state_2);
+  ctrl_weapon_addState(self, self.state_1);
 };
 
 void(entity data) configVehicleSpeeds={

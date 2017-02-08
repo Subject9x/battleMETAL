@@ -32,37 +32,22 @@ float AS_FLOAT = 8;
 .float stat_cofs_y;
 .float stat_cofs_z;
 .float stat_w1_id;
-.float stat_w1_gr;
-.float stat_w1_st;
 .float stat_w2_id;
-.float stat_w2_gr;
-.float stat_w2_st;
 .float stat_w3_id;
-.float stat_w3_gr;
-.float stat_w3_st;
 .float stat_w4_id;
-.float stat_w4_gr;
-.float stat_w4_st;
 .float stat_w5_id;
-.float stat_w5_gr;
-.float stat_w5_st;
 .float stat_w6_id;
-.float stat_w6_gr;
-.float stat_w6_st;
 .float stat_w7_id;
-.float stat_w7_gr;
-.float stat_w7_st;
 .float stat_w8_id;
-.float stat_w8_gr;
-.float stat_w8_st;
 .float stat_w9_id;
-.float stat_w9_gr;
-.float stat_w9_st;
 .float stat_trg_vid;
 .float stat_trg_sh;
 .float stat_trg_am;
 .float stat_trg_dat;
 .float stat_hit_dirs;
+.float stat_rdr_mode;
+.float stat_wep_state;
+.float stat_trg_dist;
 
 //hit direction bit flags
 float STAT_HIT_CL = 1;
@@ -97,6 +82,26 @@ float TARG_LG_OK = 32768;
 float TARG_LG_DM = 65536;
 float TARG_LG_DD = 131072;
 
+//weapon status all-in-one for bitflags
+float WEAPON1_OK = 1;
+float WEAPON1_DD = 2;
+float WEAPON2_OK = 4;
+float WEAPON2_DD = 8;
+float WEAPON3_OK = 16;
+float WEAPON3_DD = 32;
+float WEAPON4_OK = 64;
+float WEAPON4_DD = 128;
+float WEAPON5_OK = 256;
+float WEAPON5_DD = 512;
+float WEAPON6_OK = 1024;
+float WEAPON6_DD = 2048;
+float WEAPON7_OK = 4096;
+float WEAPON7_DD = 8192;
+float WEAPON8_OK = 16384;
+float WEAPON8_DD = 32768;
+float WEAPON9_OK = 65536;
+float WEAPON9_DD = 131072;
+
 //stat channels
 float STAT_ENTITY_ID = 33;
 float STAT_PCLASS = 34;
@@ -126,33 +131,32 @@ float STAT_RARM_HP = 54;
 float STAT_RARM_AM = 55;
 
 float STAT_WEP1_ID = 56;
-float STAT_WEP1_GR = 57;
-float STAT_WEP1_ST = 58;
+//float STAT_WEP1_ST = 58;
 float STAT_WEP2_ID = 59;
-float STAT_WEP2_GR = 60;
-float STAT_WEP2_ST = 61;
+//float STAT_WEP2_GR = 60;
+//float STAT_WEP2_ST = 61;
 float STAT_WEP3_ID = 62;
-float STAT_WEP3_GR = 63;
-float STAT_WEP3_ST = 64;
+//float STAT_WEP3_GR = 63;
+//float STAT_WEP3_ST = 64;
 float STAT_WEP4_ID = 65;
-float STAT_WEP4_GR = 66;
-float STAT_WEP4_ST = 67;
+//float STAT_WEP4_GR = 66;
+//float STAT_WEP4_ST = 67;
 float STAT_WEP5_ID = 68;
-float STAT_WEP5_GR = 69;
-float STAT_WEP5_ST = 70;
+//float STAT_WEP5_GR = 69;
+//float STAT_WEP5_ST = 70;
 float STAT_WEP6_ID = 71;
-float STAT_WEP6_GR = 72;
-float STAT_WEP6_ST = 73;
+//float STAT_WEP6_GR = 72;
+//float STAT_WEP6_ST = 73;
 float STAT_WEP7_ID = 74;
-float STAT_WEP7_GR = 75;
-float STAT_WEP7_ST = 76;
+//float STAT_WEP7_GR = 75;
+//float STAT_WEP7_ST = 76;
 float STAT_WEP8_ID = 77;
-float STAT_WEP8_GR = 78;
-float STAT_WEP8_ST = 79;
+//float STAT_WEP8_GR = 78;
+//float STAT_WEP8_ST = 79;
 float STAT_WEP9_ID = 80;
-float STAT_WEP9_GR = 81;
-float STAT_WEP9_ST = 82;
-
+//float STAT_WEP9_GR = 81;
+//float STAT_WEP9_ST = 82;
+float STAT_WEP_STT = 57;
 float STAT_WEP_GRP =83;
 
 //Targeting stuff
@@ -165,3 +169,6 @@ float STAT_RDR_FRNT = 88;
 float STAT_RDR_BACK = 89;
 
 float STAT_HIT_DIR = 90;
+float STAT_RDR_MODE = 91;
+
+float STAT_TRG_DIST = 92;

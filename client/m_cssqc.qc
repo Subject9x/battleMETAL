@@ -65,6 +65,14 @@ vector(float val, float type) css_getStatusColor={
 	}
 };
 
+vector(float bits, float dead, float ok) css_getWepStatusColor{
+  if((bits & dead)){
+    return '0.1 0.1 0.1';
+  }
+  else if((bits & ok)){
+    return '0.215 0.709 0.29';
+  }
+}
 
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float dir) css_renderMeter={
   /*

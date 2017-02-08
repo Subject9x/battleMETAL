@@ -18,6 +18,8 @@ commented vars mean they're already implemented and are here for reference!
 //.max_health;
 //.armortype;
 //.armorvalue
+.float state_1;
+.float state_2;
 .void() w_attack;     //actual attack func
 .vector w_mnt_ofs;    //the offset mounting
 .vector w_fire_ofs;     //offset for proj. origin

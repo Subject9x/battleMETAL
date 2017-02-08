@@ -69,6 +69,7 @@ float m_wep = 6;
 .string m_maccel;
 .string m_pitch_min;
 .string m_pitch_max;
+
 //player vars
 .float LG_AM_MX;
 .float LG_AM_CR;
@@ -109,6 +110,7 @@ float STAT_SHIELD = 38;
 
 float STAT_TARG_EID = 39;
 float STAT_VID = 40;
+
 //send ent is for the weak!
 float STAT_CAM_ORG_X = 41;
 float STAT_CAM_ORG_Y = 42;
@@ -128,33 +130,16 @@ float STAT_RARM_HP = 54;
 float STAT_RARM_AM = 55;
 
 float STAT_WEP1_ID = 56;
-float STAT_WEP1_GR = 57;
-float STAT_WEP1_ST = 58;
 float STAT_WEP2_ID = 59;
-float STAT_WEP2_GR = 60;
-float STAT_WEP2_ST = 61;
 float STAT_WEP3_ID = 62;
-float STAT_WEP3_GR = 63;
-float STAT_WEP3_ST = 64;
 float STAT_WEP4_ID = 65;
-float STAT_WEP4_GR = 66;
-float STAT_WEP4_ST = 67;
 float STAT_WEP5_ID = 68;
-float STAT_WEP5_GR = 69;
-float STAT_WEP5_ST = 70;
 float STAT_WEP6_ID = 71;
-float STAT_WEP6_GR = 72;
-float STAT_WEP6_ST = 73;
 float STAT_WEP7_ID = 74;
-float STAT_WEP7_GR = 75;
-float STAT_WEP7_ST = 76;
 float STAT_WEP8_ID = 77;
-float STAT_WEP8_GR = 78;
-float STAT_WEP8_ST = 79;
 float STAT_WEP9_ID = 80;
-float STAT_WEP9_GR = 81;
-float STAT_WEP9_ST = 82;
 
+float STAT_WEP_STT = 57;
 float STAT_WEP_GRP = 83;
 
 float STAT_TRG_VID = 84;
@@ -165,6 +150,8 @@ float STAT_TRG_DAT = 87;
 float STAT_RDR_FRNT = 88;
 float STAT_RDR_BACK = 89;
 float STAT_HIT_DIR = 90;
+float STAT_RDR_MODE = 91;
+float STAT_TRG_DIST = 92;
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
@@ -208,3 +195,34 @@ float TARG_LA_DD = 16384;
 float TARG_LG_OK = 32768;
 float TARG_LG_DM = 65536;
 float TARG_LG_DD = 131072;
+
+//weapon status all-in-one for bitflags
+float WEAPON1_OK = 1;
+float WEAPON1_DD = 2;
+float WEAPON2_OK = 4;
+float WEAPON2_DD = 8;
+float WEAPON3_OK = 16;
+float WEAPON3_DD = 32;
+float WEAPON4_OK = 64;
+float WEAPON4_DD = 128;
+float WEAPON5_OK = 256;
+float WEAPON5_DD = 512;
+float WEAPON6_OK = 1024;
+float WEAPON6_DD = 2048;
+float WEAPON7_OK = 4096;
+float WEAPON7_DD = 8192;
+float WEAPON8_OK = 16384;
+float WEAPON8_DD = 32768;
+float WEAPON9_OK = 65536;
+float WEAPON9_DD = 131072;
+
+//weapon slot bits
+float WEAPON1 = 1;
+float WEAPON2 = 2;
+float WEAPON3 = 4;
+float WEAPON4 = 8;
+float WEAPON5 = 16;
+float WEAPON6 = 32;
+float WEAPON7 = 64;
+float WEAPON8 = 128;
+float WEAPON9 = 256;

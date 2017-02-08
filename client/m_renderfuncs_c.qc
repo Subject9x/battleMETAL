@@ -134,32 +134,34 @@ void(float cur_group) hud_renderWeapons={
   self.wp_pnl_org = css_calcAlign(ofs, self.wp_pnl_aln);
   drawpic(self.wp_pnl_org, self.wp_pnl_img, pnl_sz, '1 1 1', 1, 0);
 
+  local float wep_stat, state;
+  wep_stat = getstati(STAT_WEP_STT);
   if(getstati(STAT_WEP1_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP1_ID),getstati(STAT_WEP1_GR),getstati(STAT_WEP1_ST), self.wdg_wp.w1_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP1_ID), WEAPON1, css_getWepStatusColor(wep_stat, WEAPON1_DD, WEAPON1_OK), self.wdg_wp.w1_ofs, self);
   }
   if(getstati(STAT_WEP2_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP2_ID),getstati(STAT_WEP2_GR),getstati(STAT_WEP2_ST), self.wdg_wp.w2_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP2_ID), WEAPON2, css_getWepStatusColor(wep_stat, WEAPON2_DD, WEAPON2_OK), self.wdg_wp.w2_ofs, self);
   }
   if(getstati(STAT_WEP3_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP3_ID),getstati(STAT_WEP3_GR),getstati(STAT_WEP3_ST), self.wdg_wp.w3_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP3_ID), WEAPON3, css_getWepStatusColor(wep_stat, WEAPON3_DD, WEAPON3_OK), self.wdg_wp.w3_ofs, self);
   }
   if(getstati(STAT_WEP4_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP4_ID),getstati(STAT_WEP4_GR),getstati(STAT_WEP4_ST), self.wdg_wp.w4_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP4_ID), WEAPON4, css_getWepStatusColor(wep_stat, WEAPON4_DD, WEAPON4_OK), self.wdg_wp.w4_ofs, self);
   }
   if(getstati(STAT_WEP5_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP5_ID),getstati(STAT_WEP5_GR),getstati(STAT_WEP5_ST), self.wdg_wp.w5_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP5_ID), WEAPON5, css_getWepStatusColor(wep_stat, WEAPON5_DD, WEAPON5_OK), self.wdg_wp.w5_ofs, self);
   }
   if(getstati(STAT_WEP6_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP6_ID),getstati(STAT_WEP6_GR),getstati(STAT_WEP6_ST), self.wdg_wp.w6_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP6_ID), WEAPON6, css_getWepStatusColor(wep_stat, WEAPON6_DD, WEAPON6_OK), self.wdg_wp.w6_ofs, self);
   }  
   if(getstati(STAT_WEP7_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP7_ID),getstati(STAT_WEP7_GR),getstati(STAT_WEP7_ST), self.wdg_wp.w7_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP7_ID), WEAPON7, css_getWepStatusColor(wep_stat, WEAPON7_DD, WEAPON7_OK), self.wdg_wp.w7_ofs, self);
   }  
   if(getstati(STAT_WEP8_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP8_ID),getstati(STAT_WEP8_GR),getstati(STAT_WEP8_ST), self.wdg_wp.w8_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP8_ID), WEAPON8, css_getWepStatusColor(wep_stat, WEAPON8_DD, WEAPON8_OK), self.wdg_wp.w8_ofs, self);
   }  
   if(getstati(STAT_WEP9_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP9_ID),getstati(STAT_WEP9_GR),getstati(STAT_WEP9_ST), self.wdg_wp.w9_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP9_ID), WEAPON9, css_getWepStatusColor(wep_stat, WEAPON9_DD, WEAPON9_OK), self.wdg_wp.w9_ofs, self);
   }  
 };
 
@@ -201,11 +203,14 @@ void() hud_renderTarget={
     pnl_ctr_x = self.tg_pnl_org_x + (pnl_sz_x/2);
     pnl_ctr_y = self.tg_pnl_org_y + (pnl_sz_y/2);
     pnl_ctr_x = pos + (pnl_sz_x/2);
-    nlen = stringwidth(strcat("[Target] ", self.vec_name), 0, '4 4 0');
+    nlen = stringwidth(strcat("[Target] ", data.vec_name), 0, '4 4 0');
     title_x = pnl_ctr_x - nlen;
     title_y = self.tg_pnl_org_y + 8;
     drawstring(title, strcat("[Target] ", data.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-	
+    
+    local float range;
+    range = getstati(STAT_TRG_DIST);
+    drawstring(title + '0 25', ftos(range), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 	local entity oself;
   oself = self;
   self = oself.wdg_pd;
@@ -235,58 +240,59 @@ void() hud_renderTarget={
 	}	
 	css_renderMeter(100, (pnl_ctr + '-28 30'), '56 16', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
 	
-	
-	//target right torso
-	drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-	if(tam & TARG_RT_OK){
-		colorBuffer = css_getStatusColor(2, 0);
-	}
-	else if(tam & TARG_RT_DM){
-		colorBuffer = css_getStatusColor(1, 0);
-	}
-	else if(tam & TARG_RT_DD){
-		colorBuffer = css_getStatusColor(0, 0);
-	}	
-	css_renderMeter(100, (pnl_ctr + '8 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
-	
-	//target left torso	
-	drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-	if(tam & TARG_LT_OK){
-		colorBuffer = css_getStatusColor(2, 0);
-	}
-	else if(tam & TARG_LT_DM){
-		colorBuffer = css_getStatusColor(1, 0);
-	}
-	else if(tam & TARG_LT_DD){
-		colorBuffer = css_getStatusColor(0, 0);
-	}
-	css_renderMeter(100, (pnl_ctr + '-20 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
-	
-	//target right arm
-	drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-	if(tam & TARG_RA_OK){
-		colorBuffer = css_getStatusColor(2, 0);
-	}
-	else if(tam & TARG_RA_DM){
-		colorBuffer = css_getStatusColor(1, 0);
-	}
-	else if(tam & TARG_RA_DD){
-		colorBuffer = css_getStatusColor(0, 0);
-	}
-	css_renderMeter(100, (pnl_ctr + '22 -12'), '12 36',  '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
-	
-	//target left arm
-	drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-	if(tam & TARG_LA_OK){
-		colorBuffer = css_getStatusColor(2, 0);
-	}
-	else if(tam & TARG_LA_DM){
-		colorBuffer = css_getStatusColor(1, 0);
-	}
-	else if(tam & TARG_LA_DD){
-		colorBuffer = css_getStatusColor(0, 0);
-	}
-	css_renderMeter(100, (pnl_ctr + '-34 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+	if(data.data_type == DATA_MECH){
+    //target right torso
+    drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    if(tam & TARG_RT_OK){
+      colorBuffer = css_getStatusColor(2, 0);
+    }
+    else if(tam & TARG_RT_DM){
+      colorBuffer = css_getStatusColor(1, 0);
+    }
+    else if(tam & TARG_RT_DD){
+      colorBuffer = css_getStatusColor(0, 0);
+    }	
+    css_renderMeter(100, (pnl_ctr + '8 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    //target left torso	
+    drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    if(tam & TARG_LT_OK){
+      colorBuffer = css_getStatusColor(2, 0);
+    }
+    else if(tam & TARG_LT_DM){
+      colorBuffer = css_getStatusColor(1, 0);
+    }
+    else if(tam & TARG_LT_DD){
+      colorBuffer = css_getStatusColor(0, 0);
+    }
+    css_renderMeter(100, (pnl_ctr + '-20 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    //target right arm
+    drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    if(tam & TARG_RA_OK){
+      colorBuffer = css_getStatusColor(2, 0);
+    }
+    else if(tam & TARG_RA_DM){
+      colorBuffer = css_getStatusColor(1, 0);
+    }
+    else if(tam & TARG_RA_DD){
+      colorBuffer = css_getStatusColor(0, 0);
+    }
+    css_renderMeter(100, (pnl_ctr + '22 -12'), '12 36',  '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    //target left arm
+    drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    if(tam & TARG_LA_OK){
+      colorBuffer = css_getStatusColor(2, 0);
+    }
+    else if(tam & TARG_LA_DM){
+      colorBuffer = css_getStatusColor(1, 0);
+    }
+    else if(tam & TARG_LA_DD){
+      colorBuffer = css_getStatusColor(0, 0);
+    }
+    css_renderMeter(100, (pnl_ctr + '-34 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+  }
   self = oself;
   }
 };
@@ -308,7 +314,17 @@ void() hud_renderRadar={
   local float front, back;
   front = getstatf(STAT_RDR_FRNT);
   back = getstatf(STAT_RDR_BACK);
-  drawstring(self.rd_pnl_org + '32 10', "[RADAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(self.rd_pnl_org + '5 10', "[RADAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  local float mode;
+  mode = getstati(STAT_RDR_MODE);
+  if(mode == TRUE){
+    drawstring(self.rd_pnl_org + '48 10', "ACTIVE", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  else if (mode == FALSE){
+    drawstring(self.rd_pnl_org + '48 10', "PASSIVE", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  
   
   local vector pnl_ctr, heat_f, heat_r;
   pnl_ctr_x = (pnl_sz_x/2);
@@ -330,8 +346,8 @@ void() hud_renderRadar={
   drawstring(self.rd_pnl_org + '25 60', ftos(back), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
 };
 
-void(float cgrp, float wid, float wgr, float wst, vector ofs, entity src) hud_renderWeapon={
-  local vector ofsact, color;
+void(float cgrp, float wid, float wgr, vector statusColor, vector ofs, entity src) hud_renderWeapon={
+  local vector ofsact;
   local entity data;
   ofsact = ofs;
   if(src!=world){
@@ -339,7 +355,7 @@ void(float cgrp, float wid, float wgr, float wst, vector ofs, entity src) hud_re
   }
   
   data = m_findData(wid, DATA_WEPN);
-  if(wgr == cgrp){
+  if(cgrp & wgr){
     local float len;
     len = stringwidth(data.w_name, 0, '4 4 0');
     local vector tl, tr, bl, br;
@@ -359,20 +375,6 @@ void(float cgrp, float wid, float wgr, float wst, vector ofs, entity src) hud_re
     drawline(6, bl, br, '0 1 0', 1, 0);
   }
   
-  if(wst == 3){
-    color = '1 0 0 ';
-  }
-  else if(wst == 2){
-    color = '1 1 0';
-  }
-  else{
-    color = '0 1 0';
-  }
-  
-  if(wgr != cgrp){
-    color = '0 0.75 0';
-  }
-  
-  drawstring(ofsact, data.w_name, '4 4 0', color, HUD_ALPHA, 0);
+  drawstring(ofsact, data.w_name, '4 4 0', statusColor, HUD_ALPHA, 0);
   
 };

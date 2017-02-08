@@ -15,6 +15,7 @@ fight_h.qc
   mech/ext/ent_proj_c.qc
   mech/ext/defs_cs.qc
   mech/ext/defs_data.qc
+  mech/ext/defs_impulse.qc
 //==========================
 
 //mech header files

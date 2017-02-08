@@ -174,6 +174,9 @@ void() data_otl_ini={
   self.data_type = DATA_MECH;
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
   self.i_reserve= DAT_OTL_RESERVE_COST;
+  self.w_group1 = self.w_group1 + (WEAPON1 + WEAPON2);
+  self.w_group2 = self.w_group2 + WEAPON3;
+  self.w_group3 = 0;
   self.en_cur= DAT_OTL_ENERGY_CUR;
   self.en_max= DAT_OTL_ENERGY_MAX;
   self.en_rate= DAT_OTL_ENERGY_RATE;
@@ -268,7 +271,7 @@ void() data_otl_wep1={
   self.c_ofs = DAT_OTL_WEP1_OFFSET;
   self.c_alt_ofs = DAT_OTL_WEP1_OFFSET_ALT;
   self.w_adj_ang = DAT_OTL_WEP1_ADJ_ANG;
-  self.w_group = DAT_OTL_WEP1_GROUP;
+  self.w_group = WEAPON1;
 };
 void() data_otl_wep2={  
   self.c_parent = DAT_OTL_WEP2_CPARENT;
@@ -276,7 +279,7 @@ void() data_otl_wep2={
   self.c_ofs = DAT_OTL_WEP2_OFFSET;
   self.c_alt_ofs = DAT_OTL_WEP2_OFFSET_ALT;
   self.w_adj_ang = DAT_OTL_WEP2_ADJ_ANG;
-  self.w_group = DAT_OTL_WEP2_GROUP;
+  self.w_group = WEAPON2;
 };
 void() data_otl_wep3={  
   self.c_parent = DAT_OTL_WEP3_CPARENT;
@@ -284,5 +287,5 @@ void() data_otl_wep3={
   self.c_ofs = DAT_OTL_WEP3_OFFSET;
   self.c_alt_ofs = DAT_OTL_WEP3_OFFSET_ALT;
   self.w_adj_ang = DAT_OTL_WEP3_ADJ_ANG;
-  self.w_group = DAT_OTL_WEP3_GROUP;
+  self.w_group = WEAPON3;
 };

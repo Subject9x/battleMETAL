@@ -7,7 +7,6 @@ Overview: the defintion file for my radar idea
 
 //entity extensions
 .float radar_range;
-.float radar_mode;
 .float radar_front;
 .float radar_rear;
 

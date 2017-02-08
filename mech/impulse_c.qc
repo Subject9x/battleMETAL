@@ -19,7 +19,7 @@ void() playerAttack={
   while(wep_chain){
     local float wpgrp;
     wpgrp = wep_chain.w_group;
-    if(wpgrp == self.currentWeaponGroup){
+    if(self.currentWeaponGroup & wep_chain.w_group){
       if(wep_chain.w_isfire != 1){
         wep_chain.w_isfire = 1;
       }
@@ -35,55 +35,69 @@ void() ImpulseCommands ={
       //respawn();
 		//W_ChangeWeapon ();
 
-	if (self.impulse == 9){}
+	//if (self.impulse == 9){}
 		//CheatCommand ();
-	if (self.impulse == 10){}
+	//if (self.impulse == 10){}
 		//CycleWeaponCommand ();
-	if (self.impulse == 11){}
+	//if (self.impulse == 11){}
 		//ServerflagsCommand ();
-	if (self.impulse == 12){}
+	//if (self.impulse == 12){}
 		//CycleWeaponReverseCommand ();
 
-	if (self.impulse == 255){}
+	//if (self.impulse == 255){}
 		//QuadCheat ();
    
    //Weapon group selection
-  if(self.impulse == 20){
+  if(self.impulse == IMP_WGROUP1){
+  //20
     centerprint(self, "[Weapon Group 1]");
-    self.currentWeaponGroup = 1;
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3));
+    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group1;
   }
 
-  if(self.impulse == 21){
+  if(self.impulse == IMP_WGROUP2){
+    //21
     centerprint(self, "[Weapon Group 2]");
-    self.currentWeaponGroup = 2;
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3));
+    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group2;
   }
     
-  if(self.impulse == 22){
+  if(self.impulse == IMP_WGROUP3){
+    //22
     centerprint(self, "[Weapon Group 3]");
-    self.currentWeaponGroup = 3;
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3));
+    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group3;
   }
   
   local float change;
   change = 0;
   
-  if(self.impulse == 23){
+  if(self.impulse == IMP_VECPREV){
     change = 1;
     self.nextVecChoice = self.nextVecChoice - 1;
   }
   
-  if(self.impulse == 24){
+  if(self.impulse == IMP_VECNEXT){
     change = 1;
     self.nextVecChoice = self.nextVecChoice + 1;
   }
   
-  if(self.impulse == 25){
+  if(self.impulse == IMP_SUICIDE){
     ClientKill();
   }
   
-  if(self.impulse == 26){
+  if(self.impulse == IMP_TARGET){
     server_getTarget();
   }
   
+  if(self.impulse == IMP_RADAR){
+    if(self.stat_rdr_mode){
+      self.stat_rdr_mode = FALSE;
+    }
+    else{
+      self.stat_rdr_mode = TRUE;
+    }
+  }
   
   //abstract out into handler at some point
 

@@ -35,11 +35,17 @@ void() PlayerPreThink = {
   //
   server_updateTargetInfo();
   
-  self.stat_hit_dirs = self.hitdir_buffer;
+  
+  if(self.was_hit){
+    self.stat_hit_dirs = self.hitdir_buffer;
+    self.was_hit = FALSE;
+  }
+
   
   if(self.hitdir_buffer & STAT_HIT_LF){
     self.hitdir_buffer = self.hitdir_buffer - STAT_HIT_LF;
-    bprint(strcat("cleared buffer: ",ftos(self.hitdir_buffer), " \n"));
+    //bprint(strcat("cleared buffer: ",ftos(self.hitdir_buffer), " \n"));
+    self.was_hit = TRUE;
   }
   
 	if (self.button2){
@@ -83,14 +89,17 @@ void() PlayerPostThink = {
   
   local vector radar;
   radar = server_updateRadarInfo();
-  self.radar_front = radar_x;
-  self.radar_rear = radar_y;
+  self.radar_front = radar_x / 10;
+  self.radar_rear = radar_y / 10;
   
   if(self.p_class != P_OBS){
     local entity wep_chain;
+    local float cnt;
+    cnt = 1;
     wep_chain = self.w_slot;
     while(wep_chain){
       ctrl_weapon_think(wep_chain);
+      cnt = cnt + 1;
       wep_chain = wep_chain.w_slot;
     }
   }
@@ -153,9 +162,24 @@ void() PlayerDie={
 	self.angles_z = 0;
   self.avelocity = '0 0 0';
   
-  if(self.p_class == P_MECH){
-    mech_player_die();
-    return;
+  if(self.p_class != P_OBS){
+    self.currentWeaponGroup = self.currentWeaponGroup - 
+                                ((self.currentWeaponGroup & self.w_group1) |
+                                (self.currentWeaponGroup & self.w_group2) | 
+                                (self.currentWeaponGroup & self.w_group3));
+    self.w_group1 = self.w_group1 - self.w_group1;
+    self.w_group2 = self.w_group2 - self.w_group2;
+    self.w_group3 = self.w_group2 - self.w_group3;
+    local entity wep;
+    wep = self.w_slot;
+    while(wep){
+      ctrl_weapon_clearState(self, self.state_1, self.state_2);
+      wep = wep.w_slot;
+    }
+    if(self.p_class == P_MECH){
+      mech_player_die();
+      return;
+    }
   }
 };
 

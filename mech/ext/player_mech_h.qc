@@ -7,6 +7,7 @@ Overview: head for mech management functions
 
 
 void() ctrl_update_mechplayer;
+void() stat_update_weapons;
 
 void() mech_player_die;
 void() mech_player_weapondie;

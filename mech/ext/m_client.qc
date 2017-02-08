@@ -20,7 +20,7 @@ void() ClientConnect = {
   self.p_class_next = P_MECH;
   self.nextVecChoice = 1;
   self.data_idx = 0;
-  self.currentWeaponGroup = 1;
+  self.currentWeaponGroup = self.currentWeaponGroup;
   self.faction = 1;
   self.stat_eid = num_for_edict(self);
   self.en_cur = 0;
@@ -45,32 +45,18 @@ void() ClientConnect = {
   self.stat_cofs_y = 0;
   self.stat_cofs_z = 0;
   self.stat_w1_id = -1;
-  self.stat_w1_gr = -1;
-  self.stat_w1_st = -1;
   self.stat_w2_id = -1;
-  self.stat_w2_gr = -1;
-  self.stat_w2_st = -1;
   self.stat_w3_id = -1;
-  self.stat_w3_gr = -1;
-  self.stat_w3_st = -1;
   self.stat_w4_id = -1;
-  self.stat_w4_gr = -1;
-  self.stat_w4_st = -1;
   self.stat_w5_id = -1;
-  self.stat_w5_gr = -1;
-  self.stat_w5_st = -1;
   self.stat_w6_id = -1;
-  self.stat_w6_gr = -1;
-  self.stat_w6_st = -1;
   self.stat_w7_id = -1;
-  self.stat_w7_gr = -1;
-  self.stat_w7_st = -1;
   self.stat_w8_id = -1;
-  self.stat_w8_gr = -1;
-  self.stat_w8_st = -1;
   self.stat_w9_id = -1;
-  self.stat_w9_gr = -1;
-  self.stat_w9_st = -1;
+  self.w_group1 = 0;
+  self.w_group2 = 0;
+  self.w_group3 = 0;
+  self.stat_wep_state = 0;
   
   self.stat_trg_vid = -1;
   self.stat_trg_sh = -1;
@@ -83,6 +69,7 @@ void() ClientConnect = {
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
   self.stat_hit_dirs = 0;
+  self.stat_rdr_mode = 0;
   
   if (intermission_running){
     ExitIntermission();
@@ -180,7 +167,7 @@ void() ClientKill = {
 
   if(self.p_class == P_MECH){
     mech_player_die();
-    cleanup_mech();
+    
   }
   self.frame = $ctorstand1;
 	self.solid = SOLID_CORPSE;
@@ -188,6 +175,23 @@ void() ClientKill = {
 	self.movetype = MOVETYPE_TOSS;
 	self.deadflag = DEAD_DEAD;
   self.nextthink = -1;
+  self.currentWeaponGroup = self.currentWeaponGroup - 
+                              ((self.currentWeaponGroup & self.w_group1) |
+                              (self.currentWeaponGroup & self.w_group2) | 
+                              (self.currentWeaponGroup & self.w_group3));
+  self.w_group1 = self.w_group1 - self.w_group1;
+  self.w_group2 = self.w_group2 - self.w_group2;
+  self.w_group3 = self.w_group2 - self.w_group3;
+  local entity wep;
+  wep = self.w_slot;
+  while(wep){
+    ctrl_weapon_clearState(wep, wep.state_1, wep.state_2);
+    wep = wep.w_slot;
+  }
+  
+  if(self.p_class == P_MECH){
+    cleanup_mech();
+  }
 
   //only deduct frags of player is going from !observer to another !observer
   if(self.p_class != P_OBS){
