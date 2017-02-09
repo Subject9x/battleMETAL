@@ -21,12 +21,12 @@ void() hud_renderHelmet={
   local float hitdir, l_fade;
   hitdir = getstatf(STAT_HIT_DIR);
   
-  if(hitdir & STAT_HIT_LF){
+  /*if(hitdir & STAT_HIT_LF){
     local vector lorg;
     lorg_x = VIEW_ORG_x + 10;
     lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
     drawfill((lorg + '0 -24'), '8 48', STATUS_DMG, HUD_ALPHA, 0);
-  }
+  }*/
   
   /*if(hitdir & STAT_HIT_RT){
     local vector rorg;
@@ -292,6 +292,20 @@ void() hud_renderTarget={
       colorBuffer = css_getStatusColor(0, 0);
     }
     css_renderMeter(100, (pnl_ctr + '-34 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    local float face;
+    face = getstati(STAT_TRG_FACE);
+    if(face > -1){
+      local vector lorg;
+      if(face == 0){
+        lorg_x = VIEW_ORG_x + 10;    
+      }
+      else if(face == 1){
+        lorg_x = VIEW_ORG_x + VIEW_MAX_x - 10;  
+      }
+      lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
+      drawfill((lorg + '0 -24'), '8 48', STATUS_DMG, HUD_ALPHA, 0);
+    }
   }
   self = oself;
   }

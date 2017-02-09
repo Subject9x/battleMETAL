@@ -152,6 +152,7 @@ float STAT_RDR_BACK = 89;
 float STAT_HIT_DIR = 90;
 float STAT_RDR_MODE = 91;
 float STAT_TRG_DIST = 92;
+float STAT_TRG_FACE = 58;
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";

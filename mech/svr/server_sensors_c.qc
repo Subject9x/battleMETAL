@@ -7,7 +7,7 @@ Overview: necessary targeting and radar functions
 
 float(float current, float total) server_calcComponentArmor;
 void() server_calcTargetArmor;
-
+float() server_calcTargetFacing;
 
 /*scope - self = unit making the target call*/
 void() server_getTarget={
@@ -36,6 +36,7 @@ void() server_updateTargetInfo={
     self.stat_trg_sh = -1;
     self.stat_trg_am = -1;
     self.stat_trg_dist = -1;
+    self.stat_trg_face = -1;
     return;
   }
   
@@ -43,6 +44,9 @@ void() server_updateTargetInfo={
   self.stat_trg_dat = self.enemy.data_type;
   self.stat_trg_am = 0;
   self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+
+  self.stat_trg_face = server_calcTargetFacing();
+
   server_calcTargetArmor();
   if(self.enemy.sh_cur > -1){
     if(self.enemy.sh_cur == 0){
@@ -57,6 +61,28 @@ void() server_updateTargetInfo={
   }
 };
 
+//inspired by original inFront function
+float() server_calcTargetFacing={
+  
+	local vector	vec;
+	local float		f_dot, s_dot;
+	
+	makevectors (self.angles);
+	vec = normalize (self.enemy.origin - self.origin);
+	f_dot = vec * v_forward;
+  s_dot = vec * v_right;
+	centerprint(self, strcat(ftos(f_dot),"\n",ftos(s_dot)));
+	if ( f_dot > 0.6 )
+	{
+		return -1;
+	}
+  else if(s_dot < 0.1 && f_dot < 0.5){
+    return FALSE;
+  }
+  else if(s_dot > 0.1 && f_dot < 0.5){
+    return TRUE;
+  }
+};
 
 void() server_calcTargetArmor={
 	local entity trg;

@@ -62,6 +62,7 @@ void() ClientConnect = {
   self.stat_trg_sh = -1;
   self.stat_trg_am = -1;
   self.stat_trg_dat = -1;
+  self.stat_trg_face = -1;
   
   self.radar_range = 800;
   self.radar_front = 0;
