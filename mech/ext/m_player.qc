@@ -36,16 +36,20 @@ void() PlayerPreThink = {
   server_updateTargetInfo();
   
   
-  if(self.was_hit){
-    self.stat_hit_dirs = self.hitdir_buffer;
-    self.was_hit = FALSE;
-  }
 
-  
-  if(self.hitdir_buffer & STAT_HIT_LF){
-    self.hitdir_buffer = self.hitdir_buffer - STAT_HIT_LF;
-    //bprint(strcat("cleared buffer: ",ftos(self.hitdir_buffer), " \n"));
-    self.was_hit = TRUE;
+  if(time >= self.was_hit){
+    if(self.stat_hit_dirs & STAT_HIT_LF){
+      self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_LF;
+    }
+    if(self.stat_hit_dirs & STAT_HIT_RT){
+      self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_RT;
+    }
+    if(self.stat_hit_dirs & STAT_HIT_BK){
+      self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_BK;
+    }
+  }
+  else{
+    self.stat_hit_dirs = self.hitdir_buffer;
   }
   
 	if (self.button2){

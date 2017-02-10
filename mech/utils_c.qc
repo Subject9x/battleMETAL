@@ -5,6 +5,34 @@ Date: 8/27/2016
 Overview: utility functions for mod, header
 */
 
+//inspired by original inFront function
+float(entity trg) util_checkPointAngle={
+  
+	local vector	vec;
+	local float		f_dot, s_dot;
+	
+	makevectors (self.angles);
+	vec = normalize (trg.origin - self.origin);
+	f_dot = vec * v_forward;
+  s_dot = vec * v_right;
+	if ( f_dot > 0.6 )
+	{
+		return -1;
+	}
+  else{
+    if(f_dot < -0.9 && s_dot <= 0.1){
+      return 2;
+    }
+    else{
+      if(s_dot > 0.1){
+        return 1;
+      }
+      else if(s_dot < 0.1){
+        return 0;
+      }
+    }
+  }
+};
 
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
   local vector next;

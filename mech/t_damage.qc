@@ -31,16 +31,31 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     trg.dmg_inflictor = inflictor;
   }
 
-  if(trg.was_hit != TRUE){
-    trg.was_hit = TRUE;
+  if(trg.was_hit < time){
+    trg.was_hit = time + 2;
   }
-  
-  local float trg_yaw, prj_yaw, fr, fl, rr, rl, flg;
-  trg_yaw = vectoyaw(trg.angles);
-  prj_yaw = vectoyaw(inflictor.velocity);
-  fr = anglemod(trg_yaw + 45);
-  fl = anglemod(trg_yaw - 45);
-
+  local float hit_ang;
+  oself = self;
+  self = trg;
+    hit_ang = util_checkPointAngle(inflictor);
+  self = oself;
+  if(hit_ang == 0){
+    if(!trg.hitdir_buffer & STAT_HIT_LF){
+      trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_LF;
+    }
+  }
+  else if(hit_ang == 1){
+    if(!trg.hitdir_buffer & STAT_HIT_RT){
+      trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_RT;
+    }
+  }
+  else if(hit_ang == 2){
+    if(!trg.hitdir_buffer & STAT_HIT_BK){
+      trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_BK;
+    }
+  }
+  bprint(strcat(ftos(trg.hitdir_buffer)));
+ 
   
   //check shields
   if(trg.sh_cur >= 0){

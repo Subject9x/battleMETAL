@@ -81,8 +81,30 @@ void() data_latc_atk={
     org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
     traceline(org, end, FALSE, player);
     dir = trace_endpos;
-
-    newmis = spawn();
+    
+    te_superspike(dir);
+    sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+    t_damage(trace_ent, self, player, 5, DMG_BAL, dir, '0 0 0');
+    
+    
+    local vector sfx;
+    adj_z = adj_z + 45;
+    sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+    
+    local entity bul_fx;
+    bul_fx = spawn();
+    bul_fx.movetype = SOLID_NOT;
+    bul_fx.classname = "missile";
+    setmodel(bul_fx, "progs/muzzleflash.spr32");
+    setsize(bul_fx, '0 0 0', '0 0 0');
+    setorigin(bul_fx, sfx);
+    bul_fx.glow_color = 250;
+    bul_fx.glow_size = 1;
+    bul_fx.glow_trail = TRUE;
+    bul_fx.color = '1 0 0';
+    bul_fx.think = SUB_Remove;
+    bul_fx.nextthink = time + 0.001;// + 0.35;
+    /*newmis = spawn();
     oself = self;
     self = newmis;
       self.owner = player;
@@ -96,8 +118,8 @@ void() data_latc_atk={
       setorigin(self, org);
       self.velocity = self.velocity * self.p_velocity;
       self.angles = vectoangles(self.velocity);
-    self = oself;
-    sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+    self = oself;*/
+    
   }
   else{
     bprint("oops!\n");

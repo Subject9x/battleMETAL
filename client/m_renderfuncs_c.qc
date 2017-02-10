@@ -21,19 +21,19 @@ void() hud_renderHelmet={
   local float hitdir, l_fade;
   hitdir = getstatf(STAT_HIT_DIR);
   
-  /*if(hitdir & STAT_HIT_LF){
+  if(hitdir & STAT_HIT_LF){
     local vector lorg;
     lorg_x = VIEW_ORG_x + 10;
     lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
-    drawfill((lorg + '0 -24'), '8 48', STATUS_DMG, HUD_ALPHA, 0);
-  }*/
+    drawfill((lorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
+  }
   
-  /*if(hitdir & STAT_HIT_RT){
+  if(hitdir & STAT_HIT_RT){
     local vector rorg;
     rorg_x = VIEW_MAX_x - 18;
     rorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
-    drawfill((rorg + '0 -24'), '8 48', STATUS_DMG, HUD_ALPHA, 0);
-  }*/
+    drawfill((rorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
+  }
 };
 
 void() hud_renderEnergy={
@@ -296,15 +296,23 @@ void() hud_renderTarget={
     local float face;
     face = getstati(STAT_TRG_FACE);
     if(face > -1){
-      local vector lorg;
+      local vector lorg, sz;
       if(face == 0){
-        lorg_x = VIEW_ORG_x + 10;    
+        lorg_x = VIEW_ORG_x + 10; 
+        lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2) - 24;
+        sz = '8 48';
       }
       else if(face == 1){
-        lorg_x = VIEW_ORG_x + VIEW_MAX_x - 10;  
+        lorg_x = VIEW_ORG_x + VIEW_MAX_x - 10; 
+        lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2) - 24;
+        sz = '8 48';        
       }
-      lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
-      drawfill((lorg + '0 -24'), '8 48', STATUS_DMG, HUD_ALPHA, 0);
+      else if(face == 2){
+        lorg_x = VIEW_ORG_x + (VIEW_MAX_x/2) - 24;
+        lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2) - 48;
+        sz = '48 8';
+      }
+      drawfill(lorg, sz, STATUS_DMG, HUD_ALPHA, 0);
     }
   }
   self = oself;
