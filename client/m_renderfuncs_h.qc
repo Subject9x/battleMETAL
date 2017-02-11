@@ -13,4 +13,4 @@ void(float cur_group) hud_renderWeapons;
 void() hud_renderSpeed;
 void() hud_renderRadar;
 void() hud_renderTarget;
-void(float cgrp, float wid, float wgr, vector statusColor, vector ofs, entity src) hud_renderWeapon;
+void(float cgrp, float wid, float wgr, vector statusColor, vector ofs, entity src, float reload) hud_renderWeapon;

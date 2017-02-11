@@ -17,4 +17,4 @@ entity(entity data, entity own) buildLeftArm;
 entity(entity data, entity own) buildRightArm;
 entity(entity data, entity own) buildCameraEnt;
 void(entity data, entity own) buildWeaponList;
-void(entity data, entity own, float state1, float state2) buildVehicleWeapon;
+void(entity data, entity own, float state1, float state2, float state3) buildVehicleWeapon;

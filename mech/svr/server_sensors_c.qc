@@ -23,6 +23,11 @@ void() server_getTarget={
     if(trace_ent.p_class != P_OBS){
       self.enemy = trace_ent;
     }
+    else{
+      self.enemy = world;
+    }
+  }else{
+    self.enemy = world;
   }
 };
 
@@ -39,7 +44,7 @@ void() server_updateTargetInfo={
     //self.stat_trg_fact = -1;
     return;
   }
-  
+
   self.stat_trg_vid = self.enemy.data_idx;
   self.stat_trg_dat = self.enemy.data_type;
   self.stat_trg_am = 0;

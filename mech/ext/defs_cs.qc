@@ -50,6 +50,7 @@ float AS_FLOAT = 8;
 .float stat_trg_dist;
 .float stat_trg_face;
 .float stat_nav_dir;
+.float stat_wep_rel;
 
 //hit direction bit flags
 float STAT_HIT_CL = 1;
@@ -104,6 +105,17 @@ float WEAPON8_DD = 32768;
 float WEAPON9_OK = 65536;
 float WEAPON9_DD = 131072;
 
+//weapon reload states
+float WEAPON1_REL = 1;
+float WEAPON2_REL = 2;
+float WEAPON3_REL = 4;
+float WEAPON4_REL = 8;
+float WEAPON5_REL = 16;
+float WEAPON6_REL = 32;
+float WEAPON7_REL = 64;
+float WEAPON8_REL = 128;
+float WEAPON9_REL = 256;
+
 //stat channels
 float STAT_ENTITY_ID = 33;
 float STAT_PCLASS = 34;
@@ -134,7 +146,6 @@ float STAT_RARM_AM = 55;
 
 float STAT_WEP1_ID = 56;
 float STAT_WEP2_ID = 59;
-//float STAT_WEP2_ST = 61;
 float STAT_WEP3_ID = 62;
 //float STAT_WEP3_GR = 63;
 //float STAT_WEP3_ST = 64;
@@ -158,6 +169,7 @@ float STAT_WEP9_ID = 80;
 //float STAT_WEP9_ST = 82;
 float STAT_WEP_STT = 57;
 float STAT_WEP_GRP =83;
+float STAT_WEP_REL = 61;
 
 //Targeting stuff
 float STAT_TRG_VID = 84;

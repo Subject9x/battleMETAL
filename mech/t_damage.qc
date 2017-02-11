@@ -32,7 +32,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
   }
 
   if(trg.was_hit < time){
-    trg.was_hit = time + 2;
+    trg.was_hit = time + 1;
   }
   local float hit_ang;
   oself = self;
@@ -54,8 +54,6 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
       trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_BK;
     }
   }
-  bprint(strcat(ftos(trg.hitdir_buffer)));
- 
   
   //check shields
   if(trg.sh_cur >= 0){

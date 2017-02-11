@@ -23,7 +23,7 @@ void() hud_renderHelmet={
   
   if(hitdir & STAT_HIT_LF){
     local vector lorg;
-    lorg_x = VIEW_ORG_x + 10;
+    lorg_x = VIEW_ORG_x + 4;
     lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
     drawfill((lorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
   }
@@ -134,34 +134,34 @@ void(float cur_group) hud_renderWeapons={
   self.wp_pnl_org = css_calcAlign(ofs, self.wp_pnl_aln);
   drawpic(self.wp_pnl_org, self.wp_pnl_img, pnl_sz, '1 1 1', 1, 0);
 
-  local float wep_stat, state;
+  local float wep_stat;
   wep_stat = getstati(STAT_WEP_STT);
   if(getstati(STAT_WEP1_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP1_ID), WEAPON1, css_getWepStatusColor(wep_stat, WEAPON1_DD, WEAPON1_OK), self.wdg_wp.w1_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP1_ID), WEAPON1, css_getWepStatusColor(wep_stat, WEAPON1_DD, WEAPON1_OK), self.wdg_wp.w1_ofs, self, WEAPON1_REL);
   }
   if(getstati(STAT_WEP2_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP2_ID), WEAPON2, css_getWepStatusColor(wep_stat, WEAPON2_DD, WEAPON2_OK), self.wdg_wp.w2_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP2_ID), WEAPON2, css_getWepStatusColor(wep_stat, WEAPON2_DD, WEAPON2_OK), self.wdg_wp.w2_ofs, self, WEAPON2_REL);
   }
   if(getstati(STAT_WEP3_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP3_ID), WEAPON3, css_getWepStatusColor(wep_stat, WEAPON3_DD, WEAPON3_OK), self.wdg_wp.w3_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP3_ID), WEAPON3, css_getWepStatusColor(wep_stat, WEAPON3_DD, WEAPON3_OK), self.wdg_wp.w3_ofs, self, WEAPON3_REL);
   }
   if(getstati(STAT_WEP4_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP4_ID), WEAPON4, css_getWepStatusColor(wep_stat, WEAPON4_DD, WEAPON4_OK), self.wdg_wp.w4_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP4_ID), WEAPON4, css_getWepStatusColor(wep_stat, WEAPON4_DD, WEAPON4_OK), self.wdg_wp.w4_ofs, self, WEAPON4_REL);
   }
   if(getstati(STAT_WEP5_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP5_ID), WEAPON5, css_getWepStatusColor(wep_stat, WEAPON5_DD, WEAPON5_OK), self.wdg_wp.w5_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP5_ID), WEAPON5, css_getWepStatusColor(wep_stat, WEAPON5_DD, WEAPON5_OK), self.wdg_wp.w5_ofs, self, WEAPON5_REL);
   }
   if(getstati(STAT_WEP6_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP6_ID), WEAPON6, css_getWepStatusColor(wep_stat, WEAPON6_DD, WEAPON6_OK), self.wdg_wp.w6_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP6_ID), WEAPON6, css_getWepStatusColor(wep_stat, WEAPON6_DD, WEAPON6_OK), self.wdg_wp.w6_ofs, self, WEAPON6_REL);
   }  
   if(getstati(STAT_WEP7_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP7_ID), WEAPON7, css_getWepStatusColor(wep_stat, WEAPON7_DD, WEAPON7_OK), self.wdg_wp.w7_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP7_ID), WEAPON7, css_getWepStatusColor(wep_stat, WEAPON7_DD, WEAPON7_OK), self.wdg_wp.w7_ofs, self, WEAPON7_REL);
   }  
   if(getstati(STAT_WEP8_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP8_ID), WEAPON8, css_getWepStatusColor(wep_stat, WEAPON8_DD, WEAPON8_OK), self.wdg_wp.w8_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP8_ID), WEAPON8, css_getWepStatusColor(wep_stat, WEAPON8_DD, WEAPON8_OK), self.wdg_wp.w8_ofs, self, WEAPON8_REL);
   }  
   if(getstati(STAT_WEP9_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP9_ID), WEAPON9, css_getWepStatusColor(wep_stat, WEAPON9_DD, WEAPON9_OK), self.wdg_wp.w9_ofs, self);
+    hud_renderWeapon(cur_group, getstati(STAT_WEP9_ID), WEAPON9, css_getWepStatusColor(wep_stat, WEAPON9_DD, WEAPON9_OK), self.wdg_wp.w9_ofs, self, WEAPON9_REL);
   }  
 };
 
@@ -368,7 +368,7 @@ void() hud_renderRadar={
   drawstring(self.rd_pnl_org + '25 60', ftos(back), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
 };
 
-void(float cgrp, float wid, float wgr, vector statusColor, vector ofs, entity src) hud_renderWeapon={
+void(float cgrp, float wid, float wgr, vector statusColor, vector ofs, entity src, float reload) hud_renderWeapon={
   local vector ofsact;
   local entity data;
   ofsact = ofs;
@@ -398,5 +398,7 @@ void(float cgrp, float wid, float wgr, vector statusColor, vector ofs, entity sr
   }
   
   drawstring(ofsact, data.w_name, '4 4 0', statusColor, HUD_ALPHA, 0);
-  
+  local float rld;
+  rld = getstati(STAT_WEP_REL);
+  css_renderModalPip(ofsact+ '64 0' , rld, reload, '1 0.1 0.1', '0.1 1 0.1', '24 4', HUD_ALPHA,0);
 };

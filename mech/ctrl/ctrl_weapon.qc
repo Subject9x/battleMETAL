@@ -20,6 +20,17 @@ void(entity wep) ctrl_weapon_think={
     return;
   }
   
+  if(time > self.w_firetime){
+    if(self.owner.stat_wep_rel & self.stat_wep_rel){
+      self.owner.stat_wep_rel = self.owner.stat_wep_rel - self.stat_wep_rel;
+    }
+  }else{
+    if(!(self.owner.stat_wep_rel & self.stat_wep_rel)){
+      self.owner.stat_wep_rel = self.owner.stat_wep_rel + self.stat_wep_rel;
+    }
+  }
+  
+  
   if(self.w_isfire == 1){
     if(time > self.w_firetime){
       if(self.w_currentammo > 0){
@@ -51,7 +62,20 @@ void(entity wep, float state) ctrl_weapon_subState={
 };
 
 void(entity wep, float state1, float state2) ctrl_weapon_clearState={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & (state1 | state2));
+  if(wep.owner.stat_wep_state & state1){
+    wep.owner.stat_wep_state = wep.owner.stat_wep_state - state1;
+  }
+  if(wep.owner.stat_wep_state & state2){
+    wep.owner.stat_wep_state = wep.owner.stat_wep_state - state2;
+  }
+};
+
+void(entity wep, float state) ctrl_weapon_isReload={
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state + state;
+};
+
+void(entity wep, float state) ctrl_weapon_isReady={
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state);
 };
 
 void(entity wep) ctrl_weapon_tryFire={

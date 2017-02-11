@@ -28,6 +28,13 @@ void() playerAttack={
   }
 };
 
+void(float current, float toRemove) removeWeaponGroup={
+
+  if(current & toRemove){
+    current = current - toRemove;
+  }
+
+};
 
 void() ImpulseCommands ={
 	//if (self.impulse >= 1 && self.impulse <= 8)

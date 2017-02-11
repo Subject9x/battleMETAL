@@ -141,6 +141,7 @@ float STAT_WEP9_ID = 80;
 
 float STAT_WEP_STT = 57;
 float STAT_WEP_GRP = 83;
+float STAT_WEP_REL = 61;
 
 float STAT_TRG_VID = 84;
 float STAT_TRG_SH = 85;
@@ -217,6 +218,18 @@ float WEAPON8_OK = 16384;
 float WEAPON8_DD = 32768;
 float WEAPON9_OK = 65536;
 float WEAPON9_DD = 131072;
+
+//weapon reload states
+float WEAPON1_REL = 1;
+float WEAPON2_REL = 2;
+float WEAPON3_REL = 4;
+float WEAPON4_REL = 8;
+float WEAPON5_REL = 16;
+float WEAPON6_REL = 32;
+float WEAPON7_REL = 64;
+float WEAPON8_REL = 128;
+float WEAPON9_REL = 256;
+
 
 //weapon slot bits
 float WEAPON1 = 1;

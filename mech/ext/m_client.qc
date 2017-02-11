@@ -18,7 +18,7 @@ void() ClientConnect = {
   
   self.p_class = P_MECH;
   self.p_class_next = P_MECH;
-  self.nextVecChoice = 1;
+  self.nextVecChoice = 2;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.faction = 1;
@@ -57,6 +57,7 @@ void() ClientConnect = {
   self.w_group2 = 0;
   self.w_group3 = 0;
   self.stat_wep_state = 0;
+  self.stat_wep_rel = 0;
   
   self.stat_trg_vid = -1;
   self.stat_trg_sh = -1;

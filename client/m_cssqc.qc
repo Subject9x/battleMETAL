@@ -10,6 +10,7 @@ vector(vector vec, float algn) css_calcAlign;
 vector(vector org, vector sz, float axs) css_calcAxis;
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float dir) css_renderMeter;
 vector(float val) css_calcRadarHeat;
+void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) css_renderModalPip;
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;
@@ -168,5 +169,17 @@ vector(float val) css_calcRadarHeat={
     toSender = '0.7 0.11 0.23';
   }
   return toSender;
+};
+
+void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) css_renderModalPip={
+  local vector colorActual;
+  if(bit & state1){
+    colorActual = color1;
+  }
+  else{
+    colorActual = color2;
+  }
+  
+  drawfill(ofs, sz, colorActual, alpha, flg);
 };
 

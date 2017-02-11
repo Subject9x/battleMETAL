@@ -39,7 +39,7 @@ void() mh_world_ini={
   
   addstat(STAT_WEP_GRP, AS_INT, currentWeaponGroup);
   addstat(STAT_WEP_STT, AS_INT, stat_wep_state);
-  
+  addstat(STAT_WEP_REL, AS_INT, stat_wep_rel);
   
   addstat(STAT_TRG_VID, AS_INT, stat_trg_vid);
   addstat(STAT_TRG_SH, AS_FLOAT, stat_trg_sh);
