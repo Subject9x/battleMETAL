@@ -73,7 +73,7 @@ void() data_las_atk={
   makevectors(player.v_angle);
   cam = player.e_cam;//.clientcamera;
   traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-  end = trace_endpos;
+  end = trace_endpos + (crandom() * (player.stat_spr_x / 0.75) * v_right) + (v_up * crandom() * (player.stat_spr_y /  0.75));
   
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
   makevectors(player.angles);
@@ -82,8 +82,6 @@ void() data_las_atk={
   dir = trace_endpos;
   
   if (player.t_width < time){
-		//sound (self, CHAN_WEAPON, "weapons/lhit.wav", 1, ATTN_NORM);
-      //sound (self, CHAN_WEAPON, "weapons/laser_3.ogg", 1, ATTN_NORM);
     player.t_width = time + 0.05;//0.6;
 	}
 	player.punchangle_x = -0.05;

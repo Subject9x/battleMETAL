@@ -155,6 +155,9 @@ float STAT_RDR_MODE = 91;
 float STAT_TRG_DIST = 92;
 float STAT_TRG_FACE = 58;
 float STAT_NAV_DIR = 60;
+float STAT_SPR_X = 63;
+float STAT_SPR_Y = 64;
+float STAT_PLR_STT = 66;
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
@@ -230,7 +233,6 @@ float WEAPON7_REL = 64;
 float WEAPON8_REL = 128;
 float WEAPON9_REL = 256;
 
-
 //weapon slot bits
 float WEAPON1 = 1;
 float WEAPON2 = 2;
@@ -241,3 +243,10 @@ float WEAPON6 = 32;
 float WEAPON7 = 64;
 float WEAPON8 = 128;
 float WEAPON9 = 256;
+
+//PLAYER STATE BITS
+float PLAYER_IDLE = 0;
+float PLAYER_SPAWN = 1;
+float PLAYER_LOWEN = 2;
+float PLAYER_LOWSHIELD = 3;
+float PLAYER_CRITDAM = 4;

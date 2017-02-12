@@ -80,15 +80,15 @@ void(vector bbx_min, vector bbx_max) util_setBoundBox={
 /*
   checks to see if a point is within bounds
 */
-float(vector p, vector min, vector max) util_checkInBounds={
+float(vector p, vector pmin, vector pmax) util_checkInBounds={
   if(
-    ((p_x >= min_x) &&
-    (p_y >= min_y) &&
-    (p_z >= min_z))
+    ((p_x >= pmin_x) &&
+    (p_y >= pmin_y) &&
+    (p_z >= pmin_z))
     &&
-    ((p_x <= max_x) &&
-    (p_y <= max_y) &&
-    (p_z <= max_z))
+    ((p_x <= pmax_x) &&
+    (p_y <= pmax_y) &&
+    (p_z <= pmax_z))
   ){
     return TRUE;
   }

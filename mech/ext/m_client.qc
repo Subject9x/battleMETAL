@@ -73,6 +73,11 @@ void() ClientConnect = {
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = 0;
   
+  self.stat_spr_x = 0;
+  self.stat_spr_y = 0;
+  
+  self.stat_plr_stt = 0;
+  
   if (intermission_running){
     ExitIntermission();
   }
@@ -124,6 +129,7 @@ void() PutClientInServer = {
   }
   else if(self.p_class == P_MECH){
     mh_makeMech(self);
+    sound(self.e_cam, CHAN_BODY, "sound/comp/online.ogg", 1, ATTN_NORM); 
   }
  
 	if (deathmatch || coop)

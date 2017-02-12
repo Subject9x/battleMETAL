@@ -10,7 +10,7 @@ Overview: the defintion file for my radar idea
 vector() radar_MakeSweep={
 
   local entity oself, contact, root;
-  local float heat_front, heat_back, ht, face;
+  local float heat_front, heat_back, face;
   heat_front = 0;
   heat_back = 0;
   contact = findradius(self.origin, self.radar_range);
@@ -71,7 +71,7 @@ float(entity root, entity contact, float current_total) radar_calcEnemyDist={
             if(dist == 0){
               dist = 1;
             }
-            mod = 1;
+            mod = 1 / (dist * dist);
             total = total + mod;
           }
         }

@@ -7,9 +7,9 @@ Overview: data def file for a weapon projectile
 
 //MIS CANNON SHOT=======================
 float DAT_PRJ_MIS_IDX = ID_PRJ_MIS;
-float DAT_PRJ_MIS_VELOCITY = 1500;
+float DAT_PRJ_MIS_VELOCITY = 1200;
 string DAT_PRJ_MIS_MODEL = "q3mdl/proj_mis.md3";
-float DAT_PRJ_MIS_LIFETIME = 4;
+float DAT_PRJ_MIS_LIFETIME = 1;
 float DAT_PRJ_MIS_DAMAGE = 20;
 float DAT_PRJ_MIS_DMGTYPE = 0;  //see data_prj_MIS
 
@@ -64,8 +64,8 @@ void() data_prj_mis_touch={
 	}
   
   if(other.classname == "worldspawn"){
-    te_superspike(self.origin);
-    remove(self);
+    BecomeExplosion();
+    //remove(self);
     return;
   }
 
@@ -80,9 +80,8 @@ void() data_prj_mis_touch={
   if(other.classname == "spike"){
     return;
   }
-  //te_superspike(self.origin);
-  //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-  
-  remove(self);
+  BecomeExplosion();
+  //remove(self);
 };

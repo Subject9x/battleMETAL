@@ -34,14 +34,13 @@ void() server_getTarget={
 /*scope - self = unit making the target call*/
 void() server_updateTargetInfo={
   
-  if(self.enemy.deadflag > DEAD_NO){
+  if(self.enemy.deadflag > DEAD_NO || self.enemy == world){
     self.stat_trg_vid = -1;
     self.stat_trg_dat = -1;
     self.stat_trg_sh = -1;
     self.stat_trg_am = -1;
     self.stat_trg_dist = -1;
     self.stat_trg_face = -1;
-    //self.stat_trg_fact = -1;
     return;
   }
 
@@ -51,7 +50,22 @@ void() server_updateTargetInfo={
   self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
   //self.stat_trg_fact = self.enemy.i_faction;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
-
+  if(self.stat_trg_face <= 0){
+    local vector t_height;
+    t_height_z = self.enemy.c_bbx_x_z + 1;
+    t_height_x = 0;
+    t_height_y = 0;
+    local float sz;
+    sz = self.stat_trg_dist / 25;
+    if(sz <= 10){
+      sz = 10;
+    }
+    else if(sz > 25){
+      sz = 25;
+    }
+    msg_entity = self;
+    te_customflash(self.enemy.origin + t_height, sz, 0.75, '1 0 0');
+  }
   server_calcTargetArmor();
   if(self.enemy.sh_cur > -1){
     if(self.enemy.sh_cur == 0){

@@ -74,7 +74,7 @@ void() data_latc_atk={
     makevectors(player.v_angle);
     cam = player.e_cam;
     traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-    end = trace_endpos;
+    end = trace_endpos + (crandom() * player.stat_spr_x * v_right) + (v_up * crandom() * player.stat_spr_y);
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
     makevectors(player.angles);

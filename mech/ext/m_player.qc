@@ -50,6 +50,7 @@ void() PlayerPreThink = {
     self.stat_hit_dirs = self.hitdir_buffer;
   }
   
+  
 	if (self.button2){
 		PlayerJump();
 	}
@@ -103,14 +104,14 @@ void() PlayerPostThink = {
     }
   }
 
-	if (self.impulse)
+	if(self.impulse){
 		ImpulseCommands ();
-    
+  }
 // check for attack
 	if (self.button0){
     playerAttack();
 	}
-
+  
 // check to see if player landed and play landing sound	
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
 	{
@@ -177,7 +178,7 @@ void() PlayerDie={
     if(self.p_class == P_MECH){
       mech_player_die();
       return;
-    }
+    }  
   }
 };
 

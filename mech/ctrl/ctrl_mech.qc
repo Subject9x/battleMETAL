@@ -30,6 +30,12 @@ void() ctrl_updateCenterTorso={
   
   if((self.velocity_x != 0) || (self.velocity_y != 0)){
     self.en_cur = self.en_cur - (self.en_rate/1.25);
+    self.stat_spr_x = 8;
+    self.stat_spr_y = 8;
+  }
+  else{
+    self.stat_spr_x = 1;
+    self.stat_spr_y = 1;
   }
   
   if(self.en_cur < 0){

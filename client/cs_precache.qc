@@ -5,6 +5,10 @@ Date: 10/31/2016
 Overview: header for mech hud functions
 */
 
+void() cs_removeEnt={
+  remove(self);
+};
+
 void() cs_precache={
 
   //cockpit models
@@ -20,6 +24,10 @@ void() cs_precache={
   precache_pic("gfx/hud/otl/otl_sl.png", 0);
   precache_pic("gfx/hud/otl/otl_sp.png", 0);
   precache_pic("gfx/hud/otl/otl_wp.png", 0);
+  
+  //cockpit voice
+  precache_sound("sound/comp/online.ogg");
+  precache_sound("sound/comp/en_low.ogg");
   
   //buildings
   building_power();

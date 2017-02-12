@@ -11,7 +11,7 @@ string DAT_MIS_NAME = "Missile Launcher";
 float DAT_MIS_FIRETIME = 0;
 float DAT_MIS_CLIPSIZE = 6;
 float DAT_MIS_CURRENTAMMO = 6;
-float DAT_MIS_FIRERATE = 0.2;
+float DAT_MIS_FIRERATE = 0.3;
 float DAT_MIS_RELOADTIME = 01.85;
 float DAT_MIS_ISFIRE = 0;
 vector DAT_MIS_FIRE_OFS = '0 0 12';
@@ -74,7 +74,7 @@ void() data_mis_atk={
     makevectors(player.v_angle);
     cam = player.e_cam;
     traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-    end = trace_endpos;
+    end = trace_endpos + (crandom() * (player.stat_spr_x + 6) * v_right) + (v_up * crandom() * (player.stat_spr_y + 6));
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
     makevectors(player.angles);
@@ -91,7 +91,7 @@ void() data_mis_atk={
       util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
       util_setBoundBox('0 0 0', '0 0 0');
       self.velocity = normalize(dir - org);
-      self.think = SUB_Remove;
+      self.think = BecomeExplosion;
       self.nextthink = time + self.p_lifetime;
       setorigin(self, org);
       self.velocity = self.velocity * self.p_velocity;

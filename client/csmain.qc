@@ -97,7 +97,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   local vector vforg;
   vforg = getpropertyvec(VF_ANGLES);
   p_class = getstati(STAT_PCLASS);
-   eid = getstati(STAT_ENTITY_ID);
+  eid = getstati(STAT_ENTITY_ID);
   /*drawstring('0 0 0', vtos(VIEW_ORG), '8 8 0', '1 1 1', 1, 0);
   drawstring('0 8 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
   drawstring('0 16 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
@@ -120,8 +120,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         hud_renderTarget();
       self = oself;
    }
+   	// draw custom crosshair
   }
-	// draw custom crosshair
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!

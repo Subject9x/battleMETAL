@@ -54,6 +54,11 @@ void() mh_world_ini={
   addstat(STAT_RDR_MODE, AS_INT, stat_rdr_mode);
   addstat(STAT_NAV_DIR, AS_INT, stat_nav_dir);
   
+  addstat(STAT_SPR_X, AS_FLOAT, stat_spr_x);
+  addstat(STAT_SPR_Y, AS_FLOAT, stat_spr_y);
+  
+  addstat(STAT_PLR_STT, AS_INT, stat_plr_stt);
+  
   mh_world_iniData();
 };
 

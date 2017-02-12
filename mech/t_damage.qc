@@ -40,17 +40,17 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     hit_ang = util_checkPointAngle(inflictor);
   self = oself;
   if(hit_ang == 0){
-    if(!trg.hitdir_buffer & STAT_HIT_LF){
+    if(!(trg.hitdir_buffer & STAT_HIT_LF)){
       trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_LF;
     }
   }
   else if(hit_ang == 1){
-    if(!trg.hitdir_buffer & STAT_HIT_RT){
+    if(!(trg.hitdir_buffer & STAT_HIT_RT)){
       trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_RT;
     }
   }
   else if(hit_ang == 2){
-    if(!trg.hitdir_buffer & STAT_HIT_BK){
+    if(!(trg.hitdir_buffer & STAT_HIT_BK)){
       trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_BK;
     }
   }
@@ -70,7 +70,6 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
   }
   else{
     te_particlecube(dmg_point + '-1 -1 -1', dmg_point + '1 1 1', '0 0 0', dmg_amt, 150, TRUE, 100);
-    //te_particlerain(dmg_point + '-1 -1 -4', dmg_point + '1 1 4', '0 0 -100', dmg_amt, 150);
     return;
   }
   
