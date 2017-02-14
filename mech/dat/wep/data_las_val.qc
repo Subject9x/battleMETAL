@@ -21,7 +21,7 @@ float DAT_LAS_HPMAX = 50;
 float DAT_LAS_ARMOR = 50;
 float DAT_LAS_ARMORMAX = 50;
 string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_LAS_EN_COST = 1;
+float DAT_LAS_EN_COST = 10;
 string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
 

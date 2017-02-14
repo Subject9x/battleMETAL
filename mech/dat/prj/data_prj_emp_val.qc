@@ -45,7 +45,7 @@ void() data_prj_emp_ini={
   self.c_model = DAT_PRJ_EMP_MODEL;
   self.p_lifetime = DAT_PRJ_EMP_LIFETIME;
   self.p_damage =  DAT_PRJ_EMP_DAMAGE;
-  self.p_dmgtype = DMG_ENE | EFF_RAM;
+  self.p_dmgtype = DMG_ENE + EFF_RAM;
   
   //cosmetics
   self.effects = EF_ADDITIVE | EF_NOSHADOW;

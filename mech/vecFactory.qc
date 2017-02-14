@@ -68,7 +68,7 @@ entity(entity data) buildLegs={
 
 void(entity data) buildCenterTorso={
   data.unit_ctor();
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_WALK);
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_BOUNCE);
   util_setModel(self.c_model, 0);
   util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
   ctor_stand();

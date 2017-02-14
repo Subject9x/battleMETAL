@@ -11,7 +11,7 @@ float DAT_PRJ_MIS_VELOCITY = 1200;
 string DAT_PRJ_MIS_MODEL = "q3mdl/proj_mis.md3";
 float DAT_PRJ_MIS_LIFETIME = 1;
 float DAT_PRJ_MIS_DAMAGE = 20;
-float DAT_PRJ_MIS_DMGTYPE = 0;  //see data_prj_MIS
+float DAT_PRJ_MIS_DMGTYPE = DMG_EXP;
 
 float DAT_PRJ_MIS_EFFECTS = 0; //see data_prj_MIS
 float DAT_PRJ_MIS_MODELFLAGS = MF_ROCKET;
@@ -44,9 +44,8 @@ void() data_prj_mis_ini={
   self.p_velocity = DAT_PRJ_MIS_VELOCITY;
   self.c_model = DAT_PRJ_MIS_MODEL;
   self.p_lifetime = DAT_PRJ_MIS_LIFETIME;
-  self.p_damage = DMG_ENE | EFF_RAM;
-  self.p_dmgtype = DAT_PRJ_MIS_DMGTYPE;
-  
+  self.p_damage = DAT_PRJ_MIS_DAMAGE;
+  self.p_dmgtype = DMG_EXP;
   //cosmetics
   self.effects = EF_ADDITIVE | EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MIS_MODELFLAGS;

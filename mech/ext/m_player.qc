@@ -32,6 +32,23 @@ void() PlayerPreThink = {
     return;	// dying, so do nothing
   }
   
+  //power up sequence
+  if(time < self.power_timer){
+    //self.movetype = MOVETYPE_NONE;
+    if(self.stat_plr_stt == PLAYER_SPAWN){
+      sound(self, CHAN_AUTO, "sound/comp/online.ogg", 1, ATTN_NORM);
+      self.stat_plr_stt = PLAYER_IDLE;
+    } 
+    return;
+  }
+  else{
+    self.power_timer = -2;
+  }
+  if(self.power_timer == -2){
+    self.movetype = MOVETYPE_WALK;
+    self.power_timer = -1;
+  }
+  
   //
   server_updateTargetInfo();
   
@@ -74,7 +91,11 @@ void() PlayerPostThink = {
 	if (self.deadflag){
     return;
   }
-
+  
+  if(time < self.power_timer){
+    return;
+  }
+  
 // do weapon stuff
 
   //STAT UPDATE  
@@ -259,6 +280,6 @@ void() PlayerJump={
 	
 	self.button2 = 0;
 // player jumping sound
-	sound (self, CHAN_BODY, "player/plyrjmp8.wav", 1, ATTN_NORM);
-	self.velocity_z = self.velocity_z + 270;
+	//sound (self, CHAN_BODY, "player/plyrjmp8.wav", 1, ATTN_NORM);
+	self.velocity_z = self.velocity_z + 0;
 };

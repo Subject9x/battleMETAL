@@ -16,9 +16,9 @@ void() ctrl_updateCenterTorso={
   }
   if(self.sh_cur < self.sh_max){
     if(time >= self.sh_hit){
-      if(self.en_cur > (self.sh_rate*3)){
+      if(self.en_cur > (self.sh_rate*2)){
         self.sh_cur = self.sh_cur + self.sh_rate;
-        self.en_cur = self.en_cur - (self.sh_rate/4);
+        self.en_cur = self.en_cur - self.sh_rate;
         if(self.sh_cur > self.sh_max){
           local float diff;
           diff = self.sh_cur - self.sh_max;
@@ -29,7 +29,7 @@ void() ctrl_updateCenterTorso={
   }
   
   if((self.velocity_x != 0) || (self.velocity_y != 0)){
-    self.en_cur = self.en_cur - (self.en_rate/1.25);
+    //self.en_cur = self.en_cur - (self.en_rate*0.25);
     self.stat_spr_x = 8;
     self.stat_spr_y = 8;
   }

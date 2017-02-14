@@ -63,6 +63,8 @@ void() mh_world_ini={
 };
 
 void() mh_world_iniData={
+
+  
   //projectile data
   data_prj_latc();
   data_prj_emp();

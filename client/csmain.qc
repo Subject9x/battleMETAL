@@ -136,7 +136,7 @@ float() CSQC_Parse_TempEntity =
 {
   local float id;
   id = ReadByte();
-  
+
 	return FALSE;
 };
 
@@ -164,10 +164,16 @@ float(entity ent, float channel, string soundname, float volume, float attenuati
 	return FALSE;
 };
 
+float() CSQC_Parse_Event={
+  centerprint("foo\n");
+  return FALSE;
+};
+
+
 // return TRUE if you want to eat this event, otherwise return FALSE to let engine handle it.
 // NOT USED IN DARKPLACES
 float(float event) CSQC_Event =
-{
+{  
 	return FALSE;
 };
 
@@ -185,7 +191,9 @@ entity(float entnum) CSQC_Ent_Spawn =
 // if you wish to do interpolation, be sure to make use the proper time variables: time is previous packet time, servertime is new packet time, so the tick time between packets is servertime - time and the interpolation should begin the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
-  
+  local float id, sfx;
+  id = ReadByte();
+  sfx = ReadByte();
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

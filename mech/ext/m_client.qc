@@ -15,7 +15,7 @@ void() ClientConnect = {
   
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
-  
+  stuffcmd(self, "loadsky dust_ \n");
   self.p_class = P_MECH;
   self.p_class_next = P_MECH;
   self.nextVecChoice = 2;
@@ -129,7 +129,7 @@ void() PutClientInServer = {
   }
   else if(self.p_class == P_MECH){
     mh_makeMech(self);
-    sound(self.e_cam, CHAN_BODY, "sound/comp/online.ogg", 1, ATTN_NORM); 
+    self.power_timer = time + 8;
   }
  
 	if (deathmatch || coop)

@@ -31,6 +31,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     trg.dmg_inflictor = inflictor;
   }
 
+  //calculate hit time and angle
   if(trg.was_hit < time){
     trg.was_hit = time + 1;
   }
@@ -57,12 +58,11 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
   
   //check shields
   if(trg.sh_cur >= 0){
-    new_dmg = damage_shield(trg, attacker, dmg_amt, dmg_type);
+    new_dmg = damage_shield(trg, dmg_amt, dmg_type);
   } 
   
   if(trg.sh_cur <= 0){
     trg.sh_cur = 0;
-    te_tarexplosion(trg.origin);
   }
   
   if(new_dmg > 0){
@@ -276,55 +276,94 @@ void(entity targ, entity attacker, float dmg_type) killed={
 };
 
 //returns remain damage to be passed on to armor
-float(entity targ, entity attacker, float dmg_amt, float dmg_type) damage_shield={
-  
-  if(targ.sh_cur >= 0){
-    targ.sh_hit = time + SHIELD_DELAY;
-    if((dmg_type & DMG_ENE)){
-      if((dmg_type & EFF_RAM)){
+float(entity targ, float dmg_amt, float dmg_type) damage_shield={
+  targ.sh_hit = time + 5;
+  //Energy damage calculation
+  if(dmg_type & DMG_ENE){
+    if(dmg_type & EFF_PRC){
+        return dmg_amt;
+    }
+    else if(dmg_type & EFF_STX){
+      if(dmg_type & EFF_RAM){
+        dmg_amt = dmg_amt * 2;
+      }
+      targ.sh_cur = targ.sh_cur - dmg_amt;
+      if(targ.sh_cur < 0){
+        targ.sh_cur = 0;
+      }
+      return 0;
+    }
+    else{
+      if(targ.sh_cur >= dmg_amt){
         targ.sh_cur = targ.sh_cur - dmg_amt;
         return 0;
       }
-      else if((dmg_type & EFF_PRC)){
-        targ.sh_cur = targ.sh_cur - (dmg_amt/SHIELD_SOAK);
-        return (dmg_amt - (dmg_amt/SHIELD_SOAK));
-      }
       else{
-        if(targ.sh_cur < dmg_amt){
-          targ.sh_cur = 0;
-          dmg_amt = dmg_amt - targ.sh_cur;
-          return dmg_amt;
-        }
-        else{
-          targ.sh_cur = targ.sh_cur - dmg_amt;
-          return 0;
-        }
-      }
-    }
-    else if((dmg_type & DMG_BAL)){
-      if((dmg_type & EFF_RAM)){
-        targ.sh_cur = targ.sh_cur - (dmg_amt + (dmg_amt * 1.5));
-        return 0;
-      }
-      if((dmg_type & EFF_PRC)){
-        return dmg_amt;
-      }
-      if(targ.sh_cur < dmg_amt){
         dmg_amt = dmg_amt - targ.sh_cur;
         return dmg_amt;
       }
-      else{
-        targ.sh_cur = targ.sh_cur - (dmg_amt/2);
-        return 0;
-      }
-    }
-    else if((dmg_type & DMG_EXP)){
-    
     }
   }
+  else if(dmg_type & DMG_BAL){
+    if(dmg_type & EFF_PRC){
+      return dmg_amt;
+    }
+    else if(dmg_type & EFF_STX){
+      if(dmg_type & EFF_RAM){
+        dmg_amt = dmg_amt * 1.15;
+      }
+      targ.sh_cur = targ.sh_cur - dmg_amt;
+      if(targ.sh_cur < 0){
+        targ.sh_cur = 0;
+      }
+      return 0;
+    }
+    else{
+      if(targ.sh_cur >= dmg_amt){
+        targ.sh_cur = targ.sh_cur - dmg_amt;
+        return 0;
+      }
+      else{
+        dmg_amt = dmg_amt - targ.sh_cur;
+        return dmg_amt;
+      }
+    }
+  }
+  else if(dmg_type & DMG_EXP){
+    if(dmg_type & EFF_PRC){
+      return dmg_amt;
+    }
+    else if(dmg_type & EFF_STX){
+      if(dmg_type & EFF_RAM){
+        dmg_amt = dmg_amt * 0.75;
+      }
+      targ.sh_cur = targ.sh_cur - dmg_amt;
+      if(targ.sh_cur < 0){
+        targ.sh_cur = 0;
+      }
+      return 0;
+    }
+    else{
+      if(targ.sh_cur > 0){
+        return 0;
+      }
+      else{
+        return dmg_amt;
+      }
+    }
+  }
+  
+  if(targ.sh_cur < 0){
+    dmg_amt = dmg_amt - (targ.sh_cur * -1);
+    targ.sh_cur = 0;
+  }
+  
   return dmg_amt;
 };
 
+float(entity targ, float dmg_amt, float dmg_type) damage_armor={
+  return dmg_amt;
+};
 
 /*
   2 Jan 2017
