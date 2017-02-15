@@ -79,6 +79,7 @@ void() mh_world_iniData={
   //mech data
   data_mech_otl();
   data_mech_mtk();
+  data_mech_hvd();
   
   //buildings;
   data_h_power();

@@ -26,6 +26,9 @@ float DAT_MTK_M_FSPEED=125;
 float DAT_MTK_M_SSPEED=100;
 float DAT_MTK_M_BSPEED=100;
 
+vector DAT_MTK_SPREAD_N = '0 0 0.002';
+vector DAT_MTK_SPREAD_X = '6 6 0.003';
+
 //HITPOINT VALUES
 float DAT_MTK_CTOR_HP = 100;
 float DAT_MTK_CTOR_HPMAX= 100;
@@ -213,6 +216,8 @@ void() data_mtk_ini={
   self.c_model = DAT_MTK_CTOR_MODEL;
   self.weaponmodel = DAT_MTK_CPIT_MODEL;
   self.weaponframe = 0;
+  self.conv_min = DAT_MTK_SPREAD_N; 
+  self.conv_max = DAT_MTK_SPREAD_X;
   self.m_fspeed = DAT_MTK_M_FSPEED;
   self.m_sspeed = DAT_MTK_M_SSPEED;
   self.m_bspeed = DAT_MTK_M_BSPEED;

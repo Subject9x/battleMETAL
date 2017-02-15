@@ -27,6 +27,9 @@ float DAT_OTL_M_FSPEED=175;
 float DAT_OTL_M_SSPEED=150;
 float DAT_OTL_M_BSPEED=150;
 
+vector DAT_OTL_SPREAD_N = '1 1 0.005';
+vector DAT_OTL_SPREAD_X = '4 4 0.005';
+
 float DAT_OTL_LEG_HP = 100;
 float DAT_OTL_LEG_HPMAX= 100;
 float DAT_OTL_CTOR_HP = 100;
@@ -188,6 +191,8 @@ void() data_otl_ini={
   self.c_model = DAT_OTL_CTOR_MODEL;
   self.weaponmodel = DAT_OTL_CPIT_MODEL;
   self.weaponframe = 0;
+  self.conv_min = DAT_OTL_SPREAD_N; 
+  self.conv_max = DAT_OTL_SPREAD_X; 
   self.m_fspeed = DAT_OTL_M_FSPEED;
   self.m_sspeed = DAT_OTL_M_SSPEED;
   self.m_bspeed = DAT_OTL_M_BSPEED;

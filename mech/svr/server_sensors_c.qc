@@ -33,7 +33,7 @@ void() server_getTarget={
 
 /*scope - self = unit making the target call*/
 void() server_updateTargetInfo={
-  
+  local float isvis;
   if(self.enemy.deadflag > DEAD_NO || self.enemy == world){
     self.stat_trg_vid = -1;
     self.stat_trg_dat = -1;
@@ -51,22 +51,13 @@ void() server_updateTargetInfo={
   //self.stat_trg_fact = self.enemy.i_faction;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
   if(self.stat_trg_face <= 0){
-    local vector t_height;
-    t_height_z = self.enemy.c_bbx_x_z + 1;
-    t_height_x = 0;
-    t_height_y = 0;
-    local float sz;
-    sz = self.stat_trg_dist / 25;
-    if(sz <= 10){
-      sz = 10;
-    }
-    else if(sz > 25){
-      sz = 25;
-    }
-    msg_entity = self;
-    te_customflash(self.enemy.origin + t_height, sz, 0.75, '1 0 0');
+    isvis = TRUE;
   }
-  server_calcTargetArmor();
+  else{
+    isvis = FALSE;
+  }
+  sever_handleTargetMarkEnt(isvis);
+  server_calcTargetArmor(isvis, self.enemy);
   if(self.enemy.sh_cur > -1){
     if(self.enemy.sh_cur == 0){
       self.stat_trg_sh = 0;
@@ -78,6 +69,34 @@ void() server_updateTargetInfo={
   else{
     self.stat_trg_sh = -1;
   }
+};
+
+void(float vis) sever_handleTargetMarkEnt={
+  local entity oself;
+  local vector t_height;
+  t_height_z = self.enemy.c_bbx_x_z + 1;
+  t_height_x = 0;
+  t_height_y = 0;
+  local float sz;
+  sz = self.stat_trg_dist / 25;
+  if(sz <= 2){
+    sz = 2;
+  }
+  else if(sz > 5){
+    sz = 5;
+  }
+  oself = self;
+  self = self.targetpip;
+  if(vis == TRUE){
+    self.effects = EF_FULLBRIGHT + EF_NODEPTHTEST + EF_LOWPRECISION;
+    setmodel(self, "q3mdl/green_pip.spr32");
+    setorigin(self, oself.enemy.origin + t_height);
+    self.scale = sz/10;
+  }
+  else{
+    self.effects = EF_NODRAW + EF_LOWPRECISION;
+  }
+  self = oself;
 };
 
 

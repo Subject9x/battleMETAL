@@ -47,7 +47,7 @@ void() data_prj_mis_ini={
   self.p_damage = DAT_PRJ_MIS_DAMAGE;
   self.p_dmgtype = DMG_EXP;
   //cosmetics
-  self.effects = EF_ADDITIVE | EF_NOSHADOW;
+  self.effects = EF_ADDITIVE + EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MIS_MODELFLAGS;
   self.alpha = DAT_PRJ_MIS_ALPHA;
   self.colormod = DAT_PRJ_MIS_COLORMOD;

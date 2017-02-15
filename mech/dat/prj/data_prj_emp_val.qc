@@ -18,7 +18,7 @@ float DAT_PRJ_EMP_MODELFLAGS = MF_TRACER3;
 float DAT_PRJ_EMP_ALPHA = 0.75;
 vector DAT_PRJ_EMP_COLORMOD = '0.45 0.45 0.80';
 float DAT_PRJ_EMP_GLOWCOLOR = 150;
-float DAT_PRJ_EMP_GLOWSIZE = 0.05;
+float DAT_PRJ_EMP_GLOWSIZE = 0.1;
 float DAT_PRJ_EMP_GLOWTRAIL= TRUE;
 
 void() data_prj_emp;
@@ -48,7 +48,7 @@ void() data_prj_emp_ini={
   self.p_dmgtype = DMG_ENE + EFF_RAM;
   
   //cosmetics
-  self.effects = EF_ADDITIVE | EF_NOSHADOW;
+  self.effects = EF_ADDITIVE + EF_NOSHADOW;
   self.modelflags = DAT_PRJ_EMP_MODELFLAGS;
   self.alpha = DAT_PRJ_EMP_ALPHA;
   self.colormod = DAT_PRJ_EMP_COLORMOD;

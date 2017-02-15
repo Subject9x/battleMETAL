@@ -22,6 +22,7 @@ m_renderfuncs_h.qc
   //Mechs
   data/mch/data_matok_val.qc
   data/mch/data_outlaw_val.qc
+  data/mch/data_hevidahl_val.qc
   
   //Buildings
   //data/bld/data_h_power.qc

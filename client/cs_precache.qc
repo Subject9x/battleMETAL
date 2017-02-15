@@ -37,6 +37,7 @@ void() cs_precache={
   //mech data
   data_mech_mtk();
   data_mech_otl();
+  data_mech_hvd();
   
   //wep data
   data_wep_latc();

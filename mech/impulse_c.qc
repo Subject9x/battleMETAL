@@ -108,11 +108,11 @@ void() ImpulseCommands ={
   
   //abstract out into handler at some point
 
-  if(self.nextVecChoice > 2){
+  if(self.nextVecChoice > 3){
     self.nextVecChoice = 0;
   }
   else if(self.nextVecChoice < 0){
-    self.nextVecChoice = 2;
+    self.nextVecChoice = 3;
   }
 	
   if(change == 1){

@@ -132,16 +132,7 @@ vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 
 void() data_mech_otl;
 void() data_otl_ini;
-void() data_otl_legs;
-void() data_otl_ctor;
-void() data_otl_ltor;
-void() data_otl_rtor;
-void() data_otl_larm;
-void() data_otl_rarm;
-void() data_otl_cam;
-void() data_otl_wep1;
-void() data_otl_wep2;
-void() data_otl_wep3;
+
 
 //call this guy at the start of the world ini
 void() data_mech_otl={

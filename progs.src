@@ -56,6 +56,7 @@ fight_h.qc
   //mechs
   mech/dat/mch/data_outlaw_val.qc
   mech/dat/mch/data_matok_val.qc
+  mech/dat/mch/data_hevdal_val.qc
   
   //buildings
   mech/dat/bld/data_h_buildings.qc

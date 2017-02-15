@@ -25,7 +25,8 @@ void() mh_precache_models={
 
   precache_model("progs/v_dpshot.mdl");
   
-    //mech model
+  precache_model("q3mdl/green_pip.spr32");
+  //mech model
   precache_model ("q3mdl/testball.md3");
   //nu outlaw
   precache_model ("q3mdl/mechs/notl/mdl_notl_cpt.md3");
@@ -44,6 +45,13 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_r_arm.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3");
   
+  precache_model ("q3mdl/mechs/hvd/mdl_hvd_legs.md3");
+  precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_cent.md3");
+  precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_left.md3");
+  precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_right.md3");
+  precache_model ("q3mdl/mechs/hvd/mdl_hvd_l_arm.md3");
+  precache_model ("q3mdl/mechs/hvd/mdl_hvd_r_arm.md3");
+   
    
   //weapon models
   precache_model ("q3mdl/weapons/w_atc.md3");

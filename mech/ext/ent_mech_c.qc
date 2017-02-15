@@ -18,6 +18,8 @@ commented vars mean they're already implemented and are here for reference!
 .float sh_rate;   //shield recharge rate
 .float sh_hit;
 
+.vector conv_min;
+.vector conv_max;
 
 .float l_dmg;
 .float m_rot_speed;
@@ -27,9 +29,6 @@ commented vars mean they're already implemented and are here for reference!
 //.float i_techLevel;
 //.string data_type;
 
-//.void() w_group1;
-//.void() w_group2;
-//.void() w_group3;
 .void() th_ctrl;    //update function
 
 //child entites

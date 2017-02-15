@@ -30,14 +30,26 @@ void() ctrl_updateCenterTorso={
   
   if((self.velocity_x != 0) || (self.velocity_y != 0)){
     //self.en_cur = self.en_cur - (self.en_rate*0.25);
-    self.stat_spr_x = 8;
-    self.stat_spr_y = 8;
+    self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
+    if(self.stat_spr_x > self.conv_max_x){
+      self.stat_spr_x =  self.conv_max_x;
+    }
+    self.stat_spr_y = self.stat_spr_y + self.conv_max_z;
+    if(self.stat_spr_y > self.conv_max_y){
+      self.stat_spr_y =  self.conv_max_y;
+    }
   }
   else{
-    self.stat_spr_x = 1;
-    self.stat_spr_y = 1;
+    self.stat_spr_x = self.stat_spr_x - self.conv_min_z;
+    if(self.stat_spr_x < self.conv_min_x){
+      self.stat_spr_x =  self.conv_min_x;
+    }
+    self.stat_spr_y = self.stat_spr_y - self.conv_min_z;
+    if(self.stat_spr_y < self.conv_min_y){
+      self.stat_spr_y =  self.conv_min_y;
+    }
   }
-  
+  centerprint(self, strcat("x:", ftos(self.stat_spr_x),"|y:", ftos(self.stat_spr_y),"\n"));
   if(self.en_cur < 0){
     self.en_cur = 0;
   }
