@@ -18,7 +18,7 @@ void() ClientConnect = {
   stuffcmd(self, "loadsky dust_ \n");
   self.p_class = P_MECH;
   self.p_class_next = P_MECH;
-  self.nextVecChoice = 1;
+  self.nextVecChoice = 3;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.faction = 1;
@@ -78,6 +78,7 @@ void() ClientConnect = {
   self.conv_min = '0 0 0';
   self.conv_max = '0 0 0';
   self.stat_plr_stt = 0;
+  self.stat_plr_fir = 0;
   
   if (intermission_running){
     ExitIntermission();
@@ -127,6 +128,7 @@ void() PutClientInServer = {
 	
   if(self.p_class == P_OBS){
     mh_makeObserver(self);
+    self.power_timer = 0;
   }
   else if(self.p_class == P_MECH){
     mh_makeMech(self);

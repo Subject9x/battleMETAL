@@ -20,6 +20,8 @@ float DAT_LATC_PROJ_ID= ID_PRJ_LATC;
 float DAT_LATC_EN_COST= 0;
 string DAT_LATC_SOUND = "sound/ac5.ogg";
 float DAT_LATC_TECH_LEVEL = 1;
+float DAT_LATC_SPR_X = 3;
+float DAT_LATC_SPR_Y = 2;
 
 void() data_wep_latc;
 void() data_latc_ini;
@@ -54,6 +56,8 @@ void() data_latc_ini={
   self.en_max = DAT_LATC_EN_COST;
   self.fire_sound = DAT_LATC_SOUND;
   self.i_techlvl = DAT_LATC_TECH_LEVEL;
+  self.stat_spr_x = DAT_LATC_SPR_X;
+  self.stat_spr_y = DAT_LATC_SPR_Y;
 };
 
 void() data_latc_atk={
@@ -66,7 +70,7 @@ void() data_latc_atk={
     makevectors(player.v_angle);
     cam = player.e_cam;
     traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-    end = trace_endpos + (crandom() * player.stat_spr_x * v_right) + (v_up * crandom() * player.stat_spr_y);
+    end = trace_endpos + (crandom() * (player.stat_spr_x + self.stat_spr_x) * v_right) + (v_up * crandom() * (player.stat_spr_y + self.stat_spr_y));
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
     makevectors(player.angles);

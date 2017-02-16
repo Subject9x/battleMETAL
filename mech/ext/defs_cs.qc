@@ -54,6 +54,7 @@ float AS_FLOAT = 8;
 .float stat_spr_x;
 .float stat_spr_y;
 .float stat_plr_stt;
+.float stat_plr_fir;
 
 //hit direction bit flags
 float STAT_HIT_CL = 1;
@@ -158,7 +159,6 @@ float STAT_WEP1_ID = 56;
 float STAT_WEP2_ID = 59;
 float STAT_WEP3_ID = 62;
 float STAT_WEP4_ID = 65;
-//float STAT_WEP4_ST = 67;
 float STAT_WEP5_ID = 68;
 //float STAT_WEP5_GR = 69;
 //float STAT_WEP5_ST = 70;
@@ -182,6 +182,7 @@ float STAT_SPR_X = 63;
 float STAT_SPR_Y = 64;
 
 float STAT_PLR_STT = 66;
+float STAT_PLR_FIR = 67;
 
 //Targeting stuff
 float STAT_TRG_VID = 84;

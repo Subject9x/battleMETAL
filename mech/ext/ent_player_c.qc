@@ -20,6 +20,7 @@ Overview: extends the player's entity.
 .float w_group1;
 .float w_group2;
 .float w_group3;
+.float w_firemode;
 
 .float faction;   //which faction? consult table
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 

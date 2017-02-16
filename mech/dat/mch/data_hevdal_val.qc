@@ -22,9 +22,9 @@ float DAT_HVD_SHIELD_RATE = 0.1;
 vector DAT_HVD_CTOR_BBX_N ='-18 -18 -50';
 vector DAT_HVD_CTOR_BBX_X ='18 18 14';
 string DAT_HVD_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3";
-float DAT_HVD_M_FSPEED=125;
-float DAT_HVD_M_SSPEED=100;
-float DAT_HVD_M_BSPEED=100;
+float DAT_HVD_M_FSPEED=85;
+float DAT_HVD_M_SSPEED=80;
+float DAT_HVD_M_BSPEED=75;
 
 vector DAT_HVD_SPREAD_N = '4 2 0.005';
 vector DAT_HVD_SPREAD_X = '10 6 0.01';
@@ -76,12 +76,12 @@ string DAT_HVD_M_ACCEL="1";
 string DAT_HVD_M_ROLLANGLE="2.25";
 string DAT_HVD_M_PITCH_N="90";
 string DAT_HVD_M_PITCH_X="-90";
-string DAT_HVD_M_BOB = "0.0008";
-string DAT_HVD_M_BCYCLE =  "0.5";
+string DAT_HVD_M_BOB = "0.5";
+string DAT_HVD_M_BCYCLE =  "0.85";
 string DAT_HVD_M_BUP = "0.5";
 string DAT_HVD_M_BMODEL = "1";
-string DAT_HVD_M_BSIDE = "0.35";
-string DAT_HVD_M_BSPD = "6.55";
+string DAT_HVD_M_BSIDE = "0.65";
+string DAT_HVD_M_BSPD = "3.85";
 
 //LEGS
 string DAT_HVD_LEG_CNAME= M_LEGS;

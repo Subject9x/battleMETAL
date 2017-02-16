@@ -32,41 +32,44 @@ void() PlayerPreThink = {
     return;	// dying, so do nothing
   }
   
-  //power up sequence
-  if(time < self.power_timer){
-    //self.movetype = MOVETYPE_NONE;
-    if(self.stat_plr_stt == PLAYER_SPAWN){
-      sound(self, CHAN_AUTO, "sound/comp/online.ogg", 1, ATTN_NORM);
-      self.stat_plr_stt = PLAYER_IDLE;
-    } 
-    return;
+  if(self.p_class != P_OBS){
+    //power up sequence
+    if(time < self.power_timer){
+      //self.movetype = MOVETYPE_NONE;
+      if(self.stat_plr_stt == PLAYER_SPAWN){
+        sound(self, CHAN_AUTO, "sound/comp/online.ogg", 1, ATTN_NORM);
+        self.stat_plr_stt = PLAYER_IDLE;
+      } 
+      return;
+    }
+    else{
+      self.power_timer = -2;
+    }
+    if(self.power_timer == -2){
+      self.movetype = MOVETYPE_WALK;
+      self.power_timer = -1;
+    }
   }
-  else{
-    self.power_timer = -2;
-  }
-  if(self.power_timer == -2){
-    self.movetype = MOVETYPE_WALK;
-    self.power_timer = -1;
-  }
+
   
   //
   server_updateTargetInfo();
-  
-  if(time >= self.was_hit){
-    if(self.stat_hit_dirs & STAT_HIT_LF){
-      self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_LF;
+  if(self.p_class != P_OBS){
+    if(time >= self.was_hit){
+      if(self.stat_hit_dirs & STAT_HIT_LF){
+        self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_LF;
+      }
+      if(self.stat_hit_dirs & STAT_HIT_RT){
+        self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_RT;
+      }
+      if(self.stat_hit_dirs & STAT_HIT_BK){
+        self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_BK;
+      }
     }
-    if(self.stat_hit_dirs & STAT_HIT_RT){
-      self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_RT;
-    }
-    if(self.stat_hit_dirs & STAT_HIT_BK){
-      self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_BK;
+    else{
+      self.stat_hit_dirs = self.hitdir_buffer;
     }
   }
-  else{
-    self.stat_hit_dirs = self.hitdir_buffer;
-  }
-  
   
 	if (self.button2){
 		PlayerJump();
@@ -92,8 +95,10 @@ void() PlayerPostThink = {
     return;
   }
   
-  if(time < self.power_timer){
-    return;
+  if(self.p_class != P_OBS){
+    if(time < self.power_timer){
+      return;
+    }
   }
   
 // do weapon stuff

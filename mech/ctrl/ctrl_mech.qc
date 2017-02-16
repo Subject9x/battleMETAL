@@ -49,7 +49,6 @@ void() ctrl_updateCenterTorso={
       self.stat_spr_y =  self.conv_min_y;
     }
   }
-  centerprint(self, strcat("x:", ftos(self.stat_spr_x),"|y:", ftos(self.stat_spr_y),"\n"));
   if(self.en_cur < 0){
     self.en_cur = 0;
   }

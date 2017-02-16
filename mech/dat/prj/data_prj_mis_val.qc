@@ -64,7 +64,6 @@ void() data_prj_mis_touch={
   
   if(other.classname == "worldspawn"){
     BecomeExplosion();
-    //remove(self);
     return;
   }
 
@@ -82,5 +81,4 @@ void() data_prj_mis_touch={
 
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   BecomeExplosion();
-  //remove(self);
 };

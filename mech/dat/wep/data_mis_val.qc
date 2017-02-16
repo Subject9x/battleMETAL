@@ -20,6 +20,8 @@ float DAT_MIS_PROJ_ID= ID_PRJ_MIS;
 float DAT_MIS_EN_COST= 0;
 string DAT_MIS_SOUND = "weapons/sgun1.wav";
 float DAT_MIS_TECH_LEVEL = 1;
+float DAT_LAS_SPR_X = 8;
+float DAT_LAS_SPR_Y = 6;
 
 void() data_wep_mis;
 void() data_mis_ini;
@@ -54,6 +56,8 @@ void() data_mis_ini={
   self.en_max = DAT_MIS_EN_COST;
   self.fire_sound = DAT_MIS_SOUND;
   self.i_techlvl = DAT_MIS_TECH_LEVEL;
+  self.stat_spr_x = DAT_LAS_SPR_X;
+  self.stat_spr_y = DAT_LAS_SPR_Y;
 };
 
 void() data_mis_atk={
@@ -66,7 +70,7 @@ void() data_mis_atk={
     makevectors(player.v_angle);
     cam = player.e_cam;
     traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-    end = trace_endpos + (crandom() * (player.stat_spr_x + 6) * v_right) + (v_up * crandom() * (player.stat_spr_y + 6));
+    end = trace_endpos + (crandom() * (player.stat_spr_x + self.stat_spr_x) * v_right) + (v_up * crandom() * (player.stat_spr_y + self.stat_spr_y));
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
     makevectors(player.angles);

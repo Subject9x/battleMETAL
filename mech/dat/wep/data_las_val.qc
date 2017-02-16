@@ -90,7 +90,7 @@ void() data_las_atk={
   local float dtype;
   dtype = DMG_ENE;
   t_damage(trace_ent, self, player, DAT_LAS_DMG, dtype, dir, '0 0 0');
-  sound (laser_org, CHAN_WEAPON, "sound/weapons/laser_3.ogg", 1, ATTN_NORM); 
+  sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
   te_lightning1(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);

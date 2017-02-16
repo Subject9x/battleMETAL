@@ -158,6 +158,7 @@ float STAT_NAV_DIR = 60;
 float STAT_SPR_X = 63;
 float STAT_SPR_Y = 64;
 float STAT_PLR_STT = 66;
+float STAT_PLR_FIR = 67;
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";

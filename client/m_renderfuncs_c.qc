@@ -34,6 +34,18 @@ void() hud_renderHelmet={
     rorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
     drawfill((rorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
   }
+  
+  local vector spr_w, spr_h;
+  spr_w_x = getstatf(STAT_SPR_X);
+  spr_w_y = 0;
+  spr_h_y = getstatf(STAT_SPR_Y);
+  spr_h_x = 0;
+  
+  drawfill((VIEW_CTR - '8 0' - spr_w), '8 1',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  drawfill((VIEW_CTR + spr_w), '8 1',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  drawfill((VIEW_CTR - '0 8' - spr_h), '1 8',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  drawfill((VIEW_CTR + spr_h), '1 8',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  
 };
 
 void() hud_renderEnergy={

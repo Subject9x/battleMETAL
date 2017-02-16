@@ -16,6 +16,7 @@ void() mh_precache_sound={
   precache_sound ("weapons/sgun1.wav");
   precache_sound ("sound/ac5.ogg");
   precache_sound ("sound/llaser.ogg");
+  precache_sound ("sound/laser_test.ogg");
   
   //voice
   precache_sound ("sound/comp/online.ogg");

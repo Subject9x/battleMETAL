@@ -18,4 +18,16 @@ float IMP_GETNAV = 9;
 float IMP_FGROUP = 10; //toggle group fire
 float IMP_FCHAIN = 11; //toggle chain fire
 float IMP_SHIELD = 12; //toggle shield autocharge
+float IMP_SWEAPON1 = 13;
+float IMP_SWEAPON2 = 14;
+float IMP_SWEAPON3 = 15;
+float IMP_SWEAPON4 = 16;
+float IMP_SWEAPON5 = 17;
+float IMP_SWEAPON6 = 18;
+float IMP_SWEAPON7 = 19;
+float IMP_SWEAPON8 = 20;
+float IMP_SWEAPON9 = 21;
+float IMP_FSINGLE = 22;
 
+void() mpls_singleFire;
+void() mpls_groupFire;

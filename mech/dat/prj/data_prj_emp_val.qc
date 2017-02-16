@@ -64,7 +64,7 @@ void() data_prj_emp_touch={
 	}
   
   if(other.classname == "worldspawn"){
-    te_superspike(self.origin);
+    te_tarexplosion(self.origin);
     remove(self);
     return;
   }
@@ -80,8 +80,7 @@ void() data_prj_emp_touch={
   if(other.classname == "spike"){
     return;
   }
-  //te_superspike(self.origin);
-  //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+  te_tarexplosion(self.origin);
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   
   remove(self);
