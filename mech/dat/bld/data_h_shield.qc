@@ -23,6 +23,7 @@ void() building_shield={
   util_setBoundBox('-64 -64 0', '64 64 40');
   self.scale = 1;
   droptofloor();
+  self.th_die = BecomeExplosion;
   self.think = SUB_Null;
   self.nextthink = time + 10000000;
 };

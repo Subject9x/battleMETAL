@@ -21,9 +21,9 @@ float DAT_EMP_EN_COST= 25;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 
-void() data_wep_emp;
-void() data_emp_ini;
-void() data_emp_atk;
+void() data_wep_emp;  //called by the data system at game startup
+void() data_emp_ini;  //used by the vehicle factory when building a weapon hardpoint
+void() data_emp_atk;  //the actual attack call
 
 void() data_wep_emp={
   local entity oself, emp;

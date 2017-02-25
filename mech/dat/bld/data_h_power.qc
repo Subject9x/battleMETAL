@@ -23,6 +23,7 @@ void() building_power={
   util_setBoundBox('-56 -56 0', '56 56 46');
   self.scale = 1;
   droptofloor();
+  self.th_die = BecomeExplosion;
   self.think = SUB_Null;
   self.nextthink = time + 10000000;
 };

@@ -300,6 +300,7 @@ float(entity targ, float dmg_amt, float dmg_type) damage_shield={
       }
       else{
         dmg_amt = dmg_amt - targ.sh_cur;
+        targ.sh_cur = 0;
         return dmg_amt;
       }
     }
@@ -325,11 +326,12 @@ float(entity targ, float dmg_amt, float dmg_type) damage_shield={
       }
       else{
         dmg_amt = dmg_amt - targ.sh_cur;
+        targ.sh_cur = 0;
         return dmg_amt;
       }
     }
   }
-  else if(dmg_type & DMG_EXP){
+  else if(dmg_type & DMG_EXP){ 
     if(dmg_type & EFF_PRC){
       return dmg_amt;
     }

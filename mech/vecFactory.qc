@@ -62,7 +62,9 @@ entity(entity data) buildLegs={
     self.view_ofs = self.origin - oself.origin;
     self.angles = oself.angles;
     self.v_angle = self.angles - oself.angles; 
-    self.th_die = ctrl_dieLegs;   
+    self.th_die = ctrl_dieLegs;
+    self.laser_sight_org = '0 0 0';
+    self.laser_sight_timer = time + 0.5;
   self = oself;
   return leg_ent;
 };

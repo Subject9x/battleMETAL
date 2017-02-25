@@ -43,6 +43,9 @@ void() server_updateTargetInfo={
     self.stat_trg_dist = -1;
     self.stat_trg_face = -1;
     self.targetpip.effects = EF_NODRAW + EF_LOWPRECISION;
+    if(self.stat_lck_stt & LOCK_TARG){
+      self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG;
+    }
     return;
   }
 

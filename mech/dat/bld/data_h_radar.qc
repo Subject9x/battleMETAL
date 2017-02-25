@@ -23,6 +23,7 @@ void() building_radar={
   util_setBoundBox('-16 -16 0', '16 16 20');
   self.scale = 1;
   droptofloor();
+  self.th_die = BecomeExplosion;
   self.think = SUB_Null;
   self.nextthink = time + 10000000;
 };

@@ -41,7 +41,7 @@ void() ClientConnect = {
   stuffcmd(self, "loadsky dust_ \n");
   self.p_class = P_MECH;
   self.p_class_next = P_MECH;
-  self.nextVecChoice = 1;
+  self.nextVecChoice = 2;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.faction = 1;

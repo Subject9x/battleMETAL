@@ -33,3 +33,6 @@ Overview: extends the player's entity.
 .float chain_timer;
 
 .entity targetpip;
+
+.float laser_sight_timer;
+.vector laser_sight_org;

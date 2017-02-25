@@ -58,24 +58,6 @@ void(float current, float toRemove) removeWeaponGroup={
 };
 
 void() ImpulseCommands ={
-	//if (self.impulse >= 1 && self.impulse <= 8)
-    //if(self.deadflag == DEAD_DEAD)
-      //respawn();
-		//W_ChangeWeapon ();
-
-	//if (self.impulse == 9){}
-		//CheatCommand ();
-	//if (self.impulse == 10){}
-		//CycleWeaponCommand ();
-	//if (self.impulse == 11){}
-		//ServerflagsCommand ();
-	//if (self.impulse == 12){}
-		//CycleWeaponReverseCommand ();
-
-	//if (self.impulse == 255){}
-		//QuadCheat ();
-  
-
   if(self.impulse == IMP_FGROUP){
     self.stat_plr_fir = FIRE_GROUP;
   }

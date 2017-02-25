@@ -94,7 +94,7 @@ void() data_las_atk={
   te_lightning1(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);
- 
+  
   laser_org.think = SUB_Remove;
-  laser_org.nextthink = time + 0.001;// + 0.35;
+  laser_org.nextthink = time + 0.011;// + 0.35;
 };

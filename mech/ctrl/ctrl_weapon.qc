@@ -34,7 +34,7 @@ void(entity wep) ctrl_weapon_think={
   if(self.w_isfire == 1){
     if(time > self.w_firetime){
       if(self.w_currentammo > 0){
-        if((self.en_cur == self.en_max) || (self.en_cur == -1)){
+        if((self.en_cur == self.en_max) || (self.en_max == -1)){
           self.w_currentammo = self.w_currentammo - 1;
           self.w_attack();
           if(self.w_currentammo < 0){
