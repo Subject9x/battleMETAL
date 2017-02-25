@@ -12,6 +12,7 @@ void() CSQC_Init =
   plr_angles = '0 0 0';
   VIEW_ORG = '0 0';
   
+  registercommand("balls");
   cs_precache();
   //hud_ini();
 };
@@ -103,23 +104,89 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   drawstring('0 16 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
  */
   if(p_class != P_OBS){
-    local float vid, wgrp;
-    local entity hud, oself, plr;
-    vid = getstati(STAT_VID);
-    wgrp = getstati(STAT_WEP_GRP);
-    hud = m_findData(vid, DATA_HUD);
-    if(hud != world){
-      oself = self;
-      self = hud;
-        hud_renderHelmet();
-        hud_renderEnergy();
-        hud_renderPaper();
-        hud_renderShield();
-        hud_renderWeapons(wgrp);
-        hud_renderRadar();
-        hud_renderTarget();
-      self = oself;
-   }
+    //player general info
+    local float vec_id, hitdir, conv_x, conv_y, pitch;
+    vec_id = getstati(STAT_VID);
+    hitdir = getstatf(STAT_HIT_DIR);
+    conv_x = getstatf(STAT_SPR_X);
+    conv_y = getstatf(STAT_SPR_Y);
+    pitch = getstati(STAT_PLR_PTC);
+    
+    //player mech hp info
+    local float plr_sh, plr_en, plr_ct, plr_rt, plr_lt, plr_ra, plr_la, plr_lg;
+    plr_sh = getstati(STAT_SHIELD);
+    plr_en = getstati(STAT_ENERGY);
+    plr_ct = getstatf(STAT_CTOR_HP);
+    plr_rt = getstatf(STAT_RTOR_HP);
+    plr_lt = getstatf(STAT_LTOR_HP);
+    plr_ra = getstatf(STAT_RARM_HP);
+    plr_la = getstatf(STAT_LARM_HP);
+    plr_lg = getstatf(STAT_LEG_HP);
+    
+    //player weapon tracking info
+    local float plr_wgrp, plr_wstate, plr_wrel, w1_id, w2_id, w3_id, w4_id, w5_id, w6_id, w7_id, w8_id, w9_id;
+    plr_wgrp = getstati(STAT_WEP_GRP);
+    plr_wstate = getstati(STAT_WEP_STT);
+    plr_wrel = getstati(STAT_WEP_REL);
+    w1_id = getstati(STAT_WEP1_ID);
+    w2_id = getstati(STAT_WEP2_ID);
+    w3_id = getstati(STAT_WEP3_ID);
+    w4_id = getstati(STAT_WEP4_ID);
+    w5_id = getstati(STAT_WEP5_ID);
+    w6_id = getstati(STAT_WEP6_ID);
+    w7_id = getstati(STAT_WEP7_ID);
+    w8_id = getstati(STAT_WEP8_ID);
+    w9_id = getstati(STAT_WEP9_ID);
+    
+    //player radar info
+    local float rad_frnt, rad_bck, rad_mode;
+    rad_frnt = getstatf(STAT_RDR_FRNT);
+    rad_bck = getstatf(STAT_RDR_BACK);
+    rad_mode = getstati(STAT_RDR_MODE);
+    
+    //target tracking info
+    local float trg_vid, trg_datid, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
+    trg_vid = getstati(STAT_TRG_VID);
+    trg_datid = getstati(STAT_TRG_DAT);
+    trg_sh = getstatf(STAT_TRG_SH);
+    trg_am = getstati(STAT_TRG_AM);
+    trg_dist = getstati(STAT_TRG_DIST);
+    trg_dir = getstati(STAT_TRG_FACE);
+    trg_lock = getstati(STAT_LCK_STT);
+    
+    //render 
+    local entity player_hud, vec_data, oself;
+    vec_data = m_findData(1, DATA_MECH);
+    player_hud = m_findData(1, DATA_HUD);
+    
+    oself = self;
+    self = player_hud;
+      self.hud_prep(vec_data);
+      self.hud_HelmetImage(VIEW_MAX, VIEW_CTR);
+      self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
+      self.hud_playerShield(plr_sh);
+      self.hud_playerEnergy(plr_en);  
+      self.hud_Radar(rad_frnt, rad_bck, rad_mode);
+      self.hud_hitDirectionPips(hitdir);
+      self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, plr_wrel);
+      self.hud_renderWeapon2(plr_wgrp, plr_wstate, w2_id, WEAPON2, WEAPON2_DD, WEAPON2_OK, plr_wrel);
+      self.hud_renderWeapon3(plr_wgrp, plr_wstate, w3_id, WEAPON3, WEAPON3_DD, WEAPON3_OK, plr_wrel);
+      self.hud_renderWeapon4(plr_wgrp, plr_wstate, w4_id, WEAPON4, WEAPON4_DD, WEAPON4_OK, plr_wrel);
+      self.hud_renderWeapon5(plr_wgrp, plr_wstate, w5_id, WEAPON5, WEAPON5_DD, WEAPON5_OK, plr_wrel);
+      self.hud_renderWeapon6(plr_wgrp, plr_wstate, w6_id, WEAPON6, WEAPON6_DD, WEAPON6_OK, plr_wrel);
+      self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, plr_wrel);
+      self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, plr_wrel);
+      self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, plr_wrel);
+      self.hud_targetArmor(trg_am);
+      self.hud_targetShield(trg_sh);
+      self.hud_targetRange(trg_dist);
+      self.hud_targetLock(trg_lock);
+      self.hud_targetDirectionPip(trg_dir);
+    self = oself;
+    
+    
+    //do sound queue system here
+    
    	// draw custom crosshair
   }
 };
@@ -128,6 +195,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 // return FALSE to let engine process command, TRUE to eat command
 float(string s) CSQC_ConsoleCommand =
 {
+  centerprint("boop");
 	return FALSE;
 };
 

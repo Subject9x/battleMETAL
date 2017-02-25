@@ -6,7 +6,7 @@ Overview: implementation for hud widget callbacks
 */
 
 void() hud_renderHelmet={
-  local vector pnl_sz, img_sz, ofs, org;
+  /*local vector pnl_sz, img_sz, ofs, org;
   local float aln;
   aln = VIEW_BOT | VIEW_LFT;
   img_sz = draw_getimagesize(self.img);
@@ -16,8 +16,9 @@ void() hud_renderHelmet={
   ofs = '0 0';
   ofs_y = ofs_y + pnl_sz_y;
   org = css_calcAlign(ofs, aln);
-  drawpic(org, self.img, pnl_sz, '1 1 1', 1, 0);
+  drawpic(org, self.img, pnl_sz, '1 1 1', 1, 0);*/
   
+  //RE?NDER HIT DIRECTION
   local float hitdir, l_fade;
   hitdir = getstatf(STAT_HIT_DIR);
   
@@ -35,6 +36,7 @@ void() hud_renderHelmet={
     drawfill((rorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
   }
   
+  //RENDER CONVERGENCE
   local vector spr_w, spr_h;
   spr_w_x = getstatf(STAT_SPR_X);
   spr_w_y = 0;
@@ -46,6 +48,10 @@ void() hud_renderHelmet={
   drawfill((VIEW_CTR - '0 8' - spr_h), '1 8',  '0.85 0.1 0.1',HUD_ALPHA, 0);
   drawfill((VIEW_CTR + spr_h), '1 8',  '0.85 0.1 0.1',HUD_ALPHA, 0);
   
+  //RENDER PITCH
+  local float pitch;
+  pitch = getstati(STAT_PLR_PTC);
+  drawstring(VIEW_CTR - '16 0', ftos(pitch), '4 4 0', '1 1 1', HUD_ALPHA, 0); 
 };
 
 void() hud_renderEnergy={
@@ -146,34 +152,43 @@ void(float cur_group) hud_renderWeapons={
   self.wp_pnl_org = css_calcAlign(ofs, self.wp_pnl_aln);
   drawpic(self.wp_pnl_org, self.wp_pnl_img, pnl_sz, '1 1 1', 1, 0);
 
-  local float wep_stat;
+  local float wep_stat, w1, w2, w3, w4,w5,w6,w7,w8,w9;
   wep_stat = getstati(STAT_WEP_STT);
-  if(getstati(STAT_WEP1_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP1_ID), WEAPON1, css_getWepStatusColor(wep_stat, WEAPON1_DD, WEAPON1_OK), self.wdg_wp.w1_ofs, self, WEAPON1_REL);
+  w1 = getstati(STAT_WEP1_ID);
+  w2 = getstati(STAT_WEP2_ID);
+  w3 = getstati(STAT_WEP3_ID);
+  w4 = getstati(STAT_WEP4_ID);
+  w5 = getstati(STAT_WEP5_ID);
+  w6 = getstati(STAT_WEP6_ID);
+  w7 = getstati(STAT_WEP7_ID);
+  w8 = getstati(STAT_WEP8_ID);
+  w9 = getstati(STAT_WEP9_ID);
+  if(w1 > -1){
+    hud_renderWeapon(cur_group, w1, WEAPON1, css_getWepStatusColor(wep_stat, WEAPON1_DD, WEAPON1_OK), self.wdg_wp.w1_ofs, self, WEAPON1_REL);
   }
-  if(getstati(STAT_WEP2_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP2_ID), WEAPON2, css_getWepStatusColor(wep_stat, WEAPON2_DD, WEAPON2_OK), self.wdg_wp.w2_ofs, self, WEAPON2_REL);
+  if(w2 > -1){
+    hud_renderWeapon(cur_group, w2, WEAPON2, css_getWepStatusColor(wep_stat, WEAPON2_DD, WEAPON2_OK), self.wdg_wp.w2_ofs, self, WEAPON2_REL);
   }
-  if(getstati(STAT_WEP3_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP3_ID), WEAPON3, css_getWepStatusColor(wep_stat, WEAPON3_DD, WEAPON3_OK), self.wdg_wp.w3_ofs, self, WEAPON3_REL);
+  if(w3 > -1){
+    hud_renderWeapon(cur_group,w3, WEAPON3, css_getWepStatusColor(wep_stat, WEAPON3_DD, WEAPON3_OK), self.wdg_wp.w3_ofs, self, WEAPON3_REL);
   }
-  if(getstati(STAT_WEP4_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP4_ID), WEAPON4, css_getWepStatusColor(wep_stat, WEAPON4_DD, WEAPON4_OK), self.wdg_wp.w4_ofs, self, WEAPON4_REL);
+  if(w4 > -1){
+    hud_renderWeapon(cur_group, w4, WEAPON4, css_getWepStatusColor(wep_stat, WEAPON4_DD, WEAPON4_OK), self.wdg_wp.w4_ofs, self, WEAPON4_REL);
   }
-  if(getstati(STAT_WEP5_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP5_ID), WEAPON5, css_getWepStatusColor(wep_stat, WEAPON5_DD, WEAPON5_OK), self.wdg_wp.w5_ofs, self, WEAPON5_REL);
+  if(w5 > -1){
+    hud_renderWeapon(cur_group, w5, WEAPON5, css_getWepStatusColor(wep_stat, WEAPON5_DD, WEAPON5_OK), self.wdg_wp.w5_ofs, self, WEAPON5_REL);
   }
-  if(getstati(STAT_WEP6_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP6_ID), WEAPON6, css_getWepStatusColor(wep_stat, WEAPON6_DD, WEAPON6_OK), self.wdg_wp.w6_ofs, self, WEAPON6_REL);
+  if(w6 > -1){
+    hud_renderWeapon(cur_group, w6, WEAPON6, css_getWepStatusColor(wep_stat, WEAPON6_DD, WEAPON6_OK), self.wdg_wp.w6_ofs, self, WEAPON6_REL);
   }  
-  if(getstati(STAT_WEP7_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP7_ID), WEAPON7, css_getWepStatusColor(wep_stat, WEAPON7_DD, WEAPON7_OK), self.wdg_wp.w7_ofs, self, WEAPON7_REL);
+  if(w7 > -1){
+    hud_renderWeapon(cur_group, w7, WEAPON7, css_getWepStatusColor(wep_stat, WEAPON7_DD, WEAPON7_OK), self.wdg_wp.w7_ofs, self, WEAPON7_REL);
   }  
-  if(getstati(STAT_WEP8_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP8_ID), WEAPON8, css_getWepStatusColor(wep_stat, WEAPON8_DD, WEAPON8_OK), self.wdg_wp.w8_ofs, self, WEAPON8_REL);
+  if(w8 > -1){
+    hud_renderWeapon(cur_group, w8, WEAPON8, css_getWepStatusColor(wep_stat, WEAPON8_DD, WEAPON8_OK), self.wdg_wp.w8_ofs, self, WEAPON8_REL);
   }  
-  if(getstati(STAT_WEP9_ID) > -1){
-    hud_renderWeapon(cur_group, getstati(STAT_WEP9_ID), WEAPON9, css_getWepStatusColor(wep_stat, WEAPON9_DD, WEAPON9_OK), self.wdg_wp.w9_ofs, self, WEAPON9_REL);
+  if(w9 > -1){
+    hud_renderWeapon(cur_group, w9, WEAPON9, css_getWepStatusColor(wep_stat, WEAPON9_DD, WEAPON9_OK), self.wdg_wp.w9_ofs, self, WEAPON9_REL);
   }  
 };
 
@@ -223,6 +238,12 @@ void() hud_renderTarget={
     local float range;
     range = getstati(STAT_TRG_DIST);
     drawstring(title + '0 25', ftos(range), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    
+    local float lock;
+    lock = getstati(STAT_LCK_STT);
+    if(lock & LOCK_TARG){
+      drawstring(title+ '0 -10', "[LOCKED ON]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    } 
 	local entity oself;
   oself = self;
   self = oself.wdg_pd;
@@ -404,8 +425,8 @@ void(float cgrp, float wid, float wgr, vector statusColor, vector ofs, entity sr
     br_y = bl_y;
     
     drawline(6, tl, tr, '0 1 0', 1, 0);
-    drawline(6, tl, bl, '0 1 0', 1,0);
-    drawline(6, tr, br, '0 1 0', 1,0);
+    drawline(6, tl, bl, '0 1 0', 1, 0);
+    drawline(6, tr, br, '0 1 0', 1, 0);
     drawline(6, bl, br, '0 1 0', 1, 0);
   }
   

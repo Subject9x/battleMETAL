@@ -29,5 +29,7 @@ Overview: extends the player's entity.
 .entity w_slot;     //use this for teh linked list goodness
 
 .float power_timer; //used for power up
+.float lock_timer;
+.float chain_timer;
 
 .entity targetpip;

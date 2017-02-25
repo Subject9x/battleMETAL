@@ -8,7 +8,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LAS_IDX = ID_WEP_LAS;
 string DAT_LAS_NAME = "Light Laser";
-float DAT_LAS_DMG = 5;
+float DAT_LAS_DMG = 15;
 float DAT_LAS_FIRETIME = 0;
 float DAT_LAS_CLIPSIZE = 1;
 float DAT_LAS_CURRENTAMMO = 1;
@@ -17,7 +17,7 @@ float DAT_LAS_RELOADTIME = 0.8;
 float DAT_LAS_ISFIRE = 0;
 vector DAT_LAS_FIRE_OFS = '0 0 6';
 string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_LAS_EN_COST = 10;
+float DAT_LAS_EN_COST = 8;
 string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
 
@@ -50,7 +50,7 @@ void() data_las_ini={
   self.w_fire_ofs = DAT_LAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_LAS_MODEL;
   self.w_attack = data_las_atk;
-  //self.w_proj = DAT_LAS_PROJ_ID;
+  self.en_cur = 0;
   self.en_max = DAT_LAS_EN_COST;
   self.fire_sound = DAT_LAS_SOUND;
   self.i_techlvl = DAT_LAS_TECH_LEVEL;

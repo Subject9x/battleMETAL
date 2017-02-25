@@ -12,7 +12,8 @@ void(entity data) buildVehicle={
   if(data.data_type == DATA_MECH){
   
     self.sh_hit = 0;
-    
+    self.chain_timer = time;
+    self.lock_timer = 0;
     if(data.unit_ctor){
       buildCenterTorso(data);
     }
@@ -298,7 +299,6 @@ void(entity mechData, entity own, float state1, float state2, float state3) buil
   self.state_1 = state1;
   self.state_2 = state2;
   self.stat_wep_rel = state3;
-  ctrl_weapon_clearState(self, self.state_1, self.state_2);
   ctrl_weapon_addState(self, self.state_1);
 };
 

@@ -6,7 +6,7 @@ Overview: header for all mech component controllers
 */
 
 void() ctrl_updateCenterTorso;
-void() ctrl_dieMech;
+//void() ctrl_dieMech;
 void() ctrl_updateLegs;
 void() ctrl_dieLegs;
 void() ctrl_die_weapon;

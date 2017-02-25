@@ -26,8 +26,8 @@ float DAT_HVD_M_FSPEED=85;
 float DAT_HVD_M_SSPEED=80;
 float DAT_HVD_M_BSPEED=75;
 
-vector DAT_HVD_SPREAD_N = '4 2 0.005';
-vector DAT_HVD_SPREAD_X = '10 6 0.01';
+vector DAT_HVD_SPREAD_N = '8 6 0.01';
+vector DAT_HVD_SPREAD_X = '14 10 0.03';
 
 //HITPOINT VALUES
 float DAT_HVD_CTOR_HP = 100;

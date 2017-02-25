@@ -51,6 +51,7 @@ void() data_emp_ini={
   self.c_model = DAT_EMP_MODEL;
   self.w_attack = data_emp_atk;
   self.w_proj = DAT_EMP_PROJ_ID;
+  self.en_cur = 0;
   self.en_max = DAT_EMP_EN_COST;
   self.fire_sound = DAT_EMP_SOUND;
   self.i_techlvl = DAT_EMP_TECH_LEVEL;

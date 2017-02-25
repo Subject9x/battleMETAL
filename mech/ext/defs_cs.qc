@@ -55,6 +55,9 @@ float AS_FLOAT = 8;
 .float stat_spr_y;
 .float stat_plr_stt;
 .float stat_plr_fir;
+.float stat_lck_stt;
+.float stat_plr_ptc;
+.float stat_plr_ang;
 
 //hit direction bit flags
 float STAT_HIT_CL = 1;
@@ -128,6 +131,7 @@ float PLAYER_LOWSHIELD = 3;
 float PLAYER_CRITDAM = 4;
 
 //stat channels
+float STAT_PLR_ANG = 73;
 float STAT_ENTITY_ID = 33;
 float STAT_PCLASS = 34;
 float STAT_SPREADX = 35;
@@ -160,11 +164,8 @@ float STAT_WEP2_ID = 59;
 float STAT_WEP3_ID = 62;
 float STAT_WEP4_ID = 65;
 float STAT_WEP5_ID = 68;
-//float STAT_WEP5_GR = 69;
-//float STAT_WEP5_ST = 70;
 float STAT_WEP6_ID = 71;
-//float STAT_WEP6_GR = 72;
-//float STAT_WEP6_ST = 73;
+//float STAT_WEP6_ST = ;
 float STAT_WEP7_ID = 74;
 //float STAT_WEP7_GR = 75;
 //float STAT_WEP7_ST = 76;
@@ -175,14 +176,15 @@ float STAT_WEP9_ID = 80;
 //float STAT_WEP9_GR = 81;
 //float STAT_WEP9_ST = 82;
 float STAT_WEP_STT = 57;
-float STAT_WEP_GRP =83;
+float STAT_WEP_GRP = 83;
 float STAT_WEP_REL = 61;
 
 float STAT_SPR_X = 63;
 float STAT_SPR_Y = 64;
-
 float STAT_PLR_STT = 66;
 float STAT_PLR_FIR = 67;
+float STAT_LCK_STT = 69;
+float STAT_PLR_PTC = 72;
 
 //Targeting stuff
 float STAT_TRG_VID = 84;

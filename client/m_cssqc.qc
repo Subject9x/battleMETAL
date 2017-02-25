@@ -6,11 +6,19 @@ Overview: csscsqc? csqccss? cssqc?
 */
 vector(float val, float type) css_getStatusColor;
 vector(vector vec, float scle) css_scaleSize;
+vector(vector sz) css_getCenter;
 vector(vector vec, float algn) css_calcAlign;
 vector(vector org, vector sz, float axs) css_calcAxis;
-void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float dir) css_renderMeter;
+void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) css_renderMeter;
 vector(float val) css_calcRadarHeat;
 void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) css_renderModalPip;
+void(string str, vector ofs, vector color, vector sz, float alpha, float flg, float ax, float vdir) css_renderString;
+void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) css_renderScroll;
+void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) css_renderImageReel;
+void(string src_img, vector tintcolor, float alpha, float flg) css_renderImageFullScreen;
+vector(float bit, float check1, float check2, float check3) css_getStatusColor3;
+void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) css_BoxOnLabel;
+
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;
@@ -37,7 +45,7 @@ float OBJ_LIST = 3;
 float PAT_BAR = 1;
 float PAT_SPH = 2;
 float PAT_BOX = 3;
-float HUD_ALPHA = 0.9;
+float HUD_ALPHA = 1;
 
 //common ent vars
 .float data_idx;
@@ -52,8 +60,10 @@ float HUD_ALPHA = 0.9;
 .float otype;
 .vector margin_ins;
 .float pattern;
-
-
+.vector offset;
+.vector asize;
+.vector colortint;
+.vector hsize;
 vector(float val, float type) css_getStatusColor={
 	if(val == 0){
 		return STATUS_DED;
@@ -75,7 +85,7 @@ vector(float bits, float dead, float ok) css_getWepStatusColor{
   }
 }
 
-void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float dir) css_renderMeter={
+void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) css_renderMeter={
   /*
     given target origin, meter size, current meter value
   */
@@ -183,3 +193,71 @@ void(vector ofs, float bit, float state1, vector color1, vector color2, vector s
   drawfill(ofs, sz, colorActual, alpha, flg);
 };
 
+vector(float bit, float check1, float check2, float check3) css_getStatusColor3={
+	if(bit & check1){
+		return STATUS_DED;
+	}
+	else if(bit & check2){
+		return STATUS_DMG;
+	}
+	else if(bit & check3){
+		return STATUS_AOK;
+	}
+};
+
+/*
+  Draws an image that occupies the entire screen size
+*/
+void(string src_img, vector tintcolor, float alpha, float flg) css_renderImageFullScreen={
+  local vector pnl_sz, img_sz, ofs, org;
+  local float aln;
+  
+  img_sz = draw_getimagesize(src_img);
+  aln = VIEW_BOT | VIEW_LFT;
+  pnl_sz_x = VIEW_MAX_x;
+  pnl_sz_y = img_sz_y;
+  ofs_y = ofs_y + pnl_sz_y;
+  org = css_calcAlign(ofs, aln);
+  drawpic(org, src_img, pnl_sz, tintcolor, alpha, flg);
+};
+
+void(string str, vector ofs, vector color, vector sz, float alpha, float flg, float ax, float vdir) css_renderString={
+
+};
+
+void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) css_BoxOnLabel={
+  local float len;
+  len = stringwidth(str, 0, txt_sz);
+  local vector tl, tr, bl, br;
+  tl = ofs - '2 2';
+  tr = ofs - '2 2';
+  tr_x = tr_x + len + 4;
+  bl = ofs;
+  bl_x = tl_x;
+  bl_y = bl_y + 6;
+  br = ofs;
+  br_x = ofs_x + len + 2;
+  br_y = bl_y;
+  
+  drawline(ln_sz_x, tl, tr, clr, 1, 0);
+  drawline(ln_sz_y, tl, bl, clr, 1, 0);
+  drawline(ln_sz_y, tr, br, clr, 1, 0);
+  drawline(ln_sz_x, bl, br, clr, 1, 0);
+};
+  
+vector(vector sz) css_getCenter={
+  local vector toSender;
+  toSender_x = sz_x / 2;
+  toSender_y = sz_y / 2;
+  return toSender;
+};
+
+
+void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) css_renderImageReel={
+  local vector isz, nsz, ratio;
+  isz = draw_getimagesize(src_img);
+  clipSize_x = clipSize_x / isz_x;
+  clipSize_y = clipSize_y / isz_y;
+  isz = css_scaleSize(isz, VIEW_SCALE);
+  drawsubpic(srcOrg, isz, src_img, percent, clipSize, clr, alpha, flg);
+};

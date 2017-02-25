@@ -4,6 +4,29 @@
   there isn't realy a reason both need to be in the same file
   and having to modifiy a 1k line file is a pain in the rear
 */
+
+
+/*
+  very important; parse every client call starting with 'cmd'
+
+*/
+void(string str) SV_ParseClientCommand={
+  local float argc;
+  argc = tokenize(str);
+  if(argv(0) == "mech"){
+    if(argv(1) == "setwep"){
+      bprint(strcat(ftos(self.data_idx),"\n"));
+      if(self.deadflag >= DEAD_NO){
+        
+      }
+    }
+  }
+  else{
+    clientcommand(self, str);
+  }
+};
+
+
 /*
 ===========
 ClientConnect
@@ -18,7 +41,7 @@ void() ClientConnect = {
   stuffcmd(self, "loadsky dust_ \n");
   self.p_class = P_MECH;
   self.p_class_next = P_MECH;
-  self.nextVecChoice = 3;
+  self.nextVecChoice = 1;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.faction = 1;
@@ -78,7 +101,10 @@ void() ClientConnect = {
   self.conv_min = '0 0 0';
   self.conv_max = '0 0 0';
   self.stat_plr_stt = 0;
-  self.stat_plr_fir = 0;
+  self.stat_plr_fir = FIRE_GROUP;
+  self.stat_lck_stt = LOCK_NONE;
+  self.stat_plr_ptc = 0;
+  self.stat_plr_ang = 0;
   
   if (intermission_running){
     ExitIntermission();

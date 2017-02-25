@@ -937,7 +937,7 @@ float REFDEFFLAG_INTERMISSION = 8;
 //  the finished extension once done
 
 // assorted builtins
-float	drawsubpic(vector position, vector size, string pic, vector srcPosition, vector srcSize, vector rgb, float alpha, float flag) = #328;
+float	(vector position, vector size, string pic, vector srcPosition, vector srcSize, vector rgb, float alpha, float flag)drawsubpic = #328;
 vector	drawgetimagesize(string pic) = #318;
 #define SPA_POSITION 0
 #define SPA_S_AXIS 1

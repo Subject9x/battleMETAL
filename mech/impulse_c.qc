@@ -15,16 +15,37 @@ void() toggerRadar={};
 
 void() playerAttack={
   local entity wep_chain;
+  local float wep_count;
   wep_chain = self.w_slot;
+  wep_count = wep_chain.w_group;
   while(wep_chain){
     local float wpgrp;
     wpgrp = wep_chain.w_group;
-    if(self.currentWeaponGroup & wep_chain.w_group){
-      if(wep_chain.w_isfire != 1){
-        wep_chain.w_isfire = 1;
+    wep_count = wep_chain.w_group;
+    if(self.stat_plr_fir == FIRE_GROUP){
+      if(self.currentWeaponGroup & wep_chain.w_group){
+        if(wep_chain.w_isfire != 1){
+          wep_chain.w_isfire = 1;
+        }
+      }
+    }
+    else if(self.stat_plr_fir == FIRE_CHAIN){
+      if(self.currentWeaponGroup == wep_chain.w_group){
+        if(wep_chain.w_isfire != 1){
+          if(time  > self.chain_timer){
+            self.chain_timer = time + wep_chain.w_reloadtime;
+            wep_chain.w_isfire = 1;
+          }
+        }
       }
     }
     wep_chain = wep_chain.w_slot;
+  }
+  if(self.stat_plr_fir == FIRE_CHAIN){
+    self.currentWeaponGroup = self.currentWeaponGroup * 2;
+    if(self.currentWeaponGroup > WEAPON9){
+      self.currentWeaponGroup = WEAPON1;
+    }
   }
 };
 
@@ -60,6 +81,7 @@ void() ImpulseCommands ={
   }
   if(self.impulse == IMP_FCHAIN){
     self.stat_plr_fir = FIRE_CHAIN;
+    self.currentWeaponGroup = 1;
   }
   if(self.impulse == IMP_FSINGLE){
     self.stat_plr_fir = FIRE_SINGLE;
@@ -68,7 +90,7 @@ void() ImpulseCommands ={
   if(self.stat_plr_fir == FIRE_SINGLE){
     mpls_singleFire();
   }
-  if(self.stat_plr_fir == IMP_FGROUP){
+  if(self.stat_plr_fir == FIRE_GROUP){
     mpls_groupFire();
   }
 

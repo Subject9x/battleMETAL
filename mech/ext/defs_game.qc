@@ -102,3 +102,8 @@ float ARM_CER = 16;
 float FIRE_SINGLE = 1;
 float FIRE_GROUP = 2;
 float FIRE_CHAIN = 3;
+
+//target lock states
+float LOCK_NONE = 1;
+float LOCK_TARG = 2;
+float LOCK_PLYR = 4;

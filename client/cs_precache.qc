@@ -20,10 +20,14 @@ void() cs_precache={
   precache_pic("gfx/hud/otl/otl_am.png", 0);
   precache_pic("gfx/hud/otl/otl_hd.png", 0);
   precache_pic("gfx/hud/otl/otl_en.png", 0);
+  precache_pic("gfx/hud/otl/otl_en_cvr.png", 0);
   precache_pic("gfx/hud/otl/otl_rd.png", 0);
+  precache_pic("gfx/hud/otl/otl_rd_cvr.png", 0);
   precache_pic("gfx/hud/otl/otl_sl.png", 0);
   precache_pic("gfx/hud/otl/otl_sp.png", 0);
   precache_pic("gfx/hud/otl/otl_wp.png", 0);
+  
+  precache_pic("gfx/hud/navbar.png", 0);
   
   //cockpit voice
   precache_sound("sound/comp/online.ogg");

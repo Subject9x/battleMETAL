@@ -159,7 +159,9 @@ float STAT_SPR_X = 63;
 float STAT_SPR_Y = 64;
 float STAT_PLR_STT = 66;
 float STAT_PLR_FIR = 67;
-
+float STAT_LCK_STT = 69;
+float STAT_PLR_PTC = 72;
+float STAT_PLR_ANG = 73;
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
 string M_TOR_RIGHT = "tor_right";
@@ -251,3 +253,8 @@ float PLAYER_SPAWN = 1;
 float PLAYER_LOWEN = 2;
 float PLAYER_LOWSHIELD = 3;
 float PLAYER_CRITDAM = 4;
+
+//target lock states
+float LOCK_NONE = 1;
+float LOCK_TARG = 2;
+float LOCK_PLYR = 4;

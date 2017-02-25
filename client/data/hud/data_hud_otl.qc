@@ -6,18 +6,38 @@ Overview: Hud Layout data for mech 'outlaw'
 */
 
 void() otl_hud_ini;
+void(entity vec_data) otl_hud_prep;
+void(vector view_x, vector view_ctr) otl_HelmetImage;          
+void(float shieldval) otl_playerShield;
+void(float energyval) otl_playerEnergy;
+void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor;
+void(float rad_front, float rad_back, float rad_mode) otl_Radar;
+void(float hit_dir) otl_hitDirectionPips;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon1;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon2;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon3;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon4;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon5;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon6;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon7;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon8;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon9;
+void(float shieldval) otl_targetShield;
+void(float armorVal) otl_targetArmor;
+void(float range) otl_targetRange;
+void(float islock) otl_targetLock;
+void(float targdir) otl_targetDirectionPip;
 
+//merely registers the hud into the ent list
 void() otl_hud_ini={
 
   local entity oself, otl_hud, otl_en, otl_sh, otl_pd, otl_wp;
   otl_hud = spawn();
   oself = self;
   self = otl_hud;
-  self.vec_name = "Outlaw";
   self.classname = "data";
   self.data_type = DATA_HUD;
   self.data_idx = 1;
-  self.c_mdl = "q3mdl/mechs/notl/mdl_notl_cpt.md3";
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/otl/otl_hd.png";
   // energy
@@ -25,8 +45,27 @@ void() otl_hud_ini={
   self.en_pnl_ofs = '152 12';
   self.en_pnl_aln = self.en_pnl_aln | VIEW_BOT | VIEW_LFT;
   
-  //shield
-  //outlaw doesn't have a separate shield meter panel
+  self.hud_prep = otl_hud_prep;
+  self.hud_HelmetImage = otl_HelmetImage;          
+  self.hud_playerShield = otl_playerShield;
+  self.hud_playerEnergy = otl_playerEnergy;
+  self.hud_playerArmor = otl_playerArmor;
+  self.hud_Radar = otl_Radar;
+  self.hud_hitDirectionPips = otl_hitDirectionPips;
+  self.hud_renderWeapon1 = otl_renderWeapon1;
+  self.hud_renderWeapon2 = otl_renderWeapon2;
+  self.hud_renderWeapon3 = otl_renderWeapon3;
+  self.hud_renderWeapon4 = otl_renderWeapon4;
+  self.hud_renderWeapon5 = otl_renderWeapon5;
+  self.hud_renderWeapon6 = otl_renderWeapon6;
+  self.hud_renderWeapon7 = otl_renderWeapon7;
+  self.hud_renderWeapon8 = otl_renderWeapon8;
+  self.hud_renderWeapon9 = otl_renderWeapon9;
+  self.hud_targetShield = otl_targetShield;
+  self.hud_targetArmor = otl_targetArmor;
+  self.hud_targetRange = otl_targetRange;
+  self.hud_targetLock = otl_targetLock;
+  self.hud_targetDirectionPip = otl_targetDirectionPip;
   
   //armor
   self.am_pnl_img = "gfx/hud/otl/otl_am_2.png";
@@ -47,7 +86,72 @@ void() otl_hud_ini={
   self.tg_pnl_img = "gfx/hud/otl/otl_am_2.png";
   self.tg_pnl_ofs = '221 0';
   self.tg_pnl_aln = VIEW_BOT | VIEW_RGT;
-    
+  
+  //this is the armor panel
+  oself = self;
+  self.hud_pnl1 = spawn();
+  self = self.hud_pnl1;
+    self.classname = "widget";
+    self.owner = oself;
+    self.img = "gfx/hud/otl/otl_am_2.png";
+    self.drawme = TRUE;
+    self.align = self.align | VIEW_BOT | VIEW_LFT;
+    self.offset = '48 0';
+    self.colortint = '1 1 1';
+    self.margin_ins = '8 10';
+  self = oself;
+  
+  //radar panel
+  self.hud_pnl2 = spawn();
+  self = self.hud_pnl2;
+    self.classname = "widget";
+    self.owner = oself;
+    self.img = "gfx/hud/otl/otl_rd.png";
+    self.drawme = TRUE;
+    self.align = self.align | VIEW_BOT | VIEW_LFT;
+    self.colortint = '1 1 1';
+  self = oself;
+  
+  //energy panel
+  self.hud_pnl3 = spawn();
+  self = self.hud_pnl3;
+    self.classname = "widget";
+    self.owner = oself;
+    self.img = "gfx/hud/otl/otl_en.png";
+    self.drawme = TRUE;
+    self.align = self.align | VIEW_BOT | VIEW_LFT;
+    self.offset = '0 0';
+    self.colortint = '1 1 1';
+    self.margin_ins = '6 10';
+  self = oself;
+  
+  //weapon panel
+  self.hud_pnl4 = spawn();
+  self = self.hud_pnl4;
+    self.classname = "widget";
+    self.owner = oself;
+    self.img = "gfx/hud/otl/otl_wp.png";
+    self.drawme = TRUE;
+    self.align = self.align | VIEW_BOT | VIEW_LFT;
+    self.offset = '0 0';
+    self.colortint = '1 1 1';
+    self.margin_ins = '16 10';
+  self = oself;
+ 
+  //target panel
+  oself = self;
+  self.hud_pnl5 = spawn();
+  self = self.hud_pnl5;
+    self.classname = "widget";
+    self.owner = oself;
+    self.img = "gfx/hud/otl/otl_am_2.png";
+    self.drawme = TRUE;
+    self.align = self.align | VIEW_BOT | VIEW_LFT;
+    self.offset = '0 0';
+    self.colortint = '1 1 1';
+    self.margin_ins = '8 10';
+  self = oself;
+ 
   otl_en = spawn();
   self = otl_en;
     self.classname = "widget";
@@ -111,4 +215,363 @@ void() otl_hud_ini={
   
   self = oself;
   addentity(otl_hud);
+};
+
+//you can order the panels to sorta chain them if you desire
+void(entity vec_data) otl_hud_prep={
+  self.data = vec_data;
+  //prep the panels 
+  //ARMOR PANEL
+  local vector  img_sz, ofs;
+  local entity rdpnl;
+  rdpnl = self.hud_pnl2;
+  img_sz = draw_getimagesize(rdpnl.img);
+  rdpnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
+  rdpnl.hsize = css_getCenter(rdpnl.asize);
+  ofs_x = VIEW_CTR_x - (rdpnl.asize_x/2);
+  ofs_y = ofs_y + rdpnl.asize_y;
+  rdpnl.pos = css_calcAlign(ofs, rdpnl.align);
+  
+  local entity enpnl;
+  enpnl = self.hud_pnl3;
+  img_sz = draw_getimagesize(enpnl.img);
+  enpnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
+  enpnl.hsize = css_getCenter(enpnl.asize);
+  ofs_x = rdpnl.pos_x - enpnl.asize_x;
+  ofs_y = enpnl.asize_y;
+  enpnl.pos = css_calcAlign(ofs, enpnl.align);
+  
+  local entity ampnl;
+  ampnl = self.hud_pnl1;
+  img_sz = draw_getimagesize(ampnl.img);
+  ampnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
+  ampnl.hsize = css_getCenter(ampnl.asize);
+  ofs_x = enpnl.pos_x - ampnl.asize_x;
+  ofs_y = ampnl.asize_y;
+  ampnl.pos = css_calcAlign(ofs, ampnl.align);
+  
+  local entity wepnl;
+  wepnl = self.hud_pnl4;
+  img_sz = draw_getimagesize(wepnl.img);
+  wepnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
+  wepnl.hsize = css_getCenter(wepnl.asize);
+  ofs_x = rdpnl.pos_x - wepnl.asize_x;
+  ofs_y = ampnl.asize_y + wepnl.asize_y;
+  wepnl.pos = css_calcAlign(ofs, wepnl.align);
+
+  local entity tgpnl;
+  tgpnl = self.hud_pnl5;
+  img_sz = draw_getimagesize(tgpnl.img);
+  tgpnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
+  tgpnl.hsize = css_getCenter(tgpnl.asize);
+  ofs_x = VIEW_CTR_x + (rdpnl.asize_x/2);
+  ofs_y = tgpnl.asize_y;
+  tgpnl.pos = css_calcAlign(ofs, tgpnl.align);
+};
+
+void(vector view_x, vector view_ctr) otl_HelmetImage ={
+  css_renderImageFullScreen(self.img, '1 1 1', HUD_ALPHA, 0);
+  
+  local vector sz, hsz, ofs;
+  sz = draw_getimagesize("gfx/hud/navbar.png");
+  sz = css_scaleSize(sz,VIEW_SCALE);
+  ofs_x = VIEW_CTR_x - (sz_x/2);
+  ofs_y = VIEW_ORG_y + 16;
+  //drawpic(ofs,  "gfx/hud/navbar.png", sz, '0 1 0', HUD_ALPHA, 0);
+  
+  local float ang;
+  local vector pct;
+  ang = getstati(STAT_PLR_ANG);
+  if(ang >= 359){
+    ang = 0;
+  }
+  pct_x = (ang / 360);
+  pct_y = 0;
+  
+  
+  css_renderImageReel(ofs, pct, "gfx/hud/navbar.png", '64 32', '0 1 0', HUD_ALPHA, 0);
+  self.prev_ang = ang;
+ 
+};
+
+/*
+  SHIELD METER=====================================================
+*/
+void(float shieldval) otl_playerShield={
+  //outlaw doesn't render a separate shield panel
+    local vector label_org;
+    self.wdg_sh.pos = self.hud_pnl1.pos + self.hud_pnl1.margin_ins + '3 6';
+    self.wdg_sh.value1 = shieldval;
+    css_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, self.wdg_sh.drawsize, self.wdg_sh.drawcolor1, 
+                                                                    self.wdg_sh.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
+    label_org = self.wdg_sh.pos - '0 4';
+    drawstring(label_org, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+};
+
+/*
+  ENERGY METER=====================================================
+*/
+void(float energyval) otl_playerEnergy={
+  drawpic(self.hud_pnl3.pos, self.hud_pnl3.img,  self.hud_pnl3.asize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
+  self.wdg_en.value1 = energyval;
+  self.wdg_en.pos = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '0 5';
+  css_renderMeter(self.wdg_en.value1, self.wdg_en.pos, self.wdg_en.drawsize, self.wdg_en.drawcolor1,
+                                                              self.wdg_en.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  
+  local vector isz;
+  isz = draw_getimagesize("gfx/hud/otl/otl_en_cvr.png");
+  isz = css_scaleSize(isz,VIEW_SCALE);
+  drawpic(self.wdg_en.pos, "gfx/hud/otl/otl_en_cvr.png", self.wdg_en.drawsize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
+  drawstring( self.hud_pnl3.pos + self.hud_pnl3.margin_ins, "ENERGY", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+};
+
+/*
+  PLAYER ARMOR LAYOUT====================================================
+*/
+void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor={
+  drawpic(self.hud_pnl1.pos, self.hud_pnl1.img,  self.hud_pnl1.asize, self.hud_pnl1.colortint, HUD_ALPHA, 0);
+  local vector pnl_ctr;
+  pnl_ctr_x = self.hud_pnl1.pos_x + self.hud_pnl1.asize_x/2;
+  pnl_ctr_y = self.hud_pnl1.pos_y +self.hud_pnl1.asize_y/2;
+  drawstring((pnl_ctr + '-4 -18'), "CT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  css_renderMeter(ct, (pnl_ctr + '-6 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  
+  css_renderMeter(lg, (pnl_ctr + '-28 30'), '56 16', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  
+  drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  css_renderMeter(rt, (pnl_ctr + '8 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  
+  drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  css_renderMeter(lt, (pnl_ctr + '-20 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  
+  drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  css_renderMeter(ra, (pnl_ctr + '22 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  
+  drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  css_renderMeter(la, (pnl_ctr + '-34 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+};
+
+/*
+  RADAR LAYOUT====================================================
+*/
+void(float rad_front, float rad_back, float rad_mode) otl_Radar={
+  drawpic(self.hud_pnl2.pos, self.hud_pnl2.img,  self.hud_pnl2.asize, self.hud_pnl2.colortint, HUD_ALPHA, 0);
+  
+  local vector lbl1, lbl2, cvr, c_sz, cvr_ctr, f_clr, b_clr;
+  local string mode;
+  local float len;
+  lbl1 = self.hud_pnl2.pos + '10 10';
+  if(rad_mode == TRUE){
+    mode = "[ACTIVE]";
+  }
+  else{
+    mode = "[PASSIVE]";
+  }
+  len = stringwidth("RADAR MODE:", 0, '6 6 0');
+  lbl2 = lbl1;
+  lbl2_x = lbl2_x + len + 2;
+  drawstring(lbl1, "RADAR MODE:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(lbl2, mode, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  cvr = self.hud_pnl2.pos + self.hud_pnl2.hsize;
+  cvr = cvr - '32 32';
+  c_sz = draw_getimagesize("gfx/hud/otl/otl_rd_cvr.png");
+  c_sz = css_scaleSize(c_sz, VIEW_SCALE);
+  cvr_ctr = cvr + css_getCenter(cvr);
+
+  drawpic(cvr, "gfx/hud/otl/otl_rd_cvr.png",  c_sz, self.hud_pnl2.colortint, HUD_ALPHA, 0);
+};
+
+/*
+ HIT DIRECTION PIPS===================================================
+*/
+void(float hit_dir) otl_hitDirectionPips={
+  //RE?NDER HIT DIRECTION
+  local float l_fade;
+  
+  if(hit_dir & STAT_HIT_LF){
+    local vector lorg;
+    lorg_x = VIEW_ORG_x + 4;
+    lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
+    drawfill((lorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
+  }
+  
+  if(hit_dir & STAT_HIT_RT){
+    local vector rorg;
+    rorg_x = VIEW_MAX_x - 18;
+    rorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
+    drawfill((rorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
+  }
+};
+
+//all the weapons for the outlaw are on the same panel, so 
+//we put the base panel pic in the first weapon function call
+/*
+  WEAPON 1===================================================
+*/
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon1={
+  local entity wep_dat;
+  local float wlen;
+  local vector ofs, wstat;
+  wep_dat = m_findData(w_id, DATA_WEPN);
+  drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
+  
+  wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
+  wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
+  drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins), wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
+
+  ofs = self.hud_pnl4.pos;
+  ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
+  ofs_y = ofs_y + self.hud_pnl4.margin_ins_y;
+  css_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  if(w_grp & w_bit){
+    css_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins, '4 4 0', '2 2 0', '0 1 0'); 
+  } 
+};
+/*
+  WEAPON 2====================================================
+*/
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon2={
+  local entity wep_dat;
+  local float wlen;
+  local vector ofs, stat, wstat;
+  wep_dat = m_findData(w_id, DATA_WEPN);
+  ofs = self.hud_pnl4.pos + self.hud_pnl4.margin_ins;
+  ofs_y = ofs_y + 8;
+  
+  wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
+  wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
+  drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
+  
+  ofs = self.hud_pnl4.pos;
+  ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
+  ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 8;
+  css_renderModalPip(ofs, w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  if(w_grp & w_bit){
+    css_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 8', '4 4 0', '2 2 0', '0 1 0'); 
+  } 
+};
+/*
+  WEAPON 3====================================================
+*/
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon3={
+  local entity wep_dat;
+  local float wlen;
+  local vector ofs, stat, wstat;
+  wep_dat = m_findData(w_id, DATA_WEPN);
+  ofs = self.hud_pnl4.pos + self.hud_pnl4.margin_ins;
+  ofs_y = ofs_y + 16;
+  
+  wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
+  wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
+  drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
+  
+  ofs = self.hud_pnl4.pos;
+  ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
+  ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 16;
+  css_renderModalPip(ofs, w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  if(w_grp & w_bit){
+    css_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 16', '4 4 0', '2 2 0', '0 1 0'); 
+  } 
+};
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon4={};
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon5={};
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon6={};
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon7={};
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon8={};
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon9={};
+
+/*
+  TARGET ARMOR LAYOUT====================================================
+*/
+void(float armorVal) otl_targetArmor={
+  drawpic(self.hud_pnl5.pos, self.hud_pnl5.img,  self.hud_pnl5.asize, self.hud_pnl5.colortint, HUD_ALPHA, 0);
+  if(armorVal > -1){
+    local vector pnl_ctr;
+    pnl_ctr_x = self.hud_pnl5.pos_x + self.hud_pnl5.asize_x/2;
+    pnl_ctr_y = self.hud_pnl5.pos_y + self.hud_pnl5.asize_y/2;
+    local vector colorBuffer;
+    //target center torso
+    drawstring((pnl_ctr + '-4 -18'), "CT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    colorBuffer = css_getStatusColor3(armorVal, TARG_CT_DD, TARG_CT_DM, TARG_CT_OK);
+    css_renderMeter(100, (pnl_ctr + '-6 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    //target leg armor
+    colorBuffer = css_getStatusColor3(armorVal, TARG_LG_DD, TARG_LG_DM, TARG_LG_OK); 
+    css_renderMeter(100, (pnl_ctr + '-28 30'), '56 16', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    
+    //target right torso
+    drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    colorBuffer = css_getStatusColor3(armorVal, TARG_RT_DD, TARG_RT_DM, TARG_RT_OK);
+    css_renderMeter(100, (pnl_ctr + '8 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+
+    //target left torso	
+    drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    colorBuffer = css_getStatusColor3(armorVal, TARG_LT_DD, TARG_LT_DM, TARG_LT_OK);
+    css_renderMeter(100, (pnl_ctr + '-20 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);   
+    
+    //target right arm
+    drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    colorBuffer = css_getStatusColor3(armorVal, TARG_RA_DD, TARG_RA_DM, TARG_RA_OK);
+    css_renderMeter(100, (pnl_ctr + '22 -12'), '12 36',  '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+   
+    //target left arm
+    drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+    colorBuffer = css_getStatusColor3(armorVal, TARG_LA_DD, TARG_LA_DM, TARG_LA_OK);
+    css_renderMeter(100, (pnl_ctr + '-34 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+  }
+};
+
+/*
+  TARGER SHIELD METER====================================================
+*/
+void(float shieldval) otl_targetShield={
+  if(shieldval > -1){
+    local vector label_org, ofs;
+    ofs = self.hud_pnl5.pos + self.hud_pnl5.margin_ins + '3 6';
+    css_renderMeter(shieldval, ofs, self.wdg_sh.drawsize, self.wdg_sh.drawcolor1, 
+                                                                    self.wdg_sh.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
+    label_org = ofs - '0 4';
+    drawstring(label_org, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  }
+};
+/*
+  TARGER RANGE====================================================
+*/
+void(float range) otl_targetRange={
+  if(range > -1){
+  
+  }
+};
+/*
+  TARGER LOCK INDICATOR====================================================
+*/
+void(float islock) otl_targetLock={
+
+
+
+};
+/*
+  TARGER DIRECTIONAL PIP====================================================
+*/
+void(float targdir) otl_targetDirectionPip={
+  if(targdir > -1){
+    local vector lorg, sz;
+    if(targdir == 0){
+      lorg_x = VIEW_ORG_x + 10; 
+      lorg_y = VIEW_CTR_y - 24;
+      sz = '8 48';
+    }
+    else if(targdir == 1){
+      lorg_x = VIEW_ORG_x + VIEW_MAX_x - 10; 
+      lorg_y = VIEW_CTR_y  - 24;
+      sz = '8 48';        
+    }
+    else if(targdir == 2){
+      lorg_x = VIEW_CTR_x - 24;
+      lorg_y = VIEW_CTR_y + 48;
+      sz = '48 8';
+    }
+    drawfill(lorg, sz, STATUS_DMG, HUD_ALPHA, 0);
+  }
 };

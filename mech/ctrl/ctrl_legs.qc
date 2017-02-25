@@ -6,10 +6,41 @@ Overview: implementation for leg model updates
 */
 
 void() ctrl_updateLegs={
-
+  
+  if((self.owner.movement_x == 0) && (self.owner.movement_y == 0)){
+    self.movetype = MOVETYPE_NONE;
+    makevectors(self.owner.angles);
+    local vector adj;
+    adj = self.owner.origin + (v_up * self.c_ofs_y) + (v_right * self.c_ofs_x) + (v_forward * self.c_ofs_z);
+    setorigin(self, adj);
+  }
+  else{
+    if(self.movetype != MOVETYPE_FOLLOW){
+      self.movetype = MOVETYPE_FOLLOW;
+    }
+    local vector m;
+    m = self.owner.movement;
+    m_y = m_y * -1;
+    self.angles =  vectoangles(m);
+    self.v_angle = self.angles;
+  }
+  
 };
 
 void() ctrl_dieLegs={
+  if(self.owner.health <= DEAD_NO){
+    if(self.owner.flags & FL_CLIENT){
+      local float fs, ms;
+      self.owner.m_fspeed = self.owner.m_fspeed - (self.owner.m_fspeed * 0.05);
+      self.owner.m_sspeed = self.owner.m_sspeed - (self.owner.m_sspeed * 0.02);
+    
+      mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, self.m_maccel, self.m_rollangle);
+    }
+    else{
+      //todo leg damage
+    }
+    return;
+  }
   leg_die1();
 };
 

@@ -34,18 +34,39 @@ void(entity wep) ctrl_weapon_think={
   if(self.w_isfire == 1){
     if(time > self.w_firetime){
       if(self.w_currentammo > 0){
-        self.w_currentammo = self.w_currentammo - 1;
-        self.w_attack();
-        if(self.w_currentammo < 0){
-          self.w_currentammo = 0;
+        if((self.en_cur == self.en_max) || (self.en_cur == -1)){
+          self.w_currentammo = self.w_currentammo - 1;
+          self.w_attack();
+          if(self.w_currentammo < 0){
+            self.w_currentammo = 0;
+          }
+          self.w_firetime = time + self.w_firerate;
+          
+          if(self.en_cur != -1){
+            
+            self.en_cur = self.en_cur - self.en_max;
+          }
+          
+          //oself.en_cur = oself.en_cur - self.en_max;
         }
-        self.w_firetime = time + self.w_firerate;
-        oself.en_cur = oself.en_cur - self.en_max;
+        else{
+          self.w_isfire = 0;
+        }
       }
       else{
         self.w_firetime = time + self.w_reloadtime;
         self.w_currentammo = self.w_currentammo + self.w_clipsize;
         self.w_isfire = 0;
+      }
+    }
+  }
+  
+  if(self.en_cur != -1){
+    if(self.en_cur < self.en_max){
+      self.en_cur = self.en_cur + self.owner.en_rate;
+      self.owner.en_cur = self.owner.en_cur - (self.owner.en_rate * 1.15);
+      if(self.en_cur > self.en_max){
+        self.en_cur = self.en_max;
       }
     }
   }
@@ -95,6 +116,10 @@ void() ctrl_die_weapon={
       setorigin(newmis, oself.origin);
       BecomeExplosion();
     self = oself;
+    if(oself.currentWeaponGroup & self.w_group){
+      oself.currentWeaponGroup = oself.currentWeaponGroup - self.w_group;
+      self.w_group = 0;
+    }
     ctrl_weapon_subState(self, self.state_1);
     ctrl_weapon_addState(self, self.state_2);
     self.w_attack = SUB_Null;

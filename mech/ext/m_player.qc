@@ -102,8 +102,8 @@ void() PlayerPostThink = {
   }
   
 // do weapon stuff
-
-  //STAT UPDATE  
+  self.stat_plr_ang = anglemod(self.v_angle_y);
+  //STAT UPDATE   
   if(self.p_class == P_MECH){
     self.stat_en = (self.en_cur / self.en_max)*100;
     self.stat_sh = (self.sh_cur / self.sh_max)*100;
@@ -115,6 +115,7 @@ void() PlayerPostThink = {
     self.stat_rarm_hp = csqc_updateCompStat(self.e_arm_r);
     ctrl_update_mechplayer();
   }
+  self.stat_plr_ptc = self.v_angle_x * -1;
   
   local vector radar;
   radar = server_updateRadarInfo();
@@ -138,19 +139,25 @@ void() PlayerPostThink = {
     playerAttack();
 	}
   
+  local float cv;
+  cv = cvar("mech_setwep1");
+  //centerprint(self, ftos(cv));
+  cvar_set("mech_setwep1","0");
+
 // check to see if player landed and play landing sound	
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
 	{
-		if (self.watertype == CONTENT_WATER)
-			sound (self, CHAN_BODY, "player/h2ojump.wav", 1, ATTN_NORM);
-		else if (self.jump_flag < -650)
+		//if (self.watertype == CONTENT_WATER)
+			//sound (self, CHAN_BODY, "player/h2ojump.wav", 1, ATTN_NORM);
+		//else
+    if (self.jump_flag < -650)
 		{
 			T_Damage (self, world, world, 5); 
-			sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
+			//sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
 			self.deathtype = "falling";
 		}
 		else
-			sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
+			//sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
 
 		self.jump_flag = 0;
 	}
@@ -287,4 +294,4 @@ void() PlayerJump={
 // player jumping sound
 	//sound (self, CHAN_BODY, "player/plyrjmp8.wav", 1, ATTN_NORM);
 	self.velocity_z = self.velocity_z + 0;
-};
+ };

@@ -58,6 +58,16 @@ void() mh_world_ini={
   addstat(STAT_SPR_Y, AS_FLOAT, stat_spr_y);
   
   addstat(STAT_PLR_STT, AS_INT, stat_plr_stt);
+  addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
+  
+  addstat(STAT_PLR_PTC, AS_INT, stat_plr_ptc);
+  
+  addstat(STAT_PLR_ANG, AS_INT, stat_plr_ang);
+  
+  registercvar("mech_setwep1", "0"); 
+  registercvar("mech_setwep2", "0"); 
+  registercvar("mech_setwep3", "0"); 
+  
   
   mh_world_iniData();
 };

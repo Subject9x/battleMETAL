@@ -27,9 +27,26 @@ void() ctrl_updateCenterTorso={
       }
     }
   }
+  local float mx, my;
+  mx = self.movement_x;
+  if(mx < 0){
+    mx = mx * -1;
+  }
   
-  if((self.velocity_x != 0) || (self.velocity_y != 0)){
-    //self.en_cur = self.en_cur - (self.en_rate*0.25);
+  my = self.movement_y;
+  if(my < 0){
+    my = my * -1;
+  }
+  
+  if((mx >= (self.m_fspeed + 1)) || (my >= (self.m_sspeed + 1))){
+    local float v;
+    local vector norg;
+    norg_x = self.origin_x + self.velocity_x;
+    norg_y = self.origin_y + self.velocity_y;
+    v = vlen(norg - self.origin) / 3000;
+    self.en_cur = self.en_cur - (self.en_rate * 1.15);
+    
+    
     self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
     if(self.stat_spr_x > self.conv_max_x){
       self.stat_spr_x =  self.conv_max_x;
@@ -40,6 +57,7 @@ void() ctrl_updateCenterTorso={
     }
   }
   else{
+    
     self.stat_spr_x = self.stat_spr_x - self.conv_min_z;
     if(self.stat_spr_x < self.conv_min_x){
       self.stat_spr_x =  self.conv_min_x;
@@ -116,12 +134,12 @@ void() ctrl_die_comp={
   }
 }
 
-void() ctrl_dieMech={
-  /*if(self.deadflag <= DEAD_NO){
+/*void() ctrl_dieMech={
+  if(self.deadflag <= DEAD_NO){
     self.solid = SOLID_NOT;
     self.deadflag = DEAD_DYING;
     self.takedamage = DAMAGE_NO;
     setmodel(self, "");
     setsize(self, '0 0 0', '0 0 0'); 
-  }*/
-};
+  }
+};*/

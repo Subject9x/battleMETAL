@@ -8,10 +8,11 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LATC_IDX = ID_WEP_LATC;
 string DAT_LATC_NAME = "Light Autocannon";
+float DAT_LATC_DMG = 2;
 float DAT_LATC_FIRETIME = 0;
 float DAT_LATC_CLIPSIZE = 3;
 float DAT_LATC_CURRENTAMMO = 3;
-float DAT_LATC_FIRERATE = 0.15;
+float DAT_LATC_FIRERATE = 0.2;
 float DAT_LATC_RELOADTIME = 0.5;
 float DAT_LATC_ISFIRE = 0;
 vector DAT_LATC_FIRE_OFS = '0 0 12';
@@ -53,6 +54,7 @@ void() data_latc_ini={
   self.c_model = DAT_LATC_MODEL;
   self.w_attack = data_latc_atk;
   self.w_proj = DAT_LATC_PROJ_ID;
+  self.en_cur = -1;
   self.en_max = DAT_LATC_EN_COST;
   self.fire_sound = DAT_LATC_SOUND;
   self.i_techlvl = DAT_LATC_TECH_LEVEL;
@@ -80,7 +82,7 @@ void() data_latc_atk={
     
     te_superspike(dir);
     sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-    t_damage(trace_ent, self, player, 5, DMG_BAL, dir, '0 0 0');
+    t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir, '0 0 0');
     
     
     local vector sfx;

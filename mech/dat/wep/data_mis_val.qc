@@ -53,6 +53,7 @@ void() data_mis_ini={
   self.c_model = DAT_MIS_MODEL;
   self.w_attack = data_mis_atk;
   self.w_proj = DAT_MIS_PROJ_ID;
+  self.en_cur = -1;
   self.en_max = DAT_MIS_EN_COST;
   self.fire_sound = DAT_MIS_SOUND;
   self.i_techlvl = DAT_MIS_TECH_LEVEL;

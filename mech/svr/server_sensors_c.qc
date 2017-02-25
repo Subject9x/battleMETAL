@@ -22,6 +22,7 @@ void() server_getTarget={
   if(trace_ent != world){
     if(trace_ent.p_class != P_OBS){
       self.enemy = trace_ent;
+      self.lock_timer = time + 5;
     }
     else{
       self.enemy = world;
@@ -41,6 +42,7 @@ void() server_updateTargetInfo={
     self.stat_trg_am = -1;
     self.stat_trg_dist = -1;
     self.stat_trg_face = -1;
+    self.targetpip.effects = EF_NODRAW + EF_LOWPRECISION;
     return;
   }
 
@@ -50,11 +52,27 @@ void() server_updateTargetInfo={
   self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
   //self.stat_trg_fact = self.enemy.i_faction;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
+  
   if(self.stat_trg_face <= 0){
     isvis = TRUE;
+    if(time > self.lock_timer){
+      if(!(self.stat_lck_stt & LOCK_TARG)){
+        self.stat_lck_stt = self.stat_lck_stt + LOCK_TARG;
+      }
+      if(!(self.enemy.stat_lck_stt & LOCK_PLYR)){
+        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt + LOCK_PLYR;
+      }
+    }
   }
   else{
     isvis = FALSE;
+    if(self.stat_lck_stt & LOCK_TARG){
+      self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG;
+      self.lock_timer = time + 5;
+    } 
+    if(self.enemy.stat_lck_stt & LOCK_PLYR){
+      self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - LOCK_PLYR;
+    }
   }
   sever_handleTargetMarkEnt(isvis);
   server_calcTargetArmor(isvis, self.enemy);
@@ -90,7 +108,7 @@ void(float vis) sever_handleTargetMarkEnt={
   if(vis == TRUE){
     self.effects = EF_FULLBRIGHT + EF_NODEPTHTEST + EF_LOWPRECISION;
     setmodel(self, "q3mdl/green_pip.spr32");
-    setorigin(self, oself.enemy.origin + t_height);
+    setorigin(self, oself.enemy.origin + (t_height * 1.15));
     self.scale = sz/10;
   }
   else{

@@ -4,6 +4,7 @@
 m_csdefs.qc
 m_entdefs.qc
 m_datadefs.qc
+m_hud_h.qc
 m_cssqc.qc
 m_renderfuncs_h.qc
 

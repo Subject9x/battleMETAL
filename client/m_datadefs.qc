@@ -39,3 +39,4 @@ float ID_PRJ_LATC=1;
 float ID_PRJ_EMP=2;
 float ID_PRJ_MIS=3;
 
+entity(float id, float dat_type) m_findData;

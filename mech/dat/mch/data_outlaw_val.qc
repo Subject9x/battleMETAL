@@ -27,8 +27,8 @@ float DAT_OTL_M_FSPEED=175;
 float DAT_OTL_M_SSPEED=150;
 float DAT_OTL_M_BSPEED=150;
 
-vector DAT_OTL_SPREAD_N = '1 1 0.005';
-vector DAT_OTL_SPREAD_X = '4 4 0.005';
+vector DAT_OTL_SPREAD_N = '4 4 0.01';
+vector DAT_OTL_SPREAD_X = '8 8 0.01';
 
 float DAT_OTL_LEG_HP = 100;
 float DAT_OTL_LEG_HPMAX= 100;
