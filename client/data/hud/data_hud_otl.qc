@@ -420,6 +420,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins), wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
 
+  local string wid;
+  wid = css_getWeaponId(w_bit);
+  drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins) - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
+  
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y;
@@ -442,6 +446,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
   wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
+  
+  local string wid;
+  wid = css_getWeaponId(w_bit);
+  drawstring(ofs - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
@@ -466,13 +474,18 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
   
+  local string wid;
+  wid = css_getWeaponId(w_bit);
+  drawstring(ofs - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
+  
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 16;
   css_renderModalPip(ofs, w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     css_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 16', '4 4 0', '2 2 0', '0 1 0'); 
-  } 
+  }
+
 };
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon4={};
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon5={};

@@ -19,6 +19,8 @@ m_renderfuncs_h.qc
   data/wep/data_emp_val.qc
   data/wep/data_mis_val.qc
   data/wep/data_las_val.qc
+  data/wep/data_mlgd_vals.qc
+  data/wep/data_marh_vals.qc
   
   //Mechs
   data/mch/data_matok_val.qc

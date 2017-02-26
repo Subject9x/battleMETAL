@@ -11,3 +11,8 @@ void() SetNewParms;
 void() DecodeLevelParms;
 void() respawn;
 entity() SelectSpawnPoint;
+
+//client command layer
+void(string cmd, float tokens) client_ParseMechCommand;
+void(string cmd, float tokens) client_setWeapon;
+

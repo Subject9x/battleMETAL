@@ -18,7 +18,7 @@ void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr,
 void(string src_img, vector tintcolor, float alpha, float flg) css_renderImageFullScreen;
 vector(float bit, float check1, float check2, float check3) css_getStatusColor3;
 void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) css_BoxOnLabel;
-
+string(float bit) css_getWeaponId;
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;
@@ -260,4 +260,34 @@ void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr,
   clipSize_y = clipSize_y / isz_y;
   isz = css_scaleSize(isz, VIEW_SCALE);
   drawsubpic(srcOrg, isz, src_img, percent, clipSize, clr, alpha, flg);
+};
+
+string(float bit) css_getWeaponId={
+  if(bit == WEAPON1){
+    return "1";
+  }
+  else if(bit == WEAPON2){
+    return "2";
+  }
+  else if(bit == WEAPON3){
+    return "3";
+  }
+  else if(bit == WEAPON4){
+    return "4";
+  }
+  else if(bit == WEAPON5){
+    return "5";
+  }
+  else if(bit == WEAPON6){
+    return "6";
+  }
+  else if(bit == WEAPON7){
+    return "7";
+  }
+  else if(bit == WEAPON8){
+    return "8";
+  }
+  else if(bit == WEAPON9){
+    return "9";
+  }
 };

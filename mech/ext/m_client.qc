@@ -14,12 +14,7 @@ void(string str) SV_ParseClientCommand={
   local float argc;
   argc = tokenize(str);
   if(argv(0) == "mech"){
-    if(argv(1) == "setwep"){
-      bprint(strcat(ftos(self.data_idx),"\n"));
-      if(self.deadflag >= DEAD_NO){
-        
-      }
-    }
+    client_ParseMechCommand(str, argc);
   }
   else{
     clientcommand(self, str);

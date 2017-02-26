@@ -4,6 +4,54 @@ Author: Subject9x
 Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 */
+
+/*
+  client sends string 'cmd mech foo'
+  where foo is the command, first parm must be 'mech'
+  
+  so - 'cmd mech foo'
+  
+*/
+void(string str, float tokens) client_ParseMechCommand={
+  
+  if(argv(1) == "setwep"){
+    bprint(strcat(str,"\n"));
+    if(self.deadflag >= DEAD_NO){
+      client_setWeapon(str, tokens);
+    }
+  }
+};
+/*
+commmand string: cmd mech setwep X Y
+  X = WEAPON bitflag id
+  Y = weapon data_idx id
+*/
+void(string cmd, float tokens) client_setWeapon={
+  bprint(strcat(ftos(self.data_idx),"\n"));
+  local float wslotid, new_id;
+  local entity e_wslot, oself, new_dat;
+  oself = self;
+  wslotid = stof(argv(2));
+  new_id = stof(argv(3));
+  new_dat = mh_world_findData(new_id, DATA_WEPN);
+  if(new_dat == world){
+    bprint(strcat("Error on command:",cmd,"\n","could not find weapon"));
+    return;
+  }
+  e_wslot = self.w_slot;
+  while(e_wslot){
+    if(e_wslot.w_group == wslotid){
+      self = e_wslot;
+        self.data_idx = new_id;
+        new_dat.unit_ini();
+        ctrl_weapon_addState(self, self.state_1);
+        util_setModel(self.c_model, 0);
+      self = oself;
+    }
+    e_wslot = e_wslot.w_slot;
+  }
+};
+
 void() respawn={
   if (coop){
 		// make a copy of the dead body for appearances sake

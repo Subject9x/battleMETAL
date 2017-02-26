@@ -7,7 +7,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 */
 //LIGHT AUTOCANNON=======================
 float DAT_LATC_IDX = ID_WEP_LATC;
-string DAT_LATC_NAME = "L/Autocannon";
+string DAT_LATC_NAME = "Autocannon";
 float DAT_LATC_CLIPSIZE = 4;
 float DAT_LATC_FIRERATE = 0.18;
 float DAT_LATC_RELOADTIME = 0.45;

@@ -48,6 +48,8 @@ void() cs_precache={
   data_wep_emp();
   data_wep_mis();
   data_wep_las();
+  data_wep_mlgd();
+  data_wep_marh();
   
   //hud data
   otl_hud_ini();
