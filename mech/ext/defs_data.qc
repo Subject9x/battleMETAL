@@ -40,7 +40,7 @@ float ID_WEP_ATC = 5;
 float ID_WEP_QRF = 6;
 float ID_WEP_RPC = 7;
 //ENERGY
-float ID_WEP_APC = 8;
+float ID_WEP_PAC = 8;
 float ID_WEP_ESR = 9;
 
 //MISSILE
@@ -60,6 +60,8 @@ float ID_PRJ_EMP = 2;
 float ID_PRJ_MIS = 3;
 float ID_PRJ_MLGD = 4;
 float ID_PRJ_MARH = 5;
+float ID_PRJ_RPLAS = 6;
+float ID_PRJ_QRFL = 7;
 
 //VEHICLES===============================
 

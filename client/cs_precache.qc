@@ -50,6 +50,10 @@ void() cs_precache={
   data_wep_las();
   data_wep_mlgd();
   data_wep_marh();
+  data_wep_pac();
+  data_wep_qrfl();
+  data_wep_esr();
+  data_wep_rplas();
   
   //hud data
   otl_hud_ini();
@@ -58,7 +62,7 @@ void() cs_precache={
 };
 
 entity(float id, float dat_type) m_findData={
-  local entity found, data_chain;
+  local entity data_chain;
   data_chain = findchain(classname, "data");
   while(data_chain){
     local float idx;

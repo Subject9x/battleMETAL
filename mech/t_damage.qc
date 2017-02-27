@@ -293,6 +293,13 @@ float(entity targ, float dmg_amt, float dmg_type) damage_shield={
       }
       return 0;
     }
+    else if(dmg_type & EFF_ENG){
+      targ.en_cur = targ.en_cur - dmg_amt;
+      if(targ.en_cur < 0){
+        targ.en_cur = 0;
+      }
+      return 0;
+    }
     else{
       if(targ.sh_cur >= dmg_amt){
         targ.sh_cur = targ.sh_cur - dmg_amt;
@@ -319,6 +326,13 @@ float(entity targ, float dmg_amt, float dmg_type) damage_shield={
       }
       return 0;
     }
+    else if(dmg_type & EFF_ENG){
+      targ.en_cur = targ.en_cur - dmg_amt;
+      if(targ.en_cur < 0){
+        targ.en_cur = 0;
+      }
+      return 0;
+    }
     else{
       if(targ.sh_cur >= dmg_amt){
         targ.sh_cur = targ.sh_cur - dmg_amt;
@@ -342,6 +356,13 @@ float(entity targ, float dmg_amt, float dmg_type) damage_shield={
       targ.sh_cur = targ.sh_cur - dmg_amt;
       if(targ.sh_cur < 0){
         targ.sh_cur = 0;
+      }
+      return 0;
+    }
+    else if(dmg_type & EFF_ENG){
+      targ.en_cur = targ.en_cur - dmg_amt;
+      if(targ.en_cur < 0){
+        targ.en_cur = 0;
       }
       return 0;
     }

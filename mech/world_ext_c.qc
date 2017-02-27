@@ -81,6 +81,8 @@ void() mh_world_iniData={
   data_prj_mis();
   data_prj_mlgd();
   data_prj_marh();
+  data_prj_rplas();
+  data_prj_qrfl();
   
   //weapon data
   data_wep_latc();
@@ -89,6 +91,9 @@ void() mh_world_iniData={
   data_wep_las();
   data_wep_mlgd();
   data_wep_marh();
+  data_wep_qrfl();
+  data_wep_esr();
+  data_wep_pac();
   
   //mech data
   data_mech_otl();

@@ -469,7 +469,6 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wep_dat = m_findData(w_id, DATA_WEPN);
   ofs = self.hud_pnl4.pos + self.hud_pnl4.margin_ins;
   ofs_y = ofs_y + 16;
-  
   wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
   wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);

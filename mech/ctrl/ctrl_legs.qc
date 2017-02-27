@@ -28,13 +28,13 @@ void() ctrl_updateLegs={
 };
 
 void() ctrl_dieLegs={
-  if(self.owner.health <= DEAD_NO){
+  if(self.owner.deadflag <= DEAD_NO){
     if(self.owner.flags & FL_CLIENT){
       local float fs, ms;
       self.owner.m_fspeed = self.owner.m_fspeed - (self.owner.m_fspeed * 0.05);
       self.owner.m_sspeed = self.owner.m_sspeed - (self.owner.m_sspeed * 0.02);
     
-      mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, self.m_maccel, self.m_rollangle);
+      mh_world_updateClientSpeed(self.owner.m_fspeed, self.owner.m_sspeed, self.owner.m_bspeed, self.owner.m_maccel, self.owner.m_rollangle);
     }
     else{
       //todo leg damage

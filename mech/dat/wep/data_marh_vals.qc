@@ -76,10 +76,15 @@ void() data_marh_atk={
         org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
         traceline(org, end, FALSE, player);
         dir = trace_endpos;
-        local float cnt, itr;
-        cnt = 15;
+        local float countlim, itr;
+        countlim = 15;
         
-        while(itr < cnt){
+        local float dist;
+        local vector arc;
+        dist = vlen(dir - org);
+        arc = org + (v_forward * (dist/4)) + (v_up * (dist/8)) + v_right;
+        
+        while(itr < countlim){
           local vector start;
           start = org + ((crandom() * 5) * v_right) + (v_up * (crandom() * 5));
           itr = itr + 1;
@@ -91,8 +96,10 @@ void() data_marh_atk={
             util_setModel(self.c_model, 0);
             util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
             util_setBoundBox('0 0 0', '0 0 0');
-            self.velocity = normalize(dir - start);
+            self.velocity = normalize(arc - start);
             self.enemy = self.owner.enemy;
+            self.c_ofs = arc;
+            self.lock_timer = time + 1;
             self.p_lifetime = time + self.p_lifetime;
             setorigin(self, start);
             self.velocity = self.velocity * self.p_velocity;

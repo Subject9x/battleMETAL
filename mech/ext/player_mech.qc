@@ -19,7 +19,7 @@ void() ctrl_update_mechplayer={
 };
 
 
-void() stat_update_weapons={
+/*void() stat_update_weapons={
   local float cnt;
   local entity ent;
   ent = self.w_slot;
@@ -29,7 +29,7 @@ void() stat_update_weapons={
     ent = ent.w_slot;
   }
 
-};
+};*/
 
 
 /*

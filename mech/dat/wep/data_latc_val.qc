@@ -84,7 +84,6 @@ void() data_latc_atk={
     sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
     t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir, '0 0 0');
     
-    
     local vector sfx;
     adj_z = adj_z + 45;
     sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
@@ -102,22 +101,6 @@ void() data_latc_atk={
     bul_fx.color = '1 0 0';
     bul_fx.think = SUB_Remove;
     bul_fx.nextthink = time + 0.001;// + 0.35;
-    /*newmis = spawn();
-    oself = self;
-    self = newmis;
-      self.owner = player;
-      proj.unit_ini();
-      util_setModel(self.c_model, 0);
-      util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-      util_setBoundBox('0 0 0', '0 0 0');
-      self.velocity = normalize(dir - org);
-      self.think = SUB_Remove;
-      self.nextthink = time + self.p_lifetime;
-      setorigin(self, org);
-      self.velocity = self.velocity * self.p_velocity;
-      self.angles = vectoangles(self.velocity);
-    self = oself;*/
-    
   }
   else{
     bprint("oops!\n");

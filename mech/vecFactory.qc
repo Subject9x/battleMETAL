@@ -141,7 +141,7 @@ entity(entity data, entity own) buildCameraEnt={
   self = cam;
     self.classname = "camera";
     self.scale = 0.05;
-    data.unit_cam(cam);
+    data.unit_cam();
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
     util_setModel(self.c_model, 0);
     self.alpha = 0;
@@ -160,10 +160,10 @@ entity(entity data, entity own) buildCameraEnt={
 
 //im outta tricks, brute force away
 void(entity mechData, entity own)buildWeaponList={
-  local entity point, oself;
+  local entity point, oself, wep;
   point = own;
   if(mechData.unit_wep1){
-    local entity wep;
+    
     wep = spawn();
     oself = self;
     self = wep;
@@ -175,7 +175,6 @@ void(entity mechData, entity own)buildWeaponList={
     point = point.w_slot;
   }
   if(mechData.unit_wep2){
-    local entity wep;
     wep = spawn();
     oself = self;
     self = wep;
@@ -187,7 +186,7 @@ void(entity mechData, entity own)buildWeaponList={
     point = point.w_slot;
   }
   if(mechData.unit_wep3){
-    local entity wep;
+
     wep = spawn();
     oself = self;
     self = wep;
@@ -199,7 +198,7 @@ void(entity mechData, entity own)buildWeaponList={
     point = point.w_slot;
   }
   if(mechData.unit_wep4){
-    local entity wep;
+   
     wep = spawn();
     oself = self;
     self = wep;
@@ -211,7 +210,7 @@ void(entity mechData, entity own)buildWeaponList={
     point = point.w_slot;
   }
   if(mechData.unit_wep5){
-    local entity wep;
+    
     wep = spawn();
     oself = self;
     self = wep;
@@ -223,7 +222,7 @@ void(entity mechData, entity own)buildWeaponList={
     point = point.w_slot;
   }
   if(mechData.unit_wep6){
-    local entity wep;
+    
     wep = spawn();
     oself = self;
     self = wep;
@@ -235,7 +234,7 @@ void(entity mechData, entity own)buildWeaponList={
     point = point.w_slot;
   }
   if(mechData.unit_wep7){
-    local entity wep;
+   
     wep = spawn();
     oself = self;
     self = wep;
@@ -247,7 +246,7 @@ void(entity mechData, entity own)buildWeaponList={
     point = point.w_slot;
   }
   if(mechData.unit_wep8){
-    local entity wep;
+    
     wep = spawn();
     oself = self;
     self = wep;
@@ -259,7 +258,7 @@ void(entity mechData, entity own)buildWeaponList={
     point = point.w_slot;
   }
   if(mechData.unit_wep9){
-    local entity wep;
+    
     wep = spawn();
     oself = self;
     self = wep;

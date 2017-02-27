@@ -6,7 +6,7 @@ Overview: implementation for center torso updates
 */
 
 void() ctrl_updateCenterTorso={
-
+  local float diff;
   if(time > self.laser_sight_timer){
     local entity cam;
     makevectors(self.v_angle);
@@ -19,7 +19,6 @@ void() ctrl_updateCenterTorso={
   if(self.en_cur < self.en_max){
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur > self.en_max){
-        local float diff;
         diff = self.en_cur - self.en_max;
         self.en_cur = self.en_cur - diff;
       }
@@ -30,7 +29,6 @@ void() ctrl_updateCenterTorso={
         self.sh_cur = self.sh_cur + self.sh_rate;
         self.en_cur = self.en_cur - self.sh_rate;
         if(self.sh_cur > self.sh_max){
-          local float diff;
           diff = self.sh_cur - self.sh_max;
           self.sh_cur = self.sh_cur - diff;
         }

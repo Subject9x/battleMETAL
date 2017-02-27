@@ -44,7 +44,7 @@ void(entity wep) ctrl_weapon_think={
           
           if(self.en_cur != -1){
             
-            self.en_cur = self.en_cur - self.en_max;
+            self.en_cur = self.en_cur - (self.en_max/self.w_clipsize);
           }
           
           //oself.en_cur = oself.en_cur - self.en_max;
@@ -57,6 +57,7 @@ void(entity wep) ctrl_weapon_think={
         self.w_firetime = time + self.w_reloadtime;
         self.w_currentammo = self.w_currentammo + self.w_clipsize;
         self.w_isfire = 0;
+        
       }
     }
   }
@@ -64,7 +65,7 @@ void(entity wep) ctrl_weapon_think={
   if(self.en_cur != -1){
     if(self.en_cur < self.en_max){
       self.en_cur = self.en_cur + self.owner.en_rate;
-      self.owner.en_cur = self.owner.en_cur - (self.owner.en_rate * 1.15);
+      self.owner.en_cur = self.owner.en_cur - (self.owner.en_rate * 1.35);
       if(self.en_cur > self.en_max){
         self.en_cur = self.en_max;
       }
@@ -74,12 +75,12 @@ void(entity wep) ctrl_weapon_think={
 };
 
 //gross
-void(entity wep, float state) ctrl_weapon_addState={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state + state;
+void(entity wep, float wstate) ctrl_weapon_addState={
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state + wstate;
 };
 
-void(entity wep, float state) ctrl_weapon_subState={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state);
+void(entity wep, float wstate) ctrl_weapon_subState={
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & wstate);
 };
 
 void(entity wep, float state1, float state2) ctrl_weapon_clearState={
@@ -91,12 +92,12 @@ void(entity wep, float state1, float state2) ctrl_weapon_clearState={
   }
 };
 
-void(entity wep, float state) ctrl_weapon_isReload={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state + state;
+void(entity wep, float wstate) ctrl_weapon_isReload={
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state + wstate;
 };
 
-void(entity wep, float state) ctrl_weapon_isReady={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state);
+void(entity wep, float wstate) ctrl_weapon_isReady={
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & wstate);
 };
 
 void(entity wep) ctrl_weapon_tryFire={

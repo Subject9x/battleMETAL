@@ -15,8 +15,7 @@ float(entity trg) util_checkPointAngle={
 	vec = normalize (trg.origin - self.origin);
 	f_dot = vec * v_forward;
   s_dot = vec * v_right;
-	if ( f_dot > 0.6 )
-	{
+	if ( f_dot > 0.6 ){
 		return -1;
 	}
   else{
@@ -27,7 +26,7 @@ float(entity trg) util_checkPointAngle={
       if(s_dot > 0.1){
         return 1;
       }
-      else if(s_dot < 0.1){
+      else {
         return 0;
       }
     }

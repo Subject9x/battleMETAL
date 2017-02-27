@@ -1,6 +1,5 @@
 ../progs.dat
 
-//defs.qc
 dp/defs.qc
 dp/dpextensions.qc
 
@@ -48,6 +47,8 @@ fight_h.qc
   mech/dat/prj/data_prj_mis_val.qc
   mech/dat/prj/data_prj_mlgd_vals.qc
   mech/dat/prj/data_prj_marh_vals.qc
+  mech/dat/prj/data_prj_rplas_vals.qc  
+  mech/dat/prj/data_prj_qrfl_vals.qc  
   
   //weapons
   mech/dat/wep/data_latc_val.qc
@@ -56,7 +57,11 @@ fight_h.qc
   mech/dat/wep/data_las_val.qc
   mech/dat/wep/data_mlgd_vals.qc
   mech/dat/wep/data_marh_vals.qc
-  
+  mech/dat/wep/data_rplas_vals.qc
+  mech/dat/wep/data_qrfl_vals.qc
+  mech/dat/wep/data_esr_vals.qc
+  mech/dat/wep/data_pac_vals.qc
+
   //mechs
   mech/dat/mch/data_outlaw_val.qc
   mech/dat/mch/data_matok_val.qc
@@ -137,21 +142,20 @@ triggers.qc
 plats.qc
 misc.qc
 
-/*
-q1/qmonst/ogre.qc
-q1/qmonst/demon.qc
-q1/qmonst/shambler.qc
-q1/qmonst/knight.qc
-q1/qmonst/soldier.qc
-q1/qmonst/wizard.qc
-q1/qmonst/dog.qc
-q1/qmonst/zombie.qc
-q1/qmonst/boss.qc
 
-q1/qmonst/tarbaby.qc		// registered
-q1/qmonst/hknight.qc		// registered
-q1/qmonst/fish.qc			// registered
-q1/qmonst/shalrath.qc		// registered
-q1/qmonst/enforcer.qc		// registered
-q1/qmonst/oldone.qc		// registered
-*/
+//q1/qmonst/ogre.qc
+//q1/qmonst/demon.qc
+//q1/qmonst/shambler.qc
+//q1/qmonst/knight.qc
+//q1/qmonst/soldier.qc
+//q1/qmonst/wizard.qc
+//q1/qmonst/dog.qc
+//q1/qmonst/zombie.qc
+//q1/qmonst/boss.qc
+
+//q1/qmonst/tarbaby.qc		// registered
+//q1/qmonst/hknight.qc		// registered
+//q1/qmonst/fish.qc			// registered
+//q1/qmonst/shalrath.qc		// registered
+//q1/qmonst/enforcer.qc		// registered
+//q1/qmonst/oldone.qc		// registered

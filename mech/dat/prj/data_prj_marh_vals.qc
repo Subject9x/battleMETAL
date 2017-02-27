@@ -54,6 +54,7 @@ void() data_prj_marh_ini={
   self.glow_color = DAT_PRJ_MARH_GLOWCOLOR;
   self.glow_size = DAT_PRJ_MARH_GLOWSIZE;
   self.glow_trail = DAT_PRJ_MARH_GLOWTRAIL;
+  self.c_ofs = '0 0 0';
 };
 
 void() data_prj_marh_th={
@@ -65,10 +66,28 @@ void() data_prj_marh_th={
   if(self.enemy == world){
     return;
   }
-  turnrate = 0.01;	//Change as you wish
-	if (self.owner.stat_lck_stt & LOCK_TARG){
-    makevectors(self.enemy.angles);
-  	vtemp = self.enemy.origin + '0 0 10' + ((crandom() * 50) * v_right) + (v_up * (crandom() * 35));
+  turnrate = 0.1;	//Change as you wish  
+	if(self.owner.stat_lck_stt & LOCK_TARG){
+    if(time > self.lock_timer){
+      makevectors(self.enemy.angles);
+      vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.c_bbx_x_x) * v_right) + (v_forward * (crandom() * self.enemy.c_bbx_x_x));
+    }
+    else{
+      local vector mns, mxs;
+      mns = self.c_ofs - '10 10 10';
+      mxs = self.c_ofs + '10 10 10';
+      local float yiss;
+      yiss = util_checkInBounds(self.origin, mns, mxs);
+      
+      if(yiss){
+        makevectors(self.enemy.angles);
+        vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.c_bbx_x_x) * v_right) + (v_forward * (crandom() * self.enemy.c_bbx_x_x));
+      }
+      else{
+        vtemp = self.c_ofs;
+      }
+    }
+    
     olddir = normalize(self.velocity);
 		dir = normalize(vtemp - self.origin);
     if (olddir_x - dir_x > (turnrate*2))

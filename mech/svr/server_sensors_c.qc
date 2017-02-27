@@ -78,7 +78,7 @@ void() server_updateTargetInfo={
     }
   }
   sever_handleTargetMarkEnt(isvis);
-  server_calcTargetArmor(isvis, self.enemy);
+  server_calcTargetArmor();
   if(self.enemy.sh_cur > -1){
     if(self.enemy.sh_cur == 0){
       self.stat_trg_sh = 0;
