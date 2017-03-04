@@ -82,6 +82,7 @@ void() data_las_atk={
   laser_org = spawn();
   laser_org.movetype = SOLID_NOT;
   laser_org.classname = "missile";
+  setmodel(laser_org, "progs/laser.mdl");
   setsize(laser_org, '0 0 0', '0 0 0');
   setorigin(laser_org, org);
   
@@ -91,10 +92,23 @@ void() data_las_atk={
   dtype = DMG_ENE;
   t_damage(trace_ent, self, player, DAT_LAS_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
-  te_lightning1(laser_org, laser_org.origin, dir); 
+  //te_lightning1(laser_org, laser_org.origin, dir);
+  
+  
+  WriteByte(MSG_ALL, SVC_TEMPENTITY);
+  WriteByte(MSG_ALL, TE_LIGHTNING3);
+  WriteEntity(MSG_ALL, laser_org);
+  WriteCoord(MSG_ALL, laser_org.origin_x);
+  WriteCoord(MSG_ALL, laser_org.origin_y);
+  WriteCoord(MSG_ALL, laser_org.origin_z);
+  WriteCoord(MSG_ALL, dir_x);
+  WriteCoord(MSG_ALL, dir_y);
+  WriteCoord(MSG_ALL, dir_z);
+  
+  
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);
   
   laser_org.think = SUB_Remove;
-  laser_org.nextthink = time + 0.011;// + 0.35;
+  laser_org.nextthink = time + 0.01;// + 0.35;
 };

@@ -21,7 +21,8 @@ every hud ent has to implement this format
 .vector nav_ofs;
 
 .void(entity vec_data) hud_prep;
-.void(vector view_x, vector view_ctr) hud_HelmetImage;          
+.void(vector view_x, vector view_ctr) hud_HelmetImage;
+.void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hud_renderCrosshairs;  
 .void(float shieldval) hud_playerShield;
 .void(float energyval) hud_playerEnergy;
 .void(float ct, float lt, float rt, float la, float ra, float lg) hud_playerArmor;
@@ -36,6 +37,7 @@ every hud ent has to implement this format
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon7;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon8;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon9;
+.void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float trglock, float trgdir)hud_renderTarget; //this will call the functions below
 .void(float shieldval) hud_targetShield;
 .void(float armorVal) hud_targetArmor;
 .void(float range) hud_targetRange;

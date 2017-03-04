@@ -12,9 +12,7 @@ void() CSQC_Init =
   plr_angles = '0 0 0';
   VIEW_ORG = '0 0';
   
-  registercommand("balls");
   cs_precache();
-  //hud_ini();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -29,6 +27,12 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float typ, float x, float y) CSQC_InputEvent =
 {
+  
+  //if(typ == 1){
+   //  
+    //return TRUE;
+  //}
+  
 	return FALSE;
 };
 
@@ -156,13 +160,14 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     //render 
     local entity player_hud, vec_data, oself;
-    vec_data = m_findData(1, DATA_MECH);
-    player_hud = m_findData(1, DATA_HUD);
+    vec_data = m_findData(vec_id, DATA_MECH);
+    player_hud = m_findData(vec_id, DATA_HUD);
     
     oself = self;
     self = player_hud;
       self.hud_prep(vec_data);
       self.hud_HelmetImage(VIEW_MAX, VIEW_CTR);
+      self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
       self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
       self.hud_playerShield(plr_sh);
       self.hud_playerEnergy(plr_en);  
@@ -177,11 +182,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, plr_wrel);
       self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, plr_wrel);
       self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, plr_wrel);
-      self.hud_targetArmor(trg_am);
-      self.hud_targetShield(trg_sh);
-      self.hud_targetRange(trg_dist);
-      self.hud_targetLock(trg_lock);
-      self.hud_targetDirectionPip(trg_dir);
+      self.hud_renderTarget(trg_vid,trg_datid,trg_am,trg_sh,trg_dist,trg_lock,trg_dir);
     self = oself;
     
     
@@ -195,7 +196,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 // return FALSE to let engine process command, TRUE to eat command
 float(string s) CSQC_ConsoleCommand =
 {
-  centerprint("boop");
 	return FALSE;
 };
 

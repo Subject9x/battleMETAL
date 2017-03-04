@@ -19,21 +19,24 @@ void(string src_img, vector tintcolor, float alpha, float flg) css_renderImageFu
 vector(float bit, float check1, float check2, float check3) css_getStatusColor3;
 void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) css_BoxOnLabel;
 string(float bit) css_getWeaponId;
+
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;
 vector VIEW_CTR;
-float VIEW_TOP = 1;//	(bit)
-float VIEW_BOT = 2;// (bit)
-float VIEW_LFT = 4;// (bit)
-float VIEW_RGT = 8;// (bit)
+float VIEW_TOP = 1;
+float VIEW_BOT = 2;
+float VIEW_LFT = 4;
+float VIEW_RGT = 8;
+float VIEW_CTX = 16;
+float VIEW_CTY = 32;
 float VIEW_SCALE;
-float AXIS_H = 1;	//bit)
-float AXIS_V = 2;// (bit)
-float AXIS_LEFT = 4;// (bit)
-float AXIS_RIGHT = 8;// (bit)
-float AXIS_UP = 16;// (bit)
-float AXIS_DOWN = 24;// (bit)
+float AXIS_H = 1;	
+float AXIS_V = 2;
+float AXIS_LEFT = 4;
+float AXIS_RIGHT = 8;
+float AXIS_UP = 16;
+float AXIS_DOWN = 24;
 float AXIS_CTR = 32;
 float DIR_UP = 1;
 float DIR_DN = 2;
@@ -129,6 +132,13 @@ vector(vector vec, float algn) css_calcAlign={
     x = VIEW_MAX_x - vec_x;
   }
   
+  if(algn & VIEW_CTX){
+    x = VIEW_CTR_x - vec_x;
+    
+  }
+  if(algn & VIEW_CTY){
+    y = VIEW_CTR_y - vec_y;
+  }
   toSender_x = x;
   toSender_y = y;
   

@@ -11,7 +11,7 @@ float DAT_ESR_DMG = 25;
 float DAT_ESR_FIRETIME = 0;
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_CURRENTAMMO = 10;
-float DAT_ESR_FIRERATE = 0.06;
+float DAT_ESR_FIRERATE = 0.01;
 float DAT_ESR_RELOADTIME = 1;
 float DAT_ESR_ISFIRE = 0;
 vector DAT_ESR_FIRE_OFS = '0 0 6';
@@ -92,7 +92,7 @@ void() data_esr_atk={
   dtype = DMG_ENE;
   t_damage(trace_ent, self, player, DAT_ESR_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
-  te_lightning1(laser_org, laser_org.origin, dir); 
+  te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);
   

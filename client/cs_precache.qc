@@ -57,7 +57,8 @@ void() cs_precache={
   
   //hud data
   otl_hud_ini();
-  tmk_hud_ini();
+  mtk_hud_ini();
+  hvd_hud_ini();
   
 };
 

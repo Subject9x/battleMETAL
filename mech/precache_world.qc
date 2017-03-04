@@ -53,6 +53,7 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_right.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_l_arm.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_r_arm.md3");
+  precache_model ("q3mdl/mechs/hvd/mdl_hvd_cpt.md3");
    
    
   //weapon models

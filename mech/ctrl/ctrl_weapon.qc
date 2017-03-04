@@ -69,6 +69,7 @@ void(entity wep) ctrl_weapon_think={
       if(self.en_cur > self.en_max){
         self.en_cur = self.en_max;
       }
+      self.w_isfire = 0;
     }
   }
   self = oself;

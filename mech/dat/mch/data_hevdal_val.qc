@@ -21,7 +21,7 @@ float DAT_HVD_SHIELD_MAX = 150;
 float DAT_HVD_SHIELD_RATE = 0.1;
 vector DAT_HVD_CTOR_BBX_N ='-18 -18 -50';
 vector DAT_HVD_CTOR_BBX_X ='18 18 14';
-string DAT_HVD_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3";
+string DAT_HVD_CPIT_MODEL = "q3mdl/mechs/hvd/mdl_hvd_cpt.md3";
 float DAT_HVD_M_FSPEED=85;
 float DAT_HVD_M_SSPEED=80;
 float DAT_HVD_M_BSPEED=75;
@@ -30,18 +30,18 @@ vector DAT_HVD_SPREAD_N = '8 6 0.01';
 vector DAT_HVD_SPREAD_X = '14 10 0.03';
 
 //HITPOINT VALUES
-float DAT_HVD_CTOR_HP = 100;
-float DAT_HVD_CTOR_HPMAX= 100;
-float DAT_HVD_LEG_HP = 100;
-float DAT_HVD_LEG_HPMAX= 100;
-float DAT_HVD_LTOR_HP = 100;
-float DAT_HVD_LTOR_HPMAX= 100;
-float DAT_HVD_RTOR_HP = 100;
-float DAT_HVD_RTOR_HPMAX= 100;
-float DAT_HVD_LARM_HP = 100;
-float DAT_HVD_LARM_HPMAX= 100;
-float DAT_HVD_RARM_HP = 100;
-float DAT_HVD_RARM_HPMAX= 100;
+float DAT_HVD_CTOR_HP = 350;
+float DAT_HVD_CTOR_HPMAX= 350;
+float DAT_HVD_LEG_HP = 400;
+float DAT_HVD_LEG_HPMAX= 400;
+float DAT_HVD_LTOR_HP = 300;
+float DAT_HVD_LTOR_HPMAX= 300;
+float DAT_HVD_RTOR_HP = 300;
+float DAT_HVD_RTOR_HPMAX= 300;
+float DAT_HVD_LARM_HP = 200;
+float DAT_HVD_LARM_HPMAX= 200;
+float DAT_HVD_RARM_HP = 200;
+float DAT_HVD_RARM_HPMAX= 200;
 
 //ARMOR VALUES
 float DAT_HVD_CTOR_ARMOR= 100;

@@ -2,12 +2,14 @@
 mech Mod
 Author: Subject9x
 Date: 11/02/2016
+  refac 03/01/2017
 Overview: Hud Layout data for mech 'outlaw'
 */
 
 void() otl_hud_ini;
 void(entity vec_data) otl_hud_prep;
-void(vector view_x, vector view_ctr) otl_HelmetImage;          
+void(vector view_x, vector view_ctr) otl_HelmetImage;
+void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_renderCrosshairs;     
 void(float shieldval) otl_playerShield;
 void(float energyval) otl_playerEnergy;
 void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor;
@@ -22,6 +24,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon7;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon8;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon9;
+void(float trgvid, float trgdat,  float trgam, float trgsh, float trgdist, float trglock, float trgdir) otl_renderTarget; 
 void(float shieldval) otl_targetShield;
 void(float armorVal) otl_targetArmor;
 void(float range) otl_targetRange;
@@ -46,7 +49,8 @@ void() otl_hud_ini={
   self.en_pnl_aln = self.en_pnl_aln | VIEW_BOT | VIEW_LFT;
   
   self.hud_prep = otl_hud_prep;
-  self.hud_HelmetImage = otl_HelmetImage;          
+  self.hud_HelmetImage = otl_HelmetImage;
+  self.hud_renderCrosshairs = otl_renderCrosshairs;
   self.hud_playerShield = otl_playerShield;
   self.hud_playerEnergy = otl_playerEnergy;
   self.hud_playerArmor = otl_playerArmor;
@@ -66,7 +70,7 @@ void() otl_hud_ini={
   self.hud_targetRange = otl_targetRange;
   self.hud_targetLock = otl_targetLock;
   self.hud_targetDirectionPip = otl_targetDirectionPip;
-  
+  self.hud_renderTarget = otl_renderTarget;
   //armor
   self.am_pnl_img = "gfx/hud/otl/otl_am_2.png";
   self.am_pnl_ofs = '48 0';
@@ -295,6 +299,27 @@ void(vector view_x, vector view_ctr) otl_HelmetImage ={
 };
 
 /*
+ CROSSHAIRS =======================================================
+*/
+void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_renderCrosshairs={
+
+  //convergence
+  local vector spr_w, spr_h;
+  spr_w_x = conv_x;
+  spr_w_y = 0;
+  spr_h_y = conv_y;
+  spr_h_x = 0;
+  
+  drawfill((VIEW_CTR - '9 0' - spr_w), '9 3',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  drawfill((VIEW_CTR + spr_w), '9 3',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  drawfill((VIEW_CTR - '0 9' - spr_h), '3 9',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  drawfill((VIEW_CTR + spr_h), '3 9',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  
+  //pitch
+  drawstring(VIEW_CTR - '24 0', ftos(pitch), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
+};  
+
+/*
   SHIELD METER=====================================================
 */
 void(float shieldval) otl_playerShield={
@@ -357,28 +382,43 @@ void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor
 void(float rad_front, float rad_back, float rad_mode) otl_Radar={
   drawpic(self.hud_pnl2.pos, self.hud_pnl2.img,  self.hud_pnl2.asize, self.hud_pnl2.colortint, HUD_ALPHA, 0);
   
-  local vector lbl1, lbl2, cvr, c_sz, cvr_ctr, f_clr, b_clr;
+  local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
   local string mode;
-  local float len;
+  local float len, badj;
   lbl1 = self.hud_pnl2.pos + '10 10';
   if(rad_mode == TRUE){
     mode = "[ACTIVE]";
+    clr = STATUS_DMG;
   }
   else{
     mode = "[PASSIVE]";
+    clr = STATUS_AOK;
   }
   len = stringwidth("RADAR MODE:", 0, '6 6 0');
   lbl2 = lbl1;
   lbl2_x = lbl2_x + len + 2;
   drawstring(lbl1, "RADAR MODE:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(lbl2, mode, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
   
   cvr = self.hud_pnl2.pos + self.hud_pnl2.hsize;
-  cvr = cvr - '32 32';
+  cvr = cvr - '72 16';
   c_sz = draw_getimagesize("gfx/hud/otl/otl_rd_cvr.png");
-  c_sz = css_scaleSize(c_sz, VIEW_SCALE);
-  cvr_ctr = cvr + css_getCenter(cvr);
+  c_sz = css_scaleSize(c_sz, VIEW_SCALE/1.25);
+  cvr_ctr = cvr + css_getCenter(c_sz);
 
+  
+  f_clr = css_calcRadarHeat(rad_front);
+  f_sz = c_sz;
+  f_sz_y = c_sz_y / 3;
+  drawfill(cvr, f_sz, f_clr, HUD_ALPHA, 0);
+  
+  b_clr = css_calcRadarHeat(rad_back);
+  b_sz = f_sz;
+  badj = (c_sz_y / 3)*2;
+  bpos = cvr;
+  bpos_y = cvr_y + badj;
+  drawfill(bpos, f_sz, b_clr, HUD_ALPHA, 0);
+  drawfill(cvr_ctr-'10 10', '20 20', self.wdg_en.drawcolor2, HUD_ALPHA, 0);
   drawpic(cvr, "gfx/hud/otl/otl_rd_cvr.png",  c_sz, self.hud_pnl2.colortint, HUD_ALPHA, 0);
 };
 
@@ -494,10 +534,51 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon9={};
 
 /*
+  RENDER TARGET====================================================
+*/
+void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float trglock, float trgdir) otl_renderTarget={
+
+  if(trglock & LOCK_PLYR){
+    local vector pofs;
+    pofs = self.hud_pnl2.pos + '10 10';
+    pofs_y = pofs_y + 16;
+    local float f;
+    f = (time - (2 * floor(time/2)));
+    if(f > 1){
+      drawstring(pofs, "[INCOMING]", '6 6 0', '1 0.1 0.1', HUD_ALPHA, 0);
+    }
+  }
+
+  drawpic(self.hud_pnl5.pos, self.hud_pnl5.img,  self.hud_pnl5.asize, self.hud_pnl5.colortint, HUD_ALPHA, 0);
+  if(trgvid > -1){
+    local entity dat;
+    dat = m_findData(trgvid, trgdat);
+
+    if(dat){
+      local vector ofs, rofs;
+      local float nlen, dlen;
+      local string dist;
+      nlen = stringwidth(dat.vec_name, 0, '6 6 0');
+      ofs = rofs = self.hud_pnl2.pos + self.hud_pnl2.hsize;
+      drawstring((ofs + '16 -16'), "[Target]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+      ofs_x = ofs_x - nlen/2;
+      drawstring((ofs + '32 -8'), dat.vec_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+      
+      
+      self.hud_targetArmor(trgam);
+      self.hud_targetShield(trgsh);
+      self.hud_targetRange(trgdist);
+      self.hud_targetLock(trglock);
+      self.hud_targetDirectionPip(trgdir);
+    }
+  }
+}; 
+
+
+/*
   TARGET ARMOR LAYOUT====================================================
 */
 void(float armorVal) otl_targetArmor={
-  drawpic(self.hud_pnl5.pos, self.hud_pnl5.img,  self.hud_pnl5.asize, self.hud_pnl5.colortint, HUD_ALPHA, 0);
   if(armorVal > -1){
     local vector pnl_ctr;
     pnl_ctr_x = self.hud_pnl5.pos_x + self.hud_pnl5.asize_x/2;
@@ -552,15 +633,23 @@ void(float shieldval) otl_targetShield={
 */
 void(float range) otl_targetRange={
   if(range > -1){
-  
+    local vector tofs;
+    tofs = self.hud_pnl2.pos + self.hud_pnl2.hsize;
+    tofs = tofs + '12 24';
+    drawstring(tofs, "[Range]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(tofs+'0 12', ftos(range), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   }
 };
 /*
   TARGER LOCK INDICATOR====================================================
 */
 void(float islock) otl_targetLock={
-
-
+  if(islock & LOCK_TARG){
+    local vector tofs;
+    tofs = self.hud_pnl2.pos + self.hud_pnl2.hsize;
+    tofs = tofs + '12 -24';
+    drawstring(tofs, "[LOCKED ON]", '6 6 0', '1 0.25 0.1', HUD_ALPHA, 0);
+  }
 
 };
 /*

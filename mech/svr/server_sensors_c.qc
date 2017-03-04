@@ -44,7 +44,7 @@ void() server_updateTargetInfo={
     self.stat_trg_face = -1;
     self.targetpip.effects = EF_NODRAW + EF_LOWPRECISION;
     if(self.stat_lck_stt & LOCK_TARG){
-      self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG;
+      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
     }
     return;
   }
@@ -60,21 +60,18 @@ void() server_updateTargetInfo={
     isvis = TRUE;
     if(time > self.lock_timer){
       if(!(self.stat_lck_stt & LOCK_TARG)){
-        self.stat_lck_stt = self.stat_lck_stt + LOCK_TARG;
-      }
-      if(!(self.enemy.stat_lck_stt & LOCK_PLYR)){
-        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt + LOCK_PLYR;
+        self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG;
       }
     }
   }
   else{
     isvis = FALSE;
-    if(self.stat_lck_stt & LOCK_TARG){
-      self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG;
+    if((self.stat_lck_stt & LOCK_TARG)){
+      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
       self.lock_timer = time + 5;
     } 
-    if(self.enemy.stat_lck_stt & LOCK_PLYR){
-      self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - LOCK_PLYR;
+    if((self.enemy.stat_lck_stt & LOCK_PLYR)){
+      self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
     }
   }
   sever_handleTargetMarkEnt(isvis);

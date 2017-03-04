@@ -113,6 +113,11 @@ void() PlayerPostThink = {
     self.stat_rtor_hp = csqc_updateCompStat(self.e_tor_r);
     self.stat_larm_hp = csqc_updateCompStat(self.e_arm_l);
     self.stat_rarm_hp = csqc_updateCompStat(self.e_arm_r);
+    if(self.stat_lck_stt & LOCK_TARG){
+      if(!(self.enemy.stat_lck_stt & LOCK_PLYR)){
+        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt | LOCK_PLYR;
+      }
+    }
     ctrl_update_mechplayer();
   }
   self.stat_plr_ptc = self.v_angle_x * -1;
