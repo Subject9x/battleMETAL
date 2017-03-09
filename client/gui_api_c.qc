@@ -1,73 +1,12 @@
 /*
 mech Mod
 Author: Subject9x
-Date: 11/08/2016
-Overview: csscsqc? csqccss? cssqc?
+Date: 03/8/2017
+Overview: GUI API class file
 */
-vector(float val, float type) css_getStatusColor;
-vector(vector vec, float scle) css_scaleSize;
-vector(vector sz) css_getCenter;
-vector(vector vec, float algn) css_calcAlign;
-vector(vector org, vector sz, float axs) css_calcAxis;
-void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) css_renderMeter;
-vector(float val) css_calcRadarHeat;
-void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) css_renderModalPip;
-void(string str, vector ofs, vector color, vector sz, float alpha, float flg, float ax, float vdir) css_renderString;
-void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) css_renderScroll;
-void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) css_renderImageReel;
-void(string src_img, vector tintcolor, float alpha, float flg) css_renderImageFullScreen;
-vector(float bit, float check1, float check2, float check3) css_getStatusColor3;
-void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) css_BoxOnLabel;
-string(float bit) css_getWeaponId;
 
-//system const
-vector VIEW_ORG;
-vector VIEW_MAX;
-vector VIEW_CTR;
-float VIEW_TOP = 1;
-float VIEW_BOT = 2;
-float VIEW_LFT = 4;
-float VIEW_RGT = 8;
-float VIEW_CTX = 16;
-float VIEW_CTY = 32;
-float VIEW_SCALE;
-float AXIS_H = 1;	
-float AXIS_V = 2;
-float AXIS_LEFT = 4;
-float AXIS_RIGHT = 8;
-float AXIS_UP = 16;
-float AXIS_DOWN = 24;
-float AXIS_CTR = 32;
-float DIR_UP = 1;
-float DIR_DN = 2;
-float DIR_LF = 3;
-float DIR_RT = 4;
-float OBJ_METER = 1;
-float OBJ_SLIDER = 2;
-float OBJ_LIST = 3;
-float PAT_BAR = 1;
-float PAT_SPH = 2;
-float PAT_BOX = 3;
-float HUD_ALPHA = 1;
 
-//common ent vars
-.float data_idx;
-.float data_type;
-.string img;
-.vector parent_org;
-.vector pos;
-.float scale;
-.float align;
-.float axis;
-.float dir; 
-.float otype;
-.vector margin_ins;
-.float pattern;
-.vector offset;
-.vector asize;
-.vector colortint;
-.vector hsize;
-vector(float val, float type) css_getStatusColor={
+vector(float val, float type) gui_getStatusColor={
 	if(val == 0){
 		return STATUS_DED;
 	}
@@ -79,7 +18,7 @@ vector(float val, float type) css_getStatusColor={
 	}
 };
 
-vector(float bits, float dead, float ok) css_getWepStatusColor{
+vector(float bits, float dead, float ok) gui_getWepStatusColor{
   if((bits & dead)){
     return '0.1 0.1 0.1';
   }
@@ -88,13 +27,13 @@ vector(float bits, float dead, float ok) css_getWepStatusColor{
   }
 }
 
-void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) css_renderMeter={
+void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderMeter={
   /*
     given target origin, meter size, current meter value
   */
   local float perc, adj, diff;
   local vector norg, end;
-  norg = css_calcAxis(org, sz, ax);  
+  norg = gui_calcAxis(org, sz, ax);  
   drawfill(norg, sz, clr_bk, alpha, flg);
   end = norg;
   perc = (val / 100);
@@ -115,7 +54,7 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha
 
 /*
 */
-vector(vector vec, float algn) css_calcAlign={
+vector(vector vec, float algn) gui_calcAlign={
   local vector toSender;
   local float x,y;
   if(algn & VIEW_TOP){
@@ -147,7 +86,7 @@ vector(vector vec, float algn) css_calcAlign={
 
 /*
 */
-vector(vector org, vector sz, float axs) css_calcAxis={
+vector(vector org, vector sz, float axs) gui_calcAxis={
   local vector toSender;
   toSender = org;
   if(axs & AXIS_H){
@@ -169,7 +108,7 @@ vector(vector org, vector sz, float axs) css_calcAxis={
   return toSender;
 };
 
-vector(vector vec, float scle) css_scaleSize={
+vector(vector vec, float scle) gui_scaleSize={
   local vector toSender;
   toSender_x = vec_x * scle;
   toSender_y = vec_y * scle;
@@ -177,7 +116,7 @@ vector(vector vec, float scle) css_scaleSize={
   return toSender;
 };
 
-vector(float val) css_calcRadarHeat={
+vector(float val) gui_calcRadarHeat={
   local vector toSender;
 	if(val <= 2){
     toSender = STATUS_AOK;
@@ -191,7 +130,7 @@ vector(float val) css_calcRadarHeat={
   return toSender;
 };
 
-void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) css_renderModalPip={
+void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalPip={
   local vector colorActual;
   if(bit & state1){
     colorActual = color1;
@@ -203,7 +142,7 @@ void(vector ofs, float bit, float state1, vector color1, vector color2, vector s
   drawfill(ofs, sz, colorActual, alpha, flg);
 };
 
-vector(float bit, float check1, float check2, float check3) css_getStatusColor3={
+vector(float bit, float check1, float check2, float check3) gui_getStatusColor3={
 	if(bit & check1){
 		return STATUS_DED;
 	}
@@ -218,7 +157,7 @@ vector(float bit, float check1, float check2, float check3) css_getStatusColor3=
 /*
   Draws an image that occupies the entire screen size
 */
-void(string src_img, vector tintcolor, float alpha, float flg) css_renderImageFullScreen={
+void(string src_img, vector tintcolor, float alpha, float flg) gui_renderImageFullScreen={
   local vector pnl_sz, img_sz, ofs, org;
   local float aln;
   
@@ -227,15 +166,15 @@ void(string src_img, vector tintcolor, float alpha, float flg) css_renderImageFu
   pnl_sz_x = VIEW_MAX_x;
   pnl_sz_y = img_sz_y;
   ofs_y = ofs_y + pnl_sz_y;
-  org = css_calcAlign(ofs, aln);
+  org = gui_calcAlign(ofs, aln);
   drawpic(org, src_img, pnl_sz, tintcolor, alpha, flg);
 };
 
-void(string str, vector ofs, vector color, vector sz, float alpha, float flg, float ax, float vdir) css_renderString={
+void(string str, vector ofs, vector color, vector sz, float alpha, float flg, float ax, float vdir) gui_renderString={
 
 };
 
-void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) css_BoxOnLabel={
+void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel={
   local float len;
   len = stringwidth(str, 0, txt_sz);
   local vector tl, tr, bl, br;
@@ -254,8 +193,25 @@ void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) css_BoxOnL
   drawline(ln_sz_y, tr, br, clr, 1, 0);
   drawline(ln_sz_x, bl, br, clr, 1, 0);
 };
+
+void(vector ofs, vector r_sz, vector ln_sz, vector clr) gui_DrawRect={
+  local vector tl, tr, bl, br;
+  tl = ofs;
+  tr = ofs;
+  tr_x = ofs_x + r_sz_x;
+  bl_x = ofs_x;
+  bl_y = ofs_y + r_sz_y;
+  br = tr;
+  br_y = tr_y + r_sz_y;
   
-vector(vector sz) css_getCenter={
+  drawline(ln_sz_x, tl, tr, clr, 1, 0);
+  drawline(ln_sz_y, tl, bl, clr, 1, 0);
+  drawline(ln_sz_y, tr, br, clr, 1, 0);
+  drawline(ln_sz_x, bl, br, clr, 1, 0);
+};
+  
+
+vector(vector sz) gui_getCenter={
   local vector toSender;
   toSender_x = sz_x / 2;
   toSender_y = sz_y / 2;
@@ -263,16 +219,16 @@ vector(vector sz) css_getCenter={
 };
 
 
-void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) css_renderImageReel={
+void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) gui_renderImageReel={
   local vector isz, nsz, ratio;
   isz = draw_getimagesize(src_img);
   clipSize_x = clipSize_x / isz_x;
   clipSize_y = clipSize_y / isz_y;
-  isz = css_scaleSize(isz, VIEW_SCALE);
+  isz = gui_scaleSize(isz, VIEW_SCALE);
   drawsubpic(srcOrg, isz, src_img, percent, clipSize, clr, alpha, flg);
 };
 
-string(float bit) css_getWeaponId={
+string(float bit) gui_getWeaponId={
   if(bit == WEAPON1){
     return "1";
   }
@@ -299,5 +255,13 @@ string(float bit) css_getWeaponId={
   }
   else if(bit == WEAPON9){
     return "9";
+  }
+};
+
+void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector ln_sz2, vector clr2) gui_DrawHighlightRect={
+  if(select){
+    gui_DrawRect(ofs, r_sz, ln_sz1, clr1);
+  }else{
+    gui_DrawRect(ofs, r_sz, ln_sz2, clr2);
   }
 };

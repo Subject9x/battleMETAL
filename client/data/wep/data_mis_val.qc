@@ -7,7 +7,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 */
 //LIGHT AUTOCANNON=======================
 float DAT_MIS_IDX = ID_WEP_MIS;
-string DAT_MIS_NAME = "Missile Launcher";
+string DAT_MIS_NAME = "Rocket Launcher";
 float DAT_MIS_CLIPSIZE = 6;
 float DAT_MIS_FIRERATE = 0.25;
 float DAT_MIS_RELOADTIME = 01.75;

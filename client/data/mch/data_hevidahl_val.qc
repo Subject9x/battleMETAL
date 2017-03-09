@@ -21,10 +21,10 @@ float DAT_HVD_SHIELD_MAX = 150;
 float DAT_HVD_SHIELD_RATE = 0.1;
 vector DAT_HVD_CTOR_BBX_N ='-18 -18 -50';
 vector DAT_HVD_CTOR_BBX_X ='18 18 14';
-string DAT_HVD_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3";
-float DAT_HVD_M_FSPEED=125;
-float DAT_HVD_M_SSPEED=100;
-float DAT_HVD_M_BSPEED=100;
+string DAT_HVD_CPIT_MODEL = "gfx/ui/hgr_hvd.png";
+float DAT_HVD_M_FSPEED=85;
+float DAT_HVD_M_SSPEED=80;
+float DAT_HVD_M_BSPEED=75;
 
 //HITPOINT VALUES
 float DAT_HVD_CTOR_HP = 100;
@@ -182,6 +182,13 @@ vector DAT_HVD_WEP9_ADJ_ANG= '0 0 0';
 void() data_mech_hvd;
 void() data_hvd_ini;
 
+void() hvd_renderHardpoints={
+
+};
+
+float(vector org) hvd_hardpointListener={
+
+};
 
 //call this guy at the start of the world ini
 void() data_mech_hvd={
@@ -193,6 +200,10 @@ void() data_mech_hvd={
     self.vec_name = DAT_HVD_VEC_NAME;
     self.classname = "data";
     self.data_type = DATA_MECH;
+    self.vec_size = 3;
+    self.c_mdl = DAT_HVD_CPIT_MODEL;
+    self.menu_renderHardpoints = hvd_renderHardpoints;
+    self.menu_hardpointListener = hvd_hardpointListener;
     data_hvd_ini();
   self = oself;
 };
@@ -202,6 +213,7 @@ void() data_hvd_ini={
   self.vec_name= DAT_HVD_VEC_NAME;
   self.i_techlvl= DAT_HVD_TECH_LEVEL;
   self.i_reserve= DAT_HVD_RESERVE_COST;
+  self.c_mdl = DAT_HVD_CPIT_MODEL;
   self.en_cur= DAT_HVD_ENERGY_CUR;
   self.en_max= DAT_HVD_ENERGY_MAX;
   self.en_rate= DAT_HVD_ENERGY_RATE;

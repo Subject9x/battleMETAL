@@ -21,7 +21,7 @@ float DAT_OTL_SHIELD_MAX = 125;
 float DAT_OTL_SHIELD_RATE = 0.075;
 vector DAT_OTL_CTOR_BBX_N ='-11 -11 -34';
 vector DAT_OTL_CTOR_BBX_X ='11 11 12';
-string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_cent.md3";
+string DAT_OTL_CPIT_MODEL= "gfx/ui/hgr_otl.png";
 float DAT_OTL_M_FSPEED=175;
 float DAT_OTL_M_SSPEED=150;
 float DAT_OTL_M_BSPEED=150;
@@ -134,6 +134,27 @@ void() data_mech_otl;
 void() data_otl_ini;
 
 
+void(vector org) otl_renderHardpoints={
+  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '-10 -104', '32 32', '8 8', '1 1 0', '4 4', '1 1 1');
+  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '-75 -64', '32 32', '8 8', '1 1 0', '4 4', '1 1 1');
+  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '48 -64', '32 32', '8 8 0', '1 1 0', '4 4', '1 1 1'); 
+};
+
+float(vector org) otl_hardpointListener={
+
+  if(menu_checkMouseInBounds(cursorpos, org + '-10 -104', '32 32')){
+    return 3;
+  }  
+  
+  if(menu_checkMouseInBounds(cursorpos, org + '-75 -64', '32 32')){
+    return 2;
+  } 
+
+  if(menu_checkMouseInBounds(cursorpos, org + '48 -64', '32 32')){
+    return 1;
+  } 
+};
+
 //call this guy at the start of the world ini
 void() data_mech_otl={
   local entity otl, oself;
@@ -144,8 +165,13 @@ void() data_mech_otl={
     self.vec_name = DAT_OTL_VEC_NAME;
     self.classname = "data";
     self.data_type = DATA_MECH;
+    self.vec_size = 1;
+    self.c_mdl = DAT_OTL_CPIT_MODEL;
+    self.menu_renderHardpoints = otl_renderHardpoints;
+    self.menu_hardpointListener = otl_hardpointListener;
     data_otl_ini();
   self = oself;
+  addentity(otl);
 };
 
 void() data_otl_ini={
@@ -153,6 +179,7 @@ void() data_otl_ini={
   self.vec_name= DAT_OTL_VEC_NAME;
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
   self.i_reserve= DAT_OTL_RESERVE_COST;
+  self.c_mdl = DAT_OTL_CPIT_MODEL;
   self.en_cur= DAT_OTL_ENERGY_CUR;
   self.en_max= DAT_OTL_ENERGY_MAX;
   self.en_rate= DAT_OTL_ENERGY_RATE;

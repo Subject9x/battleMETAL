@@ -5,6 +5,23 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
+.float plr_sel_mech; //used for mech selection
+.float plr_sel_hrpnt;
+.float plr_sel_wep;
+.float plr_nex_mech;
+.float plr_nex_wep1;
+.float plr_nex_wep2;
+.float plr_nex_wep3;
+.float plr_nex_wep4;
+.float plr_nex_wep5;
+.float plr_nex_wep6;
+.float plr_nex_wep7;
+.float plr_nex_wep8;
+.float plr_nex_wep9;
+.float plr_nex_grp1;
+.float plr_nex_grp2;
+.float plr_nex_grp3;
+
 .entity wdg_sh; //shield widget
 .entity wdg_en; //energy widget
 .entity wdg_pd; //paper doll widget
@@ -13,7 +30,7 @@ Overview: hud data ents field vars
 //widget vars - flat-tree approach
 //ie - only 'animated / info-changing' stuff should be their own ent
 //static images are just that
-.string en_pnl_img;
+/*.string en_pnl_img;
 .vector en_pnl_org;
 .vector en_pnl_ofs;
 .float  en_pnl_aln;
@@ -46,7 +63,7 @@ Overview: hud data ents field vars
 .string tg_pnl_img;
 .vector tg_pnl_org;
 .vector tg_pnl_ofs;
-.float tg_pnl_aln;
+.float tg_pnl_aln;*/
 
 //widget vars
 .string c_mdl;
@@ -76,6 +93,8 @@ Overview: hud data ents field vars
 .vector w7_ofs;
 .vector w8_ofs;
 .vector w9_ofs;
+
+
 
 
 

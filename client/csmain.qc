@@ -11,6 +11,22 @@ void() CSQC_Init =
   plr_orig = '0 0 0';
   plr_angles = '0 0 0';
   VIEW_ORG = '0 0';
+  PLAYER_HELPER = spawn();
+  PLAYER_HELPER.drawmask = MASK_ENGINE;
+  PLAYER_HELPER.plr_sel_mech = 1;
+  PLAYER_HELPER.plr_nex_mech = -1;
+  PLAYER_HELPER.plr_nex_wep1 = -1;
+  PLAYER_HELPER.plr_nex_wep2 = -1;
+  PLAYER_HELPER.plr_nex_wep3 = -1;
+  PLAYER_HELPER.plr_nex_wep4 = -1;
+  PLAYER_HELPER.plr_nex_wep6 = -1;
+  PLAYER_HELPER.plr_nex_wep7 = -1;
+  PLAYER_HELPER.plr_nex_wep8 = -1;
+  PLAYER_HELPER.plr_nex_wep9 = -1;
+  PLAYER_HELPER.plr_nex_grp1 = -1;
+  PLAYER_HELPER.plr_nex_grp2 = -1;
+  PLAYER_HELPER.plr_nex_grp3 = -1;
+  addentity(PLAYER_HELPER);
   
   cs_precache();
 };
@@ -25,15 +41,65 @@ void() CSQC_Shutdown =
 // typ 2 = mousemove (x, y) if inputmode is off
 // typ 3 = mousepos (x, y) if inputmode is on
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
-float(float typ, float x, float y) CSQC_InputEvent =
-{
+float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
+  if(evtype == 0){
+    if(scanx == K_TAB){
+      if(MENU_ACTIVE){
+        MENU_ACTIVE = FALSE;
+        MENU_HANGAR_ACTIVE = FALSE;
+        setcursormode(0);
+      }
+      else{
+        MENU_ACTIVE = TRUE;
+        MENU_HANGAR_ACTIVE = TRUE;
+        setcursormode(1);
+      }
+      return TRUE;
+    }
+    else if(scanx == K_MOUSE1){
+      if(MENU_ACTIVE){
+        if(MENU_HANGAR_ACTIVE){
+          menu_hangarListener();
+        }
+        return TRUE;
+      }
+      else{
+        return FALSE;
+      }
+      
+    }
+  }
+  else if(evtype == 2){
+    if(MENU_ACTIVE){
+      cursorpos_x = cursorpos_x + scanx;
+      cursorpos_y = cursorpos_y + chary;
+      if(cursorpos_x < 0){
+        cursorpos_x = 0;
+      }
+      else if(cursorpos_x > VIEW_MAX_x){
+        cursorpos_x = VIEW_MAX_x;
+      }
+      
+      if(cursorpos_y < VIEW_ORG_y){
+        cursorpos_y = VIEW_ORG_y;
+      }
+      else if(cursorpos_y > VIEW_MAX_y){
+        cursorpos_y = VIEW_MAX_y;
+      }
+      return TRUE;
+    }
+    else{
+      return FALSE;
+    }
+  }
   
-  //if(typ == 1){
-   //  
-    //return TRUE;
-  //}
-  
-	return FALSE;
+  if(MENU_ACTIVE){
+
+    return TRUE;
+  }
+  else{
+    return FALSE;
+  }
 };
 
 // the most important function in CSQC...
@@ -65,15 +131,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   vf_sz_z = 0;
   vf_mn = '0 0 0';
 	// set up the scene parameters
-	//setproperty(VF_SIZE, vf_size);
-	//setproperty(VF_MIN, vf_min);
   setproperty(VF_MIN, vf_mn);   //set the left of the view
   setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
-  
-  //setproperty(VF_FOV, fovvec);
+  setproperty(VF_ANGLES, view_angles);
+  //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
+  setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
 	setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
 	setproperty(VF_DRAWENGINESBAR, 0); // TODO custom hud
+  PLR_VIEW = getpropertyvec(VF_ORIGIN) + getpropertyvec(VF_ANGLES) + getpropertyvec(VF_FOV) + getpropertyvec(VF_MIN) + getpropertyvec(VF_SIZE);
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
@@ -115,6 +181,11 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     conv_x = getstatf(STAT_SPR_X);
     conv_y = getstatf(STAT_SPR_Y);
     pitch = getstati(STAT_PLR_PTC);
+    
+    //player camera_transform
+    PLR_VIEW_x = getstatf(STAT_CAM_ORG_X);
+    PLR_VIEW_y = getstatf(STAT_CAM_ORG_Y);
+    PLR_VIEW_z = getstatf(STAT_CAM_ORG_Z);
     
     //player mech hp info
     local float plr_sh, plr_en, plr_ct, plr_rt, plr_lt, plr_ra, plr_la, plr_lg;
@@ -187,9 +258,25 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     
     //do sound queue system here
-    
-   	// draw custom crosshair
   }
+  else{
+    local float len;
+    len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
+    local vector og;
+    og = VIEW_CTR;
+    og_x = og_x - len/2;
+    og_y = VIEW_MAX_y - 32;
+    drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+  
+  }
+  //menu system
+  if(MENU_ACTIVE){
+    cursorpos = getmousepos();
+    menu_handleFrame();
+  }
+  
+  // draw custom crosshair
+  drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!

@@ -53,8 +53,9 @@ void() PlayerPreThink = {
 
   
   //
-  server_updateTargetInfo();
+
   if(self.p_class != P_OBS){
+    server_updateTargetInfo();
     if(time >= self.was_hit){
       if(self.stat_hit_dirs & STAT_HIT_LF){
         self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_LF;
@@ -105,6 +106,9 @@ void() PlayerPostThink = {
   self.stat_plr_ang = anglemod(self.v_angle_y);
   //STAT UPDATE   
   if(self.p_class == P_MECH){
+    self.stat_plr_camx = self.e_cam.origin_x;
+    self.stat_plr_camy = self.e_cam.origin_y; 
+    self.stat_plr_camz = self.e_cam.origin_z;
     self.stat_en = (self.en_cur / self.en_max)*100;
     self.stat_sh = (self.sh_cur / self.sh_max)*100;
     self.stat_legs_hp = csqc_updateCompStat(self.e_legs);
@@ -119,13 +123,14 @@ void() PlayerPostThink = {
       }
     }
     ctrl_update_mechplayer();
+    local vector radar;
+    radar = server_updateRadarInfo();
+    self.radar_front = radar_x;
+    self.radar_rear = radar_y;
   }
   self.stat_plr_ptc = self.v_angle_x * -1;
   
-  local vector radar;
-  radar = server_updateRadarInfo();
-  self.radar_front = radar_x;
-  self.radar_rear = radar_y;
+
   
   if(self.p_class != P_OBS){
     local entity wep_chain;
@@ -254,7 +259,6 @@ void() PlayerDeathThink={
 	self.button0 = 0;
 	self.button1 = 0;
 	self.button2 = 0;
-  
 	respawn();
 };
 

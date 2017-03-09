@@ -5,7 +5,7 @@ Date: 02/25/2017
 Overview: long-range, low damage, homing missile
 */
 //========ACTIVE-RADAR HOMING MISSILE=========
-float DATWEP_MARH_IDX = 11;
+float DATWEP_MARH_IDX = ID_WEP_MARH;
 string DATWEP_MARH_NAME = "MIS-ARH";
 float DATWEP_MARH_FIRETIME = 0;
 float DATWEP_MARH_CLIPSIZE = 1;

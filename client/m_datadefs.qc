@@ -6,6 +6,7 @@ Overview: really should have been synced with file of the same name serverside..
 */
 
 .string vec_name;
+.float vec_size;
 .string c_name;
 
 string DATA = "data";

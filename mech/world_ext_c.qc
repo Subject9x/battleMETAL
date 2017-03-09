@@ -13,6 +13,12 @@ void() mh_world_ini={
   addstat(STAT_ENERGY, AS_INT, stat_en);
   addstat(STAT_SHIELD, AS_INT, stat_sh);
   
+  addstat(STAT_CAM_ORG_X, AS_FLOAT, stat_plr_camx);
+  addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);
+  addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_plr_camz);
+  
+  
+  
   addstat(STAT_LEG_HP, AS_FLOAT, stat_legs_hp);
   addstat(STAT_LEG_AM, AS_FLOAT, stat_legs_am);  
   addstat(STAT_CTOR_HP, AS_FLOAT, stat_ctor_hp);
@@ -94,6 +100,7 @@ void() mh_world_iniData={
   data_wep_qrfl();
   data_wep_esr();
   data_wep_pac();
+  data_wep_rplas();
   
   //mech data
   data_mech_otl();

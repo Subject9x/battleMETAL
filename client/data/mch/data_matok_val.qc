@@ -10,7 +10,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 
 //MATOK MECH=============================
 float DAT_MTK_IDX = ID_MCH_MATOK;
-string DAT_MTK_VEC_NAME = "MATOK";
+string DAT_MTK_VEC_NAME = "Matok";
 float DAT_MTK_TECH_LEVEL = 1;
 float DAT_MTK_RESERVE_COST = 200;
 float DAT_MTK_ENERGY_CUR = 100;
@@ -21,6 +21,7 @@ float DAT_MTK_SHIELD_MAX = 150;
 float DAT_MTK_SHIELD_RATE = 0.065;
 vector DAT_MTK_CTOR_BBX_N ='-12 -12 -35';
 vector DAT_MTK_CTOR_BBX_X ='12 12 14';
+string DAT_MTK_CPIT_MODEL = "gfx/ui/hgr_mtk.png";
 
 float DAT_MTK_M_FSPEED=125;
 float DAT_MTK_M_SSPEED=100;
@@ -154,18 +155,14 @@ vector DAT_MTK_WEP5_ADJ_ANG= '0 0 0';
 //=========================================
 void() data_mech_mtk;
 void() data_mtk_ini;
-void() data_mtk_legs;
-void() data_mtk_ctor;
-void() data_mtk_ltor;
-void() data_mtk_rtor;
-void() data_mtk_larm;
-void() data_mtk_rarm;
-void() data_mtk_cam;
-void() data_mtk_wep1;
-void() data_mtk_wep2;
-void() data_mtk_wep3;
-void() data_mtk_wep4;
-void() data_mtk_wep5;
+
+void() mtk_renderHardpoints={
+
+};
+
+float(vector org) mtk_hardpointListener={
+
+};
 
 //call this guy at the start of the world ini
 void() data_mech_mtk={
@@ -177,6 +174,10 @@ void() data_mech_mtk={
     self.classname = "data";
     self.data_type = DATA_MECH;
     self.vec_name = DAT_MTK_VEC_NAME;
+    self.vec_size = 2;
+    self.c_mdl = DAT_MTK_CPIT_MODEL;
+    self.menu_renderHardpoints = mtk_renderHardpoints;
+    self.menu_hardpointListener = mtk_hardpointListener;
     data_mtk_ini();
   self = oself;
 };
@@ -186,6 +187,7 @@ void() data_mtk_ini={
   self.vec_name= DAT_MTK_VEC_NAME;
   self.i_techlvl= DAT_MTK_TECH_LEVEL;
   self.i_reserve= DAT_MTK_RESERVE_COST;
+  self.c_mdl = DAT_MTK_CPIT_MODEL;
   self.en_cur= DAT_MTK_ENERGY_CUR;
   self.en_max= DAT_MTK_ENERGY_MAX;
   self.en_rate= DAT_MTK_ENERGY_RATE;

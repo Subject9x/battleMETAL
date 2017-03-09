@@ -36,3 +36,13 @@ Overview: extends the player's entity.
 
 .float laser_sight_timer;
 .vector laser_sight_org;
+
+.float next_wepn1;
+.float next_wepn2;
+.float next_wepn3;
+.float next_wepn4;
+.float next_wepn5;
+.float next_wepn6;
+.float next_wepn7;
+.float next_wepn8;
+.float next_wepn9;

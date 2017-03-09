@@ -1,13 +1,17 @@
 ../../csprogs.dat
 
 ../dp/csprogsdefs.qc
+keycodes.qc
 m_csdefs.qc
 m_entdefs.qc
 m_datadefs.qc
 m_hud_h.qc
-m_cssqc.qc
-m_renderfuncs_h.qc
+gui_api_h.qc
+cl_svr_cmd_h.qc
+ui/ui_defs_h.qc
+ui/ui_hangar_h.qc
 
+gui_api_c.qc
 //DATA FILES==========
   //buildings
   data/bld/data_h_power.qc
@@ -39,9 +43,16 @@ m_renderfuncs_h.qc
   //HUD
   data/hud/data_hud_otl.qc
   data/hud/data_hud_mtk.qc
+  data/hud/data_hud_hvd.qc
 //=======================
+//Client->SERVER LAYER===
+cl_svr_cmd_c.qc
+//========================
+//MENU SYSTEM============
+  ui/ui_defs_c.qc
+  ui/ui_hangar_c.qc
+//======================= 
 
 cs_precache.qc
 cs_mechhud_h.qc
-m_renderfuncs_c.qc
-csmain.qc
+csmain.qc

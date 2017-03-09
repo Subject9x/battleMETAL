@@ -43,10 +43,6 @@ void() otl_hud_ini={
   self.data_idx = 1;
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/otl/otl_hd.png";
-  // energy
-  self.en_pnl_img = "gfx/hud/otl/otl_en_2.png";
-  self.en_pnl_ofs = '152 12';
-  self.en_pnl_aln = self.en_pnl_aln | VIEW_BOT | VIEW_LFT;
   
   self.hud_prep = otl_hud_prep;
   self.hud_HelmetImage = otl_HelmetImage;
@@ -71,25 +67,6 @@ void() otl_hud_ini={
   self.hud_targetLock = otl_targetLock;
   self.hud_targetDirectionPip = otl_targetDirectionPip;
   self.hud_renderTarget = otl_renderTarget;
-  //armor
-  self.am_pnl_img = "gfx/hud/otl/otl_am_2.png";
-  self.am_pnl_ofs = '48 0';
-  self.am_pnl_aln =  self.am_pnl_aln | VIEW_BOT | VIEW_LFT;
-  
-  //weapons
-  self.wp_pnl_img = "gfx/hud/otl/otl_wp_2.png";
-  self.wp_pnl_ofs = '180 16';
-  self.wp_pnl_aln = self.wp_pnl_aln | VIEW_BOT | VIEW_LFT;
-  
-  //radar
-  self.rd_pnl_img = "gfx/hud/otl/otl_am_2.png";
-  self.rd_pnl_ofs = '221 0';
-  self.rd_pnl_aln = self.rd_pnl_aln | VIEW_BOT | VIEW_LFT;
-  
-  //target panel
-  self.tg_pnl_img = "gfx/hud/otl/otl_am_2.png";
-  self.tg_pnl_ofs = '221 0';
-  self.tg_pnl_aln = VIEW_BOT | VIEW_RGT;
   
   //this is the armor panel
   oself = self;
@@ -230,55 +207,55 @@ void(entity vec_data) otl_hud_prep={
   local entity rdpnl;
   rdpnl = self.hud_pnl2;
   img_sz = draw_getimagesize(rdpnl.img);
-  rdpnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
-  rdpnl.hsize = css_getCenter(rdpnl.asize);
+  rdpnl.asize = gui_scaleSize(img_sz,VIEW_SCALE);
+  rdpnl.hsize = gui_getCenter(rdpnl.asize);
   ofs_x = VIEW_CTR_x - (rdpnl.asize_x/2);
   ofs_y = ofs_y + rdpnl.asize_y;
-  rdpnl.pos = css_calcAlign(ofs, rdpnl.align);
+  rdpnl.pos = gui_calcAlign(ofs, rdpnl.align);
   
   local entity enpnl;
   enpnl = self.hud_pnl3;
   img_sz = draw_getimagesize(enpnl.img);
-  enpnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
-  enpnl.hsize = css_getCenter(enpnl.asize);
+  enpnl.asize = gui_scaleSize(img_sz,VIEW_SCALE);
+  enpnl.hsize = gui_getCenter(enpnl.asize);
   ofs_x = rdpnl.pos_x - enpnl.asize_x;
   ofs_y = enpnl.asize_y;
-  enpnl.pos = css_calcAlign(ofs, enpnl.align);
+  enpnl.pos = gui_calcAlign(ofs, enpnl.align);
   
   local entity ampnl;
   ampnl = self.hud_pnl1;
   img_sz = draw_getimagesize(ampnl.img);
-  ampnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
-  ampnl.hsize = css_getCenter(ampnl.asize);
+  ampnl.asize = gui_scaleSize(img_sz,VIEW_SCALE);
+  ampnl.hsize = gui_getCenter(ampnl.asize);
   ofs_x = enpnl.pos_x - ampnl.asize_x;
   ofs_y = ampnl.asize_y;
-  ampnl.pos = css_calcAlign(ofs, ampnl.align);
+  ampnl.pos = gui_calcAlign(ofs, ampnl.align);
   
   local entity wepnl;
   wepnl = self.hud_pnl4;
   img_sz = draw_getimagesize(wepnl.img);
-  wepnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
-  wepnl.hsize = css_getCenter(wepnl.asize);
+  wepnl.asize = gui_scaleSize(img_sz,VIEW_SCALE);
+  wepnl.hsize = gui_getCenter(wepnl.asize);
   ofs_x = rdpnl.pos_x - wepnl.asize_x;
   ofs_y = ampnl.asize_y + wepnl.asize_y;
-  wepnl.pos = css_calcAlign(ofs, wepnl.align);
+  wepnl.pos = gui_calcAlign(ofs, wepnl.align);
 
   local entity tgpnl;
   tgpnl = self.hud_pnl5;
   img_sz = draw_getimagesize(tgpnl.img);
-  tgpnl.asize = css_scaleSize(img_sz,VIEW_SCALE);
-  tgpnl.hsize = css_getCenter(tgpnl.asize);
+  tgpnl.asize = gui_scaleSize(img_sz,VIEW_SCALE);
+  tgpnl.hsize = gui_getCenter(tgpnl.asize);
   ofs_x = VIEW_CTR_x + (rdpnl.asize_x/2);
   ofs_y = tgpnl.asize_y;
-  tgpnl.pos = css_calcAlign(ofs, tgpnl.align);
+  tgpnl.pos = gui_calcAlign(ofs, tgpnl.align);
 };
 
 void(vector view_x, vector view_ctr) otl_HelmetImage ={
-  css_renderImageFullScreen(self.img, '1 1 1', HUD_ALPHA, 0);
+  gui_renderImageFullScreen(self.img, '1 1 1', HUD_ALPHA, 0);
   
   local vector sz, hsz, ofs;
   sz = draw_getimagesize("gfx/hud/navbar.png");
-  sz = css_scaleSize(sz,VIEW_SCALE);
+  sz = gui_scaleSize(sz,VIEW_SCALE);
   ofs_x = VIEW_CTR_x - (sz_x/2);
   ofs_y = VIEW_ORG_y + 16;
   //drawpic(ofs,  "gfx/hud/navbar.png", sz, '0 1 0', HUD_ALPHA, 0);
@@ -293,7 +270,7 @@ void(vector view_x, vector view_ctr) otl_HelmetImage ={
   pct_y = 0;
   
   
-  css_renderImageReel(ofs, pct, "gfx/hud/navbar.png", '64 32', '0 1 0', HUD_ALPHA, 0);
+  gui_renderImageReel(ofs, pct, "gfx/hud/navbar.png", '64 32', '0 1 0', HUD_ALPHA, 0);
   self.prev_ang = ang;
  
 };
@@ -327,7 +304,7 @@ void(float shieldval) otl_playerShield={
     local vector label_org;
     self.wdg_sh.pos = self.hud_pnl1.pos + self.hud_pnl1.margin_ins + '3 6';
     self.wdg_sh.value1 = shieldval;
-    css_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, self.wdg_sh.drawsize, self.wdg_sh.drawcolor1, 
+    gui_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, self.wdg_sh.drawsize, self.wdg_sh.drawcolor1, 
                                                                     self.wdg_sh.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
     label_org = self.wdg_sh.pos - '0 4';
     drawstring(label_org, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
@@ -340,12 +317,12 @@ void(float energyval) otl_playerEnergy={
   drawpic(self.hud_pnl3.pos, self.hud_pnl3.img,  self.hud_pnl3.asize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
   self.wdg_en.value1 = energyval;
   self.wdg_en.pos = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '0 5';
-  css_renderMeter(self.wdg_en.value1, self.wdg_en.pos, self.wdg_en.drawsize, self.wdg_en.drawcolor1,
+  gui_renderMeter(self.wdg_en.value1, self.wdg_en.pos, self.wdg_en.drawsize, self.wdg_en.drawcolor1,
                                                               self.wdg_en.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
   
   local vector isz;
   isz = draw_getimagesize("gfx/hud/otl/otl_en_cvr.png");
-  isz = css_scaleSize(isz,VIEW_SCALE);
+  isz = gui_scaleSize(isz,VIEW_SCALE);
   drawpic(self.wdg_en.pos, "gfx/hud/otl/otl_en_cvr.png", self.wdg_en.drawsize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
   drawstring( self.hud_pnl3.pos + self.hud_pnl3.margin_ins, "ENERGY", '4 4 0', '1 1 1', HUD_ALPHA, 0);
 };
@@ -359,21 +336,21 @@ void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor
   pnl_ctr_x = self.hud_pnl1.pos_x + self.hud_pnl1.asize_x/2;
   pnl_ctr_y = self.hud_pnl1.pos_y +self.hud_pnl1.asize_y/2;
   drawstring((pnl_ctr + '-4 -18'), "CT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  css_renderMeter(ct, (pnl_ctr + '-6 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(ct, (pnl_ctr + '-6 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
   
-  css_renderMeter(lg, (pnl_ctr + '-28 30'), '56 16', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(lg, (pnl_ctr + '-28 30'), '56 16', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
   
   drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  css_renderMeter(rt, (pnl_ctr + '8 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(rt, (pnl_ctr + '8 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
   
   drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  css_renderMeter(lt, (pnl_ctr + '-20 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(lt, (pnl_ctr + '-20 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
   
   drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  css_renderMeter(ra, (pnl_ctr + '22 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(ra, (pnl_ctr + '22 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
   
   drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  css_renderMeter(la, (pnl_ctr + '-34 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(la, (pnl_ctr + '-34 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 /*
@@ -403,16 +380,16 @@ void(float rad_front, float rad_back, float rad_mode) otl_Radar={
   cvr = self.hud_pnl2.pos + self.hud_pnl2.hsize;
   cvr = cvr - '72 16';
   c_sz = draw_getimagesize("gfx/hud/otl/otl_rd_cvr.png");
-  c_sz = css_scaleSize(c_sz, VIEW_SCALE/1.25);
-  cvr_ctr = cvr + css_getCenter(c_sz);
+  c_sz = gui_scaleSize(c_sz, VIEW_SCALE/1.25);
+  cvr_ctr = cvr + gui_getCenter(c_sz);
 
   
-  f_clr = css_calcRadarHeat(rad_front);
+  f_clr = gui_calcRadarHeat(rad_front);
   f_sz = c_sz;
   f_sz_y = c_sz_y / 3;
   drawfill(cvr, f_sz, f_clr, HUD_ALPHA, 0);
   
-  b_clr = css_calcRadarHeat(rad_back);
+  b_clr = gui_calcRadarHeat(rad_back);
   b_sz = f_sz;
   badj = (c_sz_y / 3)*2;
   bpos = cvr;
@@ -457,19 +434,19 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
   
   wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
-  wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
+  wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins), wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
 
   local string wid;
-  wid = css_getWeaponId(w_bit);
+  wid = gui_getWeaponId(w_bit);
   drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins) - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y;
-  css_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  gui_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    css_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins, '4 4 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins, '4 4 0', '2 2 0', '0 1 0'); 
   } 
 };
 /*
@@ -484,19 +461,19 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   ofs_y = ofs_y + 8;
   
   wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
-  wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
+  wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
   
   local string wid;
-  wid = css_getWeaponId(w_bit);
+  wid = gui_getWeaponId(w_bit);
   drawstring(ofs - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 8;
-  css_renderModalPip(ofs, w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  gui_renderModalPip(ofs, w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    css_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 8', '4 4 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 8', '4 4 0', '2 2 0', '0 1 0'); 
   } 
 };
 /*
@@ -510,19 +487,19 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   ofs = self.hud_pnl4.pos + self.hud_pnl4.margin_ins;
   ofs_y = ofs_y + 16;
   wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
-  wstat = css_getWepStatusColor(w_state, w_dd, w_ok);
+  wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
   
   local string wid;
-  wid = css_getWeaponId(w_bit);
+  wid = gui_getWeaponId(w_bit);
   drawstring(ofs - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 16;
-  css_renderModalPip(ofs, w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  gui_renderModalPip(ofs, w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    css_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 16', '4 4 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 16', '4 4 0', '2 2 0', '0 1 0'); 
   }
 
 };
@@ -586,32 +563,32 @@ void(float armorVal) otl_targetArmor={
     local vector colorBuffer;
     //target center torso
     drawstring((pnl_ctr + '-4 -18'), "CT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = css_getStatusColor3(armorVal, TARG_CT_DD, TARG_CT_DM, TARG_CT_OK);
-    css_renderMeter(100, (pnl_ctr + '-6 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    colorBuffer = gui_getStatusColor3(armorVal, TARG_CT_DD, TARG_CT_DM, TARG_CT_OK);
+    gui_renderMeter(100, (pnl_ctr + '-6 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
     
     //target leg armor
-    colorBuffer = css_getStatusColor3(armorVal, TARG_LG_DD, TARG_LG_DM, TARG_LG_OK); 
-    css_renderMeter(100, (pnl_ctr + '-28 30'), '56 16', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    colorBuffer = gui_getStatusColor3(armorVal, TARG_LG_DD, TARG_LG_DM, TARG_LG_OK); 
+    gui_renderMeter(100, (pnl_ctr + '-28 30'), '56 16', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
     
     //target right torso
     drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = css_getStatusColor3(armorVal, TARG_RT_DD, TARG_RT_DM, TARG_RT_OK);
-    css_renderMeter(100, (pnl_ctr + '8 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    colorBuffer = gui_getStatusColor3(armorVal, TARG_RT_DD, TARG_RT_DM, TARG_RT_OK);
+    gui_renderMeter(100, (pnl_ctr + '8 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
 
     //target left torso	
     drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = css_getStatusColor3(armorVal, TARG_LT_DD, TARG_LT_DM, TARG_LT_OK);
-    css_renderMeter(100, (pnl_ctr + '-20 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);   
+    colorBuffer = gui_getStatusColor3(armorVal, TARG_LT_DD, TARG_LT_DM, TARG_LT_OK);
+    gui_renderMeter(100, (pnl_ctr + '-20 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);   
     
     //target right arm
     drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = css_getStatusColor3(armorVal, TARG_RA_DD, TARG_RA_DM, TARG_RA_OK);
-    css_renderMeter(100, (pnl_ctr + '22 -12'), '12 36',  '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    colorBuffer = gui_getStatusColor3(armorVal, TARG_RA_DD, TARG_RA_DM, TARG_RA_OK);
+    gui_renderMeter(100, (pnl_ctr + '22 -12'), '12 36',  '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
    
     //target left arm
     drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = css_getStatusColor3(armorVal, TARG_LA_DD, TARG_LA_DM, TARG_LA_OK);
-    css_renderMeter(100, (pnl_ctr + '-34 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    colorBuffer = gui_getStatusColor3(armorVal, TARG_LA_DD, TARG_LA_DM, TARG_LA_OK);
+    gui_renderMeter(100, (pnl_ctr + '-34 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
   }
 };
 
@@ -622,7 +599,7 @@ void(float shieldval) otl_targetShield={
   if(shieldval > -1){
     local vector label_org, ofs;
     ofs = self.hud_pnl5.pos + self.hud_pnl5.margin_ins + '3 6';
-    css_renderMeter(shieldval, ofs, self.wdg_sh.drawsize, self.wdg_sh.drawcolor1, 
+    gui_renderMeter(shieldval, ofs, self.wdg_sh.drawsize, self.wdg_sh.drawcolor1, 
                                                                     self.wdg_sh.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
     label_org = ofs - '0 4';
     drawstring(label_org, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);

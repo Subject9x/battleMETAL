@@ -168,6 +168,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep1();
+      if(oself.next_wepn1 > 0){
+        self.data_idx = oself.next_wepn1;
+      }
       buildVehicleWeapon(mechData, own, WEAPON1_OK, WEAPON1_DD, WEAPON1_REL);
     self = oself;
     self.stat_w1_id = wep.data_idx;
@@ -179,6 +182,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep2();
+      if(oself.next_wepn2 > 0){
+        self.data_idx = oself.next_wepn2;
+      }
       buildVehicleWeapon(mechData, own,  WEAPON2_OK, WEAPON2_DD, WEAPON2_REL);
     self = oself;
     self.stat_w2_id = wep.data_idx;
@@ -191,6 +197,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep3();
+      if(oself.next_wepn3 > 0){
+        self.data_idx = oself.next_wepn3;
+      }
       buildVehicleWeapon(mechData, own,  WEAPON3_OK, WEAPON3_DD, WEAPON3_REL);
     self = oself;
     self.stat_w3_id = wep.data_idx;
@@ -203,6 +212,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep4();
+      if(oself.next_wepn4 > 0){
+        self.data_idx = oself.next_wepn4;
+      }
       buildVehicleWeapon(mechData, own,  WEAPON4_OK, WEAPON4_DD, WEAPON4_REL);
     self = oself;
     self.stat_w4_id = wep.data_idx;
@@ -215,6 +227,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep5();
+      if(oself.next_wepn5 > 0){
+        self.data_idx = oself.next_wepn5;
+      }
       buildVehicleWeapon(mechData, own,  WEAPON5_OK, WEAPON5_DD, WEAPON5_REL);
     self = oself;
     self.stat_w5_id = wep.data_idx;
@@ -227,6 +242,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep6();
+      if(oself.next_wepn6 > 0){
+        self.data_idx = oself.next_wepn6;
+      }
       buildVehicleWeapon(mechData, own,  WEAPON6_OK, WEAPON6_DD, WEAPON6_REL);
     self = oself;
     self.stat_w6_id = wep.data_idx;
@@ -239,6 +257,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep7();
+      if(oself.next_wepn7 > 0){
+        self.data_idx = oself.next_wepn7;
+      }
       buildVehicleWeapon(mechData, own,  WEAPON7_OK, WEAPON7_DD, WEAPON7_REL);
     self = oself;
     self.stat_w7_id = wep.data_idx;
@@ -251,6 +272,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep8();
+      if(oself.next_wepn8 > 0){
+        self.data_idx = oself.next_wepn8;
+      }
       buildVehicleWeapon(mechData, own,  WEAPON8_OK, WEAPON8_DD, WEAPON8_REL);
     self = oself;
     self.stat_w8_id = wep.data_idx;
@@ -263,6 +287,9 @@ void(entity mechData, entity own)buildWeaponList={
     oself = self;
     self = wep;
       mechData.unit_wep9();
+      if(oself.next_wepn9 > 0){
+        self.data_idx = oself.next_wepn9;
+      }
       buildVehicleWeapon(mechData, own,  WEAPON9_OK, WEAPON9_DD, WEAPON9_REL);
     self = oself;
     self.stat_w9_id = wep.data_idx;

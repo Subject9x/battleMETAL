@@ -34,9 +34,9 @@ void() ClientConnect = {
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
   stuffcmd(self, "loadsky dust_ \n");
-  self.p_class = P_MECH;
-  self.p_class_next = P_MECH;
-  self.nextVecChoice = 3;
+  self.p_class = P_OBS;
+  self.p_class_next = P_OBS;
+  self.nextVecChoice = 0;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.faction = 1;
@@ -101,6 +101,16 @@ void() ClientConnect = {
   self.stat_plr_ptc = 0;
   self.stat_plr_ang = 0;
   
+  self.next_wepn1 = -1;
+  self.next_wepn2 = -1;
+  self.next_wepn3 = -1;
+  self.next_wepn4 = -1;
+  self.next_wepn5 = -1;
+  self.next_wepn6 = -1;
+  self.next_wepn7 = -1;
+  self.next_wepn8 = -1;
+  self.next_wepn9 = -1;
+  
   if (intermission_running){
     ExitIntermission();
   }
@@ -161,7 +171,9 @@ void() PutClientInServer = {
 		makevectors(self.angles);
 	}
   
-  dummyConnect();
+  if(self.p_class != P_OBS){
+    dummyConnect();
+  }
 };
 
 /*

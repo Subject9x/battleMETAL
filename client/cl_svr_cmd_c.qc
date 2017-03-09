@@ -1,0 +1,22 @@
+/*
+mech Mod
+Author: Subject9x
+Date: 3/8/2017
+Overview: class file for the client -> server command layer
+
+*/
+
+void(float slot, float w_bit) cl_setweapon={
+
+  local string cmd;
+  cmd = strcat("cmd mech setwep ", ftos(slot), " ", ftos(w_bit), "\n");
+  localcmd(cmd);
+
+};
+
+
+void(float val) cl_setmech={
+  local string cmd;
+  cmd = strcat("cmd mech setmech ", ftos(val), "\n");
+  localcmd(cmd);
+};

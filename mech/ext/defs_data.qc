@@ -30,10 +30,10 @@ float ID_MCH_MATOK= 2;
 float ID_MCH_COLOSSUS= 3;
 
 //WEAPONS================================
-float ID_WEP_LATC=1;
-float ID_WEP_EMP=2;
-float ID_WEP_LAS=3;
-float ID_WEP_MIS=4;
+float ID_WEP_LATC = 1;
+float ID_WEP_EMP = 2;
+float ID_WEP_LAS = 3;
+float ID_WEP_MIS = 4;
 //PROTO WEAPONS
 //BALLISTIC
 float ID_WEP_ATC = 5;

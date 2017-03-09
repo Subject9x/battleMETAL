@@ -20,6 +20,10 @@ void(string str, float tokens) client_ParseMechCommand={
       client_setWeapon(str, tokens);
     }
   }
+  else if(argv(1) == "setmech"){
+    self.p_class_next = P_MECH;
+    self.nextVecChoice = stof(argv(2));
+  }
 };
 
 //scope - self = weapon updating its owner
@@ -63,7 +67,34 @@ void(string cmd, float tokens) client_setWeapon={
   oself = self;
   wslotid = stof(argv(2));
   new_id = stof(argv(3));
-  new_dat = mh_world_findData(new_id, DATA_WEPN);
+  if(wslotid == WEAPON1){
+    self.next_wepn1 = new_id;
+  }
+  else if(wslotid == WEAPON2){
+    self.next_wepn2 = new_id;
+  }
+  else if(wslotid == WEAPON3){
+    self.next_wepn3 = new_id;
+  }
+  else if(wslotid == WEAPON4){
+    self.next_wepn4 = new_id;
+  }
+  else if(wslotid == WEAPON5){
+    self.next_wepn5 = new_id;
+  }
+  else if(wslotid == WEAPON6){
+    self.next_wepn6 = new_id;
+  }
+  else if(wslotid == WEAPON7){
+    self.next_wepn7 = new_id;
+  }
+  else if(wslotid == WEAPON8){
+    self.next_wepn8 = new_id;
+  }
+  else if(wslotid == WEAPON9){
+    self.next_wepn9 = new_id;
+  }
+  /*new_dat = mh_world_findData(new_id, DATA_WEPN);
   if(new_dat == world){
     bprint(strcat("Error on command:",cmd,"\n","could not find weapon","\n"));
     return;
@@ -80,21 +111,24 @@ void(string cmd, float tokens) client_setWeapon={
       self = oself;
     }
     e_wslot = e_wslot.w_slot;
-  }
+  }*/
 };
 
 void() respawn={
-  if (coop){
+ setspawnparms (self);
+ PutClientInServer ();
+ 
+ /* if (coop){
 		// make a copy of the dead body for appearances sake
-    CopyToBodyQue (self);
+    //CopyToBodyQue (self);
 		// get the spawn parms as they were at level start
-		setspawnparms (self);
+		//setspawnparms (self);
 		// respawn		
 		PutClientInServer ();
 	}
 	else if (deathmatch){
 		// make a copy of the dead body for appearances sake
-    CopyToBodyQue (self);
+    //CopyToBodyQue (self);
 
 		// set default spawn parms
 		//SetNewParms ();
@@ -104,7 +138,7 @@ void() respawn={
 	else{	
   // restart the entire server
 		localcmd ("restart\n");
-	}
+	}*/
 };
 
 entity() SelectSpawnPoint={

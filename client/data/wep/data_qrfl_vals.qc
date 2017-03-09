@@ -6,7 +6,7 @@ Overview:
 */
 //LIGHT AUTOCANNON=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
-string DAT_QRFL_NAME = "Light Autocannon";
+string DAT_QRFL_NAME = "Q-Rifle";
 float DAT_QRFL_FIRETIME = 0;
 float DAT_QRFL_CLIPSIZE = 1;
 float DAT_QRFL_FIRERATE = 0.5;

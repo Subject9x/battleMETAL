@@ -16,6 +16,10 @@ float AS_FLOAT = 8;
 .float stat_en;
 .float stat_sh;
 
+.float stat_plr_camx;
+.float stat_plr_camy;
+.float stat_plr_camz;
+
 .float stat_legs_hp;
 .float stat_legs_am;
 .float stat_ctor_hp;
