@@ -49,12 +49,7 @@ void() PlayerPreThink = {
       self.movetype = MOVETYPE_WALK;
       self.power_timer = -1;
     }
-  }
-
-  
-  //
-
-  if(self.p_class != P_OBS){
+    
     server_updateTargetInfo();
     if(time >= self.was_hit){
       if(self.stat_hit_dirs & STAT_HIT_LF){
@@ -209,9 +204,9 @@ void() PlayerDie={
     removeWeaponGroup(self.currentWeaponGroup,  self.w_group1);
     removeWeaponGroup(self.currentWeaponGroup,  self.w_group2);
     removeWeaponGroup(self.currentWeaponGroup,  self.w_group3);
-    self.w_group1 = self.w_group1 - self.w_group1;
-    self.w_group2 = self.w_group2 - self.w_group2;
-    self.w_group3 = self.w_group3 - self.w_group3;
+    self.w_group1 = self.w_group1 - (self.w_group1 & self.w_group1);
+    self.w_group2 = self.w_group2 - (self.w_group2 & self.w_group2);
+    self.w_group3 = self.w_group3 - (self.w_group3 & self.w_group3);
     local entity wep;
     wep = self.w_slot;
     while(wep){

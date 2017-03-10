@@ -22,11 +22,11 @@ void(entity wep) ctrl_weapon_think={
   
   if(time > self.w_firetime){
     if(self.owner.stat_wep_rel & self.stat_wep_rel){
-      self.owner.stat_wep_rel = self.owner.stat_wep_rel - self.stat_wep_rel;
+      self.owner.stat_wep_rel = self.owner.stat_wep_rel - ( self.owner.stat_wep_rel & self.stat_wep_rel);
     }
   }else{
     if(!(self.owner.stat_wep_rel & self.stat_wep_rel)){
-      self.owner.stat_wep_rel = self.owner.stat_wep_rel + self.stat_wep_rel;
+      self.owner.stat_wep_rel = self.owner.stat_wep_rel | self.stat_wep_rel;
     }
   }
   
@@ -77,7 +77,7 @@ void(entity wep) ctrl_weapon_think={
 
 //gross
 void(entity wep, float wstate) ctrl_weapon_addState={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state + wstate;
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state | wstate;
 };
 
 void(entity wep, float wstate) ctrl_weapon_subState={
@@ -86,15 +86,15 @@ void(entity wep, float wstate) ctrl_weapon_subState={
 
 void(entity wep, float state1, float state2) ctrl_weapon_clearState={
   if(wep.owner.stat_wep_state & state1){
-    wep.owner.stat_wep_state = wep.owner.stat_wep_state - state1;
+    wep.owner.stat_wep_state = wep.owner.stat_wep_state - ( wep.owner.stat_wep_state & state1);
   }
   if(wep.owner.stat_wep_state & state2){
-    wep.owner.stat_wep_state = wep.owner.stat_wep_state - state2;
+    wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state2);
   }
 };
 
 void(entity wep, float wstate) ctrl_weapon_isReload={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state + wstate;
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state | wstate;
 };
 
 void(entity wep, float wstate) ctrl_weapon_isReady={
@@ -119,7 +119,7 @@ void() ctrl_die_weapon={
       BecomeExplosion();
     self = oself;
     if(oself.currentWeaponGroup & self.w_group){
-      oself.currentWeaponGroup = oself.currentWeaponGroup - self.w_group;
+      oself.currentWeaponGroup = oself.currentWeaponGroup - (oself.currentWeaponGroup & self.w_group);
       self.w_group = 0;
     }
     ctrl_weapon_subState(self, self.state_1);

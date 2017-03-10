@@ -23,28 +23,32 @@ float(vector mpos, vector org, vector sz) menu_checkMouseInBounds={
   calculates the screen-area of a list, determines if the mouse is within the bounds of one of these
   and returns the index number of the item if any'
 */
-float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) textListListener={
-
-  local float itr, found;
-  local vector interval;
-  interval = list_size;
-  interval_y = list_size_y / max_items;
-  itr = 1;
-  found = 0;
-  while(itr < max_items+1){
-    local float chk;
-    local vector sub_org;
-    sub_org = org;
-    sub_org_y = org_y + (interval_y * itr);
-    chk = menu_checkMouseInBounds(mpos, sub_org, row_size);
-    if(chk){
-      gui_DrawRect(sub_org, sub_org + row_size, '2 2', '1 1 1');
-      found = itr;
+float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener={
+  if(menu_checkMouseInBounds(cursorpos, org, list_size)){
+    local vector ofs, mx;
+    local entity dat;
+    local float lst_idx, toSender;
+    lst_idx = 1;
+    toSender = 0;
+    while(lst_idx <= max_items){
+      local vector lofs;
+      local float chk;
+      lofs_x = org_x;
+      lofs_y = org_y + (lst_idx * row_size_y);
+      chk = menu_checkMouseInBounds(cursorpos, lofs, row_size);
+      if(chk){
+        gui_DrawRect(lofs, lofs + row_size, '2 2', '1 1 1');
+        toSender = lst_idx;
+      }
+      lst_idx = lst_idx + 1;
     }
-    itr = itr + 1;
+    return toSender;
   }
-  return found;
+  else{
+    return 0;
+  }
 };
+
 
 
 void() menu_handleFrame={

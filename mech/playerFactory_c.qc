@@ -11,7 +11,7 @@ void(entity ent) mh_makeObserver={
   oself = self;
   self = ent;
   self.view_ofs = '0 0 1';
-  self.flags = self.flags + FL_FLY;
+  self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
   util_setCollider(DAMAGE_NO, SOLID_BSP, MOVETYPE_FLY);
   setmodel(self, "q3mdl/testball.md3");

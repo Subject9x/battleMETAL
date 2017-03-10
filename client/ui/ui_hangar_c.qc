@@ -6,7 +6,8 @@ Overview: class file for hangar ui
 
 */
 vector MECHPANEL_CTR;
-
+vector MECHLIST_SIZE;
+vector WEPNLIST_SIZE;
 
 //hook for input events
 void() menu_hangarListener={
@@ -30,7 +31,7 @@ void() hardpointListener={
 
 void() mechSelectListener={
   local float found;
-  found = textListListener('24 36', cursorpos, '48 36', '48 12', 3, 0);
+  found = listListener('24 36', cursorpos, MECHLIST_SIZE, '48 12', 3, 0);
   if(found  > 0){
     if(found != PLAYER_HELPER.plr_sel_mech){
         cl_setmech(found);
@@ -42,9 +43,10 @@ void() mechSelectListener={
 void() weaponSelectListener={
   local float found;
   local vector lofs;
-  lofs_x = 460;
-  lofs_y = 36;
-  found = textListListener(lofs, cursorpos, '48 168', '64 12', 11, 0);
+  lofs_x = VIEW_CTR_x + 128;
+  lofs_y = 24;
+  gui_DrawRect(lofs, lofs + WEPNLIST_SIZE, '6 4', '1 1 1');
+  found = listListener(lofs, cursorpos, WEPNLIST_SIZE, '64 12', 10, 0);
   if(found  > 0){
    PLAYER_HELPER.plr_sel_wep = found;
    if(PLAYER_HELPER.plr_sel_hrpnt > 0){
@@ -161,7 +163,7 @@ void(vector offset) menu_hangar_MechList={
   ofs = sz = offset;
   drawstring(offset + '24 0', "[MECHS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   lst_idx = 1;
-  while(lst_idx < 4){
+  while(lst_idx <= 3){
     local entity dat;
     local vector lofs;
     dat = m_findData(lst_idx, DATA_MECH);
@@ -175,6 +177,9 @@ void(vector offset) menu_hangar_MechList={
     sz_y = sz_y + lofs_y;
     lst_idx = lst_idx + 1;
   }
+  MECHLIST_SIZE_x = 48;
+  MECHLIST_SIZE_y = (lst_idx * 12)+12;
+  
 };
 
 
@@ -230,21 +235,22 @@ void(vector offset) menu_hangar_WeaponList={
   ofs_y = 24;
   mx_x = 128;
   mx_y = VIEW_MAX_y - 64;
-  gui_DrawRect(ofs, mx, '6 4', '1 1 1');
+  //gui_DrawRect(ofs, mx, '6 4', '1 1 1');
   lst_idx = 1;
-  while(lst_idx < 12){
+  while(lst_idx <= 10){
     local entity dat;
     local vector lofs;
     dat = m_findData(lst_idx, DATA_WEPN);
     lofs_x = ofs_x + 12;
     lofs_y = ofs_y + (lst_idx * 12);
-    //drawstring(lofs, dat.w_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-    drawstring(lofs, vtos(lofs), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(lofs, strcat(ftos(lst_idx),": ",dat.w_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
       gui_DrawRect(lofs, '48 12', '4 4', '1 1 1');
     }
     lst_idx = lst_idx + 1;
   }
+  WEPNLIST_SIZE_x = 48;
+  WEPNLIST_SIZE_y = (lst_idx * 12) + 12;
 };
 
 float(float slotid) getWeaponInHardpoint={

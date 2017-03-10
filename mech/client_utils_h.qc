@@ -15,4 +15,4 @@ entity() SelectSpawnPoint;
 //client command layer
 void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
-void(float w_id, float wslotid) client_updateWeaponIdStat;
+//void(float w_id, float wslotid) client_updateWeaponIdStat;

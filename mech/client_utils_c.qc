@@ -27,7 +27,7 @@ void(string str, float tokens) client_ParseMechCommand={
 };
 
 //scope - self = weapon updating its owner
-void(float w_id, float wslotid) client_updateWeaponIdStat={
+/*void(float w_id, float wslotid) client_updateWeaponIdStat={
   if(wslotid == WEAPON1){
     self.owner.stat_w1_id = w_id;
   }
@@ -55,7 +55,7 @@ void(float w_id, float wslotid) client_updateWeaponIdStat={
   else if(wslotid == WEAPON9){
     self.owner.stat_w9_id = w_id;
   }
-};
+};*/
 /*
 commmand string: cmd mech setwep X Y
   X = WEAPON bitflag id
@@ -94,33 +94,16 @@ void(string cmd, float tokens) client_setWeapon={
   else if(wslotid == WEAPON9){
     self.next_wepn9 = new_id;
   }
-  /*new_dat = mh_world_findData(new_id, DATA_WEPN);
-  if(new_dat == world){
-    bprint(strcat("Error on command:",cmd,"\n","could not find weapon","\n"));
-    return;
-  }
-  e_wslot = self.w_slot;
-  while(e_wslot){
-    if(e_wslot.w_group == wslotid){
-      self = e_wslot;
-        self.data_idx = new_id;
-        new_dat.unit_ini();
-        ctrl_weapon_addState(self, self.state_1);
-        util_setModel(self.c_model, 0);
-        client_updateWeaponIdStat(new_id, self.w_group);
-      self = oself;
-    }
-    e_wslot = e_wslot.w_slot;
-  }*/
 };
 
 void() respawn={
- setspawnparms (self);
- PutClientInServer ();
+  //CopyToBodyQue (self);
+  //setspawnparms (self);
+  PutClientInServer ();
  
  /* if (coop){
 		// make a copy of the dead body for appearances sake
-    //CopyToBodyQue (self);
+    //
 		// get the spawn parms as they were at level start
 		//setspawnparms (self);
 		// respawn		

@@ -18,20 +18,6 @@ void() ctrl_update_mechplayer={
   }
 };
 
-
-/*void() stat_update_weapons={
-  local float cnt;
-  local entity ent;
-  ent = self.w_slot;
-  cnt = 0;
-  while(ent){
-    
-    ent = ent.w_slot;
-  }
-
-};*/
-
-
 /*
   only called at the m_client level when player kills, respawns, or disconnects!
 */
@@ -88,7 +74,6 @@ void() mech_player_die={
     mech_player_cameradie();
   }
 
-  
   w_chain = self.w_slot;
   while(w_chain){
     mech_player_compdie(w_chain);

@@ -30,28 +30,27 @@ float ID_MCH_MATOK= 2;
 float ID_MCH_COLOSSUS= 3;
 
 //WEAPONS================================
-float ID_WEP_LATC = 1;
-float ID_WEP_EMP = 2;
-float ID_WEP_LAS = 3;
-float ID_WEP_MIS = 4;
+float ID_WEP_LATC=1;
+float ID_WEP_EMP=2;
+float ID_WEP_LAS=3;
+float ID_WEP_MIS=4;
 //PROTO WEAPONS
 //BALLISTIC
-float ID_WEP_ATC = 5;
-float ID_WEP_QRF = 6;
-float ID_WEP_RPC = 7;
+float ID_WEP_QRF = 5;
+float ID_WEP_RPC = 6;
 //ENERGY
-float ID_WEP_PAC = 8;
-float ID_WEP_ESR = 9;
+float ID_WEP_PAC = 7;
+float ID_WEP_ESR = 8;
 
 //MISSILE
-float ID_WEP_MLGD = 10;
-float ID_WEP_MARH = 11;
-float ID_WEP_MAPR = 12;
-float ID_WEP_MCRK = 13;
+float ID_WEP_MLGD = 9;
+float ID_WEP_MARH = 10;
+float ID_WEP_MAPR = 11;
+float ID_WEP_MCRK = 12;
 
 //MELEE
-float ID_WEP_RAM = 14;
-float ID_WEP_BLD = 15;
+float ID_WEP_RAM = 13;
+float ID_WEP_BLD = 14;
 
 
 //PROJECTILE=============================

@@ -141,13 +141,3 @@ void() ctrl_die_comp={
     }
   }
 }
-
-/*void() ctrl_dieMech={
-  if(self.deadflag <= DEAD_NO){
-    self.solid = SOLID_NOT;
-    self.deadflag = DEAD_DYING;
-    self.takedamage = DAMAGE_NO;
-    setmodel(self, "");
-    setsize(self, '0 0 0', '0 0 0'); 
-  }
-};*/

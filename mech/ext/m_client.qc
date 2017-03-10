@@ -156,7 +156,7 @@ void() PutClientInServer = {
 	self.pausetime = 0;
 	
 	self.view_ofs = '0 0 1';
-	
+  
   if(self.p_class == P_OBS){
     mh_makeObserver(self);
     self.power_timer = 0;
@@ -208,35 +208,30 @@ void() ClientKill = {
   
   }
 
+  if(self.p_class == P_MECH){
+    //mech_player_die();
+    self.frame = $ctorstand1;
 
-  if(self.p_class == P_MECH){
-    mech_player_die();
-    
-  }
-  self.frame = $ctorstand1;
-	self.solid = SOLID_CORPSE;
-  setsize(self, '-3 -3 -3', '3 3 3');
-	self.movetype = MOVETYPE_TOSS;
-	self.deadflag = DEAD_DEAD;
-  self.nextthink = -1;
-  self.currentWeaponGroup = self.currentWeaponGroup - 
-                              ((self.currentWeaponGroup & self.w_group1) |
-                              (self.currentWeaponGroup & self.w_group2) | 
-                              (self.currentWeaponGroup & self.w_group3));
-  self.w_group1 = self.w_group1 - self.w_group1;
-  self.w_group2 = self.w_group2 - self.w_group2;
-  self.w_group3 = self.w_group2 - self.w_group3;
-  local entity wep;
-  wep = self.w_slot;
-  while(wep){
-    ctrl_weapon_clearState(wep, wep.state_1, wep.state_2);
-    wep = wep.w_slot;
-  }
-  
-  if(self.p_class == P_MECH){
+    self.currentWeaponGroup = self.currentWeaponGroup - 
+                                ((self.currentWeaponGroup & self.w_group1) |
+                                (self.currentWeaponGroup & self.w_group2) | 
+                                (self.currentWeaponGroup & self.w_group3));
+    self.w_group1 = self.w_group1 - (self.w_group1 & self.w_group1);
+    self.w_group2 = self.w_group2 - (self.w_group2 & self.w_group2);
+    self.w_group3 = self.w_group2 - (self.w_group3 & self.w_group3);
+    local entity wep;
+    wep = self.w_slot;
+    while(wep){
+      ctrl_weapon_clearState(wep, wep.state_1, wep.state_2);
+      wep = wep.w_slot;
+    }
     cleanup_mech();
   }
-
+  self.solid = SOLID_CORPSE;
+  setsize(self, '-3 -3 -3', '3 3 3');
+  self.movetype = MOVETYPE_TOSS;
+  self.deadflag = DEAD_DEAD;
+  self.nextthink = -1;
   //only deduct frags of player is going from !observer to another !observer
   if(self.p_class != P_OBS){
     if(self.p_class_next != P_OBS){
@@ -267,7 +262,7 @@ void() ClientDisconnect = {
 	bprint (" has fled the field of battle!\n");
   
   if(self.p_class == P_MECH){
-    mech_player_die();
+    //mech_player_die();
     cleanup_mech();
   }
 };

@@ -136,8 +136,13 @@ void() data_otl_ini;
 
 void(vector org) otl_renderHardpoints={
   gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '-10 -104', '32 32', '8 8', '1 1 0', '4 4', '1 1 1');
+  drawstring(org + '-10 -104', ftos(PLAYER_HELPER.plr_nex_wep3), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
   gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '-75 -64', '32 32', '8 8', '1 1 0', '4 4', '1 1 1');
+  drawstring(org + '-75 -64', ftos(PLAYER_HELPER.plr_nex_wep2), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
   gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '48 -64', '32 32', '8 8 0', '1 1 0', '4 4', '1 1 1'); 
+  drawstring(org + '48 -64', ftos(PLAYER_HELPER.plr_nex_wep1), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 float(vector org) otl_hardpointListener={

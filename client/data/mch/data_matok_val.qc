@@ -156,12 +156,39 @@ vector DAT_MTK_WEP5_ADJ_ANG= '0 0 0';
 void() data_mech_mtk;
 void() data_mtk_ini;
 
-void() mtk_renderHardpoints={
-
+void(vector org) mtk_renderHardpoints={
+  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '-40 -100', '16 16', '8 8', '1 1 0', '4 4', '1 1 1');
+  drawstring(org + '-40 -100', ftos(PLAYER_HELPER.plr_nex_wep1), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '24 -100', '16 16', '8 8', '1 1 0', '4 4', '1 1 1');
+  drawstring(org + '24 -100', ftos(PLAYER_HELPER.plr_nex_wep2), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '-60 -40', '16 16', '8 8 0', '1 1 0', '4 4', '1 1 1'); 
+  drawstring(org + '-60 -40', ftos(PLAYER_HELPER.plr_nex_wep3), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 4), org + '44 -40', '16 16', '8 8 0', '1 1 0', '4 4', '1 1 1'); 
+  drawstring(org + '44 -40', ftos(PLAYER_HELPER.plr_nex_wep4), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 5), org + '-8 -94', '16 16', '8 8 0', '1 1 0', '4 4', '1 1 1');
+  drawstring(org + '-8 -94', ftos(PLAYER_HELPER.plr_nex_wep5), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 float(vector org) mtk_hardpointListener={
-
+  if(menu_checkMouseInBounds(cursorpos, org + '-40 -100', '16 16')){
+    return 1;
+  }  
+  if(menu_checkMouseInBounds(cursorpos, org + '24 -100', '16 16')){
+    return 2;
+  } 
+  if(menu_checkMouseInBounds(cursorpos, org + '-60 -40', '16 16')){
+    return 3;
+  } 
+  if(menu_checkMouseInBounds(cursorpos, org + '44 -40', '16 16')){
+    return 4;
+  } 
+  if(menu_checkMouseInBounds(cursorpos, org + '-8 -94', '16 16')){
+    return 5;
+  } 
 };
 
 //call this guy at the start of the world ini
