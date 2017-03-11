@@ -14,9 +14,14 @@ void(float slot, float w_bit) cl_setweapon={
 
 };
 
-
 void(float val) cl_setmech={
   local string cmd;
   cmd = strcat("cmd mech setmech ", ftos(val), "\n");
+  localcmd(cmd);
+};
+
+void() cl_spawnmech={
+  local string cmd;
+  cmd = "cmd mech spawn\n";
   localcmd(cmd);
 };

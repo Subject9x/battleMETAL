@@ -84,10 +84,12 @@ void() PlayerPostThink = {
 	local	float	r;
  
 	if (self.view_ofs == '0 0 0'){
+    centerprint(self, "boop");
 		return;		// intermission or finale
   }
     
 	if (self.deadflag){
+    centerprint(self, "boop");
     return;
   }
   
@@ -179,13 +181,11 @@ void() PlayerDie={
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}
-//	self.items = self.items - (self.items & IT_INVISIBILITY);
-	self.items = self.items - (self.items & (IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD) );
-	self.invisible_finished = 0;	// don't die as eyes
-	self.invincible_finished = 0;
-	self.super_damage_finished = 0;
-	self.radsuit_finished = 0;
-	self.effects = 0;	// 1998-07-23 Glowing corpse of players which had quad/pentagram until respawn fix by Maddes
+  
+  //legacy stuff
+  legacy_PlayerDie();
+
+	self.effects = 0;
   
 	self.view_ofs = '0 0 1';
 	self.deadflag = DEAD_DYING;
@@ -201,12 +201,7 @@ void() PlayerDie={
   self.avelocity = '0 0 0';
   
   if(self.p_class != P_OBS){
-    removeWeaponGroup(self.currentWeaponGroup,  self.w_group1);
-    removeWeaponGroup(self.currentWeaponGroup,  self.w_group2);
-    removeWeaponGroup(self.currentWeaponGroup,  self.w_group3);
-    self.w_group1 = self.w_group1 - (self.w_group1 & self.w_group1);
-    self.w_group2 = self.w_group2 - (self.w_group2 & self.w_group2);
-    self.w_group3 = self.w_group3 - (self.w_group3 & self.w_group3);
+    mech_clearWeaponGroups();
     local entity wep;
     wep = self.w_slot;
     while(wep){
@@ -254,7 +249,14 @@ void() PlayerDeathThink={
 	self.button0 = 0;
 	self.button1 = 0;
 	self.button2 = 0;
-	respawn();
+	
+  self.deadflag = DEAD_NO;
+  player_unmakeMech();
+  player_makeObserver();
+  spawnpoint_Random();
+  self.movetype = MOVETYPE_NONE;
+  
+  //respawn();
 };
 
 void() PlayerJump={

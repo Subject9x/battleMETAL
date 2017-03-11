@@ -158,11 +158,11 @@ void() PutClientInServer = {
 	self.view_ofs = '0 0 1';
   
   if(self.p_class == P_OBS){
-    mh_makeObserver(self);
+    player_makeObserver(self);
     self.power_timer = 0;
   }
   else if(self.p_class == P_MECH){
-    mh_makeMech(self);
+    player_makeMech(self);
     self.power_timer = time + 1;//8
   }
  
@@ -225,7 +225,7 @@ void() ClientKill = {
       ctrl_weapon_clearState(wep, wep.state_1, wep.state_2);
       wep = wep.w_slot;
     }
-    cleanup_mech();
+    mech_cleanupMech();
   }
   self.solid = SOLID_CORPSE;
   setsize(self, '-3 -3 -3', '3 3 3');
@@ -262,8 +262,8 @@ void() ClientDisconnect = {
 	bprint (" has fled the field of battle!\n");
   
   if(self.p_class == P_MECH){
-    //mech_player_die();
-    cleanup_mech();
+    mech_player_die();
+    mech_cleanupMech();
   }
 };
 

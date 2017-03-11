@@ -79,10 +79,10 @@ void() putDummyInServer = {
 	self.view_ofs = '0 0 1';
 	
   if(self.p_class == P_OBS){
-    mh_makeObserver(self);
+    player_makeObserver(self);
   }
   else if(self.p_class == P_MECH){
-    mh_makeMech(self);
+    player_makeMech(self);
   }
  
 	if (deathmatch || coop)

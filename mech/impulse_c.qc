@@ -49,14 +49,6 @@ void() playerAttack={
   }
 };
 
-void(float current, float toRemove) removeWeaponGroup={
-
-  if(current & toRemove){
-    current = current - toRemove;
-  }
-
-};
-
 void() ImpulseCommands ={
   if(self.impulse == IMP_FGROUP){
     self.stat_plr_fir = FIRE_GROUP;

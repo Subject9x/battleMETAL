@@ -24,38 +24,13 @@ void(string str, float tokens) client_ParseMechCommand={
     self.p_class_next = P_MECH;
     self.nextVecChoice = stof(argv(2));
   }
+  else if(argv(1) == "spawn"){
+    player_unmakeObserver();
+    player_makeMech();
+    spawnpoint_Random();
+  }
 };
 
-//scope - self = weapon updating its owner
-/*void(float w_id, float wslotid) client_updateWeaponIdStat={
-  if(wslotid == WEAPON1){
-    self.owner.stat_w1_id = w_id;
-  }
-  else if(wslotid == WEAPON2){
-    self.owner.stat_w2_id = w_id;
-  }
-  else if(wslotid == WEAPON3){
-    self.owner.stat_w3_id = w_id;
-  }
-  else if(wslotid == WEAPON4){
-    self.owner.stat_w4_id = w_id;
-  }
-  else if(wslotid == WEAPON5){
-    self.owner.stat_w5_id = w_id;
-  }
-  else if(wslotid == WEAPON6){
-    self.owner.stat_w6_id = w_id;
-  }
-  else if(wslotid == WEAPON7){
-    self.owner.stat_w7_id = w_id;
-  }
-  else if(wslotid == WEAPON8){
-    self.owner.stat_w8_id = w_id;
-  }
-  else if(wslotid == WEAPON9){
-    self.owner.stat_w9_id = w_id;
-  }
-};*/
 /*
 commmand string: cmd mech setwep X Y
   X = WEAPON bitflag id
@@ -182,4 +157,20 @@ entity() SelectSpawnPoint={
 		error ("PutClientInServer: no info_player_start on level");
 	
 	return spot;
+};
+
+void() spawnpoint_Random={
+  local entity spot;
+  spot = SelectSpawnPoint();
+  self.origin = self.oldorigin = spot.origin + '0 0 24';
+  self.angles = spot.angles;
+	self.fixangle = TRUE;	
+};
+
+void() legacy_PlayerDie={
+	self.items = self.items - (self.items & (IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD) );
+	self.invisible_finished = 0;
+	self.invincible_finished = 0;
+	self.super_damage_finished = 0;
+	self.radsuit_finished = 0;
 };

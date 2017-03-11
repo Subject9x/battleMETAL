@@ -103,7 +103,8 @@ void() mechAcceptButtonListener={
     cl_setweapon(WEAPON6, PLAYER_HELPER.plr_nex_wep6); 
     cl_setweapon(WEAPON7, PLAYER_HELPER.plr_nex_wep7);
     cl_setweapon(WEAPON8, PLAYER_HELPER.plr_nex_wep8);      
-    cl_setweapon(WEAPON9, PLAYER_HELPER.plr_nex_wep9);  
+    cl_setweapon(WEAPON9, PLAYER_HELPER.plr_nex_wep9);
+    cl_spawnmech();
     MENU_ACTIVE = FALSE;
     setcursormode(0);
   }

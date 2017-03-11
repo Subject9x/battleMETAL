@@ -12,6 +12,13 @@ void() DecodeLevelParms;
 void() respawn;
 entity() SelectSpawnPoint;
 
+//legacy wrappers
+void() legacy_PlayerDie;
+
+//spawn spot wrappers
+void() spawnpoint_Random;
+
+
 //client command layer
 void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;

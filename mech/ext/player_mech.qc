@@ -2,8 +2,26 @@
 mech mod
 Author: Subject9x
 Date: 9/7/2016
+      mod 3/10/2017
 Overview: implementation of mech player functions,
 */
+
+
+void() mech_clearWeaponGroups={
+  self.w_group1 = self.w_group1 - (self.w_group1 & self.w_group1);
+  self.w_group2 = self.w_group2 - (self.w_group2 & self.w_group2);
+  self.w_group3 = self.w_group3 - (self.w_group3 & self.w_group3);
+  if((self.currentWeaponGroup & self.w_group1)){
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group1);
+  }
+  if((self.currentWeaponGroup & self.w_group2)){
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group2);
+  }
+  if((self.currentWeaponGroup & self.w_group3)){
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group3);
+  }
+
+};
 
 void() ctrl_update_mechplayer={
   local entity oself;
@@ -21,7 +39,7 @@ void() ctrl_update_mechplayer={
 /*
   only called at the m_client level when player kills, respawns, or disconnects!
 */
-void() cleanup_mech={
+void() mech_cleanupMech={
   
   local entity oself, w_chain, next, lstp;
   oself = self;
@@ -89,9 +107,6 @@ void() mech_player_die={
   ctor_die1();
 };
 
-void() mech_player_weapondie={
-
-};
 
 void(entity comp) mech_player_compdie={
   if(comp.model){
