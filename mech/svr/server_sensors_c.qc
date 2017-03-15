@@ -45,6 +45,9 @@ void() server_updateTargetInfo={
     self.targetpip.effects = EF_NODRAW + EF_LOWPRECISION;
     if(self.stat_lck_stt & LOCK_TARG){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
+      if(self.enemy != world){
+        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
+      }
     }
     return;
   }

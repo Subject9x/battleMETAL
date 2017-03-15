@@ -2,6 +2,7 @@
 mech Mod
 Author: Subject9x
 Date: 9/1/2016
+      mod - 3/4/2017
 Overview: weapon controller header
 */
 
@@ -21,15 +22,10 @@ void(entity wep) ctrl_weapon_think={
   }
   
   if(time > self.w_firetime){
-    if(self.owner.stat_wep_rel & self.stat_wep_rel){
-      self.owner.stat_wep_rel = self.owner.stat_wep_rel - ( self.owner.stat_wep_rel & self.stat_wep_rel);
-    }
+    ctrl_weapon_isReady(self, self.stat_wep_rel);
   }else{
-    if(!(self.owner.stat_wep_rel & self.stat_wep_rel)){
-      self.owner.stat_wep_rel = self.owner.stat_wep_rel | self.stat_wep_rel;
-    }
+    ctrl_weapon_isReload(self, self.stat_wep_rel);
   }
-  
   
   if(self.w_isfire == 1){
     if(time > self.w_firetime){
@@ -77,7 +73,9 @@ void(entity wep) ctrl_weapon_think={
 
 //gross
 void(entity wep, float wstate) ctrl_weapon_addState={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state | wstate;
+  if(!(wep.owner.stat_wep_state & wstate)){
+    wep.owner.stat_wep_state = wep.owner.stat_wep_state | wstate;
+  }
 };
 
 void(entity wep, float wstate) ctrl_weapon_subState={
@@ -85,20 +83,18 @@ void(entity wep, float wstate) ctrl_weapon_subState={
 };
 
 void(entity wep, float state1, float state2) ctrl_weapon_clearState={
-  if(wep.owner.stat_wep_state & state1){
-    wep.owner.stat_wep_state = wep.owner.stat_wep_state - ( wep.owner.stat_wep_state & state1);
-  }
-  if(wep.owner.stat_wep_state & state2){
-    wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state2);
-  }
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state1);
+  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state2);
 };
 
 void(entity wep, float wstate) ctrl_weapon_isReload={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state | wstate;
+  if(!(wep.owner.stat_wep_rel & wstate)){
+    wep.owner.stat_wep_rel = wep.owner.stat_wep_rel | wstate;
+  }
 };
 
 void(entity wep, float wstate) ctrl_weapon_isReady={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & wstate);
+  wep.owner.stat_wep_rel = wep.owner.stat_wep_rel - (wep.owner.stat_wep_rel & wstate);
 };
 
 void(entity wep) ctrl_weapon_tryFire={

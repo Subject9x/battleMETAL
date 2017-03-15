@@ -675,6 +675,7 @@ void(float islock) mtk_targetLock={
   if(islock & LOCK_TARG){
     colr = '1 0.25 0.1';
     acq = "!ACQUIRED!";
+    gui_DrawRect(VIEW_CTR - '16 16', '32 32', '4 4', '0.85 0.85 0');
   }
   else{
     colr = '0.5 0.5 0.5';
@@ -682,6 +683,7 @@ void(float islock) mtk_targetLock={
   }
   tofs_x = tofs_x + llen + 2;
   drawstring(tofs, acq, '6 6 0', colr, HUD_ALPHA, 0);
+  
 };
 /*
   TARGER DIRECTIONAL PIP====================================================

@@ -52,18 +52,18 @@ void() PlayerPreThink = {
     
     server_updateTargetInfo();
     if(time >= self.was_hit){
-      if(self.stat_hit_dirs & STAT_HIT_LF){
-        self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_LF;
-      }
-      if(self.stat_hit_dirs & STAT_HIT_RT){
-        self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_RT;
-      }
-      if(self.stat_hit_dirs & STAT_HIT_BK){
-        self.stat_hit_dirs =  self.stat_hit_dirs - STAT_HIT_BK;
-      }
+      //if(self.stat_hit_dirs & STAT_HIT_LF){
+        self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_LF);
+      //}
+      //if(self.stat_hit_dirs & STAT_HIT_RT){
+        self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_RT);
+      //}
+      //if(self.stat_hit_dirs & STAT_HIT_BK){
+        self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_BK);
+      //}
     }
     else{
-      self.stat_hit_dirs = self.hitdir_buffer;
+      self.stat_hit_dirs =  self.hitdir_buffer;
     }
   }
   
@@ -84,12 +84,10 @@ void() PlayerPostThink = {
 	local	float	r;
  
 	if (self.view_ofs == '0 0 0'){
-    centerprint(self, "boop");
 		return;		// intermission or finale
   }
     
 	if (self.deadflag){
-    centerprint(self, "boop");
     return;
   }
   
@@ -114,7 +112,7 @@ void() PlayerPostThink = {
     self.stat_rtor_hp = csqc_updateCompStat(self.e_tor_r);
     self.stat_larm_hp = csqc_updateCompStat(self.e_arm_l);
     self.stat_rarm_hp = csqc_updateCompStat(self.e_arm_r);
-    if(self.stat_lck_stt & LOCK_TARG){
+    if((self.stat_lck_stt & LOCK_TARG)){
       if(!(self.enemy.stat_lck_stt & LOCK_PLYR)){
         self.enemy.stat_lck_stt = self.enemy.stat_lck_stt | LOCK_PLYR;
       }
@@ -126,9 +124,7 @@ void() PlayerPostThink = {
     self.radar_rear = radar_y;
   }
   self.stat_plr_ptc = self.v_angle_x * -1;
-  
-
-  
+    
   if(self.p_class != P_OBS){
     local entity wep_chain;
     wep_chain = self.w_slot;
@@ -145,11 +141,6 @@ void() PlayerPostThink = {
 	if (self.button0){
     playerAttack();
 	}
-  
-  local float cv;
-  cv = cvar("mech_setwep1");
-  //centerprint(self, ftos(cv));
-  cvar_set("mech_setwep1","0");
 
 // check to see if player landed and play landing sound	
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
@@ -202,12 +193,13 @@ void() PlayerDie={
   
   if(self.p_class != P_OBS){
     mech_clearWeaponGroups();
-    local entity wep;
+    /*local entity wep;
     wep = self.w_slot;
     while(wep){
-      ctrl_weapon_clearState(wep, wep.state_1, wep.state_2);
+      ctrl_weapon_subState(wep, wep.state_2);
+      ctrl_weapon_subState(wep, wep.state_1);
       wep = wep.w_slot;
-    }
+    }*/
     if(self.p_class == P_MECH){
       mech_player_die();
       return;

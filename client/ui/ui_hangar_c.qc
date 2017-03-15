@@ -31,7 +31,7 @@ void() hardpointListener={
 
 void() mechSelectListener={
   local float found;
-  found = listListener('24 36', cursorpos, MECHLIST_SIZE, '48 12', 3, 0);
+  found = listListener('24 36', cursorpos, MECHLIST_SIZE, '64 12', 3, 0);
   if(found  > 0){
     if(found != PLAYER_HELPER.plr_sel_mech){
         cl_setmech(found);
@@ -46,7 +46,7 @@ void() weaponSelectListener={
   lofs_x = VIEW_CTR_x + 128;
   lofs_y = 24;
   gui_DrawRect(lofs, lofs + WEPNLIST_SIZE, '6 4', '1 1 1');
-  found = listListener(lofs, cursorpos, WEPNLIST_SIZE, '64 12', 10, 0);
+  found = listListener(lofs, cursorpos, WEPNLIST_SIZE, '96 12', 10, 0);
   if(found  > 0){
    PLAYER_HELPER.plr_sel_wep = found;
    if(PLAYER_HELPER.plr_sel_hrpnt > 0){
@@ -172,13 +172,13 @@ void(vector offset) menu_hangar_MechList={
     lofs_y = ofs_y + (lst_idx * 12);
     drawstring(lofs, dat.vec_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
     if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
-      gui_DrawRect(lofs, '48 12', '4 4', '1 1 1');
+      gui_DrawRect(lofs, '64 12', '4 4', '1 1 1');
     }
     sz_x = sz_x + lofs_x;
     sz_y = sz_y + lofs_y;
     lst_idx = lst_idx + 1;
   }
-  MECHLIST_SIZE_x = 48;
+  MECHLIST_SIZE_x = 64;
   MECHLIST_SIZE_y = (lst_idx * 12)+12;
   
 };
@@ -246,11 +246,11 @@ void(vector offset) menu_hangar_WeaponList={
     lofs_y = ofs_y + (lst_idx * 12);
     drawstring(lofs, strcat(ftos(lst_idx),": ",dat.w_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
-      gui_DrawRect(lofs, '48 12', '4 4', '1 1 1');
+      gui_DrawRect(lofs, '96 12', '4 4', '1 1 1');
     }
     lst_idx = lst_idx + 1;
   }
-  WEPNLIST_SIZE_x = 48;
+  WEPNLIST_SIZE_x = 96;
   WEPNLIST_SIZE_y = (lst_idx * 12) + 12;
 };
 

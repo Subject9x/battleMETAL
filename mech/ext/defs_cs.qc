@@ -99,20 +99,28 @@ float TARG_LG_DD = 131072;
 //weapon status all-in-one for bitflags
 float WEAPON1_OK = 1;
 float WEAPON1_DD = 2;
+
 float WEAPON2_OK = 4;
 float WEAPON2_DD = 8;
+
 float WEAPON3_OK = 16;
 float WEAPON3_DD = 32;
+
 float WEAPON4_OK = 64;
 float WEAPON4_DD = 128;
+
 float WEAPON5_OK = 256;
 float WEAPON5_DD = 512;
+
 float WEAPON6_OK = 1024;
 float WEAPON6_DD = 2048;
+
 float WEAPON7_OK = 4096;
 float WEAPON7_DD = 8192;
+
 float WEAPON8_OK = 16384;
 float WEAPON8_DD = 32768;
+
 float WEAPON9_OK = 65536;
 float WEAPON9_DD = 131072;
 

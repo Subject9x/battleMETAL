@@ -15,7 +15,7 @@ float DAT_LATC_CURRENTAMMO = 3;
 float DAT_LATC_FIRERATE = 0.2;
 float DAT_LATC_RELOADTIME = 0.5;
 float DAT_LATC_ISFIRE = 0;
-vector DAT_LATC_FIRE_OFS = '0 0 12';
+vector DAT_LATC_FIRE_OFS = '0 0 2';
 string DAT_LATC_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_LATC_PROJ_ID= ID_PRJ_LATC;
 float DAT_LATC_EN_COST= -1;
@@ -84,9 +84,9 @@ void() data_latc_atk={
     sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
     t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir, '0 0 0');
     
-    local vector sfx;
-    adj_z = adj_z + 45;
-    sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+    //local vector sfx;
+    //adj_z = adj_z + 45;
+    //sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
     
     local entity bul_fx;
     bul_fx = spawn();
@@ -94,7 +94,7 @@ void() data_latc_atk={
     bul_fx.classname = "missile";
     setmodel(bul_fx, "progs/muzzleflash.spr32");
     setsize(bul_fx, '0 0 0', '0 0 0');
-    setorigin(bul_fx, sfx);
+    setorigin(bul_fx, org);
     bul_fx.glow_color = 250;
     bul_fx.glow_size = 1;
     bul_fx.glow_trail = TRUE;

@@ -220,12 +220,13 @@ vector(vector sz) gui_getCenter={
 
 
 void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) gui_renderImageReel={
-  local vector isz, nsz, ratio;
+  local vector isz, ratio, split_sz, split_org;
   isz = draw_getimagesize(src_img);
   clipSize_x = clipSize_x / isz_x;
   clipSize_y = clipSize_y / isz_y;
   isz = gui_scaleSize(isz, VIEW_SCALE);
   drawsubpic(srcOrg, isz, src_img, percent, clipSize, clr, alpha, flg);
+  
 };
 
 string(float bit) gui_getWeaponId={

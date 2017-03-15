@@ -15,7 +15,6 @@ Overview: client utility methods, pulled from client.qc
 void(string str, float tokens) client_ParseMechCommand={
   
   if(argv(1) == "setwep"){
-    bprint(strcat(str,"\n"));
     if(self.deadflag >= DEAD_NO){
       client_setWeapon(str, tokens);
     }
@@ -25,9 +24,11 @@ void(string str, float tokens) client_ParseMechCommand={
     self.nextVecChoice = stof(argv(2));
   }
   else if(argv(1) == "spawn"){
-    player_unmakeObserver();
-    player_makeMech();
-    spawnpoint_Random();
+    if(self.p_class == P_OBS){
+      player_unmakeObserver();
+      player_makeMech();
+      spawnpoint_Random();
+    }
   }
 };
 

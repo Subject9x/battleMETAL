@@ -111,10 +111,12 @@ void() ctrl_die_comp={
       }      
       util_setHealthArmor(10,10,10,10);
       self.th_die = SUB_Remove;
+      self.owner = oself.owner;
       setorigin(self, oself.origin);
       util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_BOUNCE);
       setmodel(self, oself.model);
       setsize(self, '-3 -3 -3', '3 3 3');
+      self.touch = touch_mechPiece;
       self.think = BecomeExplosion;
       self.nextthink = time + 100;
     self = oself;
@@ -140,4 +142,16 @@ void() ctrl_die_comp={
       c = c.w_slot;
     }
   }
-}
+};
+
+void() touch_mechPiece={
+  if(other==world){
+    return;
+  }
+  
+  if(other.p_class == P_MECH){
+    if(other != self.owner){
+      BecomeExplosion();
+    }
+  }
+};

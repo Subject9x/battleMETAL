@@ -6,6 +6,7 @@ Overview: head for mech management functions
 */
 
 void() mech_clearWeaponGroups;
+void() mech_clearWeaponState;
 
 void() ctrl_update_mechplayer;
 

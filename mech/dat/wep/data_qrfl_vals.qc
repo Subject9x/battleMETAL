@@ -6,7 +6,7 @@ Overview:
 */
 //LIGHT AUTOCANNON=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
-string DAT_QRFL_NAME = "Light Autocannon";
+string DAT_QRFL_NAME = "Q-Rifle";
 float DAT_QRFL_DMG = 15;
 float DAT_QRFL_FIRETIME = 0;
 float DAT_QRFL_CLIPSIZE = 1;
@@ -14,7 +14,7 @@ float DAT_QRFL_CURRENTAMMO = 1;
 float DAT_QRFL_FIRERATE = 0.5;
 float DAT_QRFL_RELOADTIME = 0.5;
 float DAT_QRFL_ISFIRE = 0;
-vector DAT_QRFL_FIRE_OFS = '0 0 12';
+vector DAT_QRFL_FIRE_OFS = '0 0 2';
 string DAT_QRFL_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_QRFL_PROJ_ID= ID_PRJ_QRFL;
 float DAT_QRFL_EN_COST= -1;

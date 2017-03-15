@@ -15,7 +15,7 @@ void() player_makeObserver={
   self.view_ofs = '0 0 1';
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
-  util_setCollider(DAMAGE_NO, SOLID_BSP, MOVETYPE_FLY);
+  util_setCollider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY);
   setmodel(self, "q3mdl/testball.md3");
   self.scale = 0.005;
   self.weaponmodel = "";
@@ -23,6 +23,8 @@ void() player_makeObserver={
   mh_world_updateClientSpeed(50, 50, 50, "0","0");
   mh_world_updateClientViewBob("0", "0", "0");
   mh_world_updateClientModelBob("0", "0", "0");
+  self.stat_wep_state = 0;
+  self.stat_wep_rel = 0;
 };
 
 void() player_unmakeObserver={
@@ -45,7 +47,6 @@ void() player_makeMech={
   self.data_idx = dat.data_idx;
   self.power_timer = time + 1;
   buildVehicle(dat);
-  bprint(strcat(ftos(self.flags),"\n"));
   if((self.flags & FL_CLIENT)){
     if(self.targetpip == world){
       self.targetpip = spawn();
@@ -82,8 +83,8 @@ void() player_unmakeMech={
   self.next_wepn7 = -1;
   self.next_wepn8 = -1;
   self.next_wepn9 = -1;
-  self.stat_lck_stt = LOCK_NONE;
+  self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & (LOCK_TARG | LOCK_PLYR));
+  mech_clearWeaponState();
   mech_clearWeaponGroups();
   mech_cleanupMech();
-  remove(self.targetpip);
 };

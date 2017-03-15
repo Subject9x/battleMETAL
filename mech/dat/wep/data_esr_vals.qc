@@ -4,7 +4,7 @@ Author: Subject9x
 Date: 02/26/2017
 Overview: 
 */
-//LIGHT AUTOCANNON=======================
+//Electro static Rifle=======================
 float DAT_ESR_IDX = ID_WEP_ESR;
 string DAT_ESR_NAME = "ESR";
 float DAT_ESR_DMG = 25;
@@ -14,7 +14,7 @@ float DAT_ESR_CURRENTAMMO = 10;
 float DAT_ESR_FIRERATE = 0.01;
 float DAT_ESR_RELOADTIME = 1;
 float DAT_ESR_ISFIRE = 0;
-vector DAT_ESR_FIRE_OFS = '0 0 6';
+vector DAT_ESR_FIRE_OFS = '0 0 2';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_EN_COST = 40;
 string DAT_ESR_SOUND = "q3mdl/weapons/w_laser.md3";
@@ -89,7 +89,7 @@ void() data_esr_atk={
   //T_Damage(trace_ent, self.owner, self.owner, 12, 12, "", DT_IMPACT, other.origin, '0 0 0', Obituary_Generic);
   //damage_mech_main(trace_ent, self.owner, self.owner, 12, 0);
   local float dtype;
-  dtype = DMG_ENE;
+  dtype = dtype | DMG_ENE;
   t_damage(trace_ent, self, player, DAT_ESR_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 

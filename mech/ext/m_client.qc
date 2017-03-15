@@ -170,10 +170,9 @@ void() PutClientInServer = {
 	{
 		makevectors(self.angles);
 	}
-  
-  if(self.p_class != P_OBS){
-    dummyConnect();
-  }
+
+  dummyConnect();
+  dummyConnect();
 };
 
 /*
@@ -211,14 +210,7 @@ void() ClientKill = {
   if(self.p_class == P_MECH){
     //mech_player_die();
     self.frame = $ctorstand1;
-
-    self.currentWeaponGroup = self.currentWeaponGroup - 
-                                ((self.currentWeaponGroup & self.w_group1) |
-                                (self.currentWeaponGroup & self.w_group2) | 
-                                (self.currentWeaponGroup & self.w_group3));
-    self.w_group1 = self.w_group1 - (self.w_group1 & self.w_group1);
-    self.w_group2 = self.w_group2 - (self.w_group2 & self.w_group2);
-    self.w_group3 = self.w_group2 - (self.w_group3 & self.w_group3);
+    mech_clearWeaponGroups();
     local entity wep;
     wep = self.w_slot;
     while(wep){
@@ -264,6 +256,9 @@ void() ClientDisconnect = {
   if(self.p_class == P_MECH){
     mech_player_die();
     mech_cleanupMech();
+  }
+  if(self.targetpip!=world){
+    remove(self.targetpip);
   }
 };
 

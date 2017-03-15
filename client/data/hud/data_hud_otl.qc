@@ -257,7 +257,7 @@ void(vector view_x, vector view_ctr) otl_HelmetImage ={
   sz = draw_getimagesize("gfx/hud/navbar.png");
   sz = gui_scaleSize(sz,VIEW_SCALE);
   ofs_x = VIEW_CTR_x - (sz_x/2);
-  ofs_y = VIEW_ORG_y + 16;
+  ofs_y = VIEW_ORG_y + 20;
   //drawpic(ofs,  "gfx/hud/navbar.png", sz, '0 1 0', HUD_ALPHA, 0);
   
   local float ang;
@@ -269,10 +269,12 @@ void(vector view_x, vector view_ctr) otl_HelmetImage ={
   pct_x = (ang / 360);
   pct_y = 0;
   
-  
   gui_renderImageReel(ofs, pct, "gfx/hud/navbar.png", '64 32', '0 1 0', HUD_ALPHA, 0);
+  local vector pip;
+  pip = VIEW_ORG + '0 8';
+  pip_x = VIEW_CTR_x - 3;
+  drawfill(pip, '6 12',  '0 1 0',HUD_ALPHA, 0);
   self.prev_ang = ang;
- 
 };
 
 /*
@@ -626,8 +628,8 @@ void(float islock) otl_targetLock={
     tofs = self.hud_pnl2.pos + self.hud_pnl2.hsize;
     tofs = tofs + '12 -24';
     drawstring(tofs, "[LOCKED ON]", '6 6 0', '1 0.25 0.1', HUD_ALPHA, 0);
+    gui_DrawRect(VIEW_CTR - '16 16', '32 32', '12 12 0', '0.85 0.85 0');
   }
-
 };
 /*
   TARGER DIRECTIONAL PIP====================================================
