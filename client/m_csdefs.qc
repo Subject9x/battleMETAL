@@ -162,6 +162,10 @@ float STAT_PLR_FIR = 67;
 float STAT_LCK_STT = 69;
 float STAT_PLR_PTC = 72;
 float STAT_PLR_ANG = 73;
+
+float STAT_TRG_ORGX = 75;
+float STAT_TRG_ORGY = 76;
+float STAT_TRG_ORGZ = 78;
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
 string M_TOR_RIGHT = "tor_right";

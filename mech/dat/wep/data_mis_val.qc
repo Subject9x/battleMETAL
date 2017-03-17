@@ -13,7 +13,6 @@ float DAT_MIS_CLIPSIZE = 6;
 float DAT_MIS_CURRENTAMMO = 6;
 float DAT_MIS_FIRERATE = 0.3; //0.3;
 float DAT_MIS_RELOADTIME = 2.5;//1.85;
-float DAT_MIS_ISFIRE = 0;
 vector DAT_MIS_FIRE_OFS = '0 0 2';
 string DAT_MIS_MODEL = "q3mdl/weapons/w_mis.md3";
 float DAT_MIS_PROJ_ID= ID_PRJ_MIS;
@@ -26,6 +25,7 @@ float DAT_LAS_SPR_Y = 6;
 void() data_wep_mis;
 void() data_mis_ini;
 void() data_mis_atk;
+void() data_mis_think;
 
 void() data_wep_mis={
   local entity oself, mis;
@@ -48,7 +48,7 @@ void() data_mis_ini={
   self.w_currentammo = DAT_MIS_CURRENTAMMO;
   self.w_firerate = DAT_MIS_FIRERATE;
   self.w_reloadtime = DAT_MIS_RELOADTIME;
-  self.w_isfire = DAT_MIS_ISFIRE;
+  self.w_isready = 0;
   self.w_fire_ofs = DAT_MIS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_MIS_MODEL;
   self.w_attack = data_mis_atk;
@@ -59,6 +59,23 @@ void() data_mis_ini={
   self.i_techlvl = DAT_MIS_TECH_LEVEL;
   self.stat_spr_x = DAT_LAS_SPR_X;
   self.stat_spr_y = DAT_LAS_SPR_Y;
+  self.w_think = data_mis_think;
+};
+
+void() data_mis_think={
+  if(time > self.w_firetime){
+    if(self.w_currentammo > 0){
+      self.w_isready = TRUE;
+    }
+    else{
+      self.w_isready = FALSE;
+      self.w_firetime = time + self.w_reloadtime;
+      self.w_currentammo = self.w_clipsize;
+    }
+  }
+  else{
+    self.w_isready = FALSE;
+  }
 };
 
 void() data_mis_atk={
@@ -66,6 +83,9 @@ void() data_mis_atk={
   player = self.owner;
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
+    self.w_isready = FALSE;
+    self.w_currentammo = self.w_currentammo - 1;
+    self.w_firetime = time + self.w_firerate;
     local vector dir, org, end, adj;
 
     makevectors(player.v_angle);

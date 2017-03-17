@@ -2,8 +2,18 @@
 mech Mod
 Author: Subject9x
 Date: 8/27/2016
+      mod 3/16/2017
 Overview: utility functions for mod, header
 */
+
+void(float mod, float targ_val) util_zeroStat={
+
+  targ_val = targ_val - mod;
+  if(targ_val < 0){
+    targ_val = 0;
+  }
+ 
+};
 
 //inspired by original inFront function
 float(entity trg) util_checkPointAngle={
@@ -80,18 +90,25 @@ void(vector bbx_min, vector bbx_max) util_setBoundBox={
   checks to see if a point is within bounds
 */
 float(vector p, vector pmin, vector pmax) util_checkInBounds={
-  if(
-    ((p_x >= pmin_x) &&
-    (p_y >= pmin_y) &&
-    (p_z >= pmin_z))
-    &&
-    ((p_x <= pmax_x) &&
-    (p_y <= pmax_y) &&
-    (p_z <= pmax_z))
-  ){
+
+  local vector ok;
+  ok = '0 0 0';
+
+  if((p_x > pmin_x-1) && (p_x < pmax_x+1)){
+    ok_x = 1;
+  }
+  if((p_y > pmin_y-1) && (p_y < pmax_y+1)){
+    ok_y = 1;
+  } 
+  if((p_z > pmin_z-1) && (p_z < pmax_z+1)){
+    ok_z = 1;
+  }
+  
+  if((ok_x==1) && (ok_y==1) &&(ok_z==1)){
     return TRUE;
   }
   else{
     return FALSE;
   }
+  
 };

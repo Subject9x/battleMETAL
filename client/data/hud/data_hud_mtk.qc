@@ -435,9 +435,6 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
   
-  local string wid;
-  wid = gui_getWeaponId(w_bit);
-  drawstring(ofs - '4 0', wid, '5 6 0', wstat, HUD_ALPHA, 0);
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
@@ -464,9 +461,6 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
   
-  local string wid;
-  wid = gui_getWeaponId(w_bit);
-  drawstring(ofs - '4 0', wid, '5 6 0', wstat, HUD_ALPHA, 0);
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
@@ -491,9 +485,6 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
   
-  local string wid;
-  wid = gui_getWeaponId(w_bit);
-  drawstring(ofs - '4 0', wid, '5 6 0', wstat, HUD_ALPHA, 0);
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
@@ -510,15 +501,12 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   pont = self.hud_pnl5.pos - isz;
   pont_y = self.hud_pnl5.pos_y - isz_y/2.75;
   
-    wep_dat = m_findData(w_id, DATA_WEPN);
+  wep_dat = m_findData(w_id, DATA_WEPN);
   ofs = pont + '16 20';
   wlen = stringwidth(wep_dat.w_name, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
-  
-  local string wid;
-  wid = gui_getWeaponId(w_bit);
-  drawstring(ofs - '4 0', wid, '5 6 0', wstat, HUD_ALPHA, 0);
+ 
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
@@ -538,10 +526,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_name, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
-  
-  local string wid;
-  wid = gui_getWeaponId(w_bit);
-  drawstring(ofs - '4 0', wid, '5 6 0', wstat, HUD_ALPHA, 0);
+ 
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }

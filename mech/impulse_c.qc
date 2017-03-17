@@ -14,38 +14,23 @@ void() selectTarget={};
 void() toggerRadar={};
 
 void() playerAttack={
-  local entity wep_chain;
+  local entity wep_chain, oself;
   local float wep_count;
   wep_chain = self.w_slot;
   wep_count = wep_chain.w_group;
   while(wep_chain){
-    local float wpgrp;
-    wpgrp = wep_chain.w_group;
-    wep_count = wep_chain.w_group;
-    if(self.stat_plr_fir == FIRE_GROUP){
-      if(self.currentWeaponGroup & wep_chain.w_group){
-        if(wep_chain.w_isfire != 1){
-          wep_chain.w_isfire = 1;
-        }
-      }
-    }
-    else if(self.stat_plr_fir == FIRE_CHAIN){
-      if(self.currentWeaponGroup == wep_chain.w_group){
-        if(wep_chain.w_isfire != 1){
-          if(time  > self.chain_timer){
-            self.chain_timer = time + wep_chain.w_reloadtime;
-            wep_chain.w_isfire = 1;
-          }
-        }
+    local float wgrp;
+    wgrp = wep_chain.w_group;
+    if((self.currentWeaponGroup & wgrp)){
+      if(wep_chain.w_isready){
+        oself = self;
+        self = wep_chain;
+          self.w_attack();
+        self = oself;
+        
       }
     }
     wep_chain = wep_chain.w_slot;
-  }
-  if(self.stat_plr_fir == FIRE_CHAIN){
-    self.currentWeaponGroup = self.currentWeaponGroup * 2;
-    if(self.currentWeaponGroup > WEAPON9){
-      self.currentWeaponGroup = WEAPON1;
-    }
   }
 };
 

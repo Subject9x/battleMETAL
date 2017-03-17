@@ -42,6 +42,9 @@ void() server_updateTargetInfo={
     self.stat_trg_am = -1;
     self.stat_trg_dist = -1;
     self.stat_trg_face = -1;
+    self.stat_trg_orgx = 0;
+    self.stat_trg_orgy = 0;
+    self.stat_trg_orgz = 0;
     self.targetpip.effects = EF_NODRAW + EF_LOWPRECISION;
     if(self.stat_lck_stt & LOCK_TARG){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
@@ -79,6 +82,9 @@ void() server_updateTargetInfo={
   }
   sever_handleTargetMarkEnt(isvis);
   server_calcTargetArmor();
+  self.stat_trg_orgx = self.enemy.origin_x;
+  self.stat_trg_orgy = self.enemy.origin_y;
+  self.stat_trg_orgz = self.enemy.origin_z;
   if(self.enemy.sh_cur > -1){
     if(self.enemy.sh_cur == 0){
       self.stat_trg_sh = 0;
@@ -111,7 +117,8 @@ void(float vis) sever_handleTargetMarkEnt={
   if(vis == TRUE){
     self.effects = EF_FULLBRIGHT + EF_NODEPTHTEST + EF_LOWPRECISION;
     setmodel(self, "q3mdl/green_pip.spr32");
-    setorigin(self, oself.enemy.origin + (t_height * 1.15));
+    //setorigin(self, oself.enemy.origin + (t_height * 1.15));
+    setorigin(self, oself.enemy.origin + (t_height * 2));
     self.scale = sz/10;
   }
   else{

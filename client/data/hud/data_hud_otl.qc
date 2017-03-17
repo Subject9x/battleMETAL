@@ -438,10 +438,6 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins), wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
-
-  local string wid;
-  wid = gui_getWeaponId(w_bit);
-  drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins) - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
@@ -466,10 +462,6 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
   
-  local string wid;
-  wid = gui_getWeaponId(w_bit);
-  drawstring(ofs - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
-  
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 8;
@@ -491,10 +483,6 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
-  
-  local string wid;
-  wid = gui_getWeaponId(w_bit);
-  drawstring(ofs - '4 0', wid, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;

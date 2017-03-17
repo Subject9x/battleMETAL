@@ -99,6 +99,7 @@ float ARM_HVY = 4;  //heavy armor;
 float ARM_RAD = 8;  //radiation armor
 float ARM_CER = 16; 
 
+
 //fire modes
 float FIRE_SINGLE = 1;
 float FIRE_GROUP = 2;

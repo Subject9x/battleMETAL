@@ -17,8 +17,6 @@ void() mh_world_ini={
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);
   addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_plr_camz);
   
-  
-  
   addstat(STAT_LEG_HP, AS_FLOAT, stat_legs_hp);
   addstat(STAT_LEG_AM, AS_FLOAT, stat_legs_am);  
   addstat(STAT_CTOR_HP, AS_FLOAT, stat_ctor_hp);
@@ -53,7 +51,10 @@ void() mh_world_ini={
   addstat(STAT_TRG_DAT, AS_INT, stat_trg_dat);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
-  
+  addstat(STAT_TRG_ORGX, AS_FLOAT, stat_trg_orgx);
+  addstat(STAT_TRG_ORGY, AS_FLOAT, stat_trg_orgy);
+  addstat(STAT_TRG_ORGZ, AS_FLOAT, stat_trg_orgz);
+ 
   addstat(STAT_RDR_FRNT, AS_FLOAT, radar_front);
   addstat(STAT_RDR_BACK, AS_FLOAT, radar_rear);
   addstat(STAT_HIT_DIR, AS_FLOAT, stat_hit_dirs);

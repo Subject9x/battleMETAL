@@ -13,6 +13,9 @@ void(entity targ, entity inflictor, entity attacker, float dmg_amt, float dmg_ty
 void(entity targ, entity attacker, float dmg_type) killed;
 void(entity targ, entity attacker, float dmg_type) filter_killed;
 float(entity targ, float dmg_amt, float dmg_type) damage_shield;
+float(entity targ, float dmg_amt, float dmg_type) shield_vs_bal;
+float(entity targ, float dmg_amt, float dmg_type) shield_vs_ene;
+float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis;
 float(entity targ, float dmg_amt, float dmg_type) damage_armor;
 
 //kept for posterity, see the impl file for detials

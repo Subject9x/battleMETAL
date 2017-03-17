@@ -2,6 +2,7 @@
 mech mod
 Author: Subject9x
 Date: 8/27/2016
+      mod  3/15/2017
 Overview: 'class' for weapon data /ents
 
 commented vars mean they're already implemented and are here for reference!
@@ -21,6 +22,7 @@ commented vars mean they're already implemented and are here for reference!
 .float state_1;
 .float state_2;
 .void() w_attack;     //actual attack func
+.void() w_think;     //implementable update function
 .vector w_mnt_ofs;    //the offset mounting
 .vector w_fire_ofs;     //offset for proj. origin
 .vector w_adj_ang;      //rotate weapon model face correctly
@@ -35,7 +37,7 @@ commented vars mean they're already implemented and are here for reference!
 .float w_currentammo;
 .float w_clipsize;
 .float w_ammotype;
-.float w_isfire;
+.float w_isready;
 .float w_slotnum;
 .float w_spread;
 

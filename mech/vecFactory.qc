@@ -6,7 +6,7 @@ Overview: builds player vehicle
 */
 
 void(entity data) buildVehicle={
-  local entity oself, wep_slot, plr_slot;
+  local entity oself;
   oself = self;
   data.unit_ini();
   if(data.data_type == DATA_MECH){

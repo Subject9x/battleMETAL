@@ -12,7 +12,6 @@ float DATWEP_MARH_CLIPSIZE = 1;
 float DATWEP_MARH_CURRENTAMMO = 1;
 float DATWEP_MARH_FIRERATE = 0.25;//0.95;
 float DATWEP_MARH_RELOADTIME = 0.95;
-float DATWEP_MARH_ISFIRE = 0;
 vector DATWEP_MARH_FIRE_OFS = '0 0 2';
 string DATWEP_MARH_MODEL = "q3mdl/weapons/w_mis.md3";
 float DATWEP_MARH_PROJ_ID= ID_PRJ_MARH;
@@ -23,7 +22,7 @@ float DATWEP_MARH_TECH_LEVEL = 2;
 void() data_wep_marh;  //called by the data system at game startup
 void() data_marh_ini;  //used by the vehicle factory when building a weapon hardpoint
 void() data_marh_atk;  //the actual attack call
-
+void() data_marh_think;
 
 void() data_wep_marh={
   local entity oself, marh;
@@ -46,7 +45,7 @@ void() data_marh_ini={
   self.w_currentammo = DATWEP_MARH_CURRENTAMMO;
   self.w_firerate = DATWEP_MARH_FIRERATE;
   self.w_reloadtime = DATWEP_MARH_RELOADTIME;
-  self.w_isfire = DATWEP_MARH_ISFIRE;
+  self.w_isready = 0;
   self.w_fire_ofs = DATWEP_MARH_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DATWEP_MARH_MODEL;
   self.w_attack = data_marh_atk;
@@ -55,7 +54,25 @@ void() data_marh_ini={
   self.en_max = DATWEP_MARH_EN_COST;
   self.fire_sound = DATWEP_MARH_FIRESOUND;
   self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
+  self.w_think = data_marh_think;
 };
+
+void() data_marh_think={
+  if(time > self.w_firetime){
+    if(self.w_currentammo > 0){
+      self.w_isready = TRUE;
+    }
+    else{
+      self.w_isready = FALSE;
+      self.w_firetime = time + self.w_reloadtime;
+      self.w_currentammo = self.w_clipsize;
+    }
+  }
+  else{
+    self.w_isready = FALSE;
+  }
+};
+
 
 void() data_marh_atk={
   local entity player, proj, cam, oself;
@@ -63,7 +80,10 @@ void() data_marh_atk={
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
     if(self.owner.stat_rdr_mode == TRUE){
-      if(self.owner.stat_lck_stt & LOCK_TARG){
+      if(self.owner.stat_lck_stt & LOCK_TARG){ 
+        self.w_isready = FALSE;
+        self.w_currentammo = self.w_currentammo - 1;
+        self.w_firetime = time + self.w_firerate;
         local vector dir, org, end, adj;
 
         makevectors(player.v_angle);
@@ -82,11 +102,11 @@ void() data_marh_atk={
         local float dist;
         local vector arc;
         dist = vlen(dir - org);
-        arc = org + (v_forward * (dist/4)) + (v_up * (dist/8)) + v_right;
+        arc = org + (v_forward * (dist/4)) + (v_up * (dist/8)) + (v_right * 0);
         
         while(itr < countlim){
           local vector start;
-          start = org + ((crandom() * 5) * v_right) + (v_up * (crandom() * 5));
+          start = org + ((crandom() * 5) * v_right) + (v_up * (crandom() * 5)) + (v_right * 0);
           itr = itr + 1;
           newmis = spawn();
           oself = self;

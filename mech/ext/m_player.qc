@@ -101,9 +101,9 @@ void() PlayerPostThink = {
   self.stat_plr_ang = anglemod(self.v_angle_y);
   //STAT UPDATE   
   if(self.p_class == P_MECH){
-    self.stat_plr_camx = self.e_cam.origin_x;
-    self.stat_plr_camy = self.e_cam.origin_y; 
-    self.stat_plr_camz = self.e_cam.origin_z;
+    self.stat_plr_camx = self.e_cam.c_ofs_x;
+    self.stat_plr_camy = self.e_cam.c_ofs_y; 
+    self.stat_plr_camz = self.e_cam.c_ofs_z;
     self.stat_en = (self.en_cur / self.en_max)*100;
     self.stat_sh = (self.sh_cur / self.sh_max)*100;
     self.stat_legs_hp = csqc_updateCompStat(self.e_legs);
@@ -129,7 +129,7 @@ void() PlayerPostThink = {
     local entity wep_chain;
     wep_chain = self.w_slot;
     while(wep_chain){
-      ctrl_weapon_think(wep_chain);
+      ctrl_wpn_think(wep_chain);
       wep_chain = wep_chain.w_slot;
     }
   }
@@ -162,6 +162,12 @@ void() PlayerPostThink = {
 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
+    
+  if(self.p_class == P_MECH){
+    self.stat_plr_camx = self.e_cam.c_ofs_x;
+    self.stat_plr_camy = self.e_cam.c_ofs_y; 
+    self.stat_plr_camz = self.e_cam.c_ofs_z;
+  }
 };
 
 
@@ -193,13 +199,6 @@ void() PlayerDie={
   
   if(self.p_class != P_OBS){
     mech_clearWeaponGroups();
-    /*local entity wep;
-    wep = self.w_slot;
-    while(wep){
-      ctrl_weapon_subState(wep, wep.state_2);
-      ctrl_weapon_subState(wep, wep.state_1);
-      wep = wep.w_slot;
-    }*/
     if(self.p_class == P_MECH){
       mech_player_die();
       return;
@@ -246,7 +245,8 @@ void() PlayerDeathThink={
   player_unmakeMech();
   player_makeObserver();
   spawnpoint_Random();
-  self.movetype = MOVETYPE_NONE;
+  self.movetype = MOVETYPE_FLY;
+  self.flags = self.flags | FL_FLY;
   
   //respawn();
 };

@@ -13,10 +13,9 @@ float DAT_PAC_CLIPSIZE = 1;
 float DAT_PAC_CURRENTAMMO = 2;
 float DAT_PAC_FIRERATE = 1;
 float DAT_PAC_RELOADTIME = 1;
-float DAT_PAC_ISFIRE = 0;
 vector DAT_PAC_FIRE_OFS = '0 0 2';
 string DAT_PAC_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_PAC_EN_COST = 60;
+float DAT_PAC_EN_COST =  0.15;
 string DAT_PAC_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_PAC_TECH_LEVEL = 1;
 float DAT_PAC_SPR_X = 0;
@@ -25,6 +24,7 @@ float DAT_PAC_SPR_Y = 0;
 void() data_wep_pac;
 void() data_pac_ini;
 void() data_pac_atk;
+void() data_pac_think;
 
 void() data_wep_pac={
   local entity oself, PAC;
@@ -47,7 +47,7 @@ void() data_pac_ini={
   self.w_currentammo = DAT_PAC_CURRENTAMMO;
   self.w_firerate = DAT_PAC_FIRERATE;
   self.w_reloadtime = DAT_PAC_RELOADTIME;
-  self.w_isfire = DAT_PAC_ISFIRE;
+  self.w_isready = 0;
   self.w_fire_ofs = DAT_PAC_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_PAC_MODEL;
   self.w_attack = data_pac_atk;
@@ -55,10 +55,36 @@ void() data_pac_ini={
   self.en_max = DAT_PAC_EN_COST;
   self.fire_sound = DAT_PAC_SOUND;
   self.i_techlvl = DAT_PAC_TECH_LEVEL;
+  self.w_think = data_pac_think;
+};
+
+void() data_pac_think={
+  if(time > self.w_firetime){
+    if(self.w_currentammo > 0){
+      self.w_isready = TRUE;
+    }
+    else{
+      self.w_isready = FALSE;
+      self.w_firetime = time + self.w_reloadtime;
+      self.w_currentammo = self.w_clipsize;
+    }
+  }
+  else{
+    self.w_isready = FALSE;
+  }
+  
+  if(!self.w_isready){
+    self.owner.en_cur = self.owner.en_cur - self.en_max;
+  }
 };
 
 void() data_pac_atk={
- local entity cam, player, oself, proj;
+  
+  self.w_isready = FALSE;
+  self.w_currentammo = self.w_currentammo - 1;
+  self.w_firetime = time + self.w_firerate;
+  
+  local entity cam, player, oself, proj;
   local vector spread;
 	local vector dir,org, end, adj;
   player = self.owner;
@@ -92,7 +118,7 @@ void() data_pac_atk={
   dtype = DMG_ENE + EFF_PRC;
   t_damage(trace_ent, self, player, DAT_PAC_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/gauss.ogg", 1, ATTN_NORM); 
-  te_lightning1(laser_org, laser_org.origin, dir); 
+  te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);
   

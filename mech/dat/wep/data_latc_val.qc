@@ -14,7 +14,6 @@ float DAT_LATC_CLIPSIZE = 3;
 float DAT_LATC_CURRENTAMMO = 3;
 float DAT_LATC_FIRERATE = 0.2;
 float DAT_LATC_RELOADTIME = 0.5;
-float DAT_LATC_ISFIRE = 0;
 vector DAT_LATC_FIRE_OFS = '0 0 2';
 string DAT_LATC_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_LATC_PROJ_ID= ID_PRJ_LATC;
@@ -27,6 +26,7 @@ float DAT_LATC_SPR_Y = 2;
 void() data_wep_latc;
 void() data_latc_ini;
 void() data_latc_atk;
+void() data_latc_think; 
 
 void() data_wep_latc={
   local entity oself, latc;
@@ -49,7 +49,7 @@ void() data_latc_ini={
   self.w_currentammo = DAT_LATC_CURRENTAMMO;
   self.w_firerate = DAT_LATC_FIRERATE;
   self.w_reloadtime = DAT_LATC_RELOADTIME;
-  self.w_isfire = DAT_LATC_ISFIRE;
+  self.w_isready = 0;
   self.w_fire_ofs = DAT_LATC_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_LATC_MODEL;
   self.w_attack = data_latc_atk;
@@ -60,13 +60,34 @@ void() data_latc_ini={
   self.i_techlvl = DAT_LATC_TECH_LEVEL;
   self.stat_spr_x = DAT_LATC_SPR_X;
   self.stat_spr_y = DAT_LATC_SPR_Y;
+  self.w_think = data_latc_think;
+};
+
+
+void() data_latc_think={
+  if(time > self.w_firetime){
+    if(self.w_currentammo > 0){
+      self.w_isready = TRUE;
+    }
+    else{
+      self.w_isready = FALSE;
+      self.w_firetime = time + self.w_reloadtime;
+      self.w_currentammo = self.w_clipsize;
+    }
+  }
+  else{
+    self.w_isready = FALSE;
+  }
 };
 
 void() data_latc_atk={
   local entity player, proj, cam, oself;
   player = self.owner;
-  proj = mh_world_findData(self.w_proj, DATA_PROJ);
-  if(proj){
+  //proj = mh_world_findData(self.w_proj, DATA_PROJ);
+  //if(proj){
+    self.w_isready = FALSE;
+    self.w_currentammo = self.w_currentammo - 1;
+    self.w_firetime = time + self.w_firerate;
     local vector dir, org, end, adj;
 
     makevectors(player.v_angle);
@@ -101,8 +122,8 @@ void() data_latc_atk={
     bul_fx.color = '1 0 0';
     bul_fx.think = SUB_Remove;
     bul_fx.nextthink = time + 0.001;// + 0.35;
-  }
-  else{
-    bprint("oops!\n");
-  }
+  //}
+  //else{
+  //  bprint("oops!\n");
+  //}
 };

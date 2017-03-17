@@ -11,12 +11,11 @@ float DAT_ESR_DMG = 25;
 float DAT_ESR_FIRETIME = 0;
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_CURRENTAMMO = 10;
-float DAT_ESR_FIRERATE = 0.01;
+float DAT_ESR_FIRERATE = 0.05;
 float DAT_ESR_RELOADTIME = 1;
-float DAT_ESR_ISFIRE = 0;
 vector DAT_ESR_FIRE_OFS = '0 0 2';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_ESR_EN_COST = 40;
+float DAT_ESR_EN_COST = 0.18;
 string DAT_ESR_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_TECH_LEVEL = 1;
 float DAT_ESR_SPR_X = 10;
@@ -25,6 +24,7 @@ float DAT_ESR_SPR_Y = 10;
 void() data_wep_esr;
 void() data_esr_ini;
 void() data_esr_atk;
+void() data_esr_think;
 
 void() data_wep_esr={
   local entity oself, esr;
@@ -47,7 +47,7 @@ void() data_esr_ini={
   self.w_currentammo = DAT_ESR_CURRENTAMMO;
   self.w_firerate = DAT_ESR_FIRERATE;
   self.w_reloadtime = DAT_ESR_RELOADTIME;
-  self.w_isfire = DAT_ESR_ISFIRE;
+  self.w_isready = 0;
   self.w_fire_ofs = DAT_ESR_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_ESR_MODEL;
   self.w_attack = data_esr_atk;
@@ -55,6 +55,27 @@ void() data_esr_ini={
   self.en_max = DAT_ESR_EN_COST;
   self.fire_sound = DAT_ESR_SOUND;
   self.i_techlvl = DAT_ESR_TECH_LEVEL;
+  self.w_think = data_esr_think;
+};
+
+void() data_esr_think={
+  if(time > self.w_firetime){
+    if(self.w_currentammo > 0){
+      self.w_isready = TRUE;
+    }
+    else{
+      self.w_isready = FALSE;
+      self.w_firetime = time + self.w_reloadtime;
+      self.w_currentammo = self.w_clipsize;
+    }
+  }
+  else{
+    self.w_isready = FALSE;
+  }
+  
+  if(!self.w_isready){
+    self.owner.en_cur = self.owner.en_cur - self.en_max;
+  }
 };
 
 void() data_esr_atk={
@@ -63,6 +84,10 @@ void() data_esr_atk={
 	local vector dir,org, end, adj;
   player = self.owner;
   
+  self.w_isready = FALSE;
+  self.w_currentammo = self.w_currentammo - 1;
+  self.w_firetime = time + self.w_firerate;
+
   makevectors(player.v_angle);
   cam = player.e_cam;//.clientcamera;
   traceline(cam.origin, cam.origin + v_forward*500, FALSE, player);

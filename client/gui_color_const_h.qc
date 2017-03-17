@@ -5,7 +5,7 @@ Date: 03/10/2017
 Overview: GUI API class file for all colors
 */
 
-//target armor constants
+//armor constants
 
 //fine
 

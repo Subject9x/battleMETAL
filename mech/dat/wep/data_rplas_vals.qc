@@ -14,10 +14,9 @@ float DAT_RPLAS_CLIPSIZE = 1;
 float DAT_RPLAS_CURRENTAMMO = 1;
 float DAT_RPLAS_FIRERATE = 0.28;
 float DAT_RPLAS_RELOADTIME = 0.28;
-float DAT_RPLAS_ISFIRE = 0;
 vector DAT_RPLAS_FIRE_OFS = '0 0 2';
 string DAT_RPLAS_MODEL = "q3mdl/weapons/w_atc.md3";
-float DAT_RPLAS_PROJ_ID= ID_PRJ_RPLAS;
+float DAT_RPLAS_PROJ_ID= 6;//ID_PRJ_RPLAS;
 float DAT_RPLAS_EN_COST= -1;
 string DAT_RPLAS_SOUND = "sound/ac5.ogg";
 float DAT_RPLAS_TECH_LEVEL = 1;
@@ -27,29 +26,31 @@ float DAT_RPLAS_SPR_Y = 8;
 void() data_wep_rplas;
 void() data_rplas_ini;
 void() data_rplas_atk;
+void() data_rplas_think;
 
 void() data_wep_rplas={
-  local entity oself, latc;
-  latc = spawn();
+  local entity oself, rplas;
+  rplas = spawn();
   oself = self;
-  self = latc;
+  self = rplas;
     self.classname = "data";
     self.data_idx = DAT_RPLAS_IDX;
     self.data_type = DATA_WEPN;
     self.unit_ini = data_rplas_ini;
     self.w_name = DAT_RPLAS_NAME;
+    bprint(strcat(etos(self),"\n"));
   self = oself;
 };
 
 void() data_rplas_ini={
   self.data_idx = DAT_RPLAS_IDX;
   self.w_name = DAT_RPLAS_NAME;
+  self.w_isready = 0;
   self.w_firetime = DAT_RPLAS_FIRETIME;
   self.w_clipsize = DAT_RPLAS_CLIPSIZE;
   self.w_currentammo = DAT_RPLAS_CURRENTAMMO;
   self.w_firerate = DAT_RPLAS_FIRERATE;
   self.w_reloadtime = DAT_RPLAS_RELOADTIME;
-  self.w_isfire = DAT_RPLAS_ISFIRE;
   self.w_fire_ofs = DAT_RPLAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_RPLAS_MODEL;
   self.w_attack = data_rplas_atk;
@@ -60,6 +61,23 @@ void() data_rplas_ini={
   self.i_techlvl = DAT_RPLAS_TECH_LEVEL;
   self.stat_spr_x = DAT_RPLAS_SPR_X;
   self.stat_spr_y = DAT_RPLAS_SPR_Y;
+  self.w_think = data_rplas_think;
+};
+
+void() data_rplas_think={
+  if(time > self.w_firetime){
+    if(self.w_currentammo > 0){
+      self.w_isready = TRUE;
+    }
+    else{
+      self.w_isready = FALSE;
+      self.w_firetime = time + self.w_reloadtime;
+      self.w_currentammo = self.w_clipsize;
+    }
+  }
+  else{
+    self.w_isready = FALSE;
+  }
 };
 
 void() data_rplas_atk={
@@ -67,8 +85,11 @@ void() data_rplas_atk={
   player = self.owner;
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
+    self.w_isready = FALSE;
+    self.w_currentammo = self.w_currentammo - 1;
+    self.w_firetime = time + self.w_firerate;
+    
     local vector dir, org, end, adj;
-
     makevectors(player.v_angle);
     cam = player.e_cam;
     traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
@@ -120,6 +141,6 @@ void() data_rplas_atk={
     
   }
   else{
-    bprint("oops!\n");
+    bprint(strcat("proj not found!\n", ftos(self.w_proj),"\n"));
   }
 };

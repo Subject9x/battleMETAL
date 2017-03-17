@@ -9,7 +9,7 @@ float DAT_PRJ_MARH_IDX = ID_PRJ_MARH;
 float DAT_PRJ_MARH_VELOCITY = 500;
 string DAT_PRJ_MARH_MODEL = "q3mdl/proj_mis.md3";
 float DAT_PRJ_MARH_LIFETIME = 15;
-float DAT_PRJ_MARH_DAMAGE = 15;
+float DAT_PRJ_MARH_DAMAGE = 5;
 float DAT_PRJ_MARH_DMGTYPE = DMG_EXP;
 
 float DAT_PRJ_MARH_EFFECTS = 0; //see data_prj_MIS

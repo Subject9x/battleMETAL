@@ -2,6 +2,8 @@
 // called during level initialization, before first entities are received, only world is valid at this point
 void() CSQC_Init =
 {
+
+  adddynamiclight('0 0 10', 10, '0 0 0.5');
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity"))
 		maxclients = maxclients + 1;
@@ -126,20 +128,23 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
                 vf_sz,
                 vf_mn;
 	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
+  vf_sz = getpropertyvec(VF_SIZE);
+  vf_mn = getpropertyvec(VF_MIN);
+  
+  centerprint(vtos(vf_mn));
 	vf_sz_x = w;
   vf_sz_y = h;
   vf_sz_z = 0;
   vf_mn = '0 0 0';
 	// set up the scene parameters
-  setproperty(VF_MIN, vf_mn);   //set the left of the view
-  setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
+  //setproperty(VF_MIN, vf_mn);   //set the left of the view
+  //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
   setproperty(VF_ANGLES, view_angles);
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
 	setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
 	setproperty(VF_DRAWENGINESBAR, 0); // TODO custom hud
-  PLR_VIEW = getpropertyvec(VF_ORIGIN) + getpropertyvec(VF_ANGLES) + getpropertyvec(VF_FOV) + getpropertyvec(VF_MIN) + getpropertyvec(VF_SIZE);
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
@@ -186,6 +191,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     PLR_VIEW_x = getstatf(STAT_CAM_ORG_X);
     PLR_VIEW_y = getstatf(STAT_CAM_ORG_Y);
     PLR_VIEW_z = getstatf(STAT_CAM_ORG_Z);
+    makevectors(input_angles);
+    PLR_VIEW = pmove_org + (v_up * PLR_VIEW_y) + (v_right * PLR_VIEW_x) + (v_forward * PLR_VIEW_z);
     
     //player mech hp info
     local float plr_sh, plr_en, plr_ct, plr_rt, plr_lt, plr_ra, plr_la, plr_lg;
@@ -277,6 +284,20 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   
   // draw custom crosshair
   drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  local vector prj, temp;
+  
+  setproperty(VF_ORIGIN, PLR_VIEW);
+  temp_x = getstatf(STAT_TRG_ORGX);
+  temp_y = getstatf(STAT_TRG_ORGY);
+  temp_z = getstatf(STAT_TRG_ORGZ);
+  prj = cs_project(temp);
+  if (prj_z >= 0) {
+    prj_x -= stringwidth("foo", TRUE, '6 6') * 0.5; //align horizontally to centre
+    prj_y -= 6 * 0.5; //align vertically again
+    prj_z = 0; //shut up dp.
+    drawstring(prj, "foo", '6 6', '1 1 1', 1, 0);
+  }
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!

@@ -13,17 +13,17 @@ float DAT_EMP_CLIPSIZE = 1;
 float DAT_EMP_CURRENTAMMO = 1;
 float DAT_EMP_FIRERATE = 0.95;
 float DAT_EMP_RELOADTIME = 0.95;
-float DAT_EMP_ISFIRE = 0;
 vector DAT_EMP_FIRE_OFS = '0 0 2';
 string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
 float DAT_EMP_PROJ_ID= ID_PRJ_EMP;
-float DAT_EMP_EN_COST= 25;
+float DAT_EMP_EN_COST=  0.1;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 
 void() data_wep_emp;  //called by the data system at game startup
 void() data_emp_ini;  //used by the vehicle factory when building a weapon hardpoint
 void() data_emp_atk;  //the actual attack call
+void() data_emp_think;
 
 void() data_wep_emp={
   local entity oself, emp;
@@ -46,7 +46,7 @@ void() data_emp_ini={
   self.w_currentammo = DAT_EMP_CURRENTAMMO;
   self.w_firerate = DAT_EMP_FIRERATE;
   self.w_reloadtime = DAT_EMP_RELOADTIME;
-  self.w_isfire = DAT_EMP_ISFIRE;
+  self.w_isready = 0;
   self.w_fire_ofs = DAT_EMP_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_EMP_MODEL;
   self.w_attack = data_emp_atk;
@@ -55,6 +55,27 @@ void() data_emp_ini={
   self.en_max = DAT_EMP_EN_COST;
   self.fire_sound = DAT_EMP_SOUND;
   self.i_techlvl = DAT_EMP_TECH_LEVEL;
+  self.w_think = data_emp_think;
+};
+
+void() data_emp_think={
+  if(time > self.w_firetime){
+    if(self.w_currentammo > 0){
+      self.w_isready = TRUE;
+    }
+    else{
+      self.w_isready = FALSE;
+      self.w_firetime = time + self.w_reloadtime;
+      self.w_currentammo = self.w_clipsize;
+    }
+  }
+  else{
+    self.w_isready = FALSE;
+  }
+  
+  if(!self.w_isready){
+    self.owner.en_cur = self.owner.en_cur - self.en_max;
+  }
 };
 
 void() data_emp_atk={
@@ -63,7 +84,10 @@ void() data_emp_atk={
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
     local vector dir, org, end, adj;
-
+    self.w_isready = FALSE;
+    self.w_currentammo = self.w_currentammo - 1;
+    self.w_firetime = time + self.w_firerate;
+    
     makevectors(player.v_angle);
     cam = player.e_cam;
     traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
@@ -84,11 +108,15 @@ void() data_emp_atk={
       util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
       util_setBoundBox('0 0 0', '0 0 0');
       self.velocity = normalize(dir - org);
-      self.think = SUB_Remove;
-      self.nextthink = time + self.p_lifetime;
+      //self.think = SUB_Remove;
+      //self.nextthink = time + self.p_lifetime;
+      self.p_lifetime = time + self.p_lifetime;
+      self.w_firetime = time + (self.p_lifetime - 4);
       setorigin(self, org);
       self.velocity = self.velocity * self.p_velocity;
       self.angles = vectoangles(self.velocity);
+      self.think = data_prj_emp_think;
+      self.nextthink = time + 0.01;
     self = oself;
     sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   }

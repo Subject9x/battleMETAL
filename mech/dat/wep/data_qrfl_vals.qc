@@ -13,7 +13,6 @@ float DAT_QRFL_CLIPSIZE = 1;
 float DAT_QRFL_CURRENTAMMO = 1;
 float DAT_QRFL_FIRERATE = 0.5;
 float DAT_QRFL_RELOADTIME = 0.5;
-float DAT_QRFL_ISFIRE = 0;
 vector DAT_QRFL_FIRE_OFS = '0 0 2';
 string DAT_QRFL_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_QRFL_PROJ_ID= ID_PRJ_QRFL;
@@ -26,6 +25,7 @@ float DAT_QRFL_SPR_Y = 2;
 void() data_wep_qrfl;
 void() data_qrfl_ini;
 void() data_qrfl_atk;
+void() data_qrfl_think;
 
 void() data_wep_qrfl={
   local entity oself, latc;
@@ -43,12 +43,12 @@ void() data_wep_qrfl={
 void() data_qrfl_ini={
   self.data_idx = DAT_QRFL_IDX;
   self.w_name = DAT_QRFL_NAME;
+  self.w_isready = 0;
   self.w_firetime = DAT_QRFL_FIRETIME;
   self.w_clipsize = DAT_QRFL_CLIPSIZE;
   self.w_currentammo = DAT_QRFL_CURRENTAMMO;
   self.w_firerate = DAT_QRFL_FIRERATE;
   self.w_reloadtime = DAT_QRFL_RELOADTIME;
-  self.w_isfire = DAT_QRFL_ISFIRE;
   self.w_fire_ofs = DAT_QRFL_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_QRFL_MODEL;
   self.w_attack = data_qrfl_atk;
@@ -59,7 +59,25 @@ void() data_qrfl_ini={
   self.i_techlvl = DAT_QRFL_TECH_LEVEL;
   self.stat_spr_x = DAT_QRFL_SPR_X;
   self.stat_spr_y = DAT_QRFL_SPR_Y;
+  self.w_think = data_qrfl_think;
 };
+
+void() data_qrfl_think={
+  if(time > self.w_firetime){
+    if(self.w_currentammo > 0){
+      self.w_isready = TRUE;
+    }
+    else{
+      self.w_isready = FALSE;
+      self.w_firetime = time + self.w_reloadtime;
+      self.w_currentammo = self.w_clipsize;
+    }
+  }
+  else{
+    self.w_isready = FALSE;
+  }
+};
+
 
 void() data_qrfl_atk={
   local entity player, proj, cam, oself;
@@ -67,7 +85,9 @@ void() data_qrfl_atk={
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
     local vector dir, org, end, adj;
-
+    self.w_isready = FALSE;
+    self.w_currentammo = self.w_currentammo - 1;
+    self.w_firetime = time + self.w_firerate;
     makevectors(player.v_angle);
     cam = player.e_cam;
     traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);

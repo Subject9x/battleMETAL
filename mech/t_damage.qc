@@ -277,114 +277,126 @@ void(entity targ, entity attacker, float dmg_type) killed={
 
 //returns remain damage to be passed on to armor
 float(entity targ, float dmg_amt, float dmg_type) damage_shield={
-  targ.sh_hit = time + 5;
-  //Energy damage calculation
-  if(dmg_type & DMG_ENE){
-    if(dmg_type & EFF_PRC){
-        return dmg_amt;
-    }
-    else if(dmg_type & EFF_STX){
-      if(dmg_type & EFF_RAM){
-        dmg_amt = dmg_amt * 2;
-      }
-      targ.sh_cur = targ.sh_cur - dmg_amt;
-      if(targ.sh_cur < 0){
-        targ.sh_cur = 0;
-      }
-      return 0;
-    }
-    else if(dmg_type & EFF_ENG){
-      targ.en_cur = targ.en_cur - dmg_amt;
-      if(targ.en_cur < 0){
-        targ.en_cur = 0;
-      }
-      return 0;
-    }
-    else{
-      if(targ.sh_cur >= dmg_amt){
-        targ.sh_cur = targ.sh_cur - dmg_amt;
-        return 0;
-      }
-      else{
-        dmg_amt = dmg_amt - targ.sh_cur;
-        targ.sh_cur = 0;
-        return dmg_amt;
-      }
-    }
+  targ.sh_hit = time + SHIELD_RECHARGE_COOLDOWN;
+  float dmg_remainder;
+  dmg_remainder = 0;
+  if((dmg_type & DMG_BAL)){
+    dmg_remainder = shield_vs_bal(targ, dmg_amt, dmg_type);
   }
-  else if(dmg_type & DMG_BAL){
-    if(dmg_type & EFF_PRC){
-      return dmg_amt;
-    }
-    else if(dmg_type & EFF_STX){
-      if(dmg_type & EFF_RAM){
-        dmg_amt = dmg_amt * 1.15;
-      }
-      targ.sh_cur = targ.sh_cur - dmg_amt;
-      if(targ.sh_cur < 0){
-        targ.sh_cur = 0;
-      }
-      return 0;
-    }
-    else if(dmg_type & EFF_ENG){
-      targ.en_cur = targ.en_cur - dmg_amt;
-      if(targ.en_cur < 0){
-        targ.en_cur = 0;
-      }
-      return 0;
-    }
-    else{
-      if(targ.sh_cur >= dmg_amt){
-        targ.sh_cur = targ.sh_cur - dmg_amt;
-        return 0;
-      }
-      else{
-        dmg_amt = dmg_amt - targ.sh_cur;
-        targ.sh_cur = 0;
-        return dmg_amt;
-      }
-    }
+  else if((dmg_type & DMG_EXP)){
+    dmg_remainder = shield_vs_mis(targ, dmg_amt, dmg_type);
   }
-  else if(dmg_type & DMG_EXP){ 
-    if(dmg_type & EFF_PRC){
-      return dmg_amt;
-    }
-    else if(dmg_type & EFF_STX){
-      if(dmg_type & EFF_RAM){
-        dmg_amt = dmg_amt * 0.75;
-      }
-      targ.sh_cur = targ.sh_cur - dmg_amt;
-      if(targ.sh_cur < 0){
-        targ.sh_cur = 0;
-      }
-      return 0;
-    }
-    else if(dmg_type & EFF_ENG){
-      targ.en_cur = targ.en_cur - dmg_amt;
-      if(targ.en_cur < 0){
-        targ.en_cur = 0;
-      }
-      return 0;
-    }
-    else{
-      if(targ.sh_cur > 0){
-        return 0;
-      }
-      else{
-        return dmg_amt;
-      }
-    }
+  else if((dmg_type & DMG_ENE)){
+    dmg_remainder = shield_vs_ene(targ, dmg_amt, dmg_type);
   }
-  
+
   if(targ.sh_cur < 0){
-    dmg_amt = dmg_amt - (targ.sh_cur * -1);
     targ.sh_cur = 0;
   }
   
-  return dmg_amt;
+  return dmg_remainder;
 };
 
+
+float(entity targ, float dmg_amt, float dmg_type) shield_vs_bal={
+
+  local float remainder, mod;
+  if((dmg_type & EFF_PRC)){
+    mod = dmg_amt / SHVBAL_EFFPRC_PERCENTAGE;
+    targ.sh_cur = targ.sh_cur - mod;
+    remainder = dmg_amt - mod;
+  }
+  else if((dmg_type & EFF_STX)){
+    targ.sh_cur = targ.sh_cur - dmg_amt;
+    remainder = 0;
+  }
+  else if((dmg_type & EFF_RAM)){
+    mod = dmg_amt * SHVBAL_EFFRAM_PERCENTAGE;
+    targ.sh_cur = targ.sh_cur - mod;
+    remainder = 0;
+  }
+  else{
+    if(dmg_amt >= targ.sh_cur){
+      targ.sh_cur = targ.sh_cur - targ.sh_cur;
+      remainder = dmg_amt - (targ.sh_cur * SHVBAL_EFFNON_PERCENTAGE);
+    }
+    else{
+      mod = dmg_amt/ SHVBAL_EFFNON_REDUCE;
+      targ.sh_cur = targ.sh_cur - mod;
+      remainder = 0;
+    }
+  }
+  return remainder;
+};
+
+float(entity targ, float dmg_amt, float dmg_type) shield_vs_ene={
+  
+  local float remainder, mod;
+  if((dmg_type & EFF_PRC)){
+    mod = dmg_amt / SHVENE_EFFPRC_PERCENTAGE;
+    targ.sh_cur = targ.sh_cur - mod;
+    remainder = dmg_amt - mod;
+  }
+  else if((dmg_type & EFF_STX)){
+    targ.sh_cur = targ.sh_cur - dmg_amt;
+    remainder = 0;
+  }
+  else if((dmg_type & EFF_RAM)){
+    mod = dmg_amt * SHVENE_EFFRAM_PERCENTAGE;
+    targ.sh_cur = targ.sh_cur - mod;
+    remainder = 0;
+  }
+  else{
+    if(dmg_amt >= targ.sh_cur){
+      targ.sh_cur = targ.sh_cur - targ.sh_cur;
+      remainder = dmg_amt - targ.sh_cur;
+    }
+    else{
+      mod = dmg_amt;
+      targ.sh_cur = targ.sh_cur - mod;
+      remainder = 0;
+    }
+  }
+  return remainder;
+};
+
+float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis={
+  
+  local float remainder, mod;
+  if((dmg_type & EFF_PRC)){
+    mod = dmg_amt / SHVEXP_EFFPRC_PERCENTAGE;
+    targ.sh_cur = targ.sh_cur - mod;
+    remainder = dmg_amt - mod;
+  }
+  else if((dmg_type & EFF_STX)){
+    mod = dmg_amt / SHVEXP_EFFSTX_PERCENTAGE;
+    targ.sh_cur = targ.sh_cur - mod;
+    remainder = 0;
+  }
+  else if((dmg_type & EFF_RAM)){
+    mod = dmg_amt * SHVEXP_EFFRAM_PERCENTAGE;
+    targ.sh_cur = targ.sh_cur - mod;
+    remainder = 0;
+  }
+  else{
+    if(dmg_amt >= targ.sh_cur){
+      targ.sh_cur = targ.sh_cur - targ.sh_cur;
+      remainder = dmg_amt - (targ.sh_cur * SHVEXP_EFFNON_PERCENTAGE);
+    }
+    else{
+      mod = dmg_amt / SHVEXP_EFFNON_REDUCE;
+      targ.sh_cur = targ.sh_cur - mod;
+      remainder = 0;
+    }
+  }
+  return remainder;
+};
+
+
 float(entity targ, float dmg_amt, float dmg_type) damage_armor={
+
+  
+
   return dmg_amt;
 };
 

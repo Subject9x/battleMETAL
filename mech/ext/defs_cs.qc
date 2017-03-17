@@ -62,7 +62,9 @@ float AS_FLOAT = 8;
 .float stat_lck_stt;
 .float stat_plr_ptc;
 .float stat_plr_ang;
-
+.float stat_trg_orgx;
+.float stat_trg_orgy;
+.float stat_trg_orgz;
 //hit direction bit flags
 float STAT_HIT_CL = 1;
 float STAT_HIT_LF = 2;
@@ -177,12 +179,8 @@ float STAT_WEP3_ID = 62;
 float STAT_WEP4_ID = 65;
 float STAT_WEP5_ID = 68;
 float STAT_WEP6_ID = 71;
-//float STAT_WEP6_ST = ;
 float STAT_WEP7_ID = 74;
-//float STAT_WEP7_GR = 75;
-//float STAT_WEP7_ST = 76;
 float STAT_WEP8_ID = 77;
-//float STAT_WEP8_GR = 78;
 //float STAT_WEP8_ST = 79;
 float STAT_WEP9_ID = 80;
 //float STAT_WEP9_GR = 81;
@@ -213,3 +211,7 @@ float STAT_RDR_MODE = 91;
 
 float STAT_TRG_DIST = 92;
 float STAT_TRG_FACE = 58;
+
+float STAT_TRG_ORGX = 75;
+float STAT_TRG_ORGY = 76;
+float STAT_TRG_ORGZ = 78;
