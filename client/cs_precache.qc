@@ -38,6 +38,9 @@ void() cs_precache={
   precache_sound("sound/comp/online.ogg");
   precache_sound("sound/comp/en_low.ogg");
   
+  //cursor
+  precache_pic("gfx/ui/ui_cursor.png",0);
+  precache_pic("gfx/hud/target_box.png",0);
   //buildings
   building_power();
   building_shield();

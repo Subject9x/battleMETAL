@@ -5,6 +5,7 @@ keycodes.qc
 m_csdefs.qc
 m_entdefs.qc
 m_datadefs.qc
+gui_color_const_h.qc
 m_hud_h.qc
 gui_api_h.qc
 cl_svr_cmd_h.qc

@@ -9,3 +9,4 @@ Overview: definition file for the client -> server command layer
 void(float val, float w_bit) cl_setweapon;
 void(float val) cl_setmech;
 void() cl_spawnmech;
+void(float grp_id, float grp_val) cl_setweapongroup;

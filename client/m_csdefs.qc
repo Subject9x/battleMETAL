@@ -69,7 +69,8 @@ float m_wep = 6;
 .string m_maccel;
 .string m_pitch_min;
 .string m_pitch_max;
-
+.vector c_bbx_x;
+.vector c_bbx_n;
 //player vars
 .float LG_AM_MX;
 .float LG_AM_CR;
@@ -166,6 +167,14 @@ float STAT_PLR_ANG = 73;
 float STAT_TRG_ORGX = 75;
 float STAT_TRG_ORGY = 76;
 float STAT_TRG_ORGZ = 78;
+
+float STAT_TRG_LEG_HP = 93;
+float STAT_TRG_CTOR_HP = 94;
+float STAT_TRG_LTOR_HP = 95;
+float STAT_TRG_RTOR_HP = 96;
+float STAT_TRG_LARM_HP = 97;
+float STAT_TRG_RARM_HP = 98;
+
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
 string M_TOR_RIGHT = "tor_right";

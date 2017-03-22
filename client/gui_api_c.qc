@@ -6,17 +6,45 @@ Overview: GUI API class file
 */
 
 
-vector(float val, float type) gui_getStatusColor={
-	if(val == 0){
-		return STATUS_DED;
-	}
-	else if(val == 1){
-		return STATUS_DMG;
-	}
-	else if(val == 2){
-		return STATUS_AOK;
-	}
+vector(float val) gui_getColorForArmor={
+  if(val < 1){
+    return CLR_DEF_ARM_DED;
+  }
+  else if((1<val)&&(val<=25)){
+    return CLR_DEF_ARM_ONEQ;
+  }
+  else if((25<val)&&(val<50)){
+    return CLR_DEF_ARM_HALF;
+  }
+  else if((50<val)&&(val<=75)){
+    return CLR_DEF_ARM_THREEQ;
+  }
+  else if((75<val)&&(val<=100)){
+    return CLR_DEF_ARM_OK;
+  }
+  else{
+    return CLR_DEF_ARM_DED;
+  }
 };
+
+vector(float val) gui_getColorForShield={
+  if((1<val)&&(val<=25)){
+    return CLR_DEF_SHD_ONEQ;
+  }
+  else if((25<val)&&(val<50)){
+    return CLR_DEF_SHD_HALF;
+  }
+  else if((50<val)&&(val<=75)){
+    return CLR_DEF_SHD_THREEQ;
+  }
+  else if((75<val)&&(val<=100)){
+    return CLR_DEF_SHD_OK;
+  }
+  else{
+    return CLR_DEF_SHD_DED;
+  }
+};
+
 
 vector(float bits, float dead, float ok) gui_getWepStatusColor{
   if((bits & dead)){
@@ -140,18 +168,6 @@ void(vector ofs, float bit, float state1, vector color1, vector color2, vector s
   }
   
   drawfill(ofs, sz, colorActual, alpha, flg);
-};
-
-vector(float bit, float check1, float check2, float check3) gui_getStatusColor3={
-	if(bit & check1){
-		return STATUS_DED;
-	}
-	else if(bit & check2){
-		return STATUS_DMG;
-	}
-	else if(bit & check3){
-		return STATUS_AOK;
-	}
 };
 
 /*

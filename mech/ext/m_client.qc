@@ -83,6 +83,13 @@ void() ClientConnect = {
   self.stat_trg_dat = -1;
   self.stat_trg_face = -1;
   
+  self.stat_trg_lg_hp = -1;
+  self.stat_trg_ct_hp = -1;
+  self.stat_trg_lt_hp = -1;
+  self.stat_trg_rt_hp = -1;
+  self.stat_trg_la_hp = -1;
+  self.stat_trg_ra_hp = -1;
+  
   self.radar_range = 800;
   self.radar_front = 0;
   self.radar_rear = 0;
@@ -256,9 +263,6 @@ void() ClientDisconnect = {
   if(self.p_class == P_MECH){
     mech_player_die();
     mech_cleanupMech();
-  }
-  if(self.targetpip!=world){
-    remove(self.targetpip);
   }
 };
 

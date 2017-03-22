@@ -53,7 +53,11 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
 
 void() menu_handleFrame={
 
-  local vector mpos;
+  local vector mpos, i_sz;
+  
+  i_sz = draw_getimagesize("gfx/ui/ui_cursor.png");
+  i_sz = gui_scaleSize(i_sz, VIEW_SCALE/1.25);
+  
   mpos_x = cursorpos_x - 2;
   mpos_y = cursorpos_y - 4;
 
@@ -63,5 +67,5 @@ void() menu_handleFrame={
   else if(MENU_BRIEF_ACTIVE){
   
   }
-  drawfill(mpos, '4 8', '0 1 0', HUD_ALPHA, 0);
+  drawpic(mpos, "gfx/ui/ui_cursor.png",  i_sz, '1 1 1', HUD_ALPHA, 0);
 };

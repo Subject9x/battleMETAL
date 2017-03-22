@@ -175,18 +175,23 @@ void(vector org) mtk_renderHardpoints={
 
 float(vector org) mtk_hardpointListener={
   if(menu_checkMouseInBounds(cursorpos, org + '-40 -100', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON1;
     return 1;
   }  
   if(menu_checkMouseInBounds(cursorpos, org + '24 -100', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON2;
     return 2;
   } 
   if(menu_checkMouseInBounds(cursorpos, org + '-60 -40', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON3;
     return 3;
   } 
   if(menu_checkMouseInBounds(cursorpos, org + '44 -40', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON4;
     return 4;
   } 
   if(menu_checkMouseInBounds(cursorpos, org + '-8 -94', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON5;
     return 5;
   } 
 };
@@ -228,4 +233,6 @@ void() data_mtk_ini={
   self.m_maccel = DAT_MTK_M_ACCEL;
   self.m_pitch_max = DAT_MTK_M_PITCH_N;
   self.m_pitch_min = DAT_MTK_M_PITCH_X;
+  self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
+  self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
 };

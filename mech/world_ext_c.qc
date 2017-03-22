@@ -55,6 +55,14 @@ void() mh_world_ini={
   addstat(STAT_TRG_ORGY, AS_FLOAT, stat_trg_orgy);
   addstat(STAT_TRG_ORGZ, AS_FLOAT, stat_trg_orgz);
  
+  addstat(STAT_TRG_LEG_HP, AS_FLOAT, stat_trg_lg_hp);
+  addstat(STAT_TRG_CTOR_HP, AS_FLOAT, stat_trg_ct_hp);
+  addstat(STAT_TRG_LTOR_HP, AS_FLOAT, stat_trg_lt_hp);
+  addstat(STAT_TRG_RTOR_HP, AS_FLOAT, stat_trg_rt_hp);
+  addstat(STAT_TRG_LARM_HP, AS_FLOAT, stat_trg_la_hp);
+  addstat(STAT_TRG_RARM_HP, AS_FLOAT, stat_trg_ra_hp);
+ 
+ 
   addstat(STAT_RDR_FRNT, AS_FLOAT, radar_front);
   addstat(STAT_RDR_BACK, AS_FLOAT, radar_rear);
   addstat(STAT_HIT_DIR, AS_FLOAT, stat_hit_dirs);
@@ -66,15 +74,8 @@ void() mh_world_ini={
   
   addstat(STAT_PLR_STT, AS_INT, stat_plr_stt);
   addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
-  
   addstat(STAT_PLR_PTC, AS_INT, stat_plr_ptc);
-  
   addstat(STAT_PLR_ANG, AS_INT, stat_plr_ang);
-  
-  registercvar("mech_setwep1", "0"); 
-  registercvar("mech_setwep2", "0"); 
-  registercvar("mech_setwep3", "0"); 
-  
   
   mh_world_iniData();
 };

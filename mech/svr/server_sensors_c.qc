@@ -4,10 +4,6 @@ Author: Subject9x
 Date: 1/26/2017
 Overview: necessary targeting and radar functions
 */
-
-float(float current, float total) server_calcComponentArmor;
-void() server_calcTargetArmor;
-
 /*scope - self = unit making the target call*/
 void() server_getTarget={
   local entity src;
@@ -45,7 +41,12 @@ void() server_updateTargetInfo={
     self.stat_trg_orgx = 0;
     self.stat_trg_orgy = 0;
     self.stat_trg_orgz = 0;
-    self.targetpip.effects = EF_NODRAW + EF_LOWPRECISION;
+    self.stat_trg_lg_hp = -1;
+    self.stat_trg_ct_hp = -1;
+    self.stat_trg_lt_hp = -1;
+    self.stat_trg_rt_hp = -1;
+    self.stat_trg_la_hp = -1;
+    self.stat_trg_ra_hp = -1;
     if(self.stat_lck_stt & LOCK_TARG){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
       if(self.enemy != world){
@@ -80,7 +81,6 @@ void() server_updateTargetInfo={
       self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
     }
   }
-  sever_handleTargetMarkEnt(isvis);
   server_calcTargetArmor();
   self.stat_trg_orgx = self.enemy.origin_x;
   self.stat_trg_orgy = self.enemy.origin_y;
@@ -98,34 +98,6 @@ void() server_updateTargetInfo={
   }
 };
 
-void(float vis) sever_handleTargetMarkEnt={
-  local entity oself;
-  local vector t_height;
-  t_height_z = self.enemy.c_bbx_x_z + 1;
-  t_height_x = 0;
-  t_height_y = 0;
-  local float sz;
-  sz = self.stat_trg_dist / 25;
-  if(sz <= 2){
-    sz = 2;
-  }
-  else if(sz > 5){
-    sz = 5;
-  }
-  oself = self;
-  self = self.targetpip;
-  if(vis == TRUE){
-    self.effects = EF_FULLBRIGHT + EF_NODEPTHTEST + EF_LOWPRECISION;
-    setmodel(self, "q3mdl/green_pip.spr32");
-    //setorigin(self, oself.enemy.origin + (t_height * 1.15));
-    setorigin(self, oself.enemy.origin + (t_height * 2));
-    self.scale = sz/10;
-  }
-  else{
-    self.effects = EF_NODRAW + EF_LOWPRECISION;
-  }
-  self = oself;
-};
 
 
 void() server_calcTargetArmor={
@@ -134,85 +106,12 @@ void() server_calcTargetArmor={
 	track = 0;
 	trg = self.enemy;
 	if(trg.p_class == P_MECH){
-		track = server_calcComponentArmor(trg.health, trg.max_health);
-		if(track == 0){
-			self.stat_trg_am = self.stat_trg_am | TARG_CT_DD;
-		}
-		else if(track == 1){
-			self.stat_trg_am = self.stat_trg_am | TARG_CT_DM;
-		}
-		else if(track == 2){
-			self.stat_trg_am = self.stat_trg_am | TARG_CT_OK;
-		}
-		
-		track = server_calcComponentArmor(trg.e_tor_l.health, trg.e_tor_l.max_health);
-		if(track == 0){
-			self.stat_trg_am = self.stat_trg_am | TARG_LT_DD;
-		}
-		else if(track == 1){
-			self.stat_trg_am = self.stat_trg_am | TARG_LT_DM;
-		}
-		else if(track == 2){
-			self.stat_trg_am = self.stat_trg_am | TARG_LT_OK;
-		}
-		
-		track = server_calcComponentArmor(trg.e_tor_r.health, trg.e_tor_r.max_health);
-		if(track == 0){
-			self.stat_trg_am = self.stat_trg_am | TARG_RT_DD;
-		}
-		else if(track == 1){
-			self.stat_trg_am = self.stat_trg_am | TARG_RT_DM;
-		}
-		else if(track == 2){
-			self.stat_trg_am = self.stat_trg_am | TARG_RT_OK;
-		}
-		
-		track = server_calcComponentArmor(trg.e_arm_l.health, trg.e_arm_l.max_health);
-		if(track == 0){
-			self.stat_trg_am = self.stat_trg_am | TARG_LA_DD;
-		}
-		else if(track == 1){
-			self.stat_trg_am = self.stat_trg_am | TARG_LA_DM;
-		}
-		else if(track == 2){
-			self.stat_trg_am = self.stat_trg_am | TARG_LA_OK;
-		}
-		
-		track = server_calcComponentArmor(trg.e_arm_r.health, trg.e_arm_r.max_health);
-		if(track == 0){
-			self.stat_trg_am = self.stat_trg_am | TARG_RA_DD;
-		}
-		else if(track == 1){
-			self.stat_trg_am = self.stat_trg_am | TARG_RA_DM;
-		}
-		else if(track == 2){
-			self.stat_trg_am = self.stat_trg_am | TARG_RA_OK;
-		}
-
-		track = server_calcComponentArmor(trg.e_legs.health, trg.e_legs.max_health);
-		if(track == 0){
-			self.stat_trg_am = self.stat_trg_am | TARG_LG_DD;
-		}
-		else if(track == 1){
-			self.stat_trg_am = self.stat_trg_am | TARG_LG_DM;
-		}
-		else if(track == 2){
-			self.stat_trg_am = self.stat_trg_am | TARG_LG_OK;
-		}
-	}
-};
-
-float(float current, float total) server_calcComponentArmor={
-	float threes;
-	threes = total - (total/4);
-	if(current <= 0){
-		return 0;
-	}
-	else if((current >= 0) && (current <= threes)){
-		return 1;
-	}
-	else{
-		return 2;
+    self.stat_trg_lg_hp = csqc_updateCompStat(trg.e_legs);
+    self.stat_trg_ct_hp = csqc_updateCompStat(trg);
+    self.stat_trg_lt_hp = csqc_updateCompStat(trg.e_tor_l);
+    self.stat_trg_rt_hp = csqc_updateCompStat(trg.e_tor_r);
+    self.stat_trg_la_hp = csqc_updateCompStat(trg.e_arm_l);
+    self.stat_trg_ra_hp = csqc_updateCompStat(trg.e_arm_r);
 	}
 };
 

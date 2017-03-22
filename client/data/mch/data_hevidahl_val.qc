@@ -213,30 +213,39 @@ void(vector org) hvd_renderHardpoints={
 
 float(vector org) hvd_hardpointListener={
   if(menu_checkMouseInBounds(cursorpos, org +  '-76 -40', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON1;
     return 1;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  '-60 -40', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON2;
     return 2;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  '60 -40', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON3;
     return 3;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  '44 -40', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON4;
     return 4;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  '-34 -90', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON5;
     return 5;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  '18 -90', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON6;
     return 6;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  '-8 -40', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON7;
     return 7;
   } 
   if(menu_checkMouseInBounds(cursorpos, org +  '-34 -50', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON8;
     return 8;
   } 
   if(menu_checkMouseInBounds(cursorpos, org +  '18 -50', '16 16')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON9;
     return 9;
   }
 };
@@ -278,4 +287,6 @@ void() data_hvd_ini={
   self.m_maccel = DAT_HVD_M_ACCEL;
   self.m_pitch_max = DAT_HVD_M_PITCH_N;
   self.m_pitch_min = DAT_HVD_M_PITCH_X;
+  self.c_bbx_x = DAT_HVD_CTOR_BBX_X;
+  self.c_bbx_n = DAT_HVD_CTOR_BBX_N;
 };

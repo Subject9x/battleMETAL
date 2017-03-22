@@ -11,3 +11,4 @@ void(float vis) sever_handleTargetMarkEnt;
 
 void() server_radarSweep;
 vector() server_updateRadarInfo;
+void() server_calcTargetArmor;

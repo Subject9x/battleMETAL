@@ -27,7 +27,6 @@ void() mh_precache_models={
 
   precache_model("progs/v_dpshot.mdl");
   
-  precache_model("q3mdl/green_pip.spr32");
   //mech model
   precache_model ("q3mdl/testball.md3");
   //nu outlaw

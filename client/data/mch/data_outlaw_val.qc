@@ -148,14 +148,17 @@ void(vector org) otl_renderHardpoints={
 float(vector org) otl_hardpointListener={
 
   if(menu_checkMouseInBounds(cursorpos, org + '-10 -104', '32 32')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON3;
     return 3;
   }  
   
   if(menu_checkMouseInBounds(cursorpos, org + '-75 -64', '32 32')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON2;
     return 2;
   } 
 
   if(menu_checkMouseInBounds(cursorpos, org + '48 -64', '32 32')){
+    PLAYER_HELPER.plr_sel_wid = WEAPON1;
     return 1;
   } 
 };
@@ -198,4 +201,6 @@ void() data_otl_ini={
   self.m_maccel = DAT_OTL_M_ACCEL;
   self.m_pitch_max = DAT_OTL_M_PITCH_N;
   self.m_pitch_min = DAT_OTL_M_PITCH_X;
+  self.c_bbx_x = DAT_OTL_CTOR_BBX_X;
+  self.c_bbx_n = DAT_OTL_CTOR_BBX_N;
 };

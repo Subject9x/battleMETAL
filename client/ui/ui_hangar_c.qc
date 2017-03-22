@@ -15,6 +15,7 @@ void() menu_hangarListener={
   mechAcceptButtonListener();
   weaponSelectListener();
   hardpointListener();
+  hardpointInfoListener();
 };
 
 void() hardpointListener={
@@ -92,6 +93,23 @@ void() weaponSelectListener={
   }
 };
 
+void() hardpointInfoListener={
+  local vector ofs;
+  ofs_x = VIEW_CTR_x - 26;
+  ofs_y = VIEW_CTR_y + 24;
+  if(menu_checkMouseInBounds(cursorpos, ofs, '128 128')){
+    ofs = ofs + '3 20';
+    if(menu_checkMouseInBounds(cursorpos, ofs+'54 0', '18 8')){
+      getPrevWeaponGroup();
+      assignWeaponToGroup(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt),PLAYER_HELPER.plr_sel_grp);
+    }
+    if(menu_checkMouseInBounds(cursorpos, ofs+'78 0', '18 8')){
+      getNextWeaponGroup();
+      assignWeaponToGroup(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt),PLAYER_HELPER.plr_sel_grp);
+    }
+  }
+};
+
 void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, VIEW_MAX - '88 24', '64 16')){
     cl_setmech(PLAYER_HELPER.plr_sel_mech);
@@ -104,6 +122,9 @@ void() mechAcceptButtonListener={
     cl_setweapon(WEAPON7, PLAYER_HELPER.plr_nex_wep7);
     cl_setweapon(WEAPON8, PLAYER_HELPER.plr_nex_wep8);      
     cl_setweapon(WEAPON9, PLAYER_HELPER.plr_nex_wep9);
+    cl_setweapongroup(1, PLAYER_HELPER.plr_nex_grp1);
+    cl_setweapongroup(2, PLAYER_HELPER.plr_nex_grp2);
+    cl_setweapongroup(3, PLAYER_HELPER.plr_nex_grp3);
     cl_spawnmech();
     MENU_ACTIVE = FALSE;
     setcursormode(0);
@@ -124,32 +145,33 @@ void() menu_hangarDrawFrame={
   menu_hangar_MechList(topleftroot + '0 24');
   menu_hangar_MechInfo(topleftroot);
   menu_hangar_WeaponList(topleftroot);
+  menu_hangar_HardPointInfo(topleftroot);
 };
 
-void(vector offset) menu_hangar_DrawNavBar={
+void(vector ofs) menu_hangar_DrawNavBar={
 
-  gui_DrawRect(offset, '48 16', '6 4', '1 1 1');
-  drawstring(offset + '0 4', "[HANGAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_DrawRect(ofs, '48 16', '6 4', '1 1 1');
+  drawstring(ofs + '0 4', "[HANGAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  gui_DrawRect(offset+'48 0', '64 16', '6 4', '1 1 1');
-  drawstring(offset + '48 4', "[BRIEFING]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_DrawRect(ofs+'48 0', '64 16', '6 4', '1 1 1');
+  drawstring(ofs + '48 4', "[BRIEFING]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   gui_DrawRect(VIEW_MAX - '88 24', '64 16', '6 4', '1 1 1');
   drawstring(VIEW_MAX - '88 24', "[ACCEPT]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
-void(vector offset) menu_hangar_MechDisplay={
-  local vector ofs, hofs, mpos, i_sz, hpnts;
-  ofs = offset + '116 24';
-  gui_DrawRect(ofs, (VIEW_MAX - '336 256'), '6 4', '1 1 1');
+void(vector ofs) menu_hangar_MechDisplay={
+  local vector nofs, hofs, mpos, i_sz, hpnts;
+  nofs = ofs + '116 24';
+  gui_DrawRect(nofs, (VIEW_MAX - '336 256'), '6 4', '1 1 1');
   local entity dat;
   dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
   i_sz = draw_getimagesize(dat.c_mdl);
   i_sz = gui_scaleSize(i_sz,VIEW_SCALE);
   i_sz_x = i_sz_x/1.5;
   i_sz_y = i_sz_y/1.5;
-  hofs_x = (ofs_x + ((VIEW_MAX_x - 300)/2));
-  hofs_y = ofs_y;
+  hofs_x = (nofs_x + ((VIEW_MAX_x - 300)/2));
+  hofs_y = nofs_y;
   hofs_x = hofs_x - i_sz_x/2;
   hpnts_x = hofs_x + i_sz_x/2;
   hpnts_y = hofs_y + i_sz_y/2;
@@ -158,11 +180,11 @@ void(vector offset) menu_hangar_MechDisplay={
   MECHPANEL_CTR = hpnts;
 };
 
-void(vector offset) menu_hangar_MechList={
-  local vector ofs,sz;
+void(vector ofs) menu_hangar_MechList={
+  local vector nofs,sz;
   local float lst_idx, found;
-  ofs = sz = offset;
-  drawstring(offset + '24 0', "[MECHS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  nofs = sz = ofs;
+  drawstring(ofs + '24 0', "[MECHS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   lst_idx = 1;
   while(lst_idx <= 3){
     local entity dat;
@@ -184,16 +206,16 @@ void(vector offset) menu_hangar_MechList={
 };
 
 
-void(vector offset) menu_hangar_MechInfo={
-  local vector ofs;
+void(vector ofs) menu_hangar_MechInfo={
+  local vector nofs;
   local entity dat;
-  ofs_x = offset_x + 116;
-  ofs_y = VIEW_CTR_y + 24;
-  gui_DrawRect(ofs, (ofs + '32 8'), '6 4', '1 1 1');
+  nofs_x = ofs_x + 116;
+  nofs_y = VIEW_CTR_y + 24;
+  gui_DrawRect(nofs, (nofs + '32 8'), '6 4', '1 1 1');
 
   dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
-  drawstring(ofs + '6 6', "[INFO]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(ofs + '6 12', strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '6 6', "[INFO]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '6 12', strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   local string type;
   local vector t_color;
   // MECH SIZE
@@ -209,8 +231,8 @@ void(vector offset) menu_hangar_MechInfo={
     type = "Heavy";
     t_color = STATUS_REL;
   }
-  drawstring(ofs + '6 18', "[TYPE] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(ofs + '48 18',  type, '6 6 0', t_color, HUD_ALPHA, 0);
+  drawstring(nofs + '6 18', "[TYPE] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '48 18',  type, '6 6 0', t_color, HUD_ALPHA, 0);
   //MECH SPEED
   if(dat.m_fspeed <= 85){
     type = "Slow";
@@ -224,8 +246,8 @@ void(vector offset) menu_hangar_MechInfo={
     type = "Fast";
     t_color = STATUS_AOK;
   }
-  drawstring(ofs + '6 24', "[SPEED] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(ofs + '56 24', type, '6 6 0', t_color, HUD_ALPHA, 0);
+  drawstring(nofs + '6 24', "[SPEED] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '56 24', type, '6 6 0', t_color, HUD_ALPHA, 0);
 };
 
 void(vector offset) menu_hangar_WeaponList={
@@ -252,6 +274,86 @@ void(vector offset) menu_hangar_WeaponList={
   }
   WEPNLIST_SIZE_x = 96;
   WEPNLIST_SIZE_y = (lst_idx * 12) + 12;
+};
+
+void(vector ofs) menu_hangar_HardPointInfo={
+  local vector nofs, max;
+  local entity dat;
+  nofs_x = ofs_x + VIEW_CTR_x - 38;
+  nofs_y = ofs_y + VIEW_CTR_y + 12;
+  gui_DrawRect(nofs, '128 128', '6 4', '1 1 1');
+  
+  local string title;
+  local float tlen;
+  local vector tpos;
+  title = "[HARDPOINT]";
+  tlen = stringwidth(title, 0, '6 6 0');
+  tpos = nofs + '64 3';
+  tpos_x = tpos_x - tlen/2;
+  drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  dat = m_findData(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt), DATA_WEPN);
+  local string wepname_row;
+  local vector wnpos;
+  wepname_row = strcat("[WEAPON]: ", dat.w_name);
+  wnpos = nofs + '3 12';
+  drawstring(wnpos, wepname_row, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  local string wepgrp_row;
+  local vector wgpos;
+  wepgrp_row = strcat("[GROUP]:    ", ftos(checkIfWeaponInGroup(PLAYER_HELPER.plr_sel_wid)));
+  wgpos = nofs + '3 20';
+  drawstring(wgpos, wepgrp_row, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(wgpos+'54 0', "[<]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(wgpos+'78 0', "[>]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+};
+
+
+void() getNextWeaponGroup={
+  PLAYER_HELPER.plr_sel_grp = PLAYER_HELPER.plr_sel_grp + 1;
+  if(PLAYER_HELPER.plr_sel_grp > 3){
+    PLAYER_HELPER.plr_sel_grp = 1;
+  }
+};
+
+void() getPrevWeaponGroup={
+  PLAYER_HELPER.plr_sel_grp = PLAYER_HELPER.plr_sel_grp - 1;
+  if(PLAYER_HELPER.plr_sel_grp <= 0){
+    PLAYER_HELPER.plr_sel_grp = 3;
+  }
+};
+
+void(float wep_id, float grp_id) assignWeaponToGroup={
+  if(grp_id == 1){
+    PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 | wep_id;
+    PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 - (PLAYER_HELPER.plr_nex_grp2 & wep_id);
+    PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 - (PLAYER_HELPER.plr_nex_grp3 & wep_id);
+  }
+  else if(grp_id == 2){
+    PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 | wep_id;
+    PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 - (PLAYER_HELPER.plr_nex_grp1 & wep_id);
+    PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 - (PLAYER_HELPER.plr_nex_grp3 & wep_id);
+  }
+  else if(grp_id == 3){
+    PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 | wep_id;
+    PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 - (PLAYER_HELPER.plr_nex_grp2 & wep_id);
+    PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 - (PLAYER_HELPER.plr_nex_grp1 & wep_id);
+  }
+};
+
+float(float comp) checkIfWeaponInGroup={
+  if((PLAYER_HELPER.plr_nex_grp1 & comp)){
+    return 1;
+  }
+  else if((PLAYER_HELPER.plr_nex_grp2 & comp)){
+    return 2;
+  }  
+  else if((PLAYER_HELPER.plr_nex_grp3 & comp)){
+    return 3;
+  }
+  else{
+    return 0;
+  }
 };
 
 float(float slotid) getWeaponInHardpoint={
@@ -281,5 +383,8 @@ float(float slotid) getWeaponInHardpoint={
   }
   else if(slotid == 9){
     return PLAYER_HELPER.plr_nex_wep9;    
+  }
+  else{
+    return 0;
   }
 };

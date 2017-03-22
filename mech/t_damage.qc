@@ -393,12 +393,24 @@ float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis={
 };
 
 
-float(entity targ, float dmg_amt, float dmg_type) damage_armor={
-
-  
-
+float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
+  local float mod;
+  if((arm_type & ARM_LIT)){
+    mod = dmg_amt * ARM_LT_MOD;
+    dmg_amt = dmg_amt - mod;
+  }
+  else if((arm_type & ARM_MED)){
+    mod = dmg_amt * ARM_MD_MOD;
+    dmg_amt = dmg_amt - mod;  
+  }
+  else if((arm_type & ARM_HVY)){
+    mod = dmg_amt * ARM_HV_MOD;
+    dmg_amt = dmg_amt - mod;  
+  }
   return dmg_amt;
 };
+
+
 
 /*
   2 Jan 2017

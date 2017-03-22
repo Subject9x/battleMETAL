@@ -16,7 +16,7 @@ float(entity targ, float dmg_amt, float dmg_type) damage_shield;
 float(entity targ, float dmg_amt, float dmg_type) shield_vs_bal;
 float(entity targ, float dmg_amt, float dmg_type) shield_vs_ene;
 float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis;
-float(entity targ, float dmg_amt, float dmg_type) damage_armor;
+float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor;
 
 //kept for posterity, see the impl file for detials
 //entity(vector point, float rad, entity src, entity own, entity prev) t_find_recurse;

@@ -27,47 +27,6 @@ void(entity wep) ctrl_wpn_think={
     ctrl_weapon_isReload(self, self.stat_wep_rel);
   }
   self.w_think();
-  /*if(self.w_isready == 1){
-    if(time > self.w_firetime){
-      if(self.w_currentammo > 0){
-        if((self.en_cur == self.en_max) || (self.en_max == -1)){
-          self.w_currentammo = self.w_currentammo - 1;
-          self.w_attack();
-          if(self.w_currentammo < 0){
-            self.w_currentammo = 0;
-          }
-          self.w_firetime = time + self.w_firerate;
-          
-          if(self.en_cur != -1){
-            
-            self.en_cur = self.en_cur - (self.en_max/self.w_clipsize);
-          }
-          
-          //oself.en_cur = oself.en_cur - self.en_max;
-        }
-        else{
-          self.w_isready = 0;
-        }
-      }
-      else{
-        self.w_firetime = time + self.w_reloadtime;
-        self.w_currentammo = self.w_currentammo + self.w_clipsize;
-        self.w_isready = 0;
-        
-      }
-    }
-  }*/
-  
-  /*if(self.en_cur != -1){
-    if(self.en_cur < self.en_max){
-      self.en_cur = self.en_cur + self.owner.en_rate;
-      self.owner.en_cur = self.owner.en_cur - (self.owner.en_rate * 1.35);
-      if(self.en_cur > self.en_max){
-        self.en_cur = self.en_max;
-      }
-      self.w_isready = 0;
-    }
-  }*/
   self = oself;
 };
 

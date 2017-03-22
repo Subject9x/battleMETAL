@@ -24,9 +24,9 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon7;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon8;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon9;
-void(float trgvid, float trgdat,  float trgam, float trgsh, float trgdist, float trglock, float trgdir) mtk_renderTarget; 
-void(float shieldval) mtk_targetShield;
-void(float armorVal) mtk_targetArmor;
+void(float trgvid, float trgdat,  float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mtk_renderTarget; 
+void(float shieldval, vector tpos, float zht) mtk_targetShield;
+void(float lg, float ct, float lt, float rt, float la, float ra) mtk_targetArmor;
 void(float range) mtk_targetRange;
 void(float islock) mtk_targetLock;
 void(float targdir) mtk_targetDirectionPip;
@@ -305,8 +305,7 @@ void(float shieldval) mtk_playerShield={
   drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
   self.wdg_sh.value1 = shieldval;
   self.wdg_sh.pos = self.hud_pnl4.pos + self.hud_pnl4.margin_ins + '0 5';
-  gui_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, self.wdg_sh.drawsize, self.wdg_sh.drawcolor1,
-                                                              self.wdg_sh.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, self.wdg_sh.drawsize, CLR_DEF_ARM_DED, gui_getColorForShield(shieldval), HUD_ALPHA, 0, AXIS_V, 0);
   
   local vector isz;
   isz = draw_getimagesize("gfx/hud/otl/otl_en_cvr.png");
@@ -337,21 +336,21 @@ void(float ct, float lt, float rt, float la, float ra, float lg) mtk_playerArmor
   pnl_ctr_x = self.hud_pnl1.pos_x + self.hud_pnl1.hsize_x;
   pnl_ctr_y = self.hud_pnl1.pos_y + self.hud_pnl1.hsize_y;
   drawstring((pnl_ctr + '-4 -18'), "CT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter(ct, (pnl_ctr + '-6 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(ct, (pnl_ctr + '-6 -12'), '12 36', CLR_DEF_ARM_DED, gui_getColorForArmor(ct), HUD_ALPHA, 0, AXIS_V, 0);
   
-  gui_renderMeter(lg, (pnl_ctr + '-28 30'), '56 16', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(lg, (pnl_ctr + '-28 30'), '56 16', CLR_DEF_ARM_DED, gui_getColorForArmor(lg), HUD_ALPHA, 0, AXIS_V, 0);
   
   drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter(rt, (pnl_ctr + '8 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(rt, (pnl_ctr + '8 -12'), '12 36', CLR_DEF_ARM_DED, gui_getColorForArmor(rt), HUD_ALPHA, 0, AXIS_V, 0);
   
   drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter(lt, (pnl_ctr + '-20 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(lt, (pnl_ctr + '-20 -12'), '12 36', CLR_DEF_ARM_DED, gui_getColorForArmor(lt), HUD_ALPHA, 0, AXIS_V, 0);
   
   drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter(ra, (pnl_ctr + '22 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(ra, (pnl_ctr + '22 -12'), '12 36', CLR_DEF_ARM_DED, gui_getColorForArmor(ra), HUD_ALPHA, 0, AXIS_V, 0);
   
   drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter(la, (pnl_ctr + '-34 -12'), '12 36', self.wdg_pd.drawcolor1, self.wdg_pd.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(la, (pnl_ctr + '-34 -12'), '12 36', CLR_DEF_ARM_DED, gui_getColorForArmor(la), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 /*RADAR LAYOUT====================================================*/
@@ -539,7 +538,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon9={};
 
 /*RENDER TARGET====================================================*/
-void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float trglock, float trgdir) mtk_renderTarget={
+void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mtk_renderTarget={
   if(trglock & LOCK_PLYR){
     local vector pofs;
     pofs = self.hud_pnl1.pos + '4 0';
@@ -557,7 +556,7 @@ void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float 
     dat = m_findData(trgvid, trgdat);
 
     if(dat){
-      local vector ofs, rofs;
+      local vector ofs, rofs, apos, spos;
       local float tlen, nlen, dlen;
       local string dist;
       nlen = stringwidth(dat.vec_name, 0, '6 6 0');
@@ -567,8 +566,24 @@ void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float 
       rofs_x = ofs_x + tlen;
       drawstring(rofs, dat.vec_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
       
-      self.hud_targetArmor(trgam);
-      self.hud_targetShield(trgsh);
+      apos = tpos;
+      if(dat.data_type == DATA_MECH){
+        apos_z = apos_z - dat.c_bbx_x_z;
+      }
+      spos = cs_project(apos);
+      if (spos_z >= 0) {
+        local vector i_sz;
+        i_sz = draw_getimagesize("gfx/hud/target_box.png");
+        i_sz = gui_scaleSize(i_sz, VIEW_SCALE);
+        spos_x -= i_sz_x/2; //align horizontally to centre
+        spos_y -= i_sz_y/2; //align vertically again
+        spos_z = 0; //shut up dp.
+        drawpic(spos, "gfx/hud/target_box.png", i_sz, '1 0 0', HUD_ALPHA, 0);
+      }
+      
+      self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
+                            getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
+      self.hud_targetShield(trgsh, tpos, 12);
       self.hud_targetRange(trgdist);
       self.hud_targetLock(trglock);
       self.hud_targetDirectionPip(trgdir);
@@ -580,58 +595,60 @@ void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float 
 /*
   TARGET ARMOR LAYOUT====================================================
 */
-void(float armorVal) mtk_targetArmor={
-  if(armorVal > -1){
+void(float lg, float ct, float lt, float rt, float la, float ra) mtk_targetArmor={
+  if(ct > -1){
     local vector pnl_ctr;
     pnl_ctr_x = self.hud_pnl5.pos_x + self.hud_pnl5.hsize_x;
     pnl_ctr_y = self.hud_pnl5.pos_y + self.hud_pnl5.hsize_y;
     pnl_ctr = pnl_ctr + '0 14';
-    local vector colorBuffer;
     //target center torso
     drawstring((pnl_ctr + '-4 -18'), "CT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = gui_getStatusColor3(armorVal, TARG_CT_DD, TARG_CT_DM, TARG_CT_OK);
-    gui_renderMeter(100, (pnl_ctr + '-6 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    gui_renderMeter(100, (pnl_ctr + '-6 -12'), '12 36', '0 0 0', gui_getColorForArmor(ct), HUD_ALPHA, 0, AXIS_V, 0);
     
     //target leg armor
-    colorBuffer = gui_getStatusColor3(armorVal, TARG_LG_DD, TARG_LG_DM, TARG_LG_OK); 
-    gui_renderMeter(100, (pnl_ctr + '-28 30'), '56 16', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    gui_renderMeter(100, (pnl_ctr + '-28 30'), '56 16', '0 0 0', gui_getColorForArmor(lg), HUD_ALPHA, 0, AXIS_V, 0);
     
     //target right torso
     drawstring((pnl_ctr + '10 -18'), "RT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = gui_getStatusColor3(armorVal, TARG_RT_DD, TARG_RT_DM, TARG_RT_OK);
-    gui_renderMeter(100, (pnl_ctr + '8 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    gui_renderMeter(100, (pnl_ctr + '8 -12'), '12 36', '0 0 0', gui_getColorForArmor(rt), HUD_ALPHA, 0, AXIS_V, 0);
 
     //target left torso	
     drawstring((pnl_ctr + '-18 -18'), "LT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = gui_getStatusColor3(armorVal, TARG_LT_DD, TARG_LT_DM, TARG_LT_OK);
-    gui_renderMeter(100, (pnl_ctr + '-20 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);   
+    gui_renderMeter(100, (pnl_ctr + '-20 -12'), '12 36', '0 0 0', gui_getColorForArmor(lt), HUD_ALPHA, 0, AXIS_V, 0);   
     
     //target right arm
     drawstring((pnl_ctr + '24 -18'), "RA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = gui_getStatusColor3(armorVal, TARG_RA_DD, TARG_RA_DM, TARG_RA_OK);
-    gui_renderMeter(100, (pnl_ctr + '22 -12'), '12 36',  '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    gui_renderMeter(100, (pnl_ctr + '22 -12'), '12 36',  '0 0 0', gui_getColorForArmor(ra), HUD_ALPHA, 0, AXIS_V, 0);
    
     //target left arm
     drawstring((pnl_ctr + '-32 -18'), "LA", '4 4 0', '1 1 1', HUD_ALPHA, 0);
-    colorBuffer = gui_getStatusColor3(armorVal, TARG_LA_DD, TARG_LA_DM, TARG_LA_OK);
-    gui_renderMeter(100, (pnl_ctr + '-34 -12'), '12 36', '0 0 0', colorBuffer, HUD_ALPHA, 0, AXIS_V, 0);
+    gui_renderMeter(100, (pnl_ctr + '-34 -12'), '12 36', '0 0 0', gui_getColorForArmor(la), HUD_ALPHA, 0, AXIS_V, 0);
   }
 };
 
 /*
   TARGER SHIELD METER====================================================
 */
-void(float shieldval) mtk_targetShield={
+void(float shieldval, vector tpos, float zht) mtk_targetShield={
   local vector label_org, ofs;
   local float nlen;
   ofs = self.hud_pnl5.pos + self.hud_pnl5.margin_ins + '0 32';
   drawstring(ofs, "[Shield]", '6 6 0', '0 0.85 0', HUD_ALPHA, 0);
   nlen = stringwidth("[SHIELD]",0,'6 6 0');
   
-  if(shieldval > -1){
+  if(shieldval > 0){
+    local vector spos;
+    tpos_z = tpos_z + zht;
+    spos = cs_project(tpos);
+    if (spos_z >= 0) {
+      spos_x -= 36; //align horizontally to centre
+      spos_y -= 3; //align vertically again
+      spos_z = 0; //shut up dp.
+      //ofs_x = ofs_x + nlen + 2;
+      gui_renderMeter(shieldval, spos, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval), HUD_ALPHA, 0, AXIS_H, 0);
+    }
     ofs_x = ofs_x + nlen + 2;
-    gui_renderMeter(shieldval, ofs, '82 12', self.wdg_sh.drawcolor1, self.wdg_sh.drawcolor2, HUD_ALPHA, 0, AXIS_H, 0);
-    //label_org = ofs - '0 4';
+    gui_renderMeter(shieldval, ofs, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval), HUD_ALPHA, 0, AXIS_H, 0);
   }
 };
 /*

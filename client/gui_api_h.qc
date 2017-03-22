@@ -5,7 +5,6 @@ Date: 03/8/2017
 Overview: GUI API header
 */
 
-vector(float val, float type) gui_getStatusColor;
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
 vector(vector vec, float algn) gui_calcAlign;
@@ -17,11 +16,12 @@ void(string str, vector ofs, vector color, vector sz, float alpha, float flg, fl
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderScroll;
 void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) gui_renderImageReel;
 void(string src_img, vector tintcolor, float alpha, float flg) gui_renderImageFullScreen;
-vector(float bit, float check1, float check2, float check3) gui_getStatusColor3;
 void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel;
 void(vector ofs, vector r_sz, vector ln_sz, vector clr) gui_DrawRect;
 string(float bit) gui_getWeaponId;
 void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector ln_sz2, vector clr2) gui_DrawHighlightRect;
+vector(float val) gui_getColorForArmor;
+vector(float val) gui_getColorForShield;
 
 //system const
 vector VIEW_ORG;

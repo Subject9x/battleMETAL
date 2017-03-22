@@ -8,7 +8,7 @@ Overview: csqc handler
 float(entity piece) csqc_updateCompStat={
 
   if(piece){
-    if(piece.owner == self || piece == self){
+    if(piece.classname != "world"){
       if(piece.health){
         local float perc;
         perc = (piece.health / piece.max_health)*100;

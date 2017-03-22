@@ -37,9 +37,9 @@ every hud ent has to implement this format
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon7;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon8;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon9;
-.void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float trglock, float trgdir)hud_renderTarget; //this will call the functions below
-.void(float shieldval) hud_targetShield;
-.void(float armorVal) hud_targetArmor;
+.void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos)hud_renderTarget; //this will call the functions below
+.void(float shieldval, vector tpos) hud_targetShield;
+.void(float lg, float ct, float lt, float rt, float la, float ra) hud_targetArmor;
 .void(float range) hud_targetRange;
 .void(float islock) hud_targetLock;
 .void(float targdir) hud_targetDirectionPip;

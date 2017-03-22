@@ -48,14 +48,6 @@ void() player_makeMech={
   self.power_timer = time + 1;
   buildVehicle(dat);
   if((self.flags & FL_CLIENT)){
-    if(self.targetpip == world){
-      self.targetpip = spawn();
-      self.targetpip.drawonlytoclient = self;
-      setmodel(self.targetpip, "q3mdl/green_pip.spr32");
-      setorigin(self.targetpip, self.origin);
-      setsize(self.targetpip, '-1 -1 -1', '1 1 1');
-      self.targetpip.effects = EF_NODRAW;
-    }
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, self.m_maccel, self.m_rollangle);
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);
     mh_world_updateClientModelBob(self.m_bmodel, self.m_bside, self.m_bobspd);

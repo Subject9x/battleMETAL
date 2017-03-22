@@ -8,6 +8,8 @@ Overview: hud data ents field vars
 .float plr_sel_mech; //used for mech selection
 .float plr_sel_hrpnt;
 .float plr_sel_wep;
+.float plr_sel_wid;
+.float plr_sel_grp;
 .float plr_nex_mech;
 .float plr_nex_wep1;
 .float plr_nex_wep2;
@@ -26,44 +28,6 @@ Overview: hud data ents field vars
 .entity wdg_en; //energy widget
 .entity wdg_pd; //paper doll widget
 .entity wdg_wp; //weapons list widget
-
-//widget vars - flat-tree approach
-//ie - only 'animated / info-changing' stuff should be their own ent
-//static images are just that
-/*.string en_pnl_img;
-.vector en_pnl_org;
-.vector en_pnl_ofs;
-.float  en_pnl_aln;
-
-.string sh_pnl_img;
-.vector sh_pnl_org;
-.vector sh_pnl_ofs;
-.float  sh_pnl_aln;
-
-.string am_pnl_img;
-.vector am_pnl_org;
-.vector am_pnl_ofs;
-.float  am_pnl_aln;
-
-.string sp_pnl_img;
-.vector sp_pnl_org;
-.vector sp_pnl_ofs;
-.float  sp_pnl_aln;
-
-.string wp_pnl_img;
-.vector wp_pnl_org;
-.vector wp_pnl_ofs;
-.float  wp_pnl_aln;
-
-.string rd_pnl_img;
-.vector rd_pnl_org;
-.vector rd_pnl_ofs;
-.float  rd_pnl_aln;
-
-.string tg_pnl_img;
-.vector tg_pnl_org;
-.vector tg_pnl_ofs;
-.float tg_pnl_aln;*/
 
 //widget vars
 .string c_mdl;

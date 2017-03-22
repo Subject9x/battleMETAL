@@ -130,8 +130,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	fovvec = getpropertyvec(VF_FOV); // note this is a vector (x and y are independent)
   vf_sz = getpropertyvec(VF_SIZE);
   vf_mn = getpropertyvec(VF_MIN);
-  
-  centerprint(vtos(vf_mn));
+
 	vf_sz_x = w;
   vf_sz_y = h;
   vf_sz_z = 0;
@@ -151,6 +150,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   VIEW_CTR_x = VIEW_MAX_x / 2;
   VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_SCALE = 0.35;
+  
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
@@ -193,7 +193,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     PLR_VIEW_z = getstatf(STAT_CAM_ORG_Z);
     makevectors(input_angles);
     PLR_VIEW = pmove_org + (v_up * PLR_VIEW_y) + (v_right * PLR_VIEW_x) + (v_forward * PLR_VIEW_z);
-    
+    setproperty(VF_ORIGIN, PLR_VIEW);
     //player mech hp info
     local float plr_sh, plr_en, plr_ct, plr_rt, plr_lt, plr_ra, plr_la, plr_lg;
     plr_sh = getstati(STAT_SHIELD);
@@ -228,6 +228,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     //target tracking info
     local float trg_vid, trg_datid, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
+    local vector trg_pos;
     trg_vid = getstati(STAT_TRG_VID);
     trg_datid = getstati(STAT_TRG_DAT);
     trg_sh = getstatf(STAT_TRG_SH);
@@ -235,7 +236,9 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     trg_dist = getstati(STAT_TRG_DIST);
     trg_dir = getstati(STAT_TRG_FACE);
     trg_lock = getstati(STAT_LCK_STT);
-    
+    trg_pos_x = getstatf(STAT_TRG_ORGX);
+    trg_pos_y = getstatf(STAT_TRG_ORGY);
+    trg_pos_z = getstatf(STAT_TRG_ORGZ);
     //render 
     local entity player_hud, vec_data, oself;
     vec_data = m_findData(vec_id, DATA_MECH);
@@ -260,7 +263,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, plr_wrel);
       self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, plr_wrel);
       self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, plr_wrel);
-      self.hud_renderTarget(trg_vid,trg_datid,trg_am,trg_sh,trg_dist,trg_lock,trg_dir);
+      self.hud_renderTarget(trg_vid,trg_datid,trg_am,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
     self = oself;
     
     
@@ -274,7 +277,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     og_x = og_x - len/2;
     og_y = VIEW_MAX_y - 32;
     drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
-  
   }
   //menu system
   if(MENU_ACTIVE){
@@ -285,10 +287,10 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   // draw custom crosshair
   drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  local vector prj, temp;
+  //local vector prj, temp;
   
-  setproperty(VF_ORIGIN, PLR_VIEW);
-  temp_x = getstatf(STAT_TRG_ORGX);
+  //
+  /*temp_x = getstatf(STAT_TRG_ORGX);
   temp_y = getstatf(STAT_TRG_ORGY);
   temp_z = getstatf(STAT_TRG_ORGZ);
   prj = cs_project(temp);
@@ -297,7 +299,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     prj_y -= 6 * 0.5; //align vertically again
     prj_z = 0; //shut up dp.
     drawstring(prj, "foo", '6 6', '1 1 1', 1, 0);
-  }
+  }*/
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!

@@ -65,6 +65,13 @@ float AS_FLOAT = 8;
 .float stat_trg_orgx;
 .float stat_trg_orgy;
 .float stat_trg_orgz;
+.float stat_trg_lg_hp;
+.float stat_trg_ct_hp;
+.float stat_trg_lt_hp;
+.float stat_trg_rt_hp;
+.float stat_trg_la_hp;
+.float stat_trg_ra_hp;
+
 //hit direction bit flags
 float STAT_HIT_CL = 1;
 float STAT_HIT_LF = 2;
@@ -161,17 +168,20 @@ float STAT_CAM_ORG_Y = 42;
 float STAT_CAM_ORG_Z = 43;
 
 float STAT_LEG_HP = 44;
-float STAT_LEG_AM = 45;
 float STAT_CTOR_HP = 46;
-float STAT_CTOR_AM = 47;
 float STAT_LTOR_HP = 48;
-float STAT_LTOR_AM = 49;
 float STAT_RTOR_HP = 50;
-float STAT_RTOR_AM = 51;
 float STAT_LARM_HP = 52;
-float STAT_LARM_AM = 53;
 float STAT_RARM_HP = 54;
+
+//these are on notice, might be removed
+float STAT_LEG_AM = 45;
+float STAT_CTOR_AM = 47;
+float STAT_LTOR_AM = 49;
+float STAT_RTOR_AM = 51;
+float STAT_LARM_AM = 53;
 float STAT_RARM_AM = 55;
+
 
 float STAT_WEP1_ID = 56;
 float STAT_WEP2_ID = 59;
@@ -215,3 +225,10 @@ float STAT_TRG_FACE = 58;
 float STAT_TRG_ORGX = 75;
 float STAT_TRG_ORGY = 76;
 float STAT_TRG_ORGZ = 78;
+
+float STAT_TRG_LEG_HP = 93;
+float STAT_TRG_CTOR_HP = 94;
+float STAT_TRG_LTOR_HP = 95;
+float STAT_TRG_RTOR_HP = 96;
+float STAT_TRG_LARM_HP = 97;
+float STAT_TRG_RARM_HP = 98;

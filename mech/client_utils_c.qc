@@ -30,7 +30,29 @@ void(string str, float tokens) client_ParseMechCommand={
       spawnpoint_Random();
     }
   }
+  else if(argv(1) == "setgroup"){
+    clien_setWeaponGroup(str, tokens);
+  }
+};  
+
+/*
+  
+*/
+void(string cmd, float tokens) clien_setWeaponGroup={
+  local float groupnum, groupval;
+  groupnum = stof(argv(2));
+  groupval = stof(argv(3));
+  if(groupnum == 1){
+    self.w_group1 = groupval;
+  }
+  else if(groupnum == 2){
+    self.w_group2 = groupval;
+  }
+  else if(groupnum == 3){
+    self.w_group3 = groupval;
+  }
 };
+
 
 /*
 commmand string: cmd mech setwep X Y
