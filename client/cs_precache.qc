@@ -40,6 +40,9 @@ void() cs_precache={
   
   //cursor
   precache_pic("gfx/ui/ui_cursor.png",0);
+  UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png",0);
+  UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png",0);
+  UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",0);
   precache_pic("gfx/hud/target_box.png",0);
   //buildings
   building_power();

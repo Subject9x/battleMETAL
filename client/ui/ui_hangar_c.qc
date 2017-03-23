@@ -7,7 +7,12 @@ Overview: class file for hangar ui
 */
 vector MECHPANEL_CTR;
 vector MECHLIST_SIZE;
+vector MECHLIST_ORG;
+vector MECHLIST_SIZE;
+vector WEPNLIST_ORG;
 vector WEPNLIST_SIZE;
+float MECHLIST_CNT;
+float WEPNLIST_CNT;
 
 //hook for input events
 void() menu_hangarListener={
@@ -32,22 +37,20 @@ void() hardpointListener={
 
 void() mechSelectListener={
   local float found;
-  found = listListener('24 36', cursorpos, MECHLIST_SIZE, '64 12', 3, 0);
-  if(found  > 0){
-    if(found != PLAYER_HELPER.plr_sel_mech){
-        cl_setmech(found);
+  if(menu_checkMouseInBounds(cursorpos, '32 40', '96 400')){
+    if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG, MECHLIST_SIZE)){
+      found = listListener(MECHLIST_ORG, cursorpos, MECHLIST_SIZE, '90 16', 3, 0);
     }
-    PLAYER_HELPER.plr_sel_mech = found;
+    if((found > 0) && (found != PLAYER_HELPER.plr_sel_mech)){
+      PLAYER_HELPER.plr_sel_mech = found;
+      cl_setmech(found);
+    }
   }
 };
 
 void() weaponSelectListener={
   local float found;
-  local vector lofs;
-  lofs_x = VIEW_CTR_x + 128;
-  lofs_y = 24;
-  gui_DrawRect(lofs, lofs + WEPNLIST_SIZE, '6 4', '1 1 1');
-  found = listListener(lofs, cursorpos, WEPNLIST_SIZE, '96 12', 10, 0);
+  found = listListener(WEPNLIST_ORG, cursorpos, WEPNLIST_SIZE, '96 14', WEPNLIST_CNT, 0);
   if(found  > 0){
    PLAYER_HELPER.plr_sel_wep = found;
    if(PLAYER_HELPER.plr_sel_hrpnt > 0){
@@ -55,39 +58,30 @@ void() weaponSelectListener={
     cur_point = PLAYER_HELPER.plr_sel_hrpnt;
     if(cur_point == 1){
       PLAYER_HELPER.plr_nex_wep1 = PLAYER_HELPER.plr_sel_wep;
-      
     }
     else if(cur_point == 2){
       PLAYER_HELPER.plr_nex_wep2 = PLAYER_HELPER.plr_sel_wep; 
-        
     }
     else if(cur_point == 3){
       PLAYER_HELPER.plr_nex_wep3 = PLAYER_HELPER.plr_sel_wep;
-          
     }
     else if(cur_point == 4){
       PLAYER_HELPER.plr_nex_wep4 = PLAYER_HELPER.plr_sel_wep;
-          
     }
     else if(cur_point == 5){
       PLAYER_HELPER.plr_nex_wep5 = PLAYER_HELPER.plr_sel_wep; 
-         
     }
     else if(cur_point == 6){
        PLAYER_HELPER.plr_nex_wep6 = PLAYER_HELPER.plr_sel_wep;
-        
     }
     else if(cur_point == 7){
       PLAYER_HELPER.plr_nex_wep7 = PLAYER_HELPER.plr_sel_wep;
-          
     }
     else if(cur_point == 8){
        PLAYER_HELPER.plr_nex_wep8 = PLAYER_HELPER.plr_sel_wep;
- 
     }
     else if(cur_point == 9){
       PLAYER_HELPER.plr_nex_wep9 = PLAYER_HELPER.plr_sel_wep;
-  
     }
    }
   }
@@ -137,24 +131,29 @@ void() menu_hangarDrawFrame={
   
   local vector topleftroot;
   topleftroot = VIEW_ORG + '12 12';
-  drawfill(topleftroot, (VIEW_MAX - '24 24'), STATUS_DED, HUD_ALPHA, 0); 
-  gui_DrawRect(topleftroot, (VIEW_MAX - '24 24'), '6 4', '1 1 1');
-
+  //drawfill(topleftroot, (VIEW_MAX - '24 24'), STATUS_DED, HUD_ALPHA, 0);
+  //gui_DrawRect(topleftroot, (VIEW_MAX - '24 24'), '6 4', '1 1 1');
+  
+  drawpic(topleftroot, UI_DEF_BOX_512,(VIEW_MAX - '24 24'), '1 1 1', HUD_ALPHA, 0);
+  
   menu_hangar_DrawNavBar(topleftroot);
   menu_hangar_MechDisplay(topleftroot);
   menu_hangar_MechList(topleftroot + '0 24');
+  
   menu_hangar_MechInfo(topleftroot);
-  menu_hangar_WeaponList(topleftroot);
+  menu_hangar_WeaponList(topleftroot + '0 24');
   menu_hangar_HardPointInfo(topleftroot);
 };
 
 void(vector ofs) menu_hangar_DrawNavBar={
-
-  gui_DrawRect(ofs, '48 16', '6 4', '1 1 1');
-  drawstring(ofs + '0 4', "[HANGAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  local vector nvpos;
+  nvpos = ofs + '8 6';
   
-  gui_DrawRect(ofs+'48 0', '64 16', '6 4', '1 1 1');
-  drawstring(ofs + '48 4', "[BRIEFING]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_DrawRect(nvpos, '48 16', '6 4', '1 1 1');
+  drawstring(nvpos + '0 4', "[HANGAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  gui_DrawRect(nvpos+'48 0', '64 16', '6 4', '1 1 1');
+  drawstring(nvpos + '48 4', "[BRIEFING]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   gui_DrawRect(VIEW_MAX - '88 24', '64 16', '6 4', '1 1 1');
   drawstring(VIEW_MAX - '88 24', "[ACCEPT]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
@@ -162,17 +161,15 @@ void(vector ofs) menu_hangar_DrawNavBar={
 
 void(vector ofs) menu_hangar_MechDisplay={
   local vector nofs, hofs, mpos, i_sz, hpnts;
-  nofs = ofs + '116 24';
-  gui_DrawRect(nofs, (VIEW_MAX - '336 256'), '6 4', '1 1 1');
+  nofs = ofs + '106 42';
+  drawpic(nofs, UI_DEF_BOX_512, '175 250', '1 1 1', HUD_ALPHA, 0);
   local entity dat;
   dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
   i_sz = draw_getimagesize(dat.c_mdl);
   i_sz = gui_scaleSize(i_sz,VIEW_SCALE);
-  i_sz_x = i_sz_x/1.5;
-  i_sz_y = i_sz_y/1.5;
-  hofs_x = (nofs_x + ((VIEW_MAX_x - 300)/2));
-  hofs_y = nofs_y;
-  hofs_x = hofs_x - i_sz_x/2;
+  i_sz_x = i_sz_x/1.35;
+  i_sz_y = i_sz_y/1.35;
+  hofs = nofs + '20 24';
   hpnts_x = hofs_x + i_sz_x/2;
   hpnts_y = hofs_y + i_sz_y/2;
   drawpic(hofs, dat.c_mdl, i_sz, '1 1 1', HUD_ALPHA, 0);
@@ -181,41 +178,54 @@ void(vector ofs) menu_hangar_MechDisplay={
 };
 
 void(vector ofs) menu_hangar_MechList={
-  local vector nofs,sz;
-  local float lst_idx, found;
-  nofs = sz = ofs;
-  drawstring(ofs + '24 0', "[MECHS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs + '10 18', UI_DEF_BOX_256_TALL, '96 400', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs + '8 8', "[AVAILABLE METAL]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  MECHLIST_SIZE_x = 96;
+  MECHLIST_SIZE_y = 400;
+  menu_hangar_MechListLight(ofs);
+};
+
+void(vector ofs) menu_hangar_MechListLight={
+  local vector nofs, clr;
+  local float lst_idx;
+  nofs = ofs;
+  nofs = nofs + '12 12';
   lst_idx = 1;
   while(lst_idx <= 3){
     local entity dat;
-    local vector lofs;
+    local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_MECH);
-    lofs_x = ofs_x + 12;
-    lofs_y = ofs_y + (lst_idx * 12);
-    drawstring(lofs, dat.vec_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-    if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
-      gui_DrawRect(lofs, '64 12', '4 4', '1 1 1');
+    if(dat){
+      lofs_x = nofs_x;
+      lofs_y = nofs_y + (lst_idx * 16);
+      if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
+        clr = CLR_DEF_TXT_HIGHLIGHT;
+      }
+      else{
+        clr = CLR_DEF_TXT_NONSELECT;
+      }
+      drawstring(lofs + '12 0', dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
     }
-    sz_x = sz_x + lofs_x;
-    sz_y = sz_y + lofs_y;
     lst_idx = lst_idx + 1;
   }
-  MECHLIST_SIZE_x = 64;
-  MECHLIST_SIZE_y = (lst_idx * 12)+12;
-  
+  MECHLIST_CNT = lst_idx;
+  MECHLIST_ORG = nofs;
+  MECHLIST_SIZE_x = 88;
+  MECHLIST_SIZE_y = (lst_idx * 16) ;
+  //gui_DrawRect(MECHLIST_ORG,MECHLIST_SIZE, '4 4', '1 1 1'); //debug
 };
-
 
 void(vector ofs) menu_hangar_MechInfo={
   local vector nofs;
   local entity dat;
-  nofs_x = ofs_x + 116;
-  nofs_y = VIEW_CTR_y + 24;
-  gui_DrawRect(nofs, (nofs + '32 8'), '6 4', '1 1 1');
+  nofs_x = ofs_x + 106;
+  nofs_y = VIEW_CTR_y + 64;
+  drawpic(nofs, UI_DEF_BOX_256, '175 150', '1 1 1', HUD_ALPHA, 0);
+  gui_DrawRect(nofs, '150 150', '6 4', '1 1 1');
 
   dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
-  drawstring(nofs + '6 6', "[INFO]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(nofs + '6 12', strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '36 -8', "[METAL INFO]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '6 6', strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   local string type;
   local vector t_color;
   // MECH SIZE
@@ -231,8 +241,8 @@ void(vector ofs) menu_hangar_MechInfo={
     type = "Heavy";
     t_color = STATUS_REL;
   }
-  drawstring(nofs + '6 18', "[TYPE] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(nofs + '48 18',  type, '6 6 0', t_color, HUD_ALPHA, 0);
+  drawstring(nofs + '6 16', "[TYPE] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '48 16',  type, '6 6 0', t_color, HUD_ALPHA, 0);
   //MECH SPEED
   if(dat.m_fspeed <= 85){
     type = "Slow";
@@ -246,34 +256,53 @@ void(vector ofs) menu_hangar_MechInfo={
     type = "Fast";
     t_color = STATUS_AOK;
   }
-  drawstring(nofs + '6 24', "[SPEED] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(nofs + '56 24', type, '6 6 0', t_color, HUD_ALPHA, 0);
+  drawstring(nofs + '6 26', "[SPEED] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '56 26', type, '6 6 0', t_color, HUD_ALPHA, 0);
+  
+  //Energy
+  drawstring(nofs + '6 36', "[MAX ENERGY] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '78 36', ftos(dat.en_max), '6 6 0', STATUS_REL, HUD_ALPHA, 0);
+  drawstring(nofs + '6 46', "[ENERGY RECHARGE] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '112 46', strcat(ftos(rint(dat.en_rate * 10)),"/sec"), '6 6 0', STATUS_REL, HUD_ALPHA, 0);
+  //Shield
+  drawstring(nofs + '6 56', "[MAX SHIELD] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '78 56', ftos(dat.sh_max), '6 6 0', STATUS_REL, HUD_ALPHA, 0);
+  drawstring(nofs + '6 66', "[SHIELD RECHARGE] ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '112 66', strcat(ftos(rint(dat.sh_rate * 10)),"/sec"), '6 6 0', STATUS_REL, HUD_ALPHA, 0);
 };
 
-void(vector offset) menu_hangar_WeaponList={
-  local vector ofs, mx;
-  local entity dat;
+void(vector ofs) menu_hangar_WeaponList={
+  local vector nofs, clr;
   local float lst_idx;
-  ofs_x = VIEW_CTR_x + 128;
-  ofs_y = 24;
-  mx_x = 128;
-  mx_y = VIEW_MAX_y - 64;
-  //gui_DrawRect(ofs, mx, '6 4', '1 1 1');
+  ofs_x = VIEW_CTR_x + 160;
+  nofs = ofs;
+  nofs = nofs + '12 12';
+  drawpic(ofs + '10 18', UI_DEF_BOX_256_TALL, '128 400', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs + '8 8', "[AVAILABLE WEAPONS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   lst_idx = 1;
   while(lst_idx <= 10){
     local entity dat;
     local vector lofs;
+    local vector clr;
     dat = m_findData(lst_idx, DATA_WEPN);
-    lofs_x = ofs_x + 12;
-    lofs_y = ofs_y + (lst_idx * 12);
-    drawstring(lofs, strcat(ftos(lst_idx),": ",dat.w_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-    if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
-      gui_DrawRect(lofs, '96 12', '4 4', '1 1 1');
+    if(dat){
+      lofs_x = nofs_x;
+      lofs_y = nofs_y + (lst_idx * 14);
+      if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+        clr = CLR_DEF_TXT_HIGHLIGHT;
+      }
+      else{
+        clr = CLR_DEF_TXT_NONSELECT;
+      }
+      drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
     }
     lst_idx = lst_idx + 1;
   }
+  WEPNLIST_CNT = lst_idx;
+  WEPNLIST_ORG = nofs;
   WEPNLIST_SIZE_x = 96;
-  WEPNLIST_SIZE_y = (lst_idx * 12) + 12;
+  WEPNLIST_SIZE_y = (lst_idx * 14);
+  //gui_DrawRect(MECHLIST_ORG,MECHLIST_SIZE, '4 4', '1 1 1'); //debug
 };
 
 void(vector ofs) menu_hangar_HardPointInfo={

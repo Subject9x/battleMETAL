@@ -5,6 +5,11 @@ Date: 03/10/2017
 Overview: GUI API class file for all colors
 */
 
+//ui constants
+vector CLR_DEF_TXT_HIGHLIGHT = '0.98 0.98 0.98';
+vector CLR_DEF_TXT_NONSELECT = '0.75 0.75 0.75';
+vector CLR_DEF_TXT_CANTSELET = '0.4 0.4 0.4';
+
 //armor constants
   //fine
   vector CLR_DEF_ARM_OK= '0.2 0.8 0.2';

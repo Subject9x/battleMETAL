@@ -22,3 +22,9 @@ float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 
 void() menu_handleFrame;
+
+
+//image defs
+string UI_DEF_BOX_512;
+string UI_DEF_BOX_256;
+string UI_DEF_BOX_256_TALL;

@@ -21,6 +21,7 @@ void() hardpointInfoListener;
 void(vector offset) menu_hangar_DrawNavBar;
 void(vector offset) menu_hangar_MechDisplay;
 void(vector offset) menu_hangar_MechList;
+void(vector offset) menu_hangar_MechListLight;
 void(vector offset) menu_hangar_MechInfo;
 void(vector offset) menu_hangar_WeaponList;
 void(vector offset) menu_hangar_HardPointInfo;
