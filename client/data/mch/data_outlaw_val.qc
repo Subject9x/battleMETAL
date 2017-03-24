@@ -25,6 +25,7 @@ string DAT_OTL_CPIT_MODEL= "gfx/ui/hgr_otl.png";
 float DAT_OTL_M_FSPEED=175;
 float DAT_OTL_M_SSPEED=150;
 float DAT_OTL_M_BSPEED=150;
+float DAT_OTL_HARDPOINTS = 3;
 
 float DAT_OTL_LEG_HP = 100;
 float DAT_OTL_LEG_HPMAX= 100;
@@ -135,29 +136,29 @@ void() data_otl_ini;
 
 
 void(vector org) otl_renderHardpoints={
-  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '-10 -104', '32 32', '8 8', '1 1 0', '4 4', '1 1 1');
-  drawstring(org + '-10 -104', ftos(PLAYER_HELPER.plr_nex_wep3), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '-10 -96', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(org + '-10 -96', ftos(HARDPOINTS[2]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '-75 -64', '32 32', '8 8', '1 1 0', '4 4', '1 1 1');
-  drawstring(org + '-75 -64', ftos(PLAYER_HELPER.plr_nex_wep2), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '-75 -36', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(org + '-75 -36', ftos(HARDPOINTS[1]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '48 -64', '32 32', '8 8 0', '1 1 0', '4 4', '1 1 1'); 
-  drawstring(org + '48 -64', ftos(PLAYER_HELPER.plr_nex_wep1), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '52 -36', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(org + '52 -36', ftos(HARDPOINTS[0]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 float(vector org) otl_hardpointListener={
 
-  if(menu_checkMouseInBounds(cursorpos, org + '-10 -104', '32 32')){
+  if(menu_checkMouseInBounds(cursorpos, org + '-10 -96', '24 24')){
     PLAYER_HELPER.plr_sel_wid = WEAPON3;
     return 3;
   }  
   
-  if(menu_checkMouseInBounds(cursorpos, org + '-75 -64', '32 32')){
+  if(menu_checkMouseInBounds(cursorpos, org + '-75 -36', '24 24')){
     PLAYER_HELPER.plr_sel_wid = WEAPON2;
     return 2;
   } 
 
-  if(menu_checkMouseInBounds(cursorpos, org + '48 -64', '32 32')){
+  if(menu_checkMouseInBounds(cursorpos, org + '52 -36', '24 24')){
     PLAYER_HELPER.plr_sel_wid = WEAPON1;
     return 1;
   } 
@@ -194,7 +195,7 @@ void() data_otl_ini={
   self.sh_cur= DAT_OTL_SHIELD_CUR;
   self.sh_max= DAT_OTL_SHIELD_MAX;
   self.sh_rate= DAT_OTL_SHIELD_RATE;
-  
+  self.hardpoint_cnt = DAT_OTL_HARDPOINTS; 
   self.m_fspeed = DAT_OTL_M_FSPEED;
   self.m_sspeed = DAT_OTL_M_SSPEED;
   self.m_bspeed = DAT_OTL_M_BSPEED;

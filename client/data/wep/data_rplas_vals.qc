@@ -40,5 +40,6 @@ void() data_rplas_ini={
   self.c_model = DAT_RPLAS_MODEL;
   self.en_max = DAT_RPLAS_EN_COST;
   self.i_techlvl = DAT_RPLAS_TECH_LEVEL;
+  self.dmg_type = self.dmg_type | DMG_BAL;
 };
 

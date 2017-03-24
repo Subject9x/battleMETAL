@@ -39,4 +39,5 @@ void() data_latc_ini={
   self.c_model = DAT_LATC_MODEL;
   self.en_max = DAT_LATC_EN_COST;
   self.i_techlvl = DAT_LATC_TECH_LEVEL;
+  self.dmg_type = self.dmg_type | DMG_BAL;
 };

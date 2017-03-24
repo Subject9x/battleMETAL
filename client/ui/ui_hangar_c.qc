@@ -5,14 +5,6 @@ Date: 3/8/2017
 Overview: class file for hangar ui
 
 */
-vector MECHPANEL_CTR;
-vector MECHLIST_SIZE;
-vector MECHLIST_ORG;
-vector MECHLIST_SIZE;
-vector WEPNLIST_ORG;
-vector WEPNLIST_SIZE;
-float MECHLIST_CNT;
-float WEPNLIST_CNT;
 
 //hook for input events
 void() menu_hangarListener={
@@ -21,6 +13,7 @@ void() menu_hangarListener={
   weaponSelectListener();
   hardpointListener();
   hardpointInfoListener();
+  weaponGroupPanelListener();
 };
 
 void() hardpointListener={
@@ -31,18 +24,30 @@ void() hardpointListener={
   hpnt = dat.menu_hardpointListener(MECHPANEL_CTR);
   if(hpnt > 0){
     PLAYER_HELPER.plr_sel_hrpnt = hpnt;
-    PLAYER_HELPER.plr_sel_wep = getWeaponInHardpoint(hpnt);
+    PLAYER_HELPER.plr_sel_wep = HARDPOINTS[hpnt];
   }
 };
 
 void() mechSelectListener={
   local float found;
   if(menu_checkMouseInBounds(cursorpos, '32 40', '96 400')){
-    if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG, MECHLIST_SIZE)){
-      found = listListener(MECHLIST_ORG, cursorpos, MECHLIST_SIZE, '90 16', 3, 0);
+    if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT)){
+      found = listListener(MECHLIST_ORG_LIGHT, cursorpos, MECHLIST_SIZE_LIGHT, '90 16', MECHLIST_CNT_LIGHT, 0);
+      found = MECHLIST_LIGHT_ARR[found];
+    }
+    if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_MEDIUM, MECHLIST_SIZE_MEDIUM)){
+      found = listListener(MECHLIST_ORG_MEDIUM, cursorpos, MECHLIST_SIZE_MEDIUM, '90 16', MECHLIST_CNT_MEDIUM, 0);
+      found = MECHLIST_MEDIUM_ARR[found];
+    }
+    if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_HEAVY, MECHLIST_SIZE_HEAVY)){
+      found = listListener(MECHLIST_ORG_HEAVY, cursorpos, MECHLIST_SIZE_HEAVY, '90 16', MECHLIST_CNT_HEAVY, 0);
+      found = MECHLIST_HEAVY_ARR[found];
     }
     if((found > 0) && (found != PLAYER_HELPER.plr_sel_mech)){
       PLAYER_HELPER.plr_sel_mech = found;
+      local entity dat;
+      dat = m_findData(found, DATA_MECH);
+      HARDPOINT_CNT = dat.hardpoint_cnt;
       cl_setmech(found);
     }
   }
@@ -51,38 +56,22 @@ void() mechSelectListener={
 void() weaponSelectListener={
   local float found;
   found = listListener(WEPNLIST_ORG, cursorpos, WEPNLIST_SIZE, '96 14', WEPNLIST_CNT, 0);
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL)){
+    found = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, '90 16', WEPNLIST_CNT_BAL, 0);
+    found = WEPLIST_BAL_ARR[found];
+  }
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_ENE, WEPNLIST_SIZE_ENE)){
+    found = listListener(WEPNLIST_ORG_ENE, cursorpos, WEPNLIST_SIZE_ENE, '90 16', WEPNLIST_CNT_ENE, 0);
+    found = WEPLIST_ENE_ARR[found];
+  }
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_EXP, WEPNLIST_SIZE_EXP)){
+    found = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, '90 16', WEPNLIST_CNT_EXP, 0);
+    found = WEPLIST_EXP_ARR[found];
+  }
   if(found  > 0){
    PLAYER_HELPER.plr_sel_wep = found;
    if(PLAYER_HELPER.plr_sel_hrpnt > 0){
-    local float cur_point;
-    cur_point = PLAYER_HELPER.plr_sel_hrpnt;
-    if(cur_point == 1){
-      PLAYER_HELPER.plr_nex_wep1 = PLAYER_HELPER.plr_sel_wep;
-    }
-    else if(cur_point == 2){
-      PLAYER_HELPER.plr_nex_wep2 = PLAYER_HELPER.plr_sel_wep; 
-    }
-    else if(cur_point == 3){
-      PLAYER_HELPER.plr_nex_wep3 = PLAYER_HELPER.plr_sel_wep;
-    }
-    else if(cur_point == 4){
-      PLAYER_HELPER.plr_nex_wep4 = PLAYER_HELPER.plr_sel_wep;
-    }
-    else if(cur_point == 5){
-      PLAYER_HELPER.plr_nex_wep5 = PLAYER_HELPER.plr_sel_wep; 
-    }
-    else if(cur_point == 6){
-       PLAYER_HELPER.plr_nex_wep6 = PLAYER_HELPER.plr_sel_wep;
-    }
-    else if(cur_point == 7){
-      PLAYER_HELPER.plr_nex_wep7 = PLAYER_HELPER.plr_sel_wep;
-    }
-    else if(cur_point == 8){
-       PLAYER_HELPER.plr_nex_wep8 = PLAYER_HELPER.plr_sel_wep;
-    }
-    else if(cur_point == 9){
-      PLAYER_HELPER.plr_nex_wep9 = PLAYER_HELPER.plr_sel_wep;
-    }
+    HARDPOINTS[PLAYER_HELPER.plr_sel_hrpnt] = found;
    }
   }
 };
@@ -95,11 +84,11 @@ void() hardpointInfoListener={
     ofs = ofs + '3 20';
     if(menu_checkMouseInBounds(cursorpos, ofs+'54 0', '18 8')){
       getPrevWeaponGroup();
-      assignWeaponToGroup(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt),PLAYER_HELPER.plr_sel_grp);
+      //assignWeaponToGroup(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt),PLAYER_HELPER.plr_sel_grp);
     }
     if(menu_checkMouseInBounds(cursorpos, ofs+'78 0', '18 8')){
       getNextWeaponGroup();
-      assignWeaponToGroup(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt),PLAYER_HELPER.plr_sel_grp);
+//assignWeaponToGroup(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt),PLAYER_HELPER.plr_sel_grp);
     }
   }
 };
@@ -107,15 +96,14 @@ void() hardpointInfoListener={
 void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, VIEW_MAX - '88 24', '64 16')){
     cl_setmech(PLAYER_HELPER.plr_sel_mech);
-    cl_setweapon(WEAPON1, PLAYER_HELPER.plr_nex_wep1);
-    cl_setweapon(WEAPON2, PLAYER_HELPER.plr_nex_wep2); 
-    cl_setweapon(WEAPON3, PLAYER_HELPER.plr_nex_wep3);
-    cl_setweapon(WEAPON4, PLAYER_HELPER.plr_nex_wep4);
-    cl_setweapon(WEAPON5, PLAYER_HELPER.plr_nex_wep5);
-    cl_setweapon(WEAPON6, PLAYER_HELPER.plr_nex_wep6); 
-    cl_setweapon(WEAPON7, PLAYER_HELPER.plr_nex_wep7);
-    cl_setweapon(WEAPON8, PLAYER_HELPER.plr_nex_wep8);      
-    cl_setweapon(WEAPON9, PLAYER_HELPER.plr_nex_wep9);
+    local float lst_idx, bit;
+    lst_idx = 1;
+    bit = 1;
+    while(lst_idx <= HARDPOINT_CNT){
+      cl_setweapon(bit, HARDPOINTS[lst_idx]);
+      bit = bit *2;
+      lst_idx = lst_idx + 1;
+    }
     cl_setweapongroup(1, PLAYER_HELPER.plr_nex_grp1);
     cl_setweapongroup(2, PLAYER_HELPER.plr_nex_grp2);
     cl_setweapongroup(3, PLAYER_HELPER.plr_nex_grp3);
@@ -123,6 +111,10 @@ void() mechAcceptButtonListener={
     MENU_ACTIVE = FALSE;
     setcursormode(0);
   }
+};
+
+void() weaponGroupPanelListener={
+
 };
 
 
@@ -143,6 +135,7 @@ void() menu_hangarDrawFrame={
   menu_hangar_MechInfo(topleftroot);
   menu_hangar_WeaponList(topleftroot + '0 24');
   menu_hangar_HardPointInfo(topleftroot);
+  menu_hangar_WeaponGroupPanel(topleftroot);
 };
 
 void(vector ofs) menu_hangar_DrawNavBar={
@@ -180,39 +173,114 @@ void(vector ofs) menu_hangar_MechDisplay={
 void(vector ofs) menu_hangar_MechList={
   drawpic(ofs + '10 18', UI_DEF_BOX_256_TALL, '96 400', '1 1 1', HUD_ALPHA, 0);
   drawstring(ofs + '8 8', "[AVAILABLE METAL]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  MECHLIST_SIZE_x = 96;
-  MECHLIST_SIZE_y = 400;
   menu_hangar_MechListLight(ofs);
+  menu_hangar_MechListMedium(ofs);
+  menu_hangar_MechListHeavy(ofs);
 };
 
 void(vector ofs) menu_hangar_MechListLight={
   local vector nofs, clr;
-  local float lst_idx;
+  local float lst_idx, act_idx;
   nofs = ofs;
-  nofs = nofs + '12 12';
+  nofs = nofs + '12 24';
+  drawstring(nofs + '18 2', "==LIGHT==", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= 3){
     local entity dat;
     local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_MECH);
     if(dat){
-      lofs_x = nofs_x;
-      lofs_y = nofs_y + (lst_idx * 16);
-      if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
-        clr = CLR_DEF_TXT_HIGHLIGHT;
+      if(dat.vec_size == 1){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + (act_idx * 16);
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + '12 0', dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
+        MECHLIST_LIGHT_ARR[act_idx] = dat.data_idx;
+        act_idx = act_idx + 1;
       }
-      else{
-        clr = CLR_DEF_TXT_NONSELECT;
-      }
-      drawstring(lofs + '12 0', dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
     }
     lst_idx = lst_idx + 1;
   }
-  MECHLIST_CNT = lst_idx;
-  MECHLIST_ORG = nofs;
-  MECHLIST_SIZE_x = 88;
-  MECHLIST_SIZE_y = (lst_idx * 16) ;
-  //gui_DrawRect(MECHLIST_ORG,MECHLIST_SIZE, '4 4', '1 1 1'); //debug
+  MECHLIST_CNT_LIGHT = act_idx;
+  MECHLIST_ORG_LIGHT = nofs;
+  MECHLIST_SIZE_LIGHT_x = 88;
+  MECHLIST_SIZE_LIGHT_y = (act_idx * 16);
+};
+
+void(vector ofs) menu_hangar_MechListMedium={
+  local vector nofs, clr;
+  local float lst_idx, act_idx;
+  nofs = ofs;
+  nofs = nofs + '12 150';
+  drawstring(nofs + '8 2', "==MEDIUM==", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  act_idx = 1;
+  lst_idx = 1;
+  while(lst_idx <= 3){
+    local entity dat;
+    local vector lofs, clr;
+    dat = m_findData(lst_idx, DATA_MECH);
+    if(dat){
+      if(dat.vec_size == 2){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + (act_idx * 16);
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + '12 0', dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
+        MECHLIST_MEDIUM_ARR[act_idx] = dat.data_idx;
+        act_idx = act_idx + 1;
+      }
+    }
+    lst_idx = lst_idx + 1;
+  }
+  MECHLIST_CNT_MEDIUM = act_idx;
+  MECHLIST_ORG_MEDIUM = nofs;
+  MECHLIST_SIZE_MEDIUM_x = 88;
+  MECHLIST_SIZE_MEDIUM_y = (act_idx * 16);
+
+};
+void(vector ofs) menu_hangar_MechListHeavy={
+  local vector nofs, clr;
+  local float lst_idx, act_idx;
+  nofs = ofs;
+  nofs = nofs + '12 275';
+  drawstring(nofs + '10 2', "==HEAVY==", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  act_idx = 1;
+  lst_idx = 1;
+  while(lst_idx <= 3){
+    local entity dat;
+    local vector lofs, clr;
+    dat = m_findData(lst_idx, DATA_MECH);
+    if(dat){
+      if(dat.vec_size == 3){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + (act_idx * 16);
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + '12 0', dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
+        MECHLIST_HEAVY_ARR[act_idx] = dat.data_idx;
+        act_idx = act_idx + 1;
+      }
+    }
+    lst_idx = lst_idx + 1;
+  }
+  MECHLIST_CNT_HEAVY = act_idx;
+  MECHLIST_ORG_HEAVY = nofs;
+  MECHLIST_SIZE_HEAVY_x = 88;
+  MECHLIST_SIZE_HEAVY_y = (act_idx * 16);
 };
 
 void(vector ofs) menu_hangar_MechInfo={
@@ -221,8 +289,7 @@ void(vector ofs) menu_hangar_MechInfo={
   nofs_x = ofs_x + 106;
   nofs_y = VIEW_CTR_y + 64;
   drawpic(nofs, UI_DEF_BOX_256, '175 150', '1 1 1', HUD_ALPHA, 0);
-  gui_DrawRect(nofs, '150 150', '6 4', '1 1 1');
-
+  
   dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
   drawstring(nofs + '36 -8', "[METAL INFO]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   drawstring(nofs + '6 6', strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
@@ -279,49 +346,202 @@ void(vector ofs) menu_hangar_WeaponList={
   nofs = nofs + '12 12';
   drawpic(ofs + '10 18', UI_DEF_BOX_256_TALL, '128 400', '1 1 1', HUD_ALPHA, 0);
   drawstring(ofs + '8 8', "[AVAILABLE WEAPONS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  menu_hangar_WeaponList_BAL(nofs);
+  menu_hangar_WeaponList_ENE(nofs);
+  menu_hangar_WeaponList_EXP(nofs);
+  menu_hangar_WeaponList_MSC(nofs);
+};
+
+void(vector ofs) menu_hangar_WeaponList_BAL={
+  local vector nofs, clr;
+  local float lst_idx, act_idx;
+  nofs = ofs;
+  nofs = nofs + '12 12';
+  drawstring(nofs + '10 2', "==BALLISTIC==", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= 10){
     local entity dat;
-    local vector lofs;
-    local vector clr;
+    local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_WEPN);
     if(dat){
-      lofs_x = nofs_x;
-      lofs_y = nofs_y + (lst_idx * 14);
-      if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
-        clr = CLR_DEF_TXT_HIGHLIGHT;
+      if((dat.dmg_type & DMG_BAL)){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + (act_idx * 16);
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
+        WEPLIST_BAL_ARR[act_idx] = dat.data_idx;
+        act_idx = act_idx + 1;
       }
-      else{
-        clr = CLR_DEF_TXT_NONSELECT;
-      }
-      drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
     }
     lst_idx = lst_idx + 1;
   }
-  WEPNLIST_CNT = lst_idx;
-  WEPNLIST_ORG = nofs;
-  WEPNLIST_SIZE_x = 96;
-  WEPNLIST_SIZE_y = (lst_idx * 14);
-  //gui_DrawRect(MECHLIST_ORG,MECHLIST_SIZE, '4 4', '1 1 1'); //debug
+  WEPNLIST_CNT_BAL = act_idx;
+  WEPNLIST_ORG_BAL = nofs;
+  WEPNLIST_SIZE_BAL_x = 88;
+  WEPNLIST_SIZE_BAL_y = (act_idx * 16);
+};
+
+void(vector ofs) menu_hangar_WeaponList_ENE={
+  local vector nofs, clr;
+  local float lst_idx, act_idx;
+  nofs = ofs;
+  nofs = nofs + '12 100';
+  drawstring(nofs + '10 2', "==ENERGY==", '6 6 0', CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', HUD_ALPHA, 0);
+  act_idx = 1;
+  lst_idx = 1;
+  while(lst_idx <= 10){
+    local entity dat;
+    local vector lofs, clr;
+    dat = m_findData(lst_idx, DATA_WEPN);
+    if(dat){
+      if((dat.dmg_type & DMG_ENE)){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + (act_idx * 16);
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
+        WEPLIST_ENE_ARR[act_idx] = dat.data_idx;
+        act_idx = act_idx + 1;
+      }
+    }
+    lst_idx = lst_idx + 1;
+  }
+  WEPNLIST_CNT_ENE = act_idx;
+  WEPNLIST_ORG_ENE = nofs;
+  WEPNLIST_SIZE_ENE_x = 88;
+  WEPNLIST_SIZE_ENE_y = (act_idx * 16);
+};
+
+void(vector ofs) menu_hangar_WeaponList_EXP={
+  local vector nofs, clr;
+  local float lst_idx, act_idx;
+  nofs = ofs;
+  nofs = nofs + '12 190';
+  drawstring(nofs + '10 2', "==MISSILE==", '6 6 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  act_idx = 1;
+  lst_idx = 1;
+  while(lst_idx <= 10){
+    local entity dat;
+    local vector lofs, clr;
+    dat = m_findData(lst_idx, DATA_WEPN);
+    if(dat){
+      if((dat.dmg_type & DMG_EXP)){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + (act_idx * 16);
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
+        WEPLIST_EXP_ARR[act_idx] = dat.data_idx;
+        act_idx = act_idx + 1;
+      }
+    }
+    lst_idx = lst_idx + 1;
+  }
+  WEPNLIST_CNT_EXP = act_idx;
+  WEPNLIST_ORG_EXP = nofs;
+  WEPNLIST_SIZE_EXP_x = 88;
+  WEPNLIST_SIZE_EXP_y = (act_idx * 16);
+};
+
+void(vector ofs) menu_hangar_WeaponList_MSC={
+  local vector nofs, clr;
+  local float lst_idx, act_idx;
+  nofs = ofs;
+  nofs = nofs + '12 275';
+  drawstring(nofs + '4 2', "==MISCELLANEOUS==", '6 6 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
+  act_idx = 1;
+  lst_idx = 1;
+  while(lst_idx <= 10){
+    local entity dat;
+    local vector lofs, clr;
+    dat = m_findData(lst_idx, DATA_WEPN);
+    if(dat){
+      if((dat.dmg_type & DMG_MSC)){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + (act_idx * 14);
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
+        WEPLIST_MSC_ARR[act_idx] = dat.data_idx;
+        act_idx = act_idx + 1;
+      }
+    }
+    lst_idx = lst_idx + 1;
+  }
+  WEPNLIST_CNT_MSC = act_idx;
+  WEPNLIST_ORG_MSC = nofs;
+  WEPNLIST_SIZE_MSC_x = 88;
+  WEPNLIST_SIZE_MSC_y = (act_idx * 14);
+};
+
+void(vector ofs) menu_hangar_WeaponGroupPanel={
+  local vector nofs, col_a, col_b, col_c;
+  local float lst_idx, bit;
+  nofs_x = ofs_x + VIEW_CTR_x - 38;
+  nofs_y = ofs_y + VIEW_CTR_y + 52;
+  drawpic(nofs, UI_DEF_BOX_256, '196 150', '1 1 1', HUD_ALPHA,0);
+  drawstring(nofs + '48 6', "[WEAPON GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '124 16', "[A] [B] [C]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  col_a = nofs + '124 22';
+  col_b = nofs + '142 22';
+  col_c = nofs + '160 22';
+  
+  nofs = nofs + '0 12';
+  lst_idx = 1;
+  bit = 1;
+  while(lst_idx <= HARDPOINT_CNT){
+    local vector lofs;
+    local string line;
+    local entity dat;
+    local float g1,g2,g3;
+    lofs_x = nofs_x + 6 ;
+    lofs_y = nofs_y + (lst_idx * 14);
+    line = strcat("[",ftos(lst_idx),"]");
+    dat = m_findData(HARDPOINTS[lst_idx], DATA_WEPN);
+    line = strcat(line, " ", dat.w_name);
+    drawstring(lofs, line, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp1 & bit),  lofs + '120 -2', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp2 & bit),  lofs + '144 -2', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp3 & bit),  lofs + '166 -2', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    bit = bit * 2;
+    lst_idx = lst_idx + 1;
+  }
 };
 
 void(vector ofs) menu_hangar_HardPointInfo={
   local vector nofs, max;
   local entity dat;
   nofs_x = ofs_x + VIEW_CTR_x - 38;
-  nofs_y = ofs_y + VIEW_CTR_y + 12;
-  gui_DrawRect(nofs, '128 128', '6 4', '1 1 1');
-  
+  nofs_y = ofs_y + 42;
+  //gui_DrawRect(nofs, '196 128', '6 4', '1 1 1');
+  drawpic(nofs, UI_DEF_BOX_256, '196 128', '1 1 1', HUD_ALPHA, 0);
   local string title;
   local float tlen;
   local vector tpos;
   title = "[HARDPOINT]";
   tlen = stringwidth(title, 0, '6 6 0');
   tpos = nofs + '64 3';
-  tpos_x = tpos_x - tlen/2;
   drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  dat = m_findData(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt), DATA_WEPN);
+  dat = m_findData(HARDPOINTS[PLAYER_HELPER.plr_sel_hrpnt], DATA_WEPN);
   local string wepname_row;
   local vector wnpos;
   wepname_row = strcat("[WEAPON]: ", dat.w_name);
@@ -379,39 +599,6 @@ float(float comp) checkIfWeaponInGroup={
   }  
   else if((PLAYER_HELPER.plr_nex_grp3 & comp)){
     return 3;
-  }
-  else{
-    return 0;
-  }
-};
-
-float(float slotid) getWeaponInHardpoint={
-  if(slotid == 1){
-    return PLAYER_HELPER.plr_nex_wep1;
-  }
-  else if(slotid == 2){
-    return PLAYER_HELPER.plr_nex_wep2;    
-  }
-  else if(slotid == 3){
-    return PLAYER_HELPER.plr_nex_wep3;    
-  }
-  else if(slotid == 4){
-    return PLAYER_HELPER.plr_nex_wep4;    
-  }
-  else if(slotid == 5){
-    return PLAYER_HELPER.plr_nex_wep5;    
-  }
-  else if(slotid == 6){
-    return PLAYER_HELPER.plr_nex_wep6;   
-  }
-  else if(slotid == 7){
-    return PLAYER_HELPER.plr_nex_wep7;    
-  }
-  else if(slotid == 8){
-    return PLAYER_HELPER.plr_nex_wep8;   
-  }
-  else if(slotid == 9){
-    return PLAYER_HELPER.plr_nex_wep9;    
   }
   else{
     return 0;

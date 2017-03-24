@@ -45,4 +45,5 @@ void() data_mlgd_ini={
   self.c_model = DATWEP_MLGD_MODEL;
   self.en_max = DATWEP_MLGD_EN_COST;
   self.i_techlvl = DATWEP_MLGD_TECH_LEVEL;
+  self.dmg_type = self.dmg_type | DMG_EXP;
 };

@@ -39,4 +39,5 @@ void() data_mis_ini={
   self.c_model = DAT_MIS_MODEL;
   self.en_max = DAT_MIS_EN_COST;
   self.i_techlvl = DAT_MIS_TECH_LEVEL;
+  self.dmg_type = self.dmg_type | DMG_EXP;
 };

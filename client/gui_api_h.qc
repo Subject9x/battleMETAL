@@ -22,7 +22,7 @@ string(float bit) gui_getWeaponId;
 void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector ln_sz2, vector clr2) gui_DrawHighlightRect;
 vector(float val) gui_getColorForArmor;
 vector(float val) gui_getColorForShield;
-
+void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alpha, float flg) gui_renderTintImage;
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;

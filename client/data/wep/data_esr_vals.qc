@@ -39,4 +39,5 @@ void() data_esr_ini={
   self.c_model = DAT_ESR_MODEL;
   self.en_max = DAT_ESR_EN_COST;
   self.i_techlvl = DAT_ESR_TECH_LEVEL;
+  self.dmg_type = self.dmg_type | DMG_ENE;
 };

@@ -142,7 +142,13 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
-	setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
+  if(MENU_ACTIVE){
+  	setproperty(VF_DRAWCROSSHAIR, 0); // TODO custom crosshairs
+  }
+  else{
+  	setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
+  }
+	//setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
 	setproperty(VF_DRAWENGINESBAR, 0); // TODO custom hud
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");

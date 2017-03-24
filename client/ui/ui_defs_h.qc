@@ -28,3 +28,4 @@ void() menu_handleFrame;
 string UI_DEF_BOX_512;
 string UI_DEF_BOX_256;
 string UI_DEF_BOX_256_TALL;
+string UI_DEF_BOX_64;

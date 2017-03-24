@@ -44,4 +44,5 @@ void() data_marh_ini={
   self.c_model = DATWEP_MARH_MODEL;
   self.en_max = DATWEP_MARH_EN_COST;
   self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
+  self.dmg_type = self.dmg_type | DMG_EXP;
 };

@@ -37,5 +37,6 @@ void() data_qrfl_ini={
   self.w_reloadtime = DAT_QRFL_RELOADTIME;
   self.en_max = DAT_QRFL_EN_COST;
   self.i_techlvl = DAT_QRFL_TECH_LEVEL;
+  self.dmg_type = self.dmg_type | DMG_BAL | EFF_ENG;
 };
 

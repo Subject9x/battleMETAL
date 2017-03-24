@@ -5,6 +5,17 @@ Date: 03/8/2017
 Overview: GUI API class file
 */
 
+void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alpha, float flg) gui_renderTintImage={
+  local vector clr;
+  if(bool){
+    clr = tnt_clr;
+  }
+  else{
+    clr = '1 1 1';
+  }
+  drawpic(org, img, i_sz, clr, alpha, flg);
+};
+
 
 vector(float val) gui_getColorForArmor={
   if(val < 1){

@@ -22,7 +22,7 @@ float DAT_MTK_SHIELD_RATE = 0.065;
 vector DAT_MTK_CTOR_BBX_N ='-12 -12 -35';
 vector DAT_MTK_CTOR_BBX_X ='12 12 14';
 string DAT_MTK_CPIT_MODEL = "gfx/ui/hgr_mtk.png";
-
+float DAT_MTK_HARDPOINTS = 5;
 float DAT_MTK_M_FSPEED=125;
 float DAT_MTK_M_SSPEED=100;
 float DAT_MTK_M_BSPEED=100;
@@ -157,40 +157,41 @@ void() data_mech_mtk;
 void() data_mtk_ini;
 
 void(vector org) mtk_renderHardpoints={
-  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '-40 -100', '16 16', '8 8', '1 1 0', '4 4', '1 1 1');
-  drawstring(org + '-40 -100', ftos(PLAYER_HELPER.plr_nex_wep1), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+
+  gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '-44 -100', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(org + '-44 -100', ftos(HARDPOINTS[0]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '24 -100', '16 16', '8 8', '1 1 0', '4 4', '1 1 1');
-  drawstring(org + '24 -100', ftos(PLAYER_HELPER.plr_nex_wep2), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '22 -100', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(org + '22 -100', ftos(HARDPOINTS[1]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '-60 -40', '16 16', '8 8 0', '1 1 0', '4 4', '1 1 1'); 
-  drawstring(org + '-60 -40', ftos(PLAYER_HELPER.plr_nex_wep3), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '-84 -40', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(org + '-84 -40', ftos(HARDPOINTS[2]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 4), org + '44 -40', '16 16', '8 8 0', '1 1 0', '4 4', '1 1 1'); 
-  drawstring(org + '44 -40', ftos(PLAYER_HELPER.plr_nex_wep4), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 4), org + '58 -40', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(org + '58 -40', ftos(HARDPOINTS[3]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  gui_DrawHighlightRect((PLAYER_HELPER.plr_sel_hrpnt == 5), org + '-8 -94', '16 16', '8 8 0', '1 1 0', '4 4', '1 1 1');
-  drawstring(org + '-8 -94', ftos(PLAYER_HELPER.plr_nex_wep5), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 5), org + '-12 -94', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(org + '-12 -94', ftos(HARDPOINTS[4]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 float(vector org) mtk_hardpointListener={
-  if(menu_checkMouseInBounds(cursorpos, org + '-40 -100', '16 16')){
+  if(menu_checkMouseInBounds(cursorpos, org + '-44 -100', '24 24')){
     PLAYER_HELPER.plr_sel_wid = WEAPON1;
     return 1;
   }  
-  if(menu_checkMouseInBounds(cursorpos, org + '24 -100', '16 16')){
+  if(menu_checkMouseInBounds(cursorpos, org + '22 -100', '24 24')){
     PLAYER_HELPER.plr_sel_wid = WEAPON2;
     return 2;
   } 
-  if(menu_checkMouseInBounds(cursorpos, org + '-60 -40', '16 16')){
+  if(menu_checkMouseInBounds(cursorpos, org + '-84 -40','24 24')){
     PLAYER_HELPER.plr_sel_wid = WEAPON3;
     return 3;
   } 
-  if(menu_checkMouseInBounds(cursorpos, org + '44 -40', '16 16')){
+  if(menu_checkMouseInBounds(cursorpos, org + '58 -40', '24 24')){
     PLAYER_HELPER.plr_sel_wid = WEAPON4;
     return 4;
   } 
-  if(menu_checkMouseInBounds(cursorpos, org + '-8 -94', '16 16')){
+  if(menu_checkMouseInBounds(cursorpos, org + '-12 -94', '24 24')){
     PLAYER_HELPER.plr_sel_wid = WEAPON5;
     return 5;
   } 
@@ -226,7 +227,7 @@ void() data_mtk_ini={
   self.sh_cur= DAT_MTK_SHIELD_CUR;
   self.sh_max= DAT_MTK_SHIELD_MAX;
   self.sh_rate= DAT_MTK_SHIELD_RATE;
-  
+  self.hardpoint_cnt = DAT_MTK_HARDPOINTS; 
   self.m_fspeed = DAT_MTK_M_FSPEED;
   self.m_sspeed = DAT_MTK_M_SSPEED;
   self.m_bspeed = DAT_MTK_M_BSPEED;
