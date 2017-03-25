@@ -7,7 +7,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 */
 //LIGHT AUTOCANNON=======================
 float DAT_RPLAS_IDX = ID_WEP_RPC;
-string DAT_RPLAS_NAME = "RPC";
+string DAT_RPLAS_NAME = "Rotary Plasma Cannon";
 float DAT_RPLAS_CLIPSIZE = 1;
 float DAT_RPLAS_FIRERATE = 0.28;
 float DAT_RPLAS_RELOADTIME = 0.28;
@@ -41,5 +41,6 @@ void() data_rplas_ini={
   self.en_max = DAT_RPLAS_EN_COST;
   self.i_techlvl = DAT_RPLAS_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_BAL;
+  self.w_abbr = "RPC";
 };
 

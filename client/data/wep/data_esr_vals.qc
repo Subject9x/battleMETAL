@@ -6,7 +6,7 @@ Overview:
 */
 //LIGHT AUTOCANNON=======================
 float DAT_ESR_IDX = ID_WEP_ESR;
-string DAT_ESR_NAME = "ESR";
+string DAT_ESR_NAME = "Electro-Static Coil";
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_FIRERATE = 0.06;
 float DAT_ESR_RELOADTIME = 1;
@@ -40,4 +40,5 @@ void() data_esr_ini={
   self.en_max = DAT_ESR_EN_COST;
   self.i_techlvl = DAT_ESR_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_ENE;
+  self.w_abbr = "ESR";
 };

@@ -12,7 +12,7 @@ vector(vector org, vector sz, float axs) gui_calcAxis;
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderMeter;
 vector(float val) gui_calcRadarHeat;
 void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalPip;
-void(string str, vector ofs, vector color, vector sz, float alpha, float flg, float ax, float vdir) gui_renderString;
+void(string str, vector ofs, vector color, vector sz, float alpha, float flg) gui_renderString;
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderScroll;
 void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) gui_renderImageReel;
 void(string src_img, vector tintcolor, float alpha, float flg) gui_renderImageFullScreen;
@@ -23,6 +23,8 @@ void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector l
 vector(float val) gui_getColorForArmor;
 vector(float val) gui_getColorForShield;
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alpha, float flg) gui_renderTintImage;
+vector(float dmg_type) gui_colorForWeaponType;
+void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float alpha, float flg) gui_renderHighlightString;
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;

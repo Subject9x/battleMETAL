@@ -42,6 +42,9 @@ fight_h.qc
 //==========================
 
 //DATA FILES=================
+  //miscellaneous
+  mech/dat/msc/map_navpoint.qc
+  
   //projectiles
   mech/dat/prj/data_prj_latc_val.qc
   mech/dat/prj/data_prj_emp_val.qc

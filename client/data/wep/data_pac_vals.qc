@@ -6,7 +6,7 @@ Overview:
 */
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
-string DAT_PAC_NAME = "PAC";
+string DAT_PAC_NAME = "Particle-Accelerator Cannon";
 float DAT_PAC_FIRETIME = 0;
 float DAT_PAC_CLIPSIZE = 1;
 float DAT_PAC_FIRERATE = 1;
@@ -41,6 +41,7 @@ void() data_pac_ini={
   self.en_max = DAT_PAC_EN_COST;
   self.i_techlvl = DAT_PAC_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_ENE | EFF_PRC;
+  self.w_abbr = "PAC";
 };
 
 

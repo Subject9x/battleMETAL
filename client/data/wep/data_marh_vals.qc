@@ -6,7 +6,7 @@ Overview: long-range, low damage, homing missile
 */
 //========ACTIVE-RADAR HOMING MISSILE=========
 float DATWEP_MARH_IDX = ID_WEP_MARH;
-string DATWEP_MARH_NAME = "MIS-ARH";
+string DATWEP_MARH_NAME = "Active-Radar Homing Missile";
 float DATWEP_MARH_FIRETIME = 0;
 float DATWEP_MARH_CLIPSIZE = 1;
 float DATWEP_MARH_CURRENTAMMO = 1;
@@ -45,4 +45,5 @@ void() data_marh_ini={
   self.en_max = DATWEP_MARH_EN_COST;
   self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_EXP;
+  self.w_abbr = "M-ARH";
 };

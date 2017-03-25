@@ -40,5 +40,6 @@ void() data_emp_ini={
   self.en_max = DAT_EMP_EN_COST;
   self.i_techlvl = DAT_EMP_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_ENE | EFF_STX;
+  self.w_abbr = "EMP";
 };
 

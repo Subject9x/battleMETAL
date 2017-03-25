@@ -29,5 +29,3 @@ Overview: definition file for building entities
 
 .float eff_output;  //type of effect output - power or shields
 .float eff_radius; //the radius of the effect
-
-

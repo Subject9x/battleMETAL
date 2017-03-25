@@ -71,6 +71,7 @@ float m_wep = 6;
 .string m_pitch_max;
 .vector c_bbx_x;
 .vector c_bbx_n;
+.string w_abbr;
 //player vars
 .float LG_AM_MX;
 .float LG_AM_CR;

@@ -434,16 +434,16 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wep_dat = m_findData(w_id, DATA_WEPN);
   drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
   
-  wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
+  wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins), wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
+  drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins), wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y;
   gui_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins, '4 4 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_abbr, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins, '4 4 0', '2 2 0', '0 1 0'); 
   } 
 };
 /*
@@ -457,16 +457,16 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   ofs = self.hud_pnl4.pos + self.hud_pnl4.margin_ins;
   ofs_y = ofs_y + 8;
   
-  wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
+  wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
+  drawstring(ofs, wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 8;
   gui_renderModalPip(ofs, w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 8', '4 4 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_abbr, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 8', '4 4 0', '2 2 0', '0 1 0'); 
   } 
 };
 /*
@@ -479,16 +479,16 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wep_dat = m_findData(w_id, DATA_WEPN);
   ofs = self.hud_pnl4.pos + self.hud_pnl4.margin_ins;
   ofs_y = ofs_y + 16;
-  wlen = stringwidth(wep_dat.w_name, 0, '4 4 0');
+  wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs, wep_dat.w_name, '4 4 0', wstat, HUD_ALPHA, 0);
+  drawstring(ofs, wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 16;
   gui_renderModalPip(ofs, w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_name, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 16', '4 4 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_abbr, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 16', '4 4 0', '2 2 0', '0 1 0'); 
   }
 
 };

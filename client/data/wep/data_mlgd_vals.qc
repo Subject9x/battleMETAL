@@ -7,7 +7,7 @@ Overview: Laser-guided missile
 */
 //========LASER GUIDED MISSILE=========
 float DATWEP_MLGD_IDX = ID_WEP_MLGD;
-string DATWEP_MLGD_NAME = "MIS-LGD";
+string DATWEP_MLGD_NAME = "Laser-Guided Missile";
 float DATWEP_MLGD_FIRETIME = 0;
 float DATWEP_MLGD_CLIPSIZE = 10;
 float DATWEP_MLGD_CURRENTAMMO = 10;
@@ -46,4 +46,5 @@ void() data_mlgd_ini={
   self.en_max = DATWEP_MLGD_EN_COST;
   self.i_techlvl = DATWEP_MLGD_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_EXP;
+  self.w_abbr = "M-LGD";
 };

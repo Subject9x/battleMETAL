@@ -40,4 +40,5 @@ void() data_latc_ini={
   self.en_max = DAT_LATC_EN_COST;
   self.i_techlvl = DAT_LATC_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_BAL;
+  self.w_abbr = "ATC";
 };

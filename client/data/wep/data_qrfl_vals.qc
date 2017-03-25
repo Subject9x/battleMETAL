@@ -6,7 +6,7 @@ Overview:
 */
 //LIGHT AUTOCANNON=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
-string DAT_QRFL_NAME = "Q-Rifle";
+string DAT_QRFL_NAME = "Quantum Rifle";
 float DAT_QRFL_FIRETIME = 0;
 float DAT_QRFL_CLIPSIZE = 1;
 float DAT_QRFL_FIRERATE = 0.5;
@@ -38,5 +38,6 @@ void() data_qrfl_ini={
   self.en_max = DAT_QRFL_EN_COST;
   self.i_techlvl = DAT_QRFL_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_BAL | EFF_ENG;
+  self.w_abbr = "QRF";
 };
 

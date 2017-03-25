@@ -157,21 +157,26 @@ void() data_mech_mtk;
 void() data_mtk_ini;
 
 void(vector org) mtk_renderHardpoints={
-
+  local entity wep;
+  wep = m_findData(HARDPOINTS[1], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '-44 -100', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '-44 -100', ftos(HARDPOINTS[0]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '-44 -96', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[2], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '22 -100', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '22 -100', ftos(HARDPOINTS[1]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '22 -96', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[3], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '-84 -40', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '-84 -40', ftos(HARDPOINTS[2]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '-84 -34',  wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[4], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 4), org + '58 -40', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '58 -40', ftos(HARDPOINTS[3]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '58 -34',  wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[5], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 5), org + '-12 -94', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '-12 -94', ftos(HARDPOINTS[4]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '-12 -88',  wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
 };
 
 float(vector org) mtk_hardpointListener={

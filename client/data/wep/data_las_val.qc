@@ -41,4 +41,5 @@ void() data_las_ini={
   self.en_max = DAT_LAS_EN_COST;
   self.i_techlvl = DAT_LAS_TECH_LEVEL;
   self.dmg_type = self.dmg_type | DMG_ENE;
+  self.w_abbr = "LAS";
 };

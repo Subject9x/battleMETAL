@@ -14,10 +14,8 @@ Overview: ui header file the hangar menu
   float WEPLIST_EXP_ARR[8];
   float WEPLIST_MSC_ARR[8];
 
-  float HARDPOINTS[8];
-  float NEXT_WEAPONS[9];
-  
-  float WEPBITS[8];
+  float HARDPOINTS[10]; //somehow making this '10' fixed a bug with hardpoint #9
+  float WEPBITS[9];
   
   vector MECHPANEL_CTR;
 //light mech list globals
@@ -96,9 +94,9 @@ void(vector ofs) menu_hangar_WeaponList_EXP;
 void(vector ofs) menu_hangar_WeaponList_MSC;
 void(vector ofs) menu_hangar_HardPointInfo;
 void(vector ofs) menu_hangar_WeaponGroupPanel;
+void(vector ofs) menu_hangar_WeaponInfo;
 
 //utility
-float(float comp) checkIfWeaponInGroup;
-void(float wep_id, float grp_id) assignWeaponToGroup;
-void() getNextWeaponGroup;
-void() getPrevWeaponGroup;
+void() cleanHardPoints;
+float(float comp, float bits) checkIfWeaponInGroup;
+string(float bit) getNameOfWepType;

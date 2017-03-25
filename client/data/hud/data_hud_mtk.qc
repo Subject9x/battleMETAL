@@ -430,12 +430,12 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   drawpic(pont, "gfx/hud/otl/otl_wp.png",  isz, '1 1 1', HUD_ALPHA, 0);
     wep_dat = m_findData(w_id, DATA_WEPN);
   ofs = pont + '16 10';
-  wlen = stringwidth(wep_dat.w_name, 0, '5 6 0');
+  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
+  drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
   
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
   ofs_x = ofs_x + wlen + 6;
   gui_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
@@ -456,12 +456,12 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   
   wep_dat = m_findData(w_id, DATA_WEPN);
   ofs = pont + '16 10';
-  wlen = stringwidth(wep_dat.w_name, 0, '5 6 0');
+  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
+  drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
   
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
   ofs_x = ofs_x + wlen + 6;
   gui_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
@@ -480,12 +480,12 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   
     wep_dat = m_findData(w_id, DATA_WEPN);
   ofs = pont + '16 20';
-  wlen = stringwidth(wep_dat.w_name, 0, '5 6 0');
+  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
+  drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
   
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
   ofs_x = ofs_x + wlen + 6;
   gui_renderModalPip(ofs, w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
@@ -502,12 +502,12 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   
   wep_dat = m_findData(w_id, DATA_WEPN);
   ofs = pont + '16 20';
-  wlen = stringwidth(wep_dat.w_name, 0, '5 6 0');
+  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
+  drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
  
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
   ofs_x = ofs_x + wlen + 6;
   gui_renderModalPip(ofs, w_rel, WEAPON4_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
@@ -522,12 +522,12 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   
   wep_dat = m_findData(w_id, DATA_WEPN);
   ofs = pont + '16 20';
-  wlen = stringwidth(wep_dat.w_name, 0, '5 6 0');
+  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs + '2 0', wep_dat.w_name, '5 6 0', wstat, HUD_ALPHA, 0);
+  drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
  
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_name, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
   ofs_x = ofs_x + wlen + 6;
   gui_renderModalPip(ofs, w_rel, WEAPON5_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);

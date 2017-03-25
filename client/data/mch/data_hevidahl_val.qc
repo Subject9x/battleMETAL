@@ -184,33 +184,42 @@ void() data_mech_hvd;
 void() data_hvd_ini;
 
 void(vector org) hvd_renderHardpoints={
-  
+  local entity wep;
+  wep = m_findData(HARDPOINTS[1], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 1), org + '-82 -48', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '-82 -48', ftos(HARDPOINTS[1]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '-82 -48', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
 
+  wep = m_findData(HARDPOINTS[2], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 2), org + '-64 -24', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '-64 -24', ftos(HARDPOINTS[2]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '-64 -24', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[3], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 3), org + '60 -48', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '60 -48', ftos(HARDPOINTS[3]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '60 -48', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
     
+  wep = m_findData(HARDPOINTS[4], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 4), org + '44 -24', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '44 -24', ftos(HARDPOINTS[4]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '44 -24', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
 
+  wep = m_findData(HARDPOINTS[5], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 5), org + '-38 -90', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '-34 -90', ftos(HARDPOINTS[5]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '-34 -90', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[6], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 6), org + '14 -90', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '18 -90', ftos(HARDPOINTS[6]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '18 -90', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[7], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 7), org + '-12 -44', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '-8 -40', ftos(HARDPOINTS[7]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '-8 -40', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[8], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 8), org + '-38 -54', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org + '-34 -50', ftos(HARDPOINTS[8]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org + '-34 -50', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
   
+  wep = m_findData(HARDPOINTS[9], DATA_WEPN);
   gui_renderTintImage((PLAYER_HELPER.plr_sel_hrpnt == 9), org +  '14 -54', UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  drawstring(org +  '18 -50', ftos(HARDPOINTS[9]), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(org +  '18 -50', wep.w_abbr, '6 6 0', gui_colorForWeaponType(wep.dmg_type), HUD_ALPHA, 0);
 };
 
 float(vector org) hvd_hardpointListener={

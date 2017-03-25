@@ -5,6 +5,22 @@ Date: 03/8/2017
 Overview: GUI API class file
 */
 
+
+vector(float dmg_type) gui_colorForWeaponType={
+  if((dmg_type & DMG_BAL)){
+    return CLR_DEF_ARM_HALF;
+  }
+  else if((dmg_type & DMG_ENE)){
+    return ( CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2');
+  }
+  else if((dmg_type & DMG_EXP)){
+    return CLR_DEF_ARM_OK;
+  }
+  else{
+    return CLR_DEF_TXT_HIGHLIGHT;
+  }
+};
+
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alpha, float flg) gui_renderTintImage={
   local vector clr;
   if(bool){
@@ -197,8 +213,19 @@ void(string src_img, vector tintcolor, float alpha, float flg) gui_renderImageFu
   drawpic(org, src_img, pnl_sz, tintcolor, alpha, flg);
 };
 
-void(string str, vector ofs, vector color, vector sz, float alpha, float flg, float ax, float vdir) gui_renderString={
+void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float alpha, float flg) gui_renderHighlightString={
 
+  if(bool){
+    gui_renderString(str, ofs, hclr, sz, alpha, flg);
+  }
+  else{
+    gui_renderString(str, ofs, clr, sz, alpha, flg);
+  }
+};
+
+
+void(string str, vector ofs, vector color, vector sz, float alpha, float flg) gui_renderString={
+  drawstring(ofs, str, sz,color, alpha, flg);
 };
 
 void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel={

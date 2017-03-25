@@ -17,7 +17,6 @@ void() menu_hangarListener={
 };
 
 void() hardpointListener={
-
   local entity dat;
   local float hpnt;
   dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
@@ -48,6 +47,7 @@ void() mechSelectListener={
       local entity dat;
       dat = m_findData(found, DATA_MECH);
       HARDPOINT_CNT = dat.hardpoint_cnt;
+      cleanHardPoints();
       cl_setmech(found);
     }
   }
@@ -77,20 +77,18 @@ void() weaponSelectListener={
 };
 
 void() hardpointInfoListener={
-  local vector ofs;
+  /*local vector ofs;
   ofs_x = VIEW_CTR_x - 26;
   ofs_y = VIEW_CTR_y + 24;
   if(menu_checkMouseInBounds(cursorpos, ofs, '128 128')){
     ofs = ofs + '3 20';
     if(menu_checkMouseInBounds(cursorpos, ofs+'54 0', '18 8')){
       getPrevWeaponGroup();
-      //assignWeaponToGroup(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt),PLAYER_HELPER.plr_sel_grp);
     }
     if(menu_checkMouseInBounds(cursorpos, ofs+'78 0', '18 8')){
       getNextWeaponGroup();
-//assignWeaponToGroup(getWeaponInHardpoint(PLAYER_HELPER.plr_sel_hrpnt),PLAYER_HELPER.plr_sel_grp);
     }
-  }
+  }*/
 };
 
 void() mechAcceptButtonListener={
@@ -149,11 +147,11 @@ void() weaponGroupPanelListener={
 void() menu_hangarDrawFrame={
   
   local vector topleftroot;
-  topleftroot = VIEW_ORG + '12 12';
+  topleftroot = VIEW_ORG + '2 12';
   //drawfill(topleftroot, (VIEW_MAX - '24 24'), STATUS_DED, HUD_ALPHA, 0);
   //gui_DrawRect(topleftroot, (VIEW_MAX - '24 24'), '6 4', '1 1 1');
   
-  drawpic(topleftroot, UI_DEF_BOX_512,(VIEW_MAX - '24 24'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(topleftroot, UI_DEF_BOX_512,(VIEW_MAX - '4 24'), '1 1 1', HUD_ALPHA, 0);
   
   menu_hangar_DrawNavBar(topleftroot);
   menu_hangar_MechDisplay(topleftroot);
@@ -163,6 +161,7 @@ void() menu_hangarDrawFrame={
   menu_hangar_WeaponList(topleftroot + '0 24');
   menu_hangar_HardPointInfo(topleftroot);
   menu_hangar_WeaponGroupPanel(topleftroot);
+  menu_hangar_WeaponInfo(topleftroot + '0 24');
 };
 
 void(vector ofs) menu_hangar_DrawNavBar={
@@ -367,10 +366,10 @@ void(vector ofs) menu_hangar_MechInfo={
 
 void(vector ofs) menu_hangar_WeaponList={
   local vector nofs;
-  ofs_x = VIEW_CTR_x + 160;
+  ofs_x = VIEW_CTR_x + 150;
   nofs = ofs;
   nofs = nofs + '12 12';
-  drawpic(ofs + '10 18', UI_DEF_BOX_256_TALL, '128 400', '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs + '10 18', UI_DEF_BOX_256_TALL, '148 400', '1 1 1', HUD_ALPHA, 0);
   drawstring(ofs + '8 8', "[AVAILABLE WEAPONS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   menu_hangar_WeaponList_BAL(nofs);
   menu_hangar_WeaponList_ENE(nofs);
@@ -382,8 +381,8 @@ void(vector ofs) menu_hangar_WeaponList_BAL={
   local vector nofs, clr;
   local float lst_idx, act_idx;
   nofs = ofs;
-  nofs = nofs + '12 12';
-  drawstring(nofs + '10 2', "==BALLISTIC==", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  nofs = nofs + '-8 12';
+  drawstring(nofs + '40 2', "==BALLISTIC==", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
   act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= 10){
@@ -400,7 +399,7 @@ void(vector ofs) menu_hangar_WeaponList_BAL={
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
-        drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
+        drawstring(lofs + '12 0', dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_BAL_ARR[act_idx] = dat.data_idx;
         act_idx = act_idx + 1;
       }
@@ -417,8 +416,8 @@ void(vector ofs) menu_hangar_WeaponList_ENE={
   local vector nofs, clr;
   local float lst_idx, act_idx;
   nofs = ofs;
-  nofs = nofs + '12 100';
-  drawstring(nofs + '10 2', "==ENERGY==", '6 6 0', CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', HUD_ALPHA, 0);
+  nofs = nofs + '-8 100';
+  drawstring(nofs + '48 2', "==ENERGY==", '6 6 0', CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', HUD_ALPHA, 0);
   act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= 10){
@@ -435,7 +434,7 @@ void(vector ofs) menu_hangar_WeaponList_ENE={
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
-        drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
+        drawstring(lofs + '12 0', dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_ENE_ARR[act_idx] = dat.data_idx;
         act_idx = act_idx + 1;
       }
@@ -452,8 +451,8 @@ void(vector ofs) menu_hangar_WeaponList_EXP={
   local vector nofs, clr;
   local float lst_idx, act_idx;
   nofs = ofs;
-  nofs = nofs + '12 190';
-  drawstring(nofs + '10 2', "==MISSILE==", '6 6 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  nofs = nofs + '-8 190';
+  drawstring(nofs + '48 2', "==MISSILE==", '6 6 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
   act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= 10){
@@ -470,7 +469,7 @@ void(vector ofs) menu_hangar_WeaponList_EXP={
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
-        drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
+        drawstring(lofs + '12 0', dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_EXP_ARR[act_idx] = dat.data_idx;
         act_idx = act_idx + 1;
       }
@@ -505,7 +504,7 @@ void(vector ofs) menu_hangar_WeaponList_MSC={
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
-        drawstring(lofs + '12 0', dat.w_name, '6 6 0', clr, HUD_ALPHA, 0);
+        drawstring(lofs + '12 0', dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_MSC_ARR[act_idx] = dat.data_idx;
         act_idx = act_idx + 1;
       }
@@ -524,13 +523,13 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
   nofs_x = ofs_x + VIEW_CTR_x - 38;
   nofs_y = ofs_y + VIEW_CTR_y + 52;
   drawpic(nofs, UI_DEF_BOX_256, '196 150', '1 1 1', HUD_ALPHA,0);
-  drawstring(nofs + '48 6', "[WEAPON GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(nofs + '124 16', "[A] [B] [C]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '6 6', "[WEAPON GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + '124 6', "[A] [B] [C]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  nofs = nofs + '0 12';
-  col_a = nofs + '126 12';
-  col_b = nofs + '150 12';
-  col_c = nofs + '172 12';
+  nofs = nofs + '0 6';
+  col_a = nofs + '126 10';
+  col_b = nofs + '150 10';
+  col_c = nofs + '172 10';
   lst_idx = 1;
   bit = 1;
   while((lst_idx <= HARDPOINT_CNT)){
@@ -541,15 +540,15 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
     lofs_y = nofs_y + (lst_idx * 14);
     line = strcat("[",ftos(lst_idx),"]");
     dat = m_findData(HARDPOINTS[lst_idx], DATA_WEPN);
-    line = strcat(line, " ", dat.w_name);
+    line = strcat(line, " ", dat.w_abbr);
     drawstring(lofs, line, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp1 & bit),  lofs + '120 -2', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp2 & bit),  lofs + '144 -2', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp3 & bit),  lofs + '166 -2', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp1 & bit),  lofs + '120 -4', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp2 & bit),  lofs + '144 -4', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp3 & bit),  lofs + '166 -4', UI_DEF_BOX_256, '14 14', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
     bit = bit * 2;
     lst_idx = lst_idx + 1;
   }
-  lst_idx = lst_idx - 1;
+  lst_idx = lst_idx;
   WEPNGRP_CNT_A = lst_idx;
   WEPNGRP_CNT_B = lst_idx;
   WEPNGRP_CNT_C = lst_idx;
@@ -558,9 +557,9 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
   WEPNGRP_ORG_C = col_c;
   WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = 14;
   WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = ((lst_idx) * 14);
-  gui_DrawRect(WEPNGRP_ORG_A, WEPNGRP_SIZE_A, '6 4', '1 1 1');
-  gui_DrawRect(WEPNGRP_ORG_B, WEPNGRP_SIZE_B, '6 4', '1 1 1');
-  gui_DrawRect(WEPNGRP_ORG_C, WEPNGRP_SIZE_C, '6 4', '1 1 1');
+  //gui_DrawRect(WEPNGRP_ORG_A, WEPNGRP_SIZE_A, '6 4', '1 1 1'); //DEBUG
+ // gui_DrawRect(WEPNGRP_ORG_B, WEPNGRP_SIZE_B, '6 4', '1 1 1'); //DEBUG
+  //gui_DrawRect(WEPNGRP_ORG_C, WEPNGRP_SIZE_C, '6 4', '1 1 1'); //DEBUG
 };
 
 void(vector ofs) menu_hangar_HardPointInfo={
@@ -569,60 +568,135 @@ void(vector ofs) menu_hangar_HardPointInfo={
   nofs_x = ofs_x + VIEW_CTR_x - 38;
   nofs_y = ofs_y + 42;
   //gui_DrawRect(nofs, '196 128', '6 4', '1 1 1');
-  drawpic(nofs, UI_DEF_BOX_256, '196 128', '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs, UI_DEF_BOX_256, '196 56', '1 1 1', HUD_ALPHA, 0);
   local string title;
   local float tlen;
   local vector tpos;
-  title = "[HARDPOINT]";
+  title = "[HARDPOINT INFO]";
   tlen = stringwidth(title, 0, '6 6 0');
   tpos = nofs + '64 3';
   drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
+  local vector idrpos;
+  idrpos = nofs + '4 12';
+  drawstring(idrpos, strcat("[ID]: ", ftos(PLAYER_HELPER.plr_sel_hrpnt)) , '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
   dat = m_findData(HARDPOINTS[PLAYER_HELPER.plr_sel_hrpnt], DATA_WEPN);
   local string wepname_row;
   local vector wnpos;
-  wepname_row = strcat("[WEAPON]: ", dat.w_name);
-  wnpos = nofs + '3 12';
+  wepname_row = strcat("[WEAPON]:", dat.w_abbr);
+  wnpos = idrpos + '0 8';
   drawstring(wnpos, wepname_row, '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   local string wepgrp_row;
   local vector wgpos;
-  wepgrp_row = strcat("[GROUP]:    ", ftos(checkIfWeaponInGroup(PLAYER_HELPER.plr_sel_wid)));
-  wgpos = nofs + '3 20';
-  drawstring(wgpos, wepgrp_row, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(wgpos+'54 0', "[<]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(wgpos+'78 0', "[>]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  local string groups;
+  wgpos = idrpos + '0 16';
+  drawstring(wgpos, "[GROUPS]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderHighlightString("[A]",wgpos+'64 0', CLR_DEF_ARM_OK, CLR_DEF_TXT_NONSELECT,checkIfWeaponInGroup(PLAYER_HELPER.plr_sel_wid, PLAYER_HELPER.plr_nex_grp1),'6 6 0', HUD_ALPHA,0);  
+  gui_renderHighlightString("[B]",wgpos+'96 0', CLR_DEF_ARM_OK, CLR_DEF_TXT_NONSELECT,checkIfWeaponInGroup(PLAYER_HELPER.plr_sel_wid, PLAYER_HELPER.plr_nex_grp2),'6 6 0', HUD_ALPHA,0);  
+  gui_renderHighlightString("[C]",wgpos+'128 0', CLR_DEF_ARM_OK, CLR_DEF_TXT_NONSELECT,checkIfWeaponInGroup(PLAYER_HELPER.plr_sel_wid, PLAYER_HELPER.plr_nex_grp3),'6 6 0', HUD_ALPHA,0);  
+  
+  local vector typpos;
+  typpos = idrpos + '0 24';
+  drawstring(typpos, "[ALLOWED TYPES]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  local vector hptsizepos;
+  hptsizepos = idrpos + '0 32';
+  drawstring(hptsizepos, "[MAX WEAPON SIZE]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
-
-void() getNextWeaponGroup={
-  PLAYER_HELPER.plr_sel_grp = PLAYER_HELPER.plr_sel_grp + 1;
-  if(PLAYER_HELPER.plr_sel_grp > 3){
-    PLAYER_HELPER.plr_sel_grp = 1;
-  }
+void(vector ofs) menu_hangar_WeaponInfo={
+  local vector nofs, max;
+  local entity dat;
+  nofs_x = ofs_x + VIEW_CTR_x - 38;
+  nofs_y = ofs_y + 74;
+  drawpic(nofs, UI_DEF_BOX_256, '196 194', '1 1 1', HUD_ALPHA, 0);
+  local string title;
+  local float tlen;
+  local vector tpos;
+  title = "[WEAPON INFO]";
+  tlen = stringwidth(title, 0, '6 6 0');
+  tpos = nofs + '0 6';
+  tpos_x= (nofs_x + 98) - (tlen/2);
+  drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  local vector nmpos;
+  local string name;
+  local entity dat;
+  local float nlen;
+  dat = m_findData(PLAYER_HELPER.plr_sel_wep, DATA_WEPN);
+  name = dat.w_name;
+  nlen = stringwidth(name, 0, '7 8 0');
+  nmpos = nofs + '0 16';
+  nmpos_x = (nmpos_x + 98) - (nlen/2); 
+  drawstring(nmpos, name, '7 8 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //type
+  local vector typpos;
+  typpos = nofs + '4 28';
+  drawstring(typpos, strcat("[TYPE]: ",getNameOfWepType(dat.dmg_type)), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //range
+  local vector rngpos;
+  rngpos = nofs + '4 40';
+  drawstring(rngpos, "[RANGE]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //size
+  local vector sizpos;
+  sizpos = nofs + '4 52';
+  drawstring(sizpos, "[SIZE]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //faction
+  local vector tecpos;
+  tecpos = nofs + '4 64';
+  drawstring(tecpos, "[FACTION]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //tech
+  local vector facpos;
+  facpos = nofs + '4 78';
+  drawstring(facpos, "[TECH LEVEL]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //desc
+  local vector decpos;
+  decpos = nofs + '4 90';
+  drawstring(decpos, "[NOTES]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(decpos+'8 10', "+", '5 5 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(decpos+'8 20', "+", '5 5 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(decpos+'8 30', "+", '5 5 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(decpos+'8 40', "+", '5 5 0', '1 1 1', HUD_ALPHA, 0);
 };
 
-void() getPrevWeaponGroup={
-  PLAYER_HELPER.plr_sel_grp = PLAYER_HELPER.plr_sel_grp - 1;
-  if(PLAYER_HELPER.plr_sel_grp <= 0){
-    PLAYER_HELPER.plr_sel_grp = 3;
-  }
-};
-
-void(float wep_id, float group) assignWeaponToGroup={
-};
-
-float(float comp) checkIfWeaponInGroup={
-  if((PLAYER_HELPER.plr_nex_grp1 & comp)){
-    return 1;
-  }
-  else if((PLAYER_HELPER.plr_nex_grp2 & comp)){
-    return 2;
-  }  
-  else if((PLAYER_HELPER.plr_nex_grp3 & comp)){
-    return 3;
+//UTILITY FUNCS
+float(float comp, float bits) checkIfWeaponInGroup={
+  if((bits & comp)){
+    return TRUE;
   }
   else{
-    return 0;
+    return FALSE;
   }
+};
+
+void() cleanHardPoints={
+  local float lst_idx;
+  lst_idx = 0;
+  while(lst_idx <= HARDPOINT_CNT){
+    HARDPOINTS[lst_idx] = 0;
+    lst_idx = lst_idx + 1;
+  }
+};
+
+string(float bit) getNameOfWepType={
+  if((bit & DMG_BAL)){
+    return "BALLISTIC";
+  }
+  else if((bit & DMG_ENE)){
+    return "ENERGY";
+  }
+  else if((bit & DMG_EXP)){
+    return "MISSILe";
+  }
+  else{
+    return "unknown";
+  } 
 };
