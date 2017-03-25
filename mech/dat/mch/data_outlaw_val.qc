@@ -168,6 +168,9 @@ void() data_mech_otl={
     self.unit_wep1 = data_otl_wep1;
     self.unit_wep2 = data_otl_wep2;
     self.unit_wep3 = data_otl_wep3;
+    self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;    
+    self.w_group2 = self.w_group2 | WEAPON3;    
+    self.w_group3 = 0;
   self = oself;
 };
 
@@ -177,9 +180,6 @@ void() data_otl_ini={
   self.data_type = DATA_MECH;
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
   self.i_reserve= DAT_OTL_RESERVE_COST;
-  self.w_group1 = self.w_group1 | WEAPON1| WEAPON2;
-  self.w_group2 = self.w_group2 | WEAPON3;
-  self.w_group3 = 0;
   self.en_cur= DAT_OTL_ENERGY_CUR;
   self.en_max= DAT_OTL_ENERGY_MAX;
   self.en_rate= DAT_OTL_ENERGY_RATE;

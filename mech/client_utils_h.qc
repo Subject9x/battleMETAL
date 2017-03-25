@@ -24,5 +24,5 @@ void() spawnpoint_Random;
 //client command layer
 void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
-void(string cmd, float tokens) clien_setWeaponGroup;
+void(string cmd, float tokens) client_setWeaponGroup;
 //void(float w_id, float wslotid) client_updateWeaponIdStat;

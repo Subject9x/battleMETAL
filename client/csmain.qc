@@ -16,7 +16,7 @@ void() CSQC_Init =
   PLAYER_HELPER = spawn();
   PLAYER_HELPER.drawmask = MASK_ENGINE;
   PLAYER_HELPER.plr_sel_mech = 1;
-  PLAYER_HELPER.plr_nex_mech = -1;
+  PLAYER_HELPER.plr_nex_mech = 0;
   PLAYER_HELPER.plr_nex_wep1 = -1;
   PLAYER_HELPER.plr_nex_wep2 = -1;
   PLAYER_HELPER.plr_nex_wep3 = -1;
@@ -25,10 +25,20 @@ void() CSQC_Init =
   PLAYER_HELPER.plr_nex_wep7 = -1;
   PLAYER_HELPER.plr_nex_wep8 = -1;
   PLAYER_HELPER.plr_nex_wep9 = -1;
-  PLAYER_HELPER.plr_nex_grp1 = -1;
-  PLAYER_HELPER.plr_nex_grp2 = -1;
-  PLAYER_HELPER.plr_nex_grp3 = -1;
+  PLAYER_HELPER.plr_nex_grp1 = 0;
+  PLAYER_HELPER.plr_nex_grp2 = 0;
+  PLAYER_HELPER.plr_nex_grp3 = 0;
   addentity(PLAYER_HELPER);
+  
+  WEPBITS[0] = 1;
+  WEPBITS[1] = 2;
+  WEPBITS[2] = 4;
+  WEPBITS[3] = 8;
+  WEPBITS[4] = 16;
+  WEPBITS[5] = 32;
+  WEPBITS[6] = 64;
+  WEPBITS[7] = 128;
+  WEPBITS[8] = 256;
   
   cs_precache();
 };

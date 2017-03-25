@@ -114,7 +114,34 @@ void() mechAcceptButtonListener={
 };
 
 void() weaponGroupPanelListener={
-
+  local float found;
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A)){
+    found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A, '14 14', WEPNGRP_CNT_A, 0);
+    found = WEPBITS[found];
+    if((PLAYER_HELPER.plr_nex_grp1 & found)){
+      PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 - (PLAYER_HELPER.plr_nex_grp1 & found);
+    }else{
+      PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 | found;
+    }
+  }
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_B, WEPNGRP_SIZE_B)){
+    found = listListener(WEPNGRP_ORG_B, cursorpos, WEPNGRP_SIZE_B, '14 14', WEPNGRP_CNT_B, 0);
+    found = WEPBITS[found];
+    if((PLAYER_HELPER.plr_nex_grp2 & found)){
+      PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 - (PLAYER_HELPER.plr_nex_grp2 & found);
+    }else{
+      PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 | found;
+    }
+  }  
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_C, WEPNGRP_SIZE_C)){
+    found = listListener(WEPNGRP_ORG_C, cursorpos, WEPNGRP_SIZE_C, '14 14', WEPNGRP_CNT_C, 0);
+    found = WEPBITS[found];
+    if((PLAYER_HELPER.plr_nex_grp3 & found)){
+      PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 - (PLAYER_HELPER.plr_nex_grp3 & found);
+    }else{
+      PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 | found;
+    }
+  }
 };
 
 
@@ -339,8 +366,7 @@ void(vector ofs) menu_hangar_MechInfo={
 };
 
 void(vector ofs) menu_hangar_WeaponList={
-  local vector nofs, clr;
-  local float lst_idx;
+  local vector nofs;
   ofs_x = VIEW_CTR_x + 160;
   nofs = ofs;
   nofs = nofs + '12 12';
@@ -500,18 +526,17 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
   drawpic(nofs, UI_DEF_BOX_256, '196 150', '1 1 1', HUD_ALPHA,0);
   drawstring(nofs + '48 6', "[WEAPON GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   drawstring(nofs + '124 16', "[A] [B] [C]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  col_a = nofs + '124 22';
-  col_b = nofs + '142 22';
-  col_c = nofs + '160 22';
   
   nofs = nofs + '0 12';
+  col_a = nofs + '126 12';
+  col_b = nofs + '150 12';
+  col_c = nofs + '172 12';
   lst_idx = 1;
   bit = 1;
-  while(lst_idx <= HARDPOINT_CNT){
+  while((lst_idx <= HARDPOINT_CNT)){
     local vector lofs;
     local string line;
     local entity dat;
-    local float g1,g2,g3;
     lofs_x = nofs_x + 6 ;
     lofs_y = nofs_y + (lst_idx * 14);
     line = strcat("[",ftos(lst_idx),"]");
@@ -524,6 +549,18 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
     bit = bit * 2;
     lst_idx = lst_idx + 1;
   }
+  lst_idx = lst_idx - 1;
+  WEPNGRP_CNT_A = lst_idx;
+  WEPNGRP_CNT_B = lst_idx;
+  WEPNGRP_CNT_C = lst_idx;
+  WEPNGRP_ORG_A = col_a;
+  WEPNGRP_ORG_B = col_b;
+  WEPNGRP_ORG_C = col_c;
+  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = 14;
+  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = ((lst_idx) * 14);
+  gui_DrawRect(WEPNGRP_ORG_A, WEPNGRP_SIZE_A, '6 4', '1 1 1');
+  gui_DrawRect(WEPNGRP_ORG_B, WEPNGRP_SIZE_B, '6 4', '1 1 1');
+  gui_DrawRect(WEPNGRP_ORG_C, WEPNGRP_SIZE_C, '6 4', '1 1 1');
 };
 
 void(vector ofs) menu_hangar_HardPointInfo={
@@ -572,22 +609,7 @@ void() getPrevWeaponGroup={
   }
 };
 
-void(float wep_id, float grp_id) assignWeaponToGroup={
-  if(grp_id == 1){
-    PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 | wep_id;
-    PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 - (PLAYER_HELPER.plr_nex_grp2 & wep_id);
-    PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 - (PLAYER_HELPER.plr_nex_grp3 & wep_id);
-  }
-  else if(grp_id == 2){
-    PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 | wep_id;
-    PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 - (PLAYER_HELPER.plr_nex_grp1 & wep_id);
-    PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 - (PLAYER_HELPER.plr_nex_grp3 & wep_id);
-  }
-  else if(grp_id == 3){
-    PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 | wep_id;
-    PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 - (PLAYER_HELPER.plr_nex_grp2 & wep_id);
-    PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 - (PLAYER_HELPER.plr_nex_grp1 & wep_id);
-  }
+void(float wep_id, float group) assignWeaponToGroup={
 };
 
 float(float comp) checkIfWeaponInGroup={

@@ -17,6 +17,18 @@ void(entity data) buildVehicle={
     if(data.unit_ctor){
       buildCenterTorso(data);
     }
+    if((self.flags & FL_CLIENT)){
+      if(self.w_group1 == 0){
+        self.w_group1 = data.w_group1;
+      }
+      if(self.w_group2 == 0){
+        self.w_group2 = data.w_group2;
+      }
+      if(self.w_group3 == 0){
+        self.w_group3 = data.w_group3;
+      }
+    }
+    
     if(data.unit_ltor){
       self.e_tor_l = buildLeftTorso(data, self);
     }

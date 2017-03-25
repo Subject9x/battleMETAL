@@ -546,7 +546,7 @@ void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float 
         
       self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
                             getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
-      self.hud_targetShield(trgsh, tpos, 12);
+      self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z);
       self.hud_targetRange(trgdist);
       self.hud_targetLock(trglock);
       self.hud_targetDirectionPip(trgdir);
@@ -593,25 +593,23 @@ void(float lg, float ct, float lt, float rt, float la, float ra) otl_targetArmor
   TARGER SHIELD METER====================================================
 */
 void(float shieldval, vector tpos, float zht) otl_targetShield={
-  local vector label_org, ofs;
-  local float nlen;
-  ofs = self.hud_pnl5.pos + self.hud_pnl5.margin_ins + '0 32';
-  drawstring(ofs, "[Shield]", '6 6 0', '0 0.85 0', HUD_ALPHA, 0);
-  nlen = stringwidth("[SHIELD]",0,'6 6 0');
-  
   if(shieldval > 0){
-    local vector spos;
+    local vector label_org, ofs, spos;
+    local float nlen;
+    ofs = self.hud_pnl5.pos + self.hud_pnl5.margin_ins + '8 12';
+    nlen = stringwidth("[SHIELD]",0,'6 6 0');
+    gui_renderMeter(shieldval, ofs, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
+    ofs_x = self.hud_pnl5.pos + (self.hud_pnl5.hsize - (nlen/2) - 8);
+    ofs_y = ofs_y - 8;
+    drawstring(ofs, "[Shield]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
     tpos_z = tpos_z + zht;
     spos = cs_project(tpos);
     if (spos_z >= 0) {
       spos_x -= 36; //align horizontally to centre
       spos_y -= 3; //align vertically again
       spos_z = 0; //shut up dp.
-      //ofs_x = ofs_x + nlen + 2;
       gui_renderMeter(shieldval, spos, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
     }
-    ofs_x = ofs_x + nlen + 2;
-    gui_renderMeter(shieldval, ofs, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
   }
 };
 /*

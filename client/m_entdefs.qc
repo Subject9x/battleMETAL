@@ -76,7 +76,7 @@ float ARM_RAD = 24;
 .vector w9_ofs;
 
 .float dmg_type;
-.float hardpoint_cnt
+.float hardpoint_cnt;
 
 
 

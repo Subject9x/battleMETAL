@@ -193,6 +193,9 @@ void() data_mech_mtk={
     self.unit_wep3 = data_mtk_wep3;
     self.unit_wep4 = data_mtk_wep4;
     self.unit_wep5 = data_mtk_wep5;
+    self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;    
+    self.w_group2 = self.w_group2 | WEAPON3 | WEAPON4;    
+    self.w_group3 = self.w_group3 | WEAPON5;  
   self = oself;
 };
 
@@ -202,9 +205,6 @@ void() data_mtk_ini={
   self.data_type = DATA_MECH;
   self.i_techlvl= DAT_MTK_TECH_LEVEL;
   self.i_reserve= DAT_MTK_RESERVE_COST;
-  self.w_group1 = self.w_group1 + WEAPON1 + WEAPON2;
-  self.w_group2 = self.w_group2 + WEAPON3 + WEAPON4;
-  self.w_group3 = self.w_group3 + WEAPON5;
   self.en_cur= DAT_MTK_ENERGY_CUR;
   self.en_max= DAT_MTK_ENERGY_MAX;
   self.en_rate= DAT_MTK_ENERGY_RATE;

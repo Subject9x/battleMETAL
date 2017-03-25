@@ -31,14 +31,14 @@ void(string str, float tokens) client_ParseMechCommand={
     }
   }
   else if(argv(1) == "setgroup"){
-    clien_setWeaponGroup(str, tokens);
+    client_setWeaponGroup(str, tokens);
   }
 };  
 
 /*
   
 */
-void(string cmd, float tokens) clien_setWeaponGroup={
+void(string cmd, float tokens) client_setWeaponGroup={
   local float groupnum, groupval;
   groupnum = stof(argv(2));
   groupval = stof(argv(3));

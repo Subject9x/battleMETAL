@@ -227,6 +227,9 @@ void() data_mech_hvd={
     self.unit_wep7 = data_hvd_wep7;
     self.unit_wep8 = data_hvd_wep8;
     self.unit_wep9 = data_hvd_wep9;
+    self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2 | WEAPON3 | WEAPON4;    
+    self.w_group2 = self.w_group2 | WEAPON5 | WEAPON6;    
+    self.w_group3 = self.w_group3 | WEAPON7 | WEAPON8 | WEAPON9;    
   self = oself;
 };
 
@@ -236,9 +239,6 @@ void() data_hvd_ini={
   self.data_type = DATA_MECH;
   self.i_techlvl= DAT_HVD_TECH_LEVEL;
   self.i_reserve= DAT_HVD_RESERVE_COST;
-  self.w_group1 = WEAPON1 + WEAPON2 + WEAPON3 + WEAPON4;
-  self.w_group2 = WEAPON5 + WEAPON6;
-  self.w_group3 = WEAPON7 + WEAPON8 + WEAPON9;
   self.en_cur= DAT_HVD_ENERGY_CUR;
   self.en_max= DAT_HVD_ENERGY_MAX;
   self.en_rate= DAT_HVD_ENERGY_RATE;

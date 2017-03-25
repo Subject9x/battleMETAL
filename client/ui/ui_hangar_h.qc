@@ -17,6 +17,8 @@ Overview: ui header file the hangar menu
   float HARDPOINTS[8];
   float NEXT_WEAPONS[9];
   
+  float WEPBITS[8];
+  
   vector MECHPANEL_CTR;
 //light mech list globals
   vector MECHLIST_SIZE_LIGHT;
@@ -50,6 +52,19 @@ float WEPNLIST_CNT;
   vector WEPNLIST_ORG_MSC;
   vector WEPNLIST_SIZE_MSC;
 
+// weapon group A
+  float WEPNGRP_CNT_A;
+  vector WEPNGRP_ORG_A;
+  vector WEPNGRP_SIZE_A;
+// weapon group B
+  float WEPNGRP_CNT_B;
+  vector WEPNGRP_ORG_B;
+  vector WEPNGRP_SIZE_B;
+// weapon group C
+  float WEPNGRP_CNT_C;
+  vector WEPNGRP_ORG_C;
+  vector WEPNGRP_SIZE_C;
+  
 //hardpoint count
   float HARDPOINT_CNT;
   
