@@ -14,15 +14,16 @@ float MENU_BRIEF_ACTIVE = FALSE;
 vector cursorpos;
 vector last_view;
 
-.void(vector org) menu_renderHardpoints;
-.float(vector org) menu_hardpointListener;
+.void(vector org) menu_renderHardpoints;    //the mech data ent implements these
+.float(vector org) menu_hardpointListener; //the mech data ent implements these
 
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
-
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 
 void() menu_handleFrame;
-
+void(vector ofs) menu_navBar;
+void() menu_mainListener;
+void() navBarListener;
 
 //image defs
 string UI_DEF_BOX_512;

@@ -49,8 +49,6 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
   }
 };
 
-
-
 void() menu_handleFrame={
 
   local vector mpos, i_sz;
@@ -65,7 +63,37 @@ void() menu_handleFrame={
     menu_hangarDrawFrame(); 
   }
   else if(MENU_BRIEF_ACTIVE){
-  
+    menu_briefDrawFrame();
   }
+  menu_navBar((VIEW_ORG+'2 12'));
   drawpic(mpos, "gfx/ui/ui_cursor.png",  i_sz, '1 1 1', HUD_ALPHA, 0);
+};
+
+void(vector ofs) menu_navBar={
+  local vector nvpos;
+  nvpos = ofs + '8 6';
+  
+  gui_DrawRect(nvpos, '58 16', '6 4', '1 1 1');
+  drawstring(nvpos + '0 4', "[BRIEFING]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  gui_DrawRect(nvpos+'59 0', '64 16', '6 4', '1 1 1');
+  drawstring(nvpos + '59 4', "[HANGAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  gui_DrawRect(VIEW_MAX - '88 24', '64 16', '6 4', '1 1 1');
+  drawstring(VIEW_MAX - '88 24', "[ACCEPT]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+};
+
+void() menu_mainListener={
+  navBarListener();
+};
+
+void() navBarListener={
+  if(menu_checkMouseInBounds(cursorpos, '10 18', '58 16')){
+    MENU_BRIEF_ACTIVE = TRUE;
+    MENU_HANGAR_ACTIVE = FALSE;
+  }
+  else if(menu_checkMouseInBounds(cursorpos, '59 18', '48 16')){
+    MENU_BRIEF_ACTIVE = FALSE;
+    MENU_HANGAR_ACTIVE = TRUE;
+  }
 };

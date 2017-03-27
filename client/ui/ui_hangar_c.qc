@@ -153,7 +153,7 @@ void() menu_hangarDrawFrame={
   
   drawpic(topleftroot, UI_DEF_BOX_512,(VIEW_MAX - '4 24'), '1 1 1', HUD_ALPHA, 0);
   
-  menu_hangar_DrawNavBar(topleftroot);
+  //menu_hangar_DrawNavBar(topleftroot);
   menu_hangar_MechDisplay(topleftroot);
   menu_hangar_MechList(topleftroot + '0 24');
   
@@ -162,20 +162,6 @@ void() menu_hangarDrawFrame={
   menu_hangar_HardPointInfo(topleftroot);
   menu_hangar_WeaponGroupPanel(topleftroot);
   menu_hangar_WeaponInfo(topleftroot + '0 24');
-};
-
-void(vector ofs) menu_hangar_DrawNavBar={
-  local vector nvpos;
-  nvpos = ofs + '8 6';
-  
-  gui_DrawRect(nvpos, '48 16', '6 4', '1 1 1');
-  drawstring(nvpos + '0 4', "[HANGAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  gui_DrawRect(nvpos+'48 0', '64 16', '6 4', '1 1 1');
-  drawstring(nvpos + '48 4', "[BRIEFING]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  gui_DrawRect(VIEW_MAX - '88 24', '64 16', '6 4', '1 1 1');
-  drawstring(VIEW_MAX - '88 24', "[ACCEPT]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 void(vector ofs) menu_hangar_MechDisplay={

@@ -80,7 +80,6 @@ void() hardpointListener;
 void() hardpointInfoListener;
 void() weaponGroupPanelListener;
 
-void(vector ofs) menu_hangar_DrawNavBar;
 void(vector ofs) menu_hangar_MechDisplay;
 void(vector ofs) menu_hangar_MechList;
 void(vector ofs) menu_hangar_MechListLight;

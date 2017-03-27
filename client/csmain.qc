@@ -40,6 +40,8 @@ void() CSQC_Init =
   WEPBITS[7] = 128;
   WEPBITS[8] = 256;
   
+  //get mission file
+  
   cs_precache();
 };
 
@@ -59,11 +61,13 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       if(MENU_ACTIVE){
         MENU_ACTIVE = FALSE;
         MENU_HANGAR_ACTIVE = FALSE;
+        MENU_BRIEF_ACTIVE = FALSE;
         setcursormode(0);
       }
       else{
         MENU_ACTIVE = TRUE;
-        MENU_HANGAR_ACTIVE = TRUE;
+        //MENU_HANGAR_ACTIVE = TRUE;
+        MENU_BRIEF_ACTIVE = TRUE;
         setcursormode(1);
       }
       return TRUE;
@@ -73,6 +77,10 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
         if(MENU_HANGAR_ACTIVE){
           menu_hangarListener();
         }
+        else if(MENU_BRIEF_ACTIVE){
+          menu_briefListener();
+        }
+          menu_mainListener();
         return TRUE;
       }
       else{
@@ -106,7 +114,6 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   }
   
   if(MENU_ACTIVE){
-
     return TRUE;
   }
   else{
