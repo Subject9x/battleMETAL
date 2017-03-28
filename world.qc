@@ -8,7 +8,6 @@ void() main =
 	q1_precache_world();
   mh_precache_world();
   //see q1/precache_word.q1_precache_world()
-
 };
 
 
@@ -97,6 +96,8 @@ void() worldspawn =
 
 	// 63 testing
 	lightstyle(63, "a");
+  
+  world.i_reserve = 10000;
 };
 
 void() StartFrame =

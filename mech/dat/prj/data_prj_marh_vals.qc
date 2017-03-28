@@ -6,10 +6,10 @@ Overview: long-range, low damage, homing missile
 */
 //=======MISSILE: LASER-GUIDED========
 float DAT_PRJ_MARH_IDX = ID_PRJ_MARH;
-float DAT_PRJ_MARH_VELOCITY = 500;
+float DAT_PRJ_MARH_VELOCITY = 750; //was 500 - 3/27/2017
 string DAT_PRJ_MARH_MODEL = "q3mdl/proj_mis.md3";
 float DAT_PRJ_MARH_LIFETIME = 15;
-float DAT_PRJ_MARH_DAMAGE = 5;
+float DAT_PRJ_MARH_DAMAGE = 2;
 float DAT_PRJ_MARH_DMGTYPE = DMG_EXP;
 
 float DAT_PRJ_MARH_EFFECTS = 0; //see data_prj_MIS
@@ -70,18 +70,18 @@ void() data_prj_marh_th={
 	if(self.owner.stat_lck_stt & LOCK_TARG){
     if(time > self.lock_timer){
       makevectors(self.enemy.angles);
-      vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.c_bbx_x_x) * v_right) + (v_forward * (crandom() * self.enemy.c_bbx_x_x));
+      vtemp = self.enemy.origin + '0 0 10' + ((crandom() * 35) * v_right) + (v_forward * (crandom() * 35));
     }
     else{
       local vector mns, mxs;
-      mns = self.c_ofs - '10 10 10';
-      mxs = self.c_ofs + '10 10 10';
+      mns = self.c_ofs - '25 25 25';
+      mxs = self.c_ofs + '25 25 25';
       local float yiss;
       yiss = util_checkInBounds(self.origin, mns, mxs);
       
       if(yiss){
         makevectors(self.enemy.angles);
-        vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.c_bbx_x_x) * v_right) + (v_forward * (crandom() * self.enemy.c_bbx_x_x));
+        vtemp = self.enemy.origin + '0 0 10' + ((crandom() * 35) * v_right) + (v_forward * (crandom() * 35));
       }
       else{
         vtemp = self.c_ofs;

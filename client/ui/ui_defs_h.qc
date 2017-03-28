@@ -5,6 +5,8 @@ Date: 3/8/2017
 Overview:  header file for ui system
 */
 
+float AVAILABLE_RESERVE;
+
 entity PLAYER_HELPER;
 
 float MENU_ACTIVE;

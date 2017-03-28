@@ -77,18 +77,7 @@ void() weaponSelectListener={
 };
 
 void() hardpointInfoListener={
-  /*local vector ofs;
-  ofs_x = VIEW_CTR_x - 26;
-  ofs_y = VIEW_CTR_y + 24;
-  if(menu_checkMouseInBounds(cursorpos, ofs, '128 128')){
-    ofs = ofs + '3 20';
-    if(menu_checkMouseInBounds(cursorpos, ofs+'54 0', '18 8')){
-      getPrevWeaponGroup();
-    }
-    if(menu_checkMouseInBounds(cursorpos, ofs+'78 0', '18 8')){
-      getNextWeaponGroup();
-    }
-  }*/
+
 };
 
 void() mechAcceptButtonListener={
@@ -146,17 +135,21 @@ void() weaponGroupPanelListener={
 //main hook for menu system
 void() menu_hangarDrawFrame={
   
+  if(PLAYER_HELPER.plr_sel_mech <= 0){
+    PLAYER_HELPER.plr_sel_mech = 1;
+    local entity dat;
+    dat = m_findData(1, DATA_MECH);
+    HARDPOINT_CNT = dat.hardpoint_cnt;
+    cleanHardPoints();
+    cl_setmech(1);
+    
+  }
+  
   local vector topleftroot;
   topleftroot = VIEW_ORG + '2 12';
-  //drawfill(topleftroot, (VIEW_MAX - '24 24'), STATUS_DED, HUD_ALPHA, 0);
-  //gui_DrawRect(topleftroot, (VIEW_MAX - '24 24'), '6 4', '1 1 1');
-  
   drawpic(topleftroot, UI_DEF_BOX_512,(VIEW_MAX - '4 24'), '1 1 1', HUD_ALPHA, 0);
-  
-  //menu_hangar_DrawNavBar(topleftroot);
   menu_hangar_MechDisplay(topleftroot);
   menu_hangar_MechList(topleftroot + '0 24');
-  
   menu_hangar_MechInfo(topleftroot);
   menu_hangar_WeaponList(topleftroot + '0 24');
   menu_hangar_HardPointInfo(topleftroot);
@@ -619,38 +612,50 @@ void(vector ofs) menu_hangar_WeaponInfo={
   drawstring(nmpos, name, '7 8 0', '1 1 1', HUD_ALPHA, 0);
   
   //type
-  local vector typpos;
-  typpos = nofs + '4 28';
-  drawstring(typpos, strcat("[TYPE]: ",getNameOfWepType(dat.dmg_type)), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  local vector icol;
+  icol = nofs + '4 32';
   
+  //damage
+  drawstring(icol, strcat("[DAMAGE]:         ", ftos(dat.dmg_amt)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //type
+  drawstring(icol + '0 8', strcat("[TYPE]:         ",getNameOfWepType(dat.dmg_type)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //en cost
+  drawstring(icol + '0 16', strcat("[ENERGY COST]:  ",ftos(dat.en_max)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+    
   //range
-  local vector rngpos;
-  rngpos = nofs + '4 40';
-  drawstring(rngpos, "[RANGE]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + '0 24', strcat("[RANGE]:        ",ftos(dat.w_range)),'7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //size
-  local vector sizpos;
-  sizpos = nofs + '4 52';
-  drawstring(sizpos, "[SIZE]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + '0 32', strcat("[SIZE]:         ",ftos(dat.i_size)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
-  //faction
-  local vector tecpos;
-  tecpos = nofs + '4 64';
-  drawstring(tecpos, "[FACTION]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  //clip
+  drawstring(icol + '0 40', strcat("[CLIPSIZE]:     ",ftos(dat.w_clipsize)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //rof
+  drawstring(icol + '0 48', strcat("[RATE OF FIRE]: ",ftos(dat.w_firerate)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //reload
+  drawstring(icol + '0 56', strcat("[RELOAD TIME]:  ",ftos(dat.w_reloadtime)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //tech
-  local vector facpos;
-  facpos = nofs + '4 78';
-  drawstring(facpos, "[TECH LEVEL]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + '0 64', strcat("[TECH LEVEL]:   ",ftos(dat.i_techlvl)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //desc
-  local vector decpos;
-  decpos = nofs + '4 90';
-  drawstring(decpos, "[NOTES]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(decpos+'8 10', "+", '5 5 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(decpos+'8 20', "+", '5 5 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(decpos+'8 30', "+", '5 5 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(decpos+'8 40', "+", '5 5 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + '0 72', "[NOTES]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  if(dat.note1){
+    drawstring(icol+'2 82', dat.note1, '5 6 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  if(dat.note2){
+    drawstring(icol+'2 92', dat.note2, '5 6 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  if(dat.note3){
+    drawstring(icol+'2 102', dat.note3, '5 6 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  if(dat.note4){
+    drawstring(icol+'2 112', dat.note4, '5 6 0', '1 1 1', HUD_ALPHA, 0);
+  }
 };
 
 //UTILITY FUNCS
@@ -680,7 +685,7 @@ string(float bit) getNameOfWepType={
     return "ENERGY";
   }
   else if((bit & DMG_EXP)){
-    return "MISSILe";
+    return "MISSILE";
   }
   else{
     return "unknown";

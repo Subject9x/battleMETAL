@@ -17,7 +17,7 @@ vector() radar_MakeSweep={
   root = contact;
   while(contact){
     if(contact.data_idx){
-      if(contact.faction != self.faction){
+      if(contact.i_faction != self.i_faction){
         if(contact.p_class != P_OBS){
           if(contact.deadflag <= DEAD_NO){
             local float ht;
@@ -65,7 +65,7 @@ float(entity root, entity contact, float current_total) radar_calcEnemyDist={
     if(sub.classname == "player"){
       if(sub.p_class != P_OBS){
         if(sub != self){
-          if(sub.faction == contact.faction){
+          if(sub.i_faction == contact.i_faction){
             local float dist, mod;
             dist = vlen(sub.origin - contact.origin);
             if(dist == 0){

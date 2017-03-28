@@ -8,12 +8,12 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_RPLAS_IDX = ID_WEP_RPC;
 string DAT_RPLAS_NAME = "RPC";
-float DAT_RPLAS_DMG = 2;
+float DAT_RPLAS_DMG = 8;
 float DAT_RPLAS_FIRETIME = 0;
-float DAT_RPLAS_CLIPSIZE = 1;
-float DAT_RPLAS_CURRENTAMMO = 1;
-float DAT_RPLAS_FIRERATE = 0.28;
-float DAT_RPLAS_RELOADTIME = 0.28;
+float DAT_RPLAS_CLIPSIZE = 8; //was 1 - 3/27/2017
+float DAT_RPLAS_CURRENTAMMO = 8; //was 1 - 3/27/2017
+float DAT_RPLAS_FIRERATE = 0.43; //was 0.28 - 3/27/2017
+float DAT_RPLAS_RELOADTIME = 0.85; //was 0.28 - 3/27/2017
 vector DAT_RPLAS_FIRE_OFS = '0 0 2';
 string DAT_RPLAS_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_RPLAS_PROJ_ID= 6;//ID_PRJ_RPLAS;
@@ -22,6 +22,7 @@ string DAT_RPLAS_SOUND = "sound/ac5.ogg";
 float DAT_RPLAS_TECH_LEVEL = 1;
 float DAT_RPLAS_SPR_X = 8;
 float DAT_RPLAS_SPR_Y = 8;
+float DAT_RPLAS_WSIZE = 2;
 
 void() data_wep_rplas;
 void() data_rplas_ini;
@@ -61,6 +62,7 @@ void() data_rplas_ini={
   self.i_techlvl = DAT_RPLAS_TECH_LEVEL;
   self.stat_spr_x = DAT_RPLAS_SPR_X;
   self.stat_spr_y = DAT_RPLAS_SPR_Y;
+  self.i_size = DAT_RPLAS_WSIZE;
   self.w_think = data_rplas_think;
 };
 

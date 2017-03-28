@@ -19,6 +19,7 @@ float DAT_EMP_PROJ_ID= ID_PRJ_EMP;
 float DAT_EMP_EN_COST=  0.1;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
+float DAT_EMP_WSIZE = 2;
 
 void() data_wep_emp;  //called by the data system at game startup
 void() data_emp_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -55,6 +56,7 @@ void() data_emp_ini={
   self.en_max = DAT_EMP_EN_COST;
   self.fire_sound = DAT_EMP_SOUND;
   self.i_techlvl = DAT_EMP_TECH_LEVEL;
+  self.i_size = DAT_EMP_WSIZE;
   self.w_think = data_emp_think;
 };
 

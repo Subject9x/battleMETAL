@@ -315,6 +315,11 @@ float(entity targ, float dmg_amt, float dmg_type) shield_vs_bal={
     targ.sh_cur = targ.sh_cur - mod;
     remainder = 0;
   }
+  else if((dmg_type & EFF_ENG)){
+    mod = dmg_amt;
+    targ.en_cur = targ.en_cur - mod;
+    remainder = 0;
+  }
   else{
     if(dmg_amt >= targ.sh_cur){
       targ.sh_cur = targ.sh_cur - targ.sh_cur;
@@ -344,6 +349,11 @@ float(entity targ, float dmg_amt, float dmg_type) shield_vs_ene={
   else if((dmg_type & EFF_RAM)){
     mod = dmg_amt * SHVENE_EFFRAM_PERCENTAGE;
     targ.sh_cur = targ.sh_cur - mod;
+    remainder = 0;
+  }  
+  else if((dmg_type & EFF_ENG)){
+    mod = dmg_amt;
+    targ.en_cur = targ.en_cur - mod;
     remainder = 0;
   }
   else{
@@ -376,6 +386,11 @@ float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis={
   else if((dmg_type & EFF_RAM)){
     mod = dmg_amt * SHVEXP_EFFRAM_PERCENTAGE;
     targ.sh_cur = targ.sh_cur - mod;
+    remainder = 0;
+  }
+  else if((dmg_type & EFF_ENG)){
+    mod = dmg_amt;
+    targ.en_cur = targ.en_cur - mod;
     remainder = 0;
   }
   else{

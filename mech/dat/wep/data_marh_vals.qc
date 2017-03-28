@@ -10,14 +10,15 @@ string DATWEP_MARH_NAME = "MIS-ARH";
 float DATWEP_MARH_FIRETIME = 0;
 float DATWEP_MARH_CLIPSIZE = 1;
 float DATWEP_MARH_CURRENTAMMO = 1;
-float DATWEP_MARH_FIRERATE = 0.25;//0.95;
-float DATWEP_MARH_RELOADTIME = 0.95;
+float DATWEP_MARH_FIRERATE = 1.10;//0.95;
+float DATWEP_MARH_RELOADTIME = 1.10;
 vector DATWEP_MARH_FIRE_OFS = '0 0 2';
 string DATWEP_MARH_MODEL = "q3mdl/weapons/w_mis.md3";
 float DATWEP_MARH_PROJ_ID= ID_PRJ_MARH;
 float DATWEP_MARH_EN_COST= -1;
 string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
+float DAT_MARH_WSIZE = 3;
 
 void() data_wep_marh;  //called by the data system at game startup
 void() data_marh_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -54,6 +55,7 @@ void() data_marh_ini={
   self.en_max = DATWEP_MARH_EN_COST;
   self.fire_sound = DATWEP_MARH_FIRESOUND;
   self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
+  self.i_size = DAT_MARH_WSIZE;
   self.w_think = data_marh_think;
 };
 
@@ -102,11 +104,11 @@ void() data_marh_atk={
         local float dist;
         local vector arc;
         dist = vlen(dir - org);
-        arc = org + (v_forward * (dist/4)) + (v_up * (dist/8)) + (v_right * 0);
+        arc = org + (v_forward * (300 + (crandom() * 20))) + (v_up * (300 + (crandom() * 20))) + (v_right * 0);
         
         while(itr < countlim){
           local vector start;
-          start = org + ((crandom() * 5) * v_right) + (v_up * (crandom() * 5)) + (v_right * 0);
+          start = org + ((crandom() * 15) * v_right) + (v_up * (crandom() * 15)) + (v_right * 0);
           itr = itr + 1;
           newmis = spawn();
           oself = self;

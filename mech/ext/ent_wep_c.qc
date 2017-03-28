@@ -41,5 +41,6 @@ commented vars mean they're already implemented and are here for reference!
 .float w_slotnum;
 .float w_spread;
 
+
 .float w_group;     //weapon group, only 1-3 - SET BY PARENT
 

@@ -15,7 +15,7 @@ void() CSQC_Init =
   VIEW_ORG = '0 0';
   PLAYER_HELPER = spawn();
   PLAYER_HELPER.drawmask = MASK_ENGINE;
-  PLAYER_HELPER.plr_sel_mech = 1;
+  PLAYER_HELPER.plr_sel_mech = 0;
   PLAYER_HELPER.plr_nex_mech = 0;
   PLAYER_HELPER.plr_nex_wep1 = -1;
   PLAYER_HELPER.plr_nex_wep2 = -1;
@@ -201,6 +201,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   drawstring('0 8 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
   drawstring('0 16 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
  */
+  AVAILABLE_RESERVE = getstati(STAT_LVL_RES);
   if(p_class != P_OBS){
     //player general info
     local float vec_id, hitdir, conv_x, conv_y, pitch;

@@ -53,7 +53,7 @@ void(vector ofs) menu_briefMissionInfo={
   drawstring(ofs+'14 64', "[TYPE]: ", '6 6 0', '1 1 1', HUD_ALPHA, 0); 
   
   //reserves
-  drawstring(ofs+'14 72', "[RESOURCE POINTS]: ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+'14 72', strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE)), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   //sector
   drawstring(ofs+'14 80', "[SECTOR]: ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
@@ -88,6 +88,8 @@ void(vector ofs) menu_briefObjectivePanel={
   tpos_x = (tpos_x + 187.5) - (tlen/2);
   tpos_y = tpos_y + 6;
   drawstring(tpos, "[OBJECTIVES]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+  
+  
   
 };
 

@@ -19,6 +19,7 @@ string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_EN_COST =  0.095;
 string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
+float DAT_LAS_WSIZE = 1;
 
 void() data_wep_las;
 void() data_las_ini;
@@ -54,6 +55,7 @@ void() data_las_ini={
   self.en_max = DAT_LAS_EN_COST;
   self.fire_sound = DAT_LAS_SOUND;
   self.i_techlvl = DAT_LAS_TECH_LEVEL;
+  self.i_size = DAT_LAS_WSIZE;
   self.w_think = data_las_think;
 };
 

@@ -11,11 +11,11 @@ float DAT_QRFL_FIRETIME = 0;
 float DAT_QRFL_CLIPSIZE = 1;
 float DAT_QRFL_FIRERATE = 0.5;
 float DAT_QRFL_RELOADTIME = 0.5;
-float DAT_QRFL_EN_COST= -1;
+float DAT_QRFL_EN_COST= 0;
 float DAT_QRFL_TECH_LEVEL = 1;
+float DAT_QRFL_WSIZE = 3;
 
 void() data_wep_qrfl;
-void() data_qrfl_ini;
 
 void() data_wep_qrfl={
   local entity oself, latc;
@@ -24,20 +24,20 @@ void() data_wep_qrfl={
   self = latc;
     self.classname = "data";
     self.data_idx = DAT_QRFL_IDX;
+    self.dmg_amt = 8;
     self.data_type = DATA_WEPN;
-    data_qrfl_ini();
     self.w_name = DAT_QRFL_NAME;
+    self.w_name = DAT_QRFL_NAME;
+    self.w_clipsize = DAT_QRFL_CLIPSIZE;
+    self.w_firerate = DAT_QRFL_FIRERATE;
+    self.w_reloadtime = DAT_QRFL_RELOADTIME;
+    self.en_max = DAT_QRFL_EN_COST;
+    self.i_techlvl = DAT_QRFL_TECH_LEVEL;
+    self.dmg_type = self.dmg_type | DMG_BAL | EFF_ENG;
+    self.i_size = DAT_QRFL_WSIZE;
+    self.w_abbr = "QRF";
+    self.note1 = "Damage affects Target's ENERGY meter.";
+    self.note2 = "Does not cause any other damage.";
   self = oself;
-};
-
-void() data_qrfl_ini={
-  self.w_name = DAT_QRFL_NAME;
-  self.w_clipsize = DAT_QRFL_CLIPSIZE;
-  self.w_firerate = DAT_QRFL_FIRERATE;
-  self.w_reloadtime = DAT_QRFL_RELOADTIME;
-  self.en_max = DAT_QRFL_EN_COST;
-  self.i_techlvl = DAT_QRFL_TECH_LEVEL;
-  self.dmg_type = self.dmg_type | DMG_BAL | EFF_ENG;
-  self.w_abbr = "QRF";
 };
 

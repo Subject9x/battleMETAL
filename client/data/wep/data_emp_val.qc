@@ -14,9 +14,9 @@ float DAT_EMP_RELOADTIME = 0.95;
 string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
 float DAT_EMP_EN_COST= 30;
 float DAT_EMP_TECH_LEVEL = 1;
+float DAT_EMP_WSIZE = 2;
 
 void() data_wep_emp;
-void() data_emp_ini;
 
 void() data_wep_emp={
   local entity oself, emp;
@@ -25,21 +25,20 @@ void() data_wep_emp={
   self = emp;
     self.classname = "data";
     self.data_idx = DAT_EMP_IDX;
+    self.dmg_amt = 65;
     self.data_type = DATA_WEPN;
-    data_emp_ini();
     self.w_name = DAT_EMP_NAME;
+    self.w_name = DAT_EMP_NAME;
+    self.w_clipsize = DAT_EMP_CLIPSIZE;
+    self.w_firerate = DAT_EMP_FIRERATE;
+    self.w_reloadtime = DAT_EMP_RELOADTIME;
+    self.c_model = DAT_EMP_MODEL;
+    self.en_max = DAT_EMP_EN_COST;
+    self.i_techlvl = DAT_EMP_TECH_LEVEL;
+    self.dmg_type = self.dmg_type | DMG_ENE | EFF_STX;
+    self.i_size = DAT_EMP_WSIZE;
+    self.w_abbr = "EMP";
+    self.note1 = "Only damages Target's SHIELDS.";
+    self.note2 = "Proximity detonation at longer ranges.";
   self = oself;
 };
-
-void() data_emp_ini={
-  self.w_name = DAT_EMP_NAME;
-  self.w_clipsize = DAT_EMP_CLIPSIZE;
-  self.w_firerate = DAT_EMP_FIRERATE;
-  self.w_reloadtime = DAT_EMP_RELOADTIME;
-  self.c_model = DAT_EMP_MODEL;
-  self.en_max = DAT_EMP_EN_COST;
-  self.i_techlvl = DAT_EMP_TECH_LEVEL;
-  self.dmg_type = self.dmg_type | DMG_ENE | EFF_STX;
-  self.w_abbr = "EMP";
-};
-

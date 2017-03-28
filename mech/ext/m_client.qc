@@ -39,7 +39,7 @@ void() ClientConnect = {
   self.nextVecChoice = 0;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
-  self.faction = 1;
+  self.i_faction = 1;
   self.stat_eid = num_for_edict(self);
   self.en_cur = 0;
   self.en_max = 0;
@@ -117,6 +117,8 @@ void() ClientConnect = {
   self.next_wepn7 = -1;
   self.next_wepn8 = -1;
   self.next_wepn9 = -1;
+  
+  self.i_reserve = world.i_reserve;
   
   if (intermission_running){
     ExitIntermission();

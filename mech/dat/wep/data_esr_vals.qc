@@ -11,7 +11,7 @@ float DAT_ESR_DMG = 25;
 float DAT_ESR_FIRETIME = 0;
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_CURRENTAMMO = 10;
-float DAT_ESR_FIRERATE = 0.05;
+float DAT_ESR_FIRERATE = 0.1;
 float DAT_ESR_RELOADTIME = 1;
 vector DAT_ESR_FIRE_OFS = '0 0 2';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
@@ -20,6 +20,7 @@ string DAT_ESR_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_TECH_LEVEL = 1;
 float DAT_ESR_SPR_X = 10;
 float DAT_ESR_SPR_Y = 10;
+float DAT_ESR_WSIZE = 3;
 
 void() data_wep_esr;
 void() data_esr_ini;
@@ -55,6 +56,7 @@ void() data_esr_ini={
   self.en_max = DAT_ESR_EN_COST;
   self.fire_sound = DAT_ESR_SOUND;
   self.i_techlvl = DAT_ESR_TECH_LEVEL;
+  self.i_size = DAT_ESR_WSIZE;
   self.w_think = data_esr_think;
 };
 

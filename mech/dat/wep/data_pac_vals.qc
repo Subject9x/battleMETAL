@@ -20,6 +20,7 @@ string DAT_PAC_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_PAC_TECH_LEVEL = 1;
 float DAT_PAC_SPR_X = 0;
 float DAT_PAC_SPR_Y = 0;
+float DAT_PAC_WSIZE = 2;
 
 void() data_wep_pac;
 void() data_pac_ini;
@@ -55,6 +56,7 @@ void() data_pac_ini={
   self.en_max = DAT_PAC_EN_COST;
   self.fire_sound = DAT_PAC_SOUND;
   self.i_techlvl = DAT_PAC_TECH_LEVEL;
+  self.i_size = DAT_PAC_WSIZE;
   self.w_think = data_pac_think;
 };
 

@@ -191,7 +191,6 @@ float STAT_WEP5_ID = 68;
 float STAT_WEP6_ID = 71;
 float STAT_WEP7_ID = 74;
 float STAT_WEP8_ID = 77;
-//float STAT_WEP8_ST = 79;
 float STAT_WEP9_ID = 80;
 //float STAT_WEP9_GR = 81;
 //float STAT_WEP9_ST = 82;
@@ -232,3 +231,6 @@ float STAT_TRG_LTOR_HP = 95;
 float STAT_TRG_RTOR_HP = 96;
 float STAT_TRG_LARM_HP = 97;
 float STAT_TRG_RARM_HP = 98;
+
+//level
+float STAT_LVL_RES = 79;

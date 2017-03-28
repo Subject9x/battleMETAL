@@ -38,6 +38,11 @@ void() cs_precache={
   precache_sound("sound/comp/online.ogg");
   precache_sound("sound/comp/en_low.ogg");
   
+  //ui sounds
+  precache_sound("sound/misc/menu1.wav");
+  precache_sound("sound/misc/menu2.wav");
+  precache_sound("sound/misc/menu3.wav");
+  
   //cursor
   precache_pic("gfx/ui/ui_cursor.png",0);
   UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png",0);

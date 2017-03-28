@@ -53,7 +53,7 @@ float m_wep = 6;
 .float en_max;
 .float i_techlvl;
 .float data_type;
-.float faction;   //which faction? consult table
+.float i_faction;   //which faction? consult table
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
 .float i_reserve; //how many reserve points does the unit cost?
 .float en_max;   //max amount
@@ -272,3 +272,7 @@ float PLAYER_CRITDAM = 4;
 float LOCK_NONE = 1;
 float LOCK_TARG = 2;
 float LOCK_PLYR = 4;
+
+
+//level
+float STAT_LVL_RES = 79;

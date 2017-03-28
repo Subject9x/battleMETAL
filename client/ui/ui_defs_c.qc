@@ -14,6 +14,7 @@ float(vector mpos, vector org, vector sz) menu_checkMouseInBounds={
   asz = org+sz;
   if(((mpos_x > org_x) && (mpos_x < asz_x))
   && ((mpos_y > org_y) && (mpos_y < asz_y))){
+    pointsound(pmove_org, "sound/misc/menu1.wav", 1, ATTN_NORM); //maybe not the best place for this.
     return TRUE;
   }
   return FALSE;
@@ -71,13 +72,21 @@ void() menu_handleFrame={
 
 void(vector ofs) menu_navBar={
   local vector nvpos;
-  nvpos = ofs + '8 6';
+  nvpos = ofs + '10 8';
   
-  gui_DrawRect(nvpos, '58 16', '6 4', '1 1 1');
-  drawstring(nvpos + '0 4', "[BRIEFING]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage(MENU_BRIEF_ACTIVE, nvpos, UI_DEF_BOX_256, '96 24', CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  local vector tpos;
+  tpos = nvpos;
+  tpos_x = (nvpos_x + 48) - (stringwidth("[BRIEFING]", 0 ,'8 8 0')/2);
+  tpos_y = (nvpos_y + 16) - 8;
+  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', MENU_BRIEF_ACTIVE, '8 8 0', HUD_ALPHA, 0) ;
   
-  gui_DrawRect(nvpos+'59 0', '64 16', '6 4', '1 1 1');
-  drawstring(nvpos + '59 4', "[HANGAR]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage(MENU_HANGAR_ACTIVE, nvpos+'96 0', UI_DEF_BOX_256, '96 24', CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  local vector hpos;
+  hpos = nvpos + '96 0';
+  hpos_x = (hpos_x + 48) - (stringwidth("[HANGAR]", 0 ,'8 8 0')/2);
+  hpos_y = (hpos_y + 16) - 8;
+  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', MENU_HANGAR_ACTIVE, '8 8 0', HUD_ALPHA, 0) ;
   
   gui_DrawRect(VIEW_MAX - '88 24', '64 16', '6 4', '1 1 1');
   drawstring(VIEW_MAX - '88 24', "[ACCEPT]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
@@ -88,11 +97,11 @@ void() menu_mainListener={
 };
 
 void() navBarListener={
-  if(menu_checkMouseInBounds(cursorpos, '10 18', '58 16')){
+  if(menu_checkMouseInBounds(cursorpos, '20 28', '94 24')){
     MENU_BRIEF_ACTIVE = TRUE;
     MENU_HANGAR_ACTIVE = FALSE;
   }
-  else if(menu_checkMouseInBounds(cursorpos, '59 18', '48 16')){
+  else if(menu_checkMouseInBounds(cursorpos, '124 28', '94 24')){
     MENU_BRIEF_ACTIVE = FALSE;
     MENU_HANGAR_ACTIVE = TRUE;
   }

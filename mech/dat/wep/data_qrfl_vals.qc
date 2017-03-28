@@ -21,6 +21,7 @@ string DAT_QRFL_SOUND = "sound/ac5.ogg";
 float DAT_QRFL_TECH_LEVEL = 1;
 float DAT_QRFL_SPR_X = 3;
 float DAT_QRFL_SPR_Y = 2;
+float DAT_QRFL_WSIZE = 3;
 
 void() data_wep_qrfl;
 void() data_qrfl_ini;
@@ -59,6 +60,7 @@ void() data_qrfl_ini={
   self.i_techlvl = DAT_QRFL_TECH_LEVEL;
   self.stat_spr_x = DAT_QRFL_SPR_X;
   self.stat_spr_y = DAT_QRFL_SPR_Y;
+  self.i_size = DAT_QRFL_WSIZE;
   self.w_think = data_qrfl_think;
 };
 

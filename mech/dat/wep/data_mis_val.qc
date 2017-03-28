@@ -21,6 +21,7 @@ string DAT_MIS_SOUND = "weapons/sgun1.wav";
 float DAT_MIS_TECH_LEVEL = 1;
 float DAT_LAS_SPR_X = 8;
 float DAT_LAS_SPR_Y = 6;
+float DAT_MIS_WSIZE = 2;
 
 void() data_wep_mis;
 void() data_mis_ini;
@@ -59,6 +60,7 @@ void() data_mis_ini={
   self.i_techlvl = DAT_MIS_TECH_LEVEL;
   self.stat_spr_x = DAT_LAS_SPR_X;
   self.stat_spr_y = DAT_LAS_SPR_Y;
+  self.i_size = DAT_MIS_WSIZE;
   self.w_think = data_mis_think;
 };
 
