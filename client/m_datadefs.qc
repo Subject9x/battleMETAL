@@ -16,6 +16,8 @@ float DATA_WEPN = 3;
 float DATA_PROJ = 4;
 float DATA_HUD = 5;
 float DATA_BLD = 6;
+float DATA_NAVP = 7;
+float DATA_OBJT = 8;
 
 entity(float id, float dat_type) m_findData;
 

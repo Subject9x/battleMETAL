@@ -15,6 +15,7 @@ void() respawn;
 entity() SelectSpawnPoint;
 //==========================
 
+
 //legacy wrappers
 void() legacy_PlayerDie;
 

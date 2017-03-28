@@ -41,7 +41,6 @@ void() CSQC_Init =
   WEPBITS[8] = 256;
   
   //get mission file
-  
   cs_precache();
 };
 
@@ -324,6 +323,19 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     prj_z = 0; //shut up dp.
     drawstring(prj, "foo", '6 6', '1 1 1', 1, 0);
   }*/
+  local entity nav;
+  nav = findfloat(world, data_type, DATA_NAVP);
+  while(nav){
+    local vector prj;
+    prj = cs_project(nav.origin);
+    if (prj_z >= 0) {
+      prj_x -= stringwidth(nav.nav_name, TRUE, '6 6') * 0.5; //align horizontally to centre
+      prj_y -= 6 * 0.5; //align vertically again
+      prj_z = 0; //shut up dp.
+      drawstring(prj, nav.nav_name, '6 6', '1 1 1', 1, 0);
+    }
+    nav = nav.chain;
+  }
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!
@@ -393,9 +405,22 @@ entity(float entnum) CSQC_Ent_Spawn =
 // if you wish to do interpolation, be sure to make use the proper time variables: time is previous packet time, servertime is new packet time, so the tick time between packets is servertime - time and the interpolation should begin the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
-  local float id, sfx;
+  local float id;
   id = ReadByte();
-  sfx = ReadByte();
+  if(isnew){
+    self.classname = "data";
+    self.data_type = DATA_NAVP;
+    self.drawmask = MASK_ENGINE;
+    setmodel(self, "q3mdl/testball.md3");
+    local string nm;
+    nm = ReadString();
+    self.nav_name = strzone(nm);
+    addentity(self);
+  }
+  self.origin_x = ReadCoord();
+  self.origin_y = ReadCoord();
+  self.origin_z = ReadCoord();
+  setorigin(self, self.origin);
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

@@ -40,7 +40,7 @@ void() worldspawn =
 		cvar_set ("sv_gravity", "800");
 
     
-  setmodel(self, "maps/t_train0.bsp");
+  //setmodel(self, "maps/t_train0.bsp");
 // the area based ambient sounds MUST be the first precache_sounds
 
 // player precaches	

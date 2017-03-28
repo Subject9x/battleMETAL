@@ -5,10 +5,10 @@ Date: 10/21/2016
 Overview: csqc handler
 */
 
-.float(entity to, float sendflags) SendEntity;
-.float SendFlags;
 float MSG_ENTITY = 5;
-.float SENDDATA;
+.float(entity ent, float changedflags) SendEntity;
+.float SendFlags;
+void(float buf, float fl) WriteFloat = #280;
 
 .float csqc_entType;
 .float csqc_datType;
