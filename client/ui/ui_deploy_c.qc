@@ -39,6 +39,7 @@ void(vector ofs) menu_briefMissionText={
 };
 void(vector ofs) menu_briefMapPanel={
 
+
 };
 void(vector ofs) menu_briefObjectivePanel={
 

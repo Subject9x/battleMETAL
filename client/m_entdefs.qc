@@ -95,4 +95,4 @@ float ARM_RAD = 24;
 .float controllingFaction;
 .float isActive;
 .float navId;
-.string nav_name;
+.float nav_name;

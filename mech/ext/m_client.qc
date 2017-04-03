@@ -119,6 +119,7 @@ void() ClientConnect = {
   self.next_wepn9 = -1;
   
   self.i_reserve = world.i_reserve;
+  client_sendMissionFileName();
   
   if (intermission_running){
     ExitIntermission();

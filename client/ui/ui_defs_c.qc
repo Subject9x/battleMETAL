@@ -106,3 +106,24 @@ void() navBarListener={
     MENU_HANGAR_ACTIVE = TRUE;
   }
 };
+
+
+void(entity nav) ui_renderNav={
+  local vector apos, tofs, iofs, i_sz;
+  i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
+  apos = cs_project(nav.origin);
+  tofs = apos;
+  if (apos_z >= 0) {
+    tofs_x -= stringwidth(nav.w_name, TRUE, '6 6') * 0.5; //align horizontally to centre
+    tofs_y -= 6 * 0.5; //align vertically again
+    tofs_z = 0; //shut up dp.
+    apos_z = 0; //shut up dp.
+    iofs = apos;
+    i_sz_x = i_sz_x / 4;
+    i_sz_y = i_sz_y / 4;
+    iofs_x = iofs_x - (i_sz_x/2);
+    iofs_y = iofs_y - (i_sz_y/2);
+    gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+    drawstring(tofs, nav.w_name, '6 6', CLR_DEF_WEP_INRANGE, 1, 0);
+  }
+};

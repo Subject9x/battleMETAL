@@ -38,37 +38,37 @@ void() navpointListener={
 
 //panels
 void(vector ofs) menu_briefMissionInfo={
-  drawpic(ofs + '10 42', UI_DEF_BOX_256, '164 70', '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs + '10 42', UI_DEF_BOX_256, '242 70', '1 1 1', HUD_ALPHA, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION INFO]", 0, '8 8 0');
-  tpos = ofs + '10 44';
-  tpos_x = (tpos_x + 82) - (tlen/2);
+  tpos = ofs + '0 44';
+  tpos_x = (tpos_x + 121) - (tlen/2);
   drawstring(tpos, "[MISSION INFO]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
   //mission name
-  drawstring(ofs+'14 56', "[NAME]: ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
+  drawstring(ofs+'14 56', strcat("[NAME]:            ", MSN_NAME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //mission type
-  drawstring(ofs+'14 64', "[TYPE]: ", '6 6 0', '1 1 1', HUD_ALPHA, 0); 
-  
+  drawstring(ofs+'14 64', strcat("[TYPE]:            ",MSN_TYPE), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
   //reserves
   drawstring(ofs+'14 72', strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE)), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
   //sector
-  drawstring(ofs+'14 80', "[SECTOR]: ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
+  drawstring(ofs+'14 80', strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //location
-  drawstring(ofs+'14 88', "[LOCATION]: ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  //location
-  drawstring(ofs+'14 96', "[LOCAL TIME]: ", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+'14 88', strcat("[LOCATION]:        ", MSN_LOCATION ), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  //local time
+  drawstring(ofs+'14 96', strcat("[LOCAL TIME]:      ", MSN_LOCALTIME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 void(vector ofs) menu_briefMissionText={
   local vector bpos;
   bpos = ofs + '10 112';
-  drawpic(bpos, UI_DEF_BOX_256_TALL, '164 256', '1 1 1', HUD_ALPHA, 0);
+  drawpic(bpos, UI_DEF_BOX_256_TALL, '242 256', '1 1 1', HUD_ALPHA, 0);
+  local float tlen;
+  local vector tpos;
+  tlen = stringwidth("[MISSION BRIEF]", 0, '8 8 0');
+  tpos = bpos + '82 0';
+  drawstring(tpos, "[MISSION BRIEF]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 void(vector ofs) menu_briefMapPanel={
@@ -76,6 +76,34 @@ void(vector ofs) menu_briefMapPanel={
   mpos_x = mpos_x + (VIEW_CTR_x - 66);
   mpos_y = ofs_y + 44;
   drawpic(mpos, UI_DEF_BOX_256, '375 225', '1 1 1', HUD_ALPHA, 0);
+  
+  local vector iofs;
+  iofs = mpos + '64 6';
+  
+  drawpic(iofs, "maps/t_train0_over.png", '212 212', '1 1 1', HUD_ALPHA, 0);
+  
+  local vector map_size, cprc;
+  map_size_x = (world.mins_x*-1) + world.maxs_x;
+  map_size_y = (world.mins_y*-1) + world.maxs_y;
+
+  cprc_x = ((world.mins_x*-1)/map_size_x);
+  cprc_y = ((world.mins_y*-1)/map_size_y);
+  
+  local entity nav;
+  nav = findchain(classname, "data");
+  while(nav){
+    if(nav.data_type == DATA_NAVP){
+      local vector nofs;
+      nofs = gui_mapCoordToImgCoord(map_size, cprc, nav.origin, '212 212 0');
+      local float nlen;
+      nlen = stringwidth(nav.w_name, 0, '6 6 0');
+      nofs = iofs+nofs;
+      nofs_x = nofs_x - (nlen/2);
+      nofs_y = nofs_y - 3;
+      drawstring(nofs, nav.w_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    }
+    nav = nav.chain;
+  }
 };
 
 void(vector ofs) menu_briefObjectivePanel={
@@ -89,14 +117,26 @@ void(vector ofs) menu_briefObjectivePanel={
   tpos_y = tpos_y + 6;
   drawstring(tpos, "[OBJECTIVES]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
-  
-  
+  local entity obj;
+  local float lst_idx;
+  local vector lofs;
+  lofs = bpos + '12 24';
+  obj = findchain(classname, "data");
+  lst_idx = 0;
+  while(obj){
+    if(obj.data_type == DATA_OBJT){
+      local vector oofs;
+      oofs = lofs;
+      oofs_y = oofs_y + (lst_idx *12);
+      drawstring(oofs, strcat("Objective ", ftos(obj.nav_name)), '6 6 0', '1 1 1', HUD_ALPHA,0);
+      lst_idx = lst_idx + 1;
+    }
+    obj = obj.chain;
+  }
 };
 
 void(vector ofs) menu_briefIntelPanel={
   local vector bpos;
   bpos = VIEW_CTR + '-66 40';
   drawpic(bpos, UI_DEF_BOX_256_TALL, '375 182', '1 1 1', HUD_ALPHA, 0);
-
-
 };

@@ -5,6 +5,32 @@ Date: 03/8/2017
 Overview: GUI API class file
 */
 
+vector(vector map_size, vector cprc, vector coords, vector i_sz) gui_mapCoordToImgCoord={
+
+  local vector tctr, perc, val;
+  tctr_x = i_sz_x * cprc_x;
+  tctr_y = i_sz_y * cprc_y ;
+  if(coords_x < 0){
+      perc_x = (coords_x*-1) / map_size_x;
+      val_x = tctr_x - (perc_x * i_sz_x);
+  }
+  else{
+      perc_x = (coords_x / map_size_x);
+      val_x = tctr_x + (perc_x * i_sz_x);
+  }
+  if(coords_y < 0){
+      perc_y = (coords_y*-1) / map_size_y;
+      val_y = tctr_y - (perc_y * i_sz_y);
+  }
+  else{
+      perc_y = (coords_y / map_size_y);
+      val_y = tctr_y + (perc_y * i_sz_y);
+  }
+  return val;
+};
+string(float navname) gui_getNavName={
+  return NAVNAMES[navname];
+};
 
 vector(float dmg_type) gui_colorForWeaponType={
   if((dmg_type & DMG_BAL)){

@@ -630,7 +630,6 @@ void(float to, float f) WriteCoord		= #56;
 void(float to, float f) WriteAngle		= #57;
 void(float to, string s) WriteString	= #58;
 void(float to, entity s) WriteEntity	= #59;
-
 //
 // broadcast client message generation
 //

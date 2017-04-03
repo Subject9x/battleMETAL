@@ -34,6 +34,7 @@ void() playerAttack={
 };
 
 void() ImpulseCommands ={
+
   if(self.impulse == IMP_FGROUP){
     self.stat_plr_fir = FIRE_GROUP;
   }

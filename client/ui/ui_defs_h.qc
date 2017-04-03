@@ -27,8 +27,12 @@ void(vector ofs) menu_navBar;
 void() menu_mainListener;
 void() navBarListener;
 
+void(entity nav) ui_renderNav;
+
+
 //image defs
 string UI_DEF_BOX_512;
 string UI_DEF_BOX_256;
 string UI_DEF_BOX_256_TALL;
 string UI_DEF_BOX_64;
+string UI_DEF_NAVPOINT;

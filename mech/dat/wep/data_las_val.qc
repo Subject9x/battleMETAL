@@ -110,7 +110,7 @@ void() data_las_atk={
   laser_org = spawn();
   laser_org.movetype = SOLID_NOT;
   laser_org.classname = "missile";
-  setmodel(laser_org, "progs/laser.mdl");
+  //setmodel(laser_org, "progs/laser.mdl");
   setsize(laser_org, '0 0 0', '0 0 0');
   setorigin(laser_org, org);
   
@@ -124,7 +124,7 @@ void() data_las_atk={
   
   
   WriteByte(MSG_ALL, SVC_TEMPENTITY);
-  WriteByte(MSG_ALL, TE_LIGHTNING3);
+  WriteByte(MSG_ALL, TE_LIGHTNING1);
   WriteEntity(MSG_ALL, laser_org);
   WriteCoord(MSG_ALL, laser_org.origin_x);
   WriteCoord(MSG_ALL, laser_org.origin_y);

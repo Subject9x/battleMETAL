@@ -5,6 +5,8 @@ Date: 03/8/2017
 Overview: GUI API header
 */
 
+string NAVNAMES[21];
+
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
 vector(vector vec, float algn) gui_calcAlign;
@@ -25,6 +27,9 @@ vector(float val) gui_getColorForShield;
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alpha, float flg) gui_renderTintImage;
 vector(float dmg_type) gui_colorForWeaponType;
 void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float alpha, float flg) gui_renderHighlightString;
+vector(vector map_min, vector map_max, vector coords, vector img_sz) gui_mapCoordToImgCoord;
+string(float navname) gui_getNavName;
+
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;

@@ -26,4 +26,5 @@ void() spawnpoint_Random;
 void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
 void(string cmd, float tokens) client_setWeaponGroup;
+void() client_sendMissionFileName;
 //void(float w_id, float wslotid) client_updateWeaponIdStat;

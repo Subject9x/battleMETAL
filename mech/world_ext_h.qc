@@ -5,6 +5,8 @@ Date: 8/27/2016
 Overview: function extensions to world.qc
 */
 
+.string msn_file;
+
 void() mh_world_ini;
 void() mh_world_iniData;
 entity(float id, float dat_type) mh_world_findData;

@@ -94,6 +94,14 @@ void(string cmd, float tokens) client_setWeapon={
   }
 };
 
+
+void() client_sendMissionFileName={
+  local string cmd;
+  cmd = strcat("mech msn_file ",world.msn_file,"\n");
+  stuffcmd(self, cmd);
+  bprint(strcat(cmd, "\n")); //DEBUG
+};
+
 void() respawn={
   //CopyToBodyQue (self);
   //setspawnparms (self);

@@ -40,6 +40,29 @@ void() CSQC_Init =
   WEPBITS[7] = 128;
   WEPBITS[8] = 256;
   
+  NAVNAMES[0] = "Unknown";
+  NAVNAMES[1] = "Alpha";
+  NAVNAMES[2] = "Beta";
+  NAVNAMES[3] = "Gamma";
+  NAVNAMES[4] = "Delta";
+  NAVNAMES[5] = "Epsilon";
+  NAVNAMES[6] = "Zeta";
+  NAVNAMES[7] = "Eta";
+  NAVNAMES[8] = "Theta";
+  NAVNAMES[9] = "Iota";
+  NAVNAMES[10] = "Kappa";
+  NAVNAMES[11] = "Lambda";
+  NAVNAMES[12] = "Mu";
+  NAVNAMES[13] = "Nu";
+  NAVNAMES[14] = "Xi";
+  NAVNAMES[15] = "Omicron";
+  NAVNAMES[16] = "Rho";
+  NAVNAMES[17] = "Tau";
+  NAVNAMES[18] = "Upsilon";
+  NAVNAMES[19] = "Phi";
+  NAVNAMES[20] = "Omega";
+  
+  
   //get mission file
   cs_precache();
 };
@@ -65,7 +88,6 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       }
       else{
         MENU_ACTIVE = TRUE;
-        //MENU_HANGAR_ACTIVE = TRUE;
         MENU_BRIEF_ACTIVE = TRUE;
         setcursormode(1);
       }
@@ -184,12 +206,21 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// draw the main view
 	renderscene();
 
+  //mission file load check
+  if(MSN_FILEFOUND){
+    if(MSN_LOADED == FALSE){
+      msn_parsefile();
+      
+      MSN_LOADED = TRUE;
+    }
+  }
+  
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
 
 	// draw custom hud
- //draw hud
+  //draw hud
  
   local float p_class, eid;
   local vector vforg;
@@ -305,36 +336,31 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   if(MENU_ACTIVE){
     cursorpos = getmousepos();
     menu_handleFrame();
-  }
-  
-  // draw custom crosshair
-  drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  //local vector prj, temp;
-  
-  //
-  /*temp_x = getstatf(STAT_TRG_ORGX);
-  temp_y = getstatf(STAT_TRG_ORGY);
-  temp_z = getstatf(STAT_TRG_ORGZ);
-  prj = cs_project(temp);
-  if (prj_z >= 0) {
-    prj_x -= stringwidth("foo", TRUE, '6 6') * 0.5; //align horizontally to centre
-    prj_y -= 6 * 0.5; //align vertically again
-    prj_z = 0; //shut up dp.
-    drawstring(prj, "foo", '6 6', '1 1 1', 1, 0);
-  }*/
-  local entity nav;
-  nav = findfloat(world, data_type, DATA_NAVP);
-  while(nav){
-    local vector prj;
-    prj = cs_project(nav.origin);
+  }else{
+    // draw custom crosshair
+    drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    
+    //local vector prj, temp;
+    
+    //
+    /*temp_x = getstatf(STAT_TRG_ORGX);
+    temp_y = getstatf(STAT_TRG_ORGY);
+    temp_z = getstatf(STAT_TRG_ORGZ);
+    prj = cs_project(temp);
     if (prj_z >= 0) {
-      prj_x -= stringwidth(nav.nav_name, TRUE, '6 6') * 0.5; //align horizontally to centre
+      prj_x -= stringwidth("foo", TRUE, '6 6') * 0.5; //align horizontally to centre
       prj_y -= 6 * 0.5; //align vertically again
       prj_z = 0; //shut up dp.
-      drawstring(prj, nav.nav_name, '6 6', '1 1 1', 1, 0);
+      drawstring(prj, "foo", '6 6', '1 1 1', 1, 0);
+    }*/
+    local entity nav;
+    nav = findchain(classname, "data");
+    while(nav){
+      if(nav.data_type == DATA_NAVP){
+        ui_renderNav(nav);
+      }
+      nav = nav.chain;
     }
-    nav = nav.chain;
   }
 };
 
@@ -357,7 +383,17 @@ float() CSQC_Parse_TempEntity =
 // if string is interesting, deal with it, otherwise pass it to localcmd() and let engine parse it (note: will not be executed immediately).
 void(string s) CSQC_Parse_StuffCmd =
 {
-	localcmd(s);
+  local float argc;
+  argc = tokenize(s);
+  if(argv(0) == "mech"){
+    if(argv(1) == "msn_file"){
+      MSN_FILENAME = strzone(argv(2));
+      msn_getfile();
+    }
+  }
+  else{
+    localcmd(s);
+  }
 };
 
 // if string is interesting, deal with it, otherwise pass it to print() to invoke the engine code.
@@ -407,20 +443,32 @@ void(float isnew) CSQC_Ent_Update =
 {
   local float id;
   id = ReadByte();
-  if(isnew){
-    self.classname = "data";
-    self.data_type = DATA_NAVP;
-    self.drawmask = MASK_ENGINE;
-    setmodel(self, "q3mdl/testball.md3");
-    local string nm;
-    nm = ReadString();
-    self.nav_name = strzone(nm);
-    addentity(self);
+  if(id == 1){
+    if(isnew){
+      self.classname = "data";
+      self.data_type = DATA_NAVP;
+      self.drawmask = MASK_ENGINE;
+      //setmodel(self, "q3mdl/testball.md3");
+
+      setorigin(self, self.origin);
+      addentity(self);
+    }
+    self.nav_name = ReadByte();
+    self.w_name = gui_getNavName(self.nav_name);
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
   }
-  self.origin_x = ReadCoord();
-  self.origin_y = ReadCoord();
-  self.origin_z = ReadCoord();
-  setorigin(self, self.origin);
+  else if(id == 2){
+    if(isnew){
+      self.classname = "data";
+      self.data_type = DATA_OBJT;
+      self.drawmask = MASK_ENGINE;
+      setorigin(self, self.origin);
+      addentity(self);
+    }
+    self.nav_name = ReadByte();
+  }
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not
