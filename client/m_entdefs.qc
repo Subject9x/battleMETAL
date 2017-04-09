@@ -96,3 +96,6 @@ float ARM_RAD = 24;
 .float isActive;
 .float navId;
 .float nav_name;
+
+//objectives
+.string obj_desc;

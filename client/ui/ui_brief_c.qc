@@ -42,8 +42,8 @@ void(vector ofs) menu_briefMissionInfo={
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION INFO]", 0, '8 8 0');
-  tpos = ofs + '0 44';
-  tpos_x = (tpos_x + 121) - (tlen/2);
+  tpos = ofs + '121 44';
+  tpos_x = tpos_x - (tlen/2);
   drawstring(tpos, "[MISSION INFO]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
   //mission name
@@ -67,8 +67,28 @@ void(vector ofs) menu_briefMissionText={
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION BRIEF]", 0, '8 8 0');
-  tpos = bpos + '82 0';
+  tpos = bpos + '121 4';
+  tpos_x = tpos_x - tlen/2;
   drawstring(tpos, "[MISSION BRIEF]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+  
+  local float argc, lne_idx;
+  local vector fpos;
+  fpos = bpos + '10 20';
+  argc = tokenizebyseparator(MSN_BRIEF, ";");
+  lne_idx = 0;
+  while(lne_idx != -1){
+    local string line;
+    local float llen;
+    line = argv(lne_idx);
+    drawstring(fpos, line, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    if(line ==""){
+      lne_idx = -1;
+    }
+    else{
+      lne_idx = lne_idx + 1;
+      fpos_y = fpos_y + 8;
+    }
+  }
 };
 
 void(vector ofs) menu_briefMapPanel={
@@ -128,7 +148,9 @@ void(vector ofs) menu_briefObjectivePanel={
       local vector oofs;
       oofs = lofs;
       oofs_y = oofs_y + (lst_idx *12);
-      drawstring(oofs, strcat("Objective ", ftos(obj.nav_name)), '6 6 0', '1 1 1', HUD_ALPHA,0);
+      local string desc;
+      desc = MSN_OBJ_DESC[obj.nav_name];
+      drawstring(oofs, strcat("[", ftos(obj.nav_name),"]:", desc), '6 6 0', '1 1 1', HUD_ALPHA,0);  
       lst_idx = lst_idx + 1;
     }
     obj = obj.chain;

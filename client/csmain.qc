@@ -210,7 +210,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   if(MSN_FILEFOUND){
     if(MSN_LOADED == FALSE){
       msn_parsefile();
-      
       MSN_LOADED = TRUE;
     }
   }
