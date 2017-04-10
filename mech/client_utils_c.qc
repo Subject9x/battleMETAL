@@ -25,13 +25,16 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   else if(argv(1) == "spawn"){
     if(self.p_class == P_OBS){
+      spawnpoint_Random();
       player_unmakeObserver();
       player_makeMech();
-      spawnpoint_Random();
     }
   }
   else if(argv(1) == "setgroup"){
     client_setWeaponGroup(str, tokens);
+  }
+  else if(argv(1) == "setnav"){
+    client_setNavPoint(str, tokens);
   }
 };  
 
@@ -99,7 +102,19 @@ void() client_sendMissionFileName={
   local string cmd;
   cmd = strcat("mech msn_file ",world.msn_file,"\n");
   stuffcmd(self, cmd);
-  bprint(strcat(cmd, "\n")); //DEBUG
+};
+
+void(string cmd, float tokens) client_setNavPoint={
+  local float nav_id;
+  local entity nav;
+  nav_id = stof(argv(2));
+  nav = findfloat(world, nav_name, nav_id);
+  if(nav != world){
+    self.nav_name = nav_id;
+  }
+  else{
+    self.nav_name = -1;
+  }
 };
 
 void() respawn={
@@ -136,44 +151,45 @@ entity() SelectSpawnPoint={
 	local	float  pcount;
 	
 // testinfo_player_start is only found in regioned levels
-	spot = find (world, classname, "testplayerstart");
+
+  spot = find (world, classname, "testplayerstart");
 	if (spot)
 		return spot;
 		
 // choose a info_player_deathmatch point
 	if (coop)
 	{
-		lastspawn = find(lastspawn, classname, "info_player_coop");
-		if (lastspawn == world)
-			lastspawn = find (lastspawn, classname, "info_player_start");
-		if (lastspawn != world)
-			return lastspawn;
+    lastspawn = find(lastspawn, classname, "info_player_coop");
+    if (lastspawn == world)
+      lastspawn = find (lastspawn, classname, "info_player_start");
+    if (lastspawn != world)
+      return lastspawn;
 	}
 	else if (deathmatch)
 	{
-		spot = lastspawn;
-		while (1)
-		{
-			spot = find(spot, classname, "info_player_deathmatch");
-			if (spot != world)
-			{
-				if (spot == lastspawn)
-					return lastspawn;
-				pcount = 0;
-				thing = findradius(spot.origin, 32);
-				while(thing)
-				{
-					if (thing.classname == "player")
-						pcount = pcount + 1;
-					thing = thing.chain;
-				}
-				if (pcount == 0)
-				{
-					lastspawn = spot;
-					return spot;
-				}
-			}
-		}
+    spot = lastspawn;
+    while (1)
+    {
+      spot = find(spot, classname, "info_player_deathmatch");
+      if (spot != world)
+      {
+        if (spot == lastspawn)
+          return lastspawn;
+        pcount = 0;
+        thing = findradius(spot.origin, 32);
+        while(thing)
+        {
+          if (thing.classname == "player")
+            pcount = pcount + 1;
+          thing = thing.chain;
+        }
+        if (pcount == 0)
+        {
+          lastspawn = spot;
+          return spot;
+        }
+      }
+    }
 	}
 
 	if (serverflags)
@@ -182,8 +198,9 @@ entity() SelectSpawnPoint={
 		if (spot)
 			return spot;
 	}
-	
-	spot = find (world, classname, "info_player_start");
+  
+  spot = find (world, classname, "info_player_start");
+  
 	if (!spot)
 		error ("PutClientInServer: no info_player_start on level");
 	
@@ -192,8 +209,16 @@ entity() SelectSpawnPoint={
 
 void() spawnpoint_Random={
   local entity spot;
-  spot = SelectSpawnPoint();
+  //spot = SelectSpawnPoint();
+  if(self.nav_name > 0){
+    spot = mh_world_findData(self.nav_name, DATA_NAVP);
+  }
+  else{
+    spot = SelectSpawnPoint();
+  }
+  
   self.origin = self.oldorigin = spot.origin + '0 0 24';
+  
   self.angles = spot.angles;
 	self.fixangle = TRUE;	
 };

@@ -12,6 +12,8 @@ entity PLAYER_HELPER;
 float MENU_ACTIVE;
 float MENU_HANGAR_ACTIVE = FALSE;
 float MENU_BRIEF_ACTIVE = FALSE;
+float MENU_DEPLOY_ACTIVE = FALSE;
+float MENU_LAUNCH_ROLLOVER = FALSE;
 
 vector cursorpos;
 vector last_view;
@@ -22,10 +24,15 @@ vector last_view;
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 
+
+vector MENU_BTN_LAUNCH_ORG;
+vector MENU_BTN_LAUNCH_SZ;
+
 void() menu_handleFrame;
 void(vector ofs) menu_navBar;
 void() menu_mainListener;
 void() navBarListener;
+void() mechAcceptButtonListener;
 
 void(entity nav) ui_renderNav;
 

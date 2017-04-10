@@ -31,3 +31,9 @@ void(float grp_id, float grp_val) cl_setweapongroup={
   cmd = strcat("cmd mech setgroup ", ftos(grp_id)," ",ftos(grp_val), "\n");
   localcmd(cmd);
 };
+
+void(float nav_id) cl_setspawnpoint={
+  local string cmd;
+  cmd = strcat("cmd mech setnav ", ftos(nav_id), "\n");
+  localcmd(cmd);
+};

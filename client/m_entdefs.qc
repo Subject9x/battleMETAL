@@ -40,6 +40,7 @@ float ARM_RAD = 24;
 .float plr_nex_grp1;
 .float plr_nex_grp2;
 .float plr_nex_grp3;
+.float plr_nav_pnt;
 
 .entity wdg_sh; //shield widget
 .entity wdg_en; //energy widget
@@ -96,6 +97,8 @@ float ARM_RAD = 24;
 .float isActive;
 .float navId;
 .float nav_name;
+.vector ui_org;
+.vector ui_size;
 
 //objectives
 .string obj_desc;

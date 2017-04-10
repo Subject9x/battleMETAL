@@ -19,10 +19,14 @@ void() menu_briefDrawFrame={
   else{
     menu_briefIntelPanel(topleftroot);
   }
+  menu_objIntelSwitchPanel(topleftroot);
 };
 
 //hook for input system
-void() menu_briefListener={};
+void() menu_briefListener={
+  objIntelSwitchListener();
+
+};
 
 //Listener hooks calle by menu_briefListener
 void() navpointListener={
@@ -33,6 +37,15 @@ void() navpointListener={
     lst_idx = lst_idx + 1;
   }  
 
+};
+
+void() objIntelSwitchListener={
+  if(menu_checkMouseInBounds(cursorpos, OBJ_BTN_ORG, OBJ_BTN_SZ)){
+    INFO_SWITCH = TRUE;
+  }
+  else if(menu_checkMouseInBounds(cursorpos, INT_BTN_ORG, INT_BTN_SZ)){ 
+    INFO_SWITCH = FALSE;
+  }
 };
 
 
@@ -126,20 +139,54 @@ void(vector ofs) menu_briefMapPanel={
   }
 };
 
+void(vector ofs) menu_objIntelSwitchPanel={
+  local vector bpos, tpos, isz;
+  local float tlen, idraw, odraw;
+  if(INFO_SWITCH){
+    idraw = FALSE;
+    odraw = TRUE;
+  }
+  else{
+    idraw = TRUE;
+    odraw = FALSE;
+  }
+  bpos = VIEW_CTR + '-48 40';
+  tlen = stringwidth("[OBJECTIVES]", 0 ,'8 8 0');
+  tpos = bpos;
+  tpos_x = (bpos_x + 48) - (tlen/2);
+  tpos_y = (bpos_y + 16) - 8;
+  isz_x = tlen + 12;
+  isz_y = 16;
+  OBJ_BTN_ORG = bpos + '-6 4';
+  OBJ_BTN_SZ = isz;
+
+  gui_renderTintImage(odraw, bpos + '-6 4', UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[OBJECTIVES]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', odraw, '8 8 0', HUD_ALPHA, 0) ;
+  
+  local vector ipos, iisz, itpos;
+  local float ilen;  
+  ipos = bpos;
+  ipos_x = ipos_x + isz_x;
+  ilen = stringwidth("[INTEL]", 0 ,'8 8 0');
+  itpos = ipos;
+  itpos_y = itpos_y + 8;
+  iisz_x = ilen + 12;
+  iisz_y = 16;
+  INT_BTN_ORG = ipos + '-6 4';
+  INT_BTN_SZ = isz;
+  gui_renderTintImage(idraw, ipos + '-6 4', UI_DEF_BOX_256, iisz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[INTEL]", itpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', idraw, '8 8 0', HUD_ALPHA, 0) ;  
+};
+
 void(vector ofs) menu_briefObjectivePanel={
-  local vector bpos,tpos;
-  local float tlen;
+  local vector bpos,tpos, lofs;
+  local float tlen, lst_idx;
+  local entity obj;
+    
   tlen = stringwidth("[OBJECTIVES]", 0 , '8 8 0');
   bpos = VIEW_CTR + '-66 40';
   drawpic(bpos, UI_DEF_BOX_256_TALL, '375 182', '1 1 1', HUD_ALPHA, 0);
-  tpos = bpos;
-  tpos_x = (tpos_x + 187.5) - (tlen/2);
-  tpos_y = tpos_y + 6;
-  drawstring(tpos, "[OBJECTIVES]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
-  local entity obj;
-  local float lst_idx;
-  local vector lofs;
   lofs = bpos + '12 24';
   obj = findchain(classname, "data");
   lst_idx = 0;
@@ -159,6 +206,27 @@ void(vector ofs) menu_briefObjectivePanel={
 
 void(vector ofs) menu_briefIntelPanel={
   local vector bpos;
+  local string intel;
   bpos = VIEW_CTR + '-66 40';
   drawpic(bpos, UI_DEF_BOX_256_TALL, '375 182', '1 1 1', HUD_ALPHA, 0);
+  intel = MSN_INTEL;
+  
+  local float argc, lne_idx;
+  local vector fpos;
+  fpos = bpos + '12 22';
+  argc = tokenizebyseparator(MSN_INTEL, ";");
+  lne_idx = 0;
+  while(lne_idx != -1){
+    local string line;
+    local float llen;
+    line = argv(lne_idx);
+    drawstring(fpos, line, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    if(line ==""){
+      lne_idx = -1;
+    }
+    else{
+      lne_idx = lne_idx + 1;
+      fpos_y = fpos_y + 8;
+    }
+  }
 };

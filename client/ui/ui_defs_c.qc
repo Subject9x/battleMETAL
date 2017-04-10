@@ -66,8 +66,35 @@ void() menu_handleFrame={
   else if(MENU_BRIEF_ACTIVE){
     menu_briefDrawFrame();
   }
+  else if(MENU_DEPLOY_ACTIVE){
+    menu_deployDrawFrame();
+  }
   menu_navBar((VIEW_ORG+'2 12'));
   drawpic(mpos, "gfx/ui/ui_cursor.png",  i_sz, '1 1 1', HUD_ALPHA, 0);
+};
+
+
+void() mechAcceptButtonListener={
+  if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
+    if(PLAYER_HELPER.plr_sel_mech > 0){
+      cl_setspawnpoint(PLAYER_HELPER.plr_nav_pnt);
+      cl_setmech(PLAYER_HELPER.plr_sel_mech);
+      local float lst_idx, bit;
+      lst_idx = 1;
+      bit = 1;
+      while(lst_idx <= HARDPOINT_CNT){
+        cl_setweapon(bit, HARDPOINTS[lst_idx]);
+        bit = bit *2;
+        lst_idx = lst_idx + 1;
+      }
+      cl_setweapongroup(1, PLAYER_HELPER.plr_nex_grp1);
+      cl_setweapongroup(2, PLAYER_HELPER.plr_nex_grp2);
+      cl_setweapongroup(3, PLAYER_HELPER.plr_nex_grp3);
+      cl_spawnmech();
+      MENU_ACTIVE = FALSE;
+      setcursormode(0);
+    }
+  }
 };
 
 void(vector ofs) menu_navBar={
@@ -88,22 +115,49 @@ void(vector ofs) menu_navBar={
   hpos_y = (hpos_y + 16) - 8;
   gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', MENU_HANGAR_ACTIVE, '8 8 0', HUD_ALPHA, 0) ;
   
-  gui_DrawRect(VIEW_MAX - '88 24', '64 16', '6 4', '1 1 1');
-  drawstring(VIEW_MAX - '88 24', "[ACCEPT]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderTintImage(MENU_DEPLOY_ACTIVE, nvpos+'192 0', UI_DEF_BOX_256, '96 24', CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  local vector dpos;
+  dpos = nvpos + '192 0';
+  dpos_x = (dpos_x + 48) - (stringwidth("[DEPLOYMENT]", 0 ,'8 8 0')/2);
+  dpos_y = (dpos_y + 16) - 8;
+  gui_renderHighlightString("[DEPLOYMENT]", dpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', MENU_DEPLOY_ACTIVE, '8 8 0', HUD_ALPHA, 0) ;
+  
+  local vector rpos, lpos, isz;
+  rpos = nvpos;
+  rpos_x = VIEW_MAX_x - 128;
+  lpos = rpos;
+  lpos_x = (lpos_x + 58) - (stringwidth(">>[LAUNCH]>>", 0 ,'8 8 0')/2);
+  lpos_y = (lpos_y + 16) - 8;
+  isz_x = stringwidth(">>[!LAUNCH!]>>", 0 ,'8 8 0') + 12;
+  isz_y = 24;
+  gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos +'-6 0', UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  gui_renderHighlightString(">>[LAUNCH]>>",lpos, CLR_DEF_WEP_INRANGE, CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, '8 8 0', HUD_ALPHA, 0) ;
+  MENU_BTN_LAUNCH_ORG = rpos +'-6 0';
+  MENU_BTN_LAUNCH_SZ = isz;
+  //gui_DrawRect(VIEW_MAX - '88 24', '64 16', '6 4', '1 1 1');
+ // drawstring(VIEW_MAX - '88 24', "[ACCEPT]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 void() menu_mainListener={
   navBarListener();
+  mechAcceptButtonListener();
 };
 
 void() navBarListener={
   if(menu_checkMouseInBounds(cursorpos, '20 28', '94 24')){
     MENU_BRIEF_ACTIVE = TRUE;
     MENU_HANGAR_ACTIVE = FALSE;
+    MENU_DEPLOY_ACTIVE = FALSE;
   }
   else if(menu_checkMouseInBounds(cursorpos, '124 28', '94 24')){
     MENU_BRIEF_ACTIVE = FALSE;
     MENU_HANGAR_ACTIVE = TRUE;
+    MENU_DEPLOY_ACTIVE = FALSE;
+  }
+  else if(menu_checkMouseInBounds(cursorpos, '204 28', '94 24')){
+    MENU_BRIEF_ACTIVE = FALSE;
+    MENU_HANGAR_ACTIVE = FALSE;
+    MENU_DEPLOY_ACTIVE = TRUE;
   }
 };
 

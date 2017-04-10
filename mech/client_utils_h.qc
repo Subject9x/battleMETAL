@@ -27,4 +27,5 @@ void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
 void(string cmd, float tokens) client_setWeaponGroup;
 void() client_sendMissionFileName;
+void(string cmd, float tokens) client_setNavPoint;
 //void(float w_id, float wslotid) client_updateWeaponIdStat;

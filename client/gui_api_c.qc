@@ -47,6 +47,18 @@ vector(float dmg_type) gui_colorForWeaponType={
   }
 };
 
+void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm_clr, float alpha, float flg) gui_renderTintImage2={
+  local vector clr;
+  if(bool){
+    clr = tnt_clr;
+  }
+  else{
+    clr = nrm_clr;
+  }
+  drawpic(org, img, i_sz, clr, alpha, flg);
+};
+
+
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alpha, float flg) gui_renderTintImage={
   local vector clr;
   if(bool){

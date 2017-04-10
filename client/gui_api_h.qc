@@ -25,6 +25,7 @@ void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector l
 vector(float val) gui_getColorForArmor;
 vector(float val) gui_getColorForShield;
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alpha, float flg) gui_renderTintImage;
+void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm_clr, float alpha, float flg) gui_renderTintImage2;
 vector(float dmg_type) gui_colorForWeaponType;
 void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float alpha, float flg) gui_renderHighlightString;
 vector(vector map_min, vector map_max, vector coords, vector img_sz) gui_mapCoordToImgCoord;

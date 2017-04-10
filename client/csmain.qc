@@ -28,6 +28,7 @@ void() CSQC_Init =
   PLAYER_HELPER.plr_nex_grp1 = 0;
   PLAYER_HELPER.plr_nex_grp2 = 0;
   PLAYER_HELPER.plr_nex_grp3 = 0;
+  PLAYER_HELPER.plr_nav_pnt = 0;
   addentity(PLAYER_HELPER);
   
   WEPBITS[0] = 1;
@@ -84,6 +85,7 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
         MENU_ACTIVE = FALSE;
         MENU_HANGAR_ACTIVE = FALSE;
         MENU_BRIEF_ACTIVE = FALSE;
+        MENU_DEPLOY_ACTIVE = FALSE;
         setcursormode(0);
       }
       else{
@@ -100,6 +102,9 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
         }
         else if(MENU_BRIEF_ACTIVE){
           menu_briefListener();
+        }
+        else if(MENU_DEPLOY_ACTIVE){
+          menu_deployListener();
         }
           menu_mainListener();
         return TRUE;
@@ -447,7 +452,8 @@ void(float isnew) CSQC_Ent_Update =
       self.classname = "data";
       self.data_type = DATA_NAVP;
       self.drawmask = MASK_ENGINE;
-      //setmodel(self, "q3mdl/testball.md3");
+      self.ui_org = '0 0 0'; 
+      self.ui_size = '0 0 0';
 
       setorigin(self, self.origin);
       addentity(self);
@@ -463,6 +469,8 @@ void(float isnew) CSQC_Ent_Update =
       self.classname = "data";
       self.data_type = DATA_OBJT;
       self.drawmask = MASK_ENGINE;
+      self.ui_org = '0 0 0'; 
+      self.ui_size = '0 0 0';
       setorigin(self, self.origin);
       addentity(self);
     }

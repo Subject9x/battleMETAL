@@ -9,7 +9,6 @@ Overview: class file for hangar ui
 //hook for input events
 void() menu_hangarListener={
   mechSelectListener();
-  mechAcceptButtonListener();
   weaponSelectListener();
   hardpointListener();
   hardpointInfoListener();
@@ -78,26 +77,6 @@ void() weaponSelectListener={
 
 void() hardpointInfoListener={
 
-};
-
-void() mechAcceptButtonListener={
-  if(menu_checkMouseInBounds(cursorpos, VIEW_MAX - '88 24', '64 16')){
-    cl_setmech(PLAYER_HELPER.plr_sel_mech);
-    local float lst_idx, bit;
-    lst_idx = 1;
-    bit = 1;
-    while(lst_idx <= HARDPOINT_CNT){
-      cl_setweapon(bit, HARDPOINTS[lst_idx]);
-      bit = bit *2;
-      lst_idx = lst_idx + 1;
-    }
-    cl_setweapongroup(1, PLAYER_HELPER.plr_nex_grp1);
-    cl_setweapongroup(2, PLAYER_HELPER.plr_nex_grp2);
-    cl_setweapongroup(3, PLAYER_HELPER.plr_nex_grp3);
-    cl_spawnmech();
-    MENU_ACTIVE = FALSE;
-    setcursormode(0);
-  }
 };
 
 void() weaponGroupPanelListener={

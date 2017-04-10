@@ -28,6 +28,7 @@ void() map_objective={
   setmodel(self, "q3mdl/testball.md3");
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
+  self.data_idx = self.nav_name;
   self.SendEntity = send_objective;
   self.SendFlags = 1;
 }
