@@ -18,5 +18,7 @@ void() menu_deployListener;
 void() navSelectListener;
 
 //panels
+void(vector ofs) menu_deploy_missionInfoPanel;
+void(vector ofs) menu_deploy_navInfoPanel;
 void(vector ofs) menu_deploy_mechInfoPanel;
 void(vector ofs) menu_deploy_mapOverviewPanel;

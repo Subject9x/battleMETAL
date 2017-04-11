@@ -20,7 +20,7 @@ void() dummyConnect = {
   
   self.p_class = P_MECH;
   self.p_class_next = P_MECH;
-  self.nextVecChoice = 3;
+  self.nextVecChoice = 2;
   self.data_idx = 0;
   self.currentWeaponGroup = 1;
   self.i_faction = 2;
