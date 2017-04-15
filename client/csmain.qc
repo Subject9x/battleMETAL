@@ -63,7 +63,10 @@ void() CSQC_Init =
   NAVNAMES[19] = "Phi";
   NAVNAMES[20] = "Omega";
   
-  
+  VOICE_QUEUE[0] = "null";
+  VOICE_QUEUE[1] = "null";
+  VOICE_QUEUE[2] = "null";
+  VOICE_QUEUE[3] = "null";
   //get mission file
   cs_precache();
 };
@@ -252,8 +255,11 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     makevectors(input_angles);
     PLR_VIEW = pmove_org + (v_up * PLR_VIEW_y) + (v_right * PLR_VIEW_x) + (v_forward * PLR_VIEW_z);
     setproperty(VF_ORIGIN, PLR_VIEW);
+    setorigin(PLAYER_HELPER, PLR_VIEW);
+    
     //player mech hp info
-    local float plr_sh, plr_en, plr_ct, plr_rt, plr_lt, plr_ra, plr_la, plr_lg;
+    local float plr_state, plr_sh, plr_en, plr_ct, plr_rt, plr_lt, plr_ra, plr_la, plr_lg;
+    plr_state = getstati(STAT_PLR_STT);
     plr_sh = getstati(STAT_SHIELD);
     plr_en = getstati(STAT_ENERGY);
     plr_ct = getstatf(STAT_CTOR_HP);
@@ -285,10 +291,11 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     rad_mode = getstati(STAT_RDR_MODE);
     
     //target tracking info
-    local float trg_vid, trg_datid, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
+    local float trg_vid, trg_datid, trg_ddflg, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
     local vector trg_pos;
     trg_vid = getstati(STAT_TRG_VID);
     trg_datid = getstati(STAT_TRG_DAT);
+    trg_ddflg = getstati(STAT_TRG_DDFLG);
     trg_sh = getstatf(STAT_TRG_SH);
     trg_am = getstati(STAT_TRG_AM);
     trg_dist = getstati(STAT_TRG_DIST);
@@ -302,6 +309,10 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     vec_data = m_findData(vec_id, DATA_MECH);
     player_hud = m_findData(vec_id, DATA_HUD);
     
+    snd_hud_vfx_statelistener(plr_state);
+    snd_hud_vfx_enelistener(plr_en);
+    snd_hud_vfx_toggleradar(rad_mode);
+    snd_hud_vfx_targkill(trg_ddflg);
     oself = self;
     self = player_hud;
       self.hud_prep(vec_data);
@@ -336,6 +347,12 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     og_y = VIEW_MAX_y - 32;
     drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   }
+  
+  //sound system;
+  snd_hud_vfx_frame();
+  
+  
+  
   //menu system
   if(MENU_ACTIVE){
     cursorpos = getmousepos();
@@ -419,7 +436,7 @@ float(entity ent, float channel, string soundname, float volume, float attenuati
 };
 
 float() CSQC_Parse_Event={
-  centerprint("foo\n");
+
   return FALSE;
 };
 

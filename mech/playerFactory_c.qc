@@ -45,7 +45,8 @@ void() player_makeMech={
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   self.p_class = P_MECH;
   self.data_idx = dat.data_idx;
-  self.power_timer = time + 1;
+  self.power_timer = time + 5;
+  self.stat_plr_stt = PLAYER_SPAWN;
   buildVehicle(dat);
   if((self.flags & FL_CLIENT)){
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, self.m_maccel, self.m_rollangle);

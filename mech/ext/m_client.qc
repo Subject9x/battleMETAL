@@ -78,6 +78,7 @@ void() ClientConnect = {
   self.stat_wep_rel = 0;
   
   self.stat_trg_vid = -1;
+  self.stat_trg_ddflg = -1;
   self.stat_trg_sh = -1;
   self.stat_trg_am = -1;
   self.stat_trg_dat = -1;

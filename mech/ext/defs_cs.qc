@@ -62,6 +62,7 @@ float AS_FLOAT = 8;
 .float stat_lck_stt;
 .float stat_plr_ptc;
 .float stat_plr_ang;
+.float stat_trg_ddflg;
 .float stat_trg_orgx;
 .float stat_trg_orgy;
 .float stat_trg_orgz;
@@ -147,9 +148,7 @@ float WEAPON9_REL = 256;
 //PLAYER STATE BITS
 float PLAYER_IDLE = 0;
 float PLAYER_SPAWN = 1;
-float PLAYER_LOWEN = 2;
-float PLAYER_LOWSHIELD = 3;
-float PLAYER_CRITDAM = 4;
+float PLAYER_CRITDAM = 2;
 
 //stat channels
 float STAT_PLR_ANG = 73;
@@ -218,6 +217,7 @@ float STAT_NAV_DIR = 60;
 float STAT_HIT_DIR = 90;
 float STAT_RDR_MODE = 91;
 
+float STAT_TRG_DDFLG = 81;
 float STAT_TRG_DIST = 92;
 float STAT_TRG_FACE = 58;
 

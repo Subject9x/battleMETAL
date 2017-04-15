@@ -8,7 +8,7 @@ this guy will bounce off up to two non-targets.
 
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_RPLAS_IDX = ID_PRJ_RPLAS;
-float DAT_PRJ_RPLAS_VELOCITY = 1000;
+float DAT_PRJ_RPLAS_VELOCITY = 1500;//1000;
 string DAT_PRJ_RPLAS_MODEL = "progs/casing.mdl";
 float DAT_PRJ_RPLAS_LIFETIME = 2;
 float DAT_PRJ_RPLAS_DAMAGE = 8; //was 5 - 3/27/2017
@@ -101,5 +101,5 @@ void() data_prj_rplas_touch={
 	self.movetype = MOVETYPE_BOUNCE;
 	self.think = data_prj_rplas_bounce;
 	self.ltime = self.nextthink;
-	self.nextthink = time + 0.1;
+	self.nextthink = time + 0.001;
 };

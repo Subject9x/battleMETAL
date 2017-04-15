@@ -25,6 +25,14 @@ float	SVC_FINALE			= 31;
 float	SVC_CDTRACK			= 32;
 float	SVC_SELLSCREEN		= 33;
 
+//ported over from server
+float	DEAD_NO					= 0;
+float	DEAD_DYING				= 1;
+float	DEAD_DEAD				= 2;
+float	DEAD_RESPAWNABLE		= 3;
+float	DEAD_RESPAWNING			= 4; // dead, waiting for buttons to be released
+
+
 //satus colors
 vector STATUS_AOK = '0.13 0.6 0.329';
 vector STATUS_DMG = '0.952 0.611 0.07';
@@ -165,6 +173,7 @@ float STAT_LCK_STT = 69;
 float STAT_PLR_PTC = 72;
 float STAT_PLR_ANG = 73;
 
+float STAT_TRG_DDFLG = 81;
 float STAT_TRG_ORGX = 75;
 float STAT_TRG_ORGY = 76;
 float STAT_TRG_ORGZ = 78;
@@ -264,15 +273,12 @@ float WEAPON9 = 256;
 //PLAYER STATE BITS
 float PLAYER_IDLE = 0;
 float PLAYER_SPAWN = 1;
-float PLAYER_LOWEN = 2;
-float PLAYER_LOWSHIELD = 3;
-float PLAYER_CRITDAM = 4;
+float PLAYER_CRITDAM = 2;
 
 //target lock states
 float LOCK_NONE = 1;
 float LOCK_TARG = 2;
 float LOCK_PLYR = 4;
-
 
 //level
 float STAT_LVL_RES = 79;

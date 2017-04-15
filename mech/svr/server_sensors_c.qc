@@ -31,11 +31,13 @@ void() server_getTarget={
 /*scope - self = unit making the target call*/
 void() server_updateTargetInfo={
   local float isvis;
-  if(self.enemy.deadflag > DEAD_NO || self.enemy == world){
+  
+  if(self.enemy == world){
     self.stat_trg_vid = -1;
     self.stat_trg_dat = -1;
-    self.stat_trg_sh = -1;
-    self.stat_trg_am = -1;
+    mech_clearTargetInfo();
+    self.stat_trg_ddflg = -1;
+    self.stat_trg_am = 0;
     self.stat_trg_dist = -1;
     self.stat_trg_face = -1;
     self.stat_trg_orgx = 0;
@@ -49,15 +51,39 @@ void() server_updateTargetInfo={
     self.stat_trg_ra_hp = -1;
     if(self.stat_lck_stt & LOCK_TARG){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
-      if(self.enemy != world){
-        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
-      }
+    }
+    return;
+  }
+  
+  if(self.enemy.deadflag > DEAD_NO){
+    self.stat_trg_vid = -1;
+    self.stat_trg_dat = -1;
+    // self.stat_trg_sh = -1;
+    //gross
+    mech_clearTargetInfo();
+    self.stat_trg_ddflg = self.enemy.deadflag;
+    self.stat_trg_am = 0;
+    self.stat_trg_dist = -1;
+    self.stat_trg_face = -1;
+    self.stat_trg_orgx = 0;
+    self.stat_trg_orgy = 0;
+    self.stat_trg_orgz = 0;
+    self.stat_trg_lg_hp = -1;
+    self.stat_trg_ct_hp = -1;
+    self.stat_trg_lt_hp = -1;
+    self.stat_trg_rt_hp = -1;
+    self.stat_trg_la_hp = -1;
+    self.stat_trg_ra_hp = -1;
+    if(self.stat_lck_stt & LOCK_TARG){
+      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
+      self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
     }
     return;
   }
 
   self.stat_trg_vid = self.enemy.data_idx;
   self.stat_trg_dat = self.enemy.data_type;
+  self.stat_trg_ddflg = self.enemy.deadflag;
   self.stat_trg_am = 0;
   self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
   //self.stat_trg_fact = self.enemy.i_faction;

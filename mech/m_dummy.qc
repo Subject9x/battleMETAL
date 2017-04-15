@@ -124,6 +124,7 @@ void() dummyDie={
   
   if(self.p_class == P_MECH){
     mech_player_die();
+    self.deadflag = DEAD_DEAD;
     return;
   }
 };

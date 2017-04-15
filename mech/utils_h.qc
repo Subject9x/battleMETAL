@@ -14,3 +14,4 @@ void(float hp, float max_hp, float arm_type, float arm_val) util_setHealthArmor;
 void(vector bbx_min, vector bbx_max) util_setBoundBox;
 float(vector p, vector min, vector max) util_checkInBounds;
 float(entity trg) util_checkPointAngle;
+void(float bits, float b, float bb, float bbb) util_subThreeBits;

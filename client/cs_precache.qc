@@ -35,8 +35,12 @@ void() cs_precache={
   precache_pic("gfx/ui/hgr_hvd.png", 0);
   
   //cockpit voice
-  precache_sound("sound/comp/online.ogg");
-  precache_sound("sound/comp/en_low.ogg");
+  SND_HUD_VFX_ONLINE = precache_sound2("sound/comp/online.ogg");
+  SND_HUD_VFX_ENELOW = precache_sound2("sound/comp/en_low.ogg");
+  SND_HUD_VFX_SHDLOW = precache_sound2("sound/comp/sh_low.ogg");
+  SND_HUD_VFX_RDRACTIVE = precache_sound2("sound/comp/rdr_active.ogg");
+  SND_HUD_VFX_RDRPASSIVE = precache_sound2("sound/comp/rdr_passive.ogg");
+  SND_HUD_VFX_TARGKILL = precache_sound2("sound/comp/trg_kill.ogg");
   
   //ui sounds
   precache_sound("sound/misc/menu1.wav");

@@ -1,0 +1,107 @@
+/*
+mech Mod
+Author: Subject9x
+Date: 04/10/2017
+Overview: impl file for the hud sound system
+*/
+
+void() snd_hud_vfx_frame={
+  if(time > VOICE_TIME_NEXT){
+    local float playing
+    local string snd;
+    playing = getsoundtime(PLAYER_HELPER, CHAN_AUTO);
+    if(playing < 0){
+      //print(strcat(ftos(VOICE_QUEUE_IDX),":",VOICE_QUEUE[VOICE_QUEUE_IDX],"\n")); // DEBUG
+      VOICE_TIME = soundlength(snd);
+      VOICE_TIME_NEXT = time + VOICE_TIME;
+      snd = VOICE_QUEUE[VOICE_QUEUE_IDX];
+      sound7(PLAYER_HELPER, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+      VOICE_QUEUE[VOICE_QUEUE_IDX] = "null";
+      VOICE_QUEUE_IDX = VOICE_QUEUE_IDX + 1;
+      if(VOICE_QUEUE_IDX > (VOICE_QUEUE_SIZE - 1)){
+        VOICE_QUEUE_IDX = 0;
+      }
+    }
+  }
+};
+
+void(string requestedSound) snd_hud_vfx_addtoqueue={
+  if(time > VOICE_ADDTIME){
+    //check if sound already queued
+    local float lst_idx, existing;
+    lst_idx = 0;
+    existing = 0;
+    while(lst_idx < VOICE_QUEUE_SIZE){
+      local string snd;
+      snd = VOICE_QUEUE[lst_idx];
+      if(snd == requestedSound){
+        existing = existing + 1;
+      }
+      lst_idx = lst_idx + 1;
+    }
+    if(existing == 0){
+      lst_idx = 0;
+      existing = 0;
+      while(lst_idx < VOICE_QUEUE_SIZE){
+        local string snd;
+        snd = VOICE_QUEUE[lst_idx];
+        if(snd == "null"){
+          if(existing == 0){
+            existing = 1;
+            VOICE_QUEUE[lst_idx] = requestedSound;
+            VOICE_ADDTIME = time + soundlength(requestedSound);
+          }
+        }
+        lst_idx = lst_idx + 1;
+      }
+    }
+  }
+};
+
+void(float playerState) snd_hud_vfx_statelistener={
+  if(playerState == PLAYER_SPAWN){
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE);
+    playerState = PLAYER_IDLE;
+  }
+};
+
+void(float lockstate) snd_hud_vfx_locklistener={
+};
+
+void(float curEn) snd_hud_vfx_enelistener={
+  if((curEn >= 30) && (curEn <= 35)){
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW);
+  }
+};
+
+void(float curSh) snd_hud_vfx_shdlistener={
+  if((curSh >= 30) && (curSh <= 35)){
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_SHDLOW);
+  }
+};
+
+void(float curAm) snd_hud_vfx_armlistener={
+  
+};
+
+void(float mode) snd_hud_vfx_toggleradar={
+  if(SND_HUD_RADARMODE != mode){
+    SND_HUD_RADARMODE = mode;
+    if(mode==0){
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRPASSIVE); 
+    }
+    else{
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE);
+    }
+  }
+};
+
+void(float dedflg) snd_hud_vfx_targkill={
+  if(dedflg > DEAD_NO){
+    print(strcat(ftos(dedflg),"\n"));
+  }
+  if(dedflg == DEAD_DEAD){
+    
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL);
+  }
+};
