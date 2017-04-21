@@ -24,4 +24,4 @@ commented vars mean they're already implemented and are here for reference!
 .vector c_alt_ofs;    //useful alt offset
 .vector c_bbx_n;    //min / max of bbox
 .vector c_bbx_x;
-.entity c_chain;    //used only for weapon slots!
+.entity c_part;

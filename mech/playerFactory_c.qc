@@ -64,7 +64,6 @@ void() player_unmakeMech={
   self.p_class = P_OBS;
   self.stat_trg_vid = -1;
   self.stat_trg_sh = -1;
-  self.stat_trg_am = -1;
   self.stat_trg_dat = -1;
   self.stat_trg_face = -1;
   self.next_wepn1 = -1;

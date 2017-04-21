@@ -155,7 +155,7 @@ float STAT_WEP_REL = 61;
 
 float STAT_TRG_VID = 84;
 float STAT_TRG_SH = 85;
-float STAT_TRG_AM = 86;
+//float STAT_TRG_AM = 86;
 float STAT_TRG_DAT = 87;
 
 float STAT_RDR_FRNT = 88;

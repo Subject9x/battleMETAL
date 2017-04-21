@@ -20,7 +20,7 @@ void() dummyConnect = {
   
   self.p_class = P_MECH;
   self.p_class_next = P_MECH;
-  self.nextVecChoice = 2;
+  self.nextVecChoice = 3;
   self.data_idx = 0;
   self.currentWeaponGroup = 1;
   self.i_faction = 2;
@@ -33,8 +33,6 @@ void() dummyConnect = {
   
   self.stat_trg_vid = -1;
   self.stat_trg_sh = -1;
-  self.stat_trg_am = -1;
-  self.stat_trg_dat = -1;
   
   self.radar_range = 100;
   self.radar_front = 0;
@@ -58,11 +56,13 @@ void() putDummyInServer = {
 	self.effects = 0;
 	self.invincible_time = 0;
   
-  spot  = SelectSpawnPoint();
   
-	self.origin = self.oldorigin = spot.origin + '0 0 24';	// 1998-07-21 Respawning where player died fix by Robert Field
-  self.angles = spot.angles;
-	self.fixangle = TRUE;		// turn this way immediately
+  spawnpoint_Random();
+  //spot  = SelectSpawnPoint();
+  
+	//..self.origin = self.oldorigin = spot.origin + '0 0 24';	// 1998-07-21 Respawning where player died fix by Robert Field
+  //self.angles = spot.angles;
+	//self.fixangle = TRUE;		// turn this way immediately
 	
   self.classname = "player";
   

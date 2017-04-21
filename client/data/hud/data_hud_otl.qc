@@ -24,7 +24,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon7;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon8;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon9;
-void(float trgvid, float trgdat,  float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) otl_renderTarget; 
+void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) otl_renderTarget; 
 void(float shieldval, vector tpos, float zht) otl_targetShield;
 void(float lg, float ct, float lt, float rt, float la, float ra) otl_targetArmor;
 void(float range) otl_targetRange;
@@ -502,7 +502,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 /*
   RENDER TARGET====================================================
 */
-void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) otl_renderTarget={
+void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) otl_renderTarget={
 
   if(trglock & LOCK_PLYR){
     local vector pofs;

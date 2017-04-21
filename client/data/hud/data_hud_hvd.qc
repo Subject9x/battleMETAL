@@ -24,7 +24,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon7;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon8;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon9;
-void(float trgvid, float trgdat,  float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) hvd_renderTarget; 
+void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) hvd_renderTarget; 
 void(float shieldval, vector tpos, float zht) hvd_targetShield;
 void(float lg, float ct, float lt, float rt, float la, float ra) hvd_targetArmor;
 void(float range) hvd_targetRange;
@@ -586,7 +586,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   gui_renderModalPip(ofs, w_rel, WEAPON9_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
 };
 /*TARGET ARMOR PANEL ==============================================*/
-void(float trgvid, float trgdat,  float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) hvd_renderTarget={
+void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) hvd_renderTarget={
   drawpic(self.hud_pnl2.pos, self.hud_pnl2.img, self.hud_pnl2.asize, '1 1 1', HUD_ALPHA, 0);
   if(trglock & LOCK_PLYR){
     local vector pofs;

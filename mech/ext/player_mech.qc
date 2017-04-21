@@ -15,12 +15,6 @@ void() mech_clearWeaponState={
 
 
 void() mech_clearTargetInfo={
-  util_subThreeBits( self.stat_trg_am, TARG_CT_OK, TARG_CT_DM, TARG_CT_DD);
-  util_subThreeBits( self.stat_trg_am, TARG_RT_OK, TARG_RT_DM, TARG_RT_DD);
-  util_subThreeBits( self.stat_trg_am, TARG_LT_OK, TARG_LT_DM, TARG_LT_DD);
-  util_subThreeBits( self.stat_trg_am, TARG_RA_OK, TARG_RA_DM, TARG_RA_DD);
-  util_subThreeBits( self.stat_trg_am, TARG_LA_OK, TARG_LA_DM, TARG_LA_DD);
-  util_subThreeBits( self.stat_trg_am, TARG_LG_OK, TARG_LG_DM, TARG_LG_DD);
 };
 
 void() mech_clearWeaponGroups={

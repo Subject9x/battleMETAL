@@ -118,6 +118,12 @@ void() data_las_atk={
   //damage_mech_main(trace_ent, self.owner, self.owner, 12, 0);
   local float dtype;
   dtype = DMG_ENE;
+  
+  /*if(trace_ent != world){
+    local float bbx;
+    bbx = 2;//trace_ent.c_bbx_x_x / 6;
+    dir = dir + (v_forward*bbx);
+  }*/
   t_damage(trace_ent, self, player, DAT_LAS_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
   //te_lightning1(laser_org, laser_org.origin, dir);

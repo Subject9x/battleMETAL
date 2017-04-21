@@ -118,6 +118,11 @@ void() data_pac_atk={
   //damage_mech_main(trace_ent, self.owner, self.owner, 12, 0);
   local float dtype;
   dtype = DMG_ENE + EFF_PRC;
+  if(trace_ent != world){
+    local float bbx;
+    bbx = trace_ent.c_bbx_x_x / 4;
+    dir = dir + (v_forward*bbx);
+  }
   t_damage(trace_ent, self, player, DAT_PAC_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/gauss.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 

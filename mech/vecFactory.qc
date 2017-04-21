@@ -49,7 +49,15 @@ void(entity data) buildVehicle={
     }
     self = self.e_legs;
        leg_stand1();
-    self = oself;   
+    self = oself; 
+    
+    //now we chain all the components together for linked list power!
+    //link flow ctor -> ltor -> la -> rtor -> la -> lg
+    self.c_part = self.e_tor_l;
+    self.e_tor_l.c_part = self.e_arm_l;
+    self.e_arm_l.c_part = self.e_tor_r;
+    self.e_tor_r.c_part = self.e_arm_r;
+    self.e_arm_r.c_part = self.e_legs;
   }
   self = oself;
   buildWeaponList(data, self);
@@ -322,6 +330,8 @@ void(entity mechData, entity own, float state1, float state2, float state3) buil
 
   wepData.unit_ini();
 
+  self.health = 25;
+  self.max_health = 25;
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
   util_setModel(self.c_model, 0);
   util_setBoundBox('-1 -1 -1','1 1 1');

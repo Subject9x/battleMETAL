@@ -84,7 +84,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     }
     else{
       local float irad;
-      irad = vlen(trg.origin - dmg_point);
+      irad = vlen(dmg_point - trg.origin);
       targ_act = t_find_part(dmg_point, irad, trg);
       if(targ_act != world){
         if(targ_act.deadflag <= DEAD_NO){
@@ -128,71 +128,63 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
   many a clever approach was attempted before I sank into exhaustion to use this.
   :(
 */
-entity(vector point, float rad, entity own) t_find_part={
+entity(vector point, float rad, entity trg) t_find_part={
   
-  local float cur_dist, a_rad, t_rad, c1_rad,c2_rad;
-  local entity  farm, ftor, c1, toSender;
-  t_rad = rad;
-  cur_dist = vlen(point - own.e_arm_l.origin);
-  if(cur_dist < rad){
-    a_rad = cur_dist;
-    farm = own.e_arm_l;
-  }
-
-  cur_dist = vlen(point - own.e_arm_r.origin);
-  if(cur_dist < rad){
-    a_rad = cur_dist;
-    farm = own.e_arm_r;
-  }
-  
-  cur_dist = vlen(point - own.e_tor_l.origin);
-  if(cur_dist < rad){
-    t_rad = cur_dist;
-    ftor = own.e_tor_l;
+  local float cur_dist;
+  local entity  cprt, f_wep, toSender;
+  cur_dist = rad;
+  cprt = trg;
+  f_wep = trg;
+  while(cprt){
+    local float diff;
+    if(cprt != trg){
+      diff = vlen(point - cprt.origin);
+      if(cprt.deadflag <= DEAD_NO){
+        if(diff < cur_dist){
+          cur_dist = diff;
+          toSender = cprt;
+        }
+      }
+    }
+    cprt = cprt.c_part;
   }
   
-  cur_dist = vlen(point - own.e_tor_r.origin);
-  if(cur_dist < rad){
-    t_rad = cur_dist;
-    ftor = own.e_tor_r;
-  }
-  
-  if(a_rad < t_rad){
-    if(farm.deadflag <= DEAD_NO){
-      c1_rad = a_rad;
-      c1 = farm;
-    }
-    else{
-      c1_rad = t_rad;
-      c1 = ftor;
+  f_wep = closestWeapon(trg, point, rad);
+  if(f_wep != world){
+    if(f_wep != trg){
+      local float chk;
+      chk = vlen(point - f_wep.origin);
+      if(chk < cur_dist){
+        toSender = f_wep;
+      }
     }
   }
-  else if(t_rad < a_rad){
-    if(ftor.deadflag <= DEAD_NO){
-      c1_rad = t_rad;
-      c1 = ftor;
-    }
-    else{
-      c1_rad = a_rad;
-      c1 = farm;
-    }
-  } 
-  
-  if(c1_rad < rad){
-    if(c1.deadflag <= DEAD_NO){
-      toSender =  c1;
-    }
-    else{
-      toSender = own;
-    }
-  }
-  else{
-    toSender = own;
-  }
-  
   return toSender;
 };
 
+entity(entity parent, vector org, float start_rad) closestWeapon={
+  local float cur_dist;
+  local entity wep, toSender;
+  cur_dist = start_rad;
+  wep = parent;
+  while(wep){
+    local float diff;
+    diff = vlen(wep.origin - org);
+    if((wep != parent)){
+      if(wep.deadflag <= DEAD_NO){
+        if(diff < cur_dist){
+          cur_dist = diff;
+          toSender = wep;
+        }
+      }
+    }
+    wep = wep.w_slot;
+  }
+  if(wep == world){
+    wep = parent;
+  }
+  return toSender;
+};
 
 
 /*
@@ -251,22 +243,21 @@ void(entity targ, entity attacker, float dmg_type) killed={
   self.doobits = 0;
   
   if((self.classname == MECH_PIECE) && (self.c_name != "weapon")){
-      local entity wep;
-      wep = self.owner;
-      while(wep){
-        wep = wep.w_slot;
-        if(wep.c_parent == self.c_name){
-          if(wep.deadflag <= DEAD_NO){
-              killed(wep, attacker, 0);      
-          }
+    local entity wep;
+    wep = self.owner;
+    while(wep){
+      wep = wep.w_slot;
+      if(wep.c_parent == self.c_name){
+        if(wep.deadflag <= DEAD_NO){
+            killed(wep, attacker, 0);      
         }
       }
+    }
   }
   
   if(self.enemy.enemy == self){
     self.enemy.stat_trg_vid = -1;
     self.enemy.stat_trg_sh = -1;
-    self.enemy.stat_trg_am = -1;
     self.enemy.enemy = world;
   }
 
@@ -424,8 +415,6 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
   }
   return dmg_amt;
 };
-
-
 
 /*
   2 Jan 2017

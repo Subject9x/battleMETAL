@@ -297,7 +297,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     trg_datid = getstati(STAT_TRG_DAT);
     trg_ddflg = getstati(STAT_TRG_DDFLG);
     trg_sh = getstatf(STAT_TRG_SH);
-    trg_am = getstati(STAT_TRG_AM);
     trg_dist = getstati(STAT_TRG_DIST);
     trg_dir = getstati(STAT_TRG_FACE);
     trg_lock = getstati(STAT_LCK_STT);
@@ -332,7 +331,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, plr_wrel);
       self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, plr_wrel);
       self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, plr_wrel);
-      self.hud_renderTarget(trg_vid,trg_datid,trg_am,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
+      self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
     self = oself;
     
     

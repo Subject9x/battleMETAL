@@ -105,6 +105,7 @@ void() data_latc_atk={
     
     te_superspike(dir);
     sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+    
     t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir, '0 0 0');
     
     //local vector sfx;

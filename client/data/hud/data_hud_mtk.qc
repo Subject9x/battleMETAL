@@ -24,7 +24,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon7;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon8;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon9;
-void(float trgvid, float trgdat,  float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mtk_renderTarget; 
+void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mtk_renderTarget; 
 void(float shieldval, vector tpos, float zht) mtk_targetShield;
 void(float lg, float ct, float lt, float rt, float la, float ra) mtk_targetArmor;
 void(float range) mtk_targetRange;
@@ -538,7 +538,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon9={};
 
 /*RENDER TARGET====================================================*/
-void(float trgvid, float trgdat, float trgam, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mtk_renderTarget={
+void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mtk_renderTarget={
   if(trglock & LOCK_PLYR){
     local vector pofs;
     pofs = self.hud_pnl1.pos + '4 0';
