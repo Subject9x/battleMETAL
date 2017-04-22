@@ -188,12 +188,12 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
-  if(MENU_ACTIVE){
+  /*if(MENU_ACTIVE){
   	setproperty(VF_DRAWCROSSHAIR, 0); // TODO custom crosshairs
   }
   else{
   	setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
-  }
+  }*/
 	//setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
 	setproperty(VF_DRAWENGINESBAR, 0); // TODO custom hud
   VIEW_ORG = '0 0';
@@ -316,7 +316,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     self = player_hud;
       self.hud_prep(vec_data);
       self.hud_HelmetImage(VIEW_MAX, VIEW_CTR);
-      self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
       self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
       self.hud_playerShield(plr_sh);
       self.hud_playerEnergy(plr_en);  
@@ -332,6 +331,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, plr_wrel);
       self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, plr_wrel);
       self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
+      self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
     self = oself;
     
     

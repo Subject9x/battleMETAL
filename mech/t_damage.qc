@@ -148,7 +148,7 @@ entity(vector point, float rad, entity trg) t_find_part={
     }
     cprt = cprt.c_part;
   }
-  
+  //NOTE - perhaps only check for weapons when armor is below a certain threshold?
   f_wep = closestWeapon(trg, point, rad);
   if(f_wep != world){
     if(f_wep != trg){

@@ -16,7 +16,12 @@ void() cs_precache={
   precache_model ("q3mdl/mechs/mtmk/mdl_tmk_cpit.md3");
   precache_model ("q3mdl/mechs/col/mdl_col_cpit.md3");
 
-  //cockpit images  
+  //cockpit images 
+  HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret_pip_hrz.png", 0);
+  HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret_pip_vrt.png", 0);
+  HUT_RET_LOK = precache_pic("gfx/hud/ret_lock.png", 0);
+  
+  
   precache_pic("gfx/hud/otl/otl_am.png", 0);
   precache_pic("gfx/hud/otl/otl_hd.png", 0);
   precache_pic("gfx/hud/otl/otl_en.png", 0);

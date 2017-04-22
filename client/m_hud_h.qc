@@ -6,6 +6,11 @@ Overview: the interface for hud rendering
 every hud ent has to implement this format
 */
 
+string HUT_RET_PIP_HRZ;
+string HUT_RET_PIP_VRT;
+string HUT_RET_LOK;
+
+
 .entity data;
 .entity hud_pnl1;
 .entity hud_pnl2;

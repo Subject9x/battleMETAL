@@ -290,10 +290,11 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hvd_ren
   spr_h_y = conv_y;
   spr_h_x = 0;
   
-  drawfill((VIEW_CTR - '9 0' - spr_w), '9 3',  '0.85 0.1 0.1',HUD_ALPHA, 0);
-  drawfill((VIEW_CTR + spr_w), '9 3',  '0.85 0.1 0.1',HUD_ALPHA, 0);
-  drawfill((VIEW_CTR - '0 9' - spr_h), '3 9',  '0.85 0.1 0.1',HUD_ALPHA, 0);
-  drawfill((VIEW_CTR + spr_h), '3 9',  '0.85 0.1 0.1',HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, (VIEW_CTR - '11 1.5' - spr_w), HUT_RET_PIP_HRZ, '10 3', '0.2 0.8 0.2', HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, (VIEW_CTR + spr_w + '1 -1.5'), HUT_RET_PIP_HRZ, '10 3', '0.2 0.8 0.2', HUD_ALPHA, 0);
+  
+  gui_renderTintImage(TRUE, (VIEW_CTR - '1.5 11' - spr_h), HUT_RET_PIP_VRT, '3 10', '0.2 0.8 0.2', HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + '-1.5 1'), HUT_RET_PIP_VRT, '3 10', '0.2 0.8 0.2', HUD_ALPHA, 0);
   
   //pitch
   drawstring(VIEW_CTR - '24 0', ftos(pitch), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
@@ -714,7 +715,7 @@ void(float islock) hvd_targetLock={
   if(islock & LOCK_TARG){
     colr = '1 0.25 0.1';
     acq = "!ACQUIRED!";
-    gui_DrawRect(VIEW_CTR - '16 16', '32 32', '4 4', '0.85 0.85 0.6');
+    gui_renderTintImage(TRUE, (VIEW_CTR - '12 12'), HUT_RET_LOK, '24 24', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
   }
   else{
     colr = '0.5 0.5 0.5';
