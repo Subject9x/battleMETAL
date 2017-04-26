@@ -5,6 +5,44 @@ Date: 03/8/2017
 Overview: GUI API class file
 */
 
+
+vector(float pcx, float pcy) gui_percentToPixel={
+  local vector pixel;
+  pixel_x = VIEW_SIZE_x * pcx;
+  pixel_y = VIEW_SIZE_y * pcy;
+  pixel_z = 0;
+  return pixel;
+};
+
+float(float pcx) gui_percentX={
+  return (VIEW_SIZE_x * pcx);
+};
+
+float(float pcy) gui_percentY={
+  return (VIEW_SIZE_y * pcy);
+}; 
+
+//Raw is for dynamically generated values
+vector(float pcx, float pcy) gui_percentToPixelRaw={
+  local vector pct, ret;
+  pct_x = pcx / VIEW_SIZE_x;
+  pct_y = pcy / VIEW_SIZE_y;
+  return gui_percentToPixel(pct_x, pct_y);
+};
+
+float(float pcx) gui_percentXRaw={
+  local float pct;
+  pct = pcx / VIEW_SIZE_x;
+  return gui_percentX(pct);
+};
+
+float(float pcy) gui_percentYRaw={
+  local float pct;
+  pct = pcy / VIEW_SIZE_y;
+  return gui_percentY(pct);
+};
+
+
 vector(vector map_size, vector cprc, vector coords, vector i_sz) gui_mapCoordToImgCoord={
 
   local vector tctr, perc, val;

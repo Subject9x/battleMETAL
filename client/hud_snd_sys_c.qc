@@ -7,7 +7,7 @@ Overview: impl file for the hud sound system
 
 void() snd_hud_vfx_frame={
   if(time > VOICE_TIME_NEXT){
-    local float playing
+    local float playing;
     local string snd;
     playing = getsoundtime(PLAYER_HELPER, CHAN_AUTO);
     if(playing < 0){
@@ -29,10 +29,10 @@ void(string requestedSound) snd_hud_vfx_addtoqueue={
   if(time > VOICE_ADDTIME){
     //check if sound already queued
     local float lst_idx, existing;
+    local string snd;
     lst_idx = 0;
     existing = 0;
     while(lst_idx < VOICE_QUEUE_SIZE){
-      local string snd;
       snd = VOICE_QUEUE[lst_idx];
       if(snd == requestedSound){
         existing = existing + 1;
@@ -43,7 +43,6 @@ void(string requestedSound) snd_hud_vfx_addtoqueue={
       lst_idx = 0;
       existing = 0;
       while(lst_idx < VOICE_QUEUE_SIZE){
-        local string snd;
         snd = VOICE_QUEUE[lst_idx];
         if(snd == "null"){
           if(existing == 0){

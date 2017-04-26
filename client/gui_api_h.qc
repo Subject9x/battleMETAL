@@ -31,9 +31,18 @@ void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, flo
 vector(vector map_min, vector map_max, vector coords, vector img_sz) gui_mapCoordToImgCoord;
 string(float navname) gui_getNavName;
 
+vector(float pcx, float pcy) gui_percentToPixel;
+float(float pcx) gui_percentX;
+float(float pcy) gui_percentY;
+
+vector(float pcx, float pcy) gui_percentToPixelRaw;
+float(float pcx) gui_percentXRaw;
+float(float pcy) gui_percentYRaw;
+
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;
+vector VIEW_SIZE;
 vector VIEW_CTR;
 vector PLR_VIEW;
 float VIEW_TOP = 1;

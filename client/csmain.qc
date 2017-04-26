@@ -199,6 +199,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
+  VIEW_SIZE_x = VIEW_MAX_x * 2;
+  VIEW_SIZE_y = VIEW_MAX_y * 2;
   VIEW_CTR_x = VIEW_MAX_x / 2;
   VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_SCALE = 0.35;
