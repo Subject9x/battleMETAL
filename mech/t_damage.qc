@@ -155,7 +155,11 @@ entity(vector point, float rad, entity trg) t_find_part={
       local float chk;
       chk = vlen(point - f_wep.origin);
       if(chk < cur_dist){
-        toSender = f_wep;
+        local entity part;
+        part = util_getPartFromName(f_wep.c_parent, trg);
+        if(part.health < (part.max_health / 3)){
+          toSender = f_wep;
+        }
       }
     }
   }

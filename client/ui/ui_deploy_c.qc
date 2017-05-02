@@ -41,20 +41,20 @@ void() navSelectListener={
 
 //panels
 void(vector ofs) menu_deploy_missionInfoPanel={
-  drawpic(ofs + '10 42', UI_DEF_BOX_256, gui_percentToPixel(0.1648, 0.0729), '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs + gui_percentToPixel(0.008, 0.044), UI_DEF_BOX_256, gui_percentToPixel(0.1648, 0.0729), '1 1 1', HUD_ALPHA, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION STATUS]", 0, '8 8 0');
-  tpos = ofs + gui_percentToPixel(0.0902, 0.0458);
+  tpos = ofs + gui_percentToPixel(0.0902, 0.048);
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[MISSION STATUS]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
   //mission name
-  drawstring(ofs+gui_percentToPixel(0.0109, 0.0583), strcat("[NAME]:            ", MSN_NAME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixel(0.0109, 0.06), strcat("[NAME]:            ", MSN_NAME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //mission type
-  drawstring(ofs+gui_percentToPixel(0.0109, 0.0666), strcat("[TYPE]:            ", MSN_TYPE), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
+  drawstring(ofs+gui_percentToPixel(0.0109, 0.07), strcat("[TYPE]:            ", MSN_TYPE), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
   //reserves
-  drawstring(ofs+gui_percentToPixel(0.0109, 0.075), strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE)), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixel(0.0109, 0.08), strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE)), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //sector
   //drawstring(ofs+'14 80', strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //location
@@ -64,16 +64,16 @@ void(vector ofs) menu_deploy_missionInfoPanel={
 };
 
 void(vector ofs) menu_deploy_navInfoPanel={
-  drawpic(ofs + gui_percentToPixel(0.0078, 0.1166), UI_DEF_BOX_256, '211 70', '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs + gui_percentToPixel(0.008, 0.118), UI_DEF_BOX_256, gui_percentToPixel(0.165, 0.073), '1 1 1', HUD_ALPHA, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[SELECTED DROP POINT]", 0, '8 8 0');
-  tpos = ofs + gui_percentToPixel(0.0902, 0.1187);
+  tpos = ofs + gui_percentToPixel(0.0902, 0.12);
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[SELECTED DROP POINT]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
   //nav help
-  drawstring(ofs+'16 126', "Click a Nav Point on the map ->", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixel(0.025, 0.1312), "Click a Nav Point on the map ->", '6 6 0', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
   //current spawn point
   local string navlbl;
   if(PLAYER_HELPER.plr_nav_pnt > 0){
@@ -89,7 +89,7 @@ void(vector ofs) menu_deploy_navInfoPanel={
 };
 
 void(vector ofs) menu_deploy_mechInfoPanel={
-  drawpic(ofs + gui_percentToPixel(0.0078, 0.1895), UI_DEF_BOX_256, '211 70', '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs + gui_percentToPixel(0.008, 0.19), UI_DEF_BOX_256, gui_percentToPixel(0.1648, 0.0729), '1 1 1', HUD_ALPHA, 0);
   local float tlen;
   local vector tpos, spos, t_color;
   local string type;
@@ -100,7 +100,7 @@ void(vector ofs) menu_deploy_mechInfoPanel={
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[SELECTED METAL]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   spos = ofs + gui_percentToPixel(0.0125, 0.1531);
-  if(PLAYER_HELPER.plr_sel_mech >0){
+  if(PLAYER_HELPER.plr_sel_mech > 0){
     dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
     drawstring(spos, strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     // MECH SIZE

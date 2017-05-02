@@ -107,7 +107,7 @@ void(vector ofs) menu_briefMissionText={
 
 void(vector ofs) menu_briefMapPanel={
   local vector mpos;
-  mpos_x = mpos_x + gui_percentXRaw((VIEW_CTR_x - 75));
+  mpos_x = mpos_x + (VIEW_CTR_x - gui_percentX(0.0585));
   mpos_y = ofs_y + gui_percentY(0.04);
   drawpic(mpos, UI_DEF_BOX_512, gui_percentToPixel(0.295, 0.31), '1 1 1', HUD_ALPHA, 0);
   

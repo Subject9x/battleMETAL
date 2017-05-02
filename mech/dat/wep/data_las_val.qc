@@ -20,6 +20,7 @@ float DAT_LAS_EN_COST =  0.095;
 string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
 float DAT_LAS_WSIZE = 1;
+float DAT_LAS_HPX = 30;
 
 void() data_wep_las;
 void() data_las_ini;
@@ -57,6 +58,8 @@ void() data_las_ini={
   self.i_techlvl = DAT_LAS_TECH_LEVEL;
   self.i_size = DAT_LAS_WSIZE;
   self.w_think = data_las_think;
+    self.health = DAT_LAS_HPX;
+  self.max_health = DAT_LAS_HPX;
 };
 
 void() data_las_think={
@@ -91,7 +94,7 @@ void() data_las_atk={
   self.w_firetime = time + self.w_firerate;
   
   makevectors(player.v_angle);
-  cam = player.e_cam;//.clientcamera;
+  cam = player.e_cam;
   traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
   end = trace_endpos + (crandom() * (player.stat_spr_x / 0.75) * v_right) + (v_up * crandom() * (player.stat_spr_y /  0.75));
   
@@ -110,26 +113,18 @@ void() data_las_atk={
   laser_org = spawn();
   laser_org.movetype = SOLID_NOT;
   laser_org.classname = "missile";
-  //setmodel(laser_org, "progs/laser.mdl");
   setsize(laser_org, '0 0 0', '0 0 0');
   setorigin(laser_org, org);
   
-  //T_Damage(trace_ent, self.owner, self.owner, 12, 12, "", DT_IMPACT, other.origin, '0 0 0', Obituary_Generic);
-  //damage_mech_main(trace_ent, self.owner, self.owner, 12, 0);
   local float dtype;
   dtype = DMG_ENE;
   
-  /*if(trace_ent != world){
-    local float bbx;
-    bbx = 2;//trace_ent.c_bbx_x_x / 6;
-    dir = dir + (v_forward*bbx);
-  }*/
   t_damage(trace_ent, self, player, DAT_LAS_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
-  //te_lightning1(laser_org, laser_org.origin, dir);
+  te_lightning1(laser_org, laser_org.origin, dir);
   
   
-  WriteByte(MSG_ALL, SVC_TEMPENTITY);
+  /*WriteByte(MSG_ALL, SVC_TEMPENTITY);
   WriteByte(MSG_ALL, TE_LIGHTNING1);
   WriteEntity(MSG_ALL, laser_org);
   WriteCoord(MSG_ALL, laser_org.origin_x);
@@ -137,7 +132,7 @@ void() data_las_atk={
   WriteCoord(MSG_ALL, laser_org.origin_z);
   WriteCoord(MSG_ALL, dir_x);
   WriteCoord(MSG_ALL, dir_y);
-  WriteCoord(MSG_ALL, dir_z);
+  WriteCoord(MSG_ALL, dir_z);*/
   
   
   te_flamejet(dir, '0 25 0', 5);

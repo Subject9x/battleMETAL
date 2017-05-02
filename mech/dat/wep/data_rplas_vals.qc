@@ -23,6 +23,7 @@ float DAT_RPLAS_TECH_LEVEL = 1;
 float DAT_RPLAS_SPR_X = 8;
 float DAT_RPLAS_SPR_Y = 8;
 float DAT_RPLAS_WSIZE = 2;
+float DAT_RPLAS_HPX = 25;
 
 void() data_wep_rplas;
 void() data_rplas_ini;
@@ -64,6 +65,8 @@ void() data_rplas_ini={
   self.stat_spr_y = DAT_RPLAS_SPR_Y;
   self.i_size = DAT_RPLAS_WSIZE;
   self.w_think = data_rplas_think;
+  self.health = DAT_RPLAS_HPX;
+  self.max_health = DAT_RPLAS_HPX;
 };
 
 void() data_rplas_think={

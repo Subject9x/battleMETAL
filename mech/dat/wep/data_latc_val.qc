@@ -23,6 +23,7 @@ float DAT_LATC_TECH_LEVEL = 1;
 float DAT_LATC_SPR_X = 3;
 float DAT_LATC_SPR_Y = 2;
 float DAT_LATC_WSIZE = 1;
+float DAT_LATC_HPX = 30;
 
 void() data_wep_latc;
 void() data_latc_ini;
@@ -63,6 +64,8 @@ void() data_latc_ini={
   self.stat_spr_y = DAT_LATC_SPR_Y;
   self.i_size = DAT_LATC_WSIZE;
   self.w_think = data_latc_think;
+  self.health = DAT_LATC_HPX;
+  self.max_health = DAT_LATC_HPX;
 };
 
 

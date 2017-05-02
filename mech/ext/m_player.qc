@@ -36,10 +36,6 @@ void() PlayerPreThink = {
     //power up sequence
     if(time < self.power_timer){
       self.movetype = MOVETYPE_NONE;
-      //if(self.stat_plr_stt == PLAYER_SPAWN){
-        //sound(self, CHAN_AUTO, "sound/comp/online.ogg", 1, ATTN_NORM);
-        //self.stat_plr_stt = PLAYER_IDLE;
-     // } 
       return;
     }
     else{

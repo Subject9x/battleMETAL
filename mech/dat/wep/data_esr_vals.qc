@@ -18,9 +18,10 @@ string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_EN_COST = 0.18;
 string DAT_ESR_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_TECH_LEVEL = 1;
-float DAT_ESR_SPR_X = 1;//10;
-float DAT_ESR_SPR_Y = 1;//10;
+float DAT_ESR_SPR_X = 5;
+float DAT_ESR_SPR_Y = 5;
 float DAT_ESR_WSIZE = 3;
+float DAT_ESR_HPX = 20;
 
 void() data_wep_esr;
 void() data_esr_ini;
@@ -58,6 +59,8 @@ void() data_esr_ini={
   self.i_techlvl = DAT_ESR_TECH_LEVEL;
   self.i_size = DAT_ESR_WSIZE;
   self.w_think = data_esr_think;
+  self.health = DAT_ESR_HPX;
+  self.max_health = DAT_ESR_HPX;
 };
 
 void() data_esr_think={

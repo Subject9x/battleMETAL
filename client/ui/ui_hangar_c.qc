@@ -139,6 +139,7 @@ void(vector ofs) menu_hangar_MechDisplay={
   local vector nofs, hofs, mpos, i_sz, hpnts;
   nofs = ofs + gui_percentToPixel(0.0828, 0.0437);
   drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixel(0.1367, 0.2604), '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs + gui_percentToPixel(0.0025, 0.005), UI_HANGAR_BOX, gui_percentToPixel(0.132, 0.25), '1 1 1', HUD_ALPHA, 0);
   local entity dat;
   dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
   i_sz = draw_getimagesize(dat.c_mdl);
@@ -155,7 +156,7 @@ void(vector ofs) menu_hangar_MechDisplay={
 
 void(vector ofs) menu_hangar_MechList={
   drawpic(ofs + gui_percentToPixel(0.0078, 0.0187), UI_DEF_BOX_256_TALL, gui_percentToPixel(0.075, 0.4166), '1 1 1', HUD_ALPHA, 0);
-  drawstring(ofs + '8 8', "[AVAILABLE METAL]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs + gui_percentToPixel(0.0062, 0.008), "[AVAILABLE METAL]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   menu_hangar_MechListLight(ofs);
   menu_hangar_MechListMedium(ofs);
   menu_hangar_MechListHeavy(ofs);

@@ -19,6 +19,7 @@ float DATWEP_MARH_EN_COST= -1;
 string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
 float DAT_MARH_WSIZE = 3;
+float DAT_MARH_HPX = 15;
 
 void() data_wep_marh;  //called by the data system at game startup
 void() data_marh_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -57,6 +58,8 @@ void() data_marh_ini={
   self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
   self.i_size = DAT_MARH_WSIZE;
   self.w_think = data_marh_think;
+    self.health = DAT_MARH_HPX;
+  self.max_health = DAT_MARH_HPX;
 };
 
 void() data_marh_think={

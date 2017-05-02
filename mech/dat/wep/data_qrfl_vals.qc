@@ -22,6 +22,7 @@ float DAT_QRFL_TECH_LEVEL = 1;
 float DAT_QRFL_SPR_X = 3;
 float DAT_QRFL_SPR_Y = 2;
 float DAT_QRFL_WSIZE = 3;
+float DAT_QRFL_HPX = 20;
 
 void() data_wep_qrfl;
 void() data_qrfl_ini;
@@ -62,6 +63,8 @@ void() data_qrfl_ini={
   self.stat_spr_y = DAT_QRFL_SPR_Y;
   self.i_size = DAT_QRFL_WSIZE;
   self.w_think = data_qrfl_think;
+  self.health = DAT_QRFL_HPX;
+  self.max_health = DAT_QRFL_HPX;
 };
 
 void() data_qrfl_think={

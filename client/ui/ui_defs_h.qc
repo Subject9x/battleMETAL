@@ -43,3 +43,4 @@ string UI_DEF_BOX_256;
 string UI_DEF_BOX_256_TALL;
 string UI_DEF_BOX_64;
 string UI_DEF_NAVPOINT;
+string UI_HANGAR_BOX;

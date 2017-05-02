@@ -18,7 +18,7 @@ monster_use
 Using a monster makes it angry at the current activator
 ================
 */
-void() monster_use =
+void() q_monster_use =
 {
 	if (self.enemy)
 		return;
@@ -35,7 +35,7 @@ void() monster_use =
 // heard
 	self.enemy = activator;
 	self.nextthink = time + 0.1;
-	self.think = FoundTarget;
+	self.think = q_FoundTarget;
 };
 
 /*
@@ -46,7 +46,7 @@ When a mosnter dies, it fires all of its targets with the current
 enemy as activator.
 ================
 */
-void() monster_death_use =
+void() q_monster_death_use =
 {
 	local entity 	ent, otemp, stemp;
 
@@ -66,7 +66,7 @@ void() monster_death_use =
 
 //============================================================================
 
-void() walkmonster_start_go =
+void() q_walkmonster_start_go =
 {
 local string	stemp;
 local entity	etemp;
@@ -87,7 +87,7 @@ local entity	etemp;
 	if (!self.yaw_speed)
 		self.yaw_speed = 20;
 	self.view_ofs = '0 0 25';
-	self.use = monster_use;
+	self.use = q_monster_use;
 	
 	self.flags = self.flags | FL_MONSTER;
 	
@@ -119,18 +119,18 @@ local entity	etemp;
 };
 
 
-void() walkmonster_start =
+void() q_walkmonster_start =
 {
 // delay drop to floor to make sure all doors have been spawned
 // spread think times so they don't all happen at same time
 	self.nextthink = self.nextthink + random()*0.5;
-	self.think = walkmonster_start_go;
+	self.think = q_walkmonster_start_go;
 	total_monsters = total_monsters + 1;
 };
 
 
 
-void() flymonster_start_go =
+void() q_flymonster_start_go =
 {
 	self.takedamage = DAMAGE_AIM;
 
@@ -138,7 +138,7 @@ void() flymonster_start_go =
 	if (!self.yaw_speed)
 		self.yaw_speed = 10;
 	self.view_ofs = '0 0 25';
-	self.use = monster_use;
+	self.use = q_monster_use;
 
 	self.flags = self.flags | FL_FLY;
 	self.flags = self.flags | FL_MONSTER;
@@ -173,11 +173,11 @@ void() flymonster_start_go =
 	}
 };
 
-void() flymonster_start =
+void() q_flymonster_start =
 {
 // spread think times so they don't all happen at same time
 	self.nextthink = self.nextthink + random()*0.5;
-	self.think = flymonster_start_go;
+	self.think = q_flymonster_start_go;
 	total_monsters = total_monsters + 1;
 };
 
@@ -197,7 +197,7 @@ void() swimmonster_start_go =
 	if (!self.yaw_speed)
 		self.yaw_speed = 10;
 	self.view_ofs = '0 0 10';
-	self.use = monster_use;
+	self.use = q_monster_use;
 	
 	self.flags = self.flags | FL_SWIM;
 	self.flags = self.flags | FL_MONSTER;
@@ -225,12 +225,12 @@ void() swimmonster_start_go =
 	self.nextthink = self.nextthink + random()*0.5;
 };
 
-void() swimmonster_start =
+/*void() swimmonster_start =
 {
 // spread think times so they don't all happen at same time
 	self.nextthink = self.nextthink + random()*0.5;
 	self.think = swimmonster_start_go;
 	total_monsters = total_monsters + 1;
-};
+};*/
 
 

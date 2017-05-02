@@ -129,13 +129,13 @@ void(vector ofs) menu_navBar={
   rpos = nvpos;
   rpos_x = VIEW_MAX_x - gui_percentX(0.1);
   lpos = rpos;
-  lpos_x = (lpos_x + gui_percentX(0.0453)) - (stringwidth(">>[LAUNCH]>>", 0 ,'8 8 0')/2);
-  lpos_y = (lpos_y + gui_percentX(0.0083));//16) - 8;
-  isz_x = stringwidth(">>[!LAUNCH!]>>", 0 ,'8 8 0') + gui_percentX(0.0093);
-  isz_y = gui_percentY(0.0079);
-  gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos - gui_percentToPixel(0.0046, 0), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  lpos_x = (lpos_x + gui_percentX(0.05)) - (stringwidth(">>[LAUNCH]>>", 0 ,'8 8 0')/2);
+  lpos_y = (lpos_y + gui_percentX(0.0045));//16) - 8;
+  isz_x = gui_percentXRaw(stringwidth(">>[!LAUNCH!]>>", 0 ,'8 8 0')) + gui_percentX(0.0093);
+  isz_y = gui_percentY(0.025);
+  gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos + gui_percentToPixel(0.005, 0), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
   gui_renderHighlightString(">>[LAUNCH]>>",lpos, CLR_DEF_WEP_INRANGE, CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, '8 8 0', HUD_ALPHA, 0) ;
-  MENU_BTN_LAUNCH_ORG = rpos - gui_percentToPixel(0.0046, 0);
+  MENU_BTN_LAUNCH_ORG = rpos + gui_percentToPixel(0.005, 0);
   MENU_BTN_LAUNCH_SZ = isz;
 };
 

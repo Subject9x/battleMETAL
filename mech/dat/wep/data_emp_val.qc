@@ -20,6 +20,7 @@ float DAT_EMP_EN_COST=  0.1;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 float DAT_EMP_WSIZE = 2;
+float DAT_EMP_HPX = 25;
 
 void() data_wep_emp;  //called by the data system at game startup
 void() data_emp_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -58,6 +59,8 @@ void() data_emp_ini={
   self.i_techlvl = DAT_EMP_TECH_LEVEL;
   self.i_size = DAT_EMP_WSIZE;
   self.w_think = data_emp_think;
+  self.health = DAT_EMP_HPX;
+  self.max_health = DAT_EMP_HPX;
 };
 
 void() data_emp_think={
@@ -110,8 +113,6 @@ void() data_emp_atk={
       util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
       util_setBoundBox('0 0 0', '0 0 0');
       self.velocity = normalize(dir - org);
-      //self.think = SUB_Remove;
-      //self.nextthink = time + self.p_lifetime;
       self.p_lifetime = time + self.p_lifetime;
       self.w_firetime = time + (self.p_lifetime - 4);
       setorigin(self, org);

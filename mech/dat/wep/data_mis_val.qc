@@ -22,6 +22,7 @@ float DAT_MIS_TECH_LEVEL = 1;
 float DAT_LAS_SPR_X = 8;
 float DAT_LAS_SPR_Y = 6;
 float DAT_MIS_WSIZE = 2;
+float DAT_MIS_HPX = 10;
 
 void() data_wep_mis;
 void() data_mis_ini;
@@ -62,6 +63,8 @@ void() data_mis_ini={
   self.stat_spr_y = DAT_LAS_SPR_Y;
   self.i_size = DAT_MIS_WSIZE;
   self.w_think = data_mis_think;
+  self.health = DAT_MIS_HPX;
+  self.max_health = DAT_MIS_HPX;
 };
 
 void() data_mis_think={

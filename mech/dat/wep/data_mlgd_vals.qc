@@ -20,6 +20,7 @@ float DATWEP_MLGD_EN_COST= -1;
 string DATWEP_MLGD_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MLGD_TECH_LEVEL = 2;
 float DAT_MLGD_WSIZE = 1;
+float DAT_MLGD_HPX = 10;
 
 void() data_wep_mlgd;  //called by the data system at game startup
 void() data_mlgd_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -58,6 +59,8 @@ void() data_mlgd_ini={
   self.i_techlvl = DATWEP_MLGD_TECH_LEVEL;
   self.i_size = DAT_MLGD_WSIZE;
   self.w_think = data_mlgd_think;
+  self.health = DAT_MLGD_HPX;
+  self.max_health = DAT_MLGD_HPX;
 };
 
 void() data_mlgd_think={
