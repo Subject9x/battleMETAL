@@ -73,7 +73,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     return;
   }
   
-  te_spark(dmg_point, attacker.velocity, new_dmg); 
+  te_spark(dmg_point, inflictor.velocity, new_dmg); 
   
   //the special hit-location calculator is only run for P_MECH
   //units
@@ -105,17 +105,18 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     }
   }
 
-  if((trg.flags & FL_MONSTER) && attacker != world){
-    if(attacker.takedamage){
-      if(trg.enemy == world){
-        if(trg != attacker && attacker != trg.enemy){
-          if ( (trg.classname != attacker.classname) || (trg.classname == "monster_army" ) ){
-            
-          }
-        }
-      }
-    }
-  }
+	if ( (self.flags & FL_MONSTER) && attacker != world){
+	// get mad unless of the same class (except for soldiers)
+		if (self != attacker && attacker != self.enemy){
+			if ( (self.classname != attacker.classname) 
+              || (self.classname == "monster_army" ) ){
+				if (self.enemy.classname == "player")
+					self.oldenemy = self.enemy;
+				self.enemy = attacker;
+				q_FoundTarget ();
+			}
+		}
+	}
 };
 
 

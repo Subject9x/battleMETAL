@@ -104,10 +104,13 @@ void() data_las_atk={
   traceline(org, end, FALSE, player);
   dir = trace_endpos;
   
-  if (player.t_width < time){
-    player.t_width = time + 0.05;//0.6;
-	}
-	player.punchangle_x = -0.05;
+  //if (player.t_width < time){
+    //player.t_width = time + 0.05;//0.6;
+	//}
+  if((self.flags & FL_CLIENT)){
+  	player.punchangle_x = -0.05;
+  }
+
 
   local entity laser_org;
   laser_org = spawn();

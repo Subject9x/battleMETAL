@@ -9,10 +9,13 @@ nextVecChoice = match to mech data id
 i_faction = which faction
 */
 void() ai_mech={
-  if(deathmatch){
+  //DEBUG
+  /*if(deathmatch){
     remove(self);
     return;
-  }
+  }*/
+  
+  self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
   self.p_class = P_MECH;
   self.data_idx = 0;
@@ -92,5 +95,63 @@ void() ai_mech={
     remove(self);
     return;
   }
+  
+  
+  self.ideal_yaw = self.angles * '0 1 0';
+	if (!self.yaw_speed)
+		self.yaw_speed = 20;
+    
   buildVehicle(dat);
+  
+  self.th_die = ai_mech_die;
+  self.th_walk = ai_mech_walk;
+  self.th_run = ai_mech_run;
+  self.th_missile = ai_mech_attack;
+  self.th_stand = ai_mech_stand;
+  self.ai_state = AI_STAND;
+  
+  self.origin_z = self.origin_z + 1;	// raise off floor a bit
+	droptofloor();
+	
+	if (!walkmove(0,0))
+	{
+		dprint ("walkmonster in wall at: ");
+		dprint (vtos(self.origin));
+		dprint ("\n");
+	}
+  
+  self.ideal_yaw = self.angles * '0 1 0';
+	if (!self.yaw_speed)
+		self.yaw_speed = 20;
+	self.use = q_monster_use;
+  
+  if (self.target)
+	{
+		self.goalentity = self.movetarget = find(world, targetname, self.target);
+		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+		if (!self.movetarget)
+		{
+			dprint ("Monster can't find target at ");
+			dprint (vtos(self.origin));
+			dprint ("\n");
+		}
+// this used to be an objerror
+		if (self.movetarget.classname == "path_corner"){
+      self.ai_state = AI_WALK;
+			//self.th_walk ();
+		}else{
+			self.pausetime = 99999999;
+      self.ai_state = AI_STAND;
+			//self.th_stand ();
+    }
+	}
+	else
+	{
+		self.pausetime = 99999999;
+    self.ai_state = AI_STAND;
+		//self.th_stand ();
+	}
+  
+  self.think = ai_control;
+  self.nextthink = time + 0.001;
 };

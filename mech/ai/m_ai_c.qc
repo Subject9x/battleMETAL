@@ -85,7 +85,8 @@ local entity	temp;
 	if (!self.movetarget)
 	{
 		self.pausetime = time + 999999;
-		self.th_stand ();
+    self.ai_state = AI_STAND;
+		//self.th_stand ();
 		return;
 	}
 };
@@ -230,11 +231,13 @@ void() ChangeYaw =
 
 void() q_HuntTarget =
 {
+     
 	self.goalentity = self.enemy;
-	self.think = self.th_run;
+	//self.think = self.th_run;
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-	self.nextthink = time + 0.1;
+	//self.nextthink = time + 0.1;
 	SUB_AttackFinished (1);	// wait a while before first attack
+  self.th_run();
 };
 
 void() q_FoundTarget =
@@ -246,8 +249,8 @@ void() q_FoundTarget =
 	}
 	
 	self.show_hostile = time + 1;		// wake up other monsters
-
-	q_HuntTarget ();
+  self.ai_state = AI_HUNTTARGET;
+	//q_HuntTarget ();
 };
 
 /*
@@ -300,8 +303,9 @@ float() q_FindTarget =
 		return FALSE;
 
 	r = q_range (client);
-	if (r == RANGE_FAR)
-		return FALSE;
+   
+	//if (r == RANGE_FAR)
+		//return FALSE;
 		
 	if (!q_visible (client))
 		return FALSE;
@@ -361,12 +365,7 @@ void(float dist) q_ai_walk =
 	local vector		mtemp;
 	
 	movedist = dist;
-	
-	if (self.classname == "monster_dragon")
-	{
-		movetogoal (dist);
-		return;
-	}
+  
 	// check for noticing a player
 	if (q_FindTarget ())
 		return;
@@ -389,7 +388,8 @@ void() q_ai_stand =
 	
 	if (time > self.pausetime)
 	{
-		self.th_walk ();
+    self.ai_state = AI_WALK;
+		//self.th_walk ();
 		return;
 	}
 	
@@ -463,8 +463,9 @@ float() q_FacingIdeal =
 
 float() q_CheckAnyAttack =
 {
-	if (!enemy_vis)
-		return FALSE;
+	if (!enemy_vis){
+  	return FALSE;
+  }  
 	return q_CheckAttack ();
 };
 
@@ -483,7 +484,7 @@ void() q_ai_run_melee =
 
 	if (q_FacingIdeal())
 	{
-		self.th_melee ();
+		//self.th_melee ();
 		self.attack_state = AS_STRAIGHT;
 	}
 };
@@ -562,9 +563,11 @@ void(float dist) q_ai_run =
 		else
 		{
 			if (self.movetarget)
-				self.th_walk ();
+				//self.th_walk ();
+        self.ai_state = AI_WALK;
 			else
-				self.th_stand ();
+        self.ai_state = AI_STAND;
+				//self.th_stand ();
 			return;
 		}
 	}
@@ -589,13 +592,11 @@ void(float dist) q_ai_run =
 	
 	if (self.attack_state == AS_MISSILE)
 	{
-//dprint ("ai_run_missile\n");
 		q_ai_run_missile ();
 		return;
 	}
 	if (self.attack_state == AS_MELEE)
 	{
-//dprint ("ai_run_melee\n");
 		q_ai_run_melee ();
 		return;
 	}
@@ -630,22 +631,27 @@ float() q_CheckAttack =
 	targ = self.enemy;
 	
 // see if any entities are in the way of the shot
-	spot1 = self.origin + self.view_ofs;
+	//spot1 = self.origin + self.view_ofs;
+	spot1 = self.origin;
 	spot2 = targ.origin + targ.view_ofs;
 
 	traceline (spot1, spot2, FALSE, self);
 
-	if (trace_ent != targ)
-		return FALSE;		// don't have a clear shot
+	if (trace_ent != targ){
+		return FALSE;		// don't have a clear shot 
+  }
+
 			
-	if (trace_inopen && trace_inwater)
-		return FALSE;			// sight line crossed contents
+	if (trace_inopen && trace_inwater){
+    return FALSE;			// sight line crossed contents
+  }
+		
 
 	if (enemy_range == RANGE_MELEE)
 	{	// melee attack
 		if (self.th_melee)
 		{
-			self.th_melee ();
+			//self.th_melee ();
 			return TRUE;
 		}
 	}
@@ -654,13 +660,13 @@ float() q_CheckAttack =
 	if (!self.th_missile)
 		return FALSE;
 		
-	if (time < self.attack_finished)
-		return FALSE;
+	//if (time < self.attack_finished)
+		//return FALSE;
 		
-	if (enemy_range == RANGE_FAR)
-		return FALSE;
+	//if (enemy_range == RANGE_FAR)
+		//return FALSE;
 		
-	if (enemy_range == RANGE_MELEE)
+	/*if (enemy_range == RANGE_MELEE)
 	{
 		chance = 0.9;
 		self.attack_finished = 0;
@@ -680,16 +686,17 @@ float() q_CheckAttack =
 			chance = 0.1;
 	}
 	else
-		chance = 0;
-
-	if (random () < chance)
-	{
+		chance = 0;*/
+    
+	//if (random () < chance)
+	//{
 		self.th_missile ();
-		SUB_AttackFinished (2*random());
-		return TRUE;
-	}
+    SUB_AttackFinished (2*random());
+		//return TRUE;
+//	}
 
-	return FALSE;
+	//return FALSE;
+	return TRUE;
 };
 
 /*
@@ -780,4 +787,219 @@ void() q_ai_melee_side =
 		return;
 	ldmg = (random() + random() + random()) * 3;
 	T_Damage (self.enemy, self, self, ldmg);
+};
+
+/*
+================
+monster_use
+
+Using a monster makes it angry at the current activator
+================
+*/
+void() q_monster_use =
+{
+	if (self.enemy)
+		return;
+	if (self.health <= 0)
+		return;
+	if (activator.items & IT_INVISIBILITY)
+		return;
+	if (activator.flags & FL_NOTARGET)
+		return;
+	if (activator.classname != "player")
+		return;
+	
+// delay reaction so if the monster is teleported, its sound is still
+// heard
+	self.enemy = activator;
+	//self.nextthink = time + 0.1;
+	//self.think = q_FoundTarget;
+  q_FoundTarget();
+};
+
+/*
+================
+monster_death_use
+
+When a mosnter dies, it fires all of its targets with the current
+enemy as activator.
+================
+*/
+void() q_monster_death_use =
+{
+	local entity 	ent, otemp, stemp;
+
+// fall to ground
+	if (self.flags & FL_FLY)
+		self.flags = self.flags - FL_FLY;
+	if (self.flags & FL_SWIM)
+		self.flags = self.flags - FL_SWIM;
+
+	if (!self.target)
+		return;
+
+	activator = self.enemy;
+	SUB_UseTargets ();
+};
+
+
+//============================================================================
+
+void() q_walkmonster_start_go =
+{
+local string	stemp;
+local entity	etemp;
+
+	self.origin_z = self.origin_z + 1;	// raise off floor a bit
+	droptofloor();
+	
+	if (!walkmove(0,0))
+	{
+		dprint ("walkmonster in wall at: ");
+		dprint (vtos(self.origin));
+		dprint ("\n");
+	}
+	
+	self.takedamage = DAMAGE_AIM;
+
+	self.ideal_yaw = self.angles * '0 1 0';
+	if (!self.yaw_speed)
+		self.yaw_speed = 20;
+	self.view_ofs = '0 0 25';
+	self.use = q_monster_use;
+	
+	self.flags = self.flags | FL_MONSTER;
+	
+	if (self.target)
+	{
+		self.goalentity = self.movetarget = find(world, targetname, self.target);
+		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+		if (!self.movetarget)
+		{
+			dprint ("Monster can't find target at ");
+			dprint (vtos(self.origin));
+			dprint ("\n");
+		}
+// this used to be an objerror
+		if (self.movetarget.classname == "path_corner")
+			self.th_walk ();
+		else
+			self.pausetime = 99999999;
+			self.th_stand ();
+	}
+	else
+	{
+		self.pausetime = 99999999;
+		self.th_stand ();
+	}
+
+// spread think times so they don't all happen at same time
+	self.nextthink = self.nextthink + random()*0.5;
+};
+
+
+void() q_walkmonster_start =
+{
+// delay drop to floor to make sure all doors have been spawned
+// spread think times so they don't all happen at same time
+	self.nextthink = self.nextthink + random()*0.5;
+	self.think = q_walkmonster_start_go;
+	total_monsters = total_monsters + 1;
+};
+
+
+
+void() q_flymonster_start_go =
+{
+	self.takedamage = DAMAGE_AIM;
+
+	self.ideal_yaw = self.angles * '0 1 0';
+	if (!self.yaw_speed)
+		self.yaw_speed = 10;
+	self.view_ofs = '0 0 25';
+	self.use = q_monster_use;
+
+	self.flags = self.flags | FL_FLY;
+	self.flags = self.flags | FL_MONSTER;
+
+	if (!walkmove(0,0))
+	{
+		dprint ("flymonster in wall at: ");
+		dprint (vtos(self.origin));
+		dprint ("\n");
+	}
+
+	if (self.target)
+	{
+		self.goalentity = self.movetarget = find(world, targetname, self.target);
+		if (!self.movetarget)
+		{
+			dprint ("Monster can't find target at ");
+			dprint (vtos(self.origin));
+			dprint ("\n");
+		}
+// this used to be an objerror
+		if (self.movetarget.classname == "path_corner")
+			self.th_walk ();
+		else
+			self.pausetime = 99999999;
+			self.th_stand ();
+	}
+	else
+	{
+		self.pausetime = 99999999;
+		self.th_stand ();
+	}
+};
+
+void() q_flymonster_start =
+{
+// spread think times so they don't all happen at same time
+	self.nextthink = self.nextthink + random()*0.5;
+	self.think = q_flymonster_start_go;
+	total_monsters = total_monsters + 1;
+};
+
+
+void() swimmonster_start_go =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	self.takedamage = DAMAGE_AIM;
+//	total_monsters = total_monsters + 1;
+
+	self.ideal_yaw = self.angles * '0 1 0';
+	if (!self.yaw_speed)
+		self.yaw_speed = 10;
+	self.view_ofs = '0 0 10';
+	self.use = q_monster_use;
+	
+	self.flags = self.flags | FL_SWIM;
+	self.flags = self.flags | FL_MONSTER;
+
+	if (self.target)
+	{
+		self.goalentity = self.movetarget = find(world, targetname, self.target);
+		if (!self.movetarget)
+		{
+			dprint ("Monster can't find target at ");
+			dprint (vtos(self.origin));
+			dprint ("\n");
+		}
+// this used to be an objerror
+		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+		self.th_walk ();
+	}
+	else
+	{
+		self.pausetime = 99999999;
+		self.th_stand ();
+	}
+
+// spread think times so they don't all happen at same time
+	self.nextthink = self.nextthink + random()*0.5;
 };

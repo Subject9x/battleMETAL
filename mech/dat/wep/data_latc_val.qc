@@ -94,7 +94,7 @@ void() data_latc_atk={
     self.w_currentammo = self.w_currentammo - 1;
     self.w_firetime = time + self.w_firerate;
     local vector dir, org, end, adj;
-
+    
     makevectors(player.v_angle);
     cam = player.e_cam;
     traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);

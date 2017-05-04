@@ -40,6 +40,7 @@ dp/dpextensions.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
   mech/ai/m_ai_h.qc
+  mech/ai/m_ext_ai_h.qc
   q1/qwep/wep_fx_h.qc
 //==========================
 
@@ -84,6 +85,7 @@ dp/dpextensions.qc
   //ai
   mech/ai/m_ai_c.qc
   mech/ai/m_ai_test.qc
+  mech/ai/m_ext_ai_c.qc
   //mech/mech_anim.qc
   mech/t_damage.qc
   mech/svr/server_parmops_c.qc
@@ -144,7 +146,7 @@ world.qc
   mech/anim/mch_ctor.qc
 //============================
 //player.qc
-monsters.qc
+//monsters.qc
 doors.qc
 buttons.qc
 triggers.qc

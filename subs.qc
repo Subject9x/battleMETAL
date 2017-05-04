@@ -301,7 +301,7 @@ void(float normal) SUB_AttackFinished =
 		self.attack_finished = time + normal;
 };
 
-float (entity targ) visible;
+float (entity targ) q_visible;
 
 void (void() thinkst) SUB_CheckRefire =
 {
@@ -309,7 +309,7 @@ void (void() thinkst) SUB_CheckRefire =
 		return;
 	if (self.cnt == 1)
 		return;
-	if (!visible (self.enemy))
+	if (!q_visible (self.enemy))
 		return;
 	self.cnt = 1;
 	self.think = thinkst;
