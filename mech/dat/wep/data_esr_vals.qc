@@ -93,31 +93,19 @@ void() data_esr_atk={
   self.w_currentammo = self.w_currentammo - 1;
   self.w_firetime = time + self.w_firerate;
 
-  makevectors(player.v_angle);
-  cam = player.e_cam;//.clientcamera;
-  traceline(cam.origin, cam.origin + v_forward*500, FALSE, player);
-  end = trace_endpos + (crandom() * (player.stat_spr_x + DAT_ESR_SPR_X) * v_right) + (v_up * crandom() * (player.stat_spr_y +  DAT_ESR_SPR_Y));
+  end = util_traceForPlayer(player, (player.stat_spr_x + DAT_ESR_SPR_X), (player.stat_spr_y+DAT_ESR_SPR_Y), '1 1 1', 400);
+  dir = util_traceForOffset(player, self, end);
   
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-  makevectors(player.angles);
-  org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-  traceline(org, end, FALSE, player);
-  dir = trace_endpos;
-  
-  //if (player.t_width < time){
-   // player.t_width = time + 0.05;//0.6;
-	//}
   if((self.flags & FL_CLIENT)){
   	player.punchangle_x = -0.05;
   }
-
 
   local entity laser_org;
   laser_org = spawn();
   laser_org.movetype = SOLID_NOT;
   laser_org.classname = "missile";
   setsize(laser_org, '0 0 0', '0 0 0');
-  setorigin(laser_org, org);
+  setorigin(laser_org, self.fx_origin);
   
   //T_Damage(trace_ent, self.owner, self.owner, 12, 12, "", DT_IMPACT, other.origin, '0 0 0', Obituary_Generic);
   //damage_mech_main(trace_ent, self.owner, self.owner, 12, 0);

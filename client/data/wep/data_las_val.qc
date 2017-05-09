@@ -40,5 +40,6 @@ void() data_wep_las={
     self.i_size = DAT_LAS_WSIZE;
     self.w_abbr = "LAS";
     self.note1 = "Small bonus damage against shields.";
+    self.w_icon = UI_WEP_LAS;
   self = oself;
 };

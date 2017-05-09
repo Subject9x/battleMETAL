@@ -90,6 +90,7 @@ float ARM_RAD = 24;
 .string note2;
 .string note3;
 .string note4;
+.string w_icon;
 
 //navpoint
 .float obj_status;

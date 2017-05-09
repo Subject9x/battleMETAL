@@ -24,6 +24,7 @@ float DAT_LATC_SPR_X = 3;
 float DAT_LATC_SPR_Y = 2;
 float DAT_LATC_WSIZE = 1;
 float DAT_LATC_HPX = 30;
+float DAT_LATC_RANGE = 800;
 
 void() data_wep_latc;
 void() data_latc_ini;
@@ -66,6 +67,7 @@ void() data_latc_ini={
   self.w_think = data_latc_think;
   self.health = DAT_LATC_HPX;
   self.max_health = DAT_LATC_HPX;
+  self.w_range = DAT_LATC_RANGE;
 };
 
 
@@ -88,48 +90,35 @@ void() data_latc_think={
 void() data_latc_atk={
   local entity player, proj, cam, oself;
   player = self.owner;
-  //proj = mh_world_findData(self.w_proj, DATA_PROJ);
-  //if(proj){
-    self.w_isready = FALSE;
-    self.w_currentammo = self.w_currentammo - 1;
-    self.w_firetime = time + self.w_firerate;
-    local vector dir, org, end, adj;
-    
-    makevectors(player.v_angle);
-    cam = player.e_cam;
-    traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-    end = trace_endpos + (crandom() * (player.stat_spr_x + self.stat_spr_x) * v_right) + (v_up * crandom() * (player.stat_spr_y + self.stat_spr_y));
-    
-    adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-    makevectors(player.angles);
-    org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-    traceline(org, end, FALSE, player);
-    dir = trace_endpos;
-    
+  
+  self.w_isready = FALSE;
+  self.w_currentammo = self.w_currentammo - 1;
+  self.w_firetime = time + self.w_firerate;
+  local vector dir, end, adj;
+ 
+  end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y+self.stat_spr_y), '1 1 1', self.w_range);
+  dir = util_traceForOffset(player, self, end);
+  
+  
+  if(trace_ent){
     te_superspike(dir);
-    sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-    
-    t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir, '0 0 0');
-    
-    //local vector sfx;
-    //adj_z = adj_z + 45;
-    //sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-    
-    local entity bul_fx;
-    bul_fx = spawn();
-    bul_fx.movetype = SOLID_NOT;
-    bul_fx.classname = "missile";
-    setmodel(bul_fx, "progs/muzzleflash.spr32");
-    setsize(bul_fx, '0 0 0', '0 0 0');
-    setorigin(bul_fx, org);
-    bul_fx.glow_color = 250;
-    bul_fx.glow_size = 1;
-    bul_fx.glow_trail = TRUE;
-    bul_fx.color = '1 0 0';
-    bul_fx.think = SUB_Remove;
-    bul_fx.nextthink = time + 0.001;// + 0.35;
-  //}
-  //else{
-  //  bprint("oops!\n");
-  //}
+  }
+  
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  
+  t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir, '0 0 0');
+  
+  local entity bul_fx;
+  bul_fx = spawn();
+  bul_fx.movetype = SOLID_NOT;
+  bul_fx.classname = "missile";
+  setmodel(bul_fx, "progs/muzzleflash.spr32");
+  setsize(bul_fx, '0 0 0', '0 0 0');
+  setorigin(bul_fx, self.fx_origin);
+  bul_fx.glow_color = 250;
+  bul_fx.glow_size = 1;
+  bul_fx.glow_trail = TRUE;
+  bul_fx.color = '1 0 0';
+  bul_fx.think = SUB_Remove;
+  bul_fx.nextthink = time + 0.001;// + 0.35;
 };

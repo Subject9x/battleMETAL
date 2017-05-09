@@ -22,6 +22,7 @@ float DAT_PAC_SPR_X = 0;
 float DAT_PAC_SPR_Y = 0;
 float DAT_PAC_WSIZE = 2;
 float DAT_PAC_HPX = 20;
+float DAT_PAC_RANGE = 600;
 
 void() data_wep_pac;
 void() data_pac_ini;
@@ -61,6 +62,7 @@ void() data_pac_ini={
   self.w_think = data_pac_think;
   self.health = DAT_PAC_HPX;
   self.max_health = DAT_PAC_HPX;
+  self.w_range = DAT_PAC_RANGE;
 };
 
 void() data_pac_think={
@@ -91,23 +93,12 @@ void() data_pac_atk={
   
   local entity cam, player, oself, proj;
   local vector spread;
-	local vector dir,org, end, adj;
+	local vector dir, end, adj;
   player = self.owner;
   
-  makevectors(player.v_angle);
-  cam = player.e_cam;//.clientcamera;
-  traceline(cam.origin, cam.origin + v_forward*2000, FALSE, player);
-  end = trace_endpos + (crandom() * (player.stat_spr_x + DAT_PAC_SPR_X) * v_right) + (v_up * crandom() * (player.stat_spr_y +  DAT_PAC_SPR_Y));
-  
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-  makevectors(player.angles);
-  org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-  traceline(org, end, FALSE, player);
-  dir = trace_endpos;
-  
-  if (player.t_width < time){
-    player.t_width = time + 0.05;//0.6;
-	}
+  end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y+self.stat_spr_y), '1 1 1', self.w_range);
+  dir = util_traceForOffset(player, self, end);
+
 	player.punchangle_x = -0.05;
 
   local entity laser_org;
@@ -115,17 +106,11 @@ void() data_pac_atk={
   laser_org.movetype = SOLID_NOT;
   laser_org.classname = "missile";
   setsize(laser_org, '0 0 0', '0 0 0');
-  setorigin(laser_org, org);
+  setorigin(laser_org, self.fx_origin);
   
-  //T_Damage(trace_ent, self.owner, self.owner, 12, 12, "", DT_IMPACT, other.origin, '0 0 0', Obituary_Generic);
-  //damage_mech_main(trace_ent, self.owner, self.owner, 12, 0);
   local float dtype;
   dtype = DMG_ENE + EFF_PRC;
-  if(trace_ent != world){
-    local float bbx;
-    bbx = trace_ent.c_bbx_x_x / 4;
-    dir = dir + (v_forward*bbx);
-  }
+
   t_damage(trace_ent, self, player, DAT_PAC_DMG, dtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/gauss.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 

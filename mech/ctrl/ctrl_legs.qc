@@ -7,6 +7,7 @@ Overview: implementation for leg model updates
 
 void() ctrl_updateLegs={
   
+  
   if((self.owner.movement_x == 0) && (self.owner.movement_y == 0)){
     self.movetype = MOVETYPE_NONE;
     makevectors(self.owner.angles);
@@ -18,13 +19,18 @@ void() ctrl_updateLegs={
     if(self.movetype != MOVETYPE_FOLLOW){
       self.movetype = MOVETYPE_FOLLOW;
     }
-    local vector m;
-    m = self.owner.movement;
-    m_y = m_y * -1;
-    self.angles =  vectoangles(m);
-    self.v_angle = self.angles;
+    if((self.owner.flags & FL_CLIENT)){
+      local vector m;
+      m = self.owner.movement;
+      m_y = m_y * -1;
+      self.angles =  vectoangles(m);
+      self.v_angle = self.angles;
+    }
+    else{
+      self.angles = self.owner.angles;
+      self.v_angle = self.angles;
+    }
   }
-  
 };
 
 void() ctrl_dieLegs={

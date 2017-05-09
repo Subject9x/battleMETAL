@@ -39,5 +39,6 @@ void() data_wep_esr={
     self.w_abbr = "ESR";
     self.note1 = "Devastating short range weapon.";
     self.note2 = "Highly innaccurate.";
+    self.w_icon = UI_WEP_ESR;
   self = oself;
 };

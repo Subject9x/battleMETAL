@@ -61,6 +61,15 @@ void() cs_precache={
   precache_pic("gfx/hud/target_box.png",0);
   UI_DEF_NAVPOINT = precache_pic("gfx/ui/hud_navpoint.png",0);
   UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",0);
+  
+  UI_WEP_LAS = precache_pic("gfx/ui/wep_icons/wi_las.png",0);
+  UI_WEP_ESR = precache_pic("gfx/ui/wep_icons/wi_esr.png",0);
+  UI_WEP_PAC = precache_pic("gfx/ui/wep_icons/wi_pac.png",0);
+  UI_WEP_EMP = precache_pic("gfx/ui/wep_icons/wi_emp.png",0);
+  UI_WEP_RCK = precache_pic("gfx/ui/wep_icons/wi_rck.png",0);
+  UI_WEP_MLGD = precache_pic("gfx/ui/wep_icons/wi_mlgd.png",0);
+  UI_WEP_MARH = precache_pic("gfx/ui/wep_icons/wi_marh.png",0);
+  
   //buildings
   building_power();
   building_shield();

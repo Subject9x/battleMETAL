@@ -41,5 +41,6 @@ void() data_wep_mis={
     self.note1 = "Fires entire clip at once.";
     self.note2 = "Does not require [ACTIVE] RADAR.";
     self.note3 = "Does not require TARGET LOCK.";
+    self.w_icon = UI_WEP_RCK;
   self = oself;
 };

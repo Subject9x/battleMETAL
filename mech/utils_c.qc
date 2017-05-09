@@ -6,6 +6,34 @@ Date: 8/27/2016
 Overview: utility functions for mod, header
 */
 
+//scope is self = weapon making the call
+vector(entity own, float spr_x, float spr_y, vector self_spread, float range) util_traceForPlayer={
+  local vector msrc, end;
+  local entity cam;
+  cam = own.e_cam;
+  if((own.flags & FL_MONSTER)){
+    msrc = normalize(own.enemy.origin - own.origin);
+    traceline(cam.origin, cam.origin + msrc*range, TRUE, own);
+  }
+  else if((own.flags & FL_CLIENT)){
+    makevectors(own.v_angle);
+    traceline(cam.origin, cam.origin + v_forward*range, FALSE, own);
+  }
+  end = trace_endpos + (crandom() * (spr_x / 0.75) * v_right) + (v_up * crandom() * (spr_y /  0.75));
+  return end;
+};
+
+//scope is self = weapon making the call
+vector(entity own, entity ofsent, vector prev_tracend) util_traceForOffset={
+  local vector adj, org;
+  adj = ofsent.c_ofs + ofsent.w_fire_ofs + ofsent.c_alt_ofs;
+  makevectors(own.angles);
+  org = own.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+  ofsent.fx_origin = org;
+  traceline(org, prev_tracend, FALSE, own);
+  return trace_endpos;
+}; 
+
 void(float mod, float targ_val) util_zeroStat={
 
   targ_val = targ_val - mod;

@@ -140,18 +140,20 @@ void(vector ofs) menu_hangar_MechDisplay={
   nofs = ofs + gui_percentToPixel(0.0828, 0.0437);
   drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixel(0.1367, 0.2604), '1 1 1', HUD_ALPHA, 0);
   drawpic(nofs + gui_percentToPixel(0.0025, 0.005), UI_HANGAR_BOX, gui_percentToPixel(0.132, 0.25), '1 1 1', HUD_ALPHA, 0);
-  local entity dat;
-  dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
-  i_sz = draw_getimagesize(dat.c_mdl);
-  i_sz = gui_scaleSize(i_sz,VIEW_SCALE);
-  i_sz_x = i_sz_x/1.35;
-  i_sz_y = i_sz_y/1.35;
-  hofs = nofs + gui_percentToPixel(0.0156, 0.025);
-  hpnts_x = hofs_x + i_sz_x/2;
-  hpnts_y = hofs_y + i_sz_y/2;
-  drawpic(hofs, dat.c_mdl, i_sz, '1 1 1', HUD_ALPHA, 0);
-  dat.menu_renderHardpoints(hpnts);
-  MECHPANEL_CTR = hpnts;
+  if(PLAYER_HELPER.plr_sel_mech > 0){
+    local entity dat;
+    dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
+    i_sz = draw_getimagesize(dat.c_mdl);
+    i_sz = gui_scaleSize(i_sz,VIEW_SCALE);
+    i_sz_x = i_sz_x/1.35;
+    i_sz_y = i_sz_y/1.35;
+    hofs = nofs + gui_percentToPixel(0.0156, 0.025);
+    hpnts_x = hofs_x + i_sz_x/2;
+    hpnts_y = hofs_y + i_sz_y/2;
+    drawpic(hofs, dat.c_mdl, i_sz, '1 1 1', HUD_ALPHA, 0);
+    dat.menu_renderHardpoints(hpnts);
+    MECHPANEL_CTR = hpnts;
+  }
 };
 
 void(vector ofs) menu_hangar_MechList={

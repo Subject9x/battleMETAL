@@ -33,7 +33,7 @@ void(vector ofs) menu_navBar;
 void() menu_mainListener;
 void() navBarListener;
 void() mechAcceptButtonListener;
-
+void(float wid, vector org, float selected) ui_renderHardPointGraphic;
 void(entity nav) ui_renderNav;
 
 
@@ -44,3 +44,12 @@ string UI_DEF_BOX_256_TALL;
 string UI_DEF_BOX_64;
 string UI_DEF_NAVPOINT;
 string UI_HANGAR_BOX;
+
+//hangar graphics
+string UI_WEP_LAS;
+string UI_WEP_ESR;
+string UI_WEP_PAC;
+string UI_WEP_EMP;
+string UI_WEP_RCK;
+string UI_WEP_MLGD;
+string UI_WEP_MARH;

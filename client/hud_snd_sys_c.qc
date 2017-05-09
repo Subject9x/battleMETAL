@@ -11,7 +11,6 @@ void() snd_hud_vfx_frame={
     local string snd;
     playing = getsoundtime(PLAYER_HELPER, CHAN_AUTO);
     if(playing < 0){
-      //print(strcat(ftos(VOICE_QUEUE_IDX),":",VOICE_QUEUE[VOICE_QUEUE_IDX],"\n")); // DEBUG
       VOICE_TIME = soundlength(snd);
       VOICE_TIME_NEXT = time + VOICE_TIME;
       snd = VOICE_QUEUE[VOICE_QUEUE_IDX];

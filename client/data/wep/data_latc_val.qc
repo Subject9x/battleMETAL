@@ -39,5 +39,6 @@ void() data_wep_latc={
     self.i_size = DAT_LATC_WSIZE;
     self.w_abbr = "ATC";
     self.note1 = "Slight damage bonus on armor.";
+    self.w_icon = UI_DEF_BOX_64;
   self = oself;
 };

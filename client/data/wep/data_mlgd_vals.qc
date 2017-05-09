@@ -47,5 +47,6 @@ void() data_wep_mlgd={
     self.note1 = "Missile will follow your reticule.";
     self.note2 = "Does not require [ACTIVE] RADAR.";
     self.note3 = "Does not require TARGET LOCK.";
+    self.w_icon = UI_WEP_MLGD;
   self = oself;
 };

@@ -122,7 +122,7 @@ void() ai_mech={
   
   self.ideal_yaw = self.angles * '0 1 0';
 	if (!self.yaw_speed)
-		self.yaw_speed = 20;
+		self.yaw_speed = 10;
 	self.use = q_monster_use;
   
   if (self.target)
@@ -151,7 +151,8 @@ void() ai_mech={
     self.ai_state = AI_STAND;
 		//self.th_stand ();
 	}
-  
+  self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2| WEAPON3| WEAPON4| WEAPON5;
+  self.currentWeaponGroup = self.w_group1;
   self.think = ai_control;
   self.nextthink = time + 0.001;
 };

@@ -182,3 +182,12 @@ void(entity nav) ui_renderNav={
     drawstring(tofs, nav.w_name, '6 6', CLR_DEF_WEP_INRANGE, 1, 0);
   }
 };
+
+void(float wid, vector org, float selected) ui_renderHardPointGraphic={
+  local entity wep;
+  gui_renderTintImage(selected, org, UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  if(wid > 0 ){
+    wep = m_findData(wid, DATA_WEPN);
+    drawpic( org +'1 1', wep.w_icon,  '22 22', '1 1 1', HUD_ALPHA, 0);
+  }
+};

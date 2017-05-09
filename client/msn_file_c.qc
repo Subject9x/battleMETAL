@@ -33,7 +33,6 @@ void() msn_parsefile={
   line = fgets(flannel);
   while((line!="")){
     argc = tokenizebyseparator(line, ":");
-    //print(strcat(line,"\n")); // DEBUG
     //mission info section
     msn_setname(argv(0), argv(1));
     msn_settype(argv(0), argv(1));

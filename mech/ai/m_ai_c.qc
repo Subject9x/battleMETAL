@@ -231,12 +231,8 @@ void() ChangeYaw =
 
 void() q_HuntTarget =
 {
-     
 	self.goalentity = self.enemy;
-	//self.think = self.th_run;
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-	//self.nextthink = time + 0.1;
-	SUB_AttackFinished (1);	// wait a while before first attack
   self.th_run();
 };
 
@@ -250,7 +246,6 @@ void() q_FoundTarget =
 	
 	self.show_hostile = time + 1;		// wake up other monsters
   self.ai_state = AI_HUNTTARGET;
-	//q_HuntTarget ();
 };
 
 /*
@@ -563,11 +558,9 @@ void(float dist) q_ai_run =
 		else
 		{
 			if (self.movetarget)
-				//self.th_walk ();
-        self.ai_state = AI_WALK;
+				self.th_walk ();
 			else
-        self.ai_state = AI_STAND;
-				//self.th_stand ();
+				self.th_stand ();
 			return;
 		}
 	}
@@ -723,7 +716,6 @@ The monster is in a melee attack, so get as close as possible to .enemy
 
 void(float d) q_ai_charge =
 {
-	q_ai_face ();	
 	movetogoal (d);		// done in C code...
 };
 

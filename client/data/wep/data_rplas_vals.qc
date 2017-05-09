@@ -39,6 +39,7 @@ void() data_wep_rplas={
     self.i_size = DAT_RPLAS_WSIZE;
     self.w_abbr = "RPC";
     self.note1 = "Ricochets off the ground and most walls.";
+    self.w_icon = UI_DEF_BOX_64;
   self = oself;
 };
 
