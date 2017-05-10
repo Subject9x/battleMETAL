@@ -32,17 +32,15 @@ The number of seconds to spend standing or bowing for path_stand or path_bow
 
 ==============================================================================
 */
-
-
 void() q_movetarget_f =
 {
-	if (!self.targetname)
+	if (!self.targetname){
 		objerror ("monster_movetarget: no targetname");
-		
+  }
+  
 	self.solid = SOLID_TRIGGER;
 	self.touch = q_t_movetarget;
 	setsize (self, '-8 -8 -8', '8 8 8');
-	
 };
 
 /*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8)
@@ -66,26 +64,26 @@ void() q_t_movetarget =
 {
 local entity	temp;
 
-	if (other.movetarget != self)
+	if (other.movetarget != self){
 		return;
-	
-	if (other.enemy)
+	}
+	if (other.enemy){
 		return;		// fighting, not following a path
-
+  }
+  
 	temp = self;
 	self = other;
 	other = temp;
 
-	if (self.classname == "monster_ogre")
+	if (self.classname == "monster_ogre"){
 		sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
-
+  }
 //dprint ("t_movetarget\n");
 	self.goalentity = self.movetarget = find (world, targetname, other.target);
 	self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-	if (!self.movetarget)
-	{
+	if (!self.movetarget){
 		self.pausetime = time + 999999;
-    self.ai_state = AI_STAND;
+    self.ai_move = AI_STATE_STAND;
 		//self.th_stand ();
 		return;
 	}
@@ -138,11 +136,13 @@ float (entity targ) q_visible =
 	spot2 = targ.origin + targ.view_ofs;
 	traceline (spot1, spot2, TRUE, self);	// see through other monsters
 	
-	if (trace_inopen && trace_inwater)
+	if (trace_inopen && trace_inwater){
 		return FALSE;			// sight line crossed contents
-
-	if (trace_fraction == 1)
+  }
+  
+	if (trace_fraction == 1){
 		return TRUE;
+  }
 	return FALSE;
 };
 
@@ -163,8 +163,7 @@ float(entity targ) q_infront =
 	vec = normalize (targ.origin - self.origin);
 	dot = vec * v_forward;
 	
-	if ( dot > 0.3)
-	{
+	if ( dot > 0.3){
 		return TRUE;
 	}
 	return FALSE;
@@ -233,19 +232,22 @@ void() q_HuntTarget =
 {
 	self.goalentity = self.enemy;
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-  self.th_run();
+  self.ai_move = AI_STATE_RUN;
 };
 
 void() q_FoundTarget =
 {
-	if (self.enemy.classname == "player")
-	{	// let other monsters see this monster for a while
+	if (self.enemy.classname == "player"){	
+    // let other monsters see this monster for a while
 		sight_entity = self;
 		sight_entity_time = time;
 	}
 	
 	self.show_hostile = time + 1;		// wake up other monsters
-  self.ai_state = AI_HUNTTARGET;
+  //self.ai_state = self.ai_state | AI_STATE_HUNT;
+  
+  self.ai_move = AI_STATE_RUN;
+  self.ai_state = AI_STATE_HUNT;
 };
 
 /*
@@ -279,8 +281,9 @@ float() q_FindTarget =
 	if (sight_entity_time >= time - 0.1 && !(self.spawnflags & 3) )
 	{
 		client = sight_entity;
-		if (client.enemy == self.enemy)
+		if (client.enemy == self.enemy){
 			return TRUE;
+    }
 	}
 	else
 	{
@@ -289,31 +292,36 @@ float() q_FindTarget =
 			return FALSE;	// current check entity isn't in PVS
 	}
 
-	if (client == self.enemy)
+	if (client == self.enemy){
 		return FALSE;
-
-	if (client.flags & FL_NOTARGET)
+  }
+	/*if (client.flags & FL_NOTARGET){
 		return FALSE;
-	if (client.items & IT_INVISIBILITY)
+  }
+	if (client.items & IT_INVISIBILITY){
 		return FALSE;
+  }*/
 
 	r = q_range (client);
    
 	//if (r == RANGE_FAR)
 		//return FALSE;
 		
-	if (!q_visible (client))
+	if (!q_visible (client)){
 		return FALSE;
-
+  }
+  
 	if (r == RANGE_NEAR)
 	{
-		if (client.show_hostile < time && !q_infront (client))
+		if (client.show_hostile < time && !q_infront (client)){
 			return FALSE;
+    }
 	}
 	else if (r == RANGE_MID)
 	{
-		if ( /* client.show_hostile < time || */ !q_infront (client))
+		if ( /* client.show_hostile < time || */ !q_infront (client)){
 			return FALSE;
+    }
 	}
 	
 //
@@ -331,8 +339,9 @@ float() q_FindTarget =
 	}
 	
 	q_FoundTarget ();
-
-	return TRUE;
+  
+	//return TRUE;
+	return FALSE;
 };
 
 
@@ -362,9 +371,12 @@ void(float dist) q_ai_walk =
 	movedist = dist;
   
 	// check for noticing a player
-	if (q_FindTarget ())
-		return;
-
+  if(self.ai_state != AI_STATE_HUNT){
+    q_FindTarget ();
+  }
+	//if (q_FindTarget ()){
+		//return;
+  //}
 	movetogoal (dist);
 };
 
@@ -378,15 +390,19 @@ The monster is staying in one place for a while, with slight angle turns
 */
 void() q_ai_stand =
 {
-	if (q_FindTarget ())
-		return;
-	
-	if (time > self.pausetime)
-	{
-    self.ai_state = AI_WALK;
-		//self.th_walk ();
-		return;
-	}
+  if(self.ai_state != AI_STATE_HUNT){
+    q_FindTarget ();
+  }
+
+	//if (q_FindTarget ()){
+  // // return;
+  //}
+	//if (time > self.pausetime)
+	//{
+    //self.ai_move = AI_STATE_WALK;
+		////self.th_walk ();
+		//return;
+	//}
 	
 // change angle slightly
 
@@ -401,9 +417,9 @@ don't move, but turn towards ideal_yaw
 */
 void() q_ai_turn =
 {
-	if (q_FindTarget ())
+	if (q_FindTarget ()){
 		return;
-	
+	}
 	ChangeYaw ();
 };
 
@@ -450,8 +466,9 @@ float() q_FacingIdeal =
 	local	float	delta;
 	
 	delta = anglemod(self.angles_y - self.ideal_yaw);
-	if (delta > 45 && delta < 315)
+	if (delta > 45 && delta < 315){
 		return FALSE;
+  }
 	return TRUE;
 };
 
@@ -517,14 +534,15 @@ void() q_ai_run_slide =
 	
 	self.ideal_yaw = enemy_yaw;
 	ChangeYaw ();
-	if (self.lefty)
+	if (self.lefty){
 		ofs = 90;
-	else
+	}
+  else{
 		ofs = -90;
-	
-	if (walkmove (self.ideal_yaw + ofs, movedist))
+	}
+	if (walkmove (self.ideal_yaw + ofs, movedist)){
 		return;
-		
+  }
 	self.lefty = 1 - self.lefty;
 	
 	walkmove (self.ideal_yaw - ofs, movedist);
@@ -557,10 +575,15 @@ void(float dist) q_ai_run =
 		}
 		else
 		{
-			if (self.movetarget)
-				self.th_walk ();
-			else
-				self.th_stand ();
+			if (self.movetarget){
+        self.ai_move = AI_STATE_RUN;
+        self.ai_state = AI_STATE_HUNT;
+			}	//self.th_walk ();
+			else{
+        self.ai_move = AI_STATE_STAND;
+        self.ai_state = AI_STATE_PEACE;
+				//self.th_stand ();
+      }
 			return;
 		}
 	}
@@ -569,40 +592,44 @@ void(float dist) q_ai_run =
 
 // check knowledge of enemy
 	enemy_vis = q_visible(self.enemy);
-	if (enemy_vis)
+	if (enemy_vis){
 		self.search_time = time + 5;
-
+  }
 // look for other coop players
 	if (coop && self.search_time < time)
 	{
-		if (q_FindTarget ())
-			return;
+    if(self.ai_state != AI_STATE_HUNT){
+      q_FindTarget ();
+    }
+		//if (q_FindTarget ()){
+		//	return;
+   //}
 	}
 
 	enemy_infront = q_infront(self.enemy);
 	enemy_range = q_range(self.enemy);
 	enemy_yaw = vectoyaw(self.enemy.origin - self.origin);
 	
-	if (self.attack_state == AS_MISSILE)
-	{
-		q_ai_run_missile ();
-		return;
-	}
-	if (self.attack_state == AS_MELEE)
-	{
-		q_ai_run_melee ();
-		return;
-	}
+	//if (self.attack_state == AS_MISSILE)
+	//{
+		//q_ai_run_missile ();
+		//return;
+	//}
+	//if (self.attack_state == AS_MELEE)
+	//{
+		//q_ai_run_melee ();
+		//return;
+	//}
 
-	if (q_CheckAnyAttack ())
-		return;					// beginning an attack
+	//if (q_CheckAnyAttack ())
+	//	return;					// beginning an attack
 		
-	if (self.attack_state == AS_SLIDING)
-	{
-		q_ai_run_slide ();
-		return;
-	}
-		
+	//if (self.attack_state == AS_SLIDING)
+	//{
+		//q_ai_run_slide ();
+		//return;
+	//}
+	
 // head straight in
 	movetogoal (dist);		// done in C code...
 };
@@ -653,8 +680,8 @@ float() q_CheckAttack =
 	if (!self.th_missile)
 		return FALSE;
 		
-	//if (time < self.attack_finished)
-		//return FALSE;
+	if (time < self.attack_finished)
+		return FALSE;
 		
 	//if (enemy_range == RANGE_FAR)
 		//return FALSE;
@@ -683,8 +710,8 @@ float() q_CheckAttack =
     
 	//if (random () < chance)
 	//{
-		self.th_missile ();
-    SUB_AttackFinished (2*random());
+		//self.th_missile ();
+    //SUB_AttackFinished (2*random());
 		//return TRUE;
 //	}
 
@@ -748,14 +775,14 @@ void() q_ai_melee =
 	local vector	delta;
 	local float 	ldmg;
 
-	if (!self.enemy)
+	if (!self.enemy){
 		return;		// removed before stroke
-		
+  }
 	delta = self.enemy.origin - self.origin;
 
-	if (vlen(delta) > 60)
+	if (vlen(delta) > 60){
 		return;
-		
+  }
 	ldmg = (random() + random() + random()) * 3;
 	T_Damage (self.enemy, self, self, ldmg);
 };
@@ -873,16 +900,21 @@ local entity	etemp;
 			dprint ("\n");
 		}
 // this used to be an objerror
-		if (self.movetarget.classname == "path_corner")
-			self.th_walk ();
-		else
+		if (self.movetarget.classname == "path_corner"){
+      self.ai_move = AI_STATE_WALK;
+			//self.th_walk ();
+    }
+		else{
 			self.pausetime = 99999999;
-			self.th_stand ();
-	}
+			//self.th_stand ();
+      self.ai_move = AI_STATE_STAND;
+    }
+  }
 	else
 	{
 		self.pausetime = 99999999;
-		self.th_stand ();
+		//self.th_stand ();
+    self.ai_move = AI_STATE_STAND;
 	}
 
 // spread think times so they don't all happen at same time

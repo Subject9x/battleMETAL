@@ -53,3 +53,6 @@ string UI_WEP_EMP;
 string UI_WEP_RCK;
 string UI_WEP_MLGD;
 string UI_WEP_MARH;
+string UI_WEP_ATC;
+string UI_WEP_QRF;
+string UI_WEP_RPC;

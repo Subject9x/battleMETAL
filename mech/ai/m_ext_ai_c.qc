@@ -5,6 +5,10 @@ Overview: ai extension funcs
 */
 
 void() ai_control={
+  local float astate, move, qrk;
+  astate = self.ai_state;
+  move = self.ai_move;
+  qrk = self.ai_quirks;
 
   if(self.enemy != world){
     q_ai_face();
@@ -16,23 +20,25 @@ void() ai_control={
 
   ai_weapon_update();
   
-  if(self.ai_state == AI_STAND){
-    self.th_stand();
-  }
-  else if(self.ai_state == AI_RUN){
-    self.th_run();
-  }
-  else if(self.ai_state == AI_WALK){
-    self.th_walk();
-  }
-  else if(self.ai_state == AI_FORWARD){
+  if(astate == AI_STATE_WANDER){
     
   }
-  else if(self.ai_state == AI_BACKWARD){
+  else if(astate == AI_STATE_TOPOINT){
   
   }
-  else if(self.ai_state == AI_HUNTTARGET){
+  else if(astate == AI_STATE_HUNT){
     q_HuntTarget();
+    self.th_missile();
+  }
+ 
+  if(move == AI_STATE_STAND){
+    self.th_stand();
+  }
+  else if(move == AI_STATE_WALK){
+    self.th_walk();
+  }
+  else if(move == AI_STATE_RUN){
+    self.th_run();
   }
   
   self.think = ai_control;
@@ -41,11 +47,11 @@ void() ai_control={
 
 
 void() ai_mech_walk={
-  q_ai_walk(0.05);
+  q_ai_walk(0.5);
 };
 
 void() ai_mech_run={
-  q_ai_run(0.1);
+  q_ai_run(1);
 };
 
 void() ai_mech_attack={
@@ -114,10 +120,10 @@ void() ai_mech_die={
   self.nextthink = time + 100;
 };
 
-vector(entity bot) ai_traceEnd={
-
+void(float move_state) ai_setmovestate={
+  self.ai_move = move_state;
 };
 
-void() ai_traceOffset={
-
+void(float dir_state) ai_setdirstate={
+  self.ai_state = dir_state;
 };

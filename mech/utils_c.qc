@@ -143,15 +143,7 @@ float(vector p, vector pmin, vector pmax) util_checkInBounds={
 
 //dont ask
 void(float bits, float b, float bb, float bbb) util_subThreeBits={
-  if((bits & b)){
-    bits = bits - (bits & b);
-  }
-  if((bits & bb)){
-    bits = bits - (bits & bb);
-  }
-  if((bits & bbb)){
-    bits = bits - (bits & bbb);
-  }
+  bits = bits - (bits & (b | bb | bbb) );
 };
 
 entity(string part, entity unit) util_getPartFromName={

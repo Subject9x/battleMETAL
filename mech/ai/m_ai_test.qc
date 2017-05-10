@@ -108,7 +108,9 @@ void() ai_mech={
   self.th_run = ai_mech_run;
   self.th_missile = ai_mech_attack;
   self.th_stand = ai_mech_stand;
-  self.ai_state = AI_STAND;
+  self.ai_state = 0;
+  self.ai_move = 0;
+  ai_setmovestate(AI_STATE_STAND);
   
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
@@ -137,18 +139,17 @@ void() ai_mech={
 		}
 // this used to be an objerror
 		if (self.movetarget.classname == "path_corner"){
-      self.ai_state = AI_WALK;
+      self.ai_move = AI_STATE_WALK;
 			//self.th_walk ();
 		}else{
 			self.pausetime = 99999999;
-      self.ai_state = AI_STAND;
-			//self.th_stand ();
+      self.ai_move = AI_STATE_STAND;
     }
 	}
 	else
 	{
 		self.pausetime = 99999999;
-    self.ai_state = AI_STAND;
+    self.ai_move = AI_STATE_STAND;
 		//self.th_stand ();
 	}
   self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2| WEAPON3| WEAPON4| WEAPON5;

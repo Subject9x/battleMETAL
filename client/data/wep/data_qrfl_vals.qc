@@ -38,7 +38,7 @@ void() data_wep_qrfl={
     self.w_abbr = "QRF";
     self.note1 = "Damage affects Target's ENERGY meter.";
     self.note2 = "Does not cause any other damage.";
-    self.w_icon = UI_DEF_BOX_64;
+    self.w_icon = UI_WEP_QRF;
   self = oself;
 };
 
