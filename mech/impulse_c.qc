@@ -164,4 +164,15 @@ void() mpls_groupFire={
     self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3));
     self.currentWeaponGroup = self.currentWeaponGroup + self.w_group3;
   }
+  if(self.impulse == IMP_WGROUP4){
+    centerprint(self, "[Weapon Group 4]");
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group5));
+    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group4;
+  }
+  if(self.impulse == IMP_WGROUP5){
+    centerprint(self, "[Weapon Group 5]");
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group4));
+    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group5;
+  }
+  
 };

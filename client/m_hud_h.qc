@@ -2,14 +2,50 @@
 mech Mod
 Author: Subject9x
 Date: 2/17/2017
+mod - 5/11/2017
 Overview: the interface for hud rendering
 every hud ent has to implement this format
 */
 
+void(float hp, vector org, vector sz) hud_renderArmorBuilding={
+  local vector ofs;
+  ofs = org;
+  ofs_x = ofs_x - (sz_x/2);
+  ofs_y = ofs_y - (sz_y/2);
+  gui_renderMeter(100, ofs, sz, '0 0 0', gui_getColorForArmor(hp), HUD_ALPHA, 0, AXIS_V, 0);
+};
+
+void(float hp, vector org) hud_renderArmorVehicle={
+
+};
+
+void(vector org, vector sz, float wrange, float tdist, float alpha, float flg) hud_RangeIndicator={
+  local float inrange;
+  inrange = FALSE;
+  if(tdist <= wrange){
+    inrange = TRUE;
+  }
+  gui_renderModalFill(org, inrange, CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, sz, alpha, flg);
+};
+
+void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
+  local float pmax, perc;
+  mn = mn *-1;
+  pmax = mx+mn;
+  if(pval > 0){
+    pval = pval + mx;
+  }
+  else{
+    pval = pval * -1;
+  }
+  perc = pval / pmax;
+  
+  gui_renderMeter(perc, (org - '6 32'), '12 64', '0 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
+};
+
 string HUT_RET_PIP_HRZ;
 string HUT_RET_PIP_VRT;
 string HUT_RET_LOK;
-
 
 .entity data;
 .entity hud_pnl1;
@@ -48,4 +84,5 @@ string HUT_RET_LOK;
 .void(float range) hud_targetRange;
 .void(float islock) hud_targetLock;
 .void(float targdir) hud_targetDirectionPip;
+
 

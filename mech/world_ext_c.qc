@@ -74,7 +74,7 @@ void() mh_world_ini={
   
   addstat(STAT_PLR_STT, AS_INT, stat_plr_stt);
   addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
-  addstat(STAT_PLR_PTC, AS_INT, stat_plr_ptc);
+  addstat(STAT_PLR_PTC, AS_FLOAT, stat_plr_ptc);
   addstat(STAT_PLR_ANG, AS_INT, stat_plr_ang);
   
   addstat(STAT_LVL_RES, AS_INT, i_reserve);
@@ -115,6 +115,8 @@ void() mh_world_iniData={
   data_h_power();
   data_h_radar();
   data_h_shield();
+  data_h_fuel();
+  data_h_hangar_l();
 };
 
 entity(float id, float dat_type) mh_world_findData={

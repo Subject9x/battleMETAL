@@ -109,6 +109,8 @@ float m_wep = 6;
 //PLAYER CLASSES
 float P_OBS = 0;
 float P_MECH = 1;
+float P_VEHC = 2;
+float P_BULD = 3;
 
 //STAT CHANNEL
 float STAT_ENTITY_ID = 33;

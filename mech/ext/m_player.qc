@@ -114,7 +114,8 @@ void() PlayerPostThink = {
     self.radar_front = radar_x;
     self.radar_rear = radar_y;
   }
-  self.stat_plr_ptc = self.v_angle_x * -1;
+
+  self.stat_plr_ptc = self.v_angle_x;
     
   if(self.p_class != P_OBS){
     local entity wep_chain;

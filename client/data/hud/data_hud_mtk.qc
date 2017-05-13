@@ -67,7 +67,7 @@ void() mtk_hud_ini={
   self.hud_targetLock = mtk_targetLock;
   self.hud_targetDirectionPip = mtk_targetDirectionPip;
   self.hud_renderTarget = mtk_renderTarget;
-
+  self.w_range = -1; //this is hack to check weapon range;
   
   //this is the armor panel
   oself = self;
@@ -433,6 +433,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
+  hud_RangeIndicator(ofs + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
   
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
@@ -459,7 +460,8 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  
+  hud_RangeIndicator(ofs + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+    
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
@@ -483,7 +485,8 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  
+  hud_RangeIndicator(ofs + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+    
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
@@ -505,7 +508,8 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
- 
+  hud_RangeIndicator(ofs + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+   
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
@@ -525,7 +529,8 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
- 
+  hud_RangeIndicator(ofs + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+   
   if(w_grp & w_bit){
     gui_BoxOnLabel(wep_dat.w_abbr, ofs + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
   }
@@ -581,8 +586,20 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
         drawpic(spos, "gfx/hud/target_box.png", i_sz, '1 0 0', HUD_ALPHA, 0);
       }
       
-      self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
+      if(dat.data_type == DATA_MECH){
+        self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
                             getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
+      }
+      else if(dat.data_type == DATA_BLD){
+        local vector pnl_ctr;
+        pnl_ctr_x = self.hud_pnl5.pos_x + self.hud_pnl5.hsize_x;
+        pnl_ctr_y = self.hud_pnl5.pos_y + self.hud_pnl5.hsize_y;
+        pnl_ctr = pnl_ctr+ '0 12';
+        hud_renderArmorBuilding(getstatf(STAT_TRG_CTOR_HP), pnl_ctr, '78 48');
+      }
+      else if(dat.data_type == DATA_VEHC){
+      
+      }
       self.hud_targetShield(trgsh, tpos, 12);
       self.hud_targetRange(trgdist);
       self.hud_targetLock(trglock);

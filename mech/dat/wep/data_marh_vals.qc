@@ -101,6 +101,7 @@ void() data_marh_atk={
         org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
         traceline(org, end, FALSE, player);
         dir = trace_endpos;
+        
         local float countlim, itr;
         countlim = 15;
         
@@ -124,7 +125,7 @@ void() data_marh_atk={
             self.velocity = normalize(arc - start);
             self.enemy = self.owner.enemy;
             self.c_ofs = arc;
-            self.lock_timer = time + 1;
+            self.lock_timer = time + 0.75;
             self.p_lifetime = time + self.p_lifetime;
             setorigin(self, start);
             self.velocity = self.velocity * self.p_velocity;

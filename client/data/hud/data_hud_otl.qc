@@ -67,6 +67,7 @@ void() otl_hud_ini={
   self.hud_targetLock = otl_targetLock;
   self.hud_targetDirectionPip = otl_targetDirectionPip;
   self.hud_renderTarget = otl_renderTarget;
+  self.w_range = -1; //this is hack to check weapon range;
   
   //this is the armor panel
   oself = self;
@@ -296,7 +297,8 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_ren
   gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + '-1.5 1'), HUT_RET_PIP_VRT, '3 10', '0.2 0.8 0.2', HUD_ALPHA, 0);
   
   //pitch
-  drawstring(VIEW_CTR - '24 0', ftos(pitch), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
+  drawstring(VIEW_CTR - '24 0', ftos(pitch), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  hud_renderPitchSlider((VIEW_CTR - '24 0'), 90, 270, pitch);
 };  
 
 /*
@@ -438,6 +440,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins), wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
+  hud_RangeIndicator((self.hud_pnl4.pos + self.hud_pnl4.margin_ins) + '24 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
@@ -461,7 +464,8 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
-  
+  hud_RangeIndicator(ofs + '24 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
   ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 8;
@@ -483,6 +487,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawstring(ofs, wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
+  hud_RangeIndicator(ofs + '24 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
   
   ofs = self.hud_pnl4.pos;
   ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
@@ -544,9 +549,20 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
         spos_z = 0; //shut up dp.
         drawpic(spos, "gfx/hud/target_box.png", i_sz, '1 0 0', HUD_ALPHA, 0);
       }
-        
-      self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
+      if(dat.data_type == DATA_MECH){
+        self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
                             getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
+      }
+      else if(dat.data_type == DATA_BLD){
+        local vector pnl_ctr;
+        pnl_ctr_x = self.hud_pnl5.pos_x + self.hud_pnl5.asize_x/2;
+        pnl_ctr_y = self.hud_pnl5.pos_y + self.hud_pnl5.asize_y/2;
+        pnl_ctr = pnl_ctr;
+        hud_renderArmorBuilding(getstatf(STAT_TRG_CTOR_HP), pnl_ctr + '0 12', '78 56');
+      }
+      else if(dat.data_type == DATA_VEHC){
+      
+      }
       self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z);
       self.hud_targetRange(trgdist);
       self.hud_targetLock(trglock);

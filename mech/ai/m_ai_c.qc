@@ -84,7 +84,6 @@ local entity	temp;
 	if (!self.movetarget){
 		self.pausetime = time + 999999;
     self.ai_move = AI_STATE_STAND;
-		//self.th_stand ();
 		return;
 	}
 };
@@ -244,8 +243,6 @@ void() q_FoundTarget =
 	}
 	
 	self.show_hostile = time + 1;		// wake up other monsters
-  //self.ai_state = self.ai_state | AI_STATE_HUNT;
-  
   self.ai_move = AI_STATE_RUN;
   self.ai_state = AI_STATE_HUNT;
 };
@@ -327,7 +324,10 @@ float() q_FindTarget =
 //
 // got one
 //
-	self.enemy = client;
+  if(client.p_class != P_OBS){
+  	self.enemy = client;
+  }
+
 	if (self.enemy.classname != "player")
 	{
 		self.enemy = self.enemy.enemy;

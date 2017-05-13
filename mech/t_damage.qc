@@ -69,6 +69,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     dmg_amt = new_dmg;
   }
   else{
+    anger_monster(attacker);
     te_particlecube(dmg_point + '-1 -1 -1', dmg_point + '1 1 1', '0 0 0', dmg_amt, 150, TRUE, 100);
     return;
   }
@@ -104,19 +105,16 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
       }
     }
   }
-
-	if ( (self.flags & FL_MONSTER) && attacker != world){
-	// get mad unless of the same class (except for soldiers)
-		if (self != attacker && attacker != self.enemy){
-			if ( (self.classname != attacker.classname) 
-              || (self.classname == "monster_army" ) ){
-				if (self.enemy.classname == "player")
-					self.oldenemy = self.enemy;
-				self.enemy = attacker;
-				q_FoundTarget ();
-			}
-		}
-	}
+  
+  if(self.classname == MECH_PIECE){
+    oself = self;
+    self = self.owner;
+      anger_monster(attacker);
+    self = oself;
+  }
+  else{
+    anger_monster(attacker);
+  }
 };
 
 
@@ -419,6 +417,17 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
     dmg_amt = dmg_amt - mod;  
   }
   return dmg_amt;
+};
+
+
+void(entity attacker) anger_monster={
+	if ( (self.flags & FL_MONSTER) && (attacker != world)){
+    if ((self != attacker) && (attacker != self.enemy)){
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        q_FoundTarget ();
+    }
+  }
 };
 
 

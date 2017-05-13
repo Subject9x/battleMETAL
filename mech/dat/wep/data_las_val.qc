@@ -12,11 +12,11 @@ float DAT_LAS_DMG = 15;
 float DAT_LAS_FIRETIME = 0;
 float DAT_LAS_CLIPSIZE = 1;
 float DAT_LAS_CURRENTAMMO = 1;
-float DAT_LAS_FIRERATE = 0.8;
-float DAT_LAS_RELOADTIME = 0.8;
+float DAT_LAS_FIRERATE = 1.15;
+float DAT_LAS_RELOADTIME = 1.15;
 vector DAT_LAS_FIRE_OFS = '0 0 2';
 string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_LAS_EN_COST = 10;
+float DAT_LAS_EN_COST = 0.05;
 string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
 float DAT_LAS_WSIZE = 1;
@@ -76,13 +76,13 @@ void() data_las_think={
     }
   }
   else{
+    if(self.owner.en_cur > 0){
+      self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
+    }
+    else{
+      self.w_firetime = time + self.w_reloadtime;
+    }
     self.w_isready = FALSE;
-  }
-  if(self.en_cur < self.en_max){
-    self.w_isready = FALSE;
-    self.owner.en_cur = self.owner.en_cur - 0.05;
-    self.en_cur = self.en_cur + 0.05;
-    self.w_firetime = time + 0.05;
   }
 };
 

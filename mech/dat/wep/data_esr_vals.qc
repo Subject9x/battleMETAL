@@ -12,16 +12,17 @@ float DAT_ESR_FIRETIME = 0;
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_CURRENTAMMO = 10;
 float DAT_ESR_FIRERATE = 0.1;
-float DAT_ESR_RELOADTIME = 1;
+float DAT_ESR_RELOADTIME = 1.25;
 vector DAT_ESR_FIRE_OFS = '0 0 2';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_ESR_EN_COST = 0.18;
+float DAT_ESR_EN_COST = 0.3;
 string DAT_ESR_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_TECH_LEVEL = 1;
 float DAT_ESR_SPR_X = 5;
 float DAT_ESR_SPR_Y = 5;
 float DAT_ESR_WSIZE = 3;
 float DAT_ESR_HPX = 20;
+float DAT_ESR_RANGE = 400;
 
 void() data_wep_esr;
 void() data_esr_ini;
@@ -61,26 +62,36 @@ void() data_esr_ini={
   self.w_think = data_esr_think;
   self.health = DAT_ESR_HPX;
   self.max_health = DAT_ESR_HPX;
+  self.w_range = DAT_ESR_RANGE;
 };
 
 void() data_esr_think={
-  if(time > self.w_firetime){
-    if(self.w_currentammo > 0){
-      self.w_isready = TRUE;
+  
+  if(time > self.power_timer){
+    if(time > self.w_firetime){
+      if(self.w_currentammo > 0){
+        self.w_isready = TRUE;
+      }
+      else{
+        self.w_isready = FALSE;
+        self.power_timer = time + self.w_reloadtime;
+        self.w_currentammo = self.w_clipsize;
+      }
     }
     else{
       self.w_isready = FALSE;
-      self.w_firetime = time + self.w_reloadtime;
-      self.w_currentammo = self.w_clipsize;
     }
   }
   else{
+    if(self.owner.en_cur > 0){
+      self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
+    }
+    else{
+      self.w_firetime = time + self.w_reloadtime;
+    }
     self.w_isready = FALSE;
   }
-  
-  if(!self.w_isready){
-    self.owner.en_cur = self.owner.en_cur - self.en_max;
-  }
+
 };
 
 void() data_esr_atk={
@@ -89,11 +100,10 @@ void() data_esr_atk={
 	local vector dir,org, end, adj;
   player = self.owner;
   
-  self.w_isready = FALSE;
   self.w_currentammo = self.w_currentammo - 1;
   self.w_firetime = time + self.w_firerate;
 
-  end = util_traceForPlayer(player, (player.stat_spr_x + DAT_ESR_SPR_X), (player.stat_spr_y+DAT_ESR_SPR_Y), '1 1 1', 400);
+  end = util_traceForPlayer(player, (player.stat_spr_x + DAT_ESR_SPR_X), (player.stat_spr_y+DAT_ESR_SPR_Y), '1 1 1', self.w_range);
   dir = util_traceForOffset(player, self, end);
   
   if((self.flags & FL_CLIENT)){

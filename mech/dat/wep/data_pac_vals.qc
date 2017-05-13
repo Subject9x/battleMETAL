@@ -10,9 +10,9 @@ string DAT_PAC_NAME = "PAC";
 float DAT_PAC_DMG = 45;
 float DAT_PAC_FIRETIME = 0;
 float DAT_PAC_CLIPSIZE = 1;
-float DAT_PAC_CURRENTAMMO = 2;
-float DAT_PAC_FIRERATE = 1;
-float DAT_PAC_RELOADTIME = 1;
+float DAT_PAC_CURRENTAMMO = 1;
+float DAT_PAC_FIRERATE = 1.35;
+float DAT_PAC_RELOADTIME = 1.35;
 vector DAT_PAC_FIRE_OFS = '0 0 2';
 string DAT_PAC_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_PAC_EN_COST =  0.15;
@@ -77,11 +77,13 @@ void() data_pac_think={
     }
   }
   else{
+    if(self.owner.en_cur > 0){
+      self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
+    }
+    else{
+      self.w_firetime = time + self.w_reloadtime;
+    }
     self.w_isready = FALSE;
-  }
-  
-  if(!self.w_isready){
-    self.owner.en_cur = self.owner.en_cur - self.en_max;
   }
 };
 

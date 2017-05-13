@@ -2,6 +2,7 @@
 mech Mod
 Author: Subject9x
 Date: 04/02/2017
+mod: 5/5/2017 - added void(string line, string val) msn_setresrv
 Overview: header for the mission file handler.
 */
 
@@ -10,6 +11,7 @@ float MSN_LOADED = FALSE;
 string MSN_FILENAME;
 string MSN_NAME;
 string MSN_TYPE;
+string MSN_RESERVETOTAL;
 string MSN_SECTOR;
 string MSN_LOCATION;
 string MSN_LOCALTIME;
@@ -23,6 +25,7 @@ void() msn_getfile;
 void() msn_parsefile;
 void(string line, string val) msn_setname;
 void(string line, string val) msn_settype;
+void(string line, string val) msn_setresrv;
 void(string line, string val) msn_setsector;
 void(string line, string val) msn_setlocation;
 void(string line, string val) msn_setlocaltime;

@@ -273,6 +273,17 @@ void(vector ofs, float bit, float state1, vector color1, vector color2, vector s
   drawfill(ofs, sz, colorActual, alpha, flg);
 };
 
+void(vector ofs, float bool, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalFill={
+  local vector colorActual;
+  if(bool){
+    colorActual = color1;
+  }
+  else{
+    colorActual = color2;
+  }
+  drawfill(ofs, sz, colorActual, alpha, flg);
+};
+
 /*
   Draws an image that occupies the entire screen size
 */

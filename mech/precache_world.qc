@@ -27,6 +27,13 @@ void() mh_precache_models={
 
   precache_model("progs/v_dpshot.mdl");
   
+  //buildings
+  precache_model("q3mdl/buildings/mdl_bld_h_hangar_l.md3");
+  precache_model("q3mdl/buildings/mdl_bld_h_power.md3");
+  precache_model("q3mdl/buildings/mdl_bld_h_radar.md3");
+  precache_model("q3mdl/buildings/mdl_bld_h_shield.md3");
+  precache_model("q3mdl/buildings/mdl_bld_h_fuel.md3");
+  
   //mech model
   precache_model ("q3mdl/testball.md3");
   //nu outlaw

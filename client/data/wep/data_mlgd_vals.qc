@@ -48,5 +48,6 @@ void() data_wep_mlgd={
     self.note2 = "Does not require [ACTIVE] RADAR.";
     self.note3 = "Does not require TARGET LOCK.";
     self.w_icon = UI_WEP_MLGD;
+    self.w_range = 3000;
   self = oself;
 };

@@ -65,7 +65,7 @@ void(vector ofs) menu_briefMissionInfo={
   //mission type
   drawstring(ofs+gui_percentToPixel(0.0078, 0.0208), strcat("[TYPE]:            ",MSN_TYPE), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
   //reserves
-  drawstring(ofs+gui_percentToPixel(0.0078, 0.0291), strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE)), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixel(0.0078, 0.0291), strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //sector
   drawstring(ofs+gui_percentToPixel(0.0078, 0.0375), strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //location

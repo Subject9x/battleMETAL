@@ -47,11 +47,18 @@ void() ai_control={
 
 
 void() ai_mech_walk={
-  q_ai_walk(0.5);
+  local float spd;
+  spd = self.m_fspeed;
+  spd = spd / 500;
+  q_ai_walk(spd);
 };
 
 void() ai_mech_run={
-  q_ai_run(1);
+  local float spd;
+  spd = self.m_fspeed;
+  spd = spd / 500;
+  spd = spd + (spd/3);
+  q_ai_run(spd);
 };
 
 void() ai_mech_attack={

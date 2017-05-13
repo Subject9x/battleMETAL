@@ -40,6 +40,7 @@ void() data_wep_pac={
     self.w_abbr = "PAC";
     self.note1 = "Ignores Target's shields completely.";
     self.w_icon = UI_WEP_PAC;
+    self.w_range = 600;
   self = oself;
 };
 

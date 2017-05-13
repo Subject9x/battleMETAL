@@ -34,13 +34,13 @@ vector(entity own, entity ofsent, vector prev_tracend) util_traceForOffset={
   return trace_endpos;
 }; 
 
-void(float mod, float targ_val) util_zeroStat={
+float(float mod, float targ_val) util_zeroStat={
 
   targ_val = targ_val - mod;
   if(targ_val < 0){
     targ_val = 0;
   }
- 
+  return targ_val;
 };
 
 //inspired by original inFront function

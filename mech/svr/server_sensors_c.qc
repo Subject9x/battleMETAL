@@ -136,6 +136,9 @@ void() server_calcTargetArmor={
     self.stat_trg_la_hp = csqc_updateCompStat(trg.e_arm_l);
     self.stat_trg_ra_hp = csqc_updateCompStat(trg.e_arm_r);
 	}
+  else{
+    self.stat_trg_ct_hp = csqc_updateCompStat(trg);
+  }
 };
 
 void() server_radarSweep={

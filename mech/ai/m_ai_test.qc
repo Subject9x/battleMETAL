@@ -54,6 +54,8 @@ void() ai_mech={
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;
+  self.w_group4 = 0;
+  self.w_group5 = 0;
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
   
@@ -98,10 +100,23 @@ void() ai_mech={
   
   
   self.ideal_yaw = self.angles * '0 1 0';
-	if (!self.yaw_speed)
-		self.yaw_speed = 20;
+	if (!self.yaw_speed){
+    if(self.nextVecChoice == 1){
+      self.yaw_speed = 20;
+    }
+    else if(self.nextVecChoice == 2){
+      self.yaw_speed = 10;
+    }
+    else if(self.nextVecChoice == 3){
+      self.yaw_speed = 2.5;
+    }
+  }
+		
     
   buildVehicle(dat);
+  
+  //DEBUG
+  self.solid = SOLID_BBOX;
   
   self.th_die = ai_mech_die;
   self.th_walk = ai_mech_walk;

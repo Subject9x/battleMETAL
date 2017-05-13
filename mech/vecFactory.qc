@@ -27,6 +27,12 @@ void(entity data) buildVehicle={
       if(self.w_group3 == 0){
         self.w_group3 = data.w_group3;
       }
+      if(self.w_group4 == 0){
+        self.w_group4 = data.w_group4;
+      }
+      if(self.w_group5 == 0){
+        self.w_group5 = data.w_group5;
+      }
     }
     
     if(data.unit_ltor){
@@ -350,26 +356,4 @@ void(entity mechData, entity own, float state1, float state2, float state3) buil
   self.state_2 = state2;
   self.stat_wep_rel = state3;
   ctrl_weapon_addState(self, self.state_1);
-};
-
-void(entity data) configVehicleSpeeds={
-  
-  //Movement variables
-  self.m_fspeed = data.m_fspeed;
-  self.m_sspeed = data.m_sspeed;
-  self.m_bspeed = data.m_bspeed;
-  self.m_maccel = data.m_maccel;
-  self.m_rollangle = data.m_rollangle;
-  self.m_pitch_max = data.m_pitch_max;
-  self.m_pitch_min = data.m_pitch_min;
-  
-  //Cosmetic variables
-  self.m_bob = data.m_bob;
-  self.m_bcycle =  data.m_bcycle;
-  self.m_bup = data.m_bup;
-  
-  self.m_bmodel = data.m_bmodel;
-  self.m_bside = data.m_bside;
-  self.m_bobspd = data.m_bobspd;
-  self.m_rollangle = data.m_rollangle;
 };

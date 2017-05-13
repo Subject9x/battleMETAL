@@ -7,7 +7,6 @@ Overview: used to build vehicles for players, this is the header
 */
 
 void(entity data) buildVehicle;
-void(entity data) configVehicleSpeeds;
 entity(entity leg_data) buildLegs;
 void(entity own) buildUnitPiece;
 void(entity data) buildCenterTorso;

@@ -58,6 +58,7 @@ void() player_makeMech={
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);
   }
+  droptofloor();
 };
 
 void() player_unmakeMech={

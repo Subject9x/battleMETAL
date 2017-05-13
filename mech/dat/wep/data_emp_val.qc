@@ -11,12 +11,12 @@ string DAT_EMP_NAME = "EMP Cannon";
 float DAT_EMP_FIRETIME = 0;
 float DAT_EMP_CLIPSIZE = 1;
 float DAT_EMP_CURRENTAMMO = 1;
-float DAT_EMP_FIRERATE = 0.95;
-float DAT_EMP_RELOADTIME = 0.95;
+float DAT_EMP_FIRERATE = 1;
+float DAT_EMP_RELOADTIME = 1;
 vector DAT_EMP_FIRE_OFS = '0 0 2';
 string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
 float DAT_EMP_PROJ_ID= ID_PRJ_EMP;
-float DAT_EMP_EN_COST=  0.1;
+float DAT_EMP_EN_COST=  0.2;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 float DAT_EMP_WSIZE = 2;
@@ -76,10 +76,12 @@ void() data_emp_think={
   }
   else{
     self.w_isready = FALSE;
-  }
-  
-  if(!self.w_isready){
-    self.owner.en_cur = self.owner.en_cur - self.en_max;
+    if(self.owner.en_cur > 0){
+      self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
+    }
+    else{
+      self.w_firetime = time + self.w_reloadtime;
+    }
   }
 };
 
@@ -114,7 +116,7 @@ void() data_emp_atk={
       util_setBoundBox('0 0 0', '0 0 0');
       self.velocity = normalize(dir - org);
       self.p_lifetime = time + self.p_lifetime;
-      self.w_firetime = time + (self.p_lifetime - 4);
+      self.w_firetime = time + 0.5;
       setorigin(self, org);
       self.velocity = self.velocity * self.p_velocity;
       self.angles = vectoangles(self.velocity);

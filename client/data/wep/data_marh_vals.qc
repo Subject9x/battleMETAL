@@ -48,5 +48,6 @@ void() data_wep_marh={
     self.note3 = "Has minimum range.";
     self.note4 = "Fires 15 missiles at a time.";
     self.w_icon = UI_WEP_MARH;
+    self.w_range = 2000;
   self = oself;
 };

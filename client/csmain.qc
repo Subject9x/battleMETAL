@@ -29,6 +29,7 @@ void() CSQC_Init =
   PLAYER_HELPER.plr_nex_grp2 = 0;
   PLAYER_HELPER.plr_nex_grp3 = 0;
   PLAYER_HELPER.plr_nav_pnt = 0;
+  PLAYER_HELPER.w_range = 0;
   addentity(PLAYER_HELPER);
   
   WEPBITS[0] = 1;
@@ -248,7 +249,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     hitdir = getstatf(STAT_HIT_DIR);
     conv_x = getstatf(STAT_SPR_X);
     conv_y = getstatf(STAT_SPR_Y);
-    pitch = getstati(STAT_PLR_PTC);
+    //pitch = getstatf(STAT_PLR_PTC);
+    pitch = input_angles_x *-3;
     
     //player camera_transform
     PLR_VIEW_x = getstatf(STAT_CAM_ORG_X);
@@ -305,6 +307,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     trg_pos_x = getstatf(STAT_TRG_ORGX);
     trg_pos_y = getstatf(STAT_TRG_ORGY);
     trg_pos_z = getstatf(STAT_TRG_ORGZ);
+    PLAYER_HELPER.w_range = trg_dist;
     //render 
     local entity player_hud, vec_data, oself;
     vec_data = m_findData(vec_id, DATA_MECH);
@@ -316,6 +319,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_targkill(trg_ddflg);
     oself = self;
     self = player_hud;
+      self.w_range = trg_dist;
       self.hud_prep(vec_data);
       self.hud_HelmetImage(VIEW_MAX, VIEW_CTR);
       self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
@@ -335,9 +339,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
       self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
     self = oself;
-    
-    
-    //do sound queue system here
   }
   else{
     local float len;
@@ -349,11 +350,19 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   }
   
+  //display remaining reserves;
+  local string res;
+  local float reslen;
+  local vector src;
+  res = strcat("[RESERVES]:",ftos(AVAILABLE_RESERVE),"/", MSN_RESERVETOTAL);
+  reslen = stringwidth(res, 0, '8 8 0');
+  src_x = VIEW_ORG_x + gui_percentX(0.008);
+  src_y = VIEW_ORG_y + gui_percentY(0.008);
+  drawstring(src, res, '8 8 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  
   //sound system;
   snd_hud_vfx_frame();
-  
-  
-  
+ 
   //menu system
   if(MENU_ACTIVE){
     cursorpos = getmousepos();

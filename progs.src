@@ -79,6 +79,8 @@ dp/dpextensions.qc
   mech/dat/bld/data_h_radar.qc
   mech/dat/bld/data_h_shield.qc
   mech/dat/bld/data_h_power.qc
+  mech/dat/bld/data_h_hangar_l.qc
+  mech/dat/bld/data_h_fuel.qc
 //===========================
 
 //impl files

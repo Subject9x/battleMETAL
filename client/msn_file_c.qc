@@ -36,6 +36,7 @@ void() msn_parsefile={
     //mission info section
     msn_setname(argv(0), argv(1));
     msn_settype(argv(0), argv(1));
+    msn_setresrv(argv(0), argv(1));
     msn_setsector(argv(0), argv(1));
     msn_setlocation(argv(0), argv(1));
     msn_setlocaltime(argv(0), argv(1));
@@ -60,6 +61,11 @@ void(string line, string val) msn_setname={
 void(string line, string val) msn_settype={
   if(line == "MSN_TYPE"){
     MSN_TYPE = strzone(val);
+  }
+};
+void(string line, string val) msn_setresrv={
+  if(line == "MSN_RSERVE"){
+    MSN_RESERVETOTAL = strzone(val);
   }
 };
 void(string line, string val) msn_setsector={

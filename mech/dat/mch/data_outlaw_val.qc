@@ -171,6 +171,8 @@ void() data_mech_otl={
     self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;    
     self.w_group2 = self.w_group2 | WEAPON3;    
     self.w_group3 = 0;
+    self.w_group4 = self.w_group4;
+    self.w_group5 = self.w_group5;
   self = oself;
 };
 

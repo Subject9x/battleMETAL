@@ -41,5 +41,6 @@ void() data_wep_emp={
     self.note1 = "Only damages Target's SHIELDS.";
     self.note2 = "Proximity detonation at longer ranges.";
     self.w_icon = UI_WEP_EMP;
+    self.w_range = 1000;
   self = oself;
 };

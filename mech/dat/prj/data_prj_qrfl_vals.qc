@@ -8,7 +8,7 @@ this guy will bounce off up to two non-targets.
 
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_QRFL_IDX = ID_PRJ_QRFL;
-float DAT_PRJ_QRFL_VELOCITY = 2000; //was 1500 - 3/27/2017
+float DAT_PRJ_QRFL_VELOCITY = 3000;//was 2000 - 5/13/2017; //was 1500 - 3/27/2017
 string DAT_PRJ_QRFL_MODEL = "progs/casing.mdl";
 float DAT_PRJ_QRFL_LIFETIME = 2;
 float DAT_PRJ_QRFL_DAMAGE = 8; //was 16 - 3/27/2017
@@ -46,7 +46,7 @@ void() data_prj_qrfl_ini={
   self.c_model = DAT_PRJ_QRFL_MODEL;
   self.p_lifetime = DAT_PRJ_QRFL_LIFETIME;
   self.p_damage = DAT_PRJ_QRFL_DAMAGE;
-  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_ENG;
+  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_RAM;
   
   //cosmetics
   self.effects = self.effects + DAT_PRJ_QRFL_EFFECTS;

@@ -6,7 +6,7 @@ Date: 8/27/2016
 Overview: utility functions for mod, header
 */
 
-void(float mod, float targ_val) util_zeroStat;
+float(float mod, float targ_val) util_zeroStat;
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin;
 void(string mdl_name, float effects) util_setModel;
 void(float dmgMode, float solid_type, float move_type) util_setCollider;

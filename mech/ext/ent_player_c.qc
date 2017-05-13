@@ -20,6 +20,8 @@ Overview: extends the player's entity.
 .float w_group1;
 .float w_group2;
 .float w_group3;
+.float w_group4;
+.float w_group5;
 .float w_firemode;
 
 .float i_faction;   //which faction? consult table

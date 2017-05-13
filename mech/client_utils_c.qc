@@ -53,6 +53,12 @@ void(string cmd, float tokens) client_setWeaponGroup={
   }
   else if(groupnum == 3){
     self.w_group3 = groupval;
+  } 
+  else if(groupnum == 4){
+    self.w_group4 = groupval;
+  }
+  else if(groupnum == 5){
+    self.w_group5 = groupval;
   }
 };
 

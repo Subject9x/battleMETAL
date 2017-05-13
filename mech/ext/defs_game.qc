@@ -37,6 +37,7 @@ float sv_gravity;
 float P_OBS = 0;
 float P_MECH = 1;
 float P_VECH = 2;
+float P_BULD = 3;
 
 float GAME_M = 2;
 

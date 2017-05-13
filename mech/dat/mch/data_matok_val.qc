@@ -195,7 +195,9 @@ void() data_mech_mtk={
     self.unit_wep5 = data_mtk_wep5;
     self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;    
     self.w_group2 = self.w_group2 | WEAPON3 | WEAPON4;    
-    self.w_group3 = self.w_group3 | WEAPON5;  
+    self.w_group3 = self.w_group3 | WEAPON5;
+    self.w_group4 = self.w_group4;
+    self.w_group5 = self.w_group5;    
   self = oself;
 };
 

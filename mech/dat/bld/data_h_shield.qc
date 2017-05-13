@@ -16,7 +16,7 @@ void() building_shield={
   self.data_idx = ID_BLD_H_SHIELD;
   self.data_type = DATA_BLD;
   self.vec_name = "Shield Generator";
-  self.p_class = P_VECH;
+  self.p_class = P_BULD;
   util_setModel("q3mdl/buildings/mdl_bld_h_shield.md3", 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(100, 100, 1, 100) ;

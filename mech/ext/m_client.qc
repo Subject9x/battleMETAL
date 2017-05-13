@@ -74,6 +74,8 @@ void() ClientConnect = {
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;
+  self.w_group4 = 0;
+  self.w_group5 = 0;
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
   
@@ -180,8 +182,6 @@ void() PutClientInServer = {
 	{
 		makevectors(self.angles);
 	}
-
-  dummyConnect();
 };
 
 /*
