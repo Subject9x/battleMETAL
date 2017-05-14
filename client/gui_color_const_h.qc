@@ -9,6 +9,8 @@ Overview: GUI API class file for all colors
 vector CLR_DEF_TXT_HIGHLIGHT = '0.98 0.98 0.98';
 vector CLR_DEF_TXT_NONSELECT = '0.75 0.75 0.75';
 vector CLR_DEF_TXT_CANTSELET = '0.4 0.4 0.4';
+vector CLR_DEF_WHITE = '1 1 1';
+vector CLR_DEF_BLACK = '0 0 0';
 
 //armor constants
   //fine

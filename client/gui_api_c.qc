@@ -151,10 +151,10 @@ vector(float val) gui_getColorForShield={
 
 vector(float bits, float dead, float ok) gui_getWepStatusColor{
   if((bits & dead)){
-    return '0.1 0.1 0.1';
+    return CLR_DEF_ARM_ONEQ;
   }
   else if((bits & ok)){
-    return '0.215 0.709 0.29';
+    return CLR_DEF_WHITE;
   }
 }
 

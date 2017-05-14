@@ -79,7 +79,7 @@ void() hvd_hud_ini={
     self.align = self.align | VIEW_BOT | VIEW_RGT;
     self.offset = '0 0';
     self.colortint = '1 1 1';
-    self.margin_ins = '10 15';
+    self.margin_ins = '6 10';
   self = oself;
   
   //right big box
@@ -104,7 +104,7 @@ void() hvd_hud_ini={
     self.align = self.align | VIEW_BOT | VIEW_LFT;
     self.offset = '0 0';
     self.colortint = '1 1 1';
-    self.margin_ins = '10 15';
+    self.margin_ins = '6 10';
   self = oself;
   
   //left big box
@@ -420,181 +420,137 @@ void(float hit_dir) hvd_hitDirectionPips={
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon1={
   //right side weapons - 1, 2, 5, 8
   drawpic(self.hud_pnl1.pos, self.hud_pnl1.img, self.hud_pnl1.asize, '1 1 1', HUD_ALPHA, 0);
-  
-  local vector pont,wstat,ofs;
+  local vector pont,wstat;
   local entity wep_dat;
-  local float wlen;
   pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins;
+  pont = pont + '48 0';
   wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
+  
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
 };
 /*WEAPON 2 ========================================================*/
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon2={
-  local vector pont,wstat,ofs;
+  local vector pont,wstat;
   local entity wep_dat;
-  local float wlen;
-  pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins + '0 10';
+  pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins;
+  pont = pont + '48 26';
   wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
 };
 /*WEAPON 3 ========================================================*/
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon3={
-  //right side weapons - 1, 2, 5, 8
+  //left side weapons - 3, 4, 6, 7
   drawpic(self.hud_pnl3.pos,self.hud_pnl3.img,  self.hud_pnl3.asize, '1 1 1', HUD_ALPHA, 0);
   
-  local vector pont,wstat,ofs;
+  local vector pont,wstat;
   local entity wep_dat;
-  local float wlen;
   pont = self.hud_pnl3.pos + self.hud_pnl3.margin_ins;
-  wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
-  wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
   
+  wep_dat = m_findData(w_id, DATA_WEPN);
+  wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
 };
 /*WEAPON 4 ========================================================*/
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon4={
   local vector pont,wstat,ofs;
   local entity wep_dat;
-  local float wlen;
-  pont = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '0 10';
+  pont = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '0 26';
   wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-   
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON4_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
 };
 /*WEAPON 5 ========================================================*/
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon5={
-  local vector pont,wstat,ofs;
+  local vector pont,wstat;
   local entity wep_dat;
-  local float wlen;
-  pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins + '0 20';
+  pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins;
   wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-    
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON5_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON5_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
-
 };
 /*WEAPON 6 ========================================================*/
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon6={
-  local vector pont,wstat,ofs;
+  local vector pont,wstat;
   local entity wep_dat;
-  local float wlen;
-  pont = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '0 20';
+  pont = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '48 0';
   wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON6_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON5_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
-
 };
 /*WEAPON 7 ========================================================*/
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon7={
   local vector pont,wstat,ofs;
   local entity wep_dat;
-  local float wlen;
-  pont = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '0 30';
+  pont = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '48 26';
   wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-    
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON7_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON8_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
 };
 
 /*WEAPON 8 ========================================================*/
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon8={
-  local vector pont,wstat,ofs;
+  local vector pont,wstat;
   local entity wep_dat;
-  local float wlen;
-  pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins + '0 30';
+  pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins + '0 26';
   wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-    
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON8_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON8_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
 };
 /*WEAPON 9 ========================================================*/
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon9={
-  local vector pont,wstat,ofs;
+  local vector pont,wstat;
   local entity wep_dat;
-  local float wlen;
-  pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins + '0 40';
+  pont = self.hud_pnl1.pos + self.hud_pnl1.margin_ins + '0 52';
   wep_dat = m_findData(w_id, DATA_WEPN);
-  wlen = stringwidth(wep_dat.w_abbr, 0, '5 6 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(pont + '2 0', wep_dat.w_abbr, '5 6 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(pont + '32 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-   
+  drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON9_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, pont + '3 1', '5 6 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
-  ofs = pont;
-  ofs_x = ofs_x + wlen + 6;
-  gui_renderModalPip(ofs, w_rel, WEAPON9_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
 };
 /*TARGET ARMOR PANEL ==============================================*/
 void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) hvd_renderTarget={

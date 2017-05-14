@@ -29,17 +29,17 @@ void(vector org, vector sz, float wrange, float tdist, float alpha, float flg) h
 };
 
 void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
-  local float pmax, perc;
-  mn = mn *-1;
-  pmax = mx+mn;
-  if(pval > 0){
-    pval = pval + mx;
+  local float pmax, pcur, perc;
+  pcur = pval;
+  if(pcur > -1){
+    perc = pcur / mx;
   }
   else{
-    pval = pval * -1;
+    mn = mn * -1;
+    pcur = pcur *-1;
+    perc = pcur / mn;
+    perc = perc * -1;
   }
-  perc = pval / pmax;
-  
   gui_renderMeter(perc, (org - '6 32'), '12 64', '0 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
 };
 

@@ -235,7 +235,7 @@ void(entity vec_data) otl_hud_prep={
   local entity wepnl;
   wepnl = self.hud_pnl4;
   img_sz = draw_getimagesize(wepnl.img);
-  wepnl.asize = gui_scaleSize(img_sz,VIEW_SCALE);
+  wepnl.asize = gui_scaleSize(img_sz,0.45);
   wepnl.hsize = gui_getCenter(wepnl.asize);
   ofs_x = rdpnl.pos_x - wepnl.asize_x;
   ofs_y = ampnl.asize_y + wepnl.asize_y;
@@ -298,7 +298,7 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_ren
   
   //pitch
   drawstring(VIEW_CTR - '24 0', ftos(pitch), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  hud_renderPitchSlider((VIEW_CTR - '24 0'), 90, 270, pitch);
+  hud_renderPitchSlider((VIEW_CTR - '24 0'), 270, -270, pitch);
 };  
 
 /*
@@ -432,22 +432,18 @@ void(float hit_dir) otl_hitDirectionPips={
 */
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon1={
   local entity wep_dat;
-  local float wlen;
   local vector ofs, wstat;
   wep_dat = m_findData(w_id, DATA_WEPN);
   drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
-  
-  wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
+
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring((self.hud_pnl4.pos + self.hud_pnl4.margin_ins), wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator((self.hud_pnl4.pos + self.hud_pnl4.margin_ins) + '24 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  ofs = self.hud_pnl4.pos + '16 8';
+  drawpic(ofs, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator((ofs + '4 24'), '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
   
-  ofs = self.hud_pnl4.pos;
-  ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
-  ofs_y = ofs_y + self.hud_pnl4.margin_ins_y;
-  gui_renderModalPip(ofs, w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  gui_renderModalPip((ofs + '8 34'), w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins, '4 4 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   } 
 };
 /*
@@ -455,23 +451,18 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 */
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon2={
   local entity wep_dat;
-  local float wlen;
   local vector ofs, stat, wstat;
   wep_dat = m_findData(w_id, DATA_WEPN);
-  ofs = self.hud_pnl4.pos + self.hud_pnl4.margin_ins;
-  ofs_y = ofs_y + 8;
+  ofs_x = self.hud_pnl4.pos_x + self.hud_pnl4.asize_x - 40;
+  ofs_y = self.hud_pnl4.pos_y + 8;
   
-  wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs, wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(ofs + '24 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-   
-  ofs = self.hud_pnl4.pos;
-  ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
-  ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 8;
-  gui_renderModalPip(ofs, w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  drawpic(ofs, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(ofs + '4 24', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  
+  gui_renderModalPip((ofs + '8 34'), w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 8', '4 4 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   } 
 };
 /*
@@ -479,24 +470,19 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 */
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon3={
   local entity wep_dat;
-  local float wlen;
   local vector ofs, stat, wstat;
   wep_dat = m_findData(w_id, DATA_WEPN);
-  ofs = self.hud_pnl4.pos + self.hud_pnl4.margin_ins;
-  ofs_y = ofs_y + 16;
-  wlen = stringwidth(wep_dat.w_abbr, 0, '4 4 0');
-  wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
-  drawstring(ofs, wep_dat.w_abbr, '4 4 0', wstat, HUD_ALPHA, 0);
-  hud_RangeIndicator(ofs + '24 0', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  ofs_x = self.hud_pnl4.pos_x + self.hud_pnl4.hsize_x - 12;
+  ofs_y = self.hud_pnl4.pos_y + 8;
   
-  ofs = self.hud_pnl4.pos;
-  ofs_x = ofs_x + self.hud_pnl4.asize_x - self.hud_pnl4.hsize_x/2;
-  ofs_y = ofs_y + self.hud_pnl4.margin_ins_y + 16;
-  gui_renderModalPip(ofs, w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
+  drawpic(ofs, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
+  hud_RangeIndicator(ofs + '4 24', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
+  
+  gui_renderModalPip((ofs + '8 34'), w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
-    gui_BoxOnLabel(wep_dat.w_abbr, self.hud_pnl4.pos  + self.hud_pnl4.margin_ins +'0 16', '4 4 0', '2 2 0', '0 1 0'); 
+    gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   }
-
 };
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon4={};
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon5={};

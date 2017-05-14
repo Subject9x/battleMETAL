@@ -102,13 +102,13 @@ void() ai_mech={
   self.ideal_yaw = self.angles * '0 1 0';
 	if (!self.yaw_speed){
     if(self.nextVecChoice == 1){
-      self.yaw_speed = 20;
+      self.yaw_speed = 2;//20;
     }
     else if(self.nextVecChoice == 2){
-      self.yaw_speed = 10;
+      self.yaw_speed = 1;//10;
     }
     else if(self.nextVecChoice == 3){
-      self.yaw_speed = 2.5;
+      self.yaw_speed = 0.5;//2.5;
     }
   }
 		
@@ -138,8 +138,8 @@ void() ai_mech={
 	}
   
   self.ideal_yaw = self.angles * '0 1 0';
-	if (!self.yaw_speed)
-		self.yaw_speed = 10;
+	//if (!self.yaw_speed)
+	//	self.yaw_speed = 10;
 	self.use = q_monster_use;
   
   if (self.target)

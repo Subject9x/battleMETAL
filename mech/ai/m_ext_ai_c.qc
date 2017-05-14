@@ -49,14 +49,14 @@ void() ai_control={
 void() ai_mech_walk={
   local float spd;
   spd = self.m_fspeed;
-  spd = spd / 500;
+  spd = spd / 250;
   q_ai_walk(spd);
 };
 
 void() ai_mech_run={
   local float spd;
   spd = self.m_fspeed;
-  spd = spd / 500;
+  spd = spd / 250;
   spd = spd + (spd/3);
   q_ai_run(spd);
 };
@@ -64,10 +64,19 @@ void() ai_mech_run={
 void() ai_mech_attack={
   local entity wep_chain, oself;
   local float dist;
+  
+  if(!q_infront(self.enemy)){
+    return;
+  }
   wep_chain = self.w_slot;
   dist = vlen(self.enemy.origin - self.origin);
+  traceline(self.origin, self.enemy.origin, FALSE, self);
+  if(trace_ent != self.enemy){
+    //only fire on a clear shot.
+    return;
+  }
   while(wep_chain){
-    if((self.currentWeaponGroup & wep_chain.w_group)){
+    //if((self.currentWeaponGroup & wep_chain.w_group)){
       if(wep_chain.w_isready){
         if( dist <= wep_chain.w_range){
           oself = self;
@@ -76,7 +85,7 @@ void() ai_mech_attack={
           self = oself;
         }
       }
-    }
+   // }
     wep_chain = wep_chain.w_slot;
   }
 };
