@@ -567,7 +567,8 @@ void(vector ofs) menu_hangar_WeaponInfo={
   local entity dat;
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentX(0.0296);
   nofs_y = ofs_y + gui_percentY(0.077);
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixel(0.1531, 0.202), '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixel(0.1531, 0.202), CLR_DEF_WHITE, HUD_ALPHA, 0);
+  
   local string title;
   local float tlen;
   local vector tpos;
@@ -582,15 +583,18 @@ void(vector ofs) menu_hangar_WeaponInfo={
   local entity dat;
   local float nlen;
   dat = m_findData(PLAYER_HELPER.plr_sel_wep, DATA_WEPN);
+  if(dat.w_icon != ""){
+    drawpic((nofs + gui_percentToPixel(0.005, 0.005)), dat.w_icon, gui_percentToPixel(0.03, 0.03), CLR_DEF_WHITE, HUD_ALPHA, 0); 
+  }
   name = dat.w_name;
   nlen = stringwidth(name, 0, '7 8 0');
-  nmpos = nofs + gui_percentToPixel(0, 0.01666);
+  nmpos = nofs + gui_percentToPixel(0, 0.04);
   nmpos_x = (nmpos_x + gui_percentX(0.0765)) - gui_percentXRaw((nlen/2)); 
   drawstring(nmpos, name, '7 8 0', '1 1 1', HUD_ALPHA, 0);
   
   //type
   local vector icol;
-  icol = nofs + gui_percentToPixel(0.0031, 0.0333);
+  icol = nofs + gui_percentToPixel(0.003, 0.06);
   
   //damage
   drawstring(icol, strcat("[DAMAGE]:         ", ftos(dat.dmg_amt)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
