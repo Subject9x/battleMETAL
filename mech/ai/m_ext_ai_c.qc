@@ -19,6 +19,7 @@ void() ai_control={
   }
 
   ai_weapon_update();
+  ai_conv_update();
   
   if(astate == AI_STATE_WANDER){
     
@@ -47,18 +48,31 @@ void() ai_control={
 
 
 void() ai_mech_walk={
-  local float spd;
+  local float spd, dist;
   spd = self.m_fspeed;
   spd = spd / 250;
   q_ai_walk(spd);
+  if(self.ai_state == AI_STATE_HUNT){
+    dist = vlen(self.enemy.origin - self.origin);
+    if(dist <= 200){
+      self.ai_move = AI_STATE_STAND;
+    }
+  }
 };
 
 void() ai_mech_run={
-  local float spd;
+  
+  local float spd, dist;
   spd = self.m_fspeed;
   spd = spd / 250;
   spd = spd + (spd/3);
-  q_ai_run(spd);
+  dist = vlen(self.enemy.origin - self.origin);
+  if(dist <= 400){
+    self.ai_move = AI_STATE_STAND;
+  }
+  else{
+    q_ai_run(spd);
+  }
 };
 
 void() ai_mech_attack={
@@ -66,6 +80,9 @@ void() ai_mech_attack={
   local float dist;
   
   if(!q_infront(self.enemy)){
+    return;
+  }
+  if(!q_FacingIdeal()){
     return;
   }
   wep_chain = self.w_slot;
@@ -76,16 +93,21 @@ void() ai_mech_attack={
     return;
   }
   while(wep_chain){
-    //if((self.currentWeaponGroup & wep_chain.w_group)){
       if(wep_chain.w_isready){
         if( dist <= wep_chain.w_range){
           oself = self;
           self = wep_chain;
+          if((self.p_dmgtype & EFF_STX)){
+            if(self.enemy.sh_cur >= (self.enemy.sh_max / 3)){
+              self.w_attack();
+            }
+          }
+          else{
             self.w_attack();
+          }   
           self = oself;
         }
       }
-   // }
     wep_chain = wep_chain.w_slot;
   }
 };
@@ -136,10 +158,25 @@ void() ai_mech_die={
   self.nextthink = time + 100;
 };
 
-void(float move_state) ai_setmovestate={
-  self.ai_move = move_state;
-};
-
-void(float dir_state) ai_setdirstate={
-  self.ai_state = dir_state;
+void() ai_conv_update={
+  if(self.ai_move == AI_STATE_STAND){
+    self.stat_spr_x = self.stat_spr_x - self.conv_min_z;
+    if(self.stat_spr_x < self.conv_min_x){
+      self.stat_spr_x =  self.conv_min_x;
+    }
+    self.stat_spr_y = self.stat_spr_y - self.conv_min_z;
+    if(self.stat_spr_y < self.conv_min_y){
+      self.stat_spr_y =  self.conv_min_y;
+    }
+  }
+  else{
+    self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
+    if(self.stat_spr_x > self.conv_max_x){
+      self.stat_spr_x =  self.conv_max_x;
+    }
+    self.stat_spr_y = self.stat_spr_y + self.conv_max_z;
+    if(self.stat_spr_y > self.conv_max_y){
+      self.stat_spr_y =  self.conv_max_y;
+    }
+  }
 };

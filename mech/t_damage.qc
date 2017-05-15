@@ -70,6 +70,15 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
   }
   else{
     anger_monster(attacker);
+    newmis = spawn();
+    setmodel(newmis, "q3mdl/fx_shield.md3");
+    setsize(newmis, '-1 -1 -1', '1 1 1');
+    setorigin(newmis, dmg_point);
+    newmis.solid = SOLID_NOT;
+    newmis.angles = normalize(attacker.origin - self.origin);
+    newmis.think = SUB_Remove;
+    newmis.nextthink = time + 1;
+    
     te_particlecube(dmg_point + '-1 -1 -1', dmg_point + '1 1 1', '0 0 0', dmg_amt, 150, TRUE, 100);
     return;
   }

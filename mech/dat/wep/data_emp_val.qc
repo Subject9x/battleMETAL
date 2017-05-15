@@ -61,6 +61,8 @@ void() data_emp_ini={
   self.w_think = data_emp_think;
   self.health = DAT_EMP_HPX;
   self.max_health = DAT_EMP_HPX;
+  self.p_dmgtype = self.p_dmgtype | EFF_STX;
+  self.w_range = 1200;
 };
 
 void() data_emp_think={
@@ -94,17 +96,21 @@ void() data_emp_atk={
     self.w_isready = FALSE;
     self.w_currentammo = self.w_currentammo - 1;
     self.w_firetime = time + self.w_firerate;
-    
-    makevectors(player.v_angle);
-    cam = player.e_cam;
-    traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-    end = trace_endpos;
+
+    if((player.flags & FL_CLIENT)){
+      end = util_traceForPlayer(player, player.stat_spr_x, player.stat_spr_y, '0 0 0', self.w_range);
+    }
+    else{
+      local vector spr;
+      spr_x = self.stat_spr_x;
+      spr_y = self.stat_spr_y;
+      end = util_traceForAI(player, spr, '0 0 0', self.w_range, 0); 
+    }
+    dir = util_traceForOffset(player, self, end);
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
     makevectors(player.angles);
     org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-    traceline(org, end, FALSE, player);
-    dir = trace_endpos;
     
     newmis = spawn();
     oself = self;

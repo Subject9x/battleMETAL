@@ -98,14 +98,13 @@ void() ai_mech={
     return;
   }
   
-  
   self.ideal_yaw = self.angles * '0 1 0';
 	if (!self.yaw_speed){
     if(self.nextVecChoice == 1){
-      self.yaw_speed = 2;//20;
+      self.yaw_speed = 1;//20;
     }
     else if(self.nextVecChoice == 2){
-      self.yaw_speed = 1;//10;
+      self.yaw_speed = 0.75;//10;
     }
     else if(self.nextVecChoice == 3){
       self.yaw_speed = 0.5;//2.5;
@@ -114,7 +113,7 @@ void() ai_mech={
 		
     
   buildVehicle(dat);
-  
+  //self.en_rate = self.en_rate / 10;
   //DEBUG
   self.solid = SOLID_BBOX;
   
@@ -124,8 +123,7 @@ void() ai_mech={
   self.th_missile = ai_mech_attack;
   self.th_stand = ai_mech_stand;
   self.ai_state = 0;
-  self.ai_move = 0;
-  ai_setmovestate(AI_STATE_STAND);
+  self.ai_move = AI_STATE_STAND;
   
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
@@ -167,8 +165,6 @@ void() ai_mech={
     self.ai_move = AI_STATE_STAND;
 		//self.th_stand ();
 	}
-  self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2| WEAPON3| WEAPON4| WEAPON5;
-  self.currentWeaponGroup = self.w_group1;
   self.think = ai_control;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 1;
 };

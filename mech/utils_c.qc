@@ -11,15 +11,24 @@ vector(entity own, float spr_x, float spr_y, vector self_spread, float range) ut
   local vector msrc, end;
   local entity cam;
   cam = own.e_cam;
-  if((own.flags & FL_MONSTER)){
-    msrc = normalize(own.enemy.origin - own.origin);
-    traceline(cam.origin, cam.origin + msrc*range, TRUE, own);
-  }
-  else if((own.flags & FL_CLIENT)){
-    makevectors(own.v_angle);
-    traceline(cam.origin, cam.origin + v_forward*range, FALSE, own);
-  }
-  end = trace_endpos + (crandom() * (spr_x / 0.75) * v_right) + (v_up * crandom() * (spr_y /  0.75));
+
+  makevectors(own.v_angle);
+  traceline(cam.origin, cam.origin + v_forward*range, FALSE, own);
+
+  end = trace_endpos + ((crandom() * (spr_x + self_spread_x)) * v_right) + (v_up * (crandom() * (spr_y + self_spread_y)));
+  return end;
+};
+
+vector(entity own, vector src_spread, vector self_spread, float range, float lead_factor) util_traceForAI={
+  local vector msrc, end, ang, lead;
+  local entity cam;
+  cam = own.e_cam;
+  msrc = normalize(own.enemy.origin - own.origin);
+  traceline(cam.origin, cam.origin + msrc*range, TRUE, own);
+  makevectors(own.enemy.velocity);
+  lead = (v_right * lead_factor);
+  end = trace_endpos + lead;
+  end = end + ((crandom() * (src_spread_x + self_spread_x)) * v_right) + (v_up * (crandom() * (src_spread_y + self_spread_y)));
   return end;
 };
 

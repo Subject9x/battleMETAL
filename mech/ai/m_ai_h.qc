@@ -70,7 +70,7 @@ void() q_ai_stand;
 void() q_ai_turn;
 void() q_ai_run_melee;
 void() q_ai_run_missile;
-void() q_ai_run_slide;
+void(float dist) q_ai_run_slide;
 void(float dist) q_ai_run;
 float() q_CheckAttack;
 void() q_ai_face;

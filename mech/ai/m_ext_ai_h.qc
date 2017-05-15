@@ -50,5 +50,4 @@ void() ai_mech_walk;
 void() ai_mech_run;
 void() ai_mech_attack;
 void() ai_mech_stand;
-void(float move_state) ai_setmovestate;
-void(float dir_state) ai_setdirstate;
+void() ai_conv_update;

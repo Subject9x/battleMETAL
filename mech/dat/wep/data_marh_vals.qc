@@ -90,17 +90,21 @@ void() data_marh_atk={
         self.w_currentammo = self.w_currentammo - 1;
         self.w_firetime = time + self.w_firerate;
         local vector dir, org, end, adj;
-
-        makevectors(player.v_angle);
-        cam = player.e_cam;
-        traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-        end = trace_endpos;
+        
+        if((player.flags & FL_CLIENT)){
+          end = util_traceForPlayer(player, player.stat_spr_x, player.stat_spr_y, '1 1 1', self.w_range);
+        }
+        else{
+          local vector spr;
+          spr_x = self.stat_spr_x;
+          spr_y = self.stat_spr_y;
+          end = util_traceForAI(player, spr, '1 1 1', self.w_range, 0); 
+        }
+        dir = util_traceForOffset(player, self, end);
         
         adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
         makevectors(player.angles);
         org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-        traceline(org, end, FALSE, player);
-        dir = trace_endpos;
         
         local float countlim, itr;
         countlim = 15;

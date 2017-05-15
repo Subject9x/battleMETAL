@@ -7,13 +7,16 @@ Overview: implementation for center torso updates
 
 void() ctrl_updateCenterTorso={
   local float diff;
-  if(time > self.laser_sight_timer){
-    local entity cam;
-    makevectors(self.v_angle);
-    cam = self.e_cam;
-    traceline(cam.origin, cam.origin + v_forward*10000, FALSE, self);
-    self.laser_sight_org = trace_endpos;
-    self.laser_sight_timer = time + 0.05;
+  
+  if((self.flags & FL_CLIENT)){
+    if(time > self.laser_sight_timer){
+      local entity cam;
+      makevectors(self.v_angle);
+      cam = self.e_cam;
+      traceline(cam.origin, cam.origin + v_forward*10000, FALSE, self);
+      self.laser_sight_org = trace_endpos;
+      self.laser_sight_timer = time + 0.05;
+    }
   }
 
   if(self.en_cur < self.en_max){
@@ -23,6 +26,7 @@ void() ctrl_updateCenterTorso={
         self.en_cur = self.en_cur - diff;
       }
   }
+  
   if(self.sh_cur < self.sh_max){
     if(time >= self.sh_hit){
       if(self.en_cur > (self.sh_rate*2)){

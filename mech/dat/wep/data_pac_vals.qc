@@ -98,9 +98,17 @@ void() data_pac_atk={
 	local vector dir, end, adj;
   player = self.owner;
   
-  end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y+self.stat_spr_y), '1 1 1', self.w_range);
+  if((player.flags & FL_CLIENT)){
+    end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y+self.stat_spr_y), '1 1 1', self.w_range);
+  }
+  else{
+    local vector spr;
+    spr_x = player.stat_spr_x + self.stat_spr_x;
+    spr_y = player.stat_spr_y + self.stat_spr_y;
+    end = util_traceForAI(player, spr, '1 1 1', self.w_range, 10); 
+  }
   dir = util_traceForOffset(player, self, end);
-
+  
 	player.punchangle_x = -0.05;
 
   local entity laser_org;

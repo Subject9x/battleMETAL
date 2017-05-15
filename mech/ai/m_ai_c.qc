@@ -393,19 +393,6 @@ void() q_ai_stand =
   if(self.ai_state != AI_STATE_HUNT){
     q_FindTarget ();
   }
-
-	//if (q_FindTarget ()){
-  // // return;
-  //}
-	//if (time > self.pausetime)
-	//{
-    //self.ai_move = AI_STATE_WALK;
-		////self.th_walk ();
-		//return;
-	//}
-	
-// change angle slightly
-
 };
 
 /*
@@ -528,7 +515,7 @@ ai_run_slide
 Strafe sideways, but stay at aproximately the same range
 =============
 */
-void() q_ai_run_slide =
+void(float dist) q_ai_run_slide =
 {
 	local float	ofs;
 	
@@ -540,12 +527,14 @@ void() q_ai_run_slide =
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs, movedist)){
+	if (walkmove (self.ideal_yaw + ofs, dist)){
 		return;
   }
 	self.lefty = 1 - self.lefty;
 	
-	walkmove (self.ideal_yaw - ofs, movedist);
+	walkmove (self.ideal_yaw - ofs, dist);
+  
+  q_ai_run(dist);//new
 };
 
 
@@ -578,11 +567,10 @@ void(float dist) q_ai_run =
 			if (self.movetarget){
         self.ai_move = AI_STATE_RUN;
         self.ai_state = AI_STATE_HUNT;
-			}	//self.th_walk ();
+			}
 			else{
         self.ai_move = AI_STATE_STAND;
         self.ai_state = AI_STATE_PEACE;
-				//self.th_stand ();
       }
 			return;
 		}
@@ -601,36 +589,12 @@ void(float dist) q_ai_run =
     if(self.ai_state != AI_STATE_HUNT){
       q_FindTarget ();
     }
-		//if (q_FindTarget ()){
-		//	return;
-   //}
 	}
 
 	enemy_infront = q_infront(self.enemy);
 	enemy_range = q_range(self.enemy);
 	enemy_yaw = vectoyaw(self.enemy.origin - self.origin);
-	
-	//if (self.attack_state == AS_MISSILE)
-	//{
-		//q_ai_run_missile ();
-		//return;
-	//}
-	//if (self.attack_state == AS_MELEE)
-	//{
-		//q_ai_run_melee ();
-		//return;
-	//}
-
-	//if (q_CheckAnyAttack ())
-	//	return;					// beginning an attack
-		
-	//if (self.attack_state == AS_SLIDING)
-	//{
-		//q_ai_run_slide ();
-		//return;
-	//}
-	
-// head straight in
+  
 	movetogoal (dist);		// done in C code...
 };
 

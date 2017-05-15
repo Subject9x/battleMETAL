@@ -182,6 +182,7 @@ void(vector ofs) menu_hangar_MechListLight={
         lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
         if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
           clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
@@ -217,6 +218,7 @@ void(vector ofs) menu_hangar_MechListMedium={
         lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
         if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
           clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
@@ -252,6 +254,7 @@ void(vector ofs) menu_hangar_MechListHeavy={
         lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
         if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
           clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
@@ -355,6 +358,7 @@ void(vector ofs) menu_hangar_WeaponList_BAL={
         lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
         if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
@@ -390,6 +394,7 @@ void(vector ofs) menu_hangar_WeaponList_ENE={
         lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
         if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
@@ -425,6 +430,7 @@ void(vector ofs) menu_hangar_WeaponList_EXP={
         lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
         if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
@@ -460,6 +466,7 @@ void(vector ofs) menu_hangar_WeaponList_MSC={
         lofs_y = nofs_y + gui_percentYRaw((act_idx * 14));
         if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;

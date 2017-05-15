@@ -8,12 +8,12 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LATC_IDX = ID_WEP_LATC;
 string DAT_LATC_NAME = "Light Autocannon";
-float DAT_LATC_DMG = 6; //was 2 - 3/27/2017
+float DAT_LATC_DMG = 5; //was 2 - 3/27/2017
 float DAT_LATC_FIRETIME = 0;
-float DAT_LATC_CLIPSIZE = 6;  //was 3 - 3/27/2017
-float DAT_LATC_CURRENTAMMO = 6;  //was 3 - 3/27/2017
-float DAT_LATC_FIRERATE = 0.15;  //was 0.2 - 3/27/2017
-float DAT_LATC_RELOADTIME = 0.5;
+float DAT_LATC_CLIPSIZE = 1;  //was 3 - 3/27/2017
+float DAT_LATC_CURRENTAMMO = 1;  //was 3 - 3/27/2017
+float DAT_LATC_FIRERATE = 0.25;//was 0.15; - 5/14/2-017  //was 0.2 - 3/27/2017
+float DAT_LATC_RELOADTIME = 0.25;
 vector DAT_LATC_FIRE_OFS = '0 0 2';
 string DAT_LATC_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_LATC_PROJ_ID= ID_PRJ_LATC;
@@ -24,7 +24,7 @@ float DAT_LATC_SPR_X = 3;
 float DAT_LATC_SPR_Y = 2;
 float DAT_LATC_WSIZE = 1;
 float DAT_LATC_HPX = 30;
-float DAT_LATC_RANGE = 800;
+float DAT_LATC_RANGE = 1500;
 
 void() data_wep_latc;
 void() data_latc_ini;
@@ -96,7 +96,16 @@ void() data_latc_atk={
   self.w_firetime = time + self.w_firerate;
   local vector dir, end, adj;
  
-  end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y+self.stat_spr_y), '1 1 1', self.w_range);
+  if((player.flags & FL_CLIENT)){
+    end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y+self.stat_spr_y), '1 1 1', self.w_range);
+  }
+  else{
+    local vector spr;
+    spr_x = player.stat_spr_x + self.stat_spr_x;
+    spr_y = player.stat_spr_y + self.stat_spr_y;
+    end = util_traceForAI(player, spr, '1 1 1', self.w_range, 10); 
+  }
+
   dir = util_traceForOffset(player, self, end);
   
   

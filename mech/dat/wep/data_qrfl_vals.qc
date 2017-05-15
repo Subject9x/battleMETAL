@@ -7,20 +7,20 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
 string DAT_QRFL_NAME = "Q-Rifle";
-float DAT_QRFL_DMG = 15;
+float DAT_QRFL_DMG = 2;
 float DAT_QRFL_FIRETIME = 0;
-float DAT_QRFL_CLIPSIZE = 1;
-float DAT_QRFL_CURRENTAMMO = 1;
-float DAT_QRFL_FIRERATE = 0.5;
-float DAT_QRFL_RELOADTIME = 0.5;
+float DAT_QRFL_CLIPSIZE = 15;//was 1 - 5/14/2017
+float DAT_QRFL_CURRENTAMMO = 15;//was 1 - 5/14/2017
+float DAT_QRFL_FIRERATE = 0.075;//was 0.5 - 5/14/2017
+float DAT_QRFL_RELOADTIME = 2;//was 0.5  - 5/14/2017
 vector DAT_QRFL_FIRE_OFS = '0 0 2';
 string DAT_QRFL_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_QRFL_PROJ_ID= ID_PRJ_QRFL;
 float DAT_QRFL_EN_COST= -1;
 string DAT_QRFL_SOUND = "sound/ac5.ogg";
 float DAT_QRFL_TECH_LEVEL = 1;
-float DAT_QRFL_SPR_X = 3;
-float DAT_QRFL_SPR_Y = 2;
+float DAT_QRFL_SPR_X = 1;
+float DAT_QRFL_SPR_Y = 5;
 float DAT_QRFL_WSIZE = 3;
 float DAT_QRFL_HPX = 20;
 
@@ -65,6 +65,7 @@ void() data_qrfl_ini={
   self.w_think = data_qrfl_think;
   self.health = DAT_QRFL_HPX;
   self.max_health = DAT_QRFL_HPX;
+  self.w_range = 1500;
 };
 
 void() data_qrfl_think={
@@ -93,17 +94,22 @@ void() data_qrfl_atk={
     self.w_isready = FALSE;
     self.w_currentammo = self.w_currentammo - 1;
     self.w_firetime = time + self.w_firerate;
-    makevectors(player.v_angle);
-    cam = player.e_cam;
-    traceline(cam.origin, cam.origin + v_forward*10000, FALSE, player);
-    end = trace_endpos + (crandom() * (player.stat_spr_x + self.stat_spr_x) * v_right) + (v_up * crandom() * (player.stat_spr_y + self.stat_spr_y));
+    
+    if((player.flags & FL_CLIENT)){
+      end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y + self.stat_spr_y), '1 1 1', self.w_range);
+    }
+    else{
+      local vector spr;
+      spr_x = self.stat_spr_x;
+      spr_y = self.stat_spr_y;
+      end = util_traceForAI(player, spr, '1 1 1', self.w_range, 0); 
+    }
+    dir = util_traceForOffset(player, self, end);
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
     makevectors(player.angles);
     org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-    traceline(org, end, FALSE, player);
-    dir = trace_endpos;
-    
+
     sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 
     newmis = spawn();

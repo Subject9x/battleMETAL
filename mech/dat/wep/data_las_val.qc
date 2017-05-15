@@ -97,13 +97,17 @@ void() data_las_atk={
   self.w_currentammo = self.w_currentammo - 1;
   self.w_firetime = time + self.w_firerate;
   self.en_cur = 0;
- 
-  end = util_traceForPlayer(player, player.stat_spr_x, player.stat_spr_y, '1 1 1', self.w_range);
-  dir = util_traceForOffset(player, self, end);
-
-  if((self.flags & FL_CLIENT)){
-  	player.punchangle_x = -0.05;
+  
+  if((player.flags & FL_CLIENT)){
+    end = util_traceForPlayer(player, player.stat_spr_x, player.stat_spr_y, '1 1 1', self.w_range);
   }
+  else{
+    local vector spr;
+    spr_x = player.stat_spr_x + self.stat_spr_x;
+    spr_y = player.stat_spr_y + self.stat_spr_y;
+    end = util_traceForAI(player, spr, '1 1 1', self.w_range, 10); 
+  }
+  dir = util_traceForOffset(player, self, end);
 
   local entity laser_org;
   laser_org = spawn();
