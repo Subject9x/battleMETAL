@@ -37,6 +37,7 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
       lofs_x = org_x;
       lofs_y = org_y + (lst_idx * row_size_y);
       chk = menu_checkMouseInBounds(cursorpos, lofs, row_size);
+      gui_DrawRect(lofs, gui_percentToPixel(row_size_x, row_size_y), '0 0 0', '1 1 1');
       if(chk){
         gui_DrawRect(lofs, lofs + row_size, '2 2', '1 1 1');
         toSender = lst_idx;
@@ -93,6 +94,8 @@ void() mechAcceptButtonListener={
       cl_setweapongroup(1, PLAYER_HELPER.plr_nex_grp1);
       cl_setweapongroup(2, PLAYER_HELPER.plr_nex_grp2);
       cl_setweapongroup(3, PLAYER_HELPER.plr_nex_grp3);
+      cl_setweapongroup(4, PLAYER_HELPER.plr_nex_grp4);
+      cl_setweapongroup(5, PLAYER_HELPER.plr_nex_grp5);
       cl_spawnmech();
       MENU_ACTIVE = FALSE;
       setcursormode(0);

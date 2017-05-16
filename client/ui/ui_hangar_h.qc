@@ -62,7 +62,18 @@ float WEPNLIST_CNT;
   float WEPNGRP_CNT_C;
   vector WEPNGRP_ORG_C;
   vector WEPNGRP_SIZE_C;
+
+// weapon group D
+  float WEPNGRP_CNT_D;
+  vector WEPNGRP_ORG_D;
+  vector WEPNGRP_SIZE_D;
   
+// weapon group E
+  float WEPNGRP_CNT_E;
+  vector WEPNGRP_ORG_E;
+  vector WEPNGRP_SIZE_E;
+ 
+ 
 //hardpoint count
   float HARDPOINT_CNT;
   

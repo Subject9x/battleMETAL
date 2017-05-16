@@ -28,6 +28,8 @@ void() CSQC_Init =
   PLAYER_HELPER.plr_nex_grp1 = 0;
   PLAYER_HELPER.plr_nex_grp2 = 0;
   PLAYER_HELPER.plr_nex_grp3 = 0;
+  PLAYER_HELPER.plr_nex_grp4 = 0;
+  PLAYER_HELPER.plr_nex_grp5 = 0;
   PLAYER_HELPER.plr_nav_pnt = 0;
   PLAYER_HELPER.w_range = 0;
   addentity(PLAYER_HELPER);

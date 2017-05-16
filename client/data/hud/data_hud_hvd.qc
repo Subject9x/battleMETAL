@@ -298,8 +298,11 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hvd_ren
   gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + '-1.5 1'), HUT_RET_PIP_VRT, '3 10', '0.2 0.8 0.2', HUD_ALPHA, 0);
   
   //pitch
-  drawstring(VIEW_CTR - '24 0', ftos(pitch), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
-
+  local float p;
+  p = pitch; //passing the var doesn't mess with it for some reason
+  hud_renderPitchSlider((VIEW_CTR - '64 24'), 270, -270, p);
+  drawfill((VIEW_CTR - '68 25'), '8 1', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  drawfill((VIEW_CTR + '-68 28'), '8 1', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
 };     
 /* PLAYER SHIELD =======================================================*/
 void(float shieldval) hvd_playerShield={

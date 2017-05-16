@@ -296,9 +296,13 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mtk_ren
   
   gui_renderTintImage(TRUE, (VIEW_CTR - '1.5 11' - spr_h), HUT_RET_PIP_VRT, '3 10', '0.2 0.8 0.2', HUD_ALPHA, 0);
   gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + '-1.5 1'), HUT_RET_PIP_VRT, '3 10', '0.2 0.8 0.2', HUD_ALPHA, 0);
+  
   //pitch
-  drawstring(VIEW_CTR - '24 0', ftos(pitch), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  hud_renderPitchSlider((VIEW_CTR - '24 0'), 270, -270, pitch);
+  local float p;
+  p = pitch; //passing the var doesn't mess with it for some reason
+  hud_renderPitchSlider((VIEW_CTR - '64 24'), 270, -270, p);
+  drawfill((VIEW_CTR - '68 25'), '8 1', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  drawfill((VIEW_CTR + '-68 28'), '8 1', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
 };  
 
 /*SHIELD METER=====================================================*/
@@ -637,7 +641,7 @@ void(float shieldval, vector tpos, float zht) mtk_targetShield={
     spos = cs_project(tpos);
     if (spos_z >= 0) {
       spos_x -= 36; //align horizontally to centre
-      spos_y -= 3; //align vertically again
+      spos_y -= 32; //align vertically again
       spos_z = 0; //shut up dp.
       //ofs_x = ofs_x + nlen + 2;
       gui_renderMeter(shieldval, spos, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval), HUD_ALPHA, 0, AXIS_H, 0);

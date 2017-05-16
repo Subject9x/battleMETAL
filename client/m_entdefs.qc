@@ -40,6 +40,8 @@ float ARM_RAD = 24;
 .float plr_nex_grp1;
 .float plr_nex_grp2;
 .float plr_nex_grp3;
+.float plr_nex_grp4;
+.float plr_nex_grp5;
 .float plr_nav_pnt;
 
 .entity wdg_sh; //shield widget

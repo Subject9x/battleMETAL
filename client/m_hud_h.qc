@@ -32,15 +32,15 @@ void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
   local float pmax, pcur, perc;
   pcur = pval;
   if(pcur > -1){
-    perc = pcur / mx;
+    perc = (pcur / mx) * 100;
   }
   else{
     mn = mn * -1;
     pcur = pcur *-1;
-    perc = pcur / mn;
+    perc = (pcur / mn) * 100;
     perc = perc * -1;
   }
-  gui_renderMeter(perc, (org - '6 32'), '12 64', '0 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(perc, org, '4 26', '-1 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 string HUT_RET_PIP_HRZ;

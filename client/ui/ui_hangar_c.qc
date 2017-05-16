@@ -82,7 +82,7 @@ void() hardpointInfoListener={
 void() weaponGroupPanelListener={
   local float found;
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A)){
-    found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A,  gui_percentToPixel(0.0145, 0.0145), WEPNGRP_CNT_A, 0);
+    found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A,  gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_A, 0);
     found = WEPBITS[found];
     if((PLAYER_HELPER.plr_nex_grp1 & found)){
       PLAYER_HELPER.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1 - (PLAYER_HELPER.plr_nex_grp1 & found);
@@ -91,7 +91,7 @@ void() weaponGroupPanelListener={
     }
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_B, WEPNGRP_SIZE_B)){
-    found = listListener(WEPNGRP_ORG_B, cursorpos, WEPNGRP_SIZE_B, gui_percentToPixel(0.0145, 0.0145), WEPNGRP_CNT_B, 0);
+    found = listListener(WEPNGRP_ORG_B, cursorpos, WEPNGRP_SIZE_B, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_B, 0);
     found = WEPBITS[found];
     if((PLAYER_HELPER.plr_nex_grp2 & found)){
       PLAYER_HELPER.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2 - (PLAYER_HELPER.plr_nex_grp2 & found);
@@ -100,12 +100,30 @@ void() weaponGroupPanelListener={
     }
   }  
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_C, WEPNGRP_SIZE_C)){
-    found = listListener(WEPNGRP_ORG_C, cursorpos, WEPNGRP_SIZE_C, gui_percentToPixel(0.0145, 0.0145), WEPNGRP_CNT_C, 0);
+    found = listListener(WEPNGRP_ORG_C, cursorpos, WEPNGRP_SIZE_C, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_C, 0);
     found = WEPBITS[found];
     if((PLAYER_HELPER.plr_nex_grp3 & found)){
       PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 - (PLAYER_HELPER.plr_nex_grp3 & found);
     }else{
       PLAYER_HELPER.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3 | found;
+    }
+  }
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_D, WEPNGRP_SIZE_D)){
+    found = listListener(WEPNGRP_ORG_D, cursorpos, WEPNGRP_SIZE_D, gui_percentToPixel(0.0109, 0.018), WEPNGRP_CNT_D, 0);
+    found = WEPBITS[found];
+    if((PLAYER_HELPER.plr_nex_grp4 & found)){
+      PLAYER_HELPER.plr_nex_grp4 = PLAYER_HELPER.plr_nex_grp4 - (PLAYER_HELPER.plr_nex_grp4 & found);
+    }else{
+      PLAYER_HELPER.plr_nex_grp4 = PLAYER_HELPER.plr_nex_grp4 | found;
+    }
+  }
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_E, WEPNGRP_SIZE_E)){
+    found = listListener(WEPNGRP_ORG_E, cursorpos, WEPNGRP_SIZE_E, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_E, 0);
+    found = WEPBITS[found];
+    if((PLAYER_HELPER.plr_nex_grp5 & found)){
+      PLAYER_HELPER.plr_nex_grp5 = PLAYER_HELPER.plr_nex_grp5 - (PLAYER_HELPER.plr_nex_grp5 & found);
+    }else{
+      PLAYER_HELPER.plr_nex_grp5 = PLAYER_HELPER.plr_nex_grp5 | found;
     }
   }
 };
@@ -179,7 +197,7 @@ void(vector ofs) menu_hangar_MechListLight={
     if(dat){
       if(dat.vec_size == 1){
         lofs_x = nofs_x;
-        lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
+        lofs_y = nofs_y + gui_percentYRaw(act_idx * 16);
         if(dat.data_idx == PLAYER_HELPER.plr_sel_mech){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
@@ -355,7 +373,7 @@ void(vector ofs) menu_hangar_WeaponList_BAL={
     if(dat){
       if((dat.dmg_type & DMG_BAL)){
         lofs_x = nofs_x;
-        lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
         if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
@@ -373,7 +391,7 @@ void(vector ofs) menu_hangar_WeaponList_BAL={
   WEPNLIST_CNT_BAL = act_idx;
   WEPNLIST_ORG_BAL = nofs;
   WEPNLIST_SIZE_BAL_x = gui_percentX(0.0687);
-  WEPNLIST_SIZE_BAL_y = gui_percentYRaw((act_idx * 16));
+  WEPNLIST_SIZE_BAL_y = gui_percentY(act_idx * 0.0166);
 };
 
 void(vector ofs) menu_hangar_WeaponList_ENE={
@@ -391,7 +409,7 @@ void(vector ofs) menu_hangar_WeaponList_ENE={
     if(dat){
       if((dat.dmg_type & DMG_ENE)){
         lofs_x = nofs_x;
-        lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
         if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
@@ -409,7 +427,7 @@ void(vector ofs) menu_hangar_WeaponList_ENE={
   WEPNLIST_CNT_ENE = act_idx;
   WEPNLIST_ORG_ENE = nofs;
   WEPNLIST_SIZE_ENE_x = gui_percentX(0.0687);
-  WEPNLIST_SIZE_ENE_y = gui_percentYRaw((act_idx * 16));
+  WEPNLIST_SIZE_ENE_y = gui_percentY(act_idx * 0.0166);
 };
 
 void(vector ofs) menu_hangar_WeaponList_EXP={
@@ -427,7 +445,7 @@ void(vector ofs) menu_hangar_WeaponList_EXP={
     if(dat){
       if((dat.dmg_type & DMG_EXP)){
         lofs_x = nofs_x;
-        lofs_y = nofs_y + gui_percentYRaw((act_idx * 16));
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
         if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
@@ -445,7 +463,7 @@ void(vector ofs) menu_hangar_WeaponList_EXP={
   WEPNLIST_CNT_EXP = act_idx;
   WEPNLIST_ORG_EXP = nofs;
   WEPNLIST_SIZE_EXP_x = gui_percentX(0.0687);
-  WEPNLIST_SIZE_EXP_y = gui_percentYRaw((act_idx * 16));
+  WEPNLIST_SIZE_EXP_y = gui_percentY(act_idx * 0.0166);
 };
 
 void(vector ofs) menu_hangar_WeaponList_MSC={
@@ -463,7 +481,7 @@ void(vector ofs) menu_hangar_WeaponList_MSC={
     if(dat){
       if((dat.dmg_type & DMG_MSC)){
         lofs_x = nofs_x;
-        lofs_y = nofs_y + gui_percentYRaw((act_idx * 14));
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
         if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
@@ -481,49 +499,60 @@ void(vector ofs) menu_hangar_WeaponList_MSC={
   WEPNLIST_CNT_MSC = act_idx;
   WEPNLIST_ORG_MSC = nofs;
   WEPNLIST_SIZE_MSC_x = gui_percentX(0.0687);
-  WEPNLIST_SIZE_MSC_y = gui_percentYRaw((act_idx * 14));
+  WEPNLIST_SIZE_MSC_y = gui_percentY(act_idx * 0.0166);
 };
 
 void(vector ofs) menu_hangar_WeaponGroupPanel={
-  local vector nofs, col_a, col_b, col_c;
+  local vector nofs, col_a, col_b, col_c, col_d, col_e;
   local float lst_idx, bit;
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentX(0.0296);
   nofs_y = ofs_y + VIEW_CTR_y + gui_percentY(0.0541);
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixel(0.1531, 0.1562), '1 1 1', HUD_ALPHA,0);
-  drawstring(nofs + gui_percentToPixel(0.0046, 0.0062), "[WEAPON GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(nofs + gui_percentToPixel(0.0968, 0.0062), "[A] [B] [C]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixel(0.1531, 0.189), '1 1 1', HUD_ALPHA,0);
+  drawstring(nofs + gui_percentToPixel(0.0046, 0.0062), "[GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + gui_percentToPixel(0.06, 0.0062), "[A] [B] [C] [D] [E]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   nofs = nofs + gui_percentToPixel(0, 0.0062);
-  col_a = nofs + gui_percentToPixel(0.0984, 0.0104);
-  col_b = nofs + gui_percentToPixel(0.1171, 0.0104);
-  col_c = nofs + gui_percentToPixel(0.1343, 0.0104);
+  col_a = nofs + gui_percentToPixel(0.062, 0.012);
+  col_b = nofs + gui_percentToPixel(0.081, 0.012);
+  col_c = nofs + gui_percentToPixel(0.1, 0.012);
+  col_d = nofs + gui_percentToPixel(0.119, 0.012);
+  col_e = nofs + gui_percentToPixel(0.138, 0.012);
   lst_idx = 1;
   bit = 1;
   while((lst_idx <= HARDPOINT_CNT)){
     local vector lofs;
-    local string line;
     local entity dat;
     lofs_x = nofs_x + gui_percentX(0.0046);
-    lofs_y = nofs_y + gui_percentYRaw((lst_idx * 14));
-    line = strcat("[",ftos(lst_idx),"]");
+    lofs_y = nofs_y + gui_percentY(lst_idx * 0.018);
     dat = m_findData(HARDPOINTS[lst_idx], DATA_WEPN);
-    line = strcat(line, " ", dat.w_abbr);
-    drawstring(lofs, line, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp1 & bit),  lofs + gui_percentToPixel(0.0937, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp2 & bit),  lofs + gui_percentToPixel(0.1125, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp3 & bit),  lofs + gui_percentToPixel(0.1296, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    drawstring(lofs, ftos(lst_idx), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    if(dat.w_icon != ""){
+      drawpic(lofs + gui_percentToPixel(0.005, -0.005), dat.w_icon, gui_percentToPixel(0.017, 0.02), '1 1 1', HUD_ALPHA,0);
+    }
+    
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp1 & bit),  lofs + gui_percentToPixel(0.057, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp2 & bit),  lofs + gui_percentToPixel(0.076, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp3 & bit),  lofs + gui_percentToPixel(0.095, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp4 & bit),  lofs + gui_percentToPixel(0.114, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp5 & bit),  lofs + gui_percentToPixel(0.133, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
     bit = bit * 2;
     lst_idx = lst_idx + 1;
   }
-  lst_idx = lst_idx;
+  //lst_idx = lst_idx;
   WEPNGRP_CNT_A = lst_idx;
   WEPNGRP_CNT_B = lst_idx;
   WEPNGRP_CNT_C = lst_idx;
+  WEPNGRP_CNT_D = lst_idx;
+  WEPNGRP_CNT_E = lst_idx;
   WEPNGRP_ORG_A = col_a;
   WEPNGRP_ORG_B = col_b;
   WEPNGRP_ORG_C = col_c;
+  WEPNGRP_ORG_D = col_d;
+  WEPNGRP_ORG_E = col_e;
   WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = gui_percentX(0.0109);
-  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw((lst_idx * 14));
+  WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = gui_percentX(0.0109);
+  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentY(lst_idx * 0.018);
+  WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentY(lst_idx * 0.018);
 };
 
 void(vector ofs) menu_hangar_HardPointInfo={

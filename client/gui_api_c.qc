@@ -33,13 +33,15 @@ vector(float pcx, float pcy) gui_percentToPixelRaw={
 float(float pcx) gui_percentXRaw={
   local float pct;
   pct = pcx / VIEW_SIZE_x;
-  return gui_percentX(pct);
+  pct = gui_percentX(pct);
+  return pct;
 };
 
 float(float pcy) gui_percentYRaw={
   local float pct;
   pct = pcy / VIEW_SIZE_y;
-  return gui_percentY(pct);
+  pct = gui_percentY(pct);
+  return pct;
 };
 
 
@@ -164,8 +166,10 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha
   */
   local float perc, adj, diff;
   local vector norg, end;
-  norg = gui_calcAxis(org, sz, ax);  
-  drawfill(norg, sz, clr_bk, alpha, flg);
+  norg = gui_calcAxis(org, sz, ax);
+  if(clr_bk_x > -1){
+    drawfill(norg, sz, clr_bk, alpha, flg);
+  }
   end = norg;
   perc = (val / 100);
   if(ax & AXIS_V){
