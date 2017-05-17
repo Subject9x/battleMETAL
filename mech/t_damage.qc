@@ -8,13 +8,13 @@ according to the original source code, there should only be one
 t_damage function and 1 killed function...for some reason, maybe good house keeping?
 */
 
-void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
+entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
   local float canDamage, new_dmg;
   local entity oself, targ_act;
     
   if(!trg.takedamage){
-    return;
+    return trg;
   }
   
   damage_attacker = attacker;
@@ -22,7 +22,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
   //add in ignore team damage
   
   if(trg.flags & FL_GODMODE){
-    return;
+    return trg;
   }
   
   canDamage = TRUE;
@@ -74,16 +74,18 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
     oself = self; 
     self = newmis;
       setmodel(self, "q3mdl/fx_shield.md3");
+      self.alpha = 0.5;
+      self.effects = self.effects | EF_NOSHADOW;
       setsize(self, '-1 -1 -1', '1 1 1');
       setorigin(self, dmg_point);
       self.solid = SOLID_NOT;
       self.ideal_yaw = vectoyaw(attacker.origin - self.origin);
       ChangeYaw ();
       self.think = SUB_Remove;
-      self.nextthink = time + 1;
+      self.nextthink = time + 0.5;
     self = oself;
-    te_particlecube(dmg_point + '-1 -1 -1', dmg_point + '1 1 1', '0 0 0', dmg_amt, 150, TRUE, 100);
-    return;
+    //te_particlecube(dmg_point + '-1 -1 -1', dmg_point + '1 1 1', '0 0 0', dmg_amt, 150, TRUE, 100);
+    return trg;
   }
   
   te_spark(dmg_point, inflictor.velocity, new_dmg); 
@@ -113,7 +115,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
    if(trg.th_die){
       if(trg.th_die != SUB_Null){
         killed(trg, attacker, dmg_type);
-        return;
+        return trg;
       }
     }
   }
@@ -127,6 +129,7 @@ void(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_typ
   else{
     anger_monster(attacker);
   }
+  return trg;
 };
 
 

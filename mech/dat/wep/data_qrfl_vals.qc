@@ -7,12 +7,12 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
 string DAT_QRFL_NAME = "Q-Rifle";
-float DAT_QRFL_DMG = 2;
+float DAT_QRFL_DMG = 10;
 float DAT_QRFL_FIRETIME = 0;
-float DAT_QRFL_CLIPSIZE = 15;//was 1 - 5/14/2017
-float DAT_QRFL_CURRENTAMMO = 15;//was 1 - 5/14/2017
-float DAT_QRFL_FIRERATE = 0.075;//was 0.5 - 5/14/2017
-float DAT_QRFL_RELOADTIME = 2;//was 0.5  - 5/14/2017
+float DAT_QRFL_CLIPSIZE = 1;//was 1 - 5/14/2017
+float DAT_QRFL_CURRENTAMMO = 1;//was 1 - 5/14/2017
+float DAT_QRFL_FIRERATE = 0.75;//was 0.5 - 5/14/2017
+float DAT_QRFL_RELOADTIME = 0.75;//was 0.5  - 5/14/2017
 vector DAT_QRFL_FIRE_OFS = '0 0 2';
 string DAT_QRFL_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_QRFL_PROJ_ID= ID_PRJ_QRFL;
@@ -23,6 +23,7 @@ float DAT_QRFL_SPR_X = 1;
 float DAT_QRFL_SPR_Y = 5;
 float DAT_QRFL_WSIZE = 3;
 float DAT_QRFL_HPX = 20;
+float DAT_QRFL_QBITS = 7;
 
 void() data_wep_qrfl;
 void() data_qrfl_ini;
@@ -106,28 +107,33 @@ void() data_qrfl_atk={
     }
     dir = util_traceForOffset(player, self, end);
     
-    adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-    makevectors(player.angles);
-    org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-
+    local float qbits;
+    qbits = DAT_QRFL_QBITS;
+    while(qbits > 0){
+      newmis = spawn();
+      oself = self;
+      self = newmis;
+        self.owner = player;
+        proj.unit_ini();
+        local vector rando;
+        rando = randomvec();
+        rando_x = (dir_x + rando_x) + (50 + crandom() * 100);
+        rando_y = (dir_y + rando_y) + (50 + crandom() * 100);
+        rando_z = (dir_z + rando_z) + (50 + crandom() * 100);
+        
+        self.velocity = normalize(dir - rando);
+        self.think = SUB_Remove;
+        self.nextthink = time + self.p_lifetime;
+        self.velocity = self.velocity * self.p_velocity;
+        self.angles = vectoangles(self.velocity);
+        util_setModel(self.c_model, 0);
+        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+        util_setBoundBox('0 0 0', '0 0 0');
+        setorigin(self, rando);
+      self = oself;
+      qbits = qbits - 1;
+    }
     sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-
-    newmis = spawn();
-    oself = self;
-    self = newmis;
-      self.owner = player;
-      proj.unit_ini();
-      self.velocity = normalize(dir - org);
-      self.think = SUB_Remove;
-      self.nextthink = time + self.p_lifetime;
-      self.velocity = self.velocity * self.p_velocity;
-      self.angles = vectoangles(self.velocity);
-      self.lock_timer = 0;
-      util_setModel(self.c_model, 0);
-      util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-      util_setBoundBox('0 0 0', '0 0 0');
-      setorigin(self, org);
-    self = oself;
   }
   else{
     bprint("oops!\n");

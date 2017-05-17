@@ -73,6 +73,9 @@ void() mh_precache_models={
   precache_model ("q3mdl/proj_mis.md3");
   precache_model ("progs/casing.mdl");
   precache_model ("q3mdl/fx_shield.md3");
+  precache_model ("progs/plasmashot.spr32");
+  precache_model ("progs/muzzleflash.spr32");
+  
   
   precache_file ("maps/t_train0.bsp");
 };

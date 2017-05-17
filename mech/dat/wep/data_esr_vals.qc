@@ -11,7 +11,7 @@ float DAT_ESR_DMG = 25;
 float DAT_ESR_FIRETIME = 0;
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_CURRENTAMMO = 10;
-float DAT_ESR_FIRERATE = 0.2;
+float DAT_ESR_FIRERATE = 0.1;
 float DAT_ESR_RELOADTIME = 1.5;
 vector DAT_ESR_FIRE_OFS = '0 0 2';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
@@ -103,13 +103,17 @@ void() data_esr_atk={
   self.w_currentammo = self.w_currentammo - 1;
   self.w_firetime = time + self.w_firerate;
 
-  end = util_traceForPlayer(player, (player.stat_spr_x + DAT_ESR_SPR_X), (player.stat_spr_y+DAT_ESR_SPR_Y), '1 1 1', self.w_range);
-  dir = util_traceForOffset(player, self, end);
-  
-  if((self.flags & FL_CLIENT)){
-  	player.punchangle_x = -0.05;
+  if((player.flags & FL_CLIENT)){
+    end = util_traceForPlayer(player, player.stat_spr_x, player.stat_spr_y, '1 1 1', self.w_range);
   }
-
+  else{
+    local vector spr;
+    spr_x = player.stat_spr_x + self.stat_spr_x;
+    spr_y = player.stat_spr_y + self.stat_spr_y;
+    end = util_traceForAI(player, spr, '1 1 1', self.w_range, 10); 
+  }
+  dir = util_traceForOffset(player, self, end);
+ 
   local entity laser_org;
   laser_org = spawn();
   laser_org.movetype = SOLID_NOT;

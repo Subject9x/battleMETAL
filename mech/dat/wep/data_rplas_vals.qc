@@ -10,20 +10,21 @@ float DAT_RPLAS_IDX = ID_WEP_RPC;
 string DAT_RPLAS_NAME = "RPC";
 float DAT_RPLAS_DMG = 8;
 float DAT_RPLAS_FIRETIME = 0;
-float DAT_RPLAS_CLIPSIZE = 8; //was 1 - 3/27/2017
-float DAT_RPLAS_CURRENTAMMO = 8; //was 1 - 3/27/2017
-float DAT_RPLAS_FIRERATE = 0.43; //was 0.28 - 3/27/2017
-float DAT_RPLAS_RELOADTIME = 0.85; //was 0.28 - 3/27/2017
+float DAT_RPLAS_CLIPSIZE = 1; //was 1 - 3/27/2017
+float DAT_RPLAS_CURRENTAMMO = 1; //was 1 - 3/27/2017
+float DAT_RPLAS_FIRERATE = 1; //was 0.28 - 3/27/2017
+float DAT_RPLAS_RELOADTIME = 1; //was 0.28 - 3/27/2017
 vector DAT_RPLAS_FIRE_OFS = '0 0 2';
 string DAT_RPLAS_MODEL = "q3mdl/weapons/w_atc.md3";
-float DAT_RPLAS_PROJ_ID= 6;//ID_PRJ_RPLAS;
-float DAT_RPLAS_EN_COST= -1;
+float DAT_RPLAS_PROJ_ID = 6;//ID_PRJ_RPLAS;
+float DAT_RPLAS_EN_COST = -1;
 string DAT_RPLAS_SOUND = "sound/ac5.ogg";
 float DAT_RPLAS_TECH_LEVEL = 1;
 float DAT_RPLAS_SPR_X = 8;
 float DAT_RPLAS_SPR_Y = 8;
 float DAT_RPLAS_WSIZE = 2;
 float DAT_RPLAS_HPX = 25;
+float DAT_RPLAS_SHOT = 6;
 
 void() data_wep_rplas;
 void() data_rplas_ini;
@@ -131,23 +132,32 @@ void() data_rplas_atk={
     bul_fx.color = '1 0 0';
     bul_fx.think = SUB_Remove;
     bul_fx.nextthink = time + 0.001;// + 0.35;
-    newmis = spawn();
-    oself = self;
-    self = newmis;
-      self.owner = player;
-      proj.unit_ini();
-      self.velocity = normalize(dir - org);
-      self.think = SUB_Remove;
-      self.nextthink = time + self.p_lifetime;
-      self.velocity = self.velocity * self.p_velocity;
-      self.angles = vectoangles(self.velocity);
-      self.lock_timer = 0;
-      util_setModel(self.c_model, 0);
-      util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-      util_setBoundBox('0 0 0', '0 0 0');
-      setorigin(self, org);
-    self = oself;
     
+    local float shots;
+    shots = DAT_RPLAS_SHOT;
+    while(shots > 0){
+      local vector norg;
+      norg = org;
+      newmis = spawn();
+      oself = self;
+      self = newmis;
+        self.owner = player;
+        proj.unit_ini();
+        self.velocity = normalize(dir - org);
+        self.think = SUB_Remove;
+        self.nextthink = time + self.p_lifetime;
+        self.velocity = self.velocity * self.p_velocity;
+        self.angles = vectoangles(self.velocity);
+        util_setModel(self.c_model, 0);
+        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+        util_setBoundBox('0 0 0', '0 0 0');        
+        self.angles_z = self.angles_z + (shots * 60);
+        makevectors(self.angles);
+        norg = org + (v_up * 8);
+        setorigin(self, norg);
+      self = oself;
+      shots = shots - 1;
+    }
   }
   else{
     bprint(strcat("proj not found!\n", ftos(self.w_proj),"\n"));

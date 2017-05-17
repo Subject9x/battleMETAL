@@ -8,10 +8,10 @@ this guy will bounce off up to two non-targets.
 
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_QRFL_IDX = ID_PRJ_QRFL;
-float DAT_PRJ_QRFL_VELOCITY = 2000;//was 2000 - 5/13/2017; //was 1500 - 3/27/2017
+float DAT_PRJ_QRFL_VELOCITY = 150;//was 2000 - 5/13/2017; //was 1500 - 3/27/2017
 string DAT_PRJ_QRFL_MODEL = "progs/casing.mdl";
-float DAT_PRJ_QRFL_LIFETIME = 2;
-float DAT_PRJ_QRFL_DAMAGE = 2; //was 8 - 5/14/2017 //was 16 - 3/27/2017
+float DAT_PRJ_QRFL_LIFETIME = 4;
+float DAT_PRJ_QRFL_DAMAGE = 8; //was 8 - 5/14/2017 //was 16 - 3/27/2017
 float DAT_PRJ_QRFL_DMGTYPE = DMG_BAL;
 
 float DAT_PRJ_QRFL_EFFECTS = EF_NOSHADOW;
@@ -46,7 +46,7 @@ void() data_prj_qrfl_ini={
   self.c_model = DAT_PRJ_QRFL_MODEL;
   self.p_lifetime = DAT_PRJ_QRFL_LIFETIME;
   self.p_damage = DAT_PRJ_QRFL_DAMAGE;
-  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_RAM;
+  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_STX;
   
   //cosmetics
   self.effects = self.effects + DAT_PRJ_QRFL_EFFECTS;
@@ -81,8 +81,6 @@ void() data_prj_qrfl_touch={
   if(other.classname == "spike"){
     return;
   }
-  //te_superspike(self.origin);
-  //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   
   remove(self);

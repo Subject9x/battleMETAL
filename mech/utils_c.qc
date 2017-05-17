@@ -23,12 +23,11 @@ vector(entity own, vector src_spread, vector self_spread, float range, float lea
   local vector msrc, end, ang, lead;
   local entity cam;
   cam = own.e_cam;
+  makevectors(own.enemy.angles);
+  lead = own.enemy.origin - (v_forward * - 20);
   msrc = normalize(own.enemy.origin - own.origin);
-  traceline(cam.origin, cam.origin + msrc*range, TRUE, own);
-  makevectors(own.enemy.velocity);
-  lead = (v_right * lead_factor);
-  end = trace_endpos + lead;
-  end = end + ((crandom() * (src_spread_x + self_spread_x)) * v_right) + (v_up * (crandom() * (src_spread_y + self_spread_y)));
+  traceline(cam.origin, lead +  msrc*range, TRUE, own);
+  end = trace_endpos + ((crandom() * (src_spread_x + self_spread_x)) * v_right) + (v_up * (crandom() * (src_spread_y + self_spread_y)));
   return end;
 };
 
