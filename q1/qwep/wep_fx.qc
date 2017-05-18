@@ -105,5 +105,7 @@ void() BecomeExplosion =
 	self.touch = SUB_Null;
 	setmodel (self, "progs/s_explod.spr");
 	self.solid = SOLID_NOT;
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.001;
 	s_explode1 ();
 };

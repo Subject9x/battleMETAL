@@ -10,6 +10,10 @@ void() ai_control={
   move = self.ai_move;
   qrk = self.ai_quirks;
 
+  if(self.enemy.p_class == P_OBS){
+    self.enemy = world;
+  }
+  
   if(self.enemy != world){
     q_ai_face();
   }

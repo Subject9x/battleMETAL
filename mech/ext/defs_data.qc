@@ -38,6 +38,7 @@ float ID_WEP_MIS=4;
 //BALLISTIC
 float ID_WEP_QRF = 5;
 float ID_WEP_RPC = 6;
+float ID_WEP_SFGA = 15;
 //ENERGY
 float ID_WEP_PAC = 7;
 float ID_WEP_ESR = 8;
@@ -61,7 +62,7 @@ float ID_PRJ_MLGD = 4;
 float ID_PRJ_MARH = 5;
 float ID_PRJ_RPLAS = 6;
 float ID_PRJ_QRFL = 7;
-
+float ID_PRJ_SFGA = 8;
 //VEHICLES===============================
 
 //BUILDINGS==============================

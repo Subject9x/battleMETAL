@@ -366,7 +366,7 @@ void(vector ofs) menu_hangar_WeaponList_BAL={
   drawstring(nofs + gui_percentToPixel(0.0312, 0.002), "==BALLISTIC==", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
   act_idx = 1;
   lst_idx = 1;
-  while(lst_idx <= 10){
+  while(lst_idx <= 15){
     local entity dat;
     local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_WEPN);
@@ -529,7 +529,6 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
     if(dat.w_icon != ""){
       drawpic(lofs + gui_percentToPixel(0.005, -0.005), dat.w_icon, gui_percentToPixel(0.017, 0.02), '1 1 1', HUD_ALPHA,0);
     }
-    
     gui_renderTintImage((PLAYER_HELPER.plr_nex_grp1 & bit),  lofs + gui_percentToPixel(0.057, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
     gui_renderTintImage((PLAYER_HELPER.plr_nex_grp2 & bit),  lofs + gui_percentToPixel(0.076, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
     gui_renderTintImage((PLAYER_HELPER.plr_nex_grp3 & bit),  lofs + gui_percentToPixel(0.095, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);

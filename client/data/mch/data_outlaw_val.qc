@@ -136,10 +136,14 @@ void() data_otl_ini;
 
 
 void(vector org) otl_renderHardpoints={
-
   ui_renderHardPointGraphic(HARDPOINTS[1], (org + '52 -36'), (PLAYER_HELPER.plr_sel_hrpnt == 1));
+  ui_renderHardPointNumber(1, (org + '52 -36'));
+  
   ui_renderHardPointGraphic(HARDPOINTS[2], (org + '-75 -36'), (PLAYER_HELPER.plr_sel_hrpnt == 2));
+  ui_renderHardPointNumber(2, (org + '-75 -36'));
+  
   ui_renderHardPointGraphic(HARDPOINTS[3], (org + '-10 -96'), (PLAYER_HELPER.plr_sel_hrpnt == 3));
+  ui_renderHardPointNumber(3, (org + '-10 -96'));
 };
 
 float(vector org) otl_hardpointListener={

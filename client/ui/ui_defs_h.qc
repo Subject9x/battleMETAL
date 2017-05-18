@@ -35,7 +35,7 @@ void() navBarListener;
 void() mechAcceptButtonListener;
 void(float wid, vector org, float selected) ui_renderHardPointGraphic;
 void(entity nav) ui_renderNav;
-
+void(float num, vector org) ui_renderHardPointNumber;
 
 //image defs
 string UI_DEF_BOX_512;

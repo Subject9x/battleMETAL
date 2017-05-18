@@ -31,6 +31,9 @@ float AI_QUIRK_RANGED = 2;
 float AI_QUIRK_MELEE = 4;
 float AI_QUIRK_COWARD = 8;
 float AI_QUIRK_AGGRO = 16;
+float AI_QUIRK_ARSON = 32;
+float AI_QUIRK_HUNTKILL = 64;
+float AI_QUIRK_SNIPER = 128;
     
 
 float AI_MOOD_IRON = 0;

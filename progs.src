@@ -48,8 +48,10 @@ dp/dpextensions.qc
   //miscellaneous
   mech/dat/msc/map_navpoint.qc
   mech/dat/msc/map_objective.qc
+  mech/dat/msc/ai_node.qc
   //projectiles
-  mech/dat/prj/data_prj_latc_val.qc
+  //mech/dat/prj/data_prj_latc_val.qc
+  mech/dat/prj/data_prj_sfga_vals.qc
   mech/dat/prj/data_prj_emp_val.qc
   mech/dat/prj/data_prj_mis_val.qc
   mech/dat/prj/data_prj_mlgd_vals.qc
@@ -59,6 +61,7 @@ dp/dpextensions.qc
   
   //weapons
   mech/dat/wep/data_latc_val.qc
+  mech/dat/wep/data_sfga_val.qc
   mech/dat/wep/data_emp_val.qc
   mech/dat/wep/data_mis_val.qc
   mech/dat/wep/data_las_val.qc

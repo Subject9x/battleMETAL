@@ -86,13 +86,14 @@ void() mh_world_iniData={
 
   
   //projectile data
-  data_prj_latc();
+  //data_prj_latc();
   data_prj_emp();
   data_prj_mis();
   data_prj_mlgd();
   data_prj_marh();
   data_prj_rplas();
   data_prj_qrfl();
+  data_prj_sfga();
   
   //weapon data
   data_wep_latc();
@@ -105,6 +106,7 @@ void() mh_world_iniData={
   data_wep_esr();
   data_wep_pac();
   data_wep_rplas();
+  data_wep_sfga();
   
   //mech data
   data_mech_otl();

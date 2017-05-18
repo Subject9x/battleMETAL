@@ -165,6 +165,7 @@ void() ai_mech={
     self.ai_move = AI_STATE_STAND;
 		//self.th_stand ();
 	}
-  self.think = ai_control;
-  self.nextthink = time + 1;
+  //DEBUG ONLY
+  //self.think = ai_control;
+  //self.nextthink = time + 1;
 };

@@ -1,20 +1,21 @@
 /*
 mech Mod
 Author: Subject9x
-Date: 01/22/2017
+Date: 05/17/2017
 Overview: data def file for a weapon projectile
 */
 
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_SFGA_IDX = ID_PRJ_SFGA;
-float DAT_PRJ_SFGA_VELOCITY = 2000;
+float DAT_PRJ_SFGA_VELOCITY = 1500;
 string DAT_PRJ_SFGA_MODEL = "progs/casing.mdl";
-float DAT_PRJ_SFGA_LIFETIME = 4;
-float DAT_PRJ_SFGA_DAMAGE = 5;
+float DAT_PRJ_SFGA_LIFETIME = 8;
+float DAT_PRJ_SFGA_DAMAGE = 150;
 float DAT_PRJ_SFGA_DMGTYPE = DMG_BAL;
+float DAT_PRJ_SFGA_RAD = 150;
 
 float DAT_PRJ_SFGA_EFFECTS = EF_NOSHADOW;
-float DAT_PRJ_SFGA_MODELFLAGS = 0;
+float DAT_PRJ_SFGA_MODELFLAGS = MF_GRENADE;
 float DAT_PRJ_SFGA_ALPHA = 1;
 vector DAT_PRJ_SFGA_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_SFGA_GLOWCOLOR = 240;
@@ -24,7 +25,7 @@ float DAT_PRJ_SFGA_GLOWTRAIL= FALSE;
 void() data_prj_sfga;
 void() data_prj_sfga_ini;
 void() data_prj_sfga_touch;
-
+void() data_prj_sfga_raddmg;
 void() data_prj_sfga={
   local entity oself, data;
   data = spawn();
@@ -46,6 +47,7 @@ void() data_prj_sfga_ini={
   self.p_lifetime = DAT_PRJ_SFGA_LIFETIME;
   self.p_damage = DAT_PRJ_SFGA_DAMAGE;
   self.p_dmgtype = DMG_BAL;
+  self.w_range = DAT_PRJ_SFGA_RAD;
   
   //cosmetics
   self.effects = self.effects | DAT_PRJ_SFGA_EFFECTS;
@@ -64,8 +66,8 @@ void() data_prj_sfga_touch={
 	}
   
   if(other.classname == "worldspawn"){
-    te_superspike(self.origin);
-    remove(self);
+    data_prj_sfga_raddmg();
+    BecomeExplosion();
     return;
   }
 
@@ -80,9 +82,32 @@ void() data_prj_sfga_touch={
   if(other.classname == "spike"){
     return;
   }
-  //te_superspike(self.origin);
-  //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-  
-  remove(self);
+  data_prj_sfga_raddmg();
+  BecomeExplosion();
+};
+
+void() data_prj_sfga_raddmg={
+  local entity f;
+  f = findradius(self.origin, self.w_range);
+  while(f){
+    if(f != other){
+      if(f.classname != MECH_PIECE){
+        local float d, dmg_act;
+        d = vlen(f.origin - self.origin);
+        if(d < (DAT_PRJ_SFGA_RAD/4)){
+          dmg_act = self.p_damage;
+        }
+        else if(d > (DAT_PRJ_SFGA_RAD/4) && d < (DAT_PRJ_SFGA_RAD/2)){
+          dmg_act = self.p_damage/2;
+        }
+        else{
+          dmg_act = self.p_damage/4;
+        }
+        traceline(self.origin, f.origin, FALSE, self.owner);
+        t_damage(f, self, self.owner, dmg_act, self.p_dmgtype, trace_endpos, '0 0 0');
+      }
+    }
+    f = f.chain;
+  }
 };

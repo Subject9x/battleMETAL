@@ -194,3 +194,7 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
     drawpic( org +'1 1', wep.w_icon,  '22 22', '1 1 1', HUD_ALPHA, 0);
   }
 };
+
+void(float num, vector org) ui_renderHardPointNumber={
+  drawstring(org, ftos(num), '10 8', CLR_DEF_WHITE, 0.85, 1);
+};
