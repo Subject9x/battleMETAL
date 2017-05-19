@@ -23,9 +23,9 @@ vector DAT_OTL_CTOR_BBX_N ='-11 -11 -34';
 vector DAT_OTL_CTOR_BBX_X ='11 11 12';
 string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_cent.md3";
 string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_notl_cpt.md3";
-float DAT_OTL_M_FSPEED=175;
-float DAT_OTL_M_SSPEED=150;
-float DAT_OTL_M_BSPEED=150;
+float DAT_OTL_M_FSPEED=350;
+float DAT_OTL_M_SSPEED=350;
+float DAT_OTL_M_BSPEED=290;
 
 vector DAT_OTL_SPREAD_N = '4 4 0.01';
 vector DAT_OTL_SPREAD_X = '8 8 0.01';

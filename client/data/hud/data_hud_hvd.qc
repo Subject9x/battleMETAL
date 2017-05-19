@@ -432,7 +432,11 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
@@ -447,7 +451,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
@@ -465,7 +472,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);  
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
@@ -479,7 +489,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON4_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);  
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON4_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
@@ -493,7 +506,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON5_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON5_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
@@ -507,7 +523,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON6_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON6_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
@@ -521,7 +540,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON7_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON7_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
@@ -536,7 +558,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON8_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON8_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }
@@ -550,7 +575,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   drawpic(pont, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(pont + '26 0', '8 24', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  gui_renderModalPip((pont + '36 0'), w_rel, WEAPON9_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (pont + '36 0'), '10 24', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  //gui_renderModalPip((pont + '36 0'), w_rel, WEAPON9_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
   if(w_grp & w_bit){
     gui_DrawRect(pont, '46 24', '2 2', CLR_DEF_ARM_OK);
   }

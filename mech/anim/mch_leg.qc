@@ -38,7 +38,7 @@ void() leg_walk1 = [$l_walk1, leg_walk2]{
 void() leg_walk2 = [$l_walk2, leg_walk3]{
   local entity player;
   player = self.owner;
-  if(player.flags & FL_ONGROUND){
+  if((player.flags & FL_ONGROUND)){
     local vector ofs;
     makevectors(player.angles);
     ofs = player.origin + ((v_up*-44)+(v_forward*8)+(v_right*10));
@@ -50,7 +50,7 @@ void() leg_walk3 = [$l_walk3, leg_walk4]{};
 void() leg_walk4 = [$l_walk4, leg_walk5]{
   local entity player;
   player = self.owner;
-  if(player.flags & FL_ONGROUND){
+  if((player.flags & FL_ONGROUND)){
     local vector ofs;
     makevectors(player.angles);
     ofs = player.origin + ((v_up*-44)+(v_forward*8)+(v_right*-10));

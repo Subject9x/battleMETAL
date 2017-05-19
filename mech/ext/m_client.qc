@@ -71,6 +71,16 @@ void() ClientConnect = {
   self.stat_w7_id = -1;
   self.stat_w8_id = -1;
   self.stat_w9_id = -1;
+  self.stat_w1_rel = -1;
+  self.stat_w2_rel = -1;
+  self.stat_w3_rel = -1;
+  self.stat_w4_rel = -1;
+  self.stat_w5_rel = -1;
+  self.stat_w6_rel = -1;
+  self.stat_w7_rel = -1;
+  self.stat_w8_rel = -1;
+  self.stat_w9_rel = -1;
+  
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;

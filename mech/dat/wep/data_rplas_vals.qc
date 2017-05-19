@@ -41,7 +41,6 @@ void() data_wep_rplas={
     self.data_type = DATA_WEPN;
     self.unit_ini = data_rplas_ini;
     self.w_name = DAT_RPLAS_NAME;
-    bprint(strcat(etos(self),"\n"));
   self = oself;
 };
 
@@ -76,11 +75,6 @@ void() data_rplas_think={
     if(self.w_currentammo > 0){
       self.w_isready = TRUE;
     }
-    else{
-      self.w_isready = FALSE;
-      self.w_firetime = time + self.w_reloadtime;
-      self.w_currentammo = self.w_clipsize;
-    }
   }
   else{
     self.w_isready = FALSE;
@@ -94,7 +88,14 @@ void() data_rplas_atk={
   if(proj){
     self.w_isready = FALSE;
     self.w_currentammo = self.w_currentammo - 1;
-    self.w_firetime = time + self.w_firerate;
+    if(self.w_currentammo <=0){
+      self.w_firetime = time + self.w_reloadtime;
+      self.power_timer = self.w_firetime;
+      self.w_currentammo = self.w_clipsize;
+    }
+    else{
+      self.w_firetime = time + self.w_firerate;
+    }
     
     local vector dir, org, end, adj;
    if((player.flags & FL_CLIENT)){

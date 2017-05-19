@@ -79,6 +79,16 @@ void() mh_world_ini={
   
   addstat(STAT_LVL_RES, AS_INT, i_reserve);
   
+  addstat(STAT_WEP1_REL, AS_FLOAT, stat_w1_rel);
+  addstat(STAT_WEP2_REL, AS_FLOAT, stat_w2_rel);
+  addstat(STAT_WEP3_REL, AS_FLOAT, stat_w3_rel);
+  addstat(STAT_WEP4_REL, AS_FLOAT, stat_w4_rel);
+  addstat(STAT_WEP5_REL, AS_FLOAT, stat_w5_rel);
+  addstat(STAT_WEP6_REL, AS_FLOAT, stat_w6_rel);
+  addstat(STAT_WEP7_REL, AS_FLOAT, stat_w7_rel);
+  addstat(STAT_WEP8_REL, AS_FLOAT, stat_w8_rel);
+  addstat(STAT_WEP9_REL, AS_FLOAT, stat_w9_rel);
+  
   mh_world_iniData();
 };
 

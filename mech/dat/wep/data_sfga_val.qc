@@ -73,14 +73,18 @@ void() data_sfga_ini={
 
 void() data_sfga_think={
   if(time > self.w_firetime){
+    if(self.power_timer > 0){
+      self.power_timer = 0;
+    }
     if(self.w_currentammo > 0){
       self.w_isready = TRUE;
     }
-    else{
+    /*else{
       self.w_isready = FALSE;
       self.w_firetime = time + self.w_reloadtime;
       self.w_currentammo = self.w_clipsize;
-    }
+      self.lock_timer = 0;
+    }*/
   }
   else{
     self.w_isready = FALSE;
@@ -93,7 +97,14 @@ void() data_sfga_atk={
   
   self.w_isready = FALSE;
   self.w_currentammo = self.w_currentammo - 1;
-  self.w_firetime = time + self.w_firerate;
+  if(self.w_currentammo <=0){
+    self.w_firetime = time + self.w_reloadtime;
+    self.power_timer = self.w_firetime;
+    self.w_currentammo = self.w_clipsize;
+  }
+  else{
+    self.w_firetime = time + self.w_firerate;
+  }
   local vector dir, end, adj, org;
  
   if((player.flags & FL_CLIENT)){

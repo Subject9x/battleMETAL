@@ -3,8 +3,14 @@ mech Mod
 Author: Subject9x
 Date: 8/27/2016
       mod 3/16/2017
+      mod 5/17/2017 - normalize time as percent
 Overview: utility functions for mod, header
 */
+
+
+float(float t, float e) util_normalizeTimeAsPercent={
+  return t / e;
+};
 
 //scope is self = weapon making the call
 vector(entity own, float spr_x, float spr_y, vector self_spread, float range) util_traceForPlayer={

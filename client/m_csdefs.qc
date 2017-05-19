@@ -151,13 +151,22 @@ float STAT_WEP7_ID = 74;
 float STAT_WEP8_ID = 77;
 float STAT_WEP9_ID = 80;
 
+float STAT_WEP1_REL = 81;
+float STAT_WEP2_REL = 82;
+float STAT_WEP3_REL = 86;
+float STAT_WEP4_REL = 99;
+float STAT_WEP5_REL = 100;
+float STAT_WEP6_REL = 101;
+float STAT_WEP7_REL = 102;
+float STAT_WEP8_REL = 103;
+float STAT_WEP9_REL = 104;
+
 float STAT_WEP_STT = 57;
 float STAT_WEP_GRP = 83;
 float STAT_WEP_REL = 61;
 
 float STAT_TRG_VID = 84;
 float STAT_TRG_SH = 85;
-//float STAT_TRG_AM = 86;
 float STAT_TRG_DAT = 87;
 
 float STAT_RDR_FRNT = 88;

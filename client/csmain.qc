@@ -32,6 +32,7 @@ void() CSQC_Init =
   PLAYER_HELPER.plr_nex_grp5 = 0;
   PLAYER_HELPER.plr_nav_pnt = 0;
   PLAYER_HELPER.w_range = 0;
+  PLAYER_HELPER.wep1_reload = 0;
   addentity(PLAYER_HELPER);
   
   WEPBITS[0] = 1;
@@ -277,6 +278,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     //player weapon tracking info
     local float plr_wgrp, plr_wstate, plr_wrel, w1_id, w2_id, w3_id, w4_id, w5_id, w6_id, w7_id, w8_id, w9_id;
+    local float w1_r, w2_r, w3_r, w4_r, w5_r, w6_r, w7_r, w8_r, w9_r;
     plr_wgrp = getstati(STAT_WEP_GRP);
     plr_wstate = getstati(STAT_WEP_STT);
     plr_wrel = getstati(STAT_WEP_REL);
@@ -289,6 +291,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     w7_id = getstati(STAT_WEP7_ID);
     w8_id = getstati(STAT_WEP8_ID);
     w9_id = getstati(STAT_WEP9_ID);
+    w1_r = getstatf(STAT_WEP1_REL);
+    w2_r = getstatf(STAT_WEP2_REL);
+    w3_r = getstatf(STAT_WEP3_REL);
+    w4_r = getstatf(STAT_WEP4_REL);
+    w5_r = getstatf(STAT_WEP5_REL);
+    w6_r = getstatf(STAT_WEP6_REL);
+    w7_r = getstatf(STAT_WEP7_REL);
+    w8_r = getstatf(STAT_WEP8_REL);
+    w9_r = getstatf(STAT_WEP9_REL);
     
     //player radar info
     local float rad_frnt, rad_bck, rad_mode;
@@ -329,15 +340,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_playerEnergy(plr_en);  
       self.hud_Radar(rad_frnt, rad_bck, rad_mode);
       self.hud_hitDirectionPips(hitdir);
-      self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, plr_wrel);
-      self.hud_renderWeapon2(plr_wgrp, plr_wstate, w2_id, WEAPON2, WEAPON2_DD, WEAPON2_OK, plr_wrel);
-      self.hud_renderWeapon3(plr_wgrp, plr_wstate, w3_id, WEAPON3, WEAPON3_DD, WEAPON3_OK, plr_wrel);
-      self.hud_renderWeapon4(plr_wgrp, plr_wstate, w4_id, WEAPON4, WEAPON4_DD, WEAPON4_OK, plr_wrel);
-      self.hud_renderWeapon5(plr_wgrp, plr_wstate, w5_id, WEAPON5, WEAPON5_DD, WEAPON5_OK, plr_wrel);
-      self.hud_renderWeapon6(plr_wgrp, plr_wstate, w6_id, WEAPON6, WEAPON6_DD, WEAPON6_OK, plr_wrel);
-      self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, plr_wrel);
-      self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, plr_wrel);
-      self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, plr_wrel);
+      self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, w1_r);
+      self.hud_renderWeapon2(plr_wgrp, plr_wstate, w2_id, WEAPON2, WEAPON2_DD, WEAPON2_OK, w2_r);
+      self.hud_renderWeapon3(plr_wgrp, plr_wstate, w3_id, WEAPON3, WEAPON3_DD, WEAPON3_OK, w3_r);
+      self.hud_renderWeapon4(plr_wgrp, plr_wstate, w4_id, WEAPON4, WEAPON4_DD, WEAPON4_OK, w4_r);
+      self.hud_renderWeapon5(plr_wgrp, plr_wstate, w5_id, WEAPON5, WEAPON5_DD, WEAPON5_OK, w5_r);
+      self.hud_renderWeapon6(plr_wgrp, plr_wstate, w6_id, WEAPON6, WEAPON6_DD, WEAPON6_OK, w6_r);
+      self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, w7_r);
+      self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, w8_r);
+      self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, w9_r);
       self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
       self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
     self = oself;

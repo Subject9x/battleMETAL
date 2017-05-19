@@ -67,11 +67,6 @@ void() data_marh_think={
     if(self.w_currentammo > 0){
       self.w_isready = TRUE;
     }
-    else{
-      self.w_isready = FALSE;
-      self.w_firetime = time + self.w_reloadtime;
-      self.w_currentammo = self.w_clipsize;
-    }
   }
   else{
     self.w_isready = FALSE;
@@ -88,7 +83,14 @@ void() data_marh_atk={
       if(self.owner.stat_lck_stt & LOCK_TARG){ 
         self.w_isready = FALSE;
         self.w_currentammo = self.w_currentammo - 1;
-        self.w_firetime = time + self.w_firerate;
+        if(self.w_currentammo <=0){
+          self.w_firetime = time + self.w_reloadtime;
+          self.power_timer = self.w_firetime;
+          self.w_currentammo = self.w_clipsize;
+        }
+        else{
+          self.w_firetime = time + self.w_firerate;
+        }
         local vector dir, org, end, adj;
         
         if((player.flags & FL_CLIENT)){

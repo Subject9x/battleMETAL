@@ -9,8 +9,8 @@ Overview: weapon  values are being reorganized to ease maintenance
 float DAT_SFGA_IDX = ID_WEP_SFGA;
 string DAT_SFGA_NAME = "Snub Field Gun";
 float DAT_SFGA_DMG = 8;
-float DAT_SFGA_FIRERATE = 0.43;
-float DAT_SFGA_RELOADTIME = 0.85;
+float DAT_SFGA_FIRERATE = 4;
+float DAT_SFGA_RELOADTIME = 4;
 string DAT_SFGA_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_SFGA_EN_COST= 0;
 float DAT_SFGA_WSIZE = 2;

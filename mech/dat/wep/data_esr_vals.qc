@@ -72,11 +72,6 @@ void() data_esr_think={
       if(self.w_currentammo > 0){
         self.w_isready = TRUE;
       }
-      else{
-        self.w_isready = FALSE;
-        self.power_timer = time + self.w_reloadtime;
-        self.w_currentammo = self.w_clipsize;
-      }
     }
     else{
       self.w_isready = FALSE;
@@ -95,13 +90,21 @@ void() data_esr_think={
 };
 
 void() data_esr_atk={
- local entity cam, player, oself, proj;
+  local entity cam, player, oself, proj;
   local vector spread;
 	local vector dir,org, end, adj;
   player = self.owner;
   
+  self.w_isready = FALSE;
   self.w_currentammo = self.w_currentammo - 1;
-  self.w_firetime = time + self.w_firerate;
+  if(self.w_currentammo <=0){
+    self.w_firetime = time + self.w_reloadtime;
+    self.power_timer = self.w_firetime;
+    self.w_currentammo = self.w_clipsize;
+  }
+  else{
+    self.w_firetime = time + self.w_firerate;
+  }
 
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, player.stat_spr_x, player.stat_spr_y, '1 1 1', self.w_range);

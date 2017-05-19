@@ -443,8 +443,10 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   ofs = self.hud_pnl4.pos + '16 8';
   drawpic(ofs, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator((ofs + '4 24'), '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
-  
-  gui_renderModalPip((ofs + '8 34'), w_rel, WEAPON1_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+    
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (ofs + '2 34'), '20 12', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
   if(w_grp & w_bit){
     gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   } 
@@ -463,7 +465,9 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   drawpic(ofs, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(ofs + '4 24', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
   
-  gui_renderModalPip((ofs + '8 34'), w_rel, WEAPON2_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (ofs + '2 34'), '20 12', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
   if(w_grp & w_bit){
     gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   } 
@@ -482,7 +486,9 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   drawpic(ofs, wep_dat.w_icon, '24 24', wstat, HUD_ALPHA,0);
   hud_RangeIndicator(ofs + '4 24', '16 6', wep_dat.w_range, self.w_range, HUD_ALPHA, 0) ;
   
-  gui_renderModalPip((ofs + '8 34'), w_rel, WEAPON3_REL, '1 0.1 0.1', '0.1 1 0.1', '8 6', HUD_ALPHA,0);
+  local float d;
+  d = w_rel *100;
+  gui_renderMeter(d, (ofs + '2 34'), '20 12', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
   if(w_grp & w_bit){
     gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   }
@@ -605,7 +611,7 @@ void(float shieldval, vector tpos, float zht) otl_targetShield={
     ofs = self.hud_pnl5.pos + self.hud_pnl5.margin_ins + '8 12';
     nlen = stringwidth("[SHIELD]",0,'6 6 0');
     gui_renderMeter(shieldval, ofs, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
-    ofs_x = self.hud_pnl5.pos + (self.hud_pnl5.hsize - (nlen/2) - 8);
+    ofs_x = self.hud_pnl5.pos_x + (self.hud_pnl5.hsize_x - (nlen/2) - 8);
     ofs_y = ofs_y - 8;
     drawstring(ofs, "[Shield]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
     tpos_z = tpos_z + zht;

@@ -31,7 +31,6 @@ void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, flo
 vector(vector map_min, vector map_max, vector coords, vector img_sz) gui_mapCoordToImgCoord;
 string(float navname) gui_getNavName;
 void(vector ofs, float bool, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalFill;
-
 vector(float pcx, float pcy) gui_percentToPixel;
 float(float pcx) gui_percentX;
 float(float pcy) gui_percentY;

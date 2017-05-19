@@ -43,6 +43,8 @@ float ARM_RAD = 24;
 .float plr_nex_grp4;
 .float plr_nex_grp5;
 .float plr_nav_pnt;
+.float wep1_reload;
+
 
 .entity wdg_sh; //shield widget
 .entity wdg_en; //energy widget

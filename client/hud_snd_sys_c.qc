@@ -96,7 +96,7 @@ void(float mode) snd_hud_vfx_toggleradar={
 
 void(float dedflg) snd_hud_vfx_targkill={
   if(dedflg > DEAD_NO){
-    print(strcat(ftos(dedflg),"\n"));
+    //print(strcat(ftos(dedflg),"\n"));
   }
   if(dedflg == DEAD_DEAD){
     

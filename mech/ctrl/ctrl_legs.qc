@@ -21,7 +21,7 @@ void() ctrl_updateLegs={
       self.movetype = MOVETYPE_FOLLOW;
     }
     if((self.owner.flags & FL_CLIENT)){
-    
+      //texture check
       local vector dn;
       local float height;
       makevectors(self.owner.angles);

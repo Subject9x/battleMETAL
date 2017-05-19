@@ -70,9 +70,6 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
-  local entity senda;
-  local	float	mspeed, aspeed;
-	local	float	r;
  
 	if (self.view_ofs == '0 0 0'){
 		return;		// intermission or finale
@@ -108,6 +105,7 @@ void() PlayerPostThink = {
         self.enemy.stat_lck_stt = self.enemy.stat_lck_stt | LOCK_PLYR;
       }
     }
+    client_updateWeaponReloads();
     ctrl_update_mechplayer();
     local vector radar;
     radar = server_updateRadarInfo();
