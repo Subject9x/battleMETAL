@@ -7,12 +7,12 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
 string DAT_PAC_NAME = "PAC";
-float DAT_PAC_DMG = 45;
+float DAT_PAC_DMG = 60;
 float DAT_PAC_FIRETIME = 0;
 float DAT_PAC_CLIPSIZE = 1;
 float DAT_PAC_CURRENTAMMO = 1;
-float DAT_PAC_FIRERATE = 1.35;
-float DAT_PAC_RELOADTIME = 1.35;
+float DAT_PAC_FIRERATE = 2;
+float DAT_PAC_RELOADTIME = 2;
 vector DAT_PAC_FIRE_OFS = '0 0 2';
 string DAT_PAC_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_PAC_EN_COST =  0.15;

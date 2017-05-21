@@ -46,6 +46,7 @@ float AI_MOOD_PANIC = 3;
 .float ai_quirks;
 .float ai_mood;
 void() ai_control;
+entity() ai_find_node;
 void() ai_mech_update;
 void() ai_weapon_update;
 void() ai_mech_die;

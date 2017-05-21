@@ -29,7 +29,23 @@ void() ai_control={
     
   }
   else if(astate == AI_STATE_TOPOINT){
-  
+    self.goalentity = ai_find_node();
+    bprint(strcat(ftos(self.ai_move),"\n"));
+    if(self.goalentity != world){
+      self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+      if(vlen(self.goalentity.origin - self.origin) <= 100){
+        self.ai_move = AI_STATE_STAND;
+      }
+      else{
+        if(self.ai_move != AI_STATE_WALK){
+          self.ai_move = AI_STATE_WALK;
+        }
+      }
+    }
+    else{
+      self.ai_state = AI_STATE_WANDER;
+      self.ai_move = AI_STATE_STAND;
+    }
   }
   else if(astate == AI_STATE_HUNT){
     q_HuntTarget();
@@ -45,7 +61,7 @@ void() ai_control={
   else if(move == AI_STATE_RUN){
     self.th_run();
   }
-  
+
   self.think = ai_control;
   self.nextthink = time + 0.005;
 };
@@ -55,13 +71,8 @@ void() ai_mech_walk={
   local float spd, dist;
   spd = self.m_fspeed;
   spd = spd / 250;
+  dist = vlen(self.enemy.origin - self.origin);
   q_ai_walk(spd);
-  if(self.ai_state == AI_STATE_HUNT){
-    dist = vlen(self.enemy.origin - self.origin);
-    if(dist <= 200){
-      self.ai_move = AI_STATE_STAND;
-    }
-  }
 };
 
 void() ai_mech_run={
@@ -129,6 +140,32 @@ void() ai_weapon_update={
     wep_chain = wep_chain.w_slot;
   }
 };
+
+
+entity() ai_find_node={
+  local entity node, f;
+  local float d;
+  if(self.goalentity == world){
+    d = 1200;
+    node = findradius(self.origin, 1200);
+    while(node){
+      local float len;
+      if(node.classname == "ai_node"){
+        len = vlen(node.origin - self.origin);
+        if(len < d){
+          d = len;
+          f = node;
+        }
+      }
+      node = node.chain;
+    }
+    return f;
+  }
+  else{
+    return self.goalentity;
+  }
+}
+
 
 void() ai_mech_update={
   local entity oself;

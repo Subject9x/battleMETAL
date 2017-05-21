@@ -245,9 +245,7 @@ void() ClientKill = {
   self.nextthink = -1;
   //only deduct frags of player is going from !observer to another !observer
   if(self.p_class != P_OBS){
-    if(self.p_class_next != P_OBS){
       self.frags = self.frags - 2;
-    }
   }
   
   self.p_class = self.p_class_next;

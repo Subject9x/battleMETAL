@@ -19,8 +19,6 @@ void() ai_mech={
   //ini all the unit stats
   self.p_class = P_MECH;
   self.data_idx = 0;
-  self.currentWeaponGroup = self.currentWeaponGroup;
-  //self.stat_eid = num_for_edict(self); - not needed
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;
@@ -39,18 +37,6 @@ void() ai_mech={
   self.stat_larm_am = 0;
   self.stat_rarm_hp = 0;
   self.stat_rarm_am = 0;
-  self.stat_cofs_x = 0;
-  self.stat_cofs_y = 0;
-  self.stat_cofs_z = 0;
-  self.stat_w1_id = -1;
-  self.stat_w2_id = -1;
-  self.stat_w3_id = -1;
-  self.stat_w4_id = -1;
-  self.stat_w5_id = -1;
-  self.stat_w6_id = -1;
-  self.stat_w7_id = -1;
-  self.stat_w8_id = -1;
-  self.stat_w9_id = -1;
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;
@@ -136,8 +122,6 @@ void() ai_mech={
 	}
   
   self.ideal_yaw = self.angles * '0 1 0';
-	//if (!self.yaw_speed)
-	//	self.yaw_speed = 10;
 	self.use = q_monster_use;
   
   if (self.target)
@@ -163,8 +147,12 @@ void() ai_mech={
 	{
 		self.pausetime = 99999999;
     self.ai_move = AI_STATE_STAND;
-		//self.th_stand ();
 	}
+  self.goalentity = world;
+  self.ai_state = AI_STATE_TOPOINT;
+  self.ai_move = AI_STATE_WALK;
+
+  
   //DEBUG ONLY
   self.think = ai_control;
   self.nextthink = time + 1;
