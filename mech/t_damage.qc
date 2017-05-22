@@ -74,17 +74,16 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     oself = self; 
     self = newmis;
       setmodel(self, "q3mdl/fx_shield.md3");
-      self.alpha = 0.5;
-      self.effects = self.effects | EF_NOSHADOW;
+      self.alpha = 1;
+      self.effects = self.effects | EF_NOSHADOW | EF_BLUE;
       setsize(self, '-1 -1 -1', '1 1 1');
       setorigin(self, dmg_point);
       self.solid = SOLID_NOT;
-      self.ideal_yaw = vectoyaw(attacker.origin - self.origin);
+      self.angles = vectoangles(attacker.origin - self.origin);
       ChangeYaw ();
       self.think = SUB_Remove;
-      self.nextthink = time + 0.5;
+      self.nextthink = time + 1;
     self = oself;
-    //te_particlecube(dmg_point + '-1 -1 -1', dmg_point + '1 1 1', '0 0 0', dmg_amt, 150, TRUE, 100);
     return trg;
   }
   
@@ -115,6 +114,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
    if(trg.th_die){
       if(trg.th_die != SUB_Null){
         killed(trg, attacker, dmg_type);
+        if(trg.c_name == M_TOR_CENTER){
+          if((trg.owner.flags & FL_MONSTER)){
+            trg.owner.deadflag = DEAD_DEAD;
+          }
+        }      
         return trg;
       }
     }
@@ -239,7 +243,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
 		self.health = -99;		// don't let sbar look bad if a player
   
 	if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
-		self.th_die ();
+		self.th_die();
     self = oself;
     return;
 	}
@@ -438,9 +442,10 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
 void(entity attacker) anger_monster={
 	if ( (self.flags & FL_MONSTER) && (attacker != world)){
     if ((self != attacker) && (attacker != self.enemy)){
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        q_FoundTarget ();
+      bprint("angry!\n");
+      self.oldenemy = self.enemy;
+      self.enemy = attacker;
+      q_FoundTarget ();
     }
   }
 };

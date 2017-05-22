@@ -22,6 +22,7 @@ void() building_fuel={
   util_setHealthArmor(500, 500, 1, 100) ;
   util_setBoundBox('-56 -56 0', '56 56 64');
   self.scale = 1;
+  self.deadflag = DEAD_NO;
   droptofloor();
   self.th_die = BecomeExplosion;
   self.think = SUB_Null;

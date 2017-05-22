@@ -27,10 +27,20 @@ void() ai_node={
 }
 
 void() ai_node_touch={
+  if((other.flags & FL_MONSTER)){
+    if(other.enemy == world){
+      //no target so continue on as normal
+      if(self.targetname){
+        //checks for patrol style ai_node
+        other.goalentity = find(world, targetname, self.target);
+      }
+    }
+  }
+
   if(other.p_class != P_OBS){
     return;
   }
   else{
-    bprint(strcat(self.classname,"\n")); // DEBUG
+    bprint(strcat("name: ",self.targetname," | target: ",self.target, "\n")); // DEBUG
   }
 };

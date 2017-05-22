@@ -53,7 +53,7 @@ void() data_prj_rplas_ini={
   
   //cosmetics
   self.effects = self.effects | DAT_PRJ_RPLAS_EFFECTS;
-  self.modelflags = DAT_PRJ_RPLAS_MODELFLAGS;
+  self.modelflags = self.modelflags | DAT_PRJ_RPLAS_MODELFLAGS;
   self.alpha = DAT_PRJ_RPLAS_ALPHA;
   self.colormod = DAT_PRJ_RPLAS_COLORMOD;
   self.glow_color = DAT_PRJ_RPLAS_GLOWCOLOR;

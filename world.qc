@@ -32,6 +32,7 @@ void() worldspawn =
 {
 	lastspawn = world;
 	InitBodyQue ();
+  cvar_set("sv_maxspeed", "800"); //allows faster units
 
 // custom map attributes
 	if (self.model == "maps/e1m8.bsp")

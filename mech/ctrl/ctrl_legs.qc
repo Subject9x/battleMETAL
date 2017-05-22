@@ -37,7 +37,7 @@ void() ctrl_updateLegs={
       self.v_angle = self.angles;
     }
     else{
-      self.angles = self.owner.v_angle;
+      self.angles = self.owner.angles;
     }
   }
 };

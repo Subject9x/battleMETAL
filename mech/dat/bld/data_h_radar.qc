@@ -22,6 +22,7 @@ void() building_radar={
   util_setHealthArmor(100, 100, 1, 100) ;
   util_setBoundBox('-16 -16 0', '16 16 20');
   self.scale = 1;
+  self.deadflag = DEAD_NO;
   droptofloor();
   self.th_die = BecomeExplosion;
   self.think = SUB_Null;

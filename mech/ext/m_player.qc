@@ -75,7 +75,7 @@ void() PlayerPostThink = {
 		return;		// intermission or finale
   }
     
-	if (self.deadflag){
+	if (self.deadflag >= DEAD_DYING){
     return;
   }
   
@@ -192,13 +192,12 @@ void() PlayerDie={
     if(self.p_class == P_MECH){
       mech_player_die();
       return;
-    }  
+    }
   }
 };
 
 void() PlayerDead={
 	self.nextthink = -1;
-// allow respawn after a certain time
 	self.deadflag = DEAD_DEAD;
 };
 

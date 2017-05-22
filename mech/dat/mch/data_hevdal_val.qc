@@ -12,6 +12,7 @@ Overview:
 float DAT_HVD_IDX = ID_MCH_COLOSSUS;
 string DAT_HVD_VEC_NAME = "Hevidahl";
 float DAT_HVD_TECH_LEVEL = 1;
+float DAT_HVD_RADAR_RANGE = 9000;
 float DAT_HVD_RESERVE_COST = 200;
 float DAT_HVD_ENERGY_CUR = 600;
 float DAT_HVD_ENERGY_MAX = 600;
@@ -239,6 +240,7 @@ void() data_hvd_ini={
   self.data_idx= DAT_HVD_IDX;
   self.vec_name= DAT_HVD_VEC_NAME;
   self.data_type = DATA_MECH;
+  self.radar_range = DAT_HVD_RADAR_RANGE;
   self.i_techlvl= DAT_HVD_TECH_LEVEL;
   self.i_reserve= DAT_HVD_RESERVE_COST;
   self.en_cur= DAT_HVD_ENERGY_CUR;

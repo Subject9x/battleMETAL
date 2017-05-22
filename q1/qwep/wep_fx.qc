@@ -100,6 +100,7 @@ void()	s_explode6	=	[5,		SUB_Remove] {};*/
 
 void() BecomeExplosion =
 {
+  self.deadflag = DEAD_DEAD;
 	self.movetype = MOVETYPE_NONE;
 	self.velocity = '0 0 0';
 	self.touch = SUB_Null;

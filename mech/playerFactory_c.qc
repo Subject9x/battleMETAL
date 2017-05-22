@@ -12,6 +12,7 @@ void() player_spawnAsObserver={
 
 
 void() player_makeObserver={
+  self.p_class = P_OBS;
   self.view_ofs = '0 0 1';
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);

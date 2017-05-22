@@ -22,6 +22,7 @@ void() building_power={
   util_setHealthArmor(100, 100, 1, 100) ;
   util_setBoundBox('-56 -56 0', '56 56 46');
   self.scale = 1;
+  self.deadflag = DEAD_NO;
   droptofloor();
   self.th_die = BecomeExplosion;
   self.think = SUB_Null;

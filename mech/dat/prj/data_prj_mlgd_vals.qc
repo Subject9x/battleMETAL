@@ -10,7 +10,7 @@ float DAT_PRJ_MLGD_IDX = ID_PRJ_MLGD;
 float DAT_PRJ_MLGD_VELOCITY = 700;
 string DAT_PRJ_MLGD_MODEL = "q3mdl/proj_mis.md3";
 float DAT_PRJ_MLGD_LIFETIME = 6;
-float DAT_PRJ_MLGD_DAMAGE = 40;
+float DAT_PRJ_MLGD_DAMAGE = 100;
 float DAT_PRJ_MLGD_DMGTYPE = DMG_EXP;
 
 float DAT_PRJ_MLGD_EFFECTS = 0; //see data_prj_MIS

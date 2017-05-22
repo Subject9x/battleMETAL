@@ -83,7 +83,7 @@ local entity	temp;
 	self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
 	if (!self.movetarget){
 		self.pausetime = time + 999999;
-    self.ai_move = AI_STATE_STAND;
+    self.ai_move = AI_MOVE_STAND;
 		return;
 	}
 };
@@ -142,6 +142,11 @@ float (entity targ) q_visible =
 	if (trace_fraction == 1){
 		return TRUE;
   }
+  else if(trace_ent){
+    if(trace_ent.i_faction != self.i_faction){
+      return TRUE;
+    }
+  }
 	return FALSE;
 };
 
@@ -157,7 +162,7 @@ float(entity targ) q_infront =
 {
 	local vector	vec;
 	local float		dot;
-	
+
 	makevectors (self.angles);
 	vec = normalize (targ.origin - self.origin);
 	dot = vec * v_forward;
@@ -229,22 +234,30 @@ void() ChangeYaw =
 
 void() q_HuntTarget =
 {
-	self.goalentity = self.enemy;
-	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-  self.ai_move = AI_STATE_RUN;
+  //bprint("q_HuntTarget\n"); //DEBUG
+  if(self.enemy.deadflag <= DEAD_NO){
+    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+    self.ai_move = AI_MOVE_RUN;
+  }
+  else{
+    self.enemy = world;
+    self.ai_move = AI_MOVE_STAND;
+    ai_update_state(AI_STATE_TOPOINT);
+  }
 };
 
 void() q_FoundTarget =
 {
-	if (self.enemy.classname == "player"){	
+	//if (self.enemy.classname == "player"){	
     // let other monsters see this monster for a while
-		sight_entity = self;
-		sight_entity_time = time;
-	}
-	
-	self.show_hostile = time + 1;		// wake up other monsters
-  self.ai_move = AI_STATE_RUN;
-  self.ai_state = AI_STATE_HUNT;
+		//sight_entity = self;
+		//sight_entity_time = time;
+	//}
+	//bprint("q_FoundTarget\n"); //DEBUG
+	//self.show_hostile = time + 1;		// wake up other monsters
+  self.ai_move = AI_MOVE_RUN;
+  ai_update_state(AI_STATE_HUNT);
+  //self.ai_state = AI_STATE_HUNT;
 };
 
 /*
@@ -327,6 +340,9 @@ float() q_FindTarget =
   if(client.p_class != P_OBS){
   	self.enemy = client;
   }
+  else{
+    return FALSE;
+  }
 
 	if (self.enemy.classname != "player")
 	{
@@ -370,9 +386,13 @@ void(float dist) q_ai_walk =
 	
 	movedist = dist;
   
-	// check for noticing a player
+	// check for noticing a target
   if(self.ai_state != AI_STATE_HUNT){
-    q_FindTarget ();
+    if(ai_find_target()){
+      //bprint("TARGETING!\n");//DEBUG
+      q_FoundTarget();
+    }
+    //q_FindTarget ();
   }
 	//if (q_FindTarget ()){
 		//return;
@@ -390,8 +410,13 @@ The monster is staying in one place for a while, with slight angle turns
 */
 void() q_ai_stand =
 {
+	// check for noticing a target
   if(self.ai_state != AI_STATE_HUNT){
-    q_FindTarget ();
+    if(ai_find_target()){
+      //bprint("q_ai_stand!\n");//DEBUG
+      q_FoundTarget();
+    }
+    //q_FindTarget ();
   }
 };
 
@@ -564,30 +589,36 @@ void(float dist) q_ai_run =
 		}
 		else
 		{
-			if (self.movetarget){
-        self.ai_move = AI_STATE_RUN;
-        self.ai_state = AI_STATE_HUNT;
+			/*if (self.movetarget){
+        self.ai_move = AI_MOVE_RUN;
+        ai_update_state(AI_STATE_HUNT);
 			}
-			else{
-        self.ai_move = AI_STATE_STAND;
-        self.ai_state = AI_STATE_PEACE;
-      }
+			else{*/
+        ai_update_state(AI_STATE_TOPOINT);
+        self.ai_move = AI_MOVE_STAND;
+      //}
 			return;
 		}
 	}
 
-	self.show_hostile = time + 1;		// wake up other monsters
+	//self.show_hostile = time + 1;		// wake up other monsters
 
 // check knowledge of enemy
-	enemy_vis = q_visible(self.enemy);
-	if (enemy_vis){
+	//enemy_vis = q_visible(self.enemy);
+	//if (enemy_vis){
+	if (q_visible(self.enemy)){
 		self.search_time = time + 5;
   }
 // look for other coop players
 	if (coop && self.search_time < time)
 	{
+    // check for noticing a player
     if(self.ai_state != AI_STATE_HUNT){
-      q_FindTarget ();
+      if(ai_find_target()){
+        self.ai_state_prev = self.ai_state;
+        q_FoundTarget();
+      }
+      //q_FindTarget ();
     }
 	}
 
@@ -865,20 +896,20 @@ local entity	etemp;
 		}
 // this used to be an objerror
 		if (self.movetarget.classname == "path_corner"){
-      self.ai_move = AI_STATE_WALK;
+      self.ai_move = AI_MOVE_WALK;
 			//self.th_walk ();
     }
 		else{
 			self.pausetime = 99999999;
 			//self.th_stand ();
-      self.ai_move = AI_STATE_STAND;
+      self.ai_move = AI_MOVE_STAND;
     }
   }
 	else
 	{
 		self.pausetime = 99999999;
 		//self.th_stand ();
-    self.ai_move = AI_STATE_STAND;
+    self.ai_move = AI_MOVE_STAND;
 	}
 
 // spread think times so they don't all happen at same time

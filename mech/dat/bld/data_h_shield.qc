@@ -22,6 +22,7 @@ void() building_shield={
   util_setHealthArmor(100, 100, 1, 100) ;
   util_setBoundBox('-64 -64 0', '64 64 40');
   self.scale = 1;
+  self.deadflag = DEAD_NO;
   droptofloor();
   self.th_die = BecomeExplosion;
   self.think = SUB_Null;

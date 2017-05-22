@@ -3,9 +3,6 @@ mech Mod
 Author: Subject9x
 Date: 5/10/2017
 Overview: data file for building
-  type: radar tower
-  faction: humans
-  func: provides radar scanning to all friendly units in radius
 */
 
 /*QUAKED building_hangar (.1 .1 .1) (-64 -64 0) (64 64 40)
@@ -22,6 +19,7 @@ void() building_hangar={
   util_setHealthArmor(500, 500, 1, 100) ;
   util_setBoundBox('-56 -56 0', '56 56 64');
   self.scale = 1;
+  self.deadflag = DEAD_NO;
   droptofloor();
   self.th_die = BecomeExplosion;
   self.think = SUB_Null;

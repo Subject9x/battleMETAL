@@ -12,6 +12,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 float DAT_MTK_IDX = ID_MCH_MATOK;
 string DAT_MTK_VEC_NAME = "MATOK";
 float DAT_MTK_TECH_LEVEL = 1;
+float DAT_MTK_RADAR_RANGE = 10000;
 float DAT_MTK_RESERVE_COST = 200;
 float DAT_MTK_ENERGY_CUR = 400;
 float DAT_MTK_ENERGY_MAX = 400;
@@ -205,6 +206,7 @@ void() data_mtk_ini={
   self.data_idx= DAT_MTK_IDX;
   self.vec_name= DAT_MTK_VEC_NAME;
   self.data_type = DATA_MECH;
+  self.radar_range = DAT_MTK_RADAR_RANGE;
   self.i_techlvl= DAT_MTK_TECH_LEVEL;
   self.i_reserve= DAT_MTK_RESERVE_COST;
   self.en_cur= DAT_MTK_ENERGY_CUR;

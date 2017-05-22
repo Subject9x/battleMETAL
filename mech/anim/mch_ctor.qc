@@ -15,8 +15,8 @@ void() ctor_die1 = [$ctorstand1, ctor_die2]{
   e = spawn();
   oself = self;
   self = e;
-  setorigin(self, oself.origin);
-  BecomeExplosion();
+    setorigin(self, oself.origin);
+    BecomeExplosion();
   self = oself;
   
   self.c_bbx_n = '-1 -1 -1';
@@ -38,5 +38,7 @@ void() ctor_die1 = [$ctorstand1, ctor_die2]{
 };
 void() ctor_die2 = [$ctorstand1, ctor_die3]{};
 void() ctor_die3 = [$ctorstand1, ctor_die3]{
-  PlayerDead();
+  if((self.flags & FL_CLIENT)){
+    PlayerDead();
+  }
 };

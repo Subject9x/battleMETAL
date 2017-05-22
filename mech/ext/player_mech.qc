@@ -100,6 +100,9 @@ void() mech_cleanupMech={
   self.stat_w7_id = -1;
   self.stat_w8_id = -1;
   self.stat_w9_id = -1;
+  if((self.flags & FL_MONSTER)){
+    remove(self);
+  }
 };
 
 
@@ -132,7 +135,13 @@ void(entity comp) mech_player_compdie={
       local entity old;
       old = self;
       self = comp;
-        self.th_die();
+        if(self.th_die){
+          self.th_die();
+        }
+        else{
+          self.think = SUB_Remove;
+          self.nextthink = time + 0.001;
+        }
       self = old;
     }
   }
