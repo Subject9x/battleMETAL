@@ -3,6 +3,7 @@ mech mod
 Author: Subject9x
 Date: 9/7/2016
       mod 3/10/2017
+      mod 5/22/2017 - addded some monster flag checks
 Overview: implementation of mech player functions,
 */
 
@@ -69,14 +70,17 @@ void() mech_cleanupMech={
   mech_player_removecomp(oself.e_arm_l);
   mech_player_removecomp(oself.e_arm_r);
 
-  self = oself.e_legs;
+  if((self.flags & FL_CLIENT)){
+    self = oself.e_legs;
     local entity n;
     n = spawn();
     copyentity(self, n);
-    mech_player_removecomp(self);
+    
     self = n;
       leg_die1();
-  self = oself;
+    self = oself;
+    mech_player_removecomp(self.e_legs);
+  }
 
   w_chain = self.w_slot;
   while(w_chain){
@@ -91,16 +95,19 @@ void() mech_cleanupMech={
     w_chain = next;
   }
   self = oself;
-  self.stat_w1_id = -1;
-  self.stat_w2_id = -1;
-  self.stat_w3_id = -1;
-  self.stat_w4_id = -1;
-  self.stat_w5_id = -1;
-  self.stat_w6_id = -1;
-  self.stat_w7_id = -1;
-  self.stat_w8_id = -1;
-  self.stat_w9_id = -1;
+  if((self.flags & FL_CLIENT)){
+    self.stat_w1_id = -1;
+    self.stat_w2_id = -1;
+    self.stat_w3_id = -1;
+    self.stat_w4_id = -1;
+    self.stat_w5_id = -1;
+    self.stat_w6_id = -1;
+    self.stat_w7_id = -1;
+    self.stat_w8_id = -1;
+    self.stat_w9_id = -1;
+  }
   if((self.flags & FL_MONSTER)){
+    mech_player_removecomp(self.e_cam);
     remove(self);
   }
 };

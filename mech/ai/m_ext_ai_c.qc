@@ -16,7 +16,6 @@ void() ai_control={
     return;
   }
   
-  
   if(self.enemy){
     if(self.enemy.health <= 0){
       self.enemy = world;
@@ -27,14 +26,31 @@ void() ai_control={
     if(self.enemy != world){
       q_ai_face();
     }
+    if(self.oldenemy != world){
+      self.enemy = self.oldenemy;
+      q_FoundTarget();
+    }
   }
   
   if(self.p_class == P_MECH){
     ai_mech_update();
   }
-
   ai_weapon_update();
   ai_conv_update();
+  
+  if(time > self.power_timer){
+    if(self.ai_move = AI_MOVE_BACK){
+      self.ai_move = AI_MOVE_RUN_STRAFE;
+    }
+    self.power_timer = time + 0.1;
+  }
+  
+  if(self.ai_patience > 10){
+    if(self.ai_state == AI_STATE_HUNT){
+      self.ai_move = AI_MOVE_RUN_STRAFE;
+    }
+    self.ai_patience = 0;
+  }
   
   if(astate == AI_STATE_WANDER){
     
@@ -46,6 +62,9 @@ void() ai_control={
       self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
       if(self.ai_move != AI_MOVE_WALK){
         self.ai_move = AI_MOVE_WALK;
+      }
+      if(self.origin == self.ai_prev_org){
+        self.ai_move = AI_MOVE_BACK;
       }
     }
     else{
@@ -76,7 +95,16 @@ void() ai_control={
   else if(move == AI_MOVE_RUN){
     self.th_run();
   }
-
+  else if(move == AI_MOVE_RUN_STRAFE){
+    ai_move_strafe();
+  }
+  else if(move == AI_MOVE_BACK){
+    q_ai_back(self.m_fspeed / 500);
+    if(self.ai_prev_org != self.origin){
+      self.ai_move = AI_MOVE_RUN_STRAFE;
+    }
+  }
+  self.ai_prev_org = self.origin;
   self.think = ai_control;
   self.nextthink = time + 0.005;
 };
@@ -87,6 +115,9 @@ void() ai_mech_walk={
   spd = self.m_fspeed / 500;
   dist = vlen(self.enemy.origin - self.origin);
   q_ai_walk(spd);
+  if(self.origin == self.ai_prev_org){
+    self.ai_move = AI_MOVE_RUN_STRAFE;
+  }
 };
 
 void() ai_mech_run={
@@ -96,35 +127,89 @@ void() ai_mech_run={
   spd = spd + (spd/3);
   dist = vlen(self.enemy.origin - self.origin);
   if(dist <= 200){
-    self.ai_move = AI_MOVE_STAND;
+    self.ai_patience = self.ai_patience + 5;
   }
   else{
     q_ai_run(spd);
   }
+  if(self.origin == self.ai_prev_org){
+    self.ai_move = AI_MOVE_RUN_STRAFE;
+  }
 };
+
+void() ai_move_strafe={
+	local	vector	dtemp;
+	local	float	heading,  spd, dist;
+  spd = self.m_fspeed / 500;
+  spd = spd + (spd/3);
+	local float	ofs;
+	
+	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+	ChangeYaw ();
+	if (self.lefty){
+		ofs = 90;
+	}
+  else{
+		ofs = -90;
+	}
+	if (walkmove (self.ideal_yaw + ofs, dist)){
+		return;
+  }
+	self.lefty = 1 - self.lefty;
+	
+	walkmove (self.ideal_yaw - ofs, dist);
+  
+  q_ai_run(dist);//new
+  if(self.origin == self.ai_prev_org){
+    self.ai_move = AI_MOVE_BACK;
+  }
+}
+
 
 void() ai_mech_attack={
   local entity ai, wep_chain, oself;
   local float dist;
   ai = self;
   if(self.enemy == world){
-    //bprint("was world\n"); //DEBUG
-    return;
+    if(self.oldenemy != world){
+      self.enemy = self.oldenemy;
+      q_FoundTarget();
+      return;
+    }
+    else{
+      self.ai_patience = self.ai_patience + 1;
+      return;
+    }
   }
   
   if(!q_infront(self.enemy)){
+    self.ai_patience = self.ai_patience + 1;
     return;
   }
   if(!q_FacingIdeal()){
+    self.ai_patience = self.ai_patience + 1;
     return;
+  }
+
+  traceline(self.origin, self.enemy.origin, FALSE, self);
+  if(trace_ent != self.enemy){
+    if((trace_ent.flags & FL_MONSTER) || (trace_ent.flags & FL_CLIENT)){
+      if(trace_ent.i_faction != self.i_faction){
+        self.oldenemy = self.enemy;
+        self.enemy = trace_ent;
+        q_FoundTarget;
+        return;
+      }
+    }
+    else{
+      self.oldenemy = self.enemy;
+      self.enemy = world;
+      ai_update_state(AI_STATE_WANDER);
+      return;
+    }
   }
   wep_chain = self.w_slot;
   dist = vlen(self.enemy.origin - self.origin);
-  traceline(self.origin, self.enemy.origin, FALSE, self);
-  if(trace_ent != self.enemy){
-    //only fire on a clear shot.
-    return;
-  }
   while(wep_chain){
       if(wep_chain.w_isready){
         if( dist <= wep_chain.w_range){
@@ -195,6 +280,13 @@ float() ai_find_target={
     //already found a target
     return FALSE;
   }
+  if(self.enemy == world){
+    if(self.oldenemy != world){
+      self.enemy = self.oldenemy;
+      self.oldenemy = world;
+      return TRUE;
+    }
+  }
   //make optical check first
   local entity targ, t_opt, t_rdr;
   local float len;
@@ -229,6 +321,7 @@ float() ai_find_target={
     //bprint(strcat("optical target: ", t_opt.classname,"\n"));//DEBUG
     //found a target in LoS
     self.enemy = t_opt;
+    q_FoundTarget();
     return TRUE;
   }
   
@@ -258,9 +351,9 @@ float() ai_find_target={
     targ = targ.chain;
   }
   if(t_rdr != world){
-    //bprint(strcat("radar target: ", t_rdr.classname,"\n"));//DEBUG
     //found one on sensors;
     self.enemy = t_rdr;
+    q_FoundTarget();
     return TRUE;
   }
   return FALSE;
@@ -296,7 +389,7 @@ void() ai_mech_die={
   ctor_die1();
   
   self.think = ai_mech_cleanup;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.01;
 };
 
 void() ai_mech_cleanup={

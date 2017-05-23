@@ -234,7 +234,6 @@ void() ChangeYaw =
 
 void() q_HuntTarget =
 {
-  //bprint("q_HuntTarget\n"); //DEBUG
   if(self.enemy.deadflag <= DEAD_NO){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
     self.ai_move = AI_MOVE_RUN;
@@ -248,16 +247,8 @@ void() q_HuntTarget =
 
 void() q_FoundTarget =
 {
-	//if (self.enemy.classname == "player"){	
-    // let other monsters see this monster for a while
-		//sight_entity = self;
-		//sight_entity_time = time;
-	//}
-	//bprint("q_FoundTarget\n"); //DEBUG
-	//self.show_hostile = time + 1;		// wake up other monsters
   self.ai_move = AI_MOVE_RUN;
   ai_update_state(AI_STATE_HUNT);
-  //self.ai_state = AI_STATE_HUNT;
 };
 
 /*
@@ -589,11 +580,6 @@ void(float dist) q_ai_run =
 		}
 		else
 		{
-			/*if (self.movetarget){
-        self.ai_move = AI_MOVE_RUN;
-        ai_update_state(AI_STATE_HUNT);
-			}
-			else{*/
         ai_update_state(AI_STATE_TOPOINT);
         self.ai_move = AI_MOVE_STAND;
       //}

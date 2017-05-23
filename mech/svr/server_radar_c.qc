@@ -25,7 +25,7 @@ vector() radar_MakeSweep={
             ht = ht + radar_calcPlayerDist(contact, ht);
             ht = ht + radar_calcEnemyDist(root, contact, ht);
             ht = ht + radar_calcUnitValue(contact, ht) ;
-            face = q_infront(contact); //oh look an actual use for original qc code
+            face = ai_target_infront(contact); //oh look an actual use for original qc code
             if(face){
               heat_front =  heat_front + ht;
             }

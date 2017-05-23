@@ -26,24 +26,16 @@ void() ai_mech={
   self.sh_max = 0;
   self.sh_rate = 0;
   self.stat_legs_hp = 0;
-  self.stat_legs_am = 0;
   self.stat_ctor_hp = 0;
-  self.stat_ctor_am = 0;
   self.stat_ltor_hp = 0;
-  self.stat_ltor_am = 0;
   self.stat_rtor_hp = 0;
-  self.stat_rtor_am = 0;
   self.stat_larm_hp = 0;
-  self.stat_larm_am = 0;
   self.stat_rarm_hp = 0;
-  self.stat_rarm_am = 0;
   self.w_group1 = 0;
   self.w_group2 = 0;
   self.w_group3 = 0;
   self.w_group4 = 0;
   self.w_group5 = 0;
-  self.stat_wep_state = 0;
-  self.stat_wep_rel = 0;
   
   self.stat_trg_vid = -1;
   self.stat_trg_ddflg = -1;
@@ -70,13 +62,8 @@ void() ai_mech={
   self.stat_spr_y = 0;
   self.conv_min = '0 0 0';
   self.conv_max = '0 0 0';
-  self.stat_plr_stt = 0;
-  self.stat_plr_fir = FIRE_GROUP;
   self.stat_lck_stt = LOCK_NONE;
-  self.stat_plr_ptc = 0;
-  self.stat_plr_ang = 0;
   
-
   local entity dat;
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   if(!dat){
@@ -85,34 +72,34 @@ void() ai_mech={
     return;
   }
   self.ai_optical = self.radar_range /2;
-  
-  
+  self.ai_patience = 0;
+  self.ai_prev_org = self.origin;
   self.ideal_yaw = self.angles * '0 1 0';
 	if (!self.yaw_speed){
     if(self.nextVecChoice == 1){
-      self.yaw_speed = 1;//20;
+      self.yaw_speed = 2;//20;
     }
     else if(self.nextVecChoice == 2){
-      self.yaw_speed = 0.75;//10;
+      self.yaw_speed = 1;//10;
     }
     else if(self.nextVecChoice == 3){
-      self.yaw_speed = 0.5;//2.5;
+      self.yaw_speed = 0.75;//2.5;
     }
   }
 		
-    
   buildVehicle(dat);
   self.en_rate = self.en_rate / 150; // DEBUG
   self.sh_rate = self.sh_rate / 150;
   self.solid = SOLID_BBOX;
   
   self.th_die = ai_mech_die;
-  self.th_walk = ai_mech_walk;
-  self.th_run = ai_mech_run;
+  //self.th_walk = ai_mech_walk;
+  //self.th_run = ai_mech_run;
   self.th_missile = ai_mech_attack;
-  self.th_stand = ai_mech_stand;
-  self.ai_state = 0;
-  self.ai_move = AI_MOVE_STAND;
+  //self.th_stand = ai_mech_stand;
+  self.ai_unit_update = ai_mech_update;
+  self.ai_next_state = ai_state_ready;
+  self.ai_next_move = ai_move_stand;
   
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
@@ -125,7 +112,6 @@ void() ai_mech={
 	}
   
   self.ideal_yaw = self.angles * '0 1 0';
-	self.use = q_monster_use;
   
   if (self.target)
 	{
@@ -139,21 +125,19 @@ void() ai_mech={
 		}
 // this used to be an objerror
 		if (self.movetarget.classname == "path_corner"){
-      self.ai_move = AI_MOVE_WALK;
+     // self.ai_move = AI_MOVE_WALK;
 			//self.th_walk ();
 		}else{
 			self.pausetime = 99999999;
-      self.ai_move = AI_MOVE_STAND;
+      //self.ai_move = AI_MOVE_STAND;
     }
 	}
 	else
 	{
 		self.pausetime = 99999999;
-    self.ai_move = AI_MOVE_STAND;
+    //self.ai_move = AI_MOVE_STAND;
 	}
   self.goalentity = world;
-  self.ai_state = AI_STATE_TOPOINT;
-  self.ai_move = AI_MOVE_WALK;
 
   
   //DEBUG ONLY

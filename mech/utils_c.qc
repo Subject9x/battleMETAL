@@ -45,7 +45,12 @@ vector(entity own, entity ofsent, vector prev_tracend) util_traceForOffset={
   org = own.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   ofsent.fx_origin = org;
   traceline(org, prev_tracend, FALSE, own);
-  return trace_endpos;
+  if((trace_ent == self.enemy) || (trace_ent.i_faction != own.i_faction)){
+    return trace_endpos;
+  }
+  else{
+    return own.origin;
+  }
 }; 
 
 float(float mod, float targ_val) util_zeroStat={
@@ -179,4 +184,13 @@ entity(string part, entity unit) util_getPartFromName={
   else{
     return unit;
   }
+};
+
+float(float v) anglemod =
+{
+	while (v >= 360)
+		v = v - 360;
+	while (v < 0)
+		v = v + 360;
+	return v;
 };

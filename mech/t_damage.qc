@@ -56,6 +56,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
+  if((self.flags & FL_MONSTER)){
+    anger_monster(attacker);
+  }
+  
   //check shields
   if(trg.sh_cur >= 0){
     new_dmg = damage_shield(trg, dmg_amt, dmg_type);
@@ -122,16 +126,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
         return trg;
       }
     }
-  }
-  
-  if(self.classname == MECH_PIECE){
-    oself = self;
-    self = self.owner;
-      anger_monster(attacker);
-    self = oself;
-  }
-  else{
-    anger_monster(attacker);
   }
   return trg;
 };
@@ -445,7 +439,7 @@ void(entity attacker) anger_monster={
       bprint("angry!\n");
       self.oldenemy = self.enemy;
       self.enemy = attacker;
-      q_FoundTarget ();
+      self.ai_next_state = ai_state_hunt;
     }
   }
 };
@@ -646,7 +640,8 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 				if (self.enemy.classname == "player")
 					self.oldenemy = self.enemy;
 				self.enemy = attacker;
-				q_FoundTarget ();
+				self.ai_next_state = ai_state_hunt;
+        //q_FoundTarget ();
 			}
 		}
 	}

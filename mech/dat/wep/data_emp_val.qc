@@ -88,16 +88,6 @@ void() data_emp_atk={
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
     local vector dir, org, end, adj;
-    self.w_currentammo = self.w_currentammo - 1;
-    self.w_isready = FALSE;
-    if(self.w_currentammo <=0){
-      self.w_firetime = time + self.w_reloadtime;
-      self.power_timer = self.w_firetime;
-      self.w_currentammo = self.w_clipsize;
-    }
-    else{
-      self.w_firetime = time + self.w_firerate;
-    }
 
     if((player.flags & FL_CLIENT)){
       end = util_traceForPlayer(player, player.stat_spr_x, player.stat_spr_y, '0 0 0', self.w_range);
@@ -109,6 +99,24 @@ void() data_emp_atk={
       end = util_traceForAI(player, spr, '0 0 0', self.w_range, 0); 
     }
     dir = util_traceForOffset(player, self, end);
+    if(dir == player.origin){
+      if((player.flags & FL_MONSTER)){
+        player.ai_patience = player.ai_patience + 1;
+      }
+      return;
+    }
+    
+    self.w_currentammo = self.w_currentammo - 1;
+    self.w_isready = FALSE;
+    if(self.w_currentammo <=0){
+      self.w_firetime = time + self.w_reloadtime;
+      self.power_timer = self.w_firetime;
+      self.w_currentammo = self.w_clipsize;
+    }
+    else{
+      self.w_firetime = time + self.w_firerate;
+    }
+    
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
     makevectors(player.angles);

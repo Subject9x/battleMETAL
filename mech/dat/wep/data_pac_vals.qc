@@ -84,17 +84,7 @@ void() data_pac_think={
 
 void() data_pac_atk={
   
-  self.w_isready = FALSE;
-  self.w_currentammo = self.w_currentammo - 1;
-  if(self.w_currentammo <=0){
-    self.w_firetime = time + self.w_reloadtime;
-    self.power_timer = self.w_firetime;
-    self.w_currentammo = self.w_clipsize;
-  }
-  else{
-    self.w_firetime = time + self.w_firerate;
-  }
-  
+
   local entity cam, player, oself, proj;
   local vector spread;
 	local vector dir, end, adj;
@@ -111,7 +101,23 @@ void() data_pac_atk={
   }
   dir = util_traceForOffset(player, self, end);
   
-	player.punchangle_x = -0.05;
+  if(dir == player.origin){
+    if((player.flags & FL_MONSTER)){
+      player.ai_patience = player.ai_patience + 1;
+    }
+    return;
+  }
+  
+  self.w_isready = FALSE;
+  self.w_currentammo = self.w_currentammo - 1;
+  if(self.w_currentammo <=0){
+    self.w_firetime = time + self.w_reloadtime;
+    self.power_timer = self.w_firetime;
+    self.w_currentammo = self.w_clipsize;
+  }
+  else{
+    self.w_firetime = time + self.w_firerate;
+  }
 
   local entity laser_org;
   laser_org = spawn();
