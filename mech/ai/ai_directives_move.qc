@@ -8,7 +8,6 @@ this one will focus on move to move
 //TODO - move this stuff to own file
 void() ai_mech_update={
   
-  
   local entity oself;
   oself = self;
   ctrl_updateCenterTorso();
@@ -46,6 +45,10 @@ void() ai_mech_update={
     if(self.stat_spr_y > self.conv_max_y){
       self.stat_spr_y =  self.conv_max_y;
     }
+  }
+    
+  if(self.enemy != world){
+    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
   }
 };
 
@@ -114,33 +117,64 @@ void() ai_control={
     return;
   }
   self.ai_unit_update();
+  //do not panic yet
+  //if(self.health <= (self.max_health /1.25)){
+   // self.ai_next_state = ai_state_panic;
+  //}
   self.ai_next_state();
   self.ai_next_move();
   self.think = ai_control;
   self.nextthink = time + 0.005;
+  if(self.ai_patience > 20){
+    self.ai_patience = 0;
+  }
 };
 
 //move directives
 void() ai_move_stand={
-  if(ai_core_findtarget()){
-    self.ai_next_state = ai_state_hunt;
+  if(ai_core_targetstate()){
+    ChangeYaw ();
   }
 };
 
 void() ai_move_walk={ 
-  movetogoal(self.m_fspeed/100);
+  movetogoal(self.m_fspeed/400);
 };
 
 void() ai_mive_walk_slide={
-
+  local float ofs;
+  ChangeYaw();
+  	if (self.lefty){
+		ofs = 90;
+	}
+  else{
+		ofs = -90;
+	}
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed/400)){
+		return;
+  }
+	self.lefty = 1 - self.lefty;
+  walkmove( self.ideal_yaw, self.m_fspeed/400);
 };
 
 void() ai_move_run={  
-  movetogoal(self.m_fspeed/75);
+  movetogoal(self.m_fspeed/300);
 };
 
 void() ai_move_run_slide={
-
+  local float ofs;
+  ChangeYaw();
+  	if (self.lefty){
+		ofs = 90;
+	}
+  else{
+		ofs = -90;
+	}
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed/300)){
+		return;
+  }
+	self.lefty = 1 - self.lefty;
+  walkmove( self.ideal_yaw, self.m_fspeed/300);
 };
 
 void() ai_move_forward={

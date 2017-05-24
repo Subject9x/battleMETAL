@@ -109,8 +109,8 @@ void() data_esr_atk={
   if((player.flags & FL_MONSTER)){
     if(dir == player.origin){
       player.ai_patience = player.ai_patience + 1;
+      return;
     }
-    return;
   }
     
   self.w_isready = FALSE;
@@ -136,13 +136,8 @@ void() data_esr_atk={
   local float dtype;
   dtype = dtype | DMG_ENE;
   
-  if(trace_ent != world){
-    local float bbx;
-    bbx = trace_ent.c_bbx_x_x / 4;
-    dir = dir + (v_forward*bbx);
-  }
   te_customflash(dir, 4, 10, '0 0 1');
-  t_damage(trace_ent, self, player, DAT_ESR_DMG, dtype, dir, '0 0 0');
+  t_damage(trace_ent, self, player, DAT_ESR_DMG, dtype, dir + (v_forward*3), '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);

@@ -87,16 +87,6 @@ void() data_qrfl_atk={
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
     local vector dir, org, end, adj;
-    self.w_isready = FALSE;
-    self.w_currentammo = self.w_currentammo - 1;
-    if(self.w_currentammo <=0){
-      self.w_firetime = time + self.w_reloadtime;
-      self.power_timer = self.w_firetime;
-      self.w_currentammo = self.w_clipsize;
-    }
-    else{
-      self.w_firetime = time + self.w_firerate;
-    }
     
     if((player.flags & FL_CLIENT)){
       end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y + self.stat_spr_y), '1 1 1', self.w_range);
@@ -108,6 +98,24 @@ void() data_qrfl_atk={
       end = util_traceForAI(player, spr, '1 1 1', self.w_range, 0); 
     }
     dir = util_traceForOffset(player, self, end);
+    
+    if((player.flags & FL_MONSTER)){
+      if(dir == player.origin){
+        player.ai_patience = player.ai_patience + 1;
+        return;
+      }
+    }
+    
+    self.w_isready = FALSE;
+    self.w_currentammo = self.w_currentammo - 1;
+    if(self.w_currentammo <=0){
+      self.w_firetime = time + self.w_reloadtime;
+      self.power_timer = self.w_firetime;
+      self.w_currentammo = self.w_clipsize;
+    }
+    else{
+      self.w_firetime = time + self.w_firerate;
+    }
     
     local float qbits;
     qbits = DAT_QRFL_QBITS;

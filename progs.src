@@ -39,8 +39,6 @@ dp/dpextensions.qc
   mech/impulse_h.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
-  //mech/ai/m_ai_h.qc
-  //mech/ai/m_ext_ai_h.qc
   mech/ai/m_ext_ai_h2.qc
   q1/qwep/wep_fx_h.qc
 //==========================
@@ -89,9 +87,7 @@ dp/dpextensions.qc
 
 //impl files
   //ai
-  //mech/ai/m_ai_c.qc
   mech/ai/m_ai_test.qc
-  //mech/ai/m_ext_ai_c.qc
   mech/ai/ai_directives_move.qc
   mech/ai/ai_directives_state.qc
   mech/ai/ai_core_utils.qc
@@ -142,7 +138,6 @@ world.qc
 //client.qc
 //============================
   mech/map_objects_c.qc
-  mech/m_dummy.qc
   mech/ext/m_client.qc
   mech/ext/m_player.qc
  

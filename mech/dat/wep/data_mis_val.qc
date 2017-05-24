@@ -96,11 +96,11 @@ void() data_mis_atk={
       end = util_traceForAI(player, spr, '1 1 1', self.w_range, 0); 
     }
     dir = util_traceForOffset(player, self, end);
-    if(dir == player.origin){
-      if((player.flags & FL_MONSTER)){
+    if((player.flags & FL_MONSTER)){
+      if(dir == player.origin){
         player.ai_patience = player.ai_patience + 1;
+        return;
       }
-      return;
     }
     self.w_isready = FALSE;
     self.w_currentammo = self.w_currentammo - 1;

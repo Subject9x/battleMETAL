@@ -4,16 +4,6 @@ Date: 5/22/2017
 Overview: next draft the ai
 this one will focus on move to move
 */
-
-float AI_STATE_READY = 0;
-float AI_STATE_WANDER = 1; // mods the move state, wander = random movement
-float AI_STATE_TOPOINT = 2; //mods the move state, move to a non-target point
-float AI_STATE_HUNT = 3;      //mods the move state, actively chase a target
-float AI_STATE_COVER = 4;
-float AI_STATE_DEFEND = 5;
-
-
-.float ai_state; //tracks the state of the AI
 .float ai_optical; //the 'visual' range the ai can see out before relying on sensors
 .float ai_patience; //counter for if AI is stuck on something
 .vector ai_prev_org;
@@ -42,6 +32,7 @@ void() ai_state_wander;
 void() ai_state_tonode;
 void() ai_state_defend;
 void() ai_state_ready;
+void() ai_state_panic;
 
 //utility functions
 float(entity targ) ai_target_infront;
@@ -53,6 +44,9 @@ float() ai_core_targetstate; //checks to see if target ent is still a valid ent 
 entity() ai_core_opticaltarget;
 entity() ai_core_radartarget;
 float() ai_target_facingideal;
+float() ai_core_panicnode;
+float(vector chk, vector node) ai_core_nodelos;
+
 //TODO - separate header?
 void() ai_mech_update;
 void() ai_mech_attack;

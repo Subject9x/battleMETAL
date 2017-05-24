@@ -2,9 +2,9 @@
   player qc
 */
 void() PlayerPreThink = {
-  local	float	mspeed, aspeed;
-	local	float	r;
-  local entity oself;
+  //local	float	mspeed, aspeed;
+	//local	float	r;
+  //local entity oself;
 
 	if (intermission_running)
 	{
@@ -86,7 +86,7 @@ void() PlayerPostThink = {
   }
   
 // do weapon stuff
-  self.stat_plr_ang = anglemod(self.v_angle_y);
+    self.stat_plr_ang = anglemod(self.v_angle_y);
   //STAT UPDATE   
   if(self.p_class == P_MECH){
     self.stat_plr_camx = self.e_cam.c_ofs_x;
@@ -162,7 +162,7 @@ void() PlayerPostThink = {
 
 
 void() PlayerDie={
-  local float f;
+  //local float f;
 	if (self.deadflag)
 	{
 		bprint("warning: PlayerDie called twice\n");
@@ -203,7 +203,7 @@ void() PlayerDead={
 
 
 void() PlayerDeathThink={
-  local entity	old_self;
+  //local entity	old_self;
 	local float		forward;
 	if ((self.flags & FL_ONGROUND)){
 		forward = vlen (self.velocity);
@@ -241,7 +241,7 @@ void() PlayerDeathThink={
 };
 
 void() PlayerJump={
-  	local vector start, end;
+ //local vector start, end;
 	
 	if (self.flags & FL_WATERJUMP)
 		return;

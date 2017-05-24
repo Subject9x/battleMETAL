@@ -94,17 +94,7 @@ void() data_sfga_think={
 void() data_sfga_atk={
   local entity player, proj, cam, oself;
   player = self.owner;
-  
-  self.w_isready = FALSE;
-  self.w_currentammo = self.w_currentammo - 1;
-  if(self.w_currentammo <=0){
-    self.w_firetime = time + self.w_reloadtime;
-    self.power_timer = self.w_firetime;
-    self.w_currentammo = self.w_clipsize;
-  }
-  else{
-    self.w_firetime = time + self.w_firerate;
-  }
+ 
   local vector dir, end, adj, org;
  
   if((player.flags & FL_CLIENT)){
@@ -118,6 +108,24 @@ void() data_sfga_atk={
   }
 
   dir = util_traceForOffset(player, self, end);
+  
+  if((player.flags & FL_MONSTER)){
+    if(dir == player.origin){
+      player.ai_patience = player.ai_patience + 1;
+      return;
+    }
+  }
+  
+  self.w_isready = FALSE;
+  self.w_currentammo = self.w_currentammo - 1;
+  if(self.w_currentammo <=0){
+    self.w_firetime = time + self.w_reloadtime;
+    self.power_timer = self.w_firetime;
+    self.w_currentammo = self.w_clipsize;
+  }
+  else{
+    self.w_firetime = time + self.w_firerate;
+  }
   
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
   makevectors(player.angles);

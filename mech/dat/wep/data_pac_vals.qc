@@ -101,11 +101,11 @@ void() data_pac_atk={
   }
   dir = util_traceForOffset(player, self, end);
   
-  if(dir == player.origin){
-    if((player.flags & FL_MONSTER)){
+  if((player.flags & FL_MONSTER)){
+    if(dir == player.origin){
       player.ai_patience = player.ai_patience + 1;
+      return;
     }
-    return;
   }
   
   self.w_isready = FALSE;
@@ -129,7 +129,7 @@ void() data_pac_atk={
   local float dtype;
   dtype = DMG_ENE + EFF_PRC;
 
-  t_damage(trace_ent, self, player, DAT_PAC_DMG, dtype, dir, '0 0 0');
+  t_damage(trace_ent, self, player, DAT_PAC_DMG, dtype, dir + (v_forward*3), '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/gauss.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);

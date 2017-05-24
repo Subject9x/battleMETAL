@@ -44,8 +44,9 @@ vector(entity own, entity ofsent, vector prev_tracend) util_traceForOffset={
   makevectors(own.angles);
   org = own.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   ofsent.fx_origin = org;
+  makevectors(self.angles);
   traceline(org, prev_tracend, FALSE, own);
-  if((trace_ent == self.enemy) || (trace_ent.i_faction != own.i_faction)){
+  if(trace_ent.i_faction != own.i_faction){
     return trace_endpos;
   }
   else{

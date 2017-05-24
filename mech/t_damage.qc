@@ -16,9 +16,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if(!trg.takedamage){
     return trg;
   }
-  
-  damage_attacker = attacker;
-  
   //add in ignore team damage
   
   if(trg.flags & FL_GODMODE){
@@ -56,8 +53,8 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
-  if((self.flags & FL_MONSTER)){
-    anger_monster(attacker);
+  if((trg.flags & FL_MONSTER)){
+    anger_monster(trg, attacker);
   }
   
   //check shields
@@ -73,7 +70,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     dmg_amt = new_dmg;
   }
   else{
-    anger_monster(attacker);
     newmis = spawn();
     oself = self; 
     self = newmis;
@@ -433,13 +429,24 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
 };
 
 
-void(entity attacker) anger_monster={
-	if ( (self.flags & FL_MONSTER) && (attacker != world)){
-    if ((self != attacker) && (attacker != self.enemy)){
-      bprint("angry!\n");
-      self.oldenemy = self.enemy;
-      self.enemy = attacker;
-      self.ai_next_state = ai_state_hunt;
+void(entity trg, entity atk) anger_monster={
+  if(atk != world){
+    if(atk.owner != trg){
+      if(atk != trg){
+        if(atk.i_faction != trg.i_faction){
+          if((atk != trg.enemy) && (trg.enemy == world)){
+            local entity s;
+            s = self;
+            self = trg;
+              self.enemy = atk;
+              if(self.ai_next_state != ai_state_hunt){
+                self.ai_next_state = ai_state_hunt;
+              }
+            self = s;
+            return;
+          }
+        }  
+      }    
     }
   }
 };

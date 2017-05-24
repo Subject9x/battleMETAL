@@ -18,7 +18,7 @@ float(entity targ, float dmg_amt, float dmg_type) shield_vs_ene;
 float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis;
 float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor;
 entity(entity parent, vector org, float start_rad) closestWeapon;
-void(entity attacker) anger_monster;
+void(entity trg, entity atk) anger_monster;
 //kept for posterity, see the impl file for detials
 //entity(vector point, float rad, entity src, entity own, entity prev) t_find_recurse;
 //entity(entity targ, entity inflictor, entity attacker, vector dmg_point) damage_mech;

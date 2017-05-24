@@ -111,8 +111,6 @@ void() ai_mech={
 		dprint ("\n");
 	}
   
-  self.ideal_yaw = self.angles * '0 1 0';
-  
   if (self.target)
 	{
 		self.goalentity = self.movetarget = find(world, targetname, self.target);
@@ -125,21 +123,22 @@ void() ai_mech={
 		}
 // this used to be an objerror
 		if (self.movetarget.classname == "path_corner"){
-     // self.ai_move = AI_MOVE_WALK;
-			//self.th_walk ();
+      self.ai_next_state = ai_state_tonode;
+      self.ai_next_move = ai_move_walk;
 		}else{
 			self.pausetime = 99999999;
-      //self.ai_move = AI_MOVE_STAND;
+      self.ai_next_state = ai_state_ready;
+      self.ai_next_move = ai_move_stand;
     }
 	}
 	else
 	{
 		self.pausetime = 99999999;
-    //self.ai_move = AI_MOVE_STAND;
+      self.ai_next_state = ai_state_ready;
+      self.ai_next_move = ai_move_stand;
 	}
   self.goalentity = world;
 
-  
   //DEBUG ONLY
   self.think = ai_control;
   self.nextthink = time + 5;

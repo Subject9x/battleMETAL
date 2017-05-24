@@ -84,11 +84,10 @@ void() data_latc_think={
 
 void() data_latc_atk={
   local entity player, proj, cam, oself;
+  local vector dir, end, adj; 
+  
   player = self.owner;
   
-
-  local vector dir, end, adj;
- 
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y+self.stat_spr_y), '1 1 1', self.w_range);
   }
@@ -100,11 +99,11 @@ void() data_latc_atk={
   }
 
   dir = util_traceForOffset(player, self, end);
-  if(dir == player.origin){
-    if((player.flags & FL_MONSTER)){
+  if((player.flags & FL_MONSTER)){
+    if(dir == player.origin){
       player.ai_patience = player.ai_patience + 1;
+      return;
     }
-    return;
   }
   self.w_isready = FALSE;
   self.w_currentammo = self.w_currentammo - 1;
@@ -116,21 +115,19 @@ void() data_latc_atk={
   else{
     self.w_firetime = time + self.w_firerate;
   }
-  if(trace_ent){
-    te_superspike(dir);
-  }
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  
-  t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir, '0 0 0');
+  te_superspike(dir);
+  t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir + (v_forward*3), '0 0 0');
   
   local entity bul_fx;
   bul_fx = spawn();
   bul_fx.movetype = SOLID_NOT;
   bul_fx.classname = "missile";
   setmodel(bul_fx, "progs/muzzleflash.spr32");
-  setsize(bul_fx, '0 0 0', '0 0 0');
+  setsize(bul_fx, '-1 -1 -1', '1 1 1');
   setorigin(bul_fx, self.fx_origin);
+  bul_fx.alpha = 0.85;
   bul_fx.glow_color = 250;
   bul_fx.glow_size = 1;
   bul_fx.glow_trail = TRUE;

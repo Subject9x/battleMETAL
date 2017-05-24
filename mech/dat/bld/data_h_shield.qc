@@ -26,5 +26,5 @@ void() building_shield={
   droptofloor();
   self.th_die = BecomeExplosion;
   self.think = SUB_Null;
-  self.nextthink = time + 10000000;
+  self.nextthink = time + 1;
 };

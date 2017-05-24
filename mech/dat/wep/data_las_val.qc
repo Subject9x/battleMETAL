@@ -98,11 +98,11 @@ void() data_las_atk={
     end = util_traceForAI(player, spr, '1 1 1', self.w_range, 10); 
   }
   dir = util_traceForOffset(player, self, end);
-  if(dir == player.origin){
-    if((player.flags & FL_MONSTER)){
+  if((player.flags & FL_MONSTER)){
+    if(dir == player.origin){
       player.ai_patience = player.ai_patience + 1;
+      return;
     }
-    return;
   }
   
   self.w_isready = FALSE;
@@ -129,10 +129,9 @@ void() data_las_atk={
   te_lightning1(laser_org, laser_org.origin, dir);
   
   te_flamejet(dir, '0 25 0', 5);
-  te_plasmaburn(dir);
   
   local float dtype;
   dtype = DMG_ENE;
   
-  t_damage(trace_ent, self, player, DAT_LAS_DMG, dtype, dir, '0 0 0');
+  t_damage(trace_ent, self, player, DAT_LAS_DMG, dtype, dir + (v_forward*3), '0 0 0');
 };

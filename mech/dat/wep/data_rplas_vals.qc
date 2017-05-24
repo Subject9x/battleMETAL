@@ -98,11 +98,11 @@ void() data_rplas_atk={
     }
     dir = util_traceForOffset(player, self, end);
     
-    if(dir == player.origin){
-      if((player.flags & FL_MONSTER)){
+    if((player.flags & FL_MONSTER)){
+      if(dir == player.origin){
         player.ai_patience = player.ai_patience + 1;
+        return;
       }
-      return;
     }
     
     self.w_isready = FALSE;

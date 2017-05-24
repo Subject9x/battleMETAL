@@ -19,24 +19,23 @@ void() ai_node={
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
   setmodel(self, "q3mdl/testball.md3");
-  setsize(self, '-1 -1 -1', '1 1 1');
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
-  self.touch = ai_node_touch;
-  
+  self.touch = ai_node_touch; 
 }
 
 void() ai_node_touch={
-  if((other.flags & FL_MONSTER)){
-    if(other.enemy == world){
-      //no target so continue on as normal
-      if(self.targetname){
-        //checks for patrol style ai_node
-        other.goalentity = find(world, targetname, self.target);
+  if(self.isActive){
+    if((other.flags & FL_MONSTER)){
+      if(other.enemy == world){
+        //no target so continue on as normal
+        if(self.targetname){
+          //checks for patrol style ai_node
+          other.goalentity = find(world, targetname, self.target);
+        }
       }
     }
   }
-
   if(other.p_class != P_OBS){
     return;
   }

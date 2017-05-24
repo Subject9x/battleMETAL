@@ -20,15 +20,15 @@ void() ctrl_updateCenterTorso={
   }
 
   if(self.en_cur < self.en_max){
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur > self.en_max){
-        diff = self.en_cur - self.en_max;
-        self.en_cur = self.en_cur - diff;
-      }
+    self.en_cur = self.en_cur + self.en_rate;
+    if(self.en_cur > self.en_max){
+      diff = self.en_cur - self.en_max;
+      self.en_cur = self.en_cur - diff;
+    }
   }
   
   if(self.sh_cur < self.sh_max){
-    if(time >= self.sh_hit){
+    if(time > self.sh_hit){
       if(self.en_cur > (self.sh_rate*2)){
         self.sh_cur = self.sh_cur + self.sh_rate;
         self.en_cur = self.en_cur - self.sh_rate;
@@ -39,44 +39,46 @@ void() ctrl_updateCenterTorso={
       }
     }
   }
-  local float mx, my;
-  mx = self.movement_x;
-  if(mx < 0){
-    mx = mx * -1;
-  }
-  
-  my = self.movement_y;
-  if(my < 0){
-    my = my * -1;
-  }
-  
-  if((mx >= (self.m_fspeed + 1)) || (my >= (self.m_sspeed + 1))){
-    local float v;
-    local vector norg;
-    norg_x = self.origin_x + self.velocity_x;
-    norg_y = self.origin_y + self.velocity_y;
-    v = vlen(norg - self.origin) / 3000;
-    self.en_cur = self.en_cur - (self.en_rate * 1.15);
-    
-    
-    self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
-    if(self.stat_spr_x > self.conv_max_x){
-      self.stat_spr_x =  self.conv_max_x;
+  if((self.flags & FL_CLIENT)){
+    local float mx, my;
+    mx = self.movement_x;
+    if(mx < 0){
+      mx = mx * -1;
     }
-    self.stat_spr_y = self.stat_spr_y + self.conv_max_z;
-    if(self.stat_spr_y > self.conv_max_y){
-      self.stat_spr_y =  self.conv_max_y;
-    }
-  }
-  else{
     
-    self.stat_spr_x = self.stat_spr_x - self.conv_min_z;
-    if(self.stat_spr_x < self.conv_min_x){
-      self.stat_spr_x =  self.conv_min_x;
+    my = self.movement_y;
+    if(my < 0){
+      my = my * -1;
     }
-    self.stat_spr_y = self.stat_spr_y - self.conv_min_z;
-    if(self.stat_spr_y < self.conv_min_y){
-      self.stat_spr_y =  self.conv_min_y;
+    
+    if((mx >= (self.m_fspeed + 1)) || (my >= (self.m_sspeed + 1))){
+      local float v;
+      local vector norg;
+      norg_x = self.origin_x + self.velocity_x;
+      norg_y = self.origin_y + self.velocity_y;
+      v = vlen(norg - self.origin) / 3000;
+      self.en_cur = self.en_cur - (self.en_rate * 1.15);
+      
+      
+      self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
+      if(self.stat_spr_x > self.conv_max_x){
+        self.stat_spr_x =  self.conv_max_x;
+      }
+      self.stat_spr_y = self.stat_spr_y + self.conv_max_z;
+      if(self.stat_spr_y > self.conv_max_y){
+        self.stat_spr_y =  self.conv_max_y;
+      }
+    }
+    else{
+      
+      self.stat_spr_x = self.stat_spr_x - self.conv_min_z;
+      if(self.stat_spr_x < self.conv_min_x){
+        self.stat_spr_x =  self.conv_min_x;
+      }
+      self.stat_spr_y = self.stat_spr_y - self.conv_min_z;
+      if(self.stat_spr_y < self.conv_min_y){
+        self.stat_spr_y =  self.conv_min_y;
+      }
     }
   }
   if(self.en_cur < 0){
@@ -127,7 +129,6 @@ void() ctrl_die_comp={
 
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;
-    //setmodel(self, "");
     setsize(self, '0 0 0', '0 0 0');
     
     if(compType == M_TOR_LEFT){
@@ -152,10 +153,7 @@ void() touch_mechPiece={
   if(other==world){
     return;
   }
-  
   if(other.p_class == P_MECH){
-    if(other != self.owner){
-      BecomeExplosion();
-    }
+    BecomeExplosion();
   }
 };

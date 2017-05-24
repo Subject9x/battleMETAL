@@ -8,6 +8,9 @@ Overview: implementation for leg model updates
 
 void() ctrl_updateLegs={
   
+  if((self.owner.flags & FL_MONSTER)){
+    self.angles_y = self.owner.ideal_yaw;
+  }
   
   if((self.owner.movement_x == 0) && (self.owner.movement_y == 0)){
     self.movetype = MOVETYPE_NONE;
@@ -23,10 +26,10 @@ void() ctrl_updateLegs={
     if((self.owner.flags & FL_CLIENT)){
       //texture check
       local vector dn;
-      local float height;
+      local float vertic;
       makevectors(self.owner.angles);
-      height = self.owner.c_bbx_n_y - 4;
-      dn = self.origin + (v_up*height);
+      vertic = self.owner.c_bbx_n_y - 4;
+      dn = self.origin + (v_up*vertic);
       traceline(self.origin, dn, TRUE, self.owner);
       //trace_dphittexturename
       
@@ -43,9 +46,9 @@ void() ctrl_updateLegs={
 };
 
 void() ctrl_dieLegs={
-  if(self.owner.deadflag <= DEAD_NO){
+  if(self.owner!=world){
     if(self.owner.flags & FL_CLIENT){
-      if(self.owner!=world){
+      if(self.owner.deadflag <= DEAD_NO){
         local float fs, ms;
         self.owner.m_fspeed = self.owner.m_fspeed - (self.owner.m_fspeed * 0.05);
         self.owner.m_sspeed = self.owner.m_sspeed - (self.owner.m_sspeed * 0.02);
@@ -59,7 +62,3 @@ void() ctrl_dieLegs={
   }
   leg_die1();
 };
-
-
-
-

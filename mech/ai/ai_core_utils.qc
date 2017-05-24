@@ -40,21 +40,20 @@ float() ai_core_findnode={
 ================================*/
 float() ai_core_findtarget={
   local entity t_opt, t_rdr;
-  local float dist;
-  if(!self.enemy){
-    if(self.oldenemy){
+  if(self.enemy == world){
+    if(self.oldenemy != world){
       //an old grudge
       self.enemy = self.oldenemy;
       return TRUE;
     }
     t_opt = ai_core_opticaltarget();
-    if(t_opt){
+    if(t_opt != world){
       //found a target in LoS
       self.enemy = t_opt;
       return TRUE;
     }
     t_rdr = ai_core_radartarget();
-    if(t_rdr){
+    if(t_rdr != world){
       self.enemy = t_rdr;
       return TRUE;
     }
@@ -78,23 +77,21 @@ active state. this makes sure the AI's target
 is still a valid one, return FALSE if its not.
 ================================*/
 float() ai_core_targetstate={
-  local float stat;
-  stat = TRUE;
+  if(self.enemy == world){
+    return FALSE;
+  }
   if(self.enemy.p_class){
     if(self.enemy.p_class == P_OBS){
-      stat = FALSE;
+      return FALSE;
     }
   }
-  else{
-    stat = FALSE;
-  }
   if(self.enemy.deadflag >= DEAD_DYING){
-    stat = FALSE;
+    return FALSE;
   }
   if(self.enemy.health <= 0){
-    stat = FALSE;
+    return FALSE;
   }
-  return stat;
+  return TRUE;
 };
 
 /*================================
@@ -110,12 +107,12 @@ entity() ai_core_opticaltarget={
   targ = findradius(self.origin, len);
   while(targ){
     if(targ != world){
-      if(ai_target_visible(targ)){
-        if(targ.p_class == P_MECH || targ.p_class == P_BULD){
-          if(targ != self){
-            if(targ.health > 0){
-              if(targ.i_faction != self.i_faction){
-                if(ai_target_infront(targ)){
+      if(targ != self){
+        if(targ.owner != self){
+          if(ai_target_infront(targ)){
+            if(ai_target_visible(targ)){
+              if((targ.p_class == P_MECH) || (targ.p_class == P_BULD)){
+                if(targ.i_faction != self.i_faction){
                   local float d;
                   d = vlen(targ.origin - self.origin);
                   if(d < len){
@@ -147,10 +144,10 @@ entity() ai_core_radartarget={
   self.stat_rdr_mode = 1;
   while(targ){
     if(targ != world){
-      if(ai_target_visible(targ)){
-        if(targ.p_class == P_MECH || targ.p_class == P_BULD){
-          if(targ != self){
-            if(targ.health > 0){
+      if(targ != self){
+        if(targ.owner != self){
+          if(ai_target_visible(targ)){
+            if(targ.p_class == P_MECH || targ.p_class == P_BULD){
               if(targ.i_faction != self.i_faction){
                 local float d;
                 d = vlen(targ.origin - self.origin);
@@ -171,7 +168,7 @@ entity() ai_core_radartarget={
 
 /*================================
         ai_target_infront
-determins if an entity is in front of calling ent
+determines if an entity is in front of calling ent
 -ported from classic qc
 ================================*/
 float(entity targ) ai_target_infront={
@@ -180,7 +177,7 @@ float(entity targ) ai_target_infront={
   makevectors(self.angles);
   v = normalize(targ.origin - self.origin);
   d = v * v_forward;
-  if( d > 0.3){
+  if( d > 0.05){
     return TRUE;
   }
   return FALSE;
@@ -189,7 +186,7 @@ float(entity targ) ai_target_infront={
 
 /*================================
         ai_target_visible
-determins if an entity is in front of calling ent
+determins if an entity can be seen by caller
 -ported from classic qc
 ================================*/
 float(entity targ) ai_target_visible={
@@ -209,3 +206,85 @@ float() ai_target_facingideal =
 		return FALSE;
 	return TRUE;
 };
+
+/*
+
+*/
+float() ai_core_panicnode={
+  local entity node, dst;
+  local float len;
+  if(self.enemy != world){
+    len = self.ai_optical;
+    node = findradius(self.origin, self.ai_optical);
+    while(node){
+      if(node.classname == "ai_node"){
+        if(!ai_core_nodelos(self.enemy.origin, node.origin)){
+          local float d;
+          d = vlen(node.origin - self.origin);
+          if(d < len){
+            len = d;
+            dst = node;
+          }
+        }
+      }
+      node = node.chain;
+    }
+    if(dst != world){
+      self.goalentity = node;
+      return TRUE;
+    }
+    else{
+      return FALSE;
+    }
+  }
+  else{
+    len = self.ai_optical;
+    node = findradius(self.origin, self.ai_optical);
+    while(node){
+      if(node.classname == "ai_node"){
+        if(ai_core_nodelos(self.origin, node.origin)){
+          local float d;
+          d = vlen(node.origin - self.origin);
+          if(d < len){
+            len = d;
+            dst = node;
+          }
+        }
+      }
+      node = node.chain;
+    }
+  }
+  if(dst == world){
+    return FALSE;
+  }
+  if(ai_core_nodelos(self.origin, dst.origin)){
+    self.goalentity = dst; 
+    return TRUE;
+  }
+  else{
+    local entity ndst, oslf;
+    oslf = self;
+    self = ndst;
+    if(ai_core_panicnode()){
+      oslf.goalentity = self.goalentity;
+      self.goalentity = world;
+      self = oslf;
+      return TRUE;
+    }
+    else{
+      self.goalentity = world;
+      self = oslf;
+      return FALSE;
+    }
+  }
+  return FALSE;
+};
+
+float(vector chk, vector node) ai_core_nodelos={
+  traceline(node, chk, TRUE, self);
+  if(trace_fraction == 1){
+    return TRUE;
+  }
+  return FALSE;
+};
+
