@@ -34,7 +34,7 @@ void() ctor_die1 = [$ctorstand1, ctor_die2]{
     self.avelocity_x = random()*600;
     self.avelocity_y = random()*600;
     self.avelocity_z = random()*600;
-  }   
+  }
 };
 void() ctor_die2 = [$ctorstand1, ctor_die3]{};
 void() ctor_die3 = [$ctorstand1, ctor_die3]{

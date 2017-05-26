@@ -7,6 +7,7 @@
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
 nextVecChoice = match to mech data id
 i_faction = which faction
+ai_leading = how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
 */
 void() ai_mech={
   //DEBUG
@@ -31,11 +32,6 @@ void() ai_mech={
   self.stat_rtor_hp = 0;
   self.stat_larm_hp = 0;
   self.stat_rarm_hp = 0;
-  self.w_group1 = 0;
-  self.w_group2 = 0;
-  self.w_group3 = 0;
-  self.w_group4 = 0;
-  self.w_group5 = 0;
   
   self.stat_trg_vid = -1;
   self.stat_trg_ddflg = -1;
@@ -50,9 +46,7 @@ void() ai_mech={
   self.stat_trg_la_hp = -1;
   self.stat_trg_ra_hp = -1;
   
-  self.radar_range = 0;
-  self.radar_front = 0;
-  self.radar_rear = 0;
+  self.radar_range = 0; 
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
   self.stat_hit_dirs = 0;
@@ -64,6 +58,7 @@ void() ai_mech={
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
   
+  self.ai_leading = 0.05;
   local entity dat;
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   if(!dat){
@@ -74,6 +69,19 @@ void() ai_mech={
   self.ai_optical = self.radar_range /2;
   self.ai_patience = 0;
   self.ai_prev_org = self.origin;
+  
+  local entity wep;
+  local float near, far;
+  wep = self.w_slot;
+  near = wep.w_range;
+  while(wep){
+    if(wep.w_range < near){
+      near = wep.w_range;
+    }
+    wep = wep.w_slot;
+  }
+  self.ai_minrange = near;
+  
   self.ideal_yaw = self.angles * '0 1 0';
 	if (!self.yaw_speed){
     if(self.nextVecChoice == 1){
@@ -88,18 +96,16 @@ void() ai_mech={
   }
 		
   buildVehicle(dat);
-  self.en_rate = self.en_rate / 150; // DEBUG
-  self.sh_rate = self.sh_rate / 150;
+  self.en_rate = self.en_rate; // DEBUG
+  self.sh_rate = self.sh_rate * 2;
   self.solid = SOLID_BBOX;
   
   self.th_die = ai_mech_die;
-  //self.th_walk = ai_mech_walk;
-  //self.th_run = ai_mech_run;
   self.th_missile = ai_mech_attack;
-  //self.th_stand = ai_mech_stand;
   self.ai_unit_update = ai_mech_update;
   self.ai_next_state = ai_state_ready;
   self.ai_next_move = ai_move_stand;
+  self.touch = ai_mech_touch;
   
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();

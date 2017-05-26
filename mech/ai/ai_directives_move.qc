@@ -9,15 +9,16 @@ this one will focus on move to move
 void() ai_mech_update={
   
   local entity oself;
-  oself = self;
-  ctrl_updateCenterTorso();
-  if(oself.e_legs){
-    if(oself.e_legs != world && oself.e_legs.owner == oself){
+  if(self.e_legs){
+    if(self.e_legs != world && oself.e_legs.owner == self){
+      oself = self;
       self = oself.e_legs;
         ctrl_updateLegs();
       self = oself;
     }
   }
+  
+  ctrl_updateCenterTorso();
   
   local entity wep_chain;
   wep_chain = self.w_slot;
@@ -102,6 +103,32 @@ void() ai_mech_cleanup={
   mech_cleanupMech();
 };
 
+void() ai_mech_touch={
+  local entity oact;
+  if((other.owner.flags & FL_MONSTER)){
+    oact = other.owner;
+  }
+  else if((other.owner.flags & FL_CLIENT)){
+    oact = other.owner;
+  }
+  else{
+    oact = other;
+  }
+  
+  if(other.i_faction != self.i_faction){
+    if(ai_target_infront(other)){
+      self.oldenemy = self.enemy;
+      self.enemy = oact;
+      self.ai_next_move = ai_move_backward;
+    }
+    else{
+      self.ai_next_move = ai_move_run_slide;
+    }
+
+  }
+
+};
+
 
 //this is run after the unit spawns in
 void() ai_spawn_start={
@@ -117,15 +144,17 @@ void() ai_control={
     return;
   }
   self.ai_unit_update();
-  //do not panic yet
-  //if(self.health <= (self.max_health /1.25)){
-   // self.ai_next_state = ai_state_panic;
-  //}
+  if(self.health <= (self.max_health /3)){
+    if(self.ai_next_state != ai_state_panic){
+      self.ai_next_state =ai_state_panic;
+    }
+  }
   self.ai_next_state();
   self.ai_next_move();
   self.think = ai_control;
   self.nextthink = time + 0.005;
   if(self.ai_patience > 20){
+    self.ai_next_move = ai_move_backward;
     self.ai_patience = 0;
   }
 };
@@ -133,6 +162,7 @@ void() ai_control={
 //move directives
 void() ai_move_stand={
   if(ai_core_targetstate()){
+    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
     ChangeYaw ();
   }
 };
@@ -143,6 +173,7 @@ void() ai_move_walk={
 
 void() ai_mive_walk_slide={
   local float ofs;
+  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
   	if (self.lefty){
 		ofs = 90;
@@ -163,6 +194,7 @@ void() ai_move_run={
 
 void() ai_move_run_slide={
   local float ofs;
+  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
   	if (self.lefty){
 		ofs = 90;
@@ -178,10 +210,11 @@ void() ai_move_run_slide={
 };
 
 void() ai_move_forward={
-
+  
+  walkmove (self.angles_y, self.m_fspeed/400);
 };
 
 void() ai_move_backward={
-
+  walkmove ((self.angles_y+180), self.m_fspeed/400);
 };
 

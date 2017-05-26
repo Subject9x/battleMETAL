@@ -22,22 +22,23 @@ void() ctrl_updateCenterTorso={
   if(self.en_cur < self.en_max){
     self.en_cur = self.en_cur + self.en_rate;
     if(self.en_cur > self.en_max){
-      diff = self.en_cur - self.en_max;
-      self.en_cur = self.en_cur - diff;
+      self.en_cur = self.en_max;
     }
   }
   
   if(self.sh_cur < self.sh_max){
     if(time > self.sh_hit){
-      if(self.en_cur > (self.sh_rate*2)){
+      if(self.en_cur > 0){
         self.sh_cur = self.sh_cur + self.sh_rate;
         self.en_cur = self.en_cur - self.sh_rate;
         if(self.sh_cur > self.sh_max){
-          diff = self.sh_cur - self.sh_max;
-          self.sh_cur = self.sh_cur - diff;
+          self.sh_cur = self.sh_max;
         }
       }
     }
+  }
+  if(self.en_cur < 0){
+    self.en_cur = 0;
   }
   if((self.flags & FL_CLIENT)){
     local float mx, my;
@@ -80,9 +81,6 @@ void() ctrl_updateCenterTorso={
         self.stat_spr_y =  self.conv_min_y;
       }
     }
-  }
-  if(self.en_cur < 0){
-    self.en_cur = 0;
   }
 };
 

@@ -332,6 +332,7 @@ void(float energyval) mtk_playerEnergy={
   isz = gui_scaleSize(isz,VIEW_SCALE);
   drawpic(self.wdg_en.pos, "gfx/hud/otl/otl_en_cvr.png", self.wdg_en.drawsize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
   drawstring( self.hud_pnl3.pos + self.hud_pnl3.margin_ins, "ENERGY", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring( self.hud_pnl3.pos + self.hud_pnl3.margin_ins +'0 16', ftos(energyval), '4 4 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 /*PLAYER ARMOR LAYOUT====================================================*/

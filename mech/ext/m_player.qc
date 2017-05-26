@@ -190,6 +190,7 @@ void() PlayerDie={
   if(self.p_class != P_OBS){
     mech_clearWeaponGroups();
     if(self.p_class == P_MECH){
+      self.p_class = P_OBS; //edge case spot-welding
       mech_player_die();
       return;
     }

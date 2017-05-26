@@ -218,23 +218,26 @@ void() data_mtk_ini={
   self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
   self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
   self.c_model = DAT_MTK_CTOR_MODEL;
-  self.weaponmodel = DAT_MTK_CPIT_MODEL;
-  self.weaponframe = 0;
+
   self.conv_min = DAT_MTK_SPREAD_N; 
   self.conv_max = DAT_MTK_SPREAD_X;
   self.m_fspeed = DAT_MTK_M_FSPEED;
   self.m_sspeed = DAT_MTK_M_SSPEED;
   self.m_bspeed = DAT_MTK_M_BSPEED;
   self.m_maccel = DAT_MTK_M_ACCEL;
-  self.m_rollangle = DAT_MTK_M_ROLLANGLE;
-  self.m_pitch_max = DAT_MTK_M_PITCH_N;
-  self.m_pitch_min = DAT_MTK_M_PITCH_X;
-  self.m_bob = DAT_MTK_M_BOB;
-  self.m_bcycle = DAT_MTK_M_BCYCLE;
-  self.m_bup = DAT_MTK_M_BUP;
-  self.m_bmodel = DAT_MTK_M_BMODEL;
-  self.m_bside = DAT_MTK_M_BSIDE;
-  self.m_bobspd = DAT_MTK_M_BSPD;
+  if((self.flags & FL_CLIENT)){
+    self.weaponmodel = DAT_MTK_CPIT_MODEL;
+    self.weaponframe = 0;
+    self.m_rollangle = DAT_MTK_M_ROLLANGLE;
+    self.m_pitch_max = DAT_MTK_M_PITCH_N;
+    self.m_pitch_min = DAT_MTK_M_PITCH_X;
+    self.m_bob = DAT_MTK_M_BOB;
+    self.m_bcycle = DAT_MTK_M_BCYCLE;
+    self.m_bup = DAT_MTK_M_BUP;
+    self.m_bmodel = DAT_MTK_M_BMODEL;
+    self.m_bside = DAT_MTK_M_BSIDE;
+    self.m_bobspd = DAT_MTK_M_BSPD;
+  }
 };
 void() data_mtk_legs={
   self.c_name = DAT_MTK_LEG_CNAME;

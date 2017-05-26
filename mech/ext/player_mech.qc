@@ -71,14 +71,6 @@ void() mech_cleanupMech={
   mech_player_removecomp(oself.e_arm_r);
 
   if((self.flags & FL_CLIENT)){
-    self = oself.e_legs;
-    local entity n;
-    n = spawn();
-    copyentity(self, n);
-    
-    self = n;
-      leg_die1();
-    self = oself;
     mech_player_removecomp(self.e_legs);
   }
 
@@ -89,7 +81,7 @@ void() mech_cleanupMech={
     if(lstp){
       lstp.w_slot = next;
     }
-    if(w_chain != world && w_chain.classname!="player"){
+    if(w_chain != world && ((!w_chain.flags & FL_CLIENT) || (!w_chain.flags & FL_MONSTER))){
       remove(w_chain);
     }
     w_chain = next;

@@ -113,13 +113,15 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if(trg.health <= 0){
    if(trg.th_die){
       if(trg.th_die != SUB_Null){
-        killed(trg, attacker, dmg_type);
-        if(trg.c_name == M_TOR_CENTER){
-          if((trg.owner.flags & FL_MONSTER)){
-            trg.owner.deadflag = DEAD_DEAD;
-          }
-        }      
-        return trg;
+        if(trg.c_name != M_LEGS){
+          killed(trg, attacker, dmg_type);
+          if(trg.c_name == M_TOR_CENTER){
+            if((trg.owner.flags & FL_MONSTER)){
+              trg.owner.deadflag = DEAD_DEAD;
+            }
+          }      
+          return trg;
+        }
       }
     }
   }
@@ -441,6 +443,7 @@ void(entity trg, entity atk) anger_monster={
               self.enemy = atk;
               if(self.ai_next_state != ai_state_hunt){
                 self.ai_next_state = ai_state_hunt;
+                self.ai_next_move = ai_move_run;
               }
             self = s;
             return;

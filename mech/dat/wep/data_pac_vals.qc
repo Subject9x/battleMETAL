@@ -91,15 +91,12 @@ void() data_pac_atk={
   player = self.owner;
   
   if((player.flags & FL_CLIENT)){
-    end = util_traceForPlayer(player, (player.stat_spr_x + self.stat_spr_x), (player.stat_spr_y+self.stat_spr_y), '1 1 1', self.w_range);
+    end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
   }
   else{
-    local vector spr;
-    spr_x = player.stat_spr_x + self.stat_spr_x;
-    spr_y = player.stat_spr_y + self.stat_spr_y;
-    end = util_traceForAI(player, spr, '1 1 1', self.w_range, 10); 
+    end = util_traceForAI(player, self.w_range, self.ai_leading); 
   }
-  dir = util_traceForOffset(player, self, end);
+  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
   if((player.flags & FL_MONSTER)){
     if(dir == player.origin){

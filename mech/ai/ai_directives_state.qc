@@ -19,8 +19,8 @@ void() ai_state_hunt={
         self.ai_patience = self.ai_patience + 10;
       }
     }
-    //self.goalentity = self.enemy;
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+    ChangeYaw();
     if(!ai_target_infront(self.enemy)){
       self.ai_patience = self.ai_patience + 1;
       return;
@@ -29,14 +29,29 @@ void() ai_state_hunt={
       self.ai_patience = self.ai_patience + 1;
       return;
     }
-    if(self.stat_trg_dist > (self.radar_range / 2)){
+    if(self.stat_trg_dist > (self.ai_minrange * 2)){
       self.ai_next_move = ai_move_run;
+    }
+    else if(self.stat_trg_dist < self.ai_minrange){
+      if(ai_target_infront(self.enemy)){
+        self.ai_next_move = ai_move_backward;
+      }
+      else{
+        self.ai_next_move = ai_move_forward;
+      }
+      
     }
     else{
       self.ai_next_move = ai_move_walk;
-      if(self.stat_trg_dist < 200){
+      if(ai_target_insights(self.enemy)){
+        if(self.stat_trg_dist <= self.ai_minrange){
+          self.ai_next_move = ai_move_run_slide;
+        }
+      }
+      else if(self.stat_trg_dist <= (self.ai_minrange/2)){
         self.ai_next_move = ai_move_run_slide;
       }
+
     }
     self.th_missile();
   } 
@@ -60,6 +75,14 @@ void() ai_state_wander={
 */
 void() ai_state_tonode={
   if(self.goalentity.classname == "ai_node"){
+    local float d;
+    d = vlen(self.goalentity.origin - self.origin);
+    if(d <= 10){
+      if(self.health <= (self.max_health /3)){
+        self.ai_next_state = ai_state_panic;
+        self.ai_next_move = ai_move_run;
+      }
+    }
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
     self.ai_next_move = ai_move_walk;
   }
@@ -89,14 +112,33 @@ void() ai_state_ready={
     }
   }
   else{
-    self.ai_next_move = ai_move_stand;
+    if(ai_core_findnode()){
+      self.ai_next_state = ai_state_tonode;
+      self.ai_next_move = ai_move_run;
+    }
+    else{
+      self.ai_next_move = ai_move_stand;
+    }
   }
 };
 
 void() ai_state_panic={
   if(self.goalentity != world){
-    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    self.ai_next_move = ai_move_run;
+    local float d;
+    d = vlen(self.goalentity.origin - self.origin);
+    if(d <= 15){
+      if(ai_core_panicnode()){
+        return;
+      }
+      else{
+        self.ai_next_state = ai_state_ready;
+        self.ai_next_move = ai_move_stand;
+      }
+    }
+    else{
+      self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+      self.ai_next_move = ai_move_run;
+    }    
   }
   else{
     if(ai_core_panicnode()){

@@ -80,10 +80,8 @@ float() ai_core_targetstate={
   if(self.enemy == world){
     return FALSE;
   }
-  if(self.enemy.p_class){
-    if(self.enemy.p_class == P_OBS){
-      return FALSE;
-    }
+  if(self.enemy.p_class == P_OBS){
+    return FALSE;
   }
   if(self.enemy.deadflag >= DEAD_DYING){
     return FALSE;
@@ -177,12 +175,24 @@ float(entity targ) ai_target_infront={
   makevectors(self.angles);
   v = normalize(targ.origin - self.origin);
   d = v * v_forward;
-  if( d > 0.05){
+  if( d > 0.3){
     return TRUE;
   }
   return FALSE;
 };
 
+//is self in front of a target?
+float(entity targ) ai_target_insights={
+  local vector v;
+  local float d;
+  makevectors(targ.angles);
+  v = normalize(self.origin - targ.origin);
+  d = v * v_forward;
+  if( d > 0.3){
+    return TRUE;
+  }
+  return FALSE;
+};
 
 /*================================
         ai_target_visible
@@ -213,70 +223,30 @@ float() ai_target_facingideal =
 float() ai_core_panicnode={
   local entity node, dst;
   local float len;
-  if(self.enemy != world){
-    len = self.ai_optical;
-    node = findradius(self.origin, self.ai_optical);
-    while(node){
-      if(node.classname == "ai_node"){
-        if(!ai_core_nodelos(self.enemy.origin, node.origin)){
-          local float d;
-          d = vlen(node.origin - self.origin);
-          if(d < len){
-            len = d;
-            dst = node;
+  len = self.radar_range;
+  node = findradius(self.origin, len);
+  while(node){
+    if(node.classname == "ai_node"){
+      if(self.enemy != world){
+        if(node != self.goalentity){
+          if(!ai_core_nodelos(self.enemy.origin, node.origin)){
+            local float d;
+            d = vlen(node.origin - self.origin);
+            if(d < len){
+              len = d;
+              dst = node;
+            }
           }
         }
       }
-      node = node.chain;
     }
-    if(dst != world){
-      self.goalentity = node;
-      return TRUE;
-    }
-    else{
-      return FALSE;
-    }
+    node = node.chain;
   }
-  else{
-    len = self.ai_optical;
-    node = findradius(self.origin, self.ai_optical);
-    while(node){
-      if(node.classname == "ai_node"){
-        if(ai_core_nodelos(self.origin, node.origin)){
-          local float d;
-          d = vlen(node.origin - self.origin);
-          if(d < len){
-            len = d;
-            dst = node;
-          }
-        }
-      }
-      node = node.chain;
-    }
-  }
-  if(dst == world){
-    return FALSE;
-  }
-  if(ai_core_nodelos(self.origin, dst.origin)){
-    self.goalentity = dst; 
+  if(dst != world){
+    self.goalentity = dst;
     return TRUE;
   }
-  else{
-    local entity ndst, oslf;
-    oslf = self;
-    self = ndst;
-    if(ai_core_panicnode()){
-      oslf.goalentity = self.goalentity;
-      self.goalentity = world;
-      self = oslf;
-      return TRUE;
-    }
-    else{
-      self.goalentity = world;
-      self = oslf;
-      return FALSE;
-    }
-  }
+  
   return FALSE;
 };
 

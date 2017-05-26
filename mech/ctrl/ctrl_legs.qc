@@ -9,7 +9,7 @@ Overview: implementation for leg model updates
 void() ctrl_updateLegs={
   
   if((self.owner.flags & FL_MONSTER)){
-    self.angles_y = self.owner.ideal_yaw;
+    self.angles_y = self.owner.angles_y;
   }
   
   if((self.owner.movement_x == 0) && (self.owner.movement_y == 0)){
@@ -46,19 +46,5 @@ void() ctrl_updateLegs={
 };
 
 void() ctrl_dieLegs={
-  if(self.owner!=world){
-    if(self.owner.flags & FL_CLIENT){
-      if(self.owner.deadflag <= DEAD_NO){
-        local float fs, ms;
-        self.owner.m_fspeed = self.owner.m_fspeed - (self.owner.m_fspeed * 0.05);
-        self.owner.m_sspeed = self.owner.m_sspeed - (self.owner.m_sspeed * 0.02);
-        mh_world_updateClientSpeed(self.owner.m_fspeed, self.owner.m_sspeed, self.owner.m_bspeed, self.owner.m_maccel, self.owner.m_rollangle);
-      }
-    }
-    else{
-      //todo leg damage
-    }
-    return;
-  }
   leg_die1();
 };

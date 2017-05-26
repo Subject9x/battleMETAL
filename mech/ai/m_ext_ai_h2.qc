@@ -4,6 +4,8 @@ Date: 5/22/2017
 Overview: next draft the ai
 this one will focus on move to move
 */
+.float ai_leading; //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
+.float ai_minrange; //minimum range of guns;
 .float ai_optical; //the 'visual' range the ai can see out before relying on sensors
 .float ai_patience; //counter for if AI is stuck on something
 .vector ai_prev_org;
@@ -36,6 +38,7 @@ void() ai_state_panic;
 
 //utility functions
 float(entity targ) ai_target_infront;
+float(entity targ) ai_target_insights;
 float(entity targ) ai_target_visible;
 float() ai_core_findnode; // find the closest AI node
 float() ai_core_findtarget; //ai scans for a target
@@ -52,3 +55,4 @@ void() ai_mech_update;
 void() ai_mech_attack;
 void() ai_mech_die;
 void() ai_mech_cleanup;
+void() ai_mech_touch;
