@@ -11,16 +11,16 @@ string DATWEP_MLGD_NAME = "MIS-LGD";
 float DATWEP_MLGD_FIRETIME = 0;
 float DATWEP_MLGD_CLIPSIZE = 1;
 float DATWEP_MLGD_CURRENTAMMO = 1;
-float DATWEP_MLGD_FIRERATE = 0.75;//0.95;
-float DATWEP_MLGD_RELOADTIME = 0.75;
+float DATWEP_MLGD_FIRERATE = 5;//0.95;
+float DATWEP_MLGD_RELOADTIME = 5;
 vector DATWEP_MLGD_FIRE_OFS = '0 0 2';
 string DATWEP_MLGD_MODEL = "q3mdl/weapons/w_mis.md3";
 float DATWEP_MLGD_PROJ_ID= ID_PRJ_MLGD;
-float DATWEP_MLGD_EN_COST= -1;
+float DATWEP_MLGD_EN_COST= 0.1;
 string DATWEP_MLGD_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MLGD_TECH_LEVEL = 2;
 float DAT_MLGD_WSIZE = 1;
-float DAT_MLGD_HPX = 10;
+float DAT_MLGD_HPX = 45;
 
 void() data_wep_mlgd;  //called by the data system at game startup
 void() data_mlgd_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -53,7 +53,6 @@ void() data_mlgd_ini={
   self.c_model = DATWEP_MLGD_MODEL;
   self.w_attack = data_mlgd_atk;
   self.w_proj = DATWEP_MLGD_PROJ_ID;
-  self.en_cur = -1;
   self.en_max = DATWEP_MLGD_EN_COST;
   self.fire_sound = DATWEP_MLGD_FIRESOUND;
   self.i_techlvl = DATWEP_MLGD_TECH_LEVEL;
@@ -72,6 +71,12 @@ void() data_mlgd_think={
   }
   else{
     self.w_isready = FALSE;
+    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
+      self.owner.en_delta = self.en_max +  self.owner.en_delta;
+    }
+    else{
+      self.w_firetime = time + self.w_reloadtime;
+    }
   }
 };
 
@@ -92,7 +97,7 @@ void() data_mlgd_atk={
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
 
     if((player.flags & FL_MONSTER)){
-      if(dir == player.origin){
+      if((end == player.origin) || (dir == player.origin)){
         player.ai_patience = player.ai_patience + 1;
         return;
       }

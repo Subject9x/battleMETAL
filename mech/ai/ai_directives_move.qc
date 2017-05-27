@@ -114,17 +114,38 @@ void() ai_mech_touch={
   else{
     oact = other;
   }
-  
-  if(other.i_faction != self.i_faction){
-    if(ai_target_infront(other)){
-      self.oldenemy = self.enemy;
-      self.enemy = oact;
-      self.ai_next_move = ai_move_backward;
+  local float infront;
+  infront = ai_target_infront(other);
+  //bumped an ally!
+  if(other.i_faction == self.i_faction){
+    if(infront){
+      //self.ai_next_move = ai_move_backward;
+      ai_move_backward();
     }
     else{
-      self.ai_next_move = ai_move_run_slide;
+      //self.ai_next_move = ai_move_forward;
+      ai_move_forward();
+    } 
+  }
+  //bumped a baddy!
+  else{
+    if(other.p_class == P_MECH){
+      if(self.enemy == world){
+        self.enemy = other;
+      }
+      else{
+        self.oldenemy = self.enemy;
+        self.enemy = other;
+      }
     }
-
+    if(infront){
+      //self.ai_next_move = ai_move_run_slide;
+      ai_move_run_slide();
+    }
+    else{
+     //self.ai_next_move = ai_move_backward;
+      ai_move_backward();
+    } 
   }
 
 };
@@ -145,18 +166,31 @@ void() ai_control={
   }
   self.ai_unit_update();
   if(self.health <= (self.max_health /3)){
-    if(self.ai_next_state != ai_state_panic){
-      self.ai_next_state =ai_state_panic;
+    if(self.en_cur <= 0){
+      if(self.ai_next_state != ai_state_panic){
+        self.ai_next_state =ai_state_panic;
+      } 
     }
+  }
+  if(self.ai_patience > 5){
+    if(self.enemy != world){
+      if(ai_core_findtarget()){
+        self.ai_next_state = ai_state_hunt;
+      }
+      else{
+        self.ai_next_move = ai_move_backward;
+      }
+    }
+    else{
+      self.ai_next_move = ai_move_backward;
+    }
+    self.ai_patience = 0;
   }
   self.ai_next_state();
   self.ai_next_move();
   self.think = ai_control;
   self.nextthink = time + 0.005;
-  if(self.ai_patience > 20){
-    self.ai_next_move = ai_move_backward;
-    self.ai_patience = 0;
-  }
+
 };
 
 //move directives

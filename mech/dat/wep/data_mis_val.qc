@@ -11,18 +11,18 @@ string DAT_MIS_NAME = "Missile Launcher";
 float DAT_MIS_FIRETIME = 0;
 float DAT_MIS_CLIPSIZE = 6;
 float DAT_MIS_CURRENTAMMO = 6;
-float DAT_MIS_FIRERATE = 0.3; //0.3;
-float DAT_MIS_RELOADTIME = 2.5;//1.85;
+float DAT_MIS_FIRERATE = 0.2; //0.3;
+float DAT_MIS_RELOADTIME = 8;//1.85;
 vector DAT_MIS_FIRE_OFS = '0 0 2';
 string DAT_MIS_MODEL = "q3mdl/weapons/w_mis.md3";
 float DAT_MIS_PROJ_ID= ID_PRJ_MIS;
 float DAT_MIS_EN_COST= -1;
 string DAT_MIS_SOUND = "weapons/sgun1.wav";
 float DAT_MIS_TECH_LEVEL = 1;
-float DAT_LAS_SPR_X = 8;
+float DAT_LAS_SPR_X = 10;
 float DAT_LAS_SPR_Y = 6;
 float DAT_MIS_WSIZE = 2;
-float DAT_MIS_HPX = 10;
+float DAT_MIS_HPX = 50;
 
 void() data_wep_mis;
 void() data_mis_ini;
@@ -94,7 +94,7 @@ void() data_mis_atk={
     }
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     if((player.flags & FL_MONSTER)){
-      if(dir == player.origin){
+      if((end == player.origin) || (dir == player.origin)){
         player.ai_patience = player.ai_patience + 1;
         return;
       }

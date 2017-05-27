@@ -8,20 +8,20 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LAS_IDX = ID_WEP_LAS;
 string DAT_LAS_NAME = "Light Laser";
-float DAT_LAS_DMG = 15;
+float DAT_LAS_DMG = 30;
 float DAT_LAS_FIRETIME = 0;
 float DAT_LAS_CLIPSIZE = 1;
 float DAT_LAS_CURRENTAMMO = 1;
-float DAT_LAS_FIRERATE = 1.15;
-float DAT_LAS_RELOADTIME = 1.15;
+float DAT_LAS_FIRERATE = 3;
+float DAT_LAS_RELOADTIME = 3;
 vector DAT_LAS_FIRE_OFS = '0 0 2';
 string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_LAS_EN_COST = 0.1;
+float DAT_LAS_EN_COST = 1;
 string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
 float DAT_LAS_WSIZE = 1;
 float DAT_LAS_HPX = 30;
-float DAT_LAS_RANGE = 1200;
+float DAT_LAS_RANGE = 1800;
 
 void() data_wep_las;
 void() data_las_ini;
@@ -59,7 +59,7 @@ void() data_las_ini={
   self.i_techlvl = DAT_LAS_TECH_LEVEL;
   self.i_size = DAT_LAS_WSIZE;
   self.w_think = data_las_think;
-    self.health = DAT_LAS_HPX;
+  self.health = DAT_LAS_HPX;
   self.max_health = DAT_LAS_HPX;
   self.w_range = DAT_LAS_RANGE;
 };
@@ -71,13 +71,13 @@ void() data_las_think={
     }
   }
   else{
-    if(self.owner.en_cur > 0){
-      self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
+    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
+      self.owner.en_delta = self.owner.en_delta + self.en_max;
     }
     else{
       self.w_firetime = time + self.w_reloadtime;
+      self.w_isready = FALSE;
     }
-    self.w_isready = FALSE;
   }
 };
 
@@ -97,7 +97,7 @@ void() data_las_atk={
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
   if((player.flags & FL_MONSTER)){
-    if(dir == player.origin){
+    if((end == player.origin) || (dir == player.origin)){
       player.ai_patience = player.ai_patience + 1;
       return;
     }

@@ -80,6 +80,9 @@ void() ai_mech={
     }
     wep = wep.w_slot;
   }
+  if(near <= 0){
+    near = 100;
+  }
   self.ai_minrange = near;
   
   self.ideal_yaw = self.angles * '0 1 0';

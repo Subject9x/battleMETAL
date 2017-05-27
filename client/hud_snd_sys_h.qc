@@ -6,6 +6,8 @@ Overview: header file for the hud sound system
 */
 
 //sound precache
+string SND_MCH_SFX_REACT;
+
 string SND_HUD_VFX_ONLINE;
 string SND_HUD_VFX_ENELOW;
 string SND_HUD_VFX_SHDLOW;
@@ -16,6 +18,7 @@ string SND_HUD_VFX_TARGKILL;
 float SND_HUD_RADARMODE = FALSE;
 float SND_HUD_TARGKILL = FALSE;
 //channels so far
+float REACT_TIME;
 //hud voice
 float VOICE_PLAY = FALSE;
 float VOICE_TIME;

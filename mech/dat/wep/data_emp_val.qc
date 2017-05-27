@@ -11,12 +11,12 @@ string DAT_EMP_NAME = "EMP Cannon";
 float DAT_EMP_FIRETIME = 0;
 float DAT_EMP_CLIPSIZE = 1;
 float DAT_EMP_CURRENTAMMO = 1;
-float DAT_EMP_FIRERATE = 2;
-float DAT_EMP_RELOADTIME = 2;
+float DAT_EMP_FIRERATE = 6;
+float DAT_EMP_RELOADTIME = 6;
 vector DAT_EMP_FIRE_OFS = '0 0 2';
 string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
 float DAT_EMP_PROJ_ID= ID_PRJ_EMP;
-float DAT_EMP_EN_COST=  0.5;
+float DAT_EMP_EN_COST=  1.25;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 float DAT_EMP_WSIZE = 2;
@@ -73,8 +73,8 @@ void() data_emp_think={
   }
   else{
     self.w_isready = FALSE;
-    if(self.owner.en_cur > 0){
-      self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
+    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
+      self.owner.en_delta = self.en_max +  self.owner.en_delta;
     }
     else{
       self.w_firetime = time + self.w_reloadtime;
@@ -97,11 +97,12 @@ void() data_emp_atk={
     }
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     
-    if(dir == player.origin){
-      if((player.flags & FL_MONSTER)){
+
+    if((player.flags & FL_MONSTER)){
+      if((end == player.origin) || (dir == player.origin)){
         player.ai_patience = player.ai_patience + 1;
+        return;
       }
-      return;
     }
     
     self.w_currentammo = self.w_currentammo - 1;

@@ -10,12 +10,12 @@ string DATWEP_MARH_NAME = "MIS-ARH";
 float DATWEP_MARH_FIRETIME = 0;
 float DATWEP_MARH_CLIPSIZE = 1;
 float DATWEP_MARH_CURRENTAMMO = 1;
-float DATWEP_MARH_FIRERATE = 1.10;//0.95;
-float DATWEP_MARH_RELOADTIME = 1.10;
+float DATWEP_MARH_FIRERATE = 12;//0.95;
+float DATWEP_MARH_RELOADTIME = 12;
 vector DATWEP_MARH_FIRE_OFS = '0 0 2';
 string DATWEP_MARH_MODEL = "q3mdl/weapons/w_mis.md3";
 float DATWEP_MARH_PROJ_ID= ID_PRJ_MARH;
-float DATWEP_MARH_EN_COST= -1;
+float DATWEP_MARH_EN_COST= 0.25;
 string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
 float DAT_MARH_WSIZE = 3;
@@ -52,7 +52,6 @@ void() data_marh_ini={
   self.c_model = DATWEP_MARH_MODEL;
   self.w_attack = data_marh_atk;
   self.w_proj = DATWEP_MARH_PROJ_ID;
-  self.en_cur = -1;
   self.en_max = DATWEP_MARH_EN_COST;
   self.fire_sound = DATWEP_MARH_FIRESOUND;
   self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
@@ -70,6 +69,12 @@ void() data_marh_think={
   }
   else{
     self.w_isready = FALSE;
+    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
+      self.owner.en_delta = self.en_max +  self.owner.en_delta;
+    }
+    else{
+      self.w_firetime = time + self.w_reloadtime;
+    }
   }
 };
 
@@ -93,7 +98,7 @@ void() data_marh_atk={
         dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
               
         if((player.flags & FL_MONSTER)){
-          if(dir == player.origin){
+          if((end == player.origin) || (dir == player.origin)){
             player.ai_patience = player.ai_patience + 1;
             return;
           }

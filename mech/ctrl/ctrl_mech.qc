@@ -19,11 +19,20 @@ void() ctrl_updateCenterTorso={
     }
   }
 
-  if(self.en_cur < self.en_max){
-    self.en_cur = self.en_cur + self.en_rate;
-    if(self.en_cur > self.en_max){
-      self.en_cur = self.en_max;
+  if(self.en_cur >= 0){
+    if(self.en_delta > 0){
+      self.en_cur = self.en_cur - self.en_delta;
+      self.en_delta = 0;
     }
+    else{
+      self.en_cur = self.en_cur + self.en_rate;
+    }
+  }
+  if(self.en_cur < 0){
+    self.en_cur = 0;
+  }
+  else if(self.en_cur > self.en_max){
+    self.en_cur = self.en_max;
   }
   
   if(self.sh_cur < self.sh_max){

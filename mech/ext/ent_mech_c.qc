@@ -12,7 +12,7 @@ commented vars mean they're already implemented and are here for reference!
 .float en_max;   //max amount
 .float en_cur;  //current amount
 .float en_rate; //how much energy built per frame
-
+.float en_delta; //total to subtract over a framel
 .float sh_max;    //max shields
 .float sh_cur;    //current amount of shields
 .float sh_rate;   //shield recharge rate

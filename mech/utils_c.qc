@@ -34,6 +34,12 @@ vector(entity own, float range, float lead_factor) util_traceForAI={
 	lead = normalize (lead - own.origin);
   makevectors(own.v_angle);
   traceline (own.origin + v_forward*10, own.origin + lead*range, FALSE, own);
+  if(trace_ent == world){
+    return own.origin;
+  }
+  if(trace_ent.i_faction == own.i_faction){
+    return own.origin;
+  }
   return trace_endpos;
 };
 

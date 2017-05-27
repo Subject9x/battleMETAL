@@ -7,15 +7,15 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
 string DAT_PAC_NAME = "PAC";
-float DAT_PAC_DMG = 100;
+float DAT_PAC_DMG = 300;
 float DAT_PAC_FIRETIME = 0;
 float DAT_PAC_CLIPSIZE = 1;
 float DAT_PAC_CURRENTAMMO = 1;
-float DAT_PAC_FIRERATE = 4;
-float DAT_PAC_RELOADTIME = 4;
+float DAT_PAC_FIRERATE = 8;
+float DAT_PAC_RELOADTIME = 8;
 vector DAT_PAC_FIRE_OFS = '0 0 2';
 string DAT_PAC_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_PAC_EN_COST =  0.9;
+float DAT_PAC_EN_COST =  1;
 string DAT_PAC_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_PAC_TECH_LEVEL = 1;
 float DAT_PAC_SPR_X = 0;
@@ -99,7 +99,7 @@ void() data_pac_atk={
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
   if((player.flags & FL_MONSTER)){
-    if(dir == player.origin){
+    if((end == player.origin) || (dir == player.origin)){
       player.ai_patience = player.ai_patience + 1;
       return;
     }

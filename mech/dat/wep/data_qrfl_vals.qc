@@ -7,23 +7,23 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
 string DAT_QRFL_NAME = "Q-Rifle";
-float DAT_QRFL_DMG = 10;
+float DAT_QRFL_DMG = 150;
 float DAT_QRFL_FIRETIME = 0;
 float DAT_QRFL_CLIPSIZE = 1;//was 1 - 5/14/2017
 float DAT_QRFL_CURRENTAMMO = 1;//was 1 - 5/14/2017
-float DAT_QRFL_FIRERATE = 0.75;//was 0.5 - 5/14/2017
-float DAT_QRFL_RELOADTIME = 0.75;//was 0.5  - 5/14/2017
+float DAT_QRFL_FIRERATE = 5;//was 0.5 - 5/14/2017
+float DAT_QRFL_RELOADTIME = 5;//was 0.5  - 5/14/2017
 vector DAT_QRFL_FIRE_OFS = '0 0 2';
 string DAT_QRFL_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_QRFL_PROJ_ID= ID_PRJ_QRFL;
-float DAT_QRFL_EN_COST= -1;
+float DAT_QRFL_EN_COST= 0.15;
 string DAT_QRFL_SOUND = "sound/ac5.ogg";
 float DAT_QRFL_TECH_LEVEL = 1;
 float DAT_QRFL_SPR_X = 1;
 float DAT_QRFL_SPR_Y = 5;
 float DAT_QRFL_WSIZE = 3;
 float DAT_QRFL_HPX = 20;
-float DAT_QRFL_QBITS = 7;
+float DAT_QRFL_QBITS = 6;
 
 void() data_wep_qrfl;
 void() data_qrfl_ini;
@@ -56,7 +56,6 @@ void() data_qrfl_ini={
   self.c_model = DAT_QRFL_MODEL;
   self.w_attack = data_qrfl_atk;
   self.w_proj = DAT_QRFL_PROJ_ID;
-  self.en_cur = -1;
   self.en_max = DAT_QRFL_EN_COST;
   self.fire_sound = DAT_QRFL_SOUND;
   self.i_techlvl = DAT_QRFL_TECH_LEVEL;
@@ -77,6 +76,12 @@ void() data_qrfl_think={
   }
   else{
     self.w_isready = FALSE;
+    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
+      self.owner.en_delta = self.en_max +  self.owner.en_delta;
+    }
+    else{
+      self.w_firetime = time + self.w_reloadtime;
+    }
   }
 };
 
@@ -97,7 +102,7 @@ void() data_qrfl_atk={
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     
     if((player.flags & FL_MONSTER)){
-      if(dir == player.origin){
+      if((end == player.origin) || (dir == player.origin)){
         player.ai_patience = player.ai_patience + 1;
         return;
       }

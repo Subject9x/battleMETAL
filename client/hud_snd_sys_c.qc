@@ -61,6 +61,14 @@ void(float playerState) snd_hud_vfx_statelistener={
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE);
     playerState = PLAYER_IDLE;
   }
+  else if(playerState == PLAYER_IDLE){
+    local float t;
+    if(time > REACT_TIME){
+      REACT_TIME = time + soundlength(SND_MCH_SFX_REACT);
+      sound7(PLAYER_HELPER, CHAN_ITEM, SND_MCH_SFX_REACT, 1, ATTN_NORM, 100,SOUNDFLAG_RELIABLE );
+    }
+   
+  }
 };
 
 void(float lockstate) snd_hud_vfx_locklistener={

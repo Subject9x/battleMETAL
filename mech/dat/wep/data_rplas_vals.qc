@@ -8,16 +8,16 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_RPLAS_IDX = ID_WEP_RPC;
 string DAT_RPLAS_NAME = "RPC";
-float DAT_RPLAS_DMG = 8;
+float DAT_RPLAS_DMG = 120;
 float DAT_RPLAS_FIRETIME = 0;
 float DAT_RPLAS_CLIPSIZE = 1; //was 1 - 3/27/2017
 float DAT_RPLAS_CURRENTAMMO = 1; //was 1 - 3/27/2017
-float DAT_RPLAS_FIRERATE = 1; //was 0.28 - 3/27/2017
-float DAT_RPLAS_RELOADTIME = 1; //was 0.28 - 3/27/2017
+float DAT_RPLAS_FIRERATE = 3; //was 0.28 - 3/27/2017
+float DAT_RPLAS_RELOADTIME = 3; //was 0.28 - 3/27/2017
 vector DAT_RPLAS_FIRE_OFS = '0 0 2';
 string DAT_RPLAS_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_RPLAS_PROJ_ID = 6;//ID_PRJ_RPLAS;
-float DAT_RPLAS_EN_COST = -1;
+float DAT_RPLAS_EN_COST = 0.5;
 string DAT_RPLAS_SOUND = "sound/ac5.ogg";
 float DAT_RPLAS_TECH_LEVEL = 1;
 float DAT_RPLAS_SPR_X = 8;
@@ -96,7 +96,7 @@ void() data_rplas_atk={
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     
     if((player.flags & FL_MONSTER)){
-      if(dir == player.origin){
+      if((end == player.origin) || (dir == player.origin)){
         player.ai_patience = player.ai_patience + 1;
         return;
       }

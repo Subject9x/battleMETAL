@@ -34,10 +34,16 @@ void() ai_state_hunt={
     }
     else if(self.stat_trg_dist < self.ai_minrange){
       if(ai_target_infront(self.enemy)){
-        self.ai_next_move = ai_move_backward;
+        self.ai_next_move = ai_move_run_slide;
       }
       else{
-        self.ai_next_move = ai_move_forward;
+        if(self.stat_trg_dist < 50){
+          self.ai_next_move = ai_move_backward;
+        }
+        else{
+          self.ai_next_move = ai_move_forward;
+        }
+
       }
       
     }

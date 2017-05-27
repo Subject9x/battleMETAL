@@ -8,12 +8,12 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LATC_IDX = ID_WEP_LATC;
 string DAT_LATC_NAME = "Light Autocannon";
-float DAT_LATC_DMG = 2; //was 2 - 3/27/2017
+float DAT_LATC_DMG = 10; //was 2 - 3/27/2017
 float DAT_LATC_FIRETIME = 0;
 float DAT_LATC_CLIPSIZE = 1;  //was 3 - 3/27/2017
 float DAT_LATC_CURRENTAMMO = 1;  //was 3 - 3/27/2017
-float DAT_LATC_FIRERATE = 0.4;//was 0.15; - 5/14/2-017  //was 0.2 - 3/27/2017
-float DAT_LATC_RELOADTIME = 0.4;
+float DAT_LATC_FIRERATE = 0.5;//was 0.15; - 5/14/2-017  //was 0.2 - 3/27/2017
+float DAT_LATC_RELOADTIME = 0.5;
 vector DAT_LATC_FIRE_OFS = '0 0 2';
 string DAT_LATC_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_LATC_PROJ_ID= ID_PRJ_LATC;
@@ -96,7 +96,7 @@ void() data_latc_atk={
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   if((player.flags & FL_MONSTER)){
-    if(dir == player.origin){
+    if((end == player.origin) || (dir == player.origin)){
       player.ai_patience = player.ai_patience + 1;
       return;
     }

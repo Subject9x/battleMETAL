@@ -8,12 +8,12 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_SFGA_IDX = ID_WEP_SFGA;
 string DAT_SFGA_NAME = "Light Autocannon";
-float DAT_SFGA_DMG = 5;
+float DAT_SFGA_DMG = 300;
 float DAT_SFGA_FIRETIME = 0;
 float DAT_SFGA_CLIPSIZE = 1;
 float DAT_SFGA_CURRENTAMMO = 1;
-float DAT_SFGA_FIRERATE = 4;
-float DAT_SFGA_RELOADTIME = 4;
+float DAT_SFGA_FIRERATE = 8;
+float DAT_SFGA_RELOADTIME = 8;
 vector DAT_SFGA_FIRE_OFS = '0 0 2';
 string DAT_SFGA_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_SFGA_PROJ_ID= ID_PRJ_SFGA;
@@ -106,7 +106,7 @@ void() data_sfga_atk={
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
   if((player.flags & FL_MONSTER)){
-    if(dir == player.origin){
+    if((end == player.origin) || (dir == player.origin)){
       player.ai_patience = player.ai_patience + 1;
       return;
     }

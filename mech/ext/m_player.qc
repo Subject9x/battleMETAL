@@ -85,6 +85,7 @@ void() PlayerPostThink = {
     }
   }
   
+  centerprint(self, ftos(self.en_cur)); //DEBUG
 // do weapon stuff
     self.stat_plr_ang = anglemod(self.v_angle_y);
   //STAT UPDATE   

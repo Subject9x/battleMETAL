@@ -81,7 +81,7 @@ void() mech_cleanupMech={
     if(lstp){
       lstp.w_slot = next;
     }
-    if(w_chain != world && ((!w_chain.flags & FL_CLIENT) || (!w_chain.flags & FL_MONSTER))){
+    if(w_chain != world && ((!(w_chain.flags & FL_CLIENT)) || (!(w_chain.flags & FL_MONSTER)))){
       remove(w_chain);
     }
     w_chain = next;
@@ -106,7 +106,7 @@ void() mech_cleanupMech={
 
 
 void() mech_player_die={
-  local entity w_chain, next;
+  local entity w_chain;
   
   if(self.flags & FL_CLIENT){
     mech_player_cameradie();
@@ -154,7 +154,6 @@ void() mech_player_cameradie={
 }
 
 void() mech_player_removecamera={
-  local entity old;
   if(self.e_cam.classname){
     self.view_ofs = '0 0 1';
     msg_entity = self;

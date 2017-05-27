@@ -40,6 +40,7 @@ void() cs_precache={
   precache_pic("gfx/ui/hgr_hvd.png", 0);
   
   //cockpit voice
+  SND_MCH_SFX_REACT = precache_sound2("sound/mech_react.ogg");
   SND_HUD_VFX_ONLINE = precache_sound2("sound/comp/online.ogg");
   SND_HUD_VFX_ENELOW = precache_sound2("sound/comp/en_low.ogg");
   SND_HUD_VFX_SHDLOW = precache_sound2("sound/comp/sh_low.ogg");

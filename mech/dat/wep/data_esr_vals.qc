@@ -7,15 +7,15 @@ Overview:
 //Electro static Rifle=======================
 float DAT_ESR_IDX = ID_WEP_ESR;
 string DAT_ESR_NAME = "ESR";
-float DAT_ESR_DMG = 25;
+float DAT_ESR_DMG = 50;
 float DAT_ESR_FIRETIME = 0;
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_CURRENTAMMO = 10;
 float DAT_ESR_FIRERATE = 0.1;
-float DAT_ESR_RELOADTIME = 3;
+float DAT_ESR_RELOADTIME = 5;
 vector DAT_ESR_FIRE_OFS = '0 0 2';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_ESR_EN_COST = 1;
+float DAT_ESR_EN_COST = 2;
 string DAT_ESR_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_TECH_LEVEL = 1;
 float DAT_ESR_SPR_X = 5;
@@ -78,11 +78,12 @@ void() data_esr_think={
     }
   }
   else{
-    if(self.owner.en_cur > 0){
-      self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
+    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
+      self.owner.en_delta = self.owner.en_delta + self.en_max;
+      //self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
     }
     else{
-      self.w_firetime = time + self.w_reloadtime;
+      self.power_timer = time + self.w_reloadtime;
     }
     self.w_isready = FALSE;
   }
@@ -104,7 +105,7 @@ void() data_esr_atk={
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
 
   if((player.flags & FL_MONSTER)){
-    if(dir == player.origin){
+    if((end == player.origin) || (dir == player.origin)){
       player.ai_patience = player.ai_patience + 1;
       return;
     }
