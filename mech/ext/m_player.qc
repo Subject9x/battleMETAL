@@ -85,9 +85,9 @@ void() PlayerPostThink = {
     }
   }
   
-  centerprint(self, ftos(self.en_cur)); //DEBUG
+  centerprint(self, ftos(self.enemy.en_cur)); //DEBUG
 // do weapon stuff
-    self.stat_plr_ang = anglemod(self.v_angle_y);
+  self.stat_plr_ang = anglemod(self.v_angle_y);
   //STAT UPDATE   
   if(self.p_class == P_MECH){
     self.stat_plr_camx = self.e_cam.c_ofs_x;
@@ -129,9 +129,10 @@ void() PlayerPostThink = {
 		ImpulseCommands ();
   }
 // check for attack
-	if (self.button0){
+  playerAttack();
+	/*if (self.button0){
     playerAttack();
-	}
+	}*/
 
 // check to see if player landed and play landing sound	
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
@@ -205,7 +206,6 @@ void() PlayerDead={
 
 
 void() PlayerDeathThink={
-  //local entity	old_self;
 	local float		forward;
 	if ((self.flags & FL_ONGROUND)){
 		forward = vlen (self.velocity);

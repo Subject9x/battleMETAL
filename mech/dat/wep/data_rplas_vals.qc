@@ -13,11 +13,11 @@ float DAT_RPLAS_FIRETIME = 0;
 float DAT_RPLAS_CLIPSIZE = 1; //was 1 - 3/27/2017
 float DAT_RPLAS_CURRENTAMMO = 1; //was 1 - 3/27/2017
 float DAT_RPLAS_FIRERATE = 3; //was 0.28 - 3/27/2017
-float DAT_RPLAS_RELOADTIME = 3; //was 0.28 - 3/27/2017
 vector DAT_RPLAS_FIRE_OFS = '0 0 2';
 string DAT_RPLAS_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_RPLAS_PROJ_ID = 6;//ID_PRJ_RPLAS;
-float DAT_RPLAS_EN_COST = 0.5;
+float DAT_RPLAS_EN_COST = 10;
+float DAT_RPLAS_EN_MAX = 300;
 string DAT_RPLAS_SOUND = "sound/ac5.ogg";
 float DAT_RPLAS_TECH_LEVEL = 1;
 float DAT_RPLAS_SPR_X = 8;
@@ -48,17 +48,18 @@ void() data_rplas_ini={
   self.data_idx = DAT_RPLAS_IDX;
   self.w_name = DAT_RPLAS_NAME;
   self.w_isready = 0;
+  self.p_dmgtype = self.p_dmgtype | DMG_BAL;
   self.w_firetime = DAT_RPLAS_FIRETIME;
   self.w_clipsize = DAT_RPLAS_CLIPSIZE;
   self.w_currentammo = DAT_RPLAS_CURRENTAMMO;
   self.w_firerate = DAT_RPLAS_FIRERATE;
-  self.w_reloadtime = DAT_RPLAS_RELOADTIME;
   self.w_fire_ofs = DAT_RPLAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_RPLAS_MODEL;
   self.w_attack = data_rplas_atk;
   self.w_proj = DAT_RPLAS_PROJ_ID;
-  self.en_cur = -1;
-  self.en_max = DAT_RPLAS_EN_COST;
+  self.en_cur = DAT_RPLAS_EN_MAX;
+  self.en_rate = DAT_RPLAS_EN_COST;
+  self.en_max = DAT_RPLAS_EN_MAX;
   self.fire_sound = DAT_RPLAS_SOUND;
   self.i_techlvl = DAT_RPLAS_TECH_LEVEL;
   self.stat_spr_x = DAT_RPLAS_SPR_X;
@@ -68,16 +69,24 @@ void() data_rplas_ini={
   self.health = DAT_RPLAS_HPX;
   self.max_health = DAT_RPLAS_HPX;
   self.w_range = 1500;
+  self.w_isburst = FALSE;
+  self.w_state = READY;
 };
 
 void() data_rplas_think={
-  if(time > self.w_firetime){
-    if(self.w_currentammo > 0){
-      self.w_isready = TRUE;
+  if(self.w_state == RECOIL){
+    if(time > self.w_firetime){
+      self.w_state = READY;
     }
   }
-  else{
-    self.w_isready = FALSE;
+  else if(self.w_state == RELOADING){
+    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 5);
+      self.en_cur = self.en_cur + self.en_rate;
+      if(self.en_cur >= self.en_max){
+        self.w_state = READY;
+      }
+    }
   }
 };
 
@@ -102,15 +111,15 @@ void() data_rplas_atk={
       }
     }
     
-    self.w_isready = FALSE;
     self.w_currentammo = self.w_currentammo - 1;
-    if(self.w_currentammo <=0){
-      self.w_firetime = time + self.w_reloadtime;
-      self.power_timer = self.w_firetime;
+    if(self.w_currentammo <= 0){
+      self.en_cur = 0;
       self.w_currentammo = self.w_clipsize;
+      self.w_state = RELOADING;
     }
     else{
       self.w_firetime = time + self.w_firerate;
+      self.w_state = RECOIL;
     }
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;

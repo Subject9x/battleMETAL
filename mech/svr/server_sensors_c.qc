@@ -16,8 +16,8 @@ void() server_getTarget={
   }
   traceline(src.origin, src.origin + v_forward*10000, FALSE, self);
   if(trace_ent != world){
+    self.enemy = trace_ent;
     if(trace_ent.p_class != P_OBS){
-      self.enemy = trace_ent;
       self.lock_timer = time + 5;
     }
     else{

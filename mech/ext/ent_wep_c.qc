@@ -43,3 +43,5 @@ commented vars mean they're already implemented and are here for reference!
 .float w_group;     //weapon group, only 1-3 - SET BY PARENT
 .vector fx_origin;
 .float w_range;
+.float w_isburst;   //ugh
+.float w_state; //double ugh

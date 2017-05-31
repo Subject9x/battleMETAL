@@ -22,11 +22,13 @@ void() playerAttack={
     local float wgrp;
     wgrp = wep_chain.w_group;
     if((self.currentWeaponGroup & wgrp)){
-      if(wep_chain.w_isready){
-        oself = self;
-        self = wep_chain;
-          self.w_attack();
-        self = oself;
+      if((self.button0) || (wep_chain.w_isburst)){
+        if(wep_chain.w_state == READY){
+          oself = self;
+          self = wep_chain;
+            self.w_attack();
+          self = oself;
+        }
       }
     }
     wep_chain = wep_chain.w_slot;

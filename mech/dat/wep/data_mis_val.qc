@@ -16,7 +16,8 @@ float DAT_MIS_RELOADTIME = 8;//1.85;
 vector DAT_MIS_FIRE_OFS = '0 0 2';
 string DAT_MIS_MODEL = "q3mdl/weapons/w_mis.md3";
 float DAT_MIS_PROJ_ID= ID_PRJ_MIS;
-float DAT_MIS_EN_COST= -1;
+float DAT_MIS_EN_COST= 10;
+float DAT_MIS_EN_MAX= 800;
 string DAT_MIS_SOUND = "weapons/sgun1.wav";
 float DAT_MIS_TECH_LEVEL = 1;
 float DAT_LAS_SPR_X = 10;
@@ -49,14 +50,13 @@ void() data_mis_ini={
   self.w_clipsize = DAT_MIS_CLIPSIZE;
   self.w_currentammo = DAT_MIS_CURRENTAMMO;
   self.w_firerate = DAT_MIS_FIRERATE;
-  self.w_reloadtime = DAT_MIS_RELOADTIME;
-  self.w_isready = 0;
   self.w_fire_ofs = DAT_MIS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_MIS_MODEL;
   self.w_attack = data_mis_atk;
   self.w_proj = DAT_MIS_PROJ_ID;
-  self.en_cur = -1;
-  self.en_max = DAT_MIS_EN_COST;
+  self.en_cur = DAT_MIS_EN_MAX;
+  self.en_rate = DAT_MIS_EN_COST;
+  self.en_max = DAT_MIS_EN_MAX;
   self.fire_sound = DAT_MIS_SOUND;
   self.i_techlvl = DAT_MIS_TECH_LEVEL;
   self.stat_spr_x = DAT_LAS_SPR_X;
@@ -66,16 +66,21 @@ void() data_mis_ini={
   self.health = DAT_MIS_HPX;
   self.max_health = DAT_MIS_HPX;
   self.w_range = 600;
+  self.w_isburst = FALSE;
+  self.w_state = READY;
 };
 
 void() data_mis_think={
-  if(time > self.w_firetime){
-    if(self.w_currentammo > 0){
-      self.w_isready = TRUE;
+  if(self.w_state == RECOIL){
+    if(time > self.w_firetime){
+      self.w_state = READY;
     }
   }
-  else{
-    self.w_isready = FALSE;
+  else if(self.w_state == RELOADING){
+    self.en_cur = self.en_cur + self.en_rate;
+    if(self.en_cur >= self.en_max){
+      self.w_state = READY;
+    }
   }
 };
 
@@ -99,15 +104,17 @@ void() data_mis_atk={
         return;
       }
     }
-    self.w_isready = FALSE;
     self.w_currentammo = self.w_currentammo - 1;
-    if(self.w_currentammo <=0){
-      self.w_firetime = time + self.w_reloadtime;
-      self.power_timer = self.w_firetime;
+    if(self.w_currentammo <= 0){
+      self.en_cur = 0;
       self.w_currentammo = self.w_clipsize;
+      self.w_state = RELOADING;
+      self.w_isburst = FALSE;
     }
     else{
       self.w_firetime = time + self.w_firerate;
+      self.w_state = RECOIL;
+      self.w_isburst = TRUE;
     }
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;

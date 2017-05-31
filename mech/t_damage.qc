@@ -10,28 +10,30 @@ t_damage function and 1 killed function...for some reason, maybe good house keep
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
-  local float canDamage, new_dmg;
+  local float new_dmg;
   local entity oself, targ_act;
     
   if(!trg.takedamage){
     return trg;
   }
   //add in ignore team damage
+  if(trg.i_faction == attacker.i_faction){
+    dmg_amt = dmg_amt / 2;
+  }
   
-  if(trg.flags & FL_GODMODE){
+  if((trg.flags & FL_GODMODE)){
     return trg;
   }
   
-  canDamage = TRUE;
-  
-  if(trg.flags & FL_CLIENT){
+  if((trg.flags & FL_CLIENT)){
     trg.dmg_inflictor = inflictor;
+    if(trg.was_hit < time){
+      trg.was_hit = time + 1;
+    }
   }
 
   //calculate hit time and angle
-  if(trg.was_hit < time){
-    trg.was_hit = time + 1;
-  }
+
   local float hit_ang;
   oself = self;
   self = trg;

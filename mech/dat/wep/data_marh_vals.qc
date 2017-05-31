@@ -15,7 +15,8 @@ float DATWEP_MARH_RELOADTIME = 12;
 vector DATWEP_MARH_FIRE_OFS = '0 0 2';
 string DATWEP_MARH_MODEL = "q3mdl/weapons/w_mis.md3";
 float DATWEP_MARH_PROJ_ID= ID_PRJ_MARH;
-float DATWEP_MARH_EN_COST= 0.25;
+float DATWEP_MARH_EN_COST = 10;
+float DATWEP_MARH_EN_MAX = 500;
 string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
 float DAT_MARH_WSIZE = 3;
@@ -41,39 +42,41 @@ void() data_wep_marh={
 
 void() data_marh_ini={
   self.data_idx = DATWEP_MARH_IDX;
+    self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.w_name = DATWEP_MARH_NAME;
   self.w_firetime = DATWEP_MARH_FIRETIME;
   self.w_clipsize = DATWEP_MARH_CLIPSIZE;
   self.w_currentammo = DATWEP_MARH_CURRENTAMMO;
   self.w_firerate = DATWEP_MARH_FIRERATE;
-  self.w_reloadtime = DATWEP_MARH_RELOADTIME;
-  self.w_isready = 0;
   self.w_fire_ofs = DATWEP_MARH_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DATWEP_MARH_MODEL;
   self.w_attack = data_marh_atk;
   self.w_proj = DATWEP_MARH_PROJ_ID;
-  self.en_max = DATWEP_MARH_EN_COST;
+  self.en_cur = DATWEP_MARH_EN_MAX;
+  self.en_rate = DATWEP_MARH_EN_COST;
+  self.en_max = DATWEP_MARH_EN_MAX;
   self.fire_sound = DATWEP_MARH_FIRESOUND;
   self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
   self.i_size = DAT_MARH_WSIZE;
   self.w_think = data_marh_think;
     self.health = DAT_MARH_HPX;
   self.max_health = DAT_MARH_HPX;
+  self.w_isburst = NEITHER;
 };
 
 void() data_marh_think={
-  if(time > self.w_firetime){
-    if(self.w_currentammo > 0){
-      self.w_isready = TRUE;
+  if(self.w_state == RECOIL){
+    if(time > self.w_firetime){
+      self.w_state = READY;
     }
   }
-  else{
-    self.w_isready = FALSE;
-    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
-      self.owner.en_delta = self.en_max +  self.owner.en_delta;
-    }
-    else{
-      self.w_firetime = time + self.w_reloadtime;
+  else if(self.w_state == RELOADING){
+    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 8);
+      self.en_cur = self.en_cur + self.en_rate;
+      if(self.en_cur >= self.en_max){
+        self.w_state = READY;
+      }
     }
   }
 };
@@ -104,15 +107,15 @@ void() data_marh_atk={
           }
         }
         
-        self.w_isready = FALSE;
         self.w_currentammo = self.w_currentammo - 1;
-        if(self.w_currentammo <=0){
-          self.w_firetime = time + self.w_reloadtime;
-          self.power_timer = self.w_firetime;
+        if(self.w_currentammo <= 0){
+          self.en_cur = 0;
           self.w_currentammo = self.w_clipsize;
+          self.w_state = RELOADING;
         }
         else{
           self.w_firetime = time + self.w_firerate;
+          self.w_state = RECOIL;
         }
                 
         adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;

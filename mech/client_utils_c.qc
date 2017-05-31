@@ -245,31 +245,31 @@ void() client_updateWeaponReloads={
   while(e){
     
     if(idx == 1){ 
-      self.stat_w1_rel = client_incrementReload(self.stat_w1_rel, e.power_timer, e.w_reloadtime, self.stat_wep_rel, WEAPON1_REL);
+      self.stat_w1_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w1_rel, e.power_timer, e.w_reloadtime, self.stat_wep_rel, WEAPON1_REL);
     }
     else if(idx == 2){
-      self.stat_w2_rel = client_incrementReload(self.stat_w2_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON2_REL);
+      self.stat_w2_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w2_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON2_REL);
     }
     else if(idx == 3){
-      self.stat_w3_rel = client_incrementReload(self.stat_w3_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON3_REL);
+      self.stat_w3_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w3_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON3_REL);
     }
     else if(idx == 4){
-      self.stat_w4_rel = client_incrementReload(self.stat_w4_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON4_REL);
+      self.stat_w4_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w4_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON4_REL);
     }
     else if(idx == 5){
-      self.stat_w5_rel = client_incrementReload(self.stat_w5_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON5_REL);
+      self.stat_w5_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w5_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON5_REL);
     }
     else if(idx == 6){
-      self.stat_w6_rel = client_incrementReload(self.stat_w6_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON6_REL);
+      self.stat_w6_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w6_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON6_REL);
     }
     else if(idx == 7){
-      self.stat_w7_rel = client_incrementReload(self.stat_w7_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON7_REL);
+      self.stat_w7_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w7_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON7_REL);
     }
     else if(idx == 8){
-      self.stat_w8_rel = client_incrementReload(self.stat_w8_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON8_REL);
+      self.stat_w8_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w8_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON8_REL);
     }
     else if(idx == 9){
-      self.stat_w9_rel = client_incrementReload(self.stat_w9_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON9_REL);
+      self.stat_w9_rel = (e.en_cur / e.en_max); //client_incrementReload(self.stat_w9_rel, e.power_timer, e.w_reloadtime,  self.stat_wep_rel, WEAPON9_REL);
     }
     idx = idx + 1;
     e = e.w_slot;

@@ -8,7 +8,10 @@ this one will focus on move to move
 //TODO - move this stuff to own file
 void() ai_mech_update={
   
-  local entity oself;
+  local entity oself,wep_chain;
+  
+  ctrl_updateCenterTorso();
+  
   if(self.e_legs){
     if(self.e_legs != world && oself.e_legs.owner == self){
       oself = self;
@@ -17,10 +20,7 @@ void() ai_mech_update={
       self = oself;
     }
   }
-  
-  ctrl_updateCenterTorso();
-  
-  local entity wep_chain;
+
   wep_chain = self.w_slot;
   while(wep_chain){
     ctrl_wpn_think(wep_chain);
@@ -59,19 +59,28 @@ void() ai_mech_attack={
   ai = self;
   wep_chain = self.w_slot;
   while(wep_chain){
-    if(wep_chain.w_isready){
+    if(wep_chain.w_state == READY){
       if( self.stat_trg_dist <= wep_chain.w_range){
-        oself = self;
-        self = wep_chain;
-        if((self.p_dmgtype & EFF_STX)){
-          if(ai.enemy.sh_cur >= (ai.enemy.sh_max/4)){
-            self.w_attack();
+        if(self.en_cur >= (wep_chain.en_rate * 2)){
+          oself = self;
+          self = wep_chain;
+          if((self.p_dmgtype & EFF_STX)){
+            if(ai.enemy.sh_cur >= (ai.enemy.sh_max/4)){
+              self.w_attack();
+            }
           }
+          else{
+            if((self.p_dmgtype & DMG_EXP)){
+              if(ai.enemy.sh_cur <= 0){
+                self.w_attack();
+              }
+            }
+            else{
+              self.w_attack();
+            }
+          }   
+          self = oself;
         }
-        else{
-          self.w_attack();
-        }   
-        self = oself;
       }
     }
     wep_chain = wep_chain.w_slot;
@@ -104,6 +113,10 @@ void() ai_mech_cleanup={
 };
 
 void() ai_mech_touch={
+  if(time > self.nextthink){
+    
+    self.nextthink = time + 0.005;
+  }
   local entity oact;
   if((other.owner.flags & FL_MONSTER)){
     oact = other.owner;
@@ -119,12 +132,12 @@ void() ai_mech_touch={
   //bumped an ally!
   if(other.i_faction == self.i_faction){
     if(infront){
-      //self.ai_next_move = ai_move_backward;
-      ai_move_backward();
+      self.ai_next_move = ai_move_backward;
+      return;
     }
     else{
-      //self.ai_next_move = ai_move_forward;
-      ai_move_forward();
+      self.ai_next_move = ai_move_forward;
+      return;
     } 
   }
   //bumped a baddy!
@@ -139,15 +152,14 @@ void() ai_mech_touch={
       }
     }
     if(infront){
-      //self.ai_next_move = ai_move_run_slide;
-      ai_move_run_slide();
+      self.ai_next_move = ai_move_run_slide;
+      return;
     }
     else{
-     //self.ai_next_move = ai_move_backward;
-      ai_move_backward();
+      self.ai_next_move = ai_move_backward;
+      return;
     } 
   }
-
 };
 
 

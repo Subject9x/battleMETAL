@@ -28,13 +28,7 @@ void() ctrl_updateCenterTorso={
       self.en_cur = self.en_cur + self.en_rate;
     }
   }
-  if(self.en_cur < 0){
-    self.en_cur = 0;
-  }
-  else if(self.en_cur > self.en_max){
-    self.en_cur = self.en_max;
-  }
-  
+
   if(self.sh_cur < self.sh_max){
     if(time > self.sh_hit){
       if(self.en_cur > 0){
@@ -49,6 +43,10 @@ void() ctrl_updateCenterTorso={
   if(self.en_cur < 0){
     self.en_cur = 0;
   }
+  else if(self.en_cur > self.en_max){
+    self.en_cur = self.en_max;
+  }
+  
   if((self.flags & FL_CLIENT)){
     local float mx, my;
     mx = self.movement_x;
@@ -67,8 +65,7 @@ void() ctrl_updateCenterTorso={
       norg_x = self.origin_x + self.velocity_x;
       norg_y = self.origin_y + self.velocity_y;
       v = vlen(norg - self.origin) / 3000;
-      self.en_cur = self.en_cur - (self.en_rate * 1.15);
-      
+      self.en_delta = self.en_delta + (self.en_rate * 1.15);
       
       self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
       if(self.stat_spr_x > self.conv_max_x){

@@ -15,7 +15,8 @@ float DAT_PAC_FIRERATE = 8;
 float DAT_PAC_RELOADTIME = 8;
 vector DAT_PAC_FIRE_OFS = '0 0 2';
 string DAT_PAC_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_PAC_EN_COST =  1;
+float DAT_PAC_EN_COST =  10;
+float DAT_PAC_EN_MAX =  800;
 string DAT_PAC_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_PAC_TECH_LEVEL = 1;
 float DAT_PAC_SPR_X = 0;
@@ -45,17 +46,17 @@ void() data_wep_pac={
 void() data_pac_ini={
   self.data_idx = DAT_PAC_IDX;
   self.w_name = DAT_PAC_NAME;
+  self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_PRC;
   self.w_firetime = DAT_PAC_FIRETIME;
   self.w_clipsize = DAT_PAC_CLIPSIZE;
   self.w_currentammo = DAT_PAC_CURRENTAMMO;
   self.w_firerate = DAT_PAC_FIRERATE;
-  self.w_reloadtime = DAT_PAC_RELOADTIME;
-  self.w_isready = 0;
   self.w_fire_ofs = DAT_PAC_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_PAC_MODEL;
   self.w_attack = data_pac_atk;
-  self.en_cur = 0;
-  self.en_max = DAT_PAC_EN_COST;
+  self.en_cur = DAT_PAC_EN_MAX;
+  self.en_rate = DAT_PAC_EN_COST;
+  self.en_max = DAT_PAC_EN_MAX;
   self.fire_sound = DAT_PAC_SOUND;
   self.i_techlvl = DAT_PAC_TECH_LEVEL;
   self.i_size = DAT_PAC_WSIZE;
@@ -63,22 +64,24 @@ void() data_pac_ini={
   self.health = DAT_PAC_HPX;
   self.max_health = DAT_PAC_HPX;
   self.w_range = DAT_PAC_RANGE;
+  self.w_isburst = FALSE;
+  self.w_state = READY;
 };
 
 void() data_pac_think={
-  if(time > self.w_firetime){
-    if(self.w_currentammo > 0){
-      self.w_isready = TRUE;
+  if(self.w_state == RECOIL){
+    if(time > self.w_firetime){
+      self.w_state = READY;
     }
   }
-  else{
-    if(self.owner.en_cur > 0){
-      self.owner.en_cur = util_zeroStat(self.en_max, self.owner.en_cur);
+  else if(self.w_state == RELOADING){
+    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 3);
+      self.en_cur = self.en_cur + self.en_rate;
+      if(self.en_cur >= self.en_max){
+        self.w_state = READY;
+      }
     }
-    else{
-      self.w_firetime = time + self.w_reloadtime;
-    }
-    self.w_isready = FALSE;
   }
 };
 
@@ -105,15 +108,15 @@ void() data_pac_atk={
     }
   }
   
-  self.w_isready = FALSE;
   self.w_currentammo = self.w_currentammo - 1;
-  if(self.w_currentammo <=0){
-    self.w_firetime = time + self.w_reloadtime;
-    self.power_timer = self.w_firetime;
+  if(self.w_currentammo <= 0){
+    self.en_cur = 0;
     self.w_currentammo = self.w_clipsize;
+    self.w_state = RELOADING;
   }
   else{
     self.w_firetime = time + self.w_firerate;
+    self.w_state = RECOIL;
   }
 
   local entity laser_org;

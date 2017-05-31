@@ -20,6 +20,7 @@ void() ai_mech={
   //ini all the unit stats
   self.p_class = P_MECH;
   self.data_idx = 0;
+  self.en_delta = 0;
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;
@@ -32,19 +33,6 @@ void() ai_mech={
   self.stat_rtor_hp = 0;
   self.stat_larm_hp = 0;
   self.stat_rarm_hp = 0;
-  
-  self.stat_trg_vid = -1;
-  self.stat_trg_ddflg = -1;
-  self.stat_trg_sh = -1;
-  self.stat_trg_dat = -1;
-  self.stat_trg_face = -1;
-  
-  self.stat_trg_lg_hp = -1;
-  self.stat_trg_ct_hp = -1;
-  self.stat_trg_lt_hp = -1;
-  self.stat_trg_rt_hp = -1;
-  self.stat_trg_la_hp = -1;
-  self.stat_trg_ra_hp = -1;
   
   self.radar_range = 0; 
   self.was_hit = FALSE;
@@ -99,8 +87,8 @@ void() ai_mech={
   }
 		
   buildVehicle(dat);
-  self.en_rate = self.en_rate; // DEBUG
-  self.sh_rate = self.sh_rate * 2;
+  self.en_rate = self.en_rate / 10; // DEBUG
+  self.sh_rate = self.sh_rate / 10;
   self.solid = SOLID_BBOX;
   
   self.th_die = ai_mech_die;

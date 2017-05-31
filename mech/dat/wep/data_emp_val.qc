@@ -12,11 +12,11 @@ float DAT_EMP_FIRETIME = 0;
 float DAT_EMP_CLIPSIZE = 1;
 float DAT_EMP_CURRENTAMMO = 1;
 float DAT_EMP_FIRERATE = 6;
-float DAT_EMP_RELOADTIME = 6;
 vector DAT_EMP_FIRE_OFS = '0 0 2';
 string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
 float DAT_EMP_PROJ_ID= ID_PRJ_EMP;
-float DAT_EMP_EN_COST=  1.25;
+float DAT_EMP_EN_COST =  10;
+float DAT_EMP_EN_MAX = 600;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 float DAT_EMP_WSIZE = 2;
@@ -47,14 +47,13 @@ void() data_emp_ini={
   self.w_clipsize = DAT_EMP_CLIPSIZE;
   self.w_currentammo = DAT_EMP_CURRENTAMMO;
   self.w_firerate = DAT_EMP_FIRERATE;
-  self.w_reloadtime = DAT_EMP_RELOADTIME;
-  self.w_isready = 0;
   self.w_fire_ofs = DAT_EMP_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_EMP_MODEL;
   self.w_attack = data_emp_atk;
   self.w_proj = DAT_EMP_PROJ_ID;
-  self.en_cur = 0;
-  self.en_max = DAT_EMP_EN_COST;
+  self.en_cur = DAT_EMP_EN_MAX;
+  self.en_rate = DAT_EMP_EN_COST;
+  self.en_max = DAT_EMP_EN_MAX;
   self.fire_sound = DAT_EMP_SOUND;
   self.i_techlvl = DAT_EMP_TECH_LEVEL;
   self.i_size = DAT_EMP_WSIZE;
@@ -63,21 +62,22 @@ void() data_emp_ini={
   self.max_health = DAT_EMP_HPX;
   self.p_dmgtype = self.p_dmgtype | EFF_STX;
   self.w_range = 1200;
+  self.w_state = READY;
 };
 
 void() data_emp_think={
-  if(time > self.w_firetime){
-    if(self.w_currentammo > 0){
-      self.w_isready = TRUE;
+  if(self.w_state == RECOIL){
+    if(time > self.w_firetime){
+      self.w_state = READY;
     }
   }
-  else{
-    self.w_isready = FALSE;
-    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
-      self.owner.en_delta = self.en_max +  self.owner.en_delta;
-    }
-    else{
-      self.w_firetime = time + self.w_reloadtime;
+  else if(self.w_state == RELOADING){
+    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
+      self.owner.en_cur = self.owner.en_cur - self.en_rate;
+      self.en_cur = self.en_cur + self.en_rate;
+      if(self.en_cur >= self.en_max){
+        self.w_state = READY;
+      }
     }
   }
 };
@@ -97,7 +97,6 @@ void() data_emp_atk={
     }
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     
-
     if((player.flags & FL_MONSTER)){
       if((end == player.origin) || (dir == player.origin)){
         player.ai_patience = player.ai_patience + 1;
@@ -106,16 +105,15 @@ void() data_emp_atk={
     }
     
     self.w_currentammo = self.w_currentammo - 1;
-    self.w_isready = FALSE;
-    if(self.w_currentammo <=0){
-      self.w_firetime = time + self.w_reloadtime;
-      self.power_timer = self.w_firetime;
+    if(self.w_currentammo <= 0){
+      self.en_cur = 0;
       self.w_currentammo = self.w_clipsize;
+      self.w_state = RELOADING;
     }
     else{
       self.w_firetime = time + self.w_firerate;
+      self.w_state = RECOIL;
     }
-    
     
     adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
     makevectors(player.angles);

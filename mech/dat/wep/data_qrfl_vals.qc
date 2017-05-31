@@ -16,7 +16,8 @@ float DAT_QRFL_RELOADTIME = 5;//was 0.5  - 5/14/2017
 vector DAT_QRFL_FIRE_OFS = '0 0 2';
 string DAT_QRFL_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_QRFL_PROJ_ID= ID_PRJ_QRFL;
-float DAT_QRFL_EN_COST= 0.15;
+float DAT_QRFL_EN_COST= 10;
+float DAT_QRFL_EN_MAX = 500;
 string DAT_QRFL_SOUND = "sound/ac5.ogg";
 float DAT_QRFL_TECH_LEVEL = 1;
 float DAT_QRFL_SPR_X = 1;
@@ -46,17 +47,18 @@ void() data_wep_qrfl={
 void() data_qrfl_ini={
   self.data_idx = DAT_QRFL_IDX;
   self.w_name = DAT_QRFL_NAME;
-  self.w_isready = 0;
+  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_STX;
   self.w_firetime = DAT_QRFL_FIRETIME;
   self.w_clipsize = DAT_QRFL_CLIPSIZE;
   self.w_currentammo = DAT_QRFL_CURRENTAMMO;
   self.w_firerate = DAT_QRFL_FIRERATE;
-  self.w_reloadtime = DAT_QRFL_RELOADTIME;
   self.w_fire_ofs = DAT_QRFL_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_QRFL_MODEL;
   self.w_attack = data_qrfl_atk;
   self.w_proj = DAT_QRFL_PROJ_ID;
-  self.en_max = DAT_QRFL_EN_COST;
+  self.en_max = DAT_QRFL_EN_MAX;
+  self.en_rate = DAT_QRFL_EN_COST;
+  self.en_cur = DAT_QRFL_EN_MAX;
   self.fire_sound = DAT_QRFL_SOUND;
   self.i_techlvl = DAT_QRFL_TECH_LEVEL;
   self.stat_spr_x = DAT_QRFL_SPR_X;
@@ -66,21 +68,23 @@ void() data_qrfl_ini={
   self.health = DAT_QRFL_HPX;
   self.max_health = DAT_QRFL_HPX;
   self.w_range = 1500;
+  self.w_isburst = FALSE;
+  self.w_state = READY;
 };
 
 void() data_qrfl_think={
-  if(time > self.w_firetime){
-    if(self.w_currentammo > 0){
-      self.w_isready = TRUE;
+  if(self.w_state == RECOIL){
+    if(time > self.w_firetime){
+      self.w_state = READY;
     }
   }
-  else{
-    self.w_isready = FALSE;
-    if(self.owner.en_cur > (self.en_max +  self.owner.en_delta)){
-      self.owner.en_delta = self.en_max +  self.owner.en_delta;
-    }
-    else{
-      self.w_firetime = time + self.w_reloadtime;
+  else if(self.w_state == RELOADING){
+    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 6);
+      self.en_cur = self.en_cur + self.en_rate;
+      if(self.en_cur >= self.en_max){
+        self.w_state = READY;
+      }
     }
   }
 };
@@ -108,15 +112,15 @@ void() data_qrfl_atk={
       }
     }
     
-    self.w_isready = FALSE;
     self.w_currentammo = self.w_currentammo - 1;
-    if(self.w_currentammo <=0){
-      self.w_firetime = time + self.w_reloadtime;
-      self.power_timer = self.w_firetime;
+    if(self.w_currentammo <= 0){
+      self.en_cur = 0;
       self.w_currentammo = self.w_clipsize;
+      self.w_state = RELOADING;
     }
     else{
       self.w_firetime = time + self.w_firerate;
+      self.w_state = RECOIL;
     }
     
     local float qbits;
