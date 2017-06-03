@@ -258,3 +258,56 @@ float(vector chk, vector node) ai_core_nodelos={
   return FALSE;
 };
 
+void(entity e, entity mask) ai_core_sortranges={
+  local entity wep;
+  wep = e.w_slot;
+  while(wep){
+    if(mask != wep){
+      local float dmg;
+      if(wep.w_proj > 0){
+        local entity p;
+        p = mh_world_findData(wep.w_proj, DATA_PROJ);
+        bprint(strcat(ftos(p.p_damage),"\n")); //DEBUG
+        dmg = p.p_damage * wep.w_clipsize;
+      }
+      else{
+        dmg = wep.p_damage * wep.w_clipsize;
+      }
+      if(wep.w_range <= AI_RANGE_S){
+        e.ai_dmg_s = e.ai_dmg_s + dmg;
+      }
+      else if(wep.w_range <= AI_RANGE_M){
+        e.ai_dmg_m = e.ai_dmg_m + dmg;
+      }
+      else if(wep.w_range <= AI_RANGE_L){
+        e.ai_dmg_l = e.ai_dmg_l + dmg;
+      }
+    }
+    wep = wep.w_slot;
+  }
+  local float s, m, l;
+  s = e.ai_dmg_s;
+  m = e.ai_dmg_m;
+  l = e.ai_dmg_l;
+  if(s < l){
+    e.ai_minrange = AI_RANGE_L;
+  }
+  else if( s > l){
+    e.ai_minrange = AI_RANGE_S;
+  }
+  if(m < l){
+    e.ai_minrange = AI_RANGE_L;
+  }
+  else if( m > l){
+    e.ai_minrange = AI_RANGE_M;
+  }
+  if(s < m){
+    e.ai_minrange = AI_RANGE_M;
+  }
+  else if( s > m){
+    e.ai_minrange = AI_RANGE_S;
+  }
+  if(e.ai_minrange == 0){
+    e.ai_minrange = 400;
+  }
+};

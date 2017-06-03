@@ -42,7 +42,7 @@ void() data_wep_marh={
 
 void() data_marh_ini={
   self.data_idx = DATWEP_MARH_IDX;
-    self.p_dmgtype = self.p_dmgtype | DMG_EXP;
+  self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.w_name = DATWEP_MARH_NAME;
   self.w_firetime = DATWEP_MARH_FIRETIME;
   self.w_clipsize = DATWEP_MARH_CLIPSIZE;
@@ -59,9 +59,9 @@ void() data_marh_ini={
   self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
   self.i_size = DAT_MARH_WSIZE;
   self.w_think = data_marh_think;
-    self.health = DAT_MARH_HPX;
+  self.health = DAT_MARH_HPX;
   self.max_health = DAT_MARH_HPX;
-  self.w_isburst = NEITHER;
+  self.w_isburst = FALSE;
 };
 
 void() data_marh_think={
@@ -71,8 +71,8 @@ void() data_marh_think={
     }
   }
   else if(self.w_state == RELOADING){
-    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 8);
+    if(self.owner.en_cur > self.en_rate){
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 15);
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;
@@ -96,7 +96,7 @@ void() data_marh_atk={
           end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
         }
         else{
-          end = util_traceForAI(player, self.w_range, self.ai_leading); 
+          end = util_traceForAI(player, self.w_range, player.ai_leading); 
         }
         dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
               

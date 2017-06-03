@@ -273,4 +273,5 @@ void() data_hvd_ini={
   self.m_pitch_min = DAT_HVD_M_PITCH_X;
   self.c_bbx_x = DAT_HVD_CTOR_BBX_X;
   self.c_bbx_n = DAT_HVD_CTOR_BBX_N;
+  self.e_model = DAT_HVD_CTOR_MODEL;
 };

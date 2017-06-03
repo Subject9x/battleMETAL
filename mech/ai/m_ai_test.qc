@@ -4,6 +4,24 @@
   Overview: super simple ai test
 */
 
+float(entity ent, float changed) send_ai_mech={
+//super ugly hack, send ai's e_cam ent
+  WriteByte( MSG_ENTITY, 3 ); // Unique Identifier, I suggest you use enums to make it easy on yourself
+  WriteByte( MSG_ENTITY, self.owner.data_idx);
+  WriteByte( MSG_ENTITY, self.owner.p_class);
+  WriteByte( MSG_ENTITY, self.owner.sh_cur);
+  WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
+  WriteByte( MSG_ENTITY, self.owner.i_faction);
+  WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
+  WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
+  WriteCoord( MSG_ENTITY, self.owner.origin_z ); // Position Z
+  //WriteCoord( MSG_ENTITY, self.angles_x ); // Position X
+  //WriteCoord( MSG_ENTITY, self.angles_y ); // Position Y
+ // WriteCoord( MSG_ENTITY, self.angles_z ); // Position Z
+  return TRUE;
+};
+
+
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
 nextVecChoice = match to mech data id
 i_faction = which faction
@@ -20,7 +38,6 @@ void() ai_mech={
   //ini all the unit stats
   self.p_class = P_MECH;
   self.data_idx = 0;
-  self.en_delta = 0;
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;
@@ -46,7 +63,7 @@ void() ai_mech={
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
   
-  self.ai_leading = 0.05;
+  self.ai_leading = 0.01;
   local entity dat;
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   if(!dat){
@@ -54,41 +71,23 @@ void() ai_mech={
     remove(self);
     return;
   }
-  self.ai_optical = self.radar_range /2;
-  self.ai_patience = 0;
-  self.ai_prev_org = self.origin;
-  
-  local entity wep;
-  local float near, far;
-  wep = self.w_slot;
-  near = wep.w_range;
-  while(wep){
-    if(wep.w_range < near){
-      near = wep.w_range;
-    }
-    wep = wep.w_slot;
-  }
-  if(near <= 0){
-    near = 100;
-  }
-  self.ai_minrange = near;
-  
+
   self.ideal_yaw = self.angles * '0 1 0';
 	if (!self.yaw_speed){
     if(self.nextVecChoice == 1){
-      self.yaw_speed = 2;//20;
+      self.yaw_speed = 8;//20;
     }
     else if(self.nextVecChoice == 2){
-      self.yaw_speed = 1;//10;
+      self.yaw_speed = 6;//10;
     }
     else if(self.nextVecChoice == 3){
-      self.yaw_speed = 0.75;//2.5;
+      self.yaw_speed = 4;//2.5;
     }
   }
 		
   buildVehicle(dat);
-  self.en_rate = self.en_rate / 10; // DEBUG
-  self.sh_rate = self.sh_rate / 10;
+  //ai_core_sortranges(self, world);
+  
   self.solid = SOLID_BBOX;
   
   self.th_die = ai_mech_die;
@@ -97,7 +96,10 @@ void() ai_mech={
   self.ai_next_state = ai_state_ready;
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
-  
+  self.ai_optical = self.radar_range /2;
+  self.ai_patience = 0;
+  self.ai_prev_org = self.origin;
+ 
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
 	
@@ -135,7 +137,11 @@ void() ai_mech={
       self.ai_next_move = ai_move_stand;
 	}
   self.goalentity = world;
-
+  
+  //self.SendEntity = send_ai_mech;
+  //self.SendFlags = 1;
+  self.e_cam.SendEntity = send_ai_mech;
+  self.e_cam.SendFlags = 1;
   //DEBUG ONLY
   self.think = ai_control;
   self.nextthink = time + 5;

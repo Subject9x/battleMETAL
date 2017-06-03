@@ -79,6 +79,7 @@ vector DAT_OTL_LEG_OFFSET= '0 -19.5 -4';
 
 //CENTER TORSO
 string DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
+string DAT_OTL_CTOR_MODEL = "q3mdl/mechs/notl/mdl_notl_t_cent.md3";
 
 //LEFT TORSO
 string DAT_OTL_LTOR_CNAME= M_TOR_LEFT;
@@ -201,4 +202,5 @@ void() data_otl_ini={
   self.m_pitch_min = DAT_OTL_M_PITCH_X;
   self.c_bbx_x = DAT_OTL_CTOR_BBX_X;
   self.c_bbx_n = DAT_OTL_CTOR_BBX_N;
+  self.e_model = DAT_OTL_CTOR_MODEL;
 };

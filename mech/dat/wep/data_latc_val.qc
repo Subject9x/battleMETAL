@@ -8,16 +8,16 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LATC_IDX = ID_WEP_LATC;
 string DAT_LATC_NAME = "Light Autocannon";
-float DAT_LATC_DMG = 10; //was 2 - 3/27/2017
+float DAT_LATC_DMG = 20; //was 2 - 3/27/2017
 float DAT_LATC_FIRETIME = 0;
 float DAT_LATC_CLIPSIZE = 1;  //was 3 - 3/27/2017
 float DAT_LATC_CURRENTAMMO = 1;  //was 3 - 3/27/2017
-float DAT_LATC_FIRERATE = 0.5;//was 0.15; - 5/14/2-017  //was 0.2 - 3/27/2017
+float DAT_LATC_FIRERATE = 0.3;//was 0.15; - 5/14/2-017  //was 0.2 - 3/27/2017
 vector DAT_LATC_FIRE_OFS = '0 0 2';
 string DAT_LATC_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_LATC_PROJ_ID= ID_PRJ_LATC;
 float DAT_LATC_EN_COST = 10;
-float DAT_LATC_EN_MAX = 150;
+float DAT_LATC_EN_MAX = 100;
 string DAT_LATC_SOUND = "sound/ac5.ogg";
 float DAT_LATC_TECH_LEVEL = 1;
 float DAT_LATC_SPR_X = 3;
@@ -48,6 +48,7 @@ void() data_latc_ini={
   self.data_idx = DAT_LATC_IDX;
   self.w_name = DAT_LATC_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
+  self.p_damage = DAT_LATC_DMG;
   self.w_firetime = DAT_LATC_FIRETIME;
   self.w_clipsize = DAT_LATC_CLIPSIZE;
   self.w_currentammo = DAT_LATC_CURRENTAMMO;
@@ -96,7 +97,7 @@ void() data_latc_atk={
     end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
   }
   else{
-    end = util_traceForAI(player, self.w_range, self.ai_leading); 
+    end = util_traceForAI(player, self.w_range, player.ai_leading); 
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   if((player.flags & FL_MONSTER)){
@@ -118,7 +119,7 @@ void() data_latc_atk={
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   te_superspike(dir);
-  t_damage(trace_ent, self, player, DAT_LATC_DMG, DMG_BAL, dir + (v_forward*3), '0 0 0');
+  t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir + (v_forward*3), '0 0 0');
   
   local entity bul_fx;
   bul_fx = spawn();

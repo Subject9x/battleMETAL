@@ -38,6 +38,7 @@ void() data_prj_rplas={
     self.data_type = DATA_PROJ;
     self.data_idx = DAT_PRJ_RPLAS_IDX;
     self.unit_ini = data_prj_rplas_ini;
+    self.p_damage = DAT_PRJ_RPLAS_DAMAGE;
   self = oself;
 };
 

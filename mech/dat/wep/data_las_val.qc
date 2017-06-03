@@ -16,7 +16,7 @@ float DAT_LAS_FIRERATE = 10;
 vector DAT_LAS_FIRE_OFS = '0 0 2';
 string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_EN_MAX = 200;
-float DAT_LAS_EN_RATE = 5;
+float DAT_LAS_EN_RATE = 10;
 string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
 float DAT_LAS_WSIZE = 1;
@@ -44,6 +44,7 @@ void() data_wep_las={
 void() data_las_ini={
   self.data_idx = DAT_LAS_IDX;
   self.p_dmgtype = self.p_dmgtype | DMG_ENE;
+  self.p_damage = DAT_LAS_DMG;
   self.w_name = DAT_LAS_NAME;
   self.w_firetime = DAT_LAS_FIRETIME;
   self.w_clipsize = DAT_LAS_CLIPSIZE;
@@ -72,8 +73,8 @@ void() data_las_think={
     }
   }
   else if(self.w_state == RELOADING){
-    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
-      self.owner.en_cur = self.owner.en_cur - self.en_rate;
+    if(self.owner.en_cur > self.en_rate){
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate/4);
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;
@@ -93,7 +94,7 @@ void() data_las_atk={
     end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
   }
   else{
-    end = util_traceForAI(player, self.w_range, self.ai_leading); 
+    end = util_traceForAI(player, self.w_range, player.ai_leading); 
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
@@ -132,5 +133,5 @@ void() data_las_atk={
   local float dtype;
   dtype = DMG_ENE;
   
-  t_damage(trace_ent, self, player, DAT_LAS_DMG, dtype, dir + (v_forward*3), '0 0 0');
+  t_damage(trace_ent, self, player, self.p_damage, dtype, dir + (v_forward*3), '0 0 0');
 };

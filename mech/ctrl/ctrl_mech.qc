@@ -20,12 +20,9 @@ void() ctrl_updateCenterTorso={
   }
 
   if(self.en_cur >= 0){
-    if(self.en_delta > 0){
-      self.en_cur = self.en_cur - self.en_delta;
-      self.en_delta = 0;
-    }
-    else{
-      self.en_cur = self.en_cur + self.en_rate;
+    self.en_cur = self.en_cur + self.en_rate;
+    if(self.en_cur > self.en_max){
+      self.en_cur = self.en_max;
     }
   }
 
@@ -65,7 +62,6 @@ void() ctrl_updateCenterTorso={
       norg_x = self.origin_x + self.velocity_x;
       norg_y = self.origin_y + self.velocity_y;
       v = vlen(norg - self.origin) / 3000;
-      self.en_delta = self.en_delta + (self.en_rate * 1.15);
       
       self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
       if(self.stat_spr_x > self.conv_max_x){

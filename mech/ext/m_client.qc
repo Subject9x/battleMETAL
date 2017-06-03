@@ -129,7 +129,6 @@ void() ClientConnect = {
   self.next_wepn7 = -1;
   self.next_wepn8 = -1;
   self.next_wepn9 = -1;
-  self.en_delta = 0;
   self.i_reserve = world.i_reserve;
   client_sendMissionFileName();
   

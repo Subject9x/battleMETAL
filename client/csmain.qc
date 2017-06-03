@@ -516,6 +516,26 @@ void(float isnew) CSQC_Ent_Update =
     }
     self.nav_name = ReadByte();
   }
+  //AI test...
+  else if(id == 3){
+    self.data_idx = ReadByte();
+    self.p_class = ReadByte();
+    if(isnew){
+      self.drawmask = MASK_ENGINE;
+      addentity(self);
+    }
+    self.sh_cur = ReadByte();
+    self.stat_rdr_mode = ReadByte();
+    self.i_faction = ReadByte();
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    //self.angles_x = ReadCoord();
+    //self.angles_y = ReadCoord();
+    //self.angles_z = ReadCoord();
+   
+    setorigin(self, self.origin);
+  }
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

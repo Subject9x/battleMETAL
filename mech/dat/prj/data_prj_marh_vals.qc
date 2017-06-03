@@ -34,6 +34,7 @@ void() data_prj_marh={
     self.data_type = DATA_PROJ;
     self.data_idx = ID_PRJ_MARH;
     self.unit_ini = data_prj_marh_ini;
+    self.p_damage = DAT_PRJ_MARH_DAMAGE;
   self = oself;
 };
 

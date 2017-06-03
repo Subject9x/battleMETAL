@@ -450,6 +450,20 @@ void(entity trg, entity atk) anger_monster={
             self = s;
             return;
           }
+          else{
+            if((vlen(trg.enemy.origin - trg.origin)) > (vlen(atk.origin - trg.origin))){
+              local entity s;
+              s = self;
+              self = trg;
+                self.enemy = atk;
+                if(self.ai_next_state != ai_state_hunt){
+                  self.ai_next_state = ai_state_hunt;
+                  self.ai_next_move = ai_move_run;
+                }
+              self = s;
+              return;
+            }
+          }
         }  
       }    
     }

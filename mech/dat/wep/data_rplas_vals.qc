@@ -80,8 +80,8 @@ void() data_rplas_think={
     }
   }
   else if(self.w_state == RELOADING){
-    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 5);
+    if(self.owner.en_cur > self.en_rate){
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 15);
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;
@@ -100,7 +100,7 @@ void() data_rplas_atk={
       end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
     }
     else{
-      end = util_traceForAI(player, self.w_range, self.ai_leading); 
+      end = util_traceForAI(player, self.w_range, player.ai_leading); 
     }
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     

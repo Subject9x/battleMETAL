@@ -85,7 +85,13 @@ void() PlayerPostThink = {
     }
   }
   
-  centerprint(self, ftos(self.enemy.en_cur)); //DEBUG
+  if(self.enemy){
+    local string s;
+    s = strcat(ftos(self.enemy.ai_dmg_s),"\n",ftos(self.enemy.ai_dmg_m),"\n");
+    s = strcat(s,"\n",ftos(self.enemy.ai_dmg_l),"\n");
+    s = strcat(s, "\n rng:", ftos(self.enemy.ai_minrange),"\n");
+    centerprint(self, s);
+  }
 // do weapon stuff
   self.stat_plr_ang = anglemod(self.v_angle_y);
   //STAT UPDATE   

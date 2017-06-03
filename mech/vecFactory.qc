@@ -335,9 +335,11 @@ void(entity mechData, entity own, float state1, float state2, float state3) buil
   self.c_name = "weapon";
 
   wepData.unit_ini();
-
-  self.health = 25;
-  self.max_health = 25;
+  if((own.flags & FL_MONSTER)){
+    if(self.w_clipsize > 1){
+      self.w_firerate = self.w_firerate * 100;
+    }
+  }
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
   util_setModel(self.c_model, 0);
   util_setBoundBox('-1 -1 -1','1 1 1');

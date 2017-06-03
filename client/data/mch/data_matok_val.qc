@@ -226,4 +226,5 @@ void() data_mtk_ini={
   self.m_pitch_min = DAT_MTK_M_PITCH_X;
   self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
   self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
+  self.e_model = DAT_MTK_CTOR_MODEL;
 };

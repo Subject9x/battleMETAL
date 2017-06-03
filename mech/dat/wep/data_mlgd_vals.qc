@@ -73,7 +73,7 @@ void() data_mlgd_think={
     }
   }
   else if(self.w_state == RELOADING){
-    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
+    if(self.owner.en_cur > self.en_rate){
       self.owner.en_cur = self.owner.en_cur - (self.en_rate / 8);
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
@@ -95,7 +95,7 @@ void() data_mlgd_atk={
       end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
     }
     else{
-      end = util_traceForAI(player, self.w_range, self.ai_leading); 
+      end = util_traceForAI(player, self.w_range, player.ai_leading); 
     }
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
 

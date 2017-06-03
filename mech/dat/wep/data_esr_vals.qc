@@ -11,15 +11,15 @@ float DAT_ESR_DMG = 50;
 float DAT_ESR_FIRETIME = 0;
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_CURRENTAMMO = 10;
-float DAT_ESR_FIRERATE = 0.2;
+float DAT_ESR_FIRERATE = 0.1;
 vector DAT_ESR_FIRE_OFS = '0 0 2';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_EN_COST = 10;
 float DAT_ESR_EN_MAX = 500;
 string DAT_ESR_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_TECH_LEVEL = 1;
-float DAT_ESR_SPR_X = 15;
-float DAT_ESR_SPR_Y = 15;
+float DAT_ESR_SPR_X = 8;
+float DAT_ESR_SPR_Y = 8;
 float DAT_ESR_WSIZE = 3;
 float DAT_ESR_HPX = 20;
 float DAT_ESR_RANGE = 400;
@@ -46,6 +46,7 @@ void() data_esr_ini={
   self.data_idx = DAT_ESR_IDX;
   self.w_name = DAT_ESR_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_ENE;
+  self.p_damage = DAT_ESR_DMG;
   self.w_firetime = DAT_ESR_FIRETIME;
   self.w_clipsize = DAT_ESR_CLIPSIZE;
   self.w_currentammo = DAT_ESR_CURRENTAMMO;
@@ -66,7 +67,7 @@ void() data_esr_ini={
   self.stat_spr_x = DAT_ESR_SPR_X;
   self.stat_spr_y = DAT_ESR_SPR_Y;
   self.w_state = READY;
-  self.w_isburst = TRUE;
+  self.w_isburst = FALSE;
 };
 
 void() data_esr_think={
@@ -76,7 +77,7 @@ void() data_esr_think={
     }
   }
   else if(self.w_state == RELOADING){
-    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
+    if(self.owner.en_cur > self.en_rate){
       self.owner.en_cur = self.owner.en_cur - self.en_rate;
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
@@ -96,7 +97,7 @@ void() data_esr_atk={
     end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
   }
   else{
-    end = util_traceForAI(player, self.w_range, self.ai_leading); 
+    end = util_traceForAI(player, self.w_range, player.ai_leading); 
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
 
@@ -112,10 +113,12 @@ void() data_esr_atk={
     self.en_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
+    self.w_isburst = FALSE;
   }
   else{
     self.w_firetime = time + self.w_firerate;
     self.w_state = RECOIL;
+    self.w_isburst = TRUE;
   }
 
   local entity laser_org;
@@ -131,11 +134,11 @@ void() data_esr_atk={
   dtype = dtype | DMG_ENE;
   
   te_customflash(dir, 4, 10, '0 0 1');
-  t_damage(trace_ent, self, player, DAT_ESR_DMG, dtype, dir + (v_forward*3), '0 0 0');
+  t_damage(trace_ent, self, player, self.p_damage, dtype, dir + (v_forward*3), '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);
   
   laser_org.think = SUB_Remove;
-  laser_org.nextthink = time + 0.001;// + 0.35;
+  laser_org.nextthink = time + 0.01;
 };

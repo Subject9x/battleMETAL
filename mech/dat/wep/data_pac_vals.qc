@@ -75,7 +75,7 @@ void() data_pac_think={
     }
   }
   else if(self.w_state == RELOADING){
-    if(self.owner.en_cur > (self.en_rate + self.owner.en_delta)){
+    if(self.owner.en_cur > self.en_rate){
       self.owner.en_cur = self.owner.en_cur - (self.en_rate / 3);
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
@@ -97,7 +97,7 @@ void() data_pac_atk={
     end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
   }
   else{
-    end = util_traceForAI(player, self.w_range, self.ai_leading); 
+    end = util_traceForAI(player, self.w_range, player.ai_leading); 
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
@@ -129,7 +129,7 @@ void() data_pac_atk={
   local float dtype;
   dtype = DMG_ENE + EFF_PRC;
 
-  t_damage(trace_ent, self, player, DAT_PAC_DMG, dtype, dir + (v_forward*3), '0 0 0');
+  t_damage(trace_ent, self, player, self.p_damage, dtype, dir + (v_forward*3), '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/gauss.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);

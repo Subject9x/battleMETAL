@@ -20,7 +20,6 @@ void() ai_mech_update={
       self = oself;
     }
   }
-
   wep_chain = self.w_slot;
   while(wep_chain){
     ctrl_wpn_think(wep_chain);
@@ -59,33 +58,140 @@ void() ai_mech_attack={
   ai = self;
   wep_chain = self.w_slot;
   while(wep_chain){
-    if(wep_chain.w_state == READY){
-      if( self.stat_trg_dist <= wep_chain.w_range){
-        if(self.en_cur >= (wep_chain.en_rate * 2)){
-          oself = self;
-          self = wep_chain;
-          if((self.p_dmgtype & EFF_STX)){
-            if(ai.enemy.sh_cur >= (ai.enemy.sh_max/4)){
-              self.w_attack();
-            }
-          }
-          else{
-            if((self.p_dmgtype & DMG_EXP)){
-              if(ai.enemy.sh_cur <= 0){
-                self.w_attack();
-              }
-            }
-            else{
-              self.w_attack();
-            }
-          }   
-          self = oself;
-        }
+    local float fire;
+    fire = FALSE;
+    if((self.stat_trg_dist <= wep_chain.w_range) && (wep_chain.w_isburst == FALSE)){
+      fire = TRUE;
+    }
+    else if(wep_chain.w_isburst == TRUE) {
+      fire =  TRUE;
+    }
+    if(fire){
+      if((wep_chain.p_dmgtype & DMG_ENE)){
+        ai_attack_ene(wep_chain);
+      }
+      else if((wep_chain.p_dmgtype & DMG_BAL)){
+        ai_attack_bal(wep_chain);
+      }
+      else if((wep_chain.p_dmgtype & DMG_EXP)){
+        ai_attack_exp(wep_chain);
+      }
+      else{
+        ai_attack_basic(wep_chain);
       }
     }
     wep_chain = wep_chain.w_slot;
   }
 };
+void(entity wep) ai_attack_basic={
+  local float attack;
+  local entity oself;
+  oself = self;
+  attack = FALSE;
+
+  if(wep.w_state == READY){
+    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
+      attack = TRUE;
+    }
+    else{
+      attack = TRUE;
+    }   
+  }
+  if(wep.w_isburst == TRUE){
+    attack = TRUE;
+  }
+  if(attack){
+    self = wep;
+    self.w_attack();
+  }
+  self = oself;
+};
+
+void(entity wep) ai_attack_ene={
+  local float attack;
+  local entity oself;
+  oself = self;
+  attack = FALSE;
+
+  if(wep.w_state == READY){
+    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
+      attack = TRUE;
+    }
+    else{
+      attack = TRUE;
+    }   
+  }
+  if((wep.p_dmgtype & EFF_STX)){
+    if(self.enemy.sh_cur >= (self.enemy.sh_max/4)){
+      attack = TRUE;
+    }
+    else{
+      attack = FALSE; //cancel attack regardless of weapon state
+    }
+  }
+  if(wep.w_isburst == TRUE){
+    attack = TRUE;
+  }
+  if(attack){
+    self = wep;
+    self.w_attack();
+  }
+  self = oself;
+};
+
+void(entity wep) ai_attack_bal={
+  local float attack;
+  local entity oself;
+  oself = self;
+  attack = FALSE;
+  if(wep.w_state == READY){
+    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
+      attack = TRUE;
+    }
+    else{
+      attack = TRUE;
+    }   
+  }
+  if(wep.w_isburst == TRUE){
+    attack = TRUE;
+  }
+  if(attack){
+    self = wep;
+    self.w_attack();
+  }
+  self = oself;  
+};
+void(entity wep) ai_attack_exp={
+  local float attack;
+  local entity oself;
+  oself = self;
+  attack = FALSE;
+  if(wep.w_state == READY){
+    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
+      attack = TRUE;
+    }
+    else{
+      attack = TRUE;
+    }   
+  }
+  if((wep.p_dmgtype & DMG_EXP)){
+    if(self.enemy.sh_cur >= (self.enemy.sh_max/5)){
+      attack = TRUE;
+    }
+    else{
+      attack = FALSE; //cancel attack regardless of weapon state
+    }
+  }
+  if(wep.w_isburst == TRUE){
+    attack = TRUE;
+  }
+  if(attack){
+    self = wep;
+    self.w_attack();
+  }
+  self = oself;
+};
+
 
 void() ai_mech_die={
   local entity w_chain;
@@ -105,7 +211,7 @@ void() ai_mech_die={
   ctor_die1();
   
   self.think = ai_mech_cleanup;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.0001;
 };
 
 void() ai_mech_cleanup={
@@ -113,10 +219,6 @@ void() ai_mech_cleanup={
 };
 
 void() ai_mech_touch={
-  if(time > self.nextthink){
-    
-    self.nextthink = time + 0.005;
-  }
   local entity oact;
   if((other.owner.flags & FL_MONSTER)){
     oact = other.owner;
@@ -201,23 +303,27 @@ void() ai_control={
   self.ai_next_state();
   self.ai_next_move();
   self.think = ai_control;
-  self.nextthink = time + 0.005;
-
+  self.nextthink = time + 0.05;
+  self.e_cam.SendFlags = 1;
 };
 
 //move directives
 void() ai_move_stand={
+  self.ai_prev_move = ai_move_stand;
   if(ai_core_targetstate()){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
     ChangeYaw ();
   }
 };
 
-void() ai_move_walk={ 
-  movetogoal(self.m_fspeed/400);
+void() ai_move_walk={
+  self.ai_prev_move = ai_move_walk;
+  self.e_legs.angles_y = self.ideal_yaw;
+  movetogoal(self.m_fspeed / 50);
 };
 
 void() ai_mive_walk_slide={
+  self.ai_prev_move = ai_mive_walk_slide;
   local float ofs;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
@@ -227,18 +333,23 @@ void() ai_mive_walk_slide={
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed/400)){
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 50)){
+    self.e_legs.angles_y = self.ideal_yaw + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed/400);
+  walkmove( self.ideal_yaw, self.m_fspeed / 50);
+  self.e_legs.angles_y = self.ideal_yaw;
 };
 
 void() ai_move_run={  
-  movetogoal(self.m_fspeed/300);
+  self.ai_prev_move = ai_move_run;
+  movetogoal(self.m_fspeed / 25);
+  self.e_legs.angles_y = self.ideal_yaw;
 };
 
-void() ai_move_run_slide={
+void() ai_move_run_slide={  
+  self.ai_prev_move = ai_move_run_slide;
   local float ofs;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
@@ -248,19 +359,24 @@ void() ai_move_run_slide={
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed/300)){
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 25)){
+      self.e_legs.angles_y = self.ideal_yaw + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed/300);
+  walkmove( self.ideal_yaw, self.m_fspeed / 25);
+  self.e_legs.angles_y = self.ideal_yaw;
 };
 
-void() ai_move_forward={
-  
-  walkmove (self.angles_y, self.m_fspeed/400);
+void() ai_move_forward={  
+  self.ai_prev_move = ai_move_forward;
+  self.e_legs.angles_y = self.angles_y;
+  walkmove (self.angles_y, self.m_fspeed / 50);
 };
 
-void() ai_move_backward={
-  walkmove ((self.angles_y+180), self.m_fspeed/400);
+void() ai_move_backward={  
+  self.ai_prev_move = ai_move_backward;
+  self.e_legs.angles_y = self.angles_y + 180;
+  walkmove ((self.angles_y+180), self.m_fspeed / 50);
 };
 

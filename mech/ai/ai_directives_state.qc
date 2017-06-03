@@ -29,35 +29,25 @@ void() ai_state_hunt={
       self.ai_patience = self.ai_patience + 1;
       return;
     }
-    if(self.stat_trg_dist > (self.ai_minrange * 2)){
+    if(self.stat_trg_dist < AI_RANGE_S / 6){
+      self.ai_next_move = ai_move_backward;
+    }
+    else if(self.stat_trg_dist > AI_RANGE_L){
       self.ai_next_move = ai_move_run;
     }
-    else if(self.stat_trg_dist < self.ai_minrange){
-      if(ai_target_infront(self.enemy)){
-        self.ai_next_move = ai_move_run_slide;
+    else if(self.stat_trg_dist <=  AI_RANGE_S){
+      if(self.enemy.enemy == self){
+        local entity t, os;
+        os = self;
+        self = self.enemy;
+          if(ai_target_infront(os)){
+            os.ai_next_move = ai_move_run_slide;
+          }
+          else{
+           os.ai_next_move = ai_move_walk;
+          } 
+        self = os;
       }
-      else{
-        if(self.stat_trg_dist < 50){
-          self.ai_next_move = ai_move_backward;
-        }
-        else{
-          self.ai_next_move = ai_move_forward;
-        }
-
-      }
-      
-    }
-    else{
-      self.ai_next_move = ai_move_walk;
-      if(ai_target_insights(self.enemy)){
-        if(self.stat_trg_dist <= self.ai_minrange){
-          self.ai_next_move = ai_move_run_slide;
-        }
-      }
-      else if(self.stat_trg_dist <= (self.ai_minrange/2)){
-        self.ai_next_move = ai_move_run_slide;
-      }
-
     }
     self.th_missile();
   } 

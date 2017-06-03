@@ -172,7 +172,7 @@ float(vector p, vector pmin, vector pmax) util_checkInBounds={
 void(float bits, float b, float bb, float bbb) util_subThreeBits={
   bits = bits - (bits & (b | bb | bbb) );
 };
-
+ 
 entity(string part, entity unit) util_getPartFromName={
   if(part == M_TOR_RIGHT){
     return unit.e_tor_r;
@@ -202,3 +202,4 @@ float(float v) anglemod =
 		v = v + 360;
 	return v;
 };
+

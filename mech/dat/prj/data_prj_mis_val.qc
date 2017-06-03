@@ -34,6 +34,7 @@ void() data_prj_mis={
     self.data_type = DATA_PROJ;
     self.data_idx = DAT_PRJ_MIS_IDX;
     self.unit_ini = data_prj_mis_ini;
+    self.p_damage = DAT_PRJ_MIS_DAMAGE;
   self = oself;
 };
 

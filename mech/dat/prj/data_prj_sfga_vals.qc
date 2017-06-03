@@ -35,6 +35,7 @@ void() data_prj_sfga={
     self.data_type = DATA_PROJ;
     self.data_idx = DAT_PRJ_SFGA_IDX;
     self.unit_ini = data_prj_sfga_ini;
+    self.p_damage = DAT_PRJ_SFGA_DAMAGE;
   self = oself;
 };
 

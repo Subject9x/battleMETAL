@@ -35,6 +35,7 @@ void() data_prj_mlgd={
     self.data_type = DATA_PROJ;
     self.data_idx = ID_PRJ_MLGD;
     self.unit_ini = data_prj_mlgd_ini;
+    self.p_damage = DAT_PRJ_MLGD_DAMAGE;
   self = oself;
 };
 

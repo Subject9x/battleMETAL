@@ -35,6 +35,7 @@ void() data_prj_qrfl={
     self.data_type = DATA_PROJ;
     self.data_idx = DAT_PRJ_QRFL_IDX;
     self.unit_ini = data_prj_qrfl_ini;
+    self.p_damage = DAT_PRJ_QRFL_DAMAGE;
   self = oself;
 };
 

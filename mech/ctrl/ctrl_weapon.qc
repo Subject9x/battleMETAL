@@ -65,6 +65,10 @@ void(entity wep, float wstate) ctrl_weapon_isReady={
 
 void() ctrl_die_weapon={
   if(self.deadflag <= DEAD_NO){
+    /*if((self.owner.flags & FL_MONSTER)){
+      ai_core_sortranges(self.owner, self);
+    }*/
+  
     local entity oself;
     oself = self;
     newmis = spawn();

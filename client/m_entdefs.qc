@@ -85,10 +85,10 @@ float ARM_RAD = 24;
 .float hardpoint_cnt;
 
 //weapon
-//.float i_faction;   //which faction? consult table
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
 .float i_reserve; //how many reserve points does the unit cost?
 .float i_size;
+.float i_faction;
 .float w_range;
 .string note1;
 .string note2;
@@ -107,3 +107,10 @@ float ARM_RAD = 24;
 
 //objectives
 .string obj_desc;
+
+//ai mech
+.string e_model;
+.float p_class;
+.float sh_cur;
+.float stat_rdr_mode;
+.float i_faction;

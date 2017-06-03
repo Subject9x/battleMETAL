@@ -4,6 +4,18 @@ Date: 5/22/2017
 Overview: next draft the ai
 this one will focus on move to move
 */
+
+float AI_RANGE_S = 600;
+float AI_RANGE_M = 1200;
+float AI_RANGE_L = 1800;
+
+.float ai_dmg_l;
+.float ai_dmg_m;
+.float ai_dmg_s;
+.float ai_rng_s;
+.float ai_rng_m;
+.float ai_rng_l;
+
 .float ai_leading; //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
 .float ai_minrange; //minimum range of guns;
 .float ai_optical; //the 'visual' range the ai can see out before relying on sensors
@@ -13,11 +25,17 @@ this one will focus on move to move
 .void() ai_next_move; //run this move on this frame
 .void() ai_next_state;
 .void() ai_unit_update; //depends on unit type
-
+.void() ai_prev_move;
 //.goalentity should always be where the AI *MOVES* to
 //.target should always be the thing the AI *SHOOTS* at and aims at
 void() ai_spawn_start;
 void() ai_control;
+
+void(entity wep) ai_attack_basic;
+void(entity wep) ai_attack_ene;
+void(entity wep) ai_attack_bal;
+void(entity wep) ai_attack_exp;
+void() ai_calc_attackranges;
 
 //move directives
 void() ai_move_stand;
@@ -49,6 +67,7 @@ entity() ai_core_radartarget;
 float() ai_target_facingideal;
 float() ai_core_panicnode;
 float(vector chk, vector node) ai_core_nodelos;
+void(entity e, entity mask) ai_core_sortranges;
 
 //TODO - separate header?
 void() ai_mech_update;
