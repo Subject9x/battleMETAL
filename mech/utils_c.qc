@@ -19,28 +19,27 @@ vector(entity own, float spr_x, float spr_y, float range) util_traceForPlayer={
   cam = own.e_cam;
 
   makevectors(own.v_angle);
-  traceline(cam.origin, cam.origin + v_forward*range, FALSE, own);
+  traceline(cam.origin, cam.origin + v_forward*10000, FALSE, own);
 
   end = trace_endpos + ((crandom() * spr_x) * v_right) + (v_up * (crandom() * spr_y ));
-  end = end + (v_forward * 4);
   return end;
 };
 
-vector(entity own, float range, float lead_factor) util_traceForAI={
+vector(entity own, float spr_x, float spr_y, float range, float lead_factor) util_traceForAI={
   local vector lead;
   local entity cam;
   cam = own.e_cam;
   lead = own.enemy.origin - own.enemy.velocity*lead_factor;
 	lead = normalize (lead - own.origin);
   makevectors(own.v_angle);
-  traceline (own.origin + v_forward*10, own.origin + lead*range, FALSE, own);
+  traceline (own.origin + v_forward*10, own.origin + lead*10000, FALSE, own);
   if(trace_ent == world){
     return own.origin;
   }
   if(trace_ent.i_faction == own.i_faction){
     return own.origin;
   }
-  return trace_endpos;
+  return trace_endpos + ((crandom() * spr_x) * v_right) + (v_up * (crandom() * spr_y ));;
 };
 
 //scope is self = weapon making the call
@@ -50,11 +49,12 @@ vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spre
   makevectors(own.angles);
   org = own.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   ofsent.fx_origin = org;
-  end = trace_endpos + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready));
+  //end = trace_endpos + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready));
+  end = trace_endpos;
   makevectors(self.angles);
   traceline(org, end, FALSE, own);
   if(trace_ent.i_faction != own.i_faction){
-    return trace_endpos;
+    return trace_endpos + (v_right * 4);
   }
   else{
     return own.origin;

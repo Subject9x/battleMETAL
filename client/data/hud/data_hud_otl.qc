@@ -13,7 +13,7 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_ren
 void(float shieldval) otl_playerShield;
 void(float energyval) otl_playerEnergy;
 void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor;
-void(float rad_front, float rad_back, float rad_mode) otl_Radar;
+void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar;
 void(float hit_dir) otl_hitDirectionPips;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon1;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon2;
@@ -363,7 +363,7 @@ void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor
 /*
   RADAR LAYOUT====================================================
 */
-void(float rad_front, float rad_back, float rad_mode) otl_Radar={
+void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar={
   drawpic(self.hud_pnl2.pos, self.hud_pnl2.img,  self.hud_pnl2.asize, self.hud_pnl2.colortint, HUD_ALPHA, 0);
   
   local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
@@ -384,26 +384,24 @@ void(float rad_front, float rad_back, float rad_mode) otl_Radar={
   drawstring(lbl1, "RADAR MODE:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
   
-  cvr = self.hud_pnl2.pos + self.hud_pnl2.hsize;
-  cvr = cvr - '72 16';
-  c_sz = draw_getimagesize("gfx/hud/otl/otl_rd_cvr.png");
-  c_sz = gui_scaleSize(c_sz, VIEW_SCALE/1.25);
-  cvr_ctr = cvr + gui_getCenter(c_sz);
+  local vector mpos;
+  mpos_x = self.hud_pnl2.pos_x + self.hud_pnl2.hsize_x;
+  mpos_x = mpos_x - 75;
+  mpos_y = self.hud_pnl2.pos_y + self.hud_pnl2.hsize_y;
+  mpos_y = mpos_y - 28;
+  drawpic(mpos, UI_DEF_BOX_256, '90 90', '1 1 1', HUD_ALPHA, 0);
+  
+  local vector map_size, cprc;
+  map_size_x = gui_percentXRaw((world.mins_x*-1) + world.maxs_x);
+  map_size_y = gui_percentYRaw((world.mins_y*-1) + world.maxs_y);
 
+  //cprc_x = gui_percentXRaw(((world.mins_x*-1)/map_size_x));
+  //cprc_y = gui_percentYRaw(((world.mins_y*-1)/map_size_y));
   
-  f_clr = gui_calcRadarHeat(rad_front);
-  f_sz = c_sz;
-  f_sz_y = c_sz_y / 3;
-  drawfill(cvr, f_sz, f_clr, HUD_ALPHA, 0);
+  cprc_x = mpos_x + 45;
+  cprc_y = mpos_y + 45;
   
-  b_clr = gui_calcRadarHeat(rad_back);
-  b_sz = f_sz;
-  badj = (c_sz_y / 3)*2;
-  bpos = cvr;
-  bpos_y = cvr_y + badj;
-  drawfill(bpos, f_sz, b_clr, HUD_ALPHA, 0);
-  drawfill(cvr_ctr-'10 10', '20 20', self.wdg_en.drawcolor2, HUD_ALPHA, 0);
-  drawpic(cvr, "gfx/hud/otl/otl_rd_cvr.png",  c_sz, self.hud_pnl2.colortint, HUD_ALPHA, 0);
+  hud_RenderRadar (cprc, 17000, '90 90 0', i_fact);
 };
 
 /*

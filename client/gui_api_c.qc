@@ -5,6 +5,15 @@ Date: 03/8/2017
 Overview: GUI API class file
 */
 
+float(float v) anglemod =
+{
+	while (v >= 360)
+		v = v - 360;
+	while (v < 0)
+		v = v + 360;
+	return v;
+};
+
 
 vector(float pcx, float pcy) gui_percentToPixel={
   local vector pixel;

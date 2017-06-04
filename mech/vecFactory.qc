@@ -337,7 +337,7 @@ void(entity mechData, entity own, float state1, float state2, float state3) buil
   wepData.unit_ini();
   if((own.flags & FL_MONSTER)){
     if(self.w_clipsize > 1){
-      self.w_firerate = self.w_firerate * 100;
+      self.w_firerate = self.w_firerate * 1000;
     }
   }
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);

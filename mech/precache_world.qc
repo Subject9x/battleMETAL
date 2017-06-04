@@ -19,6 +19,8 @@ void() mh_precache_sound={
   precache_sound ("sound/laser_test.ogg");
   precache_sound ("sound/gauss.ogg");
   
+  precache_sound ("sound/mech_stomp.ogg");
+  
   //voice
   precache_sound ("sound/comp/online.ogg");
 };

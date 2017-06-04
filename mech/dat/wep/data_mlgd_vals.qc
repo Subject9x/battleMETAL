@@ -63,7 +63,7 @@ void() data_mlgd_ini={
   self.health = DAT_MLGD_HPX;
   self.max_health = DAT_MLGD_HPX;
   self.w_range = 2000;
-  self.w_isburst = NEITHER;
+  self.w_isburst = FALSE;
 };
 
 void() data_mlgd_think={
@@ -95,7 +95,7 @@ void() data_mlgd_atk={
       end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
     }
     else{
-      end = util_traceForAI(player, self.w_range, player.ai_leading); 
+      end = util_traceForAI(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y, self.w_range, player.ai_leading); 
     }
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
 

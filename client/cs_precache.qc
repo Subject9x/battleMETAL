@@ -20,7 +20,8 @@ void() cs_precache={
   HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret_pip_hrz.png", 0);
   HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret_pip_vrt.png", 0);
   HUT_RET_LOK = precache_pic("gfx/hud/ret_lock.png", 0);
-  
+  HUD_RAD_PIP_BLD = precache_pic("gfx/hud/rad_bld.png", 0);
+  HUD_RAD_PIP_MCH = precache_pic("gfx/hud/rad_mch.png", 0);
   
   precache_pic("gfx/hud/otl/otl_am.png", 0);
   precache_pic("gfx/hud/otl/otl_hd.png", 0);

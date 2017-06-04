@@ -536,6 +536,26 @@ void(float isnew) CSQC_Ent_Update =
    
     setorigin(self, self.origin);
   }
+  else if(id == 4){
+    self.data_idx = ReadByte();
+    self.p_class = ReadByte();
+    if(isnew){
+      local entity dat;
+      dat = m_findData(self.data_idx, DATA_BLD);
+      setmodel(self, dat.e_model);
+      self.drawmask = MASK_ENGINE;
+      addentity(self);
+    }
+    self.i_faction = ReadByte();
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+    
+    setorigin(self, self.origin);
+  }
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

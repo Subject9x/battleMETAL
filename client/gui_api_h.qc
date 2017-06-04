@@ -34,6 +34,7 @@ void(vector ofs, float bool, vector color1, vector color2, vector sz, float alph
 vector(float pcx, float pcy) gui_percentToPixel;
 float(float pcx) gui_percentX;
 float(float pcy) gui_percentY;
+float(float ang) anglemod;
 
 vector(float pcx, float pcy) gui_percentToPixelRaw;
 float(float pcx) gui_percentXRaw;

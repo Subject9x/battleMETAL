@@ -89,6 +89,8 @@ void() mh_world_ini={
   addstat(STAT_WEP8_REL, AS_FLOAT, stat_w8_rel);
   addstat(STAT_WEP9_REL, AS_FLOAT, stat_w9_rel);
   
+  addstat(STAT_PLR_IFAC, AS_INT, i_faction);
+  
   mh_world_iniData();
 };
 

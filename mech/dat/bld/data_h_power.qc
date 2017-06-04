@@ -24,6 +24,8 @@ void() building_power={
   self.deadflag = DEAD_NO;
   droptofloor();
   self.th_die = BecomeExplosion;
-  self.think = SUB_Null;
-  self.nextthink = time + 10000000;
+  self.think = building_think;
+  self.nextthink = time + 1;
+  self.SendEntity = send_building;
+  self.SendFlags = 1;
 };

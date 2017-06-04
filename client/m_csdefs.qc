@@ -165,6 +165,8 @@ float STAT_WEP_STT = 57;
 float STAT_WEP_GRP = 83;
 float STAT_WEP_REL = 61;
 
+float STAT_PLR_IFAC = 105;
+
 float STAT_TRG_VID = 84;
 float STAT_TRG_SH = 85;
 float STAT_TRG_DAT = 87;

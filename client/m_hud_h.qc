@@ -7,6 +7,26 @@ Overview: the interface for hud rendering
 every hud ent has to implement this format
 */
 
+string HUT_RET_PIP_HRZ;
+string HUT_RET_PIP_VRT;
+string HUT_RET_LOK;
+string HUD_RAD_PIP_BLD;
+string HUD_RAD_PIP_MCH;
+
+.entity data;
+.entity hud_pnl1;
+.entity hud_pnl2;
+.entity hud_pnl3;
+.entity hud_pnl4;
+.entity hud_pnl5;
+.entity hud_pnl6;
+.entity hud_pnl7;
+.entity hud_pnl8;
+.entity hud_pnl9;
+
+.float prev_ang;
+.vector nav_ofs;
+
 void(float hp, vector org, vector sz) hud_renderArmorBuilding={
   local vector ofs;
   ofs = org;
@@ -43,23 +63,59 @@ void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
   gui_renderMeter(perc, org, '4 26', '-1 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
 };
 
-string HUT_RET_PIP_HRZ;
-string HUT_RET_PIP_VRT;
-string HUT_RET_LOK;
-
-.entity data;
-.entity hud_pnl1;
-.entity hud_pnl2;
-.entity hud_pnl3;
-.entity hud_pnl4;
-.entity hud_pnl5;
-.entity hud_pnl6;
-.entity hud_pnl7;
-.entity hud_pnl8;
-.entity hud_pnl9;
-
-.float prev_ang;
-.vector nav_ofs;
+void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
+  local entity e;
+  local vector map_size;
+  map_size_x = gui_percentXRaw((world.mins_x*-1) + world.maxs_x);
+  map_size_y = gui_percentYRaw((world.mins_y*-1) + world.maxs_y);
+  e = findradius(pmove_org, range);
+  while(e){
+    if(e != world){
+      if(e.p_class != P_OBS){
+        traceline(pmove_org, e.origin, TRUE, self);
+        if(trace_fraction == 1){
+          local vector clr;
+          local string icon;
+          if(e.i_faction != p_faction){
+            clr = CLR_DEF_IFF_ENEMY;
+            if(e.p_class == P_BULD){
+              icon = HUD_RAD_PIP_BLD;
+            }
+            else if(e.p_class == P_MECH){
+              icon = HUD_RAD_PIP_MCH;
+            }
+          }
+          else{
+            if(e.p_class == P_BULD){
+              clr = CLR_DEF_IIF_FRIEND_BLD;
+              icon = HUD_RAD_PIP_BLD;
+            }
+            else{
+              clr = CLR_DEF_IIF_FRIEND;
+              icon = HUD_RAD_PIP_MCH;
+            }
+          }
+          local float d,len, ang, p;
+          local vector eorg, corg, nofs;
+          eorg = e.origin;
+          len = sqrt((eorg_x * eorg_x + eorg_y * eorg_y));
+          len = len / range * pnl_sz_x;
+          ang = atan2(eorg_x, eorg_y);
+          ang = anglemod( ang - input_angles_y );
+          corg_x = (cos(ang) * len)/map_size_x;
+          corg_y = (sin(ang) * len)/map_size_y;
+          
+          nofs_x = cofs_x + (corg_x * 90);
+          nofs_y = cofs_y + (corg_y * 90);
+          //nofs_x = cprc_x + ((cos(ang) * len));
+          //nofs_y = cprc_y + ((sin(ang) * len));
+          drawpic(nofs - '3 3', icon,  '6 6', clr, HUD_ALPHA, 0);
+        }
+      }
+    }
+    e = e.chain;
+  }
+};
 
 .void(entity vec_data) hud_prep;
 .void(vector view_x, vector view_ctr) hud_HelmetImage;
@@ -67,7 +123,7 @@ string HUT_RET_LOK;
 .void(float shieldval) hud_playerShield;
 .void(float energyval) hud_playerEnergy;
 .void(float ct, float lt, float rt, float la, float ra, float lg) hud_playerArmor;
-.void(float rad_front, float rad_back, float rad_mode) hud_Radar;
+.void(float rad_front, float rad_back, float rad_mode, float i_fact) hud_Radar;
 .void(float hit_dir) hud_hitDirectionPips;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon1;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon2;

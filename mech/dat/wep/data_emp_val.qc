@@ -88,12 +88,12 @@ void() data_emp_atk={
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
     local vector dir, org, end, adj;
-
+    
     if((player.flags & FL_CLIENT)){
       end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
     }
     else{
-      end = util_traceForAI(player, self.w_range, player.ai_leading); 
+      end = util_traceForAI(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y, self.w_range, player.ai_leading); 
     }
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     

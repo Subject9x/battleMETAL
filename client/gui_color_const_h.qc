@@ -43,8 +43,9 @@ vector CLR_DEF_BLACK = '0 0 0';
   vector CLR_DEF_ENG_DED = '0.18 0.32 0.6';
  
 //IFF constants
+  vector CLR_DEF_IIF_FRIEND_BLD = '0 0.6 1'; 
   //friendly
-  vector CLR_DEF_IIF_FRIEND = '0 0.6 1';
+  vector CLR_DEF_IIF_FRIEND = '0.17 0.89 0.13';
   //neutral
   vector CLR_DEF_IFF_NEUTRAL = '1 0.6 0.2';
   //enemy

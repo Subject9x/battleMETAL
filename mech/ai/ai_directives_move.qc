@@ -27,21 +27,21 @@ void() ai_mech_update={
   }
   
   if(self.ai_next_move == ai_move_stand){
-    self.stat_spr_x = self.stat_spr_x - self.conv_min_z;
+    self.stat_spr_x = self.stat_spr_x - (self.conv_min_z / 10);
     if(self.stat_spr_x < self.conv_min_x){
       self.stat_spr_x =  self.conv_min_x;
     }
-    self.stat_spr_y = self.stat_spr_y - self.conv_min_z;
+    self.stat_spr_y = self.stat_spr_y - (self.conv_min_z  / 10);
     if(self.stat_spr_y < self.conv_min_y){
       self.stat_spr_y =  self.conv_min_y;
     }
   }
   else{
-    self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
+    self.stat_spr_x = self.stat_spr_x + (self.conv_max_z * 5);
     if(self.stat_spr_x > self.conv_max_x){
       self.stat_spr_x =  self.conv_max_x;
     }
-    self.stat_spr_y = self.stat_spr_y + self.conv_max_z;
+    self.stat_spr_y = self.stat_spr_y + (self.conv_max_z * 5);
     if(self.stat_spr_y > self.conv_max_y){
       self.stat_spr_y =  self.conv_max_y;
     }

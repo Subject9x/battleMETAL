@@ -172,6 +172,9 @@ entity(vector point, float rad, entity trg) t_find_part={
         if(part.health < (part.max_health / 3)){
           toSender = f_wep;
         }
+        else{
+          toSender = part;
+        }
       }
     }
   }

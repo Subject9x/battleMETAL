@@ -15,5 +15,6 @@ void() building_fuel={
     self.data_idx = ID_BLD_H_FUEL;
     self.data_type = DATA_BLD;
     self.vec_name = "Fuel Tank";
+    self.e_model = "q3mdl/buildings/mdl_bld_h_fuel.md3";
   self = oself;
 };

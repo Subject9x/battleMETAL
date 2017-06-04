@@ -25,6 +25,8 @@ void() building_shield={
   self.deadflag = DEAD_NO;
   droptofloor();
   self.th_die = BecomeExplosion;
-  self.think = SUB_Null;
+  self.think = building_think;
   self.nextthink = time + 1;
+  self.SendEntity = send_building;
+  self.SendFlags = 1;
 };

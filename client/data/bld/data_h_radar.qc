@@ -20,5 +20,6 @@ void() building_radar={
     self.data_idx = ID_BLD_H_RADAR;
     self.data_type = DATA_BLD;
     self.vec_name = "Listening Post";
+    self.e_model = "q3mdl/buildings/mdl_bld_h_radar.md3";
   self = oself;
 };

@@ -13,7 +13,7 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hvd_ren
 void(float shieldval) hvd_playerShield;
 void(float energyval) hvd_playerEnergy;
 void(float ct, float lt, float rt, float la, float ra, float lg) hvd_playerArmor;
-void(float rad_front, float rad_back, float rad_mode) hvd_Radar;
+void(float rad_front, float rad_back, float rad_mode, float i_fact) hvd_Radar;
 void(float hit_dir) hvd_hitDirectionPips;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon1;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon2;
@@ -357,7 +357,7 @@ void(float ct, float lt, float rt, float la, float ra, float lg) hvd_playerArmor
   gui_renderMeter(la, (pnl_ctr + '-34 -12'), '12 36', CLR_DEF_ARM_DED, gui_getColorForArmor(la), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
-void(float rad_front, float rad_back, float rad_mode) hvd_Radar={
+void(float rad_front, float rad_back, float rad_mode, float i_fact) hvd_Radar={
  local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
   local string mode;
   local float len, badj;

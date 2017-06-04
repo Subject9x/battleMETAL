@@ -20,5 +20,6 @@ void() building_power={
     self.data_idx = ID_BLD_H_POWER;
     self.data_type = DATA_BLD;
     self.vec_name = "Power Generator";
+    self.e_model = "q3mdl/buildings/mdl_bld_h_power.md3";
   self = oself;
 };

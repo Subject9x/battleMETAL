@@ -188,6 +188,7 @@ float STAT_WEP6_REL = 101;
 float STAT_WEP7_REL = 102;
 float STAT_WEP8_REL = 103;
 float STAT_WEP9_REL = 104;
+float STAT_PLR_IFAC = 105;
 
 float STAT_WEP_STT = 57;
 float STAT_WEP_GRP = 83;
