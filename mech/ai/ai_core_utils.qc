@@ -259,8 +259,10 @@ float(vector chk, vector node) ai_core_nodelos={
 };
 
 void(entity e, entity mask) ai_core_sortranges={
-  local entity wep;
-  wep = e.w_slot;
+  local entity os, wep;
+  os = self;
+  self = e;
+  wep = self.w_slot;
   while(wep){
     if(mask != wep){
       local float dmg;
@@ -274,40 +276,44 @@ void(entity e, entity mask) ai_core_sortranges={
         dmg = wep.p_damage * wep.w_clipsize;
       }
       if(wep.w_range <= AI_RANGE_S){
-        e.ai_dmg_s = e.ai_dmg_s + dmg;
+        self.ai_dmg_s = self.ai_dmg_s + dmg;
       }
-      else if(wep.w_range <= AI_RANGE_M){
-        e.ai_dmg_m = e.ai_dmg_m + dmg;
+      if((wep.w_range > AI_RANGE_S) && (wep.w_range < AI_RANGE_M)){
+        self.ai_dmg_s = self.ai_dmg_s + dmg;
+        self.ai_dmg_m = self.ai_dmg_m + dmg;
       }
-      else if(wep.w_range <= AI_RANGE_L){
-        e.ai_dmg_l = e.ai_dmg_l + dmg;
+      if(wep.w_range > AI_RANGE_M){
+        self.ai_dmg_s = self.ai_dmg_s + dmg;
+        self.ai_dmg_m = self.ai_dmg_m + dmg;
+        self.ai_dmg_l = self.ai_dmg_l + dmg;
       }
     }
     wep = wep.w_slot;
   }
   local float s, m, l;
-  s = e.ai_dmg_s;
-  m = e.ai_dmg_m;
-  l = e.ai_dmg_l;
+  s = self.ai_dmg_s;
+  m = self.ai_dmg_m;
+  l = self.ai_dmg_l;
   if(s < l){
-    e.ai_minrange = AI_RANGE_L;
+    self.ai_minrange = AI_RANGE_L;
   }
   else if( s > l){
-    e.ai_minrange = AI_RANGE_S;
+    self.ai_minrange = AI_RANGE_S;
   }
   if(m < l){
-    e.ai_minrange = AI_RANGE_L;
+    self.ai_minrange = AI_RANGE_L;
   }
   else if( m > l){
-    e.ai_minrange = AI_RANGE_M;
+    self.ai_minrange = AI_RANGE_M;
   }
   if(s < m){
-    e.ai_minrange = AI_RANGE_M;
+    self.ai_minrange = AI_RANGE_M;
   }
   else if( s > m){
-    e.ai_minrange = AI_RANGE_S;
+    self.ai_minrange = AI_RANGE_S;
   }
-  if(e.ai_minrange == 0){
-    e.ai_minrange = 400;
+  if(self.ai_minrange == 0){
+    self.ai_minrange = 400;
   }
+  self = os;
 };

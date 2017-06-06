@@ -33,7 +33,7 @@ void() ClientConnect = {
   
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
-  stuffcmd(self, "loadsky dust_ \n");
+  //stuffcmd(self, "loadsky dust_ \n");
   self.p_class = P_OBS;
   self.p_class_next = P_OBS;
   self.nextVecChoice = 0;

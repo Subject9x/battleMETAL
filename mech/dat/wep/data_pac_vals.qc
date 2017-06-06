@@ -94,10 +94,10 @@ void() data_pac_atk={
   player = self.owner;
   
   if((player.flags & FL_CLIENT)){
-    end = util_traceForPlayer(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y+self.stat_spr_y, self.w_range);
+    end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = util_traceForAI(player, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y, self.w_range, player.ai_leading); 
+    end = util_traceForAI(player, self.w_range, player.ai_leading); 
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
@@ -125,11 +125,8 @@ void() data_pac_atk={
   laser_org.classname = "missile";
   setsize(laser_org, '0 0 0', '0 0 0');
   setorigin(laser_org, self.fx_origin);
-  
-  local float dtype;
-  dtype = DMG_ENE + EFF_PRC;
 
-  t_damage(trace_ent, self, player, self.p_damage, dtype, dir + (v_forward*3), '0 0 0');
+  t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/gauss.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);

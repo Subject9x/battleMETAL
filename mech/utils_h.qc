@@ -16,8 +16,10 @@ float(vector p, vector min, vector max) util_checkInBounds;
 float(entity trg) util_checkPointAngle;
 void(float bits, float b, float bb, float bbb) util_subThreeBits;
 entity(string part, entity unit) util_getPartFromName;
-vector(entity own, float spr_x, float spr_y, float range) util_traceForPlayer;
-vector(entity own, float spr_x, float spr_y, float range, float lead_factor) util_traceForAI;
+
+vector(entity own, float range) util_traceForPlayer;
+vector(entity own, float range, float lead_factor) util_traceForAI;
 vector(entity own, entity wep, vector prev_tracend, float spreadx, float spready) util_traceForOffset;
+
 float(float t, float e) util_normalizeTimeAsPercent;
 float(float v) anglemod;

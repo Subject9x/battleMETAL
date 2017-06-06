@@ -86,7 +86,7 @@ void() ai_mech={
   }
 		
   buildVehicle(dat);
-  //ai_core_sortranges(self, world);
+  ai_core_sortranges(self, world);
   
   self.solid = SOLID_BBOX;
   

@@ -7,7 +7,6 @@ this one will focus on move to move
 
 //TODO - move this stuff to own file
 void() ai_mech_update={
-  
   local entity oself,wep_chain;
   
   ctrl_updateCenterTorso();
