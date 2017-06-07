@@ -44,12 +44,6 @@ void() ai_mech={
   self.sh_cur = 0;
   self.sh_max = 0;
   self.sh_rate = 0;
-  self.stat_legs_hp = 0;
-  self.stat_ctor_hp = 0;
-  self.stat_ltor_hp = 0;
-  self.stat_rtor_hp = 0;
-  self.stat_larm_hp = 0;
-  self.stat_rarm_hp = 0;
   
   self.radar_range = 0; 
   self.was_hit = FALSE;
@@ -72,22 +66,24 @@ void() ai_mech={
     return;
   }
 
+  
   self.ideal_yaw = self.angles * '0 1 0';
 	if (!self.yaw_speed){
     if(self.nextVecChoice == 1){
-      self.yaw_speed = 8;//20;
+      self.yaw_speed = 6;//20;
     }
     else if(self.nextVecChoice == 2){
-      self.yaw_speed = 6;//10;
+      self.yaw_speed = 4;//10;
     }
     else if(self.nextVecChoice == 3){
-      self.yaw_speed = 4;//2.5;
+      self.yaw_speed = 2;//2.5;
     }
   }
 		
   buildVehicle(dat);
-  ai_core_sortranges(self, world);
-  
+  self.m_fspeed = self.m_fspeed * 0.025;
+  self.m_sspeed = self.m_sspeed * 0.025;
+  self.m_bspeed = self.m_bspeed * 0.025;
   self.solid = SOLID_BBOX;
   
   self.th_die = ai_mech_die;
@@ -96,20 +92,21 @@ void() ai_mech={
   self.ai_next_state = ai_state_ready;
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
-  self.ai_optical = self.radar_range /2;
+  self.ai_optical = self.radar_range / 4;
   self.ai_patience = 0;
-  self.ai_prev_org = self.origin;
- 
+  self.pausetime = 0;
+  
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
-	
+  self.dest = self.origin;
 	if (!walkmove(0,0))
 	{
 		dprint ("walkmonster in wall at: ");
 		dprint (vtos(self.origin));
 		dprint ("\n");
 	}
-  
+  self.goalentity = world;
+  self.enemy = world;
   if (self.target)
 	{
 		self.goalentity = self.movetarget = find(world, targetname, self.target);
@@ -121,7 +118,7 @@ void() ai_mech={
 			dprint ("\n");
 		}
 // this used to be an objerror
-		if (self.movetarget.classname == "path_corner"){
+		if (self.movetarget.classname == "ai_node"){
       self.ai_next_state = ai_state_tonode;
       self.ai_next_move = ai_move_walk;
 		}else{
@@ -133,16 +130,13 @@ void() ai_mech={
 	else
 	{
 		self.pausetime = 99999999;
-      self.ai_next_state = ai_state_ready;
-      self.ai_next_move = ai_move_stand;
+    self.ai_next_state = ai_state_ready;
+    self.ai_next_move = ai_move_stand;
 	}
-  self.goalentity = world;
-  
-  //self.SendEntity = send_ai_mech;
-  //self.SendFlags = 1;
+
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = 1;
-  //DEBUG ONLY
+
   self.think = ai_control;
   self.nextthink = time + 5;
 };

@@ -148,9 +148,9 @@ void() PlayerPostThink = {
 		//else
     if (self.jump_flag < -650)
 		{
-			T_Damage (self, world, world, 5); 
+			//T_Damage (self, world, world, 5); 
 			//sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
-			self.deathtype = "falling";
+			//self.deathtype = "falling";
 		}
 		else
 			//sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);

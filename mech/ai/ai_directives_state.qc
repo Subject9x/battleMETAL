@@ -5,11 +5,83 @@ Overview: next draft the ai
 this one will focus on move to move
 */
 
+
+void() ai_state_findtarget={
+  if(time > self.pausetime){
+    if(self.ai_prev_state == ai_state_tonode){
+      self.ai_next_state = self.ai_prev_state;
+      self.ai_prev_state = SUB_Null;
+    }
+  }
+  else{
+    if(ai_core_findtarget()){
+      if(self.ai_next_state != ai_state_hunt){
+        self.ai_prev_state = self.ai_next_state;
+        self.ai_next_state = ai_state_hunt;
+      }
+    }
+  }
+};
+
 /*
 
 */
 void() ai_state_hunt={
   if(ai_core_targetstate()){
+    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+    ChangeYaw();
+    if(!ai_target_infront(self.enemy)){
+      return;
+    }
+    if(!ai_target_facingideal()){
+      return;
+    }
+    
+    if(ai_target_insights(self.enemy)){
+      self.ai_next_move = ai_move_run_slide;
+    }
+    else{
+      if(self.stat_trg_dist > AI_RANGE_M){
+        self.ai_next_move = ai_move_walk;
+      }
+      else{
+        self.ai_next_move = ai_move_run;
+      }
+    }
+    self.th_missile();
+  }
+  else{
+    if(self.oldenemy != world){
+      self.enemy = self.oldenemy;
+      self.oldenemy = world;
+      if(!ai_core_targetstate()){
+        if(self.ai_prev_state != SUB_Null){
+          self.ai_next_state = self.ai_prev_state;
+          return;
+        }
+        else{
+          self.ai_next_state = ai_state_ready;
+          self.ai_next_move = ai_move_stand;
+          return;
+        }
+      }
+    }
+    else{
+      self.goalentity = world;
+      self.enemy = world;
+      if(self.ai_prev_state != SUB_Null){
+        self.ai_next_state = self.ai_prev_state;
+        return;
+      }
+      else{
+        self.ai_next_state = ai_state_ready;
+        self.ai_next_move = ai_move_stand;
+        return;
+      }
+    }
+  }
+
+  /*if(ai_core_targetstate()){
     if(!ai_target_visible(self.enemy)){
       if(self.oldenemy != world){
         self.oldenemy = self.enemy;
@@ -21,10 +93,7 @@ void() ai_state_hunt={
     }
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
     ChangeYaw();
-    if(!ai_target_infront(self.enemy)){
-      self.ai_patience = self.ai_patience + 1;
-      return;
-    }
+
     if(!ai_target_facingideal()){
       self.ai_patience = self.ai_patience + 1;
       return;
@@ -56,7 +125,7 @@ void() ai_state_hunt={
     self.enemy = world;
     self.ai_next_state = ai_state_ready;
     self.ai_next_move = ai_move_stand;
-  }
+  }*/
 };
 
 /*
@@ -70,26 +139,31 @@ void() ai_state_wander={
 
 */
 void() ai_state_tonode={
-  if(self.goalentity.classname == "ai_node"){
+  if(time > self.pausetime){
+    self.pausetime = 0;
+    makevectors(self.v_angle);
+    tracebox(self.origin, self.c_bbx_n, self.c_bbx_x, self.origin + (v_forward * 50), TRUE, self); 
+    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+    if(trace_ent && (trace_ent!=self.goalentity)){
+      self.ideal_yaw = self.ideal_yaw + 110;
+      ChangeYaw();
+      self.ai_next_move = ai_move_walk_dest;
+      return;
+    }    
+    ChangeYaw();
     local float d;
     d = vlen(self.goalentity.origin - self.origin);
-    if(d <= 10){
-      if(self.health <= (self.max_health /3)){
-        self.ai_next_state = ai_state_panic;
-        self.ai_next_move = ai_move_run;
-      }
-    }
-    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    self.ai_next_move = ai_move_walk;
-  }
-  else{
-    if(ai_core_findnode()){
-      self.ai_next_move = ai_move_walk;
+    if(d > AI_RANGE_M){
+      self.ai_next_move = ai_move_run;    
     }
     else{
-      self.ai_next_state = ai_state_ready;
-      self.ai_next_move = ai_move_stand;
+      self.ai_next_move = ai_move_walk;    
     }
+  }
+  else{
+    self.ai_prev_state = ai_state_tonode;
+    self.ai_next_state = ai_state_findtarget;
+    self.ai_next_move = ai_move_stand;
   }
 };
 
@@ -101,7 +175,7 @@ void() ai_state_defend={
 };
 
 void() ai_state_ready={
-  if(ai_core_findtarget()){
+  /*if(ai_core_findtarget()){
     if(self.ai_next_state != ai_state_hunt){
       self.ai_next_state = ai_state_hunt;
       self.ai_next_move = ai_move_run;
@@ -115,11 +189,11 @@ void() ai_state_ready={
     else{
       self.ai_next_move = ai_move_stand;
     }
-  }
+  }*/
 };
 
 void() ai_state_panic={
-  if(self.goalentity != world){
+  /*if(self.goalentity != world){
     local float d;
     d = vlen(self.goalentity.origin - self.origin);
     if(d <= 15){
@@ -145,5 +219,5 @@ void() ai_state_panic={
       self.ai_next_state = ai_state_ready;
       self.ai_next_move = ai_move_stand;
     }
-  }
+  }*/
 };

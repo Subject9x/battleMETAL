@@ -18,7 +18,7 @@ vector(entity own, float range) util_traceForPlayer={
   local entity cam;
   cam = own.e_cam;
   makevectors(own.v_angle);
-  traceline(cam.origin, cam.origin + v_forward*self.w_range, FALSE, own);
+  traceline(cam.origin, cam.origin + v_forward*5000, FALSE, own);
   return trace_endpos;
 };
 

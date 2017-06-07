@@ -169,7 +169,7 @@ entity(vector point, float rad, entity trg) t_find_part={
       if(chk < cur_dist){
         local entity part;
         part = util_getPartFromName(f_wep.c_parent, trg);
-        if(part.health < (part.max_health / 3)){
+        if(part.health < (part.max_health / 4)){
           toSender = f_wep;
         }
         else{
@@ -279,7 +279,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
     self.enemy.stat_trg_sh = -1;
     self.enemy.enemy = world;
   }
-
   self.th_die();
   
   self = oself;
@@ -447,6 +446,7 @@ void(entity trg, entity atk) anger_monster={
             self = trg;
               self.enemy = atk;
               if(self.ai_next_state != ai_state_hunt){
+                self.ai_prev_state = self.ai_next_state;
                 self.ai_next_state = ai_state_hunt;
                 self.ai_next_move = ai_move_run;
               }
@@ -460,6 +460,7 @@ void(entity trg, entity atk) anger_monster={
               self = trg;
                 self.enemy = atk;
                 if(self.ai_next_state != ai_state_hunt){
+                  self.ai_prev_state = self.ai_next_state;
                   self.ai_next_state = ai_state_hunt;
                   self.ai_next_move = ai_move_run;
                 }

@@ -174,7 +174,7 @@ void(entity wep) ai_attack_exp={
     }   
   }
   if((wep.p_dmgtype & DMG_EXP)){
-    if(self.enemy.sh_cur >= (self.enemy.sh_max/5)){
+    if(self.enemy.sh_cur >= wep.p_damage){
       attack = TRUE;
     }
     else{
@@ -278,14 +278,14 @@ void() ai_control={
     return;
   }
   self.ai_unit_update();
-  if(self.health <= (self.max_health /3)){
+  /*if(self.health <= (self.max_health /3)){
     if(self.en_cur <= 0){
       if(self.ai_next_state != ai_state_panic){
         self.ai_next_state =ai_state_panic;
       } 
     }
-  }
-  if(self.ai_patience > 5){
+  }*/
+  /*if(self.ai_patience > 5){
     if(self.enemy != world){
       if(ai_core_findtarget()){
         self.ai_next_state = ai_state_hunt;
@@ -298,7 +298,7 @@ void() ai_control={
       self.ai_next_move = ai_move_backward;
     }
     self.ai_patience = 0;
-  }
+  }*/
   self.ai_next_state();
   self.ai_next_move();
   self.think = ai_control;
@@ -317,34 +317,38 @@ void() ai_move_stand={
 
 void() ai_move_walk={
   self.ai_prev_move = ai_move_walk;
-  self.e_legs.angles_y = self.ideal_yaw;
-  movetogoal(self.m_fspeed / 50);
+  movetogoal(self.m_fspeed);
 };
 
-void() ai_mive_walk_slide={
-  self.ai_prev_move = ai_mive_walk_slide;
+void() ai_move_walk_dest={
+  self.e_legs.angles_y = self.ideal_yaw;
+  walkmove( self.ideal_yaw, self.m_fspeed);
+};
+
+void() ai_move_walk_slide={
+  self.ai_prev_move = ai_move_walk_slide;
   local float ofs;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
-  	if (self.lefty){
+  if (self.lefty){
 		ofs = 90;
 	}
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 50)){
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed)){
     self.e_legs.angles_y = self.ideal_yaw + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed / 50);
+  walkmove( self.ideal_yaw, self.m_fspeed);
   self.e_legs.angles_y = self.ideal_yaw;
 };
 
 void() ai_move_run={  
   self.ai_prev_move = ai_move_run;
-  movetogoal(self.m_fspeed / 25);
   self.e_legs.angles_y = self.ideal_yaw;
+  movetogoal(self.m_fspeed * 1.5);
 };
 
 void() ai_move_run_slide={  
@@ -358,24 +362,24 @@ void() ai_move_run_slide={
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 25)){
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed* 1.5)){
       self.e_legs.angles_y = self.ideal_yaw + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed / 25);
+  walkmove( self.ideal_yaw, self.m_fspeed* 1.5);
   self.e_legs.angles_y = self.ideal_yaw;
 };
 
 void() ai_move_forward={  
   self.ai_prev_move = ai_move_forward;
   self.e_legs.angles_y = self.angles_y;
-  walkmove (self.angles_y, self.m_fspeed / 50);
+  walkmove (self.angles_y, self.m_fspeed);
 };
 
 void() ai_move_backward={  
   self.ai_prev_move = ai_move_backward;
   self.e_legs.angles_y = self.angles_y + 180;
-  walkmove ((self.angles_y+180), self.m_fspeed / 50);
+  walkmove ((self.angles_y+180), self.m_fspeed);
 };
 

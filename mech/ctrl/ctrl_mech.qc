@@ -121,6 +121,7 @@ void() ctrl_die_comp={
       setorigin(self, oself.origin);
       util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_BOUNCE);
       setmodel(self, oself.model);
+      self.modelflags = self.modelflags  | MF_ROCKET;
       setsize(self, '-3 -3 -3', '3 3 3');
       self.touch = touch_mechPiece;
       self.think = BecomeExplosion;

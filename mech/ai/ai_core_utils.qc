@@ -4,6 +4,21 @@ Date: 5/22/2017
 Overview: next draft the ai
 this one will focus on move to move
 */
+
+float() ai_flag_hasdest={
+  if(self.dest != self.origin){
+    return TRUE;
+  }
+  return FALSE;
+};
+
+float() ai_flag_hasgoal={
+  if(self.goalentity != world){
+    return TRUE;
+  }
+  return FALSE;
+};
+
 float() ai_core_findnode={
   local entity node, f;
   local float d;
@@ -52,11 +67,11 @@ float() ai_core_findtarget={
       self.enemy = t_opt;
       return TRUE;
     }
-    t_rdr = ai_core_radartarget();
+    /*t_rdr = ai_core_radartarget();
     if(t_rdr != world){
       self.enemy = t_rdr;
       return TRUE;
-    }
+    }*/
   }
   return FALSE;
 };
@@ -98,7 +113,7 @@ finds all valid units (mechs, tanks, buildings)
 -must be in front of ent
 -must be visible
 ================================*/
-entity() ai_core_opticaltarget={
+/*entity() ai_core_opticaltarget={
   local float len;
   local entity t_opt, targ;
   len = self.ai_optical;
@@ -125,6 +140,31 @@ entity() ai_core_opticaltarget={
       }
     }
     targ = targ.chain;
+  }
+  return t_opt;
+};
+*/
+entity() ai_core_opticaltarget={
+  local float dst;
+  local entity t_opt, trg;
+  dst = self.ai_optical;
+  trg = findchainfloat(p_class, P_MECH);
+  while(trg){
+    if(trg != self){
+      if(ai_target_infront(trg)){
+        if(ai_target_visible(trg)){
+          if(trg.i_faction != self.i_faction){
+            local float d;
+            d = vlen(trg.origin - self.origin);
+            if(d < dst){
+              dst = d;
+              t_opt = trg;
+            }
+          }
+        }
+      }
+    }
+    trg = trg.chain;
   }
   return t_opt;
 };
@@ -196,7 +236,7 @@ float(entity targ) ai_target_insights={
 
 /*================================
         ai_target_visible
-determins if an entity can be seen by caller
+determines if an entity can be seen by caller
 -ported from classic qc
 ================================*/
 float(entity targ) ai_target_visible={
@@ -259,61 +299,5 @@ float(vector chk, vector node) ai_core_nodelos={
 };
 
 void(entity e, entity mask) ai_core_sortranges={
-  local entity os, wep;
-  os = self;
-  self = e;
-  wep = self.w_slot;
-  while(wep){
-    if(mask != wep){
-      local float dmg;
-      if(wep.w_proj > 0){
-        local entity p;
-        p = mh_world_findData(wep.w_proj, DATA_PROJ);
-        bprint(strcat(ftos(p.p_damage),"\n")); //DEBUG
-        dmg = p.p_damage * wep.w_clipsize;
-      }
-      else{
-        dmg = wep.p_damage * wep.w_clipsize;
-      }
-      if(wep.w_range <= AI_RANGE_S){
-        self.ai_dmg_s = self.ai_dmg_s + dmg;
-      }
-      if((wep.w_range > AI_RANGE_S) && (wep.w_range < AI_RANGE_M)){
-        self.ai_dmg_s = self.ai_dmg_s + dmg;
-        self.ai_dmg_m = self.ai_dmg_m + dmg;
-      }
-      if(wep.w_range > AI_RANGE_M){
-        self.ai_dmg_s = self.ai_dmg_s + dmg;
-        self.ai_dmg_m = self.ai_dmg_m + dmg;
-        self.ai_dmg_l = self.ai_dmg_l + dmg;
-      }
-    }
-    wep = wep.w_slot;
-  }
-  local float s, m, l;
-  s = self.ai_dmg_s;
-  m = self.ai_dmg_m;
-  l = self.ai_dmg_l;
-  if(s < l){
-    self.ai_minrange = AI_RANGE_L;
-  }
-  else if( s > l){
-    self.ai_minrange = AI_RANGE_S;
-  }
-  if(m < l){
-    self.ai_minrange = AI_RANGE_L;
-  }
-  else if( m > l){
-    self.ai_minrange = AI_RANGE_M;
-  }
-  if(s < m){
-    self.ai_minrange = AI_RANGE_M;
-  }
-  else if( s > m){
-    self.ai_minrange = AI_RANGE_S;
-  }
-  if(self.ai_minrange == 0){
-    self.ai_minrange = 400;
-  }
-  self = os;
+
 };

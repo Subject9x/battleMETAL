@@ -10,7 +10,7 @@ primarily used by t_damage stuff.
 float SHIELD_RECHARGE_COOLDOWN = 8;
 
 //shield vs effect by damage type
-float SHVBAL_EFFPRC_PERCENTAGE = 5;
+float SHVBAL_EFFPRC_PERCENTAGE = 10;
 float SHVBAL_EFFRAM_PERCENTAGE = 1.5;
 float SHVBAL_EFFNON_PERCENTAGE = 1.15;
 float SHVBAL_EFFNON_REDUCE = 0.75;

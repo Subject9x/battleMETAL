@@ -7,7 +7,7 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
 string DAT_PAC_NAME = "PAC";
-float DAT_PAC_DMG = 300;
+float DAT_PAC_DMG = 200;
 float DAT_PAC_FIRETIME = 0;
 float DAT_PAC_CLIPSIZE = 1;
 float DAT_PAC_CURRENTAMMO = 1;
@@ -66,6 +66,7 @@ void() data_pac_ini={
   self.w_range = DAT_PAC_RANGE;
   self.w_isburst = FALSE;
   self.w_state = READY;
+  self.p_damage = DAT_PAC_DMG;
 };
 
 void() data_pac_think={
@@ -126,7 +127,7 @@ void() data_pac_atk={
   setsize(laser_org, '0 0 0', '0 0 0');
   setorigin(laser_org, self.fx_origin);
 
-  t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
+  t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir, '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/gauss.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);
