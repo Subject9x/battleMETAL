@@ -112,16 +112,16 @@ void() ai_mech={
   
   if (self.target)
 	{
-		self.goalentity = self.movetarget = find(world, targetname, self.target);
+		self.goalentity = find(world, targetname, self.target);
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-		if (!self.movetarget)
+		if (!self.goalentity)
 		{
 			dprint ("Monster can't find target at ");
 			dprint (vtos(self.origin));
 			dprint ("\n");
 		}
 // this used to be an objerror
-		if (self.movetarget.classname == "path_corner"){
+		if (self.goalentity.classname == "ai_node"){
       self.ai_next_state = ai_state_tonode;
       self.ai_next_move = ai_move_walk;
 		}else{
@@ -136,7 +136,7 @@ void() ai_mech={
       self.ai_next_state = ai_state_ready;
       self.ai_next_move = ai_move_stand;
 	}
-  self.goalentity = world;
+
   
   //self.SendEntity = send_ai_mech;
   //self.SendFlags = 1;

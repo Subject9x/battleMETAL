@@ -11,17 +11,15 @@ float() ai_core_findnode={
     return FALSE;
   }
   d = self.radar_range;
-  node = findradius(self.origin, d);
+  node = findchain(classname, "ai_node");
   while(node){
     local float len;
     if(ai_target_visible(node)){
-      if(node.classname == "ai_node"){
-        if(node.target){
-          len = vlen(node.origin - self.origin);
-          if(len < d){
-            d = len;
-            f = node;
-          }
+      if(node.target){
+        len = vlen(node.origin - self.origin);
+        if(len < d){
+          d = len;
+          f = node;
         }
       }
     }
