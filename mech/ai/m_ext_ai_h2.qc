@@ -5,10 +5,18 @@ Overview: next draft the ai
 this one will focus on move to move
 */
 
+//pathfinding
+.float TOTAL_NODES;
+.float visited;
+float NODE_GRAPH[64];
+float NODE_VISIT[64];
+float NODE_DIST[64];
+
 float AI_RANGE_S = 600;
 float AI_RANGE_M = 1200;
 float AI_RANGE_L = 1800;
 
+.float star_h;
 .float ai_dmg_l;
 .float ai_dmg_m;
 .float ai_dmg_s;
@@ -55,6 +63,7 @@ void() ai_state_ready;
 void() ai_state_panic;
 
 //utility functions
+void() ai_clear_nodegraph;
 float(entity targ) ai_target_infront;
 float(entity targ) ai_target_insights;
 float(entity targ) ai_target_visible;

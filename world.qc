@@ -99,12 +99,17 @@ void() worldspawn =
 	lightstyle(63, "a");
   
   world.i_reserve = 10000;
+  world.TOTAL_NODES = 0;
 };
 
 void() StartFrame =
 {
 	teamplay = cvar("teamplay");
 	skill = cvar("skill");
+  if(framecount == 1){
+    //special post-load logic -Subject9x
+    
+  }
 	framecount = framecount + 1;
 };
 

@@ -4,6 +4,17 @@ Date: 5/22/2017
 Overview: next draft the ai
 this one will focus on move to move
 */
+
+//make sure to clear this after every use
+void() ai_clear_nodegraph={
+  local float i;
+  i = 0;
+  while(i<=16){
+    NODE_GRAPH[i] = 0;
+    i = i + 1;
+  }
+};
+
 float() ai_core_findnode={
   local entity node, f;
   local float d;

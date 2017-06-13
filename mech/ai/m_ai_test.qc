@@ -64,6 +64,7 @@ void() ai_mech={
   self.stat_lck_stt = LOCK_NONE;
   
   self.ai_leading = 0.05;
+  self.star_h = -1;
   local entity dat;
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   if(!dat){

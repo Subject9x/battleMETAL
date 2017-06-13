@@ -21,7 +21,17 @@ void() ai_node={
   setmodel(self, "q3mdl/testball.md3");
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
-  self.touch = ai_node_touch; 
+  self.touch = ai_node_touch;
+  world.TOTAL_NODES = world.TOTAL_NODES + 1;
+  self.visited = -1;
+  if(world.TOTAL_NODES > 64){
+    bprint("error! too many nodes - 64 is max limit\n");
+  }
+  else{
+    local float idx;
+    idx = world.TOTAL_NODES;
+    NODE_GRAPH[idx] = num_for_edict(self);
+  }
 }
 
 void() ai_node_touch={
