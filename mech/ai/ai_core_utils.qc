@@ -5,14 +5,128 @@ Overview: next draft the ai
 this one will focus on move to move
 */
 
-//make sure to clear this after every use
-void() ai_clear_nodegraph={
-  local float i;
-  i = 0;
-  while(i<=16){
-    NODE_GRAPH[i] = 0;
-    i = i + 1;
+
+float(entity ai, entity goal) ai_core_trynode={
+  
+  local entity e, near;
+  local float prox;
+  prox = vlen(goal.origin - ai.origin);
+  e = findchain(classname, "ai_node");
+  while(e){
+    local float d;
+    traceline(e.origin, goal.origin, FALSE, goal);
+    if(trace_fraction == 1){
+      d = vlen(e.origin - goal.origin);
+      if( d < prox){
+        prox = d;
+        near = e;
+      }
+    }
+    e = e.chain;
   }
+  return near.node_id;
+};
+
+//galaxy forgive me
+entity(entity node, float id) ai_query_graphnode={
+  local entity n;
+  local float idx;
+  if(id == 1){
+    idx = node.nexnode1;
+  }
+  else if(id == 2){
+    idx = node.nexnode2;
+  }
+  else if(id == 3){
+    idx = node.nexnode3;
+  }
+  else if(id == 4){
+    idx = node.nexnode4;
+  }
+  else if(id == 5){
+    idx = node.nexnode5;
+  }
+  else if(id == 6){
+    idx = node.nexnode6;
+  }
+  else if(id == 7){
+    idx = node.nexnode7;
+  }
+  else if(id == 8){
+    idx = node.nexnode8;
+  }
+  else if(id == 9){
+    idx = node.nexnode9;
+  }
+  else if(id == 10){
+    idx = node.nexnode10;
+  }
+  else if(id == 11){
+    idx = node.nexnode11;
+  }
+  else if(id == 12){
+    idx = node.nexnode12;
+  }
+  else if(id == 13){
+    idx = node.nexnode13;
+  }
+  else if(id == 14){
+    idx = node.nexnode14;
+  }
+  else if(id == 15){
+    idx = node.nexnode15;
+  }
+  else if(id == 16){
+    idx = node.nexnode16;
+  }
+  else if(id == 17){
+    idx = node.nexnode17;
+  }
+  else if(id == 18){
+    idx = node.nexnode18;
+  }
+  else if(id == 19){
+    idx = node.nexnode19;
+  }
+  else if(id == 20){
+    idx = node.nexnode20;
+  }
+  else if(id == 21){
+    idx = node.nexnode21;
+  }
+  else if(id == 22){
+    idx = node.nexnode22;
+  }
+  else if(id == 23){
+    idx = node.nexnode23;
+  }
+  else if(id == 24){
+    idx = node.nexnode24;
+  }
+  n = findfloat(world, node_id, idx);
+  return n;
+};
+
+entity(vector org, float start_dist) ai_core_findgraphnode={
+  local entity e, near;
+  local float prox;
+  prox = start_dist;
+  e = findchain(classname, "ai_node");
+  while(e){
+    local float d;
+    if(self.node_id){
+      traceline(e.origin, org, FALSE, self);
+      if(trace_fraction == 1){
+        d = vlen(e.origin - org);
+        if( d < prox){
+          prox = d;
+          near = e;
+        }
+      }
+    }
+    e = e.chain;
+  }
+  return near;
 };
 
 float() ai_core_findnode={

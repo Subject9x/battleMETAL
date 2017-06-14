@@ -71,15 +71,18 @@ void() ai_state_wander={
 */
 void() ai_state_tonode={
   if(self.goalentity.classname == "ai_node"){
-    local float d;
-    d = vlen(self.goalentity.origin - self.origin);
-    if(d <= 10){
-      if(self.health <= (self.max_health /3)){
-        self.ai_next_state = ai_state_panic;
-        self.ai_next_move = ai_move_run;
-      }
-    }
+    bprint("executing to node \n"); //DEBUG
+    bprint(strcat(self.target,"\n")); //DEBUG
+    local float prox;
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+    te_customflash(self.goalentity.origin, 100, 2, '1 1 1'); //DEBUG
+    traceline(self.origin, self.goalentity.origin, FALSE, self);
+    if(trace_fraction < 1){
+      self.ai_next_state = ai_state_trynode;
+      bprint("goto trynode \n"); // DEBUG
+      self.ai_next_move = ai_move_walk;
+      return;
+    }
     self.ai_next_move = ai_move_walk;
   }
   else{
@@ -145,5 +148,22 @@ void() ai_state_panic={
       self.ai_next_state = ai_state_ready;
       self.ai_next_move = ai_move_stand;
     }
+  }
+};
+
+void() ai_state_trynode={
+  if(self.movetarget != world){
+    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+  }
+  else{
+    bprint("entering trynode\n"); //DEBUG
+    self.ai_goal = self.goalentity;
+    self.node_id = ai_core_trynode(self, self.ai_goal);
+    bprint(strcat("goal id: ", ftos(self.node_id), "\n")); //DEBUG
+    local entity node;
+    node = ai_core_findgraphnode(self.origin, self.ai_optical);
+    bprint(strcat("next id: ", ftos(node.node_id), "\n")); //DEBUG
+    self.goalentity = node;
+    self.movetarget = self.goalentity;
   }
 };

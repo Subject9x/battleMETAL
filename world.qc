@@ -99,7 +99,6 @@ void() worldspawn =
 	lightstyle(63, "a");
   
   world.i_reserve = 10000;
-  world.TOTAL_NODES = 0;
 };
 
 void() StartFrame =

@@ -64,7 +64,7 @@ void() ai_mech={
   self.stat_lck_stt = LOCK_NONE;
   
   self.ai_leading = 0.05;
-  self.star_h = -1;
+
   local entity dat;
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   if(!dat){
@@ -103,14 +103,15 @@ void() ai_mech={
  
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
-	
+  self.movetarget = world;
+  self.ai_goal = world;
+  
 	if (!walkmove(0,0))
 	{
 		dprint ("walkmonster in wall at: ");
 		dprint (vtos(self.origin));
 		dprint ("\n");
 	}
-  
   if (self.target)
 	{
 		self.goalentity = find(world, targetname, self.target);

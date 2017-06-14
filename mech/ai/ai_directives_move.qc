@@ -26,21 +26,21 @@ void() ai_mech_update={
   }
   
   if(self.ai_next_move == ai_move_stand){
-    self.stat_spr_x = self.stat_spr_x - (self.conv_min_z / 10);
+    self.stat_spr_x = self.stat_spr_x - (self.conv_min_z / 100);
     if(self.stat_spr_x < self.conv_min_x){
       self.stat_spr_x =  self.conv_min_x;
     }
-    self.stat_spr_y = self.stat_spr_y - (self.conv_min_z  / 10);
+    self.stat_spr_y = self.stat_spr_y - (self.conv_min_z  / 100);
     if(self.stat_spr_y < self.conv_min_y){
       self.stat_spr_y =  self.conv_min_y;
     }
   }
   else{
-    self.stat_spr_x = self.stat_spr_x + (self.conv_max_z * 5);
+    self.stat_spr_x = self.stat_spr_x + (self.conv_max_z * 10);
     if(self.stat_spr_x > self.conv_max_x){
       self.stat_spr_x =  self.conv_max_x;
     }
-    self.stat_spr_y = self.stat_spr_y + (self.conv_max_z * 5);
+    self.stat_spr_y = self.stat_spr_y + (self.conv_max_z * 10);
     if(self.stat_spr_y > self.conv_max_y){
       self.stat_spr_y =  self.conv_max_y;
     }
@@ -311,13 +311,13 @@ void() ai_move_stand={
   self.ai_prev_move = ai_move_stand;
   if(ai_core_targetstate()){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-    ChangeYaw ();
   }
 };
 
 void() ai_move_walk={
   self.ai_prev_move = ai_move_walk;
   self.e_legs.angles_y = self.ideal_yaw;
+  ChangeYaw();
   movetogoal(self.m_fspeed / 50);
 };
 

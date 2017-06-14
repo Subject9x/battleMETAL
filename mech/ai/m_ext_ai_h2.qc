@@ -5,18 +5,40 @@ Overview: next draft the ai
 this one will focus on move to move
 */
 
-//pathfinding
-.float TOTAL_NODES;
-.float visited;
-float NODE_GRAPH[64];
-float NODE_VISIT[64];
-float NODE_DIST[64];
+//pathfinder node stuff
+.float node_id;
+.float nexnode1;
+.float nexnode2;
+.float nexnode3;
+.float nexnode4;
+.float nexnode5;
+.float nexnode6;
+.float nexnode7;
+.float nexnode8;
+.float nexnode9;
+.float nexnode10;
+.float nexnode11;
+.float nexnode12;
+.float nexnode13;
+.float nexnode14;
+.float nexnode15;
+.float nexnode16;
+.float nexnode17;
+.float nexnode18;
+.float nexnode19;
+.float nexnode20;
+.float nexnode21;
+.float nexnode22;
+.float nexnode23;
+.float nexnode24;
+//=========================
+
 
 float AI_RANGE_S = 600;
 float AI_RANGE_M = 1200;
 float AI_RANGE_L = 1800;
 
-.float star_h;
+.entity ai_goal;
 .float ai_dmg_l;
 .float ai_dmg_m;
 .float ai_dmg_s;
@@ -61,9 +83,12 @@ void() ai_state_tonode;
 void() ai_state_defend;
 void() ai_state_ready;
 void() ai_state_panic;
+void() ai_state_trynode;
 
 //utility functions
-void() ai_clear_nodegraph;
+float(entity ai, entity goal) ai_core_trynode;
+entity(entity node, float id) ai_query_graphnode;
+entity(vector org, float start_dist) ai_core_findgraphnode;
 float(entity targ) ai_target_infront;
 float(entity targ) ai_target_insights;
 float(entity targ) ai_target_visible;
