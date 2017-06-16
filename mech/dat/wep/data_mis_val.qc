@@ -24,6 +24,7 @@ float DAT_LAS_SPR_X = 10;
 float DAT_LAS_SPR_Y = 6;
 float DAT_MIS_WSIZE = 2;
 float DAT_MIS_HPX = 50;
+float DAT_MIS_RANGE = 600;
 
 void() data_wep_mis;
 void() data_mis_ini;
@@ -65,7 +66,7 @@ void() data_mis_ini={
   self.w_think = data_mis_think;
   self.health = DAT_MIS_HPX;
   self.max_health = DAT_MIS_HPX;
-  self.w_range = 600;
+  self.w_range = DAT_MIS_RANGE;
   self.w_isburst = FALSE;
   self.w_state = READY;
 };
@@ -100,7 +101,7 @@ void() data_mis_atk={
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     if((player.flags & FL_MONSTER)){
       if((end == player.origin) || (dir == player.origin)){
-        player.ai_patience = player.ai_patience + 1;
+        player.patience = player.patience + 1;
         return;
       }
     }

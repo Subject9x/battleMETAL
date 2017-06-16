@@ -23,7 +23,7 @@ float DAT_PAC_SPR_X = 0;
 float DAT_PAC_SPR_Y = 0;
 float DAT_PAC_WSIZE = 2;
 float DAT_PAC_HPX = 20;
-float DAT_PAC_RANGE = 600;
+float DAT_PAC_RANGE = 800;
 
 void() data_wep_pac;
 void() data_pac_ini;
@@ -46,6 +46,7 @@ void() data_wep_pac={
 void() data_pac_ini={
   self.data_idx = DAT_PAC_IDX;
   self.w_name = DAT_PAC_NAME;
+  self.p_damage = DAT_PAC_DMG;
   self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_PRC;
   self.w_firetime = DAT_PAC_FIRETIME;
   self.w_clipsize = DAT_PAC_CLIPSIZE;
@@ -103,7 +104,7 @@ void() data_pac_atk={
   
   if((player.flags & FL_MONSTER)){
     if((end == player.origin) || (dir == player.origin)){
-      player.ai_patience = player.ai_patience + 1;
+      player.patience = player.patience + 1;
       return;
     }
   }

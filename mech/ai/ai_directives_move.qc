@@ -51,146 +51,6 @@ void() ai_mech_update={
   }
 };
 
-void() ai_mech_attack={
-  local entity ai, wep_chain, oself;
-  local float dist;
-  ai = self;
-  wep_chain = self.w_slot;
-  while(wep_chain){
-    local float fire;
-    fire = FALSE;
-    if((self.stat_trg_dist <= wep_chain.w_range) && (wep_chain.w_isburst == FALSE)){
-      fire = TRUE;
-    }
-    else if(wep_chain.w_isburst == TRUE) {
-      fire =  TRUE;
-    }
-    if(fire){
-      if((wep_chain.p_dmgtype & DMG_ENE)){
-        ai_attack_ene(wep_chain);
-      }
-      else if((wep_chain.p_dmgtype & DMG_BAL)){
-        ai_attack_bal(wep_chain);
-      }
-      else if((wep_chain.p_dmgtype & DMG_EXP)){
-        ai_attack_exp(wep_chain);
-      }
-      else{
-        ai_attack_basic(wep_chain);
-      }
-    }
-    wep_chain = wep_chain.w_slot;
-  }
-};
-void(entity wep) ai_attack_basic={
-  local float attack;
-  local entity oself;
-  oself = self;
-  attack = FALSE;
-
-  if(wep.w_state == READY){
-    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
-      attack = TRUE;
-    }
-    else{
-      attack = TRUE;
-    }   
-  }
-  if(wep.w_isburst == TRUE){
-    attack = TRUE;
-  }
-  if(attack){
-    self = wep;
-    self.w_attack();
-  }
-  self = oself;
-};
-
-void(entity wep) ai_attack_ene={
-  local float attack;
-  local entity oself;
-  oself = self;
-  attack = FALSE;
-
-  if(wep.w_state == READY){
-    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
-      attack = TRUE;
-    }
-    else{
-      attack = TRUE;
-    }   
-  }
-  if((wep.p_dmgtype & EFF_STX)){
-    if(self.enemy.sh_cur >= (self.enemy.sh_max/4)){
-      attack = TRUE;
-    }
-    else{
-      attack = FALSE; //cancel attack regardless of weapon state
-    }
-  }
-  if(wep.w_isburst == TRUE){
-    attack = TRUE;
-  }
-  if(attack){
-    self = wep;
-    self.w_attack();
-  }
-  self = oself;
-};
-
-void(entity wep) ai_attack_bal={
-  local float attack;
-  local entity oself;
-  oself = self;
-  attack = FALSE;
-  if(wep.w_state == READY){
-    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
-      attack = TRUE;
-    }
-    else{
-      attack = TRUE;
-    }   
-  }
-  if(wep.w_isburst == TRUE){
-    attack = TRUE;
-  }
-  if(attack){
-    self = wep;
-    self.w_attack();
-  }
-  self = oself;  
-};
-void(entity wep) ai_attack_exp={
-  local float attack;
-  local entity oself;
-  oself = self;
-  attack = FALSE;
-  if(wep.w_state == READY){
-    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
-      attack = TRUE;
-    }
-    else{
-      attack = TRUE;
-    }   
-  }
-  if((wep.p_dmgtype & DMG_EXP)){
-    if(self.enemy.sh_cur >= (self.enemy.sh_max/5)){
-      attack = TRUE;
-    }
-    else{
-      attack = FALSE; //cancel attack regardless of weapon state
-    }
-  }
-  if(wep.w_isburst == TRUE){
-    attack = TRUE;
-  }
-  if(attack){
-    self = wep;
-    self.w_attack();
-  }
-  self = oself;
-};
-
 
 void() ai_mech_die={
   local entity w_chain;
@@ -218,51 +78,40 @@ void() ai_mech_cleanup={
 };
 
 void() ai_mech_touch={
-  local entity oact;
-  if((other.owner.flags & FL_MONSTER)){
-    oact = other.owner;
-  }
-  else if((other.owner.flags & FL_CLIENT)){
-    oact = other.owner;
-  }
-  else{
-    oact = other;
-  }
   local float infront;
   infront = ai_target_infront(other);
-  //bumped an ally!
   if(other.i_faction == self.i_faction){
+    //bumped an ally!
     if(infront){
       self.ai_next_move = ai_move_backward;
-      return;
     }
     else{
       self.ai_next_move = ai_move_forward;
-      return;
     } 
   }
-  //bumped a baddy!
   else{
-    if(other.p_class == P_MECH){
-      if(self.enemy == world){
-        self.enemy = other;
+    //bumped a baddy!
+    if(self.enemy == world){
+      if(other.p_class == P_MECH){
+        if(self.enemy == world){
+          self.enemy = other;
+        }
+        else{
+          self.oldenemy = self.enemy;
+          self.enemy = other;
+        }
+      }
+      if(infront){
+        self.ai_next_move = ai_move_run_goal_slide;
+        return;
       }
       else{
-        self.oldenemy = self.enemy;
-        self.enemy = other;
-      }
+        self.ai_next_move = ai_move_backward;
+        return;
+      } 
     }
-    if(infront){
-      self.ai_next_move = ai_move_run_slide;
-      return;
-    }
-    else{
-      self.ai_next_move = ai_move_backward;
-      return;
-    } 
   }
 };
-
 
 //this is run after the unit spawns in
 void() ai_spawn_start={
@@ -271,6 +120,9 @@ void() ai_spawn_start={
   }
 };
 
+/*
+  Core controller for any AI unit
+*/
 void() ai_control={
   if(self.deadflag >= DEAD_DYING){
     self.health = 0;
@@ -285,20 +137,6 @@ void() ai_control={
       } 
     }
   }
-  if(self.ai_patience > 5){
-    if(self.enemy != world){
-      if(ai_core_findtarget()){
-        self.ai_next_state = ai_state_hunt;
-      }
-      else{
-        self.ai_next_move = ai_move_backward;
-      }
-    }
-    else{
-      self.ai_next_move = ai_move_backward;
-    }
-    self.ai_patience = 0;
-  }
   self.ai_next_state();
   self.ai_next_move();
   self.think = ai_control;
@@ -308,47 +146,41 @@ void() ai_control={
 
 //move directives
 void() ai_move_stand={
-  self.ai_prev_move = ai_move_stand;
   if(ai_core_targetstate()){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   }
 };
 
-void() ai_move_walk={
-  self.ai_prev_move = ai_move_walk;
-  self.e_legs.angles_y = self.ideal_yaw;
-  ChangeYaw();
-  movetogoal(self.m_fspeed / 50);
+void() ai_move_walk_goal={
+  self.e_legs.angles = self.angles;
+  movetogoal(self.m_fspeed / 40);
 };
 
-void() ai_mive_walk_slide={
-  self.ai_prev_move = ai_mive_walk_slide;
+void() ai_move_walk_goal_slide={
   local float ofs;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
-  	if (self.lefty){
+  if (self.lefty){
 		ofs = 90;
 	}
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 50)){
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 40)){
     self.e_legs.angles_y = self.ideal_yaw + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed / 50);
-  self.e_legs.angles_y = self.ideal_yaw;
+  walkmove( self.ideal_yaw, self.m_fspeed / 40);
+  self.e_legs.angles = self.angles;
 };
 
-void() ai_move_run={  
-  self.ai_prev_move = ai_move_run;
-  movetogoal(self.m_fspeed / 25);
-  self.e_legs.angles_y = self.ideal_yaw;
+void() ai_move_run_goal={  
+  movetogoal(self.m_fspeed / 20);
+  self.e_legs.angles = self.angles;
 };
 
-void() ai_move_run_slide={  
-  self.ai_prev_move = ai_move_run_slide;
+void() ai_move_run_goal_slide={  
   local float ofs;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
@@ -358,24 +190,22 @@ void() ai_move_run_slide={
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 25)){
-      self.e_legs.angles_y = self.ideal_yaw + ofs;
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 20)){
+      self.e_legs.angles_y = self.angles + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed / 25);
+  walkmove( self.ideal_yaw, self.m_fspeed / 20);
   self.e_legs.angles_y = self.ideal_yaw;
 };
 
 void() ai_move_forward={  
-  self.ai_prev_move = ai_move_forward;
   self.e_legs.angles_y = self.angles_y;
-  walkmove (self.angles_y, self.m_fspeed / 50);
+  walkmove (self.angles_y, self.m_fspeed / 40);
 };
 
 void() ai_move_backward={  
-  self.ai_prev_move = ai_move_backward;
   self.e_legs.angles_y = self.angles_y + 180;
-  walkmove ((self.angles_y+180), self.m_fspeed / 50);
+  walkmove ((self.angles_y+180), self.m_fspeed / 40);
 };
 

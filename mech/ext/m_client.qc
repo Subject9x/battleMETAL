@@ -103,8 +103,8 @@ void() ClientConnect = {
   self.stat_trg_ra_hp = -1;
   
   self.radar_range = 800;
-  self.radar_front = 0;
-  self.radar_rear = 0;
+  //self.radar_front = 0;
+  //self.radar_rear = 0;
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
   self.stat_hit_dirs = 0;

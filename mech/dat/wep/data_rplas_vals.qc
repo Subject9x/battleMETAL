@@ -25,6 +25,7 @@ float DAT_RPLAS_SPR_Y = 8;
 float DAT_RPLAS_WSIZE = 2;
 float DAT_RPLAS_HPX = 25;
 float DAT_RPLAS_SHOT = 6;
+float DAT_RPLAS_RANGE = 1200;
 
 void() data_wep_rplas;
 void() data_rplas_ini;
@@ -68,7 +69,7 @@ void() data_rplas_ini={
   self.w_think = data_rplas_think;
   self.health = DAT_RPLAS_HPX;
   self.max_health = DAT_RPLAS_HPX;
-  self.w_range = 1500;
+  self.w_range = DAT_RPLAS_RANGE;
   self.w_isburst = FALSE;
   self.w_state = READY;
 };
@@ -106,7 +107,7 @@ void() data_rplas_atk={
     
     if((player.flags & FL_MONSTER)){
       if((end == player.origin) || (dir == player.origin)){
-        player.ai_patience = player.ai_patience + 1;
+        player.patience = player.patience + 1;
         return;
       }
     }

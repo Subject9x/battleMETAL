@@ -21,6 +21,7 @@ string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 float DAT_EMP_WSIZE = 2;
 float DAT_EMP_HPX = 25;
+float DAT_EMP_RANGE = 1600;
 
 void() data_wep_emp;  //called by the data system at game startup
 void() data_emp_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -61,7 +62,7 @@ void() data_emp_ini={
   self.health = DAT_EMP_HPX;
   self.max_health = DAT_EMP_HPX;
   self.p_dmgtype = self.p_dmgtype | EFF_STX;
-  self.w_range = 1200;
+  self.w_range = DAT_EMP_RANGE;
   self.w_state = READY;
 };
 
@@ -99,7 +100,7 @@ void() data_emp_atk={
     
     if((player.flags & FL_MONSTER)){
       if((end == player.origin) || (dir == player.origin)){
-        player.ai_patience = player.ai_patience + 1;
+        player.patience = player.patience + 1;
         return;
       }
     }

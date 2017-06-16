@@ -41,6 +41,6 @@ void() data_wep_las={
     self.w_abbr = "LAS";
     self.note1 = "Small bonus damage against shields.";
     self.w_icon = UI_WEP_LAS;
-    self.w_range = 1200;
+    self.w_range = 2400;
   self = oself;
 };

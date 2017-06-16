@@ -83,6 +83,11 @@ float ARM_RAD = 24;
 .float dmg_type;
 .float dmg_amt;
 .float hardpoint_cnt;
+//mech
+.float hp_ctor;
+.float hp_stor;
+.float hp_arm;
+.float hp_leg;
 
 //weapon
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 

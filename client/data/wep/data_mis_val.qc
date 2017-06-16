@@ -42,6 +42,6 @@ void() data_wep_mis={
     self.note2 = "Does not require [ACTIVE] RADAR.";
     self.note3 = "Does not require TARGET LOCK.";
     self.w_icon = UI_WEP_RCK;
-    self.w_range = 800;
+    self.w_range = 600;
   self = oself;
 };

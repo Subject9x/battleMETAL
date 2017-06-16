@@ -7,7 +7,6 @@ this one will focus on move to move
 
 
 float(entity ai, entity goal) ai_core_trynode={
-  
   local entity e, near;
   local float prox;
   prox = vlen(goal.origin - ai.origin);
@@ -103,6 +102,30 @@ entity(entity node, float id) ai_query_graphnode={
   else if(id == 24){
     idx = node.nexnode24;
   }
+  else if(id == 25){
+    idx = node.nexnode25;
+  }
+  else if(id == 26){
+    idx = node.nexnode26;
+  }
+  else if(id == 27){
+    idx = node.nexnode27;
+  }
+  else if(id == 28){
+    idx = node.nexnode28;
+  }
+  else if(id == 29){
+    idx = node.nexnode29;
+  }
+  else if(id == 30){
+    idx = node.nexnode30;
+  }
+  else if(id == 31){
+    idx = node.nexnode31;
+  }
+  else if(id == 32){
+    idx = node.nexnode32;
+  }
   n = findfloat(world, node_id, idx);
   return n;
 };
@@ -129,12 +152,9 @@ entity(vector org, float start_dist) ai_core_findgraphnode={
   return near;
 };
 
-float() ai_core_findnode={
+entity() ai_core_findnode={
   local entity node, f;
   local float d;
-  if(self.goalentity){
-    return FALSE;
-  }
   d = self.radar_range;
   node = findchain(classname, "ai_node");
   while(node){
@@ -150,38 +170,30 @@ float() ai_core_findnode={
     }
     node = node.chain;
   }
-  if(f){
-    self.goalentity = f;
-    return TRUE;
-  }
-  return FALSE;
+  return f;
 };
 
 /*================================
         ai_core_findtarget
 
 ================================*/
-float() ai_core_findtarget={
+entity() ai_core_findtarget={
   local entity t_opt, t_rdr;
   if(self.enemy == world){
     if(self.oldenemy != world){
       //an old grudge
-      self.enemy = self.oldenemy;
-      return TRUE;
+      return self.oldenemy;
     }
     t_opt = ai_core_opticaltarget();
     if(t_opt != world){
-      //found a target in LoS
-      self.enemy = t_opt;
-      return TRUE;
+      return t_opt;
     }
     t_rdr = ai_core_radartarget();
     if(t_rdr != world){
-      self.enemy = t_rdr;
-      return TRUE;
+      return t_rdr;
     }
   }
-  return FALSE;
+  return world;
 };
 
 
@@ -381,62 +393,10 @@ float(vector chk, vector node) ai_core_nodelos={
   return FALSE;
 };
 
-void(entity e, entity mask) ai_core_sortranges={
-  local entity os, wep;
-  os = self;
-  self = e;
-  wep = self.w_slot;
-  while(wep){
-    if(mask != wep){
-      local float dmg;
-      if(wep.w_proj > 0){
-        local entity p;
-        p = mh_world_findData(wep.w_proj, DATA_PROJ);
-        bprint(strcat(ftos(p.p_damage),"\n")); //DEBUG
-        dmg = p.p_damage * wep.w_clipsize;
-      }
-      else{
-        dmg = wep.p_damage * wep.w_clipsize;
-      }
-      if(wep.w_range <= AI_RANGE_S){
-        self.ai_dmg_s = self.ai_dmg_s + dmg;
-      }
-      if((wep.w_range > AI_RANGE_S) && (wep.w_range < AI_RANGE_M)){
-        self.ai_dmg_s = self.ai_dmg_s + dmg;
-        self.ai_dmg_m = self.ai_dmg_m + dmg;
-      }
-      if(wep.w_range > AI_RANGE_M){
-        self.ai_dmg_s = self.ai_dmg_s + dmg;
-        self.ai_dmg_m = self.ai_dmg_m + dmg;
-        self.ai_dmg_l = self.ai_dmg_l + dmg;
-      }
-    }
-    wep = wep.w_slot;
+void(void() state, void() move, float cache_state) ai_update_statemove={
+  if(cache_state == TRUE){
+    self.ai_state_cache = self.ai_next_state;
   }
-  local float s, m, l;
-  s = self.ai_dmg_s;
-  m = self.ai_dmg_m;
-  l = self.ai_dmg_l;
-  if(s < l){
-    self.ai_minrange = AI_RANGE_L;
-  }
-  else if( s > l){
-    self.ai_minrange = AI_RANGE_S;
-  }
-  if(m < l){
-    self.ai_minrange = AI_RANGE_L;
-  }
-  else if( m > l){
-    self.ai_minrange = AI_RANGE_M;
-  }
-  if(s < m){
-    self.ai_minrange = AI_RANGE_M;
-  }
-  else if( s > m){
-    self.ai_minrange = AI_RANGE_S;
-  }
-  if(self.ai_minrange == 0){
-    self.ai_minrange = 400;
-  }
-  self = os;
+  self.ai_next_state = state;
+  self.ai_next_move = move;
 };

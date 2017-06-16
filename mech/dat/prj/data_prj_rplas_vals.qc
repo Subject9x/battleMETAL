@@ -10,7 +10,7 @@ this guy will bounce off up to two non-targets.
 float DAT_PRJ_RPLAS_IDX = ID_PRJ_RPLAS;
 float DAT_PRJ_RPLAS_VELOCITY = 1500;//1000;
 string DAT_PRJ_RPLAS_MODEL = "progs/casing.mdl";
-float DAT_PRJ_RPLAS_LIFETIME = 2;
+float DAT_PRJ_RPLAS_LIFETIME = 0.8;
 float DAT_PRJ_RPLAS_DAMAGE = 20; //was 5 - 3/27/2017
 float DAT_PRJ_RPLAS_BURN = 0.25;
 float DAT_PRJ_RPLAS_DMGTYPE = DMG_BAL;

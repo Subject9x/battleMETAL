@@ -260,7 +260,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     PLR_VIEW_y = getstatf(STAT_CAM_ORG_Y);
     PLR_VIEW_z = getstatf(STAT_CAM_ORG_Z);
     makevectors(input_angles);
-    PLR_VIEW = pmove_org + (v_up * PLR_VIEW_y) + (v_right * PLR_VIEW_x) + (v_forward * PLR_VIEW_z);
+    PLAYER_HELPER.angles_y = input_angles_y;
+    PLR_VIEW = pmove_org; //+ (v_up * PLR_VIEW_y) + (v_right * PLR_VIEW_x) + (v_forward * PLR_VIEW_z);
     setproperty(VF_ORIGIN, PLR_VIEW);
     setorigin(PLAYER_HELPER, PLR_VIEW);
     
@@ -303,8 +304,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     //player radar info
     local float rad_frnt, rad_bck, rad_mode;
-    rad_frnt = getstatf(STAT_RDR_FRNT);
-    rad_bck = getstatf(STAT_RDR_BACK);
+    //rad_frnt = getstatf(STAT_RDR_FRNT);
+    //rad_bck = getstatf(STAT_RDR_BACK);
     rad_mode = getstati(STAT_RDR_MODE);
     
     //target tracking info
@@ -338,7 +339,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
       self.hud_playerShield(plr_sh);
       self.hud_playerEnergy(plr_en);  
-      self.hud_Radar(rad_frnt, rad_bck, rad_mode);
+      self.hud_Radar(0, 0, rad_mode);
       self.hud_hitDirectionPips(hitdir);
       self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, w1_r);
       self.hud_renderWeapon2(plr_wgrp, plr_wstate, w2_id, WEAPON2, WEAPON2_DD, WEAPON2_OK, w2_r);
@@ -352,6 +353,16 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
       self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
     self = oself;
+    local float rng, l;
+    local string s;
+    local vector v;
+    v = VIEW_CTR;
+    rng = getstati(STAT_RET_DIST);
+    s = ftos(rng);
+    l = stringwidth(s, 0, '8 8 0');
+    v_x = v_x - l/2;
+    v_y = v_y + 32;
+    drawstring(v, s, '8 8', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
   }
   else{
     local float len;

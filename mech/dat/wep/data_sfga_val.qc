@@ -104,7 +104,7 @@ void() data_sfga_atk={
   
   if((player.flags & FL_MONSTER)){
     if((end == player.origin) || (dir == player.origin)){
-      player.ai_patience = player.ai_patience + 1;
+      player.patience = player.patience + 1;
       return;
     }
   }

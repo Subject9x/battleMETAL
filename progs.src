@@ -2,9 +2,7 @@
 
 dp/defs.qc
 dp/dpextensions.qc
-
-//fight_h.qc
-
+dp/subs.qc
 //mech classes / extensions
   mech/ext/defs_game.qc
   mech/ext/ent_player_c.qc
@@ -19,7 +17,6 @@ dp/dpextensions.qc
 //==========================
 
 //mech header files
-  subs_h.qc
   mech/client_utils_h.qc
   mech/svr/server_parmops_h.qc
   mech/svr/server_intermsn_h.qc
@@ -88,6 +85,7 @@ dp/dpextensions.qc
 //impl files
   //ai
   mech/ai/m_ai_test.qc
+  mech/ai/ai_directives_combat.qc
   mech/ai/ai_directives_move.qc
   mech/ai/ai_directives_state.qc
   mech/ai/ai_core_utils.qc
@@ -111,31 +109,16 @@ dp/dpextensions.qc
   mech/ctrl/ctrl_legs.qc
 //==========================
 
-//subs.qc
-dp/subs.qc
 
-//fight.qc
-//ai.qc
-//combat.qc
-//items.qc
 
 q1/qwep/qwep_header.qc
 q1/qwep/wep_fx.qc
-//q1/qwep/q_projectiles.qc
-//q1/qwep/axe.qc
-//q1/qwep/glaunch.qc
-//q1/qwep/lightning.qc
-//q1/qwep/nails.qc
-//q1/qwep/shotgun.qc
-//q1/qwep/rocket.qc
-//q1/qwep/weapons.qc
 
 q1/precache_world.qc
 //============================
   mech/precache_world.qc
 //============================
 world.qc
-//client.qc
 //============================
   mech/map_objects_c.qc
   mech/ext/m_client.qc
@@ -149,8 +132,6 @@ world.qc
   mech/anim/mch_leg.qc
   mech/anim/mch_ctor.qc
 //============================
-//player.qc
-//monsters.qc
 doors.qc
 buttons.qc
 triggers.qc

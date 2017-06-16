@@ -9,7 +9,7 @@ Overview: data def file for a weapon projectile
 float DAT_PRJ_EMP_IDX = ID_PRJ_EMP;
 float DAT_PRJ_EMP_VELOCITY = 1500; //1500
 string DAT_PRJ_EMP_MODEL = "q3mdl/proj_emp.md3";
-float DAT_PRJ_EMP_LIFETIME = 1.5;//was 6; 5/13/2017 
+float DAT_PRJ_EMP_LIFETIME = 1.07;//was 6; 5/13/2017 
 float DAT_PRJ_EMP_DAMAGE = 150;
 float DAT_PRJ_EMP_DMGTYPE = 0;  //see data_prj_emp
 

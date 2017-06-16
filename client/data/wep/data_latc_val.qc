@@ -40,6 +40,6 @@ void() data_wep_latc={
     self.w_abbr = "ATC";
     self.note1 = "Slight damage bonus on armor.";
     self.w_icon = UI_WEP_ATC;
-    self.w_range = 800;
+    self.w_range = 2400;
   self = oself;
 };

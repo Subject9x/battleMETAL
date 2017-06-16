@@ -24,7 +24,7 @@ float DAT_LATC_SPR_X = 3;
 float DAT_LATC_SPR_Y = 2;
 float DAT_LATC_WSIZE = 1;
 float DAT_LATC_HPX = 30;
-float DAT_LATC_RANGE = 1500;
+float DAT_LATC_RANGE = 2400;
 
 void() data_wep_latc;
 void() data_latc_ini;
@@ -102,7 +102,7 @@ void() data_latc_atk={
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   if((player.flags & FL_MONSTER)){
     if((end == player.origin) || (dir == player.origin)){
-      player.ai_patience = player.ai_patience + 1;
+      player.patience = player.patience + 1;
       return;
     }
   }

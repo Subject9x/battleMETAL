@@ -10,36 +10,31 @@ Overview: moving all mech values into a single global file for ease of maintenan
 
 //MATOK MECH=============================
 float DAT_MTK_IDX = ID_MCH_MATOK;
-string DAT_MTK_VEC_NAME = "Matok";
+string DAT_MTK_VEC_NAME = "MATOK";
 float DAT_MTK_TECH_LEVEL = 1;
+float DAT_MTK_RADAR_RANGE = 10000;
 float DAT_MTK_RESERVE_COST = 200;
-float DAT_MTK_ENERGY_CUR = 100;
-float DAT_MTK_ENERGY_MAX = 100;
-float DAT_MTK_ENERGY_RATE = 0.085;
-float DAT_MTK_SHIELD_CUR = 150;
-float DAT_MTK_SHIELD_MAX = 150;
-float DAT_MTK_SHIELD_RATE = 0.065;
-vector DAT_MTK_CTOR_BBX_N ='-12 -12 -35';
-vector DAT_MTK_CTOR_BBX_X ='12 12 14';
+float DAT_MTK_ENERGY_CUR = 800;
+float DAT_MTK_ENERGY_MAX = 800;
+float DAT_MTK_ENERGY_RATE = 3;
+float DAT_MTK_SHIELD_CUR = 425;
+float DAT_MTK_SHIELD_MAX = 425;
+float DAT_MTK_SHIELD_RATE = 0.75;
+vector DAT_MTK_CTOR_BBX_N ='-14 -14 -35';
+vector DAT_MTK_CTOR_BBX_X ='14 14 14';
 string DAT_MTK_CPIT_MODEL = "gfx/ui/hgr_mtk.png";
+float DAT_MTK_M_FSPEED=225;
+float DAT_MTK_M_SSPEED=225;
+float DAT_MTK_M_BSPEED=190;
 float DAT_MTK_HARDPOINTS = 5;
-float DAT_MTK_M_FSPEED=125;
-float DAT_MTK_M_SSPEED=100;
-float DAT_MTK_M_BSPEED=100;
 
 //HITPOINT VALUES
-float DAT_MTK_CTOR_HP = 100;
-float DAT_MTK_CTOR_HPMAX= 100;
-float DAT_MTK_LEG_HP = 100;
-float DAT_MTK_LEG_HPMAX= 100;
-float DAT_MTK_LTOR_HP = 100;
-float DAT_MTK_LTOR_HPMAX= 100;
-float DAT_MTK_RTOR_HP = 100;
-float DAT_MTK_RTOR_HPMAX= 100;
-float DAT_MTK_LARM_HP = 100;
-float DAT_MTK_LARM_HPMAX= 100;
-float DAT_MTK_RARM_HP = 100;
-float DAT_MTK_RARM_HPMAX= 100;
+float DAT_MTK_CTOR_HPMAX= 650;
+float DAT_MTK_LEG_HPMAX= 900;
+float DAT_MTK_LTOR_HPMAX= 600;
+float DAT_MTK_RTOR_HPMAX= 600;
+float DAT_MTK_LARM_HPMAX= 675;
+float DAT_MTK_RARM_HPMAX= 675;
 
 //ARMOR VALUES
 float DAT_MTK_CTOR_ARMOR= 100;
@@ -227,4 +222,8 @@ void() data_mtk_ini={
   self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
   self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
   self.e_model = DAT_MTK_CTOR_MODEL;
+  self.hp_ctor = DAT_MTK_CTOR_HPMAX;
+  self.hp_stor = DAT_MTK_LTOR_HPMAX;
+  self.hp_arm = DAT_MTK_LARM_HPMAX;
+  self.hp_leg = DAT_MTK_LEG_HPMAX;
 };

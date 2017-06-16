@@ -7,8 +7,8 @@ Overview: the defintion file for my radar idea
 
 //entity extensions
 .float radar_range;
-.float radar_front;
-.float radar_rear;
+//.float radar_front;
+//.float radar_rear;
 
 //GLOBALS
 float RADAR_ISMECH = 2;

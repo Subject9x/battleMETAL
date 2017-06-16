@@ -12,7 +12,7 @@ Overview:
 float DAT_HVD_IDX = ID_MCH_COLOSSUS;
 string DAT_HVD_VEC_NAME = "Hevidahl";
 float DAT_HVD_TECH_LEVEL = 1;
-float DAT_HVD_RADAR_RANGE = 9000;
+float DAT_HVD_RADAR_RANGE = 2000;
 float DAT_HVD_RESERVE_COST = 200;
 float DAT_HVD_ENERGY_CUR = 1200;
 float DAT_HVD_ENERGY_MAX = 1200;
@@ -73,7 +73,7 @@ float DAT_HVD_WEP1_GROUP= 1;
 
 //this is mostly cosmetics
 string DAT_HVD_CTOR_MODEL= "q3mdl/mechs/hvd/mdl_hvd_t_cent.md3";
-string DAT_HVD_M_ACCEL="1";
+float DAT_HVD_M_ACCEL= 0.0005;
 string DAT_HVD_M_ROLLANGLE="2.25";
 string DAT_HVD_M_PITCH_N="90";
 string DAT_HVD_M_PITCH_X="-90";
@@ -270,6 +270,7 @@ void() data_hvd_ini={
   self.m_bside = DAT_HVD_M_BSIDE;
   self.m_bobspd = DAT_HVD_M_BSPD;
 };
+
 void() data_hvd_legs={
   self.c_name = DAT_HVD_LEG_CNAME;
   self.health = DAT_HVD_LEG_HP;
@@ -279,6 +280,7 @@ void() data_hvd_legs={
   self.c_model = DAT_HVD_LEG_MODEL;
   self.c_ofs = DAT_HVD_LEG_OFFSET;
 };
+
 void() data_hvd_ctor={
   self.c_name = DAT_HVD_CTOR_CNAME;
   self.health = DAT_HVD_CTOR_HP;

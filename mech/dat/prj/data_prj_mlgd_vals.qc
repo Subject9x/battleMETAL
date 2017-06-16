@@ -7,9 +7,9 @@ Overview: data def file for a weapon projectile
 
 //=======MISSILE: LASER-GUIDED========
 float DAT_PRJ_MLGD_IDX = ID_PRJ_MLGD;
-float DAT_PRJ_MLGD_VELOCITY = 700;
+float DAT_PRJ_MLGD_VELOCITY = 800;
 string DAT_PRJ_MLGD_MODEL = "q3mdl/proj_mis.md3";
-float DAT_PRJ_MLGD_LIFETIME = 6;
+float DAT_PRJ_MLGD_LIFETIME = 1.75;
 float DAT_PRJ_MLGD_DAMAGE = 200;
 float DAT_PRJ_MLGD_DMGTYPE = DMG_EXP;
 

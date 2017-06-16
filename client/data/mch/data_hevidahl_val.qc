@@ -12,34 +12,29 @@ Overview: moving all mech values into a single global file for ease of maintenan
 float DAT_HVD_IDX = ID_MCH_COLOSSUS;
 string DAT_HVD_VEC_NAME = "Hevidahl";
 float DAT_HVD_TECH_LEVEL = 1;
+float DAT_HVD_RADAR_RANGE = 9000;
 float DAT_HVD_RESERVE_COST = 200;
-float DAT_HVD_ENERGY_CUR = 100;
-float DAT_HVD_ENERGY_MAX = 100;
-float DAT_HVD_ENERGY_RATE = 0.08;
-float DAT_HVD_SHIELD_CUR = 150;
-float DAT_HVD_SHIELD_MAX = 150;
-float DAT_HVD_SHIELD_RATE = 0.1;
-vector DAT_HVD_CTOR_BBX_N ='-18 -18 -50';
-vector DAT_HVD_CTOR_BBX_X ='18 18 14';
+float DAT_HVD_ENERGY_CUR = 1200;
+float DAT_HVD_ENERGY_MAX = 1200;
+float DAT_HVD_ENERGY_RATE = 2;
+float DAT_HVD_SHIELD_CUR = 1200;
+float DAT_HVD_SHIELD_MAX = 1200;
+float DAT_HVD_SHIELD_RATE = 0.35;
+vector DAT_HVD_CTOR_BBX_N ='-20 -20 -50';
+vector DAT_HVD_CTOR_BBX_X ='20 20 14';
 string DAT_HVD_CPIT_MODEL = "gfx/ui/hgr_hvd.png";
+float DAT_HVD_M_FSPEED=150;
+float DAT_HVD_M_SSPEED=150;
+float DAT_HVD_M_BSPEED=100;
 float DAT_HVD_HARDPOINTS = 9;
-float DAT_HVD_M_FSPEED=85;
-float DAT_HVD_M_SSPEED=80;
-float DAT_HVD_M_BSPEED=75;
 
 //HITPOINT VALUES
-float DAT_HVD_CTOR_HP = 100;
-float DAT_HVD_CTOR_HPMAX= 100;
-float DAT_HVD_LEG_HP = 100;
-float DAT_HVD_LEG_HPMAX= 100;
-float DAT_HVD_LTOR_HP = 100;
-float DAT_HVD_LTOR_HPMAX= 100;
-float DAT_HVD_RTOR_HP = 100;
-float DAT_HVD_RTOR_HPMAX= 100;
-float DAT_HVD_LARM_HP = 100;
-float DAT_HVD_LARM_HPMAX= 100;
-float DAT_HVD_RARM_HP = 100;
-float DAT_HVD_RARM_HPMAX= 100;
+float DAT_HVD_CTOR_HPMAX= 1200;
+float DAT_HVD_LEG_HPMAX= 1500;
+float DAT_HVD_LTOR_HPMAX= 1200;
+float DAT_HVD_RTOR_HPMAX= 1200;
+float DAT_HVD_LARM_HPMAX= 1000;
+float DAT_HVD_RARM_HPMAX= 1000;
 
 //ARMOR VALUES
 float DAT_HVD_CTOR_ARMOR= 100;
@@ -274,4 +269,8 @@ void() data_hvd_ini={
   self.c_bbx_x = DAT_HVD_CTOR_BBX_X;
   self.c_bbx_n = DAT_HVD_CTOR_BBX_N;
   self.e_model = DAT_HVD_CTOR_MODEL;
+  self.hp_ctor = DAT_HVD_CTOR_HPMAX;
+  self.hp_stor = DAT_HVD_LTOR_HPMAX;
+  self.hp_arm = DAT_HVD_LARM_HPMAX;
+  self.hp_leg = DAT_HVD_LEG_HPMAX;
 };

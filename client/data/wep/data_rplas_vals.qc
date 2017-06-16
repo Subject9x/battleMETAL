@@ -40,7 +40,7 @@ void() data_wep_rplas={
     self.w_abbr = "RPC";
     self.note1 = "Ricochets off the ground and most walls.";
     self.w_icon = UI_WEP_RPC;
-    self.w_range = 1000;
+    self.w_range = 1200;
   self = oself;
 };
 

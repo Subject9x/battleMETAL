@@ -20,7 +20,7 @@ void() ai_node={
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
   setmodel(self, "q3mdl/testball.md3");
-  setsize(self, '-8 -8 -59','8 8 1');
+  setsize(self, '-15 -15 -59','15 15 1');
   droptofloor();
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
@@ -28,14 +28,26 @@ void() ai_node={
 }
 
 void() ai_node_touch={
-  if(self.isActive){
-    if((other.flags & FL_MONSTER)){
-      if(other.enemy == world){
-        //no target so continue on as normal
-        if(self.targetname){
-          //checks for patrol style ai_node
-          other.goalentity = find(world, targetname, self.target);
-        }
+  if((other.flags & FL_MONSTER)){
+    local entity this;
+    this = self;
+    if(self.target){
+      local entity t;
+      t = find(world, targetname, self.target);
+      if(t){
+        self = other;
+          self.oldgoal = self.goalentity;
+          self.goalentity = t;
+          ai_update_statemove(ai_state_tonode, self.ai_next_move, FALSE); 
+        self = this;
+        return;
+      }
+      else{
+        self = other;
+          self.goalentity = world;
+          ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
+        self = this;
+        return;
       }
     }
   }
@@ -72,22 +84,57 @@ void() ai_node_g21;
 void() ai_node_g22;
 void() ai_node_g23;
 void() ai_node_g24;
+void() ai_node_g25;
+void() ai_node_g26;
+void() ai_node_g27;
+void() ai_node_g28;
+void() ai_node_g29;
+void() ai_node_g30;
+void() ai_node_g31;
+void() ai_node_g32;
 
 void() ai_node_graph_touch={
-  if(other.ai_next_state == ai_state_trynode){
-    if(other.node_id == self.node_id){
-      local entity this;
-      this = self;
-      self = other;
-        self.ai_next_state = ai_state_ready;
-        self.ai_next_move = ai_move_stand;
-        self.goalentity = self.ai_goal;
-        self.ai_goal = world;
-        self.movetarget = world;
-      self = this;
-      return;
+  if((other.flags & FL_MONSTER)){
+    local entity this;
+    this = self;
+    if(self.target){
+      local entity t;
+      t = find(world, targetname, self.target);
+      if(t){
+        self = other;
+          self.oldgoal = self.goalentity;
+          self.goalentity = t;
+          ai_update_statemove(ai_state_tonode, self.ai_next_move, FALSE); 
+        self = this;
+        return;
+      }
+      else{
+        self = other;
+          self.goalentity = world;
+          ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
+        self = this;
+        return;
+      }
     }
-    other.goalentity = ai_query_graphnode(self, other.node_id);
+    else if(this.node_id){
+      if(self == other.oldgoal){
+        self = other;
+          self.goalentity = self.oldgoal;
+          self.movetarget = world;
+          ai_update_statemove(self.ai_state_cache, ai_move_stand, FALSE);
+        self = this;
+        return; 
+      }
+      else{
+        local entity n;
+        n = ai_query_graphnode(self, other.node_id);
+        self = other; 
+          self.goalentity = n;
+          ai_update_statemove(ai_state_trynode, ai_move_walk_goal, FALSE);
+        self = this;
+        return; 
+      }
+    }
   }
   if(other.p_class != P_OBS){
     return;
@@ -288,3 +335,67 @@ fill out .node_g1 - g24 to make graph
 I'm sorry :(
 */
 void() ai_node_g24={self.node_id = 24; ai_node(); self.touch = ai_node_graph_touch;};
+
+/*QUAKED ai_node_g25 (.1 .8 .9) (-20 -20 -39) (20 20 1)
+these are single-use nodes for making a small nodegraph
+use each one ONCE!
+fill out .node_g1 - g25 to make graph
+I'm sorry :(
+*/
+void() ai_node_g25={self.node_id = 25; ai_node(); self.touch = ai_node_graph_touch;};
+
+/*QUAKED ai_node_g26 (.1 .8 .9) (-20 -20 -39) (20 20 1)
+these are single-use nodes for making a small nodegraph
+use each one ONCE!
+fill out .node_g1 - g32 to make graph
+I'm sorry :(
+*/
+void() ai_node_g26={self.node_id = 26; ai_node(); self.touch = ai_node_graph_touch;};
+
+/*QUAKED ai_node_g27 (.1 .8 .9) (-20 -20 -39) (20 20 1)
+these are single-use nodes for making a small nodegraph
+use each one ONCE!
+fill out .node_g1 - g32 to make graph
+I'm sorry :(
+*/
+void() ai_node_g27={self.node_id = 27; ai_node(); self.touch = ai_node_graph_touch;};
+
+/*QUAKED ai_node_g28 (.1 .8 .9) (-20 -20 -39) (20 20 1)
+these are single-use nodes for making a small nodegraph
+use each one ONCE!
+fill out .node_g1 - g32 to make graph
+I'm sorry :(
+*/
+void() ai_node_g28={self.node_id = 28; ai_node(); self.touch = ai_node_graph_touch;};
+
+/*QUAKED ai_node_g29 (.1 .8 .9) (-20 -20 -39) (20 20 1)
+these are single-use nodes for making a small nodegraph
+use each one ONCE!
+fill out .node_g1 - g24 to make graph
+I'm sorry :(
+*/
+void() ai_node_g29={self.node_id = 29; ai_node(); self.touch = ai_node_graph_touch;};
+
+/*QUAKED ai_node_g30 (.1 .8 .9) (-20 -20 -39) (20 20 1)
+these are single-use nodes for making a small nodegraph
+use each one ONCE!
+fill out .node_g1 - g32 to make graph
+I'm sorry :(
+*/
+void() ai_node_g30={self.node_id = 30; ai_node(); self.touch = ai_node_graph_touch;};
+
+/*QUAKED ai_node_g31 (.1 .8 .9) (-20 -20 -39) (20 20 1)
+these are single-use nodes for making a small nodegraph
+use each one ONCE!
+fill out .node_g1 - g32 to make graph
+I'm sorry :(
+*/
+void() ai_node_g31={self.node_id = 31; ai_node(); self.touch = ai_node_graph_touch;};
+
+/*QUAKED ai_node_g32(.1 .8 .9) (-20 -20 -39) (20 20 1)
+these are single-use nodes for making a small nodegraph
+use each one ONCE!
+fill out .node_g1 - g32 to make graph
+I'm sorry :(
+*/
+void() ai_node_g32={self.node_id = 32; ai_node(); self.touch = ai_node_graph_touch;};

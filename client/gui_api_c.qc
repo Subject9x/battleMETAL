@@ -190,7 +190,7 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha
   else if(ax & AXIS_H){
      adj = sz_x * perc;
      diff = sz_x - adj;
-     norg_x = norg_x + diff;
+     //norg_x = norg_x + diff;
      sz_x = sz_x - diff;
   }
   drawfill(norg, sz, clr_fr, alpha, flg);

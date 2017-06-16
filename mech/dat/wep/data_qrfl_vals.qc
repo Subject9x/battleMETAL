@@ -25,7 +25,7 @@ float DAT_QRFL_SPR_Y = 5;
 float DAT_QRFL_WSIZE = 3;
 float DAT_QRFL_HPX = 20;
 float DAT_QRFL_QBITS = 6;
-
+float DAT_QRFL_RANGE = 2200;
 void() data_wep_qrfl;
 void() data_qrfl_ini;
 void() data_qrfl_atk;
@@ -67,7 +67,7 @@ void() data_qrfl_ini={
   self.w_think = data_qrfl_think;
   self.health = DAT_QRFL_HPX;
   self.max_health = DAT_QRFL_HPX;
-  self.w_range = 1500;
+  self.w_range = DAT_QRFL_RANGE;
   self.w_isburst = FALSE;
   self.w_state = READY;
 };
@@ -107,7 +107,7 @@ void() data_qrfl_atk={
     
     if((player.flags & FL_MONSTER)){
       if((end == player.origin) || (dir == player.origin)){
-        player.ai_patience = player.ai_patience + 1;
+        player.patience = player.patience + 1;
         return;
       }
     }

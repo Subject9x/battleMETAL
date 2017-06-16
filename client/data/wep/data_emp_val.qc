@@ -25,7 +25,7 @@ void() data_wep_emp={
   self = emp;
     self.classname = "data";
     self.data_idx = DAT_EMP_IDX;
-    self.dmg_amt = 65;
+    self.dmg_amt = 150;
     self.data_type = DATA_WEPN;
     self.w_name = DAT_EMP_NAME;
     self.w_name = DAT_EMP_NAME;
@@ -41,6 +41,6 @@ void() data_wep_emp={
     self.note1 = "Only damages Target's SHIELDS.";
     self.note2 = "Proximity detonation at longer ranges.";
     self.w_icon = UI_WEP_EMP;
-    self.w_range = 1000;
+    self.w_range = 1600;
   self = oself;
 };

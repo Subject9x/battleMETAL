@@ -15,9 +15,6 @@ float(entity ent, float changed) send_ai_mech={
   WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
   WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
   WriteCoord( MSG_ENTITY, self.owner.origin_z ); // Position Z
-  //WriteCoord( MSG_ENTITY, self.angles_x ); // Position X
-  //WriteCoord( MSG_ENTITY, self.angles_y ); // Position Y
- // WriteCoord( MSG_ENTITY, self.angles_z ); // Position Z
   return TRUE;
 };
 
@@ -37,6 +34,8 @@ void() ai_mech={
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
   self.p_class = P_MECH;
+  self.i_faction = 2; // DEBUG
+  self.ai_leading = 0.075; //DEBUG
   self.data_idx = 0;
   self.en_cur = 0;
   self.en_max = 0;
@@ -62,8 +61,7 @@ void() ai_mech={
   self.conv_min = '0 0 0';
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
-  
-  self.ai_leading = 0.05;
+
 
   local entity dat;
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
@@ -87,10 +85,8 @@ void() ai_mech={
   }
 		
   buildVehicle(dat);
-  ai_core_sortranges(self, world);
   
   self.solid = SOLID_BBOX;
-  
   self.th_die = ai_mech_die;
   self.th_missile = ai_mech_attack;
   self.ai_unit_update = ai_mech_update;
@@ -98,13 +94,11 @@ void() ai_mech={
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
   self.ai_optical = self.radar_range /2;
-  self.ai_patience = 0;
-  self.ai_prev_org = self.origin;
- 
+  self.patience = 0;
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
   self.movetarget = world;
-  self.ai_goal = world;
+  self.oldgoal = world;
   
 	if (!walkmove(0,0))
 	{
@@ -125,7 +119,7 @@ void() ai_mech={
 // this used to be an objerror
 		if (self.goalentity.classname == "ai_node"){
       self.ai_next_state = ai_state_tonode;
-      self.ai_next_move = ai_move_walk;
+      self.ai_next_move = ai_move_walk_goal;
 		}else{
 			self.pausetime = 99999999;
       self.ai_next_state = ai_state_ready;
@@ -135,16 +129,12 @@ void() ai_mech={
 	else
 	{
 		self.pausetime = 99999999;
-      self.ai_next_state = ai_state_ready;
-      self.ai_next_move = ai_move_stand;
+    self.ai_next_state = ai_state_ready;
+    self.ai_next_move = ai_move_stand;
 	}
 
-  
-  //self.SendEntity = send_ai_mech;
-  //self.SendFlags = 1;
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = 1;
-  //DEBUG ONLY
   self.think = ai_control;
-  self.nextthink = time + 5;
+  self.nextthink = time + 5; //power up timer
 };

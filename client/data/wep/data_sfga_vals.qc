@@ -40,7 +40,7 @@ void() data_wep_sfga={
     self.w_abbr = "SFGA";
     self.note1 = "Massive Artillery Cannon";
     self.w_icon = UI_WEP_RPC;
-    self.w_range = 2000;
+    self.w_range = 1600;
   self = oself;
 };
 

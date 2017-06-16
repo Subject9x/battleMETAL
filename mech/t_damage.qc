@@ -79,10 +79,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       self.alpha = 1;
       self.effects = self.effects | EF_NOSHADOW | EF_BLUE;
       setsize(self, '-1 -1 -1', '1 1 1');
-      setorigin(self, dmg_point);
+      
+      self.movetype = MOVETYPE_FOLLOW;
+      self.aiment = trg;
       self.solid = SOLID_NOT;
       self.angles = vectoangles(attacker.origin - self.origin);
       ChangeYaw ();
+      setorigin(self, dmg_point);
       self.think = SUB_Remove;
       self.nextthink = time + 1;
     self = oself;
@@ -440,7 +443,7 @@ void(entity trg, entity atk) anger_monster={
   if(atk != world){
     if(atk.owner != trg){
       if(atk != trg){
-        if(atk.i_faction != trg.i_faction){
+        if((!atk.i_faction) || (atk.i_faction != trg.i_faction)){
           if((atk != trg.enemy) && (trg.enemy == world)){
             local entity s;
             s = self;
@@ -448,7 +451,7 @@ void(entity trg, entity atk) anger_monster={
               self.enemy = atk;
               if(self.ai_next_state != ai_state_hunt){
                 self.ai_next_state = ai_state_hunt;
-                self.ai_next_move = ai_move_run;
+                self.ai_next_move = ai_move_run_goal;
               }
             self = s;
             return;
@@ -461,7 +464,7 @@ void(entity trg, entity atk) anger_monster={
                 self.enemy = atk;
                 if(self.ai_next_state != ai_state_hunt){
                   self.ai_next_state = ai_state_hunt;
-                  self.ai_next_move = ai_move_run;
+                  self.ai_next_move = ai_move_run_goal;
                 }
               self = s;
               return;

@@ -80,6 +80,7 @@ float AS_FLOAT = 8;
 .float stat_trg_rt_hp;
 .float stat_trg_la_hp;
 .float stat_trg_ra_hp;
+.float stat_ret_dist;
 
 //hit direction bit flags
 float STAT_HIT_CL = 1;
@@ -206,7 +207,7 @@ float STAT_TRG_VID = 84;
 float STAT_TRG_SH = 85;
 float STAT_TRG_DAT = 87;
 
-float STAT_RDR_FRNT = 88;
+float STAT_RET_DIST = 88;
 float STAT_RDR_BACK = 89;
 float STAT_NAV_DIR = 60;
 

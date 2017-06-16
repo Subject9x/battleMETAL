@@ -21,6 +21,7 @@ string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
 float DAT_MARH_WSIZE = 3;
 float DAT_MARH_HPX = 15;
+float DAT_MARH_RANGE = 2400;
 
 void() data_wep_marh;  //called by the data system at game startup
 void() data_marh_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -102,7 +103,7 @@ void() data_marh_atk={
               
         if((player.flags & FL_MONSTER)){
           if((end == player.origin) || (dir == player.origin)){
-            player.ai_patience = player.ai_patience + 1;
+            player.patience = player.patience + 1;
             return;
           }
         }

@@ -46,7 +46,7 @@ commented vars mean they're already implemented and are here for reference!
 .float m_fspeed; //forward speed
 .float m_sspeed; //side strafe speed
 .float m_bspeed; //backward speed
-.string m_maccel;
+.float m_maccel;
 
 .string m_bob;    //bob settings are important for dat immersion
 .string m_bcycle;

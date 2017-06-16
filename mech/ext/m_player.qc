@@ -85,17 +85,13 @@ void() PlayerPostThink = {
     }
   }
   
-  if(self.enemy){
-    local string s;
-    s = strcat(ftos(self.enemy.ai_dmg_s),"\n",ftos(self.enemy.ai_dmg_m),"\n");
-    s = strcat(s,"\n",ftos(self.enemy.ai_dmg_l),"\n");
-    s = strcat(s, "\n rng:", ftos(self.enemy.ai_minrange),"\n");
-    centerprint(self, s);
-  }
 // do weapon stuff
   self.stat_plr_ang = anglemod(self.v_angle_y);
   //STAT UPDATE   
   if(self.p_class == P_MECH){
+    makevectors(self.v_angle);
+    traceline(self.origin, self.origin + (v_forward * 5000), FALSE,self);
+    self.stat_ret_dist = 5000 * trace_fraction;
     self.stat_plr_camx = self.e_cam.c_ofs_x;
     self.stat_plr_camy = self.e_cam.c_ofs_y; 
     self.stat_plr_camz = self.e_cam.c_ofs_z;
@@ -116,8 +112,8 @@ void() PlayerPostThink = {
     ctrl_update_mechplayer();
     local vector radar;
     radar = server_updateRadarInfo();
-    self.radar_front = radar_x;
-    self.radar_rear = radar_y;
+    //self.radar_front = radar_x;
+    //self.radar_rear = radar_y;
   }
 
   self.stat_plr_ptc = self.v_angle_x;
@@ -148,7 +144,7 @@ void() PlayerPostThink = {
 		//else
     if (self.jump_flag < -650)
 		{
-			T_Damage (self, world, world, 5); 
+			//T_Damage (self, world, world, 5); 
 			//sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
 			self.deathtype = "falling";
 		}

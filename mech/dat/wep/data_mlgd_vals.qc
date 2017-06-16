@@ -22,6 +22,7 @@ string DATWEP_MLGD_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MLGD_TECH_LEVEL = 2;
 float DAT_MLGD_WSIZE = 1;
 float DAT_MLGD_HPX = 45;
+float DAT_MLGD_RANGE = 1400;
 
 void() data_wep_mlgd;  //called by the data system at game startup
 void() data_mlgd_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -62,7 +63,7 @@ void() data_mlgd_ini={
   self.w_think = data_mlgd_think;
   self.health = DAT_MLGD_HPX;
   self.max_health = DAT_MLGD_HPX;
-  self.w_range = 2000;
+  self.w_range = DAT_MLGD_RANGE;
   self.w_isburst = FALSE;
 };
 
@@ -101,7 +102,7 @@ void() data_mlgd_atk={
 
     if((player.flags & FL_MONSTER)){
       if((end == player.origin) || (dir == player.origin)){
-        player.ai_patience = player.ai_patience + 1;
+        player.patience = player.patience + 1;
         return;
       }
     }

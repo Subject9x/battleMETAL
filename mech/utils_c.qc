@@ -46,11 +46,11 @@ vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spre
   makevectors(own.angles);
   org = own.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   ofsent.fx_origin = org;
-  end = trace_endpos + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready));
+  end = prev_tracend + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready));
   makevectors(self.angles);
   traceline(org, end, FALSE, own);
   if(trace_ent.i_faction != own.i_faction){
-    return trace_endpos + (v_right * 4);
+    return trace_endpos;
   }
   else{
     return own.origin;
