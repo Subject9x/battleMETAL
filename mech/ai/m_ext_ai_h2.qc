@@ -61,16 +61,23 @@ float AI_RANGE_L = 2400;
 .float maxpatience; //how impatient is the AI
 .vector ai_prev_org;
 
-.void() ai_prev_state;
-.void() ai_next_move; //run this move on this frame
-.void() ai_next_state;
-.void() ai_state_cache;
-.void() ai_move_cache;
 .void() ai_unit_update; //depends on unit type
 //.goalentity should always be where the AI *MOVES* to
 //.target should always be the thing the AI *SHOOTS* at and aims at
 void() ai_spawn_start;
 void() ai_control;
+
+//new
+.void() ai_first_order; //order the unit was spawned with
+.void() ai_current_order; //order the ai is currently processing;
+
+
+.void() ai_prev_state; //*-refactor
+.void() ai_next_move;  //*-refactor//run this move on this frame
+.void() ai_next_state; //*-refactor
+.void() ai_state_cache; //*-refactor
+.void() ai_move_cache; //*-refactor
+
 
 void(entity wep) ai_attack_basic;
 void(entity wep) ai_attack_ene;
@@ -86,15 +93,27 @@ void() ai_move_run_goal_slide;
 void() ai_move_forward;
 void() ai_move_backward;
 
+//ai orders - these things sit atop all other ai directives
+void() ai_order_topoint;
+void() ai_order_fight;
+void() ai_order_defend;
+void() ai_order_patrol;
+void() ai_order_stand;
+
+void() ai_sub_hunt;
+void() ai_sub_tonode;
+void() ai_sub_trynode;
+void() ai_sub_wander
+
 //state directives
-void() ai_state_hunt;
-void() ai_state_fight;
-void() ai_state_wander;
-void() ai_state_tonode;
-void() ai_state_defend;
-void() ai_state_ready;
-void() ai_state_panic;
-void() ai_state_trynode;
+void() ai_state_hunt; //*-refactor
+void() ai_state_fight; //*-refactor
+void() ai_state_wander; //*-refactor
+void() ai_state_tonode; //*-refactor
+void() ai_state_defend; //*-refactor
+void() ai_state_ready; //*-refactor
+void() ai_state_panic; //*-refactor
+void() ai_state_trynode; //*-refactor
 
 //utility functions
 void(void() state, void() move, float cache_state) ai_update_statemove;
