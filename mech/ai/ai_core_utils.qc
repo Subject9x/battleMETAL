@@ -5,7 +5,6 @@ Overview: next draft the ai
 this one will focus on move to move
 */
 
-
 float(entity ai, entity goal) ai_core_trynode={
   local entity e, near;
   local float prox;
@@ -24,6 +23,26 @@ float(entity ai, entity goal) ai_core_trynode={
     e = e.chain;
   }
   return near.node_id;
+};
+
+entity(entity ai, entity goal) ai_core_nodetogoal={
+  local entity e, near;
+  local float prox;
+  prox = vlen(goal.origin - ai.origin);
+  e = findchain(classname, "ai_node");
+  while(e){
+    local float d;
+    traceline(e.origin, goal.origin, FALSE, goal);
+    if(trace_fraction == 1){
+      d = vlen(e.origin - goal.origin);
+      if( d < prox){
+        prox = d;
+        near = e;
+      }
+    }
+    e = e.chain;
+  }
+  return near;
 };
 
 //galaxy forgive me
@@ -393,10 +412,12 @@ float(vector chk, vector node) ai_core_nodelos={
   return FALSE;
 };
 
-void(void() state, void() move, float cache_state) ai_update_statemove={
-  if(cache_state == TRUE){
+void(void() state, float cache_state) ai_update_state={
+  /*if(cache_state == TRUE){
     self.ai_state_cache = self.ai_next_state;
+  }*/
+  if(self.ai_prev_state != self.ai_next_state){
+    self.ai_prev_state = self.ai_next_state;
   }
   self.ai_next_state = state;
-  self.ai_next_move = move;
 };

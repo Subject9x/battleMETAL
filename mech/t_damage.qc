@@ -449,10 +449,8 @@ void(entity trg, entity atk) anger_monster={
             s = self;
             self = trg;
               self.enemy = atk;
-              if(self.ai_next_state != ai_state_hunt){
-                self.ai_next_state = ai_state_hunt;
-                self.ai_next_move = ai_move_run_goal;
-              }
+              self.ai_prev_state = self.ai_next_state;
+              self.ai_next_state = ai_sub_fight;
             self = s;
             return;
           }
@@ -462,10 +460,9 @@ void(entity trg, entity atk) anger_monster={
               s = self;
               self = trg;
                 self.enemy = atk;
-                if(self.ai_next_state != ai_state_hunt){
-                  self.ai_next_state = ai_state_hunt;
-                  self.ai_next_move = ai_move_run_goal;
-                }
+                self.enemy = atk;
+                self.ai_prev_state = self.ai_next_state;
+                self.ai_next_state = ai_sub_fight;
               self = s;
               return;
             }

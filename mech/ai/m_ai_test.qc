@@ -22,7 +22,12 @@ float(entity ent, float changed) send_ai_mech={
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
 nextVecChoice = match to mech data id
 i_faction = which faction
-ai_leading = how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
+ai_leading = how bad does the ai suck at aiming? 0.0 is ACE, 0.2 is pretty bad
+state_1 = initial order
+  0 = Attack the .target
+  1 = defend the .target
+  2 = patrol the .target
+  3 = stand at the .target
 */
 void() ai_mech={
   //DEBUG
@@ -94,11 +99,27 @@ void() ai_mech={
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
   self.ai_optical = self.radar_range /2;
+  self.maxpatience = 10;
   self.patience = 0;
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
   self.movetarget = world;
   self.oldgoal = world;
+  
+  //set first order based on self.state_1
+  if(self.state_1 == 0){
+    self.ai_first_order = ai_order_stand;
+  }
+  else if(self.state_1 == 1){
+    self.ai_first_order = ai_order_defend;
+  }
+  else if(self.state_1 == 2){
+    self.ai_first_order = ai_order_patrol;
+  }
+  else if(self.state_1 == 3){
+    self.ai_first_order = ai_order_attack;
+  }
+  
   
 	if (!walkmove(0,0))
 	{
@@ -106,33 +127,62 @@ void() ai_mech={
 		dprint (vtos(self.origin));
 		dprint ("\n");
 	}
+  
   if (self.target)
 	{
-		self.goalentity = find(world, targetname, self.target);
-		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-		if (!self.goalentity)
+    local entity t;
+    t = find(world, targetname, self.target);
+    if(t){
+      tracebox(self.origin, '-10 -10 0', '10 10 0', t.origin, FALSE, self);
+      if(t.classname == "ai_node"){
+        self.goalentity = t;
+      }
+      else{
+        self.enemy = t;
+      }
+      if(trace_fraction  < 1){
+         self.ai_prev_state = self.ai_first_order;
+        if(self.ai_first_order == ai_order_patrol){
+          self.ai_next_state = ai_sub_tonode;
+        }
+        else if(self.ai_first_order == ai_order_attack){
+          self.ai_next_state = ai_sub_hunt;
+        }
+        else if(self.ai_first_order == ai_order_defend){
+          self.ai_next_state = ai_sub_hunt;
+        }
+        else if(self.ai_first_order == ai_order_stand){
+          self.ai_next_state = ai_sub_tonode;
+        }
+      }
+    }
+    else{
+      self.ai_first_order = ai_order_stand;
+      self.ai_next_state = ai_order_stand;
+    }
+		//self.goalentity = find(world, targetname, self.target);
+		//self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+		/*if (!self.goalentity)
 		{
 			dprint ("Monster can't find target at ");
 			dprint (vtos(self.origin));
 			dprint ("\n");
-		}
+		}*/
 // this used to be an objerror
-		if (self.goalentity.classname == "ai_node"){
+		/*if (self.goalentity.classname == "ai_node"){
       self.ai_next_state = ai_state_tonode;
       self.ai_next_move = ai_move_walk_goal;
 		}else{
 			self.pausetime = 99999999;
       self.ai_next_state = ai_state_ready;
-      self.ai_next_move = ai_move_stand;
-    }
+    }*/
 	}
 	else
 	{
 		self.pausetime = 99999999;
-    self.ai_next_state = ai_state_ready;
-    self.ai_next_move = ai_move_stand;
+    self.ai_next_state = ai_order_stand;
 	}
-
+  
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = 1;
   self.think = ai_control;

@@ -70,7 +70,7 @@ void() ai_mech_die={
   ctor_die1();
   
   self.think = ai_mech_cleanup;
-  self.nextthink = time + 0.0001;
+  self.nextthink = time + 100;
 };
 
 void() ai_mech_cleanup={
@@ -78,37 +78,39 @@ void() ai_mech_cleanup={
 };
 
 void() ai_mech_touch={
-  local float infront;
-  infront = ai_target_infront(other);
-  if(other.i_faction == self.i_faction){
-    //bumped an ally!
-    if(infront){
-      self.ai_next_move = ai_move_backward;
-    }
-    else{
-      self.ai_next_move = ai_move_forward;
-    } 
-  }
-  else{
-    //bumped a baddy!
-    if(self.enemy == world){
-      if(other.p_class == P_MECH){
-        if(self.enemy == world){
-          self.enemy = other;
-        }
-        else{
-          self.oldenemy = self.enemy;
-          self.enemy = other;
-        }
-      }
+  if(other.p_class != P_OBS){
+    local float infront;
+      infront = ai_target_infront(other);
+    if(other.i_faction == self.i_faction){
+      //bumped an ally!
       if(infront){
-        self.ai_next_move = ai_move_run_goal_slide;
-        return;
+        self.ai_next_move = ai_move_backward;
       }
       else{
-        self.ai_next_move = ai_move_backward;
-        return;
+        self.ai_next_move = ai_move_forward;
       } 
+    }
+    else{
+      //bumped a baddy!
+      if(self.enemy == world){
+        if(other.p_class == P_MECH){
+          if(self.enemy == world){
+            self.enemy = other;
+          }
+          else{
+            self.oldenemy = self.enemy;
+            self.enemy = other;
+          }
+        }
+        if(infront){
+          self.ai_next_move = ai_move_run_goal_slide;
+          return;
+        }
+        else{
+          self.ai_next_move = ai_move_backward;
+          return;
+        } 
+      }
     }
   }
 };

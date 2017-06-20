@@ -46,6 +46,9 @@ float AI_RANGE_S = 800;
 float AI_RANGE_M = 1600;
 float AI_RANGE_L = 2400;
 
+float AI_WALK_SPD = 0;
+float AI_RUN_SPD = 0;
+
 .entity oldgoal;
 .float ai_dmg_l;
 .float ai_dmg_m;
@@ -59,7 +62,7 @@ float AI_RANGE_L = 2400;
 .float ai_optical; //the 'visual' range the ai can see out before relying on sensors
 .float patience; //counter for if AI is stuck on something
 .float maxpatience; //how impatient is the AI
-.vector ai_prev_org;
+//.vector ai_prev_org; use the pre-existing 'dest' vars
 
 .void() ai_unit_update; //depends on unit type
 //.goalentity should always be where the AI *MOVES* to
@@ -71,13 +74,10 @@ void() ai_control;
 .void() ai_first_order; //order the unit was spawned with
 .void() ai_current_order; //order the ai is currently processing;
 
-
-.void() ai_prev_state; //*-refactor
-.void() ai_next_move;  //*-refactor//run this move on this frame
-.void() ai_next_state; //*-refactor
-.void() ai_state_cache; //*-refactor
-.void() ai_move_cache; //*-refactor
-
+.void() ai_prev_state;
+.void() ai_prev_move;
+.void() ai_next_move;
+.void() ai_next_state;
 
 void(entity wep) ai_attack_basic;
 void(entity wep) ai_attack_ene;
@@ -94,12 +94,13 @@ void() ai_move_forward;
 void() ai_move_backward;
 
 //ai orders - these things sit atop all other ai directives
-void() ai_order_topoint;
-void() ai_order_fight;
+void() ai_order_attack;
 void() ai_order_defend;
 void() ai_order_patrol;
 void() ai_order_stand;
 
+//subs are in-between states for orders
+void() ai_sub_fight;
 void() ai_sub_hunt;
 void() ai_sub_tonode;
 void() ai_sub_trynode;
@@ -116,13 +117,15 @@ void() ai_state_panic; //*-refactor
 void() ai_state_trynode; //*-refactor
 
 //utility functions
-void(void() state, void() move, float cache_state) ai_update_statemove;
+void(void() state, float cache_state) ai_update_state;
+void(void() first_order, void() current_state) ai_state_tansition;
 float(entity ai, entity goal) ai_core_trynode;
 entity(entity node, float id) ai_query_graphnode;
 entity(vector org, float start_dist) ai_core_findgraphnode;
 float(entity targ) ai_target_infront;
 float(entity targ) ai_target_insights;
 float(entity targ) ai_target_visible;
+entity(entity ai, entity goal) ai_core_nodetogoal; //find closest node to goal
 entity() ai_core_findnode; // find the closest AI node
 entity() ai_core_findtarget; //ai scans for a target
 float() ai_core_foundtarget; //ai has found a target, update state accordingly

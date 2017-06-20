@@ -38,14 +38,14 @@ void() ai_node_touch={
         self = other;
           self.oldgoal = self.goalentity;
           self.goalentity = t;
-          ai_update_statemove(ai_state_tonode, self.ai_next_move, FALSE); 
+          //ai_update_statemove(ai_state_tonode, self.ai_next_move, FALSE); 
         self = this;
         return;
       }
       else{
         self = other;
           self.goalentity = world;
-          ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
+          //ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
         self = this;
         return;
       }
@@ -104,14 +104,14 @@ void() ai_node_graph_touch={
         self = other;
           self.oldgoal = self.goalentity;
           self.goalentity = t;
-          ai_update_statemove(ai_state_tonode, self.ai_next_move, FALSE); 
+          //ai_update_statemove(ai_state_tonode, self.ai_next_move, FALSE); 
         self = this;
         return;
       }
       else{
         self = other;
           self.goalentity = world;
-          ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
+          //ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
         self = this;
         return;
       }
@@ -121,7 +121,6 @@ void() ai_node_graph_touch={
         self = other;
           self.goalentity = self.oldgoal;
           self.movetarget = world;
-          ai_update_statemove(self.ai_state_cache, ai_move_stand, FALSE);
         self = this;
         return; 
       }
@@ -130,7 +129,6 @@ void() ai_node_graph_touch={
         n = ai_query_graphnode(self, other.node_id);
         self = other; 
           self.goalentity = n;
-          ai_update_statemove(ai_state_trynode, ai_move_walk_goal, FALSE);
         self = this;
         return; 
       }

@@ -84,6 +84,8 @@ dp/subs.qc
 
 //impl files
   //ai
+  mech/ai/ai_orders.qc
+  mech/ai/ai_subs.qc
   mech/ai/m_ai_test.qc
   mech/ai/ai_directives_combat.qc
   mech/ai/ai_directives_move.qc
