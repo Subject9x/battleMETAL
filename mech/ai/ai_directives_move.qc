@@ -154,8 +154,10 @@ void() ai_move_stand={
 };
 
 void() ai_move_walk_goal={
+  self.e_legs.movetype = MOVETYPE_NONE;
   self.e_legs.angles = self.angles;
-  movetogoal(self.m_fspeed / 40);
+  self.e_legs.movetype = MOVETYPE_FOLLOW;
+  movetogoal(self.m_fspeed * AI_WALK_SPD);
 };
 
 void() ai_move_walk_goal_slide={
@@ -168,17 +170,17 @@ void() ai_move_walk_goal_slide={
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 40)){
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed * AI_WALK_SPD)){
     self.e_legs.angles_y = self.ideal_yaw + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed / 40);
+  walkmove( self.ideal_yaw, self.m_fspeed * AI_WALK_SPD);
   self.e_legs.angles = self.angles;
 };
 
 void() ai_move_run_goal={  
-  movetogoal(self.m_fspeed / 20);
+  movetogoal(self.m_fspeed * AI_RUN_SPD);
   self.e_legs.angles = self.angles;
 };
 
@@ -192,22 +194,22 @@ void() ai_move_run_goal_slide={
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed / 20)){
+	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed * AI_RUN_SPD)){
       self.e_legs.angles_y = self.angles + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed / 20);
+  walkmove( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD);
   self.e_legs.angles_y = self.ideal_yaw;
 };
 
 void() ai_move_forward={  
   self.e_legs.angles_y = self.angles_y;
-  walkmove (self.angles_y, self.m_fspeed / 40);
+  walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
 };
 
 void() ai_move_backward={  
   self.e_legs.angles_y = self.angles_y + 180;
-  walkmove ((self.angles_y+180), self.m_fspeed / 40);
+  walkmove ((self.angles_y+180), self.m_fspeed * AI_WALK_SPD);
 };
 

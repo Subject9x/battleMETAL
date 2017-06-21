@@ -31,23 +31,23 @@ void() ai_node_touch={
   if((other.flags & FL_MONSTER)){
     local entity this;
     this = self;
-    if(self.target){
-      local entity t;
-      t = find(world, targetname, self.target);
-      if(t){
-        self = other;
-          self.oldgoal = self.goalentity;
-          self.goalentity = t;
-          //ai_update_statemove(ai_state_tonode, self.ai_next_move, FALSE); 
-        self = this;
-        return;
-      }
-      else{
-        self = other;
-          self.goalentity = world;
-          //ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
-        self = this;
-        return;
+    if((other.ai_first_order == ai_order_patrol) || (self.ai_next_state == ai_sub_tonode)){
+      if(self.target){
+        local entity t;
+        t = find(world, targetname, self.target);
+        if(t){
+          self = other;
+            self.oldgoal = self.goalentity;
+            self.goalentity = t;
+          self = this;
+          return;
+        }
+        else{
+          self = other;
+            self.goalentity = world;
+          self = this;
+          return;
+        }
       }
     }
   }

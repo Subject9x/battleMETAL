@@ -119,7 +119,9 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       else{
         return FALSE;
       }
-      
+    }
+    else if(scanx == K_SHIFT){
+      return FALSE;
     }
   }
   else if(evtype == 2){

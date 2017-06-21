@@ -9,7 +9,7 @@ Overview: implementation for leg model updates
 void() ctrl_updateLegs={
   
   if((self.owner.flags & FL_MONSTER)){
-    self.angles_y = self.owner.angles_y;
+    //self.angles_y = self.owner.angles_y;
   }
   
   if((self.owner.movement_x == 0) && (self.owner.movement_y == 0)){

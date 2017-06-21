@@ -43,7 +43,9 @@ void() ai_sub_fight={
           }
         }
       }
-      self.th_missile();
+      if(ai_target_facingideal()){
+        self.th_missile();
+      }
       return;
     }
     else{
@@ -164,6 +166,17 @@ void() ai_sub_tonode={
       return;
     }
   }
+  local entity t;
+  t = ai_core_findtarget();
+  if(t != world){
+    //bprint("target!\n"); //DEBUG
+    //bprint("-> ai_sub_fight\n"); //DEBUG
+    self.enemy = t;
+    self.oldgoal = self.goalentity;
+    self.ai_prev_state = self.ai_next_state;
+    self.ai_next_state = ai_sub_fight;
+    return;
+  }
   if(self.goalentity != world){
     traceline(self.origin, self.goalentity.origin, FALSE, self);
     if(trace_fraction == 1){
@@ -178,21 +191,32 @@ void() ai_sub_tonode={
       }
     }
     else{
-      self.oldgoal = self.goalentity;
-      self.node_id = ai_core_trynode(self, self.oldgoal);
-      local entity node;
-      node = ai_core_findgraphnode(self.origin, self.ai_optical);
-      if(node != world){
-        self.goalentity = node;
-        self.movetarget = self.goalentity; 
+      local float v;
+      d = vlen(self.dest2 - self.origin);
+      if(d <= 1){
+        self.patience = self.patience + 1;
+        if(self.patience >= self.maxpatience * 10){
+          self.patience = 0;
+          self.oldgoal = self.goalentity;
+          self.node_id = ai_core_trynode(self, self.oldgoal);
+          local entity node;
+          node = ai_core_findgraphnode(self.origin, self.ai_optical);
+          if(node != world){
+            self.goalentity = node;
+            self.movetarget = self.goalentity; 
+          }
+          self.ai_prev_state = self.ai_next_state;
+          self.ai_next_state = ai_sub_trynode;
+          return;
+        }
       }
-      self.ai_prev_state = self.ai_next_state;
-      self.ai_next_state = ai_sub_trynode;
-      return;
+      self.dest2 = self.origin;
     }
   }
   else{
-    
+    self.ai_next_state = self.ai_first_order;
+    self.ai_prev_state = ai_sub_tonode;
+    return;
   }
 };
 

@@ -39,8 +39,8 @@ void() ai_mech={
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
   self.p_class = P_MECH;
-  self.i_faction = 2; // DEBUG
-  self.ai_leading = 0.075; //DEBUG
+  //self.i_faction = 2; // DEBUG
+  //self.ai_leading = 0.075; //DEBUG
   self.data_idx = 0;
   self.en_cur = 0;
   self.en_max = 0;
@@ -140,12 +140,10 @@ void() ai_mech={
       else{
         self.enemy = t;
       }
+      self.ai_next_state = self.ai_first_order;
       if(trace_fraction  < 1){
-         self.ai_prev_state = self.ai_first_order;
-        if(self.ai_first_order == ai_order_patrol){
-          self.ai_next_state = ai_sub_tonode;
-        }
-        else if(self.ai_first_order == ai_order_attack){
+        self.ai_prev_state = self.ai_first_order;
+        if(self.ai_first_order == ai_order_attack){
           self.ai_next_state = ai_sub_hunt;
         }
         else if(self.ai_first_order == ai_order_defend){
