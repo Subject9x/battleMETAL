@@ -75,6 +75,8 @@ void() ai_mech_die={
 
 void() ai_mech_cleanup={
   mech_cleanupMech();
+  self.think = SUB_Remove;
+  self.nextthink = time + 1;
 };
 
 void() ai_mech_touch={
@@ -188,7 +190,7 @@ void() ai_move_run_goal_slide={
   local float ofs;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
-  	if (self.lefty){
+  if (self.lefty){
 		ofs = 90;
 	}
   else{

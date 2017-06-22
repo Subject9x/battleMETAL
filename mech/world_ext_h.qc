@@ -5,6 +5,7 @@ Date: 8/27/2016
 Overview: function extensions to world.qc
 */
 
+string SFX_MUSIC_TRACK_ONE;
 .string msn_file;
 
 void() mh_world_ini;

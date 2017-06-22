@@ -29,7 +29,7 @@ vector(entity own, float range, float lead_factor) util_traceForAI={
   lead = own.enemy.origin - own.enemy.velocity*lead_factor;
 	lead = normalize (lead - own.origin);
   makevectors(own.v_angle);
-  traceline (own.origin + v_forward*10, (own.origin+ v_forward*10) + (lead*self.w_range), FALSE, own);
+  traceline (own.origin + v_forward*1, own.origin + lead*self.w_range, FALSE, own);
   if(trace_ent == world){
     return own.origin;
   }

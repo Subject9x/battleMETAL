@@ -46,8 +46,8 @@ float AI_RANGE_S = 800;
 float AI_RANGE_M = 1600;
 float AI_RANGE_L = 2400;
 
-float AI_WALK_SPD = 0.035;
-float AI_RUN_SPD = 0.045;
+float AI_WALK_SPD = 0.025;
+float AI_RUN_SPD = 0.035;
 
 .entity oldgoal;
 .float ai_dmg_l;

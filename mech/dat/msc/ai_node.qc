@@ -9,6 +9,13 @@ void() ai_node_touch;
 void() ai_node_graph_touch;
 
 /*QUAKED ai_node (.1 .2 .9) (-20 -20 -20) (20 20 20)
+isActive = 0 / 1
+i_faction = only is if faction matching //not impl yet
+state_1 = impart new first order to an AI
+   0 = Attack the .target
+  1 = defend the .target
+  2 = patrol the .target
+  3 = stand at the .target
 */
 void() ai_node;
 void() ai_node={
@@ -31,22 +38,44 @@ void() ai_node_touch={
   if((other.flags & FL_MONSTER)){
     local entity this;
     this = self;
-    if((other.ai_first_order == ai_order_patrol) || (self.ai_next_state == ai_sub_tonode)){
-      if(self.target){
-        local entity t;
-        t = find(world, targetname, self.target);
-        if(t){
-          self = other;
-            self.oldgoal = self.goalentity;
-            self.goalentity = t;
-          self = this;
-          return;
+    if(self.state_1){
+      //override the AI's First Order behavior with a new one
+      self = other;
+        if(this.state_1 == 0){
+          self.ai_first_order = ai_order_stand;
         }
-        else{
-          self = other;
-            self.goalentity = world;
-          self = this;
-          return;
+        else if(this.state_1 == 1){
+          self.ai_first_order = ai_order_defend;
+        }
+        else if(this.state_1 == 2){
+          self.ai_first_order = ai_order_patrol;
+        }
+        else if(this.state_1 == 3){
+          self.ai_first_order = ai_order_attack;
+        }
+        self.ai_next_state = self.ai_first_order;
+      self = this;
+      return;
+    }
+    else{
+      if((other.ai_first_order == ai_order_patrol) || (self.ai_next_state == ai_sub_tonode)){
+        //AI is on patrol orders
+        if(self.target){
+          local entity t;
+          t = find(world, targetname, self.target);
+          if(t){
+            self = other;
+              self.oldgoal = self.goalentity;
+              self.goalentity = t;
+            self = this;
+            return;
+          }
+          else{
+            self = other;
+              self.goalentity = world;
+            self = this;
+            return;
+          }
         }
       }
     }

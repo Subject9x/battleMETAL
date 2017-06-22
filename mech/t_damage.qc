@@ -58,6 +58,22 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if((trg.flags & FL_MONSTER)){
     anger_monster(trg, attacker);
   }
+  if(trg.p_class == P_BULD){
+    local entity e;
+    e = findradius(trg.origin, 1000);
+    while(e){
+      if(e.p_class == P_MECH){
+        if(e.i_faction == trg.i_faction){
+          if((e.flags & FL_MONSTER)){
+            if(e.ai_first_order == ai_order_defend){
+              anger_monster(e, attacker);
+            }
+          }
+        }
+      }
+      e = e.chain;
+    }
+  }
   
   //check shields
   if(trg.sh_cur >= 0){

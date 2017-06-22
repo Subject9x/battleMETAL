@@ -61,10 +61,31 @@ void() ai_order_defend={
     restore = find(world, targetname, self.target);
     if(restore != self.goalentity){
       if(restore != world){
-        //bprint("restoring entity\n");
+        bprint("restoring entity\n");
         self.goalentity = restore;
       }
     }
+  }
+  local entity t;
+  t = ai_core_findtarget();
+  if(t){
+    bprint("target!\n"); //DEBUG
+    bprint("-> ai_sub_fight\n"); //DEBUG
+    self.enemy = t;
+    self.ai_prev_state = ai_order_defend;
+    self.ai_next_state = ai_sub_fight;
+    return;
+  }
+  local float d;
+  d = vlen(self.goalentity.origin - self.origin);
+  if(d <= AI_RANGE_S){
+    self.ai_next_move = ai_move_stand;
+  }
+  else{
+    bprint(strcat("ai_sub_tonode\n"));
+    self.ai_prev_state = self.ai_first_order;
+    self.ai_next_state = ai_sub_tonode;
+    return;
   }
 };
 

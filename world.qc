@@ -98,7 +98,20 @@ void() worldspawn =
 	// 63 testing
 	lightstyle(63, "a");
   
-  world.i_reserve = 10000;
+  // plays music for the level if there is any
+	if (self.music)
+	{
+		precache_sound (self.music);
+		// the Quake engine spatializes ATTN_NONE, so spawn it in two places to get less directional sound
+		//ambientsound ('-4095 -4095 -4095', self.noise, 1.00, ATTN_NONE);
+		//ambientsound ('4095 4095 4095', self.noise, 1.00, ATTN_NONE);
+		// the DarkPlaces engine does not spatialize ATTN_NONE.
+		ambientsound ('0 0 0', self.music, 1.00, ATTN_NONE);
+	}
+  
+  
+  
+  world.i_reserve = 10000; //DEBUG
 };
 
 void() StartFrame =
@@ -107,7 +120,6 @@ void() StartFrame =
 	skill = cvar("skill");
   if(framecount == 1){
     //special post-load logic -Subject9x
-    
   }
 	framecount = framecount + 1;
 };

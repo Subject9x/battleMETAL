@@ -79,19 +79,21 @@ void() ai_mech={
   self.ideal_yaw = self.angles * '0 1 0';
 	if (!self.yaw_speed){
     if(self.nextVecChoice == 1){
-      self.yaw_speed = 8;//20;
+      self.yaw_speed = 6;//20;
     }
     else if(self.nextVecChoice == 2){
-      self.yaw_speed = 6;//10;
+      self.yaw_speed = 4;//10;
     }
     else if(self.nextVecChoice == 3){
-      self.yaw_speed = 4;//2.5;
+      self.yaw_speed = 2;//2.5;
     }
   }
 		
   buildVehicle(dat);
-  
-  self.solid = SOLID_BBOX;
+  self.stat_spr_x = self.conv_max_x * 3;
+  self.stat_spr_y = self.conv_max_y * 3;
+  self.en_rate = self.en_rate / 10;
+  //self.solid = SOLID_BBOX;
   self.th_die = ai_mech_die;
   self.th_missile = ai_mech_attack;
   self.ai_unit_update = ai_mech_update;

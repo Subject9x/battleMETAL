@@ -39,7 +39,7 @@ void() ClientConnect = {
   self.nextVecChoice = 0;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
-  self.i_faction = 2;
+  self.i_faction = 2; //DEBUG
   self.stat_eid = num_for_edict(self);
   self.en_cur = 0;
   self.en_max = 0;
@@ -102,7 +102,7 @@ void() ClientConnect = {
   self.stat_trg_la_hp = -1;
   self.stat_trg_ra_hp = -1;
   
-  self.radar_range = 800;
+  self.radar_range = 800; // DEBUG
   //self.radar_front = 0;
   //self.radar_rear = 0;
   self.was_hit = FALSE;
@@ -244,7 +244,7 @@ void() ClientKill = {
   self.nextthink = -1;
   //only deduct frags of player is going from !observer to another !observer
   if(self.p_class != P_OBS){
-      self.frags = self.frags - 2;
+    self.frags = self.frags - 2;
   }
   
   self.p_class = self.p_class_next;

@@ -10,15 +10,15 @@ link the main ai_order states together, sometimes actings as a go-between;
 AI has a target in open-sights and will move to engage 
 ================================================================*/
 void() ai_sub_fight={
-  if(self.ai_prev_state == ai_sub_hunt){
-    if(!ai_target_visible(self.enemy)){
-      self.enemy = world;
-      self.ai_prev_state = self.ai_next_state;
-      self.ai_next_state = self.ai_first_order;
-      return;
-    }
-  }
   if(ai_core_targetstate()){
+    if(self.ai_prev_state == ai_sub_hunt){
+      if(!ai_target_visible(self.enemy)){
+        self.enemy = world;
+        self.ai_prev_state = self.ai_next_state;
+        self.ai_next_state = self.ai_first_order;
+        return;
+      }
+    }
    // bprint("valid target!\n"); //DEBUG
     if(ai_target_visible(self.enemy)){
       //bprint("visible!\n"); //DEBUG
@@ -66,8 +66,8 @@ void() ai_sub_fight={
     if(self.enemy != world){
       self.enemy = world;
     }
-    self.ai_prev_state = self.ai_next_state;
-    self.ai_next_state = self.ai_first_order;
+    self.ai_next_state = self.ai_prev_state;
+    self.ai_prev_state = ai_sub_fight;
     return;
   }
 };
@@ -101,6 +101,24 @@ void() ai_sub_hunt={
       }
       self.patience = self.patience + 1;
       if(self.patience >= self.maxpatience){
+        if(self.ai_first_order == ai_order_defend){
+          if(self.stat_trg_dist >= AI_RANGE_S){
+            self.enemy = world;
+            self.ai_prev_state = self.ai_next_state;
+            self.ai_next_state = self.ai_first_order;
+            return;
+          }
+        }
+        if(self.ai_first_order == ai_order_patrol){
+          local float p;
+          p = vlen(self.oldgoal.origin - self.origin);
+          if(p >= AI_RANGE_S){
+            self.enemy = world;
+            self.ai_prev_state = self.ai_next_state;
+            self.ai_next_state = self.ai_first_order;
+            return;
+          }
+        }
         //bprint("patience hit!\n"); //DEBUG
         self.patience = 0;
         local float nd, ng;
@@ -137,7 +155,7 @@ void() ai_sub_hunt={
   }
   else{
     if(self.ai_prev_state == self.ai_first_order){
-      //bprint("-> first order\n"); //DEBUG
+     // bprint("-> first order\n"); //DEBUG
       self.goalentity = self.oldgoal;
       self.oldgoal = world;
       self.ai_next_state = self.ai_first_order;
@@ -225,7 +243,7 @@ void() ai_sub_tonode={
 ================================================================*/
 void() ai_sub_trynode={
   if(self.oldgoal != world){
-    //bprint("ai_sub_trynode\n"); //DEBUG
+   // bprint("ai_sub_trynode\n"); //DEBUG
     if(self.goalentity == self.oldgoal){
       //bprint("found goal\n"); //DEBUG
       //have reached goal
