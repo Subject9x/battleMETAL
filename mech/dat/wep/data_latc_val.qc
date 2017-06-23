@@ -97,15 +97,16 @@ void() data_latc_atk={
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = util_traceForAI(player, self.w_range, player.ai_leading); 
-  }
-  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-  if((player.flags & FL_MONSTER)){
-    if((end == player.origin) || (dir == player.origin)){
-      player.patience = player.patience + 1;
-      return;
+    end = util_traceForAI(player, self.w_range, player.ai_leading);
+    if((player.flags & FL_MONSTER)){
+      if((end == player.origin) || (dir == player.origin)){
+        player.patience = player.patience + 1;
+        return;
+      }
     }
   }
+  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.en_cur = 0;
@@ -119,7 +120,7 @@ void() data_latc_atk={
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   te_superspike(dir);
-  t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir + (v_forward*3), '0 0 0');
+  t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');
   
   local entity bul_fx;
   bul_fx = spawn();

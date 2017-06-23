@@ -133,5 +133,5 @@ void() data_las_atk={
   local float dtype;
   dtype = DMG_ENE;
   
-  t_damage(trace_ent, self, player, self.p_damage, dtype, dir + (v_forward*3), '0 0 0');
+  t_damage(trace_ent, self, player, self.p_damage, dtype, dir, '0 0 0');
 };

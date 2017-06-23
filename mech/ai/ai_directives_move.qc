@@ -25,7 +25,7 @@ void() ai_mech_update={
     wep_chain = wep_chain.w_slot;
   }
   
-  if(self.ai_next_move == ai_move_stand){
+  /*if(self.ai_next_move == ai_move_stand){
     self.stat_spr_x = self.stat_spr_x - (self.conv_min_z / 100);
     if(self.stat_spr_x < self.conv_min_x){
       self.stat_spr_x =  self.conv_min_x;
@@ -44,7 +44,7 @@ void() ai_mech_update={
     if(self.stat_spr_y > self.conv_max_y){
       self.stat_spr_y =  self.conv_max_y;
     }
-  }
+  }*/
     
   if(self.enemy != world){
     self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
@@ -151,7 +151,7 @@ void() ai_control={
 //move directives
 void() ai_move_stand={
   if(ai_core_targetstate()){
-    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+    ChangeYaw();
   }
 };
 
@@ -165,7 +165,6 @@ void() ai_move_walk_goal={
 void() ai_move_walk_goal_slide={
   local float ofs;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-  ChangeYaw();
   if (self.lefty){
 		ofs = 90;
 	}
@@ -178,7 +177,7 @@ void() ai_move_walk_goal_slide={
   }
 	self.lefty = 1 - self.lefty;
   walkmove( self.ideal_yaw, self.m_fspeed * AI_WALK_SPD);
-  self.e_legs.angles = self.angles;
+  self.e_legs.angles = self.v_angle;
 };
 
 void() ai_move_run_goal={  
@@ -188,7 +187,6 @@ void() ai_move_run_goal={
 
 void() ai_move_run_goal_slide={  
   local float ofs;
-  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   ChangeYaw();
   if (self.lefty){
 		ofs = 90;
@@ -197,7 +195,7 @@ void() ai_move_run_goal_slide={
 		ofs = -90;
 	}
 	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed * AI_RUN_SPD)){
-      self.e_legs.angles_y = self.angles + ofs;
+      self.e_legs.angles_y = self.angles_y + ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;

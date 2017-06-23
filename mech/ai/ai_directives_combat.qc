@@ -74,7 +74,7 @@ void(entity wep) ai_attack_ene={
       attack = TRUE;
     }   
   }
-  if((wep.p_dmgtype & EFF_STX)){
+  if((wep.p_dmgtype & EFF_STX) && (wep.w_isburst == FALSE)){
     if(self.enemy.sh_cur >= (self.enemy.sh_max/4)){
       attack = TRUE;
     }

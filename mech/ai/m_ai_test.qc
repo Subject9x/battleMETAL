@@ -67,7 +67,6 @@ void() ai_mech={
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
 
-
   local entity dat;
   dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
   if(!dat){
@@ -85,13 +84,15 @@ void() ai_mech={
       self.yaw_speed = 4;//10;
     }
     else if(self.nextVecChoice == 3){
-      self.yaw_speed = 2;//2.5;
+      self.yaw_speed = 3;//2.5;
     }
   }
 		
   buildVehicle(dat);
-  self.stat_spr_x = self.conv_max_x * 3;
-  self.stat_spr_y = self.conv_max_y * 3;
+  ai_core_calcranges();
+  
+  self.stat_spr_x = (self.conv_min_x + self.conv_max_x) * 3;
+  self.stat_spr_y = (self.conv_min_y + self.conv_max_y) * 1.75;
   self.en_rate = self.en_rate / 10;
   //self.solid = SOLID_BBOX;
   self.th_die = ai_mech_die;
@@ -121,7 +122,9 @@ void() ai_mech={
   else if(self.state_1 == 3){
     self.ai_first_order = ai_order_attack;
   }
-  
+  else{
+    self.ai_first_order = ai_order_stand;
+  }
   
 	if (!walkmove(0,0))
 	{
@@ -135,7 +138,7 @@ void() ai_mech={
     local entity t;
     t = find(world, targetname, self.target);
     if(t){
-      tracebox(self.origin, '-10 -10 0', '10 10 0', t.origin, FALSE, self);
+      traceline(self.origin, t.origin, FALSE, self);
       if(t.classname == "ai_node"){
         self.goalentity = t;
       }
@@ -149,7 +152,7 @@ void() ai_mech={
           self.ai_next_state = ai_sub_hunt;
         }
         else if(self.ai_first_order == ai_order_defend){
-          self.ai_next_state = ai_sub_hunt;
+          self.ai_next_state = ai_sub_tonode;
         }
         else if(self.ai_first_order == ai_order_stand){
           self.ai_next_state = ai_sub_tonode;
@@ -160,22 +163,6 @@ void() ai_mech={
       self.ai_first_order = ai_order_stand;
       self.ai_next_state = ai_order_stand;
     }
-		//self.goalentity = find(world, targetname, self.target);
-		//self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-		/*if (!self.goalentity)
-		{
-			dprint ("Monster can't find target at ");
-			dprint (vtos(self.origin));
-			dprint ("\n");
-		}*/
-// this used to be an objerror
-		/*if (self.goalentity.classname == "ai_node"){
-      self.ai_next_state = ai_state_tonode;
-      self.ai_next_move = ai_move_walk_goal;
-		}else{
-			self.pausetime = 99999999;
-      self.ai_next_state = ai_state_ready;
-    }*/
 	}
 	else
 	{

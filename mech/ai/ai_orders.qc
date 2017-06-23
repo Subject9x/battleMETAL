@@ -79,10 +79,11 @@ void() ai_order_defend={
   local float d;
   d = vlen(self.goalentity.origin - self.origin);
   if(d <= AI_RANGE_S){
+    bprint("-> ai_move_stand\n"); //DEBUG
     self.ai_next_move = ai_move_stand;
   }
   else{
-    bprint(strcat("ai_sub_tonode\n"));
+    bprint("ai_sub_tonode\n");
     self.ai_prev_state = self.ai_first_order;
     self.ai_next_state = ai_sub_tonode;
     return;
@@ -138,16 +139,6 @@ void() ai_order_stand={
       self.goalentity = restore;
     }
   }
-  local float d;
-  d = vlen(self.goalentity.origin - self.origin);
-  if(d <= AI_RANGE_S){
-    self.ai_next_move = ai_move_stand;
-  }
-  else{
-    self.ai_prev_state = self.ai_first_order;
-    self.ai_next_state = ai_sub_tonode;
-    return;
-  }
   //bprint("ai_order_stand\n"); //DEBUG
   local entity t;
   t = ai_core_findtarget();
@@ -159,4 +150,15 @@ void() ai_order_stand={
     self.ai_next_state = ai_sub_fight;
     return;
   }
+  local float d;
+  d = vlen(self.goalentity.origin - self.origin);
+  if(d <= AI_RANGE_S){
+    self.ai_next_move = ai_move_stand;
+  }
+  else{
+    self.ai_prev_state = self.ai_first_order;
+    self.ai_next_state = ai_sub_tonode;
+    return;
+  }
+
 };

@@ -14,7 +14,6 @@ float(float t, float e) util_normalizeTimeAsPercent={
 
 //scope is self = weapon making the call
 vector(entity own, float range) util_traceForPlayer={
-  local vector msrc, end;
   local entity cam;
   cam = own.e_cam;
   makevectors(own.v_angle);
@@ -49,12 +48,7 @@ vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spre
   end = prev_tracend + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready));
   makevectors(self.angles);
   traceline(org, end, FALSE, own);
-  if(trace_ent.i_faction != own.i_faction){
-    return trace_endpos;
-  }
-  else{
-    return own.origin;
-  }
+  return trace_endpos;
 }; 
 
 float(float mod, float targ_val) util_zeroStat={

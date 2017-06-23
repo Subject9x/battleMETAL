@@ -31,15 +31,25 @@ void() ai_sub_fight={
           if(ai_target_insights(self.enemy)){
             self.ai_next_move = ai_move_run_goal_slide;
           }else{
-            self.ai_next_move = ai_move_backward;
+            if(self.stat_trg_dist <= 10){
+              self.ai_next_move = ai_move_backward;
+            }
+            else{
+              self.ai_next_move = ai_move_stand;
+            }
           }
         }
         else{
-          if(ai_target_insights(self.enemy)){
-            self.ai_next_move = ai_move_walk_goal_slide;
+          if(self.stat_trg_dist >= self.ai_minrange){
+            self.ai_next_move = ai_move_forward;
           }
           else{
-            self.ai_next_move = ai_move_forward;
+            if(ai_target_insights(self.enemy)){
+              self.ai_next_move = ai_move_walk_goal_slide;
+            }
+            else{
+              self.ai_next_move = ai_move_forward;
+            }
           }
         }
       }
@@ -66,6 +76,7 @@ void() ai_sub_fight={
     if(self.enemy != world){
       self.enemy = world;
     }
+    self.goalentity = self.oldgoal;
     self.ai_next_state = self.ai_prev_state;
     self.ai_prev_state = ai_sub_fight;
     return;

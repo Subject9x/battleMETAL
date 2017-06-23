@@ -412,12 +412,49 @@ float(vector chk, vector node) ai_core_nodelos={
   return FALSE;
 };
 
-void(void() state, float cache_state) ai_update_state={
+void(void() nex_state, float cache_state) ai_update_state={
   /*if(cache_state == TRUE){
     self.ai_state_cache = self.ai_next_state;
   }*/
   if(self.ai_prev_state != self.ai_next_state){
     self.ai_prev_state = self.ai_next_state;
   }
-  self.ai_next_state = state;
+  self.ai_next_state = nex_state;
+};
+
+void() ai_core_calcranges={
+  local entity w;
+  w = self.w_slot;
+  while(w){
+    local float dmg;
+    dmg = w.p_damage * w.w_clipsize;
+    
+    if(w.w_range <= AI_RANGE_S){ 
+      self.ai_dmg_s = self.ai_dmg_s + dmg;
+    }
+    if(w.w_range > AI_RANGE_S){
+      if(w.w_range <= AI_RANGE_M){
+        self.ai_dmg_m = self.ai_dmg_m + dmg;
+        self.ai_dmg_s = self.ai_dmg_s + dmg;
+      }
+    }
+    if(w.w_range > AI_RANGE_M){
+      self.ai_dmg_m = self.ai_dmg_m + dmg;
+      self.ai_dmg_s = self.ai_dmg_s + dmg;
+      self.ai_dmg_l = self.ai_dmg_l + dmg;
+    }
+    w = w.w_slot;
+  }
+  if((self.ai_dmg_l > self.ai_dmg_s) && (self.ai_dmg_l  > self.ai_dmg_s)){
+    self.ai_minrange = AI_RANGE_L;
+  }
+  else if((self.ai_dmg_m > self.ai_dmg_l) && (self.ai_dmg_m  > self.ai_dmg_s)){
+    self.ai_minrange = AI_RANGE_M;
+  }
+  else if((self.ai_dmg_s > self.ai_dmg_l) && (self.ai_dmg_s  > self.ai_dmg_m)){
+    self.ai_minrange = AI_RANGE_S;
+  }
+  else{
+    self.ai_minrange = AI_RANGE_S;
+  }
 };

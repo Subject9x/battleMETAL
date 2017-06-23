@@ -59,18 +59,21 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     anger_monster(trg, attacker);
   }
   if(trg.p_class == P_BULD){
-    local entity e;
-    e = findradius(trg.origin, 1000);
+    local entity e, this;
+    this = self;
+    e = findradius(trg.origin, 2000);
     while(e){
-      if(e.p_class == P_MECH){
-        if(e.i_faction == trg.i_faction){
-          if((e.flags & FL_MONSTER)){
-            if(e.ai_first_order == ai_order_defend){
+      self = e;
+      if(self.p_class == P_MECH){
+        if(self.i_faction == trg.i_faction){
+          if((self.flags & FL_MONSTER)){
+            if(self.state_1 == 1){
               anger_monster(e, attacker);
             }
           }
         }
       }
+      self = this;
       e = e.chain;
     }
   }
@@ -142,6 +145,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
             }
           }      
           return trg;
+        }
+        else{
+          trg.owner.m_fspeed = trg.owner.m_fspeed / 2;
         }
       }
     }
@@ -475,7 +481,6 @@ void(entity trg, entity atk) anger_monster={
               local entity s;
               s = self;
               self = trg;
-                self.enemy = atk;
                 self.enemy = atk;
                 self.ai_prev_state = self.ai_next_state;
                 self.ai_next_state = ai_sub_fight;

@@ -117,8 +117,7 @@ void() ai_state_panic; //*-refactor
 void() ai_state_trynode; //*-refactor
 
 //utility functions
-void(void() state, float cache_state) ai_update_state;
-void(void() first_order, void() current_state) ai_state_tansition;
+void(void() nex_state, float cache_state) ai_update_state;
 float(entity ai, entity goal) ai_core_trynode;
 entity(entity node, float id) ai_query_graphnode;
 entity(vector org, float start_dist) ai_core_findgraphnode;
@@ -135,6 +134,7 @@ entity() ai_core_radartarget;
 float() ai_target_facingideal;
 float() ai_core_panicnode;
 float(vector chk, vector node) ai_core_nodelos;
+void() ai_core_calcranges;
 
 //TODO - separate header?
 void() ai_mech_update;
