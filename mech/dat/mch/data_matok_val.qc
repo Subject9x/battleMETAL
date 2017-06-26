@@ -20,6 +20,7 @@ float DAT_MTK_ENERGY_RATE = 3;
 float DAT_MTK_SHIELD_CUR = 425;
 float DAT_MTK_SHIELD_MAX = 425;
 float DAT_MTK_SHIELD_RATE = 0.75;
+float DAT_MTK_YAWSPEED = 5;
 vector DAT_MTK_CTOR_BBX_N ='-15 -15 -35';
 vector DAT_MTK_CTOR_BBX_X ='15 15 14';
 string DAT_MTK_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3";
@@ -218,7 +219,7 @@ void() data_mtk_ini={
   self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
   self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
   self.c_model = DAT_MTK_CTOR_MODEL;
-
+  self.m_rot_speed = DAT_MTK_YAWSPEED;
   self.conv_min = DAT_MTK_SPREAD_N; 
   self.conv_max = DAT_MTK_SPREAD_X;
   self.m_fspeed = DAT_MTK_M_FSPEED;

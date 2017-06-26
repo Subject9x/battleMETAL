@@ -41,21 +41,51 @@ this one will focus on move to move
 .float nexnode32;
 //=========================
 
+//how well does the AI handle weapon convergence
+float AI_CNV_ACE = 14;
+float AI_CNV_VET = 18;
+float AI_CNV_REG = 22;
+float AI_CNV_ROK = 26;
+
+//how does range affect the AI's accuracy
+float AI_RNG_ACE = 1;
+float AI_RNG_VET = 1.25;
+float AI_RNG_REG = 1.5;
+float AI_RNG_ROK = 2;
+
+//Adjust Rotation Rate
+//self.yaw_speed = rotation rate + (rotation rate * AI_ROT_X);
+float AI_ROT_ACE = 0.6;
+float AI_ROT_VET = 0.4;
+float AI_ROT_REG = 0.2;
+float AI_ROT_ROK = 0.05;
+
+//armor based on difficulty
+//hp = hp * AI_ARMOR
+float AI_ARMOR_EASY = 0.2;
+float AI_ARMOR_MEDM = 0.4;
+float AI_ARMOR_HARD = 0.6;
+float AI_ARMOR_NIGHT = 0.75;
+
+//ai_leading ratings, how well an ai tracks a slippery targt
+float AI_LEAD_ACE = 0.05;
+float AI_LEAD_VET = 0.1;
+float AI_LEAD_REG = 0.18;
+float AI_LEAD_ROK = 0.24;
 
 float AI_RANGE_S = 800;
 float AI_RANGE_M = 1600;
 float AI_RANGE_L = 2400;
 
-float AI_WALK_SPD = 0.025;
-float AI_RUN_SPD = 0.035;
+float AI_WALK_SPD = 0.03;
+float AI_RUN_SPD = 0.045;
 
 .entity oldgoal;
 .float ai_dmg_l;
 .float ai_dmg_m;
 .float ai_dmg_s;
-.float ai_rng_s;
-.float ai_rng_m;
-.float ai_rng_l;
+.float ai_rte_rng;
+.float ai_rte_cnv;
 
 .float ai_leading; //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
 .float ai_minrange; //minimum range of guns;
@@ -67,31 +97,34 @@ float AI_RUN_SPD = 0.035;
 .void() ai_unit_update; //depends on unit type
 //.goalentity should always be where the AI *MOVES* to
 //.target should always be the thing the AI *SHOOTS* at and aims at
-void() ai_spawn_start;
 void() ai_control;
 
 //new
 .void() ai_first_order; //order the unit was spawned with
-.void() ai_current_order; //order the ai is currently processing;
 
 .void() ai_prev_state;
+.void() ai_next_state;
 .void() ai_prev_move;
 .void() ai_next_move;
-.void() ai_next_state;
 
+void(void() move) ai_move_controller;
 void(entity wep) ai_attack_basic;
 void(entity wep) ai_attack_ene;
 void(entity wep) ai_attack_bal;
 void(entity wep) ai_attack_exp;
 
 //move directives
+void() ai_move_random;
 void() ai_move_stand;
 void() ai_move_walk_goal;
-void() ai_move_walk_goal_slide;
+void() ai_move_walkmove_slide;
+void() ai_move_walkmove_strafeleft;
+void() ai_move_walkmove_straferight;
 void() ai_move_run_goal;
-void() ai_move_run_goal_slide;
+void() ai_move_runmove_slide;
 void() ai_move_forward;
 void() ai_move_backward;
+void() ai_move_charge;
 
 //ai orders - these things sit atop all other ai directives
 void() ai_order_attack;
@@ -135,6 +168,13 @@ float() ai_target_facingideal;
 float() ai_core_panicnode;
 float(vector chk, vector node) ai_core_nodelos;
 void() ai_core_calcranges;
+
+float() ai_pilot_rating_converg;
+float() ai_pilot_rating_range;
+float() ai_pilot_rating_leading;
+float() ai_pilot_yaw_mod;
+float() ai_pilot_armor_mod;
+
 
 //TODO - separate header?
 void() ai_mech_update;

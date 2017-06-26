@@ -107,7 +107,12 @@ void() data_esr_atk={
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
 
-
+  if((player.flags & FL_MONSTER)){
+    if(end == player.origin){
+      player.patience = player.patience + 1;
+      return;
+    }
+  }
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
@@ -134,12 +139,15 @@ void() data_esr_atk={
   local float dtype;
   dtype = dtype | DMG_ENE;
   
-  te_customflash(dir, 4, 10, '0 0 1');
+  
   t_damage(trace_ent, self, player, self.p_damage, dtype, dir + (v_forward*3), '0 0 0');
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
-  te_flamejet(dir, '0 25 0', 5);
-  
   laser_org.think = SUB_Remove;
   laser_org.nextthink = time + 0.01;
+  
+  if(pointcontents(dir) == CONTENT_SOLID){
+    te_flamejet(dir, '0 25 0', 5);
+    te_customflash(dir, 4, 10, '0 0 1');
+  }
 };

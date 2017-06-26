@@ -103,7 +103,7 @@ void() data_pac_atk={
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
   if((player.flags & FL_MONSTER)){
-    if((end == player.origin) || (dir == player.origin)){
+    if(end == player.origin){
       player.patience = player.patience + 1;
       return;
     }
@@ -132,7 +132,7 @@ void() data_pac_atk={
   te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);
-  
+ 
   laser_org.think = SUB_Remove;
   laser_org.nextthink = time + 0.011;// + 0.35;
 };

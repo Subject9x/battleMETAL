@@ -22,20 +22,33 @@ vector(entity own, float range) util_traceForPlayer={
 };
 
 vector(entity own, float range, float lead_factor) util_traceForAI={
-  local vector lead;
+  local float rng, cnv,cx, cy;
+  local vector lead, end;
   local entity cam;
+  cnv = own.ai_rte_cnv;
+  rng = own.ai_rte_rng;
   cam = own.e_cam;
   lead = own.enemy.origin - own.enemy.velocity*lead_factor;
 	lead = normalize (lead - own.origin);
   makevectors(own.v_angle);
   traceline (own.origin + v_forward*1, own.origin + lead*self.w_range, FALSE, own);
+  if(own.stat_trg_dist > own.ai_minrange){
+    cnv = cnv * rng;
+  }
+  cx = cnv/1.15;
+  cx = cx + (cnv *random());
+  cx = cx * crandom();
+  cy = cnv/1.15; 
+  cy = cy + (cnv *random());
+  cy = cy * crandom();
+  end = trace_endpos + (v_up*cy)+(v_right*cx);
   if(trace_ent == world){
     return own.origin;
   }
   if(trace_ent.i_faction == own.i_faction){
     return own.origin;
   }
-  return trace_endpos;
+  return end;
 };
 
 //scope is self = weapon making the call
@@ -52,7 +65,6 @@ vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spre
 }; 
 
 float(float mod, float targ_val) util_zeroStat={
-
   targ_val = targ_val - mod;
   if(targ_val < 0){
     targ_val = 0;

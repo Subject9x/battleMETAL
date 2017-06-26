@@ -422,6 +422,96 @@ void(void() nex_state, float cache_state) ai_update_state={
   self.ai_next_state = nex_state;
 };
 
+//gets convergence factor for pilot rating
+float() ai_pilot_rating_converg={
+  if(self.p_damage == 0){
+    return AI_CNV_ACE;
+  }
+  else if(self.p_damage == 1){
+    return AI_CNV_VET;
+  }
+  else if(self.p_damage == 2){
+    return AI_CNV_REG;
+  }
+  else{
+    return AI_CNV_ROK;
+  }
+};
+
+//gets range modifier for pilot rating
+float() ai_pilot_rating_range={
+  if(self.p_damage == 0){
+    return AI_RNG_ACE;
+  }
+  else if(self.p_damage == 1){
+    return AI_RNG_VET;
+  }
+  else if(self.p_damage == 2){
+    return AI_RNG_REG;
+  }
+  else if(self.p_damage == 3){
+    return AI_RNG_ROK;
+  }
+  else{
+    return 1;
+  }
+};
+
+float() ai_pilot_yaw_mod={
+  if(self.p_damage == 0){
+    return AI_ROT_ACE;
+  }
+  else if(self.p_damage == 1){
+    return AI_ROT_VET;
+  }
+  else if(self.p_damage == 2){
+    return AI_ROT_REG;
+  }
+  else if(self.p_damage == 3){
+    return AI_ROT_ROK;
+  }
+  else{
+    return 1;
+  }
+};
+
+//armor is modified based on skill level
+float() ai_pilot_armor_mod={
+  if(skill == 0){
+    return AI_ARMOR_EASY;
+  }
+  else if(skill == 1){
+    return AI_ARMOR_MEDM;
+  }
+  else if(skill == 2){
+    return AI_ARMOR_HARD;
+  }
+  else if(skill == 3){
+    return AI_ARMOR_NIGHT;
+  }
+  else{
+    return AI_ARMOR_EASY;
+  }
+}
+
+float() ai_pilot_rating_leading={
+  if(self.p_damage == 0){
+    return AI_LEAD_ACE;
+  }
+  else if(self.p_damage == 1){
+    return AI_LEAD_VET;
+  }
+  else if(self.p_damage == 2){
+    return AI_LEAD_REG;
+  }
+  else if(self.p_damage == 3){
+    return AI_LEAD_ROK;
+  }
+  else{
+    return AI_LEAD_ROK;
+  }
+};
+
 void() ai_core_calcranges={
   local entity w;
   w = self.w_slot;

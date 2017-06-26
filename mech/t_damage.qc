@@ -467,24 +467,24 @@ void(entity trg, entity atk) anger_monster={
       if(atk != trg){
         if((!atk.i_faction) || (atk.i_faction != trg.i_faction)){
           if((atk != trg.enemy) && (trg.enemy == world)){
-            local entity s;
-            s = self;
+            local entity this;
+            this = self;
             self = trg;
               self.enemy = atk;
               self.ai_prev_state = self.ai_next_state;
               self.ai_next_state = ai_sub_fight;
-            self = s;
+            self = this;
             return;
           }
           else{
             if((vlen(trg.enemy.origin - trg.origin)) > (vlen(atk.origin - trg.origin))){
-              local entity s;
-              s = self;
+              local entity this;
+              this = self;
               self = trg;
                 self.enemy = atk;
                 self.ai_prev_state = self.ai_next_state;
                 self.ai_next_state = ai_sub_fight;
-              self = s;
+              self = this;
               return;
             }
           }

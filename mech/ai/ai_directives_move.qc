@@ -105,7 +105,7 @@ void() ai_mech_touch={
           }
         }
         if(infront){
-          self.ai_next_move = ai_move_run_goal_slide;
+          self.ai_next_move = ai_move_runmove_slide;
           return;
         }
         else{
@@ -114,13 +114,6 @@ void() ai_mech_touch={
         } 
       }
     }
-  }
-};
-
-//this is run after the unit spawns in
-void() ai_spawn_start={
-  if(self.target){
-    self.goalentity = find(world, targetname, self.target);
   }
 };
 
@@ -148,21 +141,116 @@ void() ai_control={
   self.e_cam.SendFlags = 1;
 };
 
-//move directives
-void() ai_move_stand={
-  if(ai_core_targetstate()){
-    ChangeYaw();
+
+/*
+the controller function is a state controller
+for move states. Instantly changing directons may work
+for classic Quake, but battleMETAL needs a more refined
+system for controlling the movements of AI. this is
+really just important during the ai_sub_fight() func.
+
+entity ai - the ai to act upon
+void() move - the desired move function
+*/
+void(void() move) ai_move_controller={
+  ChangeYaw();
+  if(move == ai_move_stand){
+    self.ai_next_move = ai_move_stand;
+  }
+  else if(move == ai_move_walk_goal){
+    if(self.ai_prev_move != ai_sub_fight){
+      self.ai_next_move = ai_move_walk_goal;
+    }
+    else{
+      self.ai_next_move = ai_move_stand;
+    }
+  }
+  else if(move == ai_move_run_goal){
+    if(self.ai_prev_move != ai_sub_fight){
+      self.ai_next_move = ai_move_walk_goal;
+    }
+    else{
+      self.ai_next_move = ai_move_stand;
+    }
+  }
+  else if(move == ai_move_walkmove_strafeleft){
+    if(self.ai_prev_move == ai_move_walkmove_straferight){
+      self.ai_next_move = ai_move_stand;
+    }
+    else{
+      self.ai_next_move = ai_move_walkmove_strafeleft;
+    }
+  }
+  else if( move == ai_move_walkmove_straferight){
+      if(self.ai_prev_move == ai_move_walkmove_strafeleft){
+      self.ai_next_move = ai_move_stand;
+    }
+    else{
+      self.ai_next_move = ai_move_walkmove_straferight;
+    }
+  }
+  else if(move == ai_move_forward){
+    if(self.ai_prev_move != ai_move_stand){
+      self.ai_next_move = ai_move_stand;
+    }
+    else{
+      self.ai_next_move = ai_move_forward;
+    }
+  }
+  else if(move == ai_move_backward){
+    if(self.ai_prev_move != ai_move_stand){
+      self.ai_next_move = ai_move_stand;
+    }
+    else{
+      self.ai_next_move = ai_move_backward;
+    }
+  }
+  else if(move == ai_move_charge){
+    if(self.ai_prev_move == ai_move_backward){
+      self.ai_next_move = ai_move_stand;
+    }
+    else{
+      self.ai_next_move = ai_move_charge;
+    }
+  }
+  else{
+    self.ai_next_move = ai_move_stand;
   }
 };
 
-void() ai_move_walk_goal={
-  self.e_legs.movetype = MOVETYPE_NONE;
-  self.e_legs.angles = self.angles;
-  self.e_legs.movetype = MOVETYPE_FOLLOW;
-  movetogoal(self.m_fspeed * AI_WALK_SPD);
+//move directives
+void() ai_move_random={
+  local float r;
+  r = random();
+  if(r < 0.25){
+    ai_move_controller(ai_move_backward);
+  }
+  else if((r >= 0.25) && (r < 0.5)){
+    ai_move_controller(ai_move_forward);
+  }
+  else if((r >= 0.5) && (r < 0.75)){
+    ai_move_controller(ai_move_walkmove_strafeleft);
+  }
+  else if(r >= 0.75){
+    ai_move_controller(ai_move_walkmove_straferight);
+  }
 };
 
-void() ai_move_walk_goal_slide={
+void() ai_move_stand={
+  self.ai_prev_move = ai_move_stand;
+};
+
+void() ai_move_walk_goal={
+  movetogoal(self.m_fspeed * AI_WALK_SPD);
+  self.ai_prev_move = ai_move_walk_goal;
+};
+
+void() ai_move_run_goal={  
+  movetogoal(self.m_fspeed * AI_RUN_SPD);
+  self.ai_prev_move = ai_move_run_goal;
+};
+
+void() ai_move_walkmove_slide={
   local float ofs;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   if (self.lefty){
@@ -172,20 +260,15 @@ void() ai_move_walk_goal_slide={
 		ofs = -90;
 	}
 	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed * AI_WALK_SPD)){
-    self.e_legs.angles_y = self.ideal_yaw + ofs;
+    self.ai_prev_move = ai_move_walkmove_slide;
 		return;
   }
 	self.lefty = 1 - self.lefty;
   walkmove( self.ideal_yaw, self.m_fspeed * AI_WALK_SPD);
-  self.e_legs.angles = self.v_angle;
+  self.ai_prev_move = ai_move_walkmove_slide;
 };
 
-void() ai_move_run_goal={  
-  movetogoal(self.m_fspeed * AI_RUN_SPD);
-  self.e_legs.angles = self.angles;
-};
-
-void() ai_move_run_goal_slide={  
+void() ai_move_runmove_slide={  
   local float ofs;
   ChangeYaw();
   if (self.lefty){
@@ -195,21 +278,58 @@ void() ai_move_run_goal_slide={
 		ofs = -90;
 	}
 	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed * AI_RUN_SPD)){
-      self.e_legs.angles_y = self.angles_y + ofs;
-		return;
+		self.ai_prev_move = ai_move_runmove_slide;
+    return;
   }
 	self.lefty = 1 - self.lefty;
   walkmove( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD);
-  self.e_legs.angles_y = self.ideal_yaw;
+  self.ai_prev_move = ai_move_runmove_slide;
 };
 
-void() ai_move_forward={  
-  self.e_legs.angles_y = self.angles_y;
+void() ai_move_forward={
   walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
+  self.ai_prev_move = ai_move_forward;
 };
 
 void() ai_move_backward={  
-  self.e_legs.angles_y = self.angles_y + 180;
   walkmove ((self.angles_y+180), self.m_fspeed * AI_WALK_SPD);
+  self.ai_prev_move = ai_move_backward;
 };
 
+void() ai_move_walkmove_strafeleft={
+  if not(walkmove (self.ideal_yaw + 90,  self.m_fspeed * AI_WALK_SPD)){
+    ai_move_stand();
+    self.ai_prev_move = ai_move_stand;
+  }
+  else{
+    self.ai_prev_move = ai_move_walkmove_strafeleft;
+  }
+};
+
+void() ai_move_walkmove_straferight={
+  if not(walkmove (self.ideal_yaw - 90,  self.m_fspeed * AI_WALK_SPD)){
+    ai_move_stand();
+    self.ai_prev_move = ai_move_stand;
+  }
+  else{
+    self.ai_prev_move = ai_move_walkmove_straferight;
+  }
+};
+
+void() ai_move_charge={
+  local float t, a;
+  t = random();
+  if(t <= 0.5){
+    a = -60;
+  }
+  else{
+    a = 60;
+  }
+  if not(walkmove (self.ideal_yaw - a,  self.m_fspeed * AI_WALK_SPD)){
+    ai_move_stand();
+    self.ai_prev_move = ai_move_stand;
+  }
+  else{
+    self.ai_prev_move = ai_move_charge;
+  }
+};

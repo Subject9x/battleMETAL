@@ -106,7 +106,7 @@ void() data_qrfl_atk={
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     
     if((player.flags & FL_MONSTER)){
-      if((end == player.origin) || (dir == player.origin)){
+      if(end == player.origin){
         player.patience = player.patience + 1;
         return;
       }

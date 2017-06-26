@@ -19,38 +19,35 @@ void() ai_sub_fight={
         return;
       }
     }
-   // bprint("valid target!\n"); //DEBUG
     if(ai_target_visible(self.enemy)){
-      //bprint("visible!\n"); //DEBUG
       self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-      if(self.stat_trg_dist >= AI_RANGE_L){
-        self.ai_next_move = ai_move_forward;
+      if(self.stat_trg_dist > self.ai_minrange){
+        ai_move_controller(ai_move_forward);
       }
-      else{
-        if(self.stat_trg_dist <= AI_RANGE_S){
-          if(ai_target_insights(self.enemy)){
-            self.ai_next_move = ai_move_run_goal_slide;
-          }else{
-            if(self.stat_trg_dist <= 10){
-              self.ai_next_move = ai_move_backward;
-            }
-            else{
-              self.ai_next_move = ai_move_stand;
-            }
+      else if(self.stat_trg_dist <= 100){
+        if(ai_target_insights(self.enemy)){
+          if(ai_target_facingideal()){
+            ai_move_controller(ai_move_charge);
+          }
+          else{
+            ai_move_random();
           }
         }
         else{
-          if(self.stat_trg_dist >= self.ai_minrange){
-            self.ai_next_move = ai_move_forward;
+          ai_move_controller(ai_move_backward);
+        } 
+      }
+      else{
+        if(ai_target_insights(self.enemy)){
+          if(self.ai_prev_move == ai_move_walkmove_strafeleft){
+            ai_move_controller(ai_move_walkmove_straferight);
           }
           else{
-            if(ai_target_insights(self.enemy)){
-              self.ai_next_move = ai_move_walk_goal_slide;
-            }
-            else{
-              self.ai_next_move = ai_move_forward;
-            }
+            ai_move_controller(ai_move_walkmove_strafeleft);
           }
+        }
+        else{
+          ai_move_controller(ai_move_stand);
         }
       }
       if(ai_target_facingideal()){
@@ -61,7 +58,6 @@ void() ai_sub_fight={
     else{
       self.patience = self.patience + 1;
       if(self.patience >= self.maxpatience){
-        //bprint("-> ai_sub_hunt\n"); //DEBUG
         self.patience = 0;
         self.ai_prev_state = self.ai_next_state;
         self.ai_next_state = ai_sub_hunt;
@@ -105,10 +101,12 @@ void() ai_sub_hunt={
       self.oldgoal = self.goalentity;
       self.goalentity = self.enemy;
       if(self.stat_trg_dist >= AI_RANGE_L){
-        self.ai_next_move = ai_move_run_goal;
+        //self.ai_next_move = ai_move_run_goal;
+        ai_move_controller(ai_move_run_goal);
       }
       else{
-        self.ai_next_move = ai_move_walk_goal;
+        //self.ai_next_move = ai_move_walk_goal;
+        ai_move_controller(ai_move_walk_goal);
       }
       self.patience = self.patience + 1;
       if(self.patience >= self.maxpatience){
@@ -213,10 +211,12 @@ void() ai_sub_tonode={
       self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
       d = vlen(self.goalentity.origin - self.origin);
       if(d > AI_RANGE_L){
-        self.ai_next_move = ai_move_run_goal;
+        ai_move_controller(ai_move_run_goal);
+        //self.ai_next_move = ai_move_run_goal;
       }
       else{
-        self.ai_next_move = ai_move_walk_goal;
+        ai_move_controller(ai_move_walk_goal);
+        //self.ai_next_move = ai_move_walk_goal;
       }
     }
     else{
@@ -268,10 +268,12 @@ void() ai_sub_trynode={
       self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
       d = vlen(self.goalentity.origin - self.origin);
       if(d > AI_RANGE_L){
-        self.ai_next_move = ai_move_run_goal;
+        ai_move_controller(ai_move_run_goal);
+        //self.ai_next_move = ai_move_run_goal;
       }
       else{
-        self.ai_next_move = ai_move_walk_goal;
+        ai_move_controller(ai_move_walk_goal);
+        //self.ai_next_move = ai_move_walk_goal;
       }
     }
   }

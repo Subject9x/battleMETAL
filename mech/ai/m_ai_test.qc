@@ -28,6 +28,11 @@ state_1 = initial order
   1 = defend the .target
   2 = patrol the .target
   3 = stand at the .target
+p_damage = AI pilot rating, will affect accuracy
+  0 = ACE 
+  1 = VETERAN
+  2 = REGULAR
+  3 = ROOKIE
 */
 void() ai_mech={
   //DEBUG
@@ -35,12 +40,19 @@ void() ai_mech={
     remove(self);
     return;
   }*/
-  
+  local entity dat;
+  dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
+  if(!dat){
+    bprint(strcat("mech id:",ftos(self.nextVecChoice)," was not found","\n"));
+    remove(self);
+    return;
+  }
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
   self.p_class = P_MECH;
   //self.i_faction = 2; // DEBUG
   //self.ai_leading = 0.075; //DEBUG
+  //self.p_damage = 3; //DEBUG
   self.data_idx = 0;
   self.en_cur = 0;
   self.en_max = 0;
@@ -67,34 +79,32 @@ void() ai_mech={
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
 
-  local entity dat;
-  dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
-  if(!dat){
-    bprint(strcat("mech id:",ftos(self.nextVecChoice)," was not found","\n"));
-    remove(self);
-    return;
-  }
-
   self.ideal_yaw = self.angles * '0 1 0';
-	if (!self.yaw_speed){
-    if(self.nextVecChoice == 1){
-      self.yaw_speed = 6;//20;
-    }
-    else if(self.nextVecChoice == 2){
-      self.yaw_speed = 4;//10;
-    }
-    else if(self.nextVecChoice == 3){
-      self.yaw_speed = 3;//2.5;
-    }
-  }
 		
   buildVehicle(dat);
   ai_core_calcranges();
-  
-  self.stat_spr_x = (self.conv_min_x + self.conv_max_x) * 3;
-  self.stat_spr_y = (self.conv_min_y + self.conv_max_y) * 1.75;
-  self.en_rate = self.en_rate / 10;
-  //self.solid = SOLID_BBOX;
+  local float mod;
+  mod = ai_pilot_armor_mod();
+  self.max_health = self.health = self.health * mod; 
+  self.e_legs.max_health = self.e_legs.health = self.e_legs.health * mod; 
+  self.e_tor_l.max_health = self.e_tor_l.health = self.e_tor_l.health * mod; 
+  self.e_tor_r.max_health = self.e_tor_r.health = self.e_tor_r.health * mod; 
+  self.e_arm_r.max_health = self.e_arm_r.health = self.e_arm_r.health * mod; 
+  self.e_arm_l.max_health = self.e_arm_l.health = self.e_arm_l.health * mod; 
+  if (!self.yaw_speed){
+    local float m;
+    m = ai_pilot_yaw_mod();
+    self.yaw_speed = self.m_rot_speed + (self.m_rot_speed * m);
+  }
+  mod = ai_pilot_rating_leading();
+  self.ai_leading = mod;
+  self.stat_spr_x = self.conv_min_x + self.conv_max_x;
+  self.stat_spr_y = self.conv_min_y + self.conv_max_y;
+  mod = ai_pilot_rating_converg();
+  self.ai_rte_cnv = mod;
+  mod = ai_pilot_rating_range();
+  self.ai_rte_rng = mod;
+  self.en_rate = self.en_rate / 5;
   self.th_die = ai_mech_die;
   self.th_missile = ai_mech_attack;
   self.ai_unit_update = ai_mech_update;

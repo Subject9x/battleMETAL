@@ -85,7 +85,7 @@ void() ai_state_fight={
         self.ai_next_move = ai_move_run_goal;
       }
       if(self.stat_trg_dist <= AI_RANGE_S){
-        self.ai_next_move = ai_move_run_goal_slide;
+        self.ai_next_move = ai_move_runmove_slide;
       }
     }
     else{

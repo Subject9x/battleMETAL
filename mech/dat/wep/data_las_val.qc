@@ -99,7 +99,7 @@ void() data_las_atk={
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
   if((player.flags & FL_MONSTER)){
-    if((end == player.origin) || (dir == player.origin)){
+    if(end == player.origin){
       player.patience = player.patience + 1;
       return;
     }
@@ -126,12 +126,10 @@ void() data_las_atk={
   laser_org.nextthink = time + 0.01;// + 0.35;
   
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
-  te_lightning1(laser_org, laser_org.origin, dir + (v_forward*3));
-  
+  te_lightning1(laser_org, laser_org.origin, dir + (v_forward*3));  
   te_flamejet(dir, '0 25 0', 5);
   
   local float dtype;
   dtype = DMG_ENE;
-  
   t_damage(trace_ent, self, player, self.p_damage, dtype, dir, '0 0 0');
 };
