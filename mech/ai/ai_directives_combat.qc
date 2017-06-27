@@ -13,13 +13,19 @@ void() ai_mech_attack={
   while(wep_chain){
     local float fire;
     fire = FALSE;
-    if((self.stat_trg_dist <= wep_chain.w_range) && (wep_chain.w_isburst == FALSE)){
-      fire = TRUE;
+    if(self.button0){
+      if(wep_chain.w_state == READY){
+        fire = TRUE;
+      }
     }
-    else if(wep_chain.w_isburst == TRUE) {
-      fire =  TRUE;
+    else{
+      if(wep_chain.w_isburst == TRUE){
+        if(wep_chain.w_state == READY){
+          fire = TRUE;
+        }
+      }
     }
-    if(fire){
+    if(fire == TRUE){
       if((wep_chain.p_dmgtype & DMG_ENE)){
         ai_attack_ene(wep_chain);
       }
@@ -61,35 +67,27 @@ void(entity wep) ai_attack_basic={
 };
 
 void(entity wep) ai_attack_ene={
-  local float attack;
   local entity oself;
   oself = self;
-  attack = FALSE;
-
-  if(wep.w_state == READY){
-    if((wep.w_currentammo > 0) && (wep.w_currentammo < 2)){
-      attack = TRUE;
-    }
-    else{
-      attack = TRUE;
-    }   
-  }
-  if((wep.p_dmgtype & EFF_STX) && (wep.w_isburst == FALSE)){
+  self = wep;
+  if((self.p_dmgtype & EFF_STX) && (self.w_isburst == FALSE)){
     if(self.enemy.sh_cur >= (self.enemy.sh_max/4)){
-      attack = TRUE;
+      self.w_attack();
+      self = oself;
+      return;
     }
     else{
-      attack = FALSE; //cancel attack regardless of weapon state
+      self = oself;
+      return;//cancel attack regardless of weapon state
     }
   }
-  if(wep.w_isburst == TRUE){
-    attack = TRUE;
-  }
-  if(attack){
-    self = wep;
+  else{
     self.w_attack();
+    self = oself;
+    return;
   }
   self = oself;
+  return;
 };
 
 void(entity wep) ai_attack_bal={

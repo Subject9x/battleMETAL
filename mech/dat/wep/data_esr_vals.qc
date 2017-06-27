@@ -16,7 +16,7 @@ vector DAT_ESR_FIRE_OFS = '0 0 2';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_ESR_EN_COST = 10;
 float DAT_ESR_EN_MAX = 500;
-string DAT_ESR_SOUND = "q3mdl/weapons/w_laser.md3";
+string DAT_ESR_SOUND = "sound/laser_test.ogg";
 float DAT_ESR_TECH_LEVEL = 1;
 float DAT_ESR_SPR_X = 8;
 float DAT_ESR_SPR_Y = 8;
@@ -81,6 +81,7 @@ void() data_esr_think={
       self.owner.en_cur = self.owner.en_cur - self.en_rate;
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
+        self.en_cur = self.en_max;
         self.w_state = READY;
       }
     }
@@ -98,21 +99,14 @@ void() data_esr_atk={
   }
   else{
     end = util_traceForAI(player, self.w_range, player.ai_leading);
-    if((player.flags & FL_MONSTER)){
-      if((end == player.origin) || (dir == player.origin)){
+    if((player.flags & FL_MONSTER) && (self.w_currentammo == self.w_clipsize) ){
+      if(end == player.origin){
         player.patience = player.patience + 1;
         return;
       }
     }    
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-
-  if((player.flags & FL_MONSTER)){
-    if(end == player.origin){
-      player.patience = player.patience + 1;
-      return;
-    }
-  }
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
@@ -133,21 +127,16 @@ void() data_esr_atk={
   laser_org.classname = "missile";
   setsize(laser_org, '0 0 0', '0 0 0');
   setorigin(laser_org, self.fx_origin);
-  
-  //T_Damage(trace_ent, self.owner, self.owner, 12, 12, "", DT_IMPACT, other.origin, '0 0 0', Obituary_Generic);
-  //damage_mech_main(trace_ent, self.owner, self.owner, 12, 0);
+
   local float dtype;
   dtype = dtype | DMG_ENE;
   
-  
   t_damage(trace_ent, self, player, self.p_damage, dtype, dir + (v_forward*3), '0 0 0');
-  sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
+  sound (laser_org, CHAN_WEAPON, DAT_ESR_SOUND, 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
   laser_org.think = SUB_Remove;
   laser_org.nextthink = time + 0.01;
   
-  if(pointcontents(dir) == CONTENT_SOLID){
-    te_flamejet(dir, '0 25 0', 5);
-    te_customflash(dir, 4, 10, '0 0 1');
-  }
+  te_flamejet(dir, '0 25 0', 5);
+  te_customflash(dir, 4, 10, '0 0 1');
 };

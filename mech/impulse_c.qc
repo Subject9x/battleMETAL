@@ -16,15 +16,24 @@ void() toggerRadar={};
 void() playerAttack={
   local entity wep_chain, oself;
   local float wep_count;
+  oself = self;
   wep_chain = self.w_slot;
   wep_count = wep_chain.w_group;
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
-    if((self.currentWeaponGroup & wgrp)){
-      if((self.button0) || (wep_chain.w_isburst)){
+    if(self.button0){
+      if((self.currentWeaponGroup & wgrp)){
         if(wep_chain.w_state == READY){
-          oself = self;
+          self = wep_chain;
+            self.w_attack();
+          self = oself;
+        }
+      }
+    }
+    else{
+      if(wep_chain.w_isburst == TRUE){
+        if(wep_chain.w_state == READY){
           self = wep_chain;
             self.w_attack();
           self = oself;

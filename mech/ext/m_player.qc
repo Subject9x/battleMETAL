@@ -112,8 +112,7 @@ void() PlayerPostThink = {
     ctrl_update_mechplayer();
     local vector radar;
     radar = server_updateRadarInfo();
-    //self.radar_front = radar_x;
-    //self.radar_rear = radar_y;
+    centerprint(self, ftos(self.enemy.en_cur));
   }
 
   self.stat_plr_ptc = self.v_angle_x;

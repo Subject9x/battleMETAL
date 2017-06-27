@@ -257,6 +257,9 @@ void(entity mechData, entity own)buildWeaponList={
         self.data_idx = oself.next_wepn5;
       }
       buildVehicleWeapon(mechData, own,  WEAPON5_OK, WEAPON5_DD, WEAPON5_REL);
+      if((own.flags & FL_MONSTER)){
+        self.en_rate = self.en_rate / 10;
+      }
     self = oself;
     self.stat_w5_id = wep.data_idx;
     point.w_slot = wep;

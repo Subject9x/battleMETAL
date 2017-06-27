@@ -23,29 +23,7 @@ void() ai_mech_update={
   while(wep_chain){
     ctrl_wpn_think(wep_chain);
     wep_chain = wep_chain.w_slot;
-  }
-  
-  /*if(self.ai_next_move == ai_move_stand){
-    self.stat_spr_x = self.stat_spr_x - (self.conv_min_z / 100);
-    if(self.stat_spr_x < self.conv_min_x){
-      self.stat_spr_x =  self.conv_min_x;
-    }
-    self.stat_spr_y = self.stat_spr_y - (self.conv_min_z  / 100);
-    if(self.stat_spr_y < self.conv_min_y){
-      self.stat_spr_y =  self.conv_min_y;
-    }
-  }
-  else{
-    self.stat_spr_x = self.stat_spr_x + (self.conv_max_z * 10);
-    if(self.stat_spr_x > self.conv_max_x){
-      self.stat_spr_x =  self.conv_max_x;
-    }
-    self.stat_spr_y = self.stat_spr_y + (self.conv_max_z * 10);
-    if(self.stat_spr_y > self.conv_max_y){
-      self.stat_spr_y =  self.conv_max_y;
-    }
-  }*/
-    
+  }  
   if(self.enemy != world){
     self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
   }
@@ -127,14 +105,11 @@ void() ai_control={
     return;
   }
   self.ai_unit_update();
-  if(self.health <= (self.max_health /3)){
-    if(self.en_cur <= 0){
-      if(self.ai_next_state != ai_state_panic){
-        self.ai_next_state =ai_state_panic;
-      } 
-    }
-  }
   self.ai_next_state();
+  self.th_missile();
+  if(self.button0){
+    self.button0 = 0;
+  }
   self.ai_next_move();
   self.think = ai_control;
   self.nextthink = time + 0.05;
@@ -245,7 +220,7 @@ void() ai_move_walk_goal={
   self.ai_prev_move = ai_move_walk_goal;
 };
 
-void() ai_move_run_goal={  
+void() ai_move_run_goal={
   movetogoal(self.m_fspeed * AI_RUN_SPD);
   self.ai_prev_move = ai_move_run_goal;
 };
@@ -264,7 +239,7 @@ void() ai_move_walkmove_slide={
 		return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed * AI_WALK_SPD);
+  walkmove( self.ideal_yaw, self.m_sspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_walkmove_slide;
 };
 
@@ -277,41 +252,53 @@ void() ai_move_runmove_slide={
   else{
 		ofs = -90;
 	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed * AI_RUN_SPD)){
+	if (walkmove (self.ideal_yaw + ofs,  self.m_sspeed * AI_RUN_SPD)){
 		self.ai_prev_move = ai_move_runmove_slide;
     return;
   }
 	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD);
+  walkmove( self.ideal_yaw, self.m_sspeed * AI_RUN_SPD);
   self.ai_prev_move = ai_move_runmove_slide;
 };
 
 void() ai_move_forward={
+  ChangeYaw();
   walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
+  self.e_legs.angles_y =  self.angles_y;
+  self.e_legs.v_angle_y = self.e_legs.angles_y;
   self.ai_prev_move = ai_move_forward;
 };
 
 void() ai_move_backward={  
-  walkmove ((self.angles_y+180), self.m_fspeed * AI_WALK_SPD);
+  ChangeYaw();
+  walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD);
+  self.e_legs.angles_y =  self.angles_y+180;
+  self.e_legs.v_angle_y = self.e_legs.angles_y;
   self.ai_prev_move = ai_move_backward;
 };
 
 void() ai_move_walkmove_strafeleft={
-  if not(walkmove (self.ideal_yaw + 90,  self.m_fspeed * AI_WALK_SPD)){
+  ChangeYaw();
+  if not(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
   }
   else{
+    self.e_legs.angles_y =  self.angles_y + 90;
+    self.e_legs.v_angle_y = self.e_legs.angles_y;
     self.ai_prev_move = ai_move_walkmove_strafeleft;
   }
 };
 
 void() ai_move_walkmove_straferight={
-  if not(walkmove (self.ideal_yaw - 90,  self.m_fspeed * AI_WALK_SPD)){
+  ChangeYaw();
+  if not(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
   }
   else{
+    self.e_legs.angles_y =  self.angles_y - 90;
+    self.e_legs.v_angle_y = self.e_legs.angles_y;
     self.ai_prev_move = ai_move_walkmove_straferight;
   }
 };

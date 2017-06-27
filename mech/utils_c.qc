@@ -35,11 +35,11 @@ vector(entity own, float range, float lead_factor) util_traceForAI={
   if(own.stat_trg_dist > own.ai_minrange){
     cnv = cnv * rng;
   }
-  cx = cnv/1.15;
-  cx = cx + (cnv *random());
+  cx = cnv;
+  cx = cx + (cnv/2 *random());
   cx = cx * crandom();
-  cy = cnv/1.15; 
-  cy = cy + (cnv *random());
+  cy = cnv; 
+  cy = cy + (cnv/2 *random());
   cy = cy * crandom();
   end = trace_endpos + (v_up*cy)+(v_right*cx);
   if(trace_ent == world){

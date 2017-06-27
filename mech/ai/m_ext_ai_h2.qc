@@ -42,10 +42,10 @@ this one will focus on move to move
 //=========================
 
 //how well does the AI handle weapon convergence
-float AI_CNV_ACE = 14;
-float AI_CNV_VET = 18;
-float AI_CNV_REG = 22;
-float AI_CNV_ROK = 26;
+float AI_CNV_ACE = 16;
+float AI_CNV_VET = 24;
+float AI_CNV_REG = 36;
+float AI_CNV_ROK = 48;
 
 //how does range affect the AI's accuracy
 float AI_RNG_ACE = 1;
