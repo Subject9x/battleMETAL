@@ -38,11 +38,16 @@ void() ai_sub_fight={
         } 
       }
       else{
-        if(ai_target_insights(self.enemy)){
-          ai_move_controller(ai_move_walkmove_straferight);
+        if(self.stat_trg_dist > self.ai_minrange/2){
+          ai_move_controller(ai_move_forward);
         }
         else{
-          ai_move_controller(ai_move_stand);
+          if(ai_target_insights(self.enemy)){
+            ai_move_controller(ai_move_walkmove_straferight);
+          }
+          else{
+            ai_move_controller(ai_move_stand);
+          }
         }
       }
       if(ai_target_facingideal()){

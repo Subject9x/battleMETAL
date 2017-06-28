@@ -96,16 +96,17 @@ void() data_mis_atk={
       end = util_traceForPlayer(player, self.w_range);
     }
     else{
-      end = util_traceForAI(player, self.w_range, player.ai_leading); 
+      end = util_traceForAI(player, self.w_range, player.ai_leading);
+      if((player.flags & FL_MONSTER)){
+        if(end == player.origin){
+          player.patience = player.patience + 1;
+          return;
+        }
+      }
     }
     dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     
-    if((player.flags & FL_MONSTER)){
-      if(end == player.origin){
-        player.patience = player.patience + 1;
-        return;
-      }
-    }
+
     
     self.w_currentammo = self.w_currentammo - 1;
     if(self.w_currentammo <= 0){
@@ -115,7 +116,12 @@ void() data_mis_atk={
       self.w_isburst = FALSE;
     }
     else{
-      self.w_firetime = time + self.w_firerate;
+      if((player.flags & FL_MONSTER)){
+        self.w_firetime = time + (self.w_firerate/1000);
+      }
+      else{
+        self.w_firetime = time + self.w_firerate;
+      }
       self.w_state = RECOIL;
       self.w_isburst = TRUE;
     }

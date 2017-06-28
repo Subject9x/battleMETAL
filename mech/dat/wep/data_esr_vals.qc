@@ -28,6 +28,7 @@ void() data_wep_esr;
 void() data_esr_ini;
 void() data_esr_atk;
 void() data_esr_think;
+void() data_esr_ai;
 
 void() data_wep_esr={
   local entity oself, esr;
@@ -116,7 +117,13 @@ void() data_esr_atk={
     self.w_isburst = FALSE;
   }
   else{
-    self.w_firetime = time + self.w_firerate;
+    if((player.flags & FL_MONSTER)){
+      self.w_firetime = time + (self.w_firerate/1000);
+    }
+    else{
+      self.w_firetime = time + self.w_firerate;
+    }
+
     self.w_state = RECOIL;
     self.w_isburst = TRUE;
   }

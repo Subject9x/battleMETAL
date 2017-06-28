@@ -13,30 +13,32 @@ void() ai_mech_attack={
   while(wep_chain){
     local float fire;
     fire = FALSE;
-    if(self.button0){
-      if(wep_chain.w_state == READY){
-        fire = TRUE;
-      }
-    }
-    else{
-      if(wep_chain.w_isburst == TRUE){
+    if(self.stat_trg_dist <= wep_chain.w_range){
+      if(self.button0){
         if(wep_chain.w_state == READY){
           fire = TRUE;
         }
       }
-    }
-    if(fire == TRUE){
-      if((wep_chain.p_dmgtype & DMG_ENE)){
-        ai_attack_ene(wep_chain);
-      }
-      else if((wep_chain.p_dmgtype & DMG_BAL)){
-        ai_attack_bal(wep_chain);
-      }
-      else if((wep_chain.p_dmgtype & DMG_EXP)){
-        ai_attack_exp(wep_chain);
-      }
       else{
-        ai_attack_basic(wep_chain);
+        if(wep_chain.w_isburst == TRUE){
+          if(wep_chain.w_state == READY){
+            fire = TRUE;
+          }
+        }
+      }
+      if(fire == TRUE){
+        if((wep_chain.p_dmgtype & DMG_ENE)){
+          ai_attack_ene(wep_chain);
+        }
+        else if((wep_chain.p_dmgtype & DMG_BAL)){
+          ai_attack_bal(wep_chain);
+        }
+        else if((wep_chain.p_dmgtype & DMG_EXP)){
+          ai_attack_exp(wep_chain);
+        }
+        else{
+          ai_attack_basic(wep_chain);
+        }
       }
     }
     wep_chain = wep_chain.w_slot;
@@ -84,10 +86,8 @@ void(entity wep) ai_attack_ene={
   else{
     self.w_attack();
     self = oself;
-    return;
   }
   self = oself;
-  return;
 };
 
 void(entity wep) ai_attack_bal={

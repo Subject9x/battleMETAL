@@ -77,8 +77,13 @@ void() ctrl_die_weapon={
       oself.currentWeaponGroup = oself.currentWeaponGroup - (oself.currentWeaponGroup & self.w_group);
       self.w_group = 0;
     }
-    ctrl_weapon_subState(self, self.state_1);
-    ctrl_weapon_addState(self, self.state_2);
+    if((self.owner.flags & FL_CLIENT)){
+      ctrl_weapon_subState(self, self.state_1);
+      ctrl_weapon_addState(self, self.state_2);
+    }
+    else{
+      ai_core_calcranges();
+    }
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;
