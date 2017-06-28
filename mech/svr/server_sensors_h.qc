@@ -7,7 +7,6 @@ Overview: necessary targeting and radar functions
 
 void() server_getTarget;
 void() server_updateTargetInfo;
-void(float vis) sever_handleTargetMarkEnt;
 
 void() server_radarSweep;
 vector() server_updateRadarInfo;

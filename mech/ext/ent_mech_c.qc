@@ -20,7 +20,6 @@ commented vars mean they're already implemented and are here for reference!
 .vector conv_min;
 .vector conv_max;
 
-.float l_dmg;
 .float m_rot_speed;
 .string m_pitch_min;
 .string m_pitch_max;
@@ -28,19 +27,14 @@ commented vars mean they're already implemented and are here for reference!
 //.float i_techLevel;
 //.string data_type;
 
-.void() th_ctrl;    //update function
-
 //child entites
 .entity e_legs;
-.entity e_leg_l;
-.entity e_leg_r;
 .entity e_cam;
 .entity e_tor_c;  //now is the player themselves, this is here for data purposes
 .entity e_tor_l;
 .entity e_arm_l;  //arms can be optional
 .entity e_tor_r;
 .entity e_arm_r;  //arms can be optional
-.entity e_cpit;
 
 //Client-side data and cosmetics
 .float m_fspeed; //forward speed
@@ -55,9 +49,4 @@ commented vars mean they're already implemented and are here for reference!
 .string m_bmodel;
 .string m_bside;
 .string m_bobspd;
-
-//cockpit
-.string m_cockpit;
-.vector m_view;
-.string m_cockpit_model;
 

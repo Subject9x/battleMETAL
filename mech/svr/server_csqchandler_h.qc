@@ -10,13 +10,8 @@ float MSG_ENTITY = 5;
 .float SendFlags;
 void(float buf, float fl) WriteFloat = #280;
 
-.float csqc_entType;
-.float csqc_datType;
-.float csqc_flgType;
-
 float(entity piece) csqc_updateCompStat;
 entity() csqc_setHeader;
-void(entity to, float sendFlags) send_DataTE;
 void(entity to, float entType, float flagType) csqc_SendMechData;
 //float(entity to, float sendFlags) sendData;
 float() sendData;

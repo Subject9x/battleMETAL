@@ -88,8 +88,8 @@ void() data_latc_think={
 };
 
 void() data_latc_atk={
-  local entity player, proj, cam, oself;
-  local vector dir, end, adj; 
+  local entity player;
+  local vector dir, end; 
   
   player = self.owner;
   

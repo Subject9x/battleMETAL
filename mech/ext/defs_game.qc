@@ -14,7 +14,6 @@ float RECOIL = 4;
 float NEITHER = 3; //really gross hack to make burst-fire weapon work.
 
 .entity lst_p; //linked list parent
-.entity lst_c; //linked list child
 
 //from world.qc
 entity lastspawn;

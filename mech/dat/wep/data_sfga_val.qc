@@ -89,7 +89,7 @@ void() data_sfga_think={
 };
 
 void() data_sfga_atk={
-  local entity player, proj, cam, oself;
+  local entity player, proj, oself;
   player = self.owner;
  
   local vector dir, end, adj, org;
@@ -99,16 +99,15 @@ void() data_sfga_atk={
   }
   else{
     end = util_traceForAI(player, self.w_range, player.ai_leading); 
-  }
-  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-  
-  if((player.flags & FL_MONSTER)){
-    if(end == player.origin){
-      player.patience = player.patience + 1;
-      return;
+    if((player.flags & FL_MONSTER)){
+      if(end == player.origin){
+        player.patience = player.patience + 1;
+        return;
+      }
     }
   }
-  
+  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+    
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.en_cur = 0;

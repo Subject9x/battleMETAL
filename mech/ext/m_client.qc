@@ -179,11 +179,11 @@ void() PutClientInServer = {
 	self.view_ofs = '0 0 1';
   
   if(self.p_class == P_OBS){
-    player_makeObserver(self);
+    player_makeObserver();
     self.power_timer = 0;
   }
   else if(self.p_class == P_MECH){
-    player_makeMech(self);
+    player_makeMech();
     self.power_timer = time + 1;//8
   }
  

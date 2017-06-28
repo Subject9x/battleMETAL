@@ -92,7 +92,7 @@ void() data_rplas_think={
 };
 
 void() data_rplas_atk={
-  local entity player, proj, cam, oself;
+  local entity player, proj, oself;
   player = self.owner;
   proj = mh_world_findData(self.w_proj, DATA_PROJ);
   if(proj){
@@ -101,16 +101,16 @@ void() data_rplas_atk={
       end = util_traceForPlayer(player, self.w_range);
     }
     else{
-      end = util_traceForAI(player, self.w_range, player.ai_leading); 
-    }
-    dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-    
-    if((player.flags & FL_MONSTER)){
-      if(end == player.origin){
-        player.patience = player.patience + 1;
-        return;
+      end = util_traceForAI(player, self.w_range, player.ai_leading);  
+      if((player.flags & FL_MONSTER)){
+        if(end == player.origin){
+          player.patience = player.patience + 1;
+          return;
+        }
       }
     }
+    dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+
     
     self.w_currentammo = self.w_currentammo - 1;
     if(self.w_currentammo <= 0){

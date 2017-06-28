@@ -8,8 +8,8 @@ Overview: extends the player's entity.
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame
 
-.float	dmgtime; //pulled from client.qc
-.float playermovestate, playermovebegin; //pulled from dpqc player.qc
+//.float	dmgtime; //pulled from client.qc
+//.float playermovestate, playermovebegin; //pulled from dpqc player.qc
 
 .float p_class;      //type of player, maps to GLOBAL P_TYPES
 .float p_class_next;  // previous player class, needed for cleanup checks
@@ -22,7 +22,7 @@ Overview: extends the player's entity.
 .float w_group3;
 .float w_group4;
 .float w_group5;
-.float w_firemode;
+//.float w_firemode;
 
 .float i_faction;   //which faction? consult table
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 

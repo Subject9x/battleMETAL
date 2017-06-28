@@ -33,4 +33,3 @@ vector() radar_MakeSweep;
 float(entity contact, float current_total) radar_calcPlayerDist;
 float(entity root, entity contact, float current_total) radar_calcEnemyDist;
 float(entity contact, float current_total)  radar_calcUnitValue;
-float(entity org, entity contact) radar_calcFacing;

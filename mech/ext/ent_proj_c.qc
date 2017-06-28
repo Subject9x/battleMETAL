@@ -7,7 +7,6 @@ commented vars mean they're already implemented and are here for reference!
 */
 
 //.string data_type;
-.string p_name;
 .float p_lifetime;
 .float p_velocity;
 .float p_damage;

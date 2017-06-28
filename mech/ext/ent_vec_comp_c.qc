@@ -20,7 +20,6 @@ commented vars mean they're already implemented and are here for reference!
 .string c_parent;
 .string c_name;    //data reference, different than ‘classname
 .vector c_ofs;
-.vector c_prt_ofs;    //parent offset
 .vector c_alt_ofs;    //useful alt offset
 .vector c_bbx_n;    //min / max of bbox
 .vector c_bbx_x;

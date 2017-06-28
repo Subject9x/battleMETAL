@@ -517,21 +517,21 @@ void() ai_core_calcranges={
   w = self.w_slot;
   while(w){
     if(w.deadflag <= DEAD_NO){
-      local float dmg;
-      dmg = w.p_damage * w.w_clipsize;
+      local float damg;
+      damg = w.p_damage * w.w_clipsize;
       if(w.w_range <= AI_RANGE_S){ 
-        self.ai_dmg_s = self.ai_dmg_s + dmg;
+        self.ai_dmg_s = self.ai_dmg_s + damg;
       }
       if(w.w_range > AI_RANGE_S){
         if(w.w_range <= AI_RANGE_M){
-          self.ai_dmg_m = self.ai_dmg_m + dmg;
-          self.ai_dmg_s = self.ai_dmg_s + dmg;
+          self.ai_dmg_m = self.ai_dmg_m + damg;
+          self.ai_dmg_s = self.ai_dmg_s + damg;
         }
       }
       if(w.w_range > AI_RANGE_M){
-        self.ai_dmg_m = self.ai_dmg_m + dmg;
-        self.ai_dmg_s = self.ai_dmg_s + dmg;
-        self.ai_dmg_l = self.ai_dmg_l + dmg;
+        self.ai_dmg_m = self.ai_dmg_m + damg;
+        self.ai_dmg_s = self.ai_dmg_s + damg;
+        self.ai_dmg_l = self.ai_dmg_l + damg;
       }
     }
     w = w.w_slot;

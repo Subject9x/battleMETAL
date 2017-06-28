@@ -10,9 +10,9 @@ void() data_h_radar;
 void() data_h_shield;
 void() data_h_hangar_l;
 void() data_h_fuel;
-void(entity ent, float changed) send_building;
+float(entity ent, float changed) send_building;
 
-void(entity ent, float changed) send_building={
+float(entity ent, float changed) send_building={
   WriteByte(MSG_ENTITY, 4);
   WriteByte( MSG_ENTITY, self.data_idx);
   WriteByte( MSG_ENTITY, self.p_class);

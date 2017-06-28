@@ -478,13 +478,13 @@ void(entity trg, entity atk) anger_monster={
           }
           else{
             if((vlen(trg.enemy.origin - trg.origin)) > (vlen(atk.origin - trg.origin))){
-              local entity this;
-              this = self;
+              local entity this2;
+              this2 = self;
               self = trg;
                 self.enemy = atk;
                 self.ai_prev_state = self.ai_next_state;
                 self.ai_next_state = ai_sub_fight;
-              self = this;
+              self = this2;
               return;
             }
           }
@@ -498,6 +498,7 @@ void(entity trg, entity atk) anger_monster={
 //LEGACY FROM COMBAT.QC
 
 void() T_MissileTouch;
+void() T_MissileTouch={};
 void() info_player_start;
 //void(entity targ, entity attacker) ClientObituary;
 
@@ -698,7 +699,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 
 	if (self.th_pain)
 	{
-		self.th_pain (attacker, take);
+		self.th_pain (attacker, take, 0, "");
 	// nightmare mode monsters don't go into pain frames often
 		if (skill == 3)
 			self.pain_finished = time + 5;		

@@ -28,7 +28,6 @@ void() data_wep_esr;
 void() data_esr_ini;
 void() data_esr_atk;
 void() data_esr_think;
-void() data_esr_ai;
 
 void() data_wep_esr={
   local entity oself, esr;
