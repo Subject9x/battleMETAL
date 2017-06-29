@@ -22,31 +22,31 @@ void() ai_sub_fight={
     if(ai_target_visible(self.enemy)){
       self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
       if(self.stat_trg_dist > self.ai_minrange){
-        ai_move_controller(ai_move_forward);
+        ai_move_controller(ai_move_forward, 4);
       }
       else if(self.stat_trg_dist <= 100){
         if(ai_target_insights(self.enemy)){
           if(ai_target_facingideal()){
-            ai_move_controller(ai_move_charge);
+            ai_move_controller(ai_move_charge, 6);
           }
           else{
             ai_move_random();
           }
         }
         else{
-          ai_move_controller(ai_move_backward);
+          ai_move_controller(ai_move_backward, 4);
         } 
       }
       else{
         if(self.stat_trg_dist > self.ai_minrange/2){
-          ai_move_controller(ai_move_forward);
+          ai_move_controller(ai_move_forward, 2);
         }
         else{
           if(ai_target_insights(self.enemy)){
-            ai_move_controller(ai_move_walkmove_straferight);
+            ai_move_controller(ai_move_walkmove_straferight, 6);
           }
           else{
-            ai_move_controller(ai_move_stand);
+            ai_move_controller(ai_move_stand, 2);
           }
         }
       }
@@ -102,11 +102,11 @@ void() ai_sub_hunt={
       self.goalentity = self.enemy;
       if(self.stat_trg_dist >= AI_RANGE_L){
         //self.ai_next_move = ai_move_run_goal;
-        ai_move_controller(ai_move_run_goal);
+        ai_move_controller(ai_move_run_goal, 1);
       }
       else{
         //self.ai_next_move = ai_move_walk_goal;
-        ai_move_controller(ai_move_walk_goal);
+        ai_move_controller(ai_move_walk_goal, 1);
       }
       self.patience = self.patience + 1;
       if(self.patience >= self.maxpatience){
@@ -211,12 +211,10 @@ void() ai_sub_tonode={
       self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
       d = vlen(self.goalentity.origin - self.origin);
       if(d > AI_RANGE_L){
-        ai_move_controller(ai_move_run_goal);
-        //self.ai_next_move = ai_move_run_goal;
+        ai_move_controller(ai_move_run_goal, 1);
       }
       else{
-        ai_move_controller(ai_move_walk_goal);
-        //self.ai_next_move = ai_move_walk_goal;
+        ai_move_controller(ai_move_walk_goal, 1);
       }
     }
     else{
@@ -268,12 +266,10 @@ void() ai_sub_trynode={
       self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
       d = vlen(self.goalentity.origin - self.origin);
       if(d > AI_RANGE_L){
-        ai_move_controller(ai_move_run_goal);
-        //self.ai_next_move = ai_move_run_goal;
+        ai_move_controller(ai_move_run_goal, 1);
       }
       else{
-        ai_move_controller(ai_move_walk_goal);
-        //self.ai_next_move = ai_move_walk_goal;
+        ai_move_controller(ai_move_walk_goal, 1);
       }
     }
   }

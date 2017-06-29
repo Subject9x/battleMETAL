@@ -23,7 +23,8 @@ float(entity ent, float changed) send_navpoint={
   return TRUE;
 };
 
-/*QUAKED map_navpoint (.1 .1 .1) (-1 -1 -1 ) (1 1 1) 
+/*QUAKED map_navpoint (.1 .1 .1) (-1 -1 -1 ) (1 1 1)
+
 */
 void() map_navpoint={
   //self.obj_status = 1;

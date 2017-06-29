@@ -107,7 +107,7 @@ void() ai_control;
 .void() ai_prev_move;
 .void() ai_next_move;
 
-void(void() move) ai_move_controller;
+void(void() move, float frames) ai_move_controller;
 void(entity wep) ai_attack_basic;
 void(entity wep) ai_attack_ene;
 void(entity wep) ai_attack_bal;

@@ -126,70 +126,80 @@ really just important during the ai_sub_fight() func.
 
 entity ai - the ai to act upon
 void() move - the desired move function
+float frames - how many server think frames to run movement for
 */
-void(void() move) ai_move_controller={
+void(void() move, float frames) ai_move_controller={
   ChangeYaw();
-  if(move == ai_move_stand){
-    self.ai_next_move = ai_move_stand;
-  }
-  else if(move == ai_move_walk_goal){
-    if(self.ai_prev_move != ai_sub_fight){
-      self.ai_next_move = ai_move_walk_goal;
-    }
-    else{
-      self.ai_next_move = ai_move_stand;
-    }
-  }
-  else if(move == ai_move_run_goal){
-    if(self.ai_prev_move != ai_sub_fight){
-      self.ai_next_move = ai_move_walk_goal;
-    }
-    else{
-      self.ai_next_move = ai_move_stand;
-    }
-  }
-  else if(move == ai_move_walkmove_strafeleft){
-    if(self.ai_prev_move == ai_move_walkmove_straferight){
-      self.ai_next_move = ai_move_stand;
-    }
-    else{
-      self.ai_next_move = ai_move_walkmove_strafeleft;
-    }
-  }
-  else if( move == ai_move_walkmove_straferight){
-      if(self.ai_prev_move == ai_move_walkmove_strafeleft){
-      self.ai_next_move = ai_move_stand;
-    }
-    else{
-      self.ai_next_move = ai_move_walkmove_straferight;
-    }
-  }
-  else if(move == ai_move_forward){
-    if(self.ai_prev_move != ai_move_stand){
-      self.ai_next_move = ai_move_stand;
-    }
-    else{
-      self.ai_next_move = ai_move_forward;
-    }
-  }
-  else if(move == ai_move_backward){
-    if(self.ai_prev_move != ai_move_stand){
-      self.ai_next_move = ai_move_stand;
-    }
-    else{
-      self.ai_next_move = ai_move_backward;
-    }
-  }
-  else if(move == ai_move_charge){
-    if(self.ai_prev_move == ai_move_backward){
-      self.ai_next_move = ai_move_stand;
-    }
-    else{
-      self.ai_next_move = ai_move_charge;
-    }
+  if(self.w_isready <= self.w_clipsize){
+    //hold the present course
+    self.w_isready = self.w_isready + 1;
   }
   else{
-    self.ai_next_move = ai_move_stand;
+    //set new course and duration
+    self.w_isready = 0;
+    self.w_clipsize = frames;
+    if(move == ai_move_stand){
+      self.ai_next_move = ai_move_stand;
+    }
+    else if(move == ai_move_walk_goal){
+      if(self.ai_prev_move != ai_sub_fight){
+        self.ai_next_move = ai_move_walk_goal;
+      }
+      else{
+        self.ai_next_move = ai_move_stand;
+      }
+    }
+    else if(move == ai_move_run_goal){
+      if(self.ai_prev_move != ai_sub_fight){
+        self.ai_next_move = ai_move_walk_goal;
+      }
+      else{
+        self.ai_next_move = ai_move_stand;
+      }
+    }
+    else if(move == ai_move_walkmove_strafeleft){
+      if(self.ai_prev_move == ai_move_walkmove_straferight){
+        self.ai_next_move = ai_move_stand;
+      }
+      else{
+        self.ai_next_move = ai_move_walkmove_strafeleft;
+      }
+    }
+    else if( move == ai_move_walkmove_straferight){
+        if(self.ai_prev_move == ai_move_walkmove_strafeleft){
+        self.ai_next_move = ai_move_stand;
+      }
+      else{
+        self.ai_next_move = ai_move_walkmove_straferight;
+      }
+    }
+    else if(move == ai_move_forward){
+      if(self.ai_prev_move != ai_move_stand){
+        self.ai_next_move = ai_move_stand;
+      }
+      else{
+        self.ai_next_move = ai_move_forward;
+      }
+    }
+    else if(move == ai_move_backward){
+      if(self.ai_prev_move != ai_move_stand){
+        self.ai_next_move = ai_move_stand;
+      }
+      else{
+        self.ai_next_move = ai_move_backward;
+      }
+    }
+    else if(move == ai_move_charge){
+      if(self.ai_prev_move == ai_move_backward){
+        self.ai_next_move = ai_move_stand;
+      }
+      else{
+        self.ai_next_move = ai_move_charge;
+      }
+    }
+    else{
+      self.ai_next_move = ai_move_stand;
+    }
   }
 };
 
@@ -198,16 +208,16 @@ void() ai_move_random={
   local float r;
   r = random();
   if(r < 0.25){
-    ai_move_controller(ai_move_backward);
+    ai_move_controller(ai_move_backward, r*2);
   }
   else if((r >= 0.25) && (r < 0.5)){
-    ai_move_controller(ai_move_forward);
+    ai_move_controller(ai_move_forward, r*2);
   }
   else if((r >= 0.5) && (r < 0.75)){
-    ai_move_controller(ai_move_walkmove_strafeleft);
+    ai_move_controller(ai_move_walkmove_strafeleft, r*2);
   }
   else if(r >= 0.75){
-    ai_move_controller(ai_move_walkmove_straferight);
+    ai_move_controller(ai_move_walkmove_straferight, r*2);
   }
 };
 
@@ -304,15 +314,7 @@ void() ai_move_walkmove_straferight={
 };
 
 void() ai_move_charge={
-  local float t, a;
-  t = random();
-  if(t <= 0.5){
-    a = -60;
-  }
-  else{
-    a = 60;
-  }
-  if not(walkmove (self.ideal_yaw - a,  self.m_fspeed * AI_WALK_SPD)){
+  if not(walkmove (self.ideal_yaw - 60,  self.m_fspeed * AI_WALK_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
   }

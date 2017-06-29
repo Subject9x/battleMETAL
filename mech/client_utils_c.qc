@@ -123,12 +123,8 @@ void(string cmd, float tokens) client_setNavPoint={
   }
 };
 
-void() respawn={
-  //CopyToBodyQue (self);
-  //setspawnparms (self);
-  PutClientInServer ();
- 
- /* if (coop){
+void() respawn={ 
+  if (coop){
 		// make a copy of the dead body for appearances sake
     //
 		// get the spawn parms as they were at level start
@@ -148,7 +144,7 @@ void() respawn={
 	else{	
   // restart the entire server
 		localcmd ("restart\n");
-	}*/
+	}
 };
 
 entity() SelectSpawnPoint={
