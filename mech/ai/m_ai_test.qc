@@ -18,7 +18,6 @@ float(entity ent, float changed) send_ai_mech={
   return TRUE;
 };
 
-
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
 nextVecChoice = match to mech data id
 i_faction = which faction
@@ -114,7 +113,8 @@ void() ai_mech={
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
   self.ai_optical = self.radar_range /2;
-  self.maxpatience = 10;
+  mod = ai_pilot_rating_patience();
+  self.maxpatience = mod;
   self.patience = 0;
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
@@ -160,15 +160,7 @@ void() ai_mech={
       self.ai_next_state = self.ai_first_order;
       if(trace_fraction  < 1){
         self.ai_prev_state = self.ai_first_order;
-        if(self.ai_first_order == ai_order_attack){
-          self.ai_next_state = ai_sub_hunt;
-        }
-        else if(self.ai_first_order == ai_order_defend){
-          self.ai_next_state = ai_sub_tonode;
-        }
-        else if(self.ai_first_order == ai_order_stand){
-          self.ai_next_state = ai_sub_tonode;
-        }
+        self.ai_next_state = ai_sub_tonode;
       }
     }
     else{

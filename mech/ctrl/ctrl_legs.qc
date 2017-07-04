@@ -25,14 +25,13 @@ void() ctrl_updateLegs={
     }
     if((self.owner.flags & FL_CLIENT)){
       //texture check
-      local vector dn;
+      local vector dn, angl;
       local float vertic;
       makevectors(self.owner.angles);
-      vertic = self.owner.c_bbx_n_y - 4;
+      vertic = self.owner.c_bbx_n_y - 16;
       dn = self.origin + (v_up*vertic);
       traceline(self.origin, dn, TRUE, self.owner);
       //trace_dphittexturename
-      
       local vector m;
       m = self.owner.movement;
       m_y = m_y * -1;

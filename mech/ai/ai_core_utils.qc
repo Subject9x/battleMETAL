@@ -512,6 +512,24 @@ float() ai_pilot_rating_leading={
   }
 };
 
+float() ai_pilot_rating_patience={
+  if(self.p_damage == 0){
+    return AI_PTNCE_ACE;
+  }
+  else if(self.p_damage == 1){
+    return AI_PTNCE_VET;
+  }
+  else if(self.p_damage == 2){
+    return AI_PTNCE_REG;
+  }
+  else if(self.p_damage == 3){
+    return AI_PTNCE_ROK;
+  }
+  else{
+    return AI_PTNCE_ROK;
+  }
+};
+
 void() ai_core_calcranges={
   local entity w;
   w = self.w_slot;

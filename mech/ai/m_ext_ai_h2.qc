@@ -73,6 +73,13 @@ float AI_LEAD_VET = 0.1;
 float AI_LEAD_REG = 0.18;
 float AI_LEAD_ROK = 0.24;
 
+//ai's patience in hunting a target, the better the pilot the longer they hunting
+float AI_PTNCE_ACE = 40;
+float AI_PTNCE_VET = 30;
+float AI_PTNCE_REG = 20;
+float AI_PTNCE_ROK = 10;
+
+//
 float AI_RANGE_S = 800;
 float AI_RANGE_M = 1600;
 float AI_RANGE_L = 2400;
@@ -174,7 +181,7 @@ float() ai_pilot_rating_range;
 float() ai_pilot_rating_leading;
 float() ai_pilot_yaw_mod;
 float() ai_pilot_armor_mod;
-
+float() ai_pilot_rating_patience;
 
 //TODO - separate header?
 void() ai_mech_update;

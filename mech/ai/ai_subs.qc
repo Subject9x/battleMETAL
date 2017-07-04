@@ -43,7 +43,7 @@ void() ai_sub_fight={
         }
         else{
           if(ai_target_insights(self.enemy)){
-            ai_move_controller(ai_move_walkmove_straferight, 6);
+            ai_move_controller(ai_move_walkmove_straferight, 3);
           }
           else{
             ai_move_controller(ai_move_stand, 2);
@@ -89,7 +89,6 @@ void() ai_sub_hunt={
     //target is still valid
     if(ai_target_visible(self.enemy)){
       //target is visible
-      //bprint("-> ai_sub_fight\n"); //DEBUG
       self.goalentity = self.oldgoal;
       self.oldgoal = world;
       self.ai_prev_state = self.ai_next_state;
@@ -97,15 +96,12 @@ void() ai_sub_hunt={
       return;
     }
     else{
-      //bprint("hunting non-visible\n"); //DEBUG
       self.oldgoal = self.goalentity;
       self.goalentity = self.enemy;
       if(self.stat_trg_dist >= AI_RANGE_L){
-        //self.ai_next_move = ai_move_run_goal;
         ai_move_controller(ai_move_run_goal, 1);
       }
       else{
-        //self.ai_next_move = ai_move_walk_goal;
         ai_move_controller(ai_move_walk_goal, 1);
       }
       self.patience = self.patience + 1;
@@ -128,14 +124,12 @@ void() ai_sub_hunt={
             return;
           }
         }
-        //bprint("patience hit!\n"); //DEBUG
         self.patience = 0;
         local float nd, ng;
         local entity node, nodeg;
         nd = vlen(self.origin - self.enemy.origin);
         node = ai_core_nodetogoal(self, self.enemy);
         if(node){
-          //bprint("enemy close to node\n"); //DEBUG
           self.ai_prev_state = self.ai_next_state;
           if(node.node_id){
             //node is a node_graph node
@@ -153,7 +147,6 @@ void() ai_sub_hunt={
           }
         }
         else{
-         // bprint("enemy not close to node\n"); //DEBUG
           self.goalentity = self.oldgoal;
           self.oldgoal = world;
           self.ai_next_state = self.ai_prev_state;
@@ -164,14 +157,12 @@ void() ai_sub_hunt={
   }
   else{
     if(self.ai_prev_state == self.ai_first_order){
-     // bprint("-> first order\n"); //DEBUG
       self.goalentity = self.oldgoal;
       self.oldgoal = world;
       self.ai_next_state = self.ai_first_order;
       return;
     }
     else{
-      //bprint("prev state\n"); //DEBUG
       self.goalentity = self.oldgoal;
       self.oldgoal = world;
       self.ai_next_state = self.ai_prev_state;
@@ -186,7 +177,6 @@ void() ai_sub_hunt={
 void() ai_sub_tonode={
   if(self.ai_prev_state == ai_sub_trynode){
     if(self.goalentity == self.oldgoal){
-      //bprint("exiting tonode - reason: trynode succeed\n"); //DEBUG
       self.oldgoal = world;
       self.ai_prev_state = self.ai_next_state;
       self.ai_next_state = self.ai_first_order;
@@ -196,8 +186,6 @@ void() ai_sub_tonode={
   local entity t;
   t = ai_core_findtarget();
   if(t != world){
-    //bprint("target!\n"); //DEBUG
-    //bprint("-> ai_sub_fight\n"); //DEBUG
     self.enemy = t;
     self.oldgoal = self.goalentity;
     self.ai_prev_state = self.ai_next_state;
@@ -211,10 +199,20 @@ void() ai_sub_tonode={
       self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
       d = vlen(self.goalentity.origin - self.origin);
       if(d > AI_RANGE_L){
-        ai_move_controller(ai_move_run_goal, 1);
+        ai_move_controller(ai_move_run_goal, 2);
       }
       else{
-        ai_move_controller(ai_move_walk_goal, 1);
+        if(d > AI_RANGE_S){
+          ai_move_controller(ai_move_walk_goal, 4);
+        }
+        else if(d <= 75){
+          if(self.ai_first_order != ai_order_patrol){
+            ai_move_controller(ai_move_stand, 1);
+            self.ai_next_state = self.ai_prev_state;
+            self.ai_prev_state = ai_sub_tonode;
+            return;
+          }
+        }
       }
     }
     else{
@@ -252,16 +250,13 @@ void() ai_sub_tonode={
 ================================================================*/
 void() ai_sub_trynode={
   if(self.oldgoal != world){
-   // bprint("ai_sub_trynode\n"); //DEBUG
     if(self.goalentity == self.oldgoal){
-      //bprint("found goal\n"); //DEBUG
       //have reached goal
       self.ai_next_state = self.ai_prev_state;
       self.ai_prev_state = ai_sub_trynode;
       return;
     }
     else{
-      //bprint("execute ai_sub_trynode\n"); //DEBUG
       local float d;
       self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
       d = vlen(self.goalentity.origin - self.origin);

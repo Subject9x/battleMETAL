@@ -58,7 +58,7 @@ void() ai_node_touch={
       return;
     }
     else{
-      if((other.ai_first_order == ai_order_patrol) || (self.ai_next_state == ai_sub_tonode)){
+      if(other.ai_first_order == ai_order_patrol){
         //AI is on patrol orders
         if(self.target){
           local entity t;
@@ -77,6 +77,26 @@ void() ai_node_touch={
             return;
           }
         }
+      }
+      else if(other.ai_first_order == ai_order_attack){
+        local entity t;
+        t = ai_core_findtarget();
+        if(t){
+          self = other;
+            self.enemy = t;
+            self.ai_prev_state = self.ai_next_state;
+            self.ai_next_state = ai_sub_fight;
+          self = this;
+          return;
+        }
+      }
+      else if(other.ai_first_order == ai_order_defend){
+        self = other;
+          self.ai_prev_state = self.ai_next_state;
+          self.ai_next_state = self.ai_first_order;
+          ai_move_random();
+        self = this;
+        return;
       }
     }
   }
