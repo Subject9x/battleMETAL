@@ -5,6 +5,12 @@ Date: 10/12/2016
 Overview: csqc defs for main game
 */
 
+//SendEnt constants
+float E_NAV = 1;
+float E_OBJ = 2;
+float E_AIU = 3;
+float E_BLD = 4;
+
 //STAT TYPES
 float AS_STRING = 1;
 float AS_INT = 2;

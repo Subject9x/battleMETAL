@@ -111,6 +111,17 @@ void() ai_control={
     self.button0 = 0;
   }
   self.ai_next_move();
+  if(self.p_class == P_MECH){
+    local float a;
+    a = anglemod(self.ideal_yaw + self.p_velocity);
+    if(self.e_legs.angles_y != a){
+      if(self.owner.ai_next_move != ai_move_stand){
+        self.e_legs.angles_y = anglemod(self.e_legs.angles_y - a);
+        self.e_legs.v_angle_y = self.e_legs.angles_y;
+        self.p_velocity = 0;
+      }
+    }
+  }
   self.think = ai_control;
   self.nextthink = time + 0.05;
   self.e_cam.SendFlags = 1;
@@ -228,11 +239,13 @@ void() ai_move_stand={
 void() ai_move_walk_goal={
   movetogoal(self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_walk_goal;
+  self.p_velocity = 0;
 };
 
 void() ai_move_run_goal={
   movetogoal(self.m_fspeed * AI_RUN_SPD);
   self.ai_prev_move = ai_move_run_goal;
+  self.p_velocity = 0;
 };
 
 void() ai_move_walkmove_slide={
@@ -246,6 +259,7 @@ void() ai_move_walkmove_slide={
 	}
 	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed * AI_WALK_SPD)){
     self.ai_prev_move = ai_move_walkmove_slide;
+    self.p_velocity = ofs;
 		return;
   }
 	self.lefty = 1 - self.lefty;
@@ -264,6 +278,7 @@ void() ai_move_runmove_slide={
 	}
 	if (walkmove (self.ideal_yaw + ofs,  self.m_sspeed * AI_RUN_SPD)){
 		self.ai_prev_move = ai_move_runmove_slide;
+    self.p_velocity = ofs;
     return;
   }
 	self.lefty = 1 - self.lefty;
@@ -274,16 +289,14 @@ void() ai_move_runmove_slide={
 void() ai_move_forward={
   ChangeYaw();
   walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
-  self.e_legs.angles_y =  self.angles_y;
-  self.e_legs.v_angle_y = self.e_legs.angles_y;
   self.ai_prev_move = ai_move_forward;
+  self.p_velocity = 0;
 };
 
 void() ai_move_backward={  
   ChangeYaw();
   walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD);
-  self.e_legs.angles_y =  self.angles_y+180;
-  self.e_legs.v_angle_y = self.e_legs.angles_y;
+  self.p_velocity = 180;
   self.ai_prev_move = ai_move_backward;
 };
 
@@ -294,8 +307,7 @@ void() ai_move_walkmove_strafeleft={
     self.ai_prev_move = ai_move_stand;
   }
   else{
-    self.e_legs.angles_y =  self.angles_y + 90;
-    self.e_legs.v_angle_y = self.e_legs.angles_y;
+    self.p_velocity = 90;
     self.ai_prev_move = ai_move_walkmove_strafeleft;
   }
 };
@@ -307,8 +319,7 @@ void() ai_move_walkmove_straferight={
     self.ai_prev_move = ai_move_stand;
   }
   else{
-    self.e_legs.angles_y =  self.angles_y - 90;
-    self.e_legs.v_angle_y = self.e_legs.angles_y;
+    self.p_velocity = -90;
     self.ai_prev_move = ai_move_walkmove_straferight;
   }
 };
@@ -320,5 +331,6 @@ void() ai_move_charge={
   }
   else{
     self.ai_prev_move = ai_move_charge;
+    self.p_velocity = -60;
   }
 };

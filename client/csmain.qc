@@ -500,24 +500,24 @@ void(float isnew) CSQC_Ent_Update =
 {
   local float id;
   id = ReadByte();
-  if(id == 1){
+  if(id == E_NAV){
     if(isnew){
       self.classname = "data";
       self.data_type = DATA_NAVP;
       self.drawmask = MASK_ENGINE;
       self.ui_org = '0 0 0'; 
       self.ui_size = '0 0 0';
-
       setorigin(self, self.origin);
       addentity(self);
     }
     self.nav_name = ReadByte();
     self.w_name = gui_getNavName(self.nav_name);
+    self.isActive = ReadByte();
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
   }
-  else if(id == 2){
+  else if(id == E_OBJ){
     if(isnew){
       self.classname = "data";
       self.data_type = DATA_OBJT;
@@ -530,7 +530,7 @@ void(float isnew) CSQC_Ent_Update =
     self.nav_name = ReadByte();
   }
   //AI test...
-  else if(id == 3){
+  else if(id == E_AIU){
     self.data_idx = ReadByte();
     self.p_class = ReadByte();
     if(isnew){
@@ -542,14 +542,10 @@ void(float isnew) CSQC_Ent_Update =
     self.i_faction = ReadByte();
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    //self.angles_x = ReadCoord();
-    //self.angles_y = ReadCoord();
-    //self.angles_z = ReadCoord();
-   
+    self.origin_z = ReadCoord();  
     setorigin(self, self.origin);
   }
-  else if(id == 4){
+  else if(id == E_BLD){
     self.data_idx = ReadByte();
     self.p_class = ReadByte();
     if(isnew){
@@ -566,7 +562,6 @@ void(float isnew) CSQC_Ent_Update =
     self.angles_x = ReadAngle();
     self.angles_y = ReadAngle();
     self.angles_z = ReadAngle();
-    
     setorigin(self, self.origin);
   }
 };

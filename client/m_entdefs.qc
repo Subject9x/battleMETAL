@@ -5,6 +5,12 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
+//SendEnt constants
+float E_NAV = 1;
+float E_OBJ = 2;
+float E_AIU = 3;
+float E_BLD = 4;
+
 //Damage types
 float DMG_BAL = 1;  //ballstic damage
 float DMG_ENE = 2;  //energy damage
@@ -105,7 +111,6 @@ float ARM_RAD = 24;
 .float obj_status;
 .float controllingFaction;
 .float isActive;
-.float navId;
 .float nav_name;
 .vector ui_org;
 .vector ui_size;

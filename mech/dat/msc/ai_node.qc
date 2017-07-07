@@ -9,7 +9,9 @@ void() ai_node_touch;
 void() ai_node_graph_touch;
 
 /*QUAKED ai_node (.1 .2 .9) (-20 -20 -20) (20 20 20)
-isActive = 0 / 1
+isActive = AI can use this? (mmm might not be workable atm)
+  0 = FALSE
+  1 = TRUE
 i_faction = only is if faction matching //not impl yet
 state_1 = impart new first order to an AI
    0 = Attack the .target
@@ -19,11 +21,6 @@ state_1 = impart new first order to an AI
 */
 void() ai_node;
 void() ai_node={
-  //self.obj_status = 1;
-  //self.controllingFaction = 0;
-  //self.isActive = TRUE;
-  //self.navId = 1;
-  //self.nav_name = "Alpha";
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
   setmodel(self, "q3mdl/testball.md3");

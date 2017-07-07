@@ -28,14 +28,14 @@ void() navSelectListener={
   nav = findchain(classname, "data");
   while(nav){
     if(nav.data_type == DATA_NAVP){
-      if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
-        PLAYER_HELPER.plr_nav_pnt = nav.nav_name;
+      if(nav.isActive == TRUE){
+        if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
+          PLAYER_HELPER.plr_nav_pnt = nav.nav_name;
+        }
       }
     }
     nav = nav.chain;
   }
-  
-  
 };
 
 
@@ -82,10 +82,7 @@ void(vector ofs) menu_deploy_navInfoPanel={
   else{
     navlbl = "RANDOM!";
   }  
-  drawstring(ofs+gui_percentToPixel(0.0125, 0.1437), strcat("[CURRENT]:            ", navlbl), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
-  //reserves
-  //drawstring(ofs+'14 72', strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE)), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
+  drawstring(ofs+gui_percentToPixel(0.0125, 0.1437), strcat("[CURRENT]:            ", navlbl), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 void(vector ofs) menu_deploy_mechInfoPanel={

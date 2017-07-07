@@ -127,7 +127,7 @@ vector(float val) gui_getColorForArmor={
   else if((1<val)&&(val<=25)){
     return CLR_DEF_ARM_ONEQ;
   }
-  else if((25<val)&&(val<50)){
+  else if((25<val)&&(val<=50)){
     return CLR_DEF_ARM_HALF;
   }
   else if((50<val)&&(val<=75)){
@@ -145,7 +145,7 @@ vector(float val) gui_getColorForShield={
   if((1<val)&&(val<=25)){
     return CLR_DEF_SHD_ONEQ;
   }
-  else if((25<val)&&(val<50)){
+  else if((25<val)&&(val<=50)){
     return CLR_DEF_SHD_HALF;
   }
   else if((50<val)&&(val<=75)){
@@ -158,7 +158,6 @@ vector(float val) gui_getColorForShield={
     return CLR_DEF_SHD_DED;
   }
 };
-
 
 vector(float bits, float dead, float ok) gui_getWepStatusColor{
   if((bits & dead)){
@@ -190,7 +189,6 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha
   else if(ax & AXIS_H){
      adj = sz_x * perc;
      diff = sz_x - adj;
-     //norg_x = norg_x + diff;
      sz_x = sz_x - diff;
   }
   drawfill(norg, sz, clr_fr, alpha, flg);

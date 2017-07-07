@@ -9,7 +9,7 @@ void() nav_obcjective_th;
 float(entity ent, float changed) send_objective;
 
 float(entity ent, float changed) send_objective={
-  WriteByte( MSG_ENTITY, 2 ); // Unique Identifier, I suggest you use enums to make it easy on yourself
+  WriteByte( MSG_ENTITY, E_OBJ ); // Unique Identifier, I suggest you use enums to make it easy on yourself
   WriteByte( MSG_ENTITY, self.nav_name);
   return TRUE;
 };

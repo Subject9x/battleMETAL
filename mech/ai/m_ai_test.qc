@@ -6,7 +6,7 @@
 
 float(entity ent, float changed) send_ai_mech={
 //super ugly hack, send ai's e_cam ent
-  WriteByte( MSG_ENTITY, 3 ); // Unique Identifier, I suggest you use enums to make it easy on yourself
+  WriteByte( MSG_ENTITY, E_AIU ); // Unique Identifier, I suggest you use enums to make it easy on yourself
   WriteByte( MSG_ENTITY, self.owner.data_idx);
   WriteByte( MSG_ENTITY, self.owner.p_class);
   WriteByte( MSG_ENTITY, self.owner.sh_cur);
@@ -49,9 +49,6 @@ void() ai_mech={
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
   self.p_class = P_MECH;
-  //self.i_faction = 2; // DEBUG
-  //self.ai_leading = 0.075; //DEBUG
-  //self.p_damage = 3; //DEBUG
   self.data_idx = 0;
   self.en_cur = 0;
   self.en_max = 0;

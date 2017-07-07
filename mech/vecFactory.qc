@@ -130,6 +130,7 @@ entity(entity dat, entity own) buildLeftArm={
   self = comp;
     dat.unit_larm();
     buildUnitPiece(own);
+    self.c_part = oself.e_tor_l;
   self = oself;
   return comp;
 };
@@ -140,6 +141,7 @@ entity(entity dat, entity own) buildRightArm={
   self = comp;
     dat.unit_rarm();
     buildUnitPiece(own);
+    self.c_part = oself.e_tor_r;
   self = oself;
   return comp;
 };
@@ -356,6 +358,14 @@ void(entity mechData, entity own, float state1, float state2, float state3) buil
   self.view_ofs = self.origin - own.origin;
   self.angles = own.angles;
   self.v_angle = self.angles - own.angles;
+  
+  if(self.c_parent == M_ARM_RIGHT){
+    self.c_part = own.e_arm_r;
+  }
+  else if(self.c_parent == M_ARM_LEFT){
+    self.c_part = own.e_arm_l;
+  }
+  
   self.th_die = ctrl_die_weapon;
   self.state_1 = state1;
   self.state_2 = state2;
