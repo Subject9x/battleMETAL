@@ -138,6 +138,7 @@ void() ai_order_attack;
 void() ai_order_defend;
 void() ai_order_patrol;
 void() ai_order_stand;
+void() ai_order_test;
 
 //subs are in-between states for orders
 void() ai_sub_fight;

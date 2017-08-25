@@ -131,6 +131,9 @@ void() ai_mech={
   else if(self.state_1 == 3){
     self.ai_first_order = ai_order_attack;
   }
+  else if(self.state_1 == -1){
+    self.ai_first_order = ai_order_test;
+  }
   else{
     self.ai_first_order = ai_order_stand;
   }

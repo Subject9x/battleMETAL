@@ -142,3 +142,28 @@ void() ai_order_stand={
   }
 
 };
+
+/*================================================================
+[Dummy]
+AI is ordered to stand around and generally do nothing, literally nothing
+================================================================*/
+void() ai_order_test={
+  if(self.ai_prev_state != ai_order_stand){
+    local entity restore;
+    restore = find(world, targetname, self.target);
+    if(restore != self.goalentity){
+      //bprint("restoring entity\n");
+      self.goalentity = restore;
+    }
+  }
+  local float d;
+  d = vlen(self.goalentity.origin - self.origin);
+  if(d <= AI_RANGE_S){
+    self.ai_next_move = ai_move_stand;
+  }
+  else{
+    self.ai_prev_state = self.ai_first_order;
+    self.ai_next_state = ai_sub_tonode;
+    return;
+  }
+};
