@@ -3,16 +3,16 @@ mech Mod
 Author: Subject9x
 Date: 01/21/2017
 Overview: moving all mech values into a single global file for ease of maintenance.
-  mech: MATOK
+  mech: HEVIDAHL
 -the search function will be your best friend in these files...
 -these are utilized by their relevant data entity and its ini functions
 */
 
-//MATOK MECH=============================
+//HEVIDAHL MECH=============================
 float DAT_HVD_IDX = ID_MCH_COLOSSUS;
 string DAT_HVD_VEC_NAME = "Hevidahl";
 float DAT_HVD_TECH_LEVEL = 1;
-float DAT_HVD_RADAR_RANGE = 9000;
+float DAT_HVD_RADAR_RANGE = 2000;
 float DAT_HVD_RESERVE_COST = 200;
 float DAT_HVD_ENERGY_CUR = 1200;
 float DAT_HVD_ENERGY_MAX = 1200;

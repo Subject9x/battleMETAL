@@ -10,7 +10,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 
 //OUTLAW MECH=============================
 float DAT_OTL_IDX = ID_MCH_OUTLAW;
-string DAT_OTL_VEC_NAME = "Outlaw";
+string DAT_OTL_VEC_NAME = "Balakett";
 float DAT_OTL_TECH_LEVEL = 1;
 float DAT_OTL_RESERVE_COST = 100;
 float DAT_OTL_RADAR_RANGE = 17000;
@@ -20,8 +20,8 @@ float DAT_OTL_ENERGY_RATE = 0.5;
 float DAT_OTL_SHIELD_CUR = 300;
 float DAT_OTL_SHIELD_MAX = 300;
 float DAT_OTL_SHIELD_RATE = 1;
-vector DAT_OTL_CTOR_BBX_N ='-12 -12 -34';
-vector DAT_OTL_CTOR_BBX_X ='12 12 12';
+vector DAT_OTL_CTOR_BBX_N ='-14 -14 -34';
+vector DAT_OTL_CTOR_BBX_X ='14 14 12';
 string DAT_OTL_CPIT_MODEL= "gfx/ui/hgr_otl.png";
 float DAT_OTL_M_FSPEED= 525;//350; - 5/21/2017
 float DAT_OTL_M_SSPEED= 450;//350; - 5/21/2017

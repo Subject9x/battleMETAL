@@ -11,8 +11,8 @@ Overview: moving all mech values into a single global file for ease of maintenan
 //MATOK MECH=============================
 float DAT_MTK_IDX = ID_MCH_MATOK;
 string DAT_MTK_VEC_NAME = "Matok";
-float DAT_MTK_TECH_LEVEL = 1;
-float DAT_MTK_RADAR_RANGE = 10000;
+float DAT_MTK_TECH_LEVEL = 2;
+float DAT_MTK_RADAR_RANGE = 3000;
 float DAT_MTK_RESERVE_COST = 200;
 float DAT_MTK_ENERGY_CUR = 800;
 float DAT_MTK_ENERGY_MAX = 800;
@@ -20,8 +20,8 @@ float DAT_MTK_ENERGY_RATE = 3;
 float DAT_MTK_SHIELD_CUR = 425;
 float DAT_MTK_SHIELD_MAX = 425;
 float DAT_MTK_SHIELD_RATE = 0.75;
-vector DAT_MTK_CTOR_BBX_N ='-14 -14 -35';
-vector DAT_MTK_CTOR_BBX_X ='14 14 14';
+vector DAT_MTK_CTOR_BBX_N ='-15 -15 -35';
+vector DAT_MTK_CTOR_BBX_X ='15 15 14';
 string DAT_MTK_CPIT_MODEL = "gfx/ui/hgr_mtk.png";
 float DAT_MTK_M_FSPEED=225;
 float DAT_MTK_M_SSPEED=225;
