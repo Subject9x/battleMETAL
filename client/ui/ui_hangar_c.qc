@@ -651,22 +651,22 @@ void(vector ofs) menu_hangar_WeaponInfo={
   drawstring(icol + gui_percentToPixel(0, 0.0083), strcat("[TYPE]:         ",getNameOfWepType(dat.dmg_type)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //en cost
-  drawstring(icol + gui_percentToPixel(0, 0.0166), strcat("[ENERGY COST]:  ",ftos(dat.en_max)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixel(0, 0.0166), strcat("[ENERGY COST]:  ",ftos(dat.en_max)," per second"), '7 7 0', '1 1 1', HUD_ALPHA, 0);
     
   //range
   drawstring(icol + gui_percentToPixel(0, 0.025), strcat("[RANGE]:        ",ftos(dat.w_range)),'7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //size
-  drawstring(icol + gui_percentToPixel(0, 0.0333), strcat("[SIZE]:         ",ftos(dat.i_size)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixel(0, 0.0333), strcat("[RATE OF FIRE]: ",ftos(dat.w_firerate),"s"), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //clip
   drawstring(icol + gui_percentToPixel(0, 0.0416), strcat("[CLIPSIZE]:     ",ftos(dat.w_clipsize)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //rof
-  drawstring(icol + gui_percentToPixel(0, 0.05), strcat("[RATE OF FIRE]: ",ftos(dat.w_firerate)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixel(0, 0.05), strcat("[RELOAD TIME]:  ",ftos(dat.w_reloadtime),"s"), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //reload
-  drawstring(icol + gui_percentToPixel(0, 0.0583), strcat("[RELOAD TIME]:  ",ftos(dat.w_reloadtime)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixel(0, 0.0583),strcat("[SIZE]:         ",ftos(dat.i_size)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //tech
   drawstring(icol + gui_percentToPixel(0, 0.0666), strcat("[TECH LEVEL]:   ",ftos(dat.i_techlvl)), '7 7 0', '1 1 1', HUD_ALPHA, 0);

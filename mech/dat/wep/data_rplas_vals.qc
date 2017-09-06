@@ -5,7 +5,7 @@ Date: 02/26/2017
 Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
-//LIGHT AUTOCANNON=======================
+//ROTARY PLASMA CANNON=======================
 float DAT_RPLAS_IDX = ID_WEP_RPC;
 string DAT_RPLAS_NAME = "RPC";
 float DAT_RPLAS_DMG = 120;

@@ -10,16 +10,18 @@ string DATWEP_MARH_NAME = "Active-Radar Homing Missile";
 float DATWEP_MARH_FIRETIME = 0;
 float DATWEP_MARH_CLIPSIZE = 1;
 float DATWEP_MARH_CURRENTAMMO = 1;
-float DATWEP_MARH_FIRERATE = 0.25;//0.95;
-float DATWEP_MARH_RELOADTIME = 0.95;
+float DATWEP_MARH_FIRERATE = 5;//0.95;
+float DATWEP_MARH_RELOADTIME = 5;
 float DATWEP_MARH_ISFIRE = 0;
 vector DATWEP_MARH_FIRE_OFS = '0 0 8';
 string DATWEP_MARH_MODEL = "q3mdl/weapons/w_mis.md3";
 float DATWEP_MARH_PROJ_ID= ID_PRJ_MARH;
-float DATWEP_MARH_EN_COST= 0;
+float DATWEP_MARH_EN_COST = 10;
+float DATWEP_MARH_EN_MAX = 500;
 string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
 float DAT_MARH_WSIZE = 3;
+float DAT_MARH_RANGE = 2400;
 
 void() data_wep_marh;
 
@@ -30,7 +32,7 @@ void() data_wep_marh={
   self = mis;
     self.classname = "data";
     self.data_idx = DATWEP_MARH_IDX;
-    self.dmg_amt = 5;
+    self.dmg_amt = 4;
     self.data_type = DATA_WEPN;
     self.w_name = DATWEP_MARH_NAME;
     self.w_name = DATWEP_MARH_NAME;
@@ -48,6 +50,6 @@ void() data_wep_marh={
     self.note3 = "Has minimum range.";
     self.note4 = "Fires 15 missiles at a time.";
     self.w_icon = UI_WEP_MARH;
-    self.w_range = 2400;
+    self.w_range = DAT_MARH_RANGE;
   self = oself;
 };

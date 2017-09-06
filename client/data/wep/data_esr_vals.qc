@@ -9,9 +9,9 @@ float DAT_ESR_IDX = ID_WEP_ESR;
 string DAT_ESR_NAME = "Electro-Static Coil";
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_FIRERATE = 0.1;
-float DAT_ESR_RELOADTIME = 1;
+float DAT_ESR_RELOADTIME = 5;
 string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_ESR_EN_COST = 40;
+float DAT_ESR_EN_COST = 10;
 float DAT_ESR_TECH_LEVEL = 1;
 float DAT_ESR_WSIZE = 3;
 

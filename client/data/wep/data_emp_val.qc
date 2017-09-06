@@ -9,12 +9,13 @@ Overview: weapon  values are being reorganized to ease maintenance
 float DAT_EMP_IDX = ID_WEP_EMP;
 string DAT_EMP_NAME = "EMP Cannon";
 float DAT_EMP_CLIPSIZE = 1;
-float DAT_EMP_FIRERATE = 0.95;
-float DAT_EMP_RELOADTIME = 0.95;
+float DAT_EMP_FIRERATE = 6;
+float DAT_EMP_RELOADTIME = 6;
 string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
-float DAT_EMP_EN_COST= 30;
+float DAT_EMP_EN_COST = 10;
 float DAT_EMP_TECH_LEVEL = 1;
 float DAT_EMP_WSIZE = 2;
+float DAT_EMP_RANGE = 1600;
 
 void() data_wep_emp;
 
@@ -41,6 +42,6 @@ void() data_wep_emp={
     self.note1 = "Only damages Target's SHIELDS.";
     self.note2 = "Proximity detonation at longer ranges.";
     self.w_icon = UI_WEP_EMP;
-    self.w_range = 1600;
+    self.w_range = DAT_EMP_RANGE;
   self = oself;
 };

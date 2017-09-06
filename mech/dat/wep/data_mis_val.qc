@@ -5,7 +5,7 @@ Date: 01/22/2017
 Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
-//LIGHT AUTOCANNON=======================
+//ROCKET POD=======================
 float DAT_MIS_IDX = ID_WEP_MIS;
 string DAT_MIS_NAME = "Missile Launcher";
 float DAT_MIS_FIRETIME = 0;

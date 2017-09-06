@@ -6,15 +6,17 @@ Overview:
 */
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
+float DAT_PAC_DMG = 300;
 string DAT_PAC_NAME = "Particle-Accelerator Cannon";
 float DAT_PAC_FIRETIME = 0;
 float DAT_PAC_CLIPSIZE = 1;
-float DAT_PAC_FIRERATE = 1;
-float DAT_PAC_RELOADTIME = 1;
+float DAT_PAC_FIRERATE = 8;
+float DAT_PAC_RELOADTIME = 8;
 string DAT_PAC_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_PAC_EN_COST = 60;
+float DAT_PAC_EN_COST =  10;
 float DAT_PAC_TECH_LEVEL = 1;
 float DAT_PAC_WSIZE = 2;
+float DAT_PAC_RANGE = 800;
 
 void() data_wep_pac;
 
@@ -25,7 +27,7 @@ void() data_wep_pac={
   self = PAC;
     self.classname = "data";
     self.data_idx = DAT_PAC_IDX;
-    self.dmg_amt = 45;
+    self.dmg_amt = DAT_PAC_DMG;
     self.data_type = DATA_WEPN;
     self.w_name = DAT_PAC_NAME;
     self.w_name = DAT_PAC_NAME;
@@ -40,7 +42,7 @@ void() data_wep_pac={
     self.w_abbr = "PAC";
     self.note1 = "Ignores Target's shields completely.";
     self.w_icon = UI_WEP_PAC;
-    self.w_range = 800;
+    self.w_range = DAT_PAC_RANGE;
   self = oself;
 };
 

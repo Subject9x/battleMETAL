@@ -4,7 +4,7 @@ Author: Subject9x
 Date: 02/26/2017
 Overview: 
 */
-//LIGHT AUTOCANNON=======================
+//QUANTUM RIFLE=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
 string DAT_QRFL_NAME = "Q-Rifle";
 float DAT_QRFL_DMG = 150;

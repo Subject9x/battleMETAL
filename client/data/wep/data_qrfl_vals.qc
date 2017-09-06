@@ -4,16 +4,17 @@ Author: Subject9x
 Date: 02/26/2017
 Overview: 
 */
-//LIGHT AUTOCANNON=======================
+//QUANTUM RIFLE=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
 string DAT_QRFL_NAME = "Quantum Rifle";
-float DAT_QRFL_FIRETIME = 0;
+float DAT_QRFL_DMG = 150;
+float DAT_QRFL_FIRERATE = 5;//was 0.5 - 5/14/2017
+float DAT_QRFL_RELOADTIME = 5;//was 0.5  - 5/14/2017
 float DAT_QRFL_CLIPSIZE = 1;
-float DAT_QRFL_FIRERATE = 0.5;
-float DAT_QRFL_RELOADTIME = 0.5;
-float DAT_QRFL_EN_COST= 0;
+float DAT_QRFL_EN_COST= 10;
 float DAT_QRFL_TECH_LEVEL = 1;
 float DAT_QRFL_WSIZE = 3;
+float DAT_QRFL_RANGE = 2200;
 
 void() data_wep_qrfl;
 
@@ -24,7 +25,7 @@ void() data_wep_qrfl={
   self = latc;
     self.classname = "data";
     self.data_idx = DAT_QRFL_IDX;
-    self.dmg_amt = 8;
+    self.dmg_amt = DAT_QRFL_DMG;
     self.data_type = DATA_WEPN;
     self.w_name = DAT_QRFL_NAME;
     self.w_name = DAT_QRFL_NAME;
@@ -36,10 +37,10 @@ void() data_wep_qrfl={
     self.dmg_type = self.dmg_type | DMG_BAL | EFF_ENG;
     self.i_size = DAT_QRFL_WSIZE;
     self.w_abbr = "QRF";
-    self.note1 = "Damage affects Target's ENERGY meter.";
-    self.note2 = "Does not cause any other damage.";
+    self.note1 = "Affects Shields Only.";
+    self.note2 = "Instant-impact weapon.";
     self.w_icon = UI_WEP_QRF;
-    self.w_range = 2200;
+    self.w_range = DAT_QRFL_RANGE;
   self = oself;
 };
 
