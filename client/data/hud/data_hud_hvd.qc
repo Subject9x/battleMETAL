@@ -262,26 +262,16 @@ void(entity vec_data) hvd_hud_prep={
 
 void(vector view_x, vector view_ctr) hvd_HelmetImage={
   gui_renderImageFullScreen(self.img, '1 1 1', HUD_ALPHA, 0);
-  
-  local vector sz, hsz, ofs;
-  sz = draw_getimagesize("gfx/hud/navbar.png");
-  sz = gui_scaleSize(sz,VIEW_SCALE);
-  ofs_x = VIEW_CTR_x - (sz_x/2);
-  ofs_y = VIEW_ORG_y + 16;
-  
+  local vector npos;
+  local string nav;  
   local float ang;
   local vector pct;
-  ang = getstati(STAT_PLR_ANG);
-  if(ang >= 359){
-    ang = 0;
-  }
-  pct_x = (ang / 360);
-  pct_y = 0;
-  
-  
-  gui_renderImageReel(ofs, pct, "gfx/hud/navbar.png", '64 32', '0 1 0', HUD_ALPHA, 0);
+  ang = getstati(STAT_PLR_ANG);  
+  nav = gui_angleToNav(ang);
+  npos_x = VIEW_CTR_x - 8;
+  npos_y = VIEW_ORG_y + 16;
+  drawstring(npos, nav, '16 16 0', '0 1 0', HUD_ALPHA, 0);
   self.prev_ang = ang;
- 
 };
 void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hvd_renderCrosshairs={
   //convergence

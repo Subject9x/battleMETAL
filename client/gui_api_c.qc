@@ -15,6 +15,38 @@ float(float v) anglemod =
 };
 
 
+string(float anglee) gui_angleToNav={
+  anglee = anglemod(anglee);
+  if(anglee >= 337.5 || anglee < 22.5){
+    return "N";
+  }
+  else if(anglee >= 22.5 && anglee < 67.5){
+    return "NE";  
+  }
+  else if(anglee >= 67.5 && anglee < 112.5){
+    return "E";  
+  }
+  else if(anglee >= 112.5 && anglee < 157){
+    return "ES"; 
+  }
+  else if(anglee >= 157 && anglee < 202){
+    return "S";
+  }
+  else if(anglee >= 202 && anglee < 247){
+    return "SW";  
+  }
+  else if(anglee >= 247 && anglee < 292){
+    return "W";  
+  }
+  else if(anglee >= 292 && anglee < 337.5){
+    return "NW"; 
+  }
+  else{
+    return "?";
+  }
+};
+
+
 vector(float pcx, float pcy) gui_percentToPixel={
   local vector pixel;
   pixel_x = VIEW_SIZE_x * pcx;
