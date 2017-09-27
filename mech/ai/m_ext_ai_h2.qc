@@ -87,6 +87,7 @@ float AI_RANGE_L = 2400;
 float AI_WALK_SPD = 0.03;
 float AI_RUN_SPD = 0.045;
 
+.vector prev_pos;
 .entity oldgoal;
 .float ai_dmg_l;
 .float ai_dmg_m;

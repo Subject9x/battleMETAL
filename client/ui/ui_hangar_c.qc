@@ -42,11 +42,12 @@ void() mechSelectListener={
       found = MECHLIST_HEAVY_ARR[found];
     }
     if((found > 0) && (found != PLAYER_HELPER.plr_sel_mech)){
+      stashMechConfig();
+      local entity next;
+      next = m_findData(found, DATA_MECH);
       PLAYER_HELPER.plr_sel_mech = found;
-      local entity dat;
-      dat = m_findData(found, DATA_MECH);
-      HARDPOINT_CNT = dat.hardpoint_cnt;
-      cleanHardPoints();
+      HARDPOINT_CNT = next.hardpoint_cnt;
+      grabMechConfig(found);
       cl_setmech(found);
     }
   }
@@ -81,6 +82,8 @@ void() hardpointInfoListener={
 
 void() weaponGroupPanelListener={
   local float found;
+  local entity dat;
+  dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A)){
     found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A,  gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_A, 0);
     found = WEPBITS[found];
@@ -138,6 +141,7 @@ void() menu_hangarDrawFrame={
     dat = m_findData(1, DATA_MECH);
     HARDPOINT_CNT = dat.hardpoint_cnt;
     cleanHardPoints();
+    grabMechConfig(1);
     cl_setmech(1); 
   }
   
@@ -719,4 +723,45 @@ string(float bit) getNameOfWepType={
   else{
     return "unknown";
   } 
+};
+
+void() stashMechConfig={
+  local entity prev;
+  
+  prev = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
+  prev.plr_nex_grp1 = PLAYER_HELPER.plr_nex_grp1;
+  prev.plr_nex_grp2 = PLAYER_HELPER.plr_nex_grp2;
+  prev.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3;
+  prev.plr_nex_grp4 = PLAYER_HELPER.plr_nex_grp4;
+  prev.plr_nex_grp5 = PLAYER_HELPER.plr_nex_grp5;
+
+  prev.plr_nex_wep1 = HARDPOINTS[1];
+  prev.plr_nex_wep2 = HARDPOINTS[2];
+  prev.plr_nex_wep3 = HARDPOINTS[3];
+  prev.plr_nex_wep4 = HARDPOINTS[4];
+  prev.plr_nex_wep5 = HARDPOINTS[5];
+  prev.plr_nex_wep6 = HARDPOINTS[6];
+  prev.plr_nex_wep7 = HARDPOINTS[7];
+  prev.plr_nex_wep8 = HARDPOINTS[8];
+  prev.plr_nex_wep9 = HARDPOINTS[9];
+};
+
+void(float fnd) grabMechConfig={
+  local entity next;
+  next = m_findData(fnd, DATA_MECH);
+  PLAYER_HELPER.plr_nex_grp1 = next.plr_nex_grp1;
+  PLAYER_HELPER.plr_nex_grp2 = next.plr_nex_grp2;
+  PLAYER_HELPER.plr_nex_grp3 = next.plr_nex_grp3;
+  PLAYER_HELPER.plr_nex_grp4 = next.plr_nex_grp4;
+  PLAYER_HELPER.plr_nex_grp5 = next.plr_nex_grp5;
+
+  HARDPOINTS[1] = next.plr_nex_wep1;
+  HARDPOINTS[2] = next.plr_nex_wep2;
+  HARDPOINTS[3] = next.plr_nex_wep3;
+  HARDPOINTS[4] = next.plr_nex_wep4;
+  HARDPOINTS[5] = next.plr_nex_wep5;
+  HARDPOINTS[6] = next.plr_nex_wep6;
+  HARDPOINTS[7] = next.plr_nex_wep7;
+  HARDPOINTS[8] = next.plr_nex_wep8;
+  HARDPOINTS[9] = next.plr_nex_wep9;
 };

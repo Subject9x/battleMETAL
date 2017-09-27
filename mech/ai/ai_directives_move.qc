@@ -110,17 +110,13 @@ void() ai_control={
   if(self.button0){
     self.button0 = 0;
   }
+  self.prev_pos = self.origin;
   self.ai_next_move();
+  self.prev_angle = normalize(self.origin - self.prev_pos);
   if(self.p_class == P_MECH){
-    local float a;
-    a = anglemod(self.ideal_yaw + self.p_velocity);
-    if(self.e_legs.angles_y != a){
-      if(self.owner.ai_next_move != ai_move_stand){
-        self.e_legs.angles_y = anglemod(self.e_legs.angles_y - a);
-        self.e_legs.v_angle_y = self.e_legs.angles_y;
-        self.p_velocity = 0;
-      }
-    }
+    local vector v; 
+    v = vectoangles(self.prev_angle);
+    self.e_legs.v_angle_y = anglemod(v_y);
   }
   self.think = ai_control;
   self.nextthink = time + 0.05;
@@ -239,13 +235,11 @@ void() ai_move_stand={
 void() ai_move_walk_goal={
   movetogoal(self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_walk_goal;
-  self.p_velocity = 0;
 };
 
 void() ai_move_run_goal={
   movetogoal(self.m_fspeed * AI_RUN_SPD);
   self.ai_prev_move = ai_move_run_goal;
-  self.p_velocity = 0;
 };
 
 void() ai_move_walkmove_slide={

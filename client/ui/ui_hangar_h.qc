@@ -110,3 +110,5 @@ void(vector ofs) menu_hangar_WeaponInfo;
 void() cleanHardPoints;
 float(float comp, float bits) checkIfWeaponInGroup;
 string(float bit) getNameOfWepType;
+void() stashMechConfig;
+void(float fnd) grabMechConfig;

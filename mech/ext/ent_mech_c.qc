@@ -8,6 +8,7 @@ commented vars mean they're already implemented and are here for reference!
 */
 
 //local vars
+.vector prev_angle;
 //reactor
 .float en_max;   //max amount
 .float en_cur;  //current amount

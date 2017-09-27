@@ -173,7 +173,8 @@ void() ai_mech={
 		self.pausetime = 99999999;
     self.ai_next_state = ai_order_stand;
 	}
-  
+  self.prev_pos = self.origin;
+  self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = 1;
   self.think = ai_control;

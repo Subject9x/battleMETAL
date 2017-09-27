@@ -182,27 +182,6 @@ void() ai_state_panic={
 void() ai_state_trynode={
   if(self.movetarget != world){
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    
-    /*if(self.ai_state_cache == ai_state_hunt){
-      if(ai_target_visible(self.enemy)){
-        self.ai_next_state = self.ai_state_cache;
-        self.oldgoal = world;
-        self.goalentity = world;
-        self.movetarget = world;
-        return;
-      }
-    }
-    if(self.ai_state_cache == ai_state_tonode){
-      local entity contact;
-      contact = ai_core_findtarget();
-      if(contact != world){
-        self.enemy = contact;
-        self.movetarget = world;
-        //ai_update_statemove(ai_state_hunt, ai_move_forward, FALSE);
-        return;
-      }
-    }*/
-
     self.ai_next_move = ai_move_walk_goal;
   }
   else{

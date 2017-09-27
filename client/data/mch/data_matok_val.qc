@@ -197,6 +197,20 @@ void() data_mech_mtk={
     self.menu_renderHardpoints = mtk_renderHardpoints;
     self.menu_hardpointListener = mtk_hardpointListener;
     data_mtk_ini();
+    self.plr_nex_wep1 = 0;
+    self.plr_nex_wep2 = 0;
+    self.plr_nex_wep3 = 0;
+    self.plr_nex_wep4 = 0;
+    self.plr_nex_wep5 = 0;
+    self.plr_nex_wep6 = 0;
+    self.plr_nex_wep7 = 0;
+    self.plr_nex_wep8 = 0;
+    self.plr_nex_wep9 = 0;
+    self.plr_nex_grp1 = 0;
+    self.plr_nex_grp2 = 0;
+    self.plr_nex_grp3 = 0;
+    self.plr_nex_grp4 = 0;
+    self.plr_nex_grp5 = 0;
   self = oself;
 };
 
