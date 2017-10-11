@@ -9,7 +9,7 @@ Overview:
 */
 
 //MATOK MECH=============================
-float DAT_HVD_IDX = ID_MCH_COLOSSUS;
+float DAT_HVD_IDX = ID_MCH_HEVDAHL;
 string DAT_HVD_VEC_NAME = "Hevidahl";
 float DAT_HVD_TECH_LEVEL = 1;
 float DAT_HVD_RADAR_RANGE = 2000;
@@ -212,6 +212,7 @@ void() data_mech_hvd={
     self.classname = "data";
     self.data_type = DATA_MECH;
     self.vec_name = DAT_HVD_VEC_NAME;
+    self.vec_size = 3;
     self.unit_ini = data_hvd_ini;
     self.unit_legs = data_hvd_legs;
     self.unit_ltor = data_hvd_ltor;

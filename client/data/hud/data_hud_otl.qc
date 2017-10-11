@@ -40,9 +40,10 @@ void() otl_hud_ini={
   self = otl_hud;
   self.classname = "data";
   self.data_type = DATA_HUD;
-  self.data_idx = 1;
+  self.data_idx = ID_MCH_BALAKET;
+  self.vec_size = SZ_MCH_BALAKET;
   self.drawmask = MASK_ENGINE;
-  self.img = "gfx/hud/otl/otl_hd.png";
+  self.img = "gfx/hud/hud_blk_bck.png";
   
   self.hud_prep = otl_hud_prep;
   self.hud_HelmetImage = otl_HelmetImage;
@@ -234,11 +235,12 @@ void(entity vec_data) otl_hud_prep={
   
   local entity wepnl;
   wepnl = self.hud_pnl4;
+  //img_sz = draw_getimagesize(wepnl.img);
   img_sz = draw_getimagesize(wepnl.img);
   wepnl.asize = gui_scaleSize(img_sz,0.45);
   wepnl.hsize = gui_getCenter(wepnl.asize);
-  ofs_x = rdpnl.pos_x - wepnl.asize_x;
-  ofs_y = ampnl.asize_y + wepnl.asize_y;
+  ofs_x = rdpnl.pos_x - 80;
+  ofs_y = ampnl.asize_y + 58;
   wepnl.pos = gui_calcAlign(ofs, wepnl.align);
 
   local entity tgpnl;
@@ -252,11 +254,21 @@ void(entity vec_data) otl_hud_prep={
 };
 
 void(vector view_x, vector view_ctr) otl_HelmetImage ={
-  gui_renderImageFullScreen(self.img, '1 1 1', HUD_ALPHA, 0);
-  local vector npos;
+
+  local vector img_sz, npos, pct, bck, as, hs;
   local string nav;  
   local float ang;
-  local vector pct;
+  
+  
+  img_sz = draw_getimagesize(self.img);
+  as = gui_scaleSize(img_sz,VIEW_SCALE);
+  hs = gui_getCenter(as);
+  
+  bck_x = VIEW_CTR_x - hs_x;
+  bck_y = VIEW_CTR_y + hs_y - 12;
+  drawpic(bck, self.img, as, '1 1 1', HUD_ALPHA, 0);
+  //gui_renderImageFullScreen(self.img, '1 1 1', HUD_ALPHA, 0);
+  
   ang = getstati(STAT_PLR_ANG);  
   nav = gui_angleToNav(ang);
   npos_x = VIEW_CTR_x - 8;
@@ -308,7 +320,7 @@ void(float shieldval) otl_playerShield={
   ENERGY METER=====================================================
 */
 void(float energyval) otl_playerEnergy={
-  drawpic(self.hud_pnl3.pos, self.hud_pnl3.img,  self.hud_pnl3.asize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl3.pos, self.hud_pnl3.img,  self.hud_pnl3.asize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
   self.wdg_en.value1 = energyval;
   self.wdg_en.pos = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '0 5';
   gui_renderMeter(self.wdg_en.value1, self.wdg_en.pos, self.wdg_en.drawsize, self.wdg_en.drawcolor1,
@@ -325,7 +337,7 @@ void(float energyval) otl_playerEnergy={
   PLAYER ARMOR LAYOUT====================================================
 */
 void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor={
-  drawpic(self.hud_pnl1.pos, self.hud_pnl1.img,  self.hud_pnl1.asize, self.hud_pnl1.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl1.pos, self.hud_pnl1.img,  self.hud_pnl1.asize, self.hud_pnl1.colortint, HUD_ALPHA, 0);
   local vector pnl_ctr;
   pnl_ctr_x = self.hud_pnl1.pos_x + self.hud_pnl1.asize_x/2;
   pnl_ctr_y = self.hud_pnl1.pos_y +self.hud_pnl1.asize_y/2;
@@ -351,7 +363,7 @@ void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor
   RADAR LAYOUT====================================================
 */
 void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar={
-  drawpic(self.hud_pnl2.pos, self.hud_pnl2.img,  self.hud_pnl2.asize, self.hud_pnl2.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl2.pos, self.hud_pnl2.img,  self.hud_pnl2.asize, self.hud_pnl2.colortint, HUD_ALPHA, 0);
   
   local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
   local string mode;
@@ -422,7 +434,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   local entity wep_dat;
   local vector ofs, wstat;
   wep_dat = m_findData(w_id, DATA_WEPN);
-  drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
 
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
   ofs = self.hud_pnl4.pos + '16 8';
@@ -431,7 +443,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
     
   local float d;
   d = w_rel *100;
-  gui_renderMeter(d, (ofs + '2 34'), '20 12', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(d, (ofs + '2 34'), '20 8', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
   if(w_grp & w_bit){
     gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   } 
@@ -452,7 +464,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   
   local float d;
   d = w_rel *100;
-  gui_renderMeter(d, (ofs + '2 34'), '20 12', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(d, (ofs + '2 34'), '20 8', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
   if(w_grp & w_bit){
     gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   } 
@@ -473,7 +485,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   
   local float d;
   d = w_rel *100;
-  gui_renderMeter(d, (ofs + '2 34'), '20 12', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(d, (ofs + '2 34'), '20 8', CLR_DEF_ARM_DED, gui_getColorForArmor(d), HUD_ALPHA, 0, AXIS_V, 0);
   if(w_grp & w_bit){
     gui_DrawRect(ofs, '24 42', '2 2', CLR_DEF_ARM_OK);
   }
@@ -501,7 +513,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
     }
   }
 
-  drawpic(self.hud_pnl5.pos, self.hud_pnl5.img,  self.hud_pnl5.asize, self.hud_pnl5.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl5.pos, self.hud_pnl5.img,  self.hud_pnl5.asize, self.hud_pnl5.colortint, HUD_ALPHA, 0);
   if(trgvid > -1){
     local entity dat;
     dat = m_findData(trgvid, trgdat);

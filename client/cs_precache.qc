@@ -123,3 +123,37 @@ entity(float id, float dat_type) m_findData={
   }
   return data_chain;
 };
+
+entity(float sz, float id) m_findMechData={
+  local entity data_chain;
+  data_chain = findchain(classname, "data");
+  while(data_chain){
+    if(data_chain.data_type == DATA_MECH){
+      local float idx, weight;
+      idx = data_chain.data_idx;
+      weight = data_chain.vec_size;
+      if(sz == weight && id == idx){
+        return data_chain;
+      }
+    }
+    data_chain = data_chain.chain;
+  }
+  return data_chain;
+};
+
+entity(float sz, float id) m_findHUDData={
+  local entity data_chain;
+  data_chain = findchain(classname, "data");
+  while(data_chain){
+    if(data_chain.data_type == DATA_HUD){
+      local float idx, weight;
+      idx = data_chain.data_idx;
+      weight = data_chain.vec_size;
+      if(sz == weight && id == idx){
+        return data_chain;
+      }
+    }
+    data_chain = data_chain.chain;
+  }
+  return data_chain;
+};

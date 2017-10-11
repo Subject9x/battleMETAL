@@ -9,7 +9,6 @@ Overview: moving all mech values into a single global file for ease of maintenan
 */
 
 //HEVIDAHL MECH=============================
-float DAT_HVD_IDX = ID_MCH_COLOSSUS;
 string DAT_HVD_VEC_NAME = "Hevidahl";
 float DAT_HVD_TECH_LEVEL = 1;
 float DAT_HVD_RADAR_RANGE = 2000;
@@ -235,11 +234,11 @@ void() data_mech_hvd={
   oself = self;
   hvd = spawn();
   self = hvd;
-    self.data_idx = DAT_HVD_IDX;
+    self.data_idx = ID_MCH_HEVDAHL;
     self.vec_name = DAT_HVD_VEC_NAME;
     self.classname = "data";
     self.data_type = DATA_MECH;
-    self.vec_size = 3;
+    self.vec_size = SZ_MCH_HEVDAHL;
     self.c_mdl = DAT_HVD_CPIT_MODEL;
     self.menu_renderHardpoints = hvd_renderHardpoints;
     self.menu_hardpointListener = hvd_hardpointListener;
@@ -262,7 +261,6 @@ void() data_mech_hvd={
 };
 
 void() data_hvd_ini={
-  self.data_idx= DAT_HVD_IDX;
   self.vec_name= DAT_HVD_VEC_NAME;
   self.i_techlvl= DAT_HVD_TECH_LEVEL;
   self.i_reserve= DAT_HVD_RESERVE_COST;

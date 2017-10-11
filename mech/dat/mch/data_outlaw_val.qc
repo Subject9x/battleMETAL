@@ -3,14 +3,14 @@ mech Mod
 Author: Subject9x
 Date: 01/21/2017
 Overview: moving all mech values into a single global file for ease of maintenance.
-  mech: OUTLAW
+  mech: Balaket
 -the search function will be your best friend in these files...
 -these are utilized by their relevant data entity and its ini functions
 */
 
 //OUTLAW MECH=============================
-float DAT_OTL_IDX = ID_MCH_OUTLAW;
-string DAT_OTL_VEC_NAME = "Outlaw";
+float DAT_OTL_IDX = ID_MCH_BALAKET;
+string DAT_OTL_VEC_NAME = "Balaket";
 float DAT_OTL_TECH_LEVEL = 1;
 float DAT_OTL_RESERVE_COST = 100;
 float DAT_OTL_RADAR_RANGE = 4000;
@@ -159,6 +159,7 @@ void() data_mech_otl={
     self.vec_name = DAT_OTL_VEC_NAME;
     self.classname = "data";
     self.data_type = DATA_MECH;
+    self.vec_size = 1;
     self.unit_ini = data_otl_ini;
     self.unit_legs = data_otl_legs;
     self.unit_ctor = data_otl_ctor;

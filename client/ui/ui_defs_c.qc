@@ -82,7 +82,7 @@ void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
     if(PLAYER_HELPER.plr_sel_mech > 0){
       cl_setspawnpoint(PLAYER_HELPER.plr_nav_pnt);
-      cl_setmech(PLAYER_HELPER.plr_sel_mech);
+      cl_setmech(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
       local float lst_idx, bit;
       lst_idx = 1;
       bit = 1;

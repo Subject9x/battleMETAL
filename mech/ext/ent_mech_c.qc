@@ -18,6 +18,8 @@ commented vars mean they're already implemented and are here for reference!
 .float sh_rate;   //shield recharge rate
 .float sh_hit;
 
+.float vec_size;
+
 .vector conv_min;
 .vector conv_max;
 

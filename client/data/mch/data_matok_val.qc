@@ -9,7 +9,6 @@ Overview: moving all mech values into a single global file for ease of maintenan
 */
 
 //MATOK MECH=============================
-float DAT_MTK_IDX = ID_MCH_MATOK;
 string DAT_MTK_VEC_NAME = "Matok";
 float DAT_MTK_TECH_LEVEL = 2;
 float DAT_MTK_RADAR_RANGE = 3000;
@@ -188,11 +187,11 @@ void() data_mech_mtk={
   mtk = spawn();
   oself = self;
   self = mtk;
-    self.data_idx = DAT_MTK_IDX;
+    self.data_idx = ID_MCH_MATOK;
     self.classname = "data";
     self.data_type = DATA_MECH;
     self.vec_name = DAT_MTK_VEC_NAME;
-    self.vec_size = 2;
+    self.vec_size = SZ_MCH_MATOK;
     self.c_mdl = DAT_MTK_CPIT_MODEL;
     self.menu_renderHardpoints = mtk_renderHardpoints;
     self.menu_hardpointListener = mtk_hardpointListener;
@@ -215,7 +214,6 @@ void() data_mech_mtk={
 };
 
 void() data_mtk_ini={
-  self.data_idx= DAT_MTK_IDX;
   self.vec_name= DAT_MTK_VEC_NAME;
   self.i_techlvl= DAT_MTK_TECH_LEVEL;
   self.i_reserve= DAT_MTK_RESERVE_COST;

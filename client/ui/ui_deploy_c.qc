@@ -98,7 +98,7 @@ void(vector ofs) menu_deploy_mechInfoPanel={
   drawstring(tpos, "[SELECTED METAL]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   spos = ofs + gui_percentToPixel(0.0125, 0.1531);
   if(PLAYER_HELPER.plr_sel_mech > 0){
-    dat = m_findData(PLAYER_HELPER.plr_sel_mech, DATA_MECH);
+    dat = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
     drawstring(spos, strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     // MECH SIZE
     if(dat.vec_size == 1){

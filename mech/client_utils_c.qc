@@ -21,7 +21,8 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   else if(argv(1) == "setmech"){
     self.p_class_next = P_MECH;
-    self.nextVecChoice = stof(argv(2));
+    self.vec_size = stof(argv(2));
+    self.nextVecChoice = stof(argv(3));
   }
   else if(argv(1) == "spawn"){
     if(self.p_class == P_OBS){
@@ -62,6 +63,23 @@ void(string cmd, float tokens) client_setWeaponGroup={
   }
 };
 
+void() client_sendAvailableLightMechs={
+  local string cmd;
+  cmd = strcat("mech list_light ",ftos(world.next_wepn4),"\n");
+  stuffcmd(self, cmd);
+};
+
+void() client_sendAvailableMediumMechs={
+  local string cmd;
+  cmd = strcat("mech list_med ",ftos(world.next_wepn5),"\n");
+  stuffcmd(self, cmd);
+};
+
+void() client_sendAvailableHeavyMechs={
+  local string cmd;
+  cmd = strcat("mech list_hvy ",ftos(world.next_wepn6),"\n");
+  stuffcmd(self, cmd);
+};
 
 /*
 commmand string: cmd mech setwep X Y

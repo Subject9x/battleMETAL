@@ -40,7 +40,8 @@ void() mtk_hud_ini={
   self = mtk_hud;
   self.classname = "data";
   self.data_type = DATA_HUD;
-  self.data_idx = 2;
+  self.data_idx = ID_MCH_MATOK;
+  self.vec_size = SZ_MCH_MATOK;
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/otl/otl_hd.png";
   

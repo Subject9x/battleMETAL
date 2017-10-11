@@ -25,9 +25,9 @@ Overview: master data ID lists for all the game data
 
 //UPDATE CSQC cs_datadefs.qc if you mod any of these!
 //MECHS==================================
-float ID_MCH_OUTLAW= 1;
-float ID_MCH_MATOK= 2;
-float ID_MCH_COLOSSUS= 3;
+float ID_MCH_BALAKET = 1;
+float ID_MCH_MATOK = 2;
+float ID_MCH_HEVDAHL = 4;
 
 //WEAPONS================================
 float ID_WEP_LATC=1;

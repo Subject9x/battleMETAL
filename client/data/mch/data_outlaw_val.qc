@@ -9,7 +9,6 @@ Overview: moving all mech values into a single global file for ease of maintenan
 */
 
 //OUTLAW MECH=============================
-float DAT_OTL_IDX = ID_MCH_OUTLAW;
 string DAT_OTL_VEC_NAME = "Balakett";
 float DAT_OTL_TECH_LEVEL = 1;
 float DAT_OTL_RESERVE_COST = 100;
@@ -163,11 +162,11 @@ void() data_mech_otl={
   oself = self;
   otl = spawn();
   self = otl;
-    self.data_idx = DAT_OTL_IDX;
+    self.data_idx = ID_MCH_BALAKET;
     self.vec_name = DAT_OTL_VEC_NAME;
     self.classname = "data";
     self.data_type = DATA_MECH;
-    self.vec_size = 1;
+    self.vec_size = SZ_MCH_BALAKET;
     self.c_mdl = DAT_OTL_CPIT_MODEL;
     self.menu_renderHardpoints = otl_renderHardpoints;
     self.menu_hardpointListener = otl_hardpointListener;
@@ -191,7 +190,6 @@ void() data_mech_otl={
 };
 
 void() data_otl_ini={
-  self.data_idx= DAT_OTL_IDX;
   self.vec_name= DAT_OTL_VEC_NAME;
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
   self.i_reserve= DAT_OTL_RESERVE_COST;

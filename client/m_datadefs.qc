@@ -20,12 +20,19 @@ float DATA_NAVP = 7;
 float DATA_OBJT = 8;
 
 entity(float id, float dat_type) m_findData;
+entity(float sz, float id) m_findMechData;
+entity(float sz, float id) m_findHUDData;
 
 //BELOW MUST BE UPDATED IF YOU CHANGE THESE VALUES SERVER SIDE
 //MECHS==================================
-float ID_MCH_OUTLAW= 1;
-float ID_MCH_MATOK= 2;
-float ID_MCH_COLOSSUS= 3;
+float ID_MCH_BALAKET = 1;
+float SZ_MCH_BALAKET = 1;
+
+float ID_MCH_MATOK = 2;
+float SZ_MCH_MATOK = 1;
+
+float ID_MCH_HEVDAHL = 4;
+float SZ_MCH_HEVDAHL = 1;
 
 //WEAPONS================================
 float ID_WEP_LATC=1;

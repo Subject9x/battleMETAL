@@ -31,3 +31,7 @@ void(string cmd, float tokens) client_setNavPoint;
 void() client_updateWeaponReloads;
 float(float val, float rel, float wpn_rel, float rdy, float bit)client_incrementReload;
 //void(float w_id, float wslotid) client_updateWeaponIdStat;
+void() client_sendAvailableLightMechs;
+void() client_sendAvailableMediumMechs;
+void() client_sendAvailableHeavyMechs;
+void(vector pos, vector sz, vector clr, float life) client_highlightUI;

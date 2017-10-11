@@ -149,6 +149,23 @@ entity(float id, float dat_type) mh_world_findData={
   return data_chain;
 };
 
+entity(float sz, float id) m_findMechData={
+  local entity data_chain;
+  data_chain = findchain(classname, "data");
+  while(data_chain){
+    if(data_chain.data_type == DATA_MECH){
+      local float idx, weight;
+      idx = data_chain.data_idx;
+      weight = data_chain.vec_size;
+      if(sz == weight && id == idx){
+        return data_chain;
+      }
+    }
+    data_chain = data_chain.chain;
+  }
+  return data_chain;
+};
+
 void(float fwd, float side, float bck, string accel, string roll) mh_world_updateClientSpeed={
   stuffcmd(self, "cl_forwardspeed ");
   stuffcmd(self, ftos(fwd)); //400

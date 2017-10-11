@@ -16,6 +16,7 @@ void() CSQC_Init =
   PLAYER_HELPER = spawn();
   PLAYER_HELPER.drawmask = MASK_ENGINE;
   PLAYER_HELPER.plr_sel_mech = 0;
+  PLAYER_HELPER.vec_size = 1;
   PLAYER_HELPER.plr_nex_mech = 0;
   PLAYER_HELPER.plr_nex_wep1 = -1;
   PLAYER_HELPER.plr_nex_wep2 = -1;
@@ -44,6 +45,29 @@ void() CSQC_Init =
   WEPBITS[6] = 64;
   WEPBITS[7] = 128;
   WEPBITS[8] = 256;
+  
+  local float i, cnt;
+  i = 1;
+  cnt = 0;
+  while(i < 24){
+    MECHLIST_LIGHT_ARR[cnt] = i;
+    i = i * 2;
+    cnt = cnt + 1;
+  }
+  i = 1;
+  cnt = 0;
+  while(i < 24){
+    MECHLIST_MEDIUM_ARR[cnt] = i;
+    i = i * 2;
+    cnt = cnt + 1;
+  }
+  i = 1;
+  cnt = 0;
+  while(i < 24){
+    MECHLIST_HEAVY_ARR[cnt] = i;
+    i = i * 2;
+    cnt = cnt + 1;
+  }
   
   NAVNAMES[0] = "Unknown";
   NAVNAMES[1] = "Alpha";
@@ -326,8 +350,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     PLAYER_HELPER.w_range = trg_dist;
     //render 
     local entity player_hud, vec_data, oself;
-    vec_data = m_findData(vec_id, DATA_MECH);
-    player_hud = m_findData(vec_id, DATA_HUD);
+    vec_data = m_findMechData(PLAYER_HELPER.vec_size, vec_id);
+    player_hud = m_findHUDData(PLAYER_HELPER.vec_size, vec_id);
     
     snd_hud_vfx_statelistener(plr_state);
     snd_hud_vfx_enelistener(plr_en);
@@ -446,6 +470,15 @@ void(string s) CSQC_Parse_StuffCmd =
     if(argv(1) == "msn_file"){
       MSN_FILENAME = strzone(argv(2));
       msn_getfile();
+    }
+    else if(argv(1) == "list_light"){
+      PLAYER_HELPER.parm7 = stof(argv(2));
+    }
+    else if(argv(1) == "list_med"){
+      PLAYER_HELPER.parm8 = stof(argv(2));
+    }
+    else if(argv(1) == "list_hvy"){
+      PLAYER_HELPER.parm9 = stof(argv(2));
     }
   }
   else{

@@ -37,6 +37,7 @@ void() ClientConnect = {
   self.p_class = P_OBS;
   self.p_class_next = P_OBS;
   self.nextVecChoice = 0;
+  self.vec_size = 0;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.i_faction = 2; //DEBUG
@@ -131,7 +132,9 @@ void() ClientConnect = {
   self.next_wepn9 = -1;
   self.i_reserve = world.i_reserve;
   client_sendMissionFileName();
-  
+  client_sendAvailableLightMechs();
+  client_sendAvailableMediumMechs();
+  client_sendAvailableHeavyMechs();
   if (intermission_running){
     ExitIntermission();
   }

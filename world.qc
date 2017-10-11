@@ -44,9 +44,15 @@ void() worldspawn =
   //setmodel(self, "maps/t_train0.bsp");
 // the area based ambient sounds MUST be the first precache_sounds
 
-// player precaches	
-	//W_Precache ();			// get weapon precaches
-
+  if(world.next_wepn4 < 1){
+    world.next_wepn4 =  world.next_wepn4 | ID_MCH_BALAKET | ID_MCH_MATOK | ID_MCH_HEVDAHL;
+  }
+  if(world.next_wepn5 < 1){
+    world.next_wepn5 = 1;
+  }
+  if(world.next_wepn6 < 1){
+    world.next_wepn6 = 1;
+  }
   //see q1/precache_world.q1_precache_sound();
   q1_precache_sound();
   q1_precache_models();

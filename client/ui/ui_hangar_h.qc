@@ -5,9 +5,9 @@ Date: 3/8/2017
 Overview: ui header file the hangar menu
 */
 //might as well go wild with the globals
-  float MECHLIST_LIGHT_ARR[8]; 
-  float MECHLIST_MEDIUM_ARR[8]; 
-  float MECHLIST_HEAVY_ARR[8]; 
+  float MECHLIST_LIGHT_ARR[24]; 
+  float MECHLIST_MEDIUM_ARR[24]; 
+  float MECHLIST_HEAVY_ARR[24]; 
 
   float WEPLIST_BAL_ARR[8];
   float WEPLIST_ENE_ARR[8];
@@ -111,4 +111,4 @@ void() cleanHardPoints;
 float(float comp, float bits) checkIfWeaponInGroup;
 string(float bit) getNameOfWepType;
 void() stashMechConfig;
-void(float fnd) grabMechConfig;
+void(entity next) grabMechConfig;

@@ -9,6 +9,18 @@ float CON_H;
 float CON_CW;
 float CON_CH;
 
+//client parms ported from server
+.float parm1;
+.float parm2;
+.float parm3;
+.float parm4;
+.float parm5;
+.float parm6;
+.float parm7; // bitflags for light mechs
+.float parm8; // bitflags for medium mechs
+.float parm9; // bitflags for heavy mechs
+
+//
 vector plr_orig;
 vector plr_angles;
 .entity cpit_mdl;

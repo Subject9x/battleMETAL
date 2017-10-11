@@ -40,7 +40,8 @@ void() hvd_hud_ini={
   self = hvd_hud;
   self.classname = "data";
   self.data_type = DATA_HUD;
-  self.data_idx = 3;
+  self.data_idx = ID_MCH_HEVDAHL;
+  self.vec_size = SZ_MCH_HEVDAHL;
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/otl/otl_hd.png";
   

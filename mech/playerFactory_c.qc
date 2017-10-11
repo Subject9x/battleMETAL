@@ -43,7 +43,7 @@ void() player_makeVec={
 
 void() player_makeMech={
   local entity dat;
-  dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
+  dat = m_findMechData(self.vec_size, self.nextVecChoice);
   self.p_class = P_MECH;
   self.data_idx = dat.data_idx;
   self.power_timer = time + 5;
