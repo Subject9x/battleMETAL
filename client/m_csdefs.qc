@@ -210,6 +210,15 @@ float STAT_TRG_RTOR_HP = 96;
 float STAT_TRG_LARM_HP = 97;
 float STAT_TRG_RARM_HP = 98;
 
+float UI_BOX_POSX = 106;
+float UI_BOX_POSY = 107;
+float UI_BOX_SZEX = 108;
+float UI_BOX_SZEY = 109;
+float UI_BOX_CLRX = 110;
+float UI_BOX_CLRY = 111;
+float UI_BOX_CLRZ = 112;
+float UI_BOX_TIME = 113;
+
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
 string M_TOR_RIGHT = "tor_right";

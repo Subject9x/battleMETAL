@@ -267,7 +267,6 @@ void(vector view_x, vector view_ctr) otl_HelmetImage ={
   bck_x = VIEW_CTR_x - hs_x;
   bck_y = VIEW_CTR_y + hs_y - 12;
   drawpic(bck, self.img, as, '1 1 1', HUD_ALPHA, 0);
-  //gui_renderImageFullScreen(self.img, '1 1 1', HUD_ALPHA, 0);
   
   ang = getstati(STAT_PLR_ANG);  
   nav = gui_angleToNav(ang);
@@ -414,14 +413,16 @@ void(float hit_dir) otl_hitDirectionPips={
     local vector lorg;
     lorg_x = VIEW_ORG_x + 4;
     lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
-    drawfill((lorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
+    gui_renderTintImage(TRUE, lorg, HUD_DMG_PIP_H, '16 128', '0.85 0.1 0.1', HUD_ALPHA, 0);
+    //drawfill((lorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
   }
   
   if(hit_dir & STAT_HIT_RT){
     local vector rorg;
     rorg_x = VIEW_MAX_x - 18;
     rorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
-    drawfill((rorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
+    //drawfill((rorg + '0 -24'), '8 48', '0.85 0.1 0.1', HUD_ALPHA, 0);
+    gui_renderTintImage(TRUE, rorg, HUD_DMG_PIP_H, '16 128', '0.85 0.1 0.1', HUD_ALPHA, 0);
   }
 };
 
@@ -650,22 +651,21 @@ void(float islock) otl_targetLock={
 */
 void(float targdir) otl_targetDirectionPip={
   if(targdir > -1){
-    local vector lorg, sz;
+    local vector lorg;
     if(targdir == 0){
       lorg_x = VIEW_ORG_x + 10; 
       lorg_y = VIEW_CTR_y - 24;
-      sz = '8 48';
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_L, '16 48', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
     }
     else if(targdir == 1){
       lorg_x = VIEW_ORG_x + VIEW_MAX_x - 10; 
       lorg_y = VIEW_CTR_y  - 24;
-      sz = '8 48';        
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_R, '16 48', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);     
     }
     else if(targdir == 2){
       lorg_x = VIEW_CTR_x - 24;
       lorg_y = VIEW_CTR_y + 48;
-      sz = '48 8';
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_B, '48 16', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
     }
-    drawfill(lorg, sz, STATUS_DMG, HUD_ALPHA, 0);
   }
 };

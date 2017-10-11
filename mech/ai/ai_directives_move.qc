@@ -16,6 +16,7 @@ void() ai_mech_update={
       oself = self;
       self = oself.e_legs;
         ctrl_updateLegs();
+          self.e_legs.v_angle_y = self.ideal_yaw + self.p_velocity;
       self = oself;
     }
   }
@@ -113,11 +114,6 @@ void() ai_control={
   self.prev_pos = self.origin;
   self.ai_next_move();
   self.prev_angle = normalize(self.origin - self.prev_pos);
-  if(self.p_class == P_MECH){
-    local vector v; 
-    v = vectoangles(self.prev_angle);
-    self.e_legs.v_angle_y = anglemod(v_y);
-  }
   self.think = ai_control;
   self.nextthink = time + 0.05;
   self.e_cam.SendFlags = 1;

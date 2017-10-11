@@ -46,3 +46,8 @@ Overview: extends the player's entity.
 .float next_wepn7;
 .float next_wepn8;
 .float next_wepn9;
+
+.vector ui_box_pos;
+.vector ui_box_sz;
+.vector ui_box_clr;
+.float ui_box_time;

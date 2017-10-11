@@ -704,22 +704,21 @@ void(float islock) mtk_targetLock={
 */
 void(float targdir) mtk_targetDirectionPip={
   if(targdir > -1){
-    local vector lorg, sz;
+    local vector lorg;
     if(targdir == 0){
       lorg_x = VIEW_ORG_x + 10; 
       lorg_y = VIEW_CTR_y - 24;
-      sz = '8 48';
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_L, '16 48', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
     }
     else if(targdir == 1){
       lorg_x = VIEW_ORG_x + VIEW_MAX_x - 10; 
       lorg_y = VIEW_CTR_y  - 24;
-      sz = '8 48';        
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_R, '16 48', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);     
     }
     else if(targdir == 2){
       lorg_x = VIEW_CTR_x - 24;
       lorg_y = VIEW_CTR_y + 48;
-      sz = '48 8';
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_B, '48 16', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
     }
-    drawfill(lorg, sz, STATUS_DMG, HUD_ALPHA, 0);
   }
 };

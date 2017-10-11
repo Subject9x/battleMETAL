@@ -13,6 +13,12 @@ string HUT_RET_LOK;
 string HUD_RAD_PIP_BLD;
 string HUD_RAD_PIP_MCH;
 
+string HUD_TRG_PIP_L;
+string HUD_TRG_PIP_R;
+string HUD_TRG_PIP_B;
+
+string HUD_DMG_PIP_H;
+
 .entity data;
 .entity hud_pnl1;
 .entity hud_pnl2;

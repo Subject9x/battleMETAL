@@ -20,6 +20,7 @@ float(entity ent, float changed) send_ai_mech={
 
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
 nextVecChoice = match to mech data id
+vec_size = weight class for mech data
 i_faction = which faction
 ai_leading = how bad does the ai suck at aiming? 0.0 is ACE, 0.2 is pretty bad
 state_1 = initial order
@@ -40,7 +41,7 @@ void() ai_mech={
     return;
   }*/
   local entity dat;
-  dat = mh_world_findData(self.nextVecChoice, DATA_MECH);
+  dat = m_findMechData(self.vec_size, self.nextVecChoice);
   if(!dat){
     bprint(strcat("mech id:",ftos(self.nextVecChoice)," was not found","\n"));
     remove(self);

@@ -23,6 +23,12 @@ void() cs_precache={
   HUD_RAD_PIP_BLD = precache_pic("gfx/hud/rad_bld.png", 0);
   HUD_RAD_PIP_MCH = precache_pic("gfx/hud/rad_mch.png", 0);
   
+  HUD_TRG_PIP_L = precache_pic("gfx/hud/trg_pip_lft.png", 0);
+  HUD_TRG_PIP_R = precache_pic("gfx/hud/trg_pip_rgt.png", 0);
+  HUD_TRG_PIP_B = precache_pic("gfx/hud/trg_pip_bot.png", 0);
+  
+  HUD_DMG_PIP_H = precache_pic("gfx/hud/dmg_pip_hrz.png", 0);
+  
   precache_pic("gfx/hud/otl/otl_am.png", 0);
   precache_pic("gfx/hud/otl/otl_hd.png", 0);
   precache_pic("gfx/hud/otl/otl_en.png", 0);

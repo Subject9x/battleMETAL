@@ -71,6 +71,10 @@ void() PlayerPreThink = {
 
 void() PlayerPostThink = {
  
+  if(self.ui_box_time > 0){
+    self.ui_box_time  = self.ui_box_time - 1;
+  }
+ 
 	if (self.view_ofs == '0 0 0'){
 		return;		// intermission or finale
   }
