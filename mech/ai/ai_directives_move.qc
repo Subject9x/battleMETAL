@@ -16,7 +16,6 @@ void() ai_mech_update={
       oself = self;
       self = oself.e_legs;
         ctrl_updateLegs();
-          self.e_legs.v_angle_y = self.ideal_yaw + self.p_velocity;
       self = oself;
     }
   }
@@ -59,38 +58,40 @@ void() ai_mech_cleanup={
 };
 
 void() ai_mech_touch={
-  if(other.p_class != P_OBS){
-    local float infront;
-      infront = ai_target_infront(other);
-    if(other.i_faction == self.i_faction){
-      //bumped an ally!
-      if(infront){
-        self.ai_next_move = ai_move_backward;
-      }
-      else{
-        self.ai_next_move = ai_move_forward;
-      } 
-    }
-    else{
-      //bumped a baddy!
-      if(self.enemy == world){
-        if(other.p_class == P_MECH){
-          if(self.enemy == world){
-            self.enemy = other;
-          }
-          else{
-            self.oldenemy = self.enemy;
-            self.enemy = other;
-          }
-        }
+  if(self.ai_first_order != ai_order_test){
+    if(other.p_class != P_OBS){
+      local float infront;
+        infront = ai_target_infront(other);
+      if(other.i_faction == self.i_faction){
+        //bumped an ally!
         if(infront){
-          self.ai_next_move = ai_move_runmove_slide;
-          return;
+          self.ai_next_move = ai_move_backward;
         }
         else{
-          self.ai_next_move = ai_move_backward;
-          return;
+          self.ai_next_move = ai_move_forward;
         } 
+      }
+      else{
+        //bumped a baddy!
+        if(self.enemy == world){
+          if(other.p_class == P_MECH){
+            if(self.enemy == world){
+              self.enemy = other;
+            }
+            else{
+              self.oldenemy = self.enemy;
+              self.enemy = other;
+            }
+          }
+          if(infront){
+            self.ai_next_move = ai_move_runmove_slide;
+            return;
+          }
+          else{
+            self.ai_next_move = ai_move_backward;
+            return;
+          } 
+        }
       }
     }
   }
@@ -114,6 +115,7 @@ void() ai_control={
   self.prev_pos = self.origin;
   self.ai_next_move();
   self.prev_angle = normalize(self.origin - self.prev_pos);
+  self.e_legs.v_angle_y = vectoangles(self.enemy.origin - self.origin) + self.p_velocity;
   self.think = ai_control;
   self.nextthink = time + 0.05;
   self.e_cam.SendFlags = 1;
@@ -231,11 +233,13 @@ void() ai_move_stand={
 void() ai_move_walk_goal={
   movetogoal(self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_walk_goal;
+  self.p_velocity = 0;
 };
 
 void() ai_move_run_goal={
   movetogoal(self.m_fspeed * AI_RUN_SPD);
   self.ai_prev_move = ai_move_run_goal;
+  self.p_velocity = 0;
 };
 
 void() ai_move_walkmove_slide={
@@ -255,6 +259,7 @@ void() ai_move_walkmove_slide={
 	self.lefty = 1 - self.lefty;
   walkmove( self.ideal_yaw, self.m_sspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_walkmove_slide;
+  self.p_velocity = ofs;
 };
 
 void() ai_move_runmove_slide={  
@@ -274,19 +279,20 @@ void() ai_move_runmove_slide={
 	self.lefty = 1 - self.lefty;
   walkmove( self.ideal_yaw, self.m_sspeed * AI_RUN_SPD);
   self.ai_prev_move = ai_move_runmove_slide;
+  self.p_velocity = ofs;
 };
 
 void() ai_move_forward={
   ChangeYaw();
   walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_forward;
-  self.p_velocity = 0;
+  self.p_velocity = self.angles_y;
 };
 
 void() ai_move_backward={  
   ChangeYaw();
   walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD);
-  self.p_velocity = 180;
+  self.p_velocity = self.angles_y+180;
   self.ai_prev_move = ai_move_backward;
 };
 
@@ -295,6 +301,7 @@ void() ai_move_walkmove_strafeleft={
   if not(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
+    self.p_velocity = 0;
   }
   else{
     self.p_velocity = 90;
@@ -307,6 +314,7 @@ void() ai_move_walkmove_straferight={
   if not(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
+    self.p_velocity = 0;
   }
   else{
     self.p_velocity = -90;
@@ -318,6 +326,7 @@ void() ai_move_charge={
   if not(walkmove (self.ideal_yaw - 60,  self.m_fspeed * AI_WALK_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
+    self.p_velocity = 0;
   }
   else{
     self.ai_prev_move = ai_move_charge;

@@ -28,11 +28,11 @@ entity(float sz, float id) m_findHUDData;
 float ID_MCH_BALAKET = 1;
 float SZ_MCH_BALAKET = 1;
 
-float ID_MCH_MATOK = 2;
-float SZ_MCH_MATOK = 1;
+float ID_MCH_MATOK = 1;
+float SZ_MCH_MATOK = 2;
 
-float ID_MCH_HEVDAHL = 4;
-float SZ_MCH_HEVDAHL = 1;
+float ID_MCH_HEVDAHL = 1;
+float SZ_MCH_HEVDAHL = 3;
 
 //WEAPONS================================
 float ID_WEP_LATC=1;

@@ -132,7 +132,7 @@ void() ai_mech={
   else if(self.state_1 == 3){
     self.ai_first_order = ai_order_attack;
   }
-  else if(self.state_1 == -1){
+  else if(self.state_1 < -0){
     self.ai_first_order = ai_order_test;
   }
   else{
@@ -146,34 +146,36 @@ void() ai_mech={
 		dprint ("\n");
 	}
   
-  if (self.target)
-	{
-    local entity t;
-    t = find(world, targetname, self.target);
-    if(t){
-      traceline(self.origin, t.origin, FALSE, self);
-      if(t.classname == "ai_node"){
-        self.goalentity = t;
+  if(self.ai_first_order != ai_order_test){
+    if (self.target)
+    {
+      local entity t;
+      t = find(world, targetname, self.target);
+      if(t){
+        traceline(self.origin, t.origin, FALSE, self);
+        if(t.classname == "ai_node"){
+          self.goalentity = t;
+        }
+        else{
+          self.enemy = t;
+        }
+        self.ai_next_state = self.ai_first_order;
+        if(trace_fraction  < 1){
+          self.ai_prev_state = self.ai_first_order;
+          self.ai_next_state = ai_sub_tonode;
+        }
       }
       else{
-        self.enemy = t;
-      }
-      self.ai_next_state = self.ai_first_order;
-      if(trace_fraction  < 1){
-        self.ai_prev_state = self.ai_first_order;
-        self.ai_next_state = ai_sub_tonode;
+        self.ai_first_order = ai_order_stand;
+        self.ai_next_state = ai_order_stand;
       }
     }
-    else{
-      self.ai_first_order = ai_order_stand;
+    else
+    {
+      self.pausetime = 99999999;
       self.ai_next_state = ai_order_stand;
     }
-	}
-	else
-	{
-		self.pausetime = 99999999;
-    self.ai_next_state = ai_order_stand;
-	}
+  }
   self.prev_pos = self.origin;
   self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;

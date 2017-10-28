@@ -35,7 +35,6 @@ void() server_updateTargetInfo={
   if(self.enemy == world){
     self.stat_trg_vid = -1;
     self.stat_trg_dat = -1;
-    mech_clearTargetInfo();
     self.stat_trg_ddflg = -1;
     self.stat_trg_dist = -1;
     self.stat_trg_face = -1;
@@ -59,7 +58,6 @@ void() server_updateTargetInfo={
     self.stat_trg_dat = -1;
     // self.stat_trg_sh = -1;
     //gross
-    mech_clearTargetInfo();
     self.stat_trg_ddflg = self.enemy.deadflag;
     self.stat_trg_dist = -1;
     self.stat_trg_face = -1;

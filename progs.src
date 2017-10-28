@@ -73,6 +73,9 @@ dp/subs.qc
   mech/dat/mch/data_matok_val.qc
   mech/dat/mch/data_hevdal_val.qc
   
+  //vehicles
+
+  
   //buildings
   mech/dat/bld/data_h_buildings.qc
   mech/dat/bld/data_h_radar.qc
@@ -80,6 +83,7 @@ dp/subs.qc
   mech/dat/bld/data_h_power.qc
   mech/dat/bld/data_h_hangar_l.qc
   mech/dat/bld/data_h_fuel.qc
+  mech/dat/bld/data_h_ltur.qc
 //===========================
 
 //impl files

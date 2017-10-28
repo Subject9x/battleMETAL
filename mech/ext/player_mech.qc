@@ -7,16 +7,6 @@ Date: 9/7/2016
 Overview: implementation of mech player functions,
 */
 
-void() mech_clearWeaponState={
-
-  
-
-};
-
-
-
-void() mech_clearTargetInfo={
-};
 
 void() mech_clearWeaponGroups={
   self.w_group1 = self.w_group1 - (self.w_group1 & self.w_group1);

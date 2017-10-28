@@ -5,10 +5,7 @@ Date: 9/7/2016
 Overview: head for mech management functions
 */
 
-void() mech_clearTargetInfo;
-
 void() mech_clearWeaponGroups;
-void() mech_clearWeaponState;
 
 void() ctrl_update_mechplayer;
 

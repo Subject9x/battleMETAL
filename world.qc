@@ -45,13 +45,13 @@ void() worldspawn =
 // the area based ambient sounds MUST be the first precache_sounds
 
   if(world.next_wepn4 < 1){
-    world.next_wepn4 =  world.next_wepn4 | ID_MCH_BALAKET | ID_MCH_MATOK | ID_MCH_HEVDAHL;
+    world.next_wepn4 =  world.next_wepn4 | ID_MCH_BALAKET;
   }
   if(world.next_wepn5 < 1){
-    world.next_wepn5 = 1;
+    world.next_wepn5 = world.next_wepn5 | ID_MCH_MATOK;
   }
   if(world.next_wepn6 < 1){
-    world.next_wepn6 = 1;
+    world.next_wepn6 =  world.next_wepn6 | ID_MCH_HEVDAHL;
   }
   //see q1/precache_world.q1_precache_sound();
   q1_precache_sound();
@@ -124,9 +124,6 @@ void() StartFrame =
 {
 	teamplay = cvar("teamplay");
 	skill = cvar("skill");
-  if(framecount == 1){
-    //special post-load logic -Subject9x
-  }
 	framecount = framecount + 1;
 };
 

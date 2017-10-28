@@ -113,8 +113,6 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
           
           nofs_x = cofs_x + (corg_x * 90);
           nofs_y = cofs_y + (corg_y * 90);
-          //nofs_x = cprc_x + ((cos(ang) * len));
-          //nofs_y = cprc_y + ((sin(ang) * len));
           drawpic(nofs - '3 3', icon,  '6 6', clr, HUD_ALPHA, 0);
         }
       }

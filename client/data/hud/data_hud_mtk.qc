@@ -43,7 +43,7 @@ void() mtk_hud_ini={
   self.data_idx = ID_MCH_MATOK;
   self.vec_size = SZ_MCH_MATOK;
   self.drawmask = MASK_ENGINE;
-  self.img = "gfx/hud/otl/otl_hd.png";
+  self.img = "gfx/hud/hud_mtk_bck.png";;
   
   self.hud_prep = mtk_hud_prep;
   self.hud_HelmetImage = mtk_HelmetImage;
@@ -258,11 +258,19 @@ void(entity vec_data) mtk_hud_prep={
 };
 
 void(vector view_x, vector view_ctr) mtk_HelmetImage ={
-  gui_renderImageFullScreen(self.img, '1 1 1', HUD_ALPHA, 0);
-  local vector npos;
+
+  local vector npos,pct, img_sz, as, hs, bck;
   local string nav;  
   local float ang;
-  local vector pct;
+  
+  img_sz = draw_getimagesize(self.img);
+  as = gui_scaleSize(img_sz,VIEW_SCALE);
+  hs = gui_getCenter(as);
+  
+  bck_x = VIEW_CTR_x - hs_x;
+  bck_y = (VIEW_CTR_y - 24 )+ hs_y ;
+  drawpic(bck, self.img, as, '1 1 1', HUD_ALPHA, 0);
+  
   ang = getstati(STAT_PLR_ANG);  
   nav = gui_angleToNav(ang);
   npos_x = VIEW_CTR_x - 8;
@@ -297,7 +305,7 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mtk_ren
 
 /*SHIELD METER=====================================================*/
 void(float shieldval) mtk_playerShield={
-  drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl4.pos, self.hud_pnl4.img,  self.hud_pnl4.asize, self.hud_pnl4.colortint, HUD_ALPHA, 0);
   self.wdg_sh.value1 = shieldval;
   self.wdg_sh.pos = self.hud_pnl4.pos + self.hud_pnl4.margin_ins + '0 5';
   gui_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, self.wdg_sh.drawsize, CLR_DEF_ARM_DED, gui_getColorForShield(shieldval), HUD_ALPHA, 0, AXIS_V, 0);
@@ -311,7 +319,7 @@ void(float shieldval) mtk_playerShield={
 
 /*ENERGY METER=====================================================*/
 void(float energyval) mtk_playerEnergy={
-  drawpic(self.hud_pnl3.pos, self.hud_pnl3.img,  self.hud_pnl3.asize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl3.pos, self.hud_pnl3.img,  self.hud_pnl3.asize, self.hud_pnl3.colortint, HUD_ALPHA, 0);
   self.wdg_en.value1 = energyval;
   self.wdg_en.pos = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + '0 5';
   gui_renderMeter(self.wdg_en.value1, self.wdg_en.pos, self.wdg_en.drawsize, self.wdg_en.drawcolor1,
@@ -327,7 +335,7 @@ void(float energyval) mtk_playerEnergy={
 
 /*PLAYER ARMOR LAYOUT====================================================*/
 void(float ct, float lt, float rt, float la, float ra, float lg) mtk_playerArmor={
-  drawpic(self.hud_pnl1.pos, self.hud_pnl1.img,  self.hud_pnl1.asize, self.hud_pnl1.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl1.pos, self.hud_pnl1.img,  self.hud_pnl1.asize, self.hud_pnl1.colortint, HUD_ALPHA, 0);
   local vector pnl_ctr;
   pnl_ctr_x = self.hud_pnl1.pos_x + self.hud_pnl1.hsize_x;
   pnl_ctr_y = self.hud_pnl1.pos_y + self.hud_pnl1.hsize_y;
@@ -351,7 +359,7 @@ void(float ct, float lt, float rt, float la, float ra, float lg) mtk_playerArmor
 
 /*RADAR LAYOUT====================================================*/
 void(float rad_front, float rad_back, float rad_mode, float i_fact) mtk_Radar={
-  drawpic(self.hud_pnl2.pos, self.hud_pnl2.img,  self.hud_pnl2.asize, self.hud_pnl2.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl2.pos, self.hud_pnl2.img,  self.hud_pnl2.asize, self.hud_pnl2.colortint, HUD_ALPHA, 0);
   
   local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
   local string mode;
@@ -421,7 +429,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   pont = self.hud_pnl5.pos + self.hud_pnl5.asize;
   pont_y = self.hud_pnl5.pos_y - isz_y/2.75;
   ofs = pont + '14 6';
-  drawpic(pont, "gfx/hud/otl/otl_wp.png",  isz, CLR_DEF_WHITE, HUD_ALPHA, 0);
+  //drawpic(pont, "gfx/hud/otl/otl_wp.png",  isz, CLR_DEF_WHITE, HUD_ALPHA, 0);
   wep_dat = m_findData(w_id, DATA_WEPN);
   
   wstat = gui_getWepStatusColor(w_state, w_dd, w_ok);
@@ -550,7 +558,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
     }
   }
 
-  drawpic(self.hud_pnl5.pos, self.hud_pnl5.img,  self.hud_pnl5.asize, self.hud_pnl5.colortint, HUD_ALPHA, 0);
+  //drawpic(self.hud_pnl5.pos, self.hud_pnl5.img,  self.hud_pnl5.asize, self.hud_pnl5.colortint, HUD_ALPHA, 0);
   if(trgvid > -1){
     local entity dat;
     dat = m_findData(trgvid, trgdat);

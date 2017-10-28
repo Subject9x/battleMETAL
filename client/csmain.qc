@@ -417,14 +417,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   }
   
   //display remaining reserves;
-  local string res;
+  //10/28/2017 - MOVE TO OBJECTIVE / MISSION STATUS HOTKEY SCREEN
+  /*local string res;
   local float reslen;
   local vector src;
   res = strcat("[RESERVES]:",ftos(AVAILABLE_RESERVE),"/", MSN_RESERVETOTAL);
   reslen = stringwidth(res, 0, '8 8 0');
   src_x = VIEW_ORG_x + gui_percentX(0.008);
   src_y = VIEW_ORG_y + gui_percentY(0.008);
-  drawstring(src, res, '8 8 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  drawstring(src, res, '8 8 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);*/
   
   //sound system;
   snd_hud_vfx_frame();
