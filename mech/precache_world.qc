@@ -40,19 +40,19 @@ void() mh_precache_models={
   precache_model ("q3mdl/testball.md3");
   //nu outlaw
   precache_model ("q3mdl/mechs/notl/mdl_notl_cpt.md3");
-  precache_model ("q3mdl/mechs/notl/mdl_notl_t_cent.md3");
-  precache_model ("q3mdl/mechs/notl/mdl_notl_t_left.md3");  
-  precache_model ("q3mdl/mechs/notl/mdl_notl_t_right.md3");  
-  precache_model ("q3mdl/mechs/notl/mdl_notl_legs.md3");
-  precache_model ("q3mdl/mechs/notl/mdl_notl_l_arm.md3");
-  precache_model ("q3mdl/mechs/notl/mdl_notl_r_arm.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_blk_t_cent.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_blk_t_left.md3");  
+  precache_model ("q3mdl/mechs/notl/mdl_blk_t_right.md3");  
+  precache_model ("q3mdl/mechs/notl/mdl_blk_legs.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_blk_l_arm.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_blk_r_arm.md3");
 
-  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_legs.md3");
-  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_t_cent.md3");
-  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_t_left.md3");
-  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_t_right.md3");
-  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_l_arm.md3");
-  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_r_arm.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_mtk_legs.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_mtk_t_cent.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_mtk_t_left.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_mtk_t_right.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_mtk_l_arm.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_mtk_r_arm.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3");
   
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_legs.md3");
@@ -65,10 +65,17 @@ void() mh_precache_models={
    
    
   //weapon models
+  precache_model ("q3mdl/weapons/w_arh.md3");
   precache_model ("q3mdl/weapons/w_atc.md3");
   precache_model ("q3mdl/weapons/w_emp.md3");
+  precache_model ("q3mdl/weapons/w_esr.md3");
   precache_model ("q3mdl/weapons/w_laser.md3");
+  precache_model ("q3mdl/weapons/w_lgm.md3");
   precache_model ("q3mdl/weapons/w_mis.md3");
+  precache_model ("q3mdl/weapons/w_pac.md3");
+  precache_model ("q3mdl/weapons/w_qrf.md3");
+  precache_model ("q3mdl/weapons/w_rpc.md3");
+  precache_model ("q3mdl/weapons/w_sfga.md3");
   
   //weapon projectiles
   precache_model ("q3mdl/proj_emp.md3");

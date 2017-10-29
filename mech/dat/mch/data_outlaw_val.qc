@@ -21,9 +21,9 @@ float DAT_OTL_SHIELD_CUR = 300;
 float DAT_OTL_SHIELD_MAX = 300;
 float DAT_OTL_SHIELD_RATE = 1;
 float DAT_OTL_YAWSPEED = 6;
-vector DAT_OTL_CTOR_BBX_N ='-14 -14 -34';
+vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
 vector DAT_OTL_CTOR_BBX_X ='14 14 12';
-string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_cent.md3";
+string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
 string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_notl_cpt.md3";
 float DAT_OTL_M_FSPEED= 525;//350; - 5/21/2017
 float DAT_OTL_M_SSPEED= 450;//350; - 5/21/2017
@@ -79,8 +79,8 @@ string DAT_OTL_M_BSPD = "6";
 
 //LEGS
 string DAT_OTL_LEG_CNAME= M_LEGS;
-string DAT_OTL_LEG_MODEL= "q3mdl/mechs/notl/mdl_notl_legs.md3";
-vector DAT_OTL_LEG_OFFSET= '0 -19.5 -4';
+string DAT_OTL_LEG_MODEL= "q3mdl/mechs/notl/mdl_blk_legs.md3";
+vector DAT_OTL_LEG_OFFSET= '0 -16 -4';
 
 //CENTER TORSO
 string DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
@@ -88,49 +88,49 @@ string DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
 //LEFT TORSO
 string DAT_OTL_LTOR_CNAME= M_TOR_LEFT;
 string DAT_OTL_LTOR_CPARENT= M_TOR_CENTER;
-string DAT_OTL_LTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_left.md3";
-vector DAT_OTL_LTOR_OFFSET= '-6.5 1 -2';
+string DAT_OTL_LTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_left.md3";
+vector DAT_OTL_LTOR_OFFSET= '-7 5.5 -2';
 
 //RIGHT TORSO
 string DAT_OTL_RTOR_CNAME= M_TOR_RIGHT;
 string DAT_OTL_RTOR_CPARENT= M_TOR_CENTER; 
-string DAT_OTL_RTOR_MODEL= "q3mdl/mechs/notl/mdl_notl_t_right.md3";
-vector DAT_OTL_RTOR_OFFSET= '6.5 1 -2';
+string DAT_OTL_RTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_right.md3";
+vector DAT_OTL_RTOR_OFFSET= '7 5.5 -2';
 
 //LEFT ARM 
 string DAT_OTL_LARM_CNAME= M_ARM_LEFT;
 string DAT_OTL_LARM_CPARENT= M_TOR_LEFT;
 
-string DAT_OTL_LARM_MODEL= "q3mdl/mechs/notl/mdl_notl_l_arm.md3";
-vector DAT_OTL_LARM_OFFSET= '-11 -0.5 -0.5';
+string DAT_OTL_LARM_MODEL= "q3mdl/mechs/notl/mdl_blk_l_arm.md3";
+vector DAT_OTL_LARM_OFFSET= '-11 7 -2';
 
 //RIGHT ARM
 string DAT_OTL_RARM_CNAME= M_ARM_RIGHT;
 string DAT_OTL_RARM_CPARENT= M_TOR_RIGHT;
-string DAT_OTL_RARM_MODEL= "q3mdl/mechs/notl/mdl_notl_r_arm.md3";
-vector DAT_OTL_RARM_OFFSET= '11 -0.5 -0.5';
+string DAT_OTL_RARM_MODEL= "q3mdl/mechs/notl/mdl_blk_r_arm.md3";
+vector DAT_OTL_RARM_OFFSET= '11 7 -2';
 
 //CAMERA
 string DAT_OTL_CAM_CNAME= "camera";
 string DAT_OTL_CAM_MODEL= "q3mdl/testball.md3";
-vector DAT_OTL_CAM_OFFSET= '0 0.5 7.5';
+vector DAT_OTL_CAM_OFFSET= '0 7 7';
 vector DAT_OTL_CAM_OFFSET_ALT= '0 1 0';
 
 //WEAPON1
 string DAT_OTL_WEP1_CPARENT= M_ARM_LEFT;
-vector DAT_OTL_WEP1_OFFSET= '-11.5 -2 6';
+vector DAT_OTL_WEP1_OFFSET= '-11 0.5 1.5';
 vector DAT_OTL_WEP1_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
 string DAT_OTL_WEP2_CPARENT= M_ARM_RIGHT;
-vector DAT_OTL_WEP2_OFFSET= '11.5 -2 6';
+vector DAT_OTL_WEP2_OFFSET= '11 0.5 1.5';
 vector DAT_OTL_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP2_ADJ_ANG= '0 0 90';
 
 //WEAPON3
 string DAT_OTL_WEP3_CPARENT= M_TOR_CENTER;
-vector DAT_OTL_WEP3_OFFSET= '-1 5.5 3';
+vector DAT_OTL_WEP3_OFFSET= '-2 10.5 0';
 vector DAT_OTL_WEP3_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 

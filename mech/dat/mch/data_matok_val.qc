@@ -21,8 +21,8 @@ float DAT_MTK_SHIELD_CUR = 425;
 float DAT_MTK_SHIELD_MAX = 425;
 float DAT_MTK_SHIELD_RATE = 0.75;
 float DAT_MTK_YAWSPEED = 5;
-vector DAT_MTK_CTOR_BBX_N ='-15 -15 -35';
-vector DAT_MTK_CTOR_BBX_X ='15 15 14';
+vector DAT_MTK_CTOR_BBX_N ='-15 -15 -40';
+vector DAT_MTK_CTOR_BBX_X ='15 15 20';
 string DAT_MTK_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3";
 float DAT_MTK_M_FSPEED=225;
 float DAT_MTK_M_SSPEED=225;
@@ -72,7 +72,7 @@ float DAT_MTK_WEP4_GROUP= 2;
 float DAT_MTK_WEP5_GROUP= 3;
 
 //this is mostly cosmetics
-string DAT_MTK_CTOR_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_t_cent.md3";
+string DAT_MTK_CTOR_MODEL= "q3mdl/mechs/ntmk/mdl_mtk_t_cent.md3";
 float DAT_MTK_M_ACCEL=0.0007;
 string DAT_MTK_M_ROLLANGLE="2.25";
 string DAT_MTK_M_PITCH_N="90";
@@ -86,8 +86,8 @@ string DAT_MTK_M_BSPD = "6.55";
 
 //LEGS
 string DAT_MTK_LEG_CNAME= M_LEGS;
-string DAT_MTK_LEG_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_legs.md3";
-vector DAT_MTK_LEG_OFFSET= '0 -21 0';
+string DAT_MTK_LEG_MODEL= "q3mdl/mechs/ntmk/mdl_mtk_legs.md3";
+vector DAT_MTK_LEG_OFFSET= '0 -12 0';
 
 //CENTER TORSO
 string DAT_MTK_CTOR_CNAME= M_TOR_CENTER;
@@ -96,63 +96,63 @@ string DAT_MTK_CTOR_CNAME= M_TOR_CENTER;
 string DAT_MTK_LTOR_CNAME= M_TOR_LEFT;
 string DAT_MTK_LTOR_CPARENT= M_TOR_CENTER;
 
-string DAT_MTK_LTOR_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_t_left.md3";
-vector DAT_MTK_LTOR_OFFSET= '-8 3 -1.5';
+string DAT_MTK_LTOR_MODEL= "q3mdl/mechs/ntmk/mdl_mtk_t_left.md3";
+vector DAT_MTK_LTOR_OFFSET= '-10 12.25 1.5';
 
 //RIGHT TORSO
 string DAT_MTK_RTOR_CNAME= M_TOR_RIGHT;
 string DAT_MTK_RTOR_CPARENT= M_TOR_CENTER; 
 
-string DAT_MTK_RTOR_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_t_right.md3";
-vector DAT_MTK_RTOR_OFFSET= '8 3 -1.5';
+string DAT_MTK_RTOR_MODEL= "q3mdl/mechs/ntmk/mdl_mtk_t_right.md3";
+vector DAT_MTK_RTOR_OFFSET= '10 12.25 1.5';
 
 //LEFT ARM 
 string DAT_MTK_LARM_CNAME= M_ARM_LEFT;
 string DAT_MTK_LARM_CPARENT= M_TOR_LEFT;
 
-string DAT_MTK_LARM_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_l_arm.md3";
-vector DAT_MTK_LARM_OFFSET= '-13 -0.5 -2.25';
+string DAT_MTK_LARM_MODEL= "q3mdl/mechs/ntmk/mdl_mtk_l_arm.md3";
+vector DAT_MTK_LARM_OFFSET= '-15 11 0';
 
 //RIGHT ARM
 string DAT_MTK_RARM_CNAME= M_ARM_RIGHT;
 string DAT_MTK_RARM_CPARENT= M_TOR_RIGHT;
 
-string DAT_MTK_RARM_MODEL= "q3mdl/mechs/ntmk/mdl_ntmk_r_arm.md3";
-vector DAT_MTK_RARM_OFFSET= '13 -0.5 -2.25';
+string DAT_MTK_RARM_MODEL= "q3mdl/mechs/ntmk/mdl_mtk_r_arm.md3";
+vector DAT_MTK_RARM_OFFSET= '15 11 0';
 
 //CAMERA
 string DAT_MTK_CAM_CNAME= "camera";
 string DAT_MTK_CAM_MODEL= "q3mdl/testball.md3";
-vector DAT_MTK_CAM_OFFSET= '0 3.75 7';
+vector DAT_MTK_CAM_OFFSET= '0 14 7';
 vector DAT_MTK_CAM_OFFSET_ALT= '0 1 0';
 
 //WEAPON1
 string DAT_MTK_WEP1_CPARENT= M_TOR_RIGHT;
-vector DAT_MTK_WEP1_OFFSET= '8 8 1';
+vector DAT_MTK_WEP1_OFFSET= '9.25 8.25 9';
 vector DAT_MTK_WEP1_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
 string DAT_MTK_WEP2_CPARENT= M_TOR_LEFT;
-vector DAT_MTK_WEP2_OFFSET= '-8 8 1';
+vector DAT_MTK_WEP2_OFFSET= '-9.25 8.25 9';
 vector DAT_MTK_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP2_ADJ_ANG= '0 0 90';
 
 //WEAPON3
 string DAT_MTK_WEP3_CPARENT= M_ARM_RIGHT;
-vector DAT_MTK_WEP3_OFFSET= '14 -3 5';
+vector DAT_MTK_WEP3_OFFSET= '19 2.5 2.25';
 vector DAT_MTK_WEP3_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP3_ADJ_ANG= '0 0 90';
 
 //WEAPON4
 string DAT_MTK_WEP4_CPARENT= M_ARM_LEFT;
-vector DAT_MTK_WEP4_OFFSET= '-14 -3 5';
+vector DAT_MTK_WEP4_OFFSET= '-19 2.5 2.25';
 vector DAT_MTK_WEP4_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP4_ADJ_ANG= '0 0 0';
 
 //WEAPON5
 string DAT_MTK_WEP5_CPARENT= M_TOR_CENTER;
-vector DAT_MTK_WEP5_OFFSET= '0 10 -4';
+vector DAT_MTK_WEP5_OFFSET= '0 20 0';
 vector DAT_MTK_WEP5_OFFSET_ALT= '0 0 0';
 vector DAT_MTK_WEP5_ADJ_ANG= '0 0 0';
 
