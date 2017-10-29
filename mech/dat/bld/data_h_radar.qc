@@ -20,6 +20,9 @@ void() building_radar={
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(100, 100, 1, 100) ;
   util_setBoundBox('-16 -16 0', '16 16 20');
+  self.sh_cur= 0;
+  self.sh_max= 200;
+  self.sh_rate= 1;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();

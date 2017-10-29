@@ -21,5 +21,8 @@ void() building_shield={
     self.data_type = DATA_BLD;
     self.vec_name = "Shield Generator";
     self.e_model = "q3mdl/buildings/mdl_bld_h_shield.md3";
+    self.sh_cur= 0;
+    self.sh_max= 800;
+    self.sh_rate= 1;
   self = oself;
 };

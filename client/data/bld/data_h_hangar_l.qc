@@ -16,5 +16,8 @@ void() building_hangar_l={
     self.data_type = DATA_BLD;
     self.vec_name = "Large Hangar";
     self.e_model = "q3mdl/buildings/mdl_bld_h_hangar_l.md3";
+    self.sh_cur= 0;
+    self.sh_max= 500;
+    self.sh_rate= 1;
   self = oself;
 };

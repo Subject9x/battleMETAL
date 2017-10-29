@@ -21,6 +21,9 @@ void() building_fuel={
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(500, 500, 1, 100) ;
   util_setBoundBox('-56 -56 0', '56 56 64');
+  self.sh_cur= 0;
+  self.sh_max= 100;
+  self.sh_rate= 1;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();

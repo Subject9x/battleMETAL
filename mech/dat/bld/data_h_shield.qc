@@ -21,6 +21,9 @@ void() building_shield={
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(100, 100, 1, 100) ;
   util_setBoundBox('-64 -64 0', '64 64 40');
+  self.sh_cur= 0;
+  self.sh_max= 800;
+  self.sh_rate= 1;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();

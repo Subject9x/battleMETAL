@@ -16,5 +16,8 @@ void() building_fuel={
     self.data_type = DATA_BLD;
     self.vec_name = "Fuel Tank";
     self.e_model = "q3mdl/buildings/mdl_bld_h_fuel.md3";
+    self.sh_cur= 0;
+    self.sh_max= 100;
+    self.sh_rate= 1;
   self = oself;
 };

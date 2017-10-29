@@ -191,14 +191,19 @@ vector(float val) gui_getColorForShield={
   }
 };
 
-vector(float bits, float dead, float ok) gui_getWepStatusColor{
+vector(float bits, float dead, float ok, float wrange, float prange) gui_getWepStatusColor={
   if((bits & dead)){
-    return CLR_DEF_ARM_ONEQ;
+    return CLR_DEF_ARM_DED;
   }
   else if((bits & ok)){
-    return CLR_DEF_WHITE;
+    if(prange > wrange){
+      return CLR_DEF_ARM_THREEQ;
+    }
+    else{
+       return CLR_DEF_WHITE;
+    }
   }
-}
+};
 
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderMeter={
   /*

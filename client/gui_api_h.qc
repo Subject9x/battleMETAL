@@ -36,6 +36,7 @@ float(float pcx) gui_percentX;
 float(float pcy) gui_percentY;
 float(float ang) anglemod;
 string(float anglee) gui_angleToNav;
+vector(float bits, float dead, float ok, float wrange, float prange) gui_getWepStatusColor
 
 vector(float pcx, float pcy) gui_percentToPixelRaw;
 float(float pcx) gui_percentXRaw;

@@ -21,5 +21,8 @@ void() building_radar={
     self.data_type = DATA_BLD;
     self.vec_name = "Listening Post";
     self.e_model = "q3mdl/buildings/mdl_bld_h_radar.md3";
+    self.sh_cur= 0;
+    self.sh_max= 200;
+    self.sh_rate= 1;
   self = oself;
 };

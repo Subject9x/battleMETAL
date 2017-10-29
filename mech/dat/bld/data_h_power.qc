@@ -20,6 +20,9 @@ void() building_power={
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(100, 100, 1, 100) ;
   util_setBoundBox('-56 -56 0', '56 56 46');
+  self.sh_cur= 0;
+  self.sh_max= 600;
+  self.sh_rate= 1;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();
