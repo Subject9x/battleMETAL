@@ -27,31 +27,41 @@ void() hardpointListener={
 };
 
 void() mechSelectListener={
-  local float found;
+  local float found, vsiz;
   if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.025, 0.0416), gui_percentToPixel(0.075, 0.4166))){
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT)){
       found = listListener(MECHLIST_ORG_LIGHT, cursorpos, MECHLIST_SIZE_LIGHT, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_LIGHT, 0);
       found = MECHLIST_LIGHT_ARR[found];
-      PLAYER_HELPER.vec_size = 1;
+      vsiz = 1;
     }
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_MEDIUM, MECHLIST_SIZE_MEDIUM)){
       found = listListener(MECHLIST_ORG_MEDIUM, cursorpos, MECHLIST_SIZE_MEDIUM, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_MEDIUM, 0);
       found = MECHLIST_MEDIUM_ARR[found];
-      PLAYER_HELPER.vec_size = 2;
+      vsiz = 2;
     }
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_HEAVY, MECHLIST_SIZE_HEAVY)){
       found = listListener(MECHLIST_ORG_HEAVY, cursorpos, MECHLIST_SIZE_HEAVY, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_HEAVY, 0);
       found = MECHLIST_HEAVY_ARR[found];
-      PLAYER_HELPER.vec_size = 3;
+      vsiz = 3;
     }
-    if((found > 0) && (found != PLAYER_HELPER.plr_sel_mech)){
-      stashMechConfig();
-      local entity nxt;
-      nxt = m_findMechData(PLAYER_HELPER.vec_size, found);
-      PLAYER_HELPER.plr_sel_mech = found;
-      HARDPOINT_CNT = nxt.hardpoint_cnt;
-      grabMechConfig(nxt);
-      cl_setmech(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+    if(found > 0){
+      local float change;
+      change = FALSE;
+      if((PLAYER_HELPER.vec_size == vsiz) && (found != PLAYER_HELPER.plr_sel_mech)){
+        change = TRUE;
+      }
+      if((PLAYER_HELPER.vec_size != vsiz)){
+        change = TRUE;
+      }
+      if(change){
+        stashMechConfig();
+        PLAYER_HELPER.plr_sel_mech = found;
+        PLAYER_HELPER.vec_size = vsiz;
+        local entity nxt;
+        nxt = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+        grabMechConfig(nxt);
+        cl_setmech(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+      }
     }
   }
 };
@@ -142,9 +152,8 @@ void() menu_hangarDrawFrame={
     PLAYER_HELPER.plr_sel_mech = 1;
     PLAYER_HELPER.vec_size = 1;
     local entity dat;
-    dat = m_findMechData(1,1);
-    HARDPOINT_CNT = dat.hardpoint_cnt;
     cleanHardPoints();
+    dat = m_findMechData(1,1);
     grabMechConfig(dat);
     cl_setmech(1, 1); 
   }
@@ -541,7 +550,7 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
   col_e = nofs + gui_percentToPixel(0.138, 0.012);
   lst_idx = 1;
   bit = 1;
-  while((lst_idx <= HARDPOINT_CNT)){
+  while(lst_idx <= PLAYER_HELPER.hardpoint_cnt){
     local vector lofs;
     local entity dat;
     lofs_x = nofs_x + gui_percentX(0.0046);
@@ -577,7 +586,7 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
 };
 
 void(vector ofs) menu_hangar_HardPointInfo={
-  local vector nofs, max;
+  local vector nofs;
   local entity dat;
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentX(0.0296);
   nofs_y = ofs_y + gui_percentY(0.0437);
@@ -620,7 +629,7 @@ void(vector ofs) menu_hangar_HardPointInfo={
 };
 
 void(vector ofs) menu_hangar_WeaponInfo={
-  local vector nofs, max;
+  local vector nofs;
   local entity dat;
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentX(0.0296);
   nofs_y = ofs_y + gui_percentY(0.077);
@@ -708,8 +717,8 @@ float(float comp, float bits) checkIfWeaponInGroup={
 
 void() cleanHardPoints={
   local float lst_idx;
-  lst_idx = 0;
-  while(lst_idx <= HARDPOINT_CNT){
+  lst_idx = 1;
+  while(lst_idx <= PLAYER_HELPER.hardpoint_cnt){
     HARDPOINTS[lst_idx] = 0;
     lst_idx = lst_idx + 1;
   }
@@ -739,7 +748,7 @@ void() stashMechConfig={
   prev.plr_nex_grp3 = PLAYER_HELPER.plr_nex_grp3;
   prev.plr_nex_grp4 = PLAYER_HELPER.plr_nex_grp4;
   prev.plr_nex_grp5 = PLAYER_HELPER.plr_nex_grp5;
-
+  
   prev.plr_nex_wep1 = HARDPOINTS[1];
   prev.plr_nex_wep2 = HARDPOINTS[2];
   prev.plr_nex_wep3 = HARDPOINTS[3];
@@ -757,7 +766,7 @@ void(entity next) grabMechConfig={
   PLAYER_HELPER.plr_nex_grp3 = next.plr_nex_grp3;
   PLAYER_HELPER.plr_nex_grp4 = next.plr_nex_grp4;
   PLAYER_HELPER.plr_nex_grp5 = next.plr_nex_grp5;
-
+  PLAYER_HELPER.hardpoint_cnt = next.hardpoint_cnt;
   HARDPOINTS[1] = next.plr_nex_wep1;
   HARDPOINTS[2] = next.plr_nex_wep2;
   HARDPOINTS[3] = next.plr_nex_wep3;

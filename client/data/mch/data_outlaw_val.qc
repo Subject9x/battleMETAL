@@ -154,6 +154,7 @@ float(vector org) otl_hardpointListener={
     PLAYER_HELPER.plr_sel_wid = WEAPON2;
     return 2;
   }  
+  return 0;
 };
 
 //call this guy at the start of the world ini
@@ -171,9 +172,9 @@ void() data_mech_otl={
     self.menu_renderHardpoints = otl_renderHardpoints;
     self.menu_hardpointListener = otl_hardpointListener;
     data_otl_ini();
-    self.plr_nex_wep1 = 0;
-    self.plr_nex_wep2 = 0;
-    self.plr_nex_wep3 = 0;
+    self.plr_nex_wep1 = 1;
+    self.plr_nex_wep2 = 1;
+    self.plr_nex_wep3 = 2;
     self.plr_nex_wep4 = 0;
     self.plr_nex_wep5 = 0;
     self.plr_nex_wep6 = 0;

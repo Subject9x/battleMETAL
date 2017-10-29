@@ -74,7 +74,7 @@ void() menu_handleFrame={
   menu_navBar(VIEW_ORG);
   drawpic(mpos, "gfx/ui/ui_cursor.png",  i_sz, '1 1 1', HUD_ALPHA, 0);
   drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-    
+  drawstring(VIEW_ORG+'2 10', ftos(PLAYER_HELPER.hardpoint_cnt), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
 };
 
 
@@ -86,7 +86,7 @@ void() mechAcceptButtonListener={
       local float lst_idx, bit;
       lst_idx = 1;
       bit = 1;
-      while(lst_idx <= HARDPOINT_CNT){
+      while(lst_idx <= PLAYER_HELPER.hardpoint_cnt){
         cl_setweapon(bit, HARDPOINTS[lst_idx]);
         bit = bit * 2;
         lst_idx = lst_idx + 1;

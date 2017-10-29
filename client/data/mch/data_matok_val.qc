@@ -179,6 +179,7 @@ float(vector org) mtk_hardpointListener={
     PLAYER_HELPER.plr_sel_wid = WEAPON5;
     return 5;
   } 
+  return 0;
 };
 
 //call this guy at the start of the world ini
@@ -196,11 +197,11 @@ void() data_mech_mtk={
     self.menu_renderHardpoints = mtk_renderHardpoints;
     self.menu_hardpointListener = mtk_hardpointListener;
     data_mtk_ini();
-    self.plr_nex_wep1 = 0;
-    self.plr_nex_wep2 = 0;
-    self.plr_nex_wep3 = 0;
-    self.plr_nex_wep4 = 0;
-    self.plr_nex_wep5 = 0;
+    self.plr_nex_wep1 = ID_WEP_LATC;
+    self.plr_nex_wep2 = ID_WEP_LATC;
+    self.plr_nex_wep3 = ID_WEP_LAS;
+    self.plr_nex_wep4 = ID_WEP_LAS;
+    self.plr_nex_wep5 = ID_WEP_ESR;
     self.plr_nex_wep6 = 0;
     self.plr_nex_wep7 = 0;
     self.plr_nex_wep8 = 0;

@@ -226,6 +226,7 @@ float(vector org) hvd_hardpointListener={
     PLAYER_HELPER.plr_sel_wid = WEAPON9;
     return 9;
   }
+  return 0;
 };
 
 //call this guy at the start of the world ini
@@ -243,15 +244,15 @@ void() data_mech_hvd={
     self.menu_renderHardpoints = hvd_renderHardpoints;
     self.menu_hardpointListener = hvd_hardpointListener;
     data_hvd_ini();
-    self.plr_nex_wep1 = 0;
-    self.plr_nex_wep2 = 0;
-    self.plr_nex_wep3 = 0;
-    self.plr_nex_wep4 = 0;
-    self.plr_nex_wep5 = 0;
-    self.plr_nex_wep6 = 0;
-    self.plr_nex_wep7 = 0;
-    self.plr_nex_wep8 = 0;
-    self.plr_nex_wep9 = 0;
+    self.plr_nex_wep1 = ID_WEP_LATC;
+    self.plr_nex_wep2 = ID_WEP_LAS;
+    self.plr_nex_wep3 = ID_WEP_LATC;
+    self.plr_nex_wep4 = ID_WEP_LAS;
+    self.plr_nex_wep5 = ID_WEP_EMP;
+    self.plr_nex_wep6 = ID_WEP_EMP;
+    self.plr_nex_wep7 = ID_WEP_MIS;
+    self.plr_nex_wep8 = ID_WEP_MIS;
+    self.plr_nex_wep9 = ID_WEP_MIS;
     self.plr_nex_grp1 = 0;
     self.plr_nex_grp2 = 0;
     self.plr_nex_grp3 = 0;
