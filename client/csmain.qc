@@ -111,7 +111,7 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   if(evtype == 0){
-    if(scanx == K_TAB){
+    if(scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS){
       if(MENU_ACTIVE){
         MENU_ACTIVE = FALSE;
         MENU_HANGAR_ACTIVE = FALSE;

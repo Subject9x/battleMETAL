@@ -59,6 +59,7 @@ void() mechSelectListener={
         PLAYER_HELPER.vec_size = vsiz;
         local entity nxt;
         nxt = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+        cleanHardPoints();
         grabMechConfig(nxt);
         cl_setmech(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
       }
