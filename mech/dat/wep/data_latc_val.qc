@@ -129,6 +129,8 @@ void() data_latc_atk={
   bul_fx.classname = "missile";
   setmodel(bul_fx, "progs/muzzleflash.spr32");
   setsize(bul_fx, '-1 -1 -1', '1 1 1');
+  makevectors(self.angles);
+  self.fx_origin = self.fx_origin + (v_forward * 5);
   setorigin(bul_fx, self.fx_origin);
   bul_fx.alpha = 0.85;
   bul_fx.glow_color = 250;
@@ -136,5 +138,5 @@ void() data_latc_atk={
   bul_fx.glow_trail = TRUE;
   bul_fx.color = '1 0 0';
   bul_fx.think = SUB_Remove;
-  bul_fx.nextthink = time + 0.001;// + 0.35;
+  bul_fx.nextthink = time + 0.01;// + 0.35;
 };

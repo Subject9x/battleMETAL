@@ -19,8 +19,8 @@ void() building_fuel={
   self.p_class = P_BULD;
   util_setModel("q3mdl/buildings/mdl_bld_h_fuel.md3", 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
-  util_setHealthArmor(500, 500, 1, 100) ;
-  util_setBoundBox('-56 -56 0', '56 56 64');
+  util_setHealthArmor(150, 150, 1, 100) ;
+  util_setBoundBox('-40 -40 0', '40 40 64');
   self.sh_cur= 0;
   self.sh_max= 100;
   self.sh_rate= 1;

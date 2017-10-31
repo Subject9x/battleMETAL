@@ -132,8 +132,10 @@ void() data_esr_atk={
   laser_org.movetype = SOLID_NOT;
   laser_org.classname = "missile";
   setsize(laser_org, '0 0 0', '0 0 0');
+  makevectors(self.angles);
+  self.fx_origin = self.fx_origin + (v_forward*6);
   setorigin(laser_org, self.fx_origin);
-
+  laser_org.scale = 0.5;
   local float dtype;
   dtype = dtype | DMG_ENE;
   

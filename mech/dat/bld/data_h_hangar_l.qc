@@ -16,8 +16,8 @@ void() building_hangar={
   self.p_class = P_BULD;
   util_setModel("q3mdl/buildings/mdl_bld_h_hangar_l.md3", 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
-  util_setHealthArmor(500, 500, 1, 100) ;
-  util_setBoundBox('-56 -56 0', '56 56 64');
+  util_setHealthArmor(2000, 2000, 1, 100) ;
+  util_setBoundBox('-72 -72 0', '72 72 80');
   self.sh_cur= 0;
   self.sh_max= 500;
   self.sh_rate= 1;

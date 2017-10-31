@@ -18,8 +18,8 @@ void() building_radar={
   self.p_class = P_BULD;
   util_setModel("q3mdl/buildings/mdl_bld_h_radar.md3", 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
-  util_setHealthArmor(100, 100, 1, 100) ;
-  util_setBoundBox('-16 -16 0', '16 16 20');
+  util_setHealthArmor(250, 250, 1, 100) ;
+  util_setBoundBox('-20 -20 0', '20 20 26');
   self.sh_cur= 0;
   self.sh_max= 200;
   self.sh_rate= 1;

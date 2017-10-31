@@ -43,10 +43,10 @@ void() ctrl_update_mechplayer={
       self = oself;
     }
   }
-  self.e_arm_l.v_angle_z = self.angles_z;
+  /*self.e_arm_l.v_angle_z = self.angles_z;
   self.e_arm_l.v_angle_x = self.v_angle_x * -1;
   self.e_arm_r.v_angle_z = self.angles_z;
-  self.e_arm_r.v_angle_x = self.v_angle_x * -1;
+  self.e_arm_r.v_angle_x = self.v_angle_x * -1;*/
 };
 
 /*
