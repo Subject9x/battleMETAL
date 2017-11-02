@@ -143,6 +143,7 @@ void() mh_world_iniData={
   data_h_shield();
   data_h_fuel();
   data_h_hangar_l();
+  data_tur_hmn();
 };
 
 entity(float id, float dat_type) mh_world_findData={

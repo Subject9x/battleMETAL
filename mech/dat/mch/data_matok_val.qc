@@ -23,10 +23,10 @@ float DAT_MTK_SHIELD_RATE = 0.75;
 float DAT_MTK_YAWSPEED = 5;
 vector DAT_MTK_CTOR_BBX_N ='-15 -15 -40';
 vector DAT_MTK_CTOR_BBX_X ='15 15 20';
-string DAT_MTK_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3";
-float DAT_MTK_M_FSPEED=225;
-float DAT_MTK_M_SSPEED=225;
-float DAT_MTK_M_BSPEED=190;
+string DAT_MTK_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_mtk_cpt.md3";
+float DAT_MTK_M_FSPEED=125; //225;
+float DAT_MTK_M_SSPEED=125; //225;
+float DAT_MTK_M_BSPEED=100; //190;
 
 vector DAT_MTK_SPREAD_N = '4 4 0.008';
 vector DAT_MTK_SPREAD_X = '8 8 0.008';

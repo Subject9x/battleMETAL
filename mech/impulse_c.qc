@@ -58,7 +58,7 @@ void() ImpulseCommands ={
   }
   
   if(self.stat_plr_fir == FIRE_SINGLE){
-    mpls_singleFire();
+    //mpls_singleFire();
   }
   if(self.stat_plr_fir == FIRE_GROUP){
     mpls_groupFire();
@@ -78,7 +78,7 @@ void() ImpulseCommands ={
   }
   
   if(self.impulse == IMP_SUICIDE){
-    ClientKill();
+    //ClientKill(); WHOOPS!
   }
   
   if(self.impulse == IMP_TARGET){

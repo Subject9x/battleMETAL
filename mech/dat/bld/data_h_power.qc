@@ -20,7 +20,7 @@ void() building_power={
   self.p_class = P_BULD;
   util_setModel("q3mdl/buildings/mdl_bld_h_power.md3", 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
-  util_setHealthArmor(2500, 2500, 1, 100) ;
+  util_setHealthArmor(2500, 2500, 1, 100);
   util_setBoundBox('-75 -75 0', '75 75 48');
   self.sh_cur= 0;
   self.sh_max= 600;

@@ -101,19 +101,12 @@ void() ai_state_fight={
         }
       }
     }
-    self.th_missile();
+    //self.th_missile();
   }
   else{
     if(self.oldenemy != world){
       self.enemy = self.oldenemy;
       self.oldenemy = world;
-      //i_update_statemove(ai_state_hunt, ai_move_walk_goal, FALSE);
-    }
-    else if(self.oldgoal.classname == "ai_node"){
-      //ai_update_statemove(ai_state_tonode, ai_move_walk_goal, FALSE);
-    }
-    else{
-      //ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
     }
   }
 };
@@ -137,20 +130,15 @@ void() ai_state_tonode={
     if(contact != world){
       self.enemy = contact;
       self.oldgoal = self.goalentity;
-      //ai_update_statemove(ai_state_hunt, self.ai_next_move, TRUE);
       return;
     }
     
     traceline(self.origin, self.goalentity.origin, FALSE, self);
     if(trace_fraction < 1){
       self.movetarget = world;
-     // ai_update_statemove(ai_state_trynode, ai_move_walk_goal, TRUE);
       return;
     }
     self.ai_next_move = ai_move_walk_goal;
-  }
-  else{
-   //ai_update_statemove(ai_state_ready, ai_move_stand, FALSE);
   }
 };
 
@@ -170,7 +158,6 @@ void() ai_state_ready={
     local entity contact;
     contact = ai_core_findtarget();
     if(contact != world){
-     // ai_update_statemove(ai_state_hunt, ai_move_run_goal, FALSE);
     }
   }
 };
@@ -196,7 +183,6 @@ void() ai_state_trynode={
     else{
       self.goalentity = self.oldgoal;
       self.oldgoal = world;
-      //ai_update_statemove(self.ai_state_cache, ai_move_stand, FALSE);
     }
   }
 };

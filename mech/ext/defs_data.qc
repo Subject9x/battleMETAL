@@ -53,7 +53,6 @@ float ID_WEP_MCRK = 12;
 float ID_WEP_RAM = 13;
 float ID_WEP_BLD = 14;
 
-
 //PROJECTILE=============================
 float ID_PRJ_LATC = 1;
 float ID_PRJ_EMP = 2;

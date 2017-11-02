@@ -65,7 +65,24 @@ void(entity data) buildVehicle={
     self.e_tor_r.c_part = self.e_arm_r;
     self.e_arm_r.c_part = self.e_legs;
   }
-  self = oself;
+  else if(data.data_type == DATA_VEHC){
+    self.sh_hit = 0;
+    self.chain_timer = time;
+    self.lock_timer = 0;
+    if(data.unit_ctor){
+      buildCenterTorso(data);
+    }
+    if(data.unit_cam){
+      self.e_cam = buildCameraEnt(data, self);
+    }
+    if(data.unit_legs){
+       self.e_legs = buildLegs(data); 
+    }
+  }
+  if(self != oself){
+    self = oself;
+  }
+
   buildWeaponList(data, self);
 };
 
@@ -94,6 +111,7 @@ entity(entity data) buildLegs={
   self = oself;
   return leg_ent;
 };
+
 
 void(entity data) buildCenterTorso={
   data.unit_ctor();

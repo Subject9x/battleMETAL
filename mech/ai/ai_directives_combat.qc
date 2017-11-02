@@ -26,19 +26,26 @@ void() ai_mech_attack={
           }
         }
       }
-      if(fire == TRUE){
-        if((wep_chain.p_dmgtype & DMG_ENE)){
-          ai_attack_ene(wep_chain);
+    }
+    else{
+      if(wep_chain.w_isburst == TRUE){
+        if(wep_chain.w_state == READY){
+          fire = TRUE;
         }
-        else if((wep_chain.p_dmgtype & DMG_BAL)){
-          ai_attack_bal(wep_chain);
-        }
-        else if((wep_chain.p_dmgtype & DMG_EXP)){
-          ai_attack_exp(wep_chain);
-        }
-        else{
-          ai_attack_basic(wep_chain);
-        }
+      }
+    }
+    if(fire == TRUE){
+      if((wep_chain.p_dmgtype & DMG_ENE)){
+        ai_attack_ene(wep_chain);
+      }
+      else if((wep_chain.p_dmgtype & DMG_BAL)){
+        ai_attack_bal(wep_chain);
+      }
+      else if((wep_chain.p_dmgtype & DMG_EXP)){
+        ai_attack_exp(wep_chain);
+      }
+      else{
+        ai_attack_basic(wep_chain);
       }
     }
     wep_chain = wep_chain.w_slot;

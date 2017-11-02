@@ -13,7 +13,7 @@ float DAT_PAC_CLIPSIZE = 1;
 float DAT_PAC_CURRENTAMMO = 1;
 float DAT_PAC_FIRERATE = 8;
 float DAT_PAC_RELOADTIME = 8;
-vector DAT_PAC_FIRE_OFS = '0 0 2';
+vector DAT_PAC_FIRE_OFS = '0 0 8';
 string DAT_PAC_MODEL = "q3mdl/weapons/w_pac.md3";
 float DAT_PAC_EN_COST =  10;
 float DAT_PAC_EN_MAX =  800;
@@ -125,6 +125,8 @@ void() data_pac_atk={
   laser_org.movetype = SOLID_NOT;
   laser_org.classname = "missile";
   setsize(laser_org, '0 0 0', '0 0 0');
+  makevectors(self.angles);
+  self.fx_origin = self.fx_origin + (v_forward*DAT_PAC_FIRE_OFS_z);
   setorigin(laser_org, self.fx_origin);
 
   t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');

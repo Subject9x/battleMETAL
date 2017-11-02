@@ -5,6 +5,35 @@ Overview: next draft the ai
 this one will focus on move to move
 */
 
+
+/*
+  Core controller for any AI unit
+*/
+void() ai_control={
+  if(self.deadflag >= DEAD_DYING){
+    self.health = 0;
+    self.th_die();
+    return;
+  }
+  self.ai_unit_update();
+  self.ai_next_state();
+  if(self.th_missile){
+    self.th_missile();
+  }
+  if(self.button0){
+    self.button0 = 0;
+  }
+  self.prev_pos = self.origin;
+  if(self.m_fspeed > -1){
+    self.ai_next_move();
+    self.prev_angle = normalize(self.origin - self.prev_pos);
+    self.e_legs.v_angle_y = vectoangles(self.enemy.origin - self.origin) + self.p_velocity;
+  }
+  self.think = ai_control;
+  self.nextthink = time + 0.05;
+  self.e_cam.SendFlags = 1;
+};
+
 //TODO - move this stuff to own file
 void() ai_mech_update={
   local entity oself,wep_chain;
@@ -29,6 +58,61 @@ void() ai_mech_update={
   }
 };
 
+void() ai_turret_update={
+  local entity oself,wep_chain;
+  
+  ctrl_updateTurret();
+
+  wep_chain = self.w_slot;
+  while(wep_chain){
+    ctrl_wpn_think(wep_chain);
+    wep_chain = wep_chain.w_slot;
+  }  
+  if(self.enemy != world){
+    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+  }
+};
+
+void() ai_turret_touch={
+  if(self.ai_first_order != ai_order_test){
+    if(other.p_class != P_OBS){
+      local float infront;
+        infront = ai_target_infront(other);
+      if(other.i_faction != self.i_faction){
+        //bumped a baddy!
+        if(self.enemy == world){
+          if(other.p_class == P_MECH){
+            if(self.enemy == world){
+              self.enemy = other;
+            }
+            else{
+              self.oldenemy = self.enemy;
+              self.enemy = other;
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+void() ai_turret_die={
+  local entity w_chain;
+  w_chain = self.w_slot;
+  while(w_chain){
+    mech_player_compdie(w_chain);
+    w_chain = w_chain.w_slot;
+  }
+
+  mech_player_compdie(self.e_legs);
+  mech_player_compdie(self.e_cam);
+ 
+  //sub in a special turret death function or code here
+  //ctor_die1();
+ 
+  self.think = ai_mech_cleanup;
+  self.nextthink = time + 100;
+};
 
 void() ai_mech_die={
   local entity w_chain;
@@ -95,30 +179,6 @@ void() ai_mech_touch={
       }
     }
   }
-};
-
-/*
-  Core controller for any AI unit
-*/
-void() ai_control={
-  if(self.deadflag >= DEAD_DYING){
-    self.health = 0;
-    self.th_die();
-    return;
-  }
-  self.ai_unit_update();
-  self.ai_next_state();
-  self.th_missile();
-  if(self.button0){
-    self.button0 = 0;
-  }
-  self.prev_pos = self.origin;
-  self.ai_next_move();
-  self.prev_angle = normalize(self.origin - self.prev_pos);
-  self.e_legs.v_angle_y = vectoangles(self.enemy.origin - self.origin) + self.p_velocity;
-  self.think = ai_control;
-  self.nextthink = time + 0.05;
-  self.e_cam.SendFlags = 1;
 };
 
 

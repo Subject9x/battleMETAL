@@ -10,21 +10,6 @@ void() data_h_radar;
 void() data_h_shield;
 void() data_h_hangar_l;
 void() data_h_fuel;
-float(entity ent, float changed) send_building;
-
-float(entity ent, float changed) send_building={
-  WriteByte(MSG_ENTITY, 4);
-  WriteByte( MSG_ENTITY, self.data_idx);
-  WriteByte( MSG_ENTITY, self.p_class);
-  WriteByte( MSG_ENTITY, self.i_faction);
-  WriteCoord( MSG_ENTITY, self.origin_x ); // Position X
-  WriteCoord( MSG_ENTITY, self.origin_y ); // Position Y
-  WriteCoord( MSG_ENTITY, self.origin_z ); // Position Z
-  WriteAngle( MSG_ENTITY, self.angles_x);
-  WriteAngle( MSG_ENTITY, self.angles_y);
-  WriteAngle( MSG_ENTITY, self.angles_z);
-  return TRUE;
-};
 
 void() building_think={
 

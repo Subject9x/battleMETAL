@@ -87,7 +87,7 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
             if(e.p_class == P_BULD){
               icon = HUD_RAD_PIP_BLD;
             }
-            else if(e.p_class == P_MECH){
+            else{
               icon = HUD_RAD_PIP_MCH;
             }
           }

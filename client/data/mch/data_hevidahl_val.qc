@@ -22,9 +22,9 @@ float DAT_HVD_SHIELD_RATE = 0.35;
 vector DAT_HVD_CTOR_BBX_N ='-20 -20 -50';
 vector DAT_HVD_CTOR_BBX_X ='20 20 14';
 string DAT_HVD_CPIT_MODEL = "gfx/ui/hgr_hvd.png";
-float DAT_HVD_M_FSPEED=150;
-float DAT_HVD_M_SSPEED=150;
-float DAT_HVD_M_BSPEED=100;
+float DAT_HVD_M_FSPEED=75;//150;
+float DAT_HVD_M_SSPEED=75;//150;
+float DAT_HVD_M_BSPEED=50;//100;
 float DAT_HVD_HARDPOINTS = 9;
 
 //HITPOINT VALUES
@@ -245,8 +245,8 @@ void() data_mech_hvd={
     self.menu_hardpointListener = hvd_hardpointListener;
     data_hvd_ini();
     self.plr_nex_wep1 = ID_WEP_LATC;
-    self.plr_nex_wep2 = ID_WEP_LAS;
-    self.plr_nex_wep3 = ID_WEP_LATC;
+    self.plr_nex_wep2 = ID_WEP_LATC;
+    self.plr_nex_wep3 = ID_WEP_LAS;
     self.plr_nex_wep4 = ID_WEP_LAS;
     self.plr_nex_wep5 = ID_WEP_EMP;
     self.plr_nex_wep6 = ID_WEP_EMP;
@@ -276,7 +276,7 @@ void() data_hvd_ini={
   self.m_fspeed = DAT_HVD_M_FSPEED;
   self.m_sspeed = DAT_HVD_M_SSPEED;
   self.m_bspeed = DAT_HVD_M_BSPEED;
-  self.m_maccel = DAT_HVD_M_ACCEL;
+  self.m_maccel = 
   self.m_pitch_max = DAT_HVD_M_PITCH_N;
   self.m_pitch_min = DAT_HVD_M_PITCH_X;
   self.c_bbx_x = DAT_HVD_CTOR_BBX_X;

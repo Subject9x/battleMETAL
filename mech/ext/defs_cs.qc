@@ -10,6 +10,7 @@ float E_NAV = 1;
 float E_OBJ = 2;
 float E_AIU = 3;
 float E_BLD = 4;
+float E_VEC = 5;
 
 //STAT TYPES
 float AS_STRING = 1;

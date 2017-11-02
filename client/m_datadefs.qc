@@ -74,3 +74,4 @@ float ID_BLD_H_SHIELD = 2;
 float ID_BLD_H_POWER = 3;
 float ID_BLD_H_HANGAR_L = 4;
 float ID_BLD_H_FUEL = 5;
+float ID_BLD_H_LTUR = 6;

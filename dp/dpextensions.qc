@@ -1384,9 +1384,12 @@ float(entity clent) clienttype = #455; // returns one of the CLIENTTYPE_* consta
 //field definitions:
 .float() customizeentityforclient; // self = this entity, other = client entity
 //description:
-//allows qc to modify an entity before it is sent to each client, the function returns TRUE if it should send, FALSE if it should not, and is fully capable of editing the entity's fields, this allows cloaked players to appear less transparent to their teammates, navigation markers to only show to their team, etc
+//allows qc to modify an entity before it is sent to each client, the function returns TRUE if it should send, 
+//FALSE if it should not, and is fully capable of editing the entity's fields, this allows cloaked players to appear less transparent to their teammates, 
+//navigation markers to only show to their team, etc
 //tips on writing customize functions:
-//it is a good idea to return FALSE early in the function if possible to reduce cpu usage, because this function may be called many thousands of times per frame if there are many customized entities on a 64+ player server.
+//it is a good idea to return FALSE early in the function if possible to reduce cpu usage, because this function may be called many 
+//thousands of times per frame if there are many customized entities on a 64+ player server.
 //you are free to change anything in self, but please do not change any other entities (the results may be very inconsistent).
 //example ideas for use of this extension:
 //making icons over teammates' heads which are only visible to teammates.  for exasmple: float() playericon_customizeentityforclient = {return self.owner.team == other.team;};

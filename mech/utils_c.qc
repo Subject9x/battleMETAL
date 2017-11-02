@@ -42,10 +42,10 @@ vector(entity own, float range, float lead_factor) util_traceForAI={
   cy = cy + (cnv/2 *random());
   cy = cy * crandom();
   end = trace_endpos + (v_up*cy)+(v_right*cx);
-  if(trace_ent == world){
+  if((trace_ent == world) && (self.w_isburst == FALSE)){
     return own.origin;
   }
-  if(trace_ent.i_faction == own.i_faction){
+  if((trace_ent.i_faction == own.i_faction) && (self.w_isburst == FALSE)){
     return own.origin;
   }
   return end;

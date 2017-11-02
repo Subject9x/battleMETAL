@@ -24,9 +24,9 @@ float DAT_HVD_YAWSPEED = 3;
 vector DAT_HVD_CTOR_BBX_N ='-20 -20 -44';
 vector DAT_HVD_CTOR_BBX_X ='20 20 24';
 string DAT_HVD_CPIT_MODEL = "q3mdl/mechs/hvd/mdl_hvd_cpt.md3";
-float DAT_HVD_M_FSPEED=150;
-float DAT_HVD_M_SSPEED=150;
-float DAT_HVD_M_BSPEED=100;
+float DAT_HVD_M_FSPEED=75;//150;
+float DAT_HVD_M_SSPEED=75;//150;
+float DAT_HVD_M_BSPEED=50;//100;
 
 vector DAT_HVD_SPREAD_N = '8 6 0.01';
 vector DAT_HVD_SPREAD_X = '14 10 0.03';
@@ -78,7 +78,7 @@ float DAT_HVD_M_ACCEL= 0.0005;
 string DAT_HVD_M_ROLLANGLE="2.25";
 string DAT_HVD_M_PITCH_N="90";
 string DAT_HVD_M_PITCH_X="-90";
-string DAT_HVD_M_BOB = "0.5";
+string DAT_HVD_M_BOB = "0.03";
 string DAT_HVD_M_BCYCLE =  "0.85";
 string DAT_HVD_M_BUP = "0.5";
 string DAT_HVD_M_BMODEL = "1";
@@ -124,7 +124,7 @@ vector DAT_HVD_RARM_OFFSET= '18 13 -1';
 //CAMERA
 string DAT_HVD_CAM_CNAME= "camera";
 string DAT_HVD_CAM_MODEL= "q3mdl/testball.md3";
-vector DAT_HVD_CAM_OFFSET= '0 17 8';
+vector DAT_HVD_CAM_OFFSET= '0 15 8';
 vector DAT_HVD_CAM_OFFSET_ALT= '0 1 0';
 
 //WEAPON1

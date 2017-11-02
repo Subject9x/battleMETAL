@@ -88,6 +88,7 @@ void() cs_precache={
   building_radar();
   building_hangar_l();
   building_fuel();
+  building_ltur();
   
   //mech data
   data_mech_mtk();

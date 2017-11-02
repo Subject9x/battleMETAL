@@ -56,9 +56,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if((trg.flags & FL_MONSTER)){
+    bprint("angry! /n");
     anger_monster(trg, attacker);
   }
-  if(trg.p_class == P_BULD){
+  if((trg.p_class == P_BULD) || (trg.p_class == P_VECH)){
     local entity e, this;
     this = self;
     e = findradius(trg.origin, 2000);

@@ -49,6 +49,7 @@ void() player_makeMech={
   self.power_timer = time + 5;
   self.stat_plr_stt = PLAYER_SPAWN;
   buildVehicle(dat);
+  //self.customizeentityforclient = player_customizeMechForClient;
   if((self.flags & FL_CLIENT)){
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);
@@ -64,6 +65,8 @@ void() player_makeMech={
 
 void() player_unmakeMech={
   self.p_class = P_OBS;
+  self.vec_size = 0;
+  self.data_idx = 0;
   self.stat_trg_vid = -1;
   self.stat_trg_sh = -1;
   self.stat_trg_dat = -1;
@@ -80,4 +83,18 @@ void() player_unmakeMech={
   self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & (LOCK_TARG | LOCK_PLYR));
   mech_clearWeaponGroups();
   mech_cleanupMech();
+};
+
+float() player_customizeMechForClient={
+  if((other.flags & FL_CLIENT)){
+    util_setModel(self.c_model, 0);
+    setsize(self, self.c_bbx_n, self.c_bbx_x);
+    return TRUE;
+  }
+  if(self.model != "q3mdl/testball.md3"){
+    util_setModel("q3mdl/testball.md3", 0);
+    setsize(self, self.c_bbx_n, self.c_bbx_x);
+    return FALSE;
+  }
+  return FALSE;
 };

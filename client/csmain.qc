@@ -614,6 +614,19 @@ void(float isnew) CSQC_Ent_Update =
     self.angles_z = ReadAngle();
     setorigin(self, self.origin);
   }
+  else if(id == E_VEC){
+    self.data_idx = ReadByte();
+    self.p_class = ReadByte();
+    if(isnew){
+      self.drawmask = MASK_ENGINE;
+      addentity(self);
+    }
+    self.i_faction = ReadByte();
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    setorigin(self, self.origin);
+  }
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

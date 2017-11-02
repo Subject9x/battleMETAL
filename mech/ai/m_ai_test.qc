@@ -4,19 +4,7 @@
   Overview: super simple ai test
 */
 
-float(entity ent, float changed) send_ai_mech={
-//super ugly hack, send ai's e_cam ent
-  WriteByte( MSG_ENTITY, E_AIU ); // Unique Identifier, I suggest you use enums to make it easy on yourself
-  WriteByte( MSG_ENTITY, self.owner.data_idx);
-  WriteByte( MSG_ENTITY, self.owner.p_class);
-  WriteByte( MSG_ENTITY, self.owner.sh_cur);
-  WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
-  WriteByte( MSG_ENTITY, self.owner.i_faction);
-  WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
-  WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
-  WriteCoord( MSG_ENTITY, self.owner.origin_z ); // Position Z
-  return TRUE;
-};
+
 
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
 nextVecChoice = match to mech data id
@@ -107,7 +95,7 @@ void() ai_mech={
   self.th_die = ai_mech_die;
   self.th_missile = ai_mech_attack;
   self.ai_unit_update = ai_mech_update;
-  self.ai_next_state = ai_state_ready;
+  self.ai_next_state = self.ai_first_order = ai_state_ready;
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
   self.ai_optical = self.radar_range /2;

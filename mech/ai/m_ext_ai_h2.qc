@@ -191,3 +191,6 @@ void() ai_mech_attack;
 void() ai_mech_die;
 void() ai_mech_cleanup;
 void() ai_mech_touch;
+void() ai_turret_update;
+void() ai_turret_touch;
+void() ai_turret_die;

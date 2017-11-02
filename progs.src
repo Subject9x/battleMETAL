@@ -17,6 +17,7 @@ dp/subs.qc
 //==========================
 
 //mech header files
+  mech/world_ext_h.qc
   mech/client_utils_h.qc
   mech/svr/server_parmops_h.qc
   mech/svr/server_intermsn_h.qc
@@ -28,7 +29,6 @@ dp/subs.qc
   mech/ext/eng_player_h.qc
   mech/svr/server_csqchandler_h.qc
   mech/playerFactory_h.qc
-  mech/world_ext_h.qc
   mech/vecFactory_h.qc
   mech/ctrl/ctrl_all_h.qc
   mech/ctrl/ctrl_weapon_h.qc
@@ -113,6 +113,7 @@ dp/subs.qc
   mech/ctrl/ctrl_weapon.qc
   mech/ctrl/ctrl_mech.qc
   mech/ctrl/ctrl_legs.qc
+  mech/ctrl/ctrl_turret.qc
 //==========================
 
 

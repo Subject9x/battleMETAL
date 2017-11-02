@@ -24,10 +24,10 @@ float DAT_OTL_YAWSPEED = 6;
 vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
 vector DAT_OTL_CTOR_BBX_X ='14 14 12';
 string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
-string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_notl_cpt.md3";
-float DAT_OTL_M_FSPEED= 525;//350; - 5/21/2017
-float DAT_OTL_M_SSPEED= 450;//350; - 5/21/2017
-float DAT_OTL_M_BSPEED= 400;//290; - 5/21/2017
+string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_blk_cpt.md3";
+float DAT_OTL_M_FSPEED= 262; //525;//350; - 5/21/2017
+float DAT_OTL_M_SSPEED= 225; //450;//350; - 5/21/2017
+float DAT_OTL_M_BSPEED= 200;//400;//290; - 5/21/2017
 
 vector DAT_OTL_SPREAD_N = '4 4 0.01';
 vector DAT_OTL_SPREAD_X = '8 8 0.01';
@@ -80,7 +80,7 @@ string DAT_OTL_M_BSPD = "6";
 //LEGS
 string DAT_OTL_LEG_CNAME= M_LEGS;
 string DAT_OTL_LEG_MODEL= "q3mdl/mechs/notl/mdl_blk_legs.md3";
-vector DAT_OTL_LEG_OFFSET= '0 -16 -4';
+vector DAT_OTL_LEG_OFFSET= '0 -16 0';
 
 //CENTER TORSO
 string DAT_OTL_CTOR_CNAME= M_TOR_CENTER;

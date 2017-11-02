@@ -35,11 +35,13 @@ void() mh_precache_models={
   precache_model("q3mdl/buildings/mdl_bld_h_radar.md3");
   precache_model("q3mdl/buildings/mdl_bld_h_shield.md3");
   precache_model("q3mdl/buildings/mdl_bld_h_fuel.md3");
+  precache_model("q3mdl/buildings/mdl_bld_h_ltur.md3");
+  precache_model("q3mdl/buildings/mdl_bld_h_ltur_base.md3");
   
   //mech model
   precache_model ("q3mdl/testball.md3");
   //nu outlaw
-  precache_model ("q3mdl/mechs/notl/mdl_notl_cpt.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.md3");
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_cent.md3");
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_left.md3");  
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_right.md3");  
@@ -53,7 +55,7 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_t_right.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_l_arm.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_r_arm.md3");
-  precache_model ("q3mdl/mechs/ntmk/mdl_ntmk_cpt.md3");
+  precache_model ("q3mdl/mechs/ntmk/mdl_mtk_cpt.md3");
   
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_legs.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_cent.md3");
@@ -62,7 +64,6 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_l_arm.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_r_arm.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_cpt.md3");
-   
    
   //weapon models
   precache_model ("q3mdl/weapons/w_arh.md3");

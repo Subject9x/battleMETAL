@@ -21,6 +21,11 @@ void() legacy_PlayerDie;
 //spawn spot wrappers
 void() spawnpoint_Random;
 
+//SendEnt
+float(entity ent, float changed) send_vehicle;
+float(entity ent, float changed) send_building;
+float(entity ent, float changed) send_ai_mech;
+
 //client command layer
 void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
@@ -29,8 +34,6 @@ void() client_sendMissionFileName;
 void(string cmd, float tokens) client_setNavPoint;
 void() client_updateWeaponReloads;
 float(float val, float rel, float wpn_rel, float rdy, float bit)client_incrementReload;
-//void(float w_id, float wslotid) client_updateWeaponIdStat;
 void() client_sendAvailableLightMechs;
 void() client_sendAvailableMediumMechs;
 void() client_sendAvailableHeavyMechs;
-void(vector pos, vector sz, vector clr, float life) client_highlightUI;

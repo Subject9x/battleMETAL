@@ -8,7 +8,7 @@ Overview:
   size: small
 */
 
-//MATOK MECH=============================
+//HUMAN LIGHT TURRET=============================
 float DAT_TUR_IDX = ID_BLD_H_TURRET;
 string DAT_TUR_VEC_NAME = "Light Turret";
 float DAT_TUR_TECH_LEVEL = 1;
@@ -20,11 +20,11 @@ float DAT_TUR_SHIELD_CUR = 0;
 float DAT_TUR_SHIELD_MAX = 1200;
 float DAT_TUR_SHIELD_RATE = 0.35;
 float DAT_TUR_YAWSPEED = 2.5;
-vector DAT_TUR_CTOR_BBX_N ='-20 -20 0';
+vector DAT_TUR_CTOR_BBX_N ='-20 -20 -10';
 vector DAT_TUR_CTOR_BBX_X ='20 20 14';
-float DAT_TUR_M_FSPEED=0;
-float DAT_TUR_M_SSPEED=0;
-float DAT_TUR_M_BSPEED=0;
+float DAT_TUR_M_FSPEED=-1;
+float DAT_TUR_M_SSPEED=-1;
+float DAT_TUR_M_BSPEED=-1;
 
 string DAT_TUR_M_PITCH_N = "-25";
 string DAT_TUR_M_PITCH_X = "45";
@@ -33,10 +33,10 @@ vector DAT_TUR_SPREAD_N = '8 6 0.01';
 vector DAT_TUR_SPREAD_X = '14 10 0.03';
 
 //HITPOINT VALUES
-float DAT_TUR_CTOR_HP = 1200;
-float DAT_TUR_CTOR_HPMAX= 1200;
-float DAT_TUR_LEG_HP = 1500;
-float DAT_TUR_LEG_HPMAX= 1500;
+float DAT_TUR_CTOR_HP = 100;
+float DAT_TUR_CTOR_HPMAX= 100;
+float DAT_TUR_LEG_HP = 100;
+float DAT_TUR_LEG_HPMAX= 100;
 
 //ARMOR VALUES
 float DAT_TUR_CTOR_ARMOR= 100;
@@ -48,36 +48,43 @@ float DAT_TUR_LEG_ARMMAX= 100;
 float DAT_TUR_WEP1_IDX= ID_WEP_LATC;
 float DAT_TUR_WEP2_IDX= ID_WEP_LAS;
 float DAT_TUR_WEP1_GROUP= 1;
+float DAT_TUR_WEP2_GROUP= 1;
 
 //this is mostly cosmetics
-string DAT_TUR_CTOR_MODEL= "q3mdl/mechs/hvd/mdl_hvd_t_cent.md3";
+string DAT_TUR_CTOR_MODEL= "q3mdl/buildings/mdl_bld_h_ltur.md3";
 
 //LEGS
 string DAT_TUR_LEG_CNAME= M_LEGS;
-string DAT_TUR_LEG_MODEL= "q3mdl/mechs/hvd/mdl_hvd_legs.md3";
-vector DAT_TUR_LEG_OFFSET= '0 -30 0';
+string DAT_TUR_LEG_MODEL= "q3mdl/buildings/mdl_bld_h_ltur_base.md3";
+vector DAT_TUR_LEG_OFFSET= '0 0 0';
 
 //CENTER TORSO
 string DAT_TUR_CTOR_CNAME= M_TOR_CENTER;
 
 //WEAPON1
-string DAT_TUR_WEP1_CPARENT= M_ARM_RIGHT;
-vector DAT_TUR_WEP1_OFFSET= '3 -6 14';
-vector DAT_TUR_WEP1_OFFSET_ALT= DAT_HVD_RARM_OFFSET;
+string DAT_TUR_WEP1_CPARENT= M_TOR_CENTER;
+vector DAT_TUR_WEP1_OFFSET= '3 4 10';
+vector DAT_TUR_WEP1_OFFSET_ALT = '0 0 0';
 vector DAT_TUR_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
-string DAT_TUR_WEP2_CPARENT= M_ARM_RIGHT;
-vector DAT_TUR_WEP2_OFFSET= '0 -8 14';
-vector DAT_TUR_WEP2_OFFSET_ALT= DAT_HVD_RARM_OFFSET;
+string DAT_TUR_WEP2_CPARENT= M_TOR_CENTER;
+vector DAT_TUR_WEP2_OFFSET= '6 4 10';
+vector DAT_TUR_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_TUR_WEP2_ADJ_ANG= '0 0 90';
 
+//CAMERA
+string DAT_TUR_CAM_CNAME= "camera";
+string DAT_TUR_CAM_MODEL= "q3mdl/testball.md3";
+vector DAT_TUR_CAM_OFFSET= '0 0 0';
+vector DAT_TUR_CAM_OFFSET_ALT= '0 0 0';
 
 //=========================================
 void() data_tur_hmn;
 void() data_tur_ini;
 void() data_tur_legs;
 void() data_tur_ctor;
+void() data_tur_cam;
 void() data_tur_wep1;
 void() data_tur_wep2;
 
@@ -97,7 +104,8 @@ void() data_tur_hmn={
     self.unit_ctor = data_tur_ctor;
     self.unit_wep1 = data_tur_wep1;
     self.unit_wep2 = data_tur_wep2;
-    self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;    
+    self.unit_cam = data_tur_cam;
+    self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;
   self = oself;
 };
 
@@ -126,28 +134,87 @@ void() data_tur_ini={
   self.m_pitch_min = DAT_TUR_M_PITCH_X;
 };
 
-
 /*QUAKED building_tur (0.5 .85 .2) (-10 -10 0) (10 10 25)
 */
 void() building_tur;
 
 void() building_tur={
-  self.data_idx = ID_BLD_H_TURRET;
-  self.data_type = DATA_BLD;
-  self.vec_name = "Light Turret";
-  self.p_class = P_BULD;
-  util_setModel("q3mdl/buildings/mdl_bld_h_fuel.md3", 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
-  util_setHealthArmor(500, 500, 1, 100) ;
-  util_setBoundBox('-56 -56 0', '56 56 64');
-  self.scale = 1;
+  local entity dat;
+  dat = mh_world_findData(ID_BLD_H_TURRET, DATA_VEHC);
+  if(!dat){
+    bprint(strcat("turret id:",ftos(ID_BLD_H_TURRET)," was not found","\n"));
+    remove(self);
+    return;
+  }
+  self.flags = self.flags | FL_MONSTER;
   self.deadflag = DEAD_NO;
+  self.p_class = P_VECH;
+  self.data_idx = DATA_VEHC;
+  self.en_cur = 0;
+  self.en_max = 0;
+  self.en_rate = 0;
+  self.sh_cur = 0;
+  self.sh_max = 0;
+  self.sh_rate = 0;
+  self.stat_ctor_hp = 0;
+  self.radar_range = 0; 
+  self.was_hit = FALSE;
+  self.hitdir_buffer = 0;
+  self.stat_hit_dirs = 0;
+  self.stat_rdr_mode = 0;
+  
+  self.stat_spr_x = 0;
+  self.stat_spr_y = 0;
+  self.conv_min = '0 0 0';
+  self.conv_max = '0 0 0';
+  self.stat_lck_stt = LOCK_NONE;
+  self.ideal_yaw = self.angles * '0 1 0';
+  
+  buildVehicle(dat);
+  self.e_legs.movetype = MOVETYPE_NONE;
+  self.e_legs.aiment = world;
+  setsize(self.e_legs, '-1 -1 0', '1 1 1');
+  local vector adj;
+  makevectors(self.angles);
+  adj = self.origin + (v_up*-10);
+  setorigin(self.e_legs, adj);
+  self.e_legs.walkframe = 0;
+  self.e_legs.prev_angle = self.angles;
+  
+  ai_core_calcranges();
+
+  local float mod;
+  mod = ai_pilot_armor_mod();
+  self.max_health = self.health = self.health * mod; 
+  if (!self.yaw_speed){
+    local float m;
+    m = ai_pilot_yaw_mod();
+    self.yaw_speed = self.m_rot_speed + (self.m_rot_speed * m);
+  }
+  mod = ai_pilot_rating_leading();
+  self.stat_spr_x = self.conv_min_x + self.conv_max_x;
+  self.stat_spr_y = self.conv_min_y + self.conv_max_y;
+  mod = ai_pilot_rating_converg();
+  self.ai_rte_cnv = mod;
+  mod = ai_pilot_rating_range();
+  self.ai_rte_rng = mod;
+  self.ai_optical = self.radar_range /2;
+  mod = ai_pilot_rating_patience();
+  self.maxpatience = mod;
+  self.patience = 0;
+  self.origin_z = self.origin_z + 1;// raise off floor a bit
   droptofloor();
-  self.th_die = BecomeExplosion;
-  self.think = building_think;
-  self.nextthink = time + 1;
-  self.SendEntity = send_building;
-  self.SendFlags = 1;
+  self.enemy = world;
+  self.oldgoal = world;
+  self.ai_next_state = ai_state_ready;
+  self.ai_unit_update = ai_turret_update;
+  self.th_missile = ai_mech_attack;
+  self.e_cam.SendEntity = send_vehicle;
+  self.e_cam.SendFlags = 1;
+  self.th_die = ai_turret_die;
+  self.touch = ai_turret_touch;
+  self.think = ai_control;
+  self.nextthink = time + 0.1;
 };
 
 void() data_tur_legs={
@@ -184,4 +251,11 @@ void() data_tur_wep2={
   self.c_alt_ofs = DAT_TUR_WEP2_OFFSET_ALT;
   self.w_adj_ang = DAT_TUR_WEP2_ADJ_ANG;
   self.w_group = WEAPON2;
+};
+
+void() data_tur_cam={ 
+  self.c_name = DAT_TUR_CAM_CNAME;
+  self.c_ofs = DAT_TUR_CAM_OFFSET;
+  self.c_alt_ofs = DAT_TUR_CAM_OFFSET_ALT;
+  self.c_model = DAT_TUR_CAM_MODEL;
 };

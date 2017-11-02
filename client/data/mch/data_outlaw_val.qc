@@ -22,9 +22,9 @@ float DAT_OTL_SHIELD_RATE = 1;
 vector DAT_OTL_CTOR_BBX_N ='-14 -14 -34';
 vector DAT_OTL_CTOR_BBX_X ='14 14 12';
 string DAT_OTL_CPIT_MODEL= "gfx/ui/hgr_otl.png";
-float DAT_OTL_M_FSPEED= 525;//350; - 5/21/2017
-float DAT_OTL_M_SSPEED= 450;//350; - 5/21/2017
-float DAT_OTL_M_BSPEED= 400;//290; - 5/21/2017
+float DAT_OTL_M_FSPEED= 262; //525;//350; - 5/21/2017
+float DAT_OTL_M_SSPEED= 225; //450;//350; - 5/21/2017
+float DAT_OTL_M_BSPEED= 200;//400;//290; - 5/21/2017
 float DAT_OTL_HARDPOINTS = 3;
 
 float DAT_OTL_LEG_HPMAX= 700;

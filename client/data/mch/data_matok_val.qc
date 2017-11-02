@@ -22,9 +22,9 @@ float DAT_MTK_SHIELD_RATE = 0.75;
 vector DAT_MTK_CTOR_BBX_N ='-15 -15 -35';
 vector DAT_MTK_CTOR_BBX_X ='15 15 14';
 string DAT_MTK_CPIT_MODEL = "gfx/ui/hgr_mtk.png";
-float DAT_MTK_M_FSPEED=225;
-float DAT_MTK_M_SSPEED=225;
-float DAT_MTK_M_BSPEED=190;
+float DAT_MTK_M_FSPEED=112; //225;
+float DAT_MTK_M_SSPEED=112; //225;
+float DAT_MTK_M_BSPEED=95; //190;
 float DAT_MTK_HARDPOINTS = 5;
 
 //HITPOINT VALUES
