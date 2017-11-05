@@ -95,6 +95,9 @@ void() cs_precache={
   data_mech_otl();
   data_mech_hvd();
   
+  //vehicles
+  data_TNK_hmn();
+  
   //wep data
   data_wep_latc();
   data_wep_emp();

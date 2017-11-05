@@ -491,7 +491,14 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
   
   if(trgvid > -1){
     local entity dat;
-    dat = m_findData(trgvid, trgdat);
+    local float pcls;
+    pcls = getstati(TRG_P_CLASS);
+    if(pcls == P_MECH){
+      dat = m_findMechData(getstati(TRG_VEC_SIZ), trgdat);
+    }
+    else{
+      dat = m_findData(trgvid, trgdat);
+    }
 
     if(dat){
       local vector ofs, rofs, spos, apos;

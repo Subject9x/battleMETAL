@@ -56,8 +56,6 @@ void() server_updateTargetInfo={
   if(self.enemy.deadflag > DEAD_NO){
     self.stat_trg_vid = -1;
     self.stat_trg_dat = -1;
-    // self.stat_trg_sh = -1;
-    //gross
     self.stat_trg_ddflg = self.enemy.deadflag;
     self.stat_trg_dist = -1;
     self.stat_trg_face = -1;
@@ -70,6 +68,8 @@ void() server_updateTargetInfo={
     self.stat_trg_rt_hp = -1;
     self.stat_trg_la_hp = -1;
     self.stat_trg_ra_hp = -1;
+    self.stat_trg_vsize = -1;
+    self.stat_trg_pclass = -1;
     if(self.stat_lck_stt & LOCK_TARG){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
       self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
@@ -81,8 +81,9 @@ void() server_updateTargetInfo={
   self.stat_trg_dat = self.enemy.data_type;
   self.stat_trg_ddflg = self.enemy.deadflag;
   self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
-  //self.stat_trg_fact = self.enemy.i_faction;
+  self.stat_trg_vsize = self.enemy.vec_size;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
+  self.stat_trg_pclass = self.enemy.p_class;
   
   if(self.stat_trg_face <= 0){
     isvis = TRUE;

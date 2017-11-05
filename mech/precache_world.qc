@@ -40,7 +40,7 @@ void() mh_precache_models={
   
   //mech model
   precache_model ("q3mdl/testball.md3");
-  //nu outlaw
+  //balaket
   precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.md3");
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_cent.md3");
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_left.md3");  
@@ -49,6 +49,7 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/notl/mdl_blk_l_arm.md3");
   precache_model ("q3mdl/mechs/notl/mdl_blk_r_arm.md3");
 
+  //matok
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_legs.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_t_cent.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_t_left.md3");
@@ -56,7 +57,7 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_l_arm.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_r_arm.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_cpt.md3");
-  
+  //koblen
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_legs.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_cent.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_left.md3");
@@ -64,7 +65,11 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_l_arm.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_r_arm.md3");
   precache_model ("q3mdl/mechs/hvd/mdl_hvd_cpt.md3");
-   
+ 
+  //test tank
+  precache_model ("q3mdl/vecs/mdl_tank_chas.md3");
+  precache_model ("q3mdl/vecs/mdl_tank_tur.md3");
+  
   //weapon models
   precache_model ("q3mdl/weapons/w_arh.md3");
   precache_model ("q3mdl/weapons/w_atc.md3");

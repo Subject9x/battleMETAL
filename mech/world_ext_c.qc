@@ -63,8 +63,6 @@ void() mh_world_ini={
   addstat(STAT_TRG_RARM_HP, AS_FLOAT, stat_trg_ra_hp);
  
   addstat(STAT_RET_DIST, AS_INT, stat_ret_dist);
-  //addstat(STAT_RDR_FRNT, AS_FLOAT, radar_front);
-  //addstat(STAT_RDR_BACK, AS_FLOAT, radar_rear);
   addstat(STAT_HIT_DIR, AS_FLOAT, stat_hit_dirs);
   addstat(STAT_RDR_MODE, AS_INT, stat_rdr_mode);
   addstat(STAT_NAV_DIR, AS_INT, stat_nav_dir);
@@ -103,6 +101,8 @@ void() mh_world_ini={
   
   addstat(UI_BOX_TIME, AS_INT, ui_box_time);
   
+  addstat(TRG_VEC_SIZ, AS_INT, stat_trg_vsize);
+  addstat(TRG_P_CLASS, AS_INT, stat_trg_pclass);
   mh_world_iniData();
 };
 
@@ -136,6 +136,9 @@ void() mh_world_iniData={
   data_mech_otl();
   data_mech_mtk();
   data_mech_hvd();
+  
+  //vehicles
+  data_TNK_hmn();
   
   //buildings;
   data_h_power();

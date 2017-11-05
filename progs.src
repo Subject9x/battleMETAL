@@ -74,7 +74,7 @@ dp/subs.qc
   mech/dat/mch/data_hevdal_val.qc
   
   //vehicles
-
+  mech/dat/vec/data_tank.qc
   
   //buildings
   mech/dat/bld/data_h_buildings.qc

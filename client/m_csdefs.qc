@@ -219,6 +219,9 @@ float UI_BOX_CLRY = 111;
 float UI_BOX_CLRZ = 112;
 float UI_BOX_TIME = 113;
 
+float TRG_VEC_SIZ = 114;
+float TRG_P_CLASS = 115;
+
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";
 string M_TOR_RIGHT = "tor_right";

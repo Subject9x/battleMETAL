@@ -348,3 +348,17 @@ float(float val, float rel, float wpn_rel, float rdy, float bit) client_incremen
   }
   return val;
 };
+
+//highlights a part of the hud over X number of seconds, useful for tutorials
+void(float timer, vector pos, vector bsize, vector clr, entity client) client_HighlightHUDRec={
+  local entity this;
+  if((client.flags & FL_CLIENT)){
+    this = self;
+    self = client;
+      self.ui_box_time = timer;
+      self.ui_box_pos = pos;
+      self.ui_box_sz = bsize;
+      self.ui_box_clr = clr;
+    self = this;
+  }
+};

@@ -67,6 +67,7 @@ float ID_PRJ_MARH = 5;
 float ID_PRJ_SFGA = 6;
 
 //VEHICLES===============================
+float ID_VEC_TANK = 1;
 
 //BUILDINGS==============================
 float ID_BLD_H_RADAR = 1;

@@ -88,7 +88,8 @@ float AS_FLOAT = 8;
 .float stat_trg_la_hp;
 .float stat_trg_ra_hp;
 .float stat_ret_dist;
-
+.float stat_trg_vsize;
+.float stat_trg_pclass;
 //hit direction bit flags
 float STAT_HIT_CL = 1;
 float STAT_HIT_LF = 2;
@@ -217,6 +218,9 @@ float UI_BOX_CLRX = 110;
 float UI_BOX_CLRY = 111;
 float UI_BOX_CLRZ = 112;
 float UI_BOX_TIME = 113;
+
+float TRG_VEC_SIZ = 114;
+float TRG_P_CLASS = 115;
 
 //Targeting stuff
 float STAT_TRG_VID = 84;

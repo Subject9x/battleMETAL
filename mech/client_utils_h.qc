@@ -37,3 +37,4 @@ float(float val, float rel, float wpn_rel, float rdy, float bit)client_increment
 void() client_sendAvailableLightMechs;
 void() client_sendAvailableMediumMechs;
 void() client_sendAvailableHeavyMechs;
+void(float timer, vector pos, vector bsize, vector clr, entity client) client_HighlightHUDRec;
