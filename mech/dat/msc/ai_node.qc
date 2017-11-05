@@ -100,11 +100,7 @@ void() ai_node_touch={
   if(other.p_class != P_OBS){
     return;
   }
-  else{
-    bprint(strcat("name: ",self.targetname," | target: ",self.target, "\n")); // DEBUG
-  }
 };
-
 
 void() ai_node_g1;
 void() ai_node_g2;

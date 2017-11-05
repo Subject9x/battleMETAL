@@ -195,10 +195,11 @@ void() PutClientInServer = {
 	{
 		makevectors(self.angles);
 	}
-  self.ui_box_time = 100;
+  //DEBUG
+  /*self.ui_box_time = 100;
   self.ui_box_pos = '15 15';
   self.ui_box_sz = ' 25 25';
-  self.ui_box_clr = '1 0 1';
+  self.ui_box_clr = '1 0 1';*/
 };
 
 /*
@@ -225,7 +226,6 @@ void() ClientKill = {
     }
   }
   
-
   bprint (self.netname);
   if(self.p_class != P_OBS){
     	bprint (" cowardly ejects!\n");
@@ -234,7 +234,6 @@ void() ClientKill = {
   }
 
   if(self.p_class == P_MECH){
-    //mech_player_die();
     self.frame = $ctorstand1;
     mech_clearWeaponGroups();
     local entity wep;

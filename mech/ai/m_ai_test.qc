@@ -91,7 +91,6 @@ void() ai_mech={
   self.ai_rte_cnv = mod;
   mod = ai_pilot_rating_range();
   self.ai_rte_rng = mod;
-  //self.en_rate = self.en_rate;
   self.th_die = ai_mech_die;
   self.th_missile = ai_mech_attack;
   self.ai_unit_update = ai_mech_update;

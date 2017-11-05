@@ -12,11 +12,21 @@ this one will focus on move to move
 void() ai_control={
   if(self.deadflag >= DEAD_DYING){
     self.health = 0;
-    self.th_die();
+    if(self.th_die){
+      self.th_die();
+    }
+    else{
+      self.th_die = SUB_Remove;
+      self.th_die();
+    }
     return;
   }
-  self.ai_unit_update();
-  self.ai_next_state();
+  if(self.ai_unit_update){
+    self.ai_unit_update();
+  }
+  if(self.ai_next_state){
+    self.ai_next_state();
+  }
   if(self.th_missile){
     self.th_missile();
   }
@@ -77,7 +87,7 @@ void() ai_turret_touch={
   if(self.ai_first_order != ai_order_test){
     if(other.p_class != P_OBS){
       local float infront;
-        infront = ai_target_infront(other);
+      infront = ai_target_infront(other);
       if(other.i_faction != self.i_faction){
         //bumped a baddy!
         if(self.enemy == world){
@@ -104,11 +114,15 @@ void() ai_turret_die={
     w_chain = w_chain.w_slot;
   }
 
+  setmodel(self, self.e_legs.c_model);
+  setsize(self, '-1 -1 -10', '1 1 1');
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.angles = self.e_legs.prev_angle;
+  droptofloor();
+  
   mech_player_compdie(self.e_legs);
   mech_player_compdie(self.e_cam);
- 
-  //sub in a special turret death function or code here
-  //ctor_die1();
  
   self.think = ai_mech_cleanup;
   self.nextthink = time + 100;
@@ -195,19 +209,19 @@ float frames - how many server think frames to run movement for
 */
 void(void() move, float frames) ai_move_controller={
   ChangeYaw();
-  if(self.w_isready <= self.w_clipsize){
+  //if(self.w_isready <= self.w_clipsize){
     //hold the present course
     self.w_isready = self.w_isready + 1;
-  }
-  else{
+  //}
+  //else{
     //set new course and duration
-    self.w_isready = 0;
-    self.w_clipsize = frames;
+    //self.w_isready = 0;
+    //self.w_clipsize = frames;
     if(move == ai_move_stand){
       self.ai_next_move = ai_move_stand;
     }
     else if(move == ai_move_walk_goal){
-      if(self.ai_prev_move != ai_sub_fight){
+      if(self.ai_prev_state != ai_sub_fight){
         self.ai_next_move = ai_move_walk_goal;
       }
       else{
@@ -215,7 +229,7 @@ void(void() move, float frames) ai_move_controller={
       }
     }
     else if(move == ai_move_run_goal){
-      if(self.ai_prev_move != ai_sub_fight){
+      if(self.ai_prev_state != ai_sub_fight){
         self.ai_next_move = ai_move_walk_goal;
       }
       else{
@@ -231,7 +245,7 @@ void(void() move, float frames) ai_move_controller={
       }
     }
     else if( move == ai_move_walkmove_straferight){
-        if(self.ai_prev_move == ai_move_walkmove_strafeleft){
+      if(self.ai_prev_move == ai_move_walkmove_strafeleft){
         self.ai_next_move = ai_move_stand;
       }
       else{
@@ -239,7 +253,7 @@ void(void() move, float frames) ai_move_controller={
       }
     }
     else if(move == ai_move_forward){
-      if(self.ai_prev_move != ai_move_stand){
+      if(self.ai_prev_move == ai_move_backward){
         self.ai_next_move = ai_move_stand;
       }
       else{
@@ -247,7 +261,7 @@ void(void() move, float frames) ai_move_controller={
       }
     }
     else if(move == ai_move_backward){
-      if(self.ai_prev_move != ai_move_stand){
+      if(self.ai_prev_move == ai_move_forward){
         self.ai_next_move = ai_move_stand;
       }
       else{
@@ -265,7 +279,7 @@ void(void() move, float frames) ai_move_controller={
     else{
       self.ai_next_move = ai_move_stand;
     }
-  }
+  //}
 };
 
 //move directives
@@ -287,7 +301,15 @@ void() ai_move_random={
 };
 
 void() ai_move_stand={
-  self.ai_prev_move = ai_move_stand;
+  if(self.ai_prev_move == ai_move_walkmove_strafeleft){
+    self.ai_next_move = ai_move_walkmove_straferight;
+  }
+  else if(self.ai_prev_move == ai_move_walkmove_straferight){
+    self.ai_next_move = ai_move_walkmove_strafeleft;
+  }
+  else{
+    self.ai_prev_move = ai_move_stand;
+  }
 };
 
 void() ai_move_walk_goal={
@@ -324,7 +346,7 @@ void() ai_move_walkmove_slide={
 
 void() ai_move_runmove_slide={  
   local float ofs;
-  ChangeYaw();
+  //ChangeYaw();
   if (self.lefty){
 		ofs = 90;
 	}
@@ -343,22 +365,31 @@ void() ai_move_runmove_slide={
 };
 
 void() ai_move_forward={
-  ChangeYaw();
+  //ChangeYaw();
   walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_forward;
   self.p_velocity = self.angles_y;
 };
 
 void() ai_move_backward={  
-  ChangeYaw();
+  //ChangeYaw();
   walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD);
   self.p_velocity = self.angles_y+180;
   self.ai_prev_move = ai_move_backward;
 };
 
 void() ai_move_walkmove_strafeleft={
-  ChangeYaw();
-  if not(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
+  //ChangeYaw();
+  if(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
+    self.p_velocity = -90;
+    self.ai_prev_move = ai_move_walkmove_straferight;
+  }
+  else{
+    self.ai_next_move = ai_move_walkmove_strafeleft;
+    self.p_velocity = 0;
+  }
+  
+  /*if not(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
     self.p_velocity = 0;
@@ -366,24 +397,32 @@ void() ai_move_walkmove_strafeleft={
   else{
     self.p_velocity = 90;
     self.ai_prev_move = ai_move_walkmove_strafeleft;
-  }
+  }*/
 };
 
 void() ai_move_walkmove_straferight={
-  ChangeYaw();
-  if not(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
+  //ChangeYaw();
+  if(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
+    self.p_velocity = 90;
+    self.ai_prev_move = ai_move_walkmove_straferight;
+  }
+  else{
+    self.ai_next_move = ai_move_walkmove_strafeleft;
+    self.p_velocity = 0;
+  }
+  /*if not(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
     self.p_velocity = 0;
   }
   else{
-    self.p_velocity = -90;
+    self.p_velocity = 90;
     self.ai_prev_move = ai_move_walkmove_straferight;
-  }
+  }*/
 };
 
 void() ai_move_charge={
-  if not(walkmove (self.ideal_yaw - 60,  self.m_fspeed * AI_WALK_SPD)){
+  if not(walkmove (self.ideal_yaw - 60,  self.m_fspeed * AI_RUN_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
     self.p_velocity = 0;

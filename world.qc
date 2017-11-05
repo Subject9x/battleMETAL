@@ -114,10 +114,6 @@ void() worldspawn =
 		// the DarkPlaces engine does not spatialize ATTN_NONE.
 		ambientsound ('0 0 0', self.music, 1.00, ATTN_NONE);
 	}
-  
-  
-  
-  world.i_reserve = 10000; //DEBUG
 };
 
 void() StartFrame =

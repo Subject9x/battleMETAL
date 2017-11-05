@@ -56,7 +56,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if((trg.flags & FL_MONSTER)){
-    bprint("angry! /n");
     anger_monster(trg, attacker);
   }
   if((trg.p_class == P_BULD) || (trg.p_class == P_VECH)){
@@ -65,10 +64,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     e = findradius(trg.origin, 2000);
     while(e){
       self = e;
-      if(self.p_class == P_MECH){
+      if((self.p_class == P_MECH) || (self.p_class == P_VECH)){
         if(self.i_faction == trg.i_faction){
           if((self.flags & FL_MONSTER)){
-            if(self.state_1 == 1){
+            if( self.ai_first_order == ai_order_defend){
               anger_monster(e, attacker);
             }
           }
@@ -98,14 +97,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       setmodel(self, "q3mdl/fx_shield.md3");
       self.alpha = 1;
       self.effects = self.effects | EF_NOSHADOW | EF_BLUE;
-      setsize(self, '-1 -1 -1', '1 1 1');
-      
       self.movetype = MOVETYPE_FOLLOW;
       self.aiment = trg;
       self.solid = SOLID_NOT;
       self.angles = vectoangles(attacker.origin - self.origin);
       ChangeYaw ();
       setorigin(self, dmg_point);
+      setsize(self, '-1 -1 -1', '1 1 1');
       self.think = SUB_Remove;
       self.nextthink = time + 1;
     self = oself;
