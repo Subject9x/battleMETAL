@@ -94,7 +94,7 @@ entity(entity data) buildLegs={
     data.unit_legs();
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE;
-    self.walkframe = 8;
+    self.walkframe = 1;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
     util_setModel(self.c_model, 0);
     util_setBoundBox('-1 -1 -1','1 1 1');

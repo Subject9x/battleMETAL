@@ -13,29 +13,40 @@ void()	mech_walk6 =	[$walk6, mech_walk7] {};
 void()	mech_walk7 =	[$walk7, leg_walk1] {};*/
 
 void() leg_stand1 = [$l_stand1, leg_stand1]{
-  if ((self.owner.velocity_x || self.owner.velocity_y) && !self.owner.velocity_z){
-		self.walkframe=0;
-		leg_walk1();
-		return;
-	}
+  if((self.owner.flags & FL_CLIENT)){  
+    if (self.owner.velocity_x || self.owner.velocity_y){
+      leg_walk1();
+      return;
+    }
+  }
+  else if((self.owner.flags & FL_MONSTER)){
+    if(self.owner.ai_next_move != ai_move_stand){
+      leg_walk1();
+      return;
+    }
+  }
 };
 
 void() leg_walk1;
 
 void() leg_walk1 = [$l_walk1, leg_walk2]{
-  if (!self.owner.velocity_x && !self.owner.velocity_y){
-		self.walkframe=8;
-		leg_stand1();
-		return;
-	}
-  /*self.walkframe = self.walkframe + 1;
-  if(self.walkframe >= 7){
-    self.walkframe = 0;
-  }*/
-  //self.frame = self.walkframe;
+  if((self.owner.flags & FL_CLIENT)){  
+    if (!self.owner.velocity_x && !self.owner.velocity_y){
+      self.walkframe=1;
+      leg_stand1();
+      return;
+    }
+  }
+  else if((self.owner.flags & FL_MONSTER)){
+    if(self.owner.ai_next_move == ai_move_stand){
+      leg_stand1();
+      return;
+    }
+  }
 };
 
-void() leg_walk2 = [$l_walk2, leg_walk3]{
+void() leg_walk2 = [$l_walk2, leg_walk3]{};
+void() leg_walk3 = [$l_walk3, leg_walk4]{
   local entity player;
   player = self.owner;
   if((player.flags & FL_ONGROUND)){
@@ -45,11 +56,10 @@ void() leg_walk2 = [$l_walk2, leg_walk3]{
     te_spark(ofs, '0 0 25', 15);
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
   }
-
 };
-void() leg_walk3 = [$l_walk3, leg_walk4]{};
 void() leg_walk4 = [$l_walk4, leg_walk5]{};
-void() leg_walk5 = [$l_walk5, leg_walk6]{
+void() leg_walk5 = [$l_walk5, leg_walk6]{};
+void() leg_walk6 = [$l_walk6, leg_walk7]{
   local entity player;
   player = self.owner;
   if((player.flags & FL_ONGROUND)){
@@ -60,10 +70,10 @@ void() leg_walk5 = [$l_walk5, leg_walk6]{
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
   }
 };
-void() leg_walk6 = [$l_walk6, leg_walk7]{};
-void() leg_walk7 = [$l_walk7, leg_walk1]{};
-
-
+void() leg_walk7 = [$l_walk7, leg_walk8]{};
+void() leg_walk8 = [$l_walk8, leg_walk1]{
+  self.walkframe = 1;
+};
 
 void() leg_die1 = [$l_die1, leg_die2]{
   self.movetype = MOVETYPE_BOUNCE;

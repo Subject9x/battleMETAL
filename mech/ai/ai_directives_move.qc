@@ -24,6 +24,7 @@ void() ai_control={
   if(self.ai_unit_update){
     self.ai_unit_update();
   }
+  
   if(self.ai_next_state){
     self.ai_next_state();
   }
@@ -35,6 +36,9 @@ void() ai_control={
   }
   self.prev_pos = self.origin;
   if(self.m_fspeed > -1){
+    if(self.e_legs.walkframe > 9){
+      self.e_legs.walkframe = 2;
+    }
     self.ai_next_move();
     self.prev_angle = normalize(self.origin - self.prev_pos);
     self.e_legs.v_angle_y = vectoangles(self.enemy.origin - self.origin) + self.p_velocity;
@@ -301,6 +305,8 @@ void() ai_move_random={
 };
 
 void() ai_move_stand={
+
+  self.e_legs.walkframe = 1;
   if(self.ai_prev_move == ai_move_walkmove_strafeleft){
     self.ai_next_move = ai_move_walkmove_straferight;
   }
@@ -346,7 +352,6 @@ void() ai_move_walkmove_slide={
 
 void() ai_move_runmove_slide={  
   local float ofs;
-  //ChangeYaw();
   if (self.lefty){
 		ofs = 90;
 	}
@@ -365,21 +370,18 @@ void() ai_move_runmove_slide={
 };
 
 void() ai_move_forward={
-  //ChangeYaw();
   walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_forward;
   self.p_velocity = self.angles_y;
 };
 
-void() ai_move_backward={  
-  //ChangeYaw();
+void() ai_move_backward={
   walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD);
   self.p_velocity = self.angles_y+180;
   self.ai_prev_move = ai_move_backward;
 };
 
 void() ai_move_walkmove_strafeleft={
-  //ChangeYaw();
   if(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
     self.p_velocity = -90;
     self.ai_prev_move = ai_move_walkmove_straferight;
@@ -401,7 +403,6 @@ void() ai_move_walkmove_strafeleft={
 };
 
 void() ai_move_walkmove_straferight={
-  //ChangeYaw();
   if(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
     self.p_velocity = 90;
     self.ai_prev_move = ai_move_walkmove_straferight;

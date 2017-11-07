@@ -5,10 +5,16 @@ Date: 9/22/2016
 Overview: header file for mech animation files
 */
 
+//universal
+float() anim_speed_check={
+
+};
+
+
 /*
   LEGS
 */
-$frame l_walk1 l_walk2 l_walk3 l_walk4 l_walk5 l_walk6 l_walk7
+$frame l_walk1 l_walk2 l_walk3 l_walk4 l_walk5 l_walk6 l_walk7 l_walk8
 $frame l_stand1
 $frame l_die1 l_die2 l_die3 l_die4
 void() leg_stand1;
@@ -23,6 +29,7 @@ void() leg_walk4;
 void() leg_walk5;
 void() leg_walk6;
 void() leg_walk7;
+void() leg_walk8;
 
 /*
   CENTER TORSO

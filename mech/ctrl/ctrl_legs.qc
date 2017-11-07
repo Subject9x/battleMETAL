@@ -33,9 +33,6 @@ void() ctrl_updateLegs={
       self.angles =  vectoangles(m);
       self.v_angle = self.angles;
     }
-    /*else{
-      self.angles = self.owner.angles;
-    }*/
   }
 };
 

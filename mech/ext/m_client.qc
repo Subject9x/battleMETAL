@@ -195,11 +195,6 @@ void() PutClientInServer = {
 	{
 		makevectors(self.angles);
 	}
-  //DEBUG
-  /*self.ui_box_time = 100;
-  self.ui_box_pos = '15 15';
-  self.ui_box_sz = ' 25 25';
-  self.ui_box_clr = '1 0 1';*/
 };
 
 /*
