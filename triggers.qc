@@ -2,6 +2,14 @@
 entity stemp, otemp, s, old;
 
 
+void() highlight_hud_touch={
+  if((other.flags & FL_CLIENT)){
+    other.ui_box_pos = self.ui_box_pos;
+    other.ui_box_sz = self.ui_box_sz;
+    other.ui_box_clr = self.ui_box_clr;
+    other.ui_box_time = self.ui_box_time;
+  }
+};
 void() trigger_reactivate =
 {
 	self.solid = SOLID_TRIGGER;
@@ -93,6 +101,32 @@ void() multi_touch =
 	
 	self.enemy = other;
 	multi_trigger ();
+};
+
+
+/*QUAKED trigger_highlighthud (.5 .5 .5) ?
+Highlights a section of a client's HUD, mostly used for tutorials n such
+options:
+"ui_box_pos" : vector, position on screen, z=0
+"ui_box_sz"  : vector, size of box, z=0
+"ui_box_clr" : vector, color of box
+"ui_box_time": float, how many seconds to display.
+*/
+//highlight box on hud
+void() trigger_highlighthud={
+  InitTrigger ();
+  self.noise = "misc/talk.wav";
+  self.solid = SOLID_TRIGGER;
+  if (!self.wait){
+		self.wait = 0.2;
+  }
+  self.use = multi_use;
+  self.touch = highlight_hud_touch;
+  if (self.nextthink > time)
+	{
+		return;		// allready been triggered
+	}
+
 };
 
 /*QUAKED trigger_multiple (.5 .5 .5) ? notouch

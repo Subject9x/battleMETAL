@@ -41,7 +41,12 @@ void() ai_control={
     }
     self.ai_next_move();
     self.prev_angle = normalize(self.origin - self.prev_pos);
-    self.e_legs.v_angle_y = vectoangles(self.enemy.origin - self.origin) + self.p_velocity;
+    if(self.enemy != world){
+      self.e_legs.v_angle_y = vectoangles(self.enemy.origin - self.origin) + self.p_velocity;
+    }
+    else{
+      self.e_legs.v_angle_y = self.v_angle_y;
+    }
   }
   self.think = ai_control;
   self.nextthink = time + 0.05;
@@ -372,13 +377,14 @@ void() ai_move_runmove_slide={
 void() ai_move_forward={
   walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_forward;
-  self.p_velocity = self.angles_y;
+  self.p_velocity = 0;
 };
 
 void() ai_move_backward={
   walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD);
   self.p_velocity = self.angles_y+180;
   self.ai_prev_move = ai_move_backward;
+  self.p_velocity = 0;
 };
 
 void() ai_move_walkmove_strafeleft={
@@ -390,16 +396,6 @@ void() ai_move_walkmove_strafeleft={
     self.ai_next_move = ai_move_walkmove_strafeleft;
     self.p_velocity = 0;
   }
-  
-  /*if not(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
-    ai_move_stand();
-    self.ai_prev_move = ai_move_stand;
-    self.p_velocity = 0;
-  }
-  else{
-    self.p_velocity = 90;
-    self.ai_prev_move = ai_move_walkmove_strafeleft;
-  }*/
 };
 
 void() ai_move_walkmove_straferight={
@@ -411,15 +407,6 @@ void() ai_move_walkmove_straferight={
     self.ai_next_move = ai_move_walkmove_strafeleft;
     self.p_velocity = 0;
   }
-  /*if not(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
-    ai_move_stand();
-    self.ai_prev_move = ai_move_stand;
-    self.p_velocity = 0;
-  }
-  else{
-    self.p_velocity = 90;
-    self.ai_prev_move = ai_move_walkmove_straferight;
-  }*/
 };
 
 void() ai_move_charge={

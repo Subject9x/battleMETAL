@@ -12,9 +12,9 @@ void() cs_removeEnt={
 void() cs_precache={
 
   //cockpit models
-  precache_model ("q3mdl/mechs/notl/mdl_notl_cpt.md3");
-  precache_model ("q3mdl/mechs/mtmk/mdl_tmk_cpit.md3");
-  precache_model ("q3mdl/mechs/col/mdl_col_cpit.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.md3");
+  precache_model ("q3mdl/mechs/mtmk/mdl_mtk_cpt.md3");
+  precache_model ("q3mdl/mechs/hvd/mdl_hvd_cpt.md3");
 
   //cockpit images 
   HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret_pip_hrz.png", 0);

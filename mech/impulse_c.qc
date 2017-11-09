@@ -63,8 +63,21 @@ void() ImpulseCommands ={
   if(self.stat_plr_fir == FIRE_GROUP){
     mpls_groupFire();
   }
+  
+  if(self.impulse == IMP_TARGET){
+    server_getTarget();
+  }
+  
+  if(self.impulse == IMP_RADAR){
+    if(self.stat_rdr_mode){
+      self.stat_rdr_mode = FALSE;
+    }
+    else{
+      self.stat_rdr_mode = TRUE;
+    }
+  }
 
-  local float change;
+  /*local float change;
   change = 0;
   
   if(self.impulse == IMP_VECPREV){
@@ -78,20 +91,7 @@ void() ImpulseCommands ={
   }
   
   if(self.impulse == IMP_SUICIDE){
-    //ClientKill(); WHOOPS!
-  }
-  
-  if(self.impulse == IMP_TARGET){
-    server_getTarget();
-  }
-  
-  if(self.impulse == IMP_RADAR){
-    if(self.stat_rdr_mode){
-      self.stat_rdr_mode = FALSE;
-    }
-    else{
-      self.stat_rdr_mode = TRUE;
-    }
+    ClientKill(); WHOOPS!
   }
   
   //abstract out into handler at some point
@@ -114,7 +114,7 @@ void() ImpulseCommands ={
       centerprint(self, strcat("Spawn as ", e.vec_name));
     }
     change = 0;
-  }
+  }*/
   
 	self.impulse = 0;
 };
@@ -160,30 +160,39 @@ void() mpls_singleFire={
 
 void() mpls_groupFire={
   if(self.impulse == IMP_WGROUP1){
-    centerprint(self, "[Weapon Group 1]");
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3));
-    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group1;
+    if(!(self.currentWeaponGroup & self.w_group1)){
+      centerprint(self, "[Weapon Group 1]");
+      self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group2 | self.w_group3 | self.w_group4 | self.w_group5));
+      self.currentWeaponGroup = self.currentWeaponGroup + self.w_group1;
+    }
   }
   if(self.impulse == IMP_WGROUP2){
-    //21
-    centerprint(self, "[Weapon Group 2]");
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3));
-    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group2;
+    if(!(self.currentWeaponGroup & self.w_group2)){
+      centerprint(self, "[Weapon Group 2]");
+      self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group3 | self.w_group4 | self.w_group5));
+      self.currentWeaponGroup = self.currentWeaponGroup + self.w_group2;
+    }
   }
   if(self.impulse == IMP_WGROUP3){
-    centerprint(self, "[Weapon Group 3]");
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3));
-    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group3;
+    if(!(self.currentWeaponGroup & self.w_group3)){
+      centerprint(self, "[Weapon Group 3]");
+      self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group4 | self.w_group5));
+      self.currentWeaponGroup = self.currentWeaponGroup + self.w_group3;
+    }
   }
   if(self.impulse == IMP_WGROUP4){
-    centerprint(self, "[Weapon Group 4]");
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group5));
-    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group4;
+    if(!(self.currentWeaponGroup & self.w_group4)){
+      centerprint(self, "[Weapon Group 4]");
+      self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group5));
+      self.currentWeaponGroup = self.currentWeaponGroup + self.w_group4;
+    }
   }
   if(self.impulse == IMP_WGROUP5){
-    centerprint(self, "[Weapon Group 5]");
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group4));
-    self.currentWeaponGroup = self.currentWeaponGroup + self.w_group5;
+    if(!(self.currentWeaponGroup & self.w_group5)){
+      centerprint(self, "[Weapon Group 5]");
+      self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group4));
+      self.currentWeaponGroup = self.currentWeaponGroup + self.w_group5;
+    }
   }
   
 };

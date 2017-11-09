@@ -48,22 +48,22 @@ void() CSQC_Init =
   
   local float i, cnt;
   i = 1;
-  cnt = 0;
-  while(i < 24){
+  cnt = 1;
+  while(i < 25){
     MECHLIST_LIGHT_ARR[cnt] = i;
     i = i * 2;
     cnt = cnt + 1;
   }
   i = 1;
-  cnt = 0;
-  while(i < 24){
+  cnt = 1;
+  while(i < 25){
     MECHLIST_MEDIUM_ARR[cnt] = i;
     i = i * 2;
     cnt = cnt + 1;
   }
   i = 1;
-  cnt = 0;
-  while(i < 24){
+  cnt = 1;
+  while(i < 25){
     MECHLIST_HEAVY_ARR[cnt] = i;
     i = i * 2;
     cnt = cnt + 1;

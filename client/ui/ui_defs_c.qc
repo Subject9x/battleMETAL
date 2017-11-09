@@ -70,11 +70,11 @@ void() menu_handleFrame={
   else if(MENU_DEPLOY_ACTIVE){
     menu_deployDrawFrame();
   }
-  //menu_navBar((VIEW_ORG+'2 12'));
   menu_navBar(VIEW_ORG);
   drawpic(mpos, "gfx/ui/ui_cursor.png",  i_sz, '1 1 1', HUD_ALPHA, 0);
   drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(VIEW_ORG+'2 10', ftos(PLAYER_HELPER.hardpoint_cnt), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
+  drawstring(VIEW_ORG+'2 10', ftos(PLAYER_HELPER.vec_size), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
+  drawstring(VIEW_ORG+'2 18', ftos(PLAYER_HELPER.plr_sel_mech), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
 };
 
 

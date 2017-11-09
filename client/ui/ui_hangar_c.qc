@@ -19,11 +19,14 @@ void() hardpointListener={
   local entity dat;
   local float hpnt;
   dat = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
-  hpnt = dat.menu_hardpointListener(MECHPANEL_CTR);
-  if(hpnt > 0){
-    PLAYER_HELPER.plr_sel_hrpnt = hpnt;
-    PLAYER_HELPER.plr_sel_wep = HARDPOINTS[hpnt];
+  if(dat != world){
+    hpnt = dat.menu_hardpointListener(MECHPANEL_CTR);
+    if(hpnt > 0){
+      PLAYER_HELPER.plr_sel_hrpnt = hpnt;
+      PLAYER_HELPER.plr_sel_wep = HARDPOINTS[hpnt];
+    }
   }
+
 };
 
 void() mechSelectListener={
