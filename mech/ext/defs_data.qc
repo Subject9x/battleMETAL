@@ -27,7 +27,7 @@ Overview: master data ID lists for all the game data
 //MECHS==================================
 float ID_MCH_BALAKET = 1;
 float ID_MCH_MATOK = 1;
-float ID_MCH_HEVDAHL = 1;
+float ID_MCH_MONITOR = 1;
 
 //WEAPONS================================
 float ID_WEP_LATC=1;

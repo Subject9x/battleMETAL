@@ -51,7 +51,7 @@ void() worldspawn =
     world.next_wepn5 = world.next_wepn5 | ID_MCH_MATOK;
   }
   if(world.next_wepn6 < 1){
-    world.next_wepn6 =  world.next_wepn6 | ID_MCH_HEVDAHL;
+    world.next_wepn6 =  world.next_wepn6 | ID_MCH_MONITOR;
   }
   //see q1/precache_world.q1_precache_sound();
   q1_precache_sound();

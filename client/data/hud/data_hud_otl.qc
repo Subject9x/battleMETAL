@@ -478,7 +478,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 */
 void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) otl_renderTarget={
 
-  if(trglock & LOCK_PLYR){
+  if((trglock & LOCK_PLYR)){
     local vector pofs;
     pofs = self.hud_pnl2.pos + '10 10';
     pofs_y = pofs_y + 16;
@@ -535,7 +535,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       else if(dat.data_type == DATA_VEHC){
       
       }
-      self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z);
+      self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z + 10);
       self.hud_targetRange(trgdist);
       self.hud_targetLock(trglock);
       self.hud_targetDirectionPip(trgdir);

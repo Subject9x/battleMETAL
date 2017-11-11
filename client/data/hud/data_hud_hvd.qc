@@ -3,71 +3,71 @@ mech Mod
 Author: Subject9x
 Date: 11/02/2016
   refac 03/04/2017
-Overview: Hud Layout data for mech 'hevidahl'
+Overview: Hud Layout data for mech 'monitor'
 */
 
-void() hvd_hud_ini;
-void(entity vec_data) hvd_hud_prep;
-void(vector view_x, vector view_ctr) hvd_HelmetImage;
-void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hvd_renderCrosshairs;     
-void(float shieldval) hvd_playerShield;
-void(float energyval) hvd_playerEnergy;
-void(float ct, float lt, float rt, float la, float ra, float lg) hvd_playerArmor;
-void(float rad_front, float rad_back, float rad_mode, float i_fact) hvd_Radar;
-void(float hit_dir) hvd_hitDirectionPips;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon1;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon2;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon3;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon4;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon5;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon6;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon7;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon8;
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon9;
-void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) hvd_renderTarget; 
-void(float shieldval, vector tpos, float zht) hvd_targetShield;
-void(float lg, float ct, float lt, float rt, float la, float ra) hvd_targetArmor;
-void(float range) hvd_targetRange;
-void(float islock) hvd_targetLock;
-void(float targdir) hvd_targetDirectionPip;
+void() mnt_hud_ini;
+void(entity vec_data) mnt_hud_prep;
+void(vector view_x, vector view_ctr) mnt_HelmetImage;
+void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mnt_renderCrosshairs;     
+void(float shieldval) mnt_playerShield;
+void(float energyval) mnt_playerEnergy;
+void(float ct, float lt, float rt, float la, float ra, float lg) mnt_playerArmor;
+void(float rad_front, float rad_back, float rad_mode, float i_fact) mnt_Radar;
+void(float hit_dir) mnt_hitDirectionPips;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon1;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon2;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon3;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon4;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon5;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon6;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon7;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon8;
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon9;
+void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mnt_renderTarget; 
+void(float shieldval, vector tpos, float zht) mnt_targetShield;
+void(float lg, float ct, float lt, float rt, float la, float ra) mnt_targetArmor;
+void(float range) mnt_targetRange;
+void(float islock) mnt_targetLock;
+void(float targdir) mnt_targetDirectionPip;
 
 //merely registers the hud into the ent list
-void() hvd_hud_ini={
+void() mnt_hud_ini={
 
-  local entity oself, hvd_hud, hvd_en, hvd_sh, hvd_pd, hvd_wp;
-  hvd_hud = spawn();
+  local entity oself, mnt_hud, mnt_en, mnt_sh, mnt_pd, mnt_wp;
+  mnt_hud = spawn();
   oself = self;
-  self = hvd_hud;
+  self = mnt_hud;
   self.classname = "data";
   self.data_type = DATA_HUD;
   self.data_idx = ID_MCH_HEVDAHL;
   self.vec_size = SZ_MCH_HEVDAHL;
   self.drawmask = MASK_ENGINE;
-  self.img = "gfx/hud/hud_hvd_bck.png";
+  self.img = "gfx/hud/hud_mnt_bck.png";
   
-  self.hud_prep = hvd_hud_prep;
-  self.hud_HelmetImage = hvd_HelmetImage;
-  self.hud_renderCrosshairs = hvd_renderCrosshairs;
-  self.hud_playerShield = hvd_playerShield;
-  self.hud_playerEnergy = hvd_playerEnergy;
-  self.hud_playerArmor = hvd_playerArmor;
-  self.hud_Radar = hvd_Radar;
-  self.hud_hitDirectionPips = hvd_hitDirectionPips;
-  self.hud_renderWeapon1 = hvd_renderWeapon1;
-  self.hud_renderWeapon2 = hvd_renderWeapon2;
-  self.hud_renderWeapon3 = hvd_renderWeapon3;
-  self.hud_renderWeapon4 = hvd_renderWeapon4;
-  self.hud_renderWeapon5 = hvd_renderWeapon5;
-  self.hud_renderWeapon6 = hvd_renderWeapon6;
-  self.hud_renderWeapon7 = hvd_renderWeapon7;
-  self.hud_renderWeapon8 = hvd_renderWeapon8;
-  self.hud_renderWeapon9 = hvd_renderWeapon9;
-  self.hud_targetShield = hvd_targetShield;
-  self.hud_targetArmor = hvd_targetArmor;
-  self.hud_targetRange = hvd_targetRange;
-  self.hud_targetLock = hvd_targetLock;
-  self.hud_targetDirectionPip = hvd_targetDirectionPip;
-  self.hud_renderTarget = hvd_renderTarget;
+  self.hud_prep = mnt_hud_prep;
+  self.hud_HelmetImage = mnt_HelmetImage;
+  self.hud_renderCrosshairs = mnt_renderCrosshairs;
+  self.hud_playerShield = mnt_playerShield;
+  self.hud_playerEnergy = mnt_playerEnergy;
+  self.hud_playerArmor = mnt_playerArmor;
+  self.hud_Radar = mnt_Radar;
+  self.hud_hitDirectionPips = mnt_hitDirectionPips;
+  self.hud_renderWeapon1 = mnt_renderWeapon1;
+  self.hud_renderWeapon2 = mnt_renderWeapon2;
+  self.hud_renderWeapon3 = mnt_renderWeapon3;
+  self.hud_renderWeapon4 = mnt_renderWeapon4;
+  self.hud_renderWeapon5 = mnt_renderWeapon5;
+  self.hud_renderWeapon6 = mnt_renderWeapon6;
+  self.hud_renderWeapon7 = mnt_renderWeapon7;
+  self.hud_renderWeapon8 = mnt_renderWeapon8;
+  self.hud_renderWeapon9 = mnt_renderWeapon9;
+  self.hud_targetShield = mnt_targetShield;
+  self.hud_targetArmor = mnt_targetArmor;
+  self.hud_targetRange = mnt_targetRange;
+  self.hud_targetLock = mnt_targetLock;
+  self.hud_targetDirectionPip = mnt_targetDirectionPip;
+  self.hud_renderTarget = mnt_renderTarget;
   self.w_range = -1; //this is hack to check weapon range;
   
   //Right Weapons box
@@ -142,10 +142,10 @@ void() hvd_hud_ini={
   self = oself;
   
   //WIDGETS
-  hvd_en = spawn();
-  self = hvd_en;
+  mnt_en = spawn();
+  self = mnt_en;
     self.classname = "widget";
-    self.owner = hvd_hud;
+    self.owner = mnt_hud;
     self.otype = OBJ_METER;
     self.drawsize = '23 76';
     self.margin_ins = '4 8';
@@ -155,12 +155,12 @@ void() hvd_hud_ini={
     self.drawcolor1 = '0.18 0.32 0.6';
     self.drawcolor2 = '0.23 0.74 0.84';
     self.drawme = TRUE;
-  hvd_hud.wdg_en = hvd_en;
+  mnt_hud.wdg_en = mnt_en;
   
-  hvd_sh = spawn();
-  self = hvd_sh;
+  mnt_sh = spawn();
+  self = mnt_sh;
     self.classname = "widget";
-    self.owner = hvd_hud;
+    self.owner = mnt_hud;
     self.otype = OBJ_METER;
     self.drawsize = '23 76 0';
     self.margin_ins = '4 8';
@@ -171,12 +171,12 @@ void() hvd_hud_ini={
     self.drawcolor2 = '0.215 0.709 0.29'; //(55,181,74)
     self.drawme = TRUE;
     self.align = self.align | VIEW_BOT | VIEW_LFT;
-  hvd_hud.wdg_sh = hvd_sh;
+  mnt_hud.wdg_sh = mnt_sh;
   
-  hvd_pd = spawn();
-  self = hvd_pd;
+  mnt_pd = spawn();
+  self = mnt_pd;
     self.classname = "widget";
-    self.owner = hvd_hud;
+    self.owner = mnt_hud;
     self.otype = OBJ_METER;
     self.drawsize = '108 20 0';
     self.margin_ins = '15 17 0';
@@ -187,13 +187,13 @@ void() hvd_hud_ini={
     self.drawcolor2 = '0.215 0.709 0.29'; //(55,181,74)
     self.drawme = TRUE;
     self.align = self.align | VIEW_BOT | VIEW_LFT;
-  hvd_hud.wdg_pd = hvd_pd;
+  mnt_hud.wdg_pd = mnt_pd;
   
   self = oself;
-  addentity(hvd_hud);
+  addentity(mnt_hud);
 };
 
-void(entity vec_data) hvd_hud_prep={
+void(entity vec_data) mnt_hud_prep={
   self.data = vec_data;
   local vector  img_sz, ofs;
   
@@ -252,7 +252,7 @@ void(entity vec_data) hvd_hud_prep={
     en_pnl.pos = gui_calcAlign(ofs, en_pnl.align);
 };
 
-void(vector view_x, vector view_ctr) hvd_HelmetImage={
+void(vector view_x, vector view_ctr) mnt_HelmetImage={
   local vector npos,pct, as, hs, img_sz, bck;
   local string nav;  
   local float ang;
@@ -273,7 +273,7 @@ void(vector view_x, vector view_ctr) hvd_HelmetImage={
   drawstring(npos, nav, '16 16 0', '0 1 0', HUD_ALPHA, 0);
   self.prev_ang = ang;
 };
-void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hvd_renderCrosshairs={
+void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mnt_renderCrosshairs={
   //convergence
   local vector spr_w, spr_h;
   spr_w_x = conv_x;
@@ -295,7 +295,7 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hvd_ren
   drawfill((VIEW_CTR + '-68 28'), '8 1', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
 };     
 /* PLAYER SHIELD =======================================================*/
-void(float shieldval) hvd_playerShield={
+void(float shieldval) mnt_playerShield={
   self.wdg_sh.value1 = shieldval;
   self.wdg_sh.pos = self.hud_pnl5.pos + self.hud_pnl5.margin_ins + '3 0';
   gui_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, self.wdg_sh.drawsize, CLR_DEF_ARM_DED, gui_getColorForShield(shieldval), HUD_ALPHA, 0, AXIS_V, 0);
@@ -307,7 +307,7 @@ void(float shieldval) hvd_playerShield={
   drawstring( self.hud_pnl5.pos + self.hud_pnl5.margin_ins+'3 -4', "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);   
 };
 /* PLAYER ENERGY =======================================================*/
-void(float energyval) hvd_playerEnergy={
+void(float energyval) mnt_playerEnergy={
   self.wdg_en.value1 = energyval;
   self.wdg_en.pos = self.hud_pnl6.pos + self.hud_pnl6.margin_ins + '-7 0';
   gui_renderMeter(self.wdg_en.value1, self.wdg_en.pos, self.wdg_en.drawsize, self.wdg_en.drawcolor1,
@@ -321,7 +321,7 @@ void(float energyval) hvd_playerEnergy={
 
 };
 /* PLAYER ARMOR PANEL ==============================================*/
-void(float ct, float lt, float rt, float la, float ra, float lg) hvd_playerArmor={
+void(float ct, float lt, float rt, float la, float ra, float lg) mnt_playerArmor={
   local vector pnl_ctr;
   pnl_ctr_x = self.hud_pnl4.pos_x + 49;
   pnl_ctr_y = self.hud_pnl4.pos_y + ( self.hud_pnl4.hsize_y / 2) ;
@@ -343,7 +343,7 @@ void(float ct, float lt, float rt, float la, float ra, float lg) hvd_playerArmor
   gui_renderMeter(la, (pnl_ctr + '-34 -12'), '12 36', CLR_DEF_ARM_DED, gui_getColorForArmor(la), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
-void(float rad_front, float rad_back, float rad_mode, float i_fact) hvd_Radar={
+void(float rad_front, float rad_back, float rad_mode, float i_fact) mnt_Radar={
  local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
   local string mode;
   local float len, badj;
@@ -386,7 +386,7 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) hvd_Radar={
   drawpic(cvr, "gfx/hud/otl/otl_rd_cvr.png",  c_sz, self.hud_pnl2.colortint, HUD_ALPHA, 0);
 };
 
-void(float hit_dir) hvd_hitDirectionPips={
+void(float hit_dir) mnt_hitDirectionPips={
   //RENDER HIT DIRECTION
   local float l_fade;
   
@@ -406,7 +406,7 @@ void(float hit_dir) hvd_hitDirectionPips={
 };
 
 /*WEAPON 1 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon1={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon1={
   //right side weapons - 1, 2, 5, 8
   local vector pont,wstat;
   local entity wep_dat;
@@ -424,7 +424,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   }
 };
 /*WEAPON 2 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon2={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon2={
   local vector pont,wstat;
   local entity wep_dat;
   pont = self.hud_pnl1.pos + '38 31';
@@ -439,7 +439,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   }
 };
 /*WEAPON 3 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon3={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon3={
   //left side weapons - 3, 4, 6, 7
   local vector pont,wstat;
   local entity wep_dat;
@@ -457,7 +457,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   }
 };
 /*WEAPON 4 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon4={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon4={
   local vector pont,wstat,ofs;
   local entity wep_dat;
   pont = self.hud_pnl3.pos + '27 31';
@@ -474,7 +474,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   }
 };
 /*WEAPON 5 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon5={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon5={
   local vector pont,wstat;
   local entity wep_dat;
   pont = self.hud_pnl1.pos + '-3 5';
@@ -490,7 +490,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   }
 };
 /*WEAPON 6 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon6={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon6={
   local vector pont,wstat;
   local entity wep_dat;
   pont = self.hud_pnl3.pos + '69 5';
@@ -507,7 +507,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   }
 };
 /*WEAPON 7 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon7={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon7={
   local vector pont,wstat,ofs;
   local entity wep_dat;
   pont = self.hud_pnl3.pos + '69 31';
@@ -523,7 +523,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 };
 
 /*WEAPON 8 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon8={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon8={
   local vector pont,wstat;
   local entity wep_dat;
   pont = self.hud_pnl1.pos + '-3 31';
@@ -538,7 +538,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   }
 };
 /*WEAPON 9 ========================================================*/
-void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hvd_renderWeapon9={
+void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon9={
   local vector pont,wstat;
   local entity wep_dat;
   pont = self.hud_pnl1.pos + '-3 57';
@@ -555,7 +555,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   }
 };
 /*TARGET ARMOR PANEL ==============================================*/
-void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) hvd_renderTarget={
+void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mnt_renderTarget={
   if(trglock & LOCK_PLYR){
     local vector pofs;
     pofs = self.hud_pnl1.pos + '4 0';
@@ -618,7 +618,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       
       }
 
-      self.hud_targetShield(trgsh, tpos, 24);
+      self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z + 10);
       self.hud_targetRange(trgdist);
       self.hud_targetLock(trglock);
       self.hud_targetDirectionPip(trgdir);
@@ -626,7 +626,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
   }
 }; 
 
-void(float shieldval, vector tpos, float zht) hvd_targetShield={
+void(float shieldval, vector tpos, float zht) mnt_targetShield={
   local vector label_org, ofs;
   local float nlen;
   ofs = self.hud_pnl2.pos + self.hud_pnl2.margin_ins + '0 32';
@@ -641,20 +641,14 @@ void(float shieldval, vector tpos, float zht) hvd_targetShield={
       spos_x -= 36; //align horizontally to centre
       spos_y -= 3; //align vertically again
       spos_z = 0; //shut up dp.
-      //ofs_x = ofs_x + nlen + 2;
       gui_renderMeter(shieldval, spos, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval), HUD_ALPHA, 0, AXIS_H, 0);
     }
     ofs_x = ofs_x + nlen + 2;
-    //if(shieldval <= 0){
-      drawstring(ofs, ftos(shieldval), '6 6 0', CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0);
-    //}
-    //else{
-      //gui_renderMeter(shieldval, ofs, '72 6', CLR_DEF_ARM_DED, gui_getColorForShield(shieldval), HUD_ALPHA, 0, AXIS_H, 0);
-    //}
+    drawstring(ofs, ftos(shieldval), '6 6 0', CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0);
   }
 };
 
-void(float lg, float ct, float lt, float rt, float la, float ra) hvd_targetArmor={
+void(float lg, float ct, float lt, float rt, float la, float ra) mnt_targetArmor={
   if(ct > -1){
     local vector pnl_ctr;
     pnl_ctr_x = self.hud_pnl2.pos_x + (self.hud_pnl2.hsize_x - 4);
@@ -684,7 +678,7 @@ void(float lg, float ct, float lt, float rt, float la, float ra) hvd_targetArmor
   }
 };
 
-void(float range) hvd_targetRange={
+void(float range) mnt_targetRange={
   if(range > -1){
     local vector tofs;
     tofs = self.hud_pnl2.pos + self.hud_pnl2.margin_ins + '0 4';
@@ -695,7 +689,7 @@ void(float range) hvd_targetRange={
   }
 };
 
-void(float islock) hvd_targetLock={
+void(float islock) mnt_targetLock={
   local vector tofs, colr;
   local float llen;
   local string acq;
@@ -715,7 +709,7 @@ void(float islock) hvd_targetLock={
   drawstring(tofs, acq, '6 6 0', colr, HUD_ALPHA, 0);
 };
 
-void(float targdir) hvd_targetDirectionPip={
+void(float targdir) mnt_targetDirectionPip={
   if(targdir > -1){
     local vector lorg;
     if(targdir == 0){

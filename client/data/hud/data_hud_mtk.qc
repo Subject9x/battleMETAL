@@ -577,7 +577,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       else if(dat.data_type == DATA_VEHC){
       
       }
-      self.hud_targetShield(trgsh, tpos, 12);
+      self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z + 10);
       self.hud_targetRange(trgdist);
       self.hud_targetLock(trglock);
       self.hud_targetDirectionPip(trgdir);

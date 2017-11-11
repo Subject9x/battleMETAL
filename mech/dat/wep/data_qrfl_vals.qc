@@ -143,7 +143,7 @@ void() data_qrfl_atk={
         self.velocity = self.velocity * self.p_velocity;
         self.angles = vectoangles(self.velocity);
         util_setModel(self.c_model, 0);
-        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
         util_setBoundBox('0 0 0', '0 0 0');
         setorigin(self, rando);
       self = oself;

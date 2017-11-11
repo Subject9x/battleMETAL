@@ -56,7 +56,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if((trg.flags & FL_MONSTER)){
-    anger_monster(trg, attacker);
+    if(trg.state_1 != -1){
+      //state_1 = -1 is the 'dummy' state
+      anger_monster(trg, attacker);
+    }
   }
   if((trg.p_class == P_BULD) || (trg.p_class == P_VECH)){
     local entity e, this;
@@ -67,7 +70,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       if((self.p_class == P_MECH) || (self.p_class == P_VECH)){
         if(self.i_faction == trg.i_faction){
           if((self.flags & FL_MONSTER)){
-            if( self.ai_first_order == ai_order_defend){
+            if(self.ai_first_order == ai_order_defend){
               anger_monster(e, attacker);
             }
           }

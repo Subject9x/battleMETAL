@@ -167,13 +167,15 @@ void() navBarListener={
 
 
 void(entity nav) ui_renderNav={
-  local vector apos, tofs, iofs, i_sz;
+  local vector apos, tofs, iofs, i_sz, nofs;
   i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
-  apos = cs_project(nav.origin);
+  nofs = nav.origin;
+  nofs_z = nofs_z + 14;
+  apos = cs_project(nofs);
   tofs = apos;
   if (apos_z >= 0) {
     tofs_x -= stringwidth(nav.w_name, TRUE, '6 6') * 0.5; //align horizontally to centre
-    tofs_y -= 6 * 0.5; //align vertically again
+    tofs_y = tofs_y - 14; //align vertically again
     tofs_z = 0; //shut up dp.
     apos_z = 0; //shut up dp.
     iofs = apos;

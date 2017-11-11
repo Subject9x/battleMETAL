@@ -14,7 +14,7 @@ void() cs_precache={
   //cockpit models
   precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.md3");
   precache_model ("q3mdl/mechs/mtmk/mdl_mtk_cpt.md3");
-  precache_model ("q3mdl/mechs/hvd/mdl_hvd_cpt.md3");
+  precache_model ("q3mdl/mechs/mnt/mdl_mnt_cpt.md3");
 
   //cockpit images 
   HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret_pip_hrz.png", 0);
@@ -44,7 +44,7 @@ void() cs_precache={
   //hangar splash images
   precache_pic("gfx/ui/hgr_otl.png", 0);
   precache_pic("gfx/ui/hgr_mtk.png", 0);
-  precache_pic("gfx/ui/hgr_hvd.png", 0);
+  precache_pic("gfx/ui/hgr_mnt.png", 0);
   
   //cockpit voice
   SND_MCH_SFX_REACT = precache_sound2("sound/mech_react.ogg");
@@ -93,7 +93,7 @@ void() cs_precache={
   //mech data
   data_mech_mtk();
   data_mech_otl();
-  data_mech_hvd();
+  data_mech_MNT();
   
   //vehicles
   data_TNK_hmn();
@@ -114,7 +114,7 @@ void() cs_precache={
   //hud data
   otl_hud_ini();
   mtk_hud_ini();
-  hvd_hud_ini();
+  mnt_hud_ini();
   
 };
 

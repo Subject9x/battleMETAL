@@ -58,13 +58,13 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_r_arm.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_cpt.md3");
   //koblen
-  precache_model ("q3mdl/mechs/hvd/mdl_hvd_legs.md3");
-  precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_cent.md3");
-  precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_left.md3");
-  precache_model ("q3mdl/mechs/hvd/mdl_hvd_t_right.md3");
-  precache_model ("q3mdl/mechs/hvd/mdl_hvd_l_arm.md3");
-  precache_model ("q3mdl/mechs/hvd/mdl_hvd_r_arm.md3");
-  precache_model ("q3mdl/mechs/hvd/mdl_hvd_cpt.md3");
+  precache_model ("q3mdl/mechs/mnt/mdl_mnt_legs.md3");
+  precache_model ("q3mdl/mechs/mnt/mdl_mnt_t_cent.md3");
+  precache_model ("q3mdl/mechs/mnt/mdl_mnt_t_left.md3");
+  precache_model ("q3mdl/mechs/mnt/mdl_mnt_t_right.md3");
+  precache_model ("q3mdl/mechs/mnt/mdl_mnt_l_arm.md3");
+  precache_model ("q3mdl/mechs/mnt/mdl_mnt_r_arm.md3");
+  precache_model ("q3mdl/mechs/mnt/mdl_mnt_cpt.md3");
  
   //test tank
   precache_model ("q3mdl/vecs/mdl_tank_chas.md3");

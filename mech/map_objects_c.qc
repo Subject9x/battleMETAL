@@ -20,11 +20,11 @@ When the player touches this, he gets sent to the map listed in the "map" variab
 */
 void() trigger_changelevel =
 {
-	/*if (!self.map)
+	if (!self.map)
 		objerror ("changelevel trigger doesn't have map");
 	
 	InitTrigger ();
-	self.touch = changelevel_touch;*/
+	self.touch = changelevel_touch;
 };
 
 void() info_player_deathmatch_activate =

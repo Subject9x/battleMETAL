@@ -135,7 +135,7 @@ void() mh_world_iniData={
   //mech data
   data_mech_otl();
   data_mech_mtk();
-  data_mech_hvd();
+  data_mech_mnt();
   
   //vehicles
   data_TNK_hmn();
