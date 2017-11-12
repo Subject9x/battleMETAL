@@ -200,3 +200,29 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
 void(float num, vector org) ui_renderHardPointNumber={
   drawstring(org, ftos(num), '10 8', CLR_DEF_WHITE, 0.85, 1);
 };
+
+void() ui_renderHUDHighlight={
+  local vector bx_pos, bx_sz, bx_clr, l1, l2, l3;
+  local float x,y;
+  x = (0.1/100) * VIEW_MAX_x;
+  y = (0.1/100) * VIEW_MAX_y;
+  bx_pos_x = (getstati(UI_BOX_POSX) / 100) * VIEW_MAX_x;
+  bx_pos_y = (getstati(UI_BOX_POSY) / 100) * VIEW_MAX_y;      
+  bx_sz_x = (getstati(UI_BOX_SZEX) / 100) * VIEW_MAX_y;
+  bx_sz_y = (getstati(UI_BOX_SZEY) / 100) * VIEW_MAX_y;      
+  bx_clr_x = getstati(UI_BOX_CLRX);
+  bx_clr_y = getstati(UI_BOX_CLRY);
+  bx_clr_z = getstati(UI_BOX_CLRZ);
+  
+  l1_x = bx_pos_x + x;
+  l1_y = bx_pos_y + y;
+  l2_x = l1_x + x;
+  l2_y = l1_y + y;
+  l3_x = l2_x + x;
+  l3_y = l2_y + y;
+  gui_DrawRect (bx_pos, bx_sz, '1 1', bx_clr);
+  gui_DrawRect (l1, bx_sz, '1 1', bx_clr);
+  gui_DrawRect (l2, bx_sz, '1 1', bx_clr);
+  gui_DrawRect (l3, bx_sz, '1 1', bx_clr);
+
+};

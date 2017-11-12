@@ -390,20 +390,10 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     v_y = v_y + 32;
     drawstring(v, s, '8 8', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
     
-    local vector bx_pos, bx_sz, bx_clr;
     local float bx_time;
     bx_time = getstati(UI_BOX_TIME);
     if(bx_time > 0){
-      bx_pos_x = (getstati(UI_BOX_POSX) / 100) * VIEW_MAX_x;
-      bx_pos_y = (getstati(UI_BOX_POSY) / 100) * VIEW_MAX_y;      
-      bx_sz_x = (getstati(UI_BOX_SZEX) / 100) * VIEW_MAX_y;
-      bx_sz_y = (getstati(UI_BOX_SZEY) / 100) * VIEW_MAX_y;      
-      bx_clr_x = getstati(UI_BOX_CLRX);
-      bx_clr_y = getstati(UI_BOX_CLRY);
-      bx_clr_z = getstati(UI_BOX_CLRZ);
-      
-      gui_DrawRect (bx_pos, bx_pos + bx_sz, '2 2', bx_clr);
-      
+      ui_renderHUDHighlight();
     }
   }
   else{
