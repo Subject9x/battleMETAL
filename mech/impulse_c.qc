@@ -57,6 +57,27 @@ void() ImpulseCommands ={
     self.stat_plr_fir = FIRE_SINGLE;
   }
   
+  if(self.impulse == IMP_PRVWGRP){
+    self.state_1 = self.state_1 - 1;
+    if(self.state_1 < 1){
+      self.state_1 = 5;
+    }
+    self.impulse =  mpls_changeGroup();
+  }
+  if(self.impulse == IMP_NEXWGRP){
+    self.state_1 = self.state_1 + 1;
+    if(self.state_1 > 5){
+      self.state_1 = 1;
+    }
+    self.impulse = mpls_changeGroup();
+  }
+  if(self.state_1 < 1){
+    self.state_1 = 5;
+  }
+  else if (self.state_1 > 5){
+    self.state_1 = 1; 
+  }
+
   if(self.stat_plr_fir == FIRE_SINGLE){
     //mpls_singleFire();
   }
@@ -76,20 +97,8 @@ void() ImpulseCommands ={
       self.stat_rdr_mode = TRUE;
     }
   }
-
-  /*local float change;
-  change = 0;
   
-  if(self.impulse == IMP_VECPREV){
-    change = 1;
-    self.nextVecChoice = self.nextVecChoice - 1;
-  }
-  
-  if(self.impulse == IMP_VECNEXT){
-    change = 1;
-    self.nextVecChoice = self.nextVecChoice + 1;
-  }
-  
+  /*
   if(self.impulse == IMP_SUICIDE){
     ClientKill(); WHOOPS!
   }
@@ -158,9 +167,28 @@ void() mpls_singleFire={
   }
 };
 
+float() mpls_changeGroup={
+  if(self.state_1 == 1){
+    return IMP_WGROUP1;
+  }
+  else if(self.state_1 == 2){
+    return IMP_WGROUP2;
+  }
+  else if(self.state_1 == 3){
+    return IMP_WGROUP3;
+  }
+  else if(self.state_1 == 4){
+    return IMP_WGROUP4;
+  }
+  else if(self.state_1 == 5){
+    return IMP_WGROUP5;
+  }
+};
+
 void() mpls_groupFire={
   if(self.impulse == IMP_WGROUP1){
     if(!(self.currentWeaponGroup & self.w_group1)){
+      self.state_1 = 1;
       centerprint(self, "[Weapon Group 1]");
       self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group2 | self.w_group3 | self.w_group4 | self.w_group5));
       self.currentWeaponGroup = self.currentWeaponGroup + self.w_group1;
@@ -168,6 +196,7 @@ void() mpls_groupFire={
   }
   if(self.impulse == IMP_WGROUP2){
     if(!(self.currentWeaponGroup & self.w_group2)){
+      self.state_1 = 2;
       centerprint(self, "[Weapon Group 2]");
       self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group3 | self.w_group4 | self.w_group5));
       self.currentWeaponGroup = self.currentWeaponGroup + self.w_group2;
@@ -175,6 +204,7 @@ void() mpls_groupFire={
   }
   if(self.impulse == IMP_WGROUP3){
     if(!(self.currentWeaponGroup & self.w_group3)){
+      self.state_1 = 3;
       centerprint(self, "[Weapon Group 3]");
       self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group4 | self.w_group5));
       self.currentWeaponGroup = self.currentWeaponGroup + self.w_group3;
@@ -182,6 +212,7 @@ void() mpls_groupFire={
   }
   if(self.impulse == IMP_WGROUP4){
     if(!(self.currentWeaponGroup & self.w_group4)){
+      self.state_1 = 4;
       centerprint(self, "[Weapon Group 4]");
       self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group5));
       self.currentWeaponGroup = self.currentWeaponGroup + self.w_group4;
@@ -189,6 +220,7 @@ void() mpls_groupFire={
   }
   if(self.impulse == IMP_WGROUP5){
     if(!(self.currentWeaponGroup & self.w_group5)){
+      self.state_1 = 5;
       centerprint(self, "[Weapon Group 5]");
       self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group4));
       self.currentWeaponGroup = self.currentWeaponGroup + self.w_group5;
