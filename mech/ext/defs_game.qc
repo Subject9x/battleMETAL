@@ -4,7 +4,6 @@ Author: Subject9x
 Date: 8/27/2016
 Overview: extends the global defs
 */
-.string music;
 
 float READY = 0;
 float RELOADING = 1;

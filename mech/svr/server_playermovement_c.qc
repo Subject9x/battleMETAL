@@ -185,9 +185,8 @@ void() SV_PlayerPhysics =
 		{
 			f = wishspeed - (self.velocity * wishdir);
 			if (f > 0)
-        local float accel;
-        accel = sv_accelerate;
-				self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
+				//self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
+				self.velocity = self.velocity + wishdir * min(f, self.m_maccel * frametime * wishspeed);
 		}
 	}
 	else

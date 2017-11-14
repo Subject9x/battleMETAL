@@ -132,17 +132,17 @@ void() ExitIntermission={
 	GotoNextMap();
 };
 void() IntermissionThink={
-  if (time < intermission_exittime)
+  if (time < intermission_exittime){
+    return;
+  }
+  
+	if (!self.button0 && !self.button1 && !self.button2){
 		return;
-
-	if (!self.button0 && !self.button1 && !self.button2)
-		return;
-	
+  }
 	ExitIntermission ();
 };
 void() execute_changelevel={
   	local entity	pos;
-
 	intermission_running = 1;
 	
 // enforce a wait time before allowing changelevel
@@ -151,33 +151,38 @@ void() execute_changelevel={
 	else
 		intermission_exittime = time + 2;
 
-	WriteByte (MSG_ALL, SVC_CDTRACK);
-	WriteByte (MSG_ALL, 3);
-	WriteByte (MSG_ALL, 3);
+	/*WriteByte (MSG_ALL, SVC_CDTRACK);
+	WriteByte (MSG_ALL, 3);*/
 	
 	pos = FindIntermission ();
-
 	other = find (world, classname, "player");
+  local entity this;
+  this = self;
 	while (other != world)
 	{
+    if(other.p_class == P_MECH){
+      self = other;
+        player_unmakeMech();
+      self = this;
+    }
 		other.view_ofs = '0 0 0';
 		other.angles = other.v_angle = pos.mangle;
 		other.fixangle = TRUE;		// turn this way immediately
 		other.nextthink = time + 0.5;
+    bprint("nextthink\n");
 		other.takedamage = DAMAGE_NO;
 		other.solid = SOLID_NOT;
 		other.movetype = MOVETYPE_NONE;
 		other.modelindex = 0;
 		setorigin (other, pos.origin);
 		other = find (other, classname, "player");
-	}	
-
+    
+  }
 	WriteByte (MSG_ALL, SVC_INTERMISSION);
 };
 
 void() changelevel_touch={
 	local entity	pos;
-
 	if (other.classname != "player")
 		return;
 
@@ -194,7 +199,7 @@ void() changelevel_touch={
 	}
 	
 	nextmap = self.map;
-
+  
 	SUB_UseTargets ();
 
 	if ( (self.spawnflags & 1) && (deathmatch == 0) )

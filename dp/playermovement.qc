@@ -173,7 +173,7 @@ void() SV_PlayerPhysics =
 			f = vlen(v);
 			if (f < sv_stopspeed)
 				//f = 1 - frametime * (sv_stopspeed / f) * sv_friction;
-				f = 1 - frametime * (self.m_maccel / f) * sv_friction;
+				f = 1 - frametime * (self.m_maccel / f);// * sv_friction;
 			else
 				f = 1 - frametime * sv_friction;
 			if (f > 0)
@@ -211,7 +211,8 @@ void() SV_PlayerPhysics =
 		{
 			f = wishspeed - (self.velocity * wishdir);
 			if (f > 0)
-				self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
+				//self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
+				self.velocity = self.velocity + wishdir * min(f, self.m_maccel * frametime * wishspeed);
 		}
 	}
 };

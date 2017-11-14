@@ -103,17 +103,6 @@ void() worldspawn =
 
 	// 63 testing
 	lightstyle(63, "a");
-  
-  // plays music for the level if there is any
-	if (self.music)
-	{
-		precache_sound (self.music);
-		// the Quake engine spatializes ATTN_NONE, so spawn it in two places to get less directional sound
-		//ambientsound ('-4095 -4095 -4095', self.noise, 1.00, ATTN_NONE);
-		//ambientsound ('4095 4095 4095', self.noise, 1.00, ATTN_NONE);
-		// the DarkPlaces engine does not spatialize ATTN_NONE.
-		ambientsound ('0 0 0', self.music, 1.00, ATTN_NONE);
-	}
 };
 
 void() StartFrame =

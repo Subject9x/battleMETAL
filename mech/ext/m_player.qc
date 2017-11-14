@@ -12,9 +12,10 @@ void() PlayerPreThink = {
 		return;					// the think tics
 	}
   
-	if (self.view_ofs == '0 0 0')
-		return;		// intermission or finale
-    
+	if (self.view_ofs == '0 0 0'){
+  	return;		// intermission or finale
+  }
+  
 	makevectors (self.v_angle);		// is this still used
 
 	//CheckRules ();

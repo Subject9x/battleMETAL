@@ -10,7 +10,6 @@ void() mh_precache_world={
 
 void() mh_precache_sound={
   //sfx
-  precache_sound ("sound/cdtracks/rush.ogg");
   precache_sound ("sound/weapons/laser_3.ogg");
   precache_sound ("weapons/rocket1i.wav");
   precache_sound ("weapons/sgun1.wav");

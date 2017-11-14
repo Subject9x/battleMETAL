@@ -15,7 +15,6 @@ dp/subs.qc
   mech/ext/defs_impulse.qc
   mech/ext/defs_combat.qc
 //==========================
-
 //mech header files
   mech/world_ext_h.qc
   mech/client_utils_h.qc
@@ -24,7 +23,6 @@ dp/subs.qc
   mech/svr/server_sensors_h.qc
   mech/svr/server_radar_h.qc
   mech/utils_h.qc
-  mech/svr/server_playermove_h.qc
   mech/ext/eng_client_h.qc
   mech/ext/eng_player_h.qc
   mech/svr/server_csqchandler_h.qc
@@ -99,7 +97,6 @@ dp/subs.qc
   mech/t_damage.qc
   mech/svr/server_parmops_c.qc
   mech/svr/server_intermsn_c.qc
-  mech/svr/server_playermove_c.qc
   mech/svr/server_csqchandler_C.qc
   mech/svr/server_sensors_c.qc
   mech/svr/server_radar_c.qc

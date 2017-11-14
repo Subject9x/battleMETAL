@@ -73,7 +73,7 @@ float DAT_MTK_WEP5_GROUP= 3;
 
 //this is mostly cosmetics
 string DAT_MTK_CTOR_MODEL= "q3mdl/mechs/ntmk/mdl_mtk_t_cent.md3";
-float DAT_MTK_M_ACCEL=0.0007;
+float DAT_MTK_M_ACCEL=6;
 string DAT_MTK_M_ROLLANGLE="2.25";
 string DAT_MTK_M_PITCH_N="90";
 string DAT_MTK_M_PITCH_X="-90";

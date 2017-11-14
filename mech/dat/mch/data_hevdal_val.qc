@@ -74,7 +74,7 @@ float DAT_MNT_WEP1_GROUP= 1;
 
 //this is mostly cosmetics
 string DAT_MNT_CTOR_MODEL= "q3mdl/mechs/mnt/mdl_mnt_t_cent.md3";
-float DAT_MNT_M_ACCEL= 0.0005;
+float DAT_MNT_M_ACCEL= 4;
 string DAT_MNT_M_ROLLANGLE="2.25";
 string DAT_MNT_M_PITCH_N="90";
 string DAT_MNT_M_PITCH_X="-90";

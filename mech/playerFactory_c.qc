@@ -16,12 +16,12 @@ void() player_makeObserver={
   self.view_ofs = '0 0 1';
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
-  util_setCollider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY);
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_FLY);
   setmodel(self, "q3mdl/testball.md3");
   self.scale = 0.005;
   self.weaponmodel = "";
   util_setBoundBox('-1 -1 -1', '1 1 1');
-  mh_world_updateClientSpeed(300, 300, 300, "0","0");
+  mh_world_updateClientSpeed(200, 200, 200, "0","0");
   mh_world_updateClientViewBob("0", "0", "0");
   mh_world_updateClientModelBob("0", "0", "0");
   self.stat_wep_state = 0;
@@ -46,16 +46,14 @@ void() player_makeMech={
   dat = m_findMechData(self.vec_size, self.nextVecChoice);
   self.p_class = P_MECH;
   self.data_idx = dat.data_idx;
-  self.power_timer = time + 5;
+  self.power_timer = time + 1;
   self.stat_plr_stt = PLAYER_SPAWN;
   buildVehicle(dat);
-  //self.customizeentityforclient = player_customizeMechForClient;
   if((self.flags & FL_CLIENT)){
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);
     mh_world_updateClientModelBob(self.m_bmodel, self.m_bside, self.m_bobspd);
     self.stat_plr_stt = PLAYER_SPAWN;
-   //1/27/2017
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);

@@ -213,7 +213,7 @@ entity() SelectSpawnPoint={
 	
 // testinfo_player_start is only found in regioned levels
 
-  spot = find (world, classname, "testplayerstart");
+  spot = find (world, classname, "testinfo_player_start");
 	if (spot)
 		return spot;
 		

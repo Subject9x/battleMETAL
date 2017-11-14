@@ -33,7 +33,6 @@ void() ClientConnect = {
   
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
-  //stuffcmd(self, "loadsky dust_ \n");
   self.p_class = P_OBS;
   self.p_class_next = P_OBS;
   self.nextVecChoice = 0;
@@ -273,7 +272,7 @@ void() ClientDisconnect = {
   
   if(self.p_class == P_MECH){
     mech_player_die();
-    mech_cleanupMech();
+    player_unmakeMech();
   }
 };
 

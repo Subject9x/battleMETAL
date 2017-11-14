@@ -66,7 +66,7 @@ float DAT_OTL_WEP1_GROUP= 1;
 float DAT_OTL_WEP2_GROUP= 1;
 float DAT_OTL_WEP3_GROUP= 2;
 
-float DAT_OTL_M_ACCEL=0.001;
+float DAT_OTL_M_ACCEL=8;
 string DAT_OTL_M_ROLLANGLE="2";
 string DAT_OTL_M_PITCH_N="90";
 string DAT_OTL_M_PITCH_X="-90";
