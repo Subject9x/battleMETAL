@@ -102,7 +102,7 @@ void() q1_precache_world={
 	precache_sound ("ambience/wind2.wav");
 
 // shareware
-	precache_file ("maps/start.bsp");
+	//precache_file ("maps/start.bsp");
 
 	precache_file ("maps/e1m1.bsp");
 	precache_file ("maps/e1m2.bsp");

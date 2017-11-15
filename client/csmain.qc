@@ -402,7 +402,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     local vector og;
     og = VIEW_CTR;
     og_x = og_x - len/2;
-    og_y = VIEW_MAX_y - 32;
+    og_y = VIEW_CTR_y - 32;
     drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   }
   

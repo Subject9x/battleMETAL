@@ -80,7 +80,6 @@ void() player_unmakeMech={
   self.next_wepn9 = -1;
   self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & (LOCK_TARG | LOCK_PLYR));
   mech_clearWeaponGroups();
-  mech_cleanupMech();
 };
 
 float() player_customizeMechForClient={

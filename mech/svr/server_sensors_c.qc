@@ -14,7 +14,7 @@ void() server_getTarget={
   else{
     src = self;
   }
-  traceline(src.origin, src.origin + v_forward*10000, FALSE, self);
+  traceline(src.origin, src.origin + v_forward*self.radar_range, FALSE, self);
   if(trace_ent != world){
     self.enemy = trace_ent;
     if(trace_ent.p_class != P_OBS){
@@ -47,7 +47,7 @@ void() server_updateTargetInfo={
     self.stat_trg_rt_hp = -1;
     self.stat_trg_la_hp = -1;
     self.stat_trg_ra_hp = -1;
-    if(self.stat_lck_stt & LOCK_TARG){
+    if((self.stat_lck_stt & LOCK_TARG)){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
     }
     return;
@@ -76,11 +76,17 @@ void() server_updateTargetInfo={
     }
     return;
   }
-
+  local float dst;
+  dst = vlen(self.enemy.origin - self.origin);
+  if(dst > self.radar_range){
+    self.enemy = world;
+    return;
+  }
+  
   self.stat_trg_vid = self.enemy.data_idx;
   self.stat_trg_dat = self.enemy.data_type;
   self.stat_trg_ddflg = self.enemy.deadflag;
-  self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+  self.stat_trg_dist = dst;
   self.stat_trg_vsize = self.enemy.vec_size;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
   self.stat_trg_pclass = self.enemy.p_class;

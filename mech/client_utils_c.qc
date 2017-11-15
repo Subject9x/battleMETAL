@@ -185,18 +185,22 @@ void(string cmd, float tokens) client_setNavPoint={
 void() respawn={ 
   if (coop){
 		// make a copy of the dead body for appearances sake
+    CopyToBodyQue (self);
     //
 		// get the spawn parms as they were at level start
-		//setspawnparms (self);
+		setspawnparms (self);
 		// respawn		
 		PutClientInServer ();
 	}
 	else if (deathmatch){
 		// make a copy of the dead body for appearances sake
-    //CopyToBodyQue (self);
+    CopyToBodyQue (self);
 
 		// set default spawn parms
-		//SetNewParms ();
+		SetNewParms ();
+    if(self.p_class == P_MECH){
+      player_unmakeMech();
+    }
 		// respawn		
 		PutClientInServer ();
 	}

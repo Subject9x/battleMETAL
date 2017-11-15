@@ -25,7 +25,6 @@ void() mh_precache_sound={
 };
 
 void() mh_precache_models={
-
   precache_model("progs/v_dpshot.mdl");
   
   //buildings
@@ -90,6 +89,7 @@ void() mh_precache_models={
   precache_model ("progs/plasmashot.spr32");
   precache_model ("progs/muzzleflash.spr32");
   
-  
+  //maps
   precache_file ("maps/t_train0.bsp");
+  precache_file ("maps/start.bsp");
 };

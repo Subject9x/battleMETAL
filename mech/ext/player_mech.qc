@@ -9,11 +9,11 @@ Overview: implementation of mech player functions,
 
 
 void() mech_clearWeaponGroups={
-  self.w_group1 = self.w_group1 - (self.w_group1 & self.w_group1);
-  self.w_group2 = self.w_group2 - (self.w_group2 & self.w_group2);
-  self.w_group3 = self.w_group3 - (self.w_group3 & self.w_group3);
-  self.w_group4 = self.w_group4 - (self.w_group4 & self.w_group4);
-  self.w_group5 = self.w_group5 - (self.w_group5 & self.w_group5);
+  self.w_group1 = self.w_group1 - self.w_group1;
+  self.w_group2 = self.w_group2 - self.w_group2;
+  self.w_group3 = self.w_group3 - self.w_group3;
+  self.w_group4 = self.w_group4 - self.w_group4;
+  self.w_group5 = self.w_group5 - self.w_group5;
   if((self.currentWeaponGroup & self.w_group1)){
     self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group1);
   }
