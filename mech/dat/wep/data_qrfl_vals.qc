@@ -23,7 +23,7 @@ float DAT_QRFL_TECH_LEVEL = 1;
 float DAT_QRFL_SPR_X = 0; //v0.0.3
 float DAT_QRFL_SPR_Y = 0; //v0.0.3
 float DAT_QRFL_WSIZE = 3;
-float DAT_QRFL_HPX = 20;
+float DAT_QRFL_HPX = 150; //v0.0.3
 float DAT_QRFL_QBITS = 8; //v0.0.3
 float DAT_QRFL_RANGE = 2200;
 void() data_wep_qrfl;

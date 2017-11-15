@@ -23,7 +23,7 @@ float DAT_RPLAS_TECH_LEVEL = 1;
 float DAT_RPLAS_SPR_X = 8;
 float DAT_RPLAS_SPR_Y = 8;
 float DAT_RPLAS_WSIZE = 2;
-float DAT_RPLAS_HPX = 25;
+float DAT_RPLAS_HPX = 150; //v0.0.3
 float DAT_RPLAS_SHOT = 6;
 float DAT_RPLAS_RANGE = 1200;
 
@@ -82,7 +82,7 @@ void() data_rplas_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 15);
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 25);  //v0.0.3 - was /15
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;

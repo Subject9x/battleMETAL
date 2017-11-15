@@ -22,7 +22,7 @@ float DAT_PAC_TECH_LEVEL = 1;
 float DAT_PAC_SPR_X = 0;
 float DAT_PAC_SPR_Y = 0;
 float DAT_PAC_WSIZE = 2;
-float DAT_PAC_HPX = 20;
+float DAT_PAC_HPX = 100; //v0.0.3
 float DAT_PAC_RANGE = 800;
 
 void() data_wep_pac;
@@ -77,7 +77,7 @@ void() data_pac_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 3);
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 4); //v0.0.3 - was /3
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;

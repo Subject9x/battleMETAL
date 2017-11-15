@@ -24,7 +24,7 @@ float DAT_SFGA_TECH_LEVEL = 1;
 float DAT_SFGA_SPR_X = 3;
 float DAT_SFGA_SPR_Y = 2;
 float DAT_SFGA_WSIZE = 1;
-float DAT_SFGA_HPX = 30;
+float DAT_SFGA_HPX = 200; //v0.0.3
 float DAT_SFGA_RANGE = 2000;
 
 void() data_wep_sfga;

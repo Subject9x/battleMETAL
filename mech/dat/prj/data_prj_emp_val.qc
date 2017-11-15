@@ -10,7 +10,7 @@ float DAT_PRJ_EMP_IDX = ID_PRJ_EMP;
 float DAT_PRJ_EMP_VELOCITY = 1500; //1500
 string DAT_PRJ_EMP_MODEL = "q3mdl/proj_emp.md3";
 float DAT_PRJ_EMP_LIFETIME = 1.07;//was 6; 5/13/2017 
-float DAT_PRJ_EMP_DAMAGE = 150;
+float DAT_PRJ_EMP_DAMAGE = 300; //v0.0.3
 float DAT_PRJ_EMP_DMGTYPE = 0;  //see data_prj_emp
 
 float DAT_PRJ_EMP_EFFECTS = EF_NOSHADOW;
@@ -20,8 +20,8 @@ vector DAT_PRJ_EMP_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_EMP_GLOWCOLOR = 255;
 float DAT_PRJ_EMP_GLOWSIZE = 0.0005;
 float DAT_PRJ_EMP_GLOWTRAIL= FALSE;
-float DAT_PRJ_EMP_PROXYRAD = 100;
-float DAT_PRJ_EMP_EXPRAD = 150; 
+float DAT_PRJ_EMP_PROXYRAD = 150; //v0.0.3
+float DAT_PRJ_EMP_EXPRAD = 300;//v0.0.3
 
 void() data_prj_emp;
 void() data_prj_emp_ini;

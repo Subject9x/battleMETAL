@@ -21,7 +21,7 @@ float DAT_ESR_TECH_LEVEL = 1;
 float DAT_ESR_SPR_X = 2; //v0.0.3
 float DAT_ESR_SPR_Y = 2; //v0.0.3
 float DAT_ESR_WSIZE = 3;
-float DAT_ESR_HPX = 20;
+float DAT_ESR_HPX = 150; //v0.0.3
 float DAT_ESR_RANGE = 500;
 
 void() data_wep_esr;

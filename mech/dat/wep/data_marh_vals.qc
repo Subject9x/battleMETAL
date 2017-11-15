@@ -20,7 +20,7 @@ float DATWEP_MARH_EN_MAX = 500;
 string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
 float DAT_MARH_WSIZE = 3;
-float DAT_MARH_HPX = 15;
+float DAT_MARH_HPX = 100; //v0.0.3
 float DAT_MARH_RANGE = 2400;
 
 void() data_wep_marh;  //called by the data system at game startup
@@ -73,7 +73,7 @@ void() data_marh_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 15);
+      //self.owner.en_cur = self.owner.en_cur - (self.en_rate / 15); //v0.0.3
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;

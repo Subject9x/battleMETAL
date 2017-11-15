@@ -20,7 +20,7 @@ float DAT_EMP_EN_MAX = 600;
 string DAT_EMP_SOUND = "sound/llaser.ogg";
 float DAT_EMP_TECH_LEVEL = 1;
 float DAT_EMP_WSIZE = 2;
-float DAT_EMP_HPX = 25;
+float DAT_EMP_HPX = 200; //v0.0.3
 float DAT_EMP_RANGE = 1600;
 
 void() data_wep_emp;  //called by the data system at game startup

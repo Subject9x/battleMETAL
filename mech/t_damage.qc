@@ -259,9 +259,9 @@ void(entity targ, entity attacker, float dmg_type) killed={
 	// always hidden by the score bar stuff.
 	// if (self.health < -99)
 	//         self.health = -99;              // don't let sbar look bad if a player - not Roohr
-
-  if (self.health < -99)
-		self.health = -99;		// don't let sbar look bad if a player
+  if (self.health > 0 ){
+    self.health = 0;
+  }
   
 	if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
 		self.th_die();

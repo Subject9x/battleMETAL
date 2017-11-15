@@ -21,7 +21,7 @@ float DATWEP_MLGD_EN_MAX = 500;
 string DATWEP_MLGD_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MLGD_TECH_LEVEL = 2;
 float DAT_MLGD_WSIZE = 1;
-float DAT_MLGD_HPX = 45;
+float DAT_MLGD_HPX = 125; //v0.0.3
 float DAT_MLGD_RANGE = 1400;
 
 void() data_wep_mlgd;  //called by the data system at game startup
@@ -75,7 +75,7 @@ void() data_mlgd_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 8);
+      //self.owner.en_cur = self.owner.en_cur - (self.en_rate / 8); //v0.0.3 - no longer needed
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;

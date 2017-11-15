@@ -12,7 +12,7 @@ float DAT_PRJ_RPLAS_VELOCITY = 1500;//1000;
 string DAT_PRJ_RPLAS_MODEL = "progs/casing.mdl";
 float DAT_PRJ_RPLAS_LIFETIME = 0.8;
 float DAT_PRJ_RPLAS_DAMAGE = 20; //was 5 - 3/27/2017
-float DAT_PRJ_RPLAS_BURN = 0.25;
+float DAT_PRJ_RPLAS_BURN = 10; //v0.0.3
 float DAT_PRJ_RPLAS_DMGTYPE = DMG_BAL;
 
 float DAT_PRJ_RPLAS_EFFECTS = EF_NOSHADOW;
@@ -131,7 +131,6 @@ void() data_prj_rplas_touch={
       self.p_lifetime = time + self.p_lifetime;
     }
     else{
-      
       remove(self);
     }
     return;
