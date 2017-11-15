@@ -20,11 +20,11 @@ float DAT_QRFL_EN_COST= 10;
 float DAT_QRFL_EN_MAX = 500;
 string DAT_QRFL_SOUND = "sound/ac5.ogg";
 float DAT_QRFL_TECH_LEVEL = 1;
-float DAT_QRFL_SPR_X = 1;
-float DAT_QRFL_SPR_Y = 5;
+float DAT_QRFL_SPR_X = 0; //v0.0.3
+float DAT_QRFL_SPR_Y = 0; //v0.0.3
 float DAT_QRFL_WSIZE = 3;
 float DAT_QRFL_HPX = 20;
-float DAT_QRFL_QBITS = 6;
+float DAT_QRFL_QBITS = 8; //v0.0.3
 float DAT_QRFL_RANGE = 2200;
 void() data_wep_qrfl;
 void() data_qrfl_ini;
@@ -80,7 +80,7 @@ void() data_qrfl_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 6);
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / DAT_QRFL_QBITS);
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;
@@ -136,18 +136,19 @@ void() data_qrfl_atk={
         rando_x = (dir_x + rando_x) + (50 + crandom() * 100);
         rando_y = (dir_y + rando_y) + (50 + crandom() * 100);
         rando_z = (dir_z + rando_z) + (50 + crandom() * 100);
-        
         self.velocity = normalize(dir - rando);
         self.think = SUB_Remove;
         self.nextthink = time + self.p_lifetime;
         self.velocity = self.velocity * self.p_velocity;
         self.angles = vectoangles(self.velocity);
-        util_setModel(self.c_model, 0);
-        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
-        util_setBoundBox('0 0 0', '0 0 0');
-        setorigin(self, rando);
-      self = oself;
-      qbits = qbits - 1;
+        if(pointcontents(rando) != CONTENT_SOLID){
+          setorigin(self, rando);
+          util_setModel(self.c_model, 0);
+          util_setBoundBox('0 0 0', '0 0 0');
+          util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
+          qbits = qbits - 1;
+        }
+        self = oself;
     }
     sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   }

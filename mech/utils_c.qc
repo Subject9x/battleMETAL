@@ -61,7 +61,12 @@ vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spre
   end = prev_tracend + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready));
   makevectors(self.angles);
   traceline(org, end, FALSE, own);
-  return trace_endpos;
+  if(trace_ent != world){
+    return (trace_endpos + (v_forward*1));
+  }
+  else{
+    return trace_endpos;
+  }
 }; 
 
 float(float mod, float targ_val) util_zeroStat={

@@ -22,12 +22,12 @@ float DAT_OTL_SHIELD_MAX = 300;
 float DAT_OTL_SHIELD_RATE = 1;
 float DAT_OTL_YAWSPEED = 6;
 vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
-vector DAT_OTL_CTOR_BBX_X ='14 14 12';
+vector DAT_OTL_CTOR_BBX_X ='14 14 16'; //'14 14 12';
 string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
 string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_blk_cpt.md3";
-float DAT_OTL_M_FSPEED= 262; //525;//350; - 5/21/2017
-float DAT_OTL_M_SSPEED= 225; //450;//350; - 5/21/2017
-float DAT_OTL_M_BSPEED= 200;//400;//290; - 5/21/2017
+float DAT_OTL_M_FSPEED= 225;//v0.0.3
+float DAT_OTL_M_SSPEED= 175;//v0.0.3
+float DAT_OTL_M_BSPEED= 150;//v0.0.3
 
 vector DAT_OTL_SPREAD_N = '4 4 0.01';
 vector DAT_OTL_SPREAD_X = '8 8 0.01';

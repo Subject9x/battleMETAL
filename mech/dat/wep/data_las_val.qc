@@ -126,10 +126,8 @@ void() data_las_atk={
   laser_org.nextthink = time + 0.01;// + 0.35;
   
   sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
-  te_lightning1(laser_org, laser_org.origin, dir + (v_forward*3));  
-  te_flamejet(dir, '0 25 0', 5);
-  
-  local float dtype;
-  dtype = DMG_ENE;
-  t_damage(trace_ent, self, player, self.p_damage, dtype, dir, '0 0 0');
+  te_lightning1(laser_org, laser_org.origin, dir);  
+  te_flamejet(dir, '0 10 0', 25);
+
+  t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
 };

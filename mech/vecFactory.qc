@@ -51,7 +51,7 @@ void(entity data) buildVehicle={
       self.e_cam = buildCameraEnt(data, self);
     }
     if(data.unit_legs){
-       self.e_legs = buildLegs(data); 
+       self.e_legs = buildLegs(data);
     }
     self = self.e_legs;
        leg_stand1();

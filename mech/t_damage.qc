@@ -16,13 +16,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if(!trg.takedamage){
     return trg;
   }
+  if((trg.flags & FL_GODMODE)){
+    return trg;
+  }
+  
   //add in ignore team damage
   if(trg.i_faction == attacker.i_faction){
     dmg_amt = dmg_amt / 2;
-  }
-  
-  if((trg.flags & FL_GODMODE)){
-    return trg;
   }
   
   if((trg.flags & FL_CLIENT)){
@@ -31,9 +31,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       trg.was_hit = time + 1;
     }
   }
-
   //calculate hit time and angle
-
   local float hit_ang;
   oself = self;
   self = trg;
@@ -80,7 +78,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       e = e.chain;
     }
   }
-  
   //check shields
   if(trg.sh_cur >= 0){
     new_dmg = damage_shield(trg, dmg_amt, dmg_type);
@@ -97,18 +94,16 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     newmis = spawn();
     oself = self; 
     self = newmis;
-      setmodel(self, "q3mdl/fx_shield.md3");
-      self.alpha = 1;
-      self.effects = self.effects | EF_NOSHADOW | EF_BLUE;
-      self.movetype = MOVETYPE_FOLLOW;
-      self.aiment = trg;
-      self.solid = SOLID_NOT;
-      self.angles = vectoangles(attacker.origin - self.origin);
-      ChangeYaw ();
+      self.classname = "spike";
       setorigin(self, dmg_point);
+      setmodel(self, "q3mdl/fx_shield.md3");
       setsize(self, '-1 -1 -1', '1 1 1');
+      self.alpha = 0.75;
+      self.effects = self.effects | EF_NOSHADOW | EF_BLUE;
+      self.movetype = MOVETYPE_NONE;
+      self.solid = SOLID_NOT;
       self.think = SUB_Remove;
-      self.nextthink = time + 1;
+      self.nextthink = time + 10;
     self = oself;
     return trg;
   }
@@ -187,8 +182,10 @@ entity(vector point, float rad, entity trg) t_find_part={
     }
     cprt = cprt.c_part;
   }
+  bprint(strcat("closest part:",cprt.c_name," :",ftos(cur_dist),"\n"));//DEBUG
   //NOTE - perhaps only check for weapons when armor is below a certain threshold?
   f_wep = closestWeapon(trg, point, rad);
+  bprint(strcat("closest part:",f_wep.c_name," :",ftos(cur_dist),"\n"));//DEBUG
   if(f_wep != world){
     if(f_wep != trg){
       local float chk;

@@ -12,17 +12,17 @@ float DAT_ESR_FIRETIME = 0;
 float DAT_ESR_CLIPSIZE = 10;
 float DAT_ESR_CURRENTAMMO = 10;
 float DAT_ESR_FIRERATE = 0.1;
-vector DAT_ESR_FIRE_OFS = '0 0 2';
+vector DAT_ESR_FIRE_OFS = '0 0 4';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_esr.md3";
 float DAT_ESR_EN_COST = 10;
 float DAT_ESR_EN_MAX = 500;
 string DAT_ESR_SOUND = "sound/laser_test.ogg";
 float DAT_ESR_TECH_LEVEL = 1;
-float DAT_ESR_SPR_X = 8;
-float DAT_ESR_SPR_Y = 8;
+float DAT_ESR_SPR_X = 2; //v0.0.3
+float DAT_ESR_SPR_Y = 2; //v0.0.3
 float DAT_ESR_WSIZE = 3;
 float DAT_ESR_HPX = 20;
-float DAT_ESR_RANGE = 400;
+float DAT_ESR_RANGE = 500;
 
 void() data_wep_esr;
 void() data_esr_ini;
@@ -114,6 +114,7 @@ void() data_esr_atk={
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
     self.w_isburst = FALSE;
+    return;
   }
   else{
     if((player.flags & FL_MONSTER)){
@@ -127,24 +128,30 @@ void() data_esr_atk={
     self.w_isburst = TRUE;
   }
 
-  local entity laser_org;
+  local entity laser_org, this;
+  bprint(strcat("shot: ", ftos(self.w_currentammo), "\n"));//DEBUG
+    bprint(strcat("shot len: ", ftos(vlen(end - dir)), "\n")); //DEBUG
+    bprint(strcat("shot len: ", ftos(vlen(dir - trace_ent.origin)), "\n")); //DEBUG
+  t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
+
+  this = self;
   laser_org = spawn();
-  laser_org.movetype = SOLID_NOT;
-  laser_org.classname = "missile";
-  setsize(laser_org, '0 0 0', '0 0 0');
-  makevectors(self.angles);
-  self.fx_origin = self.fx_origin + (v_forward*6);
-  setorigin(laser_org, self.fx_origin);
-  laser_org.scale = 0.5;
-  local float dtype;
-  dtype = dtype | DMG_ENE;
+  self = laser_org;
+    self.movetype = SOLID_NOT;
+    self.classname = "missile";
+    makevectors(this.angles);
+    this.fx_origin = this.fx_origin + (v_forward*2);
+    setorigin(self, this.fx_origin);
+    setsize(self, '0 0 0', '0 0 0');
+    self.scale = 1;
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01; //0.01
+  self = this;
+  sound (laser_org, CHAN_WEAPON, DAT_ESR_SOUND, 1, ATTN_NORM);
   
-  t_damage(trace_ent, self, player, self.p_damage, dtype, dir + (v_forward*3), '0 0 0');
-  sound (laser_org, CHAN_WEAPON, DAT_ESR_SOUND, 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
-  laser_org.think = SUB_Remove;
-  laser_org.nextthink = time + 0.01;
+
   
-  te_flamejet(dir, '0 25 0', 5);
+  te_flamejet(dir, '0 15 0', 5);
   te_customflash(dir, 4, 10, '0 0 1');
 };
