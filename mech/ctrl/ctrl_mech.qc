@@ -11,9 +11,10 @@ void() ctrl_updateCenterTorso={
   if((self.flags & FL_CLIENT)){
     if(time > self.laser_sight_timer){
       local entity cam;
+      local vector v1;
       makevectors(self.v_angle);
-      cam = self.e_cam;
-      traceline(cam.origin, cam.origin + v_forward*10000, FALSE, self);
+      v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
+      traceline(v1, v1 + v_forward*10000, FALSE, self);
       self.laser_sight_org = trace_endpos;
       self.laser_sight_timer = time + 0.05;
     }
@@ -151,6 +152,9 @@ void() ctrl_die_comp={
 
 void() touch_mechPiece={
   if(other==world){
+    return;
+  }
+  if(other.classname == MECH_PIECE){
     return;
   }
   if(other.p_class == P_MECH){

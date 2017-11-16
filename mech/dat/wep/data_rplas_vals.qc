@@ -25,7 +25,7 @@ float DAT_RPLAS_SPR_Y = 8;
 float DAT_RPLAS_WSIZE = 2;
 float DAT_RPLAS_HPX = 150; //v0.0.3
 float DAT_RPLAS_SHOT = 6;
-float DAT_RPLAS_RANGE = 1200;
+float DAT_RPLAS_RANGE = 2400;//v0.0.3
 
 void() data_wep_rplas;
 void() data_rplas_ini;

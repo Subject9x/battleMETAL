@@ -24,7 +24,7 @@ float DAT_LAS_SPR_X = 10;
 float DAT_LAS_SPR_Y = 3; //v0.0.3
 float DAT_MIS_WSIZE = 1; //v0.0.3
 float DAT_MIS_HPX = 150; //v0.0.3
-float DAT_MIS_RANGE = 600;
+float DAT_MIS_RANGE = 1000;//v0.0.3
 
 void() data_wep_mis;
 void() data_mis_ini;

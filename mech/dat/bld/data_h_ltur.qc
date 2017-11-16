@@ -171,6 +171,7 @@ void() building_tur={
   self.ideal_yaw = self.angles * '0 1 0';
   
   buildVehicle(dat);
+  self.solid = SOLID_BSP;
   self.e_legs.movetype = MOVETYPE_NONE;
   self.e_legs.aiment = world;
   setsize(self.e_legs, '-1 -1 0', '1 1 1');

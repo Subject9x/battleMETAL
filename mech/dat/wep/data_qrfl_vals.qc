@@ -25,7 +25,7 @@ float DAT_QRFL_SPR_Y = 0; //v0.0.3
 float DAT_QRFL_WSIZE = 3;
 float DAT_QRFL_HPX = 150; //v0.0.3
 float DAT_QRFL_QBITS = 8; //v0.0.3
-float DAT_QRFL_RANGE = 2200;
+float DAT_QRFL_RANGE = 3600;//v0.0.3
 void() data_wep_qrfl;
 void() data_qrfl_ini;
 void() data_qrfl_atk;

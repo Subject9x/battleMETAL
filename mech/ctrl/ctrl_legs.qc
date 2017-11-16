@@ -37,5 +37,27 @@ void() ctrl_updateLegs={
 };
 
 void() ctrl_dieLegs={
-  leg_die1();
+  local entity this;
+  newmis = spawn();
+  this = self;
+    setorigin(self, this.origin);
+    local vector v1, v2;
+    local float f1, f2, f3;
+    v1 = this.owner.c_bbx_n;
+    v2 = this.owner.c_bbx_x;
+    f1 = v1_z*-1; 
+    f2 = v2_x/2;
+    f3 = v2_y/2;
+    v1_x = v1_x + f2;
+    v1_y = v1_y + f3;
+    v2_x = v2_x - f2;
+    v2_y = v2_y - f3;
+    v1_z = v1_z + f1;
+    v2_z = f1;
+    setsize(self, v1, v2);
+    setmodel(self, this.model);
+    self.frame = this.walkframe;
+    self.touch = touch_mechPiece;
+    leg_die1();
+  self = this;
 };

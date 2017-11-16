@@ -10,7 +10,7 @@ float DAT_PRJ_MLGD_IDX = ID_PRJ_MLGD;
 float DAT_PRJ_MLGD_VELOCITY = 800;
 string DAT_PRJ_MLGD_MODEL = "q3mdl/proj_mis.md3";
 float DAT_PRJ_MLGD_LIFETIME = 1.75;
-float DAT_PRJ_MLGD_DAMAGE = 200;
+float DAT_PRJ_MLGD_DAMAGE = 400;
 float DAT_PRJ_MLGD_DMGTYPE = DMG_EXP;
 
 float DAT_PRJ_MLGD_EFFECTS = 0; //see data_prj_MIS
@@ -40,7 +40,7 @@ void() data_prj_mlgd={
 };
 
 void() data_prj_mlgd_ini={
-  self.classname = "spike";
+  self.classname = "missile";
   self.touch = data_prj_mlgd_touch;
   self.data_idx = DAT_PRJ_MLGD_IDX;
   self.p_velocity = DAT_PRJ_MLGD_VELOCITY;
@@ -111,7 +111,7 @@ void() data_prj_mlgd_touch={
     return;
   }
   
-  if(other.classname == "spike"){
+  if(other.classname == "missile"){
     return;
   }
 

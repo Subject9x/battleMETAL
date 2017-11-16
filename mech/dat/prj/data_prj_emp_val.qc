@@ -9,7 +9,7 @@ Overview: data def file for a weapon projectile
 float DAT_PRJ_EMP_IDX = ID_PRJ_EMP;
 float DAT_PRJ_EMP_VELOCITY = 1500; //1500
 string DAT_PRJ_EMP_MODEL = "q3mdl/proj_emp.md3";
-float DAT_PRJ_EMP_LIFETIME = 1.07;//was 6; 5/13/2017 
+float DAT_PRJ_EMP_LIFETIME = 1.6; //v0.0.3
 float DAT_PRJ_EMP_DAMAGE = 300; //v0.0.3
 float DAT_PRJ_EMP_DMGTYPE = 0;  //see data_prj_emp
 
@@ -43,7 +43,7 @@ void() data_prj_emp={
 };
 
 void() data_prj_emp_ini={
-  self.classname = "spike";
+  self.classname = "missile";
   self.touch = data_prj_emp_touch;
   self.data_idx = DAT_PRJ_EMP_IDX;
   self.p_velocity = DAT_PRJ_EMP_VELOCITY;
@@ -72,7 +72,7 @@ void()data_prj_emp_think={
     proxy = findradius(self.origin, DAT_PRJ_EMP_PROXYRAD);
     while(proxy){
       if(proxy!=world){
-        if(proxy.classname!="spike"){
+        if(proxy.classname!="missile"){
           traceline(self.origin, proxy.origin, FALSE, self.owner);
           if(trace_ent){
             local entity f;
@@ -112,7 +112,7 @@ void()data_prj_emp_explode={
   lst = findradius(self.origin, DAT_PRJ_EMP_EXPRAD);
   while(lst){
     if(lst!=world){
-      if(lst.classname!="spike"){
+      if(lst.classname!="missile"){
         traceline(self.origin, lst.origin, FALSE, self.owner);
         if(trace_ent){
           local float ln;
@@ -151,7 +151,7 @@ void() data_prj_emp_touch={
     return;
   }
   
-  if(other.classname == "spike"){
+  if(other.classname == "missile"){
     return;
   }
   te_tarexplosion(self.origin);

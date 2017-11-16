@@ -18,7 +18,7 @@ void() building_fuel={
   self.vec_name = "Fuel Tank";
   self.p_class = P_BULD;
   util_setModel("q3mdl/buildings/mdl_bld_h_fuel.md3", 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(150, 150, 1, 100) ;
   util_setBoundBox('-40 -40 0', '40 40 64');
   self.sh_cur= 0;

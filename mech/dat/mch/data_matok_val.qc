@@ -12,7 +12,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 float DAT_MTK_IDX = ID_MCH_MATOK;
 string DAT_MTK_VEC_NAME = "MATOK";
 float DAT_MTK_TECH_LEVEL = 2;
-float DAT_MTK_RADAR_RANGE = 3000;
+float DAT_MTK_RADAR_RANGE = 4000;
 float DAT_MTK_RESERVE_COST = 200;
 float DAT_MTK_ENERGY_CUR = 800;
 float DAT_MTK_ENERGY_MAX = 800;
@@ -27,6 +27,7 @@ string DAT_MTK_CPIT_MODEL = "q3mdl/mechs/ntmk/mdl_mtk_cpt.md3";
 float DAT_MTK_M_FSPEED=150;//v0.0.3
 float DAT_MTK_M_SSPEED=100;//v0.0.3
 float DAT_MTK_M_BSPEED=90;//v0.0.3
+float DAT_MTK_M_ACCEL=1.25; //v0.0.3
 
 vector DAT_MTK_SPREAD_N = '4 4 0.008';
 vector DAT_MTK_SPREAD_X = '8 8 0.008';
@@ -73,7 +74,6 @@ float DAT_MTK_WEP5_GROUP= 3;
 
 //this is mostly cosmetics
 string DAT_MTK_CTOR_MODEL= "q3mdl/mechs/ntmk/mdl_mtk_t_cent.md3";
-float DAT_MTK_M_ACCEL=6;
 string DAT_MTK_M_ROLLANGLE="2.25";
 string DAT_MTK_M_PITCH_N="90";
 string DAT_MTK_M_PITCH_X="-90";

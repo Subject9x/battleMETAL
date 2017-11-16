@@ -184,20 +184,20 @@ entity(float sz, float id) m_findMechData={
 
 void(float fwd, float side, float bck, string accel, string roll) mh_world_updateClientSpeed={
   stuffcmd(self, "cl_forwardspeed ");
-  stuffcmd(self, ftos(fwd)); //400
+  stuffcmd(self, ftos(fwd));
   stuffcmd(self, "\n");
   stuffcmd(self, "cl_sidespeed ");
-  stuffcmd(self, ftos(side)); //350
+  stuffcmd(self, ftos(side));
   stuffcmd(self, "\n");
   stuffcmd(self, "cl_backspeed ");
-  stuffcmd(self, ftos(bck)); //400
+  stuffcmd(self, ftos(bck));
   stuffcmd(self, "\n");
-  stuffcmd(self, "cl_movement_accelerate ");
-  stuffcmd(self, accel); //10
+  stuffcmd(self, "cl_movespeedkey ");
+  stuffcmd(self, accel);
   stuffcmd(self, "\n");
   stuffcmd(self, "cl_rollangle ");
   stuffcmd(self, roll);
-  stuffcmd(self, "\n"); //2
+  stuffcmd(self, "\n"); 
 };
 
 void(string bob, string cycle, string up) mh_world_updateClientViewBob={

@@ -13,7 +13,7 @@ float DAT_OTL_IDX = ID_MCH_BALAKET;
 string DAT_OTL_VEC_NAME = "Balaket";
 float DAT_OTL_TECH_LEVEL = 1;
 float DAT_OTL_RESERVE_COST = 100;
-float DAT_OTL_RADAR_RANGE = 4000;
+float DAT_OTL_RADAR_RANGE = 7000;
 float DAT_OTL_ENERGY_CUR = 400;
 float DAT_OTL_ENERGY_MAX = 400;
 float DAT_OTL_ENERGY_RATE = 1;
@@ -25,12 +25,13 @@ vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
 vector DAT_OTL_CTOR_BBX_X ='14 14 16'; //'14 14 12';
 string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
 string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_blk_cpt.md3";
-float DAT_OTL_M_FSPEED= 225;//v0.0.3
+float DAT_OTL_M_FSPEED= 200;//v0.0.3
 float DAT_OTL_M_SSPEED= 175;//v0.0.3
 float DAT_OTL_M_BSPEED= 150;//v0.0.3
+float DAT_OTL_M_ACCEL= 1.45; //v0.0.03
 
-vector DAT_OTL_SPREAD_N = '4 4 0.01';
-vector DAT_OTL_SPREAD_X = '8 8 0.01';
+vector DAT_OTL_SPREAD_N = '4 4 0.1';
+vector DAT_OTL_SPREAD_X = '8 8 0.1';
 
 float DAT_OTL_LEG_HP = 700;
 float DAT_OTL_LEG_HPMAX= 700;
@@ -66,7 +67,6 @@ float DAT_OTL_WEP1_GROUP= 1;
 float DAT_OTL_WEP2_GROUP= 1;
 float DAT_OTL_WEP3_GROUP= 2;
 
-float DAT_OTL_M_ACCEL=8;
 string DAT_OTL_M_ROLLANGLE="2";
 string DAT_OTL_M_PITCH_N="90";
 string DAT_OTL_M_PITCH_X="-90";

@@ -61,10 +61,12 @@ void() ai_mech_update={
   
   if(self.e_legs){
     if(self.e_legs != world && oself.e_legs.owner == self){
-      oself = self;
-      self = oself.e_legs;
-        ctrl_updateLegs();
-      self = oself;
+      if(self.e_legs.deadflag <= DEAD_NO){
+        oself = self;
+        self = oself.e_legs;
+          ctrl_updateLegs();
+        self = oself;
+      }
     }
   }
   wep_chain = self.w_slot;
@@ -73,6 +75,7 @@ void() ai_mech_update={
     wep_chain = wep_chain.w_slot;
   }  
   if(self.enemy != world){
+    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
     self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
   }
 };
@@ -311,7 +314,7 @@ void() ai_move_random={
 
 void() ai_move_stand={
 
-  self.e_legs.walkframe = 1;
+  self.e_legs.walkframe = 0;
   if(self.ai_prev_move == ai_move_walkmove_strafeleft){
     self.ai_next_move = ai_move_walkmove_straferight;
   }

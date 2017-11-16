@@ -8,7 +8,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LAS_IDX = ID_WEP_LAS;
 string DAT_LAS_NAME = "Light Laser";
-float DAT_LAS_DMG = 30;
+float DAT_LAS_DMG = 20; //v0.0.3
 float DAT_LAS_FIRETIME = 0;
 float DAT_LAS_CLIPSIZE = 1;
 float DAT_LAS_CURRENTAMMO = 1;
@@ -21,7 +21,7 @@ string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_TECH_LEVEL = 1;
 float DAT_LAS_WSIZE = 1;
 float DAT_LAS_HPX = 200; //v0.0.3
-float DAT_LAS_RANGE = 2400;
+float DAT_LAS_RANGE = 4000;//v0.0.3
 
 void() data_wep_las;
 void() data_las_ini;

@@ -8,8 +8,8 @@ Overview: long-range, low damage, homing missile
 float DAT_PRJ_MARH_IDX = ID_PRJ_MARH;
 float DAT_PRJ_MARH_VELOCITY = 650;//was750 5/13/2017 //was 500 - 3/27/2017
 string DAT_PRJ_MARH_MODEL = "q3mdl/proj_mis.md3";
-float DAT_PRJ_MARH_LIFETIME = 15;
-float DAT_PRJ_MARH_DAMAGE = 4;
+float DAT_PRJ_MARH_LIFETIME = 13; //v0.0.3
+float DAT_PRJ_MARH_DAMAGE = 16; //v0.0.3
 float DAT_PRJ_MARH_DMGTYPE = DMG_EXP;
 
 float DAT_PRJ_MARH_EFFECTS = 0; //see data_prj_MIS
@@ -39,7 +39,7 @@ void() data_prj_marh={
 };
 
 void() data_prj_marh_ini={
-  self.classname = "spike";
+  self.classname = "missile";
   self.touch = data_prj_marh_touch;
   self.data_idx = DAT_PRJ_MARH_IDX;
   self.p_velocity = DAT_PRJ_MARH_VELOCITY;
@@ -61,14 +61,15 @@ void() data_prj_marh_ini={
 void() data_prj_marh_th={
 	local vector	dir, vtemp, olddir;
   local float turnrate;
+
 	if (self.enemy.health <= 0){
 		return;
 	}
   if(self.enemy == world){
     return;
   }
-  turnrate = 0.1;	//Change as you wish  
-	if(self.owner.stat_lck_stt & LOCK_TARG){
+  //turnrate = 0.1;	//Change as you wish  
+	if((self.owner.stat_lck_stt & LOCK_TARG)){
     if(time > self.lock_timer){
       makevectors(self.enemy.angles);
       vtemp = self.enemy.origin + '0 0 10' + ((crandom() * 35) * v_right) + (v_forward * (crandom() * 35));
@@ -88,23 +89,12 @@ void() data_prj_marh_th={
         vtemp = self.c_ofs;
       }
     }
-    
-    olddir = normalize(self.velocity);
-		dir = normalize(vtemp - self.origin);
-    if (olddir_x - dir_x > (turnrate*2))
-      dir_x = olddir_x - (turnrate*2);
-    if (olddir_x - dir_x < -1 * (turnrate*2))
-      dir_x = olddir_x + (turnrate*2);
-    if (olddir_y - dir_y > turnrate)
-      dir_y = olddir_y - turnrate;
-    if (olddir_y - dir_y < -1 * turnrate)
-      dir_y = olddir_y + turnrate;
-    if (olddir_z - dir_z > turnrate)
-      dir_z = olddir_z - turnrate;
-    if (olddir_z - dir_z < -1 * turnrate)
-      dir_z = olddir_z + turnrate;
-    self.velocity = dir * self.p_velocity;
-		self.angles = vectoangles(self.velocity);
+    olddir = normalize(vtemp - self.origin);
+    dir = olddir + olddir + olddir;
+    dir = dir * (1/3);
+    dir = normalize(olddir + dir);
+    self.velocity = self.p_velocity * dir;
+    self.angles = vectoangles(self.velocity);
 	}
   else{
     return;
@@ -115,7 +105,7 @@ void() data_prj_marh_th={
     self.think = BecomeExplosion;
   }
   else{
-    self.nextthink = time + 0.05;
+    self.nextthink = time + 0.01;
     self.think = data_prj_marh_th;
   }
 };
@@ -139,7 +129,7 @@ void() data_prj_marh_touch={
     return;
   }
   
-  if(other.classname == "spike"){
+  if(other.classname == "missile"){
     return;
   }
 

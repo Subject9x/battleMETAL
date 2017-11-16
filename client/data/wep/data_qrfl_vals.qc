@@ -14,7 +14,7 @@ float DAT_QRFL_CLIPSIZE = 1;
 float DAT_QRFL_EN_COST= 10;
 float DAT_QRFL_TECH_LEVEL = 1;
 float DAT_QRFL_WSIZE = 3;
-float DAT_QRFL_RANGE = 2200;
+float DAT_QRFL_RANGE = 3600;//v0.0.3
 
 void() data_wep_qrfl;
 

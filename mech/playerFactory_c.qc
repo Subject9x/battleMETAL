@@ -21,7 +21,7 @@ void() player_makeObserver={
   self.scale = 0.005;
   self.weaponmodel = "";
   util_setBoundBox('-1 -1 -1', '1 1 1');
-  mh_world_updateClientSpeed(200, 200, 200, "0","0");
+  mh_world_updateClientSpeed(200, 200, 200, "3","0");
   mh_world_updateClientViewBob("0", "0", "0");
   mh_world_updateClientModelBob("0", "0", "0");
   self.stat_wep_state = 0;
@@ -78,7 +78,32 @@ void() player_unmakeMech={
   self.next_wepn7 = -1;
   self.next_wepn8 = -1;
   self.next_wepn9 = -1;
-  self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & (LOCK_TARG | LOCK_PLYR));
+  self.stat_lck_stt = 0;
+  self.stat_trg_vsize = -1;
+  self.stat_trg_pclass = -1;
+  self.was_hit = FALSE;
+  self.hitdir_buffer = 0;
+  self.stat_hit_dirs = 0;
+  self.stat_rdr_mode = 0;
+  self.stat_spr_x = 0;
+  self.stat_spr_y = 0;
+  self.conv_min = '0 0 0';
+  self.conv_max = '0 0 0';
+  self.stat_plr_stt = 0;
+  self.stat_plr_fir = FIRE_GROUP;
+  self.stat_lck_stt = LOCK_NONE;
+  self.stat_plr_ptc = 0;
+  self.stat_plr_ang = 0;
+  
+  self.next_wepn1 = -1;
+  self.next_wepn2 = -1;
+  self.next_wepn3 = -1;
+  self.next_wepn4 = -1;
+  self.next_wepn5 = -1;
+  self.next_wepn6 = -1;
+  self.next_wepn7 = -1;
+  self.next_wepn8 = -1;
+  self.next_wepn9 = -1;
   mech_clearWeaponGroups();
 };
 

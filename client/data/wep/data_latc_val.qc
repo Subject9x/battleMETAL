@@ -17,7 +17,7 @@ float DAT_LATC_EN_MAX = 100;
 float DAT_LATC_TECH_LEVEL = 1;
 float DAT_LATC_WSIZE = 1;
 float DAT_LATC_DMG = 20;
-float DAT_LATC_RANGE = 2400;
+float DAT_LATC_RANGE = 3600;//v0.0.3
 void() data_wep_latc;
 
 void() data_wep_latc={

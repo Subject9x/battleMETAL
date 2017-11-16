@@ -7,10 +7,10 @@ Overview: data def file for a weapon projectile
 
 //MIS CANNON SHOT=======================
 float DAT_PRJ_MIS_IDX = ID_PRJ_MIS;
-float DAT_PRJ_MIS_VELOCITY = 1200;
+float DAT_PRJ_MIS_VELOCITY = 1300;
 string DAT_PRJ_MIS_MODEL = "q3mdl/proj_mis.md3";
-float DAT_PRJ_MIS_LIFETIME = 1;
-float DAT_PRJ_MIS_DAMAGE = 100;
+float DAT_PRJ_MIS_LIFETIME = 1.4;
+float DAT_PRJ_MIS_DAMAGE = 75; //v0.0.3
 float DAT_PRJ_MIS_DMGTYPE = DMG_EXP;
 
 float DAT_PRJ_MIS_EFFECTS = 0; //see data_prj_MIS
@@ -39,7 +39,7 @@ void() data_prj_mis={
 };
 
 void() data_prj_mis_ini={
-  self.classname = "spike";
+  self.classname = "missile";
   self.touch = data_prj_mis_touch;
   self.data_idx = DAT_PRJ_MIS_IDX;
   self.p_velocity = DAT_PRJ_MIS_VELOCITY;
@@ -76,7 +76,7 @@ void() data_prj_mis_touch={
     return;
   }
   
-  if(other.classname == "spike"){
+  if(other.classname == "missile"){
     return;
   }
 

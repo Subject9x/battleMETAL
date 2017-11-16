@@ -94,7 +94,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     newmis = spawn();
     oself = self; 
     self = newmis;
-      self.classname = "spike";
+      self.classname = "missile";
       setorigin(self, dmg_point);
       setmodel(self, "q3mdl/fx_shield.md3");
       setsize(self, '-1 -1 -1', '1 1 1');
@@ -103,7 +103,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
       self.think = SUB_Remove;
-      self.nextthink = time + 10;
+      self.nextthink = time + 0.1;
     self = oself;
     return trg;
   }
@@ -182,10 +182,8 @@ entity(vector point, float rad, entity trg) t_find_part={
     }
     cprt = cprt.c_part;
   }
-  bprint(strcat("closest part:",cprt.c_name," :",ftos(cur_dist),"\n"));//DEBUG
   //NOTE - perhaps only check for weapons when armor is below a certain threshold?
-  f_wep = closestWeapon(trg, point, rad);
-  bprint(strcat("closest part:",f_wep.c_name," :",ftos(cur_dist),"\n"));//DEBUG
+  /*f_wep = closestWeapon(trg, point, rad);
   if(f_wep != world){
     if(f_wep != trg){
       local float chk;
@@ -201,7 +199,7 @@ entity(vector point, float rad, entity trg) t_find_part={
         }
       }
     }
-  }
+  }*/
   return toSender;
 };
 

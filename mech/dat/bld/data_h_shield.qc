@@ -19,7 +19,7 @@ void() building_shield={
   self.vec_name = "Shield Generator";
   self.p_class = P_BULD;
   util_setModel("q3mdl/buildings/mdl_bld_h_shield.md3", 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(1000, 1000, 1, 100) ;
   util_setBoundBox('-56 -56 0', '56 56 35');
   self.sh_cur= 0;

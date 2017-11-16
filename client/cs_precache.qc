@@ -81,6 +81,7 @@ void() cs_precache={
   UI_WEP_ATC = precache_pic("gfx/ui/wep_icons/wi_atc.png",0);
   UI_WEP_QRF = precache_pic("gfx/ui/wep_icons/wi_qrf.png",0);
   UI_WEP_RPC = precache_pic("gfx/ui/wep_icons/wi_rpc.png",0);
+  UI_WEP_SFG = precache_pic("gfx/ui/wep_icons/wi_sfg.png",0);
   
   //buildings
   building_power();

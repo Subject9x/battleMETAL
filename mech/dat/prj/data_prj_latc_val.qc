@@ -39,7 +39,7 @@ void() data_prj_sfga={
 };
 
 void() data_prj_sfga_ini={
-  self.classname = "spike";
+  self.classname = "missile";
   self.touch = data_prj_sfga_touch;
   self.data_idx = DAT_PRJ_SFGA_IDX;
   self.p_velocity = DAT_PRJ_SFGA_VELOCITY;
@@ -78,7 +78,7 @@ void() data_prj_sfga_touch={
     return;
   }
   
-  if(other.classname == "spike"){
+  if(other.classname == "missile"){
     return;
   }
   //te_superspike(self.origin);

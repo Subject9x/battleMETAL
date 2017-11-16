@@ -191,7 +191,7 @@ void(vector org, vector dir) launch_spike =
 	newmis.angles = vectoangles(dir);
 	
 	newmis.touch = spike_touch;
-	newmis.classname = "spike";
+	newmis.classname = "missile";
 	newmis.think = SUB_Remove;
 	newmis.nextthink = time + 6;
 	setmodel (newmis, "progs/spike.mdl");

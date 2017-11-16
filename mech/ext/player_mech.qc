@@ -9,27 +9,12 @@ Overview: implementation of mech player functions,
 
 
 void() mech_clearWeaponGroups={
-  self.w_group1 = self.w_group1 - self.w_group1;
-  self.w_group2 = self.w_group2 - self.w_group2;
-  self.w_group3 = self.w_group3 - self.w_group3;
-  self.w_group4 = self.w_group4 - self.w_group4;
-  self.w_group5 = self.w_group5 - self.w_group5;
-  if((self.currentWeaponGroup & self.w_group1)){
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group1);
-  }
-  if((self.currentWeaponGroup & self.w_group2)){
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group2);
-  }
-  if((self.currentWeaponGroup & self.w_group3)){
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group3);
-  }
-  if((self.currentWeaponGroup & self.w_group4)){
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group5);
-  }
-  if((self.currentWeaponGroup & self.w_group5)){
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group4);
-  }
-
+  self.w_group1 = 0;
+  self.w_group2 = 0;
+  self.w_group3 = 0;
+  self.w_group4 = 0;
+  self.w_group5 = 0;
+  self.currentWeaponGroup = 0;
 };
 
 void() ctrl_update_mechplayer={
@@ -51,7 +36,7 @@ void() ctrl_update_mechplayer={
 void() mech_cleanupMech={
   
   local entity w_chain, next, lstp;
-  if(self.flags & FL_CLIENT){
+  if((self.flags & FL_CLIENT)){
     mech_player_removecamera();
   }
   mech_player_removecomp(self.e_tor_l);
@@ -59,13 +44,15 @@ void() mech_cleanupMech={
   mech_player_removecomp(self.e_arm_l);
   mech_player_removecomp(self.e_arm_r);
 
-  if((self.e_legs)){
-    local entity this;
-    this = self;
-    self = self.e_legs;
-      leg_die1();
-    self = this;
-    mech_player_removecomp(self.e_legs);
+  if(self.e_legs){
+    if(self.e_legs != world && self.e_legs.owner == self){
+      local entity this;
+      this = self;
+      self = self.e_legs;
+        leg_die1();
+      self = this;
+      mech_player_removecomp(self.e_legs);
+    }
   }
 
   w_chain = self.w_slot;

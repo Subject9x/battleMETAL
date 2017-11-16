@@ -21,7 +21,7 @@ string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
 float DAT_MARH_WSIZE = 3;
 float DAT_MARH_HPX = 100; //v0.0.3
-float DAT_MARH_RANGE = 2400;
+float DAT_MARH_RANGE = 3000;//v0.0.3
 
 void() data_wep_marh;  //called by the data system at game startup
 void() data_marh_ini;  //used by the vehicle factory when building a weapon hardpoint
@@ -139,16 +139,16 @@ void() data_marh_atk={
           oself = self;
           self = newmis;
             self.owner = player;
+            setorigin(self, start);
             proj.unit_ini();
             util_setModel(self.c_model, 0);
-            util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
             util_setBoundBox('0 0 0', '0 0 0');
+            util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
             self.velocity = normalize(arc - start);
             self.enemy = self.owner.enemy;
             self.c_ofs = arc;
             self.lock_timer = time + 0.75;
             self.p_lifetime = time + self.p_lifetime;
-            setorigin(self, start);
             self.velocity = self.velocity * self.p_velocity;
             self.angles = vectoangles(self.velocity);
             self.think = data_prj_marh_th;

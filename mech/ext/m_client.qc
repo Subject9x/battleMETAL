@@ -33,6 +33,7 @@ void() ClientConnect = {
   
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
+  self.viewzoom = 0;
   self.p_class = P_OBS;
   self.p_class_next = P_OBS;
   self.nextVecChoice = 0;
@@ -104,7 +105,7 @@ void() ClientConnect = {
   self.stat_trg_vsize = -1;
   self.stat_trg_pclass = -1;
   
-  self.radar_range = 800; // DEBUG
+  self.radar_range = 0;
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
   self.stat_hit_dirs = 0;
@@ -261,8 +262,6 @@ called when a player disconnects from a server
 ============
 */
 void() ClientDisconnect = {
-  local entity oself;
-  oself = self;
   //q1 func
   if(gameover){
     return;
@@ -273,6 +272,7 @@ void() ClientDisconnect = {
   if(self.p_class == P_MECH){
     mech_player_die();
     player_unmakeMech();
+    mech_cleanupMech();
   }
 };
 

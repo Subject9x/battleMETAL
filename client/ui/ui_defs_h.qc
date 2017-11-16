@@ -57,3 +57,4 @@ string UI_WEP_MARH;
 string UI_WEP_ATC;
 string UI_WEP_QRF;
 string UI_WEP_RPC;
+string UI_WEP_SFG;

@@ -7,7 +7,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 */
 //LIGHT AUTOCANNON=======================
 float DAT_SFGA_IDX = ID_WEP_SFGA;
-string DAT_SFGA_NAME = "Light Autocannon";
+string DAT_SFGA_NAME = "Snub Field Gun";
 float DAT_SFGA_DMG = 300;
 float DAT_SFGA_FIRETIME = 0;
 float DAT_SFGA_CLIPSIZE = 1;
@@ -25,7 +25,7 @@ float DAT_SFGA_SPR_X = 3;
 float DAT_SFGA_SPR_Y = 2;
 float DAT_SFGA_WSIZE = 1;
 float DAT_SFGA_HPX = 200; //v0.0.3
-float DAT_SFGA_RANGE = 2000;
+float DAT_SFGA_RANGE = 3600;//v0.0.3
 
 void() data_wep_sfga;
 void() data_sfga_ini;

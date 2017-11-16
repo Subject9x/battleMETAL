@@ -21,7 +21,7 @@ float DATWEP_MARH_EN_MAX = 500;
 string DATWEP_MARH_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MARH_TECH_LEVEL = 2;
 float DAT_MARH_WSIZE = 3;
-float DAT_MARH_RANGE = 2400;
+float DAT_MARH_RANGE = 3000;//v0.0.3
 
 void() data_wep_marh;
 

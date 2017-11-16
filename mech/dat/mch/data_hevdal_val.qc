@@ -12,7 +12,7 @@ Overview:
 float DAT_MNT_IDX = ID_MCH_MONITOR;
 string DAT_MNT_VEC_NAME = "Monitor";
 float DAT_MNT_TECH_LEVEL = 1;
-float DAT_MNT_RADAR_RANGE = 2000;
+float DAT_MNT_RADAR_RANGE = 3000;
 float DAT_MNT_RESERVE_COST = 200;
 float DAT_MNT_ENERGY_CUR = 1200;
 float DAT_MNT_ENERGY_MAX = 1200;
@@ -27,6 +27,7 @@ string DAT_MNT_CPIT_MODEL = "q3mdl/mechs/mnt/mdl_mnt_cpt.md3";
 float DAT_MNT_M_FSPEED=85;//v0.0.3
 float DAT_MNT_M_SSPEED=85;//v0.0.3
 float DAT_MNT_M_BSPEED=85;//v0.0.3
+float DAT_MNT_M_ACCEL=2; //v0.0.3
 
 vector DAT_MNT_SPREAD_N = '8 6 0.01';
 vector DAT_MNT_SPREAD_X = '14 10 0.03';
@@ -74,7 +75,6 @@ float DAT_MNT_WEP1_GROUP= 1;
 
 //this is mostly cosmetics
 string DAT_MNT_CTOR_MODEL= "q3mdl/mechs/mnt/mdl_mnt_t_cent.md3";
-float DAT_MNT_M_ACCEL= 4;
 string DAT_MNT_M_ROLLANGLE="2.25";
 string DAT_MNT_M_PITCH_N="90";
 string DAT_MNT_M_PITCH_X="-90";

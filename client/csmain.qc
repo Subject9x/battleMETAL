@@ -111,7 +111,7 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   if(evtype == 0){
-    if(scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS){
+    if((scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS) && (getstatf(STAT_CTOR_HP)>= 0)){
       if(MENU_ACTIVE){
         MENU_ACTIVE = FALSE;
         MENU_HANGAR_ACTIVE = FALSE;
@@ -397,13 +397,24 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     }
   }
   else{
-    local float len;
-    len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
-    local vector og;
-    og = VIEW_CTR;
-    og_x = og_x - len/2;
-    og_y = VIEW_CTR_y - 32;
-    drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+    if(getstatf(STAT_CTOR_HP) <= 0){
+      local float len;
+      len = stringwidth("Press any key to respawn", 0, '8 8 0');
+      local vector og;
+      og = VIEW_CTR;
+      og_x = og_x - len/2;
+      og_y = VIEW_CTR_y - 32;
+      drawstring(og, "Press any key to respawn", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+    }
+    else{
+      local float len;
+      len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
+      local vector og;
+      og = VIEW_CTR;
+      og_x = og_x - len/2;
+      og_y = VIEW_CTR_y - 32;
+      drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+    }
   }
   
   //display remaining reserves;

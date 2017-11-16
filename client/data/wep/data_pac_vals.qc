@@ -16,7 +16,7 @@ string DAT_PAC_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_PAC_EN_COST =  10;
 float DAT_PAC_TECH_LEVEL = 1;
 float DAT_PAC_WSIZE = 2;
-float DAT_PAC_RANGE = 800;
+float DAT_PAC_RANGE = 1600;//v0.0.3
 
 void() data_wep_pac;
 

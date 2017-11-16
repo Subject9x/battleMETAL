@@ -8,7 +8,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LATC_IDX = ID_WEP_LATC;
 string DAT_LATC_NAME = "Light Autocannon";
-float DAT_LATC_DMG = 20; //was 2 - 3/27/2017
+float DAT_LATC_DMG = 10;//v0.0.3
 float DAT_LATC_FIRETIME = 0;
 float DAT_LATC_CLIPSIZE = 1;  //was 3 - 3/27/2017
 float DAT_LATC_CURRENTAMMO = 1;  //was 3 - 3/27/2017
@@ -20,11 +20,11 @@ float DAT_LATC_EN_COST = 10;
 float DAT_LATC_EN_MAX = 100;
 string DAT_LATC_SOUND = "sound/ac5.ogg";
 float DAT_LATC_TECH_LEVEL = 1;
-float DAT_LATC_SPR_X = 0.25; //v0.0.3
-float DAT_LATC_SPR_Y = 0.35; //v0.0.3
+float DAT_LATC_SPR_X = 1; //v0.0.3
+float DAT_LATC_SPR_Y = 1; //v0.0.3
 float DAT_LATC_WSIZE = 1;
 float DAT_LATC_HPX = 200; //v0.0.3
-float DAT_LATC_RANGE = 2400;
+float DAT_LATC_RANGE = 3600;//v0.0.3
 
 void() data_wep_latc;
 void() data_latc_ini;

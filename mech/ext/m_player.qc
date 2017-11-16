@@ -241,12 +241,13 @@ void() PlayerDeathThink={
 	
   self.deadflag = DEAD_NO;
   player_unmakeMech();
+  mech_cleanupMech();
   player_makeObserver();
   spawnpoint_Random();
   self.movetype = MOVETYPE_FLY;
   self.flags = self.flags | FL_FLY;
   
-  //respawn();
+  respawn();
 };
 
 void() PlayerJump={

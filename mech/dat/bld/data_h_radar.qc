@@ -17,7 +17,7 @@ void() building_radar={
   self.vec_name = "Listening Post";
   self.p_class = P_BULD;
   util_setModel("q3mdl/buildings/mdl_bld_h_radar.md3", 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(250, 250, 1, 100) ;
   util_setBoundBox('-20 -20 0', '20 20 26');
   self.sh_cur= 0;

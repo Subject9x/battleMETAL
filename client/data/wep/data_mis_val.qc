@@ -15,7 +15,7 @@ string DAT_MIS_MODEL = "q3mdl/weapons/w_mis.md3";
 float DAT_MIS_EN_COST= 10;
 float DAT_MIS_TECH_LEVEL = 1;
 float DAT_MIS_WSIZE = 2;
-float DAT_MIS_RANGE = 600;
+float DAT_MIS_RANGE = 1000;//v0.0.3
 float DAT_MIS_DMG = 100;
 void() data_wep_mis;
 

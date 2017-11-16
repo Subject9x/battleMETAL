@@ -22,7 +22,7 @@ float DATWEP_MLGD_EN_MAX = 500;
 string DATWEP_MLGD_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MLGD_TECH_LEVEL = 2;
 float DAT_MLGD_WSIZE = 1;
-float DAT_MLGD_RANGE = 1400;
+float DAT_MLGD_RANGE = 2400;//v0.0.3
 float DAT_PRJ_MLGD_DAMAGE = 200;
 void() data_wep_mlgd;
 

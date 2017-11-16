@@ -7,7 +7,7 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
 string DAT_PAC_NAME = "PAC";
-float DAT_PAC_DMG = 300;
+float DAT_PAC_DMG = 200;//v0.0.03
 float DAT_PAC_FIRETIME = 0;
 float DAT_PAC_CLIPSIZE = 1;
 float DAT_PAC_CURRENTAMMO = 1;
@@ -23,7 +23,7 @@ float DAT_PAC_SPR_X = 0;
 float DAT_PAC_SPR_Y = 0;
 float DAT_PAC_WSIZE = 2;
 float DAT_PAC_HPX = 100; //v0.0.3
-float DAT_PAC_RANGE = 800;
+float DAT_PAC_RANGE = 1600;//v0.0.3
 
 void() data_wep_pac;
 void() data_pac_ini;

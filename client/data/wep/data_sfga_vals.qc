@@ -17,7 +17,7 @@ float DAT_SFGA_EN_MAX = 800;
 float DAT_SFGA_WSIZE = 2;
 float DAT_SFGA_TECH_LEVEL = 1;
 float DAT_SFGA_CLIPSIZE = 1;
-float DAT_SFGA_RANGE = 2000;
+float DAT_SFGA_RANGE = 1800;//v0.0.3
 
 void() data_wep_sfga;
 
@@ -41,7 +41,7 @@ void() data_wep_sfga={
     self.i_size = DAT_SFGA_WSIZE;
     self.w_abbr = "SFGA";
     self.note1 = "Large AoE blast.";
-    self.w_icon = UI_WEP_RPC;
+    self.w_icon = UI_WEP_SFG;
     self.w_range = DAT_SFGA_RANGE;
   self = oself;
 };

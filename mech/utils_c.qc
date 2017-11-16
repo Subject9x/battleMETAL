@@ -15,9 +15,11 @@ float(float t, float e) util_normalizeTimeAsPercent={
 //scope is self = weapon making the call
 vector(entity own, float range) util_traceForPlayer={
   local entity cam;
+  local vector vcr;
   cam = own.e_cam;
   makevectors(own.v_angle);
-  traceline(cam.origin, cam.origin + v_forward*self.w_range, FALSE, own);
+  vcr = own.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
+  traceline(vcr, vcr + (v_forward* self.w_range), FALSE, own);
   return trace_endpos;
 };
 
@@ -55,10 +57,10 @@ vector(entity own, float range, float lead_factor) util_traceForAI={
 vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spready) util_traceForOffset={
   local vector adj, org, end;
   adj = ofsent.c_ofs + ofsent.w_fire_ofs + ofsent.c_alt_ofs;
-  makevectors(own.angles);
-  org = own.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+  makevectors(own.v_angle);
+  org = own.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*own.e_cam.c_ofs_z);
   ofsent.fx_origin = org;
-  end = prev_tracend + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready));
+  end = prev_tracend + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready)) + (v_forward*2);
   makevectors(self.angles);
   traceline(org, end, FALSE, own);
   if(trace_ent != world){
@@ -210,3 +212,22 @@ float(float v) anglemod =
 	return v;
 };
 
+void(string msg, float val) cons_logAFloat={
+  bprint(strcat(msg,":", ftos(val),"\n"));
+};
+void(string msg, vector v1) cons_logAVector={
+  bprint(strcat(msg,":", vtos(v1),"\n"));
+};
+void(string msg, string s1) cons_logAString={
+  bprint(strcat(msg,":", s1,"\n"));
+};
+
+void(string msg, float val, string split, float val2) cons_log2Float={
+  bprint(strcat(msg,":", ftos(val), "|", ftos(val2),"\n"));
+};
+void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
+  bprint(strcat(msg,":", vtos(v1),"|",vtos(v2),"\n"));
+};
+void(string msg, string s1, string split, string s2) cons_log2Strings={
+  bprint(strcat(msg,":",s1,"|",s2,"\n"));
+};

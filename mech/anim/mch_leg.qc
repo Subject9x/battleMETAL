@@ -30,9 +30,10 @@ void() leg_stand1 = [$l_stand1, leg_stand1]{
 void() leg_walk1;
 
 void() leg_walk1 = [$l_walk1, leg_walk2]{
+  self.walkframe = 1;
   if((self.owner.flags & FL_CLIENT)){  
     if (!self.owner.velocity_x && !self.owner.velocity_y){
-      self.walkframe=1;
+      self.walkframe=0;
       leg_stand1();
       return;
     }
@@ -45,10 +46,13 @@ void() leg_walk1 = [$l_walk1, leg_walk2]{
   }
 };
 
-void() leg_walk2 = [$l_walk2, leg_walk3]{};
+void() leg_walk2 = [$l_walk2, leg_walk3]{
+self.walkframe = 2;
+};
 void() leg_walk3 = [$l_walk3, leg_walk4]{
   local entity player;
   player = self.owner;
+  self.walkframe = 3;
   if((player.flags & FL_ONGROUND)){
     local vector ofs;
     makevectors(player.angles);
@@ -57,11 +61,16 @@ void() leg_walk3 = [$l_walk3, leg_walk4]{
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
   }
 };
-void() leg_walk4 = [$l_walk4, leg_walk5]{};
-void() leg_walk5 = [$l_walk5, leg_walk6]{};
+void() leg_walk4 = [$l_walk4, leg_walk5]{
+self.walkframe = 4;
+};
+void() leg_walk5 = [$l_walk5, leg_walk6]{
+  self.walkframe = 5;
+};
 void() leg_walk6 = [$l_walk6, leg_walk7]{
   local entity player;
   player = self.owner;
+  self.walkframe = 6;
   if((player.flags & FL_ONGROUND)){
     local vector ofs;
     makevectors(player.angles);
@@ -70,15 +79,16 @@ void() leg_walk6 = [$l_walk6, leg_walk7]{
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
   }
 };
-void() leg_walk7 = [$l_walk7, leg_walk8]{};
+void() leg_walk7 = [$l_walk7, leg_walk8]{
+  self.walkframe = 7;
+};
 void() leg_walk8 = [$l_walk8, leg_walk1]{
-  self.walkframe = 1;
+  self.walkframe = 8;
 };
 
 void() leg_die1 = [$l_die1, leg_die2]{
   self.movetype = MOVETYPE_BOUNCE;
   self.solid = SOLID_BBOX;
-  setsize(self, '-12 -12 -4','12 12 4');
 };
 void() leg_die2 = [$l_die2, leg_die3]{};
 void() leg_die3 = [$l_die3, leg_die4]{};
@@ -86,7 +96,7 @@ void() leg_die4 = [$l_die4, leg_die4]{
   
   self.deadflag = DEAD_DEAD;
   self.think = SUB_Remove;
-  self.nextthink = time + 5;
+  self.nextthink = time + 100;
 };
 
 void() player_movestart =

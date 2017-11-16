@@ -15,7 +15,7 @@ string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
 float DAT_EMP_EN_COST = 10;
 float DAT_EMP_TECH_LEVEL = 1;
 float DAT_EMP_WSIZE = 2;
-float DAT_EMP_RANGE = 1600;
+float DAT_EMP_RANGE = 2400;//v0.0.3
 
 void() data_wep_emp;
 

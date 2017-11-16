@@ -7,11 +7,11 @@ Overview:
 //Electro static Rifle=======================
 float DAT_ESR_IDX = ID_WEP_ESR;
 string DAT_ESR_NAME = "ESR";
-float DAT_ESR_DMG = 50;
+float DAT_ESR_DMG = 25; //v0.0.3
 float DAT_ESR_FIRETIME = 0;
-float DAT_ESR_CLIPSIZE = 10;
-float DAT_ESR_CURRENTAMMO = 10;
-float DAT_ESR_FIRERATE = 0.1;
+float DAT_ESR_CLIPSIZE = 20;
+float DAT_ESR_CURRENTAMMO = 20; //v0.0.3
+float DAT_ESR_FIRERATE = 0.05; //v0.0.3
 vector DAT_ESR_FIRE_OFS = '0 0 4';
 string DAT_ESR_MODEL = "q3mdl/weapons/w_esr.md3";
 float DAT_ESR_EN_COST = 10;
@@ -22,7 +22,7 @@ float DAT_ESR_SPR_X = 2; //v0.0.3
 float DAT_ESR_SPR_Y = 2; //v0.0.3
 float DAT_ESR_WSIZE = 3;
 float DAT_ESR_HPX = 150; //v0.0.3
-float DAT_ESR_RANGE = 500;
+float DAT_ESR_RANGE = 800;//v0.0.3
 
 void() data_wep_esr;
 void() data_esr_ini;
@@ -78,7 +78,7 @@ void() data_esr_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - self.en_rate;
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 1.5);
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.en_cur = self.en_max;
@@ -129,9 +129,6 @@ void() data_esr_atk={
   }
 
   local entity laser_org, this;
-  bprint(strcat("shot: ", ftos(self.w_currentammo), "\n"));//DEBUG
-    bprint(strcat("shot len: ", ftos(vlen(end - dir)), "\n")); //DEBUG
-    bprint(strcat("shot len: ", ftos(vlen(dir - trace_ent.origin)), "\n")); //DEBUG
   t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
 
   this = self;

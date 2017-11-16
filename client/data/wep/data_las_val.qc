@@ -17,7 +17,7 @@ float DAT_LAS_EN_MAX = 200;
 float DAT_LAS_EN_RATE = 10;
 float DAT_LAS_TECH_LEVEL = 1;
 float DAT_LAS_WSIZE = 1;
-float DAT_LAS_RANGE = 2400;
+float DAT_LAS_RANGE = 4000;//v0.0.3
 float DAT_LAS_DMG = 30;
 
 void() data_wep_las;

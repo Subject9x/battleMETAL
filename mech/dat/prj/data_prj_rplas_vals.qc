@@ -8,11 +8,11 @@ this guy will bounce off up to two non-targets.
 
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_RPLAS_IDX = ID_PRJ_RPLAS;
-float DAT_PRJ_RPLAS_VELOCITY = 1500;//1000;
+float DAT_PRJ_RPLAS_VELOCITY = 1600;//v0.0.3
 string DAT_PRJ_RPLAS_MODEL = "progs/casing.mdl";
-float DAT_PRJ_RPLAS_LIFETIME = 0.8;
+float DAT_PRJ_RPLAS_LIFETIME = 1.558;//v0.0.3
 float DAT_PRJ_RPLAS_DAMAGE = 20; //was 5 - 3/27/2017
-float DAT_PRJ_RPLAS_BURN = 10; //v0.0.3
+float DAT_PRJ_RPLAS_BURN = 1; //v0.0.3
 float DAT_PRJ_RPLAS_DMGTYPE = DMG_BAL;
 
 float DAT_PRJ_RPLAS_EFFECTS = EF_NOSHADOW;
@@ -43,7 +43,7 @@ void() data_prj_rplas={
 };
 
 void() data_prj_rplas_ini={
-  self.classname = "spike";
+  self.classname = "missile";
   self.touch = data_prj_rplas_touch;
   self.data_idx = DAT_PRJ_RPLAS_IDX;
   self.p_velocity = DAT_PRJ_RPLAS_VELOCITY;
@@ -90,7 +90,7 @@ void() data_prj_rplas_burn={
   setorigin(self, org);
   if(time > self.p_lifetime){
     self.think = SUB_Remove;
-    self.nextthink = time + 0.001;
+    self.nextthink = time + 0.1;
     return;
   }
   else{
@@ -121,6 +121,7 @@ void() data_prj_rplas_touch={
     
     if(other.sh_cur <= 0){
       setmodel(self, "progs/plasmashot.spr32");
+      self.movetype = MOVETYPE_FOLLOW;
       self.solid = SOLID_NOT;
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
