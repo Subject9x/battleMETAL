@@ -284,7 +284,9 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mtk_ren
   
   gui_renderTintImage(TRUE, (VIEW_CTR - '1.5 11' - spr_h), HUT_RET_PIP_VRT, '3 10', '0.2 0.8 0.2', HUD_ALPHA, 0);
   gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + '-1.5 1'), HUT_RET_PIP_VRT, '3 10', '0.2 0.8 0.2', HUD_ALPHA, 0);
-  
+    if(getstatf(STAT_HIT_DIR) & STAT_HIT_TRG){
+    gui_renderTintImage(TRUE, (VIEW_CTR - '24 24'), HUD_RET_HIT, '48 48', CLR_DEF_ARM_DED, HUD_ALPHA, 0);
+  }
   //pitch
   local float p;
   p = pitch; //passing the var doesn't mess with it for some reason

@@ -13,6 +13,7 @@ float DAT_MTK_IDX = ID_MCH_MATOK;
 string DAT_MTK_VEC_NAME = "MATOK";
 float DAT_MTK_TECH_LEVEL = 2;
 float DAT_MTK_RADAR_RANGE = 4000;
+float DAT_MTK_LOCK = 3;
 float DAT_MTK_RESERVE_COST = 200;
 float DAT_MTK_ENERGY_CUR = 800;
 float DAT_MTK_ENERGY_MAX = 800;
@@ -227,6 +228,7 @@ void() data_mtk_ini={
   self.m_sspeed = DAT_MTK_M_SSPEED;
   self.m_bspeed = DAT_MTK_M_BSPEED;
   self.m_maccel = DAT_MTK_M_ACCEL;
+  self.w_firetime = DAT_MTK_LOCK; //using this as 'lock on time;
   if((self.flags & FL_CLIENT)){
     self.weaponmodel = DAT_MTK_CPIT_MODEL;
     self.weaponframe = 0;

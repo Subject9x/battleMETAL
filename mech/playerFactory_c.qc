@@ -57,6 +57,8 @@ void() player_makeMech={
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);
+    //self.e_cam.SendEntity = send_mech;
+    //self.e_cam.SendFlags = 1;
   }
   droptofloor();
 };

@@ -628,6 +628,28 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_z = ReadCoord();
     setorigin(self, self.origin);
   }
+  
+  /*else if(id == E_MEC){
+    if(isnew){
+      self.drawmask = MASK_ENGINE;
+      addentity(self);
+    }
+    local float eid;
+    eid = ReadByte();
+    self.data_idx = ReadByte();
+    self.p_class = ReadByte();
+    self.i_faction = ReadByte();
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+    self.stat_rdr_mode = ReadByte();
+    self.hp_ctor = ReadByte();
+    self.hp_leg = ReadByte();
+    self.hp_stor = ReadByte();
+    self.hp_stor2 = ReadByte();
+    self.hp_arm = ReadByte();
+    self.hp_arm2 = ReadByte();
+  }*/
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

@@ -10,6 +10,7 @@ every hud ent has to implement this format
 string HUT_RET_PIP_HRZ;
 string HUT_RET_PIP_VRT;
 string HUT_RET_LOK;
+string HUD_RET_HIT;
 string HUD_RAD_PIP_BLD;
 string HUD_RAD_PIP_MCH;
 

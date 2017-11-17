@@ -11,6 +11,7 @@ float E_OBJ = 2;
 float E_AIU = 3;
 float E_BLD = 4;
 float E_VEC = 5;
+float E_MEC = 6;
 
 //STAT TYPES
 float AS_STRING = 1;
@@ -95,6 +96,7 @@ float STAT_HIT_CL = 1;
 float STAT_HIT_LF = 2;
 float STAT_HIT_RT = 4;
 float STAT_HIT_BK = 8;
+float STAT_HIT_TRG = 16;
 
 //status floats specific components
 float COMP_OK = 5;

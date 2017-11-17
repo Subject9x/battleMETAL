@@ -52,6 +52,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_BK;
     }
   }
+  if((attacker.flags & FL_CLIENT)){
+    attacker.w_proj = time + 0.25;
+    if(!(attacker.hitdir_buffer & STAT_HIT_TRG)){
+      attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
+    }
+  }
   
   if((trg.flags & FL_MONSTER)){
     if(trg.state_1 != -1){

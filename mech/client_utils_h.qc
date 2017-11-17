@@ -25,6 +25,7 @@ void() spawnpoint_Random;
 float(entity ent, float changed) send_vehicle;
 float(entity ent, float changed) send_building;
 float(entity ent, float changed) send_ai_mech;
+float(entity ent, float changed) send_mech;
 
 //client command layer
 void(string cmd, float tokens) client_ParseMechCommand;

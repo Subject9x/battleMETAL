@@ -237,6 +237,7 @@ float STAT_HIT_CL = 1;
 float STAT_HIT_LF = 2;
 float STAT_HIT_RT = 4;
 float STAT_HIT_BK = 8;
+float STAT_HIT_TRG = 16;
 
 //status floats specific components
 float COMP_OK = 5;

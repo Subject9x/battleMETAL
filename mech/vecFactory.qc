@@ -107,7 +107,8 @@ entity(entity data) buildLegs={
     self.v_angle = self.angles - oself.angles; 
     self.th_die = ctrl_dieLegs;
     self.laser_sight_org = '0 0 0';
-    self.laser_sight_timer = time + 0.5;
+    self.laser_sight_timer = time + 0.5; 
+    self.w_firerate = 0; //used to track m_maccel changes
   self = oself;
   return leg_ent;
 };
@@ -118,6 +119,7 @@ void(entity data) buildCenterTorso={
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_BOUNCE);
   util_setModel(self.c_model, 0);
   util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
+  self.radar_range = self.radar_range / 2; //mech starts in PASSIVE radar mode;
   ctor_stand();
 };
 

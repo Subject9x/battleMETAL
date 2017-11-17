@@ -11,6 +11,7 @@ float E_OBJ = 2;
 float E_AIU = 3;
 float E_BLD = 4;
 float E_VEC = 5;
+float E_MEC = 6;
 
 //Damage types
 float DMG_BAL = 1;  //ballstic damage
@@ -96,7 +97,9 @@ float ARM_RAD = 24;
 //mech
 .float hp_ctor;
 .float hp_stor;
+.float hp_stor2;
 .float hp_arm;
+.float hp_arm2;
 .float hp_leg;
 
 //weapon

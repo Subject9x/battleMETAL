@@ -13,6 +13,7 @@ float DAT_MNT_IDX = ID_MCH_MONITOR;
 string DAT_MNT_VEC_NAME = "Monitor";
 float DAT_MNT_TECH_LEVEL = 1;
 float DAT_MNT_RADAR_RANGE = 3000;
+float DAT_MNT_LOCK = 7;
 float DAT_MNT_RESERVE_COST = 200;
 float DAT_MNT_ENERGY_CUR = 1200;
 float DAT_MNT_ENERGY_MAX = 1200;
@@ -272,6 +273,7 @@ void() data_mnt_ini={
   self.m_bmodel = DAT_MNT_M_BMODEL;
   self.m_bside = DAT_MNT_M_BSIDE;
   self.m_bobspd = DAT_MNT_M_BSPD;
+  self.w_firetime = DAT_MNT_LOCK; //using this as 'lock on time;
 };
 
 void() data_mnt_legs={

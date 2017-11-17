@@ -91,9 +91,11 @@ void() ImpulseCommands ={
   if(self.impulse == IMP_RADAR){
     if(self.stat_rdr_mode){
       self.stat_rdr_mode = FALSE;
+      self.radar_range = self.radar_range / 2;
     }
     else{
       self.stat_rdr_mode = TRUE;
+      self.radar_range = self.radar_range * 2;
     }
   }
   

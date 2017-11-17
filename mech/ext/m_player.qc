@@ -49,13 +49,14 @@ void() PlayerPreThink = {
     }
     
     server_updateTargetInfo();
+    self.stat_hit_dirs =  self.hitdir_buffer;
+    if(time >= self.w_proj){
+      self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);
+    }
     if(time >= self.was_hit){
       self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_LF);
       self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_RT);
       self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_BK);
-    }
-    else{
-      self.stat_hit_dirs =  self.hitdir_buffer;
     }
   }
   

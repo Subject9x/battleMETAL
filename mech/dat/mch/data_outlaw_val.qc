@@ -14,6 +14,7 @@ string DAT_OTL_VEC_NAME = "Balaket";
 float DAT_OTL_TECH_LEVEL = 1;
 float DAT_OTL_RESERVE_COST = 100;
 float DAT_OTL_RADAR_RANGE = 7000;
+float DAT_OTL_LOCK = 5;
 float DAT_OTL_ENERGY_CUR = 400;
 float DAT_OTL_ENERGY_MAX = 400;
 float DAT_OTL_ENERGY_RATE = 1;
@@ -28,7 +29,7 @@ string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_blk_cpt.md3";
 float DAT_OTL_M_FSPEED= 200;//v0.0.3
 float DAT_OTL_M_SSPEED= 175;//v0.0.3
 float DAT_OTL_M_BSPEED= 150;//v0.0.3
-float DAT_OTL_M_ACCEL= 1.45; //v0.0.03
+float DAT_OTL_M_ACCEL= 1.75; //v0.0.03
 
 vector DAT_OTL_SPREAD_N = '4 4 0.1';
 vector DAT_OTL_SPREAD_X = '8 8 0.1';
@@ -213,6 +214,7 @@ void() data_otl_ini={
   self.m_bmodel = DAT_OTL_M_BMODEL;
   self.m_bside = DAT_OTL_M_BSIDE;
   self.m_bobspd = DAT_OTL_M_BSPD;
+  self.w_firetime = DAT_OTL_LOCK; //using this as 'lock on time;
 };
 void() data_otl_ctor={
   self.c_name = DAT_OTL_CTOR_CNAME;

@@ -108,6 +108,7 @@ void() ClientConnect = {
   self.radar_range = 0;
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
+  self.w_proj = 0; //used to track enemy hit time
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = 0;
   

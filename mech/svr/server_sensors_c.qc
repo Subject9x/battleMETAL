@@ -18,7 +18,12 @@ void() server_getTarget={
   if(trace_ent != world){
     self.enemy = trace_ent;
     if(trace_ent.p_class != P_OBS){
-      self.lock_timer = time + 5;
+      if(self.stat_rdr_mode){
+        self.lock_timer = time + self.w_firetime;
+      }
+      else{
+        self.lock_timer = time + (self.w_firetime *1.75);
+      }
     }
     else{
       self.enemy = world;
@@ -103,7 +108,12 @@ void() server_updateTargetInfo={
     isvis = FALSE;
     if((self.stat_lck_stt & LOCK_TARG)){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
-      self.lock_timer = time + 5;
+      if(self.stat_rdr_mode){
+        self.lock_timer = time + self.w_firetime;
+      }
+      else{
+        self.lock_timer = time + (self.w_firetime *1.75);
+      }
     } 
     if((self.enemy.stat_lck_stt & LOCK_PLYR)){
       self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);

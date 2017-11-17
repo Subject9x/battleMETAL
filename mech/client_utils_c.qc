@@ -5,6 +5,24 @@ Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 */
 
+float(entity ent, float changed) send_mech={
+  WriteByte(MSG_ENTITY, E_MEC);
+  WriteByte( MSG_ENTITY, num_for_edict(self.owner));
+  WriteByte( MSG_ENTITY, self.owner.data_idx);
+  WriteByte( MSG_ENTITY, self.owner.p_class);
+  WriteByte( MSG_ENTITY, self.owner.i_faction);
+  WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
+  WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
+  WriteCoord( MSG_ENTITY, self.owner.origin_z ); // Position Z
+  WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
+  WriteByte(MSG_ENTITY, csqc_updateCompStat(self));
+  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_legs));
+  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_tor_l));
+  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_tor_r));
+  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_arm_l));
+  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_arm_r));
+  return TRUE;
+};
 
 float(entity ent, float changed) send_vehicle={
   WriteByte(MSG_ENTITY, E_VEC);
