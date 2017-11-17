@@ -18,7 +18,7 @@ float DAT_LAS_EN_RATE = 10;
 float DAT_LAS_TECH_LEVEL = 1;
 float DAT_LAS_WSIZE = 1;
 float DAT_LAS_RANGE = 4000;//v0.0.3
-float DAT_LAS_DMG = 30;
+float DAT_LAS_DMG = 20;//v0.0.3
 
 void() data_wep_las;
 
@@ -39,7 +39,7 @@ void() data_wep_las={
     self.c_model = DAT_LAS_MODEL;
     self.en_max = DAT_LAS_EN_RATE;
     self.i_techlvl = DAT_LAS_TECH_LEVEL;
-    self.dmg_type = self.dmg_type | DMG_ENE;
+    self.dmg_type = self.dmg_type | DMG_ENE | EFF_STX;
     self.i_size = DAT_LAS_WSIZE;
     self.w_abbr = "LAS";
     self.note1 = "Small bonus damage against shields.";

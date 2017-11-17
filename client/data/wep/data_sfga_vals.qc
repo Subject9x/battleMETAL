@@ -17,7 +17,7 @@ float DAT_SFGA_EN_MAX = 800;
 float DAT_SFGA_WSIZE = 2;
 float DAT_SFGA_TECH_LEVEL = 1;
 float DAT_SFGA_CLIPSIZE = 1;
-float DAT_SFGA_RANGE = 1800;//v0.0.3
+float DAT_SFGA_RANGE = 3600;//v0.0.3
 
 void() data_wep_sfga;
 

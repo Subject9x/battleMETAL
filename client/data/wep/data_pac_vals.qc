@@ -6,7 +6,7 @@ Overview:
 */
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
-float DAT_PAC_DMG = 300;
+float DAT_PAC_DMG = 200;//v0.0.3
 string DAT_PAC_NAME = "Particle-Accelerator Cannon";
 float DAT_PAC_FIRETIME = 0;
 float DAT_PAC_CLIPSIZE = 1;

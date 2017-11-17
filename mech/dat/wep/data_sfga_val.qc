@@ -140,6 +140,7 @@ void() data_sfga_atk={
       util_setBoundBox('0 0 0', '0 0 0');
       self.velocity = normalize(dir - org);
       self.velocity = self.velocity * self.p_velocity;
+      self.velocity_z = self.velocity_z + 200;
       self.think = BecomeExplosion;
       self.nextthink = time + self.p_lifetime;
       setorigin(self, org);

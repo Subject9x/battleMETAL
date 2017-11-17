@@ -23,7 +23,7 @@ string DATWEP_MLGD_FIRESOUND = "sound/llaser.ogg";
 float DATWEP_MLGD_TECH_LEVEL = 2;
 float DAT_MLGD_WSIZE = 1;
 float DAT_MLGD_RANGE = 2400;//v0.0.3
-float DAT_PRJ_MLGD_DAMAGE = 200;
+float DAT_PRJ_MLGD_DAMAGE = 400;
 void() data_wep_mlgd;
 
 void() data_wep_mlgd={
@@ -46,7 +46,7 @@ void() data_wep_mlgd={
     self.dmg_type = self.dmg_type | DMG_EXP;
     self.i_size = DAT_MLGD_WSIZE;
     self.w_abbr = "M-LGD";
-    self.note1 = "Missile will follow your reticule.";
+    self.note1 = "Missile will follow your reticle.";
     self.note2 = "Does not require [ACTIVE] RADAR.";
     self.note3 = "Does not require TARGET LOCK.";
     self.w_icon = UI_WEP_MLGD;

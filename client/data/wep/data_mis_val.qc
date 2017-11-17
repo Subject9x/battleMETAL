@@ -16,7 +16,7 @@ float DAT_MIS_EN_COST= 10;
 float DAT_MIS_TECH_LEVEL = 1;
 float DAT_MIS_WSIZE = 2;
 float DAT_MIS_RANGE = 1000;//v0.0.3
-float DAT_MIS_DMG = 100;
+float DAT_MIS_DMG = 450;
 void() data_wep_mis;
 
 void() data_wep_mis={

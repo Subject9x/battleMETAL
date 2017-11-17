@@ -16,7 +16,7 @@ float DAT_LATC_EN_COST = 10;
 float DAT_LATC_EN_MAX = 100;
 float DAT_LATC_TECH_LEVEL = 1;
 float DAT_LATC_WSIZE = 1;
-float DAT_LATC_DMG = 20;
+float DAT_LATC_DMG = 10;
 float DAT_LATC_RANGE = 3600;//v0.0.3
 void() data_wep_latc;
 
@@ -40,7 +40,7 @@ void() data_wep_latc={
     self.dmg_type = self.dmg_type | DMG_BAL;
     self.i_size = DAT_LATC_WSIZE;
     self.w_abbr = "ATC";
-    self.note1 = "Slight damage bonus on armor.";
+    self.note1 = "Basic automatic cannon.";
     self.w_icon = UI_WEP_ATC;
     self.w_range = DAT_LATC_RANGE;
   self = oself;

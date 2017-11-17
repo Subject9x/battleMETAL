@@ -15,8 +15,8 @@ string DAT_RPLAS_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_RPLAS_EN_COST = 10;
 float DAT_RPLAS_WSIZE = 2;
 float DAT_RPLAS_TECH_LEVEL = 1;
-float DAT_PRJ_RPLAS_DAMAGE = 20; //was 5 - 3/27/2017
-float DAT_PRJ_RPLAS_BURN = 0.25;
+float DAT_PRJ_RPLAS_DAMAGE = 20; //v0.0.3
+float DAT_PRJ_RPLAS_BURN = 1;
 float DAT_RPLAS_RANGE = 2400;//v0.0.3
 void() data_wep_rplas;
 

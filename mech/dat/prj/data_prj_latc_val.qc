@@ -9,9 +9,10 @@ Overview: data def file for a weapon projectile
 float DAT_PRJ_SFGA_IDX = ID_PRJ_SFGA;
 float DAT_PRJ_SFGA_VELOCITY = 2000;
 string DAT_PRJ_SFGA_MODEL = "progs/casing.mdl";
-float DAT_PRJ_SFGA_LIFETIME = 4;
+float DAT_PRJ_SFGA_LIFETIME = 6;
 float DAT_PRJ_SFGA_DAMAGE = 5;
 float DAT_PRJ_SFGA_DMGTYPE = DMG_BAL;
+float DAT_PRJ_SFGA_RADIUS = 200;
 
 float DAT_PRJ_SFGA_EFFECTS = EF_NOSHADOW;
 float DAT_PRJ_SFGA_MODELFLAGS = 0;
@@ -63,13 +64,6 @@ void() data_prj_sfga_touch={
 		remove(self);
 		return;
 	}
-  
-  if(other.classname == "worldspawn"){
-    te_superspike(self.origin);
-    remove(self);
-    return;
-  }
-
   if(other == self.owner){
     return;
   }
@@ -81,6 +75,31 @@ void() data_prj_sfga_touch={
   if(other.classname == "missile"){
     return;
   }
+  if(other.classname == "worldspawn"){
+    te_superspike(self.origin);
+    local entity lst;
+    lst = findradius(self.origin, DAT_PRJ_SFGA_RADIUS);
+    while(lst){
+      if(lst!=world){
+        if(lst.classname!="missile"){
+          traceline(self.origin, lst.origin, FALSE, self.owner);
+          if(trace_ent != world){
+            local float ln;
+            ln = vlen(trace_endpos - self.origin);
+            if(ln <= DAT_PRJ_SFGA_RADIUS){
+              t_damage(lst, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+            }
+          }
+        }
+      }
+      lst = lst.chain;
+    }
+    te_tarexplosion(self.origin);
+    BecomeExplosion();
+    return;
+  }
+
+
   //te_superspike(self.origin);
   //t_filter(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');

@@ -11,20 +11,20 @@ Overview: moving all mech values into a single global file for ease of maintenan
 //monitor MECH=============================
 string DAT_MNT_VEC_NAME = "Monitor";
 float DAT_MNT_TECH_LEVEL = 1;
-float DAT_MNT_RADAR_RANGE = 2000;
+float DAT_MNT_RADAR_RANGE = 3000;
 float DAT_MNT_RESERVE_COST = 200;
 float DAT_MNT_ENERGY_CUR = 1200;
 float DAT_MNT_ENERGY_MAX = 1200;
 float DAT_MNT_ENERGY_RATE = 2;
-float DAT_MNT_SHIELD_CUR = 1200;
-float DAT_MNT_SHIELD_MAX = 1200;
+float DAT_MNT_SHIELD_CUR = 600;
+float DAT_MNT_SHIELD_MAX = 600;
 float DAT_MNT_SHIELD_RATE = 0.35;
-vector DAT_MNT_CTOR_BBX_N ='-20 -20 -50';
-vector DAT_MNT_CTOR_BBX_X ='20 20 14';
+vector DAT_MNT_CTOR_BBX_N ='-22 -22 -44';
+vector DAT_MNT_CTOR_BBX_X ='22 22 28';
 string DAT_MNT_CPIT_MODEL = "gfx/ui/hgr_MNT.png";
-float DAT_MNT_M_FSPEED=75;//150;
-float DAT_MNT_M_SSPEED=75;//150;
-float DAT_MNT_M_BSPEED=50;//100;
+float DAT_MNT_M_FSPEED=85;//v0.0.3
+float DAT_MNT_M_SSPEED=85;//v0.0.3
+float DAT_MNT_M_BSPEED=85;//v0.0.3
 float DAT_MNT_HARDPOINTS = 9;
 
 //HITPOINT VALUES

@@ -138,8 +138,8 @@ void() data_prj_emp_touch={
   
   if(other.classname == "worldspawn"){
     te_tarexplosion(self.origin);
-    //t_radius damage
-    remove(self);
+    self.nextthink = time + 0.01;
+    self.think = data_prj_emp_explode;
     return;
   }
 

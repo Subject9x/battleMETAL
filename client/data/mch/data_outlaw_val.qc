@@ -12,19 +12,19 @@ Overview: moving all mech values into a single global file for ease of maintenan
 string DAT_OTL_VEC_NAME = "Balakett";
 float DAT_OTL_TECH_LEVEL = 1;
 float DAT_OTL_RESERVE_COST = 100;
-float DAT_OTL_RADAR_RANGE = 17000;
+float DAT_OTL_RADAR_RANGE = 7000;
 float DAT_OTL_ENERGY_CUR = 400;
 float DAT_OTL_ENERGY_MAX = 400;
-float DAT_OTL_ENERGY_RATE = 0.5;
+float DAT_OTL_ENERGY_RATE = 3;
 float DAT_OTL_SHIELD_CUR = 300;
 float DAT_OTL_SHIELD_MAX = 300;
 float DAT_OTL_SHIELD_RATE = 1;
-vector DAT_OTL_CTOR_BBX_N ='-14 -14 -34';
-vector DAT_OTL_CTOR_BBX_X ='14 14 12';
+vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
+vector DAT_OTL_CTOR_BBX_X ='14 14 16';
 string DAT_OTL_CPIT_MODEL= "gfx/ui/hgr_otl.png";
-float DAT_OTL_M_FSPEED= 262; //525;//350; - 5/21/2017
-float DAT_OTL_M_SSPEED= 225; //450;//350; - 5/21/2017
-float DAT_OTL_M_BSPEED= 200;//400;//290; - 5/21/2017
+float DAT_OTL_M_FSPEED= 200;//v0.0.3
+float DAT_OTL_M_SSPEED= 175;//v0.0.3
+float DAT_OTL_M_BSPEED= 150;//v0.0.3
 float DAT_OTL_HARDPOINTS = 3;
 
 float DAT_OTL_LEG_HPMAX= 700;

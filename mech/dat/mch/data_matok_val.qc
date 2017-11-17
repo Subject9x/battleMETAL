@@ -12,7 +12,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 float DAT_MTK_IDX = ID_MCH_MATOK;
 string DAT_MTK_VEC_NAME = "MATOK";
 float DAT_MTK_TECH_LEVEL = 2;
-float DAT_MTK_RADAR_RANGE = 4000;
+float DAT_MTK_RADAR_RANGE = 5000;
 float DAT_MTK_LOCK = 3;
 float DAT_MTK_RESERVE_COST = 200;
 float DAT_MTK_ENERGY_CUR = 800;
