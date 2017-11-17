@@ -351,7 +351,7 @@ void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor
 void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar={
   local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
   local string mode;
-  local float len, badj;
+  local float len, badj, rad_rng;
   lbl1 = self.hud_pnl2.pos + '10 10';
   if(rad_mode == TRUE){
     mode = "[ACTIVE]";
@@ -366,7 +366,8 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar={
   lbl2_x = lbl2_x + len + 2;
   drawstring(lbl1, "RADAR MODE:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
-  
+  rad_rng = getstati(STAT_RDR_RNG);
+  drawstring(lbl1 + '0 6', strcat("SCALE:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
   local vector mpos;
   mpos_x = self.hud_pnl2.pos_x + self.hud_pnl2.hsize_x;
   mpos_x = mpos_x - 71;
@@ -506,8 +507,8 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       local vector ofs, rofs, spos, apos;
       local string dist;
       ofs = rofs = self.hud_pnl2.pos;
-      drawstring((ofs + '8 20'), "[TARGET]", '6 6 0', STATUS_DMG, HUD_ALPHA, 0);
-      drawstring((ofs + '58 20'), dat.vec_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+      drawstring((ofs + '8 26'), "[TARGET]", '6 6 0', STATUS_DMG, HUD_ALPHA, 0);
+      drawstring((ofs + '58 26'), dat.vec_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
       gui_renderTintImage(TRUE, (ofs + '165 32'), HUD_TRG_PIP_R, '8 24', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
       apos = tpos;
       if(dat.data_type == DATA_MECH){

@@ -109,6 +109,7 @@ void() PlayerPostThink = {
     self.stat_rtor_hp = csqc_updateCompStat(self.e_tor_r);
     self.stat_larm_hp = csqc_updateCompStat(self.e_arm_l);
     self.stat_rarm_hp = csqc_updateCompStat(self.e_arm_r);
+    self.stat_rdr_rng = self.radar_range;
     if((self.stat_lck_stt & LOCK_TARG)){
       if(self.enemy != world){
         if(!(self.enemy.stat_lck_stt & LOCK_PLYR)){

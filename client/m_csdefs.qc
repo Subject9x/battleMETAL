@@ -184,7 +184,7 @@ float STAT_TRG_SH = 85;
 float STAT_TRG_DAT = 87;
 
 float STAT_RET_DIST = 88;
-float STAT_RDR_BACK = 89;
+float STAT_RDR_RNG = 89;
 float STAT_HIT_DIR = 90;
 float STAT_RDR_MODE = 91;
 float STAT_TRG_DIST = 92;

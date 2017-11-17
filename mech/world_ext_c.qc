@@ -65,6 +65,7 @@ void() mh_world_ini={
   addstat(STAT_RET_DIST, AS_INT, stat_ret_dist);
   addstat(STAT_HIT_DIR, AS_FLOAT, stat_hit_dirs);
   addstat(STAT_RDR_MODE, AS_INT, stat_rdr_mode);
+  addstat(STAT_RDR_RNG, AS_INT, stat_rdr_rng);
   addstat(STAT_NAV_DIR, AS_INT, stat_nav_dir);
   
   addstat(STAT_SPR_X, AS_FLOAT, stat_spr_x);

@@ -13,10 +13,16 @@ string SND_HUD_VFX_ENELOW;
 string SND_HUD_VFX_SHDLOW;
 string SND_HUD_VFX_RDRACTIVE;
 string SND_HUD_VFX_RDRPASSIVE;
+string SND_HUD_VFX_CRITARM;
+string SND_HUD_VFX_CRITTOR;
+string SND_HUD_VFX_CRITLEG;
+string SND_HUD_VFX_NAVRECH;
 string SND_HUD_VFX_TARGKILL;
 
 float SND_HUD_RADARMODE = FALSE;
 float SND_HUD_TARGKILL = FALSE;
+float SND_HUD_CRITPART = 0;
+
 //channels so far
 float REACT_TIME;
 //hud voice
@@ -34,7 +40,7 @@ void(float playerState) snd_hud_vfx_statelistener;
 void(float lockstate) snd_hud_vfx_locklistener;
 void(float curEn) snd_hud_vfx_enelistener;
 void(float curSh) snd_hud_vfx_shdlistener;
-void(float curAm) snd_hud_vfx_armlistener;
+void(float amt, float bit, string snd) snd_hud_vfx_armlistener;
 void(float mode) snd_hud_vfx_toggleradar;
 void(float trgArm) snd_hud_vfx_targkill;
 

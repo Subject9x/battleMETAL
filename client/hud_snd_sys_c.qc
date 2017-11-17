@@ -59,6 +59,7 @@ void(string requestedSound) snd_hud_vfx_addtoqueue={
 void(float playerState) snd_hud_vfx_statelistener={
   if(playerState == PLAYER_SPAWN){
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE);
+    PLAYER_HELPER.drawme = 0;
     playerState = PLAYER_IDLE;
   }
   else if(playerState == PLAYER_IDLE){
@@ -67,7 +68,6 @@ void(float playerState) snd_hud_vfx_statelistener={
       REACT_TIME = time + soundlength(SND_MCH_SFX_REACT);
       sound7(PLAYER_HELPER, CHAN_ITEM, SND_MCH_SFX_REACT, 1, ATTN_NORM, 100,SOUNDFLAG_RELIABLE );
     }
-   
   }
 };
 
@@ -86,8 +86,16 @@ void(float curSh) snd_hud_vfx_shdlistener={
   }
 };
 
-void(float curAm) snd_hud_vfx_armlistener={
-  
+void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
+  if(getstati(STAT_PLR_STT) != PLAYER_SPAWN){
+    if(amt <= 0){
+      if(!(PLAYER_HELPER.drawme & bit)){
+        snd_hud_vfx_addtoqueue(snd); 
+        PLAYER_HELPER.drawme = PLAYER_HELPER.drawme | bit;
+        
+      }
+    }
+  }
 };
 
 void(float mode) snd_hud_vfx_toggleradar={
@@ -103,11 +111,8 @@ void(float mode) snd_hud_vfx_toggleradar={
 };
 
 void(float dedflg) snd_hud_vfx_targkill={
-  if(dedflg > DEAD_NO){
-    //print(strcat(ftos(dedflg),"\n"));
-  }
-  if(dedflg == DEAD_DEAD){
-    
+  if(dedflg > DEAD_DEAD && dedflg < 5){
+    dedflg = 5;
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL);
   }
 };

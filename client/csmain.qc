@@ -34,6 +34,7 @@ void() CSQC_Init =
   PLAYER_HELPER.plr_nav_pnt = 0;
   PLAYER_HELPER.w_range = 0;
   PLAYER_HELPER.wep1_reload = 0;
+  PLAYER_HELPER.drawme = 0;
   addentity(PLAYER_HELPER);
   
   WEPBITS[0] = 1;
@@ -111,7 +112,7 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   if(evtype == 0){
-    if((scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS) && (getstatf(STAT_CTOR_HP)>= 0)){
+    if((scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS) && (getstatf(STAT_CTOR_HP)== 0)){
       if(MENU_ACTIVE){
         MENU_ACTIVE = FALSE;
         MENU_HANGAR_ACTIVE = FALSE;
@@ -302,7 +303,12 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     plr_ra = getstatf(STAT_RARM_HP);
     plr_la = getstatf(STAT_LARM_HP);
     plr_lg = getstatf(STAT_LEG_HP);
-    
+    //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(plr_rt, 2, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(plr_lt, 4, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(plr_ra, 8, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(plr_la, 16, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(plr_lg, 32, SND_HUD_VFX_CRITLEG);
     //player weapon tracking info
     local float plr_wgrp, plr_wstate, plr_wrel, w1_id, w2_id, w3_id, w4_id, w5_id, w6_id, w7_id, w8_id, w9_id;
     local float w1_r, w2_r, w3_r, w4_r, w5_r, w6_r, w7_r, w8_r, w9_r;
@@ -333,6 +339,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     //rad_frnt = getstatf(STAT_RDR_FRNT);
     //rad_bck = getstatf(STAT_RDR_BACK);
     rad_mode = getstati(STAT_RDR_MODE);
+    
     
     //target tracking info
     local float trg_vid, trg_datid, trg_ddflg, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;

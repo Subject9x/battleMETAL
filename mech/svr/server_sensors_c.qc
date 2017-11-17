@@ -76,8 +76,7 @@ void() server_updateTargetInfo={
     self.stat_trg_vsize = -1;
     self.stat_trg_pclass = -1;
     if(self.stat_lck_stt & LOCK_TARG){
-      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
-      self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
+      self.stat_lck_stt = 0;
     }
     return;
   }

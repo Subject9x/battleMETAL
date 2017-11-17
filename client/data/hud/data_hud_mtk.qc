@@ -354,7 +354,7 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) mtk_Radar={
   
   local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
   local string mode;
-  local float len, badj;
+  local float len, badj, rad_rng;
   lbl1 = self.hud_pnl2.pos + '20 12';
   if(rad_mode == TRUE){
     mode = "-ACTIVE-";
@@ -369,25 +369,8 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) mtk_Radar={
   lbl2 = lbl1;
   lbl2 = lbl1 + '6 12';
   drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
-  
-  cvr = self.hud_pnl2.pos + '18 32';
-  c_sz = draw_getimagesize("gfx/hud/otl/otl_rd_cvr.png");
-  c_sz = gui_scaleSize(c_sz, VIEW_SCALE/1.25);
-  cvr_ctr = cvr + gui_getCenter(c_sz);
-
-  f_clr = gui_calcRadarHeat(rad_front);
-  f_sz = c_sz;
-  f_sz_y = c_sz_y / 3;
-  drawfill(cvr, f_sz, f_clr, HUD_ALPHA, 0);
-  
-  b_clr = gui_calcRadarHeat(rad_back);
-  b_sz = f_sz;
-  badj = (c_sz_y / 3)*2;
-  bpos = cvr;
-  bpos_y = cvr_y + badj;
-  drawfill(bpos, f_sz, b_clr, HUD_ALPHA, 0);
-  drawfill(cvr_ctr-'10 10', '20 20', self.wdg_en.drawcolor2, HUD_ALPHA, 0);
-  drawpic(cvr, "gfx/hud/otl/otl_rd_cvr.png",  c_sz, self.hud_pnl2.colortint, HUD_ALPHA, 0);
+  rad_rng = getstati(STAT_RDR_RNG);
+  drawstring(lbl2 + '-6 6', strcat("Scale:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
 };
 
 /*HIT DIRECTION PIPS===================================================*/

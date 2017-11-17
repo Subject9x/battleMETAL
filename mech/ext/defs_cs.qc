@@ -66,6 +66,7 @@ float AS_FLOAT = 8;
 .float stat_trg_dat;
 .float stat_hit_dirs;
 .float stat_rdr_mode;
+.float stat_rdr_rng;
 .float stat_wep_state;
 .float stat_trg_dist;
 .float stat_trg_face;
@@ -230,7 +231,7 @@ float STAT_TRG_SH = 85;
 float STAT_TRG_DAT = 87;
 
 float STAT_RET_DIST = 88;
-float STAT_RDR_BACK = 89;
+float STAT_RDR_RNG = 89;
 float STAT_NAV_DIR = 60;
 
 float STAT_HIT_DIR = 90;
