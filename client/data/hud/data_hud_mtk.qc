@@ -371,6 +371,15 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) mtk_Radar={
   drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
   rad_rng = getstati(STAT_RDR_RNG);
   drawstring(lbl2 + '-6 6', strcat("Scale:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
+  local vector mpos, cprc;
+  mpos_x = self.hud_pnl2.pos_x + 8;
+  mpos_y = self.hud_pnl2.pos_y + 20;
+  
+  cprc_x = mpos_x + 45;
+  cprc_y = mpos_y + 43;
+  
+  hud_RenderRadar (cprc, rad_rng, '90 85 0', i_fact);
+  drawstring(lbl2 + '-6 6', strcat("Scale:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
 };
 
 /*HIT DIRECTION PIPS===================================================*/

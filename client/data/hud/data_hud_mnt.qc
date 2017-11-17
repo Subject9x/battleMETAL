@@ -366,6 +366,16 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) mnt_Radar={
   lbl2 = lbl1 + '6 12';
   drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
   rad_rng = getstati(STAT_RDR_RNG);
+  local vector mpos, cprc;
+  mpos_x = self.hud_pnl4.pos_x + self.hud_pnl4.hsize_x;
+  mpos_x = mpos_x - 20;
+  mpos_y = self.hud_pnl4.pos_y + self.hud_pnl4.hsize_y;
+  mpos_y = mpos_y - 20;
+  
+  cprc_x = mpos_x + 45;
+  cprc_y = mpos_y + 45;
+  
+  hud_RenderRadar (cprc, rad_rng, '90 90 0', i_fact);
   drawstring(lbl2 + '-6 6', strcat("Scale:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
 };
 

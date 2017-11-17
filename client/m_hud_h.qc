@@ -72,9 +72,7 @@ void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
 
 void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
   local entity e;
-  local vector map_size;
-  map_size_x = gui_percentXRaw((world.mins_x*-1) + world.maxs_x);
-  map_size_y = gui_percentYRaw((world.mins_y*-1) + world.maxs_y);
+  drawpic(cofs - '3 3', HUD_RAD_PIP_MCH,  '6 6', '1 1 1', HUD_ALPHA, 0);
   e = findradius(pmove_org, range);
   while(e){
     if(e != world){
@@ -102,19 +100,25 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
               icon = HUD_RAD_PIP_MCH;
             }
           }
-          local float d,len, ang, p;
-          local vector eorg, corg, nofs;
+          local float dra;
+          local vector eorg, corg, nofs, ctr;
+          ctr_x = pnl_sz_x / 2;
+          ctr_y = pnl_sz_y / 2;
+          dra = TRUE;
           eorg = e.origin;
-          len = sqrt((eorg_x * eorg_x + eorg_y * eorg_y));
-          len = len / range * pnl_sz_x;
-          ang = atan2(eorg_x, eorg_y);
-          ang = anglemod( ang - input_angles_y );
-          corg_x = (cos(ang) * len)/map_size_x;
-          corg_y = (sin(ang) * len)/map_size_y;
-          
-          nofs_x = cofs_x + (corg_x * 90);
-          nofs_y = cofs_y + (corg_y * 90);
-          drawpic(nofs - '3 3', icon,  '6 6', clr, HUD_ALPHA, 0);
+          corg_x = (eorg_x - pmove_org_x) / 25;
+          corg_y = (eorg_y - pmove_org_y) / 25; 
+          nofs_x = cofs_x + corg_x;
+          nofs_y = cofs_y + corg_y;
+          if((nofs_x > (cofs_x + ctr_x)) || (nofs_x < (cofs_x - ctr_x))){
+            dra = FALSE;
+          }  
+          if((nofs_y > (cofs_y + ctr_y)) || (nofs_y < (cofs_y - ctr_y))){
+            dra = FALSE;
+          }
+          if(dra){
+            drawpic(nofs - '3 3', icon,  '6 6', clr, HUD_ALPHA, 0);
+          }
         }
       }
     }

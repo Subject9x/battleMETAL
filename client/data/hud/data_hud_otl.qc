@@ -368,20 +368,16 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar={
   drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
   rad_rng = getstati(STAT_RDR_RNG);
   drawstring(lbl1 + '0 6', strcat("SCALE:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
-  local vector mpos;
+  local vector mpos, cprc;
   mpos_x = self.hud_pnl2.pos_x + self.hud_pnl2.hsize_x;
   mpos_x = mpos_x - 71;
   mpos_y = self.hud_pnl2.pos_y + self.hud_pnl2.hsize_y;
   mpos_y = mpos_y - 20;
   
-  local vector map_size, cprc;
-  map_size_x = gui_percentXRaw((world.mins_x*-1) + world.maxs_x);
-  map_size_y = gui_percentYRaw((world.mins_y*-1) + world.maxs_y);
-  
   cprc_x = mpos_x + 45;
   cprc_y = mpos_y + 45;
   
-  hud_RenderRadar (cprc, 17000, '90 90 0', i_fact);
+  hud_RenderRadar (cprc, rad_rng, '90 90 0', i_fact);
 };
 
 /*
