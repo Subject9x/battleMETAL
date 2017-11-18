@@ -202,7 +202,7 @@ void(entity vec_data) mnt_hud_prep={
     local entity wep_pnl1;
     wep_pnl1 = self.hud_pnl1;
     wep_pnl1.asize = gui_percentToPixelRawVec('105 105');
-    wep_pnl1.hsize = gui_getCenter(wep_pnl1.asize);
+    wep_pnl1.hsize = gui_percentToPixelRawVec( gui_getCenter(wep_pnl1.asize) );
     ofs = wep_pnl1.asize;
     wep_pnl1.pos = gui_calcAlign(ofs, wep_pnl1.align);
     
@@ -263,12 +263,11 @@ void(vector view_x, vector view_ctr) mnt_HelmetImage={
   img_sz = draw_getimagesize(self.img);
   as = gui_scaleSize(img_sz,VIEW_SCALE);
   as_x = VIEW_MAX_x;
-  gui_percentToPixelRawVec( as );
-  hs =  gui_getCenter(as);
+  hs =  gui_percentToPixelRawVec( gui_getCenter(as) );
   
-  bck_x = VIEW_ORG_x;
-  bck_y = VIEW_MAX_y - ( as_y - gui_percentYRaw(14));
-  drawpic(bck, self.img, as, '1 1 1', HUD_ALPHA, 0);
+  bck_x = VIEW_CTR_x - hs_x;
+  bck_y = VIEW_MAX_y - (gui_percentYRaw(as_y) + gui_percentYRaw(36));
+  drawpic(bck, self.img, gui_percentToPixelRawVec(as), '1 1 1', HUD_ALPHA, 0);
 
   ang = getstati(STAT_PLR_ANG);  
   nav = gui_angleToNav(ang);
