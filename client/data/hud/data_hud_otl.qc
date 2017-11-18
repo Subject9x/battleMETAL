@@ -300,12 +300,12 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_ren
   SHIELD METER=====================================================
 */
 void(float shieldval) otl_playerShield={
-    local vector label_org;
-    self.wdg_sh.pos = self.hud_pnl1.pos + self.hud_pnl1.margin_ins +  gui_percentToPixelRawVec('12 18');
-    self.wdg_sh.value1 = shieldval;
-    gui_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, gui_percentToPixelRawVec('82 12'), CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
-    label_org = self.wdg_sh.pos - gui_percentToPixelRawVec('0 4');
-    drawstring(label_org, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  local vector label_org;
+  self.wdg_sh.pos = self.hud_pnl1.pos + self.hud_pnl1.margin_ins +  gui_percentToPixelRawVec('12 18');
+  self.wdg_sh.value1 = shieldval;
+  gui_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, gui_percentToPixelRawVec('82 12'), CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
+  label_org = self.wdg_sh.pos - gui_percentToPixelRawVec('0 4');
+  drawstring(label_org, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 /*
@@ -316,11 +316,7 @@ void(float energyval) otl_playerEnergy={
   self.wdg_en.pos = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + gui_percentToPixelRawVec('6 5');
   gui_renderMeter(self.wdg_en.value1, self.wdg_en.pos, gui_percentToPixelRawVec('26 84'), self.wdg_en.drawcolor1,
                                                               self.wdg_en.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-  local vector isz;
-  isz = draw_getimagesize("gfx/hud/otl/otl_en_cvr.png");
-  isz = gui_scaleSize(isz,VIEW_SCALE);
-  isz = gui_percentToPixelRawVec(isz);
-  self.wdg_en.drawsize = isz;
+                                                              
   drawpic(self.wdg_en.pos, "gfx/hud/otl/otl_en_cvr.png", gui_percentToPixelRawVec('26 84'), self.hud_pnl3.colortint, HUD_ALPHA, 0);
   drawstring( self.hud_pnl3.pos + self.hud_pnl3.margin_ins + gui_percentToPixelRawVec('8 0'), "ENERGY", '4 4 0', '1 1 1', HUD_ALPHA, 0);
 };

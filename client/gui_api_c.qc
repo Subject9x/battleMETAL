@@ -93,15 +93,31 @@ vector(vector p) gui_percentToPixelRawVec={
 
 float(float pcx) gui_percentXRaw={
   local float pct;
-  pct = pcx / 1280;
-  pct = gui_percentX(pct);
+  if(pcx < 0){
+    pcx = pcx * -1;
+    pct = pcx / 1280;
+    pct = gui_percentX(pct);
+    pct = pct * -1;
+  }
+  else{
+    pct = pcx / 1280;
+    pct = gui_percentX(pct);
+  }
   return pct;
 };
 
 float(float pcy) gui_percentYRaw={
   local float pct;
-  pct = pcy / 960;
-  pct = gui_percentY(pct);
+  if(pcy < 0){
+    pcy = pcy * -1;
+    pct = pcy / 1280;
+    pct = gui_percentY(pct);
+    pct = pct * -1;
+  }
+  else{
+    pct = pcy / 1280;
+    pct = gui_percentY(pct);
+  }
   return pct;
 };
 
