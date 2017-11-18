@@ -66,7 +66,7 @@ float(float pcy) gui_percentY={
 //Raw is for dynamically generated values
 //the UI was aligned on a 1280x960 display
 vector(float pcx, float pcy) gui_percentToPixelRaw={
-  local vector pct, ret;
+  local vector pct
   if(pct_x < 0){
     pct_x = pct_x * -1;
     pct_x = pcx / 1280;
