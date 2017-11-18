@@ -411,7 +411,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       og = VIEW_CTR;
       og_x = og_x - len/2;
       og_y = VIEW_CTR_y - 32;
-      drawstring(og, "Press any key to respawn", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+     drawstring(og, "Press any key to respawn", '8 8 0', '1 1 1', HUD_ALPHA, 0);
     }
     else{
       local float len;

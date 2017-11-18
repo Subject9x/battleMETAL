@@ -64,23 +64,43 @@ float(float pcy) gui_percentY={
 }; 
 
 //Raw is for dynamically generated values
+//the UI was aligned on a 1280x960 display
 vector(float pcx, float pcy) gui_percentToPixelRaw={
   local vector pct, ret;
-  pct_x = pcx / VIEW_SIZE_x;
-  pct_y = pcy / VIEW_SIZE_y;
+  if(pct_x < 0){
+    pct_x = pct_x * -1;
+    pct_x = pcx / 1280;
+    pct_x = pct_x * -1;
+  }
+  else{
+    pct_x = pcx / 1280;
+  }
+  if(pct_y < 0){
+    pct_y = pct_y * -1;
+    pct_y = pcy / 960;
+    pct_y = pct_y * -1;
+  }
+  else{
+    pct_y = pcy / 960;
+  }
   return gui_percentToPixel(pct_x, pct_y);
+};
+
+//oops
+vector(vector p) gui_percentToPixelRawVec={
+  return gui_percentToPixelRaw(p_x, p_y);
 };
 
 float(float pcx) gui_percentXRaw={
   local float pct;
-  pct = pcx / VIEW_SIZE_x;
+  pct = pcx / 1280;
   pct = gui_percentX(pct);
   return pct;
 };
 
 float(float pcy) gui_percentYRaw={
   local float pct;
-  pct = pcy / VIEW_SIZE_y;
+  pct = pcy / 960;
   pct = gui_percentY(pct);
   return pct;
 };

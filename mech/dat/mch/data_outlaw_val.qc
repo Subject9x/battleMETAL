@@ -114,7 +114,7 @@ vector DAT_OTL_RARM_OFFSET= '11 7 -2';
 //CAMERA
 string DAT_OTL_CAM_CNAME= "camera";
 string DAT_OTL_CAM_MODEL= "q3mdl/testball.md3";
-vector DAT_OTL_CAM_OFFSET= '0 7 7';
+vector DAT_OTL_CAM_OFFSET= '0 6 7';
 vector DAT_OTL_CAM_OFFSET_ALT= '0 1 0';
 
 //WEAPON1

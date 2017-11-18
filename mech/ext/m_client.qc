@@ -166,7 +166,7 @@ void() PutClientInServer = {
   
   spot  = SelectSpawnPoint();
   
-	self.origin = self.oldorigin = spot.origin + '0 0 24';	// 1998-07-21 Respawning where player died fix by Robert Field
+	self.origin = self.oldorigin = spot.origin + '0 0 50';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
 	self.fixangle = TRUE;		// turn this way immediately
 	

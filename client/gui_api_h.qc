@@ -41,6 +41,7 @@ vector(float bits, float dead, float ok, float wrange, float prange) gui_getWepS
 vector(float pcx, float pcy) gui_percentToPixelRaw;
 float(float pcx) gui_percentXRaw;
 float(float pcy) gui_percentYRaw;
+vector(vector p) gui_percentToPixelRawVec;
 
 //system const
 vector VIEW_ORG;

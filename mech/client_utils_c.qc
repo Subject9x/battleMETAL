@@ -300,7 +300,7 @@ void() spawnpoint_Random={
     spot = SelectSpawnPoint();
   }
   
-  self.origin = self.oldorigin = spot.origin + '0 0 24';
+  self.origin = self.oldorigin = spot.origin + '0 0 12';
   
   self.angles = spot.angles;
 	self.fixangle = TRUE;	
