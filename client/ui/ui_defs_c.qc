@@ -56,10 +56,10 @@ void() menu_handleFrame={
   local vector mpos, i_sz;
   
   i_sz = draw_getimagesize("gfx/ui/ui_cursor.png");
-  i_sz = gui_scaleSize(i_sz, VIEW_SCALE/1.25);
+  i_sz = gui_percentToPixelRawVec( gui_scaleSize(i_sz, VIEW_SCALE/1.25) );
   
-  mpos_x = cursorpos_x - 2;
-  mpos_y = cursorpos_y - 4;
+  mpos_x = cursorpos_x - gui_percentXRaw(2);
+  mpos_y = cursorpos_y -  gui_percentXRaw(4);
 
   if(MENU_HANGAR_ACTIVE){
     menu_hangarDrawFrame(); 
@@ -72,9 +72,9 @@ void() menu_handleFrame={
   }
   menu_navBar(VIEW_ORG);
   drawpic(mpos, "gfx/ui/ui_cursor.png",  i_sz, '1 1 1', HUD_ALPHA, 0);
-  drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(VIEW_ORG+'2 10', ftos(PLAYER_HELPER.vec_size), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
-  drawstring(VIEW_ORG+'2 18', ftos(PLAYER_HELPER.plr_sel_mech), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(PLAYER_HELPER.vec_size), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(PLAYER_HELPER.plr_sel_mech), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
 };
 
 
@@ -199,15 +199,15 @@ void(entity nav) ui_renderNav={
 
 void(float wid, vector org, float selected) ui_renderHardPointGraphic={
   local entity wep;
-  gui_renderTintImage(selected, org, UI_DEF_BOX_256, '24 24', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  gui_renderTintImage(selected, org, UI_DEF_BOX_256, gui_percentToPixelRawVec('24 24'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
   if(wid > 0 ){
     wep = m_findData(wid, DATA_WEPN);
-    drawpic( org +'1 1', wep.w_icon,  '22 22', '1 1 1', HUD_ALPHA, 0);
+    drawpic( org + gui_percentToPixelRawVec('1 1'), wep.w_icon,  gui_percentToPixelRawVec('22 22'), '1 1 1', HUD_ALPHA, 0);
   }
 };
 
 void(float num, vector org) ui_renderHardPointNumber={
-  drawstring(org, ftos(num), '10 8', CLR_DEF_WHITE, 0.85, 1);
+  drawstring(org, ftos(num),gui_percentToPixelRawVec('10 8'), CLR_DEF_WHITE, 0.85, 1);
 };
 
 void() ui_renderHUDHighlight={

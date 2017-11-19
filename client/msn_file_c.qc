@@ -34,6 +34,7 @@ void() msn_parsefile={
   while((line!="")){
     argc = tokenizebyseparator(line, ":");
     //mission info section
+    msn_setmappic(argv(0), argv(1));
     msn_setname(argv(0), argv(1));
     msn_settype(argv(0), argv(1));
     msn_setresrv(argv(0), argv(1));
@@ -50,7 +51,23 @@ void() msn_parsefile={
   }
   //always close a file :3
   fclose(flannel);
+};
 
+void(string line, string val) msn_setmappic={
+  if(line == "MSN_PIC"){
+    MSN_MAPPIC = strzone(val);
+    if(MSN_MAPPIC != ""){
+      local string s;
+      s = precache_pic(MSN_MAPPIC, 0);
+      if(s != ""){
+        MSN_MAPPIC = s;
+      }
+      else{
+        MSN_MAPPIC = "";
+        print(strcat("MSN File error: Pic ", MSN_MAPPIC, " null or doesnt exist!\n"));
+      }
+    }
+  }
 };
 
 void(string line, string val) msn_setname={

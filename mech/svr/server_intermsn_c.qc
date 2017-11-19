@@ -216,6 +216,11 @@ void() changelevel_touch={
 	self.nextthink = time + 0.1;
 };
 
+/*
+copied the changelevel_touch
+so that the level can do a map switch without needing 
+to touch the changelevel trigger
+*/
 void() changelevel_use={
   if ((cvar("noexit") == 1) || ((cvar("noexit") == 2) && (mapname != "start")))
 	{

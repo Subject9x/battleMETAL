@@ -121,29 +121,30 @@ float(float pcy) gui_percentYRaw={
   return pct;
 };
 
+float(float pct, float ox, float mx) gui_percentCustom={
+  pct = pct / ox;
+  pct = pct * mx;
+  return pct;
+};
 
-vector(vector map_size, vector cprc, vector coords, vector i_sz) gui_mapCoordToImgCoord={
+vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec={
+  local vector ret;
+  ret_x = gui_percentCustom(pct_x, org_size_x, dest_size_x);
+  ret_y = gui_percentCustom(pct_y, org_size_y, dest_size_y);
+  return ret;
+};
 
-  local vector tctr, perc, val;
-  tctr_x = i_sz_x * cprc_x;
-  tctr_y = i_sz_y * cprc_y ;
-  if(coords_x < 0){
-      perc_x = (coords_x*-1) / map_size_x;
-      val_x = tctr_x - (perc_x * i_sz_x);
-  }
-  else{
-      perc_x = (coords_x / map_size_x);
-      val_x = tctr_x + (perc_x * i_sz_x);
-  }
-  if(coords_y < 0){
-      perc_y = (coords_y*-1) / map_size_y;
-      val_y = tctr_y - (perc_y * i_sz_y);
-  }
-  else{
-      perc_y = (coords_y / map_size_y);
-      val_y = tctr_y + (perc_y * i_sz_y);
-  }
-  return val;
+vector(vector map_size, vector obj_coords, vector ui_coords, vector img_sz) gui_mapCoordToImgCoord={
+  local vector map_ctr, obj_trans, obj_prc, obj_ui;
+  map_ctr_x = ((world.mins_x*-1)/map_size_x) * map_size_x;
+  map_ctr_x = map_size_x - map_ctr_x;
+  map_ctr_y = ((world.mins_y*-1)/map_size_y) * map_size_y;
+  map_ctr_y = map_size_y - map_ctr_y;
+  obj_trans = map_ctr - obj_coords;
+  obj_trans_z = 0;
+  obj_prc = gui_percentCustomVec(obj_trans, map_size, img_sz);
+  obj_ui = ui_coords + gui_percentToPixelRawVec(obj_prc);
+  return obj_ui;
 };
 string(float navname) gui_getNavName={
   return NAVNAMES[navname];
@@ -331,20 +332,6 @@ vector(vector vec, float scle) gui_scaleSize={
   return toSender;
 };
 
-vector(float val) gui_calcRadarHeat={
-  local vector toSender;
-	if(val <= 2){
-    toSender = STATUS_AOK;
-  }
-  if(val > 2){
-    toSender = STATUS_DMG;
-  }
-  if(val >= 15){
-    toSender = '0.7 0.11 0.23';
-  }
-  return toSender;
-};
-
 void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalPip={
   local vector colorActual;
   if(bit & state1){
@@ -403,14 +390,14 @@ void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnL
   local float len;
   len = stringwidth(str, 0, txt_sz);
   local vector tl, tr, bl, br;
-  tl = ofs - '2 2';
-  tr = ofs - '2 2';
-  tr_x = tr_x + len + 4;
+  tl = ofs - gui_percentToPixelRawVec('2 2');
+  tr = ofs - gui_percentToPixelRawVec('2 2');
+  tr_x = tr_x + len + gui_percentXRaw(4);
   bl = ofs;
   bl_x = tl_x;
-  bl_y = bl_y + 6;
+  bl_y = bl_y + gui_percentYRaw(6);
   br = ofs;
-  br_x = ofs_x + len + 2;
+  br_x = ofs_x + len + gui_percentXRaw(2);
   br_y = bl_y;
   
   drawline(ln_sz_x, tl, tr, clr, 1, 0);

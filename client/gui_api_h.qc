@@ -12,7 +12,6 @@ vector(vector sz) gui_getCenter;
 vector(vector vec, float algn) gui_calcAlign;
 vector(vector org, vector sz, float axs) gui_calcAxis;
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderMeter;
-vector(float val) gui_calcRadarHeat;
 void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalPip;
 void(string str, vector ofs, vector color, vector sz, float alpha, float flg) gui_renderString;
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderScroll;
@@ -28,7 +27,7 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alph
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm_clr, float alpha, float flg) gui_renderTintImage2;
 vector(float dmg_type) gui_colorForWeaponType;
 void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float alpha, float flg) gui_renderHighlightString;
-vector(vector map_min, vector map_max, vector coords, vector img_sz) gui_mapCoordToImgCoord;
+vector(vector map_size, vector obj_coords, vector ui_coords, vector img_sz) gui_mapCoordToImgCoord;
 string(float navname) gui_getNavName;
 void(vector ofs, float bool, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalFill;
 vector(float pcx, float pcy) gui_percentToPixel;
@@ -42,6 +41,8 @@ vector(float pcx, float pcy) gui_percentToPixelRaw;
 float(float pcx) gui_percentXRaw;
 float(float pcy) gui_percentYRaw;
 vector(vector p) gui_percentToPixelRawVec;
+vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec;
+float(float pct, float ox, float mx) gui_percentCustom;
 
 //system const
 vector VIEW_ORG;

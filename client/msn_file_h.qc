@@ -9,6 +9,7 @@ Overview: header for the mission file handler.
 float MSN_FILEFOUND = FALSE;
 float MSN_LOADED = FALSE;
 string MSN_FILENAME;
+string MSN_MAPPIC;
 string MSN_NAME;
 string MSN_TYPE;
 string MSN_RESERVETOTAL;
@@ -23,6 +24,7 @@ string MSN_OBJ_DESC[10];
 
 void() msn_getfile;
 void() msn_parsefile;
+void(string line, string val) msn_setmappic;
 void(string line, string val) msn_setname;
 void(string line, string val) msn_settype;
 void(string line, string val) msn_setresrv;

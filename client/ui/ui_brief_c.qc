@@ -114,24 +114,33 @@ void(vector ofs) menu_briefMapPanel={
   local vector iofs;
   iofs = mpos + gui_percentToPixel(0.005, 0.005);
   
-  drawpic(iofs, "maps/t_train0_over.png", gui_percentToPixel(0.285, 0.3), '1 1 1', HUD_ALPHA, 0);
-  
-  local vector map_size, cprc;
-  map_size_x = gui_percentXRaw((world.mins_x*-1) + world.maxs_x);
-  map_size_y = gui_percentYRaw((world.mins_y*-1) + world.maxs_y);
+  if(MSN_MAPPIC != ""){
+    local string s;
+    s = precache_pic(MSN_MAPPIC, 0);
+    if(s != ""){
+      MSN_MAPPIC = s;
+    }
+  }
+  //drawpic(iofs, "maps/t_train0_over.png", gui_percentToPixel(0.285, 0.3), '1 1 1', HUD_ALPHA, 0);
+  if(MSN_MAPPIC != ""){
+    drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec('366  289'), '1 1 1', HUD_ALPHA, 0);
+  }
+  else{
+    drawstring(iofs + gui_percentToPixelRawVec('25 25'), "Satellite Data unavailable", '14 14 0', '1 0 0', HUD_ALPHA, 0);
+  }
 
-  cprc_x = gui_percentXRaw(((world.mins_x*-1)/map_size_x));
-  cprc_y = gui_percentYRaw(((world.mins_y*-1)/map_size_y));
-  
+  local vector map_size;
+  map_size_x = ((world.mins_x*-1) + world.maxs_x);
+  map_size_y = ((world.mins_y*-1) + world.maxs_y);
+
   local entity nav;
   nav = findchain(classname, "data");
   while(nav){
     if(nav.data_type == DATA_NAVP){
       local vector nofs;
-      nofs = gui_mapCoordToImgCoord(map_size, cprc, nav.origin, gui_percentToPixel(0.285, 0.3));
+      nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('366  289'));
       local float nlen;
       nlen = stringwidth(nav.w_name, 0, '6 6 0');
-      nofs = iofs+nofs;
       nofs_x = nofs_x - gui_percentXRaw((nlen/2));
       nofs_y = nofs_y - gui_percentY(0.0031);
       drawstring(nofs, nav.w_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
