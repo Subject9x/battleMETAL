@@ -1,6 +1,4 @@
 
-entity stemp, otemp, s, old;
-
 
 void() highlight_hud_touch={
   if((other.flags & FL_CLIENT)){
@@ -16,9 +14,6 @@ void() trigger_reactivate =
 };
 
 //=============================================================================
-
-float	SPAWNFLAG_NOMESSAGE = 1;
-float	SPAWNFLAG_NOTOUCH = 1;
 
 // the wait time has passed, so set back up for another activation
 void() multi_wait =
@@ -41,7 +36,7 @@ void() multi_trigger =
 	{
 		return;		// allready been triggered
 	}
-
+  
 	if (self.classname == "trigger_secret")
 	{
 		if (self.enemy.classname != "player")
@@ -310,8 +305,7 @@ TELEPORT TRIGGERS
 ==============================================================================
 */
 
-float	PLAYER_ONLY	= 1;
-float	SILENT = 2;
+
 
 void() play_teleport =
 {
@@ -602,8 +596,6 @@ void() trigger_hurt =
 };
 
 //============================================================================
-
-float PUSH_ONCE = 1;
 
 void() trigger_push_touch =
 {

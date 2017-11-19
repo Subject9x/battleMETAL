@@ -213,7 +213,7 @@ float(float v) anglemod =
 };
 
 void(string msg, float val) cons_logAFloat={
-  bprint(strcat(msg,":", ftos(val),"\n"));
+  bprint(strcat(msg,":", ftos(val)," \n"));
 };
 void(string msg, vector v1) cons_logAVector={
   bprint(strcat(msg,":", vtos(v1),"\n"));

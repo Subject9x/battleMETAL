@@ -255,7 +255,6 @@ void() SUB_UseTargets =
 		return;
 	}
 
-
 //
 // print the message
 //
@@ -281,7 +280,6 @@ void() SUB_UseTargets =
 			remove (t);
 		} while ( 1 );
 	}
-
 //
 // fire targets
 //
@@ -299,8 +297,9 @@ void() SUB_UseTargets =
 			self = t;
 			other = stemp;
 			if (self.use)
-			if (self.use != SUB_Null)
-				self.use ();
+			if (self.use != SUB_Null){
+        self.use ();
+      }
 			self = stemp;
 			other = otemp;
 			activator = act;
@@ -325,7 +324,7 @@ void(float normal) SUB_AttackFinished =
 		self.attack_finished = time + normal;
 };
 
-float (entity targ) visible;
+
 
 void (void() thinkst) SUB_CheckRefire =
 {

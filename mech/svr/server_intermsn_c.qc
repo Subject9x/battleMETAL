@@ -215,3 +215,29 @@ void() changelevel_touch={
 	self.think = execute_changelevel;
 	self.nextthink = time + 0.1;
 };
+
+void() changelevel_use={
+  if ((cvar("noexit") == 1) || ((cvar("noexit") == 2) && (mapname != "start")))
+	{
+		T_Damage (other, self, self, 50000);
+		return;
+	}
+  
+  	if (coop || deathmatch)
+	{
+		bprint (other.netname);
+		bprint (" exited the level\n");
+	}
+  nextmap = self.map;
+  
+	SUB_UseTargets ();
+  
+  if ( (self.spawnflags & 1) && (deathmatch == 0) )
+	{	// NO_INTERMISSION
+		GotoNextMap();
+		return;
+	}
+  
+  self.think = execute_changelevel;
+	self.nextthink = time + self.delay;
+};

@@ -40,7 +40,7 @@ void() ClientConnect = {
   self.vec_size = 0;
   self.data_idx = 0;
   self.currentWeaponGroup = self.currentWeaponGroup;
-  self.i_faction = 1; //DEBUG
+  self.i_faction = 0;
   self.stat_eid = num_for_edict(self);
   self.en_cur = 0;
   self.en_max = 0;
@@ -166,14 +166,13 @@ void() PutClientInServer = {
   
   spot  = SelectSpawnPoint();
   
-	self.origin = self.oldorigin = spot.origin + '0 0 50';	// 1998-07-21 Respawning where player died fix by Robert Field
+	self.origin = self.oldorigin = spot.origin + '0 0 100';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
 	self.fixangle = TRUE;		// turn this way immediately
-	
+	self.i_faction = spot.i_faction;
   self.classname = "player";
   
   DecodeLevelParms ();
-
 	self.attack_finished = time;
 	//self.th_pain = player_pain;
 	self.th_die = PlayerDie;

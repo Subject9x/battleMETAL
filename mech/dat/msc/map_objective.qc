@@ -5,16 +5,16 @@ Date: 03/25/2017
 Overview: data file for map objectives
 */
 
-void() nav_obcjective_th;
-float(entity ent, float changed) send_objective;
-
 float(entity ent, float changed) send_objective={
   WriteByte( MSG_ENTITY, E_OBJ ); // Unique Identifier, I suggest you use enums to make it easy on yourself
   WriteByte( MSG_ENTITY, self.nav_name);
   return TRUE;
 };
 
-/*QUAKED map_objective (.1 .1 .1) (-1 -1 -1 ) (1 1 1) 
+/*QUAKED map_objective (0.99 0.8 0) (-10 -10 -10) (10 10 10)
+"nav_name" : float, must match a number in the msn_file
+"isActive" : float, does this start active?
+"target"   : string, target another ent, usually a counter
 */
 void() map_objective={
   //self.obj_status = 1;

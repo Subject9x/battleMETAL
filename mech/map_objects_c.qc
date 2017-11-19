@@ -25,6 +25,7 @@ void() trigger_changelevel =
 	
 	InitTrigger ();
 	self.touch = changelevel_touch;
+  self.use = changelevel_use;
 };
 
 void() info_player_deathmatch_activate =

@@ -312,6 +312,7 @@ float WEAPON9 = 256;
 float PLAYER_IDLE = 0;
 float PLAYER_SPAWN = 1;
 float PLAYER_CRITDAM = 2;
+float PLAYER_GETNAV = 3;
 
 //target lock states
 float LOCK_NONE = 1;

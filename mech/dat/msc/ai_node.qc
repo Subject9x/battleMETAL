@@ -5,9 +5,6 @@ Date:05/17/2017
 Overview: ai node used by the AI system
 */
 
-void() ai_node_touch;
-void() ai_node_graph_touch;
-
 /*QUAKED ai_node (.1 .2 .9) (-20 -20 -20) (20 20 20)
 isActive = AI can use this? (mmm might not be workable atm)
   0 = FALSE
@@ -19,7 +16,6 @@ state_1 = impart new first order to an AI
   2 = patrol the .target
   3 = stand at the .target
 */
-void() ai_node;
 void() ai_node={
   self.classname = "ai_node";
   self.data_type = DATA_NODE;

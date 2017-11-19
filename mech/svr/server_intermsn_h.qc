@@ -11,3 +11,4 @@ void() ExitIntermission;
 void() IntermissionThink;
 void() execute_changelevel;
 void() changelevel_touch;
+void() changelevel_use;

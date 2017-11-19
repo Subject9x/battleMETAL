@@ -444,7 +444,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     menu_handleFrame();
   }else{
     // draw custom crosshair
-    drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    //drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     
     //local vector prj, temp;
     
@@ -463,6 +463,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     nav = findchain(classname, "data");
     while(nav){
       if(nav.data_type == DATA_NAVP){
+        if(nav.isActive){
+          if(nav.i_faction == getstati(STAT_PLR_IFAC)){
+            local float d;
+            d = vlen(pmove_org - nav.origin);
+            if(d <= 150){
+              snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH);
+            }
+          }
+        }
         ui_renderNav(nav);
       }
       nav = nav.chain;
@@ -560,20 +569,21 @@ void(float isnew) CSQC_Ent_Update =
   id = ReadByte();
   if(id == E_NAV){
     if(isnew){
-      self.classname = "data";
-      self.data_type = DATA_NAVP;
-      self.drawmask = MASK_ENGINE;
       self.ui_org = '0 0 0'; 
       self.ui_size = '0 0 0';
+      self.classname = "data";
+      self.drawmask = MASK_ENGINE;
       setorigin(self, self.origin);
       addentity(self);
     }
+    self.data_type = ReadByte();
     self.nav_name = ReadByte();
-    self.w_name = gui_getNavName(self.nav_name);
+    self.i_faction = ReadByte();
     self.isActive = ReadByte();
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+    self.w_name = gui_getNavName(self.nav_name);
   }
   else if(id == E_OBJ){
     if(isnew){
