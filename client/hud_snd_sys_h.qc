@@ -19,6 +19,11 @@ string SND_HUD_VFX_CRITLEG;
 string SND_HUD_VFX_NAVRECH;
 string SND_HUD_VFX_TARGKILL;
 
+string SND_HUD_VFX_OBJ_PRIME;
+string SND_HUD_VFX_OBJ_SECON;
+string SND_HUD_VFX_OBJ_THIRD;
+string SND_HUD_VFX_OBJ_FOURT;
+
 float SND_HUD_RADARMODE = FALSE;
 float SND_HUD_TARGKILL = FALSE;
 float SND_HUD_CRITPART = 0;
@@ -30,11 +35,13 @@ float VOICE_PLAY = FALSE;
 float VOICE_TIME;
 float VOICE_TIME_NEXT;
 float VOICE_ADDTIME;
-float VOICE_QUEUE_SIZE = 4;
+float VOICE_QUEUE_SIZE = 6;
 
 float VOICE_QUEUE_IDX;
 string VOICE_QUEUE[VOICE_QUEUE_SIZE];
+string VOICE_PLAYING ="";
 void() snd_hud_vfx_frame;
+void() snd_hud_vfx_cleanqueue;
 void(string requestedSound) snd_hud_vfx_addtoqueue;
 void(float playerState) snd_hud_vfx_statelistener;
 void(float lockstate) snd_hud_vfx_locklistener;
@@ -43,6 +50,8 @@ void(float curSh) snd_hud_vfx_shdlistener;
 void(float amt, float bit, string snd) snd_hud_vfx_armlistener;
 void(float mode) snd_hud_vfx_toggleradar;
 void(float trgArm) snd_hud_vfx_targkill;
+void(float preState, float nexState) snd_hud_vfx_objectivelistener;
+void(float preState, float nexState) snd_hud_vfx_navpointlistener;
 
 
 //hud beeps

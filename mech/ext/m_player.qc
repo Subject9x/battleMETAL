@@ -41,11 +41,12 @@ void() PlayerPreThink = {
     }
     else{
       self.power_timer = -2;
+      self.stat_plr_stt = PLAYER_IDLE;
     }
     if(self.power_timer == -2){
       self.movetype = MOVETYPE_WALK;
       self.power_timer = -1;
-      self.stat_plr_stt = PLAYER_IDLE;
+      
     }
     
     server_updateTargetInfo();

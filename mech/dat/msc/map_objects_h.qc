@@ -21,5 +21,6 @@ void() ai_node_graph_touch;
 void() ai_node;
 
 //map objectives
-void() nav_objective_th;
+void() map_objective_th;
+void() map_objective_use;
 float(entity ent, float changed) send_objective;

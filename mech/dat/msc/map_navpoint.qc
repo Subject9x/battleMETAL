@@ -49,7 +49,7 @@ void() nav_point_th={
 
 /*QUAKED map_navpoint (0.2 0.8 0.2) (-10 -10 -10) (10 10 10)
 "i_faction" : bitflags for faction, only visible to that faction
-"nav_name" : number, 1 - 12, MUST BE UNIQUE
+"data_idx" : number, 1 - 12, MUST BE UNIQUE
 "isActive" : number, allow player to spawn here
   0 = FALSE
   1 = TRUE

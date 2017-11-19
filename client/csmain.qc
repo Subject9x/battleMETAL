@@ -404,6 +404,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     }
   }
   else{
+    
     if(getstatf(STAT_CTOR_HP) <= 0){
       local float len;
       len = stringwidth("Press any key to respawn", 0, '8 8 0');
@@ -423,7 +424,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
     }
   }
-  
+  setorigin(PLAYER_HELPER, PLR_VIEW);
   //display remaining reserves;
   //10/28/2017 - MOVE TO OBJECTIVE / MISSION STATUS HOTKEY SCREEN
   /*local string res;
@@ -463,15 +464,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     nav = findchain(classname, "data");
     while(nav){
       if(nav.data_type == DATA_NAVP){
-        if(nav.isActive){
-          if(nav.i_faction == getstati(STAT_PLR_IFAC)){
-            local float d;
-            d = vlen(pmove_org - nav.origin);
-            if(d <= 150){
-              snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH);
-            }
-          }
-        }
         ui_renderNav(nav);
       }
       nav = nav.chain;
@@ -573,17 +565,21 @@ void(float isnew) CSQC_Ent_Update =
       self.ui_size = '0 0 0';
       self.classname = "data";
       self.drawmask = MASK_ENGINE;
+      self.value1 = 0;
+      self.isActive = 0;
       setorigin(self, self.origin);
       addentity(self);
     }
     self.data_type = ReadByte();
     self.nav_name = ReadByte();
     self.i_faction = ReadByte();
+    self.value1 = self.isActive;
     self.isActive = ReadByte();
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
     self.w_name = gui_getNavName(self.nav_name);
+    snd_hud_vfx_navpointlistener(self.value1, self.isActive);
   }
   else if(id == E_OBJ){
     if(isnew){
@@ -592,10 +588,16 @@ void(float isnew) CSQC_Ent_Update =
       self.drawmask = MASK_ENGINE;
       self.ui_org = '0 0 0'; 
       self.ui_size = '0 0 0';
+      self.value1 = 0;
+      self.isActive = 0;
       setorigin(self, self.origin);
       addentity(self);
     }
     self.nav_name = ReadByte();
+    self.i_faction = ReadByte();
+    self.value1 = self.isActive;
+    self.isActive = ReadByte();
+    snd_hud_vfx_objectivelistener(self.value1, self.isActive);
   }
   //AI test...
   else if(id == E_AIU){

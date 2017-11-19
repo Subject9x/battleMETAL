@@ -59,6 +59,9 @@ void() cs_precache={
   SND_HUD_VFX_CRITLEG = precache_sound2("sound/comp/crt_legs.ogg");
   SND_HUD_VFX_NAVRECH = precache_sound2("sound/comp/nav_reach.ogg");
   SND_HUD_VFX_TARGKILL = precache_sound2("sound/comp/trg_kill.ogg");
+  SND_HUD_VFX_OBJ_PRIME = precache_sound2("sound/comp/obj_prime.ogg");
+  SND_HUD_VFX_OBJ_SECON = precache_sound2("sound/comp/obj_secon.ogg");
+  SND_HUD_VFX_OBJ_THIRD = precache_sound2("sound/comp/obj_terti.ogg");
   
   //ui sounds
   precache_sound("sound/misc/menu1.wav");
