@@ -21,7 +21,7 @@ void() player_makeObserver={
   self.scale = 0.005;
   self.weaponmodel = "";
   util_setBoundBox('-1 -1 -1', '1 1 1');
-  mh_world_updateClientSpeed(200, 200, 200, "3","0");
+  mh_world_updateClientSpeed(400, 400, 400, "3","0");
   mh_world_updateClientViewBob("0", "0", "0");
   mh_world_updateClientModelBob("0", "0", "0");
   self.stat_wep_state = 0;

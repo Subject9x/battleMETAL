@@ -361,4 +361,3 @@ void() misc_teleporttrain =
 	self.nextthink = self.ltime + 0.1;
 	self.think = func_train_find;
 };
-

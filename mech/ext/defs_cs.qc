@@ -148,7 +148,8 @@ float WEAPON9_REL = 256;
 //PLAYER STATE BITS
 float PLAYER_IDLE = 0;
 float PLAYER_SPAWN = 1;
-float PLAYER_CRITDAM = 2;
+float PLAYER_START = 2;
+float PLAYER_MENU = 3;
 
 //stat channels
 float STAT_PLR_ANG = 73;

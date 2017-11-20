@@ -407,7 +407,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     }
   }
   else{
-    
     if(getstatf(STAT_CTOR_HP) <= 0){
       local float len;
       len = stringwidth("Press any key to respawn", 0, '8 8 0');

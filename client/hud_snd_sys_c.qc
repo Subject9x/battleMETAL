@@ -132,13 +132,9 @@ void(float preState, float nexState) snd_hud_vfx_navpointlistener={
 
 void(float preState, float nexState) snd_hud_vfx_objectivelistener={
   if(self.i_faction == getstati(STAT_PLR_IFAC)){
-    print(" snd_hud_vfx_objectivelistener \n");
     if(nexState == FALSE){
-      print(" nexState\n");
       if(preState == TRUE){
-        print(" preState \n");
         if(self.nav_name == 1){
-          print(" data_idx \n");
           snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME);
         }
         else if(self.nav_name == 2){
@@ -147,9 +143,6 @@ void(float preState, float nexState) snd_hud_vfx_objectivelistener={
         else if(self.nav_name == 3){
           snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD);
         }
-        //else if(self.data_idx == 4){
-          //?
-       // }
       }
     }
   }

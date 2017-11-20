@@ -72,11 +72,11 @@ void() ai_node_touch={
         }
       }
       else if(other.ai_first_order == ai_order_attack){
-        local entity t;
-        t = ai_core_findtarget();
-        if(t){
+        local entity targe;
+        targe = ai_core_findtarget();
+        if(targe){
           self = other;
-            self.enemy = t;
+            self.enemy = targe;
             self.ai_prev_state = self.ai_next_state;
             self.ai_next_state = ai_sub_fight;
           self = this;

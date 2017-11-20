@@ -202,12 +202,15 @@ void(vector ofs) menu_briefObjectivePanel={
   lst_idx = 0;
   while(obj){
     if(obj.data_type == DATA_OBJT){
-      local vector oofs;
-      oofs = lofs;
-      oofs_y = oofs_y + (lst_idx * gui_percentX(0.0093));
-      local string desc;
-      desc = MSN_OBJ_DESC[obj.nav_name];
-      drawstring(oofs, strcat("[", ftos(obj.nav_name),"]:", desc), '6 6 0', '1 1 1', HUD_ALPHA,0);  
+      if(obj.data_idx > 0){
+        local vector oofs;
+        oofs = lofs;
+        oofs_y = oofs_y + (lst_idx * gui_percentX(0.0093));
+        local string desc;
+        desc = MSN_OBJ_DESC[obj.nav_name];
+        drawstring(oofs, strcat("[", ftos(obj.nav_name),"]:", desc), '6 6 0', '1 1 1', HUD_ALPHA,0);  
+      }
+
       lst_idx = lst_idx + 1;
     }
     obj = obj.chain;

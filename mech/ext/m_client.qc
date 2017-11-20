@@ -166,7 +166,7 @@ void() PutClientInServer = {
   
   spot  = SelectSpawnPoint();
   
-	self.origin = self.oldorigin = spot.origin + '0 0 100';	// 1998-07-21 Respawning where player died fix by Robert Field
+	self.origin = self.oldorigin = spot.origin + '0 0 50';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
 	self.fixangle = TRUE;		// turn this way immediately
 	self.i_faction = spot.i_faction;
@@ -185,10 +185,18 @@ void() PutClientInServer = {
   
   if(self.p_class == P_OBS){
     player_makeObserver();
+    if(!coop && !deathmatch){
+      self.movetype == MOVETYPE_NONE;
+      self.flags = self.flags - (self.flags & FL_FLY);
+      mh_world_updateClientSpeed(0, 0, 0, "0","0");
+      mh_world_updateClientViewBob("0", "0", "0");
+      mh_world_updateClientModelBob("0", "0", "0");
+    }
     self.power_timer = 0;
   }
   else if(self.p_class == P_MECH){
     player_makeMech();
+    self.stat_plr_stt = PLAYER_SPAWN;
     self.power_timer = time + 1;//8
   }
  

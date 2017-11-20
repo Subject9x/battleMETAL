@@ -46,7 +46,6 @@ void() PlayerPreThink = {
     if(self.power_timer == -2){
       self.movetype = MOVETYPE_WALK;
       self.power_timer = -1;
-      
     }
     
     server_updateTargetInfo();
@@ -60,12 +59,15 @@ void() PlayerPreThink = {
       self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_BK);
     }
   }
+  else{
+    return;
+  }
   
-	if (self.button2){
-		PlayerJump();
-	}
-	else
-		self.flags = self.flags | FL_JUMPRELEASED;
+	//if (self.button2){
+		//PlayerJump();
+	//}
+	//else
+		//self.flags = self.flags | FL_JUMPRELEASED;
 
 // teleporters can force a non-moving pause time	
 	if (time < self.pausetime)

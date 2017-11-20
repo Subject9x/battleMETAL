@@ -39,6 +39,8 @@ void() map_objective_th={
 
 /*QUAKED map_objective (0.99 0.8 0) (-10 -10 -10) (10 10 10)
 "data_idx" : float, must match a number in the msn_file
+    use value -1 for 'mission successful'
+    use value -2 for 'mission failed'
 "isActive" : float, does this start active?
 "i_faction": float, faction for this objective
 "target"   : string, target another ent, usually a counter
