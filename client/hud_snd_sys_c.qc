@@ -9,7 +9,22 @@ void() snd_hud_vfx_frame={
   if(time > VOICE_TIME_NEXT){
     local float playing;
     local string snd;
-    playing = getsoundtime(PLAYER_HELPER, CHAN_AUTO);
+    VOICE_QUEUE_IDX = VOICE_QUEUE_IDX + 1;
+    snd = VOICE_QUEUE[VOICE_QUEUE_IDX];
+    if(snd != "null"){
+      VOICE_TIME = soundlength(snd);
+      sound7(PLAYER_HELPER, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+      VOICE_QUEUE[VOICE_QUEUE_IDX] = "null";
+    }
+    else{
+      VOICE_TIME = 0;
+    }
+    VOICE_TIME_NEXT = time + VOICE_TIME;
+    if(VOICE_QUEUE_IDX > VOICE_QUEUE_SIZE){
+      VOICE_QUEUE_IDX = 1;
+    }
+    
+    /*playing = getsoundtime(PLAYER_HELPER, CHAN_AUTO);
     if( (playing < 0) ){
       snd = VOICE_QUEUE[VOICE_QUEUE_IDX];
       if(snd != "null"){
@@ -22,10 +37,9 @@ void() snd_hud_vfx_frame={
       VOICE_TIME_NEXT = time + VOICE_TIME;
       VOICE_QUEUE_IDX = VOICE_QUEUE_IDX + 1;
       if(VOICE_QUEUE_IDX > VOICE_QUEUE_SIZE){
-        snd_hud_vfx_cleanqueue();
         VOICE_QUEUE_IDX = 0;
       }
-    }
+    }*/
   }
 };
 
@@ -61,7 +75,7 @@ void(string requestedSound) snd_hud_vfx_addtoqueue={
           if(existing == 0){
             existing = 1;
             VOICE_QUEUE[lst_idx] = requestedSound;
-            //VOICE_ADDTIME = time + soundlength(requestedSound);
+            VOICE_ADDTIME = time + soundlength(requestedSound);
           }
         }
         lst_idx = lst_idx + 1;
@@ -101,7 +115,6 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
       if(!(PLAYER_HELPER.drawme & bit)){
         snd_hud_vfx_addtoqueue(snd); 
         PLAYER_HELPER.drawme = PLAYER_HELPER.drawme | bit;
-        
       }
     }
   }

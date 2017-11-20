@@ -139,7 +139,7 @@ void() ai_mech={
       local entity t;
       t = find(world, targetname, self.target);
       if(t){
-        traceline(self.origin, t.origin, FALSE, self);
+        traceline(self.origin, t.origin, TRUE, self);
         if(t.classname == "ai_node"){
           self.goalentity = t;
         }

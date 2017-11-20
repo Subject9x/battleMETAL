@@ -91,11 +91,14 @@ void() CSQC_Init =
   NAVNAMES[18] = "Upsilon";
   NAVNAMES[19] = "Phi";
   NAVNAMES[20] = "Omega";
-  
-  VOICE_QUEUE[0] = "null";
+
   VOICE_QUEUE[1] = "null";
   VOICE_QUEUE[2] = "null";
   VOICE_QUEUE[3] = "null";
+  VOICE_QUEUE[4] = "null";
+  VOICE_QUEUE[5] = "null";
+  VOICE_QUEUE[6] = "null";
+  VOICE_TIME_NEXT = time;
   //get mission file
   cs_precache();
 };
