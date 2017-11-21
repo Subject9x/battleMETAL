@@ -28,7 +28,6 @@ void() map_objective_th={
   if(self.isActive == FALSE){
     if(self.count > 0){
       self.count = 0;
-      cons_logAFloat("self.count", self.count);
       multi_trigger();
     }
   }
@@ -46,12 +45,6 @@ void() map_objective_th={
 "target"   : string, target another ent, usually a counter
 */
 void() map_objective={
-  //self.obj_status = 1;
-  //self.controllingFaction = 0;
-  //self.isActive = TRUE;
-  //self.navId = 1;
-  //self.nav_name = "Alpha";
-  //self.classname = "map_navpoint";
   self.count = 0;
   self.classname = "data";
   self.data_type = DATA_OBJT;

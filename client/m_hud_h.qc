@@ -132,7 +132,7 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
 .void(float shieldval) hud_playerShield;
 .void(float energyval) hud_playerEnergy;
 .void(float ct, float lt, float rt, float la, float ra, float lg) hud_playerArmor;
-.void(float rad_front, float rad_back, float rad_mode, float i_fact) hud_Radar;
+.void(float rad_mode, float i_fact) hud_Radar;
 .void(float hit_dir) hud_hitDirectionPips;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon1;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon2;

@@ -13,7 +13,7 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mtk_ren
 void(float shieldval) mtk_playerShield;
 void(float energyval) mtk_playerEnergy;
 void(float ct, float lt, float rt, float la, float ra, float lg) mtk_playerArmor;
-void(float rad_front, float rad_back, float rad_mode,  float i_fact) mtk_Radar;
+void(float rad_mode,  float i_fact) mtk_Radar;
 void(float hit_dir) mtk_hitDirectionPips;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon1;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon2;
@@ -341,10 +341,8 @@ void(float ct, float lt, float rt, float la, float ra, float lg) mtk_playerArmor
 };
 
 /*RADAR LAYOUT====================================================*/
-void(float rad_front, float rad_back, float rad_mode, float i_fact) mtk_Radar={
-  //drawpic(self.hud_pnl2.pos, self.hud_pnl2.img,  self.hud_pnl2.asize, self.hud_pnl2.colortint, HUD_ALPHA, 0);
-  
-  local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
+void(float rad_mode, float i_fact) mtk_Radar={
+  local vector lbl1, lbl2,  clr;
   local string mode;
   local float len, badj, rad_rng;
   lbl1 = self.hud_pnl2.pos + gui_percentToPixelRawVec('20 12');
@@ -421,7 +419,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
   local vector pont,wstat,ofs;
   local entity wep_dat;
   
-  pont_x = self.hud_pnl5.pos - self.hud_pnl5.hsize_x;
+  pont_x = self.hud_pnl5.pos_x - self.hud_pnl5.hsize_x;
   pont_y = self.hud_pnl5.pos_y;
   ofs_x = pont_x - gui_percentXRaw(30); 
   ofs_y = pont_y + gui_percentYRaw(2);
@@ -461,7 +459,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mtk_renderWeapon4={
   local vector pont,wstat,ofs;
   local entity wep_dat;
-  pont_x = self.hud_pnl5.pos - self.hud_pnl5.hsize_x;
+  pont_x = self.hud_pnl5.pos_x - self.hud_pnl5.hsize_x;
   pont_y = self.hud_pnl5.pos_y;
   ofs_x = pont_x + gui_percentXRaw(12); 
   ofs_y = pont_y + gui_percentYRaw(2);

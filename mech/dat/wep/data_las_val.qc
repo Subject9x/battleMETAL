@@ -125,7 +125,7 @@ void() data_las_atk={
   laser_org.think = SUB_Remove;
   laser_org.nextthink = time + 0.01;// + 0.35;
   
-  sound (laser_org, CHAN_WEAPON, "sound/laser_test.ogg", 1, ATTN_NORM); 
+  sound (laser_org, CHAN_WEAPON, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM); 
   te_lightning1(laser_org, laser_org.origin, dir);  
   te_flamejet(dir, '0 10 0', 25);
 

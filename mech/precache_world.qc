@@ -10,18 +10,24 @@ void() mh_precache_world={
 
 void() mh_precache_sound={
   //sfx
-  precache_sound ("sound/weapons/laser_3.ogg");
   precache_sound ("weapons/rocket1i.wav");
   precache_sound ("weapons/sgun1.wav");
-  precache_sound ("sound/ac5.ogg");
+  precache_sound ("sound/weapons/atc_fire.ogg");
+  precache_sound ("sound/weapons/qrfl_fire.ogg");
+  precache_sound ("sound/weapons/emp_fire.ogg");
   precache_sound ("sound/llaser.ogg");
-  precache_sound ("sound/laser_test.ogg");
-  precache_sound ("sound/gauss.ogg");
+  precache_sound ("sound/weapons/laser_fire.ogg");
+  precache_sound ("sound/weapons/pac_fire.ogg");
+  precache_sound ("sound/weapons/esr_fire.ogg");
   
   precache_sound ("sound/mech_stomp.ogg");
   
   //voice
   precache_sound ("sound/comp/online.ogg");
+  
+  precache_sound ("sound/fx_boom.ogg");
+  precache_sound ("sound/fx_shieldhit.ogg");
+  precache_sound ("sound/fx_armorhit.ogg");
 };
 
 void() mh_precache_models={

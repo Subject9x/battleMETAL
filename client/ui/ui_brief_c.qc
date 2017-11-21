@@ -65,7 +65,7 @@ void(vector ofs) menu_briefMissionInfo={
   //mission type
   drawstring(ofs+gui_percentToPixel(0.0078, 0.0208), strcat("[TYPE]:            ",MSN_TYPE), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
   //reserves
-  drawstring(ofs+gui_percentToPixel(0.0078, 0.0291), strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixel(0.0078, 0.0291), strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE), "//", MSN_RESERVETOTAL), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //sector
   drawstring(ofs+gui_percentToPixel(0.0078, 0.0375), strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //location
@@ -207,10 +207,9 @@ void(vector ofs) menu_briefObjectivePanel={
         oofs = lofs;
         oofs_y = oofs_y + (lst_idx * gui_percentX(0.0093));
         local string desc;
-        desc = MSN_OBJ_DESC[obj.nav_name];
-        drawstring(oofs, strcat("[", ftos(obj.nav_name),"]:", desc), '6 6 0', '1 1 1', HUD_ALPHA,0);  
+        desc = MSN_OBJ_DESC[obj.data_idx];
+        drawstring(oofs, strcat("[", ftos(obj.data_idx),"]:", desc), '6 6 0', '1 1 1', HUD_ALPHA,0);  
       }
-
       lst_idx = lst_idx + 1;
     }
     obj = obj.chain;

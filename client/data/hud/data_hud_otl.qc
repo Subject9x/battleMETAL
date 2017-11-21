@@ -13,7 +13,7 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_ren
 void(float shieldval) otl_playerShield;
 void(float energyval) otl_playerEnergy;
 void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor;
-void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar;
+void(float rad_mode, float i_fact) otl_Radar;
 void(float hit_dir) otl_hitDirectionPips;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon1;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon2;
@@ -349,8 +349,8 @@ void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor
 /*
   RADAR LAYOUT====================================================
 */
-void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar={
-  local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
+void(float rad_mode, float i_fact) otl_Radar={
+  local vector lbl1, lbl2,  clr;
   local string mode;
   local float len, badj, rad_rng;
   lbl1 = self.hud_pnl2.pos + gui_percentToPixelRawVec('10 10');
@@ -373,7 +373,7 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) otl_Radar={
   mpos_x = self.hud_pnl2.pos_x + self.hud_pnl2.hsize_x;
   mpos_x = mpos_x - gui_percentXRaw(71);
   mpos_y = self.hud_pnl2.pos_y + self.hud_pnl2.hsize_y;
-  mpos_y = mpos_y - gui_percentYRaw(20);
+  mpos_y = mpos_y - gui_percentYRaw(10);
   
   cprc_x = mpos_x + gui_percentXRaw(45);
   cprc_y = mpos_y + gui_percentYRaw(45);

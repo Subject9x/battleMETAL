@@ -13,7 +13,7 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mnt_ren
 void(float shieldval) mnt_playerShield;
 void(float energyval) mnt_playerEnergy;
 void(float ct, float lt, float rt, float la, float ra, float lg) mnt_playerArmor;
-void(float rad_front, float rad_back, float rad_mode, float i_fact) mnt_Radar;
+void(float rad_mode, float i_fact) mnt_Radar;
 void(float hit_dir) mnt_hitDirectionPips;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon1;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon2;
@@ -342,8 +342,8 @@ void(float ct, float lt, float rt, float la, float ra, float lg) mnt_playerArmor
   gui_renderMeter(la, (pnl_ctr + gui_percentToPixelRawVec('-34 -12')), gui_percentToPixelRawVec('12 36'), CLR_DEF_ARM_DED, gui_getColorForArmor(la), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
-void(float rad_front, float rad_back, float rad_mode, float i_fact) mnt_Radar={
- local vector lbl1, lbl2,  clr, cvr, c_sz, cvr_ctr, f_clr, b_clr, f_sz, b_sz, bpos;
+void(float rad_mode, float i_fact) mnt_Radar={
+ local vector lbl1, lbl2,  clr;
   local string mode;
   local float len, badj, rad_rng;
   lbl1 = self.hud_pnl4.pos + self.hud_pnl4.hsize;
@@ -367,7 +367,7 @@ void(float rad_front, float rad_back, float rad_mode, float i_fact) mnt_Radar={
   mpos_x = self.hud_pnl4.pos_x + self.hud_pnl4.hsize_x;
   mpos_x = mpos_x - gui_percentXRaw(20);
   mpos_y = self.hud_pnl4.pos_y + self.hud_pnl4.hsize_y;
-  mpos_y = mpos_y - gui_percentYRaw(20);
+  mpos_y = mpos_y - gui_percentYRaw(10);
   
   cprc_x = mpos_x + gui_percentXRaw(45);
   cprc_y = mpos_y + gui_percentYRaw(45);

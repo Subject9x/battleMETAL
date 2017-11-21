@@ -95,6 +95,8 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if(new_dmg > 0){
     dmg_amt = new_dmg;
+    sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
+    
   }
   else{
     newmis = spawn();
@@ -110,6 +112,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       self.solid = SOLID_NOT;
       self.think = SUB_Remove;
       self.nextthink = time + 0.1;
+      sound(self, CHAN_VOICE, "sound/fx_shieldhit.ogg", 1, ATTN_NORM);
     self = oself;
     return trg;
   }

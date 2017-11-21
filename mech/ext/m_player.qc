@@ -36,15 +36,18 @@ void() PlayerPreThink = {
   if(self.p_class != P_OBS){
     //power up sequence
     if(time < self.power_timer){
-      self.movetype = MOVETYPE_NONE;
-      return;
+      if(self.movetype != MOVETYPE_NONE){
+        self.movetype = MOVETYPE_NONE;
+      }
+      //return;
     }
     else{
-      self.power_timer = -2;
+      self.power_timer = 0;
       self.stat_plr_stt = PLAYER_IDLE;
+      self.movetype = MOVETYPE_WALK;
     }
     if(self.power_timer == -2){
-      self.movetype = MOVETYPE_WALK;
+      
       self.power_timer = -1;
     }
     

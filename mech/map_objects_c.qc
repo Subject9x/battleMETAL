@@ -7,6 +7,13 @@ I pulled these out of client.qc, what they were doing there I have
 no idea;
 */
 
+/*QUAKED info_player_observer_start (1 0 0) (-16 -16 -24) (16 16 24)
+  the system looks for this first, to spawn in observers
+*/
+void() info_player_observer_start={
+  
+};
+
 /*QUAKED info_intermission (1 0.5 0.5) (-16 -16 -16) (16 16 16)
 This is the camera point for the intermission.
 Use mangle instead of angle, so you can set pitch or roll as well as yaw.  'pitch roll yaw'
@@ -17,6 +24,7 @@ void() info_intermission =
 
 /*QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION
 When the player touches this, he gets sent to the map listed in the "map" variable.  Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display stats.
+  "isActive" : 1 == activate by touch, 0 = activate by remote
 */
 void() trigger_changelevel =
 {
@@ -24,8 +32,13 @@ void() trigger_changelevel =
 		objerror ("changelevel trigger doesn't have map");
 	
 	InitTrigger ();
-	self.touch = changelevel_touch;
-  self.use = changelevel_use;
+	
+  if(self.isActive){
+    self.touch = changelevel_touch;
+  }
+  else{
+    self.use = changelevel_use;
+  }
 };
 
 void() info_player_deathmatch_activate =

@@ -6,7 +6,6 @@ Overview: map objects header, for cleanliness
 */
 
 //nav point stuff
-.float obj_status;
 .float controllingFaction;
 .float isActive;
 .float nav_name;

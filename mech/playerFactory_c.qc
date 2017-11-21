@@ -46,14 +46,13 @@ void() player_makeMech={
   dat = m_findMechData(self.vec_size, self.nextVecChoice);
   self.p_class = P_MECH;
   self.data_idx = dat.data_idx;
-  self.power_timer = time + 1;
-  self.stat_plr_stt = PLAYER_SPAWN;
+  self.power_timer = time + 3;
+  self.stat_plr_stt = PLAYER_START;
   buildVehicle(dat);
   if((self.flags & FL_CLIENT)){
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);
     mh_world_updateClientModelBob(self.m_bmodel, self.m_bside, self.m_bobspd);
-    self.stat_plr_stt = PLAYER_SPAWN;
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);

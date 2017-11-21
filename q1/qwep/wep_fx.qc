@@ -100,6 +100,8 @@ void()	s_explode6	=	[5,		SUB_Remove] {};*/
 
 void() BecomeExplosion =
 {
+  
+  sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
   self.deadflag = DEAD_DEAD;
 	self.movetype = MOVETYPE_NONE;
 	self.velocity = '0 0 0';

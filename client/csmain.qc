@@ -2,8 +2,6 @@
 // called during level initialization, before first entities are received, only world is valid at this point
 void() CSQC_Init =
 {
-
-  adddynamiclight('0 0 10', 10, '0 0 0.5');
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity"))
 		maxclients = maxclients + 1;
@@ -92,13 +90,8 @@ void() CSQC_Init =
   NAVNAMES[19] = "Phi";
   NAVNAMES[20] = "Omega";
 
-  VOICE_QUEUE[1] = "null";
-  VOICE_QUEUE[2] = "null";
-  VOICE_QUEUE[3] = "null";
-  VOICE_QUEUE[4] = "null";
-  VOICE_QUEUE[5] = "null";
-  VOICE_QUEUE[6] = "null";
-  VOICE_TIME_NEXT = time;
+  snd_hud_vfx_cleanqueue();
+  
   //get mission file
   cs_precache();
 };
@@ -116,19 +109,21 @@ void() CSQC_Shutdown =
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   if(evtype == 0){
     if((scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS) && (getstatf(STAT_CTOR_HP)== 0)){
-      if(MENU_ACTIVE){
-        MENU_ACTIVE = FALSE;
-        MENU_HANGAR_ACTIVE = FALSE;
-        MENU_BRIEF_ACTIVE = FALSE;
-        MENU_DEPLOY_ACTIVE = FALSE;
-        setcursormode(0);
+      if(!isdemo()){
+        if(MENU_ACTIVE){
+          MENU_ACTIVE = FALSE;
+          MENU_HANGAR_ACTIVE = FALSE;
+          MENU_BRIEF_ACTIVE = FALSE;
+          MENU_DEPLOY_ACTIVE = FALSE;
+          setcursormode(0);
+        }
+        else{
+          MENU_ACTIVE = TRUE;
+          MENU_BRIEF_ACTIVE = TRUE;
+          setcursormode(1);
+        }
+        return TRUE;
       }
-      else{
-        MENU_ACTIVE = TRUE;
-        MENU_BRIEF_ACTIVE = TRUE;
-        setcursormode(1);
-      }
-      return TRUE;
     }
     else if(scanx == K_MOUSE1){
       if(MENU_ACTIVE){
@@ -265,17 +260,17 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// draw custom hud
   //draw hud
  
-  local float p_class, eid;
+  local float pclas, eid;
   local vector vforg;
   vforg = getpropertyvec(VF_ANGLES);
-  p_class = getstati(STAT_PCLASS);
+  pclas = getstati(STAT_PCLASS);
   eid = getstati(STAT_ENTITY_ID);
   /*drawstring('0 0 0', vtos(VIEW_ORG), '8 8 0', '1 1 1', 1, 0);
   drawstring('0 8 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
   drawstring('0 16 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
  */
   AVAILABLE_RESERVE = getstati(STAT_LVL_RES);
-  if(p_class != P_OBS){
+  if(pclas != P_OBS){
     //player general info
     local float vec_id, hitdir, conv_x, conv_y, pitch;
     vec_id = getstati(STAT_VID);
@@ -338,12 +333,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     w9_r = getstatf(STAT_WEP9_REL);
     
     //player radar info
-    local float rad_frnt, rad_bck, rad_mode;
-    //rad_frnt = getstatf(STAT_RDR_FRNT);
-    //rad_bck = getstatf(STAT_RDR_BACK);
+    local float rad_mode;
     rad_mode = getstati(STAT_RDR_MODE);
-    
-    
     //target tracking info
     local float trg_vid, trg_datid, trg_ddflg, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
     local vector trg_pos;
@@ -375,7 +366,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
       self.hud_playerShield(plr_sh);
       self.hud_playerEnergy(plr_en);  
-      self.hud_Radar(0, 0, rad_mode);
+      self.hud_Radar(rad_mode, getstati(STAT_PLR_IFAC));
       self.hud_hitDirectionPips(hitdir);
       self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, w1_r);
       self.hud_renderWeapon2(plr_wgrp, plr_wstate, w2_id, WEAPON2, WEAPON2_DD, WEAPON2_OK, w2_r);
@@ -407,24 +398,41 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     }
   }
   else{
-    if(getstatf(STAT_CTOR_HP) <= 0){
-      local float len;
+    local float len;
+    local vector og;
+    local string mesg;
+    if(getstati(STAT_PLR_STT) == PLAYER_SPAWN){
       len = stringwidth("Press any key to respawn", 0, '8 8 0');
-      local vector og;
-      og = VIEW_CTR;
-      og_x = og_x - len/2;
-      og_y = VIEW_CTR_y - 32;
-     drawstring(og, "Press any key to respawn", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+      mesg = "Press any key to respawn";
     }
-    else{
-      local float len;
+    else if(getstati(STAT_PLR_STT) == PLAYER_MENU){
       len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
-      local vector og;
-      og = VIEW_CTR;
-      og_x = og_x - len/2;
-      og_y = VIEW_CTR_y - 32;
-      drawstring(og, "Press [TAB] For Hangar Menu", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+      mesg = "Press [TAB] For Hangar Menu";
     }
+    og = VIEW_CTR;
+    og_x = og_x - gui_percentXRaw(len/2);
+    og_y = VIEW_CTR_y + gui_percentYRaw(32);
+    drawstring(og, mesg, '8 8 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  if(isdemo()){
+    local float len;
+    local vector og;
+    local string mesg;
+    len = stringwidth("Alpha v0.0.1", 0, '8 8 0');
+    mesg = "Alpha v0.0.1";
+    drawstring(gui_percentToPixelRawVec('4 4'), mesg, '8 8 0', '1 1 1', 0.85, 0);
+    
+    og_x = VIEW_MAX_x - gui_percentXRaw((len/2) + 4);
+    og_y = VIEW_MAX_y - gui_percentYRaw(12);
+    drawstring(og, mesg, '8 8 0', '1 1 1', 0.85, 0);
+    
+    og_x = VIEW_MAX_x - gui_percentXRaw((len/2) + 4);
+    og_y = VIEW_ORG_y + gui_percentYRaw(4);
+    drawstring(og, mesg, '8 8 0', '1 1 1', 0.85, 0);
+    
+    og_x = VIEW_ORG_x + gui_percentXRaw(4);
+    og_y = VIEW_MAX_y - gui_percentYRaw(12);
+    drawstring(og, mesg, '8 8 0', '1 1 1', 0.85, 0);
   }
   setorigin(PLAYER_HELPER, PLR_VIEW);
   //display remaining reserves;
@@ -592,10 +600,11 @@ void(float isnew) CSQC_Ent_Update =
       self.ui_size = '0 0 0';
       self.value1 = 0;
       self.isActive = 0;
+      self.data_idx = 0;
       setorigin(self, self.origin);
       addentity(self);
     }
-    self.nav_name = ReadByte();
+    self.data_idx = ReadByte();
     self.i_faction = ReadByte();
     self.value1 = self.isActive;
     self.isActive = ReadByte();
