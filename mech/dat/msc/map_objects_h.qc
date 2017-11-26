@@ -10,6 +10,8 @@ Overview: map objects header, for cleanliness
 .float isActive;
 .float nav_name;
 
+void() building_die;
+
 void() nav_point_use;
 void() nav_point_th;
 float(entity ent, float changed) send_navpoint;

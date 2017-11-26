@@ -26,7 +26,7 @@ void() building_radar={
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();
-  self.th_die = BecomeExplosion;
+  self.th_die = building_die;
   self.think = building_think;
   self.nextthink = time + 1;
   self.SendEntity = send_building;

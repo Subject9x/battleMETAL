@@ -47,5 +47,6 @@ void() building_shield_die={
     }
     head = head.chain;
   }
+  building_die();
   BecomeExplosion();
 };

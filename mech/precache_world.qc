@@ -10,20 +10,15 @@ void() mh_precache_world={
 
 void() mh_precache_sound={
   //sfx
-  precache_sound ("weapons/rocket1i.wav");
-  precache_sound ("weapons/sgun1.wav");
+  precache_sound ("sound/weapons/mis_fire.ogg");
   precache_sound ("sound/weapons/atc_fire.ogg");
   precache_sound ("sound/weapons/qrfl_fire.ogg");
   precache_sound ("sound/weapons/emp_fire.ogg");
-  precache_sound ("sound/llaser.ogg");
   precache_sound ("sound/weapons/laser_fire.ogg");
   precache_sound ("sound/weapons/pac_fire.ogg");
   precache_sound ("sound/weapons/esr_fire.ogg");
   
   precache_sound ("sound/mech_stomp.ogg");
-  
-  //voice
-  precache_sound ("sound/comp/online.ogg");
   
   precache_sound ("sound/fx_boom.ogg");
   precache_sound ("sound/fx_shieldhit.ogg");
@@ -96,6 +91,7 @@ void() mh_precache_models={
   precache_model ("progs/muzzleflash.spr32");
   
   //maps
-  precache_file ("maps/t_train0.bsp");
+  precache_file ("maps/t1m1.bsp");
+  precache_file ("maps/t1m2.bsp");
   precache_file ("maps/start.bsp");
 };

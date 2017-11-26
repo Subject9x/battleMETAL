@@ -47,5 +47,6 @@ void() building_power_die={
     }
     head = head.chain;
   }
+  building_die();
   BecomeExplosion();
 };

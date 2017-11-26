@@ -95,8 +95,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if(new_dmg > 0){
     dmg_amt = new_dmg;
-    sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
-    
+    sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 0.75, ATTN_NORM);
   }
   else{
     newmis = spawn();
@@ -112,7 +111,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       self.solid = SOLID_NOT;
       self.think = SUB_Remove;
       self.nextthink = time + 0.1;
-      sound(self, CHAN_VOICE, "sound/fx_shieldhit.ogg", 1, ATTN_NORM);
+      sound(self, CHAN_VOICE, "sound/fx_shieldhit.ogg", 0.75, ATTN_NORM);
     self = oself;
     return trg;
   }
@@ -567,7 +566,7 @@ void(entity targ, entity attacker) Killed =
 	self = targ;
 	
 	if (self.health < -99)
-		self.health = -99;		// don't let sbar look bad if a player
+		self.health = 0;		// don't let sbar look bad if a player
 
 	if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE)
 	{	// doors, triggers, etc

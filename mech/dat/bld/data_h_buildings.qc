@@ -12,9 +12,10 @@ void() data_h_hangar_l;
 void() data_h_fuel;
 
 void() building_think={
+  
 
   self.think = building_think;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.05;
 };
 
 void() data_h_power={
@@ -74,4 +75,12 @@ void() data_h_fuel={
     self.data_type = DATA_BLD;
     self.vec_name = "Fuel Tank";
   self = oself;
+};
+
+void() building_die={
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DEAD;
+  multi_trigger();
+  self.nextthink = time + 0.01;
+  self.think =  SUB_Remove;
 };

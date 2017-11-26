@@ -12,6 +12,7 @@ void() CSQC_Init =
   plr_angles = '0 0 0';
   VIEW_ORG = '0 0';
   PLAYER_HELPER = spawn();
+  addentity(PLAYER_HELPER);
   PLAYER_HELPER.drawmask = MASK_ENGINE;
   PLAYER_HELPER.plr_sel_mech = 0;
   PLAYER_HELPER.vec_size = 1;
@@ -33,7 +34,6 @@ void() CSQC_Init =
   PLAYER_HELPER.w_range = 0;
   PLAYER_HELPER.wep1_reload = 0;
   PLAYER_HELPER.drawme = 0;
-  addentity(PLAYER_HELPER);
   
   WEPBITS[0] = 1;
   WEPBITS[1] = 2;

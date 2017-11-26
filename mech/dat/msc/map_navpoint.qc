@@ -30,7 +30,7 @@ void() nav_point_use={
 void() nav_point_th={
   local entity e;
   if(self.isActive == TRUE){
-    e = findradius(self.origin, 150);
+    e = findradius(self.origin, 200);
     while(e){
       if((e.flags & FL_CLIENT)){
         if(e.i_faction == self.i_faction){
