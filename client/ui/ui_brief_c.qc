@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 3/26/2017
 Overview: class file for the deployment ui
 */

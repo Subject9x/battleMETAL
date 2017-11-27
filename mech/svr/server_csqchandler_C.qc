@@ -1,6 +1,6 @@
 /*
 mech mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 10/21/2016
 Overview: csqc handler
 */

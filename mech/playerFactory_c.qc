@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/27/2016
      mod 3/10/2017
 Overview: header for player type factory

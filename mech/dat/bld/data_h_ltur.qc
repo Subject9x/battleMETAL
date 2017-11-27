@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 10/28/2017
 Overview:
   name: Human Light Turret

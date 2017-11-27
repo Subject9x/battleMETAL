@@ -1,6 +1,6 @@
 /*
 mech mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/27/2016
       mod  3/15/2017
 Overview: 'class' for weapon data /ents

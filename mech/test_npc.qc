@@ -1,6 +1,6 @@
 /*
 mech mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 2/16/2017
 Overview: science forgive me
 */

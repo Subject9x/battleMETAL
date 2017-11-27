@@ -1,6 +1,6 @@
 /*
 mech mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/27/2016
 Overview: 'class' for a vehicle component
 commented vars mean they're already implemented and are here for reference!

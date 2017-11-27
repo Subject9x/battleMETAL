@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 11/18/2017
 Overview: time to parse trigger functions to their own header file.
 */

@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 01/21/2017
 Overview: data file for building
   type: radar tower

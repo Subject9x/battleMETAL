@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 01/22/2017
   mod: 11/26/2017
 Overview: master data ID lists for all the game data

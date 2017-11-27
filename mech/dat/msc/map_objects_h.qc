@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 03/25/2017
 Overview: map objects header, for cleanliness
 */

@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 01/22/2017
 Overview: data def file for a weapon projectile
 */

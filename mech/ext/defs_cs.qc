@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 10/12/2016
 Overview: csqc defs for main game
 */

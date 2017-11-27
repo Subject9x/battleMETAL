@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 01/21/2017
 Overview: moving all mech values into a single global file for ease of maintenance.
   mech: monitor

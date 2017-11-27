@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 03/10/2017
 Overview: GUI API class file for all colors
 */

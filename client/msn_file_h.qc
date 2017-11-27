@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 04/02/2017
 mod: 5/5/2017 - added void(string line, string val) msn_setresrv
 Overview: header for the mission file handler.

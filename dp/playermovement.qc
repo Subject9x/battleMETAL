@@ -193,7 +193,7 @@ void() SV_PlayerPhysics =
         local float accel;
        // accel = sv_accelerate;
         accel = self.m_maccel;
-				//self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed); - original -Subject9x
+				//self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed); - original -Peter Roohr
 				self.velocity = self.velocity + wishdir * min(f, accel * frametime * wishspeed);
 		}
 	}

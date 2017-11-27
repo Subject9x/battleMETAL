@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 04/10/2017
 Overview: impl file for the hud sound system
 */

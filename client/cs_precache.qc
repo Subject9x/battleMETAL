@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 10/31/2016
 Overview: header for mech hud functions
 */
@@ -23,6 +23,7 @@ void() cs_precache={
   HUD_RET_HIT = precache_pic("gfx/hud/ret_hit.png", 0);
   HUD_RAD_PIP_BLD = precache_pic("gfx/hud/rad_bld.png", 0);
   HUD_RAD_PIP_MCH = precache_pic("gfx/hud/rad_mch.png", 0);
+  HUD_RAD_PIP_NAV = precache_pic("gfx/hud/rad_nav.png", 0);
   
   HUD_TRG_PIP_L = precache_pic("gfx/hud/trg_pip_lft.png", 0);
   HUD_TRG_PIP_R = precache_pic("gfx/hud/trg_pip_rgt.png", 0);

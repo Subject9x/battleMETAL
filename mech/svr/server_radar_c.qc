@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 1/29/2017
 Overview: the defintion file for my radar idea
 */

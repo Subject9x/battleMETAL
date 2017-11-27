@@ -1,6 +1,6 @@
 /*
 mech mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/28/2016
 Overview: ran a diff on classic q1 defs.qc vs darkplaces defs.qc
 this is the outcome of that diff, only use is for this mod.

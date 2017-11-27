@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/27/2016
       mod 3/16/2017
       mod 5/17/2017 - normalize time as percent

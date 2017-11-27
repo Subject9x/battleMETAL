@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 11/02/2016
   refac 03/03/2017
 Overview: Hud Layout data for mech 'matok'
@@ -363,7 +363,7 @@ void(float rad_mode, float i_fact) mtk_Radar={
   drawstring(lbl2 + gui_percentToPixelRawVec('-6 6'), strcat("Scale:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
   local vector mpos, cprc;
   mpos_x = self.hud_pnl2.pos_x + gui_percentXRaw(8);
-  mpos_y = self.hud_pnl2.pos_y + gui_percentYRaw(20);
+  mpos_y = self.hud_pnl2.pos_y + gui_percentYRaw(45);
   
   cprc_x = mpos_x + gui_percentXRaw(45);
   cprc_y = mpos_y + gui_percentYRaw(43);

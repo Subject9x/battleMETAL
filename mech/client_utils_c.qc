@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 */
@@ -9,7 +9,6 @@ float(entity ent, float changed) send_mech={
   WriteByte(MSG_ENTITY, E_MEC);
   WriteByte( MSG_ENTITY, num_for_edict(self.owner));
   WriteByte( MSG_ENTITY, self.owner.data_idx);
-  WriteByte( MSG_ENTITY, self.owner.p_class);
   WriteByte( MSG_ENTITY, self.owner.i_faction);
   WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
   WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
@@ -27,7 +26,6 @@ float(entity ent, float changed) send_mech={
 float(entity ent, float changed) send_vehicle={
   WriteByte(MSG_ENTITY, E_VEC);
   WriteByte( MSG_ENTITY, self.owner.data_idx);
-  WriteByte( MSG_ENTITY, self.owner.p_class);
   WriteByte( MSG_ENTITY, self.owner.i_faction);
   WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
   WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
@@ -38,7 +36,6 @@ float(entity ent, float changed) send_vehicle={
 float(entity ent, float changed) send_building={
   WriteByte(MSG_ENTITY, E_BLD);
   WriteByte( MSG_ENTITY, self.data_idx);
-  WriteByte( MSG_ENTITY, self.p_class);
   WriteByte( MSG_ENTITY, self.i_faction);
   WriteCoord( MSG_ENTITY, self.origin_x ); // Position X
   WriteCoord( MSG_ENTITY, self.origin_y ); // Position Y
@@ -53,7 +50,6 @@ float(entity ent, float changed) send_ai_mech={
 //super ugly hack, send ai's e_cam ent
   WriteByte( MSG_ENTITY, E_AIU ); // Unique Identifier, I suggest you use enums to make it easy on yourself
   WriteByte( MSG_ENTITY, self.owner.data_idx);
-  WriteByte( MSG_ENTITY, self.owner.p_class);
   WriteByte( MSG_ENTITY, self.owner.sh_cur);
   WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
   WriteByte( MSG_ENTITY, self.owner.i_faction);

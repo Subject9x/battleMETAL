@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 04/02/2017
 Overview: header for the mission file handler.
 */

@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/27/2016
 Overview: function extensions to world.qc
 */
@@ -124,7 +124,7 @@ void() mh_world_iniData={
 
 
 void(float build_id) data_iniBuilding={
-
+  //might not be needed.
 };
 
 void(float mech_id) data_iniMech={
@@ -136,7 +136,7 @@ void(float mech_id) data_iniMech={
   calls the appropriate 'ini' function on the 
   ent that is making the call. essentially this
   func holds 'state' for finding the right 'data'
-  -Subject9x 11/26/2017
+  -Peter Roohr 11/26/2017
 */
 void(float prj_id) data_iniProjectile={
   if( prj_id == ID_PRJ_EMP){
@@ -167,7 +167,7 @@ void(float prj_id) data_iniProjectile={
   calls the appropriate 'ini' function on the 
   ent that is making the call. essentially this
   func holds 'state' for finding the right 'data'
-  -Subject9x 11/26/2017
+  -Peter Roohr 11/26/2017
 */
 void(float wep_id) data_iniWep={
   if(wep_id == ID_WEP_LATC){

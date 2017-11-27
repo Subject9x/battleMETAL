@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 11/02/2016
 Overview: hud data ents field vars
 */

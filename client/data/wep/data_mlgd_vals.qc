@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 02/25/2017
 Overview: Laser-guided missile
   missile is long-range, will follow player's aiming reticule

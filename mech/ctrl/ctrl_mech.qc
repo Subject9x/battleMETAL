@@ -1,6 +1,6 @@
 /*
 mech mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 9/5/2016
 Overview: implementation for center torso updates
 */

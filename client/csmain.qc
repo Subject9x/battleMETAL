@@ -581,6 +581,7 @@ void(float isnew) CSQC_Ent_Update =
       setorigin(self, self.origin);
       addentity(self);
     }
+    self.p_class = E_NAV;
     self.data_type = ReadByte();
     self.nav_name = ReadByte();
     self.i_faction = ReadByte();
@@ -614,7 +615,7 @@ void(float isnew) CSQC_Ent_Update =
   //AI test...
   else if(id == E_AIU){
     self.data_idx = ReadByte();
-    self.p_class = ReadByte();
+    self.p_class = E_AIU;
     if(isnew){
       self.drawmask = MASK_ENGINE;
       addentity(self);
@@ -629,7 +630,7 @@ void(float isnew) CSQC_Ent_Update =
   }
   else if(id == E_BLD){
     self.data_idx = ReadByte();
-    self.p_class = ReadByte();
+    self.p_class = E_BLD;
     if(isnew){
       local entity dat;
       dat = m_findData(self.data_idx, DATA_BLD);
@@ -648,7 +649,7 @@ void(float isnew) CSQC_Ent_Update =
   }
   else if(id == E_VEC){
     self.data_idx = ReadByte();
-    self.p_class = ReadByte();
+    self.p_class = E_VEC;
     if(isnew){
       self.drawmask = MASK_ENGINE;
       addentity(self);

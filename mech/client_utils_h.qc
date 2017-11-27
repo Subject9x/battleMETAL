@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 this is the header.

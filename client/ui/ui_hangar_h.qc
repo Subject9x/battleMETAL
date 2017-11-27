@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 3/8/2017
 Overview: ui header file the hangar menu
 */

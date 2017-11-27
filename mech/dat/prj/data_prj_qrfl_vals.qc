@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 01/22/2017
 Overview: data def file for the Rotary Plasma Cannon
 this guy will bounce off up to two non-targets.

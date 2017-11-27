@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 3/16/2017
 overview: the defs file for damage calculation numbers
 primarily used by t_damage stuff.

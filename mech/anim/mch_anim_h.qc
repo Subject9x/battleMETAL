@@ -1,6 +1,6 @@
 /*
 mech mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 9/22/2016
 Overview: header file for mech animation files
 */

@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/27/2016
 Overview: storage for map ents, i guess.
 I pulled these out of client.qc, what they were doing there I have 

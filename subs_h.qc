@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 11/18/2017
 Overview: aaaaaand Subs.qc gets its own header too >.<
 */

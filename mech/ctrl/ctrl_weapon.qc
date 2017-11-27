@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 9/1/2016
       mod - 3/4/2017
 Overview: weapon controller header

@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 10/28/2016
 Overview: header for mech hud functions
 */

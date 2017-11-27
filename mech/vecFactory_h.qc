@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 8/31/2016
 mod:  1/21/2017 - refactored due to new data value storage methods
 Overview: used to build vehicles for players, this is the header

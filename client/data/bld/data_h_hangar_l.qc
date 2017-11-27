@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 05/13/2017
 Overview: data file for large mech hangar, humans
 */

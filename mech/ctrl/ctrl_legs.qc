@@ -1,6 +1,6 @@
 /*
 mech mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 9/6/2016
 mod - 5/10/2017 - added terrain check
 Overview: implementation for leg model updates

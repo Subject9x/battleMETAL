@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 11/02/2016
   refac 03/01/2017
 Overview: Hud Layout data for mech 'outlaw'

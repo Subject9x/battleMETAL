@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 9/2/2016
 Overview: data indices for each data file, this isn't used by qc per se'
 merely for reference

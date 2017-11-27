@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 1/26/2017
 Overview: necessary targeting and radar functions
 */

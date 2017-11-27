@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 2/17/2017
 mod - 5/11/2017
 Overview: the interface for hud rendering
@@ -13,6 +13,7 @@ string HUT_RET_LOK;
 string HUD_RET_HIT;
 string HUD_RAD_PIP_BLD;
 string HUD_RAD_PIP_MCH;
+string HUD_RAD_PIP_NAV;
 
 string HUD_TRG_PIP_L;
 string HUD_TRG_PIP_R;
@@ -70,55 +71,65 @@ void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
   gui_renderMeter(perc, org, '4 26', '-1 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
 };
 
+
+
 void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
   local entity e;
-  drawpic(cofs - '3 3', HUD_RAD_PIP_MCH,  '6 6', '1 1 1', HUD_ALPHA, 0);
+  drawpic(cofs - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), '1 1 1', HUD_ALPHA, 0);
   e = findradius(pmove_org, range);
   while(e){
     if(e != world){
       if(e.p_class != P_OBS){
-        traceline(pmove_org, e.origin, TRUE, self);
-        if(trace_fraction == 1){
-          local vector clr;
-          local string icon;
-          if(e.i_faction != p_faction){
-            clr = CLR_DEF_IFF_ENEMY;
-            if(e.p_class == P_BULD){
-              icon = HUD_RAD_PIP_BLD;
+        local vector clr;
+        local string icon;
+        icon = HUD_RAD_PIP_MCH;
+        if(e.p_class == E_NAV){
+          clr = CLR_DEF_ARM_OK;
+          icon = HUD_RAD_PIP_NAV;
+        }
+        else{
+          traceline(pmove_org, e.origin, FALSE, self);
+          if(trace_fraction >= 0.85){
+            if(e.i_faction != p_faction){
+              clr = CLR_DEF_IFF_ENEMY;
+              if(e.p_class == E_BLD){
+                icon = HUD_RAD_PIP_BLD;
+              }
+              else{
+                icon = HUD_RAD_PIP_MCH;
+              }
             }
             else{
-              icon = HUD_RAD_PIP_MCH;
+              if(e.p_class == E_BLD){
+                clr = CLR_DEF_IIF_FRIEND_BLD;
+                icon = HUD_RAD_PIP_BLD;
+              }
+              else{
+                clr = CLR_DEF_IIF_FRIEND;
+                icon = HUD_RAD_PIP_MCH;
+              }
             }
           }
-          else{
-            if(e.p_class == P_BULD){
-              clr = CLR_DEF_IIF_FRIEND_BLD;
-              icon = HUD_RAD_PIP_BLD;
-            }
-            else{
-              clr = CLR_DEF_IIF_FRIEND;
-              icon = HUD_RAD_PIP_MCH;
-            }
-          }
-          local float dra;
-          local vector eorg, corg, nofs, ctr;
-          ctr_x = pnl_sz_x / 2;
-          ctr_y = pnl_sz_y / 2;
-          dra = TRUE;
-          eorg = e.origin;
-          corg_x = (eorg_x - pmove_org_x) / 25;
-          corg_y = (eorg_y - pmove_org_y) / 25; 
-          nofs_x = cofs_x + corg_x;
-          nofs_y = cofs_y + corg_y;
-          if((nofs_x > (cofs_x + ctr_x)) || (nofs_x < (cofs_x - ctr_x))){
-            dra = FALSE;
-          }  
-          if((nofs_y > (cofs_y + ctr_y)) || (nofs_y < (cofs_y - ctr_y))){
-            dra = FALSE;
-          }
-          if(dra){
-            drawpic(nofs - '3 3', icon,  '6 6', clr, HUD_ALPHA, 0);
-          }
+         
+        }
+        local float dra;
+        local vector eorg, corg, nofs, ctr;
+        ctr_x = pnl_sz_x / 2;
+        ctr_y = pnl_sz_y / 2;
+        dra = TRUE;
+        eorg = e.origin;
+        corg_x = (eorg_x - pmove_org_x) / 25;
+        corg_y = (eorg_y - pmove_org_y) / 25; 
+        nofs_x = cofs_x + corg_x;
+        nofs_y = cofs_y + corg_y;
+        if((nofs_x > (cofs_x + ctr_x)) || (nofs_x < (cofs_x - ctr_x))){
+          dra = FALSE;
+        }  
+        if((nofs_y > (cofs_y + ctr_y)) || (nofs_y < (cofs_y - ctr_y))){
+          dra = FALSE;
+        }
+        if(dra){
+          drawpic(nofs - gui_percentToPixelRawVec('3 3'), icon,  gui_percentToPixelRawVec('6 6'), clr, HUD_ALPHA, 0);
         }
       }
     }

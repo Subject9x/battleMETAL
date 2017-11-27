@@ -1,6 +1,6 @@
 /*
 mech Mod
-Author: Subject9x
+Author: Peter Roohr
 Date: 11/26/2017
 Overview: controller functions for buildings, mostly generics
 */
@@ -18,6 +18,7 @@ void() building_die={
 	SUB_UseTargets ();
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DEAD;
+  multi_trigger();
   self.nextthink = time + 0.01;
   self.think =  SUB_Remove;
 };
