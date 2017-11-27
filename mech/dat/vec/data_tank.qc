@@ -99,17 +99,18 @@ void() data_TNK_hmn={
     self.data_type = DATA_VEHC;
     self.vec_name = DAT_TNK_VEC_NAME;
     self.vec_size = 1;
-    self.unit_ini = data_TNK_ini;
-    self.unit_legs = data_TNK_legs;
-    self.unit_ctor = data_TNK_ctor;
-    self.unit_wep1 = data_TNK_wep1;
-    self.unit_wep2 = data_TNK_wep2;
-    self.unit_cam = data_TNK_cam;
+
     self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;
   self = oself;
 };
 
 void() data_TNK_ini={
+  self.unit_legs = data_TNK_legs;
+  self.unit_ctor = data_TNK_ctor;
+  self.unit_wep1 = data_TNK_wep1;
+  self.unit_wep2 = data_TNK_wep2;
+  self.unit_cam = data_TNK_cam;
+    
   self.data_idx= DAT_TNK_IDX;
   self.vec_name= DAT_TNK_VEC_NAME;
   self.data_type = DATA_VEHC;
@@ -181,7 +182,8 @@ void() ai_tank={
   
   self.ideal_yaw = self.angles * '0 1 0';
 		
-  buildVehicle(dat);
+  //buildVehicle(dat);
+  data_iniVehc (1, self.nextVecChoice);
   ai_core_calcranges();
   local float mod;
   mod = ai_pilot_armor_mod();

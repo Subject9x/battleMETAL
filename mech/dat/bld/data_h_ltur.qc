@@ -12,7 +12,7 @@ Overview:
 float DAT_TUR_IDX = ID_BLD_H_TURRET;
 string DAT_TUR_VEC_NAME = "Light Turret";
 float DAT_TUR_TECH_LEVEL = 1;
-float DAT_TUR_RADAR_RANGE = 400;
+float DAT_TUR_RADAR_RANGE = 3000;
 float DAT_TUR_ENERGY_CUR = 0;
 float DAT_TUR_ENERGY_MAX = 400;
 float DAT_TUR_ENERGY_RATE = 1;
@@ -100,16 +100,18 @@ void() data_tur_hmn={
     self.vec_name = DAT_TUR_VEC_NAME;
     self.vec_size = 1;
     self.unit_ini = data_tur_ini;
-    self.unit_legs = data_tur_legs;
-    self.unit_ctor = data_tur_ctor;
-    self.unit_wep1 = data_tur_wep1;
-    self.unit_wep2 = data_tur_wep2;
-    self.unit_cam = data_tur_cam;
+
     self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;
   self = oself; 
 };
 
 void() data_tur_ini={
+  self.unit_legs = data_tur_legs;
+  self.unit_ctor = data_tur_ctor;
+  self.unit_wep1 = data_tur_wep1;
+  self.unit_wep2 = data_tur_wep2;
+  self.unit_cam = data_tur_cam;
+
   self.data_idx= DAT_TUR_IDX;
   self.vec_name= DAT_TUR_VEC_NAME;
   self.data_type = DATA_VEHC;
@@ -139,13 +141,6 @@ void() data_tur_ini={
 void() building_tur;
 
 void() building_tur={
-  local entity dat;
-  dat = mh_world_findData(ID_BLD_H_TURRET, DATA_VEHC);
-  if(!dat){
-    bprint(strcat("turret id:",ftos(ID_BLD_H_TURRET)," was not found","\n"));
-    remove(self);
-    return;
-  }
   self.flags = self.flags | FL_MONSTER;
   self.deadflag = DEAD_NO;
   self.p_class = P_VECH;
@@ -170,17 +165,10 @@ void() building_tur={
   self.stat_lck_stt = LOCK_NONE;
   self.ideal_yaw = self.angles * '0 1 0';
   
-  buildVehicle(dat);
+  data_iniBuilding(ID_BLD_H_TURRET);
+  
   self.solid = SOLID_BSP;
   self.e_legs.movetype = MOVETYPE_NONE;
-  self.e_legs.aiment = world;
-  setsize(self.e_legs, '-1 -1 -1', '1 1 1');
-  local vector adj;
-  makevectors(self.angles);
-  adj = self.origin + (v_up*-10);
-  setorigin(self.e_legs, adj);
-  self.e_legs.walkframe = 0;
-  self.e_legs.prev_angle = self.angles;
   
   ai_core_calcranges();
 

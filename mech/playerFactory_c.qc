@@ -42,13 +42,14 @@ void() player_makeVec={
 };
 
 void() player_makeMech={
-  local entity dat;
-  dat = m_findMechData(self.vec_size, self.nextVecChoice);
+  //local entity dat;
+  //dat = m_findMechData(self.vec_size, self.nextVecChoice);
   self.p_class = P_MECH;
-  self.data_idx = dat.data_idx;
+  self.data_idx = self.nextVecChoice;
   self.power_timer = time + 3;
   self.stat_plr_stt = PLAYER_START;
-  buildVehicle(dat);
+  //buildVehicle(dat);
+  data_iniMech(self.vec_size, self.nextVecChoice);
   if((self.flags & FL_CLIENT)){
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);

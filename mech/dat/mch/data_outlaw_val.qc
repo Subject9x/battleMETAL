@@ -161,17 +161,7 @@ void() data_mech_otl={
     self.classname = "data";
     self.data_type = DATA_MECH;
     self.vec_size = 1;
-    self.unit_ini = data_otl_ini;
-    self.unit_legs = data_otl_legs;
-    self.unit_ctor = data_otl_ctor;
-    self.unit_ltor = data_otl_ltor;
-    self.unit_rtor = data_otl_rtor;
-    self.unit_larm = data_otl_larm;
-    self.unit_rarm = data_otl_rarm;
-    self.unit_cam = data_otl_cam;
-    self.unit_wep1 = data_otl_wep1;
-    self.unit_wep2 = data_otl_wep2;
-    self.unit_wep3 = data_otl_wep3;
+
     self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;    
     self.w_group2 = self.w_group2 | WEAPON3;    
     self.w_group3 = self.w_group3;
@@ -181,6 +171,17 @@ void() data_mech_otl={
 };
 
 void() data_otl_ini={
+  self.unit_legs = data_otl_legs;
+  self.unit_ctor = data_otl_ctor;
+  self.unit_ltor = data_otl_ltor;
+  self.unit_rtor = data_otl_rtor;
+  self.unit_larm = data_otl_larm;
+  self.unit_rarm = data_otl_rarm;
+  self.unit_cam = data_otl_cam;
+  self.unit_wep1 = data_otl_wep1;
+  self.unit_wep2 = data_otl_wep2;
+  self.unit_wep3 = data_otl_wep3;
+
   self.data_idx= DAT_OTL_IDX;
   self.vec_name= DAT_OTL_VEC_NAME;
   self.data_type = DATA_MECH;

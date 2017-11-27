@@ -108,27 +108,54 @@ void() mh_world_ini={
 };
 
 void() mh_world_iniData={
-
-  
-  //mech data
-  data_mech_otl();
-  data_mech_mtk();
-  data_mech_mnt();
-  
-  //vehicles
-  data_TNK_hmn();
-  
   //buildings;
-  data_tur_hmn();
 };
 
 
 void(float build_id) data_iniBuilding={
-  //might not be needed.
+  if(build_id == ID_BLD_H_TURRET){
+    build_vehicle_unit(data_tur_ini);
+  }
 };
 
-void(float mech_id) data_iniMech={
+/*
+  SCOPE: self = weapon in question
+  calls the appropriate 'ini' function on the 
+  ent that is making the call. essentially this
+  func holds 'state' for finding the right 'data'
+  -Peter Roohr 11/27/2017
+*/
+void(float vecsize, float mech_id) data_iniMech={
+  if(vecsize == 1){
+    if(mech_id == ID_MCH_BALAKET){
+      build_mech_unit(data_otl_ini);
+    }
+  }
+  else if(vecsize == 2){
+    if(mech_id == ID_MCH_MATOK){
+      build_mech_unit(data_mtk_ini);
+    }
+  }
+  else if(vecsize == 3){
+    if(mech_id == ID_MCH_MONITOR){
+      build_mech_unit(data_mnt_ini);
+    }
+  }
+};
 
+/*
+  SCOPE: self = weapon in question
+  calls the appropriate 'ini' function on the 
+  ent that is making the call. essentially this
+  func holds 'state' for finding the right 'data'
+  -Peter Roohr 11/27/2017
+*/
+void(float vecsize, float vec_id) data_iniVehc={
+  if(vecsize == 1){
+    if(vec_id == ID_VEC_TANK){
+      build_vehicle_unit(data_TNK_ini);
+    }
+  }
 };
 
 /*

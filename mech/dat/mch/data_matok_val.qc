@@ -184,19 +184,7 @@ void() data_mech_mtk={
     self.data_type = DATA_MECH;
     self.vec_name = DAT_MTK_VEC_NAME;
     self.vec_size = 2;
-    self.unit_ini = data_mtk_ini;
-    self.unit_legs = data_mtk_legs;
-    self.unit_ltor = data_mtk_ltor;
-    self.unit_ctor = data_mtk_ctor;
-    self.unit_rtor = data_mtk_rtor;
-    self.unit_larm = data_mtk_larm;
-    self.unit_rarm = data_mtk_rarm;
-    self.unit_cam = data_mtk_cam;
-    self.unit_wep1 = data_mtk_wep1;
-    self.unit_wep2 = data_mtk_wep2;
-    self.unit_wep3 = data_mtk_wep3;
-    self.unit_wep4 = data_mtk_wep4;
-    self.unit_wep5 = data_mtk_wep5;
+
     self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;    
     self.w_group2 = self.w_group2 | WEAPON3 | WEAPON4;    
     self.w_group3 = self.w_group3 | WEAPON5;
@@ -206,6 +194,19 @@ void() data_mech_mtk={
 };
 
 void() data_mtk_ini={
+  self.unit_legs = data_mtk_legs;
+  self.unit_ltor = data_mtk_ltor;
+  self.unit_ctor = data_mtk_ctor;
+  self.unit_rtor = data_mtk_rtor;
+  self.unit_larm = data_mtk_larm;
+  self.unit_rarm = data_mtk_rarm;
+  self.unit_cam = data_mtk_cam;
+  self.unit_wep1 = data_mtk_wep1;
+  self.unit_wep2 = data_mtk_wep2;
+  self.unit_wep3 = data_mtk_wep3;
+  self.unit_wep4 = data_mtk_wep4;
+  self.unit_wep5 = data_mtk_wep5;
+
   self.data_idx= DAT_MTK_IDX;
   self.vec_name= DAT_MTK_VEC_NAME;
   self.data_type = DATA_MECH;
