@@ -23,23 +23,8 @@ float DAT_EMP_WSIZE = 2;
 float DAT_EMP_HPX = 200; //v0.0.3
 float DAT_EMP_RANGE = 2400;//v0.0.3
 
-void() data_wep_emp;  //called by the data system at game startup
-void() data_emp_ini;  //used by the vehicle factory when building a weapon hardpoint
 void() data_emp_atk;  //the actual attack call
 void() data_emp_think;
-
-void() data_wep_emp={
-  local entity oself, emp;
-  emp = spawn();
-  oself = self;
-  self = emp;
-    self.classname = "data";
-    self.data_idx = DAT_EMP_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_emp_ini;
-    self.w_name = DAT_EMP_NAME;
-  self = oself;
-};
 
 void() data_emp_ini={
   self.data_idx = DAT_EMP_IDX;
@@ -86,60 +71,54 @@ void() data_emp_think={
 void() data_emp_atk={
   local entity player, proj, cam, oself;
   player = self.owner;
-  proj = mh_world_findData(self.w_proj, DATA_PROJ);
-  if(proj){
-    local vector dir, org, end, adj;
-    
-    if((player.flags & FL_CLIENT)){
-      end = util_traceForPlayer(player, self.w_range);
-    }
-    else{
-      end = util_traceForAI(player, self.w_range, player.ai_leading); 
-    }
-    dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-    
-    if((player.flags & FL_MONSTER)){
-      if(end == player.origin){
-        player.patience = player.patience + 1;
-        return;
-      }
-    }
-    
-    self.w_currentammo = self.w_currentammo - 1;
-    if(self.w_currentammo <= 0){
-      self.en_cur = 0;
-      self.w_currentammo = self.w_clipsize;
-      self.w_state = RELOADING;
-    }
-    else{
-      self.w_firetime = time + self.w_firerate;
-      self.w_state = RECOIL;
-    }
-    
-    adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-    makevectors(player.angles);
-    org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-    
-    newmis = spawn();
-    oself = self;
-    self = newmis;
-      self.owner = player;
-      proj.unit_ini();
-      util_setModel(self.c_model, 0);
-      util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-      util_setBoundBox('0 0 0', '0 0 0');
-      self.velocity = normalize(dir - org);
-      self.p_lifetime = time + self.p_lifetime;
-      self.w_firetime = time + 0.5;
-      setorigin(self, org);
-      self.velocity = self.velocity * self.p_velocity;
-      self.angles = vectoangles(self.velocity);
-      self.think = data_prj_emp_think;
-      self.nextthink = time + 0.01;
-    self = oself;
-    sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  local vector dir, org, end, adj;
+  
+  if((player.flags & FL_CLIENT)){
+    end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    bprint("oops!\n");
+    end = util_traceForAI(player, self.w_range, player.ai_leading); 
   }
+  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+  
+  if((player.flags & FL_MONSTER)){
+    if(end == player.origin){
+      player.patience = player.patience + 1;
+      return;
+    }
+  }
+  
+  self.w_currentammo = self.w_currentammo - 1;
+  if(self.w_currentammo <= 0){
+    self.en_cur = 0;
+    self.w_currentammo = self.w_clipsize;
+    self.w_state = RELOADING;
+  }
+  else{
+    self.w_firetime = time + self.w_firerate;
+    self.w_state = RECOIL;
+  }
+  
+  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
+  makevectors(player.angles);
+  org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+  
+  newmis = spawn();
+  oself = self;
+  self = newmis;
+    self.owner = player;
+    data_iniProjectile(oself.w_proj);
+    util_setModel(self.c_model, 0);
+    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+    util_setBoundBox('0 0 0', '0 0 0');
+    self.velocity = normalize(dir - org);
+    self.p_lifetime = time + self.p_lifetime;
+    self.w_firetime = time + 0.5;
+    setorigin(self, org);
+    self.velocity = self.velocity * self.p_velocity;
+    self.angles = vectoangles(self.velocity);
+    self.think = data_prj_emp_think;
+    self.nextthink = time + 0.01;
+  self = oself;
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };

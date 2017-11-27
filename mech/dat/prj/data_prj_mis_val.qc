@@ -21,22 +21,7 @@ float DAT_PRJ_MIS_GLOWCOLOR = 0;
 float DAT_PRJ_MIS_GLOWSIZE = 0;
 float DAT_PRJ_MIS_GLOWTRAIL= FALSE;
 
-void() data_prj_mis;
-void() data_prj_mis_ini;
 void() data_prj_mis_touch;
-
-void() data_prj_mis={
-  local entity oself, data;
-  data = spawn();
-  oself = self;
-  self = data;
-    self.classname = "data";
-    self.data_type = DATA_PROJ;
-    self.data_idx = DAT_PRJ_MIS_IDX;
-    self.unit_ini = data_prj_mis_ini;
-    self.p_damage = DAT_PRJ_MIS_DAMAGE;
-  self = oself;
-};
 
 void() data_prj_mis_ini={
   self.classname = "missile";

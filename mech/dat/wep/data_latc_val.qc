@@ -26,23 +26,8 @@ float DAT_LATC_WSIZE = 1;
 float DAT_LATC_HPX = 200; //v0.0.3
 float DAT_LATC_RANGE = 3600;//v0.0.3
 
-void() data_wep_latc;
-void() data_latc_ini;
 void() data_latc_atk;
 void() data_latc_think; 
-
-void() data_wep_latc={
-  local entity oself, latc;
-  latc = spawn();
-  oself = self;
-  self = latc;
-    self.classname = "data";
-    self.data_idx = DAT_LATC_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_latc_ini;
-    self.w_name = DAT_LATC_NAME;
-  self = oself;
-};
 
 void() data_latc_ini={
   self.data_idx = DAT_LATC_IDX;

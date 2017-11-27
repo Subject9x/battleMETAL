@@ -29,8 +29,8 @@ float DAT_TUR_M_BSPEED=-1;
 string DAT_TUR_M_PITCH_N = "-25";
 string DAT_TUR_M_PITCH_X = "45";
 
-vector DAT_TUR_SPREAD_N = '8 6 0.01';
-vector DAT_TUR_SPREAD_X = '14 10 0.03';
+vector DAT_TUR_SPREAD_N = '2 3 0.09';
+vector DAT_TUR_SPREAD_X = '6 6 0.01';
 
 //HITPOINT VALUES
 float DAT_TUR_CTOR_HP = 100;
@@ -106,7 +106,7 @@ void() data_tur_hmn={
     self.unit_wep2 = data_tur_wep2;
     self.unit_cam = data_tur_cam;
     self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;
-  self = oself;
+  self = oself; 
 };
 
 void() data_tur_ini={
@@ -174,7 +174,7 @@ void() building_tur={
   self.solid = SOLID_BSP;
   self.e_legs.movetype = MOVETYPE_NONE;
   self.e_legs.aiment = world;
-  setsize(self.e_legs, '-1 -1 0', '1 1 1');
+  setsize(self.e_legs, '-1 -1 -1', '1 1 1');
   local vector adj;
   makevectors(self.angles);
   adj = self.origin + (v_up*-10);

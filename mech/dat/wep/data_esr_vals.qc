@@ -24,23 +24,8 @@ float DAT_ESR_WSIZE = 3;
 float DAT_ESR_HPX = 150; //v0.0.3
 float DAT_ESR_RANGE = 800;//v0.0.3
 
-void() data_wep_esr;
-void() data_esr_ini;
 void() data_esr_atk;
 void() data_esr_think;
-
-void() data_wep_esr={
-  local entity oself, esr;
-  esr = spawn();
-  oself = self;
-  self = esr;
-    self.classname = "data";
-    self.data_idx = DAT_ESR_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_esr_ini;
-    self.w_name = DAT_ESR_NAME;
-  self = oself;
-};
 
 void() data_esr_ini={
   self.data_idx = DAT_ESR_IDX;

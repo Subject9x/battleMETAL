@@ -139,8 +139,6 @@ void() server_updateTargetInfo={
 
 void() server_calcTargetArmor={
 	local entity trg;
-	float track;
-	track = 0;
 	trg = self.enemy;
 	if(trg.p_class == P_MECH){
     self.stat_trg_lg_hp = csqc_updateCompStat(trg.e_legs);

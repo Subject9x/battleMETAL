@@ -32,7 +32,6 @@ void() multi_wait =
 // so wait for the delay time before firing
 void() multi_trigger =
 {
-  bprint("foo\n");
 	if (self.nextthink > time)
 	{
 		return;		// allready been triggered

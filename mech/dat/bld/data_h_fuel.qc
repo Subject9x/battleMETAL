@@ -8,6 +8,7 @@ Overview: data file for building
   func: provides radar scanning to all friendly units in radius
 */
 
+
 /*QUAKED building_fuel (.1 .1 .1) (-64 -64 0) (64 64 40)
 */
 void() building_fuel;
@@ -30,6 +31,7 @@ void() building_fuel={
   self.th_die = building_die;
   self.think = building_think;
   self.nextthink = time;
+  self.use = multi_trigger;
   self.SendEntity = send_building;
   self.SendFlags = 1;
 };

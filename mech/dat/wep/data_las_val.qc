@@ -17,29 +17,14 @@ vector DAT_LAS_FIRE_OFS = '0 0 2';
 string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
 float DAT_LAS_EN_MAX = 200;
 float DAT_LAS_EN_RATE = 10;
-string DAT_LAS_SOUND = "q3mdl/weapons/w_laser.md3";
+string DAT_LAS_SOUND = "sound/weapons/laser_fire.ogg";
 float DAT_LAS_TECH_LEVEL = 1;
 float DAT_LAS_WSIZE = 1;
 float DAT_LAS_HPX = 200; //v0.0.3
 float DAT_LAS_RANGE = 4000;//v0.0.3
 
-void() data_wep_las;
-void() data_las_ini;
 void() data_las_atk;
 void() data_las_think;
-
-void() data_wep_las={
-  local entity oself, las;
-  las = spawn();
-  oself = self;
-  self = las;
-    self.classname = "data";
-    self.data_idx = DAT_LAS_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_las_ini;
-    self.w_name = DAT_LAS_NAME;
-  self = oself;
-};
 
 void() data_las_ini={
   self.data_idx = DAT_LAS_IDX;
@@ -125,7 +110,7 @@ void() data_las_atk={
   laser_org.think = SUB_Remove;
   laser_org.nextthink = time + 0.01;// + 0.35;
   
-  sound (laser_org, CHAN_WEAPON, "sound/weapons/laser_fire.ogg", 1, ATTN_NORM); 
+  sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
   te_lightning1(laser_org, laser_org.origin, dir);  
   te_flamejet(dir, '0 10 0', 25);
 

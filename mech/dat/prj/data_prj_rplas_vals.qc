@@ -23,24 +23,9 @@ float DAT_PRJ_RPLAS_GLOWCOLOR = 150;// 240;
 float DAT_PRJ_RPLAS_GLOWSIZE = 0.1;
 float DAT_PRJ_RPLAS_GLOWTRAIL= FALSE;
 
-void() data_prj_rplas;
-void() data_prj_rplas_ini;
 void() data_prj_rplas_touch;
 void() data_prj_rplas_bounce;
 void() data_prj_rplas_burn;
-
-void() data_prj_rplas={
-  local entity oself, data;
-  data = spawn();
-  oself = self;
-  self = data;
-    self.classname = "data";
-    self.data_type = DATA_PROJ;
-    self.data_idx = DAT_PRJ_RPLAS_IDX;
-    self.unit_ini = data_prj_rplas_ini;
-    self.p_damage = DAT_PRJ_RPLAS_DAMAGE;
-  self = oself;
-};
 
 void() data_prj_rplas_ini={
   self.classname = "missile";

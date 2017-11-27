@@ -22,22 +22,7 @@ float DAT_PRJ_QRFL_GLOWCOLOR = 255;
 float DAT_PRJ_QRFL_GLOWSIZE = 0.0005;
 float DAT_PRJ_QRFL_GLOWTRAIL= FALSE;
 
-void() data_prj_qrfl;
-void() data_prj_qrfl_ini;
 void() data_prj_qrfl_touch;
-
-void() data_prj_qrfl={
-  local entity oself, data;
-  data = spawn();
-  oself = self;
-  self = data;
-    self.classname = "data";
-    self.data_type = DATA_PROJ;
-    self.data_idx = DAT_PRJ_QRFL_IDX;
-    self.unit_ini = data_prj_qrfl_ini;
-    self.p_damage = DAT_PRJ_QRFL_DAMAGE;
-  self = oself;
-};
 
 void() data_prj_qrfl_ini={
   self.classname = "missile";

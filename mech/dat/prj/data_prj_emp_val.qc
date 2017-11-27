@@ -23,24 +23,9 @@ float DAT_PRJ_EMP_GLOWTRAIL= FALSE;
 float DAT_PRJ_EMP_PROXYRAD = 150; //v0.0.3
 float DAT_PRJ_EMP_EXPRAD = 300;//v0.0.3
 
-void() data_prj_emp;
-void() data_prj_emp_ini;
 void() data_prj_emp_touch;
 void() data_prj_emp_think;
 void() data_prj_emp_explode;
-
-void() data_prj_emp={
-  local entity oself, data;
-  data = spawn();
-  oself = self;
-  self = data;
-    self.classname = "data";
-    self.data_type = DATA_PROJ;
-    self.data_idx = DAT_PRJ_EMP_IDX;
-    self.unit_ini = data_prj_emp_ini;
-    self.p_damage =  DAT_PRJ_EMP_DAMAGE;
-  self = oself;
-};
 
 void() data_prj_emp_ini={
   self.classname = "missile";

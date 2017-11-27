@@ -30,6 +30,7 @@ void() building_power={
   droptofloor();
   self.th_die = building_power_die;
   self.think = building_think;
+  self.use = multi_trigger;
   self.nextthink = time + 1;
   self.SendEntity = send_building;
   self.SendFlags = 1;

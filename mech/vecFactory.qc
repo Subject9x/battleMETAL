@@ -354,12 +354,11 @@ void(entity mechData, entity own, float state1, float state2, float state3) buil
   local entity wepData;
   local vector ofs;
  
-  wepData = mh_world_findData(self.data_idx, DATA_WEPN);
+  data_iniWep(self.data_idx);
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
   self.c_name = "weapon";
 
-  wepData.unit_ini();
   if((own.flags & FL_MONSTER)){
     if(self.w_clipsize > 1){
       self.w_firerate = self.w_firerate * 1000;

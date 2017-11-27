@@ -3,17 +3,18 @@
 void() CSQC_Init =
 {
 	maxclients = 0;
-	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity"))
+	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
 		maxclients = maxclients + 1;
+  }
   
 	// this is the place to do any registercmd() calls we want for custom csqc commands (like replacing +showscores) so that they tab-complete properly
 	// we can precache_sound and precache_model and precache_pic here
-  plr_orig = '0 0 0';
-  plr_angles = '0 0 0';
+  //plr_orig = '0 0 0';
+  //plr_angles = '0 0 0';
   VIEW_ORG = '0 0';
   PLAYER_HELPER = spawn();
-  addentity(PLAYER_HELPER);
   PLAYER_HELPER.drawmask = MASK_ENGINE;
+  addentity(PLAYER_HELPER);
   PLAYER_HELPER.plr_sel_mech = 0;
   PLAYER_HELPER.vec_size = 1;
   PLAYER_HELPER.plr_nex_mech = 0;

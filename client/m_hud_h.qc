@@ -39,7 +39,7 @@ void(float hp, vector org, vector sz) hud_renderArmorBuilding={
   ofs = org;
   ofs_x = ofs_x - (sz_x/2);
   ofs_y = ofs_y - (sz_y/2);
-  gui_renderMeter(100, ofs, sz, '0 0 0', gui_getColorForArmor(hp), HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(hp, ofs, sz, CLR_DEF_ARM_DED, gui_getColorForArmor(hp), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 void(float hp, vector org) hud_renderArmorVehicle={

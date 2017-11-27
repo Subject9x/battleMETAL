@@ -27,23 +27,8 @@ float DAT_SFGA_WSIZE = 1;
 float DAT_SFGA_HPX = 200; //v0.0.3
 float DAT_SFGA_RANGE = 3600;//v0.0.3
 
-void() data_wep_sfga;
-void() data_sfga_ini;
 void() data_sfga_atk;
 void() data_sfga_think; 
-
-void() data_wep_sfga={
-  local entity oself, sfga;
-  sfga = spawn();
-  oself = self;
-  self = sfga;
-    self.classname = "data";
-    self.data_idx = DAT_SFGA_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_sfga_ini;
-    self.w_name = DAT_SFGA_NAME;
-  self = oself;
-};
 
 void() data_sfga_ini={
   self.data_idx = DAT_SFGA_IDX;
@@ -128,30 +113,26 @@ void() data_sfga_atk={
   }
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  proj = mh_world_findData(self.w_proj, DATA_PROJ);
-  if(proj){
-    newmis = spawn();
-    oself = self;
-    self = newmis;
-      self.owner = player;
-      proj.unit_ini();
-      util_setModel(self.c_model, 0);
-      util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
-      util_setBoundBox('0 0 0', '0 0 0');
-      self.velocity = normalize(dir - org);
-      self.velocity = self.velocity * self.p_velocity;
-      self.velocity_z = self.velocity_z + 200;
-      self.think = BecomeExplosion;
-      self.nextthink = time + self.p_lifetime;
-      setorigin(self, org);
-      self.angles = vectoangles(self.velocity);
-    self = oself;
-    if((player.flags & FL_CLIENT)){
-      player.punchangle = randomvec();
-    }
+  newmis = spawn();
+  oself = self;
+  self = newmis;
+    self.owner = player;
+    data_iniProjectile(oself.w_proj);
+    util_setModel(self.c_model, 0);
+    util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
+    util_setBoundBox('0 0 0', '0 0 0');
+    self.velocity = normalize(dir - org);
+    self.velocity = self.velocity * self.p_velocity;
+    self.velocity_z = self.velocity_z + 200;
+    self.think = BecomeExplosion;
+    self.nextthink = time + self.p_lifetime;
+    setorigin(self, org);
+    self.angles = vectoangles(self.velocity);
+  self = oself;
+  if((player.flags & FL_CLIENT)){
+    player.punchangle = randomvec();
   }
-
-  
+    
   local entity bul_fx;
   bul_fx = spawn();
   bul_fx.movetype = SOLID_NOT;

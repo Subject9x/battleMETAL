@@ -110,29 +110,6 @@ void() mh_world_ini={
 void() mh_world_iniData={
 
   
-  //projectile data
-  //data_prj_latc();
-  data_prj_emp();
-  data_prj_mis();
-  data_prj_mlgd();
-  data_prj_marh();
-  data_prj_rplas();
-  data_prj_qrfl();
-  data_prj_sfga();
-  
-  //weapon data
-  data_wep_latc();
-  data_wep_emp();
-  data_wep_mis();
-  data_wep_las();
-  data_wep_mlgd();
-  data_wep_marh();
-  data_wep_qrfl();
-  data_wep_esr();
-  data_wep_pac();
-  data_wep_rplas();
-  data_wep_sfga();
-  
   //mech data
   data_mech_otl();
   data_mech_mtk();
@@ -142,13 +119,92 @@ void() mh_world_iniData={
   data_TNK_hmn();
   
   //buildings;
-  data_h_power();
-  data_h_radar();
-  data_h_shield();
-  data_h_fuel();
-  data_h_hangar_l();
   data_tur_hmn();
 };
+
+
+void(float build_id) data_iniBuilding={
+
+};
+
+void(float mech_id) data_iniMech={
+
+};
+
+/*
+  SCOPE: self = weapon in question
+  calls the appropriate 'ini' function on the 
+  ent that is making the call. essentially this
+  func holds 'state' for finding the right 'data'
+  -Subject9x 11/26/2017
+*/
+void(float prj_id) data_iniProjectile={
+  if( prj_id == ID_PRJ_EMP){
+    data_prj_emp_ini();
+  }
+  else if( prj_id == ID_PRJ_MIS){
+    data_prj_mis_ini();
+  }
+  else if( prj_id == ID_PRJ_MLGD){
+    data_prj_mlgd_ini();
+  }
+  else if( prj_id == ID_PRJ_MARH){
+    data_prj_marh_ini();
+  }
+  else if( prj_id == ID_PRJ_RPLAS){
+    data_prj_rplas_ini();
+  }
+  else if( prj_id == ID_PRJ_QRFL){
+    data_prj_qrfl_ini();
+  }
+  else if( prj_id == ID_PRJ_SFGA){
+    data_prj_sfga_ini();
+  }
+};
+
+/*
+  SCOPE: self = weapon in question
+  calls the appropriate 'ini' function on the 
+  ent that is making the call. essentially this
+  func holds 'state' for finding the right 'data'
+  -Subject9x 11/26/2017
+*/
+void(float wep_id) data_iniWep={
+  if(wep_id == ID_WEP_LATC){
+    data_latc_ini();
+  }
+  else if(wep_id == ID_WEP_EMP){
+    data_emp_ini();
+  }
+  else if(wep_id == ID_WEP_LAS){
+    data_las_ini();
+  }
+  else if(wep_id == ID_WEP_MIS){
+    data_mis_ini();
+  }
+  else if(wep_id == ID_WEP_QRF){
+    data_qrfl_ini();
+  }
+  else if(wep_id == ID_WEP_RPC){
+    data_rplas_ini();
+  }
+  else if(wep_id == ID_WEP_SFGA){
+    data_sfga_ini();
+  }
+  else if(wep_id == ID_WEP_PAC){
+    data_pac_ini();
+  }
+  else if(wep_id == ID_WEP_ESR){
+    data_esr_ini();
+  }
+  else if(wep_id == ID_WEP_MLGD){
+    data_mlgd_ini();
+  }
+  else if(wep_id == ID_WEP_MARH){
+    data_marh_ini();
+  }
+};
+
 
 entity(float id, float dat_type) mh_world_findData={
   local entity data_chain;

@@ -17,7 +17,7 @@ vector DAT_PAC_FIRE_OFS = '0 0 8';
 string DAT_PAC_MODEL = "q3mdl/weapons/w_pac.md3";
 float DAT_PAC_EN_COST =  10;
 float DAT_PAC_EN_MAX =  800;
-string DAT_PAC_SOUND = "q3mdl/weapons/w_laser.md3";
+string DAT_PAC_SOUND = "sound/weapons/pac_fire.ogg";
 float DAT_PAC_TECH_LEVEL = 1;
 float DAT_PAC_SPR_X = 0;
 float DAT_PAC_SPR_Y = 0;
@@ -25,23 +25,9 @@ float DAT_PAC_WSIZE = 2;
 float DAT_PAC_HPX = 100; //v0.0.3
 float DAT_PAC_RANGE = 1600;//v0.0.3
 
-void() data_wep_pac;
-void() data_pac_ini;
 void() data_pac_atk;
 void() data_pac_think;
 
-void() data_wep_pac={
-  local entity oself, PAC;
-  PAC = spawn();
-  oself = self;
-  self = PAC;
-    self.classname = "data";
-    self.data_idx = DAT_PAC_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_pac_ini;
-    self.w_name = DAT_PAC_NAME;
-  self = oself;
-};
 
 void() data_pac_ini={
   self.data_idx = DAT_PAC_IDX;
@@ -130,7 +116,7 @@ void() data_pac_atk={
   setorigin(laser_org, self.fx_origin);
 
   t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
-  sound (laser_org, CHAN_WEAPON, "sound/weapons/pac_fire.ogg", 1, ATTN_NORM); 
+  sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
   te_beam(laser_org, laser_org.origin, dir); 
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);

@@ -23,23 +23,9 @@ float DAT_MARH_WSIZE = 3;
 float DAT_MARH_HPX = 100; //v0.0.3
 float DAT_MARH_RANGE = 3000;//v0.0.3
 
-void() data_wep_marh;  //called by the data system at game startup
-void() data_marh_ini;  //used by the vehicle factory when building a weapon hardpoint
 void() data_marh_atk;  //the actual attack call
 void() data_marh_think;
 
-void() data_wep_marh={
-  local entity oself, marh;
-  marh = spawn();
-  oself = self;
-  self = marh;
-    self.classname = "data";
-    self.data_idx = DATWEP_MARH_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_marh_ini;
-    self.w_name = DATWEP_MARH_NAME;
-  self = oself;
-};
 
 void() data_marh_ini={
   self.data_idx = DATWEP_MARH_IDX;
@@ -86,80 +72,74 @@ void() data_marh_think={
 void() data_marh_atk={
   local entity player, proj, cam, oself;
   player = self.owner;
-  proj = mh_world_findData(self.w_proj, DATA_PROJ);
-  if(proj){
-    if(self.owner.stat_rdr_mode == TRUE){
-      if(self.owner.stat_lck_stt & LOCK_TARG){ 
-        
-        local vector dir, org, end, adj;
-        
-        if((player.flags & FL_CLIENT)){
-          end = util_traceForPlayer(player, self.w_range);
-        }
-        else{
-          end = util_traceForAI(player, self.w_range, player.ai_leading); 
-        }
-        dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-              
-        if((player.flags & FL_MONSTER)){
-          if(end == player.origin){
-            player.patience = player.patience + 1;
-            return;
-          }
-        }
-        
-        self.w_currentammo = self.w_currentammo - 1;
-        if(self.w_currentammo <= 0){
-          self.en_cur = 0;
-          self.w_currentammo = self.w_clipsize;
-          self.w_state = RELOADING;
-        }
-        else{
-          self.w_firetime = time + self.w_firerate;
-          self.w_state = RECOIL;
-        }
-                
-        adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-        makevectors(player.angles);
-        org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-        
-        local float countlim, itr;
-        countlim = 15;
-        
-        local float dist;
-        local vector arc;
-        dist = vlen(dir - org);
-        arc = org + (v_forward * (300 + (crandom() * 20))) + (v_up * (300 + (crandom() * 20))) + (v_right * 0);
-        
-        while(itr < countlim){
-          local vector start;
-          start = org + ((crandom() * 15) * v_right) + (v_up * (crandom() * 15)) + (v_right * 0);
-          itr = itr + 1;
-          newmis = spawn();
-          oself = self;
-          self = newmis;
-            self.owner = player;
-            setorigin(self, start);
-            proj.unit_ini();
-            util_setModel(self.c_model, 0);
-            util_setBoundBox('0 0 0', '0 0 0');
-            util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-            self.velocity = normalize(arc - start);
-            self.enemy = self.owner.enemy;
-            self.c_ofs = arc;
-            self.lock_timer = time + 0.75;
-            self.p_lifetime = time + self.p_lifetime;
-            self.velocity = self.velocity * self.p_velocity;
-            self.angles = vectoangles(self.velocity);
-            self.think = data_prj_marh_th;
-            self.nextthink = time + 0.01;
-          self = oself;
-        }
-        sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  if(self.owner.stat_rdr_mode == TRUE){
+    if(self.owner.stat_lck_stt & LOCK_TARG){ 
+      
+      local vector dir, org, end, adj;
+      
+      if((player.flags & FL_CLIENT)){
+        end = util_traceForPlayer(player, self.w_range);
       }
+      else{
+        end = util_traceForAI(player, self.w_range, player.ai_leading); 
+      }
+      dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+            
+      if((player.flags & FL_MONSTER)){
+        if(end == player.origin){
+          player.patience = player.patience + 1;
+          return;
+        }
+      }
+      
+      self.w_currentammo = self.w_currentammo - 1;
+      if(self.w_currentammo <= 0){
+        self.en_cur = 0;
+        self.w_currentammo = self.w_clipsize;
+        self.w_state = RELOADING;
+      }
+      else{
+        self.w_firetime = time + self.w_firerate;
+        self.w_state = RECOIL;
+      }
+              
+      adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
+      makevectors(player.angles);
+      org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+      
+      local float countlim, itr;
+      countlim = 15;
+      
+      local float dist;
+      local vector arc;
+      dist = vlen(dir - org);
+      arc = org + (v_forward * (300 + (crandom() * 20))) + (v_up * (300 + (crandom() * 20))) + (v_right * 0);
+      
+      while(itr < countlim){
+        local vector start;
+        start = org + ((crandom() * 15) * v_right) + (v_up * (crandom() * 15)) + (v_right * 0);
+        itr = itr + 1;
+        newmis = spawn();
+        oself = self;
+        self = newmis;
+          self.owner = player;
+          setorigin(self, start);
+          data_iniProjectile(oself.w_proj);
+          util_setModel(self.c_model, 0);
+          util_setBoundBox('0 0 0', '0 0 0');
+          util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+          self.velocity = normalize(arc - start);
+          self.enemy = self.owner.enemy;
+          self.c_ofs = arc;
+          self.lock_timer = time + 0.75;
+          self.p_lifetime = time + self.p_lifetime;
+          self.velocity = self.velocity * self.p_velocity;
+          self.angles = vectoangles(self.velocity);
+          self.think = data_prj_marh_th;
+          self.nextthink = time + 0.01;
+        self = oself;
+      }
+      sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
     }
-  }
-  else{
-    bprint("projectile not found, check your code!\n");
   }
 };

@@ -26,23 +26,8 @@ float DAT_MIS_WSIZE = 1; //v0.0.3
 float DAT_MIS_HPX = 150; //v0.0.3
 float DAT_MIS_RANGE = 1000;//v0.0.3
 
-void() data_wep_mis;
-void() data_mis_ini;
 void() data_mis_atk;
 void() data_mis_think;
-
-void() data_wep_mis={
-  local entity oself, mis;
-  mis = spawn();
-  oself = self;
-  self = mis;
-    self.classname = "data";
-    self.data_idx = DAT_MIS_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_mis_ini;
-    self.w_name = DAT_MIS_NAME;
-  self = oself;
-};
 
 void() data_mis_ini={
   self.data_idx = DAT_MIS_IDX;
@@ -88,66 +73,60 @@ void() data_mis_think={
 void() data_mis_atk={
   local entity player, proj, cam, oself;
   player = self.owner;
-  proj = mh_world_findData(self.w_proj, DATA_PROJ);
-  if(proj){
-    local vector dir, org, end, adj;
+  local vector dir, org, end, adj;
 
-    if((player.flags & FL_CLIENT)){
-      end = util_traceForPlayer(player, self.w_range);
-    }
-    else{
-      end = util_traceForAI(player, self.w_range, player.ai_leading);
-      if((player.flags & FL_MONSTER)){
-        if(end == player.origin){
-          player.patience = player.patience + 1;
-          return;
-        }
-      }
-    }
-    dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-    
-
-    
-    self.w_currentammo = self.w_currentammo - 1;
-    if(self.w_currentammo <= 0){
-      self.en_cur = 0;
-      self.w_currentammo = self.w_clipsize;
-      self.w_state = RELOADING;
-      self.w_isburst = FALSE;
-    }
-    else{
-      if((player.flags & FL_MONSTER)){
-        self.w_firetime = time + (self.w_firerate/1000);
-      }
-      else{
-        self.w_firetime = time + self.w_firerate;
-      }
-      self.w_state = RECOIL;
-      self.w_isburst = TRUE;
-    }
-    
-    adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-    makevectors(player.angles);
-    org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-    
-    newmis = spawn();
-    oself = self;
-    self = newmis;
-      self.owner = player;
-      proj.unit_ini();
-      util_setModel(self.c_model, 0);
-      util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-      util_setBoundBox('0 0 0', '0 0 0');
-      self.velocity = normalize(dir - org);
-      self.think = BecomeExplosion;
-      self.nextthink = time + self.p_lifetime;
-      setorigin(self, org);
-      self.velocity = self.velocity * self.p_velocity;
-      self.angles = vectoangles(self.velocity);
-    self = oself;
-    sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  if((player.flags & FL_CLIENT)){
+    end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    bprint("oops!\n");
+    end = util_traceForAI(player, self.w_range, player.ai_leading);
+    if((player.flags & FL_MONSTER)){
+      if(end == player.origin){
+        player.patience = player.patience + 1;
+        return;
+      }
+    }
   }
+  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+  
+
+  
+  self.w_currentammo = self.w_currentammo - 1;
+  if(self.w_currentammo <= 0){
+    self.en_cur = 0;
+    self.w_currentammo = self.w_clipsize;
+    self.w_state = RELOADING;
+    self.w_isburst = FALSE;
+  }
+  else{
+    if((player.flags & FL_MONSTER)){
+      self.w_firetime = time + (self.w_firerate/1000);
+    }
+    else{
+      self.w_firetime = time + self.w_firerate;
+    }
+    self.w_state = RECOIL;
+    self.w_isburst = TRUE;
+  }
+  
+  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
+  makevectors(player.angles);
+  org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+  
+  newmis = spawn();
+  oself = self;
+  self = newmis;
+    self.owner = player;
+    data_iniProjectile(oself.w_proj);
+    util_setModel(self.c_model, 0);
+    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+    util_setBoundBox('0 0 0', '0 0 0');
+    self.velocity = normalize(dir - org);
+    self.think = BecomeExplosion;
+    self.nextthink = time + self.p_lifetime;
+    setorigin(self, org);
+    self.velocity = self.velocity * self.p_velocity;
+    self.angles = vectoangles(self.velocity);
+  self = oself;
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };

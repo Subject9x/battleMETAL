@@ -22,22 +22,7 @@ float DAT_PRJ_SFGA_GLOWCOLOR = 240;
 float DAT_PRJ_SFGA_GLOWSIZE = 0.005;
 float DAT_PRJ_SFGA_GLOWTRAIL= FALSE;
 
-void() data_prj_sfga;
-void() data_prj_sfga_ini;
 void() data_prj_sfga_touch;
-
-void() data_prj_sfga={
-  local entity oself, data;
-  data = spawn();
-  oself = self;
-  self = data;
-    self.classname = "data";
-    self.data_type = DATA_PROJ;
-    self.data_idx = DAT_PRJ_SFGA_IDX;
-    self.unit_ini = data_prj_sfga_ini;
-    self.p_damage = DAT_PRJ_SFGA_DAMAGE;
-  self = oself;
-};
 
 void() data_prj_sfga_ini={
   self.classname = "missile";

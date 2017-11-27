@@ -20,23 +20,8 @@ float DAT_PRJ_MARH_GLOWCOLOR = 0;
 float DAT_PRJ_MARH_GLOWSIZE = 0;
 float DAT_PRJ_MARH_GLOWTRAIL= FALSE;
 
-void() data_prj_marh;
-void() data_prj_marh_ini;
 void() data_prj_marh_th;
 void() data_prj_marh_touch;
-
-void() data_prj_marh={
-  local entity oself, data;
-  data = spawn();
-  oself = self;
-  self = data;
-    self.classname = "data";
-    self.data_type = DATA_PROJ;
-    self.data_idx = ID_PRJ_MARH;
-    self.unit_ini = data_prj_marh_ini;
-    self.p_damage = DAT_PRJ_MARH_DAMAGE;
-  self = oself;
-};
 
 void() data_prj_marh_ini={
   self.classname = "missile";

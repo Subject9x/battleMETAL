@@ -26,23 +26,9 @@ float DAT_QRFL_WSIZE = 3;
 float DAT_QRFL_HPX = 150; //v0.0.3
 float DAT_QRFL_QBITS = 8; //v0.0.3
 float DAT_QRFL_RANGE = 3600;//v0.0.3
-void() data_wep_qrfl;
-void() data_qrfl_ini;
+
 void() data_qrfl_atk;
 void() data_qrfl_think;
-
-void() data_wep_qrfl={
-  local entity oself, latc;
-  latc = spawn();
-  oself = self;
-  self = latc;
-    self.classname = "data";
-    self.data_idx = DAT_QRFL_IDX;
-    self.data_type = DATA_WEPN;
-    self.unit_ini = data_qrfl_ini;
-    self.w_name = DAT_QRFL_NAME;
-  self = oself;
-};
 
 void() data_qrfl_ini={
   self.data_idx = DAT_QRFL_IDX;
@@ -93,66 +79,60 @@ void() data_qrfl_think={
 void() data_qrfl_atk={
   local entity player, proj, cam, oself;
   player = self.owner;
-  proj = mh_world_findData(self.w_proj, DATA_PROJ);
-  if(proj){
-    local vector dir, org, end, adj;
-    
-    if((player.flags & FL_CLIENT)){
-      end = util_traceForPlayer(player, self.w_range);
-    }
-    else{
-      end = util_traceForAI(player, self.w_range, player.ai_leading); 
-    }
-    dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-    
-    if((player.flags & FL_MONSTER)){
-      if(end == player.origin){
-        player.patience = player.patience + 1;
-        return;
-      }
-    }
-    
-    self.w_currentammo = self.w_currentammo - 1;
-    if(self.w_currentammo <= 0){
-      self.en_cur = 0;
-      self.w_currentammo = self.w_clipsize;
-      self.w_state = RELOADING;
-    }
-    else{
-      self.w_firetime = time + self.w_firerate;
-      self.w_state = RECOIL;
-    }
-    
-    local float qbits;
-    qbits = DAT_QRFL_QBITS;
-    while(qbits > 0){
-      newmis = spawn();
-      oself = self;
-      self = newmis;
-        self.owner = player;
-        proj.unit_ini();
-        local vector rando;
-        rando = randomvec();
-        rando_x = (dir_x + rando_x) + (50 + crandom() * 100);
-        rando_y = (dir_y + rando_y) + (50 + crandom() * 100);
-        rando_z = (dir_z + rando_z) + (50 + crandom() * 100);
-        self.velocity = normalize(dir - rando);
-        self.think = SUB_Remove;
-        self.nextthink = time + self.p_lifetime;
-        self.velocity = self.velocity * self.p_velocity;
-        self.angles = vectoangles(self.velocity);
-        if(pointcontents(rando) != CONTENT_SOLID){
-          setorigin(self, rando);
-          util_setModel(self.c_model, 0);
-          util_setBoundBox('0 0 0', '0 0 0');
-          util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
-          qbits = qbits - 1;
-        }
-        self = oself;
-    }
-    sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  local vector dir, org, end, adj;
+  
+  if((player.flags & FL_CLIENT)){
+    end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    bprint("oops!\n");
+    end = util_traceForAI(player, self.w_range, player.ai_leading); 
   }
+  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+  
+  if((player.flags & FL_MONSTER)){
+    if(end == player.origin){
+      player.patience = player.patience + 1;
+      return;
+    }
+  }
+  
+  self.w_currentammo = self.w_currentammo - 1;
+  if(self.w_currentammo <= 0){
+    self.en_cur = 0;
+    self.w_currentammo = self.w_clipsize;
+    self.w_state = RELOADING;
+  }
+  else{
+    self.w_firetime = time + self.w_firerate;
+    self.w_state = RECOIL;
+  }
+  
+  local float qbits;
+  qbits = DAT_QRFL_QBITS;
+  while(qbits > 0){
+    newmis = spawn();
+    oself = self;
+    self = newmis;
+      self.owner = player;
+      data_iniProjectile(oself.w_proj);
+      local vector rando;
+      rando = randomvec();
+      rando_x = (dir_x + rando_x) + (50 + crandom() * 100);
+      rando_y = (dir_y + rando_y) + (50 + crandom() * 100);
+      rando_z = (dir_z + rando_z) + (50 + crandom() * 100);
+      self.velocity = normalize(dir - rando);
+      self.think = SUB_Remove;
+      self.nextthink = time + self.p_lifetime;
+      self.velocity = self.velocity * self.p_velocity;
+      self.angles = vectoangles(self.velocity);
+      if(pointcontents(rando) != CONTENT_SOLID){
+        setorigin(self, rando);
+        util_setModel(self.c_model, 0);
+        util_setBoundBox('0 0 0', '0 0 0');
+        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
+        qbits = qbits - 1;
+      }
+      self = oself;
+  }
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };

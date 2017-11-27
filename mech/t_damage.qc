@@ -270,11 +270,14 @@ void(entity targ, entity attacker, float dmg_type) killed={
     self.health = 0;
   }
   
-	if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
-		self.th_die();
-    self = oself;
-    return;
-	}
+	if(!self.p_class){
+    if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
+      self.th_die();
+      self = oself;
+      return;
+    }
+  }
+
   
   self.enemy = attacker;
   
