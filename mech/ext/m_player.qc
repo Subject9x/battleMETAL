@@ -145,9 +145,6 @@ void() PlayerPostThink = {
   }
 // check for attack
   playerAttack();
-	/*if (self.button0){
-    playerAttack();
-	}*/
 
 // check to see if player landed and play landing sound	
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))

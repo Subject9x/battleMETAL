@@ -185,7 +185,7 @@ vector DAT_MNT_WEP9_ADJ_ANG= '0 0 0';
 
 //=========================================
 void() data_mech_mnt;
-void() data_mnt_ini;
+
 void() data_mnt_legs;
 void() data_mnt_ctor;
 void() data_mnt_ltor;
@@ -345,7 +345,6 @@ void() data_mnt_cam={
 };
 void() data_mnt_wep1={  
   self.c_parent = DAT_MNT_WEP1_CPARENT;
-  self.data_idx = DAT_MNT_WEP1_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP1_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP1_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP1_ADJ_ANG;
@@ -353,7 +352,6 @@ void() data_mnt_wep1={
 };
 void() data_mnt_wep2={  
   self.c_parent = DAT_MNT_WEP2_CPARENT;
-  self.data_idx = DAT_MNT_WEP2_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP2_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP2_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP2_ADJ_ANG;
@@ -361,7 +359,6 @@ void() data_mnt_wep2={
 };
 void() data_mnt_wep3={  
   self.c_parent = DAT_MNT_WEP3_CPARENT;
-  self.data_idx = DAT_MNT_WEP3_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP3_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP3_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP3_ADJ_ANG;
@@ -369,7 +366,6 @@ void() data_mnt_wep3={
 };
 void() data_mnt_wep4={  
   self.c_parent = DAT_MNT_WEP4_CPARENT;
-  self.data_idx = DAT_MNT_WEP4_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP4_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP4_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP4_ADJ_ANG;
@@ -377,7 +373,6 @@ void() data_mnt_wep4={
 };
 void() data_mnt_wep5={  
   self.c_parent = DAT_MNT_WEP5_CPARENT;
-  self.data_idx = DAT_MNT_WEP5_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP5_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP5_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP5_ADJ_ANG;
@@ -385,7 +380,6 @@ void() data_mnt_wep5={
 };
 void() data_mnt_wep6={  
   self.c_parent = DAT_MNT_WEP6_CPARENT;
-  self.data_idx = DAT_MNT_WEP6_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP6_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP6_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP6_ADJ_ANG;
@@ -393,7 +387,6 @@ void() data_mnt_wep6={
 };
 void() data_mnt_wep7={  
   self.c_parent = DAT_MNT_WEP7_CPARENT;
-  self.data_idx = DAT_MNT_WEP7_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP7_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP7_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP7_ADJ_ANG;
@@ -401,7 +394,6 @@ void() data_mnt_wep7={
 };
 void() data_mnt_wep8={  
   self.c_parent = DAT_MNT_WEP8_CPARENT;
-  self.data_idx = DAT_MNT_WEP8_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP8_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP8_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP8_ADJ_ANG;
@@ -409,7 +401,6 @@ void() data_mnt_wep8={
 };
 void() data_mnt_wep9={  
   self.c_parent = DAT_MNT_WEP9_CPARENT;
-  self.data_idx = DAT_MNT_WEP9_IDX; //consult weapon idx table!
   self.c_ofs = DAT_MNT_WEP9_OFFSET;
   self.c_alt_ofs = DAT_MNT_WEP9_OFFSET_ALT;
   self.w_adj_ang = DAT_MNT_WEP9_ADJ_ANG;

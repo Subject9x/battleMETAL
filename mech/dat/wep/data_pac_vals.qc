@@ -28,7 +28,6 @@ float DAT_PAC_RANGE = 1600;//v0.0.3
 void() data_pac_atk;
 void() data_pac_think;
 
-
 void() data_pac_ini={
   self.data_idx = DAT_PAC_IDX;
   self.w_name = DAT_PAC_NAME;

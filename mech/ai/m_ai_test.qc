@@ -28,13 +28,6 @@ void() ai_mech={
     remove(self);
     return;
   }*/
-  //local entity dat;
-  //dat = m_findMechData(self.vec_size, self.nextVecChoice);
-  //if(!dat){
-  //  bprint(strcat("mech id:",ftos(self.nextVecChoice)," was not found","\n"));
-   // remove(self);
-  //  return;
-  //}
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
   self.p_class = P_MECH;
@@ -68,8 +61,8 @@ void() ai_mech={
   
   self.ideal_yaw = self.angles * '0 1 0';
 		
-  //buildVehicle(dat);
   data_iniMech(self.vec_size, self.nextVecChoice);
+  
   ai_core_calcranges();
   local float mod;
   mod = ai_pilot_armor_mod();

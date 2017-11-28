@@ -42,13 +42,11 @@ void() player_makeVec={
 };
 
 void() player_makeMech={
-  //local entity dat;
-  //dat = m_findMechData(self.vec_size, self.nextVecChoice);
   self.p_class = P_MECH;
   self.data_idx = self.nextVecChoice;
   self.power_timer = time + 3;
   self.stat_plr_stt = PLAYER_START;
-  //buildVehicle(dat);
+
   data_iniMech(self.vec_size, self.nextVecChoice);
   if((self.flags & FL_CLIENT)){
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
@@ -96,16 +94,6 @@ void() player_unmakeMech={
   self.stat_lck_stt = LOCK_NONE;
   self.stat_plr_ptc = 0;
   self.stat_plr_ang = 0;
-  
-  self.next_wepn1 = -1;
-  self.next_wepn2 = -1;
-  self.next_wepn3 = -1;
-  self.next_wepn4 = -1;
-  self.next_wepn5 = -1;
-  self.next_wepn6 = -1;
-  self.next_wepn7 = -1;
-  self.next_wepn8 = -1;
-  self.next_wepn9 = -1;
   mech_clearWeaponGroups();
 };
 

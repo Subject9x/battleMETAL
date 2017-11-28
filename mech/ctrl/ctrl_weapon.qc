@@ -7,9 +7,10 @@ Overview: weapon controller header
 */
 
 void(entity wep) ctrl_wpn_think={
+
   local entity oself;
   oself = self;
-    self = wep;
+  self = wep;
     if(self.deadflag >= DEAD_DYING){
       self.deadflag = DEAD_DEAD;
       self = oself;
@@ -20,7 +21,7 @@ void(entity wep) ctrl_wpn_think={
       self = oself;
       return;
     }
-    if((oself.flags & FL_CLIENT)){
+    if(!(oself.flags & FL_MONSTER)){
       if(self.w_isready){
         ctrl_weapon_isReady(self, self.stat_wep_rel);
       }else{

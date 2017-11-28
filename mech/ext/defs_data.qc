@@ -24,6 +24,10 @@ Overview: master data ID lists for all the game data
 .void() unit_wep8;
 .void() unit_wep9;
 
+void() data_otl_ini;
+void() data_mtk_ini;
+void() data_mnt_ini;
+
 void() data_emp_ini;
 void() data_esr_ini;
 void() data_las_ini;
@@ -52,20 +56,19 @@ float ID_MCH_MATOK = 1;
 float ID_MCH_MONITOR = 1;
 
 //WEAPONS================================
-float ID_WEP_LATC=1;
-float ID_WEP_EMP=2;
-float ID_WEP_LAS=3;
-float ID_WEP_MIS=4;
-//PROTO WEAPONS
 //BALLISTIC
+float ID_WEP_LATC = 1;
 float ID_WEP_QRF = 5;
 float ID_WEP_RPC = 6;
 float ID_WEP_SFGA = 15;
 //ENERGY
+float ID_WEP_LAS=3;
+float ID_WEP_EMP=2;
 float ID_WEP_PAC = 7;
 float ID_WEP_ESR = 8;
 
 //MISSILE
+float ID_WEP_MIS=4;
 float ID_WEP_MLGD = 9;
 float ID_WEP_MARH = 10;
 float ID_WEP_MAPR = 11;

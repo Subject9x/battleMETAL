@@ -138,7 +138,7 @@ vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 //=========================================
 
 void() data_mech_otl;
-void() data_otl_ini;
+
 void() data_otl_legs;
 void() data_otl_ctor;
 void() data_otl_ltor;

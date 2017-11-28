@@ -76,12 +76,11 @@ void() ai_mech_update={
   }  
   if(self.enemy != world){
     self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
-    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
   }
 };
 
 void() ai_turret_update={
-  local entity oself,wep_chain;
+  local entity wep_chain;
   
   ctrl_updateTurret();
 

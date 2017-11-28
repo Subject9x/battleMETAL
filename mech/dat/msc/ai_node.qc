@@ -176,7 +176,6 @@ void() ai_node_graph_touch={
     return;
   }
   else{
-    bprint(strcat(ftos(self.node_id),"\n", self.classname, "\n")); // DEBUG
     return;
   }
 };
