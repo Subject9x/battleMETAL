@@ -44,6 +44,16 @@ vector(vector p) gui_percentToPixelRawVec;
 vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec;
 float(float pct, float ox, float mx) gui_percentCustom;
 
+//console logging
+void(string msg, float val) cons_logAFloat;
+void(string msg, vector v1) cons_logAVector;
+void(string msg, string s1) cons_logAString;
+
+void(string msg, float val, string split, float val2) cons_log2Float;
+void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
+void(string msg, string s1, string split, string s2) cons_log2Strings;
+
+
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;

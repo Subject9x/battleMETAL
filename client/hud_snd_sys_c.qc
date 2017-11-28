@@ -6,22 +6,29 @@ Overview: impl file for the hud sound system
 */
 
 void() snd_hud_vfx_frame={
-  if(time > VOICE_TIME_NEXT){
-    local float playing;
+  if(time >= VOICE_TIME_NEXT){
+    local float sfx_len, idx;
     local string snd;
-    snd = VOICE_QUEUE[VOICE_QUEUE_IDX];
+    snd = VOICE_QUEUE[0];
     if(snd != "null"){
-      VOICE_TIME = soundlength(snd);
+      sfx_len = soundlength(snd);
       sound7(PLAYER_HELPER, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+      VOICE_TIME_NEXT = time + sfx_len;
     }
     else{
-      VOICE_TIME = 0;
+      VOICE_TIME_NEXT = time + 0.5;
     }
-    VOICE_QUEUE[VOICE_QUEUE_IDX] = "null";
-    VOICE_TIME_NEXT = time + VOICE_TIME;
-    VOICE_QUEUE_IDX = VOICE_QUEUE_IDX + 1;
-    if(VOICE_QUEUE_IDX > VOICE_QUEUE_SIZE){
-      VOICE_QUEUE_IDX = 0;
+    idx = 0;
+    while(idx < VOICE_QUEUE_SIZE){
+      local float nex;
+      nex = idx + 1;
+      if(nex > VOICE_QUEUE_SIZE){
+        VOICE_QUEUE[idx] = VOICE_QUEUE[nex];
+      }
+      else{
+        VOICE_QUEUE[idx] = "null";
+      }
+      idx = idx + 1;
     }
   }
 };
@@ -35,36 +42,38 @@ void() snd_hud_vfx_cleanqueue={
   }
 };
 
-void(string requestedSound) snd_hud_vfx_addtoqueue={
-  local float lst_idx, set_idx, existing;
-  local string snd;
-  lst_idx = 0;
-  existing = 0;
-  while(lst_idx < VOICE_QUEUE_SIZE){
-    snd = VOICE_QUEUE[lst_idx];
+//count == how many instances of 1 sound can be queued at a time
+void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
+  local string sfx;
+  local float idx, cur;
+  idx = cur = 0;
+  while(idx <= VOICE_QUEUE_SIZE){
+    local string snd;
+    snd = VOICE_QUEUE[idx];
     if(snd == requestedSound){
-      existing = 1;
+      cur = cur + 1;
     }
-    lst_idx = lst_idx + 1;
+    idx = idx + 1;
   }
-  if(!existing){
-    set_idx = 0;
-    while(set_idx < VOICE_QUEUE_SIZE){
-      snd = VOICE_QUEUE[set_idx];
-      if(snd == "null"){
-        if(!existing){
-          existing = 1;
-          VOICE_QUEUE[set_idx] = requestedSound;
-        }
-      }
-      set_idx = set_idx + 1;
+  if(cur >= cnt){
+    return;
+  }
+  while(idx < VOICE_QUEUE_SIZE){
+    local string snd;
+    snd = VOICE_QUEUE[idx];
+    if(snd == "null"){
+      VOICE_QUEUE[idx] = requestedSound;
+      cons_logAFloat("idx", idx);
+      cons_logAString("snd", requestedSound);
+      return;
     }
+    idx = idx + 1;
   }
 };
 
 void(float playerState) snd_hud_vfx_statelistener={
   if(getstati(STAT_PLR_STT) == PLAYER_START){
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE);
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
     PLAYER_HELPER.drawme = 0;
   }
   else if(getstati(STAT_PLR_STT) == PLAYER_IDLE){
@@ -78,14 +87,14 @@ void(float lockstate) snd_hud_vfx_locklistener={
 };
 
 void(float curEn) snd_hud_vfx_enelistener={
-  if((curEn >= 30) && (curEn <= 35)){
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW);
+  if((curEn > 10) && (curEn < 15)){
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 2);
   }
 };
 
 void(float curSh) snd_hud_vfx_shdlistener={
   if((curSh >= 30) && (curSh <= 35)){
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_SHDLOW);
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_SHDLOW, 2);
   }
 };
 
@@ -93,8 +102,8 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
   if(getstati(STAT_PLR_STT) == PLAYER_IDLE){
     if(amt <= 0){
       if((PLAYER_HELPER.drawme & bit)){
-        snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE); 
-        snd_hud_vfx_addtoqueue(snd); 
+        snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 3); 
+        snd_hud_vfx_addtoqueue(snd, 1); 
         PLAYER_HELPER.drawme = PLAYER_HELPER.drawme - (PLAYER_HELPER.drawme & bit);
       }
     }
@@ -105,7 +114,7 @@ void(float preState, float nexState) snd_hud_vfx_navpointlistener={
   if(self.i_faction == getstati(STAT_PLR_IFAC)){
     if(nexState == FALSE){
       if(preState == TRUE){
-        snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH);
+        snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
       }
     }
   }
@@ -117,19 +126,19 @@ void(float preState, float nexState) snd_hud_vfx_objectivelistener={
       if(preState == TRUE){
         print(ftos(self.data_idx));
         if(self.data_idx == 1){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME);
+          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME, 1);
         }
         else if(self.data_idx == 2){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_SECON);
+          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_SECON, 1);
         }
         else if(self.data_idx == 3){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD);
+          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD, 1);
         }
         else if(self.data_idx == 254){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_WIN);
+          snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_WIN, 1);
         }
         else if(self.data_idx == 255){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL);
+          snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
         }
       }
     }
@@ -140,10 +149,10 @@ void(float mode) snd_hud_vfx_toggleradar={
   if(SND_HUD_RADARMODE != mode){
     SND_HUD_RADARMODE = mode;
     if(mode){
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE);
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE, 3);
     }
     else{
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRPASSIVE); 
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRPASSIVE, 3); 
       
     }
   }
@@ -152,6 +161,6 @@ void(float mode) snd_hud_vfx_toggleradar={
 void(float dedflg) snd_hud_vfx_targkill={
   if(dedflg > DEAD_DEAD && dedflg < 5){
     dedflg = 5;
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL);
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL, 1);
   }
 };

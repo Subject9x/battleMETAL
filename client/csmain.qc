@@ -91,6 +91,9 @@ void() CSQC_Init =
   NAVNAMES[19] = "Phi";
   NAVNAMES[20] = "Omega";
 
+  VOICE_TIME = time;
+  VOICE_QUEUE_ADD_IDX = 7;
+  VOICE_QUEUE_IDX = 0;
   snd_hud_vfx_cleanqueue();
   
   //get mission file

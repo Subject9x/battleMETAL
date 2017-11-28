@@ -150,6 +150,48 @@ void() ctrl_die_comp={
   }
 };
 
+void() touch_mech={
+  if(other == world){
+    return;
+  }
+  if(((other.flags & FL_CLIENT)||(other.flags & FL_MONSTER))){
+    local float dif;
+    dif = self.vec_size - other.vec_size;
+    if(dif == 2){
+      if(other.p_class == P_VECH){
+        t_damage(other, self, self, other.max_health, DMG_BAL, other.origin, '0 0 0');
+      }
+      else{
+        t_damage(other, self, self, self.max_health * 0.15, DMG_BAL, other.origin, '0 0 0');
+      }
+    }
+    else if(dif == 1){
+      if(other.p_class == P_VECH){
+        t_damage(other, self, self, other.max_health , DMG_BAL, other.origin, '0 0 0');
+      }
+      else{
+        t_damage(other, self, self, self.max_health*0.15, DMG_BAL, other.origin, '0 0 0');
+      }
+    
+    }
+    else if(dif == 0){
+      if(other.p_class == P_VECH){
+        t_damage(other, self, self, other.max_health / 4, DMG_BAL, other.origin, '0 0 0');
+      }
+    }
+    else if(dif == -1){
+      if(other.p_class != P_VECH){
+        t_damage(self, other, other, other.max_health / 1.5, DMG_BAL, self.origin, '0 0 0');
+      }
+    }
+    else if(dif == -2){
+      if(other.p_class != P_VECH){
+        t_damage(self, other, other, other.max_health / 2, DMG_BAL, self.origin, '0 0 0');
+      }
+    }
+  }
+};
+
 void() touch_mechPiece={
   if(other==world){
     return;

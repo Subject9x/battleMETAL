@@ -12,6 +12,7 @@ void() ctrl_dieLegs;
 void() ctrl_die_weapon;
 void() ctrl_die_comp;
 
+void() touch_mech;
 void() touch_mechPiece;
 
 void() ctrl_updateTurret;

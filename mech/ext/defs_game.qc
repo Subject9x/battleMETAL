@@ -10,8 +10,6 @@ float RELOADING = 1;
 float WAITING = 2;
 float RECOIL = 4;
 
-float NEITHER = 3; //really gross hack to make burst-fire weapon work.
-
 .entity lst_p; //linked list parent
 
 //from world.qc
