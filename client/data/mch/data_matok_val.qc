@@ -151,31 +151,31 @@ void() data_mech_mtk;
 void() data_mtk_ini;
 
 void(vector org) mtk_renderHardpoints={
-  ui_renderHardPointGraphic(HARDPOINTS[1], (org + '-44 -100'), (PLAYER_HELPER.plr_sel_hrpnt == 1));
-  ui_renderHardPointGraphic(HARDPOINTS[2], (org + '22 -100'), (PLAYER_HELPER.plr_sel_hrpnt == 2));
-  ui_renderHardPointGraphic(HARDPOINTS[3], (org + '-84 -40'), (PLAYER_HELPER.plr_sel_hrpnt == 3));
-  ui_renderHardPointGraphic(HARDPOINTS[4], (org + '58 -40'), (PLAYER_HELPER.plr_sel_hrpnt == 4));
-  ui_renderHardPointGraphic(HARDPOINTS[5], (org + '-12 -94'), (PLAYER_HELPER.plr_sel_hrpnt == 5));
+  ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('-44 -100')), (PLAYER_HELPER.plr_sel_hrpnt == 1));
+  ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('22 -100')), (PLAYER_HELPER.plr_sel_hrpnt == 2));
+  ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('-84 -40')), (PLAYER_HELPER.plr_sel_hrpnt == 3));
+  ui_renderHardPointGraphic(HARDPOINTS[4], (org + gui_percentToPixelRawVec('58 -40')), (PLAYER_HELPER.plr_sel_hrpnt == 4));
+  ui_renderHardPointGraphic(HARDPOINTS[5], (org + gui_percentToPixelRawVec('-12 -94')), (PLAYER_HELPER.plr_sel_hrpnt == 5));
 };
 
 float(vector org) mtk_hardpointListener={
-  if(menu_checkMouseInBounds(cursorpos, org + '-44 -100', '24 24')){
+  if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('-44 -100'), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON1;
     return 1;
   }  
-  if(menu_checkMouseInBounds(cursorpos, org + '22 -100', '24 24')){
+  if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('22 -100'), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON2;
     return 2;
   } 
-  if(menu_checkMouseInBounds(cursorpos, org + '-84 -40','24 24')){
+  if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('-84 -40'),gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON3;
     return 3;
   } 
-  if(menu_checkMouseInBounds(cursorpos, org + '58 -40', '24 24')){
+  if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('58 -40'), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON4;
     return 4;
   } 
-  if(menu_checkMouseInBounds(cursorpos, org + '-12 -94', '24 24')){
+  if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('-12 -94'), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON5;
     return 5;
   } 

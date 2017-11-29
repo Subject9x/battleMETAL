@@ -136,11 +136,11 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   local vector iofs;
   iofs = mpos + gui_percentToPixel(0.0093, 0.0125);
 
-    if(MSN_MAPPIC != ""){
+  if(MSN_MAPPIC != ""){
     drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec('380 380'), '1 1 1', HUD_ALPHA, 0);
   }
   else{
-    drawstring(iofs + gui_percentToPixelRawVec('25 25'), "Satellite Data unavailable", '14 14', '1 0 0', HUD_ALPHA, 0);
+    drawstring(iofs + gui_percentToPixelRawVec('25 25'), "Satellite Data unavailable", '12 12', '1 0 0', HUD_ALPHA, 0);
   }
   local vector map_size;
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
@@ -150,44 +150,29 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   nav = findchain(classname, "data");
   while(nav){
     if(nav.data_type == DATA_NAVP){
-      local vector nofs;
-      nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
-      local float nlen;
-      nlen = stringwidth(nav.w_name, 0, '6 6 0');
-      nofs_x = nofs_x - gui_percentXRaw((nlen/2));
-      nofs_y = nofs_y - gui_percentY(0.0031);
-      nav.ui_org = nofs; 
-      nav.ui_size_x = nav.ui_size_x + gui_percentXRaw(nlen);
-      nav.ui_size_y = nav.ui_size_y + gui_percentY(0.0062);
-      drawstring(nofs, nav.w_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-      local vector hsz;
-      hsz_x = nlen + gui_percentXRaw(6);
-      hsz_y = gui_percentYRaw(12);
-      gui_DrawHighlightRect((PLAYER_HELPER.plr_nav_pnt == nav.nav_name), nofs + gui_percentToPixelRawVec('-3 -3'), hsz, '4 4', CLR_DEF_ARM_OK, '2 2', CLR_DEF_ARM_DED);
-    
+      if(nav.i_faction == getstati(STAT_PLR_IFAC)){
+        local vector nofs, nclr;
+        nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
+        local float nlen;
+        nlen = stringwidth(nav.w_name, 0, '6 6 0');
+        nofs_x = nofs_x - gui_percentXRaw((nlen/2));
+        nofs_y = nofs_y - gui_percentY(0.0031);
+        nav.ui_org = nofs; 
+        nav.ui_size_x = nav.ui_size_x + gui_percentXRaw(nlen);
+        nav.ui_size_y = nav.ui_size_y + gui_percentY(0.0062);
+        if(nav.isActive){
+          nclr = CLR_DEF_ARM_OK;
+        }
+        else{
+          nclr = CLR_DEF_ARM_DED;
+        }
+        drawstring(nofs, nav.w_name, '6 6 0', nclr, HUD_ALPHA, 0);
+        local vector hsz;
+        hsz_x = nlen + gui_percentXRaw(6);
+        hsz_y = gui_percentYRaw(12);
+        gui_DrawHighlightRect((PLAYER_HELPER.plr_nav_pnt == nav.nav_name), nofs + gui_percentToPixelRawVec('-3 -3'), hsz, '4 4', CLR_DEF_ARM_OK, '2 2', CLR_DEF_ARM_DED);
+      }
     }
     nav = nav.chain;
   }
-  /*local entity nav;
-  nav = findchain(classname, "data");
-  while(nav){
-    if(nav.data_type == DATA_NAVP){
-      local vector nofs;
-      nofs = gui_mapCoordToImgCoord(map_size, cprc, nav.origin, gui_percentToPixel(0.2976, 0.3968));
-      local float nlen;
-      nlen = stringwidth(nav.w_name, 0, '6 6 0');
-      nofs = iofs+nofs;
-      nofs_x = nofs_x - (nlen/2);
-      nofs_y = nofs_y - gui_percentYRaw(3);
-      nav.ui_org = nofs; 
-      nav.ui_size_x = nav.ui_size_x + gui_percentXRaw(nlen);
-      nav.ui_size_y = nav.ui_size_y + gui_percentY(0.0062);
-      drawstring(nofs, nav.w_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-      local vector hsz;
-      hsz_x = nlen + gui_percentXRaw(6);
-      hsz_y = gui_percentY(12);
-      gui_DrawHighlightRect((PLAYER_HELPER.plr_nav_pnt == nav.nav_name), nofs+ gui_percentToPixelRawVec('-3 -3'), hsz, '4 4', CLR_DEF_ARM_OK, '2 2', CLR_DEF_ARM_DED);
-    }
-    nav = nav.chain;
-  }*/
 };

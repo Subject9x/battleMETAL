@@ -12,9 +12,9 @@ Overview:
 float DAT_TNK_IDX = ID_VEC_TANK;
 string DAT_TNK_VEC_NAME = "Medium Tank";
 float DAT_TNK_TECH_LEVEL = 1;
-float DAT_TNK_RADAR_RANGE = 800;
+float DAT_TNK_RADAR_RANGE = 2000;
 float DAT_TNK_ENERGY_CUR = 0;
-float DAT_TNK_ENERGY_MAX = 200;
+float DAT_TNK_ENERGY_MAX = 300;
 float DAT_TNK_ENERGY_RATE = 1;
 float DAT_TNK_SHIELD_CUR = 0;
 float DAT_TNK_SHIELD_MAX = 200;
@@ -146,13 +146,6 @@ void() ai_tank={
     remove(self);
     return;
   }*/
-  local entity dat;
-  dat = mh_world_findData(self.nextVecChoice, DATA_VEHC);
-  if(!dat){
-    bprint(strcat("mech id:",ftos(self.nextVecChoice)," was not found","\n"));
-    remove(self);
-    return;
-  }
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
   self.p_class = P_VECH;
@@ -183,7 +176,7 @@ void() ai_tank={
   self.ideal_yaw = self.angles * '0 1 0';
 		
   //buildVehicle(dat);
-  data_iniVehc (1, self.nextVecChoice);
+  data_iniVehc (self.vec_size, self.nextVecChoice);
   ai_core_calcranges();
   local float mod;
   mod = ai_pilot_armor_mod();

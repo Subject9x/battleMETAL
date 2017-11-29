@@ -203,6 +203,10 @@ void() respawn={
     //
 		// get the spawn parms as they were at level start
 		setspawnparms (self);
+    if(self.p_class == P_MECH){
+      player_unmakeMech();
+      player_makeObserver();
+    }
 		// respawn		
 		PutClientInServer ();
 	}
@@ -214,6 +218,7 @@ void() respawn={
 		SetNewParms ();
     if(self.p_class == P_MECH){
       player_unmakeMech();
+      player_makeObserver();
     }
 		// respawn		
 		PutClientInServer ();

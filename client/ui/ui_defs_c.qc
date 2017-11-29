@@ -170,7 +170,7 @@ void(entity nav) ui_renderNav={
   local vector apos, tofs, iofs, i_sz, nofs;
   i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
   nofs = nav.origin;
-  nofs_z = nofs_z + 14;
+  nofs_z = nofs_z + gui_percentYRaw(14);
   apos = cs_project(nofs);
   tofs = apos;
   if (apos_z >= 0) {

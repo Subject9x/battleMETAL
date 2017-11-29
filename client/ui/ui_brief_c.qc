@@ -137,13 +137,15 @@ void(vector ofs) menu_briefMapPanel={
   nav = findchain(classname, "data");
   while(nav){
     if(nav.data_type == DATA_NAVP){
-      local vector nofs;
-      nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('366  289'));
-      local float nlen;
-      nlen = stringwidth(nav.w_name, 0, '6 6 0');
-      nofs_x = nofs_x - gui_percentXRaw((nlen/2));
-      nofs_y = nofs_y - gui_percentY(0.0031);
-      drawstring(nofs, nav.w_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+      if(nav.i_faction == getstati(STAT_PLR_IFAC)){
+        local vector nofs;
+        nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('366  289'));
+        local float nlen;
+        nlen = stringwidth(nav.w_name, 0, '6 6 0');
+        nofs_x = nofs_x - gui_percentXRaw((nlen/2));
+        nofs_y = nofs_y - gui_percentY(0.0031);
+        drawstring(nofs, nav.w_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+      }
     }
     nav = nav.chain;
   }
@@ -202,7 +204,7 @@ void(vector ofs) menu_briefObjectivePanel={
   lst_idx = 0;
   while(obj){
     if(obj.data_type == DATA_OBJT){
-      if(obj.data_idx > 0){
+      if((obj.data_idx > 0) && (obj.data_idx < 254)){
         local vector oofs;
         oofs = lofs;
         oofs_y = oofs_y + (lst_idx * gui_percentX(0.0093));

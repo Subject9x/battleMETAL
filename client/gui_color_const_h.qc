@@ -51,6 +51,8 @@ vector CLR_DEF_BLACK = '0 0 0';
   //enemy
   vector CLR_DEF_IFF_ENEMY = '0.8 0 0';
   
+  vector CLR_DEF_IFF_ENEMY_BLD = '0.6 0.29 0';
+  
 //CROSSHAIRS
   //acquiring lock
   vector CLR_DEF_RET_GETLOCK= '1 1 0.6';

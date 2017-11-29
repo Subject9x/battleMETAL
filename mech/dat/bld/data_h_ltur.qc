@@ -56,7 +56,7 @@ string DAT_TUR_CTOR_MODEL= "q3mdl/buildings/mdl_bld_h_ltur.md3";
 //LEGS
 string DAT_TUR_LEG_CNAME= M_LEGS;
 string DAT_TUR_LEG_MODEL= "q3mdl/buildings/mdl_bld_h_ltur_base.md3";
-vector DAT_TUR_LEG_OFFSET= '0 0 0';
+vector DAT_TUR_LEG_OFFSET= '0 0 -5';
 
 //CENTER TORSO
 string DAT_TUR_CTOR_CNAME= M_TOR_CENTER;
@@ -168,7 +168,6 @@ void() building_tur={
   data_iniBuilding(ID_BLD_H_TURRET);
   
   self.solid = SOLID_BSP;
-  self.e_legs.movetype = MOVETYPE_NONE;
   
   ai_core_calcranges();
 
@@ -193,6 +192,7 @@ void() building_tur={
   self.patience = 0;
   self.origin_z = self.origin_z + 1;// raise off floor a bit
   droptofloor();
+  self.e_legs.movetype = MOVETYPE_NONE;
   self.enemy = world;
   self.oldgoal = world;
   self.ai_next_state = ai_state_ready;

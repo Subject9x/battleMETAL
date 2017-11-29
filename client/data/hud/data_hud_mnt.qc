@@ -585,13 +585,19 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       }
       spos = cs_project(apos);
       if (spos_z >= 0) {
-        local vector i_sz;
+        local vector i_sz, tclr;
         i_sz = draw_getimagesize("gfx/hud/target_box.png");
         i_sz = gui_scaleSize(i_sz, VIEW_SCALE);
         spos_x -= i_sz_x/2; //align horizontally to centre
         spos_y -= i_sz_y/2; //align vertically again
         spos_z = 0; //shut up dp.
-        drawpic(spos, "gfx/hud/target_box.png", i_sz, '1 0 0', HUD_ALPHA, 0);
+        if(getstati(STAT_TRG_IFAC) == getstati(STAT_PLR_IFAC)){
+          tclr = CLR_DEF_IIF_FRIEND;
+        }
+        else{
+          tclr = CLR_DEF_IFF_ENEMY;
+        }
+        drawpic(spos, "gfx/hud/target_box.png", i_sz, tclr, HUD_ALPHA, 0);
       }
       if(dat.data_type == DATA_MECH){
         self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),

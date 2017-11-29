@@ -35,6 +35,13 @@ void() CSQC_Init =
   PLAYER_HELPER.w_range = 0;
   PLAYER_HELPER.wep1_reload = 0;
   PLAYER_HELPER.drawme = 0;
+  PLAYER_HELPER.VOICE_QUEUE_SIZE = 6;
+  PLAYER_HELPER.SOUND_QUEUE_1 = "null";
+  PLAYER_HELPER.SOUND_QUEUE_2 = "null";
+  PLAYER_HELPER.SOUND_QUEUE_3 = "null";
+  PLAYER_HELPER.SOUND_QUEUE_4 = "null";
+  PLAYER_HELPER.SOUND_QUEUE_5 = "null";
+  PLAYER_HELPER.SOUND_QUEUE_6 = "null";
   
   WEPBITS[0] = 1;
   WEPBITS[1] = 2;
@@ -90,10 +97,6 @@ void() CSQC_Init =
   NAVNAMES[18] = "Upsilon";
   NAVNAMES[19] = "Phi";
   NAVNAMES[20] = "Omega";
-
-  VOICE_TIME = time;
-  VOICE_QUEUE_ADD_IDX = 7;
-  VOICE_QUEUE_IDX = 0;
   snd_hud_vfx_cleanqueue();
   
   //get mission file
@@ -281,7 +284,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     hitdir = getstatf(STAT_HIT_DIR);
     conv_x = getstatf(STAT_SPR_X);
     conv_y = getstatf(STAT_SPR_Y);
-    //pitch = getstatf(STAT_PLR_PTC);
     pitch = input_angles_x *-3;
     
     //player camera_transform
@@ -495,10 +497,28 @@ float(string s) CSQC_ConsoleCommand =
 // parse tempentity if it suits your fancy, return TRUE to tell engine you have finished parsing the tempentity, return FALSE to tell engine to parse tempentity itself (it will reset parse position automatically)
 float() CSQC_Parse_TempEntity =
 {
-  local float id;
+  local float id, handled;
   id = ReadByte();
+  handled = FALSE;
+  if(id == 60){
+    local vector org, end, ang;
+    local float dist, p;
+    org_x = ReadCoord();
+    org_y = ReadCoord();
+    org_z = ReadCoord();
+    end_x = ReadCoord();
+    end_y = ReadCoord();
+    end_z = ReadCoord();
+    ang_x = ReadAngle();
+    ang_y = ReadAngle();
+    ang_z = ReadAngle();
+    dist = vlen(end - org);
+    //pointparticles(, , '0 0 ', 100);
+    trailparticles(world, particleeffectnum("LASERBEAM"), org, end);
+    handled = TRUE;
+  }
 
-	return FALSE;
+	return handled;
 };
 
 // if string is interesting, deal with it, otherwise pass it to localcmd() and let engine parse it (note: will not be executed immediately).

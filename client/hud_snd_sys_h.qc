@@ -35,19 +35,32 @@ float SND_HUD_CRITPART = 0;
 float REACT_TIME;
 //hud voice
 float VOICE_PLAY = FALSE;
-float VOICE_TIME;
-float VOICE_TIME_NEXT;
-float VOICE_ADDTIME;
-float VOICE_QUEUE_SIZE = 7;
+//float VOICE_TIME;
+//float VOICE_TIME_NEXT;
+//float VOICE_ADDTIME;
+//float VOICE_QUEUE_SIZE = 7;
 
-float VOICE_QUEUE_IDX;
-float VOICE_QUEUE_ADD_IDX;
-string VOICE_QUEUE[VOICE_QUEUE_SIZE];
-string VOICE_PLAYING ="";
+//float VOICE_QUEUE_IDX;
+//float VOICE_QUEUE_ADD_IDX;
+//string VOICE_QUEUE[VOICE_QUEUE_SIZE];
+//string VOICE_PLAYING ="";
+
+.float VOICE_TIME;
+.float VOICE_TIME_NEXT;
+.float VOICE_QUEUE_SIZE;
+.float VOICE_QUEUE_IDX;
+.float queued;
+.string SOUND_QUEUE_1;
+.string SOUND_QUEUE_2;
+.string SOUND_QUEUE_3;
+.string SOUND_QUEUE_4;
+.string SOUND_QUEUE_5;
+.string SOUND_QUEUE_6;
 
 void() snd_hud_vfx_frame;
 void() snd_hud_vfx_cleanqueue;
 
+float(.string snd_q, float max, float count, .float qued, string requestedSound) snd_hud_vfx_enqueue;
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue;
 
 void(float playerState) snd_hud_vfx_statelistener;

@@ -131,26 +131,26 @@ void() data_otl_ini;
 
 
 void(vector org) otl_renderHardpoints={
-  ui_renderHardPointGraphic(HARDPOINTS[1], (org + '52 -36'), (PLAYER_HELPER.plr_sel_hrpnt == 1));
-  ui_renderHardPointNumber(1, (org + '52 -36'));
+  ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('52 -36')), (PLAYER_HELPER.plr_sel_hrpnt == 1));
+  ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('52 -36')));
   
-  ui_renderHardPointGraphic(HARDPOINTS[2], (org + '-75 -36'), (PLAYER_HELPER.plr_sel_hrpnt == 2));
-  ui_renderHardPointNumber(2, (org + '-75 -36'));
+  ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-75 -36')), (PLAYER_HELPER.plr_sel_hrpnt == 2));
+  ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-75 -36')));
   
-  ui_renderHardPointGraphic(HARDPOINTS[3], (org + '-10 -96'), (PLAYER_HELPER.plr_sel_hrpnt == 3));
-  ui_renderHardPointNumber(3, (org + '-10 -96'));
+  ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('-10 -96')), (PLAYER_HELPER.plr_sel_hrpnt == 3));
+  ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('-10 -96')));
 };
 
 float(vector org) otl_hardpointListener={
-  if(menu_checkMouseInBounds(cursorpos, (org + '-10 -96'), '24 24')){
+  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('-10 -96')), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON3;
     return 3;
   }  
-  if(menu_checkMouseInBounds(cursorpos, (org + '52 -36'), '24 24')){
+  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('52 -36')), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON1;
     return 1;
   }
-  if(menu_checkMouseInBounds(cursorpos, (org + '-75 -36'), '24 24')){
+  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('-75 -36')), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON2;
     return 2;
   }  

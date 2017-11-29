@@ -104,6 +104,7 @@ void() mh_world_ini={
   
   addstat(TRG_VEC_SIZ, AS_INT, stat_trg_vsize);
   addstat(TRG_P_CLASS, AS_INT, stat_trg_pclass);
+  addstat(STAT_TRG_IFAC, AS_INT, stat_trg_ifac);
   mh_world_iniData();
 };
 
@@ -144,7 +145,7 @@ void(float vecsize, float mech_id) data_iniMech={
 };
 
 /*
-  SCOPE: self = weapon in question
+  SCOPE: self = vehicle in question
   calls the appropriate 'ini' function on the 
   ent that is making the call. essentially this
   func holds 'state' for finding the right 'data'
@@ -159,7 +160,7 @@ void(float vecsize, float vec_id) data_iniVehc={
 };
 
 /*
-  SCOPE: self = weapon in question
+  SCOPE: self = projectile in question
   calls the appropriate 'ini' function on the 
   ent that is making the call. essentially this
   func holds 'state' for finding the right 'data'

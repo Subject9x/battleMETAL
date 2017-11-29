@@ -110,8 +110,20 @@ void() data_las_atk={
   laser_org.think = SUB_Remove;
   laser_org.nextthink = time + 0.01;// + 0.35;
   
+  WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+  WriteByte (MSG_BROADCAST, 60);
+  WriteCoord (MSG_BROADCAST, laser_org.origin_x);
+  WriteCoord (MSG_BROADCAST, laser_org.origin_y);
+  WriteCoord (MSG_BROADCAST, laser_org.origin_z);
+  WriteCoord (MSG_BROADCAST, dir_x);
+  WriteCoord (MSG_BROADCAST, dir_y);
+  WriteCoord (MSG_BROADCAST, dir_z);
+  WriteAngle (MSG_BROADCAST, self.angles_x);
+  WriteAngle (MSG_BROADCAST, self.angles_y);
+  WriteAngle (MSG_BROADCAST, self.angles_z);
   sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
-  te_lightning1(laser_org, laser_org.origin, dir);  
+  
+  //te_lightning1(laser_org, laser_org.origin, dir);  
   te_flamejet(dir, '0 10 0', 25);
 
   t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');

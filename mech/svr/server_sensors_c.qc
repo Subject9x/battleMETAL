@@ -94,6 +94,7 @@ void() server_updateTargetInfo={
   self.stat_trg_vsize = self.enemy.vec_size;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
   self.stat_trg_pclass = self.enemy.p_class;
+  self.stat_trg_ifac = self.enemy.i_faction;
   
   if(self.stat_trg_face <= 0){
     isvis = TRUE;

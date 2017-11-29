@@ -6,73 +6,113 @@ Overview: impl file for the hud sound system
 */
 
 void() snd_hud_vfx_frame={
-  if(time >= VOICE_TIME_NEXT){
+  if(time > PLAYER_HELPER.VOICE_TIME_NEXT){
     local float sfx_len, idx;
     local string snd;
-    snd = VOICE_QUEUE[0];
+    snd = PLAYER_HELPER.SOUND_QUEUE_1;
     if(snd != "null"){
       sfx_len = soundlength(snd);
       sound7(PLAYER_HELPER, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
-      VOICE_TIME_NEXT = time + sfx_len;
+      PLAYER_HELPER.VOICE_TIME_NEXT = time + sfx_len + 0.05;
     }
-    else{
-      VOICE_TIME_NEXT = time + 0.5;
-    }
-    idx = 0;
-    while(idx < VOICE_QUEUE_SIZE){
-      local float nex;
-      nex = idx + 1;
-      if(nex > VOICE_QUEUE_SIZE){
-        VOICE_QUEUE[idx] = VOICE_QUEUE[nex];
-      }
-      else{
-        VOICE_QUEUE[idx] = "null";
-      }
-      idx = idx + 1;
-    }
+    //else{
+    //  PLAYER_HELPER.VOICE_TIME_NEXT = time + 0.25;
+    //}
+    PLAYER_HELPER.SOUND_QUEUE_1 = PLAYER_HELPER.SOUND_QUEUE_2;
+    PLAYER_HELPER.SOUND_QUEUE_2 = PLAYER_HELPER.SOUND_QUEUE_3;
+    PLAYER_HELPER.SOUND_QUEUE_3 = PLAYER_HELPER.SOUND_QUEUE_4;
+    PLAYER_HELPER.SOUND_QUEUE_4 = PLAYER_HELPER.SOUND_QUEUE_5;
+    PLAYER_HELPER.SOUND_QUEUE_5 = PLAYER_HELPER.SOUND_QUEUE_6;
+    PLAYER_HELPER.SOUND_QUEUE_6 = "null";
   }
 };
 
 void() snd_hud_vfx_cleanqueue={
-  local float idx;
+  /*local float idx;
   idx = 0;
-  while(idx < VOICE_QUEUE_SIZE){
+  while(idx < PLAYER_HELPER.VOICE_QUEUE_SIZE){
     VOICE_QUEUE[idx] = "null";
     idx = idx + 1;
+  }*/
+};
+
+float(.string snd_q, float max, float count, .float qued, string requestedSound) snd_hud_vfx_enqueue={
+  if(count < max){
+    if(self.snd_q == "null"){
+      if(self.qued == FALSE){
+        self.snd_q = requestedSound;
+        self.qued = TRUE;
+        count = count + 1;
+      }
+    }
+    else if(self.snd_q == requestedSound){
+      count = count + 1;
+    }
   }
+  return count;
 };
 
 //count == how many instances of 1 sound can be queued at a time
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
+  local entity this;
+  this = self;
+  self = PLAYER_HELPER;
   local string sfx;
   local float idx, cur;
   idx = cur = 0;
-  while(idx <= VOICE_QUEUE_SIZE){
-    local string snd;
-    snd = VOICE_QUEUE[idx];
-    if(snd == requestedSound){
-      cur = cur + 1;
-    }
-    idx = idx + 1;
+  self.queued = FALSE;
+  if(self.SOUND_QUEUE_1 == requestedSound){
+    cur = cur + 1;
+  }
+  if(self.SOUND_QUEUE_2 == requestedSound){
+    cur = cur + 1;
+  }
+  if(self.SOUND_QUEUE_3 == requestedSound){
+    cur = cur + 1;
+  }
+  if(self.SOUND_QUEUE_4 == requestedSound){
+    cur = cur + 1;
+  }
+  if(self.SOUND_QUEUE_5 == requestedSound){
+    cur = cur + 1;
+  }
+  if(self.SOUND_QUEUE_6 == requestedSound){
+    cur = cur + 1;
   }
   if(cur >= cnt){
+    self = this;
     return;
   }
-  while(idx < VOICE_QUEUE_SIZE){
-    local string snd;
-    snd = VOICE_QUEUE[idx];
-    if(snd == "null"){
-      VOICE_QUEUE[idx] = requestedSound;
-      cons_logAFloat("idx", idx);
-      cons_logAString("snd", requestedSound);
-      return;
+  cur = 0;
+  idx = 0;
+  while(idx < self.VOICE_QUEUE_SIZE){
+    local string sfx;
+    if(idx == 0){
+      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_1, cnt, cur, queued, requestedSound);
+    }
+    else if( idx == 1){
+      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_2, cnt, cur, queued, requestedSound);
+    }
+    else if( idx == 2){
+      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_3, cnt, cur, queued, requestedSound);
+    }
+    else if( idx == 3){
+      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_4, cnt, cur, queued, requestedSound);
+    }
+    else if( idx == 4){
+      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_5, cnt, cur, queued, requestedSound);
+    }
+    else if( idx == 5){
+      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_6, cnt, cur, queued, requestedSound);
     }
     idx = idx + 1;
   }
+  self = this;
 };
 
 void(float playerState) snd_hud_vfx_statelistener={
   if(getstati(STAT_PLR_STT) == PLAYER_START){
+    PLAYER_HELPER.VOICE_TIME_NEXT = time;
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
     PLAYER_HELPER.drawme = 0;
   }
@@ -87,14 +127,14 @@ void(float lockstate) snd_hud_vfx_locklistener={
 };
 
 void(float curEn) snd_hud_vfx_enelistener={
-  if((curEn > 10) && (curEn < 15)){
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 2);
+  if((curEn > 10) && (curEn <= 12)){
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
   }
 };
 
 void(float curSh) snd_hud_vfx_shdlistener={
-  if((curSh >= 30) && (curSh <= 35)){
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_SHDLOW, 2);
+  if((curSh > 10) && (curSh <= 12)){
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_SHDLOW, 1);
   }
 };
 

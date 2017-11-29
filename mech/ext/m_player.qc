@@ -62,9 +62,6 @@ void() PlayerPreThink = {
       self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_BK);
     }
   }
-  else{
-    return;
-  }
   
 	//if (self.button2){
 		//PlayerJump();
@@ -93,12 +90,12 @@ void() PlayerPostThink = {
   
   if(self.p_class != P_OBS){
     if(time < self.power_timer){
-      return;
+      //return;
     }
   }
   
 // do weapon stuff
-  self.stat_plr_ang = anglemod(self.v_angle_y);
+  self.stat_plr_ang = self.v_angle_y;
   //STAT UPDATE   
   if(self.p_class == P_MECH){
     makevectors(self.v_angle);

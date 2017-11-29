@@ -14,6 +14,7 @@ string HUD_RET_HIT;
 string HUD_RAD_PIP_BLD;
 string HUD_RAD_PIP_MCH;
 string HUD_RAD_PIP_NAV;
+string HUD_RAD_PIP_VEC;
 
 string HUD_TRG_PIP_L;
 string HUD_TRG_PIP_R;
@@ -68,68 +69,102 @@ void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
     perc = (pcur / mn) * 100;
     perc = perc * -1;
   }
-  gui_renderMeter(perc, org, '4 26', '-1 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
+  gui_renderMeter(perc, org, gui_percentToPixelRawVec('4 26'), '-1 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 
+//pos, icon, clr
+void(vector post, vector fac_clr) hud_RenderRadar_Mech={
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
+};
+
+void(vector post, vector fac_clr) hud_RenderRadar_Vehc={
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_VEC,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
+};
+
+
+void(vector post, vector fac_clr) hud_RenderRadar_Building={
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
+};
+
+void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav={
+  if(isOn){
+    drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_NAV,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
+  }
+};
 
 void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
   local entity e;
   drawpic(cofs - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), '1 1 1', HUD_ALPHA, 0);
   e = findradius(pmove_org, range);
   while(e){
-    if(e != world){
-      if(e.p_class != P_OBS){
-        local vector clr;
-        local string icon;
-        icon = HUD_RAD_PIP_MCH;
-        if(e.p_class == E_NAV){
-          clr = CLR_DEF_ARM_OK;
-          icon = HUD_RAD_PIP_NAV;
+    if((e.p_class == E_NAV) || (e.p_class == E_BLD) || (e.p_class == E_AIU) || (e.p_class == E_VEC)){
+      local float draw, p_ifac, pyaw;
+      local vector ang, clr, eorg, corg, nofs, ctr;
+      p_ifac = getstati(STAT_PLR_IFAC);
+      ctr_x = pnl_sz_x / 2;
+      ctr_y = pnl_sz_y / 2;
+      draw = TRUE;
+      
+      corg_x = (e.origin_x - pmove_org_x) / 35;
+      corg_y = (e.origin_y - pmove_org_y) / 35; 
+      nofs_x = ( cofs_x + corg_x );
+      nofs_y = ( cofs_y + corg_y );
+      
+      if((nofs_x > (cofs_x + ctr_x)) || (nofs_x < (cofs_x - ctr_x))){
+        draw = FALSE;
+      }  
+      if((nofs_y > (cofs_y + ctr_y)) || (nofs_y < (cofs_y - ctr_y))){
+        draw = FALSE;
+      }
+      
+      if(e.p_class == E_NAV){
+        if(e.i_faction == p_ifac){
+          if(draw){
+            hud_RenderRadar_Nav(nofs, e.isActive, CLR_DEF_ARM_OK);         
+          }
         }
-        else{
-          traceline(pmove_org, e.origin, FALSE, self);
-          if(trace_fraction >= 0.85){
-            if(e.i_faction != p_faction){
-              clr = CLR_DEF_IFF_ENEMY;
-              if(e.p_class == E_BLD){
-                icon = HUD_RAD_PIP_BLD;
-              }
-              else{
-                icon = HUD_RAD_PIP_MCH;
-              }
+      }
+      else if(e.p_class == E_BLD){
+        if(draw){ 
+          traceline(pmove_org+'0 0 128', e.origin + '0 0 128', FALSE, self);
+          if(trace_fraction >= 0.9){
+            if(e.i_faction == p_ifac){
+              clr = CLR_DEF_IIF_FRIEND_BLD;
             }
             else{
-              if(e.p_class == E_BLD){
-                clr = CLR_DEF_IIF_FRIEND_BLD;
-                icon = HUD_RAD_PIP_BLD;
-              }
-              else{
-                clr = CLR_DEF_IIF_FRIEND;
-                icon = HUD_RAD_PIP_MCH;
-              }
+              clr = CLR_DEF_IFF_ENEMY_BLD;
             }
+            hud_RenderRadar_Building(nofs, clr);
           }
-         
         }
-        local float dra;
-        local vector eorg, corg, nofs, ctr;
-        ctr_x = pnl_sz_x / 2;
-        ctr_y = pnl_sz_y / 2;
-        dra = TRUE;
-        eorg = e.origin;
-        corg_x = (eorg_x - pmove_org_x) / 25;
-        corg_y = (eorg_y - pmove_org_y) / 25; 
-        nofs_x = cofs_x + corg_x;
-        nofs_y = cofs_y + corg_y;
-        if((nofs_x > (cofs_x + ctr_x)) || (nofs_x < (cofs_x - ctr_x))){
-          dra = FALSE;
-        }  
-        if((nofs_y > (cofs_y + ctr_y)) || (nofs_y < (cofs_y - ctr_y))){
-          dra = FALSE;
+      }
+      else if(e.p_class == E_AIU){
+        if(draw){
+          traceline(pmove_org+'0 0 128', e.origin + '0 0 64', FALSE, self);
+          if(trace_fraction >= 0.9){
+            if(e.i_faction == p_ifac){
+              clr = CLR_DEF_IIF_FRIEND;
+            }
+            else{
+              clr = CLR_DEF_IFF_ENEMY;
+            }
+            hud_RenderRadar_Mech(nofs, clr);
+          }
         }
-        if(dra){
-          drawpic(nofs - gui_percentToPixelRawVec('3 3'), icon,  gui_percentToPixelRawVec('6 6'), clr, HUD_ALPHA, 0);
+      }
+      else if(e.p_class == E_VEC){
+        if(draw){      
+          traceline(pmove_org+'0 0 128', e.origin + '0 0 64', FALSE, self);
+          if(trace_fraction >= 0.9){
+            if(e.i_faction == p_ifac){
+              clr = CLR_DEF_IIF_FRIEND;
+            }
+            else{
+              clr = CLR_DEF_IFF_ENEMY;
+            }
+            hud_RenderRadar_Vehc(nofs, clr);
+          }
         }
       }
     }
