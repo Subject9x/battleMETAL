@@ -55,23 +55,23 @@ float AI_RNG_ROK = 2;
 
 //Adjust Rotation Rate
 //self.yaw_speed = rotation rate + (rotation rate * AI_ROT_X);
-float AI_ROT_ACE = 0.7;
-float AI_ROT_VET = 0.5;
-float AI_ROT_REG = 0.3;
-float AI_ROT_ROK = 0.1;
+float AI_ROT_ACE = 0.7;//0.7;
+float AI_ROT_VET = 0.6;//0.5;
+float AI_ROT_REG = 0.4;//0.3;
+float AI_ROT_ROK = 0.25;//0.1;
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
-float AI_ARMOR_EASY = 0.2;
+float AI_ARMOR_EASY = 0.3;//0.2;
 float AI_ARMOR_MEDM = 0.4;
 float AI_ARMOR_HARD = 0.6;
 float AI_ARMOR_NIGHT = 0.75;
 
 //ai_leading ratings, how well an ai tracks a slippery targt
-float AI_LEAD_ACE = 0.05;
-float AI_LEAD_VET = 0.1;
-float AI_LEAD_REG = 0.18;
-float AI_LEAD_ROK = 0.24;
+float AI_LEAD_ACE = 0.025;//0.05;
+float AI_LEAD_VET = 0.04;//0.1;
+float AI_LEAD_REG = 0.05;//0.18;
+float AI_LEAD_ROK = 0.06;//0.24;
 
 //ai's patience in hunting a target, the better the pilot the longer they hunting
 float AI_PTNCE_ACE = 40;

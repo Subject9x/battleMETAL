@@ -112,7 +112,6 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
 
 void(float playerState) snd_hud_vfx_statelistener={
   if(getstati(STAT_PLR_STT) == PLAYER_START_BEGIN){
-    cons_logAString("where!?", "THE FUCK"); //DEBUG
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
     PLAYER_HELPER.drawme = 0;
   }

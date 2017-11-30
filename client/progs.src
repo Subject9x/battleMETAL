@@ -18,6 +18,7 @@ ui/ui_deploy_h.qc
 msn_file_c.qc
 gui_api_c.qc
 hud_snd_sys_c.qc
+../world_effectinfo_h.qc
 //DATA FILES==========
   //buildings
   data/bld/data_h_power.qc
@@ -62,7 +63,8 @@ cl_svr_cmd_c.qc
   ui/ui_brief_c.qc
   ui/ui_deploy_c.qc
 //======================= 
-
+//EFFECTS================
+  world_effectinfo_c.qc
+//=======================
 cs_precache.qc
-cs_mechhud_h.qc
 csmain.qc

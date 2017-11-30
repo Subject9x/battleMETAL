@@ -38,6 +38,7 @@ triggers_h.qc
   mech/ai/m_ext_ai_h2.qc
   q1/qwep/wep_fx_h.qc
   mech/dat/msc/map_objects_h.qc
+  world_effectinfo_h.qc
 //==========================
 dp/subs.qc
 //DATA FILES=================
@@ -137,6 +138,9 @@ world.qc
   //animations
   mech/anim/mch_leg.qc
   mech/anim/mch_ctor.qc
+  
+  //effects
+  world_effectinfo_c.qc
 //============================
 doors.qc
 buttons.qc

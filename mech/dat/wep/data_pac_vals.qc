@@ -116,7 +116,9 @@ void() data_pac_atk={
 
   t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
   sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
-  te_beam(laser_org, laser_org.origin, dir); 
+  
+  te_beam_pac(laser_org.origin, dir);
+  
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);
  

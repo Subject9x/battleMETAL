@@ -500,7 +500,7 @@ float() CSQC_Parse_TempEntity =
   local float id, handled;
   id = ReadByte();
   handled = FALSE;
-  if(id == 60){
+  if(id == TE_LASER_BEAM){
     local vector org, end, ang;
     local float dist, p;
     org_x = ReadCoord();
@@ -509,12 +509,31 @@ float() CSQC_Parse_TempEntity =
     end_x = ReadCoord();
     end_y = ReadCoord();
     end_z = ReadCoord();
-    ang_x = ReadAngle();
-    ang_y = ReadAngle();
-    ang_z = ReadAngle();
-    dist = vlen(end - org);
-    //pointparticles(, , '0 0 ', 100);
-    trailparticles(world, particleeffectnum("LASERBEAM"), org, end);
+    te_beam_laser(org, end);
+    handled = TRUE;
+  }
+  else if(id == TE_ESR_BEAM){
+    local vector org, end, ang;
+    local float dist, p;
+    org_x = ReadCoord();
+    org_y = ReadCoord();
+    org_z = ReadCoord();
+    end_x = ReadCoord();
+    end_y = ReadCoord();
+    end_z = ReadCoord();
+    te_beam_esr(org, end);
+    handled = TRUE;
+  }
+  else if(id == TE_PAC_BEAM){
+    local vector org, end, ang;
+    local float dist, p;
+    org_x = ReadCoord();
+    org_y = ReadCoord();
+    org_z = ReadCoord();
+    end_x = ReadCoord();
+    end_y = ReadCoord();
+    end_z = ReadCoord();
+    te_beam_pac(org, end);
     handled = TRUE;
   }
 

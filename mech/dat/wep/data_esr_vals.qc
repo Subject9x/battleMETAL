@@ -131,8 +131,7 @@ void() data_esr_atk={
   self = this;
   sound (laser_org, CHAN_WEAPON, DAT_ESR_SOUND, 1, ATTN_NORM);
   
-  te_beam(laser_org, laser_org.origin, dir); 
-
+  te_beam_esr(laser_org.origin, dir);
   
   te_flamejet(dir, '0 15 0', 5);
   te_customflash(dir, 4, 10, '0 0 1');
