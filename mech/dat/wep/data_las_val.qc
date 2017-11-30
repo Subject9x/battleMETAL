@@ -59,7 +59,7 @@ void() data_las_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate/4);
+      self.owner.en_cur = self.owner.en_cur - (self.en_rate/5);//v0.0.3
       self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;

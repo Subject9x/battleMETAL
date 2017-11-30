@@ -8,16 +8,16 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LATC_IDX = ID_WEP_LATC;
 string DAT_LATC_NAME = "Light Autocannon";
-float DAT_LATC_DMG = 10;//v0.0.3
+float DAT_LATC_DMG = 5;//v0.0.3
 float DAT_LATC_FIRETIME = 0;
 float DAT_LATC_CLIPSIZE = 1;  //was 3 - 3/27/2017
 float DAT_LATC_CURRENTAMMO = 1;  //was 3 - 3/27/2017
-float DAT_LATC_FIRERATE = 0.3;//was 0.15; - 5/14/2-017  //was 0.2 - 3/27/2017
+float DAT_LATC_FIRERATE = 0.05;//v0.0.3
 vector DAT_LATC_FIRE_OFS = '0 0 2';
 string DAT_LATC_MODEL = "q3mdl/weapons/w_atc.md3";
 float DAT_LATC_PROJ_ID= ID_PRJ_LATC;
-float DAT_LATC_EN_COST = 10;
-float DAT_LATC_EN_MAX = 100;
+float DAT_LATC_EN_COST = 10;//10;
+float DAT_LATC_EN_MAX = 50;//100;
 string DAT_LATC_SOUND = "sound/weapons/atc_fire.ogg";
 float DAT_LATC_TECH_LEVEL = 1;
 float DAT_LATC_SPR_X = 1; //v0.0.3

@@ -49,7 +49,7 @@ float DAT_MNT_LTOR_ARMMAX= 100;
 float DAT_MNT_LEG_ARMOR= 100;
 float DAT_MNT_LEG_ARMMAX= 100;
 
-//WEAOPON GROUPS
+//WEAPON GROUPS
 float DAT_MNT_WEP1_IDX= ID_WEP_LATC;
 float DAT_MNT_WEP2_IDX= ID_WEP_LAS;
 float DAT_MNT_WEP3_IDX= ID_WEP_LATC;
@@ -253,9 +253,9 @@ void() data_mech_MNT={
     self.plr_nex_wep7 = ID_WEP_MIS;
     self.plr_nex_wep8 = ID_WEP_MIS;
     self.plr_nex_wep9 = ID_WEP_MIS;
-    self.plr_nex_grp1 = 0;
-    self.plr_nex_grp2 = 0;
-    self.plr_nex_grp3 = 0;
+    self.plr_nex_grp1 = WEAPON1 | WEAPON2 | WEAPON3 | WEAPON4;
+    self.plr_nex_grp2 = WEAPON5 | WEAPON6;
+    self.plr_nex_grp3 = WEAPON7 | WEAPON8 | WEAPON9;
     self.plr_nex_grp4 = 0;
     self.plr_nex_grp5 = 0;
   self = oself;
