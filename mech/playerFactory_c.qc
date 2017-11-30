@@ -26,6 +26,7 @@ void() player_makeObserver={
   mh_world_updateClientModelBob("0", "0", "0");
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
+  self.stat_plr_stt = PLAYER_MENU;
 };
 
 void() player_unmakeObserver={
@@ -44,9 +45,9 @@ void() player_makeVec={
 void() player_makeMech={
   self.p_class = P_MECH;
   self.data_idx = self.nextVecChoice;
-  self.power_timer = time + 3;
-  self.stat_plr_stt = PLAYER_START;
-
+  self.power_timer = time + 8;
+  self.power_timer_segment = time + 0.008;
+  self.stat_plr_stt = PLAYER_START_BEGIN;
   data_iniMech(self.vec_size, self.nextVecChoice);
   //self.touch = touch_mech; shhhhh, not yet
   if((self.flags & FL_CLIENT)){

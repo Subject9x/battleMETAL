@@ -41,16 +41,6 @@ void() PlayerPreThink = {
       }
       //return;
     }
-    else{
-      self.power_timer = 0;
-      self.stat_plr_stt = PLAYER_IDLE;
-      self.movetype = MOVETYPE_WALK;
-    }
-    if(self.power_timer == -2){
-      
-      self.power_timer = -1;
-    }
-    
     server_updateTargetInfo();
     self.stat_hit_dirs =  self.hitdir_buffer;
     if(time >= self.w_proj){
@@ -89,8 +79,15 @@ void() PlayerPostThink = {
   }
   
   if(self.p_class != P_OBS){
-    if(time < self.power_timer){
-      //return;
+    if(time > self.power_timer_segment){
+      self.stat_plr_stt = PLAYER_START_END;
+    }
+    if(time > self.power_timer){
+      if(self.stat_plr_stt == PLAYER_START_END){
+        self.power_timer = 0;
+        self.movetype = MOVETYPE_WALK;
+        self.stat_plr_stt = PLAYER_IDLE;
+      }
     }
   }
   

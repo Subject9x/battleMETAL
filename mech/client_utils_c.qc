@@ -59,6 +59,9 @@ float(entity ent, float changed) send_ai_mech={
   return TRUE;
 };
 
+
+
+
 /*
   client sends string 'cmd mech foo'
   where foo is the command, first parm must be 'mech'
@@ -74,7 +77,7 @@ void(string str, float tokens) client_ParseMechCommand={
     }
   }
   else if(argv(1) == "setmech"){
-    self.p_class_next = P_MECH;
+    //self.p_class_next = P_MECH;
     self.vec_size = stof(argv(2));
     self.nextVecChoice = stof(argv(3));
   }

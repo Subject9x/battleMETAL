@@ -27,9 +27,6 @@ void() mh_precache_sound={
 
 void() mh_precache_models={
   precache_model("progs/v_dpshot.mdl");
-  precache_model("progs/bolt1.md3");
-  precache_model("progs/bolt2.md3");
-  precache_model("progs/bolt3.md3");
   
   //buildings
   precache_model("q3mdl/buildings/mdl_bld_h_hangar_l.md3");

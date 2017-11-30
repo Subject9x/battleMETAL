@@ -99,7 +99,6 @@ void() data_TNK_hmn={
     self.data_type = DATA_VEHC;
     self.vec_name = DAT_TNK_VEC_NAME;
     self.vec_size = 1;
-
     self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;
   self = oself;
 };

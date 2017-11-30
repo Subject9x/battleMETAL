@@ -35,7 +35,7 @@ void() ClientConnect = {
   bprint(" has deployed to the combat zone\n");
   self.viewzoom = 0;
   self.p_class = P_OBS;
-  self.p_class_next = P_OBS;
+  //self.p_class_next = P_OBS;
   self.nextVecChoice = 0;
   self.vec_size = 0;
   self.data_idx = 0;
@@ -133,6 +133,7 @@ void() ClientConnect = {
   self.next_wepn8 = -1;
   self.next_wepn9 = -1;
   
+  self.stat_plr_stt = PLAYER_SPAWN;
   self.i_reserve = world.i_reserve;
   client_sendMissionFileName();
   client_sendAvailableLightMechs();
@@ -201,8 +202,6 @@ void() PutClientInServer = {
   }
   else if(self.p_class == P_MECH){
     player_makeMech();
-    self.stat_plr_stt = PLAYER_START;
-    self.power_timer = time + 1;//8
   }
  
 	if (deathmatch || coop)
@@ -230,9 +229,7 @@ void() ClientKill = {
   //if player is an observer and their next class is still observer
   //don't let them suicide
   if(self.p_class == P_OBS){
-    if(self.p_class_next == P_OBS){
-      return;
-    }
+    return;
   }
   
   bprint (self.netname);
@@ -263,7 +260,7 @@ void() ClientKill = {
     self.frags = self.frags - 2;
   }
   
-  self.p_class = self.p_class_next;
+  //self.p_class = self.p_class_next;
   
 	respawn ();
 };

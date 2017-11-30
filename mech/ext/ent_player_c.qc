@@ -12,7 +12,7 @@ Overview: extends the player's entity.
 //.float playermovestate, playermovebegin; //pulled from dpqc player.qc
 
 .float p_class;      //type of player, maps to GLOBAL P_TYPES
-.float p_class_next;  // previous player class, needed for cleanup checks
+//.float p_class_next;  // previous player class, needed for cleanup checks
 .float currentWeaponGroup;
 .float nextVecChoice;
 .float data_idx;
@@ -31,6 +31,7 @@ Overview: extends the player's entity.
 .entity w_slot;     //use this for teh linked list goodness
 
 .float power_timer; //used for power up
+.float power_timer_segment; //used for power up
 .float lock_timer;
 .float chain_timer;
 

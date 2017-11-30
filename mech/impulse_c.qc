@@ -99,33 +99,6 @@ void() ImpulseCommands ={
     }
   }
   
-  /*
-  if(self.impulse == IMP_SUICIDE){
-    ClientKill(); WHOOPS!
-  }
-  
-  //abstract out into handler at some point
-
-  if(self.nextVecChoice > 3){
-    self.nextVecChoice = 0;
-  }
-  else if(self.nextVecChoice < 0){
-    self.nextVecChoice = 3;
-  }
-	
-  if(change == 1){
-    if( self.nextVecChoice == 0){
-      centerprint(self, "Spawn as Observer");
-      self.p_class_next = P_OBS;
-    }else{
-      self.p_class_next = P_MECH;
-      local entity e;
-      e = mh_world_findData(self.nextVecChoice, DATA_MECH);
-      centerprint(self, strcat("Spawn as ", e.vec_name));
-    }
-    change = 0;
-  }*/
-  
 	self.impulse = 0;
 };
 

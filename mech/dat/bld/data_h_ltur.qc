@@ -20,7 +20,7 @@ float DAT_TUR_SHIELD_CUR = 0;
 float DAT_TUR_SHIELD_MAX = 200;
 float DAT_TUR_SHIELD_RATE = 0.35;
 float DAT_TUR_YAWSPEED = 5;
-vector DAT_TUR_CTOR_BBX_N ='-20 -20 -10';
+vector DAT_TUR_CTOR_BBX_N ='-20 -20 -12';
 vector DAT_TUR_CTOR_BBX_X ='20 20 14';
 float DAT_TUR_M_FSPEED=-1;
 float DAT_TUR_M_SSPEED=-1;
@@ -56,7 +56,7 @@ string DAT_TUR_CTOR_MODEL= "q3mdl/buildings/mdl_bld_h_ltur.md3";
 //LEGS
 string DAT_TUR_LEG_CNAME= M_LEGS;
 string DAT_TUR_LEG_MODEL= "q3mdl/buildings/mdl_bld_h_ltur_base.md3";
-vector DAT_TUR_LEG_OFFSET= '0 0 -5';
+vector DAT_TUR_LEG_OFFSET= '0 -2 0';
 
 //CENTER TORSO
 string DAT_TUR_CTOR_CNAME= M_TOR_CENTER;
@@ -167,8 +167,6 @@ void() building_tur={
   
   data_iniBuilding(ID_BLD_H_TURRET);
   
-  self.solid = SOLID_BSP;
-  
   ai_core_calcranges();
 
   local float mod;
@@ -192,7 +190,6 @@ void() building_tur={
   self.patience = 0;
   self.origin_z = self.origin_z + 1;// raise off floor a bit
   droptofloor();
-  self.e_legs.movetype = MOVETYPE_NONE;
   self.enemy = world;
   self.oldgoal = world;
   self.ai_next_state = ai_state_ready;

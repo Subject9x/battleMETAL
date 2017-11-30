@@ -36,9 +36,6 @@ void() ai_control={
   }
   self.prev_pos = self.origin;
   if(self.m_fspeed > -1){
-    if(self.e_legs.walkframe > 9){
-      self.e_legs.walkframe = 2;
-    }
     self.ai_next_move();
     self.prev_angle = normalize(self.origin - self.prev_pos);
     if(self.enemy != world){
@@ -124,16 +121,10 @@ void() ai_turret_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-
-  setmodel(self, self.e_legs.c_model);
-  setsize(self, '-1 -1 -10', '1 1 1');
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_NOT;
-  self.angles = self.e_legs.prev_angle;
-  droptofloor();
-  
   mech_player_compdie(self.e_legs);
   mech_player_compdie(self.e_cam);
+ 
+  ctor_die1();
  
   self.think = ai_mech_cleanup;
   self.nextthink = time + 100;
@@ -312,8 +303,6 @@ void() ai_move_random={
 };
 
 void() ai_move_stand={
-
-  self.e_legs.walkframe = 0;
   if(self.ai_prev_move == ai_move_walkmove_strafeleft){
     self.ai_next_move = ai_move_walkmove_straferight;
   }

@@ -14,7 +14,6 @@ void() CSQC_Init =
   VIEW_ORG = '0 0';
   PLAYER_HELPER = spawn();
   PLAYER_HELPER.drawmask = MASK_ENGINE;
-  addentity(PLAYER_HELPER);
   PLAYER_HELPER.plr_sel_mech = 0;
   PLAYER_HELPER.vec_size = 1;
   PLAYER_HELPER.plr_nex_mech = 0;
@@ -42,6 +41,7 @@ void() CSQC_Init =
   PLAYER_HELPER.SOUND_QUEUE_4 = "null";
   PLAYER_HELPER.SOUND_QUEUE_5 = "null";
   PLAYER_HELPER.SOUND_QUEUE_6 = "null";
+  setorigin(PLAYER_HELPER, '0 0 64');
   
   WEPBITS[0] = 1;
   WEPBITS[1] = 2;
@@ -115,8 +115,7 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   if(evtype == 0){
-    if((scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS) && (getstatf(STAT_CTOR_HP)== 0)){
-      if(!isdemo()){
+    if((scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS)){
         if(MENU_ACTIVE){
           MENU_ACTIVE = FALSE;
           MENU_HANGAR_ACTIVE = FALSE;
@@ -130,7 +129,6 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
           setcursormode(1);
         }
         return TRUE;
-      }
     }
     else if(scanx == K_MOUSE1){
       if(MENU_ACTIVE){
@@ -206,6 +204,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 
 	// clear the scene information (entities, polygons, etc)
 	clearscene();
+  //=====================================================
   local vector fovvec,
                 vf_sz,
                 vf_mn;
@@ -276,6 +275,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   drawstring('0 8 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
   drawstring('0 16 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
  */
+  
   AVAILABLE_RESERVE = getstati(STAT_LVL_RES);
   if(pclas != P_OBS){
     //player general info
