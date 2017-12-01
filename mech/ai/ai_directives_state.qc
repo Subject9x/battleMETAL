@@ -71,11 +71,10 @@ void() ai_state_hunt={
   }
 };
 
-void() ai_state_fight={
+/*void() ai_state_fight={
   if(ai_core_targetstate()){
     self.goalentity = self.enemy;
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-
     if(!ai_target_visible(self.enemy)){
       self.ai_next_state = ai_state_hunt;
       return;
@@ -109,7 +108,7 @@ void() ai_state_fight={
       self.oldenemy = world;
     }
   }
-};
+};*/
 
 /*
 

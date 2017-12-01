@@ -56,8 +56,8 @@ void() ai_mech={
   self.conv_min = '0 0 0';
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
-  self.w_clipsize = 0; //use this for the movement frame counter (I love co-opting existing variables :( ) 
-  self.w_isready = 0; //and this guy too
+  self.w_clipsize = ((0 - self.p_damage) *-1) + 1; //use this for the movement frame counter (I love co-opting existing variables :( ) 
+  self.w_isready = time; //and this guy too
   
   self.ideal_yaw = self.angles * '0 1 0';
 		
@@ -85,39 +85,40 @@ void() ai_mech={
   self.ai_rte_cnv = mod;
   mod = ai_pilot_rating_range();
   self.ai_rte_rng = mod;
+  self.stat_rdr_mode = TRUE;
   self.th_die = ai_mech_die;
   self.th_missile = ai_mech_attack;
   self.ai_unit_update = ai_mech_update;
-  self.ai_next_state = self.ai_first_order = ai_state_ready;
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
   self.ai_optical = self.radar_range /2;
   mod = ai_pilot_rating_patience();
-  self.maxpatience = mod;
+  self.maxpatience = 0;
   self.patience = 0;
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
 	droptofloor();
-  self.movetarget = world;
-  self.oldgoal = world;
   
   //set first order based on self.state_1
-  if(self.state_1 == 0){
-    self.ai_first_order = ai_order_stand;
+  if(self.state_1 == AI_ORDER_ATTACK){
+    self.ai_first_order = AI_ORDER_ATTACK;
   }
-  else if(self.state_1 == 1){
-    self.ai_first_order = ai_order_defend;
+  else if(self.state_1 == AI_ORDER_DEFEND){
+    self.ai_first_order = AI_ORDER_DEFEND;
   }
-  else if(self.state_1 == 2){
-    self.ai_first_order = ai_order_patrol;
+  else if(self.state_1 == AI_ORDER_PATROL){
+    self.ai_first_order = AI_ORDER_PATROL;
+    self.ai_next_state = ai_find_patrol_node;
   }
-  else if(self.state_1 == 3){
-    self.ai_first_order = ai_order_attack;
+  else if(self.state_1 == AI_ORDER_STAND){
+    self.ai_first_order = AI_ORDER_STAND;
+    self.ai_next_state = ai_sweep_stand;
   }
-  else if(self.state_1 < 0){
-    self.ai_first_order = ai_order_test;
+  else if(self.state_1 == AI_ORDER_DEBUG){
+    self.ai_first_order = AI_ORDER_DEBUG;
   }
   else{
-    self.ai_first_order = ai_order_stand;
+    self.ai_first_order = AI_ORDER_STAND;
+    self.ai_next_state = ai_sweep_stand;
   }
   
 	if (!walkmove(0,0))
@@ -126,41 +127,10 @@ void() ai_mech={
 		dprint (vtos(self.origin));
 		dprint ("\n");
 	}
-  
-  if(self.ai_first_order != ai_order_test){
-    if (self.target)
-    {
-      local entity t;
-      t = find(world, targetname, self.target);
-      if(t){
-        traceline(self.origin, t.origin, TRUE, self);
-        if(t.classname == "ai_node"){
-          self.goalentity = t;
-        }
-        else{
-          self.enemy = t;
-        }
-        self.ai_next_state = self.ai_first_order;
-        if(trace_fraction  < 1){
-          self.ai_prev_state = self.ai_first_order;
-          self.ai_next_state = ai_sub_tonode;
-        }
-      }
-      else{
-        self.ai_first_order = ai_order_stand;
-        self.ai_next_state = ai_order_stand;
-      }
-    }
-    else
-    {
-      self.pausetime = 99999999;
-      self.ai_next_state = ai_order_stand;
-    }
-  }
   self.prev_pos = self.origin;
   self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = 1;
   self.think = ai_control;
-  self.nextthink = time + 5; //power up timer
+  self.nextthink = time + 7; //power up timer
 };

@@ -28,25 +28,31 @@ void() ai_node={
 }
 
 void() ai_node_touch={
-  if((other.flags & FL_MONSTER)){
+  /*if((other.flags & FL_MONSTER)){
     local entity this;
     this = self;
     if(self.state_1){
       //override the AI's First Order behavior with a new one
       self = other;
-        if(this.state_1 == 0){
-          self.ai_first_order = ai_order_stand;
+        if(self.state_1 == AI_ORDER_ATTACK){
+          self.ai_first_order = AI_ORDER_ATTACK;
         }
-        else if(this.state_1 == 1){
-          self.ai_first_order = ai_order_defend;
+        else if(self.state_1 == AI_ORDER_DEFEND){
+          self.ai_first_order = AI_ORDER_DEFEND;
         }
-        else if(this.state_1 == 2){
-          self.ai_first_order = ai_order_patrol;
+        else if(self.state_1 == AI_ORDER_PATROL){
+          self.ai_first_order = AI_ORDER_PATROL;
         }
-        else if(this.state_1 == 3){
-          self.ai_first_order = ai_order_attack;
+        else if(self.state_1 == AI_ORDER_STAND){
+          self.ai_first_order = AI_ORDER_STAND;
         }
-        self.ai_next_state = self.ai_first_order;
+        else if(self.state_1 == AI_ORDER_DEBUG){
+          self.ai_first_order = AI_ORDER_DEBUG;
+        }
+        else{
+          self.ai_first_order = AI_ORDER_STAND;
+        }
+        //self.ai_next_state = self.ai_first_order;
       self = this;
       return;
     }
@@ -95,7 +101,7 @@ void() ai_node_touch={
   }
   if(other.p_class != P_OBS){
     return;
-  }
+  }*/
 };
 
 void() ai_node_g1;

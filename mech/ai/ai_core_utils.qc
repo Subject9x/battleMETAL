@@ -5,6 +5,27 @@ Overview: next draft the ai
 this one will focus on move to move
 */
 
+
+/*
+  recurse through a node's patrol paths to find the most visible node to the ai
+*/
+entity(entity node) ai_find_patrol_node_recurse={
+  local entity n;
+  n = find(world, targetname, node.target);
+  if(n){
+    traceline(node.origin + '0 0 32', self.origin, TRUE, node);
+    if(trace_fraction == 1){
+      return n;
+    }
+    else{
+      return ai_find_patrol_node_recurse(n);
+    }
+  }
+  else{
+    return node;
+  }
+};
+
 float(entity ai, entity goal) ai_core_trynode={
   local entity e, near;
   local float prox;
@@ -45,109 +66,7 @@ entity(entity ai, entity goal) ai_core_nodetogoal={
   return near;
 };
 
-//galaxy forgive me
-entity(entity node, float id) ai_query_graphnode={
-  local entity n;
-  local float idx;
-  if(id == 1){
-    idx = node.nexnode1;
-  }
-  else if(id == 2){
-    idx = node.nexnode2;
-  }
-  else if(id == 3){
-    idx = node.nexnode3;
-  }
-  else if(id == 4){
-    idx = node.nexnode4;
-  }
-  else if(id == 5){
-    idx = node.nexnode5;
-  }
-  else if(id == 6){
-    idx = node.nexnode6;
-  }
-  else if(id == 7){
-    idx = node.nexnode7;
-  }
-  else if(id == 8){
-    idx = node.nexnode8;
-  }
-  else if(id == 9){
-    idx = node.nexnode9;
-  }
-  else if(id == 10){
-    idx = node.nexnode10;
-  }
-  else if(id == 11){
-    idx = node.nexnode11;
-  }
-  else if(id == 12){
-    idx = node.nexnode12;
-  }
-  else if(id == 13){
-    idx = node.nexnode13;
-  }
-  else if(id == 14){
-    idx = node.nexnode14;
-  }
-  else if(id == 15){
-    idx = node.nexnode15;
-  }
-  else if(id == 16){
-    idx = node.nexnode16;
-  }
-  else if(id == 17){
-    idx = node.nexnode17;
-  }
-  else if(id == 18){
-    idx = node.nexnode18;
-  }
-  else if(id == 19){
-    idx = node.nexnode19;
-  }
-  else if(id == 20){
-    idx = node.nexnode20;
-  }
-  else if(id == 21){
-    idx = node.nexnode21;
-  }
-  else if(id == 22){
-    idx = node.nexnode22;
-  }
-  else if(id == 23){
-    idx = node.nexnode23;
-  }
-  else if(id == 24){
-    idx = node.nexnode24;
-  }
-  else if(id == 25){
-    idx = node.nexnode25;
-  }
-  else if(id == 26){
-    idx = node.nexnode26;
-  }
-  else if(id == 27){
-    idx = node.nexnode27;
-  }
-  else if(id == 28){
-    idx = node.nexnode28;
-  }
-  else if(id == 29){
-    idx = node.nexnode29;
-  }
-  else if(id == 30){
-    idx = node.nexnode30;
-  }
-  else if(id == 31){
-    idx = node.nexnode31;
-  }
-  else if(id == 32){
-    idx = node.nexnode32;
-  }
-  n = findfloat(world, node_id, idx);
-  return n;
-};
+
 
 entity(vector org, float start_dist) ai_core_findgraphnode={
   local entity e, near;
@@ -245,6 +164,36 @@ float() ai_core_targetstate={
   }
   return TRUE;
 };
+
+
+entity() ai_core_radar_sweep={
+  local float len;
+  local entity t, found;
+  if(self.stat_rdr_mode){
+    len = self.radar_range;
+  }
+  else{
+    self.radar_range / 2;
+  }
+  t = findradius(self.origin, len);
+  while(t){
+    if(t.i_faction != self.i_faction){
+      if(t != world){
+        if((t.p_class) && (t.p_class != P_OBS)){
+          local float d;
+          d = vlen(t.origin - self.origin);
+          if(d < len){
+            len = d;
+            found = t;
+          }
+        }
+      }
+    }
+    t = t.chain;
+  }
+  return found;
+};
+
 
 /*================================
         ai_core_opticaltarget
@@ -413,9 +362,6 @@ float(vector chk, vector node) ai_core_nodelos={
 };
 
 void(void() nex_state, float cache_state) ai_update_state={
-  /*if(cache_state == TRUE){
-    self.ai_state_cache = self.ai_next_state;
-  }*/
   if(self.ai_prev_state != self.ai_next_state){
     self.ai_prev_state = self.ai_next_state;
   }
@@ -566,4 +512,109 @@ void() ai_core_calcranges={
   else{
     self.ai_minrange = AI_RANGE_S;
   }
+};
+
+//moving this to bottom for readability
+//galaxy forgive me
+entity(entity node, float id) ai_query_graphnode={
+  local entity n;
+  local float idx;
+  if(id == 1){
+    idx = node.nexnode1;
+  }
+  else if(id == 2){
+    idx = node.nexnode2;
+  }
+  else if(id == 3){
+    idx = node.nexnode3;
+  }
+  else if(id == 4){
+    idx = node.nexnode4;
+  }
+  else if(id == 5){
+    idx = node.nexnode5;
+  }
+  else if(id == 6){
+    idx = node.nexnode6;
+  }
+  else if(id == 7){
+    idx = node.nexnode7;
+  }
+  else if(id == 8){
+    idx = node.nexnode8;
+  }
+  else if(id == 9){
+    idx = node.nexnode9;
+  }
+  else if(id == 10){
+    idx = node.nexnode10;
+  }
+  else if(id == 11){
+    idx = node.nexnode11;
+  }
+  else if(id == 12){
+    idx = node.nexnode12;
+  }
+  else if(id == 13){
+    idx = node.nexnode13;
+  }
+  else if(id == 14){
+    idx = node.nexnode14;
+  }
+  else if(id == 15){
+    idx = node.nexnode15;
+  }
+  else if(id == 16){
+    idx = node.nexnode16;
+  }
+  else if(id == 17){
+    idx = node.nexnode17;
+  }
+  else if(id == 18){
+    idx = node.nexnode18;
+  }
+  else if(id == 19){
+    idx = node.nexnode19;
+  }
+  else if(id == 20){
+    idx = node.nexnode20;
+  }
+  else if(id == 21){
+    idx = node.nexnode21;
+  }
+  else if(id == 22){
+    idx = node.nexnode22;
+  }
+  else if(id == 23){
+    idx = node.nexnode23;
+  }
+  else if(id == 24){
+    idx = node.nexnode24;
+  }
+  else if(id == 25){
+    idx = node.nexnode25;
+  }
+  else if(id == 26){
+    idx = node.nexnode26;
+  }
+  else if(id == 27){
+    idx = node.nexnode27;
+  }
+  else if(id == 28){
+    idx = node.nexnode28;
+  }
+  else if(id == 29){
+    idx = node.nexnode29;
+  }
+  else if(id == 30){
+    idx = node.nexnode30;
+  }
+  else if(id == 31){
+    idx = node.nexnode31;
+  }
+  else if(id == 32){
+    idx = node.nexnode32;
+  }
+  n = findfloat(world, node_id, idx);
+  return n;
 };

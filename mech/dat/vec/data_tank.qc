@@ -197,7 +197,6 @@ void() ai_tank={
   self.th_die = ai_mech_die;
   self.th_missile = ai_mech_attack;
   self.ai_unit_update = ai_mech_update;
-  self.ai_next_state = self.ai_first_order = ai_state_ready;
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
   self.ai_optical = self.radar_range /2;
@@ -210,23 +209,26 @@ void() ai_tank={
   self.oldgoal = world;
   
   //set first order based on self.state_1
-  if(self.state_1 == 0){
-    self.ai_first_order = ai_order_stand;
+  if(self.state_1 == AI_ORDER_ATTACK){
+    self.ai_first_order = AI_ORDER_ATTACK;
   }
-  else if(self.state_1 == 1){
-    self.ai_first_order = ai_order_defend;
+  else if(self.state_1 == AI_ORDER_DEFEND){
+    self.ai_first_order = AI_ORDER_DEFEND;
   }
-  else if(self.state_1 == 2){
-    self.ai_first_order = ai_order_patrol;
+  else if(self.state_1 == AI_ORDER_PATROL){
+    self.ai_first_order = AI_ORDER_PATROL;
+    self.ai_next_state = ai_find_patrol_node;
   }
-  else if(self.state_1 == 3){
-    self.ai_first_order = ai_order_attack;
+  else if(self.state_1 == AI_ORDER_STAND){
+    self.ai_first_order = AI_ORDER_STAND;
+    self.ai_next_state = ai_sweep_stand;
   }
-  else if(self.state_1 < -0){
-    self.ai_first_order = ai_order_test;
+  else if(self.state_1 == AI_ORDER_DEBUG){
+    self.ai_first_order = AI_ORDER_DEBUG;
   }
   else{
-    self.ai_first_order = ai_order_stand;
+    self.ai_first_order = AI_ORDER_STAND;
+    self.ai_next_state = ai_sweep_stand;
   }
   
 	if (!walkmove(0,0))
@@ -235,37 +237,6 @@ void() ai_tank={
 		dprint (vtos(self.origin));
 		dprint ("\n");
 	}
-  
-  if(self.ai_first_order != ai_order_test){
-    if (self.target)
-    {
-      local entity t;
-      t = find(world, targetname, self.target);
-      if(t){
-        traceline(self.origin, t.origin, FALSE, self);
-        if(t.classname == "ai_node"){
-          self.goalentity = t;
-        }
-        else{
-          self.enemy = t;
-        }
-        self.ai_next_state = self.ai_first_order;
-        if(trace_fraction  < 1){
-          self.ai_prev_state = self.ai_first_order;
-          self.ai_next_state = ai_sub_tonode;
-        }
-      }
-      else{
-        self.ai_first_order = ai_order_stand;
-        self.ai_next_state = ai_order_stand;
-      }
-    }
-    else
-    {
-      self.pausetime = 99999999;
-      self.ai_next_state = ai_order_stand;
-    }
-  }
   self.prev_pos = self.origin;
   self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;

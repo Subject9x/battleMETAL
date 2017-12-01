@@ -74,9 +74,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       if((self.p_class == P_MECH) || (self.p_class == P_VECH)){
         if(self.i_faction == trg.i_faction){
           if((self.flags & FL_MONSTER)){
-            if(self.ai_first_order == ai_order_defend){
-              anger_monster(e, attacker);
-            }
+            //if(self.ai_first_order == ai_order_defend){
+             // anger_monster(e, attacker);
+            //}
           }
         }
       }
@@ -700,7 +700,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 				if (self.enemy.classname == "player")
 					self.oldenemy = self.enemy;
 				self.enemy = attacker;
-				self.ai_next_state = ai_state_hunt;
+				self.ai_next_state = ai_hunt_target;
         //q_FoundTarget ();
 			}
 		}
@@ -857,4 +857,4 @@ entity(vector point, float rad, entity src, entity own, entity prev) t_find_recu
   
   return found;
 };
-*/
+* 
