@@ -31,10 +31,10 @@ attack
   specifically searches for ai_nodes that are made for patrol path
 */
 void() ai_find_patrol_node={
-  if(!self.goalentity){
+  if(self.goalentity == world){
     local entity n;
     n = ai_find_patrol_node_recurse(self);
-    if(n){
+    if(n != world){
       self.goalentity = n;
       self.ai_next_state = ai_goto_patrol_node;
     }
@@ -43,14 +43,20 @@ void() ai_find_patrol_node={
       self.ai_next_state = ai_sweep_stand;
     }
   }
+  else{
+    self.ai_next_state = ai_sweep_stand;
+  }
 };
 
+/*
+  traveling to node
+*/
 void() ai_goto_patrol_node={
   local float dist;
-  local entity f;
-  f = ai_core_radar_sweep();
-  if(f){
-    self.enemy = f;
+  local entity e;
+  e = ai_core_radar_sweep();
+  if(e != world){
+    self.enemy = e;
     self.oldgoal = self.goalentity;
     self.ai_next_state = ai_hunt_target;
     self.ai_prev_state = ai_goto_patrol_node;
@@ -59,7 +65,7 @@ void() ai_goto_patrol_node={
   if(dist >= AI_RANGE_L){
     ai_move_controller(ai_move_run_goal, self.w_clipsize);
   }
-  else if(dist <= 64){
+  else if(dist <= 48){
     self.ai_next_state = ai_at_patrol_node;
     self.delay = time + self.goalentity.pausetime; 
     ai_move_controller(ai_move_stand, 1);
@@ -69,7 +75,18 @@ void() ai_goto_patrol_node={
   }
 };
 
+/*
+  has reached target node
+*/
 void() ai_at_patrol_node={
+  local entity e;
+  e = ai_core_radar_sweep();
+  if(e != world){
+    self.enemy = e;
+    self.oldgoal = self.goalentity;
+    self.ai_next_state = ai_hunt_target;
+  }
+  ai_move_controller(ai_move_stand, 1);
   if(time >= self.delay){
     if((self.goalentity.state_1) && self.goalentity.state_1 != self.state_1){
       self.state_1 = self.goalentity.state_1;
@@ -78,7 +95,7 @@ void() ai_at_patrol_node={
     else{
       local entity n;
       n = ai_find_patrol_node_recurse(self.goalentity);
-      if((n) && n != self.goalentity){
+      if((n != world) && n != self.goalentity){
         self.goalentity = n;
         self.ai_next_state = ai_goto_patrol_node;
       }
@@ -86,17 +103,6 @@ void() ai_at_patrol_node={
        self.ai_next_state = ai_sweep_stand; 
       }
     }
-  }
-  else{
-    local entity f;
-    f = ai_core_radar_sweep();
-    if(f){
-      self.enemy = f;
-      self.oldgoal = self.goalentity;
-      self.ai_next_state = ai_hunt_target;
-      self.ai_prev_state = ai_at_patrol_node;
-    }
-    ai_move_controller(ai_move_stand, 1);
   }
 };
 
@@ -107,35 +113,41 @@ void() ai_hunt_target={
     }
     else{
       if(ai_target_insights(self.enemy)){
-        
+        self.ai_next_state = ai_sub_fight;
+        ai_move_controller(ai_move_charge_left, 2);
       }
       else{
-        if(!self.stat_rdr_mode){
+        if(self.stat_rdr_mode == FALSE){
           self.stat_rdr_mode = TRUE;
         }
-        traceline(self.origin, self.enemy.origin + '0 0 64', TRUE, self);
+        makevectors(self.angles);
+        local vector v1,v2;
+        v1 = self.origin + v_up*32;
+        v2 = self.enemy.origin + v_up*32;
+        traceline(v1, v2, TRUE, self);
         if(trace_fraction <= 0.25){
           self.enemy = world;
-          self.goalentity = self.oldgoal;
+          self.goalentity = world;  
           self.stat_rdr_mode = FALSE;
           ai_core_resetto_order();
+          ai_move_controller(ai_move_stand, 0.5);
         }
         else{
+          self.goalentity = world;
           self.goalentity = self.enemy;
           ai_move_controller(ai_move_walk_goal, 2);
-          self.maxpatience = time + 2;
         }  
       }
       if(time > self.maxpatience){
         self.enemy = world;
-        self.goalentity = self.oldgoal;
+        self.goalentity = world;
         self.stat_rdr_mode = FALSE;
         ai_core_resetto_order();
       }
     }
   }
   else{
-    self.goalentity = self.oldgoal;
+    self.goalentity = world;
     self.enemy = world;
     ai_core_resetto_order();
     self.stat_rdr_mode = FALSE;
@@ -143,15 +155,16 @@ void() ai_hunt_target={
 };
 
 void() ai_sweep_stand={
-  if(self.goalentity != world){
-    self.goalentity = world;
+  if(self.enemy != world){
+    self.ai_next_state = ai_hunt_target;
+    ai_move_controller(ai_move_stand, 1);
   }
-  if(self.enemy == world){
+  else {
     local entity f;
     f = ai_core_radar_sweep();
-    if(f){
+    if(f != world){
       self.enemy = f;
-      self.oldgoal = self.goalentity;
+      self.goalentity = world;
       self.ai_next_state = ai_hunt_target;
     }
     else{
@@ -159,23 +172,25 @@ void() ai_sweep_stand={
       ai_move_controller(ai_move_stand, 1);
     }
   }
-  else {
-    self.ai_next_state = ai_hunt_target;
-  }
 };
 
 
 void() ai_sub_panic={
   local entity g;
   g = ai_core_findfriendly();
-  if(g){
+  if(g != world){
+    if(self.goalentity != world){
+      if(self.oldgoal == world){
+        self.oldgoal = self.goalentity;
+      }
+    }
     self.goalentity = g;
     self.enemy = world;
     self.stat_rdr_mode = FALSE;
     ai_move_controller(ai_move_run_goal, self.p_damage + 2);
     local float d;
     d = vlen(g.origin - self.origin);
-    if(d <= 100){
+    if(d <= 10){
       self.goalentity = world;
       self.enemy = world;
       self.ai_next_state = ai_sweep_stand;
@@ -184,7 +199,7 @@ void() ai_sub_panic={
   else{
     local entity e;
     e = ai_core_radar_sweep();
-    if(e){
+    if(e != world){
       local float ang;
       ang = vectoyaw(e.origin - self.origin);
       ang = ang + 180;
@@ -287,13 +302,12 @@ void() ai_sub_fight={
       }
     }
     else{
-      
       self.ai_next_state = ai_hunt_target;
-      self.maxpatience = time + 10;
+      self.maxpatience = time + 4;
     }
   }
   else{
-    self.goalentity = self.oldgoal;
+    self.goalentity = world;
     self.enemy = world;
     ai_core_resetto_order();
     self.stat_rdr_mode = FALSE;

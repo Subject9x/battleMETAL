@@ -61,8 +61,11 @@ entity(entity node) ai_find_patrol_node_recurse={
   local entity n;
   if(node.target){
     n = find(world, targetname, node.target);
-    if(n){
-      traceline(node.origin + '0 0 32', self.origin, TRUE, node);
+    if(n != world){
+      makevectors(node.angles);
+      local vector v1;
+      v1 = node.origin + v_up*32;
+      traceline(v1, self.origin, TRUE, node);
       if(trace_fraction == 1){
         return n;
       }
@@ -101,50 +104,6 @@ entity(vector org, float start_dist) ai_core_findgraphnode={
   return near;
 };
 
-entity() ai_core_findnode={
-  local entity node, f;
-  local float d;
-  d = self.radar_range;
-  node = findchain(classname, "ai_node");
-  while(node){
-    local float len;
-    if(ai_target_visible(node)){
-      if(node.target){
-        len = vlen(node.origin - self.origin);
-        if(len < d){
-          d = len;
-          f = node;
-        }
-      }
-    }
-    node = node.chain;
-  }
-  return f;
-};
-
-/*================================
-        ai_core_findtarget
-
-================================*/
-entity() ai_core_findtarget={
-  local entity t_opt, t_rdr;
-  if(self.enemy == world){
-    if(self.oldenemy != world){
-      //an old grudge
-      return self.oldenemy;
-    }
-    t_opt = ai_core_opticaltarget();
-    if(t_opt != world){
-      return t_opt;
-    }
-    t_rdr = ai_core_radartarget();
-    if(t_rdr != world){
-      return t_rdr;
-    }
-  }
-  return world;
-};
-
 /*================================
         ai_core_targetstate
 called whenever [ai_state_hunt] is the
@@ -164,32 +123,36 @@ float() ai_core_targetstate={
   if(self.enemy.health <= 0){
     return FALSE;
   }
-  if(self.stat_trg_dist > self.radar_range){
-    self.enemy = world;
-    return FALSE;
-  }
+  //if(self.stat_trg_dist > self.radar_range){
+   // self.enemy = world;
+  //  return FALSE;
+  //}
   return TRUE;
 };
 
 entity() ai_core_radar_sweep={
-  local float len;
+  local float len, ht;
   local entity t, found;
-  local vector vis;
+  local vector vis, me;
+  makevectors(self.angles);
+  me = self.origin + v_up*32;
   if(self.stat_rdr_mode){
     len = self.radar_range;
-    vis = '0 0 32';
+    ht = 64;
   }
   else{
     self.radar_range = self.radar_range / 2;
-    vis = '0 0 0';
+    ht = 32;
   }
   t = findradius(self.origin, len);
   while(t){
-    if(t.i_faction != self.i_faction){
-      if(t != world){
-        if((t.p_class) && (t.p_class != P_OBS)){
-          traceline(self.origin, t.origin + vis, TRUE, self);
-          if(trace_fraction >= 0.25){
+    if(t != world){
+      if(t.i_faction != self.i_faction){
+        if((t.p_class) && t.p_class != P_OBS){
+          makevectors(t.angles);
+          vis = t.origin + v_up*ht;
+          traceline(me, vis, TRUE, self);
+          if(trace_fraction >= 0.15){
             local float d;
             d = vlen(t.origin - self.origin);
             if(d < len){
@@ -207,96 +170,33 @@ entity() ai_core_radar_sweep={
 
 entity() ai_core_findfriendly={
   local entity friend, found;
+  local vector me, forg;
   local float rad, dist;
+  makevectors(self.angles);
+  me = friend.origin + v_up*64;
   dist = rad = self.radar_range;
-  friend = findchainfloat(i_faction, self.i_faction);
+  friend = findradius(self.origin, rad);
   while(friend){
-    if(friend.p_class == P_MECH){
-      traceline(self.origin, friend.origin + '0 0 32', TRUE, self);
-      if(trace_fraction >= 0.5){
-        local float f;
-        f = vlen(friend.origin - self.origin);
-        if(f < dist){
-          dist = f;
-          found = friend;
+    if(friend != world){
+      if(friend.i_faction == self.i_faction){
+        if((friend.p_class == P_VECH) || (friend.p_class == P_MECH)){
+          makevectors(friend.angles);
+          forg = friend.origin + v_up*32;
+          traceline(me, forg, TRUE, self);
+          if(trace_fraction > 0.25){
+            local float f;
+            f = vlen(friend.origin - self.origin);
+            if(f < dist){
+              dist = f;
+              found = friend;
+            }
+          }
         }
       }
     }
     friend = friend.chain;
   }
   return found;
-};
-
-/*================================
-        ai_core_opticaltarget
-finds all valid units (mechs, tanks, buildings)
--must be in front of ent
--must be visible
-================================*/
-entity() ai_core_opticaltarget={
-  local float len;
-  local entity t_opt, targ;
-  len = self.ai_optical;
-  targ = findradius(self.origin, len);
-  while(targ){
-    if(targ != world){
-      if(targ != self){
-        if(targ.owner != self){
-          if(ai_target_infront(targ)){
-            if(ai_target_visible(targ)){
-              if((targ.p_class == P_MECH) || (targ.p_class == P_BULD)){
-                if(targ.i_faction != self.i_faction){
-                  local float d;
-                  d = vlen(targ.origin - self.origin);
-                  if(d < len){
-                    len = d;
-                    t_opt = targ;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    targ = targ.chain;
-  }
-  return t_opt;
-};
-
-/*================================
-        ai_core_radartarget
-finds all valid units (mechs, tanks, buildings)
--must be visible
-================================*/
-entity() ai_core_radartarget={
-  local float len;
-  local entity t_rdr, targ;
-  len = self.radar_range;
-  targ = findradius(self.origin, len);
-  self.stat_rdr_mode = 1;
-  while(targ){
-    if(targ != world){
-      if(targ != self){
-        if(targ.owner != self){
-          if(ai_target_visible(targ)){
-            if(targ.p_class == P_MECH || targ.p_class == P_BULD){
-              if(targ.i_faction != self.i_faction){
-                local float d;
-                d = vlen(targ.origin - self.origin);
-                if(d < len){
-                  len = d;
-                  t_rdr = targ;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    targ = targ.chain;
-  }
-  return t_rdr;
 };
 
 /*================================

@@ -24,7 +24,7 @@ void() ctrl_updateLegs={
         diff = self.owner.en_rate - self.owner.m_maccel;
         diff = diff + self.owner.m_maccel;
         diff = diff * 1.05;
-        if((self.owner.movement_x > self.owner.m_fspeed) || (self.owner.movement_y > self.owner.m_fspeed)){
+        if((self.owner.movement_x >= (self.owner.m_fspeed *self.owner.m_maccel)) || (self.owner.movement_y >= (self.owner.m_fspeed*self.owner.m_maccel))){
           self.owner.en_cur = self.owner.en_cur - diff;
           if(self.owner.en_cur < diff){
             if(self.w_firerate != 1){

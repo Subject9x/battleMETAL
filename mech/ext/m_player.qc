@@ -41,6 +41,16 @@ void() PlayerPreThink = {
       }
       //return;
     }
+    if(time > self.power_timer_segment){
+      self.stat_plr_stt = PLAYER_START_END;
+    }
+    if(time > self.power_timer){
+      if(self.stat_plr_stt == PLAYER_START_END){
+        self.power_timer = 0;
+        self.movetype = MOVETYPE_WALK;
+        self.stat_plr_stt = PLAYER_IDLE;
+      }
+    }
     server_updateTargetInfo();
     self.stat_hit_dirs =  self.hitdir_buffer;
     if(time >= self.w_proj){
@@ -76,19 +86,6 @@ void() PlayerPostThink = {
     
 	if (self.deadflag >= DEAD_DYING){
     return;
-  }
-  
-  if(self.p_class != P_OBS){
-    if(time > self.power_timer_segment){
-      self.stat_plr_stt = PLAYER_START_END;
-    }
-    if(time > self.power_timer){
-      if(self.stat_plr_stt == PLAYER_START_END){
-        self.power_timer = 0;
-        self.movetype = MOVETYPE_WALK;
-        self.stat_plr_stt = PLAYER_IDLE;
-      }
-    }
   }
   
 // do weapon stuff

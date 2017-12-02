@@ -199,7 +199,6 @@ void(void() func) build_mech_torsoCenter={
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_BOUNCE);
   util_setModel(self.c_model, 0);
   util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
-  self.radar_range = self.radar_range / 2; //mech starts in PASSIVE radar mode;
   ctor_stand();
 };
 

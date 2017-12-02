@@ -126,13 +126,13 @@ void(float lockstate) snd_hud_vfx_locklistener={
 };
 
 void(float curEn) snd_hud_vfx_enelistener={
-  if((curEn > 10) && (curEn <= 12)){
+  if(curEn == 10){
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
   }
 };
 
 void(float curSh) snd_hud_vfx_shdlistener={
-  if((curSh > 10) && (curSh <= 12)){
+  if(curSh == 10){
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_SHDLOW, 1);
   }
 };
@@ -192,7 +192,6 @@ void(float mode) snd_hud_vfx_toggleradar={
     }
     else{
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRPASSIVE, 3); 
-      
     }
   }
 };

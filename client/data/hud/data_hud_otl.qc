@@ -589,7 +589,7 @@ void(float shieldval, vector tpos, float zht) otl_targetShield={
   drawstring(ofs +gui_percentToPixelRawVec('0 -8'), "[TARGET SHIELD]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   if(shieldval > 0){
     gui_renderMeter(shieldval, ofs, gui_percentToPixelRawVec('72 10'), CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
-    tpos_z = tpos_z + zht*1.5;
+    tpos_z = tpos_z + zht + (zht / 2 );
     spos = cs_project(tpos);
     if (spos_z >= 0) {
       spos_x -= 36; //align horizontally to centre

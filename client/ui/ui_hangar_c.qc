@@ -544,7 +544,7 @@ void(vector ofs) menu_hangar_WeaponGroupPanel={
   nofs_y = ofs_y + VIEW_CTR_y + gui_percentY(0.0541);
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixel(0.1531, 0.189), '1 1 1', HUD_ALPHA,0);
   drawstring(nofs + gui_percentToPixel(0.0046, 0.0062), "[GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(nofs + gui_percentToPixel(0.06, 0.0062), "[A] [B] [C] [D] [E]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + gui_percentToPixel(0.06, 0.0062), "[1] [2] [3] [4] [5]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   nofs = nofs + gui_percentToPixel(0, 0.0062);
   col_a = nofs + gui_percentToPixel(0.062, 0.012);

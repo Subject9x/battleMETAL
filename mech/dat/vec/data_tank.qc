@@ -192,6 +192,7 @@ void() ai_tank={
   self.stat_spr_y = self.conv_min_y + self.conv_max_y;
   mod = ai_pilot_rating_converg();
   self.ai_rte_cnv = mod;
+  
   mod = ai_pilot_rating_range();
   self.ai_rte_rng = mod;
   self.th_die = ai_mech_die;

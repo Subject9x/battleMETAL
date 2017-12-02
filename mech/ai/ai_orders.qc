@@ -5,37 +5,6 @@ Overview: ai orders, these are the top-level states
 that the AI moves between, with the original order being stored as a fallback behavior
 */
 
-/*================================================================
-[Attack]
-AI has a entity it must Attack
-================================================================*/
-void() ai_order_attack={
-  /*if(self.ai_prev_state != ai_order_patrol){
-    local entity restore;
-    restore = find(world, targetname, self.target);
-    if(restore != self.goalentity){
-      self.goalentity = restore;
-    }
-  } */
-  local entity t;
-  t = ai_core_findtarget();
-  if(t){
-    self.enemy = t;
-    //self.ai_prev_state = ai_order_stand;
-    //self.ai_next_state = ai_sub_fight;
-    return;
-  }
-  if(self.goalentity != world){
-    self.dest2 = self.origin;
-    //self.ai_next_state = ai_sub_tonode;
-    //self.ai_prev_state = self.ai_first_order;
-  }
-  else{
-    //self.ai_next_state = ai_order_stand;
-    // self.ai_prev_state = self.ai_first_order;
-  }
-};
-
 
 /*================================================================
 [Defend]
@@ -52,7 +21,6 @@ void() ai_order_defend={
     }
   }
   local entity t;
-  t = ai_core_findtarget();
   if(t){
     self.enemy = t;
     self.ai_prev_state = ai_order_defend;

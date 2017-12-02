@@ -61,28 +61,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if((trg.flags & FL_MONSTER)){
     if(trg.state_1 != AI_ORDER_DEBUG){
-      anger_monster(trg, attacker);
-    }
-  }
-  if((trg.p_class == P_BULD) || (trg.p_class == P_VECH)){
-    local entity e, this;
-    this = self;
-    e = findradius(trg.origin, 2000);
-    while(e){
-      self = e;
-      if((self.p_class == P_MECH) || (self.p_class == P_VECH)){
-        if(self.i_faction == trg.i_faction){
-          if((self.flags & FL_MONSTER)){
-            //if(self.ai_first_order == ai_order_defend){
-             // anger_monster(e, attacker);
-            //}
-          }
-        }
+      if(trg.i_faction != attacker.i_faction){
+        anger_monster(trg, attacker);
       }
-      self = this;
-      e = e.chain;
     }
   }
+  
   //check shields
   if(trg.sh_cur >= 0){
     new_dmg = damage_shield(trg, dmg_amt, dmg_type);
@@ -97,6 +81,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 0.75, ATTN_NORM);
   }
   else{
+    //todo turn this into effect.txt stuff
     newmis = spawn();
     oself = self; 
     self = newmis;
@@ -471,34 +456,32 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
 
 void(entity trg, entity atk) anger_monster={
   if(atk != world){
-    if(atk.owner != trg){
-      if(atk != trg){
-        if((!atk.i_faction) || (atk.i_faction != trg.i_faction)){
-          if((atk != trg.enemy) && (trg.enemy == world)){
-            local entity this;
-            this = self;
-            self = trg;
-              self.enemy = atk;
-              self.ai_prev_state = self.ai_next_state;
-              self.ai_next_state = ai_sub_fight;
-            self = this;
-            return;
-          }
-          else{
-            if((vlen(trg.enemy.origin - trg.origin)) > (vlen(atk.origin - trg.origin))){
-              local entity this2;
-              this2 = self;
-              self = trg;
-                self.enemy = atk;
-                self.ai_prev_state = self.ai_next_state;
-                self.ai_next_state = ai_sub_fight;
-              self = this2;
-              return;
-            }
-          }
-        }  
-      }    
-    }
+    if(atk != trg){
+      if((atk != trg.enemy) && (trg.enemy == world)){
+        local entity this;
+        this = self;
+        self = trg;
+          self.oldgoal = self.goalentity;
+          self.enemy = atk;
+          self.ai_next_state = ai_sub_fight;
+        self = this;
+      }
+      else{
+        if((vlen(trg.enemy.origin - trg.origin)) > (vlen(atk.origin - trg.origin))){
+          local entity this2;
+          this2 = self;
+          self = trg;
+            self.enemy = atk;
+            self.ai_next_state = ai_sub_fight;
+          self = this2;
+        }
+      }
+      local entity friend;
+      friend = ai_core_findfriendly();
+      if(friend != world){
+        anger_monster(friend, atk);
+      }
+    }    
   }
 };
 
