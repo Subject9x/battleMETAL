@@ -295,6 +295,7 @@ void() data_mnt_ctor={
   self.armorvalue = DAT_MNT_CTOR_ARMOR;
   self.max_armor = DAT_MNT_CTOR_ARMMAX;
   self.c_model = DAT_MNT_CTOR_MODEL;
+  self.w_proj = 9;
 };
 
 void() data_mnt_ltor={

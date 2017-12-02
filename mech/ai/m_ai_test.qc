@@ -49,7 +49,7 @@ void() ai_mech={
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
   self.stat_hit_dirs = 0;
-  self.stat_rdr_mode = 0;
+  self.stat_rdr_mode = FALSE;
   
   self.stat_spr_x = 0;
   self.stat_spr_y = 0;

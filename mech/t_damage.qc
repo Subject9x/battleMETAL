@@ -60,8 +60,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if((trg.flags & FL_MONSTER)){
-    if(trg.state_1 != -1){
-      //state_1 = -1 is the 'dummy' state
+    if(trg.state_1 != AI_ORDER_DEBUG){
       anger_monster(trg, attacker);
     }
   }
@@ -122,7 +121,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   //units
   if(trg.p_class == P_MECH){
     //filter out leg hits
-    if(dmg_point_z < (trg.origin_z - 10)){
+    if(dmg_point_z < (trg.origin_z - 5)){
       trg = trg.e_legs;
     }
     else{

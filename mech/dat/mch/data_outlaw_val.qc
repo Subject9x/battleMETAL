@@ -224,6 +224,7 @@ void() data_otl_ctor={
   self.armorvalue = DAT_OTL_CTOR_ARMOR;
   self.max_armor = DAT_OTL_CTOR_ARMMAX;
   self.c_model = DAT_OTL_CTOR_MODEL;
+  self.w_proj = 3;
 };
 void() data_otl_legs={
   self.c_name = DAT_OTL_LEG_CNAME;

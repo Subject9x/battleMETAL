@@ -16,11 +16,48 @@ entity ai - the ai to act upon
 void() move - the desired move function
 float frames - how many server think frames to run movement for
 */
-void(void() move, float frames) ai_move_controller={
+void(float() move, float frames) ai_move_controller={
   ChangeYaw();
   if(time > self.w_isready){
     self.w_isready = time + frames;
     self.ai_next_move = move;
+  }
+  else{
+    if(!self.ai_hasmoved){
+      local float remain;
+      remain = self.w_isready - time;
+      if(self.ai_next_move == ai_move_forward){
+        self.ai_next_move = ai_move_backward;
+      }
+      else if(self.ai_next_move == ai_move_backward){
+        self.ai_next_move = ai_move_backward;
+      }
+      else if(self.ai_next_move == ai_move_walkmove_strafeleft){
+        self.ai_next_move = ai_move_walkmove_straferight;
+      }
+      else if(self.ai_next_move == ai_move_walkmove_straferight){
+        self.ai_next_move = ai_move_walkmove_strafeleft;
+      }
+      else if(self.ai_next_move == ai_move_runmove_slideleft){
+        self.ai_next_move = ai_move_runmove_slideright;
+      }
+      else if(self.ai_next_move == ai_move_runmove_slideright){
+        self.ai_next_move = ai_move_walkmove_strafeleft;
+      }
+      else if(self.ai_next_move == ai_run_forward){
+        self.ai_next_move = ai_move_backward;
+      }
+      else if(self.ai_next_move == ai_move_backward){
+        self.ai_next_move = ai_run_forward;
+      }
+      else if(self.ai_next_move == ai_move_charge_left){
+      self.ai_next_move = ai_move_charge_right;
+        }
+      else if(self.ai_next_move == ai_move_charge_right){
+        self.ai_next_move = ai_move_charge_left;
+      }
+      self.w_isready = remain;
+    }
   }
 };
 
@@ -42,112 +79,116 @@ void() ai_move_random={
   }
 };
 
-void() ai_move_stand={
-  if(self.ai_prev_move == ai_move_walkmove_strafeleft){
-    self.ai_next_move = ai_move_walkmove_straferight;
-  }
-  else if(self.ai_prev_move == ai_move_walkmove_straferight){
-    self.ai_next_move = ai_move_walkmove_strafeleft;
-  }
-  else{
+float() ai_move_stand={
+  if(self.ai_prev_move != ai_move_stand){
+    walkmove(self.ideal_yaw, 0);
     self.ai_prev_move = ai_move_stand;
   }
+  return TRUE;
 };
 
-void() ai_move_walk_goal={
+float() ai_move_walk_goal={
   movetogoal(self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_walk_goal;
   self.p_velocity = 0;
+  return TRUE;
 };
 
-void() ai_move_run_goal={
+float() ai_move_run_goal={
   movetogoal(self.m_fspeed * AI_RUN_SPD);
   self.ai_prev_move = ai_move_run_goal;
   self.p_velocity = 0;
+  return TRUE;
 };
 
-void() ai_move_walkmove_slide={
-  local float ofs;
-  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-  if (self.lefty){
-		ofs = 90;
-	}
-  else{
-		ofs = -90;
-	}
-	if (walkmove (self.ideal_yaw + ofs,  self.m_fspeed * AI_WALK_SPD)){
-    self.ai_prev_move = ai_move_walkmove_slide;
-    self.p_velocity = ofs;
-		return;
+float() ai_move_runmove_slideright={  
+  if (walkmove( self.ideal_yaw + 90, self.m_sspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_move_runmove_slideright;
+    self.p_velocity = 90;
+    return TRUE;
   }
-	self.lefty = 1 - self.lefty;
-  walkmove( self.ideal_yaw, self.m_sspeed * AI_WALK_SPD);
-  self.ai_prev_move = ai_move_walkmove_slide;
-  self.p_velocity = ofs;
+  return FALSE;
 };
 
-void() ai_move_runmove_slideright={  
-  walkmove( self.ideal_yaw + 90, self.m_sspeed * AI_RUN_SPD);
-  self.ai_prev_move = ai_move_runmove_slideright;
-  self.p_velocity = 90;
+float() ai_move_runmove_slideleft={  
+  if (walkmove( self.ideal_yaw + -90, self.m_sspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_move_runmove_slideleft;
+    self.p_velocity = -90;
+    return TRUE;
+  }
+  return FALSE;
 };
 
-void() ai_move_runmove_slideleft={  
-  walkmove( self.ideal_yaw + -90, self.m_sspeed * AI_RUN_SPD);
-  self.ai_prev_move = ai_move_runmove_slideleft;
-  self.p_velocity = -90;
+float() ai_move_forward={
+  if (walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD)){
+    self.ai_prev_move = ai_move_forward;
+    self.p_velocity = 0;
+    return TRUE;
+  }
+  return FALSE;
 };
 
-void() ai_move_forward={
-  walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD);
-  self.ai_prev_move = ai_move_forward;
-  self.p_velocity = 0;
+float() ai_run_forward={
+  if (walkmove (self.angles_y, self.m_fspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_move_forward;
+    self.p_velocity = 0;
+    return TRUE;
+  }
+  return FALSE;
 };
 
-void() ai_run_forward={
-  walkmove (self.angles_y, self.m_fspeed * AI_RUN_SPD);
-  self.ai_prev_move = ai_move_forward;
-  self.p_velocity = 0;
+float() ai_run_backward={
+  if (walkmove (self.angles_y+180, self.m_fspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_run_backward;
+    self.p_velocity = 180;
+    return TRUE;
+  }
+  return FALSE;
 };
 
-void() ai_run_backward={
-  walkmove (self.angles_y+180, self.m_fspeed * AI_RUN_SPD);
-  self.ai_prev_move = ai_run_backward;
-  self.p_velocity = 180;
+float() ai_move_backward={
+  if (walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD)){
+    self.ai_prev_move = ai_move_backward;
+    self.p_velocity = 180;
+    return TRUE;
+  }
+  return FALSE;
 };
 
-void() ai_move_backward={
-  walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD);
-  self.ai_prev_move = ai_move_backward;
-  self.p_velocity = 180;
-};
-
-void() ai_move_walkmove_strafeleft={
+float() ai_move_walkmove_strafeleft={
   if(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
     self.p_velocity = -90;
     self.ai_prev_move = ai_move_walkmove_straferight;
+    return TRUE;
   }
+  return FALSE;
 };
 
-void() ai_move_walkmove_straferight={
+float() ai_move_walkmove_straferight={
   if(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
     self.p_velocity = 90;
     self.ai_prev_move = ai_move_walkmove_straferight;
+    return TRUE;
   }
+  return FALSE;
 };
 
-void() ai_move_charge_left={
+float() ai_move_charge_left={
   if (walkmove (self.ideal_yaw - 60,  self.m_fspeed * AI_RUN_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
     self.p_velocity = -60;
+    return TRUE;
   }
+  return FALSE;
 };
 
-void() ai_move_charge_right={
+float() ai_move_charge_right={
   if(walkmove (self.ideal_yaw + 60,  self.m_fspeed * AI_RUN_SPD)){
     ai_move_stand();
     self.ai_prev_move = ai_move_stand;
     self.p_velocity = 60;
+    return TRUE;
   }
+  return FALSE;
 };

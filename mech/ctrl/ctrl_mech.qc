@@ -156,6 +156,11 @@ void() ctrl_die_comp={
       }
       c = c.w_slot;
     }
+    if((self.owner.flags & FL_MONSTER)){
+      if( ai_core_noguns()){
+        self.ai_next_state = ai_sub_panic;
+      }
+    }
   }
 };
 

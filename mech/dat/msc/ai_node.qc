@@ -28,80 +28,7 @@ void() ai_node={
 }
 
 void() ai_node_touch={
-  /*if((other.flags & FL_MONSTER)){
-    local entity this;
-    this = self;
-    if(self.state_1){
-      //override the AI's First Order behavior with a new one
-      self = other;
-        if(self.state_1 == AI_ORDER_ATTACK){
-          self.ai_first_order = AI_ORDER_ATTACK;
-        }
-        else if(self.state_1 == AI_ORDER_DEFEND){
-          self.ai_first_order = AI_ORDER_DEFEND;
-        }
-        else if(self.state_1 == AI_ORDER_PATROL){
-          self.ai_first_order = AI_ORDER_PATROL;
-        }
-        else if(self.state_1 == AI_ORDER_STAND){
-          self.ai_first_order = AI_ORDER_STAND;
-        }
-        else if(self.state_1 == AI_ORDER_DEBUG){
-          self.ai_first_order = AI_ORDER_DEBUG;
-        }
-        else{
-          self.ai_first_order = AI_ORDER_STAND;
-        }
-        //self.ai_next_state = self.ai_first_order;
-      self = this;
-      return;
-    }
-    else{
-      if(other.ai_first_order == ai_order_patrol){
-        //AI is on patrol orders
-        if(self.target){
-          local entity t;
-          t = find(world, targetname, self.target);
-          if(t){
-            self = other;
-              self.oldgoal = self.goalentity;
-              self.goalentity = t;
-            self = this;
-            return;
-          }
-          else{
-            self = other;
-              self.goalentity = world;
-            self = this;
-            return;
-          }
-        }
-      }
-      else if(other.ai_first_order == ai_order_attack){
-        local entity targe;
-        targe = ai_core_findtarget();
-        if(targe){
-          self = other;
-            self.enemy = targe;
-            self.ai_prev_state = self.ai_next_state;
-            self.ai_next_state = ai_sub_fight;
-          self = this;
-          return;
-        }
-      }
-      else if(other.ai_first_order == ai_order_defend){
-        self = other;
-          self.ai_prev_state = self.ai_next_state;
-          self.ai_next_state = self.ai_first_order;
-          ai_move_random();
-        self = this;
-        return;
-      }
-    }
-  }
-  if(other.p_class != P_OBS){
-    return;
-  }*/
+
 };
 
 void() ai_node_g1;
@@ -186,257 +113,129 @@ void() ai_node_graph_touch={
   }
 };
 /*QUAKED ai_node_g1 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g1={self.node_id = 1; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g2 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g2={self.node_id = 2; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g3 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g3={self.node_id = 3; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g4 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g4={self.node_id = 4; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g5 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g5={self.node_id = 5; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g6 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g6={self.node_id = 6; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g7 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g7={self.node_id = 7; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g8 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g8={self.node_id = 8; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g9 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g9={self.node_id = 9; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g10 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g10={self.node_id = 10; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g11 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g11={self.node_id = 11; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g12 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g12={self.node_id = 12; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g13 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g13={self.node_id = 13; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g14 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g14={self.node_id = 14; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g15 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g15={self.node_id = 15; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g16 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g16={self.node_id = 16; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g17 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g17={self.node_id = 17; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g18 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g18={self.node_id = 18; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g19 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g19={self.node_id = 19; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g20 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g20={self.node_id = 20; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g21 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g21={self.node_id = 21; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g22 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g22={self.node_id = 22; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g23 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g23={self.node_id = 23; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g24 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g24={self.node_id = 24; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g25 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g25 to make graph
-I'm sorry :(
 */
 void() ai_node_g25={self.node_id = 25; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g26 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g32 to make graph
-I'm sorry :(
 */
 void() ai_node_g26={self.node_id = 26; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g27 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g32 to make graph
-I'm sorry :(
 */
 void() ai_node_g27={self.node_id = 27; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g28 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g32 to make graph
-I'm sorry :(
 */
 void() ai_node_g28={self.node_id = 28; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g29 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g24 to make graph
-I'm sorry :(
 */
 void() ai_node_g29={self.node_id = 29; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g30 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g32 to make graph
-I'm sorry :(
 */
 void() ai_node_g30={self.node_id = 30; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g31 (.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g32 to make graph
-I'm sorry :(
 */
 void() ai_node_g31={self.node_id = 31; ai_node(); self.touch = ai_node_graph_touch;};
 
 /*QUAKED ai_node_g32(.1 .8 .9) (-20 -20 -39) (20 20 1)
-these are single-use nodes for making a small nodegraph
-use each one ONCE!
-fill out .node_g1 - g32 to make graph
-I'm sorry :(
 */
 void() ai_node_g32={self.node_id = 32; ai_node(); self.touch = ai_node_graph_touch;};

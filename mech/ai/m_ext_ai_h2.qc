@@ -118,14 +118,14 @@ float AI_ORDER_ATTACK = 3;
 void() ai_control;
 
 //new
-//.void() ai_first_order; //order the unit was spawned with
 
 .void() ai_prev_state;
 .void() ai_next_state;
-.void() ai_prev_move;
-.void() ai_next_move;
+.float() ai_prev_move;
+.float() ai_next_move;
+.float ai_hasmoved;
 
-void(void() move, float frames) ai_move_controller;
+void(float() move, float frames) ai_move_controller;
 void(entity wep) ai_attack_basic;
 void(entity wep) ai_attack_ene;
 void(entity wep) ai_attack_bal;
@@ -133,21 +133,19 @@ void(entity wep) ai_attack_exp;
 
 //move directives
 void() ai_move_random;
-void() ai_move_stand;
-void() ai_move_walk_goal;
-void() ai_move_walkmove_slide;
-void() ai_move_walkmove_strafeleft;
-void() ai_move_walkmove_straferight;
-void() ai_move_run_goal;
-void() ai_move_runmove_slideleft;
-void() ai_move_runmove_slideright;
-void() ai_move_forward;
-void() ai_run_forward;
-void() ai_move_backward;
-void() ai_run_backward;
-void() ai_move_charge;
-void() ai_move_charge_left;
-void() ai_move_charge_right;
+float() ai_move_stand;
+float() ai_move_walk_goal;
+float() ai_move_run_goal;
+float() ai_move_walkmove_strafeleft;
+float() ai_move_walkmove_straferight;
+float() ai_move_runmove_slideleft;
+float() ai_move_runmove_slideright;
+float() ai_move_forward;
+float() ai_run_forward;
+float() ai_move_backward;
+float() ai_run_backward;
+float() ai_move_charge_left;
+float() ai_move_charge_right;
 
 //ai orders - these things sit atop all other ai directives
 void() ai_order_attack;
@@ -155,25 +153,19 @@ void() ai_order_defend;
 void() ai_order_test;
 
 //subs are in-between states for orders
+void() ai_core_resetto_order;
 void() ai_find_patrol_node;
 void() ai_goto_patrol_node;
 void() ai_at_patrol_node;
 void() ai_sweep_stand;
 void() ai_hunt_target;
 entity() ai_core_radar_sweep;
-
 void() ai_sub_fight;
-
-//state directives
-void() ai_state_defend; //*-refactor
-void() ai_state_ready; //*-refactor
-void() ai_state_panic; //*-refactor
 
 //utility functions
 entity(entity node) ai_find_patrol_node_recurse;
+float() ai_core_noguns;
 
-void(void() nex_state, float cache_state) ai_update_state;
-float(entity ai, entity goal) ai_core_trynode;
 entity(entity node, float id) ai_query_graphnode;
 entity(vector org, float start_dist) ai_core_findgraphnode;
 float(entity targ) ai_target_infront;
@@ -184,12 +176,14 @@ entity() ai_core_findnode; // find the closest AI node
 entity() ai_core_findtarget; //ai scans for a target
 float() ai_core_foundtarget; //ai has found a target, update state accordingly
 float() ai_core_targetstate; //checks to see if target ent is still a valid ent to be a target
-entity() ai_core_opticaltarget;
-entity() ai_core_radartarget;
 float() ai_target_facingideal;
-float() ai_core_panicnode;
 float(vector chk, vector node) ai_core_nodelos;
 void() ai_core_calcranges;
+entity() ai_core_findfriendly;
+
+entity() ai_core_opticaltarget;
+entity() ai_core_radartarget;
+
 
 float() ai_pilot_rating_converg;
 float() ai_pilot_rating_range;
@@ -204,6 +198,7 @@ void() ai_mech_attack;
 void() ai_mech_die;
 void() ai_mech_cleanup;
 void() ai_mech_touch;
+void() ai_turret_control;
 void() ai_turret_update;
 void() ai_turret_touch;
 void() ai_turret_die;

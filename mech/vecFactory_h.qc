@@ -11,6 +11,8 @@ void(void() func, entity own) build_unit_component;
 entity(void() func, float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon;
 void() build_unit_weapon_list;
 
+entity(void() func) build_building_base;
+
 //mech-specific assembly functions
 void(void() data_ini) build_mech_unit;
 entity(void() func) build_mech_legs;

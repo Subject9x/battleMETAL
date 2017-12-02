@@ -6,6 +6,54 @@ this one will focus on move to move
 */
 
 
+void() ai_core_resetto_order={
+  if(self.state_1 == AI_ORDER_ATTACK){
+    self.ai_first_order = AI_ORDER_ATTACK;
+  }
+  else if(self.state_1 == AI_ORDER_DEFEND){
+    self.ai_first_order = AI_ORDER_DEFEND;
+  }
+  else if(self.state_1 == AI_ORDER_PATROL){
+    self.ai_first_order = AI_ORDER_PATROL;
+    self.ai_next_state = ai_find_patrol_node;
+  }
+  else if(self.state_1 == AI_ORDER_STAND){
+    self.ai_first_order = AI_ORDER_STAND;
+    self.ai_next_state = ai_sweep_stand;
+  }
+  else if(self.state_1 == AI_ORDER_DEBUG){
+    self.ai_first_order = AI_ORDER_DEBUG;
+  }
+  else{
+    self.ai_first_order = AI_ORDER_STAND;
+    self.ai_next_state = ai_sweep_stand;
+  }
+};
+
+
+/*
+  checks to see if bot has any weapons left,
+  RETURN TRUE - bot has guns left
+  RETURN FALSE - bot has no guns left
+  only really call on t_damage or mech component death functions
+*/
+float() ai_core_noguns={
+  local float idx;
+  local entity wslot;
+  idx = 0;
+  wslot = self.w_slot;
+  while(wslot){
+    if(wslot.deadflag > DEAD_NO){
+      idx = idx + 1;
+    }
+    wslot = wslot.w_slot;
+  }
+  if(idx >= (self.w_proj - 2)){
+    return TRUE;
+  }
+  return FALSE;
+};
+
 /*
   recurse through a node's patrol paths to find the most visible node to the ai
 */
@@ -24,26 +72,6 @@ entity(entity node) ai_find_patrol_node_recurse={
   else{
     return node;
   }
-};
-
-float(entity ai, entity goal) ai_core_trynode={
-  local entity e, near;
-  local float prox;
-  prox = vlen(goal.origin - ai.origin);
-  e = findchain(classname, "ai_node");
-  while(e){
-    local float d;
-    traceline(e.origin, goal.origin, FALSE, goal);
-    if(trace_fraction == 1){
-      d = vlen(e.origin - goal.origin);
-      if( d < prox){
-        prox = d;
-        near = e;
-      }
-    }
-    e = e.chain;
-  }
-  return near.node_id;
 };
 
 entity(entity ai, entity goal) ai_core_nodetogoal={
@@ -65,8 +93,6 @@ entity(entity ai, entity goal) ai_core_nodetogoal={
   }
   return near;
 };
-
-
 
 entity(vector org, float start_dist) ai_core_findgraphnode={
   local entity e, near;
@@ -134,15 +160,6 @@ entity() ai_core_findtarget={
   return world;
 };
 
-
-float() ai_core_foundtarget={
-  if(self.enemy != world){
-    self.ai_next_state = ai_state_hunt;
-    return TRUE;
-  }
-  return FALSE;
-};
-
 /*================================
         ai_core_targetstate
 called whenever [ai_state_hunt] is the
@@ -165,26 +182,31 @@ float() ai_core_targetstate={
   return TRUE;
 };
 
-
 entity() ai_core_radar_sweep={
   local float len;
   local entity t, found;
+  local vector vis;
   if(self.stat_rdr_mode){
     len = self.radar_range;
+    vis = '0 0 32';
   }
   else{
-    self.radar_range / 2;
+    self.radar_range = self.radar_range / 2;
+    vis = '0 0 0';
   }
   t = findradius(self.origin, len);
   while(t){
     if(t.i_faction != self.i_faction){
       if(t != world){
         if((t.p_class) && (t.p_class != P_OBS)){
-          local float d;
-          d = vlen(t.origin - self.origin);
-          if(d < len){
-            len = d;
-            found = t;
+          traceline(self.origin, t.origin + vis, TRUE, self);
+          if(trace_fraction >= 0.25){
+            local float d;
+            d = vlen(t.origin - self.origin);
+            if(d < len){
+              len = d;
+              found = t;
+            }
           }
         }
       }
@@ -194,6 +216,27 @@ entity() ai_core_radar_sweep={
   return found;
 };
 
+entity() ai_core_findfriendly={
+  local entity friend, found;
+  local float rad, dist;
+  dist = rad = self.radar_range;
+  friend = findchainfloat(i_faction, self.i_faction);
+  while(friend){
+    if(friend.p_class == P_MECH){
+      traceline(self.origin, friend.origin + '0 0 32', TRUE, self);
+      if(trace_fraction >= 0.5){
+        local float f;
+        f = vlen(friend.origin - self.origin);
+        if(f < dist){
+          dist = f;
+          found = friend;
+        }
+      }
+    }
+    friend = friend.chain;
+  }
+  return found;
+};
 
 /*================================
         ai_core_opticaltarget
@@ -310,48 +353,14 @@ float(entity targ) ai_target_visible={
   return FALSE;
 };
 
-float() ai_target_facingideal =
-{
+float() ai_target_facingideal ={
 	local	float	delta;
-	
 	delta = anglemod(self.angles_y - self.ideal_yaw);
 	if (delta > 45 && delta < 315)
 		return FALSE;
 	return TRUE;
 };
 
-/*
-
-*/
-float() ai_core_panicnode={
-  local entity node, dst;
-  local float len;
-  len = self.radar_range;
-  node = findradius(self.origin, len);
-  while(node){
-    if(node.classname == "ai_node"){
-      if(self.enemy != world){
-        if(node != self.goalentity){
-          if(!ai_core_nodelos(self.enemy.origin, node.origin)){
-            local float d;
-            d = vlen(node.origin - self.origin);
-            if(d < len){
-              len = d;
-              dst = node;
-            }
-          }
-        }
-      }
-    }
-    node = node.chain;
-  }
-  if(dst != world){
-    self.goalentity = dst;
-    return TRUE;
-  }
-  
-  return FALSE;
-};
 
 float(vector chk, vector node) ai_core_nodelos={
   traceline(node, chk, TRUE, self);
@@ -359,13 +368,6 @@ float(vector chk, vector node) ai_core_nodelos={
     return TRUE;
   }
   return FALSE;
-};
-
-void(void() nex_state, float cache_state) ai_update_state={
-  if(self.ai_prev_state != self.ai_next_state){
-    self.ai_prev_state = self.ai_next_state;
-  }
-  self.ai_next_state = nex_state;
 };
 
 //gets convergence factor for pilot rating

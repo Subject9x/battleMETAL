@@ -45,8 +45,8 @@ void() player_makeVec={
 void() player_makeMech={
   self.p_class = P_MECH;
   self.data_idx = self.nextVecChoice;
-  self.power_timer = time + 8;
-  self.power_timer_segment = time + 0.008;
+  self.power_timer = time + 7;
+  self.power_timer_segment = time + 0.007;
   self.stat_plr_stt = PLAYER_START_BEGIN;
   data_iniMech(self.vec_size, self.nextVecChoice);
   //self.touch = touch_mech; shhhhh, not yet

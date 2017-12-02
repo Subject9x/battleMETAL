@@ -117,6 +117,10 @@ void(float build_id) data_iniBuilding={
   if(build_id == ID_BLD_H_TURRET){
     build_vehicle_unit(data_tur_ini);
   }
+  else{
+    cons_logAFloat("Error: failed to build building with id", build_id);
+    remove(self);
+  }
 };
 
 /*
@@ -142,6 +146,10 @@ void(float vecsize, float mech_id) data_iniMech={
       build_mech_unit(data_mnt_ini);
     }
   }
+  else{
+    cons_logAFloat("Error: failed to build mech with id", mech_id);
+    remove(self);
+  }
 };
 
 /*
@@ -156,6 +164,10 @@ void(float vecsize, float vec_id) data_iniVehc={
     if(vec_id == ID_VEC_TANK){
       build_vehicle_unit(data_TNK_ini);
     }
+  }
+  else{
+    cons_logAFloat("Error: failed to build vehicle with id", vec_id);
+    remove(self);
   }
 };
 
@@ -187,6 +199,10 @@ void(float prj_id) data_iniProjectile={
   }
   else if( prj_id == ID_PRJ_SFGA){
     data_prj_sfga_ini();
+  }
+  else{
+    cons_logAFloat("Error: failed to find projectile of ", prj_id);
+    remove(self);
   }
 };
 

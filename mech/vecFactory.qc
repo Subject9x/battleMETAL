@@ -290,7 +290,13 @@ void(void() data_ini) build_vehicle_unit={
     part_chain = part_chain.c_part;
   }
   if(self.unit_legs){
-    self.e_legs = build_vehc_base(self.unit_legs);
+    if(self.vec_name == "Light Turret"){
+      self.e_legs = build_building_base(self.unit_legs);
+    }
+    else{
+      self.e_legs = build_vehc_base(self.unit_legs);
+    }
+
     part_chain.c_part = self.e_legs;
     part_chain = part_chain.c_part;
   }
@@ -321,4 +327,28 @@ entity(void() func) build_vehc_base={
     self.w_firerate = 0; //used to track m_maccel changes
   self = this;
   return base_ent;
+};
+
+entity(void() func) build_building_base={
+  local entity this, leg_ent;
+  this = self;
+  leg_ent = spawn();
+  self = leg_ent;
+    func();
+    self.deadflag = DEAD_NO;
+    self.classname = MECH_PIECE;
+    self.walkframe = 1;
+    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
+    util_setModel(self.c_model, 0);
+    util_setBoundBox('-1 -1 -1','1 1 1');
+    util_setOffsetOrigin(self, this, self.c_ofs);
+    self.owner = this;
+    self.view_ofs = self.origin - this.origin;
+    self.th_die = ctrl_dieLegs;
+    self.laser_sight_org = '0 0 0';
+    self.laser_sight_timer = time + 0.5; 
+    self.w_firerate = 0; //used to track m_maccel changes
+    //leg_stand1();
+  self = this;
+  return leg_ent;
 };

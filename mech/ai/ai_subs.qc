@@ -94,7 +94,6 @@ void() ai_at_patrol_node={
   }
 };
 
-
 void() ai_hunt_target={
   if(ai_core_targetstate()){
     if(ai_target_visible(self.enemy)){
@@ -112,8 +111,8 @@ void() ai_hunt_target={
         if(trace_fraction <= 0.25){
           self.enemy = world;
           self.goalentity = self.oldgoal;
-          self.ai_next_state = self.ai_prev_state;
           self.stat_rdr_mode = FALSE;
+          ai_core_resetto_order();
         }
         else{
           self.goalentity = self.enemy;
@@ -125,36 +124,68 @@ void() ai_hunt_target={
         self.enemy = world;
         self.goalentity = self.oldgoal;
         self.stat_rdr_mode = FALSE;
-        if(self.ai_prev_state == ai_at_patrol_node){
-          self.ai_next_state = ai_at_patrol_node;
-        }
-        else if(self.ai_prev_state == ai_goto_patrol_node){
-          self.ai_next_state = ai_goto_patrol_node;
-        }
+        ai_core_resetto_order();
       }
     }
   }
   else{
     self.goalentity = self.oldgoal;
     self.enemy = world;
-    self.ai_next_state = self.ai_prev_state;
+    ai_core_resetto_order();
     self.stat_rdr_mode = FALSE;
   }
 };
 
 void() ai_sweep_stand={
-  local entity f;
-  f = ai_core_radar_sweep();
-  if(f){
-    self.enemy = f;
-    self.oldgoal = self.goalentity;
+  if(self.enemy == world){
+    local entity f;
+    f = ai_core_radar_sweep();
+    if(f){
+      self.enemy = f;
+      self.oldgoal = self.goalentity;
+      self.ai_next_state = ai_hunt_target;
+    }
+    else{
+      self.ai_next_state = ai_sweep_stand;
+      ai_move_controller(ai_move_stand, 1);
+    }
+  }
+  else {
     self.ai_next_state = ai_hunt_target;
   }
+};
+
+
+void() ai_sub_panic={
+  local entity g;
+  g = ai_core_findfriendly();
+  if(g){
+    self.goalentity = g;
+    self.enemy = world;
+    self.stat_rdr_mode = FALSE;
+    ai_move_controller(ai_move_run_goal, self.p_damage + 2);
+    local float d;
+    d = vlen(g.origin - self.origin);
+    if(d <= 100){
+      self.goalentity = world;
+      self.enemy = world;
+      self.ai_next_state = ai_sweep_stand;
+    }
+  }
   else{
-    self.ai_next_state = ai_sweep_stand;
-    ai_move_controller(ai_move_stand, self.vec_size);
+    local entity e;
+    e = ai_core_radar_sweep();
+    if(e){
+      local float ang;
+      ang = vectoyaw(e.origin - self.origin);
+      ang = ang + 180;
+      self.ideal_yaw = ang;
+      ai_move_controller(ai_move_forward, self.p_damage + 4);
+    }
   }
 };
+
+
 
 
 /*================================================================
@@ -239,12 +270,23 @@ void() ai_sub_fight={
         }
       }
       if(ai_target_facingideal()){
-        self.button0 = 1;
+        local float fire;
+        fire = (crandom() * (5 - self.p_damage)+ 1);
+        if(fire <= self.p_damage){
+          self.button0 = 1;
+        }        
       }
     }
     else{
+      
       self.ai_next_state = ai_hunt_target;
       self.maxpatience = time + 10;
     }
+  }
+  else{
+    self.goalentity = self.oldgoal;
+    self.enemy = world;
+    ai_core_resetto_order();
+    self.stat_rdr_mode = FALSE;
   }
 };

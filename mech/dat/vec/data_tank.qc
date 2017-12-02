@@ -12,7 +12,7 @@ Overview:
 float DAT_TNK_IDX = ID_VEC_TANK;
 string DAT_TNK_VEC_NAME = "Medium Tank";
 float DAT_TNK_TECH_LEVEL = 1;
-float DAT_TNK_RADAR_RANGE = 2000;
+float DAT_TNK_RADAR_RANGE = 4000;
 float DAT_TNK_ENERGY_CUR = 0;
 float DAT_TNK_ENERGY_MAX = 300;
 float DAT_TNK_ENERGY_RATE = 1;
@@ -162,7 +162,7 @@ void() ai_tank={
   self.was_hit = FALSE;
   self.hitdir_buffer = 0;
   self.stat_hit_dirs = 0;
-  self.stat_rdr_mode = 0;
+  self.stat_rdr_mode = FALSE;
   
   self.stat_spr_x = 0;
   self.stat_spr_y = 0;

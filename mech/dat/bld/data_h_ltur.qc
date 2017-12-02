@@ -80,30 +80,12 @@ vector DAT_TUR_CAM_OFFSET= '0 0 0';
 vector DAT_TUR_CAM_OFFSET_ALT= '0 0 0';
 
 //=========================================
-void() data_tur_hmn;
 void() data_tur_ini;
 void() data_tur_legs;
 void() data_tur_ctor;
 void() data_tur_cam;
 void() data_tur_wep1;
 void() data_tur_wep2;
-
-//call this guy at the start of the world ini
-void() data_tur_hmn={
-  local entity TUR, oself;
-  TUR = spawn();
-  oself = self;
-  self = TUR;
-    self.data_idx = DAT_TUR_IDX;
-    self.classname = "data";
-    self.data_type = DATA_VEHC;
-    self.vec_name = DAT_TUR_VEC_NAME;
-    self.vec_size = 1;
-    self.unit_ini = data_tur_ini;
-
-    self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;
-  self = oself; 
-};
 
 void() data_tur_ini={
   self.unit_legs = data_tur_legs;
@@ -164,9 +146,8 @@ void() building_tur={
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
   self.ideal_yaw = self.angles * '0 1 0';
-  
+  self.e_legs.prev_angle = self.angles;
   data_iniBuilding(ID_BLD_H_TURRET);
-  
   ai_core_calcranges();
 
   local float mod;
@@ -190,16 +171,21 @@ void() building_tur={
   self.patience = 0;
   self.origin_z = self.origin_z + 1;// raise off floor a bit
   droptofloor();
+  if(self.state_1){
+    self.ai_first_order = AI_ORDER_DEBUG;
+  }
+  else{
+    self.ai_first_order = AI_ORDER_DEFEND;
+  }
   self.enemy = world;
   self.oldgoal = world;
-  self.ai_next_state = ai_state_ready;
   self.ai_unit_update = ai_turret_update;
   self.th_missile = ai_mech_attack;
   self.e_cam.SendEntity = send_vehicle;
   self.e_cam.SendFlags = 1;
   self.th_die = ai_turret_die;
   self.touch = ai_turret_touch;
-  self.think = ai_control;
+  self.think = ai_turret_control;
   self.nextthink = time + 0.1;
 };
 

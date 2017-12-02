@@ -260,6 +260,7 @@ void() data_mtk_ctor={
   self.armorvalue = DAT_MTK_CTOR_ARMOR;
   self.max_armor = DAT_MTK_CTOR_ARMMAX;
   self.c_model = DAT_MTK_CTOR_MODEL;
+  self.w_proj = 5;
 };
 
 void() data_mtk_ltor={

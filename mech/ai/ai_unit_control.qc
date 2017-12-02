@@ -35,7 +35,7 @@ void() ai_control={
   }
   self.prev_pos = self.origin;
   if(self.m_fspeed > -1){
-    self.ai_next_move();
+    self.ai_hasmoved = self.ai_next_move();
     self.prev_angle = normalize(self.origin - self.prev_pos);
     if(self.enemy != world){
       self.e_legs.v_angle_y = vectoangles(self.enemy.origin - self.origin) + self.p_velocity;
@@ -45,6 +45,82 @@ void() ai_control={
     }
   }
   self.think = ai_control;
+  self.nextthink = time + 0.05;
+  self.e_cam.SendFlags = 1;
+};
+
+void() ai_turret_control={
+ if(self.deadflag >= DEAD_DYING){
+    self.health = 0;
+    if(self.th_die){
+      self.th_die();
+    }
+    else{
+      self.th_die = SUB_Remove;
+      self.th_die();
+    }
+    return;
+  }
+  
+  if(self.ai_unit_update){
+    self.ai_unit_update();
+  }
+  
+  if(self.ai_first_order != AI_ORDER_DEBUG){
+    if(self.enemy == world){
+      local entity f;  
+      f = ai_core_radar_sweep();
+      if(f){
+        self.enemy = f;
+      }
+    }
+    else{
+      if(ai_core_targetstate()){
+        if(ai_target_visible(self.enemy)){
+          if(!self.stat_rdr_mode){
+            self.stat_rdr_mode = TRUE;
+          }
+          self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+          ChangeYaw();
+          changepitch(self);
+          if(ai_target_facingideal()){
+            local float fire;
+            fire = (crandom() * (5 - self.p_damage)+ 1);
+            if(fire <= self.p_damage){
+              self.button0 = 1;
+            }        
+          }
+        }
+      }
+      else{
+        if(self.oldenemy){
+          self.enemy = self.oldenemy;
+          self.oldenemy = world;
+        }
+        else{
+          self.enemy = world;
+        }
+      }
+    }
+  }
+  
+  if(self.th_missile){
+    self.th_missile();
+  }
+  if(self.button0){
+    self.button0 = 0;
+  }
+  
+  local entity this;
+  this = self;
+  self = this.e_legs;
+    makevectors(self.prev_angle);
+    local vector adj;
+    adj = this.origin + (v_up * self.c_ofs_y) + (v_right * self.c_ofs_x) + (v_forward * self.c_ofs_z);
+    setorigin(self, adj);
+  self = this;
+  
+  self.think = ai_turret_control;
   self.nextthink = time + 0.05;
   self.e_cam.SendFlags = 1;
 };
@@ -79,7 +155,7 @@ void() ai_turret_update={
   local entity wep_chain;
   
   ctrl_updateTurret();
-
+  
   wep_chain = self.w_slot;
   while(wep_chain){
     ctrl_wpn_think(wep_chain);
@@ -95,11 +171,9 @@ void() ai_turret_touch={
     if(other.p_class != P_OBS){
       if(other.i_faction != self.i_faction){
         //bumped a baddy!
-        if(other.p_class != P_OBS){
-          if((ai_target_infront(other)) || (self.enemy == world)){  
-            self.oldenemy = self.enemy;
-            self.enemy = other;
-          }
+        if((ai_target_infront(other)) || (self.enemy == world)){  
+          self.oldenemy = self.enemy;
+          self.enemy = other;
         }
       }
     }
