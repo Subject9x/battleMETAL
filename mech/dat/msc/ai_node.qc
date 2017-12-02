@@ -23,7 +23,7 @@ void() ai_node={
   setsize(self, '-15 -15 -59','15 15 1');
   droptofloor();
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_TRIGGER;
+  self.solid = SOLID_NOT;
   self.touch = ai_node_touch;
 }
 

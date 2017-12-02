@@ -59,39 +59,24 @@ float() ai_core_noguns={
 */
 entity(entity node) ai_find_patrol_node_recurse={
   local entity n;
-  n = find(world, targetname, node.target);
-  if(n){
-    traceline(node.origin + '0 0 32', self.origin, TRUE, node);
-    if(trace_fraction == 1){
-      return n;
+  if(node.target){
+    n = find(world, targetname, node.target);
+    if(n){
+      traceline(node.origin + '0 0 32', self.origin, TRUE, node);
+      if(trace_fraction == 1){
+        return n;
+      }
+      else{
+        return ai_find_patrol_node_recurse(n);
+      }
     }
     else{
-      return ai_find_patrol_node_recurse(n);
+      return node;
     }
   }
   else{
     return node;
   }
-};
-
-entity(entity ai, entity goal) ai_core_nodetogoal={
-  local entity e, near;
-  local float prox;
-  prox = vlen(goal.origin - ai.origin);
-  e = findchain(classname, "ai_node");
-  while(e){
-    local float d;
-    traceline(e.origin, goal.origin, FALSE, goal);
-    if(trace_fraction == 1){
-      d = vlen(e.origin - goal.origin);
-      if( d < prox){
-        prox = d;
-        near = e;
-      }
-    }
-    e = e.chain;
-  }
-  return near;
 };
 
 entity(vector org, float start_dist) ai_core_findgraphnode={
@@ -177,6 +162,10 @@ float() ai_core_targetstate={
     return FALSE;
   }
   if(self.enemy.health <= 0){
+    return FALSE;
+  }
+  if(self.stat_trg_dist > self.radar_range){
+    self.enemy = world;
     return FALSE;
   }
   return TRUE;

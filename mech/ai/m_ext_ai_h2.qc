@@ -171,7 +171,6 @@ entity(vector org, float start_dist) ai_core_findgraphnode;
 float(entity targ) ai_target_infront;
 float(entity targ) ai_target_insights;
 float(entity targ) ai_target_visible;
-entity(entity ai, entity goal) ai_core_nodetogoal; //find closest node to goal
 entity() ai_core_findnode; // find the closest AI node
 entity() ai_core_findtarget; //ai scans for a target
 float() ai_core_foundtarget; //ai has found a target, update state accordingly
