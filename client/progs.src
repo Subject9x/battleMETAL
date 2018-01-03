@@ -42,6 +42,7 @@ hud_snd_sys_c.qc
   data/wep/data_sfga_vals.qc
   
   //Mechs
+  ../common/data/data_values_mechs.qc
   data/mch/data_matok_val.qc
   data/mch/data_outlaw_val.qc
   data/mch/data_monitor_val.qc

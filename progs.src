@@ -70,6 +70,7 @@ dp/subs.qc
   mech/dat/wep/data_pac_vals.qc
 
   //mechs
+  common/data/data_values_mechs.qc
   mech/dat/mch/data_outlaw_val.qc
   mech/dat/mch/data_matok_val.qc
   mech/dat/mch/data_hevdal_val.qc

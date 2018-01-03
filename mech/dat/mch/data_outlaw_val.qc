@@ -11,54 +11,10 @@ Overview: moving all mech values into a single global file for ease of maintenan
 //OUTLAW MECH=============================
 float DAT_OTL_IDX = ID_MCH_BALAKET;
 string DAT_OTL_VEC_NAME = "Balaket";
-float DAT_OTL_TECH_LEVEL = 1;
 float DAT_OTL_RESERVE_COST = 100;
-float DAT_OTL_RADAR_RANGE = 7000;
-float DAT_OTL_LOCK = 5;
-float DAT_OTL_ENERGY_CUR = 400;
-float DAT_OTL_ENERGY_MAX = 400;
-float DAT_OTL_ENERGY_RATE = 1;
-float DAT_OTL_SHIELD_CUR = 300;
-float DAT_OTL_SHIELD_MAX = 300;
-float DAT_OTL_SHIELD_RATE = 1;
 float DAT_OTL_YAWSPEED = 6;
 vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
-vector DAT_OTL_CTOR_BBX_X ='14 14 16'; //'14 14 12';
-string DAT_OTL_CTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
-string DAT_OTL_CPIT_MODEL= "q3mdl/mechs/notl/mdl_blk_cpt.md3";
-float DAT_OTL_M_FSPEED= 200;//v0.0.3
-float DAT_OTL_M_SSPEED= 175;//v0.0.3
-float DAT_OTL_M_BSPEED= 150;//v0.0.3
-float DAT_OTL_M_ACCEL= 1.75; //v0.0.03
-
-vector DAT_OTL_SPREAD_N = '4 4 0.1';
-vector DAT_OTL_SPREAD_X = '8 8 0.1';
-
-float DAT_OTL_LEG_HP = 700;
-float DAT_OTL_LEG_HPMAX= 700;
-float DAT_OTL_CTOR_HP = 500;
-float DAT_OTL_CTOR_HPMAX= 500;
-float DAT_OTL_LTOR_HP = 375;
-float DAT_OTL_LTOR_HPMAX= 375;
-float DAT_OTL_RTOR_HP = 375;
-float DAT_OTL_RTOR_HPMAX= 375;
-float DAT_OTL_LARM_HP = 350;
-float DAT_OTL_LARM_HPMAX= 350;
-float DAT_OTL_RARM_HP = 350;
-float DAT_OTL_RARM_HPMAX= 350;
-
-float DAT_OTL_LEG_ARMOR= 100;
-float DAT_OTL_LEG_ARMMAX= 100;
-float DAT_OTL_CTOR_ARMOR= 100;
-float DAT_OTL_CTOR_ARMMAX= 100;
-float DAT_OTL_LTOR_ARMOR= 100;
-float DAT_OTL_LTOR_ARMMAX= 100;
-float DAT_OTL_RTOR_ARMOR= 100;
-float DAT_OTL_RTOR_ARMMAX= 100;
-float DAT_OTL_LARM_ARMOR= 100;
-float DAT_OTL_LARM_ARMMAX= 100;
-float DAT_OTL_RARM_ARMOR= 100;
-float DAT_OTL_RARM_ARMMAX= 100;
+vector DAT_OTL_CTOR_BBX_X ='14 14 16';
 
 float DAT_OTL_WEP1_IDX= ID_WEP_LATC;
 float DAT_OTL_WEP2_IDX= ID_WEP_LATC;
@@ -80,8 +36,6 @@ string DAT_OTL_M_BSPD = "6";
 
 //LEGS
 string DAT_OTL_LEG_CNAME= M_LEGS;
-string DAT_OTL_LEG_MODEL= "q3mdl/mechs/notl/mdl_blk_legs.md3";
-vector DAT_OTL_LEG_OFFSET= '0 -16 0';
 
 //CENTER TORSO
 string DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
@@ -89,56 +43,39 @@ string DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
 //LEFT TORSO
 string DAT_OTL_LTOR_CNAME= M_TOR_LEFT;
 string DAT_OTL_LTOR_CPARENT= M_TOR_CENTER;
-string DAT_OTL_LTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_left.md3";
-vector DAT_OTL_LTOR_OFFSET= '-7 5.5 -2';
 
 //RIGHT TORSO
 string DAT_OTL_RTOR_CNAME= M_TOR_RIGHT;
 string DAT_OTL_RTOR_CPARENT= M_TOR_CENTER; 
-string DAT_OTL_RTOR_MODEL= "q3mdl/mechs/notl/mdl_blk_t_right.md3";
-vector DAT_OTL_RTOR_OFFSET= '7 5.5 -2';
 
 //LEFT ARM 
 string DAT_OTL_LARM_CNAME= M_ARM_LEFT;
 string DAT_OTL_LARM_CPARENT= M_TOR_LEFT;
 
-string DAT_OTL_LARM_MODEL= "q3mdl/mechs/notl/mdl_blk_l_arm.md3";
-vector DAT_OTL_LARM_OFFSET= '-11 7 -2';
 
 //RIGHT ARM
 string DAT_OTL_RARM_CNAME= M_ARM_RIGHT;
 string DAT_OTL_RARM_CPARENT= M_TOR_RIGHT;
-string DAT_OTL_RARM_MODEL= "q3mdl/mechs/notl/mdl_blk_r_arm.md3";
-vector DAT_OTL_RARM_OFFSET= '11 7 -2';
 
 //CAMERA
 string DAT_OTL_CAM_CNAME= "camera";
-string DAT_OTL_CAM_MODEL= "q3mdl/testball.md3";
-vector DAT_OTL_CAM_OFFSET= '0 6 7';
-vector DAT_OTL_CAM_OFFSET_ALT= '0 1 0';
 
 //WEAPON1
 string DAT_OTL_WEP1_CPARENT= M_ARM_LEFT;
-vector DAT_OTL_WEP1_OFFSET= '-11 0.5 1.5';
 vector DAT_OTL_WEP1_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
 string DAT_OTL_WEP2_CPARENT= M_ARM_RIGHT;
-vector DAT_OTL_WEP2_OFFSET= '11 0.5 1.5';
 vector DAT_OTL_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP2_ADJ_ANG= '0 0 90';
 
 //WEAPON3
 string DAT_OTL_WEP3_CPARENT= M_TOR_CENTER;
-vector DAT_OTL_WEP3_OFFSET= '-2 10.5 0';
 vector DAT_OTL_WEP3_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 
 //=========================================
-
-void() data_mech_otl;
-
 void() data_otl_legs;
 void() data_otl_ctor;
 void() data_otl_ltor;
@@ -149,26 +86,6 @@ void() data_otl_cam;
 void() data_otl_wep1;
 void() data_otl_wep2;
 void() data_otl_wep3;
-
-//call this guy at the start of the world ini
-void() data_mech_otl={
-  local entity otl, oself;
-  oself = self;
-  otl = spawn();
-  self = otl;
-    self.data_idx = DAT_OTL_IDX;
-    self.vec_name = DAT_OTL_VEC_NAME;
-    self.classname = "data";
-    self.data_type = DATA_MECH;
-    self.vec_size = 1;
-
-    self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;    
-    self.w_group2 = self.w_group2 | WEAPON3;    
-    self.w_group3 = self.w_group3;
-    self.w_group4 = self.w_group4;
-    self.w_group5 = self.w_group5;
-  self = oself;
-};
 
 void() data_otl_ini={
   self.unit_legs = data_otl_legs;
@@ -188,10 +105,10 @@ void() data_otl_ini={
   self.radar_range = DAT_OTL_RADAR_RANGE;
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
   self.i_reserve= DAT_OTL_RESERVE_COST;
-  self.en_cur= DAT_OTL_ENERGY_CUR;
+  self.en_cur= DAT_OTL_ENERGY_MAX;
   self.en_max= DAT_OTL_ENERGY_MAX;
   self.en_rate= DAT_OTL_ENERGY_RATE;
-  self.sh_cur= DAT_OTL_SHIELD_CUR;
+  self.sh_cur= DAT_OTL_SHIELD_MAX;
   self.sh_max= DAT_OTL_SHIELD_MAX;
   self.sh_rate= DAT_OTL_SHIELD_RATE;
   self.c_bbx_n = DAT_OTL_CTOR_BBX_N;
@@ -220,8 +137,8 @@ void() data_otl_ini={
 void() data_otl_ctor={
   self.c_name = DAT_OTL_CTOR_CNAME;
   self.health = DAT_OTL_CTOR_HP;
-  self.max_health = DAT_OTL_CTOR_HPMAX;
-  self.armorvalue = DAT_OTL_CTOR_ARMOR;
+  self.max_health = DAT_OTL_CTOR_HP;
+  self.armorvalue = DAT_OTL_CTOR_ARMMAX;
   self.max_armor = DAT_OTL_CTOR_ARMMAX;
   self.c_model = DAT_OTL_CTOR_MODEL;
   self.w_proj = 3;
@@ -229,8 +146,8 @@ void() data_otl_ctor={
 void() data_otl_legs={
   self.c_name = DAT_OTL_LEG_CNAME;
   self.health = DAT_OTL_LEG_HP;
-  self.max_health = DAT_OTL_LEG_HPMAX;
-  self.armorvalue = DAT_OTL_LEG_ARMOR;
+  self.max_health = DAT_OTL_LEG_HP;
+  self.armorvalue = DAT_OTL_LEG_ARMMAX;
   self.max_armor = DAT_OTL_LEG_ARMMAX;
   self.c_model = DAT_OTL_LEG_MODEL;
   self.c_ofs = DAT_OTL_LEG_OFFSET;
@@ -239,8 +156,8 @@ void() data_otl_ltor={
     self.c_name = DAT_OTL_LTOR_CNAME;
     self.c_parent = DAT_OTL_LTOR_CPARENT;
     self.health = DAT_OTL_LTOR_HP;
-    self.max_health = DAT_OTL_LTOR_HPMAX;
-    self.armorvalue = DAT_OTL_LTOR_ARMOR;
+    self.max_health = DAT_OTL_LTOR_HP;
+    self.armorvalue = DAT_OTL_LTOR_ARMMAX;
     self.max_armor = DAT_OTL_LTOR_ARMMAX;
     self.c_model = DAT_OTL_LTOR_MODEL;
     self.c_ofs = DAT_OTL_LTOR_OFFSET;
@@ -249,8 +166,8 @@ void() data_otl_rtor={
   self.c_name = DAT_OTL_RTOR_CNAME;
   self.c_parent = DAT_OTL_RTOR_CPARENT;
   self.health = DAT_OTL_RTOR_HP;
-  self.max_health = DAT_OTL_RTOR_HPMAX;
-  self.armorvalue = DAT_OTL_RTOR_ARMOR;
+  self.max_health = DAT_OTL_RTOR_HP;
+  self.armorvalue = DAT_OTL_RTOR_ARMMAX;
   self.max_armor = DAT_OTL_RTOR_ARMMAX;
   self.c_model = DAT_OTL_RTOR_MODEL;
   self.c_ofs = DAT_OTL_RTOR_OFFSET;
@@ -259,8 +176,8 @@ void() data_otl_larm={
   self.c_name = DAT_OTL_LARM_CNAME;
   self.c_parent = DAT_OTL_LARM_CPARENT;
   self.health = DAT_OTL_LARM_HP;
-  self.max_health = DAT_OTL_LARM_HPMAX;
-  self.armorvalue = DAT_OTL_LARM_ARMOR;
+  self.max_health = DAT_OTL_LARM_HP;
+  self.armorvalue = DAT_OTL_LARM_ARMMAX;
   self.max_armor = DAT_OTL_LARM_ARMMAX;
   self.c_model = DAT_OTL_LARM_MODEL;
   self.c_ofs = DAT_OTL_LARM_OFFSET;
@@ -269,8 +186,8 @@ void() data_otl_rarm={
   self.c_name = DAT_OTL_RARM_CNAME;
   self.c_parent = DAT_OTL_RARM_CPARENT;
   self.health = DAT_OTL_RARM_HP;
-  self.max_health = DAT_OTL_RARM_HPMAX;
-  self.armorvalue = DAT_OTL_RARM_ARMOR;
+  self.max_health = DAT_OTL_RARM_HP;
+  self.armorvalue = DAT_OTL_RARM_ARMMAX;
   self.max_armor = DAT_OTL_RARM_ARMMAX;
   self.c_model = DAT_OTL_RARM_MODEL;
   self.c_ofs = DAT_OTL_RARM_OFFSET;
