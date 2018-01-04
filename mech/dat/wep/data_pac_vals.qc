@@ -7,23 +7,7 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
 string DAT_PAC_NAME = "PAC";
-float DAT_PAC_DMG = 200;//v0.0.03
-float DAT_PAC_FIRETIME = 0;
-float DAT_PAC_CLIPSIZE = 1;
-float DAT_PAC_CURRENTAMMO = 1;
-float DAT_PAC_FIRERATE = 8;
-float DAT_PAC_RELOADTIME = 8;
-vector DAT_PAC_FIRE_OFS = '0 0 8';
-string DAT_PAC_MODEL = "q3mdl/weapons/w_pac.md3";
-float DAT_PAC_EN_COST =  10;
-float DAT_PAC_EN_MAX =  800;
-string DAT_PAC_SOUND = "sound/weapons/pac_fire.ogg";
-float DAT_PAC_TECH_LEVEL = 1;
-float DAT_PAC_SPR_X = 2;
-float DAT_PAC_SPR_Y = 2;
-float DAT_PAC_WSIZE = 2;
-float DAT_PAC_HPX = 100; //v0.0.3
-float DAT_PAC_RANGE = 1600;//v0.0.3
+float DAT_PAC_HPX = 100;
 
 void() data_pac_atk;
 void() data_pac_think;
@@ -33,9 +17,9 @@ void() data_pac_ini={
   self.w_name = DAT_PAC_NAME;
   self.p_damage = DAT_PAC_DMG;
   self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_PRC;
-  self.w_firetime = DAT_PAC_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DAT_PAC_CLIPSIZE;
-  self.w_currentammo = DAT_PAC_CURRENTAMMO;
+  self.w_currentammo = DAT_PAC_CLIPSIZE;
   self.w_firerate = DAT_PAC_FIRERATE;
   self.w_fire_ofs = DAT_PAC_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_PAC_MODEL;

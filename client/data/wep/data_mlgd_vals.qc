@@ -8,22 +8,7 @@ Overview: Laser-guided missile
 //========LASER GUIDED MISSILE=========
 float DATWEP_MLGD_IDX = ID_WEP_MLGD;
 string DATWEP_MLGD_NAME = "Laser-Guided Missile";
-float DATWEP_MLGD_FIRETIME = 0;
-float DATWEP_MLGD_CLIPSIZE = 1;
-float DATWEP_MLGD_CURRENTAMMO = 1;
-float DATWEP_MLGD_FIRERATE = 5;//0.95;
-float DATWEP_MLGD_RELOADTIME = 5;
-float DATWEP_MLGD_ISFIRE = 0;
-vector DATWEP_MLGD_FIRE_OFS = '0 0 8';
-string DATWEP_MLGD_MODEL = "q3mdl/weapons/w_mis.md3";
-float DATWEP_MLGD_PROJ_ID= ID_PRJ_MLGD;
-float DATWEP_MLGD_EN_COST = 10;
-float DATWEP_MLGD_EN_MAX = 500; 
-string DATWEP_MLGD_FIRESOUND = "";
-float DATWEP_MLGD_TECH_LEVEL = 2;
-float DAT_MLGD_WSIZE = 1;
-float DAT_MLGD_RANGE = 2400;//v0.0.3
-float DAT_PRJ_MLGD_DAMAGE = 400;
+
 void() data_wep_mlgd;
 
 void() data_wep_mlgd={
@@ -33,13 +18,13 @@ void() data_wep_mlgd={
   self = mlgd;
     self.classname = "data";
     self.data_idx = DATWEP_MLGD_IDX;
-    self.dmg_amt = DAT_PRJ_MLGD_DAMAGE;
+    self.dmg_amt = DAT_MLGD_DAMAGE;
     self.data_type = DATA_WEPN;
     self.w_name = DATWEP_MLGD_NAME;
     self.w_name = DATWEP_MLGD_NAME;
     self.w_clipsize = DATWEP_MLGD_CLIPSIZE;
     self.w_firerate = DATWEP_MLGD_FIRERATE;
-    self.w_reloadtime = DATWEP_MLGD_RELOADTIME;
+    self.w_reloadtime = DATWEP_MLGD_EN_MAX / 100;
     self.c_model = DATWEP_MLGD_MODEL;
     self.en_max = DATWEP_MLGD_EN_COST;
     self.i_techlvl = DATWEP_MLGD_TECH_LEVEL;

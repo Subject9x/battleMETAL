@@ -7,25 +7,11 @@ Overview:
 //QUANTUM RIFLE=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
 string DAT_QRFL_NAME = "Q-Rifle";
-float DAT_QRFL_DMG = 150;
-float DAT_QRFL_FIRETIME = 0;
-float DAT_QRFL_CLIPSIZE = 1;//was 1 - 5/14/2017
-float DAT_QRFL_CURRENTAMMO = 1;//was 1 - 5/14/2017
-float DAT_QRFL_FIRERATE = 5;//was 0.5 - 5/14/2017
-float DAT_QRFL_RELOADTIME = 5;//was 0.5  - 5/14/2017
-vector DAT_QRFL_FIRE_OFS = '0 0 2';
-string DAT_QRFL_MODEL = "q3mdl/weapons/w_qrf.md3";
-float DAT_QRFL_PROJ_ID= ID_PRJ_QRFL;
-float DAT_QRFL_EN_COST= 10;
-float DAT_QRFL_EN_MAX = 500;
-string DAT_QRFL_SOUND = "sound/weapons/qrfl_fire.ogg";
-float DAT_QRFL_TECH_LEVEL = 1;
-float DAT_QRFL_SPR_X = 0; //v0.0.3
-float DAT_QRFL_SPR_Y = 0; //v0.0.3
-float DAT_QRFL_WSIZE = 3;
-float DAT_QRFL_HPX = 150; //v0.0.3
-float DAT_QRFL_QBITS = 8; //v0.0.3
-float DAT_QRFL_RANGE = 3600;//v0.0.3
+
+
+float DAT_QRFL_HPX = 150; 
+float DAT_QRFL_QBITS = 8; 
+
 
 void() data_qrfl_atk;
 void() data_qrfl_think;
@@ -34,10 +20,10 @@ void() data_qrfl_ini={
   self.data_idx = DAT_QRFL_IDX;
   self.w_name = DAT_QRFL_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_STX;
-  self.w_firetime = DAT_QRFL_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DAT_QRFL_CLIPSIZE;
-  self.w_currentammo = DAT_QRFL_CURRENTAMMO;
-  self.w_firerate = DAT_QRFL_FIRERATE;
+  self.w_currentammo = DAT_QRFL_CLIPSIZE;
+  self.w_firerate = 0;
   self.w_fire_ofs = DAT_QRFL_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_QRFL_MODEL;
   self.w_attack = data_qrfl_atk;

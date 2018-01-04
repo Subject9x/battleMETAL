@@ -7,21 +7,7 @@ Overview: long-range, low damage, homing missile
 //========ACTIVE-RADAR HOMING MISSILE=========
 float DATWEP_MARH_IDX = ID_WEP_MARH;
 string DATWEP_MARH_NAME = "Active-Radar Homing Missile";
-float DATWEP_MARH_FIRETIME = 0;
-float DATWEP_MARH_CLIPSIZE = 1;
-float DATWEP_MARH_CURRENTAMMO = 1;
-float DATWEP_MARH_FIRERATE = 5;//0.95;
-float DATWEP_MARH_RELOADTIME = 5;
-float DATWEP_MARH_ISFIRE = 0;
-vector DATWEP_MARH_FIRE_OFS = '0 0 8';
-string DATWEP_MARH_MODEL = "q3mdl/weapons/w_mis.md3";
-float DATWEP_MARH_PROJ_ID= ID_PRJ_MARH;
-float DATWEP_MARH_EN_COST = 10;
-float DATWEP_MARH_EN_MAX = 500;
-string DATWEP_MARH_FIRESOUND = "";
-float DATWEP_MARH_TECH_LEVEL = 2;
-float DAT_MARH_WSIZE = 3;
-float DAT_MARH_RANGE = 3000;//v0.0.3
+
 
 void() data_wep_marh;
 
@@ -38,7 +24,7 @@ void() data_wep_marh={
     self.w_name = DATWEP_MARH_NAME;
     self.w_clipsize = DATWEP_MARH_CLIPSIZE;
     self.w_firerate = DATWEP_MARH_FIRERATE;
-    self.w_reloadtime = DATWEP_MARH_RELOADTIME;
+    self.w_reloadtime = DATWEP_MARH_EN_MAX / 100;
     self.c_model = DATWEP_MARH_MODEL;
     self.en_max = DATWEP_MARH_EN_COST;
     self.i_techlvl = DATWEP_MARH_TECH_LEVEL;

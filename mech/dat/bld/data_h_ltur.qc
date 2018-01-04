@@ -12,13 +12,8 @@ Overview:
 float DAT_TUR_IDX = ID_BLD_H_TURRET;
 string DAT_TUR_VEC_NAME = "Light Turret";
 float DAT_TUR_TECH_LEVEL = 1;
-float DAT_TUR_RADAR_RANGE = 3000;
-float DAT_TUR_ENERGY_CUR = 0;
-float DAT_TUR_ENERGY_MAX = 400;
-float DAT_TUR_ENERGY_RATE = 1;
-float DAT_TUR_SHIELD_CUR = 0;
-float DAT_TUR_SHIELD_MAX = 200;
-float DAT_TUR_SHIELD_RATE = 0.35;
+
+
 float DAT_TUR_YAWSPEED = 5;
 vector DAT_TUR_CTOR_BBX_N ='-20 -20 -12';
 vector DAT_TUR_CTOR_BBX_X ='20 20 14';
@@ -29,21 +24,6 @@ float DAT_TUR_M_BSPEED=-1;
 string DAT_TUR_M_PITCH_N = "-25";
 string DAT_TUR_M_PITCH_X = "45";
 
-vector DAT_TUR_SPREAD_N = '2 3 0.09';
-vector DAT_TUR_SPREAD_X = '6 6 0.01';
-
-//HITPOINT VALUES
-float DAT_TUR_CTOR_HP = 100;
-float DAT_TUR_CTOR_HPMAX= 100;
-float DAT_TUR_LEG_HP = 100;
-float DAT_TUR_LEG_HPMAX= 100;
-
-//ARMOR VALUES
-float DAT_TUR_CTOR_ARMOR= 100;
-float DAT_TUR_CTOR_ARMMAX= 100;
-float DAT_TUR_LEG_ARMOR= 100;
-float DAT_TUR_LEG_ARMMAX= 100;
-
 //WEAOPON GROUPS
 float DAT_TUR_WEP1_IDX= ID_WEP_LATC;
 float DAT_TUR_WEP2_IDX= ID_WEP_LAS;
@@ -51,11 +31,9 @@ float DAT_TUR_WEP1_GROUP= 1;
 float DAT_TUR_WEP2_GROUP= 1;
 
 //this is mostly cosmetics
-string DAT_TUR_CTOR_MODEL= "q3mdl/buildings/mdl_bld_h_ltur.md3";
 
 //LEGS
 string DAT_TUR_LEG_CNAME= M_LEGS;
-string DAT_TUR_LEG_MODEL= "q3mdl/buildings/mdl_bld_h_ltur_base.md3";
 vector DAT_TUR_LEG_OFFSET= '0 -2 0';
 
 //CENTER TORSO
@@ -75,7 +53,6 @@ vector DAT_TUR_WEP2_ADJ_ANG= '0 0 90';
 
 //CAMERA
 string DAT_TUR_CAM_CNAME= "camera";
-string DAT_TUR_CAM_MODEL= "q3mdl/testball.md3";
 vector DAT_TUR_CAM_OFFSET= '0 0 0';
 vector DAT_TUR_CAM_OFFSET_ALT= '0 0 0';
 
@@ -99,10 +76,10 @@ void() data_tur_ini={
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_TUR_RADAR_RANGE;
   self.i_techlvl= DAT_TUR_TECH_LEVEL;
-  self.en_cur= DAT_TUR_ENERGY_CUR;
+  self.en_cur= DAT_TUR_ENERGY_MAX;
   self.en_max= DAT_TUR_ENERGY_MAX;
   self.en_rate= DAT_TUR_ENERGY_RATE;
-  self.sh_cur= DAT_TUR_SHIELD_CUR;
+  self.sh_cur= DAT_TUR_SHIELD_MAX;
   self.sh_max= DAT_TUR_SHIELD_MAX;
   self.sh_rate= DAT_TUR_SHIELD_RATE;
   self.m_rot_speed = DAT_TUR_YAWSPEED;
@@ -192,9 +169,9 @@ void() building_tur={
 void() data_tur_legs={
   self.c_name = DAT_TUR_LEG_CNAME;
   self.health = DAT_TUR_LEG_HP;
-  self.max_health = DAT_TUR_LEG_HPMAX;
+  self.max_health = DAT_TUR_LEG_HP;
   self.armorvalue = DAT_TUR_LEG_ARMOR;
-  self.max_armor = DAT_TUR_LEG_ARMMAX;
+  self.max_armor = DAT_TUR_LEG_ARMOR;
   self.c_model = DAT_TUR_LEG_MODEL;
   self.c_ofs = DAT_TUR_LEG_OFFSET;
 };
@@ -202,9 +179,9 @@ void() data_tur_legs={
 void() data_tur_ctor={
   self.c_name = DAT_TUR_CTOR_CNAME;
   self.health = DAT_TUR_CTOR_HP;
-  self.max_health = DAT_TUR_CTOR_HPMAX;
+  self.max_health = DAT_TUR_CTOR_HP;
   self.armorvalue = DAT_TUR_CTOR_ARMOR;
-  self.max_armor = DAT_TUR_CTOR_ARMMAX;
+  self.max_armor = DAT_TUR_CTOR_ARMOR;
   self.c_model = DAT_TUR_CTOR_MODEL;
 };
 

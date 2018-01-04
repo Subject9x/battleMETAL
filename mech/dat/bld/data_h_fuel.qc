@@ -9,7 +9,7 @@ Overview: data file for building
 */
 
 
-/*QUAKED building_fuel (.1 .1 .1) (-64 -64 0) (64 64 40)
+/*QUAKED building_fuel (.1 .1 .1) (-40 -40 0) (40 40 64)
 */
 void() building_fuel;
 
@@ -18,13 +18,13 @@ void() building_fuel={
   self.data_type = DATA_BLD;
   self.vec_name = "Fuel Tank";
   self.p_class = P_BULD;
-  util_setModel("q3mdl/buildings/mdl_bld_h_fuel.md3", 0) ;
+  util_setModel(DAT_BLD_H_FUELTANK_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(150, 150, 1, 100) ;
+  util_setHealthArmor(DAT_BLD_H_FUELTANK_HP, DAT_BLD_H_FUELTANK_HP, 1, 100) ;
   util_setBoundBox('-40 -40 0', '40 40 64');
   self.sh_cur= 0;
-  self.sh_max= 100;
-  self.sh_rate= 1;
+  self.sh_max= DAT_BLD_H_FUELTANK_SH_MAX;
+  self.sh_rate = DAT_BLD_H_FUELTANK_SH_RATE;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();

@@ -8,20 +8,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LAS_IDX = ID_WEP_LAS;
 string DAT_LAS_NAME = "Light Laser";
-float DAT_LAS_DMG = 20; //v0.0.3
-float DAT_LAS_FIRETIME = 0;
-float DAT_LAS_CLIPSIZE = 1;
-float DAT_LAS_CURRENTAMMO = 1;
-float DAT_LAS_FIRERATE = 10;
-vector DAT_LAS_FIRE_OFS = '0 0 2';
-string DAT_LAS_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_LAS_EN_MAX = 200;
-float DAT_LAS_EN_RATE = 10;
-string DAT_LAS_SOUND = "sound/weapons/laser_fire.ogg";
-float DAT_LAS_TECH_LEVEL = 1;
-float DAT_LAS_WSIZE = 1;
-float DAT_LAS_HPX = 200; //v0.0.3
-float DAT_LAS_RANGE = 4000;//v0.0.3
+float DAT_LAS_HPX = 200;
 
 void() data_las_atk;
 void() data_las_think;
@@ -31,9 +18,9 @@ void() data_las_ini={
   self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_STX;
   self.p_damage = DAT_LAS_DMG;
   self.w_name = DAT_LAS_NAME;
-  self.w_firetime = DAT_LAS_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DAT_LAS_CLIPSIZE;
-  self.w_currentammo = DAT_LAS_CURRENTAMMO;
+  self.w_currentammo = DAT_LAS_CLIPSIZE;
   self.w_firerate = DAT_LAS_FIRERATE;
   self.w_fire_ofs = DAT_LAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_LAS_MODEL;

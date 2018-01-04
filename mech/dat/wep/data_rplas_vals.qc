@@ -8,24 +8,9 @@ Overview: weapon  values are being reorganized to ease maintenance
 //ROTARY PLASMA CANNON=======================
 float DAT_RPLAS_IDX = ID_WEP_RPC;
 string DAT_RPLAS_NAME = "RPC";
-float DAT_RPLAS_DMG = 120;
-float DAT_RPLAS_FIRETIME = 0;
-float DAT_RPLAS_CLIPSIZE = 1; //was 1 - 3/27/2017
-float DAT_RPLAS_CURRENTAMMO = 1; //was 1 - 3/27/2017
-float DAT_RPLAS_FIRERATE = 3; //was 0.28 - 3/27/2017
-vector DAT_RPLAS_FIRE_OFS = '0 0 2';
-string DAT_RPLAS_MODEL = "q3mdl/weapons/w_rpc.md3";
-float DAT_RPLAS_PROJ_ID = 6;//ID_PRJ_RPLAS;
-float DAT_RPLAS_EN_COST = 10;
-float DAT_RPLAS_EN_MAX = 300;
-string DAT_RPLAS_SOUND = "sound/weapons/atc_fire.ogg";
-float DAT_RPLAS_TECH_LEVEL = 1;
-float DAT_RPLAS_SPR_X = 8;
-float DAT_RPLAS_SPR_Y = 8;
-float DAT_RPLAS_WSIZE = 2;
-float DAT_RPLAS_HPX = 150; //v0.0.3
+float DAT_RPLAS_HPX = 150;
 float DAT_RPLAS_SHOT = 6;
-float DAT_RPLAS_RANGE = 2400;//v0.0.3
+
 
 void() data_rplas_atk;
 void() data_rplas_think;
@@ -35,9 +20,9 @@ void() data_rplas_ini={
   self.w_name = DAT_RPLAS_NAME;
   self.w_isready = 0;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
-  self.w_firetime = DAT_RPLAS_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DAT_RPLAS_CLIPSIZE;
-  self.w_currentammo = DAT_RPLAS_CURRENTAMMO;
+  self.w_currentammo = 1;
   self.w_firerate = DAT_RPLAS_FIRERATE;
   self.w_fire_ofs = DAT_RPLAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_RPLAS_MODEL;

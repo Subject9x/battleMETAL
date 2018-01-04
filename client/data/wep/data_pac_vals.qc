@@ -6,17 +6,8 @@ Overview:
 */
 //LIGHT AUTOCANNON=======================
 float DAT_PAC_IDX = ID_WEP_PAC;
-float DAT_PAC_DMG = 200;//v0.0.3
 string DAT_PAC_NAME = "Particle-Accelerator Cannon";
-float DAT_PAC_FIRETIME = 0;
-float DAT_PAC_CLIPSIZE = 1;
-float DAT_PAC_FIRERATE = 8;
-float DAT_PAC_RELOADTIME = 8;
-string DAT_PAC_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_PAC_EN_COST =  10;
-float DAT_PAC_TECH_LEVEL = 1;
-float DAT_PAC_WSIZE = 2;
-float DAT_PAC_RANGE = 1600;//v0.0.3
+
 
 void() data_wep_pac;
 
@@ -33,7 +24,7 @@ void() data_wep_pac={
     self.w_name = DAT_PAC_NAME;
     self.w_clipsize = DAT_PAC_CLIPSIZE;
     self.w_firerate = DAT_PAC_FIRERATE;
-    self.w_reloadtime = DAT_PAC_RELOADTIME;
+    self.w_reloadtime = DAT_PAC_EN_MAX / 100;
     self.c_model = DAT_PAC_MODEL;
     self.en_max = DAT_PAC_EN_COST;
     self.i_techlvl = DAT_PAC_TECH_LEVEL;

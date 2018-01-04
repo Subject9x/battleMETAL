@@ -7,13 +7,7 @@ Overview:
 //LIGHT AUTOCANNON=======================
 float DAT_ESR_IDX = ID_WEP_ESR;
 string DAT_ESR_NAME = "Electro-Static Coil";
-float DAT_ESR_CLIPSIZE = 20;
-float DAT_ESR_FIRERATE = 0.01;
-float DAT_ESR_RELOADTIME = 5;
-string DAT_ESR_MODEL = "q3mdl/weapons/w_laser.md3";
-float DAT_ESR_EN_COST = 10;
-float DAT_ESR_TECH_LEVEL = 1;
-float DAT_ESR_WSIZE = 3;
+
 
 void() data_wep_esr;
 
@@ -30,7 +24,7 @@ void() data_wep_esr={
     self.w_name = DAT_ESR_NAME;
     self.w_clipsize = DAT_ESR_CLIPSIZE;
     self.w_firerate = DAT_ESR_FIRERATE;
-    self.w_reloadtime = DAT_ESR_RELOADTIME;
+    self.w_reloadtime = DAT_ESR_EN_MAX / 100;
     self.c_model = DAT_ESR_MODEL;
     self.en_max = DAT_ESR_EN_COST / 1.5;
     self.i_techlvl = DAT_ESR_TECH_LEVEL;

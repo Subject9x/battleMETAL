@@ -8,9 +8,9 @@ void() building_ltur={
     self.data_idx = ID_BLD_H_LTUR;
     self.data_type = DATA_VEHC;
     self.vec_name = "Light Turret";
-    self.e_model = "q3mdl/buildings/mdl_bld_h_ltur.md3";
+    self.e_model = DAT_TUR_CTOR_MODEL;
     self.sh_cur= 0;
-    self.sh_max= 100;
-    self.sh_rate= 1;
+    self.sh_max= DAT_TUR_SHIELD_MAX;
+    self.sh_rate= DAT_TUR_SHIELD_RATE;
   self = oself;
 };

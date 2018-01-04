@@ -7,24 +7,10 @@ Overview: weapon  values are being reorganized to ease maintenance
 */
 //ROCKET POD=======================
 float DAT_MIS_IDX = ID_WEP_MIS;
-string DAT_MIS_NAME = "Missile Launcher";
-float DAT_MIS_FIRETIME = 0;
-float DAT_MIS_CLIPSIZE = 6;
-float DAT_MIS_CURRENTAMMO = 6;
-float DAT_MIS_FIRERATE = 0.2; //0.3;
-float DAT_MIS_RELOADTIME = 8;//1.85;
-vector DAT_MIS_FIRE_OFS = '0 0 2';
-string DAT_MIS_MODEL = "q3mdl/weapons/w_mis.md3";
-float DAT_MIS_PROJ_ID= ID_PRJ_MIS;
-float DAT_MIS_EN_COST= 10;
-float DAT_MIS_EN_MAX= 800;
-string DAT_MIS_SOUND = "sound/weapons/mis_fire.ogg";
-float DAT_MIS_TECH_LEVEL = 1;
-float DAT_LAS_SPR_X = 10;
-float DAT_LAS_SPR_Y = 3; //v0.0.3
-float DAT_MIS_WSIZE = 1; //v0.0.3
-float DAT_MIS_HPX = 150; //v0.0.3
-float DAT_MIS_RANGE = 1000;//v0.0.3
+string DAT_MIS_NAME = "Rocket Launcher";
+
+float DAT_MIS_HPX = 150; 
+
 
 void() data_mis_atk;
 void() data_mis_think;
@@ -32,9 +18,9 @@ void() data_mis_think;
 void() data_mis_ini={
   self.data_idx = DAT_MIS_IDX;
   self.w_name = DAT_MIS_NAME;
-  self.w_firetime = DAT_MIS_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DAT_MIS_CLIPSIZE;
-  self.w_currentammo = DAT_MIS_CURRENTAMMO;
+  self.w_currentammo = DAT_MIS_CLIPSIZE;
   self.w_firerate = DAT_MIS_FIRERATE;
   self.w_fire_ofs = DAT_MIS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_MIS_MODEL;

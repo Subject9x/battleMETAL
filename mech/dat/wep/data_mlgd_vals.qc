@@ -8,32 +8,18 @@ Overview: Laser-guided missile
 //========LASER GUIDED MISSILE=========
 float DATWEP_MLGD_IDX = ID_WEP_MLGD;
 string DATWEP_MLGD_NAME = "MIS-LGD";
-float DATWEP_MLGD_FIRETIME = 0;
-float DATWEP_MLGD_CLIPSIZE = 1;
-float DATWEP_MLGD_CURRENTAMMO = 1;
-float DATWEP_MLGD_FIRERATE = 5;//0.95;
-float DATWEP_MLGD_RELOADTIME = 5;
-vector DATWEP_MLGD_FIRE_OFS = '0 0 2';
-string DATWEP_MLGD_MODEL = "q3mdl/weapons/w_lgm.md3";
-float DATWEP_MLGD_PROJ_ID= ID_PRJ_MLGD;
-float DATWEP_MLGD_EN_COST = 10;
-float DATWEP_MLGD_EN_MAX = 500; 
-string DATWEP_MLGD_FIRESOUND = "sound/weapons/mis_fire.ogg";
-float DATWEP_MLGD_TECH_LEVEL = 2;
-float DAT_MLGD_WSIZE = 1;
-float DAT_MLGD_HPX = 125; //v0.0.3
-float DAT_MLGD_RANGE = 2400;//v0.0.3
+float DAT_MLGD_HPX = 125;
 
-void() data_mlgd_atk;  //the actual attack call
+void() data_mlgd_atk;
 void() data_mlgd_think;
 
 void() data_mlgd_ini={
   self.data_idx = DATWEP_MLGD_IDX;
   self.w_name = DATWEP_MLGD_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
-  self.w_firetime = DATWEP_MLGD_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DATWEP_MLGD_CLIPSIZE;
-  self.w_currentammo = DATWEP_MLGD_CURRENTAMMO;
+  self.w_currentammo = DATWEP_MLGD_CLIPSIZE;
   self.w_firerate = DATWEP_MLGD_FIRERATE;
   self.w_fire_ofs = DATWEP_MLGD_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DATWEP_MLGD_MODEL;

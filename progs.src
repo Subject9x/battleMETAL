@@ -57,6 +57,7 @@ dp/subs.qc
   mech/dat/prj/data_prj_qrfl_vals.qc  
   
   //weapons
+  common/data/data_values_weapons.qc
   mech/dat/wep/data_latc_val.qc
   mech/dat/wep/data_sfga_val.qc
   mech/dat/wep/data_emp_val.qc
@@ -76,9 +77,11 @@ dp/subs.qc
   mech/dat/mch/data_hevdal_val.qc
   
   //vehicles
+  common/data/data_values_vehicles.qc
   mech/dat/vec/data_tank.qc
   
   //buildings
+  common/data/data_values_buildings.qc
   mech/dat/bld/data_h_radar.qc
   mech/dat/bld/data_h_shield.qc
   mech/dat/bld/data_h_power.qc

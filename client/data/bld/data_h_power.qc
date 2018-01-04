@@ -20,9 +20,9 @@ void() building_power={
     self.data_idx = ID_BLD_H_POWER;
     self.data_type = DATA_BLD;
     self.vec_name = "Power Generator";
-    self.e_model = "q3mdl/buildings/mdl_bld_h_power.md3";
+    self.e_model = DAT_BLD_H_POWER_PLANT_MODEL;
     self.sh_cur= 0;
-    self.sh_max= 600;
-    self.sh_rate= 1;
+    self.sh_max= DAT_BLD_H_POWER_PLANT_SH_MAX;
+    self.sh_rate= DAT_BLD_H_POWER_PLANT_SH_RATE;
   self = oself;
 };

@@ -21,6 +21,7 @@ hud_snd_sys_c.qc
 ../world_effectinfo_h.qc
 //DATA FILES==========
   //buildings
+  ../common/data/data_values_buildings.qc
   data/bld/data_h_power.qc
   data/bld/data_h_radar.qc
   data/bld/data_h_shield.qc
@@ -29,6 +30,7 @@ hud_snd_sys_c.qc
   data/bld/data_h_ltur.qc
   
   //Weapons
+  ../common/data/data_values_weapons.qc
   data/wep/data_latc_val.qc
   data/wep/data_emp_val.qc
   data/wep/data_mis_val.qc
@@ -48,6 +50,7 @@ hud_snd_sys_c.qc
   data/mch/data_monitor_val.qc
 
   //Vehicles
+  ../common/data/data_values_vehicles.qc
   data/vec/data_tank.qc
   
   //HUD

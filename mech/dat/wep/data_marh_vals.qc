@@ -7,21 +7,8 @@ Overview: long-range, low damage, homing missile
 //========ACTIVE-RADAR HOMING MISSILE=========
 float DATWEP_MARH_IDX = ID_WEP_MARH;
 string DATWEP_MARH_NAME = "MIS-ARH";
-float DATWEP_MARH_FIRETIME = 0;
-float DATWEP_MARH_CLIPSIZE = 1;
-float DATWEP_MARH_CURRENTAMMO = 1;
-float DATWEP_MARH_FIRERATE = 12;//0.95;
-float DATWEP_MARH_RELOADTIME = 12;
-vector DATWEP_MARH_FIRE_OFS = '0 0 2';
-string DATWEP_MARH_MODEL = "q3mdl/weapons/w_arh.md3";
-float DATWEP_MARH_PROJ_ID= ID_PRJ_MARH;
-float DATWEP_MARH_EN_COST = 10;
-float DATWEP_MARH_EN_MAX = 500;
-string DATWEP_MARH_FIRESOUND = "sound/weapons/mis_fire.ogg";
-float DATWEP_MARH_TECH_LEVEL = 2;
-float DAT_MARH_WSIZE = 3;
-float DAT_MARH_HPX = 100; //v0.0.3
-float DAT_MARH_RANGE = 3000;//v0.0.3
+float DAT_MARH_HPX = 100;
+
 
 void() data_marh_atk;  //the actual attack call
 void() data_marh_think;
@@ -31,9 +18,9 @@ void() data_marh_ini={
   self.data_idx = DATWEP_MARH_IDX;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.w_name = DATWEP_MARH_NAME;
-  self.w_firetime = DATWEP_MARH_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DATWEP_MARH_CLIPSIZE;
-  self.w_currentammo = DATWEP_MARH_CURRENTAMMO;
+  self.w_currentammo = DATWEP_MARH_CLIPSIZE;
   self.w_firerate = DATWEP_MARH_FIRERATE;
   self.w_fire_ofs = DATWEP_MARH_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DATWEP_MARH_MODEL;

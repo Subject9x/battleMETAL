@@ -7,22 +7,9 @@ Overview:
 //Electro static Rifle=======================
 float DAT_ESR_IDX = ID_WEP_ESR;
 string DAT_ESR_NAME = "ESR";
-float DAT_ESR_DMG = 25; //v0.0.3
-float DAT_ESR_FIRETIME = 0;
-float DAT_ESR_CLIPSIZE = 20;
-float DAT_ESR_CURRENTAMMO = 20; //v0.0.3
-float DAT_ESR_FIRERATE = 0.05; //v0.0.3
-vector DAT_ESR_FIRE_OFS = '0 0 4';
-string DAT_ESR_MODEL = "q3mdl/weapons/w_esr.md3";
-float DAT_ESR_EN_COST = 10;
-float DAT_ESR_EN_MAX = 500;
-string DAT_ESR_SOUND = "sound/weapons/esr_fire.ogg";
-float DAT_ESR_TECH_LEVEL = 1;
-float DAT_ESR_SPR_X = 6; //v0.0.3
-float DAT_ESR_SPR_Y = 6; //v0.0.3
-float DAT_ESR_WSIZE = 3;
-float DAT_ESR_HPX = 150; //v0.0.3
-float DAT_ESR_RANGE = 800;//v0.0.3
+
+float DAT_ESR_HPX = 150; 
+
 
 void() data_esr_atk;
 void() data_esr_think;
@@ -32,9 +19,9 @@ void() data_esr_ini={
   self.w_name = DAT_ESR_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_ENE;
   self.p_damage = DAT_ESR_DMG;
-  self.w_firetime = DAT_ESR_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DAT_ESR_CLIPSIZE;
-  self.w_currentammo = DAT_ESR_CURRENTAMMO;
+  self.w_currentammo = DAT_ESR_CLIPSIZE;
   self.w_firerate = DAT_ESR_FIRERATE;
   self.w_fire_ofs = DAT_ESR_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_ESR_MODEL;

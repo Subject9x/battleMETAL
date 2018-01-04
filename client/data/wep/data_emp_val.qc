@@ -8,14 +8,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_EMP_IDX = ID_WEP_EMP;
 string DAT_EMP_NAME = "EMP Cannon";
-float DAT_EMP_CLIPSIZE = 1;
-float DAT_EMP_FIRERATE = 6;
-float DAT_EMP_RELOADTIME = 6;
-string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
-float DAT_EMP_EN_COST = 10;
-float DAT_EMP_TECH_LEVEL = 1;
-float DAT_EMP_WSIZE = 2;
-float DAT_EMP_RANGE = 2400;//v0.0.3
+
 
 void() data_wep_emp;
 
@@ -32,7 +25,7 @@ void() data_wep_emp={
     self.w_name = DAT_EMP_NAME;
     self.w_clipsize = DAT_EMP_CLIPSIZE;
     self.w_firerate = DAT_EMP_FIRERATE;
-    self.w_reloadtime = DAT_EMP_RELOADTIME;
+    self.w_reloadtime = DAT_EMP_EN_MAX / 100;
     self.c_model = DAT_EMP_MODEL;
     self.en_max = DAT_EMP_EN_COST;
     self.i_techlvl = DAT_EMP_TECH_LEVEL;

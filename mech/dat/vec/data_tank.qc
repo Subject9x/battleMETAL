@@ -11,38 +11,13 @@ Overview:
 //HUMAN LIGHT TNKRET=============================
 float DAT_TNK_IDX = ID_VEC_TANK;
 string DAT_TNK_VEC_NAME = "Medium Tank";
-float DAT_TNK_TECH_LEVEL = 1;
-float DAT_TNK_RADAR_RANGE = 4000;
-float DAT_TNK_ENERGY_CUR = 0;
-float DAT_TNK_ENERGY_MAX = 300;
-float DAT_TNK_ENERGY_RATE = 1;
-float DAT_TNK_SHIELD_CUR = 0;
-float DAT_TNK_SHIELD_MAX = 200;
-float DAT_TNK_SHIELD_RATE = 0.35;
+
 float DAT_TNK_YAWSPEED = 2.5;
 vector DAT_TNK_CTOR_BBX_N ='-20 -20 -10';
 vector DAT_TNK_CTOR_BBX_X ='20 20 14';
-float DAT_TNK_M_FSPEED=75;
-float DAT_TNK_M_SSPEED=75;
-float DAT_TNK_M_BSPEED=25;
 
 string DAT_TNK_M_PITCH_N = "-25";
 string DAT_TNK_M_PITCH_X = "45";
-
-vector DAT_TNK_SPREAD_N = '8 6 0.01';
-vector DAT_TNK_SPREAD_X = '14 10 0.03';
-
-//HITPOINT VALUES
-float DAT_TNK_CTOR_HP = 100;
-float DAT_TNK_CTOR_HPMAX= 100;
-float DAT_TNK_LEG_HP = 100;
-float DAT_TNK_LEG_HPMAX= 100;
-
-//ARMOR VALUES
-float DAT_TNK_CTOR_ARMOR= 100;
-float DAT_TNK_CTOR_ARMMAX= 100;
-float DAT_TNK_LEG_ARMOR= 100;
-float DAT_TNK_LEG_ARMMAX= 100;
 
 //WEAOPON GROUPS
 float DAT_TNK_WEP1_IDX= ID_WEP_PAC;
@@ -51,31 +26,26 @@ float DAT_TNK_WEP1_GROUP= 1;
 float DAT_TNK_WEP2_GROUP= 1;
 
 //this is mostly cosmetics
-string DAT_TNK_CTOR_MODEL= "q3mdl/vecs/mdl_tank_tur.md3";
+
 
 //LEGS
 string DAT_TNK_LEG_CNAME= M_LEGS;
-string DAT_TNK_LEG_MODEL= "q3mdl/vecs/mdl_tank_chas.md3";
-vector DAT_TNK_LEG_OFFSET= '0 0 0';
 
 //CENTER TORSO
 string DAT_TNK_CTOR_CNAME= M_TOR_CENTER;
 
 //WEAPON1
 string DAT_TNK_WEP1_CPARENT= M_TOR_CENTER;
-vector DAT_TNK_WEP1_OFFSET= '-8 6 4';
 vector DAT_TNK_WEP1_OFFSET_ALT = '0 0 0';
 vector DAT_TNK_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
 string DAT_TNK_WEP2_CPARENT= M_TOR_CENTER;
-vector DAT_TNK_WEP2_OFFSET= '8 6 4';
 vector DAT_TNK_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_TNK_WEP2_ADJ_ANG= '0 0 90';
 
 //CAMERA
 string DAT_TNK_CAM_CNAME= "camera";
-string DAT_TNK_CAM_MODEL= "q3mdl/testball.md3";
 vector DAT_TNK_CAM_OFFSET= '0 0 0';
 vector DAT_TNK_CAM_OFFSET_ALT= '0 0 0';
 
@@ -115,10 +85,10 @@ void() data_TNK_ini={
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_TNK_RADAR_RANGE;
   self.i_techlvl= DAT_TNK_TECH_LEVEL;
-  self.en_cur= DAT_TNK_ENERGY_CUR;
+  self.en_cur= DAT_TNK_ENERGY_MAX;
   self.en_max= DAT_TNK_ENERGY_MAX;
   self.en_rate= DAT_TNK_ENERGY_RATE;
-  self.sh_cur= DAT_TNK_SHIELD_CUR;
+  self.sh_cur= DAT_TNK_SHIELD_MAX;
   self.sh_max= DAT_TNK_SHIELD_MAX;
   self.sh_rate= DAT_TNK_SHIELD_RATE;
   self.m_rot_speed = DAT_TNK_YAWSPEED;
@@ -249,9 +219,9 @@ void() ai_tank={
 void() data_TNK_legs={
   self.c_name = DAT_TNK_LEG_CNAME;
   self.health = DAT_TNK_LEG_HP;
-  self.max_health = DAT_TNK_LEG_HPMAX;
+  self.max_health = DAT_TNK_LEG_HP;
   self.armorvalue = DAT_TNK_LEG_ARMOR;
-  self.max_armor = DAT_TNK_LEG_ARMMAX;
+  self.max_armor = DAT_TNK_LEG_ARMOR;
   self.c_model = DAT_TNK_LEG_MODEL;
   self.c_ofs = DAT_TNK_LEG_OFFSET;
 };
@@ -259,9 +229,9 @@ void() data_TNK_legs={
 void() data_TNK_ctor={
   self.c_name = DAT_TNK_CTOR_CNAME;
   self.health = DAT_TNK_CTOR_HP;
-  self.max_health = DAT_TNK_CTOR_HPMAX;
+  self.max_health = DAT_TNK_CTOR_HP;
   self.armorvalue = DAT_TNK_CTOR_ARMOR;
-  self.max_armor = DAT_TNK_CTOR_ARMMAX;
+  self.max_armor = DAT_TNK_CTOR_ARMOR;
   self.c_model = DAT_TNK_CTOR_MODEL;
 };
 

@@ -8,20 +8,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_EMP_IDX = ID_WEP_EMP;
 string DAT_EMP_NAME = "EMP Cannon";
-float DAT_EMP_FIRETIME = 0;
-float DAT_EMP_CLIPSIZE = 1;
-float DAT_EMP_CURRENTAMMO = 1;
-float DAT_EMP_FIRERATE = 6;
-vector DAT_EMP_FIRE_OFS = '0 0 2';
-string DAT_EMP_MODEL = "q3mdl/weapons/w_emp.md3";
-float DAT_EMP_PROJ_ID= ID_PRJ_EMP;
-float DAT_EMP_EN_COST =  10;
-float DAT_EMP_EN_MAX = 600;
-string DAT_EMP_SOUND = "sound/weapons/emp_fire.ogg";
-float DAT_EMP_TECH_LEVEL = 1;
-float DAT_EMP_WSIZE = 2;
-float DAT_EMP_HPX = 200; //v0.0.3
-float DAT_EMP_RANGE = 2400;//v0.0.3
+float DAT_EMP_HPX = 200;
 
 void() data_emp_atk;  //the actual attack call
 void() data_emp_think;
@@ -29,10 +16,10 @@ void() data_emp_think;
 void() data_emp_ini={
   self.data_idx = DAT_EMP_IDX;
   self.w_name = DAT_EMP_NAME;
-  self.w_firetime = DAT_EMP_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DAT_EMP_CLIPSIZE;
-  self.w_currentammo = DAT_EMP_CURRENTAMMO;
-  self.w_firerate = DAT_EMP_FIRERATE;
+  self.w_currentammo = 1;
+  self.w_firerate = 0;
   self.w_fire_ofs = DAT_EMP_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_EMP_MODEL;
   self.w_attack = data_emp_atk;

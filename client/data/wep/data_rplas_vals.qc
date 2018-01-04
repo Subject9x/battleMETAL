@@ -8,16 +8,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 //ROTARY PLASMA CANNON=======================
 float DAT_RPLAS_IDX = ID_WEP_RPC;
 string DAT_RPLAS_NAME = "Rotary Plasma Cannon";
-float DAT_RPLAS_CLIPSIZE = 1;
-float DAT_RPLAS_FIRERATE = 3; //was 0.28 - 3/27/2017
-float DAT_RPLAS_RELOADTIME = 3;
-string DAT_RPLAS_MODEL = "q3mdl/weapons/w_atc.md3";
-float DAT_RPLAS_EN_COST = 10;
-float DAT_RPLAS_WSIZE = 2;
-float DAT_RPLAS_TECH_LEVEL = 1;
-float DAT_PRJ_RPLAS_DAMAGE = 20; //v0.0.3
-float DAT_PRJ_RPLAS_BURN = 1;
-float DAT_RPLAS_RANGE = 2400;//v0.0.3
+
 void() data_wep_rplas;
 
 void() data_wep_rplas={
@@ -27,13 +18,13 @@ void() data_wep_rplas={
   self = latc;
     self.classname = "data";
     self.data_idx = DAT_RPLAS_IDX;
-    self.dmg_amt = DAT_PRJ_RPLAS_DAMAGE;
+    self.dmg_amt = DAT_RPLAS_DMG;
     self.data_type = DATA_WEPN;
     self.w_name = DAT_RPLAS_NAME;
     self.w_name = DAT_RPLAS_NAME;
     self.w_clipsize = DAT_RPLAS_CLIPSIZE;
     self.w_firerate = DAT_RPLAS_FIRERATE;
-    self.w_reloadtime = DAT_RPLAS_RELOADTIME;
+    self.w_reloadtime = DAT_RPLAS_EN_MAX / 100;
     self.c_model = DAT_RPLAS_MODEL;
     self.en_max = DAT_RPLAS_EN_COST;
     self.i_techlvl = DAT_RPLAS_TECH_LEVEL;

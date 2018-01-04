@@ -8,16 +8,8 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_LATC_IDX = ID_WEP_LATC;
 string DAT_LATC_NAME = "Autocannon";
-float DAT_LATC_CLIPSIZE = 6;
-float DAT_LATC_FIRERATE = 0.3;
-float DAT_LATC_RELOADTIME = 1;
-string DAT_LATC_MODEL = "q3mdl/weapons/w_atc.md3";
-float DAT_LATC_EN_COST = 10;
-float DAT_LATC_EN_MAX = 100;
-float DAT_LATC_TECH_LEVEL = 1;
-float DAT_LATC_WSIZE = 1;
-float DAT_LATC_DMG = 10;
-float DAT_LATC_RANGE = 3600;//v0.0.3
+
+
 void() data_wep_latc;
 
 void() data_wep_latc={
@@ -33,7 +25,7 @@ void() data_wep_latc={
     self.w_name = DAT_LATC_NAME;
     self.w_clipsize = DAT_LATC_CLIPSIZE;
     self.w_firerate = DAT_LATC_FIRERATE;
-    self.w_reloadtime = DAT_LATC_RELOADTIME;
+    self.w_reloadtime = DAT_LATC_EN_MAX / 100;
     self.c_model = DAT_LATC_MODEL;
     self.en_max = 0;
     self.i_techlvl = DAT_LATC_TECH_LEVEL;

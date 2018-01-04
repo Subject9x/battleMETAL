@@ -20,9 +20,9 @@ void() building_radar={
     self.data_idx = ID_BLD_H_RADAR;
     self.data_type = DATA_BLD;
     self.vec_name = "Listening Post";
-    self.e_model = "q3mdl/buildings/mdl_bld_h_radar.md3";
+    self.e_model = DAT_BLD_H_SM_RADAR_MODEL;
     self.sh_cur= 0;
-    self.sh_max= 200;
-    self.sh_rate= 1;
+    self.sh_max= DAT_BLD_H_SM_RADAR_SH_MAX;
+    self.sh_rate= DAT_BLD_H_SM_RADAR_SH_RATE;
   self = oself;
 };

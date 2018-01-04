@@ -8,24 +8,8 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_SFGA_IDX = ID_WEP_SFGA;
 string DAT_SFGA_NAME = "Snub Field Gun";
-float DAT_SFGA_DMG = 300;
-float DAT_SFGA_FIRETIME = 0;
-float DAT_SFGA_CLIPSIZE = 1;
-float DAT_SFGA_CURRENTAMMO = 1;
-float DAT_SFGA_FIRERATE = 8;
-float DAT_SFGA_RELOADTIME = 8;
-vector DAT_SFGA_FIRE_OFS = '0 0 2';
-string DAT_SFGA_MODEL = "q3mdl/weapons/w_sfga.md3";
-float DAT_SFGA_PROJ_ID= ID_PRJ_SFGA;
-float DAT_SFGA_EN_COST = 10;
-float DAT_SFGA_EN_MAX = 800;
-string DAT_SFGA_SOUND = "sound/fx_boom.ogg";
-float DAT_SFGA_TECH_LEVEL = 1;
-float DAT_SFGA_SPR_X = 3;
-float DAT_SFGA_SPR_Y = 2;
-float DAT_SFGA_WSIZE = 1;
 float DAT_SFGA_HPX = 200; //v0.0.3
-float DAT_SFGA_RANGE = 3600;//v0.0.3
+
 
 void() data_sfga_atk;
 void() data_sfga_think; 
@@ -34,10 +18,10 @@ void() data_sfga_ini={
   self.data_idx = DAT_SFGA_IDX;
   self.w_name = DAT_SFGA_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
-  self.w_firetime = DAT_SFGA_FIRETIME;
+  self.w_firetime = 0;
   self.w_clipsize = DAT_SFGA_CLIPSIZE;
-  self.w_currentammo = DAT_SFGA_CURRENTAMMO;
-  self.w_firerate = DAT_SFGA_FIRERATE;
+  self.w_firerate = 0;
+  self.w_currentammo = 1;
   self.w_fire_ofs = DAT_SFGA_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_SFGA_MODEL;
   self.w_attack = data_sfga_atk;

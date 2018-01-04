@@ -7,14 +7,7 @@ Overview:
 //QUANTUM RIFLE=======================
 float DAT_QRFL_IDX = ID_WEP_QRF;
 string DAT_QRFL_NAME = "Quantum Rifle";
-float DAT_QRFL_DMG = 200;
-float DAT_QRFL_FIRERATE = 5;//was 0.5 - 5/14/2017
-float DAT_QRFL_RELOADTIME = 5;//was 0.5  - 5/14/2017
-float DAT_QRFL_CLIPSIZE = 1;
-float DAT_QRFL_EN_COST= 10;
-float DAT_QRFL_TECH_LEVEL = 1;
-float DAT_QRFL_WSIZE = 3;
-float DAT_QRFL_RANGE = 3600;//v0.0.3
+
 
 void() data_wep_qrfl;
 
@@ -31,7 +24,7 @@ void() data_wep_qrfl={
     self.w_name = DAT_QRFL_NAME;
     self.w_clipsize = DAT_QRFL_CLIPSIZE;
     self.w_firerate = DAT_QRFL_FIRERATE;
-    self.w_reloadtime = DAT_QRFL_RELOADTIME;
+    self.w_reloadtime = DAT_QRFL_EN_MAX / 100;
     self.en_max = DAT_QRFL_EN_COST;
     self.i_techlvl = DAT_QRFL_TECH_LEVEL;
     self.dmg_type = self.dmg_type | DMG_BAL | EFF_STX;

@@ -64,7 +64,9 @@ float ID_PRJ_EMP = 2;
 float ID_PRJ_MIS = 3;
 float ID_PRJ_MLGD = 4;
 float ID_PRJ_MARH = 5;
-float ID_PRJ_SFGA = 6;
+float ID_PRJ_RPLAS = 6;
+float ID_PRJ_QRFL = 7;
+float ID_PRJ_SFGA = 8;
 
 //VEHICLES===============================
 float ID_VEC_TANK = 1;

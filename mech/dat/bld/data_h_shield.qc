@@ -18,13 +18,13 @@ void() building_shield={
   self.data_type = DATA_BLD;
   self.vec_name = "Shield Generator";
   self.p_class = P_BULD;
-  util_setModel("q3mdl/buildings/mdl_bld_h_shield.md3", 0) ;
+  util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(1000, 1000, 1, 100) ;
+  util_setHealthArmor(DAT_BLD_H_SHIELDGEN_HP, DAT_BLD_H_SHIELDGEN_HP, 1, 100) ;
   util_setBoundBox('-56 -56 0', '56 56 35');
   self.sh_cur= 0;
-  self.sh_max= 800;
-  self.sh_rate= 1;
+  self.sh_max= DAT_BLD_H_SHIELDGEN_SH_MAX;
+  self.sh_rate= DAT_BLD_H_SHIELDGEN_SH_RATE;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();

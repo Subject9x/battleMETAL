@@ -18,13 +18,17 @@ void() building_power={
   self.data_type = DATA_BLD;
   self.vec_name = "Power Generator";
   self.p_class = P_BULD;
-  util_setModel("q3mdl/buildings/mdl_bld_h_power.md3", 0) ;
+  util_setModel(DAT_BLD_H_POWER_PLANT_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(2500, 2500, 1, 100);
+  util_setHealthArmor(DAT_BLD_H_POWER_PLANT_HP, DAT_BLD_H_POWER_PLANT_HP, 1, 100);
   util_setBoundBox('-75 -75 0', '75 75 48');
   self.sh_cur= 0;
-  self.sh_max= 600;
-  self.sh_rate= 1;
+  self.sh_max= DAT_BLD_H_POWER_PLANT_SH_MAX;
+  self.sh_rate= DAT_BLD_H_POWER_PLANT_SH_RATE;
+  self.en_cur= 0;
+  self.en_max= DAT_BLD_H_POWER_PLANT_EN_MAX;
+  self.en_rate= DAT_BLD_H_POWER_PLANT_EN_RATE;
+  
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();
