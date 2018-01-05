@@ -702,6 +702,27 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_z = ReadCoord();
     setorigin(self, self.origin);
   }
+  else if(id == E_DEP){
+   if(isnew){
+      self.ui_org = '0 0 0'; 
+      self.ui_size = '0 0 0';
+      self.classname = "data";
+      self.drawmask = MASK_ENGINE;
+      self.value1 = 0;
+      self.isActive = 0;
+      setorigin(self, self.origin);
+      addentity(self);
+    }
+    self.p_class = E_DEP;
+    self.data_type = ReadByte();
+    self.nav_name = ReadByte();
+    self.i_faction = ReadByte();
+    self.value1 = self.isActive;
+    self.isActive = ReadByte();
+    self.origin_x = ReadCoord();
+    self.origin_y = ReadCoord();
+    self.origin_z = ReadCoord();
+  }
   
   /*else if(id == E_MEC){
     if(isnew){

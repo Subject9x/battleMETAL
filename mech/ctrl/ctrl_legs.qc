@@ -40,7 +40,7 @@ void() ctrl_updateLegs={
             if(self.w_firerate == 1){
               self.w_firerate = 0;
               local string acc;
-              acc = strcat("cl_movespeedkey ", ftos(self.owner.m_maccel),"\n");
+              acc = strcat("cl_movespeedkey ", ftos(self.owner.m_maccel)," \n");
               stuffcmd(self.owner, acc);
             }
           }

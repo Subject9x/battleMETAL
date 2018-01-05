@@ -96,7 +96,7 @@ void() data_las_atk={
   setorigin(laser_org, self.fx_origin);
   laser_org.think = SUB_Remove;
   laser_org.nextthink = time + 0.01;// + 0.35;
-    
+   
   te_beam_laser(laser_org.origin, dir);
   sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
   

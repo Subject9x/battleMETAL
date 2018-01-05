@@ -27,7 +27,7 @@ void() navSelectListener={
   local entity nav;
   nav = findchain(classname, "data");
   while(nav){
-    if(nav.data_type == DATA_NAVP){
+    if(nav.data_type == DATA_DEPL){
       if(nav.isActive == TRUE){
         if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
           PLAYER_HELPER.plr_nav_pnt = nav.nav_name;
@@ -174,5 +174,31 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       }
     }
     nav = nav.chain;
+  }
+  
+    
+  local entity deploy;
+  deploy = findchain(classname, "data");
+  while(deploy){
+    if(deploy.data_type == DATA_DEPL){
+      if(deploy.i_faction == getstati(STAT_PLR_IFAC)){
+        local vector nofs, nclr;
+        nofs = gui_mapCoordToImgCoord(map_size, deploy.origin, iofs, gui_percentToPixelRawVec('380 380'));
+        deploy.ui_org = nofs; 
+        deploy.ui_size_x = deploy.ui_size_x + gui_percentXRaw(nlen);
+        deploy.ui_size_y = deploy.ui_size_y + gui_percentY(0.0062);
+        if(deploy.isActive){
+          nclr = CLR_DEF_ARM_OK;
+        }
+        else{
+          nclr = CLR_DEF_ARM_DED;
+        }
+        local vector hsz;
+        hsz_x = nlen + gui_percentXRaw(6);
+        hsz_y = gui_percentYRaw(12);
+        gui_DrawHighlightRect((PLAYER_HELPER.plr_nav_pnt == deploy.nav_name), nofs + gui_percentToPixelRawVec('-3 -3'), hsz, '4 4', CLR_DEF_ARM_OK, '2 2', CLR_DEF_ARM_DED);
+      }
+    }
+    deploy = deploy.chain;
   }
 };

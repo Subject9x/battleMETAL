@@ -11,8 +11,8 @@ Overview: moving all mech values into a single global file for ease of maintenan
 //MATOK MECH=============================
 string DAT_MTK_VEC_NAME = "Matok";
 float DAT_MTK_RESERVE_COST = 200;
-vector DAT_MTK_CTOR_BBX_N ='-17 -17 -40';
-vector DAT_MTK_CTOR_BBX_X ='17 17 22';
+vector DAT_MTK_CTOR_BBX_N = '-17 -17 -40';
+vector DAT_MTK_CTOR_BBX_X = '17 17 22';
 string DAT_MTK_UI_IMG = "gfx/ui/hgr_mtk.png";
 float DAT_MTK_HARDPOINTS = 5;
 
@@ -104,22 +104,32 @@ void(vector org) mtk_renderHardpoints={
 float(vector org) mtk_hardpointListener={
   if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('-44 -100'), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON1;
+    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MTK_HARDPOINT1_SIZE;
+    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MTK_HARDPOINT1_TYPES;
     return 1;
   }  
   if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('22 -100'), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON2;
+    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MTK_HARDPOINT2_SIZE;
+    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MTK_HARDPOINT2_TYPES;
     return 2;
   } 
   if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('-84 -40'),gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON3;
+    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MTK_HARDPOINT3_SIZE;
+    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MTK_HARDPOINT3_TYPES;
     return 3;
   } 
   if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('58 -40'), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON4;
+    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MTK_HARDPOINT4_SIZE;
+    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MTK_HARDPOINT4_TYPES;
     return 4;
   } 
   if(menu_checkMouseInBounds(cursorpos, org + gui_percentToPixelRawVec('-12 -94'), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON5;
+    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MTK_HARDPOINT5_SIZE;
+    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MTK_HARDPOINT5_TYPES;
     return 5;
   } 
   return 0;

@@ -88,7 +88,13 @@ void() weaponSelectListener={
   if(found  > 0){
    PLAYER_HELPER.plr_sel_wep = found;
    if(PLAYER_HELPER.plr_sel_hrpnt > 0){
-    HARDPOINTS[PLAYER_HELPER.plr_sel_hrpnt] = found;
+    local entity dat;
+    dat = m_findData(found, DATA_WEPN);
+    if(dat){
+      if((PLAYER_HELPER.plr_sel_hrpnt_types & dat.dmg_type) && (PLAYER_HELPER.plr_sel_hrpnt_size >= dat.i_size)){
+        HARDPOINTS[PLAYER_HELPER.plr_sel_hrpnt] = found;
+      } 
+    }
    }
   }
 };
@@ -416,6 +422,9 @@ void(vector ofs) menu_hangar_WeaponList_BAL={
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
+        if(!(PLAYER_HELPER.plr_sel_hrpnt_types & DMG_BAL) || (dat.i_size > PLAYER_HELPER.plr_sel_hrpnt_size)){
+          clr = CLR_DEF_BLACK;
+        }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_BAL_ARR[act_idx] = dat.data_idx;
         act_idx = act_idx + 1;
@@ -452,6 +461,9 @@ void(vector ofs) menu_hangar_WeaponList_ENE={
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
+        if(!(PLAYER_HELPER.plr_sel_hrpnt_types & DMG_ENE) || (dat.i_size > PLAYER_HELPER.plr_sel_hrpnt_size)){
+          clr = CLR_DEF_BLACK;
+        }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_ENE_ARR[act_idx] = dat.data_idx;
         act_idx = act_idx + 1;
@@ -487,6 +499,9 @@ void(vector ofs) menu_hangar_WeaponList_EXP={
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
+        }
+        if(!(PLAYER_HELPER.plr_sel_hrpnt_types & DMG_EXP) || (dat.i_size > PLAYER_HELPER.plr_sel_hrpnt_size)){
+          clr = CLR_DEF_BLACK;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_EXP_ARR[act_idx] = dat.data_idx;

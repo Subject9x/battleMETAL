@@ -59,6 +59,8 @@ float DATA_BLD = 6;
 float DATA_NAVP = 7;
 float DATA_OBJT = 8;
 float DATA_NODE = 9;
+float DATA_DEPL = 10;
+float DATA_POBS = 11;
 
 //mech piece classname constants
 string MECH_PIECE = "mech_piece";

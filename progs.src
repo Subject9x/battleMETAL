@@ -43,6 +43,7 @@ triggers_h.qc
 dp/subs.qc
 //DATA FILES=================
   //miscellaneous
+  mech/dat/msc/map_deplypoint.qc
   mech/dat/msc/map_navpoint.qc
   mech/dat/msc/map_objective.qc
   mech/dat/msc/ai_node.qc

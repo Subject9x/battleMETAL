@@ -192,9 +192,9 @@ float DAT_LATC_WSIZE      = 1;
 //-------------------------RPlas
 float DAT_RPLAS_WSIZE     = 2;
 //-------------------------QRifle
-float DAT_QRFL_WSIZE      = 3;
+float DAT_QRFL_WSIZE      = 2;
 //-------------------------SFGA
-float DAT_SFGA_WSIZE      = 1;
+float DAT_SFGA_WSIZE      = 3;
 //-------------------------Laser
 float DAT_LAS_WSIZE       = 1;
 //-------------------------EMP
@@ -206,7 +206,7 @@ float DAT_PAC_WSIZE       = 2;
 //-------------------------Rocket
 float DAT_MIS_WSIZE       = 1;
 //-------------------------Laser Missile
-float DAT_MLGD_WSIZE      = 1;
+float DAT_MLGD_WSIZE      = 2;
 //-------------------------Radar Missile
 float DAT_MARH_WSIZE      = 3;
 //============================

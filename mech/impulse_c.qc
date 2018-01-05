@@ -22,7 +22,7 @@ void() playerAttack={
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
-    if(self.button0){
+    if(self.button0 && (self.stat_plr_stt == PLAYER_IDLE)){
       if((self.currentWeaponGroup & wgrp)){
         if(wep_chain.w_state == READY){
           self = wep_chain;

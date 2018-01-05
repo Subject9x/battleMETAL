@@ -41,3 +41,22 @@ void(vector org, vector end) te_beam_pac={
   WriteCoord (MSG_BROADCAST, end_y);
   WriteCoord (MSG_BROADCAST, end_z);
 };
+
+
+//compound effects
+void(vector org, vector clr) te_muzzle_laser={
+  local entity vfx;
+  vfx = spawn();
+  vfx.movetype = SOLID_NOT;
+  vfx.classname = "missile";
+  setmodel(vfx, "q3mdl/muzzle_laser.spr32");
+  setsize(vfx, '-1 -1 -1', '1 1 1');
+  setorigin(vfx, org);
+  vfx.alpha = 0.85;
+  vfx.glow_color = 250;
+  vfx.glow_size = 1;
+  vfx.glow_trail = TRUE;
+  vfx.color = util_rgbToFloat(clr);
+  vfx.scale = 0.15;
+  s_mzl_las1();
+};

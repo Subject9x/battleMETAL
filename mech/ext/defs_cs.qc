@@ -12,6 +12,7 @@ float E_AIU = 3;
 float E_BLD = 4;
 float E_VEC = 5;
 float E_MEC = 6;
+float E_DEP = 7;
 
 //STAT TYPES
 float AS_STRING = 1;

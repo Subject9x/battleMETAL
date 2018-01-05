@@ -9,7 +9,7 @@ server and client
 //============================
 //            Health           
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 float DAT_OTL_LEG_HP    = 700;
 float DAT_OTL_CTOR_HP   = 500;
 float DAT_OTL_LTOR_HP   = 375;
@@ -33,7 +33,7 @@ float DAT_MNT_RARM_HP   = 1000;
 //============================
 //            Armor  ! NOT IMPLEMENTED !
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 float DAT_OTL_LEG_ARMMAX    = 100;
 float DAT_OTL_CTOR_ARMMAX   = 100;
 float DAT_OTL_LTOR_ARMMAX   = 100;
@@ -57,7 +57,7 @@ float DAT_MNT_LEG_ARMMAX    = 100;
 //============================
 //            Shield  
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 float DAT_OTL_SHIELD_MAX    = 300;
 float DAT_OTL_SHIELD_RATE   = 1;
 //-------------------------MATOK------------------------
@@ -69,7 +69,7 @@ float DAT_MNT_SHIELD_RATE   = 0.35;
 //============================
 //            Energy  
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 float DAT_OTL_ENERGY_MAX    = 400;
 float DAT_OTL_ENERGY_RATE   = 1;
 //-------------------------MATOK------------------------
@@ -81,7 +81,7 @@ float DAT_MNT_ENERGY_RATE   = 2;
 //============================
 //            Speed  
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 float DAT_OTL_M_FSPEED      = 200;//v0.0.3
 float DAT_OTL_M_SSPEED      = 175;//v0.0.3
 float DAT_OTL_M_BSPEED      = 150;//v0.0.3
@@ -99,7 +99,7 @@ float DAT_MNT_M_ACCEL       = 2; //v0.0.3
 //============================
 //            Radar Range and Lock-on Delay
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 float DAT_OTL_RADAR_RANGE = 7000;
 float DAT_OTL_LOCK = 5;
 //-------------------------MATOK------------------------
@@ -111,7 +111,7 @@ float DAT_MNT_LOCK = 7;
 //============================
 //            Base Convergence
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 vector DAT_OTL_SPREAD_N = '4 4 0.1';
 vector DAT_OTL_SPREAD_X = '8 8 0.1';
 //-------------------------MATOK------------------------
@@ -123,7 +123,7 @@ vector DAT_MNT_SPREAD_X = '14 10 0.03';
 //============================
 //            Models  
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 string DAT_OTL_CTOR_MODEL   = "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
 string DAT_OTL_CPIT_MODEL   = "q3mdl/mechs/notl/mdl_blk_cpt.md3";
 string DAT_OTL_LEG_MODEL    = "q3mdl/mechs/notl/mdl_blk_legs.md3";
@@ -153,7 +153,7 @@ string DAT_MNT_CAM_MODEL    = "q3mdl/testball.md3";
 //============================
 //            Model Offsets 
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 vector DAT_OTL_LEG_OFFSET     = '0 -16 0';
 vector DAT_OTL_LTOR_OFFSET    = '-7 5.5 -2';
 vector DAT_OTL_RTOR_OFFSET    = '7 5.5 -2';
@@ -195,9 +195,55 @@ vector DAT_MNT_WEP7_OFFSET    = '0 5 6';
 vector DAT_MNT_WEP8_OFFSET    = '9 6 4';
 vector DAT_MNT_WEP9_OFFSET    = '-9 6 4';
 //============================
+//            Hardpoint Size 
+//============================
+//-------------------------BALAKET
+float DAT_BLK_HARDPOINT1_SIZE = 1;
+float DAT_BLK_HARDPOINT2_SIZE = 1;
+float DAT_BLK_HARDPOINT3_SIZE = 3;
+//-------------------------MATOK
+float DAT_MTK_HARDPOINT1_SIZE = 1;
+float DAT_MTK_HARDPOINT2_SIZE = 1;
+float DAT_MTK_HARDPOINT3_SIZE = 2;
+float DAT_MTK_HARDPOINT4_SIZE = 2;
+float DAT_MTK_HARDPOINT5_SIZE = 3;
+//-------------------------MONITOR
+float DAT_MNT_HARDPOINT1_SIZE = 1;
+float DAT_MNT_HARDPOINT2_SIZE = 1;
+float DAT_MNT_HARDPOINT3_SIZE = 1;
+float DAT_MNT_HARDPOINT4_SIZE = 1;
+float DAT_MNT_HARDPOINT5_SIZE = 3;
+float DAT_MNT_HARDPOINT6_SIZE = 3;
+float DAT_MNT_HARDPOINT7_SIZE = 3;
+float DAT_MNT_HARDPOINT8_SIZE = 3;
+float DAT_MNT_HARDPOINT9_SIZE = 3;
+//============================
+//            Hardpoint Type
+//============================
+//-------------------------BALAKET
+float DAT_BLK_HARDPOINT1_TYPES = 3;
+float DAT_BLK_HARDPOINT2_TYPES = 3;
+float DAT_BLK_HARDPOINT3_TYPES = 7;
+//-------------------------MATOK
+float DAT_MTK_HARDPOINT1_TYPES = 3;
+float DAT_MTK_HARDPOINT2_TYPES = 3;
+float DAT_MTK_HARDPOINT3_TYPES = 3;
+float DAT_MTK_HARDPOINT4_TYPES = 3;
+float DAT_MTK_HARDPOINT5_TYPES = 7;
+//-------------------------MONITOR
+float DAT_MNT_HARDPOINT1_TYPES = 3;
+float DAT_MNT_HARDPOINT2_TYPES = 3;
+float DAT_MNT_HARDPOINT3_TYPES = 3;
+float DAT_MNT_HARDPOINT4_TYPES = 3;
+float DAT_MNT_HARDPOINT5_TYPES = 3;
+float DAT_MNT_HARDPOINT6_TYPES = 3;
+float DAT_MNT_HARDPOINT7_TYPES = 4;
+float DAT_MNT_HARDPOINT8_TYPES = 4;
+float DAT_MNT_HARDPOINT9_TYPES = 4;
+//============================
 //            Tech level  
 //============================
-//-------------------------OUTLAW------------------------
+//-------------------------BALAKET------------------------
 float DAT_OTL_TECH_LEVEL = 1;
 //-------------------------MATOK------------------------
 float DAT_MTK_TECH_LEVEL = 2;

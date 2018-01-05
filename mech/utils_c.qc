@@ -8,6 +8,14 @@ Overview: utility functions for mod, header
 */
 
 
+vector(vector rgb) util_rgbToFloat={
+  local vector nu;
+  nu_x = rgb_x/255;
+  nu_x = rgb_y/255;
+  nu_x = rgb_z/255;
+  return nu;
+};
+
 float(float t, float e) util_normalizeTimeAsPercent={
   return t / e;
 };

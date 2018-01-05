@@ -34,3 +34,5 @@ vector(entity own, entity wep, vector prev_tracend, float spreadx, float spready
 float(float t, float e) util_normalizeTimeAsPercent;
 float(float v) anglemod;
 float() crandom;
+
+vector(vector rgb) util_rgbToFloat;

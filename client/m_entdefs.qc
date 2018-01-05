@@ -12,16 +12,17 @@ float E_AIU = 3;
 float E_BLD = 4;
 float E_VEC = 5;
 float E_MEC = 6;
+float E_DEP = 7;
 
 //Damage types
 float DMG_BAL = 1;  //ballstic damage
 float DMG_ENE = 2;  //energy damage
 float DMG_EXP = 4;  //explosive damage
+float DMG_MSC = 128; //up to the weapon
 float EFF_PRC = 8;  //piercing damage
 float EFF_RAM = 16; //dmg is doubled
 float EFF_STX = 32; //dmg only affects shields
 float EFF_ENG = 64; //dmg only affects energy
-float DMG_MSC = 128; //up to the weapon
 
 //Armor Types
 float ARM_LIT = 2;  //light armor
@@ -51,6 +52,9 @@ float ARM_RAD = 24;
 .float plr_nex_grp4;
 .float plr_nex_grp5;
 .float plr_nav_pnt;
+.float plr_sel_hrpnt_size;
+.float plr_sel_hrpnt_types;
+
 .float wep1_reload;
 .vector show_box_pos;
 .vector show_box_sz;

@@ -95,14 +95,20 @@ void(vector org) otl_renderHardpoints={
 float(vector org) otl_hardpointListener={
   if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('-10 -96')), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON3;
+    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_BLK_HARDPOINT3_SIZE;
+    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_BLK_HARDPOINT3_TYPES;
     return 3;
   }  
   if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('52 -36')), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON1;
+    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_BLK_HARDPOINT1_SIZE;
+    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_BLK_HARDPOINT1_TYPES;
     return 1;
   }
   if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('-75 -36')), gui_percentToPixelRawVec('24 24'))){
     PLAYER_HELPER.plr_sel_wid = WEAPON2;
+    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_BLK_HARDPOINT2_SIZE;
+    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_BLK_HARDPOINT2_TYPES;
     return 2;
   }  
   return 0;
