@@ -4,21 +4,10 @@ Author: Peter Roohr
 Date: 02/25/2017
 Overview: long-range, low damage, homing missile
 */
-//=======MISSILE: LASER-GUIDED========
+//=======MISSILE: ACTIVE-RADAR========
 float DAT_PRJ_MARH_IDX = ID_PRJ_MARH;
-float DAT_PRJ_MARH_VELOCITY = 650;//was750 5/13/2017 //was 500 - 3/27/2017
-string DAT_PRJ_MARH_MODEL = "q3mdl/proj_mis.md3";
-float DAT_PRJ_MARH_LIFETIME = 13; //v0.0.3
-float DAT_PRJ_MARH_DAMAGE = 2; //v0.0.3
+float DAT_PRJ_MARH_DAMAGE = 2;
 float DAT_PRJ_MARH_DMGTYPE = DMG_EXP;
-
-float DAT_PRJ_MARH_EFFECTS = 0; //see data_prj_MIS
-float DAT_PRJ_MARH_MODELFLAGS = MF_ROCKET;
-float DAT_PRJ_MARH_ALPHA = 1;
-vector DAT_PRJ_MARH_COLORMOD = '0 0 0';
-float DAT_PRJ_MARH_GLOWCOLOR = 0;
-float DAT_PRJ_MARH_GLOWSIZE = 0;
-float DAT_PRJ_MARH_GLOWTRAIL= FALSE;
 
 void() data_prj_marh_th;
 void() data_prj_marh_touch;

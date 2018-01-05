@@ -7,19 +7,8 @@ Overview: data def file for a weapon projectile
 
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_SFGA_IDX = ID_PRJ_SFGA;
-float DAT_PRJ_SFGA_VELOCITY = 1500;
-string DAT_PRJ_SFGA_MODEL = "progs/casing.mdl";
-float DAT_PRJ_SFGA_LIFETIME = 8;
 float DAT_PRJ_SFGA_DAMAGE = 300;
 float DAT_PRJ_SFGA_RAD = 150;
-
-float DAT_PRJ_SFGA_EFFECTS = EF_NOSHADOW;
-float DAT_PRJ_SFGA_MODELFLAGS = MF_GRENADE;
-float DAT_PRJ_SFGA_ALPHA = 1;
-vector DAT_PRJ_SFGA_COLORMOD = '0.85 0.45 0.45';
-float DAT_PRJ_SFGA_GLOWCOLOR = 240;
-float DAT_PRJ_SFGA_GLOWSIZE = 0.005;
-float DAT_PRJ_SFGA_GLOWTRAIL= FALSE;
 
 void() data_prj_sfga_touch;
 void() data_prj_sfga_raddmg;

@@ -7,19 +7,10 @@ Overview: data def file for a weapon projectile
 
 //MIS CANNON SHOT=======================
 float DAT_PRJ_MIS_IDX = ID_PRJ_MIS;
-float DAT_PRJ_MIS_VELOCITY = 1300;
-string DAT_PRJ_MIS_MODEL = "q3mdl/proj_mis.md3";
-float DAT_PRJ_MIS_LIFETIME = 1.4;
-float DAT_PRJ_MIS_DAMAGE = 75; //v0.0.3
+float DAT_PRJ_MIS_DAMAGE = 75;
 float DAT_PRJ_MIS_DMGTYPE = DMG_EXP;
 
-float DAT_PRJ_MIS_EFFECTS = 0; //see data_prj_MIS
-float DAT_PRJ_MIS_MODELFLAGS = MF_ROCKET;
-float DAT_PRJ_MIS_ALPHA = 1;
-vector DAT_PRJ_MIS_COLORMOD = '0 0 0';
-float DAT_PRJ_MIS_GLOWCOLOR = 0;
-float DAT_PRJ_MIS_GLOWSIZE = 0;
-float DAT_PRJ_MIS_GLOWTRAIL= FALSE;
+
 
 void() data_prj_mis_touch;
 

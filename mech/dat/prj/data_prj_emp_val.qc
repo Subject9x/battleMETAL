@@ -7,21 +7,10 @@ Overview: data def file for a weapon projectile
 
 //EMP CANNON SHOT=======================
 float DAT_PRJ_EMP_IDX = ID_PRJ_EMP;
-float DAT_PRJ_EMP_VELOCITY = 1500; //1500
-string DAT_PRJ_EMP_MODEL = "q3mdl/proj_emp.md3";
-float DAT_PRJ_EMP_LIFETIME = 1.6; //v0.0.3
-float DAT_PRJ_EMP_DAMAGE = 300; //v0.0.3
-float DAT_PRJ_EMP_DMGTYPE = 0;  //see data_prj_emp
-
-float DAT_PRJ_EMP_EFFECTS = EF_NOSHADOW;
-float DAT_PRJ_EMP_MODELFLAGS = MF_TRACER3;
-float DAT_PRJ_EMP_ALPHA = 0.75;
-vector DAT_PRJ_EMP_COLORMOD = '0.85 0.45 0.45';
-float DAT_PRJ_EMP_GLOWCOLOR = 255;
-float DAT_PRJ_EMP_GLOWSIZE = 0.0005;
-float DAT_PRJ_EMP_GLOWTRAIL= FALSE;
-float DAT_PRJ_EMP_PROXYRAD = 150; //v0.0.3
-float DAT_PRJ_EMP_EXPRAD = 300;//v0.0.3
+float DAT_PRJ_EMP_DAMAGE = 300;
+float DAT_PRJ_EMP_DMGTYPE = 0;
+float DAT_PRJ_EMP_PROXYRAD = 150;
+float DAT_PRJ_EMP_EXPRAD = 300;
 
 void() data_prj_emp_touch;
 void() data_prj_emp_think;
@@ -38,7 +27,7 @@ void() data_prj_emp_ini={
   self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_RAM;
   
   //cosmetics
-  self.effects = EF_ADDITIVE + EF_NOSHADOW;
+  self.effects = self.effects | (EF_ADDITIVE | EF_NOSHADOW);
   self.modelflags = DAT_PRJ_EMP_MODELFLAGS;
   self.alpha = DAT_PRJ_EMP_ALPHA;
   self.colormod = DAT_PRJ_EMP_COLORMOD;

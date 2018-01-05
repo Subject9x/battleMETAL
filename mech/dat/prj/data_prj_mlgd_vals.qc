@@ -7,19 +7,8 @@ Overview: data def file for a weapon projectile
 
 //=======MISSILE: LASER-GUIDED========
 float DAT_PRJ_MLGD_IDX = ID_PRJ_MLGD;
-float DAT_PRJ_MLGD_VELOCITY = 800;
-string DAT_PRJ_MLGD_MODEL = "q3mdl/proj_mis.md3";
-float DAT_PRJ_MLGD_LIFETIME = 1.75;
 float DAT_PRJ_MLGD_DAMAGE = 275;
 float DAT_PRJ_MLGD_DMGTYPE = DMG_EXP;
-
-float DAT_PRJ_MLGD_EFFECTS = 0; //see data_prj_MIS
-float DAT_PRJ_MLGD_MODELFLAGS = MF_ROCKET;
-float DAT_PRJ_MLGD_ALPHA = 1;
-vector DAT_PRJ_MLGD_COLORMOD = '0 0 0';
-float DAT_PRJ_MLGD_GLOWCOLOR = 0;
-float DAT_PRJ_MLGD_GLOWSIZE = 0;
-float DAT_PRJ_MLGD_GLOWTRAIL= FALSE;
 
 void() data_prj_mlgd_th;
 void() data_prj_mlgd_touch;

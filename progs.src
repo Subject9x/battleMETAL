@@ -47,8 +47,9 @@ dp/subs.qc
   mech/dat/msc/map_navpoint.qc
   mech/dat/msc/map_objective.qc
   mech/dat/msc/ai_node.qc
+  
   //projectiles
-  //mech/dat/prj/data_prj_latc_val.qc
+  common/data/data_values_projectiles.qc
   mech/dat/prj/data_prj_sfga_vals.qc
   mech/dat/prj/data_prj_emp_val.qc
   mech/dat/prj/data_prj_mis_val.qc

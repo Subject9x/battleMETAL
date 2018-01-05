@@ -8,19 +8,11 @@ this guy will bounce off up to two non-targets.
 
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_QRFL_IDX = ID_PRJ_QRFL;
-float DAT_PRJ_QRFL_VELOCITY = 200;//v0.0.3
-string DAT_PRJ_QRFL_MODEL = "progs/casing.mdl";
-float DAT_PRJ_QRFL_LIFETIME = 4;
-float DAT_PRJ_QRFL_DAMAGE = 35;  //v0.0.3
+
+float DAT_PRJ_QRFL_DAMAGE = 35;
 float DAT_PRJ_QRFL_DMGTYPE = DMG_BAL;
 
-float DAT_PRJ_QRFL_EFFECTS = EF_NOSHADOW;
-float DAT_PRJ_QRFL_MODELFLAGS = MF_TRACER3;
-float DAT_PRJ_QRFL_ALPHA = 0.75;
-vector DAT_PRJ_QRFL_COLORMOD = '0.85 0.45 0.45';
-float DAT_PRJ_QRFL_GLOWCOLOR = 255;
-float DAT_PRJ_QRFL_GLOWSIZE = 0.0005;
-float DAT_PRJ_QRFL_GLOWTRAIL= FALSE;
+
 
 void() data_prj_qrfl_touch;
 

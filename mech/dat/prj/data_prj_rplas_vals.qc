@@ -6,22 +6,11 @@ Overview: data def file for the Rotary Plasma Cannon
 this guy will bounce off up to two non-targets.
 */
 
-//LIGHT AUTOCANNON SHOT==================
+//ROTARY PLASMA SHOT==================
 float DAT_PRJ_RPLAS_IDX = ID_PRJ_RPLAS;
-float DAT_PRJ_RPLAS_VELOCITY = 1600;//v0.0.3
-string DAT_PRJ_RPLAS_MODEL = "progs/casing.mdl";
-float DAT_PRJ_RPLAS_LIFETIME = 1.558;//v0.0.3
-float DAT_PRJ_RPLAS_DAMAGE = 20; //was 5 - 3/27/2017
-float DAT_PRJ_RPLAS_BURN = 1; //v0.0.3
+float DAT_PRJ_RPLAS_DAMAGE = 20;
+float DAT_PRJ_RPLAS_BURN = 1; 
 float DAT_PRJ_RPLAS_DMGTYPE = DMG_BAL;
-
-float DAT_PRJ_RPLAS_EFFECTS = EF_NOSHADOW;
-float DAT_PRJ_RPLAS_MODELFLAGS = MF_TRACER2;
-float DAT_PRJ_RPLAS_ALPHA = 1;
-vector DAT_PRJ_RPLAS_COLORMOD = '0.35 0.85 0.45';
-float DAT_PRJ_RPLAS_GLOWCOLOR = 150;// 240;
-float DAT_PRJ_RPLAS_GLOWSIZE = 0.1;
-float DAT_PRJ_RPLAS_GLOWTRAIL= FALSE;
 
 void() data_prj_rplas_touch;
 void() data_prj_rplas_bounce;
