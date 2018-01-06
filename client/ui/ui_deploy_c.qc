@@ -151,54 +151,33 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   while(nav){
     if(nav.data_type == DATA_NAVP){
       if(nav.i_faction == getstati(STAT_PLR_IFAC)){
-        local vector nofs, nclr;
-        nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
+        local vector ofs, nofs;
+        ofs = nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
         local float nlen;
         nlen = stringwidth(nav.w_name, 0, '6 6 0');
         nofs_x = nofs_x - gui_percentXRaw((nlen/2));
-        nofs_y = nofs_y - gui_percentY(0.0031);
+        nofs_y = nofs_y - gui_percentYRaw(4);
         nav.ui_org = nofs; 
         nav.ui_size_x = nav.ui_size_x + gui_percentXRaw(nlen);
         nav.ui_size_y = nav.ui_size_y + gui_percentY(0.0062);
+        drawstring(nofs - gui_percentToPixelRawVec('0 12'), nav.w_name, '6 6 0', CLR_DEF_WHITE, HUD_ALPHA, 0);
+        gui_renderTintImage(TRUE, ofs + gui_percentToPixelRawVec('-8 -8'), UI_DEF_NAVPOINT, '16 16', CLR_DEF_WHITE, 1, 0) ;
+      }
+    }
+    else if(nav.data_type == DATA_DEPL){
+        local vector nofs, nclr;
+        nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
+        nav.ui_org = nofs; 
         if(nav.isActive){
           nclr = CLR_DEF_ARM_OK;
         }
         else{
           nclr = CLR_DEF_ARM_DED;
         }
-        drawstring(nofs, nav.w_name, '6 6 0', nclr, HUD_ALPHA, 0);
-        local vector hsz;
-        hsz_x = nlen + gui_percentXRaw(6);
-        hsz_y = gui_percentYRaw(12);
-        gui_DrawHighlightRect((PLAYER_HELPER.plr_nav_pnt == nav.nav_name), nofs + gui_percentToPixelRawVec('-3 -3'), hsz, '4 4', CLR_DEF_ARM_OK, '2 2', CLR_DEF_ARM_DED);
-      }
+        drawstring(nofs,ftos(nav.nav_name), '12 12', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+        gui_renderTintImage((PLAYER_HELPER.plr_nav_pnt == nav.nav_name), nav.ui_org, UI_DEF_DEPLOYPOINT, '16 16', CLR_DEF_ARM_OK, 1, 0) ;
     }
     nav = nav.chain;
   }
-  
-    
-  local entity deploy;
-  deploy = findchain(classname, "data");
-  while(deploy){
-    if(deploy.data_type == DATA_DEPL){
-      if(deploy.i_faction == getstati(STAT_PLR_IFAC)){
-        local vector nofs, nclr;
-        nofs = gui_mapCoordToImgCoord(map_size, deploy.origin, iofs, gui_percentToPixelRawVec('380 380'));
-        deploy.ui_org = nofs; 
-        deploy.ui_size_x = deploy.ui_size_x + gui_percentXRaw(nlen);
-        deploy.ui_size_y = deploy.ui_size_y + gui_percentY(0.0062);
-        if(deploy.isActive){
-          nclr = CLR_DEF_ARM_OK;
-        }
-        else{
-          nclr = CLR_DEF_ARM_DED;
-        }
-        local vector hsz;
-        hsz_x = nlen + gui_percentXRaw(6);
-        hsz_y = gui_percentYRaw(12);
-        gui_DrawHighlightRect((PLAYER_HELPER.plr_nav_pnt == deploy.nav_name), nofs + gui_percentToPixelRawVec('-3 -3'), hsz, '4 4', CLR_DEF_ARM_OK, '2 2', CLR_DEF_ARM_DED);
-      }
-    }
-    deploy = deploy.chain;
-  }
+ 
 };

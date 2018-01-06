@@ -20,7 +20,7 @@ float(entity ent, float changed) send_deploypoint={
 void() th_deploy={
 
   self.think = th_deploy;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.5;
 };
 
 /*QUAKED map_deploy_point (0.2 0.8 0.2) (-10 -10 -10) (10 10 10)
@@ -35,10 +35,11 @@ player-choosable
 void() map_deploy_point={
   self.classname = "data";
   self.data_type = DATA_DEPL;
+  setmodel(self, "q3mdl/testball.md3");
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.SendEntity = send_deploypoint;
   self.SendFlags = 1;
   self.think = th_deploy;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.5;
 }

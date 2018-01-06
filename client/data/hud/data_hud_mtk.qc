@@ -536,7 +536,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       spos = cs_project(apos);
       if (spos_z >= 0) {
         local vector i_sz, tclr;
-        i_sz = draw_getimagesize("gfx/hud/target_box.png");
+        i_sz = draw_getimagesize(HUD_TARGET_BOX);
         i_sz = gui_scaleSize(i_sz, VIEW_SCALE);
         i_sz = gui_percentToPixelRawVec(i_sz);
         spos_x -= i_sz_x/2; //align horizontally to centre
@@ -548,7 +548,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
         else{
           tclr = CLR_DEF_IFF_ENEMY;
         }
-        drawpic(spos, "gfx/hud/target_box.png", i_sz, tclr, HUD_ALPHA, 0);
+        drawpic(spos, HUD_TARGET_BOX, i_sz, tclr, HUD_ALPHA, 0);
       }
       
       if(dat.data_type == DATA_MECH){

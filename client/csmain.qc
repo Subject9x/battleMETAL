@@ -259,6 +259,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     }
   }
   
+  
+  
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
@@ -717,7 +719,6 @@ void(float isnew) CSQC_Ent_Update =
     self.data_type = ReadByte();
     self.nav_name = ReadByte();
     self.i_faction = ReadByte();
-    self.value1 = self.isActive;
     self.isActive = ReadByte();
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();

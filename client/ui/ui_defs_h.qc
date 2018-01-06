@@ -37,12 +37,16 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic;
 void(entity nav) ui_renderNav;
 void(float num, vector org) ui_renderHardPointNumber;
 
+string MISSION_OBJECTIVES[12];
+float MISSION_OBJ_STATUS[12];
+
 //image defs
 string UI_DEF_BOX_512;
 string UI_DEF_BOX_256;
 string UI_DEF_BOX_256_TALL;
 string UI_DEF_BOX_64;
 string UI_DEF_NAVPOINT;
+string UI_DEF_DEPLOYPOINT;
 string UI_HANGAR_BOX;
 string UI_BOX_SELECT;
 

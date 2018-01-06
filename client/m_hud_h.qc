@@ -22,6 +22,8 @@ string HUD_TRG_PIP_B;
 
 string HUD_DMG_PIP_H;
 
+string HUD_TARGET_BOX;
+
 .entity data;
 .entity hud_pnl1;
 .entity hud_pnl2;

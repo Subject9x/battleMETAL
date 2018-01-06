@@ -16,6 +16,10 @@ void() nav_point_use;
 void() nav_point_th;
 float(entity ent, float changed) send_navpoint;
 
+//deploy point stuff
+void() th_deploy;
+float(entity ent, float changed) send_deploypoint;
+
 //AI nodes
 void() ai_node_touch;
 void() ai_node_graph_touch;

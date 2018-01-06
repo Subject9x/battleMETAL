@@ -18,7 +18,9 @@ float DATA_HUD = 5;
 float DATA_BLD = 6;
 float DATA_NAVP = 7;
 float DATA_OBJT = 8;
-float DATA_DEPL = 9;
+float DATA_NODE = 9;
+float DATA_DEPL = 10;
+float DATA_POBS = 11;
 
 entity(float id, float dat_type) m_findData;
 entity(float sz, float id) m_findMechData;

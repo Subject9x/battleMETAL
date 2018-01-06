@@ -81,8 +81,9 @@ void() cs_precache={
   UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png",0);
   UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",0);
   UI_DEF_BOX_64 = precache_pic("gfx/ui/box_64.png",0);
-  precache_pic("gfx/hud/target_box.png",0);
+  HUD_TARGET_BOX = precache_pic("gfx/hud/target_box.png",0);
   UI_DEF_NAVPOINT = precache_pic("gfx/ui/hud_navpoint.png",0);
+  UI_DEF_DEPLOYPOINT = precache_pic("gfx/ui/hud_deploypoint.png", 0);
   UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",0);
   UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",0);
   
