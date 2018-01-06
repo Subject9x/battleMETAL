@@ -31,6 +31,7 @@ void() CSQC_Init =
   PLAYER_HELPER.plr_nex_grp4 = 0;
   PLAYER_HELPER.plr_nex_grp5 = 0;
   PLAYER_HELPER.plr_nav_pnt = 0;
+  PLAYER_HELPER.plr_menu_choice = MENU_BRIEF_ACTIVE;
   PLAYER_HELPER.w_range = 0;
   PLAYER_HELPER.wep1_reload = 0;
   PLAYER_HELPER.drawme = 0;
@@ -118,27 +119,28 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
     if((scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS)){
         if(MENU_ACTIVE){
           MENU_ACTIVE = FALSE;
-          MENU_HANGAR_ACTIVE = FALSE;
-          MENU_BRIEF_ACTIVE = FALSE;
-          MENU_DEPLOY_ACTIVE = FALSE;
+          PLAYER_HELPER.plr_menu_choice = 0;
           setcursormode(0);
         }
         else{
           MENU_ACTIVE = TRUE;
-          MENU_BRIEF_ACTIVE = TRUE;
+          PLAYER_HELPER.plr_menu_choice = MENU_BRIEF_ACTIVE;
           setcursormode(1);
         }
         return TRUE;
     }
     else if(scanx == K_MOUSE1){
       if(MENU_ACTIVE){
-        if(MENU_HANGAR_ACTIVE){
+        if(PLAYER_HELPER.plr_menu_choice == MENU_HANGAR_ACTIVE){
           menu_hangarListener();
         }
-        else if(MENU_BRIEF_ACTIVE){
+        else if(PLAYER_HELPER.plr_menu_choice == MENU_BRIEF_ACTIVE){
           menu_briefListener();
         }
-        else if(MENU_DEPLOY_ACTIVE){
+        else if(PLAYER_HELPER.plr_menu_choice == MENU_ARMING_ACTIVE){
+          menu_arming_listener();
+        }
+        else if(PLAYER_HELPER.plr_menu_choice == MENU_DEPLOY_ACTIVE){
           menu_deployListener();
         }
           menu_mainListener();

@@ -13,6 +13,7 @@ msn_file_h.qc
 hud_snd_sys_h.qc
 ui/ui_defs_h.qc
 ui/ui_hangar_h.qc
+ui/ui_arming_h.qc
 ui/ui_brief_h.qc
 ui/ui_deploy_h.qc
 msn_file_c.qc
@@ -64,6 +65,7 @@ cl_svr_cmd_c.qc
 //MENU SYSTEM============
   ui/ui_defs_c.qc
   ui/ui_hangar_c.qc
+  ui/ui_arming_c.qc
   ui/ui_brief_c.qc
   ui/ui_deploy_c.qc
 //======================= 

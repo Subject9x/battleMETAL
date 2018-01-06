@@ -54,6 +54,7 @@ float ARM_RAD = 24;
 .float plr_nav_pnt;
 .float plr_sel_hrpnt_size;
 .float plr_sel_hrpnt_types;
+.float plr_menu_choice; 
 
 .float wep1_reload;
 .vector show_box_pos;

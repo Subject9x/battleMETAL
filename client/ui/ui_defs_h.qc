@@ -10,10 +10,12 @@ float AVAILABLE_RESERVE;
 entity PLAYER_HELPER;
 
 float MENU_ACTIVE;
-float MENU_HANGAR_ACTIVE = FALSE;
-float MENU_BRIEF_ACTIVE = FALSE;
-float MENU_DEPLOY_ACTIVE = FALSE;
-float MENU_LAUNCH_ROLLOVER = FALSE;
+float MENU_CHOICE = 1; //always start at briefing
+float MENU_BRIEF_ACTIVE = 1;
+float MENU_HANGAR_ACTIVE = 2;
+float MENU_ARMING_ACTIVE = 3;
+float MENU_DEPLOY_ACTIVE = 4;
+float MENU_LAUNCH_ROLLOVER = 5;
 
 vector cursorpos;
 vector last_view;
@@ -49,6 +51,7 @@ string UI_DEF_NAVPOINT;
 string UI_DEF_DEPLOYPOINT;
 string UI_HANGAR_BOX;
 string UI_BOX_SELECT;
+string UI_CURSOR_IMG;
 
 //hangar graphics
 string UI_WEP_LAS;

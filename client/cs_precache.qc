@@ -76,7 +76,7 @@ void() cs_precache={
   precache_sound("sound/misc/menu3.wav");
   
   //cursor
-  precache_pic("gfx/ui/ui_cursor.png",0);
+  UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png",0);
   UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png",0);
   UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png",0);
   UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",0);
