@@ -154,6 +154,7 @@ void(float preState, float nexState) snd_hud_vfx_navpointlistener={
     if(nexState == FALSE){
       if(preState == TRUE){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
+        MSN_OBJ_STATUS[self.data_idx] = TRUE;
       }
     }
   }

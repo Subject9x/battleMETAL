@@ -30,6 +30,7 @@ float IMP_SWEAPON9 = 21;
 float IMP_FSINGLE = 22;
 float IMP_WGROUP4 = 23;
 float IMP_WGROUP5 = 24;
+float IMP_SHOWOBJ = 25;
 
 void() mpls_singleFire;
 void() mpls_groupFire;

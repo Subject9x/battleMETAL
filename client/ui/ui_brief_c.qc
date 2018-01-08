@@ -195,29 +195,26 @@ void(vector ofs) menu_objIntelSwitchPanel={
 
 void(vector ofs) menu_briefObjectivePanel={
   local vector bpos,tpos, lofs;
-  local float tlen, lst_idx;
-  local entity obj;
+  local float tlen, lst_idx, eol;
     
   tlen = stringwidth("[OBJECTIVES]", 0 , '8 8 0');
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
   drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), '1 1 1', HUD_ALPHA, 0);
   
   lofs = bpos + gui_percentToPixel(0.0093, 0.025);
-  obj = findchain(classname, "data");
-  lst_idx = 0;
-  while(obj){
-    if(obj.data_type == DATA_OBJT){
-      if((obj.data_idx > 0) && (obj.data_idx < 254)){
-        local vector oofs;
-        oofs = lofs;
-        oofs_y = oofs_y + (lst_idx * gui_percentX(0.0093));
-        local string desc;
-        desc = MSN_OBJ_DESC[obj.data_idx];
-        drawstring(oofs, strcat("[", ftos(obj.data_idx),"]:", desc), '6 6 0', '1 1 1', HUD_ALPHA,0);  
-      }
-      lst_idx = lst_idx + 1;
+  eol = TRUE;
+  lst_idx = 1;
+  while(eol){
+    local vector oofs;
+    oofs = lofs;
+    oofs_y = oofs_y + (lst_idx * gui_percentX(0.0093));
+    local string desc;
+    desc = MSN_OBJ_DESC[lst_idx];
+    drawstring(oofs, strcat("[", ftos(lst_idx),"]:", desc), '6 6 0', '1 1 1', HUD_ALPHA,0);
+    if(MSN_OBJ_DESC[(lst_idx+1)] ==""){
+      eol = FALSE;
     }
-    obj = obj.chain;
+    lst_idx = lst_idx + 1;
   }
 };
 

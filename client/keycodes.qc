@@ -11,6 +11,8 @@ float K_SPACE		=	32;
 
 // normal keys should be passed as lowercased ascii
 
+float K_C = 99; //ASCII value
+
 float K_BACKSPACE	=	127;
 float K_UPARROW		=	128;
 float K_DOWNARROW	=	129;

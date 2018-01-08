@@ -150,6 +150,15 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
         return FALSE;
       }
     }
+    else if(scanx == K_C){
+      if(UI_OBJECTIVE_ACTIVE){
+        UI_OBJECTIVE_ACTIVE = FALSE;
+      }
+      else{
+        UI_OBJECTIVE_ACTIVE = TRUE;
+      }
+      return TRUE;
+    }
     else if(scanx == K_SHIFT){
       return FALSE;
     }
@@ -422,6 +431,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     if(bx_time > 0){
       ui_renderHUDHighlight();
     }
+    ui_objective_frame(VIEW_ORG);
   }
   else{
     local float len;

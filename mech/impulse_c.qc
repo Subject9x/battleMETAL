@@ -200,5 +200,4 @@ void() mpls_groupFire={
       self.currentWeaponGroup = self.currentWeaponGroup + self.w_group5;
     }
   }
-  
 };
