@@ -4,6 +4,20 @@ Author: Peter Roohr
 Date: 3/8/2017
 Overview: ui header file the hangar menu
 */
+
+//DISPLAY CONSTANT
+  float DISP_MAX_FSPEED = 225;
+  float DISP_MAX_SSPEED = 200;
+  float DISP_MAX_BSPEED = 175;
+  float DISP_MAX_ENE = 1500;
+  float DISP_MAX_ENE_RATE = 5;
+  float DISP_MAX_SHIELD = 700;
+  float DISP_MAX_SHIELD_RATE = 5;
+  float DISP_MAX_ARM_CT = 1200;
+  float DISP_MAX_ARM_ST = 1200;
+  float DISP_MAX_ARM_AR = 1200;
+  float DISP_MAX_ARM_LG = 1500;
+  float DISP_MAX_RAD_RANGE = 9000;
 //might as well go wild with the globals
   float MECHLIST_LIGHT_ARR[24]; 
   float MECHLIST_MEDIUM_ARR[24]; 
@@ -38,3 +52,5 @@ void(vector ofs) menu_hangar_MechListLight;
 void(vector ofs) menu_hangar_MechListMedium;
 void(vector ofs) menu_hangar_MechListHeavy;
 void(vector ofs) menu_hangar_MechInfo;
+void(vector ofs) menu_hangar_MechFluff;
+void(vector ofs) menu_hangar_MechHPoints;

@@ -106,6 +106,7 @@ float ARM_RAD = 24;
 .float hp_arm;
 .float hp_arm2;
 .float hp_leg;
+.float radar_range;
 
 //weapon
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 

@@ -87,6 +87,11 @@ void() cs_precache={
   UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",0);
   UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",0);
   
+  UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png",0);
+  UI_WEP_BAL = precache_pic("gfx/ui/wep_icons/wep_bal.png",0);
+  UI_WEP_EXP = precache_pic("gfx/ui/wep_icons/wep_exp.png",0);
+  UI_WEP_MSC = precache_pic("gfx/ui/wep_icons/wep_msc.png",0);
+  
   UI_WEP_LAS = precache_pic("gfx/ui/wep_icons/wi_las.png",0);
   UI_WEP_ESR = precache_pic("gfx/ui/wep_icons/wi_esr.png",0);
   UI_WEP_PAC = precache_pic("gfx/ui/wep_icons/wi_pac.png",0);

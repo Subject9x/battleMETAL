@@ -116,28 +116,28 @@ void(vector ofs) menu_navBar={
   strwid = stringwidth("[BRIEFING]", 0 ,'8 8 0')/2;
   tpos_x = (nvpos_x + gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   tpos_y = nvpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', MENU_BRIEF_ACTIVE, '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (PLAYER_HELPER.plr_menu_choice ==MENU_BRIEF_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
   
   gui_renderTintImage((PLAYER_HELPER.plr_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
   hpos = nvpos + gui_percentToPixel(0.075, 0);
   strwid = stringwidth("[HANGAR]", 0 ,'8 8 0')/2;
   hpos_x = (hpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   hpos_y = hpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', MENU_HANGAR_ACTIVE, '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (PLAYER_HELPER.plr_menu_choice ==MENU_HANGAR_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
   
   gui_renderTintImage((PLAYER_HELPER.plr_menu_choice == MENU_ARMING_ACTIVE), (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
   apos = nvpos + gui_percentToPixelRawVec('192 0');
   strwid = stringwidth("[ARMING]", 0 ,'8 8 0')/2;
   apos_x = (apos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   apos_y = apos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[ARMING]", apos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', MENU_ARMING_ACTIVE, '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[ARMING]", apos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (PLAYER_HELPER.plr_menu_choice ==MENU_ARMING_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
   
   gui_renderTintImage((PLAYER_HELPER.plr_menu_choice == MENU_DEPLOY_ACTIVE), (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
   dpos = nvpos + gui_percentToPixelRawVec('288 0');
   strwid = stringwidth("[DEPLOYMENT]", 0 ,'8 8 0')/2;
   dpos_x = (dpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   dpos_y = dpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[DEPLOYMENT]", dpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', MENU_DEPLOY_ACTIVE, '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[DEPLOYMENT]", dpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (PLAYER_HELPER.plr_menu_choice == MENU_DEPLOY_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
 
   rpos = nvpos;
   rpos_x = VIEW_MAX_x - gui_percentX(0.1);
@@ -211,6 +211,29 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
     wep = m_findData(wid, DATA_WEPN);
     drawpic( org + gui_percentToPixelRawVec('1 1'), wep.w_icon,  gui_percentToPixelRawVec('22 22'), '1 1 1', HUD_ALPHA, 0);
   }
+};
+
+
+void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
+  local vector pofs, iofs, szofs;
+  pofs = org + gui_percentToPixelRawVec('8 0');
+  pofs_y = org_y + gui_percentYRaw((hpt_num * 20));
+  drawstring(pofs + gui_percentToPixelRawVec('0 4'), strcat("[#",ftos(hpt_num),"]"), '6 6 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
+  local float cnt;
+  cnt = 0;
+  if((types & DMG_ENE)){
+    drawpic(pofs + gui_percentToPixelRawVec('85 0'), UI_WEP_ENE, gui_percentToPixelRawVec('16 16'), '1 1 1', HUD_ALPHA, 0);
+  }
+  if((types & DMG_BAL)){
+    drawpic(pofs + gui_percentToPixelRawVec('100 0'), UI_WEP_BAL, gui_percentToPixelRawVec('16 16'), '1 1 1', HUD_ALPHA, 0);
+  }
+  if((types & DMG_EXP)){
+    drawpic(pofs + gui_percentToPixelRawVec('120 0'), UI_WEP_EXP, gui_percentToPixelRawVec('16 16'), '1 1 1', HUD_ALPHA, 0);
+  }
+  if((types & DMG_MSC)){
+    drawpic(pofs + gui_percentToPixelRawVec('140 0'), UI_WEP_MSC, gui_percentToPixelRawVec('16 16'), '1 1 1', HUD_ALPHA, 0);
+  }
+  drawstring(pofs + gui_percentToPixelRawVec('225 4'), ftos(sz), '8 8 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
 };
 
 void(float num, vector org) ui_renderHardPointNumber={

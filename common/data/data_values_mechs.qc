@@ -82,20 +82,20 @@ float DAT_MNT_ENERGY_RATE   = 2;
 //            Speed  
 //============================
 //-------------------------BALAKET------------------------
-float DAT_OTL_M_FSPEED      = 200;//v0.0.3
-float DAT_OTL_M_SSPEED      = 175;//v0.0.3
-float DAT_OTL_M_BSPEED      = 150;//v0.0.3
-float DAT_OTL_M_ACCEL       = 1.75; //v0.0.03
+float DAT_OTL_M_FSPEED      = 200;
+float DAT_OTL_M_SSPEED      = 175;
+float DAT_OTL_M_BSPEED      = 150;
+float DAT_OTL_M_ACCEL       = 1.75;
 //-------------------------MATOK------------------------
-float DAT_MTK_M_FSPEED      = 150;//v0.0.3
-float DAT_MTK_M_SSPEED      = 100;//v0.0.3
-float DAT_MTK_M_BSPEED      = 90;//v0.0.3
-float DAT_MTK_M_ACCEL       = 1.25; //v0.0.3
+float DAT_MTK_M_FSPEED      = 150;
+float DAT_MTK_M_SSPEED      = 100;
+float DAT_MTK_M_BSPEED      = 90;
+float DAT_MTK_M_ACCEL       = 1.25;
 //-------------------------MONITOR------------------------
-float DAT_MNT_M_FSPEED      = 85;//v0.0.3
-float DAT_MNT_M_SSPEED      = 85;//v0.0.3
-float DAT_MNT_M_BSPEED      = 85;//v0.0.3
-float DAT_MNT_M_ACCEL       = 2; //v0.0.3
+float DAT_MNT_M_FSPEED      = 85;
+float DAT_MNT_M_SSPEED      = 85;
+float DAT_MNT_M_BSPEED      = 85;
+float DAT_MNT_M_ACCEL       = 2;
 //============================
 //            Radar Range and Lock-on Delay
 //============================

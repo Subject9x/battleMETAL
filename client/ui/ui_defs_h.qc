@@ -22,6 +22,7 @@ vector last_view;
 
 .void(vector org) menu_renderHardpoints;    //the mech data ent implements these
 .float(vector org) menu_hardpointListener; //the mech data ent implements these
+.void(vector org) menu_hardpointRows;
 
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
@@ -38,6 +39,7 @@ void() mechAcceptButtonListener;
 void(float wid, vector org, float selected) ui_renderHardPointGraphic;
 void(entity nav) ui_renderNav;
 void(float num, vector org) ui_renderHardPointNumber;
+void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 
 string MISSION_OBJECTIVES[12];
 float MISSION_OBJ_STATUS[12];
@@ -54,6 +56,11 @@ string UI_BOX_SELECT;
 string UI_CURSOR_IMG;
 
 //hangar graphics
+string UI_WEP_ENE;
+string UI_WEP_BAL;
+string UI_WEP_EXP;
+string UI_WEP_MSC;
+  
 string UI_WEP_LAS;
 string UI_WEP_ESR;
 string UI_WEP_PAC;

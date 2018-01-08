@@ -82,14 +82,28 @@ void() data_otl_ini;
 
 
 void(vector org) otl_renderHardpoints={
-  ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('52 -36')), (PLAYER_HELPER.plr_sel_hrpnt == 1));
-  ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('52 -36')));
   
-  ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-75 -36')), (PLAYER_HELPER.plr_sel_hrpnt == 2));
-  ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-75 -36')));
-  
-  ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('-10 -96')), (PLAYER_HELPER.plr_sel_hrpnt == 3));
-  ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('-10 -96')));
+  if(PLAYER_HELPER.plr_menu_choice == MENU_ARMING_ACTIVE){
+    ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('52 -36')), (PLAYER_HELPER.plr_sel_hrpnt == 1));
+    ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('52 -36')));
+    
+    ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-75 -36')), (PLAYER_HELPER.plr_sel_hrpnt == 2));
+    ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-75 -36')));
+    
+    ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('-10 -96')), (PLAYER_HELPER.plr_sel_hrpnt == 3));
+    ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('-10 -96')));
+  }
+  else if(PLAYER_HELPER.plr_menu_choice == MENU_HANGAR_ACTIVE){
+    ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('42 -14')));
+    ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-50 -14')));
+    ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('8 -50')));
+  }
+};
+
+void(vector org) otl_hardpointrows={
+  ui_renderHardpointRow(org, 1, DAT_BLK_HARDPOINT1_TYPES, DAT_BLK_HARDPOINT1_SIZE);
+  ui_renderHardpointRow(org, 2, DAT_BLK_HARDPOINT2_TYPES, DAT_BLK_HARDPOINT2_SIZE);
+  ui_renderHardpointRow(org, 3, DAT_BLK_HARDPOINT3_TYPES, DAT_BLK_HARDPOINT3_SIZE);
 };
 
 float(vector org) otl_hardpointListener={
@@ -128,6 +142,7 @@ void() data_mech_otl={
     self.c_mdl = DAT_OTL_CPIT_MODEL;
     self.menu_renderHardpoints = otl_renderHardpoints;
     self.menu_hardpointListener = otl_hardpointListener;
+    self.menu_hardpointRows = otl_hardpointrows;
     data_otl_ini();
     self.plr_nex_wep1 = 1;
     self.plr_nex_wep2 = 1;
@@ -172,4 +187,5 @@ void() data_otl_ini={
   self.hp_stor = DAT_OTL_LTOR_HP;
   self.hp_arm = DAT_OTL_LARM_HP;
   self.hp_leg = DAT_OTL_LEG_HP;
+  self.radar_range = DAT_OTL_RADAR_RANGE;
 };

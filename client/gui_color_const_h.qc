@@ -10,6 +10,7 @@ vector CLR_DEF_TXT_HIGHLIGHT = '0.98 0.98 0.98';
 vector CLR_DEF_TXT_NONSELECT = '0.75 0.75 0.75';
 vector CLR_DEF_TXT_CANTSELET = '0.4 0.4 0.4';
 vector CLR_DEF_WHITE = '1 1 1';
+vector CLR_DEF_GRAY_H = '0.85 0.85 0.85';
 vector CLR_DEF_BLACK = '0 0 0';
 
 //armor constants
@@ -60,6 +61,9 @@ vector CLR_DEF_BLACK = '0 0 0';
   //have lock
   vector CLR_DEF_RET_HASLOCK= '0.8 0 0';
   
+//ENERGY
+  vector CLR_DEF_ENE_BCK = '0.18 0.32 0.6';
+  vector CLR_DEF_ENE_FRT = '0.23 0.74 0.84';
   
 //weapon constants
 //group1 
@@ -81,12 +85,3 @@ vector CLR_DEF_BLACK = '0 0 0';
 //mode active
 
 //mode passive
-
-//threat level: extreme
-  
-//threat level: high
-
-//threat level: average
-
-//threat level: clear
-

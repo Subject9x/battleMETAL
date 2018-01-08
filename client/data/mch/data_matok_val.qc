@@ -94,11 +94,28 @@ void() data_mech_mtk;
 void() data_mtk_ini;
 
 void(vector org) mtk_renderHardpoints={
-  ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('-44 -100')), (PLAYER_HELPER.plr_sel_hrpnt == 1));
-  ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('22 -100')), (PLAYER_HELPER.plr_sel_hrpnt == 2));
-  ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('-84 -40')), (PLAYER_HELPER.plr_sel_hrpnt == 3));
-  ui_renderHardPointGraphic(HARDPOINTS[4], (org + gui_percentToPixelRawVec('58 -40')), (PLAYER_HELPER.plr_sel_hrpnt == 4));
-  ui_renderHardPointGraphic(HARDPOINTS[5], (org + gui_percentToPixelRawVec('-12 -94')), (PLAYER_HELPER.plr_sel_hrpnt == 5));
+  if(PLAYER_HELPER.plr_menu_choice == MENU_ARMING_ACTIVE){
+    ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('-44 -100')), (PLAYER_HELPER.plr_sel_hrpnt == 1));
+    ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('22 -100')), (PLAYER_HELPER.plr_sel_hrpnt == 2));
+    ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('-84 -40')), (PLAYER_HELPER.plr_sel_hrpnt == 3));
+    ui_renderHardPointGraphic(HARDPOINTS[4], (org + gui_percentToPixelRawVec('58 -40')), (PLAYER_HELPER.plr_sel_hrpnt == 4));
+    ui_renderHardPointGraphic(HARDPOINTS[5], (org + gui_percentToPixelRawVec('-12 -94')), (PLAYER_HELPER.plr_sel_hrpnt == 5));
+  }
+  else if(PLAYER_HELPER.plr_menu_choice == MENU_HANGAR_ACTIVE){
+    ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('-40 -36')));
+    ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('28 -36')));
+    ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('-74 -16')));
+    ui_renderHardPointNumber(4, (org + gui_percentToPixelRawVec('64 -16')));
+    ui_renderHardPointNumber(5, (org + gui_percentToPixelRawVec('-4 -74')));
+  }
+};
+
+void(vector org) MTK_hardpointrows={
+  ui_renderHardpointRow(org, 1, DAT_MTK_HARDPOINT1_TYPES, DAT_MTK_HARDPOINT1_SIZE);
+  ui_renderHardpointRow(org, 2, DAT_MTK_HARDPOINT2_TYPES, DAT_MTK_HARDPOINT2_SIZE);
+  ui_renderHardpointRow(org, 3, DAT_MTK_HARDPOINT3_TYPES, DAT_MTK_HARDPOINT3_SIZE);
+  ui_renderHardpointRow(org, 4, DAT_MTK_HARDPOINT4_TYPES, DAT_MTK_HARDPOINT4_SIZE);
+  ui_renderHardpointRow(org, 5, DAT_MTK_HARDPOINT5_TYPES, DAT_MTK_HARDPOINT5_SIZE);
 };
 
 float(vector org) mtk_hardpointListener={
@@ -149,6 +166,7 @@ void() data_mech_mtk={
     self.c_mdl = DAT_MTK_UI_IMG;
     self.menu_renderHardpoints = mtk_renderHardpoints;
     self.menu_hardpointListener = mtk_hardpointListener;
+    self.menu_hardpointRows = MTK_hardpointrows;
     data_mtk_ini();
     self.plr_nex_wep1 = ID_WEP_LATC;
     self.plr_nex_wep2 = ID_WEP_LATC;
@@ -192,4 +210,5 @@ void() data_mtk_ini={
   self.hp_stor = DAT_MTK_LTOR_HP;
   self.hp_arm = DAT_MTK_LARM_HP;
   self.hp_leg = DAT_MTK_LEG_HP;
+  self.radar_range = DAT_MTK_RADAR_RANGE;
 };
