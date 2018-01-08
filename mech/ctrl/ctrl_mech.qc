@@ -30,7 +30,9 @@ void() ctrl_updateCenterTorso={
   }
 
   if(self.en_cur >= 0){
-    self.en_cur = self.en_cur + self.en_rate;
+    if(self.movement_x < self.m_fspeed && self.movement_y < self.m_fspeed){
+      self.en_cur = self.en_cur + self.en_rate;
+    }
     if(self.en_cur > self.en_max){
       self.en_cur = self.en_max;
     }

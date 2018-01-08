@@ -19,33 +19,6 @@ void() ctrl_updateLegs={
       self.movetype = MOVETYPE_FOLLOW;
     }
     if((self.owner.flags & FL_CLIENT)){
-      if(self.owner.movetype != MOVETYPE_NONE){
-        local float diff;
-        diff = self.owner.en_rate - self.owner.m_maccel;
-        diff = diff + self.owner.m_maccel;
-        diff = diff * 1.05;
-        if((self.owner.movement_x >= (self.owner.m_fspeed *self.owner.m_maccel)) || (self.owner.movement_y >= (self.owner.m_fspeed*self.owner.m_maccel))){
-          self.owner.en_cur = self.owner.en_cur - diff;
-          if(self.owner.en_cur < diff){
-            if(self.w_firerate != 1){
-              local string acc;
-              self.w_firerate = 1;
-              acc = strcat("cl_movespeedkey ", ftos(self.w_firerate),"\n");
-              stuffcmd(self.owner, acc);
-            }
-          }
-        }
-        else{
-          if(self.owner.en_cur >= diff * 25){
-            if(self.w_firerate == 1){
-              self.w_firerate = 0;
-              local string acc;
-              acc = strcat("cl_movespeedkey ", ftos(self.owner.m_maccel)," \n");
-              stuffcmd(self.owner, acc);
-            }
-          }
-        }
-      }
       //texture check
       local vector dn, angl;
       local float vertic;

@@ -6,6 +6,10 @@ Overview: class file for the client -> server command layer
 
 */
 
+void(float val) cl_set_movespeedkey={
+  cvar_set("cl_movespeedkey", ftos(val));
+};
+
 void(float slot, float w_bit) cl_setweapon={
 
   local string cmd;

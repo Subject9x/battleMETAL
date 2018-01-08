@@ -86,7 +86,7 @@ float m_wep = 6;
 .float m_fspeed; //forward speed
 .float m_sspeed; //side strafe speed
 .float m_bspeed; //backward speed
-.string m_maccel;
+.float m_maccel;
 .string m_pitch_min;
 .string m_pitch_max;
 .vector c_bbx_x;

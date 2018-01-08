@@ -311,6 +311,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     plr_ra = getstatf(STAT_RARM_HP);
     plr_la = getstatf(STAT_LARM_HP);
     plr_lg = getstatf(STAT_LEG_HP);
+    
     //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(plr_rt, 2, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(plr_lt, 4, SND_HUD_VFX_CRITTOR);
@@ -363,6 +364,21 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     local entity player_hud, vec_data, oself;
     vec_data = m_findMechData(PLAYER_HELPER.vec_size, vec_id);
     player_hud = m_findHUDData(PLAYER_HELPER.vec_size, vec_id);
+    
+    
+    //update sprinting based on player energy state.
+    
+    if(plr_en < 10){
+      cl_set_movespeedkey(1);
+    }
+    else{
+      local float cl_sprint;
+      cl_sprint = cvar("cl_movespeedkey");
+      if(cl_sprint == 1){
+        cl_set_movespeedkey(vec_data.m_maccel);
+      }
+    }
+    
     
     snd_hud_vfx_statelistener(plr_state);
     snd_hud_vfx_enelistener(plr_en);
