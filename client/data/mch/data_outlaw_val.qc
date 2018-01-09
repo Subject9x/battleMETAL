@@ -167,6 +167,7 @@ void() data_otl_ini={
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
   self.i_reserve= DAT_OTL_RESERVE_COST;
   self.c_mdl = DAT_OTL_UI_IMG;
+  self.c_ui_hf = "gfx/ui/hgr_blk_hf.png";
   self.en_cur= DAT_OTL_ENERGY_MAX;
   self.en_max= DAT_OTL_ENERGY_MAX;
   self.en_rate= DAT_OTL_ENERGY_RATE;

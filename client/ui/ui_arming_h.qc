@@ -7,14 +7,14 @@ Overview: part of splitting the hangar into more understandable chunks
   set weapon groups.
 */
 
-  float WEPLIST_BAL_ARR[8];
-  float WEPLIST_ENE_ARR[8];
-  float WEPLIST_EXP_ARR[8];
-  float WEPLIST_MSC_ARR[8];
+float WEPLIST_BAL_ARR[8];
+float WEPLIST_ENE_ARR[8];
+float WEPLIST_EXP_ARR[8];
+float WEPLIST_MSC_ARR[8];
 
-  float HARDPOINTS[10]; //somehow making this '10' fixed a bug with hardpoint #9
-  float WEPBITS[9];
-  
+float HARDPOINTS[10]; //somehow making this '10' fixed a bug with hardpoint #9
+float WEPBITS[9];
+
   
 vector WEPNLIST_ORG;
 vector WEPNLIST_SIZE;
@@ -70,18 +70,17 @@ void() weaponGroupPanelListener;
 
 void() menu_arming_drawFrame;
 
+void(vector ofs) menu_arming_HardpointGraph;
+
 void(vector ofs) menu_arming_WeaponList;
 void(vector ofs) menu_arming_WeaponList_BAL;
 void(vector ofs) menu_arming_WeaponList_ENE;
 void(vector ofs) menu_arming_WeaponList_EXP;
 void(vector ofs) menu_arming_WeaponList_MSC;
-
 void(vector ofs) menu_arming_WeaponGroupPanel;
-
 void(vector ofs) menu_arming_HardPointInfo;
-
 void(vector ofs) menu_arming_WeaponInfo;
-
+void(vector ofs) menu_arming_WeapoinInHardpoint;
 
 float(float comp, float bits) checkIfWeaponInGroup;
 void() cleanHardPoints;

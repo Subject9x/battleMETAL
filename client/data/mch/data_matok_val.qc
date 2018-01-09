@@ -190,6 +190,7 @@ void() data_mtk_ini={
   self.i_techlvl= DAT_MTK_TECH_LEVEL;
   self.i_reserve= DAT_MTK_RESERVE_COST;
   self.c_mdl = DAT_MTK_UI_IMG;
+  self.c_ui_hf = "gfx/ui/hgr_mtk_hf.png";
   self.en_cur= DAT_MTK_ENERGY_MAX;
   self.en_max= DAT_MTK_ENERGY_MAX;
   self.en_rate= DAT_MTK_ENERGY_RATE;

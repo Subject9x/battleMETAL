@@ -114,19 +114,40 @@ void() menu_arming_drawFrame={
   topleftroot = VIEW_ORG;
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, '1 1 1', HUD_ALPHA, 0);
   
+  menu_arming_HardpointGraph(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponList(topleftroot + gui_percentToPixel(0, 0.025));
-  menu_arming_HardPointInfo(topleftroot);
-  menu_arming_WeaponGroupPanel(topleftroot);
-  menu_arming_WeaponInfo(topleftroot + gui_percentToPixel(0, 0.025));
+  menu_arming_HardPointInfo(topleftroot + gui_percentToPixelRawVec('0 32'));
+  menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
+  menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
+  menu_arming_WeapoinInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
 };
+
+void(vector ofs) menu_arming_HardpointGraph={
+  local vector nofs, hofs, hpnts;
+  nofs = ofs + gui_percentToPixelRawVec('10 64');
+  drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('225 188'), '1 1 1', HUD_ALPHA, 0);
+  if(PLAYER_HELPER.plr_sel_mech > 0){
+    local entity dat;
+    dat = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+    hofs = nofs + gui_percentToPixelRawVec('4 4');
+    hpnts_x = hofs_x + gui_percentXRaw(110.5);
+    hpnts_y = hofs_y + gui_percentYRaw(90);
+    drawpic(hofs , dat.c_ui_hf, gui_percentToPixelRawVec('221 180'), '1 1 1', HUD_ALPHA, 0);
+    MECHPANEL_CTR = hpnts;
+    dat.menu_renderHardpoints(hpnts);
+  }
+  
+};
+
 
 void(vector ofs) menu_arming_WeaponList={
   local vector nofs;
-  ofs_x = VIEW_CTR_x + gui_percentX(0.1171);
+  
   nofs = ofs;
-  nofs = nofs + gui_percentToPixel(0.0093, 0.0125);
-  drawpic(ofs + gui_percentToPixel(0.0078, 0.0187), UI_DEF_BOX_256_TALL, gui_percentToPixel(0.1156, 0.4166), '1 1 1', HUD_ALPHA, 0);
-  drawstring(ofs + gui_percentToPixel(0.0062, 0.0083), "[AVAILABLE WEAPONS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  nofs_x = VIEW_CTR_x + gui_percentXRaw(150);
+  nofs = nofs + gui_percentToPixelRawVec('12 10');
+  drawpic(nofs, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('148 439'), '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('8 8'), "[AVAILABLE WEAPONS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   menu_arming_WeaponList_BAL(nofs);
   menu_arming_WeaponList_ENE(nofs);
   menu_arming_WeaponList_EXP(nofs);
@@ -289,35 +310,36 @@ void(vector ofs) menu_arming_WeaponList_MSC={
 void(vector ofs) menu_arming_WeaponGroupPanel={
   local vector nofs, col_a, col_b, col_c, col_d, col_e;
   local float lst_idx, bit;
-  nofs_x = ofs_x + VIEW_CTR_x - gui_percentX(0.0296);
-  nofs_y = ofs_y + VIEW_CTR_y + gui_percentY(0.0541);
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixel(0.1531, 0.189), '1 1 1', HUD_ALPHA,0);
-  drawstring(nofs + gui_percentToPixel(0.0046, 0.0062), "[GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(nofs + gui_percentToPixel(0.06, 0.0062), "[1] [2] [3] [4] [5]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  nofs_x = ofs_x + gui_percentXRaw(10);
+  nofs_y = ofs_y + gui_percentYRaw(325);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), '1 1 1', HUD_ALPHA,0);
+  drawstring(nofs + gui_percentToPixelRawVec('24 6'), "[WEAPON GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + gui_percentToPixelRawVec('45 14'), "[1][2][3][4][5]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
-  nofs = nofs + gui_percentToPixel(0, 0.0062);
-  col_a = nofs + gui_percentToPixel(0.062, 0.012);
-  col_b = nofs + gui_percentToPixel(0.081, 0.012);
-  col_c = nofs + gui_percentToPixel(0.1, 0.012);
-  col_d = nofs + gui_percentToPixel(0.119, 0.012);
-  col_e = nofs + gui_percentToPixel(0.138, 0.012);
+  nofs = nofs + gui_percentToPixelRawVec('0 10');
+  col_a = nofs + gui_percentToPixelRawVec('46 14');
+  col_b = nofs + gui_percentToPixelRawVec('66  14');
+  col_c = nofs + gui_percentToPixelRawVec('86 14');
+  col_d = nofs + gui_percentToPixelRawVec('106 14');
+  col_e = nofs + gui_percentToPixelRawVec('126 14');
+  
   lst_idx = 1;
   bit = 1;
   while(lst_idx <= PLAYER_HELPER.hardpoint_cnt){
     local vector lofs;
     local entity dat;
-    lofs_x = nofs_x + gui_percentX(0.0046);
-    lofs_y = nofs_y + gui_percentY(lst_idx * 0.018);
+    lofs_x = nofs_x + gui_percentXRaw(6);
+    lofs_y = nofs_y + gui_percentYRaw(lst_idx * 24);
     dat = m_findData(HARDPOINTS[lst_idx], DATA_WEPN);
-    drawstring(lofs, ftos(lst_idx), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(lofs, strcat("[",ftos(lst_idx),"]"), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     if(dat.w_icon != ""){
-      drawpic(lofs + gui_percentToPixel(0.005, -0.005), dat.w_icon, gui_percentToPixel(0.017, 0.02), '1 1 1', HUD_ALPHA,0);
+      drawpic(lofs + gui_percentToPixelRawVec('16 -5'), dat.w_icon, gui_percentToPixelRawVec('22 24'), '1 1 1', HUD_ALPHA,0);
     }
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp1 & bit),  lofs + gui_percentToPixel(0.057, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp2 & bit),  lofs + gui_percentToPixel(0.076, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp3 & bit),  lofs + gui_percentToPixel(0.095, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp4 & bit),  lofs + gui_percentToPixel(0.114, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp5 & bit),  lofs + gui_percentToPixel(0.133, -0.0041), UI_DEF_BOX_256, gui_percentToPixel(0.0109, 0.0145), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    gui_renderTintImage((PLAYER_HELPER.plr_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
     bit = bit * 2;
     lst_idx = lst_idx + 1;
   }
@@ -332,69 +354,53 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   WEPNGRP_ORG_C = col_c;
   WEPNGRP_ORG_D = col_d;
   WEPNGRP_ORG_E = col_e;
-  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = gui_percentX(0.0109);
-  WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = gui_percentX(0.0109);
-  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentY(lst_idx * 0.018);
-  WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentY(lst_idx * 0.018);
+  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = gui_percentXRaw(14);
+  WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = gui_percentXRaw(14);
+  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * 24);
+  WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw(lst_idx * 24);
 };
 
 void(vector ofs) menu_arming_HardPointInfo={
   local vector nofs;
   local entity dat;
-  nofs_x = ofs_x + VIEW_CTR_x - gui_percentX(0.0296);
-  nofs_y = ofs_y + gui_percentY(0.0437);
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixel(0.1531, 0.0583), '1 1 1', HUD_ALPHA, 0);
+  nofs_x = ofs_x + gui_percentXRaw(10);
+  nofs_y = ofs_y;
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('156 56'), '1 1 1', HUD_ALPHA, 0);
   local string title;
   local float tlen;
   local vector tpos;
   title = "[HARDPOINT INFO]";
   tlen = stringwidth(title, 0, '6 6 0');
-  tpos = nofs + gui_percentToPixel(0.05, 0.0031);
+  tpos = nofs + gui_percentToPixelRawVec('32 3');
   drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   local vector idrpos;
-  idrpos = nofs + gui_percentToPixel(0.0031, 0.0125);
-  drawstring(idrpos, strcat("[ID]: ", ftos(PLAYER_HELPER.plr_sel_hrpnt)) , '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  dat = m_findData(HARDPOINTS[PLAYER_HELPER.plr_sel_hrpnt], DATA_WEPN);
-  local string wepname_row;
-  local vector wnpos;
-  wepname_row = strcat("[WEAPON]:", dat.w_abbr);
-  wnpos = idrpos + gui_percentToPixel(0, 0.0083);
-  drawstring(wnpos, wepname_row, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  local string wepgrp_row;
-  local vector wgpos;
-  local string groups;
-  wgpos = idrpos + gui_percentToPixel(0, 0.0166);
-  drawstring(wgpos, "[GROUPS]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderHighlightString("[A]",wgpos+gui_percentToPixel(0.05, 0), CLR_DEF_ARM_OK, CLR_DEF_TXT_NONSELECT,checkIfWeaponInGroup(PLAYER_HELPER.plr_sel_wid, PLAYER_HELPER.plr_nex_grp1),'6 6 0', HUD_ALPHA,0);  
-  gui_renderHighlightString("[B]",wgpos+gui_percentToPixel(0.075, 0), CLR_DEF_ARM_OK, CLR_DEF_TXT_NONSELECT,checkIfWeaponInGroup(PLAYER_HELPER.plr_sel_wid, PLAYER_HELPER.plr_nex_grp2),'6 6 0', HUD_ALPHA,0);  
-  gui_renderHighlightString("[C]",wgpos+gui_percentToPixel(0.1, 0), CLR_DEF_ARM_OK, CLR_DEF_TXT_NONSELECT,checkIfWeaponInGroup(PLAYER_HELPER.plr_sel_wid, PLAYER_HELPER.plr_nex_grp3),'6 6 0', HUD_ALPHA,0);  
+  idrpos = nofs + gui_percentToPixelRawVec('4 12');
+  drawstring(idrpos, strcat("[NUMBER]: ", ftos(PLAYER_HELPER.plr_sel_hrpnt)) , '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   local vector typpos;
-  typpos = idrpos + gui_percentToPixel(0, 0.025);
+  typpos = idrpos + gui_percentToPixelRawVec('0 6');
   drawstring(typpos, "[ALLOWED TYPES]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   local vector hptsizepos;
-  hptsizepos = idrpos + gui_percentToPixel(0, 0.034);
+  hptsizepos = idrpos + gui_percentToPixelRawVec('0 32');
   drawstring(hptsizepos, "[MAX WEAPON SIZE]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 void(vector ofs) menu_arming_WeaponInfo={
   local vector nofs;
   local entity dat;
-  nofs_x = ofs_x + VIEW_CTR_x - gui_percentX(0.0296);
-  nofs_y = ofs_y + gui_percentY(0.077);
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixel(0.1531, 0.202), CLR_DEF_WHITE, HUD_ALPHA, 0);
+  nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);
+  nofs_y = ofs_y + gui_percentYRaw(12);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   local string title;
   local float tlen;
   local vector tpos;
-  title = "[WEAPON INFO]";
+  title = "[WEAPON INFO FROM LIST]";
   tlen = stringwidth(title, 0, '6 6 0');
-  tpos = nofs + gui_percentToPixel(0, 0.0062);
-  tpos_x= (nofs_x + gui_percentX(0.0765)) - gui_percentXRaw((tlen/2));
+  tpos = nofs + gui_percentToPixelRawVec('0 6');
+  tpos_x= (nofs_x + gui_percentXRaw(108)) - gui_percentXRaw((tlen/2));
   drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   local vector nmpos;
@@ -403,17 +409,17 @@ void(vector ofs) menu_arming_WeaponInfo={
   local float nlen;
   dat = m_findData(PLAYER_HELPER.plr_sel_wep, DATA_WEPN);
   if(dat.w_icon != ""){
-    drawpic((nofs + gui_percentToPixel(0.005, 0.005)), dat.w_icon, gui_percentToPixel(0.03, 0.03), CLR_DEF_WHITE, HUD_ALPHA, 0); 
+    drawpic((nofs + gui_percentToPixelRawVec('6 6')), dat.w_icon, gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, HUD_ALPHA, 0); 
   }
   name = dat.w_name;
   nlen = stringwidth(name, 0, '7 8 0');
-  nmpos = nofs + gui_percentToPixel(0, 0.04);
-  nmpos_x = (nmpos_x + gui_percentX(0.0765)) - gui_percentXRaw((nlen/2)); 
+  nmpos = nofs + gui_percentToPixelRawVec('0 38');
+  nmpos_x = (nmpos_x + gui_percentXRaw(97)) - gui_percentXRaw((nlen/2)); 
   drawstring(nmpos, name, '7 8 0', '1 1 1', HUD_ALPHA, 0);
   
   //type
   local vector icol;
-  icol = nofs + gui_percentToPixel(0.003, 0.06);
+  icol = nofs + gui_percentToPixelRawVec('4 57');
   
   //damage
   drawstring(icol, strcat("[DAMAGE]:         ", ftos(dat.dmg_amt)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
@@ -456,6 +462,24 @@ void(vector ofs) menu_arming_WeaponInfo={
   if(dat.note4){
     drawstring(icol+gui_percentToPixel(0.0015, 0.1166), dat.note4, '5 6 0', '1 1 1', HUD_ALPHA, 0);
   }
+};
+
+
+void(vector ofs) menu_arming_WeapoinInHardpoint={
+  local vector nofs;
+  local entity dat;
+  nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);
+  nofs_y = VIEW_CTR_y + gui_percentYRaw(12);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  
+  local string title;
+  local float tlen;
+  local vector tpos;
+  title = "[WEAPON ON HARDPOINT]";
+  tlen = stringwidth(title, 0, '6 6 0');
+  tpos = nofs + gui_percentToPixelRawVec('0 6');
+  tpos_x= (nofs_x + gui_percentXRaw(108)) - gui_percentXRaw((tlen/2));
+  drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 //UTILITY FUNCS

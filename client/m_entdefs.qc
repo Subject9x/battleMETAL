@@ -69,6 +69,7 @@ float ARM_RAD = 24;
 
 //widget vars
 .string c_mdl;
+.string c_ui_hf;
 .float scale;
 .string img1;
 .string img2;
