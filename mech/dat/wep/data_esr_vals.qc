@@ -22,13 +22,13 @@ void() data_esr_ini={
   self.w_firetime = 0;
   self.w_clipsize = DAT_ESR_CLIPSIZE;
   self.w_currentammo = DAT_ESR_CLIPSIZE;
-  self.w_firerate = DAT_ESR_FIRERATE;
   self.w_fire_ofs = DAT_ESR_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_ESR_MODEL;
   self.w_attack = data_esr_atk;
-  self.en_cur = DAT_ESR_EN_MAX;
-  self.en_rate = DAT_ESR_EN_COST;
-  self.en_max = DAT_ESR_EN_MAX;
+  self.rl_cur = DAT_ESR_RL_MAX;
+  self.rl_rate = DAT_ESR_RL_RATE;
+  self.rl_max = DAT_ESR_RL_MAX;
+  self.en_rate = DAT_ESR_EN_RATE;
   self.fire_sound = DAT_ESR_SOUND;
   self.i_techlvl = DAT_ESR_TECH_LEVEL;
   self.i_size = DAT_ESR_WSIZE;
@@ -50,10 +50,10 @@ void() data_esr_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 1.5);
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur >= self.en_max){
-        self.en_cur = self.en_max;
+      self.owner.en_cur = self.owner.en_cur - self.en_rate;
+      self.rl_cur = self.rl_cur + self.rl_rate;
+      if(self.rl_cur >= self.rl_max){
+        self.rl_cur = self.rl_max;
         self.w_state = READY;
       }
     }
@@ -82,7 +82,7 @@ void() data_esr_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.en_cur = 0;
+    self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
     self.w_isburst = FALSE;
@@ -90,10 +90,10 @@ void() data_esr_atk={
   }
   else{
     if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + (self.w_firerate/1000);
+      self.w_firetime = time + (self.rl_rate/1000);
     }
     else{
-      self.w_firetime = time + self.w_firerate;
+      self.w_firetime = time + self.rl_rate/200;
     }
 
     self.w_state = RECOIL;

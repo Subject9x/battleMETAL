@@ -17,6 +17,7 @@ void() CSQC_Init =
   PLAYER_HELPER.plr_sel_mech = 0;
   PLAYER_HELPER.vec_size = 1;
   PLAYER_HELPER.plr_nex_mech = 0;
+  PLAYER_HELPER.plr_sel_list_wep = 0;
   PLAYER_HELPER.plr_nex_wep1 = -1;
   PLAYER_HELPER.plr_nex_wep2 = -1;
   PLAYER_HELPER.plr_nex_wep3 = -1;

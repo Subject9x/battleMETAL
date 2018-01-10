@@ -67,6 +67,7 @@ void() weaponSelectListener;
 void() hardpointListener;
 void() hardpointInfoListener;
 void() weaponGroupPanelListener;
+void() assignToHardpointListener;
 
 void() menu_arming_drawFrame;
 
@@ -81,6 +82,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel;
 void(vector ofs) menu_arming_HardPointInfo;
 void(vector ofs) menu_arming_WeaponInfo;
 void(vector ofs) menu_arming_WeapoinInHardpoint;
+void(vector ofs) menu_arming_AssignToHardpoint_btn;
 
 float(float comp, float bits) checkIfWeaponInGroup;
 void() cleanHardPoints;

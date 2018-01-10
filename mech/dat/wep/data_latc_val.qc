@@ -22,13 +22,13 @@ void() data_latc_ini={
   self.w_firetime = 0;
   self.w_clipsize = DAT_LATC_CLIPSIZE;
   self.w_currentammo = DAT_LATC_CLIPSIZE;
-  self.w_firerate = DAT_LATC_FIRERATE;
   self.w_fire_ofs = DAT_LATC_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_LATC_MODEL;
   self.w_attack = data_latc_atk;
-  self.en_cur = DAT_LATC_EN_MAX;
-  self.en_rate = DAT_LATC_EN_COST;
-  self.en_max = DAT_LATC_EN_MAX;
+  self.rl_cur = DAT_LATC_RL_MAX;
+  self.rl_rate = DAT_LATC_RL_RATE;
+  self.rl_max = DAT_LATC_RL_MAX;
+  self.en_rate = DAT_LATC_EN_RATE;
   self.fire_sound = DAT_LATC_SOUND;
   self.i_techlvl = DAT_LATC_TECH_LEVEL;
   self.stat_spr_x = DAT_LATC_SPR_X;
@@ -49,8 +49,9 @@ void() data_latc_think={
     }
   }
   else if(self.w_state == RELOADING){
-    self.en_cur = self.en_cur + self.en_rate;
-    if(self.en_cur >= self.en_max){
+    self.rl_cur = self.rl_cur + self.rl_rate;
+    if(self.rl_cur >= self.rl_max){
+      self.rl_cur = self.rl_max;
       self.w_state = READY;
     }
   }
@@ -79,7 +80,7 @@ void() data_latc_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.en_cur = 0;
+    self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
   }

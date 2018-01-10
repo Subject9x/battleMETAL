@@ -18,18 +18,18 @@ void() data_mlgd_ini={
   self.w_name = DATWEP_MLGD_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.w_firetime = 0;
-  self.w_clipsize = DATWEP_MLGD_CLIPSIZE;
-  self.w_currentammo = DATWEP_MLGD_CLIPSIZE;
-  self.w_firerate = DATWEP_MLGD_FIRERATE;
-  self.w_fire_ofs = DATWEP_MLGD_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
-  self.c_model = DATWEP_MLGD_MODEL;
+  self.w_clipsize = DAT_MLGD_CLIPSIZE;
+  self.w_currentammo = DAT_MLGD_CLIPSIZE;
+  self.w_fire_ofs = DAT_MLGD_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
+  self.c_model = DAT_MLGD_MODEL;
   self.w_attack = data_mlgd_atk;
-  self.w_proj = DATWEP_MLGD_PROJ_ID;
-  self.en_cur = DATWEP_MLGD_EN_MAX;
-  self.en_rate = DATWEP_MLGD_EN_COST;
-  self.en_max = DATWEP_MLGD_EN_MAX;
-  self.fire_sound = DATWEP_MLGD_FIRESOUND;
-  self.i_techlvl = DATWEP_MLGD_TECH_LEVEL;
+  self.w_proj = DAT_MLGD_PROJ_ID;
+  self.rl_cur = DAT_MLGD_RL_MAX;
+  self.rl_rate = DAT_MLGD_RL_RATE;
+  self.rl_max = DAT_MLGD_RL_MAX;
+  self.en_rate = DAT_MLGD_EN_RATE;
+  self.fire_sound = DAT_MLGD_FIRESOUND;
+  self.i_techlvl = DAT_MLGD_TECH_LEVEL;
   self.i_size = DAT_MLGD_WSIZE;
   self.w_think = data_mlgd_think;
   self.health = DAT_MLGD_HPX;
@@ -47,7 +47,7 @@ void() data_mlgd_think={
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
       //self.owner.en_cur = self.owner.en_cur - (self.en_rate / 8); //v0.0.3 - no longer needed
-      self.en_cur = self.en_cur + self.en_rate;
+      self.rl_cur = self.rl_cur + self.rl_rate;
       if(self.en_cur >= self.en_max){
         self.w_state = READY;
       }
@@ -78,7 +78,7 @@ void() data_mlgd_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.en_cur = 0;
+    self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
   }

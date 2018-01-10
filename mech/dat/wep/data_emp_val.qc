@@ -19,14 +19,14 @@ void() data_emp_ini={
   self.w_firetime = 0;
   self.w_clipsize = DAT_EMP_CLIPSIZE;
   self.w_currentammo = 1;
-  self.w_firerate = 0;
   self.w_fire_ofs = DAT_EMP_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_EMP_MODEL;
   self.w_attack = data_emp_atk;
   self.w_proj = DAT_EMP_PROJ_ID;
-  self.en_cur = DAT_EMP_EN_MAX;
-  self.en_rate = DAT_EMP_EN_COST;
-  self.en_max = DAT_EMP_EN_MAX;
+  self.rl_cur = DAT_EMP_RL_MAX;
+  self.rl_rate = DAT_EMP_RL_RATE;
+  self.rl_max = DAT_EMP_RL_MAX;
+  self.en_rate = DAT_EMP_EN_RATE;
   self.fire_sound = DAT_EMP_SOUND;
   self.i_techlvl = DAT_EMP_TECH_LEVEL;
   self.i_size = DAT_EMP_WSIZE;
@@ -47,8 +47,9 @@ void() data_emp_think={
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
       self.owner.en_cur = self.owner.en_cur - self.en_rate;
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur >= self.en_max){
+      self.rl_cur = self.rl_cur + self.rl_rate;
+      if(self.rl_cur >= self.rl_max){
+        self.rl_cur = self.rl_max;
         self.w_state = READY;
       }
     }
@@ -77,7 +78,7 @@ void() data_emp_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.en_cur = 0;
+    self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
   }

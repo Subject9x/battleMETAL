@@ -21,14 +21,14 @@ void() data_mis_ini={
   self.w_firetime = 0;
   self.w_clipsize = DAT_MIS_CLIPSIZE;
   self.w_currentammo = DAT_MIS_CLIPSIZE;
-  self.w_firerate = DAT_MIS_FIRERATE;
   self.w_fire_ofs = DAT_MIS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_MIS_MODEL;
   self.w_attack = data_mis_atk;
   self.w_proj = DAT_MIS_PROJ_ID;
-  self.en_cur = DAT_MIS_EN_MAX;
-  self.en_rate = DAT_MIS_EN_COST;
-  self.en_max = DAT_MIS_EN_MAX;
+  self.rl_cur = DAT_MIS_RL_MAX;
+  self.rl_rate = DAT_MIS_RL_RATE;
+  self.rl_max = DAT_MIS_RL_MAX;
+  self.en_rate = DAT_MIS_EN_RATE;
   self.fire_sound = DAT_MIS_SOUND;
   self.i_techlvl = DAT_MIS_TECH_LEVEL;
   self.stat_spr_x = DAT_LAS_SPR_X;
@@ -49,8 +49,9 @@ void() data_mis_think={
     }
   }
   else if(self.w_state == RELOADING){
-    self.en_cur = self.en_cur + self.en_rate;
-    if(self.en_cur >= self.en_max){
+    self.rl_cur = self.rl_cur + self.rl_rate;
+    if(self.rl_cur >= self.rl_max){
+      self.rl_cur = self.rl_max;
       self.w_state = READY;
     }
   }
@@ -79,17 +80,17 @@ void() data_mis_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.en_cur = 0;
+    self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
     self.w_isburst = FALSE;
   }
   else{
     if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + (self.w_firerate/1000);
+      self.w_firetime = time + (self.rl_rate/1000);
     }
     else{
-      self.w_firetime = time + self.w_firerate;
+      self.w_firetime = time + self.rl_rate/50;
     }
     self.w_state = RECOIL;
     self.w_isburst = TRUE;

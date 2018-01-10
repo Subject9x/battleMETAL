@@ -13,6 +13,26 @@ void() menu_arming_listener={
   hardpointListener();
   hardpointInfoListener();
   weaponGroupPanelListener();
+  assignToHardpointListener();
+};
+
+void() assignToHardpointListener={
+  if(menu_checkMouseInBounds(cursorpos, VIEW_CTR + gui_percentToPixelRawVec('-34 -14'), gui_percentToPixelRawVec('195 24'))){
+    local float found;
+    found = 0;
+    if(PLAYER_HELPER.plr_sel_hrpnt > 0){
+      if(PLAYER_HELPER.plr_sel_list_wep > 0){
+        local entity dat;
+        dat = m_findData(PLAYER_HELPER.plr_sel_list_wep, DATA_WEPN);
+        if(dat){
+          if((PLAYER_HELPER.plr_sel_hrpnt_types & dat.dmg_type) && (PLAYER_HELPER.plr_sel_hrpnt_size >= dat.i_size)){
+            HARDPOINTS[PLAYER_HELPER.plr_sel_hrpnt] = PLAYER_HELPER.plr_sel_list_wep;
+            PLAYER_HELPER.plr_sel_wep = PLAYER_HELPER.plr_sel_list_wep;
+          }
+        }
+      }
+    }
+   }
 };
 
 void() weaponSelectListener={
@@ -31,16 +51,7 @@ void() weaponSelectListener={
     found = WEPLIST_EXP_ARR[found];
   }
   if(found  > 0){
-   PLAYER_HELPER.plr_sel_wep = found;
-   if(PLAYER_HELPER.plr_sel_hrpnt > 0){
-    local entity dat;
-    dat = m_findData(found, DATA_WEPN);
-    if(dat){
-      if((PLAYER_HELPER.plr_sel_hrpnt_types & dat.dmg_type) && (PLAYER_HELPER.plr_sel_hrpnt_size >= dat.i_size)){
-        HARDPOINTS[PLAYER_HELPER.plr_sel_hrpnt] = found;
-      } 
-    }
-   }
+   PLAYER_HELPER.plr_sel_list_wep = found;
   }
 };
 
@@ -120,6 +131,7 @@ void() menu_arming_drawFrame={
   menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeapoinInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
+  menu_arming_AssignToHardpoint_btn(VIEW_CTR);
 };
 
 void(vector ofs) menu_arming_HardpointGraph={
@@ -136,7 +148,6 @@ void(vector ofs) menu_arming_HardpointGraph={
     MECHPANEL_CTR = hpnts;
     dat.menu_renderHardpoints(hpnts);
   }
-  
 };
 
 
@@ -170,7 +181,7 @@ void(vector ofs) menu_arming_WeaponList_BAL={
       if((dat.dmg_type & DMG_BAL)){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-        if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
@@ -209,7 +220,7 @@ void(vector ofs) menu_arming_WeaponList_ENE={
       if((dat.dmg_type & DMG_ENE)){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-        if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
@@ -248,7 +259,7 @@ void(vector ofs) menu_arming_WeaponList_EXP={
       if((dat.dmg_type & DMG_EXP)){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-        if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
@@ -287,7 +298,7 @@ void(vector ofs) menu_arming_WeaponList_MSC={
       if((dat.dmg_type & DMG_MSC)){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-        if(dat.data_idx == PLAYER_HELPER.plr_sel_wep){
+        if(dat.data_idx == PLAYER_HELPER.plr_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
@@ -407,7 +418,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   local string name;
   local entity dat;
   local float nlen;
-  dat = m_findData(PLAYER_HELPER.plr_sel_wep, DATA_WEPN);
+  dat = m_findData(PLAYER_HELPER.plr_sel_list_wep, DATA_WEPN);
   if(dat.w_icon != ""){
     drawpic((nofs + gui_percentToPixelRawVec('6 6')), dat.w_icon, gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, HUD_ALPHA, 0); 
   }
@@ -422,48 +433,53 @@ void(vector ofs) menu_arming_WeaponInfo={
   icol = nofs + gui_percentToPixelRawVec('4 57');
   
   //damage
-  drawstring(icol, strcat("[DAMAGE]:         ", ftos(dat.dmg_amt)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol, "[DAMAGE/SHOT]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderMeter((dat.dmg_amt / 350)*100, icol + gui_percentToPixelRawVec('112 -2'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
   
   //type
-  drawstring(icol + gui_percentToPixel(0, 0.0083), strcat("[TYPE]:         ",getNameOfWepType(dat.dmg_type)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 8'), strcat("[TYPE]:         ",getNameOfWepType(dat.dmg_type)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //en cost
-  drawstring(icol + gui_percentToPixel(0, 0.0166), strcat("[ENERGY COST]:  ",ftos(dat.en_max)," per second"), '7 7 0', '1 1 1', HUD_ALPHA, 0);
-    
-  //range
-  drawstring(icol + gui_percentToPixel(0, 0.025), strcat("[RANGE]:        ",ftos(dat.w_range)),'7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 16'), "[ENERGY/SEC]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderMeter((dat.en_rate / 20)*100, icol + gui_percentToPixelRawVec('112 16'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
   
-  //size
-  drawstring(icol + gui_percentToPixel(0, 0.0333), strcat("[RATE OF FIRE]: ",ftos(dat.w_firerate),"s"), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  //range
+  drawstring(icol + gui_percentToPixelRawVec('0 24'), strcat("[RANGE]:        ",ftos(dat.w_range)),'7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //clip
-  drawstring(icol + gui_percentToPixel(0, 0.0416), strcat("[CLIPSIZE]:     ",ftos(dat.w_clipsize)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
-  
-  //rof
-  drawstring(icol + gui_percentToPixel(0, 0.05), strcat("[RELOAD TIME]:  ",ftos(dat.w_reloadtime),"s"), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 32'), strcat("[CLIPSIZE]:     ",ftos(dat.w_clipsize)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //reload
-  drawstring(icol + gui_percentToPixel(0, 0.0583),strcat("[SIZE]:         ",ftos(dat.i_size)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 40'),strcat("[SIZE]:         ",ftos(dat.i_size)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //tech
-  drawstring(icol + gui_percentToPixel(0, 0.0666), strcat("[TECH LEVEL]:   ",ftos(dat.i_techlvl)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 48'), strcat("[TECH LEVEL]:   ",ftos(dat.i_techlvl)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //desc
-  drawstring(icol + gui_percentToPixel(0, 0.075), "[NOTES]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 56'), "[NOTES]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
   if(dat.note1){
-    drawstring(icol+gui_percentToPixel(0.0015, 0.0854), dat.note1, '5 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(icol+gui_percentToPixelRawVec('2 66'), dat.note1, '6 7 0', '1 1 1', HUD_ALPHA, 0);
   }
   if(dat.note2){
-    drawstring(icol+gui_percentToPixel(0.0015, 0.958), dat.note2, '5 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(icol+gui_percentToPixelRawVec('2 76'), dat.note2, '6 7 0', '1 1 1', HUD_ALPHA, 0);
   }
   if(dat.note3){
-    drawstring(icol+gui_percentToPixel(0.0015, 0.1062), dat.note3, '5 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(icol+gui_percentToPixelRawVec('2 86'), dat.note3, '6 7 0', '1 1 1', HUD_ALPHA, 0);
   }
   if(dat.note4){
-    drawstring(icol+gui_percentToPixel(0.0015, 0.1166), dat.note4, '5 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(icol+gui_percentToPixelRawVec('2 96'), dat.note4, '6 7 0', '1 1 1', HUD_ALPHA, 0);
   }
 };
 
+
+void(vector ofs) menu_arming_AssignToHardpoint_btn={
+  local vector nofs;
+  nofs = ofs + gui_percentToPixelRawVec('-34 -14');
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 24'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('8 9'), HUD_TRG_PIP_B, gui_percentToPixelRawVec('16 8'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('172 9'), HUD_TRG_PIP_B, gui_percentToPixelRawVec('16 8'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(nofs+gui_percentToPixelRawVec('28 2'), "[ASSIGN TO HARDPOINT]", '7 8 0', '1 1 1', HUD_ALPHA, 0);
+};
 
 void(vector ofs) menu_arming_WeapoinInHardpoint={
   local vector nofs;
@@ -480,6 +496,62 @@ void(vector ofs) menu_arming_WeapoinInHardpoint={
   tpos = nofs + gui_percentToPixelRawVec('0 6');
   tpos_x= (nofs_x + gui_percentXRaw(108)) - gui_percentXRaw((tlen/2));
   drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  local vector nmpos;
+  local string name;
+  local entity dat;
+  local float nlen;
+  dat = m_findData(PLAYER_HELPER.plr_sel_wep, DATA_WEPN);
+  if(dat.w_icon != ""){
+    drawpic((nofs + gui_percentToPixelRawVec('6 6')), dat.w_icon, gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, HUD_ALPHA, 0); 
+  }
+  name = dat.w_name;
+  nlen = stringwidth(name, 0, '7 8 0');
+  nmpos = nofs + gui_percentToPixelRawVec('0 38');
+  nmpos_x = (nmpos_x + gui_percentXRaw(97)) - gui_percentXRaw((nlen/2)); 
+  drawstring(nmpos, name, '7 8 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //type
+  local vector icol;
+  icol = nofs + gui_percentToPixelRawVec('4 57');
+  
+  //damage
+  drawstring(icol, "[DAMAGE/SHOT]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderMeter((dat.dmg_amt / 350)*100, icol + gui_percentToPixelRawVec('112 -2'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
+  
+  //type
+  drawstring(icol + gui_percentToPixelRawVec('0 8'), strcat("[TYPE]:         ",getNameOfWepType(dat.dmg_type)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //en cost
+  drawstring(icol + gui_percentToPixelRawVec('0 16'), "[ENERGY/SEC]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderMeter((dat.en_rate / 20)*100, icol + gui_percentToPixelRawVec('112 16'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
+  
+  //range
+  drawstring(icol + gui_percentToPixelRawVec('0 24'), strcat("[RANGE]:        ",ftos(dat.w_range)),'7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //clip
+  drawstring(icol + gui_percentToPixelRawVec('0 32'), strcat("[CLIPSIZE]:     ",ftos(dat.w_clipsize)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //reload
+  drawstring(icol + gui_percentToPixelRawVec('0 40'),strcat("[SIZE]:         ",ftos(dat.i_size)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //tech
+  drawstring(icol + gui_percentToPixelRawVec('0 48'), strcat("[TECH LEVEL]:   ",ftos(dat.i_techlvl)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  //desc
+  drawstring(icol + gui_percentToPixelRawVec('0 56'), "[NOTES]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  if(dat.note1){
+    drawstring(icol+gui_percentToPixelRawVec('2 66'), dat.note1, '6 7 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  if(dat.note2){
+    drawstring(icol+gui_percentToPixelRawVec('2 76'), dat.note2, '6 7 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  if(dat.note3){
+    drawstring(icol+gui_percentToPixelRawVec('2 86'), dat.note3, '6 7 0', '1 1 1', HUD_ALPHA, 0);
+  }
+  if(dat.note4){
+    drawstring(icol+gui_percentToPixelRawVec('2 96'), dat.note4, '6 7 0', '1 1 1', HUD_ALPHA, 0);
+  }
 };
 
 //UTILITY FUNCS

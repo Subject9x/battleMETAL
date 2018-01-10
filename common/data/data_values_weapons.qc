@@ -35,49 +35,49 @@ float DAT_MARH_RANGE      = 3000;
 //            Recharge Time  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_EN_COST    = 10;
-float DAT_LATC_EN_MAX     = 100;
-float DAT_LATC_FIRERATE   = 0.05;
+float DAT_LATC_RL_RATE    = 10;
+float DAT_LATC_RL_MAX     = 100;
+float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
-float DAT_RPLAS_EN_COST   = 10;
-float DAT_RPLAS_EN_MAX    = 300;
-float DAT_RPLAS_FIRERATE  = 0;
+float DAT_RPLAS_RL_RATE   = 10;
+float DAT_RPLAS_RL_MAX    = 300;
+float DAT_RPLAS_EN_RATE   = 1;
 //-------------------------QRifle
-float DAT_QRFL_EN_COST    = 10;
-float DAT_QRFL_EN_MAX     = 500;
-float DAT_QRFL_FIRERATE   = 0;
+float DAT_QRFL_RL_RATE    = 10;
+float DAT_QRFL_RL_MAX     = 500;
+float DAT_QRFL_EN_RATE    = 5;
 //-------------------------SFGA
-float DAT_SFGA_EN_COST    = 10;
-float DAT_SFGA_EN_MAX     = 800;
-float DAT_SFGA_FIRERATE   = 0;
+float DAT_SFGA_RL_RATE    = 10;
+float DAT_SFGA_RL_MAX     = 800;
+float DAT_SFGA_EN_RATE    = 0;
 //-------------------------Laser
-float DAT_LAS_EN_RATE     = 10;
-float DAT_LAS_EN_MAX      = 200;
-float DAT_LAS_FIRERATE    = 0;
+float DAT_LAS_RL_RATE     = 10;
+float DAT_LAS_RL_MAX      = 200;
+float DAT_LAS_EN_RATE     = 3;
 //-------------------------EMP
-float DAT_EMP_EN_COST     = 10;
-float DAT_EMP_EN_MAX      = 600;
-float DAT_EMP_FIRERATE    = 0;
+float DAT_EMP_RL_RATE     = 10;
+float DAT_EMP_RL_MAX      = 600;
+float DAT_EMP_EN_RATE     = 10;
 //-------------------------ESR
-float DAT_ESR_EN_COST     = 10;
-float DAT_ESR_EN_MAX      = 500;
-float DAT_ESR_FIRERATE    = 0.05;
+float DAT_ESR_RL_RATE     = 10;
+float DAT_ESR_RL_MAX      = 500;
+float DAT_ESR_EN_RATE     = 8;
 //-------------------------PAC
-float DAT_PAC_EN_COST     = 10;
-float DAT_PAC_EN_MAX      = 800;
-float DAT_PAC_FIRERATE    = 0;
+float DAT_PAC_RL_RATE     = 10;
+float DAT_PAC_RL_MAX      = 800;
+float DAT_PAC_EN_RATE     = 15;
 //-------------------------Rocket
-float DAT_MIS_EN_COST     = 10;
-float DAT_MIS_EN_MAX      = 800;
-float DAT_MIS_FIRERATE    = 0.2;
+float DAT_MIS_RL_RATE     = 10;
+float DAT_MIS_RL_MAX      = 800;
+float DAT_MIS_EN_RATE     = 0;
 //-------------------------Laser Missile
-float DATWEP_MLGD_EN_COST = 10;
-float DATWEP_MLGD_EN_MAX  = 500;
-float DATWEP_MLGD_FIRERATE = 0;
+float DAT_MLGD_RL_RATE = 10;
+float DAT_MLGD_RL_MAX  = 500;
+float DAT_MLGD_EN_RATE = 2;
 //-------------------------Radar Missile
-float DATWEP_MARH_EN_COST = 10;
-float DATWEP_MARH_EN_MAX  = 500;
-float DATWEP_MARH_FIRERATE = 0;
+float DAT_MARH_RL_RATE = 10;
+float DAT_MARH_RL_MAX  = 500;
+float DAT_MARH_EN_RATE = 1;
 //====================================================================================
 //            Damage  
 //====================================================================================
@@ -156,9 +156,9 @@ float DAT_PAC_CLIPSIZE      = 1;
 //-------------------------Rocket
 float DAT_MIS_CLIPSIZE      = 6;
 //-------------------------Laser Missile
-float DATWEP_MLGD_CLIPSIZE  = 1;
+float DAT_MLGD_CLIPSIZE  = 1;
 //-------------------------Radar Missile
-float DATWEP_MARH_CLIPSIZE  = 1;
+float DAT_MARH_CLIPSIZE  = 1;
 //============================
 //            Tech Level  
 //============================
@@ -181,9 +181,9 @@ float DAT_PAC_TECH_LEVEL    = 1;
 //-------------------------Rocket
 float DAT_MIS_TECH_LEVEL    = 1;
 //-------------------------Laser Missile
-float DATWEP_MLGD_TECH_LEVEL = 2;
+float DAT_MLGD_TECH_LEVEL = 2;
 //-------------------------Radar Missile
-float DATWEP_MARH_TECH_LEVEL = 2;
+float DAT_MARH_TECH_LEVEL = 2;
 //============================
 //            Size  
 //============================
@@ -231,9 +231,9 @@ string DAT_PAC_SOUND = "sound/weapons/pac_fire.ogg";
 //-------------------------Rocket
 string DAT_MIS_SOUND = "sound/weapons/mis_fire.ogg";
 //-------------------------Laser Missile
-string DATWEP_MLGD_FIRESOUND = "sound/weapons/mis_fire.ogg";
+string DAT_MLGD_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //-------------------------Radar Missile
-string DATWEP_MARH_FIRESOUND = "sound/weapons/mis_fire.ogg";
+string DAT_MARH_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //============================
 //            Model  
 //============================
@@ -256,9 +256,9 @@ string DAT_PAC_MODEL     = "q3mdl/weapons/w_pac.md3";
 //-------------------------Rocket
 string DAT_MIS_MODEL     = "q3mdl/weapons/w_mis.md3";
 //-------------------------Laser Missile
-string DATWEP_MLGD_MODEL = "q3mdl/weapons/w_lgm.md3";
+string DAT_MLGD_MODEL = "q3mdl/weapons/w_lgm.md3";
 //-------------------------Radar Missile
-string DATWEP_MARH_MODEL = "q3mdl/weapons/w_arh.md3";
+string DAT_MARH_MODEL = "q3mdl/weapons/w_arh.md3";
 //============================
 //            Model Offset 
 //============================
@@ -281,9 +281,9 @@ vector DAT_PAC_FIRE_OFS     = '0 0 8';
 //-------------------------Rocket
 vector DAT_MIS_FIRE_OFS     = '0 0 2';
 //-------------------------Laser Missile
-vector DATWEP_MLGD_FIRE_OFS = '0 0 2';
+vector DAT_MLGD_FIRE_OFS = '0 0 2';
 //-------------------------Radar Missile
-vector DATWEP_MARH_FIRE_OFS = '0 0 2';
+vector DAT_MARH_FIRE_OFS = '0 0 2';
 //============================
 //            Projectile ID
 //============================
@@ -306,6 +306,6 @@ float DAT_EMP_PROJ_ID     = ID_PRJ_EMP;
 //-------------------------Rocket
 float DAT_MIS_PROJ_ID     = ID_PRJ_MIS;
 //-------------------------Laser Missile
-float DATWEP_MLGD_PROJ_ID = ID_PRJ_MLGD;
+float DAT_MLGD_PROJ_ID = ID_PRJ_MLGD;
 //-------------------------Radar Missile
-float DATWEP_MARH_PROJ_ID = ID_PRJ_MARH;
+float DAT_MARH_PROJ_ID = ID_PRJ_MARH;

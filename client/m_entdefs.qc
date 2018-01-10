@@ -34,6 +34,7 @@ float ARM_RAD = 24;
 .float plr_sel_mech; //used for mech selection
 .float plr_sel_hrpnt;
 .float plr_sel_wep;
+.float plr_sel_list_wep;
 .float plr_sel_wid;
 .float plr_sel_grp;
 .float plr_nex_mech;
@@ -110,6 +111,8 @@ float ARM_RAD = 24;
 .float radar_range;
 
 //weapon
+.float en_rate;
+.float rl_max;
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
 .float i_reserve; //how many reserve points does the unit cost?
 .float i_size;

@@ -19,18 +19,18 @@ void() data_marh_ini={
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.w_name = DATWEP_MARH_NAME;
   self.w_firetime = 0;
-  self.w_clipsize = DATWEP_MARH_CLIPSIZE;
-  self.w_currentammo = DATWEP_MARH_CLIPSIZE;
-  self.w_firerate = DATWEP_MARH_FIRERATE;
-  self.w_fire_ofs = DATWEP_MARH_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
-  self.c_model = DATWEP_MARH_MODEL;
+  self.w_clipsize = DAT_MARH_CLIPSIZE;
+  self.w_currentammo = DAT_MARH_CLIPSIZE;
+  self.w_fire_ofs = DAT_MARH_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
+  self.c_model = DAT_MARH_MODEL;
   self.w_attack = data_marh_atk;
-  self.w_proj = DATWEP_MARH_PROJ_ID;
-  self.en_cur = DATWEP_MARH_EN_MAX;
-  self.en_rate = DATWEP_MARH_EN_COST;
-  self.en_max = DATWEP_MARH_EN_MAX;
-  self.fire_sound = DATWEP_MARH_FIRESOUND;
-  self.i_techlvl = DATWEP_MARH_TECH_LEVEL;
+  self.w_proj = DAT_MARH_PROJ_ID;
+  self.rl_cur = DAT_MARH_RL_MAX;
+  self.rl_rate = DAT_MARH_RL_RATE;
+  self.rl_max = DAT_MARH_RL_MAX;
+  self.en_max = DAT_MARH_EN_RATE;
+  self.fire_sound = DAT_MARH_FIRESOUND;
+  self.i_techlvl = DAT_MARH_TECH_LEVEL;
   self.i_size = DAT_MARH_WSIZE;
   self.w_think = data_marh_think;
   self.health = DAT_MARH_HPX;
@@ -47,8 +47,9 @@ void() data_marh_think={
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
       //self.owner.en_cur = self.owner.en_cur - (self.en_rate / 15); //v0.0.3
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur >= self.en_max){
+      self.rl_cur = self.rl_cur + self.rl_rate;
+      if(self.rl_cur >= self.rl_max){
+        self.rl_cur = self.rl_max;
         self.w_state = READY;
       }
     }
@@ -81,7 +82,7 @@ void() data_marh_atk={
       
       self.w_currentammo = self.w_currentammo - 1;
       if(self.w_currentammo <= 0){
-        self.en_cur = 0;
+        self.rl_cur = 0;
         self.w_currentammo = self.w_clipsize;
         self.w_state = RELOADING;
       }

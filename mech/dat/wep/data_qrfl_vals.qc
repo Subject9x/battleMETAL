@@ -23,14 +23,14 @@ void() data_qrfl_ini={
   self.w_firetime = 0;
   self.w_clipsize = DAT_QRFL_CLIPSIZE;
   self.w_currentammo = DAT_QRFL_CLIPSIZE;
-  self.w_firerate = 0;
   self.w_fire_ofs = DAT_QRFL_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_QRFL_MODEL;
   self.w_attack = data_qrfl_atk;
   self.w_proj = DAT_QRFL_PROJ_ID;
-  self.en_max = DAT_QRFL_EN_MAX;
-  self.en_rate = DAT_QRFL_EN_COST;
-  self.en_cur = DAT_QRFL_EN_MAX;
+  self.rl_max = DAT_QRFL_RL_MAX;
+  self.rl_rate = DAT_QRFL_RL_RATE;
+  self.rl_cur = DAT_QRFL_RL_MAX;
+  self.en_rate = DAT_QRFL_EN_RATE;
   self.fire_sound = DAT_QRFL_SOUND;
   self.i_techlvl = DAT_QRFL_TECH_LEVEL;
   self.stat_spr_x = DAT_QRFL_SPR_X;
@@ -52,9 +52,10 @@ void() data_qrfl_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / DAT_QRFL_QBITS);
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur >= self.en_max){
+      self.owner.en_cur = self.owner.en_cur - self.en_rate;
+      self.rl_cur = self.rl_cur + self.rl_rate;
+      if(self.rl_cur >= self.rl_max){
+        self.rl_cur = self.rl_max;
         self.w_state = READY;
       }
     }
@@ -84,7 +85,7 @@ void() data_qrfl_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.en_cur = 0;
+    self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
   }

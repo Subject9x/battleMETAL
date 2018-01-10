@@ -20,13 +20,13 @@ void() data_pac_ini={
   self.w_firetime = 0;
   self.w_clipsize = DAT_PAC_CLIPSIZE;
   self.w_currentammo = DAT_PAC_CLIPSIZE;
-  self.w_firerate = DAT_PAC_FIRERATE;
   self.w_fire_ofs = DAT_PAC_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_PAC_MODEL;
   self.w_attack = data_pac_atk;
-  self.en_cur = DAT_PAC_EN_MAX;
-  self.en_rate = DAT_PAC_EN_COST;
-  self.en_max = DAT_PAC_EN_MAX;
+  self.rl_cur = DAT_PAC_RL_MAX;
+  self.rl_rate = DAT_PAC_RL_RATE;
+  self.rl_max = DAT_PAC_RL_MAX;
+  self.en_rate = DAT_PAC_EN_RATE;
   self.fire_sound = DAT_PAC_SOUND;
   self.i_techlvl = DAT_PAC_TECH_LEVEL;
   self.i_size = DAT_PAC_WSIZE;
@@ -46,9 +46,10 @@ void() data_pac_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate / 4); //v0.0.3 - was /3
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur >= self.en_max){
+      self.owner.en_cur = self.owner.en_cur - self.en_rate;
+      self.rl_cur = self.rl_cur + self.rl_rate;
+      if(self.rl_cur >= self.rl_max){
+        self.rl_cur = self.rl_max;
         self.w_state = READY;
       }
     }
@@ -80,7 +81,7 @@ void() data_pac_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.en_cur = 0;
+    self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
   }

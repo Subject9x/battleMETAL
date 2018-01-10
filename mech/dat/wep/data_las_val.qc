@@ -21,13 +21,13 @@ void() data_las_ini={
   self.w_firetime = 0;
   self.w_clipsize = DAT_LAS_CLIPSIZE;
   self.w_currentammo = DAT_LAS_CLIPSIZE;
-  self.w_firerate = DAT_LAS_FIRERATE;
   self.w_fire_ofs = DAT_LAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_LAS_MODEL;
   self.w_attack = data_las_atk;
-  self.en_cur = DAT_LAS_EN_MAX;
   self.en_rate = DAT_LAS_EN_RATE;
-  self.en_max = DAT_LAS_EN_MAX;
+  self.rl_rate = DAT_LAS_RL_RATE;
+  self.rl_cur = DAT_LAS_RL_MAX;
+  self.rl_max = DAT_LAS_RL_MAX;
   self.fire_sound = DAT_LAS_SOUND;
   self.i_techlvl = DAT_LAS_TECH_LEVEL;
   self.i_size = DAT_LAS_WSIZE;
@@ -46,9 +46,10 @@ void() data_las_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - (self.en_rate/5);//v0.0.3
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur >= self.en_max){
+      self.owner.en_cur = self.owner.en_cur - self.en_rate;
+      self.rl_cur = self.rl_cur + self.rl_rate;
+      if(self.rl_cur >= self.rl_max){
+        self.rl_cur = self.rl_max;
         self.w_state = READY;
       }
     }
@@ -79,7 +80,7 @@ void() data_las_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.en_cur = 0;
+    self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
   }

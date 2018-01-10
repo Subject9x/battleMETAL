@@ -325,7 +325,7 @@ void() client_updateWeaponReloads={
   e = self.w_slot;
   while(e){
     local float delta;
-    delta = e.en_cur / e.en_max;
+    delta = e.rl_cur / e.rl_max;
     if(idx == 1){ 
       self.stat_w1_rel = delta;
     }
