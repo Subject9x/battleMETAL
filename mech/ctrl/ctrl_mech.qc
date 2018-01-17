@@ -33,6 +33,9 @@ void() ctrl_updateCenterTorso={
     if(self.movement_x <= self.m_fspeed && self.movement_y <= self.m_fspeed){
       self.en_cur = self.en_cur + self.en_rate;
     }
+    else{
+      self.en_cur = self.en_cur + (self.en_rate - self.m_maccel);
+    }
     if(self.en_cur > self.en_max){
       self.en_cur = self.en_max;
     }
@@ -67,7 +70,15 @@ void() ctrl_updateCenterTorso={
     if(my < 0){
       my = my * -1;
     }
-    
+    local float r_max, r_min;
+    if(self.stat_rdr_mode){
+      r_max = self.conv_max_z / 2;
+      r_min = self.conv_min_z * 2;
+    }
+    else{
+      r_max = self.conv_max_z;
+      r_min = self.conv_min_z;
+    }
     if((mx >= (self.m_fspeed + 1)) || (my >= (self.m_sspeed + 1))){
       local float v;
       local vector norg;
@@ -75,22 +86,22 @@ void() ctrl_updateCenterTorso={
       norg_y = self.origin_y + self.velocity_y;
       v = vlen(norg - self.origin) / 3000;
       
-      self.stat_spr_x = self.stat_spr_x + self.conv_max_z;
+      self.stat_spr_x = self.stat_spr_x + r_max;
       if(self.stat_spr_x > self.conv_max_x){
         self.stat_spr_x =  self.conv_max_x;
       }
-      self.stat_spr_y = self.stat_spr_y + self.conv_max_z;
+      self.stat_spr_y = self.stat_spr_y + r_max;
       if(self.stat_spr_y > self.conv_max_y){
         self.stat_spr_y =  self.conv_max_y;
       }
     }
     else{
       
-      self.stat_spr_x = self.stat_spr_x - self.conv_min_z;
+      self.stat_spr_x = self.stat_spr_x - r_min;
       if(self.stat_spr_x < self.conv_min_x){
         self.stat_spr_x =  self.conv_min_x;
       }
-      self.stat_spr_y = self.stat_spr_y - self.conv_min_z;
+      self.stat_spr_y = self.stat_spr_y - r_min;
       if(self.stat_spr_y < self.conv_min_y){
         self.stat_spr_y =  self.conv_min_y;
       }

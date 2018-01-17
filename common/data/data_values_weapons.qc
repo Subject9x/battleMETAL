@@ -41,7 +41,7 @@ float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
 float DAT_RPLAS_RL_RATE   = 10;
 float DAT_RPLAS_RL_MAX    = 300;
-float DAT_RPLAS_EN_RATE   = 1;
+float DAT_RPLAS_EN_RATE   = 0.5;
 //-------------------------QRifle
 float DAT_QRFL_RL_RATE    = 10;
 float DAT_QRFL_RL_MAX     = 500;
@@ -73,11 +73,11 @@ float DAT_MIS_EN_RATE     = 0;
 //-------------------------Laser Missile
 float DAT_MLGD_RL_RATE = 10;
 float DAT_MLGD_RL_MAX  = 500;
-float DAT_MLGD_EN_RATE = 2;
+float DAT_MLGD_EN_RATE = 0.5;
 //-------------------------Radar Missile
 float DAT_MARH_RL_RATE = 10;
 float DAT_MARH_RL_MAX  = 500;
-float DAT_MARH_EN_RATE = 1;
+float DAT_MARH_EN_RATE = 0.25;
 //====================================================================================
 //            Damage  
 //====================================================================================
@@ -92,17 +92,17 @@ float DAT_SFGA_DMG        = 300;
 //-------------------------Laser
 float DAT_LAS_DMG         = 20;
 //-------------------------EMP
-float DAT_EMP_DMG      = 300;
+float DAT_EMP_DMG         = 300;
 //-------------------------ESR
 float DAT_ESR_DMG         = 25;
 //-------------------------PAC
 float DAT_PAC_DMG         = 200;
 //-------------------------Rocket
-float DAT_MIS_DMG      = 75;
+float DAT_MIS_DMG         = 75;
 //-------------------------Laser Missile
-float DAT_MLGD_DMG     = 275;
+float DAT_MLGD_DMG        = 275;
 //-------------------------Radar Missile
-float DAT_MARH_DMG     = 2; 
+float DAT_MARH_DMG        = 2; 
 //====================================================================================
 //            Inaccuracy  
 //====================================================================================
@@ -156,9 +156,9 @@ float DAT_PAC_CLIPSIZE      = 1;
 //-------------------------Rocket
 float DAT_MIS_CLIPSIZE      = 6;
 //-------------------------Laser Missile
-float DAT_MLGD_CLIPSIZE  = 1;
+float DAT_MLGD_CLIPSIZE     = 1;
 //-------------------------Radar Missile
-float DAT_MARH_CLIPSIZE  = 1;
+float DAT_MARH_CLIPSIZE     = 1;
 //============================
 //            Tech Level  
 //============================
@@ -181,9 +181,9 @@ float DAT_PAC_TECH_LEVEL    = 1;
 //-------------------------Rocket
 float DAT_MIS_TECH_LEVEL    = 1;
 //-------------------------Laser Missile
-float DAT_MLGD_TECH_LEVEL = 2;
+float DAT_MLGD_TECH_LEVEL   = 2;
 //-------------------------Radar Missile
-float DAT_MARH_TECH_LEVEL = 2;
+float DAT_MARH_TECH_LEVEL   = 2;
 //============================
 //            Size  
 //============================
@@ -256,9 +256,9 @@ string DAT_PAC_MODEL     = "q3mdl/weapons/w_pac.md3";
 //-------------------------Rocket
 string DAT_MIS_MODEL     = "q3mdl/weapons/w_mis.md3";
 //-------------------------Laser Missile
-string DAT_MLGD_MODEL = "q3mdl/weapons/w_lgm.md3";
+string DAT_MLGD_MODEL    = "q3mdl/weapons/w_lgm.md3";
 //-------------------------Radar Missile
-string DAT_MARH_MODEL = "q3mdl/weapons/w_arh.md3";
+string DAT_MARH_MODEL    = "q3mdl/weapons/w_arh.md3";
 //============================
 //            Model Offset 
 //============================
@@ -306,6 +306,6 @@ float DAT_EMP_PROJ_ID     = ID_PRJ_EMP;
 //-------------------------Rocket
 float DAT_MIS_PROJ_ID     = ID_PRJ_MIS;
 //-------------------------Laser Missile
-float DAT_MLGD_PROJ_ID = ID_PRJ_MLGD;
+float DAT_MLGD_PROJ_ID    = ID_PRJ_MLGD;
 //-------------------------Radar Missile
-float DAT_MARH_PROJ_ID = ID_PRJ_MARH;
+float DAT_MARH_PROJ_ID    = ID_PRJ_MARH;
