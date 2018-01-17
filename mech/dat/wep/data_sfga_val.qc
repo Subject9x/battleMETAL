@@ -8,7 +8,7 @@ Overview: weapon  values are being reorganized to ease maintenance
 //LIGHT AUTOCANNON=======================
 float DAT_SFGA_IDX = ID_WEP_SFGA;
 string DAT_SFGA_NAME = "Snub Field Gun";
-float DAT_SFGA_HPX = 200; //v0.0.3
+float DAT_SFGA_HPX = 200;
 
 
 void() data_sfga_atk;
@@ -18,6 +18,7 @@ void() data_sfga_ini={
   self.data_idx = DAT_SFGA_IDX;
   self.w_name = DAT_SFGA_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
+  self.p_damage = DAT_SFGA_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_SFGA_CLIPSIZE;
   self.w_currentammo = 1;
@@ -106,6 +107,8 @@ void() data_sfga_atk={
     util_setModel(self.c_model, 0);
     util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
     util_setBoundBox('0 0 0', '0 0 0');
+    self.p_dmgtype = oself.p_dmgtype;
+    self.p_damage = oself.p_damage;
     self.velocity = normalize(dir - org);
     self.velocity = self.velocity * self.p_velocity;
     self.velocity_z = self.velocity_z + 200;

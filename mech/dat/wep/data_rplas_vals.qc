@@ -11,7 +11,6 @@ string DAT_RPLAS_NAME = "RPC";
 float DAT_RPLAS_HPX = 150;
 float DAT_RPLAS_SHOT = 6;
 
-
 void() data_rplas_atk;
 void() data_rplas_think;
 
@@ -20,6 +19,7 @@ void() data_rplas_ini={
   self.w_name = DAT_RPLAS_NAME;
   self.w_isready = 0;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
+  self.p_damage = DAT_RPLAS_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_RPLAS_CLIPSIZE;
   self.w_currentammo = 1;
@@ -131,6 +131,8 @@ void() data_rplas_atk={
       self.think = SUB_Remove;
       self.nextthink = time + self.p_lifetime;
       self.velocity = self.velocity * self.p_velocity;
+      self.p_dmgtype = oself.p_dmgtype;
+      self.p_damage = oself.p_damage;
       self.angles = vectoangles(self.velocity);
       util_setModel(self.c_model, 0);
       util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);

@@ -92,17 +92,17 @@ float DAT_SFGA_DMG        = 300;
 //-------------------------Laser
 float DAT_LAS_DMG         = 20;
 //-------------------------EMP
-float DAT_EMP_DAMAGE      = 300;
+float DAT_EMP_DMG      = 300;
 //-------------------------ESR
 float DAT_ESR_DMG         = 25;
 //-------------------------PAC
 float DAT_PAC_DMG         = 200;
 //-------------------------Rocket
-float DAT_MIS_DAMAGE      = 75;
+float DAT_MIS_DMG      = 75;
 //-------------------------Laser Missile
-float DAT_MLGD_DAMAGE     = 275;
+float DAT_MLGD_DMG     = 275;
 //-------------------------Radar Missile
-float DAT_MARH_DAMAGE     = 2; 
+float DAT_MARH_DMG     = 2; 
 //====================================================================================
 //            Inaccuracy  
 //====================================================================================

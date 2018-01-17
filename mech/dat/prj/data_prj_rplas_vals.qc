@@ -8,9 +8,7 @@ this guy will bounce off up to two non-targets.
 
 //ROTARY PLASMA SHOT==================
 float DAT_PRJ_RPLAS_IDX = ID_PRJ_RPLAS;
-float DAT_PRJ_RPLAS_DAMAGE = 20;
 float DAT_PRJ_RPLAS_BURN = 1; 
-float DAT_PRJ_RPLAS_DMGTYPE = DMG_BAL;
 
 void() data_prj_rplas_touch;
 void() data_prj_rplas_bounce;
@@ -23,8 +21,6 @@ void() data_prj_rplas_ini={
   self.p_velocity = DAT_PRJ_RPLAS_VELOCITY;
   self.c_model = DAT_PRJ_RPLAS_MODEL;
   self.p_lifetime = DAT_PRJ_RPLAS_LIFETIME;
-  self.p_damage = DAT_PRJ_RPLAS_DAMAGE;
-  self.p_dmgtype = DMG_BAL;
   
   //cosmetics
   self.effects = self.effects | DAT_PRJ_RPLAS_EFFECTS;

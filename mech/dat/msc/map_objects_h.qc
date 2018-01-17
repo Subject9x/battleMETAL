@@ -29,3 +29,7 @@ void() ai_node;
 void() map_objective_th;
 void() map_objective_use;
 float(entity ent, float changed) send_objective;
+
+//misc_model
+void() misc_model;
+void() map_terrain_model;

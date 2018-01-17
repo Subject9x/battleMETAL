@@ -9,14 +9,13 @@ float DATWEP_MARH_IDX = ID_WEP_MARH;
 string DATWEP_MARH_NAME = "MIS-ARH";
 float DAT_MARH_HPX = 100;
 
-
 void() data_marh_atk;  //the actual attack call
 void() data_marh_think;
-
 
 void() data_marh_ini={
   self.data_idx = DATWEP_MARH_IDX;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
+  self.p_damage = DAT_MARH_DMG;
   self.w_name = DATWEP_MARH_NAME;
   self.w_firetime = 0;
   self.w_clipsize = DAT_MARH_CLIPSIZE;
@@ -116,6 +115,8 @@ void() data_marh_atk={
           util_setModel(self.c_model, 0);
           util_setBoundBox('0 0 0', '0 0 0');
           util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+          self.p_dmgtype = oself.p_dmgtype;
+          self.p_damage = oself.p_damage;
           self.velocity = normalize(arc - start);
           self.enemy = self.owner.enemy;
           self.c_ofs = arc;

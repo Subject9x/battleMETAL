@@ -65,4 +65,4 @@ void() map_navpoint={
   self.use = nav_point_use;
   self.think = nav_point_th;
   self.nextthink = time + 0.5;
-}
+};

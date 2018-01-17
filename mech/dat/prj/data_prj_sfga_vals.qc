@@ -7,7 +7,6 @@ Overview: data def file for a weapon projectile
 
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_SFGA_IDX = ID_PRJ_SFGA;
-float DAT_PRJ_SFGA_DAMAGE = 300;
 float DAT_PRJ_SFGA_RAD = 150;
 
 void() data_prj_sfga_touch;
@@ -20,8 +19,6 @@ void() data_prj_sfga_ini={
   self.p_velocity = DAT_PRJ_SFGA_VELOCITY;
   self.c_model = DAT_PRJ_SFGA_MODEL;
   self.p_lifetime = DAT_PRJ_SFGA_LIFETIME;
-  self.p_damage = DAT_PRJ_SFGA_DAMAGE;
-  self.p_dmgtype = DMG_BAL;
   self.w_range = DAT_PRJ_SFGA_RAD;
   
   //cosmetics

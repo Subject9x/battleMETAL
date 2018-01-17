@@ -17,6 +17,7 @@ void() data_mlgd_ini={
   self.data_idx = DATWEP_MLGD_IDX;
   self.w_name = DATWEP_MLGD_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
+  self.p_damage = DAT_MLGD_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_MLGD_CLIPSIZE;
   self.w_currentammo = DAT_MLGD_CLIPSIZE;
@@ -99,6 +100,8 @@ void() data_mlgd_atk={
     util_setModel(self.c_model, 0);
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     util_setBoundBox('0 0 0', '0 0 0');
+    self.p_dmgtype = oself.p_dmgtype;
+    self.p_damage = oself.p_damage;
     self.velocity = normalize(dir - org);
     self.think = data_prj_mlgd_th;
     self.nextthink = time + 0.05;

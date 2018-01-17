@@ -7,8 +7,6 @@ Overview: data def file for a weapon projectile
 
 //=======MISSILE: LASER-GUIDED========
 float DAT_PRJ_MLGD_IDX = ID_PRJ_MLGD;
-float DAT_PRJ_MLGD_DAMAGE = 275;
-float DAT_PRJ_MLGD_DMGTYPE = DMG_EXP;
 
 void() data_prj_mlgd_th;
 void() data_prj_mlgd_touch;
@@ -20,8 +18,7 @@ void() data_prj_mlgd_ini={
   self.p_velocity = DAT_PRJ_MLGD_VELOCITY;
   self.c_model = DAT_PRJ_MLGD_MODEL;
   self.p_lifetime = DAT_PRJ_MLGD_LIFETIME;
-  self.p_damage = DAT_PRJ_MLGD_DAMAGE;
-  self.p_dmgtype = self.p_dmgtype | DMG_EXP;
+  
   //cosmetics
   self.effects = EF_ADDITIVE + EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MLGD_MODELFLAGS;

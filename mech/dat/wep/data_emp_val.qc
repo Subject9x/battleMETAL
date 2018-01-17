@@ -36,6 +36,7 @@ void() data_emp_ini={
   self.p_dmgtype = self.p_dmgtype | EFF_STX;
   self.w_range = DAT_EMP_RANGE;
   self.w_state = READY;
+  self.p_damage = DAT_EMP_DMG;
 };
 
 void() data_emp_think={
@@ -100,6 +101,8 @@ void() data_emp_atk={
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     util_setBoundBox('0 0 0', '0 0 0');
     self.velocity = normalize(dir - org);
+    self.p_dmgtype = oself.p_dmgtype;
+    self.p_damage = oself.p_damage;
     self.p_lifetime = time + self.p_lifetime;
     self.w_firetime = time + 0.5;
     setorigin(self, org);

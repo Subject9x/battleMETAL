@@ -9,11 +9,6 @@ this guy will bounce off up to two non-targets.
 //LIGHT AUTOCANNON SHOT==================
 float DAT_PRJ_QRFL_IDX = ID_PRJ_QRFL;
 
-float DAT_PRJ_QRFL_DAMAGE = 35;
-float DAT_PRJ_QRFL_DMGTYPE = DMG_BAL;
-
-
-
 void() data_prj_qrfl_touch;
 
 void() data_prj_qrfl_ini={
@@ -23,8 +18,6 @@ void() data_prj_qrfl_ini={
   self.p_velocity = DAT_PRJ_QRFL_VELOCITY;
   self.c_model = DAT_PRJ_QRFL_MODEL;
   self.p_lifetime = DAT_PRJ_QRFL_LIFETIME;
-  self.p_damage = DAT_PRJ_QRFL_DAMAGE;
-  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_STX;
   
   //cosmetics
   self.effects = self.effects + DAT_PRJ_QRFL_EFFECTS;

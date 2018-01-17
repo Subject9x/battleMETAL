@@ -7,10 +7,6 @@ Overview: data def file for a weapon projectile
 
 //MIS CANNON SHOT=======================
 float DAT_PRJ_MIS_IDX = ID_PRJ_MIS;
-float DAT_PRJ_MIS_DAMAGE = 75;
-float DAT_PRJ_MIS_DMGTYPE = DMG_EXP;
-
-
 
 void() data_prj_mis_touch;
 
@@ -21,8 +17,7 @@ void() data_prj_mis_ini={
   self.p_velocity = DAT_PRJ_MIS_VELOCITY;
   self.c_model = DAT_PRJ_MIS_MODEL;
   self.p_lifetime = DAT_PRJ_MIS_LIFETIME;
-  self.p_damage = DAT_PRJ_MIS_DAMAGE;
-  self.p_dmgtype = DMG_EXP;
+  
   //cosmetics
   self.effects = EF_ADDITIVE + EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MIS_MODELFLAGS;

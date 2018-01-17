@@ -7,8 +7,6 @@ Overview: data def file for a weapon projectile
 
 //EMP CANNON SHOT=======================
 float DAT_PRJ_EMP_IDX = ID_PRJ_EMP;
-float DAT_PRJ_EMP_DAMAGE = 300;
-float DAT_PRJ_EMP_DMGTYPE = 0;
 float DAT_PRJ_EMP_PROXYRAD = 150;
 float DAT_PRJ_EMP_EXPRAD = 300;
 
@@ -23,8 +21,6 @@ void() data_prj_emp_ini={
   self.p_velocity = DAT_PRJ_EMP_VELOCITY;
   self.c_model = DAT_PRJ_EMP_MODEL;
   self.p_lifetime = DAT_PRJ_EMP_LIFETIME;
-  self.p_damage =  DAT_PRJ_EMP_DAMAGE;
-  self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_RAM;
   
   //cosmetics
   self.effects = self.effects | (EF_ADDITIVE | EF_NOSHADOW);

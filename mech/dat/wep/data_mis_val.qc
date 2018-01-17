@@ -11,7 +11,6 @@ string DAT_MIS_NAME = "Rocket Launcher";
 
 float DAT_MIS_HPX = 150; 
 
-
 void() data_mis_atk;
 void() data_mis_think;
 
@@ -40,6 +39,8 @@ void() data_mis_ini={
   self.w_range = DAT_MIS_RANGE;
   self.w_isburst = FALSE;
   self.w_state = READY;
+  self.p_dmgtype = self.p_dmgtype | DMG_EXP;
+  self.p_damage = DAT_MIS_DMG;
 };
 
 void() data_mis_think={
@@ -108,6 +109,8 @@ void() data_mis_atk={
     util_setModel(self.c_model, 0);
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     util_setBoundBox('0 0 0', '0 0 0');
+    self.p_dmgtype = oself.p_dmgtype;
+    self.p_damage = oself.p_damage;
     self.velocity = normalize(dir - org);
     self.think = BecomeExplosion;
     self.nextthink = time + self.p_lifetime;
