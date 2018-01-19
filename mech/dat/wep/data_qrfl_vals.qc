@@ -8,10 +8,8 @@ Overview:
 float DAT_QRFL_IDX = ID_WEP_QRF;
 string DAT_QRFL_NAME = "Q-Rifle";
 
-
 float DAT_QRFL_HPX = 150; 
 float DAT_QRFL_QBITS = 8; 
-
 
 void() data_qrfl_atk;
 void() data_qrfl_think;

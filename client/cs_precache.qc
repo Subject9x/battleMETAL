@@ -132,6 +132,7 @@ void() cs_precache={
   data_wep_pac();
   data_wep_rplas();
   data_wep_sfga();
+  data_wep_flak();
   
   //hud data
   otl_hud_ini();

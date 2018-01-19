@@ -8,7 +8,6 @@ this guy will bounce off up to two non-targets.
 
 //ROTARY PLASMA SHOT==================
 float DAT_PRJ_RPLAS_IDX = ID_PRJ_RPLAS;
-float DAT_PRJ_RPLAS_BURN = 1; 
 
 void() data_prj_rplas_touch;
 void() data_prj_rplas_bounce;
@@ -52,10 +51,10 @@ void() data_prj_rplas_burn={
   local entity e;
   if(self.enemy.deadflag > DEAD_NO){
     self.think = SUB_Remove;
-    self.nextthink = time + 0.001;
+    self.nextthink = time + 0.01;
     return;
   }
-  t_damage(self.enemy, self, self.owner, DAT_PRJ_RPLAS_BURN, self.p_dmgtype, self.e_cam.origin, '0 0 0');
+  t_damage(self.enemy, self, self.owner, DAT_RPLAS_DMG_BURN, self.p_dmgtype, self.e_cam.origin, '0 0 0');
   org = randomvec() * 5 + self.e_cam.origin;
   setorigin(self, org);
   if(time > self.p_lifetime){

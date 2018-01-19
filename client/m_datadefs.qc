@@ -47,6 +47,7 @@ float ID_WEP_MIS=4;
 float ID_WEP_QRF = 5;
 float ID_WEP_RPC = 6;
 float ID_WEP_SFGA = 15;
+float ID_WEP_FLAK = 16;
 //ENERGY
 float ID_WEP_PAC = 7;
 float ID_WEP_ESR = 8;

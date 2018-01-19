@@ -173,7 +173,7 @@ void(vector ofs) menu_arming_WeaponList_BAL={
   drawstring(nofs + gui_percentToPixel(0.0312, 0.002), "==BALLISTIC==", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
   act_idx = 1;
   lst_idx = 1;
-  while(lst_idx <= 15){
+  while(lst_idx <= UI_TOTAL_WEAPONS){
     local entity dat;
     local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_WEPN);
@@ -212,7 +212,7 @@ void(vector ofs) menu_arming_WeaponList_ENE={
   drawstring(nofs + gui_percentToPixel(0.0375, 0.002), "==ENERGY==", '6 6 0', CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', HUD_ALPHA, 0);
   act_idx = 1;
   lst_idx = 1;
-  while(lst_idx <= 10){
+  while(lst_idx <= UI_TOTAL_WEAPONS){
     local entity dat;
     local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_WEPN);
@@ -251,7 +251,7 @@ void(vector ofs) menu_arming_WeaponList_EXP={
   drawstring(nofs + gui_percentToPixel(0.0375, 0.002), "==MISSILE==", '6 6 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
   act_idx = 1;
   lst_idx = 1;
-  while(lst_idx <= 10){
+  while(lst_idx <= UI_TOTAL_WEAPONS){
     local entity dat;
     local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_WEPN);

@@ -15,7 +15,7 @@ void() building_hangar={
   self.vec_name = "Large Hangar";
   self.p_class = P_BULD;
   util_setModel(DAT_BLD_H_LG_HANGAR_MODEL, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_STEP) ;
   util_setHealthArmor(DAT_BLD_H_LG_HANGAR_HP, DAT_BLD_H_LG_HANGAR_HP, 1, 100) ;
   util_setBoundBox('-72 -72 0', '72 72 80');
   self.sh_cur= 0;
@@ -24,6 +24,7 @@ void() building_hangar={
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();
+  self.movetype = MOVETYPE_NONE;
   self.th_die = building_die;
   self.think = building_think;
   self.nextthink = time + 1;

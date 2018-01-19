@@ -22,7 +22,7 @@ void() data_rplas_ini={
   self.p_damage = DAT_RPLAS_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_RPLAS_CLIPSIZE;
-  self.w_currentammo = 1;
+  self.w_currentammo = DAT_RPLAS_CLIPSIZE;
   self.w_fire_ofs = DAT_RPLAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_RPLAS_MODEL;
   self.w_attack = data_rplas_atk;
@@ -86,10 +86,17 @@ void() data_rplas_atk={
     self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
+    self.w_isburst = FALSE;
   }
   else{
-    self.w_firetime = time + self.w_firerate;
+    if((player.flags & FL_MONSTER)){
+      self.w_firetime = time + (self.rl_rate/1.5);
+    }
+    else{
+      self.w_firetime = time + self.rl_rate/1.5;
+    }
     self.w_state = RECOIL;
+    self.w_isburst = TRUE;
   }
   
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
@@ -117,31 +124,26 @@ void() data_rplas_atk={
   bul_fx.think = SUB_Remove;
   bul_fx.nextthink = time + 0.001;// + 0.35;
   
-  local float shots;
-  shots = DAT_RPLAS_SHOT;
-  while(shots > 0){
-    local vector norg;
-    norg = org;
-    newmis = spawn();
-    oself = self;
-    self = newmis;
-      self.owner = player;
-      data_iniProjectile(oself.w_proj);
-      self.velocity = normalize(dir - org);
-      self.think = SUB_Remove;
-      self.nextthink = time + self.p_lifetime;
-      self.velocity = self.velocity * self.p_velocity;
-      self.p_dmgtype = oself.p_dmgtype;
-      self.p_damage = oself.p_damage;
-      self.angles = vectoangles(self.velocity);
-      util_setModel(self.c_model, 0);
-      util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
-      util_setBoundBox('0 0 0', '0 0 0');        
-      self.angles_z = self.angles_z + (shots * 60);
-      makevectors(self.angles);
-      norg = org + (v_up * 8);
-      setorigin(self, norg);
-    self = oself;
-    shots = shots - 1;
-  }
+  local vector norg;
+  norg = org;
+  newmis = spawn();
+  oself = self;
+  self = newmis;
+    self.owner = player;
+    data_iniProjectile(oself.w_proj);
+    self.velocity = normalize(dir - org);
+    self.think = SUB_Remove;
+    self.nextthink = time + self.p_lifetime;
+    self.velocity = self.velocity * self.p_velocity;
+    self.p_dmgtype = oself.p_dmgtype;
+    self.p_damage = oself.p_damage;
+    self.angles = vectoangles(self.velocity);
+    util_setModel(self.c_model, 0);
+    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
+    util_setBoundBox('0 0 0', '0 0 0');        
+    self.angles = oself.angles;
+    makevectors(self.angles);
+    norg = org + (v_up * 8);
+    setorigin(self, norg);
+  self = oself;
 };

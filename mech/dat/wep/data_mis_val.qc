@@ -76,9 +76,7 @@ void() data_mis_atk={
     }
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-  
-
-  
+    
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.rl_cur = 0;
@@ -88,10 +86,10 @@ void() data_mis_atk={
   }
   else{
     if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + (self.rl_rate/1000);
+      self.w_firetime = time + (self.rl_rate);
     }
     else{
-      self.w_firetime = time + self.rl_rate/50;
+      self.w_firetime = time + self.rl_rate;
     }
     self.w_state = RECOIL;
     self.w_isburst = TRUE;

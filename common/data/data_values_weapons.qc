@@ -17,6 +17,8 @@ float DAT_RPLAS_RANGE     = 2400;
 float DAT_QRFL_RANGE      = 3600;
 //-------------------------SFGA
 float DAT_SFGA_RANGE      = 3600;
+//-------------------------FLAK
+float DAT_FLAK_RANGE      = 800
 //-------------------------Laser
 float DAT_LAS_RANGE       = 4000;
 //-------------------------EMP
@@ -35,60 +37,68 @@ float DAT_MARH_RANGE      = 3000;
 //            Recharge Time  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_RL_RATE    = 10;
-float DAT_LATC_RL_MAX     = 100;
+float DAT_LATC_RL_RATE    = 0.1;
+float DAT_LATC_RL_MAX     = 1;
 float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
-float DAT_RPLAS_RL_RATE   = 10;
-float DAT_RPLAS_RL_MAX    = 300;
-float DAT_RPLAS_EN_RATE   = 0.5;
+float DAT_RPLAS_RL_RATE   = 0.1;
+float DAT_RPLAS_RL_MAX    = 3;
+float DAT_RPLAS_EN_RATE   = 0.3;
 //-------------------------QRifle
-float DAT_QRFL_RL_RATE    = 10;
-float DAT_QRFL_RL_MAX     = 500;
-float DAT_QRFL_EN_RATE    = 5;
+float DAT_QRFL_RL_RATE    = 0.1;
+float DAT_QRFL_RL_MAX     = 5;
+float DAT_QRFL_EN_RATE    = 3;
 //-------------------------SFGA
-float DAT_SFGA_RL_RATE    = 10;
-float DAT_SFGA_RL_MAX     = 800;
+float DAT_SFGA_RL_RATE    = 0.1;
+float DAT_SFGA_RL_MAX     = 8;
 float DAT_SFGA_EN_RATE    = 0;
+//-------------------------FLAK
+float DAT_FLAK_RL_RATE    = 0.1;
+float DAT_FLAK_RL_MAX     = 1.5;
+float DAT_FLAK_EN_RATE    = 0;
 //-------------------------Laser
-float DAT_LAS_RL_RATE     = 10;
-float DAT_LAS_RL_MAX      = 200;
-float DAT_LAS_EN_RATE     = 3;
+float DAT_LAS_RL_RATE     = 0.1;
+float DAT_LAS_RL_MAX      = 2;
+float DAT_LAS_EN_RATE     = 0.5;
 //-------------------------EMP
-float DAT_EMP_RL_RATE     = 10;
-float DAT_EMP_RL_MAX      = 600;
-float DAT_EMP_EN_RATE     = 10;
+float DAT_EMP_RL_RATE     = 0.1;
+float DAT_EMP_RL_MAX      = 6;
+float DAT_EMP_EN_RATE     = 6.67;
 //-------------------------ESR
-float DAT_ESR_RL_RATE     = 10;
-float DAT_ESR_RL_MAX      = 500;
-float DAT_ESR_EN_RATE     = 8;
+float DAT_ESR_RL_RATE     = 0.1;
+float DAT_ESR_RL_MAX      = 5;
+float DAT_ESR_EN_RATE     = 6;
 //-------------------------PAC
-float DAT_PAC_RL_RATE     = 10;
-float DAT_PAC_RL_MAX      = 800;
-float DAT_PAC_EN_RATE     = 15;
+float DAT_PAC_RL_RATE     = 0.1;
+float DAT_PAC_RL_MAX      = 8;
+float DAT_PAC_EN_RATE     = 6.25;
 //-------------------------Rocket
-float DAT_MIS_RL_RATE     = 10;
-float DAT_MIS_RL_MAX      = 800;
+float DAT_MIS_RL_RATE     = 0.1;
+float DAT_MIS_RL_MAX      = 8;
 float DAT_MIS_EN_RATE     = 0;
 //-------------------------Laser Missile
-float DAT_MLGD_RL_RATE = 10;
-float DAT_MLGD_RL_MAX  = 500;
-float DAT_MLGD_EN_RATE = 0.5;
+float DAT_MLGD_RL_RATE    = 0.1;
+float DAT_MLGD_RL_MAX     = 5;
+float DAT_MLGD_EN_RATE    = 0.1;
 //-------------------------Radar Missile
-float DAT_MARH_RL_RATE = 10;
-float DAT_MARH_RL_MAX  = 500;
-float DAT_MARH_EN_RATE = 0.25;
+float DAT_MARH_RL_RATE    = 0.1;
+float DAT_MARH_RL_MAX     = 5;
+float DAT_MARH_EN_RATE    = 0.2;
 //====================================================================================
 //            Damage  
 //====================================================================================
 //-------------------------ATC
 float DAT_LATC_DMG        = 5;
 //-------------------------RPlas
-float DAT_RPLAS_DMG       = 20;  //this is a derived value
+float DAT_RPLAS_DMG       = 18;
+float DAT_RPLAS_DMG_BURN  = 0.5; 
 //-------------------------QRifle
-float DAT_QRFL_DMG        = 150;  //this is a derived value
+float DAT_QRFL_DMG        = 18.75;
 //-------------------------SFGA
 float DAT_SFGA_DMG        = 300;
+//-------------------------FLAK
+float DAT_FLAK_DMG        = 0.5;
+float DAT_FLAK_SHRAP_TOTAL= 8;
 //-------------------------Laser
 float DAT_LAS_DMG         = 20;
 //-------------------------EMP
@@ -118,6 +128,10 @@ float DAT_QRFL_SPR_Y      = 0;
 //-------------------------SFGA
 float DAT_SFGA_SPR_X      = 3;
 float DAT_SFGA_SPR_Y      = 2;
+//-------------------------FLAK
+float DAT_FLAK_CHOKE_X    = 25;
+float DAT_FLAK_CHOKE_Y    = 18;
+
 //-------------------------Laser
 
 //-------------------------EMP
@@ -139,8 +153,10 @@ float DAT_LAS_SPR_Y       = 3;
 //====================================================================================
 //-------------------------ATC
 float DAT_LATC_CLIPSIZE     = 1;
+//-------------------------FLAK
+float DAT_FLAK_CLIPSIZE     = 1;
 //-------------------------RPlas
-float DAT_RPLAS_CLIPSIZE    = 1;
+float DAT_RPLAS_CLIPSIZE    = 8;
 //-------------------------QRifle
 float DAT_QRFL_CLIPSIZE     = 1;
 //-------------------------SFGA
@@ -170,6 +186,8 @@ float DAT_RPLAS_TECH_LEVEL  = 1;
 float DAT_QRFL_TECH_LEVEL   = 1;
 //-------------------------SFGA
 float DAT_SFGA_TECH_LEVEL   = 1;
+//-------------------------FLAK
+float DAT_FLAK_TECH_LEVEL   = 1;
 //-------------------------Laser
 float DAT_LAS_TECH_LEVEL    = 1;
 //-------------------------EMP
@@ -189,6 +207,8 @@ float DAT_MARH_TECH_LEVEL   = 2;
 //============================
 //-------------------------ATC
 float DAT_LATC_WSIZE      = 1;
+//-------------------------FLAK
+float DAT_FLAK_WSIZE      = 1;
 //-------------------------RPlas
 float DAT_RPLAS_WSIZE     = 2;
 //-------------------------QRifle
@@ -214,6 +234,8 @@ float DAT_MARH_WSIZE      = 3;
 //============================
 //-------------------------ATC
 string DAT_LATC_SOUND = "sound/weapons/atc_fire.ogg";
+//-------------------------FLAK
+string DAT_FLAK_SOUND = "sound/weapons/atc_fire.ogg";
 //-------------------------RPlas
 string DAT_RPLAS_SOUND = "sound/weapons/atc_fire.ogg";
 //-------------------------QRifle
@@ -239,6 +261,8 @@ string DAT_MARH_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //============================
 //-------------------------ATC
 string DAT_LATC_MODEL    = "q3mdl/weapons/w_atc.md3";
+//-------------------------FLAK
+string DAT_FLAK_MODEL    = "q3mdl/weapons/w_atc.md3";
 //-------------------------RPlas
 string DAT_RPLAS_MODEL   = "q3mdl/weapons/w_rpc.md3";
 //-------------------------QRifle
@@ -264,6 +288,8 @@ string DAT_MARH_MODEL    = "q3mdl/weapons/w_arh.md3";
 //============================
 //-------------------------ATC
 vector DAT_LATC_FIRE_OFS    = '0 0 2';
+//-------------------------ATC
+vector DAT_FLAK_FIRE_OFS    = '0 0 2';
 //-------------------------RPlas
 vector DAT_RPLAS_FIRE_OFS   = '0 0 2';
 //-------------------------QRifle

@@ -247,6 +247,9 @@ void(float wep_id) data_iniWep={
   else if(wep_id == ID_WEP_MARH){
     data_marh_ini();
   }
+  else if(wep_id == ID_WEP_FLAK){
+    data_flak_ini();
+  }
 };
 
 

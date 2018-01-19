@@ -28,6 +28,7 @@ void() building_shield={
   self.scale = 1;
   self.deadflag = DEAD_NO;
   droptofloor();
+  
   self.th_die = building_shield_die;
   self.use = multi_trigger;
   self.think = building_think;

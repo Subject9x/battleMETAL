@@ -5,42 +5,48 @@ Date: 1/16/2018
 Overview: mimicking Quake 3 map functionality
 */
 
-/*QUAKED misc_model (1 0 1) (-16 -16 -24) (16 16 32)
-model : <filename> - model to load
-count : number, first frame
-delay : number, frame display time
-solid : 
-  SOLID_NOT				= 0;	// no interaction with other objects
-  SOLID_TRIGGER			= 1;	// touch on edge, but not blocking
-  SOLID_BBOX				= 2;	// touch on edge, block
-  SOLID_SLIDEBOX			= 3;	// touch on edge, but not an onground
-  SOLID_BSP				= 4;	// bsp clip, touch on edge, block
-scale : float, starting size. default is 1.0
-*/
-void() misc_model={
-  self.movetype = MOVETYPE_NONE;
-  self.velocity = '0 0 0';
-  precache_model(self.model);
-  setmodel(self, self.model);
-  setsize(self, self.mins, self.maxs);
-  self.scale = self.scale;
-};
-
-/*QUAKED map_terrain_model (1 0 1) (-16 -16 -24) (16 16 32)
-model : <filename> - model to load
-cnt : number, first frame
-solid : is defaulted to SOLID_BSP by engine
-scale : float, starting size. default is 1.0
+/*QUAKED map_terrain_model (1 .5 .25) (-16 -16 -16) (16 16 16)
+solid is defaulted to SOLID_BSP
+Keys:
+"model"
+  path to model
 */
 void() map_terrain_model={
+  self.angles = '0 90 0';
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
   self.velocity = '0 0 0';
   precache_model(self.model);
   setmodel(self, self.model);
   self.takedamage = DAMAGE_NO;
+  setorigin(self, self.origin);
   setsize(self, self.mins, self.maxs);
-  dprint(strcat(self.model, " \n")); //DEBUG
-  self.nextthink = time + 0.5;
-  self.think = SUB_Null;
+  self.alpha = 1;
+};
+
+/*QUAKED misc_model (1 .5 .25) (-16 -16 -16) (16 16 16)
+Place a model in the map.
+If target is set it follows the path defined by the target path_corner ents.
+noise and noise1 then define the noises to play during movement.
+button0 & 1 dont work when target is set.
+Keys:
+"angle" 
+ Direction in which model will be oriented.
+"model"
+ Path/name of model to use (eg: models/mapobjects/mymodel.md3).
+"target" 
+ First node to follow.
+"button0"
+ Startframe to play
+"button1"
+ Endframe to play
+"noise"
+ Start and movement sound (eg: sound1start.wav)
+"noise1"
+ Stop sound (eg: sound1stop.wav)
+"noise4"
+ Target name for use with the misc_rotateengine
+*/
+void() misc_model={
+  //apparently misc_model is ONLY for Q3map2
 };

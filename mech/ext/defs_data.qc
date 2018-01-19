@@ -39,6 +39,7 @@ void() data_pac_ini;
 void() data_qrfl_ini;
 void() data_rplas_ini;
 void() data_sfga_ini;
+void() data_flak_ini;
 
 void() data_prj_emp_ini;
 void() data_prj_sfga_ini;
@@ -61,6 +62,7 @@ float ID_WEP_LATC = 1;
 float ID_WEP_QRF = 5;
 float ID_WEP_RPC = 6;
 float ID_WEP_SFGA = 15;
+float ID_WEP_FLAK = 16;
 //ENERGY
 float ID_WEP_LAS = 3;
 float ID_WEP_EMP = 2;

@@ -23,13 +23,11 @@ float(entity ent, float changed) send_deploypoint;
 //AI nodes
 void() ai_node_touch;
 void() ai_node_graph_touch;
-void() ai_node;
 
 //map objectives
 void() map_objective_th;
 void() map_objective_use;
 float(entity ent, float changed) send_objective;
 
-//misc_model
-void() misc_model;
-void() map_terrain_model;
+//misc model
+void() misc_model_remove;
