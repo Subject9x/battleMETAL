@@ -18,7 +18,7 @@ void() building_shield={
   self.data_type = DATA_BLD;
   self.vec_name = "Shield Generator";
   self.flags = self.flags | FL_MONSTER;
-  self.p_class = P_BULD;
+  self.data_type = P_BULD;
   util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_SHIELDGEN_HP, DAT_BLD_H_SHIELDGEN_HP, 1, 100) ;
@@ -42,7 +42,7 @@ void() building_shield_die={
   local entity head;
   head = findradius(self.origin, 400);
   while(head){
-    if(head.p_class == P_MECH){
+    if(head.data_type == DATA_MECH){
       head.sh_cur = head.sh_cur + 250;
       if(head.sh_cur > head.sh_max){
         head.sh_cur = head.sh_max;

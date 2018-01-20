@@ -85,11 +85,11 @@ float(entity root, entity contact, float current_total) radar_calcEnemyDist={
 float(entity contact, float current_total) radar_calcUnitValue={
   local float val;
   val = 0;
-  if(contact.p_class == P_MECH){
+  if(contact.data_type == DATA_MECH){
     val = val + RADAR_ISMECH;
   }
   
-  if(contact.p_class == P_VECH){
+  if(contact.data_type == DATA_VEHC){
     val = val + RADAR_ISCIV;
   }
   return val ;

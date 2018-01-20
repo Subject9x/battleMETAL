@@ -168,7 +168,7 @@ void() ai_turret_update={
 
 void() ai_turret_touch={
   if(self.ai_first_order != AI_ORDER_DEBUG){
-    if(other.p_class != P_OBS){
+    if(other.data_type != DATA_POBS){
       if(other.i_faction != self.i_faction){
         //bumped a baddy!
         if((ai_target_infront(other)) || (self.enemy == world)){  
@@ -228,7 +228,7 @@ void() ai_mech_touch={
     return;
   }
   if(self.ai_first_order != AI_ORDER_DEBUG){
-    if(other.p_class != P_OBS){
+    if(other.data_type != DATA_POBS){
       local float infront;
       infront = ai_target_infront(other);
       if(other.i_faction == self.i_faction){
@@ -245,7 +245,7 @@ void() ai_mech_touch={
       else{
         //bumped a baddy!
         if(self.enemy == world){
-          if(other.p_class != P_OBS){
+          if(other.data_type != DATA_POBS){
             if(self.enemy == world){
               self.enemy = other;
             }

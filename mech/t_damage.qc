@@ -104,7 +104,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   //the special hit-location calculator is only run for P_MECH
   //units
-  if(trg.p_class == P_MECH){
+  if(trg.data_type == DATA_MECH){
     //filter out leg hits
     if(dmg_point_z < (trg.origin_z - 5)){
       trg = trg.e_legs;
@@ -229,7 +229,7 @@ void(entity targ, entity attacker, float dmg_type) filter_killed={
   local entity filter;
   filter = targ;
   if(targ.owner.classname == "player"){
-    if(targ.owner.p_class == P_MECH){
+    if(targ.owner.data_type == DATA_MECH){
       if(targ.classname == M_LEGS){
         return;
       }
@@ -254,7 +254,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
     self.health = 0;
   }
   
-	if(!self.p_class){
+	if(!self.data_type){
     if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
       self.th_die();
       self = oself;

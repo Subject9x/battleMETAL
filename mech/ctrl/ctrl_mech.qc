@@ -185,7 +185,7 @@ void() touch_mech={
     local float dif;
     dif = self.vec_size - other.vec_size;
     if(dif == 2){
-      if(other.p_class == P_VECH){
+      if(other.data_type == DATA_VEHC){
         t_damage(other, self, self, other.max_health, DMG_BAL, other.origin, '0 0 0');
       }
       else{
@@ -193,7 +193,7 @@ void() touch_mech={
       }
     }
     else if(dif == 1){
-      if(other.p_class == P_VECH){
+      if(other.data_type == DATA_VEHC){
         t_damage(other, self, self, other.max_health , DMG_BAL, other.origin, '0 0 0');
       }
       else{
@@ -202,17 +202,17 @@ void() touch_mech={
     
     }
     else if(dif == 0){
-      if(other.p_class == P_VECH){
+      if(other.data_type == DATA_VEHC){
         t_damage(other, self, self, other.max_health / 4, DMG_BAL, other.origin, '0 0 0');
       }
     }
     else if(dif == -1){
-      if(other.p_class != P_VECH){
+      if(other.data_type != DATA_VEHC){
         t_damage(self, other, other, other.max_health / 1.5, DMG_BAL, self.origin, '0 0 0');
       }
     }
     else if(dif == -2){
-      if(other.p_class != P_VECH){
+      if(other.data_type != DATA_VEHC){
         t_damage(self, other, other, other.max_health / 2, DMG_BAL, self.origin, '0 0 0');
       }
     }
@@ -226,7 +226,7 @@ void() touch_mechPiece={
   if(other.classname == MECH_PIECE){
     return;
   }
-  if(other.p_class == P_MECH){
+  if(other.data_type == DATA_MECH){
     BecomeExplosion();
   }
 };

@@ -85,10 +85,10 @@ void() data_mis_atk={
   }
   else{
     if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + ((self.rl_rate / 3) / 10);
+      self.w_firetime = time + ((self.rl_rate * 1.5) / 10);
     }
     else{
-      self.w_firetime = time + self.rl_rate / 3;
+      self.w_firetime = time + self.rl_rate * 1.5;
     }
     self.w_state = RECOIL;
     self.w_isburst = TRUE;

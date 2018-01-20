@@ -114,7 +114,7 @@ float() ai_core_targetstate={
   if(self.enemy == world){
     return FALSE;
   }
-  if(self.enemy.p_class == P_OBS){
+  if(self.enemy.data_type == DATA_POBS){
     return FALSE;
   }
   if(self.enemy.deadflag >= DEAD_DYING){
@@ -148,7 +148,7 @@ entity() ai_core_radar_sweep={
   while(t){
     if(t != world){
       if(t.i_faction != self.i_faction){
-        if((t.p_class) && t.p_class != P_OBS){
+        if((t.data_type) && t.data_type != DATA_POBS){
           makevectors(t.angles);
           vis = t.origin + v_up*ht;
           traceline(me, vis, TRUE, self);
@@ -179,7 +179,7 @@ entity() ai_core_findfriendly={
   while(friend){
     if(friend != world){
       if(friend.i_faction == self.i_faction){
-        if((friend.p_class == P_VECH) || (friend.p_class == P_MECH)){
+        if((friend.data_type == DATA_VEHC) || (friend.data_type == DATA_MECH)){
           makevectors(friend.angles);
           forg = friend.origin + v_up*32;
           traceline(me, forg, TRUE, self);
