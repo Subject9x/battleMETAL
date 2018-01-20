@@ -6,14 +6,12 @@ Overview: data def file for a weapon projectile
 */
 
 //MIS CANNON SHOT=======================
-float DAT_PRJ_MIS_IDX = ID_PRJ_MIS;
-
 void() data_prj_mis_touch;
 
 void() data_prj_mis_ini={
   self.classname = "missile";
   self.touch = data_prj_mis_touch;
-  self.data_idx = DAT_PRJ_MIS_IDX;
+  self.data_idx = ID_PRJ_MIS;
   self.p_velocity = DAT_PRJ_MIS_VELOCITY;
   self.c_model = DAT_PRJ_MIS_MODEL;
   self.p_lifetime = DAT_PRJ_MIS_LIFETIME;

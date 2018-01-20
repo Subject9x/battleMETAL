@@ -17,6 +17,7 @@ void() data_flak_ini={
   self.w_name = DAT_FLAK_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
   self.p_damage = DAT_FLAK_DMG;
+  self.w_proj = DAT_FLAK_PROJ_ID;
   self.w_firetime = 0;
   self.w_clipsize = DAT_FLAK_CLIPSIZE;
   self.w_currentammo = DAT_FLAK_CLIPSIZE;
@@ -29,8 +30,8 @@ void() data_flak_ini={
   self.en_rate = DAT_FLAK_EN_RATE;
   self.fire_sound = DAT_FLAK_SOUND;
   self.i_techlvl = DAT_FLAK_TECH_LEVEL;
-  self.stat_spr_x = 0;
-  self.stat_spr_y = 0;
+  self.stat_spr_x = DAT_FLAK_SPR_X;
+  self.stat_spr_y = DAT_FLAK_SPR_Y;
   self.i_size = DAT_FLAK_WSIZE;
   self.w_think = data_flak_think;
   self.health = DAT_FLAK_HPX;
@@ -56,8 +57,8 @@ void() data_flak_think={
 };
 
 void() data_flak_atk={
-  local entity player;
-  local vector dir, end; 
+  local entity player, this;
+  local vector dir, end, adj, org; 
   
   player = self.owner;
   
@@ -81,23 +82,46 @@ void() data_flak_atk={
     self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
+    self.w_isburst = FALSE;
   }
   else{
-    self.w_firetime = time + self.w_firerate;
+    if((self.flags * FL_MONSTER)){
+      self.w_firetime = time + (self.rl_rate / 10 ) / 1.5;
+    }
+    else{
+      self.w_firetime = time + self.rl_rate / 1.5;
+    }
     self.w_state = RECOIL;
+    self.w_isburst = TRUE;
   }
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  local float shrap;
-  shrap = DAT_FLAK_SHRAP_TOTAL;
-  while(shrap > 0){
-    local vector ofs;
-    ofs = dir + (crandom() * DAT_FLAK_CHOKE_X * v_right) + (crandom() * DAT_FLAK_CHOKE_Y * v_up);
-    te_spike(ofs);
-    t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, ofs, '0 0 0');
-    shrap = shrap - 1;
-  }
-
+  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
+  makevectors(player.angles);
+  org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+  
+  newmis = spawn();
+  this = self;
+  self = newmis;
+    self.owner = player;
+    data_iniProjectile(this.w_proj);
+    util_setModel(self.c_model, 0);
+    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+    util_setBoundBox('0 0 0', '0 0 0');
+    self.velocity = normalize(dir - org);
+    self.p_dmgtype = this.p_dmgtype;
+    self.p_damage = this.p_damage;
+    self.p_lifetime = time + self.p_lifetime;
+    self.w_firetime = time + 0.1;
+    setorigin(self, org);
+    self.velocity = self.velocity * self.p_velocity;
+    self.angles = vectoangles(self.velocity);
+    self.think = data_prj_flak_think;
+    self.touch = data_prj_flak_touch;
+    self.nextthink = time + 0.01;
+  self = this;
+  
+  
   local entity bul_fx;
   bul_fx = spawn();
   bul_fx.movetype = SOLID_NOT;

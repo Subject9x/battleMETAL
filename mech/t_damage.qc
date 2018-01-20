@@ -354,7 +354,7 @@ float(entity targ, float dmg_amt, float dmg_type) shield_vs_bal={
       remainder = dmg_amt - (targ.sh_cur * SHVBAL_EFFNON_PERCENTAGE);
     }
     else{
-      mod = dmg_amt/ SHVBAL_EFFNON_REDUCE;
+      mod = dmg_amt * SHVBAL_EFFNON_REDUCE;
       targ.sh_cur = targ.sh_cur - mod;
       remainder = 0;
     }

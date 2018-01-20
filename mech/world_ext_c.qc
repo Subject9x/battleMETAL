@@ -200,6 +200,9 @@ void(float prj_id) data_iniProjectile={
   else if( prj_id == ID_PRJ_SFGA){
     data_prj_sfga_ini();
   }
+  else if(prj_id == ID_PRJ_FLAK){
+    data_prj_flak_ini();
+  }
   else{
     cons_logAFloat("Error: failed to find projectile of ", prj_id);
     remove(self);

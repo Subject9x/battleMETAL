@@ -49,6 +49,7 @@ void() data_prj_mlgd_ini;
 void() data_prj_qrfl_ini;
 void() data_prj_rplas_ini;
 void() data_prj_sfga_ini;
+void() data_prj_flak_ini;
 
 //UPDATE CSQC cs_datadefs.qc if you mod any of these!
 //MECHS==================================
@@ -68,14 +69,12 @@ float ID_WEP_LAS = 3;
 float ID_WEP_EMP = 2;
 float ID_WEP_PAC = 7;
 float ID_WEP_ESR = 8;
-
 //MISSILE
 float ID_WEP_MIS = 4;
 float ID_WEP_MLGD = 9;
 float ID_WEP_MARH = 10;
 float ID_WEP_MAPR = 11;
 float ID_WEP_MCRK = 12;
-
 //MELEE
 float ID_WEP_RAM = 13;
 float ID_WEP_BLD = 14;
@@ -89,6 +88,7 @@ float ID_PRJ_MARH = 5;
 float ID_PRJ_RPLAS = 6;
 float ID_PRJ_QRFL = 7;
 float ID_PRJ_SFGA = 8;
+float ID_PRJ_FLAK = 9;
 //VEHICLES===============================
 float ID_VEC_TANK = 1;
 

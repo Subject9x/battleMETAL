@@ -61,9 +61,7 @@ void() data_marh_atk={
   player = self.owner;
   if(self.owner.stat_rdr_mode == TRUE){
     if(self.owner.stat_lck_stt & LOCK_TARG){ 
-      
       local vector dir, org, end, adj;
-      
       if((player.flags & FL_CLIENT)){
         end = util_traceForPlayer(player, self.w_range);
       }

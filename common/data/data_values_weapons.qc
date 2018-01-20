@@ -18,11 +18,11 @@ float DAT_QRFL_RANGE      = 3600;
 //-------------------------SFGA
 float DAT_SFGA_RANGE      = 3600;
 //-------------------------FLAK
-float DAT_FLAK_RANGE      = 800
+float DAT_FLAK_RANGE      = 4000;
 //-------------------------Laser
 float DAT_LAS_RANGE       = 4000;
 //-------------------------EMP
-float DAT_EMP_RANGE       = 2400;
+float DAT_EMP_RANGE       = 1900;
 //-------------------------ESR
 float DAT_ESR_RANGE       = 800;
 //-------------------------PAC
@@ -32,7 +32,7 @@ float DAT_MIS_RANGE       = 1000;
 //-------------------------Laser Missile
 float DAT_MLGD_RANGE      = 2400;
 //-------------------------Radar Missile
-float DAT_MARH_RANGE      = 3000;
+float DAT_MARH_RANGE      = 3600;
 //====================================================================================
 //            Recharge Time  
 //====================================================================================
@@ -54,7 +54,7 @@ float DAT_SFGA_RL_MAX     = 8;
 float DAT_SFGA_EN_RATE    = 0;
 //-------------------------FLAK
 float DAT_FLAK_RL_RATE    = 0.1;
-float DAT_FLAK_RL_MAX     = 1.5;
+float DAT_FLAK_RL_MAX     = 4;
 float DAT_FLAK_EN_RATE    = 0;
 //-------------------------Laser
 float DAT_LAS_RL_RATE     = 0.1;
@@ -78,11 +78,11 @@ float DAT_MIS_RL_MAX      = 8;
 float DAT_MIS_EN_RATE     = 0;
 //-------------------------Laser Missile
 float DAT_MLGD_RL_RATE    = 0.1;
-float DAT_MLGD_RL_MAX     = 5;
+float DAT_MLGD_RL_MAX     = 6;
 float DAT_MLGD_EN_RATE    = 0.1;
 //-------------------------Radar Missile
 float DAT_MARH_RL_RATE    = 0.1;
-float DAT_MARH_RL_MAX     = 5;
+float DAT_MARH_RL_MAX     = 7;
 float DAT_MARH_EN_RATE    = 0.2;
 //====================================================================================
 //            Damage  
@@ -90,19 +90,19 @@ float DAT_MARH_EN_RATE    = 0.2;
 //-------------------------ATC
 float DAT_LATC_DMG        = 5;
 //-------------------------RPlas
-float DAT_RPLAS_DMG       = 18;
+float DAT_RPLAS_DMG       = 20;
 float DAT_RPLAS_DMG_BURN  = 0.5; 
 //-------------------------QRifle
-float DAT_QRFL_DMG        = 18.75;
+float DAT_QRFL_DMG        = 10;
 //-------------------------SFGA
 float DAT_SFGA_DMG        = 300;
 //-------------------------FLAK
 float DAT_FLAK_DMG        = 0.5;
-float DAT_FLAK_SHRAP_TOTAL= 8;
+float DAT_FLAK_SHRAP_TOTAL= 14;
 //-------------------------Laser
 float DAT_LAS_DMG         = 20;
 //-------------------------EMP
-float DAT_EMP_DMG         = 300;
+float DAT_EMP_DMG         = 400;
 //-------------------------ESR
 float DAT_ESR_DMG         = 25;
 //-------------------------PAC
@@ -129,8 +129,8 @@ float DAT_QRFL_SPR_Y      = 0;
 float DAT_SFGA_SPR_X      = 3;
 float DAT_SFGA_SPR_Y      = 2;
 //-------------------------FLAK
-float DAT_FLAK_CHOKE_X    = 25;
-float DAT_FLAK_CHOKE_Y    = 18;
+float DAT_FLAK_SPR_X      = 4;
+float DAT_FLAK_SPR_Y      = 2;
 
 //-------------------------Laser
 
@@ -154,7 +154,7 @@ float DAT_LAS_SPR_Y       = 3;
 //-------------------------ATC
 float DAT_LATC_CLIPSIZE     = 1;
 //-------------------------FLAK
-float DAT_FLAK_CLIPSIZE     = 1;
+float DAT_FLAK_CLIPSIZE     = 4;
 //-------------------------RPlas
 float DAT_RPLAS_CLIPSIZE    = 8;
 //-------------------------QRifle
@@ -181,11 +181,11 @@ float DAT_MARH_CLIPSIZE     = 1;
 //-------------------------ATC
 float DAT_LATC_TECH_LEVEL   = 1;
 //-------------------------RPlas
-float DAT_RPLAS_TECH_LEVEL  = 1;
+float DAT_RPLAS_TECH_LEVEL  = 3;
 //-------------------------QRifle
-float DAT_QRFL_TECH_LEVEL   = 1;
+float DAT_QRFL_TECH_LEVEL   = 2;
 //-------------------------SFGA
-float DAT_SFGA_TECH_LEVEL   = 1;
+float DAT_SFGA_TECH_LEVEL   = 2;
 //-------------------------FLAK
 float DAT_FLAK_TECH_LEVEL   = 1;
 //-------------------------Laser
@@ -193,13 +193,13 @@ float DAT_LAS_TECH_LEVEL    = 1;
 //-------------------------EMP
 float DAT_EMP_TECH_LEVEL    = 1;
 //-------------------------ESR
-float DAT_ESR_TECH_LEVEL    = 1;
+float DAT_ESR_TECH_LEVEL    = 2;
 //-------------------------PAC
-float DAT_PAC_TECH_LEVEL    = 1;
+float DAT_PAC_TECH_LEVEL    = 3;
 //-------------------------Rocket
 float DAT_MIS_TECH_LEVEL    = 1;
 //-------------------------Laser Missile
-float DAT_MLGD_TECH_LEVEL   = 2;
+float DAT_MLGD_TECH_LEVEL   = 1;
 //-------------------------Radar Missile
 float DAT_MARH_TECH_LEVEL   = 2;
 //============================
@@ -208,21 +208,21 @@ float DAT_MARH_TECH_LEVEL   = 2;
 //-------------------------ATC
 float DAT_LATC_WSIZE      = 1;
 //-------------------------FLAK
-float DAT_FLAK_WSIZE      = 1;
+float DAT_FLAK_WSIZE      = 2;
 //-------------------------RPlas
 float DAT_RPLAS_WSIZE     = 2;
 //-------------------------QRifle
-float DAT_QRFL_WSIZE      = 2;
+float DAT_QRFL_WSIZE      = 1;
 //-------------------------SFGA
 float DAT_SFGA_WSIZE      = 3;
 //-------------------------Laser
 float DAT_LAS_WSIZE       = 1;
 //-------------------------EMP
-float DAT_EMP_WSIZE       = 2;
+float DAT_EMP_WSIZE       = 3;
 //-------------------------ESR
-float DAT_ESR_WSIZE       = 3;
+float DAT_ESR_WSIZE       = 2;
 //-------------------------PAC
-float DAT_PAC_WSIZE       = 2;
+float DAT_PAC_WSIZE       = 3;
 //-------------------------Rocket
 float DAT_MIS_WSIZE       = 1;
 //-------------------------Laser Missile
@@ -321,6 +321,8 @@ float DAT_RPLAS_PROJ_ID   = ID_PRJ_RPLAS;
 float DAT_QRFL_PROJ_ID    = ID_PRJ_QRFL;
 //-------------------------SFGA
 float DAT_SFGA_PROJ_ID    = ID_PRJ_SFGA;
+//-------------------------FLAK
+float DAT_FLAK_PROJ_ID    = ID_PRJ_FLAK;
 //-------------------------Laser
 
 //-------------------------EMP

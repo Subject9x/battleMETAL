@@ -22,6 +22,8 @@ float DAT_PRJ_QRFL_VELOCITY = 200;
 float DAT_PRJ_RPLAS_VELOCITY = 1600;
 //-------------------------SFGA
 float DAT_PRJ_SFGA_VELOCITY = 1500;
+//-------------------------FLAK
+float DAT_PRJ_FLAK_VELOCITY = 4500;
 //============================
 //            lifetime           
 //============================
@@ -39,23 +41,43 @@ float DAT_PRJ_QRFL_LIFETIME = 4;
 float DAT_PRJ_RPLAS_LIFETIME = 1.558;
 //-------------------------SFGA
 float DAT_PRJ_SFGA_LIFETIME = 8;
+//-------------------------FLAK
+float DAT_PRJ_FLAK_LIFETIME = 5;
+//============================
+//            radius           
+//============================
+//-------------------------EMP
+float DAT_PRJ_EMP_PROXYRAD    = 150;
+float DAT_PRJ_EMP_EXPRAD      = 300;
+//-------------------------MIS-ARH
+//-------------------------Rocket
+//-------------------------MIS-LGD
+//-------------------------QRifle
+//-------------------------RPlas
+//-------------------------SFGA
+float DAT_PRJ_SFGA_RAD        = 150;
+//-------------------------FLAK
+float DAT_PRJ_FLAK_PROXYRAD   = 45;
+float DAT_PRJ_FLAK_EXPRAD     = 50;
 //============================
 //            Model           
 //============================
 //-------------------------EMP
-string DAT_PRJ_EMP_MODEL = "q3mdl/proj_emp.md3";
+string DAT_PRJ_EMP_MODEL    = "q3mdl/proj_emp.md3";
 //-------------------------MIS-ARH
-string DAT_PRJ_MARH_MODEL = "q3mdl/proj_mis.md3";
+string DAT_PRJ_MARH_MODEL   = "q3mdl/proj_mis.md3";
 //-------------------------Rocket
-string DAT_PRJ_MIS_MODEL = "q3mdl/proj_mis.md3";
+string DAT_PRJ_MIS_MODEL    = "q3mdl/proj_mis.md3";
 //-------------------------MIS-LGD
-string DAT_PRJ_MLGD_MODEL = "q3mdl/proj_mis.md3";
+string DAT_PRJ_MLGD_MODEL   = "q3mdl/proj_mis.md3";
 //-------------------------QRifle
-string DAT_PRJ_QRFL_MODEL = "progs/casing.mdl";
+string DAT_PRJ_QRFL_MODEL   = "progs/casing.mdl";
 //-------------------------RPlas
-string DAT_PRJ_RPLAS_MODEL = "progs/casing.mdl";
+string DAT_PRJ_RPLAS_MODEL  = "progs/casing.mdl";
 //-------------------------SFGA
-string DAT_PRJ_SFGA_MODEL = "progs/casing.mdl";
+string DAT_PRJ_SFGA_MODEL   = "progs/casing.mdl";
+//-------------------------FLAK
+string DAT_PRJ_FLAK_MODEL   = "progs/casing.mdl";
 //============================
 //            Effects           
 //============================
@@ -115,3 +137,11 @@ vector DAT_PRJ_SFGA_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_SFGA_GLOWCOLOR = 240;
 float DAT_PRJ_SFGA_GLOWSIZE = 0.005;
 float DAT_PRJ_SFGA_GLOWTRAIL= FALSE;
+//-------------------------FLAK
+float DAT_PRJ_FLAK_EFFECTS = EF_NOSHADOW;
+float DAT_PRJ_FLAK_MODELFLAGS = MF_GRENADE;
+float DAT_PRJ_FLAK_ALPHA = 1;
+vector DAT_PRJ_FLAK_COLORMOD = '0.1 0.1 0.1';
+float DAT_PRJ_FLAK_GLOWCOLOR = 240;
+float DAT_PRJ_FLAK_GLOWSIZE = 0.005;
+float DAT_PRJ_FLAK_GLOWTRAIL= FALSE;

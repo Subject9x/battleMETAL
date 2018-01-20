@@ -6,10 +6,6 @@ Overview: data def file for a weapon projectile
 */
 
 //EMP CANNON SHOT=======================
-float DAT_PRJ_EMP_IDX = ID_PRJ_EMP;
-float DAT_PRJ_EMP_PROXYRAD = 150;
-float DAT_PRJ_EMP_EXPRAD = 300;
-
 void() data_prj_emp_touch;
 void() data_prj_emp_think;
 void() data_prj_emp_explode;
@@ -17,7 +13,7 @@ void() data_prj_emp_explode;
 void() data_prj_emp_ini={
   self.classname = "missile";
   self.touch = data_prj_emp_touch;
-  self.data_idx = DAT_PRJ_EMP_IDX;
+  self.data_idx = ID_PRJ_EMP;
   self.p_velocity = DAT_PRJ_EMP_VELOCITY;
   self.c_model = DAT_PRJ_EMP_MODEL;
   self.p_lifetime = DAT_PRJ_EMP_LIFETIME;

@@ -5,9 +5,8 @@ Date: 05/17/2017
 Overview: data def file for a weapon projectile
 */
 
-//LIGHT AUTOCANNON SHOT==================
-float DAT_PRJ_SFGA_IDX = ID_PRJ_SFGA;
-float DAT_PRJ_SFGA_RAD = 150;
+//SNUB FIELD GUN ARTILLERY ROUND==================
+
 
 void() data_prj_sfga_touch;
 void() data_prj_sfga_raddmg;
@@ -15,7 +14,7 @@ void() data_prj_sfga_raddmg;
 void() data_prj_sfga_ini={
   self.classname = "missile";
   self.touch = data_prj_sfga_touch;
-  self.data_idx = DAT_PRJ_SFGA_IDX;
+  self.data_idx = ID_PRJ_SFGA;
   self.p_velocity = DAT_PRJ_SFGA_VELOCITY;
   self.c_model = DAT_PRJ_SFGA_MODEL;
   self.p_lifetime = DAT_PRJ_SFGA_LIFETIME;
