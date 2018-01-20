@@ -46,12 +46,11 @@ void() data_mlgd_think={
     }
   }
   else if(self.w_state == RELOADING){
-    if(self.owner.en_cur > self.en_rate){
-      //self.owner.en_cur = self.owner.en_cur - (self.en_rate / 8); //v0.0.3 - no longer needed
-      self.rl_cur = self.rl_cur + self.rl_rate;
-      if(self.en_cur >= self.en_max){
-        self.w_state = READY;
-      }
+    self.rl_cur = self.rl_cur + self.rl_rate;
+    self.owner.en_cur = self.owner.en_cur - self.en_rate;
+    if(self.rl_cur >= self.rl_max){
+      self.rl_cur = self.rl_max;
+      self.w_state = READY;
     }
   }
 };
@@ -84,7 +83,7 @@ void() data_mlgd_atk={
     self.w_state = RELOADING;
   }
   else{
-    self.w_firetime = time + self.w_firerate;
+    self.w_firetime = time + self.rl_rate;
     self.w_state = RECOIL;
   }
   

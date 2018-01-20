@@ -89,7 +89,7 @@ void() data_flak_atk={
       self.w_firetime = time + (self.rl_rate / 10 ) / 1.5;
     }
     else{
-      self.w_firetime = time + self.rl_rate / 1.5;
+      self.w_firetime = time + self.rl_rate / 2;
     }
     self.w_state = RECOIL;
     self.w_isburst = TRUE;

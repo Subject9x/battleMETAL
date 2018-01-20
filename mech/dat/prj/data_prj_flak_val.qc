@@ -105,10 +105,21 @@ void() data_prj_flak_touch={
   if(other.takedamage == DAMAGE_NO){
     return;
   }
-  makevectors(self.angles);
-  local vector adj;
-  adj = self.origin + (v_forward * (DAT_PRJ_FLAK_PROXYRAD * -1));
-  setorigin(self, adj);
-  self.e_cam = other;
-  data_prj_flak_explode();
+  //optimization fix
+  if(other.sh_cur > 0){
+    //damage against shield should be unreliable
+    local float dmg;
+    dmg = DAT_FLAK_SHRAP_TOTAL * self.p_damage;
+    dmg = dmg * random();
+    t_damage(other, self, self.owner, dmg, self.p_dmgtype, trace_endpos, '0 0 0');
+    BecomeExplosion();
+  }
+  else{
+    makevectors(self.angles);
+    local vector adj;
+    adj = self.origin + (v_forward * (DAT_PRJ_FLAK_PROXYRAD * -1));
+    setorigin(self, adj);
+    self.e_cam = other;
+    data_prj_flak_explode();
+  }
 };
