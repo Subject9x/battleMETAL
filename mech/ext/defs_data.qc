@@ -3,7 +3,8 @@ mech Mod
 Author: Peter Roohr
 Date: 01/22/2017
   mod: 11/26/2017
-Overview: master data ID lists for all the game data
+  mod: 01/28/2018
+Overview: data ID lists for all the game data
 */
 
 .void() unit_ini;
@@ -40,6 +41,7 @@ void() data_qrfl_ini;
 void() data_rplas_ini;
 void() data_sfga_ini;
 void() data_flak_ini;
+void() data_swrm_ini;
 
 void() data_prj_emp_ini;
 void() data_prj_sfga_ini;
@@ -50,6 +52,7 @@ void() data_prj_qrfl_ini;
 void() data_prj_rplas_ini;
 void() data_prj_sfga_ini;
 void() data_prj_flak_ini;
+void() data_prj_swrm_ini;
 
 //UPDATE CSQC cs_datadefs.qc if you mod any of these!
 //MECHS==================================
@@ -57,36 +60,6 @@ float ID_MCH_BALAKET = 1;
 float ID_MCH_MATOK = 1;
 float ID_MCH_MONITOR = 1;
 
-//WEAPONS================================
-
-float ID_WEP_LATC  = 1;
-float ID_WEP_LAS   = 3;
-float ID_WEP_EMP   = 2;
-float ID_WEP_MIS   = 4;
-float ID_WEP_QRF   = 5;
-float ID_WEP_RPC   = 6;
-float ID_WEP_PAC   = 7;
-float ID_WEP_ESR   = 8;
-float ID_WEP_MLGD  = 9;
-float ID_WEP_MARH  = 10;
-float ID_WEP_MAPR  = 11;
-float ID_WEP_MCRK  = 12;
-float ID_WEP_RAM   = 13;
-float ID_WEP_BLD   = 14;
-float ID_WEP_SFGA  = 15;
-float ID_WEP_FLAK  = 16;
-float ID_WEP_ION   = 17;
-//PROJECTILE=============================
-float ID_PRJ_LATC = 1;
-float ID_PRJ_EMP = 2;
-float ID_PRJ_MIS = 3;
-float ID_PRJ_MLGD = 4;
-float ID_PRJ_MARH = 5;
-float ID_PRJ_RPLAS = 6;
-float ID_PRJ_QRFL = 7;
-float ID_PRJ_SFGA = 8;
-float ID_PRJ_FLAK = 9;
-float ID_PRJ_ION = 10;
 //VEHICLES===============================
 float ID_VEC_TANK = 1;
 

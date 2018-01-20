@@ -29,7 +29,7 @@ void() data_esr_ini={
   self.rl_rate = DAT_ESR_RL_RATE;
   self.rl_max = DAT_ESR_RL_MAX;
   self.en_rate = DAT_ESR_EN_RATE;
-  self.fire_sound = DAT_ESR_SOUND;
+  self.fire_sound = DAT_ESR_FIRESOUND;
   self.i_techlvl = DAT_ESR_TECH_LEVEL;
   self.i_size = DAT_ESR_WSIZE;
   self.w_think = data_esr_think;
@@ -116,7 +116,7 @@ void() data_esr_atk={
     self.think = SUB_Remove;
     self.nextthink = time + 0.01; //0.01
   self = this;
-  sound (laser_org, CHAN_WEAPON, DAT_ESR_SOUND, 1, ATTN_NORM);
+  sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
   
   te_beam_esr(laser_org.origin, dir);
   

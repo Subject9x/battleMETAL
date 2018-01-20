@@ -74,3 +74,4 @@ string UI_WEP_RPC;
 string UI_WEP_SFG;
 string UI_WEP_FLAK;
 string UI_WEP_ION;
+string UI_WEP_SWRM;

@@ -104,6 +104,7 @@ void() building_tur={
   self.deadflag = DEAD_NO;
   self.p_class = P_VECH;
   self.data_idx = DATA_VEHC;
+  self.flags = self.flags | FL_MONSTER;
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;

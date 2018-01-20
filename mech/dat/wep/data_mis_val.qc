@@ -6,7 +6,6 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //ROCKET POD=======================
-float DAT_MIS_IDX = ID_WEP_MIS;
 string DAT_MIS_NAME = "Rocket Launcher";
 
 float DAT_MIS_HPX = 150; 
@@ -15,7 +14,7 @@ void() data_mis_atk;
 void() data_mis_think;
 
 void() data_mis_ini={
-  self.data_idx = DAT_MIS_IDX;
+  self.data_idx = ID_WEP_MIS;
   self.w_name = DAT_MIS_NAME;
   self.w_firetime = 0;
   self.w_clipsize = DAT_MIS_CLIPSIZE;
@@ -28,10 +27,10 @@ void() data_mis_ini={
   self.rl_rate = DAT_MIS_RL_RATE;
   self.rl_max = DAT_MIS_RL_MAX;
   self.en_rate = DAT_MIS_EN_RATE;
-  self.fire_sound = DAT_MIS_SOUND;
+  self.fire_sound = DAT_MIS_FIRESOUND;
   self.i_techlvl = DAT_MIS_TECH_LEVEL;
-  self.stat_spr_x = DAT_LAS_SPR_X;
-  self.stat_spr_y = DAT_LAS_SPR_Y;
+  self.stat_spr_x = DAT_MIS_SPR_X;
+  self.stat_spr_y = DAT_MIS_SPR_Y;
   self.i_size = DAT_MIS_WSIZE;
   self.w_think = data_mis_think;
   self.health = DAT_MIS_HPX;

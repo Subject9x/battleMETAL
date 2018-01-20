@@ -206,6 +206,9 @@ void(float prj_id) data_iniProjectile={
   else if(prj_id == ID_PRJ_ION){
     data_prj_ion_ini();
   }
+  else if(prj_id == ID_PRJ_SWRM){
+    data_prj_swrm_ini();
+  }
   else{
     cons_logAFloat("Error: failed to find projectile of ", prj_id);
     remove(self);
@@ -258,6 +261,9 @@ void(float wep_id) data_iniWep={
   }
   else if(wep_id == ID_WEP_ION){
     data_ion_ini();
+  }
+  else if(wep_id == ID_WEP_SWRM){
+    data_swrm_ini();
   }
 };
 

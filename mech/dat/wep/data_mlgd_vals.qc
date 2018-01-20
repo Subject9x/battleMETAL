@@ -55,7 +55,6 @@ void() data_mlgd_think={
   }
 };
 
-
 void() data_mlgd_atk={
   local entity player, proj, cam, oself;
   player = self.owner;
@@ -108,7 +107,6 @@ void() data_mlgd_atk={
     setorigin(self, org);
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);
-    
   self = oself;
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };

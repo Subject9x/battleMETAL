@@ -5,6 +5,27 @@ Date: 1/2/2018
 Overview: condensed data file for most weapon values that are shared between 
 server and client
 */
+//====================================================================================
+//            Game ID's  
+//====================================================================================
+float ID_WEP_LATC  = 1;
+float ID_WEP_LAS   = 3;
+float ID_WEP_EMP   = 2;
+float ID_WEP_MIS   = 4;
+float ID_WEP_QRF   = 5;
+float ID_WEP_RPC   = 6;
+float ID_WEP_PAC   = 7;
+float ID_WEP_ESR   = 8;
+float ID_WEP_MLGD  = 9;
+float ID_WEP_MARH  = 10;
+float ID_WEP_MAPR  = 11;
+float ID_WEP_MCRK  = 12;
+float ID_WEP_RAM   = 13;
+float ID_WEP_BLD   = 14;
+float ID_WEP_SFGA  = 15;
+float ID_WEP_FLAK  = 16;
+float ID_WEP_ION   = 17;
+float ID_WEP_SWRM  = 18;
 
 //====================================================================================
 //            Range  
@@ -35,12 +56,14 @@ float DAT_MIS_RANGE       = 1000;
 float DAT_MLGD_RANGE      = 2400;
 //-------------------------Radar Missile
 float DAT_MARH_RANGE      = 3600;
+//-------------------------Swarm Missile
+float DAT_SWRM_RANGE      = 1600;
 //====================================================================================
 //            Recharge Time  
 //====================================================================================
 //-------------------------ATC
 float DAT_LATC_RL_RATE    = 0.1;
-float DAT_LATC_RL_MAX     = 1;
+float DAT_LATC_RL_MAX     = 0.5;
 float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
 float DAT_RPLAS_RL_RATE   = 0.1;
@@ -90,11 +113,15 @@ float DAT_MLGD_EN_RATE    = 0.1;
 float DAT_MARH_RL_RATE    = 0.1;
 float DAT_MARH_RL_MAX     = 7;
 float DAT_MARH_EN_RATE    = 0.2;
+//-------------------------Swarm Missile
+float DAT_SWRM_RL_RATE    = 0.1;
+float DAT_SWRM_RL_MAX     = 10;
+float DAT_SWRM_EN_RATE    = 0;
 //====================================================================================
 //            Damage  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_DMG        = 5;
+float DAT_LATC_DMG        = 2.5;
 //-------------------------RPlas
 float DAT_RPLAS_DMG       = 20;
 float DAT_RPLAS_DMG_BURN  = 0.5; 
@@ -121,6 +148,9 @@ float DAT_MIS_DMG         = 75;
 float DAT_MLGD_DMG        = 275;
 //-------------------------Radar Missile
 float DAT_MARH_DMG        = 2; 
+//-------------------------Swarm Missile
+float DAT_SWRM_DMG        = 20;
+float DAT_SWRM_CLUSTER    = 3;  //3 missiles per target
 //====================================================================================
 //            Inaccuracy  
 //====================================================================================
@@ -154,11 +184,13 @@ float DAT_ESR_SPR_Y       = 6;
 float DAT_PAC_SPR_X       = 2;
 float DAT_PAC_SPR_Y       = 2;
 //-------------------------Rocket
-float DAT_LAS_SPR_X       = 10;
-float DAT_LAS_SPR_Y       = 3;
+float DAT_MIS_SPR_X       = 10;
+float DAT_MIS_SPR_Y       = 3;
 //-------------------------Laser Missile
-
 //-------------------------Radar Missile
+//-------------------------Swarm Missile
+float DAT_SWRM_SPR_X       = 10;
+float DAT_SWRM_SPR_Y       = 10;
 //====================================================================================
 //            Clipsize  
 //====================================================================================
@@ -188,6 +220,8 @@ float DAT_MIS_CLIPSIZE      = 6;
 float DAT_MLGD_CLIPSIZE     = 1;
 //-------------------------Radar Missile
 float DAT_MARH_CLIPSIZE     = 1;
+//-------------------------Swarm Missile
+float DAT_SWRM_CLIPSIZE     = 3;
 //============================
 //            Tech Level  
 //============================
@@ -217,6 +251,8 @@ float DAT_MIS_TECH_LEVEL    = 1;
 float DAT_MLGD_TECH_LEVEL   = 1;
 //-------------------------Radar Missile
 float DAT_MARH_TECH_LEVEL   = 2;
+//-------------------------Swarm Missile
+float DAT_SWRM_TECH_LEVEL   = 3;
 //============================
 //            Size  
 //============================
@@ -246,35 +282,39 @@ float DAT_MIS_WSIZE       = 1;
 float DAT_MLGD_WSIZE      = 2;
 //-------------------------Radar Missile
 float DAT_MARH_WSIZE      = 3;
+//-------------------------Radar Missile
+float DAT_SWRM_WSIZE      = 2;
 //============================
 //            Sound Url
 //============================
 //-------------------------ATC
-string DAT_LATC_SOUND = "sound/weapons/atc_fire.ogg";
+string DAT_LATC_FIRESOUND = "sound/weapons/atc_fire.ogg";
 //-------------------------FLAK
-string DAT_FLAK_SOUND = "sound/weapons/atc_fire.ogg";
+string DAT_FLAK_FIRESOUND = "sound/weapons/atc_fire.ogg";
 //-------------------------RPlas
-string DAT_RPLAS_SOUND = "sound/weapons/atc_fire.ogg";
+string DAT_RPLAS_FIRESOUND = "sound/weapons/atc_fire.ogg";
 //-------------------------QRifle
-string DAT_QRFL_SOUND = "sound/weapons/qrfl_fire.ogg";
+string DAT_QRFL_FIRESOUND = "sound/weapons/qrfl_fire.ogg";
 //-------------------------SFGA
-string DAT_SFGA_SOUND = "sound/fx_boom.ogg";
+string DAT_SFGA_FIRESOUND = "sound/fx_boom.ogg";
 //-------------------------Laser
-string DAT_LAS_SOUND = "sound/weapons/laser_fire.ogg";
+string DAT_LAS_FIRESOUND = "sound/weapons/laser_fire.ogg";
 //-------------------------ION
-string DAT_ION_SOUND = "sound/weapons/emp_fire.ogg";
+string DAT_ION_FIRESOUND = "sound/weapons/emp_fire.ogg";
 //-------------------------EMP
-string DAT_EMP_SOUND = "sound/weapons/emp_fire.ogg";
+string DAT_EMP_FIRESOUND = "sound/weapons/emp_fire.ogg";
 //-------------------------ESR
-string DAT_ESR_SOUND = "sound/weapons/esr_fire.ogg";
+string DAT_ESR_FIRESOUND = "sound/weapons/esr_fire.ogg";
 //-------------------------PAC
-string DAT_PAC_SOUND = "sound/weapons/pac_fire.ogg";
+string DAT_PAC_FIRESOUND = "sound/weapons/pac_fire.ogg";
 //-------------------------Rocket
-string DAT_MIS_SOUND = "sound/weapons/mis_fire.ogg";
+string DAT_MIS_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //-------------------------Laser Missile
 string DAT_MLGD_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //-------------------------Radar Missile
 string DAT_MARH_FIRESOUND = "sound/weapons/mis_fire.ogg";
+//-------------------------Radar Missile
+string DAT_SWRM_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //============================
 //            Model  
 //============================
@@ -304,6 +344,8 @@ string DAT_MIS_MODEL     = "q3mdl/weapons/w_mis.md3";
 string DAT_MLGD_MODEL    = "q3mdl/weapons/w_lgm.md3";
 //-------------------------Radar Missile
 string DAT_MARH_MODEL    = "q3mdl/weapons/w_arh.md3";
+//-------------------------Radar Missile
+string DAT_SWRM_MODEL    = "q3mdl/weapons/w_arh.md3";
 //============================
 //            Model Offset 
 //============================
@@ -333,6 +375,8 @@ vector DAT_MIS_FIRE_OFS     = '0 0 2';
 vector DAT_MLGD_FIRE_OFS = '0 0 2';
 //-------------------------Radar Missile
 vector DAT_MARH_FIRE_OFS = '0 0 2';
+//-------------------------Radar Missile
+vector DAT_SWRM_FIRE_OFS = '0 0 2';
 //============================
 //            Projectile ID
 //============================
@@ -362,3 +406,5 @@ float DAT_MIS_PROJ_ID     = ID_PRJ_MIS;
 float DAT_MLGD_PROJ_ID    = ID_PRJ_MLGD;
 //-------------------------Radar Missile
 float DAT_MARH_PROJ_ID    = ID_PRJ_MARH;
+//-------------------------Radar Missile
+float DAT_SWRM_PROJ_ID    = ID_PRJ_SWRM;

@@ -5,7 +5,7 @@ Date: 01/22/2017
 Overview: data def file for a weapon projectile
 */
 
-//MIS CANNON SHOT=======================
+//Rocket Launcher rocket=======================
 void() data_prj_mis_touch;
 
 void() data_prj_mis_ini={

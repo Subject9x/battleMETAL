@@ -323,6 +323,16 @@ const float DRAWFLAG_2XMODULATE = 3;
 const float DRAWFLAG_SCREEN = 4;
 const float DRAWFLAG_MIPMAP = 0x100; // only for R_BeginPolygon
 
+//model flags - just to satisfy data sharing - PR
+float EF_NOMODELFLAGS = 8388608; // ignore any effects in a model file and substitute your own
+float MF_ROCKET  =   1; // leave a trail
+float MF_GRENADE =   2; // leave a trail
+float MF_GIB     =   4; // leave a trail
+float MF_ROTATE  =   8; // rotate (bonus items)
+float MF_TRACER  =  16; // green split trail
+float MF_ZOMGIB  =  32; // small blood trail
+float MF_TRACER2 =  64; // orange split trail
+float MF_TRACER3 = 128; // purple trail
 /*
 ==============================================================================
 

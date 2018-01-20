@@ -22,8 +22,14 @@ gui_api_c.qc
 hud_snd_sys_c.qc
 ../world_effectinfo_h.qc
 //DATA FILES==========
-  //buildings
+  //common values
+  ../common/data/data_values_projectiles.qc
   ../common/data/data_values_buildings.qc
+  ../common/data/data_values_weapons.qc
+  ../common/data/data_values_mechs.qc
+  ../common/data/data_values_vehicles.qc
+  
+  //buildings
   data/bld/data_h_power.qc
   data/bld/data_h_radar.qc
   data/bld/data_h_shield.qc
@@ -32,7 +38,6 @@ hud_snd_sys_c.qc
   data/bld/data_h_ltur.qc
   
   //Weapons
-  ../common/data/data_values_weapons.qc
   data/wep/data_latc_val.qc
   data/wep/data_emp_val.qc
   data/wep/data_mis_val.qc
@@ -46,15 +51,14 @@ hud_snd_sys_c.qc
   data/wep/data_sfga_vals.qc
   data/wep/data_flak_vals.qc
   data/wep/data_ion_vals.qc
+  data/wep/data_swrm_val.qc
   
   //Mechs
-  ../common/data/data_values_mechs.qc
   data/mch/data_matok_val.qc
   data/mch/data_outlaw_val.qc
   data/mch/data_monitor_val.qc
 
   //Vehicles
-  ../common/data/data_values_vehicles.qc
   data/vec/data_tank.qc
   
   //HUD

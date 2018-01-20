@@ -5,12 +5,27 @@ Date: 1/5/2018
 Overview: condensed data file for most projectile values that are shared between 
 server and client
 */
+
 //============================
-//            Velocity           
+//            Game ID        
+//============================
+float ID_PRJ_LATC = 1;
+float ID_PRJ_EMP = 2;
+float ID_PRJ_MIS = 3;
+float ID_PRJ_MLGD = 4;
+float ID_PRJ_MARH = 5;
+float ID_PRJ_RPLAS = 6;
+float ID_PRJ_QRFL = 7;
+float ID_PRJ_SFGA = 8;
+float ID_PRJ_FLAK = 9;
+float ID_PRJ_ION = 10;
+float ID_PRJ_SWRM = 11;
+//============================
+//            Velocity         
 //============================
 //-------------------------EMP
 float DAT_PRJ_EMP_VELOCITY = 1500;
-//-------------------------EMP
+//-------------------------ION
 float DAT_PRJ_ION_VELOCITY = 4000;
 //-------------------------MIS-ARH
 float DAT_PRJ_MARH_VELOCITY = 650;
@@ -26,12 +41,14 @@ float DAT_PRJ_RPLAS_VELOCITY = 1600;
 float DAT_PRJ_SFGA_VELOCITY = 1500;
 //-------------------------FLAK
 float DAT_PRJ_FLAK_VELOCITY = 4500;
+//-------------------------SWARM
+float DAT_PRJ_SWRM_VELOCITY = 1600;
 //============================
 //            lifetime           
 //============================
 //-------------------------EMP
 float DAT_PRJ_EMP_LIFETIME = 1.6;
-//-------------------------EMP
+//-------------------------ION
 float DAT_PRJ_ION_LIFETIME = 4;
 //-------------------------MIS-ARH
 float DAT_PRJ_MARH_LIFETIME = 13;
@@ -46,7 +63,9 @@ float DAT_PRJ_RPLAS_LIFETIME = 1.558;
 //-------------------------SFGA
 float DAT_PRJ_SFGA_LIFETIME = 8;
 //-------------------------FLAK
-float DAT_PRJ_FLAK_LIFETIME = 5;
+float DAT_PRJ_FLAK_LIFETIME = 4.8;
+//-------------------------SWARM
+float DAT_PRJ_SWRM_LIFETIME = 2.5;
 //============================
 //            radius           
 //============================
@@ -87,6 +106,8 @@ string DAT_PRJ_RPLAS_MODEL  = "progs/casing.mdl";
 string DAT_PRJ_SFGA_MODEL   = "progs/casing.mdl";
 //-------------------------FLAK
 string DAT_PRJ_FLAK_MODEL   = "progs/casing.mdl";
+//-------------------------SWARM
+string DAT_PRJ_SWRM_MODEL   = "q3mdl/proj_mis.md3";
 //============================
 //            Effects           
 //============================
@@ -162,3 +183,11 @@ vector DAT_PRJ_FLAK_COLORMOD = '0.1 0.1 0.1';
 float DAT_PRJ_FLAK_GLOWCOLOR = 240;
 float DAT_PRJ_FLAK_GLOWSIZE = 0.005;
 float DAT_PRJ_FLAK_GLOWTRAIL= FALSE;
+//-------------------------Swarm
+float DAT_PRJ_SWRM_EFFECTS = 0;
+float DAT_PRJ_SWRM_MODELFLAGS = MF_ROCKET;
+float DAT_PRJ_SWRM_ALPHA = 1;
+vector DAT_PRJ_SWRM_COLORMOD = '0 0 0';
+float DAT_PRJ_SWRM_GLOWCOLOR = 0;
+float DAT_PRJ_SWRM_GLOWSIZE = 0;
+float DAT_PRJ_SWRM_GLOWTRAIL= FALSE;
