@@ -72,3 +72,5 @@ string UI_WEP_ATC;
 string UI_WEP_QRF;
 string UI_WEP_RPC;
 string UI_WEP_SFG;
+string UI_WEP_FLAK;
+string UI_WEP_ION;

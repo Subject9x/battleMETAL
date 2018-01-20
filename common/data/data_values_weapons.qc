@@ -21,6 +21,8 @@ float DAT_SFGA_RANGE      = 3600;
 float DAT_FLAK_RANGE      = 4000;
 //-------------------------Laser
 float DAT_LAS_RANGE       = 4000;
+//-------------------------ION
+float DAT_ION_RANGE       = 3800;
 //-------------------------EMP
 float DAT_EMP_RANGE       = 1900;
 //-------------------------ESR
@@ -60,6 +62,10 @@ float DAT_FLAK_EN_RATE    = 0;
 float DAT_LAS_RL_RATE     = 0.1;
 float DAT_LAS_RL_MAX      = 2;
 float DAT_LAS_EN_RATE     = 0.5;
+//-------------------------ION
+float DAT_ION_RL_RATE     = 0.1;
+float DAT_ION_RL_MAX      = 5;
+float DAT_ION_EN_RATE     = 4;
 //-------------------------EMP
 float DAT_EMP_RL_RATE     = 0.1;
 float DAT_EMP_RL_MAX      = 6;
@@ -101,6 +107,8 @@ float DAT_FLAK_DMG        = 0.5;
 float DAT_FLAK_SHRAP_TOTAL= 14;
 //-------------------------Laser
 float DAT_LAS_DMG         = 20;
+//-------------------------ION
+float DAT_ION_DMG         = 100;
 //-------------------------EMP
 float DAT_EMP_DMG         = 400;
 //-------------------------ESR
@@ -131,8 +139,11 @@ float DAT_SFGA_SPR_Y      = 2;
 //-------------------------FLAK
 float DAT_FLAK_SPR_X      = 4;
 float DAT_FLAK_SPR_Y      = 2;
-
 //-------------------------Laser
+
+//-------------------------ION
+float DAT_ION_SPR_X       = 4;
+float DAT_ION_SPR_Y       = 4;
 
 //-------------------------EMP
 
@@ -163,6 +174,8 @@ float DAT_QRFL_CLIPSIZE     = 1;
 float DAT_SFGA_CLIPSIZE     = 1;
 //-------------------------Laser
 float DAT_LAS_CLIPSIZE      = 1;
+//-------------------------ION
+float DAT_ION_CLIPSIZE      = 3;
 //-------------------------EMP
 float DAT_EMP_CLIPSIZE      = 1;
 //-------------------------ESR
@@ -190,6 +203,8 @@ float DAT_SFGA_TECH_LEVEL   = 2;
 float DAT_FLAK_TECH_LEVEL   = 1;
 //-------------------------Laser
 float DAT_LAS_TECH_LEVEL    = 1;
+//-------------------------ION
+float DAT_ION_TECH_LEVEL    = 1;
 //-------------------------EMP
 float DAT_EMP_TECH_LEVEL    = 1;
 //-------------------------ESR
@@ -208,7 +223,7 @@ float DAT_MARH_TECH_LEVEL   = 2;
 //-------------------------ATC
 float DAT_LATC_WSIZE      = 1;
 //-------------------------FLAK
-float DAT_FLAK_WSIZE      = 2;
+float DAT_FLAK_WSIZE      = 1;
 //-------------------------RPlas
 float DAT_RPLAS_WSIZE     = 2;
 //-------------------------QRifle
@@ -217,6 +232,8 @@ float DAT_QRFL_WSIZE      = 1;
 float DAT_SFGA_WSIZE      = 3;
 //-------------------------Laser
 float DAT_LAS_WSIZE       = 1;
+//-------------------------ION
+float DAT_ION_WSIZE       = 2;
 //-------------------------EMP
 float DAT_EMP_WSIZE       = 3;
 //-------------------------ESR
@@ -244,6 +261,8 @@ string DAT_QRFL_SOUND = "sound/weapons/qrfl_fire.ogg";
 string DAT_SFGA_SOUND = "sound/fx_boom.ogg";
 //-------------------------Laser
 string DAT_LAS_SOUND = "sound/weapons/laser_fire.ogg";
+//-------------------------ION
+string DAT_ION_SOUND = "sound/weapons/emp_fire.ogg";
 //-------------------------EMP
 string DAT_EMP_SOUND = "sound/weapons/emp_fire.ogg";
 //-------------------------ESR
@@ -271,6 +290,8 @@ string DAT_QRFL_MODEL    = "q3mdl/weapons/w_qrf.md3";
 string DAT_SFGA_MODEL    = "q3mdl/weapons/w_sfga.md3";
 //-------------------------Laser
 string DAT_LAS_MODEL     = "q3mdl/weapons/w_laser.md3";
+//-------------------------ION
+string DAT_ION_MODEL     = "q3mdl/weapons/w_emp.md3";
 //-------------------------EMP
 string DAT_EMP_MODEL     = "q3mdl/weapons/w_emp.md3";
 //-------------------------ESR
@@ -298,6 +319,8 @@ vector DAT_QRFL_FIRE_OFS    = '0 0 2';
 vector DAT_SFGA_FIRE_OFS    = '0 0 2';
 //-------------------------Laser
 vector DAT_LAS_FIRE_OFS     = '0 0 2';
+//-------------------------ION
+vector DAT_ION_FIRE_OFS     = '0 0 2';
 //-------------------------EMP
 vector DAT_EMP_FIRE_OFS     = '0 0 2';
 //-------------------------ESR
@@ -325,6 +348,8 @@ float DAT_SFGA_PROJ_ID    = ID_PRJ_SFGA;
 float DAT_FLAK_PROJ_ID    = ID_PRJ_FLAK;
 //-------------------------Laser
 
+//-------------------------ION
+float DAT_ION_PROJ_ID     = ID_PRJ_EMP;
 //-------------------------EMP
 float DAT_EMP_PROJ_ID     = ID_PRJ_EMP;
 //-------------------------ESR

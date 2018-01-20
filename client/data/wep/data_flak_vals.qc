@@ -28,7 +28,7 @@ void() data_wep_flak={
     self.i_size = DAT_FLAK_WSIZE;
     self.w_abbr = "FLAK";
     self.note1 = "Fires cluser of shrapnel across target.";
-    self.w_icon = UI_WEP_ATC;
+    self.w_icon = UI_WEP_FLAK;
     self.w_range = DAT_FLAK_RANGE;
   self = oself;
 };

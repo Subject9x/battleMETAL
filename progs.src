@@ -59,13 +59,15 @@ dp/subs.qc
   mech/dat/prj/data_prj_marh_vals.qc
   mech/dat/prj/data_prj_rplas_vals.qc  
   mech/dat/prj/data_prj_qrfl_vals.qc
-  mech/dat/prj/data_prj_flak_val.qc  
+  mech/dat/prj/data_prj_flak_val.qc 
+  mech/dat/prj/data_prj_ion_val.qc 
   
   //weapons
   mech/dat/wep/data_latc_val.qc
   mech/dat/wep/data_flak_val.qc
   mech/dat/wep/data_sfga_val.qc
   mech/dat/wep/data_emp_val.qc
+  mech/dat/wep/data_ion_val.qc
   mech/dat/wep/data_mis_val.qc
   mech/dat/wep/data_las_val.qc
   mech/dat/wep/data_mlgd_vals.qc

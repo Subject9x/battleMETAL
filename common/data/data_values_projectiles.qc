@@ -10,6 +10,8 @@ server and client
 //============================
 //-------------------------EMP
 float DAT_PRJ_EMP_VELOCITY = 1500;
+//-------------------------EMP
+float DAT_PRJ_ION_VELOCITY = 4000;
 //-------------------------MIS-ARH
 float DAT_PRJ_MARH_VELOCITY = 650;
 //-------------------------Rocket
@@ -29,6 +31,8 @@ float DAT_PRJ_FLAK_VELOCITY = 4500;
 //============================
 //-------------------------EMP
 float DAT_PRJ_EMP_LIFETIME = 1.6;
+//-------------------------EMP
+float DAT_PRJ_ION_LIFETIME = 4;
 //-------------------------MIS-ARH
 float DAT_PRJ_MARH_LIFETIME = 13;
 //-------------------------Rocket
@@ -47,8 +51,11 @@ float DAT_PRJ_FLAK_LIFETIME = 5;
 //            radius           
 //============================
 //-------------------------EMP
-float DAT_PRJ_EMP_PROXYRAD    = 150;
+float DAT_PRJ_EMP_PROXYRAD    = 200;
 float DAT_PRJ_EMP_EXPRAD      = 300;
+//-------------------------EMP
+float DAT_PRJ_ION_PROXYRAD    = 200;
+float DAT_PRJ_ION_EXPRAD      = 300;
 //-------------------------MIS-ARH
 //-------------------------Rocket
 //-------------------------MIS-LGD
@@ -64,6 +71,8 @@ float DAT_PRJ_FLAK_EXPRAD     = 50;
 //============================
 //-------------------------EMP
 string DAT_PRJ_EMP_MODEL    = "q3mdl/proj_emp.md3";
+//-------------------------EMP
+string DAT_PRJ_ION_MODEL    = "q3mdl/proj_emp.md3";
 //-------------------------MIS-ARH
 string DAT_PRJ_MARH_MODEL   = "q3mdl/proj_mis.md3";
 //-------------------------Rocket
@@ -89,6 +98,14 @@ vector DAT_PRJ_EMP_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_EMP_GLOWCOLOR = 255;
 float DAT_PRJ_EMP_GLOWSIZE = 0.0005;
 float DAT_PRJ_EMP_GLOWTRAIL= FALSE;
+//-------------------------ION
+float DAT_PRJ_ION_EFFECTS = EF_NOSHADOW;
+float DAT_PRJ_ION_MODELFLAGS = MF_TRACER3;
+float DAT_PRJ_ION_ALPHA = 0.75;
+vector DAT_PRJ_ION_COLORMOD = '0.85 0.45 0.45';
+float DAT_PRJ_ION_GLOWCOLOR = 255;
+float DAT_PRJ_ION_GLOWSIZE = 0.0005;
+float DAT_PRJ_ION_GLOWTRAIL= FALSE;
 //-------------------------MIS-ARH
 float DAT_PRJ_MARH_EFFECTS = 0;
 float DAT_PRJ_MARH_MODELFLAGS = MF_ROCKET;

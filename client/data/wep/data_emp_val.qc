@@ -5,10 +5,8 @@ Date: 01/22/2017
 Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
-//LIGHT AUTOCANNON=======================
-float DAT_EMP_IDX = ID_WEP_EMP;
+//EMP Degausser=======================
 string DAT_EMP_NAME = "EMP Cannon";
-
 
 void() data_wep_emp;
 
@@ -18,10 +16,9 @@ void() data_wep_emp={
   oself = self;
   self = emp;
     self.classname = "data";
-    self.data_idx = DAT_EMP_IDX;
-    self.dmg_amt = 300;
+    self.data_idx = ID_WEP_EMP;
+    self.dmg_amt = DAT_EMP_DMG;
     self.data_type = DATA_WEPN;
-    self.w_name = DAT_EMP_NAME;
     self.w_name = DAT_EMP_NAME;
     self.w_clipsize = DAT_EMP_CLIPSIZE;
     self.c_model = DAT_EMP_MODEL;
