@@ -37,7 +37,7 @@ commented vars mean they're already implemented and are here for reference!
 //child entites
 .entity e_legs;
 .entity e_cam;
-.entity e_tor_c;  //now is the player themselves, this is here for data purposes
+.entity e_tor_c;
 .entity e_tor_l;
 .entity e_arm_l;  //arms can be optional
 .entity e_tor_r;

@@ -124,9 +124,9 @@ void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
 
 
 void(string mdl_name, float fx) util_setModel={
-  self.c_model = mdl_name;
+  self.model = mdl_name;
   self.effects = self.effects | fx;
-  setmodel(self, self.c_model);
+  setmodel(self, self.model);
 };
 
 /*

@@ -435,21 +435,23 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     ui_objective_frame(VIEW_ORG);
   }
   else{
-    local float len;
-    local vector og;
-    local string mesg;
-    if(getstati(STAT_PLR_STT) == PLAYER_SPAWN){
-      len = stringwidth("Press any key to respawn", 0, '8 8 0');
-      mesg = "Press any key to respawn";
+    if(UI_OBJECTIVE_ACTIVE){
+      local float len;
+      local vector og;
+      local string mesg;
+      if(getstati(STAT_PLR_STT) == PLAYER_SPAWN){
+        len = stringwidth("Press any key to respawn", 0, '8 8 0');
+        mesg = "Press any key to respawn";
+      }
+      else if(getstati(STAT_PLR_STT) == PLAYER_MENU){
+        len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
+        mesg = "Press [TAB] For Hangar Menu";
+      }
+      og = VIEW_CTR;
+      og_x = og_x - gui_percentXRaw(len/2);
+      og_y = VIEW_CTR_y + gui_percentYRaw(32);
+      drawstring(og, mesg, '8 8 0', '1 1 1', HUD_ALPHA, 0);
     }
-    else if(getstati(STAT_PLR_STT) == PLAYER_MENU){
-      len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
-      mesg = "Press [TAB] For Hangar Menu";
-    }
-    og = VIEW_CTR;
-    og_x = og_x - gui_percentXRaw(len/2);
-    og_y = VIEW_CTR_y + gui_percentYRaw(32);
-    drawstring(og, mesg, '8 8 0', '1 1 1', HUD_ALPHA, 0);
   }
   if(isdemo()){
     local float len;
@@ -507,13 +509,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       prj_z = 0; //shut up dp.
       drawstring(prj, "foo", '6 6', '1 1 1', 1, 0);
     }*/
-    local entity nav;
-    nav = findchain(classname, "data");
-    while(nav){
-      if(nav.data_type == DATA_NAVP){
-        ui_renderNav(nav);
+    if(UI_OBJECTIVE_ACTIVE){
+      local entity nav;
+      nav = findchain(classname, "data");
+      while(nav){
+        if(nav.data_type == DATA_NAVP){
+          ui_renderNav(nav);
+        }
+        nav = nav.chain;
       }
-      nav = nav.chain;
     }
   }
 };
@@ -753,16 +757,17 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
   }
-  
-  /*else if(id == E_MEC){
+  else if(id == E_MEC){
     if(isnew){
+      setmodel(self, "q3mdl/testball.md3");
+      self.alpha = 0.005;
       self.drawmask = MASK_ENGINE;
       addentity(self);
     }
     local float eid;
     eid = ReadByte();
     self.data_idx = ReadByte();
-    self.p_class = ReadByte();
+    self.data_type = ReadByte();
     self.i_faction = ReadByte();
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
@@ -774,7 +779,7 @@ void(float isnew) CSQC_Ent_Update =
     self.hp_stor2 = ReadByte();
     self.hp_arm = ReadByte();
     self.hp_arm2 = ReadByte();
-  }*/
+  }
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

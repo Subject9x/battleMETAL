@@ -195,11 +195,32 @@ void(void() data_ini) build_mech_unit={
 };
 
 void(void() func) build_mech_torsoCenter={
+  local entity this, ctor;
   func();
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_BOUNCE);
-  util_setModel(self.c_model, 0);
+  //util_setModel(self.c_model, 0);
+  util_setModel("q3mdl/testball.md3", 0);
   util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
-  ctor_stand();
+  self.alpha = 0.005;
+  this = self;
+  ctor = spawn();
+  self = ctor;
+    self.deadflag = DEAD_NO;
+    self.classname = MECH_PIECE; 
+    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+    util_setModel(this.c_model, 0);
+    util_setBoundBox('-1 -1 -1','1 1 1');
+    util_setOffsetOrigin(self, this, '0 0 0');
+    self.punchangle = self.angles = '0 0 0';
+    self.aiment = this;
+    self.owner = this;
+    self.punchangle = this.angles;
+    self.view_ofs = self.origin - this.origin;
+    self.angles = this.angles;
+    self.v_angle = self.angles - this.angles;
+    ctor_stand();
+  self = this;
+  self.e_tor_c = ctor;
 };
 
 entity(void() func) build_mech_torsoLeft={

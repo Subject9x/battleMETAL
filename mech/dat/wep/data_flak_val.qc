@@ -57,7 +57,7 @@ void() data_flak_think={
 };
 
 void() data_flak_atk={
-  local entity player, this;
+  local entity player, this, enm;
   local vector dir, end, adj, org; 
   
   player = self.owner;
@@ -69,7 +69,7 @@ void() data_flak_atk={
     end = util_traceForAI(player, self.w_range, player.ai_leading);
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-
+  enm = trace_ent;
   if((player.flags & FL_MONSTER)){
     if(end == player.origin){
       player.patience = player.patience + 1;
@@ -100,27 +100,41 @@ void() data_flak_atk={
   makevectors(player.angles);
   org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   
-  newmis = spawn();
-  this = self;
-  self = newmis;
-    self.owner = player;
-    data_iniProjectile(this.w_proj);
-    util_setModel(self.c_model, 0);
-    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-    util_setBoundBox('0 0 0', '0 0 0');
-    self.velocity = normalize(dir - org);
-    self.p_dmgtype = this.p_dmgtype;
-    self.p_damage = this.p_damage;
-    self.p_lifetime = time + self.p_lifetime;
-    self.w_firetime = time + 0.1;
-    setorigin(self, org);
-    self.velocity = self.velocity * self.p_velocity;
-    self.angles = vectoangles(self.velocity);
-    self.think = data_prj_flak_think;
-    self.touch = data_prj_flak_touch;
-    self.nextthink = time + 0.01;
-  self = this;
-  
+  if(enm && enm != world){
+    local float totes;
+    totes = DAT_FLAK_SHRAP_TOTAL;
+    if(enm.sh_cur > (self.p_damage * totes)){
+      t_damage(enm, self, self.owner, self.p_damage * totes, self.p_dmgtype, trace_endpos, '0 0 0');
+    }
+    else{
+      while(totes > 0){
+        local entity boom;
+        local vector ang, v;
+        local float d;
+        d = vlen(enm.origin - dir);
+        ang = vectoangles(enm.origin - dir);
+        makevectors(ang);
+        v = dir + (v_forward * (d )) + (v_right * (crandom() * (random() * DAT_PRJ_FLAK_EXPRAD/3)))
+                + (v_up * (crandom() * (random() * DAT_PRJ_FLAK_EXPRAD/3)));
+        traceline(dir, v, FALSE, self);
+        t_damage(enm, self, self.owner, self.p_damage, self.p_dmgtype, trace_endpos, '0 0 0');
+        totes = totes - 1;
+      }
+    }
+    boom = spawn();
+    boom.color = '0.1 0.1 0.1';
+    setorigin(boom, dir);
+    boom.nextthink = time + 0.001;
+    boom.think = BecomeExplosion;
+  }
+  else{
+    local entity boom;
+    boom = spawn();
+    boom.color = '0.1 0.1 0.1';
+    setorigin(boom, dir);
+    boom.nextthink = time + 0.001;
+    boom.think = BecomeExplosion;
+  }
   
   local entity bul_fx;
   bul_fx = spawn();

@@ -43,7 +43,7 @@ void() mech_cleanupMech={
   mech_player_removecomp(self.e_tor_r);
   mech_player_removecomp(self.e_arm_l);
   mech_player_removecomp(self.e_arm_r);
-
+  mech_player_removecomp(self.e_tor_c);
   if(self.e_legs){
     if(self.e_legs != world && self.e_legs.owner == self){
       local entity this;
