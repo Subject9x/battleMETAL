@@ -12,21 +12,21 @@ void() player_spawnAsObserver={
 
 
 void() player_makeObserver={
-  self.p_class = P_OBS;
+  self.data_type = DATA_POBS;
   self.view_ofs = '0 0 1';
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_FLY);
+  util_setCollider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY);
   setmodel(self, "q3mdl/testball.md3");
+  setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
   self.weaponmodel = "";
-  util_setBoundBox('-1 -1 -1', '1 1 1');
   mh_world_updateClientSpeed(400, 400, 400, "3","0");
   mh_world_updateClientViewBob("0", "0", "0");
   mh_world_updateClientModelBob("0", "0", "0");
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
-  self.stat_plr_stt = PLAYER_MENU;
+  self.stat_plr_stt = PLAYER_IN_MENU;
 };
 
 void() player_unmakeObserver={
@@ -43,11 +43,11 @@ void() player_makeVec={
 };
 
 void() player_makeMech={
-  self.p_class = P_MECH;
+  self.data_type = DATA_MECH;
   self.data_idx = self.nextVecChoice;
   self.power_timer = time + 7;
   self.power_timer_segment = time + 0.007;
-  self.stat_plr_stt = PLAYER_START_BEGIN;
+  self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
   data_iniMech(self.vec_size, self.nextVecChoice);
   //self.touch = touch_mech; shhhhh, not yet
   if((self.flags & FL_CLIENT)){
@@ -57,14 +57,12 @@ void() player_makeMech={
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);
-    //self.e_cam.SendEntity = send_mech;
-    //self.e_cam.SendFlags = 1;
   }
   droptofloor();
 };
 
 void() player_unmakeMech={
-  self.p_class = P_OBS;
+  self.data_type = DATA_POBS;
   self.vec_size = 0;
   self.data_idx = 0;
   self.stat_trg_vid = -1;
@@ -91,11 +89,9 @@ void() player_unmakeMech={
   self.stat_spr_y = 0;
   self.conv_min = '0 0 0';
   self.conv_max = '0 0 0';
-  self.stat_plr_stt = PLAYER_MENU;
+  self.stat_plr_stt = PLAYER_IN_MENU;
   self.stat_plr_fir = FIRE_GROUP;
   self.stat_lck_stt = LOCK_NONE;
-  self.stat_plr_ptc = 0;
-  self.stat_plr_ang = 0;
   self.stat_ctor_hp = 0;
   mech_clearWeaponGroups();
 };

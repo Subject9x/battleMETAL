@@ -48,20 +48,6 @@ float GAME_M = 2;
 float SHIELD_DELAY = 5;
 float SHIELD_SOAK = 4;
 
-//data class constants
-string DATA = "data";
-float DATA_MECH = 1;
-float DATA_VEHC = 2;
-float DATA_WEPN = 3;
-float DATA_PROJ = 4;
-float DATA_HUD = 5;
-float DATA_BLD = 6;
-float DATA_NAVP = 7;
-float DATA_OBJT = 8;
-float DATA_NODE = 9;
-float DATA_DEPL = 10;
-float DATA_POBS = 11;
-
 //mech piece classname constants
 string MECH_PIECE = "mech_piece";
 string M_TOR_CENTER = "tor_center";
@@ -77,17 +63,6 @@ string M_ARM_RIGHT = "arm_right";
 string V_CHASSIS = "v_chas";
 string V_TUR_MAIN = "v_tur_main";
 string V_TUR_AUX = "v_tur_aux";
-
-//weapon slot bits
-float WEAPON1 = 1;
-float WEAPON2 = 2;
-float WEAPON3 = 4;
-float WEAPON4 = 8;
-float WEAPON5 = 16;
-float WEAPON6 = 32;
-float WEAPON7 = 64;
-float WEAPON8 = 128;
-float WEAPON9 = 256;
 
 //class vars
 .float data_type;

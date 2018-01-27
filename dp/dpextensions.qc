@@ -297,13 +297,13 @@ float GECKO_BUTTON_PRESS        = 2;
 // use this for mouse events if needed?
 float GECKO_BUTTON_DOUBLECLICK  = 3;
 //builtin definitions:
-float(string name) gecko_create( string name ) = #487;
+/*float(string name) gecko_create( string name ) = #487;
 void(string name) gecko_destroy( string name ) = #488;
 void(string name) gecko_navigate( string name, string URI ) = #489;
 float(string name) gecko_keyevent( string name, float key, float eventtype ) = #490;
 void gecko_mousemove( string name, float x, float y ) = #491;
 void gecko_resize( string name, float w, float h ) = #492;
-vector gecko_get_texture_extent( string name ) = #493;
+vector gecko_get_texture_extent( string name ) = #493;*/
 //engine-called QC prototypes:
 //string(string name, string query) Qecko_Query;
 //description:

@@ -5,41 +5,59 @@ Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 */
 
+//Specifically this sends PLAYER data
 float(entity ent, float changed) send_mech={
-  WriteByte(MSG_ENTITY, E_MEC);
-  WriteByte( MSG_ENTITY, num_for_edict(self.owner));
-  WriteByte( MSG_ENTITY, self.owner.data_idx);
-  WriteByte( MSG_ENTITY, self.owner.i_faction);
-  WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
-  WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
-  WriteCoord( MSG_ENTITY, self.owner.origin_z ); // Position Z
-  WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
-  WriteByte(MSG_ENTITY, csqc_updateCompStat(self));
-  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_legs));
-  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_tor_l));
-  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_tor_r));
-  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_arm_l));
-  WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_arm_r));
+  WriteByte(MSG_ENTITY, DATA_PLR);
+  WriteByte(MSG_ENTITY, self.data_type);
+  WriteByte( MSG_ENTITY, self.i_faction);
+  WriteByte(MSG_ENTITY, self.stat_plr_stt);
+  WriteByte(MSG_ENTITY, self.flags);
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  WriteAngle( MSG_ENTITY, self.angles_x);
+  WriteAngle( MSG_ENTITY, self.angles_y);
+  WriteAngle( MSG_ENTITY, self.angles_z);
+  WriteLong ( MSG_ENTITY, self.velocity_x);
+  WriteLong ( MSG_ENTITY, self.velocity_y);
+  WriteLong ( MSG_ENTITY, self.velocity_z);
+  if(self.data_type == DATA_MECH){
+    WriteByte( MSG_ENTITY, self.data_idx);
+    WriteByte( MSG_ENTITY, self.vec_size);
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
+    WriteByte(MSG_ENTITY, self.stat_rdr_rng);
+    WriteByte(MSG_ENTITY, csqc_updateCompStat(self));
+    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_legs));
+    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_tor_l));
+    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_tor_r));
+    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_arm_l));
+    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_arm_r));
+    WriteByte(MSG_ENTITY, (self.en_cur / self.en_max)*100);
+    WriteByte(MSG_ENTITY, (self.sh_cur / self.sh_max)*100);
+    WriteByte(MSG_ENTITY, self.stat_hit_dirs);
+    WriteByte(MSG_ENTITY, self.stat_ret_dist);
+  }
   return TRUE;
 };
 
 float(entity ent, float changed) send_vehicle={
-  WriteByte(MSG_ENTITY, E_VEC);
+  WriteByte(MSG_ENTITY, DATA_VEHC);
   WriteByte( MSG_ENTITY, self.owner.data_idx);
+  WriteByte( MSG_ENTITY, self.owner.vec_size);
   WriteByte( MSG_ENTITY, self.owner.i_faction);
-  WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
-  WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
-  WriteCoord( MSG_ENTITY, self.owner.origin_z ); // Position Z
+  WriteCoord( MSG_ENTITY, self.owner.origin_x );
+  WriteCoord( MSG_ENTITY, self.owner.origin_y );
+  WriteCoord( MSG_ENTITY, self.owner.origin_z );
   return TRUE;
 };
 
 float(entity ent, float changed) send_building={
-  WriteByte(MSG_ENTITY, E_BLD);
+  WriteByte(MSG_ENTITY, DATA_BLD);
   WriteByte( MSG_ENTITY, self.data_idx);
   WriteByte( MSG_ENTITY, self.i_faction);
-  WriteCoord( MSG_ENTITY, self.origin_x ); // Position X
-  WriteCoord( MSG_ENTITY, self.origin_y ); // Position Y
-  WriteCoord( MSG_ENTITY, self.origin_z ); // Position Z
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y ); 
+  WriteCoord( MSG_ENTITY, self.origin_z );
   WriteAngle( MSG_ENTITY, self.angles_x);
   WriteAngle( MSG_ENTITY, self.angles_y);
   WriteAngle( MSG_ENTITY, self.angles_z);
@@ -48,26 +66,23 @@ float(entity ent, float changed) send_building={
 
 float(entity ent, float changed) send_ai_mech={
 //super ugly hack, send ai's e_cam ent
-  WriteByte( MSG_ENTITY, E_AIU ); // Unique Identifier, I suggest you use enums to make it easy on yourself
+  WriteByte( MSG_ENTITY, DATA_MECH_AI );
   WriteByte( MSG_ENTITY, self.owner.data_idx);
+  WriteByte( MSG_ENTITY, self.owner.vec_size);
   WriteByte( MSG_ENTITY, self.owner.sh_cur);
   WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
   WriteByte( MSG_ENTITY, self.owner.i_faction);
-  WriteCoord( MSG_ENTITY, self.owner.origin_x ); // Position X
-  WriteCoord( MSG_ENTITY, self.owner.origin_y ); // Position Y
-  WriteCoord( MSG_ENTITY, self.owner.origin_z ); // Position Z
+  WriteCoord( MSG_ENTITY, self.owner.origin_x );
+  WriteCoord( MSG_ENTITY, self.owner.origin_y );
+  WriteCoord( MSG_ENTITY, self.owner.origin_z );
   return TRUE;
 };
-
-
-
 
 /*
   client sends string 'cmd mech foo'
   where foo is the command, first parm must be 'mech'
   
   so - 'cmd mech foo'
-  
 */
 void(string str, float tokens) client_ParseMechCommand={
   
@@ -77,12 +92,11 @@ void(string str, float tokens) client_ParseMechCommand={
     }
   }
   else if(argv(1) == "setmech"){
-    //self.p_class_next = P_MECH;
     self.vec_size = stof(argv(2));
     self.nextVecChoice = stof(argv(3));
   }
   else if(argv(1) == "spawn"){
-    if(self.p_class == P_OBS){
+    if(self.data_type == DATA_POBS){
       spawnpoint_Random();
       player_unmakeObserver();
       player_makeMech();
@@ -104,7 +118,6 @@ void(string cmd, float tokens) client_setWeaponGroup={
   groupnum = stof(argv(2));
   groupval = stof(argv(3));
   if(groupnum == 1){
-    
     self.w_group1 = groupval;
   }
   else if(groupnum == 2){
@@ -206,7 +219,7 @@ void() respawn={
     //
 		// get the spawn parms as they were at level start
 		setspawnparms (self);
-    if(self.p_class == P_MECH){
+    if(self.data_type == DATA_MECH){
       player_unmakeMech();
       player_makeObserver();
     }
@@ -219,7 +232,7 @@ void() respawn={
 
 		// set default spawn parms
 		SetNewParms ();
-    if(self.p_class == P_MECH){
+    if(self.data_type == DATA_MECH){
       player_unmakeMech();
       player_makeObserver();
     }
@@ -290,7 +303,7 @@ entity() SelectSpawnPoint={
   
 	if (!spot)
 		error ("PutClientInServer: no info_player_start on level");
-	
+
 	return spot;
 };
 

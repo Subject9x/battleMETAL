@@ -4,9 +4,17 @@
 keycodes.qc
 m_csdefs.qc
 m_entdefs.qc
-m_datadefs.qc
+m_datadefs.qc 
+ //common values
+  ../common/data/data_values_game.qc
+  ../common/data/data_values_projectiles.qc
+  ../common/data/data_values_buildings.qc
+  ../common/data/data_values_weapons.qc
+  ../common/data/data_values_mechs.qc
+  ../common/data/data_values_vehicles.qc
 gui_color_const_h.qc
 gui_api_h.qc
+hud_api_h.qc
 m_hud_h.qc
 cl_svr_cmd_h.qc
 msn_file_h.qc
@@ -22,13 +30,6 @@ gui_api_c.qc
 hud_snd_sys_c.qc
 ../world_effectinfo_h.qc
 //DATA FILES==========
-  //common values
-  ../common/data/data_values_projectiles.qc
-  ../common/data/data_values_buildings.qc
-  ../common/data/data_values_weapons.qc
-  ../common/data/data_values_mechs.qc
-  ../common/data/data_values_vehicles.qc
-  
   //buildings
   data/bld/data_h_power.qc
   data/bld/data_h_radar.qc

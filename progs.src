@@ -15,6 +15,12 @@ triggers_h.qc
   mech/ext/defs_data.qc
   mech/ext/defs_impulse.qc
   mech/ext/defs_combat.qc
+  common/data/data_values_game.qc
+  common/data/data_values_projectiles.qc
+  common/data/data_values_weapons.qc
+  common/data/data_values_mechs.qc
+  common/data/data_values_vehicles.qc
+  common/data/data_values_buildings.qc
 //==========================
 //mech header files
   mech/world_ext_h.qc
@@ -42,8 +48,7 @@ triggers_h.qc
 //==========================
 dp/subs.qc
 //DATA FILES=================
-  common/data/data_values_projectiles.qc
-  common/data/data_values_weapons.qc
+  
   //miscellaneous
   mech/dat/msc/map_deplypoint.qc
   mech/dat/msc/map_navpoint.qc
@@ -80,17 +85,14 @@ dp/subs.qc
   mech/dat/wep/data_swrm_val.qc
 
   //mechs
-  common/data/data_values_mechs.qc
   mech/dat/mch/data_outlaw_val.qc
   mech/dat/mch/data_matok_val.qc
   mech/dat/mch/data_hevdal_val.qc
   
   //vehicles
-  common/data/data_values_vehicles.qc
   mech/dat/vec/data_tank.qc
   
   //buildings
-  common/data/data_values_buildings.qc
   mech/dat/bld/data_h_radar.qc
   mech/dat/bld/data_h_shield.qc
   mech/dat/bld/data_h_power.qc

@@ -54,12 +54,6 @@ void() data_prj_sfga_ini;
 void() data_prj_flak_ini;
 void() data_prj_swrm_ini;
 
-//UPDATE CSQC cs_datadefs.qc if you mod any of these!
-//MECHS==================================
-float ID_MCH_BALAKET = 1;
-float ID_MCH_MATOK = 1;
-float ID_MCH_MONITOR = 1;
-
 //VEHICLES===============================
 float ID_VEC_TANK = 1;
 

@@ -35,7 +35,7 @@ void() building_shield={
   self.think = building_think;
   self.nextthink = time + 1;
   self.SendEntity = send_building;
-  self.SendFlags = 1;
+  self.SendFlags = -1;
 };
 
 void() building_shield_die={

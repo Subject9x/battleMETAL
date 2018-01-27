@@ -7,8 +7,7 @@ Overview: data file for map nav points
 
 
 float(entity ent, float changed) send_navpoint={
-  WriteByte( MSG_ENTITY, E_NAV ); // Unique Identifier, I suggest you use enums to make it easy on yourself
-  WriteByte( MSG_ENTITY, self.data_type);
+  WriteByte( MSG_ENTITY, DATA_NAVP ); // Unique Identifier, I suggest you use enums to make it easy on yourself
   WriteByte( MSG_ENTITY, self.data_idx);
   WriteByte( MSG_ENTITY, self.i_faction);
   WriteByte( MSG_ENTITY, self.isActive);
@@ -24,7 +23,7 @@ void() nav_point_use={
   }else{
     self.isActive = TRUE;
   }
-  self.SendFlags = 1;
+  self.SendFlags = -1;
 };
 
 void() nav_point_th={
@@ -36,7 +35,7 @@ void() nav_point_th={
         if(e.i_faction == self.i_faction){
           self.enemy = e;
           self.isActive = FALSE;
-          self.SendFlags = 1;
+          self.SendFlags = -1;
           multi_trigger();
         }
       }
@@ -61,7 +60,7 @@ void() map_navpoint={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.SendEntity = send_navpoint;
-  self.SendFlags = 1;
+  self.SendFlags = -1;
   self.use = nav_point_use;
   self.think = nav_point_th;
   self.nextthink = time + 0.5;

@@ -50,28 +50,12 @@ vector DAT_TNK_CAM_OFFSET= '0 0 0';
 vector DAT_TNK_CAM_OFFSET_ALT= '0 0 0';
 
 //=========================================
-void() data_TNK_hmn;
 void() data_TNK_ini;
 void() data_TNK_legs;
 void() data_TNK_ctor;
 void() data_TNK_cam;
 void() data_TNK_wep1;
 void() data_TNK_wep2;
-
-//call this guy at the start of the world ini
-void() data_TNK_hmn={
-  local entity TNK, oself;
-  TNK = spawn();
-  oself = self;
-  self = TNK;
-    self.data_idx = DAT_TNK_IDX;
-    self.classname = "data";
-    self.data_type = DATA_VEHC;
-    self.vec_name = DAT_TNK_VEC_NAME;
-    self.vec_size = 1;
-    self.w_group1 = self.w_group1 | WEAPON1 | WEAPON2;
-  self = oself;
-};
 
 void() data_TNK_ini={
   self.unit_legs = data_TNK_legs;
@@ -117,7 +101,7 @@ void() ai_tank={
   }*/
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
-  self.p_class = P_VECH;
+  self.data_type = DATA_VEHC;
   self.data_idx = 0;
   self.en_cur = 0;
   self.en_max = 0;
@@ -211,7 +195,7 @@ void() ai_tank={
   self.prev_pos = self.origin;
   self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;
-  self.e_cam.SendFlags = 1;
+  self.e_cam.SendFlags = -1;
   self.think = ai_control;
   self.nextthink = time + 5; //power up timer
 };

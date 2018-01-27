@@ -8,12 +8,6 @@ Overview: Hud Layout data for mech 'outlaw'
 
 void() otl_hud_ini;
 void(entity vec_data) otl_hud_prep;
-void(vector view_x, vector view_ctr) otl_HelmetImage;
-void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_renderCrosshairs;     
-void(float shieldval) otl_playerShield;
-void(float energyval) otl_playerEnergy;
-void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor;
-void(float rad_mode, float i_fact) otl_Radar;
 void(float hit_dir) otl_hitDirectionPips;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon1;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon2;
@@ -31,6 +25,17 @@ void(float range) otl_targetRange;
 void(float islock) otl_targetLock;
 void(float targdir) otl_targetDirectionPip;
 
+//entry point
+void() hud_blk_frame={
+  otl_HelmetImage();
+  otl_playerShield(self.sh_cur);
+  otl_playerEnergy(self.en_cur);
+  otl_playerArmor( self.hp_ctor, self.hp_stor, self.hp_stor2, self.hp_arm, self.hp_arm2, self.hp_leg);
+  otl_Radar(self.stat_rdr_mode, self.radar_range, self.i_faction);
+  otl_hitDirectionPips(self.stat_hit_dirs);
+  otl_renderCrosshairs(getstati(STAT_LCK_STT), getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), input_angles_x *-3);
+};
+
 //merely registers the hud into the ent list
 void() otl_hud_ini={
 
@@ -46,12 +51,12 @@ void() otl_hud_ini={
   self.img = "gfx/hud/hud_blk_bck.png";
   
   self.hud_prep = otl_hud_prep;
-  self.hud_HelmetImage = otl_HelmetImage;
-  self.hud_renderCrosshairs = otl_renderCrosshairs;
-  self.hud_playerShield = otl_playerShield;
-  self.hud_playerEnergy = otl_playerEnergy;
-  self.hud_playerArmor = otl_playerArmor;
-  self.hud_Radar = otl_Radar;
+  //self.hud_HelmetImage = otl_HelmetImage;
+  //self.hud_renderCrosshairs = otl_renderCrosshairs;
+  //.self.hud_playerShield = otl_playerShield;
+  //self.hud_playerEnergy = otl_playerEnergy;
+  //self.hud_playerArmor = otl_playerArmor;
+  //self.hud_Radar = otl_Radar;
   self.hud_hitDirectionPips = otl_hitDirectionPips;
   self.hud_renderWeapon1 = otl_renderWeapon1;
   self.hud_renderWeapon2 = otl_renderWeapon2;
@@ -145,24 +150,7 @@ void() otl_hud_ini={
     self.drawme = TRUE;
   self = oself;
  otl_hud.wdg_en = otl_en;
-  
-  otl_sh = spawn();
-  self = otl_sh;
-    self.classname = "widget";
-    self.owner = otl_hud;
-    self.otype = OBJ_METER;
-    self.drawsize = gui_percentToPixelRawVec('82 12');
-    self.margin_ins = gui_percentToPixelRawVec('12 20');
-    self.axis = self.axis | AXIS_LEFT;
-    self.pattern = PAT_BAR;
-    self.pos = '0 0 0';
-    self.drawcolor1 = '0.7 0.11 0.23'; //179,30,60
-    self.drawcolor2 = '0.215 0.709 0.29'; //(55,181,74)
-    self.drawme = TRUE;
-    self.align = self.align | VIEW_BOT | VIEW_LFT;
-  self = oself;
-  otl_hud.wdg_sh = otl_sh;
-  
+ 
   otl_pd = spawn();
   self = otl_pd;
     self.classname = "widget";
@@ -246,32 +234,17 @@ void(entity vec_data) otl_hud_prep={
   tgpnl.pos = gui_calcAlign(ofs, tgpnl.align);  
 };
 
-void(vector view_x, vector view_ctr) otl_HelmetImage ={
-
-  local vector img_sz, npos, pct, bck, as, hs;
-  local string nav;  
-  local float ang;
-  
-  img_sz = draw_getimagesize(self.img);
-  as = gui_scaleSize(img_sz,VIEW_SCALE);
-  hs = gui_percentToPixelRawVec( gui_getCenter(as) );
-  
-  bck_x = VIEW_CTR_x - hs_x;
-  bck_y = (VIEW_CTR_y - gui_percentYRaw(44) ) + hs_y;
-  drawpic(bck, self.img, gui_percentToPixelRawVec(as), '1 1 1', HUD_ALPHA, 0); //DEBUG
-  
-  ang = getstati(STAT_PLR_ANG);  
-  nav = gui_angleToNav(ang);
-  npos_x = VIEW_CTR_x - gui_percentXRaw(8);
-  npos_y = VIEW_ORG_y + gui_percentYRaw(16);
-  drawstring(npos, nav, gui_percentToPixelRawVec('16 16'), '0 1 0', HUD_ALPHA, 0);
-  self.prev_ang = ang;
+void() otl_HelmetImage ={
+  local vector img_sz;
+  img_sz = '452 180';
+  hud_HelmetImage('226 175', img_sz, HUD_BLK_IMG_B, (VIEW_CTX | VIEW_BOT), HUD_ALPHA, CLR_DEF_WHITE); 
+  hud_Navbar('8 16', CLR_DEF_ARM_OK, HUD_ALPHA);
 };
 
 /*
  CROSSHAIRS =======================================================
 */
-void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_renderCrosshairs={
+void(float lockval, float conv_x, float conv_y, float pitch) otl_renderCrosshairs={
 
   //convergence
   local vector spr_w, spr_h;
@@ -285,26 +258,24 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) otl_ren
   
   gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRaw(1.5, 11) - spr_h), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), '0.2 0.8 0.2', HUD_ALPHA, 0);
   gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + gui_percentToPixelRaw(-1.5, 1)), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), '0.2 0.8 0.2', HUD_ALPHA, 0);
-  if(getstatf(STAT_HIT_DIR) & STAT_HIT_TRG){
+  if((self.stat_hit_dirs & STAT_HIT_TRG)){
     gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRaw(24,24)), HUD_RET_HIT, gui_percentToPixelRawVec('48 48'), CLR_DEF_ARM_DED, HUD_ALPHA, 0);
   }
   //pitch
   local float p;
   p = pitch; //passing the var doesn't mess with it for some reason
   hud_renderPitchSlider((VIEW_CTR - gui_percentToPixelRaw(64, 24)), 270, -270, p);
-  drawfill((VIEW_CTR - gui_percentToPixelRaw(68, 25)), gui_percentToPixelRawVec('8 1'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-  drawfill((VIEW_CTR + gui_percentToPixelRaw(-68, 28)), gui_percentToPixelRawVec('8 1'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
 };  
 
 /*
   SHIELD METER=====================================================
 */
 void(float shieldval) otl_playerShield={
-  local vector label_org;
-  self.wdg_sh.pos = self.hud_pnl1.pos + self.hud_pnl1.margin_ins +  gui_percentToPixelRawVec('12 18');
-  self.wdg_sh.value1 = shieldval;
-  gui_renderMeter(self.wdg_sh.value1, self.wdg_sh.pos, gui_percentToPixelRawVec('82 12'), CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
-  label_org = self.wdg_sh.pos - gui_percentToPixelRawVec('0 4');
+  local vector label_org, shofs;
+  shofs = gui_percentToPixelRawVec('208 90');
+  shofs = gui_calcAlign(shofs, (VIEW_CTX | VIEW_BOT));
+  gui_renderMeter(shieldval, shofs, gui_percentToPixelRawVec('82 12'), CLR_DEF_ARM_DED, gui_getColorForShield(shieldval) , HUD_ALPHA, 0, AXIS_H, 0);
+  label_org = shofs - gui_percentToPixelRawVec('0 4');
   drawstring(label_org, "SHIELD", '4 4 0', '1 1 1', HUD_ALPHA, 0);
 };
 
@@ -312,13 +283,12 @@ void(float shieldval) otl_playerShield={
   ENERGY METER=====================================================
 */
 void(float energyval) otl_playerEnergy={
-  self.wdg_en.value1 = energyval;
-  self.wdg_en.pos = self.hud_pnl3.pos + self.hud_pnl3.margin_ins + gui_percentToPixelRawVec('6 5');
-  gui_renderMeter(self.wdg_en.value1, self.wdg_en.pos, gui_percentToPixelRawVec('26 84'), self.wdg_en.drawcolor1,
-                                                              self.wdg_en.drawcolor2, HUD_ALPHA, 0, AXIS_V, 0);
-                                                              
-  drawpic(self.wdg_en.pos, "gfx/hud/otl/otl_en_cvr.png", gui_percentToPixelRawVec('26 84'), self.hud_pnl3.colortint, HUD_ALPHA, 0);
-  drawstring( self.hud_pnl3.pos + self.hud_pnl3.margin_ins + gui_percentToPixelRawVec('8 0'), "ENERGY", '4 4 0', '1 1 1', HUD_ALPHA, 0);
+  local vector enofs;
+  enofs = gui_percentToPixelRawVec('102 87');
+  enofs = gui_calcAlign(enofs, (VIEW_CTX | VIEW_BOT));
+  gui_renderMeter(energyval, enofs, gui_percentToPixelRawVec('26 84'), CLR_DEF_ENG_DED , CLR_DEF_ENG_OK, HUD_ALPHA, 0, AXIS_V, 0);                                        
+  drawpic(enofs, "gfx/hud/otl/otl_en_cvr.png", gui_percentToPixelRawVec('26 84'), '1 1 1', HUD_ALPHA, 0);
+  drawstring( enofs + gui_percentToPixelRawVec('2 -4'), "ENERGY", '4 4 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 /*
@@ -326,8 +296,9 @@ void(float energyval) otl_playerEnergy={
 */
 void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor={
   local vector pnl_ctr;
-  pnl_ctr_x = self.hud_pnl1.pos_x + self.hud_pnl1.asize_x/2;
-  pnl_ctr_y = self.hud_pnl1.pos_y +self.hud_pnl1.asize_y/2;
+  pnl_ctr = gui_percentToPixelRawVec('167 55');
+  pnl_ctr = gui_calcAlign(pnl_ctr, (VIEW_CTX | VIEW_BOT));
+  
   drawstring((pnl_ctr + gui_percentToPixelRaw(-4, -18)), "CT", '4 4 0', '1 1 1', HUD_ALPHA, 0);
   gui_renderMeter(ct, (pnl_ctr + gui_percentToPixelRaw(-6, -12)), gui_percentToPixelRaw(12, 36), CLR_DEF_ARM_DED, gui_getColorForArmor(ct), HUD_ALPHA, 0, AXIS_V, 0);
   
@@ -349,11 +320,13 @@ void(float ct, float lt, float rt, float la, float ra, float lg) otl_playerArmor
 /*
   RADAR LAYOUT====================================================
 */
-void(float rad_mode, float i_fact) otl_Radar={
-  local vector lbl1, lbl2,  clr;
+void(float rad_mode, float rad_range, float i_fact) otl_Radar={
+  local vector rorg, lbl1, lbl2,  clr;
   local string mode;
-  local float len, badj, rad_rng;
-  lbl1 = self.hud_pnl2.pos + gui_percentToPixelRawVec('10 10');
+  local float len, badj;
+  rorg = gui_percentToPixelRawVec('72 135');
+  rorg = gui_calcAlign(rorg, (VIEW_CTX | VIEW_BOT));
+  lbl1 = rorg + gui_percentToPixelRawVec('10 10');
   if(rad_mode == TRUE){
     mode = "[ACTIVE]";
     clr = STATUS_DMG;
@@ -367,35 +340,30 @@ void(float rad_mode, float i_fact) otl_Radar={
   lbl2_x = lbl2_x + len + gui_percentXRaw(2);
   drawstring(lbl1, "RADAR MODE:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
-  rad_rng = getstati(STAT_RDR_RNG);
-  drawstring(lbl1 + gui_percentToPixelRawVec('0 6'), strcat("SCALE:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
+  drawstring(lbl1 + gui_percentToPixelRawVec('0 6'), strcat("SCALE:", ftos(rad_range), "m"), '6 6 0', clr, HUD_ALPHA, 0);
+  
   local vector mpos, cprc;
-  mpos_x = self.hud_pnl2.pos_x + self.hud_pnl2.hsize_x;
-  mpos_x = mpos_x - gui_percentXRaw(71);
-  mpos_y = self.hud_pnl2.pos_y + self.hud_pnl2.hsize_y;
-  mpos_y = mpos_y - gui_percentYRaw(10);
+  mpos = rorg + gui_percentToPixelRawVec('12 45');
+  cprc = mpos + gui_percentToPixelRawVec('45 45');
   
-  cprc_x = mpos_x + gui_percentXRaw(45);
-  cprc_y = mpos_y + gui_percentYRaw(45);
-  
-  hud_RenderRadar (cprc, rad_rng, gui_percentToPixelRawVec('90 90'), i_fact);
+  hud_RenderRadar (cprc, rad_range, gui_percentToPixelRawVec('90 90'), i_fact);
 };
 
 /*
  HIT DIRECTION PIPS===================================================
 */
 void(float hit_dir) otl_hitDirectionPips={
-  //RE?NDER HIT DIRECTION
+  //RENDER HIT DIRECTION
   local float l_fade;
   
-  if(hit_dir & STAT_HIT_LF){
+  if((hit_dir & STAT_HIT_LF)){
     local vector lorg;
     lorg_x = VIEW_ORG_x + gui_percentXRaw(4);
     lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
     gui_renderTintImage(TRUE, lorg, HUD_DMG_PIP_H, gui_percentToPixelRawVec('16 128'), '0.85 0.1 0.1', HUD_ALPHA, 0);
   }
   
-  if(hit_dir & STAT_HIT_RT){
+  if((hit_dir & STAT_HIT_RT)){
     local vector rorg;
     rorg_x = VIEW_MAX_x - gui_percentXRaw(18);
     rorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
@@ -513,7 +481,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
         spos_x -= i_sz_x/2; //align horizontally to centre
         spos_y -= i_sz_y/2; //align vertically again
         spos_z = 0; //shut up dp.
-        if(getstati(STAT_TRG_IFAC) == getstati(STAT_PLR_IFAC)){
+        if(getstati(STAT_TRG_IFAC) == self.i_faction){
           tclr = CLR_DEF_IIF_FRIEND;
         }
         else{

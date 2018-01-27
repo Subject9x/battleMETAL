@@ -6,7 +6,7 @@ Overview: data file for map objectives
 */
 
 float(entity ent, float changed) send_objective={
-  WriteByte( MSG_ENTITY, E_OBJ ); // Unique Identifier, I suggest you use enums to make it easy on yourself
+  WriteByte( MSG_ENTITY, DATA_OBJT ); // Unique Identifier, I suggest you use enums to make it easy on yourself
   WriteByte( MSG_ENTITY, self.data_idx);
   WriteByte( MSG_ENTITY, self.i_faction);
   WriteByte( MSG_ENTITY, self.isActive);
@@ -21,7 +21,7 @@ void() map_objective_use={
     self.isActive = TRUE;
     self.count = 0;
   }
-  self.SendFlags = 1;
+  self.SendFlags = -1;
 };
 
 void() map_objective_th={
@@ -53,7 +53,7 @@ void() map_objective={
   self.solid = SOLID_NOT;
   self.use = map_objective_use;
   self.SendEntity = send_objective;
-  self.SendFlags = 1;
+  self.SendFlags = -1;
   self.think = map_objective_th;
   self.nextthink = time + 0.5;
 }

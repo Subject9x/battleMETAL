@@ -33,7 +33,7 @@ void() PlayerPreThink = {
     return;	// dying, so do nothing
   }
   
-  if(self.p_class != P_OBS){
+  if(self.data_type != DATA_POBS){
     //power up sequence
     if(time < self.power_timer){
       if(self.movetype != MOVETYPE_NONE){
@@ -42,13 +42,13 @@ void() PlayerPreThink = {
       //return;
     }
     if(time > self.power_timer_segment){
-      self.stat_plr_stt = PLAYER_START_END;
+      self.stat_plr_stt = PLAYER_POWERUP_END;
     }
     if(time > self.power_timer){
-      if(self.stat_plr_stt == PLAYER_START_END){
+      if(self.stat_plr_stt == PLAYER_POWERUP_END){
         self.power_timer = 0;
         self.movetype = MOVETYPE_WALK;
-        self.stat_plr_stt = PLAYER_IDLE;
+        self.stat_plr_stt = PLAYER_ACTIVE;
       }
     }
     server_updateTargetInfo();
@@ -71,7 +71,7 @@ void() PlayerPreThink = {
 
 // teleporters can force a non-moving pause time	
 	if (time < self.pausetime)
-		self.velocity = '0 0 0';    
+		self.velocity = '0 0 0';
 };
 
 void() PlayerPostThink = {
@@ -89,17 +89,14 @@ void() PlayerPostThink = {
   }
   
 // do weapon stuff
-  self.stat_plr_ang = self.v_angle_y;
   //STAT UPDATE   
-  if(self.p_class == P_MECH){
+  if(self.data_type == DATA_MECH){
     makevectors(self.v_angle);
     traceline(self.origin, self.origin + (v_forward * 5000), FALSE,self);
     self.stat_ret_dist = 5000 * trace_fraction;
     self.stat_plr_camx = self.e_cam.c_ofs_x;
     self.stat_plr_camy = self.e_cam.c_ofs_y; 
     self.stat_plr_camz = self.e_cam.c_ofs_z;
-    self.stat_en = (self.en_cur / self.en_max)*100;
-    self.stat_sh = (self.sh_cur / self.sh_max)*100;
     self.stat_legs_hp = csqc_updateCompStat(self.e_legs);
     self.stat_ctor_hp = csqc_updateCompStat(self);
     self.stat_ltor_hp = csqc_updateCompStat(self.e_tor_l);
@@ -119,10 +116,8 @@ void() PlayerPostThink = {
     local vector radar;
     radar = server_updateRadarInfo();
   }
-
-  self.stat_plr_ptc = self.v_angle_x;
     
-  if(self.p_class != P_OBS){
+  if(self.data_type != DATA_POBS){
     local entity wep_chain;
     wep_chain = self.w_slot;
     while(wep_chain){
@@ -158,11 +153,13 @@ void() PlayerPostThink = {
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
     
-  if(self.p_class == P_MECH){
+  if(self.data_type == DATA_MECH){
     self.stat_plr_camx = self.e_cam.c_ofs_x;
     self.stat_plr_camy = self.e_cam.c_ofs_y; 
     self.stat_plr_camz = self.e_cam.c_ofs_z;
+   
   }
+   self.SendFlags = 1;
 };
 
 
@@ -192,10 +189,10 @@ void() PlayerDie={
 	self.angles_z = 0;
   self.avelocity = '0 0 0';
   
-  if(self.p_class != P_OBS){
+  if(self.data_type != DATA_POBS){
     mech_clearWeaponGroups();
-    if(self.p_class == P_MECH){
-      self.p_class = P_OBS; //edge case spot-welding
+    if(self.data_type == DATA_MECH){
+      self.data_type = DATA_POBS; //edge case spot-welding
       mech_player_die();
       return;
     }

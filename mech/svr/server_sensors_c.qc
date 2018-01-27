@@ -17,7 +17,7 @@ void() server_getTarget={
   traceline(src.origin, src.origin + v_forward*self.radar_range, FALSE, self);
   if(trace_ent != world){
     self.enemy = trace_ent;
-    if(trace_ent.p_class != P_OBS){
+    if(trace_ent.data_type != P_OBS){
       if(self.stat_rdr_mode){
         self.lock_timer = time + self.w_firetime;
       }

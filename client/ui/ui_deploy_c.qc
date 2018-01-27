@@ -150,7 +150,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   nav = findchain(classname, "data");
   while(nav){
     if(nav.data_type == DATA_NAVP){
-      if(nav.i_faction == getstati(STAT_PLR_IFAC)){
+      if(nav.i_faction == self.i_faction){
         local vector ofs, nofs;
         ofs = nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
         local float nlen;

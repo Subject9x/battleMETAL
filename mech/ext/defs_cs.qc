@@ -5,15 +5,6 @@ Date: 10/12/2016
 Overview: csqc defs for main game
 */
 
-//SendEnt constants
-float E_NAV = 1;
-float E_OBJ = 2;
-float E_AIU = 3;
-float E_BLD = 4;
-float E_VEC = 5;
-float E_MEC = 6;
-float E_DEP = 7;
-
 //STAT TYPES
 float AS_STRING = 1;
 float AS_INT = 2;
@@ -22,8 +13,6 @@ float AS_FLOAT = 8;
 
 //STAT FIELD VARS
 .float stat_eid;
-.float stat_en;
-.float stat_sh;
 
 .float stat_plr_camx;
 .float stat_plr_camy;
@@ -78,8 +67,6 @@ float AS_FLOAT = 8;
 .float stat_plr_stt;
 .float stat_plr_fir;
 .float stat_lck_stt;
-.float stat_plr_ptc;
-.float stat_plr_ang;
 .float stat_trg_ddflg;
 .float stat_trg_orgx;
 .float stat_trg_orgy;
@@ -147,116 +134,3 @@ float WEAPON6_REL = 32;
 float WEAPON7_REL = 64;
 float WEAPON8_REL = 128;
 float WEAPON9_REL = 256;
-
-//PLAYER STATE BITS
-float PLAYER_IDLE = 0;
-float PLAYER_SPAWN = 1;
-float PLAYER_START_BEGIN = 2;
-float PLAYER_START_END = 3;
-float PLAYER_MENU = 4;
-
-//stat channels
-float STAT_PLR_ANG = 73;
-float STAT_ENTITY_ID = 33;
-float STAT_PCLASS = 34;
-float STAT_SPREADX = 35;
-float STAT_SPREADY = 36;
-float STAT_ENERGY = 37;
-float STAT_SHIELD = 38;
-
-float STAT_TARG_EID = 39;
-float STAT_VID = 40;
-//send ent is for the weak!
-float STAT_CAM_ORG_X = 41;
-float STAT_CAM_ORG_Y = 42;
-float STAT_CAM_ORG_Z = 43;
-
-float STAT_LEG_HP = 44;
-float STAT_CTOR_HP = 46;
-float STAT_LTOR_HP = 48;
-float STAT_RTOR_HP = 50;
-float STAT_LARM_HP = 52;
-float STAT_RARM_HP = 54;
-
-//these are on notice, might be removed
-float STAT_LEG_AM = 45;
-float STAT_CTOR_AM = 47;
-float STAT_LTOR_AM = 49;
-float STAT_RTOR_AM = 51;
-float STAT_LARM_AM = 53;
-float STAT_RARM_AM = 55;
-
-float STAT_WEP1_ID = 56;
-float STAT_WEP2_ID = 59;
-float STAT_WEP3_ID = 62;
-float STAT_WEP4_ID = 65;
-float STAT_WEP5_ID = 68;
-float STAT_WEP6_ID = 71;
-float STAT_WEP7_ID = 74;
-float STAT_WEP8_ID = 77;
-float STAT_WEP9_ID = 80;
-
-float STAT_WEP1_REL = 81;
-float STAT_WEP2_REL = 82;
-float STAT_WEP3_REL = 86;
-float STAT_WEP4_REL = 99;
-float STAT_WEP5_REL = 100;
-float STAT_WEP6_REL = 101;
-float STAT_WEP7_REL = 102;
-float STAT_WEP8_REL = 103;
-float STAT_WEP9_REL = 104;
-float STAT_PLR_IFAC = 105;
-
-float STAT_WEP_STT = 57;
-float STAT_WEP_GRP = 83;
-float STAT_WEP_REL = 61;
-
-float STAT_SPR_X = 63;
-float STAT_SPR_Y = 64;
-float STAT_PLR_STT = 66;
-float STAT_PLR_FIR = 67;
-float STAT_LCK_STT = 69;
-float STAT_PLR_PTC = 72;
-
-float UI_BOX_POSX = 106;
-float UI_BOX_POSY = 107;
-float UI_BOX_SZEX = 108;
-float UI_BOX_SZEY = 109;
-float UI_BOX_CLRX = 110;
-float UI_BOX_CLRY = 111;
-float UI_BOX_CLRZ = 112;
-float UI_BOX_TIME = 113;
-
-float TRG_VEC_SIZ = 114;
-float TRG_P_CLASS = 115;
-float STAT_TRG_IFAC = 116;
-
-//Targeting stuff
-float STAT_TRG_VID = 84;
-float STAT_TRG_SH = 85;
-float STAT_TRG_DAT = 87;
-
-float STAT_RET_DIST = 88;
-float STAT_RDR_RNG = 89;
-float STAT_NAV_DIR = 60;
-
-float STAT_HIT_DIR = 90;
-float STAT_RDR_MODE = 91;
-
-float STAT_TRG_DDFLG = 81;
-float STAT_TRG_DIST = 92;
-float STAT_TRG_FACE = 58;
-
-float STAT_TRG_ORGX = 75;
-float STAT_TRG_ORGY = 76;
-float STAT_TRG_ORGZ = 78;
-
-float STAT_TRG_LEG_HP = 93;
-float STAT_TRG_CTOR_HP = 94;
-float STAT_TRG_LTOR_HP = 95;
-float STAT_TRG_RTOR_HP = 96;
-float STAT_TRG_LARM_HP = 97;
-float STAT_TRG_RARM_HP = 98;
-
-//level
-float STAT_LVL_RES = 79;

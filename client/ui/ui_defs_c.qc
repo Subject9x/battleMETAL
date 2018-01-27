@@ -83,7 +83,7 @@ void() menu_handleFrame={
 
 void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
-    if(PLAYER_HELPER.plr_sel_mech > 0 && (getstati(STAT_PCLASS) == P_OBS)){
+    if(PLAYER_HELPER.plr_sel_mech > 0 && (self.data_type == DATA_POBS)){
       cl_setspawnpoint(PLAYER_HELPER.plr_nav_pnt);
       cl_setmech(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
       local float lst_idx, bit;
@@ -190,7 +190,7 @@ void(entity nav) ui_renderNav={
     i_sz_y = i_sz_y / 4;
     iofs_x = iofs_x - (i_sz_x/2);
     iofs_y = iofs_y - (i_sz_y/2);
-    if(nav.i_faction == getstati(STAT_PLR_IFAC)){
+    if(nav.i_faction == self.i_faction){
       if(nav.isActive == TRUE){
         drawstring(tofs, nav.w_name, '6 6', CLR_DEF_WEP_INRANGE, 1, 0);
         gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;

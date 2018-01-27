@@ -111,11 +111,11 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
 };
 
 void(float playerState) snd_hud_vfx_statelistener={
-  if(getstati(STAT_PLR_STT) == PLAYER_START_BEGIN){
+  if(getstati(STAT_PLR_STT) == PLAYER_POWERUP_BEGIN){
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
     PLAYER_HELPER.drawme = 0;
   }
-  else if(getstati(STAT_PLR_STT) == PLAYER_IDLE){
+  else if(getstati(STAT_PLR_STT) == PLAYER_ACTIVE){
     if(PLAYER_HELPER.drawme == 0){
       PLAYER_HELPER.drawme = PLAYER_HELPER.drawme | 1 | 2 | 4 | 8 | 16 | 32;
     }
@@ -127,7 +127,9 @@ void(float lockstate) snd_hud_vfx_locklistener={
 
 void(float curEn) snd_hud_vfx_enelistener={
   if(curEn == 10){
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
+    if(PLAYER_HELPER.SOUND_QUEUE_1 != SND_HUD_VFX_ENELOW){
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
+    }
   }
 };
 
@@ -138,7 +140,7 @@ void(float curSh) snd_hud_vfx_shdlistener={
 };
 
 void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
-  if(getstati(STAT_PLR_STT) == PLAYER_IDLE){
+  if(getstati(STAT_PLR_STT) == PLAYER_ACTIVE){
     if(amt <= 0){
       if((PLAYER_HELPER.drawme & bit)){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 3); 
@@ -150,35 +152,43 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
 };
 
 void(float preState, float nexState) snd_hud_vfx_navpointlistener={
-  if(self.i_faction == getstati(STAT_PLR_IFAC)){
-    if(nexState == FALSE){
-      if(preState == TRUE){
-        snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
-        MSN_OBJ_STATUS[self.data_idx] = TRUE;
+  local entity player;
+  player = entitybyindex(player_localentnum);
+  if(player){
+    if(self.i_faction == player.i_faction){
+      if(nexState == FALSE){
+        if(preState == TRUE){
+          snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
+          MSN_OBJ_STATUS[self.data_idx] = TRUE;
+        }
       }
     }
   }
 };
 
 void(float preState, float nexState) snd_hud_vfx_objectivelistener={
-  if(self.i_faction == getstati(STAT_PLR_IFAC)){
-    if(nexState == FALSE){
-      if(preState == TRUE){
-        print(ftos(self.data_idx));
-        if(self.data_idx == 1){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME, 1);
-        }
-        else if(self.data_idx == 2){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_SECON, 1);
-        }
-        else if(self.data_idx == 3){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD, 1);
-        }
-        else if(self.data_idx == 254){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_WIN, 1);
-        }
-        else if(self.data_idx == 255){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
+  local entity player;
+  player = entitybyindex(player_localentnum);
+  if(player){
+    if(self.i_faction == player.i_faction){
+      if(nexState == FALSE){
+        if(preState == TRUE){
+          print(ftos(self.data_idx));
+          if(self.data_idx == 1){
+            snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME, 1);
+          }
+          else if(self.data_idx == 2){
+            snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_SECON, 1);
+          }
+          else if(self.data_idx == 3){
+            snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD, 1);
+          }
+          else if(self.data_idx == 254){
+            snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_WIN, 1);
+          }
+          else if(self.data_idx == 255){
+            snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
+          }
         }
       }
     }

@@ -6,30 +6,14 @@ Overview: function extensions to world.qc
 */
 
 void() mh_world_ini={
-
-  addstat(STAT_ENTITY_ID, AS_INT, stat_eid);
-  addstat(STAT_PCLASS, AS_INT, p_class);
   
-  addstat(STAT_ENERGY, AS_INT, stat_en);
-  addstat(STAT_SHIELD, AS_INT, stat_sh);
+  //work around for player observer
+  addstat(STAT_PLAYER_STATE, AS_INT, stat_plr_stt);
+  addstat(STAT_OBS_FACTION, AS_INT, i_faction);
   
   addstat(STAT_CAM_ORG_X, AS_FLOAT, stat_plr_camx);
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);
   addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_plr_camz);
-  
-  addstat(STAT_LEG_HP, AS_FLOAT, stat_legs_hp);
-  addstat(STAT_LEG_AM, AS_FLOAT, stat_legs_am);  
-  addstat(STAT_CTOR_HP, AS_FLOAT, stat_ctor_hp);
-  addstat(STAT_CTOR_AM, AS_FLOAT, stat_ctor_am);  
-  addstat(STAT_LTOR_HP, AS_FLOAT, stat_ltor_hp);
-  addstat(STAT_LTOR_AM, AS_FLOAT, stat_ltor_am); 
-  addstat(STAT_RTOR_HP, AS_FLOAT, stat_rtor_hp);
-  addstat(STAT_RTOR_AM, AS_FLOAT, stat_rtor_am);  
-  addstat(STAT_LARM_HP, AS_FLOAT, stat_larm_hp);
-  addstat(STAT_LARM_AM, AS_FLOAT, stat_larm_am);  
-  addstat(STAT_RARM_HP, AS_FLOAT, stat_rarm_hp);
-  addstat(STAT_RARM_AM, AS_FLOAT, stat_rarm_am);
-  addstat(STAT_VID, AS_INT, data_idx);
   
   addstat(STAT_WEP1_ID, AS_INT,stat_w1_id);
   addstat(STAT_WEP2_ID, AS_INT,stat_w2_id);
@@ -62,19 +46,12 @@ void() mh_world_ini={
   addstat(STAT_TRG_LARM_HP, AS_FLOAT, stat_trg_la_hp);
   addstat(STAT_TRG_RARM_HP, AS_FLOAT, stat_trg_ra_hp);
  
-  addstat(STAT_RET_DIST, AS_INT, stat_ret_dist);
-  addstat(STAT_HIT_DIR, AS_FLOAT, stat_hit_dirs);
-  addstat(STAT_RDR_MODE, AS_INT, stat_rdr_mode);
-  addstat(STAT_RDR_RNG, AS_INT, stat_rdr_rng);
   addstat(STAT_NAV_DIR, AS_INT, stat_nav_dir);
   
   addstat(STAT_SPR_X, AS_FLOAT, stat_spr_x);
   addstat(STAT_SPR_Y, AS_FLOAT, stat_spr_y);
   
-  addstat(STAT_PLR_STT, AS_INT, stat_plr_stt);
   addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
-  addstat(STAT_PLR_PTC, AS_FLOAT, stat_plr_ptc);
-  addstat(STAT_PLR_ANG, AS_INT, stat_plr_ang);
   
   addstat(STAT_LVL_RES, AS_INT, i_reserve);
   
@@ -87,8 +64,6 @@ void() mh_world_ini={
   addstat(STAT_WEP7_REL, AS_FLOAT, stat_w7_rel);
   addstat(STAT_WEP8_REL, AS_FLOAT, stat_w8_rel);
   addstat(STAT_WEP9_REL, AS_FLOAT, stat_w9_rel);
-  
-  addstat(STAT_PLR_IFAC, AS_INT, i_faction);
  
   addstat(UI_BOX_POSX, AS_INT, ui_box_pos_x);
   addstat(UI_BOX_POSY, AS_INT, ui_box_pos_y);
@@ -105,6 +80,7 @@ void() mh_world_ini={
   addstat(TRG_VEC_SIZ, AS_INT, stat_trg_vsize);
   addstat(TRG_P_CLASS, AS_INT, stat_trg_pclass);
   addstat(STAT_TRG_IFAC, AS_INT, stat_trg_ifac);
+  
   mh_world_iniData();
 };
 

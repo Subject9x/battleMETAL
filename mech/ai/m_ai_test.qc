@@ -30,7 +30,6 @@ void() ai_mech={
   }*/
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
-  self.p_class = P_MECH;
   self.data_idx = 0;
   self.en_cur = 0;
   self.en_max = 0;
@@ -130,7 +129,7 @@ void() ai_mech={
   self.prev_pos = self.origin;
   self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;
-  self.e_cam.SendFlags = 1;
+  self.e_cam.SendFlags = -1;
   self.think = ai_control;
   self.nextthink = time + 7; //power up timer
 };

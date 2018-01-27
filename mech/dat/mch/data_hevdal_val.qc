@@ -8,8 +8,7 @@ Overview:
   size: heavy
 */
 
-//MATOK MECH=============================
-float DAT_MNT_IDX = ID_MCH_MONITOR;
+//MONITOR MECH=============================
 string DAT_MNT_VEC_NAME = "Monitor";
 
 float DAT_MNT_RESERVE_COST = 200;
@@ -149,8 +148,9 @@ void() data_mnt_ini={
   self.unit_wep8 = data_mnt_wep8;
   self.unit_wep9 = data_mnt_wep9;
   
-  self.data_idx= DAT_MNT_IDX;
+  self.data_idx= ID_MCH_MONITOR;
   self.vec_name= DAT_MNT_VEC_NAME;
+  self.vec_size = SZ_MCH_MONITOR;
   self.data_type = DATA_MECH;
   self.radar_range = DAT_MNT_RADAR_RANGE;
   self.i_techlvl= DAT_MNT_TECH_LEVEL;

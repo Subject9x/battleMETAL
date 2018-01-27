@@ -8,12 +8,6 @@ Overview: Hud Layout data for mech 'monitor'
 
 void() mnt_hud_ini;
 void(entity vec_data) mnt_hud_prep;
-void(vector view_x, vector view_ctr) mnt_HelmetImage;
-void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mnt_renderCrosshairs;     
-void(float shieldval) mnt_playerShield;
-void(float energyval) mnt_playerEnergy;
-void(float ct, float lt, float rt, float la, float ra, float lg) mnt_playerArmor;
-void(float rad_mode, float i_fact) mnt_Radar;
 void(float hit_dir) mnt_hitDirectionPips;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon1;
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) mnt_renderWeapon2;
@@ -31,6 +25,15 @@ void(float range) mnt_targetRange;
 void(float islock) mnt_targetLock;
 void(float targdir) mnt_targetDirectionPip;
 
+
+//entry point
+void() hud_mnt_frame={
+  mnt_HelmetImage();
+  
+  mnt_renderCrosshairs(getstati(STAT_LCK_STT), getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), input_angles_x *-3);
+};
+
+
 //merely registers the hud into the ent list
 void() mnt_hud_ini={
 
@@ -40,18 +43,18 @@ void() mnt_hud_ini={
   self = mnt_hud;
   self.classname = "data";
   self.data_type = DATA_HUD;
-  self.data_idx = ID_MCH_HEVDAHL;
-  self.vec_size = SZ_MCH_HEVDAHL;
+  self.data_idx = ID_MCH_MONITOR;
+  self.vec_size = SZ_MCH_MONITOR;
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/hud_mnt_bck.png";
   
   self.hud_prep = mnt_hud_prep;
-  self.hud_HelmetImage = mnt_HelmetImage;
-  self.hud_renderCrosshairs = mnt_renderCrosshairs;
-  self.hud_playerShield = mnt_playerShield;
-  self.hud_playerEnergy = mnt_playerEnergy;
-  self.hud_playerArmor = mnt_playerArmor;
-  self.hud_Radar = mnt_Radar;
+  //self.hud_HelmetImage = mnt_HelmetImage;
+  //self.hud_renderCrosshairs = mnt_renderCrosshairs;
+  //self.hud_playerShield = mnt_playerShield;
+  //self.hud_playerEnergy = mnt_playerEnergy;
+  //self.hud_playerArmor = mnt_playerArmor;
+  //self.hud_Radar = mnt_Radar;
   self.hud_hitDirectionPips = mnt_hitDirectionPips;
   self.hud_renderWeapon1 = mnt_renderWeapon1;
   self.hud_renderWeapon2 = mnt_renderWeapon2;
@@ -255,28 +258,13 @@ void(entity vec_data) mnt_hud_prep={
     en_pnl.pos = gui_calcAlign(ofs, en_pnl.align);
 };
 
-void(vector view_x, vector view_ctr) mnt_HelmetImage={
-  local vector npos,pct, as, hs, img_sz, bck;
-  local string nav;  
-  local float ang;
-  
-  img_sz = draw_getimagesize(self.img);
-  as = gui_scaleSize(img_sz,VIEW_SCALE);
-  as_x = VIEW_MAX_x;
-  hs =  gui_percentToPixelRawVec( gui_getCenter(as) );
-  
-  bck_x = VIEW_CTR_x - hs_x;
-  bck_y = VIEW_MAX_y - (gui_percentYRaw(as_y) + gui_percentYRaw(36));
-  drawpic(bck, self.img, gui_percentToPixelRawVec(as), '1 1 1', HUD_ALPHA, 0);
-
-  ang = getstati(STAT_PLR_ANG);  
-  nav = gui_angleToNav(ang);
-  npos_x = VIEW_CTR_x - gui_percentXRaw(8);
-  npos_y = VIEW_ORG_y + gui_percentYRaw(16);
-  drawstring(npos, nav, '16 16 0', '0 1 0', HUD_ALPHA, 0);
-  self.prev_ang = ang;
+void() mnt_HelmetImage={
+  local vector img_sz;
+  img_sz = '640 140'; 
+  hud_HelmetImage('320 135', img_sz, HUD_MNT_IMG_B, (VIEW_CTX | VIEW_BOT),  HUD_ALPHA, CLR_DEF_WHITE); 
+  hud_Navbar('8 16', CLR_DEF_ARM_OK, HUD_ALPHA);
 };
-void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mnt_renderCrosshairs={
+void(float lockval, float conv_x, float conv_y, float pitch) mnt_renderCrosshairs={
   //convergence
   local vector spr_w, spr_h;
   spr_w_x = conv_x;
@@ -289,15 +277,13 @@ void(float pvid, float lockval, float conv_x, float conv_y, float pitch) mnt_ren
   
   gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('1.5 11') - spr_h), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), '0.2 0.8 0.2', HUD_ALPHA, 0);
   gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + gui_percentToPixelRawVec('-1.5 1')), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), '0.2 0.8 0.2', HUD_ALPHA, 0);
-  if(getstatf(STAT_HIT_DIR) & STAT_HIT_TRG){
+  if((self.stat_hit_dirs & STAT_HIT_TRG)){
     gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('24 24')), HUD_RET_HIT, gui_percentToPixelRawVec('48 48'), CLR_DEF_ARM_DED, HUD_ALPHA, 0);
   }
   //pitch
   local float p;
   p = pitch; //passing the var doesn't mess with it for some reason
   hud_renderPitchSlider((VIEW_CTR - gui_percentToPixelRawVec('64 24')), 270, -270, p);
-  drawfill((VIEW_CTR - gui_percentToPixelRawVec('68 25')), gui_percentToPixelRawVec('8 1'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-  drawfill((VIEW_CTR + gui_percentToPixelRawVec('-68 28')), gui_percentToPixelRawVec('8 1'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
 };     
 /* PLAYER SHIELD =======================================================*/
 void(float shieldval) mnt_playerShield={
@@ -342,7 +328,7 @@ void(float ct, float lt, float rt, float la, float ra, float lg) mnt_playerArmor
   gui_renderMeter(la, (pnl_ctr + gui_percentToPixelRawVec('-34 -12')), gui_percentToPixelRawVec('12 36'), CLR_DEF_ARM_DED, gui_getColorForArmor(la), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
-void(float rad_mode, float i_fact) mnt_Radar={
+void(float rad_mode, float rad_range, float i_fact) mnt_Radar={
  local vector lbl1, lbl2,  clr;
   local string mode;
   local float len, badj, rad_rng;
@@ -362,7 +348,7 @@ void(float rad_mode, float i_fact) mnt_Radar={
   lbl2 = lbl1;
   lbl2 = lbl1 + gui_percentToPixelRawVec('6 12');
   drawstring(lbl2, mode, '6 6 0', clr, HUD_ALPHA, 0);
-  rad_rng = getstati(STAT_RDR_RNG);
+  rad_rng = self.radar_range;
   local vector mpos, cprc;
   mpos_x = self.hud_pnl4.pos_x + self.hud_pnl4.hsize_x;
   mpos_x = mpos_x - gui_percentXRaw(20);
@@ -591,7 +577,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
         spos_x -= i_sz_x/2; //align horizontally to centre
         spos_y -= i_sz_y/2; //align vertically again
         spos_z = 0; //shut up dp.
-        if(getstati(STAT_TRG_IFAC) == getstati(STAT_PLR_IFAC)){
+        if(getstati(STAT_TRG_IFAC) == self.i_faction){
           tclr = CLR_DEF_IIF_FRIEND;
         }
         else{

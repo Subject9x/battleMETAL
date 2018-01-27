@@ -72,6 +72,8 @@ void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
     perc = perc * -1;
   }
   gui_renderMeter(perc, org, gui_percentToPixelRawVec('4 26'), '-1 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
+  drawfill((org - gui_percentToPixelRawVec('0 0')), gui_percentToPixelRawVec('8 1'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  drawfill((org + gui_percentToPixelRawVec('0 52')), gui_percentToPixelRawVec('8 1'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
 };
 
 
@@ -100,10 +102,10 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
   drawpic(cofs - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), '1 1 1', HUD_ALPHA, 0);
   e = findradius(pmove_org, range);
   while(e){
-    if((e.p_class == E_NAV) || (e.p_class == E_BLD) || (e.p_class == E_AIU) || (e.p_class == E_VEC)){
+    if((e.data_type == DATA_MECH) || (e.data_type == DATA_BLD) || (e.data_type == DATA_VEHC)){
       local float draw, p_ifac, pyaw;
       local vector ang, clr, eorg, corg, nofs, ctr;
-      p_ifac = getstati(STAT_PLR_IFAC);
+      p_ifac = self.i_faction;
       ctr_x = pnl_sz_x / 2;
       ctr_y = pnl_sz_y / 2;
       draw = TRUE;
@@ -120,14 +122,14 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
         draw = FALSE;
       }
       
-      if(e.p_class == E_NAV){
+      if(e.data_type == DATA_NAVP){
         if(e.i_faction == p_ifac){
           if(draw){
             hud_RenderRadar_Nav(nofs, e.isActive, CLR_DEF_ARM_OK);         
           }
         }
       }
-      else if(e.p_class == E_BLD){
+      else if(e.data_type == DATA_BLD){
         if(draw){ 
           traceline(pmove_org+'0 0 128', e.origin + '0 0 128', FALSE, self);
           if(trace_fraction >= 0.9){
@@ -141,7 +143,7 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
           }
         }
       }
-      else if(e.p_class == E_AIU){
+      else if(e.data_type == DATA_MECH){
         if(draw){
           traceline(pmove_org+'0 0 128', e.origin + '0 0 64', FALSE, self);
           if(trace_fraction >= 0.9){
@@ -155,7 +157,7 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
           }
         }
       }
-      else if(e.p_class == E_VEC){
+      else if(e.data_type == DATA_VEHC){
         if(draw){      
           traceline(pmove_org+'0 0 128', e.origin + '0 0 64', FALSE, self);
           if(trace_fraction >= 0.9){
@@ -174,13 +176,54 @@ void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
   }
 };
 
+/*
+  displays a background image on the hud
+  always draws from bottom left of screen UP
+*/
+void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) hud_HelmetImage={
+  local vector nofs;
+  nofs = gui_calcAlign(ofs, valign); 
+  drawpic(nofs, bimg, gui_percentToPixelRawVec(img_sz), clr, alpha, 0);  
+};
+
+void(vector ofs, vector clr, float alpha) hud_Navbar={
+  local float ang;
+  local vector npos;
+  local string nav;
+  
+  ang = getstati(STAT_PLR_ANG);  
+  nav = gui_angleToNav(ang);
+  npos_x = VIEW_CTR_x - gui_percentXRaw(ofs_x);
+  npos_y = VIEW_ORG_y + gui_percentYRaw(ofs_y);
+  drawstring(npos, nav, gui_percentToPixelRawVec('16 16'), clr, alpha, 0);
+};
+
+//entry point for the mech hud system
+void(float mech_id, float mech_size) hud_frame={
+  if(mech_size == 1){
+    if(mech_id == ID_MCH_BALAKET){
+      hud_blk_frame(); 
+    }
+  }
+  else if(mech_size == 2){
+    if(mech_id == ID_MCH_MATOK){
+      hud_mtk_frame(); 
+    }
+  }
+  else if(mech_size == 3){
+    if(mech_id == ID_MCH_MONITOR){
+      hud_mnt_frame(); 
+    }
+  }
+};
+
 .void(entity vec_data) hud_prep;
-.void(vector view_x, vector view_ctr) hud_HelmetImage;
-.void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hud_renderCrosshairs;  
-.void(float shieldval) hud_playerShield;
-.void(float energyval) hud_playerEnergy;
-.void(float ct, float lt, float rt, float la, float ra, float lg) hud_playerArmor;
-.void(float rad_mode, float i_fact) hud_Radar;
+//.void(vector view_x, vector view_ctr) hud_HelmetImage;
+//.void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hud_renderCrosshairs;  
+//.void(float shieldval) hud_playerShield;
+//.void(float energyval) hud_playerEnergy;
+//.void(float ct, float lt, float rt, float la, float ra, float lg) hud_playerArmor;
+//.void(float rad_mode, float i_fact) hud_Radar;
 .void(float hit_dir) hud_hitDirectionPips;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon1;
 .void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon2;

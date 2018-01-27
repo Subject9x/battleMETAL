@@ -9,7 +9,6 @@ Overview: moving all mech values into a single global file for ease of maintenan
 */
 
 //OUTLAW MECH=============================
-float DAT_OTL_IDX = ID_MCH_BALAKET;
 string DAT_OTL_VEC_NAME = "Balaket";
 float DAT_OTL_RESERVE_COST = 100;
 float DAT_OTL_YAWSPEED = 6;
@@ -99,7 +98,8 @@ void() data_otl_ini={
   self.unit_wep2 = data_otl_wep2;
   self.unit_wep3 = data_otl_wep3;
 
-  self.data_idx= DAT_OTL_IDX;
+  self.data_idx= ID_MCH_BALAKET;
+  self.vec_size = SZ_MCH_BALAKET;
   self.vec_name= DAT_OTL_VEC_NAME;
   self.data_type = DATA_MECH;
   self.radar_range = DAT_OTL_RADAR_RANGE;

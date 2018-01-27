@@ -15,7 +15,6 @@ void(float slot, float w_bit) cl_setweapon={
   local string cmd;
   cmd = strcat("cmd mech setwep ", ftos(slot), " ", ftos(w_bit), "\n");
   localcmd(cmd);
-
 };
 
 void(float sz, float id) cl_setmech={

@@ -17,6 +17,10 @@ void() cs_precache={
   precache_model ("q3mdl/mechs/mnt/mdl_mnt_cpt.md3");
 
   //cockpit images 
+  HUD_BLK_IMG_B = precache_pic("gfx/hud/hud_blk_bck.png", 0);
+  HUD_MTK_IMG_B = precache_pic("gfx/hud/hud_mtk_bck.png", 0);
+  HUD_MNT_IMG_B = precache_pic("gfx/hud/hud_mnt_bck.png", 0);
+  
   HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret_pip_hrz.png", 0);
   HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret_pip_vrt.png", 0);
   HUT_RET_LOK = precache_pic("gfx/hud/ret_lock.png", 0);
@@ -31,18 +35,6 @@ void() cs_precache={
   HUD_TRG_PIP_B = precache_pic("gfx/hud/trg_pip_bot.png", 0);
   
   HUD_DMG_PIP_H = precache_pic("gfx/hud/dmg_pip_hrz.png", 0);
-  
-  precache_pic("gfx/hud/otl/otl_am.png", 0);
-  precache_pic("gfx/hud/otl/otl_hd.png", 0);
-  precache_pic("gfx/hud/otl/otl_en.png", 0);
-  precache_pic("gfx/hud/otl/otl_en_cvr.png", 0);
-  precache_pic("gfx/hud/otl/otl_rd.png", 0);
-  precache_pic("gfx/hud/otl/otl_rd_cvr.png", 0);
-  precache_pic("gfx/hud/otl/otl_sl.png", 0);
-  precache_pic("gfx/hud/otl/otl_sp.png", 0);
-  precache_pic("gfx/hud/otl/otl_wp.png", 0);
-  
-  precache_pic("gfx/hud/navbar.png", 0);
   
   //hangar splash images
   precache_pic("gfx/ui/hgr_otl.png", 0);

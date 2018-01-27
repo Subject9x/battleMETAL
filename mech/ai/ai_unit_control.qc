@@ -38,7 +38,7 @@ void() ai_control={
     self.ai_hasmoved = self.ai_next_move();
     self.prev_angle = normalize(self.origin - self.prev_pos);
     if(self.enemy != world){
-      self.e_legs.v_angle_y = vectoangles(self.enemy.origin - self.origin) + self.p_velocity;
+      self.e_legs.v_angle_y = vectoyaw(self.enemy.origin - self.origin) + self.p_velocity;
     }
     else{
       self.e_legs.v_angle_y = self.v_angle_y;
@@ -46,7 +46,7 @@ void() ai_control={
   }
   self.think = ai_control;
   self.nextthink = time + 0.05;
-  self.e_cam.SendFlags = 1;
+  self.e_cam.SendFlags = -1;
 };
 
 void() ai_turret_control={
@@ -122,7 +122,7 @@ void() ai_turret_control={
   
   self.think = ai_turret_control;
   self.nextthink = time + 0.05;
-  self.e_cam.SendFlags = 1;
+  self.e_cam.SendFlags = -1;
 };
 
 //TODO - move this stuff to own file

@@ -95,7 +95,7 @@ void		end_sys_globals;		// flag for structure dumping
 
 .float		entnum;	// *** the ent number as on the server
 .float		drawmask;
-.void()		predraw;
+.float()		predraw;
 
 .float		movetype;
 .float		solid;
@@ -241,6 +241,35 @@ const float CONTENT_WATER					= -3;
 const float CONTENT_SLIME					= -4;
 const float CONTENT_LAVA					= -5;
 const float CONTENT_SKY						= -6;
+
+
+// edict.flags
+const float	FL_FLY					= 1;
+const float	FL_SWIM					= 2;
+const float	FL_CLIENT				= 8;	// set for all client edicts
+const float	FL_INWATER				= 16;	// for enter / leave water splash
+const float	FL_MONSTER				= 32;
+const float	FL_GODMODE				= 64;	// player cheat
+const float	FL_NOTARGET				= 128;	// player cheat
+const float	FL_ITEM					= 256;	// extra wide size for bonus items
+const float	FL_ONGROUND				= 512;	// standing on something
+const float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
+const float	FL_WATERJUMP			= 2048;	// player jumping out of water
+const float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
+
+// edict.movetype values
+const float	MOVETYPE_NONE			= 0;	// never moves
+//float	MOVETYPE_ANGLENOCLIP	= 1;
+//float	MOVETYPE_ANGLECLIP		= 2;
+const float	MOVETYPE_WALK			= 3;	// players only
+const float	MOVETYPE_STEP			= 4;	// discrete, not real time unless fall
+const float	MOVETYPE_FLY			= 5;
+const float	MOVETYPE_TOSS			= 6;	// gravity
+const float	MOVETYPE_PUSH			= 7;	// no clip to world, push and crush
+const float	MOVETYPE_NOCLIP			= 8;
+const float	MOVETYPE_FLYMISSILE		= 9;	// fly with extra size against monsters
+const float	MOVETYPE_BOUNCE			= 10;
+const float	MOVETYPE_BOUNCEMISSILE	= 11;	// bounce with extra size
 
 // Quake Solid Constants
 const float SOLID_NOT						= 0;

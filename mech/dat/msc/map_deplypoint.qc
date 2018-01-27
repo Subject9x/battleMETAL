@@ -6,8 +6,7 @@ Overview: data file for map deployment spots (spawn points)
 */
 
 float(entity ent, float changed) send_deploypoint={
-  WriteByte( MSG_ENTITY, E_DEP ); // Unique Identifier, I suggest you use enums to make it easy on yourself
-  WriteByte( MSG_ENTITY, self.data_type);
+  WriteByte( MSG_ENTITY, DATA_DEPL ); // Unique Identifier, I suggest you use enums to make it easy on yourself
   WriteByte( MSG_ENTITY, self.data_idx);
   WriteByte( MSG_ENTITY, self.i_faction);
   WriteByte( MSG_ENTITY, self.isActive);
@@ -39,7 +38,7 @@ void() map_deploy_point={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.SendEntity = send_deploypoint;
-  self.SendFlags = 1;
+  self.SendFlags = -1;
   self.think = th_deploy;
   self.nextthink = time + 0.5;
 }

@@ -166,13 +166,13 @@ float(vector p, vector pmin, vector pmax) util_checkInBounds={
   local vector ok;
   ok = '0 0 0';
 
-  if((p_x > pmin_x-1) && (p_x < pmax_x+1)){
+  if((p_x > (pmin_x - 1)) && (p_x < (pmax_x + 1))){
     ok_x = 1;
   }
-  if((p_y > pmin_y-1) && (p_y < pmax_y+1)){
+  if((p_y > pmin_y - 1) && (p_y < pmax_y+1)){
     ok_y = 1;
   } 
-  if((p_z > pmin_z-1) && (p_z < pmax_z+1)){
+  if((p_z > pmin_z - 1) && (p_z < pmax_z+1)){
     ok_z = 1;
   }
   

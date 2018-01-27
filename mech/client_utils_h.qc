@@ -22,6 +22,7 @@ void() legacy_PlayerDie;
 void() spawnpoint_Random;
 
 //SendEnt
+void(entity ent, float changed) send_info_start
 float(entity ent, float changed) send_vehicle;
 float(entity ent, float changed) send_building;
 float(entity ent, float changed) send_ai_mech;

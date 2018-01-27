@@ -5,14 +5,16 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
-//SendEnt constants
-float E_NAV = 1;
-float E_OBJ = 2;
-float E_AIU = 3;
-float E_BLD = 4;
-float E_VEC = 5;
-float E_MEC = 6;
-float E_DEP = 7;
+.float timer_phys;
+.float timer_r;
+.vector origin_old;
+.vector origin_phys;       
+
+vector vPlayerOrigin;
+vector vPlayerOriginOld;
+vector vPlayerVelocity;
+
+.float pmove_flags;
 
 //Damage types
 float DMG_BAL = 1;  //ballstic damage
@@ -102,6 +104,8 @@ float ARM_RAD = 24;
 .float dmg_amt;
 .float hardpoint_cnt;
 //mech
+.float en_cur;
+.float sh_cur;
 .float hp_ctor;
 .float hp_stor;
 .float hp_stor2;

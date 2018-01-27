@@ -139,7 +139,7 @@ void(vector ofs) menu_briefMapPanel={
   nav = findchain(classname, "data");
   while(nav){
     if(nav.data_type == DATA_NAVP){
-      if(nav.i_faction == getstati(STAT_PLR_IFAC)){
+      if(nav.i_faction == self.i_faction){
         local vector nofs, tofs;
         tofs = nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec(ui_msize_in));
         local float nlen;

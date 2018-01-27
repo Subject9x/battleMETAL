@@ -18,7 +18,6 @@ void() building_power={
   self.data_type = DATA_BLD;
   self.vec_name = "Power Generator";
   self.flags = self.flags | FL_MONSTER;
-  self.p_class = P_BULD;
   util_setModel(DAT_BLD_H_POWER_PLANT_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_POWER_PLANT_HP, DAT_BLD_H_POWER_PLANT_HP, 1, 100);
@@ -38,7 +37,7 @@ void() building_power={
   self.use = multi_trigger;
   self.nextthink = time + 1;
   self.SendEntity = send_building;
-  self.SendFlags = 1;
+  self.SendFlags = -1;
 };
 
 void() building_power_die={

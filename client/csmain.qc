@@ -1,4 +1,6 @@
 
+float() player_predraw;
+float() obs_predraw;
 // called during level initialization, before first entities are received, only world is valid at this point
 void() CSQC_Init =
 {
@@ -116,8 +118,11 @@ void() CSQC_Shutdown =
 // typ 3 = mousepos (x, y) if inputmode is on
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
+  if(self.player_state == PLAYER_POWERUP_BEGIN){
+    return TRUE;
+  }
   if(evtype == 0){
-    if((scanx == K_TAB && getstati(STAT_PCLASS) == P_OBS)){
+    if((scanx == K_TAB && self.data_type == DATA_POBS)){
         if(MENU_ACTIVE){
           MENU_ACTIVE = FALSE;
           PLAYER_HELPER.plr_menu_choice = 0;
@@ -235,14 +240,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
-  /*if(MENU_ACTIVE){
-  	setproperty(VF_DRAWCROSSHAIR, 0); // TODO custom crosshairs
-  }
-  else{
-  	setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
-  }*/
-	//setproperty(VF_DRAWCROSSHAIR, 1); // TODO custom crosshairs
-	setproperty(VF_DRAWENGINESBAR, 0); // TODO custom hud
+	setproperty(VF_DRAWCROSSHAIR, 0);
+	setproperty(VF_DRAWENGINESBAR, 0);
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
@@ -252,13 +251,23 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_SCALE = 0.35;
   
+  	// add any polygons we want here
+
+  
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
 	// TODO: do clientside viewmodel entity instead
 	addentities(MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS);
 
-	// add any polygons we want here
+  if(self.data_type == DATA_MECH){
+    setproperty(VF_ORIGIN, pmove_org);
+    setproperty(VF_ANGLES, input_angles);
+  }
+  else{ 
+    setproperty( VF_ORIGIN, self.origin);
+    setproperty( VF_ANGLES, input_angles );
+  }
 
 	// draw the main view
 	renderscene();
@@ -271,31 +280,20 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     }
   }
   
-  
-  
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
 
 	// draw custom hud
   //draw hud
- 
-  local float pclas, eid;
-  local vector vforg;
-  vforg = getpropertyvec(VF_ANGLES);
-  pclas = getstati(STAT_PCLASS);
-  eid = getstati(STAT_ENTITY_ID);
-  /*drawstring('0 0 0', vtos(VIEW_ORG), '8 8 0', '1 1 1', 1, 0);
-  drawstring('0 8 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
-  drawstring('0 16 0', vtos(VIEW_MAX), '8 8 0', '1 1 1', 1, 0);
- */
   
   AVAILABLE_RESERVE = getstati(STAT_LVL_RES);
-  if(pclas != P_OBS){
+  if(self.player_state == PLAYER_SPAWN){
+    localcmd(strcat("stopsound", "\n"));
+  }
+  if(self.data_type == DATA_MECH){
     //player general info
-    local float vec_id, hitdir, conv_x, conv_y, pitch;
-    vec_id = getstati(STAT_VID);
-    hitdir = getstatf(STAT_HIT_DIR);
+    local float conv_x, conv_y, pitch;
     conv_x = getstatf(STAT_SPR_X);
     conv_y = getstatf(STAT_SPR_Y);
     pitch = input_angles_x *-3;
@@ -306,28 +304,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     PLR_VIEW_z = getstatf(STAT_CAM_ORG_Z);
     makevectors(input_angles);
     PLAYER_HELPER.angles_y = input_angles_y;
-    PLR_VIEW = pmove_org; //+ (v_up * PLR_VIEW_y) + (v_right * PLR_VIEW_x) + (v_forward * PLR_VIEW_z);
-    setproperty(VF_ORIGIN, PLR_VIEW);
-    setorigin(PLAYER_HELPER, PLR_VIEW);
-    
-    //player mech hp info
-    local float plr_state, plr_sh, plr_en, plr_ct, plr_rt, plr_lt, plr_ra, plr_la, plr_lg;
-    plr_state = getstati(STAT_PLR_STT);
-    plr_sh = getstati(STAT_SHIELD);
-    plr_en = getstati(STAT_ENERGY);
-    plr_ct = getstatf(STAT_CTOR_HP);
-    plr_rt = getstatf(STAT_RTOR_HP);
-    plr_lt = getstatf(STAT_LTOR_HP);
-    plr_ra = getstatf(STAT_RARM_HP);
-    plr_la = getstatf(STAT_LARM_HP);
-    plr_lg = getstatf(STAT_LEG_HP);
+    PLR_VIEW = pmove_org;
+    setorigin(PLAYER_HELPER, self.origin);
     
     //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(plr_rt, 2, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(plr_lt, 4, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(plr_ra, 8, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(plr_la, 16, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(plr_lg, 32, SND_HUD_VFX_CRITLEG);
+    snd_hud_vfx_armlistener(self.hp_stor2, 2, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(self.hp_stor, 4, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(self.hp_arm2, 8, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(self.hp_arm, 16, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(self.hp_leg, 32, SND_HUD_VFX_CRITLEG);
     //player weapon tracking info
     local float plr_wgrp, plr_wstate, plr_wrel, w1_id, w2_id, w3_id, w4_id, w5_id, w6_id, w7_id, w8_id, w9_id;
     local float w1_r, w2_r, w3_r, w4_r, w5_r, w6_r, w7_r, w8_r, w9_r;
@@ -353,9 +338,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     w8_r = getstatf(STAT_WEP8_REL);
     w9_r = getstatf(STAT_WEP9_REL);
     
-    //player radar info
-    local float rad_mode;
-    rad_mode = getstati(STAT_RDR_MODE);
     //target tracking info
     local float trg_vid, trg_datid, trg_ddflg, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
     local vector trg_pos;
@@ -372,16 +354,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     PLAYER_HELPER.w_range = trg_dist;
     //render 
     local entity player_hud, vec_data, oself;
-    vec_data = m_findMechData(PLAYER_HELPER.vec_size, vec_id);
-    player_hud = m_findHUDData(PLAYER_HELPER.vec_size, vec_id);
+    vec_data = m_findMechData(self.vec_size, self.data_idx);
+    player_hud = m_findHUDData(self.vec_size, self.data_idx);
     
     
-    //update sprinting based on player energy state.
-    
-    if(plr_en < 10){
+    //UPDATE SPRINTING ABILITY BASED ON ENERGY
+    if(self.en_cur < 10){
       cl_set_movespeedkey(1);
     }
-    else{
+    else {
       local float cl_sprint;
       cl_sprint = cvar("cl_movespeedkey");
       if(cl_sprint == 1){
@@ -389,21 +370,25 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       }
     }
     
-    
-    snd_hud_vfx_statelistener(plr_state);
-    snd_hud_vfx_enelistener(plr_en);
-    snd_hud_vfx_toggleradar(rad_mode);
+    //HUD SOUND SYSTEM LISTENERS
+    snd_hud_vfx_statelistener(self.player_state);
+    snd_hud_vfx_enelistener(self.en_cur);
+    snd_hud_vfx_toggleradar(self.stat_rdr_mode);
     snd_hud_vfx_targkill(trg_ddflg);
+    
+    //HUD RENDER FRAME SYSTEM
+    hud_frame(self.data_idx, self.vec_size);
+    
     oself = self;
     self = player_hud;
       self.w_range = trg_dist;
       self.hud_prep(vec_data);
-      self.hud_HelmetImage(VIEW_MAX, VIEW_CTR);
-      self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
-      self.hud_playerShield(plr_sh);
-      self.hud_playerEnergy(plr_en);  
-      self.hud_Radar(rad_mode, getstati(STAT_PLR_IFAC));
-      self.hud_hitDirectionPips(hitdir);
+      //self.hud_HelmetImage(VIEW_MAX, VIEW_CTR);
+      //self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
+      //self.hud_playerShield(plr_sh);
+      //self.hud_playerEnergy(plr_en);  
+      //self.hud_Radar(rad_mode, getstati(STAT_PLR_IFAC));
+      //self.hud_hitDirectionPips(hitdir);
       self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, w1_r);
       self.hud_renderWeapon2(plr_wgrp, plr_wstate, w2_id, WEAPON2, WEAPON2_DD, WEAPON2_OK, w2_r);
       self.hud_renderWeapon3(plr_wgrp, plr_wstate, w3_id, WEAPON3, WEAPON3_DD, WEAPON3_OK, w3_r);
@@ -414,13 +399,14 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, w8_r);
       self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, w9_r);
       self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
-      self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
+      //self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
     self = oself;
+    
     local float rng, l;
     local string s;
     local vector v;
     v = VIEW_CTR;
-    rng = getstati(STAT_RET_DIST);
+    rng = self.stat_ret_dist;
     s = ftos(rng);
     l = stringwidth(s, 0, '8 8 0');
     v_x = v_x - l/2;
@@ -439,11 +425,11 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       local float len;
       local vector og;
       local string mesg;
-      if(getstati(STAT_PLR_STT) == PLAYER_SPAWN){
+      if(self.player_state == PLAYER_SPAWN){
         len = stringwidth("Press any key to respawn", 0, '8 8 0');
         mesg = "Press any key to respawn";
       }
-      else if(getstati(STAT_PLR_STT) == PLAYER_MENU){
+      else if(self.player_state == PLAYER_IN_MENU){
         len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
         mesg = "Press [TAB] For Hangar Menu";
       }
@@ -473,7 +459,9 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     og_y = VIEW_MAX_y - gui_percentYRaw(12);
     drawstring(og, mesg, '8 8 0', '1 1 1', 0.85, 0);
   }
-  setorigin(PLAYER_HELPER, PLR_VIEW);
+  //setorigin(PLAYER_HELPER, PLR_VIEW);
+  PLAYER_HELPER.origin = PLR_VIEW;
+  
   //display remaining reserves;
   //10/28/2017 - MOVE TO OBJECTIVE / MISSION STATUS HOTKEY SCREEN
   /*local string res;
@@ -493,23 +481,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     cursorpos = getmousepos();
     menu_handleFrame();
   }else{
-    // draw custom crosshair
-    //drawstring(VIEW_ORG+'2 2', vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-    
-    //local vector prj, temp;
-    
-    //
-    /*temp_x = getstatf(STAT_TRG_ORGX);
-    temp_y = getstatf(STAT_TRG_ORGY);
-    temp_z = getstatf(STAT_TRG_ORGZ);
-    prj = cs_project(temp);
-    if (prj_z >= 0) {
-      prj_x -= stringwidth("foo", TRUE, '6 6') * 0.5; //align horizontally to centre
-      prj_y -= 6 * 0.5; //align vertically again
-      prj_z = 0; //shut up dp.
-      drawstring(prj, "foo", '6 6', '1 1 1', 1, 0);
-    }*/
-    if(UI_OBJECTIVE_ACTIVE){
+    drawstring(VIEW_ORG+'2 2', vtos(self.origin), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    if(self.player_state >= PLAYER_POWERUP_BEGIN){
       local entity nav;
       nav = findchain(classname, "data");
       while(nav){
@@ -534,7 +507,6 @@ float() CSQC_Parse_TempEntity =
 {
   local float id, handled;
   id = ReadByte();
-  handled = FALSE;
   if(id == TE_LASER_BEAM){
     local vector org, end, ang;
     local float dist, p;
@@ -615,11 +587,16 @@ void(string s) CSQC_Parse_CenterPrint =
 // return TRUE if you wish to eat this sound, return FALSE to let engine handle it.
 float(entity ent, float channel, string soundname, float volume, float attenuation, vector pos, float speed100, float sflags) CSQC_Event_Sound =
 {
+  if(soundname == "sound/misc/menu1.wav"){
+    return FALSE;
+  }
+  else if(self.player_state == PLAYER_POWERUP_BEGIN){
+    return TRUE;
+  }
 	return FALSE;
 };
 
 float() CSQC_Parse_Event={
-
   return FALSE;
 };
 
@@ -647,7 +624,7 @@ void(float isnew) CSQC_Ent_Update =
 {
   local float id;
   id = ReadByte();
-  if(id == E_NAV){
+  if(id == DATA_NAVP){
     if(isnew){
       self.ui_org = '0 0 0'; 
       self.ui_size = '0 0 0';
@@ -655,11 +632,8 @@ void(float isnew) CSQC_Ent_Update =
       self.drawmask = MASK_ENGINE;
       self.value1 = 0;
       self.isActive = 0;
-      setorigin(self, self.origin);
-      addentity(self);
     }
-    self.p_class = E_NAV;
-    self.data_type = ReadByte();
+    self.data_type = DATA_NAVP;
     self.nav_name = ReadByte();
     self.i_faction = ReadByte();
     self.value1 = self.isActive;
@@ -667,10 +641,11 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+    setorigin(self, self.origin);
     self.w_name = gui_getNavName(self.nav_name);
     snd_hud_vfx_navpointlistener(self.value1, self.isActive);
   }
-  else if(id == E_OBJ){
+  else if(id == DATA_OBJT){
     if(isnew){
       self.classname = "data";
       self.data_type = DATA_OBJT;
@@ -680,22 +655,21 @@ void(float isnew) CSQC_Ent_Update =
       self.value1 = 0;
       self.isActive = 0;
       self.data_idx = 0;
-      setorigin(self, self.origin);
-      addentity(self);
     }
     self.data_idx = ReadByte();
     self.i_faction = ReadByte();
     self.value1 = self.isActive;
     self.isActive = ReadByte();
+    setorigin(self, self.origin);
     snd_hud_vfx_objectivelistener(self.value1, self.isActive);
   }
   //AI test...
-  else if(id == E_AIU){
+  else if(id == DATA_MECH_AI){
     self.data_idx = ReadByte();
-    self.p_class = E_AIU;
+    self.vec_size = ReadByte();
+    self.data_type = DATA_MECH;
     if(isnew){
       self.drawmask = MASK_ENGINE;
-      addentity(self);
     }
     self.sh_cur = ReadByte();
     self.stat_rdr_mode = ReadByte();
@@ -705,15 +679,15 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_z = ReadCoord();  
     setorigin(self, self.origin);
   }
-  else if(id == E_BLD){
+  else if(id == DATA_BLD){
     self.data_idx = ReadByte();
-    self.p_class = E_BLD;
+    self.data_type = DATA_BLD;
     if(isnew){
       local entity dat;
       dat = m_findData(self.data_idx, DATA_BLD);
       setmodel(self, dat.e_model);
       self.drawmask = MASK_ENGINE;
-      addentity(self);
+      self.solid = SOLID_BSP;
     }
     self.i_faction = ReadByte();
     self.origin_x = ReadCoord();
@@ -724,12 +698,12 @@ void(float isnew) CSQC_Ent_Update =
     self.angles_z = ReadAngle();
     setorigin(self, self.origin);
   }
-  else if(id == E_VEC){
+  else if(id == DATA_VEHC){
+    self.data_type = DATA_VEHC;
     self.data_idx = ReadByte();
-    self.p_class = E_VEC;
+    self.vec_size = ReadByte();
     if(isnew){
       self.drawmask = MASK_ENGINE;
-      addentity(self);
     }
     self.i_faction = ReadByte();
     self.origin_x = ReadCoord();
@@ -737,7 +711,7 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_z = ReadCoord();
     setorigin(self, self.origin);
   }
-  else if(id == E_DEP){
+  else if(id == DATA_DEPL){
    if(isnew){
       self.ui_org = '0 0 0'; 
       self.ui_size = '0 0 0';
@@ -745,40 +719,61 @@ void(float isnew) CSQC_Ent_Update =
       self.drawmask = MASK_ENGINE;
       self.value1 = 0;
       self.isActive = 0;
-      setorigin(self, self.origin);
-      addentity(self);
     }
-    self.p_class = E_DEP;
-    self.data_type = ReadByte();
+    self.data_type = DATA_DEPL;
     self.nav_name = ReadByte();
     self.i_faction = ReadByte();
     self.isActive = ReadByte();
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+    setorigin(self, self.origin);
   }
-  else if(id == E_MEC){
+  else if(id == DATA_PLR){
     if(isnew){
-      setmodel(self, "q3mdl/testball.md3");
-      self.alpha = 0.005;
+      self.classname = "player";
+      self.solid = SOLID_SLIDEBOX;
+      self.movetype = MOVETYPE_FLY;
+      self.predraw = obs_predraw;      
       self.drawmask = MASK_ENGINE;
-      addentity(self);
+      setmodel(self, "q3mdl/testball.md3");
+      setsize(self, '-4 -4 -4', '4 4 4');
     }
-    local float eid;
-    eid = ReadByte();
-    self.data_idx = ReadByte();
     self.data_type = ReadByte();
     self.i_faction = ReadByte();
+    self.player_state = ReadByte();
+    self.flags = ReadByte();
+    
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
-    self.stat_rdr_mode = ReadByte();
-    self.hp_ctor = ReadByte();
-    self.hp_leg = ReadByte();
-    self.hp_stor = ReadByte();
-    self.hp_stor2 = ReadByte();
-    self.hp_arm = ReadByte();
-    self.hp_arm2 = ReadByte();
+    self.origin_phys = self.origin;
+    setorigin(self, self.origin);
+    
+    self.angles_x = ReadAngle();
+    self.angles_y = ReadAngle();
+    self.angles_z = ReadAngle();
+    self.velocity_x = ReadLong();
+    self.velocity_y = ReadLong();
+    self.velocity_z = ReadLong();
+    
+    if(self.data_type == DATA_MECH){
+      self.data_idx = ReadByte();
+      self.vec_size = ReadByte(); 
+      self.stat_rdr_mode = ReadByte();
+      self.radar_range = ReadByte();
+      self.hp_ctor = ReadByte();
+      self.hp_leg = ReadByte();
+      self.hp_stor = ReadByte();
+      self.hp_stor2 = ReadByte();
+      self.hp_arm = ReadByte();
+      self.hp_arm2 = ReadByte();
+      
+      self.en_cur = ReadByte();
+      self.sh_cur = ReadByte();
+      self.stat_hit_dirs = ReadByte();
+      self.stat_ret_dist = ReadByte();
+    }
   }
 };
 
@@ -795,8 +790,104 @@ void(string msg) GameCommand =
 {
 };
 
-// called on each entity each time it is about to be added to the scene (by R_AddEntities)
-//.void() predraw;
+//http://forums.insideqc.com/viewtopic.php?f=2&t=2871
+float() obs_predraw={
+  if(self.entnum == player_localentnum){
+    local float sys_ticrate;
+    local vector v;
+    sys_ticrate = cvar("sys_ticrate");
+
+    if (self.solid){
+      if (time > self.timer_phys + sys_ticrate){
+        
+        self.origin_old = self.origin_phys;
+        while (time > self.timer_phys + sys_ticrate){
+          self.timer_phys = self.timer_phys + sys_ticrate;
+          self.origin_phys = self.origin_phys + self.velocity * sys_ticrate;
+        }
+      }
+      
+      self.timer_r = ( time - self.timer_phys ) / sys_ticrate;
+      v = self.origin_old + ( self.origin_phys - self.origin_old ) * self.timer_r;
+
+      setorigin(self, v);
+    } 
+    addentity( self );
+  }
+  else{
+    addentity( self );
+  }
+};
+
+float() player_predraw={
+  //https://icculus.org/~marco/quakec/csqc/prediction
+    if ( self.entnum == player_localentnum ) {
+      local vector vOldOrigin;
+      local vector vOldVelocity;
+      local float fOldPMoveFlags;
+      
+      if(self.data_type == DATA_POBS){
+        self.movetype = MOVETYPE_FLY;
+      }
+      else{
+        self.movetype = MOVETYPE_WALK;
+      }
+      // Prepare rollback
+      vOldOrigin = self.origin;
+      vOldVelocity = self.velocity;
+      fOldPMoveFlags = self.pmove_flags;
+
+      // Apply physics for every single input-frame that has not yet been
+      // acknowledged by the server (servercommandframe = last acknowledged frame)
+      local float idx;
+      idx = servercommandframe + 1;
+      while (idx <= clientcommandframe) {
+        getinputstate( idx );
+        runstandardplayerphysics( self );
+        idx = idx + 1;
+      }
+          
+      // Smooth stair stepping, this has to be done manually!
+      vPlayerOriginOld = vPlayerOrigin;
+          
+      if ( ( self.flags & FL_ONGROUND ) && ( self.origin_z - vPlayerOriginOld_z > 0 ) ) {
+        vPlayerOriginOld_z = vPlayerOriginOld_z + (frametime * 150);
+            
+        if ( vPlayerOriginOld_z > self.origin_z ) {
+          vPlayerOriginOld_z = self.origin_z;
+        }
+        if ( self.origin_z - vPlayerOriginOld_z > 18 ) {
+          vPlayerOriginOld_z = self.origin_z - 18;
+        }
+        vPlayerOrigin_z += vPlayerOriginOld_z - self.origin_z;
+      } 
+      else {
+        vPlayerOriginOld_z = self.origin_z;
+      }
+      
+      vPlayerOrigin_x = self.origin_x;
+      vPlayerOrigin_y = self.origin_y;
+      vPlayerOrigin_z = vPlayerOriginOld_z;
+      vPlayerVelocity = self.velocity;
+      
+      addentity( self );
+
+      // Time to roll back
+      self.origin = vOldOrigin;
+      setorigin( self, self.origin );
+      self.velocity = vOldVelocity;
+      self.pmove_flags = fOldPMoveFlags;
+      self.movetype = MOVETYPE_NONE;
+
+      // Set renderflag for mirrors!
+      //self.modelflags = RF_EXTERNALMODEL;
+    } 
+    else {
+        addentity( self );
+    }
+    
+    return 1;
+};
 
 // called on each entity each frame if self.nextthink <= time + frametime
 //.void() think;

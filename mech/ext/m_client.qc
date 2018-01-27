@@ -34,11 +34,10 @@ void() ClientConnect = {
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
   self.viewzoom = 0;
-  self.p_class = P_OBS;
-  //self.p_class_next = P_OBS;
   self.nextVecChoice = 0;
   self.vec_size = 0;
   self.data_idx = 0;
+  self.data_type = DATA_POBS;
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.i_faction = 0;
   self.stat_eid = num_for_edict(self);
@@ -117,11 +116,8 @@ void() ClientConnect = {
   self.stat_spr_y = 0;
   self.conv_min = '0 0 0';
   self.conv_max = '0 0 0';
-  self.stat_plr_stt = 0;
   self.stat_plr_fir = FIRE_GROUP;
   self.stat_lck_stt = LOCK_NONE;
-  self.stat_plr_ptc = 0;
-  self.stat_plr_ang = 0;
   
   self.next_wepn1 = -1;
   self.next_wepn2 = -1;
@@ -133,12 +129,13 @@ void() ClientConnect = {
   self.next_wepn8 = -1;
   self.next_wepn9 = -1;
   
-  self.stat_plr_stt = PLAYER_SPAWN;
+  self.stat_plr_stt = PLAYER_CONNECT;
   self.i_reserve = world.i_reserve;
   client_sendMissionFileName();
   client_sendAvailableLightMechs();
   client_sendAvailableMediumMechs();
   client_sendAvailableHeavyMechs();
+  
   if (intermission_running){
     ExitIntermission();
   }
@@ -158,53 +155,54 @@ void() PutClientInServer = {
   self.velocity = '0 0 0';	// 1998-07-21 Player moves after respawn fix by Xian
 	self.air_finished = time + 12;
 	self.dmg = 2;   		// initial water damage
-	self.super_damage_finished = 0;
+	/*self.super_damage_finished = 0;
 	self.radsuit_finished = 0;
 	self.invisible_finished = 0;
-	self.invincible_finished = 0;
+	self.invincible_finished = 0;*/
 	self.effects = 0;
-	self.invincible_time = 0;
+	//self.invincible_time = 0;
   
-  spot  = SelectSpawnPoint();
-  
-	self.origin = self.oldorigin = spot.origin + '0 0 50';	// 1998-07-21 Respawning where player died fix by Robert Field
-  self.angles = spot.angles;
 	self.fixangle = TRUE;		// turn this way immediately
-	self.i_faction = spot.i_faction;
+	
   self.classname = "player";
   
   DecodeLevelParms ();
 	self.attack_finished = time;
-	//self.th_pain = player_pain;
 	self.th_die = PlayerDie;
 	self.deadflag = DEAD_NO;
 
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
+  self.SendEntity = send_mech;
 	
-	self.view_ofs = '0 0 1';
+  self.view_ofs = '0 0 1';
   
-  if(self.p_class == P_OBS){
+  spot  = SelectSpawnPoint();
+  self.i_faction = spot.i_faction;
+	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
+  self.angles = spot.angles;
+  
+  if(self.data_type == DATA_POBS){
     player_makeObserver();
     
     if(!coop && !deathmatch){
-      self.movetype == MOVETYPE_NONE;
+      self.movetype = MOVETYPE_NONE;
       self.flags = self.flags - (self.flags & FL_FLY);
       mh_world_updateClientSpeed(0, 0, 0, "0","0");
       mh_world_updateClientViewBob("0", "0", "0");
       mh_world_updateClientModelBob("0", "0", "0");
-      self.stat_plr_stt = PLAYER_MENU;
+      self.stat_plr_stt = PLAYER_IN_MENU;
     }
     else{
-      self.stat_plr_stt = PLAYER_SPAWN;
+      self.stat_plr_stt = PLAYER_ACTIVE;
     }
     self.power_timer = 0;
   }
-  else if(self.p_class == P_MECH){
+  else if(self.data_type == DATA_MECH){
     player_makeMech();
   }
- 
-	if (deathmatch || coop)
+
+  if (deathmatch || coop)
 	{
 		makevectors(self.angles);
 	}
@@ -228,18 +226,18 @@ void() ClientKill = {
 
   //if player is an observer and their next class is still observer
   //don't let them suicide
-  if(self.p_class == P_OBS){
+  if(self.data_type == DATA_POBS){
     return;
   }
   
   bprint (self.netname);
-  if(self.p_class != P_OBS){
+  if(self.data_type != DATA_POBS){
     	bprint (" cowardly ejects!\n");
   }else{
   
   }
 
-  if(self.p_class == P_MECH){
+  if(self.data_type == DATA_MECH){
     self.frame = $ctorstand1;
     mech_clearWeaponGroups();
     local entity wep;
@@ -256,11 +254,9 @@ void() ClientKill = {
   self.deadflag = DEAD_DEAD;
   self.nextthink = -1;
   //only deduct frags of player is going from !observer to another !observer
-  if(self.p_class != P_OBS){
+  if(self.data_type != DATA_POBS){
     self.frags = self.frags - 2;
   }
-  
-  //self.p_class = self.p_class_next;
   
 	respawn ();
 };
@@ -280,7 +276,7 @@ void() ClientDisconnect = {
   bprint (self.netname);
 	bprint (" has fled the field of battle!\n");
   
-  if(self.p_class == P_MECH){
+  if(self.data_type == DATA_MECH){
     mech_player_die();
     player_unmakeMech();
     mech_cleanupMech();

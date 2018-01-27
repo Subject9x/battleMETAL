@@ -18,7 +18,6 @@ void() building_fuel={
   self.data_type = DATA_BLD;
   self.vec_name = "Fuel Tank";
   self.flags = self.flags | FL_MONSTER;
-  self.p_class = P_BULD;
   util_setModel(DAT_BLD_H_FUELTANK_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_FUELTANK_HP, DAT_BLD_H_FUELTANK_HP, 1, 100) ;
@@ -34,5 +33,5 @@ void() building_fuel={
   self.nextthink = time;
   self.use = multi_trigger;
   self.SendEntity = send_building;
-  self.SendFlags = 1;
+  self.SendFlags = -1;
 };
