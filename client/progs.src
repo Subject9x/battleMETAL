@@ -28,6 +28,7 @@ ui/ui_objectives_h.qc
 msn_file_c.qc
 gui_api_c.qc
 hud_snd_sys_c.qc
+data_api_h.qc
 ../world_effectinfo_h.qc
 //DATA FILES==========
   //buildings
@@ -82,4 +83,5 @@ cl_svr_cmd_c.qc
   world_effectinfo_c.qc
 //=======================
 cs_precache.qc
+data_api_c.qc
 csmain.qc

@@ -71,12 +71,12 @@ float AS_FLOAT = 8;
 .float stat_trg_orgx;
 .float stat_trg_orgy;
 .float stat_trg_orgz;
-.float stat_trg_lg_hp;
+/*.float stat_trg_lg_hp;
 .float stat_trg_ct_hp;
 .float stat_trg_lt_hp;
 .float stat_trg_rt_hp;
 .float stat_trg_la_hp;
-.float stat_trg_ra_hp;
+.float stat_trg_ra_hp;*/
 .float stat_ret_dist;
 .float stat_trg_vsize;
 .float stat_trg_pclass;

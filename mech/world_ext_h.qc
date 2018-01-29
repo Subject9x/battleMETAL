@@ -8,7 +8,6 @@ Overview: function extensions to world.qc
 .string msn_file;
 
 void() mh_world_ini;
-void() mh_world_iniData;
 
 void(float wep_id) data_iniWep;
 void(float build_id) data_iniBuilding;

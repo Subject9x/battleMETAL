@@ -51,7 +51,6 @@ void() PlayerPreThink = {
         self.stat_plr_stt = PLAYER_ACTIVE;
       }
     }
-    server_updateTargetInfo();
     self.stat_hit_dirs =  self.hitdir_buffer;
     if(time >= self.w_proj){
       self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);
@@ -75,7 +74,10 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
- 
+  
+  //Update Target information
+  server_updateTargetInfo();
+  
   if(self.ui_box_time > 0){
     self.ui_box_time  = self.ui_box_time - 1;
   }

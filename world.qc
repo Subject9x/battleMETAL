@@ -30,6 +30,7 @@ World Types:
 //=======================
 void() worldspawn =
 {
+  world.data_idx = -1;
 	lastspawn = world;
 	InitBodyQue ();
   cvar_set("sv_maxspeed", "800"); //allows faster units

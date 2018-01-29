@@ -7,11 +7,11 @@ Overview: client utility methods, pulled from client.qc
 
 //Specifically this sends PLAYER data
 float(entity ent, float changed) send_mech={
-  WriteByte(MSG_ENTITY, DATA_PLR);
-  WriteByte(MSG_ENTITY, self.data_type);
+  WriteByte( MSG_ENTITY, DATA_PLR);
+  WriteByte( MSG_ENTITY, self.data_type);
   WriteByte( MSG_ENTITY, self.i_faction);
-  WriteByte(MSG_ENTITY, self.stat_plr_stt);
-  WriteByte(MSG_ENTITY, self.flags);
+  WriteByte( MSG_ENTITY, self.stat_plr_stt);
+  WriteByte( MSG_ENTITY, self.flags);
   WriteCoord( MSG_ENTITY, self.origin_x );
   WriteCoord( MSG_ENTITY, self.origin_y );
   WriteCoord( MSG_ENTITY, self.origin_z );
@@ -21,30 +21,55 @@ float(entity ent, float changed) send_mech={
   WriteLong ( MSG_ENTITY, self.velocity_x);
   WriteLong ( MSG_ENTITY, self.velocity_y);
   WriteLong ( MSG_ENTITY, self.velocity_z);
+  
   if(self.data_type == DATA_MECH){
     WriteByte( MSG_ENTITY, self.data_idx);
     WriteByte( MSG_ENTITY, self.vec_size);
     WriteByte( MSG_ENTITY, self.stat_rdr_mode);
-    WriteByte(MSG_ENTITY, self.stat_rdr_rng);
-    WriteByte(MSG_ENTITY, csqc_updateCompStat(self));
-    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_legs));
-    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_tor_l));
-    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_tor_r));
-    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_arm_l));
-    WriteByte(MSG_ENTITY, csqc_updateCompStat(self.e_arm_r));
-    WriteByte(MSG_ENTITY, (self.en_cur / self.en_max)*100);
-    WriteByte(MSG_ENTITY, (self.sh_cur / self.sh_max)*100);
-    WriteByte(MSG_ENTITY, self.stat_hit_dirs);
-    WriteByte(MSG_ENTITY, self.stat_ret_dist);
+    WriteByte( MSG_ENTITY, self.stat_rdr_rng);
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.e_legs));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.e_tor_l));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.e_tor_r));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.e_arm_l));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.e_arm_r));
+    WriteByte( MSG_ENTITY, (self.en_cur / self.en_max)*100);
+    WriteByte( MSG_ENTITY, (self.sh_cur / self.sh_max)*100);
+    WriteByte( MSG_ENTITY, self.stat_hit_dirs);
+    WriteByte( MSG_ENTITY, self.stat_ret_dist);
+  }
+
+  WriteByte ( MSG_ENTITY, self.enemy.data_idx);
+  if(self.enemy.data_idx > 0){
+    WriteByte ( MSG_ENTITY, self.enemy.data_type);
+    WriteByte ( MSG_ENTITY, self.enemy.i_faction);
+    WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy));
+    if(self.enemy.data_type == DATA_MECH_AI){
+      WriteByte ( MSG_ENTITY, self.enemy.vec_size);
+      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_tor_l));
+      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_tor_r));
+      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_arm_l));
+      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_arm_r));
+      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_legs));
+      WriteByte ( MSG_ENTITY, (self.enemy.sh_cur / self.enemy.sh_max)*100);
+    }
+    else if(self.enemy.data_type == DATA_VEHC){
+      WriteByte ( MSG_ENTITY, self.enemy.vec_size);
+      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_legs));
+      WriteByte ( MSG_ENTITY, (self.enemy.sh_cur / self.enemy.sh_max)*100);
+    }
+    else if(self.enemy.data_type == DATA_BLD){
+      WriteByte ( MSG_ENTITY, (self.enemy.sh_cur / self.enemy.sh_max)*100);
+    }
   }
   return TRUE;
 };
 
 float(entity ent, float changed) send_vehicle={
   WriteByte(MSG_ENTITY, DATA_VEHC);
-  WriteByte( MSG_ENTITY, self.owner.data_idx);
-  WriteByte( MSG_ENTITY, self.owner.vec_size);
-  WriteByte( MSG_ENTITY, self.owner.i_faction);
+  WriteByte( MSG_ENTITY, self.owner.data_idx );
+  WriteByte( MSG_ENTITY, self.owner.vec_size );
+  WriteByte( MSG_ENTITY, self.owner.i_faction );
   WriteCoord( MSG_ENTITY, self.owner.origin_x );
   WriteCoord( MSG_ENTITY, self.owner.origin_y );
   WriteCoord( MSG_ENTITY, self.owner.origin_z );

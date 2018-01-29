@@ -6,11 +6,7 @@ Overview: function extensions to world.qc
 */
 
 void() mh_world_ini={
-  
-  //work around for player observer
-  addstat(STAT_PLAYER_STATE, AS_INT, stat_plr_stt);
-  addstat(STAT_OBS_FACTION, AS_INT, i_faction);
-  
+ 
   addstat(STAT_CAM_ORG_X, AS_FLOAT, stat_plr_camx);
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);
   addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_plr_camz);
@@ -29,22 +25,13 @@ void() mh_world_ini={
   addstat(STAT_WEP_STT, AS_INT, stat_wep_state);
   addstat(STAT_WEP_REL, AS_INT, stat_wep_rel);
   
-  addstat(STAT_TRG_VID, AS_INT, stat_trg_vid);
   addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
-  addstat(STAT_TRG_SH, AS_FLOAT, stat_trg_sh);
-  addstat(STAT_TRG_DAT, AS_INT, stat_trg_dat);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
   addstat(STAT_TRG_ORGX, AS_FLOAT, stat_trg_orgx);
   addstat(STAT_TRG_ORGY, AS_FLOAT, stat_trg_orgy);
   addstat(STAT_TRG_ORGZ, AS_FLOAT, stat_trg_orgz);
  
-  addstat(STAT_TRG_LEG_HP, AS_FLOAT, stat_trg_lg_hp);
-  addstat(STAT_TRG_CTOR_HP, AS_FLOAT, stat_trg_ct_hp);
-  addstat(STAT_TRG_LTOR_HP, AS_FLOAT, stat_trg_lt_hp);
-  addstat(STAT_TRG_RTOR_HP, AS_FLOAT, stat_trg_rt_hp);
-  addstat(STAT_TRG_LARM_HP, AS_FLOAT, stat_trg_la_hp);
-  addstat(STAT_TRG_RARM_HP, AS_FLOAT, stat_trg_ra_hp);
  
   addstat(STAT_NAV_DIR, AS_INT, stat_nav_dir);
   
@@ -77,17 +64,7 @@ void() mh_world_ini={
   
   addstat(UI_BOX_TIME, AS_INT, ui_box_time);
   
-  addstat(TRG_VEC_SIZ, AS_INT, stat_trg_vsize);
-  addstat(TRG_P_CLASS, AS_INT, stat_trg_pclass);
-  addstat(STAT_TRG_IFAC, AS_INT, stat_trg_ifac);
-  
-  mh_world_iniData();
 };
-
-void() mh_world_iniData={
-  //buildings;
-};
-
 
 void(float build_id) data_iniBuilding={
   if(build_id == ID_BLD_H_TURRET){

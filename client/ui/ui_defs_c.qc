@@ -100,6 +100,7 @@ void() mechAcceptButtonListener={
       cl_setweapongroup(4, PLAYER_HELPER.plr_nex_grp4);
       cl_setweapongroup(5, PLAYER_HELPER.plr_nex_grp5);
       cl_spawnmech();
+      localcmd("cd play \n");
       MENU_ACTIVE = FALSE;
       setcursormode(0);
     }
@@ -263,5 +264,4 @@ void() ui_renderHUDHighlight={
   gui_DrawRect (l1, bx_sz, '1 1', bx_clr);
   gui_DrawRect (l2, bx_sz, '1 1', bx_clr);
   gui_DrawRect (l3, bx_sz, '1 1', bx_clr);
-
 };

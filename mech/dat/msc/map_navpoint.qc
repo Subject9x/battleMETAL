@@ -7,13 +7,13 @@ Overview: data file for map nav points
 
 
 float(entity ent, float changed) send_navpoint={
-  WriteByte( MSG_ENTITY, DATA_NAVP ); // Unique Identifier, I suggest you use enums to make it easy on yourself
+  WriteByte( MSG_ENTITY, DATA_NAVP );
   WriteByte( MSG_ENTITY, self.data_idx);
   WriteByte( MSG_ENTITY, self.i_faction);
   WriteByte( MSG_ENTITY, self.isActive);
-  WriteCoord( MSG_ENTITY, self.origin_x); // Position X
-  WriteCoord( MSG_ENTITY, self.origin_y); // Position Y
-  WriteCoord( MSG_ENTITY, self.origin_z); // Position Z
+  WriteCoord( MSG_ENTITY, self.origin_x);
+  WriteCoord( MSG_ENTITY, self.origin_y);
+  WriteCoord( MSG_ENTITY, self.origin_z);
   return TRUE;
 };
 

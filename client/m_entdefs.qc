@@ -5,6 +5,18 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
+.float target_faction;
+.float target_vecsize;
+.float target_datatype;
+.float target_shield;
+
+.float stat_trg_lg_hp;
+.float stat_trg_ct_hp;
+.float stat_trg_lt_hp;
+.float stat_trg_rt_hp;
+.float stat_trg_la_hp;
+.float stat_trg_ra_hp;
+
 .float timer_phys;
 .float timer_r;
 .vector origin_old;

@@ -7,6 +7,13 @@ server and client
 */
 
 //============================
+//            NAMES (client)           
+//============================
+string MCH_NAME_BLK = "Balaket";
+string MCH_NAME_MTK = "Matok";
+string MCH_NAME_MNT = "Monitor";
+
+//============================
 //            DATA ID's           
 //============================
 //-------------------------BALAKET------------------------

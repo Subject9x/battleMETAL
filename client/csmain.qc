@@ -110,6 +110,7 @@ void() CSQC_Init =
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
 void() CSQC_Shutdown =
 {
+  localcmd("cd stop\n");
 };
 
 // typ 0 = keydown (keysym, unicode character but this may be zero) or typed input (-1, unicode character)
@@ -292,6 +293,13 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     localcmd(strcat("stopsound", "\n"));
   }
   if(self.data_type == DATA_MECH){
+    if(MENU_ACTIVE){
+      if(self.player_state == PLAYER_POWERUP_BEGIN){
+        MENU_ACTIVE = FALSE;
+        PLAYER_HELPER.plr_menu_choice = 0;
+        setcursormode(0);
+      }
+    }
     //player general info
     local float conv_x, conv_y, pitch;
     conv_x = getstatf(STAT_SPR_X);
@@ -305,7 +313,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     makevectors(input_angles);
     PLAYER_HELPER.angles_y = input_angles_y;
     PLR_VIEW = pmove_org;
-    setorigin(PLAYER_HELPER, self.origin);
+    setorigin(PLAYER_HELPER, pmove_org);
     
     //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(self.hp_stor2, 2, SND_HUD_VFX_CRITTOR);
@@ -341,10 +349,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     //target tracking info
     local float trg_vid, trg_datid, trg_ddflg, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
     local vector trg_pos;
-    trg_vid = getstati(STAT_TRG_VID);
-    trg_datid = getstati(STAT_TRG_DAT);
     trg_ddflg = getstati(STAT_TRG_DDFLG);
-    trg_sh = getstatf(STAT_TRG_SH);
     trg_dist = getstati(STAT_TRG_DIST);
     trg_dir = getstati(STAT_TRG_FACE);
     trg_lock = getstati(STAT_LCK_STT);
@@ -398,7 +403,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, w7_r);
       self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, w8_r);
       self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, w9_r);
-      self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
+      //self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
       //self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
     self = oself;
     
@@ -421,6 +426,13 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     ui_objective_frame(VIEW_ORG);
   }
   else{
+    if(self.player_state == PLAYER_IN_MENU){
+      if(!MENU_ACTIVE){
+        MENU_ACTIVE = TRUE;
+        PLAYER_HELPER.plr_menu_choice = MENU_BRIEF_ACTIVE;
+        setcursormode(1);
+      }
+    } 
     if(UI_OBJECTIVE_ACTIVE){
       local float len;
       local vector og;
@@ -543,7 +555,6 @@ float() CSQC_Parse_TempEntity =
     te_beam_pac(org, end);
     handled = TRUE;
   }
-
 	return handled;
 };
 
@@ -590,7 +601,7 @@ float(entity ent, float channel, string soundname, float volume, float attenuati
   if(soundname == "sound/misc/menu1.wav"){
     return FALSE;
   }
-  else if(self.player_state == PLAYER_POWERUP_BEGIN){
+  else if(self.player_state >= PLAYER_POWERUP_BEGIN){
     return TRUE;
   }
 	return FALSE;
@@ -747,6 +758,7 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_x = ReadCoord();
     self.origin_y = ReadCoord();
     self.origin_z = ReadCoord();
+    
     self.origin_phys = self.origin;
     setorigin(self, self.origin);
     
@@ -773,6 +785,31 @@ void(float isnew) CSQC_Ent_Update =
       self.sh_cur = ReadByte();
       self.stat_hit_dirs = ReadByte();
       self.stat_ret_dist = ReadByte();
+    }
+    self.stat_trg_vid = ReadByte();
+    if(self.stat_trg_vid != 255 && self.stat_trg_vid > 0){
+      self.target_datatype = ReadByte();
+      self.target_faction = ReadByte();
+      self.stat_trg_ct_hp = ReadByte();
+      if(self.target_datatype == DATA_MECH_AI){
+        self.target_datatype = DATA_MECH;
+        self.target_vecsize = ReadByte();
+        self.stat_trg_lt_hp = ReadByte();
+        self.stat_trg_rt_hp = ReadByte();
+        self.stat_trg_la_hp = ReadByte();
+        self.stat_trg_ra_hp = ReadByte();
+        self.stat_trg_lg_hp = ReadByte();
+        self.target_shield = ReadByte();
+      }
+      else if(self.target_datatype == DATA_VEHC){
+        self.target_vecsize = ReadByte();
+        self.stat_trg_lg_hp = ReadByte();
+        self.target_shield = ReadByte();
+      }
+      else if(self.target_datatype == DATA_BLD){
+        self.target_vecsize = 0 ;
+        self.target_shield = ReadByte();
+      }
     }
   }
 };

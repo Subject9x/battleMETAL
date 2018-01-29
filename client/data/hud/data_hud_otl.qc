@@ -20,7 +20,6 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) otl_renderWeapon9;
 void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) otl_renderTarget; 
 void(float shieldval, vector tpos, float zht) otl_targetShield;
-void(float lg, float ct, float lt, float rt, float la, float ra) otl_targetArmor;
 void(float range) otl_targetRange;
 void(float islock) otl_targetLock;
 void(float targdir) otl_targetDirectionPip;
@@ -33,6 +32,8 @@ void() hud_blk_frame={
   otl_playerArmor( self.hp_ctor, self.hp_stor, self.hp_stor2, self.hp_arm, self.hp_arm2, self.hp_leg);
   otl_Radar(self.stat_rdr_mode, self.radar_range, self.i_faction);
   otl_hitDirectionPips(self.stat_hit_dirs);
+  otl_renderTarget(self.stat_trg_vid, 0,0, 0, 0, 0, '0 0 0');
+  
   otl_renderCrosshairs(getstati(STAT_LCK_STT), getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), input_angles_x *-3);
 };
 
@@ -57,7 +58,7 @@ void() otl_hud_ini={
   //self.hud_playerEnergy = otl_playerEnergy;
   //self.hud_playerArmor = otl_playerArmor;
   //self.hud_Radar = otl_Radar;
-  self.hud_hitDirectionPips = otl_hitDirectionPips;
+  //self.hud_hitDirectionPips = otl_hitDirectionPips;
   self.hud_renderWeapon1 = otl_renderWeapon1;
   self.hud_renderWeapon2 = otl_renderWeapon2;
   self.hud_renderWeapon3 = otl_renderWeapon3;
@@ -67,12 +68,12 @@ void() otl_hud_ini={
   self.hud_renderWeapon7 = otl_renderWeapon7;
   self.hud_renderWeapon8 = otl_renderWeapon8;
   self.hud_renderWeapon9 = otl_renderWeapon9;
-  self.hud_targetShield = otl_targetShield;
-  self.hud_targetArmor = otl_targetArmor;
-  self.hud_targetRange = otl_targetRange;
-  self.hud_targetLock = otl_targetLock;
-  self.hud_targetDirectionPip = otl_targetDirectionPip;
-  self.hud_renderTarget = otl_renderTarget;
+  //self.hud_targetShield = otl_targetShield;
+  //self.hud_targetArmor = otl_targetArmor;
+  //self.hud_targetRange = otl_targetRange;
+  //self.hud_targetLock = otl_targetLock;
+  //self.hud_targetDirectionPip = otl_targetDirectionPip;
+  //self.hud_renderTarget = otl_renderTarget;
   self.w_range = -1; //this is hack to check weapon range;
   
   //this is the armor panel
@@ -446,7 +447,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
 
   if((trglock & LOCK_PLYR)){  
     local vector pofs;
-    pofs = self.hud_pnl2.pos + self.hud_pnl2.hsize+ gui_percentToPixelRawVec('28 18');
+    pofs = self.hud_pnl2.pos + self.hud_pnl2.hsize + gui_percentToPixelRawVec('28 18');
     local float f;
     f = (time - (2 * floor(time/2)));
     if(f > 1){
@@ -454,60 +455,53 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
     }
   }
   
-  if(trgvid > -1){
-    local entity dat;
-    local float pcls;
-    pcls = getstati(TRG_P_CLASS);
-    if(pcls == P_MECH){
-      dat = m_findMechData(getstati(TRG_VEC_SIZ), trgdat);
+  if(trgvid > -1 && trgvid != 255){
+    data_get_target(self.target_datatype, self.stat_trg_vid, self.target_vecsize);
+    cons_logAString("t name", buffer_TargetInfo[0]);
+    
+    local vector ofs, rofs, spos, apos;
+    local string dist;
+    ofs = rofs = gui_percentToPixelRawVec('71 136');
+    ofs = rofs = gui_calcAlign(rofs, (VIEW_CTX | VIEW_BOT));
+    drawstring((ofs + gui_percentToPixelRawVec('8 26')), "[TARGET]", '6 6 0', STATUS_DMG, HUD_ALPHA, 0);
+    drawstring((ofs + gui_percentToPixelRawVec('58 26')), buffer_TargetInfo[0], '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    gui_renderTintImage(TRUE, (ofs + gui_percentToPixelRawVec('165 32')), HUD_TRG_PIP_R, '8 24', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+    apos = tpos;
+    spos = cs_project(apos);
+    if (spos_z >= 0) {
+      local vector i_sz, tclr;
+      i_sz = draw_getimagesize(HUD_TARGET_BOX);
+      i_sz = gui_scaleSize(i_sz, VIEW_SCALE);
+      spos_x -= i_sz_x/2; //align horizontally to centre
+      spos_y -= i_sz_y/2; //align vertically again
+      spos_z = 0; //shut up dp.
+      if(self.target_faction == self.i_faction){
+        tclr = CLR_DEF_IIF_FRIEND;
+      }
+      else{
+        tclr = CLR_DEF_IFF_ENEMY;
+      }
+      drawpic(spos, HUD_TARGET_BOX, i_sz, tclr, HUD_ALPHA, 0);
     }
-    else{
-      dat = m_findData(trgvid, trgdat);
-    }
-
-    if(dat){
-      local vector ofs, rofs, spos, apos;
-      local string dist;
-      ofs = rofs = self.hud_pnl2.pos;
-      drawstring((ofs + gui_percentToPixelRawVec('8 26')), "[TARGET]", '6 6 0', STATUS_DMG, HUD_ALPHA, 0);
-      drawstring((ofs + gui_percentToPixelRawVec('58 26')), dat.vec_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-      gui_renderTintImage(TRUE, (ofs + gui_percentToPixelRawVec('165 32')), HUD_TRG_PIP_R, '8 24', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
-      apos = tpos;
-      spos = cs_project(apos);
-      if (spos_z >= 0) {
-        local vector i_sz, tclr;
-        i_sz = draw_getimagesize(HUD_TARGET_BOX);
-        i_sz = gui_scaleSize(i_sz, VIEW_SCALE);
-        spos_x -= i_sz_x/2; //align horizontally to centre
-        spos_y -= i_sz_y/2; //align vertically again
-        spos_z = 0; //shut up dp.
-        if(getstati(STAT_TRG_IFAC) == self.i_faction){
-          tclr = CLR_DEF_IIF_FRIEND;
-        }
-        else{
-          tclr = CLR_DEF_IFF_ENEMY;
-        }
-        drawpic(spos, HUD_TARGET_BOX, i_sz, tclr, HUD_ALPHA, 0);
-      }
-      if(dat.data_type == DATA_MECH){
-        self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
-                            getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
-      }
-      else if(dat.data_type == DATA_BLD){
-        local vector pnl_ctr;
-        pnl_ctr_x = self.hud_pnl5.pos_x + self.hud_pnl5.asize_x/2;
-        pnl_ctr_y = self.hud_pnl5.pos_y + self.hud_pnl5.asize_y/2;
-        pnl_ctr = pnl_ctr;
-        hud_renderArmorBuilding(getstatf(STAT_TRG_CTOR_HP), pnl_ctr + gui_percentToPixelRawVec('0 12'), gui_percentToPixelRawVec('78 56'));
-      }
-      else if(dat.data_type == DATA_VEHC){
+    if(self.target_datatype == DATA_MECH){
+      //self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
+                 //         getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
       
-      }
-      self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z / 2);
-      self.hud_targetRange(trgdist);
-      self.hud_targetLock(trglock);
-      self.hud_targetDirectionPip(trgdir);
     }
+    else if(self.target_datatype == DATA_BLD){
+      /*local vector pnl_ctr;
+      pnl_ctr_x = self.hud_pnl5.pos_x + self.hud_pnl5.asize_x/2;
+      pnl_ctr_y = self.hud_pnl5.pos_y + self.hud_pnl5.asize_y/2;
+      pnl_ctr = pnl_ctr;
+      hud_renderArmorBuilding(getstatf(STAT_TRG_CTOR_HP), pnl_ctr + gui_percentToPixelRawVec('0 12'), gui_percentToPixelRawVec('78 56'));*/
+    }
+    else if(self.target_datatype == DATA_VEHC){
+    
+    }
+    //self.hud_targetShield(trgsh, tpos, 45);
+    //self.hud_targetRange(trgdist);
+    //self.hud_targetLock(trglock);
+    //self.hud_targetDirectionPip(trgdir);
   }
 }; 
 
@@ -573,8 +567,7 @@ void(float shieldval, vector tpos, float zht) otl_targetShield={
 void(float range) otl_targetRange={
   if(range > -1){
     local vector tofs;
-    tofs = self.hud_pnl2.pos;
-    tofs = tofs + gui_percentToPixelRawVec('118 48');
+    tofs = VIEW_CTR + gui_percentToPixelRawVec('34 155');
     drawstring(tofs, "[Range]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
     drawstring(tofs + gui_percentToPixelRawVec('0 12'), ftos(range), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   }
@@ -585,8 +578,7 @@ void(float range) otl_targetRange={
 void(float islock) otl_targetLock={
   if(islock & LOCK_TARG){
     local vector tofs;
-    tofs = self.hud_pnl2.pos + self.hud_pnl2.hsize;
-    tofs = tofs + gui_percentToPixelRawVec('28 12');
+    tofs = gui_calcAlign('-34 55', (VIEW_BOT | VIEW_CTX));
     drawstring(tofs, "[LOCKED ON]", '6 6 0', CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0);
     gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('12 12')), HUT_RET_LOK, gui_percentToPixelRawVec('24 24'), CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
   }

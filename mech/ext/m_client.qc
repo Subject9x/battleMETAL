@@ -91,18 +91,7 @@ void() ClientConnect = {
   
   self.stat_trg_vid = -1;
   self.stat_trg_ddflg = -1;
-  self.stat_trg_sh = -1;
-  self.stat_trg_dat = -1;
   self.stat_trg_face = -1;
-  
-  self.stat_trg_lg_hp = -1;
-  self.stat_trg_ct_hp = -1;
-  self.stat_trg_lt_hp = -1;
-  self.stat_trg_rt_hp = -1;
-  self.stat_trg_la_hp = -1;
-  self.stat_trg_ra_hp = -1;
-  self.stat_trg_vsize = -1;
-  self.stat_trg_pclass = -1;
   
   self.radar_range = 0;
   self.was_hit = FALSE;
@@ -131,6 +120,7 @@ void() ClientConnect = {
   
   self.stat_plr_stt = PLAYER_CONNECT;
   self.i_reserve = world.i_reserve;
+  self.enemy = world; //explicit assignment here
   client_sendMissionFileName();
   client_sendAvailableLightMechs();
   client_sendAvailableMediumMechs();
@@ -196,6 +186,7 @@ void() PutClientInServer = {
     else{
       self.stat_plr_stt = PLAYER_ACTIVE;
     }
+    self.SendFlags = 1;
     self.power_timer = 0;
   }
   else if(self.data_type == DATA_MECH){

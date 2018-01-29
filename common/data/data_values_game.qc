@@ -46,11 +46,9 @@ float WEAPON6 = 32;
 float WEAPON7 = 64;
 float WEAPON8 = 128;
 float WEAPON9 = 256;
-
 //============================
 //     STAT CHANNELS         
 //============================
-
 .float stat_plr_camx;
 .float stat_plr_camy;
 .float stat_plr_camz;
@@ -95,15 +93,14 @@ float WEAPON9 = 256;
 .float stat_trg_orgx;
 .float stat_trg_orgy;
 .float stat_trg_orgz;
-.float stat_trg_lg_hp;
+/*.float stat_trg_lg_hp;
 .float stat_trg_ct_hp;
 .float stat_trg_lt_hp;
 .float stat_trg_rt_hp;
 .float stat_trg_la_hp;
-.float stat_trg_ra_hp;
+.float stat_trg_ra_hp;*/
 .float stat_ret_dist;
-.float stat_trg_vsize;
-.float stat_trg_pclass;
+//.float stat_trg_vsize;
 .float stat_trg_ifac;
 //============================
 //     STAT CHANNELS         
