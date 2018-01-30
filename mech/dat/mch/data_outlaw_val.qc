@@ -133,6 +133,7 @@ void() data_otl_ini={
   self.m_bside = DAT_OTL_M_BSIDE;
   self.m_bobspd = DAT_OTL_M_BSPD;
   self.w_firetime = DAT_OTL_LOCK; //using this as 'lock on time;
+  self.hardpoint_cnt = DAT_BLK_HARDPOINT_CNT;
 };
 void() data_otl_ctor={
   self.c_name = DAT_OTL_CTOR_CNAME;

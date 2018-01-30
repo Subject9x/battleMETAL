@@ -36,13 +36,28 @@ float(entity ent, float changed) send_mech={
     WriteByte( MSG_ENTITY, (self.en_cur / self.en_max)*100);
     WriteByte( MSG_ENTITY, (self.sh_cur / self.sh_max)*100);
     WriteByte( MSG_ENTITY, self.stat_hit_dirs);
-    WriteByte( MSG_ENTITY, self.stat_ret_dist);
+    WriteLong( MSG_ENTITY, self.stat_ret_dist);
+    
+    WriteByte( MSG_ENTITY, self.currentWeaponGroup);
+    WriteByte( MSG_ENTITY, self.stat_wep_rel);
+    WriteByte( MSG_ENTITY, self.hardpoint_cnt);
+    local entity wep;
+    local float hpt;
+    hpt = 1;
+    wep = self.w_slot;
+    while(wep){
+      WriteByte( MSG_ENTITY, wep.data_idx);
+      WriteByte( MSG_ENTITY, (wep.rl_cur / wep.rl_max)*100);
+      hpt = hpt +1;
+      wep = wep.w_slot;
+    }
   }
 
   WriteByte ( MSG_ENTITY, self.enemy.data_idx);
   if(self.enemy.data_idx > 0){
     WriteByte ( MSG_ENTITY, self.enemy.data_type);
     WriteByte ( MSG_ENTITY, self.enemy.i_faction);
+    WriteByte ( MSG_ENTITY, self.stat_trg_face);
     WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy));
     if(self.enemy.data_type == DATA_MECH_AI){
       WriteByte ( MSG_ENTITY, self.enemy.vec_size);

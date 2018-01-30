@@ -95,7 +95,7 @@ void() PlayerPostThink = {
   if(self.data_type == DATA_MECH){
     makevectors(self.v_angle);
     traceline(self.origin, self.origin + (v_forward * 5000), FALSE,self);
-    self.stat_ret_dist = 5000 * trace_fraction;
+    self.stat_ret_dist = (5000 * trace_fraction);
     self.stat_plr_camx = self.e_cam.c_ofs_x;
     self.stat_plr_camy = self.e_cam.c_ofs_y; 
     self.stat_plr_camz = self.e_cam.c_ofs_z;
@@ -190,12 +190,13 @@ void() PlayerDie={
 	self.angles_x = 0;
 	self.angles_z = 0;
   self.avelocity = '0 0 0';
-  
+  self.SendFlags = 1;
   if(self.data_type != DATA_POBS){
     mech_clearWeaponGroups();
     if(self.data_type == DATA_MECH){
       self.data_type = DATA_POBS; //edge case spot-welding
       mech_player_die();
+      self.SendFlags = 1;
       return;
     }
   }
@@ -241,7 +242,7 @@ void() PlayerDeathThink={
   spawnpoint_Random();
   self.movetype = MOVETYPE_FLY;
   self.flags = self.flags | FL_FLY;
-  
+  self.SendFlags = 1;
   respawn();
 };
 

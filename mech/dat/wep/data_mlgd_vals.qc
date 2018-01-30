@@ -6,16 +6,14 @@ Overview: Laser-guided missile
   missile is long-range, will follow player's aiming reticule
 */
 //========LASER GUIDED MISSILE=========
-float DATWEP_MLGD_IDX = ID_WEP_MLGD;
-string DATWEP_MLGD_NAME = "MIS-LGD";
 float DAT_MLGD_HPX = 125;
 
 void() data_mlgd_atk;
 void() data_mlgd_think;
 
 void() data_mlgd_ini={
-  self.data_idx = DATWEP_MLGD_IDX;
-  self.w_name = DATWEP_MLGD_NAME;
+  self.data_idx = ID_WEP_MLGD;
+  self.w_name = DAT_MLGD_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.p_damage = DAT_MLGD_DMG;
   self.w_firetime = 0;

@@ -5,16 +5,14 @@ Date: 01/22/2017
 Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
-//LIGHT AUTOCANNON=======================
-float DAT_EMP_IDX = ID_WEP_EMP;
-string DAT_EMP_NAME = "EMP Cannon";
+//EMP CANNON=======================
 float DAT_EMP_HPX = 200;
 
 void() data_emp_atk;  //the actual attack call
 void() data_emp_think;
 
 void() data_emp_ini={
-  self.data_idx = DAT_EMP_IDX;
+  self.data_idx = ID_WEP_EMP;
   self.w_name = DAT_EMP_NAME;
   self.w_firetime = 0;
   self.w_clipsize = DAT_EMP_CLIPSIZE;

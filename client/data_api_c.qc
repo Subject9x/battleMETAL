@@ -5,6 +5,72 @@ Date: 01/28/2018
 Overview: implementation
 */
 
+
+
+void() data_ini_arrays={
+  //Weapon Names
+  data_WeaponNames[ID_WEP_LATC] = DAT_LATC_NAME;
+  data_WeaponNames[ID_WEP_LAS] = DAT_LAS_NAME;
+  data_WeaponNames[ID_WEP_EMP] = DAT_EMP_NAME;
+  data_WeaponNames[ID_WEP_MIS] = DAT_MIS_NAME;
+  data_WeaponNames[ID_WEP_QRF] = DAT_QRF_NAME;
+  data_WeaponNames[ID_WEP_RPC] = DAT_RPC_NAME;
+  data_WeaponNames[ID_WEP_PAC] = DAT_PAC_NAME;
+  data_WeaponNames[ID_WEP_ESR] = DAT_ESR_NAME;
+  data_WeaponNames[ID_WEP_MLGD] = DAT_MLGD_NAME;
+  data_WeaponNames[ID_WEP_MARH] = DAT_MARH_NAME;
+  data_WeaponNames[ID_WEP_MAPR] = "";
+  //data_WeaponNames[ID_WEP_MCRK] = "";
+  data_WeaponNames[ID_WEP_RAM] = "";
+  data_WeaponNames[ID_WEP_BLD] = "";
+  data_WeaponNames[ID_WEP_SFGA] = DAT_SFGA_NAME;
+  data_WeaponNames[ID_WEP_FLAK] = DAT_FLAK_NAME;
+  data_WeaponNames[ID_WEP_ION] = DAT_ION_NAME;
+  data_WeaponNames[ID_WEP_SWRM] = DAT_SWRM_NAME;
+  
+  //Weapon Icons
+  data_WeaponIcons[ID_WEP_LATC] = DAT_LATC_ICON;
+  data_WeaponIcons[ID_WEP_LAS] = DAT_LAS_ICON;
+  data_WeaponIcons[ID_WEP_EMP] = DAT_EMP_ICON;
+  data_WeaponIcons[ID_WEP_MIS] = DAT_MIS_ICON;
+  data_WeaponIcons[ID_WEP_QRF] = DAT_QRFL_ICON;
+  data_WeaponIcons[ID_WEP_RPC] = DAT_RPLAS_ICON;
+  data_WeaponIcons[ID_WEP_PAC] = DAT_PAC_ICON;
+  data_WeaponIcons[ID_WEP_ESR] = DAT_ESR_ICON;
+  data_WeaponIcons[ID_WEP_MLGD] = DAT_MLGD_ICON;
+  data_WeaponIcons[ID_WEP_MARH] = DAT_MARH_ICON;
+  data_WeaponIcons[ID_WEP_MAPR] = "";
+  //data_WeaponNames[ID_WEP_MCRK] = "";
+  data_WeaponIcons[ID_WEP_RAM] = "";
+  data_WeaponIcons[ID_WEP_BLD] = "";
+  data_WeaponIcons[ID_WEP_SFGA] = DAT_SFGA_ICON;
+  data_WeaponIcons[ID_WEP_FLAK] = DAT_FLAK_ICON;
+  data_WeaponIcons[ID_WEP_ION] = DAT_ION_ICON;
+  data_WeaponIcons[ID_WEP_SWRM] = DAT_SWRM_ICON;
+};
+
+string(float data_idx) data_get_weapon_name={
+  local float idx;
+  idx = 1;
+  while(idx <= 18){
+    if(idx == data_idx){
+      return data_WeaponNames[idx];
+    }
+    idx = idx + 1;
+  }
+};
+
+string(float data_idx) data_get_weapon_icon={
+  local float idx;
+  idx = 1;
+  while(idx <= 18){
+    if(idx == data_idx){
+      return data_WeaponIcons[idx];
+    }
+    idx = idx + 1;
+  }
+};
+
 /*
  0 name
  1 size
@@ -86,8 +152,6 @@ void(float data_idx, float vsize) data_get_mech={
   data type
   vec size
 */
-
-string buffer_TargetInfo[8];
 
 void(float dtype, float data_idx, float vsize) data_get_target={
   if(dtype == DATA_MECH){

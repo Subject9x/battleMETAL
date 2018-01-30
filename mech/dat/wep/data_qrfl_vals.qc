@@ -5,9 +5,6 @@ Date: 02/26/2017
 Overview: 
 */
 //QUANTUM RIFLE=======================
-float DAT_QRFL_IDX = ID_WEP_QRF;
-string DAT_QRFL_NAME = "Q-Rifle";
-
 float DAT_QRFL_HPX = 150; 
 float DAT_QRFL_QBITS = 8; 
 
@@ -15,8 +12,8 @@ void() data_qrfl_atk;
 void() data_qrfl_think;
 
 void() data_qrfl_ini={
-  self.data_idx = DAT_QRFL_IDX;
-  self.w_name = DAT_QRFL_NAME;
+  self.data_idx = ID_WEP_QRF;
+  self.w_name = DAT_QRF_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_STX;
   self.p_damage = DAT_QRFL_DMG;
   self.w_firetime = 0;

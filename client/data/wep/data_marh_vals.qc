@@ -5,10 +5,6 @@ Date: 02/25/2017
 Overview: long-range, low damage, homing missile
 */
 //========ACTIVE-RADAR HOMING MISSILE=========
-float DATWEP_MARH_IDX = ID_WEP_MARH;
-string DATWEP_MARH_NAME = "Active-Radar Homing Missile";
-
-
 void() data_wep_marh;
 
 void() data_wep_marh={
@@ -17,11 +13,10 @@ void() data_wep_marh={
   oself = self;
   self = mis;
     self.classname = "data";
-    self.data_idx = DATWEP_MARH_IDX;
+    self.data_idx = ID_WEP_MARH;
     self.dmg_amt = 4;
     self.data_type = DATA_WEPN;
-    self.w_name = DATWEP_MARH_NAME;
-    self.w_name = DATWEP_MARH_NAME;
+    self.w_name = DAT_MARH_NAME;
     self.w_clipsize = DAT_MARH_CLIPSIZE;
     self.c_model = DAT_MARH_MODEL;
     self.en_rate = DAT_MARH_EN_RATE;

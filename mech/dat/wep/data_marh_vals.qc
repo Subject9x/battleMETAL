@@ -5,18 +5,17 @@ Date: 02/25/2017
 Overview: long-range, low damage, homing missile
 */
 //========ACTIVE-RADAR HOMING MISSILE=========
-float DATWEP_MARH_IDX = ID_WEP_MARH;
-string DATWEP_MARH_NAME = "MIS-ARH";
+
 float DAT_MARH_HPX = 100;
 
 void() data_marh_atk;  //the actual attack call
 void() data_marh_think;
 
 void() data_marh_ini={
-  self.data_idx = DATWEP_MARH_IDX;
+  self.data_idx = ID_WEP_MARH;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.p_damage = DAT_MARH_DMG;
-  self.w_name = DATWEP_MARH_NAME;
+  self.w_name = DAT_MARH_NAME;
   self.w_firetime = 0;
   self.w_clipsize = DAT_MARH_CLIPSIZE;
   self.w_currentammo = DAT_MARH_CLIPSIZE;

@@ -5,8 +5,7 @@ Date: 01/18/2018
 Overview: new year, new toys
 */
 //FLAK CANNON=======================
-float DAT_FLAK_IDX = ID_WEP_FLAK;
-string DAT_FLAK_NAME = "Flak Cannon";
+
 float DAT_FLAK_HPX = 200;
 
 void() data_flak_atk;

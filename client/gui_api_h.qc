@@ -10,6 +10,7 @@ string NAVNAMES[21];
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
 vector(vector vec, float algn) gui_calcAlign;
+vector(vector vec, float algn, vector org) gui_calcAlignCustom;
 vector(vector org, vector sz, float axs) gui_calcAxis;
 void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderMeter;
 void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalPip;

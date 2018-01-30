@@ -5,17 +5,13 @@ Date: 02/26/2017
 Overview: 
 */
 //Electro static Rifle=======================
-float DAT_ESR_IDX = ID_WEP_ESR;
-string DAT_ESR_NAME = "ESR";
-
 float DAT_ESR_HPX = 150; 
-
 
 void() data_esr_atk;
 void() data_esr_think;
 
 void() data_esr_ini={
-  self.data_idx = DAT_ESR_IDX;
+  self.data_idx = ID_WEP_ESR;
   self.w_name = DAT_ESR_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_ENE;
   self.p_damage = DAT_ESR_DMG;

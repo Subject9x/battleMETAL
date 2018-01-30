@@ -105,6 +105,7 @@ void() CSQC_Init =
   
   //get mission file
   cs_precache();
+  data_ini_arrays();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -321,30 +322,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_armlistener(self.hp_arm2, 8, SND_HUD_VFX_CRITARM);
     snd_hud_vfx_armlistener(self.hp_arm, 16, SND_HUD_VFX_CRITARM);
     snd_hud_vfx_armlistener(self.hp_leg, 32, SND_HUD_VFX_CRITLEG);
-    //player weapon tracking info
-    local float plr_wgrp, plr_wstate, plr_wrel, w1_id, w2_id, w3_id, w4_id, w5_id, w6_id, w7_id, w8_id, w9_id;
-    local float w1_r, w2_r, w3_r, w4_r, w5_r, w6_r, w7_r, w8_r, w9_r;
-    plr_wgrp = getstati(STAT_WEP_GRP);
-    plr_wstate = getstati(STAT_WEP_STT);
-    plr_wrel = getstati(STAT_WEP_REL);
-    w1_id = getstati(STAT_WEP1_ID);
-    w2_id = getstati(STAT_WEP2_ID);
-    w3_id = getstati(STAT_WEP3_ID);
-    w4_id = getstati(STAT_WEP4_ID);
-    w5_id = getstati(STAT_WEP5_ID);
-    w6_id = getstati(STAT_WEP6_ID);
-    w7_id = getstati(STAT_WEP7_ID);
-    w8_id = getstati(STAT_WEP8_ID);
-    w9_id = getstati(STAT_WEP9_ID);
-    w1_r = getstatf(STAT_WEP1_REL);
-    w2_r = getstatf(STAT_WEP2_REL);
-    w3_r = getstatf(STAT_WEP3_REL);
-    w4_r = getstatf(STAT_WEP4_REL);
-    w5_r = getstatf(STAT_WEP5_REL);
-    w6_r = getstatf(STAT_WEP6_REL);
-    w7_r = getstatf(STAT_WEP7_REL);
-    w8_r = getstatf(STAT_WEP8_REL);
-    w9_r = getstatf(STAT_WEP9_REL);
     
     //target tracking info
     local float trg_vid, trg_datid, trg_ddflg, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
@@ -361,7 +338,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     local entity player_hud, vec_data, oself;
     vec_data = m_findMechData(self.vec_size, self.data_idx);
     player_hud = m_findHUDData(self.vec_size, self.data_idx);
-    
     
     //UPDATE SPRINTING ABILITY BASED ON ENERGY
     if(self.en_cur < 10){
@@ -386,15 +362,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     oself = self;
     self = player_hud;
-      self.w_range = trg_dist;
-      self.hud_prep(vec_data);
+      //self.w_range = trg_dist;
+      //self.hud_prep(vec_data);
       //self.hud_HelmetImage(VIEW_MAX, VIEW_CTR);
       //self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
       //self.hud_playerShield(plr_sh);
       //self.hud_playerEnergy(plr_en);  
       //self.hud_Radar(rad_mode, getstati(STAT_PLR_IFAC));
       //self.hud_hitDirectionPips(hitdir);
-      self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, w1_r);
+      /*self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, w1_r);
       self.hud_renderWeapon2(plr_wgrp, plr_wstate, w2_id, WEAPON2, WEAPON2_DD, WEAPON2_OK, w2_r);
       self.hud_renderWeapon3(plr_wgrp, plr_wstate, w3_id, WEAPON3, WEAPON3_DD, WEAPON3_OK, w3_r);
       self.hud_renderWeapon4(plr_wgrp, plr_wstate, w4_id, WEAPON4, WEAPON4_DD, WEAPON4_OK, w4_r);
@@ -402,21 +378,10 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       self.hud_renderWeapon6(plr_wgrp, plr_wstate, w6_id, WEAPON6, WEAPON6_DD, WEAPON6_OK, w6_r);
       self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, w7_r);
       self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, w8_r);
-      self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, w9_r);
+      self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, w9_r);*/
       //self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
       //self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
     self = oself;
-    
-    local float rng, l;
-    local string s;
-    local vector v;
-    v = VIEW_CTR;
-    rng = self.stat_ret_dist;
-    s = ftos(rng);
-    l = stringwidth(s, 0, '8 8 0');
-    v_x = v_x - l/2;
-    v_y = v_y + 32;
-    drawstring(v, s, '8 8', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
     
     local float bx_time;
     bx_time = getstati(UI_BOX_TIME);
@@ -784,12 +749,58 @@ void(float isnew) CSQC_Ent_Update =
       self.en_cur = ReadByte();
       self.sh_cur = ReadByte();
       self.stat_hit_dirs = ReadByte();
-      self.stat_ret_dist = ReadByte();
+      self.stat_ret_dist = ReadLong();
+      //WEAPON DATA
+      self.currentWeaponGroup = ReadByte();
+      self.stat_wep_rel = ReadByte();
+      local float wepCount, wepItr;
+      wepCount = ReadByte();
+      wepItr = 1;
+      while(wepItr <= wepCount){
+        if(wepItr == 1){
+          self.stat_w1_id = ReadByte();
+          self.stat_w1_rel = ReadByte();
+        }
+        else if(wepItr == 2){
+          self.stat_w2_id = ReadByte();
+          self.stat_w2_rel = ReadByte();
+        }
+        else if(wepItr == 3){
+          self.stat_w3_id = ReadByte();
+          self.stat_w3_rel = ReadByte();
+        }
+        else if(wepItr == 4){
+          self.stat_w4_id = ReadByte();
+          self.stat_w4_rel = ReadByte();
+        }
+        else if(wepItr == 5){
+          self.stat_w5_id = ReadByte();
+          self.stat_w5_rel = ReadByte();
+        }
+        else if(wepItr == 6){
+          self.stat_w6_id = ReadByte();
+          self.stat_w6_rel = ReadByte();
+        }
+        else if(wepItr == 7){
+          self.stat_w7_id = ReadByte();
+          self.stat_w7_rel = ReadByte();
+        }
+        else if(wepItr == 8){
+          self.stat_w8_id = ReadByte();
+          self.stat_w8_rel = ReadByte();
+        }
+        else if(wepItr == 9){
+          self.stat_w9_id = ReadByte();
+          self.stat_w9_rel = ReadByte();
+        }
+        wepItr = wepItr + 1;
+      }
     }
     self.stat_trg_vid = ReadByte();
     if(self.stat_trg_vid != 255 && self.stat_trg_vid > 0){
       self.target_datatype = ReadByte();
       self.target_faction = ReadByte();
+      self.stat_trg_face = ReadByte();
       self.stat_trg_ct_hp = ReadByte();
       if(self.target_datatype == DATA_MECH_AI){
         self.target_datatype = DATA_MECH;
@@ -800,6 +811,7 @@ void(float isnew) CSQC_Ent_Update =
         self.stat_trg_ra_hp = ReadByte();
         self.stat_trg_lg_hp = ReadByte();
         self.target_shield = ReadByte();
+        
       }
       else if(self.target_datatype == DATA_VEHC){
         self.target_vecsize = ReadByte();

@@ -19,13 +19,29 @@ float ID_WEP_ESR   = 8;
 float ID_WEP_MLGD  = 9;
 float ID_WEP_MARH  = 10;
 float ID_WEP_MAPR  = 11;
-float ID_WEP_MCRK  = 12;
 float ID_WEP_RAM   = 13;
 float ID_WEP_BLD   = 14;
 float ID_WEP_SFGA  = 15;
 float ID_WEP_FLAK  = 16;
 float ID_WEP_ION   = 17;
 float ID_WEP_SWRM  = 18;
+//====================================================================================
+//            Weapon Names
+//====================================================================================
+string DAT_LATC_NAME = "Light Autocannon";
+string DAT_LAS_NAME = "Light Laser";
+string DAT_EMP_NAME = "EMP Cannon";
+string DAT_MIS_NAME = "Rocket Launcher";
+string DAT_QRF_NAME = "Q-Rifle";
+string DAT_RPC_NAME = "RPC";
+string DAT_PAC_NAME = "PAC";
+string DAT_ESR_NAME = "ESR";
+string DAT_MLGD_NAME = "MIS-LGD";
+string DAT_MARH_NAME = "MIS-ARH";
+string DAT_SFGA_NAME = "Snub Field Gun";
+string DAT_FLAK_NAME = "Flak Cannon";
+string DAT_ION_NAME = "Ion Coil";
+string DAT_SWRM_NAME = "Swarm Missile Launcher";
 
 //====================================================================================
 //            Range  
@@ -346,6 +362,37 @@ string DAT_MLGD_MODEL    = "q3mdl/weapons/w_lgm.md3";
 string DAT_MARH_MODEL    = "q3mdl/weapons/w_arh.md3";
 //-------------------------Radar Missile
 string DAT_SWRM_MODEL    = "q3mdl/weapons/w_arh.md3";
+//============================
+//            Icon  
+//============================
+//-------------------------ATC
+string DAT_LATC_ICON    = "gfx/ui/wep_icons/wi_atc.png";
+//-------------------------FLAK
+string DAT_FLAK_ICON     = "gfx/ui/wep_icons/wi_flak.png";
+//-------------------------RPlas
+string DAT_RPLAS_ICON    = "gfx/ui/wep_icons/wi_rpc.png";
+//-------------------------QRifle
+string DAT_QRFL_ICON     = "gfx/ui/wep_icons/wi_qrf.png";
+//-------------------------SFGA
+string DAT_SFGA_ICON     = "gfx/ui/wep_icons/wi_sfga.png";
+//-------------------------Laser
+string DAT_LAS_ICON      = "gfx/ui/wep_icons/wi_las.png";
+//-------------------------ION
+string DAT_ION_ICON      = "gfx/ui/wep_icons/wi_ion.png";
+//-------------------------EMP
+string DAT_EMP_ICON      = "gfx/ui/wep_icons/wi_emp.png";
+//-------------------------ESR
+string DAT_ESR_ICON      = "gfx/ui/wep_icons/wi_esr.png";
+//-------------------------PAC
+string DAT_PAC_ICON      = "gfx/ui/wep_icons/wi_pac.png";
+//-------------------------Rocket
+string DAT_MIS_ICON      = "gfx/ui/wep_icons/wi_rck.png";
+//-------------------------Laser Missile
+string DAT_MLGD_ICON     = "gfx/ui/wep_icons/wi_mlgd.png";
+//-------------------------Radar Missile
+string DAT_MARH_ICON     = "gfx/ui/wep_icons/wi_marh.png";
+//-------------------------Radar Missile
+string DAT_SWRM_ICON     = "gfx/ui/wep_icons/wi_swrm.png";
 //============================
 //            Model Offset 
 //============================

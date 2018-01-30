@@ -6,8 +6,6 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //ROCKET POD=======================
-string DAT_MIS_NAME = "Rocket Launcher";
-
 float DAT_MIS_HPX = 150; 
 
 void() data_mis_atk;

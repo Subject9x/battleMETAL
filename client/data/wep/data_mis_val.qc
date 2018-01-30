@@ -6,9 +6,6 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //ROCKET POD=======================
-float DAT_MIS_IDX = ID_WEP_MIS;
-string DAT_MIS_NAME = "Rocket Pod";
-
 void() data_wep_mis;
 
 void() data_wep_mis={
@@ -17,10 +14,9 @@ void() data_wep_mis={
   oself = self;
   self = mis;
     self.classname = "data";
-    self.data_idx = DAT_MIS_IDX;
+    self.data_idx = ID_WEP_MIS;
     self.dmg_amt = DAT_MIS_DMG;
     self.data_type = DATA_WEPN;
-    self.w_name = DAT_MIS_NAME;
     self.w_name = DAT_MIS_NAME;
     self.w_clipsize = DAT_MIS_CLIPSIZE;
     self.c_model = DAT_MIS_MODEL;

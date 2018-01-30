@@ -5,17 +5,14 @@ Date: 01/22/2017
 Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
-//LIGHT AUTOCANNON=======================
-float DAT_SFGA_IDX = ID_WEP_SFGA;
-string DAT_SFGA_NAME = "Snub Field Gun";
+//SNUB FIELD GUN ARTILLERY======================
 float DAT_SFGA_HPX = 200;
-
 
 void() data_sfga_atk;
 void() data_sfga_think; 
 
 void() data_sfga_ini={
-  self.data_idx = DAT_SFGA_IDX;
+  self.data_idx = ID_WEP_SFGA;
   self.w_name = DAT_SFGA_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
   self.p_damage = DAT_SFGA_DMG;

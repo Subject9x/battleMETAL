@@ -4,8 +4,8 @@ Author: Peter Roohr
 Date: 01/20/2018
 overiew: Ion Coil - a lighter ION cannon, 3-rnd burst
 */
-//LIGHT AUTOCANNON=======================
-string DAT_ION_NAME = "Ion Coil";
+//ION COIL GUN=======================
+
 float DAT_ION_HPX = 200;
 
 void() data_ion_atk;  //the actual attack call

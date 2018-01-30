@@ -272,30 +272,52 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha
 */
 vector(vector vec, float algn) gui_calcAlign={
   local vector toSender;
-  local float x,y;
-  if(algn & VIEW_TOP){
-    y = VIEW_ORG_y + vec_y;
+  
+  if((algn & VIEW_TOP)){
+    toSender_y = VIEW_ORG_y + vec_y;
   }
-  else if(algn & VIEW_BOT){
-    y = VIEW_MAX_y - vec_y;
+  else if((algn & VIEW_BOT)){
+    toSender_y = VIEW_MAX_y - vec_y;
   }
   
-  if(algn & VIEW_LFT){
-    x = VIEW_ORG_x + vec_x;
+  if((algn & VIEW_LFT)){
+    toSender_x = VIEW_ORG_x + vec_x;
   }
-  else if(algn & VIEW_RGT){
-    x = VIEW_MAX_x - vec_x;
+  else if((algn & VIEW_RGT)){
+    toSender_x = VIEW_MAX_x - vec_x;
   }
   
-  if(algn & VIEW_CTX){
-    x = VIEW_CTR_x - vec_x;
-    
+  if((algn & VIEW_CTX)){
+    toSender_x = VIEW_CTR_x - vec_x;
   }
-  if(algn & VIEW_CTY){
-    y = VIEW_CTR_y - vec_y;
+  if((algn & VIEW_CTY)){
+    toSender_y = VIEW_CTR_y - vec_y;
   }
-  toSender_x = x;
-  toSender_y = y;
+  return toSender;
+};
+
+vector(vector vec, float algn, vector org) gui_calcAlignCustom={
+  local vector toSender;
+  if((algn & VIEW_TOP)){
+    toSender_y = org_y - vec_y;
+  }
+  else if((algn & VIEW_BOT)){
+    toSender_y = org_y + vec_y;
+  }
+  
+  if((algn & VIEW_LFT)){
+    toSender_x = org_x - vec_x;
+  }
+  else if((algn & VIEW_RGT)){
+    toSender_x = org_x + vec_x;
+  }
+  
+  if((algn & VIEW_CTX)){
+   toSender_x = org_x + vec_x;   
+  }
+  if((algn & VIEW_CTY)){
+    toSender_y = org_y + vec_y;
+  }
   
   return toSender;
 };

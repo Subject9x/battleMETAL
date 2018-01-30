@@ -132,7 +132,7 @@ void() cs_precache={
   data_wep_swrm();
   
   //hud data
-  otl_hud_ini();
+  //otl_hud_ini();
   mtk_hud_ini();
   mnt_hud_ini();
 };

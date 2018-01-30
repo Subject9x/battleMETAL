@@ -5,16 +5,14 @@ Date: 01/22/2017
 Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
-//LIGHT AUTOCANNON=======================
-float DAT_LAS_IDX = ID_WEP_LAS;
-string DAT_LAS_NAME = "Light Laser";
+//STANDARD LASER=======================
 float DAT_LAS_HPX = 200;
 
 void() data_las_atk;
 void() data_las_think;
 
 void() data_las_ini={
-  self.data_idx = DAT_LAS_IDX;
+  self.data_idx = ID_WEP_LAS;
   self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_STX;
   self.p_damage = DAT_LAS_DMG;
   self.w_name = DAT_LAS_NAME;

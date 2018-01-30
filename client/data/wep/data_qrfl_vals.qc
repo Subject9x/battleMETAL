@@ -5,10 +5,6 @@ Date: 02/26/2017
 Overview: 
 */
 //QUANTUM RIFLE=======================
-float DAT_QRFL_IDX = ID_WEP_QRF;
-string DAT_QRFL_NAME = "Quantum Rifle";
-
-
 void() data_wep_qrfl;
 
 void() data_wep_qrfl={
@@ -17,11 +13,10 @@ void() data_wep_qrfl={
   oself = self;
   self = latc;
     self.classname = "data";
-    self.data_idx = DAT_QRFL_IDX;
+    self.data_idx = ID_WEP_QRF;
     self.dmg_amt = DAT_QRFL_DMG;
     self.data_type = DATA_WEPN;
-    self.w_name = DAT_QRFL_NAME;
-    self.w_name = DAT_QRFL_NAME;
+    self.w_name = DAT_QRF_NAME;
     self.w_clipsize = DAT_QRFL_CLIPSIZE;
     self.en_rate= DAT_QRFL_EN_RATE;
     self.rl_max = DAT_QRFL_RL_MAX;

@@ -6,10 +6,6 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //LIGHT AUTOCANNON=======================
-float DAT_LAS_IDX = ID_WEP_LAS;
-string DAT_LAS_NAME = "Laser";
-
-
 void() data_wep_las;
 
 void() data_wep_las={
@@ -18,10 +14,9 @@ void() data_wep_las={
   oself = self;
   self = las;
     self.classname = "data";
-    self.data_idx = DAT_LAS_IDX;
+    self.data_idx = ID_WEP_LAS;
     self.dmg_amt = DAT_LAS_DMG;
     self.data_type = DATA_WEPN;
-    self.w_name = DAT_LAS_NAME;
     self.w_name = DAT_LAS_NAME;
     self.w_clipsize = DAT_LAS_CLIPSIZE;
     self.c_model = DAT_LAS_MODEL;

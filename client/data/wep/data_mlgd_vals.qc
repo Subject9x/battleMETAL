@@ -6,9 +6,6 @@ Overview: Laser-guided missile
   missile is long-range, will follow player's aiming reticule
 */
 //========LASER GUIDED MISSILE=========
-float DATWEP_MLGD_IDX = ID_WEP_MLGD;
-string DATWEP_MLGD_NAME = "Laser-Guided Missile";
-
 void() data_wep_mlgd;
 
 void() data_wep_mlgd={
@@ -17,11 +14,10 @@ void() data_wep_mlgd={
   oself = self;
   self = mlgd;
     self.classname = "data";
-    self.data_idx = DATWEP_MLGD_IDX;
+    self.data_idx = ID_WEP_MLGD;
     self.dmg_amt = DAT_MLGD_DMG;
     self.data_type = DATA_WEPN;
-    self.w_name = DATWEP_MLGD_NAME;
-    self.w_name = DATWEP_MLGD_NAME;
+    self.w_name = DAT_MLGD_NAME;
     self.w_clipsize = DAT_MLGD_CLIPSIZE;
     self.c_model = DAT_MLGD_MODEL;
     self.en_rate= DAT_MLGD_EN_RATE;

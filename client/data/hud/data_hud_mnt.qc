@@ -28,9 +28,9 @@ void(float targdir) mnt_targetDirectionPip;
 
 //entry point
 void() hud_mnt_frame={
-  mnt_HelmetImage();
+  //mnt_HelmetImage();
   
-  mnt_renderCrosshairs(getstati(STAT_LCK_STT), getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), input_angles_x *-3);
+  //mnt_renderCrosshairs(getstati(STAT_LCK_STT), getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), input_angles_x *-3);
 };
 
 
@@ -47,30 +47,6 @@ void() mnt_hud_ini={
   self.vec_size = SZ_MCH_MONITOR;
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/hud_mnt_bck.png";
-  
-  self.hud_prep = mnt_hud_prep;
-  //self.hud_HelmetImage = mnt_HelmetImage;
-  //self.hud_renderCrosshairs = mnt_renderCrosshairs;
-  //self.hud_playerShield = mnt_playerShield;
-  //self.hud_playerEnergy = mnt_playerEnergy;
-  //self.hud_playerArmor = mnt_playerArmor;
-  //self.hud_Radar = mnt_Radar;
-  self.hud_hitDirectionPips = mnt_hitDirectionPips;
-  self.hud_renderWeapon1 = mnt_renderWeapon1;
-  self.hud_renderWeapon2 = mnt_renderWeapon2;
-  self.hud_renderWeapon3 = mnt_renderWeapon3;
-  self.hud_renderWeapon4 = mnt_renderWeapon4;
-  self.hud_renderWeapon5 = mnt_renderWeapon5;
-  self.hud_renderWeapon6 = mnt_renderWeapon6;
-  self.hud_renderWeapon7 = mnt_renderWeapon7;
-  self.hud_renderWeapon8 = mnt_renderWeapon8;
-  self.hud_renderWeapon9 = mnt_renderWeapon9;
-  self.hud_targetShield = mnt_targetShield;
-  self.hud_targetArmor = mnt_targetArmor;
-  self.hud_targetRange = mnt_targetRange;
-  self.hud_targetLock = mnt_targetLock;
-  self.hud_targetDirectionPip = mnt_targetDirectionPip;
-  self.hud_renderTarget = mnt_renderTarget;
   self.w_range = -1; //this is hack to check weapon range;
   
   //Right Weapons box
@@ -261,8 +237,8 @@ void(entity vec_data) mnt_hud_prep={
 void() mnt_HelmetImage={
   local vector img_sz;
   img_sz = '640 140'; 
-  hud_HelmetImage('320 135', img_sz, HUD_MNT_IMG_B, (VIEW_CTX | VIEW_BOT),  HUD_ALPHA, CLR_DEF_WHITE); 
-  hud_Navbar('8 16', CLR_DEF_ARM_OK, HUD_ALPHA);
+  //hud_HelmetImage('320 135', img_sz, HUD_MNT_IMG_B, (VIEW_CTX | VIEW_BOT),  HUD_ALPHA, CLR_DEF_WHITE); 
+  //hud_Navbar('8 16', CLR_DEF_ARM_OK, HUD_ALPHA);
 };
 void(float lockval, float conv_x, float conv_y, float pitch) mnt_renderCrosshairs={
   //convergence
@@ -283,7 +259,7 @@ void(float lockval, float conv_x, float conv_y, float pitch) mnt_renderCrosshair
   //pitch
   local float p;
   p = pitch; //passing the var doesn't mess with it for some reason
-  hud_renderPitchSlider((VIEW_CTR - gui_percentToPixelRawVec('64 24')), 270, -270, p);
+  //hud_renderPitchSlider((VIEW_CTR - gui_percentToPixelRawVec('64 24')), 270, -270, p);
 };     
 /* PLAYER SHIELD =======================================================*/
 void(float shieldval) mnt_playerShield={
@@ -358,7 +334,7 @@ void(float rad_mode, float rad_range, float i_fact) mnt_Radar={
   cprc_x = mpos_x + gui_percentXRaw(45);
   cprc_y = mpos_y + gui_percentYRaw(45);
   
-  hud_RenderRadar (cprc, rad_rng, gui_percentToPixelRawVec('90 90'), i_fact);
+  //hud_RenderRadar (cprc, rad_rng, gui_percentToPixelRawVec('90 90'), i_fact);
   drawstring(lbl2 + gui_percentToPixelRawVec('-6 6'), strcat("Scale:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
 };
 
@@ -586,8 +562,8 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
         drawpic(spos,HUD_TARGET_BOX, i_sz, tclr, HUD_ALPHA, 0);
       }
       if(dat.data_type == DATA_MECH){
-        self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
-                        getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
+        //self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
+                       //getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
       }
       else if(dat.data_type == DATA_BLD){
         local vector pnl_ctr;
@@ -600,10 +576,10 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       
       }
 
-      self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z + 10);
-      self.hud_targetRange(trgdist);
-      self.hud_targetLock(trglock);
-      self.hud_targetDirectionPip(trgdir);
+     // self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z + 10);
+      //self.hud_targetRange(trgdist);
+     // self.hud_targetLock(trglock);
+      //self.hud_targetDirectionPip(trgdir);
     }
   }
 }; 

@@ -28,10 +28,10 @@ void(float targdir) mtk_targetDirectionPip;
 
 //entry point
 void() hud_mtk_frame={
-  mtk_HelmetImage();
+  //mtk_HelmetImage();
   
   
-  mtk_renderCrosshairs(getstati(STAT_LCK_STT), getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), input_angles_x *-3);
+  //mtk_renderCrosshairs(getstati(STAT_LCK_STT), getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), input_angles_x *-3);
 };
 
 //merely registers the hud into the ent list
@@ -48,14 +48,14 @@ void() mtk_hud_ini={
   self.drawmask = MASK_ENGINE;
   self.img = "gfx/hud/hud_mtk_bck.png";
   
-  self.hud_prep = mtk_hud_prep;
+  //self.hud_prep = mtk_hud_prep;
   //self.hud_HelmetImage = mtk_HelmetImage;
   //self.hud_renderCrosshairs = mtk_renderCrosshairs;
   //self.hud_playerShield = mtk_playerShield;
   //self.hud_playerEnergy = mtk_playerEnergy;
 //self.hud_playerArmor = mtk_playerArmor;
   //self.hud_Radar = mtk_Radar;
-  self.hud_hitDirectionPips = mtk_hitDirectionPips;
+  /*self.hud_hitDirectionPips = mtk_hitDirectionPips;
   self.hud_renderWeapon1 = mtk_renderWeapon1;
   self.hud_renderWeapon2 = mtk_renderWeapon2;
   self.hud_renderWeapon3 = mtk_renderWeapon3;
@@ -70,7 +70,7 @@ void() mtk_hud_ini={
   self.hud_targetRange = mtk_targetRange;
   self.hud_targetLock = mtk_targetLock;
   self.hud_targetDirectionPip = mtk_targetDirectionPip;
-  self.hud_renderTarget = mtk_renderTarget;
+  self.hud_renderTarget = mtk_renderTarget;*/
   self.w_range = -1; //this is hack to check weapon range;
   
   //this is the armor panel
@@ -253,8 +253,8 @@ void(entity vec_data) mtk_hud_prep={
 void() mtk_HelmetImage={ 
   local vector img_sz;
   img_sz = '571 171';
-  hud_HelmetImage('285 165', img_sz, HUD_MTK_IMG_B, (VIEW_CTX | VIEW_BOT),  HUD_ALPHA, CLR_DEF_WHITE); 
-  hud_Navbar('8 16', CLR_DEF_ARM_OK, HUD_ALPHA);
+  //hud_HelmetImage('285 165', img_sz, HUD_MTK_IMG_B, (VIEW_CTX | VIEW_BOT),  HUD_ALPHA, CLR_DEF_WHITE); 
+  //hud_Navbar('8 16', CLR_DEF_ARM_OK, HUD_ALPHA);
 };
 
 /*CROSSHAIRS ======================================================*/
@@ -278,7 +278,7 @@ void(float lockval, float conv_x, float conv_y, float pitch) mtk_renderCrosshair
   //pitch
   local float p;
   p = pitch; //passing the var doesn't mess with it for some reason
-  hud_renderPitchSlider((VIEW_CTR - gui_percentToPixelRawVec('64 24')), 270, -270, p);
+  //hud_renderPitchSlider((VIEW_CTR - gui_percentToPixelRawVec('64 24')), 270, -270, p);
 };  
 
 /*SHIELD METER=====================================================*/
@@ -354,7 +354,7 @@ void(float rad_mode, float rad_range, float i_fact) mtk_Radar={
   cprc_x = mpos_x + gui_percentXRaw(45);
   cprc_y = mpos_y + gui_percentYRaw(43);
   
-  hud_RenderRadar (cprc, rad_rng, gui_percentToPixelRawVec('90 85'), i_fact);
+  //hud_RenderRadar (cprc, rad_rng, gui_percentToPixelRawVec('90 85'), i_fact);
   drawstring(lbl2 + gui_percentToPixelRawVec('-6 6'), strcat("Scale:", ftos(rad_rng), "m"), '6 6 0', clr, HUD_ALPHA, 0);
 };
 
@@ -538,23 +538,23 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       }
       
       if(dat.data_type == DATA_MECH){
-        self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
-                            getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
+        //self.hud_targetArmor(getstatf(STAT_TRG_LEG_HP), getstatf(STAT_TRG_CTOR_HP), getstatf(STAT_TRG_LTOR_HP),
+                           // getstatf(STAT_TRG_RTOR_HP), getstatf(STAT_TRG_LARM_HP), getstatf(STAT_TRG_RARM_HP));
       }
       else if(dat.data_type == DATA_BLD){
         local vector pnl_ctr;
         pnl_ctr_x = self.hud_pnl5.pos_x + self.hud_pnl5.hsize_x;
         pnl_ctr_y = self.hud_pnl5.pos_y + self.hud_pnl5.hsize_y;
         pnl_ctr = pnl_ctr+ gui_percentToPixelRawVec('0 20');
-        hud_renderArmorBuilding(getstatf(STAT_TRG_CTOR_HP), pnl_ctr, gui_percentToPixelRawVec('78 48'));
+        //hud_renderArmorBuilding(getstatf(STAT_TRG_CTOR_HP), pnl_ctr, gui_percentToPixelRawVec('78 48'));
       }
       else if(dat.data_type == DATA_VEHC){
       
       }
-      self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z / 2);
-      self.hud_targetRange(trgdist);
-      self.hud_targetLock(trglock);
-      self.hud_targetDirectionPip(trgdir);
+      //self.hud_targetShield(trgsh, tpos, dat.c_bbx_x_z / 2);
+      //self.hud_targetRange(trgdist);
+      //self.hud_targetLock(trglock);
+      //self.hud_targetDirectionPip(trgdir);
     }
   }
 }; 

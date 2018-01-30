@@ -6,8 +6,6 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //EMP Degausser=======================
-string DAT_EMP_NAME = "EMP Cannon";
-
 void() data_wep_emp;
 
 void() data_wep_emp={

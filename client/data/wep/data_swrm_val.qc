@@ -5,8 +5,6 @@ Date: 02/25/2017
 Overview: long-range, low damage, homing missile
 */
 //========ACTIVE-RADAR HOMING MISSILE=========
-string DATWEP_SWRM_NAME = "Swarm Missile Launcher";
-
 void() data_wep_swrm;
 
 void() data_wep_swrm={
@@ -18,8 +16,7 @@ void() data_wep_swrm={
     self.data_idx = ID_WEP_SWRM;
     self.dmg_amt = DAT_SWRM_DMG;
     self.data_type = DATA_WEPN;
-    self.w_name = DATWEP_SWRM_NAME;
-    self.w_name = DATWEP_SWRM_NAME;
+    self.w_name = DAT_SWRM_NAME;
     self.w_clipsize = DAT_SWRM_CLIPSIZE;
     self.c_model = DAT_SWRM_MODEL;
     self.en_rate = DAT_SWRM_EN_RATE;

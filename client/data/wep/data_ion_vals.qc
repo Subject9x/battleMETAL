@@ -4,8 +4,6 @@ Author: Peter Roohr
 Date: 01/20/2018
 */
 //Ion Coil=======================
-string DAT_ION_NAME = "Ion Coil";
-
 void() data_wep_ion;
 
 void() data_wep_ion={
@@ -17,7 +15,6 @@ void() data_wep_ion={
     self.data_idx = ID_WEP_ION;
     self.dmg_amt = DAT_ION_DMG;
     self.data_type = DATA_WEPN;
-    self.w_name = DAT_ION_NAME;
     self.w_name = DAT_ION_NAME;
     self.w_clipsize = DAT_ION_CLIPSIZE;
     self.c_model = DAT_ION_MODEL;

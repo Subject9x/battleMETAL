@@ -6,16 +6,12 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //LIGHT AUTOCANNON=======================
-float DAT_LATC_IDX = ID_WEP_LATC;
-string DAT_LATC_NAME = "Light Autocannon";
 float DAT_LATC_HPX = 200;
-
-
 void() data_latc_atk;
 void() data_latc_think; 
 
 void() data_latc_ini={
-  self.data_idx = DAT_LATC_IDX;
+  self.data_idx = ID_WEP_LATC;
   self.w_name = DAT_LATC_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
   self.p_damage = DAT_LATC_DMG;

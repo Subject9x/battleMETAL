@@ -5,10 +5,6 @@ Date: 02/26/2017
 Overview: 
 */
 //LIGHT AUTOCANNON=======================
-float DAT_ESR_IDX = ID_WEP_ESR;
-string DAT_ESR_NAME = "Electro-Static Coil";
-
-
 void() data_wep_esr;
 
 void() data_wep_esr={
@@ -17,10 +13,9 @@ void() data_wep_esr={
   oself = self;
   self = esr;
     self.classname = "data";
-    self.data_idx = DAT_ESR_IDX;
+    self.data_idx = ID_WEP_ESR;
     self.dmg_amt = 25;
     self.data_type = DATA_WEPN;
-    self.w_name = DAT_ESR_NAME;
     self.w_name = DAT_ESR_NAME;
     self.w_clipsize = DAT_ESR_CLIPSIZE;
     self.c_model = DAT_ESR_MODEL;

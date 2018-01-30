@@ -5,7 +5,7 @@ Date: 01/21/2018
 Overview: weapon data file for the Swarm Missile launcher
 */
 //Swarm Missile Launcher=======================
-string DAT_SWRM_NAME = "Swarm Missile Launcher";
+
 
 float DAT_SWRM_HPX = 150; 
 

@@ -6,8 +6,6 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //ROTARY PLASMA CANNON=======================
-float DAT_RPLAS_IDX = ID_WEP_RPC;
-string DAT_RPLAS_NAME = "RPC";
 float DAT_RPLAS_HPX = 150;
 float DAT_RPLAS_SHOT = 6;
 
@@ -15,8 +13,8 @@ void() data_rplas_atk;
 void() data_rplas_think;
 
 void() data_rplas_ini={
-  self.data_idx = DAT_RPLAS_IDX;
-  self.w_name = DAT_RPLAS_NAME;
+  self.data_idx = ID_WEP_RPC;
+  self.w_name = DAT_RPC_NAME;
   self.w_isready = 0;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
   self.p_damage = DAT_RPLAS_DMG;

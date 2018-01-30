@@ -47,12 +47,18 @@ float WEAPON7 = 64;
 float WEAPON8 = 128;
 float WEAPON9 = 256;
 //============================
-//     STAT CHANNELS         
+//     RADAR DEFS          
 //============================
+vector  RADAR_PASSIVE_ARC_PLAYER = '0 96 0';
+vector  RADAR_ACTIVE_ARC_PLAYER = '0 256 0';
+//============================
+//     SHARED STATS         
+//============================
+.float hardpoint_cnt;
+.float currentWeaponGroup;
 .float stat_plr_camx;
 .float stat_plr_camy;
 .float stat_plr_camz;
-
 .float stat_cofs_x;
 .float stat_cofs_y;
 .float stat_cofs_z;

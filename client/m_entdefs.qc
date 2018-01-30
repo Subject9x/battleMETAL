@@ -5,6 +5,9 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
+.float sh_cur;
+.float stat_rdr_mode;
+
 .float target_faction;
 .float target_vecsize;
 .float target_datatype;
@@ -114,7 +117,6 @@ float ARM_RAD = 24;
 
 .float dmg_type;
 .float dmg_amt;
-.float hardpoint_cnt;
 //mech
 .float en_cur;
 .float sh_cur;
@@ -153,6 +155,3 @@ float ARM_RAD = 24;
 
 //ai mech
 .string e_model;
-.float p_class;
-.float sh_cur;
-.float stat_rdr_mode;

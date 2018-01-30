@@ -5,9 +5,6 @@ Date: 02/26/2017
 Overview: 
 */
 //LIGHT AUTOCANNON=======================
-float DAT_PAC_IDX = ID_WEP_PAC;
-string DAT_PAC_NAME = "Particle-Accelerator Cannon";
-
 
 void() data_wep_pac;
 
@@ -17,10 +14,9 @@ void() data_wep_pac={
   oself = self;
   self = PAC;
     self.classname = "data";
-    self.data_idx = DAT_PAC_IDX;
+    self.data_idx = ID_WEP_PAC;
     self.dmg_amt = DAT_PAC_DMG;
     self.data_type = DATA_WEPN;
-    self.w_name = DAT_PAC_NAME;
     self.w_name = DAT_PAC_NAME;
     self.w_clipsize = DAT_PAC_CLIPSIZE;
     self.c_model = DAT_PAC_MODEL;

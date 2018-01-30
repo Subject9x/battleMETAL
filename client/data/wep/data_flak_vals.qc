@@ -5,8 +5,6 @@ Date: 01/18/2018
 Overview: new year, new toys
 */
 //FLAK CANNON=======================
-float DAT_FLAK_IDX = ID_WEP_FLAK;
-string DAT_FLAK_NAME = "Flak Cannon";
 
 void() data_wep_flak={
   local entity oself, las;
@@ -14,7 +12,7 @@ void() data_wep_flak={
   oself = self;
   self = las;
     self.classname = "data";
-    self.data_idx = DAT_FLAK_IDX;
+    self.data_idx = ID_WEP_FLAK;
     self.dmg_amt = DAT_FLAK_DMG;
     self.data_type = DATA_WEPN;
     self.w_name = DAT_FLAK_NAME;

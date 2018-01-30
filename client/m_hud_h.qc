@@ -7,6 +7,8 @@ Overview: the interface for hud rendering
 every hud ent has to implement this format
 */
 
+vector HUD_COLOR_DEF = '0.2 0.8 0.2';
+
 string HUT_RET_PIP_HRZ;
 string HUT_RET_PIP_VRT;
 string HUT_RET_LOK;
@@ -38,207 +40,28 @@ string HUD_TARGET_BOX;
 .float prev_ang;
 .vector nav_ofs;
 
-void(float hp, vector org, vector sz) hud_renderArmorBuilding={
-  local vector ofs;
-  ofs = org;
-  ofs_x = ofs_x - (sz_x/2);
-  ofs_y = ofs_y - (sz_y/2);
-  gui_renderMeter(hp, ofs, sz, CLR_DEF_ARM_DED, gui_getColorForArmor(hp), HUD_ALPHA, 0, AXIS_V, 0);
-};
-
-void(float hp, vector org) hud_renderArmorVehicle={
-
-};
-
-void(vector org, vector sz, float wrange, float tdist, float alpha, float flg) hud_RangeIndicator={
-  local float inrange;
-  inrange = FALSE;
-  if(tdist <= wrange){
-    inrange = TRUE;
-  }
-  gui_renderModalFill(org, inrange, CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, sz, alpha, flg);
-};
-
-void(vector org, float mx, float mn, float pval) hud_renderPitchSlider={
-  local float pmax, pcur, perc;
-  pcur = pval;
-  if(pcur > -1){
-    perc = (pcur / mx) * 100;
-  }
-  else{
-    mn = mn * -1;
-    pcur = pcur *-1;
-    perc = (pcur / mn) * 100;
-    perc = perc * -1;
-  }
-  gui_renderMeter(perc, org, gui_percentToPixelRawVec('4 26'), '-1 0 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_V, 0);
-  drawfill((org - gui_percentToPixelRawVec('0 0')), gui_percentToPixelRawVec('8 1'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-  drawfill((org + gui_percentToPixelRawVec('0 52')), gui_percentToPixelRawVec('8 1'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-};
-
-
-//pos, icon, clr
-void(vector post, vector fac_clr) hud_RenderRadar_Mech={
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
-};
-
-void(vector post, vector fac_clr) hud_RenderRadar_Vehc={
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_VEC,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
-};
-
-
-void(vector post, vector fac_clr) hud_RenderRadar_Building={
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
-};
-
-void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav={
-  if(isOn){
-    drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_NAV,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
-  }
-};
-
-void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
-  local entity e;
-  drawpic(cofs - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), '1 1 1', HUD_ALPHA, 0);
-  e = findradius(pmove_org, range);
-  while(e){
-    if((e.data_type == DATA_MECH) || (e.data_type == DATA_BLD) || (e.data_type == DATA_VEHC)){
-      local float draw, p_ifac, pyaw;
-      local vector ang, clr, eorg, corg, nofs, ctr;
-      p_ifac = self.i_faction;
-      ctr_x = pnl_sz_x / 2;
-      ctr_y = pnl_sz_y / 2;
-      draw = TRUE;
-      
-      corg_x = (e.origin_x - pmove_org_x) / 35;
-      corg_y = (e.origin_y - pmove_org_y) / 35; 
-      nofs_x = ( cofs_x + corg_x );
-      nofs_y = ( cofs_y + corg_y );
-      
-      if((nofs_x > (cofs_x + ctr_x)) || (nofs_x < (cofs_x - ctr_x))){
-        draw = FALSE;
-      }  
-      if((nofs_y > (cofs_y + ctr_y)) || (nofs_y < (cofs_y - ctr_y))){
-        draw = FALSE;
-      }
-      
-      if(e.data_type == DATA_NAVP){
-        if(e.i_faction == p_ifac){
-          if(draw){
-            hud_RenderRadar_Nav(nofs, e.isActive, CLR_DEF_ARM_OK);         
-          }
-        }
-      }
-      else if(e.data_type == DATA_BLD){
-        if(draw){ 
-          traceline(pmove_org+'0 0 128', e.origin + '0 0 128', FALSE, self);
-          if(trace_fraction >= 0.9){
-            if(e.i_faction == p_ifac){
-              clr = CLR_DEF_IIF_FRIEND_BLD;
-            }
-            else{
-              clr = CLR_DEF_IFF_ENEMY_BLD;
-            }
-            hud_RenderRadar_Building(nofs, clr);
-          }
-        }
-      }
-      else if(e.data_type == DATA_MECH){
-        if(draw){
-          traceline(pmove_org+'0 0 128', e.origin + '0 0 64', FALSE, self);
-          if(trace_fraction >= 0.9){
-            if(e.i_faction == p_ifac){
-              clr = CLR_DEF_IIF_FRIEND;
-            }
-            else{
-              clr = CLR_DEF_IFF_ENEMY;
-            }
-            hud_RenderRadar_Mech(nofs, clr);
-          }
-        }
-      }
-      else if(e.data_type == DATA_VEHC){
-        if(draw){      
-          traceline(pmove_org+'0 0 128', e.origin + '0 0 64', FALSE, self);
-          if(trace_fraction >= 0.9){
-            if(e.i_faction == p_ifac){
-              clr = CLR_DEF_IIF_FRIEND;
-            }
-            else{
-              clr = CLR_DEF_IFF_ENEMY;
-            }
-            hud_RenderRadar_Vehc(nofs, clr);
-          }
-        }
-      }
-    }
-    e = e.chain;
-  }
-};
-
-/*
-  displays a background image on the hud
-  always draws from bottom left of screen UP
-*/
-void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) hud_HelmetImage={
-  local vector nofs;
-  nofs = gui_calcAlign(ofs, valign); 
-  drawpic(nofs, bimg, gui_percentToPixelRawVec(img_sz), clr, alpha, 0);  
-};
-
-void(vector ofs, vector clr, float alpha) hud_Navbar={
-  local float ang;
-  local vector npos;
-  local string nav;
-  
-  ang = getstati(STAT_PLR_ANG);  
-  nav = gui_angleToNav(ang);
-  npos_x = VIEW_CTR_x - gui_percentXRaw(ofs_x);
-  npos_y = VIEW_ORG_y + gui_percentYRaw(ofs_y);
-  drawstring(npos, nav, gui_percentToPixelRawVec('16 16'), clr, alpha, 0);
-};
-
+void(float hitdirection, float lockval, float conv_x, float conv_y) hud_renderCrosshairs;
+void(float hitDirBit) hud_renderDirectionHit;
+void(float targdir) hud_renderTargetDirection;
+void(vector pos, float algn, float pitchVal, float pitch_max, float pitch_min) hud_renderPitchIndicator;
+void(vector pos, float algn, float val) hud_renderReticleRange;
+void(vector pos, float algn, vector angle) hud_renderNavHeading;
+void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderShield;
+void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderEnergy;
+void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label) hud_renderArmorMeter;
+void(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph;
+void(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
+void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon;
+void(vector pos, float algn, float val) hud_renderShieldOverlay;
+void(vector pos, float algn, float val) hud_renderTargetOverlay;
+void(vector pos, float algn, string name) hud_renderNameOverlay;
+void(float hp, vector org, vector sz) hud_renderArmorBuilding;
+void(float hp, vector org) hud_renderArmorVehicle;
+void(vector post, vector fac_clr) hud_RenderRadar_Mech;
+void(vector post, vector fac_clr) hud_RenderRadar_Vehc;
+void(vector post, vector fac_clr) hud_RenderRadar_Building;
+void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav;
+void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) hud_HelmetImage;
 //entry point for the mech hud system
-void(float mech_id, float mech_size) hud_frame={
-  if(mech_size == 1){
-    if(mech_id == ID_MCH_BALAKET){
-      hud_blk_frame(); 
-    }
-  }
-  else if(mech_size == 2){
-    if(mech_id == ID_MCH_MATOK){
-      hud_mtk_frame(); 
-    }
-  }
-  else if(mech_size == 3){
-    if(mech_id == ID_MCH_MONITOR){
-      hud_mnt_frame(); 
-    }
-  }
-};
-
-.void(entity vec_data) hud_prep;
-//.void(vector view_x, vector view_ctr) hud_HelmetImage;
-//.void(float pvid, float lockval, float conv_x, float conv_y, float pitch) hud_renderCrosshairs;  
-//.void(float shieldval) hud_playerShield;
-//.void(float energyval) hud_playerEnergy;
-//.void(float ct, float lt, float rt, float la, float ra, float lg) hud_playerArmor;
-//.void(float rad_mode, float i_fact) hud_Radar;
-.void(float hit_dir) hud_hitDirectionPips;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon1;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon2;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon3;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon4;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon5;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon6;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon7;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon8;
-.void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok, float w_rel) hud_renderWeapon9;
-.void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos)hud_renderTarget; //this will call the functions below
-.void(float shieldval, vector tpos, float zht) hud_targetShield;
-.void(float lg, float ct, float lt, float rt, float la, float ra) hud_targetArmor;
-.void(float range) hud_targetRange;
-.void(float islock) hud_targetLock;
-.void(float targdir) hud_targetDirectionPip;
-
+void(float mech_id, float mech_size) hud_frame;
 

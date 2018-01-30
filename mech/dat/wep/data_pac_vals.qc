@@ -4,16 +4,14 @@ Author: Peter Roohr
 Date: 02/26/2017
 Overview: 
 */
-//LIGHT AUTOCANNON=======================
-float DAT_PAC_IDX = ID_WEP_PAC;
-string DAT_PAC_NAME = "PAC";
+//PARTICLE ACCELERATOR CANNON=======================
 float DAT_PAC_HPX = 100;
 
 void() data_pac_atk;
 void() data_pac_think;
 
 void() data_pac_ini={
-  self.data_idx = DAT_PAC_IDX;
+  self.data_idx = ID_WEP_PAC;
   self.w_name = DAT_PAC_NAME;
   self.p_damage = DAT_PAC_DMG;
   self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_PRC;

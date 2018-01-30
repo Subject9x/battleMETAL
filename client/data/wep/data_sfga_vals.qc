@@ -6,9 +6,6 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //LIGHT AUTOCANNON=======================
-float DAT_SFGA_IDX = ID_WEP_SFGA;
-string DAT_SFGA_NAME = "Snub Field Gun";
-
 
 void() data_wep_sfga;
 
@@ -18,7 +15,7 @@ void() data_wep_sfga={
   oself = self;
   self = latc;
     self.classname = "data";
-    self.data_idx = DAT_SFGA_IDX;
+    self.data_idx = ID_WEP_SFGA;
     self.dmg_amt = DAT_SFGA_DMG;
     self.data_type = DATA_WEPN;
     self.w_name = DAT_SFGA_NAME;

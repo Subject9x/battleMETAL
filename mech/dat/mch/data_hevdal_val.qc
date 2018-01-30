@@ -183,6 +183,7 @@ void() data_mnt_ini={
   self.m_bside = DAT_MNT_M_BSIDE;
   self.m_bobspd = DAT_MNT_M_BSPD;
   self.w_firetime = DAT_MNT_LOCK; //using this as 'lock on time;
+  self.hardpoint_cnt = DAT_MNT_HARDPOINT_CNT;
 };
 
 void() data_mnt_legs={
