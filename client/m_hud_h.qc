@@ -55,11 +55,11 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
 void(vector pos, float algn, float val) hud_renderShieldOverlay;
 void(vector pos, float algn, float val) hud_renderTargetOverlay;
 void(vector pos, float algn, string name) hud_renderNameOverlay;
-void(float hp, vector org, vector sz) hud_renderArmorBuilding;
+void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding;
 void(float hp, vector org) hud_renderArmorVehicle;
-void(vector post, vector fac_clr) hud_RenderRadar_Mech;
-void(vector post, vector fac_clr) hud_RenderRadar_Vehc;
-void(vector post, vector fac_clr) hud_RenderRadar_Building;
+void(vector post, float plr_fact, float  e_fact) hud_RenderRadar_Mech;
+void(vector post, float plr_fact, float  e_fact) hud_RenderRadar_Vehc;
+void(vector post,float plr_fact, float  e_fact) hud_RenderRadar_Building;
 void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav;
 void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) hud_HelmetImage;
 //entry point for the mech hud system

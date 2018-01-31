@@ -169,6 +169,7 @@ void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector 
 
 /*
   RENDER ARMOR GRAPH STYLE 1
+  used for mech targets
 */
 void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph={
   local vector pnl_ctr;
@@ -191,7 +192,7 @@ void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, 
 /*
   RENDER ENTIRE RADAR PANEL
 */
-void(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
+void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
 
   local vector radCenter, radarFidelity, map_size;
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
@@ -213,14 +214,48 @@ void(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange
     radarFidelity_z = radarRange / 4;
   }
   drawpic(radCenter - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+  
   local entity e;
   e = findradius(radarOrg, radarRange);
   while(e){
     if(e.data_type){
-      if((e.data_type == DATA_BLD) || (e.data_type == DATA_MECH) || (e.data_type == DATA_VEHC) || (e.data_type == DATA_MECH_AI)){
-        local vector hudorg;
-        hudorg = gui_mapCoordToImgCoord(map_size, e.origin, vorg, siz);
-        drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+      if(e.entnum != player_localentnum){
+        if((e.data_type == DATA_BLD) || (e.data_type == DATA_MECH) || (e.data_type == DATA_VEHC)){
+          local vector hudorg, ang, spotVec;
+          local float canSee, radUp, radOut, entAngle, entAngleRadian, dist, radDist;
+          dist = vlen(e.origin - radarOrg);
+          radDist = dist / self.radar_range;
+          ang = vectoangles(e.origin - radarOrg);
+          canSee = FALSE;
+                    
+          makevectors(ang);
+          spotVec = radarOrg + (v_up * radarFidelity_y) + (v_forward * radarFidelity_z);
+          traceline(spotVec, e.origin, FALSE, self);
+          if(trace_fraction >= 0.9){
+            canSee = TRUE;
+          }
+          
+          if(canSee){  
+            entAngle = anglemod(input_angles_y + ang_y);
+            entAngleRadian = entAngle * 3.14 / 180;
+
+            hudorg_x = radCenter_x - (cos(entAngleRadian) * (siz_x/2 * radDist));
+            hudorg_y = radCenter_y - (sin(entAngleRadian) * (siz_y/2 * radDist));
+            
+            if(e.data_type == DATA_BLD){
+              hud_RenderRadar_Building(hudorg, plrFaction, e.i_faction);  
+            }
+            else if(e.data_type == DATA_VEHC){
+              hud_RenderRadar_Vehc(hudorg, plrFaction, e.i_faction);
+            }
+            else if(e.data_type == DATA_MECH){
+              hud_RenderRadar_Mech(hudorg, plrFaction, e.i_faction); 
+            }
+            else{
+              drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+            }
+          }
+        }
       }
     }
     e = e.chain;
@@ -277,116 +312,75 @@ void(vector pos, float algn, string name) hud_renderNameOverlay={
 
 };
 
-
-void(float hp, vector org, vector sz) hud_renderArmorBuilding={
-  local vector ofs;
-  ofs = org;
-  ofs_x = ofs_x - (sz_x/2);
-  ofs_y = ofs_y - (sz_y/2);
-  gui_renderMeter(hp, ofs, sz, CLR_DEF_ARM_DED, gui_getColorForArmor(hp), HUD_ALPHA, 0, AXIS_V, 0);
+/*
+  RENDER A SINGLE WEAPON AND ITS RELOAD BAR
+  you might want to cover this with a nice overlay picture
+*/
+void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
+  local vector meter;
+  vorg = gui_percentToPixelRawVec(vorg);
+  vorg = gui_calcAlign(vorg, algn);
+  meter = gui_percentToPixelRawVec(siz);
+  meter_x = meter_x / 2;
+  meter_y = meter_y / 2;
+  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
+  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 void(float hp, vector org) hud_renderArmorVehicle={
 
 };
 
-//pos, icon, clr
-void(vector post, vector fac_clr) hud_RenderRadar_Mech={
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
+/*
+  RENDER A MECH ICON ON THE RADAR
+*/
+void(vector post, float plr_fact, float  e_fact) hud_RenderRadar_Mech={
+  local vector clr;
+  if(plr_fact == e_fact){
+    clr = CLR_DEF_IIF_FRIEND;
+  }
+  else{
+    clr = CLR_DEF_IFF_ENEMY;
+  }
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), clr, HUD_ALPHA, 0);
 };
 
-void(vector post, vector fac_clr) hud_RenderRadar_Vehc={
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_VEC,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
+/*
+  RENDER A VEHICLE ICON ON THE RADAR
+*/
+void(vector post, float plr_fact, float  e_fact) hud_RenderRadar_Vehc={
+  local vector clr;
+  if(plr_fact == e_fact){
+    clr = CLR_DEF_IIF_FRIEND;
+  }
+  else{
+    clr = CLR_DEF_IFF_ENEMY;
+  }
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_VEC,  gui_percentToPixelRawVec('6 6'), clr, HUD_ALPHA, 0);
 };
 
-void(vector post, vector fac_clr) hud_RenderRadar_Building={
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
+/*
+  RENDER A BUILDING ICON ON THE RADAR
+*/
+void(vector post,float plr_fact, float  e_fact) hud_RenderRadar_Building={
+  local vector clr;
+  if(plr_fact == e_fact){
+    clr = CLR_DEF_IIF_FRIEND_BLD;
+  }
+  else{
+    clr = CLR_DEF_IFF_ENEMY_BLD;
+  }
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec('6 6'), clr, HUD_ALPHA, 0);
 };
 
+/*
+  RENDER A NAV POINT ICON ON THE RADAR
+*/
 void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav={
   if(isOn){
     drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_NAV,  gui_percentToPixelRawVec('6 6'), fac_clr, HUD_ALPHA, 0);
   }
 };
-
-/*void(vector cofs, float range, vector pnl_sz, float p_faction) hud_RenderRadar={
-  local entity e;
-  drawpic(cofs - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), '1 1 1', HUD_ALPHA, 0);
-  e = findradius(pmove_org, range);
-  while(e){
-    if((e.data_type == DATA_MECH) || (e.data_type == DATA_BLD) || (e.data_type == DATA_VEHC)){
-      local float draw, p_ifac, pyaw;
-      local vector ang, clr, eorg, corg, nofs, ctr;
-      p_ifac = self.i_faction;
-      ctr_x = pnl_sz_x / 2;
-      ctr_y = pnl_sz_y / 2;
-      draw = TRUE;
-      
-      corg_x = (e.origin_x - pmove_org_x) / 35;
-      corg_y = (e.origin_y - pmove_org_y) / 35; 
-      nofs_x = ( cofs_x + corg_x );
-      nofs_y = ( cofs_y + corg_y );
-      
-      if((nofs_x > (cofs_x + ctr_x)) || (nofs_x < (cofs_x - ctr_x))){
-        draw = FALSE;
-      }  
-      if((nofs_y > (cofs_y + ctr_y)) || (nofs_y < (cofs_y - ctr_y))){
-        draw = FALSE;
-      }
-      
-      if(e.data_type == DATA_NAVP){
-        if(e.i_faction == p_ifac){
-          if(draw){
-            hud_RenderRadar_Nav(nofs, e.isActive, CLR_DEF_ARM_OK);         
-          }
-        }
-      }
-      else if(e.data_type == DATA_BLD){
-        if(draw){ 
-          traceline(pmove_org+'0 0 128', e.origin + '0 0 128', FALSE, self);
-          if(trace_fraction >= 0.9){
-            if(e.i_faction == p_ifac){
-              clr = CLR_DEF_IIF_FRIEND_BLD;
-            }
-            else{
-              clr = CLR_DEF_IFF_ENEMY_BLD;
-            }
-            hud_RenderRadar_Building(nofs, clr);
-          }
-        }
-      }
-      else if(e.data_type == DATA_MECH){
-        if(draw){
-          traceline(pmove_org+'0 0 128', e.origin + '0 0 64', FALSE, self);
-          if(trace_fraction >= 0.9){
-            if(e.i_faction == p_ifac){
-              clr = CLR_DEF_IIF_FRIEND;
-            }
-            else{
-              clr = CLR_DEF_IFF_ENEMY;
-            }
-            hud_RenderRadar_Mech(nofs, clr);
-          }
-        }
-      }
-      else if(e.data_type == DATA_VEHC){
-        if(draw){      
-          traceline(pmove_org+'0 0 128', e.origin + '0 0 64', FALSE, self);
-          if(trace_fraction >= 0.9){
-            if(e.i_faction == p_ifac){
-              clr = CLR_DEF_IIF_FRIEND;
-            }
-            else{
-              clr = CLR_DEF_IFF_ENEMY;
-            }
-            hud_RenderRadar_Vehc(nofs, clr);
-          }
-        }
-      }
-    }
-    e = e.chain;
-  }
-};*/
 
 /*
   displays a background image on the hud

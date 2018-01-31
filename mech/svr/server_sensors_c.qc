@@ -14,7 +14,7 @@ void() server_getTarget={
   else{
     src = self;
   }
-  traceline(src.origin, src.origin + v_forward*self.radar_range, FALSE, self);
+  traceline(src.origin, src.origin + v_forward*self.stat_rdr_rng, FALSE, self);
   if(trace_ent != world){
     self.enemy = trace_ent;
     if(trace_ent.data_type != DATA_POBS){
@@ -65,7 +65,7 @@ void() server_updateTargetInfo={
   }
   local float dst;
   dst = vlen(self.enemy.origin - self.origin);
-  if(dst > self.radar_range){
+  if(dst > self.stat_rdr_rng){
     self.enemy = world;
     return;
   }

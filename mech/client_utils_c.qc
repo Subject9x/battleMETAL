@@ -26,7 +26,7 @@ float(entity ent, float changed) send_mech={
     WriteByte( MSG_ENTITY, self.data_idx);
     WriteByte( MSG_ENTITY, self.vec_size);
     WriteByte( MSG_ENTITY, self.stat_rdr_mode);
-    WriteByte( MSG_ENTITY, self.stat_rdr_rng);
+    WriteLong( MSG_ENTITY, self.stat_rdr_rng);
     WriteByte( MSG_ENTITY, csqc_updateCompStat(self));
     WriteByte( MSG_ENTITY, csqc_updateCompStat(self.e_legs));
     WriteByte( MSG_ENTITY, csqc_updateCompStat(self.e_tor_l));
@@ -59,7 +59,7 @@ float(entity ent, float changed) send_mech={
     WriteByte ( MSG_ENTITY, self.enemy.i_faction);
     WriteByte ( MSG_ENTITY, self.stat_trg_face);
     WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy));
-    if(self.enemy.data_type == DATA_MECH_AI){
+    if(self.enemy.data_type == DATA_MECH){
       WriteByte ( MSG_ENTITY, self.enemy.vec_size);
       WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_tor_l));
       WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_tor_r));

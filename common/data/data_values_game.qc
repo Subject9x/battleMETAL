@@ -99,14 +99,7 @@ vector  RADAR_ACTIVE_ARC_PLAYER = '0 256 0';
 .float stat_trg_orgx;
 .float stat_trg_orgy;
 .float stat_trg_orgz;
-/*.float stat_trg_lg_hp;
-.float stat_trg_ct_hp;
-.float stat_trg_lt_hp;
-.float stat_trg_rt_hp;
-.float stat_trg_la_hp;
-.float stat_trg_ra_hp;*/
 .float stat_ret_dist;
-//.float stat_trg_vsize;
 .float stat_trg_ifac;
 //============================
 //     STAT CHANNELS         
@@ -167,13 +160,6 @@ float STAT_TRG_DDFLG = 81;
 float STAT_TRG_ORGX = 75;
 float STAT_TRG_ORGY = 76;
 float STAT_TRG_ORGZ = 78;
-
-float STAT_TRG_LEG_HP = 93;
-float STAT_TRG_CTOR_HP = 94;
-float STAT_TRG_LTOR_HP = 95;
-float STAT_TRG_RTOR_HP = 96;
-float STAT_TRG_LARM_HP = 97;
-float STAT_TRG_RARM_HP = 98;
 
 float UI_BOX_POSX = 106;
 float UI_BOX_POSY = 107;

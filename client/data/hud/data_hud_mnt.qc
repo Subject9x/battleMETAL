@@ -570,7 +570,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
         pnl_ctr_x = self.hud_pnl2.pos_x + self.hud_pnl2.hsize_x;
         pnl_ctr_y = self.hud_pnl2.pos_y + self.hud_pnl2.hsize_y;
         pnl_ctr = pnl_ctr + gui_percentToPixelRawVec('0 12');
-        hud_renderArmorBuilding(getstatf(STAT_TRG_CTOR_HP), pnl_ctr, gui_percentToPixelRawVec('96 48'));
+        //hud_renderArmorBuilding(getstatf(STAT_TRG_CTOR_HP), pnl_ctr, gui_percentToPixelRawVec('96 48'));
       }
       else if(dat.data_type == DATA_VEHC){
       

@@ -738,7 +738,7 @@ void(float isnew) CSQC_Ent_Update =
       self.data_idx = ReadByte();
       self.vec_size = ReadByte(); 
       self.stat_rdr_mode = ReadByte();
-      self.radar_range = ReadByte();
+      self.radar_range = ReadLong();
       self.hp_ctor = ReadByte();
       self.hp_leg = ReadByte();
       self.hp_stor = ReadByte();
@@ -802,7 +802,7 @@ void(float isnew) CSQC_Ent_Update =
       self.target_faction = ReadByte();
       self.stat_trg_face = ReadByte();
       self.stat_trg_ct_hp = ReadByte();
-      if(self.target_datatype == DATA_MECH_AI){
+      if((self.target_datatype == DATA_MECH) || (self.target_datatype == DATA_MECH_AI)){
         self.target_datatype = DATA_MECH;
         self.target_vecsize = ReadByte();
         self.stat_trg_lt_hp = ReadByte();
@@ -811,7 +811,6 @@ void(float isnew) CSQC_Ent_Update =
         self.stat_trg_ra_hp = ReadByte();
         self.stat_trg_lg_hp = ReadByte();
         self.target_shield = ReadByte();
-        
       }
       else if(self.target_datatype == DATA_VEHC){
         self.target_vecsize = ReadByte();

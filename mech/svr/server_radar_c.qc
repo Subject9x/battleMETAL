@@ -13,7 +13,7 @@ vector() radar_MakeSweep={
   local float heat_front, heat_back, face;
   heat_front = 0;
   heat_back = 0;
-  contact = findradius(self.origin, self.radar_range);
+  contact = findradius(self.origin, self.stat_rdr_rng);
   root = contact;
   while(contact){
     if(contact.data_idx){
