@@ -486,7 +486,7 @@ void(float w_grp, float w_state, float w_id, float w_bit, float w_dd, float w_ok
 
 /*RENDER TARGET====================================================*/
 void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, float trgdir, vector tpos) mtk_renderTarget={
-  if(trglock & LOCK_PLYR){
+/*  if(trglock & LOCK_PLYR){
     local vector pofs;
     pofs = self.hud_pnl1.pos + gui_percentToPixelRawVec('4 0');
     pofs_y = pofs_y + gui_percentYRaw(16);
@@ -556,7 +556,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
       //self.hud_targetLock(trglock);
       //self.hud_targetDirectionPip(trgdir);
     }
-  }
+  }*/
 }; 
 
 

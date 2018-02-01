@@ -28,10 +28,6 @@ void() mh_world_ini={
   addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
-  addstat(STAT_TRG_ORGX, AS_FLOAT, stat_trg_orgx);
-  addstat(STAT_TRG_ORGY, AS_FLOAT, stat_trg_orgy);
-  addstat(STAT_TRG_ORGZ, AS_FLOAT, stat_trg_orgz);
- 
  
   addstat(STAT_NAV_DIR, AS_INT, stat_nav_dir);
   

@@ -302,12 +302,89 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
   gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
-void(vector pos, float algn, float val) hud_renderShieldOverlay={
-
+/*
+  RENDER A SHIELD METER IN 3d SPACE
+*/
+void(vector org, vector pos, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
+  local float height, dist;
+  local vector vpos, nofs, aSize;
+  if(val > 0){
+    dist = vlen(org - pos);
+    dist = dist / radRange;
+    mSize = gui_percentToPixelRawVec(mSize);
+    dist = (1 / (dist * dist));    
+    dist = dist / 10;
+    aSize_x = mSize_x * dist;
+    if(aSize_x > mSize_x){
+      aSize_x = mSize_x;
+    }
+    aSize_y = mSize_y * dist;
+    if(aSize_y > mSize_y){
+      aSize_y = mSize_y;
+    }
+    height = tsize * 35;
+    vpos = org;
+    vpos_z = vpos_z + height;
+    nofs = cs_project(vpos);
+    if (nofs_z >= 0) {
+      nofs = gui_percentToPixelRawVec(nofs);
+      nofs_x = nofs_x - (aSize_x /2 );
+      nofs_z = 0;
+      hud_renderShield(nofs, 0, val, aSize, FALSE, 0, '0 0', AXIS_H);
+    }
+  }
 };
-void(vector pos, float algn, float val) hud_renderTargetOverlay={
 
+/*
+  RENDER TARGET PIPS OVER AN ORIGIN IN 3D SPACE
+*/
+void(vector org, vector pos, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay ={
+  local float height, dist;
+  local vector vpos, nofs, imgSize, aSize, factionColor;
+    if(faction1 == faction2){
+      factionColor = CLR_DEF_IIF_FRIEND;
+    }
+    else{
+      factionColor = CLR_DEF_IFF_ENEMY;
+    }
+    dist = vlen(org - pos);
+    dist = 1 - (dist / 1000);
+    
+    imgSize = draw_getimagesize(HUD_TARGET_BOX);
+    imgSize = gui_percentToPixelRawVec(imgSize);
+    imgSize = imgSize + gui_percentToPixelRawVec('50 50');
+
+    aSize_x = imgSize_x * dist;
+    if(aSize_x > imgSize_x){
+      aSize_x = imgSize_x;
+    }
+    else
+    if(aSize_x < 32){
+      aSize_x = 32;
+    }
+    
+    aSize_y = imgSize_y * dist;
+    if(aSize_y > imgSize_y){
+      aSize_y = imgSize_y;
+    }
+    if(aSize_y < 32){
+      aSize_y = 32;
+    }
+
+    vpos = org;
+    nofs = cs_project(vpos);
+    if (nofs_z >= 0) {
+      nofs = gui_percentToPixelRawVec(nofs);
+      nofs_x = nofs_x - (aSize_x / 2);
+      nofs_y = nofs_y - (aSize_y / 2);
+      nofs_z = 0;
+      gui_renderTintImage(TRUE, nofs, HUD_TARGET_BOX, aSize, factionColor, HUD_ALPHA, 0);
+    }
 };
+
+/*
+  RENDER A NAME OVER AN ORIGIN IN 3D SPACE
+*/
 void(vector pos, float algn, string name) hud_renderNameOverlay={
 
 };
@@ -327,8 +404,16 @@ void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding={
   gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
-void(float hp, vector org) hud_renderArmorVehicle={
 
+void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
+  local vector meter;
+  vorg = gui_percentToPixelRawVec(vorg);
+  vorg = gui_calcAlign(vorg, algn);
+  meter = gui_percentToPixelRawVec(siz);
+  meter_x = meter_x / 2;
+  meter_y = meter_y / 2;
+  meter = gui_calcAlignCustom(meter, (VIEW_CTX | VIEW_TOP), vorg);
+  gui_renderMeter(val, meter, siz, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 /*
@@ -393,6 +478,40 @@ void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector c
   drawpic(nofs, bimg, gui_percentToPixelRawVec(img_sz), clr, alpha, 0);  
 };
 
+/*
+  RENDERS A LABEL 'RANGE' AND DISTANCE TO ORIGIN
+*/
+void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange={
+  local float dist, msgLen;
+  local vector tofs, msgSize;
+  local string msg;
+  ofs = gui_percentToPixelRawVec(ofs);
+  ofs = gui_calcAlign(ofs, algn);
+  dist = vlen(torg - porg);
+  msg = strcat("[RANGE] ", ftos(dist));
+  msgLen = stringwidth(msg, 0, '6 6 0');
+  msgSize_x = gui_percentXRaw(msgLen/2);
+  msgSize_y = gui_percentYRaw(6);
+  tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
+  drawstring(tofs, msg, '6 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+};
+
+/*
+  RENDERS A LABEL 'TARGET' AND THE TARGET'S NAME
+*/
+void(vector ofs, string targType, float algn) hud_renderTargetName={
+  local float msgLen;
+  local vector tofs, msgSize;
+  local string msg;
+  ofs = gui_percentToPixelRawVec(ofs);
+  ofs = gui_calcAlign(ofs, algn);
+  msg = strcat("[TARGET] ", targType);
+  msgLen = stringwidth(msg, 0, '6 6 0');
+  msgSize_x = gui_percentXRaw(msgLen/2);
+  msgSize_y = gui_percentYRaw(6);
+  tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
+  drawstring(tofs, msg, '6 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+};
 
 //entry point for the mech hud system
 void(float mech_id, float mech_size) hud_frame={

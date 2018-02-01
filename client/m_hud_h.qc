@@ -52,16 +52,18 @@ void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector 
 void(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph;
 void(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
 void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon;
-void(vector pos, float algn, float val) hud_renderShieldOverlay;
-void(vector pos, float algn, float val) hud_renderTargetOverlay;
+void(vector org, vector pos, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay;
+void(vector org, vector pos, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay;
 void(vector pos, float algn, string name) hud_renderNameOverlay;
 void(vector vorg, float algn, vector siz, float val) hud_renderArmorBuilding;
-void(float hp, vector org) hud_renderArmorVehicle;
+void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle;
 void(vector post, float plr_fact, float  e_fact) hud_RenderRadar_Mech;
 void(vector post, float plr_fact, float  e_fact) hud_RenderRadar_Vehc;
 void(vector post,float plr_fact, float  e_fact) hud_RenderRadar_Building;
 void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav;
 void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) hud_HelmetImage;
+void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
+void(vector ofs, string targType, float algn) hud_renderTargetName;
 //entry point for the mech hud system
 void(float mech_id, float mech_size) hud_frame;
 

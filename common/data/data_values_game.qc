@@ -96,11 +96,7 @@ vector  RADAR_ACTIVE_ARC_PLAYER = '0 256 0';
 .float stat_plr_fir;
 .float stat_lck_stt;
 .float stat_trg_ddflg;
-.float stat_trg_orgx;
-.float stat_trg_orgy;
-.float stat_trg_orgz;
 .float stat_ret_dist;
-.float stat_trg_ifac;
 //============================
 //     STAT CHANNELS         
 //============================

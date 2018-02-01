@@ -59,6 +59,9 @@ float(entity ent, float changed) send_mech={
     WriteByte ( MSG_ENTITY, self.enemy.i_faction);
     WriteByte ( MSG_ENTITY, self.stat_trg_face);
     WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy));
+    WriteCoord ( MSG_ENTITY, self.enemy.origin_x);
+    WriteCoord ( MSG_ENTITY, self.enemy.origin_y);
+    WriteCoord ( MSG_ENTITY, self.enemy.origin_z);
     if(self.enemy.data_type == DATA_MECH){
       WriteByte ( MSG_ENTITY, self.enemy.vec_size);
       WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.enemy.e_tor_l));

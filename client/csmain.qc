@@ -324,15 +324,11 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_armlistener(self.hp_leg, 32, SND_HUD_VFX_CRITLEG);
     
     //target tracking info
-    local float trg_vid, trg_datid, trg_ddflg, trg_sh, trg_am, trg_dist, trg_dir, trg_lock;
+    local float trg_ddflg, trg_dist, trg_dir, trg_lock;
     local vector trg_pos;
     trg_ddflg = getstati(STAT_TRG_DDFLG);
-    trg_dist = getstati(STAT_TRG_DIST);
     trg_dir = getstati(STAT_TRG_FACE);
     trg_lock = getstati(STAT_LCK_STT);
-    trg_pos_x = getstatf(STAT_TRG_ORGX);
-    trg_pos_y = getstatf(STAT_TRG_ORGY);
-    trg_pos_z = getstatf(STAT_TRG_ORGZ);
     PLAYER_HELPER.w_range = trg_dist;
     //render 
     local entity player_hud, vec_data, oself;
@@ -802,6 +798,9 @@ void(float isnew) CSQC_Ent_Update =
       self.target_faction = ReadByte();
       self.stat_trg_face = ReadByte();
       self.stat_trg_ct_hp = ReadByte();
+      self.target_origin_x = ReadCoord();
+      self.target_origin_y = ReadCoord();
+      self.target_origin_z = ReadCoord();
       if((self.target_datatype == DATA_MECH) || (self.target_datatype == DATA_MECH_AI)){
         self.target_datatype = DATA_MECH;
         self.target_vecsize = ReadByte();
@@ -865,76 +864,6 @@ float() obs_predraw={
   else{
     addentity( self );
   }
-};
-
-float() player_predraw={
-  //https://icculus.org/~marco/quakec/csqc/prediction
-    if ( self.entnum == player_localentnum ) {
-      local vector vOldOrigin;
-      local vector vOldVelocity;
-      local float fOldPMoveFlags;
-      
-      if(self.data_type == DATA_POBS){
-        self.movetype = MOVETYPE_FLY;
-      }
-      else{
-        self.movetype = MOVETYPE_WALK;
-      }
-      // Prepare rollback
-      vOldOrigin = self.origin;
-      vOldVelocity = self.velocity;
-      fOldPMoveFlags = self.pmove_flags;
-
-      // Apply physics for every single input-frame that has not yet been
-      // acknowledged by the server (servercommandframe = last acknowledged frame)
-      local float idx;
-      idx = servercommandframe + 1;
-      while (idx <= clientcommandframe) {
-        getinputstate( idx );
-        runstandardplayerphysics( self );
-        idx = idx + 1;
-      }
-          
-      // Smooth stair stepping, this has to be done manually!
-      vPlayerOriginOld = vPlayerOrigin;
-          
-      if ( ( self.flags & FL_ONGROUND ) && ( self.origin_z - vPlayerOriginOld_z > 0 ) ) {
-        vPlayerOriginOld_z = vPlayerOriginOld_z + (frametime * 150);
-            
-        if ( vPlayerOriginOld_z > self.origin_z ) {
-          vPlayerOriginOld_z = self.origin_z;
-        }
-        if ( self.origin_z - vPlayerOriginOld_z > 18 ) {
-          vPlayerOriginOld_z = self.origin_z - 18;
-        }
-        vPlayerOrigin_z += vPlayerOriginOld_z - self.origin_z;
-      } 
-      else {
-        vPlayerOriginOld_z = self.origin_z;
-      }
-      
-      vPlayerOrigin_x = self.origin_x;
-      vPlayerOrigin_y = self.origin_y;
-      vPlayerOrigin_z = vPlayerOriginOld_z;
-      vPlayerVelocity = self.velocity;
-      
-      addentity( self );
-
-      // Time to roll back
-      self.origin = vOldOrigin;
-      setorigin( self, self.origin );
-      self.velocity = vOldVelocity;
-      self.pmove_flags = fOldPMoveFlags;
-      self.movetype = MOVETYPE_NONE;
-
-      // Set renderflag for mirrors!
-      //self.modelflags = RF_EXTERNALMODEL;
-    } 
-    else {
-        addentity( self );
-    }
-    
-    return 1;
 };
 
 // called on each entity each frame if self.nextthink <= time + frametime

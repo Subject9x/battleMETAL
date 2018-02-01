@@ -97,12 +97,8 @@ float m_wep = 6;
 .float player_state;
 
 .float stat_hit_dirs;
-
-//PLAYER CLASSES
-float P_OBS = 0;
-float P_MECH = 1;
-float P_VEHC = 2;
-float P_BULD = 3;
+.float target_entid;
+.vector target_origin;
 
 //mech piece classname constants
 string M_TOR_CENTER = "tor_center";

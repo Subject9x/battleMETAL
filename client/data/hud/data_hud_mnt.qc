@@ -519,7 +519,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
     }
   }
 
-  if(trgvid > -1){
+/*  if(trgvid > -1){
     local entity dat;
     local float pcls;
     pcls = getstati(TRG_P_CLASS);
@@ -581,7 +581,7 @@ void(float trgvid, float trgdat, float trgsh, float trgdist, float trglock, floa
      // self.hud_targetLock(trglock);
       //self.hud_targetDirectionPip(trgdir);
     }
-  }
+  }*/
 }; 
 
 void(float shieldval, vector tpos, float zht) mnt_targetShield={
