@@ -41,59 +41,6 @@ this one will focus on move to move
 .float nexnode32;
 //=========================
 
-//how well does the AI handle weapon convergence
-float AI_CNV_ACE = 10;//16;
-float AI_CNV_VET = 15;//24;
-float AI_CNV_REG = 20;//36;
-float AI_CNV_ROK = 25;//48;
-
-//how does range affect the AI's accuracy
-float AI_RNG_ACE = 1;
-float AI_RNG_VET = 1.15;
-float AI_RNG_REG = 1.25;
-float AI_RNG_ROK = 1.5;
-
-//Adjust Rotation Rate
-//self.yaw_speed = rotation rate + (rotation rate * AI_ROT_X);
-float AI_ROT_ACE = 0.7;//0.7;
-float AI_ROT_VET = 0.6;//0.5;
-float AI_ROT_REG = 0.4;//0.3;
-float AI_ROT_ROK = 0.25;//0.1;
-
-//armor based on difficulty
-//hp = hp * AI_ARMOR
-float AI_ARMOR_EASY = 0.3;//0.2;
-float AI_ARMOR_MEDM = 0.4;
-float AI_ARMOR_HARD = 0.6;
-float AI_ARMOR_NIGHT = 0.75;
-
-//ai_leading ratings, how well an ai tracks a slippery targt
-float AI_LEAD_ACE = 0.04;//0.05;
-float AI_LEAD_VET = 0.06;//0.1;
-float AI_LEAD_REG = 0.08;//0.18;
-float AI_LEAD_ROK = 0.1;//0.24;
-
-//ai's patience in hunting a target, the better the pilot the longer they hunting
-float AI_PTNCE_ACE = 40;
-float AI_PTNCE_VET = 30;
-float AI_PTNCE_REG = 20;
-float AI_PTNCE_ROK = 10;
-
-//
-float AI_RANGE_S = 1000;
-float AI_RANGE_M = 2400;
-float AI_RANGE_L = 4000;
-
-float AI_WALK_SPD = 0.035;//0.03;
-float AI_RUN_SPD = 0.045;//0.045;
-
-//AI order constants, refactored from func pointers
-float AI_ORDER_DEBUG = -1;
-float AI_ORDER_STAND = 0;
-float AI_ORDER_DEFEND = 1;
-float AI_ORDER_PATROL = 2;
-float AI_ORDER_ATTACK = 3;
-
 .float ai_first_order;
 .float ai_current_order;
 
@@ -116,8 +63,6 @@ float AI_ORDER_ATTACK = 3;
 //.goalentity should always be where the AI *MOVES* to
 //.target should always be the thing the AI *SHOOTS* at and aims at
 void() ai_control;
-
-//new
 
 .void() ai_prev_state;
 .void() ai_next_state;
@@ -147,10 +92,48 @@ float() ai_run_backward;
 float() ai_move_charge_left;
 float() ai_move_charge_right;
 
-//ai orders - these things sit atop all other ai directives
-void() ai_order_attack;
-void() ai_order_defend;
-void() ai_order_test;
+/*AI SPECIFIC ENT VARS*/
+.entity node;         //the node that the ai wants to move to
+//.entity goalentity  //builtin, used by walkmove and movetogoal
+//.entity enemy       //builtin, use by walkmove and movetogoal
+//.entity target      //builtin but - is the holder for the enemy
+/*AI STATE FUNCTIONS========================*/
+void(void() next_state) ai_state_control={
+  if(next_state != self.ai_next_state){
+     self.ai_prev_state = self.ai_next_state;
+     self.ai_next_state = next_state;     
+  }
+};
+//PATROL STATES
+void() ai_patrol_startWithNode; 
+void() ai_patrol_findNode;
+void() ai_patrol_gotoNode;
+void() ai_patrol_atNode;
+//DEFEND STATES
+void() ai_defend_findNode;
+void() ai_defend_gotoNode;
+void() ai_defend_atNode;
+//ASSAULT STATES
+void() ai_assault_findNode;
+void() ai_assault_gotoNode;
+void() ai_assault_atNode;
+//MISC STATES
+void() ai_misc_unstuck;
+void() ai_misc_stand;
+//WANDER STATES
+void() ai_wander_findNode;
+void() ai_wander_gotoNode;
+void() ai_wander_atNode;
+//COMBAT STATES
+void() ai_combat_findTarget;
+void() ai_combat_huntTarget;
+void() ai_combat_adjustPosition;
+/*==========================================*/
+
+/*AI CORE FUNCTIONS=========================*/
+entity() ai_core_findNode;
+
+/*==========================================*/
 
 //subs are in-between states for orders
 void() ai_core_resetto_order;

@@ -57,7 +57,7 @@ void() ai_mech={
   self.stat_lck_stt = LOCK_NONE;
   self.w_clipsize = ((0 - self.p_damage) *-1) + 1; //use this for the movement frame counter (I love co-opting existing variables :( ) 
   self.w_isready = time; //and this guy too
-  
+  self.delay = time;
   self.ideal_yaw = self.angles * '0 1 0';
 		
   data_iniMech(self.vec_size, self.nextVecChoice);
@@ -85,6 +85,7 @@ void() ai_mech={
   mod = ai_pilot_rating_range();
   self.ai_rte_rng = mod;
   self.stat_rdr_mode = TRUE;
+  self.ai_next_state = SUB_Null;
   self.th_die = ai_mech_die;
   self.th_missile = ai_mech_attack;
   self.ai_unit_update = ai_mech_update;
@@ -99,21 +100,22 @@ void() ai_mech={
   
   //set first order based on self.state_1
   if(self.state_1 == AI_ORDER_ATTACK){
-    self.ai_first_order = AI_ORDER_ATTACK;
+    //self.ai_first_order = AI_ORDER_ATTACK;
   }
   else if(self.state_1 == AI_ORDER_DEFEND){
-    self.ai_first_order = AI_ORDER_DEFEND;
+    //self.ai_first_order = AI_ORDER_DEFEND;
   }
   else if(self.state_1 == AI_ORDER_PATROL){
-    self.ai_first_order = AI_ORDER_PATROL;
-    self.ai_next_state = ai_find_patrol_node;
+    ai_state_control(ai_patrol_startWithNode);
+    //self.ai_first_order = AI_ORDER_PATROL;
+    //self.ai_next_state = ai_find_patrol_node;
   }
   else if(self.state_1 == AI_ORDER_STAND){
-    self.ai_first_order = AI_ORDER_STAND;
-    self.ai_next_state = ai_sweep_stand;
+    //self.ai_first_order = AI_ORDER_STAND;
+    //self.ai_next_state = ai_sweep_stand;
   }
   else if(self.state_1 == AI_ORDER_DEBUG){
-    self.ai_first_order = AI_ORDER_DEBUG;
+    //self.ai_first_order = AI_ORDER_DEBUG;
   }
   else{
     self.ai_first_order = AI_ORDER_STAND;
@@ -131,5 +133,5 @@ void() ai_mech={
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = -1;
   self.think = ai_control;
-  self.nextthink = time + 7; //power up timer
+  self.nextthink = time + 1; //power up timer 7
 };

@@ -48,7 +48,6 @@ triggers_h.qc
 //==========================
 dp/subs.qc
 //DATA FILES=================
-  
   //miscellaneous
   mech/dat/msc/map_deplypoint.qc
   mech/dat/msc/map_navpoint.qc
@@ -103,6 +102,14 @@ dp/subs.qc
 
 //impl files
   //ai
+  mech/ai/ai_state_patrol.qc
+  mech/ai/ai_state_defend.qc
+  mech/ai/ai_state_assault.qc
+  mech/ai/ai_state_misc.qc
+  mech/ai/ai_state_wander.qc
+  mech/ai/ai_state_combat.qc
+  mech/ai/ai_core_funcs.qc
+  
   mech/ai/ai_orders.qc
   mech/ai/ai_subs.qc
   mech/ai/m_ai_test.qc

@@ -171,3 +171,62 @@ float TRG_P_CLASS = 115;
 float STAT_TRG_IFAC = 116;
 
 float STAT_LVL_RES = 79;
+
+
+//============================
+//     AI STATS      
+//============================
+float AI_PATROL_DIST = 50;  //how close to get to node before counting as 'close'
+//how well does the AI handle weapon convergence
+float AI_CNV_ACE = 10;
+float AI_CNV_VET = 15;
+float AI_CNV_REG = 20;
+float AI_CNV_ROK = 25;
+
+//how does range affect the AI's accuracy
+float AI_RNG_ACE = 1;
+float AI_RNG_VET = 1.15;
+float AI_RNG_REG = 1.25;
+float AI_RNG_ROK = 1.5;
+
+//Adjust Rotation Rate
+//self.yaw_speed = rotation rate + (rotation rate * AI_ROT_X);
+float AI_ROT_ACE = 0.7;
+float AI_ROT_VET = 0.6;
+float AI_ROT_REG = 0.4;
+float AI_ROT_ROK = 0.25;
+
+//armor based on difficulty
+//hp = hp * AI_ARMOR
+float AI_ARMOR_EASY = 0.3;
+float AI_ARMOR_MEDM = 0.4;
+float AI_ARMOR_HARD = 0.6;
+float AI_ARMOR_NIGHT = 0.75;
+
+//ai_leading ratings, how well an ai tracks a slippery targt
+float AI_LEAD_ACE = 0.04;
+float AI_LEAD_VET = 0.06;
+float AI_LEAD_REG = 0.08;
+float AI_LEAD_ROK = 0.1;
+
+//ai's patience in hunting a target, the better the pilot the longer they hunting
+float AI_PTNCE_ACE = 40;
+float AI_PTNCE_VET = 30;
+float AI_PTNCE_REG = 20;
+float AI_PTNCE_ROK = 10;
+
+//common engage ranges
+float AI_RANGE_S = 1000;
+float AI_RANGE_M = 2400;
+float AI_RANGE_L = 4000;
+
+//AI movement speed ratio 
+float AI_WALK_SPD = 0.035;
+float AI_RUN_SPD = 0.045;
+
+//AI order constants, refactored from func pointers
+float AI_ORDER_DEBUG = -1;
+float AI_ORDER_STAND = 0;
+float AI_ORDER_DEFEND = 1;
+float AI_ORDER_PATROL = 2;
+float AI_ORDER_ATTACK = 3;
