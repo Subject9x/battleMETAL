@@ -6,8 +6,8 @@ Overview: quick and dirty data retrieval
 trying to not use entities as data collections cause its playing havoc with other functionality
 */
 
-string data_WeaponNames[18];
-string data_WeaponIcons[18];
+string data_WeaponNames[19];
+string data_WeaponIcons[19];
 //Store per-frame unit data in a buffer array, use the retrieval api to load the buffers
 //yes I know, these are terrible data structs to mimic classes
 /*

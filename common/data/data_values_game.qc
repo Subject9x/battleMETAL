@@ -172,11 +172,24 @@ float STAT_TRG_IFAC = 116;
 
 float STAT_LVL_RES = 79;
 
-
 //============================
 //     AI STATS      
 //============================
-float AI_PATROL_DIST = 50;  //how close to get to node before counting as 'close'
+//STATE VALUES
+float AI_PATROL_DIST      = 100;  //how close to get to node before counting as 'close'
+float AI_DEFEND_DIST_MIN  = 200;
+float AI_DEFEND_DIST      = 1000;
+
+//QUIRKS - combat
+float AI_QUIRK_SNIPER = 1;
+float AI_QUIRK_BRAWL  = 2;
+float AI_QUIRK_SKIRM  = 4;
+float AI_QUIRK_FLANK  = 8;
+float AI_QUIRK_STALK  = 16;
+//QUIRKS - personality
+float AI_QUIRK_AGGRO  = 32;
+float AI_QUIRK_RESCU  = 64;
+
 //how well does the AI handle weapon convergence
 float AI_CNV_ACE = 10;
 float AI_CNV_VET = 15;
@@ -198,10 +211,10 @@ float AI_ROT_ROK = 0.25;
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
-float AI_ARMOR_EASY = 0.3;
-float AI_ARMOR_MEDM = 0.4;
-float AI_ARMOR_HARD = 0.6;
-float AI_ARMOR_NIGHT = 0.75;
+float AI_ARMOR_EASY = 0.2;
+float AI_ARMOR_MEDM = 0.3;
+float AI_ARMOR_HARD = 0.5;
+float AI_ARMOR_NIGHT = 0.6;
 
 //ai_leading ratings, how well an ai tracks a slippery targt
 float AI_LEAD_ACE = 0.04;

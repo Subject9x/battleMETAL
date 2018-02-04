@@ -237,7 +237,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
           
           if(canSee){  
             entAngle = anglemod(input_angles_y + ang_y);
-            entAngleRadian = entAngle * 3.14 / 180;
+            entAngleRadian = entAngle * PI / 180;
 
             hudorg_x = radCenter_x - (cos(entAngleRadian) * (siz_x/2 * radDist));
             hudorg_y = radCenter_y - (sin(entAngleRadian) * (siz_y/2 * radDist));

@@ -92,12 +92,22 @@ float() ai_run_backward;
 float() ai_move_charge_left;
 float() ai_move_charge_right;
 
-/*AI SPECIFIC ENT VARS*/
-.entity node;         //the node that the ai wants to move to
+/*
+  AI SPECIFIC ENT VARS======================
+*/
+//the code uses enemy/goalentity together as a buffer for where the 
+//  AI will move to, node and trigger_field are the 'saved state'
+//  for nodes and enemies respectively.
 //.entity goalentity  //builtin, used by walkmove and movetogoal
 //.entity enemy       //builtin, use by walkmove and movetogoal
-//.entity target      //builtin but - is the holder for the enemy
-/*AI STATE FUNCTIONS========================*/
+//.entity trigger_field //builtin but - is the holder for the actual enemy
+.entity node;         //the node that the ai wants to move to
+.float ai_quirks;      //tracks the behavorial quirks of the ai
+/*==========================================*/
+
+/*
+  AI STATE FUNCTIONS========================
+*/
 void(void() next_state) ai_state_control={
   if(next_state != self.ai_next_state){
      self.ai_prev_state = self.ai_next_state;
@@ -110,6 +120,7 @@ void() ai_patrol_findNode;
 void() ai_patrol_gotoNode;
 void() ai_patrol_atNode;
 //DEFEND STATES
+void() ai_defend_startWithNode;
 void() ai_defend_findNode;
 void() ai_defend_gotoNode;
 void() ai_defend_atNode;
@@ -119,7 +130,8 @@ void() ai_assault_gotoNode;
 void() ai_assault_atNode;
 //MISC STATES
 void() ai_misc_unstuck;
-void() ai_misc_stand;
+void() ai_misc_stand;  
+void() ai_misc_stand_debug;
 //WANDER STATES
 void() ai_wander_findNode;
 void() ai_wander_gotoNode;
@@ -128,11 +140,22 @@ void() ai_wander_atNode;
 void() ai_combat_findTarget;
 void() ai_combat_huntTarget;
 void() ai_combat_adjustPosition;
+void() ai_combat_endFight;
 /*==========================================*/
 
 /*AI CORE FUNCTIONS=========================*/
 entity() ai_core_findNode;
-
+//NODE NOODLES
+entity(entity pNode) ai_findNode_searchGroup;
+//COMBAT
+float(entity targ) ai_target_canSee;
+float(entity targ) ai_target_inForwardArc;
+float(entity t) ai_target_radarPing;
+float(entity t) ai_target_isValid;
+float(entity t) ai_target_validType;
+entity() ai_target_visualTarget;
+entity() ai_target_radarTarget; 
+void() ai_target_clearBuffers;
 /*==========================================*/
 
 //subs are in-between states for orders
@@ -163,7 +186,6 @@ entity() ai_core_findfriendly;
 
 entity() ai_core_opticaltarget;
 entity() ai_core_radartarget;
-
 
 float() ai_pilot_rating_converg;
 float() ai_pilot_rating_range;

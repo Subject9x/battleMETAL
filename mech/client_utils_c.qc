@@ -45,11 +45,11 @@ float(entity ent, float changed) send_mech={
     local float hpt;
     hpt = 1;
     wep = self.w_slot;
-    while(wep){
+    while(hpt <= self.hardpoint_cnt){
       WriteByte( MSG_ENTITY, wep.data_idx);
       WriteByte( MSG_ENTITY, (wep.rl_cur / wep.rl_max)*100);
-      hpt = hpt +1;
       wep = wep.w_slot;
+      hpt = hpt +1;
     }
   }
 

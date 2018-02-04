@@ -9,6 +9,17 @@ Overview: ai state implementation
 //============================
 //   ASSAULT STATES          
 //============================
-void() ai_assault_findNode={};
-void() ai_assault_gotoNode={};
-void() ai_assault_atNode={};
+void() ai_assault_findNode={
+
+};
+
+
+void() ai_assault_gotoNode={
+
+};
+
+
+void() ai_assault_atNode={
+
+
+};

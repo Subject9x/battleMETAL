@@ -100,22 +100,17 @@ void() ai_mech={
   
   //set first order based on self.state_1
   if(self.state_1 == AI_ORDER_ATTACK){
-    //self.ai_first_order = AI_ORDER_ATTACK;
   }
   else if(self.state_1 == AI_ORDER_DEFEND){
-    //self.ai_first_order = AI_ORDER_DEFEND;
+     ai_state_control(ai_defend_startWithNode);
   }
   else if(self.state_1 == AI_ORDER_PATROL){
     ai_state_control(ai_patrol_startWithNode);
-    //self.ai_first_order = AI_ORDER_PATROL;
-    //self.ai_next_state = ai_find_patrol_node;
   }
   else if(self.state_1 == AI_ORDER_STAND){
-    //self.ai_first_order = AI_ORDER_STAND;
-    //self.ai_next_state = ai_sweep_stand;
   }
   else if(self.state_1 == AI_ORDER_DEBUG){
-    //self.ai_first_order = AI_ORDER_DEBUG;
+    
   }
   else{
     self.ai_first_order = AI_ORDER_STAND;

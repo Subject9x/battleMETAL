@@ -9,6 +9,112 @@ Overview: ai state implementation
 //============================
 //   DEFEND STATES          
 //============================
-void() ai_defend_findNode={};
-void() ai_defend_gotoNode={};
-void() ai_defend_atNode={};
+/*
+  Defense nodes, to cover a large area (say a base) should be a series
+  of nodes that either can see each other, or be seen by a centeral node.
+  Give all nodes in the set of Defense nodes a .group id so that the
+  AI can query all of them. 
+*/
+void() ai_defend_startWithNode={
+  local entity e;
+  e = find(world, targetname, self.target);
+  self.ai_prev_state = ai_defend_startWithNode;
+  if(e){
+    if(e.isActive == TRUE){
+      if(e.i_faction == self.i_faction){
+        self.node = ai_findNode_searchGroup(e);
+        self.enemy = self.node;
+        self.goalentity = self.node;
+        ai_state_control(ai_defend_gotoNode);
+        return;
+      }
+    }
+  }
+  ai_state_control(ai_misc_stand); 
+};
+
+void() ai_defend_findNode={
+  //find a patrol node, usually assigned by spawning in
+  //IF NODE
+    // TRUE -> ai_patrol_gotoNode
+    // FALSE -> ai_misc_stand
+  if(self.node != world){
+    if(self.node .isActive == TRUE){
+      if(self.node .i_faction == self.i_faction){
+        self.node = ai_findNode_searchGroup(self.node);
+        self.enemy = self.node;
+        self.goalentity = self.node;
+        ai_state_control(ai_defend_gotoNode);
+        return;
+      }
+    }
+  }
+  if(self.target){
+    ai_state_control(ai_defend_startWithNode);
+    return;
+  }
+};
+
+/*
+  very similar to patrol node goto
+  difference is, bot should run, and ignore enemies unless
+  they're too close to thing to guard
+*/
+void() ai_defend_gotoNode={
+  if(!self.stat_rdr_mode){
+    self.stat_rdr_mode = TRUE;
+  }
+  if(self.stat_rdr_mode){
+    if(self.trigger_field == world){
+      local entity contact;
+      contact = ai_target_radarTarget();
+      if(contact){
+        self.trigger_field = contact;
+        //self.enemy = contact;
+        //self.goalentity = contact;
+        //cons_logAString("CONTACT!", "found a baddy");
+        //TODO switch to combat
+        return;
+      }
+    }
+  }
+  if(self.node != world){
+    if(vlen(self.node.origin - self.origin) <= AI_DEFEND_DIST_MIN){
+      ai_state_control(ai_defend_atNode);
+      ai_move_controller(ai_move_stand, 1);
+      return;
+    }
+    ai_state_control(ai_defend_gotoNode);
+    ai_move_controller(ai_move_run_goal, 1);
+    return;
+  }
+  ai_state_control(ai_misc_stand);
+  ai_move_controller(ai_move_stand, 1);
+  return;
+};
+
+void() ai_defend_atNode={
+  //similiar to standing but slightly different,
+  //should only switch to combat if enemy is within a 
+  //certain range of the defense point.
+  if(!self.stat_rdr_mode){
+    self.stat_rdr_mode = TRUE;
+  }
+  if(self.stat_rdr_mode){
+    if(self.trigger_field == world){
+      local entity contact;
+      contact = ai_target_radarTarget();
+      if(contact){
+        self.trigger_field = contact;
+        //self.enemy = contact;
+        //self.goalentity = contact;
+        //cons_logAString("CONTACT!", "found a baddy");
+        //TODO switch to combat
+        return;
+      }
+    }
+  }
+  ai_state_control(ai_defend_atNode);
+  ai_move_controller(ai_move_stand, 0.05);
+  return;
+};

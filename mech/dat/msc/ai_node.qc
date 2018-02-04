@@ -6,6 +6,7 @@ Overview: ai node used by the AI system
 */
 
 /*QUAKED ai_node (.1 .2 .9) (-20 -20 -20) (20 20 20)
+group = the group name for a set of nodes
 isActive = AI can use this? (mmm might not be workable atm)
   0 = FALSE
   1 = TRUE

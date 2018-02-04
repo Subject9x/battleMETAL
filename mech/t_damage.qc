@@ -60,7 +60,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if((trg.flags & FL_MONSTER)){
-    if(trg.state_1 != AI_ORDER_DEBUG){
+    if(trg.ai_next_state == ai_misc_stand_debug){
       if(trg.i_faction != attacker.i_faction){
         anger_monster(trg, attacker);
       }
@@ -682,7 +682,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 				if (self.enemy.classname == "player")
 					self.oldenemy = self.enemy;
 				self.enemy = attacker;
-				self.ai_next_state = ai_hunt_target;
+				//self.ai_next_state = ai_hunt_target;
         //q_FoundTarget ();
 			}
 		}
