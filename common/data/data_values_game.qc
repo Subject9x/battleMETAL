@@ -54,6 +54,7 @@ vector  RADAR_ACTIVE_ARC_PLAYER = '0 256 0';
 //============================
 //     SHARED STATS         
 //============================
+.float radar_range;
 .float hardpoint_cnt;
 .float currentWeaponGroup;
 .float stat_plr_camx;
@@ -181,14 +182,16 @@ float AI_DEFEND_DIST_MIN  = 200;
 float AI_DEFEND_DIST      = 1000;
 
 //QUIRKS - combat
-float AI_QUIRK_SNIPER = 1;
-float AI_QUIRK_BRAWL  = 2;
-float AI_QUIRK_SKIRM  = 4;
-float AI_QUIRK_FLANK  = 8;
-float AI_QUIRK_STALK  = 16;
+float AI_STYLE_SNIPER = 1;
+float AI_STYLE_BRAWL  = 2;
+float AI_STYLE_SKIRM  = 3;
+float AI_STYLE_FLANK  = 4;
+float AI_STYLE_STALK  = 5;
+
 //QUIRKS - personality
-float AI_QUIRK_AGGRO  = 32;
-float AI_QUIRK_RESCU  = 64;
+float AI_TYPE_AGGRO  = 1;
+float AI_TYPE_RESCU  = 2;
+float AI_TYPE_COWRD  = 3;
 
 //how well does the AI handle weapon convergence
 float AI_CNV_ACE = 10;

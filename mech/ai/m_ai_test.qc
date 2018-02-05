@@ -7,20 +7,31 @@
 
 
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
-nextVecChoice = match to mech data id
-vec_size = weight class for mech data
-i_faction = which faction
-ai_leading = how bad does the ai suck at aiming? 0.0 is ACE, 0.2 is pretty bad
-state_1 = initial order
-  0 = Attack the .target
+"nextVecChoice" : number, match to mech data id
+"vec_size" : number, weight class for mech data
+"i_faction" : bitflags for faction which faction
+"state_1" : number, initial order
+  0 = stand at the .target
   1 = defend the .target
   2 = patrol the .target
-  3 = stand at the .target
-p_damage = AI pilot rating, will affect accuracy
+  3 = attack the .target
+"p_damage" : number,AI pilot rating, will affect accuracy
   0 = ACE 
   1 = VETERAN
   2 = REGULAR
   3 = ROOKIE
+"count1" : AI's combat style
+  1 = sniper
+  2 = brawler
+  3 = skirmisher
+  4 = flanker
+  5 = stalker
+"count2" : AI's personality
+  1 = aggressive
+  2 = rescues friendlies
+  3 = coward
+"next_wepn1" : float, data_idx for weapon slot
+    this goes to next_wepn9
 */
 void() ai_mech={
   //DEBUG

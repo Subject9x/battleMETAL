@@ -180,7 +180,6 @@ float(entity targ) ai_target_visible;
 float() ai_core_foundtarget; //ai has found a target, update state accordingly
 float() ai_core_targetstate; //checks to see if target ent is still a valid ent to be a target
 float() ai_target_facingideal;
-float(vector chk, vector node) ai_core_nodelos;
 void() ai_core_calcranges;
 entity() ai_core_findfriendly;
 

@@ -48,9 +48,9 @@ entity() ai_findNode_knowPatrol={
 //   COMBAT SHENANIGANS
 //============================
 /*
-        ai_target_visible
-determins if an entity can be seen by caller
--ported from classic qc
+  ai_target_visible
+    determins if an entity can be seen by caller
+    -ported from classic qc
 */
 float(entity targ) ai_target_canSee={
   traceline(self.origin, targ.origin, TRUE, self);

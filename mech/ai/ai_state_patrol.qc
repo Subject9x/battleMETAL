@@ -106,6 +106,13 @@ void() ai_patrol_gotoNode={
   return;
 };
 
+/*
+  AI has reached the min distance to its desired patrol node entity,
+  if the ai has a delay value, it waits at the node for that length
+  of time before moving onto the next node (if there is one). As
+  usual, the AI makes a radar sweep at the top of this function to
+  detect enemies early and switch states to combat.
+*/
 void() ai_patrol_atNode={
   //make a sweep for targets
     // TRUE -> ai_combat_findTarget
@@ -123,11 +130,18 @@ void() ai_patrol_atNode={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        self.trigger_field = contact;
         //self.enemy = contact;
         //self.goalentity = contact;
-        cons_logAString("CONTACT!", "found a baddy");
-        //TODO switch to combat
+        //cons_logAString("CONTACT!", "found a baddy");
+        self.trigger_field = contact;
+        self.enemy = self.trigger_field;
+        self.goalentity = self.trigger_field;
+        if(ai_target_canSee(self.trigger_field)){
+          ai_state_control(ai_combat_adjustPosition);
+          return;
+        }
+        self.delay = time + 40; //TODO - patience mod
+        ai_state_control(ai_combat_huntTarget);
         return;
       }
     }
@@ -162,6 +176,5 @@ void() ai_patrol_atNode={
   }
   ai_state_control(ai_patrol_atNode);
   ai_move_controller(ai_move_stand, 0.5);
-  
   return;
 };

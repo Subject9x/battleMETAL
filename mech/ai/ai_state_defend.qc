@@ -11,7 +11,7 @@ Overview: ai state implementation
 //============================
 /*
   Defense nodes, to cover a large area (say a base) should be a series
-  of nodes that either can see each other, or be seen by a centeral node.
+  of nodes that either can see each other, or be seen by a central node.
   Give all nodes in the set of Defense nodes a .group id so that the
   AI can query all of them. 
 */
@@ -69,11 +69,18 @@ void() ai_defend_gotoNode={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        self.trigger_field = contact;
         //self.enemy = contact;
         //self.goalentity = contact;
         //cons_logAString("CONTACT!", "found a baddy");
-        //TODO switch to combat
+        self.trigger_field = contact;
+        self.enemy = self.trigger_field;
+        self.goalentity = self.trigger_field;
+        if(ai_target_canSee(self.trigger_field)){
+          ai_state_control(ai_combat_adjustPosition);
+          return;
+        }
+        self.delay = time + 40; //TODO - patience mod
+        ai_state_control(ai_combat_huntTarget);
         return;
       }
     }
@@ -105,11 +112,18 @@ void() ai_defend_atNode={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        self.trigger_field = contact;
         //self.enemy = contact;
         //self.goalentity = contact;
         //cons_logAString("CONTACT!", "found a baddy");
-        //TODO switch to combat
+        self.trigger_field = contact;
+        self.enemy = self.trigger_field;
+        self.goalentity = self.trigger_field;
+        if(ai_target_canSee(self.trigger_field)){
+          ai_state_control(ai_combat_adjustPosition);
+          return;
+        }
+        self.delay = time + 40; //TODO - patience mod
+        ai_state_control(ai_combat_huntTarget);
         return;
       }
     }

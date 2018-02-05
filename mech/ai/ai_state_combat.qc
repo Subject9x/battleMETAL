@@ -71,7 +71,8 @@ void() ai_combat_huntTarget={
     else{
       //AI's patience is still holding, attempt to get 
       //optical view of target to engage
-      
+      ai_state_control(ai_combat_huntTarget);
+      ai_move_controller(ai_move_run_goal, 0.02);
       return;
     }
   }

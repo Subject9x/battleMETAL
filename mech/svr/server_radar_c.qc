@@ -24,7 +24,6 @@ vector() radar_MakeSweep={
             ht = 0;
             ht = ht + radar_calcPlayerDist(contact, ht);
             ht = ht + radar_calcEnemyDist(root, contact, ht);
-            ht = ht + radar_calcUnitValue(contact, ht) ;
             face = ai_target_infront(contact); //oh look an actual use for original qc code
             if(face){
               heat_front =  heat_front + ht;
@@ -80,17 +79,4 @@ float(entity root, entity contact, float current_total) radar_calcEnemyDist={
     sub = sub.chain;
   }
   return total;
-};
-
-float(entity contact, float current_total) radar_calcUnitValue={
-  local float val;
-  val = 0;
-  if(contact.data_type == DATA_MECH){
-    val = val + RADAR_ISMECH;
-  }
-  
-  if(contact.data_type == DATA_VEHC){
-    val = val + RADAR_ISCIV;
-  }
-  return val ;
 };

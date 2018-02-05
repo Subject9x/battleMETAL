@@ -250,15 +250,6 @@ float() ai_target_facingideal ={
 	return TRUE;
 };
 
-
-float(vector chk, vector node) ai_core_nodelos={
-  traceline(node, chk, TRUE, self);
-  if(trace_fraction == 1){
-    return TRUE;
-  }
-  return FALSE;
-};
-
 //gets convergence factor for pilot rating
 float() ai_pilot_rating_converg={
   if(self.p_damage == 0){
@@ -294,6 +285,12 @@ float() ai_pilot_rating_range={
   }
 };
 
+/*
+  Determines how good the AI is at turning their mech around.
+  Each mech has a set yaw speed, but this determines if the AI
+  is good enough to turn the mech at its set speed, rather than
+  having 'slower reflexes'.
+*/
 float() ai_pilot_yaw_mod={
   if(self.p_damage == 0){
     return AI_ROT_ACE;
@@ -312,7 +309,10 @@ float() ai_pilot_yaw_mod={
   }
 };
 
-//armor is modified based on skill level
+/*
+  Armor amounts for AI units is modified by the game's skill
+  rating. Easier skill modes mean each AI has less armor.
+*/
 float() ai_pilot_armor_mod={
   if(skill == 0){
     return AI_ARMOR_EASY;
@@ -331,6 +331,11 @@ float() ai_pilot_armor_mod={
   }
 }
 
+/*
+  This determines how good the AI is at 'leading' its target.
+  In practice, this is how badly the AI's aim should trail BEHIND
+  its target. Better AI's are better at this.
+*/
 float() ai_pilot_rating_leading={
   if(self.p_damage == 0){
     return AI_LEAD_ACE;
@@ -349,22 +354,47 @@ float() ai_pilot_rating_leading={
   }
 };
 
+/*
+  Determines the starting patience value of the AI.
+  Patience is primarily used for ai_combat_huntTarget,
+  where patience is initialized to: time + <this value>
+  better AI's can hold their patience a bit longer
+*/
 float() ai_pilot_rating_patience={
+  local float patience;
   if(self.p_damage == 0){
-    return AI_PTNCE_ACE;
+    patience = AI_PTNCE_ACE;
   }
   else if(self.p_damage == 1){
-    return AI_PTNCE_VET;
+    patience =  AI_PTNCE_VET;
   }
   else if(self.p_damage == 2){
-    return AI_PTNCE_REG;
+    patience =  AI_PTNCE_REG;
   }
   else if(self.p_damage == 3){
-    return AI_PTNCE_ROK;
+    patience =  AI_PTNCE_ROK;
   }
   else{
-    return AI_PTNCE_ROK;
+    patience =  AI_PTNCE_ROK;
   }
+  //skill mod
+  patience = patience + (patience * (skill / 15));
+  
+  //ai quirks mods
+  if(self.count1 == AI_STYLE_STALK){
+    //stalkers should have the longest patience
+    patience = patience + (patience * 0.5);
+  }
+  else if(self.count1 ==- AI_STYLE_FLANK){
+    //flankers get a minor bump in patience
+    patience = patience + (patience * 0.25);
+  }
+  //yes you can have an aggressive stalker, but it wont be great
+  //for long hunts
+  if(self.count2 == AI_TYPE_AGGRO){
+    patience = patience - (patience / 2);
+  }
+  return patience; 
 };
 
 void() ai_core_calcranges={
