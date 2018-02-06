@@ -184,7 +184,7 @@ float AI_DEFEND_DIST      = 1000;
 //QUIRKS - combat
 float AI_STYLE_SNIPER = 1;
 float AI_STYLE_BRAWL  = 2;
-float AI_STYLE_SKIRM  = 3;
+float AI_STYLE_SKIRM  = 3;  //this is 'default'
 float AI_STYLE_FLANK  = 4;
 float AI_STYLE_STALK  = 5;
 
@@ -192,6 +192,7 @@ float AI_STYLE_STALK  = 5;
 float AI_TYPE_AGGRO  = 1;
 float AI_TYPE_RESCU  = 2;
 float AI_TYPE_COWRD  = 3;
+float AI_TYPE_NORML  = 4;
 
 //how well does the AI handle weapon convergence
 float AI_CNV_ACE = 10;

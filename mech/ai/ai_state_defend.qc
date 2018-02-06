@@ -79,6 +79,7 @@ void() ai_defend_gotoNode={
           ai_state_control(ai_combat_adjustPosition);
           return;
         }
+        //TODO - only hunt target if target is still in defense radius
         self.delay = time + 40; //TODO - patience mod
         ai_state_control(ai_combat_huntTarget);
         return;
@@ -122,6 +123,7 @@ void() ai_defend_atNode={
           ai_state_control(ai_combat_adjustPosition);
           return;
         }
+        //TODO - only hunt target if target is still in defense radius
         self.delay = time + 40; //TODO - patience mod
         ai_state_control(ai_combat_huntTarget);
         return;

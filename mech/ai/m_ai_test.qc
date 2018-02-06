@@ -4,8 +4,6 @@
   Overview: super simple ai test
 */
 
-
-
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
 "nextVecChoice" : number, match to mech data id
 "vec_size" : number, weight class for mech data
@@ -20,16 +18,19 @@
   1 = VETERAN
   2 = REGULAR
   3 = ROOKIE
-"count1" : AI's combat style
-  1 = sniper
-  2 = brawler
-  3 = skirmisher
-  4 = flanker
-  5 = stalker
-"count2" : AI's personality
-  1 = aggressive
-  2 = rescues friendlies
-  3 = coward
+"ai_style" : AI's combat style
+  1 = sniper - tries to stay at long range
+  2 = brawler - always stays up close to target
+  3 = skirmisher - normal movement
+  4 = flanker - tries to get behind player
+  5 = stalker - extra patience when hunting targets
+  6 = random of 1-5
+"ai_type" : AI's personality
+  1 = aggressive - will always run around, stay in fight
+  2 = rescue - tries to save friendlies by pulling aggro
+  3 = coward - will run away or to friends easily
+  4 = normal - acts normal
+  5 = random of 1-4
 "next_wepn1" : float, data_idx for weapon slot
     this goes to next_wepn9
 */

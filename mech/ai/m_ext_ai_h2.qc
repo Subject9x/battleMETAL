@@ -103,6 +103,8 @@ float() ai_move_charge_right;
 //.entity trigger_field //builtin but - is the holder for the actual enemy
 .entity node;         //the node that the ai wants to move to
 .float ai_quirks;      //tracks the behavorial quirks of the ai
+.float ai_type;
+.float ai_style;
 /*==========================================*/
 
 /*
@@ -141,6 +143,11 @@ void() ai_combat_findTarget;
 void() ai_combat_huntTarget;
 void() ai_combat_adjustPosition;
 void() ai_combat_endFight;
+//COMBAT SUB STATES 
+void() ai_combat_adjustSniper;
+void() ai_combat_adjustBrawler;
+void() ai_combat_adjustSkirmish;
+void() ai_combat_adjustFlanker;
 /*==========================================*/
 
 /*AI CORE FUNCTIONS=========================*/
@@ -150,6 +157,7 @@ entity(entity pNode) ai_findNode_searchGroup;
 //COMBAT
 float(entity targ) ai_target_canSee;
 float(entity targ) ai_target_inForwardArc;
+float(entity t) ai_target_visualPing;
 float(entity t) ai_target_radarPing;
 float(entity t) ai_target_isValid;
 float(entity t) ai_target_validType;

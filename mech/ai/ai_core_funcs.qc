@@ -39,11 +39,6 @@ entity(entity pNode) ai_findNode_searchGroup={
   return rNode;
 };
 
-entity() ai_findNode_knowPatrol={
-  
-
-};
-
 //============================
 //   COMBAT SHENANIGANS
 //============================
@@ -106,11 +101,19 @@ traceline formula like how player radar works
 */
 float(entity t) ai_target_visualPing={
   local float delt;
+  local vector torg;
+  torg = t.origin;
+  torg_z = torg_z + t.maxs_z + 4;
   delt = 16; //adjust trace origin
   makevectors(vectoangles(self.origin - t.origin));
-  traceline( self.e_cam.origin+ (v_forward * delt), t.origin, TRUE, self);
-  if(trace_fraction == 1){
-    return TRUE;
+  traceline( self.e_cam.origin + (v_forward * delt), torg , TRUE, self);
+  te_beam_laser( self.e_cam.origin + (v_forward * delt), torg );
+  cons_logAFloat("trace_fraction", trace_fraction);
+  if(trace_fraction >= 0.85){
+    if(trace_ent == self.trigger_field){
+      return TRUE;
+    }
+    return FALSE;
   }
   return FALSE;
 };
@@ -252,4 +255,22 @@ void() ai_target_clearBuffers={
   self.oldenemy = world;
   self.trigger_field = world;
   self.goalentity = world;
+};
+
+/*
+  Changes an AI's combat ai_style
+*/
+void(float new_style) ai_update_combatStyle={
+  if(self.ai_style != new_style){
+    self.ai_style = new_style;
+  }
+};
+
+/*
+  Changes an AI's personality ai_type
+*/
+void(float new_type) ai_update_combatType={
+  if(self.ai_type != new_type){
+    self.ai_type = new_type;
+  }
 };
