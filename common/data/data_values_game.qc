@@ -179,7 +179,7 @@ float STAT_LVL_RES = 79;
 //STATE VALUES
 float AI_PATROL_DIST      = 100;  //how close to get to node before counting as 'close'
 float AI_DEFEND_DIST_MIN  = 200;
-float AI_DEFEND_DIST      = 1000;
+float AI_DEFEND_DIST      = 2000;
 
 //QUIRKS - combat
 float AI_STYLE_SNIPER = 1;

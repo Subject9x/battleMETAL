@@ -153,6 +153,9 @@ void() ai_combat_adjustFlanker;
 /*AI CORE FUNCTIONS=========================*/
 entity() ai_core_findNode;
 //NODE NOODLES
+entity(entity aggro, string groupId) ai_node_defenseGroup_setCourse;
+entity(string grpId) ai_node_searchGroup_ignoreActive;
+entity(string grpId) ai_node_searchGroup_checkActive;
 entity(entity pNode) ai_findNode_searchGroup;
 //COMBAT
 float(entity targ) ai_target_canSee;
@@ -164,17 +167,14 @@ float(entity t) ai_target_validType;
 entity() ai_target_visualTarget;
 entity() ai_target_radarTarget; 
 void() ai_target_clearBuffers;
+//UPDATE
+void(entity t, string grpId) ai_update_entityGroup;
+void(float new_type) ai_update_combatType;
+void(float new_style) ai_update_combatStyle;
+void(entity t, string newTarg) ai_update_entityTarget;
+//UTIL
+void(float state) ai_util_firstOrder_nonStatic;
 /*==========================================*/
-
-//subs are in-between states for orders
-void() ai_core_resetto_order;
-void() ai_find_patrol_node;
-void() ai_goto_patrol_node;
-void() ai_at_patrol_node;
-void() ai_sweep_stand;
-void() ai_hunt_target;
-entity() ai_core_radar_sweep;
-void() ai_sub_fight;
 
 //utility functions
 entity(entity node) ai_find_patrol_node_recurse;

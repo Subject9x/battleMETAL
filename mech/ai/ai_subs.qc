@@ -33,18 +33,18 @@ attack
 void() ai_find_patrol_node={
   if(self.goalentity == world){
     local entity n;
-    n = ai_find_patrol_node_recurse(self);
+    //n = ai_find_patrol_node_recurse(self);
     if(n != world){
       self.goalentity = n;
-      self.ai_next_state = ai_goto_patrol_node;
+      //self.ai_next_state = ai_goto_patrol_node;
     }
     else {
       self.ai_first_order = AI_ORDER_STAND;
-      self.ai_next_state = ai_sweep_stand;
+      //self.ai_next_state = ai_sweep_stand;
     }
   }
   else{
-    self.ai_next_state = ai_sweep_stand;
+    //self.ai_next_state = ai_sweep_stand;
   }
 };
 
@@ -54,20 +54,20 @@ void() ai_find_patrol_node={
 void() ai_goto_patrol_node={
   local float dist;
   local entity e;
-  e = ai_core_radar_sweep();
+  //e = ai_core_radar_sweep();
   if(e != world){
     self.enemy = e;
     self.oldgoal = self.goalentity;
-    self.ai_next_state = ai_hunt_target;
-    self.ai_prev_state = ai_goto_patrol_node;
+//self.ai_next_state = ai_hunt_target;
+    //self.ai_prev_state = ai_goto_patrol_node;
   }
   dist = vlen(self.goalentity.origin - self.origin);
   if(dist >= AI_RANGE_L){
     ai_move_controller(ai_move_run_goal, self.w_clipsize);
   }
   else if(dist <= 48){
-    self.ai_next_state = ai_at_patrol_node;
-    self.delay = time + self.goalentity.pausetime; 
+    //self.ai_next_state = ai_at_patrol_node;
+    //self.delay = time + self.goalentity.pausetime; 
     ai_move_controller(ai_move_stand, 1);
   }
   else{
@@ -80,27 +80,27 @@ void() ai_goto_patrol_node={
 */
 void() ai_at_patrol_node={
   local entity e;
-  e = ai_core_radar_sweep();
+  //e = ai_core_radar_sweep();
   if(e != world){
     self.enemy = e;
     self.oldgoal = self.goalentity;
-    self.ai_next_state = ai_hunt_target;
+    //self.ai_next_state = ai_hunt_target;
   }
   ai_move_controller(ai_move_stand, 1);
   if(time >= self.delay){
     if((self.goalentity.state_1) && self.goalentity.state_1 != self.state_1){
       self.state_1 = self.goalentity.state_1;
-      ai_core_resetto_order();
+     ///ai_core_resetto_order();
     }
     else{
       local entity n;
       n = ai_find_patrol_node_recurse(self.goalentity);
       if((n != world) && n != self.goalentity){
         self.goalentity = n;
-        self.ai_next_state = ai_goto_patrol_node;
+       // self.ai_next_state = ai_goto_patrol_node;
       }
       else{
-       self.ai_next_state = ai_sweep_stand; 
+      // self.ai_next_state = ai_sweep_stand; 
       }
     }
   }
@@ -109,11 +109,11 @@ void() ai_at_patrol_node={
 void() ai_hunt_target={
   if(ai_core_targetstate()){
     if(ai_target_visible(self.enemy)){
-      self.ai_next_state = ai_sub_fight;
+      //self.ai_next_state = ai_sub_fight;
     }
     else{
       if(ai_target_insights(self.enemy)){
-        self.ai_next_state = ai_sub_fight;
+       // self.ai_next_state = ai_sub_fight;
         ai_move_controller(ai_move_charge_left, 2);
       }
       else{
@@ -129,7 +129,7 @@ void() ai_hunt_target={
           self.enemy = world;
           self.goalentity = world;  
           self.stat_rdr_mode = FALSE;
-          ai_core_resetto_order();
+         //ai_core_resetto_order();
           ai_move_controller(ai_move_stand, 0.5);
         }
         else{
@@ -142,14 +142,14 @@ void() ai_hunt_target={
         self.enemy = world;
         self.goalentity = world;
         self.stat_rdr_mode = FALSE;
-        ai_core_resetto_order();
+       // ai_core_resetto_order();
       }
     }
   }
   else{
     self.goalentity = world;
     self.enemy = world;
-    ai_core_resetto_order();
+    //ai_core_resetto_order();
     self.stat_rdr_mode = FALSE;
   }
 };
@@ -161,11 +161,11 @@ void() ai_sweep_stand={
   }
   else {
     local entity f;
-    f = ai_core_radar_sweep();
+    //f = ai_core_radar_sweep();
     if(f != world){
       self.enemy = f;
       self.goalentity = world;
-      self.ai_next_state = ai_hunt_target;
+      //self.ai_next_state = ai_hunt_target;
     }
     else{
       self.ai_next_state = ai_sweep_stand;
@@ -193,12 +193,12 @@ void() ai_sub_panic={
     if(d <= 10){
       self.goalentity = world;
       self.enemy = world;
-      self.ai_next_state = ai_sweep_stand;
+      //self.ai_next_state = ai_sweep_stand;
     }
   }
   else{
     local entity e;
-    e = ai_core_radar_sweep();
+  //  e = ai_core_radar_sweep();
     if(e != world){
       local float ang;
       ang = vectoyaw(e.origin - self.origin);
@@ -309,7 +309,7 @@ void() ai_sub_fight={
   else{
     self.goalentity = world;
     self.enemy = world;
-    ai_core_resetto_order();
+    //ai_core_resetto_order();
     self.stat_rdr_mode = FALSE;
   }
 };

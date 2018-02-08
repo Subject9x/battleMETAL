@@ -9,6 +9,85 @@ Overview: ai core implementation
 //============================
 
 /*
+  given a target ent, find the closest defense node
+  to that target, then plot a course to that node
+*/
+entity(entity aggro, string groupId) ai_node_defenseGroup_setCourse={
+  local entity dNode, rNode;
+  local float tDist, fDist;
+  tDist = vlen(aggro.origin - self.origin);
+  dNode = findchain(group, groupId);
+  while(dNode){
+    if(dNode.data_type == DATA_NODE){
+      if(dNode.i_faction == self.i_faction){
+        if(dNode.isActive == TRUE){
+          local float nDist;
+          nDist = vlen(aggro.origin - dNode.origin);
+          if(nDist < tDist){
+            tDist = nDist;
+            rNode = dNode;
+          }
+        }
+      }
+    }
+    dNode = dNode.chain;
+  }
+  return rNode;
+};
+
+/*
+  finds a node based solely on the AI's groupId,
+  regardless of vision, and ignores if the node
+  isActive or not
+*/
+entity(string groupId) ai_node_searchGroup_ignoreActive={
+  local entity tNode, rNode;
+  local float pDist;
+  pDist = self.radar_range;
+  tNode = findchain(group, groupId);
+  while(tNode){
+    if(tNode.data_type == DATA_NODE){
+      if(tNode.i_faction == self.i_faction){
+        local float eDist;
+        eDist = vlen(tNode.origin - self.origin);
+        if(eDist < pDist){
+          rNode = tNode;
+        }
+      }
+    }
+    tNode = tNode.chain;
+  }
+  return rNode;
+};
+
+/*
+  finds a node based solely on the AI's groupId,
+  regardless of vision, but node must be Active
+*/
+entity(string groupId) ai_node_searchGroup_checkActive={
+  local entity tNode, rNode;
+  local float pDist;
+  pDist = self.radar_range;
+  tNode = findchain(group, groupId);
+  while(tNode){
+    if(tNode.data_type == DATA_NODE){
+      if(tNode.i_faction == self.i_faction){
+        if(tNode.isActive == TRUE){
+          local float eDist;
+          eDist = vlen(tNode.origin - self.origin);
+          if(eDist < pDist){
+            rNode = tNode;
+          }
+        }
+      }
+    }
+    tNode = tNode.chain;
+  }
+  return rNode;
+};
+
+
+/*
   loop search through the AI's patrol route to find
   the closest visible node, barring that, just return the
   closest node.
@@ -24,13 +103,17 @@ entity(entity pNode) ai_findNode_searchGroup={
     return pNode;
   }
   while(tNode){
-    if(tNode.isActive == TRUE){
-      traceline(self.origin + '0 0 24', tNode.origin, TRUE, self);
-      if(trace_fraction == 1){
-        local float eDist;
-        eDist = vlen(tNode.origin - self.origin);
-        if(eDist < pDist){
-          rNode = tNode;
+    if(tNode.data_type == DATA_NODE){
+      if(tNode.i_faction == self.i_faction){
+        if(tNode.isActive == TRUE){
+          traceline(self.origin + '0 0 24', tNode.origin, TRUE, self);
+          if(trace_fraction >= 0.9){
+            local float eDist;
+            eDist = vlen(tNode.origin - self.origin);
+            if(eDist < pDist){
+              rNode = tNode;
+            }
+          }
         }
       }
     }
@@ -49,7 +132,7 @@ entity(entity pNode) ai_findNode_searchGroup={
 */
 float(entity targ) ai_target_canSee={
   traceline(self.origin, targ.origin, TRUE, self);
-  if(trace_fraction == 1){
+  if(trace_fraction >= 0.85){
     return TRUE;
   }
   return FALSE;
@@ -107,8 +190,9 @@ float(entity t) ai_target_visualPing={
   delt = 16; //adjust trace origin
   makevectors(vectoangles(self.origin - t.origin));
   traceline( self.e_cam.origin + (v_forward * delt), torg , TRUE, self);
-  te_beam_laser( self.e_cam.origin + (v_forward * delt), torg );
-  cons_logAFloat("trace_fraction", trace_fraction);
+ 
+  te_beam_laser( self.e_cam.origin + (v_forward * delt), torg ); //DEBUG
+
   if(trace_fraction >= 0.85){
     if(trace_ent == self.trigger_field){
       return TRUE;
@@ -257,6 +341,10 @@ void() ai_target_clearBuffers={
   self.goalentity = world;
 };
 
+//============================
+//   UPDATE FUNCTIONS
+//============================
+
 /*
   Changes an AI's combat ai_style
 */
@@ -272,5 +360,70 @@ void(float new_style) ai_update_combatStyle={
 void(float new_type) ai_update_combatType={
   if(self.ai_type != new_type){
     self.ai_type = new_type;
+  }
+};
+
+/*
+  Change a target Ent's Group ID
+*/
+void(entity t, string groupId) ai_update_entityGroup={
+  if(t.group){
+    if(t.group != groupId){
+      t.group = groupId;
+    }
+  }
+};
+
+/*
+  Change an entity's current target
+*/
+void(entity t, string newTarg) ai_update_entityTarget={
+  local entity test;
+  //lets make sure this target even exists
+  test = find(world, targetname, newTarg);
+  if(test){
+    if(t.target){
+      if(t.target !=  newTarg){
+        t.target = newTarg;
+      }
+    }
+  }
+};
+
+//============================
+//      UTIL FUNCTIONS
+//============================
+/*
+  only call this guy for non-static AI units
+  (mechs and vecs), this converts the AI's
+  state_1 value into the corresponding initial AI state
+*/
+void(float state) ai_util_firstOrder_nonStatic={
+  if(self.state_1 == AI_ORDER_ATTACK){
+    
+  }
+  else if(self.state_1 == AI_ORDER_DEFEND){
+    if(self.target){
+      ai_state_control(ai_defend_startWithNode);
+    }
+    else{
+      ai_state_control(ai_defend_findNode);
+    }
+  }
+  else if(self.state_1 == AI_ORDER_PATROL){
+    if(self.target){
+      ai_state_control(ai_patrol_startWithNode);
+    }
+    else {
+      ai_state_control(ai_patrol_findNode);
+    }
+  }
+  else if(self.state_1 == AI_ORDER_STAND){
+    ai_state_control(ai_misc_stand);
+    ai_move_controller( ai_move_stand);
+  }
+  else {
+    ai_state_control(ai_misc_stand_debug);
+    ai_move_controller(ai_move_stand);
   }
 };

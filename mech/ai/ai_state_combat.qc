@@ -60,11 +60,13 @@ void() ai_combat_huntTarget={
     //AI lost patience, will try a new target
     if(time > self.delay){
       if(ai_target_isValid(self.oldenemy)){
+        cons_logAString("ai_combat_huntTarget->", "ai_combat_findTarget"); // DEBUG
         ai_state_control(ai_combat_findTarget);
         return;
       }
       else{
         //AI had no old target, so end fight
+        cons_logAString("ai_combat_huntTarget->", "ai_combat_endFight"); // DEBUG
         ai_target_clearBuffers();
         ai_state_control(ai_combat_endFight);
         return;
@@ -75,11 +77,13 @@ void() ai_combat_huntTarget={
       if(ai_target_visualPing(self.enemy)){
         self.delay = self.delay - time; //caching remaining patience
         ai_state_control(ai_combat_adjustPosition);
+        cons_logAString("ai_target_visualPing", "true"); // DEBUG
         return;
       }
       else{
         //AI's patience is still holding, attempt to get 
         //optical view of target to engage
+        cons_logAString("ai_combat_huntTarget->", "ai_combat_huntTarget"); // DEBUG
         ai_state_control(ai_combat_huntTarget);
         ai_move_controller(ai_move_run_goal, 0.02);
         return;
@@ -113,22 +117,22 @@ void() ai_combat_huntTarget={
   it executes a chosen sub state based on the AI's .style field
 */
 void() ai_combat_adjustPosition={
+  self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
   if(ai_target_visualPing(self.trigger_field)){
     if(self.ai_style == AI_STYLE_SNIPER){
       ai_combat_adjustSniper();
-      return;
     }
     else if(self.ai_style == AI_STYLE_BRAWL){
       ai_combat_adjustBrawler();
-      return;
     }
     else if(self.ai_style == AI_STYLE_SKIRM){
       ai_combat_adjustSkirmish();
-      return;
     }
     else if(self.ai_style == AI_STYLE_FLANK){
       ai_combat_adjustFlanker();
-      return;
+    }
+    if(ai_target_canSee(self.trigger_field)){
+      self.button0 = 1;
     }
   }
   else{

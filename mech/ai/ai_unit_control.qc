@@ -27,12 +27,17 @@ void() ai_control={
   if(self.ai_next_state){
     self.ai_next_state();
   }
-  if(self.th_missile){
-    self.th_missile();
+  
+  if(self.button0){
+    if(self.th_missile){
+      self.th_missile();
+    }
   }
+
   if(self.button0){
     self.button0 = 0;
   }
+  
   self.prev_pos = self.origin;
   if(self.m_fspeed > -1){
     self.ai_hasmoved = self.ai_next_move();
@@ -66,40 +71,29 @@ void() ai_turret_control={
     self.ai_unit_update();
   }
   
-  if(self.ai_first_order != AI_ORDER_DEBUG){
-    if(self.enemy == world){
-      local entity f;  
-      f = ai_core_radar_sweep();
-      if(f){
-        self.enemy = f;
+  if(self.ai_next_state != ai_misc_stand_debug){
+    if(ai_target_isValid(self.trigger_field)){
+      if(ai_target_canSee(self.trigger_field)){
+        self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
+        ChangeYaw();
+        changepitch(self);
+        if(ai_target_facingideal()){
+          local float fire;
+          fire = (crandom() * (5 - self.p_damage)+ 1);
+          if(fire <= self.p_damage){
+            self.button0 = 1;
+          }        
+        }
       }
     }
     else{
-      if(ai_core_targetstate()){
-        if(ai_target_visible(self.enemy)){
-          if(!self.stat_rdr_mode){
-            self.stat_rdr_mode = TRUE;
-          }
-          self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-          ChangeYaw();
-          changepitch(self);
-          if(ai_target_facingideal()){
-            local float fire;
-            fire = (crandom() * (5 - self.p_damage)+ 1);
-            if(fire <= self.p_damage){
-              self.button0 = 1;
-            }        
-          }
-        }
+      if(self.oldenemy){
+        self.trigger_field = self.oldenemy;
+        self.enemy = self.trigger_field;
+        self.oldenemy = world;
       }
       else{
-        if(self.oldenemy){
-          self.enemy = self.oldenemy;
-          self.oldenemy = world;
-        }
-        else{
-          self.enemy = world;
-        }
+        self.enemy = world;
       }
     }
   }

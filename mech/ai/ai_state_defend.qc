@@ -38,6 +38,7 @@ void() ai_defend_findNode={
   //IF NODE
     // TRUE -> ai_patrol_gotoNode
     // FALSE -> ai_misc_stand
+  local entity dNode;
   if(self.node != world){
     if(self.node .isActive == TRUE){
       if(self.node .i_faction == self.i_faction){
@@ -49,8 +50,12 @@ void() ai_defend_findNode={
       }
     }
   }
-  if(self.target){
-    ai_state_control(ai_defend_startWithNode);
+  dNode = ai_node_searchGroup_checkActive (self.group);
+  if(dNode){
+    self.node = dNode;
+    self.enemy = self.node;
+    self.goalentity = self.node;
+    ai_state_control(ai_defend_gotoNode);
     return;
   }
 };
@@ -66,22 +71,34 @@ void() ai_defend_gotoNode={
   }
   if(self.stat_rdr_mode){
     if(self.trigger_field == world){
-      local entity contact;
+      local entity contact, dNode;
       contact = ai_target_radarTarget();
       if(contact){
         //self.enemy = contact;
         //self.goalentity = contact;
         //cons_logAString("CONTACT!", "found a baddy");
         self.trigger_field = contact;
-        self.enemy = self.trigger_field;
-        self.goalentity = self.trigger_field;
         if(ai_target_canSee(self.trigger_field)){
           ai_state_control(ai_combat_adjustPosition);
           return;
         }
+        //Defender can't see target, try the defense grid
+        //see if there's a node close
+        dNode =  ai_node_defenseGroup_setCourse(contact, self.group);
+        if(dNode){
+          self.node = dNode;
+          self.enemy = self.node;
+          self.goalentity = self.node;
+          ai_state_control(ai_defend_gotoNode);
+          ai_move_controller(ai_move_run_goal, 1);
+          return;
+        }
         //TODO - only hunt target if target is still in defense radius
+        self.enemy = self.trigger_field;
+        self.goalentity = self.trigger_field;
         self.delay = time + 40; //TODO - patience mod
         ai_state_control(ai_combat_huntTarget);
+        ai_move_controller(ai_move_run_goal, 1);
         return;
       }
     }
@@ -105,6 +122,16 @@ void() ai_defend_atNode={
   //similiar to standing but slightly different,
   //should only switch to combat if enemy is within a 
   //certain range of the defense point.
+  if(ai_target_isValid(self.trigger_field)){
+    self.enemy = self.trigger_field;
+    self.goalentity = self.trigger_field;
+    if(ai_target_canSee(self.trigger_field)){
+      ai_state_control(ai_combat_adjustPosition);
+      return;
+    }
+    ai_state_control(ai_combat_huntTarget);
+    return;
+  }
   if(!self.stat_rdr_mode){
     self.stat_rdr_mode = TRUE;
   }
@@ -124,7 +151,7 @@ void() ai_defend_atNode={
           return;
         }
         //TODO - only hunt target if target is still in defense radius
-        self.delay = time + 40; //TODO - patience mod
+        self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
         ai_state_control(ai_combat_huntTarget);
         return;
       }

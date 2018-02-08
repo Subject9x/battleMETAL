@@ -24,7 +24,7 @@ void() ai_order_defend={
   if(t){
     self.enemy = t;
     self.ai_prev_state = ai_order_defend;
-    self.ai_next_state = ai_sub_fight;
+    //self.ai_next_state = ai_sub_fight;
     return;
   }
   local float d;

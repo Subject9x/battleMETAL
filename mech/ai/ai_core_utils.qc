@@ -6,31 +6,6 @@ this one will focus on move to move
 */
 
 
-void() ai_core_resetto_order={
-  if(self.state_1 == AI_ORDER_ATTACK){
-    self.ai_first_order = AI_ORDER_ATTACK;
-  }
-  else if(self.state_1 == AI_ORDER_DEFEND){
-    self.ai_first_order = AI_ORDER_DEFEND;
-  }
-  else if(self.state_1 == AI_ORDER_PATROL){
-    self.ai_first_order = AI_ORDER_PATROL;
-    self.ai_next_state = ai_find_patrol_node;
-  }
-  else if(self.state_1 == AI_ORDER_STAND){
-    self.ai_first_order = AI_ORDER_STAND;
-    self.ai_next_state = ai_sweep_stand;
-  }
-  else if(self.state_1 == AI_ORDER_DEBUG){
-    self.ai_first_order = AI_ORDER_DEBUG;
-  }
-  else{
-    self.ai_first_order = AI_ORDER_STAND;
-    self.ai_next_state = ai_sweep_stand;
-  }
-};
-
-
 /*
   checks to see if bot has any weapons left,
   RETURN TRUE - bot has guns left
