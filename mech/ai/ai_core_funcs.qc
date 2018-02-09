@@ -9,6 +9,32 @@ Overview: ai core implementation
 //============================
 
 /*
+  Finds if the designated target (aggro) is within the AI_DEFEND_DIST
+  of any defense nodes for group with groupId.
+*/
+float(entity aggro, string groupId) ai_node_defenseGroup_nodeToTarget={
+  local float tDist, valid;
+  local entity dNode;
+  valid = FALSE;
+  tDist = self.stat_trg_dist;
+  dNode = findchain(group, groupId);
+  while(dNode){
+    if(dNode.isActive){
+      local float nDist;
+      nDist = vlen(aggro.origin - dNode.origin);
+      if(nDist < tDist){
+        tDist = nDist;
+        if(tDist < AI_DEFEND_DIST){
+          valid = TRUE;
+        }
+      }
+    }
+    dNode = dNode.chain;
+  }
+  return valid;
+};
+
+/*
   given a target ent, find the closest defense node
   to that target, then plot a course to that node
 */
@@ -139,6 +165,19 @@ float(entity targ) ai_target_canSee={
 };
 
 /*
+  Identical to ai_target_canSee, except returns the thing
+  that's blocking the way, also make's sure the AI is looking
+  at the target.
+*/
+entity(entity targ) ai_target_checkBlock={
+  if(ai_target_inForwardArc(targ)){
+    traceline(self.e_cam.origin, targ.origin, FALSE, self);
+    return trace_ent;
+  }
+  return world; //really should have made a null ent, there, iD.
+};
+
+/*
   checks to see if target is in the AI's forward (90ish deg) arc
 */
 float(entity targ) ai_target_inForwardArc={
@@ -190,9 +229,7 @@ float(entity t) ai_target_visualPing={
   delt = 16; //adjust trace origin
   makevectors(vectoangles(self.origin - t.origin));
   traceline( self.e_cam.origin + (v_forward * delt), torg , TRUE, self);
- 
-  te_beam_laser( self.e_cam.origin + (v_forward * delt), torg ); //DEBUG
-
+  
   if(trace_fraction >= 0.85){
     if(trace_ent == self.trigger_field){
       return TRUE;
@@ -399,8 +436,15 @@ void(entity t, string newTarg) ai_update_entityTarget={
   state_1 value into the corresponding initial AI state
 */
 void(float state) ai_util_firstOrder_nonStatic={
+  
+  self.state_1 = state;
   if(self.state_1 == AI_ORDER_ATTACK){
-    
+    if(self.target){
+      ai_state_control(ai_assault_startWithNode);
+    }
+    else{
+      ai_state_control(ai_assault_findNode);
+    }
   }
   else if(self.state_1 == AI_ORDER_DEFEND){
     if(self.target){
@@ -425,5 +469,51 @@ void(float state) ai_util_firstOrder_nonStatic={
   else {
     ai_state_control(ai_misc_stand_debug);
     ai_move_controller(ai_move_stand);
+  }
+};
+
+/*
+  AI calls to any nearby friendly units
+  that are under 'defense' orders to save it
+*/
+void(entity aggro) ai_util_defense_callForHelp={
+  local float tDist, rDist, justOne;
+  local entity friend;
+  justOne = FALSE;
+  rDist = vlen(aggro.origin - self.origin);
+  friend = findchainfloat(i_faction, self.i_faction);
+  while(friend){
+    if( (friend.data_type == DATA_MECH) || (friend.data_type == DATA_VEHC)){
+      if(friend.state_1 == AI_ORDER_DEFEND){
+        local float fDist;
+        fDist = vlen(aggro.origin - friend.origin);
+        if(fDist < rDist){
+          rDist = fDist;
+          if(justOne == FALSE){
+            if(friend.trigger_field != world){
+              friend.oldenemy = friend.trigger_field;
+            }
+            friend.trigger_field = aggro;
+            friend.enemy = friend.trigger_field;
+            friend.goalentity = friend.trigger_field;
+            local entity this;
+            this = self;
+            self = friend;
+              if(self.trigger_field != world){
+                self.oldenemy = self.trigger_field;
+              }
+              self.trigger_field = aggro;
+              self.enemy = self.trigger_field;
+              self.goalentity = self.trigger_field;
+              //TODO - patience mod
+              self.delay = time + 20;
+              ai_state_control(ai_combat_huntTarget);
+            self = this;
+            justOne = TRUE;
+          }
+        }
+      }
+    }
+    friend = friend.chain;
   }
 };

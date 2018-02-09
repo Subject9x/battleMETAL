@@ -120,6 +120,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
     }
   }
+  else if(trg.data_type == DATA_BLD){
+    ai_util_defense_callForHelp(attacker);
+  }
   
   trg.health = trg.health - dmg_amt;
   

@@ -28,6 +28,68 @@ void() ai_node={
   self.touch = ai_node_touch;
 }
 
+/*QUAKED ai_node_patrol (.6 1 .4) (-20 -20 -20) (20 20 20)
+use this ai_node for patrols
+group = the group name for a set of nodes
+isActive = AI can use this? (mmm might not be workable atm)
+  0 = FALSE
+  1 = TRUE
+i_faction = only is if faction matching //not impl yet
+state_1 = impart new first order to an AI
+   0 = Attack the .target
+  1 = defend the .target
+  2 = patrol the .target
+  3 = stand at the .target
+*/
+void() ai_node_patrol={ai_node();};
+
+/*QUAKED ai_node_assault (1 1 0) (-20 -20 -20) (20 20 20)
+use this ai_node for assault zones
+group = the group name for a set of nodes
+isActive = AI can use this? (mmm might not be workable atm)
+  0 = FALSE
+  1 = TRUE
+i_faction = only is if faction matching //not impl yet
+state_1 = impart new first order to an AI
+   0 = Attack the .target
+  1 = defend the .target
+  2 = patrol the .target
+  3 = stand at the .target
+*/
+void() ai_node_assault={ai_node();};
+
+/*QUAKED ai_node_defend (0 .8 1) (-20 -20 -20) (20 20 20)
+use this ai_node for defense grids
+group = the group name for a set of nodes
+isActive = AI can use this? (mmm might not be workable atm)
+  0 = FALSE
+  1 = TRUE
+i_faction = only is if faction matching //not impl yet
+state_1 = impart new first order to an AI
+   0 = Attack the .target
+  1 = defend the .target
+  2 = patrol the .target
+  3 = stand at the .target
+*/
+void() ai_node_defend={ai_node();};
+
+/*QUAKED ai_node_wander (.8 0 .8) (-20 -20 -20) (20 20 20)
+use this ai_node for wander sets
+group = the group name for a set of nodes
+isActive = AI can use this? (mmm might not be workable atm)
+  0 = FALSE
+  1 = TRUE
+i_faction = only is if faction matching //not impl yet
+state_1 = impart new first order to an AI
+   0 = Attack the .target
+  1 = defend the .target
+  2 = patrol the .target
+  3 = stand at the .target
+*/
+void() ai_node_wander={ai_node();};
+
+
+
 void() ai_node_touch={
 
 };

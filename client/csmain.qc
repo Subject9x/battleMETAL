@@ -562,7 +562,7 @@ float(entity ent, float channel, string soundname, float volume, float attenuati
   if(soundname == "sound/misc/menu1.wav"){
     return FALSE;
   }
-  else if(self.player_state >= PLAYER_POWERUP_BEGIN){
+  else if((self.player_state < PLAYER_POWERUP_BEGIN) && (self.data_type == DATA_MECH)){
     return TRUE;
   }
 	return FALSE;
@@ -721,6 +721,7 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_z = ReadCoord();
     
     self.origin_phys = self.origin;
+    
     setorigin(self, self.origin);
     
     self.angles_x = ReadAngle();
@@ -792,6 +793,7 @@ void(float isnew) CSQC_Ent_Update =
         wepItr = wepItr + 1;
       }
     }
+    
     self.stat_trg_vid = ReadByte();
     if(self.stat_trg_vid != 255 && self.stat_trg_vid > 0){
       self.target_datatype = ReadByte();

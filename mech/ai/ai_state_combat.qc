@@ -56,6 +56,14 @@ void() ai_combat_findTarget={
   calculated by the ai_core function of similiar name
 */
 void() ai_combat_huntTarget={
+  //defend stat override
+  if(self.stat_trg_dist > AI_DEFEND_DIST){
+    ai_state_control(ai_combat_endFight);
+    if(self.delay > time){
+      self.delay = time;
+    }
+    return;
+  }
   if(ai_target_isValid(self.enemy)){
     //AI lost patience, will try a new target
     if(time > self.delay){
@@ -118,6 +126,12 @@ void() ai_combat_huntTarget={
 */
 void() ai_combat_adjustPosition={
   self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
+  if(self.state_1 == AI_ORDER_DEFEND){
+    if(self.stat_trg_dist > AI_DEFEND_DIST){
+      ai_state_control(ai_combat_endFight);
+      return;
+    }
+  }
   if(ai_target_visualPing(self.trigger_field)){
     if(self.ai_style == AI_STYLE_SNIPER){
       ai_combat_adjustSniper();
@@ -136,6 +150,17 @@ void() ai_combat_adjustPosition={
     }
   }
   else{
+    //maybe the AI has an old enemy that's visible?
+    if(self.oldenemy != world){
+      if(ai_target_visualPing(self.oldenemy)){
+        self.trigger_field = self.oldenemy;
+        self.oldenemy = world;
+        self.enemy = self.trigger_field;
+        self.goalentity = self.trigger_field;
+        ai_state_control(ai_combat_adjustPosition);
+        return;
+      }
+    }
     self.delay = time + (ai_pilot_rating_patience() / 2); //TODO - patience mod
     ai_state_control(ai_combat_huntTarget);
     return;
@@ -148,23 +173,40 @@ void() ai_combat_adjustPosition={
   hopefully you didnt make it a RESCU sniper...
 */
 void() ai_combat_adjustSniper={
-  local float tDist, isTooClose, isTooFar;
+  local float tDist, isTooClose, isTooFar, isBlockedFriend, isBlockedEnemy;
+  local entity eBlocker;
   tDist = vlen(self.enemy.origin - self.origin);
   isTooClose = FALSE;
   isTooFar = FALSE;
+  isBlockedFriend = FALSE;
+  isBlockedEnemy = FALSE;
   if(tDist <= AI_RANGE_M){
     isTooClose = TRUE;
   }
   if(tDist > AI_RANGE_L){
     isTooFar = TRUE;
   }
+  eBlocker = ai_target_checkBlock(self.trigger_field);
+  if(eBlocker != world){
+    if(eBlocker.i_faction == self.i_faction){
+      isBlockedFriend = TRUE;
+    }
+    else{
+      isBlockedEnemy = TRUE;
+    }
+  }
+  
   if(self.ai_type == AI_TYPE_NORML){
     if(isTooClose){
-      ai_move_controller(ai_move_backward, 0.5);
+      ai_move_controller(ai_move_backward, 0.75);
       return;
     }
     if(isTooFar){
-      ai_move_controller(ai_move_forward, 0.5);
+      ai_move_controller(ai_move_forward, 0.75);
+      return;
+    }
+    if(isBlockedFriend){
+      ai_move_controller(ai_move_walkmove_strafeleft, 1);
       return;
     }
     ai_move_controller(ai_move_stand, 1);
@@ -256,7 +298,10 @@ void() ai_combat_adjustFlanker={
   AI should have stashed its last node in self.node before fighting...
 */
 void() ai_combat_endFight={
-  
+  //clear out the delay var so that it can be reused by nodes
+  if(time < self.delay){
+    self.delay = time;
+  }
   if(self.state_1 == AI_ORDER_ATTACK){
     ai_state_control(ai_assault_findNode);
     return;

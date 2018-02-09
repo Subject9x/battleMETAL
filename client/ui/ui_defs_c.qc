@@ -100,7 +100,7 @@ void() mechAcceptButtonListener={
       cl_setweapongroup(4, PLAYER_HELPER.plr_nex_grp4);
       cl_setweapongroup(5, PLAYER_HELPER.plr_nex_grp5);
       cl_spawnmech();
-      localcmd("cd play \n");
+      //localcmd(strcat("cd play ", ftos(world.sounds), " \n"));
       MENU_ACTIVE = FALSE;
       setcursormode(0);
     }

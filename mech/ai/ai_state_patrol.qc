@@ -69,19 +69,14 @@ void() ai_patrol_gotoNode={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        //self.enemy = contact;
-        //self.goalentity = contact;
-        //cons_logAString("CONTACT!", "found a baddy");
         self.trigger_field = contact;
         self.enemy = self.trigger_field;
         self.goalentity = self.trigger_field;
         if(ai_target_visualPing(self.trigger_field)){
           ai_state_control(ai_combat_adjustPosition);
           ai_move_controller(ai_move_stand, 0.05);
-          cons_logAString("->", "ai_combat_adjustPosition");
           return;
         }
-        cons_logAString("->", "ai_combat_huntTarget");
         self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
         ai_state_control(ai_combat_huntTarget);
         return;
@@ -125,6 +120,15 @@ void() ai_patrol_atNode={
     //if new node
       //TRUE -> assign new node, ai_patrol_gotoNode
    //flip on RADAR, and run a sweep
+
+  //if node converts the state of the AI, run it here
+  if(self.node.state_1){
+    if(self.node.target){
+      ai_update_entityTarget(self, self.node.target);
+    }
+    ai_util_firstOrder_nonStatic(self.node.state_1);
+    return;
+  }
   if(!self.stat_rdr_mode){
     self.stat_rdr_mode = TRUE;
   }
@@ -133,9 +137,6 @@ void() ai_patrol_atNode={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        //self.enemy = contact;
-        //self.goalentity = contact;
-        //cons_logAString("CONTACT!", "found a baddy");
         self.trigger_field = contact;
         self.enemy = self.trigger_field;
         self.goalentity = self.trigger_field;
@@ -149,11 +150,8 @@ void() ai_patrol_atNode={
       }
     }
   }
-  
-  //cons_logAFloat("self.node.delay", self.node.delay); //DEBUG
   if(time > self.delay){
     if(self.node.target){
-      //cons_logAString("self.node.target", self.node.target); //DEBUG
       local entity e;
       e = find(world, targetname, self.node.target);
       if(e){
