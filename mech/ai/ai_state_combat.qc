@@ -32,10 +32,7 @@ void() ai_combat_findTarget={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        self.trigger_field = contact;
-        self.enemy = contact;
-        self.goalentity = contact;
-        //cons_logAString("CONTACT!", "found a baddy");
+        ai_update_switchToTarget(contact);
         //TODO switch to combat
         ai_state_control(ai_combat_huntTarget);
         return;
@@ -64,34 +61,29 @@ void() ai_combat_huntTarget={
     }
     return;
   }
-  if(ai_target_isValid(self.enemy)){
+  if(ai_target_isValid(self.trigger_field)){
     //AI lost patience, will try a new target
     if(time > self.delay){
       if(ai_target_isValid(self.oldenemy)){
-        cons_logAString("ai_combat_huntTarget->", "ai_combat_findTarget"); // DEBUG
         ai_state_control(ai_combat_findTarget);
         return;
       }
       else{
         //AI had no old target, so end fight
-        cons_logAString("ai_combat_huntTarget->", "ai_combat_endFight"); // DEBUG
-        ai_target_clearBuffers();
         ai_state_control(ai_combat_endFight);
         return;
       }
     }
     else{
       //check to see if AI can see target
-      if(ai_target_visualPing(self.enemy)){
+      if(ai_target_canSee(self.enemy)){
         self.delay = self.delay - time; //caching remaining patience
         ai_state_control(ai_combat_adjustPosition);
-        cons_logAString("ai_target_visualPing", "true"); // DEBUG
         return;
       }
       else{
         //AI's patience is still holding, attempt to get 
         //optical view of target to engage
-        cons_logAString("ai_combat_huntTarget->", "ai_combat_huntTarget"); // DEBUG
         ai_state_control(ai_combat_huntTarget);
         ai_move_controller(ai_move_run_goal, 0.02);
         return;
@@ -105,14 +97,12 @@ void() ai_combat_huntTarget={
         return;
       }
       else{
-        ai_target_clearBuffers();
         ai_state_control(ai_combat_endFight);
         return;
       }
     }
     //AI didnt have an old enemy to go after
     //so clear the targets, and end the fight phase
-    ai_target_clearBuffers();
     ai_state_control(ai_combat_endFight);
     return;
   }
@@ -152,13 +142,15 @@ void() ai_combat_adjustPosition={
   else{
     //maybe the AI has an old enemy that's visible?
     if(self.oldenemy != world){
-      if(ai_target_visualPing(self.oldenemy)){
-        self.trigger_field = self.oldenemy;
-        self.oldenemy = world;
-        self.enemy = self.trigger_field;
-        self.goalentity = self.trigger_field;
-        ai_state_control(ai_combat_adjustPosition);
-        return;
+      if(ai_target_isValid(self.oldenemy)){
+        if(ai_target_visualPing(self.oldenemy)){
+          self.trigger_field = self.oldenemy;
+          self.oldenemy = world;
+          self.enemy = self.trigger_field;
+          self.goalentity = self.trigger_field;
+          ai_state_control(ai_combat_adjustPosition);
+          return;
+        }
       }
     }
     self.delay = time + (ai_pilot_rating_patience() / 2); //TODO - patience mod
@@ -298,6 +290,7 @@ void() ai_combat_adjustFlanker={
   AI should have stashed its last node in self.node before fighting...
 */
 void() ai_combat_endFight={
+  ai_target_clearBuffers();
   //clear out the delay var so that it can be reused by nodes
   if(time < self.delay){
     self.delay = time;

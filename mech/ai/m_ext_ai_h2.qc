@@ -158,6 +158,7 @@ entity(string grpId) ai_node_searchGroup_ignoreActive;
 entity(string grpId) ai_node_searchGroup_checkActive;
 entity(entity pNode) ai_findNode_searchGroup;
 //COMBAT
+float(entity targ, float faction) ai_combat_locksOnTarget;
 float(entity targ) ai_target_canSee;
 float(entity targ) ai_target_inForwardArc;
 float(entity t) ai_target_visualPing;
@@ -173,6 +174,8 @@ void(entity t, string grpId) ai_update_entityGroup;
 void(float new_type) ai_update_combatType;
 void(float new_style) ai_update_combatStyle;
 void(entity t, string newTarg) ai_update_entityTarget;
+void(entity newTarget) ai_update_switchToTarget;
+void(entity newNode) ai_update_switchToNode;
 //UTIL
 void(float state) ai_util_firstOrder_nonStatic;
 void(entity aggro) ai_util_defense_callForHelp;

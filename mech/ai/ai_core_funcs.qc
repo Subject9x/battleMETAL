@@ -102,6 +102,7 @@ entity(string groupId) ai_node_searchGroup_checkActive={
           local float eDist;
           eDist = vlen(tNode.origin - self.origin);
           if(eDist < pDist){
+            pDist = eDist;
             rNode = tNode;
           }
         }
@@ -124,15 +125,15 @@ entity(entity pNode) ai_findNode_searchGroup={
   local float tDist, pDist;
   pDist = vlen(pNode.origin - self.origin);
   tNode = findchain(group, pNode.group);
-  traceline(self.origin + '0 0 24', pNode.origin, TRUE, self);
-  if(trace_fraction == 1){
+  traceline(self.e_cam.origin, pNode.origin, FALSE, self);
+  if(trace_fraction >= 0.85){
     return pNode;
   }
   while(tNode){
     if(tNode.data_type == DATA_NODE){
       if(tNode.i_faction == self.i_faction){
         if(tNode.isActive == TRUE){
-          traceline(self.origin + '0 0 24', tNode.origin, TRUE, self);
+          traceline(self.e_cam.origin, tNode.origin, TRUE, self);
           if(trace_fraction >= 0.9){
             local float eDist;
             eDist = vlen(tNode.origin - self.origin);
@@ -151,6 +152,23 @@ entity(entity pNode) ai_findNode_searchGroup={
 //============================
 //   COMBAT SHENANIGANS
 //============================
+/*
+  How many friendlies have this entity targeted?
+*/
+float(entity targ, float faction) ai_combat_locksOnTarget={
+  local entity f;
+  local float cnt;
+  cnt = 0;
+  f = findchainfloat(i_faction, faction);
+  while(f){
+    if( (f.trigger_field == targ) ){
+      cnt = cnt + 1;
+    }
+    f = f.chain;
+  }
+  return cnt;
+};
+
 /*
   ai_target_visible
     determins if an entity can be seen by caller
@@ -370,17 +388,37 @@ entity() ai_target_radarTarget={
 
 /*
   Reset AI's entity buffers
+  only the enemy and goalentity
 */ 
 void() ai_target_clearBuffers={
   self.enemy = world;
-  self.oldenemy = world;
-  self.trigger_field = world;
   self.goalentity = world;
 };
 
 //============================
 //   UPDATE FUNCTIONS
 //============================
+/*
+  Updates an AI .goalentity / .enemy to its target (.trigger_field)
+*/
+void(entity newTarget) ai_update_switchToTarget={
+  //maybe AI has room for old target 
+  if(self.oldenemy == world){
+    self.oldenemy = self.trigger_field;
+  }
+  self.trigger_field = newTarget;
+  self.enemy = self.trigger_field;
+  self.goalentity = self.trigger_field;
+};
+
+/*
+  Updates an AI .goalentity / .enemy to a new node' (.node)
+*/
+void(entity newNode) ai_update_switchToNode={
+  self.node = newNode;
+  self.enemy = self.node;
+  self.goalentity = self.node;
+};
 
 /*
   Changes an AI's combat ai_style
