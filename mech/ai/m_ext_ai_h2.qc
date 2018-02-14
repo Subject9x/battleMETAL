@@ -169,6 +169,9 @@ entity() ai_target_visualTarget;
 entity() ai_target_radarTarget; 
 void() ai_target_clearBuffers;
 entity(entity targ) ai_target_checkBlock;
+float() ai_target_facingideal;
+float(entity targ) ai_target_isInFront;
+float(entity targ) ai_target_isFacingThis;
 //UPDATE
 void(entity t, string grpId) ai_update_entityGroup;
 void(float new_type) ai_update_combatType;
@@ -192,7 +195,7 @@ float(entity targ) ai_target_insights;
 float(entity targ) ai_target_visible;
 float() ai_core_foundtarget; //ai has found a target, update state accordingly
 float() ai_core_targetstate; //checks to see if target ent is still a valid ent to be a target
-float() ai_target_facingideal;
+
 void() ai_core_calcranges;
 entity() ai_core_findfriendly;
 

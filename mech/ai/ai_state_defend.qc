@@ -223,15 +223,19 @@ void() ai_defend_atNode={
     }
     local entity contact;
     contact = ai_target_radarTarget();
-    if(contact){
+    if(contact){ 
+      //cons_logAString("", "contact!"); //DEBUG
       //make sure contact is actually threatening the base
       if( ai_node_defenseGroup_nodeToTarget(contact, self.group) ){
+        //cons_logAString("ai_node_defenseGroup_nodeToTarget", "true"); //DEBUG
         //see if any other friendlies have logged this target
         local float friends;
         friends = ai_combat_locksOnTarget(contact, self.i_faction);
         if( friends <= 1 ){
+          //cons_logAString("friends<1", "true"); //DEBUG
           //valid LoS? engage
           if(ai_target_canSee(contact)){
+            //cons_logAString("ai_target_canSee", "true"); //DEBUG
             ai_update_switchToTarget(contact);
             ai_state_control(ai_combat_adjustPosition);
             return;
@@ -241,12 +245,14 @@ void() ai_defend_atNode={
             local entity eNode;
             eNode = ai_node_defenseGroup_setCourse(contact, self.group);
             if(eNode){
+              //cons_logAString("eNode", "true"); //DEBUG
               ai_update_switchToNode(eNode);
               self.trigger_field = contact;
               ai_state_control(ai_defend_gotoNode);
               return;
             }
             else{
+              //cons_logAString("eNode", "false"); //DEBUG
               //no node? darn attempt to hunt 
               self.delay = time + 20; //TODO patience
               ai_update_switchToTarget(contact);
@@ -258,6 +264,7 @@ void() ai_defend_atNode={
       }
     }
     else{
+      //cons_logAString("", "contact not valid"); //DEBUG
       //no contacts, see if node has marching orders
       if(self.node.target){
         local entity next;
@@ -271,7 +278,6 @@ void() ai_defend_atNode={
     }
   }
   
-  //CASE B
   //CASE B
   if( (self.node != world) && (self.trigger_field != world) ){  
     if(ai_target_isValid(self.trigger_field)){

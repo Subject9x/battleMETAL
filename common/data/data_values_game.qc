@@ -52,6 +52,11 @@ float WEAPON9 = 256;
 vector  RADAR_PASSIVE_ARC_PLAYER = '0 96 0';
 vector  RADAR_ACTIVE_ARC_PLAYER = '0 256 0';
 //============================
+//     COMBAT STATS
+//============================
+float SHIELD_DELAY = 5;
+float SHIELD_SOAK = 4;
+//============================
 //     SHARED STATS         
 //============================
 .float radar_range;
@@ -210,10 +215,10 @@ float AI_RNG_ROK = 1.5;
 
 //Adjust Rotation Rate
 //self.yaw_speed = rotation rate + (rotation rate * AI_ROT_X);
-float AI_ROT_ACE = 0.7;
-float AI_ROT_VET = 0.6;
-float AI_ROT_REG = 0.4;
-float AI_ROT_ROK = 0.25;
+float AI_ROT_ACE = 0.2; //0.7
+float AI_ROT_VET = 0.3; //0.6
+float AI_ROT_REG = 0.4; //0.4
+float AI_ROT_ROK = 0.5; //0.25
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR

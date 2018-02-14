@@ -37,16 +37,7 @@ float sv_gravity;
 .float gravity;
 //======================
 
-//DO NOT TOUCH THESE - bad things will happen if you mod these
-float P_OBS = 0;
-float P_MECH = 1;
-float P_VECH = 2;
-float P_BULD = 3;
-
 float GAME_M = 2;
-
-float SHIELD_DELAY = 5;
-float SHIELD_SOAK = 4;
 
 //mech piece classname constants
 string MECH_PIECE = "mech_piece";
@@ -63,6 +54,16 @@ string M_ARM_RIGHT = "arm_right";
 string V_CHASSIS = "v_chas";
 string V_TUR_MAIN = "v_tur_main";
 string V_TUR_AUX = "v_tur_aux";
+
+//direction values
+float DIR_N   = 0;
+float DIR_NE  = 1;
+float DIR_E   = 2;
+float DIR_SE  = 3;
+float DIR_S   = 4;
+float DIR_SW  = 5;
+float DIR_W   = 6;
+float DIR_NW  = 7;
 
 //class vars
 .float data_type;

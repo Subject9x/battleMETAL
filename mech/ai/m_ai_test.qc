@@ -26,11 +26,11 @@
   5 = stalker - extra patience when hunting targets
   6 = random of 1-5
 "ai_type" : AI's personality
+  0, or none = normal
   1 = aggressive - will always run around, stay in fight
   2 = rescue - tries to save friendlies by pulling aggro
   3 = coward - will run away or to friends easily
-  4 = normal - acts normal
-  5 = random of 1-4
+  4 = random of 1-4
 "next_wepn1" : float, data_idx for weapon slot
     this goes to next_wepn9
 */
@@ -86,7 +86,7 @@ void() ai_mech={
   if (!self.yaw_speed){
     local float m;
     m = ai_pilot_yaw_mod();
-    self.yaw_speed = self.m_rot_speed + (self.m_rot_speed * m);
+    self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * m);
   }
   mod = ai_pilot_rating_leading();
   self.ai_leading = mod;

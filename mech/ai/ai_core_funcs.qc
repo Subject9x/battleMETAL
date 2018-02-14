@@ -16,21 +16,20 @@ float(entity aggro, string groupId) ai_node_defenseGroup_nodeToTarget={
   local float tDist, valid;
   local entity dNode;
   valid = FALSE;
-  tDist = self.stat_trg_dist;
+  tDist =  vlen(aggro.origin - self.origin);
   dNode = findchain(group, groupId);
   while(dNode){
     if(dNode.isActive){
       local float nDist;
       nDist = vlen(aggro.origin - dNode.origin);
-      if(nDist < tDist){
+      if(nDist <= AI_RANGE_L){
         tDist = nDist;
-        if(tDist < AI_DEFEND_DIST){
-          valid = TRUE;
-        }
+        valid = TRUE;
       }
     }
     dNode = dNode.chain;
   }
+  //cons_logAFloat("valid", valid); //DEBUG
   return valid;
 };
 
@@ -112,7 +111,6 @@ entity(string groupId) ai_node_searchGroup_checkActive={
   }
   return rNode;
 };
-
 
 /*
   loop search through the AI's patrol route to find
@@ -393,6 +391,52 @@ entity() ai_target_radarTarget={
 void() ai_target_clearBuffers={
   self.enemy = world;
   self.goalentity = world;
+};
+
+/*
+  determines if AI's angle is in line with its ideal yaw
+  this is check before the ai makes an attack
+*/
+float() ai_target_facingideal={
+  local	float	delta;
+  delta = anglemod(self.angles_y - self.ideal_yaw);
+  //if (delta > 45 && delta < 315)
+  if (delta > 25 && delta < 335){
+    return FALSE;
+  }
+  return TRUE;
+};
+
+/*
+  checks to see if the target is in the forward
+  arc of this unit
+*/
+float(entity targ) ai_target_isInFront={
+  local vector v;
+  local float d;
+  makevectors(targ.angles);
+  v = normalize(self.origin - targ.origin);
+  d = v * v_forward;
+  if( d > 0.3){
+    return TRUE;
+  }
+  return FALSE;
+};
+
+/*
+  Short mod to ai_target_isInFront(),
+  switches perspective to a unit's target
+  to see if target is heading this way
+*/
+float(entity targ) ai_target_isFacingThis={
+  local float bool;
+  local entity this;
+  bool = FALSE;
+  this = self;
+    self = targ;
+    bool = ai_target_isInFront(self);
+  self = this;
+  return bool;
 };
 
 //============================

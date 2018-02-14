@@ -122,7 +122,7 @@ void() ai_combat_adjustPosition={
       return;
     }
   }
-  if(ai_target_visualPing(self.trigger_field)){
+  if(ai_target_canSee(self.trigger_field)){
     if(self.ai_style == AI_STYLE_SNIPER){
       ai_combat_adjustSniper();
     }
@@ -135,9 +135,8 @@ void() ai_combat_adjustPosition={
     else if(self.ai_style == AI_STYLE_FLANK){
       ai_combat_adjustFlanker();
     }
-    if(ai_target_canSee(self.trigger_field)){
-      self.button0 = 1;
-    }
+    //AI will make an attack on the next frame
+    self.button0 = 1;
   }
   else{
     //maybe the AI has an old enemy that's visible?
@@ -153,6 +152,7 @@ void() ai_combat_adjustPosition={
         }
       }
     }
+    //no LoS and no old enemy, attempt to hunt
     self.delay = time + (ai_pilot_rating_patience() / 2); //TODO - patience mod
     ai_state_control(ai_combat_huntTarget);
     return;
@@ -230,16 +230,141 @@ void() ai_combat_adjustSniper={
   They stay at close range, and hammer away at the target.
 */
 void() ai_combat_adjustBrawler={
-  if(self.ai_type == AI_TYPE_NORML){
-  
+  //tooClose = 50 game units
+  //tooFar = 1200 game units
+  //stubbing out with comments
+  local float tDist, isTooClose, isTooFar, isBlockedFriend, isBlockedEnemy, isTargetCharge;
+  local entity eBlocker;
+  tDist = vlen(self.enemy.origin - self.origin);
+  isTooClose = FALSE;
+  isTooFar = FALSE;
+  isBlockedFriend = FALSE;
+  isBlockedEnemy = FALSE;
+  if(tDist < (AI_RANGE_S / 5 )){
+    isTooClose = TRUE;
   }
-  else if(self.ai_type == AI_TYPE_AGGRO){
-  
+  if(tDist > AI_RANGE_S){
+    isTooFar = TRUE;
   }
-  else if(self.ai_type == AI_TYPE_RESCU){
+  eBlocker = ai_target_checkBlock(self.trigger_field);
+  if(eBlocker != world){
+    if(eBlocker.i_faction == self.i_faction){
+      isBlockedFriend = TRUE;
+    }
+    else{
+      isBlockedEnemy = TRUE;
+    }
+  }
+  if(self.ai_type == AI_TYPE_AGGRO){
+    /*
+      stay very close to target
+      strafe with target (keeps attention)
+      always be running
+    */
+    if(isBlockedEnemy){
+      if( ai_target_isInFront(eBlocker) ){
+        //aggro enemies blast through everything O.o
+        self.button0 = 1;
+      }
+      else{
+        //attempt to rush around obstacle
+        ai_state_control(ai_combat_huntTarget);
+        ai_move_controller(ai_move_run_goal, 1);
+        self.delay = time + 10;
+        return;
+      }
+    }
+    if(isBlockedFriend){
+      //attempt to rush around obstacle
+      ai_state_control(ai_combat_huntTarget);
+      ai_move_controller(ai_move_run_goal, 1);
+      self.delay = time + 10;
+      return;
+    }
+    if(isTooFar){
+      if(ai_target_isInFront(self.trigger_field)){
+        //take a swipe
+        self.button0 = 1; 
+        ai_move_controller(ai_run_forward, 2);
+      }
+      else{
+        if(crandom() == TRUE){
+          ai_move_controller(ai_move_runmove_slideleft, 0.5);
+        }
+        else{
+          ai_move_controller(ai_move_runmove_slideright, 0.5);
+        }
+      }
+      ai_state_control(ai_combat_adjustPosition);
+      return;
+    }
     
   }
+  else if(self.ai_type == AI_TYPE_RESCU){
+    /*
+      if not near designated friendly
+        move to friendly
+      else
+        switch to enemy,
+        execute normal brawling
+    */
+  }
   else if(self.ai_type == AI_TYPE_COWRD){
+    /*
+      take pulse on health, hp, and shields
+      
+    */
+  }
+  else{
+    /*
+      normal brawling:
+        enemy coming at bot -> move back and slide left/right
+        enemy moving away -> charge and slide left/right
+        enemy strafe -> counter strafe
+        random movement -> 
+    */
+    
+    if(isBlockedEnemy){
+      //brawlers gonna brawl
+      if(eBlocker.data_type != DATA_BLD){
+        ai_update_switchToTarget(eBlocker);
+        ai_state_control(ai_combat_adjustPosition);
+        return;
+      }
+      else{
+        ai_state_control(ai_combat_huntTarget);
+        ai_move_controller(ai_move_run_goal, 2);
+        self.delay = time + 20;
+        return;
+      }
+    }
+    
+    //will attempt to maneuver around friends;
+    if(isBlockedFriend){
+      ai_state_control(ai_combat_huntTarget);
+      ai_move_controller(ai_move_run_goal, 2);
+      self.delay = time + 20;
+      return;
+    }
+    
+    local float tVel, scopeLeft, scopeRight;
+    scopeLeft = anglemod(self.ideal_yaw - 15);
+    scopeRight = anglemod(self.ideal_yaw + 15);
+    tVel = vectoyaw(self.trigger_field.velocity);
+    //check if target is facing this AI
+    if( ai_target_isFacingThis(self.trigger_field) ){
+      if( (tVel > scopeLeft) && (tVel < scopeRight) ){
+        //target is coming towards the bot
+        if(crandom() == TRUE){
+          ai_move_controller(ai_move_charge_left, 4);
+          return;
+        }
+        else{
+          ai_move_controller(ai_move_charge_right, 4);
+          return;
+        }
+      }
+    } 
     
   }
 
@@ -250,16 +375,19 @@ void() ai_combat_adjustBrawler={
   and have the most all-round movement profile. 
 */
 void() ai_combat_adjustSkirmish={
-  if(self.ai_type == AI_TYPE_NORML){
-  
-  }
-  else if(self.ai_type == AI_TYPE_AGGRO){
+  if(self.ai_type == AI_TYPE_AGGRO){
   
   }
   else if(self.ai_type == AI_TYPE_RESCU){
     
   }
   else if(self.ai_type == AI_TYPE_COWRD){
+    
+  }
+  else{
+    /*
+      'normal' mode
+    */
     
   }
 };
@@ -269,10 +397,18 @@ void() ai_combat_adjustSkirmish={
   the target to get back shots, and also strafe a lot too.
 */
 void() ai_combat_adjustFlanker={
-  if(self.ai_type == AI_TYPE_NORML){
-  
-  }
-  else if(self.ai_type == AI_TYPE_AGGRO){
+  /*
+    Aggro flankers - 
+      will circle strafe aggressively at full speed
+      have a higher chance of switching strafe direction
+    
+    Rescue flanker - 
+      
+    
+    Coward flanker -
+      if behind the target, aggressively stay behind this target
+  */
+  if(self.ai_type == AI_TYPE_AGGRO){
   
   }
   else if(self.ai_type == AI_TYPE_RESCU){
@@ -280,6 +416,11 @@ void() ai_combat_adjustFlanker={
   }
   else if(self.ai_type == AI_TYPE_COWRD){
     
+  }
+  else{
+    /*
+      'normal' mode
+    */
   }
 };
 

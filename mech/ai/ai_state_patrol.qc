@@ -69,9 +69,7 @@ void() ai_patrol_gotoNode={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        self.trigger_field = contact;
-        self.enemy = self.trigger_field;
-        self.goalentity = self.trigger_field;
+        ai_update_switchToTarget(contact);
         if(ai_target_visualPing(self.trigger_field)){
           ai_state_control(ai_combat_adjustPosition);
           ai_move_controller(ai_move_stand, 0.05);
@@ -137,9 +135,7 @@ void() ai_patrol_atNode={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        self.trigger_field = contact;
-        self.enemy = self.trigger_field;
-        self.goalentity = self.trigger_field;
+        ai_update_switchToTarget(contact);
         if(ai_target_canSee(self.trigger_field)){
           ai_state_control(ai_combat_adjustPosition);
           return;

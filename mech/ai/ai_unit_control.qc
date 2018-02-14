@@ -19,6 +19,7 @@ void() ai_control={
     }
     return;
   }
+  self.e_tor_c.angles = self.angles;  //sync the center torso to the bot
   
   if(self.ai_unit_update){
     self.ai_unit_update();
@@ -29,8 +30,10 @@ void() ai_control={
   }
   
   if(self.button0){
-    if(self.th_missile){
-      self.th_missile();
+    if(ai_target_facingideal()){
+      if(self.th_missile){
+        self.th_missile();
+      }
     }
   }
 
@@ -150,8 +153,8 @@ void() ai_mech_update={
     ctrl_wpn_think(wep_chain);
     wep_chain = wep_chain.w_slot;
   }  
-  if(self.enemy != world){
-    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+  if(self.trigger_field != world){
+    self.stat_trg_dist = vlen(self.trigger_field.origin - self.origin);
   }
 };
 

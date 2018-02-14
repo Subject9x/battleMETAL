@@ -44,7 +44,7 @@ void() building_power_die={
   local entity head;
   head = findradius(self.origin, 400);
   while(head){
-    if(head.p_class == P_MECH){
+    if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
       head.en_cur = head.en_cur + 100;
       if(head.en_cur > head.en_max){
         head.en_cur = head.en_max;

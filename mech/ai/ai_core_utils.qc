@@ -192,7 +192,7 @@ float(entity targ) ai_target_infront={
 };
 
 //is self in front of a target?
-float(entity targ) ai_target_insights={
+/*float(entity targ) ai_target_insights={
   local vector v;
   local float d;
   makevectors(targ.angles);
@@ -202,7 +202,7 @@ float(entity targ) ai_target_insights={
     return TRUE;
   }
   return FALSE;
-};
+};*/
 
 /*================================
         ai_target_visible
@@ -217,6 +217,7 @@ float(entity targ) ai_target_visible={
   return FALSE;
 };
 
+/*
 float() ai_target_facingideal ={
 	local	float	delta;
 	delta = anglemod(self.angles_y - self.ideal_yaw);
@@ -224,7 +225,7 @@ float() ai_target_facingideal ={
 		return FALSE;
 	return TRUE;
 };
-
+*/
 //gets convergence factor for pilot rating
 float() ai_pilot_rating_converg={
   if(self.p_damage == 0){

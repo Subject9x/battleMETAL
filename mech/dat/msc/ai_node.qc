@@ -168,7 +168,7 @@ void() ai_node_graph_touch={
       }
     }
   }
-  if(other.p_class != P_OBS){
+  if(other.data_type != DATA_POBS){
     return;
   }
   else{
