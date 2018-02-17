@@ -109,6 +109,11 @@ dp/subs.qc
   mech/ai/ai_state_wander.qc
   mech/ai/ai_state_combat.qc
   mech/ai/ai_core_funcs.qc
+  //combat sub states
+  mech/ai/ai_combat_brawl.qc
+  mech/ai/ai_combat_snipe.qc
+  mech/ai/ai_combat_skirm.qc
+  mech/ai/ai_combat_flank.qc
   
   mech/ai/ai_orders.qc
   mech/ai/ai_subs.qc

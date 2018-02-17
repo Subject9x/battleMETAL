@@ -9,6 +9,9 @@ Overview: ai state implementation
 //============================
 //   COMBAT STATES          
 //============================
+/*
+  
+*/
 void() ai_combat_findTarget={
   if(self.oldenemy != world){
     self.trigger_field = self.oldenemy;
@@ -68,16 +71,11 @@ void() ai_combat_huntTarget={
         ai_state_control(ai_combat_findTarget);
         return;
       }
-      else{
-        //AI had no old target, so end fight
-        ai_state_control(ai_combat_endFight);
-        return;
-      }
     }
     else{
       //check to see if AI can see target
       if(ai_target_canSee(self.enemy)){
-        self.delay = self.delay - time; //caching remaining patience
+        self.delay = 0;
         ai_state_control(ai_combat_adjustPosition);
         return;
       }
@@ -96,13 +94,10 @@ void() ai_combat_huntTarget={
         ai_state_control(ai_combat_findTarget);
         return;
       }
-      else{
-        ai_state_control(ai_combat_endFight);
-        return;
-      }
     }
     //AI didnt have an old enemy to go after
     //so clear the targets, and end the fight phase
+    self.delay = 0;
     ai_state_control(ai_combat_endFight);
     return;
   }
@@ -122,18 +117,23 @@ void() ai_combat_adjustPosition={
       return;
     }
   }
+  local float tvel;
+  tvel = vectoangles(self.movement);  //DEBUG possibly
+  ai_util_calcTargetMoveDir(self.trigger_field, self);
+  local float tDist;
+  tDist = vlen(self.trigger_field.origin - self.origin);
   if(ai_target_canSee(self.trigger_field)){
     if(self.ai_style == AI_STYLE_SNIPER){
-      ai_combat_adjustSniper();
+      ai_combat_adjustSniper(tDist, AI_RANGE_M, AI_RANGE_L);
     }
     else if(self.ai_style == AI_STYLE_BRAWL){
-      ai_combat_adjustBrawler();
+      ai_combat_adjustBrawler(tDist, (AI_RANGE_S / 5 ), AI_RANGE_S);
     }
     else if(self.ai_style == AI_STYLE_SKIRM){
-      ai_combat_adjustSkirmish();
+      ai_combat_adjustSkirmish(tDist, 50, AI_RANGE_L);
     }
     else if(self.ai_style == AI_STYLE_FLANK){
-      ai_combat_adjustFlanker();
+      ai_combat_adjustFlanker(tDist, (AI_RANGE_S / 5 ), AI_RANGE_L);
     }
     //AI will make an attack on the next frame
     self.button0 = 1;
@@ -157,271 +157,8 @@ void() ai_combat_adjustPosition={
     ai_state_control(ai_combat_huntTarget);
     return;
   }
-};
-
-/*
-  Snipers generally try to stay at long range, and will attempt 
-  to move away from the target if the target gets too close...
-  hopefully you didnt make it a RESCU sniper...
-*/
-void() ai_combat_adjustSniper={
-  local float tDist, isTooClose, isTooFar, isBlockedFriend, isBlockedEnemy;
-  local entity eBlocker;
-  tDist = vlen(self.enemy.origin - self.origin);
-  isTooClose = FALSE;
-  isTooFar = FALSE;
-  isBlockedFriend = FALSE;
-  isBlockedEnemy = FALSE;
-  if(tDist <= AI_RANGE_M){
-    isTooClose = TRUE;
-  }
-  if(tDist > AI_RANGE_L){
-    isTooFar = TRUE;
-  }
-  eBlocker = ai_target_checkBlock(self.trigger_field);
-  if(eBlocker != world){
-    if(eBlocker.i_faction == self.i_faction){
-      isBlockedFriend = TRUE;
-    }
-    else{
-      isBlockedEnemy = TRUE;
-    }
-  }
-  
-  if(self.ai_type == AI_TYPE_NORML){
-    if(isTooClose){
-      ai_move_controller(ai_move_backward, 0.75);
-      return;
-    }
-    if(isTooFar){
-      ai_move_controller(ai_move_forward, 0.75);
-      return;
-    }
-    if(isBlockedFriend){
-      ai_move_controller(ai_move_walkmove_strafeleft, 1);
-      return;
-    }
-    ai_move_controller(ai_move_stand, 1);
-    return;
-  }
-  else if(self.ai_type == AI_TYPE_AGGRO){
-    if(isTooClose){
-      ai_move_controller(ai_run_backward, 0.05);
-      return;
-    }
-    if(isTooFar){
-      ai_move_controller(ai_run_forward, 0.05);
-      return;
-    }
-    ai_move_controller(ai_move_stand, 0.05);
-    return;
-  }
-  else if(self.ai_type == AI_TYPE_RESCU){
-    ai_move_controller(ai_move_stand, 0.05);
-    return;
-  }
-  else if(self.ai_type == AI_TYPE_COWRD){
-    ai_move_controller(ai_move_stand, 0.05);
-    return;
-  }
-};
-
-/*
-  They stay at close range, and hammer away at the target.
-*/
-void() ai_combat_adjustBrawler={
-  //tooClose = 50 game units
-  //tooFar = 1200 game units
-  //stubbing out with comments
-  local float tDist, isTooClose, isTooFar, isBlockedFriend, isBlockedEnemy, isTargetCharge;
-  local entity eBlocker;
-  tDist = vlen(self.enemy.origin - self.origin);
-  isTooClose = FALSE;
-  isTooFar = FALSE;
-  isBlockedFriend = FALSE;
-  isBlockedEnemy = FALSE;
-  if(tDist < (AI_RANGE_S / 5 )){
-    isTooClose = TRUE;
-  }
-  if(tDist > AI_RANGE_S){
-    isTooFar = TRUE;
-  }
-  eBlocker = ai_target_checkBlock(self.trigger_field);
-  if(eBlocker != world){
-    if(eBlocker.i_faction == self.i_faction){
-      isBlockedFriend = TRUE;
-    }
-    else{
-      isBlockedEnemy = TRUE;
-    }
-  }
-  if(self.ai_type == AI_TYPE_AGGRO){
-    /*
-      stay very close to target
-      strafe with target (keeps attention)
-      always be running
-    */
-    if(isBlockedEnemy){
-      if( ai_target_isInFront(eBlocker) ){
-        //aggro enemies blast through everything O.o
-        self.button0 = 1;
-      }
-      else{
-        //attempt to rush around obstacle
-        ai_state_control(ai_combat_huntTarget);
-        ai_move_controller(ai_move_run_goal, 1);
-        self.delay = time + 10;
-        return;
-      }
-    }
-    if(isBlockedFriend){
-      //attempt to rush around obstacle
-      ai_state_control(ai_combat_huntTarget);
-      ai_move_controller(ai_move_run_goal, 1);
-      self.delay = time + 10;
-      return;
-    }
-    if(isTooFar){
-      if(ai_target_isInFront(self.trigger_field)){
-        //take a swipe
-        self.button0 = 1; 
-        ai_move_controller(ai_run_forward, 2);
-      }
-      else{
-        if(crandom() == TRUE){
-          ai_move_controller(ai_move_runmove_slideleft, 0.5);
-        }
-        else{
-          ai_move_controller(ai_move_runmove_slideright, 0.5);
-        }
-      }
-      ai_state_control(ai_combat_adjustPosition);
-      return;
-    }
-    
-  }
-  else if(self.ai_type == AI_TYPE_RESCU){
-    /*
-      if not near designated friendly
-        move to friendly
-      else
-        switch to enemy,
-        execute normal brawling
-    */
-  }
-  else if(self.ai_type == AI_TYPE_COWRD){
-    /*
-      take pulse on health, hp, and shields
-      
-    */
-  }
-  else{
-    /*
-      normal brawling:
-        enemy coming at bot -> move back and slide left/right
-        enemy moving away -> charge and slide left/right
-        enemy strafe -> counter strafe
-        random movement -> 
-    */
-    
-    if(isBlockedEnemy){
-      //brawlers gonna brawl
-      if(eBlocker.data_type != DATA_BLD){
-        ai_update_switchToTarget(eBlocker);
-        ai_state_control(ai_combat_adjustPosition);
-        return;
-      }
-      else{
-        ai_state_control(ai_combat_huntTarget);
-        ai_move_controller(ai_move_run_goal, 2);
-        self.delay = time + 20;
-        return;
-      }
-    }
-    
-    //will attempt to maneuver around friends;
-    if(isBlockedFriend){
-      ai_state_control(ai_combat_huntTarget);
-      ai_move_controller(ai_move_run_goal, 2);
-      self.delay = time + 20;
-      return;
-    }
-    
-    local float tVel, scopeLeft, scopeRight;
-    scopeLeft = anglemod(self.ideal_yaw - 15);
-    scopeRight = anglemod(self.ideal_yaw + 15);
-    tVel = vectoyaw(self.trigger_field.velocity);
-    //check if target is facing this AI
-    if( ai_target_isFacingThis(self.trigger_field) ){
-      if( (tVel > scopeLeft) && (tVel < scopeRight) ){
-        //target is coming towards the bot
-        if(crandom() == TRUE){
-          ai_move_controller(ai_move_charge_left, 4);
-          return;
-        }
-        else{
-          ai_move_controller(ai_move_charge_right, 4);
-          return;
-        }
-      }
-    } 
-    
-  }
-
-};
-
-/*
-  Skirmishers are the default, they engage in their optimal range bracket
-  and have the most all-round movement profile. 
-*/
-void() ai_combat_adjustSkirmish={
-  if(self.ai_type == AI_TYPE_AGGRO){
-  
-  }
-  else if(self.ai_type == AI_TYPE_RESCU){
-    
-  }
-  else if(self.ai_type == AI_TYPE_COWRD){
-    
-  }
-  else{
-    /*
-      'normal' mode
-    */
-    
-  }
-};
-
-/*
-  As the name suggests, flankers are obsessed with circling around
-  the target to get back shots, and also strafe a lot too.
-*/
-void() ai_combat_adjustFlanker={
-  /*
-    Aggro flankers - 
-      will circle strafe aggressively at full speed
-      have a higher chance of switching strafe direction
-    
-    Rescue flanker - 
-      
-    
-    Coward flanker -
-      if behind the target, aggressively stay behind this target
-  */
-  if(self.ai_type == AI_TYPE_AGGRO){
-  
-  }
-  else if(self.ai_type == AI_TYPE_RESCU){
-    
-  }
-  else if(self.ai_type == AI_TYPE_COWRD){
-    
-  }
-  else{
-    /*
-      'normal' mode
-    */
-  }
+  ai_state_control(ai_combat_adjustPosition);
+  return;
 };
 
 /*

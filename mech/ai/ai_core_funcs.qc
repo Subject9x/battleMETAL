@@ -599,3 +599,107 @@ void(entity aggro) ai_util_defense_callForHelp={
     friend = friend.chain;
   }
 };
+
+/*
+  Converts angle to direction bitflag
+  used for translating a vector to a world-aligned
+  direction
+  generally used for comparing two velocities
+*/
+float(vector toAngle) ai_util_angleToDir={
+  local float anglee;
+  anglee = vectoangles(toAngle);
+  
+  if(anglee >= 337.5 || anglee < 22.5){
+    return AI_DIR_N;
+  }
+  else if(anglee >= 22.5 && anglee < 67.5){
+    return AI_DIR_NE; 
+  }
+  else if(anglee >= 67.5 && anglee < 112.5){
+    return AI_DIR_E;  
+  }
+  else if(anglee >= 112.5 && anglee < 157){
+    return AI_DIR_SE; 
+  }
+  else if(anglee >= 157 && anglee < 202){
+    return AI_DIR_S;
+  }
+  else if(anglee >= 202 && anglee < 247){
+    return AI_DIR_SW;  
+  }
+  else if(anglee >= 247 && anglee < 292){
+    return AI_DIR_W;  
+  }
+  else if(anglee >= 292 && anglee < 337.5){
+    return AI_DIR_NW; 
+  }
+  else{
+    return 0;
+  }
+};
+
+/*
+  Gets the AI's target's move direction in relation
+  to itself, so it can possibly choose a better move
+  direction.
+  returns
+    float AI_TARG_FWD = 0;
+    float AI_TARG_BKD = 1;
+    float AI_TARG_LFT = 2;
+    float AI_TARG_RGT = 3;
+*/
+float(entity targ, entity this) ai_util_calcTargetMoveDir={
+  local float arc, spot, tVel, meVel, back, left, right, isFront;
+  meVel = vectoyaw(this.velocity);
+  tVel = vectoyaw(targ.velocity);
+  arc = anglemod(this.angles + 180);
+  spot = vectoyaw(targ.origin - this.origin);
+  if( (spot > anglemod(arc - 90)) && (spot < anglemod(arc + 90)) ){
+    isFront =  TRUE;
+  }else{
+    isFront =  FALSE;
+  }
+  if( (tVel >= anglemod(meVel - 45)) || (tVel <= anglemod(meVel + 45))){
+    if(isFront){
+      //cons_logAString(" target", " is going to me"); //DEBUG
+      return AI_TARG_FWD;
+    }
+    else{
+      //cons_logAString(" target", " is going away me"); //DEBUG
+      return AI_TARG_BKD;
+    }
+  }
+  else if( (tVel > anglemod(meVel + 45)) && (tVel < anglemod(meVel + 134))){
+    if(isFront){
+      //cons_logAString(" target", "  is strafe left"); //DEBUG
+      return AI_TARG_LFT;
+    }
+    else{
+      //cons_logAString(" target", "  is strafe right"); //DEBUG
+      return AI_TARG_RGT;
+    }
+  }
+  else if( (tVel >= anglemod(meVel + 135)) && (tVel <= anglemod(meVel + 225))){
+    if(isFront){
+      //cons_logAString(" target", " is going away me"); //DEBUG
+      return AI_TARG_BKD;
+    }
+    else{
+      //cons_logAString(" target", " is going to me"); //DEBUG
+      return AI_TARG_FWD;
+    }
+  }
+  else if( (tVel > anglemod(meVel + 225)) && (tVel < anglemod(meVel + 315))){
+    if(isFront){
+      //cons_logAString(" target", "  is strafe right"); //DEBUG
+      return AI_TARG_RGT;
+    }
+    else{
+      //cons_logAString(" target", "  is strafe left"); //DEBUG
+      return AI_TARG_LFT;
+    }
+  }
+  //failure case
+  return -1;
+};

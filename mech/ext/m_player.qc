@@ -126,10 +126,11 @@ void() PlayerPostThink = {
       wep_chain = wep_chain.w_slot;
     }
   }
-
+  
 	if(self.impulse){
 		ImpulseCommands ();
   }
+  
 // check for attack
   playerAttack();
 

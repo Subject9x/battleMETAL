@@ -46,7 +46,6 @@ string(float anglee) gui_angleToNav={
   }
 };
 
-
 vector(float pcx, float pcy) gui_percentToPixel={
   local vector pixel;
   pixel_x = VIEW_SIZE_x * pcx;

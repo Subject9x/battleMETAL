@@ -192,3 +192,20 @@ float() ai_move_charge_right={
   }
   return FALSE;
 };
+
+/*
+  given a bitflag set of float filterDir, using AI_DIR flags
+  produce a randomly chosen bitflag from the incoming set.
+  
+*/
+float(float filterDir) ai_move_rand_walk={
+  
+};
+
+/*
+  like ai_move_rand_walk but with run functions instead
+  of walking functions
+*/
+float(float filterDir) ai_move_rand_run={
+
+};

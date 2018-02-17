@@ -47,6 +47,25 @@ void(entity wep) ai_attack_bal;
 void(entity wep) ai_attack_exp;
 
 /*
+  AI SPECIFIC GLOBAL CONSTANT======================
+*/
+//check angle constants (for readability)
+float AI_TARG_FWD = 0;
+float AI_TARG_BKD = 1;
+float AI_TARG_LFT = 2;
+float AI_TARG_RGT = 3;
+//direction bitflag is used to filter out non-viable directions when executing pseudo-random moves
+float AI_DIR_N  = 1;
+float AI_DIR_NE = 2;
+float AI_DIR_E  = 4;
+float AI_DIR_SE = 8;
+float AI_DIR_S  = 16;
+float AI_DIR_SW = 32;
+float AI_DIR_W  = 64;
+float AI_DIR_NW = 128;
+
+/*==========================================*/
+/*
   AI SPECIFIC ENT VARS======================
 */
 void() ai_control;      //global, root controller function
@@ -102,6 +121,8 @@ float() ai_move_backward;
 float() ai_run_backward;
 float() ai_move_charge_left;
 float() ai_move_charge_right;
+float(float filterDir) ai_move_rand_walk;
+float(float filterDir) ai_move_rand_run;
 /*==========================================*/
 
 /*
@@ -143,10 +164,10 @@ void() ai_combat_huntTarget;
 void() ai_combat_adjustPosition;
 void() ai_combat_endFight;
   //COMBAT SUB STATES 
-  void() ai_combat_adjustSniper;
-  void() ai_combat_adjustBrawler;
-  void() ai_combat_adjustSkirmish;
-  void() ai_combat_adjustFlanker;
+  void(float targDist, float distClose, float distFar) ai_combat_adjustSniper;
+  void(float targDist, float distClose, float distFar) ai_combat_adjustBrawler;
+  void(float targDist, float distClose, float distFar) ai_combat_adjustSkirmish;
+  void(float targDist, float distClose, float distFar) ai_combat_adjustFlanker;
 /*==========================================*/
 
 /*AI CORE FUNCTIONS=========================*/
@@ -182,6 +203,7 @@ void(entity newNode) ai_update_switchToNode;
 //UTIL
 void(float state) ai_util_firstOrder_nonStatic;
 void(entity aggro) ai_util_defense_callForHelp;
+float(entity targ, entity this) ai_util_calcTargetMoveDir;
 /*==========================================*/
 
 //utility functions
