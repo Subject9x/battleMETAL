@@ -41,7 +41,7 @@ triggers_h.qc
   mech/impulse_h.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
-  mech/ai/m_ext_ai_h2.qc
+  mech/ai/ai_core_h.qc
   q1/qwep/wep_fx_h.qc
   mech/dat/msc/map_objects_h.qc
   world_effectinfo_h.qc
@@ -115,11 +115,10 @@ dp/subs.qc
   mech/ai/ai_combat_skirm.qc
   mech/ai/ai_combat_flank.qc
   
-  mech/ai/ai_orders.qc
   mech/ai/ai_subs.qc
   mech/ai/m_ai_test.qc
   mech/ai/ai_directives_combat.qc
-  mech/ai/ai_directives_move.qc
+  mech/ai/ai_move_funcs.qc
   mech/ai/ai_core_utils.qc
   mech/ai/ai_unit_control.qc
   //mech/mech_anim.qc

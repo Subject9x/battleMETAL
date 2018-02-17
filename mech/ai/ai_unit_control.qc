@@ -19,7 +19,7 @@ void() ai_control={
     }
     return;
   }
-  self.e_tor_c.angles = self.angles;  //sync the center torso to the bot
+  self.e_tor_c.angles_y = self.ideal_yaw;  //sync the center torso to the bot
   
   if(self.ai_unit_update){
     self.ai_unit_update();
@@ -45,21 +45,11 @@ void() ai_control={
   if(self.m_fspeed > -1){
     self.ai_hasmoved = self.ai_next_move();
     self.prev_angle = normalize(self.origin - self.prev_pos);
-    local vector aorg;
-    if(self.trigger_field != world){
-      aorg = self.trigger_field.origin;
-    }
-    else if(self.node != world){
-      aorg = self.node.origin;
-    }
-    else{
-      aorg = self.origin;
-    }
     if(self.enemy != world){
-      self.e_legs.v_angle_y = vectoyaw(aorg- self.origin);
+      self.e_legs.angles_y = vectoyaw(self.velocity);
     }
     else{
-      self.e_legs.v_angle_y = self.v_angle_y;
+      self.e_legs.angles_y = self.v_angle_y;
     }
   }
   self.think = ai_control;

@@ -1,6 +1,7 @@
 /*
 mech Mod
 Date: 5/22/2017
+  refac: 2/17/2018 - changed file name, added more functions
 Overview: next draft the ai
 this one will focus on move to move
 */
