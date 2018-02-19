@@ -21,7 +21,6 @@ void() ai_misc_unstuck={};
   in place.
 */
 void() ai_misc_stand={
-  cons_logAString("ai_misc_stand", "enter");  //DEBUG
   if(!self.stat_rdr_mode){
     self.stat_rdr_mode = TRUE;
   }
@@ -33,19 +32,15 @@ void() ai_misc_stand={
         ai_update_switchToTarget(contact);
         if(ai_target_visualPing(self.trigger_field)){
           ai_state_control(ai_combat_adjustPosition);
-          
-          cons_logAString("  ->", "ai_combat_adjustPosition");  //DEBUG
           ai_move_controller(ai_move_stand, 0.05);
           return;
         }
         self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
         ai_state_control(ai_combat_huntTarget);
-        cons_logAString("  ->", "ai_combat_huntTarget");  //DEBUG
         return;
       }
     }
   }
-  cons_logAString("ai_misc_stand", "exit");  //DEBUG
   ai_move_controller(ai_move_stand, 1);
   ai_state_control(ai_misc_stand);
   return;

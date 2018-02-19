@@ -158,11 +158,19 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       //AI's target isn't in front
       if(ai_target_isFacingThis(self.trigger_field)){
         //AI is in sight of its target
-        
+        ai_move_randomThree(4, ai_move_charge_left, 
+                                ai_move_charge_right, 
+                                ai_run_forward);
         return;
       }
+      //target is not in front, and AI is not in target's sights
+      if(tMovedir == AI_TARG_FWD){
+        ai_move_controller(ai_run_backward, 2);
+        return;
+      }
+      ai_move_controller(ai_move_stand, 2);
+      return;
     }
-    return;
   }
 //=================================================
   
@@ -190,7 +198,8 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         ai_move_randomThree(1, ai_move_runmove_slideleft, 
                                 ai_move_runmove_slideright, 
                                 ai_move_forward);
-      }      
+      }
+      return;
     }
     else if(tMovedir == AI_TARG_BKD){
       if((self.ai_type == AI_TYPE_COWRD) || (self.p_damage <= AI_RANK_REG)){
@@ -199,12 +208,14 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       else{
         ai_move_controller(ai_run_forward, 1);
       }
+      return;
     }
     else if(tMovedir == AI_TARG_LFT){
       if(self.p_damage == AI_RANK_ROK){
         ai_move_randomThree(2, ai_move_walkmove_strafeleft, 
                                 ai_move_walkmove_strafeleft, 
                                 ai_move_walkmove_straferight);
+        return;
       }
       else{
         local float d2;
@@ -215,6 +226,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         else{
           ai_move_controller(ai_move_walkmove_straferight, 1);
         }
+        return;
       }
     }
     else if(tMovedir == AI_TARG_RGT){
@@ -222,6 +234,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         ai_move_randomThree(2, ai_move_walkmove_straferight, 
                                 ai_move_walkmove_straferight, 
                                 ai_move_walkmove_strafeleft);
+        return;
       }
       else{
         local float d2;
@@ -232,17 +245,31 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         else{
           ai_move_controller(ai_move_walkmove_straferight, 1);
         }
+        return;
       }
     }
+  }
+  else{
+    //Target is outside optimal range
+    if(self.ai_type == AI_TYPE_AGGRO){
+      ai_move_randomThree(6, ai_run_forward, 
+                            ai_move_charge_right, 
+                            ai_move_charge_left);
+      return;
+    }
+    if(self.p_damage >= AI_RANK_REG){
+      ai_move_controller(ai_move_forward, 4);
+      return;
+    }
+    ai_move_controller(ai_run_forward, 8);
     return;
   }
-  //target is not in optimal range
   ai_move_randomSix(3, ai_move_runmove_slideleft, 
                         ai_move_charge_left, 
                         ai_move_walkmove_backright, 
                         ai_move_walkmove_backleft, 
                         ai_move_charge_right, 
                         ai_move_runmove_slideright); 
-    return;
+  return;
 //=================================================
 };
