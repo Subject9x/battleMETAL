@@ -14,7 +14,7 @@ FLANKER FUNCTIONS
   float distClose = range that is 'too close';
   float distFar = range that is 'too far';
 */
-void(float targDist, float distClose, float distFar) ai_combat_adjustFlanker={
+void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustFlanker={
   /*
     Aggro flankers - 
       will circle strafe aggressively at full speed

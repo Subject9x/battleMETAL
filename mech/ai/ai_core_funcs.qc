@@ -155,16 +155,16 @@ entity(entity pNode) ai_findNode_searchGroup={
 */
 float(entity targ, float faction) ai_combat_locksOnTarget={
   local entity f;
-  local float cnt;
-  cnt = 0;
+  local float cont;
+  cont = 0;
   f = findchainfloat(i_faction, faction);
   while(f){
     if( (f.trigger_field == targ) ){
-      cnt = cnt + 1;
+      cont = cont + 1;
     }
     f = f.chain;
   }
-  return cnt;
+  return cont;
 };
 
 /*
@@ -188,7 +188,9 @@ float(entity targ) ai_target_canSee={
 entity(entity targ) ai_target_checkBlock={
   if(ai_target_inForwardArc(targ)){
     traceline(self.e_cam.origin, targ.origin, FALSE, self);
-    return trace_ent;
+    if(ai_target_isValid_useDataType(trace_ent)){
+      return trace_ent;
+    }    
   }
   return world; //really should have made a null ent, there, iD.
 };
@@ -219,7 +221,7 @@ float(entity t) ai_target_radarPing={
   torg = t.origin;
   torg_z = torg_z + t.maxs_z + 4;
   radFidelityZ = (self.radar_range * ai_pilot_yaw_mod()) * 0.25;
-  radFidelityY = (RADAR_PASSIVE_ARC_PLAYER * ai_pilot_yaw_mod()) + self.maxs_y;
+  radFidelityY = (RADAR_PASSIVE_ARC_PLAYER_y * ai_pilot_yaw_mod()) + self.maxs_y;
   ang = vectoangles(radorg - torg);
   makevectors(ang);
   radorg = self.origin + (v_up * radFidelityZ) + (v_forward * radFidelityY);
@@ -256,7 +258,7 @@ float(entity t) ai_target_visualPing={
 };
 
 /*
-validate possible target
+  validate possible target
 */
 float(entity t) ai_target_isValid={
   if(t == world){
@@ -281,6 +283,29 @@ float(entity t) ai_target_isValid={
     return FALSE;
   }
   return TRUE;
+};
+
+/*
+  validate possible target using data_type
+  field, used by blocking checker
+*/
+float(entity t) ai_target_isValid_useDataType={
+  if(t.data_type == DATA_MECH){
+    return TRUE;
+  }
+  else if(t.data_type == DATA_VEHC){
+    return TRUE;
+  } 
+  else if(t.data_type == DATA_BLD){
+    return TRUE;
+  } 
+  else if(t.data_type == DATA_MECH_AI){
+    return TRUE;
+  } 
+  else if(t.data_type == DATA_PLR){
+    return TRUE;
+  } 
+  return FALSE;
 };
 
 /*
@@ -517,9 +542,9 @@ void(entity t, string newTarg) ai_update_entityTarget={
   (mechs and vecs), this converts the AI's
   state_1 value into the corresponding initial AI state
 */
-void(float state) ai_util_firstOrder_nonStatic={
-  
-  self.state_1 = state;
+void(float ai_state) ai_util_firstOrder_nonStatic={
+ 
+  self.state_1 = ai_state;
   if(self.state_1 == AI_ORDER_ATTACK){
     if(self.target){
       ai_state_control(ai_assault_startWithNode);
@@ -546,11 +571,11 @@ void(float state) ai_util_firstOrder_nonStatic={
   }
   else if(self.state_1 == AI_ORDER_STAND){
     ai_state_control(ai_misc_stand);
-    ai_move_controller( ai_move_stand);
+    ai_move_controller( ai_move_stand, 1);
   }
   else {
     ai_state_control(ai_misc_stand_debug);
-    ai_move_controller(ai_move_stand);
+    ai_move_controller(ai_move_stand, 1);
   }
 };
 
@@ -608,7 +633,7 @@ void(entity aggro) ai_util_defense_callForHelp={
 */
 float(vector toAngle) ai_util_angleToDir={
   local float anglee;
-  anglee = vectoangles(toAngle);
+  anglee = vectoyaw(toAngle);
   
   if(anglee >= 337.5 || anglee < 22.5){
     return AI_DIR_N;
@@ -653,7 +678,7 @@ float(entity targ, entity this) ai_util_calcTargetMoveDir={
   local float arc, spot, tVel, meVel, back, left, right, isFront;
   meVel = vectoyaw(this.velocity);
   tVel = vectoyaw(targ.velocity);
-  arc = anglemod(this.angles + 180);
+  arc = anglemod(this.angles_y + 180);
   spot = vectoyaw(targ.origin - this.origin);
   if( (spot > anglemod(arc - 90)) && (spot < anglemod(arc + 90)) ){
     isFront =  TRUE;
@@ -702,4 +727,32 @@ float(entity targ, entity this) ai_util_calcTargetMoveDir={
   }
   //failure case
   return -1;
+};
+
+/*
+  Compare's the AI's ideal_yaw to the given angle,
+  used for movement adjusting
+*/
+float(float checkYaw) ai_util_compareYawIdeal={
+  if(checkYaw == self.ideal_yaw){
+    return TRUE;
+  }
+  return FALSE;
+};
+
+/*
+  Get health of AI, used in movement adjusting
+  TRUE = panic!
+*/
+float() ai_util_checkSelfHealth={
+  local float total, avg;
+  total = self.max_health;
+  total = total + (self.e_tor_l.max_health * 2);
+  total = total + (self.e_arm_l.max_health * 2);
+  total = total + self.e_legs.max_health;
+  avg = total / 5;
+  if(avg <= (total * 0.25)){
+    return TRUE; //panic
+  }  
+  return FALSE;
 };

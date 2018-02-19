@@ -188,6 +188,12 @@ float AI_DEFEND_DIST      = 2000;
 float AI_ASSAULT_DIST_MIN = 400;
 float AI_ASSAULT_DIST     = 1000;
 
+//PILOT RANKS - determines base states, and some realtime decisions
+float AI_RANK_ACE = 0;
+float AI_RANK_VET = 1;  //veteran
+float AI_RANK_REG = 2;  //regular
+float AI_RANK_ROK = 3;  //rookie
+
 //QUIRKS - combat
 float AI_STYLE_SNIPER = 1;
 float AI_STYLE_BRAWL  = 2;
@@ -215,10 +221,10 @@ float AI_RNG_ROK = 1.5;
 
 //Adjust Rotation Rate
 //self.yaw_speed = rotation rate + (rotation rate * AI_ROT_X);
-float AI_ROT_ACE = 0.2; //0.7
-float AI_ROT_VET = 0.3; //0.6
-float AI_ROT_REG = 0.4; //0.4
-float AI_ROT_ROK = 0.5; //0.25
+float AI_ROT_ACE = 0.05; //0.7
+float AI_ROT_VET = 0.1; //0.6
+float AI_ROT_REG = 0.2; //0.4
+float AI_ROT_ROK = 0.3; //0.25
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
@@ -250,7 +256,7 @@ float AI_RUN_SPD = 0.045;
 
 //AI order constants, refactored from func pointers
 float AI_ORDER_DEBUG = -1;
-float AI_ORDER_STAND = 0;
-float AI_ORDER_DEFEND = 1;
-float AI_ORDER_PATROL = 2;
-float AI_ORDER_ATTACK = 3;
+float AI_ORDER_STAND = 1;
+float AI_ORDER_DEFEND = 2;
+float AI_ORDER_PATROL = 3;
+float AI_ORDER_ATTACK = 4;

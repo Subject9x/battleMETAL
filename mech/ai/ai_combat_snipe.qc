@@ -17,7 +17,7 @@ SNIPER FUNCTIONS
   float distClose = range that is 'too close';
   float distFar = range that is 'too far';
 */
-void(float targDist, float distClose, float distFar) ai_combat_adjustSniper={
+void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustSniper={
   local float tDist, isTooClose, isTooFar, isBlockedFriend, isBlockedEnemy;
   local entity eBlocker;
   tDist = vlen(self.enemy.origin - self.origin);

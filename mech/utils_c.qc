@@ -4,15 +4,51 @@ Author: Peter Roohr
 Date: 8/27/2016
       mod 3/16/2017
       mod 5/17/2017 - normalize time as percent
-Overview: utility functions for mod, header
+      mod 2/18/2018
+Overview: utility functions for mod
 */
+
+
+/*
+  Drop to floor makes too many nice assumptions about how
+  far off ground the entity is. _dropToGround is a more refined
+  algo for standing an entity on the ground regardless of starting
+  Z coord.
+*/
+vector(vector angl, vector org, float zAdjust) util_dropToGround={
+  local vector spot;
+  makevectors(angl);
+  traceline(org, org + (v_up * -3000), FALSE, self);
+  spot = trace_endpos;
+  spot_z = spot_z - zAdjust;
+  return spot;
+};
+
+/*
+  A bit on-the-nose, but, this is a dice roller
+  for semi-random whole numbers.
+  numOfSides = number of sides to the die,
+  results have to be interepreted by whatever is calling this function
+*/
+float(float numOfSides) util_roll_dice={
+  local float roll;
+  roll = (1+crandom() * numOfSides);
+  roll = floor(roll);
+  if(roll < 0){
+    roll = roll *-1;
+  }
+  if(roll == 0){
+    roll = 1;
+  }
+  return roll;
+};
 
 
 vector(vector rgb) util_rgbToFloat={
   local vector nu;
   nu_x = rgb_x/255;
-  nu_x = rgb_y/255;
-  nu_x = rgb_z/255;
+  nu_y = rgb_y/255;
+  nu_z = rgb_z/255;
   return nu;
 };
 
@@ -231,11 +267,11 @@ void(string msg, string s1) cons_logAString={
 };
 
 void(string msg, float val, string split, float val2) cons_log2Float={
-  bprint(strcat(msg,":", ftos(val), "|", ftos(val2),"\n"));
+  bprint(strcat(msg,":", ftos(val),"| ", split,":", ftos(val2),"\n"));
 };
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
-  bprint(strcat(msg,":", vtos(v1),"|",vtos(v2),"\n"));
+  bprint(strcat(msg,":", vtos(v1),"| ", split,":", vtos(v2),"\n"));
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
-  bprint(strcat(msg,":",s1,"|",s2,"\n"));
+  bprint(strcat(msg,":",s1,"| ", split,":",s2,"\n"));
 };

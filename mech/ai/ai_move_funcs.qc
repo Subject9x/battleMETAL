@@ -27,7 +27,7 @@ void(float() move, float frames) ai_move_controller={
     if(!self.ai_hasmoved){
       local float remain;
       remain = self.w_isready - time;
-      if(self.ai_next_move == ai_move_forward){
+      /*if(self.ai_next_move == ai_move_forward){
         self.ai_next_move = ai_move_backward;
       }
       else if(self.ai_next_move == ai_move_backward){
@@ -52,11 +52,11 @@ void(float() move, float frames) ai_move_controller={
         self.ai_next_move = ai_run_forward;
       }
       else if(self.ai_next_move == ai_move_charge_left){
-      self.ai_next_move = ai_move_charge_right;
-        }
+        self.ai_next_move = ai_move_charge_right;
+      }
       else if(self.ai_next_move == ai_move_charge_right){
         self.ai_next_move = ai_move_charge_left;
-      }
+      }*/
       self.w_isready = remain;
     }
   }
@@ -100,6 +100,26 @@ float() ai_move_run_goal={
   self.ai_prev_move = ai_move_run_goal;
   self.p_velocity = 0;
   return TRUE;
+};
+
+//arbitrary angle movement
+float() ai_move_angle_walk={
+  if (walkmove( anglemod(self.angles_y + self.lefty), self.m_sspeed * AI_WALK_SPD)){
+    self.ai_prev_move = ai_move_angle_walk;
+    self.p_velocity = self.lefty;
+    return TRUE;
+  }
+  return FALSE;
+};
+
+//arbitrary angle movement
+float() ai_move_angle_run={
+  if (walkmove( anglemod(self.angles_y + self.lefty), self.m_sspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_move_angle_run;
+    self.p_velocity = self.lefty;
+    return TRUE;
+  }
+  return FALSE;
 };
 
 float() ai_move_runmove_slideright={  
@@ -176,7 +196,6 @@ float() ai_move_walkmove_straferight={
 
 float() ai_move_charge_left={
   if (walkmove (self.ideal_yaw - 60,  self.m_fspeed * AI_RUN_SPD)){
-    ai_move_stand();
     self.ai_prev_move = ai_move_stand;
     self.p_velocity = -60;
     return TRUE;
@@ -186,12 +205,98 @@ float() ai_move_charge_left={
 
 float() ai_move_charge_right={
   if(walkmove (self.ideal_yaw + 60,  self.m_fspeed * AI_RUN_SPD)){
-    ai_move_stand();
     self.ai_prev_move = ai_move_stand;
     self.p_velocity = 60;
     return TRUE;
   }
   return FALSE;
+};
+
+float() ai_move_walkmove_backleft={
+  if (walkmove (self.ideal_yaw - 135,  self.m_fspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_move_stand;
+    self.p_velocity = -135;
+    return TRUE;
+  }
+  return FALSE;
+};
+
+float() ai_move_walkmove_backright={
+  if (walkmove (self.ideal_yaw + 135,  self.m_fspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_move_stand;
+    self.p_velocity = 135;
+    return TRUE;
+  }
+  return FALSE;
+};
+
+/*
+  Random forward movement in the 180 arc towards ideal_yaw
+  this is not invoked by the move controller, this is called
+  by any given ai_state
+*/
+void(float isRun, float duration) ai_move_walkmove_forwardRand={
+  local float dieRoll;
+  dieRoll = util_roll_dice(3);
+  if(dieRoll == 1){
+    if(isRun){
+      ai_move_controller(ai_run_forward, duration);
+      return;
+    }
+    ai_move_controller(ai_move_forward, duration);
+  }
+  else if(dieRoll == 2){
+    ai_move_controller(ai_move_charge_left, duration);
+  }
+  else if(dieRoll == 3){
+    ai_move_controller(ai_move_charge_right, duration);
+  }
+};
+
+
+/*
+  given 3 possible moves being passed in, roll a die
+  and pick one
+*/
+void(float duration, float() move1, float() move2, float() move3) ai_move_randomThree={
+  local float dieRoll;
+  dieRoll = util_roll_dice(3);
+  if(dieRoll == 1){
+    ai_move_controller(move1, duration);
+  }
+  else if(dieRoll == 2){
+    ai_move_controller(move2, duration);
+  }
+  else if(dieRoll == 3){
+    ai_move_controller(move3, duration);
+  }
+};
+
+/*
+  given 6 possible moves being passed in, roll a die
+  and pick one
+*/
+void(float duration, float() move1, float() move2, float() move3, float() move4, float() move5, float() move6) ai_move_randomSix={
+  local float dieRoll;
+  dieRoll = util_roll_dice(6);
+  if(dieRoll == 1){
+    ai_move_controller(move1, duration);
+  }
+  else if(dieRoll == 2){
+    ai_move_controller(move2, duration);
+  }
+  else if(dieRoll == 3){
+    ai_move_controller(move3, duration);
+  }
+  else if(dieRoll == 4){
+    ai_move_controller(move4, duration);
+  }
+  else if(dieRoll == 5){
+    ai_move_controller(move5, duration);
+  }
+  else if(dieRoll == 6){
+    ai_move_controller(move6, duration);
+  }
 };
 
 /*

@@ -46,7 +46,7 @@ void() ai_control={
     self.ai_hasmoved = self.ai_next_move();
     self.prev_angle = normalize(self.origin - self.prev_pos);
     if(self.enemy != world){
-      self.e_legs.angles_y = vectoyaw(self.velocity);
+      self.e_legs.angles_y = vectoyaw(self.v_angle) + self.p_velocity;
     }
     else{
       self.e_legs.angles_y = self.v_angle_y;

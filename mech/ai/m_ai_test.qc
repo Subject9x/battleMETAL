@@ -107,10 +107,13 @@ void() ai_mech={
   mod = ai_pilot_rating_patience();
   self.maxpatience = 0;
   self.patience = 0;
+ 
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
+  droptofloor();
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
-	droptofloor();
   
   //set first order based on self.state_1
+  
   ai_util_firstOrder_nonStatic(self.state_1);
   
 	if (!walkmove(0,0))
@@ -123,6 +126,6 @@ void() ai_mech={
   self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = -1;
+  self.nextthink = time + 4; //power up timer 7
   self.think = ai_control;
-  self.nextthink = time + 1; //power up timer 7
 };

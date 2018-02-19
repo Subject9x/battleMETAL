@@ -63,7 +63,6 @@ float AI_DIR_S  = 16;
 float AI_DIR_SW = 32;
 float AI_DIR_W  = 64;
 float AI_DIR_NW = 128;
-
 /*==========================================*/
 /*
   AI SPECIFIC ENT VARS======================
@@ -121,8 +120,13 @@ float() ai_move_backward;
 float() ai_run_backward;
 float() ai_move_charge_left;
 float() ai_move_charge_right;
+float() ai_move_walkmove_backright;
+float() ai_move_walkmove_backleft;
 float(float filterDir) ai_move_rand_walk;
 float(float filterDir) ai_move_rand_run;
+void(float isRun, float duration) ai_move_walkmove_forwardRand;
+void(float duration, float() move1, float() move2, float() move3) ai_move_randomThree;
+void(float duration, float() move1, float() move2, float() move3, float() move4, float() move5, float() move6) ai_move_randomSix;
 /*==========================================*/
 
 /*
@@ -164,10 +168,10 @@ void() ai_combat_huntTarget;
 void() ai_combat_adjustPosition;
 void() ai_combat_endFight;
   //COMBAT SUB STATES 
-  void(float targDist, float distClose, float distFar) ai_combat_adjustSniper;
-  void(float targDist, float distClose, float distFar) ai_combat_adjustBrawler;
-  void(float targDist, float distClose, float distFar) ai_combat_adjustSkirmish;
-  void(float targDist, float distClose, float distFar) ai_combat_adjustFlanker;
+  void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustSniper;
+  void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustBrawler;
+  void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustSkirmish;
+  void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustFlanker;
 /*==========================================*/
 
 /*AI CORE FUNCTIONS=========================*/
@@ -193,6 +197,7 @@ entity(entity targ) ai_target_checkBlock;
 float() ai_target_facingideal;
 float(entity targ) ai_target_isInFront;
 float(entity targ) ai_target_isFacingThis;
+float(entity t) ai_target_isValid_useDataType;
 //UPDATE
 void(entity t, string grpId) ai_update_entityGroup;
 void(float new_type) ai_update_combatType;
@@ -204,6 +209,8 @@ void(entity newNode) ai_update_switchToNode;
 void(float state) ai_util_firstOrder_nonStatic;
 void(entity aggro) ai_util_defense_callForHelp;
 float(entity targ, entity this) ai_util_calcTargetMoveDir;
+float(float checkYaw) ai_util_compareYawIdeal;
+float() ai_util_checkSelfHealth;
 /*==========================================*/
 
 //utility functions

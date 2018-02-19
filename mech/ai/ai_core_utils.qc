@@ -228,13 +228,13 @@ float() ai_target_facingideal ={
 */
 //gets convergence factor for pilot rating
 float() ai_pilot_rating_converg={
-  if(self.p_damage == 0){
+  if(self.p_damage == AI_RANK_ACE){
     return AI_CNV_ACE;
   }
-  else if(self.p_damage == 1){
+  else if(self.p_damage == AI_RANK_VET){
     return AI_CNV_VET;
   }
-  else if(self.p_damage == 2){
+  else if(self.p_damage == AI_RANK_REG){
     return AI_CNV_REG;
   }
   else{
@@ -244,16 +244,16 @@ float() ai_pilot_rating_converg={
 
 //gets range modifier for pilot rating
 float() ai_pilot_rating_range={
-  if(self.p_damage == 0){
+  if(self.p_damage == AI_RANK_ACE){
     return AI_RNG_ACE;
   }
-  else if(self.p_damage == 1){
+  else if(self.p_damage == AI_RANK_VET){
     return AI_RNG_VET;
   }
-  else if(self.p_damage == 2){
+  else if(self.p_damage == AI_RANK_REG){
     return AI_RNG_REG;
   }
-  else if(self.p_damage == 3){
+  else if(self.p_damage == AI_RANK_ROK){
     return AI_RNG_ROK;
   }
   else{
@@ -268,16 +268,16 @@ float() ai_pilot_rating_range={
   having 'slower reflexes'.
 */
 float() ai_pilot_yaw_mod={
-  if(self.p_damage == 0){
+  if(self.p_damage == AI_RANK_ACE){
     return AI_ROT_ACE;
   }
-  else if(self.p_damage == 1){
+  else if(self.p_damage == AI_RANK_VET){
     return AI_ROT_VET;
   }
-  else if(self.p_damage == 2){
+  else if(self.p_damage == AI_RANK_REG){
     return AI_ROT_REG;
   }
-  else if(self.p_damage == 3){
+  else if(self.p_damage == AI_RANK_ROK){
     return AI_ROT_ROK;
   }
   else{
@@ -313,16 +313,16 @@ float() ai_pilot_armor_mod={
   its target. Better AI's are better at this.
 */
 float() ai_pilot_rating_leading={
-  if(self.p_damage == 0){
+  if(self.p_damage == AI_RANK_ACE){
     return AI_LEAD_ACE;
   }
-  else if(self.p_damage == 1){
+  else if(self.p_damage == AI_RANK_VET){
     return AI_LEAD_VET;
   }
-  else if(self.p_damage == 2){
+  else if(self.p_damage == AI_RANK_REG){
     return AI_LEAD_REG;
   }
-  else if(self.p_damage == 3){
+  else if(self.p_damage == AI_RANK_ROK){
     return AI_LEAD_ROK;
   }
   else{
@@ -338,16 +338,16 @@ float() ai_pilot_rating_leading={
 */
 float() ai_pilot_rating_patience={
   local float patience;
-  if(self.p_damage == 0){
+  if(self.p_damage == AI_RANK_ACE){
     patience = AI_PTNCE_ACE;
   }
-  else if(self.p_damage == 1){
+  else if(self.p_damage == AI_RANK_VET){
     patience =  AI_PTNCE_VET;
   }
-  else if(self.p_damage == 2){
+  else if(self.p_damage == AI_RANK_REG){
     patience =  AI_PTNCE_REG;
   }
-  else if(self.p_damage == 3){
+  else if(self.p_damage == AI_RANK_ROK){
     patience =  AI_PTNCE_ROK;
   }
   else{

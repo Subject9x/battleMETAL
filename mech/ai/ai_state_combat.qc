@@ -110,54 +110,65 @@ void() ai_combat_huntTarget={
   it executes a chosen sub state based on the AI's .style field
 */
 void() ai_combat_adjustPosition={
-  self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
-  if(self.state_1 == AI_ORDER_DEFEND){
-    if(self.stat_trg_dist > AI_DEFEND_DIST){
-      ai_state_control(ai_combat_endFight);
-      return;
-    }
-  }
-  local float tvel;
-  tvel = vectoangles(self.movement);  //DEBUG possibly
-  ai_util_calcTargetMoveDir(self.trigger_field, self);
-  local float tDist;
-  tDist = vlen(self.trigger_field.origin - self.origin);
-  if(ai_target_canSee(self.trigger_field)){
-    if(self.ai_style == AI_STYLE_SNIPER){
-      ai_combat_adjustSniper(tDist, AI_RANGE_M, AI_RANGE_L);
-    }
-    else if(self.ai_style == AI_STYLE_BRAWL){
-      ai_combat_adjustBrawler(tDist, (AI_RANGE_S / 5 ), AI_RANGE_S);
-    }
-    else if(self.ai_style == AI_STYLE_SKIRM){
-      ai_combat_adjustSkirmish(tDist, 50, AI_RANGE_L);
-    }
-    else if(self.ai_style == AI_STYLE_FLANK){
-      ai_combat_adjustFlanker(tDist, (AI_RANGE_S / 5 ), AI_RANGE_L);
-    }
-    //AI will make an attack on the next frame
-    self.button0 = 1;
-  }
-  else{
-    //maybe the AI has an old enemy that's visible?
-    if(self.oldenemy != world){
-      if(ai_target_isValid(self.oldenemy)){
-        if(ai_target_visualPing(self.oldenemy)){
-          self.trigger_field = self.oldenemy;
-          self.oldenemy = world;
-          self.enemy = self.trigger_field;
-          self.goalentity = self.trigger_field;
-          ai_state_control(ai_combat_adjustPosition);
-          return;
-        }
+  if(ai_target_isValid(self.trigger_field)){
+    self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
+    if(self.state_1 == AI_ORDER_DEFEND){
+      if(self.stat_trg_dist > AI_DEFEND_DIST){
+        ai_state_control(ai_combat_endFight);
+        return;
       }
     }
-    //no LoS and no old enemy, attempt to hunt
-    self.delay = time + (ai_pilot_rating_patience() / 2); //TODO - patience mod
-    ai_state_control(ai_combat_huntTarget);
+
+    //prepare combat state flags
+    local float tDist, tMoveDir, lowHP, isBlock;
+    local entity eBlocker;
+    tDist = vlen(self.trigger_field.origin - self.origin);
+    tMoveDir = ai_util_calcTargetMoveDir(self.trigger_field, self);
+    lowHP = ai_util_checkSelfHealth();
+    isBlock = FALSE;
+    eBlocker = ai_target_checkBlock(self.trigger_field);
+    
+    //enter proper combat stance
+    if(ai_target_canSee(self.trigger_field)){
+      if(self.ai_style == AI_STYLE_SNIPER){
+        ai_combat_adjustSniper(tDist, AI_RANGE_M, AI_RANGE_L, tMoveDir, lowHP, eBlocker);
+      }
+      else if(self.ai_style == AI_STYLE_BRAWL){
+        ai_combat_adjustBrawler(tDist, (AI_RANGE_S / 5 ), AI_RANGE_S, tMoveDir, lowHP, eBlocker);
+      }
+      else if(self.ai_style == AI_STYLE_SKIRM){
+        ai_combat_adjustSkirmish(tDist, 50, AI_RANGE_L, tMoveDir, lowHP, eBlocker);
+      }
+      else if(self.ai_style == AI_STYLE_FLANK){
+        ai_combat_adjustFlanker(tDist, (AI_RANGE_S / 5 ), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
+      }
+      //AI will make an attack on the next frame
+      self.button0 = 1;
+    }
+    else{
+      //maybe the AI has an old enemy that's visible?
+      if(self.oldenemy != world){
+        if(ai_target_isValid(self.oldenemy)){
+          if(ai_target_visualPing(self.oldenemy)){
+            self.trigger_field = self.oldenemy;
+            self.oldenemy = world;
+            self.enemy = self.trigger_field;
+            self.goalentity = self.trigger_field;
+            ai_state_control(ai_combat_adjustPosition);
+            return;
+          }
+        }
+      }
+      //no LoS and no old enemy, attempt to hunt
+      self.delay = time + (ai_pilot_rating_patience() / 2); //TODO - patience mod
+      ai_state_control(ai_combat_huntTarget);
+      return;
+    }
+    ai_state_control(ai_combat_adjustPosition);
     return;
   }
-  ai_state_control(ai_combat_adjustPosition);
+  ai_target_clearBuffers();
+  ai_state_control(ai_combat_endFight);
   return;
 };
 
@@ -186,6 +197,7 @@ void() ai_combat_endFight={
     return;
   }
   else if(self.state_1 == AI_ORDER_STAND){
+    ai_move_controller(ai_move_stand, 1);
     ai_state_control(ai_misc_stand);
     return;
   }
