@@ -44,12 +44,11 @@ void() ai_control={
   self.prev_pos = self.origin;
   if(self.m_fspeed > -1){
     self.ai_hasmoved = self.ai_next_move();
-    self.prev_angle = normalize(self.origin - self.prev_pos);
-    if(self.enemy != world){
-      self.e_legs.angles_y = vectoyaw(self.v_angle) + self.p_velocity;
+    if(self.ai_next_move != ai_move_stand){
+      self.e_legs.v_angle_y = self.p_velocity;
     }
     else{
-      self.e_legs.angles_y = self.v_angle_y;
+      self.e_legs.v_angle_y = self.v_angle_y;
     }
   }
   self.think = ai_control;

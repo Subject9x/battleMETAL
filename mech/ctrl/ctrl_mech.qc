@@ -128,15 +128,15 @@ void() ctrl_die_comp={
       self.angles = oself.angles;
       if(pvel_x > 0 || pvel_y > 0 || pvel_z > 0){
         self.velocity = pvel + VelocityForDamage (100);
-        self.avelocity_x = random()*600;
-        self.avelocity_y = random()*600;
-        self.avelocity_z = random()*600;
+        self.avelocity_x = random()*150;
+        self.avelocity_y = random()*150;
+        self.avelocity_z = random()*100;
       }
       else{
         self.velocity = VelocityForDamage (100);
-        self.avelocity_x = random()*600;
-        self.avelocity_y = random()*600;
-        self.avelocity_z = random()*600;
+        self.avelocity_x = random()*150;
+        self.avelocity_y = random()*150;
+        self.avelocity_z = random()*100;
       }      
       util_setHealthArmor(10,10,10,10);
       self.th_die = SUB_Remove;

@@ -30,9 +30,19 @@ void() ai_misc_stand={
       contact = ai_target_radarTarget();
       if(contact){
         ai_update_switchToTarget(contact);
-        if(ai_target_visualPing(self.trigger_field)){
+        if(ai_target_canSee(self.trigger_field)){
           ai_state_control(ai_combat_adjustPosition);
-          ai_move_controller(ai_move_stand, 0.05);
+          return;
+        }
+        self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
+        ai_state_control(ai_combat_huntTarget);
+        return;
+      }
+    }
+    else{
+      if(ai_target_isValid(self.trigger_field)){
+        if(ai_target_canSee(self.trigger_field)){
+          ai_state_control(ai_combat_adjustPosition);
           return;
         }
         self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
@@ -41,8 +51,8 @@ void() ai_misc_stand={
       }
     }
   }
-  ai_move_controller(ai_move_stand, 1);
   ai_state_control(ai_misc_stand);
+  ai_move_controller(ai_move_stand, 1);
   return;
 };
 

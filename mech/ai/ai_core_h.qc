@@ -125,7 +125,9 @@ float() ai_move_walkmove_backleft;
 float(float filterDir) ai_move_rand_walk;
 float(float filterDir) ai_move_rand_run;
 void(float isRun, float duration) ai_move_walkmove_forwardRand;
+void(float duration, float() move1, float() move2) ai_move_randomTwo;
 void(float duration, float() move1, float() move2, float() move3) ai_move_randomThree;
+void(float duration, float() move1, float() move2, float() move3, float() move4) ai_move_randomFour;
 void(float duration, float() move1, float() move2, float() move3, float() move4, float() move5, float() move6) ai_move_randomSix;
 /*==========================================*/
 

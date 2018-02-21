@@ -15,139 +15,227 @@ BRAWLER FUNCTIONS
   float distFar = range that is 'too far';
 */
 void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustBrawler={
-  local float tDist, isTooClose, isTooFar, isBlockedFriend, isBlockedEnemy, isTargetCharge;
-  local entity eBlocker;
-  tDist = vlen(self.enemy.origin - self.origin);
-  isTooClose = FALSE;
-  isTooFar = FALSE;
-  isBlockedFriend = FALSE;
-  isBlockedEnemy = FALSE;
-  if(tDist < (AI_RANGE_S / 5 )){
-    isTooClose = TRUE;
+  local float isClose, isFar, distOptimal, blockDist;
+  isClose = FALSE;
+  isFar = FALSE;
+  distOptimal = FALSE;
+  /*
+    flags
+      distClose - target is inside min range
+      distFar - target is outside range
+      distOptimal - is AI in its own optimal range
+      tMovedir - move direction relative to self
+      type - the behavior type of AI
+      rank - how skilled the AI is
+  */
+  if(targDist <= distClose){
+    isClose = TRUE;
   }
-  if(tDist > AI_RANGE_S){
-    isTooFar = TRUE;
+  if(targDist > distFar){
+    isFar = TRUE;
   }
-  eBlocker = ai_target_checkBlock(self.trigger_field);
-  if(eBlocker != world){
+  if(targDist <= self.ai_minrange){
+    distOptimal = TRUE;
+  }
+//==================================================
+//CASE: target is blocked by something else
+  if((eBlocker != world) && (eBlocker != self.trigger_field)){
+    local float blockDir;
+    blockDir = ai_util_calcTargetMoveDir(eBlocker, self);
     if(eBlocker.i_faction == self.i_faction){
-      isBlockedFriend = TRUE;
+      //oops, friendly is in the way, try to move around
+      local float amt;
+      amt = ceil(1 + self.p_damage);  //worse pilots are badly aggressive
+      if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
+        if(self.ai_type == AI_TYPE_AGGRO){
+          ai_move_randomSix(amt, ai_move_walkmove_strafeleft, 
+                      ai_move_walkmove_straferight, 
+                      ai_move_runmove_slideleft, 
+                      ai_move_runmove_slideright,
+                      ai_move_charge_left, 
+                      ai_move_charge_right);
+          return;
+        }
+        ai_move_randomSix(3, ai_move_backward, 
+                              ai_run_backward, 
+                              ai_move_walkmove_backleft, 
+                              ai_move_walkmove_backleft,
+                              ai_move_walkmove_backright, 
+                              ai_move_walkmove_backright);
+        return;
+      }      
+      if(self.ai_type == AI_TYPE_AGGRO){
+        //AGGRO overrides nuance
+        ai_move_randomThree(amt, ai_move_charge_left,
+                                  ai_move_charge_right,
+                                  ai_move_backward);
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+        //COWARDS aren't great
+        ai_move_controller(ai_move_stand, 2);
+        return;
+      }
+      if(blockDir == AI_TARG_RGT){
+        ai_move_randomSix(2, ai_move_walkmove_strafeleft, 
+                                ai_move_runmove_slideleft, 
+                                ai_move_backward,
+                                ai_move_walkmove_backleft,
+                                ai_move_walkmove_strafeleft,
+                                ai_move_runmove_slideleft);
+        return;
+      }
+      if(blockDir == AI_TARG_LFT){
+        ai_move_randomSix(2, ai_move_walkmove_straferight, 
+                                ai_move_runmove_slideright, 
+                                ai_move_backward,
+                                ai_move_walkmove_backright,
+                                ai_move_walkmove_straferight,
+                                ai_move_runmove_slideright);
+        return;
+      }
     }
     else{
-      isBlockedEnemy = TRUE;
-    }
-  }
-  if(self.ai_type == AI_TYPE_AGGRO){
-    /*
-      stay very close to target
-      strafe with target (keeps attention)
-      always be running
-    */
-    if(isBlockedEnemy){
-      if( ai_target_isInFront(eBlocker) ){
-        //aggro enemies blast through everything O.o
-        self.button0 = 1;
-      }
-      else{
-        //attempt to rush around obstacle
-        ai_state_control(ai_combat_huntTarget);
-        ai_move_controller(ai_move_run_goal, 1);
-        self.delay = time + 10;
-        return;
-      }
-    }
-    if(isBlockedFriend){
-      //attempt to rush around obstacle
-      ai_state_control(ai_combat_huntTarget);
-      ai_move_controller(ai_move_run_goal, 1);
-      self.delay = time + 10;
-      return;
-    }
-    if(isTooFar){
-      if(ai_target_isInFront(self.trigger_field)){
-        //take a swipe
-        self.button0 = 1; 
-        ai_move_controller(ai_run_forward, 2);
-      }
-      else{
-        if(crandom() == TRUE){
-          ai_move_controller(ai_move_runmove_slideleft, 0.5);
+      //enemy is in the way
+      //AI is super aggressive
+      if(self.ai_type == AI_TYPE_AGGRO){
+        if(vlen(eBlocker.origin - self.origin) <= isClose){
+          //blocker is in AI's aggressive face
+          if(self.p_damage >= 2){
+            //low rank, aggressive AI's will attack the blocker
+            ai_update_switchToTarget(eBlocker);
+          }
         }
-        else{
-          ai_move_controller(ai_move_runmove_slideright, 0.5);
-        }
-      }
-      ai_state_control(ai_combat_adjustPosition);
-      return;
-    }
-    
-  }
-  else if(self.ai_type == AI_TYPE_RESCU){
-    /*
-      if not near designated friendly
-        move to friendly
-      else
-        switch to enemy,
-        execute normal brawling
-    */
-  }
-  else if(self.ai_type == AI_TYPE_COWRD){
-    /*
-      take pulse on health, hp, and shields
-      
-    */
-  }
-  else{
-    /*
-      normal brawling:
-        enemy coming at bot -> move back and slide left/right
-        enemy moving away -> charge and slide left/right
-        enemy strafe -> counter strafe
-        random movement -> 
-    */
-    
-    if(isBlockedEnemy){
-      //brawlers gonna brawl
-      if(eBlocker.data_type != DATA_BLD){
-        ai_update_switchToTarget(eBlocker);
-        ai_state_control(ai_combat_adjustPosition);
-        return;
-      }
-      else{
-        ai_state_control(ai_combat_huntTarget);
-        ai_move_controller(ai_move_run_goal, 2);
-        self.delay = time + 20;
-        return;
-      }
-    }
-    
-    //will attempt to maneuver around friends;
-    if(isBlockedFriend){
-      ai_state_control(ai_combat_huntTarget);
-      ai_move_controller(ai_move_run_goal, 2);
-      self.delay = time + 20;
-      return;
-    }
-    
-    local float tVel, scopeLeft, scopeRight;
-    scopeLeft = anglemod(self.ideal_yaw - 15);
-    scopeRight = anglemod(self.ideal_yaw + 15);
-    tVel = vectoyaw(self.trigger_field.velocity);
-    //check if target is facing this AI
-    if( ai_target_isFacingThis(self.trigger_field) ){
-      if( (tVel > scopeLeft) && (tVel < scopeRight) ){
-        //target is coming towards the bot
-        if(crandom() == TRUE){
-          ai_move_controller(ai_move_charge_left, 4);
+        if(blockDir == AI_TARG_FWD ){
+          ai_move_randomSix(2, ai_move_runmove_slideleft,
+                                ai_move_runmove_slideright, 
+                                ai_move_charge_left, 
+                                ai_move_charge_right,
+                                ai_move_runmove_slideright, 
+                                ai_move_runmove_slideleft);
           return;
         }
-        else{
-          ai_move_controller(ai_move_charge_right, 4);
+        if(blockDir == AI_TARG_BKD){
+          ai_move_randomThree(3, ai_move_charge_left,
+                                  ai_move_charge_right,
+                                  ai_move_forward);
+          return;
+        }
+        if(blockDir == AI_TARG_RGT){
+          ai_move_randomThree(4, ai_move_walkmove_strafeleft, 
+                                  ai_move_runmove_slideleft, 
+                                  ai_move_walkmove_backleft);
+          return;
+        }
+        if(blockDir == AI_TARG_LFT){
+          ai_move_randomThree(4, ai_move_walkmove_straferight, 
+                                  ai_move_runmove_slideright, 
+                                  ai_move_walkmove_backright);
           return;
         }
       }
-    } 
-    
+      if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
+        ai_move_randomSix(3, ai_move_backward, 
+                              ai_run_backward, 
+                              ai_move_walkmove_backleft, 
+                              ai_move_walkmove_backleft,
+                              ai_move_walkmove_backright, 
+                              ai_move_walkmove_backright);
+        return;
+      }
+      if(self.ai_type == AI_TYPE_AGGRO){
+        //AGGRO overrides nuance
+        ai_move_randomThree(amt, ai_move_charge_left,
+                                  ai_move_charge_right,
+                                  ai_move_backward);
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+        //COWARDS aren't great
+        ai_move_controller(ai_move_stand, 2);
+        return;
+      }
+      if(blockDir == AI_TARG_RGT){
+        ai_move_controller(ai_move_runmove_slideleft, 1);
+        return;
+      }
+      if(blockDir == AI_TARG_LFT){
+        ai_move_controller(ai_move_runmove_slideright, 1);
+        return;
+      }
+      return;
+    }
   }
+//==================================================
+  
+//CASE: Target is too close - yes its possible to be to close
+  if(isClose){
+    //layer 1 - tMovedir
+      //layer 2 - ai type
+        //layer 3 - ai rank
+          //layer 4 - target facing
+    if(tMovedir == AI_TARG_FWD){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        if(self.p_damage <= AI_RANK_VET){
+        
+        }
+        //else
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+      }
+      //else
+    }
+    if(tMovedir == AI_TARG_BKD){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        if(self.p_damage <= AI_RANK_VET){
+        
+        }
+        //else
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+      }
+      //else
+    }
+    if(tMovedir == AI_TARG_LFT){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        if(self.p_damage <= AI_RANK_VET){
+        
+        }
+        //else
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+      }
+      //else
+    }
+    if(tMovedir == AI_TARG_RGT){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        if(self.p_damage <= AI_RANK_VET){
+        
+        }
+        //else
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+      }
+      //else
+    }
+  }
+//=================================================
+  
+//CASE: Target is too far away
+  if(isFar){
+    //layer 1 - tMovedir
+      //layer 2 - ai type
+        //layer 3 - ai rank
+          //layer 4 - target facing
+  
+  }
+//=================================================
+  
+//CASE: Target is in engagement range
+  //target is in the optimal range for AI
 
+    //layer 1 - tMovedir
+      //layer 2 - ai type
+        //layer 3 - ai rank
+          //layer 4 - target facing
 };

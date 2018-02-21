@@ -17,6 +17,9 @@ SKIRMISHER FUNCTIONS
 */
 void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustSkirmish={
   local float isClose, isFar, distOptimal, blockDist;
+  isClose = FALSE;
+  isFar = FALSE;
+  distOptimal = FALSE;
   /*
     flags
       distClose - target is inside min range
@@ -29,15 +32,8 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   if(targDist <= distClose){
     isClose = TRUE;
   }
-  else{
-    isClose = FALSE;
-  }
-  
   if(targDist > distFar){
     isFar = TRUE;
-  }
-  else{
-    isFar = FALSE;
   }
   if(targDist <= self.ai_minrange){
     distOptimal = TRUE;
@@ -50,7 +46,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     blockDir = ai_util_calcTargetMoveDir(eBlocker, self);
     if(eBlocker.i_faction == self.i_faction){
       //oops, friendly is in the way, try to move around
-      if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_FWD)){
+      if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
         local float d2;
         d2 = util_roll_dice(2);
         if(d2 == 1){
@@ -81,7 +77,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
             ai_update_switchToTarget(eBlocker);
           }
         }
-        if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_FWD)){
+        if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
           ai_move_randomSix(2, ai_move_runmove_slideleft,
                                 ai_move_runmove_slideright, 
                                 ai_move_charge_left, 
@@ -101,7 +97,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
           }
         }
       }
-      if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_FWD)){
+      if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
         local float d2;
         d2 = util_roll_dice(2);
         if(d2 == 1){

@@ -125,7 +125,7 @@ float() ai_move_angle_run={
 float() ai_move_runmove_slideright={  
   if (walkmove( self.ideal_yaw + 90, self.m_sspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_move_runmove_slideright;
-    self.p_velocity = 90;
+    self.p_velocity = self.v_angle_y + 90;
     return TRUE;
   }
   return FALSE;
@@ -134,7 +134,7 @@ float() ai_move_runmove_slideright={
 float() ai_move_runmove_slideleft={  
   if (walkmove( self.ideal_yaw + -90, self.m_sspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_move_runmove_slideleft;
-    self.p_velocity = -90;
+    self.p_velocity = self.v_angle_y + -90;
     return TRUE;
   }
   return FALSE;
@@ -143,7 +143,7 @@ float() ai_move_runmove_slideleft={
 float() ai_move_forward={
   if (walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD)){
     self.ai_prev_move = ai_move_forward;
-    self.p_velocity = 0;
+    self.p_velocity = self.v_angle_y;
     return TRUE;
   }
   return FALSE;
@@ -152,25 +152,25 @@ float() ai_move_forward={
 float() ai_run_forward={
   if (walkmove (self.angles_y, self.m_fspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_move_forward;
-    self.p_velocity = 0;
+    self.p_velocity = self.v_angle_y;
     return TRUE;
   }
   return FALSE;
 };
 
 float() ai_run_backward={
-  if (walkmove (self.angles_y+180, self.m_fspeed * AI_RUN_SPD)){
+  if (walkmove (self.angles_y + 180, self.m_fspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_run_backward;
-    self.p_velocity = 180;
+    self.p_velocity = self.v_angle_y + 180;
     return TRUE;
   }
   return FALSE;
 };
 
 float() ai_move_backward={
-  if (walkmove ((self.angles_y+180), self.m_bspeed * AI_WALK_SPD)){
+  if (walkmove ((self.angles_y + 180), self.m_bspeed * AI_WALK_SPD)){
     self.ai_prev_move = ai_move_backward;
-    self.p_velocity = 180;
+    self.p_velocity = self.v_angle_y + 180;
     return TRUE;
   }
   return FALSE;
@@ -178,7 +178,7 @@ float() ai_move_backward={
 
 float() ai_move_walkmove_strafeleft={
   if(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
-    self.p_velocity = -90;
+    self.p_velocity = self.v_angle_y - 90;
     self.ai_prev_move = ai_move_walkmove_straferight;
     return TRUE;
   }
@@ -187,7 +187,7 @@ float() ai_move_walkmove_strafeleft={
 
 float() ai_move_walkmove_straferight={
   if(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
-    self.p_velocity = 90;
+    self.p_velocity = self.v_angle_y + 90;
     self.ai_prev_move = ai_move_walkmove_straferight;
     return TRUE;
   }
@@ -195,18 +195,18 @@ float() ai_move_walkmove_straferight={
 };
 
 float() ai_move_charge_left={
-  if (walkmove (self.ideal_yaw - 60,  self.m_fspeed * AI_RUN_SPD)){
+  if (walkmove (self.ideal_yaw - 75,  self.m_fspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_move_stand;
-    self.p_velocity = -60;
+    self.p_velocity = self.v_angle_y - 75;
     return TRUE;
   }
   return FALSE;
 };
 
 float() ai_move_charge_right={
-  if(walkmove (self.ideal_yaw + 60,  self.m_fspeed * AI_RUN_SPD)){
+  if(walkmove (self.ideal_yaw + 75,  self.m_fspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_move_stand;
-    self.p_velocity = 60;
+    self.p_velocity = self.v_angle_y + 75;
     return TRUE;
   }
   return FALSE;
@@ -215,7 +215,7 @@ float() ai_move_charge_right={
 float() ai_move_walkmove_backleft={
   if (walkmove (self.ideal_yaw - 135,  self.m_fspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_move_stand;
-    self.p_velocity = -135;
+    self.p_velocity = self.v_angle_y - 135;
     return TRUE;
   }
   return FALSE;
@@ -255,6 +255,21 @@ void(float isRun, float duration) ai_move_walkmove_forwardRand={
 
 
 /*
+  given 2 possible moves being passed in, roll a die
+  and pick one
+*/
+void(float duration, float() move1, float() move2) ai_move_randomTwo={
+  local float dieRoll;
+  dieRoll = util_roll_dice(2);
+  if(dieRoll == 1){
+    ai_move_controller(move1, duration);
+  }
+  else if(dieRoll == 2){
+    ai_move_controller(move2, duration);
+  }
+};
+
+/*
   given 3 possible moves being passed in, roll a die
   and pick one
 */
@@ -269,6 +284,27 @@ void(float duration, float() move1, float() move2, float() move3) ai_move_random
   }
   else if(dieRoll == 3){
     ai_move_controller(move3, duration);
+  }
+};
+
+/*
+  given 4 possible moves being passed in, roll a die
+  and pick one
+*/
+void(float duration, float() move1, float() move2, float() move3, float() move4) ai_move_randomFour={
+  local float dieRoll;
+  dieRoll = util_roll_dice(4);
+  if(dieRoll == 1){
+    ai_move_controller(move1, duration);
+  }
+  else if(dieRoll == 2){
+    ai_move_controller(move2, duration);
+  }
+  else if(dieRoll == 3){
+    ai_move_controller(move3, duration);
+  }
+  else if(dieRoll == 4){
+    ai_move_controller(move4, duration);
   }
 };
 
@@ -298,6 +334,7 @@ void(float duration, float() move1, float() move2, float() move3, float() move4,
     ai_move_controller(move6, duration);
   }
 };
+
 
 /*
   given a bitflag set of float filterDir, using AI_DIR flags

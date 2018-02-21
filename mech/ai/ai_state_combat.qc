@@ -137,7 +137,7 @@ void() ai_combat_adjustPosition={
         ai_combat_adjustBrawler(tDist, (AI_RANGE_S / 5 ), AI_RANGE_S, tMoveDir, lowHP, eBlocker);
       }
       else if(self.ai_style == AI_STYLE_SKIRM){
-        ai_combat_adjustSkirmish(tDist, 50, AI_RANGE_L, tMoveDir, lowHP, eBlocker);
+        ai_combat_adjustSkirmish(tDist, (AI_RANGE_S * 0.85), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
       }
       else if(self.ai_style == AI_STYLE_FLANK){
         ai_combat_adjustFlanker(tDist, (AI_RANGE_S / 5 ), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
@@ -180,6 +180,12 @@ void() ai_combat_adjustPosition={
 */
 void() ai_combat_endFight={
   ai_target_clearBuffers();
+  if(!ai_target_isValid(self.trigger_field)){
+    self.trigger_field = world;
+  }
+  //clear out combat move
+  self.ai_next_move = ai_move_stand;
+  self.w_isready = time + 0.5;
   //clear out the delay var so that it can be reused by nodes
   if(time < self.delay){
     self.delay = time;
