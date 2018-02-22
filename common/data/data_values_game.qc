@@ -221,10 +221,10 @@ float AI_RNG_ROK = 1.5;
 
 //Adjust Rotation Rate
 //self.yaw_speed = rotation rate + (rotation rate * AI_ROT_X);
-float AI_ROT_ACE = 0.05; //0.7
-float AI_ROT_VET = 0.1; //0.6
-float AI_ROT_REG = 0.2; //0.4
-float AI_ROT_ROK = 0.3; //0.25
+float AI_ROT_ACE = 0.01; //0.7
+float AI_ROT_VET = 0.05; //0.6
+float AI_ROT_REG = 0.15; //0.4
+float AI_ROT_ROK = 0.25; //0.25
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR

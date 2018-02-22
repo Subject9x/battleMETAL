@@ -63,23 +63,6 @@ void(float() move, float frames) ai_move_controller={
 };
 
 //move directives
-void() ai_move_random={
-  local float r;
-  r = random();
-  if(r < 0.25){
-    ai_move_controller(ai_move_backward, r*2);
-  }
-  else if((r >= 0.25) && (r < 0.5)){
-    ai_move_controller(ai_move_forward, r*2);
-  }
-  else if((r >= 0.5) && (r < 0.75)){
-    ai_move_controller(ai_move_walkmove_strafeleft, r*2);
-  }
-  else if(r >= 0.75){
-    ai_move_controller(ai_move_walkmove_straferight, r*2);
-  }
-};
-
 float() ai_move_stand={
   if(self.ai_prev_move != ai_move_stand){
     walkmove(self.ideal_yaw, 0);
@@ -91,14 +74,14 @@ float() ai_move_stand={
 float() ai_move_walk_goal={
   movetogoal(self.m_fspeed * AI_WALK_SPD);
   self.ai_prev_move = ai_move_walk_goal;
-  self.p_velocity = 0;
+  self.p_velocity = self.v_angle_y;
   return TRUE;
 };
 
 float() ai_move_run_goal={
   movetogoal(self.m_fspeed * AI_RUN_SPD);
   self.ai_prev_move = ai_move_run_goal;
-  self.p_velocity = 0;
+  self.p_velocity = self.v_angle_y;
   return TRUE;
 };
 
@@ -132,9 +115,9 @@ float() ai_move_runmove_slideright={
 };
 
 float() ai_move_runmove_slideleft={  
-  if (walkmove( self.ideal_yaw + -90, self.m_sspeed * AI_RUN_SPD)){
+  if (walkmove( self.ideal_yaw - 90, self.m_sspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_move_runmove_slideleft;
-    self.p_velocity = self.v_angle_y + -90;
+    self.p_velocity = self.v_angle_y - 90;
     return TRUE;
   }
   return FALSE;
@@ -159,7 +142,7 @@ float() ai_run_forward={
 };
 
 float() ai_run_backward={
-  if (walkmove (self.angles_y + 180, self.m_fspeed * AI_RUN_SPD)){
+  if (walkmove (self.angles_y + 180, self.m_bspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_run_backward;
     self.p_velocity = self.v_angle_y + 180;
     return TRUE;
@@ -194,6 +177,25 @@ float() ai_move_walkmove_straferight={
   return FALSE;
 };
 
+
+float() ai_move_walkmove_forwardleft={
+  if (walkmove (self.ideal_yaw - 45,  self.m_fspeed * AI_WALK_SPD)){
+    self.ai_prev_move = ai_move_stand;
+    self.p_velocity = self.v_angle_y - 45;
+    return TRUE;
+  }
+  return FALSE;
+};
+
+float() ai_move_walkmove_forwardright={
+  if(walkmove (self.ideal_yaw + 45,  self.m_fspeed * AI_WALK_SPD)){
+    self.ai_prev_move = ai_move_stand;
+    self.p_velocity = self.v_angle_y + 45;
+    return TRUE;
+  }
+  return FALSE;
+};
+
 float() ai_move_charge_left={
   if (walkmove (self.ideal_yaw - 75,  self.m_fspeed * AI_RUN_SPD)){
     self.ai_prev_move = ai_move_stand;
@@ -213,7 +215,7 @@ float() ai_move_charge_right={
 };
 
 float() ai_move_walkmove_backleft={
-  if (walkmove (self.ideal_yaw - 135,  self.m_fspeed * AI_RUN_SPD)){
+  if (walkmove (self.ideal_yaw - 135,  self.m_sspeed * AI_WALK_SPD)){
     self.ai_prev_move = ai_move_stand;
     self.p_velocity = self.v_angle_y - 135;
     return TRUE;
@@ -222,9 +224,28 @@ float() ai_move_walkmove_backleft={
 };
 
 float() ai_move_walkmove_backright={
-  if (walkmove (self.ideal_yaw + 135,  self.m_fspeed * AI_RUN_SPD)){
+  if (walkmove (self.ideal_yaw + 135,  self.m_sspeed * AI_WALK_SPD)){
     self.ai_prev_move = ai_move_stand;
-    self.p_velocity = 135;
+    self.p_velocity = self.v_angle_y + 135;
+    return TRUE;
+  }
+  return FALSE;
+};
+
+
+float() ai_move_runmove_backright={
+  if (walkmove (self.ideal_yaw + 135,  self.m_sspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_move_stand;
+    self.p_velocity = self.v_angle_y + 135;
+    return TRUE;
+  }
+  return FALSE;
+};
+
+float() ai_move_runmove_backleft={
+  if (walkmove (self.ideal_yaw - 135,  self.m_sspeed * AI_RUN_SPD)){
+    self.ai_prev_move = ai_move_stand;
+    self.p_velocity = self.v_angle_y - 135;
     return TRUE;
   }
   return FALSE;
@@ -333,22 +354,4 @@ void(float duration, float() move1, float() move2, float() move3, float() move4,
   else if(dieRoll == 6){
     ai_move_controller(move6, duration);
   }
-};
-
-
-/*
-  given a bitflag set of float filterDir, using AI_DIR flags
-  produce a randomly chosen bitflag from the incoming set.
-  
-*/
-float(float filterDir) ai_move_rand_walk={
-  
-};
-
-/*
-  like ai_move_rand_walk but with run functions instead
-  of walking functions
-*/
-float(float filterDir) ai_move_rand_run={
-
 };

@@ -32,15 +32,15 @@ float() ai_core_noguns={
 /*
   recurse through a node's patrol paths to find the most visible node to the ai
 */
-entity(entity node) ai_find_patrol_node_recurse={
+entity(entity gnode) ai_find_patrol_node_recurse={
   local entity n;
-  if(node.target){
-    n = find(world, targetname, node.target);
+  if(gnode.target){
+    n = find(world, targetname, gnode.target);
     if(n != world){
-      makevectors(node.angles);
+      makevectors(gnode.angles);
       local vector v1;
-      v1 = node.origin + v_up*32;
-      traceline(v1, self.origin, TRUE, node);
+      v1 = gnode.origin + v_up*32;
+      traceline(v1, self.origin, TRUE, gnode);
       if(trace_fraction == 1){
         return n;
       }
@@ -49,11 +49,11 @@ entity(entity node) ai_find_patrol_node_recurse={
       }
     }
     else{
-      return node;
+      return gnode;
     }
   }
   else{
-    return node;
+    return gnode;
   }
 };
 
@@ -413,104 +413,104 @@ void() ai_core_calcranges={
 
 //moving this to bottom for readability
 //galaxy forgive me
-entity(entity node, float id) ai_query_graphnode={
+entity(entity gnode, float id) ai_query_graphnode={
   local entity n;
   local float idx;
   if(id == 1){
-    idx = node.nexnode1;
+    idx = gnode.nexnode1;
   }
   else if(id == 2){
-    idx = node.nexnode2;
+    idx = gnode.nexnode2;
   }
   else if(id == 3){
-    idx = node.nexnode3;
+    idx = gnode.nexnode3;
   }
   else if(id == 4){
-    idx = node.nexnode4;
+    idx = gnode.nexnode4;
   }
   else if(id == 5){
-    idx = node.nexnode5;
+    idx = gnode.nexnode5;
   }
   else if(id == 6){
-    idx = node.nexnode6;
+    idx = gnode.nexnode6;
   }
   else if(id == 7){
-    idx = node.nexnode7;
+    idx = gnode.nexnode7;
   }
   else if(id == 8){
-    idx = node.nexnode8;
+    idx = gnode.nexnode8;
   }
   else if(id == 9){
-    idx = node.nexnode9;
+    idx = gnode.nexnode9;
   }
   else if(id == 10){
-    idx = node.nexnode10;
+    idx = gnode.nexnode10;
   }
   else if(id == 11){
-    idx = node.nexnode11;
+    idx = gnode.nexnode11;
   }
   else if(id == 12){
-    idx = node.nexnode12;
+    idx = gnode.nexnode12;
   }
   else if(id == 13){
-    idx = node.nexnode13;
+    idx = gnode.nexnode13;
   }
   else if(id == 14){
-    idx = node.nexnode14;
+    idx = gnode.nexnode14;
   }
   else if(id == 15){
-    idx = node.nexnode15;
+    idx = gnode.nexnode15;
   }
   else if(id == 16){
-    idx = node.nexnode16;
+    idx = gnode.nexnode16;
   }
   else if(id == 17){
-    idx = node.nexnode17;
+    idx = gnode.nexnode17;
   }
   else if(id == 18){
-    idx = node.nexnode18;
+    idx = gnode.nexnode18;
   }
   else if(id == 19){
-    idx = node.nexnode19;
+    idx = gnode.nexnode19;
   }
   else if(id == 20){
-    idx = node.nexnode20;
+    idx = gnode.nexnode20;
   }
   else if(id == 21){
-    idx = node.nexnode21;
+    idx = gnode.nexnode21;
   }
   else if(id == 22){
-    idx = node.nexnode22;
+    idx = gnode.nexnode22;
   }
   else if(id == 23){
-    idx = node.nexnode23;
+    idx = gnode.nexnode23;
   }
   else if(id == 24){
-    idx = node.nexnode24;
+    idx = gnode.nexnode24;
   }
   else if(id == 25){
-    idx = node.nexnode25;
+    idx = gnode.nexnode25;
   }
   else if(id == 26){
-    idx = node.nexnode26;
+    idx = gnode.nexnode26;
   }
   else if(id == 27){
-    idx = node.nexnode27;
+    idx = gnode.nexnode27;
   }
   else if(id == 28){
-    idx = node.nexnode28;
+    idx = gnode.nexnode28;
   }
   else if(id == 29){
-    idx = node.nexnode29;
+    idx = gnode.nexnode29;
   }
   else if(id == 30){
-    idx = node.nexnode30;
+    idx = gnode.nexnode30;
   }
   else if(id == 31){
-    idx = node.nexnode31;
+    idx = gnode.nexnode31;
   }
   else if(id == 32){
-    idx = node.nexnode32;
+    idx = gnode.nexnode32;
   }
   n = findfloat(world, node_id, idx);
   return n;

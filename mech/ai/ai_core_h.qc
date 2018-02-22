@@ -106,7 +106,6 @@ void() ai_control;      //global, root controller function
 */
 //move directives
 void(float() move, float frames) ai_move_controller; //root controller, delegates move functions
-void() ai_move_random;
 float() ai_move_stand;
 float() ai_move_walk_goal;
 float() ai_move_run_goal;
@@ -118,12 +117,14 @@ float() ai_move_forward;
 float() ai_run_forward;
 float() ai_move_backward;
 float() ai_run_backward;
+float() ai_move_walkmove_forwardleft;
+float() ai_move_walkmove_forwardright;
 float() ai_move_charge_left;
 float() ai_move_charge_right;
 float() ai_move_walkmove_backright;
 float() ai_move_walkmove_backleft;
-float(float filterDir) ai_move_rand_walk;
-float(float filterDir) ai_move_rand_run;
+float() ai_move_runmove_backright;
+float() ai_move_runmove_backleft;
 void(float isRun, float duration) ai_move_walkmove_forwardRand;
 void(float duration, float() move1, float() move2) ai_move_randomTwo;
 void(float duration, float() move1, float() move2, float() move3) ai_move_randomThree;

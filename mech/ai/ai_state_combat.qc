@@ -120,12 +120,11 @@ void() ai_combat_adjustPosition={
     }
 
     //prepare combat state flags
-    local float tDist, tMoveDir, lowHP, isBlock;
+    local float tDist, tMoveDir, lowHP;
     local entity eBlocker;
     tDist = vlen(self.trigger_field.origin - self.origin);
     tMoveDir = ai_util_calcTargetMoveDir(self.trigger_field, self);
     lowHP = ai_util_checkSelfHealth();
-    isBlock = FALSE;
     eBlocker = ai_target_checkBlock(self.trigger_field);
     
     //enter proper combat stance
@@ -134,7 +133,7 @@ void() ai_combat_adjustPosition={
         ai_combat_adjustSniper(tDist, AI_RANGE_M, AI_RANGE_L, tMoveDir, lowHP, eBlocker);
       }
       else if(self.ai_style == AI_STYLE_BRAWL){
-        ai_combat_adjustBrawler(tDist, (AI_RANGE_S / 5 ), AI_RANGE_S, tMoveDir, lowHP, eBlocker);
+        ai_combat_adjustBrawler(tDist, 250, AI_RANGE_S, tMoveDir, lowHP, eBlocker);
       }
       else if(self.ai_style == AI_STYLE_SKIRM){
         ai_combat_adjustSkirmish(tDist, (AI_RANGE_S * 0.85), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
