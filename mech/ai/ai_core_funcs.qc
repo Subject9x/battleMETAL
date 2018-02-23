@@ -459,7 +459,7 @@ float(entity targ) ai_target_isFacingThis={
   bool = FALSE;
   this = self;
     self = targ;
-    bool = ai_target_isInFront(self);
+    bool = ai_target_isInFront(this);
   self = this;
   return bool;
 };
@@ -755,4 +755,25 @@ float() ai_util_checkSelfHealth={
     return TRUE; //panic
   }  
   return FALSE;
+};
+
+/*
+  provides how many frames are needed to cover
+  the distance
+*/
+float(vector torg, float tickRate) ai_util_calcMoveDist={
+  local float dist, len;
+  len = vlen(torg - self.origin);
+  dist = self.m_fspeed * AI_RUN_SPD;
+  dist = dist * (1 / tickRate);
+  dist = len / dist;
+  return ceil(dist);
+};
+
+float(float len, float tickRate) ai_util_calcMoveLen={
+  local float dist;
+  dist = self.m_fspeed * AI_RUN_SPD;
+  dist = dist * (1 / tickRate);
+  dist = len / dist;
+  return ceil(dist);
 };

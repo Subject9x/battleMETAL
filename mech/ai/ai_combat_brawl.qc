@@ -178,7 +178,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       if(self.ai_type == AI_TYPE_AGGRO){
         if(self.p_damage <= AI_RANK_VET){
           if(ai_target_isFacingThis(self.trigger_field)){
-            if(self.trigger_field.enemy == self){
+            if(self.trigger_field.trigger_field == self){
               ai_move_randomFour(4, ai_move_charge_right,
                                     ai_move_charge_left,
                                     ai_move_runmove_slideleft,
@@ -218,7 +218,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         if(self.p_damage <= AI_RANK_VET){
           //vets and aces - cool under fire
           if(ai_target_isFacingThis(self.trigger_field)){
-            if(self.trigger_field.enemy == self){
+            if(self.trigger_field.trigger_field == self){
               //target is aiming at the bot
               ai_move_randomSix(4, ai_move_runmove_slideleft,
                                     ai_move_runmove_slideright,

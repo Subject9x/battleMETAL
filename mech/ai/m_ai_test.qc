@@ -19,12 +19,12 @@
   2 = REGULAR
   3 = ROOKIE
 "ai_style" : AI's combat style
+  0, or none = skirmisher - normal movement
   1 = sniper - tries to stay at long range
   2 = brawler - always stays up close to target
-  3 = skirmisher - normal movement
-  4 = flanker - tries to get behind player
-  5 = stalker - extra patience when hunting targets
-  6 = random of 1-5
+  3 = flanker - tries to get behind player
+  4 = stalker - extra patience when hunting targets
+  5 = random of 1-4
 "ai_type" : AI's personality
   0, or none = normal
   1 = aggressive - will always run around, stay in fight

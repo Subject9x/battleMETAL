@@ -195,11 +195,11 @@ float AI_RANK_REG = 2;  //regular
 float AI_RANK_ROK = 3;  //rookie
 
 //QUIRKS - combat
+float AI_STYLE_SKIRM  = 0;  //this is 'default'
 float AI_STYLE_SNIPER = 1;
 float AI_STYLE_BRAWL  = 2;
-float AI_STYLE_SKIRM  = 3;  //this is 'default'
-float AI_STYLE_FLANK  = 4;
-float AI_STYLE_STALK  = 5;
+float AI_STYLE_FLANK  = 3;
+float AI_STYLE_STALK  = 4;
 
 //QUIRKS - personality
 float AI_TYPE_AGGRO  = 1;

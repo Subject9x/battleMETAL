@@ -27,36 +27,6 @@ void(float() move, float frames) ai_move_controller={
     if(!self.ai_hasmoved){
       local float remain;
       remain = self.w_isready - time;
-      /*if(self.ai_next_move == ai_move_forward){
-        self.ai_next_move = ai_move_backward;
-      }
-      else if(self.ai_next_move == ai_move_backward){
-        self.ai_next_move = ai_move_backward;
-      }
-      else if(self.ai_next_move == ai_move_walkmove_strafeleft){
-        self.ai_next_move = ai_move_walkmove_straferight;
-      }
-      else if(self.ai_next_move == ai_move_walkmove_straferight){
-        self.ai_next_move = ai_move_walkmove_strafeleft;
-      }
-      else if(self.ai_next_move == ai_move_runmove_slideleft){
-        self.ai_next_move = ai_move_runmove_slideright;
-      }
-      else if(self.ai_next_move == ai_move_runmove_slideright){
-        self.ai_next_move = ai_move_walkmove_strafeleft;
-      }
-      else if(self.ai_next_move == ai_run_forward){
-        self.ai_next_move = ai_move_backward;
-      }
-      else if(self.ai_next_move == ai_move_backward){
-        self.ai_next_move = ai_run_forward;
-      }
-      else if(self.ai_next_move == ai_move_charge_left){
-        self.ai_next_move = ai_move_charge_right;
-      }
-      else if(self.ai_next_move == ai_move_charge_right){
-        self.ai_next_move = ai_move_charge_left;
-      }*/
       self.w_isready = remain;
     }
   }

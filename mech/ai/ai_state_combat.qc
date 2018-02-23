@@ -118,7 +118,9 @@ void() ai_combat_adjustPosition={
         return;
       }
     }
-
+    if(time > self.w_isready){
+    
+    }
     //prepare combat state flags
     local float tDist, tMoveDir, lowHP;
     local entity eBlocker;
@@ -139,7 +141,7 @@ void() ai_combat_adjustPosition={
         ai_combat_adjustSkirmish(tDist, (AI_RANGE_S * 0.85), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
       }
       else if(self.ai_style == AI_STYLE_FLANK){
-        ai_combat_adjustFlanker(tDist, (AI_RANGE_S / 5 ), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
+        ai_combat_adjustFlanker(tDist, 200, self.ai_minrange, tMoveDir, lowHP, eBlocker);
       }
       //AI will make an attack on the next frame
       self.button0 = 1;

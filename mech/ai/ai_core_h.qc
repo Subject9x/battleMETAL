@@ -214,6 +214,8 @@ void(entity aggro) ai_util_defense_callForHelp;
 float(entity targ, entity this) ai_util_calcTargetMoveDir;
 float(float checkYaw) ai_util_compareYawIdeal;
 float() ai_util_checkSelfHealth;
+float(vector torg, float tickRate) ai_util_calcMoveDist;
+float(float len, float tickRate) ai_util_calcMoveLen;
 /*==========================================*/
 
 //utility functions
