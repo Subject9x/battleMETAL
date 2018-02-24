@@ -337,40 +337,40 @@ float() ai_pilot_rating_leading={
   better AI's can hold their patience a bit longer
 */
 float() ai_pilot_rating_patience={
-  local float patience;
+  local float ePatience;
   if(self.p_damage == AI_RANK_ACE){
-    patience = AI_PTNCE_ACE;
+    ePatience = AI_PTNCE_ACE;
   }
   else if(self.p_damage == AI_RANK_VET){
-    patience =  AI_PTNCE_VET;
+    ePatience =  AI_PTNCE_VET;
   }
   else if(self.p_damage == AI_RANK_REG){
-    patience =  AI_PTNCE_REG;
+    ePatience =  AI_PTNCE_REG;
   }
   else if(self.p_damage == AI_RANK_ROK){
-    patience =  AI_PTNCE_ROK;
+    ePatience =  AI_PTNCE_ROK;
   }
   else{
-    patience =  AI_PTNCE_ROK;
+    ePatience =  AI_PTNCE_ROK;
   }
   //skill mod
-  patience = patience + (patience * (skill / 15));
+  ePatience = ePatience + (ePatience * (skill / 15));
   
   //ai quirks mods
   if(self.count1 == AI_STYLE_STALK){
     //stalkers should have the longest patience
-    patience = patience + (patience * 0.5);
+    ePatience = ePatience + (ePatience * 0.5);
   }
   else if(self.count1 ==- AI_STYLE_FLANK){
     //flankers get a minor bump in patience
-    patience = patience + (patience * 0.25);
+    ePatience = ePatience + (ePatience * 0.25);
   }
   //yes you can have an aggressive stalker, but it wont be great
   //for long hunts
   if(self.count2 == AI_TYPE_AGGRO){
-    patience = patience - (patience / 2);
+    ePatience = ePatience - (ePatience / 2);
   }
-  return patience; 
+  return ePatience; 
 };
 
 void() ai_core_calcranges={

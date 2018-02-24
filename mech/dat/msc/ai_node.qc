@@ -22,6 +22,7 @@ void() ai_node={
   self.data_type = DATA_NODE;
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-15 -15 -59','15 15 1');
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 32))); 
   droptofloor();
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;

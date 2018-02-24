@@ -41,9 +41,13 @@ void() ai_control={
     self.button0 = 0;
   }
   
-  self.prev_pos = self.origin;
   if(self.m_fspeed > -1){
-    self.ai_hasmoved = self.ai_next_move();
+    local float moveFlag, moveDelta;
+    self.prev_pos = self.origin;
+    moveFlag = self.ai_next_move();
+    
+    moveDelta = vlen(self.prev_pos - self.origin);
+    
     if(self.ai_next_move != ai_move_stand){
       self.e_legs.v_angle_y = self.p_velocity;
     }
@@ -220,47 +224,7 @@ void() ai_mech_cleanup={
 };
 
 void() ai_mech_touch={
-  if(self.classname == "ai_node"){
-    return;
-  }
-  if(self.ai_first_order != AI_ORDER_DEBUG){
-    if(other.data_type != DATA_POBS){
-      local float infront;
-      infront = ai_target_infront(other);
-      if(other.i_faction == self.i_faction){
-        //bumped an ally!
-        if(infront){   
-          ai_move_controller(ai_move_runmove_slideleft, self.w_clipsize + self.vec_size);
-          return;
-        }
-        else{
-          ai_move_controller(ai_move_backward, self.w_clipsize + self.vec_size);
-          return;
-        } 
-      }
-      else{
-        //bumped a baddy!
-        if(self.enemy == world){
-          if(other.data_type != DATA_POBS){
-            if(self.enemy == world){
-              self.enemy = other;
-            }
-            else{
-              self.oldenemy = self.enemy;
-              self.enemy = other;
-            }
-            self.ai_next_state = ai_hunt_target;
-          }
-          if(infront){   
-            ai_move_controller(ai_move_runmove_slideright, self.w_clipsize + self.vec_size);
-            return;
-          }
-          else{
-            ai_move_controller(ai_move_backward, self.w_clipsize + self.vec_size);
-            return;
-          } 
-        }
-      }
-    }
+  //TODO - refactor and fill out this stub
+  if(other.data_type == DATA_BLD){
   }
 };

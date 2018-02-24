@@ -70,7 +70,7 @@ float AI_DIR_NW = 128;
 void() ai_control;      //global, root controller function
 .void() ai_prev_state;  //stores the previous ai_state function that was executed
 .void() ai_next_state;  //this is the ai_state function to execute on next think
-.float() ai_prev_move;  //stores the previous ai_move function that was executed
+.float ai_prev_move;    //stores previous move as a generic direction, used mostly to unstuck the bot
 .float() ai_next_move;  //this is the ai_move function to execute on next think
 .float ai_hasmoved;     //misc for debugging stuck bots
 //the code uses enemy/goalentity together as a buffer for where the 
@@ -83,7 +83,6 @@ void() ai_control;      //global, root controller function
 .float ai_type;
 .float ai_style;
 .float ai_first_order;
-.float ai_current_order;
 .vector prev_pos;
 .entity oldgoal;
 .float ai_dmg_l;
@@ -178,13 +177,13 @@ void() ai_combat_endFight;
 /*==========================================*/
 
 /*AI CORE FUNCTIONS=========================*/
-entity() ai_core_findNode;
 //NODE NOODLES
 float(entity aggro, string groupId) ai_node_defenseGroup_nodeToTarget;
 entity(entity aggro, string groupId) ai_node_defenseGroup_setCourse;
 entity(string grpId) ai_node_searchGroup_ignoreActive;
 entity(string grpId) ai_node_searchGroup_checkActive;
 entity(entity pNode) ai_findNode_searchGroup;
+entity(entity aNode) ai_node_closestTargNearNode;
 //COMBAT
 float(entity targ, float faction) ai_combat_locksOnTarget;
 float(entity targ) ai_target_canSee;
@@ -224,17 +223,9 @@ float() ai_core_noguns;
 
 entity(entity node, float id) ai_query_graphnode;
 entity(vector org, float start_dist) ai_core_findgraphnode;
-float(entity targ) ai_target_infront;
-float(entity targ) ai_target_insights;
-float(entity targ) ai_target_visible;
-float() ai_core_foundtarget; //ai has found a target, update state accordingly
-float() ai_core_targetstate; //checks to see if target ent is still a valid ent to be a target
 
 void() ai_core_calcranges;
 entity() ai_core_findfriendly;
-
-entity() ai_core_opticaltarget;
-entity() ai_core_radartarget;
 
 float() ai_pilot_rating_converg;
 float() ai_pilot_rating_range;

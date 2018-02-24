@@ -75,7 +75,7 @@ void() ai_patrol_gotoNode={
           ai_move_controller(ai_move_stand, 0.05);
           return;
         }
-        self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
+        self.delay = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
       }
@@ -140,7 +140,7 @@ void() ai_patrol_atNode={
           ai_state_control(ai_combat_adjustPosition);
           return;
         }
-        self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
+        self.delay = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
       }

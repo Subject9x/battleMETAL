@@ -2,6 +2,7 @@
   mech Mod
   Date: 5/2/2017
   Overview: super simple ai test
+  mod - 2/2/2018
 */
 
 /*QUAKED ai_mech (1 0 0) (-16 -16 -24) (16 16 40)
@@ -9,10 +10,11 @@
 "vec_size" : number, weight class for mech data
 "i_faction" : bitflags for faction which faction
 "state_1" : number, initial order
-  0 = stand at the .target
-  1 = defend the .target
-  2 = patrol the .target
-  3 = attack the .target
+  -1 = debug mode (stand still, no interaction)
+  1 = stand at the .target
+  2 = defend the .target
+  3 = patrol the .target
+  4 = attack the .target
 "p_damage" : number,AI pilot rating, will affect accuracy
   0 = ACE 
   1 = VETERAN
@@ -71,7 +73,7 @@ void() ai_mech={
   self.w_isready = time; //and this guy too
   self.delay = time;
   self.ideal_yaw = self.angles * '0 1 0';
-		
+
   data_iniMech(self.vec_size, self.nextVecChoice);
   
   ai_core_calcranges();
@@ -88,14 +90,11 @@ void() ai_mech={
     m = ai_pilot_yaw_mod();
     self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * m);
   }
-  mod = ai_pilot_rating_leading();
-  self.ai_leading = mod;
+  self.ai_leading = ai_pilot_rating_leading();
   self.stat_spr_x = self.conv_min_x + self.conv_max_x;
   self.stat_spr_y = self.conv_min_y + self.conv_max_y;
-  mod = ai_pilot_rating_converg();
-  self.ai_rte_cnv = mod;
-  mod = ai_pilot_rating_range();
-  self.ai_rte_rng = mod;
+  self.ai_rte_cnv = ai_pilot_rating_converg();
+  self.ai_rte_rng = ai_pilot_rating_range();
   self.stat_rdr_mode = TRUE;
   self.ai_next_state = SUB_Null;
   self.th_die = ai_mech_die;
@@ -104,11 +103,11 @@ void() ai_mech={
   self.ai_next_move = ai_move_stand;
   self.touch = ai_mech_touch;
   self.ai_optical = self.radar_range / 2;
-  mod = ai_pilot_rating_patience();
-  self.maxpatience = 0;
+  self.maxpatience = ai_pilot_rating_patience();
   self.patience = 0;
  
-  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
+  self.prev_pos = self.origin;
   droptofloor();
   self.origin_z = self.origin_z + 1;	// raise off floor a bit
   

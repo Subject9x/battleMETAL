@@ -458,34 +458,7 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
 
 
 void(entity trg, entity atk) anger_monster={
-  if(atk != world){
-    if(atk != trg){
-      if((atk != trg.enemy) && (trg.enemy == world)){
-        local entity this;
-        this = self;
-        self = trg;
-          self.oldgoal = self.goalentity;
-          self.enemy = atk;
-          self.ai_next_state = ai_sub_fight;
-        self = this;
-      }
-      else{
-        if((vlen(trg.enemy.origin - trg.origin)) > (vlen(atk.origin - trg.origin))){
-          local entity this2;
-          this2 = self;
-          self = trg;
-            self.enemy = atk;
-            self.ai_next_state = ai_sub_fight;
-          self = this2;
-        }
-      }
-      local entity friend;
-      friend = ai_core_findfriendly();
-      if(friend != world){
-        anger_monster(friend, atk);
-      }
-    }    
-  }
+  //TODO - refactor and fill out this stub
 };
 
 

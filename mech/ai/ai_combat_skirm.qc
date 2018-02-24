@@ -16,10 +16,13 @@ SKIRMISHER FUNCTIONS
   float distFar = range that is 'too far';
 */
 void(float targDist, float distClose, float distFar, float tMovedir, float selfLowHealth, entity eBlocker) ai_combat_adjustSkirmish={
-  local float isClose, isFar, distOptimal, blockDist;
+  local float isClose, isFar, isEnemy, isTarget, distOptimal, blockDist, amt;
   isClose = FALSE;
   isFar = FALSE;
+  isEnemy = FALSE;
+  isTarget = FALSE;
   distOptimal = FALSE;
+  
   /*
     flags
       distClose - target is inside min range
@@ -38,6 +41,11 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   if(targDist <= self.ai_minrange){
     distOptimal = TRUE;
   }
+  if(self.trigger_field.enemy == self){
+    if(ai_target_isInFront(self.trigger_field)){
+      isTarget = TRUE;
+    }
+  }
 //==================================================
 
 //CASE: target is blocked by something else
@@ -47,14 +55,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     if(eBlocker.i_faction == self.i_faction){
       //oops, friendly is in the way, try to move around
       if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
-        local float d2;
-        d2 = util_roll_dice(2);
-        if(d2 == 1){
-          ai_move_controller(ai_move_walkmove_strafeleft, 1);
-        }
-        else{
-          ai_move_controller(ai_move_walkmove_straferight, 1);
-        }
+        ai_move_randomTwo(1, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
         return;
       }
       if(blockDir == AI_TARG_RGT){
@@ -98,14 +99,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         }
       }
       if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
-        local float d2;
-        d2 = util_roll_dice(2);
-        if(d2 == 1){
-          ai_move_controller(ai_move_runmove_slideleft, 1);
-        }
-        else{
-          ai_move_controller(ai_move_runmove_slideright, 1);
-        }
+        ai_move_randomTwo(1, ai_move_runmove_slideleft, ai_move_runmove_slideright);
         return;
       }
       if(blockDir == AI_TARG_RGT){
@@ -123,57 +117,174 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   
 //CASE: Target is too close
   if(isClose){
-    if(ai_target_isInFront(self.trigger_field)){
-      //AI is facing its target
-      if(ai_util_compareYawIdeal(vectoyaw(self.trigger_field.origin - self.origin))){
-        //AI's yaw is aligned to target
-        if(self.ai_type == AI_TYPE_AGGRO){
-          ai_move_randomSix(3, ai_move_runmove_slideleft, 
-                                ai_move_charge_left, 
-                                ai_move_walkmove_backright, 
-                                ai_move_walkmove_backleft, 
-                                ai_move_charge_right, 
-                                ai_move_runmove_slideright); 
-          return;
-        }
-        if(self.ai_type == AI_TYPE_COWRD){
-          ai_move_controller(ai_run_backward, 4);
-          return;
-        }
-        ai_move_randomThree(1.5, ai_move_walkmove_backleft, 
-                                ai_move_walkmove_backright, 
-                                ai_run_backward);
+    if(tMovedir == AI_TARG_FWD){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        //TODO - fill close-range stubs
         return;
       }
-      ai_move_randomThree(1, ai_move_runmove_slideleft, 
-                        ai_move_runmove_slideright, 
-                        ai_run_backward);
+      if(self.ai_type == AI_TYPE_COWRD){
+      
+        return;
+      }
+      
       return;
     }
-    else{
-      //AI's target isn't in front
-      if(ai_target_isFacingThis(self.trigger_field)){
-        //AI is in sight of its target
-        ai_move_randomThree(4, ai_move_charge_left, 
-                                ai_move_charge_right, 
-                                ai_run_forward);
+    //--------------------------
+    if(tMovedir == AI_TARG_BKD){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        
         return;
       }
-      //target is not in front, and AI is not in target's sights
-      if(tMovedir == AI_TARG_FWD){
-        ai_move_controller(ai_run_backward, 2);
+      if(self.ai_type == AI_TYPE_COWRD){
+      
         return;
       }
-      ai_move_controller(ai_move_stand, 2);
+      
       return;
     }
+    //--------------------------
+    if(tMovedir == AI_TARG_LFT){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        //TODO - fill close-range stubs
+        
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+      
+        return;
+      }
+      
+      return;
+    }
+    //--------------------------
+    if(tMovedir == AI_TARG_RGT){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+      
+        return;
+      }
+      
+      return;
+    }
+    //--------------------------
+    if(self.ai_type == AI_TYPE_AGGRO){
+    
+    }
+    if(self.ai_type == AI_TYPE_COWRD){
+      amt = self.p_damage + 4;
+      ai_move_randomThree(amt, ai_run_backward,
+                                ai_move_runmove_backright,
+                                ai_move_runmove_backleft);
+      return;
+    }
+    if(self.p_damage <= AI_RANK_VET){
+      if(isTarget){
+        ai_move_randomFour(util_roll_dice(2), ai_move_runmove_slideleft,
+                                                ai_move_runmove_slideright,
+                                                ai_move_runmove_backright,
+                                                ai_move_runmove_backleft);
+        return;
+      }
+    }
+    ai_move_randomThree(self.p_damage, ai_run_backward,
+                                        ai_move_walkmove_backleft,
+                                        ai_move_walkmove_backright);
+    return;
   }
 //=================================================
   
 //CASE: Target is too far away
   if(isFar){
+    if(tMovedir == AI_TARG_FWD){
+      amt = self.p_damage + 2;
+      if(self.ai_type == AI_TYPE_AGGRO){
+        amt = amt / 2;
+        ai_move_randomTwo(amt, ai_move_charge_left,
+                                  ai_move_charge_right);
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+        amt = amt + 2;
+      }
+      if(self.p_damage <= AI_RANK_VET){
+        amt = amt - 2;
+        ai_move_randomTwo(amt,  ai_move_charge_left,
+                                 ai_move_charge_right);
+        return;
+      }
+      ai_move_randomThree(amt, ai_move_forward,
+                                ai_move_walkmove_forwardright,
+                                ai_move_walkmove_forwardleft);
+      return;
+    }
+    if(tMovedir == AI_TARG_BKD){
+      amt = self.p_damage + 2;
+      if(self.ai_type == AI_TYPE_AGGRO){
+        amt = amt / 2;
+        ai_move_randomThree(amt, ai_run_forward,
+                                  ai_move_charge_left,
+                                  ai_move_charge_right);
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+        amt = amt + 2;
+      }
+      if(self.p_damage <= AI_RANK_VET){
+        amt = amt - 2;
+        ai_move_randomTwo(amt,  ai_move_charge_left,
+                                 ai_move_charge_right);
+        return;
+      }
+      ai_move_randomThree(amt, ai_move_forward,
+                                ai_move_walkmove_forwardright,
+                                ai_move_walkmove_forwardleft);
+      return;
+    }
+    if(tMovedir == AI_TARG_LFT){
+      amt = self.p_damage + 2;
+      if(self.ai_type == AI_TYPE_AGGRO){
+        amt = amt / 2;
+        ai_move_controller(ai_move_charge_left, amt);
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+        amt = amt + 2;
+      }
+      if(self.p_damage <= AI_RANK_VET){
+        amt = amt - 2;
+        ai_move_randomTwo(amt,  ai_run_forward,
+                                 ai_move_charge_right);
+        return;
+      }
+      ai_move_randomTwo(amt, ai_move_forward,
+                                ai_move_walkmove_forwardright);
+      return;
+    }
+    if(tMovedir == AI_TARG_RGT){
+      amt = self.p_damage + 2;
+      if(self.ai_type == AI_TYPE_AGGRO){
+        amt = amt / 2;
+        ai_move_controller(ai_move_charge_right, amt);
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+        amt = amt + 2;
+      }
+      if(self.p_damage <= AI_RANK_VET){
+        amt = amt - 2;
+        ai_move_randomTwo(amt,  ai_run_forward,
+                                 ai_move_charge_right);
+        return;
+      }
+      ai_move_randomTwo(amt, ai_move_forward,
+                                ai_move_walkmove_forwardright);
+      return;
+    }
     if(ai_target_isInFront(self.trigger_field)){
-      ai_move_controller(ai_run_forward, 2);
+      ai_move_controller(ai_run_forward, self.p_damage);
       return;
     }
     ai_move_controller(ai_move_stand, 0.5);
@@ -214,14 +325,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         return;
       }
       else{
-        local float d2;
-        d2 = util_roll_dice(2);
-        if(d2 == 1){
-          ai_move_controller(ai_move_walkmove_strafeleft, 1);
-        }
-        else{
-          ai_move_controller(ai_move_walkmove_straferight, 1);
-        }
+        ai_move_randomTwo(1, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
         return;
       }
     }
@@ -233,14 +337,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         return;
       }
       else{
-        local float d2;
-        d2 = util_roll_dice(2);
-        if(d2 == 1){
-          ai_move_controller(ai_move_walkmove_strafeleft, 1);
-        }
-        else{
-          ai_move_controller(ai_move_walkmove_straferight, 1);
-        }
+        ai_move_randomTwo(1, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
         return;
       }
     }

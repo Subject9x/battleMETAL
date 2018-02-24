@@ -186,7 +186,7 @@ float AI_PATROL_DIST      = 100;  //how close to get to node before counting as 
 float AI_DEFEND_DIST_MIN  = 200;  //how close to get to a defense node before counting as close
 float AI_DEFEND_DIST      = 2000;
 float AI_ASSAULT_DIST_MIN = 400;
-float AI_ASSAULT_DIST     = 1000;
+float AI_ASSAULT_DIST     = 2400;
 
 //PILOT RANKS - determines base states, and some realtime decisions
 float AI_RANK_ACE = 0;
@@ -220,7 +220,7 @@ float AI_RNG_REG = 1.25;
 float AI_RNG_ROK = 1.5;
 
 //Adjust Rotation Rate
-//self.yaw_speed = rotation rate + (rotation rate * AI_ROT_X);
+//self.yaw_speed = rotation rate - (rotation rate * AI_ROT_X);
 float AI_ROT_ACE = 0.01; //0.7
 float AI_ROT_VET = 0.05; //0.6
 float AI_ROT_REG = 0.15; //0.4
@@ -228,12 +228,12 @@ float AI_ROT_ROK = 0.25; //0.25
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
-float AI_ARMOR_EASY = 0.2;
-float AI_ARMOR_MEDM = 0.3;
-float AI_ARMOR_HARD = 0.5;
+float AI_ARMOR_EASY =  0.2;
+float AI_ARMOR_MEDM =  0.3;
+float AI_ARMOR_HARD =  0.5;
 float AI_ARMOR_NIGHT = 0.6;
 
-//ai_leading ratings, how well an ai tracks a slippery targt
+//ai_leading ratings, how well an ai tracks a slippery target
 float AI_LEAD_ACE = 0.04;
 float AI_LEAD_VET = 0.06;
 float AI_LEAD_REG = 0.08;

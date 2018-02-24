@@ -48,8 +48,7 @@ void() ai_defend_findNode={
     if(self.node .isActive == TRUE){
       if(self.node .i_faction == self.i_faction){
         self.node = ai_findNode_searchGroup(self.node);
-        self.enemy = self.node;
-        self.goalentity = self.node;
+        ai_update_switchToNode(self.node);
         ai_state_control(ai_defend_gotoNode);
         return;
       }
@@ -61,6 +60,7 @@ void() ai_defend_findNode={
     ai_state_control(ai_defend_gotoNode);
     return;
   }
+  ai_move_controller(ai_move_stand, 0.25);
 };
 
 /*
@@ -140,11 +140,12 @@ void() ai_defend_gotoNode={
           dNode = ai_node_defenseGroup_setCourse(self.trigger_field, self.group);
           if(dNode){
             ai_state_control(ai_defend_gotoNode);
+            ai_move_controller(ai_move_run_goal, 1);
             return;
           }
           else{
             //attempt to hunt the target normally;
-            self.delay = time + 20; //TODO patience
+            self.patience = time + self.maxpatience;
             ai_update_switchToTarget(self.trigger_field);
             ai_state_control(ai_combat_huntTarget);
             return;
@@ -157,6 +158,7 @@ void() ai_defend_gotoNode={
           self.trigger_field = self.oldenemy;
           self.oldenemy = world;
           ai_state_control(ai_defend_gotoNode);
+          ai_move_controller(ai_move_run_goal, 1);
           return;
         }
         else{
@@ -254,7 +256,7 @@ void() ai_defend_atNode={
             else{
               //cons_logAString("eNode", "false"); //DEBUG
               //no node? darn attempt to hunt 
-              self.delay = time + 20; //TODO patience
+              self.patience = time + self.maxpatience;
               ai_update_switchToTarget(contact);
               ai_state_control(ai_combat_huntTarget);
               return;
@@ -301,7 +303,7 @@ void() ai_defend_atNode={
           }
           else{
             //attempt to hunt the target normally;
-            self.delay = time + 20; //TODO patience
+            self.patience = time + self.maxpatience;
             ai_update_switchToTarget(self.trigger_field);
             ai_state_control(ai_combat_huntTarget);
             return;

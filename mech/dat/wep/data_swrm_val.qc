@@ -110,7 +110,7 @@ void() data_swrm_atk={
   while(targs){
     if((targs.flags & FL_CLIENT) || (targs.flags & FL_MONSTER)){
       if(targs.deadflag == DEAD_NO){
-        if(ai_target_infront(targs) && targs!=player){
+        if( (ai_target_isInFront(targs)) && (targs != player) ){
           local entity mis;
           mis = spawn();
           oself = self;

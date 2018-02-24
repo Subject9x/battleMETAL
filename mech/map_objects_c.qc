@@ -63,6 +63,8 @@ The normal starting point for a level.
 */
 void() info_player_start =
 {
+  
+
 };
 
 

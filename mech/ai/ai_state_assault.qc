@@ -18,32 +18,12 @@ Overview: ai state implementation
 void() ai_assault_startWithNode={
   local entity e;
   e = find(world, targetname, self.target);
-  self.ai_prev_state = ai_defend_startWithNode;
+  self.ai_prev_state = ai_assault_startWithNode;
   if(e){
     if(e.isActive == TRUE){
       if(e.i_faction == self.i_faction){
         self.node = ai_findNode_searchGroup(e);
-        self.enemy = self.node;
-        self.goalentity = self.node;
-        ai_state_control(ai_defend_gotoNode);
-        return;
-      }
-    }
-  }
-  ai_state_control(ai_misc_stand); 
-};
-
-
-void() ai_assault_findNode={
-  local entity e;
-  e = find(world, targetname, self.target);
-  self.ai_prev_state = ai_defend_startWithNode;
-  if(e){
-    if(e.isActive == TRUE){
-      if(e.i_faction == self.i_faction){
-        self.node = ai_findNode_searchGroup(e);
-        self.enemy = self.node;
-        self.goalentity = self.node;
+        ai_update_switchToNode(self.node);
         ai_state_control(ai_assault_gotoNode);
         return;
       }
@@ -52,17 +32,65 @@ void() ai_assault_findNode={
   ai_state_control(ai_misc_stand); 
 };
 
+void() ai_assault_findNode={
+  local entity e, aNode;
+  e = find(world, targetname, self.target);
+  self.ai_prev_state = ai_assault_startWithNode;
+  if(e){
+    if(e.isActive == TRUE){
+      if(e.i_faction == self.i_faction){
+        self.node = ai_findNode_searchGroup(e);
+        ai_update_switchToNode(self.node);
+        ai_state_control(ai_assault_gotoNode);
+        return;
+      }
+    }
+  }
+  aNode = ai_node_searchGroup_checkActive (self.group);
+  if(aNode){
+    ai_update_switchToNode(aNode);
+    ai_state_control(ai_assault_gotoNode);
+    return;
+  }
+  ai_move_controller(ai_move_stand, 0.25);
+};
+
 /*
   AI is traveling to an assault node
   could be from other types of nodes
 */
 void() ai_assault_gotoNode={
-  /*
-    case A: traveling to node, no target
-    case B: traveling to node with target
-    case C: at node
-    case D: fail, just stand
-  */
+/*
+  case A: goto node normally
+  case B: goto node during assault
+  case C: at node -> implicit check in CASES A and B
+  case D: fail, just stand -> implicit check in CASES A and B
+*/
+  //CASE A
+  if( (self.node != world) && (self.trigger_field == world) ){
+    local float nDist;
+    nDist = vlen(self.node.origin - self.origin);
+    if(nDist > AI_ASSAULT_DIST_MIN){
+      local entity contact;
+      //really only fight other targets if they're near the node or in the way
+      contact = ai_node_closestTargNearNode(self.node);
+      if(contact){
+        self.trigger_field = contact;
+        ai_update_switchToTarget(self.trigger_field);
+        self.patience = time + self.maxpatience;
+        ai_state_control(ai_combat_huntTarget);
+        return;
+      }
+      ai_state_control(ai_assault_gotoNode);
+      ai_move_controller(ai_move_walk_goal, 0.5);
+      return;
+    }
+    else{
+      ai_state_control(ai_assault_atNode);
+      ai_move_controller(ai_move_stand, 0.5);
+      return;
+    }
+  }
 };
 
 /*
@@ -74,4 +102,29 @@ void() ai_assault_atNode={
     case B: have target, moving through node
     case C: do nothing.
   */
+  //CASE A
+  if( (self.node != world) && (self.trigger_field == world) ){
+    local entity contact;
+    //really only fight other targets if they're near the node or in the way
+    contact = ai_node_closestTargNearNode(self.node);
+    if(contact){
+      self.trigger_field = contact;
+      ai_update_switchToTarget(self.trigger_field);
+      self.patience = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
+      return;
+    }
+    //no targets, and node has target
+    if(self.node.target){
+      local entity nexNode;
+      nexNode = find(world, targetname, self.node.target);
+      if(nexNode){
+        self.node = nexNode;
+        ai_update_switchToNode(self.node);
+        ai_state_control(ai_assault_gotoNode);
+        return;
+      }
+    }
+  }
+  ai_move_controller(ai_move_stand, 0.25);
 };

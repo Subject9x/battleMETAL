@@ -5,7 +5,7 @@ Date: 5/10/2017
 Overview: data file for building
 */
 
-/*QUAKED building_hangar (.1 .1 .1) (-72 -72 0) (72 72 80)
+/*QUAKED building_hangar (.1 .1 .1) (-72 -72 -40) (72 72 40)
 */
 void() building_hangar;
 
@@ -17,12 +17,13 @@ void() building_hangar={
   util_setModel(DAT_BLD_H_LG_HANGAR_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_STEP) ;
   util_setHealthArmor(DAT_BLD_H_LG_HANGAR_HP, DAT_BLD_H_LG_HANGAR_HP, 1, 100) ;
-  util_setBoundBox('-72 -72 0', '72 72 80');
+  util_setBoundBox('-72 -72 -40', '72 72 40');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_LG_HANGAR_SH_MAX;
   self.sh_rate= DAT_BLD_H_LG_HANGAR_SH_RATE;
   self.scale = 1;
   self.deadflag = DEAD_NO;
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   self.movetype = MOVETYPE_NONE;
   self.th_die = building_die;

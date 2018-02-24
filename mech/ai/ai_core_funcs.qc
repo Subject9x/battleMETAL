@@ -147,6 +147,29 @@ entity(entity pNode) ai_findNode_searchGroup={
   return rNode;
 };
 
+/*
+  used mostly by AI's with assault orders, this finds an enemy contact
+  that is closes to the AI invoking the call BUT also near an assault node.
+*/
+entity(entity aNode) ai_node_closestTargNearNode={
+  local entity contact, found;
+  local float nDist;
+  nDist = vlen(aNode.origin - self.origin);
+  contact = found = world; //setting to null pre-emptively
+  contact = findradius(aNode.origin, AI_ASSAULT_DIST);
+  while(contact){
+    if(ai_target_isValid(contact)){
+      local float cDist;
+      cDist = vlen(contact.origin - self.origin);
+      if(cDist < nDist){
+        nDist = cDist;
+        found = contact;
+      }
+    }
+    contact = contact.chain;
+  }
+  return found;
+};
 //============================
 //   COMBAT SHENANIGANS
 //============================
@@ -173,7 +196,7 @@ float(entity targ, float faction) ai_combat_locksOnTarget={
     -ported from classic qc
 */
 float(entity targ) ai_target_canSee={
-  traceline(self.origin, targ.origin, TRUE, self);
+  traceline(self.origin, targ.origin, FALSE, self);
   if(trace_fraction >= 0.85){
     return TRUE;
   }
@@ -612,8 +635,7 @@ void(entity aggro) ai_util_defense_callForHelp={
               self.trigger_field = aggro;
               self.enemy = self.trigger_field;
               self.goalentity = self.trigger_field;
-              //TODO - patience mod
-              self.delay = time + 20;
+              self.delay = time + self.maxpatience;
               ai_state_control(ai_combat_huntTarget);
             self = this;
             justOne = TRUE;
@@ -669,6 +691,7 @@ float(vector toAngle) ai_util_angleToDir={
   to itself, so it can possibly choose a better move
   direction.
   returns
+    float NULL        = -1;
     float AI_TARG_FWD = 0;
     float AI_TARG_BKD = 1;
     float AI_TARG_LFT = 2;
@@ -676,53 +699,48 @@ float(vector toAngle) ai_util_angleToDir={
 */
 float(entity targ, entity this) ai_util_calcTargetMoveDir={
   local float arc, spot, tVel, meVel, back, left, right, isFront;
-  meVel = vectoyaw(this.velocity);
-  tVel = vectoyaw(targ.velocity);
-  arc = anglemod(this.angles_y + 180);
-  spot = vectoyaw(targ.origin - this.origin);
-  if( (spot > anglemod(arc - 90)) && (spot < anglemod(arc + 90)) ){
-    isFront =  TRUE;
-  }else{
-    isFront =  FALSE;
-  }
-  if( (tVel >= anglemod(meVel - 45)) || (tVel <= anglemod(meVel + 45))){
-    if(isFront){
-      //cons_logAString(" target", " is going to me"); //DEBUG
-      return AI_TARG_FWD;
+  //fix for stationary targets.
+  if(targ.m_fspeed > 0){
+    meVel = vectoyaw(this.velocity);
+    tVel = vectoyaw(targ.velocity);
+    arc = anglemod(this.angles_y + 180);
+    spot = vectoyaw(targ.origin - this.origin);
+    if( (spot > anglemod(arc - 90)) && (spot < anglemod(arc + 90)) ){
+      isFront =  TRUE;
+    }else{
+      isFront =  FALSE;
     }
-    else{
-      //cons_logAString(" target", " is going away me"); //DEBUG
-      return AI_TARG_BKD;
+    if( (tVel >= anglemod(meVel - 45)) || (tVel <= anglemod(meVel + 45))){
+      if(isFront){
+        return AI_TARG_FWD;
+      }
+      else{
+        return AI_TARG_BKD;
+      }
     }
-  }
-  else if( (tVel > anglemod(meVel + 45)) && (tVel < anglemod(meVel + 134))){
-    if(isFront){
-      //cons_logAString(" target", "  is strafe left"); //DEBUG
-      return AI_TARG_LFT;
+    else if( (tVel > anglemod(meVel + 45)) && (tVel < anglemod(meVel + 134))){
+      if(isFront){
+        return AI_TARG_LFT;
+      }
+      else{
+        return AI_TARG_RGT;
+      }
     }
-    else{
-      //cons_logAString(" target", "  is strafe right"); //DEBUG
-      return AI_TARG_RGT;
+    else if( (tVel >= anglemod(meVel + 135)) && (tVel <= anglemod(meVel + 225))){
+      if(isFront){
+        return AI_TARG_BKD;
+      }
+      else{
+        return AI_TARG_FWD;
+      }
     }
-  }
-  else if( (tVel >= anglemod(meVel + 135)) && (tVel <= anglemod(meVel + 225))){
-    if(isFront){
-      //cons_logAString(" target", " is going away me"); //DEBUG
-      return AI_TARG_BKD;
-    }
-    else{
-      //cons_logAString(" target", " is going to me"); //DEBUG
-      return AI_TARG_FWD;
-    }
-  }
-  else if( (tVel > anglemod(meVel + 225)) && (tVel < anglemod(meVel + 315))){
-    if(isFront){
-      //cons_logAString(" target", "  is strafe right"); //DEBUG
-      return AI_TARG_RGT;
-    }
-    else{
-      //cons_logAString(" target", "  is strafe left"); //DEBUG
-      return AI_TARG_LFT;
+    else if( (tVel > anglemod(meVel + 225)) && (tVel < anglemod(meVel + 315))){
+      if(isFront){
+        return AI_TARG_RGT;
+      }
+      else{
+        return AI_TARG_LFT;
+      }
     }
   }
   //failure case

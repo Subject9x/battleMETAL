@@ -21,7 +21,7 @@ void() building_power={
   util_setModel(DAT_BLD_H_POWER_PLANT_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_POWER_PLANT_HP, DAT_BLD_H_POWER_PLANT_HP, 1, 100);
-  util_setBoundBox('-75 -75 0', '75 75 48');
+  util_setBoundBox('-75 -75 -24', '75 75 24');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_POWER_PLANT_SH_MAX;
   self.sh_rate= DAT_BLD_H_POWER_PLANT_SH_RATE;
@@ -31,6 +31,7 @@ void() building_power={
   
   self.scale = 1;
   self.deadflag = DEAD_NO;
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   self.th_die = building_power_die;
   self.think = building_think;

@@ -314,7 +314,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     }
     //--------------------------
     ai_move_controller(ai_move_forward, 2);
-    return;;
+    return;
   }
 //=================================================
   

@@ -8,7 +8,7 @@ Overview: data file for building
   func: provides radar scanning to all friendly units in radius
 */
 
-/*QUAKED building_shield (.1 .1 .1) (-64 -64 0) (64 64 40)
+/*QUAKED building_shield (.1 .1 .1) (-64 -64 -17.5) (64 64 17.5)
 */
 void() building_shield_die;
 void() building_shield;
@@ -22,12 +22,13 @@ void() building_shield={
   util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_SHIELDGEN_HP, DAT_BLD_H_SHIELDGEN_HP, 1, 100) ;
-  util_setBoundBox('-56 -56 0', '56 56 35');
+  util_setBoundBox('-56 -56 -17.5', '56 56 17.5');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_SHIELDGEN_SH_MAX;
   self.sh_rate= DAT_BLD_H_SHIELDGEN_SH_RATE;
   self.scale = 1;
   self.deadflag = DEAD_NO;
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   
   self.th_die = building_shield_die;

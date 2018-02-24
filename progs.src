@@ -115,7 +115,7 @@ dp/subs.qc
   mech/ai/ai_combat_skirm.qc
   mech/ai/ai_combat_flank.qc
   
-  mech/ai/ai_subs.qc
+  //mech/ai/ai_subs.qc
   mech/ai/m_ai_test.qc
   mech/ai/ai_directives_combat.qc
   mech/ai/ai_move_funcs.qc

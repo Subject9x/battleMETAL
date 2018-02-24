@@ -34,7 +34,7 @@ void() ai_misc_stand={
           ai_state_control(ai_combat_adjustPosition);
           return;
         }
-        self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
+        self.delay = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
       }
@@ -45,7 +45,7 @@ void() ai_misc_stand={
           ai_state_control(ai_combat_adjustPosition);
           return;
         }
-        self.delay = time + ai_pilot_rating_patience(); //TODO - patience mod
+        self.delay = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
       }

@@ -13,19 +13,17 @@ Overview: ai state implementation
   
 */
 void() ai_combat_findTarget={
-  if(self.oldenemy != world){
+  if(ai_target_isValid(self.oldenemy)){
     self.trigger_field = self.oldenemy;
     self.oldenemy = world;
-    self.enemy = self.trigger_field;
-    self.goalentity = self.trigger_field;
+    ai_update_switchToTarget(self.trigger_field);
     if(ai_target_canSee(self.enemy)){
       ai_state_control(ai_combat_adjustPosition);
       return;
     }
-    else{
-      ai_state_control(ai_combat_huntTarget);
-      return;
-    }
+    self.patience = time + self.maxpatience;
+    ai_state_control(ai_combat_huntTarget);
+    return;
   }
   if(!self.stat_rdr_mode){
     self.stat_rdr_mode = TRUE;
@@ -36,7 +34,7 @@ void() ai_combat_findTarget={
       contact = ai_target_radarTarget();
       if(contact){
         ai_update_switchToTarget(contact);
-        //TODO switch to combat
+        self.patience = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
       }
@@ -66,16 +64,18 @@ void() ai_combat_huntTarget={
   }
   if(ai_target_isValid(self.trigger_field)){
     //AI lost patience, will try a new target
-    if(time > self.delay){
+    if(time > self.patience){
       if(ai_target_isValid(self.oldenemy)){
         ai_state_control(ai_combat_findTarget);
         return;
       }
+      ai_state_control(ai_combat_endFight);
+      return;
     }
     else{
       //check to see if AI can see target
       if(ai_target_canSee(self.enemy)){
-        self.delay = 0;
+        self.patience = 0;
         ai_state_control(ai_combat_adjustPosition);
         return;
       }
@@ -89,15 +89,12 @@ void() ai_combat_huntTarget={
     }
   }
   else{
-    if(self.oldenemy != world){
-      if(ai_target_isValid(self.oldenemy)){
-        ai_state_control(ai_combat_findTarget);
-        return;
-      }
+    if(ai_target_isValid(self.oldenemy)){
+      ai_state_control(ai_combat_findTarget);
+      return;
     }
     //AI didnt have an old enemy to go after
     //so clear the targets, and end the fight phase
-    self.delay = 0;
     ai_state_control(ai_combat_endFight);
     return;
   }
@@ -118,9 +115,6 @@ void() ai_combat_adjustPosition={
         return;
       }
     }
-    if(time > self.w_isready){
-    
-    }
     //prepare combat state flags
     local float tDist, tMoveDir, lowHP;
     local entity eBlocker;
@@ -138,7 +132,7 @@ void() ai_combat_adjustPosition={
         ai_combat_adjustBrawler(tDist, 250, AI_RANGE_S, tMoveDir, lowHP, eBlocker);
       }
       else if(self.ai_style == AI_STYLE_SKIRM){
-        ai_combat_adjustSkirmish(tDist, (AI_RANGE_S * 0.85), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
+        ai_combat_adjustSkirmish(tDist, (AI_RANGE_S - 100), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
       }
       else if(self.ai_style == AI_STYLE_FLANK){
         ai_combat_adjustFlanker(tDist, 200, self.ai_minrange, tMoveDir, lowHP, eBlocker);
@@ -147,28 +141,28 @@ void() ai_combat_adjustPosition={
       self.button0 = 1;
     }
     else{
+      if(ai_target_isValid(self.trigger_field)){
+        //attempt to hunt
+        self.delay = time + self.maxpatience;
+        ai_state_control(ai_combat_huntTarget);
+        return;
+      }
       //maybe the AI has an old enemy that's visible?
-      if(self.oldenemy != world){
-        if(ai_target_isValid(self.oldenemy)){
-          if(ai_target_visualPing(self.oldenemy)){
-            self.trigger_field = self.oldenemy;
-            self.oldenemy = world;
-            self.enemy = self.trigger_field;
-            self.goalentity = self.trigger_field;
-            ai_state_control(ai_combat_adjustPosition);
-            return;
-          }
+      if(ai_target_isValid(self.oldenemy)){
+        if(ai_target_canSee(self.oldenemy)){
+          self.trigger_field = self.oldenemy;
+          self.oldenemy = world;
+          ai_update_switchToTarget(self.trigger_field);
+          ai_state_control(ai_combat_adjustPosition);
+          return;
         }
       }
-      //no LoS and no old enemy, attempt to hunt
-      self.delay = time + (ai_pilot_rating_patience() / 2); //TODO - patience mod
-      ai_state_control(ai_combat_huntTarget);
+      ai_state_control(ai_combat_endFight);
       return;
     }
     ai_state_control(ai_combat_adjustPosition);
     return;
   }
-  ai_target_clearBuffers();
   ai_state_control(ai_combat_endFight);
   return;
 };
@@ -180,32 +174,31 @@ void() ai_combat_adjustPosition={
   AI should have stashed its last node in self.node before fighting...
 */
 void() ai_combat_endFight={
+  self.patience = 0;
   ai_target_clearBuffers();
   if(!ai_target_isValid(self.trigger_field)){
     self.trigger_field = world;
   }
   //clear out combat move
-  self.ai_next_move = ai_move_stand;
-  self.w_isready = time + 0.5;
-  //clear out the delay var so that it can be reused by nodes
-  if(time < self.delay){
-    self.delay = time;
-  }
+  ai_move_controller(ai_move_stand, 0.5);
   if(self.state_1 == AI_ORDER_ATTACK){
     ai_state_control(ai_assault_findNode);
+    ai_move_controller(ai_move_stand, 0.1);
     return;
   }
   else if(self.state_1 == AI_ORDER_DEFEND){
     ai_state_control(ai_defend_findNode);
+    ai_move_controller(ai_move_stand, 0.1);
     return;
   }
   else if(self.state_1 == AI_ORDER_PATROL){
     ai_state_control(ai_patrol_findNode);
+    ai_move_controller(ai_move_stand, 0.1);
     return;
   }
   else if(self.state_1 == AI_ORDER_STAND){
-    ai_move_controller(ai_move_stand, 1);
     ai_state_control(ai_misc_stand);
+    ai_move_controller(ai_move_stand, 1);
     return;
   }
   else if(self.state_1 == AI_ORDER_DEBUG){

@@ -138,15 +138,12 @@ void() building_tur={
   mod = ai_pilot_rating_leading();
   self.stat_spr_x = self.conv_min_x + self.conv_max_x;
   self.stat_spr_y = self.conv_min_y + self.conv_max_y;
-  mod = ai_pilot_rating_converg();
-  self.ai_rte_cnv = mod;
-  mod = ai_pilot_rating_range();
-  self.ai_rte_rng = mod;
+  self.ai_rte_cnv = ai_pilot_rating_converg();;
+  self.ai_rte_rng = ai_pilot_rating_range();
   self.ai_optical = self.radar_range /2;
-  mod = ai_pilot_rating_patience();
-  self.maxpatience = mod;
+  self.maxpatience = ai_pilot_rating_patience();
   self.patience = 0;
-  self.origin_z = self.origin_z + 1;// raise off floor a bit
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   if(self.state_1){
     self.ai_first_order = AI_ORDER_DEBUG;

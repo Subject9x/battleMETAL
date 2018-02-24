@@ -23,34 +23,27 @@ void(float() move, float frames) ai_move_controller={
     self.w_isready = time + frames;
     self.ai_next_move = move;
   }
-  else{
-    if(!self.ai_hasmoved){
-      local float remain;
-      remain = self.w_isready - time;
-      self.w_isready = remain;
-    }
-  }
 };
 
 //move directives
 float() ai_move_stand={
-  if(self.ai_prev_move != ai_move_stand){
+  if(self.ai_prev_move != -1){
     walkmove(self.ideal_yaw, 0);
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = -1;
   }
   return TRUE;
 };
 
 float() ai_move_walk_goal={
   movetogoal(self.m_fspeed * AI_WALK_SPD);
-  self.ai_prev_move = ai_move_walk_goal;
+  self.ai_prev_move = AI_TARG_FWD;
   self.p_velocity = self.v_angle_y;
   return TRUE;
 };
 
 float() ai_move_run_goal={
   movetogoal(self.m_fspeed * AI_RUN_SPD);
-  self.ai_prev_move = ai_move_run_goal;
+  self.ai_prev_move = AI_TARG_FWD;
   self.p_velocity = self.v_angle_y;
   return TRUE;
 };
@@ -58,7 +51,7 @@ float() ai_move_run_goal={
 //arbitrary angle movement
 float() ai_move_angle_walk={
   if (walkmove( anglemod(self.angles_y + self.lefty), self.m_sspeed * AI_WALK_SPD)){
-    self.ai_prev_move = ai_move_angle_walk;
+    self.ai_prev_move = AI_TARG_FWD;
     self.p_velocity = self.lefty;
     return TRUE;
   }
@@ -68,7 +61,7 @@ float() ai_move_angle_walk={
 //arbitrary angle movement
 float() ai_move_angle_run={
   if (walkmove( anglemod(self.angles_y + self.lefty), self.m_sspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_move_angle_run;
+    self.ai_prev_move = AI_TARG_FWD;
     self.p_velocity = self.lefty;
     return TRUE;
   }
@@ -77,7 +70,7 @@ float() ai_move_angle_run={
 
 float() ai_move_runmove_slideright={  
   if (walkmove( self.ideal_yaw + 90, self.m_sspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_move_runmove_slideright;
+    self.ai_prev_move = AI_TARG_RGT;
     self.p_velocity = self.v_angle_y + 90;
     return TRUE;
   }
@@ -86,7 +79,7 @@ float() ai_move_runmove_slideright={
 
 float() ai_move_runmove_slideleft={  
   if (walkmove( self.ideal_yaw - 90, self.m_sspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_move_runmove_slideleft;
+    self.ai_prev_move = AI_TARG_LFT;
     self.p_velocity = self.v_angle_y - 90;
     return TRUE;
   }
@@ -95,7 +88,7 @@ float() ai_move_runmove_slideleft={
 
 float() ai_move_forward={
   if (walkmove (self.angles_y, self.m_fspeed * AI_WALK_SPD)){
-    self.ai_prev_move = ai_move_forward;
+    self.ai_prev_move = AI_TARG_FWD;
     self.p_velocity = self.v_angle_y;
     return TRUE;
   }
@@ -104,7 +97,7 @@ float() ai_move_forward={
 
 float() ai_run_forward={
   if (walkmove (self.angles_y, self.m_fspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_move_forward;
+    self.ai_prev_move = AI_TARG_FWD;
     self.p_velocity = self.v_angle_y;
     return TRUE;
   }
@@ -113,7 +106,7 @@ float() ai_run_forward={
 
 float() ai_run_backward={
   if (walkmove (self.angles_y + 180, self.m_bspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_run_backward;
+    self.ai_prev_move = AI_TARG_BKD;
     self.p_velocity = self.v_angle_y + 180;
     return TRUE;
   }
@@ -121,8 +114,8 @@ float() ai_run_backward={
 };
 
 float() ai_move_backward={
-  if (walkmove ((self.angles_y + 180), self.m_bspeed * AI_WALK_SPD)){
-    self.ai_prev_move = ai_move_backward;
+  if (walkmove (self.angles_y + 180, self.m_bspeed * AI_WALK_SPD)){
+    self.ai_prev_move = AI_TARG_BKD;
     self.p_velocity = self.v_angle_y + 180;
     return TRUE;
   }
@@ -132,7 +125,7 @@ float() ai_move_backward={
 float() ai_move_walkmove_strafeleft={
   if(walkmove (self.ideal_yaw - 90,  self.m_sspeed * AI_WALK_SPD)){
     self.p_velocity = self.v_angle_y - 90;
-    self.ai_prev_move = ai_move_walkmove_straferight;
+    self.ai_prev_move = AI_TARG_LFT;
     return TRUE;
   }
   return FALSE;
@@ -141,16 +134,15 @@ float() ai_move_walkmove_strafeleft={
 float() ai_move_walkmove_straferight={
   if(walkmove (self.ideal_yaw + 90,  self.m_sspeed * AI_WALK_SPD)){
     self.p_velocity = self.v_angle_y + 90;
-    self.ai_prev_move = ai_move_walkmove_straferight;
+    self.ai_prev_move = AI_TARG_RGT;
     return TRUE;
   }
   return FALSE;
 };
 
-
 float() ai_move_walkmove_forwardleft={
   if (walkmove (self.ideal_yaw - 45,  self.m_fspeed * AI_WALK_SPD)){
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = AI_TARG_FWD;
     self.p_velocity = self.v_angle_y - 45;
     return TRUE;
   }
@@ -159,7 +151,7 @@ float() ai_move_walkmove_forwardleft={
 
 float() ai_move_walkmove_forwardright={
   if(walkmove (self.ideal_yaw + 45,  self.m_fspeed * AI_WALK_SPD)){
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = AI_TARG_FWD;
     self.p_velocity = self.v_angle_y + 45;
     return TRUE;
   }
@@ -168,7 +160,7 @@ float() ai_move_walkmove_forwardright={
 
 float() ai_move_charge_left={
   if (walkmove (self.ideal_yaw - 75,  self.m_fspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = AI_TARG_FWD;
     self.p_velocity = self.v_angle_y - 75;
     return TRUE;
   }
@@ -177,7 +169,7 @@ float() ai_move_charge_left={
 
 float() ai_move_charge_right={
   if(walkmove (self.ideal_yaw + 75,  self.m_fspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = AI_TARG_FWD;
     self.p_velocity = self.v_angle_y + 75;
     return TRUE;
   }
@@ -186,7 +178,7 @@ float() ai_move_charge_right={
 
 float() ai_move_walkmove_backleft={
   if (walkmove (self.ideal_yaw - 135,  self.m_sspeed * AI_WALK_SPD)){
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = AI_TARG_BKD;
     self.p_velocity = self.v_angle_y - 135;
     return TRUE;
   }
@@ -195,17 +187,16 @@ float() ai_move_walkmove_backleft={
 
 float() ai_move_walkmove_backright={
   if (walkmove (self.ideal_yaw + 135,  self.m_sspeed * AI_WALK_SPD)){
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = AI_TARG_BKD;
     self.p_velocity = self.v_angle_y + 135;
     return TRUE;
   }
   return FALSE;
 };
 
-
 float() ai_move_runmove_backright={
   if (walkmove (self.ideal_yaw + 135,  self.m_sspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = AI_TARG_BKD;
     self.p_velocity = self.v_angle_y + 135;
     return TRUE;
   }
@@ -214,7 +205,7 @@ float() ai_move_runmove_backright={
 
 float() ai_move_runmove_backleft={
   if (walkmove (self.ideal_yaw - 135,  self.m_sspeed * AI_RUN_SPD)){
-    self.ai_prev_move = ai_move_stand;
+    self.ai_prev_move = AI_TARG_BKD;
     self.p_velocity = self.v_angle_y - 135;
     return TRUE;
   }
@@ -243,7 +234,6 @@ void(float isRun, float duration) ai_move_walkmove_forwardRand={
     ai_move_controller(ai_move_charge_right, duration);
   }
 };
-
 
 /*
   given 2 possible moves being passed in, roll a die
