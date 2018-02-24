@@ -54,18 +54,23 @@ void() ai_combat_findTarget={
   calculated by the ai_core function of similiar name
 */
 void() ai_combat_huntTarget={
+
+  te_beam_laser(self.origin, self.trigger_field.origin);  //DEBUG
   //defend stat override
-  if(self.stat_trg_dist > AI_DEFEND_DIST){
-    ai_state_control(ai_combat_endFight);
-    if(self.delay > time){
-      self.delay = time;
-    }
-    return;
+  if(self.state_1 == AI_ORDER_DEFEND){ 
+    if(self.stat_trg_dist > AI_DEFEND_DIST){
+      ai_state_control(ai_combat_endFight);
+      return;
+    } 
   }
+ 
   if(ai_target_isValid(self.trigger_field)){
     //AI lost patience, will try a new target
     if(time > self.patience){
       if(ai_target_isValid(self.oldenemy)){
+        self.trigger_field = self.oldenemy;
+        self.oldenemy = world;
+        ai_update_switchToTarget(self.trigger_field);
         ai_state_control(ai_combat_findTarget);
         return;
       }
@@ -74,30 +79,27 @@ void() ai_combat_huntTarget={
     }
     else{
       //check to see if AI can see target
-      if(ai_target_canSee(self.enemy)){
+      if(ai_target_canSee(self.trigger_field)){
         self.patience = 0;
         ai_state_control(ai_combat_adjustPosition);
         return;
       }
-      else{
-        //AI's patience is still holding, attempt to get 
-        //optical view of target to engage
-        ai_state_control(ai_combat_huntTarget);
-        ai_move_controller(ai_move_run_goal, 0.02);
-        return;
-      }
-    }
-  }
-  else{
-    if(ai_target_isValid(self.oldenemy)){
-      ai_state_control(ai_combat_findTarget);
+      //AI's patience is still holding, attempt to get 
+      //optical view of target to engage
+      ai_state_control(ai_combat_huntTarget);
+      ai_move_controller(ai_move_run_goal, 0.02);
       return;
     }
-    //AI didnt have an old enemy to go after
-    //so clear the targets, and end the fight phase
-    ai_state_control(ai_combat_endFight);
+  }
+  if(ai_target_isValid(self.oldenemy)){
+    ai_state_control(ai_combat_findTarget);
     return;
   }
+  //AI didnt have an old enemy to go after
+  //so clear the targets, and end the fight phase
+  ai_state_control(ai_combat_endFight);
+  return;
+  
 };
 
 /*

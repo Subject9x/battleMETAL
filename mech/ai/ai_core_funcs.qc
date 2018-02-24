@@ -152,18 +152,19 @@ entity(entity pNode) ai_findNode_searchGroup={
   that is closes to the AI invoking the call BUT also near an assault node.
 */
 entity(entity aNode) ai_node_closestTargNearNode={
+  local float distCont, distNode;
   local entity contact, found;
-  local float nDist;
-  nDist = vlen(aNode.origin - self.origin);
-  contact = found = world; //setting to null pre-emptively
+  distNode = vlen(aNode.origin - self.origin);
+  contact = found = world;  //ini
   contact = findradius(aNode.origin, AI_ASSAULT_DIST);
   while(contact){
-    if(ai_target_isValid(contact)){
-      local float cDist;
-      cDist = vlen(contact.origin - self.origin);
-      if(cDist < nDist){
-        nDist = cDist;
-        found = contact;
+    if(ai_target_isValid_useDataType(contact)){
+      if(ai_target_isValid(contact)){
+        distCont = vlen(contact.origin - self.origin);
+        if(distCont < distNode){
+          distNode = distCont;
+          found = contact;
+        }
       }
     }
     contact = contact.chain;
@@ -300,6 +301,9 @@ float(entity t) ai_target_isValid={
     return FALSE;
   }
   if(t.health <= 0){
+    return FALSE;
+  }
+  if(t.classname == MECH_PIECE){
     return FALSE;
   }
   if(t.i_faction == self.i_faction){

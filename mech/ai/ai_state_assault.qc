@@ -21,7 +21,8 @@ void() ai_assault_startWithNode={
   self.ai_prev_state = ai_assault_startWithNode;
   if(e){
     if(e.isActive == TRUE){
-      if(e.i_faction == self.i_faction){
+      if(e.i_faction == self.i_faction){  
+        cons_logAString("ai_assault_startWithNode","ai_assault_gotoNode");  //DEBUG
         self.node = ai_findNode_searchGroup(e);
         ai_update_switchToNode(self.node);
         ai_state_control(ai_assault_gotoNode);
@@ -75,17 +76,20 @@ void() ai_assault_gotoNode={
       //really only fight other targets if they're near the node or in the way
       contact = ai_node_closestTargNearNode(self.node);
       if(contact){
+        cons_logAString("ai_assault_gotoNode","ai_combat_huntTarget");  //DEBUG
         self.trigger_field = contact;
         ai_update_switchToTarget(self.trigger_field);
         self.patience = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
       }
+      cons_logAString("ai_assault_gotoNode","ai_assault_gotoNode");  //DEBUG
       ai_state_control(ai_assault_gotoNode);
       ai_move_controller(ai_move_walk_goal, 0.5);
       return;
     }
     else{
+      cons_logAString("ai_assault_gotoNode","ai_assault_atNode");  //DEBUG
       ai_state_control(ai_assault_atNode);
       ai_move_controller(ai_move_stand, 0.5);
       return;

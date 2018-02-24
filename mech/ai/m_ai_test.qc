@@ -107,9 +107,7 @@ void() ai_mech={
   self.patience = 0;
  
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-  self.prev_pos = self.origin;
   droptofloor();
-  self.origin_z = self.origin_z + 1;	// raise off floor a bit
   
   //set first order based on self.state_1
   
