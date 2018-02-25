@@ -54,8 +54,6 @@ void() ai_combat_findTarget={
   calculated by the ai_core function of similiar name
 */
 void() ai_combat_huntTarget={
-
-  te_beam_laser(self.origin, self.trigger_field.origin);  //DEBUG
   //defend stat override
   if(self.state_1 == AI_ORDER_DEFEND){ 
     if(self.stat_trg_dist > AI_DEFEND_DIST){
@@ -99,7 +97,6 @@ void() ai_combat_huntTarget={
   //so clear the targets, and end the fight phase
   ai_state_control(ai_combat_endFight);
   return;
-  
 };
 
 /*

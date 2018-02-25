@@ -22,9 +22,7 @@ void() ai_assault_startWithNode={
   if(e){
     if(e.isActive == TRUE){
       if(e.i_faction == self.i_faction){  
-        cons_logAString("ai_assault_startWithNode","ai_assault_gotoNode");  //DEBUG
-        self.node = ai_findNode_searchGroup(e);
-        ai_update_switchToNode(self.node);
+        ai_update_switchToNode(ai_findNode_searchGroup(e));
         ai_state_control(ai_assault_gotoNode);
         return;
       }
@@ -34,25 +32,34 @@ void() ai_assault_startWithNode={
 };
 
 void() ai_assault_findNode={
-  local entity e, aNode;
-  e = find(world, targetname, self.target);
-  self.ai_prev_state = ai_assault_startWithNode;
-  if(e){
-    if(e.isActive == TRUE){
-      if(e.i_faction == self.i_faction){
-        self.node = ai_findNode_searchGroup(e);
-        ai_update_switchToNode(self.node);
-        ai_state_control(ai_assault_gotoNode);
-        return;
-      }
+  local entity eNode;
+  if(self.group){
+    eNode = ai_node_searchGroup_checkActive (self.group);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_assault_gotoNode);
+      return;
     }
   }
-  aNode = ai_node_searchGroup_checkActive (self.group);
-  if(aNode){
-    ai_update_switchToNode(aNode);
-    ai_state_control(ai_assault_gotoNode);
-    return;
+
+  if(self.node.group){    
+    eNode = ai_node_searchGroup_checkActive (self.group);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_assault_gotoNode);
+      return;
+    }
   }
+  
+  if(self.target){
+    eNode = find(world, targetname, self.target);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_assault_gotoNode);
+      return;
+    } 
+  }
+  
   ai_move_controller(ai_move_stand, 0.25);
 };
 
@@ -72,29 +79,34 @@ void() ai_assault_gotoNode={
     local float nDist;
     nDist = vlen(self.node.origin - self.origin);
     if(nDist > AI_ASSAULT_DIST_MIN){
-      local entity contact;
-      //really only fight other targets if they're near the node or in the way
-      contact = ai_node_closestTargNearNode(self.node);
-      if(contact){
-        cons_logAString("ai_assault_gotoNode","ai_combat_huntTarget");  //DEBUG
-        self.trigger_field = contact;
-        ai_update_switchToTarget(self.trigger_field);
-        self.patience = time + self.maxpatience;
-        ai_state_control(ai_combat_huntTarget);
-        return;
-      }
-      cons_logAString("ai_assault_gotoNode","ai_assault_gotoNode");  //DEBUG
+      ///Assault AI's fixate on getting to their attack point, key difference
+      // vs Patrol
       ai_state_control(ai_assault_gotoNode);
-      ai_move_controller(ai_move_walk_goal, 0.5);
+      ai_move_controller(ai_move_walk_goal, 1);
       return;
     }
     else{
-      cons_logAString("ai_assault_gotoNode","ai_assault_atNode");  //DEBUG
+      //AI has reached node
       ai_state_control(ai_assault_atNode);
-      ai_move_controller(ai_move_stand, 0.5);
+      ai_move_controller(ai_move_stand, 0.1);
       return;
     }
   }
+  
+  //CASE B
+  if( (self.node != world) && (self.trigger_field != world) ){
+    if(ai_target_isValid(self.trigger_field)){
+      ai_update_switchToTarget(self.trigger_field);
+      self.patience = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
+      return;
+    }
+    //resume route
+    ai_state_control(ai_assault_gotoNode);
+    ai_move_controller(ai_move_walk_goal, 1);
+    return;
+  }
+  ai_move_controller(ai_move_stand, 1);
 };
 
 /*
@@ -108,27 +120,32 @@ void() ai_assault_atNode={
   */
   //CASE A
   if( (self.node != world) && (self.trigger_field == world) ){
+    //Assualt AI will sweep and clear every node
     local entity contact;
-    //really only fight other targets if they're near the node or in the way
     contact = ai_node_closestTargNearNode(self.node);
     if(contact){
-      self.trigger_field = contact;
-      ai_update_switchToTarget(self.trigger_field);
-      self.patience = time + self.maxpatience;
-      ai_state_control(ai_combat_huntTarget);
-      return;
-    }
-    //no targets, and node has target
-    if(self.node.target){
-      local entity nexNode;
-      nexNode = find(world, targetname, self.node.target);
-      if(nexNode){
-        self.node = nexNode;
-        ai_update_switchToNode(self.node);
-        ai_state_control(ai_assault_gotoNode);
+      if(!self.stat_rdr_mode){
+        self.stat_rdr_mode = TRUE;
+      }
+      if(ai_target_radarPing(contact)){
+        self.trigger_field = contact;
+        ai_update_switchToTarget(self.trigger_field);
+        self.patience = time + self.maxpatience;
+        ai_state_control(ai_combat_huntTarget);
         return;
       }
+    } 
+    //if node has a new node
+    if(self.node.target){
+      self.node = find(world, targetname, self.node.target);
+      ai_update_switchToNode(self.node);
+      ai_state_control(ai_assault_gotoNode);
+      return;
     }
+    self.node = world;
+    ai_target_clearBuffers();
+    ai_move_controller(ai_move_stand, 0.5);
+    return;
   }
   ai_move_controller(ai_move_stand, 0.25);
 };

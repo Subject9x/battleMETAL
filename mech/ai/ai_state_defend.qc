@@ -22,9 +22,7 @@ void() ai_defend_startWithNode={
   if(e){
     if(e.isActive == TRUE){
       if(e.i_faction == self.i_faction){
-        self.node = ai_findNode_searchGroup(e);
-        self.enemy = self.node;
-        self.goalentity = self.node;
+        ai_update_switchToNode(ai_findNode_searchGroup(e));
         ai_state_control(ai_defend_gotoNode);
         return;
       }
@@ -39,27 +37,34 @@ void() ai_defend_startWithNode={
   place in the map editor
 */
 void() ai_defend_findNode={
-  //find a patrol node, usually assigned by spawning in
-  //IF NODE
-    // TRUE -> ai_patrol_gotoNode
-    // FALSE -> ai_misc_stand
-  local entity dNode;
-  if(self.node != world){
-    if(self.node .isActive == TRUE){
-      if(self.node .i_faction == self.i_faction){
-        self.node = ai_findNode_searchGroup(self.node);
-        ai_update_switchToNode(self.node);
-        ai_state_control(ai_defend_gotoNode);
-        return;
-      }
+  local entity eNode;
+  if(self.group){
+    eNode = ai_node_searchGroup_checkActive (self.group);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_defend_gotoNode);
+      return;
     }
   }
-  dNode = ai_node_searchGroup_checkActive (self.group);
-  if(dNode){
-    ai_update_switchToNode(dNode);
-    ai_state_control(ai_defend_gotoNode);
-    return;
+
+  if(self.node.group){    
+    eNode = ai_node_searchGroup_checkActive (self.group);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_defend_gotoNode);
+      return;
+    }
   }
+  
+  if(self.target){
+    eNode = find(world, targetname, self.target);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_defend_gotoNode);
+      return;
+    } 
+  }
+  
   ai_move_controller(ai_move_stand, 0.25);
 };
 
@@ -226,47 +231,32 @@ void() ai_defend_atNode={
     local entity contact;
     contact = ai_target_radarTarget();
     if(contact){ 
-      //cons_logAString("", "contact!"); //DEBUG
       //make sure contact is actually threatening the base
       if( ai_node_defenseGroup_nodeToTarget(contact, self.group) ){
-        //cons_logAString("ai_node_defenseGroup_nodeToTarget", "true"); //DEBUG
         //see if any other friendlies have logged this target
         local float friends;
         friends = ai_combat_locksOnTarget(contact, self.i_faction);
         if( friends <= 1 ){
-          //cons_logAString("friends<1", "true"); //DEBUG
-          //valid LoS? engage
-          if(ai_target_canSee(contact)){
-            //cons_logAString("ai_target_canSee", "true"); //DEBUG
-            ai_update_switchToTarget(contact);
-            ai_state_control(ai_combat_adjustPosition);
+          //see if there's a node that's closer to the contact
+          local entity eNode;
+          eNode = ai_node_defenseGroup_setCourse(contact, self.group);
+          if(eNode){
+            ai_update_switchToNode(eNode);
+            self.trigger_field = contact;
+            ai_state_control(ai_defend_gotoNode);
             return;
           }
           else{
-            //see if there's a node that's closer to the contact
-            local entity eNode;
-            eNode = ai_node_defenseGroup_setCourse(contact, self.group);
-            if(eNode){
-              //cons_logAString("eNode", "true"); //DEBUG
-              ai_update_switchToNode(eNode);
-              self.trigger_field = contact;
-              ai_state_control(ai_defend_gotoNode);
-              return;
-            }
-            else{
-              //cons_logAString("eNode", "false"); //DEBUG
-              //no node? darn attempt to hunt 
-              self.patience = time + self.maxpatience;
-              ai_update_switchToTarget(contact);
-              ai_state_control(ai_combat_huntTarget);
-              return;
-            }
+            //no node? darn attempt to hunt 
+            self.patience = time + self.maxpatience;
+            ai_update_switchToTarget(contact);
+            ai_state_control(ai_combat_huntTarget);
+            return;
           }
         }
       }
     }
     else{
-      //cons_logAString("", "contact not valid"); //DEBUG
       //no contacts, see if node has marching orders
       if(self.node.target){
         local entity next;

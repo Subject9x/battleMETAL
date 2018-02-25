@@ -186,7 +186,7 @@ float AI_PATROL_DIST      = 100;  //how close to get to node before counting as 
 float AI_DEFEND_DIST_MIN  = 200;  //how close to get to a defense node before counting as close
 float AI_DEFEND_DIST      = 2000;
 float AI_ASSAULT_DIST_MIN = 400;
-float AI_ASSAULT_DIST     = 2400;
+float AI_ASSAULT_DIST     = 1200;
 
 //PILOT RANKS - determines base states, and some realtime decisions
 float AI_RANK_ACE = 0;
