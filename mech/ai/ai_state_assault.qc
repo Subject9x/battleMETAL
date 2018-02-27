@@ -33,6 +33,14 @@ void() ai_assault_startWithNode={
 
 void() ai_assault_findNode={
   local entity eNode;
+  if(self.target){
+    eNode = find(world, targetname, self.target);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_assault_gotoNode);
+      return;
+    } 
+  }
   if(self.group){
     eNode = ai_node_searchGroup_checkActive (self.group);
     if(eNode){
@@ -50,16 +58,6 @@ void() ai_assault_findNode={
       return;
     }
   }
-  
-  if(self.target){
-    eNode = find(world, targetname, self.target);
-    if(eNode){
-      ai_update_switchToNode(eNode);
-      ai_state_control(ai_assault_gotoNode);
-      return;
-    } 
-  }
-  
   ai_move_controller(ai_move_stand, 0.25);
 };
 
@@ -137,11 +135,11 @@ void() ai_assault_atNode={
     } 
     //if node has a new node
     if(self.node.target){
-      self.node = find(world, targetname, self.node.target);
-      ai_update_switchToNode(self.node);
-      ai_state_control(ai_assault_gotoNode);
+      self.target = self.node.target;
+      ai_state_control(ai_assault_findNode);
       return;
     }
+    self.target = ""; //clears out lingering target value
     self.node = world;
     ai_target_clearBuffers();
     ai_move_controller(ai_move_stand, 0.5);

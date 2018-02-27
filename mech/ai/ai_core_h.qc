@@ -194,6 +194,7 @@ float(entity t) ai_target_isValid;
 float(entity t) ai_target_validType;
 entity() ai_target_visualTarget;
 entity() ai_target_radarTarget; 
+entity(entity filter) ai_target_radarTarget_other;
 void() ai_target_clearBuffers;
 entity(entity targ) ai_target_checkBlock;
 float() ai_target_facingideal;

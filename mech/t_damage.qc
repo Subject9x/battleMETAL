@@ -459,6 +459,8 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
 
 void(entity trg, entity atk) anger_monster={
   //TODO - refactor and fill out this stub
+  
+  
 };
 
 

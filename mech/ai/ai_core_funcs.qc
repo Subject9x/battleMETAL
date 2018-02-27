@@ -437,6 +437,51 @@ entity() ai_target_radarTarget={
 };
 
 /*
+  pretty much radar target impl but 
+  ignores the existing target (filter)
+*/
+entity(entity filter) ai_target_radarTarget_other={
+ local float tDist;
+  local entity t, p;
+  //only active radar works here
+  if(self.stat_rdr_mode){
+    tDist = self.radar_range;
+    t = findradius(self.origin, self.radar_range);
+    while(t){
+      if(ai_target_isValid(t)){
+        if(  ai_target_validType(t) ){
+          if(t != filter){
+            local float fDist;
+            fDist = vlen(t.origin - self.origin);
+            //target's ACTIVE radar makes detecting easier
+            if(t.stat_rdr_mode){
+              if(fDist < tDist){
+                if(ai_target_radarPing(t)){
+                  p = t;
+                  tDist = fDist;
+                }
+              }   
+            }
+            else{
+              if(fDist <= (self.radar_range / 2)){
+                if(fDist < tDist){
+                  if(ai_target_radarPing(t)){
+                    p = t;
+                    tDist = fDist;
+                  }
+                }  
+              }
+            }
+          }
+        }
+      }
+      t = t.chain;
+    }
+  }
+  return p;
+};
+
+/*
   Reset AI's entity buffers
   only the enemy and goalentity
 */ 

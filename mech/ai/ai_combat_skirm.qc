@@ -119,54 +119,77 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   if(isClose){
     if(tMovedir == AI_TARG_FWD){
       if(self.ai_type == AI_TYPE_AGGRO){
-        //TODO - fill close-range stubs
+        amt = self.p_damage + 1;
+        ai_move_randomTwo(amt, ai_move_runmove_backleft, ai_move_runmove_backright);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-      
+        amt = self.p_damage + 1;
+        ai_move_randomTwo(amt, ai_move_walkmove_backleft, ai_move_walkmove_backright);
         return;
       }
-      
+      if(self.p_damage <= AI_RANK_VET){
+        ai_move_randomTwo(4, ai_move_runmove_backleft, ai_move_runmove_backright);
+        return;
+      }
+      ai_move_randomThree(6, ai_move_walkmove_backleft, 
+                              ai_move_walkmove_backright,
+                              ai_move_backward);
       return;
     }
     //--------------------------
     if(tMovedir == AI_TARG_BKD){
       if(self.ai_type == AI_TYPE_AGGRO){
-        
+        amt = self.p_damage + 1;
+        ai_move_randomTwo(amt, ai_move_runmove_slideleft, ai_move_runmove_slideright);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-      
+        amt = self.p_damage + 1;
+        ai_move_randomTwo(amt, ai_move_walkmove_backleft, ai_move_walkmove_backright);
         return;
       }
-      
+      if(self.p_damage <= AI_RANK_VET){
+        ai_move_randomTwo(2, ai_move_runmove_backleft, ai_move_runmove_backright);
+        return;
+      }
+      ai_move_randomThree(4, ai_move_walkmove_backleft, 
+                              ai_move_walkmove_backright,
+                              ai_move_backward);
       return;
     }
     //--------------------------
     if(tMovedir == AI_TARG_LFT){
       if(self.ai_type == AI_TYPE_AGGRO){
-        //TODO - fill close-range stubs
-        
+        if(self.p_damage <= AI_RANK_VET){
+          ai_move_randomTwo(1, ai_move_runmove_slideright, ai_move_runmove_backright);
+          return;
+        }
+        ai_move_controller(ai_move_runmove_backright, 1);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-      
+        ai_move_randomTwo(self.p_damage + 3, ai_move_backward, ai_move_walkmove_backright);
         return;
       }
-      
+      ai_move_randomTwo(self.p_damage + 1, ai_move_backward, ai_move_walkmove_backright);
       return;
     }
     //--------------------------
     if(tMovedir == AI_TARG_RGT){
       if(self.ai_type == AI_TYPE_AGGRO){
-        
+        if(self.p_damage <= AI_RANK_VET){
+          ai_move_randomTwo(1, ai_move_runmove_slideright, ai_move_runmove_backleft);
+          return;
+        }
+        ai_move_controller(ai_move_runmove_backleft, 1);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-      
+        ai_move_randomTwo(self.p_damage + 3, ai_move_backward, ai_move_walkmove_backleft);
         return;
       }
-      
+      ai_move_randomTwo(self.p_damage + 1, ai_move_backward, ai_move_walkmove_backleft);
       return;
     }
     //--------------------------

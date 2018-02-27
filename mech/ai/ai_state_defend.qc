@@ -38,24 +38,6 @@ void() ai_defend_startWithNode={
 */
 void() ai_defend_findNode={
   local entity eNode;
-  if(self.group){
-    eNode = ai_node_searchGroup_checkActive (self.group);
-    if(eNode){
-      ai_update_switchToNode(eNode);
-      ai_state_control(ai_defend_gotoNode);
-      return;
-    }
-  }
-
-  if(self.node.group){    
-    eNode = ai_node_searchGroup_checkActive (self.group);
-    if(eNode){
-      ai_update_switchToNode(eNode);
-      ai_state_control(ai_defend_gotoNode);
-      return;
-    }
-  }
-  
   if(self.target){
     eNode = find(world, targetname, self.target);
     if(eNode){
@@ -64,7 +46,22 @@ void() ai_defend_findNode={
       return;
     } 
   }
-  
+  if(self.group){
+    eNode = ai_node_searchGroup_checkActive (self.group);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_defend_gotoNode);
+      return;
+    }
+  }
+  if(self.node.group){    
+    eNode = ai_node_searchGroup_checkActive (self.group);
+    if(eNode){
+      ai_update_switchToNode(eNode);
+      ai_state_control(ai_defend_gotoNode);
+      return;
+    }
+  }
   ai_move_controller(ai_move_stand, 0.25);
 };
 
@@ -74,6 +71,8 @@ void() ai_defend_findNode={
   they're too close to thing to guard
 */
 void() ai_defend_gotoNode={
+  local float nDist, cDist;
+  local entity contact, nextNode;
 /*
   case A: goto node normally
   case B: goto node during defense - ie use defense nodes to track target
@@ -82,133 +81,68 @@ void() ai_defend_gotoNode={
 */
   //CASE A
   if( (self.node != world) && (self.trigger_field == world) ){
-    local float nDist;
     nDist = vlen(self.node.origin - self.origin);
-    if(nDist > AI_DEFEND_DIST_MIN){
-      if(ai_target_canSee(self.node)){
-        ai_state_control(ai_defend_gotoNode);
-        ai_move_controller(ai_move_walk_goal, 1);
-        return;
-      }
-      else{
-        //defenders aren't picky on positioning.
-        local entity n;
-        local float nDistt;
-        n = ai_findNode_searchGroup(self.node);
-        if(n){
-          ai_update_switchToNode(n);
-          nDistt = vlen(n.origin - self.origin);
-          if(nDist <= AI_DEFEND_DIST_MIN){
-            ai_state_control(ai_defend_atNode);
-            ai_move_controller(ai_move_stand, 1);
-            return;
-          }
-          else{
-            ai_state_control(ai_defend_gotoNode);
-            ai_move_controller(ai_move_walk_goal, 1);
-            return;
-          }
-        }
-        else{
-          ai_state_control(ai_defend_gotoNode);
-          ai_move_controller(ai_move_walk_goal, 1);
-          return; 
-        }
-      }
-    }
-    else{
+    if(nDist <= AI_DEFEND_DIST_MIN){
       ai_state_control(ai_defend_atNode);
-      ai_move_controller(ai_move_stand, 1);
+      ai_move_controller(ai_move_stand, 0.25);
       return;
     }
+    if(!ai_target_canSee(self.node)){
+      self.target = self.node.targetname;
+      nextNode = ai_node_searchGroup_checkActive(self.group);
+      if(nextNode){
+        ai_update_switchToNode(nextNode);
+        ai_state_control(ai_defend_gotoNode);
+        return;
+      }
+    }
+    contact = ai_target_radarTarget();
+    if(contact){
+      if( ai_node_defenseGroup_nodeToTarget(contact, self.group) ){
+        nextNode = ai_node_defenseGroup_setCourse(contact, self.group);
+        cDist = vlen(contact.origin - nextNode.origin);
+        if(cDist <= (AI_DEFEND_DIST + 5000)){
+          self.trigger_field = contact;
+          ai_update_switchToNode(nextNode);
+          ai_state_control(ai_defend_gotoNode);
+          ai_move_controller(ai_move_run_goal, 2);
+          return;
+        }
+      }
+      ai_update_switchToTarget(self.trigger_field);
+      self.patience = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
+      return;
+    }
+    ai_state_control(ai_defend_gotoNode);
+    ai_move_controller(ai_move_walk_goal, 0.5);
+    return;
   }
   
   //CASE B
   if( (self.node != world) && (self.trigger_field != world) ){
-    if(self.stat_rdr_mode != FALSE){
-      self.stat_rdr_mode = FALSE;
+    cDist = vlen(self.trigger_field.origin - self.node.origin);
+    if(cDist > AI_DEFEND_DIST){
+      self.trigger_field = world;
+      ai_update_switchToNode(self.node);
+      ai_state_control(ai_defend_gotoNode);
+      return;
     }
-    if(ai_target_isValid(self.trigger_field)){
-      //minimize the chances of kiting the AI away from its base
-      if(ai_node_defenseGroup_nodeToTarget(self.trigger_field, self.group) ){
-        //AI can visually spot the target, so jump to combat
-        if(ai_target_canSee(self.trigger_field)){
-          self.node = world;
-          ai_update_switchToTarget(self.trigger_field);
-          ai_state_control(ai_combat_adjustPosition);
-          return;
-        }
-        else{
-          //AI cannot see target, so it tries to find closest
-          //defense node, barring that, try to hunt the target
-          local entity dNode;
-          dNode = ai_node_defenseGroup_setCourse(self.trigger_field, self.group);
-          if(dNode){
-            ai_state_control(ai_defend_gotoNode);
-            ai_move_controller(ai_move_run_goal, 1);
-            return;
-          }
-          else{
-            //attempt to hunt the target normally;
-            self.patience = time + self.maxpatience;
-            ai_update_switchToTarget(self.trigger_field);
-            ai_state_control(ai_combat_huntTarget);
-            return;
-          }
-        }
-      }
-      else{
-        //potential target is out of range, try some others
-        if(ai_target_isValid(self.oldenemy)){
-          self.trigger_field = self.oldenemy;
-          self.oldenemy = world;
-          ai_state_control(ai_defend_gotoNode);
-          ai_move_controller(ai_move_run_goal, 1);
-          return;
-        }
-        else{
-          //AI doesn't have an old grudge so return to normal
-          local entity dNode;
-          dNode = ai_findNode_searchGroup(self.node);
-          if(dNode){
-            ai_update_switchToNode(dNode);
-            ai_state_control(ai_defend_gotoNode);
-            return;
-          }
-          else{
-            ai_target_clearBuffers();
-            ai_state_control(ai_misc_stand);
-            ai_move_controller(ai_move_stand, 1);
-            return;
-          }
-        }
-      }
+    nDist = vlen(self.node.origin - self.origin);
+    if( nDist <= AI_DEFEND_DIST_MIN ){
+      ai_state_control(ai_defend_atNode);
+      ai_move_controller(ai_move_stand, 0.25);
+      return;
     }
-    else{
-      //defenders aren't picky on positioning.
-      local entity n;
-      local float nDistt;
-      n = ai_findNode_searchGroup(self.node);
-      if(n){
-        ai_update_switchToNode(n);
-        nDistt = vlen(n.origin - self.origin);
-        if(nDistt <= AI_DEFEND_DIST_MIN){
-          ai_state_control(ai_defend_atNode);
-          ai_move_controller(ai_move_stand, 1);
-          return;
-        }
-        else{
-          ai_state_control(ai_defend_gotoNode);
-          ai_move_controller(ai_move_walk_goal, 1);
-          return;
-        }
-      }
-      else{
-        ai_state_control(ai_defend_gotoNode);
-        ai_move_controller(ai_move_walk_goal, 1);
-        return; 
-      }
+    if( ai_target_canSee(self.trigger_field) ){
+      ai_update_switchToTarget(self.trigger_field);
+      self.patience = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
+      return;
     }
+    ai_state_control(ai_defend_gotoNode);
+    ai_move_controller(ai_move_run_goal, self.p_damage + 1);
+    return;
   }
 };
 
@@ -217,6 +151,8 @@ void() ai_defend_gotoNode={
   unless a threat is near one of those nodes.
 */
 void() ai_defend_atNode={
+  local float nDist, cDist;
+  local entity contact, nextNode;
 /*
   case A: arrived at node normally
   case B: arrived at node in active combat
@@ -224,46 +160,27 @@ void() ai_defend_atNode={
 
   //CASE A
   if( (self.node != world) && (self.trigger_field == world) ){
-    //at node with nuthin to do
-    if(self.stat_rdr_mode != TRUE){
-      self.stat_rdr_mode = TRUE;
+    //AI was transitioning
+    if(self.target != self.node.targetname){
+      self.node = world;
+      ai_state_control(ai_defend_startWithNode);
+      ai_move_controller(ai_move_stand, 0.1);
+      return;
     }
-    local entity contact;
+    if(self.target == self.node.targetname){
+      //AI finished transition
+      self.target = "";
+    }
     contact = ai_target_radarTarget();
-    if(contact){ 
-      //make sure contact is actually threatening the base
+    if(contact){
       if( ai_node_defenseGroup_nodeToTarget(contact, self.group) ){
-        //see if any other friendlies have logged this target
-        local float friends;
-        friends = ai_combat_locksOnTarget(contact, self.i_faction);
-        if( friends <= 1 ){
-          //see if there's a node that's closer to the contact
-          local entity eNode;
-          eNode = ai_node_defenseGroup_setCourse(contact, self.group);
-          if(eNode){
-            ai_update_switchToNode(eNode);
-            self.trigger_field = contact;
-            ai_state_control(ai_defend_gotoNode);
-            return;
-          }
-          else{
-            //no node? darn attempt to hunt 
-            self.patience = time + self.maxpatience;
-            ai_update_switchToTarget(contact);
-            ai_state_control(ai_combat_huntTarget);
-            return;
-          }
-        }
-      }
-    }
-    else{
-      //no contacts, see if node has marching orders
-      if(self.node.target){
-        local entity next;
-        next = find(world, targetname, self.node.target);
-        if(next){
-          ai_update_switchToNode(next);
+        nextNode = ai_node_defenseGroup_setCourse(contact, self.group);
+        cDist = vlen(contact.origin - nextNode.origin);
+        if(cDist <= (AI_DEFEND_DIST + 5000)){
+          self.trigger_field = contact;
+          ai_update_switchToNode(nextNode);
           ai_state_control(ai_defend_gotoNode);
+          ai_move_controller(ai_move_run_goal, 2);
           return;
         }
       }
@@ -272,74 +189,22 @@ void() ai_defend_atNode={
   
   //CASE B
   if( (self.node != world) && (self.trigger_field != world) ){  
-    if(ai_target_isValid(self.trigger_field)){
-      //minimize the chances of kiting the AI away from its base
-      if(ai_node_defenseGroup_nodeToTarget(self.trigger_field, self.group) ){
-        //AI can visually spot the target, so jump to combat
-        if(ai_target_canSee(self.trigger_field)){
-          self.node = world;
-          ai_update_switchToTarget(self.trigger_field);
-          ai_state_control(ai_combat_adjustPosition);
-          return;
-        }
-        else{
-          //AI cannot see target, so it tries to find closest
-          //defense node, barring that, try to hunt the target
-          local entity dNode;
-          dNode = ai_node_defenseGroup_setCourse(self.trigger_field, self.group);
-          if(dNode){
-            ai_state_control(ai_defend_gotoNode);
-            return;
-          }
-          else{
-            //attempt to hunt the target normally;
-            self.patience = time + self.maxpatience;
-            ai_update_switchToTarget(self.trigger_field);
-            ai_state_control(ai_combat_huntTarget);
-            return;
-          }
-        }
-      }
-      else{
-        //potential target is out of range, try some others
-        if(ai_target_isValid(self.oldenemy)){
-          self.trigger_field = self.oldenemy;
-          self.oldenemy = world;
-          ai_state_control(ai_defend_gotoNode);
-          return;
-        }
-        else{
-          //AI doesn't have an old grudge so return to normal
-          local entity dNode;
-          dNode = ai_findNode_searchGroup(self.node);
-          if(dNode){
-            ai_update_switchToNode(dNode);
-            ai_state_control(ai_defend_gotoNode);
-            return;
-          }
-          else{
-            ai_state_control(ai_defend_atNode);
-            ai_target_clearBuffers();
-            return;
-          }
-        }
-      }
+    local entity nodeTest;
+    nodeTest = ai_node_defenseGroup_setCourse(self.trigger_field, self.group);
+    cDist = self.stat_trg_dist;
+    if(nodeTest == self.node){
+      ai_update_switchToTarget(self.trigger_field);
+      self.patience = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
+      return;
+    } 
+    
+    if(ai_target_canSee(self.trigger_field)){
+      ai_update_switchToTarget(self.trigger_field);
+      ai_state_control(ai_combat_adjustPosition);
+      return;
     }
-    else{
-      //defenders aren't picky on positioning.
-      local entity n;
-      local float nDistt;
-      n = ai_findNode_searchGroup(self.node);
-      if(n){
-        ai_update_switchToNode(n);
-        nDistt = vlen(n.origin - self.origin);
-        if(nDistt <= AI_DEFEND_DIST_MIN){
-          ai_state_control(ai_defend_atNode);
-          ai_move_controller(ai_move_stand, 1);
-          return;
-        }
-      }
-    }
+    
   }
   
   ai_state_control(ai_defend_atNode);

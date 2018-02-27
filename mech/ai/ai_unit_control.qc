@@ -161,8 +161,8 @@ void() ai_turret_update={
     ctrl_wpn_think(wep_chain);
     wep_chain = wep_chain.w_slot;
   }  
-  if(self.enemy != world){
-    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+  if(self.trigger_field != world){
+    self.stat_trg_dist = vlen(self.trigger_field.origin - self.origin);
   }
 };
 
