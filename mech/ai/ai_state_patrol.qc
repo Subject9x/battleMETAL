@@ -17,9 +17,7 @@ void() ai_patrol_startWithNode={
   if(e){
     if(e.isActive == TRUE){
       if(e.i_faction == self.i_faction){
-        self.node = ai_findNode_searchGroup(e);
-        self.enemy = self.node;
-        self.goalentity = self.node;
+        ai_update_switchToNode(ai_findNode_searchGroup(e));
         ai_state_control(ai_patrol_gotoNode);
         return;
       }
@@ -36,9 +34,7 @@ void() ai_patrol_findNode={
   if(self.node != world){
     if(self.node .isActive == TRUE){
       if(self.node .i_faction == self.i_faction){
-        self.node = ai_findNode_searchGroup(self.node);
-        self.enemy = self.node;
-        self.goalentity = self.node;
+        ai_update_switchToNode(ai_findNode_searchGroup(self.node));
         ai_state_control(ai_patrol_gotoNode);
         return;
       }
@@ -70,12 +66,7 @@ void() ai_patrol_gotoNode={
       contact = ai_target_radarTarget();
       if(contact){
         ai_update_switchToTarget(contact);
-        if(ai_target_visualPing(self.trigger_field)){
-          ai_state_control(ai_combat_adjustPosition);
-          ai_move_controller(ai_move_stand, 0.05);
-          return;
-        }
-        self.delay = time + self.maxpatience;
+        self.patience = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
       }
@@ -135,12 +126,7 @@ void() ai_patrol_atNode={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
-        ai_update_switchToTarget(contact);
-        if(ai_target_canSee(self.trigger_field)){
-          ai_state_control(ai_combat_adjustPosition);
-          return;
-        }
-        self.delay = time + self.maxpatience;
+        self.patience = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
       }
@@ -154,9 +140,7 @@ void() ai_patrol_atNode={
         if(e.isActive == TRUE){
           if(e.i_faction == self.i_faction){
             //no need to search for next node, right?
-            self.node = e;
-            self.enemy = self.node;
-            self.goalentity = self.node;
+            ai_update_switchToNode(e);
             ai_state_control(ai_patrol_gotoNode);
             return;
           }
@@ -164,9 +148,7 @@ void() ai_patrol_atNode={
       }
     }
     //end of patrol path
-    self.node = world;
-    self.enemy = self.node;
-    self.goalentity = self.node;
+    ai_update_switchToNode(world);
     ai_state_control(ai_patrol_atNode);
     ai_move_controller(ai_move_stand, 0.5);
     return;

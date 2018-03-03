@@ -29,33 +29,6 @@ float() ai_core_noguns={
   return FALSE;
 };
 
-/*
-  recurse through a node's patrol paths to find the most visible node to the ai
-*/
-entity(entity gnode) ai_find_patrol_node_recurse={
-  local entity n;
-  if(gnode.target){
-    n = find(world, targetname, gnode.target);
-    if(n != world){
-      makevectors(gnode.angles);
-      local vector v1;
-      v1 = gnode.origin + v_up*32;
-      traceline(v1, self.origin, TRUE, gnode);
-      if(trace_fraction == 1){
-        return n;
-      }
-      else{
-        return ai_find_patrol_node_recurse(n);
-      }
-    }
-    else{
-      return gnode;
-    }
-  }
-  else{
-    return gnode;
-  }
-};
 
 entity(vector org, float start_dist) ai_core_findgraphnode={
   local entity e, near;
@@ -105,44 +78,6 @@ float() ai_core_targetstate={
   return TRUE;
 };
 
-entity() ai_core_radar_sweep={
-  local float len, ht;
-  local entity t, found;
-  local vector vis, me;
-  makevectors(self.angles);
-  me = self.origin + v_up*32;
-  if(self.stat_rdr_mode){
-    len = self.radar_range;
-    ht = 64;
-  }
-  else{
-    self.radar_range = self.radar_range / 2;
-    ht = 32;
-  }
-  t = findradius(self.origin, len);
-  while(t){
-    if(t != world){
-      if(t.i_faction != self.i_faction){
-        if((t.data_type) && t.data_type != DATA_POBS){
-          makevectors(t.angles);
-          vis = t.origin + v_up*ht;
-          traceline(me, vis, TRUE, self);
-          if(trace_fraction >= 0.15){
-            local float d;
-            d = vlen(t.origin - self.origin);
-            if(d < len){
-              len = d;
-              found = t;
-            }
-          }
-        }
-      }
-    }
-    t = t.chain;
-  }
-  return found;
-};
-
 entity() ai_core_findfriendly={
   local entity friend, found;
   local vector me, forg;
@@ -172,49 +107,6 @@ entity() ai_core_findfriendly={
     friend = friend.chain;
   }
   return found;
-};
-
-/*================================
-        ai_target_infront
-determines if an entity is in front of calling ent
--ported from classic qc
-================================*/
-float(entity targ) ai_target_infront={
-  local vector v;
-  local float d;
-  makevectors(self.angles);
-  v = normalize(targ.origin - self.origin);
-  d = v * v_forward;
-  if( d > 0.3){
-    return TRUE;
-  }
-  return FALSE;
-};
-
-//is self in front of a target?
-/*float(entity targ) ai_target_insights={
-  local vector v;
-  local float d;
-  makevectors(targ.angles);
-  v = normalize(self.origin - targ.origin);
-  d = v * v_forward;
-  if( d > 0.3){
-    return TRUE;
-  }
-  return FALSE;
-};*/
-
-/*================================
-        ai_target_visible
-determins if an entity can be seen by caller
--ported from classic qc
-================================*/
-float(entity targ) ai_target_visible={
-  traceline(self.origin, targ.origin, TRUE, self);
-  if(trace_fraction == 1){
-    return TRUE;
-  }
-  return FALSE;
 };
 
 /*
@@ -371,6 +263,29 @@ float() ai_pilot_rating_patience={
     ePatience = ePatience - (ePatience / 2);
   }
   return ePatience; 
+};
+
+/*
+
+*/
+float() ai_core_hitTimeCalc={
+  local float sec;
+  sec = (self.p_damage + 2);
+  sec = sec * 1.5;
+  
+  if(self.state_1 == AI_ORDER_ATTACK){
+    sec = sec + 1;
+  }
+  if(self.ai_style == AI_STYLE_STALK){
+    sec = sec + 2.5;
+  }
+  if(self.ai_type == AI_TYPE_AGGRO){
+    sec = sec - ( sec * 0.25);
+  }
+  if(self.ai_type == AI_TYPE_COWRD){
+    sec = sec - ( sec * 0.5);
+  }
+  return sec;
 };
 
 void() ai_core_calcranges={

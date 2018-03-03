@@ -238,6 +238,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// set up the scene parameters
   //setproperty(VF_MIN, vf_mn);   //set the left of the view
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
+  if(self.data_type == DATA_MECH){
+    setproperty(VF_ORIGIN, pmove_org);
+    setproperty(VF_ANGLES, input_angles);
+  }
+  else{ 
+    setproperty( VF_ORIGIN, self.origin);
+    setproperty( VF_ANGLES, input_angles );
+  }
+
   setproperty(VF_ANGLES, view_angles);
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   setproperty(VF_FOV, fovvec);
@@ -253,25 +262,22 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_SCALE = 0.35;
 
-  
-  
   	// add any polygons we want here
 
-  
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
 	// TODO: do clientside viewmodel entity instead
-	addentities(MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS);
+	addentities(MASK_NORMAL | MASK_ENGINE);
 
-  if(self.data_type == DATA_MECH){
-    setproperty(VF_ORIGIN, self.origin + '0 6 7');
+  /*if(self.data_type == DATA_MECH){
+    setproperty(VF_ORIGIN, pmove_org);
     setproperty(VF_ANGLES, input_angles);
   }
   else{ 
-    setproperty( VF_ORIGIN, self.origin + '0 6 7');
+    setproperty( VF_ORIGIN, self.origin);
     setproperty( VF_ANGLES, input_angles );
-  }
+  }*/
   
 
 	// draw the main view

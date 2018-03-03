@@ -17,10 +17,11 @@ void() ai_combat_findTarget={
     self.trigger_field = self.oldenemy;
     self.oldenemy = world;
     ai_update_switchToTarget(self.trigger_field);
-    if(ai_target_canSee(self.enemy)){
+    if(ai_target_canSee(self.trigger_field)){
       ai_state_control(ai_combat_adjustPosition);
       return;
     }
+    ai_update_dmgTime();
     self.patience = time + self.maxpatience;
     ai_state_control(ai_combat_huntTarget);
     return;
@@ -33,6 +34,7 @@ void() ai_combat_findTarget={
       local entity contact;
       contact = ai_target_radarTarget();
       if(contact){
+        ai_update_dmgTime();
         ai_update_switchToTarget(contact);
         self.patience = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
@@ -64,25 +66,29 @@ void() ai_combat_huntTarget={
     } 
   }
   if(ai_target_isValid(self.trigger_field)){
+    self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
     //AI lost patience, will try a new target
     if(time > self.patience){
       if(ai_target_isValid(self.oldenemy)){
-        self.trigger_field = self.oldenemy;
+        ai_update_switchToTarget(self.oldenemy);
         self.oldenemy = world;
-        ai_update_switchToTarget(self.trigger_field);
+        self.patience = time + self.maxpatience;
+        ai_update_dmgTime();
         ai_state_control(ai_combat_findTarget);
         return;
       }
-      ai_state_control(ai_combat_endFight);
+      ai_state_control(ai_combat_findTarget);
       return;
     }
     else{
       //check to see if AI can see target
       if(ai_target_canSee(self.trigger_field)){
         self.patience = 0;
+        ai_update_dmgTime();
         ai_state_control(ai_combat_adjustPosition);
         return;
       }
+      
       //AI's patience is still holding, attempt to get 
       //optical view of target to engage
       ai_state_control(ai_combat_huntTarget);
@@ -144,6 +150,11 @@ void() ai_combat_adjustPosition={
       self.button0 = 1;
       return;
     }
+    
+    if(self.state_1 == AI_ORDER_PATROL){
+      te_beam_laser(self.origin, self.trigger_field.origin);
+    }
+    
     //attempt to hunt
     self.delay = time + self.maxpatience;
     ai_state_control(ai_combat_huntTarget);

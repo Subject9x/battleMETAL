@@ -235,6 +235,7 @@ void(float new_style) ai_update_combatStyle;
 void(entity t, string newTarg) ai_update_entityTarget;
 void(entity newTarget) ai_update_switchToTarget;
 void(entity newNode) ai_update_switchToNode;
+void() ai_update_dmgTime;
 //UTIL
 void(float state) ai_util_firstOrder_nonStatic;
 void(entity aggro) ai_util_defense_callForHelp;
@@ -246,7 +247,6 @@ float(float len, float tickRate) ai_util_calcMoveLen;
 /*==========================================*/
 
 //utility functions
-entity(entity node) ai_find_patrol_node_recurse;
 float() ai_core_noguns;
 
 entity(entity node, float id) ai_query_graphnode;
@@ -261,6 +261,7 @@ float() ai_pilot_rating_leading;
 float() ai_pilot_yaw_mod;
 float() ai_pilot_armor_mod;
 float() ai_pilot_rating_patience;
+float() ai_core_hitTimeCalc;
 
 //TODO - separate header?
 void() ai_mech_update;

@@ -487,7 +487,7 @@ void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange={
   local string msg;
   ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlign(ofs, algn);
-  dist = vlen(torg - porg);
+  dist = ceil(vlen(torg - porg));
   msg = strcat("[RANGE] ", ftos(dist));
   msgLen = stringwidth(msg, 0, '6 6 0');
   msgSize_x = gui_percentXRaw(msgLen/2);

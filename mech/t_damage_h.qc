@@ -18,4 +18,4 @@ float(entity targ, float dmg_amt, float dmg_type) shield_vs_ene;
 float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis;
 float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor;
 entity(entity parent, vector org, float start_rad) closestWeapon;
-void(entity atk) anger_monster;
+void(entity trg, entity atk) anger_monster;

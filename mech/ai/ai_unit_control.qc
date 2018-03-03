@@ -171,9 +171,9 @@ void() ai_turret_touch={
     if(other.data_type != DATA_POBS){
       if(other.i_faction != self.i_faction){
         //bumped a baddy!
-        if((ai_target_infront(other)) || (self.enemy == world)){  
+        if((ai_target_inForwardArc(other)) || (self.enemy == world)){  
           self.oldenemy = self.enemy;
-          self.enemy = other;
+          ai_update_switchToTarget(other);
         }
       }
     }

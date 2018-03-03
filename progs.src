@@ -28,7 +28,6 @@ triggers_h.qc
   mech/svr/server_parmops_h.qc
   mech/svr/server_intermsn_h.qc
   mech/svr/server_sensors_h.qc
-  mech/svr/server_radar_h.qc
   mech/utils_h.qc
   mech/ext/eng_client_h.qc
   mech/ext/eng_player_h.qc
@@ -129,7 +128,6 @@ dp/subs.qc
   mech/svr/server_intermsn_c.qc
   mech/svr/server_csqchandler_C.qc
   mech/svr/server_sensors_c.qc
-  mech/svr/server_radar_c.qc
   mech/utils_c.qc
   mech/playerFactory_c.qc
   mech/svr/server_playermovement_c.qc

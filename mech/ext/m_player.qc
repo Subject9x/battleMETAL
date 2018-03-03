@@ -115,8 +115,6 @@ void() PlayerPostThink = {
     }
     client_updateWeaponReloads();
     ctrl_update_mechplayer();
-    local vector radar;
-    radar = server_updateRadarInfo();
   }
     
   if(self.data_type != DATA_POBS){
@@ -190,13 +188,11 @@ void() PlayerDie={
 	self.angles_x = 0;
 	self.angles_z = 0;
   self.avelocity = '0 0 0';
-  self.SendFlags = 1;
   if(self.data_type != DATA_POBS){
     mech_clearWeaponGroups();
     if(self.data_type == DATA_MECH){
       self.data_type = DATA_POBS; //edge case spot-welding
       mech_player_die();
-      self.SendFlags = 1;
       return;
     }
   }
@@ -242,7 +238,6 @@ void() PlayerDeathThink={
   spawnpoint_Random();
   self.movetype = MOVETYPE_FLY;
   self.flags = self.flags | FL_FLY;
-  self.SendFlags = 1;
   respawn();
 };
 

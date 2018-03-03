@@ -92,13 +92,3 @@ void() server_updateTargetInfo={
     }
   }
 };
-
-void() server_radarSweep={
-  
-};
-
-vector() server_updateRadarInfo={
-  local vector toSender;
-  toSender = radar_MakeSweep();
-  return toSender;
-};

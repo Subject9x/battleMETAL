@@ -197,8 +197,9 @@ float(entity targ, float faction) ai_combat_locksOnTarget={
     -ported from classic qc
 */
 float(entity targ) ai_target_canSee={
-  traceline(self.origin, targ.origin, FALSE, self);
-  if(trace_fraction >= 0.85){
+  tracebox(targ.origin, targ.absmin, targ.absmax, self.origin, FALSE, self);
+ //traceline(self.origin, targ.origin, FALSE, self);
+  if((trace_ent == targ) || (trace_fraction >= 0.85) ){
     return TRUE;
   }
   return FALSE;
@@ -211,7 +212,7 @@ float(entity targ) ai_target_canSee={
 */
 entity(entity targ) ai_target_checkBlock={
   if(ai_target_inForwardArc(targ)){
-    traceline(self.e_cam.origin, targ.origin, FALSE, self);
+    tracebox(targ.origin, targ.absmin, targ.absmax, self.origin, FALSE, self);
     if(ai_target_isValid_useDataType(trace_ent)){
       return trace_ent;
     }    
@@ -603,6 +604,15 @@ void(entity t, string newTarg) ai_update_entityTarget={
         t.target = newTarg;
       }
     }
+  }
+};
+
+/*
+  makes AI resistant to changing targets too frequently
+*/
+void() ai_update_dmgTime={
+  if(time > self.dmgtime){
+    self.dmgtime = time + ai_core_hitTimeCalc();
   }
 };
 

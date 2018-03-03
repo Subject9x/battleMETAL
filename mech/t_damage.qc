@@ -119,17 +119,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   trg.health = trg.health - dmg_amt;
   
   //Damage has gone through, AI survived, choose how it will react->
-  if((trg.flags & FL_MONSTER)){
+  if( (trg.flags & FL_MONSTER) ){
     if(trg.ai_next_state != ai_misc_stand_debug){
-      if(attacker != trg.enemy){
+      if(attacker != trg.trigger_field){
         if(trg.i_faction != attacker.i_faction){
-          if(time > trg.dmgtime){
-            local entity this;
-            this = self;
-            self = trg;
-              anger_monster(attacker);
-            self = this;
-          }
+          anger_monster(trg, attacker);
         }
       }
     }
@@ -469,13 +463,47 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
 /*
   AI has been hit by something, and has to react to it
 */
-void(entity atk) anger_monster={
-  self.dmgtime = time + ((self.p_damage + 1) * 1.5); //AI shouldn't respond to every single hit
-  if(self.trigger_field == world){
-    ai_update_switchToTarget(atk);
-    self.patience = time + self.maxpatience;
-    ai_state_control(ai_combat_huntTarget);
-    return;
+void(entity trg, entity atk) anger_monster={
+  local float switchTarget, atkDist;
+  local entity this;
+  if(time > self.dmgtime){
+    this = self;
+    self = trg;
+      atkDist = vlen(atk.origin - self.origin);
+      switchTarget = FALSE;
+      if(self.trigger_field == world){
+        switchTarget = TRUE;
+      }
+
+      if( (self.trigger_field.data_type == DATA_BLD) && (atk.data_type != DATA_BLD) ){
+        switchTarget = TRUE;
+      }
+      
+      if( (self.trigger_field.data_type != DATA_BLD) && (atk.data_type != DATA_BLD) ){
+        if( self.ai_style == AI_STYLE_SNIPER){
+          if( (atkDist <= AI_RANGE_S) && (self.p_damage>=AI_RANK_REG) ){
+            switchTarget = TRUE;
+          }
+        }
+        else if( self.ai_style == AI_STYLE_BRAWL ){
+          if( (atkDist < self.stat_trg_dist) && (self.ai_type == AI_TYPE_AGGRO) ){
+            switchTarget = TRUE;
+          }
+        }
+        else{
+          if( (self.stat_trg_dist >= AI_RANGE_L) || (atkDist <= AI_RANGE_M) ){
+            switchTarget = TRUE;
+          }
+        }
+      }
+      
+      if(switchTarget){
+        ai_update_switchToTarget(atk);
+        self.patience = time + self.maxpatience;
+        self.dmgtime = time + ai_core_hitTimeCalc();
+        ai_state_control(ai_combat_huntTarget);
+      }
+    self = this;
   }
 };
 
