@@ -252,6 +252,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   VIEW_CTR_x = VIEW_MAX_x / 2;
   VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_SCALE = 0.35;
+
+  
   
   	// add any polygons we want here
 
@@ -263,13 +265,14 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	addentities(MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS);
 
   if(self.data_type == DATA_MECH){
-    setproperty(VF_ORIGIN, pmove_org);
+    setproperty(VF_ORIGIN, self.origin + '0 6 7');
     setproperty(VF_ANGLES, input_angles);
   }
   else{ 
-    setproperty( VF_ORIGIN, self.origin);
+    setproperty( VF_ORIGIN, self.origin + '0 6 7');
     setproperty( VF_ANGLES, input_angles );
   }
+  
 
 	// draw the main view
 	renderscene();
@@ -355,29 +358,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     //HUD RENDER FRAME SYSTEM
     hud_frame(self.data_idx, self.vec_size);
-    
-    oself = self;
-    self = player_hud;
-      //self.w_range = trg_dist;
-      //self.hud_prep(vec_data);
-      //self.hud_HelmetImage(VIEW_MAX, VIEW_CTR);
-      //self.hud_playerArmor(plr_ct, plr_lt, plr_rt, plr_la, plr_ra, plr_lg);     
-      //self.hud_playerShield(plr_sh);
-      //self.hud_playerEnergy(plr_en);  
-      //self.hud_Radar(rad_mode, getstati(STAT_PLR_IFAC));
-      //self.hud_hitDirectionPips(hitdir);
-      /*self.hud_renderWeapon1(plr_wgrp, plr_wstate, w1_id, WEAPON1, WEAPON1_DD, WEAPON1_OK, w1_r);
-      self.hud_renderWeapon2(plr_wgrp, plr_wstate, w2_id, WEAPON2, WEAPON2_DD, WEAPON2_OK, w2_r);
-      self.hud_renderWeapon3(plr_wgrp, plr_wstate, w3_id, WEAPON3, WEAPON3_DD, WEAPON3_OK, w3_r);
-      self.hud_renderWeapon4(plr_wgrp, plr_wstate, w4_id, WEAPON4, WEAPON4_DD, WEAPON4_OK, w4_r);
-      self.hud_renderWeapon5(plr_wgrp, plr_wstate, w5_id, WEAPON5, WEAPON5_DD, WEAPON5_OK, w5_r);
-      self.hud_renderWeapon6(plr_wgrp, plr_wstate, w6_id, WEAPON6, WEAPON6_DD, WEAPON6_OK, w6_r);
-      self.hud_renderWeapon7(plr_wgrp, plr_wstate, w7_id, WEAPON7, WEAPON7_DD, WEAPON7_OK, w7_r);
-      self.hud_renderWeapon8(plr_wgrp, plr_wstate, w8_id, WEAPON8, WEAPON8_DD, WEAPON8_OK, w8_r);
-      self.hud_renderWeapon9(plr_wgrp, plr_wstate, w9_id, WEAPON9, WEAPON9_DD, WEAPON9_OK, w9_r);*/
-      //self.hud_renderTarget(trg_vid,trg_datid,trg_sh,trg_dist,trg_lock,trg_dir,trg_pos);
-      //self.hud_renderCrosshairs(vec_id, trg_lock, conv_x, conv_y, pitch);
-    self = oself;
     
     local float bx_time;
     bx_time = getstati(UI_BOX_TIME);
@@ -705,11 +685,9 @@ void(float isnew) CSQC_Ent_Update =
     if(isnew){
       self.classname = "player";
       self.solid = SOLID_SLIDEBOX;
-      self.movetype = MOVETYPE_FLY;
-      self.predraw = obs_predraw;      
+      self.predraw = obs_predraw;       
       self.drawmask = MASK_ENGINE;
       setmodel(self, "q3mdl/testball.md3");
-      setsize(self, '-4 -4 -4', '4 4 4');
     }
     self.data_type = ReadByte();
     self.i_faction = ReadByte();
@@ -722,7 +700,6 @@ void(float isnew) CSQC_Ent_Update =
     
     self.origin_phys = self.origin;
     
-    setorigin(self, self.origin);
     
     self.angles_x = ReadAngle();
     self.angles_y = ReadAngle();
@@ -730,6 +707,9 @@ void(float isnew) CSQC_Ent_Update =
     self.velocity_x = ReadLong();
     self.velocity_y = ReadLong();
     self.velocity_z = ReadLong();
+    
+    setsize(self, '-4 -4 -4', '4 4 4');
+    setorigin(self, self.origin);
     
     if(self.data_type == DATA_MECH){
       self.data_idx = ReadByte();

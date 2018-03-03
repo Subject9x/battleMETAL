@@ -23,6 +23,7 @@ float CON_CH;
 .float parm8; // bitflags for medium mechs
 .float parm9; // bitflags for heavy mechs
 
+
 //
 vector plr_orig;
 vector plr_angles;

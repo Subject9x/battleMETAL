@@ -54,6 +54,7 @@ dp/subs.qc
   mech/dat/msc/map_objective.qc
   mech/dat/msc/ai_node.qc
   mech/dat/msc/misc_model.qc
+  mech/dat/msc/ai_map_logic.qc
   
   //projectiles
   mech/dat/prj/data_prj_sfga_vals.qc
@@ -101,7 +102,12 @@ dp/subs.qc
 //===========================
 
 //impl files
-  //ai
+  mech/ai/m_ai_test.qc
+  mech/ai/ai_directives_combat.qc
+  mech/ai/ai_move_funcs.qc
+  mech/ai/ai_core_utils.qc
+  mech/ai/ai_unit_control.qc
+  //AI STATES-----------------------------
   mech/ai/ai_state_patrol.qc
   mech/ai/ai_state_defend.qc
   mech/ai/ai_state_assault.qc
@@ -109,19 +115,15 @@ dp/subs.qc
   mech/ai/ai_state_wander.qc
   mech/ai/ai_state_combat.qc
   mech/ai/ai_core_funcs.qc
-  //combat sub states
+  //-------------------------------------
+  //AI COMBAT SUB STATES--------------------
   mech/ai/ai_combat_brawl.qc
   mech/ai/ai_combat_snipe.qc
   mech/ai/ai_combat_skirm.qc
   mech/ai/ai_combat_flank.qc
+  //-------------------------------------
   
-  //mech/ai/ai_subs.qc
-  mech/ai/m_ai_test.qc
-  mech/ai/ai_directives_combat.qc
-  mech/ai/ai_move_funcs.qc
-  mech/ai/ai_core_utils.qc
-  mech/ai/ai_unit_control.qc
-  //mech/mech_anim.qc
+
   mech/t_damage.qc
   mech/svr/server_parmops_c.qc
   mech/svr/server_intermsn_c.qc
@@ -141,8 +143,6 @@ dp/subs.qc
   mech/ctrl/ctrl_turret.qc
   mech/ctrl/ctrl_building.qc
 //==========================
-
-
 
 q1/qwep/qwep_header.qc
 q1/qwep/wep_fx.qc

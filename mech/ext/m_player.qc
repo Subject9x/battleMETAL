@@ -74,6 +74,7 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
+  self.SendFlags = 1;
   
   //Update Target information
   server_updateTargetInfo();
@@ -161,7 +162,6 @@ void() PlayerPostThink = {
     self.stat_plr_camz = self.e_cam.c_ofs_z;
    
   }
-   self.SendFlags = 1;
 };
 
 

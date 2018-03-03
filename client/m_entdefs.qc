@@ -5,6 +5,9 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
+.vector svOrigin;
+.vector svVangles;
+
 .float sh_cur;
 .float stat_rdr_mode;
 
@@ -29,6 +32,7 @@ vector vPlayerOrigin;
 vector vPlayerOriginOld;
 vector vPlayerVelocity;
 
+.float renderflags;
 .float pmove_flags;
 
 //Damage types

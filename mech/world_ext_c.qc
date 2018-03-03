@@ -60,6 +60,9 @@ void() mh_world_ini={
   
   addstat(UI_BOX_TIME, AS_INT, ui_box_time);
   
+  //build t_damage AI_DFLAG sets
+  
+  
 };
 
 void(float build_id) data_iniBuilding={

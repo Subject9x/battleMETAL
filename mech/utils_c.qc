@@ -43,6 +43,13 @@ float(float numOfSides) util_roll_dice={
   return roll;
 };
 
+float(entity t) util_getMechHpAverage={
+  local float total, cur;
+  total = t.max_health + (t.e_arm_l.max_health * 2) + (t.e_tor_l.max_health * 2) + t.e_legs.max_health;
+  cur = t.health + t.e_arm_r.health + t.e_arm_l.health + t.e_tor_r.health + t.e_tor_l.health + t.e_legs.health;
+  total = floor(cur / total);
+  return total;
+};
 
 vector(vector rgb) util_rgbToFloat={
   local vector nu;

@@ -18,7 +18,7 @@ float		frametime;
 
 float 		player_localentnum;	//the entnum
 float 		player_localnum;	//the playernum
-float		maxclients;	//a constant filled in by the engine. gah, portability eh?
+float		  maxclients;	//a constant filled in by the engine. gah, portability eh?
 
 float		clientcommandframe;	//player movement
 float		servercommandframe;	//clientframe echoed off the server

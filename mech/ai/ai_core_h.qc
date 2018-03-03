@@ -54,6 +54,26 @@ float AI_TARG_FWD = 0;
 float AI_TARG_BKD = 1;
 float AI_TARG_LFT = 2;
 float AI_TARG_RGT = 3;
+
+//PILOT RANKS - determines base states, and some realtime decisions
+float AI_RANK_ACE = 0;
+float AI_RANK_VET = 1;  //veteran
+float AI_RANK_REG = 2;  //regular
+float AI_RANK_ROK = 3;  //rookie
+
+//QUIRKS - combat
+float AI_STYLE_SKIRM  = 0;  //this is 'default'
+float AI_STYLE_SNIPER = 1;
+float AI_STYLE_BRAWL  = 2;
+float AI_STYLE_FLANK  = 3;
+float AI_STYLE_STALK  = 4;
+
+//QUIRKS - personality
+float AI_TYPE_NORML  = 0;
+float AI_TYPE_AGGRO  = 1;
+float AI_TYPE_RESCU  = 2;
+float AI_TYPE_COWRD  = 3;
+
 //direction bitflag is used to filter out non-viable directions when executing pseudo-random moves
 float AI_DIR_N  = 1;
 float AI_DIR_NE = 2;
@@ -63,6 +83,13 @@ float AI_DIR_S  = 16;
 float AI_DIR_SW = 32;
 float AI_DIR_W  = 64;
 float AI_DIR_NW = 128;
+
+//AI order constants, refactored from func pointers
+float AI_ORDER_DEBUG = -1;
+float AI_ORDER_STAND = 1;
+float AI_ORDER_DEFEND = 2;
+float AI_ORDER_PATROL = 3;
+float AI_ORDER_ATTACK = 4;
 /*==========================================*/
 /*
   AI SPECIFIC ENT VARS======================

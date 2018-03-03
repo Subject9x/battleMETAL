@@ -12,7 +12,6 @@ void(float buf, float fl) WriteFloat = #280;
 
 float(entity piece) csqc_updateCompStat;
 entity() csqc_setHeader;
-void(entity to, float entType, float flagType) csqc_SendMechData;
 //float(entity to, float sendFlags) sendData;
 float() sendData;
 void() sendDataThink;

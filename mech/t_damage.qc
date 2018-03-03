@@ -58,15 +58,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
     }
   }
-  
-  if((trg.flags & FL_MONSTER)){
-    if(trg.ai_next_state == ai_misc_stand_debug){
-      if(trg.i_faction != attacker.i_faction){
-        anger_monster(trg, attacker);
-      }
-    }
-  }
-  
+
   //check shields
   if(trg.sh_cur >= 0){
     new_dmg = damage_shield(trg, dmg_amt, dmg_type);
@@ -125,6 +117,24 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   trg.health = trg.health - dmg_amt;
+  
+  //Damage has gone through, AI survived, choose how it will react->
+  if((trg.flags & FL_MONSTER)){
+    if(trg.ai_next_state != ai_misc_stand_debug){
+      if(attacker != trg.enemy){
+        if(trg.i_faction != attacker.i_faction){
+          if(time > trg.dmgtime){
+            local entity this;
+            this = self;
+            self = trg;
+              anger_monster(attacker);
+            self = this;
+          }
+        }
+      }
+    }
+  }
+  
   
   if(trg.health <= 0){
     trg.health = 0;
@@ -456,11 +466,17 @@ float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
   return dmg_amt;
 };
 
-
-void(entity trg, entity atk) anger_monster={
-  //TODO - refactor and fill out this stub
-  
-  
+/*
+  AI has been hit by something, and has to react to it
+*/
+void(entity atk) anger_monster={
+  self.dmgtime = time + ((self.p_damage + 1) * 1.5); //AI shouldn't respond to every single hit
+  if(self.trigger_field == world){
+    ai_update_switchToTarget(atk);
+    self.patience = time + self.maxpatience;
+    ai_state_control(ai_combat_huntTarget);
+    return;
+  }
 };
 
 

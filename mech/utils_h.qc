@@ -16,6 +16,8 @@ void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
 //=========================================================================
 
+float(entity t) util_getMechHpAverage;
+
 float(float mod, float targ_val) util_zeroStat;
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin;
 void(string mdl_name, float effects) util_setModel;

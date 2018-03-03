@@ -23,15 +23,15 @@ float DAT_OTL_WEP1_GROUP= 1;
 float DAT_OTL_WEP2_GROUP= 1;
 float DAT_OTL_WEP3_GROUP= 2;
 
-string DAT_OTL_M_ROLLANGLE="2";
-string DAT_OTL_M_PITCH_N="90";
-string DAT_OTL_M_PITCH_X="-90";
-string DAT_OTL_M_BOB = "0.0008";
-string DAT_OTL_M_BCYCLE =  "0.5";
-string DAT_OTL_M_BUP = "0.15";
-string DAT_OTL_M_BMODEL = "1";
-string DAT_OTL_M_BSIDE = "0.09";
-string DAT_OTL_M_BSPD = "6";
+string DAT_OTL_M_ROLLANGLE  = "2";
+string DAT_OTL_M_PITCH_N    = "90";
+string DAT_OTL_M_PITCH_X    = "-90";
+string DAT_OTL_M_BOB        = "0.0008";
+string DAT_OTL_M_BCYCLE     = "0.5";
+string DAT_OTL_M_BUP        = "0.15";
+string DAT_OTL_M_BMODEL     = "1";
+string DAT_OTL_M_BSIDE      = "0.09";
+string DAT_OTL_M_BSPD       = "6";
 
 //LEGS
 string DAT_OTL_LEG_CNAME= M_LEGS;
@@ -154,14 +154,14 @@ void() data_otl_legs={
   self.c_ofs = DAT_OTL_LEG_OFFSET;
 };
 void() data_otl_ltor={
-    self.c_name = DAT_OTL_LTOR_CNAME;
-    self.c_parent = DAT_OTL_LTOR_CPARENT;
-    self.health = DAT_OTL_LTOR_HP;
-    self.max_health = DAT_OTL_LTOR_HP;
-    self.armorvalue = DAT_OTL_LTOR_ARMMAX;
-    self.max_armor = DAT_OTL_LTOR_ARMMAX;
-    self.c_model = DAT_OTL_LTOR_MODEL;
-    self.c_ofs = DAT_OTL_LTOR_OFFSET;
+  self.c_name = DAT_OTL_LTOR_CNAME;
+  self.c_parent = DAT_OTL_LTOR_CPARENT;
+  self.health = DAT_OTL_LTOR_HP;
+  self.max_health = DAT_OTL_LTOR_HP;
+  self.armorvalue = DAT_OTL_LTOR_ARMMAX;
+  self.max_armor = DAT_OTL_LTOR_ARMMAX;
+  self.c_model = DAT_OTL_LTOR_MODEL;
+  self.c_ofs = DAT_OTL_LTOR_OFFSET;
 };
 void() data_otl_rtor={
   self.c_name = DAT_OTL_RTOR_CNAME;

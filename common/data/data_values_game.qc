@@ -188,25 +188,6 @@ float AI_DEFEND_DIST      = 3500;
 float AI_ASSAULT_DIST_MIN = 400;
 float AI_ASSAULT_DIST     = 1200;
 
-//PILOT RANKS - determines base states, and some realtime decisions
-float AI_RANK_ACE = 0;
-float AI_RANK_VET = 1;  //veteran
-float AI_RANK_REG = 2;  //regular
-float AI_RANK_ROK = 3;  //rookie
-
-//QUIRKS - combat
-float AI_STYLE_SKIRM  = 0;  //this is 'default'
-float AI_STYLE_SNIPER = 1;
-float AI_STYLE_BRAWL  = 2;
-float AI_STYLE_FLANK  = 3;
-float AI_STYLE_STALK  = 4;
-
-//QUIRKS - personality
-float AI_TYPE_AGGRO  = 1;
-float AI_TYPE_RESCU  = 2;
-float AI_TYPE_COWRD  = 3;
-float AI_TYPE_NORML  = 4;
-
 //how well does the AI handle weapon convergence
 float AI_CNV_ACE = 10;
 float AI_CNV_VET = 15;
@@ -253,10 +234,3 @@ float AI_RANGE_L = 4000;
 //AI movement speed ratio 
 float AI_WALK_SPD = 0.035;
 float AI_RUN_SPD = 0.045;
-
-//AI order constants, refactored from func pointers
-float AI_ORDER_DEBUG = -1;
-float AI_ORDER_STAND = 1;
-float AI_ORDER_DEFEND = 2;
-float AI_ORDER_PATROL = 3;
-float AI_ORDER_ATTACK = 4;
