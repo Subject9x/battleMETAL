@@ -440,6 +440,14 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     cursorpos = getmousepos();
     menu_handleFrame();
   }else{
+    if(self.ANM_FILE_STATUS == 0){
+      anm_parseFile("test.anim");
+    }
+  
+    if(self.ANM_FILE_STATUS == 1){
+      anm_execute_frame();
+    }
+    
     drawstring(VIEW_ORG+'2 2', vtos(self.origin), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     if(self.player_state >= PLAYER_POWERUP_BEGIN){
       local entity nav;
@@ -689,6 +697,7 @@ void(float isnew) CSQC_Ent_Update =
   }
   else if(id == DATA_PLR){
     if(isnew){
+      self.ANM_FILE_STATUS = 0;
       self.classname = "player";
       self.solid = SOLID_SLIDEBOX;
       self.predraw = obs_predraw;       

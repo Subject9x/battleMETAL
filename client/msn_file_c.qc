@@ -24,7 +24,7 @@ void() msn_getfile={
 };
 
 void() msn_parsefile={
-  local float flannel, argc, mode, tobj;
+  local float flannel, argc, tobj;
   local string contents, line;
   flannel = fopen(MSN_FILENAME, FILE_READ);
   //print(contents);

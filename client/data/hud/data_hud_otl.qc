@@ -27,7 +27,6 @@ void() hud_blk_frame={
   //RADAR DISPLAY
   hud_renderRadar('60 90', (VIEW_CTX | VIEW_BOT), self.i_faction, self.origin, self.radar_range, self.stat_rdr_mode, '90 90');
  
-   
   //TARGET STATS
   if(self.stat_trg_vid > 0 && self.stat_trg_vid != 255){   
     hud_renderShield('-125 92', (VIEW_BOT | VIEW_CTX), self.target_shield, '90 12', TRUE, (VIEW_LFT | VIEW_TOP), '0 10', AXIS_H);

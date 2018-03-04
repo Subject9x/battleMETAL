@@ -12,7 +12,7 @@ void() snd_hud_vfx_frame={
     snd = PLAYER_HELPER.SOUND_QUEUE_1;
     if(snd != "null"){
       sfx_len = soundlength(snd);
-      sound7(PLAYER_HELPER, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+      sound7(self, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
       PLAYER_HELPER.VOICE_TIME_NEXT = time + sfx_len + 0.05;
     }
     //else{

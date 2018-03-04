@@ -19,6 +19,7 @@ data_api_h.qc
 m_hud_h.qc
 cl_svr_cmd_h.qc
 msn_file_h.qc
+anim_h.qc
 hud_snd_sys_h.qc
 ui/ui_defs_h.qc
 ui/ui_hangar_h.qc
@@ -27,6 +28,7 @@ ui/ui_brief_h.qc
 ui/ui_deploy_h.qc
 ui/ui_objectives_h.qc
 msn_file_c.qc
+anim_c.qc
 gui_api_c.qc
 m_hud_c.qc
 hud_snd_sys_c.qc
