@@ -303,6 +303,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     localcmd(strcat("stopsound", "\n"));
   }
   if(self.data_type == DATA_MECH){
+    
     if(MENU_ACTIVE){
       if(self.player_state == PLAYER_POWERUP_BEGIN){
         MENU_ACTIVE = FALSE;
@@ -439,11 +440,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   if(MENU_ACTIVE){
     cursorpos = getmousepos();
     menu_handleFrame();
-  }else{
-    if(self.ANM_FILE_STATUS == 0){
-      anm_parseFile("test.anim");
-    }
-  
+  }else{  
     if(self.ANM_FILE_STATUS == 1){
       anm_execute_frame();
     }
@@ -522,6 +519,11 @@ void(string s) CSQC_Parse_StuffCmd =
     if(argv(1) == "msn_file"){
       MSN_FILENAME = strzone(argv(2));
       msn_getfile();
+    }
+    else if(argv(1) == "anm_file"){
+      if(self.ANM_FILE_STATUS == 0){
+        anm_parseFile(argv(2));
+      }
     }
     else if(argv(1) == "list_light"){
       PLAYER_HELPER.parm7 = stof(argv(2));

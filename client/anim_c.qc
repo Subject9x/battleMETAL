@@ -32,15 +32,14 @@ void(string fileToOpen) anm_parseFile={
       line_tag = tokenizebyseparator(line, "'", "'");
       if( (argv(1) == ANM_FILE_TAG_IMG) ){
         tokenizebyseparator(line, ":",",");
-        cons_logAString("img", argv(1));  //DEBU
         ANM_FRAME_IMG[frame_count] = strzone(argv(1));
       }
       if( (argv(1) == ANM_FILE_TAG_POS) ){
         tokenizebyseparator(line, ":",",");
-        local vector siz;
-        siz_x = stof(argv(1));
-        siz_y = stof(argv(2));
-        ANM_FRAME_POS[frame_count] = siz;
+        local vector org;
+        org_x = stof(argv(1));
+        org_y = stof(argv(2));
+        ANM_FRAME_POS[frame_count] = org;
       }
       if( (argv(1) == ANM_FILE_TAG_SIZE) ){
         tokenizebyseparator(line, ":",",");
@@ -84,24 +83,31 @@ void() anm_execute_frame={
       return;
     }
     if(ANM_FRAME_SND[self.ANM_FRAME_CUR] != ""){
-      cons_logAString("play sound", ANM_FRAME_SND[self.ANM_FRAME_CUR]);//DEBUG
+      //TODO - sound for animatic frame
     }
     self.ANM_FRAME_TIME = time + ANM_FRAME_TIM[self.ANM_FRAME_CUR];
   }
   else{
+    local vector siz, org;
+    org = ANM_FRAME_POS[self.ANM_FRAME_CUR];
+    org_x = org_x * VIEW_MAX_x;
+    org_y = org_y * VIEW_MAX_y;
     if(ANM_FRAME_IMG[self.ANM_FRAME_CUR] != ""){
-      local vector siz, pos;
-      
-      pos = ANM_FRAME_POS[self.ANM_FRAME_CUR];
-      pos_x = pos_x * VIEW_MAX_x;
-      pos_y = pos_y * VIEW_MAX_y;
+
       
       siz = ANM_FRAME_SIZE[self.ANM_FRAME_CUR];
       siz_x = siz_x * VIEW_MAX_x;
       siz_y = siz_y * VIEW_MAX_y;
       
-      drawpic(pos, ANM_FRAME_IMG[self.ANM_FRAME_CUR], siz, '1 1 1', HUD_ALPHA, 0);
+      drawpic(org, ANM_FRAME_IMG[self.ANM_FRAME_CUR], siz, '1 1 1', HUD_ALPHA, 0);
     } 
+    if(ANM_FRAME_MSG[self.ANM_FRAME_CUR] != ""){
+      local vector txtpos;
+      local string line;
+      line = ANM_FRAME_MSG[self.ANM_FRAME_CUR];
+      tokenizebyseparator(line, "|");
+        //TODO - messages for animatic frame
+    }
   }
 };
 

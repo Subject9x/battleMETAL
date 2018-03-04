@@ -1,0 +1,70 @@
+/*
+mech Mod
+Author: Peter Roohr
+Date: 3/3/2018
+Overview: the map object to trigger an 'Animatic' event on the client side
+*/
+
+
+void() animatic_event_use={
+  
+  local entity client, this;
+  this = self;
+  client = findchainflags(flags, FL_CLIENT);
+  while(client){
+    //FACTION_ONLY setting
+    if( (self.spawnflags & 4) ){
+      if(self.i_faction == client.i_faction){
+        self = client;
+          client_sendAnimaticFileName(this.msn_file);
+        self = this;
+      }
+    }
+    else{;
+      self = client;
+        client_sendAnimaticFileName(this.msn_file);
+      self = this;
+    }
+    client = client.chain;
+  }
+  //Set to remove when complete
+  if( (self.spawnflags & 2) ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.05;
+  }
+};
+
+
+void() animatic_event_touch={
+  if( (other.flags & FL_CLIENT) ){
+    if( time > self.dmgtime){
+      self.dmgtime = time + 120; //2 minute cool down on refiring anims
+      self.use();
+    }
+  }
+};
+
+/*QUAKED animatic_event (.7 .5 .3) (-5 -5 -5) (5 5 5) TOUCH FINISH_REMOVE FACTION_ONLY DROPTOFLOOR
+triggers an animatic event that is sent to players
+'targetname' - linked from other map objects
+'msn_file' - the .anim file to load, in /data/anim
+'i_faction' - use with FACTION_ONLY
+TOUCH(1) - triggered by ontouch
+FINISH_REMOVE(2) - remove post-activation
+FACTION_ONLY(4) - only use the specified 'i_faction'
+DROPTOFLOOR(8) - drops trigger to floor
+*/
+void() animatic_event={
+  self.dmgtime = time;
+  self.solid = SOLID_TRIGGER;
+  self.movetype = MOVETYPE_NONE;
+  setmodel(self, "q3mdl/testball.md3"); //DEBUG
+  if( (self.spawnflags & 8) ){
+    setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
+    droptofloor();
+  }
+  self.use = animatic_event_use;
+  if( (self.spawnflags & 1) ){
+    self.touch = animatic_event_touch;
+  }
+};

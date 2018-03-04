@@ -31,3 +31,7 @@ float(entity ent, float changed) send_objective;
 
 //misc model
 void() misc_model_remove;
+
+//animatic stuff
+void() animatic_event_use;
+void() animatic_event_touch;

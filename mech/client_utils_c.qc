@@ -242,6 +242,14 @@ void() client_sendMissionFileName={
   stuffcmd(self, cmd);
 };
 
+void(string fileName) client_sendAnimaticFileName={
+  local string cmd;
+  cmd = strcat("mech anm_file ",fileName,"\n");
+  cons_logAString("cmd", cmd); //DEBUG
+  stuffcmd(self, cmd);
+};
+
+
 void(string cmd, float tokens) client_setNavPoint={
   local float nav_id;
   local entity nav;

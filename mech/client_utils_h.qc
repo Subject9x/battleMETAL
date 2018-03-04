@@ -33,6 +33,7 @@ void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
 void(string cmd, float tokens) client_setWeaponGroup;
 void() client_sendMissionFileName;
+void(string fileName) client_sendAnimaticFileName;
 void(string cmd, float tokens) client_setNavPoint;
 void() client_updateWeaponReloads;
 float(float val, float rel, float wpn_rel, float rdy, float bit)client_incrementReload;

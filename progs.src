@@ -54,6 +54,7 @@ dp/subs.qc
   mech/dat/msc/ai_node.qc
   mech/dat/msc/misc_model.qc
   mech/dat/msc/ai_map_logic.qc
+  mech/dat/msc/map_animatic.qc
   
   //projectiles
   mech/dat/prj/data_prj_sfga_vals.qc
