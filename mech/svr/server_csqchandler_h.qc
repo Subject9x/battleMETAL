@@ -8,7 +8,6 @@ Overview: csqc handler
 float MSG_ENTITY = 5;
 .float(entity ent, float changedflags) SendEntity;
 .float SendFlags;
-void(float buf, float fl) WriteFloat = #280;
 
 float(entity piece) csqc_updateCompStat;
 entity() csqc_setHeader;

@@ -317,7 +317,7 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
   pos = gui_calcAlign(pos, algn);
   
   wepState = CLR_DEF_WHITE;
-  if((wepGrp & w_bit)){
+  if( (wepGrp & w_bit) ){
     //weapon selected
     wepState = CLR_DEF_ARM_OK;
   }

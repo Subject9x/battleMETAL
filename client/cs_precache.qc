@@ -130,11 +130,6 @@ void() cs_precache={
   data_wep_flak();
   data_wep_ion();
   data_wep_swrm();
-  
-  //hud data
-  //otl_hud_ini();
-  //mtk_hud_ini();
-  mnt_hud_ini();
 };
 
 entity(float id, float dat_type) m_findData={

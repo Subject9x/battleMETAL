@@ -38,7 +38,7 @@ float(entity ent, float changed) send_mech={
     WriteByte( MSG_ENTITY, self.stat_hit_dirs);
     WriteLong( MSG_ENTITY, self.stat_ret_dist);
     
-    WriteByte( MSG_ENTITY, self.currentWeaponGroup);
+    WriteLong( MSG_ENTITY, self.currentWeaponGroup);
     WriteByte( MSG_ENTITY, self.stat_wep_rel);
     WriteByte( MSG_ENTITY, self.hardpoint_cnt);
     local entity wep;
@@ -157,6 +157,7 @@ void(string cmd, float tokens) client_setWeaponGroup={
   local float groupnum, groupval;
   groupnum = stof(argv(2));
   groupval = stof(argv(3));
+  
   if(groupnum == 1){
     self.w_group1 = groupval;
   }

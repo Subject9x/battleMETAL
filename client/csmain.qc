@@ -745,7 +745,7 @@ void(float isnew) CSQC_Ent_Update =
       self.stat_hit_dirs = ReadByte();
       self.stat_ret_dist = ReadLong();
       //WEAPON DATA
-      self.currentWeaponGroup = ReadByte();
+      self.currentWeaponGroup = ReadLong();
       self.stat_wep_rel = ReadByte();
       local float wepCount, wepItr;
       wepCount = ReadByte();

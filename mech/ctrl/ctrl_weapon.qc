@@ -74,7 +74,7 @@ void() ctrl_die_weapon={
       setorigin(newmis, oself.origin);
       BecomeExplosion();
     self = oself;
-    if(oself.currentWeaponGroup & self.w_group){
+    if((oself.currentWeaponGroup & self.w_group)){
       oself.currentWeaponGroup = oself.currentWeaponGroup - (oself.currentWeaponGroup & self.w_group);
       self.w_group = 0;
     }
