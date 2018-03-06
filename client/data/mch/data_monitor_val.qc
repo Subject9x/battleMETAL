@@ -14,19 +14,18 @@ float DAT_MNT_RESERVE_COST = 200;
 vector DAT_MNT_CTOR_BBX_N ='-22 -22 -44';
 vector DAT_MNT_CTOR_BBX_X ='22 22 28';
 string DAT_MNT_UI_IMG = "gfx/ui/hgr_MNT.png";
-float DAT_MNT_HARDPOINTS = 9;
 
 //WEAPON GROUPS
-float DAT_MNT_WEP1_IDX= ID_WEP_LATC;
-float DAT_MNT_WEP2_IDX= ID_WEP_LAS;
-float DAT_MNT_WEP3_IDX= ID_WEP_LATC;
-float DAT_MNT_WEP4_IDX= ID_WEP_LAS;
-float DAT_MNT_WEP5_IDX= ID_WEP_EMP;
-float DAT_MNT_WEP6_IDX= ID_WEP_EMP;
-float DAT_MNT_WEP7_IDX= ID_WEP_MIS;
-float DAT_MNT_WEP8_IDX= ID_WEP_MIS;
-float DAT_MNT_WEP9_IDX= ID_WEP_MIS;
-float DAT_MNT_WEP1_GROUP= 1;
+float DAT_MNT_WEP1_IDX = ID_WEP_LATC;
+float DAT_MNT_WEP2_IDX = ID_WEP_LAS;
+float DAT_MNT_WEP3_IDX = ID_WEP_LATC;
+float DAT_MNT_WEP4_IDX = ID_WEP_LAS;
+float DAT_MNT_WEP5_IDX = ID_WEP_EMP;
+float DAT_MNT_WEP6_IDX = ID_WEP_EMP;
+float DAT_MNT_WEP7_IDX = ID_WEP_MIS;
+float DAT_MNT_WEP8_IDX = ID_WEP_MIS;
+float DAT_MNT_WEP9_IDX = ID_WEP_MIS;
+float DAT_MNT_WEP1_GROUP = 1;
 
 
 //this is mostly cosmetics
@@ -258,7 +257,7 @@ void() data_MNT_ini={
   self.sh_cur= DAT_MNT_SHIELD_MAX;
   self.sh_max= DAT_MNT_SHIELD_MAX;
   self.sh_rate= DAT_MNT_SHIELD_RATE;
-  self.hardpoint_cnt = DAT_MNT_HARDPOINTS; 
+  self.hardpoint_cnt = DAT_MNT_HARDPOINT_CNT; 
   self.m_fspeed = DAT_MNT_M_FSPEED;
   self.m_sspeed = DAT_MNT_M_SSPEED;
   self.m_bspeed = DAT_MNT_M_BSPEED;
