@@ -750,7 +750,7 @@ void(float isnew) CSQC_Ent_Update =
       local float wepCount, wepItr;
       wepCount = ReadByte();
       wepItr = 1;
-      while(wepItr <= wepCount){
+      while(wepItr < wepCount + 1){
         if(wepItr == 1){
           self.stat_w1_id = ReadByte();
           self.stat_w1_rel = ReadByte();

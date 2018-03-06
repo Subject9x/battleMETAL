@@ -51,8 +51,8 @@ void() data_ini_arrays={
 
 string(float data_idx) data_get_weapon_name={
   local float idx;
-  idx = 1;
-  while(idx <= 18){
+  idx = 0;
+  while(idx < 18){
     if(idx == data_idx){
       return data_WeaponNames[idx];
     }
@@ -62,8 +62,8 @@ string(float data_idx) data_get_weapon_name={
 
 string(float data_idx) data_get_weapon_icon={
   local float idx;
-  idx = 1;
-  while(idx <= 18){
+  idx = 0;
+  while(idx < 18){
     if(idx == data_idx){
       return data_WeaponIcons[idx];
     }

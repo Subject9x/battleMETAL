@@ -264,6 +264,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
 
 /*
   RENDER A SINGLE WEAPON AND ITS RELOAD BAR
+  Weapon Icon over the Reload bar
 */
 void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon={
   local entity wep_dat;
@@ -291,12 +292,57 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), pos);
-  drawpic(iofs, data_get_weapon_icon(w_id), imgSz, wepState, HUD_ALPHA, 0);
+  if( data_get_weapon_icon(w_id) != ""){
+    drawpic(iofs, data_get_weapon_icon(w_id), imgSz, wepState, HUD_ALPHA, 0);
+  }
   
   ofs_x = imgSz_x / 2;
   ofs_y = imgSz_y * 2 + 2;
   metSize_x = imgSz_x;
-  metSize_y = gui_percentXRaw(20);
+  metSize_y = gui_percentYRaw(20);
+  ofs = gui_percentToPixelRawVec(ofs);
+  ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), pos); 
+  gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+};
+
+/*
+  RENDER A SINGLE WEAPON AND ITS RELOAD BAR
+  Weapon Icon is right to Reload Bar
+*/
+void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon2={
+  local entity wep_dat;
+  local vector iofs, ofs, metSize, wepState;
+  
+  pos = gui_percentToPixelRawVec(pos);
+  pos = gui_calcAlign(pos, algn);
+  
+  wepState = CLR_DEF_WHITE;
+  if((wepGrp & w_bit)){
+    //weapon selected
+    wepState = CLR_DEF_ARM_OK;
+  }
+  if(w_rel < 100){
+    //weapon reloading
+    if((wepGrp & w_bit)){ 
+      wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
+    }
+    else{
+      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+    }
+  }
+  
+  imgSz = gui_percentToPixelRawVec(imgSz);
+  iofs_x = imgSz_x / 2;
+  iofs_y = imgSz_y;
+  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), pos);
+  if( data_get_weapon_icon(w_id) != ""){
+    drawpic(iofs, data_get_weapon_icon(w_id), imgSz, wepState, HUD_ALPHA, 0);
+  }
+  
+  ofs_x = imgSz_x / 2;
+  ofs_y = imgSz_y;
+  metSize_x = gui_percentXRaw(-20);
+  metSize_y = imgSz_y;
   ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), pos); 
   gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
@@ -358,8 +404,7 @@ void(vector org, vector pos, float algn, float faction1, float faction2, float r
     if(aSize_x > imgSize_x){
       aSize_x = imgSize_x;
     }
-    else
-    if(aSize_x < 32){
+    else if(aSize_x < 32){
       aSize_x = 32;
     }
     
@@ -367,7 +412,7 @@ void(vector org, vector pos, float algn, float faction1, float faction2, float r
     if(aSize_y > imgSize_y){
       aSize_y = imgSize_y;
     }
-    if(aSize_y < 32){
+    else if(aSize_y < 32){
       aSize_y = 32;
     }
 
@@ -501,8 +546,16 @@ void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange={
 */
 void(vector ofs, string targType, float algn) hud_renderTargetName={
   local float msgLen;
-  local vector tofs, msgSize;
+  local vector tofs, msgSize, factionColor;
   local string msg;
+  
+  if(self.i_faction == self.target_faction){
+    factionColor = CLR_DEF_IIF_FRIEND;
+  }
+  else{
+    factionColor = CLR_DEF_IFF_ENEMY;
+  }
+
   ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlign(ofs, algn);
   msg = strcat("[TARGET] ", targType);
@@ -510,7 +563,7 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   msgSize_x = gui_percentXRaw(msgLen/2);
   msgSize_y = gui_percentYRaw(6);
   tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
-  drawstring(tofs, msg, '6 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drawstring(tofs, msg, '6 6 0', factionColor, HUD_ALPHA, 0);
 };
 
 //entry point for the mech hud system

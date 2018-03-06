@@ -52,6 +52,7 @@ void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector 
 void(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph;
 void(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
 void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon;
+void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon2;
 void(vector org, vector pos, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay;
 void(vector org, vector pos, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay;
 void(vector pos, float algn, string name) hud_renderNameOverlay;

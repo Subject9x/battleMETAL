@@ -215,14 +215,14 @@ vector DAT_MNT_WEP7_OFFSET    = '0 5 6';
 vector DAT_MNT_WEP8_OFFSET    = '9 6 4';
 vector DAT_MNT_WEP9_OFFSET    = '-9 6 4';
 //============================
-//            Hardpoint Size 
+//            Hardpoint Totals 
 //============================
 //-------------------------BALAKET
 float DAT_BLK_HARDPOINT_CNT = 3;
 //-------------------------MATOK
-float DAT_MTK_HARDPOINT_CNT = 3;
+float DAT_MTK_HARDPOINT_CNT = 5;
 //-------------------------MONITOR
-float DAT_MNT_HARDPOINT_CNT = 3;
+float DAT_MNT_HARDPOINT_CNT = 9;
 //============================
 //            Hardpoint Size 
 //============================

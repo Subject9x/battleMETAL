@@ -260,8 +260,10 @@ float() ai_pilot_rating_range;
 float() ai_pilot_rating_leading;
 float() ai_pilot_yaw_mod;
 float() ai_pilot_armor_mod;
+float() ai_pilot_shield_mod;
 float() ai_pilot_rating_patience;
 float() ai_core_hitTimeCalc;
+float() ai_core_attackInterval;
 
 //TODO - separate header?
 void() ai_mech_update;

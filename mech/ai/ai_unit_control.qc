@@ -32,7 +32,10 @@ void() ai_control={
   if(self.button0){
     if(ai_target_facingideal()){
       if(self.th_missile){
-        self.th_missile();
+        if( time > self.attack_finished){
+          self.attack_finished = time + ai_core_attackInterval();
+          self.th_missile();
+        }
       }
     }
   }

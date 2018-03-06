@@ -37,6 +37,7 @@
     this goes to next_wepn9
 */
 void() ai_mech={
+  local float mod_sh, mod_am, mod_yaw;
   //DEBUG
   /*if(deathmatch){
     remove(self);
@@ -77,18 +78,20 @@ void() ai_mech={
   data_iniMech(self.vec_size, self.nextVecChoice);
   
   ai_core_calcranges();
-  local float mod;
-  mod = ai_pilot_armor_mod();
-  self.max_health = self.health = self.health * mod; 
-  self.e_legs.max_health = self.e_legs.health = self.e_legs.health * mod; 
-  self.e_tor_l.max_health = self.e_tor_l.health = self.e_tor_l.health * mod; 
-  self.e_tor_r.max_health = self.e_tor_r.health = self.e_tor_r.health * mod; 
-  self.e_arm_r.max_health = self.e_arm_r.health = self.e_arm_r.health * mod; 
-  self.e_arm_l.max_health = self.e_arm_l.health = self.e_arm_l.health * mod; 
+  mod_am = ai_pilot_armor_mod();
+  self.max_health = self.health = self.health * mod_am; 
+  self.e_legs.max_health = self.e_legs.health = self.e_legs.health * mod_am; 
+  self.e_tor_l.max_health = self.e_tor_l.health = self.e_tor_l.health * mod_am; 
+  self.e_tor_r.max_health = self.e_tor_r.health = self.e_tor_r.health * mod_am; 
+  self.e_arm_r.max_health = self.e_arm_r.health = self.e_arm_r.health * mod_am; 
+  self.e_arm_l.max_health = self.e_arm_l.health = self.e_arm_l.health * mod_am;
+  
+  mod_sh = ai_pilot_shield_mod();
+  self.sh_max = self.sh_cur = self.sh_cur * mod_sh;
+  
   if (!self.yaw_speed){
-    local float m;
-    m = ai_pilot_yaw_mod();
-    self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * m);
+    mod_yaw = ai_pilot_yaw_mod();
+    self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * mod_yaw);
   }
   self.ai_leading = ai_pilot_rating_leading();
   self.stat_spr_x = self.conv_min_x + self.conv_max_x;
@@ -107,10 +110,10 @@ void() ai_mech={
   self.patience = 0;
  
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
+  self.flags = self.flags | FL_ONGROUND;
   droptofloor();
   
   //set first order based on self.state_1
-  
   ai_util_firstOrder_nonStatic(self.state_1);
   
 	if (!walkmove(0,0))

@@ -47,13 +47,11 @@ void() hud_blk_frame={
     hud_renderTargetRange('65 116', self.target_origin, self.origin, (VIEW_CTX | VIEW_BOT));
   }
  
- 
   //CROSSHAIR AND DETAILS
   hud_renderDirectionHit(self.stat_hit_dirs);
   hud_renderCrosshairs(getstati(STAT_LCK_STT), 0, getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y));
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY), input_angles_x * -3, 270, -270);
   hud_renderTargetDirection(self.stat_trg_face);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), self.stat_ret_dist) ;
-  
   hud_renderNavHeading( '8 16', (VIEW_CTX | VIEW_TOP), self.angles);
 };

@@ -42,14 +42,11 @@ float(entity ent, float changed) send_mech={
     WriteByte( MSG_ENTITY, self.stat_wep_rel);
     WriteByte( MSG_ENTITY, self.hardpoint_cnt);
     local entity wep;
-    local float hpt;
-    hpt = 1;
     wep = self.w_slot;
-    while(hpt <= self.hardpoint_cnt){
+    while(wep != world){
       WriteByte( MSG_ENTITY, wep.data_idx);
       WriteByte( MSG_ENTITY, (wep.rl_cur / wep.rl_max)*100);
       wep = wep.w_slot;
-      hpt = hpt +1;
     }
   }
 
@@ -245,7 +242,6 @@ void() client_sendMissionFileName={
 void(string fileName) client_sendAnimaticFileName={
   local string cmd;
   cmd = strcat("mech anm_file ",fileName,"\n");
-  cons_logAString("cmd", cmd); //DEBUG
   stuffcmd(self, cmd);
 };
 

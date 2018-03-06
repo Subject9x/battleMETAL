@@ -209,10 +209,17 @@ float AI_ROT_ROK = 0.25; //0.25
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
-float AI_ARMOR_EASY =  0.2;
-float AI_ARMOR_MEDM =  0.3;
-float AI_ARMOR_HARD =  0.5;
-float AI_ARMOR_NIGHT = 0.6;
+float AI_ARMOR_EASY =  0.3;
+float AI_ARMOR_MEDM =  0.45;
+float AI_ARMOR_HARD =  0.6;
+float AI_ARMOR_NIGHT = 0.75;
+
+//shield based on difficulty
+//shield = shield * AI_SHIELD
+float AI_SHIELD_EASY =  0.4;
+float AI_SHIELD_MEDM =  0.6;
+float AI_SHIELD_HARD =  0.8;
+float AI_SHIELD_NIGHT = 1;
 
 //ai_leading ratings, how well an ai tracks a slippery target
 float AI_LEAD_ACE = 0.04;

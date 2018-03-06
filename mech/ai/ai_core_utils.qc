@@ -200,6 +200,28 @@ float() ai_pilot_armor_mod={
 }
 
 /*
+  Armor amounts for AI units is modified by tshe game's skill
+  rating. Easier skill modes mean each AI has less armor.
+*/
+float() ai_pilot_shield_mod={
+  if(skill == 0){
+    return AI_SHIELD_EASY;
+  }
+  else if(skill == 1){
+    return AI_SHIELD_MEDM;
+  }
+  else if(skill == 2){
+    return AI_SHIELD_HARD;
+  }
+  else if(skill == 3){
+    return AI_SHIELD_NIGHT;
+  }
+  else{
+    return AI_SHIELD_EASY;
+  }
+}
+
+/*
   This determines how good the AI is at 'leading' its target.
   In practice, this is how badly the AI's aim should trail BEHIND
   its target. Better AI's are better at this.
@@ -266,7 +288,7 @@ float() ai_pilot_rating_patience={
 };
 
 /*
-
+  time in seconds in-between checks for anger_monster();
 */
 float() ai_core_hitTimeCalc={
   local float sec;
@@ -286,6 +308,57 @@ float() ai_core_hitTimeCalc={
     sec = sec - ( sec * 0.5);
   }
   return sec;
+};
+
+/*
+  a design conceit, to make sure bots are perfectly firing,
+  or inhumanly relentlessly attacking, this function creates
+  a random amount of time to make the next attack.
+*/
+float() ai_core_attackInterval={
+  local float cooldown;
+  cooldown = 1;
+  if(self.p_damage == AI_RANK_ACE){
+    cooldown = cooldown + 0.5;
+  }
+  else if(self.p_damage == AI_RANK_VET){
+    cooldown = cooldown + 0.75;
+  }
+  else if(self.p_damage == AI_RANK_REG){
+    cooldown = cooldown + 1;
+  }
+  else if(self.p_damage == AI_RANK_REG){
+    cooldown = cooldown + 1.5;
+  }
+
+  if(self.ai_style == AI_STYLE_SNIPER){
+    cooldown = cooldown + 0.75;
+  }
+  else if(self.ai_style == AI_STYLE_BRAWL){
+    cooldown = cooldown + 0.5;
+  }
+  else if(self.ai_style == AI_STYLE_SKIRM){
+    cooldown = cooldown + 1;
+  }
+
+  if(self.ai_type == AI_TYPE_AGGRO){
+    cooldown = cooldown + 0.25;
+  }
+
+  if(skill == 0){
+    cooldown = cooldown + 1.25;
+  }
+  else if(skill == 2){
+    cooldown = cooldown + 1;
+  }
+  else if(skill == 2){
+    cooldown = cooldown + 0.75;
+  }
+  else if(skill == 3){
+    cooldown = cooldown + 0.5;
+  }
+  cooldown = util_roll_dice( fabs(cooldown) );
+  return cooldown;
 };
 
 void() ai_core_calcranges={
