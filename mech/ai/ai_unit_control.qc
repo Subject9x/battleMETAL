@@ -81,36 +81,49 @@ void() ai_turret_control={
   }
   
   if(self.ai_next_state != ai_misc_stand_debug){
-    if(ai_target_isValid(self.trigger_field)){
-      if(ai_target_canSee(self.trigger_field)){
-        self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
-        ChangeYaw();
-        changepitch(self);
-        if(ai_target_facingideal()){
-          local float fire;
-          fire = (crandom() * (5 - self.p_damage)+ 1);
-          if(fire <= self.p_damage){
-            self.button0 = 1;
-          }        
+    local entity contact;
+    if(!self.stat_rdr_mode){
+      self.stat_rdr_mode = TRUE;
+    }
+    if(self.stat_rdr_mode){
+      if(self.trigger_field == world){
+        local entity contact;
+        contact = ai_target_radarTarget();
+        if(contact){
+          ai_update_switchToTarget(contact);
+          self.patience = time + self.maxpatience ;
         }
       }
     }
-    else{
-      if(self.oldenemy){
-        self.trigger_field = self.oldenemy;
-        self.enemy = self.trigger_field;
-        self.oldenemy = world;
-      }
-      else{
-        self.enemy = world;
+    if( ai_target_isValid(self.trigger_field) && ai_target_canSee(self.trigger_field) ){
+      self.patience = 0;
+      self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
+      ChangeYaw();
+      changepitch(self);
+      if( time > self.attack_finished){
+        if(ai_target_facingideal()){
+          self.attack_finished = time + ai_core_attackInterval();
+          self.button0 = 1; 
+        }
       }
     }
+    if( ai_target_isValid(self.trigger_field) ){
+      if(time > self.patience){
+        self.patience = time + self.maxpatience;
+      }
+      else{
+        self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
+        ChangeYaw();
+        changepitch(self);
+      }
+    }
+    
   }
-  
-  if(self.th_missile){
-    self.th_missile();
-  }
-  if(self.button0){
+
+  if(self.button0){  
+    if(self.th_missile){
+      self.th_missile();
+    }
     self.button0 = 0;
   }
   

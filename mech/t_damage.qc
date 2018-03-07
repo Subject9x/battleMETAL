@@ -499,9 +499,11 @@ void(entity trg, entity atk) anger_monster={
       
       if(switchTarget){
         ai_update_switchToTarget(atk);
-        self.patience = time + self.maxpatience;
         self.dmgtime = time + ai_core_hitTimeCalc();
-        ai_state_control(ai_combat_huntTarget);
+        if(self.m_fspeed > 0){
+          self.patience = time + self.maxpatience;
+          ai_state_control(ai_combat_huntTarget);
+        }
       }
     self = this;
   }

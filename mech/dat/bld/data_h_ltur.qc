@@ -100,10 +100,11 @@ void() data_tur_ini={
 void() building_tur;
 
 void() building_tur={
+  local float mod_sh, mod_am, mod_yaw;
+  
   self.flags = self.flags | FL_MONSTER;
   self.deadflag = DEAD_NO;
   self.data_type = DATA_VEHC;
-  self.flags = self.flags | FL_MONSTER;
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;
@@ -124,18 +125,17 @@ void() building_tur={
   self.stat_lck_stt = LOCK_NONE;
   self.ideal_yaw = self.angles * '0 1 0';
   self.e_legs.prev_angle = self.angles;
+  
   data_iniBuilding(ID_BLD_H_TURRET);
   ai_core_calcranges();
 
-  local float mod;
-  mod = ai_pilot_armor_mod();
-  self.max_health = self.health = self.health * mod; 
+  mod_am = ai_pilot_armor_mod();
+  self.max_health = self.health = self.health * mod_am; 
   if (!self.yaw_speed){
-    local float m;
-    m = ai_pilot_yaw_mod();
-    self.yaw_speed = self.m_rot_speed + (self.m_rot_speed * m);
+    mod_yaw = ai_pilot_yaw_mod();
+    self.yaw_speed = self.m_rot_speed + (self.m_rot_speed * mod_yaw);
   }
-  mod = ai_pilot_rating_leading();
+  mod_yaw = ai_pilot_rating_leading();
   self.stat_spr_x = self.conv_min_x + self.conv_max_x;
   self.stat_spr_y = self.conv_min_y + self.conv_max_y;
   self.ai_rte_cnv = ai_pilot_rating_converg();
@@ -143,6 +143,7 @@ void() building_tur={
   self.ai_optical = self.radar_range /2;
   self.maxpatience = ai_pilot_rating_patience();
   self.patience = 0;
+  
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   if(self.state_1){
