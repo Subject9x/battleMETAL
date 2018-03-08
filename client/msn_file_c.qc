@@ -32,7 +32,7 @@ void() msn_parsefile={
   argc = tokenizebyseparator(contents, "{",":",";","}");
   line = fgets(flannel);
   while((line!="")){
-    argc = tokenizebyseparator(line, ":");
+    argc = tokenizebyseparator(line, ":",";");
     //mission info section
     msn_setsound(argv(0), argv(1));
     msn_setmappic(argv(0), argv(1));
@@ -75,11 +75,7 @@ void(string line, string val) msn_setsound={
   if(line == "MSN_SFX"){
     if(val != ""){
       MSN_SFX = strzone(val);
-      MSN_SFX_TIME = soundlength(val);
-    }
-    else{
-      MSN_SFX = "";
-      MSN_SFX_TIME = 0;
+      self.MSN_SFX_TIME = soundlength(MSN_SFX);
     }
   }
 };

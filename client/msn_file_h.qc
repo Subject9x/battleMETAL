@@ -10,7 +10,6 @@ float MSN_FILEFOUND = FALSE;
 float MSN_LOADED = FALSE;
 string MSN_FILENAME;
 string MSN_SFX;
-float MSN_SFX_TIME;
 string MSN_MAPPIC;
 string MSN_NAME;
 string MSN_TYPE;
@@ -21,6 +20,9 @@ string MSN_LOCALTIME;
 string MSN_BRIEF;
 string MSN_INTEL;
 float MSN_OBJ;
+
+.float MSN_SFX_COUNT;
+.float MSN_SFX_TIME;
 
 string MSN_OBJ_DESC[10];
 float MSN_OBJ_STATUS[10];

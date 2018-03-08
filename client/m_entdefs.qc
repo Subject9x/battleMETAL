@@ -34,8 +34,6 @@ vector vPlayerOrigin;
 vector vPlayerOriginOld;
 vector vPlayerVelocity;
 
-.float SND_BRIEF_PLAY;
-
 .float renderflags;
 .float pmove_flags;
 

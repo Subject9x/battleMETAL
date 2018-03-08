@@ -32,7 +32,7 @@ void(string fileToOpen) anm_parseFile={
       line_tag = tokenizebyseparator(line, "'", "'", ": ", "[", ";", "]", ",");
       //meta data tags
       if( argv(1) == ANM_FILE_META_MUS ){
-        ANM_META_DATA[0] = strzone(argv(3));
+        ANM_META_DATA[0] = precache_sound2(strzone(argv(3)));
       }
       if( argv(1) == ANM_FILE_META_MUS_NO ){
         ANM_META_DATA[1] = strzone(argv(3));
@@ -46,7 +46,8 @@ void(string fileToOpen) anm_parseFile={
       //===================
       //frame data
       if( (argv(1) == ANM_FILE_TAG_IMG) ){
-        ANM_FRAME_IMG[frame_count] = strzone(argv(3));
+        ANM_FRAME_IMG[frame_count] = argv(3);
+        ANM_FRAME_IMG[frame_count] = strzone(ANM_FRAME_IMG[frame_count]);
       }
       if( (argv(1) == ANM_FILE_TAG_POS) ){
         local vector org;
@@ -61,13 +62,15 @@ void(string fileToOpen) anm_parseFile={
         ANM_FRAME_SIZE[frame_count] = siz;
       }
       if( (argv(1) == ANM_FILE_TAG_SND) ){
-        ANM_FRAME_SND[frame_count] = strzone(argv(3));
+        ANM_FRAME_SND[frame_count] = argv(3);
+        ANM_FRAME_SND[frame_count] = strzone(ANM_FRAME_SND[frame_count]);
       }
       if( (argv(1) == ANM_FILE_TAG_TIM) ){
         ANM_FRAME_TIM[frame_count] = stof(argv(3));
       }
       if( (argv(1) == ANM_FILE_TAG_MSG) ){
-        ANM_FRAME_MSG[frame_count] = strzone(argv(3));
+        ANM_FRAME_MSG[frame_count] = argv(3);
+        ANM_FRAME_MSG[frame_count] = strzone(ANM_FRAME_MSG[frame_count]);
       }
     }
     if( line == "}"){
@@ -100,13 +103,15 @@ void() anm_execute_frame={
         localcmd("cd pause");
       }
       if(ANM_META_DATA[0] != ""){
-        sound7(self, CHAN_BODY, ANM_META_DATA[0], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+        cons_logAString("ANM_META_DATA[0]", ANM_META_DATA[0]);  //DEBUG
+        sound7(self, CHAN_WEAPON, ANM_META_DATA[0], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
       }
     }
     self.ANM_FRAME_CUR = self.ANM_FRAME_CUR + 1;
     if(self.ANM_FRAME_CUR > self.ANM_FRAME_TOTAL){
       anm_cleanup();
       localcmd("cd resume");
+      sound7(self, CHAN_WEAPON, "", 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
       return;
     }
     if(ANM_FRAME_SND[self.ANM_FRAME_CUR] != ""){

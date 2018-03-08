@@ -238,15 +238,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// set up the scene parameters
   //setproperty(VF_MIN, vf_mn);   //set the left of the view
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
-  if(self.data_type == DATA_MECH){
-    setproperty(VF_ORIGIN, pmove_org);
-    setproperty(VF_ANGLES, input_angles);
-  }
-  else{ 
-    setproperty( VF_ORIGIN, self.origin);
-    setproperty( VF_ANGLES, input_angles );
-  }
-
   setproperty(VF_ANGLES, view_angles);
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   setproperty(VF_FOV, fovvec);
@@ -270,14 +261,14 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// TODO: do clientside viewmodel entity instead
 	addentities(MASK_NORMAL | MASK_ENGINE);
 
-  /*if(self.data_type == DATA_MECH){
+  if(self.data_type == DATA_MECH){
     setproperty(VF_ORIGIN, pmove_org);
     setproperty(VF_ANGLES, input_angles);
   }
   else{ 
     setproperty( VF_ORIGIN, self.origin);
     setproperty( VF_ANGLES, input_angles );
-  }*/
+  }
   
 
 	// draw the main view
@@ -693,6 +684,7 @@ void(float isnew) CSQC_Ent_Update =
   }
   else if(id == DATA_PLR){
     if(isnew){
+      self.MSN_SFX_COUNT = 0;
       self.drawme = 0;
       self.VOICE_QUEUE_SIZE = 6;
       self.SOUND_QUEUE_1 = "null";
@@ -701,7 +693,6 @@ void(float isnew) CSQC_Ent_Update =
       self.SOUND_QUEUE_4 = "null";
       self.SOUND_QUEUE_5 = "null";
       self.SOUND_QUEUE_6 = "null";
-      self.SND_BRIEF_PLAY = FALSE;
       self.ANM_FILE_STATUS = 0;
       self.classname = "player";
       self.solid = SOLID_SLIDEBOX;
@@ -733,8 +724,8 @@ void(float isnew) CSQC_Ent_Update =
 
     local float servertime;
     servertime = ReadLong();
-    cons_logAFloat("server time", servercommandframe); //DEBUG
-    cons_logAFloat("client time", clientcommandframe); //DEBUG
+   //cons_logAFloat("server time", servercommandframe); //DEBUG
+    //cons_logAFloat("client time", clientcommandframe); //DEBUG
     
     setorigin(self, self.origin);
     setproperty(VF_ORIGIN, self.origin);

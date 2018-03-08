@@ -24,6 +24,13 @@ float(entity ent, float changed) send_deploypoint;
 void() ai_node_touch;
 void() ai_node_graph_touch;
 
+//AI
+void() ai_mech;
+void() ai_spawner_use;
+void() ai_spawner_think;
+void() ai_spawner_activate;
+
+
 //map objectives
 void() map_objective_th;
 void() map_objective_use;
