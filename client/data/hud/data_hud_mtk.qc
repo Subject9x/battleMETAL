@@ -27,10 +27,11 @@ void() hud_mtk_frame={
   hud_renderWeapon2('188 -58', '24 24', (VIEW_CTX | VIEW_CTY), self.currentWeaponGroup, self.stat_w4_id, WEAPON4, self.stat_w4_rel);
   
   //CENTER WEAPON
-  hud_renderWeapon2('12 -58', '24 24', (VIEW_CTX | VIEW_CTY), self.currentWeaponGroup, self.stat_w5_id, WEAPON5, self.stat_w5_rel);
+  hud_renderWeapon2('72 -60', '24 24', (VIEW_CTX | VIEW_CTY), self.currentWeaponGroup, self.stat_w5_id, WEAPON5, self.stat_w5_rel);
  
   //RADAR DISPLAY
   hud_renderRadar('200 110', (VIEW_RGT | VIEW_BOT), self.i_faction, self.origin, self.radar_range, self.stat_rdr_mode, '85 85');
+  hud_renderRadarStatus1('24 -88', (VIEW_CTX | VIEW_CTY), self.stat_rdr_mode, self.radar_range, 0);
   
   //TARGET STATS
   if(self.stat_trg_vid > 0 && self.stat_trg_vid != 255){   

@@ -263,15 +263,96 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
 };
 
 /*
+  RENDER RADAR DATA
+    draws radar status - ACTIVE OR PASSIVE
+    draws radar range - range changes based on radius
+    [MODE] <foo>
+    [RADISU] <bar>
+*/
+void(vector torg, float algn, float status, float radius, float flag) hud_renderRadarStatus1={
+  local float lbl_len_stat, lbl_len_range;
+  local string stat;
+  local vector tsize, colr, morg, radorg, rdorg;
+  torg = gui_percentToPixelRawVec(torg);
+  torg = gui_calcAlign(torg, algn);
+  tsize = '6 6 0';
+  stat = "--PASSIVE--";
+  colr = CLR_DEF_ENG_DED;
+  if(status){
+    stat = "((ACTIVE))";
+    colr = CLR_DEF_ARM_HALF;
+  }
+  lbl_len_stat = stringwidth("[MODE]", 0, tsize);
+  lbl_len_range = stringwidth("[RADIUS]", 0, tsize);
+  
+  morg = torg;
+  morg_x = morg_x + gui_percentXRaw(lbl_len_stat + 4);
+  drawstring(torg, "[MODE]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag); 
+  drawstring(morg, stat, tsize, colr, HUD_ALPHA, flag);
+  
+  radorg = torg + gui_percentToPixelRawVec('0 12');
+  rdorg = radorg;
+  rdorg_x = rdorg_x + gui_percentXRaw(lbl_len_range + 4);
+  drawstring(radorg, "[RADIUS]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag);
+  drawstring(rdorg, ftos(radius), tsize, colr, HUD_ALPHA, flag);
+};
+
+/*
+  RENDER RADAR DATA
+    draws radar status - ACTIVE OR PASSIVE
+    draws radar range - range changes based on radius
+    [MODE] 
+    <foo>
+    [RADIUS] 
+    <bar>
+*/
+void(vector torg, float algn, float status, float radius, float flag) hud_renderRadarStatus2={
+  local float lbl_len_stat, lbl_len_range, stat_len, rad_len;
+  local string stat;
+  local vector tsize, colr, sorg, morg, radorg, rdorg;
+  torg = gui_percentToPixelRawVec(torg);
+  torg = gui_calcAlign(torg, algn);
+  
+  tsize = '6 6 0';
+  stat = "--PASSIVE--";
+  colr = CLR_DEF_ENG_DED;
+  if(status){
+    stat = "((ACTIVE))";
+    colr = CLR_DEF_ARM_HALF;
+  }
+  lbl_len_stat = stringwidth("[MODE]", 0, tsize);
+  lbl_len_range = stringwidth("[RADIUS]", 0, tsize);
+  stat_len = stringwidth(stat, 0, tsize);
+  rad_len = stringwidth(ftos(radius), 0, tsize);
+  
+  sorg = torg;
+  sorg_x = sorg_x - gui_percentXRaw(lbl_len_stat / 2);
+  morg = torg;
+  morg_x = morg_x - gui_percentXRaw(stat_len / 2);
+  morg_y = morg_y + gui_percentYRaw(12);
+  drawstring(sorg, "[MODE]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag); 
+  drawstring(morg, stat, tsize, colr, HUD_ALPHA, flag);
+  
+  radorg = torg + gui_percentToPixelRawVec('0 24');
+  radorg_x = radorg_x - gui_percentXRaw(lbl_len_range / 2);
+  rdorg = radorg;
+  rdorg_x = rdorg_x + gui_percentXRaw(lbl_len_range / 2) - gui_percentXRaw(rad_len / 2);
+  rdorg_y = rdorg_y + gui_percentYRaw(12);
+  drawstring(radorg, "[RADIUS]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag);
+  drawstring(rdorg, ftos(radius), tsize, colr, HUD_ALPHA, flag);
+};
+
+
+/*
   RENDER A SINGLE WEAPON AND ITS RELOAD BAR
   Weapon Icon over the Reload bar
 */
-void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon={
+void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon={
   local entity wep_dat;
   local vector iofs, ofs, metSize, wepState;
   
-  pos = gui_percentToPixelRawVec(pos);
-  pos = gui_calcAlign(pos, algn);
+  torg = gui_percentToPixelRawVec(torg);
+  torg = gui_calcAlign(torg, algn);
   
   wepState = CLR_DEF_WHITE;
   if((wepGrp & w_bit)){
@@ -291,7 +372,7 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
   imgSz = gui_percentToPixelRawVec(imgSz);
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
-  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), pos);
+  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
   if( data_get_weapon_icon(w_id) != ""){
     drawpic(iofs, data_get_weapon_icon(w_id), imgSz, wepState, HUD_ALPHA, 0);
   }
@@ -301,7 +382,7 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
   metSize_x = imgSz_x;
   metSize_y = gui_percentYRaw(20);
   ofs = gui_percentToPixelRawVec(ofs);
-  ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), pos); 
+  ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
   gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
@@ -309,12 +390,12 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
   RENDER A SINGLE WEAPON AND ITS RELOAD BAR
   Weapon Icon is right to Reload Bar
 */
-void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon2={
+void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon2={
   local entity wep_dat;
   local vector iofs, ofs, metSize, wepState;
   
-  pos = gui_percentToPixelRawVec(pos);
-  pos = gui_calcAlign(pos, algn);
+  torg = gui_percentToPixelRawVec(torg);
+  torg = gui_calcAlign(torg, algn);
   
   wepState = CLR_DEF_WHITE;
   if( (wepGrp & w_bit) ){
@@ -334,7 +415,7 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
   imgSz = gui_percentToPixelRawVec(imgSz);
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
-  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), pos);
+  iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
   if( data_get_weapon_icon(w_id) != ""){
     drawpic(iofs, data_get_weapon_icon(w_id), imgSz, wepState, HUD_ALPHA, 0);
   }
@@ -344,18 +425,18 @@ void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit
   metSize_x = gui_percentXRaw(-20);
   metSize_y = imgSz_y;
   ofs = gui_percentToPixelRawVec(ofs);
-  ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), pos); 
+  ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
   gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
 };
 
 /*
   RENDER A SHIELD METER IN 3d SPACE
 */
-void(vector org, vector pos, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
+void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
   local float height, dist;
   local vector vpos, nofs, aSize;
   if(val > 0){
-    dist = vlen(org - pos);
+    dist = vlen(org - torg);
     dist = dist / radRange;
     mSize = gui_percentToPixelRawVec(mSize);
     dist = (1 / (dist * dist));    
@@ -384,7 +465,7 @@ void(vector org, vector pos, float algn, float val, float radRange, float tsize,
 /*
   RENDER TARGET PIPS OVER AN ORIGIN IN 3D SPACE
 */
-void(vector org, vector pos, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay ={
+void(vector org, vector torg, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay ={
   local float height, dist;
   local vector vpos, nofs, imgSize, aSize, factionColor;
     if(faction1 == faction2){
@@ -393,7 +474,7 @@ void(vector org, vector pos, float algn, float faction1, float faction2, float r
     else{
       factionColor = CLR_DEF_IFF_ENEMY;
     }
-    dist = vlen(org - pos);
+    dist = vlen(org - torg);
     dist = 1 - (dist / 1000);
     
     imgSize = draw_getimagesize(HUD_TARGET_BOX);

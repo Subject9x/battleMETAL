@@ -55,6 +55,7 @@ void() hud_mnt_frame={
   
   //RADAR DISPLAY
   hud_renderRadar('135 80', (VIEW_CTX | VIEW_BOT), self.i_faction, self.origin, self.radar_range, self.stat_rdr_mode, '70 70');
+  hud_renderRadarStatus2('95 -100', (VIEW_CTX | VIEW_CTY), self.stat_rdr_mode, self.radar_range, 0);
   
   //TARGET STATS
   if(self.stat_trg_vid > 0 && self.stat_trg_vid != 255){   

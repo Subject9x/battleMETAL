@@ -451,15 +451,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       while(player){
         local vector namepos, nameproj;
         local float namelen;
-        namelen = stringwidth(self.netname, 0, '10 10 0');
+        namelen = stringwidth(player.netname, 0, '10 10 0');
         namepos = player.origin;
-        namepos_z = namepos_z + 75;
+        namepos_z = namepos_z + 50;
         nameproj = cs_project(namepos);
         if (nameproj_z >= 0) {
           nameproj = gui_percentToPixelRawVec(nameproj);
-          nameproj_x = nameproj_x - (namelen /2 );
+          nameproj_x = nameproj_x - (namelen / 2);
           nameproj_z = 0;
-          drawstring(nameproj, self.netname, '10 10 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+          drawstring(nameproj, player.netname, '10 10 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         player = player.chain;
       }
@@ -747,7 +747,11 @@ void(float isnew) CSQC_Ent_Update =
     setproperty(VF_ORIGIN, self.origin);
     
     if(self.data_type == DATA_MECH){
-      self.netname = ReadString();
+      local string nm;
+      nm = ReadString();
+      if( self.netname != nm){
+        self.netname = strzone(nm);
+      }
       self.data_idx = ReadByte();
       self.vec_size = ReadByte(); 
       self.stat_rdr_mode = ReadByte();
