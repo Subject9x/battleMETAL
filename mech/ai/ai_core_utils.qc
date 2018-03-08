@@ -317,45 +317,33 @@ float() ai_core_hitTimeCalc={
 */
 float() ai_core_attackInterval={
   local float cooldown;
-  cooldown = 1;
-  if(self.p_damage == AI_RANK_ACE){
-    cooldown = cooldown + 0.5;
-  }
-  else if(self.p_damage == AI_RANK_VET){
-    cooldown = cooldown + 0.75;
-  }
-  else if(self.p_damage == AI_RANK_REG){
-    cooldown = cooldown + 1;
-  }
-  else if(self.p_damage == AI_RANK_REG){
-    cooldown = cooldown + 1.5;
-  }
+  cooldown = self.p_damage / 2;
 
   if(self.ai_style == AI_STYLE_SNIPER){
-    cooldown = cooldown + 0.75;
+    cooldown = cooldown + 0.35;
   }
   else if(self.ai_style == AI_STYLE_BRAWL){
-    cooldown = cooldown + 0.5;
+    cooldown = cooldown + 0.15;
   }
   else if(self.ai_style == AI_STYLE_SKIRM){
-    cooldown = cooldown + 1;
-  }
-
-  if(self.ai_type == AI_TYPE_AGGRO){
     cooldown = cooldown + 0.25;
   }
 
-  if(skill == 0){
-    cooldown = cooldown + 1.25;
+  if(self.ai_type == AI_TYPE_AGGRO){
+    cooldown = cooldown - 0.05;
   }
-  else if(skill == 2){
+
+  if(skill == 0){
     cooldown = cooldown + 1;
   }
   else if(skill == 2){
     cooldown = cooldown + 0.75;
   }
+  else if(skill == 2){
+    cooldown = cooldown + 0.50;
+  }
   else if(skill == 3){
-    cooldown = cooldown + 0.5;
+    cooldown = cooldown + 0.25;
   }
   cooldown = util_roll_dice( fabs(cooldown) );
   return cooldown;

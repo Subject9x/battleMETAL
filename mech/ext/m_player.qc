@@ -33,6 +33,14 @@ void() PlayerPreThink = {
     return;	// dying, so do nothing
   }
   
+  //Animatic file control override
+  if( self.stat_plr_stt == PLAYER_ANIM_STOP){
+    if( time >= self.count2){
+      self.stat_plr_stt = self.count1;
+      self.movetype = self.count3;
+    }
+  }
+
   if(self.data_type != DATA_POBS){
     //power up sequence
     if(time < self.power_timer){
@@ -50,7 +58,7 @@ void() PlayerPreThink = {
         self.movetype = MOVETYPE_WALK;
         self.stat_plr_stt = PLAYER_ACTIVE;
       }
-    }
+    }    
     self.stat_hit_dirs =  self.hitdir_buffer;
     if(time >= self.w_proj){
       self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);

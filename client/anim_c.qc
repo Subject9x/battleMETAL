@@ -32,13 +32,17 @@ void(string fileToOpen) anm_parseFile={
       line_tag = tokenizebyseparator(line, "'", "'", ": ", "[", ";", "]", ",");
       //meta data tags
       if( argv(1) == ANM_FILE_META_MUS ){
-        ANM_META_DATA[0] = precache_sound2(strzone(argv(3)));
+        if( argv(3) != ""){
+          ANM_META_DATA[0] = precache_sound2(strzone(argv(3)));
+        }
       }
       if( argv(1) == ANM_FILE_META_MUS_NO ){
         ANM_META_DATA[1] = strzone(argv(3));
       }
       if( argv(1) == ANM_FILE_META_BACK ){
-        ANM_META_DATA[2] = strzone(argv(3));
+        if( argv(3) != ""){
+          ANM_META_DATA[2] = strzone(argv(3));
+        }
       }
       if( argv(1) == ANM_FILE_META_TRANS ){
         ANM_META_DATA[3] = strzone(argv(3));
@@ -87,13 +91,6 @@ void(string fileToOpen) anm_parseFile={
   }
 };
 
-/*
-  //meta tags
-string ANM_FILE_META_MUS = "music";
-string ANM_FILE_META_MUS_NO = "nomusic";
-string ANM_FILE_META_BACK = "backimg";
-string ANM_FILE_META_TRANS = "trans";
-*/
 
 void() anm_execute_frame={
   if(time > self.ANM_FRAME_TIME){

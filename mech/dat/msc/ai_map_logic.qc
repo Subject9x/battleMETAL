@@ -139,17 +139,17 @@ void() ai_logic_changeType_use={
 };
 
 void() ai_spawner_use={
-  if ( self.lefty ){
-    self.lefty = FALSE; 
+  if ( self.isActive ){
+    self.isActive = FALSE; 
   }
   else{
     if( self.count2 > 0 ){
       if( self.count3 > 0 ){
-        self.lefty = TRUE;
+        self.isActive = TRUE;
       }
     }
     else{
-      self.lefty = TRUE;
+      self.isActive = TRUE;
     }
   }
 };
@@ -158,7 +158,7 @@ void() ai_spawner_use={
 void() ai_spawner_think={
   local float bSpawn;
   bSpawn = FALSE;
-  if( self.lefty ){
+  if( self.isActive ){
     if( time > self.count4 ){
       if( self.count2 > 0 ){
         if( self.count3 > 0 ){
@@ -250,10 +250,10 @@ a bit more controllable ai spawn mechanism
 */
 void() ai_spawner={
   if( (self.spawnflags & 1) ){
-    self.lefty = TRUE;
+    self.isActive = TRUE;
   }
   else{
-    self.lefty = FALSE;
+    self.isActive = FALSE;
   }
   if(self.count2 > 0){
     self.count3 = self.count2;

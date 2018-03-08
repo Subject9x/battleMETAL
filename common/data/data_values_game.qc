@@ -15,6 +15,7 @@ float PLAYER_IN_MENU = 2;
 float PLAYER_POWERUP_BEGIN = 3;
 float PLAYER_POWERUP_END = 4;
 float PLAYER_ACTIVE = 5;
+float PLAYER_ANIM_STOP = 6;
 //============================
 //         DATA_TYPE           
 //============================

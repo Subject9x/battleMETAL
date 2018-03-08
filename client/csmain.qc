@@ -39,12 +39,6 @@ void() CSQC_Init =
   PLAYER_HELPER.wep1_reload = 0;
   PLAYER_HELPER.drawme = 0;
   PLAYER_HELPER.VOICE_QUEUE_SIZE = 6;
-  PLAYER_HELPER.SOUND_QUEUE_1 = "null";
-  PLAYER_HELPER.SOUND_QUEUE_2 = "null";
-  PLAYER_HELPER.SOUND_QUEUE_3 = "null";
-  PLAYER_HELPER.SOUND_QUEUE_4 = "null";
-  PLAYER_HELPER.SOUND_QUEUE_5 = "null";
-  PLAYER_HELPER.SOUND_QUEUE_6 = "null";
   setorigin(PLAYER_HELPER, '0 0 64');
   
   WEPBITS[0] = 1;
@@ -120,7 +114,14 @@ void() CSQC_Shutdown =
 // typ 3 = mousepos (x, y) if inputmode is on
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
-  if(self.player_state == PLAYER_POWERUP_BEGIN){
+  //console override
+  if(evtype == 0){
+    if( (scanx == K_TIL) || (scanx == K_APOS)){
+      return FALSE; 
+    }
+  }
+  //=====================
+  if( (self.player_state == PLAYER_POWERUP_BEGIN) || (self.player_state == PLAYER_ANIM_STOP) ){
     return TRUE;
   }
   if(evtype == 0){
@@ -435,7 +436,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     if(self.ANM_FILE_STATUS == 1){
       anm_execute_frame();
     }
-    
     drawstring(VIEW_ORG+'2 2', vtos(self.origin), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     if(self.player_state >= PLAYER_POWERUP_BEGIN){
       local entity nav;
@@ -445,6 +445,23 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
           ui_renderNav(nav);
         }
         nav = nav.chain;
+      }
+      local entity player;
+      player = findchainflags(flags, FL_CLIENT);
+      while(player){
+        local vector namepos, nameproj;
+        local float namelen;
+        namelen = stringwidth(self.netname, 0, '10 10 0');
+        namepos = player.origin;
+        namepos_z = namepos_z + 75;
+        nameproj = cs_project(namepos);
+        if (nameproj_z >= 0) {
+          nameproj = gui_percentToPixelRawVec(nameproj);
+          nameproj_x = nameproj_x - (namelen /2 );
+          nameproj_z = 0;
+          drawstring(nameproj, self.netname, '10 10 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+        }
+        player = player.chain;
       }
     }
   }
@@ -714,7 +731,6 @@ void(float isnew) CSQC_Ent_Update =
     
     self.origin_phys = self.origin;
     
-    
     self.angles_x = ReadAngle();
     self.angles_y = ReadAngle();
     self.angles_z = ReadAngle();
@@ -731,6 +747,7 @@ void(float isnew) CSQC_Ent_Update =
     setproperty(VF_ORIGIN, self.origin);
     
     if(self.data_type == DATA_MECH){
+      self.netname = ReadString();
       self.data_idx = ReadByte();
       self.vec_size = ReadByte(); 
       self.stat_rdr_mode = ReadByte();
