@@ -11,6 +11,7 @@ void() menu_briefDrawFrame={
   topleftroot = VIEW_ORG;
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, '1 1 1', HUD_ALPHA, 0);
   menu_briefMissionInfo(topleftroot+gui_percentToPixel(0.0082, 0.0395));
+  menu_briefPlaySound(topleftroot);
   menu_briefMissionText(topleftroot);
   menu_briefMapPanel(topleftroot);
   if(INFO_SWITCH){
@@ -25,7 +26,7 @@ void() menu_briefDrawFrame={
 //hook for input system
 void() menu_briefListener={
   objIntelSwitchListener();
-
+  briefSoundListener();
 };
 
 //Listener hooks called by menu_briefListener
@@ -48,6 +49,15 @@ void() objIntelSwitchListener={
   }
 };
 
+void() briefSoundListener={
+  if(menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('10 100'), gui_percentToPixelRawVec('243 32'))){
+    if(!self.SND_BRIEF_PLAY){
+      cons_logAString("MSN_SFX", MSN_SFX);
+      self.SND_BRIEF_PLAY = TRUE;
+      sound7(self, CHAN_AUTO, MSN_SFX, 1, ATTN_NORM, 1, 0);
+    }
+  }
+};
 
 //panels
 void(vector ofs) menu_briefMissionInfo={
@@ -74,10 +84,27 @@ void(vector ofs) menu_briefMissionInfo={
   drawstring(ofs+gui_percentToPixel(0.0078, 0.0541), strcat("[LOCAL TIME]:      ", MSN_LOCALTIME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
+
+void(vector ofs) menu_briefPlaySound={
+  local vector spos, color;
+  color = CLR_DEF_WEP_INRANGE;
+  if(MSN_SFX == ""){
+    color = '0.25 0.25 0.25';
+  }
+  spos = ofs + gui_percentToPixelRawVec('10 100');
+  drawpic(spos, UI_DEF_BOX_256, gui_percentToPixelRawVec('243 32'), color, HUD_ALPHA, 0);
+  local float tlen;
+  local vector tpos;
+  tlen = stringwidth("|>PLAY BRIEFING<|", 0, '8 8 0');
+  tpos = spos + gui_percentToPixelRawVec('120 10');
+  tpos_x = tpos_x - gui_percentXRaw((tlen/2));
+  drawstring(tpos, "|>PLAY BRIEFING<|", '8 8 0', color, HUD_ALPHA, 0);
+};
+
 void(vector ofs) menu_briefMissionText={
   local vector bpos;
-  bpos = ofs + gui_percentToPixel(0.008, 0.105);
-  drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixel(0.19, 0.388), '1 1 1', HUD_ALPHA, 0);
+  bpos = ofs + gui_percentToPixelRawVec('10 132');
+  drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('243 340'), '1 1 1', HUD_ALPHA, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION BRIEF]", 0, '8 8 0');

@@ -555,12 +555,6 @@ void(string s) CSQC_Parse_CenterPrint =
 // return TRUE if you wish to eat this sound, return FALSE to let engine handle it.
 float(entity ent, float channel, string soundname, float volume, float attenuation, vector pos, float speed100, float sflags) CSQC_Event_Sound =
 {
-  if(soundname == "sound/misc/menu1.wav"){
-    return FALSE;
-  }
-  else if((self.player_state < PLAYER_POWERUP_BEGIN) && (self.data_type == DATA_MECH)){
-    return TRUE;
-  }
 	return FALSE;
 };
 
@@ -699,12 +693,24 @@ void(float isnew) CSQC_Ent_Update =
   }
   else if(id == DATA_PLR){
     if(isnew){
+      self.drawme = 0;
+      self.VOICE_QUEUE_SIZE = 6;
+      self.SOUND_QUEUE_1 = "null";
+      self.SOUND_QUEUE_2 = "null";
+      self.SOUND_QUEUE_3 = "null";
+      self.SOUND_QUEUE_4 = "null";
+      self.SOUND_QUEUE_5 = "null";
+      self.SOUND_QUEUE_6 = "null";
+      self.SND_BRIEF_PLAY = FALSE;
       self.ANM_FILE_STATUS = 0;
       self.classname = "player";
       self.solid = SOLID_SLIDEBOX;
+      self.movetype = MOVETYPE_FLY;
       self.predraw = obs_predraw;       
       self.drawmask = MASK_ENGINE;
-      setmodel(self, "q3mdl/testball.md3");
+      //setmodel(self, "q3mdl/testball.md3");    
+      setsize(self, '-4 -4 -4', '4 4 4');
+      addentity( self );
     }
     self.data_type = ReadByte();
     self.i_faction = ReadByte();
@@ -724,9 +730,14 @@ void(float isnew) CSQC_Ent_Update =
     self.velocity_x = ReadLong();
     self.velocity_y = ReadLong();
     self.velocity_z = ReadLong();
+
+    local float servertime;
+    servertime = ReadLong();
+    cons_logAFloat("server time", servercommandframe); //DEBUG
+    cons_logAFloat("client time", clientcommandframe); //DEBUG
     
-    setsize(self, '-4 -4 -4', '4 4 4');
     setorigin(self, self.origin);
+    setproperty(VF_ORIGIN, self.origin);
     
     if(self.data_type == DATA_MECH){
       self.data_idx = ReadByte();
@@ -789,6 +800,20 @@ void(float isnew) CSQC_Ent_Update =
         }
         wepItr = wepItr + 1;
       }
+      //camera
+      self.cam_origin_x = ReadCoord();
+      self.cam_origin_y = ReadCoord();
+      self.cam_origin_z = ReadCoord();
+      
+      if(self.cam_ref == world){
+        self.cam_ref = spawn();
+        self.cam_ref.drawmask = MASK_ENGINE;
+        //setmodel(self.cam_ref, DAT_OTL_CPIT_MODEL);
+        addentity(self.cam_ref);
+      } 
+      self.cam_ref.angles = input_angles;
+      self.cam_ref.angles_x = self.cam_ref.angles_x * -1;
+      setorigin(self.cam_ref, self.cam_origin);
     }
     
     self.stat_trg_vid = ReadByte();
@@ -838,7 +863,7 @@ void(string msg) GameCommand =
 
 //http://forums.insideqc.com/viewtopic.php?f=2&t=2871
 float() obs_predraw={
-  if(self.entnum == player_localentnum){
+  /*if(self.entnum == player_localentnum){
     local float sys_ticrate;
     local vector v;
     sys_ticrate = cvar("sys_ticrate");
@@ -858,11 +883,7 @@ float() obs_predraw={
 
       setorigin(self, v);
     } 
-    addentity( self );
-  }
-  else{
-    addentity( self );
-  }
+  }*/
 };
 
 // called on each entity each frame if self.nextthink <= time + frametime

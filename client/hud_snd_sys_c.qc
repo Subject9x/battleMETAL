@@ -6,24 +6,24 @@ Overview: impl file for the hud sound system
 */
 
 void() snd_hud_vfx_frame={
-  if(time > PLAYER_HELPER.VOICE_TIME_NEXT){
+  if(time > self.VOICE_TIME_NEXT){
     local float sfx_len, idx;
     local string snd;
-    snd = PLAYER_HELPER.SOUND_QUEUE_1;
+    snd = self.SOUND_QUEUE_1;
     if(snd != "null"){
       sfx_len = soundlength(snd);
-      sound7(self, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
-      PLAYER_HELPER.VOICE_TIME_NEXT = time + sfx_len + 0.05;
+      sound7(self, CHAN_AUTO, snd, 1, ATTN_NORM, 1, SOUNDFLAG_RELIABLE);
+      self.VOICE_TIME_NEXT = time + sfx_len + 0.05;
     }
     //else{
     //  PLAYER_HELPER.VOICE_TIME_NEXT = time + 0.25;
     //}
-    PLAYER_HELPER.SOUND_QUEUE_1 = PLAYER_HELPER.SOUND_QUEUE_2;
-    PLAYER_HELPER.SOUND_QUEUE_2 = PLAYER_HELPER.SOUND_QUEUE_3;
-    PLAYER_HELPER.SOUND_QUEUE_3 = PLAYER_HELPER.SOUND_QUEUE_4;
-    PLAYER_HELPER.SOUND_QUEUE_4 = PLAYER_HELPER.SOUND_QUEUE_5;
-    PLAYER_HELPER.SOUND_QUEUE_5 = PLAYER_HELPER.SOUND_QUEUE_6;
-    PLAYER_HELPER.SOUND_QUEUE_6 = "null";
+    self.SOUND_QUEUE_1 = self.SOUND_QUEUE_2;
+    self.SOUND_QUEUE_2 = self.SOUND_QUEUE_3;
+    self.SOUND_QUEUE_3 = self.SOUND_QUEUE_4;
+    self.SOUND_QUEUE_4 = self.SOUND_QUEUE_5;
+    self.SOUND_QUEUE_5 = self.SOUND_QUEUE_6;
+    self.SOUND_QUEUE_6 = "null";
   }
 };
 
@@ -54,9 +54,6 @@ float(.string snd_q, float max, float count, .float qued, string requestedSound)
 
 //count == how many instances of 1 sound can be queued at a time
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
-  local entity this;
-  this = self;
-  self = PLAYER_HELPER;
   local string sfx;
   local float idx, cur;
   idx = cur = 0;
@@ -80,7 +77,6 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
     cur = cur + 1;
   }
   if(cur >= cnt){
-    self = this;
     return;
   }
   cur = 0;
@@ -107,17 +103,16 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
     }
     idx = idx + 1;
   }
-  self = this;
 };
 
 void(float playerState) snd_hud_vfx_statelistener={
   if(getstati(STAT_PLR_STT) == PLAYER_POWERUP_BEGIN){
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
-    PLAYER_HELPER.drawme = 0;
+    self.drawme = 0;
   }
   else if(getstati(STAT_PLR_STT) == PLAYER_ACTIVE){
-    if(PLAYER_HELPER.drawme == 0){
-      PLAYER_HELPER.drawme = PLAYER_HELPER.drawme | 1 | 2 | 4 | 8 | 16 | 32;
+    if(self.drawme == 0){
+      self.drawme = self.drawme | 1 | 2 | 4 | 8 | 16 | 32;
     }
   }
 };
@@ -127,7 +122,7 @@ void(float lockstate) snd_hud_vfx_locklistener={
 
 void(float curEn) snd_hud_vfx_enelistener={
   if(curEn == 10){
-    if(PLAYER_HELPER.SOUND_QUEUE_1 != SND_HUD_VFX_ENELOW){
+    if(self.SOUND_QUEUE_1 != SND_HUD_VFX_ENELOW){
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
     }
   }
@@ -142,10 +137,10 @@ void(float curSh) snd_hud_vfx_shdlistener={
 void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
   if(getstati(STAT_PLR_STT) == PLAYER_ACTIVE){
     if(amt <= 0){
-      if((PLAYER_HELPER.drawme & bit)){
+      if((self.drawme & bit)){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 3); 
         snd_hud_vfx_addtoqueue(snd, 1); 
-        PLAYER_HELPER.drawme = PLAYER_HELPER.drawme - (PLAYER_HELPER.drawme & bit);
+        self.drawme = self.drawme - (self.drawme & bit);
       }
     }
   }

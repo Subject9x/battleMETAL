@@ -5,7 +5,9 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
-.vector svOrigin;
+.vector cam_origin;
+.entity cam_ref;
+
 .vector svVangles;
 
 .float sh_cur;
@@ -31,6 +33,8 @@ Overview: hud data ents field vars
 vector vPlayerOrigin;
 vector vPlayerOriginOld;
 vector vPlayerVelocity;
+
+.float SND_BRIEF_PLAY;
 
 .float renderflags;
 .float pmove_flags;

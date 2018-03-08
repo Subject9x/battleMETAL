@@ -10,6 +10,12 @@ slideshow-esque animatics
 
 .float ANM_FILE_STATUS;
 
+//meta tags
+string ANM_FILE_META_MUS = "music";
+string ANM_FILE_META_MUS_NO = "nomusic";
+string ANM_FILE_META_BACK = "backimg";
+string ANM_FILE_META_TRANS = "trans";
+
 string ANM_FILE_TAG_IMG = "image";
 string ANM_FILE_TAG_SND = "sound";
 string ANM_FILE_TAG_TIM = "time";
@@ -29,6 +35,7 @@ Animatic frames are expressed by 3 things;
   frame_sound = the sound to play at the start of the frame
   frame_time =  the amount of time to show the frame for
 */
+string ANM_META_DATA[5];  //_META_ tags
 string ANM_FRAME_IMG[20];
 string ANM_FRAME_SND[20];
 float ANM_FRAME_TIM[20];
@@ -41,8 +48,3 @@ void(string fileToOpen) anm_getFile;
 void(string fileToOpen) anm_parseFile;
 void() anm_execute_frame;
 void() anm_cleanup;
-
-
-
-
-

@@ -34,6 +34,7 @@ void() msn_parsefile={
   while((line!="")){
     argc = tokenizebyseparator(line, ":");
     //mission info section
+    msn_setsound(argv(0), argv(1));
     msn_setmappic(argv(0), argv(1));
     msn_setname(argv(0), argv(1));
     msn_settype(argv(0), argv(1));
@@ -70,6 +71,18 @@ void(string line, string val) msn_setmappic={
   }
 };
 
+void(string line, string val) msn_setsound={
+  if(line == "MSN_SFX"){
+    if(val != ""){
+      MSN_SFX = strzone(val);
+      MSN_SFX_TIME = soundlength(val);
+    }
+    else{
+      MSN_SFX = "";
+      MSN_SFX_TIME = 0;
+    }
+  }
+};
 void(string line, string val) msn_setname={
   if(line == "MSN_NAME"){
     MSN_NAME = strzone(val);

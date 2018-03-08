@@ -23,9 +23,11 @@ void() menu_briefListener;
 //Listener hooks called by menu_deployListener
 void() navpointListener;
 void() objIntelSwitchListener;
+void() briefSoundListener;
 
 //panels
 void(vector ofs) menu_briefMissionInfo;
+void(vector ofs) menu_briefPlaySound;
 void(vector ofs) menu_briefMissionText;
 void(vector ofs) menu_briefMapPanel;
 void(vector ofs) menu_briefObjectivePanel;

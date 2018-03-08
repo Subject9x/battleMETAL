@@ -22,6 +22,9 @@ float(entity ent, float changed) send_mech={
   WriteLong ( MSG_ENTITY, self.velocity_y);
   WriteLong ( MSG_ENTITY, self.velocity_z);
   
+  //just for kicks
+  WriteLong( MSG_ENTITY, time); //DEBUG
+  
   if(self.data_type == DATA_MECH){
     WriteByte( MSG_ENTITY, self.data_idx);
     WriteByte( MSG_ENTITY, self.vec_size);
@@ -48,6 +51,10 @@ float(entity ent, float changed) send_mech={
       WriteByte( MSG_ENTITY, (wep.rl_cur / wep.rl_max)*100);
       wep = wep.w_slot;
     }
+    
+    WriteCoord( MSG_ENTITY, self.e_cam.origin_x);
+    WriteCoord( MSG_ENTITY, self.e_cam.origin_y);
+    WriteCoord( MSG_ENTITY, self.e_cam.origin_z);
   }
 
   WriteByte ( MSG_ENTITY, self.enemy.data_idx);
