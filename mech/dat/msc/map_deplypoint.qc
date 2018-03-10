@@ -16,8 +16,16 @@ float(entity ent, float changed) send_deploypoint={
   return TRUE;
 };
 
-void() th_deploy={
+void() deploy_point_use={
+  if(self.isActive){
+    self.isActive = FALSE;
+  }
+  else{
+    self.isActive = TRUE;
+  }
+};
 
+void() th_deploy={
   self.think = th_deploy;
   self.nextthink = time + 0.5;
 };
@@ -26,10 +34,11 @@ void() th_deploy={
 use these as the player-choosable spawn points if you desire
 player-choosable
 "i_faction" : bitflags for faction, only visible to that faction
-"data_idx" : number, 1 - 12, MUST BE UNIQUE
+"data_idx" : number used for id and choosing clientside, MUST HAVE!
 "isActive" : number, allow player to spawn here
   0 = FALSE
   1 = TRUE
+"targetname" : hook up to triggers, use() will flip isActive
 */
 void() map_deploy_point={
   self.classname = "data";
@@ -39,6 +48,7 @@ void() map_deploy_point={
   self.solid = SOLID_NOT;
   self.SendEntity = send_deploypoint;
   self.SendFlags = -1;
+  self.use = deploy_point_use;
   self.think = th_deploy;
   self.nextthink = time + 0.5;
 }

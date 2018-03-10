@@ -100,7 +100,6 @@ void() anm_execute_frame={
         localcmd("cd pause");
       }
       if(ANM_META_DATA[0] != ""){
-        cons_logAString("ANM_META_DATA[0]", ANM_META_DATA[0]);  //DEBUG
         sound7(self, CHAN_WEAPON, ANM_META_DATA[0], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
       }
     }

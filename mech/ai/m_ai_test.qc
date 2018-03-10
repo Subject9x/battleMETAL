@@ -75,6 +75,16 @@ void() ai_mech={
   self.delay = time;
   self.ideal_yaw = self.angles * '0 1 0';
 
+  //randomized pilot rank
+  if(self.p_damage == 4){
+    self.p_damage = util_roll_dice(4) - 1;
+  }
+  if(self.ai_style == 5){
+    self.ai_style = util_roll_dice(5) - 1;
+  }
+  if(self.ai_type == 4){
+    self.ai_type = util_roll_dice(4) - 1;
+  }
   data_iniMech(self.vec_size, self.nextVecChoice);
   
   ai_core_calcranges();

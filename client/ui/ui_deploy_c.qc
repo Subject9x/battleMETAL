@@ -25,13 +25,11 @@ void() menu_deployListener={
 //Listener hooks calle by menu_briefListener
 void() navSelectListener={
   local entity nav;
-  nav = findchain(classname, "data");
+  nav = findchainfloat(data_type, DATA_DEPL);
   while(nav){
-    if(nav.data_type == DATA_DEPL){
-      if(nav.isActive == TRUE){
-        if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
-          PLAYER_HELPER.plr_nav_pnt = nav.nav_name;
-        }
+    if(nav.isActive){
+      if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
+        self.plr_nav_pnt = nav.nav_name;
       }
     }
     nav = nav.chain;
@@ -76,8 +74,8 @@ void(vector ofs) menu_deploy_navInfoPanel={
   drawstring(ofs+gui_percentToPixel(0.025, 0.1312), "Click a Nav Point on the map ->", '6 6 0', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
   //current spawn point
   local string navlbl;
-  if(PLAYER_HELPER.plr_nav_pnt > 0){
-    navlbl = gui_getNavName(PLAYER_HELPER.plr_nav_pnt);
+  if(self.plr_nav_pnt > 0){
+    navlbl = gui_getNavName(self.plr_nav_pnt);
   }
   else{
     navlbl = "RANDOM!";
@@ -165,17 +163,18 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       }
     }
     else if(nav.data_type == DATA_DEPL){
-        local vector nofs, nclr;
-        nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
-        nav.ui_org = nofs; 
+      if(nav.i_faction == self.i_faction){
+        local vector nclr;
+        nav.ui_org = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
+        nav.ui_size = '16 16';
         if(nav.isActive){
           nclr = CLR_DEF_ARM_OK;
         }
         else{
           nclr = CLR_DEF_ARM_DED;
         }
-        drawstring(nofs,ftos(nav.nav_name), '12 12', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-        gui_renderTintImage((PLAYER_HELPER.plr_nav_pnt == nav.nav_name), nav.ui_org, UI_DEF_DEPLOYPOINT, '16 16', CLR_DEF_ARM_OK, 1, 0) ;
+        gui_renderTintImage((self.plr_nav_pnt == nav.nav_name), nav.ui_org, UI_DEF_DEPLOYPOINT,  nav.ui_size, CLR_DEF_ARM_OK, 1, 0) ;
+      }
     }
     nav = nav.chain;
   }

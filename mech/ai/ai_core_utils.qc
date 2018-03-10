@@ -52,32 +52,6 @@ entity(vector org, float start_dist) ai_core_findgraphnode={
   return near;
 };
 
-/*================================
-        ai_core_targetstate
-called whenever [ai_state_hunt] is the
-active state. this makes sure the AI's target
-is still a valid one, return FALSE if its not.
-================================*/
-float() ai_core_targetstate={
-  if(self.enemy == world){
-    return FALSE;
-  }
-  if(self.enemy.data_type == DATA_POBS){
-    return FALSE;
-  }
-  if(self.enemy.deadflag >= DEAD_DYING){
-    return FALSE;
-  }
-  if(self.enemy.health <= 0){
-    return FALSE;
-  }
-  //if(self.stat_trg_dist > self.radar_range){
-   // self.enemy = world;
-  //  return FALSE;
-  //}
-  return TRUE;
-};
-
 entity() ai_core_findfriendly={
   local entity friend, found;
   local vector me, forg;

@@ -689,6 +689,7 @@ void(float isnew) CSQC_Ent_Update =
       self.drawmask = MASK_ENGINE;
       self.value1 = 0;
       self.isActive = 0;
+      addentity(self);
     }
     self.data_type = DATA_DEPL;
     self.nav_name = ReadByte();

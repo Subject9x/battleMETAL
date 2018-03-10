@@ -259,12 +259,16 @@ void(string cmd, float tokens) client_setNavPoint={
   local float nav_id;
   local entity nav;
   nav_id = stof(argv(2));
-  nav = findfloat(world, nav_name, nav_id);
-  if(nav != world){
-    self.nav_name = nav_id;
-  }
-  else{
-    self.nav_name = -1;
+  nav = findchainfloat(data_type, DATA_DEPL);
+  while(nav){
+    if(nav.isActive){
+      if(nav.i_faction == self.i_faction){
+        if(nav.data_idx == nav_id){
+          self.goalentity = nav;
+        }
+      }
+    }
+    nav = nav.chain;
   }
 };
 
@@ -366,8 +370,8 @@ entity() SelectSpawnPoint={
 void() spawnpoint_Random={
   local entity spot;
   //spot = SelectSpawnPoint();
-  if(self.nav_name > 0){
-    spot = mh_world_findData(self.nav_name, DATA_NAVP);
+  if(self.goalentity){
+    spot = self.goalentity;
   }
   else{
     spot = SelectSpawnPoint();

@@ -17,6 +17,7 @@ void() nav_point_th;
 float(entity ent, float changed) send_navpoint;
 
 //deploy point stuff
+void() deploy_point_use;
 void() th_deploy;
 float(entity ent, float changed) send_deploypoint;
 
