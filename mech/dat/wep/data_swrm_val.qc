@@ -72,12 +72,6 @@ void() data_swrm_atk={
   }
   else{
     end = util_traceForAI(player, self.w_range, player.ai_leading);
-    if((player.flags & FL_MONSTER)){
-      if(end == player.origin){
-        player.patience = player.patience + 1;
-        return;
-      }
-    }
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     

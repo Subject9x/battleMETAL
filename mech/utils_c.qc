@@ -94,7 +94,7 @@ vector(entity own, float range, float lead_factor) util_traceForAI={
   cy = cnv; 
   cy = cy + (cnv/2 *random());
   cy = cy * crandom();
-  end = trace_endpos + (v_up*cy)+(v_right*cx);
+  end = trace_endpos + (v_up * cy) + (v_right * cx);
   if((trace_ent == world) && (self.w_isburst == FALSE)){
     return own.origin;
   }

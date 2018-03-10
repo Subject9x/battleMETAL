@@ -70,13 +70,6 @@ void() data_pac_atk={
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   
-  if((player.flags & FL_MONSTER)){
-    if(end == player.origin){
-      player.patience = player.patience + 1;
-      return;
-    }
-  }
-  
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.rl_cur = 0;
