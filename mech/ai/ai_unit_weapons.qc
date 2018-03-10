@@ -15,13 +15,15 @@ void() ai_attack={
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
-    if( ai_target_facingideal() && (self.stat_trg_dist <= wep_chain.w_range) ){
-      if(wep_chain.w_state == READY){
-        
-        
-        self = wep_chain;
-          self.w_attack();
-        self = oself;
+    if(self.trigger_field != world){
+      if( ai_target_facingideal() && (self.stat_trg_dist <= wep_chain.w_range) ){
+        if(wep_chain.w_state == READY){
+          
+          
+          self = wep_chain;
+            self.w_attack();
+          self = oself;
+        }
       }
     }
     else{
