@@ -246,15 +246,17 @@ float(vector torg, float tickRate) ai_util_calcMoveDist;
 float(float len, float tickRate) ai_util_calcMoveLen;
 /*==========================================*/
 
+//WEAPON HANDLING
+void() ai_attack;
+
 //utility functions
 float() ai_core_noguns;
-
 entity(entity node, float id) ai_query_graphnode;
 entity(vector org, float start_dist) ai_core_findgraphnode;
-
 void() ai_core_calcranges;
 entity() ai_core_findfriendly;
 
+//AI STATISTICS
 float() ai_pilot_rating_converg;
 float() ai_pilot_rating_range;
 float() ai_pilot_rating_leading;

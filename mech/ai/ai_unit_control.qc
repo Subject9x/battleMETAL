@@ -29,21 +29,12 @@ void() ai_control={
     self.ai_next_state();
   }
   
-  if(self.button0){
-    if(ai_target_facingideal()){
-      if(self.th_missile){
-        if( time > self.attack_finished){
-          self.attack_finished = time + ai_core_attackInterval();
-          self.th_missile();
-        }
-      }
-    }
-  }
-
-  if(self.button0){
-    self.button0 = 0;
+  
+  if(self.th_missile){
+    self.th_missile();
   }
   
+
   if(self.m_fspeed > -1){
     local float moveFlag, moveDelta;
     self.prev_pos = self.origin;
@@ -157,13 +148,16 @@ void() ai_mech_update={
       }
     }
   }
+  
+  if(self.trigger_field != world){
+    self.stat_trg_dist = vlen(self.trigger_field.origin - self.origin);
+  }
+  
+  local entity wep_chain;
   wep_chain = self.w_slot;
   while(wep_chain){
     ctrl_wpn_think(wep_chain);
     wep_chain = wep_chain.w_slot;
-  }  
-  if(self.trigger_field != world){
-    self.stat_trg_dist = vlen(self.trigger_field.origin - self.origin);
   }
 };
 

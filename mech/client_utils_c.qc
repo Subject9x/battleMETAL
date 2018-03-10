@@ -22,9 +22,6 @@ float(entity ent, float changed) send_mech={
   WriteLong ( MSG_ENTITY, self.velocity_y);
   WriteLong ( MSG_ENTITY, self.velocity_z);
   
-  //just for kicks
-  WriteLong( MSG_ENTITY, time); //DEBUG
-  
   if(self.data_type == DATA_MECH){
     WriteString( MSG_ENTITY, self.netname);
     WriteByte( MSG_ENTITY, self.data_idx);

@@ -107,6 +107,7 @@ dp/subs.qc
   mech/ai/ai_move_funcs.qc
   mech/ai/ai_core_utils.qc
   mech/ai/ai_unit_control.qc
+  mech/ai/ai_unit_weapons.qc
   //AI STATES-----------------------------
   mech/ai/ai_state_patrol.qc
   mech/ai/ai_state_defend.qc

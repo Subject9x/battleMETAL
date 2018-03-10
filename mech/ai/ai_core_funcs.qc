@@ -497,7 +497,7 @@ void() ai_target_clearBuffers={
 */
 float() ai_target_facingideal={
   local	float	delta;
-  delta = anglemod(self.angles_y - self.ideal_yaw);
+  delta = anglemod( self.angles_y - self.ideal_yaw);
   //if (delta > 45 && delta < 315)
   if (delta > 25 && delta < 335){
     return FALSE;

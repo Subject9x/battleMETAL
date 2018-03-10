@@ -124,7 +124,7 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
 
     if((own.flags & FL_MONSTER)){
       if(self.w_clipsize > 1){
-        self.w_firerate = self.w_firerate * 1500;
+        self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
       }
     }
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);

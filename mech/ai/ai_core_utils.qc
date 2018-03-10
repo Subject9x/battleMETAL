@@ -83,15 +83,6 @@ entity() ai_core_findfriendly={
   return found;
 };
 
-/*
-float() ai_target_facingideal ={
-	local	float	delta;
-	delta = anglemod(self.angles_y - self.ideal_yaw);
-	if (delta > 45 && delta < 315)
-		return FALSE;
-	return TRUE;
-};
-*/
 //gets convergence factor for pilot rating
 float() ai_pilot_rating_converg={
   if(self.p_damage == AI_RANK_ACE){

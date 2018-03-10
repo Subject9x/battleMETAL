@@ -146,8 +146,6 @@ void() ai_combat_adjustPosition={
       else if(self.ai_style == AI_STYLE_FLANK){
         ai_combat_adjustFlanker(tDist, 200, self.ai_minrange, tMoveDir, lowHP, eBlocker);
       }
-      //AI will make an attack on the next frame
-      self.button0 = 1;
       return;
     }
     

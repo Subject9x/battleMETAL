@@ -738,11 +738,6 @@ void(float isnew) CSQC_Ent_Update =
     self.velocity_x = ReadLong();
     self.velocity_y = ReadLong();
     self.velocity_z = ReadLong();
-
-    local float servertime;
-    servertime = ReadLong();
-   //cons_logAFloat("server time", servercommandframe); //DEBUG
-    //cons_logAFloat("client time", clientcommandframe); //DEBUG
     
     setorigin(self, self.origin);
     setproperty(VF_ORIGIN, self.origin);
