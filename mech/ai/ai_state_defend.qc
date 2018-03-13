@@ -114,6 +114,7 @@ void() ai_defend_gotoNode={
       ai_state_control(ai_combat_huntTarget);
       return;
     }
+    self.ideal_yaw = vectoyaw(self.node.origin - self.origin);
     ai_state_control(ai_defend_gotoNode);
     ai_move_controller(ai_move_walk_goal, 0.5);
     return;
@@ -122,7 +123,7 @@ void() ai_defend_gotoNode={
   //CASE B
   if( (self.node != world) && (self.trigger_field != world) ){
     cDist = vlen(self.trigger_field.origin - self.node.origin);
-    if(cDist > AI_DEFEND_DIST){
+    if(cDist > AI_RANGE_L){
       self.trigger_field = world;
       ai_update_switchToNode(self.node);
       ai_state_control(ai_defend_gotoNode);

@@ -111,7 +111,6 @@ void() ai_mech={
   self.stat_rdr_mode = TRUE;
   self.ai_next_state = SUB_Null;
   self.th_die = ai_mech_die;
-  //self.th_missile = ai_mech_attack;
   self.th_missile = ai_attack;
   self.ai_unit_update = ai_mech_update;
   self.ai_next_move = ai_move_stand;
@@ -120,6 +119,7 @@ void() ai_mech={
   self.maxpatience = ai_pilot_rating_patience();
   self.patience = 0;
  
+  setorigin(self, util_findOpenSpawnArea(self.angles, self.origin, self.maxs) );
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   self.flags = self.flags | FL_ONGROUND;
   droptofloor();

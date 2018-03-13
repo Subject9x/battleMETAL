@@ -5,6 +5,40 @@ Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 */
 
+
+void(entity client) client_data_ini={
+  local entity clientdata, this;
+  clientdata = spawn();
+  this = self;
+  self = clientdata;
+      self.owner = client;
+      self.stat_eid = num_for_edict(client);
+      setmodel(self, "q3mdl/testball.md3");
+      self.movetype = MOVETYPE_NONE;
+      self.solid = SOLID_NOT;
+      self.classname = "data";
+      setorigin(self, self.owner.origin);
+      self.SendEntity = client_data_sendEnt;
+      self.SendFlags = self.SendFlags | 1;
+      self.think = client_data_think;
+      self.nextthink = time + 0.01;
+  self = this; 
+};
+void() client_data_think={
+  setorigin(self, self.owner.origin);
+  self.SendFlags =  self.SendFlags | 1;
+  self.think = client_data_think;
+  self.nextthink = time + 0.01;
+};
+
+//SendEnt
+
+float(entity ent, float sendFlags) client_data_sendEnt={   
+  WriteByte( MSG_ENTITY, DATA_INFO_START);
+  WriteShort( MSG_ENTITY, self.stat_eid );
+  return TRUE;
+};
+
 //Specifically this sends PLAYER data
 float(entity ent, float changed) send_mech={
   WriteByte( MSG_ENTITY, DATA_PLR);

@@ -21,7 +21,13 @@ void() legacy_PlayerDie;
 //spawn spot wrappers
 void() spawnpoint_Random;
 
+void(entity client) client_data_ini;
+void() client_data_think;
+
 //SendEnt
+
+float(entity ent, float sendFlags) client_data_sendEnt;
+
 void(entity ent, float changed) send_info_start
 float(entity ent, float changed) send_vehicle;
 float(entity ent, float changed) send_building;

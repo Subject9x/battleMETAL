@@ -138,7 +138,6 @@ void() PlayerPostThink = {
 		ImpulseCommands ();
   }
   
-  
 // check for attack
   playerAttack();
 

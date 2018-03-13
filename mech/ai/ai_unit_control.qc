@@ -27,13 +27,7 @@ void() ai_control={
   
   if(self.ai_next_state){
     self.ai_next_state();
-  }
-  
-  
-  if(self.th_missile){
-    self.th_missile();
-  }
-  
+  }  
 
   if(self.m_fspeed > -1){
     local float moveFlag, moveDelta;
@@ -129,7 +123,7 @@ void() ai_turret_control={
   
   self.think = ai_turret_control;
   self.nextthink = time + 0.05;
-  self.e_cam.SendFlags = -1;
+  self.e_cam.SendFlags = self.e_cam.SendFlags | 1;
 };
 
 //TODO - move this stuff to own file
@@ -158,6 +152,10 @@ void() ai_mech_update={
   while(wep_chain){
     ctrl_wpn_think(wep_chain);
     wep_chain = wep_chain.w_slot;
+  }
+  
+  if(self.th_missile){
+    self.th_missile();
   }
 };
 

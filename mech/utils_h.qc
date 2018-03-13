@@ -16,6 +16,8 @@ void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
 //=========================================================================
 
+vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea;
+
 float(entity t) util_getMechHpAverage;
 
 float(float mod, float targ_val) util_zeroStat;
@@ -32,7 +34,6 @@ entity(string part, entity unit) util_getPartFromName;
 float(float numOfSides) util_roll_dice;
 
 vector(entity own, float range) util_traceForPlayer;
-vector(entity own, float range, float lead_factor) util_traceForAI;
 vector(entity own, entity wep, vector prev_tracend, float spreadx, float spready) util_traceForOffset;
 
 float(float t, float e) util_normalizeTimeAsPercent;

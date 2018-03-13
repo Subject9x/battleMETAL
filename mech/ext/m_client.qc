@@ -126,6 +126,8 @@ void() ClientConnect = {
   client_sendAvailableMediumMechs();
   client_sendAvailableHeavyMechs();
   
+  client_data_ini(self);
+  
   if (intermission_running){
     ExitIntermission();
   }

@@ -260,7 +260,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
 	// TODO: do clientside viewmodel entity instead
-	addentities(MASK_NORMAL | MASK_ENGINE);
+	addentities(MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS);
 
   if(self.data_type == DATA_MECH){
     setproperty(VF_ORIGIN, pmove_org);
@@ -271,7 +271,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     setproperty( VF_ANGLES, input_angles );
   }
   
-
 	// draw the main view
 	renderscene();
 
@@ -717,7 +716,7 @@ void(float isnew) CSQC_Ent_Update =
       self.movetype = MOVETYPE_FLY;
       self.predraw = obs_predraw;       
       self.drawmask = MASK_ENGINE;
-      //setmodel(self, "q3mdl/testball.md3");    
+      setmodel(self, "q3mdl/testball.md3");    
       setsize(self, '-4 -4 -4', '4 4 4');
       addentity( self );
     }
@@ -740,7 +739,7 @@ void(float isnew) CSQC_Ent_Update =
     self.velocity_z = ReadLong();
     
     setorigin(self, self.origin);
-    setproperty(VF_ORIGIN, self.origin);
+    //setproperty(VF_ORIGIN, self.origin);
     
     if(self.data_type == DATA_MECH){
       local string nm;
@@ -852,6 +851,13 @@ void(float isnew) CSQC_Ent_Update =
         self.target_vecsize = 0 ;
         self.target_shield = ReadByte();
       }
+    }
+  }
+  else if( id ==  DATA_INFO_START){
+    local float intg;
+    intg = ReadShort();
+    if( intg == player_localentnum){
+      //cons_logAFloat("send ent success", 1);
     }
   }
 };

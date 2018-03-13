@@ -32,10 +32,10 @@ vector(vector angl, vector org, float zAdjust) util_dropToGround={
 */
 float(float numOfSides) util_roll_dice={
   local float roll;
-  roll = (1+crandom() * numOfSides);
-  roll = floor(roll);
+  roll = ( (1 + crandom()) * numOfSides);
+  roll = ceil(roll);
   if(roll < 0){
-    roll = roll *-1;
+    roll = roll * -1;
   }
   if(roll == 0){
     roll = 1;
@@ -63,6 +63,25 @@ float(float t, float e) util_normalizeTimeAsPercent={
   return t / e;
 };
 
+vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea={
+  local vector locus, probe, destin;
+  local float dist, side, dir, box;
+  box = sz_max_x * 2;
+  dist = box * util_roll_dice(4);
+  side = util_roll_dice(2);
+  dir = util_roll_dice(2);
+  if(side == 1){
+    side = -1;
+  }
+  if(dir == 1){
+    dir = -1;
+  }
+  makevectors(facing);
+  locus = centerpoint + (v_forward * (dir * dist) ) + (v_right * (dir * dist) );
+  traceline(centerpoint, locus, FALSE, self);
+  return  trace_endpos;
+};
+
 //scope is self = weapon making the call
 vector(entity own, float range) util_traceForPlayer={
   local entity cam;
@@ -74,52 +93,17 @@ vector(entity own, float range) util_traceForPlayer={
   return trace_endpos;
 };
 
-vector(entity own, float range, float lead_factor) util_traceForAI={
-  local float rng, cnv,cx, cy;
-  local vector lead, end;
-  local entity cam;
-  cnv = own.ai_rte_cnv;
-  rng = own.ai_rte_rng;
-  cam = own.e_cam;
-  lead = own.enemy.origin - own.enemy.velocity*lead_factor;
-	lead = normalize (lead - own.origin);
-  makevectors(own.v_angle);
-  traceline (own.origin + v_forward*1, own.origin + lead*self.w_range, FALSE, own);
-  if(own.stat_trg_dist > own.ai_minrange){
-    cnv = cnv * rng;
-  }
-  cx = cnv;
-  cx = cx + (cnv/2 *random());
-  cx = cx * crandom();
-  cy = cnv; 
-  cy = cy + (cnv/2 *random());
-  cy = cy * crandom();
-  end = trace_endpos + (v_up * cy) + (v_right * cx);
-  if((trace_ent == world) && (self.w_isburst == FALSE)){
-    return own.origin;
-  }
-  if((trace_ent.i_faction == own.i_faction) && (self.w_isburst == FALSE)){
-    return own.origin;
-  }
-  return end;
-};
-
 //scope is self = weapon making the call
 vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spready) util_traceForOffset={
   local vector adj, org, end;
   adj = ofsent.c_ofs + ofsent.w_fire_ofs + ofsent.c_alt_ofs;
   makevectors(own.v_angle);
-  org = own.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*own.e_cam.c_ofs_z);
+  org = own.origin + ( v_up * adj_y ) + ( v_right * adj_x ) + ( v_forward * own.e_cam.c_ofs_z );
   ofsent.fx_origin = org;
   end = prev_tracend + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready)) + (v_forward*2);
   makevectors(self.angles);
   traceline(org, end, FALSE, own);
-  if(trace_ent != world){
-    return (trace_endpos + (v_forward*1));
-  }
-  else{
-    return trace_endpos;
-  }
+  return (trace_endpos + ( v_forward* 1 ) );
 }; 
 
 float(float mod, float targ_val) util_zeroStat={

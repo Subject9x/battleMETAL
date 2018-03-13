@@ -193,13 +193,12 @@ float(entity targ, float faction) ai_combat_locksOnTarget={
 
 /*
   ai_target_visible
-    determins if an entity can be seen by caller
+    determines if an entity can be seen by caller
     -ported from classic qc
 */
 float(entity targ) ai_target_canSee={
   tracebox(targ.origin, targ.absmin, targ.absmax, self.origin, FALSE, self);
- //traceline(self.origin, targ.origin, FALSE, self);
-  if((trace_ent == targ) || (trace_fraction >= 0.85) ){
+  if((trace_ent == targ) || (trace_fraction >= 0.9) ){
     return TRUE;
   }
   return FALSE;
@@ -286,6 +285,10 @@ float(entity t) ai_target_visualPing={
   validate possible target
 */
 float(entity t) ai_target_isValid={
+  if(!t){
+    //dead simple check
+    return FALSE;
+  }
   if(t == world){
     return FALSE;
   }
@@ -332,7 +335,7 @@ float(entity t) ai_target_isValid_useDataType={
   } 
   else if(t.data_type == DATA_PLR){
     return TRUE;
-  } 
+  }
   return FALSE;
 };
 
@@ -487,6 +490,8 @@ entity(entity filter) ai_target_radarTarget_other={
   only the enemy and goalentity
 */ 
 void() ai_target_clearBuffers={
+  self.trigger_field = world;
+  self.oldenemy = world;
   self.enemy = world;
   self.goalentity = world;
 };

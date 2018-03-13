@@ -65,8 +65,8 @@ void() data_pac_atk={
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, self.w_range);
   }
-  else{
-    end = util_traceForAI(player, self.w_range, player.ai_leading); 
+  else{ 
+    end = ai_attack_calcSpread(player);
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
   

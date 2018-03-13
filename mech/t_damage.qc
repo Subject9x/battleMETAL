@@ -304,7 +304,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
     self.enemy.stat_trg_sh = -1;
     self.enemy.enemy = world;
   }
-
   self.th_die();
   
   self = oself;
@@ -312,8 +311,11 @@ void(entity targ, entity attacker, float dmg_type) killed={
 
 //returns remain damage to be passed on to armor
 float(entity targ, float dmg_amt, float dmg_type) damage_shield={
-  targ.sh_hit = time + SHIELD_RECHARGE_COOLDOWN;
   float dmg_remainder;
+  if(dmg_amt > 5){
+    //this makes shields a bit more important, and additionally - anti-shield weapons
+    targ.sh_hit = time + SHIELD_RECHARGE_COOLDOWN;
+  }
   dmg_remainder = 0;
   if((dmg_type & DMG_BAL)){
     dmg_remainder = shield_vs_bal(targ, dmg_amt, dmg_type);

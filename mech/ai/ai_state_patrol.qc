@@ -23,7 +23,8 @@ void() ai_patrol_startWithNode={
       }
     }
   }
-  ai_state_control(ai_misc_stand); 
+  ai_state_control(ai_misc_stand);
+  return;
 };
 
 void() ai_patrol_findNode={
@@ -44,6 +45,8 @@ void() ai_patrol_findNode={
     ai_state_control(ai_patrol_startWithNode);
     return;
   }
+  ai_state_control(ai_misc_stand);
+  return;
 };
 
 void() ai_patrol_gotoNode={
@@ -83,6 +86,7 @@ void() ai_patrol_gotoNode={
       return;
     }
     //still traveling to a valid node
+    self.ideal_yaw = vectoyaw(self.node.origin - self.origin);
     ai_state_control(ai_patrol_gotoNode);
     ai_move_controller(ai_move_walk_goal, 1);
     return;

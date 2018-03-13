@@ -79,6 +79,7 @@ void() ai_assault_gotoNode={
     if(nDist > AI_ASSAULT_DIST_MIN){
       ///Assault AI's fixate on getting to their attack point, key difference
       // vs Patrol
+      self.ideal_yaw = vectoyaw(self.node.origin - self.origin);
       ai_state_control(ai_assault_gotoNode);
       ai_move_controller(ai_move_walk_goal, 1);
       return;
@@ -100,6 +101,7 @@ void() ai_assault_gotoNode={
       return;
     }
     //resume route
+    self.ideal_yaw = vectoyaw(self.node.origin - self.origin);
     ai_state_control(ai_assault_gotoNode);
     ai_move_controller(ai_move_walk_goal, 1);
     return;

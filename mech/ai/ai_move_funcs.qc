@@ -19,6 +19,7 @@ float frames - how many server think frames to run movement for
 */
 void(float() move, float frames) ai_move_controller={
   ChangeYaw();
+  changepitch(self);
   if(time > self.w_isready){
     self.w_isready = time + frames;
     self.ai_next_move = move;

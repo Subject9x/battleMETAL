@@ -65,8 +65,10 @@ void() ai_combat_huntTarget={
       return;
     } 
   }
-  if(ai_target_isValid(self.trigger_field)){
+  if( ai_target_isValid(self.trigger_field) ){
     self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
+    ChangeYaw();
+    changepitch(self);
     //AI lost patience, will try a new target
     if(time > self.patience){
       if(ai_target_isValid(self.oldenemy)){
@@ -78,6 +80,7 @@ void() ai_combat_huntTarget={
         return;
       }
       ai_state_control(ai_combat_findTarget);
+      ai_move_controller(ai_move_stand, 0.05);
       return;
     }
     else{
@@ -113,14 +116,19 @@ void() ai_combat_huntTarget={
   it executes a chosen sub state based on the AI's .style field
 */
 void() ai_combat_adjustPosition={
-  if(ai_target_isValid(self.trigger_field)){
+  if( ai_target_isValid(self.trigger_field) ){
     self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
+    ChangeYaw();
+    changepitch(self);
     //defend stat override
     if(self.state_1 == AI_ORDER_DEFEND){
       local float nDist, cDist;
       nDist = vlen(self.trigger_field.origin - self.node.origin);
       if(nDist > AI_DEFEND_DIST + 5000){
         ai_state_control(ai_combat_endFight);
+        if(self.button0){
+          self.button0 = 0;
+        }
         return;
       } 
     }
@@ -146,11 +154,12 @@ void() ai_combat_adjustPosition={
       else if(self.ai_style == AI_STYLE_FLANK){
         ai_combat_adjustFlanker(tDist, 200, self.ai_minrange, tMoveDir, lowHP, eBlocker);
       }
+      if( ai_target_facingideal() ){
+        if(time > self.attack_finished){
+          self.button0 = 1;
+        }
+      }
       return;
-    }
-    
-    if(self.state_1 == AI_ORDER_PATROL){
-      te_beam_laser(self.origin, self.trigger_field.origin);
     }
     
     //attempt to hunt
@@ -172,19 +181,19 @@ void() ai_combat_adjustPosition={
 */
 void() ai_combat_endFight={
   self.patience = 0;
+  self.button0 = 0;
   ai_target_clearBuffers();
-  if(!ai_target_isValid(self.trigger_field)){
-    self.trigger_field = world;
-  }
   if(self.state_1 == AI_ORDER_ATTACK){
     ai_state_control(ai_assault_findNode);
     return;
   }
   else if(self.state_1 == AI_ORDER_DEFEND){
+    cons_logAString("ai_combat_endFight","->AI_ORDER_DEFEND");  //DEBUG
     ai_state_control(ai_defend_findNode);
     return;
   }
   else if(self.state_1 == AI_ORDER_PATROL){
+    cons_logAString("ai_combat_endFight","->AI_ORDER_PATROL");  //DEBUG
     ai_state_control(ai_patrol_findNode);
     return;
   }

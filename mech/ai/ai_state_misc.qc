@@ -30,10 +30,6 @@ void() ai_misc_stand={
       contact = ai_target_radarTarget();
       if(contact){
         ai_update_switchToTarget(contact);
-        if(ai_target_canSee(self.trigger_field)){
-          ai_state_control(ai_combat_adjustPosition);
-          return;
-        }
         self.delay = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;
@@ -41,10 +37,6 @@ void() ai_misc_stand={
     }
     else{
       if(ai_target_isValid(self.trigger_field)){
-        if(ai_target_canSee(self.trigger_field)){
-          ai_state_control(ai_combat_adjustPosition);
-          return;
-        }
         self.delay = time + self.maxpatience;
         ai_state_control(ai_combat_huntTarget);
         return;

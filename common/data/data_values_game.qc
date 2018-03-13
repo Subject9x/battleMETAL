@@ -184,6 +184,7 @@ float STAT_LVL_RES = 79;
 //============================
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
+
 //STATE VALUES
 float AI_PATROL_DIST      = 100;  //how close to get to node before counting as 'close'
 float AI_DEFEND_DIST_MIN  = 200;  //how close to get to a defense node before counting as close

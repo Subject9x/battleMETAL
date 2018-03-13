@@ -64,7 +64,7 @@ void() data_mis_atk={
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = util_traceForAI(player, self.w_range, player.ai_leading);
+    end = ai_attack_calcSpread(player);
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
     
@@ -77,7 +77,7 @@ void() data_mis_atk={
   }
   else{
     if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + ((self.rl_rate * 1.5) / 10);
+      self.w_firetime = time + ((self.rl_rate * 1.5) / 500);
     }
     else{
       self.w_firetime = time + self.rl_rate * 1.5;

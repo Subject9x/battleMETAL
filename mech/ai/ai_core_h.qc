@@ -95,6 +95,7 @@ float AI_ORDER_ATTACK = 4;
   AI SPECIFIC ENT VARS======================
 */
 void() ai_control;      //global, root controller function
+.void() ai_unit_update; //depends on unit type
 .void() ai_prev_state;  //stores the previous ai_state function that was executed
 .void() ai_next_state;  //this is the ai_state function to execute on next think
 .float ai_prev_move;    //stores previous move as a generic direction, used mostly to unstuck the bot
@@ -106,6 +107,7 @@ void() ai_control;      //global, root controller function
 //.entity goalentity    /builtin, used by walkmove and movetogoal
 //.entity enemy         //builtin, use by walkmove and movetogoal
 //.entity trigger_field //builtin but - is the holder for the actual enemy
+//.vector w_fire_ofs    //ent_wep_c.qc import, used here to track AI's aim endpoint during attacks
 .entity node;           //the node that the ai wants to move to
 .float ai_type;
 .float ai_style;
@@ -123,7 +125,6 @@ void() ai_control;      //global, root controller function
 .float ai_optical;      //the 'visual' range the ai can see out before relying on sensors
 .float patience;        //counter for if AI is stuck on something
 .float maxpatience;     //how impatient is the AI
-.void() ai_unit_update; //depends on unit type
 
 /*==========================================*/
 
@@ -248,6 +249,10 @@ float(float len, float tickRate) ai_util_calcMoveLen;
 
 //WEAPON HANDLING
 void() ai_attack;
+vector() ai_attack_aimpoint;
+vector(entity ai) ai_attack_calcSpread;
+float(entity wep) ai_attack_checkEne;
+float(entity wep) ai_attack_shotBlock;
 
 //utility functions
 float() ai_core_noguns;
