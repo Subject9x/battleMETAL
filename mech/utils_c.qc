@@ -77,7 +77,7 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
     dir = -1;
   }
   makevectors(facing);
-  locus = centerpoint + (v_forward * (dir * dist) ) + (v_right * (dir * dist) );
+  locus = centerpoint + (v_forward * (dir * dist) ) + (v_right * (side * dist) );
   traceline(centerpoint, locus, FALSE, self);
   return  trace_endpos;
 };

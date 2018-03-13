@@ -85,7 +85,7 @@ void() ai_combat_huntTarget={
     }
     else{
       //check to see if AI can see target
-      if(ai_target_canSee(self.trigger_field)){
+      if( ai_target_canSee(self.trigger_field) ){
         self.patience = 0;
         ai_update_dmgTime();
         ai_state_control(ai_combat_adjustPosition);
@@ -188,12 +188,10 @@ void() ai_combat_endFight={
     return;
   }
   else if(self.state_1 == AI_ORDER_DEFEND){
-    cons_logAString("ai_combat_endFight","->AI_ORDER_DEFEND");  //DEBUG
     ai_state_control(ai_defend_findNode);
     return;
   }
   else if(self.state_1 == AI_ORDER_PATROL){
-    cons_logAString("ai_combat_endFight","->AI_ORDER_PATROL");  //DEBUG
     ai_state_control(ai_patrol_findNode);
     return;
   }

@@ -478,7 +478,9 @@ void(entity trg, entity atk) anger_monster={
       }
 
       if( (self.trigger_field.data_type == DATA_BLD) && (atk.data_type != DATA_BLD) ){
-        switchTarget = TRUE;
+        if(self.trigger_field.health >= (self.trigger_field.max_health *0.75)){
+          switchTarget = TRUE;
+        }
       }
       
       if( (self.trigger_field.data_type != DATA_BLD) && (atk.data_type != DATA_BLD) ){
@@ -497,6 +499,11 @@ void(entity trg, entity atk) anger_monster={
             switchTarget = TRUE;
           }
         }
+        if(self.p_damage <= AI_RANK_VET){
+          if(util_getMechHpAverage(self.trigger_field) <= 0.25){
+            switchTarget = TRUE;
+          }          
+        } 
       }
       
       if(switchTarget){

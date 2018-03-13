@@ -90,7 +90,7 @@ void() ai_defend_gotoNode={
     if(!ai_target_canSee(self.node)){
       self.target = self.node.targetname;
       nextNode = ai_node_searchGroup_checkActive(self.group);
-      if(nextNode){
+      if( (nextNode) && (self.node != nextNode) ){
         ai_update_switchToNode(nextNode);
         ai_state_control(ai_defend_gotoNode);
         return;
@@ -99,9 +99,9 @@ void() ai_defend_gotoNode={
     contact = ai_target_radarTarget();
     if(contact){
       if( ai_node_defenseGroup_nodeToTarget(contact, self.group) ){
-        nextNode = ai_node_defenseGroup_setCourse(contact, self.group);
         cDist = vlen(contact.origin - nextNode.origin);
         if(cDist <= (AI_DEFEND_DIST + 5000)){
+          nextNode = ai_node_defenseGroup_setCourse(contact, self.group);
           self.trigger_field = contact;
           ai_update_switchToNode(nextNode);
           ai_state_control(ai_defend_gotoNode);

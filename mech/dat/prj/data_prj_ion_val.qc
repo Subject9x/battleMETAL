@@ -37,21 +37,23 @@ void()data_prj_ion_think={
     local entity proxy;
     proxy = findradius(self.origin, DAT_PRJ_ION_PROXYRAD);
     while(proxy){
-      if(proxy!=world){
-        if(proxy.classname!="missile"){
-          traceline(self.origin, proxy.origin, FALSE, self.owner);
-          if(trace_ent){
-            local entity f;
-            if(trace_ent.classname == MECH_PIECE){
-              f = trace_ent.owner;
-            }
-            else{
-              f = trace_ent;
-            }
-            local float ln;
-            ln = vlen(trace_endpos - self.origin);
-            if(ln <= DAT_PRJ_ION_PROXYRAD){
-              explode = TRUE;
+      if( proxy != world ){
+        if( proxy.classname != "missile" ){
+          if(proxy.deadflag <= DEAD_NO){
+            traceline(self.origin, proxy.origin, FALSE, self.owner);
+            if(trace_ent){
+              local entity f;
+              if(trace_ent.classname == MECH_PIECE){
+                f = trace_ent.owner;
+              }
+              else{
+                f = trace_ent;
+              }
+              local float ln;
+              ln = vlen(trace_endpos - self.origin);
+              if(ln <= DAT_PRJ_ION_PROXYRAD){
+                explode = TRUE;
+              }
             }
           }
         }

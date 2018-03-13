@@ -52,10 +52,7 @@ void() objIntelSwitchListener={
 void() briefSoundListener={
   if(menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('10 100'), gui_percentToPixelRawVec('243 32'))){
     if(time > self.MSN_SFX_COUNT){
-      cons_logAFloat("self.MSN_SFX_COUNT", self.MSN_SFX_COUNT); //DEBUG
-      cons_logAFloat("time", time); //DEBUG
       self.MSN_SFX_COUNT = time +  self.MSN_SFX_TIME;
-      cons_logAFloat("self.MSN_SFX_COUNT", self.MSN_SFX_COUNT); //DEBUG
       sound7(self, CHAN_VOICE, MSN_SFX, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
     }
   }

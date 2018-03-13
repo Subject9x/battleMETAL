@@ -220,13 +220,13 @@ void() touch_mech={
 };
 
 void() touch_mechPiece={
-  if(other==world){
+  if(other == world){
     return;
   }
-  if(other.classname == MECH_PIECE){
+  if( other.classname == MECH_PIECE ){
     return;
   }
-  if(other.data_type == DATA_MECH){
+  if( (other.data_type == DATA_MECH) || (other.data_type == DATA_MECH_AI) || (other.data_type == DATA_VEHC) ){
     BecomeExplosion();
   }
 };

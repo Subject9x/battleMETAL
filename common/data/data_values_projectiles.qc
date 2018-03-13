@@ -49,7 +49,7 @@ float DAT_PRJ_SWRM_VELOCITY = 1600;
 //-------------------------EMP
 float DAT_PRJ_EMP_LIFETIME = 1.6;
 //-------------------------ION
-float DAT_PRJ_ION_LIFETIME = 4;
+float DAT_PRJ_ION_LIFETIME = 5; //was 4;
 //-------------------------MIS-ARH
 float DAT_PRJ_MARH_LIFETIME = 13;
 //-------------------------Rocket

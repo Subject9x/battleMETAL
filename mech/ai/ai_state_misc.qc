@@ -24,27 +24,26 @@ void() ai_misc_stand={
   if(!self.stat_rdr_mode){
     self.stat_rdr_mode = TRUE;
   }
-  if(self.stat_rdr_mode){
-    if(self.trigger_field == world){
-      local entity contact;
-      contact = ai_target_radarTarget();
-      if(contact){
-        ai_update_switchToTarget(contact);
-        self.delay = time + self.maxpatience;
-        ai_state_control(ai_combat_huntTarget);
-        return;
-      }
-    }
-    else{
-      if(ai_target_isValid(self.trigger_field)){
-        self.delay = time + self.maxpatience;
-        ai_state_control(ai_combat_huntTarget);
-        return;
-      }
+  if(self.trigger_field == world){
+    local entity contact;
+    contact = ai_target_radarTarget();
+    if(contact){
+      ai_update_switchToTarget(contact);
+      self.delay = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
+      return;
     }
   }
+  else{
+    if(ai_target_isValid(self.trigger_field)){
+      self.delay = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
+      return;
+    }
+  }
+  
   ai_state_control(ai_misc_stand);
-  ai_move_controller(ai_move_stand, 1);
+  ai_move_controller(ai_move_stand, 0.25);
   return;
 };
 

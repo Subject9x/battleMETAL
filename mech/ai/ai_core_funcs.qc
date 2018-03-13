@@ -56,7 +56,10 @@ entity(entity aggro, string groupId) ai_node_defenseGroup_setCourse={
     }
     dNode = dNode.chain;
   }
-  return rNode;
+  if(rNode){
+    return rNode;
+  }
+  return self.node;
 };
 
 /*
@@ -197,8 +200,11 @@ float(entity targ, float faction) ai_combat_locksOnTarget={
     -ported from classic qc
 */
 float(entity targ) ai_target_canSee={
-  tracebox(targ.origin, targ.absmin, targ.absmax, self.origin, FALSE, self);
-  if((trace_ent == targ) || (trace_fraction >= 0.9) ){
+  local vector eyes;
+  makevectors(self.angles);
+  eyes = self.origin + (v_up * self.maxs_z);
+  traceline(eyes, targ.origin + (v_up * (targ.maxs_z / 2) ), FALSE, self);
+  if( trace_ent == targ ){
     return TRUE;
   }
   return FALSE;
@@ -409,7 +415,7 @@ entity() ai_target_radarTarget={
     tDist = self.radar_range;
     t = findradius(self.origin, self.radar_range);
     while(t){
-      if(ai_target_isValid(t)){
+      if( ai_target_isValid(t) ){
         if(  ai_target_validType(t) ){
           local float fDist;
           fDist = vlen(t.origin - self.origin);
