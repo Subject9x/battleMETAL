@@ -11,22 +11,41 @@ void(entity client) client_data_ini={
   clientdata = spawn();
   this = self;
   self = clientdata;
-      self.owner = client;
-      self.stat_eid = num_for_edict(client);
-      setmodel(self, "q3mdl/testball.md3");
-      self.movetype = MOVETYPE_NONE;
-      self.solid = SOLID_NOT;
-      self.classname = "data";
-      setorigin(self, self.owner.origin);
-      self.SendEntity = client_data_sendEnt;
-      self.SendFlags = self.SendFlags | 1;
-      self.think = client_data_think;
-      self.nextthink = time + 0.01;
+    self.flags = self.flags | FL_CLIENTDATA;
+    self.owner = client;
+    self.stat_eid = num_for_edict(client);
+    setmodel(self, "q3mdl/testball.md3");
+    setsize(self, '-0.05 -0.05 -0.05', '0.05 0.05 0.05');
+    self.movetype = MOVETYPE_NONE;
+    self.solid = SOLID_NOT;
+    self.classname = "data";
+    setorigin(self, self.owner.origin);
+    self.SendEntity = client_data_sendEnt;
+    self.SendFlags = self.SendFlags | 1;
+    self.think = client_data_think;
+    self.nextthink = time + 0.01;
   self = this; 
 };
+
 void() client_data_think={
-  setorigin(self, self.owner.origin);
-  self.SendFlags =  self.SendFlags | 1;
+  local entity client;
+  client = self.owner;
+  setorigin(self, client.origin );
+  self.SendFlags = self.SendFlags | 1;
+  self.data_type = client.data_type;
+  self.i_faction = client.i_faction;
+  self.cl_flags = client.flags;
+  self.SendFlags = self.SendFlags | 2;
+  if(self.data_type == DATA_MECH){
+    self.netname  = client.netname;
+    self.vec_size = client.vec_size;
+    self.data_idx = client.data_idx;
+    self.stat_rdr_mode = client.stat_rdr_mode;
+    self.stat_rdr_rng = client.stat_rdr_rng;
+    
+    
+  self.SendFlags = self.SendFlags | 4;
+  }
   self.think = client_data_think;
   self.nextthink = time + 0.01;
 };
@@ -36,6 +55,67 @@ void() client_data_think={
 float(entity ent, float sendFlags) client_data_sendEnt={   
   WriteByte( MSG_ENTITY, DATA_INFO_START);
   WriteShort( MSG_ENTITY, self.stat_eid );
+  WriteByte( MSG_ENTITY, self.data_type);
+  WriteByte( MSG_ENTITY, self.i_faction);
+  WriteByte( MSG_ENTITY, self.cl_flags);
+  WriteCoord( MSG_ENTITY, self.origin_x );
+  WriteCoord( MSG_ENTITY, self.origin_y );
+  WriteCoord( MSG_ENTITY, self.origin_z );
+  
+  if(self.data_type == DATA_MECH){
+    WriteString( MSG_ENTITY, self.netname);
+    WriteByte( MSG_ENTITY, self.data_idx);
+    WriteByte( MSG_ENTITY, self.vec_size);  
+    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
+    WriteLong( MSG_ENTITY, self.stat_rdr_rng);
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_legs));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_tor_l));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_tor_r));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_arm_l));
+    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_arm_r));
+    WriteByte( MSG_ENTITY, (self.owner.en_cur / self.owner.en_max)*100);
+    WriteByte( MSG_ENTITY, (self.owner.sh_cur / self.owner.sh_max)*100);
+    WriteByte( MSG_ENTITY, self.owner.stat_hit_dirs);
+    WriteLong( MSG_ENTITY, self.owner.stat_ret_dist);
+    
+    WriteLong( MSG_ENTITY, self.owner.currentWeaponGroup);
+    WriteByte( MSG_ENTITY, self.owner.stat_wep_rel);
+    WriteByte( MSG_ENTITY, self.owner.hardpoint_cnt);
+    local entity wep;
+    wep = self.owner.w_slot;
+    while(wep != world){
+      WriteByte( MSG_ENTITY, wep.data_idx);
+      WriteByte( MSG_ENTITY, (wep.rl_cur / wep.rl_max)*100);
+      wep = wep.w_slot;
+    }
+      //WriteByte ( MSG_ENTITY, self.owner.enemy.data_idx);*/
+    /*if(self.owner.enemy.data_idx > 0){
+      WriteByte ( MSG_ENTITY, self.owner.enemy.data_type);
+      WriteByte ( MSG_ENTITY, self.owner.enemy.i_faction);
+      WriteByte ( MSG_ENTITY, self.owner.stat_trg_face);
+      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy));
+      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_x);
+      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_y);
+      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_z);
+      if(self.owner.enemy.data_type == DATA_MECH){
+        WriteByte ( MSG_ENTITY, self.owner.enemy.vec_size);
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_tor_l));
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_tor_r));
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_arm_l));
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_arm_r));
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_legs));
+        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
+      }
+      else if(self.owner.enemy.data_type == DATA_VEHC){
+        WriteByte ( MSG_ENTITY, self.owner.enemy.vec_size);
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_legs));
+        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
+      }
+      else if(self.owner.enemy.data_type == DATA_BLD){
+        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
+      }*/
+  }
   return TRUE;
 };
 
@@ -83,10 +163,6 @@ float(entity ent, float changed) send_mech={
       WriteByte( MSG_ENTITY, (wep.rl_cur / wep.rl_max)*100);
       wep = wep.w_slot;
     }
-    
-    WriteCoord( MSG_ENTITY, self.e_cam.origin_x);
-    WriteCoord( MSG_ENTITY, self.e_cam.origin_y);
-    WriteCoord( MSG_ENTITY, self.e_cam.origin_z);
   }
 
   WriteByte ( MSG_ENTITY, self.enemy.data_idx);
@@ -275,13 +351,13 @@ void(string cmd, float tokens) client_setWeapon={
 
 void() client_sendMissionFileName={
   local string cmd;
-  cmd = strcat("mech msn_file ",world.msn_file,"\n");
+  cmd = strcat("mech msn_file ", world.msn_file, "\n");
   stuffcmd(self, cmd);
 };
 
 void(string fileName) client_sendAnimaticFileName={
   local string cmd;
-  cmd = strcat("mech anm_file ",fileName,"\n");
+  cmd = strcat("mech anm_file ", fileName, "\n");
   stuffcmd(self, cmd);
 };
 

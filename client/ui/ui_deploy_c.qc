@@ -95,8 +95,8 @@ void(vector ofs) menu_deploy_mechInfoPanel={
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[SELECTED METAL]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   spos = ofs + gui_percentToPixel(0.0125, 0.1531);
-  if(PLAYER_HELPER.plr_sel_mech > 0){
-    dat = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+  if(self.plr_sel_mech > 0){
+    dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
     drawstring(spos, strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     // MECH SIZE
     if(dat.vec_size == 1){
@@ -178,5 +178,4 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     }
     nav = nav.chain;
   }
- 
 };

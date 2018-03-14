@@ -5,14 +5,15 @@ Date: 8/27/2016
 Overview: extends the player's entity.
 */
 
+const float FL_CLIENTDATA = 8192;
+
+.float cl_flags;
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame
 
 .float	dmgtime; //pulled from client.qc
 //.float playermovestate, playermovebegin; //pulled from dpqc player.qc
 
-.float p_class;      //type of player, maps to GLOBAL P_TYPES
-//.float p_class_next;  // previous player class, needed for cleanup checks
 .float currentWeaponGroup;
 .float nextVecChoice;
 .float data_idx;

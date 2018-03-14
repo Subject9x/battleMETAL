@@ -107,7 +107,6 @@ float SHIELD_SOAK = 4;
 //============================
 //     STAT CHANNELS         
 //============================
-float STAT_PLAYER_STATE = 33;
 float STAT_OBS_FACTION = 34;
 
 float STAT_SPREADX = 35;
@@ -119,6 +118,15 @@ float STAT_VID = 40;
 float STAT_CAM_ORG_X = 41;
 float STAT_CAM_ORG_Y = 42;
 float STAT_CAM_ORG_Z = 43;
+
+float STAT_PLR_ORG_X = 44;
+float STAT_PLR_ORG_Y = 45;
+float STAT_PLR_ORG_Z = 46;
+float STAT_PLR_STT = 66;  //keep
+float STAT_PLR_DTYPE = 47;
+float STAT_PLR_VECSIZE = 48;
+float STAT_PLR_DIDX = 49;
+float STAT_PLR_RADMOD = 50;
 
 float STAT_WEP1_ID = 56;
 float STAT_WEP2_ID = 59;
@@ -153,13 +161,15 @@ float STAT_TRG_FACE = 58;
 float STAT_NAV_DIR = 60;
 float STAT_SPR_X = 63;
 float STAT_SPR_Y = 64;
-float STAT_PLR_STT = 66;
+
+
 float STAT_PLR_FIR = 67;
 float STAT_LCK_STT = 69;
 float STAT_PLR_PTC = 72;
 float STAT_PLR_ANG = 73;
 
 float STAT_TRG_DDFLG = 81;
+
 float STAT_TRG_ORGX = 75;
 float STAT_TRG_ORGY = 76;
 float STAT_TRG_ORGZ = 78;

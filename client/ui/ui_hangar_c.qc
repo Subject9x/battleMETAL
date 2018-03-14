@@ -14,15 +14,14 @@ void() menu_hangarListener={
 void() hardpointListener={
   local entity dat;
   local float hpnt;
-  dat = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+  dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
   if(dat != world){
     hpnt = dat.menu_hardpointListener(MECHPANEL_CTR);
     if(hpnt > 0){
-      PLAYER_HELPER.plr_sel_hrpnt = hpnt;
-      PLAYER_HELPER.plr_sel_wep = HARDPOINTS[hpnt];
+      self.plr_sel_hrpnt = hpnt;
+      self.plr_sel_wep = HARDPOINTS[hpnt];
     }
   }
-
 };
 
 void() mechSelectListener={
@@ -46,21 +45,21 @@ void() mechSelectListener={
     if(found > 0){
       local float change;
       change = FALSE;
-      if((PLAYER_HELPER.vec_size == vsiz) && (found != PLAYER_HELPER.plr_sel_mech)){
+      if((self.plr_sel_size == vsiz) && (found != self.plr_sel_mech)){
         change = TRUE;
       }
-      if((PLAYER_HELPER.vec_size != vsiz)){
+      if((self.plr_sel_size != vsiz)){
         change = TRUE;
       }
       if(change){
         stashMechConfig();
-        PLAYER_HELPER.plr_sel_mech = found;
-        PLAYER_HELPER.vec_size = vsiz;
+        self.plr_sel_mech = found;
+        self.plr_sel_size = vsiz;
         local entity nxt;
-        nxt = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+        nxt = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
         cleanHardPoints();
         grabMechConfig(nxt);
-        cl_setmech(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+        cl_setmech(self.plr_sel_size, self.plr_sel_mech);
       }
     }
   }
@@ -69,9 +68,9 @@ void() mechSelectListener={
 //main hook for menu system
 void() menu_hangarDrawFrame={
   
-  if(PLAYER_HELPER.plr_sel_mech <= 0){
-    PLAYER_HELPER.plr_sel_mech = 1;
-    PLAYER_HELPER.vec_size = 1;
+  if(self.plr_sel_mech <= 0){
+    self.plr_sel_mech = 1;
+    self.plr_sel_size = 1;
     local entity dat;
     cleanHardPoints();
     dat = m_findMechData(1,1);
@@ -94,9 +93,9 @@ void(vector ofs) menu_hangar_MechDisplay={
   nofs = ofs + gui_percentToPixelRawVec('420 8');
   drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('175 250'), '1 1 1', HUD_ALPHA, 0);
   drawpic(nofs + gui_percentToPixelRawVec('3 5'), UI_HANGAR_BOX, gui_percentToPixelRawVec('168 240'), '1 1 1', HUD_ALPHA, 0);
-  if(PLAYER_HELPER.plr_sel_mech > 0){
+  if(self.plr_sel_mech > 0){
     local entity dat;
-    dat = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+    dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
     i_sz = draw_getimagesize(dat.c_mdl);
     i_sz = gui_scaleSize(i_sz,VIEW_SCALE);
     i_sz_x = i_sz_x/1.2;
@@ -126,8 +125,8 @@ void(vector ofs) menu_hangar_MechHPoints={
   drawstring(nofs + gui_percentToPixelRawVec('16 24'), "[hardpoint]", '6 6 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
   drawstring(nofs + gui_percentToPixelRawVec('125 24'), "[types]", '6 6 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
   drawstring(nofs + gui_percentToPixelRawVec('222 24'), "[size]", '6 6 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
-  if(PLAYER_HELPER.plr_sel_mech > 0){
-    dat = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+  if(self.plr_sel_mech > 0){
+    dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
     dat.menu_hardpointRows(nofs + gui_percentToPixelRawVec('16 24'));
   }
 };
@@ -156,10 +155,10 @@ void(vector ofs) menu_hangar_MechListLight={
     local entity dat;
     local vector lofs, clr;
     dat = m_findMechData(1, dat_id);
-    if(dat && (PLAYER_HELPER.parm7 & dat.data_idx)){
+    if(dat && (self.parm7 & dat.data_idx)){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(dat.vec_size == PLAYER_HELPER.vec_size && dat.data_idx == PLAYER_HELPER.plr_sel_mech){
+      if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
         gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
       }
@@ -194,10 +193,10 @@ void(vector ofs) menu_hangar_MechListMedium={
     local entity dat;
     local vector lofs, clr;
     dat = m_findMechData(2, dat_id);
-    if(dat && (PLAYER_HELPER.parm8 & dat.data_idx)){
+    if(dat && (self.parm8 & dat.data_idx)){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(dat.vec_size == PLAYER_HELPER.vec_size && dat.data_idx == PLAYER_HELPER.plr_sel_mech){
+      if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
         gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
       }
@@ -232,10 +231,10 @@ void(vector ofs) menu_hangar_MechListHeavy={
     local entity dat;
     local vector lofs, clr;
     dat = m_findMechData(3, dat_id);
-    if(dat && (PLAYER_HELPER.parm8 & dat.data_idx)){
+    if(dat && (self.parm8 & dat.data_idx)){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(dat.vec_size == PLAYER_HELPER.vec_size && dat.data_idx == PLAYER_HELPER.plr_sel_mech){
+      if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
         gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
       }
@@ -263,7 +262,7 @@ void(vector ofs) menu_hangar_MechInfo={
   nofs_y = ofs_y + gui_percentYRaw(43);
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('250 180'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
-  dat = m_findMechData(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+  dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
   local float slen;
   slen = strlen("[METAL INFO]");
   local vector sofs;

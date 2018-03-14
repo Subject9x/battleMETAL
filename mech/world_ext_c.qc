@@ -7,6 +7,17 @@ Overview: function extensions to world.qc
 
 void() mh_world_ini={
  
+  //oh my
+  addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);
+  addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);
+  addstat(STAT_PLR_ORG_Z, AS_FLOAT, stat_cofs_z);
+  addstat(STAT_PLR_STT, AS_INT, stat_plr_stt);
+  addstat(STAT_PLR_DIDX, AS_INT, data_idx);
+  addstat(STAT_PLR_DTYPE, AS_INT, data_type);
+  addstat(STAT_PLR_VECSIZE, AS_INT, vec_size);
+  addstat(STAT_PLR_RADMOD, AS_INT, stat_rdr_mode);
+  
+  
   addstat(STAT_CAM_ORG_X, AS_FLOAT, stat_plr_camx);
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);
   addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_plr_camz);
@@ -21,9 +32,9 @@ void() mh_world_ini={
   addstat(STAT_WEP8_ID, AS_INT,stat_w8_id);
   addstat(STAT_WEP9_ID, AS_INT,stat_w9_id);
   
-  addstat(STAT_WEP_GRP, AS_INT, currentWeaponGroup);
-  addstat(STAT_WEP_STT, AS_INT, stat_wep_state);
-  addstat(STAT_WEP_REL, AS_INT, stat_wep_rel);
+  //addstat(STAT_WEP_GRP, AS_INT, currentWeaponGroup);
+  //addstat(STAT_WEP_STT, AS_INT, stat_wep_state);
+  //addstat(STAT_WEP_REL, AS_INT, stat_wep_rel);
   
   addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);

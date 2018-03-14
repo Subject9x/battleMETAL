@@ -11,35 +11,7 @@ void() CSQC_Init =
   
 	// this is the place to do any registercmd() calls we want for custom csqc commands (like replacing +showscores) so that they tab-complete properly
 	// we can precache_sound and precache_model and precache_pic here
-  //plr_orig = '0 0 0';
-  //plr_angles = '0 0 0';
   VIEW_ORG = '0 0';
-  PLAYER_HELPER = spawn();
-  PLAYER_HELPER.drawmask = MASK_ENGINE;
-  PLAYER_HELPER.plr_sel_mech = 0;
-  PLAYER_HELPER.vec_size = 1;
-  PLAYER_HELPER.plr_nex_mech = 0;
-  PLAYER_HELPER.plr_sel_list_wep = 0;
-  PLAYER_HELPER.plr_nex_wep1 = -1;
-  PLAYER_HELPER.plr_nex_wep2 = -1;
-  PLAYER_HELPER.plr_nex_wep3 = -1;
-  PLAYER_HELPER.plr_nex_wep4 = -1;
-  PLAYER_HELPER.plr_nex_wep6 = -1;
-  PLAYER_HELPER.plr_nex_wep7 = -1;
-  PLAYER_HELPER.plr_nex_wep8 = -1;
-  PLAYER_HELPER.plr_nex_wep9 = -1;
-  PLAYER_HELPER.plr_nex_grp1 = 0;
-  PLAYER_HELPER.plr_nex_grp2 = 0;
-  PLAYER_HELPER.plr_nex_grp3 = 0;
-  PLAYER_HELPER.plr_nex_grp4 = 0;
-  PLAYER_HELPER.plr_nex_grp5 = 0;
-  PLAYER_HELPER.plr_nav_pnt = 0;
-  PLAYER_HELPER.plr_menu_choice = MENU_BRIEF_ACTIVE;
-  PLAYER_HELPER.w_range = 0;
-  PLAYER_HELPER.wep1_reload = 0;
-  PLAYER_HELPER.drawme = 0;
-  PLAYER_HELPER.VOICE_QUEUE_SIZE = 6;
-  setorigin(PLAYER_HELPER, '0 0 64');
   
   WEPBITS[0] = 1;
   WEPBITS[1] = 2;
@@ -114,48 +86,57 @@ void() CSQC_Shutdown =
 // typ 3 = mousepos (x, y) if inputmode is on
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
+  local entity this;
+  this = self;
+  self = entitybyindex(player_localentnum);
+  self.player_state = getstatf(STAT_PLR_STT);
   //console override
   if(evtype == 0){
     if( (scanx == K_TIL) || (scanx == K_APOS)){
+      self = this;
       return FALSE; 
     }
   }
   //=====================
   if( (self.player_state == PLAYER_POWERUP_BEGIN) || (self.player_state == PLAYER_ANIM_STOP) ){
+    self = this;
     return TRUE;
   }
   if(evtype == 0){
     if((scanx == K_TAB && self.data_type == DATA_POBS)){
         if(MENU_ACTIVE){
           MENU_ACTIVE = FALSE;
-          PLAYER_HELPER.plr_menu_choice = 0;
+          self.plr_menu_choice = 0;
           setcursormode(0);
         }
         else{
           MENU_ACTIVE = TRUE;
-          PLAYER_HELPER.plr_menu_choice = MENU_BRIEF_ACTIVE;
+          self.plr_menu_choice = MENU_BRIEF_ACTIVE;
           setcursormode(1);
         }
+        self = this;
         return TRUE;
     }
     else if(scanx == K_MOUSE1){
       if(MENU_ACTIVE){
-        if(PLAYER_HELPER.plr_menu_choice == MENU_HANGAR_ACTIVE){
+        if(self.plr_menu_choice == MENU_HANGAR_ACTIVE){
           menu_hangarListener();
         }
-        else if(PLAYER_HELPER.plr_menu_choice == MENU_BRIEF_ACTIVE){
+        else if(self.plr_menu_choice == MENU_BRIEF_ACTIVE){
           menu_briefListener();
         }
-        else if(PLAYER_HELPER.plr_menu_choice == MENU_ARMING_ACTIVE){
+        else if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
           menu_arming_listener();
         }
-        else if(PLAYER_HELPER.plr_menu_choice == MENU_DEPLOY_ACTIVE){
+        else if(self.plr_menu_choice == MENU_DEPLOY_ACTIVE){
           menu_deployListener();
         }
-          menu_mainListener();
+        menu_mainListener();
+        self = this;
         return TRUE;
       }
       else{
+        self = this;
         return FALSE;
       }
     }
@@ -166,9 +147,11 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       else{
         UI_OBJECTIVE_ACTIVE = TRUE;
       }
+      self = this;
       return TRUE;
     }
     else if(scanx == K_SHIFT){
+      self = this;
       return FALSE;
     }
   }
@@ -189,24 +172,28 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       else if(cursorpos_y > VIEW_MAX_y){
         cursorpos_y = VIEW_MAX_y;
       }
+      self = this;
       return TRUE;
     }
     else{
+      self = this;
       return FALSE;
     }
   }
   
   if(MENU_ACTIVE){
+    self = this;
     return TRUE;
   }
   else{
+    self = this;
     return FALSE;
   }
 };
 
 // the most important function in CSQC...
 void(float w, float h, float menushown) CSQC_UpdateView =
-{
+{ 
 	/*local vector vf_size;
 	local vector vf_min;
 	
@@ -239,7 +226,13 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// set up the scene parameters
   //setproperty(VF_MIN, vf_mn);   //set the left of the view
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
-  setproperty(VF_ANGLES, view_angles);
+  
+  local vector porg;
+  porg_x = getstatf(STAT_PLR_ORG_X);
+  porg_y = getstatf(STAT_PLR_ORG_Y);
+  porg_z = getstatf(STAT_PLR_ORG_Z);
+  
+  
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
@@ -262,18 +255,61 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// TODO: do clientside viewmodel entity instead
 	addentities(MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS);
 
-  if(self.data_type == DATA_MECH){
-    setproperty(VF_ORIGIN, pmove_org);
-    setproperty(VF_ANGLES, input_angles);
-  }
-  else{ 
-    setproperty( VF_ORIGIN, self.origin);
-    setproperty( VF_ANGLES, input_angles );
-  }
+  setproperty(VF_ORIGIN, pmove_org);
+  setproperty(VF_ANGLES, input_angles);
+
   
 	// draw the main view
 	renderscene();
 
+    
+  //drawstring(VIEW_ORG + gui_percentToPixelRawVec('10 100'), strcat("client [time]: ", ftos(time)), '8 8 0', '1 1 1', 1, 0); //DEBUG
+  //drawstring(VIEW_ORG + gui_percentToPixelRawVec('10 125'), strcat("self.VOICE_TIME_NEXT: ", ftos(self.VOICE_TIME_NEXT)), '8 8 0', '1 1 1', 1, 0); //DEBUG
+
+  local entity this, player;
+  this = self;
+  self = entitybyindex(player_localentnum);
+
+  receive_ent_bindData();
+
+  //if(self.player_state == PLAYER_CONNECT){
+    //hacky frame 0 check, works as an ini
+    /*self.plr_sel_mech = 0;
+    self.plr_sel_size = 1;
+    self.plr_nex_mech = 0;
+    self.plr_sel_list_wep = 0;
+    self.plr_nex_wep1 = -1;
+    self.plr_nex_wep2 = -1;
+    self.plr_nex_wep3 = -1;
+    self.plr_nex_wep4 = -1;
+    self.plr_nex_wep6 = -1;
+    self.plr_nex_wep7 = -1;
+    self.plr_nex_wep8 = -1;
+    self.plr_nex_wep9 = -1;
+    self.plr_nex_grp1 = 0;
+    self.plr_nex_grp2 = 0;
+    self.plr_nex_grp3 = 0;
+    self.plr_nex_grp4 = 0;
+    self.plr_nex_grp5 = 0;
+    self.plr_nav_pnt = 0;
+    self.plr_menu_choice = MENU_BRIEF_ACTIVE;
+    self.MSN_SFX_COUNT = 0;
+    self.drawme = 0;
+    self.VOICE_QUEUE_SIZE = 6;
+    self.SOUND_QUEUE_1 = "null";
+    self.SOUND_QUEUE_2 = "null";
+    self.SOUND_QUEUE_3 = "null";
+    self.SOUND_QUEUE_4 = "null";
+    self.SOUND_QUEUE_5 = "null";
+    self.SOUND_QUEUE_6 = "null";
+    self.queued = FALSE;
+    self.ANM_FILE_STATUS = 0;
+    addentity(self);*/
+    //self.predraw = obs_predraw;       
+    //self.drawmask = MASK_ENGINE;
+ // }
+  
+  
   //mission file load check
   if(MSN_FILEFOUND){
     if(MSN_LOADED == FALSE){
@@ -293,12 +329,12 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   if(self.player_state == PLAYER_SPAWN){
     localcmd(strcat("stopsound", "\n"));
   }
+  
   if(self.data_type == DATA_MECH){
-    
     if(MENU_ACTIVE){
       if(self.player_state == PLAYER_POWERUP_BEGIN){
         MENU_ACTIVE = FALSE;
-        PLAYER_HELPER.plr_menu_choice = 0;
+        self.plr_menu_choice = 0;
         setcursormode(0);
       }
     }
@@ -307,15 +343,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     conv_x = getstatf(STAT_SPR_X);
     conv_y = getstatf(STAT_SPR_Y);
     pitch = input_angles_x *-3;
-    
-    //player camera_transform
-    PLR_VIEW_x = getstatf(STAT_CAM_ORG_X);
-    PLR_VIEW_y = getstatf(STAT_CAM_ORG_Y);
-    PLR_VIEW_z = getstatf(STAT_CAM_ORG_Z);
-    makevectors(input_angles);
-    PLAYER_HELPER.angles_y = input_angles_y;
-    PLR_VIEW = pmove_org;
-    setorigin(PLAYER_HELPER, pmove_org);
     
     //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(self.hp_stor2, 2, SND_HUD_VFX_CRITTOR);
@@ -330,11 +357,10 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     trg_ddflg = getstati(STAT_TRG_DDFLG);
     trg_dir = getstati(STAT_TRG_FACE);
     trg_lock = getstati(STAT_LCK_STT);
-    PLAYER_HELPER.w_range = trg_dist;
+    self.w_range = trg_dist;
     //render 
-    local entity player_hud, vec_data, oself;
+    local entity vec_data, oself;
     vec_data = m_findMechData(self.vec_size, self.data_idx);
-    player_hud = m_findHUDData(self.vec_size, self.data_idx);
     
     //UPDATE SPRINTING ABILITY BASED ON ENERGY
     if(self.en_cur < 10){
@@ -368,7 +394,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     if(self.player_state == PLAYER_IN_MENU){
       if(!MENU_ACTIVE){
         MENU_ACTIVE = TRUE;
-        PLAYER_HELPER.plr_menu_choice = MENU_BRIEF_ACTIVE;
+        self.plr_menu_choice = MENU_BRIEF_ACTIVE;
         setcursormode(1);
       }
     } 
@@ -410,8 +436,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     og_y = VIEW_MAX_y - gui_percentYRaw(12);
     drawstring(og, mesg, '8 8 0', '1 1 1', 0.85, 0);
   }
-  //setorigin(PLAYER_HELPER, PLR_VIEW);
-  PLAYER_HELPER.origin = PLR_VIEW;
   
   //display remaining reserves;
   //10/28/2017 - MOVE TO OBJECTIVE / MISSION STATUS HOTKEY SCREEN
@@ -425,7 +449,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   drawstring(src, res, '8 8 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);*/
   
   //sound system;
-  snd_hud_vfx_frame();
+  snd_hud_vfx_frame();  //commented out for debug 
  
   //menu system
   if(MENU_ACTIVE){
@@ -435,7 +459,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     if(self.ANM_FILE_STATUS == 1){
       anm_execute_frame();
     }
-    drawstring(VIEW_ORG+'2 2', vtos(self.origin), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    //drawstring(VIEW_ORG+'2 2', vtos(pmove_org), '6 6 0', '1 1 1', HUD_ALPHA, 0);  //DEBUG
+    
     if(self.player_state >= PLAYER_POWERUP_BEGIN){
       local entity nav;
       nav = findchain(classname, "data");
@@ -464,6 +489,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       }
     }
   }
+  self = this;
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!
@@ -521,6 +547,10 @@ float() CSQC_Parse_TempEntity =
 void(string s) CSQC_Parse_StuffCmd =
 {
   local float argc;
+  local entity client, this;
+  client = entitybyindex(player_localentnum);
+  this = self;
+  self = client;
   argc = tokenize(s);
   if(argv(0) == "mech"){
     if(argv(1) == "msn_file"){
@@ -533,18 +563,19 @@ void(string s) CSQC_Parse_StuffCmd =
       }
     }
     else if(argv(1) == "list_light"){
-      PLAYER_HELPER.parm7 = stof(argv(2));
+      self.parm7 = stof(argv(2));
     }
     else if(argv(1) == "list_med"){
-      PLAYER_HELPER.parm8 = stof(argv(2));
+      self.parm8 = stof(argv(2));
     }
     else if(argv(1) == "list_hvy"){
-      PLAYER_HELPER.parm9 = stof(argv(2));
+      self.parm9 = stof(argv(2));
     }
   }
   else{
     localcmd(s);
   }
+  self = this;
 };
 
 // if string is interesting, deal with it, otherwise pass it to print() to invoke the engine code.
@@ -700,7 +731,7 @@ void(float isnew) CSQC_Ent_Update =
     setorigin(self, self.origin);
   }
   else if(id == DATA_PLR){
-    if(isnew){
+    /*if(isnew){
       self.MSN_SFX_COUNT = 0;
       self.drawme = 0;
       self.VOICE_QUEUE_SIZE = 6;
@@ -851,14 +882,39 @@ void(float isnew) CSQC_Ent_Update =
         self.target_vecsize = 0 ;
         self.target_shield = ReadByte();
       }
-    }
+    }*/
   }
-  else if( id ==  DATA_INFO_START){
-    local float intg;
-    intg = ReadShort();
-    if( intg == player_localentnum){
-      //cons_logAFloat("send ent success", 1);
-    }
+  else if( id ==  DATA_INFO_START ){
+    receive_ent_clientData(isnew);
+    
+    //e.stat_trg_vid = ReadByte();
+    /*if(e.stat_trg_vid != 255 && e.stat_trg_vid > 0){
+      e.target_datatype = ReadByte();
+      e.target_faction = ReadByte();
+      e.stat_trg_face = ReadByte();
+      e.stat_trg_ct_hp = ReadByte();
+      e.target_origin_x = ReadCoord();
+      e.target_origin_y = ReadCoord();
+      e.target_origin_z = ReadCoord();
+      if((e.target_datatype == DATA_MECH) || (e.target_datatype == DATA_MECH_AI)){
+        e.target_datatype = DATA_MECH;
+        e.target_vecsize = ReadByte();
+        e.stat_trg_lt_hp = ReadByte();
+        e.stat_trg_rt_hp = ReadByte();
+        e.stat_trg_la_hp = ReadByte();
+        e.stat_trg_ra_hp = ReadByte();
+        e.stat_trg_lg_hp = ReadByte();
+        e.target_shield = ReadByte();
+      }
+      else if(e.target_datatype == DATA_VEHC){
+        e.target_vecsize = ReadByte();
+        e.stat_trg_lg_hp = ReadByte();
+        e.target_shield = ReadByte();
+      }
+      else if(e.target_datatype == DATA_BLD){
+        e.target_vecsize = 0 ;
+        e.target_shield = ReadByte();
+      }*/
   }
 };
 

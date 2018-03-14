@@ -61,44 +61,44 @@ void() menu_handleFrame={
   mpos_x = cursorpos_x - gui_percentXRaw(2);
   mpos_y = cursorpos_y -  gui_percentXRaw(4);
 
-  if(PLAYER_HELPER.plr_menu_choice == MENU_HANGAR_ACTIVE){
+  if(self.plr_menu_choice == MENU_HANGAR_ACTIVE){
     menu_hangarDrawFrame(); 
   }
-  else if(PLAYER_HELPER.plr_menu_choice == MENU_BRIEF_ACTIVE){
+  else if(self.plr_menu_choice == MENU_BRIEF_ACTIVE){
     menu_briefDrawFrame();
   }
-  else if(PLAYER_HELPER.plr_menu_choice == MENU_ARMING_ACTIVE){
+  else if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
     menu_arming_drawFrame();
   }
-  else if(PLAYER_HELPER.plr_menu_choice == MENU_DEPLOY_ACTIVE){
+  else if(self.plr_menu_choice == MENU_DEPLOY_ACTIVE){
     menu_deployDrawFrame();
   }
   menu_navBar(VIEW_ORG);
   drawpic(mpos, UI_CURSOR_IMG,  i_sz, '1 1 1', HUD_ALPHA, 0);
   drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(PLAYER_HELPER.vec_size), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(PLAYER_HELPER.plr_sel_mech), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(self.plr_sel_size), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(self.plr_sel_mech), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
 };
 
 
 void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
-    if(PLAYER_HELPER.plr_sel_mech > 0 && (self.data_type == DATA_POBS)){
+    if(self.plr_sel_mech > 0 && (self.data_type == DATA_POBS)){
       cl_setspawnpoint(self.plr_nav_pnt);
-      cl_setmech(PLAYER_HELPER.vec_size, PLAYER_HELPER.plr_sel_mech);
+      cl_setmech(self.plr_sel_size, self.plr_sel_mech);
       local float lst_idx, bit;
       lst_idx = 1;
       bit = 1;
-      while(lst_idx <= PLAYER_HELPER.hardpoint_cnt){
+      while(lst_idx <= self.hardpoint_cnt){
         cl_setweapon(bit, HARDPOINTS[lst_idx]);
         bit = bit * 2;
         lst_idx = lst_idx + 1;
       }
-      cl_setweapongroup(1, PLAYER_HELPER.plr_nex_grp1);
-      cl_setweapongroup(2, PLAYER_HELPER.plr_nex_grp2);
-      cl_setweapongroup(3, PLAYER_HELPER.plr_nex_grp3);
-      cl_setweapongroup(4, PLAYER_HELPER.plr_nex_grp4);
-      cl_setweapongroup(5, PLAYER_HELPER.plr_nex_grp5);
+      cl_setweapongroup(1, self.plr_nex_grp1);
+      cl_setweapongroup(2, self.plr_nex_grp2);
+      cl_setweapongroup(3, self.plr_nex_grp3);
+      cl_setweapongroup(4, self.plr_nex_grp4);
+      cl_setweapongroup(5, self.plr_nex_grp5);
       cl_spawnmech();
       //localcmd(strcat("cd play ", ftos(world.sounds), " \n"));
       MENU_ACTIVE = FALSE;
@@ -112,33 +112,33 @@ void(vector ofs) menu_navBar={
   local float strwid;
   nvpos = ofs + gui_percentToPixelRawVec('9.984 7.488');
   
-  gui_renderTintImage((PLAYER_HELPER.plr_menu_choice == MENU_BRIEF_ACTIVE), nvpos, UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  gui_renderTintImage((self.plr_menu_choice == MENU_BRIEF_ACTIVE), nvpos, UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
   tpos = nvpos;
   strwid = stringwidth("[BRIEFING]", 0 ,'8 8 0')/2;
   tpos_x = (nvpos_x + gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   tpos_y = nvpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (PLAYER_HELPER.plr_menu_choice ==MENU_BRIEF_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_BRIEF_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
   
-  gui_renderTintImage((PLAYER_HELPER.plr_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  gui_renderTintImage((self.plr_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
   hpos = nvpos + gui_percentToPixel(0.075, 0);
   strwid = stringwidth("[HANGAR]", 0 ,'8 8 0')/2;
   hpos_x = (hpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   hpos_y = hpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (PLAYER_HELPER.plr_menu_choice ==MENU_HANGAR_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_HANGAR_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
   
-  gui_renderTintImage((PLAYER_HELPER.plr_menu_choice == MENU_ARMING_ACTIVE), (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  gui_renderTintImage((self.plr_menu_choice == MENU_ARMING_ACTIVE), (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
   apos = nvpos + gui_percentToPixelRawVec('192 0');
   strwid = stringwidth("[ARMING]", 0 ,'8 8 0')/2;
   apos_x = (apos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   apos_y = apos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[ARMING]", apos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (PLAYER_HELPER.plr_menu_choice ==MENU_ARMING_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[ARMING]", apos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_ARMING_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
   
-  gui_renderTintImage((PLAYER_HELPER.plr_menu_choice == MENU_DEPLOY_ACTIVE), (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  gui_renderTintImage((self.plr_menu_choice == MENU_DEPLOY_ACTIVE), (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
   dpos = nvpos + gui_percentToPixelRawVec('288 0');
   strwid = stringwidth("[DEPLOYMENT]", 0 ,'8 8 0')/2;
   dpos_x = (dpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   dpos_y = dpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[DEPLOYMENT]", dpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (PLAYER_HELPER.plr_menu_choice == MENU_DEPLOY_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[DEPLOYMENT]", dpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice == MENU_DEPLOY_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
 
   rpos = nvpos;
   rpos_x = VIEW_MAX_x - gui_percentX(0.1);
@@ -160,16 +160,16 @@ void() menu_mainListener={
 
 void() navBarListener={
   if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.0097, 0.0109), gui_percentToPixel(0.075, 0.025))){
-    PLAYER_HELPER.plr_menu_choice = MENU_BRIEF_ACTIVE;
+    self.plr_menu_choice = MENU_BRIEF_ACTIVE;
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025))){
-    PLAYER_HELPER.plr_menu_choice = MENU_HANGAR_ACTIVE;
+    self.plr_menu_choice = MENU_HANGAR_ACTIVE;
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
-    PLAYER_HELPER.plr_menu_choice = MENU_ARMING_ACTIVE;
+    self.plr_menu_choice = MENU_ARMING_ACTIVE;
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025))){
-    PLAYER_HELPER.plr_menu_choice = MENU_DEPLOY_ACTIVE;
+    self.plr_menu_choice = MENU_DEPLOY_ACTIVE;
   }
 };
 

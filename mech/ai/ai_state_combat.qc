@@ -41,6 +41,13 @@ void() ai_combat_findTarget={
         return;
       }
     }
+    else if( ai_target_isValid(self.trigger_field) ){
+      ai_update_dmgTime();
+      ai_update_switchToTarget(contact);
+      self.patience = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
+      return;
+    }
   }
   //didn't find anything? end the fight phase
   ai_target_clearBuffers();
@@ -66,6 +73,7 @@ void() ai_combat_huntTarget={
     } 
   }
   if( ai_target_isValid(self.trigger_field) ){
+
     self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
     ChangeYaw();
     changepitch(self);
@@ -91,7 +99,6 @@ void() ai_combat_huntTarget={
         ai_state_control(ai_combat_adjustPosition);
         return;
       }
-      
       //AI's patience is still holding, attempt to get 
       //optical view of target to engage
       ai_state_control(ai_combat_huntTarget);

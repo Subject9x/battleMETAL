@@ -5,12 +5,15 @@ Date: 11/02/2016
 Overview: hud data ents field vars
 */
 
-.vector cam_origin;
-.entity cam_ref;
+entity CLIENTDATA;
+
+.vector entorg;
+.entity client_data;
 
 .vector svVangles;
 
 .float sh_cur;
+.float stat_rdr_mode_prev;
 .float stat_rdr_mode;
 
 .float target_faction;
@@ -55,6 +58,7 @@ float ARM_CER = 16;
 float ARM_RAD = 24;
 
 .float plr_sel_mech; //used for mech selection
+.float plr_sel_size;
 .float plr_sel_hrpnt;
 .float plr_sel_wep;
 .float plr_sel_list_wep;

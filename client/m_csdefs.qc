@@ -5,8 +5,6 @@ Date: 10/11/2016
 Overview: csqc defs for the mod
 */
 
-float PLAYER_ENTITY_ID;
-
 float CON_W;
 float CON_H;
 float CON_CW;
@@ -25,9 +23,6 @@ float CON_CH;
 
 
 //
-vector plr_orig;
-vector plr_angles;
-.entity cpit_mdl;
 .float() t_remove; // called by CSQC_Ent_Remove to clean up this entity, return TRUE if remove(self) should be performed afterward
 // protocol bytes
 float SVC_SETVIEWPORT = 5;

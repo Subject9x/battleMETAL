@@ -82,7 +82,9 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
-  self.SendFlags = 1;
+  self.stat_cofs_x = self.origin_x;
+  self.stat_cofs_y = self.origin_y;
+  self.stat_cofs_z = self.origin_z;
   
   //Update Target information
   server_updateTargetInfo();

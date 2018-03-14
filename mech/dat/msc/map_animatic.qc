@@ -21,7 +21,7 @@ void() animatic_event_execute={
   local entity client, this;
   if( self.isActive){
     this = self;
-    client = findchainflags(flags, FL_CLIENT);
+    client = findchainflags(flags, (FL_CLIENT));
     while(client){
       //FACTION_ONLY setting
       if( (self.spawnflags & 4) ){
@@ -33,6 +33,7 @@ void() animatic_event_execute={
             self.count3 = self.movetype;
             self.movetype = MOVETYPE_NONE;
             self.velocity = '0 0 0';
+            self.avelocity = '0 0 0';
             client_sendAnimaticFileName(this.msn_file);
           self = this;
         }

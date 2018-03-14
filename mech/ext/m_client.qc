@@ -127,6 +127,7 @@ void() ClientConnect = {
   client_sendAvailableHeavyMechs();
   
   client_data_ini(self);
+  self.stat_plr_stt = PLAYER_SPAWN;
   
   if (intermission_running){
     ExitIntermission();
@@ -165,7 +166,7 @@ void() PutClientInServer = {
 
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
-  self.SendEntity = send_mech;
+  //self.SendEntity = send_mech;
 	
   self.view_ofs = '0 0 1';
   
@@ -188,7 +189,6 @@ void() PutClientInServer = {
     else{
       self.stat_plr_stt = PLAYER_ACTIVE;
     }
-    self.SendFlags = 1;
     self.power_timer = 0;
   }
   else if(self.data_type == DATA_MECH){

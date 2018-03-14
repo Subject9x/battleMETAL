@@ -160,7 +160,7 @@ void() execute_changelevel={
   this = self;
 	while (other != world)
 	{
-    if(other.p_class == DATA_MECH){
+    if(other.data_type == DATA_MECH){
       self = other;
         player_unmakeMech();
       self = this;

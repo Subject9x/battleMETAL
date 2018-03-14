@@ -25,14 +25,14 @@ void() hud_blk_frame={
   hud_renderWeapon('131 -42', '32 32', (VIEW_CTX | VIEW_CTY), self.currentWeaponGroup, self.stat_w2_id, WEAPON2, self.stat_w2_rel);
  
   //RADAR DISPLAY
-  hud_renderRadar('60 90', (VIEW_CTX | VIEW_BOT), self.i_faction, self.origin, self.radar_range, self.stat_rdr_mode, '90 90');
+  hud_renderRadar('60 90', (VIEW_CTX | VIEW_BOT), self.i_faction, pmove_org, self.radar_range, self.stat_rdr_mode, '90 90');
   hud_renderRadarStatus2('-70 80', (VIEW_CTX | VIEW_BOT), self.stat_rdr_mode, self.radar_range, 0);
   
   //TARGET STATS
   if(self.stat_trg_vid > 0 && self.stat_trg_vid != 255){   
     hud_renderShield('-125 92', (VIEW_BOT | VIEW_CTX), self.target_shield, '90 12', TRUE, (VIEW_LFT | VIEW_TOP), '0 10', AXIS_H);
-    hud_renderTargetOverlay(self.target_origin, self.origin, 0, self.i_faction, self.target_faction, self.radar_range);
-    hud_renderShieldOverlay(self.target_origin, self.origin, 0, self.target_shield, self.radar_range, self.target_vecsize, '64 4', AXIS_H);
+    hud_renderTargetOverlay(self.target_origin, pmove_org, 0, self.i_faction, self.target_faction, self.radar_range);
+    hud_renderShieldOverlay(self.target_origin, pmove_org, 0, self.target_shield, self.radar_range, self.target_vecsize, '64 4', AXIS_H);
     if(self.target_datatype == DATA_MECH){
       hud_renderArmorGraph('-170 45', (VIEW_CTX | VIEW_BOT), self.stat_trg_ct_hp, self.stat_trg_lt_hp, self.stat_trg_rt_hp,self.stat_trg_la_hp, self.stat_trg_ra_hp, self.stat_trg_lg_hp);
     }
@@ -45,7 +45,7 @@ void() hud_blk_frame={
     data_get_target(self.target_datatype, self.stat_trg_vid,self.target_vecsize);
     
     hud_renderTargetName('65 126', buffer_TargetInfo[0], (VIEW_CTX | VIEW_BOT));
-    hud_renderTargetRange('65 116', self.target_origin, self.origin, (VIEW_CTX | VIEW_BOT));
+    hud_renderTargetRange('65 116', self.target_origin, pmove_org, (VIEW_CTX | VIEW_BOT));
   }
  
   //CROSSHAIR AND DETAILS

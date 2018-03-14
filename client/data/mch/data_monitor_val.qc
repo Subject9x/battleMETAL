@@ -116,20 +116,20 @@ void() data_mech_MNT;
 void() data_MNT_ini;
 
 void(vector org) MNT_renderHardpoints={
-  if(PLAYER_HELPER.plr_menu_choice == MENU_ARMING_ACTIVE){
-    ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('-108 40')), (PLAYER_HELPER.plr_sel_hrpnt == 1));
-    ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-84 40')), (PLAYER_HELPER.plr_sel_hrpnt == 2));
-    ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('86 40')), (PLAYER_HELPER.plr_sel_hrpnt == 3));
-    ui_renderHardPointGraphic(HARDPOINTS[4], (org + gui_percentToPixelRawVec('62 40')), (PLAYER_HELPER.plr_sel_hrpnt == 4));
+  if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
+    ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('-108 40')), (self.plr_sel_hrpnt == 1));
+    ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-84 40')), (self.plr_sel_hrpnt == 2));
+    ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('86 40')), (self.plr_sel_hrpnt == 3));
+    ui_renderHardPointGraphic(HARDPOINTS[4], (org + gui_percentToPixelRawVec('62 40')), (self.plr_sel_hrpnt == 4));
    
-    ui_renderHardPointGraphic(HARDPOINTS[5], (org + gui_percentToPixelRawVec('-52 -40')), (PLAYER_HELPER.plr_sel_hrpnt == 5));
-    ui_renderHardPointGraphic(HARDPOINTS[6], (org + gui_percentToPixelRawVec('32 -40')), (PLAYER_HELPER.plr_sel_hrpnt == 6));
+    ui_renderHardPointGraphic(HARDPOINTS[5], (org + gui_percentToPixelRawVec('-52 -40')), (self.plr_sel_hrpnt == 5));
+    ui_renderHardPointGraphic(HARDPOINTS[6], (org + gui_percentToPixelRawVec('32 -40')), (self.plr_sel_hrpnt == 6));
     
-    ui_renderHardPointGraphic(HARDPOINTS[7], (org + gui_percentToPixelRawVec('-12 22')), (PLAYER_HELPER.plr_sel_hrpnt == 7));
-    ui_renderHardPointGraphic(HARDPOINTS[8], (org + gui_percentToPixelRawVec('-50 18')), (PLAYER_HELPER.plr_sel_hrpnt == 8));
-    ui_renderHardPointGraphic(HARDPOINTS[9], (org + gui_percentToPixelRawVec('26 18')), (PLAYER_HELPER.plr_sel_hrpnt == 9));
+    ui_renderHardPointGraphic(HARDPOINTS[7], (org + gui_percentToPixelRawVec('-12 22')), (self.plr_sel_hrpnt == 7));
+    ui_renderHardPointGraphic(HARDPOINTS[8], (org + gui_percentToPixelRawVec('-50 18')), (self.plr_sel_hrpnt == 8));
+    ui_renderHardPointGraphic(HARDPOINTS[9], (org + gui_percentToPixelRawVec('26 18')), (self.plr_sel_hrpnt == 9));
   }
-  else if(PLAYER_HELPER.plr_menu_choice == MENU_HANGAR_ACTIVE){
+  else if(self.plr_menu_choice == MENU_HANGAR_ACTIVE){
     ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('-64 -18')));
     ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-54 -18')));
     ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('54 -18')));
@@ -156,57 +156,57 @@ void(vector org) MNT_hardpointrows={
 
 float(vector org) MNT_hardpointListener={
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('-108 40'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON1;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT1_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT1_TYPES;
+    self.plr_sel_wid = WEAPON1;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT1_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT1_TYPES;
     return 1;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('-84 40'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON2;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT2_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT2_TYPES;
+    self.plr_sel_wid = WEAPON2;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT2_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT2_TYPES;
     return 2;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('86 40'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON3;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT3_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT3_TYPES;
+    self.plr_sel_wid = WEAPON3;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT3_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT3_TYPES;
     return 3;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('62 40'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON4;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT4_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT4_TYPES;
+    self.plr_sel_wid = WEAPON4;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT4_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT4_TYPES;
     return 4;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('-52 -40'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON5;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT5_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT5_TYPES;
+    self.plr_sel_wid = WEAPON5;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT5_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT5_TYPES;
     return 5;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('32 -40'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON6;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT6_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT6_TYPES;
+    self.plr_sel_wid = WEAPON6;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT6_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT6_TYPES;
     return 6;
   }
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('-12 22'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON7;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT7_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT7_TYPES;
+    self.plr_sel_wid = WEAPON7;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT7_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT7_TYPES;
     return 7;
   } 
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('-50 18'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON8;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT8_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT8_TYPES;
+    self.plr_sel_wid = WEAPON8;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT8_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT8_TYPES;
     return 8;
   } 
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('26 18'), gui_percentToPixelRawVec('24 24'))){
-    PLAYER_HELPER.plr_sel_wid = WEAPON9;
-    PLAYER_HELPER.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT9_SIZE;
-    PLAYER_HELPER.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT9_TYPES;
+    self.plr_sel_wid = WEAPON9;
+    self.plr_sel_hrpnt_size = DAT_MNT_HARDPOINT9_SIZE;
+    self.plr_sel_hrpnt_types = DAT_MNT_HARDPOINT9_TYPES;
     return 9;
   }
   return 0;

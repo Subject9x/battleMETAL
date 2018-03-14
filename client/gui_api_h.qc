@@ -60,7 +60,6 @@ vector VIEW_ORG;
 vector VIEW_MAX;
 vector VIEW_SIZE;
 vector VIEW_CTR;
-vector PLR_VIEW;
 float VIEW_TOP = 1;
 float VIEW_BOT = 2;
 float VIEW_LFT = 4;

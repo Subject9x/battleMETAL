@@ -20,7 +20,6 @@ void() player_makeObserver={
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
-  self.weaponmodel = "";
   mh_world_updateClientSpeed(400, 400, 400, "3","0");
   mh_world_updateClientViewBob("0", "0", "0");
   mh_world_updateClientModelBob("0", "0", "0");

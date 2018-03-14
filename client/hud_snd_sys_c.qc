@@ -12,12 +12,9 @@ void() snd_hud_vfx_frame={
     snd = self.SOUND_QUEUE_1;
     if(snd != "null"){
       sfx_len = soundlength(snd);
-      sound7(self, CHAN_AUTO, snd, 1, ATTN_NORM, 1, SOUNDFLAG_RELIABLE);
+      sound7(self, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
       self.VOICE_TIME_NEXT = time + sfx_len + 0.05;
     }
-    //else{
-    //  PLAYER_HELPER.VOICE_TIME_NEXT = time + 0.25;
-    //}
     self.SOUND_QUEUE_1 = self.SOUND_QUEUE_2;
     self.SOUND_QUEUE_2 = self.SOUND_QUEUE_3;
     self.SOUND_QUEUE_3 = self.SOUND_QUEUE_4;
@@ -36,8 +33,8 @@ void() snd_hud_vfx_cleanqueue={
   }*/
 };
 
-float(.string snd_q, float max, float count, .float qued, string requestedSound) snd_hud_vfx_enqueue={
-  if(count < max){
+float(.string snd_q, float total, float count, .float qued, string requestedSound) snd_hud_vfx_enqueue={
+  if(count < total){
     if(self.snd_q == "null"){
       if(self.qued == FALSE){
         self.snd_q = requestedSound;
@@ -57,7 +54,7 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
   local string sfx;
   local float idx, cur;
   idx = cur = 0;
-  self.queued = FALSE;
+  self.queued = FALSE;  
   if(self.SOUND_QUEUE_1 == requestedSound){
     cur = cur + 1;
   }
@@ -168,7 +165,6 @@ void(float preState, float nexState) snd_hud_vfx_objectivelistener={
     if(self.i_faction == player.i_faction){
       if(nexState == FALSE){
         if(preState == TRUE){
-          print(ftos(self.data_idx));
           if(self.data_idx == 1){
             snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME, 1);
           }
@@ -191,8 +187,8 @@ void(float preState, float nexState) snd_hud_vfx_objectivelistener={
 };
 
 void(float mode) snd_hud_vfx_toggleradar={
-  if(SND_HUD_RADARMODE != mode){
-    SND_HUD_RADARMODE = mode;
+  if(self.stat_rdr_mode_prev != mode){
+    self.stat_rdr_mode_prev = mode;
     if(mode){
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE, 3);
     }
