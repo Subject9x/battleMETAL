@@ -100,7 +100,8 @@ void() anm_execute_frame={
         localcmd("cd pause");
       }
       if(ANM_META_DATA[0] != ""){
-        sound7(self, CHAN_WEAPON, ANM_META_DATA[0], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+        //sound7(self, CHAN_WEAPON, ANM_META_DATA[0], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+        pointsound(pmove_org, ANM_META_DATA[0], 1, ATTN_NORM); 
       }
     }
     self.ANM_FRAME_CUR = self.ANM_FRAME_CUR + 1;
@@ -111,7 +112,8 @@ void() anm_execute_frame={
       return;
     }
     if(ANM_FRAME_SND[self.ANM_FRAME_CUR] != ""){
-      sound7(self, CHAN_VOICE, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+      //sound7(self, CHAN_VOICE, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+      pointsound(pmove_org, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NORM); 
     }
     self.ANM_FRAME_TIME = time + ANM_FRAME_TIM[self.ANM_FRAME_CUR];
   }

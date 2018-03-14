@@ -13,6 +13,21 @@ void() CSQC_Init =
 	// we can precache_sound and precache_model and precache_pic here
   VIEW_ORG = '0 0';
   
+  //ini the HUD sound system
+  SQSIZE = 6; //set to 6
+  STIME = 0;
+  STIME_NEXT = 0;
+  VQSIZE = 6;
+  VQIDX = 0;
+  SQ1 = "null";
+  SQ2 = "null";
+  SQ3 = "null";
+  SQ4 = "null";
+  SQ5 = "null";
+  SQ6 = "null";
+  CRITBITS = CRITBITS | 1 | 2 | 4 | 8 | 16 | 32;
+  SQUED = FALSE;
+  
   WEPBITS[0] = 1;
   WEPBITS[1] = 2;
   WEPBITS[2] = 4;
@@ -24,6 +39,12 @@ void() CSQC_Init =
   WEPBITS[8] = 256;
   
   local float i, cnt;
+  i = 1;
+  cnt = 1;
+  while( i < VQSIZE ){
+    SOUNDQUEUE[i] = "null";
+    i = i + 1;
+  }
   i = 1;
   cnt = 1;
   while(i < 25){
@@ -453,8 +474,10 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
  
   //menu system
   if(MENU_ACTIVE){
+    
     cursorpos = getmousepos();
     menu_handleFrame();
+    
   }else{  
     if(self.ANM_FILE_STATUS == 1){
       anm_execute_frame();

@@ -27,40 +27,26 @@ string SND_HUD_VFX_OBJ_SECON;
 string SND_HUD_VFX_OBJ_THIRD;
 string SND_HUD_VFX_OBJ_FOURT;
 
-float SND_HUD_RADARMODE = FALSE;
-float SND_HUD_TARGKILL = FALSE;
-float SND_HUD_CRITPART = 0;
+float SQSIZE; //set to 6
+float STIME;
+float STIME_NEXT;
+float VQSIZE;
+float VQIDX;
+float SQUED;
+string SOUNDQUEUE[6]; //match this with SQSIZE / VQSIZE
+string SQ1;
+string SQ2;
+string SQ3;
+string SQ4;
+string SQ5;
+string SQ6;
 
-//channels so far
-float REACT_TIME;
-//hud voice
-float VOICE_PLAY = FALSE;
-//float VOICE_TIME;
-//float VOICE_TIME_NEXT;
-//float VOICE_ADDTIME;
-//float VOICE_QUEUE_SIZE = 7;
-
-//float VOICE_QUEUE_IDX;
-//float VOICE_QUEUE_ADD_IDX;
-//string VOICE_QUEUE[VOICE_QUEUE_SIZE];
-//string VOICE_PLAYING ="";
-
-.float VOICE_TIME;
-.float VOICE_TIME_NEXT;
-.float VOICE_QUEUE_SIZE;
-.float VOICE_QUEUE_IDX;
-.float queued;
-.string SOUND_QUEUE_1;
-.string SOUND_QUEUE_2;
-.string SOUND_QUEUE_3;
-.string SOUND_QUEUE_4;
-.string SOUND_QUEUE_5;
-.string SOUND_QUEUE_6;
+float CRITBITS; //tracks sound playing for critical loss of mech parts
 
 void() snd_hud_vfx_frame;
 void() snd_hud_vfx_cleanqueue;
 
-float(.string snd_q, float max, float count, .float qued, string requestedSound) snd_hud_vfx_enqueue;
+float(string snd_q, float max, float count, string requestedSound) snd_hud_vfx_enqueue;
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue;
 
 void(float playerState) snd_hud_vfx_statelistener;

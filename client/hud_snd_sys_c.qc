@@ -6,21 +6,28 @@ Overview: impl file for the hud sound system
 */
 
 void() snd_hud_vfx_frame={
-  if(time > self.VOICE_TIME_NEXT){
-    local float sfx_len, idx;
-    local string snd;
-    snd = self.SOUND_QUEUE_1;
-    if(snd != "null"){
-      sfx_len = soundlength(snd);
-      sound7(self, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
-      self.VOICE_TIME_NEXT = time + sfx_len + 0.05;
+  if(time > STIME_NEXT){
+    local float sfx_len, itr;
+    if(SOUNDQUEUE[0] != "null"){
+      sfx_len = soundlength(SOUNDQUEUE[0]);
+      //sound7(self, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
+      pointsound(pmove_org, SOUNDQUEUE[0], 1, ATTN_NORM);
+      STIME_NEXT = time + sfx_len + 0.05;
     }
-    self.SOUND_QUEUE_1 = self.SOUND_QUEUE_2;
-    self.SOUND_QUEUE_2 = self.SOUND_QUEUE_3;
-    self.SOUND_QUEUE_3 = self.SOUND_QUEUE_4;
-    self.SOUND_QUEUE_4 = self.SOUND_QUEUE_5;
-    self.SOUND_QUEUE_5 = self.SOUND_QUEUE_6;
-    self.SOUND_QUEUE_6 = "null";
+    itr = SQSIZE;
+    while( itr > -1 ){
+      local float prev;
+      prev = itr - 1;
+      SOUNDQUEUE[prev] = SOUNDQUEUE[itr];
+      SOUNDQUEUE[itr] = "null";
+      itr = itr - 1;
+    }
+    /*SQ1 = SQ2;
+    SQ2 = SQ3;
+    SQ3 = SQ4;
+    SQ4 = SQ5;
+    SQ5 = SQ6;
+    SQ6 = "null";*/
   }
 };
 
@@ -33,44 +40,46 @@ void() snd_hud_vfx_cleanqueue={
   }*/
 };
 
-float(.string snd_q, float total, float count, .float qued, string requestedSound) snd_hud_vfx_enqueue={
+float(string snd_q, float total, float count, string requestedSound) snd_hud_vfx_enqueue={
+  local float add;
+  add = 0;
   if(count < total){
-    if(self.snd_q == "null"){
-      if(self.qued == FALSE){
-        self.snd_q = requestedSound;
-        self.qued = TRUE;
-        count = count + 1;
+    if(snd_q == "null"){
+      if(!SQUED){
+        snd_q = requestedSound;
+        cons_logAString("snd_q", snd_q);  //DEBUG
+        SQUED = TRUE;
+        add = 1;
       }
     }
-    else if(self.snd_q == requestedSound){
-      count = count + 1;
+    else if(snd_q == requestedSound){
+      add = 1;
     }
   }
-  return count;
+  return add;
 };
 
 //count == how many instances of 1 sound can be queued at a time
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
-  local string sfx;
   local float idx, cur;
   idx = cur = 0;
-  self.queued = FALSE;  
-  if(self.SOUND_QUEUE_1 == requestedSound){
+  SQUED = FALSE;  
+  if(SQ1== requestedSound){
     cur = cur + 1;
   }
-  if(self.SOUND_QUEUE_2 == requestedSound){
+  if(SQ2 == requestedSound){
     cur = cur + 1;
   }
-  if(self.SOUND_QUEUE_3 == requestedSound){
+  if(SQ3 == requestedSound){
     cur = cur + 1;
   }
-  if(self.SOUND_QUEUE_4 == requestedSound){
+  if(SQ4 == requestedSound){
     cur = cur + 1;
   }
-  if(self.SOUND_QUEUE_5 == requestedSound){
+  if(SQ5 == requestedSound){
     cur = cur + 1;
   }
-  if(self.SOUND_QUEUE_6 == requestedSound){
+  if(SQ6 == requestedSound){
     cur = cur + 1;
   }
   if(cur >= cnt){
@@ -78,28 +87,41 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
   }
   cur = 0;
   idx = 0;
-  while(idx < self.VOICE_QUEUE_SIZE){
-    local string sfx;
-    if(idx == 0){
-      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_1, cnt, cur, queued, requestedSound);
+  while(idx < SQSIZE){
+    if(SOUNDQUEUE[idx] == requestedSound){
+      cur = cur + 1;
+    }
+    if(SOUNDQUEUE[idx] == "null"){
+      if(cur < cnt){
+        SOUNDQUEUE[idx] = requestedSound;
+        cur = cur + 1;
+      }
+    }
+    
+    idx = idx + 1;
+    /*(if(idx == 0){
+      cur = cur + snd_hud_vfx_enqueue(SQ1, cnt, cur, requestedSound);
     }
     else if( idx == 1){
-      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_2, cnt, cur, queued, requestedSound);
+      cur = cur + snd_hud_vfx_enqueue(SQ2, cnt, cur, requestedSound);
     }
     else if( idx == 2){
-      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_3, cnt, cur, queued, requestedSound);
+      cur = cur + snd_hud_vfx_enqueue(SQ3, cnt, cur, requestedSound);
     }
     else if( idx == 3){
-      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_4, cnt, cur, queued, requestedSound);
+      cur = cur + snd_hud_vfx_enqueue(SQ4, cnt, cur, requestedSound);
     }
     else if( idx == 4){
-      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_5, cnt, cur, queued, requestedSound);
+      cur = cur + snd_hud_vfx_enqueue(SQ5, cnt, cur, requestedSound);
     }
     else if( idx == 5){
-      cur = snd_hud_vfx_enqueue(SOUND_QUEUE_6, cnt, cur, queued, requestedSound);
+      cur = cur + snd_hud_vfx_enqueue(SQ6, cnt, cur, requestedSound);
     }
-    idx = idx + 1;
+    if(cur >= cnt){
+      SQUED = TRUE;
+    }*/
   }
+  SQUED = FALSE;
 };
 
 void(float playerState) snd_hud_vfx_statelistener={
@@ -119,7 +141,7 @@ void(float lockstate) snd_hud_vfx_locklistener={
 
 void(float curEn) snd_hud_vfx_enelistener={
   if(curEn == 10){
-    if(self.SOUND_QUEUE_1 != SND_HUD_VFX_ENELOW){
+    if(SQ1 != SND_HUD_VFX_ENELOW){
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
     }
   }
@@ -137,7 +159,8 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
       if((self.drawme & bit)){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 3); 
         snd_hud_vfx_addtoqueue(snd, 1); 
-        self.drawme = self.drawme - (self.drawme & bit);
+        //self.drawme = self.drawme - (self.drawme & bit);
+        CRITBITS = CRITBITS - (CRITBITS & bit);
       }
     }
   }

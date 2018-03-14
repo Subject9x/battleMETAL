@@ -15,7 +15,6 @@ void(float isNew) receive_ent_clientData={
   if(isNew){ 
     self.drawmask = MASK_ENGINE;
     setorigin(self, '0 0 0');
-    addentity( self );
   }
   self.data_type = ReadByte();
   self.i_faction = ReadByte();
@@ -122,15 +121,8 @@ void(float isNew) receive_ent_clientData={
           self.plr_menu_choice = MENU_BRIEF_ACTIVE;
           self.MSN_SFX_COUNT = 0;
           self.drawme = 0;
-          self.SOUND_QUEUE_1 = "null";
-          self.SOUND_QUEUE_2 = "null";
-          self.SOUND_QUEUE_3 = "null";
-          self.SOUND_QUEUE_4 = "null";
-          self.SOUND_QUEUE_5 = "null";
-          self.SOUND_QUEUE_6 = "null";
           self.ANM_FILE_STATUS = 0;
-          self.drawmask = MASK_ENGINE;
-          addentity(self);
+          self.drawmask = MASK_NORMAL;
         self = this;
       }
     }
@@ -145,8 +137,6 @@ void() receive_ent_bindData={
   self.vec_size = getstati(STAT_PLR_VECSIZE);
   self.data_type = getstati(STAT_PLR_DTYPE);
   self.data_idx = getstati(STAT_PLR_DIDX);  
-
-  self.VOICE_QUEUE_SIZE = 6;
 
   self.i_faction = cl_data.i_faction;
   if(cl_data.data_type == DATA_MECH){
