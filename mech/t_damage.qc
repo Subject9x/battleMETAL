@@ -298,12 +298,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
       }
     }
   }
-  
-  if(self.enemy.enemy == self){
-    self.enemy.stat_trg_vid = -1;
-    self.enemy.stat_trg_sh = -1;
-    self.enemy.enemy = world;
-  }
   self.th_die();
   
   self = oself;

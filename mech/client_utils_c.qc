@@ -42,8 +42,6 @@ void() client_data_think={
     self.data_idx = client.data_idx;
     self.stat_rdr_mode = client.stat_rdr_mode;
     self.stat_rdr_rng = client.stat_rdr_rng;
-    
-    
   self.SendFlags = self.SendFlags | 4;
   }
   self.think = client_data_think;
@@ -76,8 +74,6 @@ float(entity ent, float sendFlags) client_data_sendEnt={
     WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_arm_r));
     WriteByte( MSG_ENTITY, (self.owner.en_cur / self.owner.en_max)*100);
     WriteByte( MSG_ENTITY, (self.owner.sh_cur / self.owner.sh_max)*100);
-    WriteByte( MSG_ENTITY, self.owner.stat_hit_dirs);
-    WriteLong( MSG_ENTITY, self.owner.stat_ret_dist);
     
     WriteLong( MSG_ENTITY, self.owner.currentWeaponGroup);
     WriteByte( MSG_ENTITY, self.owner.stat_wep_rel);

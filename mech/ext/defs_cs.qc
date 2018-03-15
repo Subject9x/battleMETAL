@@ -51,7 +51,7 @@ float AS_FLOAT = 8;
 .float stat_w7_rel;
 .float stat_w8_rel;
 .float stat_w9_rel;
-.float stat_trg_vid;
+.float stat_trg_dataidx;
 .float stat_trg_sh;
 .float stat_trg_dat;
 .float stat_hit_dirs;

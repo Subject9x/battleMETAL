@@ -43,7 +43,6 @@ vector ANM_FRAME_POS[20];
 vector ANM_FRAME_SIZE[20];
 string ANM_FRAME_MSG[20];
 
-
 void(string fileToOpen) anm_getFile;
 void(string fileToOpen) anm_parseFile;
 void() anm_execute_frame;

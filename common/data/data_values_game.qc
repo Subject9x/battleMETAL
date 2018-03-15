@@ -87,9 +87,23 @@ float SHIELD_SOAK = 4;
 .float stat_w7_rel;
 .float stat_w8_rel;
 .float stat_w9_rel;
-.float stat_trg_vid;
+
+.float stat_trg_ent_id;
+.float stat_trg_vsize;
+.float stat_trg_dataidx;
 .float stat_trg_sh;
 .float stat_trg_dat;
+.float stat_trg_faction;
+.float stat_trg_org_x;
+.float stat_trg_org_y;
+.float stat_trg_org_z;
+.float stat_trg_lg_hp;
+.float stat_trg_ct_hp;
+.float stat_trg_lt_hp;
+.float stat_trg_rt_hp;
+.float stat_trg_la_hp;
+.float stat_trg_ra_hp;
+
 .float stat_hit_dirs;
 .float stat_rdr_mode;
 .float stat_rdr_rng;
@@ -107,87 +121,96 @@ float SHIELD_SOAK = 4;
 //============================
 //     STAT CHANNELS         
 //============================
-float STAT_OBS_FACTION = 34;
+float STAT_OBS_FACTION = 32;
 
-float STAT_SPREADX = 35;
-float STAT_SPREADY = 36;
+float STAT_SPREADX = 33;
+float STAT_SPREADY = 34;
 
-float STAT_TARG_EID = 39;
-float STAT_VID = 40;
+float STAT_TARG_EID = 35;
+float STAT_VID = 36;
 
-float STAT_CAM_ORG_X = 41;
-float STAT_CAM_ORG_Y = 42;
-float STAT_CAM_ORG_Z = 43;
+float STAT_CAM_ORG_X = 37;
+float STAT_CAM_ORG_Y = 38;
+float STAT_CAM_ORG_Z = 39;
 
-float STAT_PLR_ORG_X = 44;
-float STAT_PLR_ORG_Y = 45;
-float STAT_PLR_ORG_Z = 46;
-float STAT_PLR_STT = 66;  //keep
-float STAT_PLR_DTYPE = 47;
-float STAT_PLR_VECSIZE = 48;
-float STAT_PLR_DIDX = 49;
-float STAT_PLR_RADMOD = 50;
+float STAT_PLR_ORG_X = 40;
+float STAT_PLR_ORG_Y = 41;
+float STAT_PLR_ORG_Z = 42;
+float STAT_PLR_STT = 43;  //keep
+float STAT_PLR_DTYPE = 44;
+float STAT_PLR_VECSIZE = 45;
+float STAT_PLR_DIDX = 46;
+float STAT_PLR_RADMOD = 47;
+float STAT_PLR_HITDIR = 48;
+float STAT_PLR_RETDIST = 49;
 
-float STAT_WEP1_ID = 56;
-float STAT_WEP2_ID = 59;
-float STAT_WEP3_ID = 62;
-float STAT_WEP4_ID = 65;
-float STAT_WEP5_ID = 68;
-float STAT_WEP6_ID = 71;
-float STAT_WEP7_ID = 74;
-float STAT_WEP8_ID = 77;
-float STAT_WEP9_ID = 80;
+float STAT_TRG_ENT_ID = 50;
+float STAT_TRG_VECSIZE = 51;
+float STAT_TRG_SHIELD= 52;
+float STAT_TRG_DATATYPE = 53;
+float STAT_TRG_DATAIDX = 54;
+float STAT_TRG_DIST = 55;
+float STAT_TRG_FACE = 56;
+float STAT_TRG_FACTION = 57;
+float STAT_TRG_ORG_X = 58;
+float STAT_TRG_ORG_Y = 59;
+float STAT_TRG_ORG_Z = 60;
 
-float STAT_WEP1_REL = 81;
-float STAT_WEP2_REL = 82;
-float STAT_WEP3_REL = 86;
-float STAT_WEP4_REL = 99;
-float STAT_WEP5_REL = 100;
-float STAT_WEP6_REL = 101;
-float STAT_WEP7_REL = 102;
-float STAT_WEP8_REL = 103;
-float STAT_WEP9_REL = 104;
+float STAT_TRG_LG_HP = 61;
+float STAT_TRG_CT_HP = 62;
+float STAT_TRG_LT_HP = 63;
+float STAT_TRG_RT_HP = 64;
+float STAT_TRG_LA_HP = 65;
+float STAT_TRG_RA_HP = 66;
 
-float STAT_WEP_STT = 57;
-float STAT_WEP_GRP = 83;
-float STAT_WEP_REL = 61;
+float TRG_VEC_SIZ = 67;
+float TRG_P_CLASS = 68;
 
-float STAT_TRG_VID = 84;
-float STAT_TRG_SH = 85;
-float STAT_TRG_DAT = 87;
+float STAT_WEP1_ID = 69;
+float STAT_WEP2_ID = 70;
+float STAT_WEP3_ID = 71;
+float STAT_WEP4_ID = 72;
+float STAT_WEP5_ID = 73;
+float STAT_WEP6_ID = 74;
+float STAT_WEP7_ID = 75;
+float STAT_WEP8_ID = 76;
+float STAT_WEP9_ID = 77;
 
-float STAT_TRG_DIST = 92;
-float STAT_TRG_FACE = 58;
-float STAT_NAV_DIR = 60;
-float STAT_SPR_X = 63;
-float STAT_SPR_Y = 64;
+float STAT_WEP1_REL = 78;
+float STAT_WEP2_REL = 79;
+float STAT_WEP3_REL = 80;
+float STAT_WEP4_REL = 81;
+float STAT_WEP5_REL = 82;
+float STAT_WEP6_REL = 83;
+float STAT_WEP7_REL = 84;
+float STAT_WEP8_REL = 85;
+float STAT_WEP9_REL = 86;
 
+float STAT_WEP_STT = 87;
+float STAT_WEP_GRP = 88;
+float STAT_WEP_REL = 89;
+float STAT_NAV_DIR = 90;
+float STAT_SPR_X = 91;
+float STAT_SPR_Y = 92;
+float STAT_PLR_FIR = 93;
+float STAT_LCK_STT = 94;
+float STAT_PLR_PTC = 95;
+float STAT_PLR_ANG = 96;
+float STAT_TRG_DDFLG = 97;
+float STAT_TRG_ORGX = 98;
+float STAT_TRG_ORGY = 99;
+float STAT_TRG_ORGZ = 100;
 
-float STAT_PLR_FIR = 67;
-float STAT_LCK_STT = 69;
-float STAT_PLR_PTC = 72;
-float STAT_PLR_ANG = 73;
+float UI_BOX_POSX = 101;
+float UI_BOX_POSY = 102;
+float UI_BOX_SZEX = 103;
+float UI_BOX_SZEY = 104;
+float UI_BOX_CLRX = 105;
+float UI_BOX_CLRY = 106;
+float UI_BOX_CLRZ = 107;
+float UI_BOX_TIME = 108;
 
-float STAT_TRG_DDFLG = 81;
-
-float STAT_TRG_ORGX = 75;
-float STAT_TRG_ORGY = 76;
-float STAT_TRG_ORGZ = 78;
-
-float UI_BOX_POSX = 106;
-float UI_BOX_POSY = 107;
-float UI_BOX_SZEX = 108;
-float UI_BOX_SZEY = 109;
-float UI_BOX_CLRX = 110;
-float UI_BOX_CLRY = 111;
-float UI_BOX_CLRZ = 112;
-float UI_BOX_TIME = 113;
-
-float TRG_VEC_SIZ = 114;
-float TRG_P_CLASS = 115;
-float STAT_TRG_IFAC = 116;
-
-float STAT_LVL_RES = 79;
+float STAT_LVL_RES = 109;
 
 //============================
 //     AI STATS      

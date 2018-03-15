@@ -25,7 +25,7 @@ void() CSQC_Init =
   SQ4 = "null";
   SQ5 = "null";
   SQ6 = "null";
-  CRITBITS = CRITBITS | 1 | 2 | 4 | 8 | 16 | 32;
+  CRITBITS = 0;
   SQUED = FALSE;
   
   WEPBITS[0] = 1;
@@ -279,10 +279,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   setproperty(VF_ORIGIN, pmove_org);
   setproperty(VF_ANGLES, input_angles);
 
-  
 	// draw the main view
 	renderscene();
-
     
   //drawstring(VIEW_ORG + gui_percentToPixelRawVec('10 100'), strcat("client [time]: ", ftos(time)), '8 8 0', '1 1 1', 1, 0); //DEBUG
   //drawstring(VIEW_ORG + gui_percentToPixelRawVec('10 125'), strcat("self.VOICE_TIME_NEXT: ", ftos(self.VOICE_TIME_NEXT)), '8 8 0', '1 1 1', 1, 0); //DEBUG
@@ -292,44 +290,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   self = entitybyindex(player_localentnum);
 
   receive_ent_bindData();
-
-  //if(self.player_state == PLAYER_CONNECT){
-    //hacky frame 0 check, works as an ini
-    /*self.plr_sel_mech = 0;
-    self.plr_sel_size = 1;
-    self.plr_nex_mech = 0;
-    self.plr_sel_list_wep = 0;
-    self.plr_nex_wep1 = -1;
-    self.plr_nex_wep2 = -1;
-    self.plr_nex_wep3 = -1;
-    self.plr_nex_wep4 = -1;
-    self.plr_nex_wep6 = -1;
-    self.plr_nex_wep7 = -1;
-    self.plr_nex_wep8 = -1;
-    self.plr_nex_wep9 = -1;
-    self.plr_nex_grp1 = 0;
-    self.plr_nex_grp2 = 0;
-    self.plr_nex_grp3 = 0;
-    self.plr_nex_grp4 = 0;
-    self.plr_nex_grp5 = 0;
-    self.plr_nav_pnt = 0;
-    self.plr_menu_choice = MENU_BRIEF_ACTIVE;
-    self.MSN_SFX_COUNT = 0;
-    self.drawme = 0;
-    self.VOICE_QUEUE_SIZE = 6;
-    self.SOUND_QUEUE_1 = "null";
-    self.SOUND_QUEUE_2 = "null";
-    self.SOUND_QUEUE_3 = "null";
-    self.SOUND_QUEUE_4 = "null";
-    self.SOUND_QUEUE_5 = "null";
-    self.SOUND_QUEUE_6 = "null";
-    self.queued = FALSE;
-    self.ANM_FILE_STATUS = 0;
-    addentity(self);*/
-    //self.predraw = obs_predraw;       
-    //self.drawmask = MASK_ENGINE;
- // }
-  
   
   //mission file load check
   if(MSN_FILEFOUND){
@@ -753,191 +713,8 @@ void(float isnew) CSQC_Ent_Update =
     self.origin_z = ReadCoord();
     setorigin(self, self.origin);
   }
-  else if(id == DATA_PLR){
-    /*if(isnew){
-      self.MSN_SFX_COUNT = 0;
-      self.drawme = 0;
-      self.VOICE_QUEUE_SIZE = 6;
-      self.SOUND_QUEUE_1 = "null";
-      self.SOUND_QUEUE_2 = "null";
-      self.SOUND_QUEUE_3 = "null";
-      self.SOUND_QUEUE_4 = "null";
-      self.SOUND_QUEUE_5 = "null";
-      self.SOUND_QUEUE_6 = "null";
-      self.ANM_FILE_STATUS = 0;
-      self.classname = "player";
-      self.solid = SOLID_SLIDEBOX;
-      self.movetype = MOVETYPE_FLY;
-      self.predraw = obs_predraw;       
-      self.drawmask = MASK_ENGINE;
-      setmodel(self, "q3mdl/testball.md3");    
-      setsize(self, '-4 -4 -4', '4 4 4');
-      addentity( self );
-    }
-    self.data_type = ReadByte();
-    self.i_faction = ReadByte();
-    self.player_state = ReadByte();
-    self.flags = ReadByte();
-    
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    
-    self.origin_phys = self.origin;
-    
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
-    self.velocity_x = ReadLong();
-    self.velocity_y = ReadLong();
-    self.velocity_z = ReadLong();
-    
-    setorigin(self, self.origin);
-    //setproperty(VF_ORIGIN, self.origin);
-    
-    if(self.data_type == DATA_MECH){
-      local string nm;
-      nm = ReadString();
-      if( self.netname != nm){
-        self.netname = strzone(nm);
-      }
-      self.data_idx = ReadByte();
-      self.vec_size = ReadByte(); 
-      self.stat_rdr_mode = ReadByte();
-      self.radar_range = ReadLong();
-      self.hp_ctor = ReadByte();
-      self.hp_leg = ReadByte();
-      self.hp_stor = ReadByte();
-      self.hp_stor2 = ReadByte();
-      self.hp_arm = ReadByte();
-      self.hp_arm2 = ReadByte();
-      
-      self.en_cur = ReadByte();
-      self.sh_cur = ReadByte();
-      self.stat_hit_dirs = ReadByte();
-      self.stat_ret_dist = ReadLong();
-      //WEAPON DATA
-      self.currentWeaponGroup = ReadLong();
-      self.stat_wep_rel = ReadByte();
-      local float wepCount, wepItr;
-      wepCount = ReadByte();
-      wepItr = 1;
-      while(wepItr <= wepCount){
-        if(wepItr == 1){
-          self.stat_w1_id = ReadByte();
-          self.stat_w1_rel = ReadByte();
-        }
-        else if(wepItr == 2){
-          self.stat_w2_id = ReadByte();
-          self.stat_w2_rel = ReadByte();
-        }
-        else if(wepItr == 3){
-          self.stat_w3_id = ReadByte();
-          self.stat_w3_rel = ReadByte();
-        }
-        else if(wepItr == 4){
-          self.stat_w4_id = ReadByte();
-          self.stat_w4_rel = ReadByte();
-        }
-        else if(wepItr == 5){
-          self.stat_w5_id = ReadByte();
-          self.stat_w5_rel = ReadByte();
-        }
-        else if(wepItr == 6){
-          self.stat_w6_id = ReadByte();
-          self.stat_w6_rel = ReadByte();
-        }
-        else if(wepItr == 7){
-          self.stat_w7_id = ReadByte();
-          self.stat_w7_rel = ReadByte();
-        }
-        else if(wepItr == 8){
-          self.stat_w8_id = ReadByte();
-          self.stat_w8_rel = ReadByte();
-        }
-        else if(wepItr == 9){
-          self.stat_w9_id = ReadByte();
-          self.stat_w9_rel = ReadByte();
-        }
-        wepItr = wepItr + 1;
-      }
-      //camera
-      self.cam_origin_x = ReadCoord();
-      self.cam_origin_y = ReadCoord();
-      self.cam_origin_z = ReadCoord();
-      
-      if(self.cam_ref == world){
-        self.cam_ref = spawn();
-        self.cam_ref.drawmask = MASK_ENGINE;
-        //setmodel(self.cam_ref, DAT_OTL_CPIT_MODEL);
-        addentity(self.cam_ref);
-      } 
-      self.cam_ref.angles = input_angles;
-      self.cam_ref.angles_x = self.cam_ref.angles_x * -1;
-      setorigin(self.cam_ref, self.cam_origin);
-    }
-    
-    self.stat_trg_vid = ReadByte();
-    if(self.stat_trg_vid != 255 && self.stat_trg_vid > 0){
-      self.target_datatype = ReadByte();
-      self.target_faction = ReadByte();
-      self.stat_trg_face = ReadByte();
-      self.stat_trg_ct_hp = ReadByte();
-      self.target_origin_x = ReadCoord();
-      self.target_origin_y = ReadCoord();
-      self.target_origin_z = ReadCoord();
-      if((self.target_datatype == DATA_MECH) || (self.target_datatype == DATA_MECH_AI)){
-        self.target_datatype = DATA_MECH;
-        self.target_vecsize = ReadByte();
-        self.stat_trg_lt_hp = ReadByte();
-        self.stat_trg_rt_hp = ReadByte();
-        self.stat_trg_la_hp = ReadByte();
-        self.stat_trg_ra_hp = ReadByte();
-        self.stat_trg_lg_hp = ReadByte();
-        self.target_shield = ReadByte();
-      }
-      else if(self.target_datatype == DATA_VEHC){
-        self.target_vecsize = ReadByte();
-        self.stat_trg_lg_hp = ReadByte();
-        self.target_shield = ReadByte();
-      }
-      else if(self.target_datatype == DATA_BLD){
-        self.target_vecsize = 0 ;
-        self.target_shield = ReadByte();
-      }
-    }*/
-  }
   else if( id ==  DATA_INFO_START ){
     receive_ent_clientData(isnew);
-    
-    //e.stat_trg_vid = ReadByte();
-    /*if(e.stat_trg_vid != 255 && e.stat_trg_vid > 0){
-      e.target_datatype = ReadByte();
-      e.target_faction = ReadByte();
-      e.stat_trg_face = ReadByte();
-      e.stat_trg_ct_hp = ReadByte();
-      e.target_origin_x = ReadCoord();
-      e.target_origin_y = ReadCoord();
-      e.target_origin_z = ReadCoord();
-      if((e.target_datatype == DATA_MECH) || (e.target_datatype == DATA_MECH_AI)){
-        e.target_datatype = DATA_MECH;
-        e.target_vecsize = ReadByte();
-        e.stat_trg_lt_hp = ReadByte();
-        e.stat_trg_rt_hp = ReadByte();
-        e.stat_trg_la_hp = ReadByte();
-        e.stat_trg_ra_hp = ReadByte();
-        e.stat_trg_lg_hp = ReadByte();
-        e.target_shield = ReadByte();
-      }
-      else if(e.target_datatype == DATA_VEHC){
-        e.target_vecsize = ReadByte();
-        e.stat_trg_lg_hp = ReadByte();
-        e.target_shield = ReadByte();
-      }
-      else if(e.target_datatype == DATA_BLD){
-        e.target_vecsize = 0 ;
-        e.target_shield = ReadByte();
-      }*/
   }
 };
 

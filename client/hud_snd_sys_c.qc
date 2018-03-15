@@ -94,44 +94,23 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
     if(SOUNDQUEUE[idx] == "null"){
       if(cur < cnt){
         SOUNDQUEUE[idx] = requestedSound;
+        cons_logAString("SOUNDQUEUE[idx]",SOUNDQUEUE[idx]);
         cur = cur + 1;
       }
     }
-    
     idx = idx + 1;
-    /*(if(idx == 0){
-      cur = cur + snd_hud_vfx_enqueue(SQ1, cnt, cur, requestedSound);
-    }
-    else if( idx == 1){
-      cur = cur + snd_hud_vfx_enqueue(SQ2, cnt, cur, requestedSound);
-    }
-    else if( idx == 2){
-      cur = cur + snd_hud_vfx_enqueue(SQ3, cnt, cur, requestedSound);
-    }
-    else if( idx == 3){
-      cur = cur + snd_hud_vfx_enqueue(SQ4, cnt, cur, requestedSound);
-    }
-    else if( idx == 4){
-      cur = cur + snd_hud_vfx_enqueue(SQ5, cnt, cur, requestedSound);
-    }
-    else if( idx == 5){
-      cur = cur + snd_hud_vfx_enqueue(SQ6, cnt, cur, requestedSound);
-    }
-    if(cur >= cnt){
-      SQUED = TRUE;
-    }*/
   }
   SQUED = FALSE;
 };
 
 void(float playerState) snd_hud_vfx_statelistener={
-  if(getstati(STAT_PLR_STT) == PLAYER_POWERUP_BEGIN){
+  if(self.player_state == PLAYER_POWERUP_BEGIN){
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
-    self.drawme = 0;
+    CRITBITS = 0;
   }
-  else if(getstati(STAT_PLR_STT) == PLAYER_ACTIVE){
-    if(self.drawme == 0){
-      self.drawme = self.drawme | 1 | 2 | 4 | 8 | 16 | 32;
+  else if(self.player_state == PLAYER_ACTIVE){
+    if(CRITBITS == 0){
+      CRITBITS = CRITBITS | 1 | 2 | 4 | 8 | 16 | 32;
     }
   }
 };
@@ -154,12 +133,11 @@ void(float curSh) snd_hud_vfx_shdlistener={
 };
 
 void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
-  if(getstati(STAT_PLR_STT) == PLAYER_ACTIVE){
+  if(self.player_state == PLAYER_ACTIVE){
     if(amt <= 0){
-      if((self.drawme & bit)){
+      if( (CRITBITS & bit) ){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 3); 
-        snd_hud_vfx_addtoqueue(snd, 1); 
-        //self.drawme = self.drawme - (self.drawme & bit);
+        snd_hud_vfx_addtoqueue(snd, 1);
         CRITBITS = CRITBITS - (CRITBITS & bit);
       }
     }

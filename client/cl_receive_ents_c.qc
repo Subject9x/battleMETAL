@@ -45,8 +45,7 @@ void(float isNew) receive_ent_clientData={
     
     self.en_cur = ReadByte();
     self.sh_cur = ReadByte();
-    self.stat_hit_dirs = ReadByte();
-    self.stat_ret_dist = ReadLong();
+
     //WEAPON DATA
     self.currentWeaponGroup = ReadLong();
     self.stat_wep_rel = ReadByte();
@@ -137,7 +136,41 @@ void() receive_ent_bindData={
   self.vec_size = getstati(STAT_PLR_VECSIZE);
   self.data_type = getstati(STAT_PLR_DTYPE);
   self.data_idx = getstati(STAT_PLR_DIDX);  
-
+  self.stat_lck_stt = getstati(STAT_LCK_STT);
+  self.stat_rdr_mode = getstati(STAT_PLR_RADMOD);
+  self.stat_hit_dirs = getstati(STAT_PLR_HITDIR);
+  self.stat_ret_dist = getstati(STAT_PLR_RETDIST);
+  
+  self.stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
+  self.stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
+  
+  if(self.stat_trg_dataidx > 0){
+    local entity targ;
+    self.target_origin_x = getstatf(STAT_TRG_ORG_X);
+    self.target_origin_y = getstatf(STAT_TRG_ORG_Y);
+    self.target_origin_z = getstatf(STAT_TRG_ORG_Z);
+    self.target_vecsize = getstati(STAT_TRG_VECSIZE);
+    self.target_shield = getstatf(STAT_TRG_SHIELD);
+    self.target_datatype = getstati(STAT_TRG_DATATYPE);
+    self.target_faction = getstati(STAT_TRG_FACTION);
+    self.stat_trg_lg_hp = getstatf(STAT_TRG_LG_HP);
+    self.stat_trg_ct_hp = getstatf(STAT_TRG_CT_HP);
+    self.stat_trg_lt_hp = getstatf(STAT_TRG_LT_HP);
+    self.stat_trg_rt_hp = getstatf(STAT_TRG_RT_HP);
+    self.stat_trg_la_hp = getstatf(STAT_TRG_LA_HP);
+    self.stat_trg_ra_hp = getstatf(STAT_TRG_RA_HP);
+    
+  }
+  else{
+    self.target_origin_x = 0;
+    self.target_origin_y = 0;
+    self.target_origin_z = 0;
+    self.target_vecsize = 0;
+    self.target_shield = 0;
+    self.target_datatype = 0;
+    self.target_faction = 0;
+  }
+  
   self.i_faction = cl_data.i_faction;
   if(cl_data.data_type == DATA_MECH){
     local string nm;
@@ -145,10 +178,6 @@ void() receive_ent_bindData={
     if( self.netname != nm){
       self.netname = nm;
     }
-    self.data_idx = cl_data.data_idx;
-    self.vec_size = cl_data.vec_size;
-    
-    self.stat_rdr_mode = cl_data.stat_rdr_mode;
     
     self.radar_range = cl_data.radar_range;
     self.hp_ctor = cl_data.hp_ctor;
@@ -160,8 +189,6 @@ void() receive_ent_bindData={
     
     self.en_cur = cl_data.en_cur;
     self.sh_cur = cl_data.sh_cur;
-    self.stat_hit_dirs = cl_data.stat_hit_dirs;
-    self.stat_ret_dist = cl_data.stat_ret_dist;
     //WEAPON DATA
     self.currentWeaponGroup = cl_data.currentWeaponGroup;
     self.stat_wep_rel = cl_data.stat_wep_rel;

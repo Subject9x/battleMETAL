@@ -58,7 +58,7 @@ void() hud_mnt_frame={
   hud_renderRadarStatus2('95 -100', (VIEW_CTX | VIEW_CTY), self.stat_rdr_mode, self.radar_range, 0);
   
   //TARGET STATS
-  if(self.stat_trg_vid > 0 && self.stat_trg_vid != 255){   
+  if(self.stat_trg_dataidx > 0 && self.stat_trg_dataidx != 255){   
     hud_renderShield('-90 104', (VIEW_BOT | VIEW_CTX), self.target_shield, '90 12', TRUE, (VIEW_LFT | VIEW_TOP), '0 10', AXIS_H);
     hud_renderTargetOverlay(self.target_origin, pmove_org, 0, self.i_faction, self.target_faction, self.radar_range);
     hud_renderShieldOverlay(self.target_origin, pmove_org, 0, self.target_shield, self.radar_range, self.target_vecsize, '64 4', AXIS_H);
@@ -71,7 +71,7 @@ void() hud_mnt_frame={
     else if(self.target_datatype == DATA_BLD){
       hud_renderArmorBuilding('-105 50', (VIEW_CTX | VIEW_BOT), '32 75', self.stat_trg_ct_hp);
     }
-    data_get_target(self.target_datatype, self.stat_trg_vid,self.target_vecsize);
+    data_get_target(self.target_datatype, self.stat_trg_dataidx,self.target_vecsize);
     
     hud_renderTargetName('-54 -92', buffer_TargetInfo[0], (VIEW_CTX | VIEW_CTY));
     hud_renderTargetRange('-54 -100', self.target_origin, pmove_org, (VIEW_CTX | VIEW_CTY));

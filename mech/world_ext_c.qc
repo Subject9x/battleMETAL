@@ -7,6 +7,35 @@ Overview: function extensions to world.qc
 
 void() mh_world_ini={
  
+ 
+       //WriteByte ( MSG_ENTITY, self.owner.enemy.data_idx);*/
+    /*if(self.owner.enemy.data_idx > 0){
+      WriteByte ( MSG_ENTITY, self.owner.enemy.data_type);
+      WriteByte ( MSG_ENTITY, self.owner.enemy.i_faction);
+      WriteByte ( MSG_ENTITY, self.owner.stat_trg_face);
+      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy));
+      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_x);
+      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_y);
+      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_z);
+      if(self.owner.enemy.data_type == DATA_MECH){
+        WriteByte ( MSG_ENTITY, self.owner.enemy.vec_size);
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_tor_l));
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_tor_r));
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_arm_l));
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_arm_r));
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_legs));
+        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
+      }
+      else if(self.owner.enemy.data_type == DATA_VEHC){
+        WriteByte ( MSG_ENTITY, self.owner.enemy.vec_size);
+        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_legs));
+        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
+      }
+      else if(self.owner.enemy.data_type == DATA_BLD){
+        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
+      }*/
+ 
+ 
   //oh my
   addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);
   addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);
@@ -16,7 +45,27 @@ void() mh_world_ini={
   addstat(STAT_PLR_DTYPE, AS_INT, data_type);
   addstat(STAT_PLR_VECSIZE, AS_INT, vec_size);
   addstat(STAT_PLR_RADMOD, AS_INT, stat_rdr_mode);
+  addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
+  addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);
+  addstat(STAT_PLR_RETDIST, AS_INT, stat_ret_dist);
   
+  //Target stats
+  addstat(STAT_TRG_ENT_ID, AS_INT, stat_trg_ent_id);
+  addstat(STAT_TRG_VECSIZE, AS_INT, stat_trg_vsize);
+  addstat(STAT_TRG_SHIELD, AS_FLOAT, stat_trg_sh);
+  addstat(STAT_TRG_DATATYPE, AS_INT, stat_trg_dat);
+  addstat(STAT_TRG_DATAIDX, AS_INT, stat_trg_dataidx);
+  addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
+  addstat(STAT_TRG_ORG_X, AS_FLOAT, stat_trg_org_x);
+  addstat(STAT_TRG_ORG_Y, AS_FLOAT, stat_trg_org_y);
+  addstat(STAT_TRG_ORG_Z, AS_FLOAT, stat_trg_org_z);
+  
+  addstat(STAT_TRG_LG_HP, AS_FLOAT, stat_trg_lg_hp);
+  addstat(STAT_TRG_CT_HP, AS_FLOAT, stat_trg_ct_hp);
+  addstat(STAT_TRG_LT_HP, AS_FLOAT, stat_trg_lt_hp);
+  addstat(STAT_TRG_RT_HP, AS_FLOAT, stat_trg_rt_hp);
+  addstat(STAT_TRG_LA_HP, AS_FLOAT, stat_trg_la_hp);
+  addstat(STAT_TRG_RA_HP, AS_FLOAT, stat_trg_ra_hp);  
   
   addstat(STAT_CAM_ORG_X, AS_FLOAT, stat_plr_camx);
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);
@@ -32,9 +81,7 @@ void() mh_world_ini={
   addstat(STAT_WEP8_ID, AS_INT,stat_w8_id);
   addstat(STAT_WEP9_ID, AS_INT,stat_w9_id);
   
-  //addstat(STAT_WEP_GRP, AS_INT, currentWeaponGroup);
-  //addstat(STAT_WEP_STT, AS_INT, stat_wep_state);
-  //addstat(STAT_WEP_REL, AS_INT, stat_wep_rel);
+  
   
   addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
@@ -45,7 +92,6 @@ void() mh_world_ini={
   addstat(STAT_SPR_X, AS_FLOAT, stat_spr_x);
   addstat(STAT_SPR_Y, AS_FLOAT, stat_spr_y);
   
-  addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
   
   addstat(STAT_LVL_RES, AS_INT, i_reserve);
   
