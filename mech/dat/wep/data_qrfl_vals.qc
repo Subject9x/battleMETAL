@@ -105,7 +105,7 @@ void() data_qrfl_atk={
       self.angles = vectoangles(self.velocity);
       if(pointcontents(rando) != CONTENT_SOLID){
         setorigin(self, rando);
-        util_setModel(self.c_model, 0);
+        util_setModel(self.c_model, 0, 0);
         util_setBoundBox('0 0 0', '0 0 0');
         util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
         qbits = qbits - 1;

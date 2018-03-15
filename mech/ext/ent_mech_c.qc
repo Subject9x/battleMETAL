@@ -57,3 +57,4 @@ commented vars mean they're already implemented and are here for reference!
 .string m_bside;
 .string m_bobspd;
 
+.float mskin;

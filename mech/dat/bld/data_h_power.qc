@@ -18,7 +18,7 @@ void() building_power={
   self.data_type = DATA_BLD;
   self.vec_name = "Power Generator";
   self.flags = self.flags | FL_MONSTER;
-  util_setModel(DAT_BLD_H_POWER_PLANT_MODEL, 0) ;
+  util_setModel(DAT_BLD_H_POWER_PLANT_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_POWER_PLANT_HP, DAT_BLD_H_POWER_PLANT_HP, 1, 100);
   util_setBoundBox('-75 -75 -24', '75 75 24');

@@ -9,6 +9,7 @@ entity CLIENTDATA;
 
 .vector entorg;
 .entity client_data;
+.entity viewmodel;
 
 .vector svVangles;
 

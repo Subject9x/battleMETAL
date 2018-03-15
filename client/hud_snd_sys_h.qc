@@ -45,8 +45,6 @@ float CRITBITS; //tracks sound playing for critical loss of mech parts
 
 void() snd_hud_vfx_frame;
 void() snd_hud_vfx_cleanqueue;
-
-float(string snd_q, float max, float count, string requestedSound) snd_hud_vfx_enqueue;
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue;
 
 void(float playerState) snd_hud_vfx_statelistener;

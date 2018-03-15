@@ -10,8 +10,7 @@ void() snd_hud_vfx_frame={
     local float sfx_len, itr;
     if(SOUNDQUEUE[0] != "null"){
       sfx_len = soundlength(SOUNDQUEUE[0]);
-      //sound7(self, CHAN_AUTO, snd, 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
-      pointsound(pmove_org, SOUNDQUEUE[0], 1, ATTN_NORM);
+      pointsound(pmove_org, SOUNDQUEUE[0], 1, ATTN_NONE);
       STIME_NEXT = time + sfx_len + 0.05;
     }
     itr = SQSIZE;
@@ -32,31 +31,7 @@ void() snd_hud_vfx_frame={
 };
 
 void() snd_hud_vfx_cleanqueue={
-  /*local float idx;
-  idx = 0;
-  while(idx < PLAYER_HELPER.VOICE_QUEUE_SIZE){
-    VOICE_QUEUE[idx] = "null";
-    idx = idx + 1;
-  }*/
-};
 
-float(string snd_q, float total, float count, string requestedSound) snd_hud_vfx_enqueue={
-  local float add;
-  add = 0;
-  if(count < total){
-    if(snd_q == "null"){
-      if(!SQUED){
-        snd_q = requestedSound;
-        cons_logAString("snd_q", snd_q);  //DEBUG
-        SQUED = TRUE;
-        add = 1;
-      }
-    }
-    else if(snd_q == requestedSound){
-      add = 1;
-    }
-  }
-  return add;
 };
 
 //count == how many instances of 1 sound can be queued at a time
@@ -64,23 +39,11 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
   local float idx, cur;
   idx = cur = 0;
   SQUED = FALSE;  
-  if(SQ1== requestedSound){
-    cur = cur + 1;
-  }
-  if(SQ2 == requestedSound){
-    cur = cur + 1;
-  }
-  if(SQ3 == requestedSound){
-    cur = cur + 1;
-  }
-  if(SQ4 == requestedSound){
-    cur = cur + 1;
-  }
-  if(SQ5 == requestedSound){
-    cur = cur + 1;
-  }
-  if(SQ6 == requestedSound){
-    cur = cur + 1;
+  while(idx < SQSIZE){
+    if(SOUNDQUEUE[idx] == requestedSound){
+      cur = cur + 1;
+    }
+    idx = idx + 1;
   }
   if(cur >= cnt){
     return;

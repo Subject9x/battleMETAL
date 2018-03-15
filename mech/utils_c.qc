@@ -44,11 +44,14 @@ float(float numOfSides) util_roll_dice={
 };
 
 float(entity t) util_getMechHpAverage={
-  local float total, cur;
-  total = t.max_health + (t.e_arm_l.max_health * 2) + (t.e_tor_l.max_health * 2) + t.e_legs.max_health;
-  cur = t.health + t.e_arm_r.health + t.e_arm_l.health + t.e_tor_r.health + t.e_tor_l.health + t.e_legs.health;
-  total = floor(cur / total);
-  return total;
+  if(t != world){
+    local float total, cur;
+    total = t.max_health + (t.e_arm_l.max_health * 2) + (t.e_tor_l.max_health * 2) + t.e_legs.max_health;
+    cur = t.health + t.e_arm_r.health + t.e_arm_l.health + t.e_tor_r.health + t.e_tor_l.health + t.e_legs.health;
+    total = floor(cur / total);
+    return total;
+  }
+  return FALSE;
 };
 
 vector(vector rgb) util_rgbToFloat={
@@ -150,10 +153,11 @@ void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
 };
 
 
-void(string mdl_name, float fx) util_setModel={
+void(string mdl_name, float skinNum, float ef_flags) util_setModel={
   self.model = mdl_name;
-  self.effects = self.effects | fx;
+  self.effects = self.effects | ef_flags;
   setmodel(self, self.model);
+  self.skin = skinNum;
 };
 
 /*

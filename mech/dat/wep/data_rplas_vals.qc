@@ -130,7 +130,7 @@ void() data_rplas_atk={
     self.p_dmgtype = oself.p_dmgtype;
     self.p_damage = oself.p_damage;
     self.angles = vectoangles(self.velocity);
-    util_setModel(self.c_model, 0);
+    util_setModel(self.c_model, 0, 0);
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
     util_setBoundBox('0 0 0', '0 0 0');        
     self.angles = oself.angles;

@@ -11,7 +11,7 @@ void(void() func, entity own) build_unit_component={
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(self.c_model, 0);
+  util_setModel(self.c_model, own.mskin, 0);
   util_setBoundBox('-1 -1 -1','1 1 1');
   util_setOffsetOrigin(self, own, self.c_ofs);
   self.aiment = own;
@@ -32,7 +32,7 @@ entity(void() func) build_unit_camera={
     self.scale = 0.05;
     func();
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, 0);
+    util_setModel(self.c_model, this.mskin, 0);
     self.alpha = 0;
     util_setBoundBox('-1 -1 -1', '1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
@@ -128,7 +128,7 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
       }
     }
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, 0);
+    util_setModel(self.c_model, own.mskin, 0);
     util_setBoundBox('-1 -1 -1','1 1 1');
     ofs = self.c_ofs + self.c_alt_ofs;
     util_setOffsetOrigin(self, own, ofs);
@@ -199,7 +199,7 @@ void(void() func) build_mech_torsoCenter={
   func();
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_BOUNCE);
   //util_setModel(self.c_model, 0);
-  util_setModel("q3mdl/testball.md3", 0);
+  util_setModel("q3mdl/testball.md3", 0, 0);
   util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
   self.alpha = 0.005;
   this = self;
@@ -208,7 +208,7 @@ void(void() func) build_mech_torsoCenter={
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE; 
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(this.c_model, 0);
+    util_setModel(this.c_model, this.mskin, 0);
     util_setBoundBox('-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, '0 0 0');
     self.punchangle = self.angles = '0 0 0';
@@ -272,7 +272,7 @@ entity(void() func) build_mech_legs={
     self.classname = MECH_PIECE;
     self.walkframe = 1;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, 0);
+    util_setModel(self.c_model, this.mskin, 0);
     util_setBoundBox('-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.aiment = this;
@@ -332,7 +332,7 @@ entity(void() func) build_vehc_base={
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, 0);
+    util_setModel(self.c_model, this.mskin, 0);
     util_setBoundBox('-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.aiment = this;
@@ -359,7 +359,7 @@ entity(void() func) build_building_base={
     self.classname = MECH_PIECE;
     self.walkframe = 1;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
-    util_setModel(self.c_model, 0);
+    util_setModel(self.c_model, this.mskin, 0);
     util_setBoundBox('-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.owner = this;

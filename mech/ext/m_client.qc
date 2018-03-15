@@ -170,8 +170,6 @@ void() PutClientInServer = {
 
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
-  //self.SendEntity = send_mech;
-	
   self.view_ofs = '0 0 1';
   
   spot  = SelectSpawnPoint();

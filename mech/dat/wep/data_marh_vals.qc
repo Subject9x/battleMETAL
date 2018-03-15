@@ -102,7 +102,7 @@ void() data_marh_atk={
           self.owner = player;
           setorigin(self, start);
           data_iniProjectile(oself.w_proj);
-          util_setModel(self.c_model, 0);
+          util_setModel(self.c_model, 0, 0);
           util_setBoundBox('0 0 0', '0 0 0');
           util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
           self.p_dmgtype = oself.p_dmgtype;

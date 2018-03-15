@@ -46,7 +46,6 @@ void() player_makeMech={
   self.data_idx = self.nextVecChoice;
   self.power_timer = time + 7;
   self.power_timer_segment = time + 0.007;
-  self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
   data_iniMech(self.vec_size, self.nextVecChoice);
   //self.touch = touch_mech; shhhhh, not yet
   if((self.flags & FL_CLIENT)){
@@ -57,8 +56,13 @@ void() player_makeMech={
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);
+    self.weaponmodel = self.weaponmodel;
+    self.weaponframe = self.weaponframe;
+    self.weaponframe = 1;
+    self.weapon = 1;  //fix?
   }
   droptofloor();
+  self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
 };
 
 void() player_unmakeMech={
@@ -93,12 +97,12 @@ void() player_unmakeMech={
 
 float() player_customizeMechForClient={
   if((other.flags & FL_CLIENT)){
-    util_setModel(self.c_model, 0);
+    util_setModel(self.c_model, 0, 0);
     setsize(self, self.c_bbx_n, self.c_bbx_x);
     return TRUE;
   }
   if(self.model != "q3mdl/testball.md3"){
-    util_setModel("q3mdl/testball.md3", 0);
+    util_setModel("q3mdl/testball.md3", 0, 0);
     setsize(self, self.c_bbx_n, self.c_bbx_x);
     return FALSE;
   }

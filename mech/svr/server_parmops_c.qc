@@ -31,7 +31,7 @@ void() SetChangeParms={
 	parm5 = self.ammo_nails;
 	parm6 = self.ammo_rockets;
 	parm7 = self.ammo_cells;
-	parm8 = self.weapon;
+	//parm8 = self.weapon;
 	parm9 = self.armortype * 100;
   
 };
@@ -61,7 +61,7 @@ void() DecodeLevelParms={
 	self.ammo_nails = parm5;
 	self.ammo_rockets = parm6;
 	self.ammo_cells = parm7;
-	self.weapon = parm8;
+	//self.weapon = parm8;
 	self.armortype = parm9 * 0.01;
   
 };

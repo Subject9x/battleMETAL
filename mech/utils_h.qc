@@ -22,7 +22,7 @@ float(entity t) util_getMechHpAverage;
 
 float(float mod, float targ_val) util_zeroStat;
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin;
-void(string mdl_name, float effects) util_setModel;
+void(string mdl_name, float skinNum, float ef_flags) util_setModel;
 void(float dmgMode, float solid_type, float move_type) util_setCollider;
 void(float hp, float max_hp, float arm_type, float arm_val) util_setHealthArmor;
 void(vector bbx_min, vector bbx_max) util_setBoundBox;

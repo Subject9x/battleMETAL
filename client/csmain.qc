@@ -273,7 +273,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
-	// TODO: do clientside viewmodel entity instead
 	addentities(MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS);
 
   setproperty(VF_ORIGIN, pmove_org);
@@ -282,11 +281,9 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// draw the main view
 	renderscene();
     
-  //drawstring(VIEW_ORG + gui_percentToPixelRawVec('10 100'), strcat("client [time]: ", ftos(time)), '8 8 0', '1 1 1', 1, 0); //DEBUG
-  //drawstring(VIEW_ORG + gui_percentToPixelRawVec('10 125'), strcat("self.VOICE_TIME_NEXT: ", ftos(self.VOICE_TIME_NEXT)), '8 8 0', '1 1 1', 1, 0); //DEBUG
-
   local entity this, player;
   this = self;
+  //switch to client context
   self = entitybyindex(player_localentnum);
 
   receive_ent_bindData();
@@ -312,6 +309,14 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   }
   
   if(self.data_type == DATA_MECH){
+  //quick replacement test for missing 3d huds :(
+  //drawpic('0 0', "gfx/hud/blk_main.png" , VIEW_MAX, '1 1 1', 1, 0); 
+  
+  
+  /*void(string texturename, float flag, ...) R_BeginPolygon = #306;
+  void(vector org, vector texcoords, vector rgb, float alpha) R_PolygonVertex = #307;
+  void() R_EndPolygon = #308;*/
+  
     if(MENU_ACTIVE){
       if(self.player_state == PLAYER_POWERUP_BEGIN){
         MENU_ACTIVE = FALSE;
