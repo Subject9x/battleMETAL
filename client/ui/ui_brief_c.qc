@@ -70,17 +70,17 @@ void(vector ofs) menu_briefMissionInfo={
   drawstring(tpos, "[MISSION INFO]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
   //mission name
-  drawstring(ofs+gui_percentToPixel(0.0078, 0.0125), strcat("[NAME]:            ", MSN_NAME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 12'), strcat("[NAME]:       ", MSN_NAME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //mission type
-  drawstring(ofs+gui_percentToPixel(0.0078, 0.0208), strcat("[TYPE]:            ",MSN_TYPE), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
+  drawstring(ofs+gui_percentToPixelRawVec('5 20'), strcat("[TYPE]:       ",MSN_TYPE), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
   //reserves
-  drawstring(ofs+gui_percentToPixel(0.0078, 0.0291), strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE), "//", MSN_RESERVETOTAL), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 28'), strcat("[RESERVES]:   ", ftos(AVAILABLE_RESERVE), "//", MSN_RESERVETOTAL), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //sector
-  drawstring(ofs+gui_percentToPixel(0.0078, 0.0375), strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 36'), strcat("[SECTOR]      ", MSN_SECTOR), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //location
-  drawstring(ofs+gui_percentToPixel(0.0078, 0.0458), strcat("[LOCATION]:        ", MSN_LOCATION ), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 44'), strcat("[LOCATION]:   ", MSN_LOCATION ), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   //local time
-  drawstring(ofs+gui_percentToPixel(0.0078, 0.0541), strcat("[LOCAL TIME]:      ", MSN_LOCALTIME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 52'), strcat("[LOCAL TIME]: ", MSN_LOCALTIME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 
@@ -113,8 +113,8 @@ void(vector ofs) menu_briefMissionText={
   
   local float argc, lne_idx;
   local vector fpos;
-  fpos = bpos + gui_percentToPixel(0.0078, 0.0208);
-  argc = tokenizebyseparator(MSN_BRIEF, ";");
+  fpos = bpos + gui_percentToPixelRawVec(' 9.854 19.96'); 
+  argc = tokenizebyseparator(MSN_BRIEF, "|");
   lne_idx = 0;
   while(lne_idx != -1){
     local string line;
@@ -254,7 +254,7 @@ void(vector ofs) menu_briefIntelPanel={
   local float argc, lne_idx;
   local vector fpos;
   fpos = bpos + gui_percentToPixel(0.0093, 0.0229);
-  argc = tokenizebyseparator(MSN_INTEL, ";");
+  argc = tokenizebyseparator(MSN_INTEL, "|");
   lne_idx = 0;
   while(lne_idx != -1){
     local string line;

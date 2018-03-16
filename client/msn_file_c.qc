@@ -29,14 +29,11 @@ void() msn_parsefile={
   flannel = fopen(MSN_FILENAME, FILE_READ);
   //print(contents);
   contents = fgets(flannel);
-  argc = tokenizebyseparator(contents, "{",":",";","}");
+  argc = tokenizebyseparator(contents, "{",",","}");
   line = fgets(flannel);
-  
-  
-  
   while((line!="")){
     if( (line != "{") && (line != "}") && (line != "//") ){
-      line_tag = tokenizebyseparator(line, "'", "'", ": ", "[", ";", "]", ",");
+      line_tag = tokenizebyseparator(line, "'", "'", ": ", ",");
       if (argv(1) == MSN_FILE_IMG){
         if( argv(3) != "" ){
           MSN_MAPPIC = strzone(argv(3));
