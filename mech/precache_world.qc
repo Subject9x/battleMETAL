@@ -41,6 +41,7 @@ void() mh_precache_models={
   precache_model ("q3mdl/testball.md3");
   //balaket
   precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.md3");
+  precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.obj");
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_cent.md3");
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_left.md3");  
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_right.md3");  

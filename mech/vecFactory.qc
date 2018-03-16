@@ -32,7 +32,7 @@ entity(void() func) build_unit_camera={
     self.scale = 0.05;
     func();
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, this.mskin, 0);
+    util_setModel(self.c_model, 0, 0);
     self.alpha = 0;
     util_setBoundBox('-1 -1 -1', '1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
@@ -197,16 +197,19 @@ void(void() data_ini) build_mech_unit={
 void(void() func) build_mech_torsoCenter={
   local entity this, ctor;
   func();
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_BOUNCE);
+  if( (self.flags & FL_CLIENT) ){
+    util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_WALK);
+  }
+  else{
+    util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
+  }
   //util_setModel(self.c_model, 0);
   util_setModel("q3mdl/testball.md3", 0, 0);
   util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
-  self.alpha = 0.005;
+  self.alpha = 1;
   this = self;
   ctor = spawn();
   self = ctor;
-    self.deadflag = DEAD_NO;
-    self.classname = MECH_PIECE; 
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
     util_setModel(this.c_model, this.mskin, 0);
     util_setBoundBox('-1 -1 -1','1 1 1');
@@ -218,9 +221,9 @@ void(void() func) build_mech_torsoCenter={
     self.view_ofs = self.origin - this.origin;
     self.angles = this.angles;
     self.v_angle = self.angles - this.angles;
-    ctor_stand();
   self = this;
   self.e_tor_c = ctor;
+  ctor_stand();
 };
 
 entity(void() func) build_mech_torsoLeft={

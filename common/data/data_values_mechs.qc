@@ -144,8 +144,8 @@ vector DAT_MNT_SPREAD_X = '14 10 0.03';
 //            Models  
 //============================
 //-------------------------BALAKET------------------------
-string DAT_OTL_CTOR_MODEL   = "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
 string DAT_OTL_CPIT_MODEL   = "q3mdl/mechs/notl/mdl_blk_cpt.md3";
+string DAT_OTL_CTOR_MODEL   = "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
 string DAT_OTL_LEG_MODEL    = "q3mdl/mechs/notl/mdl_blk_legs.md3";
 string DAT_OTL_LTOR_MODEL   = "q3mdl/mechs/notl/mdl_blk_t_left.md3";
 string DAT_OTL_RTOR_MODEL   = "q3mdl/mechs/notl/mdl_blk_t_right.md3";

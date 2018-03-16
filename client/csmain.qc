@@ -19,12 +19,6 @@ void() CSQC_Init =
   STIME_NEXT = 0;
   VQSIZE = 6;
   VQIDX = 0;
-  SQ1 = "null";
-  SQ2 = "null";
-  SQ3 = "null";
-  SQ4 = "null";
-  SQ5 = "null";
-  SQ6 = "null";
   CRITBITS = 0;
   SQUED = FALSE;
   
@@ -113,7 +107,7 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   self.player_state = getstatf(STAT_PLR_STT);
   //console override
   if(evtype == 0){
-    if( (scanx == K_TIL) || (scanx == K_APOS)){
+    if( (scanx == K_TIL) || (scanx == K_APOS) || (scanx == K_ESCAPE) ){
       self = this;
       return FALSE; 
     }
@@ -249,6 +243,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
   
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
+  setproperty(VF_ORIGIN, pmove_org);
+  setproperty(VF_ANGLES, input_angles);
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
 	setproperty(VF_DRAWCROSSHAIR, 0);
@@ -261,17 +257,13 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   VIEW_CTR_x = VIEW_MAX_x / 2;
   VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_SCALE = 0.35;
-
   	// add any polygons we want here
 
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
-	addentities(MASK_NORMAL | MASK_ENGINE);
+	addentities( (MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS) );
   
-  setproperty(VF_ORIGIN, pmove_org);
-  setproperty(VF_ANGLES, input_angles);
-
 	// draw the main view
 	renderscene();
     
@@ -306,11 +298,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //quick replacement test for missing 3d huds :(
   //drawpic('0 0', "gfx/hud/blk_main.png" , VIEW_MAX, '1 1 1', 1, 0); 
   
-  
-  /*void(string texturename, float flag, ...) R_BeginPolygon = #306;
-  void(vector org, vector texcoords, vector rgb, float alpha) R_PolygonVertex = #307;
-  void() R_EndPolygon = #308;*/
-  
     if(MENU_ACTIVE){
       if(self.player_state == PLAYER_POWERUP_BEGIN){
         MENU_ACTIVE = FALSE;
@@ -318,11 +305,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         setcursormode(0);
       }
     }
-    //player general info
-    local float conv_x, conv_y, pitch;
-    conv_x = getstatf(STAT_SPR_X);
-    conv_y = getstatf(STAT_SPR_Y);
-    pitch = input_angles_x *-3;
     
     //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(self.hp_stor2, 2, SND_HUD_VFX_CRITTOR);
@@ -396,47 +378,14 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       drawstring(og, mesg, '8 8 0', '1 1 1', HUD_ALPHA, 0);
     }
   }
-  if(isdemo()){
-    local float len;
-    local vector og;
-    local string mesg;
-    len = stringwidth("Alpha v0.0.1", 0, '8 8 0');
-    mesg = "Alpha v0.0.1";
-    drawstring(gui_percentToPixelRawVec('4 4'), mesg, '8 8 0', '1 1 1', 0.85, 0);
-    
-    og_x = VIEW_MAX_x - gui_percentXRaw((len/2) + 4);
-    og_y = VIEW_MAX_y - gui_percentYRaw(12);
-    drawstring(og, mesg, '8 8 0', '1 1 1', 0.85, 0);
-    
-    og_x = VIEW_MAX_x - gui_percentXRaw((len/2) + 4);
-    og_y = VIEW_ORG_y + gui_percentYRaw(4);
-    drawstring(og, mesg, '8 8 0', '1 1 1', 0.85, 0);
-    
-    og_x = VIEW_ORG_x + gui_percentXRaw(4);
-    og_y = VIEW_MAX_y - gui_percentYRaw(12);
-    drawstring(og, mesg, '8 8 0', '1 1 1', 0.85, 0);
-  }
-  
-  //display remaining reserves;
-  //10/28/2017 - MOVE TO OBJECTIVE / MISSION STATUS HOTKEY SCREEN
-  /*local string res;
-  local float reslen;
-  local vector src;
-  res = strcat("[RESERVES]:",ftos(AVAILABLE_RESERVE),"/", MSN_RESERVETOTAL);
-  reslen = stringwidth(res, 0, '8 8 0');
-  src_x = VIEW_ORG_x + gui_percentX(0.008);
-  src_y = VIEW_ORG_y + gui_percentY(0.008);
-  drawstring(src, res, '8 8 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);*/
-  
+   
   //sound system;
-  snd_hud_vfx_frame();  //commented out for debug 
+  snd_hud_vfx_frame();
  
   //menu system
   if(MENU_ACTIVE){
-    
     cursorpos = getmousepos();
     menu_handleFrame();
-    
   }else{
     //drawstring(VIEW_ORG+'2 2', vtos(pmove_org), '6 6 0', '1 1 1', HUD_ALPHA, 0);  //DEBUG
     

@@ -223,9 +223,9 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   else if(argv(1) == "spawn"){
     if(self.data_type == DATA_POBS){
-      spawnpoint_Random();
       player_unmakeObserver();
       player_makeMech();
+      spawnpoint_Random();
     }
   }
   else if(argv(1) == "setgroup"){

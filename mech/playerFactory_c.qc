@@ -20,8 +20,6 @@ void() player_makeObserver={
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
-  self.weaponmodel = "";
-  self.weaponframe = 0;
   mh_world_updateClientSpeed(200, 200, 200, "3","0");
   mh_world_updateClientViewBob("0", "0", "0");
   mh_world_updateClientModelBob("0", "0", "0");
@@ -36,6 +34,7 @@ void() player_unmakeObserver={
   }
   self.movetype = MOVETYPE_WALK;
   self.scale = 1;
+  self.view_ofs = '0 0 1';
 };
 
 void() player_makeVec={
@@ -50,7 +49,7 @@ void() player_makeMech={
   self.power_timer_segment = time + 0.007;
   data_iniMech(self.vec_size, self.nextVecChoice);
   //self.touch = touch_mech; shhhhh, not yet
-  if((self.flags & FL_CLIENT)){
+  if( (self.flags & FL_CLIENT) ){
     self.stat_rdr_rng = self.radar_range;
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);
@@ -58,18 +57,6 @@ void() player_makeMech={
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);
-    self.viewmodelforclient = spawn();
-    setmodel(self.viewmodelforclient, self.weaponmodel);
-    /*setorigin(self.viewmodelforclient, self.e_cam.origin);
-    self.viewmodelforclient.movetype = MOVETYPE_FOLLOW;
-    self.viewmodelforclient.solid = SOLID_NOT;
-    self.viewmodelforclient.takedamage = DAMAGE_NO;
-    self.viewmodelforclient.aiment = self;
-    self.viewmodelforclient.owner = self;
-    self.viewmodelforclient.punchangle = self.angles;
-    self.viewmodelforclient.view_ofs = self.viewmodelforclient.origin - self.origin;
-    self.viewmodelforclient.angles = self.angles;
-    self.viewmodelforclient.v_angle = self.viewmodelforclient.angles - self.angles;*/
   }
   droptofloor();
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;

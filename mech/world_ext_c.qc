@@ -5,37 +5,7 @@ Date: 8/27/2016
 Overview: function extensions to world.qc
 */
 
-void() mh_world_ini={
- 
- 
-       //WriteByte ( MSG_ENTITY, self.owner.enemy.data_idx);*/
-    /*if(self.owner.enemy.data_idx > 0){
-      WriteByte ( MSG_ENTITY, self.owner.enemy.data_type);
-      WriteByte ( MSG_ENTITY, self.owner.enemy.i_faction);
-      WriteByte ( MSG_ENTITY, self.owner.stat_trg_face);
-      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy));
-      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_x);
-      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_y);
-      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_z);
-      if(self.owner.enemy.data_type == DATA_MECH){
-        WriteByte ( MSG_ENTITY, self.owner.enemy.vec_size);
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_tor_l));
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_tor_r));
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_arm_l));
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_arm_r));
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_legs));
-        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
-      }
-      else if(self.owner.enemy.data_type == DATA_VEHC){
-        WriteByte ( MSG_ENTITY, self.owner.enemy.vec_size);
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_legs));
-        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
-      }
-      else if(self.owner.enemy.data_type == DATA_BLD){
-        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
-      }*/
- 
- 
+void() mh_world_ini={ 
   //oh my
   addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);
   addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);

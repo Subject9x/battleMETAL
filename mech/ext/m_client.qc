@@ -33,6 +33,7 @@ void() ClientConnect = {
   
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
+  self.weaponmodel = "";
   self.viewzoom = 0;
   self.nextVecChoice = 0;
   self.vec_size = 0;
@@ -132,7 +133,7 @@ void() ClientConnect = {
   
   client_data_ini(self);
   self.stat_plr_stt = PLAYER_SPAWN;
-  
+
   if (intermission_running){
     ExitIntermission();
   }

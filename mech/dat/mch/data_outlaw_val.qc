@@ -114,10 +114,8 @@ void() data_otl_ini={
   self.c_bbx_n = DAT_OTL_CTOR_BBX_N;
   self.c_bbx_x = DAT_OTL_CTOR_BBX_X;
   self.c_model = DAT_OTL_CTOR_MODEL;
-  if( (self.flags & FL_CLIENT) ){
-    self.weaponmodel = DAT_OTL_CPIT_MODEL;
-    self.weaponframe = 1;  
-  }
+  self.weaponmodel = DAT_OTL_CPIT_MODEL;
+  self.weaponframe = 0;
   self.conv_min = DAT_OTL_SPREAD_N; 
   self.conv_max = DAT_OTL_SPREAD_X;
   self.m_rot_speed = DAT_OTL_YAWSPEED;

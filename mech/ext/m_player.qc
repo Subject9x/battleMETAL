@@ -34,6 +34,54 @@ void() PlayerPreThink = {
   }
   
   //Animatic file control override
+  /*if( self.stat_plr_stt == PLAYER_ANIM_STOP){
+    if( time >= self.count2){
+      self.stat_plr_stt = self.count1;
+      self.movetype = self.count3;
+    }
+  }
+
+  if(self.data_type != DATA_POBS){
+    //power up sequence
+    if(time < self.power_timer){
+      if(self.movetype != MOVETYPE_NONE){
+        self.movetype = MOVETYPE_NONE;
+      }
+      //return;
+    }
+    if(time > self.power_timer_segment){
+      self.stat_plr_stt = PLAYER_POWERUP_END;
+    }
+    if(time > self.power_timer){
+      if(self.stat_plr_stt == PLAYER_POWERUP_END){
+        self.power_timer = 0;
+        self.movetype = MOVETYPE_WALK;
+        self.stat_plr_stt = PLAYER_ACTIVE;
+      }
+    }    
+    self.stat_hit_dirs =  self.hitdir_buffer;
+    if(time >= self.w_proj){
+      self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);
+    }
+    if(time >= self.was_hit){
+      self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_LF);
+      self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_RT);
+      self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_BK);
+    }
+  }*/
+  
+	//if (self.button2){
+		//PlayerJump();
+	//}
+	//else
+		//self.flags = self.flags | FL_JUMPRELEASED;
+
+// teleporters can force a non-moving pause time	
+	if (time < self.pausetime)
+		self.velocity = '0 0 0';
+};
+
+void() PlayerPostThink = {
   if( self.stat_plr_stt == PLAYER_ANIM_STOP){
     if( time >= self.count2){
       self.stat_plr_stt = self.count1;
@@ -69,19 +117,8 @@ void() PlayerPreThink = {
       self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_BK);
     }
   }
-  
-	//if (self.button2){
-		//PlayerJump();
-	//}
-	//else
-		//self.flags = self.flags | FL_JUMPRELEASED;
+  ////
 
-// teleporters can force a non-moving pause time	
-	if (time < self.pausetime)
-		self.velocity = '0 0 0';
-};
-
-void() PlayerPostThink = {
   self.stat_cofs_x = self.origin_x;
   self.stat_cofs_y = self.origin_y;
   self.stat_cofs_z = self.origin_z;

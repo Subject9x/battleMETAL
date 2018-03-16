@@ -121,7 +121,7 @@ void(float isNew) receive_ent_clientData={
           self.MSN_SFX_COUNT = 0;
           self.drawme = 0;
           self.ANM_FILE_STATUS = 0;
-          self.drawmask = MASK_NORMAL;
+          self.drawmask = MASK_ENGINE;
         self = this;
       }
     }
