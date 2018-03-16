@@ -11,5 +11,3 @@ void() player_unmakeObserver;
 void() player_makeVec;
 void() player_makeMech;
 void() player_unmakeMech;
-
-float() player_customizeMechForClient;

@@ -21,12 +21,6 @@ void() snd_hud_vfx_frame={
       SOUNDQUEUE[itr] = "null";
       itr = itr - 1;
     }
-    /*SQ1 = SQ2;
-    SQ2 = SQ3;
-    SQ3 = SQ4;
-    SQ4 = SQ5;
-    SQ5 = SQ6;
-    SQ6 = "null";*/
   }
 };
 
@@ -57,7 +51,6 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
     if(SOUNDQUEUE[idx] == "null"){
       if(cur < cnt){
         SOUNDQUEUE[idx] = requestedSound;
-        cons_logAString("SOUNDQUEUE[idx]",SOUNDQUEUE[idx]);
         cur = cur + 1;
       }
     }

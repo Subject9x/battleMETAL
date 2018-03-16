@@ -47,3 +47,4 @@ void(string fileToOpen) anm_getFile;
 void(string fileToOpen) anm_parseFile;
 void() anm_execute_frame;
 void() anm_cleanup;
+float() anm_total_runtime;

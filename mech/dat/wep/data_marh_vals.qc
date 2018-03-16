@@ -100,11 +100,7 @@ void() data_marh_atk={
         oself = self;
         self = newmis;
           self.owner = player;
-          setorigin(self, start);
           data_iniProjectile(oself.w_proj);
-          util_setModel(self.c_model, 0, 0);
-          util_setBoundBox('0 0 0', '0 0 0');
-          util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
           self.p_dmgtype = oself.p_dmgtype;
           self.p_damage = oself.p_damage;
           self.velocity = normalize(arc - start);
@@ -116,6 +112,10 @@ void() data_marh_atk={
           self.angles = vectoangles(self.velocity);
           self.think = data_prj_marh_th;
           self.nextthink = time + 0.01;
+          util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+          util_setModel(self.c_model, 0, 0);
+          util_setBoundBox('0 0 0', '0 0 0');
+          setorigin(self, start);
         self = oself;
       }
       sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);

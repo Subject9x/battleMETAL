@@ -122,6 +122,7 @@ void() ai_mech={
   setorigin(self, util_findOpenSpawnArea(self.angles, self.origin, self.maxs) );
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   self.flags = self.flags | FL_ONGROUND;
+  self.movetype = MOVETYPE_STEP;
   droptofloor();
   
   //set first order based on self.state_1

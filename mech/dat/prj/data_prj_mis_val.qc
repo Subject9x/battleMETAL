@@ -17,7 +17,7 @@ void() data_prj_mis_ini={
   self.p_lifetime = DAT_PRJ_MIS_LIFETIME;
   
   //cosmetics
-  self.effects = EF_ADDITIVE + EF_NOSHADOW;
+  self.effects = self.effects | EF_ADDITIVE | EF_NOSHADOW | EF_LOWPRECISION;
   self.modelflags = DAT_PRJ_MIS_MODELFLAGS;
   self.alpha = DAT_PRJ_MIS_ALPHA;
   self.colormod = DAT_PRJ_MIS_COLORMOD;
@@ -38,10 +38,12 @@ void() data_prj_mis_touch={
   }
 
   if(other == self.owner){
+    BecomeExplosion();
     return;
   }
   
   if(other.owner == self.owner){
+    BecomeExplosion();
     return;
   }
   

@@ -90,6 +90,7 @@ void() data_prj_rplas_touch={
     
     if(other.sh_cur <= 0){
       setmodel(self, "progs/plasmashot.spr32");
+      setsize(self, '0 0 0', '0 0 0');
       self.movetype = MOVETYPE_FOLLOW;
       self.solid = SOLID_NOT;
       self.velocity = '0 0 0';

@@ -77,10 +77,10 @@ void() data_mis_atk={
   }
   else{
     if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + ((self.rl_rate * 1.5) / 500);
+      self.w_firetime = time + (self.rl_rate / 1.5) * 2.25;
     }
     else{
-      self.w_firetime = time + self.rl_rate * 1.5;
+      self.w_firetime = time + self.rl_rate / 1.75;
     }
     self.w_state = RECOIL;
     self.w_isburst = TRUE;
@@ -95,14 +95,14 @@ void() data_mis_atk={
   self = newmis;
     self.owner = player;
     data_iniProjectile(oself.w_proj);
-    util_setModel(self.c_model, 0, 0);
-    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-    util_setBoundBox('0 0 0', '0 0 0');
     self.p_dmgtype = oself.p_dmgtype;
     self.p_damage = oself.p_damage;
     self.velocity = normalize(dir - org);
     self.think = BecomeExplosion;
     self.nextthink = time + self.p_lifetime;
+    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+    util_setModel(self.c_model, 0, 0);
+    util_setBoundBox('0 0 0', '0 0 0');
     setorigin(self, org);
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);

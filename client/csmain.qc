@@ -248,12 +248,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //setproperty(VF_MIN, vf_mn);   //set the left of the view
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
   
-  local vector porg;
-  porg_x = getstatf(STAT_PLR_ORG_X);
-  porg_y = getstatf(STAT_PLR_ORG_Y);
-  porg_z = getstatf(STAT_PLR_ORG_Z);
-  
-  
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
   setproperty(VF_FOV, fovvec);
   setproperty(VF_DRAWWORLD, 1);
@@ -273,8 +267,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// add clientside entities (MASK_NORMAL)
 	// add engine networked entities (MASK_ENGINE)
 	// and engine viewmodel and engine networked entities with the viewdemol flag (MASK_ENGINEVIEWMODELS)
-	addentities(MASK_NORMAL | MASK_ENGINE | MASK_ENGINEVIEWMODELS);
-
+	addentities(MASK_NORMAL | MASK_ENGINE);
+  
   setproperty(VF_ORIGIN, pmove_org);
   setproperty(VF_ANGLES, input_angles);
 
@@ -443,10 +437,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     cursorpos = getmousepos();
     menu_handleFrame();
     
-  }else{  
-    if(self.ANM_FILE_STATUS == 1){
-      anm_execute_frame();
-    }
+  }else{
     //drawstring(VIEW_ORG+'2 2', vtos(pmove_org), '6 6 0', '1 1 1', HUD_ALPHA, 0);  //DEBUG
     
     if(self.player_state >= PLAYER_POWERUP_BEGIN){
@@ -476,6 +467,12 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         player = player.chain;
       }
     }
+  }
+  
+  //put this last on the rendering order to make sure it 
+  //plays above all
+  if(self.ANM_FILE_STATUS == 1){
+    anm_execute_frame();
   }
   self = this;
 };
@@ -675,7 +672,7 @@ void(float isnew) CSQC_Ent_Update =
       dat = m_findData(self.data_idx, DATA_BLD);
       setmodel(self, dat.e_model);
       self.drawmask = MASK_ENGINE;
-      self.solid = SOLID_BSP;
+      //self.solid = SOLID_BSP;
     }
     self.i_faction = ReadByte();
     self.origin_x = ReadCoord();

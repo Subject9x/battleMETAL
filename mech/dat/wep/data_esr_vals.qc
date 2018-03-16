@@ -80,7 +80,7 @@ void() data_esr_atk={
   }
   else{
     if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + (self.rl_rate/1000);
+      self.w_firetime = time + (self.rl_rate/200) * 2;
     }
     else{
       self.w_firetime = time + self.rl_rate/200;

@@ -29,7 +29,7 @@ void(string fileToOpen) anm_parseFile={
   frame_count = 0;
   while( (line != "") ){
     if( (line != "{") && (line != "}") ){
-      line_tag = tokenizebyseparator(line, "'", "'", ": ", "[", ";", "]", ",");
+      line_tag = tokenizebyseparator(line, "'", "'", ": ", ",");
       //meta data tags
       if( argv(1) == ANM_FILE_META_MUS ){
         if( argv(3) != ""){
@@ -55,14 +55,12 @@ void(string fileToOpen) anm_parseFile={
       }
       if( (argv(1) == ANM_FILE_TAG_POS) ){
         local vector org;
-        org_x = stof(argv(4));
-        org_y = stof(argv(5));
+        org = stov(argv(3));
         ANM_FRAME_POS[frame_count] = org;
       }
       if( (argv(1) == ANM_FILE_TAG_SIZE) ){
         local vector siz;
-        siz_x = stof(argv(4));
-        siz_y = stof(argv(5));
+        siz = stov(argv(3));
         ANM_FRAME_SIZE[frame_count] = siz;
       }
       if( (argv(1) == ANM_FILE_TAG_SND) ){
@@ -112,8 +110,7 @@ void() anm_execute_frame={
       return;
     }
     if(ANM_FRAME_SND[self.ANM_FRAME_CUR] != ""){
-      //sound7(self, CHAN_VOICE, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
-      pointsound(pmove_org, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NORM); 
+      pointsound(pmove_org, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NONE); 
     }
     self.ANM_FRAME_TIME = time + ANM_FRAME_TIM[self.ANM_FRAME_CUR];
   }
@@ -129,7 +126,6 @@ void() anm_execute_frame={
       siz = ANM_FRAME_SIZE[self.ANM_FRAME_CUR];
       siz_x = siz_x * VIEW_MAX_x;
       siz_y = siz_y * VIEW_MAX_y;
-      
       drawpic(org, ANM_FRAME_IMG[self.ANM_FRAME_CUR], siz, '1 1 1', HUD_ALPHA, 0);
     } 
     if(ANM_FRAME_MSG[self.ANM_FRAME_CUR] != ""){
@@ -167,4 +163,17 @@ void() anm_cleanup={
     clean = clean + 1;
   }
   self.ANM_FILE_STATUS = -1; 
+};
+
+/*
+  Calculates the total run time of the animation in seconds
+*/
+float() anm_total_runtime={
+  local float total, itr;
+  itr = 0;
+  while( itr <= self.ANM_FRAME_TOTAL){
+    total = total + ANM_FRAME_TIM[itr];
+    itr = itr + 1;
+  }
+  return total;
 };

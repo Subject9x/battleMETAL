@@ -86,15 +86,15 @@ void() data_mlgd_atk={
   self = newmis;
     self.owner = player;
     data_iniProjectile(oself.w_proj);
-    util_setModel(self.c_model, 0, 0);
-    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-    util_setBoundBox('0 0 0', '0 0 0');
     self.p_dmgtype = oself.p_dmgtype;
     self.p_damage = oself.p_damage;
     self.velocity = normalize(dir - org);
     self.think = data_prj_mlgd_th;
     self.nextthink = time + 0.05;
     self.p_lifetime = time + self.p_lifetime;
+    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+    util_setModel(self.c_model, 0, 0);
+    util_setBoundBox('0 0 0', '0 0 0');
     setorigin(self, org);
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);

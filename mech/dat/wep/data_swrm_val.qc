@@ -111,8 +111,8 @@ void() data_swrm_atk={
           self = mis;
             self.owner = player;
             data_iniProjectile(oself.w_proj);
-            util_setModel(self.c_model, 0, 0);
             util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
+            util_setModel(self.c_model, 0, 0);
             util_setBoundBox('0 0 0', '0 0 0');
             self.p_dmgtype = oself.p_dmgtype;
             self.p_damage = oself.p_damage;

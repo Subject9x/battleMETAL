@@ -104,10 +104,10 @@ void() data_qrfl_atk={
       self.velocity = self.velocity * self.p_velocity;
       self.angles = vectoangles(self.velocity);
       if(pointcontents(rando) != CONTENT_SOLID){
-        setorigin(self, rando);
+        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
         util_setModel(self.c_model, 0, 0);
         util_setBoundBox('0 0 0', '0 0 0');
-        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLY);
+        setorigin(self, rando);
         qbits = qbits - 1;
       }
       self = oself;

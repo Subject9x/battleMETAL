@@ -6,8 +6,26 @@ mod: 5/5/2017 - added void(string line, string val) msn_setresrv
 Overview: header for the mission file handler.
 */
 
+//constants
 float MSN_FILEFOUND = FALSE;
 float MSN_LOADED = FALSE;
+
+//file tags
+string MSN_FILE_IMG = "img";
+string MSN_FILE_NAME = "name";
+string MSN_FILE_TYPE = "type";
+string MSN_FILE_POINTS = "points";
+string MSN_FILE_SECTOR = "sector";
+string MSN_FILE_LOCUS = "location";
+string MSN_FILE_TIME = "time";
+string MSN_FILE_BRIEF = "brief";
+string MSN_FILE_INTEL = "intel";
+string MSN_FILE_OBJS = "objtotal";
+string MSN_FILE_ANIM = "anim";
+string MSN_FILE_OBJ_ID = "objid";
+string MSN_FILE_OBJ_DESC = "objdesc";
+
+//file values
 string MSN_FILENAME;
 string MSN_SFX;
 string MSN_MAPPIC;
@@ -19,6 +37,7 @@ string MSN_LOCATION;
 string MSN_LOCALTIME;
 string MSN_BRIEF;
 string MSN_INTEL;
+string MSN_ANIM;
 float MSN_OBJ;
 
 .float MSN_SFX_COUNT;

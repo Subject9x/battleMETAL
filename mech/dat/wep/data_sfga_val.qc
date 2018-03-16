@@ -95,9 +95,6 @@ void() data_sfga_atk={
   self = newmis;
     self.owner = player;
     data_iniProjectile(oself.w_proj);
-    util_setModel(self.c_model, 0, 0);
-    util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
-    util_setBoundBox('0 0 0', '0 0 0');
     self.p_dmgtype = oself.p_dmgtype;
     self.p_damage = oself.p_damage;
     self.velocity = normalize(dir - org);
@@ -105,6 +102,9 @@ void() data_sfga_atk={
     self.velocity_z = self.velocity_z + 200;
     self.think = BecomeExplosion;
     self.nextthink = time + self.p_lifetime;
+    util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
+    util_setModel(self.c_model, 0, 0);
+    util_setBoundBox('0 0 0', '0 0 0');
     setorigin(self, org);
     self.angles = vectoangles(self.velocity);
   self = oself;

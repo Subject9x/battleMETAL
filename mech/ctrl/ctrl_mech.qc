@@ -141,10 +141,10 @@ void() ctrl_die_comp={
       util_setHealthArmor(10,10,10,10);
       self.th_die = SUB_Remove;
       self.owner = oself.owner;
-      setorigin(self, oself.origin);
-      util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_BOUNCE);
-      setmodel(self, oself.model);
+      util_setCollider(DAMAGE_AIM, SOLID_CORPSE, MOVETYPE_BOUNCE);
+      util_setModel(oself.model, oself.owner.mskin, 0);
       setsize(self, '-3 -3 -3', '3 3 3');
+      setorigin(self, oself.origin);
       self.touch = touch_mechPiece;
       self.think = BecomeExplosion;
       self.nextthink = time + 100;

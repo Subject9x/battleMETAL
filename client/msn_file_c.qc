@@ -24,30 +24,79 @@ void() msn_getfile={
 };
 
 void() msn_parsefile={
-  local float flannel, argc, tobj;
+  local float tobj, flannel, argc, line_tag, line_val, frame_count;
   local string contents, line;
   flannel = fopen(MSN_FILENAME, FILE_READ);
   //print(contents);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{",":",";","}");
   line = fgets(flannel);
+  
+  
+  
   while((line!="")){
-    argc = tokenizebyseparator(line, ":",";");
-    //mission info section
-    msn_setsound(argv(0), argv(1));
-    msn_setmappic(argv(0), argv(1));
-    msn_setname(argv(0), argv(1));
-    msn_settype(argv(0), argv(1));
-    msn_setresrv(argv(0), argv(1));
-    msn_setsector(argv(0), argv(1));
-    msn_setlocation(argv(0), argv(1));
-    msn_setlocaltime(argv(0), argv(1));
-    msn_setbrief(argv(0), argv(1));
-    msn_setintel(argv(0), argv(1));
-    msn_settotalobjectives(argv(0), argv(1));
-    //objectives section
-    msn_setobjdesc(tobj, argv(0), argv(1));
-    tobj = msn_mapobjid(argv(0), argv(1));
+    if( (line != "{") && (line != "}") && (line != "//") ){
+      line_tag = tokenizebyseparator(line, "'", "'", ": ", "[", ";", "]", ",");
+      if (argv(1) == MSN_FILE_IMG){
+        if( argv(3) != "" ){
+          MSN_MAPPIC = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_NAME){
+        if( argv(3) != "" ){
+          MSN_NAME = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_TYPE){
+        if( argv(3) != "" ){
+          MSN_TYPE = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_POINTS){
+        if( argv(3) != "" ){
+          MSN_RESERVETOTAL = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_SECTOR){
+        if( argv(3) != "" ){
+          MSN_SECTOR = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_LOCUS){
+        if( argv(3) != "" ){
+          MSN_LOCATION = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_TIME){
+        if( argv(3) != "" ){
+          MSN_LOCALTIME = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_BRIEF){
+        if( argv(3) != "" ){
+          MSN_BRIEF = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_INTEL){
+        if( argv(3) != "" ){
+          MSN_INTEL = strzone(argv(3));
+        }
+      }
+      if (argv(1) == MSN_FILE_OBJS){
+        if( argv(3) != "" ){
+          MSN_OBJ = stof(strzone(argv(3)));
+        }
+      }
+      if (argv(1) == MSN_FILE_ANIM){
+        if( argv(3) != "" ){
+          MSN_ANIM = strzone(argv(3));
+        }
+      }
+
+      //objectives section
+      tobj = msn_mapobjid(argv(1), argv(3));
+      msn_setobjdesc(tobj, argv(1), argv(3));
+    }
     line = fgets(flannel);
   }
   //always close a file :3
@@ -126,7 +175,7 @@ void(string line, string val) msn_settotalobjectives={
 };
 float(string line, string val) msn_mapobjid={
   local float obj_id;
-  if(line == "OBJ_ID"){
+  if(line == "MSN_FILE_OBJ_ID"){
     obj_id = stof(val);
     if(obj_id > 0){
       return obj_id;

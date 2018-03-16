@@ -11,14 +11,15 @@ void(entity client) client_data_ini={
   clientdata = spawn();
   this = self;
   self = clientdata;
+    self.classname = "data";
     self.flags = self.flags | FL_CLIENTDATA;
     self.owner = client;
+    this.node = self;
     self.stat_eid = num_for_edict(client);
     setmodel(self, "q3mdl/testball.md3");
-    setsize(self, '-0.05 -0.05 -0.05', '0.05 0.05 0.05');
     self.movetype = MOVETYPE_NONE;
     self.solid = SOLID_NOT;
-    self.classname = "data";
+    setsize(self, '-0.05 -0.05 -0.05', '0.05 0.05 0.05');
     setorigin(self, self.owner.origin);
     self.SendEntity = client_data_sendEnt;
     self.SendFlags = self.SendFlags | 1;
@@ -85,32 +86,6 @@ float(entity ent, float sendFlags) client_data_sendEnt={
       WriteByte( MSG_ENTITY, (wep.rl_cur / wep.rl_max)*100);
       wep = wep.w_slot;
     }
-      //WriteByte ( MSG_ENTITY, self.owner.enemy.data_idx);*/
-    /*if(self.owner.enemy.data_idx > 0){
-      WriteByte ( MSG_ENTITY, self.owner.enemy.data_type);
-      WriteByte ( MSG_ENTITY, self.owner.enemy.i_faction);
-      WriteByte ( MSG_ENTITY, self.owner.stat_trg_face);
-      WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy));
-      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_x);
-      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_y);
-      WriteCoord ( MSG_ENTITY, self.owner.enemy.origin_z);
-      if(self.owner.enemy.data_type == DATA_MECH){
-        WriteByte ( MSG_ENTITY, self.owner.enemy.vec_size);
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_tor_l));
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_tor_r));
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_arm_l));
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_arm_r));
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_legs));
-        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
-      }
-      else if(self.owner.enemy.data_type == DATA_VEHC){
-        WriteByte ( MSG_ENTITY, self.owner.enemy.vec_size);
-        WriteByte ( MSG_ENTITY, csqc_updateCompStat(self.owner.enemy.e_legs));
-        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
-      }
-      else if(self.owner.enemy.data_type == DATA_BLD){
-        WriteByte ( MSG_ENTITY, (self.owner.enemy.sh_cur / self.owner.enemy.sh_max)*100);
-      }*/
   }
   return TRUE;
 };

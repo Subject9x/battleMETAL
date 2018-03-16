@@ -16,11 +16,13 @@ void() player_makeObserver={
   self.view_ofs = '0 0 1';
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
-  util_setCollider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY);
+  util_setCollider(DAMAGE_NO, SOLID_TRIGGER, MOVETYPE_FLY);
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
-  mh_world_updateClientSpeed(400, 400, 400, "3","0");
+  self.weaponmodel = "";
+  self.weaponframe = 0;
+  mh_world_updateClientSpeed(200, 200, 200, "3","0");
   mh_world_updateClientViewBob("0", "0", "0");
   mh_world_updateClientModelBob("0", "0", "0");
   self.stat_wep_state = 0;
@@ -56,10 +58,18 @@ void() player_makeMech={
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);
-    self.weaponmodel = self.weaponmodel;
-    self.weaponframe = self.weaponframe;
-    self.weaponframe = 1;
-    self.weapon = 1;  //fix?
+    self.viewmodelforclient = spawn();
+    setmodel(self.viewmodelforclient, self.weaponmodel);
+    /*setorigin(self.viewmodelforclient, self.e_cam.origin);
+    self.viewmodelforclient.movetype = MOVETYPE_FOLLOW;
+    self.viewmodelforclient.solid = SOLID_NOT;
+    self.viewmodelforclient.takedamage = DAMAGE_NO;
+    self.viewmodelforclient.aiment = self;
+    self.viewmodelforclient.owner = self;
+    self.viewmodelforclient.punchangle = self.angles;
+    self.viewmodelforclient.view_ofs = self.viewmodelforclient.origin - self.origin;
+    self.viewmodelforclient.angles = self.angles;
+    self.viewmodelforclient.v_angle = self.viewmodelforclient.angles - self.angles;*/
   }
   droptofloor();
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
@@ -93,18 +103,4 @@ void() player_unmakeMech={
   self.stat_lck_stt = LOCK_NONE;
   self.stat_ctor_hp = 0;
   mech_clearWeaponGroups();
-};
-
-float() player_customizeMechForClient={
-  if((other.flags & FL_CLIENT)){
-    util_setModel(self.c_model, 0, 0);
-    setsize(self, self.c_bbx_n, self.c_bbx_x);
-    return TRUE;
-  }
-  if(self.model != "q3mdl/testball.md3"){
-    util_setModel("q3mdl/testball.md3", 0, 0);
-    setsize(self, self.c_bbx_n, self.c_bbx_x);
-    return FALSE;
-  }
-  return FALSE;
 };

@@ -18,6 +18,7 @@ void() building_die={
 	SUB_UseTargets ();
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DEAD;
+  self.solid = SOLID_CORPSE;
   multi_trigger();
   self.nextthink = time + 0.01;
   self.think =  SUB_Remove;

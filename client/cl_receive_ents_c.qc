@@ -171,68 +171,71 @@ void() receive_ent_bindData={
     self.target_faction = 0;
   }
   
-  self.i_faction = cl_data.i_faction;
-  if(cl_data.data_type == DATA_MECH){
-    local string nm;
-    nm = cl_data.netname;
-    if( self.netname != nm){
-      self.netname = nm;
+  if(cl_data != world){
+    self.i_faction = cl_data.i_faction;
+    if(cl_data.data_type == DATA_MECH){
+      local string nm;
+      nm = cl_data.netname;
+      if( self.netname != nm){
+        self.netname = nm;
+      }
+      
+      self.radar_range = cl_data.radar_range;
+      self.hp_ctor = cl_data.hp_ctor;
+      self.hp_leg = cl_data.hp_leg;
+      self.hp_stor = cl_data.hp_stor;
+      self.hp_stor2 = cl_data.hp_stor2;
+      self.hp_arm = cl_data.hp_arm;
+      self.hp_arm2 = cl_data.hp_arm2;
+      
+      self.en_cur = cl_data.en_cur;
+      self.sh_cur = cl_data.sh_cur;
+      //WEAPON DATA
+      self.currentWeaponGroup = cl_data.currentWeaponGroup;
+      self.stat_wep_rel = cl_data.stat_wep_rel;
+      local float wepCount, wepItr;
+      wepCount = cl_data.plr_sel_hrpnt;
+      wepItr = 1;
+      while(wepItr <= wepCount){
+        if(wepItr == 1){
+          self.stat_w1_id = cl_data.stat_w1_id;
+          self.stat_w1_rel = cl_data.stat_w1_rel;
+        }
+        else if(wepItr == 2){
+          self.stat_w2_id = cl_data.stat_w2_id;
+          self.stat_w2_rel = cl_data.stat_w2_rel;
+        }
+        else if(wepItr == 3){
+          self.stat_w3_id = cl_data.stat_w3_id;
+          self.stat_w3_rel = cl_data.stat_w3_rel;
+        }
+        else if(wepItr == 4){
+          self.stat_w4_id = cl_data.stat_w4_id;
+          self.stat_w4_rel = cl_data.stat_w4_rel;
+        }
+        else if(wepItr == 5){
+          self.stat_w5_id = cl_data.stat_w5_id;
+          self.stat_w5_rel = cl_data.stat_w5_rel;
+        }
+        else if(wepItr == 6){
+          self.stat_w6_id = cl_data.stat_w6_id;
+          self.stat_w6_rel = cl_data.stat_w6_rel;
+        }
+        else if(wepItr == 7){
+          self.stat_w7_id = cl_data.stat_w7_id;
+          self.stat_w7_rel = cl_data.stat_w7_rel;
+        }
+        else if(wepItr == 8){
+          self.stat_w8_id = cl_data.stat_w8_id;
+          self.stat_w8_rel = cl_data.stat_w8_rel;
+        }
+        else if(wepItr == 9){
+          self.stat_w9_id = cl_data.stat_w9_id;
+          self.stat_w9_rel = cl_data.stat_w9_rel;
+        }
+        wepItr = wepItr + 1;
+      }
     }
-    
-    self.radar_range = cl_data.radar_range;
-    self.hp_ctor = cl_data.hp_ctor;
-    self.hp_leg = cl_data.hp_leg;
-    self.hp_stor = cl_data.hp_stor;
-    self.hp_stor2 = cl_data.hp_stor2;
-    self.hp_arm = cl_data.hp_arm;
-    self.hp_arm2 = cl_data.hp_arm2;
-    
-    self.en_cur = cl_data.en_cur;
-    self.sh_cur = cl_data.sh_cur;
-    //WEAPON DATA
-    self.currentWeaponGroup = cl_data.currentWeaponGroup;
-    self.stat_wep_rel = cl_data.stat_wep_rel;
-    local float wepCount, wepItr;
-    wepCount = cl_data.plr_sel_hrpnt;
-    wepItr = 1;
-    while(wepItr <= wepCount){
-      if(wepItr == 1){
-        self.stat_w1_id = cl_data.stat_w1_id;
-        self.stat_w1_rel = cl_data.stat_w1_rel;
-      }
-      else if(wepItr == 2){
-        self.stat_w2_id = cl_data.stat_w2_id;
-        self.stat_w2_rel = cl_data.stat_w2_rel;
-      }
-      else if(wepItr == 3){
-        self.stat_w3_id = cl_data.stat_w3_id;
-        self.stat_w3_rel = cl_data.stat_w3_rel;
-      }
-      else if(wepItr == 4){
-        self.stat_w4_id = cl_data.stat_w4_id;
-        self.stat_w4_rel = cl_data.stat_w4_rel;
-      }
-      else if(wepItr == 5){
-        self.stat_w5_id = cl_data.stat_w5_id;
-        self.stat_w5_rel = cl_data.stat_w5_rel;
-      }
-      else if(wepItr == 6){
-        self.stat_w6_id = cl_data.stat_w6_id;
-        self.stat_w6_rel = cl_data.stat_w6_rel;
-      }
-      else if(wepItr == 7){
-        self.stat_w7_id = cl_data.stat_w7_id;
-        self.stat_w7_rel = cl_data.stat_w7_rel;
-      }
-      else if(wepItr == 8){
-        self.stat_w8_id = cl_data.stat_w8_id;
-        self.stat_w8_rel = cl_data.stat_w8_rel;
-      }
-      else if(wepItr == 9){
-        self.stat_w9_id = cl_data.stat_w9_id;
-        self.stat_w9_rel = cl_data.stat_w9_rel;
-      }
-      wepItr = wepItr + 1;
-    }
+  
   }
 };

@@ -284,7 +284,9 @@ float EF_LOWPRECISION = 4194304;
 //field definitions:
 .entity viewmodelforclient;
 //description:
-//this is a very special capability, attachs the entity to the view of the client specified, origin and angles become relative to the view of that client, all effects can be used (multiple skins on a weapon model etc)...  the entity is not visible to any other client.
+//this is a very special capability, attachs the entity to the view of the client specified, 
+//origin and angles become relative to the view of that client, all effects can be used (multiple skins on a weapon model etc)...  
+//the entity is not visible to any other client.
 
 //DP_GECKO_SUPPORT
 //idea: Res2k, BlackHC

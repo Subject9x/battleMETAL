@@ -188,7 +188,7 @@ void() PlayerDie={
   
 	self.view_ofs = '0 0 1';
 	self.deadflag = DEAD_DYING;
-	self.solid = SOLID_NOT;
+	self.solid = SOLID_CORPSE;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 	self.movetype = MOVETYPE_TOSS;
 	

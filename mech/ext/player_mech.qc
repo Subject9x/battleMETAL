@@ -88,7 +88,7 @@ void() mech_cleanupMech={
 void() mech_player_die={
   local entity w_chain;
   
-  if(self.flags & FL_CLIENT){
+  if( (self.flags & FL_CLIENT) ){
     mech_player_cameradie();
   }
 
@@ -103,6 +103,7 @@ void() mech_player_die={
   mech_player_compdie(self.e_arm_l);
   mech_player_compdie(self.e_arm_r);
   mech_player_compdie(self.e_legs);
+  remove(self.viewmodelforclient);
   self.stat_ctor_hp = -1;
   ctor_die1();
 };
