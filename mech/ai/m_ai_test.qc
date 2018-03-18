@@ -75,6 +75,8 @@ void() ai_mech={
   self.delay = time;
   self.ideal_yaw = self.angles * '0 1 0';
 
+  setorigin(self, util_findOpenSpawnArea(self.angles, self.origin, self.maxs) );
+  
   //randomized pilot rank
   if(self.p_damage == 4){
     self.p_damage = util_roll_dice(4) - 1;
@@ -118,8 +120,7 @@ void() ai_mech={
   self.ai_optical = self.radar_range / 2;
   self.maxpatience = ai_pilot_rating_patience();
   self.patience = 0;
- 
-  setorigin(self, util_findOpenSpawnArea(self.angles, self.origin, self.maxs) );
+
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   self.movetype = MOVETYPE_STEP;
   droptofloor();

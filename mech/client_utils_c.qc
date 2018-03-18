@@ -234,6 +234,9 @@ void(string str, float tokens) client_ParseMechCommand={
   else if(argv(1) == "setnav"){
     client_setNavPoint(str, tokens);
   }
+  else if(argv(1) == "setfaction"){
+    self.i_faction = stof( argv(2) );
+  }
 };  
 
 /*
@@ -261,21 +264,27 @@ void(string cmd, float tokens) client_setWeaponGroup={
   }
 };
 
-void() client_sendAvailableLightMechs={
+void(string mechs) client_sendAvailableLightMechs={
   local string cmd;
-  cmd = strcat("mech list_light ",ftos(world.next_wepn4),"\n");
+  cmd = strcat("mech list_light [", mechs,"]\n");
   stuffcmd(self, cmd);
 };
 
-void() client_sendAvailableMediumMechs={
+void(string mechs) client_sendAvailableMediumMechs={
   local string cmd;
-  cmd = strcat("mech list_med ",ftos(world.next_wepn5),"\n");
+  cmd = strcat("mech list_med [", mechs,"]\n");
   stuffcmd(self, cmd);
 };
 
-void() client_sendAvailableHeavyMechs={
+void(string mechs) client_sendAvailableHeavyMechs={
   local string cmd;
-  cmd = strcat("mech list_hvy ",ftos(world.next_wepn6),"\n");
+  cmd = strcat("mech list_hvy [", mechs,"]\n");
+  stuffcmd(self, cmd);
+};
+
+void(string itms) client_sendAvailableItems={
+  local string cmd;
+  cmd = strcat("mech list_items [", itms,"]\n");
   stuffcmd(self, cmd);
 };
 
@@ -319,7 +328,6 @@ void(string cmd, float tokens) client_setWeapon={
   }
 };
 
-
 void() client_sendMissionFileName={
   local string cmd;
   cmd = strcat("mech msn_file ", world.msn_file, "\n");
@@ -331,7 +339,6 @@ void(string fileName) client_sendAnimaticFileName={
   cmd = strcat("mech anm_file ", fileName, "\n");
   stuffcmd(self, cmd);
 };
-
 
 void(string cmd, float tokens) client_setNavPoint={
   local float nav_id;
@@ -405,26 +412,28 @@ entity() SelectSpawnPoint={
 	}
 	else if (deathmatch)
 	{
-    spot = lastspawn;
-    while (1)
-    {
-      spot = find(spot, classname, "info_player_deathmatch");
-      if (spot != world)
+    if(self.data_type != DATA_POBS){
+      spot = lastspawn;
+      while (1)
       {
-        if (spot == lastspawn)
-          return lastspawn;
-        pcount = 0;
-        thing = findradius(spot.origin, 32);
-        while(thing)
+        spot = find(spot, classname, "info_player_deathmatch");
+        if (spot != world)
         {
-          if (thing.classname == "player")
-            pcount = pcount + 1;
-          thing = thing.chain;
-        }
-        if (pcount == 0)
-        {
-          lastspawn = spot;
-          return spot;
+          if (spot == lastspawn)
+            return lastspawn;
+          pcount = 0;
+          thing = findradius(spot.origin, 32);
+          while(thing)
+          {
+            if (thing.classname == "player")
+              pcount = pcount + 1;
+            thing = thing.chain;
+          }
+          if (pcount == 0)
+          {
+            lastspawn = spot;
+            return spot;
+          }
         }
       }
     }

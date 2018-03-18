@@ -5,8 +5,6 @@ Date: 01/28/2018
 Overview: implementation
 */
 
-
-
 void() data_ini_arrays={
   //Weapon Names
   data_WeaponNames[ID_WEP_LATC] = DAT_LATC_NAME;

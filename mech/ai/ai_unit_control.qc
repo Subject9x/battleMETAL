@@ -8,15 +8,18 @@
   Core controller for any AI unit
 */
 void() ai_control={
-  if(self.deadflag >= DEAD_DYING){
+  if(self.deadflag == DEAD_DYING){
     self.health = 0;
-    if(self.th_die){
-      self.th_die();
-    }
-    else{
+    self.deadflag = DEAD_DEAD;
+    self.nextthink = time + 0.1;
+    return;
+  }
+  //give server chance to update 
+  if(self.deadflag == DEAD_DEAD){
+    if(!self.th_die){
       self.th_die = SUB_Remove;
-      self.th_die();
     }
+    self.th_die();
     return;
   }
   self.e_tor_c.angles_y = self.ideal_yaw;  //sync the center torso to the bot

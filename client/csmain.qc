@@ -33,31 +33,24 @@ void() CSQC_Init =
   WEPBITS[8] = 256;
   
   local float i, cnt;
+  //clear out and prepare the sound queue
   i = 1;
-  cnt = 1;
   while( i < VQSIZE ){
     SOUNDQUEUE[i] = "null";
     i = i + 1;
   }
-  i = 1;
+  //clear out and prepare mech lists
   cnt = 1;
-  while(i < 25){
-    MECHLIST_LIGHT_ARR[cnt] = i;
-    i = i * 2;
+  while(cnt < 25){
+    MECHLIST_LIGHT_ARR[cnt] = 0;
+    MECHLIST_MEDIUM_ARR[cnt] = 0;
+    MECHLIST_HEAVY_ARR[cnt] = 0;
     cnt = cnt + 1;
   }
-  i = 1;
+  //clear out and prepare master weapon list
   cnt = 1;
-  while(i < 25){
-    MECHLIST_MEDIUM_ARR[cnt] = i;
-    i = i * 2;
-    cnt = cnt + 1;
-  }
-  i = 1;
-  cnt = 1;
-  while(i < 25){
-    MECHLIST_HEAVY_ARR[cnt] = i;
-    i = i * 2;
+  while(cnt <= 32){
+    WEPLIST_ALL[cnt] = 0;
     cnt = cnt + 1;
   }
   
@@ -294,10 +287,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     localcmd(strcat("stopsound", "\n"));
   }
   
-  if(self.data_type == DATA_MECH){
-  //quick replacement test for missing 3d huds :(
-  //drawpic('0 0', "gfx/hud/blk_main.png" , VIEW_MAX, '1 1 1', 1, 0); 
-  
+  if(self.data_type == DATA_MECH){  
     if(MENU_ACTIVE){
       if(self.player_state == PLAYER_POWERUP_BEGIN){
         MENU_ACTIVE = FALSE;
@@ -312,14 +302,16 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_armlistener(self.hp_arm2, 8, SND_HUD_VFX_CRITARM);
     snd_hud_vfx_armlistener(self.hp_arm, 16, SND_HUD_VFX_CRITARM);
     snd_hud_vfx_armlistener(self.hp_leg, 32, SND_HUD_VFX_CRITLEG);
+    //HUD SOUND SYSTEM LISTENERS
+    snd_hud_vfx_statelistener(self.player_state);
+    snd_hud_vfx_enelistener(self.en_cur);
+    snd_hud_vfx_toggleradar(self.stat_rdr_mode);
+    snd_hud_vfx_targkill(self.stat_trg_ddflg);
     
     //target tracking info
-    local float trg_ddflg, trg_dist, trg_dir, trg_lock;
-    local vector trg_pos;
-    trg_ddflg = getstati(STAT_TRG_DDFLG);
-    trg_dir = getstati(STAT_TRG_FACE);
-    trg_lock = getstati(STAT_LCK_STT);
+    local float trg_dist;
     self.w_range = trg_dist;
+    
     //render 
     local entity vec_data, oself;
     vec_data = m_findMechData(self.vec_size, self.data_idx);
@@ -335,12 +327,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         cl_set_movespeedkey(vec_data.m_maccel);
       }
     }
-    
-    //HUD SOUND SYSTEM LISTENERS
-    snd_hud_vfx_statelistener(self.player_state);
-    snd_hud_vfx_enelistener(self.en_cur);
-    snd_hud_vfx_toggleradar(self.stat_rdr_mode);
-    snd_hud_vfx_targkill(trg_ddflg);
     
     //HUD RENDER FRAME SYSTEM
     hud_frame(self.data_idx, self.vec_size);
@@ -488,22 +474,26 @@ void(string s) CSQC_Parse_StuffCmd =
   argc = tokenize(s);
   if(argv(0) == "mech"){
     if(argv(1) == "msn_file"){
-      MSN_FILENAME = strzone(argv(2));
-      msn_getfile();
+      cl_get_msnfile(strzone(argv(2)));
     }
     else if(argv(1) == "anm_file"){
-      if(self.ANM_FILE_STATUS == 0){
-        anm_parseFile(argv(2));
-      }
+      cl_get_animfile( argv(2) );
     }
     else if(argv(1) == "list_light"){
-      self.parm7 = stof(argv(2));
+      tokenizebyseparator(s, "[", "]");
+      cl_get_mechs_light( argv(1) );
     }
     else if(argv(1) == "list_med"){
-      self.parm8 = stof(argv(2));
+      tokenizebyseparator(s, "[", "]");
+      cl_get_mechs_medium( argv(1) );
     }
     else if(argv(1) == "list_hvy"){
-      self.parm9 = stof(argv(2));
+      tokenizebyseparator(s, "[", "]");
+      cl_get_mechs_heavy( argv(1) );
+    }
+    else if(argv(1) == "list_items"){
+      tokenizebyseparator(s, "[", "]");
+      cl_get_items_all( argv(1) );
     }
   }
   else{

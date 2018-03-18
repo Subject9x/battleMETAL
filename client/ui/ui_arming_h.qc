@@ -7,6 +7,7 @@ Overview: part of splitting the hangar into more understandable chunks
   set weapon groups.
 */
 
+float WEPLIST_ALL[32];
 float WEPLIST_BAL_ARR[8];
 float WEPLIST_ENE_ARR[8];
 float WEPLIST_EXP_ARR[8];

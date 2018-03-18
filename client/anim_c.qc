@@ -28,7 +28,7 @@ void(string fileToOpen) anm_parseFile={
   line = fgets(flannel);
   frame_count = 0;
   while( (line != "") ){
-    if( (line != "{") && (line != "}") ){
+    if( (line != "{") && (line != "}") && (line != "//") ){
       line_tag = tokenizebyseparator(line, "'", "'", ": ", ",");
       //meta data tags
       if( argv(1) == ANM_FILE_META_MUS ){

@@ -181,7 +181,7 @@ void() touch_mech={
   if(other == world){
     return;
   }
-  if(((other.flags & FL_CLIENT)||(other.flags & FL_MONSTER))){
+  if( (other.flags & FL_CLIENT) || (other.flags & FL_MONSTER) ){
     local float dif;
     dif = self.vec_size - other.vec_size;
     if(dif == 2){
@@ -226,7 +226,7 @@ void() touch_mechPiece={
   if( other.classname == MECH_PIECE ){
     return;
   }
-  if( (other.data_type == DATA_MECH) || (other.data_type == DATA_MECH_AI) || (other.data_type == DATA_VEHC) ){
-    BecomeExplosion();
-  }
+  
+  BecomeExplosion();
+  
 };

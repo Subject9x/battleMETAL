@@ -17,6 +17,7 @@ void() player_makeObserver={
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
   util_setCollider(DAMAGE_NO, SOLID_TRIGGER, MOVETYPE_FLY);
+  self.weaponmodel = "";
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;

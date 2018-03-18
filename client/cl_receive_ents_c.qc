@@ -159,7 +159,7 @@ void() receive_ent_bindData={
     self.stat_trg_rt_hp = getstatf(STAT_TRG_RT_HP);
     self.stat_trg_la_hp = getstatf(STAT_TRG_LA_HP);
     self.stat_trg_ra_hp = getstatf(STAT_TRG_RA_HP);
-    
+    self.stat_trg_ddflg = getstati(STAT_TRG_DDFLG);
   }
   else{
     self.target_origin_x = 0;
@@ -169,6 +169,7 @@ void() receive_ent_bindData={
     self.target_shield = 0;
     self.target_datatype = 0;
     self.target_faction = 0;
+    self.stat_trg_ddflg = -1;
   }
   
   if(cl_data != world){

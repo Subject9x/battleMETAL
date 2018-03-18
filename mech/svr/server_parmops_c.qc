@@ -63,5 +63,4 @@ void() DecodeLevelParms={
 	self.ammo_cells = parm7;
 	//self.weapon = parm8;
 	self.armortype = parm9 * 0.01;
-  
 };

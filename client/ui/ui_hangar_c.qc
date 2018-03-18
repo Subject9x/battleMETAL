@@ -15,7 +15,7 @@ void() hardpointListener={
   local entity dat;
   local float hpnt;
   dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
-  if(dat != world){
+  if(dat){
     hpnt = dat.menu_hardpointListener(MECHPANEL_CTR);
     if(hpnt > 0){
       self.plr_sel_hrpnt = hpnt;
@@ -29,17 +29,17 @@ void() mechSelectListener={
   if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.025, 0.0416), gui_percentToPixel(0.075, 0.4166))){
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT)){
       found = listListener(MECHLIST_ORG_LIGHT, cursorpos, MECHLIST_SIZE_LIGHT, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_LIGHT, 0);
-      found = MECHLIST_LIGHT_ARR[found];
+      found = found + 1;
       vsiz = 1;
     }
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_MEDIUM, MECHLIST_SIZE_MEDIUM)){
       found = listListener(MECHLIST_ORG_MEDIUM, cursorpos, MECHLIST_SIZE_MEDIUM, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_MEDIUM, 0);
-      found = MECHLIST_MEDIUM_ARR[found];
+      found = found + 1;
       vsiz = 2;
     }
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_HEAVY, MECHLIST_SIZE_HEAVY)){
       found = listListener(MECHLIST_ORG_HEAVY, cursorpos, MECHLIST_SIZE_HEAVY, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_HEAVY, 0);
-      found = MECHLIST_HEAVY_ARR[found];
+      found = found + 1;
       vsiz = 3;
     }
     if(found > 0){
@@ -52,14 +52,16 @@ void() mechSelectListener={
         change = TRUE;
       }
       if(change){
-        stashMechConfig();
-        self.plr_sel_mech = found;
-        self.plr_sel_size = vsiz;
         local entity nxt;
-        nxt = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
-        cleanHardPoints();
-        grabMechConfig(nxt);
-        cl_setmech(self.plr_sel_size, self.plr_sel_mech);
+        nxt = m_findMechData(vsiz, found);
+        if(nxt){
+          stashMechConfig();
+          self.plr_sel_mech = found;
+          self.plr_sel_size = vsiz;
+          cleanHardPoints();
+          grabMechConfig(nxt);
+          cl_setmech(self.plr_sel_size, self.plr_sel_mech);
+        }
       }
     }
   }
@@ -96,17 +98,19 @@ void(vector ofs) menu_hangar_MechDisplay={
   if(self.plr_sel_mech > 0){
     local entity dat;
     dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
-    i_sz = draw_getimagesize(dat.c_mdl);
-    i_sz = gui_scaleSize(i_sz,VIEW_SCALE);
-    i_sz_x = i_sz_x/1.2;
-    i_sz_y = i_sz_y/1.2;
-    hofs_x = nofs_x + (gui_percentXRaw(171) -  gui_percentXRaw(i_sz_x)) / 2;
-    hofs_y = nofs_y + gui_percentYRaw(240) - gui_percentYRaw(i_sz_y);
-    drawpic(hofs, dat.c_mdl, i_sz, '1 1 1', HUD_ALPHA, 0);
-    hpnts_x = hofs_x + gui_percentXRaw(i_sz_x/2);
-    hpnts_y = hofs_y + gui_percentYRaw(i_sz_y/2);
-    MECHPANEL_CTR = hpnts;
-    dat.menu_renderHardpoints(hpnts);
+    if(dat){
+      i_sz = draw_getimagesize(dat.c_mdl);
+      i_sz = gui_scaleSize(i_sz,VIEW_SCALE);
+      i_sz_x = i_sz_x/1.2;
+      i_sz_y = i_sz_y/1.2;
+      hofs_x = nofs_x + (gui_percentXRaw(171) -  gui_percentXRaw(i_sz_x)) / 2;
+      hofs_y = nofs_y + gui_percentYRaw(240) - gui_percentYRaw(i_sz_y);
+      drawpic(hofs, dat.c_mdl, i_sz, '1 1 1', HUD_ALPHA, 0);
+      hpnts_x = hofs_x + gui_percentXRaw(i_sz_x/2);
+      hpnts_y = hofs_y + gui_percentYRaw(i_sz_y/2);
+      MECHPANEL_CTR = hpnts;
+      dat.menu_renderHardpoints(hpnts);
+    }
   }
 };
 
@@ -127,7 +131,9 @@ void(vector ofs) menu_hangar_MechHPoints={
   drawstring(nofs + gui_percentToPixelRawVec('222 24'), "[size]", '6 6 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
   if(self.plr_sel_mech > 0){
     dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
-    dat.menu_hardpointRows(nofs + gui_percentToPixelRawVec('16 24'));
+    if(dat){
+      dat.menu_hardpointRows(nofs + gui_percentToPixelRawVec('16 24'));  
+    }
   }
 };
 
@@ -155,21 +161,22 @@ void(vector ofs) menu_hangar_MechListLight={
     local entity dat;
     local vector lofs, clr;
     dat = m_findMechData(1, dat_id);
-    if(dat && (self.parm7 & dat.data_idx)){
-      lofs_x = sofs_x;
-      lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
-        clr = CLR_DEF_TXT_HIGHLIGHT;
-        gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    if(dat){
+      if(MECHLIST_LIGHT_ARR[dat_id] != 0){
+        lofs_x = sofs_x;
+        lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
+        if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
+        ui_lst_act = ui_lst_act + 1;
       }
-      else{
-        clr = CLR_DEF_TXT_NONSELECT;
-      }
-      drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
-      MECHLIST_LIGHT_ARR[ui_lst_act] = dat.data_idx;
-      ui_lst_act = ui_lst_act + 1;
     }
-    dat_id = dat_id * 2;
+    dat_id = dat_id + 1;
     ui_lst_cnt = ui_lst_cnt + 1;
   }
   MECHLIST_CNT_LIGHT = ui_lst_act;
@@ -178,6 +185,7 @@ void(vector ofs) menu_hangar_MechListLight={
   MECHLIST_SIZE_LIGHT_x = gui_percentX(0.0687);
   MECHLIST_SIZE_LIGHT_y = gui_percentYRaw(ui_lst_act * 16);
 };
+
 void(vector ofs) menu_hangar_MechListMedium={
   local vector nofs, clr, sofs;
   local float ui_lst_cnt, dat_id,ui_lst_act;
@@ -193,21 +201,22 @@ void(vector ofs) menu_hangar_MechListMedium={
     local entity dat;
     local vector lofs, clr;
     dat = m_findMechData(2, dat_id);
-    if(dat && (self.parm8 & dat.data_idx)){
-      lofs_x = sofs_x;
-      lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
-        clr = CLR_DEF_TXT_HIGHLIGHT;
-        gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    if(dat){
+      if(MECHLIST_MEDIUM_ARR[dat_id] != 0){
+        lofs_x = sofs_x;
+        lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
+        if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
+        ui_lst_act = ui_lst_act + 1;
       }
-      else{
-        clr = CLR_DEF_TXT_NONSELECT;
-      }
-      drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
-      MECHLIST_MEDIUM_ARR[ui_lst_act] = dat.data_idx;
-      ui_lst_act = ui_lst_act + 1;
-    }
-    dat_id = dat_id * 2;
+    } 
+    dat_id = dat_id + 1;
     ui_lst_cnt = ui_lst_cnt + 1;
   }
   MECHLIST_CNT_MEDIUM = ui_lst_act;
@@ -231,21 +240,22 @@ void(vector ofs) menu_hangar_MechListHeavy={
     local entity dat;
     local vector lofs, clr;
     dat = m_findMechData(3, dat_id);
-    if(dat && (self.parm8 & dat.data_idx)){
-      lofs_x = sofs_x;
-      lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
-        clr = CLR_DEF_TXT_HIGHLIGHT;
-        gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    if(dat){
+      if(MECHLIST_HEAVY_ARR[dat_id] != 0){
+        lofs_x = sofs_x;
+        lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
+        if(dat.vec_size == self.plr_sel_size && dat.data_idx == self.plr_sel_mech){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+        }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
+        ui_lst_act = ui_lst_act + 1;
       }
-      else{
-        clr = CLR_DEF_TXT_NONSELECT;
-      }
-      drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.vec_name, '6 6 0', clr, HUD_ALPHA, 0);
-      MECHLIST_HEAVY_ARR[ui_lst_act] = dat.data_idx;
-      ui_lst_act = ui_lst_act + 1;
     }
-    dat_id = dat_id * 2;
+    dat_id = dat_id + 1;
     ui_lst_cnt = ui_lst_cnt + 1;
   }
   MECHLIST_CNT_HEAVY = ui_lst_act;
@@ -263,6 +273,7 @@ void(vector ofs) menu_hangar_MechInfo={
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('250 180'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
   dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
+ 
   local float slen;
   slen = strlen("[METAL INFO]");
   local vector sofs;
@@ -284,9 +295,6 @@ void(vector ofs) menu_hangar_MechInfo={
   else if(dat.vec_size == 3){
     type = "Heavy";
   }
-  
-  //float  = 5;
-  //float  = 5;
   
   drawstring(nofs + gui_percentToPixelRawVec('8 33'), "[Type] ", '6 6 0', CLR_DEF_GRAY_H, HUD_ALPHA, 0);
   drawstring(nofs + gui_percentToPixelRawVec('115 33'),  type, '6 6 0', CLR_DEF_WHITE, HUD_ALPHA, 0);

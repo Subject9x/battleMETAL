@@ -127,9 +127,13 @@ void() ClientConnect = {
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here
   client_sendMissionFileName();
-  client_sendAvailableLightMechs();
-  client_sendAvailableMediumMechs();
-  client_sendAvailableHeavyMechs();
+  
+  if( !coop && !deathmatch) {
+    client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
+    client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
+    client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
+    client_sendAvailableItems(SAVE_ITEMS_ALL);
+  }
   
   client_data_ini(self);
   self.stat_plr_stt = PLAYER_SPAWN;
@@ -179,6 +183,12 @@ void() PutClientInServer = {
   self.angles = spot.angles;
   
   if(self.data_type == DATA_POBS){
+    if( coop ){
+      
+    }
+    if( deathmatch ){
+      mapfile_pvp_load(self.i_faction);
+    }
     player_makeObserver();
     
     if(!coop && !deathmatch){

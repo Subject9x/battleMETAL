@@ -44,16 +44,26 @@ void() worldspawn =
     
   //setmodel(self, "maps/t_train0.bsp");
 // the area based ambient sounds MUST be the first precache_sounds
-
-  if(world.next_wepn4 < 1){
-    world.next_wepn4 =  world.next_wepn4 | ID_MCH_BALAKET;
+  
+  if( !coop && !deathmatch){
+    if(self.model == "maps/start.bsp"){
+      //pre-populate default save file
+      savefile_default();
+    }
+    else{
+      //save single player data out
+      savefile_load();
+    }
   }
-  if(world.next_wepn5 < 1){
-    world.next_wepn5 = world.next_wepn5 | ID_MCH_MATOK;
+  else{
+    if( coop ){
+      //TODO - load coop save file
+    }
+    if( deathmatch ){
+      //TODO - load pvp save file
+    }
   }
-  if(world.next_wepn6 < 1){
-    world.next_wepn6 =  world.next_wepn6 | ID_MCH_MONITOR;
-  }
+  
   //see q1/precache_world.q1_precache_sound();
   q1_precache_sound();
   q1_precache_models();
@@ -104,6 +114,7 @@ void() worldspawn =
 
 	// 63 testing
 	lightstyle(63, "a");
+  
 };
 
 void() StartFrame =

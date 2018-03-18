@@ -75,6 +75,8 @@ void() menu_handleFrame={
   }
   menu_navBar(VIEW_ORG);
   drawpic(mpos, UI_CURSOR_IMG,  i_sz, '1 1 1', HUD_ALPHA, 0);
+  
+  //debug info
   drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
   drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(self.plr_sel_size), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
   drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(self.plr_sel_mech), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
@@ -100,7 +102,6 @@ void() mechAcceptButtonListener={
       cl_setweapongroup(4, self.plr_nex_grp4);
       cl_setweapongroup(5, self.plr_nex_grp5);
       cl_spawnmech();
-      //localcmd(strcat("cd play ", ftos(world.sounds), " \n"));
       MENU_ACTIVE = FALSE;
       setcursormode(0);
     }
@@ -154,6 +155,10 @@ void(vector ofs) menu_navBar={
 };
 
 void() menu_mainListener={
+  //prevent menu switch during briefing
+  if(self.ANM_FILE_STATUS == 1){
+    return;
+  }
   navBarListener();
   mechAcceptButtonListener();
 };

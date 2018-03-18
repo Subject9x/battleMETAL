@@ -178,22 +178,24 @@ void(vector ofs) menu_arming_WeaponList_BAL={
     local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_WEPN);
     if(dat){
-      if((dat.dmg_type & DMG_BAL)){
-        lofs_x = nofs_x;
-        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-        if(dat.data_idx == self.plr_sel_list_wep){
-          clr = CLR_DEF_TXT_HIGHLIGHT;
-          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+      if(WEPLIST_ALL[lst_idx] != 0){
+        if((dat.dmg_type & DMG_BAL)){
+          lofs_x = nofs_x;
+          lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
+          if(dat.data_idx == self.plr_sel_list_wep){
+            clr = CLR_DEF_TXT_HIGHLIGHT;
+            gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+          }
+          else{
+            clr = CLR_DEF_TXT_NONSELECT;
+          }
+          if(!(self.plr_sel_hrpnt_types & DMG_BAL) || (dat.i_size > self.plr_sel_hrpnt_size)){
+            clr = CLR_DEF_BLACK;
+          }
+          drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
+          WEPLIST_BAL_ARR[act_idx] = dat.data_idx;
+          act_idx = act_idx + 1;
         }
-        else{
-          clr = CLR_DEF_TXT_NONSELECT;
-        }
-        if(!(self.plr_sel_hrpnt_types & DMG_BAL) || (dat.i_size > self.plr_sel_hrpnt_size)){
-          clr = CLR_DEF_BLACK;
-        }
-        drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
-        WEPLIST_BAL_ARR[act_idx] = dat.data_idx;
-        act_idx = act_idx + 1;
       }
     }
     lst_idx = lst_idx + 1;

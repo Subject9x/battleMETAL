@@ -39,10 +39,16 @@ entity() FindIntermission={
 	return world;
 };
 void() GotoNextMap={
-  if (cvar("samelevel"))	// if samelevel is set, stay on same level
+
+  if (cvar("samelevel")){	// if samelevel is set, stay on same level
 		changelevel (mapname);
-	else
+	}
+  else{  
+    if( !coop && !deathmatch ){
+      savefile_save();
+    }
 		changelevel (nextmap);
+  }
 };
 
 void() ExitIntermission={
@@ -169,7 +175,6 @@ void() execute_changelevel={
 		other.angles = other.v_angle = pos.mangle;
 		other.fixangle = TRUE;		// turn this way immediately
 		other.nextthink = time + 0.5;
-    bprint("nextthink\n");
 		other.takedamage = DAMAGE_NO;
 		other.solid = SOLID_NOT;
 		other.movetype = MOVETYPE_NONE;

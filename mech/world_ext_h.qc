@@ -6,6 +6,7 @@ Overview: function extensions to world.qc
 */
 
 .string msn_file;
+.string map_file;
 
 void() mh_world_ini;
 

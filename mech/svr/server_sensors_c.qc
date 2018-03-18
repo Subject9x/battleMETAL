@@ -60,7 +60,6 @@ void() server_updateTargetInfo={
   self.stat_trg_dat = self.enemy.data_type;
   self.stat_trg_sh = (self.enemy.sh_cur / self.enemy.sh_max) * 100;
   self.stat_trg_faction = self.enemy.i_faction;
-  
   self.stat_trg_ct_hp = csqc_updateCompStat(self.enemy);
   if( (self.stat_trg_dat == DATA_MECH_AI) || (self.stat_trg_dat == DATA_VEHC) || (self.stat_trg_dat == DATA_MECH) ){
     self.stat_trg_lg_hp = csqc_updateCompStat(self.enemy.e_legs);

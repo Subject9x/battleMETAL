@@ -13,10 +13,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   local float new_dmg;
   local entity oself, targ_act;
     
-  if(!trg.takedamage){
+  if( !trg.takedamage ){
     return trg;
   }
-  if((trg.flags & FL_GODMODE)){
+  if( (trg.flags & FL_GODMODE) ){
     return trg;
   }
   
@@ -138,7 +138,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
           killed(trg, attacker, dmg_type);
           if(trg.c_name == M_TOR_CENTER){
             if((trg.owner.flags & FL_MONSTER)){
-              trg.owner.deadflag = DEAD_DEAD;
+              trg.owner.deadflag = DEAD_DYING;
             }
           }      
           return trg;

@@ -156,8 +156,7 @@ void(float mode) snd_hud_vfx_toggleradar={
 };
 
 void(float dedflg) snd_hud_vfx_targkill={
-  if(dedflg > DEAD_DEAD && dedflg < 5){
-    dedflg = 5;
+  if(dedflg == DEAD_DYING){
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL, 1);
   }
 };

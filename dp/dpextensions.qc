@@ -158,6 +158,22 @@ float   EF_NOGUNBOB     = 256;
 //uses:
 //disabling gun bobbing on a diving mask or other model used as a .viewmodel.
 //disabling gun bobbing on view-relative models meant to be part of the heads up display.  (note: if fov is changed these entities may be off-screen, or too near the center of the screen, so use fov 90 in this case)
+/*
+  self = client
+ newmis = spawn();
+ newmis.movetype = MOVETYPE_NONE;
+ newmis.solid = SOLID_NOT;
+ newmis.viewmodelforclient = self;
+ newmis.owner = self;
+ newmis.alpha = 0.3;
+ setmodel(newmis, self.weaponmodel);
+ setsize(newmis, '0 0 0', '0 0 0');
+ setorigin(newmis, '0 0 0');
+ newmis.frame = self.weaponframe;   
+ newmis.nextthink = time;
+ newmis.think = SUB_Remove;
+*/
+
 
 //DP_EF_NOSHADOW
 //idea: LordHavoc
