@@ -16,14 +16,14 @@ void(float hitdirection, float lockval, float conv_x, float conv_y) hud_renderCr
   spr_h_y = conv_y;
   spr_h_x = 0;
   
-  gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRaw(11, 1.5) - spr_w), HUT_RET_PIP_HRZ, gui_percentToPixelRawVec('10 3'), HUD_COLOR_DEF, HUD_ALPHA, 0);
-  gui_renderTintImage(TRUE, (VIEW_CTR + spr_w + gui_percentToPixelRaw(1 ,-1.5)), HUT_RET_PIP_HRZ, gui_percentToPixelRawVec('10 3'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('11 1.5') - spr_w), HUT_RET_PIP_HRZ, gui_percentToPixelRawVec('10 3'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, (VIEW_CTR + spr_w + gui_percentToPixelRawVec('1 -1.5')), HUT_RET_PIP_HRZ, gui_percentToPixelRawVec('10 3'), HUD_COLOR_DEF, HUD_ALPHA, 0);
   
-  gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRaw(1.5, 11) - spr_h), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
-  gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + gui_percentToPixelRaw(-1.5, 1)), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('1.5 11') - spr_h), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + gui_percentToPixelRawVec('-1.5 1')), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
   
   if((hitdirection & STAT_HIT_TRG)){
-    gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRaw(24,24)), HUD_RET_HIT, gui_percentToPixelRawVec('48 48'), CLR_DEF_ARM_DED, HUD_ALPHA, 0);
+    gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('24 24')), HUD_RET_HIT, gui_percentToPixelRawVec('48 48'), CLR_DEF_ARM_DED, HUD_ALPHA, 0);
   }
 };
 
@@ -108,7 +108,7 @@ void(vector pos, float algn, float val) hud_renderReticleRange={
   dist = ftos(val);
   len = stringwidth(dist, 0, '8 8 0');
   len = len / 2;
-  pos_x = pos_x + gui_percentXRaw(len);
+  pos_x = pos_x + len;
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
   
@@ -157,11 +157,14 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
 /*
   RENDER ARMOR METER
 */
-void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label) hud_renderArmorMeter={
+void( vector pos, vector grpCtr, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label) hud_renderArmorMeter={
   local vector meterSize, label_org, shofs;
+  
+  shofs = grpCtr;
   meterSize = gui_percentToPixelRawVec(mSize);
   pos = gui_percentToPixelRawVec(pos);
-  pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), grpCtr);
+  pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), shofs);
+  
   gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, meterAxis, 0);
   label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), (VIEW_LFT | VIEW_TOP), pos); 
   drawstring(label_org, label, '4 4 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
@@ -378,10 +381,9 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   }
   
   ofs_x = imgSz_x / 2;
-  ofs_y = imgSz_y * 2 + 2;
+  ofs_y = (imgSz_y * 2) + gui_percentYRaw(2);
   metSize_x = imgSz_x;
   metSize_y = gui_percentYRaw(20);
-  ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
   gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
 };
@@ -424,7 +426,6 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   ofs_y = imgSz_y;
   metSize_x = gui_percentXRaw(-20);
   metSize_y = imgSz_y;
-  ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
   gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
 };
@@ -438,7 +439,6 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
   if(val > 0){
     dist = vlen(org - torg);
     dist = dist / radRange;
-    mSize = gui_percentToPixelRawVec(mSize);
     dist = (1 / (dist * dist));    
     dist = dist / 10;
     aSize_x = mSize_x * dist;
@@ -449,13 +449,10 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
     if(aSize_y > mSize_y){
       aSize_y = mSize_y;
     }
-    height = tsize * 35;
     vpos = org;
-    vpos_z = vpos_z + height;
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
-      nofs = gui_percentToPixelRawVec(nofs);
-      nofs_x = nofs_x - (aSize_x /2 );
+      nofs_x = nofs_x - (aSize_x / 2);
       nofs_z = 0;
       hud_renderShield(nofs, 0, val, aSize, FALSE, 0, '0 0', AXIS_H);
     }
@@ -476,7 +473,6 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     }
     dist = vlen(org - torg);
     dist = 1 - (dist / 1000);
-    
     imgSize = draw_getimagesize(HUD_TARGET_BOX);
     imgSize = gui_percentToPixelRawVec(imgSize);
     imgSize = imgSize + gui_percentToPixelRawVec('50 50');
@@ -485,22 +481,21 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     if(aSize_x > imgSize_x){
       aSize_x = imgSize_x;
     }
-    else if(aSize_x < 32){
-      aSize_x = 32;
+    else if(aSize_x < gui_percentXRaw(32)){
+      aSize_x = gui_percentXRaw(32);
     }
     
     aSize_y = imgSize_y * dist;
     if(aSize_y > imgSize_y){
       aSize_y = imgSize_y;
     }
-    else if(aSize_y < 32){
-      aSize_y = 32;
+    else if(aSize_y < gui_percentYRaw(32)){
+      aSize_y = gui_percentYRaw(32);
     }
-
+    
     vpos = org;
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
-      nofs = gui_percentToPixelRawVec(nofs);
       nofs_x = nofs_x - (aSize_x / 2);
       nofs_y = nofs_y - (aSize_y / 2);
       nofs_z = 0;
@@ -600,7 +595,7 @@ void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav={
 void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) hud_HelmetImage={
   local vector nofs;
   nofs = gui_percentToPixelRawVec(ofs);
-  nofs = gui_calcAlign(ofs, valign); 
+  nofs = gui_calcAlign(nofs, valign); 
   drawpic(nofs, bimg, gui_percentToPixelRawVec(img_sz), clr, alpha, 0);  
 };
 

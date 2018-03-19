@@ -97,13 +97,12 @@ void() mech_player_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  
+  mech_player_compdie(self.e_tor_c);
   mech_player_compdie(self.e_tor_l);
   mech_player_compdie(self.e_tor_r);
   mech_player_compdie(self.e_arm_l);
   mech_player_compdie(self.e_arm_r);
   mech_player_compdie(self.e_legs);
-  remove(self.viewmodelforclient);
   self.stat_ctor_hp = -1;
   ctor_die1();
 };

@@ -184,9 +184,10 @@ void() PutClientInServer = {
   
   if(self.data_type == DATA_POBS){
     if( coop ){
-      
+      mapfile_coop_load();
     }
     if( deathmatch ){
+      cons_logAFloat("m_client:mapfile_pvp_load", self.i_faction);  //DEBUG
       mapfile_pvp_load(self.i_faction);
     }
     player_makeObserver();

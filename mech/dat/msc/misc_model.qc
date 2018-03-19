@@ -16,12 +16,13 @@ void() map_terrain_model={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
   self.velocity = '0 0 0';
+  self.alpha = 1;
+  self.avelocity = '0 0 0';
   precache_model(self.model);
   setmodel(self, self.model);
   self.takedamage = DAMAGE_NO;
-  setorigin(self, self.origin);
   setsize(self, self.mins, self.maxs);
-  self.alpha = 1;
+  setorigin(self, self.origin);
 };
 
 /*QUAKED misc_model (1 .5 .25) (-16 -16 -16) (16 16 16)

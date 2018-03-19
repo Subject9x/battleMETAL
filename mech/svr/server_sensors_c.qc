@@ -27,6 +27,10 @@ void() server_getTarget={
       }
     }
   }
+  else{
+    self.enemy = world;
+    self.lock_timer = 0;
+  }
 };
 
 /*scope - self = unit making the target call*/

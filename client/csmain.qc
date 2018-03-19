@@ -387,17 +387,38 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       local entity player;
       player = findchainflags(flags, FL_CLIENT);
       while(player){
-        local vector namepos, nameproj;
-        local float namelen;
-        namelen = stringwidth(player.netname, 0, '10 10 0');
-        namepos = player.origin;
-        namepos_z = namepos_z + 50;
-        nameproj = cs_project(namepos);
-        if (nameproj_z >= 0) {
-          nameproj = gui_percentToPixelRawVec(nameproj);
-          nameproj_x = nameproj_x - (namelen / 2);
-          nameproj_z = 0;
-          drawstring(nameproj, player.netname, '10 10 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+        if( (player.data_type != DATA_POBS) ){
+          local vector namepos, nameproj, drawcolor;
+          local float namelen,drawcheck, drawdist;
+          drawcheck = FALSE;
+          drawdist = vlen(pmove_org - player.origin);
+          if(self.i_faction == player.i_faction){
+            if(drawdist <= self.radar_range * 2){
+              drawcheck = TRUE;
+              drawcolor = CLR_DEF_IIF_FRIEND;
+            }
+          }
+          else{
+            if(self.stat_rdr_mode){
+              if(drawdist <= self.radar_range){
+                drawcheck = TRUE;
+                drawcolor = CLR_DEF_IFF_ENEMY;
+              }
+            }
+          }
+          if( drawcheck){
+            namelen = stringwidth(player.netname, 0, '10 10 0');
+            namepos = player.origin;
+            namepos_z = namepos_z + 75;
+            nameproj = cs_project(namepos);
+            if (nameproj_z >= 0) {
+              nameproj = gui_percentToPixelRawVec(nameproj);
+              nameproj_x = nameproj_x - (namelen / 2);
+              nameproj_z = 0;
+              drawstring(nameproj, player.netname, '8 6 0', drawcolor, HUD_ALPHA, 0);
+            }
+            namepos = cs_unproject(nameproj);
+          }
         }
         player = player.chain;
       }

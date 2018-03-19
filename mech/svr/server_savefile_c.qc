@@ -89,7 +89,6 @@ void() mapfile_coop_load={
         }
         if( argv(1) == SAVE_FILE_ITEMS ){
           client_sendAvailableItems( argv(3) );
-          //TODO - send item unlocks
         }
       }
       line = fgets(flannel);
@@ -125,7 +124,7 @@ void(float faction) mapfile_pvp_load={
           client_sendAvailableHeavyMechs( argv(3) );
         }
         if( argv(1) == SAVE_FILE_ITEMS ){
-          //TODO - send item unlocks
+          client_sendAvailableItems( argv(3) );
         }
       }
       line = fgets(flannel);
