@@ -47,4 +47,5 @@ void(string mechs) client_sendAvailableLightMechs;
 void(string mechs) client_sendAvailableMediumMechs;
 void(string mechs) client_sendAvailableHeavyMechs;
 void(string itms) client_sendAvailableItems;
+void(string mode) client_sendGameMode;
 void(float timer, vector pos, vector bsize, vector clr, entity client) client_HighlightHUDRec;

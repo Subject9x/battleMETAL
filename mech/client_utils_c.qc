@@ -213,6 +213,12 @@ void(string itms) client_sendAvailableItems={
   stuffcmd(self, cmd);
 };
 
+void(string mode) client_sendGameMode={
+  local string cmd;
+  cmd = strcat("mech gamemode ", mode,"\n");
+  stuffcmd(self, cmd);
+};
+
 /*
 commmand string: cmd mech setwep X Y
   X = WEAPON bitflag id

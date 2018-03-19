@@ -93,8 +93,8 @@ void() mapfile_coop_load={
       }
       line = fgets(flannel);
     }
+    fclose(flannel);
   }
-  fclose(flannel);
 };  
 
 //pvp options
@@ -129,6 +129,6 @@ void(float faction) mapfile_pvp_load={
       }
       line = fgets(flannel);
     }
+    fclose(flannel);
   }
-  fclose(flannel);
 };  

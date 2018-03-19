@@ -516,6 +516,9 @@ void(string s) CSQC_Parse_StuffCmd =
       tokenizebyseparator(s, "[", "]");
       cl_get_items_all( argv(1) );
     }
+    else if(argv(1) == "gamemode"){
+      cvar_set(argv(2), "1");
+    }
   }
   else{
     localcmd(s);

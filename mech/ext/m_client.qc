@@ -184,9 +184,11 @@ void() PutClientInServer = {
   if(self.data_type == DATA_POBS){
     if( coop ){
       mapfile_coop_load();
+      client_sendGameMode("coop");
     }
     if( deathmatch ){
       mapfile_pvp_load(self.i_faction);
+      client_sendGameMode("coop");
     }
     player_makeObserver();
     

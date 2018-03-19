@@ -178,4 +178,18 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     }
     nav = nav.chain;
   }
+  if( (cvar("coop")) || (cvar("deathmatch")) ){
+    local entity player;
+    player = findchainflags(flags, FL_CLIENT);
+    while(player){
+      if(player.data_type == DATA_MECH){
+        if(player.i_faction == self.i_faction){
+          local vector friend_org;
+          friend_org = gui_mapCoordToImgCoord(map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
+          drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND, HUD_ALPHA, 0);
+        }
+      }
+      player = player.chain;
+    }
+  }
 };
