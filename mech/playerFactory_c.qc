@@ -90,5 +90,10 @@ void() player_unmakeMech={
   self.stat_plr_fir = FIRE_GROUP;
   self.stat_lck_stt = LOCK_NONE;
   self.stat_ctor_hp = 0;
+  self.stat_rdr_mode = FALSE;
+  self.stat_rdr_rng = 0;
+  self.en_cur = 0;
+  self.sh_cur = 0;
+  self.enemy = world;
   mech_clearWeaponGroups();
 };

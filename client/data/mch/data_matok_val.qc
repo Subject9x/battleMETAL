@@ -13,7 +13,6 @@ string DAT_MTK_VEC_NAME = "Matok";
 float DAT_MTK_RESERVE_COST = 200;
 vector DAT_MTK_CTOR_BBX_N = '-17 -17 -40';
 vector DAT_MTK_CTOR_BBX_X = '17 17 22';
-string DAT_MTK_UI_IMG = "gfx/ui/hgr_mtk.png";
 float DAT_MTK_HARDPOINTS = 5;
 
 //WEAOPON GROUPS
@@ -91,7 +90,6 @@ vector DAT_MTK_WEP5_ADJ_ANG= '0 0 0';
 
 //=========================================
 void() data_mech_mtk;
-void() data_mtk_ini;
 
 void(vector org) mtk_renderHardpoints={
   if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
@@ -159,15 +157,36 @@ void() data_mech_mtk={
   oself = self;
   self = mtk;
     self.data_idx = ID_MCH_MATOK;
-    self.classname = "data";
+    self.classname = "data_mech";
     self.data_type = DATA_MECH;
     self.vec_name = DAT_MTK_VEC_NAME;
     self.vec_size = SZ_MCH_MATOK;
+    self.vec_name= DAT_MTK_VEC_NAME;
+    self.i_techlvl= DAT_MTK_TECH_LEVEL;
+    self.i_reserve= DAT_MTK_RESERVE_COST;
     self.c_mdl = DAT_MTK_UI_IMG;
+    self.c_ui_hf = "gfx/ui/hgr_mtk_hf.png";
+    self.en_cur= DAT_MTK_ENERGY_MAX;
+    self.en_max= DAT_MTK_ENERGY_MAX;
+    self.en_rate= DAT_MTK_ENERGY_RATE;
+    self.sh_cur= DAT_MTK_SHIELD_MAX;
+    self.sh_max= DAT_MTK_SHIELD_MAX;
+    self.sh_rate= DAT_MTK_SHIELD_RATE;
+    self.hardpoint_cnt = DAT_MTK_HARDPOINTS; 
+    self.m_fspeed = DAT_MTK_M_FSPEED;
+    self.m_sspeed = DAT_MTK_M_SSPEED;
+    self.m_bspeed = DAT_MTK_M_BSPEED;
+    self.m_maccel = DAT_MTK_M_ACCEL;
+    self.e_model = DAT_MTK_CTOR_MODEL;
+    self.hp_ctor = DAT_MTK_CTOR_HP;
+    self.hp_stor = DAT_MTK_LTOR_HP;
+    self.hp_arm = DAT_MTK_LARM_HP;
+    self.hp_leg = DAT_MTK_LEG_HP;
+    self.radar_range = DAT_MTK_RADAR_RANGE;
+  
     self.menu_renderHardpoints = mtk_renderHardpoints;
     self.menu_hardpointListener = mtk_hardpointListener;
     self.menu_hardpointRows = MTK_hardpointrows;
-    data_mtk_ini();
     self.plr_nex_wep1 = ID_WEP_LATC;
     self.plr_nex_wep2 = ID_WEP_LATC;
     self.plr_nex_wep3 = ID_WEP_LAS;
@@ -182,34 +201,7 @@ void() data_mech_mtk={
     self.plr_nex_grp3 = WEAPON5;
     self.plr_nex_grp4 = 0;
     self.plr_nex_grp5 = 0;
+    self.drawmask = MASK_NORMAL;
+    
   self = oself;
-};
-
-void() data_mtk_ini={
-  self.vec_name= DAT_MTK_VEC_NAME;
-  self.i_techlvl= DAT_MTK_TECH_LEVEL;
-  self.i_reserve= DAT_MTK_RESERVE_COST;
-  self.c_mdl = DAT_MTK_UI_IMG;
-  self.c_ui_hf = "gfx/ui/hgr_mtk_hf.png";
-  self.en_cur= DAT_MTK_ENERGY_MAX;
-  self.en_max= DAT_MTK_ENERGY_MAX;
-  self.en_rate= DAT_MTK_ENERGY_RATE;
-  self.sh_cur= DAT_MTK_SHIELD_MAX;
-  self.sh_max= DAT_MTK_SHIELD_MAX;
-  self.sh_rate= DAT_MTK_SHIELD_RATE;
-  self.hardpoint_cnt = DAT_MTK_HARDPOINTS; 
-  self.m_fspeed = DAT_MTK_M_FSPEED;
-  self.m_sspeed = DAT_MTK_M_SSPEED;
-  self.m_bspeed = DAT_MTK_M_BSPEED;
-  self.m_maccel = DAT_MTK_M_ACCEL;
-  self.m_pitch_max = DAT_MTK_M_PITCH_N;
-  self.m_pitch_min = DAT_MTK_M_PITCH_X;
-  self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
-  self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
-  self.e_model = DAT_MTK_CTOR_MODEL;
-  self.hp_ctor = DAT_MTK_CTOR_HP;
-  self.hp_stor = DAT_MTK_LTOR_HP;
-  self.hp_arm = DAT_MTK_LARM_HP;
-  self.hp_leg = DAT_MTK_LEG_HP;
-  self.radar_range = DAT_MTK_RADAR_RANGE;
 };

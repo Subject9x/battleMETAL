@@ -37,14 +37,14 @@ void() SetChangeParms={
 };
 void() SetNewParms={
   parm1 = 0; //i_reserve -> make it difficulty based
-	parm2 = 1;
+	parm2 = 0;
 	parm3 = 0;
 	parm4 = 0;
 	parm5 = 0;
-	parm6 = world.next_wepn3;
-	parm7 = world.next_wepn4;
-	parm8 = world.next_wepn5;
-	parm9 = world.next_wepn6;
+	parm6 = 0;
+	parm7 = 0;
+	parm8 = 0;
+	parm9 = 0;
 };
 void() DecodeLevelParms={
   //	if (serverflags)
@@ -54,13 +54,13 @@ void() DecodeLevelParms={
 			SetNewParms ();		// take away all stuff on starting new episode
 	}
 	
-	self.i_reserve = parm1;
-	self.health = parm2;
-	self.i_faction = 1; //DEBUG
-	self.ammo_shells = parm4;
-	self.ammo_nails = parm5;
-	self.ammo_rockets = parm6;
-	self.ammo_cells = parm7;
+	//self.i_reserve = parm1;
+	self.health = 100;
+	//self.i_faction = 1; //DEBUG
+	//self.ammo_shells = parm4;
+	//self.ammo_nails = parm5;
+	//self.ammo_rockets = parm6;
+	//self.ammo_cells = parm7;
 	//self.weapon = parm8;
-	self.armortype = parm9 * 0.01;
+	//self.armortype = parm9 * 0.01;
 };

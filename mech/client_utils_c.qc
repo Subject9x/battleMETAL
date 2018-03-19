@@ -11,7 +11,7 @@ void(entity client) client_data_ini={
   clientdata = spawn();
   this = self;
   self = clientdata;
-    self.classname = "data";
+    self.classname = "client";
     self.flags = self.flags | FL_CLIENTDATA;
     self.owner = client;
     this.node = self;
@@ -160,6 +160,7 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   else if(argv(1) == "setfaction"){
     self.i_faction = stof( argv(2) );
+    mapfile_pvp_load(self.i_faction);
   }
 };  
 
@@ -287,7 +288,7 @@ void() respawn={
     CopyToBodyQue (self);
     //
 		// get the spawn parms as they were at level start
-		setspawnparms (self);
+		//setspawnparms (self);
     if(self.data_type == DATA_MECH){
       player_unmakeMech();
       player_makeObserver();

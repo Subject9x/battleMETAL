@@ -77,7 +77,6 @@ void() menu_hangarDrawFrame={
     cleanHardPoints();
     dat = m_findMechData(1,1);
     grabMechConfig(dat);
-    cl_setmech(1, 1); 
   }
   
   local vector topleftroot;

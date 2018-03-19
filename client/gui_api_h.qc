@@ -55,6 +55,10 @@ void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
 
 
+string DAT_OTL_UI_IMG;
+string DAT_MNT_UI_IMG;
+string DAT_MTK_UI_IMG;
+
 //system const
 vector VIEW_ORG;
 vector VIEW_MAX;

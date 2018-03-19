@@ -13,7 +13,6 @@ string DAT_MNT_VEC_NAME = "Monitor";
 float DAT_MNT_RESERVE_COST = 200;
 vector DAT_MNT_CTOR_BBX_N ='-22 -22 -44';
 vector DAT_MNT_CTOR_BBX_X ='22 22 28';
-string DAT_MNT_UI_IMG = "gfx/ui/hgr_MNT.png";
 
 //WEAPON GROUPS
 float DAT_MNT_WEP1_IDX = ID_WEP_LATC;
@@ -113,7 +112,6 @@ vector DAT_MNT_WEP9_ADJ_ANG= '0 0 0';
 //=========================================
 
 void() data_mech_MNT;
-void() data_MNT_ini;
 
 void(vector org) MNT_renderHardpoints={
   if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
@@ -220,14 +218,35 @@ void() data_mech_MNT={
   self = MNT;
     self.data_idx = ID_MCH_MONITOR;
     self.vec_name = DAT_MNT_VEC_NAME;
-    self.classname = "data";
+    self.classname = "data_mech";
     self.data_type = DATA_MECH;
     self.vec_size = SZ_MCH_MONITOR;
-    self.c_mdl = DAT_MNT_CPIT_MODEL;
+    self.vec_name= DAT_MNT_VEC_NAME;
+    self.i_techlvl= DAT_MNT_TECH_LEVEL;
+    self.i_reserve= DAT_MNT_RESERVE_COST;
+    self.c_mdl = DAT_MNT_UI_IMG;
+    self.c_ui_hf = "gfx/ui/hgr_mnt_hf.png";
+    self.en_cur= DAT_MNT_ENERGY_MAX;
+    self.en_max= DAT_MNT_ENERGY_MAX;
+    self.en_rate= DAT_MNT_ENERGY_RATE;
+    self.sh_cur= DAT_MNT_SHIELD_MAX;
+    self.sh_max= DAT_MNT_SHIELD_MAX;
+    self.sh_rate= DAT_MNT_SHIELD_RATE;
+    self.hardpoint_cnt = DAT_MNT_HARDPOINT_CNT; 
+    self.m_fspeed = DAT_MNT_M_FSPEED;
+    self.m_sspeed = DAT_MNT_M_SSPEED;
+    self.m_bspeed = DAT_MNT_M_BSPEED;
+    self.m_maccel = DAT_MNT_M_ACCEL;
+    self.e_model = DAT_MNT_CTOR_MODEL;
+    self.hp_ctor = DAT_MNT_CTOR_HP;
+    self.hp_stor = DAT_MNT_LTOR_HP;
+    self.hp_arm = DAT_MNT_LARM_HP;
+    self.hp_leg = DAT_MNT_LEG_HP;
+    self.radar_range = DAT_MNT_RADAR_RANGE;
+  
     self.menu_renderHardpoints = MNT_renderHardpoints;
     self.menu_hardpointListener = MNT_hardpointListener;
     self.menu_hardpointRows = MNT_hardpointrows;
-    data_MNT_ini();
     self.plr_nex_wep1 = ID_WEP_LATC;
     self.plr_nex_wep2 = ID_WEP_LATC;
     self.plr_nex_wep3 = ID_WEP_LAS;
@@ -242,34 +261,7 @@ void() data_mech_MNT={
     self.plr_nex_grp3 = WEAPON7 | WEAPON8 | WEAPON9;
     self.plr_nex_grp4 = 0;
     self.plr_nex_grp5 = 0;
+    
+    self.drawmask = MASK_NORMAL;
   self = oself;
-};
-
-void() data_MNT_ini={
-  self.vec_name= DAT_MNT_VEC_NAME;
-  self.i_techlvl= DAT_MNT_TECH_LEVEL;
-  self.i_reserve= DAT_MNT_RESERVE_COST;
-  self.c_mdl = DAT_MNT_UI_IMG;
-  self.c_ui_hf = "gfx/ui/hgr_mnt_hf.png";
-  self.en_cur= DAT_MNT_ENERGY_MAX;
-  self.en_max= DAT_MNT_ENERGY_MAX;
-  self.en_rate= DAT_MNT_ENERGY_RATE;
-  self.sh_cur= DAT_MNT_SHIELD_MAX;
-  self.sh_max= DAT_MNT_SHIELD_MAX;
-  self.sh_rate= DAT_MNT_SHIELD_RATE;
-  self.hardpoint_cnt = DAT_MNT_HARDPOINT_CNT; 
-  self.m_fspeed = DAT_MNT_M_FSPEED;
-  self.m_sspeed = DAT_MNT_M_SSPEED;
-  self.m_bspeed = DAT_MNT_M_BSPEED;
-  self.m_maccel = DAT_MNT_M_ACCEL;
-  self.m_pitch_max = DAT_MNT_M_PITCH_N;
-  self.m_pitch_min = DAT_MNT_M_PITCH_X;
-  self.c_bbx_x = DAT_MNT_CTOR_BBX_X;
-  self.c_bbx_n = DAT_MNT_CTOR_BBX_N;
-  self.e_model = DAT_MNT_CTOR_MODEL;
-  self.hp_ctor = DAT_MNT_CTOR_HP;
-  self.hp_stor = DAT_MNT_LTOR_HP;
-  self.hp_arm = DAT_MNT_LARM_HP;
-  self.hp_leg = DAT_MNT_LEG_HP;
-  self.radar_range = DAT_MNT_RADAR_RANGE;
 };

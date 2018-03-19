@@ -21,7 +21,6 @@ void(string str) SV_ParseClientCommand={
   }
 };
 
-
 /*
 ===========
 ClientConnect
@@ -187,7 +186,6 @@ void() PutClientInServer = {
       mapfile_coop_load();
     }
     if( deathmatch ){
-      cons_logAFloat("m_client:mapfile_pvp_load", self.i_faction);  //DEBUG
       mapfile_pvp_load(self.i_faction);
     }
     player_makeObserver();
@@ -228,7 +226,7 @@ void() ClientKill = {
     return;
   }
   
-  if ((intermission_running)&&((coop)||(deathmatch)))  // not allowed during intermission
+  if ( (intermission_running) && ( (coop) || (deathmatch) ) )  // not allowed during intermission
 		return;
 
   //if player is an observer and their next class is still observer
@@ -240,8 +238,6 @@ void() ClientKill = {
   bprint (self.netname);
   if(self.data_type != DATA_POBS){
     	bprint (" cowardly ejects!\n");
-  }else{
-  
   }
 
   if(self.data_type == DATA_MECH){
@@ -257,6 +253,7 @@ void() ClientKill = {
     mech_cleanupMech();
   }
   self.solid = SOLID_CORPSE;
+  self.alpha = 0;
   setsize(self, '-3 -3 -3', '3 3 3');
   self.movetype = MOVETYPE_TOSS;
   self.deadflag = DEAD_DEAD;
@@ -265,7 +262,6 @@ void() ClientKill = {
   if(self.data_type != DATA_POBS){
     self.frags = self.frags - 2;
   }
-  
 	respawn ();
 };
 
@@ -277,7 +273,6 @@ called when a player disconnects from a server
 ============
 */
 void() ClientDisconnect = {
-  //q1 func
   if(gameover){
     return;
   }

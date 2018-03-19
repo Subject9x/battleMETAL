@@ -36,14 +36,12 @@ void() ctrl_update_mechplayer={
 void() mech_cleanupMech={
   
   local entity w_chain, next, lstp;
-  if((self.flags & FL_CLIENT)){
-    mech_player_removecamera();
-  }
+  
+  mech_player_removecomp(self.e_tor_c);
   mech_player_removecomp(self.e_tor_l);
   mech_player_removecomp(self.e_tor_r);
   mech_player_removecomp(self.e_arm_l);
   mech_player_removecomp(self.e_arm_r);
-  mech_player_removecomp(self.e_tor_c);
   if(self.e_legs){
     if(self.e_legs != world && self.e_legs.owner == self){
       local entity this;
@@ -67,7 +65,8 @@ void() mech_cleanupMech={
     }
     w_chain = next;
   }
-  if((self.flags & FL_CLIENT)){
+  if( (self.flags & FL_CLIENT) ){
+    mech_player_removecamera();
     self.stat_w1_id = -1;
     self.stat_w2_id = -1;
     self.stat_w3_id = -1;

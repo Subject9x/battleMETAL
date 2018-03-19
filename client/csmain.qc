@@ -264,7 +264,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   this = self;
   //switch to client context
   self = entitybyindex(player_localentnum);
-
+  
   receive_ent_bindData();
   
   //mission file load check

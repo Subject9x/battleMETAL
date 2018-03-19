@@ -13,7 +13,6 @@ string DAT_OTL_VEC_NAME = "Balakett";
 float DAT_OTL_RESERVE_COST = 100;
 vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
 vector DAT_OTL_CTOR_BBX_X ='14 14 16';
-string DAT_OTL_UI_IMG= "gfx/ui/hgr_otl.png";
 
 float DAT_OTL_HARDPOINTS = 3;
 
@@ -78,8 +77,6 @@ vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 //=========================================
 
 void() data_mech_otl;
-void() data_otl_ini;
-
 
 void(vector org) otl_renderHardpoints={
   
@@ -136,14 +133,35 @@ void() data_mech_otl={
   self = otl;
     self.data_idx = ID_MCH_BALAKET;
     self.vec_name = DAT_OTL_VEC_NAME;
-    self.classname = "data";
+    self.classname = "data_mech";
     self.data_type = DATA_MECH;
     self.vec_size = SZ_MCH_BALAKET;
-    self.c_mdl = DAT_OTL_CPIT_MODEL;
+    self.vec_name= DAT_OTL_VEC_NAME;
+    self.i_techlvl= DAT_OTL_TECH_LEVEL;
+    self.i_reserve= DAT_OTL_RESERVE_COST;
+    self.c_mdl = DAT_OTL_UI_IMG;
+    self.c_ui_hf = "gfx/ui/hgr_blk_hf.png";
+    self.en_cur= DAT_OTL_ENERGY_MAX;
+    self.en_max= DAT_OTL_ENERGY_MAX;
+    self.en_rate= DAT_OTL_ENERGY_RATE;
+    self.sh_cur= DAT_OTL_SHIELD_MAX;
+    self.sh_max= DAT_OTL_SHIELD_MAX;
+    self.sh_rate= DAT_OTL_SHIELD_RATE;
+    self.hardpoint_cnt = DAT_OTL_HARDPOINTS; 
+    self.m_fspeed = DAT_OTL_M_FSPEED;
+    self.m_sspeed = DAT_OTL_M_SSPEED;
+    self.m_bspeed = DAT_OTL_M_BSPEED;
+    self.m_maccel = DAT_OTL_M_ACCEL;
+    self.e_model = DAT_OTL_CTOR_MODEL;
+    self.hp_ctor = DAT_OTL_CTOR_HP;
+    self.hp_stor = DAT_OTL_LTOR_HP;
+    self.hp_arm = DAT_OTL_LARM_HP;
+    self.hp_leg = DAT_OTL_LEG_HP;
+    self.radar_range = DAT_OTL_RADAR_RANGE;
+  
     self.menu_renderHardpoints = otl_renderHardpoints;
     self.menu_hardpointListener = otl_hardpointListener;
     self.menu_hardpointRows = otl_hardpointrows;
-    data_otl_ini();
     self.plr_nex_wep1 = 1;
     self.plr_nex_wep2 = 1;
     self.plr_nex_wep3 = 2;
@@ -158,35 +176,10 @@ void() data_mech_otl={
     self.plr_nex_grp3 = 0;
     self.plr_nex_grp4 = 0;
     self.plr_nex_grp5 = 0;
+    self.drawmask = MASK_NORMAL;
   self = oself;
   addentity(otl);
 };
 
 void() data_otl_ini={
-  self.vec_name= DAT_OTL_VEC_NAME;
-  self.i_techlvl= DAT_OTL_TECH_LEVEL;
-  self.i_reserve= DAT_OTL_RESERVE_COST;
-  self.c_mdl = DAT_OTL_UI_IMG;
-  self.c_ui_hf = "gfx/ui/hgr_blk_hf.png";
-  self.en_cur= DAT_OTL_ENERGY_MAX;
-  self.en_max= DAT_OTL_ENERGY_MAX;
-  self.en_rate= DAT_OTL_ENERGY_RATE;
-  self.sh_cur= DAT_OTL_SHIELD_MAX;
-  self.sh_max= DAT_OTL_SHIELD_MAX;
-  self.sh_rate= DAT_OTL_SHIELD_RATE;
-  self.hardpoint_cnt = DAT_OTL_HARDPOINTS; 
-  self.m_fspeed = DAT_OTL_M_FSPEED;
-  self.m_sspeed = DAT_OTL_M_SSPEED;
-  self.m_bspeed = DAT_OTL_M_BSPEED;
-  self.m_maccel = DAT_OTL_M_ACCEL;
-  self.m_pitch_max = DAT_OTL_M_PITCH_N;
-  self.m_pitch_min = DAT_OTL_M_PITCH_X;
-  self.c_bbx_x = DAT_OTL_CTOR_BBX_X;
-  self.c_bbx_n = DAT_OTL_CTOR_BBX_N;
-  self.e_model = DAT_OTL_CTOR_MODEL;
-  self.hp_ctor = DAT_OTL_CTOR_HP;
-  self.hp_stor = DAT_OTL_LTOR_HP;
-  self.hp_arm = DAT_OTL_LARM_HP;
-  self.hp_leg = DAT_OTL_LEG_HP;
-  self.radar_range = DAT_OTL_RADAR_RANGE;
 };

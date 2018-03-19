@@ -201,7 +201,6 @@ void() PlayerDie={
   if(self.data_type != DATA_POBS){
     mech_clearWeaponGroups();
     if(self.data_type == DATA_MECH){
-      self.data_type = DATA_POBS; //edge case spot-welding
       mech_player_die();
       return;
     }

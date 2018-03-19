@@ -5,6 +5,7 @@ Date: 10/31/2016
 Overview: header for mech hud functions
 */
 
+
 void() cs_removeEnt={
   remove(self);
 };
@@ -99,6 +100,11 @@ void() cs_precache={
   UI_WEP_ION = precache_pic("gfx/ui/wep_icons/wi_ion.png",0);
   UI_WEP_SWRM = precache_pic("gfx/ui/wep_icons/wi_swrm.png",0);
   
+  //UI - mechs
+   DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);
+   DAT_MNT_UI_IMG = precache_pic("gfx/ui/hgr_MNT.png",0);
+   DAT_MTK_UI_IMG = precache_pic("gfx/ui/hgr_mtk.png",0);
+  
   //buildings
   building_power();
   building_shield();
@@ -150,7 +156,7 @@ entity(float id, float dat_type) m_findData={
 
 entity(float sz, float id) m_findMechData={
   local entity data_chain;
-  data_chain = findchain(classname, "data");
+  data_chain = findchain(classname, "data_mech");
   while(data_chain){
     if(data_chain.data_type == DATA_MECH){
       local float idx, weight;
