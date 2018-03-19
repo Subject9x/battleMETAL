@@ -45,9 +45,9 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     if(eBlocker.i_faction == self.i_faction){
       if( (blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD) ){
         if(self.ai_type == AI_TYPE_AGGRO){
-          amt = 2 + self.p_damage;
+          amt = 1 + self.p_damage;
           if(prox <= distClose){
-            amt = amt + 2;
+            amt = amt + 1;
           }
           if(ai_target_isFacingThis(self.trigger_field)){
             ai_move_randomFour(amt, ai_move_charge_left,
@@ -62,9 +62,9 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
                                     ai_move_runmove_slideright);
           return;
         }
-        amt = 1 + self.p_damage;
+        amt = 0.5 + self.p_damage;
         if(prox <= distClose){
-          amt = amt + 1;
+          amt = amt + 0.5;
           ai_move_randomSix(amt,  ai_move_walkmove_forwardleft,
                                   ai_move_walkmove_strafeleft,
                                   ai_move_walkmove_backleft,
@@ -82,22 +82,22 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       //--------------------------
       if(blockDir == AI_TARG_LFT){
         if(self.ai_type == AI_TYPE_AGGRO){
-          amt = 2 + self.p_damage;
+          amt = 1 + self.p_damage;
           if(prox <= distClose){
-            amt = amt + 2;
+            amt = amt + 1;
             ai_move_randomTwo(amt, ai_move_charge_right,
                                     ai_move_runmove_slideright);
             return;
           }
           if(ai_target_isFacingThis(self.trigger_field)){
-            amt = amt + 4;
+            amt = amt + 2;
           }
           ai_move_controller(ai_move_runmove_slideright, amt);
           return;
         }
-        amt = 1 + self.p_damage;
+        amt = 0.5 + self.p_damage;
         if(prox <= distClose){
-          amt = amt + 1;
+          amt = amt + 0.5;
           ai_move_randomThree(amt,  ai_move_walkmove_forwardright,
                                   ai_move_walkmove_straferight,
                                   ai_move_walkmove_backright);
@@ -110,22 +110,22 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       //--------------------------
       if(blockDir == AI_TARG_RGT){
         if(self.ai_type == AI_TYPE_AGGRO){
-          amt = 2 + self.p_damage;
+          amt = 1 + self.p_damage;
           if(prox <= distClose){
-            amt = amt + 2;
+            amt = amt + 1;
             ai_move_randomTwo(amt, ai_move_charge_left,
                                     ai_move_runmove_slideleft);
             return;
           }
           if(ai_target_isFacingThis(self.trigger_field)){
-            amt = amt + 4;
+            amt = amt + 2;
           }
           ai_move_controller(ai_move_runmove_slideleft, amt);
           return;
         }
-        amt = 1 + self.p_damage;
+        amt = 0.5 + self.p_damage;
         if(prox <= distClose){
-          amt = amt + 1;
+          amt = amt + 0.5;
           ai_move_randomThree(amt,  ai_move_walkmove_forwardleft,
                                   ai_move_walkmove_strafeleft,
                                   ai_move_walkmove_backleft);
@@ -140,20 +140,20 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     else{
       if( (blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD) ){
         if(self.ai_type == AI_TYPE_AGGRO){
-          amt = self.p_damage;
+          amt = self.p_damage / 2;
           if(prox <= distClose){
-            amt = amt + 4;
+            amt = amt + 2;
           }
           if(ai_target_isFacingThis(eBlocker)){
-            amt = amt + 2;
+            amt = amt + 1;
           }
           ai_move_randomTwo(amt, ai_move_runmove_slideright,
                                   ai_move_runmove_slideleft);
           return;
         }
-        amt = self.p_damage;
+        amt = self.p_damage / 2;
         if(prox <= distClose){
-          amt = amt + 3;
+          amt = amt + 1.5;
         }
         if(ai_target_isFacingThis(eBlocker)){
           ai_move_randomFour(amt, ai_move_charge_left,
@@ -171,42 +171,42 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       //--------------------------
       if(blockDir == AI_TARG_LFT){
         if(self.ai_type == AI_TYPE_AGGRO){
-          amt = self.p_damage;
+          amt = self.p_damage / 2;
           if(prox <= distClose){
-            amt = amt + 2;
+            amt = amt + 1;
             ai_move_randomThree(amt, ai_move_charge_right,
                                       ai_move_runmove_slideright,
                                       ai_move_runmove_backright);
             return;
           }
-          amt = amt + 6;
+          amt = amt + 3;
           ai_move_controller(ai_move_charge_right, amt);
           return;
         }
         amt = self.p_damage;
         if(prox <= distClose){
-          amt = amt + 1;
+          amt = amt + 0.5;
           ai_move_randomThree(amt, ai_move_walkmove_forwardright,
                                     ai_move_walkmove_straferight,
                                     ai_move_walkmove_backright);
           return;
         }
-        amt = amt + 3;
+        amt = amt + 1.5;
         ai_move_controller(ai_move_charge_right, amt);
         return;
       }
       //--------------------------
       if(blockDir == AI_TARG_RGT){
         if(self.ai_type == AI_TYPE_AGGRO){
-          amt = self.p_damage;
+          amt = self.p_damage / 2;
           if(prox <= distClose){
-            amt = amt + 2;
+            amt = amt + 1;
             ai_move_randomThree(amt, ai_move_charge_left,
                                       ai_move_runmove_slideleft,
                                       ai_move_runmove_backleft);
             return;
           }
-          amt = amt + 6;
+          amt = amt + 3;
           ai_move_controller(ai_move_charge_left, amt);
           return;
         }
@@ -218,7 +218,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
                                     ai_move_walkmove_backleft);
           return;
         }
-        amt = amt + 3;
+        amt = amt + 1.5;
         ai_move_controller(ai_move_charge_left, amt);
         return;
       }
@@ -232,16 +232,16 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     local float moveDist;
     moveDist = ai_util_calcMoveDist(self.trigger_field.origin, 0.05);
     if( (tMovedir == AI_TARG_FWD) || (tMovedir == AI_TARG_BKD) ){
-      ai_move_randomTwo(2, ai_move_walkmove_backright, ai_move_walkmove_backleft);
+      ai_move_randomTwo(1, ai_move_walkmove_backright, ai_move_walkmove_backleft);
                               
       return;
     }
     if(tMovedir == AI_TARG_LFT){
-      ai_move_controller(ai_move_walkmove_backright, 2);
+      ai_move_controller(ai_move_walkmove_backright, 1);
       return;
     }
     if(tMovedir == AI_TARG_RGT){
-      ai_move_controller(ai_move_walkmove_backleft, 2);
+      ai_move_controller(ai_move_walkmove_backleft, 1);
       return;
     }  
   }
@@ -253,31 +253,31 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     moveDist = ai_util_calcMoveDist(self.trigger_field.origin, 0.05) -  ai_util_calcMoveLen(distClose + 50, 0.05);
     if( (tMovedir == AI_TARG_FWD) || (tMovedir == AI_TARG_BKD) ){
       if(self.ai_type == AI_TYPE_AGGRO){
-        moveDist = ceil((moveDist + self.p_damage + 1) / 2); 
+        moveDist = ceil((moveDist + self.p_damage + 0.5) / 2); 
         ai_move_controller(ai_run_forward, moveDist);
         return;
       }
-      moveDist = ceil((moveDist + self.p_damage) / 2); 
+      moveDist = ceil((moveDist + (self.p_damage / 2) ) / 2); 
       ai_move_controller(ai_move_forward, moveDist);
       return;
     } 
     if(tMovedir == AI_TARG_LFT){
       if(self.ai_type == AI_TYPE_AGGRO){
-        moveDist = ceil((moveDist + self.p_damage + 1) / 2); 
+        moveDist = ceil((moveDist + self.p_damage + 0.5) / 2); 
         ai_move_controller(ai_move_walkmove_forwardleft, moveDist);
         return;
       }
-      moveDist = ceil((moveDist + self.p_damage) / 2); 
+      moveDist = ceil((moveDist + (self.p_damage / 2)) / 2); 
       ai_move_randomTwo(moveDist, ai_move_forward, ai_move_walkmove_forwardleft);
       return;
     }
     if(tMovedir == AI_TARG_RGT){
       if(self.ai_type == AI_TYPE_AGGRO){
-        moveDist = ceil((moveDist + self.p_damage + 1) / 2);
+        moveDist = ceil((moveDist + self.p_damage + 0.5) / 2);
         ai_move_controller(ai_move_walkmove_forwardright, moveDist);
         return;
       }
-      moveDist = ceil((moveDist + self.p_damage) / 2); 
+      moveDist = ceil((moveDist + (self.p_damage / 2)) / 2); 
       ai_move_randomTwo(moveDist, ai_move_forward, ai_move_walkmove_forwardright);
       return;
     }
@@ -288,9 +288,9 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   if(tMovedir == AI_TARG_FWD){
     if(self.ai_type == AI_TYPE_AGGRO){
       if(ai_target_isFacingThis(self.trigger_field)){
-        amt = self.p_damage;
+        amt = self.p_damage / 2;
         if(self.trigger_field.trigger_field == self){
-          amt = amt + 4;
+          amt = amt + 2;
         }
         ai_move_randomFour(amt, ai_move_charge_left,
                                 ai_move_charge_right,
@@ -303,9 +303,9 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     }
     
     if(ai_target_isFacingThis(self.trigger_field)){
-      amt = 1;
+      amt = 0.5;
       if(self.trigger_field.trigger_field == self){
-        amt = amt + self.p_damage;
+        amt = amt + (self.p_damage / 2);
       }
       ai_move_randomTwo(amt, ai_move_runmove_slideleft,
                                 ai_move_runmove_slideright);
@@ -318,9 +318,9 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   if(tMovedir == AI_TARG_BKD){
     if(self.ai_type == AI_TYPE_AGGRO){
       if(ai_target_isFacingThis(self.trigger_field)){
-        amt = self.p_damage;
+        amt = self.p_damage / 2;
         if(self.trigger_field.trigger_field == self){
-          amt = amt + 4;
+          amt = amt + 2;
         }
         ai_move_randomTwo(amt, ai_move_charge_left,
                                 ai_move_charge_right);
@@ -330,9 +330,9 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       return;
     }
     if(ai_target_isFacingThis(self.trigger_field)){
-      amt = 1;
+      amt = 2;
       if(self.trigger_field.trigger_field == self){
-        amt = amt + self.p_damage;
+        amt = amt + (self.p_damage / 2);
       }
       ai_move_randomTwo(amt, ai_move_runmove_slideleft,
                                 ai_move_runmove_slideright);
@@ -349,22 +349,22 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       if(ai_target_isFacingThis(self.trigger_field)){
         if(ai_target_isFacingThis(self.trigger_field)){
           if((self.p_velocity >=  self.v_angle_y + 90) && (self.p_velocity <= self.v_angle_y + 135)){
-            ai_move_controller(ai_move_walkmove_strafeleft, 2);
+            ai_move_controller(ai_move_walkmove_strafeleft, 1);
             return;
           }
           if((self.p_velocity <=  self.v_angle_y - 90) && (self.p_velocity >= self.v_angle_y - 135)){
-            ai_move_controller(ai_move_walkmove_straferight, 2);
+            ai_move_controller(ai_move_walkmove_straferight, 1);
             return;                
           }
         }
       }
-      ai_move_controller(ai_move_backward, 2);
+      ai_move_controller(ai_move_backward, 1);
       return;
     }
     if(ai_target_isFacingThis(self.trigger_field)){
-      amt = 1;
+      amt = 0.5;
       if(self.trigger_field.trigger_field == self){
-        amt = amt + self.p_damage;
+        amt = amt + (self.p_damage / 2);
       }
       ai_move_randomThree(amt, ai_run_forward,
                                 ai_move_charge_right,
@@ -381,22 +381,22 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       if(ai_target_isFacingThis(self.trigger_field)){
         if(ai_target_isFacingThis(self.trigger_field)){
           if((self.p_velocity >=  self.v_angle_y + 90) && (self.p_velocity <= self.v_angle_y + 135)){
-            ai_move_controller(ai_move_walkmove_strafeleft, 2);
+            ai_move_controller(ai_move_walkmove_strafeleft, 1);
             return;
           }
           if((self.p_velocity <=  self.v_angle_y - 90) && (self.p_velocity >= self.v_angle_y - 135)){
-            ai_move_controller(ai_move_walkmove_straferight, 2);
+            ai_move_controller(ai_move_walkmove_straferight, 1);
             return;                
           }
         }
       }
-      ai_move_controller(ai_move_backward, 2);
+      ai_move_controller(ai_move_backward, 1);
       return;
     }
     if(ai_target_isFacingThis(self.trigger_field)){
-      amt = 1;
+      amt = 0.5;
       if(self.trigger_field.trigger_field == self){
-        amt = amt + self.p_damage;
+        amt = amt + (self.p_damage / 2);
       }
       ai_move_randomThree(amt, ai_run_forward,
                                 ai_move_charge_left,
@@ -408,15 +408,15 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   }
   if(ai_target_isFacingThis(self.trigger_field)){
     if((self.p_velocity >=  self.v_angle_y + 90) && (self.p_velocity <= self.v_angle_y + 135)){
-      ai_move_controller(ai_move_walkmove_straferight, 1);
+      ai_move_controller(ai_move_walkmove_straferight, 0.5);
       return;
     }
     if((self.p_velocity <=  self.v_angle_y - 90) && (self.p_velocity >= self.v_angle_y - 135)){
-      ai_move_controller(ai_move_walkmove_strafeleft, 1);
+      ai_move_controller(ai_move_walkmove_strafeleft, 0.5);
       return;                
     }
   }
-  ai_move_controller(ai_move_stand, 1);
+  ai_move_controller(ai_move_stand, 0.5);
   return;
   //--------------------------
 //=================================================

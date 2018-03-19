@@ -55,15 +55,15 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     if(eBlocker.i_faction == self.i_faction){
       //oops, friendly is in the way, try to move around
       if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
-        ai_move_randomTwo(1, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
+        ai_move_randomTwo(0.5, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
         return;
       }
       if(blockDir == AI_TARG_RGT){
-        ai_move_controller(ai_move_walkmove_strafeleft, 2);
+        ai_move_controller(ai_move_walkmove_strafeleft, 1);
         return;
       }
       if(blockDir == AI_TARG_LFT){
-        ai_move_controller(ai_move_walkmove_straferight, 2);
+        ai_move_controller(ai_move_walkmove_straferight, 1);
         return;
       }
     }
@@ -79,7 +79,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
           }
         }
         if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
-          ai_move_randomSix(2, ai_move_runmove_slideleft,
+          ai_move_randomSix(1, ai_move_runmove_slideleft,
                                 ai_move_runmove_slideright, 
                                 ai_move_charge_left, 
                                 ai_move_charge_right,
@@ -89,25 +89,25 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         }
         else{
           if(blockDir == AI_TARG_RGT){
-            ai_move_controller(ai_move_runmove_slideleft, 2);
+            ai_move_controller(ai_move_runmove_slideleft, 1);
             return;
           }
           if(blockDir == AI_TARG_LFT){
-            ai_move_controller(ai_move_runmove_slideright, 2);
+            ai_move_controller(ai_move_runmove_slideright, 1);
             return;
           }
         }
       }
       if((blockDir == AI_TARG_FWD) || (blockDir == AI_TARG_BKD)){
-        ai_move_randomTwo(1, ai_move_runmove_slideleft, ai_move_runmove_slideright);
+        ai_move_randomTwo(0.5, ai_move_runmove_slideleft, ai_move_runmove_slideright);
         return;
       }
       if(blockDir == AI_TARG_RGT){
-        ai_move_controller(ai_move_runmove_slideleft, 2);
+        ai_move_controller(ai_move_runmove_slideleft, 1);
         return;
       }
       if(blockDir == AI_TARG_LFT){
-        ai_move_controller(ai_move_runmove_slideright, 2);
+        ai_move_controller(ai_move_runmove_slideright, 1);
         return;
       }
       return;
@@ -119,33 +119,12 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   if(isClose){
     if(tMovedir == AI_TARG_FWD){
       if(self.ai_type == AI_TYPE_AGGRO){
-        amt = self.p_damage + 1;
+        amt = self.p_damage + 0.5;
         ai_move_randomTwo(amt, ai_move_runmove_backleft, ai_move_runmove_backright);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-        amt = self.p_damage + 1;
-        ai_move_randomTwo(amt, ai_move_walkmove_backleft, ai_move_walkmove_backright);
-        return;
-      }
-      if(self.p_damage <= AI_RANK_VET){
-        ai_move_randomTwo(4, ai_move_runmove_backleft, ai_move_runmove_backright);
-        return;
-      }
-      ai_move_randomThree(6, ai_move_walkmove_backleft, 
-                              ai_move_walkmove_backright,
-                              ai_move_backward);
-      return;
-    }
-    //--------------------------
-    if(tMovedir == AI_TARG_BKD){
-      if(self.ai_type == AI_TYPE_AGGRO){
-        amt = self.p_damage + 1;
-        ai_move_randomTwo(amt, ai_move_runmove_slideleft, ai_move_runmove_slideright);
-        return;
-      }
-      if(self.ai_type == AI_TYPE_COWRD){
-        amt = self.p_damage + 1;
+        amt = self.p_damage + 0.5;
         ai_move_randomTwo(amt, ai_move_walkmove_backleft, ai_move_walkmove_backright);
         return;
       }
@@ -153,7 +132,28 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         ai_move_randomTwo(2, ai_move_runmove_backleft, ai_move_runmove_backright);
         return;
       }
-      ai_move_randomThree(4, ai_move_walkmove_backleft, 
+      ai_move_randomThree(3, ai_move_walkmove_backleft, 
+                              ai_move_walkmove_backright,
+                              ai_move_backward);
+      return;
+    }
+    //--------------------------
+    if(tMovedir == AI_TARG_BKD){
+      if(self.ai_type == AI_TYPE_AGGRO){
+        amt = self.p_damage + 0.5;
+        ai_move_randomTwo(amt, ai_move_runmove_slideleft, ai_move_runmove_slideright);
+        return;
+      }
+      if(self.ai_type == AI_TYPE_COWRD){
+        amt = self.p_damage + 0.5;
+        ai_move_randomTwo(amt, ai_move_walkmove_backleft, ai_move_walkmove_backright);
+        return;
+      }
+      if(self.p_damage <= AI_RANK_VET){
+        ai_move_randomTwo(1, ai_move_runmove_backleft, ai_move_runmove_backright);
+        return;
+      }
+      ai_move_randomThree(2, ai_move_walkmove_backleft, 
                               ai_move_walkmove_backright,
                               ai_move_backward);
       return;
@@ -162,34 +162,34 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     if(tMovedir == AI_TARG_LFT){
       if(self.ai_type == AI_TYPE_AGGRO){
         if(self.p_damage <= AI_RANK_VET){
-          ai_move_randomTwo(1, ai_move_runmove_slideright, ai_move_runmove_backright);
+          ai_move_randomTwo(0.5, ai_move_runmove_slideright, ai_move_runmove_backright);
           return;
         }
-        ai_move_controller(ai_move_runmove_backright, 1);
+        ai_move_controller(ai_move_runmove_backright, 0.5);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-        ai_move_randomTwo(self.p_damage + 3, ai_move_backward, ai_move_walkmove_backright);
+        ai_move_randomTwo(self.p_damage + 1.5, ai_move_backward, ai_move_walkmove_backright);
         return;
       }
-      ai_move_randomTwo(self.p_damage + 1, ai_move_backward, ai_move_walkmove_backright);
+      ai_move_randomTwo(self.p_damage + 0.5, ai_move_backward, ai_move_walkmove_backright);
       return;
     }
     //--------------------------
     if(tMovedir == AI_TARG_RGT){
       if(self.ai_type == AI_TYPE_AGGRO){
         if(self.p_damage <= AI_RANK_VET){
-          ai_move_randomTwo(1, ai_move_runmove_slideright, ai_move_runmove_backleft);
+          ai_move_randomTwo(0.5, ai_move_runmove_slideright, ai_move_runmove_backleft);
           return;
         }
-        ai_move_controller(ai_move_runmove_backleft, 1);
+        ai_move_controller(ai_move_runmove_backleft, 0.5);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-        ai_move_randomTwo(self.p_damage + 3, ai_move_backward, ai_move_walkmove_backleft);
+        ai_move_randomTwo(self.p_damage + 1.5, ai_move_backward, ai_move_walkmove_backleft);
         return;
       }
-      ai_move_randomTwo(self.p_damage + 1, ai_move_backward, ai_move_walkmove_backleft);
+      ai_move_randomTwo(self.p_damage + 0.5, ai_move_backward, ai_move_walkmove_backleft);
       return;
     }
     //--------------------------
@@ -197,7 +197,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     
     }
     if(self.ai_type == AI_TYPE_COWRD){
-      amt = self.p_damage + 4;
+      amt = self.p_damage + 2;
       ai_move_randomThree(amt, ai_run_backward,
                                 ai_move_runmove_backright,
                                 ai_move_runmove_backleft);
@@ -212,7 +212,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         return;
       }
     }
-    ai_move_randomThree(self.p_damage, ai_run_backward,
+    ai_move_randomThree(0.25 + (self.p_damage / 2), ai_run_backward,
                                         ai_move_walkmove_backleft,
                                         ai_move_walkmove_backright);
     return;
@@ -222,7 +222,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
 //CASE: Target is too far away
   if(isFar){
     if(tMovedir == AI_TARG_FWD){
-      amt = self.p_damage + 2;
+      amt = self.p_damage + 1;
       if(self.ai_type == AI_TYPE_AGGRO){
         amt = amt / 2;
         ai_move_randomTwo(amt, ai_move_charge_left,
@@ -230,10 +230,10 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-        amt = amt + 2;
+        amt = amt + 1;
       }
       if(self.p_damage <= AI_RANK_VET){
-        amt = amt - 2;
+        amt = amt - 1;
         ai_move_randomTwo(amt,  ai_move_charge_left,
                                  ai_move_charge_right);
         return;
@@ -244,7 +244,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       return;
     }
     if(tMovedir == AI_TARG_BKD){
-      amt = self.p_damage + 2;
+      amt = self.p_damage + 1;
       if(self.ai_type == AI_TYPE_AGGRO){
         amt = amt / 2;
         ai_move_randomThree(amt, ai_run_forward,
@@ -253,10 +253,10 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-        amt = amt + 2;
+        amt = amt + 1;
       }
       if(self.p_damage <= AI_RANK_VET){
-        amt = amt - 2;
+        amt = amt - 1;
         ai_move_randomTwo(amt,  ai_move_charge_left,
                                  ai_move_charge_right);
         return;
@@ -267,17 +267,17 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       return;
     }
     if(tMovedir == AI_TARG_LFT){
-      amt = self.p_damage + 2;
+      amt = self.p_damage + 1;
       if(self.ai_type == AI_TYPE_AGGRO){
         amt = amt / 2;
         ai_move_controller(ai_move_charge_left, amt);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-        amt = amt + 2;
+        amt = amt + 1;
       }
       if(self.p_damage <= AI_RANK_VET){
-        amt = amt - 2;
+        amt = amt - 1;
         ai_move_randomTwo(amt,  ai_run_forward,
                                  ai_move_charge_right);
         return;
@@ -287,17 +287,17 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       return;
     }
     if(tMovedir == AI_TARG_RGT){
-      amt = self.p_damage + 2;
+      amt = self.p_damage + 1;
       if(self.ai_type == AI_TYPE_AGGRO){
         amt = amt / 2;
         ai_move_controller(ai_move_charge_right, amt);
         return;
       }
       if(self.ai_type == AI_TYPE_COWRD){
-        amt = amt + 2;
+        amt = amt + 1;
       }
       if(self.p_damage <= AI_RANK_VET){
-        amt = amt - 2;
+        amt = amt - 1;
         ai_move_randomTwo(amt,  ai_run_forward,
                                  ai_move_charge_right);
         return;
@@ -310,7 +310,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
       ai_move_controller(ai_run_forward, self.p_damage);
       return;
     }
-    ai_move_controller(ai_move_stand, 0.5);
+    ai_move_controller(ai_move_stand, 0.25);
     return;
   }
 //=================================================
@@ -320,12 +320,12 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   if(targDist <= distOptimal){
     if(tMovedir == AI_TARG_FWD){
       if((self.ai_type == AI_TYPE_COWRD) || (self.p_damage <= AI_RANK_REG)){
-        ai_move_randomThree(1, ai_move_walkmove_backleft, 
+        ai_move_randomThree(0.5, ai_move_walkmove_backleft, 
                                 ai_move_walkmove_backright, 
                                 ai_run_backward);
       }
       else{
-        ai_move_randomThree(1, ai_move_runmove_slideleft, 
+        ai_move_randomThree(0.5, ai_move_runmove_slideleft, 
                                 ai_move_runmove_slideright, 
                                 ai_move_forward);
       }
@@ -333,34 +333,34 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
     }
     else if(tMovedir == AI_TARG_BKD){
       if((self.ai_type == AI_TYPE_COWRD) || (self.p_damage <= AI_RANK_REG)){
-        ai_move_controller(ai_move_forward, 2);
+        ai_move_controller(ai_move_forward, 1);
       }
       else{
-        ai_move_controller(ai_run_forward, 1);
+        ai_move_controller(ai_run_forward, 0.5);
       }
       return;
     }
     else if(tMovedir == AI_TARG_LFT){
       if(self.p_damage == AI_RANK_ROK){
-        ai_move_randomThree(2, ai_move_walkmove_strafeleft, 
+        ai_move_randomThree(1, ai_move_walkmove_strafeleft, 
                                 ai_move_walkmove_strafeleft, 
                                 ai_move_walkmove_straferight);
         return;
       }
       else{
-        ai_move_randomTwo(1, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
+        ai_move_randomTwo(0.5, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
         return;
       }
     }
     else if(tMovedir == AI_TARG_RGT){
       if(self.p_damage == AI_RANK_ROK){
-        ai_move_randomThree(2, ai_move_walkmove_straferight, 
+        ai_move_randomThree(1, ai_move_walkmove_straferight, 
                                 ai_move_walkmove_straferight, 
                                 ai_move_walkmove_strafeleft);
         return;
       }
       else{
-        ai_move_randomTwo(1, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
+        ai_move_randomTwo(0.5, ai_move_walkmove_strafeleft, ai_move_walkmove_straferight);
         return;
       }
     }
@@ -368,19 +368,19 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   else{
     //Target is outside optimal range
     if(self.ai_type == AI_TYPE_AGGRO){
-      ai_move_randomThree(6, ai_run_forward, 
+      ai_move_randomThree(3, ai_run_forward, 
                             ai_move_charge_right, 
                             ai_move_charge_left);
       return;
     }
     if(self.p_damage >= AI_RANK_REG){
-      ai_move_controller(ai_move_forward, 4);
+      ai_move_controller(ai_move_forward, 2);
       return;
     }
-    ai_move_controller(ai_run_forward, 8);
+    ai_move_controller(ai_run_forward, 4);
     return;
   }
-  ai_move_randomSix(3, ai_move_runmove_slideleft, 
+  ai_move_randomSix(1.5, ai_move_runmove_slideleft, 
                         ai_move_charge_left, 
                         ai_move_walkmove_backright, 
                         ai_move_walkmove_backleft, 
