@@ -41,7 +41,7 @@ void() ai_combat_findTarget={
         return;
       }
     }
-    else if( ai_target_isValid(self.trigger_field) ){
+    else if( !ai_target_isValid(self.trigger_field) ){
       ai_update_dmgTime();
       ai_update_switchToTarget(contact);
       self.patience = time + self.maxpatience;
@@ -148,7 +148,7 @@ void() ai_combat_adjustPosition={
     eBlocker = ai_target_checkBlock(self.trigger_field);
     
     //enter proper combat stance
-    if(ai_target_canSee(self.trigger_field)){
+    if( ai_target_canSee(self.trigger_field) ){
       if(self.ai_style == AI_STYLE_SNIPER){
         ai_combat_adjustSniper(tDist, AI_RANGE_M, AI_RANGE_L, tMoveDir, lowHP, eBlocker);
       }

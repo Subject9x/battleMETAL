@@ -159,14 +159,14 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         nav.ui_size_x = nav.ui_size_x + gui_percentXRaw(nlen);
         nav.ui_size_y = nav.ui_size_y + gui_percentY(0.0062);
         drawstring(nofs - gui_percentToPixelRawVec('0 12'), nav.w_name, '6 6 0', CLR_DEF_WHITE, HUD_ALPHA, 0);
-        gui_renderTintImage(TRUE, ofs + gui_percentToPixelRawVec('-8 -8'), UI_DEF_NAVPOINT, '16 16', CLR_DEF_WHITE, 1, 0) ;
+        gui_renderTintImage(TRUE, ofs + gui_percentToPixelRawVec('-8 -8'), UI_DEF_NAVPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_WHITE, 1, 0) ;
       }
     }
     else if(nav.data_type == DATA_DEPL){
       if(nav.i_faction == self.i_faction){
         local vector nclr;
         nav.ui_org = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
-        nav.ui_size = '16 16';
+        nav.ui_size = gui_percentToPixelRawVec('12 12');
         if(nav.isActive){
           nclr = CLR_DEF_ARM_OK;
         }
@@ -186,7 +186,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         if(player.i_faction == self.i_faction){
           local vector friend_org;
           friend_org = gui_mapCoordToImgCoord(map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
-          drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND, HUD_ALPHA, 0);
+          drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, HUD_ALPHA, 0);
         }
       }
       player = player.chain;

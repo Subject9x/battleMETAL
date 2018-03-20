@@ -34,7 +34,7 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
   if(targDist > distFar){
     isFar = TRUE;
   }
-  if(targDist <= self.ai_minrange){
+  if( !(isClose) && (targDist <= self.ai_minrange)){
     distOptimal = TRUE; //maybe disregard?
   }
 //==================================================
@@ -316,6 +316,33 @@ void(float targDist, float distClose, float distFar, float tMovedir, float selfL
                             ai_move_runmove_slideright);
       return;
     }
+    if(self.ai_type == AI_TYPE_AGGRO){
+      if(self.p_damage <= AI_RANK_VET){
+        ai_move_randomFour(2, ai_move_walkmove_backright, 
+                              ai_move_walkmove_backleft, 
+                              ai_move_runmove_backright, 
+                              ai_move_runmove_backleft);
+        return;
+      }
+      //else
+      ai_move_randomTwo(1, ai_move_runmove_backleft, ai_move_runmove_backright);
+      return;
+    }
+    if(self.ai_type == AI_TYPE_COWRD){
+      ai_move_randomThree(2, ai_move_stand, 
+                              ai_move_walkmove_backleft, 
+                              ai_move_runmove_backright);
+      return;
+    }
+    //else
+    if(self.p_damage <= AI_RANK_VET){
+      ai_move_randomThree(3, ai_move_runmove_slideright,
+                              ai_move_runmove_slideleft,
+                              ai_run_backward);
+      return;
+    }
+    ai_move_controller(ai_run_backward, 4);
+    return;
   }
 //=================================================
   

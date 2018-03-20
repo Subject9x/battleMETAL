@@ -16,6 +16,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( !trg.takedamage ){
     return trg;
   }
+  
   if( (trg.flags & FL_GODMODE) ){
     return trg;
   }
@@ -25,7 +26,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     dmg_amt = dmg_amt / 2;
   }
   
-  if((trg.flags & FL_CLIENT)){
+  if( (trg.flags & FL_CLIENT) ){
     trg.dmg_inflictor = inflictor;
     if(trg.was_hit < time){
       trg.was_hit = time + 1;
