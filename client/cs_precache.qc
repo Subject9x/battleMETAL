@@ -112,6 +112,7 @@ void() cs_precache={
   building_hangar_l();
   building_fuel();
   building_ltur();
+  building_repair();
   
   //mech data
   data_mech_mtk();

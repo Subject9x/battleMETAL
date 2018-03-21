@@ -10,6 +10,7 @@ Overview: data file for building
 
 /*QUAKED building_shield (.1 .1 .1) (-64 -64 -17.5) (64 64 17.5)
 */
+void() building_shield_think;
 void() building_shield_die;
 void() building_shield;
 
@@ -26,6 +27,9 @@ void() building_shield={
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_SHIELDGEN_SH_MAX;
   self.sh_rate= DAT_BLD_H_SHIELDGEN_SH_RATE;
+  self.en_cur = 0;
+  self.en_rate = 0;
+  self.en_max= DAT_BLD_H_POWER_PLANT_EN_MAX / 2;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
@@ -33,10 +37,77 @@ void() building_shield={
   
   self.th_die = building_shield_die;
   self.use = multi_trigger;
-  self.think = building_think;
-  self.nextthink = time + 1;
   self.SendEntity = send_building;
   self.SendFlags = -1;
+  self.think = building_shield_think;
+  self.nextthink = time + 1;
+};
+
+void() building_shield_think={
+  local entity t, p;
+  if(self.en_rate != 0){
+    self.en_cur = self.en_cur + self.en_rate;
+    if(self.en_cur > self.en_max){
+      self.en_cur = self.en_max;
+    }
+  }
+  
+  if(self.sh_cur < self.sh_max){
+    self.sh_cur = self.sh_cur + self.sh_rate * 2;
+    self.en_cur = self.en_cur - self.sh_rate / 2; 
+    if(self.sh_cur > self.sh_max){
+      self.sh_cur = self.sh_max;
+    }
+  }
+
+  t = findchainflags(flags, FL_MONSTER);
+  while(t){
+    if(t.i_faction == self.i_faction){
+      if(t != self){
+        local float dist;
+        dist = vlen(t.origin - self.origin);
+        if(dist <= DAT_BLD_H_SHIELD_RADIUS){
+          if(self.en_cur > self.sh_cur){
+            if(t.sh_cur < t.sh_max){
+              local float mod;
+              mod = self.sh_rate / 2;
+              t.sh_cur = t.sh_cur + mod;
+              self.en_cur = self.en_cur - mod;
+              if(t.sh_cur > t.sh_max){
+                t.sh_cur = t.sh_max;
+              }
+            }
+          }
+        }
+      }
+    }
+    t = t.chain;
+  }
+  
+  p = findchainflags(flags, FL_CLIENT);
+  while(p){
+    if(p.i_faction == self.i_faction){
+      local float pdist;
+      pdist = vlen(t.origin - self.origin);
+      if(pdist <= DAT_BLD_H_SHIELD_RADIUS){
+        if(self.en_cur > self.sh_cur){
+          if(p.sh_cur < p.sh_max){
+            local float pmod;
+            pmod = self.sh_rate;
+            p.sh_cur = p.sh_cur + pmod;
+            self.en_cur = self.en_cur - pmod;
+            if(p.sh_cur > p.sh_max){
+              p.sh_cur = p.sh_max;
+            }
+          }
+        }
+      }
+    }
+    p = p.chain;
+  }
+  
+  self.think = building_shield_think;
+  self.nextthink = time + 0.1;
 };
 
 void() building_shield_die={
@@ -52,5 +123,4 @@ void() building_shield_die={
     head = head.chain;
   }
   building_die();
-  BecomeExplosion();
 };

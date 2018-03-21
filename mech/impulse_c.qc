@@ -99,8 +99,7 @@ void() ImpulseCommands ={
         self.stat_rdr_rng = self.radar_range * 2;
       }
     }
-  }
-  
+  }  
 	self.impulse = 0;
 };
 

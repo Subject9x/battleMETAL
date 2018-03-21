@@ -10,6 +10,7 @@ Overview: data file for building
 
 /*QUAKED building_power (.1 .1 .1) (-56 -56 0) (56 56 46)
 */
+void() building_power_think;
 void() building_power_die;
 void() building_power;
 
@@ -34,16 +35,43 @@ void() building_power={
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   self.th_die = building_power_die;
-  self.think = building_think;
   self.use = multi_trigger;
-  self.nextthink = time + 1;
   self.SendEntity = send_building;
   self.SendFlags = -1;
+  self.think = building_power_think;
+  self.nextthink = time + 1;
+};
+
+
+void() building_power_think={
+  if(self.en_cur < self.en_max){
+    self.en_cur = self.en_cur + self.en_rate;
+    if(self.en_cur > self.en_max){
+      self.en_cur = self.en_max;
+    }
+  }
+  
+  //power friendly local buildings
+  local entity t;
+  t = findchainfloat(data_type, DATA_BLD);
+  while(t){
+    if(t.i_faction == self.i_faction){
+      if(t != self){
+        if(vlen(t.origin - self.origin) <= DAT_BLD_H_POWER_PLANT_EN_RADIUS){
+          t.en_rate = self.en_rate;
+        }
+      }
+    }
+    t = t.chain;
+  }
+  
+  self.think = building_power_think;
+  self.nextthink = time + 0.1;
 };
 
 void() building_power_die={
   local entity head;
-  head = findradius(self.origin, 400);
+  head = findradius(self.origin, DAT_BLD_H_POWER_PLANT_EN_RADIUS);
   while(head){
     if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
       head.en_cur = head.en_cur + 100;
@@ -51,8 +79,12 @@ void() building_power_die={
         head.en_cur = head.en_max;
       }
     }
+    if( head.data_type == DATA_BLD ){
+      if( head.i_faction == self.i_faction ){
+        head.en_rate = 0;
+      }
+    }
     head = head.chain;
   }
   building_die();
-  BecomeExplosion();
 };

@@ -100,6 +100,7 @@ dp/subs.qc
   mech/dat/bld/data_h_hangar_l.qc
   mech/dat/bld/data_h_fuel.qc
   mech/dat/bld/data_h_ltur.qc
+  mech/dat/bld/data_h_repair.qc
 //===========================
 
 //impl files

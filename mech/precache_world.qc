@@ -30,6 +30,7 @@ void() mh_precache_models={
   
   //buildings
   precache_model("q3mdl/buildings/mdl_bld_h_hangar_l.md3");
+  precache_model("q3mdl/buildings/mdl_bld_h_repair.md3");
   precache_model("q3mdl/buildings/mdl_bld_h_power.md3");
   precache_model("q3mdl/buildings/mdl_bld_h_radar.md3");
   precache_model("q3mdl/buildings/mdl_bld_h_shield.md3");

@@ -140,6 +140,27 @@ void() PlayerPostThink = {
 		ImpulseCommands ();
   }
   
+  if(self.button0){
+    //DEBUG / DEV ONLY!
+    if(cvar("mechdev") == TRUE){
+      makevectors(self.v_angle);
+      traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
+      te_beam_esr(self.origin + (v_up * -4), trace_endpos);
+      self.stat_trg_org_x = trace_endpos_x;
+      self.stat_trg_org_y = trace_endpos_y;
+      self.stat_trg_org_z = trace_endpos_z;
+      te_beam_esr(self.origin + (v_up * -4), trace_endpos);
+      local entity t;
+      t = findchainflags(flags, FL_MONSTER);
+      while(t){
+        if(t.alpha != 0.25){
+          t.alpha = 0.25;
+        }
+        t = t.chain;
+      }
+    }
+  }
+  
 // check for attack
   playerAttack();
 

@@ -7,6 +7,17 @@ server and client
 */
 
 //============================
+//           DATA IDX        
+//============================
+float ID_BLD_H_RADAR    = 1;
+float ID_BLD_H_SHIELD   = 2;
+float ID_BLD_H_POWER    = 3;
+float ID_BLD_H_HANGAR_L = 4;
+float ID_BLD_H_FUEL     = 5;
+float ID_BLD_H_TURRET   = 6;
+float ID_BLD_H_REPAIR   = 7;
+
+//============================
 //            Health           
 //============================
 //-------------------------Human-Fuel Tank
@@ -22,6 +33,8 @@ float DAT_BLD_H_SHIELDGEN_HP    = 1000;
 //-------------------------Human-Light turret
 float DAT_TUR_CTOR_HP           = 100;
 float DAT_TUR_LEG_HP            = 100;
+//-------------------------Human-Repair Bay
+float DAT_BLD_H_REPAIR_HP       = 3000;
 //============================
 //            Armor  ! NOT IMPLEMENTED !
 //============================
@@ -56,6 +69,10 @@ float DAT_BLD_H_POWER_PLANT_SH_RATE = 1;
 //-------------------------Human-Shield Generator
 float DAT_BLD_H_SHIELDGEN_SH_MAX    = 1000;
 float DAT_BLD_H_SHIELDGEN_SH_RATE   = 2;
+float DAT_BLD_H_SHIELD_RADIUS       = 1000;
+//-------------------------Human-Repair Bay
+float DAT_BLD_H_REPAIR_SH_MAX       = 750;
+float DAT_BLD_H_REPAIR_SH_RATE      = 1;
 //-------------------------Human-Light turret
 float DAT_TUR_SHIELD_MAX          = 200;
 float DAT_TUR_SHIELD_RATE         = 0.35;
@@ -71,7 +88,14 @@ float DAT_TUR_SHIELD_RATE         = 0.35;
 //-------------------------Human-Power Plant
 float DAT_BLD_H_POWER_PLANT_EN_MAX = 4000;
 float DAT_BLD_H_POWER_PLANT_EN_RATE = 4;
+float DAT_BLD_H_POWER_PLANT_EN_RADIUS = 800;
 //-------------------------Human-Shield Generator
+
+//-------------------------Human-Repair Bay
+float DAT_BLD_H_REPAIR_EN_MAX = 4000;
+float DAT_BLD_H_REPAIR_RL_MAX = 2000;
+float DAT_BLD_H_REPAIR_RL_RATE =  1;
+float DAT_BLD_H_REPAIR_RL_RATIO = 2;
 
 //-------------------------Human-Light turret
 float DAT_TUR_ENERGY_MAX    = 400;
@@ -114,6 +138,8 @@ vector DAT_TUR_SPREAD_X = '6 6 0.01';
 string DAT_BLD_H_FUELTANK_MODEL = "q3mdl/buildings/mdl_bld_h_fuel.md3";
 //-------------------------Human-Large Hangar
 string DAT_BLD_H_LG_HANGAR_MODEL = "q3mdl/buildings/mdl_bld_h_hangar_l.md3";
+//-------------------------Human-Repair Bay
+string DAT_BLD_H_REPAIR_MODEL = "q3mdl/buildings/mdl_bld_h_repair.md3";
 //-------------------------Human-Radar Post
 string DAT_BLD_H_SM_RADAR_MODEL = "q3mdl/buildings/mdl_bld_h_radar.md3";
 //-------------------------Human-Power Plant

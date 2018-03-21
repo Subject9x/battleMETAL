@@ -75,8 +75,7 @@ void() server_updateTargetInfo={
     self.stat_trg_la_hp = csqc_updateCompStat(self.enemy.e_arm_l);
     self.stat_trg_ra_hp = csqc_updateCompStat(self.enemy.e_arm_r);
   }
-  
-  
+
   local float dst;
   dst = vlen(self.enemy.origin - self.origin);
   if(dst > self.stat_rdr_rng){

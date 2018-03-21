@@ -6,6 +6,8 @@ Overview: function extensions to world.qc
 */
 
 void() mh_world_ini={ 
+  registercvar("mechdev", "0");
+
   //oh my
   addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);
   addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);

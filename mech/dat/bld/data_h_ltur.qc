@@ -9,7 +9,6 @@ Overview:
 */
 
 //HUMAN LIGHT TURRET=============================
-float DAT_TUR_IDX = ID_BLD_H_TURRET;
 string DAT_TUR_VEC_NAME = "Light Turret";
 float DAT_TUR_TECH_LEVEL = 1;
 
@@ -17,18 +16,18 @@ float DAT_TUR_TECH_LEVEL = 1;
 float DAT_TUR_YAWSPEED = 5;
 vector DAT_TUR_CTOR_BBX_N ='-20 -20 -12';
 vector DAT_TUR_CTOR_BBX_X ='20 20 14';
-float DAT_TUR_M_FSPEED=-1;
-float DAT_TUR_M_SSPEED=-1;
-float DAT_TUR_M_BSPEED=-1;
+float DAT_TUR_M_FSPEED  =-1;
+float DAT_TUR_M_SSPEED  =-1;
+float DAT_TUR_M_BSPEED  =-1;
 
 string DAT_TUR_M_PITCH_N = "-25";
 string DAT_TUR_M_PITCH_X = "45";
 
 //WEAOPON GROUPS
-float DAT_TUR_WEP1_IDX= ID_WEP_LATC;
-float DAT_TUR_WEP2_IDX= ID_WEP_LAS;
-float DAT_TUR_WEP1_GROUP= 1;
-float DAT_TUR_WEP2_GROUP= 1;
+float DAT_TUR_WEP1_IDX  = ID_WEP_LATC;
+float DAT_TUR_WEP2_IDX  = ID_WEP_LAS;
+float DAT_TUR_WEP1_GROUP  = 1;
+float DAT_TUR_WEP2_GROUP  = 1;
 
 //this is mostly cosmetics
 
@@ -71,7 +70,7 @@ void() data_tur_ini={
   self.unit_wep2 = data_tur_wep2;
   self.unit_cam = data_tur_cam;
 
-  self.data_idx= DAT_TUR_IDX;
+  self.data_idx= ID_BLD_H_TURRET;
   self.vec_name= DAT_TUR_VEC_NAME;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_TUR_RADAR_RANGE;

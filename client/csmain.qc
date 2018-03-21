@@ -373,8 +373,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     cursorpos = getmousepos();
     menu_handleFrame();
   }else{
-    //drawstring(VIEW_ORG+'2 2', vtos(pmove_org), '6 6 0', '1 1 1', HUD_ALPHA, 0);  //DEBUG
-    
     if(self.player_state >= PLAYER_POWERUP_BEGIN){
       local entity nav;
       nav = findchain(classname, "data");
@@ -430,6 +428,16 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   if(self.ANM_FILE_STATUS == 1){
     anm_execute_frame();
   }
+  
+  if(cvar("mechdev") == TRUE){
+    drawstring(VIEW_ORG + gui_percentToPixelRawVec('8 16'), strcat("Player Origin: ", vtos(pmove_org)), '8 8 0', '0.85 0.85 0.85', 1, 0);
+    local vector viewspot;
+    viewspot_x = getstatf(STAT_TRG_ORG_X);
+    viewspot_y = getstatf(STAT_TRG_ORG_Y);
+    viewspot_z = getstatf(STAT_TRG_ORG_Z);
+    drawstring(VIEW_ORG + gui_percentToPixelRawVec('8 32'), strcat("Tag Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0); 
+  }
+  
   self = this;
 };
 

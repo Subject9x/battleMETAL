@@ -42,6 +42,7 @@ hud_snd_sys_c.qc
   data/bld/data_h_hangar_l.qc
   data/bld/data_h_fuel.qc
   data/bld/data_h_ltur.qc
+  data/bld/data_h_repair.qc
   
   //Weapons
   data/wep/data_latc_val.qc

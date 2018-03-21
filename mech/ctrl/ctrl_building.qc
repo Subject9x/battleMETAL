@@ -21,5 +21,5 @@ void() building_die={
   self.solid = SOLID_CORPSE;
   multi_trigger();
   self.nextthink = time + 0.01;
-  self.think =  SUB_Remove;
+  self.think =  BecomeExplosion;
 };
