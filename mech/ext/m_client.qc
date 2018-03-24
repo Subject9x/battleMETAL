@@ -133,7 +133,8 @@ void() ClientConnect = {
     client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
     client_sendAvailableItems(SAVE_ITEMS_ALL);
   }
-  
+  CLIENTS = CLIENTS + 1;
+  self.client_num = CLIENTS;
   client_data_ini(self);
   self.stat_plr_stt = PLAYER_SPAWN;
 
@@ -176,7 +177,14 @@ void() PutClientInServer = {
 	self.pausetime = 0;
   self.view_ofs = '0 0 1';
   
+  if( !cvar("mechdev") ){
+    if( coop ){
+      spot = spawnpoint_coop();
+    }
+  }
+
   spot  = SelectSpawnPoint();
+  
   self.i_faction = spot.i_faction;
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
@@ -285,6 +293,18 @@ void() ClientDisconnect = {
     mech_player_die();
     player_unmakeMech();
     mech_cleanupMech();
+  }
+  //update client numbers
+  CLIENTS = CLIENTS - 1;
+  local entity client;
+  client = findchainflags(flags, FL_CLIENT);
+  while(client){
+    local float clnum;
+    clnum = client.client_num;
+    if(clnum > self.client_num){
+      client.client_num = client.client_num - 1;
+    }
+    client = client.chain;
   }
 };
 

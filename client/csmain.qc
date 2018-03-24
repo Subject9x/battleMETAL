@@ -1,6 +1,3 @@
-
-float() player_predraw;
-float() obs_predraw;
 // called during level initialization, before first entities are received, only world is valid at this point
 void() CSQC_Init =
 {
@@ -430,16 +427,18 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   }
   
   if(cvar("mechdev") == TRUE){
-    local vector viewspot, viewang;
+    local vector viewspot, viewang, porg, pang, torg;
     viewspot_x = getstatf(STAT_TRG_ORG_X);
     viewspot_y = getstatf(STAT_TRG_ORG_Y);
     viewspot_z = getstatf(STAT_TRG_ORG_Z);
     viewang_x = getstatf(STAT_PLR_ANG_X);
     viewang_y = getstatf(STAT_PLR_ANG_Y);
     viewang_z = getstatf(STAT_PLR_ANG_Z);
-    drawstring(VIEW_ORG + gui_percentToPixelRawVec('1 8'), strcat("Player Origin: ", vtos(pmove_org)), '8 8 0', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + gui_percentToPixelRawVec('1 18'), strcat("Player Angles: ", vtos(viewang)), '8 8 0', '0.85 0.85 0.85', 1, 0);
-    drawstring(VIEW_ORG + gui_percentToPixelRawVec('1 28'), strcat("Tag Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0); 
+    porg_x = pang_x = torg_x = VIEW_ORG_x;
+    porg_y = pang_y = torg_y = VIEW_MAX_y;
+    drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(pmove_org)), '8 8 0', '0.85 0.85 0.85', 1, 0);
+    drawstring(pang + gui_percentToPixelRawVec('1 -20'), strcat("Player Angles: ", vtos(viewang)), '8 8 0', '0.85 0.85 0.85', 1, 0);
+    drawstring(torg + gui_percentToPixelRawVec('1 -10'), strcat("Tag Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0); 
   }
   
   self = this;
@@ -706,31 +705,6 @@ void() CSQC_Ent_Remove =
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)
 void(string msg) GameCommand =
 {
-};
-
-//http://forums.insideqc.com/viewtopic.php?f=2&t=2871
-float() obs_predraw={
-  /*if(self.entnum == player_localentnum){
-    local float sys_ticrate;
-    local vector v;
-    sys_ticrate = cvar("sys_ticrate");
-
-    if (self.solid){
-      if (time > self.timer_phys + sys_ticrate){
-        
-        self.origin_old = self.origin_phys;
-        while (time > self.timer_phys + sys_ticrate){
-          self.timer_phys = self.timer_phys + sys_ticrate;
-          self.origin_phys = self.origin_phys + self.velocity * sys_ticrate;
-        }
-      }
-      
-      self.timer_r = ( time - self.timer_phys ) / sys_ticrate;
-      v = self.origin_old + ( self.origin_phys - self.origin_old ) * self.timer_r;
-
-      setorigin(self, v);
-    } 
-  }*/
 };
 
 // called on each entity each frame if self.nextthink <= time + frametime

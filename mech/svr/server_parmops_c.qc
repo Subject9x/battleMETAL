@@ -56,7 +56,6 @@ void() DecodeLevelParms={
 	
 	//self.i_reserve = parm1;
 	self.health = 100;
-	//self.i_faction = 1; //DEBUG
 	//self.ammo_shells = parm4;
 	//self.ammo_nails = parm5;
 	//self.ammo_rockets = parm6;

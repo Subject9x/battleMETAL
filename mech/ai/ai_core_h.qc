@@ -125,7 +125,8 @@ void() ai_control;      //global, root controller function
 .float ai_optical;      //the 'visual' range the ai can see out before relying on sensors
 .float patience;        //counter for if AI is stuck on something
 .float maxpatience;     //how impatient is the AI
-
+.float ai_stuck_cnt;        //
+.float ai_stuck_flag;
 /*==========================================*/
 
 /*

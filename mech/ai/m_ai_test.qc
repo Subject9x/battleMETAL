@@ -124,6 +124,7 @@ void() ai_mech={
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   self.movetype = MOVETYPE_STEP;
   droptofloor();
+  self.flags = self.flags | FL_ONGROUND;
   
   //set first order based on self.state_1
   ai_util_firstOrder_nonStatic(self.state_1);
@@ -138,6 +139,6 @@ void() ai_mech={
   self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = -1;
-  self.nextthink = time + 4; //power up timer 7
+  self.nextthink = time + 7; //power up timer 7
   self.think = ai_control;
 };

@@ -17,7 +17,9 @@ void() ai_patrol_startWithNode={
   if(e){
     if(e.isActive == TRUE){
       if(e.i_faction == self.i_faction){
-        ai_update_switchToNode(ai_findNode_searchGroup(e));
+        local entity n;
+        n = ai_findNode_searchGroup(e);
+        ai_update_switchToNode(n);
         ai_state_control(ai_patrol_gotoNode);
         return;
       }

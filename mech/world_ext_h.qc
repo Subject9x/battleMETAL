@@ -5,11 +5,15 @@ Date: 8/27/2016
 Overview: function extensions to world.qc
 */
 
+float CLIENTS;
+.float client_num;
+
 .string msn_file;
 .string map_file;
 
 void() mh_world_ini;
 
+//functional-style data lookup
 void(float wep_id) data_iniWep;
 void(float build_id) data_iniBuilding;
 void(float vecsize, float mech_id) data_iniMech;
@@ -18,6 +22,8 @@ void(float prj_id) data_iniProjectile;
 
 entity(float id, float dat_type) mh_world_findData;
 entity(float sz, float id) m_findMechData;
+
+//the following should probably be spun out to client_utils - Roohr 3/24/2018
 void(float fwd, float side, float bck, string accel, string roll) mh_world_updateClientSpeed;
 void(string bob, string cycle, string up) mh_world_updateClientViewBob;
 void(string bobmodel, string side, string bmod_speed) mh_world_updateClientModelBob;

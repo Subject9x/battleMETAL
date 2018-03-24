@@ -156,6 +156,7 @@ void() PlayerPostThink = {
     self.stat_trg_org_x = self.c_ofs_x;
     self.stat_trg_org_y = self.c_ofs_y;
     self.stat_trg_org_z = self.c_ofs_z;
+    
   }
   
   //========================================
@@ -264,7 +265,7 @@ void() PlayerDeathThink={
   player_unmakeMech();
   mech_cleanupMech();
   player_makeObserver();
-  spawnpoint_Random();
+  spawnpoint_select();
   self.movetype = MOVETYPE_FLY;
   self.flags = self.flags | FL_FLY;
   respawn();

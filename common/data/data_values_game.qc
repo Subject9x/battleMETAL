@@ -30,11 +30,12 @@ float DATA_NAVP = 7;
 float DATA_OBJT = 8;
 float DATA_NODE = 9;
 float DATA_DEPL = 10;
-float DATA_POBS = 11;
-float DATA_MECH_AI = 12;
+float DATA_POBS = 11; //player observer mode
+float DATA_MECH_AI = 12;  //distinguish between player mech and ai mech
 float DATA_PLR = 13;
 float DATA_WEAPON = 14;
-float DATA_INFO_START = 15;
+float DATA_INFO_START = 15; //used to send clientdata entity to csqc
+float DATA_INFO_COOP = 16;  //used as ID for info_start_coop
 //============================
 //     WEAPON SLOT BITS           
 //============================

@@ -45,18 +45,19 @@ void() building_shield={
 
 void() building_shield_think={
   local entity t, p;
-  if(self.en_rate != 0){
-    self.en_cur = self.en_cur + self.en_rate;
-    if(self.en_cur > self.en_max){
-      self.en_cur = self.en_max;
-    }
+
+  self.en_cur = self.en_cur + self.en_rate;
+  if(self.en_cur > self.en_max){
+    self.en_cur = self.en_max;
   }
   
   if(self.sh_cur < self.sh_max){
-    self.sh_cur = self.sh_cur + self.sh_rate * 2;
-    self.en_cur = self.en_cur - self.sh_rate / 2; 
-    if(self.sh_cur > self.sh_max){
-      self.sh_cur = self.sh_max;
+    if(self.en_cur > 0){
+      self.sh_cur = self.sh_cur + self.sh_rate * 2;
+      self.en_cur = self.en_cur - self.sh_rate / 2; 
+      if(self.sh_cur > self.sh_max){
+        self.sh_cur = self.sh_max;
+      }  
     }
   }
 
@@ -67,7 +68,7 @@ void() building_shield_think={
         local float dist;
         dist = vlen(t.origin - self.origin);
         if(dist <= DAT_BLD_H_SHIELD_RADIUS){
-          if(self.en_cur > self.sh_cur){
+          if(self.en_cur > 0){
             if(t.sh_cur < t.sh_max){
               local float mod;
               mod = self.sh_rate / 2;
@@ -90,7 +91,7 @@ void() building_shield_think={
       local float pdist;
       pdist = vlen(t.origin - self.origin);
       if(pdist <= DAT_BLD_H_SHIELD_RADIUS){
-        if(self.en_cur > self.sh_cur){
+        if(self.en_cur > 0){
           if(p.sh_cur < p.sh_max){
             local float pmod;
             pmod = self.sh_rate;

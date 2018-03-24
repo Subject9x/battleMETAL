@@ -26,6 +26,10 @@ void(float() move, float frames) ai_move_controller={
   }
 };
 
+void() ai_move_unstuck={
+  
+};
+
 //move directives
 float() ai_move_stand={
   if(self.ai_prev_move != -1){

@@ -34,7 +34,9 @@ void() worldspawn =
 	lastspawn = world;
 	InitBodyQue ();
   cvar_set("sv_maxspeed", "800"); //allows faster units
-
+  
+  CLIENTS = 0;
+  
 // custom map attributes
 	if (self.model == "maps/e1m8.bsp")
 		cvar_set ("sv_gravity", "100");
@@ -114,7 +116,6 @@ void() worldspawn =
 
 	// 63 testing
 	lightstyle(63, "a");
-  
 };
 
 void() StartFrame =

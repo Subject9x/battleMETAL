@@ -7,6 +7,7 @@ Overview: data file for the human repair bay
 
 /*QUAKED building_repair (.1 .1 .1) (-72 -72 -40) (72 72 40)
 */
+void() building_repair_die;
 void() building_repair_touch;
 void() building_repair_think;
 void() building_repair;
@@ -31,7 +32,7 @@ void() building_repair={
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   self.movetype = MOVETYPE_NONE;
-  self.th_die = building_die;
+  self.th_die = building_repair_die;
   self.think = building_repair_think;
   self.nextthink = time + 1;
   self.use = multi_trigger;
@@ -104,7 +105,6 @@ void() building_repair_think={
     }
   }
   
-  
   self.think = building_repair_think;
   self.nextthink = time + 0.1;
 };
@@ -127,4 +127,11 @@ void() building_repair_touch={
     }
   }
   return;
+};
+
+
+void() building_repair_die={
+  self.e_cam.trigger_field = world;
+  remove(self.e_cam);
+  building_die();
 };

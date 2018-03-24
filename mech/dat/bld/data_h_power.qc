@@ -81,7 +81,9 @@ void() building_power_die={
     }
     if( head.data_type == DATA_BLD ){
       if( head.i_faction == self.i_faction ){
-        head.en_rate = 0;
+        if( head.data_idx != ID_BLD_H_POWER){
+          head.en_rate = 0;
+        }
       }
     }
     head = head.chain;

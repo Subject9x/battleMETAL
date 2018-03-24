@@ -63,8 +63,8 @@ The normal starting point for a level.
 */
 void() info_player_start =
 {
-  
-
+  setsize(self, '-16 -16 -24', '16 16 24');
+  setorigin(self, self.origin);
 };
 
 
@@ -95,6 +95,8 @@ potential spawning position for coop games
 */
 void() info_player_coop =
 {
+  setsize(self, '-16 -16 -24', '16 16 24');
+  setorigin(self, self.origin);
 };
 
 /*QUAKED info_player_team1 (.7 0 0) (-16 -16 -24) (16 16 24)

@@ -149,7 +149,7 @@ void(string str, float tokens) client_ParseMechCommand={
     if(self.data_type == DATA_POBS){
       player_unmakeObserver();
       player_makeMech();
-      spawnpoint_Random();
+      spawnpoint_select();
     }
   }
   else if(argv(1) == "setgroup"){
@@ -321,6 +321,26 @@ void() respawn={
 	}
 };
 
+entity() spawnpoint_coop={
+  local entity locus;
+  locus = findchainfloat(data_type, DATA_INFO_COOP);
+  while(locus){
+    if(locus.i_faction == self.i_faction){
+      if(locus.target == self.goalentity.targetname){
+        if(locus.data_idx == self.client_num){
+          self.goalentity = locus;
+        }
+      }
+    }
+    locus = locus.chain;
+  }
+  return self.goalentity;
+};
+
+entity() spawnpoint_single={
+};
+
+
 entity() SelectSpawnPoint={
   local	entity spot;
 	local	entity thing;
@@ -333,7 +353,7 @@ entity() SelectSpawnPoint={
 		return spot;
 		
 // choose a info_player_deathmatch point
-	if (coop)
+	/*if (coop)
 	{
     lastspawn = find(lastspawn, classname, "info_player_coop");
     if (lastspawn == world)
@@ -341,7 +361,8 @@ entity() SelectSpawnPoint={
     if (lastspawn != world)
       return lastspawn;
 	}
-	else if (deathmatch)
+	else*/
+  if (deathmatch)
 	{
     if(self.data_type != DATA_POBS){
       spot = lastspawn;
@@ -385,9 +406,30 @@ entity() SelectSpawnPoint={
 	return spot;
 };
 
+void() spawnpoint_select={
+  local entity spot;
+
+  if(self.goalentity){
+    if( coop ){
+      spot = spawnpoint_coop();
+    }
+    else{
+      spot = self.goalentity;
+    }
+  }
+  else{
+    spot = SelectSpawnPoint();
+  }
+  
+  self.origin = self.oldorigin = spot.origin + '0 0 12';
+  
+  self.angles = spot.angles;
+	self.fixangle = TRUE;	
+};
+
 void() spawnpoint_Random={
   local entity spot;
-  //spot = SelectSpawnPoint();
+  
   if(self.goalentity){
     spot = self.goalentity;
   }
