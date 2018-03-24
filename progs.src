@@ -45,6 +45,7 @@ triggers_h.qc
   q1/qwep/wep_fx_h.qc
   mech/dat/msc/map_objects_h.qc
   world_effectinfo_h.qc
+  mech/triggers_map_h.qc
 //==========================
 dp/subs.qc
 //DATA FILES=================
@@ -126,7 +127,6 @@ dp/subs.qc
   mech/ai/ai_combat_flank.qc
   //-------------------------------------
   
-
   mech/t_damage.qc
   mech/svr/server_parmops_c.qc
   mech/svr/server_intermsn_c.qc
@@ -175,5 +175,6 @@ world.qc
 doors.qc
 buttons.qc
 triggers.qc
+mech/triggers_map_c.qc
 plats.qc
 misc.qc

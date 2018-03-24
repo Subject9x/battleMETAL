@@ -118,6 +118,10 @@ float SHIELD_SOAK = 4;
 .float stat_lck_stt;
 .float stat_trg_ddflg;
 .float stat_ret_dist;
+
+.float stat_plr_ang_x;
+.float stat_plr_ang_y;
+.float stat_plr_ang_z;
 //============================
 //     STAT CHANNELS         
 //============================
@@ -209,6 +213,10 @@ float UI_BOX_CLRX = 105;
 float UI_BOX_CLRY = 106;
 float UI_BOX_CLRZ = 107;
 float UI_BOX_TIME = 108;
+
+float STAT_PLR_ANG_X = 110;
+float STAT_PLR_ANG_Y = 111;
+float STAT_PLR_ANG_Z = 112;
 
 float STAT_LVL_RES = 109;
 

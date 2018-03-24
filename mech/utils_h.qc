@@ -19,6 +19,7 @@ void(string msg, string s1, string split, string s2) cons_log2Strings;
 vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea;
 
 float(entity t) util_getMechHpAverage;
+float(entity t) util_getMechHpTotal;
 
 float(float mod, float targ_val) util_zeroStat;
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin;

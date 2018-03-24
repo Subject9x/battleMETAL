@@ -200,6 +200,50 @@ void() trigger_once =
 	trigger_multiple();
 };
 
+
+/*void() map_trigger_once={
+  self.classname = "map_trigger_once";
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_TRIGGER;
+  //setmodel(self, "q3mdl/testball.md3");
+  self.effects = self.effects | EF_NODRAW;
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+	self.wait = -1;
+
+  if (!self.wait)
+		self.wait = 0.2;
+	self.use = multi_use;
+
+  if (self.movedir == '0 0 0')
+	if (self.angles != '0 0 0')
+		SetMovedir ();
+	self.solid = SOLID_TRIGGER;
+	self.modelindex = 0;
+	self.model = "";
+
+	if (self.health)
+	{
+		if (self.spawnflags & SPAWNFLAG_NOTOUCH)
+			objerror ("health and notouch don't make sense\n");
+		self.max_health = self.health;
+		self.th_die = multi_killed;
+		self.takedamage = DAMAGE_YES;
+		self.solid = SOLID_BBOX;
+		setorigin (self, self.origin);	// make sure it links into the world
+	}
+	else
+	{
+		if ( !(self.spawnflags & SPAWNFLAG_NOTOUCH) )
+		{
+			self.touch = multi_touch;
+		}
+	}
+  
+};*/
+
+
+
 //=============================================================================
 
 /*QUAKED trigger_relay (.5 .5 .5) (-8 -8 -8) (8 8 8)

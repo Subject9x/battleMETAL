@@ -53,8 +53,6 @@ void() mh_world_ini={
   addstat(STAT_WEP8_ID, AS_INT,stat_w8_id);
   addstat(STAT_WEP9_ID, AS_INT,stat_w9_id);
   
-  
-  
   addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
@@ -89,9 +87,9 @@ void() mh_world_ini={
   
   addstat(UI_BOX_TIME, AS_INT, ui_box_time);
   
-  //build t_damage AI_DFLAG sets
-  
-  
+  addstat(STAT_PLR_ANG_X, AS_FLOAT, stat_plr_ang_x);
+  addstat(STAT_PLR_ANG_Y, AS_FLOAT, stat_plr_ang_y);
+  addstat(STAT_PLR_ANG_Z, AS_FLOAT, stat_plr_ang_z);
 };
 
 void(float build_id) data_iniBuilding={

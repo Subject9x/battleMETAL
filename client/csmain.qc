@@ -430,12 +430,16 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   }
   
   if(cvar("mechdev") == TRUE){
-    drawstring(VIEW_ORG + gui_percentToPixelRawVec('8 16'), strcat("Player Origin: ", vtos(pmove_org)), '8 8 0', '0.85 0.85 0.85', 1, 0);
-    local vector viewspot;
+    local vector viewspot, viewang;
     viewspot_x = getstatf(STAT_TRG_ORG_X);
     viewspot_y = getstatf(STAT_TRG_ORG_Y);
     viewspot_z = getstatf(STAT_TRG_ORG_Z);
-    drawstring(VIEW_ORG + gui_percentToPixelRawVec('8 32'), strcat("Tag Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0); 
+    viewang_x = getstatf(STAT_PLR_ANG_X);
+    viewang_y = getstatf(STAT_PLR_ANG_Y);
+    viewang_z = getstatf(STAT_PLR_ANG_Z);
+    drawstring(VIEW_ORG + gui_percentToPixelRawVec('1 8'), strcat("Player Origin: ", vtos(pmove_org)), '8 8 0', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + gui_percentToPixelRawVec('1 18'), strcat("Player Angles: ", vtos(viewang)), '8 8 0', '0.85 0.85 0.85', 1, 0);
+    drawstring(VIEW_ORG + gui_percentToPixelRawVec('1 28'), strcat("Tag Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0); 
   }
   
   self = this;

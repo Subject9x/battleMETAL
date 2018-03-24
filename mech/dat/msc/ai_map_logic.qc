@@ -5,8 +5,6 @@ Date: 3/2/2018
 Overview: ai objects used for map logic
 */
 
-
-
 void() ai_logic_changeFaction_use={
   local entity e;
   if(self.group){

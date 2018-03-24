@@ -59,36 +59,41 @@ void() building_repair={
 
 void() building_repair_think={
   if(self.e_cam. trigger_field != world){
-    local entity repairMe,fix;
-    repairMe = self.e_cam.trigger_field;
-    
-    if(csqc_updateCompStat(repairMe) < 100){
-      fix = repairMe;
-    }
-    else{
-      local entity part;
-      local float lowHP;
-      part = repairMe.c_part;
-      lowHP = 99.99;
-      while(part){
-        local float hp;
-        hp = csqc_updateCompStat(part);
-        if( hp <= lowHP){
-          lowHP = hp;
-          fix = part;
-        }
-        part = part.c_part;
-      }
-    }
-    if(fix){
-      fix.health = fix.health + (self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO) / 2;
-      self.rl_cur = self.rl_cur - self.rl_rate;
-      if(fix.health > fix.max_health){
-        fix.health = fix.max_health;
-      }
-    }
-    else{
+    if(vlen(self.trigger_field.origin - self.e_cam.origin) > 16){
       self.trigger_field = world;
+    }
+    else{
+      local entity repairMe,fix;  
+      repairMe = self.e_cam.trigger_field;
+      
+      if(csqc_updateCompStat(repairMe) < 100){
+        fix = repairMe;
+      }
+      else{
+        local entity part;
+        local float lowHP;
+        part = repairMe.c_part;
+        lowHP = 99.99;
+        while(part){
+          local float hp;
+          hp = csqc_updateCompStat(part);
+          if( hp <= lowHP){
+            lowHP = hp;
+            fix = part;
+          }
+          part = part.c_part;
+        }
+      }
+      if(fix){
+        fix.health = fix.health + (self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO) / 2;
+        self.rl_cur = self.rl_cur - self.rl_rate;
+        if(fix.health > fix.max_health){
+          fix.health = fix.max_health;
+        }
+      }
+      else{
+        self.trigger_field = world;
+      } 
     }
   }
   
@@ -108,9 +113,14 @@ void() building_repair_touch={
   if(self.owner.rl_cur > 0){
     if(other.data_type == DATA_MECH){
       if(other.i_faction == self.owner.i_faction){
+        local float rep_time;
+        rep_time = self.owner.rl_cur * 10;
         if(util_getMechHpAverage(other) < 1){      
           if(self.trigger_field == world){
             self.trigger_field = other;
+            other.power_timer = time + rep_time;
+            other.velocity = '0 0 0';
+            other.avelocity = '0 0 0';
           }
         }
       }
