@@ -130,23 +130,15 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
-  
   if(trg.health <= 0){
     trg.health = 0;
-   if(trg.th_die){
-      if(trg.th_die != SUB_Null){
-        if(trg.c_name != M_LEGS){
-          killed(trg, attacker, dmg_type);
-          if(trg.c_name == M_TOR_CENTER){
-            if((trg.owner.flags & FL_MONSTER)){
-              trg.owner.deadflag = DEAD_DYING;
-            }
-          }      
-          return trg;
-        }
-        else{
-          trg.owner.m_fspeed = trg.owner.m_fspeed / 2;
-        }
+    if(trg.th_die){
+      if(trg.c_name != M_LEGS){
+        killed(trg, attacker, dmg_type);     
+        return trg;
+      }
+      else{
+        trg.owner.m_fspeed = trg.owner.m_fspeed / 2;
       }
     }
   }
@@ -270,6 +262,10 @@ void(entity targ, entity attacker, float dmg_type) killed={
     }
   }
 
+  //AI mech / tank death trigger fix
+  if( self.data_type == DATA_MECH){
+    self.ladder_entity = attacker;
+  }
   
   self.enemy = attacker;
   

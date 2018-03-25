@@ -58,8 +58,8 @@ void() ai_combat_findTarget={
 /*
   AI can't directly see its target, so it tries to hunt that target
   for a little bit.
-  self.delay should timestamped before going into combat mode in another 
-  state. self.delay should be time + 'patience' where patience is 
+  self.patience should timestamped before going into combat mode in another 
+  state. self.patience should be time + 'patience' where patience is 
   calculated by the ai_core function of similiar name
 */
 void() ai_combat_huntTarget={
@@ -170,7 +170,7 @@ void() ai_combat_adjustPosition={
     }
     
     //attempt to hunt
-    self.delay = time + self.maxpatience;
+    self.patience = time + self.maxpatience;
     ai_state_control(ai_combat_huntTarget);
     return;
   }

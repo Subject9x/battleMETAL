@@ -123,9 +123,11 @@ void() map_trigger_secret={
 
 void() map_trigger_counter={
   map_initTrigger();
-	self.wait = -1;
-	if (!self.count)
-		self.count = 2;
+	
+  self.wait = -1;
+	if ( !self.count ){
+		self.count = 2;  
+  }
 
 	self.use = counter_use;
 };

@@ -310,7 +310,8 @@ void() ai_mech_die={
   
   //fire triggers when dead
   self.target = self.target_die;
-  activator = self.trigger_field;
+  self.enemy = self.ladder_entity;
+  activator = self.enemy;
 	SUB_UseTargets ();
   multi_trigger();
   

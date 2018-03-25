@@ -29,14 +29,14 @@ void() ai_misc_stand={
     contact = ai_target_radarTarget();
     if(contact){
       ai_update_switchToTarget(contact);
-      self.delay = time + self.maxpatience;
+      self.patience = time + self.maxpatience;
       ai_state_control(ai_combat_huntTarget);
       return;
     }
   }
   else{
     if(ai_target_isValid(self.trigger_field)){
-      self.delay = time + self.maxpatience;
+      self.patience = time + self.maxpatience;
       ai_state_control(ai_combat_huntTarget);
       return;
     }

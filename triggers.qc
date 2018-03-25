@@ -302,8 +302,7 @@ void() counter_use =
 	
 	if (self.count != 0)
 	{
-		if (activator.classname == "player"
-		&& (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
+		if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
 		{
 			if (self.count >= 4)
 				centerprint (activator, "There are more to go...");
@@ -317,9 +316,10 @@ void() counter_use =
 		return;
 	}
 	
-	if (activator.classname == "player"
-	&& (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)
-		centerprint(activator, "Sequence completed!");
+	if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0){
+  	centerprint(activator, "Sequence completed!");
+  }
+	
 	self.enemy = activator;
 	multi_trigger ();
 };

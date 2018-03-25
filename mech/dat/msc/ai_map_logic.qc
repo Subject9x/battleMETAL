@@ -152,7 +152,6 @@ void() ai_spawner_use={
   }
 };
 
-
 void() ai_spawner_think={
   local float bSpawn;
   bSpawn = FALSE;

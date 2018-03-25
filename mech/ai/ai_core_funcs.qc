@@ -704,7 +704,7 @@ void(entity aggro) ai_util_defense_callForHelp={
               self.trigger_field = aggro;
               self.enemy = self.trigger_field;
               self.goalentity = self.trigger_field;
-              self.delay = time + self.maxpatience;
+              self.patience = time + self.maxpatience;
               ai_state_control(ai_combat_huntTarget);
             self = this;
             justOne = TRUE;

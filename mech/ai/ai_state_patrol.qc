@@ -81,7 +81,7 @@ void() ai_patrol_gotoNode={
     if(vlen(self.node.origin - self.origin) <= AI_PATROL_DIST){
       //AI has reached the node
       if(self.node.delay){
-        self.delay = time + self.node.delay;
+        self.patience = time + self.node.delay;
       }
       ai_state_control(ai_patrol_atNode);
       ai_move_controller(ai_move_stand, 1);
@@ -138,7 +138,7 @@ void() ai_patrol_atNode={
       }
     }
   }
-  if(time > self.delay){
+  if(time > self.patience){
     if(self.node.target){
       local entity e;
       e = find(world, targetname, self.node.target);
