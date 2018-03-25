@@ -54,6 +54,15 @@ float(entity t) util_getMechHpAverage={
   return FALSE;
 };
 
+float(entity t) util_getMechHpTotal={
+  if(t != world){
+    local float total, cur;
+    total = t.max_health + (t.e_arm_l.max_health * 2) + (t.e_tor_l.max_health * 2) + t.e_legs.max_health;
+    return total;
+  }
+  return FALSE;
+};
+
 vector(vector rgb) util_rgbToFloat={
   local vector nu;
   nu_x = rgb_x/255;

@@ -294,7 +294,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
       wep = wep.w_slot;
       if(wep.c_parent == self.c_name){
         if(wep.deadflag <= DEAD_NO){
-            killed(wep, attacker, 0);      
+          killed(wep, attacker, 0);      
         }
       }
     }

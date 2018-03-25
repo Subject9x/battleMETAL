@@ -176,7 +176,7 @@ void() ai_spawner_think={
   }
       
   self.think = ai_spawner_think;
-  self.nextthink = self.count4 + 0.001;
+  self.nextthink = time + 0.1;
 };
 
 void() ai_spawner_activate={
@@ -191,6 +191,7 @@ void() ai_spawner_activate={
     self.ai_style = this.ai_style;
     self.ai_type = this.ai_type;
     self.target = this.target;
+    self.target_die = this.target_die;
     self.group = this.w_name;
     self.state_1 = this.state_1;
     self.nextVecChoice = this.nextVecChoice;
@@ -204,6 +205,7 @@ void() ai_spawner_activate={
     self.next_wepn7 = this.next_wepn7;
     self.next_wepn8 = this.next_wepn8;
     self.next_wepn9 = this.next_wepn9;
+    self.mskin = this.mskin;
     ai_mech();
   self = this;
 };

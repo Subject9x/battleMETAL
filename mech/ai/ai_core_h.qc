@@ -127,6 +127,7 @@ void() ai_control;      //global, root controller function
 .float maxpatience;     //how impatient is the AI
 .float ai_stuck_cnt;        //
 .float ai_stuck_flag;
+.string target_die;
 /*==========================================*/
 
 /*

@@ -1,0 +1,541 @@
+/*
+//==================
+  MAP CORE OBJECTS
+//==================
+*/
+{
+"map_file" "c1m1"
+"classname" "worldspawn"
+"sounds" "6"
+"msn_file" "c1m1.dat"
+"fog" "1 0.85 0.65 0.3 0.3 0.3"
+}
+{
+"classname" "map_terrain_model"
+"origin" "0 0 0"
+"model" "models/terrain/c1m1.obj"
+}
+{
+"origin" "-1856 -912 480"
+"classname" "info_player_start"
+"angle" "90"
+"i_faction" "1"
+}
+//===================================
+/*
+========================
+  TRIGGERS AND LOGIC
+========================
+*/
+{
+"classname" "map_objective"
+"origin" "-2846.9 -200.5 600"
+"isActive" "0"
+"data_idx" "255"
+"targetname" "defend_lose"
+}
+{
+"classname" "map_objective"
+"origin" "-2952.6 -194.1 600"
+"isActive" "1"
+"data_idx" "1"
+"targetname" "obj_defend"
+"target" "defend_lose"
+}
+{
+"classname" "map_trigger_counter"
+"origin" "-2848.2 -275.7 600"
+"mins" "-8 -8 -8"
+"maxs" "8 8 8"
+"count" "7"
+"isActive" "0"
+"data_idx" "255"
+"target" "obj_defend"
+"targetname" "defend_lose_counter"
+}
+{
+"classname" "map_trigger_once"
+"origin" "-1795.9 -1150.2 200"
+"mins" "-128 -128 -24"
+"maxs" "128 128 24"
+"target" "trigger_wave1"
+"message" "Wave 1 Starting"
+}
+//Wave 1 Setup------------------
+{
+"classname" "map_trigger_multiple"
+"origin" "-1573.1 -2166.9 600"
+"mins" "-8 -8 -8"
+"maxs" "8 8 8"
+"delay" "10"
+"targetname" "trigger_wave1"
+"target" "wave_1"
+}
+{
+"classname" "map_trigger_counter"
+"origin" "-1573.1 -2146.9 600"
+"mins" "-8 -8 -8"
+"maxs" "8 8 8"
+"count" "3"
+"targetname" "counter_wave1"
+"target" "wave_2"
+}
+//----------------------------
+//Wave 2 Setup------------------
+{
+"classname" "map_trigger_multiple"
+"origin" "-1583.1 -2166.9 600"
+"mins" "-8 -8 -8"
+"maxs" "8 8 8"
+"wait" "10"
+"targetname" "trigger_wave2"
+"target" "wave_2"
+}
+{
+"classname" "map_trigger_counter"
+"origin" "-1603.1 -2146.9 600"
+"mins" "-8 -8 -8"
+"maxs" "8 8 8"
+"count" "8"
+"targetname" "counter_wave2"
+}
+//--------------------------------
+
+//======================================
+/*
+========================
+  SPAWN POINTS
+========================
+*/
+{
+"classname" "map_deploy_point"
+"origin" "-1795.9 -1150.2 200"
+"i_faction" "1"
+"isActive" "1"
+"data_idx" "1"
+"targetname" "deploy1"
+}
+{
+"classname" "info_player_coop"
+"origin" "-1911 -1187 205"
+"data_type" "16"
+"data_idx" "1"
+"target" "deploy1"
+"i_faction" "1"
+}
+{
+"classname" "info_player_coop"
+"origin" "-1900 -1079 200"
+"data_type" "16"
+"data_idx" "2"
+"target" "deploy1"
+"i_faction" "1"
+}
+{
+"classname" "info_player_coop"
+"origin" "-1810 -1048 200"
+"angles" "0 326 0"
+"data_type" "16"
+"data_idx" "3"
+"target" "deploy1"
+"i_faction" "1"
+}
+{
+"classname" "info_player_coop"
+"origin" "-1713.5 -1024.2 195"
+"angles" "0 280.9 0"
+"data_type" "16"
+"data_idx" "4"
+"target" "deploy1"
+"i_faction" "1"
+}
+//=====================================
+/*
+========================
+  NAV POINTS
+========================
+*/
+{
+"classname" "map_navpoint"
+"origin" "-1782.2 -636.8 500"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "1"
+}
+//===================================
+/*
+========================
+ PLAYER BASE BUILDINGS
+========================
+*/
+{
+"classname" "building_radar"
+"origin" "534.6 -1751.5 400"
+"angles" "0 28 0"
+"i_faction" "1"
+"target" "defend_lose_counter"
+}
+{
+"classname" "building_hangar"
+"origin" "-2033.8 -1083.4 300"
+"angles" "0 325 0"
+"i_faction" "1"
+"target" "defend_lose_counter"
+}
+{
+"classname" "building_repair"
+"origin" "-1844.4 -928 300"
+"angles" "0 291 0"
+"i_faction" "1"
+"target" "defend_lose_counter"
+}
+{
+"classname" "building_power"
+"origin" "-2151.3 -704.9 300"
+"i_faction" "1"
+"target" "defend_lose_counter"
+}
+{
+"classname" "building_power"
+"origin" "-2155.1 -432.7 300"
+"i_faction" "1"
+"target" "defend_lose_counter"
+}
+{
+"classname" "building_shield"
+"origin" "-1896.3 -682.5 300"
+"i_faction" "1"
+"target" "defend_lose_counter"
+}
+{
+"classname" "building_fuel"
+"origin" "-1897.4 -440.8 300"
+"i_faction" "1"
+"target" "defend_lose_counter"
+}
+{
+"classname" "building_fuel"
+"origin" "-1707.1 -562.4 300"
+"i_faction" "1"
+"target" "defend_lose_counter"
+}
+{
+"classname" "building_tur"
+"origin" "-1756.3 -1351.7 300"
+"i_faction" "1"
+"p_damage" "3"
+"next_wepn1" "3"
+"next_wepn2" "1"
+}
+{
+"classname" "building_tur"
+"origin" "-1187.6 -1054.9 300"
+"angles" "0 319.9 0"
+"i_faction" "1"
+"p_damage" "3"
+"next_wepn1" "3"
+"next_wepn2" "1"
+}
+{
+"classname" "building_tur"
+"origin" "-1043.3 55.8 300"
+"angles" "0 319.9 0"
+"i_faction" "1"
+"p_damage" "3"
+"next_wepn1" "3"
+"next_wepn2" "1"
+}
+{
+"classname" "building_tur"
+"origin" "-2504 -507.7 300"
+"angles" "0 175.5 0"
+"i_faction" "1"
+"p_damage" "3"
+"next_wepn1" "3"
+"next_wepn2" "1"
+}
+//===============================
+/*
+========================
+ ATTACK PATH - SE
+========================
+*/
+{
+"classname" "ai_node"
+"origin" "6810.1 -4992 50"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_1"
+"target" "attack_se_2"
+}
+{
+"classname" "ai_node"
+"origin" "6810.6 -4136.8 38"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_2"
+"target" "attack_se_3"
+}
+{
+"classname" "ai_node"
+"origin" "5347.3 -3446 20"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_3"
+"target" "attack_se_4"
+}
+{
+"classname" "ai_node"
+"origin" "3463 -2967.7 36.3"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_4"
+"target" "attack_se_5"
+}
+{
+"classname" "ai_node"
+"origin" "2869.3 -2724 125.7"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_5"
+"target" "attack_se_6"
+}
+{
+"classname" "ai_node"
+"origin" "2317.9 -2794 69.2"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_6"
+"target" "attack_se_7"
+}
+{
+"classname" "ai_node"
+"origin" "681.4 -3037.6 20"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_7"
+"target" "attack_se_8"
+}
+{
+"classname" "ai_node"
+"origin" "-340.6 -2679.3 20"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_8"
+"target" "attack_se_9"
+}
+{
+"classname" "ai_node"
+"origin" "-730.8 -602.7 112.2"
+"group" "attack_se"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_se_9"
+}
+//=====================
+/*
+========================
+ ATTACK PATH - SW
+========================
+*/
+{
+"classname" "ai_node"
+"origin" "6259.8 2543.9 200"
+"group" "attack_sw"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_sw_1"
+"target" "attack_sw_2"
+}
+{
+"classname" "ai_node"
+"origin" "5799.5 1423.5 200"
+"group" "attack_sw"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_sw_2"
+"target" "attack_sw_3"
+}
+{
+"classname" "ai_node"
+"origin" "5081.6 665.1 110"
+"group" "attack_sw"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_sw_3"
+"target" "attack_sw_4"
+}
+{
+"classname" "ai_node"
+"origin" "2557 1062.4 20"
+"group" "attack_sw"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_sw_4"
+"target" "attack_sw_5"
+}
+{
+"classname" "ai_node"
+"origin" "907.2 1897.2 20"
+"group" "attack_sw"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_sw_5"
+"target" "attack_sw_6"
+}
+{
+"classname" "ai_node"
+"origin" "-1610.4 1335.8 21.5"
+"group" "attack_sw"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_sw_6"
+"target" "attack_sw_7"
+}
+{
+"classname" "ai_node"
+"origin" "-1869.5 64.7 102.8"
+"group" "attack_sw"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_sw_7"
+}
+//=======================
+/*
+========================
+ ATTACK PATH - NE
+========================
+*/
+{
+"classname" "ai_node"
+"origin" "-5581.3 7198.6 20.7"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_1"
+"target" "attack_ne_2"
+}
+{
+"classname" "ai_node"
+"origin" "-5003.4 7519.6 32"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_2"
+"target" "attack_ne_3"
+}
+{
+"classname" "ai_node"
+"origin" "-4470.6 6903.8 20"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_3"
+"target" "attack_ne_4"
+}
+{
+"classname" "ai_node"
+"origin" "-4636.7 4676.7 21.5"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_4"
+"target" "attack_ne_5"
+}
+{
+"classname" "ai_node"
+"origin" "-3786.2 4657.1 21.6"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_5"
+"target" "attack_ne_6"
+}
+{
+"classname" "ai_node"
+"origin" "-3625 2785.7 21.6"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_6"
+"target" "attack_ne_7"
+}
+{
+"classname" "ai_node"
+"origin" "-4063.4 1154.1 20"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_7"
+"target" "attack_ne_8"
+}
+{
+"classname" "ai_node"
+"origin" "-2994.2 287.6 20"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_8"
+"target" "attack_ne_9"
+}
+{
+"classname" "ai_node"
+"origin" "-1906.7 249.1 59.9"
+"group" "attack_ne"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "attack_ne_9"
+}
+//======================
+/*
+========================
+ AI -> ATTACK PATH - SE
+========================
+*/
+//WAVE ONE
+{
+"classname" "ai_spawner"
+"origin" "6805.9 -5127.3 100"
+"isActive" "1"
+"delay" "8"
+"count1" "0"
+"count2" "3"
+"state_1" "3"
+"p_damage" "2"
+"ai_style" "2"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "3"
+"next_wepn2" "3"
+"next_wepn3" "4"
+"targetname" "wave_1"
+"target" "attack_se_1"
+"target_die" "counter_wave1"
+"i_faction" "2"
+}
+//---------------------
+
+//=====================
+/*
+========================
+ AI -> ATTACK PATH - SW
+========================
+*/
+
+//======================
+/*
+========================
+ AI -> ATTACK PATH - NW
+========================
+*/
+
+//======================

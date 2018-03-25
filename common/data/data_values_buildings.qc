@@ -55,16 +55,16 @@ float DAT_TUR_LEG_ARMOR       = 100;
 //            Shield  
 //============================
 //-------------------------Human-Fuel Tank
-float DAT_BLD_H_FUELTANK_SH_MAX   = 100;
-float DAT_BLD_H_FUELTANK_SH_RATE  = 1;
+float DAT_BLD_H_FUELTANK_SH_MAX     = 100;
+float DAT_BLD_H_FUELTANK_SH_RATE    = 1;
 //-------------------------Human-Large Hangar
-float DAT_BLD_H_LG_HANGAR_SH_MAX   = 500;
-float DAT_BLD_H_LG_HANGAR_SH_RATE  = 1;
+float DAT_BLD_H_LG_HANGAR_SH_MAX    = 500;
+float DAT_BLD_H_LG_HANGAR_SH_RATE   = 1;
 //-------------------------Human-Radar Post
-float DAT_BLD_H_SM_RADAR_SH_MAX    = 150;
-float DAT_BLD_H_SM_RADAR_SH_RATE   = 1;
+float DAT_BLD_H_SM_RADAR_SH_MAX     = 150;
+float DAT_BLD_H_SM_RADAR_SH_RATE    = 1;
 //-------------------------Human-Power Plant
-float DAT_BLD_H_POWER_PLANT_SH_MAX = 600;
+float DAT_BLD_H_POWER_PLANT_SH_MAX  = 600;
 float DAT_BLD_H_POWER_PLANT_SH_RATE = 1;
 //-------------------------Human-Shield Generator
 float DAT_BLD_H_SHIELDGEN_SH_MAX    = 1000;
@@ -74,8 +74,8 @@ float DAT_BLD_H_SHIELD_RADIUS       = 1000;
 float DAT_BLD_H_REPAIR_SH_MAX       = 750;
 float DAT_BLD_H_REPAIR_SH_RATE      = 1;
 //-------------------------Human-Light turret
-float DAT_TUR_SHIELD_MAX          = 200;
-float DAT_TUR_SHIELD_RATE         = 0.35;
+float DAT_TUR_SHIELD_MAX            = 200;
+float DAT_TUR_SHIELD_RATE           = 1;
 //============================
 //            Energy  
 //============================
@@ -86,20 +86,20 @@ float DAT_TUR_SHIELD_RATE         = 0.35;
 //-------------------------Human-Radar Post
 
 //-------------------------Human-Power Plant
-float DAT_BLD_H_POWER_PLANT_EN_MAX = 4000;
-float DAT_BLD_H_POWER_PLANT_EN_RATE = 4;
+float DAT_BLD_H_POWER_PLANT_EN_MAX    = 4000;
+float DAT_BLD_H_POWER_PLANT_EN_RATE   = 4;
 float DAT_BLD_H_POWER_PLANT_EN_RADIUS = 800;
 //-------------------------Human-Shield Generator
 
 //-------------------------Human-Repair Bay
-float DAT_BLD_H_REPAIR_EN_MAX = 4000;
-float DAT_BLD_H_REPAIR_RL_MAX = 2000;
-float DAT_BLD_H_REPAIR_RL_RATE =  1;
-float DAT_BLD_H_REPAIR_RL_RATIO = 2;
+float DAT_BLD_H_REPAIR_EN_MAX         = 4000;
+float DAT_BLD_H_REPAIR_RL_MAX         = 2000;
+float DAT_BLD_H_REPAIR_RL_RATE        = 1;
+float DAT_BLD_H_REPAIR_RL_RATIO       = 2;
 
 //-------------------------Human-Light turret
-float DAT_TUR_ENERGY_MAX    = 400;
-float DAT_TUR_ENERGY_RATE   = 1;
+float DAT_TUR_ENERGY_MAX              = 400;
+float DAT_TUR_ENERGY_RATE             = 1;
 //============================
 //            Radar Range and Lock-on Delay
 //============================

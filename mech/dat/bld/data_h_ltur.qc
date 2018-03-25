@@ -105,11 +105,11 @@ void() building_tur={
   self.deadflag = DEAD_NO;
   self.data_type = DATA_VEHC;
   self.en_cur = 0;
-  self.en_max = 0;
-  self.en_rate = 0;
+  self.en_max = DAT_TUR_ENERGY_MAX;
+  self.en_rate = DAT_TUR_ENERGY_RATE;
   self.sh_cur = 0;
-  self.sh_max = 0;
-  self.sh_rate = 0;
+  self.sh_max = DAT_TUR_SHIELD_MAX;
+  self.sh_rate = DAT_TUR_SHIELD_RATE;
   self.stat_ctor_hp = 0;
   self.radar_range = 0; 
   self.was_hit = FALSE;
@@ -145,6 +145,8 @@ void() building_tur={
   
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
+  self.flags = self.flags | FL_ONGROUND;
+  
   if(self.state_1){
     self.ai_first_order = AI_ORDER_DEBUG;
   }
@@ -154,7 +156,7 @@ void() building_tur={
   self.enemy = world;
   self.oldgoal = world;
   self.ai_unit_update = ai_turret_update;
-  self.th_missile = ai_mech_attack;
+  self.th_missile = ai_attack;
   self.e_cam.SendEntity = send_vehicle;
   self.e_cam.SendFlags = -1;
   self.th_die = ai_turret_die;

@@ -156,7 +156,6 @@ void() PlayerPostThink = {
     self.stat_trg_org_x = self.c_ofs_x;
     self.stat_trg_org_y = self.c_ofs_y;
     self.stat_trg_org_z = self.c_ofs_z;
-    
   }
   
   //========================================

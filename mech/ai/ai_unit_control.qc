@@ -140,30 +140,39 @@ void() ai_turret_control={
           self.patience = time + self.maxpatience ;
         }
       }
-    }
-    if( ai_target_isValid(self.trigger_field) && ai_target_canSee(self.trigger_field) ){
-      self.patience = 0;
-      self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
-      ChangeYaw();
-      changepitch(self);
-      if( time > self.attack_finished){
-        if(ai_target_facingideal()){
-          self.attack_finished = time + ai_core_attackInterval();
-          self.button0 = 1; 
+      else{
+        if( time > self.maxpatience){
+          local entity contact;
+          contact = ai_target_radarTarget();
+          if(contact){
+            ai_update_switchToTarget(contact);
+            self.patience = time + self.maxpatience ;
+          }
         }
       }
     }
     if( ai_target_isValid(self.trigger_field) ){
-      if(time > self.patience){
-        self.patience = time + self.maxpatience;
+      self.patience = 0;
+      self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
+      ChangeYaw();
+      changepitch(self);
+      if( ai_target_canSee(self.trigger_field) ){
+        self.patience = 0;
+        if( time > self.attack_finished){
+          if(ai_target_facingideal()){
+            self.attack_finished = time + ai_core_attackInterval();
+            self.button0 = 1; 
+          }
+        }
       }
       else{
-        self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
-        ChangeYaw();
-        changepitch(self);
+        self.patience = time + self.maxpatience;
       }
     }
-    
+    else{
+      ai_target_clearBuffers();
+      self.patience = 0;
+    } 
   }
 
   if(self.button0){  
@@ -184,7 +193,7 @@ void() ai_turret_control={
   
   self.think = ai_turret_control;
   self.nextthink = time + 0.05;
-  self.e_cam.SendFlags = self.e_cam.SendFlags | 1;
+  self.e_cam.SendFlags = -1;
 };
 
 //TODO - move this stuff to own file
@@ -250,16 +259,28 @@ void() ai_turret_touch={
 };
 
 void() ai_turret_die={
-  local entity w_chain;
+  local entity w_chain, debris, this;
   w_chain = self.w_slot;
   while(w_chain){
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
+  
+  setmodel(self, self.e_legs.model);
+  setorigin(self, self.e_legs.origin);
+  self.angles = self.e_legs.angles;  
+  self.solid = SOLID_CORPSE;
+  self.movetype = MOVETYPE_BOUNCE;
+  
+  mech_player_compdie(self.e_tor_c);
   mech_player_compdie(self.e_legs);
   mech_player_compdie(self.e_cam);
- 
-  ctor_die1();
+
+  //fire triggers when dead
+  self.target = self.target_die;
+  activator = self.enemy;
+	SUB_UseTargets ();
+  multi_trigger();
  
   self.think = ai_mech_cleanup;
   self.nextthink = time + 100;
@@ -273,6 +294,8 @@ void() ai_mech_die={
     w_chain = w_chain.w_slot;
   }
   
+  setmodel(self, self.e_tor_c.model);
+  mech_player_compdie(self.e_tor_c);
   mech_player_compdie(self.e_tor_l);
   mech_player_compdie(self.e_tor_r);
   mech_player_compdie(self.e_arm_l);
@@ -281,6 +304,15 @@ void() ai_mech_die={
   mech_player_compdie(self.e_cam);
   
   ctor_die1();
+  
+  self.movetype = MOVETYPE_BOUNCE;
+  self.solid = SOLID_CORPSE;
+  
+  //fire triggers when dead
+  self.target = self.target_die;
+  activator = self.trigger_field;
+	SUB_UseTargets ();
+  multi_trigger();
   
   self.think = ai_mech_cleanup;
   self.nextthink = time + 100;

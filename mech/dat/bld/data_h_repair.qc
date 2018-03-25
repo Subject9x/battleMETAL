@@ -25,16 +25,18 @@ void() building_repair={
   self.sh_max= DAT_BLD_H_REPAIR_SH_MAX;
   self.sh_rate= DAT_BLD_H_REPAIR_SH_RATE;
   self.scale = 1;
-  self.rl_cur = 0;
+  self.rl_cur = DAT_BLD_H_REPAIR_RL_MAX;
   self.rl_rate = DAT_BLD_H_REPAIR_RL_RATE;
   self.rl_max = DAT_BLD_H_REPAIR_RL_MAX;
   self.deadflag = DEAD_NO;
+  
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
+  
   self.movetype = MOVETYPE_NONE;
   self.th_die = building_repair_die;
   self.think = building_repair_think;
-  self.nextthink = time + 1;
+  self.nextthink = time + 0.1;
   self.use = multi_trigger;
   self.SendEntity = send_building;
   self.SendFlags = -1;
@@ -59,13 +61,19 @@ void() building_repair={
 };
 
 void() building_repair_think={
-  if(self.e_cam. trigger_field != world){
-    if(vlen(self.trigger_field.origin - self.e_cam.origin) > 16){
+  if(self.rl_cur < self.rl_max){
+    self.rl_cur = self.rl_cur + self.rl_rate;
+    if(self.rl_cur > self.rl_max){
+      self.rl_cur = self.rl_max;
+    }
+  }
+  if( self.trigger_field != world ){
+    if( vlen(self.trigger_field.origin - self.e_cam.origin) > 16){
       self.trigger_field = world;
     }
     else{
       local entity repairMe,fix;  
-      repairMe = self.e_cam.trigger_field;
+      repairMe = self.trigger_field;
       
       if(csqc_updateCompStat(repairMe) < 100){
         fix = repairMe;
@@ -76,32 +84,33 @@ void() building_repair_think={
         part = repairMe.c_part;
         lowHP = 99.99;
         while(part){
-          local float hp;
-          hp = csqc_updateCompStat(part);
-          if( hp <= lowHP){
-            lowHP = hp;
-            fix = part;
+          if(part.deadflag <= DEAD_NO){
+            local float hp;
+            hp = csqc_updateCompStat(part);
+            if( hp <= lowHP){
+              lowHP = hp;
+              fix = part;
+            }
           }
           part = part.c_part;
         }
       }
       if(fix){
-        fix.health = fix.health + (self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO) / 2;
+        local vector fx;
+        makevectors(self.angles);
+        fx = self.origin + (v_forward * 45) + (v_up * 20);
+        te_beam_laser(fx, fix.origin);
+        
+        fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
         self.rl_cur = self.rl_cur - self.rl_rate;
         if(fix.health > fix.max_health){
           fix.health = fix.max_health;
         }
       }
       else{
+        self.trigger_field.power_timer = time + 7;
         self.trigger_field = world;
       } 
-    }
-  }
-  
-  if(self.rl_cur < self.rl_max){
-    self.rl_cur = self.rl_cur + self.rl_rate;
-    if(self.rl_cur > self.rl_max){
-      self.rl_cur = self.rl_max;
     }
   }
   
@@ -110,17 +119,25 @@ void() building_repair_think={
 };
 
 void() building_repair_touch={
-  if(self.owner.rl_cur > 0){
-    if(other.data_type == DATA_MECH){
-      if(other.i_faction == self.owner.i_faction){
-        local float rep_time;
-        rep_time = self.owner.rl_cur * 10;
-        if(util_getMechHpAverage(other) < 1){      
-          if(self.trigger_field == world){
-            self.trigger_field = other;
-            other.power_timer = time + rep_time;
-            other.velocity = '0 0 0';
-            other.avelocity = '0 0 0';
+  if( vlen(other.origin - self.origin) <= 16){
+    if(self.owner.rl_cur > 0){
+      if(other.data_type == DATA_MECH){
+        if(other.i_faction == self.owner.i_faction){
+          if(util_getMechHpAverage(other) < 1){
+            if(self.owner.trigger_field == world){ 
+              local float rep_time, hpTotal, hpRemain;
+              hpTotal = util_getMechHpTotal(other);
+              hpRemain = util_getMechHpAverage(other);
+              hpRemain = hpTotal - hpRemain; 
+              rep_time = hpRemain / DAT_BLD_H_REPAIR_RL_RATIO;
+              if( hpRemain > self.owner.rl_cur){
+                rep_time = self.owner.rl_cur;
+              }
+              self.owner.trigger_field = other;
+              other.power_timer = time + rep_time;
+              other.velocity = '0 0 0';
+              other.avelocity = '0 0 0';
+            }
           }
         }
       }
