@@ -1,0 +1,23 @@
+//mission info section
+{
+  'img' : maps/c1m1_over.png,
+  'name'  : Stolen Ground,
+  'type'  : Defense,
+  'points' : 1,
+  'sector' : Stormside,
+  'location' : Badlands,
+  'time' : 14-37-09 LPT,
+  'brief' : PSC has secured a firebase in this| area. Long-range scans have| detected ENEMY forces moving to| attack this base. PSC is scrambling| multiple DEAD_HANDS to protect this| facility. A REPAIR BAY has been| brought online to preserve | defense forces,
+  'intel' : Severely recommended Strike Pakage|    3 to 4 Mechs; any type| |ENEMY forces have the numbers PSC lacks in this scenario| |PSC suggest varied loadouts to weather multiple waves of|  attacks.| |REPAIR BAY is operational but do not rely on it.,
+  'objtotal' : 2,
+  'anim' : ,
+}
+//objectives section
+{
+  'objid' : 1,
+  'objdesc' : Defend the base at all costs,
+}
+{
+  'objid' : 2,
+  'objdesc' : Defeat 3 waves of enemies,
+}

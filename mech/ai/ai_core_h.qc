@@ -49,12 +49,6 @@ void(entity wep) ai_attack_exp;
 /*
   AI SPECIFIC GLOBAL CONSTANT======================
 */
-//check angle constants (for readability)
-float AI_TARG_FWD = 0;
-float AI_TARG_BKD = 1;
-float AI_TARG_LFT = 2;
-float AI_TARG_RGT = 3;
-
 //PILOT RANKS - determines base states, and some realtime decisions
 float AI_RANK_ACE = 0;
 float AI_RANK_VET = 1;  //veteran
@@ -73,6 +67,12 @@ float AI_TYPE_NORML  = 0;
 float AI_TYPE_AGGRO  = 1;
 float AI_TYPE_RESCU  = 2;
 float AI_TYPE_COWRD  = 3;
+
+//check angle constants (for readability)
+float AI_TARG_FWD = 0;
+float AI_TARG_BKD = 1;
+float AI_TARG_LFT = 2;
+float AI_TARG_RGT = 3;
 
 //direction bitflag is used to filter out non-viable directions when executing pseudo-random moves
 float AI_DIR_N  = 1;

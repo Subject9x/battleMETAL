@@ -121,7 +121,7 @@ void() ClientConnect = {
   self.next_wepn7 = -1;
   self.next_wepn8 = -1;
   self.next_wepn9 = -1;
-  
+  self.repair_request = 0;
   self.stat_plr_stt = PLAYER_CONNECT;
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here

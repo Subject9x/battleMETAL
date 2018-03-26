@@ -228,16 +228,16 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   local float cnt;
   cnt = 0;
   if((types & DMG_ENE)){
-    drawpic(pofs + gui_percentToPixelRawVec('85 0'), UI_WEP_ENE, gui_percentToPixelRawVec('16 16'), '1 1 1', HUD_ALPHA, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('85 0'), UI_WEP_ENE, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', HUD_ALPHA, 0);
   }
   if((types & DMG_BAL)){
-    drawpic(pofs + gui_percentToPixelRawVec('100 0'), UI_WEP_BAL, gui_percentToPixelRawVec('16 16'), '1 1 1', HUD_ALPHA, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('100 0'), UI_WEP_BAL, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
   }
   if((types & DMG_EXP)){
-    drawpic(pofs + gui_percentToPixelRawVec('120 0'), UI_WEP_EXP, gui_percentToPixelRawVec('16 16'), '1 1 1', HUD_ALPHA, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('120 0'), UI_WEP_EXP, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
   }
   if((types & DMG_MSC)){
-    drawpic(pofs + gui_percentToPixelRawVec('140 0'), UI_WEP_MSC, gui_percentToPixelRawVec('16 16'), '1 1 1', HUD_ALPHA, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('140 0'), UI_WEP_MSC, gui_percentToPixelRawVec('16 16'), CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
   }
   drawstring(pofs + gui_percentToPixelRawVec('225 4'), ftos(sz), '8 8 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
 };

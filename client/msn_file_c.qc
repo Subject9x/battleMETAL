@@ -91,8 +91,8 @@ void() msn_parsefile={
       }
 
       //objectives section
-      tobj = msn_mapobjid(argv(1), argv(3));
       msn_setobjdesc(tobj, argv(1), argv(3));
+      tobj = msn_mapobjid(argv(1), argv(3));  //somehow reading this second works
     }
     line = fgets(flannel);
   }
@@ -165,14 +165,15 @@ void(string line, string val) msn_setintel={
     MSN_INTEL = strzone(val);
   }
 };
+
 void(string line, string val) msn_settotalobjectives={
-  if(line == "MSN_OBJ"){
+  if(line == MSN_FILE_OBJS){
     MSN_OBJ = stof(val);
   }
 };
 float(string line, string val) msn_mapobjid={
   local float obj_id;
-  if(line == "MSN_FILE_OBJ_ID"){
+  if(line == MSN_FILE_OBJ_ID){
     obj_id = stof(val);
     if(obj_id > 0){
       return obj_id;
@@ -186,7 +187,7 @@ float(string line, string val) msn_mapobjid={
   }
 };
 void(float obj_id, string line, string val) msn_setobjdesc={
-  if(line == "OBJ_DESC"){
+  if(line == MSN_FILE_OBJ_DESC){
     if(obj_id!=0){    
       MSN_OBJ_DESC[obj_id] = strzone(val);
       MSN_OBJ_STATUS[obj_id] = FALSE;

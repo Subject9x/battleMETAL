@@ -36,6 +36,8 @@ const float FL_CLIENTDATA = 8192;
 .float lock_timer;
 .float chain_timer;
 
+.float repair_request;
+
 .float laser_sight_timer;
 .vector laser_sight_org;
 

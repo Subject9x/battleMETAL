@@ -202,6 +202,7 @@ void() data_mech_mtk={
     self.plr_nex_grp4 = 0;
     self.plr_nex_grp5 = 0;
     self.drawmask = MASK_NORMAL;
-    
+    //38 chars per line
+    self.note1 = "The MATOK was the second-generation| combat mech that Federal Military| churned out as the threat of AUTHOR| was increasing. MATOKs are the main| stay of Federal squadrons today, | found in almost every  deployment| and any combat.| |A dangerous generalist, the MATOK is | design to engage targets head on with | a slew of direct-fire power and large | reactor recharge capacity.| |MATOK operators have to remember not | to get surrounded though, the MATOK's| defensive capabilities are not as | strong as its defense. Its speed is | also a problem against more agile| targets.";
   self = oself;
 };

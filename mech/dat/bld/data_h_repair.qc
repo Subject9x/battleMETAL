@@ -68,7 +68,8 @@ void() building_repair_think={
     }
   }
   if( self.trigger_field != world ){
-    if( vlen(self.trigger_field.origin - self.e_cam.origin) > 16){
+    if( (vlen(self.trigger_field.origin - self.e_cam.origin) > 16) ){
+      self.trigger_field.repair_request = FALSE;
       self.trigger_field = world;
     }
     else{
@@ -98,7 +99,7 @@ void() building_repair_think={
       if(fix){
         local vector fx;
         makevectors(self.angles);
-        fx = self.origin + (v_forward * 45) + (v_up * 20);
+        fx = self.origin + (v_forward * 45) + (v_up * 40);
         te_beam_laser(fx, fix.origin);
         
         fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
@@ -108,7 +109,10 @@ void() building_repair_think={
         }
       }
       else{
-        self.trigger_field.power_timer = time + 7;
+        if( (self.trigger_field.flags & FL_CLIENT) ){
+          centerprint(self.trigger_field, "[Repairs complete]\n");
+        }
+        self.trigger_field.power_timer = time + 2;
         self.trigger_field = world;
       } 
     }
@@ -125,18 +129,16 @@ void() building_repair_touch={
         if(other.i_faction == self.owner.i_faction){
           if(util_getMechHpAverage(other) < 1){
             if(self.owner.trigger_field == world){ 
-              local float rep_time, hpTotal, hpRemain;
-              hpTotal = util_getMechHpTotal(other);
-              hpRemain = util_getMechHpAverage(other);
-              hpRemain = hpTotal - hpRemain; 
-              rep_time = hpRemain / DAT_BLD_H_REPAIR_RL_RATIO;
-              if( hpRemain > self.owner.rl_cur){
-                rep_time = self.owner.rl_cur;
+              if( (other.flags & FL_CLIENT) ){
+                centerprint( other, "[Hold 'E' to REAPIR]\n");
               }
-              self.owner.trigger_field = other;
-              other.power_timer = time + rep_time;
-              other.velocity = '0 0 0';
-              other.avelocity = '0 0 0';
+              if(other.repair_request){
+                self.owner.trigger_field = other;
+                other.velocity = '0 0 0';
+                other.avelocity = '0 0 0';
+                other.v_angle = self.owner.angles;
+                other.angles = self.owner.angles;
+              }
             }
           }
         }

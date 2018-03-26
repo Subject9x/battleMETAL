@@ -8,7 +8,7 @@
 "classname" "worldspawn"
 "sounds" "6"
 "msn_file" "c1m1.dat"
-"fog" "1 0.85 0.65 0.3 0.3 0.3"
+"fog" "0.25 0.85 0.65 0.5 0.75 8000 16000 600 25"
 }
 {
 "classname" "map_terrain_model"
@@ -36,11 +36,26 @@
 }
 {
 "classname" "map_objective"
+"origin" "-2846.9 -240.5 600"
+"isActive" "0"
+"data_idx" "254"
+"targetname" "defend_win"
+}
+{
+"classname" "map_objective"
 "origin" "-2952.6 -194.1 600"
 "isActive" "1"
 "data_idx" "1"
 "targetname" "obj_defend"
 "target" "defend_lose"
+}
+{
+"classname" "map_objective"
+"origin" "-2952.6 -220 600"
+"isActive" "1"
+"data_idx" "2"
+"targetname" "obj_success"
+"target" "defend_win"
 }
 {
 "classname" "map_trigger_counter"
@@ -76,7 +91,7 @@
 "origin" "-1573.1 -2146.9 600"
 "mins" "-8 -8 -8"
 "maxs" "8 8 8"
-"count" "3"
+"count" "8"
 "targetname" "counter_wave1"
 "target" "wave_2"
 }
@@ -506,12 +521,12 @@
 "origin" "6805.9 -5127.3 100"
 "isActive" "1"
 "delay" "8"
-"count1" "0"
+"count1" "30"
 "count2" "3"
-"state_1" "3"
-"p_damage" "2"
-"ai_style" "2"
-"ai_type" "0"
+"state_1" "4"
+"p_damage" "3"
+"ai_style" "0"
+"ai_type" "1"
 "vec_size" "1"
 "nextVecChoice" "1"
 "next_wepn1" "3"
@@ -521,6 +536,7 @@
 "target" "attack_se_1"
 "target_die" "counter_wave1"
 "i_faction" "2"
+"mskin" "1"
 }
 //---------------------
 
@@ -530,12 +546,60 @@
  AI -> ATTACK PATH - SW
 ========================
 */
-
+//WAVE ONE
+{
+"classname" "ai_spawner"
+"origin" "6250.9 2919.8 154.6"
+"angles" "0 221.4 0"
+"isActive" "1"
+"delay" "8"
+"count1" "0"
+"count2" "2"
+"state_1" "4"
+"p_damage" "3"
+"ai_style" "3"
+"ai_type" "1"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "16"
+"next_wepn2" "16"
+"next_wepn3" "17"
+"targetname" "wave_1"
+"target" "attack_sw_1"
+"target_die" "counter_wave1"
+"i_faction" "2"
+"mskin" "1"
+}
+//---------------------
 //======================
 /*
 ========================
  AI -> ATTACK PATH - NW
 ========================
 */
-
+//WAVE ONE
+{
+"classname" "ai_spawner"
+"origin" "-5544.9 6879.2 32.6"
+"angles" "0 99.1 0"
+"isActive" "1"
+"delay" "8"
+"count1" "45"
+"count2" "3"
+"state_1" "4"
+"p_damage" "2"
+"ai_style" "1"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "3"
+"next_wepn2" "1"
+"next_wepn3" "5"
+"targetname" "wave_1"
+"target" "attack_nw_1"
+"target_die" "counter_wave1"
+"i_faction" "2"
+"mskin" "1"
+}
+//---------------------
 //======================

@@ -120,13 +120,13 @@ void(vector ofs) menu_briefMissionText={
     local string line;
     local float llen;
     line = argv(lne_idx);
-    drawstring(fpos, line, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(fpos, line, '7 8 0', '1 1 1', HUD_ALPHA, 0);
     if(line ==""){
       lne_idx = -1;
     }
     else{
       lne_idx = lne_idx + 1;
-      fpos_y = fpos_y + gui_percentYRaw(8);
+      fpos_y = fpos_y + gui_percentYRaw(14);
     }
   }
 };
@@ -227,16 +227,16 @@ void(vector ofs) menu_briefObjectivePanel={
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
   drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), '1 1 1', HUD_ALPHA, 0);
   
-  lofs = bpos + gui_percentToPixel(0.0093, 0.025);
+  lofs = bpos + gui_percentToPixelRawVec('12 12');
   eol = TRUE;
   lst_idx = 1;
   while(eol){
     local vector oofs;
     oofs = lofs;
-    oofs_y = oofs_y + (lst_idx * gui_percentX(0.0093));
+    oofs_y = oofs_y + (lst_idx * gui_percentXRaw(12));
     local string desc;
     desc = MSN_OBJ_DESC[lst_idx];
-    drawstring(oofs, strcat("[", ftos(lst_idx),"]:", desc), '6 6 0', '1 1 1', HUD_ALPHA,0);
+    drawstring(oofs, strcat("[", ftos(lst_idx),"]:", desc), '8 8 0', '1 1 1', HUD_ALPHA,0);
     if(MSN_OBJ_DESC[(lst_idx+1)] ==""){
       eol = FALSE;
     }
@@ -260,13 +260,13 @@ void(vector ofs) menu_briefIntelPanel={
     local string line;
     local float llen;
     line = argv(lne_idx);
-    drawstring(fpos, line, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(fpos, line, '7 8 0', '1 1 1', HUD_ALPHA, 0);
     if(line ==""){
       lne_idx = -1;
     }
     else{
       lne_idx = lne_idx + 1;
-      fpos_y = fpos_y + gui_percentY(0.0083);
+      fpos_y = fpos_y + gui_percentYRaw(12);
     }
   }
 };

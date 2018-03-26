@@ -139,15 +139,19 @@ void() PlayerPostThink = {
 	if(self.impulse){
 		ImpulseCommands ();
   }
+  if(self.repair_request){
+    if(util_getMechHpAverage(self) == 1){
+      self.repair_request = FALSE;
+    }
+  }
   
-
   //DEBUG / DEV ONLY!
   local vector v;
   if(cvar("mechdev") == TRUE){
     if(self.button0){
       makevectors(self.v_angle);
       traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
-      self.c_ofs = trace_endpos;    
+      self.c_ofs = trace_endpos;
       te_beam_esr(self.origin + (v_up * -4), trace_endpos);
     }
     self.stat_plr_ang_x = anglemod(self.v_angle_x);

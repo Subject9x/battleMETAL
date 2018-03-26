@@ -99,7 +99,13 @@ void() ImpulseCommands ={
         self.stat_rdr_rng = self.radar_range * 2;
       }
     }
-  }  
+  } 
+  
+  if(self.impulse == IMP_REPAIR){
+    if(util_getMechHpAverage(self) < 1){
+      self.repair_request = TRUE;
+    }
+  }
 	self.impulse = 0;
 };
 

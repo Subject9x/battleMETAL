@@ -342,8 +342,30 @@ void(vector ofs) menu_hangar_MechInfo={
 
 //Displays the fluff text that describes this unit, mostly helpful to give the overall idea of the unit.
 void(vector ofs) menu_hangar_MechFluff={
-  local vector nofs;
+  local vector nofs, fpos;
+  local float lne_idx, argc;
+  local entity dat;
   nofs = ofs + gui_percentToPixelRawVec('115 203');
   drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('250 261'), '1 1 1', HUD_ALPHA, 0);
   drawstring(nofs + gui_percentToPixelRawVec('16 16'), "[DESCRIPTION]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  
+  dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
+
+  fpos = nofs + gui_percentToPixelRawVec('18 26');
+  argc = tokenizebyseparator(dat.note1, "|");
+  lne_idx = 0;
+  while(lne_idx != -1){
+    local string line;
+    local float llen;
+    line = argv(lne_idx);
+    drawstring(fpos, line, '7 8 0', '1 1 1', HUD_ALPHA, 0);
+    if(line ==""){
+      lne_idx = -1;
+    }
+    else{
+      lne_idx = lne_idx + 1;
+      fpos_y = fpos_y + gui_percentYRaw(14);
+    }
+  }
+  
 };
