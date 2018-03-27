@@ -343,14 +343,13 @@ void(vector ofs) menu_hangar_MechInfo={
 void(vector ofs) menu_hangar_MechFluff={
   local vector nofs, fpos;
   local float lne_idx, argc;
-  local entity dat;
   nofs = ofs + gui_percentToPixelRawVec('115 203');
   drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('250 261'), '1 1 1', HUD_ALPHA, 0);
   drawstring(nofs + gui_percentToPixelRawVec('16 16'), "[DESCRIPTION]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   if(SELECTED_MECH != world){
     fpos = nofs + gui_percentToPixelRawVec('18 26');
-    argc = tokenizebyseparator(dat.note1, "|");
+    argc = tokenizebyseparator(SELECTED_MECH.note1, "|");
     lne_idx = 0;
     while(lne_idx != -1){
       local string line;

@@ -79,17 +79,26 @@ void() ai_combat_huntTarget={
     changepitch(self);
     //AI lost patience, will try a new target
     if(time > self.patience){
-      if(ai_target_isValid(self.oldenemy)){
-        ai_update_switchToTarget(self.oldenemy);
-        self.oldenemy = world;
-        self.patience = time + self.maxpatience;
+      if( !ai_target_canSee(self.enemy) ){
+        if(ai_target_isValid(self.oldenemy)){
+          ai_update_switchToTarget(self.oldenemy);
+          self.oldenemy = world;
+          self.patience = time + self.maxpatience;
+          ai_update_dmgTime();
+          ai_state_control(ai_combat_findTarget);
+          return;
+        }
         ai_update_dmgTime();
         ai_state_control(ai_combat_findTarget);
+        ai_move_controller(ai_move_stand, 0.05);
         return;
       }
-      ai_state_control(ai_combat_findTarget);
-      ai_move_controller(ai_move_stand, 0.05);
-      return;
+      else{
+        self.patience = 0;
+        ai_update_dmgTime();
+        ai_state_control(ai_combat_adjustPosition);
+        return;
+      }
     }
     else{
       //check to see if AI can see target
@@ -107,11 +116,13 @@ void() ai_combat_huntTarget={
     }
   }
   if(ai_target_isValid(self.oldenemy)){
+    ai_update_dmgTime();
     ai_state_control(ai_combat_findTarget);
     return;
   }
   //AI didnt have an old enemy to go after
   //so clear the targets, and end the fight phase
+  ai_update_dmgTime();
   ai_state_control(ai_combat_endFight);
   return;
 };
@@ -168,7 +179,6 @@ void() ai_combat_adjustPosition={
       }
       return;
     }
-    
     //attempt to hunt
     self.patience = time + self.maxpatience;
     ai_state_control(ai_combat_huntTarget);

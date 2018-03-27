@@ -38,6 +38,7 @@ void() navBarListener;
 void() mechAcceptButtonListener;
 void(float wid, vector org, float selected) ui_renderHardPointGraphic;
 void(entity nav) ui_renderNav;
+void(entity clnt) ui_renderClientName;
 void(float num, vector org) ui_renderHardPointNumber;
 void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 

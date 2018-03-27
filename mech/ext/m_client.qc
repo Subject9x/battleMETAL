@@ -133,6 +133,9 @@ void() ClientConnect = {
     client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
     client_sendAvailableItems(SAVE_ITEMS_ALL);
   }
+  
+  client_playTrack(6, TRUE);
+  
   CLIENTS = CLIENTS + 1;
   self.client_num = CLIENTS;
   client_data_ini(self);

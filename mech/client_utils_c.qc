@@ -150,6 +150,7 @@ void(string str, float tokens) client_ParseMechCommand={
       player_unmakeObserver();
       player_makeMech();
       spawnpoint_select();
+      client_playTrack(world.sounds, TRUE);
     }
   }
   else if(argv(1) == "setgroup"){
@@ -259,6 +260,19 @@ void(string cmd, float tokens) client_setWeapon={
   }
 };
 
+void(float track, float loop) client_playTrack={
+  local string cmd;
+  cmd = "cd ";
+  if( loop ){
+    cmd = strcat(cmd, "loop ");
+  }
+  else{
+    cmd = strcat(cmd, "play ");
+  }
+  cmd = strcat(cmd, ftos(track), "\n");
+  stuffcmd(self, cmd);
+};
+
 void() client_sendMissionFileName={
   local string cmd;
   cmd = strcat("mech msn_file ", world.msn_file, "\n");
@@ -353,15 +367,6 @@ entity() SelectSpawnPoint={
 		return spot;
 		
 // choose a info_player_deathmatch point
-	/*if (coop)
-	{
-    lastspawn = find(lastspawn, classname, "info_player_coop");
-    if (lastspawn == world)
-      lastspawn = find (lastspawn, classname, "info_player_start");
-    if (lastspawn != world)
-      return lastspawn;
-	}
-	else*/
   if (deathmatch)
 	{
     if(self.data_type != DATA_POBS){

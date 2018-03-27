@@ -248,6 +248,13 @@ a bit more controllable ai spawn mechanism
     this goes to next_wepn9
 */
 void() ai_spawner={
+  if( !self.solid ){
+    self.solid = SOLID_CORPSE;
+  }
+  if( !self.model ){
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+  }
   if( (self.spawnflags & 1) ){
     self.isActive = TRUE;
   }

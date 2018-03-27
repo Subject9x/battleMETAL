@@ -13,8 +13,8 @@ string DAT_MNT_VEC_NAME = "Monitor";
 
 float DAT_MNT_RESERVE_COST = 200;
 float DAT_MNT_YAWSPEED = 3;
-vector DAT_MNT_CTOR_BBX_N ='-22 -22 -44';//'-20 -20 -44';
-vector DAT_MNT_CTOR_BBX_X ='22 22 28';//'20 20 24';
+vector DAT_MNT_CTOR_BBX_N = '-22 -22 -44';//'-20 -20 -44';
+vector DAT_MNT_CTOR_BBX_X = '22 22 28';//'20 20 24';
 
 //WEAPON GROUPS
 float DAT_MNT_WEP1_IDX= ID_WEP_LATC;

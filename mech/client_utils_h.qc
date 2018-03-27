@@ -37,6 +37,7 @@ float(entity ent, float changed) send_ai_mech;
 float(entity ent, float changed) send_mech;
 
 //client command layer
+void(float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
 void(string cmd, float tokens) client_setWeaponGroup;

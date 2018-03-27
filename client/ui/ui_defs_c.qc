@@ -85,7 +85,7 @@ void() menu_handleFrame={
 
 void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
-    if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE) ) ){
+    if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_MECH) ){
       cl_setspawnpoint(self.plr_nav_pnt);
       cl_setmech(self.plr_sel_size, self.plr_sel_mech);
       local float lst_idx, bit;
@@ -168,7 +168,7 @@ void(vector ofs) menu_navBar={
 
   
   local vector launch_clr;
-  if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE) ) ){
+  if( (LAUNCH_VALIDATION & VALID_MECH) && (LAUNCH_VALIDATION & VALID_NODE) ){
     launch_clr = CLR_DEF_WEP_INRANGE;
   }
   else{
@@ -244,6 +244,40 @@ void(entity nav) ui_renderNav={
         gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, '0.65 0.65 0.65', HUD_ALPHA, 0) ;
       }
     }
+  }
+};
+
+void(entity clnt) ui_renderClientName={
+  local vector namepos, nameproj, drawcolor;
+  local float namelen,drawcheck, drawdist;
+  drawcheck = FALSE;
+  drawdist = vlen(pmove_org - clnt.origin);
+  if(self.i_faction == clnt.i_faction){
+    if(drawdist <= self.radar_range * 2){
+      drawcheck = TRUE;
+      drawcolor = CLR_DEF_IIF_FRIEND;
+    }
+  }
+  else{
+    if(self.stat_rdr_mode){
+      if(drawdist <= self.radar_range){
+        drawcheck = TRUE;
+        drawcolor = CLR_DEF_IFF_ENEMY;
+      }
+    }
+  }
+  if( drawcheck ){
+    namelen = stringwidth(clnt.netname, 0, '10 10 0');
+    namepos = clnt.origin;
+    namepos_z = namepos_z + gui_percentYRaw(clnt.vec_size * 18);
+    nameproj = cs_project(namepos);
+    if (nameproj_z >= 0) {
+      //nameproj = gui_percentToPixelRawVec(nameproj);
+      nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
+      nameproj_z = 0;
+      drawstring(nameproj, clnt.netname, '10 10 0', drawcolor, HUD_ALPHA, 0);
+    }
+    namepos = cs_unproject(nameproj);
   }
 };
 

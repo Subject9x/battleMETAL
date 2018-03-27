@@ -24,15 +24,33 @@ void() menu_deployListener={
 
 //Listener hooks calle by menu_briefListener
 void() navSelectListener={
-  local entity nav;
-  nav = findchainfloat(data_type, DATA_DEPL);
-  while(nav){
-    if(nav.isActive){
-      if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
-        self.plr_nav_pnt = nav.nav_name;
+  if ( menu_checkMouseInBounds(cursorpos, DEPLOY_MAP_ORG, gui_percentToPixelRawVec('380 380')) ){
+    local entity nav;
+    local float check;
+    nav = findchainfloat(data_type, DATA_DEPL);
+    check = 1;
+    while(nav){
+      if(nav.isActive){
+        if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
+          self.plr_nav_pnt = nav.nav_name;
+        }
+        else{
+          self.plr_nav_pnt = -1;
+        }
+      }
+      check = check + 1;
+      nav = nav.chain;
+    }
+    if(self.plr_nav_pnt > 0){
+      if( !(LAUNCH_VALIDATION & VALID_NODE) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
     }
-    nav = nav.chain;
+    else{
+      if( (LAUNCH_VALIDATION & VALID_NODE) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
+      }
+    }
   }
 };
 
@@ -127,13 +145,14 @@ void(vector ofs) menu_deploy_mechInfoPanel={
 
 void(vector ofs) menu_deploy_mapOverviewPanel={
   local vector mpos;
-  mpos_x = mpos_x + (VIEW_CTR_x - gui_percentX(0.0757));
-  mpos_y = ofs_y + gui_percentY(0.0458);
+  mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(96));
+  mpos_y = ofs_y + gui_percentYRaw(44);
   drawpic(mpos, UI_DEF_BOX_256, gui_percentToPixel(0.3164, 0.4218), '1 1 1', HUD_ALPHA, 0);
   
   local vector iofs;
-  iofs = mpos + gui_percentToPixel(0.0093, 0.0125);
-
+  iofs = mpos + gui_percentToPixelRawVec('12 12');
+  DEPLOY_MAP_ORG = iofs;
+  
   if(MSN_MAPPIC != ""){
     drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec('380 380'), '1 1 1', HUD_ALPHA, 0);
   }

@@ -202,7 +202,7 @@ float(entity targ, float faction) ai_combat_locksOnTarget={
 float(entity targ) ai_target_canSee={
   local vector eyes;
   makevectors(self.angles);
-  tracebox(self.origin, self.mins, self.maxs, targ.origin + (v_up * (targ.maxs_z / 2) ), FALSE, self);
+  tracebox(self.origin, '-10 -10 -10', '10 10 10', targ.origin, FALSE, self);
   if( trace_ent == targ ){
     return TRUE;
   }

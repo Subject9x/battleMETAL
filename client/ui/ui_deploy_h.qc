@@ -6,6 +6,8 @@ Date: 3/24/2017
 Overview: ui header file the deployment menu
 */
 
+vector DEPLOY_MAP_ORG;
+
 //sadly we need to limit navpoints too
 
 //main hook for menu system
