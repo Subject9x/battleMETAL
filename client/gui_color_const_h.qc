@@ -12,6 +12,9 @@ vector CLR_DEF_TXT_CANTSELET = '0.4 0.4 0.4';
 vector CLR_DEF_WHITE = '1 1 1';
 vector CLR_DEF_GRAY_H = '0.85 0.85 0.85';
 vector CLR_DEF_BLACK = '0 0 0';
+vector CLR_DEF_RED = '1 0 0';
+vector CLR_DEF_GREEN = '0 1 0';
+vector CLR_DEF_BLUE = '0 0 1';
 
 //armor constants
   //fine

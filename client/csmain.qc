@@ -29,6 +29,9 @@ void() CSQC_Init =
   WEPBITS[7] = 128;
   WEPBITS[8] = 256;
   
+  SELECTED_MECH = world;  //ini the ui selection reference
+  LAUNCH_VALIDATION = 0; //set launch validation to 0 to prevent invalid deployments to game world
+  
   local float i, cnt;
   //clear out and prepare the sound queue
   i = 1;

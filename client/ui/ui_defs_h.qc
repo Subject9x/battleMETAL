@@ -7,7 +7,7 @@ Overview:  header file for ui system
 
 float AVAILABLE_RESERVE;
 
-entity PLAYER_HELPER;
+entity SELECTED_MECH; //used across the menu system
 
 float MENU_ACTIVE;
 float MENU_CHOICE = 1; //always start at briefing
@@ -43,6 +43,12 @@ void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 
 string MISSION_OBJECTIVES[12];
 float MISSION_OBJ_STATUS[12];
+
+//pre-launch validation
+float LAUNCH_VALIDATION;
+float VALID_MECH = 1;
+float VALID_GRPS = 2;
+float VALID_NODE = 4;
 
 //image defs
 string UI_DEF_BOX_512;

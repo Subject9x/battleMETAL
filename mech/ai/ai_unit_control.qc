@@ -35,27 +35,6 @@ void() ai_control={
   if(self.m_fspeed > -1){
     local float moveFlag, moveDelta;
     self.prev_pos = self.origin;
-    
-    //stuck bot check
-    if(time > self.power_timer){
-      if(self.ai_stuck_flag){
-        self.ai_stuck_flag = FALSE;
-        if( (self.flags & FL_FLY) ){
-          self.flags = self.flags - (self.flags | FL_FLY);
-        }
-        self.flags = self.flags | FL_ONGROUND;
-        self.movetype = MOVETYPE_STEP;
-        self.ai_stuck_cnt = 0;
-      }
-    }
-    else{
-      makevectors(self.angles);
-      traceline(self.origin, self.origin + (v_forward * (self.c_bbx_x_x * 3)) + (v_up * (self.c_bbx_n_z / 2)), FALSE, self);
-      if(trace_plane_normal == '0 0 0'){
-        //must be a cliff /ledge
-        setorigin(self, self.origin + (v_forward * 4) );
-      }
-    }
 
     moveFlag = self.ai_next_move();
     moveDelta = vlen(self.prev_pos - self.origin);
@@ -66,31 +45,17 @@ void() ai_control={
       //whole second of game time
       if(self.ai_stuck_cnt > 25){
         if(!self.ai_stuck_flag){
+          local vector next;
           self.ai_stuck_flag = TRUE;
           makevectors(self.angles);
-          traceline(self.origin, self.origin + (v_forward * (self.c_bbx_x_x * 3)) + (v_up * (self.c_bbx_n_z / 2)), FALSE, self);
-          self.flags = self.flags - (self.flags | FL_ONGROUND);
-          self.power_timer = time + 0.1;
-          if(trace_plane_normal == '0 0 0'){
-            //must be a cliff /ledge
-            self.movetype = MOVETYPE_BOUNCE;
-            setorigin(self, self.origin + (v_forward * AI_WALK_SPD) + (v_up * 4) );
+          traceline(self.e_legs.origin, self.origin + (v_forward * (self.maxs_x * 2) ) + (v_up * self.mins_z), FALSE, self);
+          next = trace_endpos;
+          te_beam_laser(next, self.origin);
+          if( (trace_ent) || (trace_plane_normal_z < 0.59) ){
+            ai_move_backward();
           }
           else{
-            //impassable hill
-            if(trace_plane_normal_z <= 0.58){
-              local float d;
-              d = util_roll_dice(2) - 1;
-              if(d){
-                ai_move_runmove_slideright();
-              }
-              else{
-                ai_move_runmove_slideleft();
-              }
-            }
-            else{
-              self.flags = self.flags | FL_FLY;
-              self.movetype = MOVETYPE_FLY;
+            if( trace_plane_normal == '0 0 0' ){
             }
           }
         }

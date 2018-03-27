@@ -580,10 +580,10 @@
 //WAVE ONE
 {
 "classname" "ai_spawner"
-"origin" "-5544.9 6879.2 32.6"
+"origin" "-6009.7 7086.7 40"
 "angles" "0 99.1 0"
 "isActive" "1"
-"delay" "8"
+"delay" "12"
 "count1" "45"
 "count2" "3"
 "state_1" "4"
@@ -596,7 +596,7 @@
 "next_wepn2" "1"
 "next_wepn3" "5"
 "targetname" "wave_1"
-"target" "attack_nw_1"
+"target" "attack_ne_1"
 "target_die" "counter_wave1"
 "i_faction" "2"
 "mskin" "1"

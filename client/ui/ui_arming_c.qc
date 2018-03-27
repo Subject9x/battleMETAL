@@ -61,8 +61,6 @@ void() hardpointInfoListener={
 
 void() weaponGroupPanelListener={
   local float found;
-  local entity dat;
-  dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A)){
     found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A,  gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_A, 0);
     found = WEPBITS[found];
@@ -113,13 +111,7 @@ void() weaponGroupPanelListener={
 //main hook for the menu system
 void() menu_arming_drawFrame={
   if(self.plr_sel_mech <= 0){
-    self.plr_sel_mech = 1;
-    self.plr_sel_size = 1;
-    local entity dat;
     cleanHardPoints();
-    dat = m_findMechData(1,1);
-    grabMechConfig(dat);
-    cl_setmech(1, 1); 
   }
   local vector topleftroot;
   topleftroot = VIEW_ORG;
@@ -138,15 +130,13 @@ void(vector ofs) menu_arming_HardpointGraph={
   local vector nofs, hofs, hpnts;
   nofs = ofs + gui_percentToPixelRawVec('10 64');
   drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('225 188'), '1 1 1', HUD_ALPHA, 0);
-  if(self.plr_sel_mech > 0){
-    local entity dat;
-    dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
+  if( SELECTED_MECH != world){
     hofs = nofs + gui_percentToPixelRawVec('4 4');
     hpnts_x = hofs_x + gui_percentXRaw(110.5);
     hpnts_y = hofs_y + gui_percentYRaw(90);
-    drawpic(hofs , dat.c_ui_hf, gui_percentToPixelRawVec('221 180'), '1 1 1', HUD_ALPHA, 0);
+    drawpic(hofs , SELECTED_MECH.c_ui_hf, gui_percentToPixelRawVec('221 180'), '1 1 1', HUD_ALPHA, 0);
     MECHPANEL_CTR = hpnts;
-    dat.menu_renderHardpoints(hpnts);
+    SELECTED_MECH.menu_renderHardpoints(hpnts);
   }
 };
 
@@ -381,7 +371,6 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
 
 void(vector ofs) menu_arming_HardPointInfo={
   local vector nofs;
-  local entity dat;
   nofs_x = ofs_x + gui_percentXRaw(10);
   nofs_y = ofs_y;
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('156 56'), '1 1 1', HUD_ALPHA, 0);
@@ -507,7 +496,6 @@ void(vector ofs) menu_arming_WeapoinInHardpoint={
   
   local vector nmpos;
   local string name;
-  local entity dat;
   local float nlen;
   dat = m_findData(self.plr_sel_wep, DATA_WEPN);
   if(dat.w_icon != ""){

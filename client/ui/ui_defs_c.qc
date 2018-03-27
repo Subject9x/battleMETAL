@@ -85,7 +85,7 @@ void() menu_handleFrame={
 
 void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
-    if(self.plr_sel_mech > 0 && (self.data_type == DATA_POBS)){
+    if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE) ) ){
       cl_setspawnpoint(self.plr_nav_pnt);
       cl_setmech(self.plr_sel_size, self.plr_sel_mech);
       local float lst_idx, bit;
@@ -104,6 +104,8 @@ void() mechAcceptButtonListener={
       cl_spawnmech();
       MENU_ACTIVE = FALSE;
       setcursormode(0);
+      self.plr_nav_pnt = -1;
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
     }
   }
 };
@@ -127,20 +129,51 @@ void(vector ofs) menu_navBar={
   hpos_y = hpos_y + gui_percentY(0.0086);
   gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_HANGAR_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
   
-  gui_renderTintImage((self.plr_menu_choice == MENU_ARMING_ACTIVE), (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  local vector arming_clr;
+  local float arming_flt;
+  if(SELECTED_MECH != world){
+    arming_clr = '0.75 0.75 0.75';
+    arming_flt = (self.plr_menu_choice == MENU_ARMING_ACTIVE);
+    if(arming_flt){
+      arming_clr = CLR_DEF_WEP_INRANGE;
+    }
+  }
+  else{
+    arming_clr = '0.25 0.25 0.25';
+    arming_flt =  TRUE;
+  }
+  gui_renderTintImage(arming_flt, (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), arming_clr, HUD_ALPHA, 0) ;
   apos = nvpos + gui_percentToPixelRawVec('192 0');
   strwid = stringwidth("[ARMING]", 0 ,'8 8 0')/2;
   apos_x = (apos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   apos_y = apos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[ARMING]", apos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_ARMING_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  drawstring(apos, "[ARMING]", '8 8 0', arming_clr, HUD_ALPHA, 0);
   
-  gui_renderTintImage((self.plr_menu_choice == MENU_DEPLOY_ACTIVE), (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  local vector deploy_clr,
+  local float deploy_flt;
+  if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS) ) ){
+    deploy_clr = CLR_DEF_WEP_INRANGE;
+    deploy_flt = (self.plr_menu_choice == MENU_DEPLOY_ACTIVE);
+  }
+  else{
+    deploy_clr =  '0.25 0.25 0.25';
+    deploy_flt = TRUE;
+  }
+  gui_renderTintImage(deploy_flt, (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), deploy_clr, HUD_ALPHA, 0) ;
   dpos = nvpos + gui_percentToPixelRawVec('288 0');
   strwid = stringwidth("[DEPLOYMENT]", 0 ,'8 8 0')/2;
   dpos_x = (dpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   dpos_y = dpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[DEPLOYMENT]", dpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice == MENU_DEPLOY_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[DEPLOYMENT]", dpos, deploy_clr, '0.75 0.75 0.75', deploy_flt, '8 8 0', HUD_ALPHA, 0) ;
 
+  
+  local vector launch_clr;
+  if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE) ) ){
+    launch_clr = CLR_DEF_WEP_INRANGE;
+  }
+  else{
+    launch_clr = '0.25 0.25 0.25';
+  }
   rpos = nvpos;
   rpos_x = VIEW_MAX_x - gui_percentX(0.1);
   lpos = rpos;
@@ -148,8 +181,8 @@ void(vector ofs) menu_navBar={
   lpos_y = (lpos_y + gui_percentX(0.0045));//16) - 8;
   isz_x = gui_percentXRaw(stringwidth(">>[!LAUNCH!]>>", 0 ,'8 8 0')) + gui_percentX(0.0093);
   isz_y = gui_percentY(0.025);
-  gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos + gui_percentToPixel(0.005, 0), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  gui_renderHighlightString(">>[LAUNCH]>>",lpos, CLR_DEF_WEP_INRANGE, CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos + gui_percentToPixel(0.005, 0), UI_DEF_BOX_256, isz, launch_clr, CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  gui_renderHighlightString(">>[LAUNCH]>>",lpos, launch_clr, CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, '8 8 0', HUD_ALPHA, 0) ;
   MENU_BTN_LAUNCH_ORG = rpos + gui_percentToPixel(0.005, 0);
   MENU_BTN_LAUNCH_SZ = isz;
 };
@@ -171,10 +204,14 @@ void() navBarListener={
     self.plr_menu_choice = MENU_HANGAR_ACTIVE;
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
-    self.plr_menu_choice = MENU_ARMING_ACTIVE;
+    if(SELECTED_MECH != world){
+      self.plr_menu_choice = MENU_ARMING_ACTIVE;
+    }
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025))){
-    self.plr_menu_choice = MENU_DEPLOY_ACTIVE;
+    if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS) ) ){
+      self.plr_menu_choice = MENU_DEPLOY_ACTIVE;
+    }
   }
 };
 
@@ -211,9 +248,13 @@ void(entity nav) ui_renderNav={
 };
 
 void(float wid, vector org, float selected) ui_renderHardPointGraphic={
-  local entity wep;
-  gui_renderTintImage(selected, org, UI_DEF_BOX_256, gui_percentToPixelRawVec('24 24'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
   if(wid > 0 ){
+    local entity wep;
+    local vector iorg;
+    if(selected){
+      iorg = org - gui_percentToPixelRawVec('2 2');
+      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('28 28'), CLR_DEF_RED, HUD_ALPHA, 0);
+    }
     wep = m_findData(wid, DATA_WEPN);
     drawpic( org + gui_percentToPixelRawVec('1 1'), wep.w_icon,  gui_percentToPixelRawVec('22 22'), '1 1 1', HUD_ALPHA, 0);
   }

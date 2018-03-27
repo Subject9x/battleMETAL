@@ -72,7 +72,7 @@ void() ai_mech={
   self.stat_lck_stt = LOCK_NONE;
   self.w_clipsize = ((0 - self.p_damage) *-1) + 1; //use this for the movement frame counter (I love co-opting existing variables :( ) 
   self.w_isready = time; //and this guy too
-  self.delay = 0;
+  self.power_timer = 0;
   self.ideal_yaw = self.angles * '0 1 0';
 
   setorigin(self, util_findOpenSpawnArea(self.angles, self.origin, self.maxs) );
