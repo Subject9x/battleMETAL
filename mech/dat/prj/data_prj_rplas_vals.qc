@@ -33,6 +33,7 @@ void() data_prj_rplas_ini={
 
 
 void() data_prj_rplas_bounce={
+  
   local vector rando;
   rando = randomvec();
   rando_x = ( self.velocity_x + rando_x) + (5 + crandom() * 15);

@@ -464,39 +464,40 @@ void(entity trg, entity atk) anger_monster={
     self = trg;
       atkDist = vlen(atk.origin - self.origin);
       switchTarget = FALSE;
-      if(self.trigger_field == world){
+      if( ai_target_isValid(self.trigger_field) ){
+        if( (self.trigger_field.data_type == DATA_BLD) && (atk.data_type != DATA_BLD) ){
+          if(self.trigger_field.health >= (self.trigger_field.max_health *0.75)){
+            switchTarget = TRUE;
+          }
+        }
+        
+        if( (self.trigger_field.data_type != DATA_BLD) && (atk.data_type != DATA_BLD) ){
+          if( self.ai_style == AI_STYLE_SNIPER){
+            if( (atkDist <= AI_RANGE_S) && (self.p_damage >= AI_RANK_REG) ){
+              switchTarget = TRUE;
+            }
+          }
+          else if( self.ai_style == AI_STYLE_BRAWL ){
+            if( (atkDist < self.stat_trg_dist) && (self.ai_type == AI_TYPE_AGGRO) ){
+              switchTarget = TRUE;
+            }
+          }
+          else{
+            if( (self.stat_trg_dist >= AI_RANGE_L) || (atkDist <= AI_RANGE_M) ){
+              switchTarget = TRUE;
+            }
+          }
+          if(self.p_damage <= AI_RANK_VET){
+            if(util_getMechHpAverage(self.trigger_field) <= 0.25){
+              switchTarget = TRUE;
+            }          
+          } 
+        }
+      }
+      else{
         switchTarget = TRUE;
       }
 
-      if( (self.trigger_field.data_type == DATA_BLD) && (atk.data_type != DATA_BLD) ){
-        if(self.trigger_field.health >= (self.trigger_field.max_health *0.75)){
-          switchTarget = TRUE;
-        }
-      }
-      
-      if( (self.trigger_field.data_type != DATA_BLD) && (atk.data_type != DATA_BLD) ){
-        if( self.ai_style == AI_STYLE_SNIPER){
-          if( (atkDist <= AI_RANGE_S) && (self.p_damage>=AI_RANK_REG) ){
-            switchTarget = TRUE;
-          }
-        }
-        else if( self.ai_style == AI_STYLE_BRAWL ){
-          if( (atkDist < self.stat_trg_dist) && (self.ai_type == AI_TYPE_AGGRO) ){
-            switchTarget = TRUE;
-          }
-        }
-        else{
-          if( (self.stat_trg_dist >= AI_RANGE_L) || (atkDist <= AI_RANGE_M) ){
-            switchTarget = TRUE;
-          }
-        }
-        if(self.p_damage <= AI_RANK_VET){
-          if(util_getMechHpAverage(self.trigger_field) <= 0.25){
-            switchTarget = TRUE;
-          }          
-        } 
-      }
-      
       if(switchTarget){
         ai_update_switchToTarget(atk);
         self.dmgtime = time + ai_core_hitTimeCalc();

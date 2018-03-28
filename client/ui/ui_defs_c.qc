@@ -178,7 +178,7 @@ void(vector ofs) menu_navBar={
   rpos_x = VIEW_MAX_x - gui_percentX(0.1);
   lpos = rpos;
   lpos_x = (lpos_x + gui_percentX(0.05)) - (stringwidth(">>[LAUNCH]>>", 0 ,'8 8 0')/2);
-  lpos_y = (lpos_y + gui_percentX(0.0045));//16) - 8;
+  lpos_y = (lpos_y + gui_percentX(0.0045));
   isz_x = gui_percentXRaw(stringwidth(">>[!LAUNCH!]>>", 0 ,'8 8 0')) + gui_percentX(0.0093);
   isz_y = gui_percentY(0.025);
   gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos + gui_percentToPixel(0.005, 0), UI_DEF_BOX_256, isz, launch_clr, CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);

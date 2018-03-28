@@ -113,6 +113,7 @@
 "maxs" "8 8 8"
 "count" "7"
 "targetname" "counter_wave2"
+"target" "trigger_wave3"
 }
 //--------------------------------
 //Wave 3 Setup------------------
@@ -537,7 +538,7 @@
 //WAVE ONE
 {
 "classname" "ai_spawner"
-"origin" "6805.9 -5127.3 100"
+"origin" "6805.9 -5127.3 141"
 "mins" "-22 -22 -44"
 "maxs" "22 22 32"
 "isActive" "1"
@@ -564,7 +565,7 @@
 //WAVE TWO
 {
 "classname" "ai_spawner"
-"origin" "6721.1 -5542.2 70"
+"origin" "6721.1 -5542.2 130"
 "mins" "-22 -22 -44"
 "maxs" "22 22 32"
 "isActive" "1"
@@ -592,7 +593,7 @@
 //WAVE THREE
 {
 "classname" "ai_spawner"
-"origin" "7259.3 -4285.3 50"
+"origin" "7122.1 -4256.8 86.7"
 "angles" "0 149 0"
 "mins" "-22 -22 -44"
 "maxs" "22 22 32"
@@ -631,7 +632,7 @@
 //WAVE ONE
 {
 "classname" "ai_spawner"
-"origin" "6250.9 2919.8 154.6"
+"origin" "6250.9 2919.8 194"
 "angles" "0 221.4 0"
 "mins" "-22 -22 -44"
 "maxs" "22 22 32"
@@ -658,7 +659,7 @@
 //WAVE TWO
 {
 "classname" "ai_spawner"
-"origin" "6634.4 1240.0 224"
+"origin" "6634.4 1240.0 264"
 "angles" "0 164 0"
 "mins" "-22 -22 -44"
 "maxs" "22 22 32"
@@ -687,7 +688,7 @@
 //WAVE THREE
 {
 "classname" "ai_spawner"
-"origin" "6441.3 2695.5 240.8"
+"origin" "6441.3 2695.5 228"
 "angles" "0 281 0"
 "mins" "-22 -22 -44"
 "maxs" "22 22 32"
@@ -726,7 +727,7 @@
 //WAVE ONE
 {
 "classname" "ai_spawner"
-"origin" "-6009.7 7086.7 40"
+"origin" "-6009.7 7086.7 60"
 "angles" "0 99.1 0"
 "mins" "-22 -22 -44"
 "maxs" "22 22 32"
@@ -753,7 +754,7 @@
 //WAVE TWO
 {
 "classname" "ai_spawner"
-"origin" "-5181 7501.5 28"
+"origin" "-5181 7501.5 68"
 "angles" "0 324 0"
 "mins" "-22 -22 -44"
 "maxs" "22 22 32"

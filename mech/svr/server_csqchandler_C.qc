@@ -16,7 +16,7 @@ float(entity piece) csqc_updateCompStat={
       }
     }
   }
-  return -1;
+  return 0;
 };
 
 
