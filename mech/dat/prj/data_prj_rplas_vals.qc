@@ -10,7 +10,6 @@ this guy will bounce off up to two non-targets.
 float DAT_PRJ_RPLAS_IDX = ID_PRJ_RPLAS;
 
 void() data_prj_rplas_touch;
-void() data_prj_rplas_bounce;
 void() data_prj_rplas_burn;
 
 void() data_prj_rplas_ini={
@@ -29,22 +28,6 @@ void() data_prj_rplas_ini={
   self.glow_color = DAT_PRJ_RPLAS_GLOWCOLOR;
   self.glow_size = DAT_PRJ_RPLAS_GLOWSIZE;
   self.glow_trail = DAT_PRJ_RPLAS_GLOWTRAIL;
-};
-
-
-void() data_prj_rplas_bounce={
-  
-  local vector rando;
-  rando = randomvec();
-  rando_x = ( self.velocity_x + rando_x) + (5 + crandom() * 15);
-  rando_y = ( self.velocity_y + rando_y) + (5 + crandom() * 15);
-  rando_z = ( self.velocity_z + rando_z) + (5 + crandom() * 15);
-  self.velocity = normalize(rando) * self.p_velocity;
-  self.movetype = MOVETYPE_FLYMISSILE;
-  self.angles = vectoangles(self.velocity);
-  self.p_damage = self.p_damage - (self.p_damage/3);
-  self.think = SUB_Remove;
-  self.nextthink = self.ltime;
 };
 
 void() data_prj_rplas_burn={
@@ -88,7 +71,6 @@ void() data_prj_rplas_touch={
   if(other.takedamage){
     local entity hit;
     hit = t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-    
     if(other.sh_cur <= 0){
       setmodel(self, "progs/plasmashot.spr32");
       setsize(self, '0 0 0', '0 0 0');
@@ -101,22 +83,9 @@ void() data_prj_rplas_touch={
       self.think = data_prj_rplas_burn;
       self.nextthink = time + 0.001;
       self.p_lifetime = time + self.p_lifetime;
-    }
-    else{
-      remove(self);
-    }
-    return;
-	}
-  else{
-    if(self.aflag == 2){
-      remove(self);
       return;
     }
-    self.aflag = self.aflag + 1;
-  }
+	}
   
-	self.movetype = MOVETYPE_BOUNCE;
-	self.think = data_prj_rplas_bounce;
-	self.ltime = self.nextthink;
-	self.nextthink = time + 0.0001;
+  remove(self);
 };

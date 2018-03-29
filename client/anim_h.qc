@@ -8,7 +8,6 @@ An 'anim' or 'animatic' file is for playing simple
 slideshow-esque animatics
 */
 
-.float ANM_FILE_STATUS;
 
 //meta tags
 string ANM_FILE_META_MUS = "music";
@@ -22,13 +21,20 @@ string ANM_FILE_TAG_TIM = "time";
 string ANM_FILE_TAG_POS = "pos";
 string ANM_FILE_TAG_SIZE = "size";
 string ANM_FILE_TAG_MSG = "text";
+string ANM_FILE_TAG_ALPHA = "alpha";
+string ANM_FILE_TAG_COLOR = "color";
+string ANM_FILE_TAG_TXT_CLR = "text_color";
 
 float ANM_FRAME_MAX = 20; //this is here for reference, but if modified, MODIFY THE FOLLOWING ARRAY LIMITS!
+float ANM_FRAME_SLICE = 0.1; //used for alpha blending timer
+
+.float ANM_FILE_STATUS;
 .float ANM_FRAME_TOTAL;
 .float ANM_FRAME_CUR;
 .float ANM_FRAME_TIME;
-float ANM_PLAYING = FALSE;
-float ANM_LOADED = FALSE;
+.float ANM_FRAME_ALPHA_CUR;
+.float ANM_FRAME_CUR_FADE_START;
+.float ANM_FRAME_CUR_FADE_END;
 /*
 Animatic frames are expressed by 3 things;
   frame_image = the image to display for this frame
@@ -42,6 +48,9 @@ float ANM_FRAME_TIM[20];
 vector ANM_FRAME_POS[20];
 vector ANM_FRAME_SIZE[20];
 string ANM_FRAME_MSG[20];
+float ANM_FRAME_ALPHA[20];
+vector ANM_FRAME_COLOR[20];
+vector ANM_FRAME_TXT_CLR[20];
 
 void(string fileToOpen) anm_getFile;
 void(string fileToOpen) anm_parseFile;

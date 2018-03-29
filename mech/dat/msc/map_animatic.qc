@@ -89,6 +89,7 @@ void() animatic_event={
   self.solid = SOLID_TRIGGER;
   self.movetype = MOVETYPE_NONE;
   setmodel(self, "q3mdl/testball.md3"); //DEBUG
+  setsize(self, self.mins, self.maxs);
   if( (self.spawnflags & 8) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
     droptofloor();

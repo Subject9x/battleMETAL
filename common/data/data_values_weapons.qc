@@ -25,6 +25,15 @@ float ID_WEP_SFGA  = 15;
 float ID_WEP_FLAK  = 16;
 float ID_WEP_ION   = 17;
 float ID_WEP_SWRM  = 18;
+//TODO - Alpha 3 
+float ID_WEP_ABT   = 19;
+//-----EQUIP------------
+float ID_EQP_BAT   = 20;
+float ID_EQP_CAP   = 21;
+float ID_EQP_EMT   = 22;
+float ID_EQP_MOD   = 23;
+float ID_EQP_SEN   = 24;
+float ID_EQP_TAR   = 25;
 //====================================================================================
 //            Weapon Names
 //====================================================================================
@@ -47,7 +56,7 @@ string DAT_SWRM_NAME = "Swarm Missile Launcher";
 //            Range  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_RANGE      = 3600;
+float DAT_LATC_RANGE      = 3800;
 //-------------------------RPlas
 float DAT_RPLAS_RANGE     = 2400;
 //-------------------------QRifle
@@ -79,7 +88,7 @@ float DAT_SWRM_RANGE      = 1600;
 //====================================================================================
 //-------------------------ATC
 float DAT_LATC_RL_RATE    = 0.1;
-float DAT_LATC_RL_MAX     = 0.5;
+float DAT_LATC_RL_MAX     = 0.4;
 float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
 float DAT_RPLAS_RL_RATE   = 0.1;
@@ -137,7 +146,7 @@ float DAT_SWRM_EN_RATE    = 0;
 //            Damage  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_DMG        = 2.5;
+float DAT_LATC_DMG        = 3.5;
 //-------------------------RPlas
 float DAT_RPLAS_DMG       = 20;
 float DAT_RPLAS_DMG_BURN  = 0.5; 

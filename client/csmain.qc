@@ -302,6 +302,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_armlistener(self.hp_arm2, 8, SND_HUD_VFX_CRITARM);
     snd_hud_vfx_armlistener(self.hp_arm, 16, SND_HUD_VFX_CRITARM);
     snd_hud_vfx_armlistener(self.hp_leg, 32, SND_HUD_VFX_CRITLEG);
+    
     //HUD SOUND SYSTEM LISTENERS
     snd_hud_vfx_statelistener(self.player_state);
     snd_hud_vfx_enelistener(self.en_cur);

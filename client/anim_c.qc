@@ -74,6 +74,19 @@ void(string fileToOpen) anm_parseFile={
         ANM_FRAME_MSG[frame_count] = argv(3);
         ANM_FRAME_MSG[frame_count] = strzone(ANM_FRAME_MSG[frame_count]);
       }
+      if( (argv(1) == ANM_FILE_TAG_ALPHA) ){
+        ANM_FRAME_ALPHA[frame_count] = stof(argv(3));
+      }
+      if( (argv(1) == ANM_FILE_TAG_COLOR) ){
+        local vector clr;
+        clr = stov(argv(3));
+        ANM_FRAME_COLOR[frame_count] = clr;
+      }
+      if( (argv(1) == ANM_FILE_TAG_TXT_CLR) ){
+        local vector clr;
+        clr = stov(argv(3));
+        ANM_FRAME_TXT_CLR[frame_count] = clr;
+      }
     }
     if( line == "}"){
       frame_count = frame_count + 1;
@@ -86,6 +99,7 @@ void(string fileToOpen) anm_parseFile={
     self.ANM_FRAME_TIME = time + ANM_FRAME_TIM[self.ANM_FRAME_CUR];
     self.ANM_FRAME_CUR = 0;
     self.ANM_FILE_STATUS = 1;
+    self.ANM_FRAME_ALPHA_CUR = 0;
   }
 };
 
@@ -113,25 +127,57 @@ void() anm_execute_frame={
       pointsound(pmove_org, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NONE); 
     }
     self.ANM_FRAME_TIME = time + ANM_FRAME_TIM[self.ANM_FRAME_CUR];
+    local float frm_slice;
+    frm_slice = ANM_FRAME_TIM[self.ANM_FRAME_CUR] * ANM_FRAME_SLICE;
+    self.ANM_FRAME_CUR_FADE_START = time + frm_slice;
+    self.ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[self.ANM_FRAME_CUR] - frm_slice);
   }
   else{
+    local vector siz, org, frm_color, txt_color;
+    
     if(ANM_META_DATA[2] != ""){
       drawpic('0 0', ANM_META_DATA[2] , VIEW_MAX, '1 1 1', 1, 0); 
     }
-    local vector siz, org;
+    
     org = ANM_FRAME_POS[self.ANM_FRAME_CUR];
     org_x = org_x * VIEW_MAX_x;
     org_y = org_y * VIEW_MAX_y;
+    
     if(ANM_FRAME_IMG[self.ANM_FRAME_CUR] != ""){
+      /*
+        .float ANM_FRAME_CUR_FADE_START;
+.float ANM_FRAME_CUR_FADE_END;
+      */
+      if(time < self.ANM_FRAME_CUR_FADE_START){
+        if(self.ANM_FRAME_ALPHA_CUR < ANM_FRAME_ALPHA[self.ANM_FRAME_CUR] ){
+          self.ANM_FRAME_ALPHA_CUR = self.ANM_FRAME_ALPHA_CUR + 0.01;
+        }
+      }
+      if((time >= self.ANM_FRAME_CUR_FADE_END) && (time < self.ANM_FRAME_TIME) ){
+        if(self.ANM_FRAME_ALPHA_CUR > 0){
+          self.ANM_FRAME_ALPHA_CUR = self.ANM_FRAME_ALPHA_CUR - 0.01;
+        }
+      }
+      
+      frm_color = '1 1 1';
+      
+      if(ANM_FRAME_COLOR[self.ANM_FRAME_CUR] != '0 0 0'){
+        frm_color = ANM_FRAME_COLOR[self.ANM_FRAME_CUR];
+      }
+      
       siz = ANM_FRAME_SIZE[self.ANM_FRAME_CUR];
       siz_x = siz_x * VIEW_MAX_x;
       siz_y = siz_y * VIEW_MAX_y;
-      drawpic(org, ANM_FRAME_IMG[self.ANM_FRAME_CUR], siz, '1 1 1', HUD_ALPHA, 0);
+      drawpic(org, ANM_FRAME_IMG[self.ANM_FRAME_CUR], siz, frm_color, self.ANM_FRAME_ALPHA_CUR, 0);
     } 
     if(ANM_FRAME_MSG[self.ANM_FRAME_CUR] != ""){
       local vector txtpos, txtstart;
       local string line;
       local float tokens, tcnt;
+      txt_color = '1 1 1';
+      if(ANM_FRAME_TXT_CLR[self.ANM_FRAME_CUR] != '0 0 0'){
+        txt_color = ANM_FRAME_TXT_CLR[self.ANM_FRAME_CUR];
+      }
       tcnt = 0;
       line = ANM_FRAME_MSG[self.ANM_FRAME_CUR];
       tokens = tokenizebyseparator(line, "|");
@@ -143,7 +189,7 @@ void() anm_execute_frame={
         width = stringwidth(argv(tcnt), 0, '8 8 0');
         linepos_x = txtstart_x - (width / 2);
         linepos_y = txtstart_y + gui_percentYRaw(tcnt * 10);
-        drawstring(linepos, argv(tcnt), '8 8 0', '1 1 1', 0.85, 0);
+        drawstring(linepos, argv(tcnt), '8 8 0', txt_color, 0.85, 0);
         tcnt = tcnt + 1;
       }
     }
