@@ -63,5 +63,8 @@ void() hud_mnt_frame={
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY), input_angles_x * -3, 270, -270);
   hud_renderTargetDirection(self.stat_trg_face);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), self.stat_ret_dist) ;
-  hud_renderNavHeading( '8 16', (VIEW_CTX | VIEW_TOP), self.angles);
+  hud_renderNavHeading( '8 16', (VIEW_CTX | VIEW_TOP), self.angles);  
+  
+  //repair sits above all
+  hud_renderRepairValue(getstatf(STAT_PLR_REP));
 };

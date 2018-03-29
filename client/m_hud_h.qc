@@ -67,6 +67,7 @@ void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav;
 void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) hud_HelmetImage;
 void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
 void(vector ofs, string targType, float algn) hud_renderTargetName;
+void(float delta) hud_renderRepairValue;
 //entry point for the mech hud system
 void(float mech_id, float mech_size) hud_frame;
 

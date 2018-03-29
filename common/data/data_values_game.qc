@@ -123,6 +123,7 @@ float SHIELD_SOAK = 4;
 .float stat_plr_ang_x;
 .float stat_plr_ang_y;
 .float stat_plr_ang_z;
+.float stat_plr_rep;
 //============================
 //     STAT CHANNELS         
 //============================
@@ -218,6 +219,8 @@ float UI_BOX_TIME = 108;
 float STAT_PLR_ANG_X = 110;
 float STAT_PLR_ANG_Y = 111;
 float STAT_PLR_ANG_Z = 112;
+
+float STAT_PLR_REP = 113; //remaining repair delta
 
 float STAT_LVL_RES = 109;
 

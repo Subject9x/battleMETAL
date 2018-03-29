@@ -90,6 +90,8 @@ void() mh_world_ini={
   addstat(STAT_PLR_ANG_X, AS_FLOAT, stat_plr_ang_x);
   addstat(STAT_PLR_ANG_Y, AS_FLOAT, stat_plr_ang_y);
   addstat(STAT_PLR_ANG_Z, AS_FLOAT, stat_plr_ang_z);
+  
+  addstat(STAT_PLR_REP, AS_FLOAT, stat_plr_rep);
 };
 
 void(float build_id) data_iniBuilding={

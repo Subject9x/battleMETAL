@@ -642,6 +642,23 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   drawstring(tofs, msg, '6 6 0', factionColor, HUD_ALPHA, 0);
 };
 
+void(float delta) hud_renderRepairValue={
+  if(delta > -1){
+    local vector vorg, torg;
+    local float len;
+    local string str;
+    str = "[Repair Bay - Current Total]";
+    len = stringwidth(str, 0, '8 8 0');
+    vorg = gui_percentToPixelRawVec('128 12');
+    vorg = gui_calcAlign(vorg, (VIEW_CTX | VIEW_CTY));
+    torg = vorg;
+    torg_x = torg_x - gui_percentXRaw( len / 2 ) ;
+    torg_y = torg_y - gui_percentYRaw(4);
+    gui_renderMeter((delta * 100), vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA, 0, AXIS_H, 0);
+    drawstring(torg, str, '8 8 0', CLR_DEF_GRAY_H + '0.05 0.05 0.05', 0);
+  }
+};
+
 //entry point for the mech hud system
 void(float mech_id, float mech_size) hud_frame={
   if(mech_size == 1){

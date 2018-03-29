@@ -61,21 +61,13 @@ void() building_repair={
 };
 
 void() building_repair_think={
-  if(self.rl_cur < self.rl_max){
-    self.rl_cur = self.rl_cur + self.rl_rate;
-    if(self.rl_cur > self.rl_max){
-      self.rl_cur = self.rl_max;
-    }
-  }
+
   if( self.trigger_field != world ){
-    if( (vlen(self.trigger_field.origin - self.e_cam.origin) > 16) ){
-      self.trigger_field.repair_request = FALSE;
-      self.trigger_field = world;
-    }
-    else{
+    local float end_repair;
+    end_repair = TRUE;
+    if( vlen(self.trigger_field.origin - self.e_cam.origin) <= 16 ){
       local entity repairMe,fix;  
       repairMe = self.trigger_field;
-      
       if(csqc_updateCompStat(repairMe) < 100){
         fix = repairMe;
       }
@@ -97,24 +89,35 @@ void() building_repair_think={
         }
       }
       if(fix){
+        end_repair = FALSE;
         local vector fx;
         makevectors(self.angles);
         fx = self.origin + (v_forward * 45) + (v_up * 40);
         te_beam_laser(fx, fix.origin);
         
         fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
-        self.rl_cur = self.rl_cur - self.rl_rate;
+        self.rl_cur = self.rl_cur - (self.rl_rate * self.trigger_field.vec_size);
         if(fix.health > fix.max_health){
           fix.health = fix.max_health;
         }
+        self.trigger_field.stat_plr_rep = (self.rl_cur / self.rl_max);
       }
-      else{
-        if( (self.trigger_field.flags & FL_CLIENT) ){
-          centerprint(self.trigger_field, "[Repairs complete]\n");
-        }
-        self.trigger_field.power_timer = time + 2;
-        self.trigger_field = world;
-      } 
+    }
+    if(end_repair){
+      if( (self.trigger_field.flags & FL_CLIENT) ){
+        centerprint(self.trigger_field, "[Repairs complete]\n");
+      }
+      self.trigger_field.stat_plr_rep = -1;
+      self.trigger_field.repair_request = FALSE;
+      self.trigger_field = world;  
+    }
+  }
+  else{
+    if(self.rl_cur < self.rl_max){
+      self.rl_cur = self.rl_cur + self.rl_rate;
+      if(self.rl_cur > self.rl_max){
+        self.rl_cur = self.rl_max;
+      }
     }
   }
   
@@ -130,7 +133,7 @@ void() building_repair_touch={
           if(util_getMechHpAverage(other) < 1){
             if(self.owner.trigger_field == world){ 
               if( (other.flags & FL_CLIENT) ){
-                centerprint( other, "[Hold 'E' to REAPIR]\n");
+                centerprint( other, "[Press 'E' to start REAPIR]\n");
               }
               if(other.repair_request){
                 self.owner.trigger_field = other;

@@ -121,6 +121,7 @@ void(float isNew) receive_ent_clientData={
           self.MSN_SFX_COUNT = 0;
           self.drawme = 0;
           self.ANM_FILE_STATUS = 0;
+          self.stat_plr_rep = -1;
         self = this;
       }
     }
@@ -190,6 +191,9 @@ void() receive_ent_bindData={
       
       self.en_cur = cl_data.en_cur;
       self.sh_cur = cl_data.sh_cur;
+      
+      self.stat_plr_rep = getstatf(STAT_PLR_REP);
+      
       //WEAPON DATA
       self.currentWeaponGroup = cl_data.currentWeaponGroup;
       self.stat_wep_rel = cl_data.stat_wep_rel;

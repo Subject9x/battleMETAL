@@ -125,6 +125,9 @@ void() ClientConnect = {
   self.stat_plr_stt = PLAYER_CONNECT;
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here
+  
+  self.stat_plr_rep = -1;
+  
   client_sendMissionFileName();
   
   if( !coop && !deathmatch) {

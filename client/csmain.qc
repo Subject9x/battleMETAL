@@ -387,7 +387,9 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       player = findchainflags(flags, FL_CLIENT);
       while(player){
         if( (player.data_type != DATA_POBS) ){
-          ui_renderClientName(player);
+          if(player.netname != self.netname){
+            ui_renderClientName(player);
+          }
         }
         player = player.chain;
       }
