@@ -1,23 +1,23 @@
 //mission info section
 {
-  'img' : ,
-  'name'  : Of Ashen Countenance,
-  'type'  : Defense,
-  'points' : 1,
-  'sector' : Stormside,
-  'location' : Badlands,
-  'time' : 14-37-09 LPT,
-  'brief' : PSC has secured a firebase in this| area. Long-range scans have| detected ENEMY forces moving to| attack this base. PSC is scrambling| multiple DEAD_HANDS to protect this| facility. A REPAIR BAY has been| brought online to preserve | defense forces.| |ENEMY forces will arrive by the time| you deploy to the mission area.
-  'intel' : Severely recommended Strike Pakage|    3 to 4 Mechs; any type| |ENEMY forces have the numbers PSC lacks in this scenario| |PSC suggest varied loadouts to weather multiple waves of|  attacks.| |REPAIR BAY is operational but do not rely on it.,
-  'objtotal' : 2,
-  'anim' : ,
+  'img' : ''
+  'name'  : 'Of Ashen Countenance'
+  'type'  : 'Patrol'
+  'points' : '1'
+  'sector' : 'Stormside'
+  'location' : 'Canyons'
+  'time' : '08:33:00 LPT'
+  'brief' : 'Op-Code 2 in effect. | | Perimetra System Control (PSC) is mobilizing resources for the first phase of its mission of retribution. Our creators intentionally put our headquarters out in the STORM-REACH sector to keep us protected against a First-Strike, and to shield us from prying eyes. However that has left PSC with very little initial resources for its missions. | | This DEAD_HAND`s assignment is to sweep the plotted Nav coordinates to secure this location. At Nav <Eta> is a small bivouac of supplies that PSC can use to fund further missions towards the Habitable Zone. PSC`s ultimate goal is the annihilation of any and all surviving AUTHOR units.'
+  'intel' : 'Recommend Patrol kit | 1x Balakett |    At least 1 Anti-shield weapon. | | Enemy base Defense appear to consist of light field fortifications backed up by a Shield Generator. | | Overflight Recon has determined most ground forces in this AO to be medium tanks, encounters with hostile Metal should be rare.'
+  'objtotal' : '2'
+  'anim' : ''
 }
-//objectives section
+// objectives section
 {
-  'objid' : 1,
-  'objdesc' : Defend the base at all costs,
+  'objid' : '1'
+  'objdesc' : 'Clear each NAV POINT of all HOSTILE contacts.'
 }
 {
-  'objid' : 2,
-  'objdesc' : Defeat 3 waves of enemies,
+  'objid' : '2'
+  'objdesc' : 'Neutralize defense turrets of base at NAV ETA'
 }

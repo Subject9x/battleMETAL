@@ -131,6 +131,12 @@ void() ClientConnect = {
   client_sendMissionFileName();
   
   if( !coop && !deathmatch) {
+    if(world.model == "maps/start.bsp"){
+      //pre-populate default save file
+      savefile_default();
+    }
+    savefile_load();
+    
     self.i_faction = world.i_faction; //single player setting
     client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
     client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);

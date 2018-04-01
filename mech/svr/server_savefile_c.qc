@@ -10,8 +10,9 @@ to track player unlocks
 //functions
 void() savefile_load={
   local float flannel, argc, line_tag, line_val, line_array, line_cntr;
-  local string contents, line;
-  flannel = fopen(SAVE_FILE_NAME, FILE_READ);
+  local string file, contents, line;
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME);
+  flannel = fopen(file, FILE_READ);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{", ",", "}");
   line = fgets(flannel);
@@ -41,8 +42,9 @@ void() savefile_load={
 
 void() savefile_save={
   local float flannel;
-  local string line;
-  flannel = fopen(SAVE_FILE_NAME, FILE_WRITE);
+  local string file, line;
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME);
+  flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
   fputs(flannel, strcat("  'mission' : ",self.msn_file,",\n"));
   fputs(flannel, strcat("  'light' : ", SAVE_MECHS_LIGHT,",\n"));
@@ -55,11 +57,19 @@ void() savefile_save={
 }; 
 
 void() savefile_default={
-  SAVE_FILE_MSN_NAME = strzone("start");
-  SAVE_FILE_MECHS_LIGHT = strzone("1");
-  SAVE_FILE_MECHS_MEDIUM = strzone("");
-  SAVE_FILE_MECHS_HEAVY = strzone("");
-  SAVE_FILE_ITEMS = strzone("1 3 17 4");
+  local float flannel;
+  local string file, line;
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME);
+  flannel = fopen(file, FILE_WRITE);
+  fputs(flannel, "{\n");
+  fputs(flannel, strcat("  'mission' : start,\n"));
+  fputs(flannel, strcat("  'light' : 1,\n"));
+  fputs(flannel, strcat("  'medium' : ,\n"));
+  fputs(flannel, strcat("  'heavy' : ,\n"));
+  fputs(flannel, strcat("  'items' : 1 3 17 4,\n"));
+  fputs(flannel, strcat("  'points' : ,\n"));
+  fputs(flannel, "}");
+  fclose(flannel);
 };
 
 //coop options

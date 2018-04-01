@@ -47,17 +47,6 @@ void() worldspawn =
   //setmodel(self, "maps/t_train0.bsp");
 // the area based ambient sounds MUST be the first precache_sounds
   
-  if( !coop && !deathmatch){
-    if(self.model == "maps/start.bsp"){
-      //pre-populate default save file
-      savefile_default();
-    }
-    else{
-      //save single player data out
-      savefile_load();
-    }
-  }
-  
   //see q1/precache_world.q1_precache_sound();
   q1_precache_sound();
   q1_precache_models();
