@@ -28,6 +28,9 @@ void() mh_precache_sound={
 void() mh_precache_models={
   precache_model("progs/v_dpshot.mdl");
   
+  //terrains
+  precache_model("models/terrain/t1m3_exp2.obj");
+  
   //buildings
   precache_model("q3mdl/buildings/mdl_bld_h_hangar_l.md3");
   precache_model("q3mdl/buildings/mdl_bld_h_repair.md3");
@@ -97,4 +100,6 @@ void() mh_precache_models={
   precache_file ("maps/t1m1.bsp");
   precache_file ("maps/t1m2.bsp");
   precache_file ("maps/start.bsp");
+  precache_file ("maps/c1m1.bsp");
+  precache_file ("maps/t1m3.bsp");
 };

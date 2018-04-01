@@ -14,7 +14,6 @@ float(float v) anglemod =
 	return v;
 };
 
-
 string(float anglee) gui_angleToNav={
   anglee = anglemod(anglee);
   if(anglee >= 337.5 || anglee < 22.5){
@@ -504,6 +503,60 @@ void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector l
   }
 };
 
+/*
+  Displays text that will wrap to a given area as best it can.
+  Y coords are unbound, so it will spill over the area's y coord - sorry :(
+  
+  it returns the ending y coord so you have a reference of where the wrapping ended,
+  see ui_brief_c.menu_briefObjectivePanel() for a use-case
+*/
+float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText={
+  local float totes, token, line_cnt, line_rtn;
+  local vector vloc, varea, torg;
+  local string line;
+ 
+  varea = gui_percentToPixelRawVec(area);
+  totes = tokenizebyseparator(text, " ");
+  
+  token = 0;
+  line = "";
+  torg = loc;
+  line_cnt = 1;
+  line_rtn = 1;
+  while(token <= totes){
+    local vector charpos;
+    local float charlen, line_len;
+    local string toke;
+    toke = argv(token);
+    if(toke == "|"){
+      //code can't seem to understand '\n' character read in from a strzone'd string, so use '|' for line breaks on external strings
+      toke = "\n";
+    }
+    if(toke != "\n"){
+      if( (token > 0) || (line_rtn == 0) ){
+        toke = strcat(" ", toke);
+      }
+      charlen = stringwidth(toke, 0, fsize);
+      charpos_x = torg_x + line_rtn + gui_percentXRaw(fsize_x);
+      line_rtn = line_rtn + gui_percentXRaw(charlen);
+      if( line_rtn > varea_x ){
+        charpos_x = torg_x;
+        line_cnt = line_cnt + 1;
+        line_rtn = charlen;
+      }
+    }
+    else{
+      line_cnt = line_cnt + 1;
+      line_rtn = 0;
+    }
+    if( (toke != "\n") ){
+      charpos_y = torg_y + (line_cnt * fsize_y);
+      drawstring(charpos, toke, fsize, clr, alph);
+    }
+    token = token + 1;
+  }
+  return line_cnt * fsize_y;
+};
 
 void(string msg, float val) cons_logAFloat={
   print(strcat(msg,":", ftos(val)," \n"));

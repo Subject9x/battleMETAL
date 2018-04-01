@@ -177,7 +177,7 @@ void() data_mech_otl={
     self.plr_nex_grp5 = 0;
     self.drawmask = MASK_NORMAL;
     //38 chars per line
-    self.note1 = "A primitive combat platform, BALAKETTs| come from the early days of the| Federation. Originally billed as exp| loration vehicles, Federation Military| found them able anti-partisan units.| |BALAKETT units are best against other| light and smaller targets. Their | weapon mount limitations prevent them| from engaging larger foes one-on-one.| |They are dangerous in packs though, | their quick speed and variable-enough| loadouts keeping singular targets| distracted; unable to land that fatal| blow.";
+    self.note1 = "A primitive combat platform, BALAKETTs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. \n \n BALAKETT units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. \n \n They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
   self = oself;
   addentity(otl);
 };

@@ -26,75 +26,76 @@ void() msn_getfile={
 };
 
 void() msn_parsefile={
-  local float tobj, flannel, argc, line_tag;
+  local float tobj, flannel, argc, line_tag, token;
   local string file, contents, line;
   file = strcat(PATH_DATA_MAP, "/", MAP_NAME, "/", MSN_FILENAME);
   flannel = fopen(file, FILE_READ);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{",",","}");
   line = fgets(flannel);
-  while((line!="")){
-    if( (line != "{") && (line != "}") && (line != "//") ){
-      line_tag = tokenizebyseparator(line, "'", "'", ": ", ",");
+  token = 4; //general pointer inside tokenized msn file value
+  while( (line != "") ){
+    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+      line_tag = tokenizebyseparator(line, "'", "'", ": ","'","'");
       if (argv(1) == MSN_FILE_IMG){
-        if( argv(3) != "" ){
-          MSN_MAPPIC = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_MAPPIC = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_NAME){
-        if( argv(3) != "" ){
-          MSN_NAME = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_NAME = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_TYPE){
-        if( argv(3) != "" ){
-          MSN_TYPE = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_TYPE = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_POINTS){
-        if( argv(3) != "" ){
-          MSN_RESERVETOTAL = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_RESERVETOTAL = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_SECTOR){
-        if( argv(3) != "" ){
-          MSN_SECTOR = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_SECTOR = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_LOCUS){
-        if( argv(3) != "" ){
-          MSN_LOCATION = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_LOCATION = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_TIME){
-        if( argv(3) != "" ){
-          MSN_LOCALTIME = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_LOCALTIME = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_BRIEF){
-        if( argv(3) != "" ){
-          MSN_BRIEF = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_BRIEF = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_INTEL){
-        if( argv(3) != "" ){
-          MSN_INTEL = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_INTEL = strzone(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_OBJS){
-        if( argv(3) != "" ){
-          MSN_OBJ = stof(strzone(argv(3)));
+        if( argv(token) != "" ){
+          MSN_OBJ = stof(strzone(argv(token)));
         }
       }
       if (argv(1) == MSN_FILE_ANIM){
-        if( argv(3) != "" ){
-          MSN_ANIM = strzone(argv(3));
+        if( argv(token) != "" ){
+          MSN_ANIM = strzone(argv(token));
         }
       }
 
       //objectives section
-      msn_setobjdesc(tobj, argv(1), argv(3));
-      tobj = msn_mapobjid(argv(1), argv(3));  //somehow reading this second works
+      msn_setobjdesc(tobj, argv(1), argv(token));
+      tobj = msn_mapobjid(argv(1), argv(token));  //somehow reading this second works
     }
     line = fgets(flannel);
   }

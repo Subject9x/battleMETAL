@@ -348,21 +348,7 @@ void(vector ofs) menu_hangar_MechFluff={
   drawstring(nofs + gui_percentToPixelRawVec('16 16'), "[DESCRIPTION]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   if(SELECTED_MECH != world){
-    fpos = nofs + gui_percentToPixelRawVec('18 26');
-    argc = tokenizebyseparator(SELECTED_MECH.note1, "|");
-    lne_idx = 0;
-    while(lne_idx != -1){
-      local string line;
-      local float llen;
-      line = argv(lne_idx);
-      drawstring(fpos, line, '7 8 0', '1 1 1', HUD_ALPHA, 0);
-      if(line ==""){
-        lne_idx = -1;
-      }
-      else{
-        lne_idx = lne_idx + 1;
-        fpos_y = fpos_y + gui_percentYRaw(14);
-      }
-    }
+    fpos = nofs + gui_percentToPixelRawVec('10 26');
+    gui_wrapText(fpos, '235 210', SELECTED_MECH.note1, '7 8 0', '0.9 0.9 0.9', 1);
   }
 };

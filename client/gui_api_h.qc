@@ -45,6 +45,8 @@ vector(vector p) gui_percentToPixelRawVec;
 vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec;
 float(float pct, float ox, float mx) gui_percentCustom;
 
+float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText;
+
 //console logging
 void(string msg, float val) cons_logAFloat;
 void(string msg, vector v1) cons_logAVector;

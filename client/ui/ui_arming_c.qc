@@ -427,7 +427,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   
   //type
   local vector icol;
-  icol = nofs + gui_percentToPixelRawVec('4 57');
+  icol = nofs + gui_percentToPixelRawVec('4 50');
   
   //damage
   drawstring(icol, "[DAMAGE/SHOT]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
@@ -454,17 +454,9 @@ void(vector ofs) menu_arming_WeaponInfo={
   
   //desc
   drawstring(icol + gui_percentToPixelRawVec('0 56'), "[NOTES]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
-  if(dat.note1){
-    drawstring(icol+gui_percentToPixelRawVec('2 66'), dat.note1, '6 7 0', '1 1 1', HUD_ALPHA, 0);
-  }
-  if(dat.note2){
-    drawstring(icol+gui_percentToPixelRawVec('2 76'), dat.note2, '6 7 0', '1 1 1', HUD_ALPHA, 0);
-  }
-  if(dat.note3){
-    drawstring(icol+gui_percentToPixelRawVec('2 86'), dat.note3, '6 7 0', '1 1 1', HUD_ALPHA, 0);
-  }
-  if(dat.note4){
-    drawstring(icol+gui_percentToPixelRawVec('2 96'), dat.note4, '6 7 0', '1 1 1', HUD_ALPHA, 0);
+  
+  if(dat.note1){ 
+    gui_wrapText(icol + gui_percentToPixelRawVec('-6 58'), '187 130', dat.note1, '6 7 0', '1 1 1', 1);
   }
 };
 

@@ -131,6 +131,7 @@ void() ClientConnect = {
   client_sendMissionFileName();
   
   if( !coop && !deathmatch) {
+    self.i_faction = world.i_faction; //single player setting
     client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
     client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
     client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);

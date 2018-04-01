@@ -101,34 +101,18 @@ void(vector ofs) menu_briefPlaySound={
 };
 
 void(vector ofs) menu_briefMissionText={
-  local vector bpos;
+  local vector bpos, tpos, fpos;
+  local float tlen;
   bpos = ofs + gui_percentToPixelRawVec('10 132');
   drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('243 340'), '1 1 1', HUD_ALPHA, 0);
-  local float tlen;
-  local vector tpos;
-  tlen = stringwidth("[MISSION BRIEF]", 0, '8 8 0');
-  tpos = bpos + gui_percentToPixel(0.0945, 0.005);
-  tpos_x = tpos_x - gui_percentXRaw((tlen/2));
-  drawstring(tpos, "[MISSION BRIEF]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
-  local float argc, lne_idx;
-  local vector fpos;
-  fpos = bpos + gui_percentToPixelRawVec(' 9.854 19.96'); 
-  argc = tokenizebyseparator(MSN_BRIEF, "|");
-  lne_idx = 0;
-  while(lne_idx != -1){
-    local string line;
-    local float llen;
-    line = argv(lne_idx);
-    drawstring(fpos, line, '7 8 0', '1 1 1', HUD_ALPHA, 0);
-    if(line ==""){
-      lne_idx = -1;
-    }
-    else{
-      lne_idx = lne_idx + 1;
-      fpos_y = fpos_y + gui_percentYRaw(14);
-    }
-  }
+  tlen = stringwidth("[MISSION BRIEF]", 0, '8 8 0');
+  tpos = bpos + gui_percentToPixelRawVec('120 5');
+  tpos_x = tpos_x - gui_percentXRaw(tlen / 2);
+  drawstring(tpos, "[MISSION BRIEF]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+
+  fpos = bpos + gui_percentToPixelRawVec('2 20');
+  gui_wrapText(fpos, '230 300', MSN_BRIEF, '7 8 0', '1 1 1', 1);
 };
 
 void(vector ofs) menu_briefMapPanel={
@@ -221,22 +205,23 @@ void(vector ofs) menu_objIntelSwitchPanel={
 
 void(vector ofs) menu_briefObjectivePanel={
   local vector bpos,tpos, lofs;
-  local float tlen, lst_idx, eol;
+  local float tlen, lst_idx, eol, line_rtn;
     
   tlen = stringwidth("[OBJECTIVES]", 0 , '8 8 0');
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
   drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), '1 1 1', HUD_ALPHA, 0);
   
-  lofs = bpos + gui_percentToPixelRawVec('12 12');
+  lofs = bpos + gui_percentToPixelRawVec('6 16');
   eol = TRUE;
   lst_idx = 1;
+  line_rtn = 0;
   while(eol){
     local vector oofs;
     oofs = lofs;
-    oofs_y = oofs_y + (lst_idx * gui_percentXRaw(12));
+    oofs_y = oofs_y + gui_percentYRaw(line_rtn) + ( (lst_idx - 1) * gui_percentXRaw(4));
     local string desc;
     desc = MSN_OBJ_DESC[lst_idx];
-    drawstring(oofs, strcat("[", ftos(lst_idx),"]:", desc), '8 8 0', '1 1 1', HUD_ALPHA,0);
+    line_rtn = gui_wrapText(oofs, '300 300', strcat("[", ftos(lst_idx),"]: ", desc, " \n \n "), '8 8 0', '1 1 1', 1);
     if(MSN_OBJ_DESC[(lst_idx+1)] ==""){
       eol = FALSE;
     }
@@ -247,26 +232,11 @@ void(vector ofs) menu_briefObjectivePanel={
 void(vector ofs) menu_briefIntelPanel={
   local vector bpos;
   local string intel;
+  local vector fpos;
+  
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
   drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), '1 1 1', HUD_ALPHA, 0);
-  intel = MSN_INTEL;
   
-  local float argc, lne_idx;
-  local vector fpos;
-  fpos = bpos + gui_percentToPixel(0.0093, 0.0229);
-  argc = tokenizebyseparator(MSN_INTEL, "|");
-  lne_idx = 0;
-  while(lne_idx != -1){
-    local string line;
-    local float llen;
-    line = argv(lne_idx);
-    drawstring(fpos, line, '7 8 0', '1 1 1', HUD_ALPHA, 0);
-    if(line ==""){
-      lne_idx = -1;
-    }
-    else{
-      lne_idx = lne_idx + 1;
-      fpos_y = fpos_y + gui_percentYRaw(12);
-    }
-  }
+  fpos = bpos + gui_percentToPixelRawVec('12 22');
+  gui_wrapText(fpos, '300 300', MSN_INTEL, '7 8 0', '1 1 1', 1);
 };

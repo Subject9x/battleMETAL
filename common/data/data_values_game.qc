@@ -10,6 +10,7 @@ Overview: all the miscellaneous shared values between client and server
 string MAP_NAME;  //strips mapname global of junk
 string PATH_DATA_MAP = "map_scripts";
 string PATH_DATA_ANIM = "anim";
+string NEWLINE = "\n";
 //============================
 //   PLAYER STATE ID's           
 //============================

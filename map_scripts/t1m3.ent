@@ -4,10 +4,12 @@
 //==================
 */
 {
-"map_file" "c1m1"
+"map_file" "t1m3"
 "classname" "worldspawn"
-"msn_file" "c1m1.dat"
+"msn_file" "t1m3.dat"
 "fog" "1 0.85 0.65 0.5 0.45 6000 10000 8000 2500"
+"i_faction" "1"
+"message" "Of Ashen Countenance\n"
 }
 {
 "classname" "map_terrain_model"
@@ -20,3 +22,17 @@
 "angle" "90"
 "i_faction" "1"
 }
+/*
+========================
+  SPAWN POINTS
+========================
+*/
+{
+"classname" "map_deploy_point"
+"origin" "-6942.7 4380.3 31.5"
+"angles" "0 174.5 0"
+"i_faction" "1"
+"isActive" "1"
+"data_idx" "1"
+}
+//=====================================

@@ -16,7 +16,7 @@ void() savefile_load={
   argc = tokenizebyseparator(contents, "{", ",", "}");
   line = fgets(flannel);
   while( (line != "") ){
-    if( (line != "{") && (line != "}") && (line != "//") ){
+    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
       line_tag = tokenizebyseparator(line, "'","'",": ",",");
       if( argv(1) == SAVE_FILE_MSN_NAME) {
         
@@ -74,7 +74,7 @@ void() mapfile_coop_load={
     argc = tokenizebyseparator(contents, "{", ",", "}");
     line = fgets(flannel);
     while( (line != "") ){
-      if( (line != "{") && (line != "}") && (line != "//") ){
+      if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
         line_tag = tokenizebyseparator(line, "'","'",": ",",");
         if( argv(1) == SAVE_FILE_MSN_NAME) {
           
@@ -111,7 +111,7 @@ void(float faction) mapfile_pvp_load={
     argc = tokenizebyseparator(contents, "{", ",", "}");
     line = fgets(flannel);
     while( (line != "") ){
-      if( (line != "{") && (line != "}") && (line != "//") ){
+      if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
         line_tag = tokenizebyseparator(line, "'","'",": ",",");
         if( argv(1) == SAVE_FILE_MSN_NAME) {
           
