@@ -80,6 +80,11 @@ void() CSQC_Init =
   //get mission file
   cs_precache();
   data_ini_arrays();
+  
+  //clean up mapname global for file use
+  tokenizebyseparator(mapname, "/", ".");
+  MAP_NAME = argv(1);
+  MAP_NAME = strzone(MAP_NAME);
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)

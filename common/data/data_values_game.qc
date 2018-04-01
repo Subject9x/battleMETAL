@@ -4,7 +4,12 @@ Author: Peter Roohr
 Date: 1/26/2018
 Overview: all the miscellaneous shared values between client and server
 */
-
+//============================
+//   FILE PATHS           
+//============================
+string MAP_NAME;  //strips mapname global of junk
+string PATH_DATA_MAP = "map_scripts";
+string PATH_DATA_ANIM = "anim";
 //============================
 //   PLAYER STATE ID's           
 //============================

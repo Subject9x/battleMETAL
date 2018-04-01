@@ -21,8 +21,9 @@ void(string fileToOpen) anm_getFile={
 
 void(string fileToOpen) anm_parseFile={
   local float flannel, argc, line_tag, line_val, frame_count;
-  local string contents, line;
-  flannel = fopen(fileToOpen, FILE_READ);
+  local string file, contents, line;
+  file = strcat(PATH_DATA_ANIM, "/", fileToOpen);
+  flannel = fopen( file, FILE_READ);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{", ",", "}");
   line = fgets(flannel);

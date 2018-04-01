@@ -66,7 +66,8 @@ void() savefile_default={
 void() mapfile_coop_load={
   local string file, line, contents;
   local float flannel, line_tag, argc;
-  file = strcat(world.map_file, SAVE_FILE_EXT);
+  
+  file = strcat(PATH_DATA_MAP, "/", mapname, "/", world.map_file, SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);
@@ -102,7 +103,8 @@ void() mapfile_coop_load={
 void(float faction) mapfile_pvp_load={
   local string file, line, contents;
   local float flannel, line_tag, argc;
-  file = strcat(world.map_file, "_", ftos(faction), SAVE_FILE_EXT);
+  
+  file = strcat(PATH_DATA_MAP, "/", mapname, "/", world.map_file, "_", ftos(faction), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);

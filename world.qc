@@ -57,14 +57,6 @@ void() worldspawn =
       savefile_load();
     }
   }
-  else{
-    if( coop ){
-      //TODO - load coop save file
-    }
-    if( deathmatch ){
-      //TODO - load pvp save file
-    }
-  }
   
   //see q1/precache_world.q1_precache_sound();
   q1_precache_sound();
