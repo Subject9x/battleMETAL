@@ -263,7 +263,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
   }
 
   //AI mech / tank death trigger fix
-  if( self.data_type == DATA_MECH){
+  if( (self.data_type == DATA_MECH) || (self.data_type == DATA_VEHC) || (self.data_type == DATA_BLD)){
     self.ladder_entity = attacker;
   }
   

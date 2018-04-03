@@ -242,10 +242,12 @@ void() ai_turret_die={
   mech_player_compdie(self.e_cam);
 
   //fire triggers when dead
-  self.target = self.target_die;
-  activator = self.enemy;
-	SUB_UseTargets ();
-  multi_trigger();
+  if(self.target_die){
+    self.target = self.target_die;
+    self.enemy = self.ladder_entity;
+    activator = self.enemy;
+    SUB_UseTargets ();
+  }
  
   self.think = ai_mech_cleanup;
   self.nextthink = time + 100;

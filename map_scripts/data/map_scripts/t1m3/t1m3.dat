@@ -1,6 +1,6 @@
 //mission info section
 {
-  'img' : ''
+  'img' : 'maps/t1m3_over.png'
   'name'  : 'Of Ashen Countenance'
   'type'  : 'Patrol'
   'points' : '1'

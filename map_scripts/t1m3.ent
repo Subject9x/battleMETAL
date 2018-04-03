@@ -9,6 +9,7 @@
 "msn_file" "t1m3.dat"
 "fog" "1 0.85 0.65 0.5 0.45 6000 10000 8000 2500"
 "i_faction" "1"
+"sounds" "2"
 "message" "Of Ashen Countenance\n"
 }
 {
@@ -24,15 +25,208 @@
 }
 /*
 ========================
+  TRIGGERS AND LOGIC
+========================
+*/
+{
+"targetname" "objective_loss"
+"classname" "map_objective"
+"origin" "0 10 1000"
+"isActive" "0"
+"data_idx" "255"
+}
+{
+"targetname" "objective_win"
+"classname" "map_objective"
+"origin" "0 20 1000"
+"isActive" "0"
+"data_idx" "255"
+}
+{
+"targetname" "objective1"
+"classname" "map_objective"
+"origin" "10 0 1000"
+"isActive" "1"
+"data_idx" "1"
+"target" "counter_objectives"
+}
+{
+"targetname" "objective2"
+"classname" "map_objective"
+"origin" "20 0 1000"
+"isActive" "1"
+"data_idx" "2"
+"target" "counter_objectives"
+}
+{
+"targetname" "counter_objectives"
+"classname" "map_trigger_counter"
+"origin" "0 10 1000"
+"mins" "-4 -4 -4"
+"maxs" "4 4 4"
+"count" "2"
+}
+{
+"targetname" "counter_obj1"
+"classname" "map_trigger_counter"
+"origin" "0 20 1000"
+"mins" "-4 -4 -4"
+"maxs" "4 4 4"
+"count" "8"
+"target" "objective1"
+}
+{
+"targetname" "counter_obj2"
+"classname" "map_trigger_counter"
+"origin" "0 30 1000"
+"mins" "-4 -4 -4"
+"maxs" "4 4 4"
+"count" "3"
+"target" "objective2"
+}
+{
+"targetname" "counter_obj2_loss"
+"classname" "map_trigger_counter"
+"origin" "0 40 1000"
+"mins" "-4 -4 -4"
+"maxs" "4 4 4"
+"count" "4"
+"target" "objective_loss"
+}
+//----------------------------
+/*
+========================
   SPAWN POINTS
 ========================
 */
 {
 "classname" "map_deploy_point"
-"origin" "-6942.7 4380.3 31.5"
-"angles" "0 174.5 0"
+"origin" "-7104.4 4476.7 31.8"
+"angles" "0 100 0"
 "i_faction" "1"
 "isActive" "1"
 "data_idx" "1"
 }
 //=====================================
+/*
+========================
+  NAV POINTS
+========================
+*/
+{
+"classname" "map_navpoint"
+"origin" "-3685.1 -4856.3 50.4"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "1"
+}
+{
+"classname" "map_navpoint"
+"origin" "-123.8 1892.6 50.3"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "2"
+}
+{
+"classname" "map_navpoint"
+"origin" "5299.9 2119.8 -310.2"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "3"
+}
+{
+"classname" "map_navpoint"
+"origin" "4141.2 6721 -330.9"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "4"
+}
+{
+"classname" "map_navpoint"
+"origin" "6268.7 -5549.22 -318.5"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "5"
+}
+//===================================
+/*
+========================
+ PLAYER BASE BUILDINGS
+========================
+*/
+{
+"classname" "building_repair"
+"origin" "-7112.5 4323.5 34.8"
+"angles" "0 90 0"
+"i_faction" "1"
+}
+//===================================
+/*
+========================
+ ENEMY BASE BUILDINGS
+========================
+*/
+//@ ALPHA
+{
+"classname" "building_radar"
+"origin" "-3826.1 -4879.1 30.7"
+"angles" "0 75 0"
+"i_faction" "2"
+}
+//@ EPSILON
+{
+"classname" "building_fuel"
+"origin" "6665.2 -5624 -336.9"
+"i_faction" "2"
+}
+{
+"classname" "building_fuel"
+"origin" "6679.2 -5886.3 -336.9"
+"i_faction" "2"
+}
+{
+"classname" "building_fuel"
+"origin" "6468.2 -5699.3 -336.9"
+"i_faction" "2"
+}
+{
+"classname" "building_shield"
+"origin" "6419.7 -5395.9 -364"
+"i_faction" "2"
+}
+{
+"classname" "building_power"
+"origin" "6039.2 -5629.6 -37-.6"
+"i_faction" "2"
+}
+{
+"classname" "building_tur"
+"origin" "5743.4 -6463.8 -121.1"
+"angles" "0 90 0"
+"i_faction" "2"
+"p_damage" "4"
+"next_wepn1" "3"
+"next_wepn2" "1"
+"target_die" "counter_obj2"
+}
+{
+"classname" "building_tur"
+"origin" "5589.3 -5006.4 -273.2"
+"angles" "0 90 0"
+"i_faction" "2"
+"p_damage" "4"
+"next_wepn1" "3"
+"next_wepn2" "1"
+"target_die" "counter_obj2"
+}
+{
+"classname" "building_tur"
+"origin" "6843.2 -4349.3 -92.5"
+"angles" "0 105 0"
+"i_faction" "2"
+"p_damage" "4"
+"next_wepn1" "3"
+"next_wepn2" "1"
+"target_die" "counter_obj2"
+}
+//===================================

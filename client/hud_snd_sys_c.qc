@@ -61,8 +61,10 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
 
 void(float playerState) snd_hud_vfx_statelistener={
   if(self.player_state == PLAYER_POWERUP_BEGIN){
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
-    CRITBITS = 0;
+    if( CRITBITS < 0){
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
+      CRITBITS = 0;    
+    }
   }
   else if(self.player_state == PLAYER_ACTIVE){
     if(CRITBITS == 0){
@@ -75,10 +77,8 @@ void(float lockstate) snd_hud_vfx_locklistener={
 };
 
 void(float curEn) snd_hud_vfx_enelistener={
-  if(curEn == 10){
-    if(SQ1 != SND_HUD_VFX_ENELOW){
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
-    }
+  if( (curEn > 14) && (curEn <= 15) ){
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
   }
 };
 

@@ -16,7 +16,7 @@ void() CSQC_Init =
   STIME_NEXT = 0;
   VQSIZE = 6;
   VQIDX = 0;
-  CRITBITS = 0;
+  CRITBITS = -1;
   SQUED = FALSE;
   
   WEPBITS[0] = 1;
