@@ -77,7 +77,7 @@ void(float lockstate) snd_hud_vfx_locklistener={
 };
 
 void(float curEn) snd_hud_vfx_enelistener={
-  if( (curEn > 14) && (curEn <= 15) ){
+  if( (curEn > 15) && (curEn <= 15.99) ){
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_ENELOW, 1);
   }
 };

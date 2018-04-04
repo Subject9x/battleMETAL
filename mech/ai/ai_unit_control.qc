@@ -280,7 +280,6 @@ void() ai_mech_die={
   self.enemy = self.ladder_entity;
   activator = self.enemy;
 	SUB_UseTargets ();
-  multi_trigger();
   
   self.think = ai_mech_cleanup;
   self.nextthink = time + 100;
