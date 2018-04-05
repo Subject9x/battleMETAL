@@ -177,7 +177,7 @@ void() ai_defend_atNode={
       if( ai_node_defenseGroup_nodeToTarget(contact, self.group) ){
         nextNode = ai_node_defenseGroup_setCourse(contact, self.group);
         cDist = vlen(contact.origin - nextNode.origin);
-        if(cDist <= (AI_DEFEND_DIST + 5000)){
+        if(cDist <= (AI_DEFEND_DIST + 5000) ){
           self.trigger_field = contact;
           ai_update_switchToNode(nextNode);
           ai_state_control(ai_defend_gotoNode);

@@ -125,13 +125,14 @@ void() anm_execute_frame={
       return;
     }
     if(ANM_FRAME_SND[self.ANM_FRAME_CUR] != ""){
-      pointsound(pmove_org, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NONE); 
+      pointsound(pmove_org, ANM_FRAME_SND[self.ANM_FRAME_CUR], 1, ATTN_NONE);
     }
     self.ANM_FRAME_TIME = time + ANM_FRAME_TIM[self.ANM_FRAME_CUR];
     local float frm_slice;
     frm_slice = ANM_FRAME_TIM[self.ANM_FRAME_CUR] * ANM_FRAME_SLICE;
     self.ANM_FRAME_CUR_FADE_START = time + frm_slice;
     self.ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[self.ANM_FRAME_CUR] - frm_slice);
+    self.ANM_FRAME_CUR_FADE_RATE = (ANM_FRAME_ALPHA[self.ANM_FRAME_CUR] * frm_slice) / ANM_FRAME_TIM[self.ANM_FRAME_CUR];
   }
   else{
     local vector siz, org, frm_color, txt_color;
@@ -145,23 +146,18 @@ void() anm_execute_frame={
     org_y = org_y * VIEW_MAX_y;
     
     if(ANM_FRAME_IMG[self.ANM_FRAME_CUR] != ""){
-      /*
-        .float ANM_FRAME_CUR_FADE_START;
-.float ANM_FRAME_CUR_FADE_END;
-      */
       if(time < self.ANM_FRAME_CUR_FADE_START){
         if(self.ANM_FRAME_ALPHA_CUR < ANM_FRAME_ALPHA[self.ANM_FRAME_CUR] ){
-          self.ANM_FRAME_ALPHA_CUR = self.ANM_FRAME_ALPHA_CUR + 0.01;
+          self.ANM_FRAME_ALPHA_CUR = self.ANM_FRAME_ALPHA_CUR + self.ANM_FRAME_CUR_FADE_RATE;
         }
       }
       if((time >= self.ANM_FRAME_CUR_FADE_END) && (time < self.ANM_FRAME_TIME) ){
         if(self.ANM_FRAME_ALPHA_CUR > 0){
-          self.ANM_FRAME_ALPHA_CUR = self.ANM_FRAME_ALPHA_CUR - 0.01;
+          self.ANM_FRAME_ALPHA_CUR = self.ANM_FRAME_ALPHA_CUR - self.ANM_FRAME_CUR_FADE_RATE;
         }
       }
       
       frm_color = '1 1 1';
-      
       if(ANM_FRAME_COLOR[self.ANM_FRAME_CUR] != '0 0 0'){
         frm_color = ANM_FRAME_COLOR[self.ANM_FRAME_CUR];
       }

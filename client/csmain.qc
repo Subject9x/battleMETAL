@@ -85,6 +85,8 @@ void() CSQC_Init =
   tokenizebyseparator(mapname, "/", ".");
   MAP_NAME = argv(1);
   MAP_NAME = strzone(MAP_NAME);
+  
+  FRIK_FILE_precaches();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)

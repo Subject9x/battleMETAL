@@ -80,16 +80,22 @@ void(vector ofs) menu_deploy_missionInfoPanel={
 };
 
 void(vector ofs) menu_deploy_navInfoPanel={
-  drawpic(ofs + gui_percentToPixel(0.008, 0.118), UI_DEF_BOX_256, gui_percentToPixel(0.165, 0.073), '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs + gui_percentToPixelRawVec('10 113'), UI_DEF_BOX_256, gui_percentToPixelRawVec('211 70'), '1 1 1', HUD_ALPHA, 0);
   local float tlen;
-  local vector tpos;
+  local vector tpos, icosize, icopos1, icopos2;
   tlen = stringwidth("[SELECTED DROP POINT]", 0, '8 8 0');
   tpos = ofs + gui_percentToPixel(0.0902, 0.12);
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[SELECTED DROP POINT]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   
+  icosize = gui_percentToPixelRawVec('14 14');
+  icopos1 = ofs + gui_percentToPixelRawVec('10 113') + gui_percentToPixelRawVec('6 2');
+  icopos2 = ofs + gui_percentToPixelRawVec('10 113') + gui_percentToPixelRawVec('188 2');
+  drawpic(icopos1, UI_DEF_DEPLOYPOINT, icosize, CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  drawpic(icopos2, UI_DEF_DEPLOYPOINT, icosize, CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+  
   //nav help
-  drawstring(ofs+gui_percentToPixel(0.025, 0.1312), "Click a Nav Point on the map ->", '6 6 0', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('16 135'), ">>Select a DEPLOY POINT>>", '8 8 0', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
   //current spawn point
   local string navlbl;
   if(self.plr_nav_pnt > 0){
@@ -98,7 +104,7 @@ void(vector ofs) menu_deploy_navInfoPanel={
   else{
     navlbl = "RANDOM!";
   }  
-  drawstring(ofs+gui_percentToPixel(0.0125, 0.1437), strcat("[CURRENT]:            ", navlbl), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('16 150'), strcat("[CURRENT]:            ", navlbl), '6 6 0', '1 1 1', HUD_ALPHA, 0);
 };
 
 void(vector ofs) menu_deploy_mechInfoPanel={
@@ -185,14 +191,14 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       if(nav.i_faction == self.i_faction){
         local vector nclr;
         nav.ui_org = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec('380 380'));
-        nav.ui_size = gui_percentToPixelRawVec('12 12');
+        nav.ui_size = gui_percentToPixelRawVec('16 16');
         if(nav.isActive){
           nclr = CLR_DEF_ARM_OK;
         }
         else{
-          nclr = CLR_DEF_ARM_DED;
+          nclr = CLR_DEF_ARM_HALF;
         }
-        gui_renderTintImage((self.plr_nav_pnt == nav.nav_name), nav.ui_org, UI_DEF_DEPLOYPOINT,  nav.ui_size, CLR_DEF_ARM_OK, 1, 0) ;
+        gui_renderTintImage2((self.plr_nav_pnt == nav.nav_name), nav.ui_org, UI_DEF_DEPLOYPOINT, nav.ui_size, CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
       }
     }
     nav = nav.chain;

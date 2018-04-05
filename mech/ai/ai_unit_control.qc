@@ -40,7 +40,7 @@ void() ai_control={
     moveDelta = vlen(self.prev_pos - self.origin);
 
     //ruh roh bot might be stuck, lets do something whacky about that
-    if( moveDelta == 0){      
+    if( (moveDelta == 0) && (self.delay <= 0) ){      
       self.ai_stuck_cnt = self.ai_stuck_cnt + 1;
       //whole second of game time
       if(self.ai_stuck_cnt > 25){
@@ -50,7 +50,6 @@ void() ai_control={
           makevectors(self.angles);
           traceline(self.e_legs.origin, self.origin + (v_forward * (self.maxs_x * 2) ) + (v_up * self.mins_z), FALSE, self);
           next = trace_endpos;
-          te_beam_laser(next, self.origin);
           if( (trace_ent) || (trace_plane_normal_z < 0.59) ){
             ai_move_backward();
           }

@@ -1,0 +1,151 @@
+/*
+//==================
+  MAP CORE OBJECTS
+//==================
+*/
+{
+"map_file" "t1m4"
+"classname" "worldspawn"
+"msn_file" "t1m4.dat"
+"fog" "1 0.85 0.65 0.5 0.45 6000 10000 8000 2500"
+"i_faction" "1"
+"sounds" "2"
+"message" "Canon of silence\n"
+}
+{
+"classname" "map_terrain_model"
+"origin" "0 0 -1200"
+"model" "models/terrain/t1m4_exp1.obj"
+}
+{
+"origin" "0 0 1000"
+"classname" "info_player_start"
+"angle" "90"
+"i_faction" "1"
+}
+/*
+========================
+  TRIGGERS AND LOGIC
+========================
+*/
+{
+"targetname" "objective_win"
+"classname" "map_objective"
+"origin" "0 20 1000"
+"isActive" "0"
+"i_faction" "1"
+"data_idx" "255"
+}
+{
+"targetname" "objective1"
+"classname" "map_objective"
+"origin" "10 0 1000"
+"isActive" "1"
+"data_idx" "1"
+"i_faction" "1"
+"target" "counter_objectives"
+}
+{
+"targetname" "objective2"
+"classname" "map_objective"
+"origin" "20 0 1000"
+"isActive" "1"
+"data_idx" "2"
+"i_faction" "1"
+"target" "counter_objectives"
+}
+{
+"targetname" "counter_objectives"
+"target" "objective_win"
+"classname" "map_trigger_counter"
+"origin" "0 0 990"
+"mins" "-4 -4 -4"
+"maxs" "4 4 4"
+"count" "2"
+"spawnflags" "1"
+}
+//----------------------------
+/*
+========================
+  SPAWN POINTS
+========================
+*/
+{
+"classname" "map_deploy_point"
+"origin" "3688.3 -5043.6 -1131.8"
+"angles" "0 78.5 0"
+"i_faction" "1"
+"isActive" "1"
+"data_idx" "1"
+}
+//=====================================
+/*
+========================
+  NAV POINTS
+========================
+*/
+{
+"classname" "map_navpoint"
+"origin" "-3648.7 3194.7 -479.1"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "1"
+}
+{
+"classname" "map_navpoint"
+"origin" "4397.1 4568.3 -72"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "2"
+}
+{
+"classname" "map_navpoint"
+"origin" "-3900 -4059 -1179.1"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "3"
+}
+{
+"classname" "map_navpoint"
+"origin" "4009.3 -4556 -1045"
+"isActive" "1"
+"i_faction" "1"
+"data_idx"  "4"
+}
+//===================================
+/*
+========================
+ PLAYER BASE BUILDINGS
+========================
+*/
+{
+"classname" "building_repair"
+"origin" "3654.2 -5232.9 -1109"
+"angles" "0 79.4 0"
+"i_faction" "1"
+}
+{
+"classname" "building_fuel"
+"origin" "3968.4 -5291.2 -1108.6"
+"angles" "0 48 0"
+"i_faction" "1"
+}
+{
+"classname" "building_fuel"
+"origin" "3849.2 -5439.5 -1131.3"
+"angles" "0 121 0"
+"i_faction" "1"
+}
+//===================================
+/*
+========================
+ ENEMY BASE BUILDINGS
+========================
+*/
+//@ NAV ALPHA
+
+//@ NAV BETA
+
+//@ NAV GAMMA
+
+//======================

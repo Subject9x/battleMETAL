@@ -35,6 +35,7 @@ float ANM_FRAME_SLICE = 0.1; //used for alpha blending timer
 .float ANM_FRAME_ALPHA_CUR;
 .float ANM_FRAME_CUR_FADE_START;
 .float ANM_FRAME_CUR_FADE_END;
+.float ANM_FRAME_CUR_FADE_RATE;
 /*
 Animatic frames are expressed by 3 things;
   frame_image = the image to display for this frame

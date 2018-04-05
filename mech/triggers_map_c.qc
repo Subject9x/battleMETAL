@@ -26,12 +26,6 @@ void() map_initTrigger={
 	self.model = "";
 };
 
-//void() trigger_reactivate; ->no change in  impl
-//void() trigger_skill_touch; -> touch func
-//void() trigger_push_touch; -> touch func
-//void() trigger_onlyregistered;  -> not needed
-//void() trigger_monsterjump; -> not used
-
 void() map_trigger_highlighthud={
   map_initTrigger ();
   self.noise = "misc/talk.wav";

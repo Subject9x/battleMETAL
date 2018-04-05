@@ -37,7 +37,6 @@ void() navpointListener={
     
     lst_idx = lst_idx + 1;
   }  
-
 };
 
 void() objIntelSwitchListener={

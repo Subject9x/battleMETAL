@@ -18,7 +18,7 @@
 "model" "models/terrain/t1m3_exp2.obj"
 }
 {
-"origin" "-1856 -912 480"
+"origin" "0 0 1000"
 "classname" "info_player_start"
 "angle" "90"
 "i_faction" "1"
@@ -64,11 +64,13 @@
 }
 {
 "targetname" "counter_objectives"
+"target" "objective_win"
 "classname" "map_trigger_counter"
 "origin" "0 0 990"
 "mins" "-4 -4 -4"
 "maxs" "4 4 4"
 "count" "2"
+"spawnflags" "1"
 }
 {
 "targetname" "counter_obj1"
@@ -76,8 +78,10 @@
 "origin" "0 0 980"
 "mins" "-4 -4 -4"
 "maxs" "4 4 4"
-"count" "8"
+"count" "7"
+"message" ""
 "target" "objective1"
+"spawnflags" "1"
 }
 {
 "targetname" "counter_obj2"
@@ -87,6 +91,7 @@
 "maxs" "4 4 4"
 "count" "3"
 "target" "objective2"
+"spawnflags" "1"
 }
 {
 "targetname" "counter_obj2_loss"
@@ -133,14 +138,14 @@
 }
 {
 "classname" "map_navpoint"
-"origin" "5299.9 2119.8 -310.2"
+"origin" "5299.9 2119.8 -275"
 "isActive" "1"
 "i_faction" "1"
 "data_idx"  "3"
 }
 {
 "classname" "map_navpoint"
-"origin" "4141.2 6721 -330.9"
+"origin" "4141.2 6721 -210"
 "isActive" "1"
 "i_faction" "1"
 "data_idx"  "4"
@@ -175,6 +180,13 @@
 "classname" "building_radar"
 "origin" "-3826.1 -4879.1 30.7"
 "angles" "0 75 0"
+"i_faction" "2"
+}
+//@ DELTA
+{
+"classname" "building_radar"
+"origin" "4833.6 6242.9 -180.9"
+"angles" "0 320 0"
 "i_faction" "2"
 }
 //@ EPSILON
@@ -234,3 +246,324 @@
 "target_die" "counter_obj2"
 }
 //===================================
+/*
+========================
+ AI PATROL PATH - NAV ALPHA
+========================
+*/
+//bots
+{
+"classname" "ai_tank"
+"origin" "-4903.6 -7408.4 24"
+"angles" "0 74 0"
+"state_1" "3"
+"p_damage" "4"
+"ai_style" "0"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "1"
+"next_wepn2" "1"
+"targetname" "patrol_nav_alpha_tank1"
+"target" "patrol_nav_alpha1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "0"
+}
+{
+"classname" "ai_tank"
+"origin" "-4488.8 -6935.3 20"
+"angles" "0 94 0"
+"state_1" "3"
+"p_damage" "4"
+"ai_style" "0"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "1"
+"next_wepn2" "1"
+"targetname" "patrol_nav_alpha_tank2"
+"target" "patrol_nav_alpha1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "0"
+}
+{
+"classname" "ai_node"
+"origin" "-2831.3 -5788.8 31.4"
+"group" "patrol_nav_alpha"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_alpha1"
+"target" "patrol_nav_alpha2"
+}
+{
+"classname" "ai_node"
+"origin" "-2287.2 -3722.7 30"
+"group" "patrol_nav_alpha"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_alpha2"
+"target" "patrol_nav_alpha3"
+}
+{
+"classname" "ai_node"
+"origin" "-4231.5 -3242.6 30"
+"group" "patrol_nav_alpha"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_alpha3"
+"target" "patrol_nav_alpha4"
+}
+{
+"classname" "ai_node"
+"origin" "-6033.9 -4064.2 25"
+"group" "patrol_nav_alpha"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_alpha4"
+"target" "patrol_nav_alpha5"
+}
+{
+"classname" "ai_node"
+"origin" "-4560 -6470.5 40"
+"group" "patrol_nav_alpha"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_alpha5"
+"target" "patrol_nav_alpha1"
+}
+//======================
+/*
+========================
+ AI PATROL PATH - NAV BETA
+========================
+*/
+{
+"classname" "ai_tank"
+"origin" "2462.8 3200.3 -346.6"
+"angles" "0 88.8 0"
+"state_1" "3"
+"p_damage" "4"
+"ai_style" "0"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "1"
+"next_wepn2" "1"
+"targetname" "patrol_nav_beta_tank1"
+"target" "patrol_nav_beta1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "0"
+}
+{
+"classname" "ai_tank"
+"origin" "2601.2 3343.3 -344.6"
+"angles" "0 88.8 0"
+"state_1" "3"
+"p_damage" "3"
+"ai_style" "0"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "3"
+"next_wepn2" "16"
+"targetname" "patrol_nav_beta_tank2"
+"target" "patrol_nav_beta1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "0"
+}
+{
+"classname" "ai_tank"
+"origin" "2593.5 2986 -336.8"
+"angles" "0 88.8 0"
+"state_1" "3"
+"p_damage" "2"
+"ai_style" "0"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "17"
+"next_wepn2" "6"
+"targetname" "patrol_nav_beta_tank3"
+"target" "patrol_nav_beta1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "0"
+}
+{
+"classname" "ai_node"
+"origin" "2416 3336.4 -354.1"
+"group" "patrol_nav_beta"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_beta1"
+"target" "patrol_nav_beta2"
+"delay" "45"
+}
+{
+"classname" "ai_node"
+"origin" "1419.4 3500.3 -280.3"
+"group" "patrol_nav_beta"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_beta2"
+"target" "patrol_nav_beta3"
+"delay" "45"
+}
+{
+"classname" "ai_node"
+"origin" "885.9 2521.7 -190.6"
+"group" "patrol_nav_beta"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_beta3"
+"target" "patrol_nav_beta4"
+"delay" "45"
+}
+{
+"classname" "ai_node"
+"origin" "1081.6 1697.6 -302.8"
+"group" "patrol_nav_beta"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_beta4"
+"delay" "30"
+}
+//=======================
+/*
+========================
+ AI PATROL PATH - NAV DELTA
+========================
+*/
+{
+"classname" "ai_tank"
+"origin" "6637 6944.7 -270.6"
+"angles" "0 201 0"
+"state_1" "3"
+"p_damage" "4"
+"ai_style" "1"
+"ai_type" "1"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "17"
+"next_wepn2" "6"
+"targetname" "patrol_nav_gamma_tank1"
+"target" "patrol_nav_gamma1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "0"
+}
+{
+"classname" "ai_tank"
+"origin" "6957.5 7065 -217.4"
+"angles" "0 201 0"
+"state_1" "3"
+"p_damage" "4"
+"ai_style" "1"
+"ai_type" "1"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "17"
+"next_wepn2" "6"
+"targetname" "patrol_nav_gamma_tank2"
+"target" "patrol_nav_gamma1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "0"
+}
+{
+"classname" "ai_mech"
+"origin" "7168.9 6690.4 -189.6"
+"angles" "0 101 0"
+"state_1" "2"
+"p_damage" "4"
+"ai_style" "0"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "1"
+"next_wepn2" "1"
+"next_wepn3" "3"
+"targetname" "patrol_nav_gamma_mech1"
+"target" "patrol_nav_gamma1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "1"
+}
+{
+"classname" "ai_node"
+"origin" "5869 6893.3 -335.9"
+"group" "patrol_nav_gamma"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_gamma1"
+"target" "patrol_nav_gamma2"
+"delay" "85"
+}
+{
+"classname" "ai_node"
+"origin" "6097.7 5523.9 -339.1"
+"group" "patrol_nav_gamma"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_gamma2"
+"target" "patrol_nav_gamma3"
+"delay" "85"
+}
+{
+"classname" "ai_node"
+"origin" "6023.8 3370.4 -348.4"
+"group" "patrol_nav_gamma"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_gamma3"
+"target" "patrol_nav_gamma4"
+"delay" "85"
+}
+{
+"classname" "ai_node"
+"origin" "4375.4 587.7 -313.8"
+"group" "patrol_nav_gamma"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_gamma4"
+"delay" "85"
+}
+
+//======================
+/*
+========================
+ AI PATROL PATH - NAV DELTA
+========================
+*/
+{
+"classname" "ai_mech"
+"origin" "4209.3 5942.9 -300"
+"angles" "0 35 0"
+"state_1" "2"
+"p_damage" "4"
+"ai_style" "0"
+"ai_type" "0"
+"vec_size" "1"
+"nextVecChoice" "1"
+"next_wepn1" "3"
+"next_wepn2" "3"
+"next_wepn3" "4"
+"targetname" "patrol_nav_delta_mech1"
+"target" "patrol_nav_delta1"
+"target_die" "counter_obj1"
+"i_faction" "2"
+"mskin" "1"
+}
+{
+"classname" "ai_node"
+"origin" "4822.4 6146.1 -188.7"
+"group" "patrol_nav_delta"
+"isActive" "1"
+"i_faction" "2"
+"targetname" "patrol_nav_delta1"
+}
+//=======================

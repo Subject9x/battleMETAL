@@ -1,0 +1,23 @@
+//mission info section
+{
+  'img' : 'maps/t1m3_over.png'
+  'name'  : 'Canon of silence'
+  'type'  : 'Assassination'
+  'points' : '1'
+  'sector' : 'Stormside'
+  'location' : 'Canyons'
+  'time' : '02:13:00 LPT'
+  'brief' : 'PSC has identified a primary target responsible for coordinating ENEMY activity in this region. PSC is dispatching a DEAD HAND to remove this target from the AO. DEAD HAND will be deployed into hostile territory. Standing orders are to locate the target, and eliminate it, disregard all other contacts unless they pose a threat to your mission. The Target could be at several of the small firebases across the AO. Eliminating the bases it not a priority, however. Enemy morale seems to be heavily dependent on this Target’s continued existence. Removal of the Target will disrupt enemy activity in this region and allow PSC to move forward with its operational goals. | | DEAD HAND will operate under resource conservation codes. Upon completion of objective, DEAD HAND must exfiltrate the AO at NAV <Blar>.'
+  'intel' : 'Recommend Loadout | |    1x Metal , heavy weapons | | Target is situated in hostile territory, potentially in one of the firebases. DEAD HAND is not required to eliminate the fire bases, find target and eliminate.'
+  'objtotal' : '2'
+  'anim' : 't1m4_brief.anim'
+}
+// objectives section
+{
+  'objid' : '1'
+  'objdesc' : 'Clear each NAV POINT of all HOSTILE contacts.'
+}
+{
+  'objid' : '2'
+  'objdesc' : 'Neutralize defense turrets of base at NAV ETA'
+}

@@ -10,7 +10,7 @@
   'brief' : 'Op-Code 2 in effect. | | Perimetra System Control (PSC) is mobilizing resources for the first phase of its mission of retribution. Our creators intentionally put our headquarters out in the STORM-REACH sector to keep us protected against a First-Strike, and to shield us from prying eyes. However that has left PSC with very little initial resources for its missions. | | This DEAD_HAND`s assignment is to sweep the plotted Nav coordinates to secure this location. At Nav <Eta> is a small bivouac of supplies that PSC can use to fund further missions towards the Habitable Zone. PSC`s ultimate goal is the annihilation of any and all surviving AUTHOR units.'
   'intel' : 'Recommend Patrol kit | 1x Balakett |    At least 1 Anti-shield weapon. | | Enemy base Defense appear to consist of light field fortifications backed up by a Shield Generator. | | Overflight Recon has determined most ground forces in this AO to be medium tanks, encounters with hostile Metal should be rare.'
   'objtotal' : '2'
-  'anim' : ''
+  'anim' : 't1m3_brief.anim'
 }
 // objectives section
 {
