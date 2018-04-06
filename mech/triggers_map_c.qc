@@ -26,6 +26,20 @@ void() map_initTrigger={
 	self.model = "";
 };
 
+
+void() map_trigger_changelevel={
+  map_initTrigger ();
+	if (!self.map)
+		objerror ("changelevel trigger doesn't have map");
+    
+  if(self.isActive){
+    self.touch = changelevel_touch;
+  }
+  else{
+    self.use = changelevel_use;
+  }
+};
+
 void() map_trigger_highlighthud={
   map_initTrigger ();
   self.noise = "misc/talk.wav";

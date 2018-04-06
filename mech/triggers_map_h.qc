@@ -22,3 +22,4 @@ void() map_trigger_teleport;
 void() map_trigger_setskill;
 void() map_trigger_hurt;
 void() map_trigger_push;
+void() map_trigger_changelevel;

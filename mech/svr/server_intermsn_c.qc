@@ -39,14 +39,14 @@ entity() FindIntermission={
 	return world;
 };
 void() GotoNextMap={
-
+    if( !coop && !deathmatch ){
+      savefile_append();
+      savefile_save();
+    }
   if (cvar("samelevel")){	// if samelevel is set, stay on same level
 		changelevel (mapname);
 	}
   else{  
-    if( !coop && !deathmatch ){
-      savefile_save();
-    }
 		changelevel (nextmap);
   }
 };
@@ -202,12 +202,12 @@ void() changelevel_touch={
 		bprint (other.netname);
 		bprint (" exited the level\n");
 	}
-	
+  
 	nextmap = self.map;
   
 	SUB_UseTargets ();
 
-	if ( (self.spawnflags & 1) && (deathmatch == 0) )
+	if ( (self.spawnflags & 1) && (deathmatch == FALSE) )
 	{	// NO_INTERMISSION
 		GotoNextMap();
 		return;

@@ -29,6 +29,8 @@ string SAVE_FILES_POINTS = "points";
 void() savefile_load; //single player only
 void() savefile_save; //single player only
 void() savefile_default;  //single player, but initial start
+void() savefile_append;
+string(string item, string source) savefile_insert;
 
 void() mapfile_coop_load;  //coop options
 void(float faction) mapfile_pvp_load;  //pvp options

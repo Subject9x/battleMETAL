@@ -11,6 +11,10 @@
 "i_faction" "1"
 "sounds" "8"
 "message" "Of Ashen Countenance\n"
+"inv_m_light" ""
+"inv_m_medim" "1"
+"inv_m_heavy" "1"
+"inv_items" "2 6 7 10"
 }
 {
 "classname" "map_terrain_model"
@@ -29,20 +33,44 @@
 ========================
 */
 {
+"targetname" "next_level_win"
+"classname" "map_trigger_changelevel"
+"origin" "0 -10 1000"
+"mins" "-10 -10 -10"
+"maxs" "10 10 10"
+"isActive" "0"
+"spawnflags" "1"
+"map" "t1m4.bsp"
+"delay" "1"
+}
+{
+"targetname" "next_level_loss"
+"classname" "map_trigger_changelevel"
+"origin" "0 -20 1000"
+"isActive" "0"
+"spawnflags" "1"
+"map" "t1m3.bsp"
+"delay" "1"
+}
+{
 "targetname" "objective_loss"
+"target" "next_level_loss"
 "classname" "map_objective"
 "origin" "0 10 1000"
-"isActive" "0"
+"isActive" "1"
 "i_faction" "1"
 "data_idx" "255"
+"delay" "5"
 }
 {
 "targetname" "objective_win"
+"target" "next_level_win"
 "classname" "map_objective"
 "origin" "0 20 1000"
-"isActive" "0"
+"isActive" "1"
 "i_faction" "1"
-"data_idx" "255"
+"data_idx" "254"
+"delay" "5"
 }
 {
 "targetname" "objective1"
@@ -71,6 +99,7 @@
 "maxs" "4 4 4"
 "count" "2"
 "spawnflags" "1"
+"delay" "2"
 }
 {
 "targetname" "counter_obj1"

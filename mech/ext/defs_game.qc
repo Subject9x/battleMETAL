@@ -5,10 +5,18 @@ Date: 8/27/2016
 Overview: extends the global defs
 */
 
+
+//WEAPON FIRE STATUS
 float READY = 0;
 float RELOADING = 1;
 float WAITING = 2;
 float RECOIL = 4;
+
+//used for worldspaw, dictates unlocks to save file post-mission
+.string inv_items;
+.string inv_m_light;
+.string inv_m_medim;
+.string inv_m_heavy;
 
 .entity lst_p; //linked list parent
 

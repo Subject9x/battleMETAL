@@ -7,6 +7,82 @@ The save file is mostly an inter-level intermediary file
 to track player unlocks
 */
 
+
+/*
+  appends new save data from mission to single-player save file
+*/
+void() savefile_append={
+  if(world.inv_m_light != ""){
+    if(SAVE_MECHS_LIGHT != ""){
+      SAVE_MECHS_LIGHT = savefile_insert(world.inv_m_light, SAVE_MECHS_LIGHT);
+    }
+    else{
+      SAVE_MECHS_LIGHT = strzone(world.inv_m_light);
+    }
+  }
+  
+  if(world.inv_m_medim != ""){
+    if(SAVE_MECHS_MEDIM != ""){
+      SAVE_MECHS_MEDIM = savefile_insert(world.inv_m_medim, SAVE_MECHS_MEDIM);
+    }
+    else{
+      SAVE_MECHS_MEDIM = strzone(world.inv_m_medim);
+    }
+  }
+  
+  if(world.inv_m_heavy != ""){
+    if(SAVE_MECHS_HEAVY != ""){
+      SAVE_MECHS_HEAVY = savefile_insert(world.inv_m_heavy, SAVE_MECHS_HEAVY);
+    }
+    else{
+      SAVE_MECHS_HEAVY = strzone(world.inv_m_heavy);
+    }
+  }
+  
+  if(world.inv_items != ""){
+    if(SAVE_ITEMS_ALL != ""){
+      SAVE_ITEMS_ALL = savefile_insert(world.inv_items, SAVE_ITEMS_ALL);
+    }
+    else{
+      SAVE_ITEMS_ALL = strzone(world.inv_items);
+    }
+  }
+};
+
+//checks to see if item is already on list
+string(string item, string source) savefile_insert={
+  local string update, line;
+  local float com, tokens, itr;
+  tokens = tokenizebyseparator(item, " ");
+  update = "";
+  line = strcat(" ", source);
+  itr = 0;
+  while( itr <= tokens){
+    local string toke, chk;
+    toke = argv(itr);
+    if( (toke != "") && (toke != " ") ){
+      chk = strcat(" ", toke);
+      if( strstrofs(line, chk, 0) == -1){
+        if( itr == 0){
+          update = strcat(update, toke);
+        }
+        else{
+          update = strcat(update, chk);
+        }
+      }
+    }
+    itr = itr + 1;
+  }
+  
+  if(update != ""){
+    update = strcat(source, " ", update);
+    return strzone(update);
+  }
+  else{
+    return strzone(source);
+  }
+};
+
 //functions
 void() savefile_load={
   local float flannel, argc, line_tag, line_val, line_array, line_cntr;
@@ -46,12 +122,12 @@ void() savefile_save={
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
-  fputs(flannel, strcat("  'mission' : ",self.msn_file,",\n"));
-  fputs(flannel, strcat("  'light' : ", SAVE_MECHS_LIGHT,",\n"));
-  fputs(flannel, strcat("  'medium' : ", SAVE_MECHS_MEDIM,",\n"));
-  fputs(flannel, strcat("  'heavy' : ", SAVE_MECHS_HEAVY,",\n"));
-  fputs(flannel, strcat("  'items' : ", SAVE_ITEMS_ALL,",\n"));
-  fputs(flannel, strcat("  'points' : ", ftos(1),",\n"));
+  fputs(flannel, strcat("  'mission' : ", self.msn_file, ",\n"));
+  fputs(flannel, strcat("  'light' : ", SAVE_MECHS_LIGHT, ",\n"));
+  fputs(flannel, strcat("  'medium' : ", SAVE_MECHS_MEDIM, ",\n"));
+  fputs(flannel, strcat("  'heavy' : ", SAVE_MECHS_HEAVY, ",\n"));
+  fputs(flannel, strcat("  'items' : ", SAVE_ITEMS_ALL, ",\n"));
+  fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, "}");
   fclose(flannel);
 }; 
@@ -62,12 +138,12 @@ void() savefile_default={
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
-  fputs(flannel, strcat("  'mission' : start,\n"));
-  fputs(flannel, strcat("  'light' : 1,\n"));
-  fputs(flannel, strcat("  'medium' : ,\n"));
-  fputs(flannel, strcat("  'heavy' : ,\n"));
-  fputs(flannel, strcat("  'items' : 1 3 17 4,\n"));
-  fputs(flannel, strcat("  'points' : ,\n"));
+  fputs(flannel, "  'mission' : start,\n");
+  fputs(flannel, "  'light' : 1,\n");
+  fputs(flannel, "  'medium' : ,\n");
+  fputs(flannel, "  'heavy' : ,\n");
+  fputs(flannel, "  'items' : 1 3 17 4,\n");
+  fputs(flannel, "  'points' : ,\n");
   fputs(flannel, "}");
   fclose(flannel);
 };
