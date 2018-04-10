@@ -23,9 +23,11 @@ void() FRIK_FILE_precaches =
       else if(strstrofs(ln, ".ogg",0) != -1){
         precache_sound(ln);
       }
-			else                                // if it isn't a sound, then it will most likely be a model
-			{
+			else if(strstrofs(ln, ".md3",0) != -1){
 				precache_model(ln);         // so precache the model
+			}
+			else if( strstrofs(ln, ".obj", 0) != -1){
+				precache_model(ln);
 			}
 			ln = fgets(f);                      // get a new line from the file
 		} 

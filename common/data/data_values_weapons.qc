@@ -244,7 +244,7 @@ float DAT_MIS_CLIPSIZE      = 6;
 //-------------------------Laser Missile
 float DAT_MLGD_CLIPSIZE     = 1;
 //-------------------------Radar Missile
-float DAT_MARH_CLIPSIZE     = 1;
+float DAT_MARH_CLIPSIZE     = 15;
 //-------------------------Swarm Missile
 float DAT_SWRM_CLIPSIZE     = 3;
 //============================

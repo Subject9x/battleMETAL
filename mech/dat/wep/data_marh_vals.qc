@@ -74,51 +74,53 @@ void() data_marh_atk={
         self.rl_cur = 0;
         self.w_currentammo = self.w_clipsize;
         self.w_state = RELOADING;
+        self.w_isburst = FALSE;
       }
       else{
-        self.w_firetime = time + self.w_firerate;
+        if((player.flags & FL_MONSTER)){
+          self.w_firetime = time + self.rl_rate ;
+        }
+        else{
+          self.w_firetime = time + self.rl_rate / 1.25;
+        }
         self.w_state = RECOIL;
+        self.w_isburst = TRUE;
       }
               
       adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
       makevectors(player.angles);
       org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
       
-      local float countlim, itr;
-      countlim = 15;
-      
       local float dist;
       local vector arc;
       dist = vlen(dir - org);
       arc = org + (v_forward * (300 + (crandom() * 20))) + (v_up * (300 + (crandom() * 20))) + (v_right * 0);
       
-      while(itr < countlim){
-        local vector start;
-        start = org + ((crandom() * 15) * v_right) + (v_up * (crandom() * 15)) + (v_right * 0);
-        itr = itr + 1;
-        newmis = spawn();
-        oself = self;
-        self = newmis;
-          self.owner = player;
-          data_iniProjectile(oself.w_proj);
-          self.p_dmgtype = oself.p_dmgtype;
-          self.p_damage = oself.p_damage;
-          self.velocity = normalize(arc - start);
-          self.enemy = self.owner.enemy;
-          self.c_ofs = arc;
-          self.lock_timer = time + 0.75;
-          self.p_lifetime = time + self.p_lifetime;
-          self.velocity = self.velocity * self.p_velocity;
-          self.angles = vectoangles(self.velocity);
-          self.think = data_prj_marh_th;
-          self.nextthink = time + 0.01;
-          util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-          util_setModel(self.c_model, 0, 0);
-          util_setBoundBox('0 0 0', '0 0 0');
-          setorigin(self, start);
-        self = oself;
-      }
-      sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+
+      local vector start;
+      start = org + ((crandom() * 15) * v_right) + (v_up * (crandom() * 15)) + (v_right * 0);
+      newmis = spawn();
+      oself = self;
+      self = newmis;
+        self.owner = player;
+        data_iniProjectile(oself.w_proj);
+        self.p_dmgtype = oself.p_dmgtype;
+        self.p_damage = oself.p_damage;
+        self.velocity = normalize(arc - start);
+        self.enemy = self.owner.enemy;
+        self.c_ofs = arc;
+        self.lock_timer = time + 0.75;
+        self.p_lifetime = time + self.p_lifetime;
+        self.velocity = self.velocity * self.p_velocity;
+        self.angles = vectoangles(self.velocity);
+        self.think = data_prj_marh_th;
+        self.nextthink = time + 0.01;
+        util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+        util_setModel(self.c_model, 0, 0);
+        util_setBoundBox('0 0 0', '0 0 0');
+        setorigin(self, start);
+        sound (self, CHAN_ITEM, oself.fire_sound, 1, ATTN_NORM);
+      self = oself;
     }
   }
 };
