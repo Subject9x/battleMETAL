@@ -150,8 +150,3 @@ float WEAPON6_REL = 32;
 float WEAPON7_REL = 64;
 float WEAPON8_REL = 128;
 float WEAPON9_REL = 256;
-
-//target lock states
-float LOCK_NONE = 1;
-float LOCK_TARG = 2;
-float LOCK_PLYR = 4;

@@ -49,8 +49,11 @@ void() server_updateTargetInfo={
     self.stat_trg_org_x = 0;
     self.stat_trg_org_y = 0;
     self.stat_trg_org_z = 0;
-    if((self.stat_lck_stt & LOCK_TARG)){
-      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
+    if( (self.stat_lck_stt & LOCK_TARG_START)){
+      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
+    }
+    if( (self.stat_lck_stt & LOCK_TARG_HAS)){
+      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
     }
     return;
   }
@@ -87,26 +90,33 @@ void() server_updateTargetInfo={
   self.stat_trg_dist = dst;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
   
-  if(self.stat_trg_face <= 0){
-    isvis = TRUE;
-    if(time > self.lock_timer){
-      if(!(self.stat_lck_stt & LOCK_TARG)){
-        self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG;
-      }
-    }
-  }
-  else{
-    isvis = FALSE;
-    if((self.stat_lck_stt & LOCK_TARG)){
-      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG);
+  
+  if(self.stat_trg_face < 0){
+    if( !(self.stat_lck_stt & LOCK_TARG_START) && !(self.stat_lck_stt & LOCK_TARG_HAS) ){
+      self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_START;
+      self.power_timer_segment = time;
       if(self.stat_rdr_mode){
         self.lock_timer = time + self.w_firetime;
       }
       else{
-        self.lock_timer = time + (self.w_firetime *1.75);
+        self.lock_timer = time + (self.w_firetime * 2);
       }
+    }
+    if( time > self.lock_timer ){
+      if( !(self.stat_lck_stt & LOCK_TARG_HAS) ){
+        self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
+        self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_HAS;
+      }
+    }
+  }
+  else{
+    if( (self.stat_lck_stt & LOCK_TARG_START) ){
+      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
+    }
+    if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
+      self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
     } 
-    if((self.enemy.stat_lck_stt & LOCK_PLYR)){
+    if( (self.enemy.stat_lck_stt & LOCK_PLYR) ){
       self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
     }
   }

@@ -128,12 +128,19 @@ float(float mod, float targ_val) util_zeroStat={
 
 //inspired by original inFront function
 float(entity trg) util_checkPointAngle={
+  local float toSender;
+  toSender = util_checkPointAngleImpl(trg.origin);
+  return toSender;
+};
+
+//inspired by original inFront function
+float(vector orig) util_checkPointAngleImpl ={
   
 	local vector	vec;
 	local float		f_dot, s_dot;
 	
 	makevectors (self.angles);
-	vec = normalize (trg.origin - self.origin);
+	vec = normalize (orig - self.origin);
 	f_dot = vec * v_forward;
   s_dot = vec * v_right;
 	if ( f_dot > 0.6 ){
@@ -153,6 +160,36 @@ float(entity trg) util_checkPointAngle={
     }
   }
 };
+
+void(entity ent, vector pnt) util_chekPointToHitDir={
+  local entity this;
+  local float hit_ang;
+  
+  this = self;
+  self = ent;
+  hit_ang = util_checkPointAngleImpl(pnt);
+  
+  if(hit_ang == 0){
+    if( (self.hitdir_buffer & STAT_HIT_LF) == FALSE ){
+      self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_LF;
+    }
+  }
+  else if(hit_ang == 1){
+    if( (self.hitdir_buffer & STAT_HIT_RT) == FALSE ){
+      self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_RT;
+    }
+  }
+  else if(hit_ang == 2){
+    if( (self.hitdir_buffer & STAT_HIT_RT) == FALSE ){
+      self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_RT;
+    }
+    if( (self.hitdir_buffer & STAT_HIT_LF) == FALSE  ){
+      self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_LF;
+    }
+  }
+  self = this;
+};
+
 
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
   local vector next;

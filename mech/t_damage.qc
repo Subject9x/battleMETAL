@@ -33,29 +33,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   //calculate hit time and angle
-  local float hit_ang;
-  oself = self;
-  self = trg;
-    hit_ang = util_checkPointAngle(inflictor);
-  self = oself;
-  if(hit_ang == 0){
-    if(!(trg.hitdir_buffer & STAT_HIT_LF)){
-      trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_LF;
-    }
-  }
-  else if(hit_ang == 1){
-    if(!(trg.hitdir_buffer & STAT_HIT_RT)){
-      trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_RT;
-    }
-  }
-  else if(hit_ang == 2){
-    if(!(trg.hitdir_buffer & STAT_HIT_BK)){
-      trg.hitdir_buffer = trg.hitdir_buffer + STAT_HIT_BK;
-    }
-  }
-  if((attacker.flags & FL_CLIENT)){
-    attacker.w_proj = time + 0.25;
-    if(!(attacker.hitdir_buffer & STAT_HIT_TRG)){
+  util_chekPointToHitDir(trg, dmg_point);
+  
+  if( (attacker.flags & FL_CLIENT) ){
+    attacker.w_proj = time + 0.15;
+    if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
     }
   }

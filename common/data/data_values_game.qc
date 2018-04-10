@@ -262,6 +262,14 @@ float STAT_PLR_REP = 113; //remaining repair delta
 float STAT_LVL_RES = 109;
 
 //============================
+//     LOCK STATES   
+//============================
+float LOCK_NONE = 1;
+float LOCK_TARG_START = 2;
+float LOCK_TARG_HAS = 4;
+float LOCK_PLYR = 8;
+
+//============================
 //     AI STATS      
 //============================
 //WEAPON TWEAKS

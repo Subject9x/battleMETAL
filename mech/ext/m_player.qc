@@ -75,9 +75,7 @@ void() PlayerPostThink = {
       self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);
     }
     if(time >= self.was_hit){
-      self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_LF);
-      self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_RT);
-      self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & STAT_HIT_BK);
+      self.stat_hit_dirs =  self.stat_hit_dirs - (self.stat_hit_dirs & (STAT_HIT_LF | STAT_HIT_RT | STAT_HIT_BK));
     }
   }
   ////
@@ -116,13 +114,14 @@ void() PlayerPostThink = {
     self.stat_rtor_hp = csqc_updateCompStat(self.e_tor_r);
     self.stat_larm_hp = csqc_updateCompStat(self.e_arm_l);
     self.stat_rarm_hp = csqc_updateCompStat(self.e_arm_r);
-    if((self.stat_lck_stt & LOCK_TARG)){
+    //TODO notify target of lock
+    /*if((self.stat_lck_stt & LOCK_TARG)){
       if(self.enemy != world){
         if(!(self.enemy.stat_lck_stt & LOCK_PLYR)){
           self.enemy.stat_lck_stt = self.enemy.stat_lck_stt | LOCK_PLYR;
         }
       }
-    }
+    }*/
     client_updateWeaponReloads();
     ctrl_update_mechplayer();
   }

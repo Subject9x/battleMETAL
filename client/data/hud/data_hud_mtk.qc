@@ -55,11 +55,11 @@ void() hud_mtk_frame={
   
   //CROSSHAIR AND DETAILS
   hud_renderDirectionHit(self.stat_hit_dirs);
-  hud_renderCrosshairs(getstati(STAT_LCK_STT), 0, getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y));
+  hud_renderCrosshairs(self.stat_hit_dirs, self.stat_lck_stt , getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), self.target_shield);
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY), input_angles_x * -3, 270, -270);
-  hud_renderTargetDirection(self.stat_trg_face);
+  hud_renderTargetDirection(self.stat_trg_face, self.i_faction, self.target_faction, self.target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), self.stat_ret_dist) ;
-  hud_renderNavHeading( '8 16', (VIEW_CTX | VIEW_TOP), self.angles);  
+  hud_renderNavHeading( '8 16', (VIEW_CTX | VIEW_TOP), input_angles);  
   
   //repair sits above all
   hud_renderRepairValue(getstatf(STAT_PLR_REP));

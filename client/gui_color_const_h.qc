@@ -59,10 +59,10 @@ vector CLR_DEF_BLUE = '0 0 1';
   
 //CROSSHAIRS
   //acquiring lock
-  vector CLR_DEF_RET_GETLOCK= '1 1 0.6';
+  vector CLR_DEF_RET_GETLOCK= '1 0.6 0.2';
   
   //have lock
-  vector CLR_DEF_RET_HASLOCK= '0.8 0 0';
+  vector CLR_DEF_RET_HASLOCK= '1.0 1.0 0.4';
   
 //ENERGY
   vector CLR_DEF_ENE_BCK = '0.18 0.32 0.6';

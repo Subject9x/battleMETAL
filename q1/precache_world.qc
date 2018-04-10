@@ -224,23 +224,7 @@ void() q1_precache_sound={
 }
 
 void() q1_precache_models={
-	precache_model ("progs/player.mdl");
-	precache_model ("progs/eyes.mdl");
-	precache_model ("progs/h_player.mdl");
-	precache_model ("progs/gib1.mdl");
-	precache_model ("progs/gib2.mdl");
-	precache_model ("progs/gib3.mdl");
-
-	precache_model ("progs/s_bubble.spr");	// drowning bubbles
 	precache_model ("progs/s_explod.spr");	// sprite explosion
-
-	precache_model ("progs/v_axe.mdl");
-	precache_model ("progs/v_shot.mdl");
-	precache_model ("progs/v_nail.mdl");
-	precache_model ("progs/v_rock.mdl");
-	precache_model ("progs/v_shot2.mdl");
-	precache_model ("progs/v_nail2.mdl");
-	precache_model ("progs/v_rock2.mdl");
 
 	precache_model ("progs/lavaball.mdl");	// for testing
 	
@@ -248,10 +232,6 @@ void() q1_precache_models={
 	precache_model ("progs/grenade.mdl");
 	precache_model ("progs/spike.mdl");
 	precache_model ("progs/s_spike.mdl");
-
-	precache_model ("progs/backpack.mdl");
-
-	precache_model ("progs/zom_gib.mdl");
 
 	precache_model ("progs/v_light.mdl");
 };

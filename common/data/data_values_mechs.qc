@@ -121,13 +121,13 @@ float DAT_MNT_M_ACCEL       = 2;
 //============================
 //-------------------------BALAKET------------------------
 float DAT_OTL_RADAR_RANGE = 7000;
-float DAT_OTL_LOCK = 5;
+float DAT_OTL_LOCK = 6;
 //-------------------------MATOK------------------------
 float DAT_MTK_RADAR_RANGE = 5000;
-float DAT_MTK_LOCK = 3;
+float DAT_MTK_LOCK = 4;
 //-------------------------MONITOR------------------------
 float DAT_MNT_RADAR_RANGE = 3000;
-float DAT_MNT_LOCK = 7;
+float DAT_MNT_LOCK = 8;
 //============================
 //            Base Convergence
 //============================

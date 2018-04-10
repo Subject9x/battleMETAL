@@ -43,7 +43,7 @@ void() data_prj_marh_th={
     return;
   }
   //turnrate = 0.1;	//Change as you wish  
-	if((self.owner.stat_lck_stt & LOCK_TARG)){
+	if((self.owner.stat_lck_stt & LOCK_TARG_HAS)){
     if(time > self.lock_timer){
       makevectors(self.enemy.angles);
       vtemp = self.enemy.origin + '0 0 10' + ((crandom() * 35) * v_right) + (v_forward * (crandom() * 35));

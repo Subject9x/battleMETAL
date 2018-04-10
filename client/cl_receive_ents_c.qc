@@ -143,6 +143,7 @@ void() receive_ent_bindData={
   
   self.stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
   self.stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
+  self.stat_trg_face = getstati(STAT_TRG_FACE);
   
   if(self.stat_trg_dataidx > 0){
     local entity targ;

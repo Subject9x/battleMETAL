@@ -8,9 +8,9 @@ Overview: the implementation of the header file
 /*
   RENDER CROSSHAIRS - UNIVERSAL
 */
-void(float hitdirection, float lockval, float conv_x, float conv_y) hud_renderCrosshairs={
+void(float hitdirection, float lockval, float conv_x, float conv_y, float trg_shield) hud_renderCrosshairs={
   //convergence
-  local vector spr_w, spr_h;
+  local vector spr_w, spr_h, hitclr, lckclr;
   spr_w_x = conv_x;
   spr_w_y = 0;
   spr_h_y = conv_y;
@@ -22,8 +22,20 @@ void(float hitdirection, float lockval, float conv_x, float conv_y) hud_renderCr
   gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('1.5 11') - spr_h), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
   gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + gui_percentToPixelRawVec('-1.5 1')), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
   
-  if((hitdirection & STAT_HIT_TRG)){
-    gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('24 24')), HUD_RET_HIT, gui_percentToPixelRawVec('48 48'), CLR_DEF_ARM_DED, HUD_ALPHA, 0);
+  if( (hitdirection & STAT_HIT_TRG) ){
+    hitclr = CLR_DEF_GRAY_H;
+    if(trg_shield > 0){
+      hitclr = CLR_DEF_SHD_HALF;
+    }
+    gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('24 24')), HUD_RET_HIT, gui_percentToPixelRawVec('48 48'), hitclr, HUD_ALPHA, 0);
+  }
+  
+  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
+    lckclr = CLR_DEF_RET_GETLOCK;
+    if( (lockval & LOCK_TARG_HAS) ){
+      lckclr = CLR_DEF_RET_HASLOCK;
+    }
+    gui_renderTintImage(TRUE, VIEW_CTR - gui_percentToPixelRawVec('16 16'), HUT_RET_LOK, gui_percentToPixelRawVec('32 32'), lckclr, HUD_ALPHA, 0);
   }
 };
 
@@ -32,14 +44,14 @@ void(float hitdirection, float lockval, float conv_x, float conv_y) hud_renderCr
 */
 void(float hitDirBit) hud_renderDirectionHit={
   local float l_fade; 
-  if((hitDirBit & STAT_HIT_LF)){
+  if( (hitDirBit & STAT_HIT_LF) ){
     local vector lorg;
     lorg_x = VIEW_ORG_x + gui_percentXRaw(4);
     lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
     gui_renderTintImage(TRUE, lorg, HUD_DMG_PIP_H, gui_percentToPixelRawVec('16 128'), '0.85 0.1 0.1', HUD_ALPHA, 0);
   }
   
-  if((hitDirBit & STAT_HIT_RT)){
+  if( (hitDirBit & STAT_HIT_RT) ){
     local vector rorg;
     rorg_x = VIEW_MAX_x - gui_percentXRaw(18);
     rorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
@@ -50,23 +62,37 @@ void(float hitDirBit) hud_renderDirectionHit={
 /*
   RENDER TARGET DIRECTION INDICATORS
 */ 
-void(float targdir) hud_renderTargetDirection={
+void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection={
+  vector trg_color;
+  trg_color = CLR_DEF_ARM_HALF;
+  if( plrFaction == trgfaction ){
+    trg_color = CLR_DEF_IIF_FRIEND;
+    if( dattype == DATA_BLD ){
+      trg_color = CLR_DEF_IIF_FRIEND_BLD;
+    }
+  }
+  else{
+    trg_color = CLR_DEF_IFF_ENEMY;
+    if( dattype == DATA_BLD ){
+      trg_color = CLR_DEF_IFF_ENEMY_BLD;
+    }
+  }
   if(targdir > -1){
     local vector lorg;
     if(targdir == 0){
-      lorg_x = VIEW_ORG_x + gui_percentXRaw(10); 
+      lorg_x = VIEW_ORG_x + gui_percentXRaw(5); 
       lorg_y = VIEW_CTR_y - gui_percentYRaw(24);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_L, gui_percentToPixelRawVec('16 48'), CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_L, gui_percentToPixelRawVec('16 48'), trg_color, HUD_ALPHA, 0);
     }
     else if(targdir == 1){
-      lorg_x = VIEW_ORG_x + VIEW_MAX_x - gui_percentXRaw(10); 
+      lorg_x = (VIEW_ORG_x + VIEW_MAX_x) - gui_percentXRaw(15); 
       lorg_y = VIEW_CTR_y  - gui_percentYRaw(24);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_R, gui_percentToPixelRawVec('16 48'), CLR_DEF_ARM_HALF, HUD_ALPHA, 0);     
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_R, gui_percentToPixelRawVec('16 48'), trg_color, HUD_ALPHA, 0);     
     }
     else if(targdir == 2){
       lorg_x = VIEW_CTR_x - gui_percentXRaw(24);
       lorg_y = VIEW_CTR_y + gui_percentYRaw(48);
-      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_B, gui_percentToPixelRawVec('48 16'), CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+      gui_renderTintImage(TRUE, lorg, HUD_TRG_PIP_B, gui_percentToPixelRawVec('48 16'), trg_color, HUD_ALPHA, 0);
     }
   }
 };
@@ -450,6 +476,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       aSize_y = mSize_y;
     }
     vpos = org;
+    vpos_z = org_z + gui_percentYRaw(tsize * 18);
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);

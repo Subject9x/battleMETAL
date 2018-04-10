@@ -11,6 +11,7 @@
 "i_faction" "1"
 "sounds" "3"
 "message" "Canon of silence\n"
+"inv_items" "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17"
 }
 {
 "classname" "map_terrain_model"
@@ -31,12 +32,12 @@
 {
 "targetname" "next_level_win"
 "classname" "map_trigger_changelevel"
-"origin" "0 -10 1000"
+"origin" "0 -90 1000"
 "mins" "-10 -10 -10"
 "maxs" "10 10 10"
 "isActive" "0"
 "spawnflags" "1"
-"map" "t1m3.bsp"
+"map" "start.bsp"
 "delay" "1"
 }
 {
@@ -44,7 +45,7 @@
 "target" "next_level_win"
 "classname" "map_objective"
 "origin" "0 20 1000"
-"isActive" "0"
+"isActive" "1"
 "i_faction" "1"
 "data_idx" "255"
 "delay" "2"
