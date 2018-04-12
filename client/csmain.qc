@@ -693,6 +693,7 @@ void() CSQC_Ent_Remove =
 // called when cl_cmd is used in the console (much like menu_cmd and sv_cmd for menu.dat and progs.dat), can perform special logic or useful functionality (like bestweapon)
 void(string msg) GameCommand =
 {
+  
 };
 
 // called on each entity each frame if self.nextthink <= time + frametime

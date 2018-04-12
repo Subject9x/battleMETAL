@@ -5,47 +5,87 @@
   overview: what is a menu.dat? time to explore and find out
 */
 
-void() m_init={
+float MMODE;
 
+
+void(float menu_choice) M_Switch_Menu={
+  MMODE = menu_choice;
+};
+
+void() m_init={
+  if(clientstate() == CS_DISCONNECTED){
+    cmd("cd", " play 6");
+    m_main_f();
+  }
+  else{
+    KEY_DEST = KEY_GAME;
+    M_STATE = M_NONE;
+  }
+
+  cons_logAFloat("m_init.clientstate()", clientstate());  //DEBUG;
+  cons_logAFloat("m_init.KEY_DEST", KEY_DEST);  //DEBUG;
+  cons_logAFloat("m_init.M_STATE", M_STATE);  //DEBUG;
 };
 
 void(float keynr, float ascii) m_keydown={
-  local string key;
-  
-  print(strcat(ftos(keynr),":", keynumtostring(keynr),"\n"));
-  
+
+};
+
+void(float keynr, float ascii, float downevent) m_keyevent={
+  switch(M_STATE){
+    case M_MAIN:
+      m_main_k(keynr, ascii);
+      break;
+  }
+};
+
+void(float keynr, float ascii) m_up={
+
 };
 
 void(float width, float height) m_draw={
-  
+  local vector mouse_pos;
+  mouse_pos = getmousepos();
+  switch(M_STATE){
+    case M_MAIN:
+      m_main_d(width, height, mouse_pos);
+      break;
+  }
 };
 
 void(float mode) m_toggle={
-  print(strcat("m_toggle:mode : ", ftos(mode),"\n"));
+  cons_logAFloat("(mode)-> m_toggle      ", mode);  //DEBUG;
+//m_entersound = true;
+  
+  if ( (KEY_DEST != KEY_MENU && KEY_DEST != KEY_MENU_GRABBED) || M_STATE != M_MAIN )
+  {
+    if(mode == 0){
+      return; // the menu is off, and we want it off
+    }
+    m_main_f();
+  }
+  else
+  {
+    if(mode == 1){
+      return; // the menu is on, and we want it on
+    }
+    KEY_DEST = KEY_GAME;
+    M_STATE = M_NONE;
+  }
+};
+
+void() m_newmap={
+
 };
 
 void() m_shutdown={
+  
+};
+
+void(string msg) GameCommand={
 
 };
 
-void() m_main_menu={
-    bprint("Main menu, turkey");
+void() menu_main={
+  print("foo \n");  //DEBUG
 };
-
-void() menu_singleplayer={};
-void() menu_load={};
-void() menu_save={};
-void() menu_multiplayer={};
-void() menu_setup={};
-void() menu_options={};
-void() menu_options_effect={};
-void() menu_options_graphics={};
-void() menu_options_colorcontrol={};
-void() menu_keys={};
-void() menu_video={};
-void() menu_reset={};
-void() menu_mods={};
-void() help={};
-void() menu_credits={};
-
-
