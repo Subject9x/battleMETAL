@@ -1,11 +1,14 @@
 ../../menu.dat
 
-menudefs.qc
-keycodes.qc
-menu_h.qc
-utils_h.qc
+defs/menudefs.qc
+defs/keycodes.qc
+defs/menu_h.qc
+defs/utils_h.qc
+defs/gui_api_h.qc
+defs/menu_gfx_h.qc
 
-utils_c.qc
+defs/utils_c.qc
+defs/gui_api_c.qc
 
 menu_main.qc
 

@@ -15,13 +15,11 @@ void		end_sys_fields;
 
 void() m_init;
 void(float keynr, float ascii) m_keydown;
-void(float keynr, float ascii) m_up;
+void(float keynr, float ascii) m_keyup;
 void(float width, float height) m_draw;
 void(float mode) m_toggle;
 void() m_shutdown;
 void() m_newmap;
-void(float keynr, float ascii, float downevent) m_keyevent;
-void(string msg) GameCommand;
 // optional: float(float) m_gethostcachecategory;
 
 /////////////////////////////////////////////////////////

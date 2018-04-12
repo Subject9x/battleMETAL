@@ -4,7 +4,9 @@
   
   overview: header for menu system
 */
-float KEY_DEST;
+
+float MMODE;
+float DRAW_MOUSE;
 
 //MENU STATE CONSTANTS
 float M_STATE;
@@ -19,18 +21,23 @@ float M_OPTIONS = 7;
 float M_OPTIONS_EFFECT = 8;
 float M_OPTIONS_GFX = 9;
 float M_OPTIONS_COLOR = 10;
-float M_OPTIONS_KEYS = 11;
-float M_OPTIONS_VIDEO = 12;
-float M_OPTIONS_RESET = 13;
-float M_OPTIONS_MODS = 14;
-float M_OPTIONS_HELP = 15;
-float M_OPTIONS_CREDIT = 16;
+float M_KEYS = 11;
+float M_VIDEO = 12;
+float M_RESET = 13;
+float M_MODS = 14;
+float M_HELP = 15;
+float M_CREDIT = 16;
 
 void(float menu_choice) M_Switch_Menu;
+void(float drawmous) m_drawmouse;
 
 //see /menus/m_main.qc for info on these '_x' functions
 void() m_main_f;
-void(float scr_w, float scr_h, vector mouse_pos) m_main_d;
+
+
+void() m_main_d;
+
+
 void(float ky, float ascii) m_main_k;
 
 /*void() M_Menu_Singleplayer;
