@@ -4,9 +4,9 @@
   
   overview: header for menu system
 */
-
-float MMODE;
+//MENU GLOBALS
 float DRAW_MOUSE;
+.string classname;
 
 //MENU STATE CONSTANTS
 float M_STATE;
@@ -28,15 +28,12 @@ float M_MODS = 14;
 float M_HELP = 15;
 float M_CREDIT = 16;
 
-void(float menu_choice) M_Switch_Menu;
 void(float drawmous) m_drawmouse;
 
 //see /menus/m_main.qc for info on these '_x' functions
 void() m_main_f;
 
-
 void() m_main_d;
-
 
 void(float ky, float ascii) m_main_k;
 

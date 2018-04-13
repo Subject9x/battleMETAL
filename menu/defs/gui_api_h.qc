@@ -8,7 +8,6 @@ Overview: cloned gui_api from csqc
 //MENU SYSTEM GLOBALS
 vector VIEW_ORG;
 vector VIEW_MAX;
-vector VIEW_SIZE;
 vector VIEW_CTR;
 vector VIEW_MPOS;
 float VIEW_SCALE;

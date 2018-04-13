@@ -23,11 +23,11 @@ vector(float pcx, float pcy) gui_percentToPixel={
 };
 
 float(float pcx) gui_percentX={
-  return (VIEW_SIZE_x * pcx);
+  return (VIEW_MAX_x * pcx);
 };
 
 float(float pcy) gui_percentY={
-  return (VIEW_SIZE_y * pcy);
+  return (VIEW_MAX_y * pcy);
 }; 
 
 //Raw is for dynamically generated values
