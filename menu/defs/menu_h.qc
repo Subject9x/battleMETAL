@@ -1,36 +1,40 @@
 /*
   author: Peter Roohr
   date: 04/11/2018
-  
   overview: header for menu system
 */
 //MENU GLOBALS
+float MOUSE_DOWN;
 float DRAW_MOUSE;
-.string classname;
+float M_STATE;
+entity MOUSE_TARGET;
 
 //MENU STATE CONSTANTS
-float M_STATE;
-float M_NONE = 0;
-float M_MAIN = 1;
-float M_SINGLE = 2;
-float M_LOAD = 3;
-float M_SAVE = 4;
-float M_MULTI = 5;
-float M_SETUP = 6;
+float M_NONE    = 0;
+float M_MAIN    = 1;
+float M_SINGLE  = 2;
+float M_LOAD    = 3;
+float M_SAVE    = 4;
+float M_MULTI   = 5;
+float M_SETUP   = 6;
 float M_OPTIONS = 7;
 float M_OPTIONS_EFFECT = 8;
 float M_OPTIONS_GFX = 9;
 float M_OPTIONS_COLOR = 10;
-float M_KEYS = 11;
-float M_VIDEO = 12;
-float M_RESET = 13;
-float M_MODS = 14;
-float M_HELP = 15;
-float M_CREDIT = 16;
+float M_KEYS    = 11;
+float M_VIDEO   = 12;
+float M_RESET   = 13;
+float M_MODS    = 14;
+float M_HELP    = 15;
+float M_CREDIT  = 16;
 
 void(float drawmous) m_drawmouse;
 
+//menu ents
+
 //see /menus/m_main.qc for info on these '_x' functions
+void() m_main_i;
+
 void() m_main_f;
 
 void() m_main_d;

@@ -7,6 +7,11 @@ entity self;
 void		end_sys_globals;
 /////////////////////////////////////////////////////////
 // sys fields
+.vector origin;
+.vector size;
+.float flags;
+.string classname;
+.entity chain;
 
 /////////////////////////////////////////////////////////
 void		end_sys_fields;
