@@ -19,6 +19,10 @@ void() m_init={
     m_toggle(1);
   }
   MOUSE_TARGET = null_entity;
+  TEXTFIELD_TARGET = null_entity;
+  UI_INPUT_ACTIVE = FALSE;
+  //setup textfield key filter;
+  menu_ini_txtfilter();
 };
 
 /*
@@ -29,22 +33,32 @@ void(float keynr, float ascii) m_keydown={
     //mouse1 pressed
     MOUSE_DOWN = TRUE;
   }
-  switch(M_STATE){
-    case M_MAIN:
-      m_main_k(keynr, ascii);
-      break;
-    case M_SINGLE:
-      m_camp_k(keynr, ascii);
-      break;
-    case M_LOAD:
-      m_load_k(keynr, ascii);
-      break;
-    case M_NEWGAME:
-      m_newg_k(keynr, ascii);
-      break;
-    case M_MULTI:
-      m_multi_k(keynr, ascii);
-      break;
+  
+  //intercept keyinput to populate textfield
+  if(UI_INPUT_ACTIVE){
+    menu_do_textfield(keynr, ascii);
+  }
+  else{
+    switch(M_STATE){
+      case M_MAIN:
+        m_main_k(keynr, ascii);
+        break;
+      case M_SINGLE:
+        m_camp_k(keynr, ascii);
+        break;
+      case M_LOAD:
+        m_load_k(keynr, ascii);
+        break;
+      case M_NEWGAME:
+        m_newg_k(keynr, ascii);
+        break;
+      case M_MULTI:
+        m_multi_k(keynr, ascii);
+        break;
+      case M_SETUP:
+        m_setup_k(keynr, ascii);
+        break;
+    }
   }
 };
 
@@ -89,6 +103,9 @@ void(float width, float height) m_draw={
       break;
     case M_MULTI:
       m_multi_d();
+      break;
+    case M_SETUP:
+      m_setup_d();
       break;
   }
 

@@ -20,13 +20,12 @@ string IMG_CAMP_LOAD    = "gfx/menu/single/camp_load.png";
 void() click_camp_new = {
   M_STATE = M_NEWGAME;
   m_newg_f();
-  cons_logAFloat("click_main_camp->M_STATE", M_STATE);  //DEBUG
 };
 
 void() click_camp_load = {
+  menu_clear_items(M_STATE);
   M_STATE = M_LOAD;
   m_load_f();
-  cons_logAFloat("click_main_camp->M_STATE", M_STATE);  //DEBUG
 };
 
 void() click_camp_back={
@@ -71,8 +70,8 @@ void() m_camp_d={
   menu_k functions are the 'listener' functions
 */
 void(float key, float ascii) m_camp_k={
-  cons_logAFloat("m_M_SINGLE_k.key", key);  //DEBUG
-  cons_logAFloat("m_M_SINGLE_k.ascii", ascii);  //DEBUG   
+  cons_logAFloat("m_camp_k.key", key);  //DEBUG
+  cons_logAFloat("m_camp_k.ascii", ascii);  //DEBUG   
   
   switch(key){
     case K_ESCAPE:

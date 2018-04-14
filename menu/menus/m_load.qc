@@ -17,6 +17,7 @@ string IMG_LOAD_TITLE   = "gfx/menu/load/load_title.png";
 void() click_load_back={
   menu_clear_items(M_STATE);
   M_STATE = M_SINGLE;
+  m_camp_f();
   localsound("sound/misc/menu2.wav");
 };
 
@@ -30,7 +31,7 @@ void() click_load_loadgame={
 void() m_load_i={
   load_title = lbl_img('10 100', '1 1 0', IMG_LOAD_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_LOAD, 1, (UI_FLAG_SIZE_IMG) );
  
-  load_back = btn_img_callback('10 132 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_LOAD, click_camp_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  load_back = btn_img_callback('10 132 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_LOAD, click_load_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   
   local vector start;
   start = '10 150';
@@ -84,8 +85,8 @@ void() m_load_d={
   menu_k functions are the 'listener' functions
 */
 void(float key, float ascii) m_load_k={
-  cons_logAFloat("m_M_SINGLE_k.key", key);  //DEBUG
-  cons_logAFloat("m_M_SINGLE_k.ascii", ascii);  //DEBUG   
+  cons_logAFloat("m_load_k.key", key);  //DEBUG
+  cons_logAFloat("m_load_k.ascii", ascii);  //DEBUG   
   
   switch(key){
     case K_ESCAPE:

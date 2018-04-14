@@ -9,6 +9,11 @@ float GAME_SAVES_MAX = 10;
 string GAME_SAVES[GAME_SAVES_MAX];
 string GAME_SAVES_DRAWNAME[GAME_SAVES_MAX];
 
+entity TEXTFIELD_TARGET;
+float UI_INPUT_ACTIVE;  //buffer to track textfields
+float UI_INPUT_FILTER_MAX = 42;
+float UI_INPUT_FILTER[UI_INPUT_FILTER_MAX];  //filter out these chars;
+
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL     = 1;  //don't render label
 float UI_FLAG_NEW         = 2;  //is new
@@ -22,12 +27,13 @@ float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
 .float selected;
 .float menuId;
 .string image1;
-.string image2;
 .void() predraw;
 .void(entity myself) draw;
 .void(entity myself) isclick;  //internal, runs when clicked, if onClick() defined, then will execute within
+.void(entity myself) ischange;
 .void() onClick;
 .void() onRollOver;
+.void() onChange;
 .string command;
 .float rolledover;
 .float align;
@@ -35,22 +41,29 @@ float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
 .vector color;
 .vector select_color;
 .float data_bind;  //used in lists
+.float len; //used if needed to track char len of entity.
+.string data_text;
 
 //some of this ported over from ui_defs in the client code
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 
 //new stuff
+void() menu_ini_txtfilter;
+void() menu_ini_keyfilter;
 void() menu_scan_saves;
-
 void() menu_exit_togame;
 void(float menu_id) menu_clear_items;
+float(float keynr) menu_textfilter_validate;
+void(float keynr, float ascii) menu_do_textfield;
 
 void() render_predraw;
 void(entity btn) render_btn;
 void(entity btn) render_btn_txt;
 void(entity lbl) render_lbl_img;
 void(entity lbl) render_lbl_text;
+
+void(entity txt) render_textfield;
 
 entity() btn_new_blank;
 entity() new_ui_elm;
@@ -60,9 +73,14 @@ entity(vector org, vector siz, string img1, float algn, float menu_id, void() cl
 entity(vector org, vector siz, string txt, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_text_callback;
 entity(vector org, vector siz, string img1, float algn, float menu_id, string commd, vector clr, vector hclr, float alph, float flgs) btn_img_command;
 
+entity(vector org, vector siz, float charlen, void()  onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_textfield;
+
 void() m_sys_doclick; //called by all menus to process widget clicks
 void() btn_noclick={};  //simple null function
 void(entity myself) btn_isclick;
+void(entity myself) txtfld_isclick;
+void(entity myself) txtfld_ischange;
+
 void() btn_onClick_runCommand;
 
 //clearly super handy
@@ -86,4 +104,3 @@ void() dynamic_precache =
 	} 
 	fclose(f);                                          
 };
-
