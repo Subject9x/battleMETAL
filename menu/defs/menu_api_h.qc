@@ -4,6 +4,11 @@
   overview: header for menu_api
 */
 
+//API GLOBALS
+float GAME_SAVES_MAX = 10;
+string GAME_SAVES[GAME_SAVES_MAX];
+string GAME_SAVES_DRAWNAME[GAME_SAVES_MAX];
+
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL     = 1;  //don't render label
 float UI_FLAG_NEW         = 2;  //is new
@@ -28,16 +33,22 @@ float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
 .float align;
 .float alpha;
 .vector color;
+.vector select_color;
+.float data_bind;  //used in lists
 
 //some of this ported over from ui_defs in the client code
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 
 //new stuff
+void() menu_scan_saves;
+
+void() menu_exit_togame;
 void(float menu_id) menu_clear_items;
 
 void() render_predraw;
 void(entity btn) render_btn;
+void(entity btn) render_btn_txt;
 void(entity lbl) render_lbl_img;
 void(entity lbl) render_lbl_text;
 
@@ -45,9 +56,11 @@ entity() btn_new_blank;
 entity() new_ui_elm;
 entity(vector org, vector siz, string lbl, vector clr, float algn, float menu_id, float alph, float flgs) lbl_text;
 entity(vector org, vector siz, string img1, vector clr, float algn, float menu_id, float alph, float flgs) lbl_img;
-entity(vector org, vector siz, string img1, string img2, float algn, float menu_id, void() click, vector clr, float alph, float flgs) btn_img_callback;
-entity(vector org, vector siz, string img1, string img2, float algn, float menu_id, string commd, vector clr, float alph, float flgs) btn_img_command;
+entity(vector org, vector siz, string img1, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_img_callback;
+entity(vector org, vector siz, string txt, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_text_callback;
+entity(vector org, vector siz, string img1, float algn, float menu_id, string commd, vector clr, vector hclr, float alph, float flgs) btn_img_command;
 
+void() m_sys_doclick; //called by all menus to process widget clicks
 void() btn_noclick={};  //simple null function
 void(entity myself) btn_isclick;
 void() btn_onClick_runCommand;

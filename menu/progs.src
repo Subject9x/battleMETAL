@@ -7,6 +7,7 @@ defs/utils_h.qc
 defs/gui_api_h.qc
 defs/menu_gfx_h.qc
 defs/menu_api_h.qc
+  ../common/ui/ui_color_constants.qc
 
 defs/utils_c.qc
 defs/gui_api_c.qc
@@ -16,3 +17,7 @@ menu_main.qc
 
 //specific menus
   menus/m_main.qc
+  menus/m_camp.qc
+  menus/m_newgame.qc
+  menus/m_load.qc
+  menus/m_multiplayer.qc

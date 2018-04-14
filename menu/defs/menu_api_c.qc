@@ -24,6 +24,7 @@
 .float align;
 .float alpha;
 .vector color;
+.float data_bind;  //used in lists
 
 UI_FLAG_NOLABEL     = 1;  //don't render label
 UI_FLAG_NEW         = 2;  //is new
@@ -41,12 +42,12 @@ entity() new_ui_elm={
     self.selected = FALSE;
     self.menuId = -1;
     self.image1 = "";
-    self.image2 = "";
     self.command = "";
     self.rolledover = FALSE;
     self.align = 0;
     self.alpha = 0;
     self.color = '0 0 0';
+    self.select_color = '0 0 0';
   self = this;
   return element;
 };
@@ -104,7 +105,6 @@ entity() btn_new_blank={
     self.rolledover = FALSE;
     self.selected = FALSE;
     self.image1 = "";
-    self.image2 = "";
     self.label = "";
     self.isclick = btn_isclick;
     self.draw = render_btn;
@@ -112,12 +112,13 @@ entity() btn_new_blank={
     self.align = 0;
     self.alpha = 1;
     self.color = '1 1 1';
+    self.select_color = '1 1 1';
   self = this;
   
   return button;
 };
 
-entity(vector org, vector siz, string img1, string img2, float algn, float menu_id, void() click, vector clr, float alph, float flgs) btn_img_callback={
+entity(vector org, vector siz, string img1, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_img_callback={
   local entity newBtn, this;
   
   newBtn = btn_new_blank();
@@ -126,18 +127,44 @@ entity(vector org, vector siz, string img1, string img2, float algn, float menu_
     self.origin = org;
     self.size = siz;
     self.image1 = img1;
-    self.image2 = img2;
     self.menuId = menu_id;
     self.onClick = click;
     self.flags = flgs;
     self.align = algn;
     self.alpha = alph;
     self.color = clr;
+    self.select_color = hclr;
   self = this;
   return newBtn;
 };
 
-entity(vector org, vector siz, string img1, string img2, float algn, float menu_id, string commd, vector clr, float alph, float flgs) btn_img_command={
+/*
+  Text-only button
+  NOTE - IF using Flag UI_FLAG_SIZE_IMG
+    then param2 - siz should be font size
+*/
+entity(vector org, vector siz, string txt, float algn, float menu_id, void() click, vector clr, vector hclr, float alph, float flgs) btn_text_callback={
+  local entity newBtn, this;
+  
+  newBtn = btn_new_blank();
+  this = self;
+  self = newBtn;
+    self.draw = render_btn_txt;
+    self.origin = org;
+    self.size = siz;
+    self.label = txt;
+    self.menuId = menu_id;
+    self.onClick = click;
+    self.flags = flgs;
+    self.align = algn;
+    self.alpha = alph;
+    self.color = clr;
+    self.select_color = hclr;
+  self = this;
+  return newBtn;
+};
+
+entity(vector org, vector siz, string img1, float algn, float menu_id, string commd, vector clr, vector hclr, float alph, float flgs) btn_img_command={
   local entity newBtn, this;
   
   newBtn = btn_new_blank();
@@ -146,7 +173,6 @@ entity(vector org, vector siz, string img1, string img2, float algn, float menu_
     self.origin = org;
     self.size = siz;
     self.image1 = img1;
-    self.image2 = img2;
     self.menuId = menu_id;
     self.command = commd;
     self.onClick = btn_onClick_runCommand;
@@ -154,9 +180,12 @@ entity(vector org, vector siz, string img1, string img2, float algn, float menu_
     self.align = algn;
     self.alpha = alph;
     self.color = clr;
+    self.select_color = hclr;
   self = this;
   return newBtn;
 };
+
+
 
 void(entity btn) render_btn={
   local entity this;
@@ -174,24 +203,72 @@ void(entity btn) render_btn={
     
     bclr = self.color;
     if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+      MOUSE_TARGET = self;
       if( self.rolledover == FALSE){ 
-        localsound("sound/misc/menu1.wav");
+        localsound("sound/misc/menu3.wav");
         self.rolledover = TRUE;
-      }
-      if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){
-        bclr = '0 1 0';
-        MOUSE_TARGET = self;
-      }      
+      }    
     }
     else{
       if( self.rolledover == TRUE){
         self.rolledover = FALSE;
+        MOUSE_TARGET = null_entity;
       }
+    }
+    
+    if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){  
+      if(self.rolledover){
+        bclr = self.select_color;
+      }  
     }
     
     if(self.image1 != ""){
       drawpic(org, self.image1, sizzle, bclr, self.alpha, 0);
     }
+  self = this;
+};
+
+
+void(entity btn) render_btn_txt={
+  local entity this;
+  local vector org, sizzle, bclr;
+  
+  this = self;
+  self = btn;
+    org = gui_percentToPixelRawVec(self.origin);
+    
+    sizzle = gui_percentToPixelRawVec(self.size);
+    if( (self.flags & UI_FLAG_SIZE_IMG) ){
+      local float txt_len;
+      txt_len = stringwidth(self.label, 0, self.size);
+      sizzle_x = txt_len;
+      sizzle_y = self.size_y;
+      sizzle = gui_percentToPixelRawVec( sizzle );
+    }
+    
+    bclr = self.color;
+    if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+      MOUSE_TARGET = self;
+      if( self.rolledover == FALSE){ 
+        localsound("sound/misc/menu3.wav");
+        self.rolledover = TRUE;
+      }    
+    }
+    else{
+      if( self.rolledover == TRUE){
+        self.rolledover = FALSE;
+        MOUSE_TARGET = null_entity;
+      }
+    }
+    
+    if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){  
+      if(self.rolledover){
+        bclr = self.select_color;
+      }  
+    }
+    
+    drawstring(org, self.label, self.size, bclr, self.alpha, 0);
+    
   self = this;
 };
 
@@ -220,21 +297,57 @@ void(entity myself) btn_isclick={
   local entity this;
   this = self;
   self = myself;
-  if(self.selected){
-    self.selected = FALSE;
-    if(self.isclick){
-      self.isclick();
+    if(self.onClick){
+      self.onClick();
     }
-  }
-  else{
-    self.selected = TRUE;
-  }
   self = this;
 };
 
 void() btn_onClick_runCommand={
   if(self.command){
     cmd(self.command);
+  }
+};
+
+/*
+  loads up to 10 .sav files
+  10 = size of GAME_SAVES global
+*/
+void() menu_scan_saves={
+  local float itr;
+  itr = 0;
+  while(itr < GAME_SAVES_MAX){
+    local string fname;
+    local float flannel;
+    fname = strcat("s", ftos(itr), ".sav");
+    flannel = fopen(fname, FILE_READ);
+    if(flannel != -1){
+      local float line_count;
+      local string line, save_name, map_name, map_title;
+      line_count = 0;
+      line = fgets(flannel);
+      while (line_count < 20){
+        if(line_count == 1){
+          map_title = line;
+        }
+        if(line_count == 19){
+          map_name = line;
+        }
+        line = fgets(flannel);
+        line_count = line_count + 1;
+      }
+      tokenizebyseparator(map_title, "kills");
+      map_title = argv(0);
+      save_name = strcat("--[", map_name, "]- ", map_title, " --");
+      GAME_SAVES[itr] = strzone(fname);
+      GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
+      fclose(flannel);
+    }
+    else{
+      GAME_SAVES[itr] = strzone("");
+      GAME_SAVES_DRAWNAME[itr] = strzone("");
+    }
+    itr = itr + 1;
   }
 };
 
@@ -282,10 +395,30 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
 };
 
 /*
+  generic 'exit to game/client' func
+*/
+void() menu_exit_togame={
+  DRAW_MOUSE = FALSE;
+  M_STATE = M_NONE;
+  setkeydest(KEY_GAME);
+};
+
+/*
+ called by all menus to process widget clicks
+*/
+void() m_sys_doclick={
+  if(MOUSE_TARGET != null_entity){
+    localsound("sound/misc/menu1.wav");
+    MOUSE_TARGET.isclick(MOUSE_TARGET);
+  }
+};
+
+/*
   garbage collection on menu transition
 */
 void(float menu_id) menu_clear_items={
- local entity widgets;
+  MOUSE_TARGET = null_entity;
+  local entity widgets;
   widgets = findchainfloat(menuId, menu_id);
   while(widgets){
     local entity next;

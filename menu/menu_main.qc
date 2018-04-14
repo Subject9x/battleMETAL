@@ -1,22 +1,29 @@
 /*
   author: Peter Roohr
   date: 11/26/2017
+      mod - 04/11/2018
   
   overview: what is a menu.dat? time to explore and find out
+  comparing to darkplaces c-code was fun :|
+  I have it somewhat documented now
 */
 
+/*
+  Quake C api hook - initialize menu here
+*/
 void() m_init={
   dynamic_precache();
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){
-    cmd("cd", " play 6");
+    //cmd("cd", " play 6"); DEBUG uncomment for release
     m_toggle(1);
   }
   MOUSE_TARGET = null_entity;
-  
-  //ini functions
 };
 
+/*
+  Quake C api hook -  function for when a key is pressed
+*/
 void(float keynr, float ascii) m_keydown={
   if(keynr == K_MOUSE1){
     //mouse1 pressed
@@ -26,9 +33,24 @@ void(float keynr, float ascii) m_keydown={
     case M_MAIN:
       m_main_k(keynr, ascii);
       break;
+    case M_SINGLE:
+      m_camp_k(keynr, ascii);
+      break;
+    case M_LOAD:
+      m_load_k(keynr, ascii);
+      break;
+    case M_NEWGAME:
+      m_newg_k(keynr, ascii);
+      break;
+    case M_MULTI:
+      m_multi_k(keynr, ascii);
+      break;
   }
 };
 
+/*
+  Quake C api hook - function for when a key is RELEASED
+*/
 void(float keynr, float ascii) m_keyup={
   if(keynr == K_MOUSE1){
     //mouse1 unpressed
@@ -37,6 +59,9 @@ void(float keynr, float ascii) m_keyup={
 
 };
 
+/*
+  Quake C api hook - the primary render function, stuff all menu draw calls here
+*/
 void(float width, float height) m_draw={
   //prepare VIEW globals per-frame
   VIEW_ORG = '0 0';
@@ -53,6 +78,18 @@ void(float width, float height) m_draw={
     case M_MAIN:
       m_main_d();
       break;
+    case M_SINGLE:
+      m_camp_d();
+      break;
+    case M_LOAD:
+      m_load_d();
+      break;
+    case M_NEWGAME:
+      m_newg_d();
+      break;
+    case M_MULTI:
+      m_multi_d();
+      break;
   }
 
   m_drawmouse(DRAW_MOUSE);
@@ -61,8 +98,12 @@ void(float width, float height) m_draw={
   drawstring('4 14', ftos(width), '8 8 0', '1 1 1', 1, 0);
   drawstring('48 14', ftos(height), '8 8 0', '1 1 1', 1, 0);
   drawstring('4 24', strcat("mouse : ", ftos(MOUSE_DOWN)), '8 8 0', '1 1 1', 1, 0);
+  drawstring('4 34', strcat("target : ", MOUSE_TARGET.classname), '8 8 0', '1 1 1', 1, 0);
 };
 
+/*
+  Quake C api hook - called, I believe when 'togglemenu' console command is invoke
+*/
 void(float mode) m_toggle={
   
   if ( (getkeydest() != KEY_MENU && getkeydest() != KEY_MENU_GRABBED) || M_STATE != M_MAIN ){
@@ -86,10 +127,16 @@ void(float mode) m_toggle={
   }
 };
 
+/*
+  Quake C api hook - not sure yet
+*/
 void() m_newmap={
 
 };
 
+/*
+  Quake C api hook - when the menu shuts down
+*/
 void() m_shutdown={
   DRAW_MOUSE = FALSE;
   M_STATE = M_NONE;

@@ -12,7 +12,7 @@ m_datadefs.qc
   ../common/data/data_values_weapons.qc
   ../common/data/data_values_mechs.qc
   ../common/data/data_values_vehicles.qc
-gui_color_const_h.qc
+  ../common/ui/ui_color_constants.qc
 gui_api_h.qc
 hud_api_h.qc
 data_api_h.qc
