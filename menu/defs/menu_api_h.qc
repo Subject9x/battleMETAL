@@ -43,6 +43,7 @@ float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
 .float data_bind;  //used in lists
 .float len; //used if needed to track char len of entity.
 .string data_text;
+.float subid; //sub menu, used sparingly
 
 //some of this ported over from ui_defs in the client code
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;

@@ -18,16 +18,17 @@ float M_LOAD    = 4;
 float M_SAVE    = 5;
 float M_MULTI   = 6;
 float M_SETUP   = 7;
-float M_OPTIONS = 8;
-float M_OPTIONS_EFFECT = 9;
-float M_OPTIONS_GFX = 10;
-float M_OPTIONS_COLOR = 11;
-float M_KEYS    = 12;
-float M_VIDEO   = 13;
-float M_RESET   = 14;
-float M_MODS    = 15;
-float M_HELP    = 16;
-float M_CREDIT  = 17;
+float M_HOST    = 8
+float M_OPTIONS = 9;
+float M_OPTIONS_EFFECT = 10;
+float M_OPTIONS_GFX = 11;
+float M_OPTIONS_COLOR = 12;
+float M_KEYS    = 13;
+float M_VIDEO   = 14;
+float M_RESET   = 15;
+float M_MODS    = 16;
+float M_HELP    = 17;
+float M_CREDIT  = 18;
 
 void(float drawmous) m_drawmouse;
 
@@ -40,6 +41,7 @@ void() m_camp_i;
 
 void() m_multi_i;
   void() m_setup_i;
+  void() m_host_i;
 
 void() m_main_f;
 
@@ -49,6 +51,7 @@ void() m_camp_f;
 
 void() m_multi_f;
   void() m_setup_f;
+  void() m_host_f;
 
 void() m_main_d;
 
@@ -58,6 +61,7 @@ void() m_camp_d;
 
 void() m_multi_d;
   void() m_setup_d;
+  void() m_host_d;
 
 void(float ky, float ascii) m_main_k;
 
@@ -67,6 +71,7 @@ void(float ky, float ascii) m_camp_k;
   
 void(float ky, float ascii) m_multi_k;
   void(float ky, float ascii) m_setup_k;
+  void(float ky, float ascii) m_host_k;
 
 /*
 void() M_Menu_Save;

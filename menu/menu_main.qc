@@ -58,6 +58,9 @@ void(float keynr, float ascii) m_keydown={
       case M_SETUP:
         m_setup_k(keynr, ascii);
         break;
+      case M_HOST:
+        m_host_k(keynr, ascii);
+        break;
     }
   }
 };
@@ -106,6 +109,9 @@ void(float width, float height) m_draw={
       break;
     case M_SETUP:
       m_setup_d();
+      break;
+    case M_HOST:
+      m_host_d();
       break;
   }
 

@@ -28,6 +28,7 @@
 .float data_bind;  //used in lists
 .float len; //used if needed to track char len of entity.
 .string data_text; //short storage, primarly for textfields
+.float subid; //sub menu, used sparingly
 
 UI_FLAG_NOLABEL     = 1;  //don't render label
 UI_FLAG_NEW         = 2;  //is new
