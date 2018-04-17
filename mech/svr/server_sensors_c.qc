@@ -68,6 +68,7 @@ void() server_updateTargetInfo={
   self.stat_trg_sh = (self.enemy.sh_cur / self.enemy.sh_max) * 100;
   self.stat_trg_faction = self.enemy.i_faction;
   self.stat_trg_ct_hp = csqc_updateCompStat(self.enemy);
+  
   if( (self.stat_trg_dat == DATA_MECH_AI) || (self.stat_trg_dat == DATA_VEHC) || (self.stat_trg_dat == DATA_MECH) ){
     self.stat_trg_lg_hp = csqc_updateCompStat(self.enemy.e_legs);
   
@@ -90,8 +91,7 @@ void() server_updateTargetInfo={
   self.stat_trg_dist = dst;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
   
-  
-  if(self.stat_trg_face < 0){
+  if( util_lockOnChoke(self.enemy.origin) ){
     if( !(self.stat_lck_stt & LOCK_TARG_START) && !(self.stat_lck_stt & LOCK_TARG_HAS) ){
       self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_START;
       self.power_timer_segment = time;

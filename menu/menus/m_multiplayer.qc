@@ -37,12 +37,18 @@ void() click_multi_host={
   m_host_f();
 };
 
+void() click_multi_join={
+  menu_clear_items(M_STATE);
+  M_STATE = M_JOIN;
+  m_join_f();
+};
+
 // ini function, called by '_f' function as a setup func
 void() m_multi_i={
   multi_title = lbl_img('10 100', '1 1 0', IMG_MULTI_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MULTI, 1, (UI_FLAG_SIZE_IMG) );
   multi_playersetup = btn_img_callback('10 132 0', '1 1 0', IMG_MULTI_PLAYERSETUP, (VIEW_CTX | VIEW_CTY), M_MULTI, click_multi_setup, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   multi_hostgame = btn_img_callback('10 151 0', '1 1 0', IMG_MULTI_HOSTGAME, (VIEW_CTX | VIEW_CTY), M_MULTI, click_multi_host, '1 1 1', '0 1 0',1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  multi_joingame = btn_img_callback('10 170 0', '1 1 0', IMG_MULTI_JOINGAME, (VIEW_CTX | VIEW_CTY), M_MULTI, btn_noclick, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  multi_joingame = btn_img_callback('10 170 0', '1 1 0', IMG_MULTI_JOINGAME, (VIEW_CTX | VIEW_CTY), M_MULTI, click_multi_join, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   multi_back = btn_img_callback('10 230 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_MULTI, click_multi_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 

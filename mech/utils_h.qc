@@ -30,6 +30,7 @@ void(vector bbx_min, vector bbx_max) util_setBoundBox;
 float(vector p, vector min, vector max) util_checkInBounds;
 float(entity trg) util_checkPointAngle;
 float(vector orig) util_checkPointAngleImpl;
+float(vector org) util_lockOnChoke;
 void(entity ent, vector pnt) util_chekPointToHitDir;
 
 void(float bits, float b, float bb, float bbb) util_subThreeBits;

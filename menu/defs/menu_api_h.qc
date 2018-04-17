@@ -125,8 +125,17 @@ string(float line, float typ) map_list_getmap ={
 		ln = fgets(f); 
 		while(ln != ""){ 
 			if(strstrofs(ln, "//",0) == -1){
-				if(itr == line){
-          found = ln;
+        if(typ){
+          if(MAPS_TDM[itr] != ""){
+            strunzone(MAPS_TDM[itr]);
+          }
+          MAPS_TDM[itr] = strzone(ln);
+        }
+        else{
+          if(MAPS_COOP[itr] != ""){
+            strunzone(MAPS_COOP[itr]);
+          }
+          MAPS_COOP[itr] = strzone(ln);
         }
         print(strcat("loaded menu img : ", ln, "\n"));  //DEBUG
 			}

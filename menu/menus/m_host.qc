@@ -79,7 +79,7 @@ void() host_update_type={
 
 void() host_update_playeramount={
   if( SUB_MENU == SUB_COOP ){
-    host_map_lbl.label = strzone(map_list_getmap(SELECT_MAP, 0));
+    host_map_lbl.label = strzone(MAPS_COOP[SELECT_MAP]);
     cvar_set("coop", ftos(1));
     cvar_set("deathmatch", ftos(0));
     if( SELECT_PLAYERS > PLRS_MAX_COOP ){
@@ -90,7 +90,7 @@ void() host_update_playeramount={
     }
   }
   else if( SUB_MENU == SUB_TDM ){
-    host_map_lbl.label = strzone(map_list_getmap(SELECT_MAP, 1));
+    host_map_lbl.label = strzone(MAPS_TDM[SELECT_MAP]);
     cvar_set("coop", ftos(0));
     cvar_set("deathmatch", ftos(1));
     if( SELECT_PLAYERS > PLRS_MAX_TDM ){
@@ -218,36 +218,41 @@ void() click_host_prevskill={
 };
 
 void() click_host_map_nxt={
-  local string mp;
+  local string mp, check;
   local float test, tp;
+  
   test = SELECT_MAP + 1;
-  tp = 0;
   if( SUB_MENU == SUB_TDM){
-    tp = 1;
+    check = MAPS_TDM[test];
+  }else{
+    check = MAPS_COOP[test];
   }
-  mp = map_list_getmap( test, tp);
-  if(mp != ""){
+  if(test > 128){
+    test = 128;
+  }
+  if(check != ""){
     strunzone(host_map_lbl.label);
-    host_map_lbl.label = strzone(mp);
-    SELECT_MAP = test; 
+    host_map_lbl.label = strzone(check);
+    SELECT_MAP = test;
   }
 };
 
 void() click_host_map_prv={
-  local string mp;
+  local string mp, check;
   local float test, tp;
+  
   test = SELECT_MAP - 1;
-  tp = 0;
   if( SUB_MENU == SUB_TDM){
-    tp = 1;
+    check = MAPS_TDM[test];
+  }else{
+    check = MAPS_COOP[test];
   }
   if(test < 0){
     test = 0;
   }
-  mp = map_list_getmap( test, tp);
-  if(mp != ""){
+  if(check != ""){
     strunzone(host_map_lbl.label);
-    host_map_lbl.label = strzone(mp);
+    host_map_lbl.label = strzone(check);
     SELECT_MAP = test;
   }
 };
@@ -342,6 +347,8 @@ void() m_host_f={
   SELECT_MAP = 1;
   M_STATE = M_HOST;
   setkeydest(KEY_MENU);
+  map_list_getmap(FALSE);
+  map_list_getmap(TRUE);
   m_host_i();
 };
 

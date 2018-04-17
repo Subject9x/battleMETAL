@@ -161,6 +161,32 @@ float(vector orig) util_checkPointAngleImpl ={
   }
 };
 
+/*
+  just a tightened up util_checkPointAngleImpl for lock on mechanics
+*/
+float(vector orig) util_lockOnChoke={
+  
+	local vector	vec, vew;
+  
+	makevectors (self.angles);
+	vec = normalize (orig - self.origin);
+	vew_x = vec * v_forward;
+  vew_y = vec * v_right;
+  
+  makevectors(self.v_angle);
+	vec = normalize (orig - self.origin);
+  vew_z = vec * v_up;
+  
+  if( vew_x > 0.9){
+    if( (vew_y < 0.2) && (vew_y > -0.2)){
+      if( (vew_z < 0.2) && (vew_z > -0.2) ){
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
+};
+
 void(entity ent, vector pnt) util_chekPointToHitDir={
   local entity this;
   local float hit_ang;

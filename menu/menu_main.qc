@@ -62,6 +62,9 @@ void(float keynr, float ascii) m_keydown={
       case M_HOST:
         m_host_k(keynr, ascii);
         break;
+      case M_JOIN:
+        m_join_k(keynr, ascii);
+        break;
     }
   }
 };
@@ -112,6 +115,9 @@ void(float width, float height) m_draw={
       break;
     case M_HOST:
       m_host_d();
+      break;
+    case M_JOIN:
+      m_join_d();
       break;
   }
 

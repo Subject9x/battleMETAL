@@ -23,3 +23,4 @@ menu_main.qc
   menus/m_multiplayer.qc
   menus/m_setup.qc
   menus/m_host.qc
+  menus/m_join.qc
