@@ -21,6 +21,7 @@ void() m_init={
   MOUSE_TARGET = null_entity;
   TEXTFIELD_TARGET = null_entity;
   UI_INPUT_ACTIVE = FALSE;
+  SUB_MENU = FALSE;
   //setup textfield key filter;
   menu_ini_txtfilter();
 };
@@ -73,7 +74,6 @@ void(float keynr, float ascii) m_keyup={
     //mouse1 unpressed
     MOUSE_DOWN = FALSE;
   }
-
 };
 
 /*
@@ -161,10 +161,15 @@ void() m_newmap={
   Quake C api hook - when the menu shuts down
 */
 void() m_shutdown={
+  MOUSE_TARGET = null_entity;
+  TEXTFIELD_TARGET = null_entity;
+  UI_INPUT_ACTIVE = FALSE;
+  SUB_MENU = FALSE;
   DRAW_MOUSE = FALSE;
   M_STATE = M_NONE;
   setkeydest(KEY_GAME);
   setmousetarget(MT_CLIENT);
+  menu_clear_items(M_STATE);
 };
 
 void(float drawmous) m_drawmouse={

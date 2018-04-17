@@ -137,12 +137,21 @@ void() ClientConnect = {
     }
     savefile_load();
     self.i_faction = world.i_faction; //single player setting
-    client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
-    client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
-    client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
-    client_sendAvailableItems(SAVE_ITEMS_ALL);
+  }
+  else if( coop ){
+    mapfile_coop_load();
+    client_sendGameMode("coop");
+  }
+  else if( deathmatch ){
+    mapfile_pvp_load(self.i_faction);
+    client_sendGameMode("deathmatch");
   }
   
+  client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
+  client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
+  client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
+  client_sendAvailableItems(SAVE_ITEMS_ALL);
+
   client_playTrack(6, TRUE);
   
   CLIENTS = CLIENTS + 1;
@@ -202,14 +211,6 @@ void() PutClientInServer = {
   self.angles = spot.angles;
   
   if(self.data_type == DATA_POBS){
-    if( coop ){
-      mapfile_coop_load();
-      client_sendGameMode("coop");
-    }
-    if( deathmatch ){
-      mapfile_pvp_load(self.i_faction);
-      client_sendGameMode("coop");
-    }
     player_makeObserver();
     
     if(!coop && !deathmatch){

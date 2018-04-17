@@ -52,6 +52,7 @@ entity() new_ui_elm={
     self.alpha = 0;
     self.color = '0 0 0';
     self.select_color = '0 0 0';
+    self.subid = FALSE;
   self = this;
   return element;
 };
@@ -72,6 +73,7 @@ entity(vector org, vector siz, string lbl, vector clr, float algn, float menu_id
     self.align = algn;
     self.alpha = alph;
     self.color = clr;
+    self.subid = FALSE;
   self = this;
   
   return elbl;
@@ -92,6 +94,7 @@ entity(vector org, vector siz, string img1, vector clr, float algn, float menu_i
     self.align = algn;
     self.alpha = alph;
     self.color = clr;
+    self.subid = FALSE;
   self = this;
   
   return elbl;
@@ -117,6 +120,7 @@ entity() btn_new_blank={
     self.alpha = 1;
     self.color = '1 1 1';
     self.select_color = '1 1 1';
+    self.subid = FALSE;
   self = this;
   
   return button;
@@ -185,6 +189,7 @@ entity(vector org, vector siz, string img1, float algn, float menu_id, string co
     self.alpha = alph;
     self.color = clr;
     self.select_color = hclr;
+    self.subid = FALSE;
   self = this;
   return newBtn;
 };
@@ -211,6 +216,7 @@ entity(vector org, vector siz, float charlen, void() onchange, float algn, float
     self.isclick = txtfld_isclick;
     self.ischange = txtfld_ischange;
     self.onChange = onchange;
+    self.subid = FALSE;
   self = this;
   return newtxt;
 };
@@ -229,7 +235,6 @@ void(entity btn) render_btn={
       sizzle = gui_percentToPixelRawVec( gui_scaleSize(sizzle, VIEW_SCALE) );
     }
     
-    bclr = self.color;
     if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
       MOUSE_TARGET = self;
       if( self.rolledover == FALSE){ 
@@ -243,7 +248,8 @@ void(entity btn) render_btn={
         MOUSE_TARGET = null_entity;
       }
     }
-    
+
+    bclr = self.color;
     if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){  
       if(self.rolledover){
         bclr = self.select_color;
@@ -398,7 +404,6 @@ void(entity myself) txtfld_isclick={
   self = this;
 };
 
-
 void(entity myself) btn_isclick={
   local entity this;
   this = self;
@@ -524,6 +529,9 @@ void() m_sys_doclick={
 */
 void(float menu_id) menu_clear_items={
   MOUSE_TARGET = null_entity;
+  TEXTFIELD_TARGET = null_entity;
+  UI_INPUT_ACTIVE = FALSE;
+  SUB_MENU = FALSE;
   local entity widgets;
   widgets = findchainfloat(menuId, menu_id);
   while(widgets){
@@ -534,12 +542,29 @@ void(float menu_id) menu_clear_items={
   }
 };
 
-float(float keynr) menu_textfilter_validate={
+float(float keynr, float uiFlags) menu_textfilter_validate={
   local float itr, valid;
   valid = FALSE;
   while(itr <= UI_INPUT_FILTER_MAX){
     if( UI_INPUT_FILTER[itr] == keynr ){
-      valid = TRUE;
+      if( (uiFlags & UI_FLAG_TXTFIELD_NUM) ){
+        if( (keynr >= 48) && (keynr <= 58) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_SPEC) ){
+        if( (keynr >= 169) && (keynr <= 173) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_LOW) ){
+        if( (keynr >= 97) && (keynr <= 122) ){
+          valid = TRUE;
+        }
+      }
+      if( keynr == K_SPACE ){
+        valid = TRUE;
+      }
     }
     itr = itr + 1;
   }
@@ -547,7 +572,7 @@ float(float keynr) menu_textfilter_validate={
 };
 
 void(float keynr, float ascii) menu_do_textfield={
-  if( (keynr == K_ENTER) || (keynr == K_ESCAPE) ){
+  if( (keynr == K_ENTER) || (keynr == K_ESCAPE) || (keynr == K_MOUSE1) ){
     TEXTFIELD_TARGET.ischange(TEXTFIELD_TARGET);
     UI_INPUT_ACTIVE = FALSE;
     return;
@@ -562,7 +587,7 @@ void(float keynr, float ascii) menu_do_textfield={
     }
     return;
   }
-  if( menu_textfilter_validate(keynr) ){
+  if( menu_textfilter_validate(keynr, TEXTFIELD_TARGET.flags) ){
     if( txtlen < TEXTFIELD_TARGET.len){
       txt = TEXTFIELD_TARGET.data_text;
       if( keynr == K_SPACE ){

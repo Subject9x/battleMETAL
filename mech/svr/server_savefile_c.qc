@@ -152,8 +152,10 @@ void() savefile_default={
 void() mapfile_coop_load={
   local string file, line, contents;
   local float flannel, line_tag, argc;
-  
-  file = strcat(PATH_DATA_MAP, "/", mapname, "/", world.map_file, SAVE_FILE_EXT);
+  tokenizebyseparator(mapname, ".");
+  file = argv(0);
+  file = strcat(PATH_DATA_MAP, "/", file, "/", world.map_file, SAVE_FILE_EXT);
+  cons_logAString("file", file);  //DEBUG
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);

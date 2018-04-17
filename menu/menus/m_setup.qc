@@ -40,7 +40,7 @@ void() m_setup_i={
   setup_title = lbl_img('10 100', '1 1 0', IMG_SETUP_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SETUP, 1, (UI_FLAG_SIZE_IMG) );
   setup_label_playername = lbl_text('10 142 0', '10 10 0', "Player Name", '1 1 1', 0, M_SETUP, 1, 0);
   
-  setup_txtfld_playername = inp_textfield('150 144', '8 8 0', 32, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, 0);
+  setup_txtfld_playername = inp_textfield('150 144', '8 8 0', 32, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC));
   setup_txtfld_playername.data_text = strzone(str_cvar("_cl_name"));
   
   setup_accept = btn_text_callback('10 230 0', '8 8 0', "[ACCEPT]", (VIEW_CTX | VIEW_CTY), M_SETUP, click_setup_accept, '1 1 1', '0 1 0', 1, UI_FLAG_SIZE_IMG);

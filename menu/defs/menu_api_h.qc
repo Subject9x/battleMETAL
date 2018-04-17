@@ -21,6 +21,9 @@ float UI_FLAG_ALIGN       = 4;  //use alignment field
 float UI_FLAG_NOHIGHLIGHT = 8;  //don't render highlight overlay
 float UI_FLAG_SIZE_IMG    = 16; //base item size on img1 field
 float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
+float UI_FLAG_TXTFIELD_NUM = 64;
+float UI_FLAG_TXTFIELD_SPEC = 128;
+float UI_FLAG_TXTFIELD_LOW = 256;
 
 // UI fields
 .string label;
@@ -55,7 +58,7 @@ void() menu_ini_keyfilter;
 void() menu_scan_saves;
 void() menu_exit_togame;
 void(float menu_id) menu_clear_items;
-float(float keynr) menu_textfilter_validate;
+float(float keynr, float uiFlags) menu_textfilter_validate;
 void(float keynr, float ascii) menu_do_textfield;
 
 void() render_predraw;
@@ -104,4 +107,33 @@ void() dynamic_precache =
 		} 
 	} 
 	fclose(f);                                          
+};
+
+string(float line, float typ) map_list_getmap ={
+	local float f, itr;
+	local string ln, found;
+  found = "";
+  itr = 0;
+  f = -1;
+  if(typ){
+    f = fopen("data/cache/maps_tdm.txt", FILE_READ);
+  }
+  else{
+    f = fopen("data/cache/maps_coop.txt", FILE_READ);
+  }
+	if (f != -1){ 
+		ln = fgets(f); 
+		while(ln != ""){ 
+			if(strstrofs(ln, "//",0) == -1){
+				if(itr == line){
+          found = ln;
+        }
+        print(strcat("loaded menu img : ", ln, "\n"));  //DEBUG
+			}
+      itr = itr + 1;
+			ln = fgets(f);
+		} 
+	} 
+	fclose(f);
+  return found;
 };

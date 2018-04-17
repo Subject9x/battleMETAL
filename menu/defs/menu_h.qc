@@ -8,6 +8,7 @@ float MOUSE_DOWN;
 float DRAW_MOUSE;
 float M_STATE;
 entity MOUSE_TARGET;
+float SUB_MENU; //can only really do 1 sub menu at a time, so
 
 //MENU STATE CONSTANTS
 float M_NONE    = 0;
@@ -18,7 +19,7 @@ float M_LOAD    = 4;
 float M_SAVE    = 5;
 float M_MULTI   = 6;
 float M_SETUP   = 7;
-float M_HOST    = 8
+float M_HOST    = 8;
 float M_OPTIONS = 9;
 float M_OPTIONS_EFFECT = 10;
 float M_OPTIONS_GFX = 11;
