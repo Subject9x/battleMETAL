@@ -10,9 +10,11 @@ string GAME_SAVES[GAME_SAVES_MAX];
 string GAME_SAVES_DRAWNAME[GAME_SAVES_MAX];
 
 entity TEXTFIELD_TARGET;
+entity KEYBIND_TARGET;
 float UI_INPUT_ACTIVE;  //buffer to track textfields
-float UI_INPUT_FILTER_MAX = 42;
+float UI_INPUT_FILTER_MAX = 84;
 float UI_INPUT_FILTER[UI_INPUT_FILTER_MAX];  //filter out these chars;
+float UI_KEYBIND_ACTIVE;
 
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL     = 1;  //don't render label
@@ -24,6 +26,8 @@ float UI_FLAG_CENTER_IMG  = 32; //centers image on widget
 float UI_FLAG_TXTFIELD_NUM = 64;
 float UI_FLAG_TXTFIELD_SPEC = 128;
 float UI_FLAG_TXTFIELD_LOW = 256;
+float UI_FLAG_TXTFIELD_MOUSE = 512;
+float UI_FLAG_TXTFIELD_FUNC = 1024;
 
 // UI fields
 .string label;
@@ -60,6 +64,10 @@ void() menu_exit_togame;
 void(float menu_id) menu_clear_items;
 float(float keynr, float uiFlags) menu_textfilter_validate;
 void(float keynr, float ascii) menu_do_textfield;
+void(float keynr, float ascii) menu_do_keybind;
+void(string bind_cmd) menu_keybind_change;
+string(float keynr) menu_keybind_get;
+string(string comd) menu_keybind_forkey;
 
 void() render_predraw;
 void(entity btn) render_btn;
@@ -68,6 +76,7 @@ void(entity lbl) render_lbl_img;
 void(entity lbl) render_lbl_text;
 
 void(entity txt) render_textfield;
+void(entity txt) render_bindfield;
 
 entity() btn_new_blank;
 entity() new_ui_elm;
@@ -78,12 +87,16 @@ entity(vector org, vector siz, string txt, float algn, float menu_id, void() cli
 entity(vector org, vector siz, string img1, float algn, float menu_id, string commd, vector clr, vector hclr, float alph, float flgs) btn_img_command;
 
 entity(vector org, vector siz, float charlen, void()  onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_textfield;
+entity(vector org, vector siz, void() onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield;
 
 void() m_sys_doclick; //called by all menus to process widget clicks
 void() btn_noclick={};  //simple null function
 void(entity myself) btn_isclick;
 void(entity myself) txtfld_isclick;
 void(entity myself) txtfld_ischange;
+
+void(entity myself) bindfld_isclick;
+void(entity myself) bindfld_ischange;
 
 void() btn_onClick_runCommand;
 
@@ -109,7 +122,7 @@ void() dynamic_precache =
 	fclose(f);                                          
 };
 
-string(float line, float typ) map_list_getmap ={
+string(float typ) map_list_getmap ={
 	local float f, itr;
 	local string ln, found;
   found = "";

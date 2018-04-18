@@ -39,6 +39,9 @@ void(float keynr, float ascii) m_keydown={
   if(UI_INPUT_ACTIVE){
     menu_do_textfield(keynr, ascii);
   }
+  if(UI_KEYBIND_ACTIVE){
+    menu_do_keybind(keynr, ascii);
+  }
   else{
     switch(M_STATE){
       case M_MAIN:
@@ -64,6 +67,24 @@ void(float keynr, float ascii) m_keydown={
         break;
       case M_JOIN:
         m_join_k(keynr, ascii);
+        break;
+      case M_OPTIONS:
+        m_options_k(keynr, ascii);
+        break;
+      case M_OPTIONS_CONTROLS:
+        m_controls_k(keynr, ascii);
+        break;
+      case M_OPTIONS_GRAPHICS:
+        m_graphics_k(keynr, ascii);
+        break;
+      case M_OPTIONS_AUDIO:
+        m_audio_k(keynr, ascii);
+        break;
+      case M_OPTIONS_GAMEPLAY:
+        m_gameplay_k(keynr, ascii);
+        break;
+      case M_CREDITS:
+        m_credits_k(keynr, ascii);
         break;
     }
   }
@@ -118,6 +139,24 @@ void(float width, float height) m_draw={
       break;
     case M_JOIN:
       m_join_d();
+      break;
+    case M_OPTIONS:
+      m_options_d();
+      break;
+    case M_OPTIONS_CONTROLS:
+      m_controls_d();
+      break;
+    case M_OPTIONS_GRAPHICS:
+      m_graphics_d();
+      break;
+    case M_OPTIONS_AUDIO:
+      m_audio_d();
+      break;
+    case M_OPTIONS_GAMEPLAY:
+      m_gameplay_d();
+      break;
+    case M_CREDITS:
+      m_credits_d();
       break;
   }
 

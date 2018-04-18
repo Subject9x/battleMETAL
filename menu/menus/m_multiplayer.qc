@@ -21,25 +21,22 @@ string IMG_MULTI_JOINGAME   = "gfx/menu/multi/multi_joingame.png";
 //Multiplayer callbacks
 void() click_multi_back={
   menu_clear_items(M_STATE);
-  M_STATE = M_MAIN;
+  m_main_f();
   localsound("sound/misc/menu2.wav");
 };
 
 void() click_multi_setup={
   menu_clear_items(M_STATE);
-  M_STATE = M_SETUP;
   m_setup_f();
 };
 
 void() click_multi_host={
   menu_clear_items(M_STATE);
-  M_STATE = M_HOST;
   m_host_f();
 };
 
 void() click_multi_join={
   menu_clear_items(M_STATE);
-  M_STATE = M_JOIN;
   m_join_f();
 };
 
@@ -88,7 +85,7 @@ void(float key, float ascii) m_multi_k={
       //menu and not leave the menu system
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
-      M_STATE = M_MAIN;
+      m_main_f();
       break;
     case K_MOUSE1:
       m_sys_doclick();

@@ -18,13 +18,11 @@ string IMG_CAMP_LOAD    = "gfx/menu/single/camp_load.png";
 
 //button callbacks
 void() click_camp_new = {
-  M_STATE = M_NEWGAME;
   m_newg_f();
 };
 
 void() click_camp_load = {
   menu_clear_items(M_STATE);
-  M_STATE = M_LOAD;
   m_load_f();
 };
 
@@ -79,7 +77,7 @@ void(float key, float ascii) m_camp_k={
       //menu and not leave the menu system
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
-      M_STATE = M_MAIN;
+      m_main_f();
       break;
     case K_MOUSE1:
       m_sys_doclick();

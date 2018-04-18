@@ -27,7 +27,6 @@ string IMG_SETUP_TITLE  = "gfx/menu/setup/setup_title.png";
 void() click_setup_accept={
   //TODO save changes
   menu_clear_items(M_STATE);
-  M_STATE = M_MULTI;
   m_multi_f();
 };
 
@@ -81,7 +80,6 @@ void(float key, float ascii) m_setup_k={
     case K_ESCAPE:
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
-      M_STATE = M_MULTI;
       m_multi_f();
       break;
     case K_MOUSE1:

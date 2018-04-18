@@ -18,9 +18,15 @@ menu_main.qc
 //specific menus
   menus/m_main.qc
   menus/m_camp.qc
-  menus/m_newgame.qc
-  menus/m_load.qc
+    menus/m_newgame.qc
+    menus/m_load.qc
   menus/m_multiplayer.qc
-  menus/m_setup.qc
-  menus/m_host.qc
-  menus/m_join.qc
+    menus/m_setup.qc
+    menus/m_host.qc
+    menus/m_join.qc
+  menus/m_options.qc
+    menus/m_options_controls.qc
+    menus/m_options_graphics.qc
+    menus/m_options_audio.qc
+    menus/m_options_gameplay.qc
+  menus/m_credits.qc

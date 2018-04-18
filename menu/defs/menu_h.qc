@@ -22,15 +22,19 @@ float M_SETUP   = 7;
 float M_HOST    = 8;
 float M_JOIN    = 9;
 float M_OPTIONS = 10;
-float M_OPTIONS_EFFECT = 11;
-float M_OPTIONS_GFX = 12;
-float M_OPTIONS_COLOR = 13;
-float M_KEYS    = 14;
-float M_VIDEO   = 15;
-float M_RESET   = 16;
-float M_MODS    = 17;
-float M_HELP    = 18;
-float M_CREDIT  = 19;
+float M_OPTIONS_CONTROLS = 11;
+float M_OPTIONS_GRAPHICS = 12;
+float M_OPTIONS_AUDIO = 13;
+float M_OPTIONS_GAMEPLAY = 14;
+float M_OPTIONS_EFFECT = 15;
+float M_OPTIONS_GFX = 16;
+float M_OPTIONS_COLOR = 17;
+float M_KEYS    = 18;
+float M_VIDEO   = 19;
+float M_RESET   = 20;
+float M_MODS    = 21;
+float M_HELP    = 22;
+float M_CREDITS  = 23;
 
 string MAPS_COOP[128];
 string MAPS_TDM[128];
@@ -39,53 +43,65 @@ void(float drawmous) m_drawmouse;
 
 //see /menus/m_main.qc for info on these '_x' functions
 void() m_main_i;
-
 void() m_camp_i;
   void() m_newg_i;
   void() m_load_i;
-
 void() m_multi_i;
   void() m_setup_i;
   void() m_host_i;
   void() m_join_i;
+void() m_options_i;
+  void() m_controls_i;
+
+void() m_credits_i;
 
 void() m_main_f;
-
 void() m_camp_f;
   void() m_newg_f;
   void() m_load_f;
-
 void() m_multi_f;
   void() m_setup_f;
   void() m_host_f;
   void() m_join_f;
-
+void() m_options_f;
+  void() m_controls_f;
+  void() m_controls_f;
+  void() m_graphics_f;
+  void() m_audio_f;
+  void() m_gameplay_f;
+void() m_credits_f;
+  
 void() m_main_d;
-
 void() m_camp_d;
   void() m_newg_d;
   void() m_load_d;
-
 void() m_multi_d;
   void() m_setup_d;
   void() m_host_d;
   void() m_join_d;
+void() m_options_d;
+  void() m_controls_d;
+  void() m_graphics_d;
+  void() m_audio_d;
+  void() m_gameplay_d;
+void() m_credits_d;
 
 void(float ky, float ascii) m_main_k;
-
 void(float ky, float ascii) m_camp_k;
   void(float ky, float ascii) m_newg_k;
   void(float ky, float ascii) m_load_k;
-  
 void(float ky, float ascii) m_multi_k;
   void(float ky, float ascii) m_setup_k;
   void(float ky, float ascii) m_host_k;
   void(float ky, float ascii) m_join_k;
-
+void(float ky, float ascii) m_options_k;
+  void(float ky, float ascii) m_controls_k;
+  void(float ky, float ascii) m_graphics_k;
+  void(float ky, float ascii) m_audio_k;
+  void(float ky, float ascii) m_gameplay_k;
+void(float ky, float ascii) m_credits_k;
 /*
 void() M_Menu_Save;
-void() M_Menu_Setup;
-void() M_Menu_Options;
 void() M_Menu_Options_Effect;
 void() M_Menu_Options_Graphics;
 void() M_Menu_Options_Colorcontrol;

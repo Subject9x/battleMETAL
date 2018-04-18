@@ -94,7 +94,7 @@ void(float key, float ascii) m_load_k={
       //menu and not leave the menu system
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
-      M_STATE = M_SINGLE;
+      m_camp_f();
       break;
     case K_MOUSE1:
       m_sys_doclick();

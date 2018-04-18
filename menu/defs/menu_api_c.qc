@@ -221,6 +221,23 @@ entity(vector org, vector siz, float charlen, void() onchange, float algn, float
   return newtxt;
 };
 
+entity(vector org, vector siz, void() onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield={
+  local entity newtxt, this;
+  this = self;
+  newtxt = inp_textfield(org, siz, 0, onchange, algn, menu_id, clr, hclr, alph, flgs);
+  self = newtxt;
+    self.classname = "bindfield";
+    self.data_text = "";
+    self.label = "";
+    self.draw = render_bindfield;
+    self.isclick = bindfld_isclick;
+    self.ischange = bindfld_ischange;
+    self.subid = FALSE;
+  self = this;
+  return newtxt;
+};
+
+
 void(entity btn) render_btn={
   local entity this;
   local vector org, sizzle, bclr;
@@ -384,6 +401,42 @@ void(entity txt) render_textfield={
   self = this;
 };
 
+void(entity txt) render_bindfield={
+  local entity this;
+  this = self;
+  self = txt;
+    local vector org, sizzle, bclr;
+    org = gui_percentToPixelRawVec(self.origin);
+    sizzle_x = self.size_x * strlen(self.label);
+    sizzle_y = self.size_y;
+    sizzle = gui_percentToPixelRawVec(sizzle);
+    
+    bclr = self.color;
+    if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+      MOUSE_TARGET = self;
+      if( self.rolledover == FALSE){ 
+        localsound("sound/misc/menu3.wav");
+        self.rolledover = TRUE;
+      }    
+    }
+    else{
+      if( self.rolledover == TRUE){
+        self.rolledover = FALSE;
+        MOUSE_TARGET = null_entity;
+      }
+    }
+    
+    if(self.rolledover){
+      bclr = self.select_color;
+    }
+    
+    if( (KEYBIND_TARGET == self) && (UI_KEYBIND_ACTIVE) ){
+      bclr = CLR_DEF_ARM_THREEQ;
+    }
+
+    drawstring(org, self.label, self.size, bclr, self.alpha, 0);
+  self = this;
+};
 
 void(entity myself) txtfld_ischange={
   local entity this;
@@ -401,6 +454,25 @@ void(entity myself) txtfld_isclick={
   self = myself;
     UI_INPUT_ACTIVE = TRUE;
     TEXTFIELD_TARGET = self;
+  self = this;
+};
+
+void(entity myself) bindfld_ischange={
+  local entity this;
+  this = self;
+  self = myself;
+    if(self.onChange){
+      self.onChange();
+    }
+  self = this;
+};
+
+void(entity myself) bindfld_isclick={
+  local entity this;
+  this = self;
+  self = myself;
+    UI_KEYBIND_ACTIVE = TRUE;
+    KEYBIND_TARGET = self;
   self = this;
 };
 
@@ -548,17 +620,27 @@ float(float keynr, float uiFlags) menu_textfilter_validate={
   while(itr <= UI_INPUT_FILTER_MAX){
     if( UI_INPUT_FILTER[itr] == keynr ){
       if( (uiFlags & UI_FLAG_TXTFIELD_NUM) ){
-        if( (keynr >= 48) && (keynr <= 58) ){
+        if( (itr >= 26) && (itr <= 36) ){
           valid = TRUE;
         }
       }
       if( (uiFlags & UI_FLAG_TXTFIELD_SPEC) ){
-        if( (keynr >= 169) && (keynr <= 173) ){
+        if( (itr >= 169) && (itr <= 173) ){
           valid = TRUE;
         }
       }
       if( (uiFlags & UI_FLAG_TXTFIELD_LOW) ){
-        if( (keynr >= 97) && (keynr <= 122) ){
+        if( (itr >= 0) && (itr <= 25) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_MOUSE) ){
+        if( (itr >= 67) && (itr <= 84) ){
+          valid = TRUE;
+        }
+      }
+      if( (uiFlags & UI_FLAG_TXTFIELD_FUNC) ){
+        if( (itr >= 42) && (itr <= 66) ){
           valid = TRUE;
         }
       }
@@ -572,7 +654,7 @@ float(float keynr, float uiFlags) menu_textfilter_validate={
 };
 
 void(float keynr, float ascii) menu_do_textfield={
-  if( (keynr == K_ENTER) || (keynr == K_ESCAPE) || (keynr == K_MOUSE1) ){
+  if( (keynr == K_ENTER) || (keynr == K_ESCAPE) ){
     TEXTFIELD_TARGET.ischange(TEXTFIELD_TARGET);
     UI_INPUT_ACTIVE = FALSE;
     return;
@@ -601,6 +683,56 @@ void(float keynr, float ascii) menu_do_textfield={
   }
 };
 
+void(float keynr, float  ascii) menu_do_keybind={
+  if( keynr == K_ESCAPE ){
+    UI_KEYBIND_ACTIVE = FALSE;
+    KEYBIND_TARGET = null_entity;
+    return;
+  }
+  if( menu_textfilter_validate(keynr, KEYBIND_TARGET.flags) ){
+    KEYBIND_TARGET.len = keynr;
+    
+    if( KEYBIND_TARGET.data_text != ""){
+      strunzone(KEYBIND_TARGET.data_text);
+    }
+    KEYBIND_TARGET.data_text = strzone(keynumtostring(KEYBIND_TARGET.len));
+    
+    KEYBIND_TARGET.ischange(KEYBIND_TARGET);
+    UI_KEYBIND_ACTIVE = FALSE;
+    KEYBIND_TARGET = null_entity;
+  }
+};
+
+string(float keynr) menu_keybind_get={
+
+};
+
+string(string comd) menu_keybind_forkey={
+  local string k1, k2;
+  tokenize(findkeysforcommand(comd));
+  k1 = argv(0);
+  k2 = argv(1);
+  if( k1 != ""){
+    k1 = keynumtostring(stof(k1));
+    return k1;
+  }
+  k2 = keynumtostring(stof(k2));
+  return k2;
+};
+
+
+
+void(string bind_cmd) menu_keybind_change={
+  local string unbind, bind;
+  unbind = strcat("unbind ", self.label, "\n");
+  
+  cmd(unbind);
+  self.label = strzone(self.data_text);
+  setkeybind_bindmap(stringtokeynum(self.label), bind_cmd, 0);
+  
+  //bind = strcat("bind ", self.label, " \"", bind_cmd,"\"\n");
+  //cmd(bind);
+};
 
 /*
   only allow these keys when typing in textfield
@@ -649,9 +781,62 @@ void() menu_ini_txtfilter={
   UI_INPUT_FILTER[36] = 58;
   
   //special keys
-  UI_INPUT_FILTER[37] = 32;//K_SPACE;
+  UI_INPUT_FILTER[37] = K_SPACE;//;
   UI_INPUT_FILTER[38] = 169;//K_KP_MULTIPLY;
   UI_INPUT_FILTER[39] = 170;//K_KP_MINUS;
   UI_INPUT_FILTER[40] = 171;// K_KP_PLUS;
   UI_INPUT_FILTER[41] = 173;//K_KP_EQUALS;
+  
+  //arrow keys
+  UI_INPUT_FILTER[42] = K_UPARROW;
+  UI_INPUT_FILTER[43] = K_DOWNARROW;
+  UI_INPUT_FILTER[44] = K_LEFTARROW;
+  UI_INPUT_FILTER[45] = K_RIGHTARROW;
+  
+  //ctrl
+  UI_INPUT_FILTER[46] = K_ALT;
+  UI_INPUT_FILTER[47] = K_CTRL;
+  UI_INPUT_FILTER[48] = K_SHIFT;
+  
+  //function keys
+  UI_INPUT_FILTER[49] = K_F1;
+  UI_INPUT_FILTER[50] = K_F2;
+  UI_INPUT_FILTER[51] = K_F3;
+  UI_INPUT_FILTER[52] = K_F4;
+  UI_INPUT_FILTER[53] = K_F5;
+  UI_INPUT_FILTER[54] = K_F6;
+  UI_INPUT_FILTER[55] = K_F7;
+  UI_INPUT_FILTER[56] = K_F8;
+  UI_INPUT_FILTER[57] = K_F9;
+  UI_INPUT_FILTER[58] = K_F10;
+  UI_INPUT_FILTER[59] = K_F11;
+  UI_INPUT_FILTER[60] = K_F12;
+  
+  //ins - del
+  UI_INPUT_FILTER[61] = K_INS;
+  UI_INPUT_FILTER[62] = K_DEL;
+  UI_INPUT_FILTER[63] = K_PGDN;
+  UI_INPUT_FILTER[64] = K_PGUP;
+  UI_INPUT_FILTER[65] = K_HOME;
+  UI_INPUT_FILTER[66] = K_END;
+  
+  //mouse input
+  UI_INPUT_FILTER[67] = K_MOUSE1;
+  UI_INPUT_FILTER[68] = K_MOUSE2;
+  UI_INPUT_FILTER[69] = K_MOUSE3;
+  UI_INPUT_FILTER[70] = K_MWHEELUP;
+  UI_INPUT_FILTER[71] = K_MWHEELDOWN;
+  UI_INPUT_FILTER[72] = K_MOUSE4;
+  UI_INPUT_FILTER[73] = K_MOUSE5;
+  UI_INPUT_FILTER[74] = K_MOUSE6;
+  UI_INPUT_FILTER[75] = K_MOUSE7;
+  UI_INPUT_FILTER[76] = K_MOUSE8;
+  UI_INPUT_FILTER[77] = K_MOUSE9;
+  UI_INPUT_FILTER[78] = K_MOUSE10;
+  UI_INPUT_FILTER[79] = K_MOUSE11;
+  UI_INPUT_FILTER[80] = K_MOUSE12;
+  UI_INPUT_FILTER[81] = K_MOUSE13;
+  UI_INPUT_FILTER[82] = K_MOUSE14;
+  UI_INPUT_FILTER[83] = K_MOUSE15;
+  UI_INPUT_FILTER[84] = K_MOUSE16;
 };

@@ -27,7 +27,7 @@ string IMG_NEW_ELITE  = "gfx/menu/newgame/new_elite.png";
 //don't have to put them in a header, and they can be 'somewhat' flexibily generated
 void() click_newg_back={
   menu_clear_items(M_STATE);
-  M_STATE = M_SINGLE;
+  m_camp_f();
   localsound("sound/misc/menu2.wav");
 };
 
@@ -102,7 +102,7 @@ void(float key, float ascii) m_newg_k={
     case K_ESCAPE:
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
-      M_STATE = M_SINGLE;
+      m_camp_f();
       break;
     case K_MOUSE1:
       cons_logAString("MOUSE_TARGET.classname", MOUSE_TARGET.classname);  //DEBUG

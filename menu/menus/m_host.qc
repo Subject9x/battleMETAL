@@ -218,8 +218,8 @@ void() click_host_prevskill={
 };
 
 void() click_host_map_nxt={
-  local string mp, check;
-  local float test, tp;
+  local string check;
+  local float test;
   
   test = SELECT_MAP + 1;
   if( SUB_MENU == SUB_TDM){
@@ -238,8 +238,8 @@ void() click_host_map_nxt={
 };
 
 void() click_host_map_prv={
-  local string mp, check;
-  local float test, tp;
+  local string check;
+  local float test;
   
   test = SELECT_MAP - 1;
   if( SUB_MENU == SUB_TDM){
@@ -319,7 +319,7 @@ void() m_host_i={
   host_skill_prev.subid = SUB_COOP;
   
   host_map_lbl = lbl_text('153 240', '10 10 0', " ", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_HOST, 1, (UI_FLAG_SIZE_IMG) );
-  host_map_lbl.label = strzone(map_list_getmap(SELECT_MAP, 0));
+  host_map_lbl.label = strzone(map_list_getmap(0));
   
   host_map_nxt = btn_img_callback('265 240 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_nxt, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   host_map_prev = btn_img_callback('140 240 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_prv, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -345,10 +345,10 @@ void() m_host_f={
   SELECT_SKILL = 0;
   SELECT_TYPE = 0;
   SELECT_MAP = 1;
-  M_STATE = M_HOST;
-  setkeydest(KEY_MENU);
   map_list_getmap(FALSE);
   map_list_getmap(TRUE);
+  M_STATE = M_HOST;
+  setkeydest(KEY_MENU);
   m_host_i();
 };
 
@@ -400,11 +400,8 @@ void(float key, float ascii) m_host_k={
   
   switch(key){
     case K_ESCAPE:
-      //note how this is different than m_main_k, here we just want to go 'up' one
-      //menu and not leave the menu system
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
-      M_STATE = M_MULTI;
       SUB_MENU = 0;
       m_multi_f();
       break;
