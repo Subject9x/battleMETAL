@@ -22,6 +22,7 @@ void() m_init={
   TEXTFIELD_TARGET = null_entity;
   UI_INPUT_ACTIVE = FALSE;
   SUB_MENU = FALSE;
+  
   //setup textfield key filter;
   menu_ini_txtfilter();
 };

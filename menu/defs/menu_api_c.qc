@@ -221,13 +221,16 @@ entity(vector org, vector siz, float charlen, void() onchange, float algn, float
   return newtxt;
 };
 
-entity(vector org, vector siz, void() onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield={
+entity(vector org, vector siz, void() onchange, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield={
   local entity newtxt, this;
   this = self;
-  newtxt = inp_textfield(org, siz, 0, onchange, algn, menu_id, clr, hclr, alph, flgs);
+  newtxt = inp_textfield(org, siz, 0, onchange, 0, menu_id, clr, hclr, alph, flgs);
   self = newtxt;
     self.classname = "bindfield";
-    self.data_text = "";
+    self.data_text = strzone(ini_bind_cmd);
+    local vector bind;
+    bind = menu_keybind_keyfor(self.data_text);
+    self.len = bind_x;
     self.label = "";
     self.draw = render_bindfield;
     self.isclick = bindfld_isclick;
@@ -405,6 +408,12 @@ void(entity txt) render_bindfield={
   local entity this;
   this = self;
   self = txt;
+    
+    self.label = "UNBOUND";
+    if(self.len > -1){
+      self.label = keynumtostring(self.len);
+    }
+    
     local vector org, sizzle, bclr;
     org = gui_percentToPixelRawVec(self.origin);
     sizzle_x = self.size_x * strlen(self.label);
@@ -692,46 +701,51 @@ void(float keynr, float  ascii) menu_do_keybind={
   if( menu_textfilter_validate(keynr, KEYBIND_TARGET.flags) ){
     KEYBIND_TARGET.len = keynr;
     
-    if( KEYBIND_TARGET.data_text != ""){
-      strunzone(KEYBIND_TARGET.data_text);
-    }
-    KEYBIND_TARGET.data_text = strzone(keynumtostring(KEYBIND_TARGET.len));
-    
     KEYBIND_TARGET.ischange(KEYBIND_TARGET);
     UI_KEYBIND_ACTIVE = FALSE;
     KEYBIND_TARGET = null_entity;
   }
 };
 
-string(float keynr) menu_keybind_get={
-
-};
-
-string(string comd) menu_keybind_forkey={
+vector(string comd) menu_keybind_keyfor={
   local string k1, k2;
-  tokenize(findkeysforcommand(comd));
+  local vector binds;
+  tokenize(findkeysforcommand(comd, 0));
   k1 = argv(0);
   k2 = argv(1);
-  if( k1 != ""){
-    k1 = keynumtostring(stof(k1));
-    return k1;
-  }
-  k2 = keynumtostring(stof(k2));
-  return k2;
+  binds_x = stof(k1);
+  binds_y = stof(k2);
+  return binds;
 };
 
-
-
 void(string bind_cmd) menu_keybind_change={
-  local string unbind, bind;
-  unbind = strcat("unbind ", self.label, "\n");
+  local string bind;
+  local vector keybound;
+  local entity keybinds;
   
-  cmd(unbind);
-  self.label = strzone(self.data_text);
-  setkeybind_bindmap(stringtokeynum(self.label), bind_cmd, 0);
+  keybound = menu_keybind_keyfor(bind_cmd);
   
-  //bind = strcat("bind ", self.label, " \"", bind_cmd,"\"\n");
-  //cmd(bind);
+  if( (keybound_x > -1) && (keybound_x != self.len) ){
+    setkeybind_bindmap(keybound_x, "", 0);  //unbind desired key first
+  }
+  strunzone(self.data_text);
+  self.data_text = strzone(bind_cmd);
+  setkeybind_bindmap(self.len, self.data_text, 0);  //unbind desired key first
+  
+  
+  if( (keybound_x > -1) || (keybound_y > -1) ){
+    keybinds = findchainstring(classname, "bindfield");
+    while(keybinds){
+      if(keybinds != self){
+        if( keybinds.len == self.len ){
+          strunzone(keybinds.data_text);
+          keybinds.data_text = strzone(" ");
+          keybinds.len = -1;
+        }
+      }
+      keybinds = keybinds.chain;
+    }
+  }  
 };
 
 /*

@@ -67,7 +67,7 @@ void(float keynr, float ascii) menu_do_textfield;
 void(float keynr, float ascii) menu_do_keybind;
 void(string bind_cmd) menu_keybind_change;
 string(float keynr) menu_keybind_get;
-string(string comd) menu_keybind_forkey;
+vector(string comd) menu_keybind_keyfor;
 
 void() render_predraw;
 void(entity btn) render_btn;
@@ -87,7 +87,7 @@ entity(vector org, vector siz, string txt, float algn, float menu_id, void() cli
 entity(vector org, vector siz, string img1, float algn, float menu_id, string commd, vector clr, vector hclr, float alph, float flgs) btn_img_command;
 
 entity(vector org, vector siz, float charlen, void()  onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_textfield;
-entity(vector org, vector siz, void() onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield;
+entity(vector org, vector siz, void() onchange, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield;
 
 void() m_sys_doclick; //called by all menus to process widget clicks
 void() btn_noclick={};  //simple null function

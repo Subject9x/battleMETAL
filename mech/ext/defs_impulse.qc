@@ -9,8 +9,8 @@ Overview: defines all impulse numbers, prevents magic numbers for key definition
 float IMP_WGROUP1 = 1;  //weapon group change impulses
 float IMP_WGROUP2 = 2;
 float IMP_WGROUP3 = 3;
-float IMP_NEXWGRP = 4;  //next vehicle choice impulses - DEPRECATE
-float IMP_PRVWGRP = 5;  //next vehicle choice impulses - DEPRECATE
+float IMP_NEXWGRP = 4;  //next weapon group
+float IMP_PRVWGRP = 5;  //previous weapon group
 float IMP_SUICIDE = 6;  //debug suicide - DEPRECATE
 float IMP_TARGET = 7; //target under reticule
 float IMP_RADAR = 8;  //toggle radar
