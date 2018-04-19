@@ -109,6 +109,8 @@ void(float width, float height) m_draw={
   VIEW_ORG = '0 0';
   VIEW_MAX_x = width;
   VIEW_MAX_y = height;
+  VIEW_MAX_z = cvar("vid_pixelheight");
+  
   VIEW_CTR_x = VIEW_CTR_x / 2;
   VIEW_CTR_y = VIEW_CTR_y / 2;
   VIEW_MPOS = getmousepos();

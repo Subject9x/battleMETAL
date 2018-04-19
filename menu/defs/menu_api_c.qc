@@ -15,6 +15,7 @@
 .string classname;
 .string image1;
 .string image2;
+.float drawme;
 .void() predraw;
 .void() draw;
 .void() onClick;
@@ -46,6 +47,7 @@ entity() new_ui_elm={
     self.selected = FALSE;
     self.menuId = -1;
     self.image1 = "";
+    self.drawme = TRUE;
     self.command = "";
     self.rolledover = FALSE;
     self.align = 0;
@@ -112,6 +114,7 @@ entity() btn_new_blank={
     self.rolledover = FALSE;
     self.selected = FALSE;
     self.image1 = "";
+    self.drawme = TRUE;
     self.label = "";
     self.isclick = btn_isclick;
     self.draw = render_btn;
@@ -200,6 +203,7 @@ entity(vector org, vector siz, float charlen, void() onchange, float algn, float
   newtxt = spawn();
   self = newtxt;
     self.classname = "textfield";
+    self.drawme = TRUE;
     self.data_text = "";
     self.len = charlen;
     self.rolledover = FALSE;
@@ -227,6 +231,7 @@ entity(vector org, vector siz, void() onchange, string ini_bind_cmd, float menu_
   newtxt = inp_textfield(org, siz, 0, onchange, 0, menu_id, clr, hclr, alph, flgs);
   self = newtxt;
     self.classname = "bindfield";
+    self.drawme = TRUE;
     self.data_text = strzone(ini_bind_cmd);
     local vector bind;
     bind = menu_keybind_keyfor(self.data_text);
@@ -244,42 +249,43 @@ entity(vector org, vector siz, void() onchange, string ini_bind_cmd, float menu_
 void(entity btn) render_btn={
   local entity this;
   local vector org, sizzle, bclr;
-  
-  this = self;
-  self = btn;
-    org = gui_percentToPixelRawVec(self.origin);
-    
-    sizzle = gui_percentToPixelRawVec(self.size);
-    if( (self.flags & UI_FLAG_SIZE_IMG) ){
-      sizzle = drawgetimagesize(self.image1);
-      sizzle = gui_percentToPixelRawVec( gui_scaleSize(sizzle, VIEW_SCALE) );
-    }
-    
-    if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
-      MOUSE_TARGET = self;
-      if( self.rolledover == FALSE){ 
-        localsound("sound/misc/menu3.wav");
-        self.rolledover = TRUE;
-      }    
-    }
-    else{
-      if( self.rolledover == TRUE){
-        self.rolledover = FALSE;
-        MOUSE_TARGET = null_entity;
+  if(btn.drawme){
+    this = self;
+    self = btn;
+      org = gui_percentToPixelRawVec(self.origin);
+      
+      sizzle = gui_percentToPixelRawVec(self.size);
+      if( (self.flags & UI_FLAG_SIZE_IMG) ){
+        sizzle = drawgetimagesize(self.image1);
+        sizzle = gui_percentToPixelRawVec( gui_scaleSize(sizzle, VIEW_SCALE) );
       }
-    }
+      
+      if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+        MOUSE_TARGET = self;
+        if( self.rolledover == FALSE){ 
+          localsound("sound/misc/menu3.wav");
+          self.rolledover = TRUE;
+        }    
+      }
+      else{
+        if( self.rolledover == TRUE){
+          self.rolledover = FALSE;
+          MOUSE_TARGET = null_entity;
+        }
+      }
 
-    bclr = self.color;
-    if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){  
-      if(self.rolledover){
-        bclr = self.select_color;
-      }  
-    }
-    
-    if(self.image1 != ""){
-      drawpic(org, self.image1, sizzle, bclr, self.alpha, 0);
-    }
-  self = this;
+      bclr = self.color;
+      if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){  
+        if(self.rolledover){
+          bclr = self.select_color;
+        }  
+      }
+      
+      if(self.image1 != ""){
+        drawpic(org, self.image1, sizzle, bclr, self.alpha, 0);
+      }
+    self = this; 
+  }
 };
 
 
@@ -287,164 +293,173 @@ void(entity btn) render_btn_txt={
   local entity this;
   local vector org, sizzle, bclr;
   
-  this = self;
-  self = btn;
-    org = gui_percentToPixelRawVec(self.origin);
-    
-    sizzle = gui_percentToPixelRawVec(self.size);
-    if( (self.flags & UI_FLAG_SIZE_IMG) ){
-      local float txt_len;
-      txt_len = stringwidth(self.label, 0, self.size);
-      sizzle_x = txt_len;
-      sizzle_y = self.size_y;
-      sizzle = gui_percentToPixelRawVec( sizzle );
-    }
-    
-    bclr = self.color;
-    if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
-      MOUSE_TARGET = self;
-      if( self.rolledover == FALSE){ 
-        localsound("sound/misc/menu3.wav");
-        self.rolledover = TRUE;
-      }    
-    }
-    else{
-      if( self.rolledover == TRUE){
-        self.rolledover = FALSE;
-        MOUSE_TARGET = null_entity;
+  if(btn.drawme){
+    this = self;
+    self = btn;
+      org = gui_percentToPixelRawVec(self.origin);
+      
+      sizzle = gui_percentToPixelRawVec(self.size);
+      if( (self.flags & UI_FLAG_SIZE_IMG) ){
+        local float txt_len;
+        txt_len = stringwidth(self.label, 0, self.size);
+        sizzle_x = txt_len;
+        sizzle_y = self.size_y;
+        sizzle = gui_percentToPixelRawVec( sizzle );
       }
-    }
-    
-    if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){  
-      if(self.rolledover){
-        bclr = self.select_color;
-      }  
-    }
-    
-    drawstring(org, self.label, self.size, bclr, self.alpha, 0);
-    
-  self = this;
+      
+      bclr = self.color;
+      if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+        MOUSE_TARGET = self;
+        if( self.rolledover == FALSE){ 
+          localsound("sound/misc/menu3.wav");
+          self.rolledover = TRUE;
+        }    
+      }
+      else{
+        if( self.rolledover == TRUE){
+          self.rolledover = FALSE;
+          MOUSE_TARGET = null_entity;
+        }
+      }
+      
+      if( !(self.flags & UI_FLAG_NOHIGHLIGHT) ){  
+        if(self.rolledover){
+          bclr = self.select_color;
+        }  
+      }
+      
+      drawstring(org, self.label, self.size, bclr, self.alpha, 0);
+      
+    self = this;
+  }
 };
 
 void(entity lbl) render_lbl_text={
   local entity this;
   local vector org, sizzle, bclr;
-  
-  this = self;
-  self = lbl;
-    org = gui_percentToPixelRawVec(self.origin);
-    
-    sizzle = gui_percentToPixelRawVec(self.size);
-    if( (self.flags & UI_FLAG_SIZE_IMG) ){
-      local float txt_len;
-      txt_len = stringwidth(self.label, 0, self.size);
-      sizzle_x = txt_len;
-      sizzle_y = self.size_y;
-      sizzle = gui_percentToPixelRawVec( sizzle );
-    }
-    drawstring(org, self.label, self.size, self.color, self.alpha, 0);
-  self = this;
+  if(lbl.drawme){
+    this = self;
+    self = lbl;
+      org = gui_percentToPixelRawVec(self.origin);
+      
+      sizzle = gui_percentToPixelRawVec(self.size);
+      if( (self.flags & UI_FLAG_SIZE_IMG) ){
+        local float txt_len;
+        txt_len = stringwidth(self.label, 0, self.size);
+        sizzle_x = txt_len;
+        sizzle_y = self.size_y;
+        sizzle = gui_percentToPixelRawVec( sizzle );
+      }
+      drawstring(org, self.label, self.size, self.color, self.alpha, 0);
+    self = this;
+  }
 };
 
 void(entity lbl) render_lbl_img={
   local entity this;
   local vector org, sizzle, bclr;
   
-  this = self;
-  self = lbl;
-    org = gui_percentToPixelRawVec(self.origin);
-    
-    sizzle = gui_percentToPixelRawVec(self.size);
-    if( (self.flags & UI_FLAG_SIZE_IMG) ){
-      sizzle = drawgetimagesize(self.image1);
-      sizzle = gui_percentToPixelRawVec( gui_scaleSize(sizzle, VIEW_SCALE) );
-    }
+  if(lbl.drawme){
+    this = self;
+    self = lbl;
+      org = gui_percentToPixelRawVec(self.origin);
+      
+      sizzle = gui_percentToPixelRawVec(self.size);
+      if( (self.flags & UI_FLAG_SIZE_IMG) ){
+        sizzle = drawgetimagesize(self.image1);
+        sizzle = gui_percentToPixelRawVec( gui_scaleSize(sizzle, VIEW_SCALE) );
+      }
 
-    if(self.image1 != ""){
-      drawpic(org, self.image1, sizzle, self.color, self.alpha, 0);
-    }
-  self = this;
+      if(self.image1 != ""){
+        drawpic(org, self.image1, sizzle, self.color, self.alpha, 0);
+      }
+    self = this;
+  }
 };
 
 
 void(entity txt) render_textfield={
   local entity this;
-  this = self;
-  self = txt;
-    local vector org, sizzle, bclr;
-    org = gui_percentToPixelRawVec(self.origin);
-    sizzle_x = self.size_x * self.len;
-    sizzle_y = self.size_y;
-    sizzle = gui_percentToPixelRawVec(sizzle);
-    
-    bclr = self.color;
-    if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
-      MOUSE_TARGET = self;
-      if( self.rolledover == FALSE){ 
-        localsound("sound/misc/menu3.wav");
-        self.rolledover = TRUE;
-      }    
-    }
-    else{
-      if( self.rolledover == TRUE){
-        self.rolledover = FALSE;
-        MOUSE_TARGET = null_entity;
+  if(txt.drawme){
+    this = self;
+    self = txt;
+      local vector org, sizzle, bclr;
+      org = gui_percentToPixelRawVec(self.origin);
+      sizzle_x = self.size_x * self.len;
+      sizzle_y = self.size_y;
+      sizzle = gui_percentToPixelRawVec(sizzle);
+      
+      bclr = self.color;
+      if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+        MOUSE_TARGET = self;
+        if( self.rolledover == FALSE){ 
+          localsound("sound/misc/menu3.wav");
+          self.rolledover = TRUE;
+        }    
       }
-    }
-    
-    if(self.rolledover){
-      bclr = self.select_color;
-    }
-    
-    if( (TEXTFIELD_TARGET == self) && (UI_INPUT_ACTIVE) ){
-      bclr = CLR_DEF_ARM_THREEQ;
-    }
+      else{
+        if( self.rolledover == TRUE){
+          self.rolledover = FALSE;
+          MOUSE_TARGET = null_entity;
+        }
+      }
+      
+      if(self.rolledover){
+        bclr = self.select_color;
+      }
+      
+      if( (TEXTFIELD_TARGET == self) && (UI_INPUT_ACTIVE) ){
+        bclr = CLR_DEF_ARM_THREEQ;
+      }
 
-    drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
-  self = this;
+      drawstring(org, self.data_text, self.size, bclr, self.alpha, 0);
+    self = this;
+  }
 };
 
 void(entity txt) render_bindfield={
   local entity this;
-  this = self;
-  self = txt;
-    
-    self.label = "UNBOUND";
-    if(self.len > -1){
-      self.label = keynumtostring(self.len);
-    }
-    
-    local vector org, sizzle, bclr;
-    org = gui_percentToPixelRawVec(self.origin);
-    sizzle_x = self.size_x * strlen(self.label);
-    sizzle_y = self.size_y;
-    sizzle = gui_percentToPixelRawVec(sizzle);
-    
-    bclr = self.color;
-    if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
-      MOUSE_TARGET = self;
-      if( self.rolledover == FALSE){ 
-        localsound("sound/misc/menu3.wav");
-        self.rolledover = TRUE;
-      }    
-    }
-    else{
-      if( self.rolledover == TRUE){
-        self.rolledover = FALSE;
-        MOUSE_TARGET = null_entity;
+  if(txt.drawme){
+    this = self;
+    self = txt;
+      
+      self.label = "UNBOUND";
+      if(self.len > -1){
+        self.label = keynumtostring(self.len);
       }
-    }
-    
-    if(self.rolledover){
-      bclr = self.select_color;
-    }
-    
-    if( (KEYBIND_TARGET == self) && (UI_KEYBIND_ACTIVE) ){
-      bclr = CLR_DEF_ARM_THREEQ;
-    }
+      
+      local vector org, sizzle, bclr;
+      org = gui_percentToPixelRawVec(self.origin);
+      sizzle_x = self.size_x * strlen(self.label);
+      sizzle_y = self.size_y;
+      sizzle = gui_percentToPixelRawVec(sizzle);
+      
+      bclr = self.color;
+      if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+        MOUSE_TARGET = self;
+        if( self.rolledover == FALSE){ 
+          localsound("sound/misc/menu3.wav");
+          self.rolledover = TRUE;
+        }    
+      }
+      else{
+        if( self.rolledover == TRUE){
+          self.rolledover = FALSE;
+          MOUSE_TARGET = null_entity;
+        }
+      }
+      
+      if(self.rolledover){
+        bclr = self.select_color;
+      }
+      
+      if( (KEYBIND_TARGET == self) && (UI_KEYBIND_ACTIVE) ){
+        bclr = CLR_DEF_ARM_THREEQ;
+      }
 
-    drawstring(org, self.label, self.size, bclr, self.alpha, 0);
-  self = this;
+      drawstring(org, self.label, self.size, bclr, self.alpha, 0);
+    self = this;
+  }
 };
 
 void(entity myself) txtfld_ischange={
@@ -746,6 +761,26 @@ void(string bind_cmd) menu_keybind_change={
       keybinds = keybinds.chain;
     }
   }  
+};
+
+string(float id) menu_getvideo_clean={
+  local vector v;
+  local string s;
+  v = VID_RESO_SIZE[id];
+  s = sprintf("%s x %s", ftos(v_x), ftos(v_y));
+  return s;
+}
+
+float(vector vsize) menu_getvideo_modeid={
+  local float itr, found;
+  itr = 1;
+  while( itr <= 56){
+    if( VID_RESO_SIZE[itr] == vsize ){  
+      found = itr;
+    }
+    itr = itr + 1;
+  }
+  return found;
 };
 
 /*

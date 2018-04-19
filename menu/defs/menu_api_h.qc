@@ -16,6 +16,10 @@ float UI_INPUT_FILTER_MAX = 84;
 float UI_INPUT_FILTER[UI_INPUT_FILTER_MAX];  //filter out these chars;
 float UI_KEYBIND_ACTIVE;
 
+vector VID_RESO_SIZE[56];
+vector VID_RESO_HALF[56];
+string VID_RESO_NAME[56];
+
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL     = 1;  //don't render label
 float UI_FLAG_NEW         = 2;  //is new
@@ -34,6 +38,7 @@ float UI_FLAG_TXTFIELD_FUNC = 1024;
 .float selected;
 .float menuId;
 .string image1;
+.float drawme;
 .void() predraw;
 .void(entity myself) draw;
 .void(entity myself) isclick;  //internal, runs when clicked, if onClick() defined, then will execute within
@@ -68,6 +73,8 @@ void(float keynr, float ascii) menu_do_keybind;
 void(string bind_cmd) menu_keybind_change;
 string(float keynr) menu_keybind_get;
 vector(string comd) menu_keybind_keyfor;
+float(vector vsize) menu_getvideo_modeid;
+string(float id) menu_getvideo_clean;
 
 void() render_predraw;
 void(entity btn) render_btn;
@@ -158,4 +165,36 @@ string(float typ) map_list_getmap ={
 	} 
 	fclose(f);
   return found;
+};
+
+/*
+  Darkplaces source code hardcodes this, I guess quake doesn't actually
+  poll the display device for achievable ratios, so here we are :|
+*/
+void() menu_ini_display_constants={
+  	local float f, itr;
+	local string ln, found;
+  found = "";
+  itr = 0;
+  f = fopen("data/cache/precache_resolutions.txt", FILE_READ);
+	if (f != -1){ 
+		ln = fgets(f); 
+		while(ln != ""){ 
+			if(strstrofs(ln, "//",0) == -1){
+        tokenizebyseparator(ln, ",");
+        local vector vsize, vasize;
+        vsize_x = stof(argv(1));
+        vsize_y = stof(argv(2));
+        vsize_z = stof(argv(3));
+        vasize_x = stof(argv(4));
+        vasize_y = stof(argv(5));
+        VID_RESO_SIZE[itr] = vsize;
+        VID_RESO_HALF[itr] = vasize;
+        VID_RESO_NAME[itr] = strzone(argv(0));
+			}
+      itr = itr + 1;
+			ln = fgets(f);
+		} 
+	} 
+	fclose(f);
 };
