@@ -78,6 +78,12 @@ void(float keynr, float ascii) m_keydown={
       case M_OPTIONS_GRAPHICS:
         m_graphics_k(keynr, ascii);
         break;
+      case M_OPTIONS_EFFECT:
+        m_effects_k(keynr, ascii);
+        break;
+      case M_OPTIONS_GFX:
+        m_gfx_k(keynr, ascii);
+        break;
       case M_OPTIONS_AUDIO:
         m_audio_k(keynr, ascii);
         break;
@@ -107,14 +113,17 @@ void(float keynr, float ascii) m_keyup={
 void(float width, float height) m_draw={
   //prepare VIEW globals per-frame
   VIEW_ORG = '0 0';
-  VIEW_MAX_x = width;
-  VIEW_MAX_y = height;
+  VIEW_MAX_x = cvar("vid_conwidth");
+  VIEW_MAX_y = cvar("vid_conheight");
   VIEW_MAX_z = cvar("vid_pixelheight");
   
   VIEW_CTR_x = VIEW_CTR_x / 2;
   VIEW_CTR_y = VIEW_CTR_y / 2;
   VIEW_MPOS = getmousepos();
-
+  VIEW_ACT_x = cvar("vid_width");
+  VIEW_ACT_y = cvar("vid_height");
+  VIEW_ACT_z = cvar("vid_pixelheight");
+  
   //draw the selected Menu_d() function
   switch(M_STATE){
     case M_NONE:
@@ -152,6 +161,12 @@ void(float width, float height) m_draw={
     case M_OPTIONS_GRAPHICS:
       m_graphics_d();
       break;
+    case M_OPTIONS_EFFECT:
+      m_effects_d();
+      break;
+    case M_OPTIONS_GFX:
+      m_gfx_d();
+      break;
     case M_OPTIONS_AUDIO:
       m_audio_d();
       break;
@@ -166,8 +181,8 @@ void(float width, float height) m_draw={
   m_drawmouse(DRAW_MOUSE);
   //DEBUG
   drawstring('4 4', vtos(getmousepos()), '8 8 0', '1 1 1', 1, 0);
-  drawstring('4 14', ftos(width), '8 8 0', '1 1 1', 1, 0);
-  drawstring('48 14', ftos(height), '8 8 0', '1 1 1', 1, 0);
+  drawstring('4 14', ftos(VIEW_MAX_x), '8 8 0', '1 1 1', 1, 0);
+  drawstring('48 14', ftos(VIEW_MAX_y), '8 8 0', '1 1 1', 1, 0);
   drawstring('4 24', strcat("mouse : ", ftos(MOUSE_DOWN)), '8 8 0', '1 1 1', 1, 0);
   drawstring('4 34', strcat("target : ", MOUSE_TARGET.classname), '8 8 0', '1 1 1', 1, 0);
 };

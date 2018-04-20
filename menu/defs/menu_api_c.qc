@@ -302,7 +302,7 @@ void(entity btn) render_btn_txt={
       if( (self.flags & UI_FLAG_SIZE_IMG) ){
         local float txt_len;
         txt_len = stringwidth(self.label, 0, self.size);
-        sizzle_x = txt_len;
+        sizzle_x =  self.size_x * txt_len;
         sizzle_y = self.size_y;
         sizzle = gui_percentToPixelRawVec( sizzle );
       }
@@ -350,7 +350,7 @@ void(entity lbl) render_lbl_text={
         sizzle_y = self.size_y;
         sizzle = gui_percentToPixelRawVec( sizzle );
       }
-      drawstring(org, self.label, self.size, self.color, self.alpha, 0);
+      drawstring(org, self.label, sizzle, self.color, self.alpha, 0);
     self = this;
   }
 };
@@ -384,6 +384,7 @@ void(entity txt) render_textfield={
     this = self;
     self = txt;
       local vector org, sizzle, bclr;
+      
       org = gui_percentToPixelRawVec(self.origin);
       sizzle_x = self.size_x * self.len;
       sizzle_y = self.size_y;
@@ -430,7 +431,7 @@ void(entity txt) render_bindfield={
       
       local vector org, sizzle, bclr;
       org = gui_percentToPixelRawVec(self.origin);
-      sizzle_x = self.size_x * strlen(self.label);
+      sizzle_x = stringwidth(self.label, 0, self.size);
       sizzle_y = self.size_y;
       sizzle = gui_percentToPixelRawVec(sizzle);
       

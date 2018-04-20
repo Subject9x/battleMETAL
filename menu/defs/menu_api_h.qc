@@ -185,9 +185,9 @@ void() menu_ini_display_constants={
         local vector vsize, vasize;
         vsize_x = stof(argv(1));
         vsize_y = stof(argv(2));
-        vsize_z = stof(argv(3));
-        vasize_x = stof(argv(4));
-        vasize_y = stof(argv(5));
+        vsize_z = stof(argv(5));
+        vasize_x = stof(argv(3));
+        vasize_y = stof(argv(4));
         VID_RESO_SIZE[itr] = vsize;
         VID_RESO_HALF[itr] = vasize;
         VID_RESO_NAME[itr] = strzone(argv(0));
@@ -197,4 +197,21 @@ void() menu_ini_display_constants={
 		} 
 	} 
 	fclose(f);
+};
+
+void(string filename) menu_execute_cvar_list={
+  local float f;
+	local string ln;
+  f = fopen(filename, FILE_READ);
+	if (f != -1){
+		ln = fgets(f); 
+		while(ln != ""){ 
+			if(strstrofs(ln, "//",0) == -1){
+        tokenizebyseparator(ln, " ");
+        cvar_set(argv(0), argv(1));
+			}
+			ln = fgets(f);
+		}
+    fclose(f);    
+	} 
 };

@@ -30,24 +30,32 @@ string IMG_MAIN_QUIT   = "gfx/menu/main/main_quit.png";
 //because we define these right before the menu functions are defined, we 
 //don't have to put them in a header, and they can be 'somewhat' flexibily generated
 void() click_main_camp={
+  menu_clear_items(M_STATE);
+  M_STATE = M_SINGLE;
   m_camp_f();
   cons_logAFloat("click_main_camp->M_STATE", M_STATE);  //DEBUG
 };
 
 void() click_main_multi={
+  menu_clear_items(M_STATE);
+  M_STATE = M_MULTI;
   m_multi_f();
 };
 
 void() click_main_quit={
-  M_STATE = M_NONE;
+  menu_clear_items(M_STATE);
   cmd("quit");
 };
 
 void() click_main_options={
+  menu_clear_items(M_STATE);
+  M_STATE = M_OPTIONS;
   m_options_f();
 };
 
 void() click_main_credits={
+  menu_clear_items(M_STATE);
+  M_STATE = M_CREDITS;
   m_credits_f();
 };
 

@@ -29,7 +29,7 @@ void() click_camp_load = {
 void() click_camp_back={
   menu_clear_items(M_STATE);
   M_STATE = M_MAIN;
-  localsound("sound/misc/menu2.wav");
+  m_main_f();
 };
 
 

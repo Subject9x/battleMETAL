@@ -94,7 +94,7 @@ void() txt_control_bind_forward={
   menu_keybind_change ("+forward");
 };
 void() txt_control_bind_backward={
-  menu_keybind_change ("+backward");
+  menu_keybind_change ("+back");
 };
 void() txt_control_bind_strafeleft={
   menu_keybind_change ("+moveleft");
@@ -166,7 +166,7 @@ void() m_controls_i={
   //movement
   controls_forward = inp_keybindfield('515 213', '10 10 0', txt_control_bind_forward, "+forward", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_backward = inp_keybindfield('515 225', '10 10 0', txt_control_bind_backward, "+backward", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_backward = inp_keybindfield('515 225', '10 10 0', txt_control_bind_backward, "+back", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   controls_strafe_left = inp_keybindfield('515 237', '10 10 0', txt_control_bind_strafeleft, "+moveleft", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 

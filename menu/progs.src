@@ -27,6 +27,8 @@ menu_main.qc
   menus/m_options.qc
     menus/m_options_controls.qc
     menus/m_options_graphics.qc
+      menus/m_options_effects.qc
+      menus/m_options_gfx.qc
     menus/m_options_audio.qc
     menus/m_options_gameplay.qc
   menus/m_credits.qc

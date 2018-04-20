@@ -11,6 +11,7 @@ vector VIEW_MAX;
 vector VIEW_CTR;
 vector VIEW_MPOS;
 float VIEW_SCALE;
+vector VIEW_ACT;
 
 //MENU SYSTEM CONSTANT
 float VIEW_TOP = 1;

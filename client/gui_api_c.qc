@@ -65,18 +65,18 @@ float(float pcy) gui_percentY={
 //the UI was aligned on a 1280x960 display
 vector(float pcx, float pcy) gui_percentToPixelRaw={
   local vector pct;
-  if(pct_x < 0){
-    pct_x = pct_x * -1;
-    pct_x = pcx / 1280;
-    pct_x = pct_x * -1;
+  if(pcx < 0){
+    pct_x = 0 - pcx;
+    pct_x = pct_x / 1280;
+    pct_x = 0 - pct_x;
   }
   else{
     pct_x = pcx / 1280;
   }
-  if(pct_y < 0){
-    pct_y = pct_y * -1;
-    pct_y = pcy / 960;
-    pct_y = pct_y * -1;
+  if(pcy < 0){
+    pct_y = 0 - pcy;
+    pct_y = pct_y / 960;
+    pct_y = 0 - pct_y;
   }
   else{
     pct_y = pcy / 960;
