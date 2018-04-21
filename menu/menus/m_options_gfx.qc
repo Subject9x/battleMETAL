@@ -52,6 +52,7 @@ void() m_gfx_f={
   running on M_STATE to determine which menu_d to execute.
 */
 void() m_gfx_d={
+
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_GFX);
   while(widget){

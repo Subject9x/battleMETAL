@@ -76,6 +76,8 @@ vector(string comd) menu_keybind_keyfor;
 float(vector vsize) menu_getvideo_modeid;
 string(float id) menu_getvideo_clean;
 
+string(float val) menu_float_bool;
+
 void() render_predraw;
 void(entity btn) render_btn;
 void(entity btn) render_btn_txt;

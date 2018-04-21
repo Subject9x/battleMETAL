@@ -784,6 +784,14 @@ float(vector vsize) menu_getvideo_modeid={
   return found;
 };
 
+
+string(float val) menu_float_bool={
+  if(val){
+    return "ON";
+  }
+  return "OFF";
+};
+
 /*
   only allow these keys when typing in textfield
   not one of my best moments here...

@@ -494,12 +494,12 @@ void() click_graphics_gfx_less={
 };
 
 void() click_graphics_gfx={
-  menu_clear_items(M_STATE);
+  //don't clear because user hasn't saved their config yet
   m_gfx_f();
 };
 
 void() click_graphics_effects={
-  menu_clear_items(M_STATE);
+  //don't clear because user hasn't saved their config yet
   m_effects_f();
 };
 
