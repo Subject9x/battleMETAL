@@ -242,8 +242,8 @@ void(float drawmous) m_drawmouse={
     i_sz = drawgetimagesize(UI_IMG_MOUSE);
     i_sz = gui_percentToPixelRawVec( gui_scaleSize(i_sz, VIEW_SCALE / 1.25) );
 
-    mpos_x = VIEW_MPOS_x - gui_percentXRaw(2);
-    mpos_y = VIEW_MPOS_y - gui_percentYRaw(4);
+    mpos_x = VIEW_MPOS_x;
+    mpos_y = VIEW_MPOS_y;
     
     drawpic(mpos, UI_IMG_MOUSE, i_sz, '1 1 1', 1, 0);
   }

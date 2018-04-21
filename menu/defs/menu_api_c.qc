@@ -546,7 +546,7 @@ void() menu_scan_saves={
       }
       tokenizebyseparator(map_title, "kills");
       map_title = argv(0);
-      save_name = strcat("--[", map_name, "]- ", map_title);
+      save_name = strcat("--[", map_name, "]-- ", map_title);
       GAME_SAVES[itr] = strzone(fname);
       GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
       fclose(flannel);

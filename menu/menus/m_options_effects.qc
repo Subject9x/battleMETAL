@@ -460,8 +460,8 @@ void() click_effects_save={
   cvar_set("r_lerpmodels", ftos(effects_model_interpol_lbl.len));
   cvar_set("r_lerpsprites", ftos(effects_sprite_interpol_lbl.len));
   cvar_set("r_lerplightstyles", ftos(effects_flicker_interpol_lbl.len));
-  cvar_set("saved2", "0");
-  
+  cvar_set("saved1", "0");
+  cmd("saveconfig");
   menu_clear_items(M_STATE);
   m_graphics_f();
 };
@@ -666,7 +666,6 @@ void() m_effects_d={
     gui_renderString("Sprite Interpolation :", gui_percentToPixelRawVec('21 234'), CLR_DEF_WHITE, '8 8 0', 1, 0);
     gui_renderString("Light Interpolation :", gui_percentToPixelRawVec('29 248'), CLR_DEF_WHITE, '8 8 0', 1, 0);
 
-    
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_EFFECT);
   while(widget){

@@ -33,8 +33,10 @@ void() click_newg_back={
 
 void() click_newg_launch={
   menu_clear_items(M_STATE);
+  cmd("deathmatch 0\n");
+  cmd("coop 0\n");
   menu_exit_togame();
-  cmd("map", " start.bsp");
+  cmd("map", " start.bsp\n");
 };
 
 void() click_newg_novice={

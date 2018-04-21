@@ -259,8 +259,8 @@ void() click_refresh_rate_dn={
   local float rate;
   rate = graphics_refresh_rate_lbl.len;
   rate = rate - 10;
-  if(rate <= 20){
-    rate = 20;
+  if(rate <= 50){
+    rate = 50;
     graphics_refresh_rate_dn.drawme = FALSE;
   }
   strunzone(graphics_refresh_rate_lbl.label);
@@ -494,12 +494,12 @@ void() click_graphics_gfx_less={
 };
 
 void() click_graphics_gfx={
-  //don't clear because user hasn't saved their config yet
+  menu_clear_items(M_STATE);
   m_gfx_f();
 };
 
 void() click_graphics_effects={
-  //don't clear because user hasn't saved their config yet
+  menu_clear_items(M_STATE);
   m_effects_f();
 };
 

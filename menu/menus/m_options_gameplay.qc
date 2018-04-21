@@ -11,7 +11,6 @@ Overview: options - gameplay menu
 
 //gameplay callbacks
 
-
 // ini function, called by '_f' function as a setup func
 void() m_gameplay_i={
 
