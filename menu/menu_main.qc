@@ -32,10 +32,13 @@ void() m_init={
 */
 void(float keynr, float ascii) m_keydown={
   if(keynr == K_MOUSE1){
-    //mouse1 pressed
-    MOUSE_DOWN = TRUE;
+    if(!MOUSE_DOWN){
+      //mouse1 pressed
+      MOUSE_DOWN = TRUE;
+      MOUSE_DOWN_COUNT = gettime() + MOUSE_DOWN_RATE;
+    }
   }
-  
+  m_sys_doclick();
   //intercept keyinput to populate textfield
   if(UI_INPUT_ACTIVE){
     menu_do_textfield(keynr, ascii);
@@ -102,6 +105,7 @@ void(float keynr, float ascii) m_keydown={
 */
 void(float keynr, float ascii) m_keyup={
   if(keynr == K_MOUSE1){
+    MOUSE_DOWN_COUNT = 0;
     //mouse1 unpressed
     MOUSE_DOWN = FALSE;
   }
@@ -111,6 +115,12 @@ void(float keynr, float ascii) m_keyup={
   Quake C api hook - the primary render function, stuff all menu draw calls here
 */
 void(float width, float height) m_draw={
+  if(MOUSE_DOWN){
+    if( gettime() > MOUSE_DOWN_COUNT){
+      m_sys_doclick();
+      MOUSE_DOWN_COUNT = gettime() + MOUSE_DOWN_RATE;
+    }
+  }
   //prepare VIEW globals per-frame
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");

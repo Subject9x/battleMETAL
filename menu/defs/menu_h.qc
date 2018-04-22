@@ -10,6 +10,8 @@ float M_STATE;
 entity MOUSE_TARGET;
 float SUB_MENU; //can only really do 1 sub menu at a time, so
 
+float MOUSE_DOWN_COUNT;
+
 //MENU STATE CONSTANTS
 float M_NONE    = 0;
 float M_MAIN    = 1;
@@ -38,6 +40,8 @@ float M_CREDITS  = 23;
 
 string MAPS_COOP[128];
 string MAPS_TDM[128];
+
+float MOUSE_DOWN_RATE = 0.15;
 
 void(float drawmous) m_drawmouse;
 
