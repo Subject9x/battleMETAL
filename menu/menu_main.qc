@@ -189,6 +189,7 @@ void(float width, float height) m_draw={
   drawstring('48 14', ftos(VIEW_MAX_y), '8 8 0', '1 1 1', 1, 0);
   drawstring('4 24', strcat("mouse : ", ftos(MOUSE_DOWN)), '8 8 0', '1 1 1', 1, 0);
   drawstring('4 34', strcat("target : ", MOUSE_TARGET.classname), '8 8 0', '1 1 1', 1, 0);
+
 };
 
 /*

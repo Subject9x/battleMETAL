@@ -59,6 +59,14 @@ entity graphics_gfx_more;
 entity graphics_gfx_less;
 entity graphics_gfx_custom;
 
+entity graphics_game_contrast_lbl;
+entity graphics_game_contrast_more;
+entity graphics_game_contrast_less;
+
+entity graphics_gamma_lbl;
+entity graphics_gamma_more;
+entity graphics_gamma_less;
+
 entity graphics_back;
 entity graphics_accept;
 
@@ -503,6 +511,69 @@ void() click_graphics_effects={
   m_effects_f();
 };
 
+void() click_contrast_up={
+  local float rate;
+  rate = graphics_game_contrast_lbl.len;
+  rate = rate + 0.062;
+  if(rate >= 4){
+    rate = 4;
+    graphics_game_contrast_more.drawme = FALSE;
+  }
+  strunzone(graphics_game_contrast_lbl.label);
+  graphics_game_contrast_lbl.label = strzone(sprintf("%0.3f", rate));
+  graphics_game_contrast_lbl.len = rate;
+  cvar_set("v_contrast",  graphics_game_contrast_lbl.label);
+  graphics_game_contrast_less.drawme = TRUE;
+  
+};
+void() click_contrast_dn={
+  local float rate;
+  rate = graphics_game_contrast_lbl.len;
+  rate = rate - 0.062;
+  if(rate <= 1){
+    rate = 1;
+    graphics_game_contrast_less.drawme = FALSE;
+  }
+  strunzone(graphics_game_contrast_lbl.label);
+  graphics_game_contrast_lbl.label = strzone(sprintf("%0.3f", rate));
+  graphics_game_contrast_lbl.len = rate;
+  cvar_set("v_contrast",  graphics_game_contrast_lbl.label);
+  graphics_game_contrast_more.drawme = TRUE;
+  
+};
+
+void() click_gamma_up={
+  local float rate;
+  rate = graphics_gamma_lbl.len;
+  rate = rate + 0.062;
+  if(rate >= 3){
+    rate = 3;
+    graphics_gamma_more.drawme = FALSE;
+  }
+  strunzone(graphics_gamma_lbl.label);
+  graphics_gamma_lbl.label = strzone(sprintf("%0.3f", rate));
+  graphics_gamma_lbl.len = rate;
+  cvar_set("v_gamma",  graphics_gamma_lbl.label);
+  graphics_gamma_less.drawme = TRUE;
+  
+};
+void() click_gamma_dn={
+  local float rate;
+  rate = graphics_gamma_lbl.len;
+  rate = rate - 0.062;
+  if(rate <= 1){
+    rate = 1;
+    graphics_gamma_less.drawme = FALSE;
+  }
+  strunzone(graphics_gamma_lbl.label);
+  graphics_gamma_lbl.label = strzone(sprintf("%0.3f", rate));
+  graphics_gamma_lbl.len = rate;
+  cvar_set("v_gamma",  graphics_gamma_lbl.label);
+  graphics_gamma_more.drawme = TRUE;
+  
+};
+
+
 void() click_graphics_back={
   menu_clear_items(M_STATE);
   m_options_f();
@@ -690,26 +761,54 @@ void() m_graphics_i={
   graphics_effects_less = btn_img_callback('434 92 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_effects_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   //graphics_effects_custom
-  graphics_effects_custom = btn_text_callback('360 111 0', '10 10', "[Click to Customize]", (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_effects, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  graphics_effects_custom = btn_text_callback('376 111 0', '10 10', "[Click to Customize]", (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_effects, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   graphics_effects_custom.drawme = FALSE;
   if(graphics_effects_lbl.len == 0){
     graphics_effects_custom.drawme = TRUE;
   }
    
    //gfx / lighting
-  graphics_gfx_lbl = lbl_text('430 177', '9 9 0', strzone(graphics_get_gx(cvar("saved2"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_gfx_lbl = lbl_text('430 154', '9 9 0', strzone(graphics_get_gx(cvar("saved2"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
   graphics_gfx_lbl.len = cvar("saved2");
-  graphics_gfx_more = btn_img_callback('535 176 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  graphics_gfx_less = btn_img_callback('400 176 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_gfx_more = btn_img_callback('535 153 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_gfx_less = btn_img_callback('420 153 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
    
-  graphics_gfx_custom = btn_text_callback('360 190 0', '10 10', "[Click to Customize]", (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  graphics_gfx_custom = btn_text_callback('376 167', '10 10', "[Click to Customize]", (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   graphics_gfx_custom.drawme = FALSE;
   if(graphics_gfx_custom.len == 0){
     graphics_gfx_custom.drawme = TRUE;
   }
    
-  graphics_back = btn_img_callback('25 282 0', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  graphics_accept = btn_img_callback('285 282 0', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  //contrasts
+  
+  graphics_game_contrast_lbl = lbl_text('522 205', '9 9 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_game_contrast_lbl.len = cvar("v_contrast");
+  graphics_game_contrast_lbl.label = strzone(sprintf("%0.3f", graphics_game_contrast_lbl.len));
+  graphics_game_contrast_more = btn_img_callback('573 204', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_contrast_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_game_contrast_less = btn_img_callback('512 204', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_contrast_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
+  if(graphics_game_contrast_lbl.len >= 4){
+    graphics_game_contrast_more.drawme = FALSE;
+  }
+  else if (graphics_game_contrast_lbl.len <= 1){
+    graphics_game_contrast_less.drawme = FALSE;
+  }
+  
+  graphics_gamma_lbl = lbl_text('522 219', '9 9 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_gamma_lbl.len = cvar("v_gamma");
+  graphics_gamma_lbl.label = strzone(sprintf("%0.3f", graphics_gamma_lbl.len));
+  graphics_gamma_more = btn_img_callback('573 218', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_gamma_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_gamma_less = btn_img_callback('512 218', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_gamma_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
+  if(graphics_game_contrast_lbl.len >= 3){
+    graphics_gamma_more.drawme = FALSE;
+  }
+  else if (graphics_game_contrast_lbl.len <= 1){
+    graphics_gamma_less.drawme = FALSE;
+  }
+   
+  graphics_back = btn_img_callback('25 282', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_accept = btn_img_callback('285 282', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };
 
 /*
@@ -749,8 +848,12 @@ void() m_graphics_d={
   gui_renderString("GRAPHICAL DETAIL", gui_percentToPixelRawVec('400 80'), CLR_DEF_ARM_THREEQ, '9 9 0', 1, 0);
   
   //gfx / lighting
-  gui_renderString("LIGHTING DETAIL", gui_percentToPixelRawVec('404 164'), CLR_DEF_ARM_THREEQ, '9 9 0', 1, 0);
-    
+  gui_renderString("LIGHTING DETAIL", gui_percentToPixelRawVec('406 140'), CLR_DEF_ARM_THREEQ, '9 9 0', 1, 0);
+  
+  //contrast
+  gui_renderString("Video Contrast :", gui_percentToPixelRawVec('380 206'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("Video Gamma :", gui_percentToPixelRawVec('380 220'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_GRAPHICS);
   while(widget){
