@@ -60,7 +60,7 @@ entity host_dm_fraglim;
 entity host_dm_timelim;
 
 entity host_launch;
-
+entity host_back;
 //images
 string IMG_HOST_TITLE = "gfx/menu/host/host_title.png";
 
@@ -265,6 +265,11 @@ void() host_time_limit={
   cvar_set("timelimit", self.data_text);
 };
 
+void() click_host_back={
+  menu_clear_items(M_STATE);
+  m_multi_f();
+};
+
 void() click_host_launch={
   cvar_set("skill", ftos(SELECT_SKILL));
   cmd("map", strcat(" ", host_map_lbl.label));
@@ -310,15 +315,9 @@ void() m_host_i={
   host_playermor.subid = SUB_COOP;
   host_playerles.subid = SUB_COOP;
   
-  //COOP SUB MENU
-  host_skill_lbl = lbl_text('153 226', '10 10 0', "NOVICE", CLR_DEF_BLUE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, (UI_FLAG_SIZE_IMG) );
-  host_skill_next = btn_img_callback('265 225 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_nextskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  host_skill_prev = btn_img_callback('140 225 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_prevskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  host_skill_lbl.subid = SUB_COOP;
-  host_skill_next.subid = SUB_COOP;
-  host_skill_prev.subid = SUB_COOP;
   
-  host_map_lbl = lbl_text('153 240', '10 10 0', " ", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_HOST, 1, (UI_FLAG_SIZE_IMG) );
+  //map selector
+  host_map_lbl = lbl_text('153 240', '10 10 0', " ", CLR_DEF_IIF_FRIEND, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
   host_map_lbl.label = strzone(map_list_getmap(0));
   
   host_map_nxt = btn_img_callback('265 240 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_map_nxt, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -326,6 +325,14 @@ void() m_host_i={
   host_map_lbl.subid = SUB_COOP;
   host_map_nxt.subid = SUB_COOP;
   host_map_prev.subid = SUB_COOP;
+  
+  //COOP SUB MENU
+  host_skill_lbl = lbl_text('153 226', '10 10 0', "NOVICE", CLR_DEF_BLUE, (VIEW_CTX | VIEW_CTY), M_HOST, 1, 0);
+  host_skill_next = btn_img_callback('265 225 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_nextskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_skill_prev = btn_img_callback('140 225 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_prevskill, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  host_skill_lbl.subid = SUB_COOP;
+  host_skill_next.subid = SUB_COOP;
+  host_skill_prev.subid = SUB_COOP;
   
   //TDM SUB MENU
   host_dm_fraglim = inp_textfield('140 257', '10 10 0', 3, host_frag_limit, 0, M_HOST, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, UI_FLAG_TXTFIELD_NUM);
@@ -339,6 +346,8 @@ void() m_host_i={
   
   //LAAAAAAAAUNCH!
   host_launch = btn_img_callback('140 287 0', '96 16', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_launch, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL));
+  //or not
+  host_back = btn_img_callback('25 290 0', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_HOST, click_host_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };
 
 void() m_host_f={

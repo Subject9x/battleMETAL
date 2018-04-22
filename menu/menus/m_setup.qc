@@ -42,7 +42,7 @@ void() m_setup_i={
   setup_txtfld_playername = inp_textfield('150 144', '8 8 0', 32, textfield_setup_name, 0, M_SETUP, CLR_DEF_WHITE, CLR_DEF_BLUE, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_SPEC));
   setup_txtfld_playername.data_text = strzone(str_cvar("_cl_name"));
   
-  setup_accept = btn_text_callback('10 230 0', '8 8 0', "[ACCEPT]", (VIEW_CTX | VIEW_CTY), M_SETUP, click_setup_accept, '1 1 1', '0 1 0', 1, UI_FLAG_SIZE_IMG);
+  setup_accept = btn_img_callback('10 230 0', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_SETUP, click_setup_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };
 
 /*
