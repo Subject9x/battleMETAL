@@ -96,8 +96,5 @@ void(float key, float ascii) m_load_k={
       menu_clear_items(M_STATE);
       m_camp_f();
       break;
-    case K_MOUSE1:
-      m_sys_doclick();
-      break;
   }
 };

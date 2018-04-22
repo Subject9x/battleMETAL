@@ -54,8 +54,5 @@ void(float key, float ascii) m_credits_k={
       M_STATE = M_MAIN;
       m_main_f();
       break;
-    case K_MOUSE1:
-      m_sys_doclick();
-      break;
   }
 };

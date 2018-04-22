@@ -4,40 +4,6 @@ Author: Peter Roohr
 Date: 4/19/2018
 Overview: multiplayer join game menu
 */
-
-/*
-//effects menu
-particles on/off
-particles quality 1 -4
-
-stainmaps on/off
-onload clear stainmaps on/off -> always on
-
-decals on/off
-
-bullet impacts on/off
-smoke on/off
-sparks on/off
-bubbles on/off
-
-  blood -> off
-  blood opacity -> 0.2
-  force new blood effects -> off
-  
-  polygonal lightning -> off
-  smooth sweep lightning ->off
-  waist-level lightning -> off
-  lighting end light -> off
-  lighting thickness -> ignore
-  
-model interpolation on/off
-sprite interpolation on/off
-flicker interpolation on/off
-view blen 0 - 1
-water alpha 0 - 1
-water movement 0 - 10
-*/
-
 //effects Globals
 entity effects_title;
 entity effects_particles_lbl;
@@ -687,9 +653,6 @@ void(float key, float ascii) m_effects_k={
       menu_clear_items(M_STATE);
       M_STATE = M_OPTIONS_GRAPHICS;
       m_graphics_f();
-      break;
-    case K_MOUSE1:
-      m_sys_doclick();
       break;
   }
 };

@@ -10,7 +10,11 @@ entity controls_title;
 
 //combat
 entity controls_mouse_sense;
+entity controls_mouse_sense_more;
+entity controls_mouse_sense_less;
 entity controls_mouse_invert;
+entity controls_mouse_invert_on;
+entity controls_mouse_invert_off;
 entity controls_target;
 entity controls_fire_group;
 entity controls_fire_group1;
@@ -46,6 +50,59 @@ entity controls_chat_all;
 string IMG_CONTROLS_TITLE = "gfx/menu/options/options_title.png";
 
 //controls callbacks
+entity controls_mouse_sense;
+entity controls_mouse_sense_more;
+entity controls_mouse_sense_less;
+
+entity controls_mouse_invert;
+entity controls_mouse_invert_more;
+entity controls_mouse_invert_less;
+
+void() click_control_mouse_sense_more={
+  local float val;
+  val = controls_mouse_sense.len;
+  val = val + 1;
+  if(val >= 35){
+    val = 35;
+    controls_mouse_sense_more.drawme = FALSE;
+  }
+  controls_mouse_sense_less.drawme = TRUE;
+  controls_mouse_sense.len = val;
+  strunzone(controls_mouse_sense.label); 
+  controls_mouse_sense.label = strzone(ftos(val));
+  cvar_set("sensitivity", controls_mouse_sense.label);
+};
+void() click_control_mouse_sense_less={
+  local float val;
+  val = controls_mouse_sense.len;
+  val = val - 1;
+  if(val <= 1){
+    val = 1;
+    controls_mouse_sense_less.drawme = FALSE;
+  }
+  controls_mouse_sense_more.drawme = TRUE;
+  controls_mouse_sense.len = val;
+  strunzone(controls_mouse_sense.label); 
+  controls_mouse_sense.label = strzone(ftos(val));
+  cvar_set("sensitivity", controls_mouse_sense.label);
+};
+
+void() click_control_mouse_invert_on={
+  strunzone(controls_mouse_invert.label); 
+  controls_mouse_invert.label = strzone("ON");  
+  cvar_set("m_pitch", "-0.022");
+  controls_mouse_invert_on.drawme = FALSE;
+  controls_mouse_invert_off.drawme = TRUE;
+
+};
+void() click_control_mouse_invert_off={
+  strunzone(controls_mouse_invert.label); 
+  controls_mouse_invert.label = strzone("OFF");  
+  cvar_set("m_pitch", "0.022");  
+  controls_mouse_invert_on.drawme = TRUE;
+  controls_mouse_invert_off.drawme = FALSE;
+};
+
 void() txt_control_bind_target={
   menu_keybind_change ("impulse 7");
 };
@@ -128,6 +185,34 @@ void() txt_control_bind_chat_all={
 // ini function, called by '_f' function as a setup func
 void() m_controls_i={
   controls_title = lbl_img('10 50', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, (UI_FLAG_SIZE_IMG) );
+  
+  controls_mouse_sense = lbl_text('178 113', '9 9 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, 0);
+  controls_mouse_sense.len = cvar("sensitivity");
+  controls_mouse_sense.label = strzone(ftos(controls_mouse_sense.len));
+  controls_mouse_sense_more = btn_img_callback('204 112', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_sense_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_mouse_sense_less = btn_img_callback('167 112', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_sense_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
+  if(controls_mouse_sense.len == 1){
+    controls_mouse_sense_less.drawme = FALSE;
+  }
+  else if(controls_mouse_sense.len == 35){
+    controls_mouse_sense_more.drawme = FALSE;
+  }
+  
+  controls_mouse_invert = lbl_text('178 125', '9 9 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, 0);
+  controls_mouse_invert.len = cvar("m_pitch");
+  controls_mouse_invert_on = btn_img_callback('204 124', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_invert_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_mouse_invert_off = btn_img_callback('167 124', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_invert_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
+  if(controls_mouse_invert.len < 0){
+    controls_mouse_invert.label = strzone("ON");
+    controls_mouse_invert_on.drawme = FALSE;
+  }
+  else{
+    controls_mouse_invert.label = strzone("OFF");
+    controls_mouse_invert_off.drawme = FALSE;
+  }
+  
   //combat
   controls_target = inp_keybindfield('167 138', '10 10 0', txt_control_bind_target, "impulse 7", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
@@ -264,9 +349,6 @@ void(float key, float ascii) m_controls_k={
       menu_clear_items(M_STATE);
       M_STATE = M_OPTIONS;
       m_options_f();
-      break;
-    case K_MOUSE1:
-      m_sys_doclick();
       break;
   }
 };

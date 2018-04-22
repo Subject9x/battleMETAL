@@ -87,8 +87,5 @@ void(float key, float ascii) m_multi_k={
       menu_clear_items(M_STATE);
       m_main_f();
       break;
-    case K_MOUSE1:
-      m_sys_doclick();
-      break;
   }
 };

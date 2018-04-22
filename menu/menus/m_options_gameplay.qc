@@ -53,8 +53,5 @@ void(float key, float ascii) m_gameplay_k={
       M_STATE = M_OPTIONS;
       m_options_f();
       break;
-    case K_MOUSE1:
-      m_sys_doclick();
-      break;
   }
 };

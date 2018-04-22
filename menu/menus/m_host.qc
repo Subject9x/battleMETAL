@@ -405,8 +405,5 @@ void(float key, float ascii) m_host_k={
       SUB_MENU = 0;
       m_multi_f();
       break;
-    case K_MOUSE1:
-      m_sys_doclick();
-      break;
   }
 };

@@ -106,9 +106,5 @@ void(float key, float ascii) m_newg_k={
       menu_clear_items(M_STATE);
       m_camp_f();
       break;
-    case K_MOUSE1:
-      cons_logAString("MOUSE_TARGET.classname", MOUSE_TARGET.classname);  //DEBUG
-      m_sys_doclick();
-      break;
   }
 };

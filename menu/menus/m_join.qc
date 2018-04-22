@@ -54,8 +54,5 @@ void(float key, float ascii) m_join_k={
       M_STATE = M_MULTI;
       m_multi_f();
       break;
-    case K_MOUSE1:
-      m_sys_doclick();
-      break;
   }
 };

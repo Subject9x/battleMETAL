@@ -617,7 +617,9 @@ void() menu_exit_togame={
 void() m_sys_doclick={
   if(MOUSE_TARGET != null_entity){
     localsound("sound/misc/menu1.wav");
-    MOUSE_TARGET.isclick(MOUSE_TARGET);
+    if(!UI_KEYBIND_ACTIVE){
+      MOUSE_TARGET.isclick(MOUSE_TARGET);
+    }
   }
 };
 
