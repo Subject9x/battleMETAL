@@ -92,15 +92,15 @@ float DAT_LATC_RL_MAX     = 0.4;
 float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
 float DAT_RPLAS_RL_RATE   = 0.1;
-float DAT_RPLAS_RL_MAX    = 3;
-float DAT_RPLAS_EN_RATE   = 0.3;
+float DAT_RPLAS_RL_MAX    = 5;
+float DAT_RPLAS_EN_RATE   = 0.1;
 //-------------------------QRifle
 float DAT_QRFL_RL_RATE    = 0.1;
 float DAT_QRFL_RL_MAX     = 5;
 float DAT_QRFL_EN_RATE    = 3;
 //-------------------------SFGA
 float DAT_SFGA_RL_RATE    = 0.1;
-float DAT_SFGA_RL_MAX     = 8;
+float DAT_SFGA_RL_MAX     = 10;
 float DAT_SFGA_EN_RATE    = 0;
 //-------------------------FLAK
 float DAT_FLAK_RL_RATE    = 0.1;
@@ -133,7 +133,7 @@ float DAT_MIS_EN_RATE     = 0;
 //-------------------------Laser Missile
 float DAT_MLGD_RL_RATE    = 0.1;
 float DAT_MLGD_RL_MAX     = 6;
-float DAT_MLGD_EN_RATE    = 0.1;
+float DAT_MLGD_EN_RATE    = 0.25;
 //-------------------------Radar Missile
 float DAT_MARH_RL_RATE    = 0.1;
 float DAT_MARH_RL_MAX     = 7;
@@ -148,19 +148,19 @@ float DAT_SWRM_EN_RATE    = 0;
 //-------------------------ATC
 float DAT_LATC_DMG        = 3.5;
 //-------------------------RPlas
-float DAT_RPLAS_DMG       = 20;
+float DAT_RPLAS_DMG       = 10.8;
 float DAT_RPLAS_DMG_BURN  = 0.5; 
 //-------------------------QRifle
 float DAT_QRFL_DMG        = 10;
 //-------------------------SFGA
-float DAT_SFGA_DMG        = 300;
+float DAT_SFGA_DMG        = 500;
 //-------------------------FLAK
 float DAT_FLAK_DMG        = 0.5;
 float DAT_FLAK_SHRAP_TOTAL= 14;
 //-------------------------Laser
-float DAT_LAS_DMG         = 20;
+float DAT_LAS_DMG         = 10;
 //-------------------------ION
-float DAT_ION_DMG         = 100;
+float DAT_ION_DMG         = 75;
 //-------------------------EMP
 float DAT_EMP_DMG         = 400;
 //-------------------------ESR
@@ -195,7 +195,8 @@ float DAT_SFGA_SPR_Y      = 2;
 float DAT_FLAK_SPR_X      = 4;
 float DAT_FLAK_SPR_Y      = 2;
 //-------------------------Laser
-
+float DAT_LAS_SPR_X       = 1;
+float DAT_LAS_SPR_Y       = 1;
 //-------------------------ION
 float DAT_ION_SPR_X       = 4;
 float DAT_ION_SPR_Y       = 4;
@@ -265,7 +266,7 @@ float DAT_LAS_TECH_LEVEL    = 1;
 //-------------------------ION
 float DAT_ION_TECH_LEVEL    = 1;
 //-------------------------EMP
-float DAT_EMP_TECH_LEVEL    = 1;
+float DAT_EMP_TECH_LEVEL    = 2;
 //-------------------------ESR
 float DAT_ESR_TECH_LEVEL    = 2;
 //-------------------------PAC
@@ -304,7 +305,7 @@ float DAT_PAC_WSIZE       = 3;
 //-------------------------Rocket
 float DAT_MIS_WSIZE       = 1;
 //-------------------------Laser Missile
-float DAT_MLGD_WSIZE      = 2;
+float DAT_MLGD_WSIZE      = 1;
 //-------------------------Radar Missile
 float DAT_MARH_WSIZE      = 3;
 //-------------------------Radar Missile
