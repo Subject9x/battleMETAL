@@ -132,7 +132,7 @@ void() building_tur={
   self.max_health = self.health = self.health * mod_am; 
   if (!self.yaw_speed){
     mod_yaw = ai_pilot_yaw_mod();
-    self.yaw_speed = self.m_rot_speed + (self.m_rot_speed * mod_yaw);
+    self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * mod_yaw);
   }
   mod_yaw = ai_pilot_rating_leading();
   self.stat_spr_x = self.conv_min_x + self.conv_max_x;

@@ -20,7 +20,9 @@ void() m_init={
   }
   MOUSE_TARGET = null_entity;
   TEXTFIELD_TARGET = null_entity;
+  KEYBIND_TARGET = null_entity;
   UI_INPUT_ACTIVE = FALSE;
+  UI_KEYBIND_ACTIVE = FALSE;
   SUB_MENU = FALSE;
   
   //setup textfield key filter;
@@ -31,73 +33,69 @@ void() m_init={
   Quake C api hook -  function for when a key is pressed
 */
 void(float keynr, float ascii) m_keydown={
-  if(keynr == K_MOUSE1){
-    if(!MOUSE_DOWN){
-      //mouse1 pressed
-      MOUSE_DOWN = TRUE;
-      MOUSE_DOWN_COUNT = gettime() + MOUSE_DOWN_RATE;
-    }
-  }
   //intercept keyinput to populate textfield
   if(UI_INPUT_ACTIVE){
     menu_do_textfield(keynr, ascii);
+    return;
   }
   if(UI_KEYBIND_ACTIVE){
     menu_do_keybind(keynr, ascii);
+    return;
   }
-  else{
-    switch(M_STATE){
-      case M_MAIN:
-        m_main_k(keynr, ascii);
-        break;
-      case M_SINGLE:
-        m_camp_k(keynr, ascii);
-        break;
-      case M_LOAD:
-        m_load_k(keynr, ascii);
-        break;
-      case M_NEWGAME:
-        m_newg_k(keynr, ascii);
-        break;
-      case M_MULTI:
-        m_multi_k(keynr, ascii);
-        break;
-      case M_SETUP:
-        m_setup_k(keynr, ascii);
-        break;
-      case M_HOST:
-        m_host_k(keynr, ascii);
-        break;
-      case M_JOIN:
-        m_join_k(keynr, ascii);
-        break;
-      case M_OPTIONS:
-        m_options_k(keynr, ascii);
-        break;
-      case M_OPTIONS_CONTROLS:
-        m_controls_k(keynr, ascii);
-        break;
-      case M_OPTIONS_GRAPHICS:
-        m_graphics_k(keynr, ascii);
-        break;
-      case M_OPTIONS_EFFECT:
-        m_effects_k(keynr, ascii);
-        break;
-      case M_OPTIONS_GFX:
-        m_gfx_k(keynr, ascii);
-        break;
-      case M_OPTIONS_AUDIO:
-        m_audio_k(keynr, ascii);
-        break;
-      case M_OPTIONS_GAMEPLAY:
-        m_gameplay_k(keynr, ascii);
-        break;
-      case M_CREDITS:
-        m_credits_k(keynr, ascii);
-        break;
-    }
+  switch(M_STATE){
+    case M_MAIN:
+      m_main_k(keynr, ascii);
+      break;
+    case M_SINGLE:
+      m_camp_k(keynr, ascii);
+      break;
+    case M_LOAD:
+      m_load_k(keynr, ascii);
+      break;
+    case M_NEWGAME:
+      m_newg_k(keynr, ascii);
+      break;
+    case M_MULTI:
+      m_multi_k(keynr, ascii);
+      break;
+    case M_SETUP:
+      m_setup_k(keynr, ascii);
+      break;
+    case M_HOST:
+      m_host_k(keynr, ascii);
+      break;
+    case M_JOIN:
+      m_join_k(keynr, ascii);
+      break;
+    case M_OPTIONS:
+      m_options_k(keynr, ascii);
+      break;
+    case M_OPTIONS_CONTROLS:
+      m_controls_k(keynr, ascii);
+      break;
+    case M_OPTIONS_GRAPHICS:
+      m_graphics_k(keynr, ascii);
+      break;
+    case M_OPTIONS_EFFECT:
+      m_effects_k(keynr, ascii);
+      break;
+    case M_OPTIONS_GFX:
+      m_gfx_k(keynr, ascii);
+      break;
+    case M_OPTIONS_AUDIO:
+      m_audio_k(keynr, ascii);
+      break;
+    case M_OPTIONS_GAMEPLAY:
+      m_gameplay_k(keynr, ascii);
+      break;
+    case M_CREDITS:
+      m_credits_k(keynr, ascii);
+      break;
   }
-  m_sys_doclick();
+  if(keynr == K_MOUSE1){
+    MOUSE_DOWN = TRUE;
+    m_sys_doclick();
+  }
 };
 
 /*

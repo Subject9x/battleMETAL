@@ -496,8 +496,8 @@ void(entity myself) bindfld_isclick={
   local entity this;
   this = self;
   self = myself;
-    UI_KEYBIND_ACTIVE = TRUE;
-    KEYBIND_TARGET = self;
+      UI_KEYBIND_ACTIVE = TRUE;
+      KEYBIND_TARGET = self;
   self = this;
 };
 
@@ -617,9 +617,10 @@ void() menu_exit_togame={
 void() m_sys_doclick={
   if(MOUSE_TARGET != null_entity){
     localsound("sound/misc/menu1.wav");
-    if(!UI_KEYBIND_ACTIVE){
+    if( !UI_KEYBIND_ACTIVE ){
       MOUSE_TARGET.isclick(MOUSE_TARGET);
     }
+    MOUSE_TARGET = null_entity;
   }
 };
 
@@ -718,11 +719,14 @@ void(float keynr, float  ascii) menu_do_keybind={
   }
   if( menu_textfilter_validate(keynr, KEYBIND_TARGET.flags) ){
     KEYBIND_TARGET.len = keynr;
-    
-    KEYBIND_TARGET.ischange(KEYBIND_TARGET);
+    local entity this;
+    this = self;
+    self = KEYBIND_TARGET;
+      self.ischange(self);
+    self = this;
     UI_KEYBIND_ACTIVE = FALSE;
     KEYBIND_TARGET = null_entity;
-  }
+  } 
 };
 
 vector(string comd) menu_keybind_keyfor={
@@ -743,27 +747,24 @@ void(string bind_cmd) menu_keybind_change={
   
   keybound = menu_keybind_keyfor(bind_cmd);
   
-  if( (keybound_x > -1) && (keybound_x != self.len) ){
-    setkeybind_bindmap(keybound_x, "", 0);  //unbind desired key first
-  }
+  setkeybind_bindmap(keybound_x, " ", 0);  //unbind desired key first
+  setkeybind_bindmap(keybound_y, " ", 0);  //unbind desired key first
+  
   strunzone(self.data_text);
   self.data_text = strzone(bind_cmd);
   setkeybind_bindmap(self.len, self.data_text, 0);  //unbind desired key first
-  
-  
-  if( (keybound_x > -1) || (keybound_y > -1) ){
-    keybinds = findchainstring(classname, "bindfield");
-    while(keybinds){
-      if(keybinds != self){
-        if( keybinds.len == self.len ){
-          strunzone(keybinds.data_text);
-          keybinds.data_text = strzone(" ");
-          keybinds.len = -1;
-        }
+
+  keybinds = findchainstring(classname, "bindfield");
+  while(keybinds){
+    if(keybinds != self){
+      if( keybinds.len == self.len ){
+        strunzone(keybinds.data_text);
+        keybinds.data_text = strzone(" ");
+        keybinds.len = -1;
       }
-      keybinds = keybinds.chain;
     }
-  }  
+    keybinds = keybinds.chain;
+  }
 };
 
 string(float id) menu_getvideo_clean={
@@ -785,7 +786,6 @@ float(vector vsize) menu_getvideo_modeid={
   }
   return found;
 };
-
 
 string(float val) menu_float_bool={
   if(val){
