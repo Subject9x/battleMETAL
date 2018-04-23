@@ -28,6 +28,11 @@ void() assignToHardpointListener={
           if((self.plr_sel_hrpnt_types & dat.dmg_type) && (self.plr_sel_hrpnt_size >= dat.i_size)){
             HARDPOINTS[self.plr_sel_hrpnt] = self.plr_sel_list_wep;
             self.plr_sel_wep = self.plr_sel_list_wep;
+            GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
+            GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
+            GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
+            GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
+            GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
           }
         }
       }
@@ -66,9 +71,11 @@ void() weaponGroupPanelListener={
     found = WEPBITS[found];
     if((self.plr_nex_grp1 & found)){
       self.plr_nex_grp1 = self.plr_nex_grp1 - (self.plr_nex_grp1 & found);
+      
     }else{
       self.plr_nex_grp1 = self.plr_nex_grp1 | found;
     }
+    GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_B, WEPNGRP_SIZE_B)){
     found = listListener(WEPNGRP_ORG_B, cursorpos, WEPNGRP_SIZE_B, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_B, 0);
@@ -78,6 +85,7 @@ void() weaponGroupPanelListener={
     }else{
       self.plr_nex_grp2 = self.plr_nex_grp2 | found;
     }
+    GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
   }  
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_C, WEPNGRP_SIZE_C)){
     found = listListener(WEPNGRP_ORG_C, cursorpos, WEPNGRP_SIZE_C, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_C, 0);
@@ -87,6 +95,7 @@ void() weaponGroupPanelListener={
     }else{
       self.plr_nex_grp3 = self.plr_nex_grp3 | found;
     }
+    GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_D, WEPNGRP_SIZE_D)){
     found = listListener(WEPNGRP_ORG_D, cursorpos, WEPNGRP_SIZE_D, gui_percentToPixel(0.0109, 0.018), WEPNGRP_CNT_D, 0);
@@ -96,6 +105,7 @@ void() weaponGroupPanelListener={
     }else{
       self.plr_nex_grp4 = self.plr_nex_grp4 | found;
     }
+    GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_E, WEPNGRP_SIZE_E)){
     found = listListener(WEPNGRP_ORG_E, cursorpos, WEPNGRP_SIZE_E, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_E, 0);
@@ -105,6 +115,7 @@ void() weaponGroupPanelListener={
     }else{
       self.plr_nex_grp5 = self.plr_nex_grp5 | found;
     }
+    GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
   }
 };
 
@@ -121,6 +132,7 @@ void() menu_arming_drawFrame={
   menu_arming_WeaponList(topleftroot + gui_percentToPixel(0, 0.025));
   menu_arming_HardPointInfo(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
+  menu_arming_energydraw('160 276');
   menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeapoinInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_AssignToHardpoint_btn(VIEW_CTR);
@@ -139,7 +151,6 @@ void(vector ofs) menu_arming_HardpointGraph={
     SELECTED_MECH.menu_renderHardpoints(hpnts);
   }
 };
-
 
 void(vector ofs) menu_arming_WeaponList={
   local vector nofs;
@@ -322,7 +333,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   nofs_x = ofs_x + gui_percentXRaw(10);
   nofs_y = ofs_y + gui_percentYRaw(325);
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), '1 1 1', HUD_ALPHA,0);
-  drawstring(nofs + gui_percentToPixelRawVec('24 6'), "[WEAPON GROUPINGS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(nofs + gui_percentToPixelRawVec('24 6'), "[WEAPON GROUPINGS]", '6 6 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
   drawstring(nofs + gui_percentToPixelRawVec('45 14'), "[1][2][3][4][5]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   nofs = nofs + gui_percentToPixelRawVec('0 10');
@@ -367,6 +378,32 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = gui_percentXRaw(14);
   WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * 24);
   WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw(lst_idx * 24);
+};
+
+void(vector ofs) menu_arming_energydraw={
+  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('126 197'), '1 1 1', HUD_ALPHA,0);
+  
+  drawstring(ofs + gui_percentToPixelRawVec('3 6'), "Energy Draw total ", '7 9 0', CLR_DEF_ENE_FRT, HUD_ALPHA, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('4 18'), "by [Weapon Group]", '7 8 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('4 28'), "X Energy / 10sec", '7 8 0', '1 1 1', HUD_ALPHA, 0);
+  
+  local float enmax;
+  enmax = SELECTED_MECH.en_max * 1.5;
+  
+  drawstring(ofs + gui_percentToPixelRawVec('4 45'), "Group 1", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+    gui_renderMeter((GROUP_ENE_1 / enmax)*100, ofs + gui_percentToPixelRawVec('60 45'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+  
+  drawstring(ofs + gui_percentToPixelRawVec('4 72'), "Group 2", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+    gui_renderMeter((GROUP_ENE_2 / enmax)*100, ofs + gui_percentToPixelRawVec('60 72'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+  
+  drawstring(ofs + gui_percentToPixelRawVec('4 99'), "Group 3", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+    gui_renderMeter((GROUP_ENE_3 / enmax)*100, ofs + gui_percentToPixelRawVec('60 99'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+  
+  drawstring(ofs + gui_percentToPixelRawVec('4 126'), "Group 4", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+    gui_renderMeter((GROUP_ENE_4 / enmax)*100, ofs + gui_percentToPixelRawVec('60 126'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+    
+  drawstring(ofs + gui_percentToPixelRawVec('4 153'), "Group 5", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+    gui_renderMeter((GROUP_ENE_5 / enmax)*100, ofs + gui_percentToPixelRawVec('60 153'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
 };
 
 void(vector ofs) menu_arming_HardPointInfo={
@@ -459,7 +496,6 @@ void(vector ofs) menu_arming_WeaponInfo={
     gui_wrapText(icol + gui_percentToPixelRawVec('-6 58'), '187 130', dat.note1, '6 7 0', '1 1 1', 1);
   }
 };
-
 
 void(vector ofs) menu_arming_AssignToHardpoint_btn={
   local vector nofs;
@@ -604,4 +640,31 @@ void(entity next) grabMechConfig={
   HARDPOINTS[7] = next.plr_nex_wep7;
   HARDPOINTS[8] = next.plr_nex_wep8;
   HARDPOINTS[9] = next.plr_nex_wep9;
+  GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
+  GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
+  GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
+  GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
+  GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
+};
+
+float(float grp) calc_energy_draw={
+  local float sub, bit, lst_idx;
+  local entity dat;
+  bit = 1;
+  lst_idx = 1;
+  sub = 0;
+  while(lst_idx <= self.hardpoint_cnt){
+    if( (grp & bit) ){
+      dat = m_findData(HARDPOINTS[lst_idx], DATA_WEPN);
+      sub = sub + dat.en_rate;
+    }
+    bit = bit * 2;
+    lst_idx = lst_idx + 1;
+  }
+  sub = sub - SELECTED_MECH.en_rate;
+  if( sub < 0){
+    sub = 0;
+  }
+  sub = sub * 10 * 10;
+  return sub;
 };

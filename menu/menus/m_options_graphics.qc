@@ -610,6 +610,7 @@ void() click_graphics_accept={
   
   cmd("saveconfig\n");
   cmd("vid_restart\n");
+  cmd("r_restart\n");
 };
 
 // ini function, called by '_f' function as a setup func

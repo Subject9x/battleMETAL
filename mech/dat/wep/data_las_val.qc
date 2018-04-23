@@ -13,7 +13,7 @@ void() data_las_think;
 
 void() data_las_ini={
   self.data_idx = ID_WEP_LAS;
-  self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_STX;
+  self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_STX | EFF_ENE;
   self.p_damage = DAT_LAS_DMG;
   self.w_name = DAT_LAS_NAME;
   self.w_firetime = 0;

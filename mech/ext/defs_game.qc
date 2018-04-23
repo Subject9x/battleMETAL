@@ -78,15 +78,6 @@ float DIR_NW  = 7;
 .string vec_name;
 .float max_armor; //why wasn't this ever included!?
 
-//Damage types
-float DMG_BAL = 1;  //ballstic damage
-float DMG_ENE = 2;  //energy damage
-float DMG_EXP = 4;  //explosive damage
-float EFF_PRC = 8;  //piercing damage
-float EFF_RAM = 16; //dmg is doubled
-float EFF_STX = 32; //dmg only affects shields
-float EFF_ENG = 64; //dmg only affects energy
-
 //Armor Types
 float ARM_LIT = 2;  //light armor
 float ARM_MED = 4;  //heavy armor;

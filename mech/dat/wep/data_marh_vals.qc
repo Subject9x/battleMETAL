@@ -44,7 +44,6 @@ void() data_marh_think={
   }
   else if(self.w_state == RELOADING){
     if(self.owner.en_cur > self.en_rate){
-      //self.owner.en_cur = self.owner.en_cur - (self.en_rate / 15); //v0.0.3
       self.rl_cur = self.rl_cur + self.rl_rate;
       if(self.rl_cur >= self.rl_max){
         self.rl_cur = self.rl_max;

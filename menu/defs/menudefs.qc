@@ -565,6 +565,7 @@ float	isdemo() = #349;
 float	drawsubpic(vector position, vector size, string pic, vector srcPosition, vector srcSize, vector rgb, float alpha, float flag) = #469;
 //vector	getresolution(float number, ...) = #608; // optional argument "isfullscreen"
 void 	parseentitydata(entity ent, string data) = #613;
+
 void 	resethostcachemasks(void) = #615;
 void 	sethostcachemaskstring(float mask, float fld, string str, float op) = #616;
 void	sethostcachemasknumber(float mask, float fld, float num, float op) = #617;
@@ -578,6 +579,7 @@ float	gethostcachenumber(float fld, float hostnr) = #621;
 float	gethostcacheindexforkey(string key) = #622;
 void	addwantedhostcachekey(string key) = #623;
 string	getextresponse(void) = #624;
+
 const string cvar_string(string name) = #71;
 const string cvar_defstring(string name) = #89;
 float	stringwidth(string text, float handleColors, vector size) = #468;

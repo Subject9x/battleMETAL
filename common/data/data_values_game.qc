@@ -98,6 +98,18 @@ vector  RADAR_ACTIVE_ARC_PLAYER = '0 256 0';
 float SHIELD_DELAY = 5;
 float SHIELD_SOAK = 4;
 //============================
+//     WEAPON FLAGS
+//============================
+float DMG_BAL = 1;  //ballstic damage
+float DMG_ENE = 2;  //energy damage
+float DMG_EXP = 4;  //explosive damage
+float EFF_PRC = 8;  //piercing damage
+float EFF_RAM = 16; //dmg is doubled
+float EFF_STX = 32; //dmg only affects shields
+float EFF_ENG = 64; //dmg only affects energy
+float DMG_MSC = 128; //up to the weapon
+float EFF_ENE = 256; //weapon draws energy (client-side flag, really)
+//============================
 //     SHARED STATS         
 //============================
 .float radar_range;

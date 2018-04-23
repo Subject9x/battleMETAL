@@ -6,6 +6,8 @@ Overview: multiplayer join game menu
 */
 
 //join Globals
+entity join_title;
+
 
 //join constants
 

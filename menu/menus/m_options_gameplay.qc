@@ -87,6 +87,7 @@ void() click_gameplay_fps_off={
 };
 
 void() click_gameplay_back={
+  cmd("saveconfig\n");
   menu_clear_items(M_STATE);
   m_options_f();
 };

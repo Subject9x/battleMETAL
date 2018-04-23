@@ -13,7 +13,7 @@ void() data_esr_think;
 void() data_esr_ini={
   self.data_idx = ID_WEP_ESR;
   self.w_name = DAT_ESR_NAME;
-  self.p_dmgtype = self.p_dmgtype | DMG_ENE;
+  self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_ENE;
   self.p_damage = DAT_ESR_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_ESR_CLIPSIZE;

@@ -64,12 +64,21 @@ float WEPNLIST_CNT;
 //hardpoint count
   float HARDPOINT_CNT;
   
+//energy draw group vals
+float GROUP_ENE_1;
+float GROUP_ENE_2;
+float GROUP_ENE_3;
+float GROUP_ENE_4;
+float GROUP_ENE_5;
+  
 void() menu_arming_listener;
 void() weaponSelectListener;
 void() hardpointListener;
 void() hardpointInfoListener;
 void() weaponGroupPanelListener;
 void() assignToHardpointListener;
+
+float(float grp) calc_energy_draw;
 
 void() menu_arming_drawFrame;
 
@@ -82,6 +91,7 @@ void(vector ofs) menu_arming_WeaponList_EXP;
 void(vector ofs) menu_arming_WeaponList_MSC;
 void(vector ofs) menu_arming_WeaponGroupPanel;
 void(vector ofs) menu_arming_HardPointInfo;
+void(vector ofs) menu_arming_energydraw;
 void(vector ofs) menu_arming_WeaponInfo;
 void(vector ofs) menu_arming_WeapoinInHardpoint;
 void(vector ofs) menu_arming_AssignToHardpoint_btn;
