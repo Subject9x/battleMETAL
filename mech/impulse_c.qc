@@ -22,7 +22,7 @@ void() playerAttack={
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
-    if(self.button0 && (self.stat_plr_stt == PLAYER_ACTIVE)){
+    if( (self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7) && (self.stat_plr_stt == PLAYER_ACTIVE)){
       if((self.currentWeaponGroup & wgrp)){
         if(wep_chain.w_state == READY){
           self = wep_chain;
@@ -83,7 +83,7 @@ void() ImpulseCommands ={
   if(self.stat_plr_fir == FIRE_GROUP){
     mpls_groupFire();
   }
-  
+
   if(self.impulse == IMP_TARGET){
     server_getTarget();
   }
@@ -107,6 +107,26 @@ void() ImpulseCommands ={
     }
   }
 	self.impulse = 0;
+};
+
+
+void() ButtonCommands={
+  //fire on command keys
+  if(self.button3){
+    self.currentWeaponGroup = self.w_group1;
+  }
+  if(self.button4){
+    self.currentWeaponGroup = self.w_group2;
+  }
+  if(self.button5){
+    self.currentWeaponGroup = self.w_group3;
+  }
+  if(self.button6){
+    self.currentWeaponGroup = self.w_group4;
+  }
+  if(self.button7){
+    self.currentWeaponGroup = self.w_group5;
+  }
 };
 
 void() mpls_singleFire={

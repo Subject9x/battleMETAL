@@ -752,8 +752,7 @@ void(string bind_cmd) menu_keybind_change={
   
   strunzone(self.data_text);
   self.data_text = strzone(bind_cmd);
-  setkeybind_bindmap(self.len, self.data_text, 0);  //unbind desired key first
-
+  setkeybind_bindmap(self.len, self.data_text, 0);  //now bind the key
   keybinds = findchainstring(classname, "bindfield");
   while(keybinds){
     if(keybinds != self){

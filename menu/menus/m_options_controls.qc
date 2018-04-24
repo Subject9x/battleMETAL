@@ -110,19 +110,19 @@ void() txt_control_bind_fire={
   menu_keybind_change ("+attack");
 };
 void() txt_control_bind_fire_grp1={
-  menu_keybind_change ("+fire_group1");
+  menu_keybind_change ("+button3");
 };
 void() txt_control_bind_fire_grp2={
-  menu_keybind_change ("+fire_group2");
+  menu_keybind_change ("+button4");
 };
 void() txt_control_bind_fire_grp3={
-  menu_keybind_change ("+fire_group3");
+  menu_keybind_change ("+button5");
 };
 void() txt_control_bind_fire_grp4={
-  menu_keybind_change ("+fire_group4");
+  menu_keybind_change ("+button6");
 };
 void() txt_control_bind_fire_grp5={
-  menu_keybind_change ("+fire_group5");
+  menu_keybind_change ("+button7");
 };
 void() txt_control_bind_grp_nxt={
   menu_keybind_change ("impulse 4");

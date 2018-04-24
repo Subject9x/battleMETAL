@@ -20,3 +20,4 @@ void() cycleWeaponGroup;
 void() cycleWeaponGroupReverse;
 void() playerAttack;
 void() ImpulseCommands;
+void() ButtonCommands;

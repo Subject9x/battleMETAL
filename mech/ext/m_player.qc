@@ -138,6 +138,9 @@ void() PlayerPostThink = {
 	if(self.impulse){
 		ImpulseCommands ();
   }
+  
+  ButtonCommands();
+  
   if(self.repair_request){
     if(util_getMechHpAverage(self) == 1){
       self.repair_request = FALSE;
@@ -163,6 +166,7 @@ void() PlayerPostThink = {
   
   //========================================
   
+
 // check for attack
   playerAttack();
 
