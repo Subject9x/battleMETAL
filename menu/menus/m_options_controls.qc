@@ -110,19 +110,19 @@ void() txt_control_bind_fire={
   menu_keybind_change ("+attack");
 };
 void() txt_control_bind_fire_grp1={
-
+  menu_keybind_change ("+fire_group1");
 };
 void() txt_control_bind_fire_grp2={
-
+  menu_keybind_change ("+fire_group2");
 };
 void() txt_control_bind_fire_grp3={
-
+  menu_keybind_change ("+fire_group3");
 };
 void() txt_control_bind_fire_grp4={
-
+  menu_keybind_change ("+fire_group4");
 };
 void() txt_control_bind_fire_grp5={
-
+  menu_keybind_change ("+fire_group5");
 };
 void() txt_control_bind_grp_nxt={
   menu_keybind_change ("impulse 4");
@@ -215,23 +215,20 @@ void() m_controls_i={
   
   //combat
   controls_target = inp_keybindfield('167 138', '10 10 0', txt_control_bind_target, "impulse 7", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-
+ 
+ 
   controls_fire_group = inp_keybindfield('167 149', '10 10 0', txt_control_bind_fire, "+attack", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+   
+  controls_fire_group1 = inp_keybindfield('167 162', '10 10 0', txt_control_bind_fire_grp1, "impulse 27", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  //controls_fire_group1 = inp_keybindfield('183 138', '10 10 0', txt_control_bind_target, 0, M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-  //controls_fire_group1.label = strzone(menu_keybind_forkey("impulse 7"));
+  controls_fire_group2 = inp_keybindfield('167 174', '10 10 0', txt_control_bind_fire_grp2, "impulse 28", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  //controls_fire_group2 = inp_keybindfield('183 138', '10 10 0', txt_control_bind_target, 0, M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-  //controls_fire_group2.label = strzone(menu_keybind_forkey("impulse 7"));
+  controls_fire_group3 = inp_keybindfield('167 186', '10 10 0', txt_control_bind_fire_grp3, "impulse 29", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
+  controls_fire_group4 = inp_keybindfield('167 198', '10 10 0', txt_control_bind_fire_grp4, "impulse 30", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  //controls_fire_group3 = inp_keybindfield('183 138', '10 10 0', txt_control_bind_target, 0, M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-  //controls_fire_group3.label = strzone(menu_keybind_forkey("impulse 7"));
-  
-  //controls_fire_group4 = inp_keybindfield('183 138', '10 10 0', txt_control_bind_target, 0, M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
- // controls_fire_group4.label = strzone(menu_keybind_forkey("impulse 7"));
-  
-  //controls_fire_group5 = inp_keybindfield('183 138', '10 10 0', txt_control_bind_target, 0, M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
-  //controls_fire_group5.label = strzone(menu_keybind_forkey("impulse 7"));
+  controls_fire_group5 = inp_keybindfield('167 210', '10 10 0', txt_control_bind_fire_grp5, "impulse 31", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
   
   controls_group_next = inp_keybindfield('167 221', '10 10 0', txt_control_bind_grp_nxt, "impulse 4", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 

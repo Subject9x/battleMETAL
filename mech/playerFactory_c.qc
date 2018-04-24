@@ -60,6 +60,7 @@ void() player_makeMech={
     WriteEntity(MSG_ONE, self.e_cam);
   }
   droptofloor();
+  self.currentWeaponGroup = self.w_group1;
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
 };
 

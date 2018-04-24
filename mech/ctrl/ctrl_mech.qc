@@ -22,7 +22,7 @@ void() ctrl_updateCenterTorso={
   else{
     local entity cam;
     local vector v1;
-    makevectors(self.angles);
+    makevectors(self.v_angle);
     v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
     traceline(v1, v1 + v_forward*10000, FALSE, self);
     self.laser_sight_org = trace_endpos;
@@ -34,7 +34,9 @@ void() ctrl_updateCenterTorso={
       self.en_cur = self.en_cur + self.en_rate;
     }
     else{
-      self.en_cur = self.en_cur + (self.en_rate - self.m_maccel);
+      if(self.stat_plr_stt >= PLAYER_ACTIVE){
+        self.en_cur = self.en_cur + (self.en_rate - self.m_maccel);
+      }
     }
     if(self.en_cur > self.en_max){
       self.en_cur = self.en_max;

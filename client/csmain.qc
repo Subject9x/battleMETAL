@@ -330,14 +330,16 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     vec_data = m_findMechData(self.vec_size, self.data_idx);
     
     //UPDATE SPRINTING ABILITY BASED ON ENERGY
-    if(self.en_cur < 10){
-      cl_set_movespeedkey(1);
-    }
-    else {
-      local float cl_sprint;
-      cl_sprint = cvar("cl_movespeedkey");
-      if(cl_sprint == 1){
-        cl_set_movespeedkey(vec_data.m_maccel);
+    if( self.player_state >= PLAYER_ACTIVE){
+      if(self.en_cur < 10){
+        cl_set_movespeedkey(1);
+      }
+      else {
+        local float cl_sprint;
+        cl_sprint = cvar("cl_movespeedkey");
+        if(cl_sprint == 1){
+          cl_set_movespeedkey(vec_data.m_maccel);
+        }
       }
     }
     
