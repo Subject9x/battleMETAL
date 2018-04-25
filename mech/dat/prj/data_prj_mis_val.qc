@@ -17,7 +17,7 @@ void() data_prj_mis_ini={
   self.p_lifetime = DAT_PRJ_MIS_LIFETIME;
   
   //cosmetics
-  self.effects = self.effects | EF_ADDITIVE | EF_NOSHADOW | EF_LOWPRECISION;
+  self.effects = self.effects | EF_ADDITIVE | EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MIS_MODELFLAGS;
   self.alpha = DAT_PRJ_MIS_ALPHA;
   self.colormod = DAT_PRJ_MIS_COLORMOD;

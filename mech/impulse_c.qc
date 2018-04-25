@@ -23,11 +23,20 @@ void() playerAttack={
     local float wgrp;
     wgrp = wep_chain.w_group;
     if( (self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7) && (self.stat_plr_stt == PLAYER_ACTIVE)){
-      if((self.currentWeaponGroup & wgrp)){
+      if( (self.currentWeaponGroup & wgrp) ){
         if(wep_chain.w_state == READY){
           self = wep_chain;
             self.w_attack();
           self = oself;
+        }
+      }
+      else{
+        if(wep_chain.w_isburst == TRUE){
+          if(wep_chain.w_state == READY){
+            self = wep_chain;
+              self.w_attack();
+            self = oself;
+          }
         }
       }
     }

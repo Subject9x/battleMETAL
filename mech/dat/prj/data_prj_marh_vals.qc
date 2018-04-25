@@ -23,7 +23,7 @@ void() data_prj_marh_ini={
   self.p_dmgtype = DMG_EXP;
   //cosmetics
   self.effects = self.effects - (self.effects & EF_NOMODELFLAGS);
-  self.effects = self.effects | (EF_LOWPRECISION | EF_NOSHADOW);
+  self.effects = self.effects | EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MARH_MODELFLAGS;
   self.alpha = DAT_PRJ_MARH_ALPHA;
   self.colormod = DAT_PRJ_MARH_COLORMOD;
@@ -76,7 +76,7 @@ void() data_prj_marh_th={
   }
   
   if(time > self.p_lifetime){
-    self.nextthink = time + 0.001;
+    self.nextthink = time + 0.1;
     self.think = BecomeExplosion;
   }
   else{

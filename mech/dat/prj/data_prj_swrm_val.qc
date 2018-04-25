@@ -18,7 +18,7 @@ void() data_prj_swrm_ini={
   self.p_lifetime = DAT_PRJ_SWRM_LIFETIME;
   
   //cosmetics
-  self.effects = EF_ADDITIVE + EF_NOSHADOW;
+  self.effects = self.effects | EF_ADDITIVE | EF_NOSHADOW;
   self.modelflags = DAT_PRJ_SWRM_MODELFLAGS;
   self.alpha = DAT_PRJ_SWRM_ALPHA;
   self.colormod = DAT_PRJ_SWRM_COLORMOD;
@@ -89,7 +89,7 @@ void() data_prj_swrm_think={
 	
 	//Hunter thinks
   self.think = data_prj_swrm_think;
-  self.nextthink = time + 0.01;
+  self.nextthink = time + 0.1;
 };
 
 void() data_prj_swrm_touch={

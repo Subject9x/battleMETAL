@@ -345,6 +345,7 @@ void() click_graphics_aniso_more={
   if( !graphics_aniso_less.drawme ){
     graphics_aniso_less.drawme = TRUE;
   }
+  graphics_aniso_lbl.len = sampl;
   strunzone(graphics_aniso_lbl.label); 
   graphics_aniso_lbl.label = strzone(ftos(sampl));
 };
@@ -353,12 +354,13 @@ void() click_graphics_aniso_less={
   sampl = stof(graphics_aniso_lbl.label);
   sampl = sampl * 0.5;
   if(sampl <= 1){
-    sampl = 1;
+    sampl = 16;
     graphics_aniso_more.drawme = FALSE;
   }
   if( !graphics_aa_more.drawme ){
     graphics_aa_more.drawme = TRUE;
   }
+  graphics_aniso_lbl.len = sampl;
   strunzone(graphics_aniso_lbl.label); 
   graphics_aniso_lbl.label = strzone(ftos(sampl));
 };
@@ -573,7 +575,6 @@ void() click_gamma_dn={
   
 };
 
-
 void() click_graphics_back={
   menu_clear_items(M_STATE);
   m_options_f();
@@ -593,7 +594,7 @@ void() click_graphics_accept={
   }
   cvar_set("vid_fullscreen", ftos(graphics_fullscreen_lbl.len));
   cvar_set("vid_vsync", ftos(graphics_vsync_lbl.len));
-  cvar_set("gl_texture_anisotropy", graphics_aniso_lbl.label);
+  cvar_set("gl_texture_anisotropy", ftos(graphics_aniso_lbl.len));
   cvar_set("gl_picmip", graphics_texture_quality_lbl.label);
   cvar_set("gl_texturecompression", ftos(graphics_texture_compress_lbl.len));
   if(VID_NEXT != '0 0 0'){
@@ -776,7 +777,7 @@ void() m_graphics_i={
    
   graphics_gfx_custom = btn_text_callback('376 167', '10 10', "[Click to Customize]", (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   graphics_gfx_custom.drawme = FALSE;
-  if(graphics_gfx_custom.len == 0){
+  if(graphics_gfx_lbl.len == 0){
     graphics_gfx_custom.drawme = TRUE;
   }
    

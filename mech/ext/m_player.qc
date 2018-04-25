@@ -253,19 +253,24 @@ void() PlayerDeathThink={
 
 // wait for all buttons released
 	if (self.deadflag == DEAD_DEAD){
-		if (self.button2 || self.button1 || self.button0)
+		if (self.button2 || self.button1 || self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7)
 			return;
 		self.deadflag = DEAD_RESPAWNABLE;
 		return;
 	}
 
 // wait for any button down
-	if (!self.button2 && !self.button1 && !self.button0)
+	if (!self.button2 && !self.button1 && !self.button0 && !self.button3 && !self.button4 && !self.button5 && !self.button6 && !self.button7)
 		return;
 
 	self.button0 = 0;
 	self.button1 = 0;
 	self.button2 = 0;
+	self.button3 = 0;
+	self.button4 = 0;
+	self.button5 = 0;
+	self.button6 = 0;
+	self.button7 = 0;
 	
   self.deadflag = DEAD_NO;
   player_unmakeMech();
@@ -300,7 +305,6 @@ void() PlayerJump={
 			else
 				sound (self, CHAN_BODY, "misc/water2.wav", 1, ATTN_NORM);
 		}
-
 		return;
 	}
 

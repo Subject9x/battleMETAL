@@ -133,7 +133,7 @@ void() building_repair_touch={
           if(util_getMechHpAverage(other) < 1){
             if(self.owner.trigger_field == world){ 
               if( (other.flags & FL_CLIENT) ){
-                centerprint( other, "[Press 'E' to start REAPIR]\n");
+                centerprint( other, "[Press 'E' to start REPAIR]\n");
               }
               if(other.repair_request){
                 self.owner.trigger_field = other;

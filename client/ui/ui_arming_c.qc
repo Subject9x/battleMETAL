@@ -132,7 +132,7 @@ void() menu_arming_drawFrame={
   menu_arming_WeaponList(topleftroot + gui_percentToPixel(0, 0.025));
   menu_arming_HardPointInfo(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
-  menu_arming_energydraw('160 276');
+  menu_arming_energydraw(gui_percentToPixelRawVec('160 276'));
   menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeapoinInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_AssignToHardpoint_btn(VIEW_CTR);

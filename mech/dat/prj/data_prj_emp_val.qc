@@ -93,7 +93,7 @@ void()data_prj_emp_explode={
   }
   te_tarexplosion(self.origin);
   self.think = SUB_Remove;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.1;
 };
 
 void() data_prj_emp_touch={

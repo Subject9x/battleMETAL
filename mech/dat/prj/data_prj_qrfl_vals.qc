@@ -20,7 +20,7 @@ void() data_prj_qrfl_ini={
   self.p_lifetime = DAT_PRJ_QRFL_LIFETIME;
   
   //cosmetics
-  self.effects = self.effects + DAT_PRJ_QRFL_EFFECTS;
+  self.effects = self.effects | DAT_PRJ_QRFL_EFFECTS;
   self.modelflags = DAT_PRJ_QRFL_MODELFLAGS;
   self.alpha = DAT_PRJ_QRFL_ALPHA;
   self.colormod = DAT_PRJ_QRFL_COLORMOD;
