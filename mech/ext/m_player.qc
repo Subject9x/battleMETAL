@@ -23,6 +23,7 @@ void() PlayerPreThink = {
 
 	//if (self.waterlevel == 2)
 		//CheckWaterJump ();
+
   
 	if (self.deadflag >= DEAD_DEAD){
 		PlayerDeathThink ();
@@ -134,7 +135,7 @@ void() PlayerPostThink = {
       wep_chain = wep_chain.w_slot;
     }
   }
-  
+  self.repair_request = FALSE;
 	if(self.impulse){
 		ImpulseCommands ();
   }
