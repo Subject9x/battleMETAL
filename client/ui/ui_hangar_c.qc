@@ -21,11 +21,6 @@ void() hardpointListener={
       self.plr_sel_wep = HARDPOINTS[hpnt];
     }
   }
-  //if( (self.plr_sel_size != 0) && (self.plr_sel_mech != 0) ){
-    //dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
-    //if(dat != world){
-    //}
-  //}
 };
 
 void() mechSelectListener={

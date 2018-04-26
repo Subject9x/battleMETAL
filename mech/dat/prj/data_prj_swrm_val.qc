@@ -64,30 +64,16 @@ void() data_prj_swrm_think={
 		self.velocity = normalize(vels + ph);			//Set the velocity
 		self.velocity = self.velocity * self.p_velocity;			//And you are on your way
 	}
-		
-	//Check current tack 320 units ahead
-	/*traceline(self.origin, self.origin + vels * 320, FALSE, self);	//Traceline in front (check for walls)
-	
-	if((trace_fraction < 0.2))
-	{
-		ph = trace_plane_normal;				//Find direction that is perpindicular to the wall
-		ph = ph + vels + vels;					//Add that direction plus two times your own
-		ph = ph * (1/3);					//Averaging
-		
-		self.velocity = normalize(vels + ph);			//Set the velocity
-		self.velocity = self.velocity * self.p_velocity;			//And you are on your way
-	}*/
-	
+
 	//Set the angles	
 	self.angles = vectoangles(self.velocity);			//Set angle
 	self.aflag = self.aflag + 1;					//Add to "idle hands" counter
 	
 	if(self.aflag >= 500)						//5.25 seconds is up....
 	{
-		self.owner = world;					//No more owner, it will attack spawner
+		self.owner = world;
 	}
 	
-	//Hunter thinks
   self.think = data_prj_swrm_think;
   self.nextthink = time + 0.1;
 };
@@ -106,15 +92,8 @@ void() data_prj_swrm_touch={
   if(other == self.owner){
     return;
   }
-  
-  if(other.owner == self.owner){
-    return;
+  if(other.takedamage){
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   }
-  
-  if(other.classname == "missile"){
-    return;
-  }
-
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   BecomeExplosion();
 };

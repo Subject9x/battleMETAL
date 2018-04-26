@@ -569,11 +569,11 @@ void(string msg, string s1) cons_logAString={
 };
 
 void(string msg, float val, string split, float val2) cons_log2Float={
-  print(strcat(msg,":", ftos(val), "|", ftos(val2)," \n"));
+  print(strcat(msg,":", ftos(val), "| ", split, ftos(val2)," \n"));
 };
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
-  print(strcat(msg,":", vtos(v1),"|",vtos(v2)," \n"));
+  print(strcat(msg,":", vtos(v1),"| ", split,vtos(v2)," \n"));
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
-  print(strcat(msg,":",s1,"|",s2," \n"));
+  print(strcat(msg,":",s1,"| ", split, s2," \n"));
 };

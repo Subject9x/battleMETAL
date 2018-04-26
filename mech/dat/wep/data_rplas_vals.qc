@@ -93,49 +93,44 @@ void() data_rplas_atk={
   
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
   makevectors(player.angles);
-  org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+  org = player.origin+ (v_up*adj_y) + (v_right*adj_x) + (v_forward*adj_z);
 
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 
   local vector sfx;
-  adj_z = adj_z + 45;
   sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   
-  local entity bul_fx;
-  bul_fx = spawn();
-  bul_fx.solid = SOLID_NOT;
-  bul_fx.classname = "missile";
-  bul_fx.movetype = MOVETYPE_NONE;
-  setmodel(bul_fx, "progs/muzzleflash.spr32");
-  setsize(bul_fx, '0 0 0', '0 0 0');
-  setorigin(bul_fx, sfx);
-  bul_fx.glow_color = 250;
-  bul_fx.glow_size = 1;
-  bul_fx.glow_trail = TRUE;
-  bul_fx.color = '1 0 0';
-  bul_fx.think = SUB_Remove;
-  bul_fx.nextthink = time + 0.001;// + 0.35;
-  
-  local vector norg;
-  norg = org;
+
+  newmis = spawn();
+  newmis.solid = SOLID_NOT;
+  newmis.classname = "flash";
+  newmis.movetype = MOVETYPE_NONE;
+  newmis.glow_color = 250;
+  newmis.glow_size = 1;
+  newmis.glow_trail = TRUE;
+  newmis.color = '0 1 0';
+  newmis.alpha = 0.5;
+  setmodel(newmis, "progs/muzzleflash.spr32");
+  setsize(newmis, '0 0 0', '0 0 0');
+  setorigin(newmis, sfx);
+  newmis.think = SUB_Remove;
+  newmis.nextthink = time + 0.1;// + 0.35;
+
   newmis = spawn();
   oself = self;
   self = newmis;
     self.owner = player;
     data_iniProjectile(oself.w_proj);
-    self.velocity = normalize(dir - org);
     self.think = SUB_Remove;
     self.nextthink = time + self.p_lifetime;
-    self.velocity = self.velocity * self.p_velocity;
     self.p_dmgtype = oself.p_dmgtype;
     self.p_damage = oself.p_damage;
-    self.angles = vectoangles(self.velocity);
     util_setModel(self.c_model, 0, 0);
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     util_setBoundBox('0 0 0', '0 0 0');        
-    self.angles = oself.angles;
-    makevectors(self.angles);
-    norg = org + (v_up * 8);
-    setorigin(self, norg);
+    setorigin(self, org);
+    self.velocity = normalize(dir - org);
+    self.velocity = self.velocity * self.p_velocity;
+    self.angles = vectoangles(self.velocity);
   self = oself;
 };

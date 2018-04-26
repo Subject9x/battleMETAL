@@ -66,6 +66,7 @@ void() m_main_f;
 void() m_camp_f;
   void() m_newg_f;
   void() m_load_f;
+  void() m_save_f;
 void() m_multi_f;
   void() m_setup_f;
   void() m_host_f;
@@ -84,6 +85,7 @@ void() m_main_d;
 void() m_camp_d;
   void() m_newg_d;
   void() m_load_d;
+  void() m_save_d;
 void() m_multi_d;
   void() m_setup_d;
   void() m_host_d;
@@ -101,6 +103,7 @@ void(float ky, float ascii) m_main_k;
 void(float ky, float ascii) m_camp_k;
   void(float ky, float ascii) m_newg_k;
   void(float ky, float ascii) m_load_k;
+  void(float ky, float ascii) m_save_k;
 void(float ky, float ascii) m_multi_k;
   void(float ky, float ascii) m_setup_k;
   void(float ky, float ascii) m_host_k;
@@ -113,16 +116,3 @@ void(float ky, float ascii) m_options_k;
   void(float ky, float ascii) m_audio_k;
   void(float ky, float ascii) m_gameplay_k;
 void(float ky, float ascii) m_credits_k;
-/*
-void() M_Menu_Save;
-void() M_Menu_Options_Colorcontrol;
-void() M_Menu_Keys;
-void() M_Menu_Reset;
-void() M_Menu_Mods;
-void() M_Menu_Help;
-void() M_Menu_Credits;*/
-
-
-
-
-

@@ -12,7 +12,7 @@ void() data_prj_mlgd_th;
 void() data_prj_mlgd_touch;
 
 void() data_prj_mlgd_ini={
-  self.classname = "missile";
+  self.classname = "prj_mlgd";
   self.touch = data_prj_mlgd_touch;
   self.data_idx = DAT_PRJ_MLGD_IDX;
   self.p_velocity = DAT_PRJ_MLGD_VELOCITY;
@@ -68,24 +68,13 @@ void() data_prj_mlgd_touch={
 		remove(self);
 		return;
 	}
-  
-  if(other.classname == "worldspawn"){
-    BecomeExplosion();
-    return;
-  }
 
   if(other == self.owner){
     return;
   }
-  
-  if(other.owner == self.owner){
-    return;
+  if(other.takedamage){
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   }
   
-  if(other.classname == "missile"){
-    return;
-  }
-
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   BecomeExplosion();
 };

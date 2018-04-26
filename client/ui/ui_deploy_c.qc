@@ -20,6 +20,7 @@ void() menu_deployDrawFrame={
 //hook for input system
 void() menu_deployListener={
   navSelectListener();
+  navListSelectListener();
 };
 
 //Listener hooks calle by menu_briefListener
@@ -50,6 +51,41 @@ void() navSelectListener={
       if( (LAUNCH_VALIDATION & VALID_NODE) ){
         LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
       }
+    }
+  }
+};
+
+void() navListSelectListener={
+  local float idx;
+  if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('188 135'), gui_percentToPixelRawVec('20 44')) ){
+    idx = DEPLOY_POINT_ID + 1;
+    if(idx > DEPLOY_POINT_END){
+      idx = 0;
+    }
+    if(DEPLOY_IDS[idx] > 0){
+      DEPLOY_POINT_ID = idx;
+    }
+  }
+  if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('15 135'), gui_percentToPixelRawVec('20 44')) ){
+    idx = DEPLOY_POINT_ID - 1;
+    if(idx < 0){
+      DEPLOY_POINT_ID = DEPLOY_POINT_END;
+    }
+    else{
+      if(DEPLOY_IDS[idx] > 0){
+        DEPLOY_POINT_ID = idx;
+      }
+    }
+  }
+  self.plr_nav_pnt = DEPLOY_POINT_ID;
+  if(self.plr_nav_pnt > 0){
+    if( !(LAUNCH_VALIDATION & VALID_NODE) ){
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+    }
+  }
+  else{
+    if( (LAUNCH_VALIDATION & VALID_NODE) ){
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
     }
   }
 };
@@ -87,24 +123,26 @@ void(vector ofs) menu_deploy_navInfoPanel={
   tpos = ofs + gui_percentToPixel(0.0902, 0.12);
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[SELECTED DROP POINT]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+
+  drawstring(ofs + gui_percentToPixelRawVec('180 125'), "[Next]", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  drawpic(ofs + gui_percentToPixelRawVec('188 135'), HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 44'), '1 1 1', HUD_ALPHA, 0);
   
-  icosize = gui_percentToPixelRawVec('14 14');
-  icopos1 = ofs + gui_percentToPixelRawVec('10 113') + gui_percentToPixelRawVec('6 2');
-  icopos2 = ofs + gui_percentToPixelRawVec('10 113') + gui_percentToPixelRawVec('188 2');
-  drawpic(icopos1, UI_DEF_DEPLOYPOINT, icosize, CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-  drawpic(icopos2, UI_DEF_DEPLOYPOINT, icosize, CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-  
-  //nav help
-  drawstring(ofs + gui_percentToPixelRawVec('16 135'), ">>Select a DEPLOY POINT>>", '8 8 0', CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('15 125'), "[Prev]", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  drawpic(ofs + gui_percentToPixelRawVec('15 135'), HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 44'), '1 1 1', HUD_ALPHA, 0);
+ 
   //current spawn point
   local string navlbl;
+  local vector hclr;
   if(self.plr_nav_pnt > 0){
     navlbl = gui_getNavName(self.plr_nav_pnt);
+    hclr = CLR_DEF_GREEN;
   }
   else{
     navlbl = "RANDOM!";
-  }  
-  drawstring(ofs + gui_percentToPixelRawVec('16 150'), strcat("[CURRENT]:            ", navlbl), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    hclr = CLR_DEF_RED;
+  } 
+  drawstring(ofs + gui_percentToPixelRawVec('69 131'), "[CURRENT]", '9 9', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('82 150'), navlbl, '12 12', hclr, HUD_ALPHA, 0);
 };
 
 void(vector ofs) menu_deploy_mechInfoPanel={
@@ -197,6 +235,9 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         }
         else{
           nclr = CLR_DEF_ARM_HALF;
+        }
+        if(self.plr_nav_pnt == nav.nav_name){
+          gui_renderTintImage(TRUE, nav.ui_org - gui_percentToPixelRawVec('6 6'), UI_DEF_REC_64, gui_percentToPixelRawVec('28 28'), CLR_DEF_GREEN, 0.85, 0);
         }
         gui_renderTintImage2((self.plr_nav_pnt == nav.nav_name), nav.ui_org, UI_DEF_DEPLOYPOINT, nav.ui_size, CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
       }

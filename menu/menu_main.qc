@@ -52,6 +52,9 @@ void(float keynr, float ascii) m_keydown={
     case M_LOAD:
       m_load_k(keynr, ascii);
       break;
+    case M_SAVE:
+      m_save_k(keynr, ascii);
+      break;
     case M_NEWGAME:
       m_newg_k(keynr, ascii);
       break;
@@ -145,6 +148,9 @@ void(float width, float height) m_draw={
       break;
     case M_LOAD:
       m_load_d();
+      break;
+    case M_SAVE:
+      m_save_d();
       break;
     case M_NEWGAME:
       m_newg_d();

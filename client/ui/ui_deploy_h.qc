@@ -6,7 +6,10 @@ Date: 3/24/2017
 Overview: ui header file the deployment menu
 */
 
+float DEPLOY_IDS[100];
 vector DEPLOY_MAP_ORG;
+float DEPLOY_POINT_ID;
+float DEPLOY_POINT_END;
 
 //sadly we need to limit navpoints too
 
@@ -18,6 +21,7 @@ void() menu_deployListener;
 
 //Listener hooks calle by menu_deployListener
 void() navSelectListener;
+void() navListSelectListener;
 
 //panels
 void(vector ofs) menu_deploy_missionInfoPanel;

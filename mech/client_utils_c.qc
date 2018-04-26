@@ -173,20 +173,22 @@ void(string cmd, float tokens) client_setWeaponGroup={
   groupnum = stof(argv(2));
   groupval = stof(argv(3));
   
-  if(groupnum == 1){
-    self.w_group1 = groupval;
-  }
-  else if(groupnum == 2){
-    self.w_group2 = groupval;
-  }
-  else if(groupnum == 3){
-    self.w_group3 = groupval;
-  } 
-  else if(groupnum == 4){
-    self.w_group4 = groupval;
-  }
-  else if(groupnum == 5){
-    self.w_group5 = groupval;
+  switch(groupnum){
+    case 1:
+      self.w_group1 = groupval;
+      break;
+    case 2:
+      self.w_group2 = groupval;
+      break;
+    case 3:
+      self.w_group3 = groupval;
+      break;
+    case 4:
+      self.w_group4 = groupval;
+      break;
+    case 5:
+      self.w_group5 = groupval;
+      break;
   }
 };
 
@@ -231,32 +233,35 @@ void(string cmd, float tokens) client_setWeapon={
   oself = self;
   wslotid = stof(argv(2));
   new_id = stof(argv(3));
-  if(wslotid == WEAPON1){
-    self.next_wepn1 = new_id;
-  }
-  else if(wslotid == WEAPON2){
-    self.next_wepn2 = new_id;
-  }
-  else if(wslotid == WEAPON3){
-    self.next_wepn3 = new_id;
-  }
-  else if(wslotid == WEAPON4){
-    self.next_wepn4 = new_id;
-  }
-  else if(wslotid == WEAPON5){
-    self.next_wepn5 = new_id;
-  }
-  else if(wslotid == WEAPON6){
-    self.next_wepn6 = new_id;
-  }
-  else if(wslotid == WEAPON7){
-    self.next_wepn7 = new_id;
-  }
-  else if(wslotid == WEAPON8){
-    self.next_wepn8 = new_id;
-  }
-  else if(wslotid == WEAPON9){
-    self.next_wepn9 = new_id;
+  
+  switch(wslotid){
+    case WEAPON1:
+      self.next_wepn1 = new_id;
+      break;
+    case WEAPON2:
+      self.next_wepn2 = new_id;
+      break;
+    case WEAPON3:
+      self.next_wepn3 = new_id;
+      break;
+    case WEAPON4:
+      self.next_wepn4 = new_id;
+      break;
+    case WEAPON5:
+      self.next_wepn5 = new_id;
+      break;
+    case WEAPON6:
+      self.next_wepn6 = new_id;
+      break;
+    case WEAPON7:
+      self.next_wepn7 = new_id;
+      break;
+    case WEAPON8:
+      self.next_wepn8 = new_id;
+      break;
+    case WEAPON9:
+      self.next_wepn9 = new_id;
+      break;
   }
 };
 
@@ -464,32 +469,34 @@ void() client_updateWeaponReloads={
   while(e){
     local float delta;
     delta = e.rl_cur / e.rl_max;
-    if(idx == 1){ 
-      self.stat_w1_rel = delta;
-    }
-    else if(idx == 2){
-      self.stat_w2_rel = delta;
-    }
-    else if(idx == 3){
-      self.stat_w3_rel = delta;
-    }
-    else if(idx == 4){
-      self.stat_w4_rel = delta;
-    }
-    else if(idx == 5){
-      self.stat_w5_rel = delta;
-    }
-    else if(idx == 6){
-      self.stat_w6_rel = delta;
-    }
-    else if(idx == 7){
-      self.stat_w7_rel = delta;
-    }
-    else if(idx == 8){
-      self.stat_w8_rel = delta;
-    }
-    else if(idx == 9){
-      self.stat_w9_rel = delta;
+    switch(idx){
+      case 1: 
+        self.stat_w1_rel = delta;
+        break;
+      case 2:
+        self.stat_w2_rel = delta;
+        break;
+      case 3:
+        self.stat_w3_rel = delta;
+        break;
+      case 4:
+        self.stat_w4_rel = delta;
+        break;
+      case 5:
+        self.stat_w5_rel = delta;
+        break;
+      case 6:
+        self.stat_w6_rel = delta;
+        break;
+      case 7:
+        self.stat_w7_rel = delta;
+        break;
+      case 8:
+        self.stat_w8_rel = delta;
+        break;
+      case 9:
+        self.stat_w9_rel = delta;
+        break;
     }
     idx = idx + 1;
     e = e.w_slot;

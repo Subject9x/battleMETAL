@@ -9,21 +9,29 @@ Overview: singleplayer menu
 entity camp_title;
 entity camp_new;
 entity camp_load;
+entity camp_save;
 entity camp_back;
 
 //Main Menu Constants
 string IMG_CAMP_TITLE   = "gfx/menu/single/camp_label.png";
 string IMG_CAMP_NEW     = "gfx/menu/single/camp_new.png";
 string IMG_CAMP_LOAD    = "gfx/menu/single/camp_load.png";
+string IMG_CAMP_SAVE    = "gfx/menu/save_btn.png";
 
 //button callbacks
-void() click_camp_new = {
+void() click_camp_new ={
+  menu_clear_items(M_STATE);
   m_newg_f();
 };
 
 void() click_camp_load = {
   menu_clear_items(M_STATE);
   m_load_f();
+};
+
+void() click_camp_save={
+  menu_clear_items(M_STATE);
+  m_save_f();
 };
 
 void() click_camp_back={
@@ -36,9 +44,15 @@ void() click_camp_back={
 // ini function, called by '_f' function as a setup func
 void() m_camp_i={
   camp_title = lbl_img('10 100', '1 1 0', IMG_CAMP_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SINGLE, 1, (UI_FLAG_SIZE_IMG) );
-  camp_new = btn_img_callback('10 132 0', '1 1 0', IMG_CAMP_NEW, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_new, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  camp_load = btn_img_callback('10 151 0', '1 1 0', IMG_CAMP_LOAD, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_load, '1 1 1', '0 1 0',1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  camp_back = btn_img_callback('10 170 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  camp_new = btn_img_callback('10 132', '1 1 0', IMG_CAMP_NEW, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_new, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  camp_load = btn_img_callback('10 151', '1 1 0', IMG_CAMP_LOAD, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_load, '1 1 1', '0 1 0',1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  camp_save = btn_img_callback('10 174', '1 1 0', IMG_CAMP_SAVE, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_save, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  
+  if( isdemo() || (clientstate() != CS_CONNECTED) ){
+    camp_save.drawme = FALSE;
+  }
+  
+  camp_back = btn_img_callback('10 200', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_SINGLE, click_camp_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
 /*

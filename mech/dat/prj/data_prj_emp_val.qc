@@ -11,7 +11,7 @@ void() data_prj_emp_think;
 void() data_prj_emp_explode;
 
 void() data_prj_emp_ini={
-  self.classname = "missile";
+  self.classname = "prj_emp";
   self.touch = data_prj_emp_touch;
   self.data_idx = ID_PRJ_EMP;
   self.p_velocity = DAT_PRJ_EMP_VELOCITY;
@@ -37,25 +37,24 @@ void()data_prj_emp_think={
     local entity proxy;
     proxy = findradius(self.origin, DAT_PRJ_EMP_PROXYRAD);
     while(proxy){
-      if(proxy!=world){
-        if(proxy.classname!="missile"){
-          traceline(self.origin, proxy.origin, FALSE, self.owner);
-          if(trace_ent){
-            local entity f;
-            if(trace_ent.classname == MECH_PIECE){
-              f = trace_ent.owner;
-            }
-            else{
-              f = trace_ent;
-            }
-            local float ln;
-            ln = vlen(trace_endpos - self.origin);
-            if(ln <= DAT_PRJ_EMP_PROXYRAD){
-              explode = TRUE;
-            }
+      if(proxy.takedamage){
+        traceline(self.origin, proxy.origin, FALSE, self.owner);
+        if(trace_ent){
+          local entity f;
+          if(trace_ent.classname == MECH_PIECE){
+            f = trace_ent.owner;
+          }
+          else{
+            f = trace_ent;
+          }
+          local float ln;
+          ln = vlen(trace_endpos - self.origin);
+          if(ln <= DAT_PRJ_EMP_PROXYRAD){
+            explode = TRUE;
           }
         }
       }
+    
       proxy = proxy.chain;
     }
   }
@@ -77,15 +76,13 @@ void()data_prj_emp_explode={
   local entity lst;
   lst = findradius(self.origin, DAT_PRJ_EMP_EXPRAD);
   while(lst){
-    if(lst!=world){
-      if(lst.classname!="missile"){
-        traceline(self.origin, lst.origin, FALSE, self.owner);
-        if(trace_ent){
-          local float ln;
-          ln = vlen(trace_endpos - self.origin);
-          if(ln <= DAT_PRJ_EMP_EXPRAD){
-            t_damage(lst, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-          }
+    if(lst.takedamage){
+      traceline(self.origin, lst.origin, FALSE, self.owner);
+      if(trace_ent){
+        local float ln;
+        ln = vlen(trace_endpos - self.origin);
+        if(ln <= DAT_PRJ_EMP_EXPRAD){
+          t_damage(lst, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
         }
       }
     }
@@ -113,15 +110,9 @@ void() data_prj_emp_touch={
     return;
   }
   
-  if(other.owner == self.owner){
-    return;
+  if(other.takedamage){
+    te_tarexplosion(self.origin);
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   }
-  
-  if(other.classname == "missile"){
-    return;
-  }
-  te_tarexplosion(self.origin);
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-  
   remove(self);
 };

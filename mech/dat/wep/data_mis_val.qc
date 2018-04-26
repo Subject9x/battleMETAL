@@ -97,15 +97,15 @@ void() data_mis_atk={
     data_iniProjectile(oself.w_proj);
     self.p_dmgtype = oself.p_dmgtype;
     self.p_damage = oself.p_damage;
-    self.velocity = normalize(dir - org);
-    self.think = BecomeExplosion;
-    self.nextthink = time + self.p_lifetime;
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     util_setModel(self.c_model, 0, 0);
     util_setBoundBox('0 0 0', '0 0 0');
     setorigin(self, org);
+    self.velocity = normalize(dir - org);
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);
+    self.think = BecomeExplosion;
+    self.nextthink = time + self.p_lifetime;
   self = oself;
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };

@@ -54,7 +54,7 @@ void() CSQC_Init =
     cnt = cnt + 1;
   }
   
-  NAVNAMES[0] = "Unknown";
+  NAVNAMES[0] = "RANDOM";
   NAVNAMES[1] = "Alpha";
   NAVNAMES[2] = "Beta";
   NAVNAMES[3] = "Gamma";

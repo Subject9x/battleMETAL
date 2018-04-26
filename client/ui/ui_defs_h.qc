@@ -56,6 +56,7 @@ string UI_DEF_BOX_512;
 string UI_DEF_BOX_256;
 string UI_DEF_BOX_256_TALL;
 string UI_DEF_BOX_64;
+string UI_DEF_REC_64;
 string UI_DEF_NAVPOINT;
 string UI_DEF_DEPLOYPOINT;
 string UI_HANGAR_BOX;

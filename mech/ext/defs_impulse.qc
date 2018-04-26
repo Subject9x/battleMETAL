@@ -34,5 +34,4 @@ float IMP_SHOWOBJ = 25;
 float IMP_REPAIR = 26;
 
 void() mpls_singleFire;
-void() mpls_groupFire;
-float() mpls_changeGroup;
+void(float selector) mpls_groupFire;

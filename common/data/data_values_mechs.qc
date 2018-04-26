@@ -211,9 +211,9 @@ vector DAT_MNT_WEP3_OFFSET    = '-1.5 2 10';
 vector DAT_MNT_WEP4_OFFSET    = '1.5 2 10';
 vector DAT_MNT_WEP5_OFFSET    = '-2 15.5 6';
 vector DAT_MNT_WEP6_OFFSET    = '2 15.5 6';
-vector DAT_MNT_WEP7_OFFSET    = '0 5 6';
-vector DAT_MNT_WEP8_OFFSET    = '9 6 4';
-vector DAT_MNT_WEP9_OFFSET    = '-9 6 4';
+vector DAT_MNT_WEP7_OFFSET    = '0 5 5.5';
+vector DAT_MNT_WEP8_OFFSET    = '9 6 4.5';
+vector DAT_MNT_WEP9_OFFSET    = '-9 6 4.5';
 //============================
 //            Hardpoint Totals 
 //============================

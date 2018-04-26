@@ -210,6 +210,23 @@ void() navBarListener={
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025))){
     if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS) ) ){
+      local entity nav;
+      local float itr, idx;
+      nav = findchainfloat(data_type, DATA_DEPL);
+      itr = 0;
+      while(nav){
+        if(nav.isActive){
+          if(nav.i_faction == self.i_faction){
+            DEPLOY_IDS[itr] = nav.nav_name;
+          }
+        }
+        nav = nav.chain;
+        if(!nav){
+          DEPLOY_POINT_END = itr;
+        }
+        itr = itr + 1;
+      }
+      DEPLOY_POINT_ID = 0;
       self.plr_menu_choice = MENU_DEPLOY_ACTIVE;
     }
   }
@@ -287,10 +304,10 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
     local vector iorg;
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');
-      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('28 28'), CLR_DEF_RED, HUD_ALPHA, 0);
+      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_RED, HUD_ALPHA, 0);
     }
     wep = m_findData(wid, DATA_WEPN);
-    drawpic( org + gui_percentToPixelRawVec('1 1'), wep.w_icon,  gui_percentToPixelRawVec('22 22'), '1 1 1', HUD_ALPHA, 0);
+    drawpic( org + gui_percentToPixelRawVec('1 1'), wep.w_icon,  gui_percentToPixelRawVec('28 28'), '1 1 1', HUD_ALPHA, 0);
   }
 };
 

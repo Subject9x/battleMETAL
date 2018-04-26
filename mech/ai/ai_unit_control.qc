@@ -38,28 +38,6 @@ void() ai_control={
 
     moveFlag = self.ai_next_move();
     moveDelta = vlen(self.prev_pos - self.origin);
-
-    //ruh roh bot might be stuck, lets do something whacky about that
-    if( (moveDelta == 0) && (self.delay <= 0) ){      
-      self.ai_stuck_cnt = self.ai_stuck_cnt + 1;
-      //whole second of game time
-      if(self.ai_stuck_cnt > 25){
-        if(!self.ai_stuck_flag){
-          local vector next;
-          self.ai_stuck_flag = TRUE;
-          makevectors(self.angles);
-          traceline(self.e_legs.origin, self.origin + (v_forward * (self.maxs_x * 2) ) + (v_up * self.mins_z), FALSE, self);
-          next = trace_endpos;
-          if( (trace_ent) || (trace_plane_normal_z < 0.59) ){
-            ai_move_backward();
-          }
-          else{
-            if( trace_plane_normal == '0 0 0' ){
-            }
-          }
-        }
-      }
-    }
     
     if(self.ai_next_move != ai_move_stand){
       self.e_legs.v_angle_y = self.p_velocity;
@@ -69,7 +47,7 @@ void() ai_control={
     }
   }
   self.think = ai_control;
-  self.nextthink = time + 0.05;
+  self.nextthink = time + cvar("sys_ticrate");
   self.e_cam.SendFlags = -1;
 };
 

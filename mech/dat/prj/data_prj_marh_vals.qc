@@ -13,7 +13,7 @@ void() data_prj_marh_th;
 void() data_prj_marh_touch;
 
 void() data_prj_marh_ini={
-  self.classname = "missile";
+  self.classname = "prj_marh";
   self.touch = data_prj_marh_touch;
   self.data_idx = DAT_PRJ_MARH_IDX;
   self.p_velocity = DAT_PRJ_MARH_VELOCITY;
@@ -99,15 +99,10 @@ void() data_prj_marh_touch={
   if(other == self.owner){
     return;
   }
-  
-  if(other.owner == self.owner){
-    return;
-  }
-  
-  if(other.classname == "missile"){
-    return;
-  }
 
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+  if(other.takedamage){
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+  }
+  
   BecomeExplosion();
 };

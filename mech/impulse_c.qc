@@ -15,15 +15,32 @@ void() toggerRadar={};
 
 void() playerAttack={
   local entity wep_chain, oself;
-  local float wep_count;
+  local float wep_count, weaponGroup;
+  weaponGroup = 0;
+  if(self.button0){
+    weaponGroup = self.currentWeaponGroup;
+  }
+  else{
+    if(self.button3)
+      weaponGroup = weaponGroup | self.w_group1;
+    if(self.button4)
+      weaponGroup = weaponGroup | self.w_group2;
+    if(self.button5)
+      weaponGroup = weaponGroup | self.w_group3;
+    if(self.button6)
+      weaponGroup = weaponGroup | self.w_group4;
+    if(self.button7)
+      weaponGroup = weaponGroup | self.w_group5;
+  }
+  
   oself = self;
   wep_chain = self.w_slot;
   wep_count = wep_chain.w_group;
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
-    if( (self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7) && (self.stat_plr_stt == PLAYER_ACTIVE)){
-      if( (self.currentWeaponGroup & wgrp) ){
+    if( (weaponGroup > 0) && (self.stat_plr_stt == PLAYER_ACTIVE)){
+      if( (weaponGroup& wgrp) ){
         if(wep_chain.w_state == READY){
           self = wep_chain;
             self.w_attack();
@@ -70,27 +87,20 @@ void() ImpulseCommands ={
     if(self.state_1 < 1){
       self.state_1 = 5;
     }
-    self.impulse =  mpls_changeGroup();
+    mpls_groupFire(self.state_1);
   }
   if(self.impulse == IMP_NEXWGRP){
     self.state_1 = self.state_1 + 1;
     if(self.state_1 > 5){
       self.state_1 = 1;
     }
-    self.impulse = mpls_changeGroup();
-  }
-  if(self.state_1 < 1){
-    self.state_1 = 5;
-  }
-  else if (self.state_1 > 5){
-    self.state_1 = 1; 
+    mpls_groupFire(self.state_1);
   }
 
   if(self.stat_plr_fir == FIRE_SINGLE){
     //mpls_singleFire();
   }
   if(self.stat_plr_fir == FIRE_GROUP){
-    mpls_groupFire();
   }
 
   if(self.impulse == IMP_TARGET){
@@ -120,125 +130,45 @@ void() ImpulseCommands ={
 
 
 void() ButtonCommands={
-  //fire on command keys
-  if(self.button3){
-    self.currentWeaponGroup = self.w_group1;
-  }
-  if(self.button4){
-    self.currentWeaponGroup = self.w_group2;
-  }
-  if(self.button5){
-    self.currentWeaponGroup = self.w_group3;
-  }
-  if(self.button6){
-    self.currentWeaponGroup = self.w_group4;
-  }
-  if(self.button7){
-    self.currentWeaponGroup = self.w_group5;
-  }
+
 };
 
 void() mpls_singleFire={
-  if(self.impulse == IMP_SWEAPON1){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON1;
-  }
-  if(self.impulse == IMP_SWEAPON2){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON2;
-  }
-  if(self.impulse == IMP_SWEAPON3){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON3;
-  }
-  if(self.impulse == IMP_SWEAPON4){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON4;
-  }
-  if(self.impulse == IMP_SWEAPON5){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON5;
-  }
-  if(self.impulse == IMP_SWEAPON6){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON6;
-  }
-  if(self.impulse == IMP_SWEAPON7){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON7;
-  }
-  if(self.impulse == IMP_SWEAPON8){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON8;
-  }
-  if(self.impulse == IMP_SWEAPON9){
-    self.currentWeaponGroup = 0;
-    self.currentWeaponGroup = WEAPON9;
-  }
+
 };
 
-float() mpls_changeGroup={
-  if(self.state_1 == 1){
-    return IMP_WGROUP1;
-  }
-  else if(self.state_1 == 2){
-    return IMP_WGROUP2;
-  }
-  else if(self.state_1 == 3){
-    return IMP_WGROUP3;
-  }
-  else if(self.state_1 == 4){
-    return IMP_WGROUP4;
-  }
-  else if(self.state_1 == 5){
-    return IMP_WGROUP5;
-  }
-};
-
-void() mpls_groupFire={
-  if(self.impulse == IMP_WGROUP1){
-    if(self.currentWeaponGroup != self.w_group1){
+void(float selector) mpls_groupFire={
+  switch(selector){
+    case 1:
       self.state_1 = 1;
       centerprint(self, "[Weapon Group 1]");
-      //self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group2 | self.w_group3 | self.w_group4 | self.w_group5));
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group1;
-    }
-  }
-  if(self.impulse == IMP_WGROUP2){
-    if(self.currentWeaponGroup != self.w_group2){
+      break;
+    case 2:
       self.state_1 = 2;
       centerprint(self, "[Weapon Group 2]");
-      //self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group3 | self.w_group4 | self.w_group5));
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group2;
-    }
-  }
-  if(self.impulse == IMP_WGROUP3){
-    if(self.currentWeaponGroup != self.w_group3){
+      break;
+    case 3:
       self.state_1 = 3;
       centerprint(self, "[Weapon Group 3]");
-      //self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group4 | self.w_group5));
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group3;
-    }
-  }
-  if(self.impulse == IMP_WGROUP4){
-    if(self.currentWeaponGroup != self.w_group4){
+      break;
+    case 4:
       self.state_1 = 4;
       centerprint(self, "[Weapon Group 4]");
-      //self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group5));
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group4;
-    }
-  }
-  if(self.impulse == IMP_WGROUP5){
-    if(self.currentWeaponGroup != self.w_group5){
+      break;
+    case 5:
       self.state_1 = 5;
       centerprint(self, "[Weapon Group 5]");
-      //self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & (self.w_group1 | self.w_group2 | self.w_group3 | self.w_group4));
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group5;
-    }
+      break;
   }
+
 };

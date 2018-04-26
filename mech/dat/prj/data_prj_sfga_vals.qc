@@ -12,7 +12,7 @@ void() data_prj_sfga_touch;
 void() data_prj_sfga_raddmg;
 
 void() data_prj_sfga_ini={
-  self.classname = "missile";
+  self.classname = "prj_sfga";
   self.touch = data_prj_sfga_touch;
   self.data_idx = ID_PRJ_SFGA;
   self.p_velocity = DAT_PRJ_SFGA_VELOCITY;
@@ -46,14 +46,9 @@ void() data_prj_sfga_touch={
     return;
   }
   
-  if(other.owner == self.owner){
-    return;
+  if(other.takedamage){
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   }
-  
-  if(other.classname == "missile"){
-    return;
-  }
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   data_prj_sfga_raddmg();
   BecomeExplosion();
 };

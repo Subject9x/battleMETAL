@@ -13,7 +13,7 @@ void() data_prj_rplas_touch;
 void() data_prj_rplas_burn;
 
 void() data_prj_rplas_ini={
-  self.classname = "missile";
+  self.classname = "prj_rplas";
   self.touch = data_prj_rplas_touch;
   self.data_idx = DAT_PRJ_RPLAS_IDX;
   self.p_velocity = DAT_PRJ_RPLAS_VELOCITY;
@@ -64,10 +64,6 @@ void() data_prj_rplas_touch={
     return;
   }
   
-  if(other.owner == self.owner){
-    return;
-  }
-  
   if(other.takedamage){
     local entity hit;
     hit = t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
@@ -80,12 +76,17 @@ void() data_prj_rplas_touch={
       self.avelocity = '0 0 0';
       self.enemy = other;
       self.e_cam = hit; //hack!
+      self.aiment = self.e_cam;
+      self.punchangle = self.e_cam.angles;
+      self.view_ofs = self.origin - self.e_cam.origin;
+      self.angles = self.e_cam.angles;
+      self.v_angle = self.angles - self.e_cam.angles;
+      setorigin(self, randomvec() * 5 + self.e_cam.origin);
       self.think = data_prj_rplas_burn;
       self.nextthink = time + 0.001;
       self.p_lifetime = time + self.p_lifetime;
       return;
     }
 	}
-  
   remove(self);
 };

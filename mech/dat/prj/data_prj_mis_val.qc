@@ -9,7 +9,7 @@ Overview: data def file for a weapon projectile
 void() data_prj_mis_touch;
 
 void() data_prj_mis_ini={
-  self.classname = "missile";
+  self.classname = "prj_rck";
   self.touch = data_prj_mis_touch;
   self.data_idx = ID_PRJ_MIS;
   self.p_velocity = DAT_PRJ_MIS_VELOCITY;
@@ -31,26 +31,13 @@ void() data_prj_mis_touch={
 		remove(self);
 		return;
 	}
-  
-  if(other.classname == "worldspawn"){
-    BecomeExplosion();
-    return;
-  }
 
   if(other == self.owner){
-    BecomeExplosion();
     return;
   }
   
-  if(other.owner == self.owner){
-    BecomeExplosion();
-    return;
+  if(other.takedamage){
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   }
-  
-  if(other.classname == "missile"){
-    return;
-  }
-
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   BecomeExplosion();
 };

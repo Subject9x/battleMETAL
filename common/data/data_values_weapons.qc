@@ -153,7 +153,7 @@ float DAT_RPLAS_DMG_BURN  = 0.5;
 //-------------------------QRifle
 float DAT_QRFL_DMG        = 10;
 //-------------------------SFGA
-float DAT_SFGA_DMG        = 500;
+float DAT_SFGA_DMG        = 400;
 //-------------------------FLAK
 float DAT_FLAK_DMG        = 0.5;
 float DAT_FLAK_SHRAP_TOTAL= 14;
@@ -172,7 +172,7 @@ float DAT_MIS_DMG         = 75;
 //-------------------------Laser Missile
 float DAT_MLGD_DMG        = 275;
 //-------------------------Radar Missile
-float DAT_MARH_DMG        = 2; 
+float DAT_MARH_DMG        = 7; 
 //-------------------------Swarm Missile
 float DAT_SWRM_DMG        = 20;
 float DAT_SWRM_CLUSTER    = 3;  //3 missiles per target
@@ -411,19 +411,19 @@ vector DAT_LATC_FIRE_OFS    = '0 0 2';
 //-------------------------ATC
 vector DAT_FLAK_FIRE_OFS    = '0 0 2';
 //-------------------------RPlas
-vector DAT_RPLAS_FIRE_OFS   = '0 0 2';
+vector DAT_RPLAS_FIRE_OFS   = '0 0 4';
 //-------------------------QRifle
 vector DAT_QRFL_FIRE_OFS    = '0 0 2';
 //-------------------------SFGA
 vector DAT_SFGA_FIRE_OFS    = '0 0 2';
 //-------------------------Laser
-vector DAT_LAS_FIRE_OFS     = '0 0 2';
+vector DAT_LAS_FIRE_OFS     = '0 0 3';
 //-------------------------ION
-vector DAT_ION_FIRE_OFS     = '0 0 2';
+vector DAT_ION_FIRE_OFS     = '0 0 4';
 //-------------------------EMP
-vector DAT_EMP_FIRE_OFS     = '0 0 2';
+vector DAT_EMP_FIRE_OFS     = '0 0 4';
 //-------------------------ESR
-vector DAT_ESR_FIRE_OFS     = '0 0 4';
+vector DAT_ESR_FIRE_OFS     = '0 0 3.5';
 //-------------------------PAC
 vector DAT_PAC_FIRE_OFS     = '0 0 8';
 //-------------------------Rocket

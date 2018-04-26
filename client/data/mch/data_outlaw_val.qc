@@ -81,11 +81,11 @@ void() data_mech_otl;
 void(vector org) otl_renderHardpoints={
   
   if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
-    ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('52 65')), (self.plr_sel_hrpnt == 1));
-    ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('52 65')));
+    ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('65 86')), (self.plr_sel_hrpnt == 1));
+    ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('65 86')));
     
-    ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-75 65')), (self.plr_sel_hrpnt == 2));
-    ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-75 65')));
+    ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-93 86')), (self.plr_sel_hrpnt == 2));
+    ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-93 86')));
     
     ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('0 -5')), (self.plr_sel_hrpnt == 3));
     ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('0 -5')));
@@ -104,19 +104,19 @@ void(vector org) otl_hardpointrows={
 };
 
 float(vector org) otl_hardpointListener={
-  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('52 65')), gui_percentToPixelRawVec('24 24'))){
+  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('65 86')), gui_percentToPixelRawVec('28 28'))){
     self.plr_sel_wid = WEAPON1;
     self.plr_sel_hrpnt_size = DAT_BLK_HARDPOINT1_SIZE;
     self.plr_sel_hrpnt_types = DAT_BLK_HARDPOINT1_TYPES;
     return 1;
   }  
-  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('-75 65')), gui_percentToPixelRawVec('24 24'))){
+  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('-93 86')), gui_percentToPixelRawVec('28 28'))){
     self.plr_sel_wid = WEAPON2;
     self.plr_sel_hrpnt_size = DAT_BLK_HARDPOINT2_SIZE;
     self.plr_sel_hrpnt_types = DAT_BLK_HARDPOINT2_TYPES;
     return 2;
   }
-  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('0 -5')), gui_percentToPixelRawVec('24 24'))){
+  if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('0 -5')), gui_percentToPixelRawVec('28 28'))){
     self.plr_sel_wid = WEAPON3;
     self.plr_sel_hrpnt_size = DAT_BLK_HARDPOINT3_SIZE;
     self.plr_sel_hrpnt_types = DAT_BLK_HARDPOINT3_TYPES;

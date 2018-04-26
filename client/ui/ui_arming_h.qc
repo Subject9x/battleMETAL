@@ -90,10 +90,10 @@ void(vector ofs) menu_arming_WeaponList_ENE;
 void(vector ofs) menu_arming_WeaponList_EXP;
 void(vector ofs) menu_arming_WeaponList_MSC;
 void(vector ofs) menu_arming_WeaponGroupPanel;
-void(vector ofs) menu_arming_HardPointInfo;
+//void(vector ofs) menu_arming_HardPointInfo;
 void(vector ofs) menu_arming_energydraw;
 void(vector ofs) menu_arming_WeaponInfo;
-void(vector ofs) menu_arming_WeapoinInHardpoint;
+void(vector ofs) menu_arming_WeaponInHardpoint;
 void(vector ofs) menu_arming_AssignToHardpoint_btn;
 
 float(float comp, float bits) checkIfWeaponInGroup;

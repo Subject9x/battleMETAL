@@ -267,7 +267,7 @@ void() ai_spawner={
   self.th_missile = ai_spawner_activate;
   self.think = ai_spawner_think;
   self.use = ai_spawner_use;
-  self.nextthink = time + 0.001;
+  self.nextthink = time + 0.1;
 };
 
 /*QUAKED ai_logic_changeFaction (.25 .25 .25) (-5 -5 -5) (5 5 5)

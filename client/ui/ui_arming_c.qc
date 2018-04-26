@@ -130,23 +130,25 @@ void() menu_arming_drawFrame={
   
   menu_arming_HardpointGraph(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponList(topleftroot + gui_percentToPixel(0, 0.025));
-  menu_arming_HardPointInfo(topleftroot + gui_percentToPixelRawVec('0 32'));
+  //menu_arming_HardPointInfo(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_arming_energydraw(gui_percentToPixelRawVec('160 276'));
   menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
-  menu_arming_WeapoinInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
+  menu_arming_WeaponInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_AssignToHardpoint_btn(VIEW_CTR);
 };
 
 void(vector ofs) menu_arming_HardpointGraph={
   local vector nofs, hofs, hpnts;
-  nofs = ofs + gui_percentToPixelRawVec('10 64');
-  drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('225 188'), '1 1 1', HUD_ALPHA, 0);
+  nofs = ofs + gui_percentToPixelRawVec('10 8');
+  drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('270 236'), '0.25 0.25 0.25', HUD_ALPHA, 0);
+  
   if( SELECTED_MECH != world){
     hofs = nofs + gui_percentToPixelRawVec('4 4');
-    hpnts_x = hofs_x + gui_percentXRaw(110.5);
-    hpnts_y = hofs_y + gui_percentYRaw(90);
-    drawpic(hofs , SELECTED_MECH.c_ui_hf, gui_percentToPixelRawVec('221 180'), '1 1 1', HUD_ALPHA, 0);
+    hpnts_x = hofs_x + gui_percentXRaw(135);
+    hpnts_y = hofs_y + gui_percentYRaw(118);
+    drawpic(hofs , SELECTED_MECH.c_ui_hf, gui_percentToPixelRawVec('270 236'), '1 1 1', HUD_ALPHA, 0);
     MECHPANEL_CTR = hpnts;
     SELECTED_MECH.menu_renderHardpoints(hpnts);
   }
@@ -159,7 +161,6 @@ void(vector ofs) menu_arming_WeaponList={
   nofs_x = VIEW_CTR_x + gui_percentXRaw(150);
   nofs = nofs + gui_percentToPixelRawVec('12 10');
   drawpic(nofs, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('148 439'), '1 1 1', HUD_ALPHA, 0);
-  drawstring(ofs + gui_percentToPixelRawVec('8 8'), "[AVAILABLE WEAPONS]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   menu_arming_WeaponList_BAL(nofs);
   menu_arming_WeaponList_ENE(nofs);
   menu_arming_WeaponList_EXP(nofs);
@@ -406,7 +407,7 @@ void(vector ofs) menu_arming_energydraw={
     gui_renderMeter((GROUP_ENE_5 / enmax)*100, ofs + gui_percentToPixelRawVec('60 153'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
 };
 
-void(vector ofs) menu_arming_HardPointInfo={
+/*void(vector ofs) menu_arming_HardPointInfo={
   local vector nofs;
   nofs_x = ofs_x + gui_percentXRaw(10);
   nofs_y = ofs_y;
@@ -430,7 +431,7 @@ void(vector ofs) menu_arming_HardPointInfo={
   local vector hptsizepos;
   hptsizepos = idrpos + gui_percentToPixelRawVec('0 32');
   drawstring(hptsizepos, "[MAX WEAPON SIZE]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-};
+};*/
 
 void(vector ofs) menu_arming_WeaponInfo={
   local vector nofs;
@@ -506,7 +507,7 @@ void(vector ofs) menu_arming_AssignToHardpoint_btn={
   drawstring(nofs+gui_percentToPixelRawVec('28 2'), "[ASSIGN TO HARDPOINT]", '7 8 0', '1 1 1', HUD_ALPHA, 0);
 };
 
-void(vector ofs) menu_arming_WeapoinInHardpoint={
+void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector nofs;
   local entity dat;
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);

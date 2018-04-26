@@ -11,7 +11,7 @@ void() data_prj_ion_think;
 void() data_prj_ion_explode;
 
 void() data_prj_ion_ini={
-  self.classname = "missile";
+  self.classname = "prj_ion";
   self.touch = data_prj_ion_touch;
   self.data_idx = ID_PRJ_ION;
   self.p_velocity = DAT_PRJ_ION_VELOCITY;
@@ -37,8 +37,7 @@ void()data_prj_ion_think={
     local entity proxy;
     proxy = findradius(self.origin, DAT_PRJ_ION_PROXYRAD);
     while(proxy){
-      if( proxy != world ){
-        if( proxy.classname != "missile" ){
+        if( proxy.takedamage){
           if(proxy.deadflag <= DEAD_NO){
             traceline(self.origin, proxy.origin, FALSE, self.owner);
             if(trace_ent){
@@ -57,7 +56,6 @@ void()data_prj_ion_think={
             }
           }
         }
-      }
       proxy = proxy.chain;
     }
   }
@@ -79,15 +77,13 @@ void()data_prj_ion_explode={
   local entity lst;
   lst = findradius(self.origin, DAT_PRJ_ION_EXPRAD);
   while(lst){
-    if(lst!=world){
-      if(lst.classname!="missile"){
-        traceline(self.origin, lst.origin, FALSE, self.owner);
-        if(trace_ent){
-          local float ln;
-          ln = vlen(trace_endpos - self.origin);
-          if(ln <= DAT_PRJ_ION_EXPRAD){
-            t_damage(lst, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-          }
+    if(lst.takedamage){
+      traceline(self.origin, lst.origin, FALSE, self.owner);
+      if(trace_ent){
+        local float ln;
+        ln = vlen(trace_endpos - self.origin);
+        if(ln <= DAT_PRJ_ION_EXPRAD){
+          t_damage(lst, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
         }
       }
     }
@@ -114,16 +110,10 @@ void() data_prj_ion_touch={
   if(other == self.owner){
     return;
   }
-  
-  if(other.owner == self.owner){
-    return;
+
+  if(other.takedamage){
+    te_tarexplosion(self.origin);
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   }
-  
-  if(other.classname == "missile"){
-    return;
-  }
-  te_tarexplosion(self.origin);
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-  
   remove(self);
 };

@@ -45,6 +45,7 @@ entity controls_objectives;
 entity controls_repair;
 entity controls_chat_team;
 entity controls_chat_all;
+entity controls_zoom;
 
 //controls constants
 string IMG_CONTROLS_TITLE = "gfx/menu/options/options_title.png";
@@ -182,6 +183,10 @@ void() txt_control_bind_chat_all={
   menu_keybind_change ("messagemode");
 };
 
+void() txt_control_bind_zoom={
+  menu_keybind_change ("+zoom");
+};
+
 // ini function, called by '_f' function as a setup func
 void() m_controls_i={
   controls_title = lbl_img('10 50', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, (UI_FLAG_SIZE_IMG) );
@@ -268,6 +273,8 @@ void() m_controls_i={
   controls_chat_team = inp_keybindfield('515 161', '10 10 0', txt_control_bind_chat_team, "messagemode2", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   controls_chat_all = inp_keybindfield('515 173', '10 10 0', txt_control_bind_chat_all, "messagemode", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  
+  controls_zoom = inp_keybindfield('515 185', '10 10 0', txt_control_bind_zoom, "+zoom", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 };
 
 /*
@@ -307,12 +314,12 @@ void() m_controls_d={
     gui_renderString("Select Group 5 :", gui_percentToPixelRawVec('34 294'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   
   //movement
-  gui_renderString("MOVEMENT", gui_percentToPixelRawVec('438 200'), CLR_DEF_GREEN, '9 9 0', 1, 0);
-    gui_renderString("Forward :", gui_percentToPixelRawVec('439 214'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Backward :", gui_percentToPixelRawVec('431 226'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Strafe Left :", gui_percentToPixelRawVec('407 238'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Strafe Right :", gui_percentToPixelRawVec('399 250'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Engage Sprint :", gui_percentToPixelRawVec('391 262'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("MOVEMENT", gui_percentToPixelRawVec('438 206'), CLR_DEF_GREEN, '9 9 0', 1, 0);
+    gui_renderString("Forward :", gui_percentToPixelRawVec('439 220'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+    gui_renderString("Backward :", gui_percentToPixelRawVec('431 232'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+    gui_renderString("Strafe Left :", gui_percentToPixelRawVec('407 244'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+    gui_renderString("Strafe Right :", gui_percentToPixelRawVec('399 256'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+    gui_renderString("Engage Sprint :", gui_percentToPixelRawVec('391 268'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   
   //controls
   gui_renderString("PILOTING", gui_percentToPixelRawVec('436 100'), CLR_DEF_IIF_FRIEND_BLD, '9 9 0', 1, 0);
@@ -322,6 +329,7 @@ void() m_controls_d={
     gui_renderString("Engage Repair Bay :", gui_percentToPixelRawVec('358 150'), CLR_DEF_WHITE, '8 8 0', 1, 0);
     gui_renderString("Chat Team :", gui_percentToPixelRawVec('422 162'), CLR_DEF_WHITE, '8 8 0', 1, 0);
     gui_renderString("Chat All :", gui_percentToPixelRawVec('430 174'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+    gui_renderString("Optical Zoom :", gui_percentToPixelRawVec('398 186'), CLR_DEF_WHITE, '8 8 0', 1, 0);
     
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_CONTROLS);

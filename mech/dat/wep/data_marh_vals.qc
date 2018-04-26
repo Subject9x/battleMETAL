@@ -95,9 +95,8 @@ void() data_marh_atk={
       dist = vlen(dir - org);
       arc = org + (v_forward * (300 + (crandom() * 20))) + (v_up * (300 + (crandom() * 20))) + (v_right * 0);
       
-
       local vector start;
-      start = org + ((crandom() * 15) * v_right) + (v_up * (crandom() * 15)) + (v_right * 0);
+      start = org + ((crandom() * 2) * v_right) + (v_up * (crandom() * 4));
       newmis = spawn();
       oself = self;
       self = newmis;
@@ -105,19 +104,19 @@ void() data_marh_atk={
         data_iniProjectile(oself.w_proj);
         self.p_dmgtype = oself.p_dmgtype;
         self.p_damage = oself.p_damage;
-        self.velocity = normalize(arc - start);
         self.enemy = self.owner.enemy;
         self.c_ofs = arc;
         self.lock_timer = time + 0.75;
         self.p_lifetime = time + self.p_lifetime;
-        self.velocity = self.velocity * self.p_velocity;
-        self.angles = vectoangles(self.velocity);
-        self.think = data_prj_marh_th;
-        self.nextthink = time + 0.01;
         util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
         util_setModel(self.c_model, 0, 0);
         util_setBoundBox('0 0 0', '0 0 0');
         setorigin(self, start);
+        self.velocity = normalize(arc - start);
+        self.velocity = self.velocity * self.p_velocity;
+        self.angles = vectoangles(self.velocity);
+        self.think = data_prj_marh_th;
+        self.nextthink = time + 0.01;
         sound (self, CHAN_ITEM, oself.fire_sound, 1, ATTN_NORM);
       self = oself;
     }

@@ -5,12 +5,12 @@ Date: 4/14/2018
 Overview: load campaign menu
 */
 
-//Main Menu Globals
+//load Globals
 entity load_title;
 entity load_back;
 entity load_list;
 
-//Main Menu Constants
+//load Constants
 string IMG_LOAD_TITLE   = "gfx/menu/load/load_title.png";
 
 //button callbacks
@@ -90,8 +90,6 @@ void(float key, float ascii) m_load_k={
   
   switch(key){
     case K_ESCAPE:
-      //note how this is different than m_main_k, here we just want to go 'up' one
-      //menu and not leave the menu system
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
       m_camp_f();

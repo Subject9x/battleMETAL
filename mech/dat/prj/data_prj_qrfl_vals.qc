@@ -12,7 +12,7 @@ float DAT_PRJ_QRFL_IDX = ID_PRJ_QRFL;
 void() data_prj_qrfl_touch;
 
 void() data_prj_qrfl_ini={
-  self.classname = "missile";
+  self.classname = "prj_qrfl";
   self.touch = data_prj_qrfl_touch;
   self.data_idx = DAT_PRJ_QRFL_IDX;
   self.p_velocity = DAT_PRJ_QRFL_VELOCITY;
@@ -45,13 +45,8 @@ void() data_prj_qrfl_touch={
     return;
   }
   
-  if(other.owner == self.owner){
-    return;
-  }
-  
-  if(other.classname == "missile"){
-    return;
-  }
-  t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+  if(other.takedamage){
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+  }  
   remove(self);
 };
