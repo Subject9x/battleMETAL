@@ -29,36 +29,38 @@ void() ctrl_updateCenterTorso={
     self.laser_sight_timer = time + 0.05;
   }
 
-  if(self.en_cur >= 0){
-    if(self.movement_x <= self.m_fspeed && self.movement_y <= self.m_fspeed){
-      self.en_cur = self.en_cur + self.en_rate;
-    }
-    else{
-      if(self.stat_plr_stt >= PLAYER_ACTIVE){
-        self.en_cur = self.en_cur + (self.en_rate - self.m_maccel);
+  if( time > self.count4 ){
+    self.count4 = time + 0.1;
+    if(self.en_cur >= 0){
+      if(self.movement_x <= self.m_fspeed && self.movement_y <= self.m_fspeed){
+        self.en_cur = self.en_cur + self.en_rate;
       }
-    }
-    if(self.en_cur > self.en_max){
-      self.en_cur = self.en_max;
-    }
-  }
-
-  if(self.sh_cur < self.sh_max){
-    if(time > self.sh_hit){
-      if(self.en_cur > 0){
-        self.sh_cur = self.sh_cur + self.sh_rate;
-        self.en_cur = self.en_cur - self.sh_rate;
-        if(self.sh_cur > self.sh_max){
-          self.sh_cur = self.sh_max;
+      else{
+        if(self.stat_plr_stt >= PLAYER_ACTIVE){
+          self.en_cur = self.en_cur + (self.en_rate - self.m_maccel);
+        }
+      }
+      if(self.en_cur > self.en_max){
+        self.en_cur = self.en_max;
+      }
+    }  
+    if(self.sh_cur < self.sh_max){
+      if(time > self.sh_hit){
+        if(self.en_cur > 0){
+          self.sh_cur = self.sh_cur + self.sh_rate;
+          self.en_cur = self.en_cur - self.sh_rate;
+          if(self.sh_cur > self.sh_max){
+            self.sh_cur = self.sh_max;
+          }
         }
       }
     }
-  }
-  if(self.en_cur < 0){
-    self.en_cur = 0;
-  }
-  else if(self.en_cur > self.en_max){
-    self.en_cur = self.en_max;
+    if(self.en_cur < 0){
+      self.en_cur = 0;
+    }
+    else if(self.en_cur > self.en_max){
+      self.en_cur = self.en_max;
+    }
   }
   
   if((self.flags & FL_CLIENT)){

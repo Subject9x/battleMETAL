@@ -79,13 +79,6 @@ float(entity ent, float sendFlags) client_data_sendEnt={
     WriteLong( MSG_ENTITY, self.owner.currentWeaponGroup);
     WriteByte( MSG_ENTITY, self.owner.stat_wep_rel);
     WriteByte( MSG_ENTITY, self.owner.hardpoint_cnt);
-    local entity wep;
-    wep = self.owner.w_slot;
-    while(wep != world){
-      WriteByte( MSG_ENTITY, wep.data_idx);
-      WriteByte( MSG_ENTITY, (wep.rl_cur / wep.rl_max)*100);
-      wep = wep.w_slot;
-    }
   }
   return TRUE;
 };
@@ -467,34 +460,44 @@ void() client_updateWeaponReloads={
   idx = 1;
   e = self.w_slot;
   while(e){
-    local float delta;
-    delta = e.rl_cur / e.rl_max;
+    local float delta, wid;
+    delta = e.rl_cur;
+    wid = e.data_idx;
     switch(idx){
       case 1: 
+        self.stat_w1_id = wid;
         self.stat_w1_rel = delta;
         break;
       case 2:
+        self.stat_w2_id = wid;
         self.stat_w2_rel = delta;
         break;
       case 3:
+        self.stat_w3_id = wid;
         self.stat_w3_rel = delta;
         break;
       case 4:
+        self.stat_w4_id = wid;
         self.stat_w4_rel = delta;
         break;
       case 5:
+        self.stat_w5_id = wid;
         self.stat_w5_rel = delta;
         break;
       case 6:
+        self.stat_w6_id = wid;
         self.stat_w6_rel = delta;
         break;
       case 7:
+        self.stat_w7_id = wid;
         self.stat_w7_rel = delta;
         break;
       case 8:
+        self.stat_w8_id = wid;
         self.stat_w8_rel = delta;
         break;
       case 9:
+        self.stat_w9_id = wid;
         self.stat_w9_rel = delta;
         break;
     }

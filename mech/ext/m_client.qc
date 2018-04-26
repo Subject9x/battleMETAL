@@ -230,6 +230,7 @@ void() PutClientInServer = {
   }
   else if(self.data_type == DATA_MECH){
     player_makeMech();
+    self.count4 = 0;
   }
 
   if (deathmatch || coop)

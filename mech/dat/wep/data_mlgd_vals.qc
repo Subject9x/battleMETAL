@@ -40,23 +40,39 @@ void() data_mlgd_ini={
 void() data_mlgd_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
+      self.rl_cur = 100;
       self.w_state = READY;
     }
   }
   else if(self.w_state == RELOADING){
-    self.rl_cur = self.rl_cur + self.rl_rate;
-    self.owner.en_cur = self.owner.en_cur - self.en_rate;
-    if(self.rl_cur >= self.rl_max){
-      self.rl_cur = self.rl_max;
+    if(time > self.w_firetime){
       self.w_state = READY;
+    }
+    else{
+      local float delta, max;
+      delta = time - self.count1;
+      max = self.rl_max;      
+      self.rl_cur = (delta / max) * 100;
     }
   }
 };
 
 void() data_mlgd_atk={
   local entity player, proj, cam, oself;
-  player = self.owner;
   local vector dir, org, end, adj;
+  player = self.owner;
+  
+  if( self.w_currentammo ==  self.w_clipsize){
+    if(self.en_rate && (player.en_cur >= self.en_rate)){
+      player.en_cur = player.en_cur - self.en_rate;
+      if(player.en_cur < 0){
+        player.en_cur = 0;
+      }
+    }
+    else{
+      return;
+    }
+  }
 
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, self.w_range);
@@ -71,6 +87,8 @@ void() data_mlgd_atk={
     self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
+    self.w_firetime = time + self.rl_max;
+    self.count1 = time;
   }
   else{
     self.w_firetime = time + self.rl_rate;

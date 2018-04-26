@@ -43,22 +43,27 @@ void() data_mis_ini={
 void() data_mis_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
+      self.rl_cur = 100;
       self.w_state = READY;
     }
   }
   else if(self.w_state == RELOADING){
-    self.rl_cur = self.rl_cur + self.rl_rate;
-    if(self.rl_cur >= self.rl_max){
-      self.rl_cur = self.rl_max;
+    if(time > self.w_firetime){
       self.w_state = READY;
+    }
+    else{
+      local float delta, max;
+      delta = time - self.count1;
+      max = self.rl_max;      
+      self.rl_cur = (delta / max) * 100;
     }
   }
 };
 
 void() data_mis_atk={
   local entity player, proj, cam, oself;
-  player = self.owner;
   local vector dir, org, end, adj;
+  player = self.owner;
 
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, self.w_range);
@@ -74,6 +79,8 @@ void() data_mis_atk={
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
     self.w_isburst = FALSE;
+    self.w_firetime = time + self.rl_max;
+    self.count1 = time;
   }
   else{
     if((player.flags & FL_MONSTER)){

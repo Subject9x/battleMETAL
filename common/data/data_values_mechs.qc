@@ -91,26 +91,26 @@ float DAT_MNT_SHIELD_RATE   = 0.35;
 //============================
 //-------------------------BALAKET------------------------
 float DAT_OTL_ENERGY_MAX    = 400;
-float DAT_OTL_ENERGY_RATE   = 1;
+float DAT_OTL_ENERGY_RATE   = 4;
 //-------------------------MATOK------------------------
 float DAT_MTK_ENERGY_MAX    = 800;
-float DAT_MTK_ENERGY_RATE   = 3;
+float DAT_MTK_ENERGY_RATE   = 5;
 //-------------------------MONITOR------------------------
-float DAT_MNT_ENERGY_MAX    = 1200;
-float DAT_MNT_ENERGY_RATE   = 2;
+float DAT_MNT_ENERGY_MAX    = 700;
+float DAT_MNT_ENERGY_RATE   = 3;
 //============================
 //            Speed  
 //============================
 //-------------------------BALAKET------------------------
-float DAT_OTL_M_FSPEED      = 200;
+float DAT_OTL_M_FSPEED      = 225;
 float DAT_OTL_M_SSPEED      = 175;
 float DAT_OTL_M_BSPEED      = 150;
-float DAT_OTL_M_ACCEL       = 1.75;
+float DAT_OTL_M_ACCEL       = 1.5;
 //-------------------------MATOK------------------------
 float DAT_MTK_M_FSPEED      = 150;
 float DAT_MTK_M_SSPEED      = 100;
 float DAT_MTK_M_BSPEED      = 90;
-float DAT_MTK_M_ACCEL       = 1.25;
+float DAT_MTK_M_ACCEL       = 1.5;
 //-------------------------MONITOR------------------------
 float DAT_MNT_M_FSPEED      = 85;
 float DAT_MNT_M_SSPEED      = 85;

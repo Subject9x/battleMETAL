@@ -49,48 +49,8 @@ void(float isNew) receive_ent_clientData={
     //WEAPON DATA
     self.currentWeaponGroup = ReadLong();
     self.stat_wep_rel = ReadByte();
-    local float wepItr;
+  
     self.plr_sel_hrpnt = ReadByte();
-    wepItr = 1;
-    while(wepItr <= self.plr_sel_hrpnt){
-      if(wepItr == 1){
-        self.stat_w1_id = ReadByte();
-        self.stat_w1_rel = ReadByte();
-      }
-      else if(wepItr == 2){
-        self.stat_w2_id = ReadByte();
-        self.stat_w2_rel = ReadByte();
-      }
-      else if(wepItr == 3){
-        self.stat_w3_id = ReadByte();
-        self.stat_w3_rel = ReadByte();
-      }
-      else if(wepItr == 4){
-        self.stat_w4_id = ReadByte();
-        self.stat_w4_rel = ReadByte();
-      }
-      else if(wepItr == 5){
-        self.stat_w5_id = ReadByte();
-        self.stat_w5_rel = ReadByte();
-      }
-      else if(wepItr == 6){
-        self.stat_w6_id = ReadByte();
-        self.stat_w6_rel = ReadByte();
-      }
-      else if(wepItr == 7){
-        self.stat_w7_id = ReadByte();
-        self.stat_w7_rel = ReadByte();
-      }
-      else if(wepItr == 8){
-        self.stat_w8_id = ReadByte();
-        self.stat_w8_rel = ReadByte();
-      }
-      else if(wepItr == 9){
-        self.stat_w9_id = ReadByte();
-        self.stat_w9_rel = ReadByte();
-      }
-      wepItr = wepItr + 1;
-    }
   }
   if(intg == player_localentnum){
     client = entitybyindex(player_localentnum);
@@ -116,6 +76,15 @@ void(float isNew) receive_ent_clientData={
           self.plr_nex_grp3 = 0;
           self.plr_nex_grp4 = 0;
           self.plr_nex_grp5 = 0;
+          self.stat_w1_id = 0;
+          self.stat_w2_id = 0;
+          self.stat_w3_id = 0;
+          self.stat_w4_id = 0;
+          self.stat_w5_id = 0;
+          self.stat_w6_id = 0;
+          self.stat_w7_id = 0;
+          self.stat_w8_id = 0;
+          self.stat_w9_id = 0;
           self.plr_nav_pnt = -1;
           self.plr_menu_choice = MENU_BRIEF_ACTIVE;
           self.MSN_SFX_COUNT = 0;
@@ -198,49 +167,26 @@ void() receive_ent_bindData={
       //WEAPON DATA
       self.currentWeaponGroup = cl_data.currentWeaponGroup;
       self.stat_wep_rel = cl_data.stat_wep_rel;
-      local float wepCount, wepItr;
-      wepCount = cl_data.plr_sel_hrpnt;
-      wepItr = 1;
-      while(wepItr <= wepCount){
-        if(wepItr == 1){
-          self.stat_w1_id = cl_data.stat_w1_id;
-          self.stat_w1_rel = cl_data.stat_w1_rel;
-        }
-        else if(wepItr == 2){
-          self.stat_w2_id = cl_data.stat_w2_id;
-          self.stat_w2_rel = cl_data.stat_w2_rel;
-        }
-        else if(wepItr == 3){
-          self.stat_w3_id = cl_data.stat_w3_id;
-          self.stat_w3_rel = cl_data.stat_w3_rel;
-        }
-        else if(wepItr == 4){
-          self.stat_w4_id = cl_data.stat_w4_id;
-          self.stat_w4_rel = cl_data.stat_w4_rel;
-        }
-        else if(wepItr == 5){
-          self.stat_w5_id = cl_data.stat_w5_id;
-          self.stat_w5_rel = cl_data.stat_w5_rel;
-        }
-        else if(wepItr == 6){
-          self.stat_w6_id = cl_data.stat_w6_id;
-          self.stat_w6_rel = cl_data.stat_w6_rel;
-        }
-        else if(wepItr == 7){
-          self.stat_w7_id = cl_data.stat_w7_id;
-          self.stat_w7_rel = cl_data.stat_w7_rel;
-        }
-        else if(wepItr == 8){
-          self.stat_w8_id = cl_data.stat_w8_id;
-          self.stat_w8_rel = cl_data.stat_w8_rel;
-        }
-        else if(wepItr == 9){
-          self.stat_w9_id = cl_data.stat_w9_id;
-          self.stat_w9_rel = cl_data.stat_w9_rel;
-        }
-        wepItr = wepItr + 1;
-      }
+      
+      self.stat_w1_id = getstati(STAT_WEP1_ID);
+      self.stat_w2_id = getstati(STAT_WEP2_ID);
+      self.stat_w3_id = getstati(STAT_WEP3_ID);
+      self.stat_w4_id = getstati(STAT_WEP4_ID);
+      self.stat_w5_id = getstati(STAT_WEP5_ID);
+      self.stat_w6_id = getstati(STAT_WEP6_ID);
+      self.stat_w7_id = getstati(STAT_WEP7_ID);
+      self.stat_w8_id = getstati(STAT_WEP8_ID);
+      self.stat_w9_id = getstati(STAT_WEP9_ID);
+      
+      self.stat_w1_rel = getstatf(STAT_WEP1_REL);
+      self.stat_w2_rel = getstatf(STAT_WEP2_REL);
+      self.stat_w3_rel = getstatf(STAT_WEP3_REL);
+      self.stat_w4_rel = getstatf(STAT_WEP4_REL);
+      self.stat_w5_rel = getstatf(STAT_WEP5_REL);
+      self.stat_w6_rel = getstatf(STAT_WEP6_REL);
+      self.stat_w7_rel = getstatf(STAT_WEP7_REL);
+      self.stat_w8_rel = getstatf(STAT_WEP8_REL);
+      self.stat_w9_rel = getstatf(STAT_WEP9_REL);
     }
-  
   }
 };

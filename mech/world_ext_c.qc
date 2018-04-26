@@ -43,15 +43,15 @@ void() mh_world_ini={
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);
   addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_plr_camz);
   
-  addstat(STAT_WEP1_ID, AS_INT,stat_w1_id);
-  addstat(STAT_WEP2_ID, AS_INT,stat_w2_id);
-  addstat(STAT_WEP3_ID, AS_INT,stat_w3_id);
-  addstat(STAT_WEP4_ID, AS_INT,stat_w4_id);
-  addstat(STAT_WEP5_ID, AS_INT,stat_w5_id);
-  addstat(STAT_WEP6_ID, AS_INT,stat_w6_id);
-  addstat(STAT_WEP7_ID, AS_INT,stat_w7_id);
-  addstat(STAT_WEP8_ID, AS_INT,stat_w8_id);
-  addstat(STAT_WEP9_ID, AS_INT,stat_w9_id);
+  addstat(STAT_WEP1_ID, AS_INT, stat_w1_id);
+  addstat(STAT_WEP2_ID, AS_INT, stat_w2_id);
+  addstat(STAT_WEP3_ID, AS_INT, stat_w3_id);
+  addstat(STAT_WEP4_ID, AS_INT, stat_w4_id);
+  addstat(STAT_WEP5_ID, AS_INT, stat_w5_id);
+  addstat(STAT_WEP6_ID, AS_INT, stat_w6_id);
+  addstat(STAT_WEP7_ID, AS_INT, stat_w7_id);
+  addstat(STAT_WEP8_ID, AS_INT, stat_w8_id);
+  addstat(STAT_WEP9_ID, AS_INT, stat_w9_id);
   
   addstat(STAT_TRG_DDFLG, AS_INT, stat_trg_ddflg);
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);

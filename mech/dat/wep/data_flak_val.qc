@@ -47,10 +47,15 @@ void() data_flak_think={
     }
   }
   else if(self.w_state == RELOADING){
-    self.rl_cur = self.rl_cur + self.rl_rate;
-    if(self.rl_cur >= self.rl_max){
-      self.rl_cur = self.rl_max;
+    if(time > self.w_firetime){
+      self.rl_cur = 100;
       self.w_state = READY;
+    }
+    else{
+      local float delta, max;
+      delta = time - self.count1;
+      max = self.rl_max;      
+      self.rl_cur = (delta / max) * 100;
     }
   }
 };
@@ -76,6 +81,8 @@ void() data_flak_atk={
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
     self.w_isburst = FALSE;
+    self.w_firetime = time + self.rl_max;
+    self.count1 = time;
   }
   else{
     if((self.flags * FL_MONSTER)){

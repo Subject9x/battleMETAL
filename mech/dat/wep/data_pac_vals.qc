@@ -39,28 +39,39 @@ void() data_pac_ini={
 void() data_pac_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
+      self.rl_cur = 100;
       self.w_state = READY;
     }
   }
   else if(self.w_state == RELOADING){
-    if(self.owner.en_cur > self.en_rate){
-      self.owner.en_cur = self.owner.en_cur - self.en_rate;
-      self.rl_cur = self.rl_cur + self.rl_rate;
-      if(self.rl_cur >= self.rl_max){
-        self.rl_cur = self.rl_max;
-        self.w_state = READY;
-      }
+    if(time > self.w_firetime){
+      self.w_state = READY;
+    }
+    else{
+      local float delta, max;
+      delta = time - self.count1;
+      max = self.rl_max;      
+      self.rl_cur = (delta / max) * 100;
     }
   }
 };
 
 void() data_pac_atk={
-  
-
   local entity cam, player, oself, proj;
-  local vector spread;
-	local vector dir, end, adj;
+  local vector spread, dir, end, adj;
   player = self.owner;
+  
+  if( self.w_currentammo ==  self.w_clipsize){
+    if(self.en_rate && (player.en_cur >= self.en_rate)){
+      player.en_cur = player.en_cur - self.en_rate;
+      if(player.en_cur < 0){
+        player.en_cur = 0;
+      }
+    }
+    else{
+      return;
+    }
+  }
   
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, self.w_range);
@@ -75,6 +86,8 @@ void() data_pac_atk={
     self.rl_cur = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
+    self.w_firetime = time + self.rl_max;
+    self.count1 = time;
   }
   else{
     self.w_firetime = time + self.w_firerate;
