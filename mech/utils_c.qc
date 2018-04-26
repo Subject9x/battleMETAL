@@ -178,8 +178,8 @@ float(vector orig) util_lockOnChoke={
   vew_z = vec * v_up;
   
   if( vew_x > 0.9){
-    if( (vew_y < 0.2) && (vew_y > -0.2)){
-      if( (vew_z < 0.2) && (vew_z > -0.2) ){
+    if( (vew_y < 0.4) && (vew_y > -0.4)){
+      if( (vew_z < 0.4) && (vew_z > -0.4) ){
         return TRUE;
       }
     }
