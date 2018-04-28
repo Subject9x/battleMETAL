@@ -178,7 +178,7 @@ void() ai_tank={
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = -1;
   self.think = ai_control;
-  self.nextthink = time + 5; //power up timer
+  self.nextthink = time + 5 + random(); //power up timer
 };
 
 void() data_TNK_legs={

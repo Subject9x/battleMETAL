@@ -23,6 +23,8 @@ void() ai_control={
     return;
   }
   self.e_tor_c.angles_y = self.ideal_yaw;  //sync the center torso to the bot
+  ChangeYaw();
+  changepitch(self);
   
   if(self.ai_unit_update){
     self.ai_unit_update();
@@ -47,7 +49,7 @@ void() ai_control={
     }
   }
   self.think = ai_control;
-  self.nextthink = time + 0.075;
+  self.nextthink = time + 0.05;
   self.e_cam.SendFlags = -1;
 };
 

@@ -18,8 +18,7 @@ void() move - the desired move function
 float frames - how many server think frames to run movement for
 */
 void(float() move, float frames) ai_move_controller={
-  ChangeYaw();
-  changepitch(self);
+
   if(time > self.w_isready){
     self.w_isready = time + frames;
     self.ai_next_move = move;
@@ -247,11 +246,13 @@ void(float isRun, float duration) ai_move_walkmove_forwardRand={
 void(float duration, float() move1, float() move2) ai_move_randomTwo={
   local float dieRoll;
   dieRoll = util_roll_dice(2);
-  if(dieRoll == 1){
-    ai_move_controller(move1, duration);
-  }
-  else if(dieRoll == 2){
-    ai_move_controller(move2, duration);
+  switch(dieRoll){
+    case 1:
+      ai_move_controller(move1, duration);
+      break;
+    case 2:
+      ai_move_controller(move2, duration);
+      break;
   }
 };
 
@@ -262,14 +263,16 @@ void(float duration, float() move1, float() move2) ai_move_randomTwo={
 void(float duration, float() move1, float() move2, float() move3) ai_move_randomThree={
   local float dieRoll;
   dieRoll = util_roll_dice(3);
-  if(dieRoll == 1){
-    ai_move_controller(move1, duration);
-  }
-  else if(dieRoll == 2){
-    ai_move_controller(move2, duration);
-  }
-  else if(dieRoll == 3){
-    ai_move_controller(move3, duration);
+  switch(dieRoll){
+    case 1:
+      ai_move_controller(move1, duration);
+      break;
+    case 2:
+      ai_move_controller(move2, duration);
+      break;
+    case 3:
+      ai_move_controller(move3, duration);
+      break;
   }
 };
 
@@ -280,17 +283,19 @@ void(float duration, float() move1, float() move2, float() move3) ai_move_random
 void(float duration, float() move1, float() move2, float() move3, float() move4) ai_move_randomFour={
   local float dieRoll;
   dieRoll = util_roll_dice(4);
-  if(dieRoll == 1){
-    ai_move_controller(move1, duration);
-  }
-  else if(dieRoll == 2){
-    ai_move_controller(move2, duration);
-  }
-  else if(dieRoll == 3){
-    ai_move_controller(move3, duration);
-  }
-  else if(dieRoll == 4){
-    ai_move_controller(move4, duration);
+  switch(dieRoll){
+    case 1:
+      ai_move_controller(move1, duration);
+      break;
+    case 2:
+      ai_move_controller(move2, duration);
+      break;
+    case 3:
+      ai_move_controller(move3, duration);
+      break;
+    case 4:
+      ai_move_controller(move4, duration);
+      break;
   }
 };
 
@@ -301,22 +306,24 @@ void(float duration, float() move1, float() move2, float() move3, float() move4)
 void(float duration, float() move1, float() move2, float() move3, float() move4, float() move5, float() move6) ai_move_randomSix={
   local float dieRoll;
   dieRoll = util_roll_dice(6);
-  if(dieRoll == 1){
-    ai_move_controller(move1, duration);
-  }
-  else if(dieRoll == 2){
-    ai_move_controller(move2, duration);
-  }
-  else if(dieRoll == 3){
-    ai_move_controller(move3, duration);
-  }
-  else if(dieRoll == 4){
-    ai_move_controller(move4, duration);
-  }
-  else if(dieRoll == 5){
-    ai_move_controller(move5, duration);
-  }
-  else if(dieRoll == 6){
-    ai_move_controller(move6, duration);
+  switch(dieRoll){
+    case 1:
+      ai_move_controller(move1, duration);
+      break;
+    case 2:
+      ai_move_controller(move2, duration);
+      break;
+    case 3:
+      ai_move_controller(move3, duration);
+      break;
+    case 4:
+      ai_move_controller(move4, duration);
+      break;
+    case 5:
+      ai_move_controller(move5, duration);
+      break;
+    case 6:
+      ai_move_controller(move6, duration);
+      break;
   }
 };

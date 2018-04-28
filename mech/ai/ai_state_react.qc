@@ -91,21 +91,20 @@ float(entity atk) ai_react_enter={
     tFlags = tFlags | AI_DFLAG_ATK_LOCK;
   }
   //======================================
-  if(self.ai_style == AI_STYLE_SNIPER){
-    return ai_react_sniper(tFlags, atk, friendLocks, atkDist);
+  
+  switch(self.ai_style){
+    case AI_STYLE_SNIPER:
+      return ai_react_sniper(tFlags, atk, friendLocks, atkDist);
+    case AI_STYLE_BRAWL:
+      return ai_react_brawl(tFlags, atk, friendLocks, atkDist);
+    case AI_STYLE_SKIRM:
+      return ai_react_skirmish(tFlags, atk, friendLocks, atkDist);
+    case AI_STYLE_STALK:
+      return ai_react_stalker(tFlags, atk, friendLocks, atkDist);
+    case AI_STYLE_FLANK:
+      return ai_react_flanker(tFlags, atk, friendLocks, atkDist);
   }
-  if(self.ai_style == AI_STYLE_BRAWL){
-    return ai_react_brawl(tFlags, atk, friendLocks, atkDist);
-  }
-  if(self.ai_style == AI_STYLE_SKIRM){
-    return ai_react_skirmish(tFlags, atk, friendLocks, atkDist);
-  }
-  if(self.ai_style == AI_STYLE_STALK){
-    return ai_react_stalker(tFlags, atk, friendLocks, atkDist);
-  }
-  if(self.ai_style == AI_STYLE_FLANK){
-   return ai_react_flanker(tFlags, atk, friendLocks, atkDist);
-  }
+
   return FALSE;
 };
 

@@ -75,8 +75,6 @@ void() ai_combat_huntTarget={
   if( ai_target_isValid(self.trigger_field) ){
 
     self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
-    ChangeYaw();
-    changepitch(self);
     //AI lost patience, will try a new target
     if(time > self.patience){
       if( !ai_target_canSee(self.enemy) ){
@@ -136,53 +134,59 @@ void() ai_combat_huntTarget={
 void() ai_combat_adjustPosition={
   if( ai_target_isValid(self.trigger_field) ){
     self.ideal_yaw = vectoyaw(self.trigger_field.origin - self.origin);
-    ChangeYaw();
-    changepitch(self);
-    //defend stat override
-    if(self.state_1 == AI_ORDER_DEFEND){
-      local float nDist, cDist;
-      nDist = vlen(self.trigger_field.origin - self.node.origin);
-      if(nDist > AI_DEFEND_DIST + 5000){
-        ai_state_control(ai_combat_endFight);
-        if(self.button0){
-          self.button0 = 0;
+      //ChangeYaw();
+      //changepitch(self);
+      //defend stat override
+      if(self.state_1 == AI_ORDER_DEFEND){
+        local float nDist, cDist;
+        nDist = vlen(self.trigger_field.origin - self.node.origin);
+        if(nDist > AI_DEFEND_DIST + 5000){
+          ai_state_control(ai_combat_endFight);
+          if(self.button0){
+            self.button0 = 0;
+          }
+          return;
+        } 
+      }
+      //prepare combat state flags
+      local float tDist, tMoveDir, lowHP;
+      local entity eBlocker;
+      tDist = vlen(self.trigger_field.origin - self.origin);
+      tMoveDir = ai_util_calcTargetMoveDir(self.trigger_field, self);
+      lowHP = ai_util_checkSelfHealth();
+      eBlocker = ai_target_checkBlock(self.trigger_field);
+      
+      //enter proper combat stance
+      if( ai_target_canSee(self.trigger_field) ){
+        
+        if(time > self.w_isready){
+            switch(self.ai_style){
+              case AI_STYLE_SNIPER:
+                ai_combat_adjustSniper(tDist, AI_RANGE_M, AI_RANGE_L, tMoveDir, lowHP, eBlocker);
+                break;
+              case AI_STYLE_BRAWL:
+                ai_combat_adjustBrawler(tDist, 250, AI_RANGE_S, tMoveDir, lowHP, eBlocker);
+                break;
+              case AI_STYLE_SKIRM:
+                ai_combat_adjustSkirmish(tDist, (AI_RANGE_S - 100), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
+                break;
+              case AI_STYLE_FLANK:
+                ai_combat_adjustFlanker(tDist, 200, self.ai_minrange, tMoveDir, lowHP, eBlocker);
+                break;
+            }
+        }
+        
+        if( ai_target_facingideal() ){
+          if(time > self.attack_finished){
+            self.button0 = 1;
+          }
         }
         return;
-      } 
-    }
-    //prepare combat state flags
-    local float tDist, tMoveDir, lowHP;
-    local entity eBlocker;
-    tDist = vlen(self.trigger_field.origin - self.origin);
-    tMoveDir = ai_util_calcTargetMoveDir(self.trigger_field, self);
-    lowHP = ai_util_checkSelfHealth();
-    eBlocker = ai_target_checkBlock(self.trigger_field);
-    
-    //enter proper combat stance
-    if( ai_target_canSee(self.trigger_field) ){
-      if(self.ai_style == AI_STYLE_SNIPER){
-        ai_combat_adjustSniper(tDist, AI_RANGE_M, AI_RANGE_L, tMoveDir, lowHP, eBlocker);
       }
-      else if(self.ai_style == AI_STYLE_BRAWL){
-        ai_combat_adjustBrawler(tDist, 250, AI_RANGE_S, tMoveDir, lowHP, eBlocker);
-      }
-      else if(self.ai_style == AI_STYLE_SKIRM){
-        ai_combat_adjustSkirmish(tDist, (AI_RANGE_S - 100), AI_RANGE_L, tMoveDir, lowHP, eBlocker);
-      }
-      else if(self.ai_style == AI_STYLE_FLANK){
-        ai_combat_adjustFlanker(tDist, 200, self.ai_minrange, tMoveDir, lowHP, eBlocker);
-      }
-      if( ai_target_facingideal() ){
-        if(time > self.attack_finished){
-          self.button0 = 1;
-        }
-      }
+      //attempt to hunt
+      self.patience = time + self.maxpatience;
+      ai_state_control(ai_combat_huntTarget);
       return;
-    }
-    //attempt to hunt
-    self.patience = time + self.maxpatience;
-    ai_state_control(ai_combat_huntTarget);
-    return;
   }
   //clear out combat move
   ai_move_controller(ai_move_stand, 0.25);
@@ -200,28 +204,23 @@ void() ai_combat_endFight={
   self.patience = 0;
   self.button0 = 0;
   ai_target_clearBuffers();
-  if(self.state_1 == AI_ORDER_ATTACK){
-    ai_state_control(ai_assault_findNode);
-    return;
+  switch(self.state_1){
+    case AI_ORDER_ATTACK:
+      ai_state_control(ai_assault_findNode);
+      return;
+    case AI_ORDER_DEFEND:
+      ai_state_control(ai_defend_findNode);
+      return;
+    case AI_ORDER_PATROL:
+      ai_state_control(ai_patrol_findNode);
+      return;
+    case AI_ORDER_STAND:
+      ai_state_control(ai_misc_stand);
+      return;
+    case AI_ORDER_DEBUG:
+      ai_state_control(ai_misc_stand_debug);
+      return;
   }
-  else if(self.state_1 == AI_ORDER_DEFEND){
-    ai_state_control(ai_defend_findNode);
-    return;
-  }
-  else if(self.state_1 == AI_ORDER_PATROL){
-    ai_state_control(ai_patrol_findNode);
-    return;
-  }
-  else if(self.state_1 == AI_ORDER_STAND){
-    ai_state_control(ai_misc_stand);
-    return;
-  }
-  else if(self.state_1 == AI_ORDER_DEBUG){
-    ai_state_control(ai_misc_stand_debug);
-    return;
-  }
-  else{
-    ai_state_control(ai_misc_stand);
-    return;
-  }
+  ai_state_control(ai_misc_stand);
+  return;
 };
