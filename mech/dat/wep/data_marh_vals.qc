@@ -91,11 +91,12 @@ void() data_marh_atk={
       org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
       
       local float dist;
-      local vector arc;
+      local vector arc, start;
       dist = vlen(dir - org);
-      arc = org + (v_forward * (300 + (crandom() * 20))) + (v_up * (300 + (crandom() * 20))) + (v_right * 0);
+      arc = org + (v_forward * (300 + (crandom() * 20)));
+      arc = arc + (v_up * (300 + (crandom() * 20))) + (v_right * (crandom() * 20));
+      arc = arc + (v_right * (crandom() * 20));
       
-      local vector start;
       start = org + ((crandom() * 2) * v_right) + (v_up * (crandom() * 4));
       newmis = spawn();
       oself = self;
@@ -106,7 +107,6 @@ void() data_marh_atk={
         self.p_damage = oself.p_damage;
         self.enemy = self.owner.enemy;
         self.c_ofs = arc;
-        self.lock_timer = time + 0.75;
         self.p_lifetime = time + self.p_lifetime;
         util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
         util_setModel(self.c_model, 0, 0);
@@ -116,7 +116,7 @@ void() data_marh_atk={
         self.velocity = self.velocity * self.p_velocity;
         self.angles = vectoangles(self.velocity);
         self.think = data_prj_marh_th;
-        self.nextthink = time + 0.01;
+        self.nextthink = time + 1;
         sound (self, CHAN_ITEM, oself.fire_sound, 1, ATTN_NORM);
       self = oself;
     }
