@@ -47,7 +47,7 @@ void() ai_control={
     }
   }
   self.think = ai_control;
-  self.nextthink = time + cvar("sys_ticrate");
+  self.nextthink = time + 0.075;
   self.e_cam.SendFlags = -1;
 };
 

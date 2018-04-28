@@ -62,7 +62,7 @@ void() building_repair={
 
 void() building_repair_think={
 
-  if( self.trigger_field != world ){
+  if( self.trigger_field.takedamage >= DAMAGE_YES){
     local float end_repair;
     end_repair = TRUE;
     if( vlen(self.trigger_field.origin - self.e_cam.origin) <= 16 ){
