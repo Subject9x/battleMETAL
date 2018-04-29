@@ -36,53 +36,49 @@ void() data_prj_marh_ini={
 void() data_prj_marh_th={
 	local vector	dir, vtemp, olddir;
   local float turnrate;
-
 	if (self.enemy.health <= 0){
+    self.think = BecomeExplosion;
+    self.nextthink = time + 1 + random();
 		return;
 	}
   if(self.enemy == world){
+    self.think = BecomeExplosion;
+    self.nextthink = time + 1 + random();
     return;
   }
-  //turnrate = 0.1;	//Change as you wish  
-	if((self.owner.stat_lck_stt & LOCK_TARG_HAS)){
-    if(time > self.lock_timer){
-      makevectors(self.enemy.angles);
-      vtemp = self.enemy.origin + '0 0 10' + ((crandom() * 35) * v_right) + (v_forward * (crandom() * 35));
-    }
-    else{
-      local vector mns, mxs;
-      mns = self.c_ofs - '25 25 25';
-      mxs = self.c_ofs + '25 25 25';
-      local float yiss;
-      yiss = util_checkInBounds(self.origin, mns, mxs);
-      
-      if(yiss){
-        makevectors(self.enemy.angles);
-        vtemp = self.enemy.origin + '0 0 10' + ((crandom() * 35) * v_right) + (v_forward * (crandom() * 35));
-      }
-      else{
-        vtemp = self.c_ofs;
-      }
-    }
-    olddir = normalize(vtemp - self.origin);
-    dir = olddir + olddir + olddir;
-    dir = dir * (1/3);
-    dir = normalize(olddir + dir);
-    self.velocity = self.p_velocity * dir;
-    self.angles = vectoangles(self.velocity);
+  turnrate = 0.7;
+	if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
+    makevectors(self.enemy.angles);
+    vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.c_bbx_x_x) * v_right) + (v_forward * (crandom() * self.enemy.c_bbx_x_x));
+    olddir = normalize(self.velocity);
+		dir = normalize(vtemp - self.origin);
+    if (olddir_x - dir_x > turnrate)
+      dir_x = olddir_x - turnrate;
+    if (olddir_x - dir_x < -1 * turnrate)
+      dir_x = olddir_x + turnrate;
+    if (olddir_y - dir_y > turnrate)
+      dir_y = olddir_y - turnrate;
+    if (olddir_y - dir_y < -1 * turnrate)
+      dir_y = olddir_y + turnrate;
+    if (olddir_z - dir_z > turnrate)
+      dir_z = olddir_z - turnrate;
+    if (olddir_z - dir_z < -1 * turnrate)
+      dir_z = olddir_z + turnrate;
+    self.velocity = dir * self.p_velocity;
+		self.angles = vectoangles(self.velocity);
 	}
   else{
+    self.p_lifetime = self.p_lifetime - 0.25;
     return;
   }
   
   if(time > self.p_lifetime){
-    self.nextthink = time + 0.1;
     self.think = BecomeExplosion;
   }
   else{
-    self.nextthink = time + 0.1;
     self.think = data_prj_marh_th;
   }
+    self.nextthink = time + 0.3;
 };
 
 void() data_prj_marh_touch={

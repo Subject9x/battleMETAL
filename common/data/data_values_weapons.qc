@@ -135,7 +135,7 @@ float DAT_MLGD_RL_RATE    = 0.1;
 float DAT_MLGD_RL_MAX     = 6;
 float DAT_MLGD_EN_RATE    = 0.25;
 //-------------------------Radar Missile
-float DAT_MARH_RL_RATE    = 0.1;
+float DAT_MARH_RL_RATE    = 0.2; //0.1 - 
 float DAT_MARH_RL_MAX     = 7;
 float DAT_MARH_EN_RATE    = 0.2;
 //-------------------------Swarm Missile
@@ -245,7 +245,7 @@ float DAT_MIS_CLIPSIZE      = 6;
 //-------------------------Laser Missile
 float DAT_MLGD_CLIPSIZE     = 1;
 //-------------------------Radar Missile
-float DAT_MARH_CLIPSIZE     = 15;
+float DAT_MARH_CLIPSIZE     = 10; //15
 //-------------------------Swarm Missile
 float DAT_SWRM_CLIPSIZE     = 3;
 //============================

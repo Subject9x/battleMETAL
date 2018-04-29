@@ -30,12 +30,13 @@ void() data_prj_mlgd_ini={
 };
 
 void() data_prj_mlgd_th={
-  local vector lorg, dir, olddir;
+  local vector lorg, dir, olddir, nuv;
   local float turnrate;
 
-  turnrate = 0.15;	//Change as you wish
+  turnrate = 0.9;//0.15 turn rate increased to make up for longer intervals
   lorg = self.owner.laser_sight_org;
-	if (lorg != '0 0 0'){
+  
+  if (lorg != '0 0 0'){
     olddir = normalize(self.velocity);
 		dir = normalize(lorg - self.origin);
     if (olddir_x - dir_x > turnrate)
@@ -54,11 +55,11 @@ void() data_prj_mlgd_th={
 		self.angles = vectoangles(self.velocity);
 	}
   if(time > self.p_lifetime){
-    self.nextthink = time + 0.001;
+    self.nextthink = time + 0.1;
     self.think = BecomeExplosion;
   }
   else{
-    self.nextthink = time + 0.05;
+    self.nextthink = time + 0.2; //0.05
     self.think = data_prj_mlgd_th;
   }
 };
