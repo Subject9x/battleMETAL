@@ -82,11 +82,11 @@ void() data_marh_atk={
         self.count1 = time;
       }
       else{
-        if((player.flags & FL_MONSTER)){
+        if( (player.flags & FL_MONSTER) ){
           self.w_firetime = time + self.rl_rate ;
         }
         else{
-          self.w_firetime = time + self.rl_rate / 1.25;
+          self.w_firetime = time + self.rl_rate;
         }
         self.w_state = RECOIL;
         self.w_isburst = TRUE;

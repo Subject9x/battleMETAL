@@ -261,6 +261,76 @@ void(vector bbx_min, vector bbx_max) util_setBoundBox={
   setsize(self, bbx_min, bbx_max);
 };
 
+
+/*
+  checks the normal under all 4 points of a model, if normal within 
+  tolerance, return true
+*/
+float(entity t, float tolerance) util_cornerSlopeCheck={
+  local vector start, c1,c2,c3,c4;
+  local float val;
+  
+  val = FALSE;
+  start = t.origin + (v_up * self.mins_z);
+  
+  makevectors(t.angles);
+  c1 = start + (v_forward * self.maxs_x) + (v_right * self.maxs_y);
+  c2 = start + (v_forward * self.mins_x) + (v_right * self.maxs_y);
+  c3 = start + (v_forward * self.mins_x) + (v_right * self.mins_y);
+  c4 = start + (v_forward * self.maxs_x) + (v_right * self.mins_y);
+  
+  traceline(c1, c1 + (v_up * -128), FALSE, t);
+  te_beam_laser(c1, c1 + (v_up * -128)); //DEBUG
+    cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
+  if( trace_plane_normal_z < tolerance){
+    val = TRUE;
+  }
+  traceline(c2, c2 + (v_up * -128), FALSE, t);
+  te_beam_laser(c2, c2 + (v_up * -128)); //DEBUG
+    cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
+  if( trace_plane_normal_z < tolerance){
+    val = TRUE;
+  }
+  traceline(c3, c3 + (v_up * -128), FALSE, t);
+  te_beam_laser(c3, c3 + (v_up * -128)); //DEBUG
+    cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
+  if( trace_plane_normal_z < tolerance){
+    val = TRUE;
+  }
+  traceline(c4, c4 + (v_up * -128), FALSE, t);
+  te_beam_laser(c4, c4 + (v_up * -128)); //DEBUG
+    cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
+  if( trace_plane_normal_z < tolerance){
+    val = TRUE;
+  }
+  return val;
+};
+
+void(entity t) util_generateBuildingFoundation={
+  makevectors(t.angles);
+  local vector v;
+  local entity this, n;
+  v = t.origin + (v_up * t.mins_z);
+  n = spawn();
+  this = self;
+  self = n;
+    self.classname = "map_terrain";
+    if( t.vec_size == 1){
+      util_setModel("q3mdl/base_small.obj", 0, 0) ;
+    }
+    else if( t.vec_size == 2){
+      util_setModel("q3mdl/base_med.obj", 0, 0) ;
+    }
+    else if( t.vec_size == 3){
+      util_setModel("q3mdl/base_large.obj", 0, 0) ;;
+    }
+    util_setCollider(DAMAGE_NO, SOLID_BSP, MOVETYPE_NONE);
+    setsize(self, self.mins, self.maxs);
+    self.angles = t.angles;
+    setorigin(self, v);
+  self = this;
+};
+
 /*
   checks to see if a point is within bounds
 */

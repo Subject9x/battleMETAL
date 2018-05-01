@@ -32,6 +32,7 @@ float IMP_WGROUP4 = 23;
 float IMP_WGROUP5 = 24;
 float IMP_SHOWOBJ = 25;
 float IMP_REPAIR = 26;
+float IMP_ZOOM = 27;
 
 void() mpls_singleFire;
 void(float selector) mpls_groupFire;

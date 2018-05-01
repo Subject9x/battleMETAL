@@ -45,6 +45,9 @@ float(float t, float e) util_normalizeTimeAsPercent;
 float(float v) anglemod;
 float() crandom;
 
+float(entity t, float tolerance) util_cornerSlopeCheck;
+void(entity t) util_generateBuildingFoundation;
+
 vector(vector rgb) util_rgbToFloat;
 
 vector(vector angl, vector org, float zAdjust) util_dropToGround;
