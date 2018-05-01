@@ -32,6 +32,10 @@ void() mh_precache_models={
   precache_model("models/terrain/t1m3_exp2.obj");
   
   //buildings
+  precache_model("q3mdl/base_small.obj");
+  precache_model("q3mdl/base_med.obj");
+  precache_model("q3mdl/base_large.obj");
+  
   precache_model("q3mdl/buildings/mdl_bld_h_hangar_l.md3");
   precache_model("q3mdl/buildings/mdl_bld_h_repair.md3");
   precache_model("q3mdl/buildings/mdl_bld_h_power.md3");

@@ -19,10 +19,11 @@ void() building_power={
   self.data_type = DATA_BLD;
   self.vec_name = "Power Generator";
   self.flags = self.flags | FL_MONSTER;
+  self.vec_size = 3;
   util_setModel(DAT_BLD_H_POWER_PLANT_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_POWER_PLANT_HP, DAT_BLD_H_POWER_PLANT_HP, 1, 100);
-  util_setBoundBox('-75 -75 -24', '75 75 24');
+  util_setBoundBox('-75 -75 0', '75 75 26');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_POWER_PLANT_SH_MAX;
   self.sh_rate= DAT_BLD_H_POWER_PLANT_SH_RATE;
@@ -34,6 +35,11 @@ void() building_power={
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
+    
+  if(util_cornerSlopeCheck(self, 1)){
+    util_generateBuildingFoundation(self);
+  }
+  
   self.th_die = building_power_die;
   self.use = multi_trigger;
   self.SendEntity = send_building;

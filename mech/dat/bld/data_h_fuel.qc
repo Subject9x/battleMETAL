@@ -18,10 +18,11 @@ void() building_fuel={
   self.data_type = DATA_BLD;
   self.vec_name = "Fuel Tank";
   self.flags = self.flags | FL_MONSTER;
+  self.vec_size = 2;
   util_setModel(DAT_BLD_H_FUELTANK_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_FUELTANK_HP, DAT_BLD_H_FUELTANK_HP, 1, 100) ;
-  util_setBoundBox('-40 -40 -32', '40 40 32');
+  util_setBoundBox('-40 -40 0', '40 40 40');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_FUELTANK_SH_MAX;
   self.sh_rate = DAT_BLD_H_FUELTANK_SH_RATE;
@@ -29,6 +30,11 @@ void() building_fuel={
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
+   
+  if(util_cornerSlopeCheck(self, 1)){
+    util_generateBuildingFoundation(self);
+  }
+  
   self.th_die = building_die;
   self.think = building_think;
   self.nextthink = time;

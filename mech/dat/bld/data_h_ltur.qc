@@ -102,6 +102,7 @@ void() building_tur={
   local float mod_sh, mod_am, mod_yaw;
   
   self.flags = self.flags | FL_MONSTER;
+  self.vec_size = 1;
   self.deadflag = DEAD_NO;
   self.data_type = DATA_VEHC;
   self.en_cur = 0;
@@ -145,6 +146,11 @@ void() building_tur={
   
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
+  
+  if(util_cornerSlopeCheck(self, 1)){
+    util_generateBuildingFoundation(self);
+  }
+  
   self.flags = self.flags | FL_ONGROUND;
   
   if(self.state_1){

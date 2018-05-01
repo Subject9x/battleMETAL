@@ -14,10 +14,11 @@ void() building_hangar={
   self.data_type = DATA_BLD;
   self.vec_name = "Large Hangar";
   self.flags = self.flags | FL_MONSTER;
+  self.vec_size = 3;
   util_setModel(DAT_BLD_H_LG_HANGAR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_LG_HANGAR_HP, DAT_BLD_H_LG_HANGAR_HP, 1, 100) ;
-  util_setBoundBox('-72 -72 -40', '72 72 40');
+  util_setBoundBox('-72 -72 0', '72 72 80');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_LG_HANGAR_SH_MAX;
   self.sh_rate= DAT_BLD_H_LG_HANGAR_SH_RATE;
@@ -25,6 +26,11 @@ void() building_hangar={
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
+   
+  if(util_cornerSlopeCheck(self, 1)){
+    util_generateBuildingFoundation(self);
+  }
+  
   self.movetype = MOVETYPE_NONE;
   self.th_die = building_die;
   self.think = building_think;

@@ -93,7 +93,7 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
     if(amt <= 0){
       if( (CRITBITS & bit) ){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 3); 
-        snd_hud_vfx_addtoqueue(snd, 1);
+        snd_hud_vfx_addtoqueue(snd, 3);
         CRITBITS = CRITBITS - (CRITBITS & bit);
       }
     }

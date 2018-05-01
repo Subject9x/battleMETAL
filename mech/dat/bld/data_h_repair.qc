@@ -17,10 +17,11 @@ void() building_repair={
   self.data_type = DATA_BLD;
   self.vec_name = "Repair Bay";
   self.flags = self.flags | FL_MONSTER;
+  self.vec_size = 3;
   util_setModel(DAT_BLD_H_REPAIR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_REPAIR_HP, DAT_BLD_H_REPAIR_HP, 1, 100) ;
-  util_setBoundBox('-72 -72 -40', '72 72 40');
+  util_setBoundBox('-72 -72 0', '72 72 40');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_REPAIR_SH_MAX;
   self.sh_rate= DAT_BLD_H_REPAIR_SH_RATE;
@@ -58,6 +59,11 @@ void() building_repair={
     self.owner = this;
   self = this;
   this.e_cam = nde;
+  
+  if(util_cornerSlopeCheck(self, 1)){
+    util_generateBuildingFoundation(self);
+  }
+  
 };
 
 void() building_repair_think={
