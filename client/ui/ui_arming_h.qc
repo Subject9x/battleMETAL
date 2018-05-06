@@ -16,7 +16,7 @@ float WEPLIST_MSC_ARR[8];
 float HARDPOINTS[10]; //somehow making this '10' fixed a bug with hardpoint #9
 float WEPBITS[9];
 
-float UI_TOTAL_WEAPONS = 20; //weapon id's
+float UI_TOTAL_WEAPONS = 32; //weapon id's
 
 vector WEPNLIST_ORG;
 vector WEPNLIST_SIZE;

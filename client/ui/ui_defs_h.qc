@@ -83,3 +83,10 @@ string UI_WEP_SFG;
 string UI_WEP_FLAK;
 string UI_WEP_ION;
 string UI_WEP_SWRM;
+
+string UI_EQP_ATGM;
+string UI_EQP_ENBAT;
+string UI_EQP_HSEM;
+string UI_EQP_LSAR;
+string UI_EQP_SCAP;
+string UI_EQP_RECAP;

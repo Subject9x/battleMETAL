@@ -60,6 +60,14 @@ hud_snd_sys_c.qc
   data/wep/data_ion_vals.qc
   data/wep/data_swrm_val.qc
   
+  //Equipment
+  data/eqp/data_eqp_atgm_val.qc
+  data/eqp/data_eqp_enbat_val.qc
+  data/eqp/data_eqp_recap_val.qc
+  data/eqp/data_eqp_lsar_val.qc
+  data/eqp/data_eqp_hsem_val.qc
+  data/eqp/data_eqp_scap_val.qc
+  
   //Mechs
   data/mch/data_matok_val.qc
   data/mch/data_outlaw_val.qc

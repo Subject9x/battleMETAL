@@ -85,7 +85,16 @@ dp/subs.qc
   mech/dat/wep/data_esr_vals.qc
   mech/dat/wep/data_pac_vals.qc
   mech/dat/wep/data_swrm_val.qc
+  mech/dat/wep/data_airbt_val.qc
 
+  //equipment
+  mech/dat/itm/data_atgm_val.qc
+  mech/dat/itm/data_enbat_val.qc
+  mech/dat/itm/data_recap_val.qc
+  mech/dat/itm/data_lsar_val.qc
+  mech/dat/itm/data_hsem_val.qc
+  mech/dat/itm/data_scap_val.qc
+  
   //mechs
   mech/dat/mch/data_outlaw_val.qc
   mech/dat/mch/data_matok_val.qc

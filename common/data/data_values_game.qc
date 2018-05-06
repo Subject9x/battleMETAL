@@ -107,7 +107,7 @@ float EFF_PRC = 8;  //piercing damage
 float EFF_RAM = 16; //dmg is doubled
 float EFF_STX = 32; //dmg only affects shields
 float EFF_ENG = 64; //dmg only affects energy
-float DMG_MSC = 128; //up to the weapon
+float DMG_MSC = 128; //designates weapon as 'equipment'
 float EFF_ENE = 256; //weapon draws energy (client-side flag, really)
 //============================
 //     SHARED STATS         

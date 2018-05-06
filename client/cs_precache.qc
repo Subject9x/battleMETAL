@@ -101,6 +101,13 @@ void() cs_precache={
   UI_WEP_ION = precache_pic("gfx/ui/wep_icons/wi_ion.png",0);
   UI_WEP_SWRM = precache_pic("gfx/ui/wep_icons/wi_swrm.png",0);
   
+  UI_EQP_ATGM = precache_pic("gfx/ui/wep_icons/eqp_atgm.png",0);
+  UI_EQP_ENBAT = precache_pic("gfx/ui/wep_icons/eqp_enbat.png",0);
+  UI_EQP_HSEM = precache_pic("gfx/ui/wep_icons/eqp_hsem.png",0);
+  UI_EQP_LSAR = precache_pic("gfx/ui/wep_icons/eqp_lsar.png",0);
+  UI_EQP_SCAP = precache_pic("gfx/ui/wep_icons/eqp_lscap.png",0);
+  UI_EQP_RECAP = precache_pic("gfx/ui/wep_icons/eqp_recap.png",0);
+  
   //UI - mechs
    DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);
    DAT_MNT_UI_IMG = precache_pic("gfx/ui/hgr_MNT.png",0);
@@ -138,6 +145,14 @@ void() cs_precache={
   data_wep_flak();
   data_wep_ion();
   data_wep_swrm();
+  
+  //equip data
+  data_eqp_atgm_ini();
+  data_eqp_enbat_ini();
+  data_eqp_recap_ini();
+  data_eqp_lsar_ini();
+  data_eqp_hsem_ini();
+  data_eqp_scap_ini();
 };
 
 entity(float id, float dat_type) m_findData={

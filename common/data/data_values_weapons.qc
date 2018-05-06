@@ -25,32 +25,39 @@ float ID_WEP_SFGA  = 15;
 float ID_WEP_FLAK  = 16;
 float ID_WEP_ION   = 17;
 float ID_WEP_SWRM  = 18;
-//TODO - Alpha 3 
 float ID_WEP_ABT   = 19;
 //-----EQUIP------------
-float ID_EQP_BAT   = 20;
-float ID_EQP_CAP   = 21;
-float ID_EQP_EMT   = 22;
-float ID_EQP_MOD   = 23;
-float ID_EQP_SEN   = 24;
-float ID_EQP_TAR   = 25;
+float ID_EQP_ATGM  = 20;
+float ID_EQP_ENBAT = 21;
+float ID_EQP_HSEM  = 22;
+float ID_EQP_LSAR  = 23;
+float ID_EQP_SCAP  = 24;
+float ID_EQP_RECAP = 25;
 //====================================================================================
 //            Weapon Names
 //====================================================================================
 string DAT_LATC_NAME = "Light Autocannon";
-string DAT_LAS_NAME = "Light Laser";
-string DAT_EMP_NAME = "EMP Cannon";
-string DAT_MIS_NAME = "Rocket Launcher";
-string DAT_QRF_NAME = "Q-Rifle";
-string DAT_RPC_NAME = "RPC";
-string DAT_PAC_NAME = "PAC";
-string DAT_ESR_NAME = "ESR";
+string DAT_LAS_NAME  = "Light Laser";
+string DAT_EMP_NAME  = "EMP Cannon";
+string DAT_MIS_NAME  = "Rocket Launcher";
+string DAT_QRF_NAME  = "Q-Rifle";
+string DAT_RPC_NAME  = "RPC";
+string DAT_PAC_NAME  = "PAC";
+string DAT_ESR_NAME  = "ESR";
 string DAT_MLGD_NAME = "MIS-LGD";
 string DAT_MARH_NAME = "MIS-ARH";
 string DAT_SFGA_NAME = "Snub Field Gun";
 string DAT_FLAK_NAME = "Flak Cannon";
-string DAT_ION_NAME = "Ion Coil";
+string DAT_ION_NAME  = "Ion Coil";
 string DAT_SWRM_NAME = "Swarm Missile Launcher";
+string DAT_ABT_NAME  = "Air-burst Torpedo";
+//-----EQUIP------------
+string DAT_EQP_ATGM_NAME  = "Adv. Targeting Module";
+string DAT_EQP_ENBAT_NAME = "Energy Battery";
+string DAT_EQP_HSEM_NAME  = "Heavy Shield Emitter";
+string DAT_EQP_LSAR_NAME  = "Large Sensor Array";
+string DAT_EQP_SCAP_NAME  = "Shield Capacitor";
+string DAT_EQP_RECAP_NAME = "Recharge Capacitor";
 
 //====================================================================================
 //            Range  
@@ -83,6 +90,8 @@ float DAT_MLGD_RANGE      = 2400;
 float DAT_MARH_RANGE      = 3600;
 //-------------------------Swarm Missile
 float DAT_SWRM_RANGE      = 1600;
+//-------------------------Air-burst Torpedo
+float DAT_ABT_RANGE       = 3000;
 //====================================================================================
 //            Recharge Time  
 //====================================================================================
@@ -119,7 +128,7 @@ float DAT_EMP_RL_RATE     = 0.1;
 float DAT_EMP_RL_MAX      = 6;
 float DAT_EMP_EN_RATE     = 266.7;
 //-------------------------ESR
-float DAT_ESR_RL_RATE     = 0.2;
+float DAT_ESR_RL_RATE     = 0.07;
 float DAT_ESR_RL_MAX      = 5;
 float DAT_ESR_EN_RATE     = 200;
 //-------------------------PAC
@@ -142,6 +151,21 @@ float DAT_MARH_EN_RATE    = 0;
 float DAT_SWRM_RL_RATE    = 0.3;
 float DAT_SWRM_RL_MAX     = 10;
 float DAT_SWRM_EN_RATE    = 0;
+//-------------------------Air-burst Torpedo
+float DAT_ABT_RL_RATE    = 0.3;
+float DAT_ABT_RL_MAX     = 8;
+float DAT_ABT_EN_RATE    = 0;
+//EQUIP------------
+//-------------------------ENBAT
+float DAT_EQP_ENBAT_EN_RATE  = 0.25;  //holds energy battery upgrade
+//-------------------------RECAP
+float DAT_EQP_RECAP_EN_RATE  = 0.2;  //holds reactor recharge upgrade
+//-------------------------LSAR
+float DAT_EQP_LSAR_EN_RATE  = 0.3;  //holds large sensor upgrade
+//-------------------------HSEM
+float DAT_EQP_HSEM_EN_RATE  = 0.5;  //holds shield recharge upgrade
+//-------------------------SCAP
+float DAT_EQP_SCAP_EN_RATE  = 0.15;  //holds shield capacity upgrade
 //====================================================================================
 //            Damage  
 //====================================================================================
@@ -175,7 +199,8 @@ float DAT_MLGD_DMG        = 275;
 float DAT_MARH_DMG        = 7; 
 //-------------------------Swarm Missile
 float DAT_SWRM_DMG        = 20;
-float DAT_SWRM_CLUSTER    = 3;  //3 missiles per target
+//-------------------------Air-burst Torpedo
+float DAT_ABT_DMG        = 20;
 //====================================================================================
 //            Inaccuracy  
 //====================================================================================
@@ -248,6 +273,9 @@ float DAT_MLGD_CLIPSIZE     = 1;
 float DAT_MARH_CLIPSIZE     = 10; //15
 //-------------------------Swarm Missile
 float DAT_SWRM_CLIPSIZE     = 3;
+//-------------------------Air-burst Torpedo
+float DAT_ABT_CLIPSIZE      = 1;
+float DAT_ABT_CLUSTER_CNT   = 6;
 //============================
 //            Tech Level  
 //============================
@@ -279,6 +307,21 @@ float DAT_MLGD_TECH_LEVEL   = 1;
 float DAT_MARH_TECH_LEVEL   = 2;
 //-------------------------Swarm Missile
 float DAT_SWRM_TECH_LEVEL   = 3;
+//-------------------------Air-burst Torpedo
+float DAT_ABT_TECH_LEVEL    = 2;
+//EQUIP------------
+//-------------------------ATGM
+float DAT_EQP_ATGM_TECH_LEVEL  = 1;
+//-------------------------ENBAT
+float DAT_EQP_ENBAT_TECH_LEVEL = 2;
+//-------------------------HSEM
+float DAT_EQP_HSEM_TECH_LEVEL  = 2;
+//-------------------------LSAR
+float DAT_EQP_LSAR_TECH_LEVEL  = 1;
+//-------------------------SCAP
+float DAT_EQP_SCAP_TECH_LEVEL = 3;
+//-------------------------RECAP
+float DAT_EQP_RECAP_TECH_LEVEL = 3;
 //============================
 //            Size  
 //============================
@@ -308,8 +351,23 @@ float DAT_MIS_WSIZE       = 1;
 float DAT_MLGD_WSIZE      = 1;
 //-------------------------Radar Missile
 float DAT_MARH_WSIZE      = 3;
-//-------------------------Radar Missile
+//-------------------------Swarm Missile
 float DAT_SWRM_WSIZE      = 2;
+//-------------------------Air-burst Torpedo
+float DAT_ABT_WSIZE       = 3;
+//EQUIP------------
+//-------------------------ATGM
+float DAT_EQP_ATGM_WSIZE  = 2;
+//-------------------------ENBAT
+float DAT_EQP_ENBAT_WSIZE = 3;
+//-------------------------HSEM
+float DAT_EQP_HSEM_WSIZE  = 2;
+//-------------------------LSAR
+float DAT_EQP_LSAR_WSIZE  = 1;
+//-------------------------SCAP
+float DAT_EQP_SCAP_WSIZE  = 2;
+//-------------------------RECAP
+float DAT_EQP_RECAP_WSIZE = 3;
 //============================
 //            Sound Url
 //============================
@@ -341,6 +399,8 @@ string DAT_MLGD_FIRESOUND = "sound/weapons/mis_fire.ogg";
 string DAT_MARH_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //-------------------------Radar Missile
 string DAT_SWRM_FIRESOUND = "sound/weapons/mis_fire.ogg";
+//-------------------------Air-burst Torpedo
+string DAT_ABT_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //============================
 //            Model  
 //============================
@@ -372,6 +432,21 @@ string DAT_MLGD_MODEL    = "q3mdl/weapons/w_lgm.md3";
 string DAT_MARH_MODEL    = "q3mdl/weapons/w_arh.md3";
 //-------------------------Radar Missile
 string DAT_SWRM_MODEL    = "q3mdl/weapons/w_arh.md3";
+//-------------------------Laser Missile
+string DAT_ABT_MODEL    = "q3mdl/weapons/w_lgm.md3";
+//EQUIP------------
+//-------------------------ATGM
+string DAT_EQP_ATGM_MODEL  = "q3mdl/testball.md3";
+//-------------------------ENBAT
+string DAT_EQP_ENBAT_MODEL = "q3mdl/testball.md3";
+//-------------------------HSEM
+string DAT_EQP_HSEM_MODEL  = "q3mdl/testball.md3";
+//-------------------------LSAR
+string DAT_EQP_LSAR_MODEL  = "q3mdl/testball.md3";
+//-------------------------SCAP
+string DAT_EQP_SCAP_MODEL  = "q3mdl/testball.md3";
+//-------------------------RECAP
+string DAT_EQP_RECAP_MODEL = "q3mdl/testball.md3";
 //============================
 //            Icon  
 //============================
@@ -401,8 +476,23 @@ string DAT_MIS_ICON      = "gfx/ui/wep_icons/wi_rck.png";
 string DAT_MLGD_ICON     = "gfx/ui/wep_icons/wi_mlgd.png";
 //-------------------------Radar Missile
 string DAT_MARH_ICON     = "gfx/ui/wep_icons/wi_marh.png";
-//-------------------------Radar Missile
+//-------------------------Swarm Missile
 string DAT_SWRM_ICON     = "gfx/ui/wep_icons/wi_swrm.png";
+//-------------------------Air-burst Torpedo
+string DAT_ABT_ICON     = "gfx/ui/wep_icons/wi_swrm.png";
+//EQUIP------------
+//-------------------------ATGM
+string DAT_EQP_ATGM_ICON  = "gfx/ui/wep_icons/eqp_atgm.png";
+//-------------------------ENBAT
+string DAT_EQP_ENBAT_ICON = "gfx/ui/wep_icons/eqp_enbat.png";
+//-------------------------HSEM
+string DAT_EQP_HSEM_ICON  = "gfx/ui/wep_icons/eqp_hsem.png";
+//-------------------------LSAR
+string DAT_EQP_LSAR_ICON  = "gfx/ui/wep_icons/eqp_lsar.png";
+//-------------------------SCAP
+string DAT_EQP_SCAP_ICON  = "gfx/ui/wep_icons/eqp_lscap.png";
+//-------------------------RECAP
+string DAT_EQP_RECAP_ICON = "gfx/ui/wep_icons/eqp_recap.png";
 //============================
 //            Model Offset 
 //============================
@@ -432,8 +522,13 @@ vector DAT_MIS_FIRE_OFS     = '0 0 2';
 vector DAT_MLGD_FIRE_OFS = '0 0 2';
 //-------------------------Radar Missile
 vector DAT_MARH_FIRE_OFS = '0 0 2';
-//-------------------------Radar Missile
+//-------------------------Swarm Missile
 vector DAT_SWRM_FIRE_OFS = '0 0 2';
+//-------------------------Air-burst Torpedo
+vector DAT_ABT_FIRE_OFS = '0 0 2';
+//EQUIP------------
+//-------------------------ATGM
+vector DAT_EQP_ATGM_FIRE_OFS  = '0.15 0.2 0'; //x = spread reduce speed, y = spread increase reduction , z = lockon decrease both in %'s
 //============================
 //            Projectile ID
 //============================
@@ -463,5 +558,7 @@ float DAT_MIS_PROJ_ID     = ID_PRJ_MIS;
 float DAT_MLGD_PROJ_ID    = ID_PRJ_MLGD;
 //-------------------------Radar Missile
 float DAT_MARH_PROJ_ID    = ID_PRJ_MARH;
-//-------------------------Radar Missile
+//-------------------------Swarm Missile
 float DAT_SWRM_PROJ_ID    = ID_PRJ_SWRM;
+//-------------------------Air-burst Torpedo
+float DAT_ABT_PROJ_ID    = ID_PRJ_SWRM;

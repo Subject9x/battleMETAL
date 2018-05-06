@@ -96,7 +96,7 @@ void() data_latc_atk={
   setmodel(bul_fx, "progs/muzzleflash.spr32");
   setsize(bul_fx, '-1 -1 -1', '1 1 1');
   makevectors(self.angles);
-  self.fx_origin = self.fx_origin + (v_forward * 5);
+  self.fx_origin = dir + (v_forward * 5);
   setorigin(bul_fx, self.fx_origin);
   bul_fx.alpha = 0.85;
   bul_fx.glow_color = 250;

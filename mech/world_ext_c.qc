@@ -160,40 +160,40 @@ void(float vecsize, float vec_id) data_iniVehc={
   -Peter Roohr 11/26/2017
 */
 void(float prj_id) data_iniProjectile={
-  if( prj_id == ID_PRJ_EMP){
-    data_prj_emp_ini();
+  switch(prj_id){
+    case ID_PRJ_EMP:
+      data_prj_emp_ini();
+      return;
+    case ID_PRJ_MIS:
+      data_prj_mis_ini();
+      return;
+    case ID_PRJ_MLGD:
+      data_prj_mlgd_ini();
+      return;
+    case ID_PRJ_MARH:
+      data_prj_marh_ini();
+      return;
+    case ID_PRJ_RPLAS:
+      data_prj_rplas_ini();
+      return;
+    case ID_PRJ_QRFL:
+      data_prj_qrfl_ini();
+      return;
+    case ID_PRJ_SFGA:
+      data_prj_sfga_ini();
+      return;
+    case ID_PRJ_FLAK:
+      data_prj_flak_ini();
+      return;
+    case ID_PRJ_ION:
+      data_prj_ion_ini();
+      return;
+    case ID_PRJ_SWRM:
+      data_prj_swrm_ini();
+      return;
   }
-  else if( prj_id == ID_PRJ_MIS){
-    data_prj_mis_ini();
-  }
-  else if( prj_id == ID_PRJ_MLGD){
-    data_prj_mlgd_ini();
-  }
-  else if( prj_id == ID_PRJ_MARH){
-    data_prj_marh_ini();
-  }
-  else if( prj_id == ID_PRJ_RPLAS){
-    data_prj_rplas_ini();
-  }
-  else if( prj_id == ID_PRJ_QRFL){
-    data_prj_qrfl_ini();
-  }
-  else if( prj_id == ID_PRJ_SFGA){
-    data_prj_sfga_ini();
-  }
-  else if(prj_id == ID_PRJ_FLAK){
-    data_prj_flak_ini();
-  }
-  else if(prj_id == ID_PRJ_ION){
-    data_prj_ion_ini();
-  }
-  else if(prj_id == ID_PRJ_SWRM){
-    data_prj_swrm_ini();
-  }
-  else{
-    cons_logAFloat("Error: failed to find projectile of ", prj_id);
-    remove(self);
-  }
+  cons_logAFloat("Error: failed to find projectile of ", prj_id);
+  remove(self);
 };
 
 /*
@@ -203,51 +203,70 @@ void(float prj_id) data_iniProjectile={
   func holds 'state' for finding the right 'data'
   -Peter Roohr 11/26/2017
 */
-void(float wep_id) data_iniWep={
-  if(wep_id == ID_WEP_LATC){
-    data_latc_ini();
-  }
-  else if(wep_id == ID_WEP_EMP){
-    data_emp_ini();
-  }
-  else if(wep_id == ID_WEP_LAS){
-    data_las_ini();
-  }
-  else if(wep_id == ID_WEP_MIS){
-    data_mis_ini();
-  }
-  else if(wep_id == ID_WEP_QRF){
-    data_qrfl_ini();
-  }
-  else if(wep_id == ID_WEP_RPC){
-    data_rplas_ini();
-  }
-  else if(wep_id == ID_WEP_SFGA){
-    data_sfga_ini();
-  }
-  else if(wep_id == ID_WEP_PAC){
-    data_pac_ini();
-  }
-  else if(wep_id == ID_WEP_ESR){
-    data_esr_ini();
-  }
-  else if(wep_id == ID_WEP_MLGD){
-    data_mlgd_ini();
-  }
-  else if(wep_id == ID_WEP_MARH){
-    data_marh_ini();
-  }
-  else if(wep_id == ID_WEP_FLAK){
-    data_flak_ini();
-  }
-  else if(wep_id == ID_WEP_ION){
-    data_ion_ini();
-  }
-  else if(wep_id == ID_WEP_SWRM){
-    data_swrm_ini();
+void(float wep_id) data_iniWep={ 
+  switch(wep_id){
+    case ID_WEP_LATC:
+      data_latc_ini();
+      return;
+    case ID_WEP_EMP:
+      data_emp_ini();
+      return;
+    case ID_WEP_LAS:
+      data_las_ini();
+      return;
+    case ID_WEP_MIS:
+      data_mis_ini();
+      return;
+    case ID_WEP_QRF:
+      data_qrfl_ini();
+      return;
+    case ID_WEP_RPC:
+      data_rplas_ini();
+      return;
+    case ID_WEP_SFGA:
+      data_sfga_ini();
+      return;
+    case ID_WEP_PAC:
+      data_pac_ini();
+      return;
+    case ID_WEP_ESR:
+      data_esr_ini();
+      return;
+    case ID_WEP_MLGD:
+      data_mlgd_ini();
+      return;
+    case ID_WEP_MARH:
+      data_marh_ini();
+      return;
+    case ID_WEP_FLAK:
+      data_flak_ini();
+      return;
+    case ID_WEP_ION:
+      data_ion_ini();
+      return;
+    case ID_WEP_SWRM:
+      data_swrm_ini();
+      return;
+    case ID_EQP_ATGM:
+      data_eqp_atgm_ini();
+      return;
+    case ID_EQP_ENBAT:
+      data_eqp_enbat_ini();
+      return;
+    case ID_EQP_RECAP:
+      data_eqp_recap_ini();
+      return;
+    case ID_EQP_LSAR:
+      data_eqp_lsar_ini();
+      return;
+    case ID_EQP_HSEM:
+      data_eqp_hsem_ini();
+      return;
+    case ID_EQP_SCAP:
+      data_eqp_scap_ini();
+      return;
   }
 };
-
 
 entity(float id, float dat_type) mh_world_findData={
   local entity data_chain;

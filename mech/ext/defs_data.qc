@@ -25,10 +25,12 @@ Overview: data ID lists for all the game data
 .void() unit_wep8;
 .void() unit_wep9;
 
+//MECH INI
 void() data_otl_ini;
 void() data_mtk_ini;
 void() data_mnt_ini;
 
+//WEAPON INI
 void() data_emp_ini;
 void() data_esr_ini;
 void() data_las_ini;
@@ -43,6 +45,15 @@ void() data_sfga_ini;
 void() data_flak_ini;
 void() data_swrm_ini;
 
+//EQUIP INI
+void() data_eqp_atgm_ini;
+void() data_eqp_enbat_ini;
+void() data_eqp_recap_ini;
+void() data_eqp_lsar_ini;
+void() data_eqp_hsem_ini;
+void() data_eqp_scap_ini;
+
+//PROJECTILE INI
 void() data_prj_emp_ini;
 void() data_prj_sfga_ini;
 void() data_prj_marh_ini;

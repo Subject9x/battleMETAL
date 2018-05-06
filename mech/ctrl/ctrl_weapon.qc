@@ -16,19 +16,20 @@ void(entity wep) ctrl_wpn_think={
       self = oself;
       return;
     }
-    
     if(self.deadflag == DEAD_DEAD){
       self = oself;
       return;
-    }
-    if(!(oself.flags & FL_MONSTER)){
-      if(self.w_isready){
-        ctrl_weapon_isReady(self, self.stat_wep_rel);
-      }else{
-        ctrl_weapon_isReload(self, self.stat_wep_rel);
+    }  
+    if(self.w_think){
+      if(!(oself.flags & FL_MONSTER)){
+        if(self.w_isready){
+          ctrl_weapon_isReady(self, self.stat_wep_rel);
+        }else{
+          ctrl_weapon_isReload(self, self.stat_wep_rel);
+        }
       }
+      self.w_think();
     }
-    self.w_think();
   self = oself;
 };
 

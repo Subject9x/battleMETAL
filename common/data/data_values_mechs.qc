@@ -79,13 +79,13 @@ float DAT_MNT_LEG_ARMMAX    = 100;
 //============================
 //-------------------------BALAKET------------------------
 float DAT_OTL_SHIELD_MAX    = 300;
-float DAT_OTL_SHIELD_RATE   = 1;
+float DAT_OTL_SHIELD_RATE   = 2;
 //-------------------------MATOK------------------------
 float DAT_MTK_SHIELD_MAX    = 425;
-float DAT_MTK_SHIELD_RATE   = 0.75;
+float DAT_MTK_SHIELD_RATE   = 1.5;
 //-------------------------MONITOR------------------------
 float DAT_MNT_SHIELD_MAX    = 600;
-float DAT_MNT_SHIELD_RATE   = 0.35;
+float DAT_MNT_SHIELD_RATE   = 0.7;
 //============================
 //            Energy  
 //============================
@@ -252,13 +252,13 @@ float DAT_MNT_HARDPOINT9_SIZE = 3;
 //-------------------------BALAKET
 float DAT_BLK_HARDPOINT1_TYPES = 3;
 float DAT_BLK_HARDPOINT2_TYPES = 3;
-float DAT_BLK_HARDPOINT3_TYPES = 7;
+float DAT_BLK_HARDPOINT3_TYPES = 135; //7;
 //-------------------------MATOK
 float DAT_MTK_HARDPOINT1_TYPES = 3;
 float DAT_MTK_HARDPOINT2_TYPES = 3;
 float DAT_MTK_HARDPOINT3_TYPES = 3;
 float DAT_MTK_HARDPOINT4_TYPES = 3;
-float DAT_MTK_HARDPOINT5_TYPES = 7;
+float DAT_MTK_HARDPOINT5_TYPES = 135; //7;
 //-------------------------MONITOR
 float DAT_MNT_HARDPOINT1_TYPES = 3;
 float DAT_MNT_HARDPOINT2_TYPES = 3;
@@ -266,9 +266,9 @@ float DAT_MNT_HARDPOINT3_TYPES = 3;
 float DAT_MNT_HARDPOINT4_TYPES = 3;
 float DAT_MNT_HARDPOINT5_TYPES = 3;
 float DAT_MNT_HARDPOINT6_TYPES = 3;
-float DAT_MNT_HARDPOINT7_TYPES = 4;
-float DAT_MNT_HARDPOINT8_TYPES = 4;
-float DAT_MNT_HARDPOINT9_TYPES = 4;
+float DAT_MNT_HARDPOINT7_TYPES = 4;//4;
+float DAT_MNT_HARDPOINT8_TYPES = 139;
+float DAT_MNT_HARDPOINT9_TYPES = 139;//4;
 //============================
 //            Tech level  
 //============================

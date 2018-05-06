@@ -154,7 +154,7 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
       }
     }
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, own.mskin, 0);
+    util_setModel(self.c_model, 0, 0);
     util_setBoundBox('-1 -1 -1','1 1 1');
     ofs = self.c_ofs + self.c_alt_ofs;
     util_setOffsetOrigin(self, own, ofs);
@@ -174,7 +174,7 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
       self.c_part = own.e_arm_l;
     }
     if( (self.p_dmgtype & DMG_MSC) ){
-      self.w_think();
+      self.w_think(); //run module's upgrade now;
       self.w_think = SUB_Null;
     }
     self.th_die = ctrl_die_weapon;

@@ -26,6 +26,13 @@ void() data_ini_arrays={
   data_WeaponNames[ID_WEP_ION] = DAT_ION_NAME;
   data_WeaponNames[ID_WEP_SWRM] = DAT_SWRM_NAME;
   
+  data_WeaponNames[ID_EQP_ATGM] = DAT_EQP_ATGM_NAME;
+  data_WeaponNames[ID_EQP_ENBAT] = DAT_EQP_ENBAT_NAME;
+  data_WeaponNames[ID_EQP_HSEM] = DAT_EQP_HSEM_NAME;
+  data_WeaponNames[ID_EQP_LSAR] = DAT_EQP_LSAR_NAME;
+  data_WeaponNames[ID_EQP_SCAP] = DAT_EQP_SCAP_NAME;
+  data_WeaponNames[ID_EQP_RECAP] = DAT_EQP_RECAP_NAME;
+  
   //Weapon Icons
   data_WeaponIcons[ID_WEP_LATC] = DAT_LATC_ICON;
   data_WeaponIcons[ID_WEP_LAS] = DAT_LAS_ICON;
@@ -45,6 +52,7 @@ void() data_ini_arrays={
   data_WeaponIcons[ID_WEP_FLAK] = DAT_FLAK_ICON;
   data_WeaponIcons[ID_WEP_ION] = DAT_ION_ICON;
   data_WeaponIcons[ID_WEP_SWRM] = DAT_SWRM_ICON;
+  
   data_WeaponIcons[ID_EQP_ATGM] = DAT_EQP_ATGM_ICON;
   data_WeaponIcons[ID_EQP_ENBAT] = DAT_EQP_ENBAT_ICON;
   data_WeaponIcons[ID_EQP_HSEM] = DAT_EQP_HSEM_ICON;

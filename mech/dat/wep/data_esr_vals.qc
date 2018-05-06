@@ -94,13 +94,7 @@ void() data_esr_atk={
     self.count1 = time;
   }
   else{
-    if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + (self.rl_rate/200) * 2;
-    }
-    else{
-      self.w_firetime = time + self.rl_rate/200;
-    }
-
+    self.w_firetime = time + self.rl_rate;
     self.w_state = RECOIL;
     self.w_isburst = TRUE;
   }
