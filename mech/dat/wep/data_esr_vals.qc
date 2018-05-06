@@ -64,7 +64,7 @@ void() data_esr_atk={
 	local vector dir,org, end, adj;
   player = self.owner;
   
-  if( self.w_currentammo ==  self.w_clipsize){
+  if( self.w_currentammo == self.w_clipsize){
     if(self.en_rate && (player.en_cur >= self.en_rate)){
       player.en_cur = player.en_cur - self.en_rate;
       if(player.en_cur < 0){

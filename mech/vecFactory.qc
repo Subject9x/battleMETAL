@@ -173,6 +173,10 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
     else if(self.c_parent == M_ARM_LEFT){
       self.c_part = own.e_arm_l;
     }
+    if( (self.p_dmgtype & DMG_MSC) ){
+      self.w_think();
+      self.w_think = SUB_Null;
+    }
     self.th_die = ctrl_die_weapon;
     self.state_1 = state1;
     self.state_2 = state2;

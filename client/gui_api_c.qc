@@ -188,10 +188,7 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alph
 
 
 vector(float val) gui_getColorForArmor={
-  if(val < 1){
-    return CLR_DEF_ARM_DED;
-  }
-  else if((1<val)&&(val<=25)){
+  if((-1<val)&&(val<=25)){
     return CLR_DEF_ARM_ONEQ;
   }
   else if((25<val)&&(val<=50)){

@@ -100,7 +100,6 @@ void() ctrl_updateCenterTorso={
       }
     }
     else{
-      
       self.stat_spr_x = self.stat_spr_x - r_min;
       if(self.stat_spr_x < self.conv_min_x){
         self.stat_spr_x =  self.conv_min_x;

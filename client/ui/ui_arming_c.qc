@@ -55,6 +55,10 @@ void() weaponSelectListener={
     found = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, gui_percentToPixel(0.0703, 0.0166), WEPNLIST_CNT_EXP, 0);
     found = WEPLIST_EXP_ARR[found];
   }
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC)){
+    found = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixel(0.0703, 0.0166), WEPNLIST_CNT_MSC, 0);
+    found = WEPLIST_MSC_ARR[found];
+  }
   if(found  > 0){
    self.plr_sel_list_wep = found;
   }
@@ -294,17 +298,17 @@ void(vector ofs) menu_arming_WeaponList_MSC={
   local vector nofs, clr;
   local float lst_idx, act_idx;
   nofs = ofs;
-  nofs = nofs + gui_percentToPixel(0.0093, 0.2864);
-  drawstring(nofs + gui_percentToPixel(0.0031, 0.002), "==MISCELLANEOUS==", '6 6 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
+  nofs = nofs + gui_percentToPixel(-0.0062, 0.2864);
+  drawstring(nofs + gui_percentToPixelRawVec('30 2'), "==MISCELLANEOUS==", '6 6 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
   act_idx = 1;
   lst_idx = 1;
-  while(lst_idx <= 10){
+  while(lst_idx <= UI_TOTAL_WEAPONS){
     local entity dat;
     local vector lofs, clr;
     dat = m_findData(lst_idx, DATA_WEPN);
     if(dat){
       if(WEPLIST_ALL[lst_idx] != 0){
-        if((dat.dmg_type & DMG_MSC)){
+        if( (dat.dmg_type & DMG_MSC) ){
           lofs_x = nofs_x;
           lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
           if(dat.data_idx == self.plr_sel_list_wep){
@@ -313,6 +317,9 @@ void(vector ofs) menu_arming_WeaponList_MSC={
           }
           else{
             clr = CLR_DEF_TXT_NONSELECT;
+          }
+          if(!(self.plr_sel_hrpnt_types & DMG_MSC) || (dat.i_size > self.plr_sel_hrpnt_size)){
+            clr = CLR_DEF_BLACK;
           }
           drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
           WEPLIST_MSC_ARR[act_idx] = dat.data_idx;
@@ -386,25 +393,29 @@ void(vector ofs) menu_arming_energydraw={
   
   drawstring(ofs + gui_percentToPixelRawVec('3 6'), "Energy Draw total ", '7 9 0', CLR_DEF_ENE_FRT, HUD_ALPHA, 0);
   drawstring(ofs + gui_percentToPixelRawVec('4 18'), "by [Weapon Group]", '7 8 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(ofs + gui_percentToPixelRawVec('4 28'), "X Energy / 10sec", '7 8 0', '1 1 1', HUD_ALPHA, 0);
   
-  local float enmax;
-  enmax = SELECTED_MECH.en_max * 1.5;
-  
+  local float enmax, g1, g2, g3, g4, g5;
+  enmax = SELECTED_MECH.en_max;
+
   drawstring(ofs + gui_percentToPixelRawVec('4 45'), "Group 1", '8 8 0', '1 1 1', HUD_ALPHA, 0);
-    gui_renderMeter((GROUP_ENE_1 / enmax)*100, ofs + gui_percentToPixelRawVec('60 45'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+    g1 = (GROUP_ENE_1 / enmax)*100;
+    gui_renderMeter(g1, ofs + gui_percentToPixelRawVec('60 45'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g1), HUD_ALPHA, 0, AXIS_H, 0);
   
   drawstring(ofs + gui_percentToPixelRawVec('4 72'), "Group 2", '8 8 0', '1 1 1', HUD_ALPHA, 0);
-    gui_renderMeter((GROUP_ENE_2 / enmax)*100, ofs + gui_percentToPixelRawVec('60 72'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+    g2 = (GROUP_ENE_2 / enmax)*100;
+    gui_renderMeter(g2, ofs + gui_percentToPixelRawVec('60 72'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g2), HUD_ALPHA, 0, AXIS_H, 0);
   
   drawstring(ofs + gui_percentToPixelRawVec('4 99'), "Group 3", '8 8 0', '1 1 1', HUD_ALPHA, 0);
-    gui_renderMeter((GROUP_ENE_3 / enmax)*100, ofs + gui_percentToPixelRawVec('60 99'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+    g3 = (GROUP_ENE_3 / enmax)*100;
+    gui_renderMeter(g3, ofs + gui_percentToPixelRawVec('60 99'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g3), HUD_ALPHA, 0, AXIS_H, 0);
   
   drawstring(ofs + gui_percentToPixelRawVec('4 126'), "Group 4", '8 8 0', '1 1 1', HUD_ALPHA, 0);
-    gui_renderMeter((GROUP_ENE_4 / enmax)*100, ofs + gui_percentToPixelRawVec('60 126'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+    g4 = (GROUP_ENE_4 / enmax)*100;
+    gui_renderMeter(g4, ofs + gui_percentToPixelRawVec('60 126'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g4), HUD_ALPHA, 0, AXIS_H, 0);
     
   drawstring(ofs + gui_percentToPixelRawVec('4 153'), "Group 5", '8 8 0', '1 1 1', HUD_ALPHA, 0);
-    gui_renderMeter((GROUP_ENE_5 / enmax)*100, ofs + gui_percentToPixelRawVec('60 153'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, CLR_DEF_ARM_ONEQ, HUD_ALPHA, 0, AXIS_H, 0);
+    g5 = (GROUP_ENE_5 / enmax)*100;
+    gui_renderMeter(g5, ofs + gui_percentToPixelRawVec('60 153'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g5), HUD_ALPHA, 0, AXIS_H, 0);
 };
 
 /*void(vector ofs) menu_arming_HardPointInfo={
@@ -469,14 +480,14 @@ void(vector ofs) menu_arming_WeaponInfo={
   
   //damage
   drawstring(icol, "[DAMAGE/SHOT]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter((dat.dmg_amt / 350)*100, icol + gui_percentToPixelRawVec('112 -2'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
+  gui_renderMeter((dat.dmg_amt / 600)*100, icol + gui_percentToPixelRawVec('112 -2'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
   
   //type
   drawstring(icol + gui_percentToPixelRawVec('0 8'), strcat("[TYPE]:         ",getNameOfWepType(dat.dmg_type)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //en cost
-  drawstring(icol + gui_percentToPixelRawVec('0 16'), "[ENERGY/SEC]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter((dat.en_rate / 20)*100, icol + gui_percentToPixelRawVec('112 16'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 16'), "[ENERGY]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderMeter((dat.en_rate / 500)*100, icol + gui_percentToPixelRawVec('112 16'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (dat.en_rate / 500)*100), HUD_ALPHA, 0, AXIS_H, 0);
   
   //range
   drawstring(icol + gui_percentToPixelRawVec('0 24'), strcat("[RANGE]:        ",ftos(dat.w_range)),'7 7 0', '1 1 1', HUD_ALPHA, 0);
@@ -542,14 +553,14 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   
   //damage
   drawstring(icol, "[DAMAGE/SHOT]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter((dat.dmg_amt / 350)*100, icol + gui_percentToPixelRawVec('112 -2'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
+  gui_renderMeter((dat.dmg_amt / 600)*100, icol + gui_percentToPixelRawVec('112 -2'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
   
   //type
   drawstring(icol + gui_percentToPixelRawVec('0 8'), strcat("[TYPE]:         ",getNameOfWepType(dat.dmg_type)), '7 7 0', '1 1 1', HUD_ALPHA, 0);
   
   //en cost
-  drawstring(icol + gui_percentToPixelRawVec('0 16'), "[ENERGY/SEC]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
-  gui_renderMeter((dat.en_rate / 20)*100, icol + gui_percentToPixelRawVec('112 16'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, HUD_ALPHA, 0, AXIS_H, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 16'), "[ENERGY]:", '7 7 0', '1 1 1', HUD_ALPHA, 0);
+  gui_renderMeter((dat.en_rate / 500)*100, icol + gui_percentToPixelRawVec('112 16'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (dat.en_rate / 500)*100), HUD_ALPHA, 0, AXIS_H, 0);
   
   //range
   drawstring(icol + gui_percentToPixelRawVec('0 24'), strcat("[RANGE]:        ",ftos(dat.w_range)),'7 7 0', '1 1 1', HUD_ALPHA, 0);
@@ -598,6 +609,9 @@ string(float bit) getNameOfWepType={
   }
   else if((bit & DMG_EXP)){
     return "MISSILE";
+  }
+  else if((bit & DMG_MSC)){
+    return "EQUIPMENT";
   }
   else{
     return "unknown";
@@ -666,6 +680,5 @@ float(float grp) calc_energy_draw={
   if( sub < 0){
     sub = 0;
   }
-  sub = sub * 10 * 10;
   return sub;
 };

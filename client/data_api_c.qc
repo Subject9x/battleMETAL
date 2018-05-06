@@ -45,12 +45,19 @@ void() data_ini_arrays={
   data_WeaponIcons[ID_WEP_FLAK] = DAT_FLAK_ICON;
   data_WeaponIcons[ID_WEP_ION] = DAT_ION_ICON;
   data_WeaponIcons[ID_WEP_SWRM] = DAT_SWRM_ICON;
+  data_WeaponIcons[ID_EQP_ATGM] = DAT_EQP_ATGM_ICON;
+  data_WeaponIcons[ID_EQP_ENBAT] = DAT_EQP_ENBAT_ICON;
+  data_WeaponIcons[ID_EQP_HSEM] = DAT_EQP_HSEM_ICON;
+  data_WeaponIcons[ID_EQP_LSAR] = DAT_EQP_LSAR_ICON;
+  data_WeaponIcons[ID_EQP_SCAP] = DAT_EQP_SCAP_ICON;
+  data_WeaponIcons[ID_EQP_RECAP] = DAT_EQP_RECAP_ICON;
+  
 };
 
 string(float data_idx) data_get_weapon_name={
   local float idx;
   idx = 0;
-  while(idx < 18){
+  while(idx < UI_TOTAL_WEAPONS){
     if(idx == data_idx){
       return data_WeaponNames[idx];
     }
@@ -61,7 +68,7 @@ string(float data_idx) data_get_weapon_name={
 string(float data_idx) data_get_weapon_icon={
   local float idx;
   idx = 0;
-  while(idx < 18){
+  while(idx < UI_TOTAL_WEAPONS){
     if(idx == data_idx){
       return data_WeaponIcons[idx];
     }

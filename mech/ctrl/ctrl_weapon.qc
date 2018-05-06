@@ -89,5 +89,12 @@ void() ctrl_die_weapon={
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;
     setsize(self, '0 0 0', '0 0 0');
+    
+    if( (self.p_dmgtype & DMG_MSC) ){
+      //weapon is equip, run death func
+       self.unit_wep1();
+    }
   }
 };
+
+void() ctrl_die_weapon
