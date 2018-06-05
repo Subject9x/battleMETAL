@@ -20,6 +20,8 @@ float ID_PRJ_SFGA = 8;
 float ID_PRJ_FLAK = 9;
 float ID_PRJ_ION = 10;
 float ID_PRJ_SWRM = 11;
+float ID_PRJ_ABT = 12;
+float ID_PRJ_ABT_CLST = 13;
 //============================
 //            Velocity         
 //============================
@@ -43,6 +45,10 @@ float DAT_PRJ_SFGA_VELOCITY = 1500;
 float DAT_PRJ_FLAK_VELOCITY = 4500;
 //-------------------------SWARM
 float DAT_PRJ_SWRM_VELOCITY = 1600;
+//-------------------------Air-burst Torpedo
+float DAT_PRJ_ABT_VELOCITY = 1000;
+//-------------------------Air-burst Torpedo Cluster round
+float DAT_PRJ_ABT_CLST_VELOCITY = 300;
 //============================
 //            lifetime           
 //============================
@@ -66,6 +72,10 @@ float DAT_PRJ_SFGA_LIFETIME = 8;
 float DAT_PRJ_FLAK_LIFETIME = 4.8;
 //-------------------------SWARM
 float DAT_PRJ_SWRM_LIFETIME = 2.5;
+//-------------------------Air-burst Torpedo
+float DAT_PRJ_ABT_LIFETIME = 2.5;
+//-------------------------Air-burst Torpedo Cluster
+float DAT_PRJ_ABT_CLST_LIFETIME = 2.5;
 //============================
 //            radius           
 //============================
@@ -108,6 +118,10 @@ string DAT_PRJ_SFGA_MODEL   = "progs/casing.mdl";
 string DAT_PRJ_FLAK_MODEL   = "progs/casing.mdl";
 //-------------------------SWARM
 string DAT_PRJ_SWRM_MODEL   = "q3mdl/proj_mis.md3";
+//-------------------------Air-burst Torpedo
+string DAT_PRJ_ABT_MODEL   = "q3mdl/proj_mis.md3";
+//-------------------------Air-burst Torpedo Cluster
+string DAT_PRJ_ABT_CLST_MODEL   = "q3mdl/casing.mdl";
 //============================
 //            Effects           
 //============================
@@ -191,3 +205,19 @@ vector DAT_PRJ_SWRM_COLORMOD = '0 0 0';
 float DAT_PRJ_SWRM_GLOWCOLOR = 0;
 float DAT_PRJ_SWRM_GLOWSIZE = 0;
 float DAT_PRJ_SWRM_GLOWTRAIL= FALSE;
+//-------------------------Air-burst Torpedo
+float DAT_PRJ_ABT_EFFECTS = 0;
+float DAT_PRJ_ABT_MODELFLAGS = MF_ROCKET;
+float DAT_PRJ_ABT_ALPHA = 1;
+vector DAT_PRJ_ABT_COLORMOD = '0 0 0';
+float DAT_PRJ_ABT_GLOWCOLOR = 0;
+float DAT_PRJ_ABT_GLOWSIZE = 0;
+float DAT_PRJ_ABT_GLOWTRAIL= FALSE;
+//-------------------------Air-burst Torpedo Cluster
+float DAT_PRJ_ABT_CLST_EFFECTS = 0;
+float DAT_PRJ_ABT_CLST_MODELFLAGS = MF_ROCKET;
+float DAT_PRJ_ABT_CLST_ALPHA = 1;
+vector DAT_PRJ_ABT_CLST_COLORMOD = '0 0 0';
+float DAT_PRJ_ABT_CLST_GLOWCOLOR = 0;
+float DAT_PRJ_ABT_CLST_GLOWSIZE = 0;
+float DAT_PRJ_ABT_CLST_GLOWTRAIL= FALSE;

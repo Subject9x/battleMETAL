@@ -267,8 +267,8 @@ float DAT_MNT_HARDPOINT4_TYPES = 3;
 float DAT_MNT_HARDPOINT5_TYPES = 3;
 float DAT_MNT_HARDPOINT6_TYPES = 3;
 float DAT_MNT_HARDPOINT7_TYPES = 4;//4;
-float DAT_MNT_HARDPOINT8_TYPES = 139;
-float DAT_MNT_HARDPOINT9_TYPES = 139;//4;
+float DAT_MNT_HARDPOINT8_TYPES = 132;
+float DAT_MNT_HARDPOINT9_TYPES = 132;//4;
 //============================
 //            Tech level  
 //============================

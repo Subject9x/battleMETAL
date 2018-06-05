@@ -59,6 +59,7 @@ hud_snd_sys_c.qc
   data/wep/data_flak_vals.qc
   data/wep/data_ion_vals.qc
   data/wep/data_swrm_val.qc
+  data/wep/data_abt_val.qc
   
   //Equipment
   data/eqp/data_eqp_atgm_val.qc

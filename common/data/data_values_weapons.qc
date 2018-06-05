@@ -407,7 +407,7 @@ string DAT_ABT_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //-------------------------ATC
 string DAT_LATC_MODEL    = "q3mdl/weapons/w_atc.md3";
 //-------------------------FLAK
-string DAT_FLAK_MODEL    = "q3mdl/weapons/w_atc.md3";
+string DAT_FLAK_MODEL    = "q3mdl/weapons/w_flk.md3";
 //-------------------------RPlas
 string DAT_RPLAS_MODEL   = "q3mdl/weapons/w_rpc.md3";
 //-------------------------QRifle
@@ -417,7 +417,7 @@ string DAT_SFGA_MODEL    = "q3mdl/weapons/w_sfga.md3";
 //-------------------------Laser
 string DAT_LAS_MODEL     = "q3mdl/weapons/w_laser.md3";
 //-------------------------ION
-string DAT_ION_MODEL     = "q3mdl/weapons/w_emp.md3";
+string DAT_ION_MODEL     = "q3mdl/weapons/w_ion.md3";
 //-------------------------EMP
 string DAT_EMP_MODEL     = "q3mdl/weapons/w_emp.md3";
 //-------------------------ESR
@@ -431,22 +431,22 @@ string DAT_MLGD_MODEL    = "q3mdl/weapons/w_lgm.md3";
 //-------------------------Radar Missile
 string DAT_MARH_MODEL    = "q3mdl/weapons/w_arh.md3";
 //-------------------------Radar Missile
-string DAT_SWRM_MODEL    = "q3mdl/weapons/w_arh.md3";
+string DAT_SWRM_MODEL    = "q3mdl/weapons/w_swrm.md3";
 //-------------------------Laser Missile
 string DAT_ABT_MODEL    = "q3mdl/weapons/w_lgm.md3";
 //EQUIP------------
 //-------------------------ATGM
-string DAT_EQP_ATGM_MODEL  = "q3mdl/testball.md3";
+string DAT_EQP_ATGM_MODEL  = "q3mdl/weapons/e_atgm.md3";
 //-------------------------ENBAT
-string DAT_EQP_ENBAT_MODEL = "q3mdl/testball.md3";
+string DAT_EQP_ENBAT_MODEL = "q3mdl/weapons/e_enbat.md3";
 //-------------------------HSEM
-string DAT_EQP_HSEM_MODEL  = "q3mdl/testball.md3";
+string DAT_EQP_HSEM_MODEL  = "q3mdl/weapons/e_hsem.md3";
 //-------------------------LSAR
 string DAT_EQP_LSAR_MODEL  = "q3mdl/testball.md3";
 //-------------------------SCAP
 string DAT_EQP_SCAP_MODEL  = "q3mdl/testball.md3";
 //-------------------------RECAP
-string DAT_EQP_RECAP_MODEL = "q3mdl/testball.md3";
+string DAT_EQP_RECAP_MODEL = "q3mdl/weapons/e_recap.md3";
 //============================
 //            Icon  
 //============================
@@ -561,4 +561,6 @@ float DAT_MARH_PROJ_ID    = ID_PRJ_MARH;
 //-------------------------Swarm Missile
 float DAT_SWRM_PROJ_ID    = ID_PRJ_SWRM;
 //-------------------------Air-burst Torpedo
-float DAT_ABT_PROJ_ID    = ID_PRJ_SWRM;
+float DAT_ABT_PROJ_ID     = ID_PRJ_ABT;
+//-------------------------Air-burst Torpedo
+float DAT_ABT_CLST_PROJ_ID= ID_PRJ_ABT_CLST;

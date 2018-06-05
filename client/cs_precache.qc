@@ -100,6 +100,7 @@ void() cs_precache={
   UI_WEP_FLAK = precache_pic("gfx/ui/wep_icons/wi_flak.png",0);
   UI_WEP_ION = precache_pic("gfx/ui/wep_icons/wi_ion.png",0);
   UI_WEP_SWRM = precache_pic("gfx/ui/wep_icons/wi_swrm.png",0);
+  UI_WEP_ABT = precache_pic("gfx/ui/wep_icons/wi_abt.png",0);
   
   UI_EQP_ATGM = precache_pic("gfx/ui/wep_icons/eqp_atgm.png",0);
   UI_EQP_ENBAT = precache_pic("gfx/ui/wep_icons/eqp_enbat.png",0);
@@ -145,6 +146,7 @@ void() cs_precache={
   data_wep_flak();
   data_wep_ion();
   data_wep_swrm();
+  data_wep_abt();
   
   //equip data
   data_eqp_atgm_ini();

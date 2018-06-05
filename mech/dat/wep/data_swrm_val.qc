@@ -64,7 +64,7 @@ void() data_swrm_think={
 void() data_swrm_atk={
   local entity player, proj, cam, oself;
   local vector dir, org, end, adj;
-  local float randx, randy;
+  local float randx, randy, maxtarg;
   
   player = self.owner;
   
@@ -108,34 +108,38 @@ void() data_swrm_atk={
   org = player.origin + (v_up * randy) + (v_right * randx) + (v_forward*adj_z);
   
   local entity targs;
+  maxtarg = 3;
   targs = findradius(player.origin, self.w_range);
   while(targs){
-    if((targs.flags & FL_CLIENT) || (targs.flags & FL_MONSTER)){
-      if(targs.deadflag == DEAD_NO){
-        if( (ai_target_isInFront(targs)) && (targs != player) ){
-          local entity mis;
-          mis = spawn();
-          oself = self;
-          self = mis;
-            self.owner = player;
-            data_iniProjectile(oself.w_proj);
-            util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
-            util_setModel(self.c_model, 0, 0);
-            util_setBoundBox('0 0 0', '0 0 0');
-            self.p_dmgtype = oself.p_dmgtype;
-            self.p_damage = oself.p_damage;
-            self.enemy = targs;
-            self.p_lifetime = time + self.p_lifetime;
-            self.touch = data_prj_swrm_touch;
-            self.velocity = normalize(targs.origin - org);
-            self.velocity = self.velocity * self.p_velocity;
-            self.velocity_z = self.velocity_z + 800;
-            self.think = data_prj_swrm_think;
-            self.nextthink = time + 0.1;
-            setorigin(self, org);
-            self.angles = vectoangles(self.velocity);
-          self = oself;
-          sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+    if( maxtarg > 0 ){
+      if( (targs.flags & FL_CLIENT) || (targs.flags & FL_MONSTER) ){
+        if(targs.deadflag == DEAD_NO){
+          if( (ai_target_isInFront(targs)) && (targs != player) ){
+            maxtarg = maxtarg - 1;
+            local entity mis;
+            mis = spawn();
+            oself = self;
+            self = mis;
+              self.owner = player;
+              data_iniProjectile(oself.w_proj);
+              util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
+              util_setModel(self.c_model, 0, 0);
+              util_setBoundBox('0 0 0', '0 0 0');
+              self.p_dmgtype = oself.p_dmgtype;
+              self.p_damage = oself.p_damage;
+              self.enemy = targs;
+              self.p_lifetime = time + self.p_lifetime;
+              self.touch = data_prj_swrm_touch;
+              self.velocity = normalize(targs.origin - org);
+              self.velocity = self.velocity * self.p_velocity;
+              self.velocity_z = self.velocity_z + 800;
+              self.think = data_prj_swrm_think;
+              self.nextthink = time + 0.1;
+              setorigin(self, org);
+              self.angles = vectoangles(self.velocity);
+            self = oself;
+            sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+          }
         }
       }
     }
