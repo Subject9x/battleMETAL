@@ -35,6 +35,7 @@ void() click_newg_launch={
   menu_clear_items(M_STATE);
   cmd("deathmatch 0\n");
   cmd("coop 0\n");
+  cmd("campaign 1\n");
   menu_exit_togame();
   cmd("map", " start.bsp\n");
 };

@@ -209,9 +209,9 @@ void(string itms) client_sendAvailableItems={
   stuffcmd(self, cmd);
 };
 
-void(string mode) client_sendGameMode={
+void(float mode) client_sendGameMode={
   local string cmd;
-  cmd = strcat("mech gamemode ", mode,"\n");
+  cmd = strcat("mech gamemode ", ftos(mode),"\n");
   stuffcmd(self, cmd);
 };
 

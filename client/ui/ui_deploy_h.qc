@@ -6,6 +6,7 @@ Date: 3/24/2017
 Overview: ui header file the deployment menu
 */
 
+float DEPLOY_CNT;
 float DEPLOY_IDS[100];
 vector DEPLOY_MAP_ORG;
 float DEPLOY_POINT_ID;

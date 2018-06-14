@@ -39,10 +39,11 @@ entity() FindIntermission={
 	return world;
 };
 void() GotoNextMap={
-    if( !coop && !deathmatch ){
-      savefile_append();
-      savefile_save();
-    }
+  if( cvar("gamemode") == GAMEMODE_CAMPAIGN){
+    savefile_changemap(nextmap);
+    savefile_append();
+    savefile_save();
+  }
   if (cvar("samelevel")){	// if samelevel is set, stay on same level
 		changelevel (mapname);
 	}

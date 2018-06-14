@@ -45,7 +45,10 @@ float sv_gravity;
 .float gravity;
 //======================
 
-float GAME_M = 2;
+float GAMEMODE_CAMPAIGN = 1;
+float GAMEMODE_COOP = 2;
+float GAMEMODE_DM = 3;
+float GAMEMODE_TEAMDM = 4;
 
 //mech piece classname constants
 string MECH_PIECE = "mech_piece";

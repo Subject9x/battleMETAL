@@ -69,7 +69,7 @@ void() navListSelectListener={
   if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('15 135'), gui_percentToPixelRawVec('20 44')) ){
     idx = DEPLOY_POINT_ID - 1;
     if(idx < 0){
-      DEPLOY_POINT_ID = DEPLOY_POINT_END;
+      idx = DEPLOY_POINT_END;
     }
     else{
       if(DEPLOY_IDS[idx] > 0){

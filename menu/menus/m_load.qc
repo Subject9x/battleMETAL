@@ -24,7 +24,14 @@ void() click_load_back={
 void() click_load_loadgame={
   menu_clear_items(M_STATE);
   menu_exit_togame();
-  cmd("load ", GAME_SAVES[self.data_bind]);
+  cvar_set("saveslot", ftos(self.data_bind));
+  cons_logAFloat("saveslot", cvar("saveslot"));  //DEBUG
+  cvar_set("gamemode", ftos(1));
+  cvar_set("coop", ftos(0));
+  cvar_set("deathmatch", ftos(0));
+  tokenizebyseparator(GAME_SAVES_DRAWNAME[self.data_bind], "  ");
+  
+  cmd("map ", strcat(argv(1),"\n"));
 };
 
 // ini function, called by '_f' function as a setup func

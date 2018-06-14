@@ -8,7 +8,8 @@ to track player unlocks
 */
 
 //globals
-string SAVE_FILE_NAME = "save_me.sav"; //bake this in cause the name shouldnt change
+string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
+string SAVE_MAP;
 string SAVE_MECHS_LIGHT;
 string SAVE_MECHS_MEDIM;
 string SAVE_MECHS_HEAVY;
@@ -31,6 +32,7 @@ void() savefile_save; //single player only
 void() savefile_default;  //single player, but initial start
 void() savefile_append;
 string(string item, string source) savefile_insert;
+void(string nextmap) savefile_changemap;
 
 void() mapfile_coop_load;  //coop options
 void(float faction) mapfile_pvp_load;  //pvp options

@@ -16,6 +16,12 @@ void(string str) SV_ParseClientCommand={
   if(argv(0) == "mech"){
     client_ParseMechCommand(str, argc);
   }
+  else if( argv(0) == "savegame"){
+    savefile_save();
+  }
+  else if( argv(0) == "loadgame"){
+    savefile_load();
+  }
   else{
     clientcommand(self, str);
   }
@@ -130,34 +136,10 @@ void() ClientConnect = {
   
   self.stat_plr_rep = -1;
   
-  client_sendMissionFileName();
+  client_playTrack(6, TRUE);  //entering hangar menu
   
-  if( !coop && !deathmatch) {
-    if(world.model == "maps/start.bsp"){
-      //pre-populate default save file
-      savefile_default();
-    }
-    savefile_load();
-    self.i_faction = world.i_faction; //single player setting
-  }
-  else if( coop ){
-    mapfile_coop_load();
-    client_sendGameMode("coop");
-  }
-  else if( deathmatch ){
-    mapfile_pvp_load(self.i_faction);
-    client_sendGameMode("deathmatch");
-  }
-  
-  client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
-  client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
-  client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
-  client_sendAvailableItems(SAVE_ITEMS_ALL);
-
-  client_playTrack(6, TRUE);
-  
-  CLIENTS = CLIENTS + 1;
-  self.client_num = CLIENTS;
+  CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
+  self.client_num = CLIENTS;  //book keeping for multiplayer
   client_data_ini(self);
   self.stat_plr_stt = PLAYER_SPAWN;
 
@@ -174,6 +156,36 @@ responsible for configuring the player and spawning them into the level
 ============
 */
 void() PutClientInServer = {
+
+  client_sendMissionFileName();
+  
+  local float gamemode;
+  gamemode = cvar("gamemode");
+  
+  client_sendGameMode(gamemode);
+  switch(gamemode){
+    case GAMEMODE_CAMPAIGN:
+      if(world.model == "maps/start.bsp"){
+        //pre-populate default save file
+        savefile_default();
+      }
+      savefile_load();
+      self.i_faction = world.i_faction; //single player setting
+      break;
+    case GAMEMODE_COOP:
+      mapfile_coop_load();
+      break;
+      
+    case GAMEMODE_DM:
+      mapfile_pvp_load(self.i_faction);
+      break;
+  }
+  
+  client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
+  client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
+  client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
+  client_sendAvailableItems(SAVE_ITEMS_ALL);
+  
   local entity spot;
   
   self.flags = FL_CLIENT;

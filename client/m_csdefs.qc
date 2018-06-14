@@ -50,6 +50,11 @@ vector STATUS_DED = '0.2 0.286 0.368'; //change to this soon 95, 106, 106
 vector STATUS_REL = '0.18 0.525 0.756';
 vector STATUS_RNG = '0.513 0.568 0.572';
 
+float GAMEMODE_CAMPAIGN = 1;
+float GAMEMODE_COOP = 2;
+float GAMEMODE_DM = 3;
+float GAMEMODE_TEAMDM = 4;
+
 //COMP_TYPE
 float m_tor_c = 0;
 float m_tor_l = 1;

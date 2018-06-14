@@ -49,6 +49,10 @@ void() savefile_append={
   }
 };
 
+void(string nextmap) savefile_changemap={
+  SAVE_MAP = nextmap;
+};
+
 //checks to see if item is already on list
 string(string item, string source) savefile_insert={
   local string update, line;
@@ -87,7 +91,7 @@ string(string item, string source) savefile_insert={
 void() savefile_load={
   local float flannel, argc, line_tag, line_val, line_array, line_cntr;
   local string file, contents, line;
-  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME);
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{", ",", "}");
@@ -96,7 +100,7 @@ void() savefile_load={
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
       line_tag = tokenizebyseparator(line, "'","'",": ",",");
       if( argv(1) == SAVE_FILE_MSN_NAME) {
-        
+        SAVE_MAP = strzone(argv(3));
       }
       if( argv(1) == SAVE_FILE_MECHS_LIGHT ){
         SAVE_MECHS_LIGHT = strzone(argv(3));
@@ -119,10 +123,11 @@ void() savefile_load={
 void() savefile_save={
   local float flannel;
   local string file, line;
-  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME);
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
-  fputs(flannel, strcat("  'mission' : ", self.msn_file, ",\n"));
+  fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
+  fputs(flannel, strcat("  'mission' : ", SAVE_MAP, ",\n"));
   fputs(flannel, strcat("  'light' : ", SAVE_MECHS_LIGHT, ",\n"));
   fputs(flannel, strcat("  'medium' : ", SAVE_MECHS_MEDIM, ",\n"));
   fputs(flannel, strcat("  'heavy' : ", SAVE_MECHS_HEAVY, ",\n"));
@@ -135,9 +140,10 @@ void() savefile_save={
 void() savefile_default={
   local float flannel;
   local string file, line;
-  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME);
+  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
+  fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
   fputs(flannel, "  'mission' : start,\n");
   fputs(flannel, "  'light' : 1,\n");
   fputs(flannel, "  'medium' : ,\n");
@@ -155,7 +161,6 @@ void() mapfile_coop_load={
   tokenizebyseparator(mapname, ".");
   file = argv(0);
   file = strcat(PATH_DATA_MAP, "/", file, "/", world.map_file, SAVE_FILE_EXT);
-  cons_logAString("file", file);  //DEBUG
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);

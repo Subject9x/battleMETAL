@@ -525,31 +525,39 @@ void() menu_scan_saves={
   local float itr;
   itr = 0;
   while(itr < GAME_SAVES_MAX){
+    if(GAME_SAVES[itr] != ""){
+      strunzone(GAME_SAVES[itr]);
+    }
+    if(GAME_SAVES_DRAWNAME[itr] != ""){
+      strunzone(GAME_SAVES_DRAWNAME[itr]);
+    }
     local string fname;
     local float flannel;
-    fname = strcat("s", ftos(itr), ".sav");
+    fname = strcat("saves/save_", ftos(itr), ".sav");
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
-      local float line_count;
-      local string line, save_name, map_name, map_title;
+      local float line_count, line_tag;
+      local string line, save_name, save_num, map_name, map_title, contents;
       line_count = 0;
+      contents = fgets(flannel);
+      tokenizebyseparator(contents, "{", ",", "}");
       line = fgets(flannel);
-      while (line_count < 20){
-        if(line_count == 1){
-          map_title = line;
-        }
-        if(line_count == 19){
-          map_name = line;
+      while( (line != "") ){
+        if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+          line_tag = tokenizebyseparator(line, "'","'",": ",",");
+          if( argv(1) == "save" ){
+            save_num = argv(3);
+          }
+          if( argv(1) == "mission" ){
+            map_name = argv(3);
+          }
         }
         line = fgets(flannel);
-        line_count = line_count + 1;
       }
-      tokenizebyseparator(map_title, "kills");
-      map_title = argv(0);
-      save_name = strcat("--[", map_name, "]-- ", map_title);
+      fclose(flannel);
+      save_name = strcat("[SAVE ", save_num,"]  ", map_name);
       GAME_SAVES[itr] = strzone(fname);
       GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
-      fclose(flannel);
     }
     else{
       GAME_SAVES[itr] = strzone("");

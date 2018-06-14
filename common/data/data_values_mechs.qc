@@ -175,14 +175,14 @@ string DAT_MNT_CAM_MODEL    = "q3mdl/testball.md3";
 //============================
 //-------------------------BALAKET------------------------
 vector DAT_OTL_LEG_OFFSET     = '0 -16 0';
-vector DAT_OTL_LTOR_OFFSET    = '-7 5.5 -2';
-vector DAT_OTL_RTOR_OFFSET    = '7 5.5 -2';
-vector DAT_OTL_LARM_OFFSET    = '-11 7 -2';
-vector DAT_OTL_RARM_OFFSET    = '11 7 -2';
+vector DAT_OTL_LTOR_OFFSET    = '-7.5 5.5 -2.5';
+vector DAT_OTL_RTOR_OFFSET    = '7.5 5.5 -2.5';
+vector DAT_OTL_LARM_OFFSET    = '-12.1 7 -3';
+vector DAT_OTL_RARM_OFFSET    = '12.1 7 -3';
 vector DAT_OTL_CAM_OFFSET     = '0 6 7';
 vector DAT_OTL_CAM_OFFSET_ALT = '0 1 0';
-vector DAT_OTL_WEP1_OFFSET    = '-11 0.5 1.5';
-vector DAT_OTL_WEP2_OFFSET    = '11 0.5 1.5';
+vector DAT_OTL_WEP1_OFFSET    = '-12.2 0.5 0.5';
+vector DAT_OTL_WEP2_OFFSET    = '12.2 0.5 0.5';
 vector DAT_OTL_WEP3_OFFSET    = '-2 10.5 0';
 //-------------------------MATOK------------------------
 vector DAT_MTK_LEG_OFFSET     = '0 -12 0';

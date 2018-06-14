@@ -213,19 +213,17 @@ void() navBarListener={
       local entity nav;
       local float itr, idx;
       nav = findchainfloat(data_type, DATA_DEPL);
-      itr = 0;
+      itr = 1;
       while(nav){
-        if(nav.isActive){
+        if(nav.isActive == TRUE){
           if(nav.i_faction == self.i_faction){
             DEPLOY_IDS[itr] = nav.nav_name;
-          }
+            itr = itr + 1;
+          }  
         }
         nav = nav.chain;
-        if(!nav){
-          DEPLOY_POINT_END = itr;
-        }
-        itr = itr + 1;
       }
+      DEPLOY_POINT_END = itr;
       DEPLOY_POINT_ID = 0;
       self.plr_menu_choice = MENU_DEPLOY_ACTIVE;
     }

@@ -270,7 +270,7 @@ float DAT_MIS_CLIPSIZE      = 6;
 //-------------------------Laser Missile
 float DAT_MLGD_CLIPSIZE     = 1;
 //-------------------------Radar Missile
-float DAT_MARH_CLIPSIZE     = 10; //15
+float DAT_MARH_CLIPSIZE     = 10;
 //-------------------------Swarm Missile
 float DAT_SWRM_CLIPSIZE     = 3;
 //-------------------------Air-burst Torpedo
@@ -442,9 +442,9 @@ string DAT_EQP_ENBAT_MODEL = "q3mdl/weapons/e_enbat.md3";
 //-------------------------HSEM
 string DAT_EQP_HSEM_MODEL  = "q3mdl/weapons/e_hsem.md3";
 //-------------------------LSAR
-string DAT_EQP_LSAR_MODEL  = "q3mdl/testball.md3";
+string DAT_EQP_LSAR_MODEL  = "q3mdl/weapons/e_lsar.md3";
 //-------------------------SCAP
-string DAT_EQP_SCAP_MODEL  = "q3mdl/testball.md3";
+string DAT_EQP_SCAP_MODEL  = "q3mdl/weapons/e_scap.md3";
 //-------------------------RECAP
 string DAT_EQP_RECAP_MODEL = "q3mdl/weapons/e_recap.md3";
 //============================

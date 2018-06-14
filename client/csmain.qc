@@ -87,6 +87,12 @@ void() CSQC_Init =
   MAP_NAME = strzone(MAP_NAME);
   
   FRIK_FILE_precaches();
+  
+  DEPLOY_CNT = 0;
+  
+  registercvar("gamemode", "0");
+  registercvar("gametype", "0");
+  
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -518,7 +524,7 @@ void(string s) CSQC_Parse_StuffCmd =
       cl_get_items_all( argv(1) );
     }
     else if(argv(1) == "gamemode"){
-      cvar_set(argv(2), "1");
+      cvar_set("gamemode", argv(2));
     }
   }
   else{

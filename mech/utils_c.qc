@@ -281,25 +281,25 @@ float(entity t, float tolerance) util_cornerSlopeCheck={
   
   traceline(c1, c1 + (v_up * -128), FALSE, t);
   te_beam_laser(c1, c1 + (v_up * -128)); //DEBUG
-    cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
+    //cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
   if( trace_plane_normal_z < tolerance){
     val = TRUE;
   }
   traceline(c2, c2 + (v_up * -128), FALSE, t);
   te_beam_laser(c2, c2 + (v_up * -128)); //DEBUG
-    cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
+    //cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
   if( trace_plane_normal_z < tolerance){
     val = TRUE;
   }
   traceline(c3, c3 + (v_up * -128), FALSE, t);
   te_beam_laser(c3, c3 + (v_up * -128)); //DEBUG
-    cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
+    //cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
   if( trace_plane_normal_z < tolerance){
     val = TRUE;
   }
   traceline(c4, c4 + (v_up * -128), FALSE, t);
   te_beam_laser(c4, c4 + (v_up * -128)); //DEBUG
-    cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
+    //cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
   if( trace_plane_normal_z < tolerance){
     val = TRUE;
   }
