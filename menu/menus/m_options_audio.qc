@@ -544,8 +544,8 @@ void() m_audio_d={
   menu_k functions are the 'listener' functions
 */
 void(float key, float ascii) m_audio_k={
-  cons_logAFloat("m_audio_k.key", key);  //DEBUG
-  cons_logAFloat("m_audio_k.ascii", ascii);  //DEBUG   
+  //cons_logAFloat("m_audio_k.key", key);  //DEBUG
+  //cons_logAFloat("m_audio_k.ascii", ascii);  //DEBUG   
   
   switch(key){
     case K_ESCAPE:

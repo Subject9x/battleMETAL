@@ -47,7 +47,7 @@ void() ai_control={
     }
   }
   self.think = ai_control;
-  self.nextthink = time + 0.075;
+  self.nextthink = time + 0.05;
   self.e_cam.SendFlags = -1;
 };
 

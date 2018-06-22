@@ -244,6 +244,8 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   }
   drawpic(radCenter - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
+  //cons_logAVector(vtos(input_angles));  //DEBUG
+  
   local entity e;
   e = findradius(radarOrg, radarRange);
   while(e){
@@ -264,8 +266,15 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
             canSee = TRUE;
           }
           
-          if(canSee){  
-            entAngle = anglemod(input_angles_y + ang_y);
+          if(canSee){
+            local float rangle;
+            rangle = anglemod(input_angles_y);
+            //cons_logAFloat("input_angles_y", rangle); //DEBUG
+            //cons_logAFloat("ang_y", ang_y); //DEBUG
+            
+            entAngle = anglemod(ang_y + input_angles_y);
+            //cons_logAFloat("entAngle", entAngle); //DEBUG
+            
             entAngleRadian = entAngle * PI / 180;
 
             hudorg_x = radCenter_x - (cos(entAngleRadian) * (siz_x/2 * radDist));
@@ -524,7 +533,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);
-      nofs_y = nofs_y - (aSize_y / 2);
+      nofs_y = nofs_y - aSize_y;
       nofs_z = 0;
       gui_renderTintImage(TRUE, nofs, HUD_TARGET_BOX, aSize, factionColor, HUD_ALPHA, 0);
     }

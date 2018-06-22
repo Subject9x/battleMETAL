@@ -696,8 +696,8 @@ void() m_gfx_d={
   menu_k functions are the 'listener' functions
 */
 void(float key, float ascii) m_gfx_k={
-  cons_logAFloat("m_effects_k.key", key);  //DEBUG
-  cons_logAFloat("m_effects_k.ascii", ascii);  //DEBUG   
+  //cons_logAFloat("m_effects_k.key", key);  //DEBUG
+  //cons_logAFloat("m_effects_k.ascii", ascii);  //DEBUG   
   
   switch(key){
     case K_ESCAPE:

@@ -146,7 +146,7 @@ void() cs_precache={
   data_wep_flak();
   data_wep_ion();
   data_wep_swrm();
-  data_wep_abt();
+  //data_wep_abt();
   
   //equip data
   data_eqp_atgm_ini();

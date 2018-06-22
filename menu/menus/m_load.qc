@@ -92,8 +92,8 @@ void() m_load_d={
   menu_k functions are the 'listener' functions
 */
 void(float key, float ascii) m_load_k={
-  cons_logAFloat("m_load_k.key", key);  //DEBUG
-  cons_logAFloat("m_load_k.ascii", ascii);  //DEBUG   
+  //cons_logAFloat("m_load_k.key", key);  //DEBUG
+  //cons_logAFloat("m_load_k.ascii", ascii);  //DEBUG   
   
   switch(key){
     case K_ESCAPE:

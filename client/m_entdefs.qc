@@ -81,11 +81,6 @@ float ARM_RAD = 24;
 .vector show_box_color;
 .float show_box_life;
 
-.entity wdg_sh; //shield widget
-.entity wdg_en; //energy widget
-.entity wdg_pd; //paper doll widget
-.entity wdg_wp; //weapons list widget
-
 //widget vars
 .string c_mdl;
 .string c_ui_hf;

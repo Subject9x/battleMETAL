@@ -75,7 +75,7 @@ void() data_prj_swrm_think={
 	}
 	
   self.think = data_prj_swrm_think;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.05;
 };
 
 void() data_prj_swrm_touch={

@@ -27,15 +27,6 @@ string HUD_DMG_PIP_H;
 string HUD_TARGET_BOX;
 
 .entity data;
-.entity hud_pnl1;
-.entity hud_pnl2;
-.entity hud_pnl3;
-.entity hud_pnl4;
-.entity hud_pnl5;
-.entity hud_pnl6;
-.entity hud_pnl7;
-.entity hud_pnl8;
-.entity hud_pnl9;
 
 .float prev_ang;
 .vector nav_ofs;

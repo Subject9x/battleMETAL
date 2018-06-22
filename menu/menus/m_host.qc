@@ -406,8 +406,8 @@ void() m_host_d={
 };
 
 void(float key, float ascii) m_host_k={
-  cons_logAFloat("m_load_k.key", key);  //DEBUG
-  cons_logAFloat("m_load_k.ascii", ascii);  //DEBUG   
+  //cons_logAFloat("m_load_k.key", key);  //DEBUG
+ //cons_logAFloat("m_load_k.ascii", ascii);  //DEBUG   
   
   switch(key){
     case K_ESCAPE:

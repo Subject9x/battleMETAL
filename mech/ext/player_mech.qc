@@ -47,7 +47,8 @@ void() mech_cleanupMech={
       local entity this;
       this = self;
       self = self.e_legs;
-        leg_die1();
+        self.think = leg_die1;
+        self.nextthink = time + 0.1;
       self = this;
       mech_player_removecomp(self.e_legs);
     }
@@ -118,7 +119,7 @@ void(entity comp) mech_player_compdie={
         }
         else{
           self.think = SUB_Remove;
-          self.nextthink = time + 0.001;
+          self.nextthink = time + 0.1;
         }
       self = old;
     }

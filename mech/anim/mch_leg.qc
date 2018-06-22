@@ -30,7 +30,7 @@ void() leg_stand1 = [$l_stand1, leg_stand1]{
 void() leg_walk1;
 
 void() leg_walk1 = [$l_walk1, leg_walk2]{
-  self.walkframe = 1;
+  self.walkframe = $l_walk1;
   if((self.owner.flags & FL_CLIENT)){  
     if (!self.owner.velocity_x && !self.owner.velocity_y){
       self.walkframe=0;
@@ -47,12 +47,12 @@ void() leg_walk1 = [$l_walk1, leg_walk2]{
 };
 
 void() leg_walk2 = [$l_walk2, leg_walk3]{
-self.walkframe = 2;
+self.walkframe = $l_walk2;
 };
 void() leg_walk3 = [$l_walk3, leg_walk4]{
   local entity player;
   player = self.owner;
-  self.walkframe = 3;
+  self.walkframe = $l_walk3;
   if((player.flags & FL_ONGROUND)){
     local vector ofs;
     makevectors(player.angles);
@@ -62,15 +62,15 @@ void() leg_walk3 = [$l_walk3, leg_walk4]{
   }
 };
 void() leg_walk4 = [$l_walk4, leg_walk5]{
-self.walkframe = 4;
+self.walkframe = $l_walk4;
 };
 void() leg_walk5 = [$l_walk5, leg_walk6]{
-  self.walkframe = 5;
+  self.walkframe = $l_walk5;
 };
 void() leg_walk6 = [$l_walk6, leg_walk7]{
   local entity player;
   player = self.owner;
-  self.walkframe = 6;
+  self.walkframe = $l_walk6;
   if((player.flags & FL_ONGROUND)){
     local vector ofs;
     makevectors(player.angles);
@@ -80,10 +80,10 @@ void() leg_walk6 = [$l_walk6, leg_walk7]{
   }
 };
 void() leg_walk7 = [$l_walk7, leg_walk8]{
-  self.walkframe = 7;
+  self.walkframe = $l_walk7;
 };
 void() leg_walk8 = [$l_walk8, leg_walk1]{
-  self.walkframe = 8;
+  self.walkframe = $l_walk8;
 };
 
 void() leg_die1 = [$l_die1, leg_die2]{

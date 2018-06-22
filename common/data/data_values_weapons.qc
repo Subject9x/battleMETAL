@@ -27,12 +27,12 @@ float ID_WEP_ION   = 17;
 float ID_WEP_SWRM  = 18;
 float ID_WEP_ABT   = 19;
 //-----EQUIP------------
-float ID_EQP_ATGM  = 20;
-float ID_EQP_ENBAT = 21;
-float ID_EQP_HSEM  = 22;
-float ID_EQP_LSAR  = 23;
-float ID_EQP_SCAP  = 24;
-float ID_EQP_RECAP = 25;
+float ID_EQP_ATGM  = 19;
+float ID_EQP_ENBAT = 20;
+float ID_EQP_HSEM  = 21;
+float ID_EQP_LSAR  = 22;
+float ID_EQP_SCAP  = 23;
+float ID_EQP_RECAP = 24;
 //====================================================================================
 //            Weapon Names
 //====================================================================================
@@ -148,7 +148,7 @@ float DAT_MARH_RL_RATE    = 0.28;
 float DAT_MARH_RL_MAX     = 7;
 float DAT_MARH_EN_RATE    = 0;
 //-------------------------Swarm Missile
-float DAT_SWRM_RL_RATE    = 0.3;
+float DAT_SWRM_RL_RATE    = 0.1;
 float DAT_SWRM_RL_MAX     = 10;
 float DAT_SWRM_EN_RATE    = 0;
 //-------------------------Air-burst Torpedo
