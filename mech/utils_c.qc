@@ -322,7 +322,7 @@ void(entity t) util_generateBuildingFoundation={
       util_setModel("q3mdl/base_med.obj", 0, 0) ;
     }
     else if( t.vec_size == 3){
-      util_setModel("q3mdl/base_large.obj", 0, 0) ;;
+      util_setModel("q3mdl/base_large.obj", 0, 0);
     }
     util_setCollider(DAMAGE_NO, SOLID_BSP, MOVETYPE_NONE);
     setsize(self, self.mins, self.maxs);

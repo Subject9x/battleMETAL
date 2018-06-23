@@ -89,7 +89,7 @@ void(float curSh) snd_hud_vfx_shdlistener={
 };
 
 void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
-  if(self.player_state == PLAYER_ACTIVE){
+  if(self.player_state >= PLAYER_ACTIVE){
     if(amt <= 0){
       if( (CRITBITS & bit) ){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 3); 

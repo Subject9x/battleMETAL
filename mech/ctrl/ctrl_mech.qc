@@ -24,7 +24,7 @@ void() ctrl_updateCenterTorso={
     local vector v1;
     makevectors(self.v_angle);
     v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
-    traceline(v1, v1 + v_forward*10000, FALSE, self);
+    traceline(v1, v1 + v_forward * 10000, FALSE, self);
     self.laser_sight_org = trace_endpos;
     self.laser_sight_timer = time + 0.05;
   }
@@ -32,14 +32,7 @@ void() ctrl_updateCenterTorso={
   if( time > self.count4 ){
     self.count4 = time + 0.1;
     if(self.en_cur >= 0){
-      if(self.movement_x <= self.m_fspeed && self.movement_y <= self.m_fspeed){
-        self.en_cur = self.en_cur + self.en_rate;
-      }
-      else{
-        if(self.stat_plr_stt >= PLAYER_ACTIVE){
-          self.en_cur = self.en_cur + (self.en_rate - self.m_maccel);
-        }
-      }
+      self.en_cur = self.en_cur + self.en_rate;
       if(self.en_cur > self.en_max){
         self.en_cur = self.en_max;
       }
@@ -83,13 +76,7 @@ void() ctrl_updateCenterTorso={
       r_max = self.conv_max_z;
       r_min = self.conv_min_z;
     }
-    if((mx >= (self.m_fspeed + 1)) || (my >= (self.m_sspeed + 1))){
-      local float v;
-      local vector norg;
-      norg_x = self.origin_x + self.velocity_x;
-      norg_y = self.origin_y + self.velocity_y;
-      v = vlen(norg - self.origin) / 3000;
-      
+    if( self.stat_plr_stt > PLAYER_ACTIVE ){
       self.stat_spr_x = self.stat_spr_x + r_max;
       if(self.stat_spr_x > self.conv_max_x){
         self.stat_spr_x =  self.conv_max_x;

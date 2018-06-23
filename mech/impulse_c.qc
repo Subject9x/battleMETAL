@@ -125,12 +125,20 @@ void() ImpulseCommands ={
       self.repair_request = TRUE;
     }
   }
+  
 	self.impulse = 0;
 };
 
 
 void() ButtonCommands={
-
+  if( self.button8 ){
+    if( self.en_cur > 0 ){
+      if( self.stat_plr_stt == PLAYER_ACTIVE ){
+        self.stat_plr_stt = PLAYER_SPRINT_ON;
+        mh_world_updateClientSpeed(self.m_fspeed * self.m_maccel, self.m_sspeed * self.m_maccel, self.m_bspeed * self.m_maccel, ftos(self.m_maccel), self.m_rollangle);
+      }
+    }
+  }
 };
 
 void() mpls_singleFire={

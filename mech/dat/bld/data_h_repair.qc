@@ -41,8 +41,13 @@ void() building_repair={
   self.use = multi_trigger;
   self.SendEntity = send_building;
   self.SendFlags = -1;
+
+  
+  if(util_cornerSlopeCheck(self, 1)){
+    util_generateBuildingFoundation(self);
+  }
   makevectors(self.angles);
-  self.c_ofs = self.origin + (v_forward * 35) + (v_up * -3) + (v_right * 5);
+  self.c_ofs = self.origin + (v_forward * 35) + (v_up *( ( self.c_bbx_x_y / 2 ) -3) ) + (v_right * 5);
   local entity nde, this;
   this  = self;
   nde = spawn();
@@ -59,11 +64,6 @@ void() building_repair={
     self.owner = this;
   self = this;
   this.e_cam = nde;
-  
-  if(util_cornerSlopeCheck(self, 1)){
-    util_generateBuildingFoundation(self);
-  }
-  
 };
 
 void() building_repair_think={
@@ -132,22 +132,20 @@ void() building_repair_think={
 };
 
 void() building_repair_touch={
-  if( vlen(other.origin - self.origin) <= 16){
+  if( vlen(other.origin - self.origin) <= 32){
     if(self.owner.rl_cur > 0){
       if(other.data_type == DATA_MECH){
         if(other.i_faction == self.owner.i_faction){
           if(util_getMechHpAverage(other) < 1){
-            if(self.owner.trigger_field == world){ 
-              if( (other.flags & FL_CLIENT) ){
-                centerprint( other, "[Press 'E' to start REPAIR]\n");
-              }
-              if(other.repair_request){
-                self.owner.trigger_field = other;
-                other.velocity = '0 0 0';
-                other.avelocity = '0 0 0';
-                other.v_angle = self.owner.angles;
-                other.angles = self.owner.angles;
-              }
+            if( (other.flags & FL_CLIENT) ){
+              centerprint( other, "[Press 'E' to start REPAIR]\n");
+            }
+            if(other.repair_request){
+              self.owner.trigger_field = other;
+              other.velocity = '0 0 0';
+              other.avelocity = '0 0 0';
+              other.v_angle = self.owner.angles;
+              other.angles = self.owner.angles;
             }
           }
         }
@@ -156,7 +154,6 @@ void() building_repair_touch={
   }
   return;
 };
-
 
 void() building_repair_die={
   self.e_cam.trigger_field = world;

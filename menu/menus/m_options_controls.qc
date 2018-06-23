@@ -161,7 +161,7 @@ void() txt_control_bind_straferight={
   menu_keybind_change ("+moveright");
 };
 void() txt_control_bind_sprint={
-  menu_keybind_change ("+speed");
+  menu_keybind_change ("+button8");
 };
 
 void() txt_control_bind_radar={

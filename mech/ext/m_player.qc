@@ -43,14 +43,23 @@ void() PlayerPreThink = {
 // teleporters can force a non-moving pause time	
 	if (time < self.pausetime)
 		self.velocity = '0 0 0';
+    
+  if( !self.button8 ){
+    if( self.stat_plr_stt == PLAYER_SPRINT_ON){
+      self.stat_plr_stt = PLAYER_ACTIVE;
+      mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
+    }
+  }
 };
 
 void() PlayerPostThink = {
-  if( self.stat_plr_stt == PLAYER_ANIM_STOP){
-    if( time >= self.count2){
-      self.stat_plr_stt = self.count1;
-      self.movetype = self.count3;
-    }
+  switch(self.stat_plr_stt){
+    case PLAYER_ANIM_STOP:
+      if( time >= self.count2){
+        self.stat_plr_stt = self.count1;
+        self.movetype = self.count3;
+      }
+      break;
   }
 
   if(self.data_type != DATA_POBS){
@@ -59,7 +68,6 @@ void() PlayerPostThink = {
       if(self.movetype != MOVETYPE_NONE){
         self.movetype = MOVETYPE_NONE;
       }
-      //return;
     }
     if(time > self.power_timer_segment){
       self.stat_plr_stt = PLAYER_POWERUP_END;
@@ -136,11 +144,19 @@ void() PlayerPostThink = {
     }
   }
   self.repair_request = FALSE;
-	if(self.impulse){
+  
+	if( self.impulse ){
 		ImpulseCommands ();
   }
-  
+    
   ButtonCommands();
+  
+  //pay cost for sprinting
+  if( self.stat_plr_stt == PLAYER_SPRINT_ON){
+    if( self.en_cur > 0){
+      self.en_cur = self.en_cur - (self.en_rate - self.m_maccel);
+    }
+  }
   
   if(self.repair_request){
     if(util_getMechHpAverage(self) == 1){
@@ -165,14 +181,13 @@ void() PlayerPostThink = {
     self.stat_trg_org_z = self.c_ofs_z;
   }
   
-  //========================================
-  
+  //========================================  
 
 // check for attack
   playerAttack();
 
 // check to see if player landed and play landing sound	
-	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
+	/*if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
 	{
 		//if (self.watertype == CONTENT_WATER)
 			//sound (self, CHAN_BODY, "player/h2ojump.wav", 1, ATTN_NORM);
@@ -191,12 +206,12 @@ void() PlayerPostThink = {
 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
-    
+  */
+  
   if(self.data_type == DATA_MECH){
     self.stat_plr_camx = self.e_cam.c_ofs_x;
     self.stat_plr_camy = self.e_cam.c_ofs_y; 
     self.stat_plr_camz = self.e_cam.c_ofs_z;
-   
   }
 };
 
@@ -254,14 +269,14 @@ void() PlayerDeathThink={
 
 // wait for all buttons released
 	if (self.deadflag == DEAD_DEAD){
-		if (self.button2 || self.button1 || self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7)
+		if (self.button2 || self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7)
 			return;
 		self.deadflag = DEAD_RESPAWNABLE;
 		return;
 	}
 
 // wait for any button down
-	if (!self.button2 && !self.button1 && !self.button0 && !self.button3 && !self.button4 && !self.button5 && !self.button6 && !self.button7)
+	if (!self.button2 && !self.button0 && !self.button3 && !self.button4 && !self.button5 && !self.button6 && !self.button7 && !self.button8)
 		return;
 
 	self.button0 = 0;
@@ -272,6 +287,7 @@ void() PlayerDeathThink={
 	self.button5 = 0;
 	self.button6 = 0;
 	self.button7 = 0;
+  self.button8 = 0;
 	
   self.deadflag = DEAD_NO;
   player_unmakeMech();

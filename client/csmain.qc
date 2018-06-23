@@ -336,7 +336,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     vec_data = m_findMechData(self.vec_size, self.data_idx);
     
     //UPDATE SPRINTING ABILITY BASED ON ENERGY
-    if( self.player_state >= PLAYER_ACTIVE){
+    /*if( self.player_state >= PLAYER_ACTIVE){
       if(self.en_cur < 10){
         cl_set_movespeedkey(1);
       }
@@ -347,7 +347,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
           cl_set_movespeedkey(vec_data.m_maccel);
         }
       }
-    }
+    }*/
     
     //HUD RENDER FRAME SYSTEM
     hud_frame(self.data_idx, self.vec_size);
