@@ -252,33 +252,28 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     if(e.data_type){
       if(e.entnum != player_localentnum){
         if((e.data_type == DATA_BLD) || (e.data_type == DATA_MECH) || (e.data_type == DATA_VEHC)){
-          local vector hudorg, ang, spotVec;
-          local float canSee, radUp, radOut, entAngle, entAngleRadian, dist, radDist;
+          local vector hudorg, spotVec;
+          local float ang, canSee, radUp, radOut, entAngle, entAngleRadian, dist, radDist;
           dist = vlen(e.origin - radarOrg);
           radDist = dist / self.radar_range;
-          ang = vectoangles(e.origin - radarOrg);
+          
+          ang = vectoyaw(e.origin - radarOrg);
           canSee = FALSE;
                     
-          makevectors(ang);
+          makevectors(e.origin - radarOrg);
           spotVec = radarOrg + (v_up * radarFidelity_y) + (v_forward * radarFidelity_z);
           traceline(spotVec, e.origin, FALSE, self);
-          if(trace_fraction >= 0.9){
+          if(trace_fraction == 1){
             canSee = TRUE;
           }
           
           if(canSee){
-            local float rangle;
-            rangle = anglemod(input_angles_y);
-            //cons_logAFloat("input_angles_y", rangle); //DEBUG
-            //cons_logAFloat("ang_y", ang_y); //DEBUG
-            
-            entAngle = anglemod(ang_y + input_angles_y);
-            //cons_logAFloat("entAngle", entAngle); //DEBUG
-            
-            entAngleRadian = entAngle * PI / 180;
-
-            hudorg_x = radCenter_x - (cos(entAngleRadian) * (siz_x/2 * radDist));
-            hudorg_y = radCenter_y - (sin(entAngleRadian) * (siz_y/2 * radDist));
+            entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
+            entAngleRadian = entAngle * DEG2RAD;
+            hudorg_x = cos(entAngleRadian);
+            hudorg_y = sin(entAngleRadian);
+            hudorg_x = radCenter_x - (hudorg_x * ( siz_x * radDist));
+            hudorg_y = radCenter_y - (hudorg_y * ( siz_y * radDist));
             
             if(e.data_type == DATA_BLD){
               hud_RenderRadar_Building(hudorg, plrFaction, e.i_faction);  
