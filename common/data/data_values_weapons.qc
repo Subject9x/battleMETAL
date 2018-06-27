@@ -81,7 +81,7 @@ float DAT_EMP_RANGE       = 1900;
 //-------------------------ESR
 float DAT_ESR_RANGE       = 800;
 //-------------------------PAC
-float DAT_PAC_RANGE       = 1600;
+float DAT_PAC_RANGE       = 3200;
 //-------------------------Rocket
 float DAT_MIS_RANGE       = 1000;
 //-------------------------Laser Missile
@@ -190,7 +190,7 @@ float DAT_EMP_DMG         = 400;
 //-------------------------ESR
 float DAT_ESR_DMG         = 25;
 //-------------------------PAC
-float DAT_PAC_DMG         = 200;
+float DAT_PAC_DMG         = 250;
 //-------------------------Rocket
 float DAT_MIS_DMG         = 75;
 //-------------------------Laser Missile

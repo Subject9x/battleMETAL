@@ -23,5 +23,5 @@ void(string msg, vector v1, string split, vector v2) cons_log2Vectors={
   print(strcat(msg,":", vtos(v1),"| ", split,":", vtos(v2),"\n"));
 };
 void(string msg, string s1, string split, string s2) cons_log2Strings={
-  print(strcat(msg,":",s1,"| ", split,":",s2,"\n"));
+  bprint(strcat(msg," : ",s1," | ", split," : ",s2,"\n"));
 };

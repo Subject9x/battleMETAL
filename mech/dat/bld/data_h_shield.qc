@@ -7,48 +7,38 @@ Overview: data file for building
   faction: humans
   func: provides radar scanning to all friendly units in radius
 */
-
-/*QUAKED building_shield (.1 .1 .1) (-64 -64 -17.5) (64 64 17.5)
-*/
-void() building_shield_think;
-void() building_shield_die;
-void() building_shield;
-
-void() building_shield={
-  self.data_idx = ID_BLD_H_SHIELD;
-  self.data_type = DATA_BLD;
-  self.vec_name = "Shield Generator";
-  self.vec_size = 2;
-  self.flags = self.flags | FL_MONSTER;
-  self.data_type = DATA_BLD;
-  util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(DAT_BLD_H_SHIELDGEN_HP, DAT_BLD_H_SHIELDGEN_HP, 1, 100) ;
-  util_setBoundBox('-56 -56 0', '56 56 17.5');
-  self.sh_cur= 0;
-  self.sh_max= DAT_BLD_H_SHIELDGEN_SH_MAX;
-  self.sh_rate= DAT_BLD_H_SHIELDGEN_SH_RATE;
-  self.en_cur = 0;
-  self.en_rate = 0;
-  self.en_max= DAT_BLD_H_POWER_PLANT_EN_MAX / 2;
-  self.scale = 1;
-  self.deadflag = DEAD_NO;
-  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-  droptofloor();
-  
-  if(util_cornerSlopeCheck(self, 1)){
-    util_generateBuildingFoundation(self);
+void() hshield_die = [0, hshield_die1]{
+  local entity head;
+  head = findradius(self.origin, 400);
+  while(head){
+    if(head.data_type == DATA_MECH){
+      head.sh_cur = head.sh_cur + 250;
+      if(head.sh_cur > head.sh_max){
+        head.sh_cur = head.sh_max;
+      }
+    }
+    head = head.chain;
   }
-  
-  self.th_die = building_shield_die;
-  self.use = multi_trigger;
-  self.SendEntity = send_building;
-  self.SendFlags = -1;
-  self.think = building_shield_think;
-  self.nextthink = time + 1;
+  activator = self.enemy;
+	SUB_UseTargets ();
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DYING;
+  self.solid = SOLID_CORPSE;
+  multi_trigger();
 };
+void() hshield_die1 = [1, hshield_die2]{};
+void() hshield_die2 = [2, hshield_die3]{};
+void() hshield_die3 = [3, hshield_die4]{};
+void() hshield_die4 = [4, hshield_die5]{};
+void() hshield_die5 = [5, hshield_die6]{};
+void() hshield_die6 = [6, hshield_die7]{};
+void() hshield_die7 = [7, hshield_die8]{};
+void() hshield_die8 = [8, hshield_die9]{};
+void() hshield_die9 = [9, hshield_die10]{};
+void() hshield_die10 = [10, hshield_die11]{};
+void() hshield_die11 = [11, BecomeExplosion]{};
 
-void() building_shield_think={
+void() hshield_th = [0, hshield_th]{
   local entity t, p;
 
   self.en_cur = self.en_cur + self.en_rate;
@@ -111,22 +101,39 @@ void() building_shield_think={
     }
     p = p.chain;
   }
-  
-  self.think = building_shield_think;
-  self.nextthink = time + 0.1;
-};
+}
 
-void() building_shield_die={
-  local entity head;
-  head = findradius(self.origin, 400);
-  while(head){
-    if(head.data_type == DATA_MECH){
-      head.sh_cur = head.sh_cur + 250;
-      if(head.sh_cur > head.sh_max){
-        head.sh_cur = head.sh_max;
-      }
-    }
-    head = head.chain;
+/*QUAKED building_shield (.1 .1 .1) (-64 -64 -17.5) (64 64 17.5)
+*/
+void() building_shield={
+  self.data_idx = ID_BLD_H_SHIELD;
+  self.data_type = DATA_BLD;
+  self.vec_name = "Shield Generator";
+  self.vec_size = 2;
+  self.flags = self.flags | FL_MONSTER;
+  self.data_type = DATA_BLD;
+  util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, self.skin, 0) ;
+  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
+  util_setHealthArmor(DAT_BLD_H_SHIELDGEN_HP, DAT_BLD_H_SHIELDGEN_HP, 1, 100) ;
+  util_setBoundBox('-56 -56 0', '56 56 17.5');
+  self.sh_cur= 0;
+  self.sh_max= DAT_BLD_H_SHIELDGEN_SH_MAX;
+  self.sh_rate= DAT_BLD_H_SHIELDGEN_SH_RATE;
+  self.en_cur = 0;
+  self.en_rate = 0;
+  self.en_max= DAT_BLD_H_POWER_PLANT_EN_MAX / 2;
+  self.scale = 1;
+  self.deadflag = DEAD_NO;
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
+  droptofloor();
+  
+  if(util_cornerSlopeCheck(self, 1)){
+    util_generateBuildingFoundation(self);
   }
-  building_die();
+  
+  self.th_die = hshield_die;
+  self.use = multi_trigger;
+  self.SendEntity = send_building;
+  self.SendFlags = -1;
+  hshield_th();
 };

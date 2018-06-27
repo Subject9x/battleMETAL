@@ -104,6 +104,7 @@ void() mh_precache_models={
   precache_model ("progs/plasmashot.spr32");
   precache_model ("progs/muzzleflash.spr32");
   precache_model ("q3mdl/muzzle_laser.spr32");
+  precache_model ("progs/s_explod.spr");
   
   //maps
   precache_file ("maps/t1m1.bsp");

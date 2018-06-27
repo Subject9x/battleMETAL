@@ -5,13 +5,118 @@ Date: 3/21/2018
 Overview: data file for the human repair bay
 */
 
+void() building_repair_touch;
+
+void() hrepair_th = [0, hrepair_th]{
+  if( self.trigger_field.takedamage >= DAMAGE_YES){
+    self.th_walk();
+    return;
+  }
+  else{
+    if(self.rl_cur < self.rl_max){
+      self.rl_cur = self.rl_cur + self.rl_rate;
+      if(self.rl_cur > self.rl_max){
+        self.rl_cur = self.rl_max;
+      }
+    }
+  }
+};
+
+void() hrepair_rep = [0, hrepair_rep]{
+  local float end_repair;
+  end_repair = TRUE;
+  if( vlen(self.trigger_field.origin - self.e_cam.origin) <= 16 ){
+    local entity repairMe,fix;  
+    repairMe = self.trigger_field;
+    if(csqc_updateCompStat(repairMe) < 100){
+      fix = repairMe;
+    }
+    else{
+      local entity part;
+      local float lowHP;
+      part = repairMe.c_part;
+      lowHP = 99.99;
+      while(part){
+        if(part.deadflag <= DEAD_NO){
+          local float hp;
+          hp = csqc_updateCompStat(part);
+          if( hp <= lowHP){
+            lowHP = hp;
+            fix = part;
+          }
+        }
+        part = part.c_part;
+      }
+    }
+    if(fix){
+      end_repair = FALSE;
+      local vector fx;
+      makevectors(self.angles);
+      fx = self.origin + (v_forward * 45) + (v_up * 40);
+      te_beam_laser(fx, fix.origin);
+      
+      fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
+      self.rl_cur = self.rl_cur - (self.rl_rate * self.trigger_field.vec_size);
+      if(fix.health > fix.max_health){
+        fix.health = fix.max_health;
+      }
+      self.trigger_field.stat_plr_rep = (self.rl_cur / self.rl_max);
+    }
+  }
+  if(end_repair){
+    if( (self.trigger_field.flags & FL_CLIENT) ){
+      centerprint(self.trigger_field, "[Repairs complete]\n");
+    }
+    self.trigger_field.stat_plr_rep = -1;
+    self.trigger_field.repair_request = FALSE;
+    self.trigger_field = world;
+    self.th_stand();
+    return;
+  }
+};
+
+void() hrepair_die = [0, hrepair_die1]{
+  local entity head;
+  head = findradius(self.origin, DAT_BLD_H_POWER_PLANT_EN_RADIUS);
+  while(head){
+    if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
+      head.en_cur = head.en_cur + 100;
+      if(head.en_cur > head.en_max){
+        head.en_cur = head.en_max;
+      }
+    }
+    if( head.data_type == DATA_BLD ){
+      if( head.i_faction == self.i_faction ){
+        if( head.data_idx != ID_BLD_H_POWER){
+          head.en_rate = 0;
+        }
+      }
+    }
+    head = head.chain;
+  }
+  activator = self.enemy;
+	SUB_UseTargets ();
+  self.takedamage = DAMAGE_NO;
+  self.deadflag = DEAD_DYING;
+  self.solid = SOLID_CORPSE;
+  multi_trigger();
+};
+void() hrepair_die1 = [1, hrepair_die2]{};
+void() hrepair_die2 = [2, hrepair_die3]{};
+void() hrepair_die3 = [3, hrepair_die4]{};
+void() hrepair_die4 = [4, hrepair_die5]{};
+void() hrepair_die5 = [5, hrepair_die6]{};
+void() hrepair_die6 = [6, hrepair_die7]{};
+void() hrepair_die7 = [7, hrepair_die8]{};
+void() hrepair_die8 = [8, hrepair_die9]{};
+void() hrepair_die9 = [9, hrepair_die10]{};
+void() hrepair_die10 = [10, hrepair_die11]{};
+void() hrepair_die11 = [11, BecomeExplosion]{};
+
+
+
 /*QUAKED building_repair (.1 .1 .1) (-72 -72 -40) (72 72 40)
 */
-void() building_repair_die;
-void() building_repair_touch;
-void() building_repair_think;
-void() building_repair;
-
 void() building_repair={
   self.data_idx = ID_BLD_H_REPAIR;
   self.data_type = DATA_BLD;
@@ -35,8 +140,6 @@ void() building_repair={
   droptofloor();
   
   self.movetype = MOVETYPE_NONE;
-  self.th_die = building_repair_die;
-  self.think = building_repair_think;
   self.nextthink = time + 0.1;
   self.use = multi_trigger;
   self.SendEntity = send_building;
@@ -64,71 +167,14 @@ void() building_repair={
     self.owner = this;
   self = this;
   this.e_cam = nde;
+  
+  self.th_die = hrepair_die;
+  self.th_stand = hrepair_th;
+  self.th_walk = hrepair_rep;
+  hrepair_th();
 };
 
 void() building_repair_think={
-
-  if( self.trigger_field.takedamage >= DAMAGE_YES){
-    local float end_repair;
-    end_repair = TRUE;
-    if( vlen(self.trigger_field.origin - self.e_cam.origin) <= 16 ){
-      local entity repairMe,fix;  
-      repairMe = self.trigger_field;
-      if(csqc_updateCompStat(repairMe) < 100){
-        fix = repairMe;
-      }
-      else{
-        local entity part;
-        local float lowHP;
-        part = repairMe.c_part;
-        lowHP = 99.99;
-        while(part){
-          if(part.deadflag <= DEAD_NO){
-            local float hp;
-            hp = csqc_updateCompStat(part);
-            if( hp <= lowHP){
-              lowHP = hp;
-              fix = part;
-            }
-          }
-          part = part.c_part;
-        }
-      }
-      if(fix){
-        end_repair = FALSE;
-        local vector fx;
-        makevectors(self.angles);
-        fx = self.origin + (v_forward * 45) + (v_up * 40);
-        te_beam_laser(fx, fix.origin);
-        
-        fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
-        self.rl_cur = self.rl_cur - (self.rl_rate * self.trigger_field.vec_size);
-        if(fix.health > fix.max_health){
-          fix.health = fix.max_health;
-        }
-        self.trigger_field.stat_plr_rep = (self.rl_cur / self.rl_max);
-      }
-    }
-    if(end_repair){
-      if( (self.trigger_field.flags & FL_CLIENT) ){
-        centerprint(self.trigger_field, "[Repairs complete]\n");
-      }
-      self.trigger_field.stat_plr_rep = -1;
-      self.trigger_field.repair_request = FALSE;
-      self.trigger_field = world;  
-    }
-  }
-  else{
-    if(self.rl_cur < self.rl_max){
-      self.rl_cur = self.rl_cur + self.rl_rate;
-      if(self.rl_cur > self.rl_max){
-        self.rl_cur = self.rl_max;
-      }
-    }
-  }
-  
-  self.think = building_repair_think;
-  self.nextthink = time + 0.1;
 };
 
 void() building_repair_touch={

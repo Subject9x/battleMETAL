@@ -127,7 +127,7 @@ void(vector ofs) menu_navBar={
   strwid = stringwidth("[HANGAR]", 0 ,'8 8 0')/2;
   hpos_x = (hpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   hpos_y = hpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_HANGAR_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice == MENU_HANGAR_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
   
   local vector arming_clr;
   local float arming_flt;

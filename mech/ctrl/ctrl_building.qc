@@ -5,6 +5,9 @@ Date: 11/26/2017
 Overview: controller functions for buildings, mostly generics
 */
 
+$frame build_think1
+
+void() build_stand1 = [ $build_think1, build_stand1]{};
 
 void() building_think={
   
