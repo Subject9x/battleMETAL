@@ -53,6 +53,30 @@ void(string fileName) cl_get_animfile={
   }
 };
 
+//sorts master mech array into UI arrays
+void() cl_get_mechs_sort={
+  local float itr;
+  itr = 1;
+  while( itr <= GAME_TOTAL_MECHS){
+    if( MECHLIST_TOTAL[itr] == TRUE ){
+      local float siz;
+      siz = MECH_DATA_SIZES[itr];
+      switch(siz){
+        case 1:
+          MECHLIST_LIGHT_ARR[itr] = 1;
+          break;
+        case 2:
+          MECHLIST_MEDIUM_ARR[itr] = 1; 
+          break;
+        case 3:
+          MECHLIST_HEAVY_ARR[itr] = 1;
+          break;
+      } 
+    }
+    itr = itr + 1;
+  }
+};
+
 void(string mech_data) cl_get_mechs_light={
   local string val;
   local float itr, tokens;
@@ -63,10 +87,10 @@ void(string mech_data) cl_get_mechs_light={
     if( argv(itr) != "" ){
       item = stof( argv(itr) );
       if(item > 0){
-        MECHLIST_LIGHT_ARR[item] = 1;
+        MECHLIST_TOTAL[item] = 1;
       }
       else{
-        MECHLIST_LIGHT_ARR[item] = 0;
+        MECHLIST_TOTAL[item] = 0;
       }
     }
     itr = itr + 1;
@@ -83,10 +107,10 @@ void(string mech_data) cl_get_mechs_medium={
     if( argv(itr) != "" ){
       item = stof( argv(itr) );
       if(item > 0){
-        MECHLIST_MEDIUM_ARR[item] = 1;
+        MECHLIST_TOTAL[item] = 1;
       }
       else{
-        MECHLIST_MEDIUM_ARR[item] = 0;
+        MECHLIST_TOTAL[item] = 0;
       }
     }
     itr = itr + 1;
@@ -103,10 +127,10 @@ void(string mech_data) cl_get_mechs_heavy={
     if( argv(itr) != "" ){
       item = stof( argv(itr) );
       if(item > 0){
-        MECHLIST_HEAVY_ARR[item] = 1;
+        MECHLIST_TOTAL[item] = 1;
       }
       else{
-        MECHLIST_HEAVY_ARR[item] = 0;
+        MECHLIST_TOTAL[item] = 0;
       }
     }
     itr = itr + 1;

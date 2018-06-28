@@ -87,7 +87,7 @@ void() ai_mech={
   if(self.ai_type == 4){
     self.ai_type = util_roll_dice(4) - 1;
   }
-  data_iniMech(self.vec_size, self.nextVecChoice);
+  data_iniMech(self.nextVecChoice);
   
   ai_core_calcranges();
   mod_am = ai_pilot_armor_mod();

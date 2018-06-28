@@ -78,31 +78,6 @@ vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 
 void() data_mech_otl;
 
-void(vector org) otl_renderHardpoints={
-  
-  if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
-    ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('65 86')), (self.plr_sel_hrpnt == 1));
-    ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('65 86')));
-    
-    ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-93 86')), (self.plr_sel_hrpnt == 2));
-    ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-93 86')));
-    
-    ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('0 -5')), (self.plr_sel_hrpnt == 3));
-    ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('0 -5')));
-  }
-  else if(self.plr_menu_choice == MENU_HANGAR_ACTIVE){
-    ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('42 -14')));
-    ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-50 -14')));
-    ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('8 -50')));
-  }
-};
-
-void(vector org) otl_hardpointrows={
-  ui_renderHardpointRow(org, 1, DAT_BLK_HARDPOINT1_TYPES, DAT_BLK_HARDPOINT1_SIZE);
-  ui_renderHardpointRow(org, 2, DAT_BLK_HARDPOINT2_TYPES, DAT_BLK_HARDPOINT2_SIZE);
-  ui_renderHardpointRow(org, 3, DAT_BLK_HARDPOINT3_TYPES, DAT_BLK_HARDPOINT3_SIZE);
-};
-
 float(vector org) otl_hardpointListener={
   if(menu_checkMouseInBounds(cursorpos, (org + gui_percentToPixelRawVec('65 86')), gui_percentToPixelRawVec('28 28'))){
     self.plr_sel_wid = WEAPON1;
@@ -158,9 +133,7 @@ void() data_mech_otl={
     self.hp_arm = DAT_OTL_LARM_HP;
     self.hp_leg = DAT_OTL_LEG_HP;
     self.radar_range = DAT_OTL_RADAR_RANGE;
-    self.menu_renderHardpoints = otl_renderHardpoints;
-    self.menu_hardpointListener = otl_hardpointListener;
-    self.menu_hardpointRows = otl_hardpointrows;
+
     self.plr_nex_wep1 = 1;
     self.plr_nex_wep2 = 1;
     self.plr_nex_wep3 = 17;
@@ -176,8 +149,6 @@ void() data_mech_otl={
     self.plr_nex_grp4 = 0;
     self.plr_nex_grp5 = 0;
     self.drawmask = MASK_NORMAL;
-    //38 chars per line
-    self.note1 = "A primitive combat platform, BALAKETTs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. \n \n BALAKETT units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. \n \n They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.";
   self = oself;
   addentity(otl);
 };

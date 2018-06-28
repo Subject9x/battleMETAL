@@ -124,7 +124,7 @@ void() data_flak_atk={
     boom = spawn();
     boom.color = '0.1 0.1 0.1';
     setorigin(boom, dir);
-    boom.nextthink = time + 0.001;
+    boom.nextthink = time + 0.1;
     boom.think = BecomeExplosion;
   }
   else{
@@ -132,7 +132,7 @@ void() data_flak_atk={
     boom = spawn();
     boom.color = '0.1 0.1 0.1';
     setorigin(boom, dir);
-    boom.nextthink = time + 0.001;
+    boom.nextthink = time + 0.1;
     boom.think = BecomeExplosion;
   }
   

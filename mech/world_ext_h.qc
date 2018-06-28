@@ -16,12 +16,12 @@ void() mh_world_ini;
 //functional-style data lookup
 void(float wep_id) data_iniWep;
 void(float build_id) data_iniBuilding;
-void(float vecsize, float mech_id) data_iniMech;
-void(float vecsize, float vec_id) data_iniVehc;
+void(float mech_id) data_iniMech;
+void(float vec_id) data_iniVehc;
 void(float prj_id) data_iniProjectile;
 
 entity(float id, float dat_type) mh_world_findData;
-entity(float sz, float id) m_findMechData;
+entity(float id) m_findMechData;
 
 //the following should probably be spun out to client_utils - Roohr 3/24/2018
 void(float fwd, float side, float bck, string accel, string roll) mh_world_updateClientSpeed;

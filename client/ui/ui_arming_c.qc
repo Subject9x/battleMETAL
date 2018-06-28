@@ -68,6 +68,32 @@ void() hardpointInfoListener={
 
 };
 
+void() hardpointListener={
+
+  local entity dat;
+  local float hpnt, hlist, wepbit;
+  if( SELECT_MECH > FALSE){
+    hlist = 1;
+    wepbit = 1;
+    while( hlist <= MECH_DATA_HPOINTS ){
+      if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR + gui_percentToPixelRawVec(MECH_DATA_H_ARM[hlist])), gui_percentToPixelRawVec('28 28'))){
+        self.plr_sel_wid = wepbit;
+        self.plr_sel_hrpnt_size = MECH_DATA_H_SIZE[hlist];
+        self.plr_sel_hrpnt_types = MECH_DATA_H_TYPE[hlist];
+        hpnt = hlist;
+      }  
+      hlist = hlist + 1;
+      wepbit = wepbit * 2;
+    } 
+    //hpnt = SELECTED_MECH.menu_hardpointListener(MECHPANEL_CTR);
+    if(hpnt > 0){
+      self.plr_sel_hrpnt = hpnt;
+      self.plr_sel_wep = HARDPOINTS[hpnt];
+    }
+  }
+};
+
+
 void() weaponGroupPanelListener={
   local float found;
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A)){
@@ -148,13 +174,22 @@ void(vector ofs) menu_arming_HardpointGraph={
   drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), '1 1 1', HUD_ALPHA, 0);
   drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('270 236'), '0.25 0.25 0.25', HUD_ALPHA, 0);
   
-  if( SELECTED_MECH != world){
-    hofs = nofs + gui_percentToPixelRawVec('4 4');
-    hpnts_x = hofs_x + gui_percentXRaw(135);
-    hpnts_y = hofs_y + gui_percentYRaw(118);
-    drawpic(hofs , SELECTED_MECH.c_ui_hf, gui_percentToPixelRawVec('270 236'), '1 1 1', HUD_ALPHA, 0);
+  if( SELECT_MECH > FALSE){
+    drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , HUD_ALPHA, 0);
+    
+    hpnts_x = nofs_x + gui_percentXRaw(139);
+    hpnts_y = nofs_y + gui_percentYRaw(118);
+    hpnts = nofs + gui_percentToPixelRawVec('139 122');
     MECHPANEL_CTR = hpnts;
-    SELECTED_MECH.menu_renderHardpoints(hpnts);
+    local float hlist;
+    hlist = 1;
+    while( hlist <= MECH_DATA_HPOINTS ){
+      local vector vofs;
+      vofs = gui_percentToPixelRawVec(MECH_DATA_H_ARM[hlist]);
+      ui_renderHardPointGraphic(HARDPOINTS[hlist], (hpnts + vofs), (self.plr_sel_hrpnt == hlist));
+      ui_renderHardPointNumber(hlist, (hpnts + vofs));
+      hlist = hlist + 1;
+    }
   }
 };
 
@@ -621,7 +656,7 @@ string(float bit) getNameOfWepType={
 void() stashMechConfig={
   local entity prev;
   
-  prev = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
+  prev = m_findMechData(self.plr_sel_mech);
   prev.plr_nex_grp1 = self.plr_nex_grp1;
   prev.plr_nex_grp2 = self.plr_nex_grp2;
   prev.plr_nex_grp3 = self.plr_nex_grp3;
@@ -676,7 +711,7 @@ float(float grp) calc_energy_draw={
     bit = bit * 2;
     lst_idx = lst_idx + 1;
   }
-  sub = sub - SELECTED_MECH.en_rate;
+  sub = sub - MECH_DATA_ENRATE;
   if( sub < 0){
     sub = 0;
   }

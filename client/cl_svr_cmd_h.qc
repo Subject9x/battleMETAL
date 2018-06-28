@@ -18,3 +18,4 @@ void(string mech_data) cl_get_mechs_light;
 void(string mech_data) cl_get_mechs_medium;
 void(string mech_data) cl_get_mechs_heavy;
 void(string item_data) cl_get_items_all;
+void() cl_get_mechs_sort;

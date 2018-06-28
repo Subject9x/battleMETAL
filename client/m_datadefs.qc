@@ -10,7 +10,7 @@ Overview: really should have been synced with file of the same name serverside..
 .string c_name;
 
 entity(float id, float dat_type) m_findData;
-entity(float sz, float id) m_findMechData;
+entity(float id) m_findMechData;
 entity(float sz, float id) m_findHUDData;
 
 //VEHICLES===============================

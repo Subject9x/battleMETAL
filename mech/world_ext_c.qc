@@ -124,25 +124,21 @@ void(float build_id) data_iniBuilding={
   func holds 'state' for finding the right 'data'
   -Peter Roohr 11/27/2017
 */
-void(float vecsize, float mech_id) data_iniMech={
-  if(vecsize == 1){
-    if(mech_id == ID_MCH_BALAKET){
+void(float mech_id) data_iniMech={
+  //guess the mech id's should just be flat
+  switch(mech_id){
+    case ID_MCH_BALAKET:
       build_mech_unit(data_otl_ini);
-    }
-  }
-  else if(vecsize == 2){
-    if(mech_id == ID_MCH_MATOK){
+    break;
+    case ID_MCH_MATOK:
       build_mech_unit(data_mtk_ini);
-    }
-  }
-  else if(vecsize == 3){
-    if(mech_id == ID_MCH_MONITOR){
+    break;
+    case ID_MCH_MONITOR:
       build_mech_unit(data_mnt_ini);
-    }
-  }
-  else{
+    break;
     cons_logAFloat("Error: failed to build mech with id", mech_id);
     remove(self);
+    break;
   }
 };
 
@@ -153,15 +149,14 @@ void(float vecsize, float mech_id) data_iniMech={
   func holds 'state' for finding the right 'data'
   -Peter Roohr 11/27/2017
 */
-void(float vecsize, float vec_id) data_iniVehc={
-  if(vecsize == 1){
-    if(vec_id == ID_VEC_TANK){
+void(float vec_id) data_iniVehc={
+  switch(vec_id){
+    case ID_VEC_TANK:
       build_vehicle_unit(data_TNK_ini);
-    }
-  }
-  else{
+    break;
     cons_logAFloat("Error: failed to build vehicle with id", vec_id);
     remove(self);
+    break;
   }
 };
 
@@ -306,15 +301,14 @@ entity(float id, float dat_type) mh_world_findData={
   return data_chain;
 };
 
-entity(float sz, float id) m_findMechData={
+entity(float id) m_findMechData={
   local entity data_chain;
   data_chain = findchain(classname, "data");
   while(data_chain){
     if(data_chain.data_type == DATA_MECH){
-      local float idx, weight;
+      local float idx;
       idx = data_chain.data_idx;
-      weight = data_chain.vec_size;
-      if(sz == weight && id == idx){
+      if(id == idx){
         return data_chain;
       }
     }

@@ -8,9 +8,9 @@ Overview:  header file for ui system
 float AVAILABLE_RESERVE;
 
 entity SELECTED_MECH; //used across the menu system
+float SELECT_MECH;  //replaces entity functionality, used in conjunction with ui_data file loading - Roohr 6/26/2018
 
 float MENU_ACTIVE;
-float MENU_CHOICE = 1; //always start at briefing
 float MENU_BRIEF_ACTIVE = 1;
 float MENU_HANGAR_ACTIVE = 2;
 float MENU_ARMING_ACTIVE = 3;

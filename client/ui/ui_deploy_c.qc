@@ -150,7 +150,6 @@ void(vector ofs) menu_deploy_mechInfoPanel={
   local float tlen;
   local vector tpos, spos, t_color;
   local string type;
-  local entity dat;
   
   tlen = stringwidth("[SELECTED METAL]", 0, '8 8 0');
   tpos = ofs + gui_percentToPixel(0.0902, 0.1916);
@@ -158,18 +157,17 @@ void(vector ofs) menu_deploy_mechInfoPanel={
   drawstring(tpos, "[SELECTED METAL]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
   spos = ofs + gui_percentToPixel(0.0125, 0.1531);
   if(self.plr_sel_mech > 0){
-    dat = m_findMechData(self.plr_sel_size, self.plr_sel_mech);
-    drawstring(spos, strcat("[NAME] ", dat.vec_name), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+    drawstring(spos, strcat("[NAME] ", MECH_DATA_NAME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
     // MECH SIZE
-    if(dat.vec_size == 1){
+    if(MECH_DATA_SIZE == 1){
       type = "Light";
       t_color = STATUS_AOK;
     }
-    else if(dat.vec_size == 2){
+    else if(MECH_DATA_SIZE == 2){
       type = "Medium";
       t_color = STATUS_DMG;
     }
-    else if(dat.vec_size == 3){
+    else if(MECH_DATA_SIZE == 3){
       type = "Heavy";
       t_color = STATUS_REL;
     }

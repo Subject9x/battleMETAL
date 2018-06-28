@@ -112,45 +112,6 @@ vector DAT_MNT_WEP9_ADJ_ANG= '0 0 0';
 
 void() data_mech_MNT;
 
-void(vector org) MNT_renderHardpoints={
-  if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
-    ui_renderHardPointGraphic(HARDPOINTS[1], (org + gui_percentToPixelRawVec('-130 53')), (self.plr_sel_hrpnt == 1));
-    ui_renderHardPointGraphic(HARDPOINTS[2], (org + gui_percentToPixelRawVec('-100 53')), (self.plr_sel_hrpnt == 2));
-    ui_renderHardPointGraphic(HARDPOINTS[3], (org + gui_percentToPixelRawVec('100 53')), (self.plr_sel_hrpnt == 3));
-    ui_renderHardPointGraphic(HARDPOINTS[4], (org + gui_percentToPixelRawVec('70 53')), (self.plr_sel_hrpnt == 4));
-   
-    ui_renderHardPointGraphic(HARDPOINTS[5], (org + gui_percentToPixelRawVec('-64 -50')), (self.plr_sel_hrpnt == 5));
-    ui_renderHardPointGraphic(HARDPOINTS[6], (org + gui_percentToPixelRawVec('34 -50')), (self.plr_sel_hrpnt == 6));
-    
-    ui_renderHardPointGraphic(HARDPOINTS[7], (org + gui_percentToPixelRawVec('-14 28')), (self.plr_sel_hrpnt == 7));
-    ui_renderHardPointGraphic(HARDPOINTS[8], (org + gui_percentToPixelRawVec('-66 26')), (self.plr_sel_hrpnt == 8));
-    ui_renderHardPointGraphic(HARDPOINTS[9], (org + gui_percentToPixelRawVec('36 26')), (self.plr_sel_hrpnt == 9));
-  }
-  else if(self.plr_menu_choice == MENU_HANGAR_ACTIVE){
-    ui_renderHardPointNumber(1, (org + gui_percentToPixelRawVec('-64 -18')));
-    ui_renderHardPointNumber(2, (org + gui_percentToPixelRawVec('-54 -18')));
-    ui_renderHardPointNumber(3, (org + gui_percentToPixelRawVec('54 -18')));
-    ui_renderHardPointNumber(4, (org + gui_percentToPixelRawVec('44 -18')));
-    ui_renderHardPointNumber(5, (org + gui_percentToPixelRawVec('-32 -60')));
-    ui_renderHardPointNumber(6, (org + gui_percentToPixelRawVec('22 -60')));
-    ui_renderHardPointNumber(7, (org + gui_percentToPixelRawVec('-4 -30')));
-    ui_renderHardPointNumber(8, (org + gui_percentToPixelRawVec('-30 -30')));
-    ui_renderHardPointNumber(9, (org + gui_percentToPixelRawVec('24 -30')));
-  }
-};
-
-void(vector org) MNT_hardpointrows={
-  ui_renderHardpointRow(org, 1, DAT_MNT_HARDPOINT1_TYPES, DAT_MNT_HARDPOINT1_SIZE);
-  ui_renderHardpointRow(org, 2, DAT_MNT_HARDPOINT2_TYPES, DAT_MNT_HARDPOINT2_SIZE);
-  ui_renderHardpointRow(org, 3, DAT_MNT_HARDPOINT3_TYPES, DAT_MNT_HARDPOINT3_SIZE);
-  ui_renderHardpointRow(org, 4, DAT_MNT_HARDPOINT4_TYPES, DAT_MNT_HARDPOINT4_SIZE);
-  ui_renderHardpointRow(org, 5, DAT_MNT_HARDPOINT5_TYPES, DAT_MNT_HARDPOINT5_SIZE);
-  ui_renderHardpointRow(org, 6, DAT_MNT_HARDPOINT6_TYPES, DAT_MNT_HARDPOINT6_SIZE);
-  ui_renderHardpointRow(org, 7, DAT_MNT_HARDPOINT7_TYPES, DAT_MNT_HARDPOINT7_SIZE);
-  ui_renderHardpointRow(org, 8, DAT_MNT_HARDPOINT8_TYPES, DAT_MNT_HARDPOINT8_SIZE);
-  ui_renderHardpointRow(org, 9, DAT_MNT_HARDPOINT9_TYPES, DAT_MNT_HARDPOINT9_SIZE);
-};
-
 float(vector org) MNT_hardpointListener={
   if(menu_checkMouseInBounds(cursorpos, org +  gui_percentToPixelRawVec('-130 53'), gui_percentToPixelRawVec('28 28'))){
     self.plr_sel_wid = WEAPON1;
@@ -243,9 +204,7 @@ void() data_mech_MNT={
     self.hp_leg = DAT_MNT_LEG_HP;
     self.radar_range = DAT_MNT_RADAR_RANGE;
   
-    self.menu_renderHardpoints = MNT_renderHardpoints;
-    self.menu_hardpointListener = MNT_hardpointListener;
-    self.menu_hardpointRows = MNT_hardpointrows;
+
     self.plr_nex_wep1 = ID_WEP_LATC;
     self.plr_nex_wep2 = ID_WEP_LATC;
     self.plr_nex_wep3 = ID_WEP_LAS;
@@ -261,6 +220,5 @@ void() data_mech_MNT={
     self.plr_nex_grp4 = 0;
     self.plr_nex_grp5 = 0;
     self.drawmask = MASK_NORMAL;
-    self.note1 = "The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. \n \n The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. \n \n All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.";
   self = oself;
 };

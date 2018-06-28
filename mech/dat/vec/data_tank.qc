@@ -129,7 +129,7 @@ void() ai_tank={
   self.ideal_yaw = self.angles * '0 1 0';
 		
   //buildVehicle(dat);
-  data_iniVehc (self.vec_size, self.nextVecChoice);
+  data_iniVehc (self.nextVecChoice);
   ai_core_calcranges();
   local float mod;
   mod = ai_pilot_armor_mod();

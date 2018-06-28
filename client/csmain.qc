@@ -30,6 +30,7 @@ void() CSQC_Init =
   WEPBITS[8] = 256;
   
   SELECTED_MECH = world;  //ini the ui selection reference
+  SELECT_MECH = 0;
   LAUNCH_VALIDATION = 0; //set launch validation to 0 to prevent invalid deployments to game world
   
   local float i, cnt;
@@ -41,7 +42,8 @@ void() CSQC_Init =
   }
   //clear out and prepare mech lists
   cnt = 1;
-  while(cnt < 25){
+  while(cnt <= GAME_TOTAL_MECHS){
+    MECHLIST_TOTAL[cnt] = 0;
     MECHLIST_LIGHT_ARR[cnt] = 0;
     MECHLIST_MEDIUM_ARR[cnt] = 0;
     MECHLIST_HEAVY_ARR[cnt] = 0;
@@ -92,7 +94,9 @@ void() CSQC_Init =
   
   registercvar("gamemode", "0");
   registercvar("gametype", "0");
-  
+  //ui_data_load_mech(1); for debug
+  ui_data_load_mechnames();
+  ui_data_load_mechsizes();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -311,6 +315,10 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         MENU_ACTIVE = FALSE;
         self.plr_menu_choice = 0;
         setcursormode(0);
+        if( MECH_DATA_ID != self.data_idx){
+          ui_data_clear_mechdata();
+          ui_data_load_mech(self.data_idx);
+        }
       }
     }
     
@@ -326,28 +334,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_enelistener(self.en_cur);
     snd_hud_vfx_toggleradar(self.stat_rdr_mode);
     snd_hud_vfx_targkill(self.stat_trg_ddflg);
-    
-    //target tracking info
-    local float trg_dist;
-    self.w_range = trg_dist;
-    
-    //render 
-    local entity vec_data, oself;
-    vec_data = m_findMechData(self.vec_size, self.data_idx);
-    
-    //UPDATE SPRINTING ABILITY BASED ON ENERGY
-    /*if( self.player_state >= PLAYER_ACTIVE){
-      if(self.en_cur < 10){
-        cl_set_movespeedkey(1);
-      }
-      else {
-        local float cl_sprint;
-        cl_sprint = cvar("cl_movespeedkey");
-        if(cl_sprint == 1){
-          cl_set_movespeedkey(vec_data.m_maccel);
-        }
-      }
-    }*/
     
     //HUD RENDER FRAME SYSTEM
     hud_frame(self.data_idx, self.vec_size);

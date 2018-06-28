@@ -82,7 +82,6 @@ void() menu_handleFrame={
   drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(self.plr_sel_mech), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
 };
 
-
 void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
     if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_MECH) ){
@@ -202,6 +201,7 @@ void() navBarListener={
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025))){
     self.plr_menu_choice = MENU_HANGAR_ACTIVE;
+    cl_get_mechs_sort();
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
     if(SELECTED_MECH != world){
@@ -309,7 +309,6 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
   }
 };
 
-
 void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   local vector pofs, iofs, szofs;
   pofs = org + gui_percentToPixelRawVec('8 0');
@@ -333,7 +332,7 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
 };
 
 void(float num, vector org) ui_renderHardPointNumber={
-  drawstring(org, ftos(num),gui_percentToPixelRawVec('10 8'), CLR_DEF_WHITE, 0.85, 1);
+  drawstring(org, ftos(num), gui_percentToPixelRawVec('12 10'), CLR_DEF_RET_HASLOCK, 1, 0);
 };
 
 void() ui_renderHUDHighlight={

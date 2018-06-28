@@ -43,6 +43,7 @@ string MAP_NAME;  //strips mapname global of junk
 string PATH_DATA_MAP = "map_scripts";
 string PATH_DATA_ANIM = "anim";
 string PATH_DATA_SAVE = "saves";
+string PATH_DATA_UI = "ui";
 string NEWLINE = "\n";
 //============================
 //   PLAYER STATE ID's           
@@ -60,6 +61,9 @@ float PLAYER_SPRINT_OFF = 8;
 //============================
 //         DATA_TYPE           
 //============================
+float GAME_TOTAL_MECHS = 256; //how many distinct mechs the game should assume might exist for UI / unit data purposes
+float MECHLIST_TOTAL[256];
+  //don't mess with this really unless...no just don't mess with it.
 string DATA = "data";
 float DATA_MECH = 1;
 float DATA_VEHC = 2;

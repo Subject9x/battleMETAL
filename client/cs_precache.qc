@@ -173,15 +173,14 @@ entity(float id, float dat_type) m_findData={
   return data_chain;
 };
 
-entity(float sz, float id) m_findMechData={
+entity(float id) m_findMechData={
   local entity data_chain;
   data_chain = findchain(classname, "data_mech");
   while(data_chain){
     if(data_chain.data_type == DATA_MECH){
-      local float idx, weight;
+      local float idx;
       idx = data_chain.data_idx;
-      weight = data_chain.vec_size;
-      if(sz == weight && id == idx){
+      if(id == idx){
         return data_chain;
       }
     }

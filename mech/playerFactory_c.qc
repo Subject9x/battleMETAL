@@ -48,7 +48,7 @@ void() player_makeMech={
   self.data_idx = self.nextVecChoice;
   self.power_timer = time + 7;
   self.power_timer_segment = time + 0.007;
-  data_iniMech(self.vec_size, self.nextVecChoice);
+  data_iniMech(self.nextVecChoice);
   //self.touch = touch_mech; shhhhh, not yet
   if( (self.flags & FL_CLIENT) ){
     self.stat_rdr_rng = self.radar_range;

@@ -16,6 +16,7 @@ m_datadefs.qc
 gui_api_h.qc
 hud_api_h.qc
 data_api_h.qc
+ui_data_h.qc
 m_hud_h.qc
 cl_svr_cmd_h.qc
 cl_receive_ents_h.qc
@@ -99,4 +100,5 @@ cl_receive_ents_c.qc
 //=======================
 cs_precache.qc
 data_api_c.qc
+ui_data.qc
 csmain.qc
