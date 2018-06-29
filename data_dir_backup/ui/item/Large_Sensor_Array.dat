@@ -1,0 +1,14 @@
+{
+ 'id'       : 18,
+ 'abbr'     : LSAR,
+ 'name'     : Large Sensor Array,
+ 'icon'     : gfx/ui/wep_icons/eqp_lsar.png,
+ 'dmg'      : 0,
+ 'type'     : 128,
+ 'energy'   : 0,
+ 'range'    : 0,
+ 'clipsize' : 0,
+ 'size'     : 1,
+ 'tech'     : 1,
+ 'note'     : Increases RADAR RANGE by 30%.~
+}

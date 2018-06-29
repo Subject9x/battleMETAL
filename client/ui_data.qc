@@ -15,7 +15,7 @@ void() ui_data_load_mechnames={
     ln = fgets(f);
     while( ln != "" ){
       if( strstrofs(ln, "//", 0) == -1 ){
-        if(idx < 257){
+        if(idx <= GAME_TOTAL_MECHS){
           MECH_DATA_NAMES[idx] = strzone(ln);
         }
         idx = idx + 1;
@@ -24,6 +24,68 @@ void() ui_data_load_mechnames={
     } 
   } 
   fclose(f); 
+};
+
+void() ui_data_load_itemnames={
+  local float f, idx;
+  local string ln;
+  idx = 1;
+  f = fopen("ui/item/dir.meta", FILE_READ);
+  if (f != -1){ 
+    ln = fgets(f);
+    while( ln != "" ){
+      if( strstrofs(ln, "//", 0) == -1 ){
+        if(idx <= GAME_TOTAL_ITEMS){
+          ITEM_DATA_NAMES[idx] = strzone(ln);
+        }
+        idx = idx + 1;
+      }
+      ln = fgets(f);
+    } 
+  } 
+  fclose(f); 
+};
+
+void() ui_data_load_itemicons={
+  local float count;
+  count = 1;
+  while( count <= GAME_TOTAL_ITEMS) {
+    local string file, filename;
+    local float flannel;
+    filename = ITEM_DATA_NAMES[count];
+    if(filename != ""){
+      file = strcat("ui/item/", filename,".dat");
+      flannel = fopen(file, FILE_READ);
+      if(flannel != -1){
+        local string line, ico;
+        line = fgets(flannel);
+        while( (line != "") ){
+          if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+            tokenizebyseparator(line, "  '","'"," : ", ",");
+            local string token, value;
+            token = argv(1);
+            value = argv(3);
+            if( token == "icon" ){
+              ico = value;
+            }
+          }
+          line = fgets(flannel);
+        }
+        
+        if( ico != "" ){
+          ITEM_DATA_ICONS[count] = strzone(ico);
+        }
+        else{
+          ITEM_DATA_ICONS[count] = strzone("");
+        }
+        fclose(flannel);
+      }
+      else{
+        ITEM_DATA_ICONS[count] = "";
+      }
+    }
+    count = count + 1;
+  }
 };
 
 //this is for sorting the mechs by size class in a clean way
@@ -109,6 +171,54 @@ void() ui_data_clear_mechdata={
       MECH_DATA_GRPS[itr] = 0;
     }
     itr = itr + 1;
+  }
+};
+
+
+void() ui_data_clear_item1={
+  ITEM1_DATA_ID = 0;
+  if( ITEM1_DATA_ABBR != "" ){
+    strunzone(ITEM1_DATA_ABBR);
+  }
+
+  if( ITEM1_DATA_NAME != "" ){
+    strunzone(ITEM1_DATA_NAME);
+  }
+  
+  if( ITEM1_DATA_ICON != "" ){
+    strunzone(ITEM1_DATA_ICON);
+  }
+  ITEM1_DATA_DMG = 0;
+  ITEM1_DATA_TYPE = 0;
+  ITEM1_DATA_EN = 0;
+  ITEM1_DATA_RANGE = 0;
+  ITEM1_DATA_CLIP = 0;
+  ITEM1_DATA_SIZE = 0;
+  ITEM1_DATA_TECH = 0;
+  if( ITEM1_DATA_DESC != "" ){
+    strunzone(ITEM1_DATA_DESC);
+  }
+};
+void() ui_data_clear_item2={
+  ITEM2_DATA_ID = 0;
+  if( ITEM2_DATA_ABBR != "" ){
+    strunzone(ITEM2_DATA_ABBR);
+  }
+  if( ITEM2_DATA_NAME != "" ){
+    strunzone(ITEM2_DATA_NAME);
+  }
+  if( ITEM2_DATA_ICON != "" ){
+    strunzone(ITEM2_DATA_ICON);
+  }
+  ITEM2_DATA_DMG = 0;
+  ITEM2_DATA_TYPE = 0;
+  ITEM2_DATA_EN = 0;
+  ITEM2_DATA_RANGE = 0;
+  ITEM2_DATA_CLIP = 0;
+  ITEM2_DATA_SIZE = 0;
+  ITEM2_DATA_TECH = 0;
+  if( ITEM2_DATA_DESC != "" ){
+    strunzone(ITEM2_DATA_DESC);
   }
 };
 
@@ -239,3 +349,134 @@ float(float id) ui_data_load_mech={
   fclose(flannel);
   return TRUE;
 };
+
+
+void(float id) ui_date_load_item1={
+  ui_data_clear_item1();
+  local float flannel, line_tag, line_val;
+  local string file, contents, line;
+  file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".dat");
+  flannel = fopen(file, FILE_READ);
+  if(flannel == -1){
+    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
+    return FALSE;
+  }
+  contents = fgets(flannel);
+  //tokenizebyseparator(contents, "{", ",", "}");
+  line = fgets(flannel);
+  while( (line != "") ){
+    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+      line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
+      local string token, value;
+      token = argv(1);
+      value = argv(3);
+      if( token != ""){
+        if( token == "id" ){
+          ITEM1_DATA_ID = stof(value);
+        }
+        if( token == "abbr" ){
+          ITEM1_DATA_ABBR = strzone(value);
+        }
+        if( token == "name" ){
+          ITEM1_DATA_NAME = strzone(value);
+        }
+        if( token == "icon" ){
+          ITEM1_DATA_ICON = strzone(value);
+        }
+        if( token == "dmg" ){
+          ITEM1_DATA_DMG = stof(value); 
+        }
+        if( token == "type" ){
+          ITEM1_DATA_TYPE = stof(value);
+        }
+        if( token == "energy" ){
+          ITEM1_DATA_EN = stof(value);
+        }
+        if( token == "range" ){
+          ITEM1_DATA_RANGE = stof(value);
+        }
+        if( token == "clipsize" ){
+          ITEM1_DATA_CLIP = stof(value);
+        }
+        if( token == "size" ){
+          ITEM1_DATA_SIZE = stof(value);
+        }
+        if( token == "tech" ){
+          ITEM1_DATA_TECH = stof(value);
+        }
+        if( token == "note" ){          
+          tokenizebyseparator(line, ": ", "~");
+          ITEM1_DATA_DESC = strzone(argv(1));
+        }
+      }
+    }
+   line = fgets(flannel);
+  }
+  fclose(flannel);
+};
+
+void(float id) ui_date_load_item2={
+  ui_data_clear_item2();
+  local float flannel, line_tag, line_val;
+  local string file, contents, line;
+  file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".dat");
+  flannel = fopen(file, FILE_READ);
+  if(flannel == -1){
+    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
+    return FALSE;
+  }
+  contents = fgets(flannel);
+  //tokenizebyseparator(contents, "{", ",", "}");
+  line = fgets(flannel);
+  while( (line != "") ){
+    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+      line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
+      local string token, value;
+      token = argv(1);
+      value = argv(3);
+      if( token != ""){
+        if( token == "id" ){
+          ITEM2_DATA_ID = stof(value);
+        }
+        if( token == "abbr" ){
+          ITEM2_DATA_ABBR = strzone(value);
+        }
+        if( token == "name" ){
+          ITEM2_DATA_NAME = strzone(value);
+        }
+        if( token == "icon" ){
+          ITEM2_DATA_ICON = strzone(value);
+        }
+        if( token == "dmg" ){
+          ITEM2_DATA_DMG = stof(value); 
+        }
+        if( token == "type" ){
+          ITEM2_DATA_TYPE = stof(value);
+        }
+        if( token == "energy" ){
+          ITEM2_DATA_EN = stof(value);
+        }
+        if( token == "range" ){
+          ITEM2_DATA_RANGE = stof(value);
+        }
+        if( token == "clipsize" ){
+          ITEM2_DATA_CLIP = stof(value);
+        }
+        if( token == "size" ){
+          ITEM2_DATA_SIZE = stof(value);
+        }
+        if( token == "tech" ){
+          ITEM2_DATA_TECH = stof(value);
+        }
+        if( token == "note" ){          
+          tokenizebyseparator(line, ": ", "~");
+          ITEM2_DATA_DESC = strzone(argv(1));
+        }
+      }
+    }
+   line = fgets(flannel);
+  }
+  fclose(flannel);
+};
+
+

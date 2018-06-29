@@ -1,0 +1,14 @@
+{
+ 'id'       : 11,
+ 'abbr'     : SFGA,
+ 'name'     : Snub Field Gun,
+ 'icon'     : gfx/ui/wep_icons/wi_sfg.png,
+ 'dmg'      : 400,
+ 'type'     : 1,
+ 'energy'   : 0,
+ 'range'    : 3600,
+ 'clipsize' : 1,
+ 'size'     : 3,
+ 'tech'     : 1,
+ 'note'     : Minor parabolic arc. | Large AoE blast.~
+}

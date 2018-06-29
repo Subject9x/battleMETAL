@@ -8,6 +8,9 @@ Overview: refactor ui data to file loading, header
 float MECH_DATA_SIZES[GAME_TOTAL_MECHS];
 string MECH_DATA_NAMES[GAME_TOTAL_MECHS];
 
+string ITEM_DATA_ICONS[GAME_TOTAL_ITEMS];
+string ITEM_DATA_NAMES[GAME_TOTAL_ITEMS];
+
 //MECH DATA FILE
 float   MECH_DATA_ID;
 string  MECH_DATA_ABR;
@@ -38,16 +41,45 @@ vector  MECH_DATA_H_HNG[10];
 float   MECH_DATA_STOCK[10];
 float   MECH_DATA_GRPS[6];
 
-
 //items are compared to each other so they get 2 listings
 //ITEM 1 is the data for the weapon on top
 //ITEM 1 DATA
+float ITEM1_DATA_ID;
+string ITEM1_DATA_ABBR;
+string ITEM1_DATA_NAME;
+string ITEM1_DATA_ICON;
+float ITEM1_DATA_DMG;
+float ITEM1_DATA_TYPE;
+float ITEM1_DATA_EN;
+float ITEM1_DATA_RANGE;
+float ITEM1_DATA_CLIP;
+float ITEM1_DATA_SIZE;
+float ITEM1_DATA_TECH;
+string ITEM1_DATA_DESC;
 
 //ITEM 2 DATA 
-
+float ITEM2_DATA_ID;
+string ITEM2_DATA_ABBR;
+string ITEM2_DATA_NAME;
+string ITEM2_DATA_ICON;
+float ITEM2_DATA_DMG;
+float ITEM2_DATA_TYPE;
+float ITEM2_DATA_EN;
+float ITEM2_DATA_RANGE;
+float ITEM2_DATA_CLIP;
+float ITEM2_DATA_SIZE;
+float ITEM2_DATA_TECH;
+string ITEM2_DATA_DESC;
 
 //functions
 void() ui_data_load_mechnames;
 void() ui_data_load_mechsizes;
 void() ui_data_clear_mechdata;
 float(float id) ui_data_load_mech;
+
+void() ui_data_load_itemnames;
+void() ui_data_load_itemicons;
+void(float id) ui_date_load_item1;
+void(float id) ui_date_load_item2;
+void() ui_data_clear_item1;
+void() ui_data_clear_item2;

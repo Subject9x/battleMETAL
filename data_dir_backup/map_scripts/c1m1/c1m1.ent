@@ -151,6 +151,23 @@
 "targetname" "deploy1"
 }
 {
+"classname" "map_deploy_point"
+"origin" "-1923 310.8 60.2"
+"i_faction" "1"
+"isActive" "1"
+"data_idx" "2"
+"targetname" "deploy2"
+}
+
+{
+"classname" "map_deploy_point"
+"origin" "0 0 600"
+"i_faction" "2"
+"isActive" "1"
+"data_idx" "3"
+"targetname" "deploy3"
+}
+{
 "classname" "info_player_coop"
 "origin" "-1911 -1187 205"
 "data_type" "16"
@@ -211,7 +228,7 @@
 "target" "defend_lose_counter"
 }
 {
-"classname" "building_repair"
+"classname" "building_hangar"
 "origin" "-2033.8 -1083.4 300"
 "angles" "0 325 0"
 "i_faction" "1"

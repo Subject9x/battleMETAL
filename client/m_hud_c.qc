@@ -406,8 +406,8 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
-  if( data_get_weapon_icon(w_id) != ""){
-    drawpic(iofs, data_get_weapon_icon(w_id), imgSz, wepState, HUD_ALPHA, 0);
+  if( ITEM_DATA_ICONS[w_id] != ""){
+    drawpic(iofs, ITEM_DATA_ICONS[w_id], imgSz, wepState, HUD_ALPHA, 0);
   }
   
   ofs_x = imgSz_x / 2;
@@ -448,8 +448,8 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
-  if( data_get_weapon_icon(w_id) != ""){
-    drawpic(iofs, data_get_weapon_icon(w_id), imgSz, wepState, HUD_ALPHA, 0);
+  if( ITEM_DATA_ICONS[w_id] != ""){
+    drawpic(iofs, ITEM_DATA_ICONS[w_id], imgSz, wepState, HUD_ALPHA, 0);
   }
   
   ofs_x = imgSz_x / 2;

@@ -9,8 +9,8 @@ server and client
 //            Game ID's  
 //====================================================================================
 float ID_WEP_LATC  = 1;
-float ID_WEP_LAS   = 3;
 float ID_WEP_EMP   = 2;
+float ID_WEP_LAS   = 3;
 float ID_WEP_MIS   = 4;
 float ID_WEP_QRF   = 5;
 float ID_WEP_RPC   = 6;
@@ -18,21 +18,17 @@ float ID_WEP_PAC   = 7;
 float ID_WEP_ESR   = 8;
 float ID_WEP_MLGD  = 9;
 float ID_WEP_MARH  = 10;
-float ID_WEP_MAPR  = 11;
-float ID_WEP_RAM   = 13;
-float ID_WEP_BLD   = 14;
-float ID_WEP_SFGA  = 15;
-float ID_WEP_FLAK  = 16;
-float ID_WEP_ION   = 17;
-float ID_WEP_SWRM  = 18;
-float ID_WEP_ABT   = 19;
+float ID_WEP_SFGA  = 11;
+float ID_WEP_FLAK  = 12;
+float ID_WEP_ION   = 13;
+float ID_WEP_SWRM  = 14;
 //-----EQUIP------------
-float ID_EQP_ATGM  = 19;
-float ID_EQP_ENBAT = 20;
-float ID_EQP_HSEM  = 21;
-float ID_EQP_LSAR  = 22;
-float ID_EQP_SCAP  = 23;
-float ID_EQP_RECAP = 24;
+float ID_EQP_ATGM  = 15;
+float ID_EQP_ENBAT = 16;
+float ID_EQP_HSEM  = 17;
+float ID_EQP_LSAR  = 18;
+float ID_EQP_SCAP  = 19;
+float ID_EQP_RECAP = 20;
 //====================================================================================
 //            Weapon Names
 //====================================================================================
@@ -50,7 +46,6 @@ string DAT_SFGA_NAME = "Snub Field Gun";
 string DAT_FLAK_NAME = "Flak Cannon";
 string DAT_ION_NAME  = "Ion Coil";
 string DAT_SWRM_NAME = "Swarm Missile Launcher";
-string DAT_ABT_NAME  = "Air-burst Torpedo";
 //-----EQUIP------------
 string DAT_EQP_ATGM_NAME  = "Adv. Targeting Module";
 string DAT_EQP_ENBAT_NAME = "Energy Battery";
@@ -90,8 +85,6 @@ float DAT_MLGD_RANGE      = 2400;
 float DAT_MARH_RANGE      = 3600;
 //-------------------------Swarm Missile
 float DAT_SWRM_RANGE      = 1600;
-//-------------------------Air-burst Torpedo
-float DAT_ABT_RANGE       = 3000;
 //====================================================================================
 //            Recharge Time  
 //====================================================================================
@@ -151,10 +144,6 @@ float DAT_MARH_EN_RATE    = 0;
 float DAT_SWRM_RL_RATE    = 0.1;
 float DAT_SWRM_RL_MAX     = 10;
 float DAT_SWRM_EN_RATE    = 0;
-//-------------------------Air-burst Torpedo
-float DAT_ABT_RL_RATE    = 0.3;
-float DAT_ABT_RL_MAX     = 8;
-float DAT_ABT_EN_RATE    = 0;
 //EQUIP------------
 //-------------------------ENBAT
 float DAT_EQP_ENBAT_EN_RATE  = 0.25;  //holds energy battery upgrade
@@ -199,8 +188,6 @@ float DAT_MLGD_DMG        = 275;
 float DAT_MARH_DMG        = 7; 
 //-------------------------Swarm Missile
 float DAT_SWRM_DMG        = 20;
-//-------------------------Air-burst Torpedo
-float DAT_ABT_DMG        = 20;
 //====================================================================================
 //            Inaccuracy  
 //====================================================================================
@@ -273,9 +260,6 @@ float DAT_MLGD_CLIPSIZE     = 1;
 float DAT_MARH_CLIPSIZE     = 10;
 //-------------------------Swarm Missile
 float DAT_SWRM_CLIPSIZE     = 3;
-//-------------------------Air-burst Torpedo
-float DAT_ABT_CLIPSIZE      = 1;
-float DAT_ABT_CLUSTER_CNT   = 6;
 //============================
 //            Tech Level  
 //============================
@@ -307,8 +291,6 @@ float DAT_MLGD_TECH_LEVEL   = 1;
 float DAT_MARH_TECH_LEVEL   = 2;
 //-------------------------Swarm Missile
 float DAT_SWRM_TECH_LEVEL   = 3;
-//-------------------------Air-burst Torpedo
-float DAT_ABT_TECH_LEVEL    = 2;
 //EQUIP------------
 //-------------------------ATGM
 float DAT_EQP_ATGM_TECH_LEVEL  = 1;
@@ -353,8 +335,6 @@ float DAT_MLGD_WSIZE      = 1;
 float DAT_MARH_WSIZE      = 3;
 //-------------------------Swarm Missile
 float DAT_SWRM_WSIZE      = 2;
-//-------------------------Air-burst Torpedo
-float DAT_ABT_WSIZE       = 3;
 //EQUIP------------
 //-------------------------ATGM
 float DAT_EQP_ATGM_WSIZE  = 2;
@@ -399,8 +379,6 @@ string DAT_MLGD_FIRESOUND = "sound/weapons/mis_fire.ogg";
 string DAT_MARH_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //-------------------------Radar Missile
 string DAT_SWRM_FIRESOUND = "sound/weapons/mis_fire.ogg";
-//-------------------------Air-burst Torpedo
-string DAT_ABT_FIRESOUND = "sound/weapons/mis_fire.ogg";
 //============================
 //            Model  
 //============================
@@ -432,8 +410,6 @@ string DAT_MLGD_MODEL    = "q3mdl/weapons/w_lgm.md3";
 string DAT_MARH_MODEL    = "q3mdl/weapons/w_arh.md3";
 //-------------------------Radar Missile
 string DAT_SWRM_MODEL    = "q3mdl/weapons/w_swrm.md3";
-//-------------------------Laser Missile
-string DAT_ABT_MODEL    = "q3mdl/weapons/w_lgm.md3";
 //EQUIP------------
 //-------------------------ATGM
 string DAT_EQP_ATGM_MODEL  = "q3mdl/weapons/e_atgm.md3";
@@ -478,8 +454,6 @@ string DAT_MLGD_ICON     = "gfx/ui/wep_icons/wi_mlgd.png";
 string DAT_MARH_ICON     = "gfx/ui/wep_icons/wi_marh.png";
 //-------------------------Swarm Missile
 string DAT_SWRM_ICON     = "gfx/ui/wep_icons/wi_swrm.png";
-//-------------------------Air-burst Torpedo
-string DAT_ABT_ICON     = "gfx/ui/wep_icons/wi_swrm.png";
 //EQUIP------------
 //-------------------------ATGM
 string DAT_EQP_ATGM_ICON  = "gfx/ui/wep_icons/eqp_atgm.png";
@@ -524,8 +498,6 @@ vector DAT_MLGD_FIRE_OFS = '0 0 2';
 vector DAT_MARH_FIRE_OFS = '0 0 2';
 //-------------------------Swarm Missile
 vector DAT_SWRM_FIRE_OFS = '0 0 2';
-//-------------------------Air-burst Torpedo
-vector DAT_ABT_FIRE_OFS = '0 0 2';
 //EQUIP------------
 //-------------------------ATGM
 vector DAT_EQP_ATGM_FIRE_OFS  = '0.15 0.2 0'; //x = spread reduce speed, y = spread increase reduction , z = lockon decrease both in %'s
@@ -560,7 +532,3 @@ float DAT_MLGD_PROJ_ID    = ID_PRJ_MLGD;
 float DAT_MARH_PROJ_ID    = ID_PRJ_MARH;
 //-------------------------Swarm Missile
 float DAT_SWRM_PROJ_ID    = ID_PRJ_SWRM;
-//-------------------------Air-burst Torpedo
-float DAT_ABT_PROJ_ID     = ID_PRJ_ABT;
-//-------------------------Air-burst Torpedo
-float DAT_ABT_CLST_PROJ_ID= ID_PRJ_ABT_CLST;

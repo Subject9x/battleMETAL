@@ -1,0 +1,14 @@
+{
+ 'id'       : 17,
+ 'abbr'     : HSEM,
+ 'name'     : Heavy Shield Emitter,
+ 'icon'     : gfx/ui/wep_icons/eqp_hsem.png,
+ 'dmg'      : 0,
+ 'type'     : 128,
+ 'energy'   : 0,
+ 'range'    : 0,
+ 'clipsize' : 0,
+ 'size'     : 2,
+ 'tech'     : 2,
+ 'note'     : Increases SHIELD RECHARGE by 50%.~
+}

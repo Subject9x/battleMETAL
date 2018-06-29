@@ -1,6 +1,6 @@
 //mission info section
 {
-  'img' : 'maps/t1m3_over.png'
+  'img' : 'maps/t1m4_over.png'
   'name'  : 'Canon of silence'
   'type'  : 'Assassination'
   'points' : '1'

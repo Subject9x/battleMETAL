@@ -1,0 +1,14 @@
+{
+ 'id'       : 6,
+ 'abbr'     : RPC,
+ 'name'     : Rotary Plasma Chamber,
+ 'icon'     : gfx/ui/wep_icons/wi_rpc.png,
+ 'dmg'      : 10.8,
+ 'type'     : 1,
+ 'energy'   : 3.33,
+ 'range'    : 2400,
+ 'clipsize' : 8,
+ 'size'     : 2,
+ 'tech'     : 3,
+ 'note'     : Fires 6 sub-munitions. | | Will burn over time on unshielded targets.~
+}

@@ -1,0 +1,14 @@
+{
+ 'id'       : 1,
+ 'abbr'     : ATC,
+ 'name'     : Light Autocannon,
+ 'icon'     : gfx/ui/wep_icons/wi_atc.png,
+ 'dmg'      : 3.5,
+ 'type'     : 1,
+ 'energy'   : 0,
+ 'range'    : 3800,
+ 'clipsize' : 1,
+ 'size'     : 1,
+ 'tech'     : 1,
+ 'note'     : Basic automatic cannon.~
+}

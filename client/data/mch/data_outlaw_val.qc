@@ -134,9 +134,9 @@ void() data_mech_otl={
     self.hp_leg = DAT_OTL_LEG_HP;
     self.radar_range = DAT_OTL_RADAR_RANGE;
 
-    self.plr_nex_wep1 = 1;
-    self.plr_nex_wep2 = 1;
-    self.plr_nex_wep3 = 17;
+    self.plr_nex_wep1 = 3;
+    self.plr_nex_wep2 = 3;
+    self.plr_nex_wep3 = 4;
     self.plr_nex_wep4 = 0;
     self.plr_nex_wep5 = 0;
     self.plr_nex_wep6 = 0;

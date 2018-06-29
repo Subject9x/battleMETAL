@@ -1,0 +1,14 @@
+{
+ 'id'       : 7,
+ 'abbr'     : PAC,
+ 'name'     : Particle Cannon,
+ 'icon'     : gfx/ui/wep_icons/wi_pac.png,
+ 'dmg'      : 250,
+ 'type'     : 2,
+ 'energy'   : 333.33,
+ 'range'    : 3200,
+ 'clipsize' : 1,
+ 'size'     : 3,
+ 'tech'     : 3,
+ 'note'     : IGNORE most of Target's shields.~
+}

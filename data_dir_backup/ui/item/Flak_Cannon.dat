@@ -1,0 +1,14 @@
+{
+ 'id'       : 12,
+ 'abbr'     : FLAK,
+ 'name'     : Flak Cannon,
+ 'icon'     : gfx/ui/wep_icons/wi_flak.png,
+ 'dmg'      : 0.5,
+ 'type'     : 1,
+ 'energy'   : 0,
+ 'range'    : 4000,
+ 'clipsize' : 4,
+ 'size'     : 1,
+ 'tech'     : 1,
+ 'note'     : 4-Round burst. | Damages multiple Target pieces.~
+}

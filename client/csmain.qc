@@ -94,9 +94,12 @@ void() CSQC_Init =
   
   registercvar("gamemode", "0");
   registercvar("gametype", "0");
-  //ui_data_load_mech(1); for debug
+  
+  //ui data from text files /data/ui/
   ui_data_load_mechnames();
   ui_data_load_mechsizes();
+  ui_data_load_itemnames();
+  ui_data_load_itemicons();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)

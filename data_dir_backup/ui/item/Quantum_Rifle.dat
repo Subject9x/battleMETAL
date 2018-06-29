@@ -1,0 +1,14 @@
+{
+ 'id'       : 5,
+ 'abbr'     : QRF,
+ 'name'     : Q-Rifle,
+ 'icon'     : gfx/ui/wep_icons/wi_qrf.png,
+ 'dmg'      : 10,
+ 'type'     : 1,
+ 'energy'   : 100,
+ 'range'    : 3600,
+ 'clipsize' : 1,
+ 'size'     : 2,
+ 'tech'     : 1,
+ 'note'     : Affects Shields Only. | Instant-impact weapon. | 8 submunitions.~
+}

@@ -1,0 +1,14 @@
+{
+ 'id'       : 15,
+ 'abbr'     : ATGM,
+ 'name'     : Adv. Targeting Module,
+ 'icon'     : gfx/ui/wep_icons/eqp_atgm.png,
+ 'dmg'      : 0,
+ 'type'     : 128,
+ 'energy'   : 0,
+ 'range'    : 0,
+ 'clipsize' : 0,
+ 'size'     : 2,
+ 'tech'     : 1,
+ 'note'     : Decrease LOCK-ON time by 20% | Increase Convergence recovery by 15%.~
+}

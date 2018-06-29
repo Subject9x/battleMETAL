@@ -1,0 +1,40 @@
+mech data file
+//messing with this without knowing what you're doing WILL blow up your game
+//BACK UP BEFORE MODIFYING
+{
+  "id"      : <float>(internal id),
+  "name"    : <string>(mech name),
+  "size"    : <float>(mech size),
+  "tech"    : <float>(tech level),
+  "icon"    : <string>(img url for hangar),
+  "en_max"  : <float>(max energy),
+  "en_rate" : <float>(energy recharge),
+  "sh_max"  : <float>(shield max),
+  "sh_rate" : <float>(shield recharge),
+  "hpoints" : <float>(total hardpoints),
+  "fspeed"  : <float>(forward speed),
+  "sspeed"  : <float>(side speed),
+  "bspeed"  : <float>(back speed),
+  "accel"   : <float>(acceleration multiplier),
+  "hp_ct"   : <float>(center torso hp),
+  "hp_st"   : <float>(side torso hp),
+  "hp_am"   : <float>(arm hp),
+  "hp_lg"   : <float>(leg hp),
+  "radrng"  : <float>(radar range),
+  
+  //hardpoint info
+  "hpt_types_1"  : <float>(hardpoint item type bits),
+  "hpt_size_1"   : <float>(hardpoint max item size),
+  
+  //hardpoint ui data block
+  "hpt_arm_1" : <vector>'X Y',
+  "hpt_hang_1"  : <vector>'X Y',
+  
+  //stock loadout
+  "hpt_stock_1"  : <float>(item id),
+  
+  //stock grouping
+  "grps_stock_1" : <float>(item group bits)
+  
+  "desc"  : <string>(description text),
+}

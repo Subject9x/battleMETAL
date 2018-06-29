@@ -1,0 +1,14 @@
+{
+ 'id'       : 10,
+ 'abbr'     : MARH,
+ 'name'     : Missile-Radar Homing,
+ 'icon'     : gfx/ui/wep_icons/wi_marh.png,
+ 'dmg'      : 7,
+ 'type'     : 4,
+ 'energy'   : 0,
+ 'range'    : 3600,
+ 'clipsize' : 10,
+ 'size'     : 3,
+ 'tech'     : 2,
+ 'note'     : Requires RADAR to be [ACTIVE]. | Requires TARGET LOCK on target. | Has minimum range.~
+}

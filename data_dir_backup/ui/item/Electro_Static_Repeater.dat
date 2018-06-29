@@ -1,0 +1,14 @@
+{
+ 'id'       : 8,
+ 'abbr'     : ESR,
+ 'name'     : Electro-Static Repeater,
+ 'icon'     : gfx/ui/wep_icons/wi_esr.png,
+ 'dmg'      : 25,
+ 'type'     : 2,
+ 'energy'   : 200,
+ 'range'    : 800,
+ 'clipsize' : 20,
+ 'size'     : 2,
+ 'tech'     : 2,
+ 'note'     : Devastating short range weapon. | Highly innaccurate.~
+}

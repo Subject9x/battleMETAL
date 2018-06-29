@@ -304,8 +304,9 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
       iorg = org - gui_percentToPixelRawVec('2 2');
       gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_RED, HUD_ALPHA, 0);
     }
-    wep = m_findData(wid, DATA_WEPN);
-    drawpic( org + gui_percentToPixelRawVec('1 1'), wep.w_icon,  gui_percentToPixelRawVec('28 28'), '1 1 1', HUD_ALPHA, 0);
+    if( ITEM_DATA_ICONS[wid] != "" ){
+      drawpic( org + gui_percentToPixelRawVec('1 1'), ITEM_DATA_ICONS[wid],  gui_percentToPixelRawVec('28 28'), '1 1 1', HUD_ALPHA, 0);
+    }
   }
 };
 

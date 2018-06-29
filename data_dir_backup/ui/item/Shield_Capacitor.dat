@@ -1,0 +1,14 @@
+{
+ 'id'       : 19,
+ 'abbr'     : SCAP,
+ 'name'     : Shield Capacitor,
+ 'icon'     : gfx/ui/wep_icons/eqp_scap.png,
+ 'dmg'      : 0,
+ 'type'     : 128,
+ 'energy'   : 0,
+ 'range'    : 0,
+ 'clipsize' : 0,
+ 'size'     : 2,
+ 'tech'     : 3,
+ 'note'     : Increases SHIELD TOTAL by 15%.~
+}

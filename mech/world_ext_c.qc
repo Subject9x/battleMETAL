@@ -199,12 +199,6 @@ void(float prj_id) data_iniProjectile={
     case ID_PRJ_SWRM:
       data_prj_swrm_ini();
       return;
-    case ID_PRJ_ABT:
-      data_prj_abt_ini();
-      return;
-    case ID_PRJ_ABT_CLST:
-      data_prj_abt_clst_ini();
-      return;
   }
   cons_logAFloat("Error: failed to find projectile of ", prj_id);
   remove(self);
@@ -278,9 +272,6 @@ void(float wep_id) data_iniWep={
       return;
     case ID_EQP_SCAP:
       data_eqp_scap_ini();
-      return;
-    case ID_WEP_ABT:
-      data_abt_ini();
       return;
   }
 };

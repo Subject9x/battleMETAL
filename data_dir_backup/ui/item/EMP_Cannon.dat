@@ -1,0 +1,14 @@
+{
+ 'id'       : 2,
+ 'abbr'     : EMP,
+ 'name'     : EMP Cannon,
+ 'icon'     : gfx/ui/wep_icons/wi_emp.png,
+ 'dmg'      : 400,
+ 'type'     : 2,
+ 'energy'   : 266.7,
+ 'range'    : 1900,
+ 'clipsize' : 1,
+ 'size'     : 3,
+ 'tech'     : 2,
+ 'note'     : Only damages Target's SHIELDS. | Proximity detonation at longer ranges.~
+}

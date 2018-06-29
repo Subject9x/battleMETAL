@@ -1,0 +1,87 @@
+mech data file
+//messing with this without knowing what you're doing WILL blow up your game
+//BACK UP BEFORE MODIFYING
+{
+  'id'      : 1,
+  'abbr'    : MNT,
+  'name'    : Monitor,
+  'size'    : 3,
+  'tech'    : 1,
+  'icon'    : gfx/ui/hgr_mnt.png,
+  'en_max'  : 700,
+  'en_rate' : 3,
+  'sh_max'  : 600,
+  'sh_rate' : 0.7,
+  'hpoints' : 9,
+  'fspeed'  : 150,
+  'sspeed'  : 100,
+  'bspeed'  : 90,
+  'accel'   : 2,
+  'hp_ct'   : 1200,
+  'hp_st'   : 1200,
+  'hp_am'   : 1000,
+  'hp_lg'   : 1500,
+  'radrng'  : 3000,
+  
+  //hardpoint info
+  'hpt_types_1'  : 3,
+  'hpt_types_2'  : 3,
+  'hpt_types_3'  : 3,
+  'hpt_types_4'  : 3,  
+  'hpt_types_5'  : 3,
+  'hpt_types_6'  : 3,
+  'hpt_types_7'  : 4,
+  'hpt_types_8'  : 132,
+  'hpt_types_9'  : 132,
+  
+  'hpt_size_1'   : 1,
+  'hpt_size_2'   : 1,
+  'hpt_size_3'   : 1, 
+  'hpt_size_4'   : 1, 
+  'hpt_size_5'   : 3,
+  'hpt_size_6'   : 3,
+  'hpt_size_7'   : 3,
+  'hpt_size_8'   : 3,
+  'hpt_size_9'   : 3,
+  
+  //hardpoint ui data block
+  'hpt_arm_1' : -120 -50 0,
+  'hpt_arm_2' : -90 -50 0,
+  'hpt_arm_3' : 90 -50 0,
+  'hpt_arm_4' : 60 -50 0,
+  'hpt_arm_5' : -57 -105 0,
+  'hpt_arm_6' : 28 -105 0,
+  'hpt_arm_7' : -14 -60 0,
+  'hpt_arm_8' : -57 -63 0,
+  'hpt_arm_9' : 28 -63 0,
+  
+  'hpt_hang_1'  : -74 -46 0,
+  'hpt_hang_2'  : -64 -46 0,
+  'hpt_hang_3'  : 64 -46 0,
+  'hpt_hang_4'  : 54 -46 0,
+  'hpt_hang_5'  : -39 -95 0,
+  'hpt_hang_6'  : 26 -95 0,
+  'hpt_hang_7'  : -4 -57 0,
+  'hpt_hang_8'  : -38 -60 0,
+  'hpt_hang_9'  : 27 -60 0,
+  
+  //stock loadout
+  'hpt_stock_1'  : 1,
+  'hpt_stock_2'  : 1,
+  'hpt_stock_3'  : 3,
+  'hpt_stock_4'  : 3,
+  'hpt_stock_5'  : 2,
+  'hpt_stock_6'  : 2,
+  'hpt_stock_7'  : 4,
+  'hpt_stock_8'  : 4,
+  'hpt_stock_9'  : 4,
+  
+  //stock grouping
+  'grps_stock_1' : 15,
+  'grps_stock_2' : 48,
+  'grps_stock_3' : 448,
+  'grps_stock_4' : 0,
+  'grps_stock_5' : 0,
+  
+  'desc'  : The great cities of the Federation owe their foundations to the power of the MONITOR. The MONITOR started life as a construction and logistics vehicle used in the civilian markets. | | The MONITOR has taken to its new life as a combat unit fairly well. Being a construction unit gives the MONITOR some of the best armor and structure of any mech. It also allows the MONITOR to carry a large array of weapons and equipment. | | All of this comes at a large cost, unfortunately. The Monitor is the slowest mech on the battlefield, and its reactor capacity is incredibly small.~
+}
