@@ -53,7 +53,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if(new_dmg > 0){
     dmg_amt = new_dmg;
-    sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 0.75, ATTN_NORM);
+    sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
   }
   else{
     //todo turn this into effect.txt stuff
@@ -288,6 +288,14 @@ float(entity targ, float dmg_amt, float dmg_type) damage_shield={
   if(dmg_amt > 5){
     //this makes shields a bit more important, and additionally - anti-shield weapons
     targ.sh_hit = time + SHIELD_RECHARGE_COOLDOWN;
+  }
+  else{
+    if( dmg_amt != 0 ){
+      targ.sh_hit = time + (SHIELD_RECHARGE_COOLDOWN / 4);
+    }
+  }
+  if( ( dmg_type  & EFF_STX) ){
+    targ.sh_hit = targ.sh_hit  + 4;
   }
   dmg_remainder = 0;
   if((dmg_type & DMG_BAL)){

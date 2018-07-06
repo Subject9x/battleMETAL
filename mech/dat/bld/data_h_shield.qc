@@ -64,13 +64,15 @@ void() hshield_th = [0, hshield_th]{
         dist = vlen(t.origin - self.origin);
         if(dist <= DAT_BLD_H_SHIELD_RADIUS){
           if(self.en_cur > 0){
-            if(t.sh_cur < t.sh_max){
-              local float mod;
-              mod = self.sh_rate / 2;
-              t.sh_cur = t.sh_cur + mod;
-              self.en_cur = self.en_cur - mod;
-              if(t.sh_cur > t.sh_max){
-                t.sh_cur = t.sh_max;
+            if( time > t.sh_hit){
+              if(t.sh_cur < t.sh_max){
+                local float mod;
+                mod = self.sh_rate / 2;
+                t.sh_cur = t.sh_cur + mod;
+                self.en_cur = self.en_cur - mod;
+                if(t.sh_cur > t.sh_max){
+                  t.sh_cur = t.sh_max;
+                }
               }
             }
           }

@@ -68,7 +68,7 @@ float DAT_BLD_H_POWER_PLANT_SH_MAX  = 600;
 float DAT_BLD_H_POWER_PLANT_SH_RATE = 1;
 //-------------------------Human-Shield Generator
 float DAT_BLD_H_SHIELDGEN_SH_MAX    = 1000;
-float DAT_BLD_H_SHIELDGEN_SH_RATE   = 2;
+float DAT_BLD_H_SHIELDGEN_SH_RATE   = 1;
 float DAT_BLD_H_SHIELD_RADIUS       = 1000;
 //-------------------------Human-Repair Bay
 float DAT_BLD_H_REPAIR_SH_MAX       = 750;
