@@ -176,6 +176,11 @@ void() ui_data_clear_mechdata={
 
 
 void() ui_data_clear_item1={
+
+  if( ITEM1_DATA_ID <= 0 ){
+    return;
+  }
+ 
   ITEM1_DATA_ID = 0;
   if( ITEM1_DATA_ABBR != "" ){
     strunzone(ITEM1_DATA_ABBR);
@@ -199,7 +204,12 @@ void() ui_data_clear_item1={
     strunzone(ITEM1_DATA_DESC);
   }
 };
+
 void() ui_data_clear_item2={
+
+  if( ITEM2_DATA_ID <= 0 ){
+    return;
+  }
   ITEM2_DATA_ID = 0;
   if( ITEM2_DATA_ABBR != "" ){
     strunzone(ITEM2_DATA_ABBR);
@@ -217,6 +227,7 @@ void() ui_data_clear_item2={
   ITEM2_DATA_CLIP = 0;
   ITEM2_DATA_SIZE = 0;
   ITEM2_DATA_TECH = 0;
+  
   if( ITEM2_DATA_DESC != "" ){
     strunzone(ITEM2_DATA_DESC);
   }
@@ -349,7 +360,6 @@ float(float id) ui_data_load_mech={
   fclose(flannel);
   return TRUE;
 };
-
 
 void(float id) ui_date_load_item1={
   ui_data_clear_item1();

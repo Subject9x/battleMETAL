@@ -37,9 +37,10 @@ void() click_main_camp={
 };
 
 void() click_main_multi={
-  menu_clear_items(M_STATE);
+  //disabled for now
+  /*menu_clear_items(M_STATE);
   M_STATE = M_MULTI;
-  m_multi_f();
+  m_multi_f();*/
 };
 
 void() click_main_quit={
@@ -64,7 +65,8 @@ void() m_main_i={
   main_title = lbl_img('10 50', '1 1 0', IMG_MAIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
   main_label = lbl_img('10 100', '1 1 0', IMG_MAIN_LBL, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
   main_camp = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_CAMP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_camp, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  //main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '0.25 0.25 0.25', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '0.25 0.25 0.25', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   main_options = btn_img_callback('10 170 0', '1 1 0', IMG_MAIN_OPT, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_options, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   main_help = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   main_quit = btn_img_callback('10 208 0', '1 1 0', IMG_MAIN_QUIT, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_quit, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));

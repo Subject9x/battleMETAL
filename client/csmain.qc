@@ -319,7 +319,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         self.plr_menu_choice = 0;
         setcursormode(0);
         if( MECH_DATA_ID != self.data_idx){
-          ui_data_clear_mechdata();
           ui_data_load_mech(self.data_idx);
         }
       }
@@ -340,6 +339,16 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     //HUD RENDER FRAME SYSTEM
     hud_frame(self.data_idx, self.vec_size);
+    
+    if(self.player_state == PLAYER_SPRINT_ON){
+      local float slen;
+      local vector spos;
+      slen = stringwidth("[EVASION ON]", 0, '12 10 0');
+      slen = gui_percentXRaw(slen);
+      spos_x = VIEW_CTR_x - slen / 2;
+      spos_y = VIEW_CTR_y + gui_percentYRaw(56);
+      drawstring(spos, "[EVASION ON]", '12 10 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
+    }
     
     local float bx_time;
     bx_time = getstati(UI_BOX_TIME);
