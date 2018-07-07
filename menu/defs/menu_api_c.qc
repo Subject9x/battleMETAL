@@ -560,7 +560,7 @@ void() menu_scan_saves={
       GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
     }
     else{
-      GAME_SAVES[itr] = strzone("");
+      GAME_SAVES[itr] = strzone(" ");
       GAME_SAVES_DRAWNAME[itr] = strzone("--[ NEW SAVE SLOT ]--");
     }
     itr = itr + 1;

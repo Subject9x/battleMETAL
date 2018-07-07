@@ -255,8 +255,8 @@ void(entity nav) ui_renderNav={
       }
       else{
         //DEBUG
-        drawstring(tofs, nav.w_name, '6 6', '0.65 0.65 0.65', 1, 0);
-        gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, '0.65 0.65 0.65', HUD_ALPHA, 0) ;
+       // drawstring(tofs, nav.w_name, '6 6', '0.65 0.65 0.65', 1, 0);
+        //gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, '0.65 0.65 0.65', HUD_ALPHA, 0) ;
       }
     }
   }

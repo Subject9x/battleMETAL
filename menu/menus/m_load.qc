@@ -25,7 +25,6 @@ void() click_load_loadgame={
   menu_clear_items(M_STATE);
   menu_exit_togame();
   cvar_set("saveslot", ftos(self.data_bind));
-  cons_logAFloat("saveslot", cvar("saveslot"));  //DEBUG
   cvar_set("gamemode", ftos(1));
   cvar_set("coop", ftos(0));
   cvar_set("deathmatch", ftos(0));

@@ -15,7 +15,7 @@ void() m_init={
   dynamic_precache();
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){
-    //cmd("cd", " play 6"); DEBUG uncomment for release
+    cmd("cd", " play 6");
     m_toggle(1);
   }
   MOUSE_TARGET = null_entity;

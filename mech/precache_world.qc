@@ -90,11 +90,16 @@ void() mh_precache_models={
   precache_model ("q3mdl/weapons/w_qrf.md3");
   precache_model ("q3mdl/weapons/w_rpc.md3");
   precache_model ("q3mdl/weapons/w_sfga.md3");
+  precache_model ("q3mdl/weapons/w_ion.md3");
+  precache_model ("q3mdl/weapons/w_flk.md3");
+  precache_model ("q3mdl/weapons/w_swrm.md3");
   
   precache_model ("q3mdl/weapons/e_atgm.md3");
   precache_model ("q3mdl/weapons/e_enbat.md3");
   precache_model ("q3mdl/weapons/e_hsem.md3");
   precache_model ("q3mdl/weapons/e_recap.md3");
+  precache_model ("q3mdl/weapons/e_scap.md3");
+  precache_model ("q3mdl/weapons/e_lsar.md3");
   
   //weapon projectiles
   precache_model ("q3mdl/proj_emp.md3");

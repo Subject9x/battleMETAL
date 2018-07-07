@@ -275,17 +275,27 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
             hudorg_x = radCenter_x - (hudorg_x * ( siz_x * radDist));
             hudorg_y = radCenter_y - (hudorg_y * ( siz_y * radDist));
             
-            if(e.data_type == DATA_BLD){
-              hud_RenderRadar_Building(hudorg, plrFaction, e.i_faction);  
+            local float draw;
+            draw = TRUE;
+            if( (hudorg_x < vorg_x) || (hudorg_x > (vorg_x + siz_x) ) ){
+              draw = FALSE;
             }
-            else if(e.data_type == DATA_VEHC){
-              hud_RenderRadar_Vehc(hudorg, plrFaction, e.i_faction);
+            if( (hudorg_y < vorg_y) || (hudorg_y > (vorg_y + siz_x) ) ){
+              draw = FALSE;
             }
-            else if(e.data_type == DATA_MECH){
-              hud_RenderRadar_Mech(hudorg, plrFaction, e.i_faction); 
-            }
-            else{
-              drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+            if( draw ){
+              if(e.data_type == DATA_BLD){
+                hud_RenderRadar_Building(hudorg, plrFaction, e.i_faction);  
+              }
+              else if(e.data_type == DATA_VEHC){
+                hud_RenderRadar_Vehc(hudorg, plrFaction, e.i_faction);
+              }
+              else if(e.data_type == DATA_MECH){
+                hud_RenderRadar_Mech(hudorg, plrFaction, e.i_faction); 
+              }
+              else{
+                drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+              }
             }
           }
         }

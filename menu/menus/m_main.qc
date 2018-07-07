@@ -33,7 +33,7 @@ void() click_main_camp={
   menu_clear_items(M_STATE);
   M_STATE = M_SINGLE;
   m_camp_f();
-  cons_logAFloat("click_main_camp->M_STATE", M_STATE);  //DEBUG
+  //cons_logAFloat("click_main_camp->M_STATE", M_STATE);  //DEBUG
 };
 
 void() click_main_multi={
