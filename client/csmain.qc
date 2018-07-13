@@ -618,19 +618,31 @@ void(float isnew) CSQC_Ent_Update =
   }
   //AI test...
   else if(id == DATA_MECH_AI){
-    self.data_idx = ReadByte();
-    self.vec_size = ReadByte();
+    local float delta;
+    delta = ReadByte();
+    if( (delta & SEND_FLAG_DATA_IDX) ){
+      self.data_idx = ReadByte();
+      self.vec_size = ReadByte();
+    }
     self.data_type = DATA_MECH;
     if(isnew){
       self.drawmask = MASK_ENGINE;
     }
-    self.sh_cur = ReadByte();
-    self.stat_rdr_mode = ReadByte();
-    self.i_faction = ReadByte();
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();  
-    setorigin(self, self.origin);
+    if( (delta & SEND_FLAG_SHIELD_VAL) ){
+      self.sh_cur = ReadByte();
+    }
+    if( (delta & SEND_FLAG_RADAR_MODE) ){
+      self.stat_rdr_mode = ReadByte();
+    }
+    if( (delta & SEND_FLAG_FACTION) ){
+      self.i_faction = ReadByte();
+    }
+    if( (delta & SEND_FLAG_ORIGIN) ){
+      self.origin_x = ReadCoord();
+      self.origin_y = ReadCoord();
+      self.origin_z = ReadCoord();
+      setorigin(self, self.origin);
+    }    
   }
   else if(id == DATA_BLD){
     self.data_idx = ReadByte();
@@ -640,7 +652,6 @@ void(float isnew) CSQC_Ent_Update =
       dat = m_findData(self.data_idx, DATA_BLD);
       setmodel(self, dat.e_model);
       self.drawmask = MASK_ENGINE;
-      //self.solid = SOLID_BSP;
     }
     self.i_faction = ReadByte();
     self.origin_x = ReadCoord();
@@ -652,17 +663,35 @@ void(float isnew) CSQC_Ent_Update =
     setorigin(self, self.origin);
   }
   else if(id == DATA_VEHC){
-    self.data_type = DATA_VEHC;
-    self.data_idx = ReadByte();
-    self.vec_size = ReadByte();
+    local float delta;
+    delta = ReadByte();
+    if(isnew){
+      self.data_type = DATA_VEHC;
+      self.drawmask = MASK_ENGINE;
+    }
+    
+    if( (delta & SEND_FLAG_DATA_IDX) ){
+      self.data_idx = ReadByte();
+      self.vec_size = ReadByte();
+    }
     if(isnew){
       self.drawmask = MASK_ENGINE;
     }
-    self.i_faction = ReadByte();
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    setorigin(self, self.origin);
+    if( (delta & SEND_FLAG_SHIELD_VAL) ){
+      self.sh_cur = ReadByte();
+    }
+    if( (delta & SEND_FLAG_RADAR_MODE) ){
+      self.stat_rdr_mode = ReadByte();
+    }
+    if( (delta & SEND_FLAG_FACTION) ){
+      self.i_faction = ReadByte();
+    }
+    if( (delta & SEND_FLAG_ORIGIN) ){
+      self.origin_x = ReadCoord();
+      self.origin_y = ReadCoord();
+      self.origin_z = ReadCoord();
+      setorigin(self, self.origin);
+    }
   }
   else if(id == DATA_DEPL){
    if(isnew){

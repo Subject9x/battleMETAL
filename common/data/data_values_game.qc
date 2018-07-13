@@ -66,17 +66,17 @@ float GAME_TOTAL_ITEMS = 64; //how many distinct mechs the game should assume mi
 float MECHLIST_TOTAL[256];
   //don't mess with this really unless...no just don't mess with it.
 string DATA = "data";
-float DATA_MECH = 1;
-float DATA_VEHC = 2;
-float DATA_WEPN = 3;
-float DATA_PROJ = 4;
-float DATA_HUD = 5;
-float DATA_BLD = 6;
-float DATA_NAVP = 7;
-float DATA_OBJT = 8;
-float DATA_NODE = 9;
-float DATA_DEPL = 10;
-float DATA_POBS = 11; //player observer mode
+float DATA_POBS = 1; //player observer mode
+float DATA_MECH = 2;
+float DATA_VEHC = 3;
+float DATA_WEPN = 4;
+float DATA_PROJ = 5;
+float DATA_HUD = 6;
+float DATA_BLD = 7;
+float DATA_NAVP = 8;
+float DATA_OBJT = 9;
+float DATA_NODE = 10;
+float DATA_DEPL = 11;
 float DATA_MECH_AI = 12;  //distinguish between player mech and ai mech
 float DATA_PLR = 13;
 float DATA_WEAPON = 14;
@@ -182,6 +182,16 @@ float EFF_ENE = 256; //weapon draws energy (client-side flag, really)
 .float stat_plr_ang_y;
 .float stat_plr_ang_z;
 .float stat_plr_rep;
+//============================
+//     SEND ENTITY FLAGS       
+//============================
+float SEND_FLAG_DATA_IDX = 1;
+float SEND_FLAG_SHIELD_VAL = 2;
+float SEND_FLAG_RADAR_MODE = 4;
+float SEND_FLAG_FACTION = 8;
+float SEND_FLAG_ORIGIN = 16;
+float SEND_FLAG_ANGLE = 32;
+
 //============================
 //     STAT CHANNELS         
 //============================
@@ -352,6 +362,18 @@ float AI_PTNCE_ROK = 10;
 float AI_RANGE_S = 1000;
 float AI_RANGE_M = 2400;
 float AI_RANGE_L = 4000;
+
+//view check intervals
+float AI_VIEW_ROK = 45;
+float AI_VIEW_REG = 35;
+float AI_VIEW_VET = 25;
+float AI_VIEW_ACE = 15;
+
+//view bracket
+float AI_FOV_ROK = 0.2;
+float AI_FOV_REG = 0.3;
+float AI_FOV_VET = 0.4;
+float AI_FOV_ACE = 0.5;
 
 //AI movement speed ratio 
 float AI_WALK_SPD = 0.035;

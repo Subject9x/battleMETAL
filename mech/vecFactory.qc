@@ -318,6 +318,9 @@ entity(void() func) build_mech_legs={
     self.laser_sight_org = '0 0 0';
     self.laser_sight_timer = time + 0.5; 
     self.w_firerate = 0; //used to track m_maccel changes
+    self.th_stand = leg_stand1;
+    self.th_walk = leg_walk1;
+    self.th_die = leg_die1;
     if( (this.data_type == DATA_MECH) || (this.data_type == DATA_MECH_AI) ){
       leg_stand1();
     }

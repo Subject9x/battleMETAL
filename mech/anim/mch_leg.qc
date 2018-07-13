@@ -19,12 +19,7 @@ void() leg_stand1 = [$l_stand1, leg_stand1]{
       return;
     }
   }
-  else if((self.owner.flags & FL_MONSTER)){
-    if(self.owner.ai_next_move != ai_move_stand){
-      leg_walk1();
-      return;
-    }
-  }
+  self.walkframe = $l_stand1;
 };
 
 void() leg_walk1;
@@ -34,12 +29,6 @@ void() leg_walk1 = [$l_walk1, leg_walk2]{
   if((self.owner.flags & FL_CLIENT)){  
     if (!self.owner.velocity_x && !self.owner.velocity_y){
       self.walkframe=0;
-      leg_stand1();
-      return;
-    }
-  }
-  else if((self.owner.flags & FL_MONSTER)){
-    if(self.owner.ai_next_move == ai_move_stand){
       leg_stand1();
       return;
     }
@@ -62,7 +51,7 @@ void() leg_walk3 = [$l_walk3, leg_walk4]{
   }
 };
 void() leg_walk4 = [$l_walk4, leg_walk5]{
-self.walkframe = $l_walk4;
+  self.walkframe = $l_walk4;
 };
 void() leg_walk5 = [$l_walk5, leg_walk6]{
   self.walkframe = $l_walk5;

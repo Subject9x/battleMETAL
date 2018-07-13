@@ -84,13 +84,26 @@ float(entity ent, float sendFlags) client_data_sendEnt={
 };
 
 float(entity ent, float changed) send_vehicle={
-  WriteByte(MSG_ENTITY, DATA_VEHC);
-  WriteByte( MSG_ENTITY, self.owner.data_idx );
-  WriteByte( MSG_ENTITY, self.owner.vec_size );
-  WriteByte( MSG_ENTITY, self.owner.i_faction );
-  WriteCoord( MSG_ENTITY, self.owner.origin_x );
-  WriteCoord( MSG_ENTITY, self.owner.origin_y );
-  WriteCoord( MSG_ENTITY, self.owner.origin_z );
+  WriteByte( MSG_ENTITY, DATA_VEHC);
+  WriteByte( MSG_ENTITY, changed);
+  if( (changed & SEND_FLAG_DATA_IDX) ){
+    WriteByte( MSG_ENTITY, self.owner.data_idx );
+    WriteByte( MSG_ENTITY, self.owner.vec_size );
+  }
+  if( (changed & SEND_FLAG_SHIELD_VAL) ){
+    WriteByte( MSG_ENTITY, self.owner.sh_cur);
+  }
+  if( (changed & SEND_FLAG_RADAR_MODE) ){
+    WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
+  }
+  if( (changed & SEND_FLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, self.owner.i_faction );
+  }
+  if( (changed & SEND_FLAG_ORIGIN) ){
+    WriteCoord( MSG_ENTITY, self.owner.origin_x );
+    WriteCoord( MSG_ENTITY, self.owner.origin_y );
+    WriteCoord( MSG_ENTITY, self.owner.origin_z );
+  }
   return TRUE;
 };
 
@@ -110,14 +123,25 @@ float(entity ent, float changed) send_building={
 float(entity ent, float changed) send_ai_mech={
 //super ugly hack, send ai's e_cam ent
   WriteByte( MSG_ENTITY, DATA_MECH_AI );
-  WriteByte( MSG_ENTITY, self.owner.data_idx);
-  WriteByte( MSG_ENTITY, self.owner.vec_size);
-  WriteByte( MSG_ENTITY, self.owner.sh_cur);
-  WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
-  WriteByte( MSG_ENTITY, self.owner.i_faction);
-  WriteCoord( MSG_ENTITY, self.owner.origin_x );
-  WriteCoord( MSG_ENTITY, self.owner.origin_y );
-  WriteCoord( MSG_ENTITY, self.owner.origin_z );
+  WriteByte( MSG_ENTITY, changed);
+  if( (changed & SEND_FLAG_DATA_IDX) ){
+    WriteByte( MSG_ENTITY, self.owner.data_idx);
+    WriteByte( MSG_ENTITY, self.owner.vec_size);
+  }
+  if( (changed & SEND_FLAG_SHIELD_VAL) ){
+    WriteByte( MSG_ENTITY, self.owner.sh_cur);
+  }
+  if( (changed & SEND_FLAG_RADAR_MODE) ){
+    WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
+  }
+  if( (changed & SEND_FLAG_FACTION) ){
+    WriteByte( MSG_ENTITY, self.owner.i_faction);
+  }
+  if( (changed & SEND_FLAG_ORIGIN) ){
+    WriteCoord( MSG_ENTITY, self.owner.origin_x );
+    WriteCoord( MSG_ENTITY, self.owner.origin_y );
+    WriteCoord( MSG_ENTITY, self.owner.origin_z );
+  }
   return TRUE;
 };
 

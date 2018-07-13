@@ -114,6 +114,7 @@ void() ai_control;      //global, root controller function
 .float ai_first_order;
 .vector prev_pos;
 .entity oldgoal;
+.float ai_rank;
 .float ai_dmg_l;
 .float ai_dmg_m;
 .float ai_dmg_s;
@@ -123,8 +124,10 @@ void() ai_control;      //global, root controller function
 .float ai_leading;      //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
 .float ai_minrange;     //minimum range of guns;
 .float ai_optical;      //the 'visual' range the ai can see out before relying on sensors
+.float ai_radar;
 .float patience;        //counter for if AI is stuck on something
 .float maxpatience;     //how impatient is the AI
+.float ai_viewcheck;    //interval for checking for enemies
 .float ai_stuck_cnt;        //
 .float ai_stuck_flag;
 .string target_die;
@@ -262,17 +265,6 @@ entity(entity node, float id) ai_query_graphnode;
 entity(vector org, float start_dist) ai_core_findgraphnode;
 void() ai_core_calcranges;
 entity() ai_core_findfriendly;
-
-//AI STATISTICS
-float() ai_pilot_rating_converg;
-float() ai_pilot_rating_range;
-float() ai_pilot_rating_leading;
-float() ai_pilot_yaw_mod;
-float() ai_pilot_armor_mod;
-float() ai_pilot_shield_mod;
-float() ai_pilot_rating_patience;
-float() ai_core_hitTimeCalc;
-float() ai_core_attackInterval;
 
 //TODO - separate header?
 void() ai_mech_update;

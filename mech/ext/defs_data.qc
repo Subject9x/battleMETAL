@@ -64,7 +64,3 @@ void() data_prj_rplas_ini;
 void() data_prj_sfga_ini;
 void() data_prj_flak_ini;
 void() data_prj_swrm_ini;
-
-//VEHICLES===============================
-float ID_VEC_TANK = 1;
-

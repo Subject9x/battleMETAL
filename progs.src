@@ -42,6 +42,7 @@ triggers_h.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
   mech/ai/ai_core_h.qc
+  mech/ai/temp/ai_api_h.qc
   q1/qwep/wep_fx_h.qc
   mech/dat/msc/map_objects_h.qc
   world_effectinfo_h.qc
@@ -101,6 +102,7 @@ dp/subs.qc
   
   //vehicles
   mech/dat/vec/data_tank.qc
+  mech/dat/vec/data_h_td.qc
   
   //buildings
   mech/dat/bld/data_h_radar.qc
@@ -113,6 +115,16 @@ dp/subs.qc
 //===========================
 
 //impl files
+  
+  
+  mech/ai/temp/ai_stats.qc
+  mech/ai/temp/ai_api.qc
+  mech/ai/temp/ai_move_q1.qc
+  mech/ai/temp/ai_ctrl.qc
+  mech/ai/temp/ai_mech_skirmish.qc
+  mech/ai/temp/ai_destroyer.qc
+  
+  
   mech/ai/m_ai_test.qc
   mech/ai/ai_directives_combat.qc
   mech/ai/ai_move_funcs.qc
@@ -185,4 +197,4 @@ buttons.qc
 triggers.qc
 mech/triggers_map_c.qc
 plats.qc
-misc.qc
+misc.q

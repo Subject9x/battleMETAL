@@ -93,12 +93,10 @@ vector(entity ai) ai_attack_calcSpread={
   on-hand
 */  
 float(entity wep) ai_attack_checkEne={
-  local float cost_half, check;
-  cost_half = ( wep.rl_max * wep.en_rate ) / 2;
-  if(self.en_cur  >= cost_half ){
-    check = TRUE;
+  if(self.en_cur  >= wep.en_rate ){
+    return TRUE;
   }
-  return check;
+  return FALSE;
 };
 
 /*
