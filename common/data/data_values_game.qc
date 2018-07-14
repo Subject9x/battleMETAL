@@ -375,6 +375,12 @@ float AI_FOV_REG = 0.3;
 float AI_FOV_VET = 0.4;
 float AI_FOV_ACE = 0.5;
 
+//action timer mod
+float AI_REFLEX_ACE = 2;
+float AI_REFLEX_VET = 1;
+float AI_REFLEX_REG = 0.75;
+float AI_REFLEX_ROK = 0.25;
+
 //AI movement speed ratio 
 float AI_WALK_SPD = 0.035;
 float AI_RUN_SPD = 0.045;

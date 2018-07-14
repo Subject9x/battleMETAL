@@ -10,6 +10,7 @@ float AI_SPAWNFLAG_COOP = 2;
 float AI_SPAWNFLAG_DM = 4;
 float AI_SPAWNFLAG_TDM = 8;
 float AI_SPAWNFLAG_COLDSTART = 16; //on-spawn, bot will ignore friendly help calls
+float AI_SPAWNFLAG_RANDDOMSTART = 32; //start on random node if AI has patrol path
 
 //GLOBALS
 float enemy_infront;
@@ -18,8 +19,9 @@ float enemy_yaw;
 float enemy_vis;
 
 //ENTITY VARS
-.void() ai_action;        //th_ func to execute
+.void() th_action;        //th_ func to execute
 .float ai_action_time;  //for executing action states
+.float ai_action_mod;
 .float ai_rte_rng;
 .float ai_rte_cnv;
 .float ai_leading;      //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
@@ -47,6 +49,7 @@ float() ai_core_hitTimeCalc;
 float() ai_core_attackInterval;
 void() ai_pilot_mech_armor;
 void() ai_pilot_vec_armor;
+float(float rank) ai_pilot_action_mod;
 
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
@@ -60,8 +63,10 @@ float (entity targ) ai_visible;
 vector() ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
+float(entity t) ai_valid_target;
 
 //AI CONTROL - ai_ctrl.qc 
+void(void() next_action, float next_time, float time_mod) ai_action_next;
 void() ai_hunt_target;
 void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;
@@ -91,3 +96,5 @@ void() ai_dest_run;
 void() ai_dest_turn;
 void() ai_dest_attack;
 void() ai_dest_stand;
+void() ai_vec_dest_die;
+void() ai_vec_dest_die1;

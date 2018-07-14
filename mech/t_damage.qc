@@ -103,17 +103,17 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   //Damage has gone through, AI survived, choose how it will react->
   if( (trg.flags & FL_MONSTER) ){
-    if(trg.ai_next_state != ai_misc_stand_debug){
-      if(attacker != trg.trigger_field){
-        if(trg.i_faction != attacker.i_faction){
-          anger_monster(trg, attacker);
-        }
-      }
-    }
+    //if(trg.ai_next_state != ai_misc_stand_debug){
+      //if(attacker != trg.trigger_field){
+        //if(trg.i_faction != attacker.i_faction){
+          //anger_monster(trg, attacker);
+        //}
+      //}
+    //}
   }
   
   if(trg.health <= 0){
-    trg.health = 0;
+    //trg.health = 0;
     if(trg.th_die){
       if(trg.c_name != M_LEGS){
         killed(trg, attacker, dmg_type);     
@@ -225,59 +225,60 @@ void(entity targ, entity attacker, float dmg_type) killed={
   
   oself = self;
   self = targ;
-	// I honestly don't care if it shows a strange number,
-	// and disabling this means I can check for worse damage
-	// in the kill messages etc.
-	// infact I've never seen a case where the number shows,
-	// always hidden by the score bar stuff.
-	// if (self.health < -99)
-	//         self.health = -99;              // don't let sbar look bad if a player - not Roohr
-  if (self.health > 0 ){
-    self.health = 0;
-  }
-  
-	if(!self.data_type){
-    if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
-      self.th_die();
-      self = oself;
-      return;
+    // I honestly don't care if it shows a strange number,
+    // and disabling this means I can check for worse damage
+    // in the kill messages etc.
+    // infact I've never seen a case where the number shows,
+    // always hidden by the score bar stuff.
+     if (self.health < -99){
+      self.health = -99;              // don't let sbar look bad if a player - not Roohr
+     }
+    //if (self.health > 0 ){
+     // self.health = 0;
+    //}
+    
+    if(!self.data_type){
+      if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
+        self.th_die();
+        self = oself;
+        return;
+      }
     }
-  }
 
-  //AI mech / tank death trigger fix
-  if( (self.data_type == DATA_MECH) || (self.data_type == DATA_VEHC) || (self.data_type == DATA_BLD)){
-    self.ladder_entity = attacker;
-  }
-  
-  self.enemy = attacker;
-  
-  self.takedamage = DAMAGE_NO;
-	self.touch = SUB_Null;
-  
-  if (!self.iscorpse){
-		// bump the monster counter
-		if (self.flags & FL_MONSTER){
-			/*self.enemy = attacker;
-			killed_monsters = killed_monsters + 1;
-			WriteByte (MSG_ALL, SVC_KILLEDMONSTER);*/
+    //AI mech / tank death trigger fix
+    if( (self.data_type == DATA_MECH) || (self.data_type == DATA_VEHC) || (self.data_type == DATA_BLD)){
+      self.ladder_entity = attacker;
     }
-  }
-  
-  self.doobits = 0;
-  
-  if((self.classname == MECH_PIECE) && (self.c_name != "weapon")){
-    local entity wep;
-    wep = self.owner;
-    while(wep){
-      wep = wep.w_slot;
-      if(wep.c_parent == self.c_name){
-        if(wep.deadflag <= DEAD_NO){
-          killed(wep, attacker, 0);      
+    
+    self.enemy = attacker;
+    
+    self.takedamage = DAMAGE_NO;
+    self.touch = SUB_Null;
+    
+    if (!self.iscorpse){
+      // bump the monster counter
+      if (self.flags & FL_MONSTER){
+        /*self.enemy = attacker;
+        killed_monsters = killed_monsters + 1;
+        WriteByte (MSG_ALL, SVC_KILLEDMONSTER);*/
+      }
+    }
+    
+    self.doobits = 0;
+    
+    if((self.classname == MECH_PIECE) && (self.c_name != "weapon")){
+      local entity wep;
+      wep = self.owner;
+      while(wep){
+        wep = wep.w_slot;
+        if(wep.c_parent == self.c_name){
+          if(wep.deadflag <= DEAD_NO){
+            killed(wep, attacker, 0);      
+          }
         }
       }
     }
-  }
-  self.th_die();
+    self.th_die();
   
   self = oself;
 };

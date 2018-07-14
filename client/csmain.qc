@@ -452,7 +452,7 @@ float() CSQC_Parse_TempEntity =
   id = ReadByte();
   if(id == TE_LASER_BEAM){
     local vector org, end, ang;
-    local float dist, p;
+    local float dist;
     org_x = ReadCoord();
     org_y = ReadCoord();
     org_z = ReadCoord();
@@ -464,7 +464,7 @@ float() CSQC_Parse_TempEntity =
   }
   else if(id == TE_ESR_BEAM){
     local vector org, end, ang;
-    local float dist, p;
+    local float dist;
     org_x = ReadCoord();
     org_y = ReadCoord();
     org_z = ReadCoord();
@@ -476,7 +476,7 @@ float() CSQC_Parse_TempEntity =
   }
   else if(id == TE_PAC_BEAM){
     local vector org, end, ang;
-    local float dist, p;
+    local float dist;
     org_x = ReadCoord();
     org_y = ReadCoord();
     org_z = ReadCoord();
@@ -484,6 +484,19 @@ float() CSQC_Parse_TempEntity =
     end_y = ReadCoord();
     end_z = ReadCoord();
     te_beam_pac(org, end);
+    handled = TRUE;
+  }
+  else if(id == TE_SMOKE_TEST){
+    local vector org, vel;
+    local float cnt;
+    org_x = ReadCoord();
+    org_y = ReadCoord();
+    org_z = ReadCoord();
+    vel_x = ReadCoord();
+    vel_y = ReadCoord();
+    vel_z = ReadCoord();
+    cnt = ReadByte();
+    te_smoke_test(org, vel, cnt);
     handled = TRUE;
   }
 	return handled;

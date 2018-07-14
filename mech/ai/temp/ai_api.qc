@@ -37,6 +37,37 @@ float(float mode) ai_spawn_clean={
   return rem;
 };
 
+float(entity t) ai_valid_target={
+  if(!t){
+    //dead simple check
+    return FALSE;
+  }
+  if(t == world){
+    return FALSE;
+  }
+  if(t == self){
+    return FALSE;
+  }
+  if(t.owner == self){
+    return FALSE;
+  }
+  if(t.data_type == DATA_POBS){
+    return FALSE;
+  }
+  if(t.deadflag >= DEAD_DYING){
+    return FALSE;
+  }
+  if(t.health <= 0){
+    return FALSE;
+  }
+  if(t.classname == MECH_PIECE){
+    return ai_valid_target(t.owner);
+  }
+  if(t.i_faction == self.i_faction){
+    return FALSE;
+  }
+  return TRUE;
+};
 
 entity() ai_find_target_visual={
   local entity targ, found;
@@ -90,7 +121,8 @@ float(entity targ, float ang_limit) ai_target_infront={
 	makevectors (self.angles);
 	vec = normalize (targ.origin - self.origin);
 	dot = vec * v_forward;
-	  
+	cons_logAFloat("dot", dot);
+	cons_logAFloat("ang_limit", ang_limit);
 	if ( dot >= ang_limit){
 		return TRUE;
 	}

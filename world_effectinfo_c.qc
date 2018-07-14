@@ -43,6 +43,20 @@ void(vector org, vector end) te_beam_pac={
 };
 
 
+//TE_SMOKE_TEST = 63;
+void(vector org, vector vel, float cnt) te_smoke_test={
+  WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+  WriteByte (MSG_BROADCAST, TE_SMOKE_TEST);
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+  WriteCoord (MSG_BROADCAST, vel_x);
+  WriteCoord (MSG_BROADCAST, vel_y);
+  WriteCoord (MSG_BROADCAST, vel_z);
+  WriteByte (MSG_BROADCAST, cnt);
+};
+
+
 //compound effects
 void(vector org, vector clr) te_muzzle_laser={
   local entity vfx;

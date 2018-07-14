@@ -6,6 +6,11 @@ Overview: AI Controller functions, ported mainly from Quake 1
 */
 
 
+void(void() next_action, float next_time, float time_mod) ai_action_next={
+  self.th_action = next_action;
+  self.ai_action_time = time + (next_time - time_mod);
+};
+
 void() ai_hunt_target={
 	self.goalentity = self.enemy;
   if( self.e_legs ){
@@ -16,7 +21,7 @@ void() ai_hunt_target={
     self = temp;
   }
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-	self.ai_action = self.th_run;
+	self.th_action = self.th_run;
   self.ai_action_time = time + 5;
 };
 

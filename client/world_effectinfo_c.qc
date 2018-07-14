@@ -20,3 +20,8 @@ void(vector org, vector end) te_beam_esr={
 void(vector org, vector end) te_beam_pac={
   trailparticles(world, particleeffectnum("BEAM_PAC"), org, end);
 };
+
+//TE_SMOKE_TEST = 63;
+void(vector org, vector vel, float cnt) te_smoke_test={
+  pointparticles(particleeffectnum("SMOKE_TEST"), org , vel, cnt);
+};

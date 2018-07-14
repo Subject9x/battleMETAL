@@ -46,6 +46,7 @@ void() ai_unit_ini_var={
   self.patience = 0;
   self.ai_viewcheck = 0;
   self.ai_view = 0;
+  self.ai_action_mod = 0;
 };
 
 
@@ -84,6 +85,7 @@ void(float rank) ai_pilot_ini_stats={
   self.ai_rte_rng = ai_pilot_rating_range();
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
+  self.ai_action_mod = ai_pilot_action_mod(rank);
 };
 
 
@@ -173,6 +175,32 @@ float(float rank) ai_pilot_view_interval={
     case AI_RANK_ROK:
        mod = AI_VIEW_ROK - mod;
       break;
+  }
+  return mod;
+};
+
+/*
+  reduce action_timer by this amount
+*/
+float(float rank) ai_pilot_action_mod={
+  local float mod;
+  mod = cvar("skill") / 2;
+  switch(rank){
+    case AI_RANK_ACE:
+      mod = AI_REFLEX_ACE + mod;
+      break;
+    case AI_RANK_VET:
+       mod = AI_REFLEX_VET + mod;
+      break;
+    case AI_RANK_REG:
+       mod = AI_REFLEX_REG + mod;
+      break;
+    case AI_RANK_ROK:
+       mod = AI_REFLEX_ROK + mod;
+      break;
+  }
+  if( mod < 0 ){
+    mod = 0;
   }
   return mod;
 };

@@ -21,6 +21,7 @@ triggers_h.qc
   common/data/data_values_mechs.qc
   common/data/data_values_vehicles.qc
   common/data/data_values_buildings.qc
+  common/data/data_values_particles.qc
 //==========================
 //mech header files
   mech/world_ext_h.qc
@@ -197,4 +198,4 @@ buttons.qc
 triggers.qc
 mech/triggers_map_c.qc
 plats.qc
-misc.q
+misc.qc
