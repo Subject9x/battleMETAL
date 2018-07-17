@@ -19,6 +19,7 @@ void(float build_id) data_iniBuilding;
 void(float mech_id) data_iniMech;
 void(float vec_id) data_iniVehc;
 void(float prj_id) data_iniProjectile;
+void(float vec_id) data_iniTurret;
 
 entity(float id, float dat_type) mh_world_findData;
 entity(float id) m_findMechData;

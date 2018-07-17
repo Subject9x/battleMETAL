@@ -14,22 +14,22 @@ float(float mode) ai_spawn_clean={
   rem = FALSE;
   switch(mode){
     case GAMEMODE_CAMPAIGN:
-      if ( (mode & AI_SPAWNFLAG_CAMPAIGN) ){
+      if ( (self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
         rem = TRUE;
       }
       break;
     case GAMEMODE_COOP:
-      if ( (mode & AI_SPAWNFLAG_COOP) ){
+      if ( (self.spawnflags & AI_SPAWNFLAG_COOP) ){
         rem = TRUE;
       }
       break;
     case GAMEMODE_DM:
-      if ( (mode & AI_SPAWNFLAG_DM) ){
+      if ( (self.spawnflags & AI_SPAWNFLAG_DM) ){
         rem = TRUE;
       }
       break;
     case GAMEMODE_TEAMDM:
-      if ( (mode & AI_SPAWNFLAG_TDM) ){
+      if ( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
         rem = TRUE;
       }
       break;
@@ -69,7 +69,7 @@ float(entity t) ai_valid_target={
   return TRUE;
 };
 
-entity() ai_find_target_visual={
+float() ai_find_target_visual={
   local entity targ, found;
   local float dist, rng;
   targ = findradius(self.origin, self.ai_view);
@@ -121,8 +121,7 @@ float(entity targ, float ang_limit) ai_target_infront={
 	makevectors (self.angles);
 	vec = normalize (targ.origin - self.origin);
 	dot = vec * v_forward;
-	cons_logAFloat("dot", dot);
-	cons_logAFloat("ang_limit", ang_limit);
+  
 	if ( dot >= ang_limit){
 		return TRUE;
 	}
@@ -136,7 +135,7 @@ float (entity targ) ai_visible ={
   spot1 = self.origin + self.view_ofs;
   spot2 = targ.origin + targ.view_ofs;
   traceline (spot1, spot2, TRUE, self); // see through other monsters
-  
+
   if (trace_inopen && trace_inwater){
     return FALSE;     // sight line crossed contents
   }

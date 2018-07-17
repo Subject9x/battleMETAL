@@ -180,6 +180,9 @@ void(string str, float tokens) client_ParseMechCommand={
     self.i_faction = stof( argv(2) );
     mapfile_pvp_load(self.i_faction);
   }
+  else if( argv(1) == "setmode" ){
+    cvar_set("gamemode", argv(2) );
+  }
 };  
 
 /*

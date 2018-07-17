@@ -13,7 +13,6 @@ void() ai_unit_ini_var={
   self.flags = self.flags | FL_MONSTER;
   //ini all the unit stats
   self.data_idx = 0;
-  self.vec_size = 0;
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;
@@ -38,8 +37,6 @@ void() ai_unit_ini_var={
   self.conv_min = '0 0 0';
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
-  //self.w_clipsize = ((0 - self.ai_rank) *-1) + 1; //use this for the movement frame counter (I love co-opting existing variables :( ) 
-  self.w_isready = time; //and this guy too
   self.power_timer = 0;
   self.ideal_yaw = self.angles * '0 1 0';
   self.maxpatience = 0;

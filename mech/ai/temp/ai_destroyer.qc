@@ -32,7 +32,7 @@ void() ai_dest_run={
   if( time > self.ai_action_time ){
     if( ai_valid_target(self.enemy) ){
       if( ai_target_infront(self.enemy, 0.9) ){
-        ai_action_next( self.th_missile, 2, self.ai_action_mod );
+        ai_action_next( self.th_attack, 2, self.ai_action_mod );
         cons_logAString("Bot here", "->ai_dest_attack");  //DEBUG
         return;
       }
@@ -57,7 +57,6 @@ void() ai_dest_turn={
     if( ai_target_infront(self.enemy, 0.9) ){
       ai_action_next( ai_dest_attack, 2, self.ai_action_mod );
       cons_logAString("Bot here", "->ai_dest_attack");  //DEBUG
-      cons_logAFloat("Bot here", self.ai_action_mod); ///DEBUG
       return;
     } 
   }
@@ -65,7 +64,7 @@ void() ai_dest_turn={
 
 
 /*
-  TH_MISSILE
+  TH_ATTACK
 */
 void() ai_dest_attack={
   cons_logAString("Bot here", "attacking"); //DEBUG
@@ -75,7 +74,7 @@ void() ai_dest_attack={
       self.button0 = 1;
       ai_ranged_attack();
       self.button0 = 0;
-      self.th_action = self.th_missile;
+      self.th_action = self.th_attack;
       return;
     }
     ai_action_next( ai_dest_turn, 2, self.ai_action_mod );
@@ -89,7 +88,6 @@ void() ai_dest_attack={
   TH_STAND
 */
 void() ai_dest_stand={
-  
   
   if( time > self.patience && !ai_valid_target(self.enemy)){  
     //self.patience  = time + self.ai_viewcheck;
@@ -135,7 +133,9 @@ void() ai_dest_th={
   }
 };
 
-
+/*
+  TH_DIE Main
+*/
 void() ai_vec_dest_die={
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
@@ -156,24 +156,43 @@ void() ai_vec_dest_die={
   activator = self.enemy;
   SUB_UseTargets ();
 
-  
-  if( self.health <= (self.max_health / 2) * -1 ){
+  //basically overkill damage will just remove the tank (nice and clean)
+  if( self.health <= (self.max_health / 1.5) * -1 ){
     self.flags = self.flags | FL_SKIP;
-    self.think = BecomeExplosion;
-    self.nextthink = time + 0.01;
+    self.think = ai_vec_dest_die2;
+    self.nextthink = time + 0.1;
     return;
   }
-  ai_action_next( ai_vec_dest_die1, 360, 0);
+  ai_action_next( ai_vec_dest_die1, 120, 0);
 };
 
+/*
+  Death animation - tank sits as a smoking wreck
+*/
 void() ai_vec_dest_die1={
   te_smoke_test(self.origin, '0 0 10', 2);
   if ( time > self.ai_action_time ){
-    self.flags = self.flags | FL_SKIP;
-    self.think = BecomeExplosion;
-    self.nextthink = time + 0.01;
+    ai_action_next( ai_vec_dest_die1a, 300, 0);
     return;
   }
+};
+//stops smoking
+void() ai_vec_dest_die1a={
+  if ( time > self.ai_action_time ){
+    self.flags = self.flags | FL_SKIP;
+    self.think = ai_vec_dest_die2;
+    self.nextthink = time + 0.1;
+    return;
+  }
+};
+
+/*
+  explode the thing
+*/
+void() ai_vec_dest_die2={
+  mech_cleanupMech();
+  self.nextthink = time + 0.1;
+  self.think = BecomeExplosion;
 };
 
 /*
@@ -183,6 +202,7 @@ void() ai_vec_dest_die1={
 void() ai_vec_dest={
   if( ai_spawn_clean(cvar("gamemode")) == FALSE){
     remove(self);
+    return;
   }
   ai_unit_ini_var();
     
@@ -194,7 +214,7 @@ void() ai_vec_dest={
   self.th_stand = ai_dest_stand; //-> th_stand is used as the unit's main think function
   self.th_walk = ai_dest_walk; //-> th_walk is used the unit's 'Action' function, only 1 action execution per frame
   self.th_run = ai_dest_run;
-  self.th_missile = ai_dest_attack;
+  self.th_attack = ai_dest_attack;
   self.th_action = ai_dest_stand;
   self.th_die = ai_vec_dest_die;
   

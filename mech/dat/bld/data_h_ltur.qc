@@ -96,8 +96,6 @@ void() data_tur_ini={
 
 /*QUAKED building_tur (0.5 .85 .2) (-10 -10 0) (10 10 25)
 */
-void() building_tur;
-
 void() building_tur={
   local float mod_sh, mod_am, mod_yaw;
   

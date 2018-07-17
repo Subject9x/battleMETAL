@@ -5,12 +5,14 @@ Date: 7/9/2018
 Overview: AI API Header, covers multiple impl files
 */
 //CONSTANTS
-float AI_SPAWNFLAG_CAMPAIGN = 1;
-float AI_SPAWNFLAG_COOP = 2;
-float AI_SPAWNFLAG_DM = 4;
-float AI_SPAWNFLAG_TDM = 8;
+float AI_SPAWNFLAG_CAMPAIGN = 1;  //belongs in campaign mode
+float AI_SPAWNFLAG_COOP = 2;      //belongs in co-op mode
+float AI_SPAWNFLAG_DM = 4;        //belongs in DeathMatch
+float AI_SPAWNFLAG_TDM = 8;       //belongs in Team DeathMatch
 float AI_SPAWNFLAG_COLDSTART = 16; //on-spawn, bot will ignore friendly help calls
 float AI_SPAWNFLAG_RANDDOMSTART = 32; //start on random node if AI has patrol path
+float AI_SPAWNFLAG_HASRADAR = 64;   //radar is expensive to use, use sparingly
+                                    //generally this is for mech units
 
 //GLOBALS
 float enemy_infront;
@@ -19,6 +21,7 @@ float enemy_yaw;
 float enemy_vis;
 
 //ENTITY VARS
+.void() th_attack;      //apparently th_missile returns a float, wtf
 .void() th_action;        //th_ func to execute
 .float ai_action_time;  //for executing action states
 .float ai_action_mod;
@@ -31,6 +34,7 @@ float enemy_vis;
 .float ai_radar;
 .float patience;        //counter for if AI is stuck on something
 .float maxpatience;     //how impatient is the AI
+.vector ai_pitch;     //x = min, y= max, z = pitch speed
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -56,7 +60,7 @@ void(float rank) ai_pilot_ini_stats;
 
 //AI UTILS - 
 float(float mode) ai_spawn_clean;
-entity() ai_find_target_visual;
+float() ai_find_target_visual;
 entity() ai_find_target_radar;
 float(entity targ, float ang_limit) ai_target_infront;
 float (entity targ) ai_visible;
@@ -98,3 +102,15 @@ void() ai_dest_attack;
 void() ai_dest_stand;
 void() ai_vec_dest_die;
 void() ai_vec_dest_die1;
+void() ai_vec_dest_die1a;
+void() ai_vec_dest_die2;
+
+void() ai_turret_walk;
+void() ai_turret_run;
+void() ai_turret_stand;
+void() ai_turret_turn;
+void() ai_turret_attack;
+void() ai_turret_die;
+void() ai_turret_die_burn;
+void() ai_turret_th;
+void() temp_chunk_burn;

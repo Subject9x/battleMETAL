@@ -275,4 +275,4 @@ void() ai_mech_touch;
 void() ai_turret_control;
 void() ai_turret_update;
 void() ai_turret_touch;
-void() ai_turret_die;
+//void() ai_turret_die;

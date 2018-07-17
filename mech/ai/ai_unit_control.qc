@@ -200,7 +200,7 @@ void() ai_turret_touch={
   }
 };
 
-void() ai_turret_die={
+/*void() ai_turret_die={
   local entity w_chain, debris, this;
   w_chain = self.w_slot;
   while(w_chain){
@@ -228,7 +228,7 @@ void() ai_turret_die={
  
   self.think = ai_mech_cleanup;
   self.nextthink = time + 100;
-};
+};*/
 
 void() ai_mech_die={
   local entity w_chain;

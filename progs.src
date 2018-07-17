@@ -21,6 +21,7 @@ triggers_h.qc
   common/data/data_values_mechs.qc
   common/data/data_values_vehicles.qc
   common/data/data_values_buildings.qc
+  common/data/data_values_turrets.qc
   common/data/data_values_particles.qc
 //==========================
 //mech header files
@@ -113,6 +114,8 @@ dp/subs.qc
   mech/dat/bld/data_h_fuel.qc
   mech/dat/bld/data_h_ltur.qc
   mech/dat/bld/data_h_repair.qc
+  mech/dat/bld/data_tur_hlite.qc
+  
 //===========================
 
 //impl files
@@ -124,7 +127,7 @@ dp/subs.qc
   mech/ai/temp/ai_ctrl.qc
   mech/ai/temp/ai_mech_skirmish.qc
   mech/ai/temp/ai_destroyer.qc
-  
+  mech/ai/temp/ai_turret.qc
   
   mech/ai/m_ai_test.qc
   mech/ai/ai_directives_combat.qc

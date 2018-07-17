@@ -148,7 +148,7 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
     self.classname = MECH_PIECE; 
     self.c_name = "weapon";
 
-    if((own.flags & FL_MONSTER)){
+    if( (own.flags & FL_MONSTER) ){
       if(self.w_clipsize > 1){
         self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
       }
@@ -331,7 +331,11 @@ entity(void() func) build_mech_legs={
 void(void() data_ini) build_vehicle_unit={
   local entity part_chain;
   data_ini();
-  build_mech_torsoCenter(self.unit_ctor);
+  self.unit_ctor();
+  util_setModel(self.c_model, self.mskin, 0);
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
+  util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
+  self.alpha = 1;
   self.sh_hit = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
@@ -348,13 +352,7 @@ void(void() data_ini) build_vehicle_unit={
     part_chain = part_chain.c_part;
   }
   if(self.unit_legs){
-    if(self.vec_name == "Light Turret"){
-      self.e_legs = build_building_base(self.unit_legs);
-    }
-    else{
-      self.e_legs = build_vehc_base(self.unit_legs);
-    }
-
+    self.e_legs = build_vehc_base(self.unit_legs);
     part_chain.c_part = self.e_legs;
     part_chain = part_chain.c_part;
   }
@@ -387,6 +385,40 @@ entity(void() func) build_vehc_base={
   return base_ent;
 };
 
+void(void() data_ini) build_turret_unit={
+
+  local entity part_chain;
+  data_ini();
+  build_turret_top(self.unit_ctor);
+  self.sh_hit = 0;
+  self.chain_timer = time;
+  self.lock_timer = 0;
+  self.e_cam = build_unit_camera(self.unit_cam);
+  part_chain = self;
+  if(self.unit_legs){
+    self.e_legs = build_building_base(self.unit_legs);
+    part_chain.c_part = self.e_legs;
+    part_chain = part_chain.c_part;
+  }
+  build_unit_weapon_list();
+  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
+  droptofloor();
+  
+  if(util_cornerSlopeCheck(self, 1)){
+    util_generateBuildingFoundation(self);
+  }
+  util_setOffsetOrigin(self.e_legs, self, self.e_legs.c_ofs);
+};
+
+void(void() func) build_turret_top={
+  local entity this, ctor;
+  func();
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE);
+  util_setModel(self.c_model, self.mskin, 0);
+  util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
+  self.alpha = 1;
+};
+
 entity(void() func) build_building_base={
   local entity this, leg_ent;
   this = self;
@@ -402,11 +434,7 @@ entity(void() func) build_building_base={
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.owner = this;
     self.view_ofs = self.origin - this.origin;
-    self.th_die = ctrl_dieLegs;
-    self.laser_sight_org = '0 0 0';
-    self.laser_sight_timer = time + 0.5; 
-    self.w_firerate = 0; //used to track m_maccel changes
-    //leg_stand1();
   self = this;
   return leg_ent;
 };
+

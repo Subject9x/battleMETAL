@@ -25,3 +25,8 @@ entity(void() func) build_mech_armLeft;
 //vehicle-specific assembly functions
 void(void() data_ini) build_vehicle_unit;
 entity(void() func) build_vehc_base;
+
+//turret assembly
+void(void() data_ini) build_turret_unit;
+void(void() func) build_turret_top;
+entity(void() func) build_turret_base;

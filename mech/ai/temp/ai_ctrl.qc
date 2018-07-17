@@ -12,17 +12,20 @@ void(void() next_action, float next_time, float time_mod) ai_action_next={
 };
 
 void() ai_hunt_target={
-	self.goalentity = self.enemy;
-  if( self.e_legs ){
-    local entity temp;
-    temp = self;
-    self = self.e_legs;
-      self.th_walk();
-    self = temp;
+  //only applies to ai that can actually move
+  if( self.th_run ){
+    if( self.e_legs ){
+      local entity temp;
+      temp = self;
+      self = self.e_legs;
+        self.th_walk();
+      self = temp;
+    }
+    self.goalentity = self.enemy;
+    self.th_action = self.th_run;
+    self.ai_action_time = time + 5;
   }
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-	self.th_action = self.th_run;
-  self.ai_action_time = time + 5;
 };
 
 void(float ifaction, float datatype) ai_sfx_spotted={

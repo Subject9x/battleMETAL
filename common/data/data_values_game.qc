@@ -46,6 +46,13 @@ string PATH_DATA_SAVE = "saves";
 string PATH_DATA_UI = "ui";
 string NEWLINE = "\n";
 //============================
+//   GAME MODES
+//============================
+float GAMEMODE_CAMPAIGN = 1;
+float GAMEMODE_COOP = 2;
+float GAMEMODE_DM = 3;
+float GAMEMODE_TEAMDM = 4;
+//============================
 //   PLAYER STATE ID's           
 //============================
 float PLAYER_DEAD = -1;
