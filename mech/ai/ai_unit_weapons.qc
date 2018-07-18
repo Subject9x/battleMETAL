@@ -71,7 +71,7 @@ vector() ai_attack_aimpoint={
   return trace_endpos;
 };
 
-vector(entity ai) ai_attack_calcSpread={
+/*vector(entity ai) ai_attack_calcSpread={
   local vector hitorg;
   local float rng, cnv, cx, cy;
   if(ai.stat_trg_dist > ai.ai_minrange){
@@ -83,10 +83,11 @@ vector(entity ai) ai_attack_calcSpread={
   cy = cnv; 
   cy = cy + ( cnv / 2 * random() );
   cy = cy * crandom();
+  
   makevectors(ai.angles);
   hitorg = ai.w_fire_ofs + (v_up * cy) + (v_right * cx);
   return hitorg;
-};
+};*/
 /*
   simple validation, AI should only fire a weapon that
   has a power draw IF the AI has more than half of the current energy

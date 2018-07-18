@@ -109,7 +109,7 @@ void() mh_world_ini={
 
 void(float build_id) data_iniBuilding={
   if(build_id == ID_BLD_H_TURRET){
-    build_vehicle_unit(data_tur_ini);
+    //build_vehicle_unit(data_tur_ini);
   }
   else{
     cons_logAFloat("Error: failed to build building with id", build_id);

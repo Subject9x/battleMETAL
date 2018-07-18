@@ -112,7 +112,6 @@ dp/subs.qc
   mech/dat/bld/data_h_power.qc
   mech/dat/bld/data_h_hangar_l.qc
   mech/dat/bld/data_h_fuel.qc
-  mech/dat/bld/data_h_ltur.qc
   mech/dat/bld/data_h_repair.qc
   mech/dat/bld/data_tur_hlite.qc
   
@@ -128,6 +127,7 @@ dp/subs.qc
   mech/ai/temp/ai_mech_skirmish.qc
   mech/ai/temp/ai_destroyer.qc
   mech/ai/temp/ai_turret.qc
+  mech/ai/temp/ai_nodes.qc
   
   mech/ai/m_ai_test.qc
   mech/ai/ai_directives_combat.qc

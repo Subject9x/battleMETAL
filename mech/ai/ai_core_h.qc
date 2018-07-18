@@ -255,7 +255,7 @@ float(float len, float tickRate) ai_util_calcMoveLen;
 //WEAPON HANDLING
 void() ai_attack;
 vector() ai_attack_aimpoint;
-vector(entity ai) ai_attack_calcSpread;
+//vector(entity ai) ai_attack_calcSpread;
 float(entity wep) ai_attack_checkEne;
 float(entity wep) ai_attack_shotBlock;
 

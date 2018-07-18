@@ -13,12 +13,12 @@ float AI_SPAWNFLAG_COLDSTART = 16; //on-spawn, bot will ignore friendly help cal
 float AI_SPAWNFLAG_RANDDOMSTART = 32; //start on random node if AI has patrol path
 float AI_SPAWNFLAG_HASRADAR = 64;   //radar is expensive to use, use sparingly
                                     //generally this is for mech units
-
 //GLOBALS
 float enemy_infront;
 float enemy_range;
 float enemy_yaw;
 float enemy_vis;
+string AI_NODES[128];
 
 //ENTITY VARS
 .void() th_attack;      //apparently th_missile returns a float, wtf
@@ -58,22 +58,33 @@ float(float rank) ai_pilot_action_mod;
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
 
+//AI Node
+float AI_NODE_PATROL = 0;
+float AI_NODE_DEFEND = 1;
+float AI_NODE_ATTACK = 2;
+
+void() ai_node_t_patrol;
+void() ai_node_t_defend;
+void() ai_node_t_attack;
+
 //AI UTILS - 
 float(float mode) ai_spawn_clean;
 float() ai_find_target_visual;
 entity() ai_find_target_radar;
 float(entity targ, float ang_limit) ai_target_infront;
 float (entity targ) ai_visible;
-vector() ai_attack_trace;
+vector(entity wep) ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
 float(entity t) ai_valid_target;
+vector(entity ai) ai_attack_calcSpread;
 
 //AI CONTROL - ai_ctrl.qc 
 void(void() next_action, float next_time, float time_mod) ai_action_next;
 void() ai_hunt_target;
 void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;
+string( string grpid ) ai_node_pick_rand;
 
 void(float dist) ai_forward;
 void(float dist) ai_back;
@@ -93,24 +104,3 @@ void() q1_ai_turn;
 void(float dist) q1_ai_run;
 void() q1_ai_run_slide;
 void() q1_ai_run_attack;
-
-//Unit functions
-void() ai_dest_walk;
-void() ai_dest_run;
-void() ai_dest_turn;
-void() ai_dest_attack;
-void() ai_dest_stand;
-void() ai_vec_dest_die;
-void() ai_vec_dest_die1;
-void() ai_vec_dest_die1a;
-void() ai_vec_dest_die2;
-
-void() ai_turret_walk;
-void() ai_turret_run;
-void() ai_turret_stand;
-void() ai_turret_turn;
-void() ai_turret_attack;
-void() ai_turret_die;
-void() ai_turret_die_burn;
-void() ai_turret_th;
-void() temp_chunk_burn;

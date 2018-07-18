@@ -7,18 +7,13 @@ Overview: ai unit
   an on-ground, static vehicle
 */
 
-/*
-  TH_WALK
-*/
-void() ai_turret_walk={
-};
-
-/*
-  TH_RUN
-*/
-void() ai_turret_run={
-  ai_action_next(ai_turret_turn, 0.01, self.ai_action_mod);
-};
+void() ai_turret_stand;
+void() ai_turret_turn;
+void() ai_turret_attack;
+void() ai_turret_die;
+void() ai_turret_die_burn;
+void() ai_turret_th;
+void() temp_chunk_burn;
 
 /*
   TH_TURN

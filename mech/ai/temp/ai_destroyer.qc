@@ -7,6 +7,16 @@ Overview: ai unit
   an on-ground, turret-less vehicle
 */
 
+void() ai_dest_walk;
+void() ai_dest_run;
+void() ai_dest_turn;
+void() ai_dest_attack;
+void() ai_dest_stand;
+void() ai_vec_dest_die;
+void() ai_vec_dest_die1;
+void() ai_vec_dest_die1a;
+void() ai_vec_dest_die2;
+
 /*
   TH_WALK
 */
@@ -42,6 +52,8 @@ void() ai_dest_run={
         return;
       }
     }
+    ai_action_next( self.th_stand, 0, self.ai_action_mod );
+    return;
   }
 };
 
@@ -99,6 +111,7 @@ void() ai_dest_stand={
     }
   }
   if( time > self.pausetime ){
+    ai_walk_setup();
     ai_action_next( self.th_walk, 2, self.ai_action_mod );
     return;
   }
@@ -125,7 +138,7 @@ void() ai_dest_th={
     self.th_action();
   }
   
-  self.SendFlags = self.SendFlags | (SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION);
+  self.SendFlags = self.SendFlags | (SEND_FLAG_ORIGIN | SEND_FLAG_ANGLE | SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION);
   
   if( !(self.flags & FL_SKIP ) ){
     self.think = ai_dest_th;
@@ -198,9 +211,9 @@ void() ai_vec_dest_die2={
 /*
   AI SPAWN FUNCTION
 */
-
 void() ai_vec_dest={
   if( ai_spawn_clean(cvar("gamemode")) == FALSE){
+		objerror ("ai_vec_dest - outside of game mode");
     remove(self);
     return;
   }
@@ -209,13 +222,14 @@ void() ai_vec_dest={
   data_iniVehc(self.nextVecChoice);
   ai_pilot_ini_stats(self.ai_rank);
 
-  self.pausetime = 999999;
+  if( !self.pausetime ){
+    self.pausetime = 999999;
+  }
   
   self.th_stand = ai_dest_stand; //-> th_stand is used as the unit's main think function
   self.th_walk = ai_dest_walk; //-> th_walk is used the unit's 'Action' function, only 1 action execution per frame
   self.th_run = ai_dest_run;
   self.th_attack = ai_dest_attack;
-  self.th_action = ai_dest_stand;
   self.th_die = ai_vec_dest_die;
   
   droptofloor();
@@ -223,6 +237,8 @@ void() ai_vec_dest={
    
   self.e_cam.SendEntity = send_vehicle;
   self.e_cam.SendFlags = 31;
+
+ ai_walk_setup();
 
   self.think = ai_dest_th;
   self.nextthink = time + random()*0.5; //spread out thinks

@@ -128,7 +128,6 @@ float(entity targ, float ang_limit) ai_target_infront={
 	return FALSE;
 };
 
-
 float (entity targ) ai_visible ={
   local vector	spot1, spot2;
   
@@ -145,15 +144,35 @@ float (entity targ) ai_visible ={
   return FALSE;
 };
 
-vector() ai_attack_trace={
+vector(entity ai) ai_attack_calcSpread={
+  local vector hitorg;
+  local float rng, cnv, cx, cy;
+  //if(ai.stat_trg_dist > ai.ai_minrange){
+  //  cnv = cnv * rng;
+  //}
+  cx = cnv;
+  cx = cx + ( cnv / 2 * random() );
+  cx = cx * crandom();
+  cy = cnv; 
+  cy = cy + ( cnv / 2 * random() );
+  cy = cy * crandom();
+  
+  makevectors(ai.angles);
+  hitorg = ai.w_fire_ofs + (v_up * cy) + (v_right * cx);
+  return hitorg;
+};
+
+vector(entity wep) ai_attack_trace={
   local entity cam;
   local vector lead, cam_ofs;
+  
   lead = self.enemy.origin - (self.enemy.velocity * self.ai_leading);
   lead = normalize(lead - self.origin);
   cam = self.e_cam;
+  
   makevectors(self.angles);
-  cam_ofs = cam.origin + (v_forward * (self.c_bbx_x_x / 2) );
-  traceline(cam_ofs, self.enemy.origin, FALSE, self);
+  traceline (self.origin + v_forward * 1, self.origin + lead*wep.w_range, TRUE, self);
+  
   return trace_endpos;
 };
 
@@ -162,11 +181,12 @@ void() ai_ranged_attack={
   local float fired;
   this = self;
   wep_chain = self.w_slot;
-  self.w_fire_ofs = ai_attack_trace();
+  self.v_angle = self.angles;
   while(wep_chain){
     if(self.button0){
       if(wep_chain.w_state == READY){
-        if( ai_target_facingideal() && (self.stat_trg_dist <= wep_chain.w_range) ){
+        if( self.stat_trg_dist <= wep_chain.w_range ){
+          self.w_fire_ofs = ai_attack_trace(wep_chain);
           if( !ai_attack_blockcheck(wep_chain) ){
             if( ai_attack_checkEne(wep_chain) ){
               self = wep_chain;
@@ -209,16 +229,16 @@ void() ai_ranged_attack={
 */  
 float(entity wep) ai_attack_blockcheck={
   local vector viewpont;
+
+  viewpont = normalize(self.enemy.origin - self.e_cam.origin);
   makevectors(self.angles);
-  traceline (self.e_cam.origin + v_forward * 1, self.enemy.origin, FALSE, self);
-  viewpont = trace_endpos;
+  traceline (self.e_cam.origin + v_forward * 1, self.e_cam.origin + viewpont*wep.w_range, FALSE, self);
+  te_beam_esr(self.e_cam.origin + v_forward * 1, self.e_cam.origin + viewpont*wep.w_range);
   
-  makevectors(wep.angles);
-  tracebox(viewpont, '-2 -2 -2', '2 2 2', wep.origin, FALSE, self);
   if(trace_ent == world){
     return TRUE;
   }
-  if(trace_ent.i_faction == self.i_faction){
+  if( trace_ent.i_faction == self.i_faction ){
     return TRUE;
   }
   /*if(trace_ent != self.enemy){
@@ -230,3 +250,67 @@ float(entity wep) ai_attack_blockcheck={
   }*/
   return FALSE;
 };
+
+//AI Nodes
+//the patrol node touch 
+void() ai_node_t_patrol={
+  local entity	temp;
+  
+  if( other.movetarget != self ){
+    return;
+  }
+  
+  if( ai_valid_target( other.enemy ) ){
+    return;
+  }
+  
+  temp = self;
+	self = other;
+	other = temp;
+
+	//if (self.classname == "monster_ogre")
+		//sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
+
+//dprint ("t_movetarget\n");
+	self.goalentity = self.movetarget = find (world, targetname, other.target);
+	self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+	if ( !self.movetarget ){
+		self.pausetime = time + 999999;
+    ai_action_next( self.th_stand, 1, self.ai_action_mod );
+		return;
+	}
+};
+
+void() ai_node_t_defend={
+  
+};
+void() ai_node_t_attack={
+  
+};
+
+/*
+  Only used for AI_SPAWNFLAG_RANDDOMSTART
+*/
+string( string grpid ) ai_node_pick_rand={
+  local entity node;
+  local float clr, total, pick;
+  total = 0;
+  clr = 0;
+  while( clr <= 128 ){
+    AI_NODES[clr] = "";
+    clr = clr + 1;
+  }
+  
+  node = findchain( group, grpid);
+  if( node ){  
+    while( node ){
+      AI_NODES[total] = node.targetname;
+      total = total + 1;
+      node = node.chain;
+    }
+    pick = crandom() * total;
+    return AI_NODES[pick];
+  }
+  return "false";
+};
+

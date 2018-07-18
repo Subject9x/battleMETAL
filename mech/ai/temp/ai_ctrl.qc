@@ -37,6 +37,25 @@ void() ai_found_target={
   ai_hunt_target();
 };
 
+void() ai_walk_setup={
+	if (self.target){
+		self.goalentity = self.movetarget = find(world, targetname, self.target);
+		if (!self.movetarget){
+			dprint ("Monster can't find target at ");
+			dprint (vtos(self.origin));
+			dprint ("\n");
+		}
+// this used to be an objerror
+		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+		//self.th_walk ();
+    ai_action_next( self.th_walk, 0, self.ai_action_mod );
+	}
+	else{
+		self.pausetime = 99999999;
+    ai_action_next( self.th_stand, 0, self.ai_action_mod );
+	}
+};
+
 void(float dist) ai_forward={
   q1_ai_forward(dist);
   self.e_cam.SendFlags = 16;

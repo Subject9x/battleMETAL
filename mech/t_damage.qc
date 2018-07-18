@@ -413,7 +413,7 @@ float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis={
     remainder = 0;
   }
   else{
-    if(dmg_amt >= targ.sh_cur){
+    if(dmg_amt >= targ.sh_cur){      
       targ.sh_cur = targ.sh_cur - targ.sh_cur;
       remainder = dmg_amt - (targ.sh_cur * SHVEXP_EFFNON_PERCENTAGE);
     }

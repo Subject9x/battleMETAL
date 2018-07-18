@@ -71,7 +71,7 @@ void() data_latc_atk={
     end = ai_attack_calcSpread(player);
   }
   dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
-  
+
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.rl_cur = 0;
@@ -85,9 +85,11 @@ void() data_latc_atk={
     self.w_state = RECOIL;
   }
   
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  te_superspike(dir);
-  t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');
+  if( trace_ent ){
+    sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+    te_superspike(dir);
+    t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');
+  }
   
   local entity bul_fx;
   bul_fx = spawn();

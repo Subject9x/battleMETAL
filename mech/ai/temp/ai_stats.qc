@@ -311,20 +311,15 @@ float() ai_pilot_shield_mod={
   its target. Better AI's are better at this.
 */
 float() ai_pilot_rating_leading={
-  if(self.ai_rank == AI_RANK_ACE){
-    return AI_LEAD_ACE;
-  }
-  else if(self.ai_rank == AI_RANK_VET){
-    return AI_LEAD_VET;
-  }
-  else if(self.ai_rank == AI_RANK_REG){
-    return AI_LEAD_REG;
-  }
-  else if(self.ai_rank == AI_RANK_ROK){
-    return AI_LEAD_ROK;
-  }
-  else{
-    return AI_LEAD_ROK;
+  switch( self.ai_rank ){
+    case AI_RANK_ACE:
+      return AI_LEAD_ACE;
+    case AI_RANK_VET:
+      return AI_LEAD_VET;
+    case AI_RANK_REG:
+      return AI_LEAD_REG;
+    default :
+      return AI_LEAD_ROK;
   }
 };
 
