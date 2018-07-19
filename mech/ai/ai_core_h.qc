@@ -118,13 +118,13 @@ void() ai_control;      //global, root controller function
 .float ai_dmg_l;
 .float ai_dmg_m;
 .float ai_dmg_s;
-.float ai_rte_rng;
-.float ai_rte_cnv;
+//.float ai_rte_rng;
+//.float ai_rte_cnv;
 //.vector ai_prev_org; use the pre-existing 'dest' vars
-.float ai_leading;      //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
+//.float ai_leading;      //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
 .float ai_minrange;     //minimum range of guns;
 .float ai_optical;      //the 'visual' range the ai can see out before relying on sensors
-.float ai_radar;
+//.float ai_radar;
 .float patience;        //counter for if AI is stuck on something
 .float maxpatience;     //how impatient is the AI
 .float ai_viewcheck;    //interval for checking for enemies

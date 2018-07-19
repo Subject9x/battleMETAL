@@ -121,7 +121,7 @@ void() building_repair={
   self.data_idx = ID_BLD_H_REPAIR;
   self.data_type = DATA_BLD;
   self.vec_name = "Repair Bay";
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
   util_setModel(DAT_BLD_H_REPAIR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;

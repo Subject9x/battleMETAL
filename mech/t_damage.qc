@@ -112,15 +112,15 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     //}
   }
   
-  if(trg.health <= 0){
+  if( trg.health <= 0 ){
     //trg.health = 0;
-    if(trg.th_die){
-      if(trg.c_name != M_LEGS){
-        killed(trg, attacker, dmg_type);     
-        return trg;
+    if( trg.th_die ){
+      if( trg.c_name == M_LEGS ){
+        trg.owner.m_fspeed = trg.owner.m_fspeed / 2;
       }
       else{
-        trg.owner.m_fspeed = trg.owner.m_fspeed / 2;
+        killed(trg, attacker, dmg_type);     
+        return trg;
       }
     }
   }
@@ -257,7 +257,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
     
     if (!self.iscorpse){
       // bump the monster counter
-      if (self.flags & FL_MONSTER){
+      if ( (self.flags & FL_MONSTER) ){
         /*self.enemy = attacker;
         killed_monsters = killed_monsters + 1;
         WriteByte (MSG_ALL, SVC_KILLEDMONSTER);*/
@@ -266,7 +266,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
     
     self.doobits = 0;
     
-    if((self.classname == MECH_PIECE) && (self.c_name != "weapon")){
+    if( (self.classname == MECH_PIECE) && (self.c_name != "weapon") ){
       local entity wep;
       wep = self.owner;
       while(wep){
@@ -277,8 +277,11 @@ void(entity targ, entity attacker, float dmg_type) killed={
           }
         }
       }
+      self.th_die();
     }
-    self.th_die();
+    else{
+      self.th_die();
+    }
   
   self = oself;
 };

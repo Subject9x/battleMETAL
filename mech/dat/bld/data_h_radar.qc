@@ -15,7 +15,7 @@ void() building_radar={
   self.data_idx = ID_BLD_H_RADAR;
   self.data_type = DATA_BLD;
   self.vec_name = "Listening Post";
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
   util_setModel(DAT_BLD_H_SM_RADAR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;

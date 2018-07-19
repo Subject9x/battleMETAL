@@ -61,6 +61,14 @@ void() PlayerPostThink = {
       }
       break;
   }
+  
+  if (self.view_ofs == '0 0 0'){
+		return;		// intermission or finale
+  }
+    
+	if (self.deadflag >= DEAD_DYING){
+    return;
+  }
 
   if(self.data_type != DATA_POBS){
     //power up sequence
@@ -98,14 +106,6 @@ void() PlayerPostThink = {
   
   if(self.ui_box_time > 0){
     self.ui_box_time  = self.ui_box_time - 1;
-  }
- 
-	if (self.view_ofs == '0 0 0'){
-		return;		// intermission or finale
-  }
-    
-	if (self.deadflag >= DEAD_DYING){
-    return;
   }
   
 // do weapon stuff
@@ -245,7 +245,6 @@ void() PlayerDie={
     mech_clearWeaponGroups();
     if(self.data_type == DATA_MECH){
       mech_player_die();
-      return;
     }
   }
 };
@@ -253,6 +252,7 @@ void() PlayerDie={
 void() PlayerDead={
 	self.nextthink = -1;
 	self.deadflag = DEAD_DEAD;
+  self.data_type = DATA_POBS;
 };
 
 
@@ -289,7 +289,7 @@ void() PlayerDeathThink={
 	self.button7 = 0;
   self.button8 = 0;
 	
-  self.deadflag = DEAD_NO;
+  //self.deadflag = DEAD_NO;
   player_unmakeMech();
   mech_cleanupMech();
   player_makeObserver();

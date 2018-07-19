@@ -10,7 +10,7 @@ Overview: AI State equations
   initialize all the entity vars needed for the unit
 */
 void() ai_unit_ini_var={
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   //ini all the unit stats
   self.data_idx = 0;
   self.en_cur = 0;
@@ -44,8 +44,8 @@ void() ai_unit_ini_var={
   self.ai_viewcheck = 0;
   self.ai_view = 0;
   self.ai_action_mod = 0;
+  self.ai_fight = FALSE;
 };
-
 
 /*
   Scope : Self

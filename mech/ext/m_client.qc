@@ -206,8 +206,8 @@ void() PutClientInServer = {
   //DecodeLevelParms ();
 	self.attack_finished = time;
 	self.th_die = PlayerDie;
-	self.deadflag = DEAD_NO;
-
+  self.deadflag = DEAD_NO;
+  
 // paustime is set by teleporters to keep the player from moving a while
 	self.pausetime = 0;
   self.view_ofs = '0 0 1';

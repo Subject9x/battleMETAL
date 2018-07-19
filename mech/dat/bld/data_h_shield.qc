@@ -112,7 +112,7 @@ void() building_shield={
   self.data_type = DATA_BLD;
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.data_type = DATA_BLD;
   util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;

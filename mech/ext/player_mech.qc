@@ -103,7 +103,7 @@ void() mech_player_die={
   mech_player_compdie(self.e_arm_l);
   mech_player_compdie(self.e_arm_r);
   mech_player_compdie(self.e_legs);
-  self.stat_ctor_hp = -1;
+  self.stat_ctor_hp = 0;
   ctor_die1();
 };
 

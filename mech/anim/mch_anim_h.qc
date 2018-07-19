@@ -36,6 +36,8 @@ void() leg_walk8;
 */
 $frame ctorstand1
 
+$frame ctorDie1 ctorDie2 ctorDie3
+
 void() ctor_stand;
 void() ctor_die1;
 void() ctor_die2;

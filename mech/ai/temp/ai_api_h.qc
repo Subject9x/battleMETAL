@@ -23,6 +23,7 @@ string AI_NODES[128];
 //ENTITY VARS
 .void() th_attack;      //apparently th_missile returns a float, wtf
 .void() th_action;        //th_ func to execute
+.float ai_fight;
 .float ai_action_time;  //for executing action states
 .float ai_action_mod;
 .float ai_rte_rng;

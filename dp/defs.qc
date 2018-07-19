@@ -247,8 +247,8 @@ float	FL_ONGROUND				= 512;	// standing on something
 float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
 float	FL_WATERJUMP			= 2048;	// player jumping out of water
 float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
-float FL_SKIP           = 8192; //tells ai system that main update has been ovverridden
-
+float FL_SKIPTHINK        = 8192; //tells ai system that main update has been ovverridden
+float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
 //float	MOVETYPE_ANGLENOCLIP	= 1;

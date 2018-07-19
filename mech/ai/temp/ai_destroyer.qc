@@ -21,10 +21,9 @@ void() ai_vec_dest_die2;
   TH_WALK
 */
 void() ai_dest_walk={
-  if( time > self.patience && !ai_valid_target(self.enemy)){  
+  if( time > self.patience && !self.enemy ){  
     //self.patience  = time + self.ai_viewcheck;
     self.patience  = time + 1; //DEBUG1
-    cons_logAString("Bot Here", "Having a look around"); //DEBUG
     if( ai_find_target_visual() ){
       cons_logAString("Bot Here", "found target!"); //DEBUG
       return;
@@ -40,17 +39,15 @@ void() ai_dest_run={
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   movetogoal(self.m_fspeed * AI_RUN_SPD);
   if( time > self.ai_action_time ){
-    if( ai_valid_target(self.enemy) ){
+    if( self.enemy ){
       if( ai_target_infront(self.enemy, 0.9) ){
         ai_action_next( self.th_attack, 2, self.ai_action_mod );
-        cons_logAString("Bot here", "->ai_dest_attack");  //DEBUG
+        //cons_logAString("Bot here", "->ai_dest_attack");  //DEBUG
         return;
       }
-      else{
-        ai_action_next( ai_dest_turn, 5, self.ai_action_mod );
-        cons_logAString("Bot here", "->ai_dest_turn");  //DEBUG
-        return;
-      }
+      ai_action_next( ai_dest_turn, 5, self.ai_action_mod );
+      //cons_logAString("Bot here", "->ai_dest_turn");  //DEBUG
+      return;
     }
     ai_action_next( self.th_stand, 0, self.ai_action_mod );
     return;
@@ -61,27 +58,26 @@ void() ai_dest_run={
   TH_TURN
 */
 void() ai_dest_turn={
-  if( ai_valid_target(self.enemy) ){
+  if( self.enemy ){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
     ChangeYaw();
   }
   if( time > self.ai_action_time ){
     if( ai_target_infront(self.enemy, 0.9) ){
       ai_action_next( ai_dest_attack, 2, self.ai_action_mod );
-      cons_logAString("Bot here", "->ai_dest_attack");  //DEBUG
+      //cons_logAString("Bot here", "->ai_dest_attack");  //DEBUG
       return;
     } 
   }
 };
 
-
 /*
   TH_ATTACK
 */
 void() ai_dest_attack={
-  cons_logAString("Bot here", "attacking"); //DEBUG
+  //cons_logAString("Bot here", "attacking"); //DEBUG
 
-  if( ai_valid_target(self.enemy) ){  
+  if( self.enemy ){  
     if( ai_target_infront(self.enemy, 0.9) && ai_visible( self.enemy )){
       self.button0 = 1;
       ai_ranged_attack();
@@ -89,8 +85,9 @@ void() ai_dest_attack={
       self.th_action = self.th_attack;
       return;
     }
+    droptofloor();
     ai_action_next( ai_dest_turn, 2, self.ai_action_mod );
-    cons_logAString("Bot here", "->ai_dest_turn");  //DEBUG
+    //cons_logAString("Bot here", "->ai_dest_turn");  //DEBUG
     return; 
   }
   ai_action_next( self.th_stand, 2, self.ai_action_mod );
@@ -104,9 +101,9 @@ void() ai_dest_stand={
   if( time > self.patience && !ai_valid_target(self.enemy)){  
     //self.patience  = time + self.ai_viewcheck;
     self.patience  = time + 1; //DEBUG1
-    cons_logAString("Bot Here", "Having a look around"); //DEBUG
+
     if( ai_find_target_visual() ){
-      cons_logAString("Bot Here", "found target!"); //DEBUG
+      //cons_logAString("Bot Here", "found target!"); //DEBUG
       return;
     }
   }
@@ -131,7 +128,13 @@ void() ai_dest_th={
   }
   
   if( self.enemy ){
-    self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+    if( ai_valid_target(self.enemy ) ){
+      cons_logAString("self.enemy.classname", self.enemy.classname);  //DEBUG
+      self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+    }
+    else{ 
+      self.enemy = world;
+    }
   }
   
   if( self.th_action ){
@@ -140,7 +143,8 @@ void() ai_dest_th={
   
   self.SendFlags = self.SendFlags | (SEND_FLAG_ORIGIN | SEND_FLAG_ANGLE | SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION);
   
-  if( !(self.flags & FL_SKIP ) ){
+  if( !(self.flags & FL_SKIPTHINK ) ){
+    self.flags = self.flags - (self.flags & FL_SKIPTHINK);
     self.think = ai_dest_th;
     self.nextthink = time + 0.05;
   }
@@ -171,7 +175,7 @@ void() ai_vec_dest_die={
 
   //basically overkill damage will just remove the tank (nice and clean)
   if( self.health <= (self.max_health / 1.5) * -1 ){
-    self.flags = self.flags | FL_SKIP;
+    self.flags = self.flags | FL_SKIPTHINK;
     self.think = ai_vec_dest_die2;
     self.nextthink = time + 0.1;
     return;
@@ -192,7 +196,7 @@ void() ai_vec_dest_die1={
 //stops smoking
 void() ai_vec_dest_die1a={
   if ( time > self.ai_action_time ){
-    self.flags = self.flags | FL_SKIP;
+    self.flags = self.flags | FL_SKIPTHINK;
     self.think = ai_vec_dest_die2;
     self.nextthink = time + 0.1;
     return;

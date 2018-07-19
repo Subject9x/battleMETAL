@@ -38,35 +38,25 @@ float(float mode) ai_spawn_clean={
 };
 
 float(entity t) ai_valid_target={
-  if(!t){
-    //dead simple check
-    return FALSE;
+  if ( t ){
+    if( t.deadflag <= DEAD_NO ){
+      if( t.i_faction != self.i_faction ){
+        if( t.data_type == DATA_BLD ){
+          return TRUE;
+        }
+        if( t.data_type == DATA_MECH ){
+          return TRUE;
+        }
+        if( t.data_type == DATA_MECH_AI ){
+          return TRUE;
+        }
+        if( t.data_type == DATA_VEHC ){
+          return TRUE;
+        }
+      }
+    }
   }
-  if(t == world){
-    return FALSE;
-  }
-  if(t == self){
-    return FALSE;
-  }
-  if(t.owner == self){
-    return FALSE;
-  }
-  if(t.data_type == DATA_POBS){
-    return FALSE;
-  }
-  if(t.deadflag >= DEAD_DYING){
-    return FALSE;
-  }
-  if(t.health <= 0){
-    return FALSE;
-  }
-  if(t.classname == MECH_PIECE){
-    return ai_valid_target(t.owner);
-  }
-  if(t.i_faction == self.i_faction){
-    return FALSE;
-  }
-  return TRUE;
+  return FALSE;
 };
 
 float() ai_find_target_visual={
@@ -76,20 +66,14 @@ float() ai_find_target_visual={
   dist = self.ai_view;
   rng = dist;
   while( targ ){
-    if( (targ.flags & FL_CLIENT) || (targ.flags & FL_MONSTER) ){
-      if( targ.deadflag <= DEAD_NO ){
-        if( targ.i_faction != self.i_faction ){
-          if( (targ.data_type == DATA_MECH) || (targ.data_type == DATA_VEHC) || (targ.data_type == DATA_MECH_AI) || (targ.data_type == DATA_BLD) ){
-            if( ai_visible(targ) ){
-              if( ai_target_infront(targ, self.ai_fov) ){
-                local float ndist;
-                ndist = vlen(targ.origin - self.origin);
-                if(ndist < rng){
-                  rng = ndist;
-                  found = targ;
-                }
-              }
-            }
+    if( ai_valid_target(targ) ){
+      if( ai_target_infront(targ, self.ai_fov) ){
+        if( ai_visible(targ) ){
+          local float ndist;
+          ndist = vlen(targ.origin - self.origin);
+          if(ndist < rng){
+            rng = ndist;
+            found = targ;
           }
         }
       }
@@ -108,7 +92,47 @@ float() ai_find_target_visual={
 };
 
 entity() ai_find_target_radar={
-
+  local entity targ, found;
+  local float dist, rng;
+  targ = findchainflags(flags, FL_UNIT);
+  dist = self.radar_range;
+  rng = dist;
+  if( self.stat_rdr_mode ){
+    rng = rng * 2;
+  }
+  while( targ ){
+    if( ai_valid_target(targ) ){
+      local float ndist, nrng;
+      nrng = rng;
+      ndist = vlen(targ.origin - self.origin);
+      if( ndist <= rng ){
+        if( (targ.flags & FL_CLIENT) ){
+          if( !targ.stat_rdr_mode ){
+            if( ndist <= (nrng / 2 ) ){
+              nrng = ndist;
+              found = targ;
+            }
+          }
+        }
+        else{
+          if(ndist < nrng){
+            nrng = ndist;
+            found = targ;
+          }
+        }
+      }
+    }
+    targ = targ.chain;
+  }
+  if( found ){
+    if( found == self.enemy ){
+      return FALSE;
+    }
+    self.enemy = found;
+    ai_found_target();
+    return TRUE;
+  }
+  return FALSE;
 };
 
 /*
@@ -233,8 +257,7 @@ float(entity wep) ai_attack_blockcheck={
   viewpont = normalize(self.enemy.origin - self.e_cam.origin);
   makevectors(self.angles);
   traceline (self.e_cam.origin + v_forward * 1, self.e_cam.origin + viewpont*wep.w_range, FALSE, self);
-  te_beam_esr(self.e_cam.origin + v_forward * 1, self.e_cam.origin + viewpont*wep.w_range);
-  
+
   if(trace_ent == world){
     return TRUE;
   }

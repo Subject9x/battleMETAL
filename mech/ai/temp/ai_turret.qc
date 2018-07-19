@@ -137,9 +137,8 @@ void() ai_turret_die={
     }
     missile.velocity = randvec + (150 * v_up) + (v_right * 100*random()) + (v_forward * 100*random() );
     missile.velocity_z = missile.velocity_z + 250 + 50*random();
-
     missile.avelocity = '375 125 250';
-    
+    missile.colormod = '0.15 0.15 0.15';
   // set missile duration
     missile.delay = 360;
     missile.nextthink = 0.1;
@@ -155,7 +154,7 @@ void() ai_turret_die={
 void() ai_turret_die_burn={
   te_smoke_test(self.origin, '0 0 10', 1);
   if ( time > self.ai_action_time ){
-    self.flags = self.flags | FL_SKIP;
+    self.flags = self.flags | FL_SKIPTHINK;
     self.think = BecomeExplosion;
     self.nextthink = time + 0.01;
     return;
@@ -185,7 +184,7 @@ void() ai_turret_th={
   
   self.SendFlags = self.SendFlags | (SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION);
   
-  if( !(self.flags & FL_SKIP ) ){
+  if( !(self.flags & FL_SKIPTHINK ) ){
     self.think = ai_turret_th;
     self.nextthink = time + 0.05;
   }

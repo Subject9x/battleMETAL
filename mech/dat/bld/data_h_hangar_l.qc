@@ -13,7 +13,7 @@ void() building_hangar={
   self.data_idx = ID_BLD_H_HANGAR_L;
   self.data_type = DATA_BLD;
   self.vec_name = "Large Hangar";
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
   util_setModel(DAT_BLD_H_LG_HANGAR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
