@@ -21,53 +21,80 @@ void() ai_vec_dest_die2;
   TH_WALK
 */
 void() ai_dest_walk={
-  if( time > self.patience && !self.enemy ){  
-    //self.patience  = time + self.ai_viewcheck;
-    self.patience  = time + 1; //DEBUG1
+
+  if( time > self.ai_viewtime ){
     if( ai_find_target_visual() ){
-      cons_logAString("Bot Here", "found target!"); //DEBUG
+      self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+      ai_action_next( self.th_run, 0.5, self.ai_action_mod );
       return;
     }
+    self.ai_viewtime = time + self.ai_viewcheck;
   }
-  movetogoal(self.m_fspeed * AI_WALK_SPD);
+
+  //as long as AI has movetarget, go there
+  if( self.movetarget ){
+    movetogoal(self.m_fspeed * AI_WALK_SPD);
+  }
+  else{
+    ai_action_next( self.th_stand, 1, self.ai_action_mod);
+  }
 };
 
 /*
   TH_RUN
 */
 void() ai_dest_run={
+  
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   movetogoal(self.m_fspeed * AI_RUN_SPD);
   if( time > self.ai_action_time ){
     if( self.enemy ){
-      if( ai_target_infront(self.enemy, 0.9) ){
-        ai_action_next( self.th_attack, 2, self.ai_action_mod );
-        //cons_logAString("Bot here", "->ai_dest_attack");  //DEBUG
+      if( ai_visible(self.enemy) ){
+        if( ai_target_infront(self.enemy, 0.9) ){
+          ai_action_next( self.th_attack, 2, self.ai_action_mod );
+          return;
+        }
+        ai_action_next( ai_dest_turn, 5, self.ai_action_mod );
         return;
       }
-      ai_action_next( ai_dest_turn, 5, self.ai_action_mod );
-      //cons_logAString("Bot here", "->ai_dest_turn");  //DEBUG
-      return;
+      else{
+        self.enemy = world;
+      }
     }
-    ai_action_next( self.th_stand, 0, self.ai_action_mod );
-    return;
   }
+  ai_action_next( self.th_stand, 0, self.ai_action_mod );
+  return;
 };
 
 /*
   TH_TURN
 */
 void() ai_dest_turn={
+  ChangeYaw();
   if( self.enemy ){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-    ChangeYaw();
+    if( ai_visible( self.enemy ) ){
+      if( ai_target_infront(self.enemy, 0.97) ){
+        ai_action_next( self.th_attack, 1, self.ai_action_mod );
+        return;
+      }
+    }
+    else{
+      self.enemy = world;
+    }
   }
-  if( time > self.ai_action_time ){
-    if( ai_target_infront(self.enemy, 0.9) ){
-      ai_action_next( ai_dest_attack, 2, self.ai_action_mod );
-      //cons_logAString("Bot here", "->ai_dest_attack");  //DEBUG
-      return;
-    } 
+  else{
+    if( time > self.ai_viewtime ){
+      if( ai_find_target_visual() ){
+        self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+        ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+        return;
+      }
+      self.ai_viewtime  = time + self.ai_viewcheck;
+    }
+    if( time > self.ai_action_time ){
+      ai_action_next( self.th_stand, 0.1, 0);
+    }
   }
 };
 
@@ -75,42 +102,69 @@ void() ai_dest_turn={
   TH_ATTACK
 */
 void() ai_dest_attack={
-  //cons_logAString("Bot here", "attacking"); //DEBUG
-
   if( self.enemy ){  
-    if( ai_target_infront(self.enemy, 0.9) && ai_visible( self.enemy )){
-      self.button0 = 1;
-      ai_ranged_attack();
-      self.button0 = 0;
-      self.th_action = self.th_attack;
+    if( ai_visible( self.enemy ) ){
+      if( ai_target_infront(self.enemy, 0.97) ){
+        if( self.stat_trg_dist <= self.ai_minrange ){
+          self.button0 = 1;
+            ai_ranged_attack();
+          self.button0 = 0;
+          self.th_action = self.th_attack;
+          return;
+        }
+      }
+      ai_action_next( ai_dest_turn, 1, self.ai_action_mod );
       return;
     }
-    droptofloor();
-    ai_action_next( ai_dest_turn, 2, self.ai_action_mod );
-    //cons_logAString("Bot here", "->ai_dest_turn");  //DEBUG
-    return; 
+    self.enemy = world;
   }
-  ai_action_next( self.th_stand, 2, self.ai_action_mod );
+  ai_action_next( self.th_stand, 0.1, 0 );
 };
 
 /*
   TH_STAND
 */
 void() ai_dest_stand={
-  
-  if( time > self.patience && !ai_valid_target(self.enemy)){  
-    //self.patience  = time + self.ai_viewcheck;
-    self.patience  = time + 1; //DEBUG1
-
-    if( ai_find_target_visual() ){
-      //cons_logAString("Bot Here", "found target!"); //DEBUG
+  if( self.enemy ){
+    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+    if( ai_visible(self.enemy) ){
+      if( ai_target_infront(self.enemy, 0.97) ){
+        ai_action_next( self.th_run, 1, self.ai_action_mod );
+        return;
+      }
+      ai_action_next( ai_dest_turn, 1, self.ai_action_mod );
       return;
     }
+    else{
+      self.enemy = world;
+    }
   }
-  if( time > self.pausetime ){
-    ai_walk_setup();
-    ai_action_next( self.th_walk, 2, self.ai_action_mod );
-    return;
+  
+  ChangeYaw();
+  if( time > self.ai_action_time ){
+    if( self.movetarget ){
+      self.goalentity = self.movetarget;
+      self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+      ai_action_next( self.th_walk, 2, self.ai_action_mod);
+      return;
+    }
+    else{
+      local float turn;
+      self.ideal_yaw = anglemod(45 + crandom() * 180 - self.angles_y);
+      turn = anglemod(self.ideal_yaw - self.angles_y);
+      turn = (turn / self.yaw_speed);
+      turn = turn / 5;
+      self.ai_action_time = time + turn + self.ai_action_mod;
+    }
+  }
+  
+  if( time > self.ai_viewtime ){
+    if( ai_find_target_visual() ){
+      self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+      ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+      return;
+    }
+    self.ai_viewtime = time + self.ai_viewcheck;
   }
 };
 
@@ -127,13 +181,14 @@ void() ai_dest_th={
     wep = wep.w_slot;
   }
   
-  if( self.enemy ){
-    if( ai_valid_target(self.enemy ) ){
-      cons_logAString("self.enemy.classname", self.enemy.classname);  //DEBUG
-      self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
-    }
-    else{ 
-      self.enemy = world;
+  if( !self.deadflag ){
+    if( self.enemy ){
+      if( ai_valid_target( self.enemy ) ){
+        self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+      }
+      else{ 
+        self.enemy = world;
+      }
     }
   }
   
@@ -141,7 +196,7 @@ void() ai_dest_th={
     self.th_action();
   }
   
-  self.SendFlags = self.SendFlags | (SEND_FLAG_ORIGIN | SEND_FLAG_ANGLE | SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION);
+  self.SendFlags = self.SendFlags | SEND_FLAG_ORIGIN | SEND_FLAG_ANGLE | SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION;
   
   if( !(self.flags & FL_SKIPTHINK ) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
@@ -236,14 +291,22 @@ void() ai_vec_dest={
   self.th_attack = ai_dest_attack;
   self.th_die = ai_vec_dest_die;
   
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
+  
   droptofloor();
-  self.flags = self.flags | FL_ONGROUND;
    
   self.e_cam.SendEntity = send_vehicle;
   self.e_cam.SendFlags = 31;
 
- ai_walk_setup();
+  ai_walk_setup();
 
   self.think = ai_dest_th;
-  self.nextthink = time + random()*0.5; //spread out thinks
+  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+    self.nextthink = (time + 7) + random()*1; //spread out thinks
+  }
+  else{
+    self.nextthink = time + random()*1; //spread out thinks
+  }
 };

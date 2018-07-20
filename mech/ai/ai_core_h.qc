@@ -127,9 +127,6 @@ void() ai_control;      //global, root controller function
 //.float ai_radar;
 .float patience;        //counter for if AI is stuck on something
 .float maxpatience;     //how impatient is the AI
-.float ai_viewcheck;    //interval for checking for enemies
-.float ai_stuck_cnt;        //
-.float ai_stuck_flag;
 .string target_die;
 /*==========================================*/
 

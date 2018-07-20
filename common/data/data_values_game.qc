@@ -371,10 +371,10 @@ float AI_RANGE_M = 2400;
 float AI_RANGE_L = 4000;
 
 //view check intervals
-float AI_VIEW_ROK = 45;
-float AI_VIEW_REG = 35;
-float AI_VIEW_VET = 25;
-float AI_VIEW_ACE = 15;
+float AI_VIEW_ROK = 8;
+float AI_VIEW_REG = 6;
+float AI_VIEW_VET = 4;
+float AI_VIEW_ACE = 2;
 
 //view bracket
 float AI_FOV_ROK = 0.2;

@@ -255,7 +255,6 @@ void() PlayerDead={
   self.data_type = DATA_POBS;
 };
 
-
 void() PlayerDeathThink={
 	local float		forward;
 	if ((self.flags & FL_ONGROUND)){

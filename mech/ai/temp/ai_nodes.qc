@@ -9,7 +9,6 @@ Overview: ai nodes
 
 /*
   Patrol nodes have the specific touch function
-  
 */
 void() ai_node_patrols={
   if ( !self.targetname ){
@@ -31,6 +30,6 @@ void() ai_node_patrols={
   }
   
   self.solid = SOLID_TRIGGER;
-  setsize(self, '-4 -4 -16', '4 4 16');
+  setsize(self, '-2 -2 -16', '2 2 16');
   droptofloor();
 };

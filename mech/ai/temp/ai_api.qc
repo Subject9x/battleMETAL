@@ -60,6 +60,9 @@ float(entity t) ai_valid_target={
 };
 
 float() ai_find_target_visual={
+  if( self.enemy ){
+    return FALSE;
+  }
   local entity targ, found;
   local float dist, rng;
   targ = findradius(self.origin, self.ai_view);
@@ -246,6 +249,60 @@ void() ai_ranged_attack={
   }
 };
 
+
+void(entity bot, entity attacker) ai_damage_react={
+  local entity this;
+  local float change;
+  this = self;
+  self = bot;
+  if( self.enemy ){
+    // size check
+    if( (self.data_type == DATA_VEHC) && (attacker.data_type == DATA_MECH) ){
+      change = 0.2;
+    }
+    change = attacker.vec_size - self.enemy.vec_size;
+    //health check
+    change = change + (util_getMechHpAverage(attacker) - util_getMechHpAverage(self.enemy));
+    //range check
+    local float  dst1, dst2;
+    dst1 = vlen(self.enemy.origin - self.origin) / self.radar_range;
+    dst2 = vlen(attacker.origin - self.origin) / self.radar_range;
+    change = change + (dst1 - dst2);
+    switch( self.ai_rank ){
+      case AI_RANK_ROK:
+        if( change ){
+          self.enemy = attacker;
+        }
+        break;
+      case AI_RANK_REG:
+        if( change >= 0.7){
+          self.enemy = attacker;
+        }
+        break;
+      case AI_RANK_VET:
+        if( change > 0.5){
+          self.enemy = attacker;
+        }
+        break;
+      case AI_RANK_ACE:
+        if( change >= 0.25){
+          self.enemy = attacker;
+        }
+        break;
+    }
+    if( self.enemy == attacker ){
+      self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+      ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+    }
+  }
+  else{
+    self.enemy = attacker;
+    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+    ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+  }
+  self = this;
+};
+
 /*
   Don't fire if the weapon's barrel is blocked by things like:
   non-target entity
@@ -283,7 +340,7 @@ void() ai_node_t_patrol={
     return;
   }
   
-  if( ai_valid_target( other.enemy ) ){
+  if( other.enemy ){
     return;
   }
   
@@ -314,26 +371,82 @@ void() ai_node_t_attack={
 /*
   Only used for AI_SPAWNFLAG_RANDDOMSTART
 */
-string( string grpid ) ai_node_pick_rand={
-  local entity node;
+void( string nodename) ai_node_pick_rand={
+  local entity anode, spot;
   local float clr, total, pick;
-  total = 0;
-  clr = 0;
-  while( clr <= 128 ){
-    AI_NODES[clr] = "";
-    clr = clr + 1;
-  }
-  
-  node = findchain( group, grpid);
-  if( node ){  
-    while( node ){
-      AI_NODES[total] = node.targetname;
-      total = total + 1;
-      node = node.chain;
+  local string name, grpid;
+  if( self.target ){
+    anode = find(world, targetname, nodename);
+    if( anode && anode.group){
+      grpid = anode.group;
+      total = 0;
+      clr = 0;
+      while( clr <= 128 ){
+        AI_NODES[clr] = world;
+        clr = clr + 1;
+      }
+      
+      anode = findchain( group, grpid);
+      if( anode ){  
+        while( anode ){
+          AI_NODES[total] = anode;
+          total = total + 1;
+          anode = anode.chain;
+        }
+        pick = crandom() * total;
+        spot = AI_NODES[pick];
+        if( spot ){
+          local vector org;
+          local float angl, px, py;
+          angl = self.angles_y * DEG2RAD;
+          px = cos(angl);
+          py = sin(angl);
+          org_z = self.origin_z + 1;
+          org_x = spot.origin_x - ( px * self.maxs_x * 3);
+          org_y = spot.origin_y - ( py * self.maxs_y * 3);
+          setorigin( self, org);
+        }
+      }
     }
-    pick = crandom() * total;
-    return AI_NODES[pick];
   }
-  return "false";
 };
 
+void() ai_wep_calcranges={
+  local entity w;
+  w = self.w_slot;
+  while(w){
+    if(w.deadflag <= DEAD_NO){
+      local float damg;
+      damg = w.p_damage * w.w_clipsize;
+      if(w.w_range <= AI_RANGE_S){ 
+        self.ai_dmg_s = self.ai_dmg_s + damg;
+      }
+      if(w.w_range > AI_RANGE_S){
+        if(w.w_range <= AI_RANGE_M){
+          self.ai_dmg_m = self.ai_dmg_m + damg;
+          self.ai_dmg_s = self.ai_dmg_s + damg;
+        }
+      }
+      if(w.w_range > AI_RANGE_M){
+        self.ai_dmg_m = self.ai_dmg_m + damg;
+        self.ai_dmg_s = self.ai_dmg_s + damg;
+        self.ai_dmg_l = self.ai_dmg_l + damg;
+      }
+    }
+    w = w.w_slot;
+  }
+  
+  
+  if((self.ai_dmg_l > self.ai_dmg_s) && (self.ai_dmg_l  > self.ai_dmg_s)){
+    self.ai_minrange = AI_RANGE_L;
+  }
+  else if((self.ai_dmg_m > self.ai_dmg_l) && (self.ai_dmg_m  > self.ai_dmg_s)){
+    self.ai_minrange = AI_RANGE_M;
+  }
+  else if((self.ai_dmg_s > self.ai_dmg_l) && (self.ai_dmg_s  > self.ai_dmg_m)){
+    self.ai_minrange = AI_RANGE_S;
+  }
+  else{
+    self.ai_minrange = AI_RANGE_S;
+  }
+};

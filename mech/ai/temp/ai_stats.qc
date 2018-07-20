@@ -45,6 +45,8 @@ void() ai_unit_ini_var={
   self.ai_view = 0;
   self.ai_action_mod = 0;
   self.ai_fight = FALSE;
+  self.ai_viewtime = 0;
+  self.ai_minrange = 0;
 };
 
 /*
@@ -83,8 +85,22 @@ void(float rank) ai_pilot_ini_stats={
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
   self.ai_action_mod = ai_pilot_action_mod(rank);
+  
+  ai_wep_calcranges();
 };
 
+float() ai_pilot_rank_byskill={
+  switch(skill){
+    case 0:
+      return AI_RANK_ROK;
+    case 1:
+      return AI_RANK_REG;
+    case 2:
+      return AI_RANK_VET;
+    case 3:
+      return AI_RANK_ACE;
+  }
+};
 
 float(float rank) ai_pilot_optical_range={
   local float diff;

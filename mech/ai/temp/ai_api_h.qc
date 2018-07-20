@@ -18,7 +18,7 @@ float enemy_infront;
 float enemy_range;
 float enemy_yaw;
 float enemy_vis;
-string AI_NODES[128];
+entity AI_NODES[128];
 
 //ENTITY VARS
 .void() th_attack;      //apparently th_missile returns a float, wtf
@@ -36,6 +36,9 @@ string AI_NODES[128];
 .float patience;        //counter for if AI is stuck on something
 .float maxpatience;     //how impatient is the AI
 .vector ai_pitch;     //x = min, y= max, z = pitch speed
+.float ai_wait;
+.float ai_viewtime;
+.float ai_viewcheck;    //interval for checking for enemies
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -55,6 +58,7 @@ float() ai_core_attackInterval;
 void() ai_pilot_mech_armor;
 void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
+float() ai_pilot_rank_byskill;
 
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
@@ -79,13 +83,15 @@ void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
 float(entity t) ai_valid_target;
 vector(entity ai) ai_attack_calcSpread;
+void() ai_wep_calcranges;
 
 //AI CONTROL - ai_ctrl.qc 
 void(void() next_action, float next_time, float time_mod) ai_action_next;
 void() ai_hunt_target;
 void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;
-string( string grpid ) ai_node_pick_rand;
+void( string grpid ) ai_node_pick_rand
+void(entity bot, entity attacker) ai_damage_react;
 
 void(float dist) ai_forward;
 void(float dist) ai_back;

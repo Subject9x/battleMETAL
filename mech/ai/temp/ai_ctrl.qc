@@ -49,10 +49,12 @@ void() ai_walk_setup={
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
 		//self.th_walk ();
     ai_action_next( self.th_walk, 0, self.ai_action_mod );
+    return;
 	}
 	else{
 		self.pausetime = 99999999;
     ai_action_next( self.th_stand, 0, self.ai_action_mod );
+    return;
 	}
 };
 

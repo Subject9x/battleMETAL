@@ -96,13 +96,14 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   else if(trg.data_type == DATA_BLD){
-    ai_util_defense_callForHelp(attacker);
+    //ai_util_defense_callForHelp(attacker);
   }
   
   trg.health = trg.health - dmg_amt;
   
   //Damage has gone through, AI survived, choose how it will react->
   if( (trg.flags & FL_MONSTER) ){
+    ai_damage_react( trg, attacker );
     //if(trg.ai_next_state != ai_misc_stand_debug){
       //if(attacker != trg.trigger_field){
         //if(trg.i_faction != attacker.i_faction){
