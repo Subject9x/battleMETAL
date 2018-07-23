@@ -138,7 +138,7 @@ void() ai_mech={
   self.prev_pos = self.origin;
   self.prev_angle = self.v_angle;
   self.e_cam.SendEntity = send_ai_mech;
-  self.e_cam.SendFlags = -1;
+  self.e_cam.SendFlags = 31;
   self.nextthink = time +(random()/10) + 7; //power up timer 7
   self.think = ai_control;
 };

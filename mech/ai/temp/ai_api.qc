@@ -11,6 +11,7 @@ Overview: Main Impl for AI API
 */
 float(float mode) ai_spawn_clean={
   local float rem;
+  
   rem = FALSE;
   switch(mode){
     case GAMEMODE_CAMPAIGN:
@@ -65,6 +66,7 @@ float() ai_find_target_visual={
   }
   local entity targ, found;
   local float dist, rng;
+  
   targ = findradius(self.origin, self.ai_view);
   dist = self.ai_view;
   rng = dist;
@@ -94,9 +96,10 @@ float() ai_find_target_visual={
   return FALSE;
 };
 
-entity() ai_find_target_radar={
+float() ai_find_target_radar={
   local entity targ, found;
   local float dist, rng;
+  
   targ = findchainflags(flags, FL_UNIT);
   dist = self.radar_range;
   rng = dist;
@@ -158,14 +161,14 @@ float(entity targ, float ang_limit) ai_target_infront={
 float (entity targ) ai_visible ={
   local vector	spot1, spot2;
   
-  spot1 = self.origin + self.view_ofs;
-  spot2 = targ.origin + targ.view_ofs;
+  spot1 = self.origin;
+  spot2 = targ.origin;
   traceline (spot1, spot2, TRUE, self); // see through other monsters
 
-  if (trace_inopen && trace_inwater){
+  if ( trace_inopen && trace_inwater ){
     return FALSE;     // sight line crossed contents
   }
-  if (trace_fraction == 1){
+  if ( trace_fraction == 1 ){
     return TRUE;
   }
   return FALSE;
@@ -174,9 +177,10 @@ float (entity targ) ai_visible ={
 vector(entity ai) ai_attack_calcSpread={
   local vector hitorg;
   local float rng, cnv, cx, cy;
-  //if(ai.stat_trg_dist > ai.ai_minrange){
-  //  cnv = cnv * rng;
-  //}
+  
+  if(ai.stat_trg_dist > ai.ai_minrange){
+    cnv = cnv * rng;
+  }
   cx = cnv;
   cx = cx + ( cnv / 2 * random() );
   cx = cx * crandom();
@@ -206,29 +210,32 @@ vector(entity wep) ai_attack_trace={
 void() ai_ranged_attack={
   local entity wep_chain, this;
   local float fired;
+  
   this = self;
   wep_chain = self.w_slot;
   self.v_angle = self.angles;
   while(wep_chain){
     if(self.button0){
       if(wep_chain.w_state == READY){
-        if( self.stat_trg_dist <= wep_chain.w_range ){
-          self.w_fire_ofs = ai_attack_trace(wep_chain);
-          if( !ai_attack_blockcheck(wep_chain) ){
-            if( ai_attack_checkEne(wep_chain) ){
-              self = wep_chain;
-                if( (self.p_dmgtype & EFF_STX) ){
-                  if (this.enemy.sh_cur >= self.p_damage){
+        if( (self.currentWeaponGroup & wep_chain.w_group) ){
+          if( self.stat_trg_dist <= wep_chain.w_range ){
+            self.w_fire_ofs = ai_attack_trace(wep_chain);
+            if( !ai_attack_blockcheck(wep_chain) ){
+              if( ai_attack_checkEne(wep_chain) ){
+                self = wep_chain;
+                  if( (self.p_dmgtype & EFF_STX) ){
+                    if (this.enemy.sh_cur >= self.p_damage){
+                      fired = fired + 1;
+                      self.w_attack();
+                    }
+                  }
+                  else{
                     fired = fired + 1;
                     self.w_attack();
                   }
-                }
-                else{
-                  fired = fired + 1;
-                  self.w_attack();
-                }
-              self = this; 
-            }         
+                self = this; 
+              }         
+            }
           }
         }
       }
@@ -253,6 +260,7 @@ void() ai_ranged_attack={
 void(entity bot, entity attacker) ai_damage_react={
   local entity this;
   local float change;
+  
   this = self;
   self = bot;
   if( self.enemy ){
@@ -331,42 +339,7 @@ float(entity wep) ai_attack_blockcheck={
   return FALSE;
 };
 
-//AI Nodes
-//the patrol node touch 
-void() ai_node_t_patrol={
-  local entity	temp;
-  
-  if( other.movetarget != self ){
-    return;
-  }
-  
-  if( other.enemy ){
-    return;
-  }
-  
-  temp = self;
-	self = other;
-	other = temp;
 
-	//if (self.classname == "monster_ogre")
-		//sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
-
-//dprint ("t_movetarget\n");
-	self.goalentity = self.movetarget = find (world, targetname, other.target);
-	self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-	if ( !self.movetarget ){
-		self.pausetime = time + 999999;
-    ai_action_next( self.th_stand, 1, self.ai_action_mod );
-		return;
-	}
-};
-
-void() ai_node_t_defend={
-  
-};
-void() ai_node_t_attack={
-  
-};
 
 /*
   Only used for AI_SPAWNFLAG_RANDDOMSTART
@@ -375,6 +348,7 @@ void( string nodename) ai_node_pick_rand={
   local entity anode, spot;
   local float clr, total, pick;
   local string name, grpid;
+  
   if( self.target ){
     anode = find(world, targetname, nodename);
     if( anode && anode.group){
@@ -405,48 +379,131 @@ void( string nodename) ai_node_pick_rand={
           org_x = spot.origin_x - ( px * self.maxs_x * 3);
           org_y = spot.origin_y - ( py * self.maxs_y * 3);
           setorigin( self, org);
+          self.target = spot.targetname;
         }
       }
     }
   }
 };
 
+void(float dst, float grp, float bracket) ai_wep_group_track={
+  if( dst <= bracket ){
+    self.currentWeaponGroup = self.currentWeaponGroup | grp;
+  }
+  else{
+    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & grp);
+  }
+};
+
 void() ai_wep_calcranges={
   local entity w;
+  local float s,m,l
   w = self.w_slot;
   while(w){
     if(w.deadflag <= DEAD_NO){
       local float damg;
       damg = w.p_damage * w.w_clipsize;
       if(w.w_range <= AI_RANGE_S){ 
-        self.ai_dmg_s = self.ai_dmg_s + damg;
+        self.w_group1 = self.w_group1 | w.w_group;
+        s = s + damg;
       }
       if(w.w_range > AI_RANGE_S){
         if(w.w_range <= AI_RANGE_M){
-          self.ai_dmg_m = self.ai_dmg_m + damg;
-          self.ai_dmg_s = self.ai_dmg_s + damg;
+          self.w_group2 = self.w_group2 | w.w_group;
+          m = m + damg;
         }
       }
       if(w.w_range > AI_RANGE_M){
-        self.ai_dmg_m = self.ai_dmg_m + damg;
-        self.ai_dmg_s = self.ai_dmg_s + damg;
-        self.ai_dmg_l = self.ai_dmg_l + damg;
+        self.w_group3 = self.w_group3 | w.w_group;
+        l = l + damg;
       }
     }
     w = w.w_slot;
   }
-  
-  
-  if((self.ai_dmg_l > self.ai_dmg_s) && (self.ai_dmg_l  > self.ai_dmg_s)){
-    self.ai_minrange = AI_RANGE_L;
-  }
-  else if((self.ai_dmg_m > self.ai_dmg_l) && (self.ai_dmg_m  > self.ai_dmg_s)){
-    self.ai_minrange = AI_RANGE_M;
-  }
-  else if((self.ai_dmg_s > self.ai_dmg_l) && (self.ai_dmg_s  > self.ai_dmg_m)){
+  if( (s > m) && (s > l) ){
     self.ai_minrange = AI_RANGE_S;
+    return;
   }
-  else{
+  if( (m > s) && (m > l) ){
     self.ai_minrange = AI_RANGE_S;
+    return;
   }
+  if( (l > s) && (l > m) ){
+    self.ai_minrange = AI_RANGE_S;
+    return;
+  }
+};
+
+float(void() action) ai_hunt_dropnode={
+  if( self.ai_hunt_total < AI_HUNT_VET ){
+    if( self.ai_hunt_total < 0 ){
+      self.ai_hunt_total = self.ai_hunt_total + 1;
+      //start of hunt chain
+      local float it;
+      local vector torg;
+      it = ai_move_time(self.m_fspeed * AI_WALK_SPD, 250, 0.1);
+      
+      makevectors( self.angles );
+      torg = self.origin - (v_forward * (self.maxs_x * 2 + 2) );
+      
+      ai_node_hunt(torg, self.targetname, self.ai_hunt_total, it , action );
+      self.ai_hunt_total = self.ai_hunt_total + 1;
+    }
+    local float t;
+    t = ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.enemy.origin - self.origin), 0.1);
+    cons_logAFloat( "fadetime", t); //DEBUG
+    
+    local vector eorg;
+    makevectors( self.enemy.angles );
+    eorg = self.enemy.origin + (v_up * (self.enemy.maxs_z / 1.5) );
+    
+    self.goalentity = self.ai_hunt_node = ai_node_hunt(eorg, self.targetname, self.ai_hunt_total, t , action ); 
+    self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+    
+    ai_action_next( self.th_walk, t, self.ai_action_mod );
+    ai_leg_frame( leg_walk1 );
+    
+    self.ai_viewtime = time + self.ai_viewcheck;
+    
+    self.ai_hunt_total = self.ai_hunt_total + 1;
+    
+    local float update;
+    update = self.ai_hunt_total;
+    while( update > -1 ){
+      local string tname;
+      local entity e;
+      tname = strcat(self.targetname, "_", ftos(update) );
+      e = find( world, targetname, tname);
+      if( (e) && (e != self.goalentity) ){
+        e.pausetime = e.pausetime + (t * 2);
+      }
+      update = update - 1;
+    }
+    return TRUE;
+  }
+  return FALSE;
+};
+
+/*
+  calculates the number of game seconds the AI needs
+  to traverse a given distance at a desired speed
+*/
+float(float movespeed, float distance, float ticrate) ai_move_time={
+  local float t;
+  t = movespeed * (1 / ticrate );
+  t = distance / t;
+  return t;
+};
+
+/*
+  calculates the number of game seconds the AI needs
+  to rotate to a desired angle
+*/
+float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time={
+  local float turn;
+  self.ideal_yaw = anglemod(angmin + crandom() * angmax - self.angles_y);
+  turn = anglemod(self.ideal_yaw - self.angles_y);
+  turn = (turn / yawspeed);
+  turn = turn / tim;
+  return turn;
 };

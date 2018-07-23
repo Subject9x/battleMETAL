@@ -12,7 +12,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 string DAT_MTK_VEC_NAME = "MATOK";
 
 float DAT_MTK_RESERVE_COST = 200;
-float DAT_MTK_YAWSPEED = 5;
+
 vector DAT_MTK_CTOR_BBX_N ='-17 -17 -40'; //'-15 -15 -40';
 vector DAT_MTK_CTOR_BBX_X ='17 17 22'; //'15 15 20';
 
@@ -139,7 +139,7 @@ void() data_mtk_ini={
   self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
   self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
   self.c_model = DAT_MTK_CTOR_MODEL;
-  self.m_rot_speed = DAT_MTK_YAWSPEED;
+  self.m_rot_speed = DAT_MTK_M_YAW;
   self.conv_min = DAT_MTK_SPREAD_N; 
   self.conv_max = DAT_MTK_SPREAD_X;
   self.m_fspeed = DAT_MTK_M_FSPEED;

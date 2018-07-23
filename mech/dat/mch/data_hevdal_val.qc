@@ -12,7 +12,6 @@ Overview:
 string DAT_MNT_VEC_NAME = "Monitor";
 
 float DAT_MNT_RESERVE_COST = 200;
-float DAT_MNT_YAWSPEED = 3;
 vector DAT_MNT_CTOR_BBX_N = '-22 -22 -44';//'-20 -20 -44';
 vector DAT_MNT_CTOR_BBX_X = '22 22 28';//'20 20 24';
 
@@ -161,7 +160,7 @@ void() data_mnt_ini={
   self.sh_cur= DAT_MNT_SHIELD_MAX;
   self.sh_max= DAT_MNT_SHIELD_MAX;
   self.sh_rate= DAT_MNT_SHIELD_RATE;
-  self.m_rot_speed = DAT_MNT_YAWSPEED;
+  self.m_rot_speed = DAT_MNT_M_YAW;
   self.c_bbx_n = DAT_MNT_CTOR_BBX_N;
   self.c_bbx_x = DAT_MNT_CTOR_BBX_X;
   self.c_model = DAT_MNT_CTOR_MODEL;

@@ -310,6 +310,12 @@ float LOCK_PLYR = 8;
 //============================
 //     AI STATS      
 //============================
+
+float AI_HUNT_NOV = 1;
+float AI_HUNT_REG = 2;
+float AI_HUNT_VET = 3;
+float AI_HUNT_ELT = 4;
+
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
 
@@ -389,5 +395,5 @@ float AI_REFLEX_REG = 0.75;
 float AI_REFLEX_ROK = 0.25;
 
 //AI movement speed ratio 
-float AI_WALK_SPD = 0.035;
-float AI_RUN_SPD = 0.045;
+float AI_WALK_SPD = 0.025;
+float AI_RUN_SPD = 0.035;

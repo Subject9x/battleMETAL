@@ -40,22 +40,32 @@ void() ai_found_target={
 void() ai_walk_setup={
 	if (self.target){
 		self.goalentity = self.movetarget = find(world, targetname, self.target);
-		if (!self.movetarget){
+		if( !self.movetarget ){
 			dprint ("Monster can't find target at ");
 			dprint (vtos(self.origin));
 			dprint ("\n");
 		}
 // this used to be an objerror
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-		//self.th_walk ();
     ai_action_next( self.th_walk, 0, self.ai_action_mod );
+    ai_leg_frame( leg_walk1 );
     return;
 	}
 	else{
 		self.pausetime = 99999999;
     ai_action_next( self.th_stand, 0, self.ai_action_mod );
+    ai_leg_frame( leg_stand1 );
     return;
 	}
+};
+
+//simple handler function to push state changes down to legs
+void(void() macro) ai_leg_frame={
+  local entity this;
+  this = self;
+  self = this.e_legs;
+    macro();
+  self = this;
 };
 
 void(float dist) ai_forward={

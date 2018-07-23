@@ -18,7 +18,7 @@ void() ctrl_updateLegs={
     if(self.movetype != MOVETYPE_FOLLOW){
       self.movetype = MOVETYPE_FOLLOW;
     }
-    if((self.owner.flags & FL_CLIENT)){
+    if( (self.owner.flags & FL_CLIENT) ){
       //texture check
       local vector dn, angl;
       local float vertic;

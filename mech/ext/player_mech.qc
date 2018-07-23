@@ -102,9 +102,11 @@ void() mech_player_die={
   mech_player_compdie(self.e_tor_r);
   mech_player_compdie(self.e_arm_l);
   mech_player_compdie(self.e_arm_r);
-  mech_player_compdie(self.e_legs);
   self.stat_ctor_hp = 0;
-  ctor_die1();
+  if( (self.flags & FL_CLIENT) ){
+    mech_player_compdie(self.e_legs);
+    ctor_die1();
+  }
 };
 
 

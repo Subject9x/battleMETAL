@@ -11,7 +11,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 //OUTLAW MECH=============================
 string DAT_OTL_VEC_NAME = "Balaket";
 float DAT_OTL_RESERVE_COST = 100;
-float DAT_OTL_YAWSPEED = 6;
+
 vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
 vector DAT_OTL_CTOR_BBX_X ='14 14 16';
 
@@ -118,7 +118,7 @@ void() data_otl_ini={
   self.weaponframe = 0;
   self.conv_min = DAT_OTL_SPREAD_N; 
   self.conv_max = DAT_OTL_SPREAD_X;
-  self.m_rot_speed = DAT_OTL_YAWSPEED;
+  self.m_rot_speed = DAT_OTL_M_YAW;
   self.m_fspeed = DAT_OTL_M_FSPEED;
   self.m_sspeed = DAT_OTL_M_SSPEED;
   self.m_bspeed = DAT_OTL_M_BSPEED;

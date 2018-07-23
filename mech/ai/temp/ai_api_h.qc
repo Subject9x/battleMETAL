@@ -39,6 +39,8 @@ entity AI_NODES[128];
 .float ai_wait;
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
+.entity ai_hunt_node;  //simple node-on-decay-timer
+.float ai_hunt_total; //current number of hunt nodes
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -71,11 +73,13 @@ float AI_NODE_ATTACK = 2;
 void() ai_node_t_patrol;
 void() ai_node_t_defend;
 void() ai_node_t_attack;
+entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_node_hunt;
+float(void() action) ai_hunt_dropnode;
 
 //AI UTILS - 
 float(float mode) ai_spawn_clean;
 float() ai_find_target_visual;
-entity() ai_find_target_radar;
+float() ai_find_target_radar;
 float(entity targ, float ang_limit) ai_target_infront;
 float (entity targ) ai_visible;
 vector(entity wep) ai_attack_trace;
@@ -84,6 +88,9 @@ float(entity wep) ai_attack_blockcheck;
 float(entity t) ai_valid_target;
 vector(entity ai) ai_attack_calcSpread;
 void() ai_wep_calcranges;
+void(float dst, float grp, float bracket) ai_wep_group_track;
+float(float movespeed, float distance, float ticrate) ai_move_time;
+float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
 
 //AI CONTROL - ai_ctrl.qc 
 void(void() next_action, float next_time, float time_mod) ai_action_next;
@@ -92,6 +99,7 @@ void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;
 void( string grpid ) ai_node_pick_rand
 void(entity bot, entity attacker) ai_damage_react;
+void(void() macro) ai_leg_frame;
 
 void(float dist) ai_forward;
 void(float dist) ai_back;

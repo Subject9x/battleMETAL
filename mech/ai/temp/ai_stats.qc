@@ -10,7 +10,7 @@ Overview: AI State equations
   initialize all the entity vars needed for the unit
 */
 void() ai_unit_ini_var={
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   //ini all the unit stats
   self.data_idx = 0;
   self.en_cur = 0;
@@ -47,6 +47,7 @@ void() ai_unit_ini_var={
   self.ai_fight = FALSE;
   self.ai_viewtime = 0;
   self.ai_minrange = 0;
+  self.ai_hunt_total = -1;
 };
 
 /*
@@ -85,7 +86,6 @@ void(float rank) ai_pilot_ini_stats={
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
   self.ai_action_mod = ai_pilot_action_mod(rank);
-  
   ai_wep_calcranges();
 };
 

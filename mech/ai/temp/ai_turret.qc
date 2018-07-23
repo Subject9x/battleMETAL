@@ -93,10 +93,8 @@ void() ai_turret_attack={
   if( self.enemy ){  
     if( ai_visible( self.enemy ) ){
       if( ai_target_infront(self.enemy, 0.97) ){
-        if( self.stat_trg_dist <= self.ai_minrange ){
+        if(  self.currentWeaponGroup > 0  ){
           self.button0 = 1;
-            ai_ranged_attack();
-          self.button0 = 0;
           self.th_action = self.th_attack;
           return;
         }
@@ -113,8 +111,11 @@ void() temp_chunk_burn={
   if( time > self.delay){
     self.think = SUB_Remove;
   }
-  else{
-    te_smoke_test(self.origin, '0 0 25', 3);
+  else{  
+    makevectors( world.v_angle );
+    local vector sm;
+    sm = world.v_angle + (v_forward * world.m_speed) + (v_right * world.m_speed) + (v_up * world.m_speed);
+    te_smoke_test(self.origin, sm + '0 0 15', 3);
     self.think = temp_chunk_burn;
   }
 	self.nextthink = 0.1;
@@ -180,8 +181,11 @@ void() ai_turret_die={
   ai_action_next(ai_turret_die_burn, 360, 0 );
 };
 
-void() ai_turret_die_burn={
-  te_smoke_test(self.origin, '0 0 10', 1);
+void() ai_turret_die_burn={  
+  makevectors( world.v_angle );
+  local vector sm;
+  sm = world.v_angle + (v_forward * world.m_speed) + (v_right * world.m_speed) + (v_up * world.m_speed);
+  te_smoke_test(self.origin, sm + '0 0 10', 1);
   if ( time > self.ai_action_time ){
     self.flags = self.flags | FL_SKIPTHINK;
     self.think = BecomeExplosion;
@@ -207,10 +211,17 @@ void() ai_turret_th={
     if( self.enemy ){
       if( ai_valid_target( self.enemy ) ){
         self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+        ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
+        ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
+        ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
       }
       else{ 
         self.enemy = world;
       }
+    }
+    ai_ranged_attack();
+    if( self.button0 ){
+      self.button0 = 0;
     }
   }
   

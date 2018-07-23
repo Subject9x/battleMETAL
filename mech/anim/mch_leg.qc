@@ -13,13 +13,11 @@ void()	mech_walk6 =	[$walk6, mech_walk7] {};
 void()	mech_walk7 =	[$walk7, leg_walk1] {};*/
 
 void() leg_stand1 = [$l_stand1, leg_stand1]{
-  if((self.owner.flags & FL_CLIENT)){  
-    if (self.owner.velocity_x || self.owner.velocity_y){
-      leg_walk1();
-      return;
-    }
+  
+  if (self.owner.velocity_x || self.owner.velocity_y){
+    leg_walk1();
+    return;
   }
-  self.walkframe = $l_stand1;
 };
 
 void() leg_walk1;
@@ -28,21 +26,17 @@ void() leg_walk1 = [$l_walk1, leg_walk2]{
   self.walkframe = $l_walk1;
   if((self.owner.flags & FL_CLIENT)){  
     if (!self.owner.velocity_x && !self.owner.velocity_y){
-      self.walkframe=0;
       leg_stand1();
       return;
     }
   }
 };
 
-void() leg_walk2 = [$l_walk2, leg_walk3]{
-self.walkframe = $l_walk2;
-};
+void() leg_walk2 = [$l_walk2, leg_walk3]{};
 void() leg_walk3 = [$l_walk3, leg_walk4]{
   local entity player;
   player = self.owner;
-  self.walkframe = $l_walk3;
-  if((player.flags & FL_ONGROUND)){
+  if( (player.flags & FL_ONGROUND) ){
     local vector ofs;
     makevectors(player.angles);
     ofs = player.origin + ((v_up*-44)+(v_forward*8)+(v_right*10));
@@ -50,16 +44,11 @@ void() leg_walk3 = [$l_walk3, leg_walk4]{
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
   }
 };
-void() leg_walk4 = [$l_walk4, leg_walk5]{
-  self.walkframe = $l_walk4;
-};
-void() leg_walk5 = [$l_walk5, leg_walk6]{
-  self.walkframe = $l_walk5;
-};
+void() leg_walk4 = [$l_walk4, leg_walk5]{};
+void() leg_walk5 = [$l_walk5, leg_walk6]{};
 void() leg_walk6 = [$l_walk6, leg_walk7]{
   local entity player;
   player = self.owner;
-  self.walkframe = $l_walk6;
   if((player.flags & FL_ONGROUND)){
     local vector ofs;
     makevectors(player.angles);
@@ -68,12 +57,8 @@ void() leg_walk6 = [$l_walk6, leg_walk7]{
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
   }
 };
-void() leg_walk7 = [$l_walk7, leg_walk8]{
-  self.walkframe = $l_walk7;
-};
-void() leg_walk8 = [$l_walk8, leg_walk1]{
-  self.walkframe = $l_walk8;
-};
+void() leg_walk7 = [$l_walk7, leg_walk8]{};
+void() leg_walk8 = [$l_walk8, leg_walk1]{};
 
 void() leg_die1 = [$l_die1, leg_die2]{
   self.movetype = MOVETYPE_BOUNCE;

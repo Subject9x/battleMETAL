@@ -118,6 +118,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     if( trg.th_die ){
       if( trg.c_name == M_LEGS ){
         trg.owner.m_fspeed = trg.owner.m_fspeed / 2;
+        trg.deadflag = DEAD_DYING;
       }
       else{
         killed(trg, attacker, dmg_type);     

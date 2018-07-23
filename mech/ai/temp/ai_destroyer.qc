@@ -44,9 +44,9 @@ void() ai_dest_walk={
   TH_RUN
 */
 void() ai_dest_run={
-  
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   movetogoal(self.m_fspeed * AI_RUN_SPD);
+  
   if( time > self.ai_action_time ){
     if( self.enemy ){
       if( ai_visible(self.enemy) ){
@@ -63,6 +63,7 @@ void() ai_dest_run={
     }
   }
   ai_action_next( self.th_stand, 0, self.ai_action_mod );
+  
   return;
 };
 
@@ -105,10 +106,8 @@ void() ai_dest_attack={
   if( self.enemy ){  
     if( ai_visible( self.enemy ) ){
       if( ai_target_infront(self.enemy, 0.97) ){
-        if( self.stat_trg_dist <= self.ai_minrange ){
+        if(  self.currentWeaponGroup > 0  ){
           self.button0 = 1;
-            ai_ranged_attack();
-          self.button0 = 0;
           self.th_action = self.th_attack;
           return;
         }
@@ -185,10 +184,17 @@ void() ai_dest_th={
     if( self.enemy ){
       if( ai_valid_target( self.enemy ) ){
         self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+        ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
+        ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
+        ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L); 
       }
       else{ 
         self.enemy = world;
       }
+    }
+    ai_ranged_attack();
+    if( self.button0 ){
+      self.button0 = 0;
     }
   }
   

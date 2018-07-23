@@ -133,9 +133,7 @@ void() PlayerPostThink = {
     }*/
     client_updateWeaponReloads();
     ctrl_update_mechplayer();
-  }
     
-  if(self.data_type != DATA_POBS){
     local entity wep_chain;
     wep_chain = self.w_slot;
     while(wep_chain){
@@ -143,7 +141,8 @@ void() PlayerPostThink = {
       wep_chain = wep_chain.w_slot;
     }
   }
-  self.repair_request = FALSE;
+
+
   
 	if( self.impulse ){
 		ImpulseCommands ();
@@ -158,6 +157,8 @@ void() PlayerPostThink = {
     }
   }
   
+  //REPAIR BAY
+  self.repair_request = FALSE;
   if(self.repair_request){
     if(util_getMechHpAverage(self) == 1){
       self.repair_request = FALSE;
