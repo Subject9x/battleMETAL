@@ -22,8 +22,9 @@ entity AI_NODES[128];
 
 //ENTITY VARS
 .void() th_attack;      //apparently th_missile returns a float, wtf
+.float() th_check;       //each bot impl's their own attack check.
 .void() th_action;        //th_ func to execute
-.float ai_fight;
+.float ai_rank;
 .float ai_action_time;  //for executing action states
 .float ai_action_mod;
 .float ai_rte_rng;
@@ -41,7 +42,10 @@ entity AI_NODES[128];
 .float ai_viewcheck;    //interval for checking for enemies
 .entity ai_hunt_node;  //simple node-on-decay-timer
 .float ai_hunt_total; //current number of hunt nodes
-
+.float ai_attack_time;
+.float ai_type;
+.float ai_style;
+.string target_die;
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 float(float rank) ai_pilot_optical_range;
@@ -56,11 +60,11 @@ float() ai_pilot_armor_mod;
 float() ai_pilot_shield_mod;
 float() ai_pilot_rating_patience;
 float() ai_core_hitTimeCalc;
-float() ai_core_attackInterval;
 void() ai_pilot_mech_armor;
 void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
 float() ai_pilot_rank_byskill;
+float(float rank) ai_pilot_attack_interval;
 
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
@@ -85,12 +89,16 @@ float (entity targ) ai_visible;
 vector(entity wep) ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
+float() ai_check_forattack;
+float() ai_check_allattack;
 float(entity t) ai_valid_target;
 vector(entity ai) ai_attack_calcSpread;
 void() ai_wep_calcranges;
 void(float dst, float grp, float bracket) ai_wep_group_track;
 float(float movespeed, float distance, float ticrate) ai_move_time;
 float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
+float(entity targ) ai_range;
+float(entity wep) ai_attack_checkEne;
 
 //AI CONTROL - ai_ctrl.qc 
 void(void() next_action, float next_time, float time_mod) ai_action_next;
@@ -100,6 +108,7 @@ void() ai_found_target;
 void( string grpid ) ai_node_pick_rand
 void(entity bot, entity attacker) ai_damage_react;
 void(void() macro) ai_leg_frame;
+void() ai_face_targ;
 
 void(float dist) ai_forward;
 void(float dist) ai_back;

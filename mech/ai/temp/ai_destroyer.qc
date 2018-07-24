@@ -44,27 +44,33 @@ void() ai_dest_walk={
   TH_RUN
 */
 void() ai_dest_run={
-  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-  movetogoal(self.m_fspeed * AI_RUN_SPD);
-  
-  if( time > self.ai_action_time ){
-    if( self.enemy ){
-      if( ai_visible(self.enemy) ){
-        if( ai_target_infront(self.enemy, 0.9) ){
-          ai_action_next( self.th_attack, 2, self.ai_action_mod );
-          return;
-        }
-        ai_action_next( ai_dest_turn, 5, self.ai_action_mod );
-        return;
-      }
-      else{
-        self.enemy = world;
-      }
+  if( !self.enemy ){
+    if( self.movetarget ){
+      ai_action_next( self.th_walk, 1.4, self.ai_action_mod );
+      return;
+    }
+    else{
+      ai_action_next( self.th_stand, 0.9, self.ai_action_mod );
+      return;
     }
   }
-  ai_action_next( self.th_stand, 0, self.ai_action_mod );
   
-  return;
+  enemy_infront = ai_target_infront( self.enemy, 0.95 );
+  enemy_range = ai_range( self.enemy );
+  enemy_yaw = vectoyaw( self.enemy.origin - self.origin );
+  
+  //stand and fire
+  if( self.attack_state == AS_MISSILE ){
+    ai_action_next( self.th_attack, 0.9, self.ai_action_mod );
+    return;
+  }
+  
+  if( ai_check_allattack() ){
+    self.attack_state = AS_MISSILE;
+    return;
+  }
+  
+  movetogoal( self.m_fspeed * AI_RUN_SPD );
 };
 
 /*
@@ -124,46 +130,24 @@ void() ai_dest_attack={
   TH_STAND
 */
 void() ai_dest_stand={
-  if( self.enemy ){
-    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-    if( ai_visible(self.enemy) ){
-      if( ai_target_infront(self.enemy, 0.97) ){
-        ai_action_next( self.th_run, 1, self.ai_action_mod );
-        return;
-      }
-      ai_action_next( ai_dest_turn, 1, self.ai_action_mod );
+  if( time > self.ai_viewtime ){
+    if( ai_find_target_visual() ){
       return;
     }
-    else{
-      self.enemy = world;
-    }
+    self.ai_viewtime = time + self.ai_viewcheck;
   }
   
-  ChangeYaw();
   if( time > self.ai_action_time ){
     if( self.movetarget ){
       self.goalentity = self.movetarget;
       self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-      ai_action_next( self.th_walk, 2, self.ai_action_mod);
+      ai_action_next( self.th_walk, 1.4, 0);
       return;
     }
     else{
-      local float turn;
-      self.ideal_yaw = anglemod(45 + crandom() * 180 - self.angles_y);
-      turn = anglemod(self.ideal_yaw - self.angles_y);
-      turn = (turn / self.yaw_speed);
-      turn = turn / 5;
-      self.ai_action_time = time + turn + self.ai_action_mod;
-    }
-  }
-  
-  if( time > self.ai_viewtime ){
-    if( ai_find_target_visual() ){
-      self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-      ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+      ai_action_next( self.th_stand, 0.9, 0);
       return;
     }
-    self.ai_viewtime = time + self.ai_viewcheck;
   }
 };
 
@@ -193,9 +177,7 @@ void() ai_dest_th={
       }
     }
     ai_ranged_attack();
-    if( self.button0 ){
-      self.button0 = 0;
-    }
+    self.button0 = 0;
   }
   
   if( self.th_action ){
@@ -282,15 +264,11 @@ void() ai_vec_dest={
     remove(self);
     return;
   }
-  ai_unit_ini_var();
-    
+  
+  ai_unit_ini_var();    
   data_iniVehc(self.nextVecChoice);
   ai_pilot_ini_stats(self.ai_rank);
 
-  if( !self.pausetime ){
-    self.pausetime = 999999;
-  }
-  
   self.th_stand = ai_dest_stand; //-> th_stand is used as the unit's main think function
   self.th_walk = ai_dest_walk; //-> th_walk is used the unit's 'Action' function, only 1 action execution per frame
   self.th_run = ai_dest_run;

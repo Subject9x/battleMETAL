@@ -102,7 +102,7 @@ void() ai_turret_control={
         self.patience = 0;
         if( time > self.attack_finished){
           if(ai_target_facingideal()){
-            self.attack_finished = time + ai_core_attackInterval();
+            //self.attack_finished = time + ai_core_attackInterval();
             self.button0 = 1; 
           }
         }

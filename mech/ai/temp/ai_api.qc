@@ -40,6 +40,9 @@ float(float mode) ai_spawn_clean={
 
 float(entity t) ai_valid_target={
   if ( t ){
+    if( (t.flags & FL_NOTARGET) ){
+      return FALSE;
+    }
     if( t.deadflag <= DEAD_NO ){
       if( t.i_faction != self.i_faction ){
         if( t.data_type == DATA_BLD ){
@@ -202,7 +205,7 @@ vector(entity wep) ai_attack_trace={
   cam = self.e_cam;
   
   makevectors(self.angles);
-  traceline (self.origin + v_forward * 1, self.origin + lead*wep.w_range, TRUE, self);
+  traceline (cam.origin + v_forward * 1, self.origin + (lead * wep.w_range), TRUE, self);
   
   return trace_endpos;
 };
@@ -251,19 +254,19 @@ void() ai_ranged_attack={
     }
     wep_chain = wep_chain.w_slot;
   }
-  if( fired > 0 ){
-    self.attack_finished = time + ai_core_attackInterval();
-  }
 };
 
 
 void(entity bot, entity attacker) ai_damage_react={
   local entity this;
   local float change;
-  
+  //TODO - panic behavior
+  if( (bot.flags & FL_NOGUNS) ){
+    return;
+  }
   this = self;
   self = bot;
-  if( self.enemy ){
+  if( self.enemy && self.enemy != attacker  ){
     // size check
     if( (self.data_type == DATA_VEHC) && (attacker.data_type == DATA_MECH) ){
       change = 0.2;
@@ -306,7 +309,7 @@ void(entity bot, entity attacker) ai_damage_react={
   else{
     self.enemy = attacker;
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-    ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+    ai_action_next( self.th_attack, 0.6, self.ai_action_mod);
   }
   self = this;
 };
@@ -339,7 +342,70 @@ float(entity wep) ai_attack_blockcheck={
   return FALSE;
 };
 
+float() ai_check_allattack={
+  if( !ai_visible( self.enemy ) ){
+    cons_logAString("ai_check_allattack", "targ not visible");  //DEBUG
+    return FALSE;
+  }
+  if( self.th_check ){
+    return self.th_check();
+  }
+  return ai_check_forattack();
+};
 
+float() ai_check_forattack={
+  local vector spot1, spot2;
+  local entity targ;
+  local float chance, r;
+  
+  targ = self.enemy;
+  
+  spot1 = self.e_cam.origin;
+  spot2 = targ.origin;
+  
+  traceline(spot1, spot2, FALSE, self);
+  
+  if( trace_ent != targ ){
+    return FALSE;
+  }
+  
+  if( trace_inopen && trace_inwater ){
+    return FALSE;
+  }
+  
+  if( !self.th_attack ){
+    return FALSE;
+  }
+  
+  r = ai_range( self.enemy );
+  
+  if( r > self.ai_minrange ){
+    return FALSE;
+  }
+  
+  if( !ai_visible( self.enemy ) ){
+    return FALSE;
+  }
+  
+  local float i;
+  i = self.ai_attack_time;
+  if( r == AI_RANGE_S ){
+    i = i + 0.4;
+  }
+  else if( r == AI_RANGE_M ){
+    i = i + 0.3;
+  }
+  else if( r == AI_RANGE_L ){
+    i = i + 0.2;
+  }
+  
+  if( random() < i ){
+    ai_action_next( self.th_attack, 0.5, self.ai_action_mod );
+    ai_leg_frame( leg_stand1 );
+    return TRUE;
+  }
+  return FALSE;
+};
 
 /*
   Only used for AI_SPAWNFLAG_RANDDOMSTART
@@ -397,7 +463,7 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
 
 void() ai_wep_calcranges={
   local entity w;
-  local float s,m,l
+  local float sh, m, l;
   w = self.w_slot;
   while(w){
     if(w.deadflag <= DEAD_NO){
@@ -405,7 +471,7 @@ void() ai_wep_calcranges={
       damg = w.p_damage * w.w_clipsize;
       if(w.w_range <= AI_RANGE_S){ 
         self.w_group1 = self.w_group1 | w.w_group;
-        s = s + damg;
+        sh = sh + damg;
       }
       if(w.w_range > AI_RANGE_S){
         if(w.w_range <= AI_RANGE_M){
@@ -420,18 +486,20 @@ void() ai_wep_calcranges={
     }
     w = w.w_slot;
   }
-  if( (s > m) && (s > l) ){
+  
+  if( (sh > m) && (sh > l) ){
     self.ai_minrange = AI_RANGE_S;
-    return;
   }
-  if( (m > s) && (m > l) ){
-    self.ai_minrange = AI_RANGE_S;
-    return;
+  if( (m > sh) && (m > l) ){
+    self.ai_minrange = AI_RANGE_M;
   }
-  if( (l > s) && (l > m) ){
-    self.ai_minrange = AI_RANGE_S;
-    return;
+  if( (l > sh) && (l > m) ){
+    self.ai_minrange = AI_RANGE_L;
   }
+  if( self.ai_minrange == 0 ){
+    self.flags = self.flags | FL_NOGUNS;
+  }
+  
 };
 
 float(void() action) ai_hunt_dropnode={
@@ -485,6 +553,26 @@ float(void() action) ai_hunt_dropnode={
 };
 
 /*
+  ported over from Quake and adapted here
+*/
+float(entity targ) ai_range={
+  local vector spot1, spot2;
+  local float r;
+  
+  spot1 = self.origin;
+  spot2 = targ.origin;
+  
+  r = vlen( spot1 - spot2 );
+  if( r < AI_RANGE_S )
+    return AI_RANGE_S;
+  if( r < AI_RANGE_M )
+    return AI_RANGE_M;
+  if( r < AI_RANGE_L )
+    return AI_RANGE_L;
+  return AI_RANGE_L;
+};
+
+/*
   calculates the number of game seconds the AI needs
   to traverse a given distance at a desired speed
 */
@@ -506,4 +594,16 @@ float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time={
   turn = (turn / yawspeed);
   turn = turn / tim;
   return turn;
+};
+
+/*
+  simple validation, AI should only fire a weapon that
+  has a power draw IF the AI has more than half of the current energy
+  on-hand
+*/  
+float(entity wep) ai_attack_checkEne={
+  if(self.en_cur  >= wep.en_rate ){
+    return TRUE;
+  }
+  return FALSE;
 };

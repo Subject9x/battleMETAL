@@ -51,9 +51,6 @@ void() ai_attack={
     }
     wep_chain = wep_chain.w_slot;
   }
-  if( fired > 0 ){
-    self.attack_finished = time + ai_core_attackInterval();
-  }
 };
 
 /*
@@ -88,17 +85,7 @@ vector() ai_attack_aimpoint={
   hitorg = ai.w_fire_ofs + (v_up * cy) + (v_right * cx);
   return hitorg;
 };*/
-/*
-  simple validation, AI should only fire a weapon that
-  has a power draw IF the AI has more than half of the current energy
-  on-hand
-*/  
-float(entity wep) ai_attack_checkEne={
-  if(self.en_cur  >= wep.en_rate ){
-    return TRUE;
-  }
-  return FALSE;
-};
+
 
 /*
   Don't fire if the weapon's barrel is blocked by things like:

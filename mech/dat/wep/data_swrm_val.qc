@@ -112,7 +112,7 @@ void() data_swrm_atk={
   targs = findradius(player.origin, self.w_range);
   while(targs){
     if( maxtarg > 0 ){
-      if( (ai_target_isInFront(targs)) && (targs != player) ){
+      if( (ai_target_infront(targs, 0.7)) && (targs != player) ){
         if( (targs.flags & FL_CLIENT) || (targs.flags & FL_MONSTER) ){
           if( targs.i_faction != player.i_faction){
             if(targs.deadflag == DEAD_NO){

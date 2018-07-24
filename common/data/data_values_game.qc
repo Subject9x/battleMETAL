@@ -310,11 +310,36 @@ float LOCK_PLYR = 8;
 //============================
 //     AI STATS      
 //============================
+//PILOT RANKS - determines base states, and some realtime decisions
+float AI_RANK_ACE = 0;
+float AI_RANK_VET = 1;  //veteran
+float AI_RANK_REG = 2;  //regular
+float AI_RANK_ROK = 3;  //rookie
 
 float AI_HUNT_NOV = 1;
 float AI_HUNT_REG = 2;
 float AI_HUNT_VET = 3;
 float AI_HUNT_ELT = 4;
+
+float AI_ATTACK_ROK  =  0.2;
+float AI_ATTACK_REG  =  0.3;
+float AI_ATTACK_VET  =  0.4;
+float AI_ATTACK_ACE  =  0.5;
+
+
+//QUIRKS - combat
+float AI_STYLE_SKIRM  = 0;  //this is 'default'
+float AI_STYLE_SNIPER = 1;
+float AI_STYLE_BRAWL  = 2;
+float AI_STYLE_FLANK  = 3;
+float AI_STYLE_STALK  = 4;
+
+//QUIRKS - personality
+float AI_TYPE_NORML  = 0;
+float AI_TYPE_AGGRO  = 1;
+float AI_TYPE_RESCU  = 2;
+float AI_TYPE_COWRD  = 3;
+
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
@@ -340,10 +365,10 @@ float AI_RNG_ROK = 1.5;
 
 //Adjust Rotation Rate
 //self.yaw_speed = rotation rate - (rotation rate * AI_ROT_X);
-float AI_ROT_ACE = 0.05; //0.01
-float AI_ROT_VET = 0.15; //0.05
-float AI_ROT_REG = 0.25; //0.15
-float AI_ROT_ROK = 0.35; //0.25
+float AI_ROT_ACE = 0.1; //0.01
+float AI_ROT_VET = 0.2; //0.05
+float AI_ROT_REG = 0.3; //0.15
+float AI_ROT_ROK = 0.4; //0.25
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
@@ -360,10 +385,10 @@ float AI_SHIELD_HARD =  0.8;
 float AI_SHIELD_NIGHT = 1;
 
 //ai_leading ratings, how well an ai tracks a slippery target
-float AI_LEAD_ACE = 0.04;
-float AI_LEAD_VET = 0.06;
-float AI_LEAD_REG = 0.08;
-float AI_LEAD_ROK = 0.1;
+float AI_LEAD_ACE = 0.06;
+float AI_LEAD_VET = 0.08;
+float AI_LEAD_REG = 0.1;
+float AI_LEAD_ROK = 0.12;
 
 //ai's patience in hunting a target, the better the pilot the longer they hunting
 float AI_PTNCE_ACE = 40;
@@ -389,10 +414,17 @@ float AI_FOV_VET = 0.4;
 float AI_FOV_ACE = 0.5;
 
 //action timer mod
-float AI_REFLEX_ACE = 2;
-float AI_REFLEX_VET = 1;
-float AI_REFLEX_REG = 0.75;
-float AI_REFLEX_ROK = 0.25;
+float AI_REFLEX_ACE = 0.25;
+float AI_REFLEX_VET = 0.2;
+float AI_REFLEX_REG = 0.15;
+float AI_REFLEX_ROK = 0.1;
+
+//AI order constants, refactored from func pointers
+float AI_ORDER_DEBUG = -1;
+float AI_ORDER_STAND = 1;
+float AI_ORDER_DEFEND = 2;
+float AI_ORDER_PATROL = 3;
+float AI_ORDER_ATTACK = 4;
 
 //AI movement speed ratio 
 float AI_WALK_SPD = 0.025;

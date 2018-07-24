@@ -121,17 +121,14 @@ void() ai_node_t_patrol={
   local entity	temp;
   
   if( other.movetarget != self ){
-    cons_logAString("ai_node_t_patrol", "other.movetarget"); //DEBUG
     return;
   }
   
   if( other.enemy ){
-    cons_logAString("ai_node_t_patrol", "other.enemy"); //DEBUG
     return;
   }
   
   if( other.ai_hunt_total > -1 ){
-    cons_logAString("ai_node_t_patrol", "other.ai_hunt_total"); //DEBUG
     return;
   }
   
@@ -145,11 +142,18 @@ void() ai_node_t_patrol={
 //dprint ("t_movetarget\n");
 	self.goalentity = self.movetarget = find (world, targetname, other.target);
 	self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-	if ( !self.movetarget ){
-		self.pausetime = time + 999999;
-    ai_action_next( self.th_stand, 1, self.ai_action_mod );
+  ai_leg_frame( leg_stand1 );
+	if ( self.movetarget ){
+    if( other.pausetime ){
+      ai_action_next( self.th_stand, other.pausetime, self.ai_action_mod );
+      return;
+    }
+    ai_action_next( self.th_walk, 0.9, self.ai_action_mod );
+    ai_leg_frame( leg_walk1 );
 		return;
 	}
+  ai_action_next( self.th_stand, 999999, self.ai_action_mod );
+  return;
 };
 
 void() ai_node_t_defend={

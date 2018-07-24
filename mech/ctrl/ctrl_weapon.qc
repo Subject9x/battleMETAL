@@ -84,7 +84,7 @@ void() ctrl_die_weapon={
       ctrl_weapon_addState(self, self.state_2);
     }
     else{
-      ai_core_calcranges();
+      ai_wep_calcranges();
     }
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
@@ -97,5 +97,3 @@ void() ctrl_die_weapon={
     }
   }
 };
-
-void() ctrl_die_weapon

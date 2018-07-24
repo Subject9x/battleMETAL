@@ -13,23 +13,16 @@ void(void() next_action, float next_time, float time_mod) ai_action_next={
 
 void() ai_hunt_target={
   //only applies to ai that can actually move
+  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+  self.goalentity = self.enemy;
   if( self.th_run ){
-    if( self.e_legs ){
-      local entity temp;
-      temp = self;
-      self = self.e_legs;
-        self.th_walk();
-      self = temp;
-    }
-    self.goalentity = self.enemy;
-    self.th_action = self.th_run;
-    self.ai_action_time = time + 5;
+    ai_action_next( self.th_run, 0.8, self.ai_action_mod / 2 );
+    ai_leg_frame( leg_walk1 ); 
   }
-	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
 };
 
 void(float ifaction, float datatype) ai_sfx_spotted={
-  cons_logAString("Bot Here", "I'VE SEEN YOU!");  //DEBUG
+  cons_logAString("Bot says", "I'VE SEEN YOU!");  //DEBUG
 };
 
 void() ai_found_target={
@@ -47,13 +40,13 @@ void() ai_walk_setup={
 		}
 // this used to be an objerror
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    ai_action_next( self.th_walk, 0, self.ai_action_mod );
+    ai_action_next( self.th_walk, 1.2, self.ai_action_mod );
     ai_leg_frame( leg_walk1 );
     return;
 	}
 	else{
 		self.pausetime = 99999999;
-    ai_action_next( self.th_stand, 0, self.ai_action_mod );
+    ai_action_next( self.th_stand, 0.9, self.ai_action_mod );
     ai_leg_frame( leg_stand1 );
     return;
 	}
@@ -61,11 +54,20 @@ void() ai_walk_setup={
 
 //simple handler function to push state changes down to legs
 void(void() macro) ai_leg_frame={
-  local entity this;
-  this = self;
-  self = this.e_legs;
-    macro();
-  self = this;
+  if( self.e_legs ){
+    local entity this;
+    this = self;
+    self = this.e_legs;
+      macro();
+    self = this;
+  }
+};
+
+
+
+void() ai_face_targ={
+	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+	ChangeYaw ();
 };
 
 void(float dist) ai_forward={
@@ -107,7 +109,7 @@ void() ai_turn={
 void(float dist) ai_run={
   
   q1_ai_run(dist) ;
-  self.e_cam.SendFlags = 16;
+  self.e_cam.SendFlags = self.e_cam.SendFlags | 16;
 };
 
 void() ai_run_slide={

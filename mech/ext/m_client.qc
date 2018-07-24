@@ -316,7 +316,7 @@ void() ClientDisconnect = {
   }
   bprint (self.netname);
 	bprint (" has fled the field of battle!\n");
-  remove(self.node);
+  remove(self.ladder_entity);
   if(self.data_type == DATA_MECH){
     mech_player_die();
     player_unmakeMech();

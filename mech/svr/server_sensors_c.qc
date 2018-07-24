@@ -15,7 +15,7 @@ void() server_getTarget={
     src = self;
   }
   traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), FALSE, self);
-  if( ai_target_isValid_useDataType(trace_ent) ){
+  if( ai_valid_target(trace_ent) ){
     
     self.enemy = trace_ent;
     if(trace_ent.data_type != DATA_POBS){
@@ -37,7 +37,7 @@ void() server_getTarget={
 void() server_updateTargetInfo={
   local float isvis;
  
-  if( (!ai_target_isValid_useDataType(self.enemy)) || (self.enemy.health <= 0) ){
+  if( (!ai_valid_target(self.enemy)) || (self.enemy.health <= 0) ){
     self.stat_trg_vsize = -1;
     self.stat_trg_dataidx = -1;
     self.stat_trg_sh = 0;

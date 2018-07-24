@@ -153,7 +153,7 @@ void(float mech_id) data_iniMech={
 void(float vec_id) data_iniVehc={
   switch(vec_id){
     case ID_VEC_TANK:
-      build_vehicle_unit(data_TNK_ini);
+      //build_vehicle_unit(data_TNK_ini);
       break;
     case ID_VEC_H_TD:
       build_vehicle_unit(data_H_TD_ini);

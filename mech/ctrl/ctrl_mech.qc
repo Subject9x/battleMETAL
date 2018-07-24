@@ -163,9 +163,9 @@ void() ctrl_die_comp={
     self.health = 0;
     
     if((self.owner.flags & FL_MONSTER)){
-      if( ai_core_noguns()){
+      //if( ai_core_noguns()){
         //TODO - panic behavior
-      }
+     // }
     }
   }
 };

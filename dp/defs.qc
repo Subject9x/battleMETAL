@@ -249,6 +249,7 @@ float	FL_WATERJUMP			= 2048;	// player jumping out of water
 float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
 float FL_SKIPTHINK        = 8192; //tells ai system that main update has been ovverridden
 float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
+float FL_NOGUNS         = 32768;  //bot has no more guns!
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves
 //float	MOVETYPE_ANGLENOCLIP	= 1;

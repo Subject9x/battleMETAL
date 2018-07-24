@@ -44,7 +44,6 @@ void() ai_unit_ini_var={
   self.ai_viewcheck = 0;
   self.ai_view = 0;
   self.ai_action_mod = 0;
-  self.ai_fight = FALSE;
   self.ai_viewtime = 0;
   self.ai_minrange = 0;
   self.ai_hunt_total = -1;
@@ -61,8 +60,8 @@ void(float rank) ai_pilot_ini_stats={
   self.ai_radar = ai_pilot_radar_range(rank, self.radar_range);  
   self.ai_view = ai_pilot_view_range(rank);
   self.ai_viewcheck = ai_pilot_view_interval(rank);
+  ai_wep_calcranges();
   
-  ai_core_calcranges();
   mod_am = ai_pilot_armor_mod();
   self.max_health = self.health = self.health * mod_am; 
   self.e_legs.max_health = self.e_legs.health = self.e_legs.health * mod_am; 
@@ -86,7 +85,9 @@ void(float rank) ai_pilot_ini_stats={
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
   self.ai_action_mod = ai_pilot_action_mod(rank);
-  ai_wep_calcranges();
+  self.ai_attack_time = ai_pilot_attack_interval(rank);
+  
+
 };
 
 float() ai_pilot_rank_byskill={
@@ -100,6 +101,7 @@ float() ai_pilot_rank_byskill={
     case 3:
       return AI_RANK_ACE;
   }
+  return AI_RANK_ROK;
 };
 
 float(float rank) ai_pilot_optical_range={
@@ -410,36 +412,35 @@ float() ai_core_hitTimeCalc={
   or inhumanly relentlessly attacking, this function creates
   a random amount of time to make the next attack.
 */
-float() ai_core_attackInterval={
-  local float cooldown;
-  cooldown = self.ai_rank / 2;
-
-  if(self.ai_style == AI_STYLE_SNIPER){
-    cooldown = cooldown + 0.35;
+float(float rank) ai_pilot_attack_interval={
+  local float interval;
+  switch( skill ){
+    case 0:
+      interval = 0.1;
+      break;
+    case 1:
+      interval = 0.2;
+      break;
+    case 2:
+      interval = 0.3;
+      break;
+    case 3:
+      interval = 0.4;
+      break;
   }
-  else if(self.ai_style == AI_STYLE_BRAWL){
-    cooldown = cooldown + 0.15;
+  switch( rank ){
+    case AI_RANK_ROK:
+      interval = interval + AI_ATTACK_ROK;
+      break;
+    case AI_RANK_REG:
+      interval = interval + AI_ATTACK_REG;
+      break;
+    case AI_RANK_VET:
+      interval = interval + AI_ATTACK_VET;
+      break;
+    case AI_RANK_ACE:
+      interval = interval + AI_ATTACK_ACE;
+      break;
   }
-  else if(self.ai_style == AI_STYLE_SKIRM){
-    cooldown = cooldown + 0.25;
-  }
-
-  if(self.ai_type == AI_TYPE_AGGRO){
-    cooldown = cooldown - 0.05;
-  }
-
-  if(skill == 0){
-    cooldown = cooldown + 1;
-  }
-  else if(skill == 2){
-    cooldown = cooldown + 0.75;
-  }
-  else if(skill == 2){
-    cooldown = cooldown + 0.50;
-  }
-  else if(skill == 3){
-    cooldown = cooldown + 0.25;
-  }
-  cooldown = util_roll_dice( fabs(cooldown) );
-  return cooldown;
+  return interval;
 };

@@ -14,7 +14,7 @@ void(entity client) client_data_ini={
     self.classname = "client";
     self.flags = self.flags | FL_CLIENTDATA;
     self.owner = client;
-    this.node = self;
+    this.ladder_entity = self;
     self.stat_eid = num_for_edict(client);
     setmodel(self, "q3mdl/testball.md3");
     self.movetype = MOVETYPE_NONE;
