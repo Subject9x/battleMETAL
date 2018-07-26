@@ -199,9 +199,11 @@ vector(entity ai) ai_attack_calcSpread={
 vector(entity wep) ai_attack_trace={
   local entity cam;
   local vector lead, cam_ofs;
-  
-  lead = self.enemy.origin - (self.enemy.velocity * self.ai_leading);
-  lead = normalize(lead - self.origin);
+  lead = '1 1 1';
+  if( self.enemy ){
+    lead = self.enemy.origin - (self.enemy.velocity * self.ai_leading);
+    lead = normalize(lead - self.origin);
+  }
   cam = self.e_cam;
   
   makevectors(self.angles);
@@ -343,10 +345,6 @@ float(entity wep) ai_attack_blockcheck={
 };
 
 float() ai_check_allattack={
-  if( !ai_visible( self.enemy ) ){
-    cons_logAString("ai_check_allattack", "targ not visible");  //DEBUG
-    return FALSE;
-  }
   if( self.th_check ){
     return self.th_check();
   }
@@ -388,7 +386,7 @@ float() ai_check_forattack={
   }
   
   local float i;
-  i = self.ai_attack_time;
+  i = 0.1;
   if( r == AI_RANGE_S ){
     i = i + 0.4;
   }
@@ -556,20 +554,7 @@ float(void() action) ai_hunt_dropnode={
   ported over from Quake and adapted here
 */
 float(entity targ) ai_range={
-  local vector spot1, spot2;
-  local float r;
-  
-  spot1 = self.origin;
-  spot2 = targ.origin;
-  
-  r = vlen( spot1 - spot2 );
-  if( r < AI_RANGE_S )
-    return AI_RANGE_S;
-  if( r < AI_RANGE_M )
-    return AI_RANGE_M;
-  if( r < AI_RANGE_L )
-    return AI_RANGE_L;
-  return AI_RANGE_L;
+  return vlen( self.origin - targ.origin );
 };
 
 /*

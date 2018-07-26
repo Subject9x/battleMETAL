@@ -8,270 +8,200 @@ Overview: ai unit
   skirmishers play to engage targets at medium to close range
   they can strafe left and right against targets
 */
+void() mech_sk_stand;
+void() mech_sk_stand_scan;
+void() mech_sk_walk;
+void() mech_sk_walk_scan;
 
-void() ai_mech_sk_stand;
-void() ai_mech_sk_sentry;
+void() mech_sk_run;
+void() mech_sk_run_strafe;
+void() mech_sk_run_charge;
 
-void() ai_mech_sk_walk;
-
-void() ai_mech_sk_run;
-void() ai_mech_sk_run_strafe;
-void() ai_mech_sk_run_straight;
-
-float() ai_mech_sk_check;
-void() ai_mech_sk_attack;
+void() mech_sk_attack;
+void() mech_sk_walk_attack;
+void() mech_sk_walk_strafe_attack;
+void() mech_sk_walk_fight;
 
 void() ai_mech_sk_die;
 void() ai_mech_sk_die1;
 void() ai_mech_sk_die1a;
 void() ai_mech_sk_die2;
 
-/*
-  TH_STAND
-*/
-void() ai_mech_sk_stand={
+
+void() mech_sk_stand={
+  cons_logAString("state", "mech_sk_stand"); //DEBUG
   if( time > self.ai_viewtime ){
-    if( ai_find_target_visual() ){
-      return;
-    }
     self.ai_viewtime = time + self.ai_viewcheck;
+    ai_next_state( ST_STAND_SCAN );
+    return;
   }
-  
   if( time > self.ai_action_time ){
     if( self.movetarget ){
       self.goalentity = self.movetarget;
       self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-      ai_action_next( self.th_walk, 1.4, 0);
-      ai_leg_frame( leg_walk1 );
+      ai_next_state( ST_WALK );
       return;
-    }
-    else{
-      ai_action_next( self.th_stand, 0.9, 0);
-      ai_leg_frame( leg_stand1 );
-      return;
-    }
+    } 
+    ai_next_state( ST_STAND );
   }
 };
 
-/*
-  TH_SENTRY
-  Lost LoS to target, but before going back to previous task, stand and look around.
-*/
-void() ai_mech_sk_sentry={
-
-};
-
-/*
-  TH_CHECK
-  basically turning the CheckAnyAttack() functionality of quake into more
-  of an interface
-*/
-float() ai_mech_sk_check={
-  local vector spot1, spot2;
-  local entity targ;
-  local float i;
-  
-  targ = self.enemy;
-  
-  spot1 = self.origin;
-  spot2 = targ.origin;
-  
-  traceline( spot1, spot2, FALSE, self );
-  
-  if( trace_inopen && trace_inwater ){
-    return FALSE;
-  }
-  
-  if( trace_ent != targ ){
-    return FALSE;
-  }
-  
-  if( self.stat_trg_dist > AI_RANGE_L ){
-    return FALSE;
-  }
-  
-  if( self.stat_trg_dist > self.ai_minrange ){
-    cons_logAString("self.attack_state", "AS_STRAIGHT");  //DEBUG
-    self.attack_state = AS_STRAIGHT;
-    return TRUE;
-  }
-  
-  if( self.stat_trg_dist < self.ai_minrange / 2 ){
-    cons_logAString("self.attack_state", "AS_MELEE");  //DEBUG
-    self.attack_state = AS_MELEE;
-    return TRUE;
-  }
-
-  cons_logAString("self.attack_state", "AS_MISSILE");  //DEBUG
-  self.attack_state = AS_MISSILE;
-  return TRUE;
-};
-
-/*
-  TH_WALK
-*/
-void() ai_mech_sk_walk={
-  if( time > self.ai_viewtime ){
-    if( ai_find_target_visual() ){
-      return;
-    }
-    self.ai_viewtime = time + self.ai_viewcheck;
+void() mech_sk_stand_scan={
+  cons_logAString("state", "mech_sk_stand_scan"); //DEBUG
+  if( ai_find_target_visual() ){
+    ai_next_state( ST_RUN );
+    return;
   }
   if( time > self.ai_action_time ){
-    ai_action_next( self.th_walk, 1.4, 0 );
-    ai_leg_frame( leg_walk1 );
+    self.ai_viewtime = time + self.ai_viewcheck;
+    if( self.movetarget ){
+      self.goalentity = self.movetarget;
+      self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+      ai_next_state( ST_WALK );
+      return;
+    }
+    ai_next_state( ST_STAND );
+    return;
+  }
+};
+
+void() mech_sk_walk={
+  cons_logAString("state", "mech_sk_walk"); //DEBUG
+  if( time > self.ai_viewtime ){
+    self.ai_viewtime = time + self.ai_viewcheck;
+    ai_next_state( ST_WALK_SCAN );
     return;
   }
   movetogoal(self.m_fspeed * AI_WALK_SPD);
-};
- 
-/*
-  TH_RUN
-*/ 
-void() ai_mech_sk_run={
-  if( !self.enemy ){
-    if( self.movetarget ){
-      ai_action_next( self.th_walk, 1.4, self.ai_action_mod );
-      ai_leg_frame( leg_walk1 );
-      return;
-    }
-    else{
-      ai_action_next( self.th_stand, 0.9, self.ai_action_mod );
-      ai_leg_frame( leg_stand1 );
-      return;
-    }
-  }
-  
-  enemy_infront = ai_target_infront( self.enemy, 0.95 );
-  enemy_range = ai_range( self.enemy );
-  enemy_yaw = vectoyaw( self.enemy.origin - self.origin );
-  
-  //strafe left / right attack
-  if( self.attack_state == AS_MELEE ){
-    local float rand;
-    rand = random();
-    if( rand < 0.5 ){
-      if( self.lefty > 0 ){
-        self.lefty = 0;
-      }
-      else{
-        self.lefty = -90;
-      }
-    }
-    else{
-      if( self.lefty < 0 ){
-        self.lefty = 0;
-      }
-      else{
-        self.lefty = 90;
-      }
-    }
-    if( !self.lefty == 0 ){
-      ai_action_next( ai_mech_sk_run_strafe, 3, self.ai_action_mod );
-      ai_leg_frame( leg_walk1 );
-      return;
-    }
-    self.attack_state = AS_MISSILE;
-    return;
-  }
-  
-  if( self.attack_state == AS_STRAIGHT ){
-    ai_action_next( ai_mech_sk_run_straight, 1.2, self.ai_action_mod );
-    ai_leg_frame( leg_walk1 );
-    return;
-  }
-  
-  //stand and fire
-  if( self.attack_state == AS_MISSILE ){
-    ai_action_next( self.th_attack, 0.9, self.ai_action_mod );
-    ai_leg_frame( leg_stand1 );
-    return;
-  }
-  
-  if( ai_check_allattack() ){
-    cons_logAString("ai_check_allattack", "targ visible");  //DEBUG
-    return;
-  }
-  
-  movetogoal( self.m_fspeed * AI_RUN_SPD );
-};
-
-void() ai_mech_sk_run_strafe={
-  if( self.enemy ){
-    ai_face_targ();
-    if( walkmove( self.angles_y + self.lefty, self.m_fspeed * AI_RUN_SPD ) ){
-      self.e_legs.v_angle_y = anglemod(90 - self.angles_y + self.lefty) ;
-      droptofloor();
-    }
-    if( ai_target_infront( self.enemy, 0.95 ) ){
-      if(  self.currentWeaponGroup > 0 ){
-        if( random() <= self.ai_attack_time ){
-          self.button0 = 1;
-        }
-      }
-    }
-    if( time > self.ai_action_time ){
-      self.lefty = self.angles_y;
-      self.e_legs.v_angle_y = self.angles_y;
-      ai_action_next( self.th_run, 0.9, self.ai_action_mod );
-      ai_leg_frame( leg_walk1 );
-      return;
-    }
-  }
-  self.lefty = self.angles_y;
-  self.e_legs.angles_y = self.angles_y;
-  ai_action_next( self.th_stand, 0.9, self.ai_action_mod );
-  ai_leg_frame( leg_walk1 );
-  return;
-
-};
-
-void() ai_mech_sk_run_straight={
-  if( self.enemy ){
-    ai_face_targ();
-    movetogoal( self.m_fspeed * AI_RUN_SPD );
-    if( ai_target_infront(self.enemy, 0.95) ){
-      if( random() <= self.ai_attack_time){
-        if(  self.currentWeaponGroup > 0 ){
-          if( random() <= self.ai_attack_time ){
-            self.button0 = 1;
-          }
-        }
-      }
-    }
-    if( time > self.ai_action_time ){
-      self.e_legs.v_angle_y = self.angles_y;
-      ai_action_next( self.th_run, 0.9, self.ai_action_mod );
-      ai_leg_frame( leg_walk1 );
-      return;
-    }
-  }
-  self.lefty = self.angles_y;
-  self.e_legs.angles_y = self.angles_y;
-  ai_action_next( self.th_stand, 0.9, self.ai_action_mod );
-  ai_leg_frame( leg_walk1 );
-  return;
-};
-
-/*
-  TH_ATTACK
-*/ 
-void() ai_mech_sk_attack={
-  ai_face_targ();
-  if( ai_target_infront(self.enemy, 0.95) ){
-    if( random() <= self.ai_attack_time){
-      if(  self.currentWeaponGroup > 0 ){
-        if( random() <= self.ai_attack_time ){
-          self.button0 = 1;
-        }
-      }
-    }
-  }
-
   if( time > self.ai_action_time ){
-    ai_action_next( self.th_run, 1.1, self.ai_action_mod );
-    ai_leg_frame( leg_walk1 );
+    if( self.movetarget ){
+      self.goalentity = self.movetarget;
+      self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+      ai_next_state( ST_WALK );
+      return;
+    } 
+    ai_next_state( ST_STAND );
+  }
+};
+
+void() mech_sk_walk_scan={
+  cons_logAString("state", "mech_sk_walk_scan"); //DEBUG
+  if( ai_find_target_visual() ){
     return;
+  }
+  movetogoal(self.m_fspeed * AI_WALK_SPD);
+  if( time > self.ai_action_time ){
+    self.ai_viewtime = time + self.ai_viewcheck;
+    self.goalentity = self.movetarget;
+    self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+    ai_next_state( ST_WALK );
+    return;
+  }
+};
+
+void() mech_sk_run={
+  if( ai_valid_target( self.enemy ) ){
+    cons_logAString("state", "mech_sk_run"); //DEBUG
+
+    enemy_range = ai_range( self.enemy );
+    enemy_yaw = vectoyaw( self.enemy.origin - self.origin );
+    enemy_infront = ai_target_infront( self.enemy, 0.9 );
+    
+    cons_logAFloat("enemy_range", enemy_range );  //DEBUG
+    
+    if( enemy_range > self.ai_minrange ){ 
+      movetogoal(self.m_fspeed * AI_RUN_SPD);
+      ai_next_state( ST_RUN );
+      return;
+    }
+    
+    self.ideal_yaw = enemy_yaw;
+    
+    if( enemy_range < 200 ){
+      if( enemy_infront ){
+        self.lefty = 1 - self.lefty;
+        ai_next_state( ST_RUN_CHARGE );
+        return;
+      }
+      self.lefty = 0;
+      ai_next_state( ST_FIGHT_WALK );
+      return;
+    }
+    
+    if( enemy_range <= ( self.ai_minrange / 2 ) ){
+      if( enemy_infront ){
+        
+      }
+    }
+    
+    if( enemy_range <= self.ai_minrange ){
+      if( enemy_infront ){
+        ai_next_state( ST_ATTACK );
+        return;
+      }
+    } 
+    movetogoal(self.m_fspeed * AI_RUN_SPD);
+  }
+  else{
+    if( ai_find_target_visual() ){
+      return;
+    }
+    if( self.movetarget ){
+      ai_next_state( ST_WALK );
+      return;
+    }
+    ai_next_state( ST_STAND );
+    return;
+  }
+};
+
+void() mech_sk_run_charge={
+  cons_logAString("state", "mech_sk_run_charge"); //DEBUG
+  ai_charge_side();
+  if( time > self.ai_action_time ){
+    self.lefty = 0;
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
+void() mech_sk_attack={
+  cons_logAString("state", "mech_sk_attack"); //DEBUG
+  ai_face_targ();
+  if( ai_target_infront( self.enemy, 0.95 ) ){
+    ai_make_attack();
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
+void() mech_sk_walk_attack={
+
+};
+
+void() mech_sk_walk_strafe_attack={
+
+};
+
+void() mech_sk_walk_fight={
+  cons_logAString("state", "mech_sk_walk_fight"); //DEBUG
+  local float infront;
+  infront = ai_target_infront( self.enemy, 0.95 );
+  
+  ai_face_targ();
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+  switch( self.lefty ){
+    case 0:
+      if( infront ){
+        ai_make_attack();
+      }
+      ai_move_backward( self.ideal_yaw, self.m_fspeed * AI_WALK_SPD);
+      break;
   }
 };
 
@@ -283,6 +213,7 @@ void() ai_mech_sk_die={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
   self.colormod = '0.05 0.05 0.05';
+  self.attack_state = -1;
   
   local entity w_chain;
   w_chain = self.w_slot;
@@ -303,20 +234,20 @@ void() ai_mech_sk_die={
   activator = self.enemy;
   SUB_UseTargets ();
   
+  self.think = ai_mech_sk_die1;
+  self.ai_action_time = time + 300;
   //basically overkill damage will just remove the mech (nice and clean)
   if( self.health <= (self.max_health / 1.5) * -1 ){
-    self.flags = self.flags | FL_SKIPTHINK;
     self.think = ai_mech_sk_die2;
-    self.nextthink = time + 0.1;
-    return;
   }
-  ai_action_next( ai_mech_sk_die1, 120, 0);
+  self.nextthink = time + 0.1;
 };
 
 /*
   smoking wreck
 */
 void() ai_mech_sk_die1={
+  cons_logAString("state", "ai_mech_sk_die1"); //DEBUG
   makevectors( world.v_angle );
   local vector sm;
   sm = world.v_angle + (v_forward * world.m_speed) + (v_right * world.m_speed) + (v_up * world.m_speed);
@@ -324,22 +255,16 @@ void() ai_mech_sk_die1={
   te_smoke_test(self.e_tor_l.origin, sm + '0 0 5', 1);
   te_smoke_test(self.e_tor_r.origin, sm + '0 0 5', 1);
   
-  if ( time > self.ai_action_time ){
-    ai_action_next( ai_mech_sk_die1a, 300, 0);
-    return;
-  }
-};
-void() ai_mech_sk_die1a={
-  if ( time > self.ai_action_time ){
-    self.flags = self.flags | FL_SKIPTHINK;
+  self.think = ai_mech_sk_die1;
+  if( time > self.ai_action_time ){
     self.think = ai_mech_sk_die2;
-    self.nextthink = time + 0.1;
-    return;
-  }
+  } 
+  self.nextthink = time + 0.1;
 };
 
 //explode
 void() ai_mech_sk_die2={
+  cons_logAString("state", "ai_mech_sk_die2"); //DEBUG
   mech_cleanupMech();
   self.nextthink = time + 0.1;
   self.think = BecomeExplosion;
@@ -378,8 +303,44 @@ void() ai_mech_sk_th={
   }
   
   self.SendFlags = 31;
-  if( self.th_action ){
-    self.th_action();
+  
+  switch( self.attack_state ){
+    case ST_STAND:
+      mech_sk_stand();
+      break;
+    case ST_STAND_SCAN:
+      mech_sk_stand_scan();
+      break;
+    case ST_WALK:
+      mech_sk_walk();
+      break;
+    case ST_WALK_SCAN:
+      mech_sk_walk_scan();
+      break;
+    case ST_RUN:
+      mech_sk_run();
+      break;
+    case ST_RUN_STRAFE:
+    
+      break;
+    case ST_RUN_CHARGE:
+      mech_sk_run_charge();
+      break;
+    case ST_ATTACK:
+      mech_sk_attack();
+      break;
+    case ST_ATTACK_WALK:
+    
+      break;
+    case ST_ATTACK_WALK_STRAFE:
+    
+      break;
+    case ST_HUNT:
+    
+      break;
+    case ST_FIGHT_WALK:
+      mech_sk_walk_fight();
+      break;
   }
   
   if( !(self.flags & FL_SKIPTHINK) ){
@@ -393,7 +354,7 @@ void() ai_mech_sk_th={
   AI SPAWN FUNCTION
 */
 void() ai_mech_skirmish={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE){
+  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
 		objerror ("ai_mech_skirmish - outside of game mode");
     remove(self);
     return;
@@ -403,16 +364,12 @@ void() ai_mech_skirmish={
   data_iniMech(self.nextVecChoice);
   ai_pilot_ini_stats(self.ai_rank);
   
-  self.th_check = ai_mech_sk_check;
-  self.th_stand = ai_mech_sk_stand; //-> th_stand is used as the unit's main think function
-  self.th_walk = ai_mech_sk_walk; //-> th_walk is used the unit's 'Action' function, only 1 action execution per frame
-  self.th_run = ai_mech_sk_run;
-  self.th_attack = ai_mech_sk_attack;
   self.th_die = ai_mech_sk_die;
   
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
   }
+  self.movetype = MOVETYPE_STEP;
   
   droptofloor();
    
@@ -421,6 +378,9 @@ void() ai_mech_skirmish={
 
   ai_walk_setup();
 
+  self.attack_state = ST_STAND;
+  self.ai_action_time = time + self.ai_action_mod;
+  
   self.think = ai_mech_sk_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks

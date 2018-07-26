@@ -145,10 +145,12 @@ void() ai_node_t_patrol={
   ai_leg_frame( leg_stand1 );
 	if ( self.movetarget ){
     if( other.pausetime ){
-      ai_action_next( self.th_stand, other.pausetime, self.ai_action_mod );
+      self.attack_state = ST_STAND;
+      self.ai_action_time = time + self.ai_action_mod;
       return;
     }
-    ai_action_next( self.th_walk, 0.9, self.ai_action_mod );
+    self.attack_state = ST_WALK;
+    self.ai_action_time = time + self.ai_action_mod;
     ai_leg_frame( leg_walk1 );
 		return;
 	}

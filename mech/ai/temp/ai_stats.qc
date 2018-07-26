@@ -84,10 +84,9 @@ void(float rank) ai_pilot_ini_stats={
   self.ai_rte_rng = ai_pilot_rating_range();
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
-  self.ai_action_mod = ai_pilot_action_mod(rank);
-  self.ai_attack_time = ai_pilot_attack_interval(rank);
+  self.ai_action_mod = ai_pilot_interval( rank );
+  self.ai_attack_chance = ai_pilot_attack_interval( rank );
   
-
 };
 
 float() ai_pilot_rank_byskill={
@@ -440,6 +439,40 @@ float(float rank) ai_pilot_attack_interval={
       break;
     case AI_RANK_ACE:
       interval = interval + AI_ATTACK_ACE;
+      break;
+  }
+  return interval;
+};
+
+float( float rank ) ai_pilot_interval={
+
+  local float interval;
+  switch( skill ){
+    case 0:
+      interval = 0.95;
+      break;
+    case 1:
+      interval = 0.80;
+      break;
+    case 2:
+      interval = 0.65;
+      break;
+    case 3:
+      interval = 0.5;
+      break;
+  }
+  switch( rank ){
+    case AI_RANK_ROK:
+      interval = interval - AI_REFLEX_ROK;
+      break;
+    case AI_RANK_REG:
+      interval = interval - AI_REFLEX_REG;
+      break;
+    case AI_RANK_VET:
+      interval = interval - AI_REFLEX_VET;
+      break;
+    case AI_RANK_ACE:
+      interval = interval - AI_REFLEX_ACE;
       break;
   }
   return interval;

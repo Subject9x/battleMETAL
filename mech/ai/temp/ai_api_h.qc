@@ -5,14 +5,30 @@ Date: 7/9/2018
 Overview: AI API Header, covers multiple impl files
 */
 //CONSTANTS
-float AI_SPAWNFLAG_CAMPAIGN = 1;  //belongs in campaign mode
-float AI_SPAWNFLAG_COOP = 2;      //belongs in co-op mode
-float AI_SPAWNFLAG_DM = 4;        //belongs in DeathMatch
-float AI_SPAWNFLAG_TDM = 8;       //belongs in Team DeathMatch
-float AI_SPAWNFLAG_COLDSTART = 16; //on-spawn, bot will ignore friendly help calls
+float AI_SPAWNFLAG_CAMPAIGN     = 1;  //belongs in campaign mode
+float AI_SPAWNFLAG_COOP         = 2;  //belongs in co-op mode
+float AI_SPAWNFLAG_DM           = 4;  //belongs in DeathMatch
+float AI_SPAWNFLAG_TDM          = 8;  //belongs in Team DeathMatch
+float AI_SPAWNFLAG_COLDSTART    = 16; //on-spawn, bot will ignore friendly help calls
 float AI_SPAWNFLAG_RANDDOMSTART = 32; //start on random node if AI has patrol path
-float AI_SPAWNFLAG_HASRADAR = 64;   //radar is expensive to use, use sparingly
-                                    //generally this is for mech units
+float AI_SPAWNFLAG_HASRADAR     = 64; //radar is expensive to use, use sparingly
+                                      //generally this is for mech units
+float AI_SPAWNFLAG_SKILLUP      = 128;//promote AI by 1 rank depending on skill
+
+float ST_STAND              = 1;  // stand around
+float ST_STAND_SCAN         = 2;  // stationary, but check for targets
+float ST_WALK               = 3;  // walk around
+float ST_WALK_SCAN          = 4;  // walk but check for targets
+float ST_RUN                = 5;  // run to target
+float ST_RUN_STRAFE         = 6;  // run left or right
+float ST_RUN_CHARGE         = 7;  // run at target, offset vector
+float ST_ATTACK             = 8;  // stationary attack
+float ST_ATTACK_WALK        = 9;  // attack while walking
+float ST_ATTACK_WALK_STRAFE = 10; // attack while moving left / right
+float ST_HUNT               = 11; // go to hunt node
+float ST_HUNT_SCAN          = 12; // scan for new target
+float ST_FIGHT_WALK         = 13; // during combat
+
 //GLOBALS
 float enemy_infront;
 float enemy_range;
@@ -21,6 +37,9 @@ float enemy_vis;
 entity AI_NODES[128];
 
 //ENTITY VARS
+.float ai_state;  //switch case
+.float ai_time;   // flat time for all states
+
 .void() th_attack;      //apparently th_missile returns a float, wtf
 .float() th_check;       //each bot impl's their own attack check.
 .void() th_action;        //th_ func to execute
@@ -42,7 +61,7 @@ entity AI_NODES[128];
 .float ai_viewcheck;    //interval for checking for enemies
 .entity ai_hunt_node;  //simple node-on-decay-timer
 .float ai_hunt_total; //current number of hunt nodes
-.float ai_attack_time;
+.float ai_attack_chance;
 .float ai_type;
 .float ai_style;
 .string target_die;
@@ -65,6 +84,7 @@ void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
 float() ai_pilot_rank_byskill;
 float(float rank) ai_pilot_attack_interval;
+float( float rank ) ai_pilot_interval;
 
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
@@ -101,8 +121,10 @@ float(entity targ) ai_range;
 float(entity wep) ai_attack_checkEne;
 
 //AI CONTROL - ai_ctrl.qc 
+void( float state ) ai_next_state;
 void(void() next_action, float next_time, float time_mod) ai_action_next;
 void() ai_hunt_target;
+void() ai_make_attack;
 void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;
 void( string grpid ) ai_node_pick_rand
@@ -118,6 +140,7 @@ void() ai_turn;
 void(float dist) ai_run;
 void() ai_run_slide;
 void() ai_run_attack;
+void() ai_charge_side;
 
 //q1 legacy code ai_move_q1.qc
 void(float dist) q1_ai_forward;
@@ -128,3 +151,10 @@ void() q1_ai_turn;
 void(float dist) q1_ai_run;
 void() q1_ai_run_slide;
 void() q1_ai_run_attack;
+
+//test
+void( float angl, float dist ) ai_move_forward;
+void( float angl, float dist ) ai_move_backward;
+void( float angl, float dist ) ai_move_left;
+void( float angl, float dist ) ai_move_right;
+void() ai_move_turn;
