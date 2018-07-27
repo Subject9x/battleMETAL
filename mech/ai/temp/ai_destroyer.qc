@@ -55,20 +55,20 @@ void() ai_dest_run={
     }
   }
   
-  enemy_infront = ai_target_infront( self.enemy, 0.95 );
+  //enemy_infront = ai_target_infront( self.enemy, 0.95 );
   enemy_range = ai_range( self.enemy );
   enemy_yaw = vectoyaw( self.enemy.origin - self.origin );
   
   //stand and fire
   if( self.attack_state == AS_MISSILE ){
-    ai_action_next( self.th_attack, 0.9, self.ai_action_mod );
+    //ai_action_next( self.th_attack, 0.9, self.ai_action_mod );
     return;
   }
   
-  if( ai_check_allattack() ){
-    self.attack_state = AS_MISSILE;
-    return;
-  }
+  //if( ai_check_allattack() ){
+    //self.attack_state = AS_MISSILE;
+   // return;
+ // }
   
   movetogoal( self.m_fspeed * AI_RUN_SPD );
 };
@@ -81,10 +81,10 @@ void() ai_dest_turn={
   if( self.enemy ){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
     if( ai_visible( self.enemy ) ){
-      if( ai_target_infront(self.enemy, 0.97) ){
-        ai_action_next( self.th_attack, 1, self.ai_action_mod );
-        return;
-      }
+      //if( ai_target_infront(self.enemy, 0.97) ){
+        //ai_action_next( self.th_attack, 1, self.ai_action_mod );
+        //return;
+      //}
     }
     else{
       self.enemy = world;
@@ -94,7 +94,7 @@ void() ai_dest_turn={
     if( time > self.ai_viewtime ){
       if( ai_find_target_visual() ){
         self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-        ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+        //ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
         return;
       }
       self.ai_viewtime  = time + self.ai_viewcheck;
@@ -111,13 +111,13 @@ void() ai_dest_turn={
 void() ai_dest_attack={
   if( self.enemy ){  
     if( ai_visible( self.enemy ) ){
-      if( ai_target_infront(self.enemy, 0.97) ){
-        if(  self.currentWeaponGroup > 0  ){
-          self.button0 = 1;
-          self.th_action = self.th_attack;
-          return;
-        }
-      }
+      //if( ai_target_infront(self.enemy, 0.97) ){
+        //if(  self.currentWeaponGroup > 0  ){
+         //self.button0 = 1;
+          //self.th_action = self.th_attack;
+          //return;
+        //}
+      //}
       ai_action_next( ai_dest_turn, 1, self.ai_action_mod );
       return;
     }
@@ -180,9 +180,9 @@ void() ai_dest_th={
     self.button0 = 0;
   }
   
-  if( self.th_action ){
-    self.th_action();
-  }
+  //if( self.th_action ){
+   // self.th_action();
+  //}
   
   self.SendFlags = self.SendFlags | SEND_FLAG_ORIGIN | SEND_FLAG_ANGLE | SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION;
   
@@ -272,7 +272,7 @@ void() ai_vec_dest={
   self.th_stand = ai_dest_stand; //-> th_stand is used as the unit's main think function
   self.th_walk = ai_dest_walk; //-> th_walk is used the unit's 'Action' function, only 1 action execution per frame
   self.th_run = ai_dest_run;
-  self.th_attack = ai_dest_attack;
+  //self.th_attack = ai_dest_attack;
   self.th_die = ai_vec_dest_die;
   
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 

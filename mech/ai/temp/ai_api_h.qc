@@ -15,19 +15,16 @@ float AI_SPAWNFLAG_HASRADAR     = 64; //radar is expensive to use, use sparingly
                                       //generally this is for mech units
 float AI_SPAWNFLAG_SKILLUP      = 128;//promote AI by 1 rank depending on skill
 
-float ST_STAND              = 1;  // stand around
-float ST_STAND_SCAN         = 2;  // stationary, but check for targets
-float ST_WALK               = 3;  // walk around
-float ST_WALK_SCAN          = 4;  // walk but check for targets
-float ST_RUN                = 5;  // run to target
-float ST_RUN_STRAFE         = 6;  // run left or right
-float ST_RUN_CHARGE         = 7;  // run at target, offset vector
-float ST_ATTACK             = 8;  // stationary attack
-float ST_ATTACK_WALK        = 9;  // attack while walking
-float ST_ATTACK_WALK_STRAFE = 10; // attack while moving left / right
-float ST_HUNT               = 11; // go to hunt node
-float ST_HUNT_SCAN          = 12; // scan for new target
-float ST_FIGHT_WALK         = 13; // during combat
+float ST_STAND              = 1;  //th_stand
+float ST_WALK               = 2;  //th_walk
+float ST_FLYDIR             = 3;  //th_fly
+float ST_RUN                = 4;  //th_run
+float ST_RUN_STRAFE         = 5;  //th_run_strafe
+float ST_RUN_CHARGE         = 6;  //th_run_charge
+float ST_ATTACK             = 7;  //th_missile
+float ST_ATTACK_WALK        = 8;  //th_melee
+float ST_ATTACK_WALK_STRAFE = 9;  //th_missile_strafe
+float ST_HUNT               = 10; //th_hunt
 
 //GLOBALS
 float enemy_infront;
@@ -37,12 +34,12 @@ float enemy_vis;
 entity AI_NODES[128];
 
 //ENTITY VARS
-.float ai_state;  //switch case
 .float ai_time;   // flat time for all states
-
-.void() th_attack;      //apparently th_missile returns a float, wtf
-.float() th_check;       //each bot impl's their own attack check.
-.void() th_action;        //th_ func to execute
+.void() th_fly;
+.void() th_run_strafe;
+.void() th_run_charge;
+.void() th_missile_strafe;
+.void() th_hunt;
 .float ai_rank;
 .float ai_action_time;  //for executing action states
 .float ai_action_mod;
@@ -65,6 +62,7 @@ entity AI_NODES[128];
 .float ai_type;
 .float ai_style;
 .string target_die;
+
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 float(float rank) ai_pilot_optical_range;
@@ -104,20 +102,18 @@ float(void() action) ai_hunt_dropnode;
 float(float mode) ai_spawn_clean;
 float() ai_find_target_visual;
 float() ai_find_target_radar;
-float(entity targ, float ang_limit) ai_target_infront;
 float (entity targ) ai_visible;
 vector(entity wep) ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
-float() ai_check_forattack;
-float() ai_check_allattack;
+//float() ai_check_forattack;
+//float() ai_check_allattack;
 float(entity t) ai_valid_target;
 vector(entity ai) ai_attack_calcSpread;
 void() ai_wep_calcranges;
 void(float dst, float grp, float bracket) ai_wep_group_track;
 float(float movespeed, float distance, float ticrate) ai_move_time;
 float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
-float(entity targ) ai_range;
 float(entity wep) ai_attack_checkEne;
 
 //AI CONTROL - ai_ctrl.qc 
@@ -136,11 +132,44 @@ void(float dist) ai_forward;
 void(float dist) ai_back;
 void() ai_stand;
 void(float dist) ai_walk;
-void() ai_turn;
 void(float dist) ai_run;
 void() ai_run_slide;
 void() ai_run_attack;
 void() ai_charge_side;
+/*
+  AI STATE FUNCTIONS=====================
+*/
+void( float state ) ai_state_control;
+void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states
+void(float startState) ai_initialize_system;
+
+//generic state function
+void() ai_generic_stand;
+void() ai_generic_walk;
+void() ai_generic_fly;
+void() ai_generic_run;
+void() ai_generic_run_strafe;
+void() ai_generic_run_charge;
+void() ai_generic_missile;
+void() ai_generic_melee;
+void() ai_generic_missile_strafe;
+void() ai_generic_hunt;
+//=======================================
+/*
+  AI ACTION SET==========================
+  Headers
+*/
+float( float scan_mode) ai_check_scan;
+void(float dist) ai_walkgoal;
+void() ai_turn;
+void() ai_face_targ;
+float( float angmod, float dist) ai_move;
+float(entity targ, float ang_limit) ai_check_face;
+float(entity targ) ai_check_range;
+float(entity targ) ai_check_vis;
+float() ai_attack;
+void() ai_move_turn;
+//========================================
 
 //q1 legacy code ai_move_q1.qc
 void(float dist) q1_ai_forward;
@@ -157,4 +186,3 @@ void( float angl, float dist ) ai_move_forward;
 void( float angl, float dist ) ai_move_backward;
 void( float angl, float dist ) ai_move_left;
 void( float angl, float dist ) ai_move_right;
-void() ai_move_turn;

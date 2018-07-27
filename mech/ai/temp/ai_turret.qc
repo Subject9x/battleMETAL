@@ -23,10 +23,10 @@ void() ai_turret_turn={
   if( self.enemy ){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
     if( ai_visible( self.enemy ) ){
-      if( ai_target_infront(self.enemy, 0.97) ){
-        ai_action_next( self.th_attack, 1, self.ai_action_mod );
-        return;
-      }
+      //if( ai_target_infront(self.enemy, 0.97) ){
+//ai_action_next( self.th_attack, 1, self.ai_action_mod );
+        //return;
+      //}
     }
     else{
       self.enemy = world;
@@ -36,7 +36,7 @@ void() ai_turret_turn={
     if( time > self.ai_viewtime ){
       if( ai_find_target_visual() ){
         self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-        ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+        //ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
         return;
       }
       self.ai_viewtime  = time + self.ai_viewcheck;
@@ -54,10 +54,10 @@ void() ai_turret_stand={
   if( self.enemy ){
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
     if( ai_visible(self.enemy) ){
-      if( ai_target_infront(self.enemy, 0.97) ){
-        ai_action_next( self.th_attack, 1, self.ai_action_mod );
-        return;
-      }
+      //if( ai_target_infront(self.enemy, 0.97) ){
+        //ai_action_next( self.th_attack, 1, self.ai_action_mod );
+        //return;
+      //}
       ai_action_next( ai_turret_turn, 1, self.ai_action_mod );
       return;
     }
@@ -79,7 +79,7 @@ void() ai_turret_stand={
   if( time > self.ai_viewtime ){
     if( ai_find_target_visual() ){
       self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-      ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+      //ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
       return;
     }
     self.ai_viewtime = time + self.ai_viewcheck;
@@ -92,13 +92,13 @@ void() ai_turret_stand={
 void() ai_turret_attack={
   if( self.enemy ){  
     if( ai_visible( self.enemy ) ){
-      if( ai_target_infront(self.enemy, 0.97) ){
-        if(  self.currentWeaponGroup > 0  ){
-          self.button0 = 1;
-          self.th_action = self.th_attack;
-          return;
-        }
-      }
+      //if( ai_target_infront(self.enemy, 0.97) ){
+       //if(  self.currentWeaponGroup > 0  ){
+          //self.button0 = 1;
+         /// self.th_action = self.th_attack;
+          //return;
+        //}
+      //}
       ai_action_next( ai_turret_turn, 1, self.ai_action_mod );
       return;
     }
@@ -225,9 +225,9 @@ void() ai_turret_th={
     }
   }
   
-  if( self.th_action ){
-    self.th_action();
-  }
+  //if( self.th_action ){
+    //self.th_action();
+  //}
   
   self.SendFlags = self.SendFlags | (SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION);
   
@@ -252,7 +252,7 @@ void() ai_turret={
   self.pausetime = 999999;
   
   self.th_stand = ai_turret_stand; //-> th_stand is used as the unit's main think function
-  self.th_attack = ai_turret_attack;
+  //self.th_attack = ai_turret_attack;
   self.th_die = ai_turret_die;
   
   self.flags = self.flags | FL_ONGROUND;

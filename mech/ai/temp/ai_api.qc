@@ -75,8 +75,8 @@ float() ai_find_target_visual={
   rng = dist;
   while( targ ){
     if( ai_valid_target(targ) ){
-      if( ai_target_infront(targ, self.ai_fov) ){
-        if( ai_visible(targ) ){
+      if( ai_check_face(targ, self.ai_fov) ){
+        if( ai_check_vis(targ) ){
           local float ndist;
           ndist = vlen(targ.origin - self.origin);
           if(ndist < rng){
@@ -139,39 +139,6 @@ float() ai_find_target_radar={
     }
     self.enemy = found;
     ai_found_target();
-    return TRUE;
-  }
-  return FALSE;
-};
-
-/*
-  modified Q1's impl by making the view range a variable
-*/
-float(entity targ, float ang_limit) ai_target_infront={
-	local vector	vec;
-	local float		dot;
-	
-	makevectors (self.angles);
-	vec = normalize (targ.origin - self.origin);
-	dot = vec * v_forward;
-  
-	if ( dot >= ang_limit){
-		return TRUE;
-	}
-	return FALSE;
-};
-
-float (entity targ) ai_visible ={
-  local vector	spot1, spot2;
-  
-  spot1 = self.origin;
-  spot2 = targ.origin;
-  traceline (spot1, spot2, TRUE, self); // see through other monsters
-
-  if ( trace_inopen && trace_inwater ){
-    return FALSE;     // sight line crossed contents
-  }
-  if ( trace_fraction == 1 ){
     return TRUE;
   }
   return FALSE;
@@ -305,13 +272,13 @@ void(entity bot, entity attacker) ai_damage_react={
     }
     if( self.enemy == attacker ){
       self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-      ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+      //ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
     }
   }
   else{
     self.enemy = attacker;
     self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-    ai_action_next( self.th_attack, 0.6, self.ai_action_mod);
+    //ai_action_next( self.th_attack, 0.6, self.ai_action_mod);
   }
   self = this;
 };
@@ -344,14 +311,14 @@ float(entity wep) ai_attack_blockcheck={
   return FALSE;
 };
 
-float() ai_check_allattack={
+/*float() ai_check_allattack={
   if( self.th_check ){
     return self.th_check();
   }
   return ai_check_forattack();
-};
+};*/
 
-float() ai_check_forattack={
+/*float() ai_check_forattack={
   local vector spot1, spot2;
   local entity targ;
   local float chance, r;
@@ -403,7 +370,7 @@ float() ai_check_forattack={
     return TRUE;
   }
   return FALSE;
-};
+};*/
 
 /*
   Only used for AI_SPAWNFLAG_RANDDOMSTART
@@ -591,4 +558,50 @@ float(entity wep) ai_attack_checkEne={
     return TRUE;
   }
   return FALSE;
+};
+
+
+void(float startState) ai_initialize_system={
+  self.ai_action_time = time + self.ai_action_mod;
+  ai_pilot_validate_states();
+  ai_state_control( startState );
+};
+
+/*
+  this should be called right after assigning
+  specific-action functions for a unit. This ini's
+  any null action functions to SUB_Null to prevent
+  <null function error>
+*/
+void() ai_pilot_validate_states={
+  if( !(self.th_stand) ){
+    self.th_stand = SUB_Null;
+  }
+  if( !(self.th_walk) ){
+    self.th_walk = SUB_Null;
+  }
+  if( !(self.th_fly) ){
+    self.th_fly = SUB_Null;
+  }
+  if( !(self.th_run) ){
+    self.th_run = SUB_Null;
+  }
+  if( !(self.th_run_strafe) ){
+    self.th_run_strafe = SUB_Null;
+  }
+  if( !(self.th_run_charge) ){
+    self.th_run_charge = SUB_Null;
+  }
+  if( !(self.th_missile) ){
+    self.th_missile = SUB_Null;
+  }
+  if( !(self.th_melee) ){
+    self.th_melee = SUB_Null;
+  }
+  if( !(self.th_missile_strafe) ){
+    self.th_missile_strafe = SUB_Null;
+  }
+  if( !(self.th_hunt) ){
+    self.th_hunt = SUB_Null;
+  }
 };

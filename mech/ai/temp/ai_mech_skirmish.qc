@@ -32,7 +32,7 @@ void() mech_sk_stand={
   cons_logAString("state", "mech_sk_stand"); //DEBUG
   if( time > self.ai_viewtime ){
     self.ai_viewtime = time + self.ai_viewcheck;
-    ai_next_state( ST_STAND_SCAN );
+    //ai_next_state( ST_STAND_SCAN );
     return;
   }
   if( time > self.ai_action_time ){
@@ -69,7 +69,7 @@ void() mech_sk_walk={
   cons_logAString("state", "mech_sk_walk"); //DEBUG
   if( time > self.ai_viewtime ){
     self.ai_viewtime = time + self.ai_viewcheck;
-    ai_next_state( ST_WALK_SCAN );
+    //ai_next_state( ST_WALK_SCAN );
     return;
   }
   movetogoal(self.m_fspeed * AI_WALK_SPD);
@@ -105,7 +105,7 @@ void() mech_sk_run={
 
     enemy_range = ai_range( self.enemy );
     enemy_yaw = vectoyaw( self.enemy.origin - self.origin );
-    enemy_infront = ai_target_infront( self.enemy, 0.9 );
+    //senemy_infront = ai_target_infront( self.enemy, 0.9 );
     
     cons_logAFloat("enemy_range", enemy_range );  //DEBUG
     
@@ -124,7 +124,7 @@ void() mech_sk_run={
         return;
       }
       self.lefty = 0;
-      ai_next_state( ST_FIGHT_WALK );
+     // ai_next_state( ST_FIGHT_WALK );
       return;
     }
     
@@ -168,9 +168,9 @@ void() mech_sk_run_charge={
 void() mech_sk_attack={
   cons_logAString("state", "mech_sk_attack"); //DEBUG
   ai_face_targ();
-  if( ai_target_infront( self.enemy, 0.95 ) ){
-    ai_make_attack();
-  }
+  //if( ai_target_infront( self.enemy, 0.95 ) ){
+   // ai_make_attack();
+ // }
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
     return;
@@ -188,7 +188,7 @@ void() mech_sk_walk_strafe_attack={
 void() mech_sk_walk_fight={
   cons_logAString("state", "mech_sk_walk_fight"); //DEBUG
   local float infront;
-  infront = ai_target_infront( self.enemy, 0.95 );
+  //infront = ai_target_infront( self.enemy, 0.95 );
   
   ai_face_targ();
   if( time > self.ai_action_time ){
@@ -304,44 +304,7 @@ void() ai_mech_sk_th={
   
   self.SendFlags = 31;
   
-  switch( self.attack_state ){
-    case ST_STAND:
-      mech_sk_stand();
-      break;
-    case ST_STAND_SCAN:
-      mech_sk_stand_scan();
-      break;
-    case ST_WALK:
-      mech_sk_walk();
-      break;
-    case ST_WALK_SCAN:
-      mech_sk_walk_scan();
-      break;
-    case ST_RUN:
-      mech_sk_run();
-      break;
-    case ST_RUN_STRAFE:
-    
-      break;
-    case ST_RUN_CHARGE:
-      mech_sk_run_charge();
-      break;
-    case ST_ATTACK:
-      mech_sk_attack();
-      break;
-    case ST_ATTACK_WALK:
-    
-      break;
-    case ST_ATTACK_WALK_STRAFE:
-    
-      break;
-    case ST_HUNT:
-    
-      break;
-    case ST_FIGHT_WALK:
-      mech_sk_walk_fight();
-      break;
-  }
+  ai_state_control( self.attack_state );
   
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
@@ -364,8 +327,6 @@ void() ai_mech_skirmish={
   data_iniMech(self.nextVecChoice);
   ai_pilot_ini_stats(self.ai_rank);
   
-  self.th_die = ai_mech_sk_die;
-  
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
   }
@@ -375,11 +336,21 @@ void() ai_mech_skirmish={
    
   self.e_cam.SendEntity = send_ai_mech;
   self.e_cam.SendFlags = 31;
-
+  
+  self.th_stand = ai_generic_stand;
+  self.th_walk = ai_generic_walk;
+  self.th_run = ai_generic_run;
+  self.th_run_strafe = ai_generic_run_strafe;
+  self.th_run_charge = ai_generic_run_charge;
+  self.th_missile = ai_generic_missile;
+  self.th_melee = ai_generic_melee;
+  self.th_missile_strafe = ai_generic_missile_strafe;
+  self.th_hunt = ai_generic_hunt;
+  self.th_die = ai_mech_sk_die;
+  
+  ai_initialize_system( ST_STAND );
+  
   ai_walk_setup();
-
-  self.attack_state = ST_STAND;
-  self.ai_action_time = time + self.ai_action_mod;
   
   self.think = ai_mech_sk_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
