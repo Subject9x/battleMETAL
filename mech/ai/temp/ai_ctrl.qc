@@ -118,7 +118,7 @@ void() ai_generic_run_strafe={
 
 };
 void() ai_generic_run_charge={
-
+  
 };
 void() ai_generic_missile={
   cons_logAString(ftos(self.attack_state), "ai_generic_missile");
@@ -138,7 +138,19 @@ void() ai_generic_melee={
 
 };
 void() ai_generic_missile_strafe={
-
+  ai_face_targ();
+  ai_move( self.angles_y + (self.lefty * 90 ), self.m_fspeed * AI_WALK_SPD );
+  if( ai_check_face( self.enemy, 0.97 ) ){
+    if( ai_attack() ){
+      ai_next_state( ST_ATTACK );
+      return;
+    }
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+  
 };
 void() ai_generic_hunt={
 
@@ -171,6 +183,18 @@ void() ai_move_turn={
 void() ai_face_targ={
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
 	ChangeYaw ();
+};
+
+float( float dist ) ai_walk_back={
+  return ai_move( (self.angles_y + 180), dist );
+};
+
+float( float dist ) ai_walk_left={
+  return ai_move( (self.angles_y + 90), dist );
+};
+
+float( float dist ) ai_walk_right={
+  return ai_move( (self.angles_y - 90), dist );
 };
 
 float( float angmod, float dist) ai_move={

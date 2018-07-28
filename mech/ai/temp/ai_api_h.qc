@@ -163,12 +163,16 @@ float( float scan_mode) ai_check_scan;
 void(float dist) ai_walkgoal;
 void() ai_turn;
 void() ai_face_targ;
-float( float angmod, float dist) ai_move;
 float(entity targ, float ang_limit) ai_check_face;
 float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
 void() ai_move_turn;
+float( float angmod, float dist) ai_move;
+float( float dist ) ai_walk_back;
+float( float dist ) ai_walk_left;
+float( float dist ) ai_walk_right;
+
 //========================================
 
 //q1 legacy code ai_move_q1.qc
