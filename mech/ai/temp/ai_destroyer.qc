@@ -268,12 +268,6 @@ void() ai_vec_dest={
   ai_unit_ini_var();    
   data_iniVehc(self.nextVecChoice);
   ai_pilot_ini_stats(self.ai_rank);
-
-  self.th_stand = ai_dest_stand; //-> th_stand is used as the unit's main think function
-  self.th_walk = ai_dest_walk; //-> th_walk is used the unit's 'Action' function, only 1 action execution per frame
-  self.th_run = ai_dest_run;
-  //self.th_attack = ai_dest_attack;
-  self.th_die = ai_vec_dest_die;
   
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
@@ -284,6 +278,19 @@ void() ai_vec_dest={
   self.e_cam.SendEntity = send_vehicle;
   self.e_cam.SendFlags = 31;
 
+  self.th_stand = ai_generic_stand;
+  self.th_walk = ai_generic_walk;
+  self.th_run = ai_generic_run;
+  self.th_run_strafe = ai_generic_run_strafe;
+  self.th_run_charge = ai_generic_run_charge;
+  self.th_missile = ai_generic_missile;
+  self.th_melee = ai_generic_melee;
+  self.th_missile_strafe = ai_generic_missile_strafe;
+  self.th_hunt = ai_generic_hunt;
+  self.th_die = ai_vec_dest_die;
+  
+  ai_initialize_system( ST_STAND );
+  
   ai_walk_setup();
 
   self.think = ai_dest_th;

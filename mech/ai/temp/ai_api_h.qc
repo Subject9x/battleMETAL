@@ -25,6 +25,8 @@ float ST_ATTACK             = 7;  //th_missile
 float ST_ATTACK_WALK        = 8;  //th_melee
 float ST_ATTACK_WALK_STRAFE = 9;  //th_missile_strafe
 float ST_HUNT               = 10; //th_hunt
+float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
+float ST_HUNT_START         = 12; //TODO
 
 //GLOBALS
 float enemy_infront;
@@ -172,6 +174,10 @@ float( float angmod, float dist) ai_move;
 float( float dist ) ai_walk_back;
 float( float dist ) ai_walk_left;
 float( float dist ) ai_walk_right;
+float( float dist ) ai_yaw_back;
+float( float dist ) ai_yaw_left;
+float( float dist ) ai_yaw_right;
+float( float dist ) ai_yaw_move;
 
 //========================================
 

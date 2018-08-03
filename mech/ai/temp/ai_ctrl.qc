@@ -11,6 +11,9 @@ void(void() next_action, float next_time, float time_mod) ai_action_next={
   self.ai_action_time = time + (next_time - time_mod);
 };
 
+/*
+  Sets the next STATE enum (yes I know, no native ENUM support)
+*/
 void( float nex_state ) ai_next_state={
   self.attack_state = nex_state;
   self.ai_action_time = time + self.ai_action_mod;
@@ -63,7 +66,11 @@ void( float state ) ai_state_control={
   the null check
 ===================================================
 */
-//generic state function
+/*
+	Generic Stand
+	AI will stand around, scanning for targets every time + self.ai_viewcheck seconds
+	if AI has a node to go to, it will walk there
+*/
 void() ai_generic_stand={
   cons_logAString(ftos(self.attack_state), "ai_generic_stand");
   
@@ -79,6 +86,12 @@ void() ai_generic_stand={
     return;
   }
 };
+/*
+	Generic Walk
+	AI will use builtin func MOVETOGOAL to go to its goalentity
+	it will scan for targets every time + self.ai_viewcheck seconds
+	
+*/
 void() ai_generic_walk={
   cons_logAString(ftos(self.attack_state), "ai_generic_walk");
   
@@ -98,6 +111,12 @@ void() ai_generic_walk={
 void() ai_generic_fly={
 
 };
+/*
+	Generic Run
+	this is a bit of a callback to Quake 1, the RUN function is the entry point for all
+	AI COMBAT states. the Generic Run state will also delegate the next state along the 
+	hierarchy of VISIBILITY > RANGE > FACING
+*/
 void() ai_generic_run={
   cons_logAString(ftos(self.attack_state), "ai_generic_run");
   
@@ -108,18 +127,59 @@ void() ai_generic_run={
     if( enemy_vis ){
       if( enemy_range < 200 ){
         if( enemy_infront ){
-          
+          //TODO
         }
       }
     }
   }
 };
+/*
+	Generic Run Strafe
+	simply moves the AI 90 deg to its current yaw
+	WITHOUT adjusting for ideal_yaw, if the AI cannot complete the move
+	it switches signage on the 90deg and strafes the other way.
+*/
 void() ai_generic_run_strafe={
+  if( !(ai_walk_left( self.m_sspeed * AI_RUN_SPD ) ) ){
+    if( !ai_walk_right( self.m_sspeed * AI_RUN_SPD ) ) ){
+	  ai_next_state( ST_RUN );
+	  return;
+	}
+  }
 
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+	return;
+  }
 };
+/*
+	Generic Run Charge
+	AI will attempt to bypass its target by moving 45 degs to the left or right
+	of its current target.
+*/
 void() ai_generic_run_charge={
-  
+  if( ai_target_infront(self.enemy, 0.85) ){
+    if( !(ai_yaw_move( 45, self.m_fspeed )) ){
+      if( !(ai_yaw_move( -45, self.,m_fspeed )) ){
+	    ai_next_state( ST_RUN );
+	    return;
+	  }
+    }
+  }
+  else{
+	ai_face_targ();
+  }  
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+	return;
+  }
 };
+/*
+	Generic Missile
+	this is the AI's most basic atack.
+	The AI will turn to face its intended target, and fire if that target is 
+	in front. The AI does not move for this one.
+*/
 void() ai_generic_missile={
   cons_logAString(ftos(self.attack_state), "ai_generic_missile");
   ai_face_targ();
@@ -134,9 +194,19 @@ void() ai_generic_missile={
     return;
   }
 };
+/*
+	Generic Melee
+	a bit ported over from Quake, the melee() here is interpreted as an attack with some mobility.
+	The AI will move a little bit while trying to attack.
+*/
 void() ai_generic_melee={
-
+	ai_face_targ();
+	//TODO
 };
+/*
+	Generic Missile Strafe
+	AI will make an attack while moving to the left or right.
+*/
 void() ai_generic_missile_strafe={
   ai_face_targ();
   ai_move( self.angles_y + (self.lefty * 90 ), self.m_fspeed * AI_WALK_SPD );
@@ -150,8 +220,13 @@ void() ai_generic_missile_strafe={
     ai_next_state( ST_RUN );
     return;
   }
-  
 };
+/*
+	Generic Hunt
+	called after HUNT_START, AI will head to a temp patrol node based on Target's 
+	last known position. if Target is spotted before then, go back to combat, if the
+	target is spotted WHEN the AI reaches the node, attack from the node.
+*/
 void() ai_generic_hunt={
 
 };
@@ -199,6 +274,26 @@ float( float dist ) ai_walk_right={
 
 float( float angmod, float dist) ai_move={
   return walkmove( angmod, dist );
+};
+
+/*
+	Yaw moves use the AI's ideal_yaw
+	stat when turning
+*/
+float( float dist ) ai_yaw_back={
+  return walkmove( self.ideal_yaw + 180, dist );
+};
+
+float( float dist ) ai_yaw_left={
+  return walkmove( self.ideal_yaw + 90, dist );
+};
+
+float( float dist ) ai_yaw_right={
+  return walkmove( self.ideal_yaw - 90, dist );
+};
+
+float( float angmod, float dist ) ai_yaw_move={
+  return walkmove( self.ideal_yaw + angmod, dist );
 };
 
 float(entity t, float ang) ai_check_face={
