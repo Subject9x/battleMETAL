@@ -641,9 +641,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 	// get mad unless of the same class (except for soldiers)
 		if (self != attacker && attacker != self.enemy)
 		{
-			if ( (self.classname != attacker.classname) 
-			|| (self.classname == "monster_army" ) )
-			{
+			if ( (self.classname != attacker.classname) || (self.classname == "monster_army" ) ){
 				if (self.enemy.classname == "player")
 					self.oldenemy = self.enemy;
 				self.enemy = attacker;
@@ -658,7 +656,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 		self.th_pain (attacker, take, 0, "");
 	// nightmare mode monsters don't go into pain frames often
 		if (skill == 3)
-			self.pain_finished = time + 5;		
+			self.pain_finished = time + 5;
 	}
 
 	self = oldself;

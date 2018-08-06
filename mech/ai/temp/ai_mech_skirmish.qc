@@ -198,7 +198,7 @@ void() mech_sk_walk_fight={
   switch( self.lefty ){
     case 0:
       if( infront ){
-        ai_make_attack();
+        //ai_make_attack();
       }
       ai_move_backward( self.ideal_yaw, self.m_fspeed * AI_WALK_SPD);
       break;

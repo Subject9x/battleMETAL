@@ -27,6 +27,7 @@ float ST_ATTACK_WALK_STRAFE = 9;  //th_missile_strafe
 float ST_HUNT               = 10; //th_hunt
 float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
 float ST_HUNT_START         = 12; //TODO
+float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'staggers' the target
 
 //GLOBALS
 float enemy_infront;
@@ -122,7 +123,6 @@ float(entity wep) ai_attack_checkEne;
 void( float state ) ai_next_state;
 void(void() next_action, float next_time, float time_mod) ai_action_next;
 void() ai_hunt_target;
-void() ai_make_attack;
 void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;
 void( string grpid ) ai_node_pick_rand
@@ -141,11 +141,12 @@ void() ai_charge_side;
 /*
   AI STATE FUNCTIONS=====================
 */
-void( float state ) ai_state_control;
+void( float estate ) ai_state_control;
 void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states
-void(float startState) ai_initialize_system;
+void( float startState ) ai_initialize_system;  //
 
-//generic state function
+//generic state functions
+//any and all can be replaced by an AI's own th_func standins
 void() ai_generic_stand;
 void() ai_generic_walk;
 void() ai_generic_fly;
@@ -156,6 +157,7 @@ void() ai_generic_missile;
 void() ai_generic_melee;
 void() ai_generic_missile_strafe;
 void() ai_generic_hunt;
+void() ai_generic_pain;
 //=======================================
 /*
   AI ACTION SET==========================
@@ -177,7 +179,7 @@ float( float dist ) ai_walk_right;
 float( float dist ) ai_yaw_back;
 float( float dist ) ai_yaw_left;
 float( float dist ) ai_yaw_right;
-float( float dist ) ai_yaw_move;
+float( float angmod, float dist ) ai_yaw_move;
 
 //========================================
 

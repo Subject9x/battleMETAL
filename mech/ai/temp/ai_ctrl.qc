@@ -5,11 +5,12 @@ Date: 7/9/2018
 Overview: AI Controller functions, ported mainly from Quake 1
 */
 
-
+//DEPRECATED
 void(void() next_action, float next_time, float time_mod) ai_action_next={
   //self.th_action = next_action;
   self.ai_action_time = time + (next_time - time_mod);
 };
+//+++++++++++
 
 /*
   Sets the next STATE enum (yes I know, no native ENUM support)
@@ -24,8 +25,8 @@ void( float nex_state ) ai_next_state={
   make sure to call ai_pilot_validate_states() before
   using this
 */
-void( float state ) ai_state_control={
-  switch( state ){
+void( float estate ) ai_state_control={
+  switch( estate ){
     case ST_STAND:
       self.th_stand();
       break;
@@ -55,6 +56,9 @@ void( float state ) ai_state_control={
       break;
     case ST_HUNT:
       self.th_hunt();
+      break;
+    case ST_PAIN:
+      self.th_pain();
       break;
   }
 };
@@ -90,7 +94,6 @@ void() ai_generic_stand={
 	Generic Walk
 	AI will use builtin func MOVETOGOAL to go to its goalentity
 	it will scan for targets every time + self.ai_viewcheck seconds
-	
 */
 void() ai_generic_walk={
   cons_logAString(ftos(self.attack_state), "ai_generic_walk");
@@ -108,12 +111,16 @@ void() ai_generic_walk={
     return;
   }
 };
+/*
+  Generic Fly
+  TODO - fill out
+*/
 void() ai_generic_fly={
 
 };
 /*
 	Generic Run
-	this is a bit of a callback to Quake 1, the RUN function is the entry point for all
+	this is a bit of a callback to Quake 1, the ST_RUN function is the entry point for all
 	AI COMBAT states. the Generic Run state will also delegate the next state along the 
 	hierarchy of VISIBILITY > RANGE > FACING
 */
@@ -141,10 +148,10 @@ void() ai_generic_run={
 */
 void() ai_generic_run_strafe={
   if( !(ai_walk_left( self.m_sspeed * AI_RUN_SPD ) ) ){
-    if( !ai_walk_right( self.m_sspeed * AI_RUN_SPD ) ) ){
-	  ai_next_state( ST_RUN );
-	  return;
-	}
+    if( !(ai_walk_right( self.m_sspeed * AI_RUN_SPD ) ) ){
+      ai_next_state( ST_RUN );
+      return;
+    }
   }
 
   if( time > self.ai_action_time ){
@@ -158,12 +165,12 @@ void() ai_generic_run_strafe={
 	of its current target.
 */
 void() ai_generic_run_charge={
-  if( ai_target_infront(self.enemy, 0.85) ){
+  if( ai_check_face(self.enemy, 0.85) ){
     if( !(ai_yaw_move( 45, self.m_fspeed )) ){
-      if( !(ai_yaw_move( -45, self.,m_fspeed )) ){
-	    ai_next_state( ST_RUN );
-	    return;
-	  }
+      if( !(ai_yaw_move( -45, self.m_fspeed )) ){
+        ai_next_state( ST_RUN );
+        return;
+      }
     }
   }
   else{
@@ -228,7 +235,16 @@ void() ai_generic_missile_strafe={
 	target is spotted WHEN the AI reaches the node, attack from the node.
 */
 void() ai_generic_hunt={
-
+  //TODO
+};
+/*
+  Generic Pain
+  A AI has taken a 'staggering' amount of damage over a single frame,
+  something like losing a piece or taken (DMG > maxhp / 2 )
+  the bot then recoils in some manner, maybe making panicked noises
+*/
+void() ai_generic_pain={
+  //TODO
 };
 /*
 ===================================================
@@ -296,6 +312,9 @@ float( float angmod, float dist ) ai_yaw_move={
   return walkmove( self.ideal_yaw + angmod, dist );
 };
 
+/*
+  Checks to see if Entity T is in the ANG arc of self
+*/
 float(entity t, float ang) ai_check_face={
 	local vector	vec;
 	local float		dot;
@@ -348,7 +367,6 @@ float() ai_attack={
 ===================================================
 */
 
-
 void() ai_hunt_target={
   //only applies to ai that can actually move
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
@@ -365,6 +383,11 @@ void() ai_found_target={
   ai_hunt_target();
 };
 
+/*
+  copy over from Quake's WalkMonsterStart() but
+  adapted to battleMETAL
+  
+*/
 void() ai_walk_setup={
 	if (self.target){
 		self.goalentity = self.movetarget = find(world, targetname, self.target);
@@ -373,7 +396,6 @@ void() ai_walk_setup={
 			dprint (vtos(self.origin));
 			dprint ("\n");
 		}
-// this used to be an objerror
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
     ai_next_state( ST_WALK );
     //ai_leg_frame( leg_walk1 );
@@ -395,14 +417,6 @@ void(void() macro) ai_leg_frame={
     self = this.e_legs;
       macro();
     self = this;
-  }
-};
-
-void() ai_make_attack={
-  if( self.currentWeaponGroup > 0 ){
-    if( random() <= self.ai_attack_chance ){
-      self.button0 = 1;
-    }
   }
 };
 
