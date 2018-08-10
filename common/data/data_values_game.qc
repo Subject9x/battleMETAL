@@ -321,11 +321,15 @@ float AI_HUNT_REG = 2;
 float AI_HUNT_VET = 3;
 float AI_HUNT_ELT = 4;
 
+float AI_DMG_ROK = 0.1;
+float AI_DMG_REG = 0.2;
+float AI_DMG_VET = 0.3;
+float AI_DMG_ACE = 0.4;
+
 float AI_ATTACK_ROK  =  0.2;
 float AI_ATTACK_REG  =  0.3;
 float AI_ATTACK_VET  =  0.4;
 float AI_ATTACK_ACE  =  0.5;
-
 
 //QUIRKS - combat
 float AI_STYLE_SKIRM  = 0;  //this is 'default'
@@ -339,7 +343,6 @@ float AI_TYPE_NORML  = 0;
 float AI_TYPE_AGGRO  = 1;
 float AI_TYPE_RESCU  = 2;
 float AI_TYPE_COWRD  = 3;
-
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;

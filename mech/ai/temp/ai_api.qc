@@ -6,8 +6,9 @@ Overview: Main Impl for AI API
 */
 
 /*
-  Checks spawnflags to game mode, to make sure bot 
-  is allowed to spawn in
+  Go through spawn flags
+  Check Game Mode and Difficulty Skill
+  remove AI if they're flagged to not be in a category; 
 */
 float(float mode) ai_spawn_clean={
   local float rem;
@@ -31,6 +32,29 @@ float(float mode) ai_spawn_clean={
       break;
     case GAMEMODE_TEAMDM:
       if ( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
+        rem = TRUE;
+      }
+      break;
+  }
+  
+  switch( skill ){
+    case SKILL_NOV:
+      if ( (self.spawnflags & AI_SPAWNFLAG_NONOV) ){
+        rem = TRUE;
+      }
+      break;
+    case SKILL_REG:
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOREG) ){
+        rem = TRUE;
+      }
+      break;
+    case SKILL_VET:
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOVET) ){
+        rem = TRUE;
+      }
+      break;
+    case SKILL_ELT:
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOELT) ){
         rem = TRUE;
       }
       break;
@@ -603,5 +627,8 @@ void() ai_pilot_validate_states={
   }
   if( !(self.th_hunt) ){
     self.th_hunt = SUB_Null;
+  }
+  if( !(self.th_pain) ){
+    self.th_pain = SUB_Null;
   }
 };

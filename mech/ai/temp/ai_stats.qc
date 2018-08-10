@@ -47,6 +47,7 @@ void() ai_unit_ini_var={
   self.ai_viewtime = 0;
   self.ai_minrange = 0;
   self.ai_hunt_total = -1;
+  
 };
 
 /*
@@ -85,8 +86,8 @@ void(float rank) ai_pilot_ini_stats={
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
   self.ai_time = ai_pilot_interval( rank );
+  self.ai_action_mod = ai_pilot_action_mod( rank );
   self.ai_attack_chance = ai_pilot_attack_interval( rank );
-  
 };
 
 float() ai_pilot_rank_byskill={
@@ -170,6 +171,48 @@ float(float rank) ai_pilot_view_range={
     val = val * ( skl + 1);
   }
   return val;
+};
+
+/*
+  AI does not deal full damage like players do (because there's a ton of bots)
+  
+*/
+float( float rank, float skl, float damg) ai_pilot_mod_damage={
+  local float percent;
+  switch( skl ){
+    case SKILL_NOV:
+      percent = 0.25;
+      break;
+    case SKILL_REG:
+      percent = 0.3;
+      break;
+    case SKILL_VET:
+      percent = 0.35;
+      break;
+    case SKILL_ELT:
+      percent = 0.45;
+      break;
+  }
+
+  switch(rank){
+    case AI_RANK_ACE:
+      percent = percent + AI_DMG_ACE;
+      break;
+    case AI_RANK_VET:
+      percent = percent + AI_DMG_VET;
+      break;
+    case AI_RANK_REG:
+      percent = percent + AI_DMG_REG;
+      break;
+    case AI_RANK_ROK:
+      percent = percent + AI_DMG_ROK;
+      break;
+  }
+  percent = damg * percent;
+  if( percent < 3 ){
+    percent = 3;
+  }
+  return percent;
 };
 
 

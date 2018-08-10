@@ -248,19 +248,17 @@ void() ai_turret={
   ai_unit_ini_var();
   data_iniTurret(self.nextVecChoice);
   ai_pilot_ini_stats(ai_pilot_rank_byskill());
-
-  self.pausetime = 999999;
   
-  self.th_stand = ai_turret_stand; //-> th_stand is used as the unit's main think function
-  //self.th_attack = ai_turret_attack;
+  self.th_stand = ai_turret_stand;
+  self.th_missile = ai_turret_attack;
   self.th_die = ai_turret_die;
+  
+  ai_initialize_system( ST_STAND );
   
   self.flags = self.flags | FL_ONGROUND;
    
   self.e_cam.SendEntity = send_vehicle;
   self.e_cam.SendFlags = -1;
-  
-  ai_action_next( self.th_stand, 1, self.ai_action_mod);
   
   self.think = ai_turret_th;
   self.nextthink = time + random()*0.1; //spread out thinks

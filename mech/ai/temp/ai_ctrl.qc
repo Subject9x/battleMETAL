@@ -5,13 +5,6 @@ Date: 7/9/2018
 Overview: AI Controller functions, ported mainly from Quake 1
 */
 
-//DEPRECATED
-void(void() next_action, float next_time, float time_mod) ai_action_next={
-  //self.th_action = next_action;
-  self.ai_action_time = time + (next_time - time_mod);
-};
-//+++++++++++
-
 /*
   Sets the next STATE enum (yes I know, no native ENUM support)
 */
@@ -45,13 +38,13 @@ void( float estate ) ai_state_control={
     case ST_RUN_CHARGE:
       self.th_run_charge();
       break;
-    case ST_ATTACK:
+    case ST_MISSILE:
       self.th_missile();
       break;
-    case ST_ATTACK_WALK:
+    case ST_MELEE:
       self.th_melee();
       break;
-    case ST_ATTACK_WALK_STRAFE:
+    case ST_MISSILE_STRAFE:
       self.th_missile_strafe();
       break;
     case ST_HUNT:
@@ -101,7 +94,7 @@ void() ai_generic_walk={
   if( ai_check_scan( self.stat_rdr_mode ) ){
     return;
   }
-  ai_walkgoal( self.m_fspeed * AI_WALK_SPD );
+  ai_walkgoal(AI_WALK_SPD);
   if( time > self.ai_action_time ){
     if( self.movetarget ){
       ai_next_state( ST_WALK );
@@ -116,6 +109,7 @@ void() ai_generic_walk={
   TODO - fill out
 */
 void() ai_generic_fly={
+  cons_logAString(ftos(self.attack_state), "ai_generic_fly");
 
 };
 /*
@@ -134,10 +128,41 @@ void() ai_generic_run={
     if( enemy_vis ){
       if( enemy_range < 200 ){
         if( enemy_infront ){
-          //TODO
+          if( self.ai_rank <= AI_RANK_REG ){
+            ai_next_state( ST_MISSILE );
+            return;
+          }
+          ai_face_targ();
+          ai_next_state( ST_RUN_CHARGE );
+          return;
+        }
+        ai_face_targ();
+        return;
+      }
+      
+      if( enemy_range <= self.ai_minrange ){
+        if( enemy_infront ){
+          
+        }
+      }
+      
+      if( enemy_range > self.ai_minrange ){
+        if( enemy_infront ){
+          
+        }
+      }
+      
+      if( enemy_range > (self.ai_minrange * 2) ){
+        if( enemy_infront ){
+          
         }
       }
     }
+  }
+  
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
   }
 };
 /*
@@ -147,16 +172,21 @@ void() ai_generic_run={
 	it switches signage on the 90deg and strafes the other way.
 */
 void() ai_generic_run_strafe={
-  if( !(ai_walk_left( self.m_sspeed * AI_RUN_SPD ) ) ){
-    if( !(ai_walk_right( self.m_sspeed * AI_RUN_SPD ) ) ){
-      ai_next_state( ST_RUN );
-      return;
-    }
+  cons_logAString(ftos(self.attack_state), "ai_generic_run_strafe");
+  
+  local float moved;
+  moved = ai_walk_left( self.m_sspeed * AI_RUN_SPD );
+  if( !moved ){
+    moved = ai_walk_right( self.m_sspeed * AI_RUN_SPD );
+  }
+  if( !moved ){
+    ai_next_state( ST_RUN );
+    return;
   }
 
   if( time > self.ai_action_time ){
-    ai_next_state( ST_RUN );
-	return;
+    ai_next_state( ST_MISSILE );
+    return;
   }
 };
 /*
@@ -165,21 +195,24 @@ void() ai_generic_run_strafe={
 	of its current target.
 */
 void() ai_generic_run_charge={
-  if( ai_check_face(self.enemy, 0.85) ){
-    if( !(ai_yaw_move( 45, self.m_fspeed )) ){
-      if( !(ai_yaw_move( -45, self.m_fspeed )) ){
-        ai_next_state( ST_RUN );
-        return;
-      }
+  cons_logAString(ftos(self.attack_state), "ai_generic_run_charge");
+  ai_turn();
+  
+  if( ai_check_face(self.enemy, 0.7) ){
+    local float moved;
+    moved = ai_yaw_move( 75, self.m_fspeed * AI_RUN_SPD);
+    if( !moved ){
+      moved = ai_yaw_move( -75, self.m_fspeed * AI_RUN_SPD);
+    }
+    if( !moved ){
+      ai_next_state( ST_RUN );
+      return;
     }
   }
   else{
-	ai_face_targ();
+    ai_next_state( ST_MISSILE );
+    return;
   }  
-  if( time > self.ai_action_time ){
-    ai_next_state( ST_RUN );
-	return;
-  }
 };
 /*
 	Generic Missile
@@ -189,10 +222,11 @@ void() ai_generic_run_charge={
 */
 void() ai_generic_missile={
   cons_logAString(ftos(self.attack_state), "ai_generic_missile");
+  
   ai_face_targ();
   if( ai_check_face( self.enemy, 0.97 ) ){
     if( ai_attack() ){
-      ai_next_state( ST_ATTACK );
+      ai_next_state( ST_MISSILE );
       return;
     }
   }
@@ -207,6 +241,8 @@ void() ai_generic_missile={
 	The AI will move a little bit while trying to attack.
 */
 void() ai_generic_melee={
+  cons_logAString(ftos(self.attack_state), "ai_generic_melee");
+  
 	ai_face_targ();
 	//TODO
 };
@@ -215,11 +251,13 @@ void() ai_generic_melee={
 	AI will make an attack while moving to the left or right.
 */
 void() ai_generic_missile_strafe={
+  cons_logAString(ftos(self.attack_state), "ai_generic_missile_strafe");
+  
   ai_face_targ();
   ai_move( self.angles_y + (self.lefty * 90 ), self.m_fspeed * AI_WALK_SPD );
   if( ai_check_face( self.enemy, 0.97 ) ){
     if( ai_attack() ){
-      ai_next_state( ST_ATTACK );
+      ai_next_state( ST_MISSILE );
       return;
     }
   }
@@ -235,6 +273,8 @@ void() ai_generic_missile_strafe={
 	target is spotted WHEN the AI reaches the node, attack from the node.
 */
 void() ai_generic_hunt={
+  cons_logAString(ftos(self.attack_state), "ai_generic_hunt");
+  
   //TODO
 };
 /*
@@ -244,6 +284,8 @@ void() ai_generic_hunt={
   the bot then recoils in some manner, maybe making panicked noises
 */
 void() ai_generic_pain={
+  cons_logAString(ftos(self.attack_state), "ai_generic_pain");
+  
   //TODO
 };
 /*
@@ -263,7 +305,7 @@ float( float scan_mode) ai_check_scan={
   return FALSE;
 };
 
-void(float dist) ai_walkgoal={
+void(float speed) ai_walkgoal={
   movetogoal(self.m_fspeed * AI_RUN_SPD);
 };
 
@@ -330,12 +372,7 @@ float(entity t, float ang) ai_check_face={
 };
 
 float(entity t) ai_check_range={
-  local float v;
-  v = vlen( self.origin - t.origin );
-  if( (v > self.ai_minrange) || (v > AI_RANGE_L) ){
-    return FALSE;
-  }
-  return TRUE;
+  return vlen( self.origin - t.origin );
 };
 
 float( entity targ ) ai_check_vis={
@@ -359,9 +396,11 @@ float() ai_attack={
     if( self.currentWeaponGroup > 0 ){
       if( random() <= self.ai_attack_chance ){
         self.button0 = 1;
+        return TRUE;
       }
     }
   }
+  return FALSE;
 };
 /*
 ===================================================

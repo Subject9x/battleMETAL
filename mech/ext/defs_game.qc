@@ -4,7 +4,11 @@ Author: Peter Roohr
 Date: 8/27/2016
 Overview: extends the global defs
 */
-
+//Difficulty
+float SKILL_NOV = 0;
+float SKILL_REG = 1;
+float SKILL_VET = 2;
+float SKILL_ELT = 3;
 
 //WEAPON FIRE STATUS
 float READY = 0;

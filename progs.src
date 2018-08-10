@@ -43,8 +43,9 @@ triggers_h.qc
   mech/impulse_h.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
-  //mech/ai/ai_core_h.qc
+  //mech/ai/ai_core_h.qc --> REMOVE
   mech/ai/temp/ai_api_h.qc
+  mech/ai/temp/ai_units_h.qc
   q1/qwep/wep_fx_h.qc
   mech/dat/msc/map_objects_h.qc
   world_effectinfo_h.qc
@@ -182,6 +183,7 @@ q1/precache_world.qc
 world.qc
 //============================
   mech/map_objects_c.qc
+  mech/ai/temp/ai_units.qc
   mech/ext/m_client.qc
   mech/ext/m_player.qc
  

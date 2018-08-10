@@ -180,11 +180,9 @@ void() ai_dest_th={
     self.button0 = 0;
   }
   
-  //if( self.th_action ){
-   // self.th_action();
-  //}
   
-  self.SendFlags = self.SendFlags | SEND_FLAG_ORIGIN | SEND_FLAG_ANGLE | SEND_FLAG_DATA_IDX | SEND_FLAG_SHIELD_VAL | SEND_FLAG_RADAR_MODE | SEND_FLAG_FACTION;
+  self.SendFlags = 31;
+  ai_state_control( self.attack_state );
   
   if( !(self.flags & FL_SKIPTHINK ) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
@@ -201,6 +199,7 @@ void() ai_vec_dest_die={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
   self.colormod = '0.25 0.25 0.25';
+  self.attack_state = -1;
   
   local entity w_chain;
   w_chain = self.w_slot;
@@ -216,34 +215,39 @@ void() ai_vec_dest_die={
   activator = self.enemy;
   SUB_UseTargets ();
 
+  self.think = ai_vec_dest_die1;
+  self.ai_action_time = time + 120;
+  
   //basically overkill damage will just remove the tank (nice and clean)
   if( self.health <= (self.max_health / 1.5) * -1 ){
-    self.flags = self.flags | FL_SKIPTHINK;
     self.think = ai_vec_dest_die2;
-    self.nextthink = time + 0.1;
-    return;
   }
-  ai_action_next( ai_vec_dest_die1, 120, 0);
+  self.nextthink = time + 0.1;
 };
 
 /*
   Death animation - tank sits as a smoking wreck
 */
 void() ai_vec_dest_die1={
-  te_smoke_test(self.origin, '0 0 10', 2);
+  makevectors( world.v_angle );
+  local vector sm;
+  sm = world.v_angle + (v_forward * world.m_speed) + (v_right * world.m_speed) + (v_up * world.m_speed);
+  te_smoke_test(self.origin, sm + '0 0 10', 2);
+  
+  self.think = ai_vec_dest_die1;
   if ( time > self.ai_action_time ){
-    ai_action_next( ai_vec_dest_die1a, 300, 0);
-    return;
+    self.think = ai_vec_dest_die1a;
+    self.ai_action_time = time + 120;
   }
+  self.nextthink = time + 0.1;
 };
 //stops smoking
 void() ai_vec_dest_die1a={
-  if ( time > self.ai_action_time ){
-    self.flags = self.flags | FL_SKIPTHINK;
+  self.think = ai_vec_dest_die1a;
+  if( time > self.ai_action_time ){
     self.think = ai_vec_dest_die2;
-    self.nextthink = time + 0.1;
-    return;
   }
+  self.nextthink = time + 0.1;
 };
 
 /*
@@ -275,8 +279,8 @@ void() ai_vec_dest={
   
   droptofloor();
    
-  self.e_cam.SendEntity = send_vehicle;
   self.e_cam.SendFlags = 31;
+  self.e_cam.SendEntity = send_vehicle;
 
   self.th_stand = ai_generic_stand;
   self.th_walk = ai_generic_walk;
@@ -287,6 +291,7 @@ void() ai_vec_dest={
   self.th_melee = ai_generic_melee;
   self.th_missile_strafe = ai_generic_missile_strafe;
   self.th_hunt = ai_generic_hunt;
+  self.th_pain = ai_generic_pain;
   self.th_die = ai_vec_dest_die;
   
   ai_initialize_system( ST_STAND );

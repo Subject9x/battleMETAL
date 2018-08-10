@@ -5,15 +5,19 @@ Date: 7/9/2018
 Overview: AI API Header, covers multiple impl files
 */
 //CONSTANTS
-float AI_SPAWNFLAG_CAMPAIGN     = 1;  //belongs in campaign mode
-float AI_SPAWNFLAG_COOP         = 2;  //belongs in co-op mode
-float AI_SPAWNFLAG_DM           = 4;  //belongs in DeathMatch
-float AI_SPAWNFLAG_TDM          = 8;  //belongs in Team DeathMatch
-float AI_SPAWNFLAG_COLDSTART    = 16; //on-spawn, bot will ignore friendly help calls
-float AI_SPAWNFLAG_RANDDOMSTART = 32; //start on random node if AI has patrol path
-float AI_SPAWNFLAG_HASRADAR     = 64; //radar is expensive to use, use sparingly
-                                      //generally this is for mech units
-float AI_SPAWNFLAG_SKILLUP      = 128;//promote AI by 1 rank depending on skill
+float AI_SPAWNFLAG_CAMPAIGN     = 1;    //belongs in campaign mode
+float AI_SPAWNFLAG_COOP         = 2;    //belongs in co-op mode
+float AI_SPAWNFLAG_DM           = 4;    //belongs in DeathMatch
+float AI_SPAWNFLAG_TDM          = 8;    //belongs in Team DeathMatch
+float AI_SPAWNFLAG_COLDSTART    = 16;   //on-spawn, bot will ignore friendly help calls
+float AI_SPAWNFLAG_RANDDOMSTART = 32;   //start on random node if AI has patrol path
+float AI_SPAWNFLAG_HASRADAR     = 64;   //radar is expensive to use, use sparingly
+                                        //generally this is for mech units
+float AI_SPAWNFLAG_SKILLUP      = 128;  //promote AI by 1 rank depending on skill
+float AI_SPAWNFLAG_NONOV        = 256;  //remove from Novice Difficulty
+float AI_SPAWNFLAG_NOREG        = 512;  //remove from Regular Difficulty
+float AI_SPAWNFLAG_NOVET        = 1024; //remove from Veteran Difficulty
+float AI_SPAWNFLAG_NOELT        = 2048; //remove from Elit Difficulty
 
 float ST_STAND              = 1;  //th_stand
 float ST_WALK               = 2;  //th_walk
@@ -21,9 +25,9 @@ float ST_FLYDIR             = 3;  //th_fly
 float ST_RUN                = 4;  //th_run
 float ST_RUN_STRAFE         = 5;  //th_run_strafe
 float ST_RUN_CHARGE         = 6;  //th_run_charge
-float ST_ATTACK             = 7;  //th_missile
-float ST_ATTACK_WALK        = 8;  //th_melee
-float ST_ATTACK_WALK_STRAFE = 9;  //th_missile_strafe
+float ST_MISSILE            = 7;  //th_missile
+float ST_MELEE              = 8;  //th_melee
+float ST_MISSILE_STRAFE = 9;  //th_missile_strafe
 float ST_HUNT               = 10; //th_hunt
 float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
 float ST_HUNT_START         = 12; //TODO
@@ -65,6 +69,7 @@ entity AI_NODES[128];
 .float ai_type;
 .float ai_style;
 .string target_die;
+.vector ai_dirs;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -86,6 +91,7 @@ float(float rank) ai_pilot_action_mod;
 float() ai_pilot_rank_byskill;
 float(float rank) ai_pilot_attack_interval;
 float( float rank ) ai_pilot_interval;
+float( float rank, float skl, float damg) ai_pilot_mod_damage;
 
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
@@ -105,12 +111,10 @@ float(void() action) ai_hunt_dropnode;
 float(float mode) ai_spawn_clean;
 float() ai_find_target_visual;
 float() ai_find_target_radar;
-float (entity targ) ai_visible;
+float (entity targ) ai_visible; //REMOVE
 vector(entity wep) ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
-//float() ai_check_forattack;
-//float() ai_check_allattack;
 float(entity t) ai_valid_target;
 vector(entity ai) ai_attack_calcSpread;
 void() ai_wep_calcranges;
@@ -143,7 +147,7 @@ void() ai_charge_side;
 */
 void( float estate ) ai_state_control;
 void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states
-void( float startState ) ai_initialize_system;  //
+void( float startState ) ai_initialize_system;
 
 //generic state functions
 //any and all can be replaced by an AI's own th_func standins
@@ -164,7 +168,7 @@ void() ai_generic_pain;
   Headers
 */
 float( float scan_mode) ai_check_scan;
-void(float dist) ai_walkgoal;
+void(float speed) ai_walkgoal;
 void() ai_turn;
 void() ai_face_targ;
 float(entity targ, float ang_limit) ai_check_face;
