@@ -483,10 +483,6 @@ void() ai_stand={
   }
 };
 
-
-
-
-
 void(float dist) ai_walk={
   q1_ai_walk(dist) ;
 };

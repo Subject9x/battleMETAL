@@ -321,10 +321,10 @@ float AI_HUNT_REG = 2;
 float AI_HUNT_VET = 3;
 float AI_HUNT_ELT = 4;
 
-float AI_DMG_ROK = 0.1;
-float AI_DMG_REG = 0.2;
-float AI_DMG_VET = 0.3;
-float AI_DMG_ACE = 0.4;
+float AI_DMG_ROK = 0;
+float AI_DMG_REG = 0.05;
+float AI_DMG_VET = 0.1;
+float AI_DMG_ACE = 0.15;
 
 float AI_ATTACK_ROK  =  0.2;
 float AI_ATTACK_REG  =  0.3;

@@ -586,9 +586,8 @@ float(entity wep) ai_attack_checkEne={
 
 
 void(float startState) ai_initialize_system={
-  self.ai_action_time = time + self.ai_action_mod;
   ai_pilot_validate_states();
-  ai_state_control( startState );
+  ai_next_state( startState );
 };
 
 /*

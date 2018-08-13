@@ -181,16 +181,16 @@ float( float rank, float skl, float damg) ai_pilot_mod_damage={
   local float percent;
   switch( skl ){
     case SKILL_NOV:
-      percent = 0.25;
-      break;
-    case SKILL_REG:
       percent = 0.3;
       break;
+    case SKILL_REG:
+      percent = 0.45;
+      break;
     case SKILL_VET:
-      percent = 0.35;
+      percent = 0.6;
       break;
     case SKILL_ELT:
-      percent = 0.45;
+      percent = 0.75;
       break;
   }
 
@@ -256,8 +256,8 @@ float(float rank) ai_pilot_action_mod={
        mod = AI_REFLEX_ROK + mod;
       break;
   }
-  if( mod < 0 ){
-    mod = 0;
+  if( mod < 0.1 ){
+    mod = 0.1;
   }
   return mod;
 };
