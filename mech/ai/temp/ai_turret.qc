@@ -11,6 +11,7 @@ void() ai_turret_stand;
 void() ai_turret_walk;
 void() ai_turret_run;
 void() ai_turret_missile;
+void() ai_turret_run_strafe;
 void() ai_turret_die;
 void() ai_turret_die_burn;
 void() ai_turret_th;
@@ -26,7 +27,7 @@ void() ai_turret_stand={
   
   if( time > self.ai_action_time ){
     ai_next_state( ST_WALK );
-    self.ai_action_time = time + ai_randyaw_time( self.yaw_speed, 45, 120,  0.05);
+    self.ai_action_time = time + ai_randyaw_time( self.yaw_speed, 45, 120,  0.1);
     return;
   }
 };
@@ -47,7 +48,22 @@ void() ai_turret_walk={
 void() ai_turret_run={
   cons_logAString("state", "ai_turret_run");  //DEBUG
   if( ai_valid_target( self.enemy ) ){
-  
+    enemy_vis = ai_check_vis( self.enemy );
+    enemy_range = ai_check_range( self.enemy );
+    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+    
+    if( enemy_vis ){
+      if( enemy_range <= self.ai_minrange ){
+        if( enemy_infront ){
+          ai_next_state( ST_MISSILE );
+          return;
+        }
+        else{
+          ai_next_state( ST_RUN_STRAFE );
+          return;
+        }
+      }
+    }
   }
   
   if( time > self.ai_action_time ){
@@ -56,9 +72,39 @@ void() ai_turret_run={
   }
 };
 
+
+void() ai_turret_run_strafe={
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    if( ai_check_face( self.enemy, 0.98 ) ){
+      ai_next_state( ST_MISSILE );
+      return;
+    }
+  }
+  else{
+    ai_next_state( ST_STAND );
+    return;
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
 void() ai_turret_missile={
   cons_logAString("state", "ai_turret_missile");  //DEBUG
-
+  ai_face_targ();
+  if( ai_check_face( self.enemy, 0.97) ){
+    ai_attack();
+  }
+  if( !ai_valid_target( self.enemy ) ){
+    ai_next_state( ST_STAND );
+    return;
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
 };
 
 //this should really be moved to an FX impl

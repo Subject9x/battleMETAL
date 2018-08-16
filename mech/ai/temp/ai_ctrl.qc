@@ -142,19 +142,19 @@ void() ai_generic_run={
       
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
-          
+          //TODO - stub
         }
       }
       
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
-          
+          //TODO - stub
         }
       }
       
       if( enemy_range > (self.ai_minrange * 2) ){
         if( enemy_infront ){
-          
+          //TODO - stub
         }
       }
     }
