@@ -7,149 +7,123 @@ Overview: ai unit
   an on-ground, turret-less vehicle
 */
 
-void() ai_dest_walk;
-void() ai_dest_run;
-void() ai_dest_turn;
-void() ai_dest_attack;
 void() ai_dest_stand;
+void() ai_dest_run;
+void() ai_dest_run_strafe;
+void() ai_dest_melee;
+void() ai_dest_missile;
+
 void() ai_vec_dest_die;
 void() ai_vec_dest_die1;
 void() ai_vec_dest_die1a;
 void() ai_vec_dest_die2;
 
 /*
-  TH_WALK
-*/
-void() ai_dest_walk={
-
-  if( time > self.ai_viewtime ){
-    if( ai_find_target_visual() ){
-      self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
-      ai_action_next( self.th_run, 0.5, self.ai_action_mod );
-      return;
-    }
-    self.ai_viewtime = time + self.ai_viewcheck;
-  }
-
-  //as long as AI has movetarget, go there
-  if( self.movetarget ){
-    movetogoal(self.m_fspeed * AI_WALK_SPD);
-  }
-  else{
-    ai_action_next( self.th_stand, 1, self.ai_action_mod);
-  }
-};
-
-/*
-  TH_RUN
-*/
-void() ai_dest_run={
-  if( !self.enemy ){
-    if( self.movetarget ){
-      ai_action_next( self.th_walk, 1.4, self.ai_action_mod );
-      return;
-    }
-    else{
-      ai_action_next( self.th_stand, 0.9, self.ai_action_mod );
-      return;
-    }
-  }
-  
-  //enemy_infront = ai_target_infront( self.enemy, 0.95 );
-  enemy_range = ai_range( self.enemy );
-  enemy_yaw = vectoyaw( self.enemy.origin - self.origin );
-  
-  //stand and fire
-  if( self.attack_state == AS_MISSILE ){
-    //ai_action_next( self.th_attack, 0.9, self.ai_action_mod );
-    return;
-  }
-  
-  //if( ai_check_allattack() ){
-    //self.attack_state = AS_MISSILE;
-   // return;
- // }
-  
-  movetogoal( self.m_fspeed * AI_RUN_SPD );
-};
-
-/*
-  TH_TURN
-*/
-void() ai_dest_turn={
-  ChangeYaw();
-  if( self.enemy ){
-    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-    if( ai_visible( self.enemy ) ){
-      //if( ai_target_infront(self.enemy, 0.97) ){
-        //ai_action_next( self.th_attack, 1, self.ai_action_mod );
-        //return;
-      //}
-    }
-    else{
-      self.enemy = world;
-    }
-  }
-  else{
-    if( time > self.ai_viewtime ){
-      if( ai_find_target_visual() ){
-        self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-        //ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
-        return;
-      }
-      self.ai_viewtime  = time + self.ai_viewcheck;
-    }
-    if( time > self.ai_action_time ){
-      ai_action_next( self.th_stand, 0.1, 0);
-    }
-  }
-};
-
-/*
-  TH_ATTACK
-*/
-void() ai_dest_attack={
-  if( self.enemy ){  
-    if( ai_visible( self.enemy ) ){
-      //if( ai_target_infront(self.enemy, 0.97) ){
-        //if(  self.currentWeaponGroup > 0  ){
-         //self.button0 = 1;
-          //self.th_action = self.th_attack;
-          //return;
-        //}
-      //}
-      ai_action_next( ai_dest_turn, 1, self.ai_action_mod );
-      return;
-    }
-    self.enemy = world;
-  }
-  ai_action_next( self.th_stand, 0.1, 0 );
-};
-
-/*
-  TH_STAND
+  ST_STAND
 */
 void() ai_dest_stand={
-  if( time > self.ai_viewtime ){
-    if( ai_find_target_visual() ){
-      return;
-    }
-    self.ai_viewtime = time + self.ai_viewcheck;
+  cons_logAString("state", "ai_dest_stand");  //DEBUG
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    return;
   }
-  
   if( time > self.ai_action_time ){
     if( self.movetarget ){
-      self.goalentity = self.movetarget;
-      self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-      ai_action_next( self.th_walk, 1.4, 0);
+      ai_next_state( ST_WALK );
       return;
     }
-    else{
-      ai_action_next( self.th_stand, 0.9, 0);
+    ai_next_state( ST_STAND );
+    return;
+  }
+};
+
+/*
+  ST_RUN
+*/
+void() ai_dest_run={
+  cons_logAString("state", "ai_dest_run");  //DEBUG
+  if( ai_valid_target( self.enemy ) ){
+    enemy_vis = ai_check_vis( self.enemy );
+    enemy_range = ai_check_range( self.enemy );
+    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+    
+    if( enemy_vis){
+      if( enemy_range <= 200 ){
+        if( enemy_infront ){
+          ai_next_state( ST_MELEE );
+          return;
+        }
+      }
+      if( enemy_range <= self.ai_minrange ){
+        if( enemy_infront ){
+          ai_next_state( ST_MISSILE );
+          return;
+        }
+      }
+      ai_walkgoal( AI_RUN_SPD );
+    }
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_STAND );
+    return;
+  }
+};
+
+/*
+  ST_RUN_STRAFE
+*/
+void() ai_dest_run_strafe={
+  cons_logAString("state", "ai_dest_run_strafe");  //DEBUG
+  
+};
+
+/*
+  ST_MELEE
+*/
+void() ai_dest_melee={
+  cons_logAString("state", "ai_dest_melee");  //DEBUG
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    if( ai_check_face( self.enemy, 0.99 ) ){
+      ai_attack();
+    }
+    if( !ai_yaw_back( self.m_bspeed * AI_WALK_SPD ) ){
+      ai_next_state( ST_RUN );
       return;
     }
   }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
 };
+
+/*
+  ST_MISSILE
+*/
+void() ai_dest_missile={
+  cons_logAString("state", "ai_dest_missile");  //DEBUG
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    if( ai_check_face( self.enemy, 0.99 ) ){
+      ai_attack();
+    }
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
+/*
+  ST_HUNT
+*/
+
+
+/*
+  ST_HUNT_START
+*/
+
+
 
 /*
   TANK DESTROYER PRIMARY THINK FUNCTION
@@ -181,7 +155,7 @@ void() ai_dest_th={
   }
   
   
-  self.SendFlags = 31;
+  self.SendFlags = -1;
   ai_state_control( self.attack_state );
   
   if( !(self.flags & FL_SKIPTHINK ) ){
@@ -279,19 +253,15 @@ void() ai_vec_dest={
   
   droptofloor();
    
-  self.e_cam.SendFlags = 31;
+  self.e_cam.SendFlags = -1;
   self.e_cam.SendEntity = send_vehicle;
 
-  self.th_stand = ai_generic_stand;
+  self.th_stand = ai_dest_stand;
   self.th_walk = ai_generic_walk;
-  self.th_run = ai_generic_run;
-  self.th_run_strafe = ai_generic_run_strafe;
-  self.th_run_charge = ai_generic_run_charge;
-  self.th_missile = ai_generic_missile;
-  self.th_melee = ai_generic_melee;
-  self.th_missile_strafe = ai_generic_missile_strafe;
-  self.th_hunt = ai_generic_hunt;
-  self.th_pain = ai_generic_pain;
+  self.th_run = ai_dest_run;
+  self.th_run_strafe = ai_dest_run_strafe;
+  self.th_missile = ai_dest_missile;
+  self.th_melee = ai_dest_melee;
   self.th_die = ai_vec_dest_die;
   
   ai_initialize_system( ST_STAND );

@@ -19,10 +19,6 @@ vector DAT_H_TD_CTOR_BBX_X ='20 20 14';
 string DAT_H_TD_PITCH_N = "-25";
 string DAT_H_TD_PITCH_X = "45";
 
-//WEAOPON GROUPS
-float DAT_H_TD_WEP1_IDX= ID_WEP_PAC;
-float DAT_H_TD_WEP1_GROUP= 1;
-
 //LEGS
 string DAT_H_TD_LEG_CNAME= M_LEGS;
 
@@ -83,7 +79,7 @@ void() data_H_TD_ctor={
 
 void() data_H_TD_wep1={  
   self.c_parent = DAT_H_TD_WEP1_CPARENT;
-  self.data_idx = DAT_H_TD_WEP1_IDX; //consult weapon idx table!
+  self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_H_TD_WEP1_OFFSET;
   self.c_alt_ofs = DAT_H_TD_WEP1_OFFSET_ALT;
   self.w_adj_ang = DAT_H_TD_WEP1_ADJ_ANG;

@@ -19,24 +19,22 @@ void() temp_chunk_burn;
 
 
 void() ai_turret_stand={
-  cons_logAString("state", "ai_turret_stand");  //DEBUG
+  //cons_logAString("state", "ai_turret_stand");  //DEBUG
   if( ai_check_scan( self.stat_rdr_mode ) ){
-    ai_next_state( ST_RUN );
     return;
   }
   
   if( time > self.ai_action_time ){
     ai_next_state( ST_WALK );
-    self.ai_action_time = time + ai_randyaw_time( self.yaw_speed, 45, 120,  0.1);
+    self.ai_action_time = time + ai_randyaw_time( self.yaw_speed, 45, 120, 0.1);
     return;
   }
 };
 
 void() ai_turret_walk={
-  cons_logAString("state", "ai_turret_walk");  //DEBUG
+  //cons_logAString("state", "ai_turret_walk");  //DEBUG
   ai_move_turn();
   if( ai_check_scan( self.stat_rdr_mode ) ){
-    ai_next_state( ST_RUN );
     return;
   }
   if( time > self.ai_action_time ){
@@ -46,7 +44,7 @@ void() ai_turret_walk={
 };
 
 void() ai_turret_run={
-  cons_logAString("state", "ai_turret_run");  //DEBUG
+  //cons_logAString("state", "ai_turret_run");  //DEBUG
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
@@ -63,6 +61,10 @@ void() ai_turret_run={
           return;
         }
       }
+    }
+    else{
+      ai_next_state( ST_STAND );
+      return;
     }
   }
   
@@ -92,12 +94,14 @@ void() ai_turret_run_strafe={
 };
 
 void() ai_turret_missile={
-  cons_logAString("state", "ai_turret_missile");  //DEBUG
+  //cons_logAString("state", "ai_turret_missile");  //DEBUG
   ai_face_targ();
-  if( ai_check_face( self.enemy, 0.97) ){
-    ai_attack();
+  if( ai_valid_target( self.enemy ) ){
+    if( ai_check_face( self.enemy, 0.97) ){
+      ai_attack();
+    }
   }
-  if( !ai_valid_target( self.enemy ) ){
+  else{
     ai_next_state( ST_STAND );
     return;
   }
@@ -227,7 +231,7 @@ void() ai_turret_th={
     ai_ranged_attack();
     self.button0 = 0;
   }
-  cons_logAFloat("state", self.attack_state );  //DEBUG
+
   ai_state_control( self.attack_state );
   
   self.e_cam.SendFlags = -1;
@@ -255,6 +259,7 @@ void() ai_turret={
   self.th_stand = ai_turret_stand;
   self.th_walk = ai_turret_walk;
   self.th_run = ai_turret_run;
+  self.th_run_strafe = ai_turret_run_strafe;
   self.th_missile = ai_turret_missile;
   self.th_die = ai_turret_die;
   

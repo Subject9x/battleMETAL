@@ -91,9 +91,9 @@ void() data_sfga_atk={
   makevectors(player.angles);
   org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
     
-  if(trace_ent){
-    te_superspike(dir);
-  }
+  //if(trace_ent){
+  //  te_superspike(dir);
+ // }
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   newmis = spawn();
