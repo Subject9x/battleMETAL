@@ -19,7 +19,6 @@ void() temp_chunk_burn;
 
 
 void() ai_turret_stand={
-  //cons_logAString("state", "ai_turret_stand");  //DEBUG
   if( ai_check_scan( self.stat_rdr_mode ) ){
     return;
   }
@@ -32,7 +31,6 @@ void() ai_turret_stand={
 };
 
 void() ai_turret_walk={
-  //cons_logAString("state", "ai_turret_walk");  //DEBUG
   ai_move_turn();
   if( ai_check_scan( self.stat_rdr_mode ) ){
     return;
@@ -44,7 +42,6 @@ void() ai_turret_walk={
 };
 
 void() ai_turret_run={
-  //cons_logAString("state", "ai_turret_run");  //DEBUG
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
@@ -94,7 +91,6 @@ void() ai_turret_run_strafe={
 };
 
 void() ai_turret_missile={
-  //cons_logAString("state", "ai_turret_missile");  //DEBUG
   ai_face_targ();
   if( ai_valid_target( self.enemy ) ){
     if( ai_check_face( self.enemy, 0.97) ){

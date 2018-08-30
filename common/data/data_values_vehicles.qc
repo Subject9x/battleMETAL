@@ -8,10 +8,27 @@ server and client
 //============================
 //            DATA ID's           
 //============================
+//HUMAN SURVIVORS
+float ID_VEC_HS_TRUCK_C = 1;
+float ID_VEC_HS_TRUCK_H = 2;
+float ID_VEC_HS_TRUCK_CS = 3;
+
+float ID_VEC_HS_DOZER = 4;
+float ID_VEC_HS_LOADR = 5;
+float ID_VEC_HS_EXCAT = 6;
+
+float ID_VEC_HS_TANK_H = 8;
+
+float ID_VEC_HS_TDEST_H = 10;
+
+float ID_VEC_HS_SCOUT = 11;
+//HUMAN RAIDERS
+
 //-------------------------Human Test Tank
-float ID_VEC_TANK = 1;
+float ID_VEC_HS_TANK_L = 7;
 //-------------------------Human Tank Destroyer
-float ID_VEC_H_TD = 2;
+float ID_VEC_HS_TDEST_L = 9;
+
 //============================
 //            Health           
 //============================

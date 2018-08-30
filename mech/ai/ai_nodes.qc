@@ -6,6 +6,38 @@ Overview: ai nodes
   all the various nodes needed for the game
 */
 
+
+//NODE CONSTANTS
+
+//AI Node
+float AI_NODE_PATROL = 1;
+float AI_NODE_DEFEND = 2;
+float AI_NODE_ATTACK = 3;
+
+//SPAWNFLAGS
+float NODE_SPAWN_DROP = 1;
+float NODE_SPAWN_REMOVEONTOUCH = 2;
+float NODE_SPAWN_INACTIVE = 4;
+float NODE_SPAWN_INACTIVEONTOUCH = 8;
+
+void() node_setup={
+
+  self.classname = "ai_node";
+  self.data_type = DATA_NODE;
+  setmodel(self, "q3mdl/testball.md3");
+  setsize(self, '-15 -15 -59','15 15 1');
+  if( (self.spawnflags & NODE_SPAWN_DROP) ){
+    setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
+    droptofloor();
+  }
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_TRIGGER;
+  self.isActive = TRUE;
+  if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
+    self.isActive = FALSE;
+  }
+};
+
 void() ai_node_hunt_t={
   if( other == self.owner && self.owner.deadflag == DEAD_NO){
     local entity this;
@@ -94,7 +126,6 @@ entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_n
     setorigin( self, orig );
     droptofloor();
     self.targetname = strzone( strcat( nodeid,"_",ftos( id ) ) );
-    cons_logAString( "node.targetname", self.targetname ); //DEBUG
     
     totes = totes - 1;
     if( totes > -1){
@@ -103,7 +134,6 @@ entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_n
     else{
       self.target = this.movetarget.targetname;
     }
-    cons_logAString("node.target", self.target ); //DEBUG
     self.pausetime = time + fadetime;
     self.owner = this;
     self.th_stand = action;
@@ -117,8 +147,9 @@ entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_n
 
 //AI Nodes
 //the patrol node touch 
-void() ai_node_t_patrol={
+void(entity o) node_patrol_t={
   local entity	temp;
+  //other = o;
   
   if( other.movetarget != self ){
     return;
@@ -128,66 +159,82 @@ void() ai_node_t_patrol={
     return;
   }
   
-  if( other.ai_hunt_total > -1 ){
-    return;
-  }
-  
-  temp = self;
-	self = other;
-	other = temp;
+  if( self.i_faction == other.i_faction ){  
+    temp = self;
+    self = other;
+    other = temp;
 
-	//if (self.classname == "monster_ogre")
-		//sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
+    //if (self.classname == "monster_ogre")
+      //sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
 
-//dprint ("t_movetarget\n");
-	self.goalentity = self.movetarget = find (world, targetname, other.target);
-	self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-  ai_leg_frame( leg_stand1 );
-	if ( self.movetarget ){
-    if( other.pausetime ){
-      self.attack_state = ST_STAND;
-      self.ai_action_time = time + self.ai_action_mod;
+  //dprint ("t_movetarget\n");
+    self.goalentity = self.movetarget = find (world, targetname, other.target);
+    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+    ai_leg_frame( leg_stand1 );
+    if ( self.movetarget ){
+      if( other.pausetime ){
+        ai_next_state( ST_STAND );
+        self = temp;
+        return;
+      }
+      ai_next_state( ST_WALK );
+      ai_leg_frame( leg_walk1 );
+      self = temp;
       return;
     }
-    self.attack_state = ST_WALK;
-    self.ai_action_time = time + self.ai_action_mod;
-    ai_leg_frame( leg_walk1 );
-		return;
-	}
-  ai_action_next( self.th_stand, 999999, self.ai_action_mod );
-  return;
+    ai_next_state( ST_STAND );
+    self = temp;
+    return;
+  }
 };
 
 void() ai_node_t_defend={
   
 };
+
 void() ai_node_t_attack={
   
 };
 
+void() node_touch={
+  if( !self.isActive ){
+    return;
+  }
+  
+  if( (other.flags & FL_MONSTER ) ){
+    switch( self.data_idx ){
+      case AI_NODE_PATROL:
+        node_patrol_t( other );
+        break;
+      case AI_NODE_DEFEND:
+        SUB_Null();
+        break;
+      case AI_NODE_ATTACK:
+        SUB_Null();
+        break;
+    }
+  }
+  
+  if( (self.spawnflags & NODE_SPAWN_REMOVEONTOUCH) ){
+    remove( self );
+  }
+  if( (self.spawnflags & NODE_SPAWN_INACTIVEONTOUCH) ){
+    self.isActive = FALSE;
+  }
+};
+
 /*
-  Patrol nodes have the specific touch function
-*/
-void() ai_node_patrols={
+  QUAKED call
+*/  
+void() msc_ai_node={
   if ( !self.targetname ){
-		objerror ("ai_node_patrol - missing targetname");
+		objerror ("node - missing targetname");
     remove(self);
     return;
   }
   
-  switch( self.nextVecChoice ){
-    case AI_NODE_PATROL:
-      self.touch = ai_node_t_patrol;
-      break;
-    case AI_NODE_DEFEND:
-      self.touch = SUB_Null;
-      break;
-    case AI_NODE_ATTACK:
-      self.touch = SUB_Null;
-      break;
-  }
+  node_setup();
   
-  self.solid = SOLID_TRIGGER;
-  setsize(self, '-2 -2 -16', '2 2 16');
-  droptofloor();
+  self.touch = node_touch;
+ 
 };

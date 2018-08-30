@@ -182,7 +182,6 @@ void(float dist) q1_ai_run =
 			self.enemy = self.oldenemy;
 			//HuntTarget ();
       ai_hunt_target();
-      cons_logAString("q1 call", "HuntTarget()"); //DEBUG
 		}
 		else
 		{
@@ -197,7 +196,7 @@ void(float dist) q1_ai_run =
 	//self.show_hostile = time + 1;		// wake up other monsters
 
 // check knowledge of enemy
-	enemy_vis = ai_visible(self.enemy);
+	//enemy_vis = ai_visible(self.enemy);
 	if (enemy_vis)
 		self.search_time = time + self.maxpatience;
 
@@ -220,7 +219,6 @@ void(float dist) q1_ai_run =
 	//enemy_infront = infront(self.enemy);
 	//enemy_infront = ai_target_infront(self.enemy.origin, self.ai_optical / 2, self.ai_optical / 2);
 	//enemy_range = range(self.enemy);
-  cons_logAString("Q1 call", "enemy_range = range(self.enemy)");  //DEBUG
 	enemy_yaw = vectoyaw(self.enemy.origin - self.origin);
 	
 	if (self.attack_state == AS_MISSILE)
@@ -236,7 +234,6 @@ void(float dist) q1_ai_run =
 		return;
 	}
 
-  cons_logAString("Q1 call", "enemy_range = range(self.enemy)");  //DEBUG
 	//if (CheckAnyAttack ())
 		//return;					// beginning an attack
 		

@@ -508,8 +508,7 @@ float(void() action) ai_hunt_dropnode={
     }
     local float t;
     t = ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.enemy.origin - self.origin), 0.1);
-    cons_logAFloat( "fadetime", t); //DEBUG
-    
+
     local vector eorg;
     makevectors( self.enemy.angles );
     eorg = self.enemy.origin + (v_up * (self.enemy.maxs_z / 1.5) );

@@ -43,9 +43,7 @@ triggers_h.qc
   mech/impulse_h.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
-  //mech/ai/ai_core_h.qc --> REMOVE
-  mech/ai/temp/ai_api_h.qc
-  mech/ai/temp/ai_units_h.qc
+  mech/ai/ai_api_h.qc
   q1/qwep/wep_fx_h.qc
   mech/dat/msc/map_objects_h.qc
   world_effectinfo_h.qc
@@ -57,9 +55,7 @@ dp/subs.qc
   mech/dat/msc/map_deplypoint.qc
   mech/dat/msc/map_navpoint.qc
   mech/dat/msc/map_objective.qc
- //mech/dat/msc/ai_node.qc
   mech/dat/msc/misc_model.qc
-  //mech/dat/msc/ai_map_logic.qc
   mech/dat/msc/map_animatic.qc
   
   //projectiles
@@ -104,7 +100,6 @@ dp/subs.qc
   mech/dat/mch/data_hevdal_val.qc
   
   //vehicles
-  //mech/dat/vec/data_tank.qc
   mech/dat/vec/data_h_td.qc
   
   //buildings
@@ -119,38 +114,14 @@ dp/subs.qc
 //===========================
 
 //impl files
-  
-  
-  mech/ai/temp/ai_stats.qc
-  mech/ai/temp/ai_api.qc
-  mech/ai/temp/ai_move_q1.qc
-  mech/ai/temp/ai_ctrl.qc
-  mech/ai/temp/ai_mech_skirmish.qc
-  mech/ai/temp/ai_destroyer.qc
-  mech/ai/temp/ai_turret.qc
-  mech/ai/temp/ai_nodes.qc
-  
-  //mech/ai/m_ai_test.qc
-  //mech/ai/ai_directives_combat.qc
-  //mech/ai/ai_move_funcs.qc
-  //mech/ai/ai_core_utils.qc
-  //mech/ai/ai_unit_control.qc
-  //mech/ai/ai_unit_weapons.qc
-  //AI STATES-----------------------------
-  //mech/ai/ai_state_patrol.qc
-  //mech/ai/ai_state_defend.qc
-  //mech/ai/ai_state_assault.qc
-  //mech/ai/ai_state_misc.qc
-  //mech/ai/ai_state_wander.qc
-  //mech/ai/ai_state_combat.qc
-  //mech/ai/ai_core_funcs.qc
-  //-------------------------------------
-  //AI COMBAT SUB STATES--------------------
-  //mech/ai/ai_combat_brawl.qc
-  //mech/ai/ai_combat_snipe.qc
-  //mech/ai/ai_combat_skirm.qc
-  //mech/ai/ai_combat_flank.qc
-  //-------------------------------------
+  mech/ai/ai_stats.qc
+  mech/ai/ai_api.qc
+  mech/ai/ai_move_q1.qc
+  mech/ai/ai_ctrl.qc
+  mech/ai/ai_mech_skirmish.qc
+  mech/ai/ai_destroyer.qc
+  mech/ai/ai_turret.qc
+  mech/ai/ai_nodes.qc
   
   mech/t_damage.qc
   mech/svr/server_parmops_c.qc
@@ -183,7 +154,7 @@ q1/precache_world.qc
 world.qc
 //============================
   mech/map_objects_c.qc
-  mech/ai/temp/ai_units.qc
+  mech/ai/ai_units.qc
   mech/ext/m_client.qc
   mech/ext/m_player.qc
  

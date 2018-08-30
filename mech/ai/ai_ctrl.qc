@@ -69,7 +69,6 @@ void( float estate ) ai_state_control={
 	if AI has a node to go to, it will walk there
 */
 void() ai_generic_stand={
-  cons_logAString(ftos(self.attack_state), "ai_generic_stand");  //DEBUG
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
     return;
@@ -89,7 +88,6 @@ void() ai_generic_stand={
 	it will scan for targets every time + self.ai_viewcheck seconds
 */
 void() ai_generic_walk={
-  cons_logAString(ftos(self.attack_state), "ai_generic_walk");  //DEBUG
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
     return;
@@ -111,7 +109,6 @@ void() ai_generic_walk={
   TODO - fill out
 */
 void() ai_generic_fly={
-  cons_logAString(ftos(self.attack_state), "ai_generic_fly");  //DEBUG
 
 };
 /*
@@ -121,7 +118,6 @@ void() ai_generic_fly={
 	hierarchy of VISIBILITY > RANGE > FACING
 */
 void() ai_generic_run={
-  cons_logAString(ftos(self.attack_state), "ai_generic_run");  //DEBUG
   
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
@@ -174,7 +170,6 @@ void() ai_generic_run={
 	it switches signage on the 90deg and strafes the other way.
 */
 void() ai_generic_run_strafe={
-  cons_logAString(ftos(self.attack_state), "ai_generic_run_strafe");  //DEBUG
   
   local float moved;
   moved = ai_walk_left( self.m_sspeed * AI_RUN_SPD );
@@ -197,7 +192,6 @@ void() ai_generic_run_strafe={
 	of its current target.
 */
 void() ai_generic_run_charge={
-  cons_logAString(ftos(self.attack_state), "ai_generic_run_charge");  //DEBUG
   ai_turn();
   
   if( ai_check_face(self.enemy, 0.7) ){
@@ -223,7 +217,6 @@ void() ai_generic_run_charge={
 	in front. The AI does not move for this one.
 */
 void() ai_generic_missile={
-  cons_logAString(ftos(self.attack_state), "ai_generic_missile");  //DEBUG
   
   ai_face_targ();
   if( ai_check_face( self.enemy, 0.97 ) ){
@@ -243,7 +236,6 @@ void() ai_generic_missile={
 	The AI will move a little bit while trying to attack.
 */
 void() ai_generic_melee={
-  cons_logAString(ftos(self.attack_state), "ai_generic_melee");  //DEBUG
   
 	ai_face_targ();
 	//TODO
@@ -253,7 +245,6 @@ void() ai_generic_melee={
 	AI will make an attack while moving to the left or right.
 */
 void() ai_generic_missile_strafe={
-  cons_logAString(ftos(self.attack_state), "ai_generic_missile_strafe");  //DEBUG
   
   ai_face_targ();
   ai_move( self.angles_y + (self.lefty * 90 ), self.m_fspeed * AI_WALK_SPD );
@@ -275,7 +266,6 @@ void() ai_generic_missile_strafe={
 	target is spotted WHEN the AI reaches the node, attack from the node.
 */
 void() ai_generic_hunt={
-  cons_logAString(ftos(self.attack_state), "ai_generic_hunt");  //DEBUG
   
   //TODO
 };
@@ -286,7 +276,6 @@ void() ai_generic_hunt={
   the bot then recoils in some manner, maybe making panicked noises
 */
 void() ai_generic_pain={
-  cons_logAString(ftos(self.attack_state), "ai_generic_pain");  //DEBUG
   
   //TODO
 };
@@ -385,12 +374,18 @@ float( entity targ ) ai_check_vis={
   traceline (spot1, spot2, TRUE, self); // see through other monsters
 
   if ( trace_inopen && trace_inwater ){
-    return FALSE;     // sight line crossed contents
+    return VIS_FAIL;     // sight line crossed contents
   }
   if ( trace_fraction == 1 ){
-    return TRUE;
+    return VIS_FRAC;
   }
-  return FALSE;
+  
+  if( trace_ent != targ ) {
+    if( trace_ent.i_faction == self.i_faction ){
+      return VIS_FRN;
+    }
+  }
+  return VIS_FAIL;
 };
 
 float() ai_attack={
@@ -430,7 +425,7 @@ void() ai_found_target={
   
 */
 void() ai_walk_setup={
-	if (self.target){
+	if ( self.target ){
 		self.goalentity = self.movetarget = find(world, targetname, self.target);
 		if( !self.movetarget ){
 			dprint ("Monster can't find target at ");
@@ -444,7 +439,7 @@ void() ai_walk_setup={
 	}
 	else{
 		self.pausetime = 99999999;
-    ai_next_state( ST_WALK );
+    ai_next_state( ST_STAND );
     //ai_leg_frame( leg_stand1 );
     return;
 	}

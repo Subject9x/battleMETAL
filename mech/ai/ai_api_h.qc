@@ -18,7 +18,9 @@ float AI_SPAWNFLAG_NONOV        = 256;  //remove from Novice Difficulty
 float AI_SPAWNFLAG_NOREG        = 512;  //remove from Regular Difficulty
 float AI_SPAWNFLAG_NOVET        = 1024; //remove from Veteran Difficulty
 float AI_SPAWNFLAG_NOELT        = 2048; //remove from Elit Difficulty
+float AI_SPAWNFLAG_NODROP       = 4096; //don't drop bot to the floor onspawn
 
+//AI STATE CONSTANTS
 float ST_STAND              = 1;  //th_stand
 float ST_WALK               = 2;  //th_walk
 float ST_FLYDIR             = 3;  //th_fly
@@ -32,6 +34,12 @@ float ST_HUNT               = 10; //th_hunt
 float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
 float ST_HUNT_START         = 12; //TODO
 float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'staggers' the target
+
+//VIS CONSTANTS
+float VIS_FAIL = 0;
+float VIS_FRAC = 1;
+float VIS_TRG = 2;
+float VIS_FRN = 3;
 
 //GLOBALS
 float enemy_infront;
@@ -96,12 +104,8 @@ float( float rank, float skl, float damg) ai_pilot_mod_damage;
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
 
-//AI Node
-float AI_NODE_PATROL = 0;
-float AI_NODE_DEFEND = 1;
-float AI_NODE_ATTACK = 2;
-
-void() ai_node_t_patrol;
+void() node_touch;
+void() node_setup;
 void() ai_node_t_defend;
 void() ai_node_t_attack;
 entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_node_hunt;
@@ -111,7 +115,6 @@ float(void() action) ai_hunt_dropnode;
 float(float mode) ai_spawn_clean;
 float() ai_find_target_visual;
 float() ai_find_target_radar;
-float (entity targ) ai_visible; //REMOVE
 vector(entity wep) ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;

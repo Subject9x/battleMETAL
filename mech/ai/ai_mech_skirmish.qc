@@ -22,7 +22,6 @@ void() ai_mech_sk_die2;
 
 //MECH SKIRMISH STAND
 void() ai_mech_sk_stand={
-  //cons_logAString(ftos(self.attack_state), "ai_mech_sk_stand");  //DEBUG
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, self.ai_fov ) ){
@@ -38,12 +37,10 @@ void() ai_mech_sk_stand={
 
 //MECH SKIRMISH RUN
 void() ai_mech_sk_run={
-  //cons_logAString(ftos(self.attack_state), "ai_mech_sk_run");  //DEBUG
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
-    //cons_logAFloat("enemy_range", enemy_range); //DEBUG
     
     if( enemy_vis ){
       if( enemy_range < ( 400 )){
@@ -94,7 +91,6 @@ void() ai_mech_sk_run={
 
 //MECH SKIRMISH MELEE
 void() ai_mech_sk_melee={
-  //cons_logAString(ftos(self.attack_state), "ai_mech_sk_melee");  //DEBUG
   
   ai_face_targ();
   
@@ -118,7 +114,6 @@ void() ai_mech_sk_melee={
 
 //MECH SKIRMISH MISSILE STRAFE
 void() ai_mech_sk_missile_strafe={
-  //cons_logAString(ftos(self.attack_state), "ai_mech_sk_missile_strafe");  //DEBUG
   local float moved;
   
   ai_face_targ();
@@ -146,7 +141,6 @@ void() ai_mech_sk_missile_strafe={
 
 //MECH SKIRMISH HUNT
 void() ai_mech_sk_hunt={
-  //cons_logAString(ftos(self.attack_state), "ai_mech_sk_hunt");  //DEBUG
   ai_walkgoal(AI_RUN_SPD);
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
@@ -156,7 +150,6 @@ void() ai_mech_sk_hunt={
 
 //MECH SKIRMISH PAIN
 void() ai_mech_sk_pain={
-  //cons_logAString(ftos(self.attack_state), "ai_mech_sk_pain");  //DEBUG
   
 };
 
@@ -204,7 +197,6 @@ void() ai_mech_sk_die={
   smoking wreck
 */
 void() ai_mech_sk_die1={
-  cons_logAString("state", "ai_mech_sk_die1"); //DEBUG
   makevectors( world.v_angle );
   local vector sm;
   sm = world.v_angle + (v_forward * world.m_speed) + (v_right * world.m_speed) + (v_up * world.m_speed);
@@ -221,7 +213,6 @@ void() ai_mech_sk_die1={
 
 //explode
 void() ai_mech_sk_die2={
-  cons_logAString("state", "ai_mech_sk_die2"); //DEBUG
   mech_cleanupMech();
   self.nextthink = time + 0.1;
   self.think = BecomeExplosion;

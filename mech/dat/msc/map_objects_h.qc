@@ -21,10 +21,6 @@ void() deploy_point_use;
 void() th_deploy;
 float(entity ent, float changed) send_deploypoint;
 
-//AI nodes
-void() ai_node_touch;
-void() ai_node_graph_touch;
-
 //AI
 void() ai_mech;
 void() ai_spawner_use;

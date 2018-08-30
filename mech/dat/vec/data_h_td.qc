@@ -9,7 +9,7 @@ Overview:
 */
 
 //HUMAN LIGHT TNKRET=============================
-float DAT_H_TD_IDX = ID_VEC_H_TD;
+float DAT_H_TD_IDX = ID_VEC_HS_TDEST_L;
 string DAT_H_TD_VEC_NAME = "Medium Tank";
 
 float DAT_H_TD_YAWSPEED = 2.5;

@@ -22,7 +22,6 @@ void() ai_vec_dest_die2;
   ST_STAND
 */
 void() ai_dest_stand={
-  cons_logAString("state", "ai_dest_stand");  //DEBUG
   if( ai_check_scan( self.stat_rdr_mode ) ){
     return;
   }
@@ -40,7 +39,6 @@ void() ai_dest_stand={
   ST_RUN
 */
 void() ai_dest_run={
-  cons_logAString("state", "ai_dest_run");  //DEBUG
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
@@ -72,7 +70,6 @@ void() ai_dest_run={
   ST_RUN_STRAFE
 */
 void() ai_dest_run_strafe={
-  cons_logAString("state", "ai_dest_run_strafe");  //DEBUG
   
 };
 
@@ -80,7 +77,6 @@ void() ai_dest_run_strafe={
   ST_MELEE
 */
 void() ai_dest_melee={
-  cons_logAString("state", "ai_dest_melee");  //DEBUG
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, 0.99 ) ){
@@ -101,7 +97,6 @@ void() ai_dest_melee={
   ST_MISSILE
 */
 void() ai_dest_missile={
-  cons_logAString("state", "ai_dest_missile");  //DEBUG
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, 0.99 ) ){
