@@ -20,6 +20,9 @@ float NODE_SPAWN_REMOVEONTOUCH = 2;
 float NODE_SPAWN_INACTIVE = 4;
 float NODE_SPAWN_INACTIVEONTOUCH = 8;
 
+/*
+  common ini for any node entity
+*/
 void() node_setup={
 
   self.classname = "ai_node";
@@ -32,6 +35,12 @@ void() node_setup={
   }
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
+  
+  if( !self.pausetime ){
+    self.pausetime = 0.1; 
+  }
+  self.touch = node_touch;
+  
   self.isActive = TRUE;
   if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
     self.isActive = FALSE;
@@ -145,8 +154,12 @@ entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_n
 };
 
 
-//AI Nodes
-//the patrol node touch 
+/*
+  touch function that defines a node as a Patrol Node
+  this will set the touchee's movetarget to self.target
+  and send it on its way.
+  
+*/
 void(entity o) node_patrol_t={
   local entity	temp;
   //other = o;
@@ -196,6 +209,11 @@ void() ai_node_t_attack={
   
 };
 
+/*
+  node touch function is generic with a switch for a specific type
+  they are required to be isActive, and to have a data_idx > 0;
+  
+*/
 void() node_touch={
   if( !self.isActive ){
     return;
@@ -207,10 +225,10 @@ void() node_touch={
         node_patrol_t( other );
         break;
       case AI_NODE_DEFEND:
-        SUB_Null();
+        //TODO - defend node behavior?
         break;
       case AI_NODE_ATTACK:
-        SUB_Null();
+        //TODO - attack node behavior?
         break;
     }
   }
@@ -225,6 +243,7 @@ void() node_touch={
 
 /*
   QUAKED call
+  this is what the map script will actually call to create a node entity
 */  
 void() msc_ai_node={
   if ( !self.targetname ){
@@ -232,9 +251,5 @@ void() msc_ai_node={
     remove(self);
     return;
   }
-  
   node_setup();
-  
-  self.touch = node_touch;
- 
 };

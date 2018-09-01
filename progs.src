@@ -23,6 +23,7 @@ triggers_h.qc
   common/data/data_values_buildings.qc
   common/data/data_values_turrets.qc
   common/data/data_values_particles.qc
+  common/data/data_values_ai.qc
 //==========================
 //mech header files
   mech/world_ext_h.qc

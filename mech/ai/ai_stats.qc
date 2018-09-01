@@ -181,16 +181,16 @@ float( float rank, float skl, float damg) ai_pilot_mod_damage={
   local float percent;
   switch( skl ){
     case SKILL_NOV:
-      percent = 0.3;
+      percent = AI_DMG_SKILL_ROK;
       break;
     case SKILL_REG:
-      percent = 0.45;
+      percent = AI_DMG_SKILL_REG;
       break;
     case SKILL_VET:
-      percent = 0.6;
+      percent = AI_DMG_SKILL_VET;
       break;
     case SKILL_ELT:
-      percent = 0.75;
+      percent = AI_DMG_SKILL_ACE;
       break;
   }
 
@@ -209,6 +209,7 @@ float( float rank, float skl, float damg) ai_pilot_mod_damage={
       break;
   }
   percent = damg * percent;
+  //this prevents super-low damage weapons from being flattened
   if( percent < 3 ){
     percent = 3;
   }
