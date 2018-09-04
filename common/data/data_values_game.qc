@@ -102,11 +102,6 @@ float WEAPON7 = 64;
 float WEAPON8 = 128;
 float WEAPON9 = 256;
 //============================
-//     RADAR DEFS          
-//============================
-vector  RADAR_PASSIVE_ARC_PLAYER = '0 96 0';
-vector  RADAR_ACTIVE_ARC_PLAYER = '0 256 0';
-//============================
 //     COMBAT STATS
 //============================
 float SHIELD_DELAY = 5;

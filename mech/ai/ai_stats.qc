@@ -411,11 +411,11 @@ float() ai_pilot_rating_patience={
   ePatience = ePatience + (ePatience * (skill / 100));
   
   //ai quirks mods
-  if(self.count1 == AI_STYLE_STALK){
+  //if(self.count1 == AI_STYLE_STALK){
     //stalkers should have the longest patience
-    ePatience = ePatience + (ePatience * 0.5);
-  }
-  else if(self.count1 ==- AI_STYLE_FLANK){
+   // ePatience = ePatience + (ePatience * 0.5);
+  //} else
+  /*if(self.count1 ==- AI_STYLE_FLANK){
     //flankers get a minor bump in patience
     ePatience = ePatience + (ePatience * 0.25);
   }
@@ -423,7 +423,7 @@ float() ai_pilot_rating_patience={
   //for long hunts
   if(self.count2 == AI_TYPE_AGGRO){
     ePatience = ePatience - (ePatience / 2);
-  }
+  }*/
   return ePatience; 
 };
 
@@ -438,9 +438,9 @@ float() ai_core_hitTimeCalc={
   if(self.state_1 == AI_ORDER_ATTACK){
     sec = sec + 1;
   }
-  if(self.ai_style == AI_STYLE_STALK){
-    sec = sec + 2.5;
-  }
+  //if(self.ai_style == AI_STYLE_STALK){
+  //  sec = sec + 2.5;
+  //}
   if(self.ai_type == AI_TYPE_AGGRO){
     sec = sec - ( sec * 0.25);
   }

@@ -9,7 +9,6 @@ Overview:
 */
 
 //HUMAN LIGHT TNKRET=============================
-float DAT_TNK_IDX = ID_VEC_TANK;
 string DAT_TNK_VEC_NAME = "Medium Tank";
 
 //LEGS
@@ -23,7 +22,7 @@ void() data_TNK_hmn={
   bld = spawn();
   self = bld;
     self.classname = "data";
-    self.data_idx = ID_VEC_TANK;
+    self.data_idx = ID_VEC_HS_TANK_L;
     self.data_type = DATA_VEHC;
     self.vec_name = "Medium Tank";
     self.e_model = "q3mdl/vecs/mdl_tank_tur.md3";

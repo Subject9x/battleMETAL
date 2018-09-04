@@ -224,6 +224,8 @@ void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, 
 void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
 
   local vector radCenter, radarFidelity, map_size;
+  local entity e;
+  
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
   
@@ -234,67 +236,64 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   radCenter_x = vorg_x + (siz_x / 2);
   radCenter_y = vorg_y + (siz_y / 2);
   
-  if(radarMode){
-    radarFidelity = RADAR_ACTIVE_ARC_PLAYER;
-    radarFidelity_z = radarRange / 3;
-  }
-  else{
-    radarFidelity = RADAR_PASSIVE_ARC_PLAYER;
-    radarFidelity_z = radarRange / 4;
-  }
   drawpic(radCenter - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
-  
-  //cons_logAVector(vtos(input_angles));  //DEBUG
-  
-  local entity e;
+
   e = findradius(radarOrg, radarRange);
   while(e){
     if(e.data_type){
       if(e.entnum != player_localentnum){
-        if((e.data_type == DATA_BLD) || (e.data_type == DATA_MECH) || (e.data_type == DATA_VEHC)){
+        if( (e.data_type == DATA_BLD) || (e.data_type == DATA_MECH) || (e.data_type == DATA_VEHC) ){
           local vector hudorg, spotVec;
-          local float ang, canSee, radUp, radOut, entAngle, entAngleRadian, dist, radDist;
-          dist = vlen(e.origin - radarOrg);
-          radDist = dist / self.radar_range;
-          
-          ang = vectoyaw(e.origin - radarOrg);
-          canSee = FALSE;
-                    
-          makevectors(e.origin - radarOrg);
-          spotVec = radarOrg + (v_up * radarFidelity_y) + (v_forward * radarFidelity_z);
-          traceline(spotVec, e.origin, FALSE, self);
-          if(trace_fraction == 1){
-            canSee = TRUE;
-          }
-          
-          if(canSee){
-            entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
-            entAngleRadian = entAngle * DEG2RAD;
-            hudorg_x = cos(entAngleRadian);
-            hudorg_y = sin(entAngleRadian);
-            hudorg_x = radCenter_x - (hudorg_x * ( siz_x * radDist));
-            hudorg_y = radCenter_y - (hudorg_y * ( siz_y * radDist));
+          local float ang, canSee, entAngle, entAngleRadian, dist, radDist;
+          dist = vlen(radarOrg - e.origin );
+          if( dist <= radarRange ){
+            radDist = dist / self.radar_range;
             
-            local float draw;
-            draw = TRUE;
-            if( (hudorg_x < vorg_x) || (hudorg_x > (vorg_x + siz_x) ) ){
-              draw = FALSE;
+            ang = vectoyaw(e.origin - radarOrg);
+            canSee = TRUE;
+            if( !radarMode ){
+              canSee = FALSE;
+              
+              traceline(radarOrg, e.origin, MOVE_NORMAL, self);
+              if(trace_fraction == 1 ){
+                canSee = TRUE;
+              }
+              if( trace_fraction < 1 ){
+                if( trace_ent.flags ){
+                  canSee = TRUE;
+                }
+              }
             }
-            if( (hudorg_y < vorg_y) || (hudorg_y > (vorg_y + siz_x) ) ){
-              draw = FALSE;
-            }
-            if( draw ){
-              if(e.data_type == DATA_BLD){
-                hud_RenderRadar_Building(hudorg, plrFaction, e.i_faction);  
+            if(canSee){
+              entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
+              entAngleRadian = entAngle * DEG2RAD;
+              hudorg_x = cos(entAngleRadian);
+              hudorg_y = sin(entAngleRadian);
+              hudorg_x = radCenter_x - (hudorg_x * ( siz_x * radDist));
+              hudorg_y = radCenter_y - (hudorg_y * ( siz_y * radDist));
+              
+              local float draw;
+              draw = TRUE;
+              if( (hudorg_x < vorg_x) || (hudorg_x > (vorg_x + siz_x) ) ){
+                draw = FALSE;
               }
-              else if(e.data_type == DATA_VEHC){
-                hud_RenderRadar_Vehc(hudorg, plrFaction, e.i_faction);
+              if( (hudorg_y < vorg_y) || (hudorg_y > (vorg_y + siz_x) ) ){
+                draw = FALSE;
               }
-              else if(e.data_type == DATA_MECH){
-                hud_RenderRadar_Mech(hudorg, plrFaction, e.i_faction); 
-              }
-              else{
-                drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+              if( draw ){
+                switch( e.data_type ){
+                  case DATA_BLD:
+                    hud_RenderRadar_Building(hudorg, plrFaction, e.i_faction);  
+                    break;
+                  case DATA_VEHC:
+                    hud_RenderRadar_Vehc(hudorg, plrFaction, e.i_faction);
+                    break;
+                  case DATA_MECH:
+                    hud_RenderRadar_Mech(hudorg, plrFaction, e.i_faction); 
+                    break;
+                  default:
+                    drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+                }
               }
             }
           }
