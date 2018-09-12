@@ -97,6 +97,7 @@ void() PlayerPostThink = {
   }
   ////
 
+  server_make_sweep();
   self.stat_cofs_x = self.origin_x;
   self.stat_cofs_y = self.origin_y;
   self.stat_cofs_z = self.origin_z;
@@ -117,12 +118,6 @@ void() PlayerPostThink = {
     self.stat_plr_camx = self.e_cam.c_ofs_x;
     self.stat_plr_camy = self.e_cam.c_ofs_y; 
     self.stat_plr_camz = self.e_cam.c_ofs_z;
-    self.stat_legs_hp = csqc_updateCompStat(self.e_legs);
-    self.stat_ctor_hp = csqc_updateCompStat(self);
-    self.stat_ltor_hp = csqc_updateCompStat(self.e_tor_l);
-    self.stat_rtor_hp = csqc_updateCompStat(self.e_tor_r);
-    self.stat_larm_hp = csqc_updateCompStat(self.e_arm_l);
-    self.stat_rarm_hp = csqc_updateCompStat(self.e_arm_r);
     //TODO notify target of lock
     /*if((self.stat_lck_stt & LOCK_TARG)){
       if(self.enemy != world){
@@ -140,30 +135,28 @@ void() PlayerPostThink = {
       ctrl_wpn_think(wep_chain);
       wep_chain = wep_chain.w_slot;
     }
+    
+    //pay cost for sprinting
+    if( self.stat_plr_stt == PLAYER_SPRINT_ON){
+      if( self.en_cur > 0){
+        self.en_cur = self.en_cur - (self.en_rate - self.m_maccel);
+      }
+    }
+    
+    //REPAIR BAY
+    self.repair_request = FALSE;
+    if(self.repair_request){
+      if(util_getMechHpAverage(self) == 1){
+        self.repair_request = FALSE;
+      }
+    }
   }
-
-
   
 	if( self.impulse ){
 		ImpulseCommands ();
   }
     
   ButtonCommands();
-  
-  //pay cost for sprinting
-  if( self.stat_plr_stt == PLAYER_SPRINT_ON){
-    if( self.en_cur > 0){
-      self.en_cur = self.en_cur - (self.en_rate - self.m_maccel);
-    }
-  }
-  
-  //REPAIR BAY
-  self.repair_request = FALSE;
-  if(self.repair_request){
-    if(util_getMechHpAverage(self) == 1){
-      self.repair_request = FALSE;
-    }
-  }
   
   //DEBUG / DEV ONLY!
   local vector v;
@@ -186,7 +179,9 @@ void() PlayerPostThink = {
 
 // check for attack
   playerAttack();
-
+  
+  client_push_player_info( self );
+  
 // check to see if player landed and play landing sound	
 	/*if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
 	{

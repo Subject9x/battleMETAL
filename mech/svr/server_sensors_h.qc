@@ -7,7 +7,4 @@ Overview: necessary targeting and radar functions
 
 void() server_getTarget;
 void() server_updateTargetInfo;
-
-void() server_radarSweep;
-vector() server_updateRadarInfo;
-void() server_calcTargetArmor;
+void() server_make_sweep;

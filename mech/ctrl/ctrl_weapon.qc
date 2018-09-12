@@ -21,7 +21,7 @@ void(entity wep) ctrl_wpn_think={
       return;
     }  
     if(self.w_think){
-      if(!(oself.flags & FL_MONSTER)){
+      if( (oself.flags & FL_CLIENT) ){
         if(self.w_isready){
           ctrl_weapon_isReady(self, self.stat_wep_rel);
         }else{

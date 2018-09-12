@@ -5,6 +5,7 @@ Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 this is the header.
 */
+
 /*
   ENGINE CONSTANTS
 */
@@ -24,20 +25,17 @@ void() spawnpoint_Random;
 entity() spawnpoint_coop;
 entity() spawnpoint_single;
 
-void(entity client) client_data_ini;
-void() client_data_think;
-
 //SendEnt
-float(entity ent, float sendFlags) client_data_sendEnt;
+void() client_push_player_info;
+void( entity targetClient) server_push_player_info; //simply wraps client_push_player_info()
+void( entity radarPing ) client_push_radar_ping;
 
-void(entity ent, float changed) send_info_start
 float(entity ent, float changed) send_vehicle;
 float(entity ent, float changed) send_building;
 float(entity ent, float changed) send_ai_mech;
-float(entity ent, float changed) send_mech;
 
 //client command layer
-void(float track, float loop) client_playTrack;
+void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
 void(string cmd, float tokens) client_setWeaponGroup;

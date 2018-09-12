@@ -1380,7 +1380,9 @@ float(entity clent) clienttype = #455; // returns one of the CLIENTTYPE_* consta
 //field definitions:
 .entity clientcamera; // override camera entity
 //description:
-//allows another entity to be the camera for a client, for example a remote camera, this is similar to sending svc_setview manually except that it also changes the network culling appropriately.
+//allows another entity to be the camera for a client, 
+//for example a remote camera, this is similar to 
+//sending svc_setview manually except that it also changes the network culling appropriately.
 
 //DP_SV_CLIENTCOLORS
 //idea: LordHavoc

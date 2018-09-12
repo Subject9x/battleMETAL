@@ -223,38 +223,52 @@ void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, 
 */
 void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
 
-  local vector radCenter, radarFidelity, map_size;
+  local vector  map_size;
   local entity e;
   
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
   
-  siz = gui_percentToPixelRawVec(siz);
-  vorg = gui_percentToPixelRawVec(vorg);
-  vorg = gui_calcAlign(vorg, algn);
+  RADAR_VSIZE = gui_percentToPixelRawVec(siz);
+  RADAR_VORG = gui_percentToPixelRawVec(vorg);
+  RADAR_VORG = gui_calcAlign(RADAR_VORG, algn);
   
-  radCenter_x = vorg_x + (siz_x / 2);
-  radCenter_y = vorg_y + (siz_y / 2);
+  RADAR_VCENTER_x = RADAR_VORG_x + (RADAR_VSIZE_x / 2);
+  RADAR_VCENTER_y = RADAR_VORG_y + (RADAR_VSIZE_y / 2);
   
-  drawpic(radCenter - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
-
-  e = findradius(radarOrg, radarRange);
+  drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+  
+  
+  local entity ping;
+  ping = findchainfloat( data_idx, -2 );
+  while( ping ){
+    local entity kill;
+      cons_logAFloat( "ping.data_idx", ping.data_idx ); //DEBUG
+      hud_renderRadarContact( ping.origin, plrFaction, ping.i_faction, ping.radar_range, ping.data_type, radarRange );
+      ping.drawmask = 0;
+    kill = ping;
+    ping = ping.chain;
+    remove(kill);
+  }
+  
+  
+  e = findradius(RADAR_ORG, radarRange);
   while(e){
     if(e.data_type){
       if(e.entnum != player_localentnum){
         if( (e.data_type == DATA_BLD) || (e.data_type == DATA_MECH) || (e.data_type == DATA_VEHC) ){
           local vector hudorg, spotVec;
           local float ang, canSee, entAngle, entAngleRadian, dist, radDist;
-          dist = vlen(radarOrg - e.origin );
+          dist = vlen(RADAR_ORG - e.origin );
           if( dist <= radarRange ){
             radDist = dist / self.radar_range;
             
-            ang = vectoyaw(e.origin - radarOrg);
+            ang = vectoyaw(e.origin - RADAR_ORG);
             canSee = TRUE;
             if( !radarMode ){
               canSee = FALSE;
               
-              traceline(radarOrg, e.origin, MOVE_NORMAL, self);
+              traceline(RADAR_ORG, e.origin, MOVE_NORMAL, self);
               if(trace_fraction == 1 ){
                 canSee = TRUE;
               }
@@ -264,20 +278,21 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
                 }
               }
             }
+            canSee = FALSE; //DEBUG override
             if(canSee){
               entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
               entAngleRadian = entAngle * DEG2RAD;
               hudorg_x = cos(entAngleRadian);
               hudorg_y = sin(entAngleRadian);
-              hudorg_x = radCenter_x - (hudorg_x * ( siz_x * radDist));
-              hudorg_y = radCenter_y - (hudorg_y * ( siz_y * radDist));
-              
+              hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * radDist));
+              hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * radDist));
+              cons_logAVector("ORIGINAL hudorg", hudorg);  //DEBUG;
               local float draw;
               draw = TRUE;
-              if( (hudorg_x < vorg_x) || (hudorg_x > (vorg_x + siz_x) ) ){
+              if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
                 draw = FALSE;
               }
-              if( (hudorg_y < vorg_y) || (hudorg_y > (vorg_y + siz_x) ) ){
+              if( (hudorg_y < RADAR_VORG_y) || (hudorg_y > (RADAR_VORG_y + RADAR_VSIZE_y) ) ){
                 draw = FALSE;
               }
               if( draw ){
@@ -301,6 +316,51 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
       }
     }
     e = e.chain;
+  }
+};
+
+/*
+  RENDER SINGLE RADAR CONTACT
+*/
+void( vector pingOrg, float plrFaction, float pingFac, float distanc, float pingType, float radRange) hud_renderRadarContact={
+  local float entAngle, entAngleRadian, ang, draw;
+  local vector hudorg;
+  
+  ang = vectoyaw( pingOrg - pmove_org );
+  
+  entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
+  entAngleRadian = entAngle * DEG2RAD;
+  hudorg_x = cos(entAngleRadian);
+  hudorg_y = sin(entAngleRadian);
+  
+  distanc = distanc / radRange;
+  
+  hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * distanc));
+  hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * distanc));
+  
+  draw = TRUE;
+  if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
+    draw = FALSE;
+  }
+  if( (hudorg_y < RADAR_VORG_y) || (hudorg_y > (RADAR_VORG_y + RADAR_VSIZE_y) ) ){
+    draw = FALSE;
+  }
+  
+  if( draw ){
+    cons_logAVector("hudorg", hudorg);  //DEBUG;
+    switch( pingType ){
+      case DATA_BLD:
+        hud_RenderRadar_Building(hudorg, plrFaction, pingFac);  
+        break;
+      case DATA_VEHC:
+        hud_RenderRadar_Vehc(hudorg, plrFaction, pingFac);
+        break;
+      case DATA_MECH:
+        hud_RenderRadar_Mech(hudorg, plrFaction, pingFac); 
+        break;
+      default:
+        drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+    }
   }
 };
 
@@ -695,25 +755,21 @@ void(float delta) hud_renderRepairValue={
     torg_x = torg_x - gui_percentXRaw( len / 2 ) ;
     torg_y = torg_y - gui_percentYRaw(4);
     gui_renderMeter((delta * 100), vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA, 0, AXIS_H, 0);
-    drawstring(torg, str, '8 8 0', CLR_DEF_GRAY_H + '0.05 0.05 0.05', 0);
+    drawstring(torg, str, '8 8 0', CLR_DEF_GRAY_H + '0.05 0.05 0.05', HUD_ALPHA, 0);
   }
 };
 
 //entry point for the mech hud system
-void(float mech_id, float mech_size) hud_frame={
-  if(mech_size == 1){
-    if(mech_id == ID_MCH_BALAKET){
+void( float mech_id ) hud_frame={
+  switch( mech_id ){
+    case ID_MCH_BALAKET:
       hud_blk_frame(); 
-    }
-  }
-  else if(mech_size == 2){
-    if(mech_id == ID_MCH_MATOK){
+      break;
+    case ID_MCH_MATOK:
       hud_mtk_frame(); 
-    }
-  }
-  else if(mech_size == 3){
-    if(mech_id == ID_MCH_MONITOR){
+      break;
+    case ID_MCH_MONITOR:
       hud_mnt_frame(); 
-    }
+      break;
   }
 };

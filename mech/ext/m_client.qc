@@ -46,25 +46,12 @@ void() ClientConnect = {
   self.data_type = DATA_POBS;
   self.currentWeaponGroup = self.currentWeaponGroup;
   self.i_faction = 0;
-  self.stat_eid = num_for_edict(self);
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;
   self.sh_cur = 0;
   self.sh_max = 0;
   self.sh_rate = 0;
-  self.stat_legs_hp = 0;
-  self.stat_legs_am = -1;
-  self.stat_ctor_hp = 0;
-  self.stat_ctor_am = -1;
-  self.stat_ltor_hp = 0;
-  self.stat_ltor_am = -1;
-  self.stat_rtor_hp = 0;
-  self.stat_rtor_am = -1;
-  self.stat_larm_hp = 0;
-  self.stat_larm_am = -1;
-  self.stat_rarm_hp = 0;
-  self.stat_rarm_am = -1;
   self.stat_cofs_x = 0;
   self.stat_cofs_y = 0;
   self.stat_cofs_z = 0;
@@ -77,15 +64,6 @@ void() ClientConnect = {
   self.stat_w7_id = -1;
   self.stat_w8_id = -1;
   self.stat_w9_id = -1;
-  self.stat_w1_rel = -1;
-  self.stat_w2_rel = -1;
-  self.stat_w3_rel = -1;
-  self.stat_w4_rel = -1;
-  self.stat_w5_rel = -1;
-  self.stat_w6_rel = -1;
-  self.stat_w7_rel = -1;
-  self.stat_w8_rel = -1;
-  self.stat_w9_rel = -1;
   
   self.w_group1 = 0;
   self.w_group2 = 0;
@@ -140,8 +118,9 @@ void() ClientConnect = {
   
   CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
   self.client_num = CLIENTS;  //book keeping for multiplayer
-  client_data_ini(self);
   self.stat_plr_stt = PLAYER_SPAWN;
+  
+  client_push_player_info( self );
 
   if (intermission_running){
     ExitIntermission();
@@ -316,7 +295,7 @@ void() ClientDisconnect = {
   }
   bprint (self.netname);
 	bprint (" has fled the field of battle!\n");
-  remove(self.ladder_entity);
+
   if(self.data_type == DATA_MECH){
     mech_player_die();
     player_unmakeMech();

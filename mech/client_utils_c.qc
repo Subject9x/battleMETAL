@@ -2,85 +2,86 @@
 mech Mod
 Author: Peter Roohr
 Date: 8/27/2016
+mod: 9/11/2018 - rebuilt
 Overview: client utility methods, pulled from client.qc
 */
 
+/*
 
-void(entity client) client_data_ini={
-  local entity clientdata, this;
-  clientdata = spawn();
-  this = self;
-  self = clientdata;
-    self.classname = "client";
-    self.flags = self.flags | FL_CLIENTDATA;
-    self.owner = client;
-    this.ladder_entity = self;
-    self.stat_eid = num_for_edict(client);
-    setmodel(self, "q3mdl/testball.md3");
-    self.movetype = MOVETYPE_NONE;
-    self.solid = SOLID_NOT;
-    setsize(self, '-0.05 -0.05 -0.05', '0.05 0.05 0.05');
-    setorigin(self, self.owner.origin);
-    self.SendEntity = client_data_sendEnt;
-    self.SendFlags = self.SendFlags | 1;
-    self.think = client_data_think;
-    self.nextthink = time + 0.01;
-  self = this; 
-};
-
-void() client_data_think={
-  local entity client;
-  client = self.owner;
-  setorigin(self, client.origin );
-  self.SendFlags = self.SendFlags | 1;
-  self.data_type = client.data_type;
-  self.i_faction = client.i_faction;
-  self.cl_flags = client.flags;
-  self.SendFlags = self.SendFlags | 2;
-  if(self.data_type == DATA_MECH){
-    self.netname  = client.netname;
-    self.vec_size = client.vec_size;
-    self.data_idx = client.data_idx;
-    self.stat_rdr_mode = client.stat_rdr_mode;
-    self.stat_rdr_rng = client.stat_rdr_rng;
-  self.SendFlags = self.SendFlags | 4;
-  }
-  self.think = client_data_think;
-  self.nextthink = time + 0.01;
-};
-
-//SendEnt
-
-float(entity ent, float sendFlags) client_data_sendEnt={   
-  WriteByte( MSG_ENTITY, DATA_INFO_START);
-  WriteShort( MSG_ENTITY, self.stat_eid );
-  WriteByte( MSG_ENTITY, self.data_type);
-  WriteByte( MSG_ENTITY, self.i_faction);
-  WriteByte( MSG_ENTITY, self.cl_flags);
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y );
-  WriteCoord( MSG_ENTITY, self.origin_z );
+*/
+void() client_push_player_info={
   
-  if(self.data_type == DATA_MECH){
-    WriteString( MSG_ENTITY, self.netname);
-    WriteByte( MSG_ENTITY, self.data_idx);
-    WriteByte( MSG_ENTITY, self.vec_size);  
-    WriteByte( MSG_ENTITY, self.stat_rdr_mode);
-    WriteLong( MSG_ENTITY, self.stat_rdr_rng);
-    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner));
-    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_legs));
-    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_tor_l));
-    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_tor_r));
-    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_arm_l));
-    WriteByte( MSG_ENTITY, csqc_updateCompStat(self.owner.e_arm_r));
-    WriteByte( MSG_ENTITY, (self.owner.en_cur / self.owner.en_max)*100);
-    WriteByte( MSG_ENTITY, (self.owner.sh_cur / self.owner.sh_max)*100);
+  self.ammo_rockets = self.flags;
+  self.ammo_cells = self.i_faction;
+  self.armorvalue = self.stat_plr_stt;
+  
+  if( (self.flags & FL_CLIENT) ){
+    msg_entity = self;
+    WriteByte( MSG_ONE, SVC_TEMPENTITY );
+    WriteByte( MSG_ONE, TE_CLIENT_INFO );
+
+    WriteByte( MSG_ONE, num_for_edict(self) );  //DEBUG
     
-    WriteLong( MSG_ENTITY, self.owner.currentWeaponGroup);
-    WriteByte( MSG_ENTITY, self.owner.stat_wep_rel);
-    WriteByte( MSG_ENTITY, self.owner.hardpoint_cnt);
+    WriteCoord( MSG_ONE, self.origin_x );
+    WriteCoord( MSG_ONE, self.origin_y );
+    WriteCoord( MSG_ONE, self.origin_z );
+    
+    WriteLong( MSG_ONE, self.stat_rdr_rng );  //DEBUG
+    WriteByte( MSG_ONE, self.data_type ); //DEBUG
+  
+    if(self.data_type == DATA_MECH){
+      WriteByte( MSG_ONE, (self.en_cur / self.en_max) * 100 );
+      WriteByte( MSG_ONE, (self.sh_cur / self.sh_max) * 100 );
+      WriteByte( MSG_ONE, csqc_updateCompStat(self));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_legs));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_tor_l));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_tor_r));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_l));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_r));
+      
+      WriteByte( MSG_ONE, self.hardpoint_cnt );
+      local entity wep;
+      wep = self.w_slot;
+      while( wep ){
+        WriteByte( MSG_ONE, wep.rl_cur );
+        wep = wep.w_slot;
+      }
+      
+      local float enm;
+      enm = num_for_edict(self.enemy);
+      WriteByte( MSG_ONE, enm );
+      if( enm != num_for_edict( world ) ){
+        //TODO - target info
+        /*WriteCoord( MSG_ONE, self.enemy.origin_x );
+        WriteCoord( MSG_ONE, self.enemy.origin_y );
+        WriteCoord( MSG_ONE, self.enemy.origin_z );*/
+      }
+    }
   }
-  return TRUE;
+};
+
+void( entity targetClient ) server_push_player_info={
+  local entity this;
+  this = self;
+  self = targetClient;
+    client_push_player_info();
+  self = this;
+};
+
+void( entity radarPing ) client_push_radar_ping={
+
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_CLIENT_PING );
+  
+  WriteCoord( MSG_ONE, radarPing.origin_x );
+  WriteCoord( MSG_ONE, radarPing.origin_y );
+  WriteCoord( MSG_ONE, radarPing.origin_z );
+  
+  WriteLong( MSG_ONE, vlen(self.origin - radarPing.origin) );
+  WriteByte( MSG_ONE, radarPing.data_type );
+  WriteByte( MSG_ONE, radarPing.i_faction );
+  
 };
 
 float(entity ent, float changed) send_vehicle={
@@ -249,7 +250,7 @@ commmand string: cmd mech setwep X Y
 */
 void(string cmd, float tokens) client_setWeapon={
   local float wslotid, new_id;
-  local entity oself, new_dat;
+  local entity oself;
   oself = self;
   wslotid = stof(argv(2));
   new_id = stof(argv(3));
@@ -493,39 +494,30 @@ void() client_updateWeaponReloads={
     switch(idx){
       case 1: 
         self.stat_w1_id = wid;
-        self.stat_w1_rel = delta;
         break;
       case 2:
         self.stat_w2_id = wid;
-        self.stat_w2_rel = delta;
         break;
       case 3:
         self.stat_w3_id = wid;
-        self.stat_w3_rel = delta;
         break;
       case 4:
         self.stat_w4_id = wid;
-        self.stat_w4_rel = delta;
         break;
       case 5:
         self.stat_w5_id = wid;
-        self.stat_w5_rel = delta;
         break;
       case 6:
         self.stat_w6_id = wid;
-        self.stat_w6_rel = delta;
         break;
       case 7:
         self.stat_w7_id = wid;
-        self.stat_w7_rel = delta;
         break;
       case 8:
         self.stat_w8_id = wid;
-        self.stat_w8_rel = delta;
         break;
       case 9:
         self.stat_w9_id = wid;
-        self.stat_w9_rel = delta;
         break;
     }
     idx = idx + 1;

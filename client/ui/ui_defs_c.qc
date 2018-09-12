@@ -148,7 +148,7 @@ void(vector ofs) menu_navBar={
   apos_y = apos_y + gui_percentY(0.0086);
   drawstring(apos, "[ARMING]", '8 8 0', arming_clr, HUD_ALPHA, 0);
   
-  local vector deploy_clr,
+  local vector deploy_clr;
   local float deploy_flt;
   if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS) ) ){
     deploy_clr = CLR_DEF_WEP_INRANGE;
@@ -337,7 +337,7 @@ void(float num, vector org) ui_renderHardPointNumber={
 };
 
 void() ui_renderHUDHighlight={
-  local vector bx_pos, bx_sz, bx_clr, l1, l2, l3;
+  /*local vector bx_pos, bx_sz, bx_clr, l1, l2, l3;
   local float x,y;
   x = (0.1/100) * VIEW_MAX_x;
   y = (0.1/100) * VIEW_MAX_y;
@@ -358,5 +358,5 @@ void() ui_renderHUDHighlight={
   gui_DrawRect (bx_pos, bx_sz, '1 1', bx_clr);
   gui_DrawRect (l1, bx_sz, '1 1', bx_clr);
   gui_DrawRect (l2, bx_sz, '1 1', bx_clr);
-  gui_DrawRect (l3, bx_sz, '1 1', bx_clr);
+  gui_DrawRect (l3, bx_sz, '1 1', bx_clr);*/
 };

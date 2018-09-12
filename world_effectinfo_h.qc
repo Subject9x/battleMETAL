@@ -20,3 +20,9 @@ void() s_mzl_las3 = [2, s_mzl_las3]{};
 void() s_mzl_las4 = [3, SUB_Remove]{};
 
 void(vector org, vector color) te_muzzle_laser;
+
+//TE IMPL
+void(vector org, vector end) te_beam_laser;
+void(vector org, vector end) te_beam_esr;
+void(vector org, vector end) te_beam_pac;
+void(vector org, vector vel, float cnt) te_smoke_test;

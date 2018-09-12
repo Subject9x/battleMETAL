@@ -20,15 +20,15 @@ void() mh_world_ini={
   if( deathmatch ){
     cvar_set("gamemode", ftos(GAMEMODE_DM));
   }
+
   
   //oh my
+  addstat( STAT_PLR_NAME, AS_STRING, netname);
   addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);
   addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);
   addstat(STAT_PLR_ORG_Z, AS_FLOAT, stat_cofs_z);
-  addstat(STAT_PLR_STT, AS_INT, stat_plr_stt);
   addstat(STAT_PLR_DIDX, AS_INT, data_idx);
   addstat(STAT_PLR_DTYPE, AS_INT, data_type);
-  addstat(STAT_PLR_VECSIZE, AS_INT, vec_size);
   addstat(STAT_PLR_RADMOD, AS_INT, stat_rdr_mode);
   addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
   addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);
@@ -74,37 +74,12 @@ void() mh_world_ini={
   
   addstat(STAT_SPR_X, AS_FLOAT, stat_spr_x);
   addstat(STAT_SPR_Y, AS_FLOAT, stat_spr_y);
-  
-  
-  addstat(STAT_LVL_RES, AS_INT, i_reserve);
-  
-  addstat(STAT_WEP1_REL, AS_FLOAT, stat_w1_rel);
-  addstat(STAT_WEP2_REL, AS_FLOAT, stat_w2_rel);
-  addstat(STAT_WEP3_REL, AS_FLOAT, stat_w3_rel);
-  addstat(STAT_WEP4_REL, AS_FLOAT, stat_w4_rel);
-  addstat(STAT_WEP5_REL, AS_FLOAT, stat_w5_rel);
-  addstat(STAT_WEP6_REL, AS_FLOAT, stat_w6_rel);
-  addstat(STAT_WEP7_REL, AS_FLOAT, stat_w7_rel);
-  addstat(STAT_WEP8_REL, AS_FLOAT, stat_w8_rel);
-  addstat(STAT_WEP9_REL, AS_FLOAT, stat_w9_rel);
  
-  addstat(UI_BOX_POSX, AS_INT, ui_box_pos_x);
-  addstat(UI_BOX_POSY, AS_INT, ui_box_pos_y);
-  
-  addstat(UI_BOX_SZEX, AS_INT, ui_box_sz_x);
-  addstat(UI_BOX_SZEY, AS_INT, ui_box_sz_y);
-  
-  addstat(UI_BOX_CLRX, AS_INT, ui_box_clr_x);
-  addstat(UI_BOX_CLRY, AS_INT, ui_box_clr_y);
-  addstat(UI_BOX_CLRZ, AS_INT, ui_box_clr_z);
-  
-  addstat(UI_BOX_TIME, AS_INT, ui_box_time);
-  
   addstat(STAT_PLR_ANG_X, AS_FLOAT, stat_plr_ang_x);
   addstat(STAT_PLR_ANG_Y, AS_FLOAT, stat_plr_ang_y);
   addstat(STAT_PLR_ANG_Z, AS_FLOAT, stat_plr_ang_z);
   
-  addstat(STAT_PLR_REP, AS_FLOAT, stat_plr_rep);
+  addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
 };
 
 void(float build_id) data_iniBuilding={
@@ -296,38 +271,6 @@ void(float wep_id) data_iniWep={
       data_eqp_scap_ini();
       return;
   }
-};
-
-entity(float id, float dat_type) mh_world_findData={
-  local entity data_chain;
-  data_chain = findchain(classname, "data");
-  while(data_chain){
-    local float idx;
-    idx = data_chain.data_idx;
-    if(data_chain.data_type == dat_type){
-      if(id == idx){
-        return data_chain;
-      }
-    }
-    data_chain = data_chain.chain;
-  }
-  return data_chain;
-};
-
-entity(float id) m_findMechData={
-  local entity data_chain;
-  data_chain = findchain(classname, "data");
-  while(data_chain){
-    if(data_chain.data_type == DATA_MECH){
-      local float idx;
-      idx = data_chain.data_idx;
-      if(id == idx){
-        return data_chain;
-      }
-    }
-    data_chain = data_chain.chain;
-  }
-  return data_chain;
 };
 
 void(float fwd, float side, float bck, string accel, string roll) mh_world_updateClientSpeed={

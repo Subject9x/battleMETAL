@@ -6,13 +6,11 @@ Overview: data def file for particles
 */
 
 //TE_ ID's
-float TE_LASER_BEAM = 60;
-float TE_ESR_BEAM = 61;
-float TE_PAC_BEAM = 62;
-float TE_SMOKE_TEST = 63;
+float TE_CLIENT_INFO = 60;  //not a particle but here for completeness
+float TE_CLIENT_PING = 61;  //not a particle but here for completeness
+float TE_LASER_BEAM = 62;
+float TE_ESR_BEAM = 63;
+float TE_PAC_BEAM = 64;
+float TE_SMOKE_TEST = 65;
 
-//TE IMPL
-void(vector org, vector end) te_beam_laser;
-void(vector org, vector end) te_beam_esr;
-void(vector org, vector end) te_beam_pac;
-void(vector org, vector vel, float cnt) te_smoke_test;
+//ALERT: 70-74 are reserved, otherwise go nuts

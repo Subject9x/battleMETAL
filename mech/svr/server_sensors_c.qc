@@ -5,6 +5,32 @@ Date: 1/26/2017
 Overview: necessary targeting and radar functions
 */
 /*scope - self = unit making the target call*/
+
+
+void() server_make_sweep={
+  if( self.stat_plr_stt == PLAYER_ACTIVE ){
+    local entity ping;
+    ping = findradius( self.origin, self.radar_range );
+    while( ping ){
+      if( ping != self ){
+        if( (ping.flags & FL_MONSTER) || (ping.flags & FL_CLIENT) ){
+          if( !self.stat_rdr_mode ){
+            traceline( self.origin, ping.origin, MOVE_NORMAL, self );
+            if( trace_fraction == 1 ){
+              client_push_radar_ping( ping );
+            }
+          }
+          else{
+            client_push_radar_ping( ping );
+          }
+        }
+      }
+      ping = ping.chain;
+    }
+  }
+  
+};
+
 void() server_getTarget={
   local entity src;
   makevectors(self.v_angle);

@@ -5,6 +5,8 @@ Date: 10/11/2016
 Overview: csqc defs for the mod
 */
 
+float PLAYER_ENTITYNUM;
+
 float CON_W;
 float CON_H;
 float CON_CW;

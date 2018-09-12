@@ -6,7 +6,7 @@
 */
 
 
-//TE_LASER_BEAM = 60
+//TE_LASER_BEAM = 61
 void(vector org, vector end) te_beam_laser={
   WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
   WriteByte (MSG_BROADCAST, TE_LASER_BEAM);
@@ -18,7 +18,7 @@ void(vector org, vector end) te_beam_laser={
   WriteCoord (MSG_BROADCAST, end_z);
 };
 
-//TE_ESR_BEAM = 61
+//TE_ESR_BEAM = 62
 void(vector org, vector end) te_beam_esr={
   WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
   WriteByte (MSG_BROADCAST, TE_ESR_BEAM);
@@ -30,7 +30,7 @@ void(vector org, vector end) te_beam_esr={
   WriteCoord (MSG_BROADCAST, end_z);
 };
 
-//TE_PAC_BEAM = 62;
+//TE_PAC_BEAM = 63;
 void(vector org, vector end) te_beam_pac={
   WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
   WriteByte (MSG_BROADCAST, TE_PAC_BEAM);
@@ -43,7 +43,7 @@ void(vector org, vector end) te_beam_pac={
 };
 
 
-//TE_SMOKE_TEST = 63;
+//TE_SMOKE_TEST = 64;
 void(vector org, vector vel, float cnt) te_smoke_test={
   WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
   WriteByte (MSG_BROADCAST, TE_SMOKE_TEST);

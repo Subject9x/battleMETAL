@@ -197,7 +197,7 @@ float SEND_FLAG_ANGLE = 32;
 //============================
 //     STAT CHANNELS         
 //============================
-float STAT_OBS_FACTION = 32;
+//float STAT_OBS_FACTION = 32;
 
 float STAT_SPREADX = 33;
 float STAT_SPREADY = 34;
@@ -214,7 +214,6 @@ float STAT_PLR_ORG_Y = 41;
 float STAT_PLR_ORG_Z = 42;
 float STAT_PLR_STT = 43;  //keep
 float STAT_PLR_DTYPE = 44;
-float STAT_PLR_VECSIZE = 45;
 float STAT_PLR_DIDX = 46;
 float STAT_PLR_RADMOD = 47;
 float STAT_PLR_HITDIR = 48;
@@ -252,47 +251,37 @@ float STAT_WEP7_ID = 75;
 float STAT_WEP8_ID = 76;
 float STAT_WEP9_ID = 77;
 
-float STAT_WEP1_REL = 78;
-float STAT_WEP2_REL = 79;
-float STAT_WEP3_REL = 80;
-float STAT_WEP4_REL = 81;
-float STAT_WEP5_REL = 82;
-float STAT_WEP6_REL = 83;
-float STAT_WEP7_REL = 84;
-float STAT_WEP8_REL = 85;
-float STAT_WEP9_REL = 86;
+float STAT_WEP_STT = 78;
+float STAT_WEP_GRP = 79;
+float STAT_WEP_REL = 80;
+float STAT_NAV_DIR = 81;
+float STAT_SPR_X = 82;
+float STAT_SPR_Y = 83;
+float STAT_PLR_FIR = 84;
+float STAT_LCK_STT = 85;
+float STAT_PLR_PTC = 86;
+float STAT_PLR_ANG = 87;
+float STAT_TRG_DDFLG = 88;
+float STAT_TRG_ORGX = 89;
+float STAT_TRG_ORGY = 90;
+float STAT_TRG_ORGZ = 91;
 
-float STAT_WEP_STT = 87;
-float STAT_WEP_GRP = 88;
-float STAT_WEP_REL = 89;
-float STAT_NAV_DIR = 90;
-float STAT_SPR_X = 91;
-float STAT_SPR_Y = 92;
-float STAT_PLR_FIR = 93;
-float STAT_LCK_STT = 94;
-float STAT_PLR_PTC = 95;
-float STAT_PLR_ANG = 96;
-float STAT_TRG_DDFLG = 97;
-float STAT_TRG_ORGX = 98;
-float STAT_TRG_ORGY = 99;
-float STAT_TRG_ORGZ = 100;
+/*float UI_BOX_POSX = 92;
+float UI_BOX_POSY = 93;
+float UI_BOX_SZEX = 94;
+float UI_BOX_SZEY = 95;
+float UI_BOX_CLRX = 96;
+float UI_BOX_CLRY = 97;
+float UI_BOX_CLRZ = 98;
+float UI_BOX_TIME = 99;*/
 
-float UI_BOX_POSX = 101;
-float UI_BOX_POSY = 102;
-float UI_BOX_SZEX = 103;
-float UI_BOX_SZEY = 104;
-float UI_BOX_CLRX = 105;
-float UI_BOX_CLRY = 106;
-float UI_BOX_CLRZ = 107;
-float UI_BOX_TIME = 108;
+float STAT_PLR_ANG_X = 100;
+float STAT_PLR_ANG_Y = 101;
+float STAT_PLR_ANG_Z = 102;
 
-float STAT_PLR_ANG_X = 110;
-float STAT_PLR_ANG_Y = 111;
-float STAT_PLR_ANG_Z = 112;
+float STAT_PLR_REP = 103; //remaining repair delta
 
-float STAT_PLR_REP = 113; //remaining repair delta
-
-float STAT_LVL_RES = 109;
+float STAT_PLR_NAME = 104;
 
 //============================
 //     LOCK STATES   

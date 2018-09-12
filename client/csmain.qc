@@ -116,7 +116,8 @@ void() CSQC_Shutdown =
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   local entity this;
   this = self;
-  self = entitybyindex(player_localentnum);
+  //self = entitybyindex(player_localentnum);
+  self = entitybyindex(PLAYER_ENTITYNUM);
   self.player_state = getstatf(STAT_PLR_STT);
   //console override
   if(evtype == 0){
@@ -284,13 +285,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   
 	// draw the main view
 	renderscene();
-    
-  local entity this, player;
-  this = self;
-  //switch to client context
-  self = entitybyindex(player_localentnum);
-  
-  receive_ent_bindData();
   
   //mission file load check
   if(MSN_FILEFOUND){
@@ -299,6 +293,14 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       MSN_LOADED = TRUE;
     }
   }
+ 
+  local entity this, player;
+  this = self;
+  //switch to client context
+  //self = entitybyindex(player_localentnum);
+  self = entitybyindex(PLAYER_ENTITYNUM);
+  
+  receive_ent_bindData();
   
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
@@ -307,7 +309,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// draw custom hud
   //draw hud
   
-  AVAILABLE_RESERVE = getstati(STAT_LVL_RES);
+  AVAILABLE_RESERVE = 0;
   if(self.player_state == PLAYER_SPAWN){
     localcmd(strcat("stopsound", "\n"));
   }
@@ -329,7 +331,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_armlistener(self.hp_stor, 4, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(self.hp_arm2, 8, SND_HUD_VFX_CRITARM);
     snd_hud_vfx_armlistener(self.hp_arm, 16, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(self.hp_leg, 32, SND_HUD_VFX_CRITLEG);
+    snd_hud_vfx_armlistener( self.hp_leg, 32, SND_HUD_VFX_CRITLEG);
     
     //HUD SOUND SYSTEM LISTENERS
     snd_hud_vfx_statelistener(self.player_state);
@@ -338,7 +340,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_targkill(self.stat_trg_ddflg);
     
     //HUD RENDER FRAME SYSTEM
-    hud_frame(self.data_idx, self.vec_size);
+    hud_frame( self.data_idx );
     
     if(self.player_state == PLAYER_SPRINT_ON){
       local float slen;
@@ -350,11 +352,11 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       drawstring(spos, "[EVASION ON]", '12 10 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
     }
     
-    local float bx_time;
+    /*local float bx_time;
     bx_time = getstati(UI_BOX_TIME);
     if(bx_time > 0){
       ui_renderHUDHighlight();
-    }
+    }*/
     ui_objective_frame(VIEW_ORG);
   }
   else{
@@ -445,61 +447,25 @@ float(string s) CSQC_ConsoleCommand =
 	return FALSE;
 };
 
-// parse tempentity if it suits your fancy, return TRUE to tell engine you have finished parsing the tempentity, return FALSE to tell engine to parse tempentity itself (it will reset parse position automatically)
+// parse tempentity if it suits your fancy, return TRUE to tell engine you have finished parsing the 
+//tempentity, return FALSE to tell engine to parse tempentity itself (it will reset parse position automatically)
 float() CSQC_Parse_TempEntity =
 {
-  local float id, handled;
+  local float id;
   id = ReadByte();
-  if(id == TE_LASER_BEAM){
-    local vector org, end, ang;
-    local float dist;
-    org_x = ReadCoord();
-    org_y = ReadCoord();
-    org_z = ReadCoord();
-    end_x = ReadCoord();
-    end_y = ReadCoord();
-    end_z = ReadCoord();
-    te_beam_laser(org, end);
-    handled = TRUE;
+
+  if( id == TE_CLIENT_INFO ){
+    client_get_info();
+    return TRUE;
   }
-  else if(id == TE_ESR_BEAM){
-    local vector org, end, ang;
-    local float dist;
-    org_x = ReadCoord();
-    org_y = ReadCoord();
-    org_z = ReadCoord();
-    end_x = ReadCoord();
-    end_y = ReadCoord();
-    end_z = ReadCoord();
-    te_beam_esr(org, end);
-    handled = TRUE;
+  else if( id == TE_CLIENT_PING ){
+    client_get_contact();
+    return TRUE;
   }
-  else if(id == TE_PAC_BEAM){
-    local vector org, end, ang;
-    local float dist;
-    org_x = ReadCoord();
-    org_y = ReadCoord();
-    org_z = ReadCoord();
-    end_x = ReadCoord();
-    end_y = ReadCoord();
-    end_z = ReadCoord();
-    te_beam_pac(org, end);
-    handled = TRUE;
+  else{
+    return te_effect_delegate( id );
   }
-  else if(id == TE_SMOKE_TEST){
-    local vector org, vel;
-    local float cnt;
-    org_x = ReadCoord();
-    org_y = ReadCoord();
-    org_z = ReadCoord();
-    vel_x = ReadCoord();
-    vel_y = ReadCoord();
-    vel_z = ReadCoord();
-    cnt = ReadByte();
-    te_smoke_test(org, vel, cnt);
-    handled = TRUE;
-  }
-	return handled;
+	return FALSE;
 };
 
 // if string is interesting, deal with it, otherwise pass it to localcmd() and let engine parse it (note: will not be executed immediately).
@@ -563,6 +529,7 @@ float(entity ent, float channel, string soundname, float volume, float attenuati
 };
 
 float() CSQC_Parse_Event={
+  cons_logAFloat("CSQC_Parse_Event", TRUE); //DEBUG
   return FALSE;
 };
 
@@ -574,63 +541,47 @@ float(float event) CSQC_Event =
 	return FALSE;
 };
 
-/*
+
 // called when a network slot was previously empty, before parsing begins
 // this basically lets you do extra work before returning the result of spawn()
 // OPTIONAL, probably should be deprecated as well
 entity(float entnum) CSQC_Ent_Spawn =
 {
+  cons_logAFloat("spawn?", 1); //DEBUG
 	return spawn();
 };
-*/
+
 
 // parse a network update, isnew indicates this network slot was previously empty
-// if you wish to do interpolation, be sure to make use the proper time variables: time is previous packet time, servertime is new packet time, so the tick time between packets is servertime - time and the interpolation should begin the new move at servertime and end at servertime + (servertime - time)
+// if you wish to do interpolation, be sure to make use the proper time variables: 
+//  time is previous packet time, 
+//  servertime is new packet time, 
+//so the tick time between packets is servertime - time and the interpolation should begin 
+//the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
   local float id;
   id = ReadByte();
-  if(id == DATA_NAVP){
-    if(isnew){
-      self.ui_org = '0 0 0'; 
-      self.ui_size = '0 0 0';
-      self.classname = "data";
-      self.drawmask = MASK_ENGINE;
-      self.value1 = 0;
-      self.isActive = 0;
-    }
-    self.data_type = DATA_NAVP;
-    self.nav_name = ReadByte();
-    self.i_faction = ReadByte();
-    self.value1 = self.isActive;
-    self.isActive = ReadByte();
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    setorigin(self, self.origin);
-    self.w_name = gui_getNavName(self.nav_name);
-    snd_hud_vfx_navpointlistener(self.value1, self.isActive);
+  
+  switch( id ){
+    case DATA_NAVP:
+      receive_ent_navPoint( isnew );
+      return;
+    case DATA_OBJT:
+      receive_ent_mapObjective( isnew );
+      return;
+    case DATA_BLD:
+      receive_ent_aiBuilding( isnew );
+      return;
+    case DATA_VEHC:
+      receive_ent_aiVehicle( isnew );
+      return;
+    case DATA_DEPL:
+      receive_ent_mapDeployPoint( isnew );
+      return;
   }
-  else if(id == DATA_OBJT){
-    if(isnew){
-      self.classname = "data";
-      self.data_type = DATA_OBJT;
-      self.drawmask = MASK_ENGINE;
-      self.ui_org = '0 0 0'; 
-      self.ui_size = '0 0 0';
-      self.value1 = 0;
-      self.isActive = 0;
-      self.data_idx = 0;
-    }
-    self.data_idx = ReadByte();
-    self.i_faction = ReadByte();
-    self.value1 = self.isActive;
-    self.isActive = ReadByte();
-    setorigin(self, self.origin);
-    snd_hud_vfx_objectivelistener(self.value1, self.isActive);
-  }
-  //AI test...
-  else if(id == DATA_MECH_AI){
+  
+  if(id == DATA_MECH_AI){
     local float delta;
     delta = ReadByte();
     if( (delta & SEND_FLAG_DATA_IDX) ){
@@ -656,77 +607,6 @@ void(float isnew) CSQC_Ent_Update =
       self.origin_z = ReadCoord();
       setorigin(self, self.origin);
     }    
-  }
-  else if(id == DATA_BLD){
-    self.data_idx = ReadByte();
-    self.data_type = DATA_BLD;
-    if(isnew){
-      local entity dat;
-      dat = m_findData(self.data_idx, DATA_BLD);
-      setmodel(self, dat.e_model);
-      self.drawmask = MASK_ENGINE;
-    }
-    self.i_faction = ReadByte();
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    self.angles_x = ReadAngle();
-    self.angles_y = ReadAngle();
-    self.angles_z = ReadAngle();
-    setorigin(self, self.origin);
-  }
-  else if(id == DATA_VEHC){
-    local float delta;
-    delta = ReadByte();
-    if(isnew){
-      self.data_type = DATA_VEHC;
-      self.drawmask = MASK_ENGINE;
-    }
-    
-    if( (delta & SEND_FLAG_DATA_IDX) ){
-      self.data_idx = ReadByte();
-      self.vec_size = ReadByte();
-    }
-    if(isnew){
-      self.drawmask = MASK_ENGINE;
-    }
-    if( (delta & SEND_FLAG_SHIELD_VAL) ){
-      self.sh_cur = ReadByte();
-    }
-    if( (delta & SEND_FLAG_RADAR_MODE) ){
-      self.stat_rdr_mode = ReadByte();
-    }
-    if( (delta & SEND_FLAG_FACTION) ){
-      self.i_faction = ReadByte();
-    }
-    if( (delta & SEND_FLAG_ORIGIN) ){
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
-      setorigin(self, self.origin);
-    }
-  }
-  else if(id == DATA_DEPL){
-   if(isnew){
-      self.ui_org = '0 0 0'; 
-      self.ui_size = '0 0 0';
-      self.classname = "data";
-      self.drawmask = MASK_ENGINE;
-      self.value1 = 0;
-      self.isActive = 0;
-      addentity(self);
-    }
-    self.data_type = DATA_DEPL;
-    self.nav_name = ReadByte();
-    self.i_faction = ReadByte();
-    self.isActive = ReadByte();
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    setorigin(self, self.origin);
-  }
-  else if( id ==  DATA_INFO_START ){
-    receive_ent_clientData(isnew);
   }
 };
 

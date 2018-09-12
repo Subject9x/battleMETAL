@@ -12,8 +12,6 @@ float AS_FLOAT_TRUNCATED = 2;
 float AS_FLOAT = 8;
 
 //STAT FIELD VARS
-.float stat_eid;
-
 .float stat_plr_camx;
 .float stat_plr_camy;
 .float stat_plr_camz;

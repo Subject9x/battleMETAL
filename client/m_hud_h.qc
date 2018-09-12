@@ -7,6 +7,14 @@ Overview: the interface for hud rendering
 every hud ent has to implement this format
 */
 
+
+//HUD GLOBALS===============================
+  vector RADAR_VORG;
+  vector RADAR_ORG;
+  vector RADAR_VCENTER;
+  vector RADAR_VSIZE;
+//==========================================
+
 vector HUD_COLOR_DEF = '0.2 0.8 0.2';
 
 string HUT_RET_PIP_HRZ;
@@ -42,6 +50,7 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
 void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label) hud_renderArmorMeter;
 void(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph;
 void(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
+void( vector pingOrg, float plrFaction, float pingFac, float distanc, float pingType, float radRange ) hud_renderRadarContact;
 void(vector torg, float algn, float status, float radius, float flag) hud_renderRadarStatus1;
 void(vector torg, float algn, float status, float radius, float flag) hud_renderRadarStatus2;
 void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon;
@@ -60,5 +69,5 @@ void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
 void(vector ofs, string targType, float algn) hud_renderTargetName;
 void(float delta) hud_renderRepairValue;
 //entry point for the mech hud system
-void(float mech_id, float mech_size) hud_frame;
+void( float mech_id ) hud_frame;
 
