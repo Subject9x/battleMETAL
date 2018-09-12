@@ -58,7 +58,6 @@ float AS_FLOAT = 8;
 .float stat_wep_state;
 .float stat_trg_dist;
 .float stat_trg_face;
-.float stat_nav_dir;
 .float stat_wep_rel;
 .float stat_spr_x;
 .float stat_spr_y;

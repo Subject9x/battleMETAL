@@ -8,24 +8,44 @@ Overview: necessary targeting and radar functions
 
 
 void() server_make_sweep={
-  if( self.stat_plr_stt == PLAYER_ACTIVE ){
-    local entity ping;
-    ping = findradius( self.origin, self.radar_range );
-    while( ping ){
-      if( ping != self ){
-        if( (ping.flags & FL_MONSTER) || (ping.flags & FL_CLIENT) ){
-          if( !self.stat_rdr_mode ){
-            traceline( self.origin, ping.origin, MOVE_NORMAL, self );
-            if( trace_fraction == 1 ){
-              client_push_radar_ping( ping );
+  local float sweep, yaw, low, high;
+  local entity blip;
+  
+ 
+  if( self.data_type != DATA_POBS ){
+    self.p_lifetime = anglemod( self.p_lifetime + 8 );
+
+    sweep = self.p_lifetime;
+    low = anglemod( sweep - 1 );
+    high = anglemod( sweep + 5 );
+    
+    cons_logAFloat("sweep", sweep); //DEBUG
+    cons_logAFloat("low", low); //DEBUG
+    cons_logAFloat("high", high); //DEBUG
+    
+    
+    self.radar_time = time + RADAR_SWEEP; 
+  
+    blip = findradius( self.origin, self.radar_range );
+    while( blip ){
+      if( (blip.flags & FL_MONSTER) || (blip.flags & FL_CLIENT) ){
+        if( blip != self ){
+          yaw = vectoyaw( self.origin - blip.origin) ;
+          cons_logAFloat("   yaw", yaw);  //DEBUG
+          if( (yaw >= low) && (yaw <= high) ){
+            if( !self.stat_rdr_mode ){
+              traceline( self.origin, blip.origin, MOVE_NORMAL, self );
+              if( trace_ent == blip || trace_fraction == 1 ){
+                client_push_radar_ping( blip );
+              }
             }
-          }
-          else{
-            client_push_radar_ping( ping );
+            else{
+              client_push_radar_ping( blip );
+            }
           }
         }
       }
-      ping = ping.chain;
+      blip = blip.chain;
     }
   }
   

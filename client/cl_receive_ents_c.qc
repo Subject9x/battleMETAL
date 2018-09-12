@@ -83,23 +83,24 @@ void( entity client, float wep, float delt ) client_get_weapon_delta={
 
 
 void() client_get_contact={
-  local entity player, ping;
+  local entity player, blip;
   local vector pingOrg;
   local float pingDist, pingType, pingFac;
   local string pingName;
   
   player = entitybyindex( PLAYER_ENTITYNUM );
   
-  ping = spawn();
+  blip = spawn();
   
-  ping.origin = te_read_vector();
-  ping.radar_range = ReadLong();
-  ping.data_type = ReadByte();
-  ping.i_faction = ReadByte();
+  setorigin( blip, te_read_vector() );
+  blip.radar_range = ReadLong();
+  blip.data_type = ReadByte();
+  blip.i_faction = ReadByte();
   
-  ping.data_idx = -2; //hack
-  ping.drawmask = MASK_NORMAL;
-  addentity( ping );
+  blip.data_idx = -2; //hack
+  blip.en_cur = time + 5;
+  blip.hardpoint_cnt = 1; //alpha fade
+  blip.radar_time = 0.005;
 };
 
 void() receive_ent_bindData={

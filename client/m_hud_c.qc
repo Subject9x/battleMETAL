@@ -226,6 +226,8 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   local vector  map_size;
   local entity e;
   
+  RADAR_ORG = radarOrg;
+  
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
   
@@ -238,106 +240,43 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   
   drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
-  
-  local entity ping;
-  ping = findchainfloat( data_idx, -2 );
-  while( ping ){
-    local entity kill;
-      cons_logAFloat( "ping.data_idx", ping.data_idx ); //DEBUG
-      hud_renderRadarContact( ping.origin, plrFaction, ping.i_faction, ping.radar_range, ping.data_type, radarRange );
-      ping.drawmask = 0;
-    kill = ping;
-    ping = ping.chain;
-    remove(kill);
-  }
-  
-  
-  e = findradius(RADAR_ORG, radarRange);
-  while(e){
-    if(e.data_type){
-      if(e.entnum != player_localentnum){
-        if( (e.data_type == DATA_BLD) || (e.data_type == DATA_MECH) || (e.data_type == DATA_VEHC) ){
-          local vector hudorg, spotVec;
-          local float ang, canSee, entAngle, entAngleRadian, dist, radDist;
-          dist = vlen(RADAR_ORG - e.origin );
-          if( dist <= radarRange ){
-            radDist = dist / self.radar_range;
-            
-            ang = vectoyaw(e.origin - RADAR_ORG);
-            canSee = TRUE;
-            if( !radarMode ){
-              canSee = FALSE;
-              
-              traceline(RADAR_ORG, e.origin, MOVE_NORMAL, self);
-              if(trace_fraction == 1 ){
-                canSee = TRUE;
-              }
-              if( trace_fraction < 1 ){
-                if( trace_ent.flags ){
-                  canSee = TRUE;
-                }
-              }
-            }
-            canSee = FALSE; //DEBUG override
-            if(canSee){
-              entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
-              entAngleRadian = entAngle * DEG2RAD;
-              hudorg_x = cos(entAngleRadian);
-              hudorg_y = sin(entAngleRadian);
-              hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * radDist));
-              hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * radDist));
-              cons_logAVector("ORIGINAL hudorg", hudorg);  //DEBUG;
-              local float draw;
-              draw = TRUE;
-              if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
-                draw = FALSE;
-              }
-              if( (hudorg_y < RADAR_VORG_y) || (hudorg_y > (RADAR_VORG_y + RADAR_VSIZE_y) ) ){
-                draw = FALSE;
-              }
-              if( draw ){
-                switch( e.data_type ){
-                  case DATA_BLD:
-                    hud_RenderRadar_Building(hudorg, plrFaction, e.i_faction);  
-                    break;
-                  case DATA_VEHC:
-                    hud_RenderRadar_Vehc(hudorg, plrFaction, e.i_faction);
-                    break;
-                  case DATA_MECH:
-                    hud_RenderRadar_Mech(hudorg, plrFaction, e.i_faction); 
-                    break;
-                  default:
-                    drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
-                }
-              }
-            }
-          }
-        }
+  local entity blip;
+  blip = findchainfloat( data_idx, -2 );
+  while( blip ){
+    local entity kill;    
+      blip.hardpoint_cnt = blip.hardpoint_cnt - blip.radar_time ;
+      if( blip.hardpoint_cnt < 0 ){
+        blip.hardpoint_cnt = 0;
       }
+      hud_renderRadarContact( blip, plrFaction, radarRange );
+    kill = blip;
+    blip = blip.chain;
+    if( time > kill.en_cur ){
+      remove( kill );
     }
-    e = e.chain;
   }
+  
 };
 
 /*
   RENDER SINGLE RADAR CONTACT
 */
-void( vector pingOrg, float plrFaction, float pingFac, float distanc, float pingType, float radRange) hud_renderRadarContact={
-  local float entAngle, entAngleRadian, ang, draw;
+void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   local vector hudorg;
+  local float ang, entAngle, entAngleRadian, radDist;
+
+  radDist = blip.radar_range / radRange;
   
-  ang = vectoyaw( pingOrg - pmove_org );
-  
+  ang = vectoyaw(blip.origin - RADAR_ORG);
+
   entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
   entAngleRadian = entAngle * DEG2RAD;
   hudorg_x = cos(entAngleRadian);
   hudorg_y = sin(entAngleRadian);
-  
-  distanc = distanc / radRange;
-  
-  hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * distanc));
-  hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * distanc));
-  
+  hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * radDist));
+  hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * radDist));
+
+  local float draw;
   draw = TRUE;
   if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
     draw = FALSE;
@@ -345,18 +284,16 @@ void( vector pingOrg, float plrFaction, float pingFac, float distanc, float ping
   if( (hudorg_y < RADAR_VORG_y) || (hudorg_y > (RADAR_VORG_y + RADAR_VSIZE_y) ) ){
     draw = FALSE;
   }
-  
   if( draw ){
-    cons_logAVector("hudorg", hudorg);  //DEBUG;
-    switch( pingType ){
+    switch( blip.data_type ){
       case DATA_BLD:
-        hud_RenderRadar_Building(hudorg, plrFaction, pingFac);  
+        hud_RenderRadar_Building(hudorg, plrFaction, blip.i_faction, blip.hardpoint_cnt );  
         break;
       case DATA_VEHC:
-        hud_RenderRadar_Vehc(hudorg, plrFaction, pingFac);
+        hud_RenderRadar_Vehc(hudorg, plrFaction, blip.i_faction, blip.hardpoint_cnt);
         break;
       case DATA_MECH:
-        hud_RenderRadar_Mech(hudorg, plrFaction, pingFac); 
+        hud_RenderRadar_Mech(hudorg, plrFaction, blip.i_faction, blip.hardpoint_cnt); 
         break;
       default:
         drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
@@ -640,43 +577,40 @@ void(vector vorg, float algn, vector siz, float val)hud_renderArmorVehicle={
 /*
   RENDER A MECH ICON ON THE RADAR
 */
-void(vector post, float plr_fact, float  e_fact) hud_RenderRadar_Mech={
+void(vector post, float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Mech={
   local vector clr;
+  
+  clr = CLR_DEF_IFF_ENEMY;
   if(plr_fact == e_fact){
     clr = CLR_DEF_IIF_FRIEND;
   }
-  else{
-    clr = CLR_DEF_IFF_ENEMY;
-  }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), clr, HUD_ALPHA, 0);
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
 };
 
 /*
   RENDER A VEHICLE ICON ON THE RADAR
 */
-void(vector post, float plr_fact, float  e_fact) hud_RenderRadar_Vehc={
+void(vector post, float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Vehc={
   local vector clr;
+  
+  clr = CLR_DEF_IFF_ENEMY;
   if(plr_fact == e_fact){
     clr = CLR_DEF_IIF_FRIEND;
   }
-  else{
-    clr = CLR_DEF_IFF_ENEMY;
-  }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_VEC,  gui_percentToPixelRawVec('6 6'), clr, HUD_ALPHA, 0);
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_VEC,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
 };
 
 /*
   RENDER A BUILDING ICON ON THE RADAR
 */
-void(vector post,float plr_fact, float  e_fact) hud_RenderRadar_Building={
+void(vector post,float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Building={
   local vector clr;
+  
+  clr = CLR_DEF_IFF_ENEMY_BLD;
   if(plr_fact == e_fact){
     clr = CLR_DEF_IIF_FRIEND_BLD;
   }
-  else{
-    clr = CLR_DEF_IFF_ENEMY_BLD;
-  }
-  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec('6 6'), clr, HUD_ALPHA, 0);
+  drawpic(post - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_BLD,  gui_percentToPixelRawVec('6 6'), clr, e_alpha, 0);
 };
 
 /*

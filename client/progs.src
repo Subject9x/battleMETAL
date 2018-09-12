@@ -20,6 +20,7 @@ hud_api_h.qc
 data_api_h.qc
 ui_data_h.qc
 m_hud_h.qc
+cl_particles_h.qc
 cl_svr_cmd_h.qc
 cl_receive_ents_h.qc
 msn_file_h.qc
@@ -38,7 +39,6 @@ anim_c.qc
 gui_api_c.qc
 m_hud_c.qc
 hud_snd_sys_c.qc
-cl_particles_h.qc
 //DATA FILES==========
   //buildings
   data/bld/data_h_power.qc

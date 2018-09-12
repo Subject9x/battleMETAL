@@ -121,6 +121,8 @@ float EFF_ENE = 256; //weapon draws energy (client-side flag, really)
 //============================
 //     SHARED STATS         
 //============================
+float RADAR_SWEEP = 2.5;
+.float radar_time;
 .float radar_range;
 .float hardpoint_cnt;
 .float currentWeaponGroup;
@@ -171,7 +173,7 @@ float EFF_ENE = 256; //weapon draws energy (client-side flag, really)
 .float stat_wep_state;
 .float stat_trg_dist;
 .float stat_trg_face;
-.float stat_nav_dir;
+//.float stat_nav_dir; -> make this a CSQC func
 .float stat_wep_rel;
 .float stat_spr_x;
 .float stat_spr_y;
