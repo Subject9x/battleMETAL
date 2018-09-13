@@ -53,6 +53,15 @@ float GAMEMODE_COOP = 2;
 float GAMEMODE_DM = 3;
 float GAMEMODE_TEAMDM = 4;
 //============================
+//   WORLD TYPES
+//============================
+float WORLD_DESERT = 0;
+float WORLD_BADLND = 1;
+float WORLD_URBAN = 2;
+float WORLD_TUNDRA = 3;
+float WORLD_ICE = 4;
+float WORLD_CAVE = 5;
+//============================
 //   PLAYER STATE ID's           
 //============================
 float PLAYER_DEAD = -1;
@@ -267,6 +276,8 @@ float STAT_TRG_DDFLG = 88;
 float STAT_TRG_ORGX = 89;
 float STAT_TRG_ORGY = 90;
 float STAT_TRG_ORGZ = 91;
+
+float STAT_RAD_SWEEP = 92;
 
 /*float UI_BOX_POSX = 92;
 float UI_BOX_POSY = 93;

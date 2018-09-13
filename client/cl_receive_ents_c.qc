@@ -81,7 +81,10 @@ void( entity client, float wep, float delt ) client_get_weapon_delta={
   }
 };
 
-
+/*
+  Handles a Radar Blip TE pushed from the server to a specific client
+  blips fade out over a given amount of time 
+*/
 void() client_get_contact={
   local entity player, blip;
   local vector pingOrg;
@@ -98,9 +101,9 @@ void() client_get_contact={
   blip.i_faction = ReadByte();
   
   blip.data_idx = -2; //hack
-  blip.en_cur = time + 5;
+  blip.en_cur = time + 6;
   blip.hardpoint_cnt = 1; //alpha fade
-  blip.radar_time = 0.005;
+  blip.radar_time = 0.001;
 };
 
 void() receive_ent_bindData={

@@ -78,6 +78,7 @@ void() mh_world_ini={
   addstat(STAT_PLR_ANG_Z, AS_FLOAT, stat_plr_ang_z);
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
+  addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
 };
 
 void(float build_id) data_iniBuilding={

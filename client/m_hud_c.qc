@@ -223,8 +223,9 @@ void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, 
 */
 void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
 
-  local vector  map_size;
-  local entity e;
+  local vector  map_size, sweepvec;
+  local entity blip;
+  local float sweep, rad;
   
   RADAR_ORG = radarOrg;
   
@@ -240,7 +241,6 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   
   drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
   
-  local entity blip;
   blip = findchainfloat( data_idx, -2 );
   while( blip ){
     local entity kill;    
@@ -255,7 +255,6 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
       remove( kill );
     }
   }
-  
 };
 
 /*
