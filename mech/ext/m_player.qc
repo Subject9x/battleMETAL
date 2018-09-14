@@ -50,6 +50,14 @@ void() PlayerPreThink = {
       mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
     }
   }
+  if( !self.button9 ){
+    if( self.viewzoom < 1 ){
+      self.viewzoom = self.viewzoom + 0.25;
+    }
+    else{
+      self.viewzoom = 1;
+    }
+  }
 };
 
 void() PlayerPostThink = {

@@ -1,13 +1,12 @@
 
 
 void() highlight_hud_touch={
-  if((other.flags & FL_CLIENT)){
-    other.ui_box_pos = self.ui_box_pos;
-    other.ui_box_sz = self.ui_box_sz;
-    other.ui_box_clr = self.ui_box_clr;
-    other.ui_box_time = self.ui_box_time;
+  if( (other.flags & FL_CLIENT) ){
+    client_push_hud_highlight( other );
   }
 };
+
+
 void() trigger_reactivate =
 {
 	self.solid = SOLID_TRIGGER;

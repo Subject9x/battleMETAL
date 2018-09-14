@@ -336,18 +336,23 @@ void(float num, vector org) ui_renderHardPointNumber={
   drawstring(org, ftos(num), gui_percentToPixelRawVec('12 10'), CLR_DEF_RET_HASLOCK, 1, 0);
 };
 
-void() ui_renderHUDHighlight={
-  /*local vector bx_pos, bx_sz, bx_clr, l1, l2, l3;
+void( entity box ) ui_renderHUDHighlight={
+  local vector bx_pos, bx_sz, bx_clr, l1, l2, l3;
   local float x,y;
+  
+  
+  /*
+    hfx.origin = te_read_vector();
+  hfx.drawsize = te_read_vector();
+  hfx.drawcolor1 = te_read_vector();
+  */
+  
   x = (0.1/100) * VIEW_MAX_x;
   y = (0.1/100) * VIEW_MAX_y;
-  bx_pos_x = (getstati(UI_BOX_POSX) / 100) * VIEW_MAX_x;
-  bx_pos_y = (getstati(UI_BOX_POSY) / 100) * VIEW_MAX_y;      
-  bx_sz_x = (getstati(UI_BOX_SZEX) / 100) * VIEW_MAX_y;
-  bx_sz_y = (getstati(UI_BOX_SZEY) / 100) * VIEW_MAX_y;      
-  bx_clr_x = getstati(UI_BOX_CLRX);
-  bx_clr_y = getstati(UI_BOX_CLRY);
-  bx_clr_z = getstati(UI_BOX_CLRZ);
+  bx_pos_x = VIEW_ORG_x + ( VIEW_MAX_x * box.origin_x );
+  bx_pos_y = VIEW_ORG_y + ( VIEW_MAX_y * box.origin_y );      
+  bx_sz_x = box.drawsize_x * VIEW_MAX_x;
+  bx_sz_y = box.drawsize_y * VIEW_MAX_y;
   
   l1_x = bx_pos_x + x;
   l1_y = bx_pos_y + y;
@@ -355,8 +360,8 @@ void() ui_renderHUDHighlight={
   l2_y = l1_y + y;
   l3_x = l2_x + x;
   l3_y = l2_y + y;
-  gui_DrawRect (bx_pos, bx_sz, '1 1', bx_clr);
-  gui_DrawRect (l1, bx_sz, '1 1', bx_clr);
-  gui_DrawRect (l2, bx_sz, '1 1', bx_clr);
-  gui_DrawRect (l3, bx_sz, '1 1', bx_clr);*/
+  gui_DrawRect (bx_pos, bx_sz, '2 1', box.drawcolor1);
+  gui_DrawRect (l1, bx_sz, '2 1', box.drawcolor1);
+  gui_DrawRect (l2, bx_sz, '1 2', box.drawcolor1);
+  gui_DrawRect (l3, bx_sz, '2 1', box.drawcolor1);
 };

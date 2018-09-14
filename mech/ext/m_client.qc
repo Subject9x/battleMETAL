@@ -39,7 +39,7 @@ void() ClientConnect = {
   bprint(self.netname);
   bprint(" has deployed to the combat zone\n");
   self.weaponmodel = "";
-  self.viewzoom = 0;
+  self.viewzoom = 1;
   self.nextVecChoice = 0;
   self.vec_size = 0;
   self.data_idx = 0;
@@ -75,7 +75,6 @@ void() ClientConnect = {
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
   
-  self.stat_trg_vsize = -1;
   self.stat_trg_dataidx = -1;
   self.stat_trg_sh = -1;
   self.stat_trg_ddflg = -1;

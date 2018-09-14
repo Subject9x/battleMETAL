@@ -8,6 +8,7 @@ server.
 
 void() client_get_info;
 void() client_get_contact;
+void() client_get_hud_highlight;
 
 void() receive_ent_bindData;
 

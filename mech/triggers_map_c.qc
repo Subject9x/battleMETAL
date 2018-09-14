@@ -40,6 +40,12 @@ void() map_trigger_changelevel={
   }
 };
 
+/*
+  self.fx_origin = screen position (in percent)
+  self.c_alt_ofs = screen size (in percent );
+  self.c_ofs = color
+  self.dmgtime = time to show up
+*/
 void() map_trigger_highlighthud={
   map_initTrigger ();
   self.noise = "misc/talk.wav";

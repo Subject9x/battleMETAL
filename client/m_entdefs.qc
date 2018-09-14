@@ -22,13 +22,6 @@ entity CLIENTDATA;
 .float target_datatype;
 .float target_shield;
 
-.float stat_trg_lg_hp;
-.float stat_trg_ct_hp;
-.float stat_trg_lt_hp;
-.float stat_trg_rt_hp;
-.float stat_trg_la_hp;
-.float stat_trg_ra_hp;
-
 .float timer_phys;
 .float timer_r;
 .vector origin_old;
@@ -76,10 +69,6 @@ float ARM_RAD = 24;
 .float plr_menu_choice; 
 
 .float wep1_reload;
-.vector show_box_pos;
-.vector show_box_sz;
-.vector show_box_color;
-.float show_box_life;
 
 //widget vars
 .string c_mdl;

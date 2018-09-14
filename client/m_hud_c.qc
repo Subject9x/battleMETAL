@@ -244,11 +244,11 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   blip = findchainfloat( data_idx, -2 );
   while( blip ){
     local entity kill;    
-      blip.hardpoint_cnt = blip.hardpoint_cnt - blip.radar_time ;
-      if( blip.hardpoint_cnt < 0 ){
-        blip.hardpoint_cnt = 0;
-      }
-      hud_renderRadarContact( blip, plrFaction, radarRange );
+    blip.hardpoint_cnt = blip.hardpoint_cnt - blip.radar_time ;
+    if( blip.hardpoint_cnt < 0 ){
+      blip.hardpoint_cnt = 0;
+    }
+    hud_renderRadarContact( blip, plrFaction, radarRange );
     kill = blip;
     blip = blip.chain;
     if( time > kill.en_cur ){
@@ -264,7 +264,7 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   local vector hudorg;
   local float ang, entAngle, entAngleRadian, radDist;
 
-  radDist = blip.radar_range / radRange;
+  radDist = blip.radar_range / radRange * 1.5;
   
   ang = vectoyaw(blip.origin - RADAR_ORG);
 
@@ -485,7 +485,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       aSize_y = mSize_y;
     }
     vpos = org;
-    vpos_z = org_z + gui_percentYRaw(tsize * 18);
+    vpos_z = vpos_z + self.target_vecsize;
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);
@@ -530,6 +530,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     }
     
     vpos = org;
+    vpos_z = vpos_z - self.target_vecsize;
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);

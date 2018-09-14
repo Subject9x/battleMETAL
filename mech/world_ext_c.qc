@@ -36,21 +36,9 @@ void() mh_world_ini={
   
   //Target stats
   addstat(STAT_TRG_ENT_ID, AS_INT, stat_trg_ent_id);
-  addstat(STAT_TRG_VECSIZE, AS_INT, stat_trg_vsize);
-  addstat(STAT_TRG_SHIELD, AS_FLOAT, stat_trg_sh);
   addstat(STAT_TRG_DATATYPE, AS_INT, stat_trg_dat);
   addstat(STAT_TRG_DATAIDX, AS_INT, stat_trg_dataidx);
   addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
-  addstat(STAT_TRG_ORG_X, AS_FLOAT, stat_trg_org_x);
-  addstat(STAT_TRG_ORG_Y, AS_FLOAT, stat_trg_org_y);
-  addstat(STAT_TRG_ORG_Z, AS_FLOAT, stat_trg_org_z);
-  
-  addstat(STAT_TRG_LG_HP, AS_FLOAT, stat_trg_lg_hp);
-  addstat(STAT_TRG_CT_HP, AS_FLOAT, stat_trg_ct_hp);
-  addstat(STAT_TRG_LT_HP, AS_FLOAT, stat_trg_lt_hp);
-  addstat(STAT_TRG_RT_HP, AS_FLOAT, stat_trg_rt_hp);
-  addstat(STAT_TRG_LA_HP, AS_FLOAT, stat_trg_la_hp);
-  addstat(STAT_TRG_RA_HP, AS_FLOAT, stat_trg_ra_hp);  
   
   addstat(STAT_CAM_ORG_X, AS_FLOAT, stat_plr_camx);
   addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);

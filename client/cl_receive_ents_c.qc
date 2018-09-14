@@ -42,8 +42,15 @@ void() client_get_info={
     
     client.stat_trg_ent_id = ReadByte();
     if( client.stat_trg_ent_id != 0 ){
-      //client.target_origin = te_read_vector();
-      
+      client.target_origin = te_read_vector();
+      client.target_shield = ReadByte();
+      client.stat_trg_ct_hp = ReadByte();
+      client.stat_trg_lg_hp = ReadByte();
+      client.stat_trg_lt_hp = ReadByte(); 
+      client.stat_trg_rt_hp = ReadByte(); 
+      client.stat_trg_la_hp = ReadByte();
+      client.stat_trg_ra_hp = ReadByte();
+      client.target_vecsize = ReadShort();
     }
   }
 };
@@ -87,9 +94,6 @@ void( entity client, float wep, float delt ) client_get_weapon_delta={
 */
 void() client_get_contact={
   local entity player, blip;
-  local vector pingOrg;
-  local float pingDist, pingType, pingFac;
-  local string pingName;
   
   player = entitybyindex( PLAYER_ENTITYNUM );
   
@@ -105,6 +109,19 @@ void() client_get_contact={
   blip.hardpoint_cnt = 1; //alpha fade
   blip.radar_time = 0.001;
 };
+
+void() client_get_hud_highlight={
+  local entity hfx;
+
+  hfx = spawn();
+  hfx.data_idx = -3;  //more hacks
+  hfx.origin = te_read_vector();
+  hfx.drawsize = te_read_vector();
+  hfx.drawcolor1 = te_read_vector();
+  hfx.drawme = time + ReadShort();
+  
+};
+
 
 void() receive_ent_bindData={
   self.netname = getstats( STAT_PLR_NAME );
@@ -124,26 +141,11 @@ void() receive_ent_bindData={
   self.stat_trg_face = getstati(STAT_TRG_FACE);
     
   if(self.stat_trg_dataidx > 0){
-    self.target_origin_x = getstatf(STAT_TRG_ORG_X);
-    self.target_origin_y = getstatf(STAT_TRG_ORG_Y);
-    self.target_origin_z = getstatf(STAT_TRG_ORG_Z);
-    self.target_vecsize = getstati(STAT_TRG_VECSIZE);
-    self.target_shield = getstatf(STAT_TRG_SHIELD);
     self.target_datatype = getstati(STAT_TRG_DATATYPE);
     self.target_faction = getstati(STAT_TRG_FACTION);
-    self.stat_trg_lg_hp = getstatf(STAT_TRG_LG_HP);
-    self.stat_trg_ct_hp = getstatf(STAT_TRG_CT_HP);
-    self.stat_trg_lt_hp = getstatf(STAT_TRG_LT_HP);
-    self.stat_trg_rt_hp = getstatf(STAT_TRG_RT_HP);
-    self.stat_trg_la_hp = getstatf(STAT_TRG_LA_HP);
-    self.stat_trg_ra_hp = getstatf(STAT_TRG_RA_HP);
-    self.stat_trg_ddflg = getstati(STAT_TRG_DDFLG);
+
   }
   else{
-    self.target_origin_x = 0;
-    self.target_origin_y = 0;
-    self.target_origin_z = 0;
-    self.target_vecsize = 0;
     self.target_shield = 0;
     self.target_datatype = 0;
     self.target_faction = 0;

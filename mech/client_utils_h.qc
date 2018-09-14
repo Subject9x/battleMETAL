@@ -29,6 +29,7 @@ entity() spawnpoint_single;
 void() client_push_player_info;
 void( entity targetClient) server_push_player_info; //simply wraps client_push_player_info()
 void( entity radarPing ) client_push_radar_ping;
+void( entity targetClient ) client_push_hud_highlight;
 
 float(entity ent, float changed) send_vehicle;
 float(entity ent, float changed) send_building;

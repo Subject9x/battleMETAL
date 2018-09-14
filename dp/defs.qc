@@ -482,10 +482,10 @@ float	AS_MISSILE		= 4;
 .float		invincible_time, invincible_sound;
 .float		invisible_time, invisible_sound;
 .float		super_time, super_sound;
-.float		rad_time;
+//.float		rad_time; deprecated
 .float		fly_sound;
 
-.float		axhitme;
+//.float		axhitme; deprecated
 
 .float		show_hostile;	// set to time+0.2 whenever a client fires a
 							// weapon or takes damage.  Used to alert

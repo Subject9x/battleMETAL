@@ -51,10 +51,17 @@ void() client_push_player_info={
       enm = num_for_edict(self.enemy);
       WriteByte( MSG_ONE, enm );
       if( enm != num_for_edict( world ) ){
-        //TODO - target info
-        /*WriteCoord( MSG_ONE, self.enemy.origin_x );
+        WriteCoord( MSG_ONE, self.enemy.origin_x );
         WriteCoord( MSG_ONE, self.enemy.origin_y );
-        WriteCoord( MSG_ONE, self.enemy.origin_z );*/
+        WriteCoord( MSG_ONE, self.enemy.origin_z );
+        WriteByte( MSG_ONE, (self.enemy.sh_cur / self.enemy.sh_max) * 100 );
+        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy));
+        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_legs));
+        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_l));
+        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_r));
+        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_l));
+        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_r));
+        WriteShort( MSG_ONE, self.enemy.c_bbx_x_y * 1.5 );
       }
     }
   }
@@ -83,6 +90,30 @@ void( entity radarPing ) client_push_radar_ping={
   WriteByte( MSG_ONE, radarPing.i_faction );
   
 };
+
+void( entity targetClient ) client_push_hud_highlight={
+  local entity this;
+  this = self;
+  self = targetClient;
+    msg_entity = self;
+    WriteByte( MSG_ONE, SVC_TEMPENTITY );
+    WriteByte( MSG_ONE, TE_UI_BOX );
+    WriteCoord( MSG_ONE, this.fx_origin_x );
+    WriteCoord( MSG_ONE, this.fx_origin_y );
+    WriteCoord( MSG_ONE, this.fx_origin_z );
+    
+    WriteCoord( MSG_ONE, this.c_alt_ofs_x );
+    WriteCoord( MSG_ONE, this.c_alt_ofs_y );
+    WriteCoord( MSG_ONE, this.c_alt_ofs_z );
+    
+    WriteCoord( MSG_ONE, this.c_ofs_x );
+    WriteCoord( MSG_ONE, this.c_ofs_y );
+    WriteCoord( MSG_ONE, this.c_ofs_z );
+
+    WriteShort( MSG_ONE, this.wait );
+  
+  self = this;
+}; 
 
 float(entity ent, float changed) send_vehicle={
   WriteByte( MSG_ENTITY, DATA_VEHC);

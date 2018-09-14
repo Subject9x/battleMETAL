@@ -1991,7 +1991,8 @@ float Q3SURFACEFLAG_NONSOLID = 16384; // compiler hint (not important to qc)
 //field definitions:
 .float viewzoom;
 //description:
-//scales fov and sensitivity of player, valid range is 0 to 1 (intended for sniper rifle zooming, and such)
+//scales fov and sensitivity of player, valid range is 0 to 1 
+//(intended for sniper rifle zooming, and such)
 
 //EXT_BITSHIFT
 //idea: Spike

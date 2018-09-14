@@ -139,6 +139,12 @@ void() ButtonCommands={
       }
     }
   }
+  
+  if( self.button9 ){
+    if( self.viewzoom > 0.25 ){
+      self.viewzoom = self.viewzoom - 0.25;
+    }
+  }
 };
 
 void() mpls_singleFire={

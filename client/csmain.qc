@@ -355,8 +355,20 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     /*local float bx_time;
     bx_time = getstati(UI_BOX_TIME);
     if(bx_time > 0){
-      ui_renderHUDHighlight();
     }*/
+    
+    local entity boxes;
+    boxes = findchainfloat( data_idx, -3 );
+    while( boxes ){
+      local entity rem;
+      rem = boxes;
+      boxes = boxes.chain;
+      ui_renderHUDHighlight( rem );
+      if( time > rem.drawme ){
+        remove( rem );
+      }
+    }
+    
     ui_objective_frame(VIEW_ORG);
   }
   else{
@@ -454,16 +466,18 @@ float() CSQC_Parse_TempEntity =
   local float id;
   id = ReadByte();
 
-  if( id == TE_CLIENT_INFO ){
-    client_get_info();
-    return TRUE;
-  }
-  else if( id == TE_CLIENT_PING ){
-    client_get_contact();
-    return TRUE;
-  }
-  else{
-    return te_effect_delegate( id );
+  switch( id ){
+    case TE_CLIENT_INFO:
+      client_get_info();
+      return TRUE;
+    case TE_CLIENT_PING:
+      client_get_contact();
+      return TRUE;
+    case TE_UI_BOX:
+      client_get_hud_highlight();
+      return TRUE;
+    default:
+      return te_effect_delegate( id );
   }
 	return FALSE;
 };
