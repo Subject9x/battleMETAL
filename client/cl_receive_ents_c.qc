@@ -51,10 +51,13 @@ void() client_get_info={
       client.stat_trg_la_hp = ReadByte();
       client.stat_trg_ra_hp = ReadByte();
       client.target_vecsize = ReadShort();
+      if( client.w_icon != "" ){
+        strunzone( client.w_icon );
+      }
+      client.w_icon = strzone( ReadString() );
     }
   }
 };
-
 
 void( entity client, float wep, float delt ) client_get_weapon_delta={
   switch( wep ){

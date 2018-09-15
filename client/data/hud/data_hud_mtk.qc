@@ -47,9 +47,8 @@ void() hud_mtk_frame={
     else if(self.target_datatype == DATA_BLD){
       hud_renderArmorBuilding('6 55', (VIEW_BOT | VIEW_CTX), '36 75', self.stat_trg_ct_hp);
     }
-    data_get_target(self.target_datatype, self.stat_trg_dataidx, self.target_vecsize);
     
-    hud_renderTargetName('85 126', buffer_TargetInfo[0], (VIEW_CTX | VIEW_BOT));
+    hud_renderTargetName('85 126',self.w_icon, (VIEW_CTX | VIEW_BOT));
     hud_renderTargetRange('85 116', self.target_origin, pmove_org, (VIEW_CTX | VIEW_BOT));
   }
   

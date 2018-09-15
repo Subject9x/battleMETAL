@@ -68,19 +68,17 @@ float(entity t) ai_valid_target={
       return FALSE;
     }
     if( t.deadflag <= DEAD_NO ){
-      if( t.i_faction != self.i_faction ){
-        if( t.data_type == DATA_BLD ){
-          return TRUE;
-        }
-        if( t.data_type == DATA_MECH ){
-          return TRUE;
-        }
-        if( t.data_type == DATA_MECH_AI ){
-          return TRUE;
-        }
-        if( t.data_type == DATA_VEHC ){
-          return TRUE;
-        }
+      if( t.data_type == DATA_BLD ){
+        return TRUE;
+      }
+      if( t.data_type == DATA_MECH ){
+        return TRUE;
+      }
+      if( t.data_type == DATA_MECH_AI ){
+        return TRUE;
+      }
+      if( t.data_type == DATA_VEHC ){
+        return TRUE;
       }
     }
   }

@@ -31,18 +31,20 @@ void() hud_blk_frame={
     hud_renderShield('-125 92', (VIEW_BOT | VIEW_CTX), self.target_shield, '90 12', TRUE, (VIEW_LFT | VIEW_TOP), '0 10', AXIS_H);
     hud_renderTargetOverlay(self.target_origin, pmove_org, 0, self.i_faction, self.target_faction, self.radar_range);
     hud_renderShieldOverlay(self.target_origin, pmove_org, 0, self.target_shield, self.radar_range, self.target_vecsize, '64 6', AXIS_H);
-    if(self.target_datatype == DATA_MECH){
-      hud_renderArmorGraph('-170 45', (VIEW_CTX | VIEW_BOT), self.stat_trg_ct_hp, self.stat_trg_lt_hp, self.stat_trg_rt_hp,self.stat_trg_la_hp, self.stat_trg_ra_hp, self.stat_trg_lg_hp);
-    }
-    else if(self.target_datatype == DATA_VEHC){
-      hud_renderArmorBuilding('-42 45', (VIEW_CTX | VIEW_BOT), '128 64', self.stat_trg_ct_hp);
-    }
-    else if(self.target_datatype == DATA_BLD){
-      hud_renderArmorBuilding('-106 45', (VIEW_CTX | VIEW_BOT), '64 64', self.stat_trg_ct_hp);
-    }
-    data_get_target(self.target_datatype, self.stat_trg_dataidx, self.target_vecsize);
     
-    hud_renderTargetName('65 126', buffer_TargetInfo[0], (VIEW_CTX | VIEW_BOT));
+    switch( self.target_datatype ){
+      case DATA_MECH:
+        hud_renderArmorGraph('-170 45', (VIEW_CTX | VIEW_BOT), self.stat_trg_ct_hp, self.stat_trg_lt_hp, self.stat_trg_rt_hp,self.stat_trg_la_hp, self.stat_trg_ra_hp, self.stat_trg_lg_hp);
+        break;
+      case DATA_VEHC:
+        hud_renderArmorBuilding('-42 45', (VIEW_CTX | VIEW_BOT), '128 64', self.stat_trg_ct_hp);
+        break;
+      case DATA_BLD:
+        hud_renderArmorBuilding('-106 45', (VIEW_CTX | VIEW_BOT), '64 64', self.stat_trg_ct_hp);
+        break;
+    }
+    
+    hud_renderTargetName('65 126', self.w_icon, (VIEW_CTX | VIEW_BOT));
     hud_renderTargetRange('65 116', self.target_origin, pmove_org, (VIEW_CTX | VIEW_BOT));
   }
  

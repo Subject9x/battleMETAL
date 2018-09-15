@@ -659,11 +659,9 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   local vector tofs, msgSize, factionColor;
   local string msg;
   
+  factionColor = CLR_DEF_IFF_ENEMY;
   if(self.i_faction == self.target_faction){
     factionColor = CLR_DEF_IIF_FRIEND;
-  }
-  else{
-    factionColor = CLR_DEF_IFF_ENEMY;
   }
 
   ofs = gui_percentToPixelRawVec(ofs);

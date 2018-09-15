@@ -49,17 +49,16 @@ void() server_make_sweep={
 void() server_getTarget={
   local entity src;
   makevectors(self.v_angle);
+    src = self;
   if(self.e_cam != world){
     src = self.e_cam;
   }
-  else{
-    src = self;
-  }
-  traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), FALSE, self);
+
+  traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
   if( ai_valid_target(trace_ent) ){
-    
-    self.enemy = trace_ent;
-    if(trace_ent.data_type != DATA_POBS){
+    cons_logAString("classname", trace_ent.vec_name);  //DEBUG
+    if( (trace_ent.flags & FL_CLIENT) || (trace_ent.flags & FL_MONSTER) ){
+      self.enemy = trace_ent;
       if(self.stat_rdr_mode){
         self.lock_timer = time + self.w_firetime;
       }
@@ -78,7 +77,7 @@ void() server_getTarget={
 void() server_updateTargetInfo={
   local float isvis;
  
-  if( (!ai_valid_target(self.enemy)) || (self.enemy.health <= 0) ){
+  if( !(ai_valid_target(self.enemy)) || (self.enemy.health <= 0) ){
     self.stat_trg_dataidx = -1;
     self.stat_trg_ddflg = -1;
     self.stat_trg_dist = -1;
@@ -100,7 +99,7 @@ void() server_updateTargetInfo={
   self.stat_trg_faction = self.enemy.i_faction;
 
   local float dst;
-  dst = vlen(self.enemy.origin - self.origin);
+  dst = vlen( self.enemy.origin - self.origin );
   if(dst > self.stat_rdr_rng){
     self.enemy = world;
     return;

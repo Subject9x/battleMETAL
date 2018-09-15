@@ -436,17 +436,16 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   
   if(cvar("mechdev") == TRUE){
     local vector viewspot, viewang, porg, pang, torg;
-    viewspot_x = getstatf(STAT_TRG_ORG_X);
-    viewspot_y = getstatf(STAT_TRG_ORG_Y);
-    viewspot_z = getstatf(STAT_TRG_ORG_Z);
     viewang_x = getstatf(STAT_PLR_ANG_X);
     viewang_y = getstatf(STAT_PLR_ANG_Y);
     viewang_z = getstatf(STAT_PLR_ANG_Z);
+    viewspot_x =  getstatf(STAT_PLR_ORG_X);
+    viewspot_y =  getstatf(STAT_PLR_ORG_Y);
+    viewspot_z =  getstatf(STAT_PLR_ORG_Z);
     porg_x = pang_x = torg_x = VIEW_ORG_x;
     porg_y = pang_y = torg_y = VIEW_MAX_y;
-    drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(pmove_org)), '8 8 0', '0.85 0.85 0.85', 1, 0);
-    drawstring(pang + gui_percentToPixelRawVec('1 -20'), strcat("Player Angles: ", vtos(viewang)), '8 8 0', '0.85 0.85 0.85', 1, 0);
-    drawstring(torg + gui_percentToPixelRawVec('1 -10'), strcat("Tag Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0); 
+    drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0);
+    drawstring(torg + gui_percentToPixelRawVec('1 -10'), strcat("Tag Origin: ", vtos( viewang )), '8 8 0', '0.85 0.85 0.85', 1, 0); 
   }
   
   self = this;

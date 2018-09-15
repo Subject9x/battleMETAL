@@ -50,9 +50,8 @@ void() hud_mnt_frame={
     else if(self.target_datatype == DATA_BLD){
       hud_renderArmorBuilding('-105 50', (VIEW_CTX | VIEW_BOT), '32 75', self.stat_trg_ct_hp);
     }
-    data_get_target(self.target_datatype, self.stat_trg_dataidx, self.target_vecsize);
     
-    hud_renderTargetName('-54 -92', buffer_TargetInfo[0], (VIEW_CTX | VIEW_CTY));
+    hud_renderTargetName('-54 -92', self.w_icon, (VIEW_CTX | VIEW_CTY));
     hud_renderTargetRange('-54 -100', self.target_origin, pmove_org, (VIEW_CTX | VIEW_CTY));
   }
   

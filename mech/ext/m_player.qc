@@ -175,12 +175,12 @@ void() PlayerPostThink = {
       self.c_ofs = trace_endpos;
       te_beam_esr(self.origin + (v_up * -4), trace_endpos);
     }
-    self.stat_plr_ang_x = anglemod(self.v_angle_x);
-    self.stat_plr_ang_y = anglemod(self.v_angle_y);
-    self.stat_plr_ang_z = anglemod(self.v_angle_z);
-    self.stat_trg_org_x = self.c_ofs_x;
-    self.stat_trg_org_y = self.c_ofs_y;
-    self.stat_trg_org_z = self.c_ofs_z;
+    self.stat_cofs_x = self.origin_x;
+    self.stat_cofs_y = self.origin_y;
+    self.stat_cofs_z = self.origin_z;
+    self.stat_plr_ang_x = trace_endpos_x;
+    self.stat_plr_ang_y = trace_endpos_y;
+    self.stat_plr_ang_z = trace_endpos_z;
   }
   
   //========================================  

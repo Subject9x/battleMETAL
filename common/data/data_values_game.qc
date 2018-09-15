@@ -161,20 +161,9 @@ float RADAR_SWEEP = 2.5;
 .float stat_w9_rel;
 
 .float stat_trg_ent_id;
-.float stat_trg_vsize;
 .float stat_trg_dataidx;
-.float stat_trg_sh;
 .float stat_trg_dat;
 .float stat_trg_faction;
-.float stat_trg_org_x;
-.float stat_trg_org_y;
-.float stat_trg_org_z;
-.float stat_trg_lg_hp;
-.float stat_trg_ct_hp;
-.float stat_trg_lt_hp;
-.float stat_trg_rt_hp;
-.float stat_trg_la_hp;
-.float stat_trg_ra_hp;
 
 .float stat_hit_dirs;
 .float stat_rdr_mode;
@@ -231,16 +220,11 @@ float STAT_PLR_HITDIR = 48;
 float STAT_PLR_RETDIST = 49;
 
 float STAT_TRG_ENT_ID = 50;
-float STAT_TRG_VECSIZE = 51;
-float STAT_TRG_SHIELD= 52;
 float STAT_TRG_DATATYPE = 53;
 float STAT_TRG_DATAIDX = 54;
 float STAT_TRG_DIST = 55;
 float STAT_TRG_FACE = 56;
 float STAT_TRG_FACTION = 57;
-float STAT_TRG_ORG_X = 58;
-float STAT_TRG_ORG_Y = 59;
-float STAT_TRG_ORG_Z = 60;
 
 float STAT_TRG_LG_HP = 61;
 float STAT_TRG_CT_HP = 62;

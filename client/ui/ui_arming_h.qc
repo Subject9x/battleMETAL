@@ -74,7 +74,6 @@ float GROUP_ENE_5;
 void() menu_arming_listener;
 void() weaponSelectListener;
 void() hardpointListener;
-void() hardpointInfoListener;
 void() weaponGroupPanelListener;
 void() assignToHardpointListener;
 
