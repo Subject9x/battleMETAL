@@ -108,9 +108,16 @@ void() client_get_contact={
   blip.i_faction = ReadByte();
   
   blip.data_idx = -2; //hack
-  blip.en_cur = time + 6;
+  //Radar 1 - settings
+  //blip.en_cur = time + 6;
+  //blip.hardpoint_cnt = 1; //alpha fade
+  //blip.radar_time = 0.001;
+  
+  //Radar 2 - settings
+  blip.en_cur = time + 3;
   blip.hardpoint_cnt = 1; //alpha fade
-  blip.radar_time = 0.001;
+  blip.radar_time = 0.0025;
+  
 };
 
 void() client_get_hud_highlight={

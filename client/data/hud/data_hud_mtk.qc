@@ -42,10 +42,10 @@ void() hud_mtk_frame={
       hud_renderArmorGraph('-12 64', (VIEW_CTX | VIEW_BOT), self.stat_trg_ct_hp, self.stat_trg_lt_hp, self.stat_trg_rt_hp,self.stat_trg_la_hp, self.stat_trg_ra_hp, self.stat_trg_lg_hp);
     }
     else if(self.target_datatype == DATA_VEHC){
-      hud_renderArmorBuilding('-42 45', (VIEW_CTX | VIEW_BOT), '128 64', self.stat_trg_ct_hp);
+      hud_renderArmorBuilding('32 64', (VIEW_CTX | VIEW_BOT), '32 68', self.stat_trg_ct_hp);
     }
     else if(self.target_datatype == DATA_BLD){
-      hud_renderArmorBuilding('6 55', (VIEW_BOT | VIEW_CTX), '36 75', self.stat_trg_ct_hp);
+      hud_renderArmorBuilding('48 54', (VIEW_BOT | VIEW_CTX), '48 48', self.stat_trg_ct_hp);
     }
     
     hud_renderTargetName('85 126',self.w_icon, (VIEW_CTX | VIEW_BOT));

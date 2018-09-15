@@ -37,10 +37,10 @@ void() hud_blk_frame={
         hud_renderArmorGraph('-170 45', (VIEW_CTX | VIEW_BOT), self.stat_trg_ct_hp, self.stat_trg_lt_hp, self.stat_trg_rt_hp,self.stat_trg_la_hp, self.stat_trg_ra_hp, self.stat_trg_lg_hp);
         break;
       case DATA_VEHC:
-        hud_renderArmorBuilding('-42 45', (VIEW_CTX | VIEW_BOT), '128 64', self.stat_trg_ct_hp);
+        hud_renderArmorBuilding('-145 48', (VIEW_CTX | VIEW_BOT), '24 60', self.stat_trg_ct_hp);
         break;
       case DATA_BLD:
-        hud_renderArmorBuilding('-106 45', (VIEW_CTX | VIEW_BOT), '64 64', self.stat_trg_ct_hp);
+        hud_renderArmorBuilding('-110 46', (VIEW_CTX | VIEW_BOT), '60 60', self.stat_trg_ct_hp);
         break;
     }
     
