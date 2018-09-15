@@ -49,30 +49,6 @@ hud_snd_sys_c.qc
   data/bld/data_h_ltur.qc
   data/bld/data_h_repair.qc
   
-  //Weapons
-  data/wep/data_latc_val.qc
-  data/wep/data_emp_val.qc
-  data/wep/data_mis_val.qc
-  data/wep/data_las_val.qc
-  data/wep/data_mlgd_vals.qc
-  data/wep/data_marh_vals.qc
-  data/wep/data_pac_vals.qc
-  data/wep/data_qrfl_vals.qc
-  data/wep/data_esr_vals.qc
-  data/wep/data_rplas_vals.qc
-  data/wep/data_sfga_vals.qc
-  data/wep/data_flak_vals.qc
-  data/wep/data_ion_vals.qc
-  data/wep/data_swrm_val.qc
-  
-  //Equipment
-  data/eqp/data_eqp_atgm_val.qc
-  data/eqp/data_eqp_enbat_val.qc
-  data/eqp/data_eqp_recap_val.qc
-  data/eqp/data_eqp_lsar_val.qc
-  data/eqp/data_eqp_hsem_val.qc
-  data/eqp/data_eqp_scap_val.qc
-  
   //Mechs
   data/mch/data_matok_val.qc
   data/mch/data_outlaw_val.qc

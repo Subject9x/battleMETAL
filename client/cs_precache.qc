@@ -130,31 +130,6 @@ void() cs_precache={
   
   //vehicles
   data_TNK_hmn();
-  
-  //wep data
-  data_wep_latc();
-  data_wep_emp();
-  data_wep_mis();
-  data_wep_las();
-  data_wep_mlgd();
-  data_wep_marh();
-  data_wep_qrfl();
-  data_wep_esr();
-  data_wep_pac();
-  data_wep_rplas();
-  data_wep_sfga();
-  data_wep_flak();
-  data_wep_ion();
-  data_wep_swrm();
-  //data_wep_abt();
-  
-  //equip data
-  data_eqp_atgm_ini();
-  data_eqp_enbat_ini();
-  data_eqp_recap_ini();
-  data_eqp_lsar_ini();
-  data_eqp_hsem_ini();
-  data_eqp_scap_ini();
 };
 
 entity(float id, float dat_type) m_findData={

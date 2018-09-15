@@ -372,7 +372,6 @@ void(float id) ui_date_load_item1={
     return FALSE;
   }
   contents = fgets(flannel);
-  //tokenizebyseparator(contents, "{", ",", "}");
   line = fgets(flannel);
   while( (line != "") ){
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){

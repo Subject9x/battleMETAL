@@ -28,7 +28,7 @@ void() data_ini_arrays={
   data_WeaponNames[ID_EQP_LSAR] = DAT_EQP_LSAR_NAME;
   data_WeaponNames[ID_EQP_SCAP] = DAT_EQP_SCAP_NAME;
   data_WeaponNames[ID_EQP_RECAP] = DAT_EQP_RECAP_NAME;
-  
+
   //Weapon Icons
   data_WeaponIcons[ID_WEP_LATC] = DAT_LATC_ICON;
   data_WeaponIcons[ID_WEP_LAS] = DAT_LAS_ICON;
@@ -52,6 +52,51 @@ void() data_ini_arrays={
   data_WeaponIcons[ID_EQP_SCAP] = DAT_EQP_SCAP_ICON;
   data_WeaponIcons[ID_EQP_RECAP] = DAT_EQP_RECAP_ICON;
   
+  //hey arrays are fast, right?
+  data_WeaponType[ID_WEP_LATC] = 1;
+  data_WeaponType[ID_WEP_LAS] = 2;
+  data_WeaponType[ID_WEP_EMP] = 2;
+  data_WeaponType[ID_WEP_MIS] = 4;
+  data_WeaponType[ID_WEP_QRF] = 1;
+  data_WeaponType[ID_WEP_RPC] = 1;
+  data_WeaponType[ID_WEP_PAC] = 2;
+  data_WeaponType[ID_WEP_ESR] = 2;
+  data_WeaponType[ID_WEP_MLGD] = 4;
+  data_WeaponType[ID_WEP_MARH] = 4;
+  data_WeaponType[ID_WEP_SFGA] = 1;
+  data_WeaponType[ID_WEP_FLAK] = 1;
+  data_WeaponType[ID_WEP_ION] = 2;
+  data_WeaponType[ID_WEP_SWRM] = 4;
+  
+  data_WeaponType[ID_EQP_ATGM] = 128;
+  data_WeaponType[ID_EQP_ENBAT] = 128;
+  data_WeaponType[ID_EQP_HSEM] = 128;
+  data_WeaponType[ID_EQP_LSAR] = 128;
+  data_WeaponType[ID_EQP_SCAP] = 128;
+  data_WeaponType[ID_EQP_RECAP] = 128;
+  
+  //hey arrays are fast, right?
+  data_WeaponSize[ID_WEP_LATC] = DAT_LATC_WSIZE;
+  data_WeaponSize[ID_WEP_LAS] = DAT_LAS_WSIZE;
+  data_WeaponSize[ID_WEP_EMP] = DAT_EMP_WSIZE;
+  data_WeaponSize[ID_WEP_MIS] = DAT_MIS_WSIZE;
+  data_WeaponSize[ID_WEP_QRF] = DAT_QRFL_WSIZE;
+  data_WeaponSize[ID_WEP_RPC] = DAT_RPLAS_WSIZE;
+  data_WeaponSize[ID_WEP_PAC] = DAT_PAC_WSIZE;
+  data_WeaponSize[ID_WEP_ESR] = DAT_ESR_WSIZE;
+  data_WeaponSize[ID_WEP_MLGD] = DAT_MLGD_WSIZE;
+  data_WeaponSize[ID_WEP_MARH] = DAT_MARH_WSIZE;
+  data_WeaponSize[ID_WEP_SFGA] = DAT_SFGA_WSIZE;
+  data_WeaponSize[ID_WEP_FLAK] = DAT_FLAK_WSIZE;
+  data_WeaponSize[ID_WEP_ION] = DAT_ION_WSIZE;
+  data_WeaponSize[ID_WEP_SWRM] = DAT_SWRM_WSIZE;
+  
+  data_WeaponSize[ID_EQP_ATGM] = DAT_EQP_ATGM_WSIZE;
+  data_WeaponSize[ID_EQP_ENBAT] = DAT_EQP_ENBAT_WSIZE;
+  data_WeaponSize[ID_EQP_HSEM] = DAT_EQP_HSEM_WSIZE;
+  data_WeaponSize[ID_EQP_LSAR] = DAT_EQP_LSAR_WSIZE;
+  data_WeaponSize[ID_EQP_SCAP] = DAT_EQP_SCAP_WSIZE;
+  data_WeaponSize[ID_EQP_RECAP] = DAT_EQP_RECAP_WSIZE;
 };
 
 string(float data_idx) data_get_weapon_name={
@@ -73,82 +118,6 @@ string(float data_idx) data_get_weapon_icon={
       return data_WeaponIcons[idx];
     }
     idx = idx + 1;
-  }
-};
-
-/*
- 0 name
- 1 size
- 2 speed forward
- 3 speed strafe
- 4 speed back
- 5 energy max
- 6 energy rate
- 7 shield max
- 8 shield rate
- 9 armor ct
- 10 armor torso
- 11 armor arm
- 12 armor leg
- 13 radar range
-*/
-//MECHS
-void(float data_idx, float vsize) data_get_mech={
-
-  if(vsize == 1){
-    if(data_idx == ID_MCH_BALAKET){
-      buffer_MechInfo[0] = MCH_NAME_BLK;
-      buffer_MechInfo[1] = ftos(SZ_MCH_BALAKET);
-      buffer_MechInfo[2] = ftos(DAT_OTL_M_FSPEED);
-      buffer_MechInfo[3] = ftos(DAT_OTL_M_SSPEED);
-      buffer_MechInfo[4] = ftos(DAT_OTL_M_BSPEED);
-      buffer_MechInfo[5] = ftos(DAT_OTL_ENERGY_MAX);
-      buffer_MechInfo[6] = ftos(DAT_OTL_ENERGY_RATE);
-      buffer_MechInfo[7] = ftos(DAT_OTL_SHIELD_MAX);
-      buffer_MechInfo[8] = ftos(DAT_OTL_SHIELD_RATE);
-      buffer_MechInfo[9] = ftos(DAT_OTL_CTOR_HP);
-      buffer_MechInfo[10] = ftos(DAT_OTL_LTOR_HP);
-      buffer_MechInfo[11] = ftos(DAT_OTL_LARM_HP);
-      buffer_MechInfo[12] = ftos(DAT_OTL_LEG_HP);
-      buffer_MechInfo[13] = ftos(DAT_OTL_RADAR_RANGE);
-    }
-  }
-  else if(vsize == 2){
-    if(data_idx == ID_MCH_MATOK){ 
-      buffer_MechInfo[0] = MCH_NAME_MTK;
-      buffer_MechInfo[1] = ftos(SZ_MCH_MATOK);
-      buffer_MechInfo[2] = ftos(DAT_MTK_M_FSPEED);
-      buffer_MechInfo[3] = ftos(DAT_MTK_M_SSPEED);
-      buffer_MechInfo[4] = ftos(DAT_MTK_M_BSPEED);
-      buffer_MechInfo[5] = ftos(DAT_MTK_ENERGY_MAX);
-      buffer_MechInfo[6] = ftos(DAT_MTK_ENERGY_RATE);
-      buffer_MechInfo[7] = ftos(DAT_MTK_SHIELD_MAX);
-      buffer_MechInfo[8] = ftos(DAT_MTK_SHIELD_RATE);
-      buffer_MechInfo[9] = ftos(DAT_MTK_CTOR_HP);
-      buffer_MechInfo[10] = ftos(DAT_MTK_LTOR_HP);
-      buffer_MechInfo[11] = ftos(DAT_MTK_LARM_HP);
-      buffer_MechInfo[12] = ftos(DAT_MTK_LEG_HP);
-      buffer_MechInfo[13] = ftos(DAT_MTK_RADAR_RANGE);
-    }
-  
-  }
-  else if(vsize == 3){
-    if(data_idx == ID_MCH_MONITOR){  
-      buffer_MechInfo[0] = MCH_NAME_MNT;
-      buffer_MechInfo[1] = ftos(SZ_MCH_MONITOR);
-      buffer_MechInfo[2] = ftos(DAT_MNT_M_FSPEED);
-      buffer_MechInfo[3] = ftos(DAT_MNT_M_SSPEED);
-      buffer_MechInfo[4] = ftos(DAT_MNT_M_BSPEED);
-      buffer_MechInfo[5] = ftos(DAT_MNT_ENERGY_MAX);
-      buffer_MechInfo[6] = ftos(DAT_MNT_ENERGY_RATE);
-      buffer_MechInfo[7] = ftos(DAT_MNT_SHIELD_MAX);
-      buffer_MechInfo[8] = ftos(DAT_MNT_SHIELD_RATE);
-      buffer_MechInfo[9] = ftos(DAT_MNT_CTOR_HP);
-      buffer_MechInfo[10] = ftos(DAT_MNT_LTOR_HP);
-      buffer_MechInfo[11] = ftos(DAT_MNT_LARM_HP);
-      buffer_MechInfo[12] = ftos(DAT_MNT_LEG_HP);
-      buffer_MechInfo[13] = ftos(DAT_MNT_RADAR_RANGE);
-    }
   }
 };
 

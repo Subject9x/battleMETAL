@@ -8,6 +8,8 @@ trying to not use entities as data collections cause its playing havoc with othe
 
 string data_WeaponNames[32];
 string data_WeaponIcons[32];
+float data_WeaponSize[32];
+float data_WeaponType[32];
 //Store per-frame unit data in a buffer array, use the retrieval api to load the buffers
 //yes I know, these are terrible data structs to mimic classes
 /*
@@ -55,7 +57,6 @@ string buffer_WeaponInfoB[12];
 
 //API functions
 void() data_ini_arrays;
-void(float data_idx, float vsize) data_get_mech;
 void(float data_idx) data_get_weapon;
 void(float dtype, float data_idx, float vsize) data_get_target;
 void(float data_idx, float vsize) data_get_target_mech;

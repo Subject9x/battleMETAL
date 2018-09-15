@@ -11,7 +11,6 @@ Overview: part of splitting the hangar into more understandable chunks
 void() menu_arming_listener={
   weaponSelectListener();
   hardpointListener();
-  hardpointInfoListener();
   weaponGroupPanelListener();
   assignToHardpointListener();
 };
@@ -22,22 +21,18 @@ void() assignToHardpointListener={
     found = 0;
     if(self.plr_sel_hrpnt > 0){
       if(self.plr_sel_list_wep > 0){
-        local entity dat;
-        dat = m_findData(self.plr_sel_list_wep, DATA_WEPN);
-        if(dat){
-          if((self.plr_sel_hrpnt_types & dat.dmg_type) && (self.plr_sel_hrpnt_size >= dat.i_size)){
-            HARDPOINTS[self.plr_sel_hrpnt] = self.plr_sel_list_wep;
-            self.plr_sel_wep = self.plr_sel_list_wep;
-            GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
-            GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
-            GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
-            GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
-            GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
-          }
+        if((self.plr_sel_hrpnt_types & data_WeaponType[self.plr_sel_list_wep]) && (self.plr_sel_hrpnt_size >= data_WeaponSize[self.plr_sel_list_wep])){
+          HARDPOINTS[self.plr_sel_hrpnt] = self.plr_sel_list_wep;
+          self.plr_sel_wep = self.plr_sel_list_wep;
+          GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
+          GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
+          GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
+          GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
+          GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
         }
       }
     }
-   }
+  }
 };
 
 void() weaponSelectListener={
@@ -58,15 +53,12 @@ void() weaponSelectListener={
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC)){
     found = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixel(0.0703, 0.0166), WEPNLIST_CNT_MSC, 0);
     found = WEPLIST_MSC_ARR[found];
+    cons_logAFloat(" found ", found); //DEBUG
   }
   if(found  > 0){
    self.plr_sel_list_wep = found;
    ui_date_load_item1(self.plr_sel_list_wep);
   }
-};
-
-void() hardpointInfoListener={
-
 };
 
 void() hardpointListener={
@@ -93,7 +85,6 @@ void() hardpointListener={
     }
   }
 };
-
 
 void() weaponGroupPanelListener={
   local float found;
@@ -161,7 +152,6 @@ void() menu_arming_drawFrame={
   
   menu_arming_HardpointGraph(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponList(topleftroot + gui_percentToPixel(0, 0.025));
-  //menu_arming_HardPointInfo(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_arming_energydraw(gui_percentToPixelRawVec('160 276'));
   menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
@@ -216,28 +206,22 @@ void(vector ofs) menu_arming_WeaponList_BAL={
   act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= UI_TOTAL_WEAPONS){
-    local entity dat;
     local vector lofs, clr;
-    dat = m_findData(lst_idx, DATA_WEPN);
-    if(dat){
-      if(WEPLIST_ALL[lst_idx] != 0){
-        if((dat.dmg_type & DMG_BAL)){
-          lofs_x = nofs_x;
-          lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-          if(dat.data_idx == self.plr_sel_list_wep){
-            clr = CLR_DEF_TXT_HIGHLIGHT;
-            gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-          }
-          else{
-            clr = CLR_DEF_TXT_NONSELECT;
-          }
-          if(!(self.plr_sel_hrpnt_types & DMG_BAL) || (dat.i_size > self.plr_sel_hrpnt_size)){
-            clr = CLR_DEF_BLACK;
-          }
-          drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
-          WEPLIST_BAL_ARR[act_idx] = dat.data_idx;
-          act_idx = act_idx + 1;
+    if(WEPLIST_ALL[lst_idx] != 0){
+      if( (data_WeaponType[lst_idx] & DMG_BAL)){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
+        clr = CLR_DEF_TXT_NONSELECT;
+        if( lst_idx == self.plr_sel_list_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
+        if(!(self.plr_sel_hrpnt_types & DMG_BAL) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
+          clr = CLR_DEF_BLACK;
+        }
+        drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, HUD_ALPHA, 0);
+        WEPLIST_BAL_ARR[act_idx] = lst_idx;
+        act_idx = act_idx + 1;
       }
     }
     lst_idx = lst_idx + 1;
@@ -257,30 +241,27 @@ void(vector ofs) menu_arming_WeaponList_ENE={
   act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= UI_TOTAL_WEAPONS){
-    local entity dat;
     local vector lofs, clr;
-    dat = m_findData(lst_idx, DATA_WEPN);
-    if(dat){
-      if(WEPLIST_ALL[lst_idx] != 0){
-        if((dat.dmg_type & DMG_ENE)){
-          lofs_x = nofs_x;
-          lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-          if(dat.data_idx == self.plr_sel_list_wep){
-            clr = CLR_DEF_TXT_HIGHLIGHT;
-            gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-          }
-          else{
-            clr = CLR_DEF_TXT_NONSELECT;
-          }
-          if(!(self.plr_sel_hrpnt_types & DMG_ENE) || (dat.i_size > self.plr_sel_hrpnt_size)){
-            clr = CLR_DEF_BLACK;
-          }
-          drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
-          WEPLIST_ENE_ARR[act_idx] = dat.data_idx;
-          act_idx = act_idx + 1;
+    if(WEPLIST_ALL[lst_idx] != 0){
+      if( (data_WeaponType[lst_idx] & DMG_ENE) ){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
+        if(lst_idx == self.plr_sel_list_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        if(!(self.plr_sel_hrpnt_types & DMG_ENE) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
+          clr = CLR_DEF_BLACK;
+        }
+        drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, HUD_ALPHA, 0);
+        WEPLIST_ENE_ARR[act_idx] = lst_idx;
+        act_idx = act_idx + 1;
       }
     }
+    
     lst_idx = lst_idx + 1;
   }
   WEPNLIST_CNT_ENE = act_idx;
@@ -298,28 +279,24 @@ void(vector ofs) menu_arming_WeaponList_EXP={
   act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= UI_TOTAL_WEAPONS){
-    local entity dat;
     local vector lofs, clr;
-    dat = m_findData(lst_idx, DATA_WEPN);
-    if(dat){
-      if(WEPLIST_ALL[lst_idx] != 0){
-        if((dat.dmg_type & DMG_EXP)){
-          lofs_x = nofs_x;
-          lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-          if(dat.data_idx == self.plr_sel_list_wep){
-            clr = CLR_DEF_TXT_HIGHLIGHT;
-            gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-          }
-          else{
-            clr = CLR_DEF_TXT_NONSELECT;
-          }
-          if(!(self.plr_sel_hrpnt_types & DMG_EXP) || (dat.i_size > self.plr_sel_hrpnt_size)){
-            clr = CLR_DEF_BLACK;
-          }
-          drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
-          WEPLIST_EXP_ARR[act_idx] = dat.data_idx;
-          act_idx = act_idx + 1;
+    if(WEPLIST_ALL[lst_idx] != 0){
+      if( (data_WeaponType[lst_idx] & DMG_EXP) ){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
+        if( lst_idx == self.plr_sel_list_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        if(!(self.plr_sel_hrpnt_types & DMG_EXP) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
+          clr = CLR_DEF_BLACK;
+        }
+        drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, HUD_ALPHA, 0);
+        WEPLIST_EXP_ARR[act_idx] = lst_idx;
+        act_idx = act_idx + 1;
       }
     }
     lst_idx = lst_idx + 1;
@@ -339,28 +316,24 @@ void(vector ofs) menu_arming_WeaponList_MSC={
   act_idx = 1;
   lst_idx = 1;
   while(lst_idx <= UI_TOTAL_WEAPONS){
-    local entity dat;
     local vector lofs, clr;
-    dat = m_findData(lst_idx, DATA_WEPN);
-    if(dat){
-      if(WEPLIST_ALL[lst_idx] != 0){
-        if( (dat.dmg_type & DMG_MSC) ){
-          lofs_x = nofs_x;
-          lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-          if(dat.data_idx == self.plr_sel_list_wep){
-            clr = CLR_DEF_TXT_HIGHLIGHT;
-            gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
-          }
-          else{
-            clr = CLR_DEF_TXT_NONSELECT;
-          }
-          if(!(self.plr_sel_hrpnt_types & DMG_MSC) || (dat.i_size > self.plr_sel_hrpnt_size)){
-            clr = CLR_DEF_BLACK;
-          }
-          drawstring(lofs + gui_percentToPixel(0.0093, 0), dat.w_name, '5 5 0', clr, HUD_ALPHA, 0);
-          WEPLIST_MSC_ARR[act_idx] = dat.data_idx;
-          act_idx = act_idx + 1;
+    if(WEPLIST_ALL[lst_idx] > 0){
+      if( (data_WeaponType[lst_idx] & DMG_MSC) ){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
+        if( lst_idx == self.plr_sel_list_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
+        else{
+          clr = CLR_DEF_TXT_NONSELECT;
+        }
+        if(!(self.plr_sel_hrpnt_types & DMG_MSC) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
+          clr = CLR_DEF_BLACK;
+        }
+        drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx] , '5 5 0', clr, HUD_ALPHA, 0);
+        WEPLIST_MSC_ARR[act_idx] = lst_idx;
+        act_idx = act_idx + 1;
       }
     }
     lst_idx = lst_idx + 1;
@@ -452,32 +425,6 @@ void(vector ofs) menu_arming_energydraw={
     g5 = (GROUP_ENE_5 / enmax)*100;
     gui_renderMeter(g5, ofs + gui_percentToPixelRawVec('60 153'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g5), HUD_ALPHA, 0, AXIS_H, 0);
 };
-
-/*void(vector ofs) menu_arming_HardPointInfo={
-  local vector nofs;
-  nofs_x = ofs_x + gui_percentXRaw(10);
-  nofs_y = ofs_y;
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('156 56'), '1 1 1', HUD_ALPHA, 0);
-  local string title;
-  local float tlen;
-  local vector tpos;
-  title = "[HARDPOINT INFO]";
-  tlen = stringwidth(title, 0, '6 6 0');
-  tpos = nofs + gui_percentToPixelRawVec('32 3');
-  drawstring(tpos, title, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  local vector idrpos;
-  idrpos = nofs + gui_percentToPixelRawVec('4 12');
-  drawstring(idrpos, strcat("[NUMBER]: ", ftos(self.plr_sel_hrpnt)) , '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  local vector typpos;
-  typpos = idrpos + gui_percentToPixelRawVec('0 6');
-  drawstring(typpos, "[ALLOWED TYPES]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  
-  local vector hptsizepos;
-  hptsizepos = idrpos + gui_percentToPixelRawVec('0 32');
-  drawstring(hptsizepos, "[MAX WEAPON SIZE]:", '6 6 0', '1 1 1', HUD_ALPHA, 0);
-};*/
 
 void(vector ofs) menu_arming_WeaponInfo={
   local vector nofs;
