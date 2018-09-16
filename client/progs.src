@@ -56,11 +56,7 @@ hud_snd_sys_c.qc
 
   //Vehicles
   data/vec/data_tank.qc
-  
-  //HUD
-  data/hud/data_hud_otl.qc
-  data/hud/data_hud_mtk.qc
-  data/hud/data_hud_mnt.qc
+
 //=======================
 //Client->SERVER LAYER===
 cl_svr_cmd_c.qc

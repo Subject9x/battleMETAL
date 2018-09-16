@@ -1,0 +1,57 @@
+//menu image precaching
+//general purpose
+gfx/ui/box_512.png
+gfx/menu/btn_back.png
+gfx/menu/btn_accept.png
+gfx/hud/trg_pip_lft.png
+gfx/hud/trg_pip_rgt.png
+
+//main menu images
+gfx/menu/main/main_title.png
+gfx/menu/main/main_label.png
+gfx/menu/main/main_camp.png
+gfx/menu/main/main_multi.png
+gfx/menu/main/main_opt.png
+gfx/menu/main/main_quit.png
+
+//singleplayer menu images
+gfx/menu/single/camp_label.png
+gfx/menu/single/camp_new.png
+gfx/menu/single/camp_load.png
+
+//new game menu
+gfx/menu/newgame/new_title.png
+gfx/menu/newgame/new_novice.png
+gfx/menu/newgame/new_regular.png
+gfx/menu/newgame/new_veteran.png
+gfx/menu/newgame/new_elite.png
+
+//load game
+gfx/menu/load/load_title.png
+
+//save game
+gfx/menu/save/save_title.png
+
+//multiplayer top menu
+gfx/menu/multi/multi_title.png
+gfx/menu/multi/multi_playersetup.png
+gfx/menu/multi/multi_hostgame.png
+gfx/menu/multi/multi_joingame.png
+
+//player setup
+gfx/menu/setup/setup_title.png
+
+//host game
+gfx/menu/host/host_title.png
+
+//join game
+
+//options
+gfx/menu/options/options_title.png
+gfx/menu/options/options_controls.png
+gfx/menu/options/options_graphics.png
+gfx/menu/options/options_audio.png
+gfx/menu/options/options_gameplay.png
+
+//help/credits
+gfx/menu/help/credits_title.png

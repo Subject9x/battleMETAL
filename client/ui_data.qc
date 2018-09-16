@@ -26,6 +26,27 @@ void() ui_data_load_mechnames={
   fclose(f); 
 };
 
+void() ui_data_load_hudnames={
+  local float f, idx;
+  local string ln;
+  idx = 1;
+  f = fopen("ui/hud/dir.meta", FILE_READ);
+  if (f != -1){ 
+    ln = fgets(f);
+    while( ln != "" ){
+      if( strstrofs(ln, "//", 0) == -1 ){
+        if(idx <= GAME_TOTAL_MECHS){
+          HUD_DATA_NAMES[idx] = strzone(ln);
+        }
+        idx = idx + 1;
+      }
+      ln = fgets(f);
+    } 
+  } 
+  fclose(f); 
+};
+
+
 void() ui_data_load_itemnames={
   local float f, idx;
   local string ln;
@@ -174,6 +195,27 @@ void() ui_data_clear_mechdata={
   }
 };
 
+void() ui_data_clear_huddata={
+  local float itr;
+  itr = 1;
+  while( itr <= 32 ){
+    UI_DATA_UIDS[itr] = 0;
+    UI_DATA_POS[itr] = '0 0 0';
+    UI_DATA_SIZE[itr] = '0 0 0';
+    UI_DATA_ALIGN[itr] = 0;
+    UI_DATA_LABEL_FLAG[itr] = 0;
+    UI_DATA_LABEL_ALIGN[itr] = 0;
+    UI_DATA_AXIS_FLAG[itr] = 0;
+    UI_DATA_LABEL_OFS[itr] = '0 0 0';
+    UI_DATA_COLOR1[itr] = '0 0 0';
+    UI_DATA_COLOR2[itr] = '0 0 0';
+    if( UI_DATA_IMG[itr] != "" ){
+      strunzone( UI_DATA_IMG[itr] );
+    }
+    UI_DATA_IMG[itr] = ""; //background image if needed
+    itr = itr + 1;
+  }
+};
 
 void() ui_data_clear_item1={
 
@@ -361,7 +403,93 @@ float(float id) ui_data_load_mech={
   return TRUE;
 };
 
-void(float id) ui_date_load_item1={
+float( float id ) ui_data_load_hud={
+  ui_data_clear_huddata();
+  local float flannel, line_tag, uid;
+  local string file, contents, line;
+  file = strcat(PATH_DATA_UI, "/hud/", HUD_DATA_NAMES[id], ".dat");
+  flannel = fopen(file, FILE_READ);
+  if(flannel == -1){
+    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
+    return FALSE;
+  }
+  contents = fgets(flannel);
+  //tokenizebyseparator(contents, "{", ",", "}");
+  uid = 0;
+  line = fgets(flannel);
+  while( (line != "") ){ 
+    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+      local string token, value;
+      line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
+      token = argv(1);
+      value = argv(3);
+      if( token != ""){
+        if( token == "uid"){
+          UI_DATA_UIDS[uid] = stof(value);
+          cons_logAFloat( "index", uid ); //DEBUG
+          cons_logAFloat( "uid", UI_DATA_UIDS[uid] ); //DEBUG
+        }
+        if( token == "pos"){
+          UI_DATA_POS[uid] = stov(value);
+          cons_logAVector( "    pos", UI_DATA_POS[uid] ); //DEBUG
+        }
+        if( token == "size"){
+          UI_DATA_SIZE[uid] = stov(value);
+          cons_logAVector( "    size", UI_DATA_SIZE[uid] ); //DEBUG
+        }
+        if( token == "icon"){
+          UI_DATA_IMG[uid] = strzone(value);
+          cons_logAString( "    icon", UI_DATA_IMG[uid] ); //DEBUG
+        }
+        if( token == "valign"){
+          UI_DATA_ALIGN[uid] = stof(value);
+          cons_logAFloat( "    valign", UI_DATA_ALIGN[uid] ); //DEBUG
+        }
+        if( token == "color1"){
+          UI_DATA_COLOR1[uid] = stov(value);
+          cons_logAVector( "    color1", UI_DATA_COLOR1[uid] ); //DEBUG
+        }
+        if( token == "color2"){
+          UI_DATA_COLOR2[uid] = stov(value);
+          cons_logAVector( "    color2", UI_DATA_COLOR2[uid] ); //DEBUG
+        }
+        if( token == "label"){
+          UI_DATA_LABEL[uid] = strzone(value);
+          cons_logAString( "    label", UI_DATA_LABEL[uid] ); //DEBUG
+        }
+        if( token == "lalign"){
+          UI_DATA_LABEL_ALIGN[uid] = stof(value);
+          cons_logAFloat( "    lalign", UI_DATA_LABEL_ALIGN[uid] ); //DEBUG
+        }
+        if( token == "axis"){
+          UI_DATA_AXIS_FLAG[uid] = stof(value);
+          cons_logAFloat( "    axis", UI_DATA_AXIS_FLAG[uid] ); //DEBUG
+        }
+        if( token == "lblofs"){
+          UI_DATA_LABEL_OFS[uid] = stov(value);
+          cons_logAVector( "    lblofs", UI_DATA_LABEL_OFS[uid] ); //DEBUG
+        }
+        if( token == "wbit"){
+          UI_DATA_WEPBIT[uid] = stof(value);
+          cons_logAFloat( "    wbit", UI_DATA_WEPBIT[uid] ); //DEBUG
+        }
+        if( token == "lflag"){
+          UI_DATA_LABEL_FLAG[uid] = stof(value);
+          cons_logAFloat( "    lflag", UI_DATA_LABEL_FLAG[uid] ); //DEBUG
+        }
+      }
+    }
+    if( line == "{" ){
+      uid = uid + 1;
+    }
+    line = fgets(flannel);
+  }
+  fclose(flannel);
+  return TRUE;
+};
+
+
+float(float id) ui_date_load_item1={
   ui_data_clear_item1();
   local float flannel, line_tag, line_val;
   local string file, contents, line;
@@ -422,9 +550,10 @@ void(float id) ui_date_load_item1={
    line = fgets(flannel);
   }
   fclose(flannel);
+  return TRUE;
 };
 
-void(float id) ui_date_load_item2={
+float(float id) ui_date_load_item2={
   ui_data_clear_item2();
   local float flannel, line_tag, line_val;
   local string file, contents, line;
@@ -486,6 +615,7 @@ void(float id) ui_date_load_item2={
    line = fgets(flannel);
   }
   fclose(flannel);
+  return TRUE;
 };
 
 

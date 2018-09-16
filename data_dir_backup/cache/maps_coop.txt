@@ -1,0 +1,3 @@
+//list the FIRST map in each coop campaign
+c1m1.bsp
+c2m1.bsp

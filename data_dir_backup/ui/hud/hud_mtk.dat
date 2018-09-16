@@ -1,0 +1,139 @@
+//Image background
+{
+  'uid'    : 1,
+  'pos'    : 287.5 170 0,
+  'size'   : 575 180 0,
+  'icon'   : gfx/hud/hud_mtk_bck.png,
+  'valign' : 18,
+  'color1' : 1 1 1,
+}
+//Player Energy
+{
+  'uid'     : 2,
+  'pos'     : 72 98 0,
+  'valign'  : 6,
+  'size'    : 22 82 0,
+  'lflag'   : 1,
+  'lalign'  : 17,
+  'lblofs'  : 0 6 0,
+  'axis'    : 2,
+}
+//Player Shield
+{
+  'uid'     : 4,
+  'pos'     : 94 98 0,
+  'valign'  : 10,
+  'size'    : 22 82 0,
+  'lflag'   : 1,
+  'lalign'  : 5,
+  'lblofs'  : 0 6 0,
+  'axis'    : 2,
+}
+//Player Armor
+{
+  'uid'     : 3,
+  'pos'     : 160 70 0,
+  'valign'  : 6,
+}
+//Weapon 1 - Style 2
+{
+  'uid'     : 8,
+  'pos'     : -118 -58 0,
+  'size'    : 24 24 0,
+  'valign'  : 48,
+  'wbit'    : 1,
+}
+//Weapon 2 - Style 2
+{
+  'uid'     : 8,
+  'pos'     : 145 -58 0,
+  'size'    : 24 24 0,
+  'valign'  : 48,
+  'wbit'    : 2,
+}
+//Weapon 3 - Style 2
+{
+  'uid'     : 8,
+  'pos'     : -163 -58 0,
+  'size'    : 24 24 0,
+  'valign'  : 48,
+  'wbit'    : 4,
+}
+//Weapon 4 - Style 2
+{
+  'uid'     : 8,
+  'pos'     : 188 -58 0,
+  'size'    : 24 24 0,
+  'valign'  : 48,
+  'wbit'    : 8,
+}
+//Weapon 5 - Style 2
+{
+  'uid'     : 8,
+  'pos'     : 72 -60 0,
+  'size'    : 24 24 0,
+  'valign'  : 48,
+  'wbit'    : 16,
+}
+//Radar Graph
+{
+  'uid'     : 11,
+  'pos'     : 200 110 0,
+  'valign'  : 10,
+  'size'    : 85 85 0,
+}
+//Radar Status - Style 1
+{
+  'uid'     : 9,
+  'pos'     : 24 -88 0,
+  'valign'  : 48,
+}
+//Target Shield
+{
+  'uid'     : 6,
+  'pos'     : -55 92 0,
+  'valign'  : 18,
+  'size'    : 18 75 0,
+  'lflag'   : 1,
+  'lalign'  : 5,
+  'lblofs'  : 2 6 0,
+  'axis'    : 2,
+}
+//Target Armor - Mech
+{
+  'uid'     : 5,
+  'pos'     : -12 64 0,
+  'valign'  : 18,
+}
+//Nav Heading
+{
+  'uid'     : 12,
+  'pos'     : 8 16 0,
+  'valign'  : 17,
+}
+//Target Name
+{
+  'uid'     : 13,
+  'pos'     : 85 126 0,
+  'valign'  : 18,
+}
+//Target Range
+{
+  'uid'     : 14,
+  'pos'     : 85 116 0,
+  'valign'  : 18,
+}
+//Target Armor - Vec
+{
+  'uid'     : 15,
+  'pos'     : 32 64 0,
+  'valign'  : 18,
+  'size'    : 32 68 0,
+}
+//Target Armor - Building
+{
+  'uid'     : 16,
+  'pos'     : 48 54 0,
+  'valign'  : 18,
+  'size'    : 48 48 0,
+}

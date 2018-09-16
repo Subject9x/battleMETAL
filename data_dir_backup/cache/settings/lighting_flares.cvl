@@ -1,0 +1,14 @@
+//here we can define what WE consider to be Lighting: Flares settings
+//menu will load this in and run each command
+r_coronas 1
+gl_flashblend 1
+r_shadow_gloss 0
+r_shadow_realtime_dlight 1
+r_shadow_realtime_dlight_shadows 0
+r_shadow_realtime_world 1
+r_shadow_realtime_world_lightmaps 0
+r_shadow_realtime_world_shadows 1
+r_bloom 0
+r_hdr_scenebrightness 0
+r_hdr_glowintensity 0
+

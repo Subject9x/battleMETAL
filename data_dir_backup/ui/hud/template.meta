@@ -1,0 +1,120 @@
+//assertions
+//
+//list of mech ids -> MECH_DATA_NAMES[]
+//uid[]
+//  1 - hud_HelmetImage(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) 
+//  2 - hud_renderEnergy(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) 
+//  3 - hud_renderArmorGraph_player(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) ;
+//  4 - hud_renderShield_player(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) 
+//  5 - hud_renderArmorGraph_target(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) ;
+//  6 - hud_renderShield_target(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) 
+//  7 - hud_renderWeapon_t1 (vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) 
+//  8 - hud_renderWeapon_t2 (vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) 
+//  9 - hud_renderRadarStatus1(vector torg, float algn, float status, float radius, float flag) 
+//  10 - hud_renderRadarStatus2(vector torg, float algn, float status, float radius, float flag) 
+//  11 - hud_renderRadar(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
+//  12 - hud_renderNavHeading(vector pos, float algn, vector angle) 
+//
+
+//data file for mech huds
+//metadata block
+{
+  'mech_id' : <mech id>,
+}
+{
+  //hud_HelmetImage
+  'uid'   : 1 //which  widget
+  'pos'   : <vector>
+  'size'  : <vector> // % of screen
+  'img'   : <string>  //image to render
+  'valign': <float>   //bitflag for alignment
+  'color1'  : <vector> //color option 1
+  //alpha set by game settings
+}
+{
+  //hud_renderEnergy for player
+  'uid'   : 2
+  'pos'   : <vector>
+  'size'  : <vector> // % of screen
+  'valign': <float>   //bitflag for alignment
+  'label' : <float> // yes / no on label
+  'lalign': <float> //bitflag for alignment of label
+  'axis'  : <float> //axis direction of meter, Vertical 
+  'lblofs': <vector>  //offset for label, Vertical or Horizontal
+}
+{
+  //hud_renderArmorGraph for player
+  'uid'   : 3
+  'pos'   : <vector>
+  'valign': <float>   //bitflag for alignment
+}
+{
+  //hud_renderShield for player
+  'uid'   : 4
+  'pos'   : <vector>
+  'size'  : <vector> // % of screen
+  'valign': <float>   //bitflag for alignment
+  'label' : <float> // yes / no on label
+  'lalign': <float> //bitflag for alignment of label
+  'axis'  : <float> //axis direction of meter, Vertical 
+  'lblofs': <vector>  //offset for label, Vertical or Horizontal
+}
+{
+  //hud_renderArmorGraph for target
+  //hud_renderArmorGraph for player
+  'uid'   : 5
+  'pos'   : <vector>
+  'valign': <float>   //bitflag for alignment
+}
+{
+  //hud_renderShield for target
+  'uid'   : 6
+  'pos'   : <vector>
+  'size'  : <vector> // % of screen
+  'valign': <float>   //bitflag for alignment
+  'label' : <float> // yes / no on label
+  'lalign': <float> //bitflag for alignment of label
+  'axis'  : <float> //axis direction of meter, Vertical 
+  'lblofs': <vector>  //offset for label, Vertical or Horizontal
+}
+{
+  //hud_renderWeapon_t1
+  'uid'   : 7,
+  'pos'   : <vector>
+  'align': <float>   //bitflag for alignment
+  'w_bit' : <float>   //unique bit 1,2,4,8,16,21,64,128,256
+}
+{
+  //hud_renderWeapon_t2
+  'uid'   : 8,
+  'pos'   : <vector>
+  'align' : <float>   //bitflag for alignment
+  'w_bit' : <float>   //unique bit 1,2,4,8,16,21,64,128,256
+}
+{
+  //hud_renderRadarStatus1(vector torg, float algn, float status, float radius, float flag) 
+  'uid'   : 9,
+  'pos'   : <vector>
+  'align' : <float>   //bitflag for alignment
+  'flag'  : <float>
+}
+{
+  //hud_renderRadarStatus2(vector torg, float algn, float status, float radius, float flag) 
+  'uid'   : 10,
+  'pos'   : <vector>
+  'align' : <float>   //bitflag for alignment
+  'flag'  : <float>
+}
+{
+  //hud_renderRadar(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
+  'uid'   : 11,
+  'pos'   : <vector>
+  'align' : <float>   //bitflag for alignment
+  'size'  : <vector>
+}
+{
+  //hud_renderNavHeading(vector pos, float algn, vector angle)  
+  'uid'   : 12,
+  'pos'   : <vector>
+  'align' : <float>   //bitflag for alignment
+}

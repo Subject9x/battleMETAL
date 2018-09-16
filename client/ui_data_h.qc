@@ -5,11 +5,12 @@ Date: 6/26/2018
 Overview: refactor ui data to file loading, header
 */
 
-float MECH_DATA_SIZES[GAME_TOTAL_MECHS];
-string MECH_DATA_NAMES[GAME_TOTAL_MECHS];
+float MECH_DATA_SIZES[256];
+string MECH_DATA_NAMES[256];
+string HUD_DATA_NAMES[256];
 
-string ITEM_DATA_ICONS[GAME_TOTAL_ITEMS];
-string ITEM_DATA_NAMES[GAME_TOTAL_ITEMS];
+string ITEM_DATA_ICONS[256];
+string ITEM_DATA_NAMES[256];
 
 //MECH DATA FILE
 float   MECH_DATA_ID;
@@ -74,12 +75,16 @@ string ITEM2_DATA_DESC;
 //functions
 void() ui_data_load_mechnames;
 void() ui_data_load_mechsizes;
+void() ui_data_load_hudnames;
 void() ui_data_clear_mechdata;
+void() ui_data_clear_huddata;
 float(float id) ui_data_load_mech;
+
+float( float id ) ui_data_load_hud;
 
 void() ui_data_load_itemnames;
 void() ui_data_load_itemicons;
-void(float id) ui_date_load_item1;
-void(float id) ui_date_load_item2;
+float(float id) ui_date_load_item1;
+float(float id) ui_date_load_item2;
 void() ui_data_clear_item1;
 void() ui_data_clear_item2;

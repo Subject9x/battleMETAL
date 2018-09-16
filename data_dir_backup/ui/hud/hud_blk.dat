@@ -1,0 +1,120 @@
+//Image background
+{
+  'uid'    : 1,
+  'pos'    : 226 175 0,
+  'size'   : 452 180 0,
+  'icon'   : gfx/hud/hud_blk_bck.png,
+  'valign' : 18,
+  'color1' : 1 1 1,
+}
+//Player Energy
+{
+  'uid'     : 2,
+  'pos'     : 102 87 0,
+  'valign'  : 18,
+  'size'    : 26 84 0,
+  'lflag'   : 1,
+  'lalign'  : 17,
+  'lblofs'  : 1 6 0,
+  'axis'    : 2,
+}
+//Player Shield
+{
+  'uid'     : 4,
+  'pos'     : 215 92 0,
+  'valign'  : 18,
+  'size'    : 90 12 0,
+  'lflag'   : 1,
+  'lalign'  : 5,
+  'lblofs'  : 0 10 0,
+  'axis'    : 1,
+}
+//Player Armor
+{
+  'uid'     : 3,
+  'pos'     : 170 45 0,
+  'valign'  : 18,
+}
+//Weapon 1 - Style 1
+{
+  'uid'     : 7,
+  'pos'     : 205 -42 0,
+  'valign'  : 48,
+  'wbit'    : 1,
+}
+//Weapon 2 - Style 1
+{
+  'uid'     : 7,
+  'pos'     : 168 -42 0,
+  'valign'  : 48,
+  'wbit'    : 2,
+}
+//Weapon 3 - Style 1
+{
+  'uid'     : 7,
+  'pos'     : 131 -42 0,
+  'valign'  : 48,
+  'wbit'    : 4,
+}
+//Radar Status - Style 2
+{
+  'uid'     : 10,
+  'pos'     : -70 80 0,
+  'valign'  : 18,
+}
+//Radar Graph
+{
+  'uid'     : 11,
+  'pos'     : 60 90 0,
+  'valign'  : 18,
+  'size'    : 90 90 0,
+}
+//Target Shield
+{
+  'uid'     : 6,
+  'pos'     : -125 92 0,
+  'valign'  : 18,
+  'size'    : 90 12 0,
+  'lflag'   : 1,
+  'lalign'  : 5,
+  'lblofs'  : 0 10 0,
+  'axis'    : 1,
+}
+//Target Armor - Mech
+{
+  'uid'     : 5,
+  'pos'     : 170 45 0,
+  'valign'  : 18,
+}
+//Nav Heading
+{
+  'uid'     : 12,
+  'pos'     : 8 16 0,
+  'valign'  : 17,
+}
+//Target Name
+{
+  'uid'     : 13,
+  'pos'     : 65 126 0,
+  'valign'  : 18,
+}
+//Target Range
+{
+  'uid'     : 14,
+  'pos'     : 65 116 0,
+  'valign'  : 18,
+}
+//Target Armor - Vec
+{
+  'uid'     : 15,
+  'pos'     : -145 48 0,
+  'valign'  : 18,
+  'size'    : 24 60 0,
+}
+//Target Armor - Building
+{
+  'uid'     : 16,
+  'pos'     : -110 46 0,
+  'valign'  : 18,
+  'size'    : 60 60 0,
+}

@@ -3,9 +3,31 @@ mech Mod
 Author: Peter Roohr
 Date: 2/17/2017
 mod - 5/11/2017
+mod - 9/15/2018
 Overview: the interface for hud rendering
 every hud ent has to implement this format
 */
+
+
+//HUD CONSTANTS==============================
+vector HUD_COLOR_DEF = '0.2 0.8 0.2';
+float HUD_UID_IMG_HELM      = 1;
+float HUD_UID_ENERGY        = 2;
+float HUD_UID_ARM_PLAYER    = 3;
+float HUD_UID_SHIELD_PLAYER = 4;
+float HUD_UID_ARM_TARGET    = 5;
+float HUD_UID_SHIELD_TARGET = 6;
+float HUD_UID_WEP_TYPE1     = 7;
+float HUD_UID_WEP_TYPE2     = 8;
+float HUD_UID_RADAR_TYPE1   = 9;
+float HUD_UID_RADAR_TYPE2   = 10;
+float HUD_UID_RADAR_GRAPH   = 11;
+float HUD_UID_NAV           = 12;
+float HUD_UID_TARGET_NAME   = 13;
+float HUD_UID_TARGET_RANGE  = 14;
+float HUD_UID_ARM_TARG_VEC  = 15;
+float HUD_UID_ARM_TARG_BLD  = 16;
+//==========================================
 
 
 //HUD GLOBALS===============================
@@ -15,7 +37,22 @@ every hud ent has to implement this format
   vector RADAR_VSIZE;
 //==========================================
 
-vector HUD_COLOR_DEF = '0.2 0.8 0.2';
+//HUD Text Data Arrays======================
+float UI_DATA_UIDS[32]; // - primary key / table for hud objects
+vector UI_DATA_POS[32];
+vector UI_DATA_SIZE[32];
+float UI_DATA_ALIGN[32];
+float UI_DATA_LABEL_FLAG[32];
+float UI_DATA_LABEL_ALIGN[32];
+float UI_DATA_AXIS_FLAG[32];
+vector UI_DATA_LABEL_OFS[32];
+vector UI_DATA_COLOR1[32];
+vector UI_DATA_COLOR2[32];
+string UI_DATA_IMG[32]; //background image if needed
+string UI_DATA_LABEL[32];
+float UI_DATA_WEPBIT[32];
+
+//==========================================
 
 string HUT_RET_PIP_HRZ;
 string HUT_RET_PIP_VRT;
@@ -71,3 +108,7 @@ void(float delta) hud_renderRepairValue;
 //entry point for the mech hud system
 void( float mech_id ) hud_frame;
 
+//new text-based hud system
+void( float uid, float targetId ) hud_data_renderTarget_Shield;
+vector( float wbit ) hud_data_weapon_info;
+void() data_hud_frame;

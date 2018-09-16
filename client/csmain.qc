@@ -100,6 +100,7 @@ void() CSQC_Init =
   ui_data_load_mechsizes();
   ui_data_load_itemnames();
   ui_data_load_itemicons();
+  ui_data_load_hudnames();
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -340,7 +341,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     snd_hud_vfx_targkill(self.stat_trg_ddflg);
     
     //HUD RENDER FRAME SYSTEM
-    hud_frame( self.data_idx );
+    data_hud_frame();
     
     if(self.player_state == PLAYER_SPRINT_ON){
       local float slen;

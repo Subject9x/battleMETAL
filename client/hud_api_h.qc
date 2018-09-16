@@ -9,11 +9,4 @@ string HUD_BLK_IMG_B;
 string HUD_MTK_IMG_B;
 string HUD_MNT_IMG_B;
 
-//-------------------------BALAKET------------------------
-void() hud_blk_frame;
-
-//-------------------------MATOK------------------------
-void() hud_mtk_frame;
-
-//-------------------------MONITOR------------------------
-void() hud_mnt_frame;
+//TODO - delete me, refactor client-side precache?

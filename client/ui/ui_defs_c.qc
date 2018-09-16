@@ -60,18 +60,20 @@ void() menu_handleFrame={
   
   mpos_x = cursorpos_x - gui_percentXRaw(2);
   mpos_y = cursorpos_y -  gui_percentXRaw(4);
-
-  if(self.plr_menu_choice == MENU_HANGAR_ACTIVE){
-    menu_hangarDrawFrame(); 
-  }
-  else if(self.plr_menu_choice == MENU_BRIEF_ACTIVE){
-    menu_briefDrawFrame();
-  }
-  else if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
-    menu_arming_drawFrame();
-  }
-  else if(self.plr_menu_choice == MENU_DEPLOY_ACTIVE){
-    menu_deployDrawFrame();
+  
+  switch( self.plr_menu_choice ){
+    case MENU_HANGAR_ACTIVE:
+      menu_hangarDrawFrame(); 
+      break;
+    case MENU_BRIEF_ACTIVE:
+      menu_briefDrawFrame();
+      break;
+    case MENU_ARMING_ACTIVE:
+      menu_arming_drawFrame();
+      break;
+    case MENU_DEPLOY_ACTIVE:
+      menu_deployDrawFrame();
+      break;
   }
   menu_navBar(VIEW_ORG);
   drawpic(mpos, UI_CURSOR_IMG,  i_sz, '1 1 1', HUD_ALPHA, 0);
@@ -105,6 +107,7 @@ void() mechAcceptButtonListener={
       setcursormode(0);
       self.plr_nav_pnt = -1;
       LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
+      ui_data_load_hud( self.plr_sel_mech );
     }
   }
 };
@@ -339,13 +342,6 @@ void(float num, vector org) ui_renderHardPointNumber={
 void( entity box ) ui_renderHUDHighlight={
   local vector bx_pos, bx_sz, bx_clr, l1, l2, l3;
   local float x,y;
-  
-  
-  /*
-    hfx.origin = te_read_vector();
-  hfx.drawsize = te_read_vector();
-  hfx.drawcolor1 = te_read_vector();
-  */
   
   x = (0.1/100) * VIEW_MAX_x;
   y = (0.1/100) * VIEW_MAX_y;
