@@ -38,6 +38,4 @@ void() building_radar={
   self.think = building_think;
   self.use = multi_trigger;
   self.nextthink = time + 1;
-  self.SendEntity = send_building;
-  self.SendFlags = -1;
 };

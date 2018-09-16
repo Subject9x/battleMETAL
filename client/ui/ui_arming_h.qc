@@ -98,5 +98,3 @@ void(vector ofs) menu_arming_AssignToHardpoint_btn;
 float(float comp, float bits) checkIfWeaponInGroup;
 void() cleanHardPoints;
 string(float bit) getNameOfWepType;
-void() stashMechConfig;
-void(entity next) grabMechConfig;

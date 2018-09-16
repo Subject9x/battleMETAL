@@ -142,9 +142,6 @@ void() building_repair={
   self.movetype = MOVETYPE_NONE;
   self.nextthink = time + 0.1;
   self.use = multi_trigger;
-  self.SendEntity = send_building;
-  self.SendFlags = -1;
-
   
   if(util_cornerSlopeCheck(self, 1)){
     util_generateBuildingFoundation(self);

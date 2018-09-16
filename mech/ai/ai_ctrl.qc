@@ -468,7 +468,7 @@ void() ai_stand={
   //q1_ai_stand() ;
   if( time > self.patience && !self.enemy){  
     //self.patience  = time + self.ai_viewcheck;
-    self.patience  = time + 1; //DEBUG1
+    self.patience  = time + 1; //DEBUG
     cons_logAString("Bot Here", "Having a look around"); //DEBUG
     if( ai_find_target_visual() ){
       cons_logAString("Bot Here", "found target!"); //DEBUG

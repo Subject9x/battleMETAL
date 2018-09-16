@@ -102,8 +102,6 @@ void() building_power={
   
   self.th_die = hpower_die1;
   self.use = multi_trigger;
-  self.SendEntity = send_building;
-  self.SendFlags = -1;
   
   hpower_th();
 };

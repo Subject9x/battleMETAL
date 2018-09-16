@@ -43,6 +43,7 @@ float ARM_RAD = 24;
 
 .float plr_sel_mech; //used for mech selection
 .float plr_sel_size;
+.float plr_sel_cfg; // mech config file num
 .float plr_sel_hrpnt;
 .float plr_sel_wep;
 .float plr_sel_list_wep;
@@ -67,8 +68,6 @@ float ARM_RAD = 24;
 .float plr_sel_hrpnt_size;
 .float plr_sel_hrpnt_types;
 .float plr_menu_choice; 
-
-.float wep1_reload;
 
 //widget vars
 .string c_mdl;

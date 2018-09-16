@@ -133,7 +133,7 @@ void(vector ofs) menu_navBar={
   
   local vector arming_clr;
   local float arming_flt;
-  if(SELECTED_MECH != world){
+  if(SELECT_MECH != 0){
     arming_clr = '0.75 0.75 0.75';
     arming_flt = (self.plr_menu_choice == MENU_ARMING_ACTIVE);
     if(arming_flt){
@@ -207,7 +207,7 @@ void() navBarListener={
     cl_get_mechs_sort();
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
-    if(SELECTED_MECH != world){
+    if(SELECT_MECH != 0){
       self.plr_menu_choice = MENU_ARMING_ACTIVE;
     }
   }
@@ -337,6 +337,21 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
 
 void(float num, vector org) ui_renderHardPointNumber={
   drawstring(org, ftos(num), gui_percentToPixelRawVec('12 10'), CLR_DEF_RET_HASLOCK, 1, 0);
+};
+
+
+void() ui_renderHUD_Highlight_frame={
+  local entity boxes;
+  boxes = findchainfloat( data_idx, -3 );
+  while( boxes ){
+    local entity rem;
+    rem = boxes;
+    boxes = boxes.chain;
+    ui_renderHUDHighlight( rem );
+    if( time > rem.drawme ){
+      remove( rem );
+    }
+  }
 };
 
 void( entity box ) ui_renderHUDHighlight={

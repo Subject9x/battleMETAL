@@ -135,7 +135,5 @@ void() building_shield={
   
   self.th_die = hshield_die;
   self.use = multi_trigger;
-  self.SendEntity = send_building;
-  self.SendFlags = -1;
   hshield_th();
 };

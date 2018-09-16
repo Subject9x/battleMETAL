@@ -143,19 +143,6 @@ float(entity ent, float changed) send_vehicle={
   return TRUE;
 };
 
-float(entity ent, float changed) send_building={
-  WriteByte(MSG_ENTITY, DATA_BLD);
-  WriteByte( MSG_ENTITY, self.data_idx);
-  WriteByte( MSG_ENTITY, self.i_faction);
-  WriteCoord( MSG_ENTITY, self.origin_x );
-  WriteCoord( MSG_ENTITY, self.origin_y ); 
-  WriteCoord( MSG_ENTITY, self.origin_z );
-  WriteAngle( MSG_ENTITY, self.angles_x);
-  WriteAngle( MSG_ENTITY, self.angles_y);
-  WriteAngle( MSG_ENTITY, self.angles_z);
-  return TRUE;
-};
-
 float(entity ent, float changed) send_ai_mech={
 //super ugly hack, send ai's e_cam ent
   WriteByte( MSG_ENTITY, DATA_MECH_AI );

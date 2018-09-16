@@ -132,7 +132,6 @@ void() client_get_hud_highlight={
   
 };
 
-
 void() receive_ent_bindData={
   self.netname = getstats( STAT_PLR_NAME );
   self.flags = getstati( STAT_ROCKETS );

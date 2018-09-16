@@ -28,29 +28,16 @@ void() mechSelectListener={
     }
     
     if(found > FALSE){
-      local float change;
-      change = FALSE;
-      if(found != self.plr_sel_mech){
-        change = TRUE;
+
+      if( (LAUNCH_VALIDATION & VALID_MECH) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION - ( LAUNCH_VALIDATION & VALID_MECH) ;
       }
-      if(change){
-        local entity nxt;
-        nxt = m_findMechData(found);
-        ui_data_load_mech(found);
-        SELECT_MECH = found;
-        if(nxt){ 
-          if(SELECTED_MECH != world){
-            stashMechConfig();
-          }
-          self.plr_sel_mech = found;
-          self.plr_sel_size = MECH_DATA_SIZES[found];
-          cleanHardPoints();
-          grabMechConfig(nxt);
-          SELECTED_MECH = nxt;
-          if( !(LAUNCH_VALIDATION & VALID_MECH) ){
-            LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_MECH;
-          }
-        }
+      if(found != self.plr_sel_mech){
+        ui_mech_config_switch( found, 0 );
+      }
+
+      if( !(LAUNCH_VALIDATION & VALID_MECH) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_MECH;
       }
     }
   }
@@ -223,9 +210,9 @@ void(vector ofs) menu_hangar_MechListHeavy={
   sofs = nofs;
   sofs_y = sofs_y + gui_percentYRaw(4);
   while(ui_lst_cnt <= GAME_TOTAL_MECHS){
-    local entity dat;
     local vector lofs, clr;   
     local float siz;
+    
     siz = MECH_DATA_SIZES[dat_id];
     if(MECHLIST_HEAVY_ARR[dat_id] != 0){
       lofs_x = sofs_x;

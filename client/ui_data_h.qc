@@ -88,3 +88,5 @@ float(float id) ui_date_load_item1;
 float(float id) ui_date_load_item2;
 void() ui_data_clear_item1;
 void() ui_data_clear_item2;
+
+void( float mechId, float fileNum  ) ui_mech_config_switch;

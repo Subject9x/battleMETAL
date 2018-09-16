@@ -120,3 +120,143 @@ string(float data_idx) data_get_weapon_icon={
     idx = idx + 1;
   }
 };
+
+void() data_mech_config_clearBuffer={
+  local float itr;
+  itr = 1;
+  data_config_buffer_fileNum = 0;
+  if( data_config_buffer_name != "" ){
+    strunzone( data_config_buffer_name );
+  }
+  data_config_buffer_name = "";
+  
+  while( itr <= 9 ){
+    data_config_buffer_weps[itr] = 0;
+    if( itr <= 5 ){
+      data_config_buffer_grps[itr] = 0;
+    }
+    itr = itr + 1;
+  }
+};
+
+void( float mechId, float configNum ) data_mech_config_save={
+  local float flannel, itr;
+  local string file, line, group;
+
+  itr = 1;
+  file = strcat(PATH_DATA_UI, "/loadouts/", ftos(mechId), "/", ftos(configNum),".dat");
+ 
+  flannel = fopen(file, FILE_WRITE);
+  fputs(flannel, "{\n");
+  fputs(flannel, strcat("  'id' : ", ftos(data_config_buffer_fileNum), ",\n"));
+  fputs(flannel, strcat("  'name' : ", data_config_buffer_name, ",\n"));
+  
+  while( itr <= MECH_DATA_HPOINTS ){
+    local string wep;
+    local float wepid;
+    wepid = HARDPOINTS[itr];
+    wep = strcat( "  'hpt_", ftos(itr), "' : ", ftos(wepid), ",\n");
+    fputs(flannel, wep);
+    itr = itr + 1;
+  }
+  group = strcat( "  'group_", ftos(1), "' : ", ftos(self.plr_nex_grp1), ",\n");
+  fputs(flannel, group);
+  
+  group = strcat( "  'group_", ftos(2), "' : ", ftos(self.plr_nex_grp2), ",\n");
+  fputs(flannel, group);
+ 
+  group = strcat( "  'group_", ftos(3), "' : ", ftos(self.plr_nex_grp3), ",\n");
+  fputs(flannel, group);
+  
+  group = strcat( "  'group_", ftos(4), "' : ", ftos(self.plr_nex_grp4), ",\n");
+  fputs(flannel, group);
+  
+  group = strcat( "  'group_", ftos(5), "' : ", ftos(self.plr_nex_grp5), ",\n");
+  fputs(flannel, group);
+  
+  fputs(flannel, "}");
+  fclose(flannel);
+};
+
+float( float mechId, float configNum ) data_mech_config_load={
+  local float flannel, line_tag, line_val;
+  local string file, contents, line;
+  file = strcat(PATH_DATA_UI, "/loadouts/", ftos(mechId), "/", ftos(configNum),".dat");
+  flannel = fopen(file, FILE_READ);
+  if(flannel == -1){
+    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
+    return FALSE;
+  }
+  contents = fgets(flannel);
+  //tokenizebyseparator(contents, "{", ",", "}");
+  line = fgets(flannel);
+  while( (line != "") ){
+    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
+      line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
+      local string token, value;
+      token = argv(1);
+      value = argv(3);
+      if( token != ""){
+        if( token == "id"){
+          data_config_buffer_fileNum = stof(value);
+        }
+        if( token == "name"){
+          data_config_buffer_name = strzone(value);
+        }
+        if( strstrofs(token, "hpt",0) != -1 ){
+          tokenizebyseparator(token, "_");
+          local float idx;
+          idx = stof(argv(1));
+          data_config_buffer_weps[idx] = stof(value);
+        }
+        if( strstrofs(token, "group",0) != -1 ){
+          tokenizebyseparator(token, "_");
+          local float idx;
+          idx = stof(argv(1));
+          data_config_buffer_grps[idx] = stof(value);
+        }
+      }
+    }
+    line = fgets(flannel);
+  }
+  fclose(flannel);
+  return TRUE;
+};
+
+/*
+  Validates the Mech Config File against the target mech data.
+  We don't really want too much messing around here.
+*/
+float() data_mech_config_valid={
+  local float valid, itr;
+  
+  itr = 1;
+  
+  while( itr <= MECH_DATA_HPOINTS ){
+    local float wepid, wtype, wsize, hptsize, hpttype;
+    if( itr > MECH_DATA_HPOINTS ){
+      wepid = data_config_buffer_weps[itr];
+      if( wepid > 0 ){
+        cons_logAString("data_mech_config_valid", "FAILED - too many hardpoints");  //DEBUG
+        return FALSE; //Trying to sneak more weapons into the config file?
+      }
+    }
+    if( itr <= MECH_DATA_HPOINTS ){
+      wepid = data_config_buffer_weps[itr];
+      wtype = data_WeaponType[wepid];
+      wsize = data_WeaponSize[wepid];
+      hpttype = MECH_DATA_H_TYPE[itr];
+      hptsize = MECH_DATA_H_SIZE[itr];
+      if( !(hpttype & wtype) ){
+        cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Type mismatch");  //DEBUG
+        return FALSE;
+      }
+      if( wsize > hptsize ){
+        cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Size mismatch");  //DEBUG
+        return FALSE;
+      }
+    }
+    itr = itr + 1;
+  }
+  return TRUE;
+};

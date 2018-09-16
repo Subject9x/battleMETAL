@@ -48,11 +48,6 @@ hud_snd_sys_c.qc
   data/bld/data_h_fuel.qc
   data/bld/data_h_ltur.qc
   data/bld/data_h_repair.qc
-  
-  //Mechs
-  data/mch/data_matok_val.qc
-  data/mch/data_outlaw_val.qc
-  data/mch/data_monitor_val.qc
 
   //Vehicles
   data/vec/data_tank.qc

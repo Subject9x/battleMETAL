@@ -811,7 +811,7 @@ void() data_hud_frame={
           if( self.target_datatype == DATA_MECH ){
             porg = UI_DATA_POS[uid];
             algn = UI_DATA_ALIGN[uid];
-            hud_renderArmorGraph(porg, algn, self.hp_ctor, self.hp_stor, self.hp_stor2, self.hp_arm, self.hp_arm2, self.hp_leg);
+            hud_renderArmorGraph(porg, algn, self.stat_trg_ct_hp, self.stat_trg_lt_hp, self.stat_trg_rt_hp, self.stat_trg_la_hp, self.stat_trg_ra_hp, self.stat_trg_lg_hp);
           }
         }
         break;

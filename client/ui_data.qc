@@ -426,56 +426,42 @@ float( float id ) ui_data_load_hud={
       if( token != ""){
         if( token == "uid"){
           UI_DATA_UIDS[uid] = stof(value);
-          cons_logAFloat( "index", uid ); //DEBUG
-          cons_logAFloat( "uid", UI_DATA_UIDS[uid] ); //DEBUG
         }
         if( token == "pos"){
           UI_DATA_POS[uid] = stov(value);
-          cons_logAVector( "    pos", UI_DATA_POS[uid] ); //DEBUG
         }
         if( token == "size"){
           UI_DATA_SIZE[uid] = stov(value);
-          cons_logAVector( "    size", UI_DATA_SIZE[uid] ); //DEBUG
         }
         if( token == "icon"){
           UI_DATA_IMG[uid] = strzone(value);
-          cons_logAString( "    icon", UI_DATA_IMG[uid] ); //DEBUG
         }
         if( token == "valign"){
           UI_DATA_ALIGN[uid] = stof(value);
-          cons_logAFloat( "    valign", UI_DATA_ALIGN[uid] ); //DEBUG
         }
         if( token == "color1"){
           UI_DATA_COLOR1[uid] = stov(value);
-          cons_logAVector( "    color1", UI_DATA_COLOR1[uid] ); //DEBUG
         }
         if( token == "color2"){
           UI_DATA_COLOR2[uid] = stov(value);
-          cons_logAVector( "    color2", UI_DATA_COLOR2[uid] ); //DEBUG
         }
         if( token == "label"){
           UI_DATA_LABEL[uid] = strzone(value);
-          cons_logAString( "    label", UI_DATA_LABEL[uid] ); //DEBUG
         }
         if( token == "lalign"){
           UI_DATA_LABEL_ALIGN[uid] = stof(value);
-          cons_logAFloat( "    lalign", UI_DATA_LABEL_ALIGN[uid] ); //DEBUG
         }
         if( token == "axis"){
           UI_DATA_AXIS_FLAG[uid] = stof(value);
-          cons_logAFloat( "    axis", UI_DATA_AXIS_FLAG[uid] ); //DEBUG
         }
         if( token == "lblofs"){
           UI_DATA_LABEL_OFS[uid] = stov(value);
-          cons_logAVector( "    lblofs", UI_DATA_LABEL_OFS[uid] ); //DEBUG
         }
         if( token == "wbit"){
           UI_DATA_WEPBIT[uid] = stof(value);
-          cons_logAFloat( "    wbit", UI_DATA_WEPBIT[uid] ); //DEBUG
         }
         if( token == "lflag"){
           UI_DATA_LABEL_FLAG[uid] = stof(value);
-          cons_logAFloat( "    lflag", UI_DATA_LABEL_FLAG[uid] ); //DEBUG
         }
       }
     }
@@ -618,4 +604,54 @@ float(float id) ui_date_load_item2={
   return TRUE;
 };
 
+void( float mechId, float fileNum ) ui_mech_config_switch={
+  local float cfg, itr;
+  
+  if( self.plr_sel_mech > 0 ){
+    if( self.plr_sel_cfg > 0 ){
+      //prevents overriding Config 0 - the default config for each mech
+      data_mech_config_save( self.plr_sel_mech, self.plr_sel_cfg );
+    }
+    data_mech_config_clearBuffer();
+  }
+  
+  ui_data_load_mech( mechId );
+  
+  //Attempt to load and validate the desired config
+  cfg = data_mech_config_load( mechId, fileNum );
+  if( cfg ){
+    cfg = data_mech_config_valid();
+  }
+  
+  //hm, desired config has errors, try the DEFAULT? you did keep the default around....right?
+  if( !cfg ){
+    cfg = data_mech_config_load( mechId, 0 );
+    cfg = data_mech_config_valid();
+  }
+  
+  //welp, here goes, lets make the switch
+  if( cfg ){
+    SELECT_MECH = mechId;
+    self.plr_sel_mech = SELECT_MECH;
+    self.plr_sel_size = MECH_DATA_SIZES[SELECT_MECH];
+    cleanHardPoints();
+    self.plr_nex_grp1 = data_config_buffer_grps[1];
+    self.plr_nex_grp2 = data_config_buffer_grps[2];
+    self.plr_nex_grp3 = data_config_buffer_grps[3];
+    self.plr_nex_grp4 = data_config_buffer_grps[4];
+    self.plr_nex_grp5 = data_config_buffer_grps[5];
+    itr = 1;
+    while( itr <= MECH_DATA_HPOINTS ){
+      local float buffwep, hpt;
+      buffwep =  data_config_buffer_weps[itr];
+      HARDPOINTS[itr] = buffwep;
+      itr = itr + 1;
+    }
+    GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
+    GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
+    GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
+    GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
+    GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
+  }
 
+};

@@ -26,7 +26,9 @@ vector last_view;
 
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
+
 void( entity box ) ui_renderHUDHighlight;
+void() ui_renderHUD_Highlight_frame;
 
 vector MENU_BTN_LAUNCH_ORG;
 vector MENU_BTN_LAUNCH_SZ;

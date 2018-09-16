@@ -53,7 +53,6 @@ void() weaponSelectListener={
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC)){
     found = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixel(0.0703, 0.0166), WEPNLIST_CNT_MSC, 0);
     found = WEPLIST_MSC_ARR[found];
-    cons_logAFloat(" found ", found); //DEBUG
   }
   if(found  > 0){
    self.plr_sel_list_wep = found;
@@ -62,9 +61,8 @@ void() weaponSelectListener={
 };
 
 void() hardpointListener={
-
-  local entity dat;
   local float hpnt, hlist, wepbit;
+  
   if( SELECT_MECH > FALSE){
     hlist = 1;
     wepbit = 1;
@@ -362,12 +360,12 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   
   lst_idx = 1;
   bit = 1;
-  while(lst_idx <= self.hardpoint_cnt){
+  while(lst_idx <= MECH_DATA_HPOINTS){
     local vector lofs;
     lofs_x = nofs_x + gui_percentXRaw(6);
     lofs_y = nofs_y + gui_percentYRaw(lst_idx * 24);
     drawstring(lofs, strcat("[",ftos(lst_idx),"]"), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-    if(ITEM_DATA_ICONS[HARDPOINTS[lst_idx]] != ""){
+    if( ITEM_DATA_ICONS[HARDPOINTS[lst_idx]] != "" ){
       //ok that's funny and cool ^
       drawpic(lofs + gui_percentToPixelRawVec('16 -5'), ITEM_DATA_ICONS[HARDPOINTS[lst_idx]], gui_percentToPixelRawVec('22 24'), '1 1 1', HUD_ALPHA,0);
     }
@@ -403,7 +401,8 @@ void(vector ofs) menu_arming_energydraw={
   drawstring(ofs + gui_percentToPixelRawVec('4 18'), "by [Weapon Group]", '7 8 0', '1 1 1', HUD_ALPHA, 0);
   
   local float enmax, g1, g2, g3, g4, g5;
-  enmax = SELECTED_MECH.en_max;
+  //enmax = SELECTED_MECH.en_max;
+  enmax = MECH_DATA_ENMAX;
 
   drawstring(ofs + gui_percentToPixelRawVec('4 45'), "Group 1", '8 8 0', '1 1 1', HUD_ALPHA, 0);
     g1 = (GROUP_ENE_1 / enmax)*100;
@@ -572,7 +571,7 @@ float(float comp, float bits) checkIfWeaponInGroup={
 void() cleanHardPoints={
   local float lst_idx;
   lst_idx = 1;
-  while(lst_idx <= self.hardpoint_cnt){
+  while(lst_idx <= MECH_DATA_HPOINTS){
     HARDPOINTS[lst_idx] = 0;
     lst_idx = lst_idx + 1;
   }
@@ -596,49 +595,6 @@ string(float bit) getNameOfWepType={
   } 
 };
 
-void() stashMechConfig={
-  local entity prev;
-  
-  prev = m_findMechData(self.plr_sel_mech);
-  prev.plr_nex_grp1 = self.plr_nex_grp1;
-  prev.plr_nex_grp2 = self.plr_nex_grp2;
-  prev.plr_nex_grp3 = self.plr_nex_grp3;
-  prev.plr_nex_grp4 = self.plr_nex_grp4;
-  prev.plr_nex_grp5 = self.plr_nex_grp5;
-  
-  prev.plr_nex_wep1 = HARDPOINTS[1];
-  prev.plr_nex_wep2 = HARDPOINTS[2];
-  prev.plr_nex_wep3 = HARDPOINTS[3];
-  prev.plr_nex_wep4 = HARDPOINTS[4];
-  prev.plr_nex_wep5 = HARDPOINTS[5];
-  prev.plr_nex_wep6 = HARDPOINTS[6];
-  prev.plr_nex_wep7 = HARDPOINTS[7];
-  prev.plr_nex_wep8 = HARDPOINTS[8];
-  prev.plr_nex_wep9 = HARDPOINTS[9];
-};
-
-void(entity next) grabMechConfig={
-  self.plr_nex_grp1 = next.plr_nex_grp1;
-  self.plr_nex_grp2 = next.plr_nex_grp2;
-  self.plr_nex_grp3 = next.plr_nex_grp3;
-  self.plr_nex_grp4 = next.plr_nex_grp4;
-  self.plr_nex_grp5 = next.plr_nex_grp5;
-  self.hardpoint_cnt = next.hardpoint_cnt;
-  HARDPOINTS[1] = next.plr_nex_wep1;
-  HARDPOINTS[2] = next.plr_nex_wep2;
-  HARDPOINTS[3] = next.plr_nex_wep3;
-  HARDPOINTS[4] = next.plr_nex_wep4;
-  HARDPOINTS[5] = next.plr_nex_wep5;
-  HARDPOINTS[6] = next.plr_nex_wep6;
-  HARDPOINTS[7] = next.plr_nex_wep7;
-  HARDPOINTS[8] = next.plr_nex_wep8;
-  HARDPOINTS[9] = next.plr_nex_wep9;
-  GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
-  GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
-  GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
-  GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
-  GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
-};
 
 float(float grp) calc_energy_draw={
   local float sub, bit, lst_idx;
@@ -646,7 +602,7 @@ float(float grp) calc_energy_draw={
   bit = 1;
   lst_idx = 1;
   sub = 0;
-  while(lst_idx <= self.hardpoint_cnt){
+  while(lst_idx <= MECH_DATA_HPOINTS){
     if( (grp & bit) ){
       dat = m_findData(HARDPOINTS[lst_idx], DATA_WEPN);
       sub = sub + dat.en_rate;

@@ -93,7 +93,6 @@ void() ai_node_hunt_th={
         }
         else{
           if( this.target ){
-            cons_logAString("ai_node_hunt_th-> this.target", this.target ); //DEBUG
             self.goalentity = self.ai_hunt_node = find(world, targetname, this.target);
           }
           else{

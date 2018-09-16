@@ -123,13 +123,6 @@ void() cs_precache={
   building_ltur();
   building_repair();
   
-  //mech data
-  data_mech_mtk();
-  data_mech_otl();
-  data_mech_MNT();
-  
-  //vehicles
-  data_TNK_hmn();
 };
 
 entity(float id, float dat_type) m_findData={
@@ -139,22 +132,6 @@ entity(float id, float dat_type) m_findData={
     local float idx;
     idx = data_chain.data_idx;
     if(data_chain.data_type == dat_type){
-      if(id == idx){
-        return data_chain;
-      }
-    }
-    data_chain = data_chain.chain;
-  }
-  return data_chain;
-};
-
-entity(float id) m_findMechData={
-  local entity data_chain;
-  data_chain = findchain(classname, "data_mech");
-  while(data_chain){
-    if(data_chain.data_type == DATA_MECH){
-      local float idx;
-      idx = data_chain.data_idx;
       if(id == idx){
         return data_chain;
       }

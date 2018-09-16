@@ -32,7 +32,6 @@ void( entity radarPing ) client_push_radar_ping;
 void( entity targetClient ) client_push_hud_highlight;
 
 float(entity ent, float changed) send_vehicle;
-float(entity ent, float changed) send_building;
 float(entity ent, float changed) send_ai_mech;
 
 //client command layer

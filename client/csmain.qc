@@ -353,22 +353,9 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       drawstring(spos, "[EVASION ON]", '12 10 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
     }
     
-    /*local float bx_time;
-    bx_time = getstati(UI_BOX_TIME);
-    if(bx_time > 0){
-    }*/
     
-    local entity boxes;
-    boxes = findchainfloat( data_idx, -3 );
-    while( boxes ){
-      local entity rem;
-      rem = boxes;
-      boxes = boxes.chain;
-      ui_renderHUDHighlight( rem );
-      if( time > rem.drawme ){
-        remove( rem );
-      }
-    }
+    //HUD Highlight Boxes
+    ui_renderHUD_Highlight_frame();
     
     ui_objective_frame(VIEW_ORG);
   }
@@ -543,7 +530,6 @@ float(entity ent, float channel, string soundname, float volume, float attenuati
 };
 
 float() CSQC_Parse_Event={
-  cons_logAFloat("CSQC_Parse_Event", TRUE); //DEBUG
   return FALSE;
 };
 
@@ -561,7 +547,6 @@ float(float event) CSQC_Event =
 // OPTIONAL, probably should be deprecated as well
 entity(float entnum) CSQC_Ent_Spawn =
 {
-  cons_logAFloat("spawn?", 1); //DEBUG
 	return spawn();
 };
 
