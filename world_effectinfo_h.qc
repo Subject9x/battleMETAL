@@ -26,3 +26,4 @@ void(vector org, vector end) te_beam_laser;
 void(vector org, vector end) te_beam_esr;
 void(vector org, vector end) te_beam_pac;
 void(vector org, vector vel, float cnt) te_smoke_test;
+void(vector org, vector angl) te_shield_test;

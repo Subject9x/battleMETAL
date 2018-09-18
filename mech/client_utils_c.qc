@@ -143,31 +143,6 @@ float(entity ent, float changed) send_vehicle={
   return TRUE;
 };
 
-float(entity ent, float changed) send_ai_mech={
-//super ugly hack, send ai's e_cam ent
-  WriteByte( MSG_ENTITY, DATA_MECH_AI );
-  WriteByte( MSG_ENTITY, changed);
-  if( (changed & SEND_FLAG_DATA_IDX) ){
-    WriteByte( MSG_ENTITY, self.owner.data_idx);
-    WriteByte( MSG_ENTITY, self.owner.vec_size);
-  }
-  if( (changed & SEND_FLAG_SHIELD_VAL) ){
-    WriteByte( MSG_ENTITY, self.owner.sh_cur);
-  }
-  if( (changed & SEND_FLAG_RADAR_MODE) ){
-    WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
-  }
-  if( (changed & SEND_FLAG_FACTION) ){
-    WriteByte( MSG_ENTITY, self.owner.i_faction);
-  }
-  if( (changed & SEND_FLAG_ORIGIN) ){
-    WriteCoord( MSG_ENTITY, self.owner.origin_x );
-    WriteCoord( MSG_ENTITY, self.owner.origin_y );
-    WriteCoord( MSG_ENTITY, self.owner.origin_z );
-  }
-  return TRUE;
-};
-
 /*
   client sends string 'cmd mech foo'
   where foo is the command, first parm must be 'mech'
@@ -544,36 +519,5 @@ void() client_updateWeaponReloads={
     }
     idx = idx + 1;
     e = e.w_slot;
-  }
-};
-
-float(float val, float rel, float wpn_rel, float rdy, float bit) client_incrementReload={
-  if((rdy & bit)){
-    local float t;
-    t = time;
-    val = (rel - t);
-    val = val / wpn_rel;
-    val = (1 - val);
-    if(val <= 0){
-      val = 0;
-    }
-  }
-  else{
-    val = 1;
-  }
-  return val;
-};
-
-//highlights a part of the hud over X number of seconds, useful for tutorials
-void(float timer, vector pos, vector bsize, vector clr, entity client) client_HighlightHUDRec={
-  local entity this;
-  if((client.flags & FL_CLIENT)){
-    this = self;
-    self = client;
-      self.ui_box_time = timer;
-      self.ui_box_pos = pos;
-      self.ui_box_sz = bsize;
-      self.ui_box_clr = clr;
-    self = this;
   }
 };

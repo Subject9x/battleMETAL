@@ -15,5 +15,6 @@ float TE_LASER_BEAM = 65;
 float TE_ESR_BEAM = 66;
 float TE_PAC_BEAM = 67;
 float TE_SMOKE_TEST = 68;
+float TE_SHIELD_TEST = 69;
 
 //ALERT: 70-74 are reserved, otherwise go nuts

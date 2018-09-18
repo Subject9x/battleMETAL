@@ -212,57 +212,6 @@ void( float isnew ) receive_ent_mapObjective={
   snd_hud_vfx_objectivelistener(self.value1, self.isActive);
 };
 
-void( float isnew ) receive_ent_aiBuilding={
-  self.data_idx = ReadByte();
-  self.data_type = DATA_BLD;
-  if(isnew){
-    local entity dat;
-    dat = m_findData(self.data_idx, DATA_BLD);
-    setmodel(self, dat.e_model);
-    self.drawmask = MASK_ENGINE;
-  }
-  self.i_faction = ReadByte();
-  self.origin_x = ReadCoord();
-  self.origin_y = ReadCoord();
-  self.origin_z = ReadCoord();
-  self.angles_x = ReadAngle();
-  self.angles_y = ReadAngle();
-  self.angles_z = ReadAngle();
-  setorigin(self, self.origin);
-};
-
-void( float isnew ) receive_ent_aiVehicle={
-  local float delta;
-  delta = ReadByte();
-  if(isnew){
-    self.data_type = DATA_VEHC;
-    self.drawmask = MASK_ENGINE;
-  }
-  
-  if( (delta & SEND_FLAG_DATA_IDX) ){
-    self.data_idx = ReadByte();
-    self.vec_size = ReadByte();
-  }
-  if(isnew){
-    self.drawmask = MASK_ENGINE;
-  }
-  if( (delta & SEND_FLAG_SHIELD_VAL) ){
-    self.sh_cur = ReadByte();
-  }
-  if( (delta & SEND_FLAG_RADAR_MODE) ){
-    self.stat_rdr_mode = ReadByte();
-  }
-  if( (delta & SEND_FLAG_FACTION) ){
-    self.i_faction = ReadByte();
-  }
-  if( (delta & SEND_FLAG_ORIGIN) ){
-    self.origin_x = ReadCoord();
-    self.origin_y = ReadCoord();
-    self.origin_z = ReadCoord();
-    setorigin(self, self.origin);
-  }
-};
-
 void( float isnew ) receive_ent_mapDeployPoint={
   if(isnew){
     self.ui_org = '0 0 0'; 

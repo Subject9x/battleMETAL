@@ -571,43 +571,9 @@ void(float isnew) CSQC_Ent_Update =
     case DATA_OBJT:
       receive_ent_mapObjective( isnew );
       return;
-    case DATA_BLD:
-      receive_ent_aiBuilding( isnew );
-      return;
-    case DATA_VEHC:
-      receive_ent_aiVehicle( isnew );
-      return;
     case DATA_DEPL:
       receive_ent_mapDeployPoint( isnew );
       return;
-  }
-  
-  if(id == DATA_MECH_AI){
-    local float delta;
-    delta = ReadByte();
-    if( (delta & SEND_FLAG_DATA_IDX) ){
-      self.data_idx = ReadByte();
-      self.vec_size = ReadByte();
-    }
-    self.data_type = DATA_MECH;
-    if(isnew){
-      self.drawmask = MASK_ENGINE;
-    }
-    if( (delta & SEND_FLAG_SHIELD_VAL) ){
-      self.sh_cur = ReadByte();
-    }
-    if( (delta & SEND_FLAG_RADAR_MODE) ){
-      self.stat_rdr_mode = ReadByte();
-    }
-    if( (delta & SEND_FLAG_FACTION) ){
-      self.i_faction = ReadByte();
-    }
-    if( (delta & SEND_FLAG_ORIGIN) ){
-      self.origin_x = ReadCoord();
-      self.origin_y = ReadCoord();
-      self.origin_z = ReadCoord();
-      setorigin(self, self.origin);
-    }    
   }
 };
 

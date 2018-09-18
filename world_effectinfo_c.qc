@@ -57,6 +57,17 @@ void(vector org, vector vel, float cnt) te_smoke_test={
 };
 
 
+void(vector org, vector angl) te_shield_test={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_SHIELD_TEST );
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+  WriteCoord (MSG_BROADCAST, angl_x);
+  WriteCoord (MSG_BROADCAST, angl_y);
+  WriteCoord (MSG_BROADCAST, angl_z);
+};
+
 //compound effects
 void(vector org, vector clr) te_muzzle_laser={
   local entity vfx;

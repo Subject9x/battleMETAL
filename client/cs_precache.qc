@@ -113,16 +113,6 @@ void() cs_precache={
    DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);
    DAT_MNT_UI_IMG = precache_pic("gfx/ui/hgr_MNT.png",0);
    DAT_MTK_UI_IMG = precache_pic("gfx/ui/hgr_mtk.png",0);
-  
-  //buildings
-  building_power();
-  building_shield();
-  building_radar();
-  building_hangar_l();
-  building_fuel();
-  building_ltur();
-  building_repair();
-  
 };
 
 entity(float id, float dat_type) m_findData={

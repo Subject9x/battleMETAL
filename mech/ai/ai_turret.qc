@@ -230,8 +230,6 @@ void() ai_turret_th={
 
   ai_state_control( self.attack_state );
   
-  self.e_cam.SendFlags = -1;
- 
   self.think = ai_turret_th;
   self.nextthink = time + 0.05; 
 };
@@ -248,9 +246,6 @@ void() ai_turret={
   ai_unit_ini_var();
   data_iniTurret( self.nextVecChoice );
   ai_pilot_ini_stats( ai_pilot_rank_byskill() );
-  
-  self.e_cam.SendEntity = send_vehicle;
-  self.e_cam.SendFlags = -1;
   
   self.th_stand = ai_turret_stand;
   self.th_walk = ai_turret_walk;

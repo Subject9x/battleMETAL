@@ -1532,7 +1532,8 @@ float MF_TRACER3 = 128; // purple trail
 //silly example modification #2 to W_FireRocket in weapons.qc:
 //missile.modelflags = MF_GIB; // leave a blood trail instead of glow/fire trail
 //
-//note: you can not combine multiple kinds of trail, only one of them will be active, you can combine MF_ROTATE and the other MF_ flags however, and using EF_NOMODELFLAGS along with these does no harm.
+//note: you can not combine multiple kinds of trail, only one of them will be active, you can combine MF_ROTATE and the other 
+//MF_ flags however, and using EF_NOMODELFLAGS along with these does no harm.
 //
 //note to engine coders: they are internally encoded in the protocol as extra EF_ flags (shift the values left 24 bits and send them in the protocol that way), so no protocol change was required (however 32bit effects is a protocol extension itself), within the engine they are referred to as EF_ for the 24bit shifted values.
 

@@ -25,6 +25,9 @@ float( float te_id ) te_effect_delegate={
     case TE_SMOKE_TEST:
       hand = te_smoke_test( te_read_vector(), te_read_vector(), ReadByte() );
       break;
+    case TE_SHIELD_TEST:
+      hand = te_shield_test( te_read_vector(), te_read_vector() ) ;
+      break;
     default:
       hand = FALSE;
       break;
@@ -46,26 +49,46 @@ vector() te_read_vector={
   return newv;
 };
 
-//TE_LASER_BEAM = 61
 float(vector org, vector end) te_beam_laser={
   trailparticles(world, particleeffectnum("BEAM_LASER"), org, end);
   return TRUE;
 };
 
-//TE_PAC_BEAM = 62;
+
 float(vector org, vector end) te_beam_esr={
   trailparticles(world, particleeffectnum("BEAM_ESR"), org, end);
   return TRUE;
 };
 
-//TE_ESR_BEAM = 63
 float(vector org, vector end) te_beam_pac={
   trailparticles(world, particleeffectnum("BEAM_PAC"), org, end);
   return TRUE;
 };
 
-//TE_SMOKE_TEST = 64;
+
 float(vector org, vector vel, float cnt) te_smoke_test={
   pointparticles(particleeffectnum("SMOKE_TEST"), org , vel, cnt);
+  return TRUE;
+};
+
+float(vector org, vector angl) te_shield_test={
+  local entity burst;
+  makevectors( angl );
+  org = org + v_forward * 10;
+  burst = spawn();
+  setorigin(burst, org);
+  setmodel(burst, "q3mdl/fx_shield.md3");
+  setsize(burst, '-1 -1 -1', '1 1 1');
+  burst.angles = angl;
+  burst.alpha = 1;
+  burst.effects = EF_NOSHADOW | EF_BLUE | EF_ADDITIVE;
+  burst.movetype = MOVETYPE_NONE;
+  burst.solid = SOLID_NOT;
+  burst.think = te_shield_think;
+  burst.nextthink = time + 0.1;
+  burst.drawmask = MASK_NORMAL;
+  sound(burst, CHAN_VOICE, "sound/fx_shieldhit.ogg", 0.75, ATTN_NORM);
+
+  te_customflash(org, 50, 0.3, '0 0 1'); 
   return TRUE;
 };

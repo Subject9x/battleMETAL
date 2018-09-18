@@ -62,22 +62,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
   }
   else{
-    //todo turn this into effect.txt stuff
-    newmis = spawn();
-    oself = self; 
-    self = newmis;
-      self.classname = "missile";
-      setorigin(self, dmg_point);
-      setmodel(self, "q3mdl/fx_shield.md3");
-      setsize(self, '-1 -1 -1', '1 1 1');
-      self.alpha = 0.75;
-      self.effects = self.effects | EF_NOSHADOW | EF_BLUE;
-      self.movetype = MOVETYPE_NONE;
-      self.solid = SOLID_NOT;
-      self.think = SUB_Remove;
-      self.nextthink = time + 0.1;
-      sound(self, CHAN_VOICE, "sound/fx_shieldhit.ogg", 0.75, ATTN_NORM);
-    self = oself;
+    te_shield_test( dmg_point, vectoangles( attacker.origin - dmg_point ) );
     return trg;
   }
   

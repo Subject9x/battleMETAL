@@ -31,9 +31,6 @@ void( entity targetClient) server_push_player_info; //simply wraps client_push_p
 void( entity radarPing ) client_push_radar_ping;
 void( entity targetClient ) client_push_hud_highlight;
 
-float(entity ent, float changed) send_vehicle;
-float(entity ent, float changed) send_ai_mech;
-
 //client command layer
 void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;
@@ -43,10 +40,8 @@ void() client_sendMissionFileName;
 void(string fileName) client_sendAnimaticFileName;
 void(string cmd, float tokens) client_setNavPoint;
 void() client_updateWeaponReloads;
-float(float val, float rel, float wpn_rel, float rdy, float bit)client_incrementReload;
 void(string mechs) client_sendAvailableLightMechs;
 void(string mechs) client_sendAvailableMediumMechs;
 void(string mechs) client_sendAvailableHeavyMechs;
 void(string itms) client_sendAvailableItems;
 void(float mode) client_sendGameMode;
-void(float timer, vector pos, vector bsize, vector clr, entity client) client_HighlightHUDRec;

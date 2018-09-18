@@ -149,8 +149,6 @@ void() ai_dest_th={
     self.button0 = 0;
   }
   
-  
-  self.SendFlags = -1;
   ai_state_control( self.attack_state );
   
   if( !(self.flags & FL_SKIPTHINK ) ){
@@ -247,9 +245,6 @@ void() ai_vec_dest={
   }
   
   droptofloor();
-   
-  self.e_cam.SendFlags = -1;
-  self.e_cam.SendEntity = send_vehicle;
 
   self.th_stand = ai_dest_stand;
   self.th_walk = ai_generic_walk;

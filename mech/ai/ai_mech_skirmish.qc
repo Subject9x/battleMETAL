@@ -249,9 +249,7 @@ void() ai_mech_sk_th={
     ai_ranged_attack();
     self.button0 = 0;
   }
-  
-  self.e_cam.SendFlags = -1;
-  
+
   ai_state_control( self.attack_state );
   
   if( !(self.flags & FL_SKIPTHINK) ){
@@ -280,9 +278,6 @@ void() ai_mech_skirmish={
   }
   
   droptofloor();
-   
-  self.e_cam.SendEntity = send_ai_mech;
-  self.e_cam.SendFlags = -1;
   
   self.th_stand = ai_mech_sk_stand;
   self.th_walk = ai_generic_walk;
