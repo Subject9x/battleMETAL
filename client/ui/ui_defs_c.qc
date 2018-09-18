@@ -88,11 +88,11 @@ void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
     if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_MECH) ){
       cl_setspawnpoint(self.plr_nav_pnt);
-      cl_setmech(self.plr_sel_size, self.plr_sel_mech);
+      cl_setmech(self.plr_sel_size, MECH_DATA_ID);
       local float lst_idx, bit;
       lst_idx = 1;
       bit = 1;
-      while(lst_idx <= self.hardpoint_cnt){
+      while(lst_idx <= MECH_DATA_HPOINTS){
         cl_setweapon(bit, HARDPOINTS[lst_idx]);
         bit = bit * 2;
         lst_idx = lst_idx + 1;
@@ -107,7 +107,7 @@ void() mechAcceptButtonListener={
       setcursormode(0);
       self.plr_nav_pnt = -1;
       LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
-      ui_data_load_hud( self.plr_sel_mech );
+      ui_data_load_hud( MECH_DATA_ID );
     }
   }
 };
@@ -200,9 +200,15 @@ void() menu_mainListener={
 
 void() navBarListener={
   if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.0097, 0.0109), gui_percentToPixel(0.075, 0.025))){
+    if( self.plr_menu_choice == MENU_ARMING_ACTIVE ){
+      data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
+    }
     self.plr_menu_choice = MENU_BRIEF_ACTIVE;
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025))){
+    if( self.plr_menu_choice == MENU_ARMING_ACTIVE ){
+      data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
+    }
     self.plr_menu_choice = MENU_HANGAR_ACTIVE;
     cl_get_mechs_sort();
   }
@@ -215,6 +221,11 @@ void() navBarListener={
     if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS) ) ){
       local entity nav;
       local float itr, idx;
+      
+      if( self.plr_menu_choice == MENU_ARMING_ACTIVE ){
+        data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
+      }
+      
       nav = findchainfloat(data_type, DATA_DEPL);
       itr = 1;
       while(nav){

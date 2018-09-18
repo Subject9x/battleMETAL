@@ -71,11 +71,20 @@ float GROUP_ENE_3;
 float GROUP_ENE_4;
 float GROUP_ENE_5;
   
+//config buttons
+vector BTN_CFG_P;
+vector BTN_CFG_N;
+
+float CFG_INDEX;
+float CFG_INDEX_PREV;
+  
 void() menu_arming_listener;
 void() weaponSelectListener;
 void() hardpointListener;
 void() weaponGroupPanelListener;
 void() assignToHardpointListener;
+void() selectNextConfig;
+void() selectPrevConfig;
 
 float(float grp) calc_energy_draw;
 
@@ -89,7 +98,6 @@ void(vector ofs) menu_arming_WeaponList_ENE;
 void(vector ofs) menu_arming_WeaponList_EXP;
 void(vector ofs) menu_arming_WeaponList_MSC;
 void(vector ofs) menu_arming_WeaponGroupPanel;
-//void(vector ofs) menu_arming_HardPointInfo;
 void(vector ofs) menu_arming_energydraw;
 void(vector ofs) menu_arming_WeaponInfo;
 void(vector ofs) menu_arming_WeaponInHardpoint;

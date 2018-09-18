@@ -91,6 +91,8 @@ void() CSQC_Init =
   FRIK_FILE_precaches();
   
   DEPLOY_CNT = 0;
+  CFG_INDEX = 0;
+  CFG_INDEX_PREV = CFG_INDEX;
   
   registercvar("gamemode", "0");
   registercvar("gametype", "0");

@@ -604,13 +604,13 @@ float(float id) ui_date_load_item2={
   return TRUE;
 };
 
-void( float mechId, float fileNum ) ui_mech_config_switch={
+float( float mechId, float fileNum ) ui_mech_config_switch={
   local float cfg, itr;
   
   if( self.plr_sel_mech > 0 ){
-    if( self.plr_sel_cfg > 0 ){
+    if( CFG_INDEX_PREV > 0 ){
       //prevents overriding Config 0 - the default config for each mech
-      data_mech_config_save( self.plr_sel_mech, self.plr_sel_cfg );
+      data_mech_config_save( self.plr_sel_mech, CFG_INDEX_PREV );
     }
     data_mech_config_clearBuffer();
   }
@@ -627,6 +627,7 @@ void( float mechId, float fileNum ) ui_mech_config_switch={
   if( !cfg ){
     cfg = data_mech_config_load( mechId, 0 );
     cfg = data_mech_config_valid();
+    CFG_INDEX = 0;
   }
   
   //welp, here goes, lets make the switch

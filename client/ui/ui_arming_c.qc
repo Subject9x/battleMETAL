@@ -13,6 +13,8 @@ void() menu_arming_listener={
   hardpointListener();
   weaponGroupPanelListener();
   assignToHardpointListener();
+  selectNextConfig();
+  selectPrevConfig();
 };
 
 void() assignToHardpointListener={
@@ -139,6 +141,39 @@ void() weaponGroupPanelListener={
   }
 };
 
+
+void() selectNextConfig={
+  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_N, gui_percentToPixelRawVec('20 38') )){
+    CFG_INDEX_PREV = CFG_INDEX;
+    CFG_INDEX = CFG_INDEX + 1;
+    if( CFG_INDEX > 6 ){
+      CFG_INDEX = 0;
+    }
+    if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
+      if( data_config_buffer_name != "" ){
+        strunzone( data_config_buffer_name );
+      }
+      data_config_buffer_name = strzone(ftos(CFG_INDEX));
+    }
+  }
+};
+
+void() selectPrevConfig={
+  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_P, gui_percentToPixelRawVec('20 38') )){
+    CFG_INDEX_PREV = CFG_INDEX;
+    CFG_INDEX = CFG_INDEX - 1;
+    if( CFG_INDEX < 0 ){
+      CFG_INDEX = 6;
+    }
+    if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
+      if( data_config_buffer_name != "" ){
+        strunzone( data_config_buffer_name );
+      }
+      data_config_buffer_name = strzone(ftos(CFG_INDEX));
+    }
+  }
+};
+
 //main hook for the menu system
 void() menu_arming_drawFrame={
   if(self.plr_sel_mech <= 0){
@@ -158,10 +193,12 @@ void() menu_arming_drawFrame={
 };
 
 void(vector ofs) menu_arming_HardpointGraph={
-  local vector nofs, hofs, hpnts;
+  local vector nofs, hofs, hpnts, psize;
+  
   nofs = ofs + gui_percentToPixelRawVec('10 8');
+  psize = gui_percentToPixelRawVec('270 236');
   drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), '1 1 1', HUD_ALPHA, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('270 236'), '0.25 0.25 0.25', HUD_ALPHA, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, psize, '0.25 0.25 0.25', HUD_ALPHA, 0);
   
   if( SELECT_MECH > FALSE){
     drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , HUD_ALPHA, 0);
@@ -180,6 +217,41 @@ void(vector ofs) menu_arming_HardpointGraph={
       hlist = hlist + 1;
     }
   }
+  
+  local vector nbtn, pbtn, pctr, lctr;
+  pctr_x = psize_x / 2;
+  pctr_y = psize_y / 2;
+  nbtn = pbtn = nofs;
+  pbtn_y = pbtn_y + pctr_y;
+  nbtn_x = nbtn_x + psize_x - gui_percentXRaw(14);
+  nbtn_y = nbtn_y + pctr_y;
+  
+  BTN_CFG_P = pbtn;
+  drawstring(pbtn + gui_percentToPixelRawVec('0 -19'), "PREV", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  drawstring(pbtn + gui_percentToPixelRawVec('0 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  drawpic(pbtn, HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 38'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  
+  BTN_CFG_N = nbtn;
+  drawstring(nbtn + gui_percentToPixelRawVec('-9 -19'), "NEXT", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  drawstring(nbtn + gui_percentToPixelRawVec('-9 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  drawpic(nbtn, HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 38'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+  
+  lctr = nofs + pctr;
+  lctr_y = lctr_y + pctr_y - gui_percentYRaw(8);
+  local string cfg;
+  local float len;
+  if( CFG_INDEX == 0 ){
+    cfg = "DEFAULT";
+  }
+  else{
+    //this is quite hilarious
+    cfg = NAVNAMES[CFG_INDEX];;
+  }
+  cfg = strcat("CONFIG: ", cfg);
+  len = stringwidth(cfg, 0, '8 9 0');
+  lctr_x = lctr_x - gui_percentXRaw( len / 2 );
+  drawstring(lctr, cfg, '8 9 0', CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+  
 };
 
 void(vector ofs) menu_arming_WeaponList={
@@ -557,6 +629,10 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
     gui_wrapText(icol + gui_percentToPixelRawVec('-6 60'), '187 130', ITEM2_DATA_DESC, '6 7 0', '1 1 1', 1);
   }
 };
+
+
+//
+
 
 //UTILITY FUNCS
 float(float comp, float bits) checkIfWeaponInGroup={

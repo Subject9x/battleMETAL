@@ -181,6 +181,7 @@ void( float mechId, float configNum ) data_mech_config_save={
 float( float mechId, float configNum ) data_mech_config_load={
   local float flannel, line_tag, line_val;
   local string file, contents, line;
+  
   file = strcat(PATH_DATA_UI, "/loadouts/", ftos(mechId), "/", ftos(configNum),".dat");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
