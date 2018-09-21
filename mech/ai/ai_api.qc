@@ -68,17 +68,15 @@ float(entity t) ai_valid_target={
       return FALSE;
     }
     if( t.deadflag <= DEAD_NO ){
-      if( t.data_type == DATA_BLD ){
-        return TRUE;
-      }
-      if( t.data_type == DATA_MECH ){
-        return TRUE;
-      }
-      if( t.data_type == DATA_MECH_AI ){
-        return TRUE;
-      }
-      if( t.data_type == DATA_VEHC ){
-        return TRUE;
+      switch( t.data_type ){
+        case DATA_BLD:
+          return TRUE;
+        case DATA_MECH:
+          return TRUE;
+        case DATA_MECH_AI:
+          return TRUE;
+        case DATA_MECH_AI:
+          return TRUE;
       }
     }
   }

@@ -2,15 +2,118 @@
 mech Mod
 Author: Peter Roohr
 Date: 01/21/2017
+mod : 09/19/2018
 Overview: data file for building
   type: radar tower
   faction: humans
   func: provides radar scanning to all friendly units in radius
 */
 
+void() building_radar_cooldown={
+  if( time > self.ai_action_time ){
+    self.enemy = world;
+    ai_next_state( ST_STAND );
+    cons_logAString(" building_radar_cooldown ->", "ST_STAND");
+    return;
+  }
+};
+
+void() building_radar_has_enemy={
+  local float dist, rng;
+  dist = vlen( self.origin - self.enemy.origin );
+  
+  //target player is running PASSIVE radar
+  rng = self.radar_range;
+  if( self.enemy.stat_rdr_mode == 0 ){
+    rng = self.radar_range / 2;
+  }
+  
+  //target player is outside radar range
+  if( dist > self.radar_range ){
+    ai_next_state( ST_HUNT );
+    self.ai_action_time = self.ai_action_time + 5;
+    return;
+  }
+  
+  if( time > self.ai_action_time ){
+    cons_logAString(" building_radar_has_enemy ->", "ST_MISSILE");
+    ai_next_state( ST_MISSILE );
+    return;
+  }
+};
+
+void() building_radar_send_target={
+  local entity ally;
+  ally = findchainfloat( i_faction, self.i_faction );
+  while( ally ){
+    if( ai_valid_target( ally ) ){
+      if( ally.data_type != DATA_BLD ){
+        if( ally.enemy == world ){
+          ally.enemy = self.enemy;
+        }
+      }
+    }
+    ally = ally.chain;
+  }
+  
+  self.enemy = world;
+  ai_next_state( ST_STAND );
+  cons_logAString(" building_radar_send_target->", "ST_STAND");
+  return;
+};
+
+void() building_radar_sweep={
+  local entity blip, found;
+  local float rng, sweep, low, high, yaw;
+  //TODO - Magic numbers
+  self.radar_time = anglemod( self.radar_time + 6 );
+
+  sweep = self.radar_time;
+  low = anglemod( sweep - 5 );
+  high = anglemod( sweep + 1 );
+  
+  //target player is running PASSIVE radar
+
+  
+  blip = findradius( self.origin, self.radar_range );
+  while( blip ){
+    if( blip.deadflag <= DEAD_NO ){
+      if( (blip.flags & FL_CLIENT) ){
+        if( blip.i_faction != self.i_faction ){
+          rng = self.radar_range;
+          if( blip.stat_rdr_mode == FALSE){
+            rng = self.radar_range / 2;
+          }
+          yaw = vectoyaw( self.origin - blip.origin);
+          if( (yaw >= low) && (yaw <= high) ){
+            if( vlen( blip.origin - self.origin ) <= rng ){
+              found = blip;
+            }
+          }
+        }
+      }
+    }
+    blip = blip.chain;
+  }
+  
+  if( found != world){
+    cons_logAString("building_radar_sweep->", "ST_RUN");
+    self.enemy = found;
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
+void() building_radar_think={
+  
+  ai_state_control( self.attack_state );
+  
+  self.think = building_radar_think;
+  self.nextthink = time + 0.1;
+};
+
 /*QUAKED building_radar (.1 .1 .1) (-20 -20 -13) (20 20 13)
 */
-void() building_radar;
 void() building_radar={
   self.data_idx = ID_BLD_H_RADAR;
   self.data_type = DATA_BLD;
@@ -21,9 +124,9 @@ void() building_radar={
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_SM_RADAR_HP, DAT_BLD_H_SM_RADAR_HP, 1, 100) ;
   util_setBoundBox('-20 -20 0', '20 20 26');
-  self.sh_cur= 0;
-  self.sh_max= DAT_BLD_H_SM_RADAR_SH_MAX;
-  self.sh_rate= DAT_BLD_H_SM_RADAR_SH_RATE;
+  self.sh_cur = 0;
+  self.sh_max = DAT_BLD_H_SM_RADAR_SH_MAX;
+  self.sh_rate = DAT_BLD_H_SM_RADAR_SH_RATE;
   self.stat_rdr_mode = 1;
   self.radar_range = DAT_BLD_H_SM_RADAR_RADAR_RANGE;
   self.scale = 1;
@@ -31,11 +134,18 @@ void() building_radar={
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();  
   
+  self.th_stand = building_radar_sweep;
+  self.th_run = building_radar_has_enemy;
+  self.th_missile = building_radar_send_target;
+  self.th_hunt = building_radar_cooldown;
+  
+  ai_initialize_system( ST_STAND );
+  
   if(util_cornerSlopeCheck(self, 1)){
     util_generateBuildingFoundation(self);
   }
   self.th_die = building_die;
-  self.think = building_think;
+  self.think = building_radar_think;
   self.use = multi_trigger;
   self.nextthink = time + 1;
 };
