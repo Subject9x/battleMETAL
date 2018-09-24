@@ -115,7 +115,10 @@ void(float mech_id) data_iniMech={
 void(float vec_id) data_iniVehc={
   switch(vec_id){
     case ID_VEC_HS_TDEST_L:
-      build_vehicle_unit(data_H_TD_ini);
+      build_vehicle_unit( data_H_TD_ini );
+      break;
+    case ID_VEC_HS_TANK_L:
+      build_vehicle_unit( data_HS_TANKL_ini );
       break;
     default :
       cons_logAFloat("Error: failed to build vehicle with id", vec_id);

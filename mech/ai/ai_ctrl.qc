@@ -192,7 +192,7 @@ void() ai_generic_run_strafe={
 	of its current target.
 */
 void() ai_generic_run_charge={
-  ai_turn();
+  ai_move_turn();
   
   if( ai_check_face(self.enemy, 0.7) ){
     local float moved;
@@ -456,14 +456,6 @@ void(void() macro) ai_leg_frame={
   }
 };
 
-void(float dist) ai_forward={
-  q1_ai_forward(dist);
-};
-
-void(float dist) ai_back={
-  q1_ai_back(dist);
-};
-
 void() ai_stand={
   //q1_ai_stand() ;
   if( time > self.patience && !self.enemy){  
@@ -480,26 +472,7 @@ void() ai_stand={
   }
 };
 
-void(float dist) ai_walk={
-  q1_ai_walk(dist) ;
-};
 
-void() ai_turn={
-  q1_ai_turn() ;
-};
-
-void(float dist) ai_run={
-  
-  q1_ai_run(dist) ;
-};
-
-void() ai_run_slide={
-  q1_ai_run_slide() ;
-};
-
-void() ai_run_attack={
-  q1_ai_run_attack() ;
-};
 
 void() ai_charge_side={
 	local	vector	dtemp;

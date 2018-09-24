@@ -102,6 +102,7 @@ dp/subs.qc
   
   //vehicles
   mech/dat/vec/data_h_td.qc
+  mech/dat/vec/data_hs_tl.qc
   
   //buildings
   mech/dat/bld/data_h_radar.qc
@@ -121,6 +122,7 @@ dp/subs.qc
   mech/ai/ai_ctrl.qc
   mech/ai/ai_mech_skirmish.qc
   mech/ai/ai_destroyer.qc
+  mech/ai/ai_tank_skirmish.qc
   mech/ai/ai_turret.qc
   mech/ai/ai_nodes.qc
   

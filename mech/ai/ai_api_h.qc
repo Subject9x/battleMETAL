@@ -125,6 +125,7 @@ void(float dst, float grp, float bracket) ai_wep_group_track;
 float(float movespeed, float distance, float ticrate) ai_move_time;
 float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
 float(entity wep) ai_attack_checkEne;
+void( entity ally, entity targ, float override ) ai_give_target;
 
 //AI CONTROL - ai_ctrl.qc 
 void( float state ) ai_next_state;
@@ -137,14 +138,6 @@ void(entity bot, entity attacker) ai_damage_react;
 void(void() macro) ai_leg_frame;
 void() ai_face_targ;
 
-void(float dist) ai_forward;
-void(float dist) ai_back;
-void() ai_stand;
-void(float dist) ai_walk;
-void(float dist) ai_run;
-void() ai_run_slide;
-void() ai_run_attack;
-void() ai_charge_side;
 /*
   AI STATE FUNCTIONS=====================
 */
@@ -172,7 +165,6 @@ void() ai_generic_pain;
 */
 float( float scan_mode) ai_check_scan;
 void(float speed) ai_walkgoal;
-void() ai_turn;
 void() ai_face_targ;
 float(entity targ, float ang_limit) ai_check_face;
 float(entity targ) ai_check_range;
@@ -199,9 +191,3 @@ void() q1_ai_turn;
 void(float dist) q1_ai_run;
 void() q1_ai_run_slide;
 void() q1_ai_run_attack;
-
-//test
-void( float angl, float dist ) ai_move_forward;
-void( float angl, float dist ) ai_move_backward;
-void( float angl, float dist ) ai_move_left;
-void( float angl, float dist ) ai_move_right;

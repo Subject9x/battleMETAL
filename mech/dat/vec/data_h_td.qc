@@ -9,24 +9,13 @@ Overview:
 */
 
 //HUMAN LIGHT TNKRET=============================
-float DAT_H_TD_IDX = ID_VEC_HS_TDEST_L;
-string DAT_H_TD_VEC_NAME = "Medium Tank";
-
-float DAT_H_TD_YAWSPEED = 2.5;
 vector DAT_H_TD_CTOR_BBX_N ='-20 -20 -10';
 vector DAT_H_TD_CTOR_BBX_X ='20 20 14';
 
 string DAT_H_TD_PITCH_N = "-25";
 string DAT_H_TD_PITCH_X = "45";
 
-//LEGS
-string DAT_H_TD_LEG_CNAME= M_LEGS;
-
-//CENTER TORSO
-string DAT_H_TD_CTOR_CNAME= M_TOR_CENTER;
-
 //WEAPON1
-string DAT_H_TD_WEP1_CPARENT= M_TOR_CENTER;
 vector DAT_H_TD_WEP1_OFFSET_ALT = '0 0 0';
 vector DAT_H_TD_WEP1_ADJ_ANG= '0 0 90';
 
@@ -46,7 +35,7 @@ void() data_H_TD_ini={
   self.unit_wep1 = data_H_TD_wep1;
   self.unit_cam = data_H_TD_cam;
     
-  self.data_idx= DAT_H_TD_IDX;
+  self.data_idx= ID_VEC_HS_TDEST_L;
   self.vec_name= DAT_H_TD_VEC_NAME;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_H_TD_RADAR_RANGE;
@@ -57,7 +46,7 @@ void() data_H_TD_ini={
   self.sh_cur= DAT_H_TD_SHIELD_MAX;
   self.sh_max= DAT_H_TD_SHIELD_MAX;
   self.sh_rate= DAT_H_TD_SHIELD_RATE;
-  self.m_rot_speed = DAT_H_TD_YAWSPEED;
+  self.m_rot_speed = DAT_HS_TANKDEST_YAW_SPEED;
   self.c_bbx_n = DAT_H_TD_CTOR_BBX_N;
   self.c_bbx_x = DAT_H_TD_CTOR_BBX_X;
   self.c_model = DAT_H_TD_CTOR_MODEL;
@@ -71,14 +60,14 @@ void() data_H_TD_ini={
 };
 
 void() data_H_TD_ctor={
-  self.c_name = DAT_H_TD_CTOR_CNAME;
+  self.c_name = M_TOR_CENTER;
   self.health = DAT_H_TD_HP_CTOR;
   self.max_health = DAT_H_TD_HP_CTOR;
   self.c_model = DAT_H_TD_CTOR_MODEL;
 };
 
 void() data_H_TD_wep1={  
-  self.c_parent = DAT_H_TD_WEP1_CPARENT;
+  self.c_parent = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_H_TD_WEP1_OFFSET;
   self.c_alt_ofs = DAT_H_TD_WEP1_OFFSET_ALT;

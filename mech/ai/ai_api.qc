@@ -69,6 +69,8 @@ float(entity t) ai_valid_target={
     }
     if( t.deadflag <= DEAD_NO ){
       switch( t.data_type ){
+        case DATA_VEHC:
+          return TRUE;
         case DATA_BLD:
           return TRUE;
         case DATA_MECH:
@@ -95,13 +97,15 @@ float() ai_find_target_visual={
   rng = dist;
   while( targ ){
     if( ai_valid_target(targ) ){
-      if( ai_check_face(targ, self.ai_fov) ){
-        if( ai_check_vis(targ) ){
-          local float ndist;
-          ndist = vlen(targ.origin - self.origin);
-          if(ndist < rng){
-            rng = ndist;
-            found = targ;
+      if( targ.i_faction != self.i_faction ){
+        if( ai_check_face(targ, self.ai_fov) ){
+          if( ai_check_vis(targ) ){
+            local float ndist;
+            ndist = vlen(targ.origin - self.origin);
+            if(ndist < rng){
+              rng = ndist;
+              found = targ;
+            }
           }
         }
       }
@@ -162,6 +166,16 @@ float() ai_find_target_radar={
     return TRUE;
   }
   return FALSE;
+};
+
+void( entity ally, entity targ, float override ) ai_give_target={
+  local entity this;
+  if( !(ally.enemy) || override){
+    self = ally;
+      self.enemy = this.enemy;
+      ai_found_target();
+    self = this;
+  }
 };
 
 vector(entity ai) ai_attack_calcSpread={

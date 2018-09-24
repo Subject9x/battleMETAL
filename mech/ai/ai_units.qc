@@ -52,6 +52,7 @@ void() unit_hs_excavat={
 
 void() unit_hs_tank_l={
   self.nextVecChoice = 7;
+  ai_tank_skirmish();
 };
 
 void() unit_hs_tank_h={

@@ -13,7 +13,6 @@ void() building_radar_cooldown={
   if( time > self.ai_action_time ){
     self.enemy = world;
     ai_next_state( ST_STAND );
-    cons_logAString(" building_radar_cooldown ->", "ST_STAND");
     return;
   }
 };
@@ -36,20 +35,21 @@ void() building_radar_has_enemy={
   }
   
   if( time > self.ai_action_time ){
-    cons_logAString(" building_radar_has_enemy ->", "ST_MISSILE");
     ai_next_state( ST_MISSILE );
     return;
   }
 };
 
 void() building_radar_send_target={
-  local entity ally;
+  local entity ally, this;
+  this = self;
   ally = findchainfloat( i_faction, self.i_faction );
   while( ally ){
-    if( ai_valid_target( ally ) ){
-      if( ally.data_type != DATA_BLD ){
-        if( ally.enemy == world ){
-          ally.enemy = self.enemy;
+    if( vlen( ally.origin - self.origin ) <= (self.radar_range / 2) ){
+      if( ai_valid_target(ally) ){
+        //heh, sloppy check for combat units
+        if( ally.w_slot != world ){
+          ai_give_target( ally, self.enemy, FALSE );
         }
       }
     }
@@ -58,7 +58,6 @@ void() building_radar_send_target={
   
   self.enemy = world;
   ai_next_state( ST_STAND );
-  cons_logAString(" building_radar_send_target->", "ST_STAND");
   return;
 };
 
@@ -72,15 +71,13 @@ void() building_radar_sweep={
   low = anglemod( sweep - 5 );
   high = anglemod( sweep + 1 );
   
-  //target player is running PASSIVE radar
-
-  
   blip = findradius( self.origin, self.radar_range );
   while( blip ){
     if( blip.deadflag <= DEAD_NO ){
       if( (blip.flags & FL_CLIENT) ){
         if( blip.i_faction != self.i_faction ){
           rng = self.radar_range;
+          //target player is running PASSIVE radar
           if( blip.stat_rdr_mode == FALSE){
             rng = self.radar_range / 2;
           }
@@ -97,9 +94,9 @@ void() building_radar_sweep={
   }
   
   if( found != world){
-    cons_logAString("building_radar_sweep->", "ST_RUN");
     self.enemy = found;
     ai_next_state( ST_RUN );
+    self.ai_action_time = self.ai_action_time + 5;
     return;
   }
 };
@@ -138,6 +135,8 @@ void() building_radar={
   self.th_run = building_radar_has_enemy;
   self.th_missile = building_radar_send_target;
   self.th_hunt = building_radar_cooldown;
+  
+  self.ai_action_mod = 0.15;
   
   ai_initialize_system( ST_STAND );
   
