@@ -45,9 +45,9 @@ void() ai_mech_sk_run={
     if( enemy_vis ){
       if( enemy_range < ( 400 )){
         if( enemy_infront ){
+          ai_leg_frame( leg_walk1 );
           ai_next_state( ST_MELEE );
           if( self.ai_rank > AI_RANK_REG ){
-            ai_leg_frame( leg_walk1 );
             ai_next_state( ST_RUN_STRAFE );
           }
           return;
@@ -59,7 +59,7 @@ void() ai_mech_sk_run={
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
           self.lefty = self.lefty * -1;
-          self.ai_dirs = self.angles;
+          self.ai_dir = self.angles_y;
           ai_leg_frame( leg_walk1 );
           ai_next_state( ST_MISSILE_STRAFE );
           return;
@@ -270,7 +270,7 @@ void() ai_mech_skirmish={
   }
   
   ai_unit_ini_var();
-  data_iniMech(self.nextVecChoice);
+  data_iniMech( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 

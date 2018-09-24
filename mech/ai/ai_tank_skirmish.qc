@@ -8,6 +8,18 @@ Overview: ai unit
   a default tank
 */
 
+float() ai_tread_adjust={
+  if( self.e_legs.angles_y > anglemod( self.angles_y + 25 ) ){
+    self.e_legs.angles_y = anglemod( self.e_legs.angles_y - self.yaw_speed );
+    return FALSE;
+  }
+  else if(self.e_legs.angles_y < anglemod( self.angles_y - 25 ) ){
+    self.e_legs.angles_y = anglemod( self.e_legs.angles_y + self.yaw_speed );
+    return FALSE;
+  }
+  return TRUE;
+};
+
 void() ai_tank_sk_stand;
 void() ai_tank_sk_run;
 void() ai_tank_sk_melee;
@@ -19,8 +31,6 @@ void() ai_tank_sk_pain;
 void() ai_tank_sk_die;
 void() ai_tank_sk_die1;
 void() ai_tank_sk_die2;
-
-
 
 void() ai_tank_sk_stand={
   if( ai_valid_target( self.enemy ) ){
@@ -45,28 +55,37 @@ void() ai_tank_sk_run={
     if( enemy_vis ){
       if( enemy_range < ( 400 )){
         if( enemy_infront ){
-          //ST_MELEE
           ai_next_state( ST_MELEE );
+          self.ai_action_time = self.ai_action_time + 2;
+          self.ai_dir = anglemod( self.ideal_yaw + 45 );
           return;
         }
-        ai_leg_frame( leg_walk1 );
-        ai_next_state( ST_RUN_STRAFE );
+        ai_leg_frame( leg_stand1 );
+        ai_next_state( ST_STAND );
         return;
       }
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
-          //MISSILE
+          ai_leg_frame( leg_stand1 );
+          ai_next_state( ST_MISSILE );
+          return;
         }
-        
+        ai_leg_frame( leg_stand1 );
+        ai_next_state( ST_STAND );
+        return;
       }
       if( enemy_range <= (self.ai_minrange * 2) ){
         if( enemy_infront ){
-          //MISSILE
+          ai_next_state( ST_RUN_STRAFE );
+          ai_leg_frame( leg_walk1 );
+          self.ai_action_time = self.ai_action_time + 5;
+          return;
         }
-        
+        ai_leg_frame( leg_stand1 );
+        ai_next_state( ST_STAND );
+        return;
       }
       movetogoal( self.m_fspeed * AI_RUN_SPD );
-    
     }
     else{
       self.goalentity = self.enemy;
@@ -83,16 +102,16 @@ void() ai_tank_sk_run={
 };
 
 void() ai_tank_sk_melee={
-  ai_move_turn();
+  ai_face_targ();
   
   if( ai_check_face(self.enemy, 0.6) ){
-    local float moved, ang;
-    ang = 75;
-    if( self.ai_rank > AI_RANK_VET ){
-      ang = ang * -1;
-    }
-    moved = ai_yaw_move( 75, self.m_fspeed * AI_RUN_SPD);
+    local float moved, avg;
+
+    avg = (self.m_fspeed + self.m_sspeed) / 2;
+    
+    moved = ai_move( self.ai_dir, avg * AI_RUN_SPD);
     if( !moved ){
+      ai_leg_frame( leg_walk1 );
       ai_next_state( ST_RUN );
       return;
     }
@@ -110,11 +129,13 @@ void() ai_tank_sk_missile={
   
   if( ai_check_face( self.enemy, 0.92 ) ){
     if( ai_attack() ){
+      ai_leg_frame( leg_stand1 );
       ai_next_state( ST_MISSILE );
       return;
     }
   }
   if( time > self.ai_action_time ){
+    ai_leg_frame( leg_walk1 );
     ai_next_state( ST_RUN );
     return;
   }
@@ -135,12 +156,14 @@ void() ai_tank_sk_missile_strafe={
     self.lefty = self.lefty * -1;
     moved = ai_walk_left( self.m_sspeed * AI_WALK_SPD );
     if( !moved ){
+      ai_leg_frame( leg_stand1 );
       ai_next_state( ST_MISSILE );
       return;
     }
   }
   
   if( time > self.ai_action_time ){
+    ai_leg_frame( leg_walk1 );
     ai_next_state( ST_RUN );
     return;
   }
@@ -154,7 +177,9 @@ void() ai_tank_sk_hunt={
   }
 };
 
-void() ai_tank_sk_pain={};
+void() ai_tank_sk_pain={
+
+};
 
 
 void() ai_tank_sk_die={
@@ -178,16 +203,49 @@ void() ai_tank_sk_die={
   activator = self.enemy;
   SUB_UseTargets ();
 
+    
+  setmodel( self, self.e_legs.model);
+  setsize(self, '-8 -8 -3' , '8 8 3');
+  setorigin( self, self.e_legs.origin);
+  
+  mech_player_compdie(self.e_legs);
+  mech_player_compdie(self.e_tor_l);
+  mech_player_compdie(self.e_tor_r);
+  
   self.think = ai_tank_sk_die1;
   self.ai_action_time = time + 120;
   
-  if( self.health <= self.max_health
+  if( self.health <= (self.max_health / 1.25) * -1 ) {
+    //blow the stack
+    local	entity missile;
+    missile = spawn ();
+    missile.owner = self;
+    missile.movetype = MOVETYPE_BOUNCE;
+    missile.solid = SOLID_CORPSE;
+    makevectors (self.angles);
+    local vector randvec;
+    randvec = randomvec();
+    if(randvec_z < 0 ){
+      randvec_z = 1;
+    }
+    missile.velocity = randvec + (150 * v_up) + (v_right * 100*random()) + (v_forward * 100*random() );
+    missile.velocity_z = missile.velocity_z + 250 + 50*random();
+    missile.avelocity = '375 125 250';
+    missile.colormod = '0.15 0.15 0.15';
+  // set missile duration
+    missile.delay = 360;
+    missile.nextthink = 0.1;
+    missile.think = temp_chunk_burn;
+    missile.touch = BecomeExplosion;
+    setmodel (missile, self.model);
+    setsize (missile, '-2 -2 -3', '2 2 3');		
+    setorigin (missile, self.origin + (v_up * self.c_bbx_x_z * 2));
+  }
   
   //basically overkill damage will just remove the tank (nice and clean)
   if( self.health <= (self.max_health / 1.5) * -1 ){
     self.think = ai_tank_sk_die2;
   }
-  
   self.nextthink = time + 0.1;
 };
 
@@ -236,16 +294,14 @@ void() ai_tank_sk_th={
       else{ 
         self.enemy = world;
       }
-    }  
-    if(self.e_legs.frame != $l_stand1){
-      self.e_legs.angles_y = self.angles_y;
-    }
+    } 
+    self.e_legs.angles_y = self.ai_dir;
     ai_ranged_attack();
     self.button0 = 0;
   }
 
   ai_state_control( self.attack_state );
-  
+
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
     self.think = ai_tank_sk_th;
@@ -258,13 +314,14 @@ void() ai_tank_sk_th={
 */
 void() ai_tank_skirmish={
   if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
-		objerror ("ai_mech_skirmish - outside of game mode");
+		objerror ("ai_tank_skirmish - outside of game mode");
     remove(self);
     return;
   }
+  
   ai_unit_ini_var();
-  data_iniVehc(self.nextVecChoice);
-  ai_pilot_ini_stats(self.ai_rank);
+  data_iniVehc( self.nextVecChoice );
+  ai_pilot_ini_stats( self.ai_rank );
   
   droptofloor();
   
@@ -272,7 +329,7 @@ void() ai_tank_skirmish={
   self.th_walk = ai_generic_walk;
   self.th_run = ai_tank_sk_run;
   self.th_run_strafe = ai_generic_run_strafe;
-  self.th_missile = ai_tank_sk_missile;
+  self.th_missile = ai_generic_missile;
   self.th_melee = ai_tank_sk_melee;
   self.th_missile_strafe = ai_tank_sk_missile_strafe;
   self.th_hunt = ai_tank_sk_hunt;
@@ -281,7 +338,8 @@ void() ai_tank_skirmish={
   
   ai_initialize_system( ST_STAND );
   
-  ai_walk_setup();  
+  ai_walk_setup();
+  
   self.think = ai_tank_sk_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks

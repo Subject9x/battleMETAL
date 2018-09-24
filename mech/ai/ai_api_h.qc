@@ -77,7 +77,7 @@ entity AI_NODES[128];
 .float ai_type;
 .float ai_style;
 .string target_die;
-.vector ai_dirs;
+.float ai_dir;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc

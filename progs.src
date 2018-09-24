@@ -120,10 +120,10 @@ dp/subs.qc
   mech/ai/ai_api.qc
   mech/ai/ai_move_q1.qc
   mech/ai/ai_ctrl.qc
+  mech/ai/ai_turret.qc
   mech/ai/ai_mech_skirmish.qc
   mech/ai/ai_destroyer.qc
   mech/ai/ai_tank_skirmish.qc
-  mech/ai/ai_turret.qc
   mech/ai/ai_nodes.qc
   
   mech/t_damage.qc
