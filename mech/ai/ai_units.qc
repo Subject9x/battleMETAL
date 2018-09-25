@@ -21,33 +21,38 @@ Overview: AI Unit impl
 void() unit_hs_truck_cargo={
   self.nextVecChoice = 1;
   self.ai_rank = AI_RANK_ROK;
-  
+  ai_noncom_tank();
 };
 
 void() unit_hs_truck_hab={
   self.nextVecChoice = 2;
   self.ai_rank = AI_RANK_ROK;
+  ai_noncom_tank();
 };
 
 void() unit_hs_truck_const={
   self.nextVecChoice = 3;
   self.ai_rank = AI_RANK_ROK;
+  ai_noncom_tank();
 
 };
 
 void() unit_hs_dozer={
   self.nextVecChoice = 4;
   self.ai_rank = AI_RANK_ROK;
+  ai_noncom_tank();
 };
 
 void() unit_hs_loader={
   self.nextVecChoice = 5;
   self.ai_rank = AI_RANK_ROK;
+  ai_noncom_tank();
 };
 
 void() unit_hs_excavat={
   self.nextVecChoice = 6;
   self.ai_rank = AI_RANK_ROK;
+  ai_noncom_tank();
 };
 
 void() unit_hs_tank_l={

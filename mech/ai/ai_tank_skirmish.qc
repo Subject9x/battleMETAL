@@ -339,6 +339,8 @@ void() ai_tank_skirmish={
   ai_initialize_system( ST_STAND );
   
   ai_walk_setup();
+  self.colormod = '1 0 0'; //DEBUG
+  self.e_legs.colormod = '1 0 0'; //DEBUG
   
   self.think = ai_tank_sk_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){

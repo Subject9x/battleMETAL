@@ -101,6 +101,12 @@ dp/subs.qc
   mech/dat/mch/data_hevdal_val.qc
   
   //vehicles
+  mech/dat/vec/data_hs_trucka.qc
+  mech/dat/vec/data_hs_truckb.qc
+  mech/dat/vec/data_hs_truckc.qc
+  mech/dat/vec/data_hs_dozer.qc
+  mech/dat/vec/data_hs_loadr.qc
+  mech/dat/vec/data_hs_excat.qc
   mech/dat/vec/data_h_td.qc
   mech/dat/vec/data_hs_tl.qc
   
@@ -124,6 +130,7 @@ dp/subs.qc
   mech/ai/ai_mech_skirmish.qc
   mech/ai/ai_destroyer.qc
   mech/ai/ai_tank_skirmish.qc
+  mech/ai/ai_noncom.qc
   mech/ai/ai_nodes.qc
   
   mech/t_damage.qc

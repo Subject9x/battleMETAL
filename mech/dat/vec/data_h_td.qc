@@ -3,15 +3,13 @@ mech Mod
 Author: Peter Roohr
 Date: 11/5/2017
 Overview:
-  name: Human medium tank
-  type: vehicle
-  size: mediums
+  name    : Tank - Destroyer
+  faction : Human Survivors
+  type    : vehicle
+  size    : medium
 */
 
 //HUMAN LIGHT TNKRET=============================
-vector DAT_H_TD_CTOR_BBX_N ='-20 -20 -10';
-vector DAT_H_TD_CTOR_BBX_X ='20 20 14';
-
 string DAT_H_TD_PITCH_N = "-25";
 string DAT_H_TD_PITCH_X = "45";
 

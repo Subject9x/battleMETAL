@@ -114,6 +114,24 @@ void(float mech_id) data_iniMech={
 */
 void(float vec_id) data_iniVehc={
   switch(vec_id){
+    case ID_VEC_HS_TRUCK_C:
+      build_vehicle_unit( data_HS_TruckA_ini );
+      break;
+    case ID_VEC_HS_TRUCK_H:
+      build_vehicle_unit( data_HS_TruckB_ini );
+      break;
+    case ID_VEC_HS_TRUCK_CS:
+      build_vehicle_unit( data_HS_TruckC_ini );
+      break;
+    case ID_VEC_HS_DOZER:
+      build_vehicle_unit( data_HS_Dozer_ini );
+      break;
+    case ID_VEC_HS_LOADR:
+      build_vehicle_unit( data_HS_Loader_ini );
+      break;
+    case ID_VEC_HS_EXCAT:
+      build_vehicle_unit( data_HS_Excat_ini );
+      break;
     case ID_VEC_HS_TDEST_L:
       build_vehicle_unit( data_H_TD_ini );
       break;

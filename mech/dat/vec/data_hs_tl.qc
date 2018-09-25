@@ -3,15 +3,13 @@ mech Mod
 Author: Peter Roohr
 Date: 09/22/2018
 Overview:
-  name: Light Tank
-  type: tank
-  size: mediums
-  factoin: Human Survivors
+  name    : Tank - Light
+  faction : Human Survivors
+  type    : vehicle
+  size    : medium
 */
 
 //HUMAN SURVIVORS TANK LIGHT=============================
-vector DAT_HS_TANKL_CTOR_BBX_N ='-20 -20 -10';
-vector DAT_HS_TANKL_CTOR_BBX_X ='20 20 14';
 
 string DAT_HS_TANKL_PITCH_N = "-25";
 string DAT_HS_TANKL_PITCH_X = "45";

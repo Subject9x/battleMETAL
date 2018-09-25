@@ -32,6 +32,8 @@ float ID_VEC_HS_TDEST_L = 9;
 //============================
 //            Health           
 //============================
+//-------------------------Human Truck A, B, C
+float DAT_HS_TRUCK_HP = 100;
 //-------------------------Human Test Tank
 float DAT_H_TANKL_CTOR_HP = 200;
 float DAT_H_TANKL_LEG_HP = 200;
@@ -40,15 +42,23 @@ float DAT_H_TD_HP_CTOR = 100;
 //============================
 //            NAMES 
 //============================
+//-------------------------Human Truck A
+string DAT_HS_TRUCKA_NAME = "Convoy Track";
+//-------------------------Human Truck B
+string DAT_HS_TRUCKB_NAME = "Convoy Hab";
+//-------------------------Human Truck C
+string DAT_HS_TRUCKC_NAME = "Convoy Supply";
+//-------------------------Human Test Tank
 string DAT_HS_TANKL_NAME = "<Medium Tank>";
+//-------------------------Human Tank Destroyer
 string DAT_H_TD_VEC_NAME = "<Tank Destroyer>";
 
 //============================
 //            Armor  ! NOT IMPLEMENTED !
 //============================
 //-------------------------Human Test Tank
-float DAT_TNK_CTOR_ARMOR= 1;
-float DAT_TNK_LEG_ARMOR= 1;
+float DAT_TNK_CTOR_ARMOR  = 1;
+float DAT_TNK_LEG_ARMOR = 1;
 //-------------------------Human Tank Destroyer
 //============================
 //            Shield  
@@ -59,7 +69,6 @@ float DAT_HS_TANKL_SHIELD_RATE   = 0.35;
 //-------------------------Human Tank Destroyer
 float DAT_H_TD_SHIELD_MAX    = 200;
 float DAT_H_TD_SHIELD_RATE   = 0.35;
-  
 //============================
 //            Energy  
 //============================
@@ -72,6 +81,10 @@ float DAT_H_TD_ENERGY_RATE   = 10;
 //============================
 //            Speed  
 //============================
+//-------------------------Human Truck A, B, C
+float DAT_HS_TRUCK_FSPEED      = 100;
+float DAT_HS_TRUCK_SSPEED      = 75;
+float DAT_HS_TRUCK_BSPEED      = 25;
 //-------------------------Human Tank Light
 float DAT_HS_TANKL_FSPEED      = 100;
 float DAT_HS_TANKL_SSPEED      = 75;
@@ -80,6 +93,15 @@ float DAT_HS_TANKL_BSPEED      = 25;
 float DAT_H_TD_FSPEED      = 50;
 float DAT_H_TD_SSPEED      = 0;
 float DAT_H_TD_BSPEED      = 15;
+//============================
+//            Bounding Box
+//============================
+//-------------------------Human Tank Light
+vector DAT_HS_TANKL_CTOR_BBX_N ='-20 -20 -10';
+vector DAT_HS_TANKL_CTOR_BBX_X ='20 20 14';
+//-------------------------Human Tank Destroyer
+vector DAT_H_TD_CTOR_BBX_N ='-20 -20 -10';
+vector DAT_H_TD_CTOR_BBX_X ='20 20 14';
 //============================
 //            Radar Range and Lock-on Delay
 //============================
@@ -98,6 +120,9 @@ vector DAT_H_TD_SPREAD_N      = '4 2 0.02';
 vector DAT_H_TD_SPREAD_X      = '8 6 0.025';
 //============================
 //         Base Yaw Speed
+//============================
+//-------------------------Human Truck A, B, C
+float DAT_HS_TRUCK_YAW_SPEED  = 1.9;
 //-------------------------Human Tank Light
 float DAT_HS_TANKL_YAW_SPEED  = 2.5;
 //-------------------------Human Tank Destroyer

@@ -173,7 +173,9 @@ void(void() data_ini) build_mech_unit={
   self.sh_hit = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
-  self.e_cam = build_unit_camera(self.unit_cam);
+  if( self.unit_cam ){
+    self.e_cam = build_unit_camera(self.unit_cam);
+  }
   part_chain = self;
   if(self.unit_rtor){
     self.e_tor_r = build_mech_torsoRight(self.unit_rtor);
@@ -318,7 +320,9 @@ void(void() data_ini) build_vehicle_unit={
   self.sh_hit = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
-  self.e_cam = build_unit_camera(self.unit_cam);
+  if( self.unit_cam ){
+    self.e_cam = build_unit_camera(self.unit_cam);
+  }
   part_chain = self;
   if(self.unit_rtor){
     self.e_tor_r = build_mech_torsoRight(self.unit_rtor);
