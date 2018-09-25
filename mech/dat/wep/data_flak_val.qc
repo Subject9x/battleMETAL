@@ -120,12 +120,12 @@ void() data_flak_atk={
         t_damage(enm, self, self.owner, self.p_damage, self.p_dmgtype, trace_endpos, '0 0 0');
         totes = totes - 1;
       }
+      boom = spawn();
+      boom.color = '0.1 0.1 0.1';
+      setorigin(boom, dir);
+      boom.nextthink = time + 0.1;
+      boom.think = BecomeExplosion;
     }
-    boom = spawn();
-    boom.color = '0.1 0.1 0.1';
-    setorigin(boom, dir);
-    boom.nextthink = time + 0.1;
-    boom.think = BecomeExplosion;
   }
   else{
     local entity boom;

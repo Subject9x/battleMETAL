@@ -48,6 +48,10 @@ void() data_prj_sfga_touch={
   
   if(other.takedamage){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    if( other.sh_cur > 0 ){
+      remove(self);
+      return;
+    }
   }
   data_prj_sfga_raddmg();
   BecomeExplosion();

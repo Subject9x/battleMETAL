@@ -86,9 +86,11 @@ void() data_latc_atk={
   }
   
   if( trace_ent ){
-    sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-    te_superspike(dir);
     t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');
+    if( other.sh_cur <= 0 ){
+      sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+      te_superspike(dir);
+    }
   }
   
   local entity bul_fx;
