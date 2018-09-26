@@ -93,7 +93,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   trg.health = trg.health - dmg_amt;
   
   if( trg.health <= 0 ){
-    //trg.health = 0;
     if( trg.th_die ){
       if( trg.c_name == M_LEGS ){
         trg.owner.m_fspeed = trg.owner.m_fspeed / 2;

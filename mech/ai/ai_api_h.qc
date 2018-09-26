@@ -115,6 +115,7 @@ float(void() action) ai_hunt_dropnode;
 float(float mode) ai_spawn_clean;
 float() ai_find_target_visual;
 float() ai_find_target_radar;
+entity( float radiius ) ai_find_friend;
 vector(entity wep) ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;

@@ -77,12 +77,33 @@ float(entity t) ai_valid_target={
           return TRUE;
         case DATA_MECH_AI:
           return TRUE;
-        case DATA_MECH_AI:
-          return TRUE;
       }
     }
   }
   return FALSE;
+};
+
+entity( float radiius) ai_find_friend={
+  local entity ally, this, friend;
+  local float dist, rad;
+  this = self;
+  rad = radiius;
+  
+  ally = findchainfloat( i_faction, self.i_faction );
+  while( ally ){
+    dist = vlen( ally.origin - self.origin );
+    if( dist <= rad ){
+      rad = dist;
+      if( ai_valid_target(ally) ){
+        //heh, sloppy check for combat units
+        if( ally.w_slot != world ){
+          friend = ally;
+        }
+      }
+    }
+    ally = ally.chain;
+  }
+  return friend;
 };
 
 float() ai_find_target_visual={
@@ -170,6 +191,7 @@ float() ai_find_target_radar={
 
 void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
+  this = self;
   if( !(ally.enemy) || override){
     self = ally;
       self.enemy = this.enemy;

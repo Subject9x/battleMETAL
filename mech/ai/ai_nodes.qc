@@ -186,6 +186,7 @@ void(entity o) node_patrol_t={
     if ( self.movetarget ){
       if( other.pausetime ){
         ai_next_state( ST_STAND );
+        self.ai_action_time = self.ai_action_time + other.pausetime;
         self = temp;
         return;
       }

@@ -33,12 +33,12 @@ float ID_VEC_HS_TDEST_L = 9;
 //            Health           
 //============================
 //-------------------------Human Truck A, B, C
-float DAT_HS_TRUCK_HP = 100;
+float DAT_HS_TRUCK_HP = 400;
 //-------------------------Human Test Tank
-float DAT_H_TANKL_CTOR_HP = 200;
-float DAT_H_TANKL_LEG_HP = 200;
+float DAT_H_TANKL_CTOR_HP = 300;
+float DAT_H_TANKL_LEG_HP = 300;
 //-------------------------Human Tank Destroyer
-float DAT_H_TD_HP_CTOR = 100;
+float DAT_H_TD_HP_CTOR = 200;
 //============================
 //            NAMES 
 //============================
