@@ -109,6 +109,7 @@ dp/subs.qc
   mech/dat/vec/data_hs_excat.qc
   mech/dat/vec/data_h_td.qc
   mech/dat/vec/data_hs_tl.qc
+  mech/dat/vec/data_psc_vtoll.qc
   
   //buildings
   mech/dat/bld/data_h_radar.qc
@@ -131,6 +132,7 @@ dp/subs.qc
   mech/ai/ai_destroyer.qc
   mech/ai/ai_tank_skirmish.qc
   mech/ai/ai_noncom.qc
+  mech/ai/ai_vtol.qc
   mech/ai/ai_nodes.qc
   
   mech/t_damage.qc

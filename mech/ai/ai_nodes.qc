@@ -27,8 +27,9 @@ void() node_setup={
 
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
+  self.solid = SOLID_CORPSE;
   setmodel(self, "q3mdl/testball.md3");
-  setsize(self, '-15 -15 -59','15 15 1');
+  setsize(self, '-15 -15 -512','15 15 512');
   if( (self.spawnflags & NODE_SPAWN_DROP) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
     droptofloor();

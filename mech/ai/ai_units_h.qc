@@ -67,3 +67,4 @@ void() unit_hr_arty_c;
   FACTION - PSC
 ==============================
 */
+void() unit_psc_vtol_l;

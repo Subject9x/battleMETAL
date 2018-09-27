@@ -16,18 +16,19 @@ float ID_VEC_HS_TRUCK_CS = 3;
 float ID_VEC_HS_DOZER = 4;
 float ID_VEC_HS_LOADR = 5;
 float ID_VEC_HS_EXCAT = 6;
-
+//-------------------------Human Tank Light
+float ID_VEC_HS_TANK_L = 7;
 float ID_VEC_HS_TANK_H = 8;
-
+//-------------------------Human Tank Destroyer
+float ID_VEC_HS_TDEST_L = 9;
 float ID_VEC_HS_TDEST_H = 10;
-
 float ID_VEC_HS_SCOUT = 11;
 //HUMAN RAIDERS
 
-//-------------------------Human Tank Light
-float ID_VEC_HS_TANK_L = 7;
-//-------------------------Human Tank Destroyer
-float ID_VEC_HS_TDEST_L = 9;
+//SYNTH
+
+//PSC
+float ID_VEC_PSC_VTOL_L = 48;
 
 //============================
 //            Health           
@@ -39,6 +40,8 @@ float DAT_H_TANKL_CTOR_HP = 300;
 float DAT_H_TANKL_LEG_HP = 300;
 //-------------------------Human Tank Destroyer
 float DAT_H_TD_HP_CTOR = 200;
+//-------------------------PSC VTOL Light
+float DAT_PSC_VTOLL_HP = 100;
 //============================
 //            NAMES 
 //============================
@@ -53,6 +56,8 @@ string DAT_HS_TANKL_NAME = "<Medium Tank>";
 //-------------------------Human Tank Destroyer
 string DAT_H_TD_VEC_NAME = "<Tank Destroyer>";
 
+//-------------------------PSC VTOL Light
+string DAT_PSC_VTOLL_NAME = "<recon killer>";
 //============================
 //            Armor  ! NOT IMPLEMENTED !
 //============================
@@ -69,6 +74,9 @@ float DAT_HS_TANKL_SHIELD_RATE   = 0.35;
 //-------------------------Human Tank Destroyer
 float DAT_H_TD_SHIELD_MAX    = 200;
 float DAT_H_TD_SHIELD_RATE   = 0.35;
+//-------------------------PSC VTOL Light
+float DAT_PSC_VTOLL_SHIELD_MAX = 100;
+float DAT_PSC_VTOLL_SHIELD_RATE = 0.15;
 //============================
 //            Energy  
 //============================
@@ -78,6 +86,9 @@ float DAT_HS_TANKL_ENERGY_RATE = 1;
 //-------------------------Human Tank Destroyer
 float DAT_H_TD_ENERGY_MAX    = 350;
 float DAT_H_TD_ENERGY_RATE   = 10;
+//-------------------------PSC VTOL Light
+float DAT_PSC_VTOLL_ENERGY_MAX = 200;
+float DAT_PSC_VTOLL_ENERGY_RATE = 5;
 //============================
 //            Speed  
 //============================
@@ -90,9 +101,13 @@ float DAT_HS_TANKL_FSPEED      = 100;
 float DAT_HS_TANKL_SSPEED      = 75;
 float DAT_HS_TANKL_BSPEED      = 25;
 //-------------------------Human Tank Destroyer
-float DAT_H_TD_FSPEED      = 50;
-float DAT_H_TD_SSPEED      = 0;
-float DAT_H_TD_BSPEED      = 15;
+float DAT_H_TD_FSPEED          = 50;
+float DAT_H_TD_SSPEED          = 0;
+float DAT_H_TD_BSPEED          = 15;
+//-------------------------PSC VTOL Light
+float DAT_PSC_VTOLL_FSPEED     = 400;
+float DAT_PSC_VTOLL_SSPEED     = 400;
+float DAT_PSC_VTOLL_BSPEED     = 200;
 //============================
 //            Bounding Box
 //============================
@@ -102,6 +117,9 @@ vector DAT_HS_TANKL_CTOR_BBX_X ='20 20 14';
 //-------------------------Human Tank Destroyer
 vector DAT_H_TD_CTOR_BBX_N ='-20 -20 -10';
 vector DAT_H_TD_CTOR_BBX_X ='20 20 14';
+//-------------------------PSC VTOL Light
+vector DAT_PSC_VTOLL_BBX_N = '-30 -30 -15';
+vector DAT_PSC_VTOLL_BBX_X = '30 30 15';
 //============================
 //            Radar Range and Lock-on Delay
 //============================
@@ -109,6 +127,8 @@ vector DAT_H_TD_CTOR_BBX_X ='20 20 14';
 float DAT_HS_TANKL_RADAR_RANGE  = 4000;
 //-------------------------Human Tank Destroyer
 float DAT_H_TD_RADAR_RANGE      = 6000;
+//-------------------------PSC VTOL Light
+float DAT_PSC_VTOLL_RADAR_RANGE = 3000;
 //============================
 //            Base Convergence
 //============================
@@ -118,6 +138,9 @@ vector DAT_HS_TANKL_SPREAD_X      = '14 10 0.03';
 //-------------------------Human Tank Destroyer
 vector DAT_H_TD_SPREAD_N      = '4 2 0.02';
 vector DAT_H_TD_SPREAD_X      = '8 6 0.025';
+//-------------------------PSC VTOL Light
+vector DAT_PSC_VTOLL_SPREAD_N      = '2 4 0.02';
+vector DAT_PSC_VTOLL_SPREAD_X      = '4 8 0.025';
 //============================
 //         Base Yaw Speed
 //============================
@@ -127,6 +150,8 @@ float DAT_HS_TRUCK_YAW_SPEED  = 1.9;
 float DAT_HS_TANKL_YAW_SPEED  = 2.5;
 //-------------------------Human Tank Destroyer
 float DAT_HS_TANKDEST_YAW_SPEED = 2.5;
+//-------------------------PSC VTOL Light
+float DAT_PSC_VTOLL_YAW_SPEED = 4;
 //============================
 //            Models  
 //============================
@@ -137,6 +162,8 @@ string DAT_HS_TANKL_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------Human Tank Destroyer
 string DAT_H_TD_CTOR_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
 string DAT_H_TD_CAM_MODEL    = "q3mdl/testball.md3";
+//-------------------------PSC VTOL Light
+string DAT_PSC_VTOLL_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
 //============================
 //            Model Offsets 
 //============================
@@ -146,6 +173,9 @@ vector DAT_HS_TANKL_WEP1_OFFSET  = '-8 6 4';
 vector DAT_HS_TANKL_WEP2_OFFSET  = '8 6 4';
 //-------------------------Human Tank Destroyer
 vector DAT_H_TD_WEP1_OFFSET  = '-8 6 4';
+//-------------------------PSC VTOL Light
+vector DAT_PSC_VTOLL_WEP1_OFFSET  = '-8 6 4';
+vector DAT_PSC_VTOLL_WEP2_OFFSET  = '8 6 4';
 //============================
 //            Tech level  
 //============================

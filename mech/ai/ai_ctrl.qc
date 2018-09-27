@@ -8,9 +8,13 @@ Overview: AI Controller functions, ported mainly from Quake 1
 /*
   Sets the next STATE enum (yes I know, no native ENUM support)
 */
-void( float nex_state ) ai_next_state={
-  self.attack_state = nex_state;
+void( float estate ) ai_next_state={
+  self.attack_state = estate;
   self.ai_action_time = time + self.ai_action_mod;
+};
+
+void( float estate ) ai_turret_set_state={
+  self.e_tor_c.attack_state = estate;
 };
 
 /*
@@ -55,6 +59,26 @@ void( float estate ) ai_state_control={
       break;
   }
 };
+
+void() ai_turret_state={
+  local entity this;
+  this = self;
+  self = this.e_tor_c;
+    switch( self.attack_state ){
+      case TR_NORM:
+        self.ideal_yaw = this.angles;
+        break;
+      case TR_TARG:
+        self.ideal_yaw = vectoyaw( self.enemy.origin - this.origin );
+        break;
+      case TR_GOAL:
+        self.ideal_yaw = vectoyaw( self.goalentity.origin - this.origin );
+        break;
+    }
+    ChangeYaw();
+  self = this;
+};
+
 /*
 ===================================================
   Generic State impl's

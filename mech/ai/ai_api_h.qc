@@ -35,6 +35,11 @@ float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even i
 float ST_HUNT_START         = 12; //TODO
 float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'staggers' the target
 
+//AI TURRET CONSTANTS
+float TR_NORM               = 0;
+float TR_TARG               = 1;
+float TR_GOAL               = 3;
+
 //VIS CONSTANTS
 float VIS_FAIL = 0;
 float VIS_FRAC = 1;
@@ -143,8 +148,11 @@ void() ai_face_targ;
   AI STATE FUNCTIONS=====================
 */
 void( float estate ) ai_state_control;
+void() ai_turret_state;
 void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states
 void( float startState ) ai_initialize_system;
+
+void( float estate ) ai_turret_set_state;
 
 //generic state functions
 //any and all can be replaced by an AI's own th_func standins

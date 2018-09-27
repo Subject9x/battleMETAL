@@ -138,6 +138,9 @@ void(float vec_id) data_iniVehc={
     case ID_VEC_HS_TANK_L:
       build_vehicle_unit( data_HS_TANKL_ini );
       break;
+    case ID_VEC_PSC_VTOL_L:
+      build_vtol_unit( data_PSC_VTOLL_ini );
+      break;
     default :
       cons_logAFloat("Error: failed to build vehicle with id", vec_id);
       remove(self);

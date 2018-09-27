@@ -342,6 +342,13 @@ void(void() data_ini) build_vehicle_unit={
   build_unit_weapon_list();
 };
 
+
+void( void() data_ini ) build_vtol_unit={
+  build_vehicle_unit( data_ini );
+  self.movetype = MOVETYPE_FLY;
+  self.flags = self.flags | FL_FLY;
+};
+
 entity(void() func) build_vehc_base={
   local entity this, base_ent;
   this = self;

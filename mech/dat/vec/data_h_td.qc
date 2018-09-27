@@ -13,15 +13,6 @@ Overview:
 string DAT_H_TD_PITCH_N = "-25";
 string DAT_H_TD_PITCH_X = "45";
 
-//WEAPON1
-vector DAT_H_TD_WEP1_OFFSET_ALT = '0 0 0';
-vector DAT_H_TD_WEP1_ADJ_ANG= '0 0 90';
-
-//CAMERA
-string DAT_H_TD_CAM_CNAME= "camera";
-vector DAT_H_TD_CAM_OFFSET= '0 0 0';
-vector DAT_H_TD_CAM_OFFSET_ALT= '0 0 0';
-
 //=========================================
 void() data_H_TD_ini;
 void() data_H_TD_ctor;
@@ -68,14 +59,16 @@ void() data_H_TD_wep1={
   self.c_parent = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_H_TD_WEP1_OFFSET;
-  self.c_alt_ofs = DAT_H_TD_WEP1_OFFSET_ALT;
-  self.w_adj_ang = DAT_H_TD_WEP1_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON1;
 };
 
-void() data_H_TD_cam={ 
-  self.c_name = DAT_H_TD_CAM_CNAME;
-  self.c_ofs = DAT_H_TD_CAM_OFFSET;
-  self.c_alt_ofs = DAT_H_TD_CAM_OFFSET_ALT;
-  self.c_model = DAT_H_TD_CAM_MODEL;
+void() data_H_TD_wep2={  
+  self.c_parent = M_TOR_CENTER;
+  self.data_idx = 0; //consult weapon idx table!
+  self.c_ofs = DAT_H_TD_WEP1_OFFSET;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.w_group = WEAPON2;
 };

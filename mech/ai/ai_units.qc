@@ -103,7 +103,6 @@ void() unit_hr_gev_m={};
 void() unit_hr_arty_m={};
 void() unit_hr_arty_c={};
 
-
 /*
 ==============================
   FACTION - SYNTH - WARLORDS
@@ -116,3 +115,7 @@ void() unit_hr_arty_c={};
   FACTION - PSC
 ==============================
 */
+void() unit_psc_vtol_l={
+  self.nextVecChoice = ID_VEC_PSC_VTOL_L;
+  ai_vtol();
+};
