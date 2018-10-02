@@ -62,7 +62,7 @@ void() data_prj_sfga_raddmg={
   f = findradius(self.origin, self.w_range);
   while(f){
     if(f != other){
-      if(f.classname != MECH_PIECE){
+      if(f.comp_id > 0){
         local float d, dmg_act;
         d = vlen(f.origin - self.origin);
         if(d < (DAT_PRJ_SFGA_RAD/4)){

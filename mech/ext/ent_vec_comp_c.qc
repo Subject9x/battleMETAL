@@ -17,8 +17,8 @@ commented vars mean they're already implemented and are here for reference!
 //.armorvalue
 
 .string c_model;
-.string c_parent;
-.string c_name;    //data reference, different than ‘classname
+.float c_parent;
+.float comp_id;    //component_name,
 .vector c_ofs;
 .vector c_alt_ofs;    //useful alt offset
 .vector c_bbx_n;    //min / max of bbox

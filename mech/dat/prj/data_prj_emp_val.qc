@@ -41,7 +41,7 @@ void()data_prj_emp_think={
         traceline(self.origin, proxy.origin, FALSE, self.owner);
         if(trace_ent){
           local entity f;
-          if(trace_ent.classname == MECH_PIECE){
+          if(trace_ent.comp_id > 0){
             f = trace_ent.owner;
           }
           else{

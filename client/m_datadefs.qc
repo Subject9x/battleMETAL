@@ -7,6 +7,6 @@ Overview: really should have been synced with file of the same name serverside..
 
 .string vec_name;
 .float vec_size;
-.string c_name;
+.float comp_id;
 
 entity(float id, float dat_type) m_findData;

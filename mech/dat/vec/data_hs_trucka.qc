@@ -36,7 +36,7 @@ void() data_HS_TruckA_ini={
 };
 
 void() data_HS_TruckA_chas={
-  self.c_name = M_TOR_CENTER;
+  self.comp_id = M_TOR_CENTER;
   self.health = DAT_HS_TRUCK_HP;
   self.max_health = DAT_HS_TRUCK_HP;
   self.c_model = DAT_H_TD_CTOR_MODEL;

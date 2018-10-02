@@ -60,13 +60,18 @@ void( float estate ) ai_state_control={
   }
 };
 
-void() ai_turret_state={
+/*
+  called every frame if the AI Unit has FL_TURRET
+  flag, this  assumes .e_tor_c is the AI's turret ent.
+  
+*/
+void(float tstate) ai_turret_control={
   local entity this;
   this = self;
   self = this.e_tor_c;
-    switch( self.attack_state ){
+    switch( tstate ){
       case TR_NORM:
-        self.ideal_yaw = this.angles;
+        self.ideal_yaw = this.angles_y;
         break;
       case TR_TARG:
         self.ideal_yaw = vectoyaw( self.enemy.origin - this.origin );

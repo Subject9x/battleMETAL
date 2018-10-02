@@ -5,8 +5,6 @@ Date: 8/27/2016
 Overview: extends the player's entity.
 */
 
-const float FL_CLIENTDATA = 8192;
-
 .float cl_flags;
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame

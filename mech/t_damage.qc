@@ -94,7 +94,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if( trg.health <= 0 ){
     if( trg.th_die ){
-      if( trg.c_name == M_LEGS ){
+      if( trg.comp_id == M_LEGS ){
         trg.owner.m_fspeed = trg.owner.m_fspeed / 2;
         trg.deadflag = DEAD_DYING;
       }
@@ -192,7 +192,7 @@ void(entity targ, entity attacker, float dmg_type) filter_killed={
   filter = targ;
   if(targ.owner.classname == "player"){
     if(targ.owner.data_type == DATA_MECH){
-      if(targ.classname == M_LEGS){
+      if(targ.comp_id == M_LEGS){
         return;
       }
     }
@@ -246,12 +246,12 @@ void(entity targ, entity attacker, float dmg_type) killed={
     
     self.doobits = 0;
     
-    if( (self.classname == MECH_PIECE) && (self.c_name != "weapon") ){
+    if( (self.classname == MECH_PIECE) && (self.comp_id != -1) ){
       local entity wep;
       wep = self.owner;
       while(wep){
         wep = wep.w_slot;
-        if(wep.c_parent == self.c_name){
+        if(wep.c_parent == self.comp_id){
           if(wep.deadflag <= DEAD_NO){
             killed(wep, attacker, 0);      
           }
@@ -746,7 +746,7 @@ entity(entity targ, entity inflictor, entity attacker, vector dmg_point) damage_
   if(found == world){
     found = targ;
   }
-  if(found.c_name == "cpit"){
+  if(found.comp_id == "cpit"){
     found = targ;
   }
   return found;
@@ -763,7 +763,7 @@ entity(vector point, float rad, entity src, entity own, entity prev) t_find_recu
   while(elm){
     if(elm != world){
       if(elm.owner == own){
-        if((elm.c_name) && (elm.c_name != "cpit")){
+        if((elm.comp_id) && (elm.comp_id != "cpit")){
           cur_dist =  vlen(elm.origin - point);
           if(cur_dist < rad_dist){
             rad_dist = cur_dist;

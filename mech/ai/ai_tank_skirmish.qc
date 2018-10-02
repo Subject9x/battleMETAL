@@ -8,18 +8,6 @@ Overview: ai unit
   a default tank
 */
 
-float() ai_tread_adjust={
-  if( self.e_legs.angles_y > anglemod( self.angles_y + 25 ) ){
-    self.e_legs.angles_y = anglemod( self.e_legs.angles_y - self.yaw_speed );
-    return FALSE;
-  }
-  else if(self.e_legs.angles_y < anglemod( self.angles_y - 25 ) ){
-    self.e_legs.angles_y = anglemod( self.e_legs.angles_y + self.yaw_speed );
-    return FALSE;
-  }
-  return TRUE;
-};
-
 void() ai_tank_sk_stand;
 void() ai_tank_sk_run;
 void() ai_tank_sk_melee;
@@ -181,7 +169,6 @@ void() ai_tank_sk_pain={
 
 };
 
-
 void() ai_tank_sk_die={
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
@@ -295,13 +282,17 @@ void() ai_tank_sk_th={
         self.enemy = world;
       }
     } 
-    self.e_legs.angles_y = self.ai_dir;
+    
     ai_ranged_attack();
-    self.button0 = 0;
+    self.button0 = 0;  
+    
+    ai_state_control( self.attack_state );
+
+    if( (self.flags & FL_TURRET) ){
+      ai_turret_control( self.e_tor_c.attack_state );
+    }
   }
-
-  ai_state_control( self.attack_state );
-
+  
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
     self.think = ai_tank_sk_th;

@@ -34,43 +34,43 @@ string DAT_OTL_M_BSIDE      = "0.09";
 string DAT_OTL_M_BSPD       = "6";
 
 //LEGS
-string DAT_OTL_LEG_CNAME= M_LEGS;
+float DAT_OTL_LEG_CNAME= M_LEGS;
 
 //CENTER TORSO
-string DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
+float DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
 
 //LEFT TORSO
-string DAT_OTL_LTOR_CNAME= M_TOR_LEFT;
-string DAT_OTL_LTOR_CPARENT= M_TOR_CENTER;
+float DAT_OTL_LTOR_CNAME= M_TOR_LEFT;
+float DAT_OTL_LTOR_CPARENT= M_TOR_CENTER;
 
 //RIGHT TORSO
-string DAT_OTL_RTOR_CNAME= M_TOR_RIGHT;
-string DAT_OTL_RTOR_CPARENT= M_TOR_CENTER; 
+float DAT_OTL_RTOR_CNAME= M_TOR_RIGHT;
+float DAT_OTL_RTOR_CPARENT= M_TOR_CENTER; 
 
 //LEFT ARM 
-string DAT_OTL_LARM_CNAME= M_ARM_LEFT;
-string DAT_OTL_LARM_CPARENT= M_TOR_LEFT;
+float DAT_OTL_LARM_CNAME= M_ARM_LEFT;
+float DAT_OTL_LARM_CPARENT= M_TOR_LEFT;
 
 
 //RIGHT ARM
-string DAT_OTL_RARM_CNAME= M_ARM_RIGHT;
-string DAT_OTL_RARM_CPARENT= M_TOR_RIGHT;
+float DAT_OTL_RARM_CNAME= M_ARM_RIGHT;
+float DAT_OTL_RARM_CPARENT= M_TOR_RIGHT;
 
 //CAMERA
-string DAT_OTL_CAM_CNAME= "camera";
+float DAT_OTL_CAM_CNAME = -1;
 
 //WEAPON1
-string DAT_OTL_WEP1_CPARENT= M_ARM_LEFT;
+float DAT_OTL_WEP1_CPARENT= M_ARM_LEFT;
 vector DAT_OTL_WEP1_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
-string DAT_OTL_WEP2_CPARENT= M_ARM_RIGHT;
+float DAT_OTL_WEP2_CPARENT= M_ARM_RIGHT;
 vector DAT_OTL_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP2_ADJ_ANG= '0 0 90';
 
 //WEAPON3
-string DAT_OTL_WEP3_CPARENT= M_TOR_CENTER;
+float DAT_OTL_WEP3_CPARENT= M_TOR_CENTER;
 vector DAT_OTL_WEP3_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 
@@ -100,7 +100,7 @@ void() data_otl_ini={
 
   self.data_idx= ID_MCH_BALAKET;
   self.vec_size = SZ_MCH_BALAKET;
-  self.vec_name= DAT_OTL_VEC_NAME;
+  self.vec_name = DAT_OTL_VEC_NAME;
   self.data_type = DATA_MECH;
   self.radar_range = DAT_OTL_RADAR_RANGE;
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
@@ -136,7 +136,7 @@ void() data_otl_ini={
   self.hardpoint_cnt = DAT_BLK_HARDPOINT_CNT;
 };
 void() data_otl_ctor={
-  self.c_name = DAT_OTL_CTOR_CNAME;
+  self.comp_id = DAT_OTL_CTOR_CNAME;
   self.health = DAT_OTL_CTOR_HP;
   self.max_health = DAT_OTL_CTOR_HP;
   self.armorvalue = DAT_OTL_CTOR_ARMMAX;
@@ -145,7 +145,7 @@ void() data_otl_ctor={
   self.w_proj = 3;
 };
 void() data_otl_legs={
-  self.c_name = DAT_OTL_LEG_CNAME;
+  self.comp_id = DAT_OTL_LEG_CNAME;
   self.health = DAT_OTL_LEG_HP;
   self.max_health = DAT_OTL_LEG_HP;
   self.armorvalue = DAT_OTL_LEG_ARMMAX;
@@ -154,7 +154,7 @@ void() data_otl_legs={
   self.c_ofs = DAT_OTL_LEG_OFFSET;
 };
 void() data_otl_ltor={
-  self.c_name = DAT_OTL_LTOR_CNAME;
+  self.comp_id = DAT_OTL_LTOR_CNAME;
   self.c_parent = DAT_OTL_LTOR_CPARENT;
   self.health = DAT_OTL_LTOR_HP;
   self.max_health = DAT_OTL_LTOR_HP;
@@ -164,7 +164,7 @@ void() data_otl_ltor={
   self.c_ofs = DAT_OTL_LTOR_OFFSET;
 };
 void() data_otl_rtor={
-  self.c_name = DAT_OTL_RTOR_CNAME;
+  self.comp_id = DAT_OTL_RTOR_CNAME;
   self.c_parent = DAT_OTL_RTOR_CPARENT;
   self.health = DAT_OTL_RTOR_HP;
   self.max_health = DAT_OTL_RTOR_HP;
@@ -174,7 +174,7 @@ void() data_otl_rtor={
   self.c_ofs = DAT_OTL_RTOR_OFFSET;
 };
 void() data_otl_larm={  
-  self.c_name = DAT_OTL_LARM_CNAME;
+  self.comp_id = DAT_OTL_LARM_CNAME;
   self.c_parent = DAT_OTL_LARM_CPARENT;
   self.health = DAT_OTL_LARM_HP;
   self.max_health = DAT_OTL_LARM_HP;
@@ -184,7 +184,7 @@ void() data_otl_larm={
   self.c_ofs = DAT_OTL_LARM_OFFSET;
 };
 void() data_otl_rarm={  
-  self.c_name = DAT_OTL_RARM_CNAME;
+  self.comp_id = DAT_OTL_RARM_CNAME;
   self.c_parent = DAT_OTL_RARM_CPARENT;
   self.health = DAT_OTL_RARM_HP;
   self.max_health = DAT_OTL_RARM_HP;
@@ -194,7 +194,7 @@ void() data_otl_rarm={
   self.c_ofs = DAT_OTL_RARM_OFFSET;
 };
 void() data_otl_cam={  
-  self.c_name = DAT_OTL_CAM_CNAME;
+  self.comp_id = DAT_OTL_CAM_CNAME;
   self.c_ofs = DAT_OTL_CAM_OFFSET;
   self.c_alt_ofs = DAT_OTL_CAM_OFFSET_ALT;
   self.c_model = DAT_OTL_CAM_MODEL;

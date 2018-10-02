@@ -18,7 +18,7 @@ Overview: definition file for building entities
 .void() th_ctrl;  //controller function
 .float data_idx;
 .string c_model;
-.string c_name;
+.float comp_id;
 .vector c_bbx_n;    //min / max of bbox
 .vector c_bbx_x;
 .health;

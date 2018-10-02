@@ -58,7 +58,7 @@ void() data_PSC_VTOLL_ini={
 };
 
 void() data_PSC_VTOLL_ctor={
-  self.c_name = M_TOR_CENTER;
+  self.comp_id = M_TOR_CENTER;
   self.health = DAT_H_TD_HP_CTOR;
   self.max_health = DAT_H_TD_HP_CTOR;
   self.c_model = DAT_H_TD_CTOR_MODEL;

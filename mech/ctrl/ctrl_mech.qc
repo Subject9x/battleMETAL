@@ -103,8 +103,8 @@ void() ctrl_die_comp={
   if(self.deadflag <= DEAD_NO){
     local entity oself, tmp;
     local vector pvel;
-    local string compType;
-    compType = self.c_name;
+    local float compType;
+    compType = self.comp_id;
     oself = self;
     pvel = self.owner.velocity;
     newmis = spawn();

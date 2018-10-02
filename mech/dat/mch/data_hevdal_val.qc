@@ -40,75 +40,75 @@ string DAT_MNT_M_BSIDE    = "0.65";
 string DAT_MNT_M_BSPD     = "3.85";
 
 //LEGS
-string DAT_MNT_LEG_CNAME= M_LEGS;
+float DAT_MNT_LEG_CNAME= M_LEGS;
 
 //CENTER TORSO
-string DAT_MNT_CTOR_CNAME= M_TOR_CENTER;
+float DAT_MNT_CTOR_CNAME= M_TOR_CENTER;
 
 //LEFT TORSO
-string DAT_MNT_LTOR_CNAME= M_TOR_LEFT;
-string DAT_MNT_LTOR_CPARENT= M_TOR_CENTER;
+float DAT_MNT_LTOR_CNAME= M_TOR_LEFT;
+float DAT_MNT_LTOR_CPARENT= M_TOR_CENTER;
 
 
 //RIGHT TORSO
-string DAT_MNT_RTOR_CNAME= M_TOR_RIGHT;
-string DAT_MNT_RTOR_CPARENT= M_TOR_CENTER; 
+float DAT_MNT_RTOR_CNAME= M_TOR_RIGHT;
+float DAT_MNT_RTOR_CPARENT= M_TOR_CENTER; 
 
 
 //LEFT ARM 
-string DAT_MNT_LARM_CNAME= M_ARM_LEFT;
-string DAT_MNT_LARM_CPARENT= M_TOR_LEFT;
+float DAT_MNT_LARM_CNAME= M_ARM_LEFT;
+float DAT_MNT_LARM_CPARENT= M_TOR_LEFT;
 
 
 //RIGHT ARM
-string DAT_MNT_RARM_CNAME= M_ARM_RIGHT;
-string DAT_MNT_RARM_CPARENT= M_TOR_RIGHT;
+float DAT_MNT_RARM_CNAME= M_ARM_RIGHT;
+float DAT_MNT_RARM_CPARENT= M_TOR_RIGHT;
 
 //CAMERA
-string DAT_MNT_CAM_CNAME= "camera";
+float DAT_MNT_CAM_CNAME= -1;
 
 //WEAPON1
-string DAT_MNT_WEP1_CPARENT= M_ARM_RIGHT;
+float DAT_MNT_WEP1_CPARENT= M_ARM_RIGHT;
 vector DAT_MNT_WEP1_OFFSET_ALT= DAT_MNT_RARM_OFFSET;
 vector DAT_MNT_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
-string DAT_MNT_WEP2_CPARENT= M_ARM_RIGHT;
+float DAT_MNT_WEP2_CPARENT= M_ARM_RIGHT;
 vector DAT_MNT_WEP2_OFFSET_ALT= DAT_MNT_RARM_OFFSET;
 vector DAT_MNT_WEP2_ADJ_ANG= '0 0 90';
 
 //WEAPON3
-string DAT_MNT_WEP3_CPARENT= M_ARM_LEFT;
+float DAT_MNT_WEP3_CPARENT= M_ARM_LEFT;
 vector DAT_MNT_WEP3_OFFSET_ALT= DAT_MNT_LARM_OFFSET;
 vector DAT_MNT_WEP3_ADJ_ANG= '0 0 90';
 
 //WEAPON4
-string DAT_MNT_WEP4_CPARENT= M_ARM_LEFT;
+float DAT_MNT_WEP4_CPARENT= M_ARM_LEFT;
 vector DAT_MNT_WEP4_OFFSET_ALT= DAT_MNT_LARM_OFFSET;
 vector DAT_MNT_WEP4_ADJ_ANG= '0 0 0';
 
 //WEAPON5
-string DAT_MNT_WEP5_CPARENT= M_TOR_RIGHT;
+float DAT_MNT_WEP5_CPARENT= M_TOR_RIGHT;
 vector DAT_MNT_WEP5_OFFSET_ALT= DAT_MNT_RTOR_OFFSET;
 vector DAT_MNT_WEP5_ADJ_ANG= '0 0 0';
 
 //WEAPON6
-string DAT_MNT_WEP6_CPARENT= M_TOR_LEFT;
+float DAT_MNT_WEP6_CPARENT= M_TOR_LEFT;
 vector DAT_MNT_WEP6_OFFSET_ALT= DAT_MNT_LTOR_OFFSET;
 vector DAT_MNT_WEP6_ADJ_ANG= '0 0 0';
 
 //WEAPON7
-string DAT_MNT_WEP7_CPARENT= M_TOR_CENTER;
+float DAT_MNT_WEP7_CPARENT= M_TOR_CENTER;
 vector DAT_MNT_WEP7_OFFSET_ALT= '0 0 0';
 vector DAT_MNT_WEP7_ADJ_ANG= '0 0 0';
 
 //WEAPON8
-string DAT_MNT_WEP8_CPARENT= M_TOR_RIGHT;
+float DAT_MNT_WEP8_CPARENT= M_TOR_RIGHT;
 vector DAT_MNT_WEP8_OFFSET_ALT= '0 0 0';
 vector DAT_MNT_WEP8_ADJ_ANG= '0 0 0';
 
 //WEAPON9
-string DAT_MNT_WEP9_CPARENT= M_TOR_LEFT;
+float DAT_MNT_WEP9_CPARENT= M_TOR_LEFT;
 vector DAT_MNT_WEP9_OFFSET_ALT= '0 0 0';
 vector DAT_MNT_WEP9_ADJ_ANG= '0 0 0';
 //=========================================
@@ -186,7 +186,7 @@ void() data_mnt_ini={
 };
 
 void() data_mnt_legs={
-  self.c_name = DAT_MNT_LEG_CNAME;
+  self.comp_id = DAT_MNT_LEG_CNAME;
   self.health = DAT_MNT_LEG_HP;
   self.max_health = DAT_MNT_LEG_HP;
   self.armorvalue = DAT_MNT_LEG_ARMMAX;
@@ -196,7 +196,7 @@ void() data_mnt_legs={
 };
 
 void() data_mnt_ctor={
-  self.c_name = DAT_MNT_CTOR_CNAME;
+  self.comp_id = DAT_MNT_CTOR_CNAME;
   self.health = DAT_MNT_CTOR_HP;
   self.max_health = DAT_MNT_CTOR_HP;
   self.armorvalue = DAT_MNT_CTOR_ARMMAX;
@@ -206,7 +206,7 @@ void() data_mnt_ctor={
 };
 
 void() data_mnt_ltor={
-  self.c_name = DAT_MNT_LTOR_CNAME;
+  self.comp_id = DAT_MNT_LTOR_CNAME;
   self.c_parent = DAT_MNT_LTOR_CPARENT;
   self.health = DAT_MNT_LTOR_HP;
   self.max_health = DAT_MNT_LTOR_HP;
@@ -216,7 +216,7 @@ void() data_mnt_ltor={
   self.c_ofs = DAT_MNT_LTOR_OFFSET;
 };
 void() data_mnt_rtor={
-  self.c_name = DAT_MNT_RTOR_CNAME;
+  self.comp_id = DAT_MNT_RTOR_CNAME;
   self.c_parent = DAT_MNT_RTOR_CPARENT;
   self.health = DAT_MNT_RTOR_HP;
   self.max_health = DAT_MNT_RTOR_HP;
@@ -226,7 +226,7 @@ void() data_mnt_rtor={
   self.c_ofs = DAT_MNT_RTOR_OFFSET;
 };
 void() data_mnt_larm={  
-  self.c_name = DAT_MNT_LARM_CNAME;
+  self.comp_id = DAT_MNT_LARM_CNAME;
   self.c_parent = DAT_MNT_LARM_CPARENT;
   self.health = DAT_MNT_LARM_HP;
   self.max_health = DAT_MNT_LARM_HP;
@@ -236,7 +236,7 @@ void() data_mnt_larm={
   self.c_ofs = DAT_MNT_LARM_OFFSET;
 };
 void() data_mnt_rarm={  
-  self.c_name = DAT_MNT_RARM_CNAME;
+  self.comp_id = DAT_MNT_RARM_CNAME;
   self.c_parent = DAT_MNT_RARM_CPARENT;
   self.health = DAT_MNT_RARM_HP;
   self.max_health = DAT_MNT_RARM_HP;
@@ -246,7 +246,7 @@ void() data_mnt_rarm={
   self.c_ofs = DAT_MNT_RARM_OFFSET;
 };
 void() data_mnt_cam={  
-  self.c_name = DAT_MNT_CAM_CNAME;
+  self.comp_id = DAT_MNT_CAM_CNAME;
   self.c_ofs = DAT_MNT_CAM_OFFSET;
   self.c_alt_ofs = DAT_MNT_CAM_OFFSET_ALT;
   self.c_model = DAT_MNT_CAM_MODEL;

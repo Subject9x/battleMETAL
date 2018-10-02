@@ -15,14 +15,13 @@ string DAT_HS_TANKL_PITCH_N = "-25";
 string DAT_HS_TANKL_PITCH_X = "45";
 
 //CAMERA
-string DAT_HS_TANKL_CAM_CNAME= "camera";
+float DAT_HS_TANKL_CAM_CNAME= -1;
 vector DAT_HS_TANKL_CAM_OFFSET= '0 0 0';
 vector DAT_HS_TANKL_CAM_OFFSET_ALT= '0 0 0';
 
 //=========================================
 void() data_HS_TANKL_ini;
 void() data_HS_TANKL_ctor;
-void() data_HS_TANKL_legs;
 void() data_HS_TANKL_cam;
 void() data_HS_TANKL_wep1;
 void() data_HS_TANKL_wep2;
@@ -31,7 +30,6 @@ void() data_HS_TANKL_ini={
   self.unit_ctor = data_HS_TANKL_ctor;
   self.unit_wep1 = data_HS_TANKL_wep1;
   self.unit_wep2 = data_HS_TANKL_wep2;
-  self.unit_legs = data_HS_TANKL_legs;
   self.unit_cam = data_HS_TANKL_cam;
     
   self.data_idx= ID_VEC_HS_TANK_L;
@@ -48,7 +46,7 @@ void() data_HS_TANKL_ini={
   self.m_rot_speed = DAT_HS_TANKL_YAW_SPEED;
   self.c_bbx_n = DAT_HS_TANKL_CTOR_BBX_N;
   self.c_bbx_x = DAT_HS_TANKL_CTOR_BBX_X;
-  self.c_model = DAT_HS_TANKL_CTOR_MODEL;
+  self.c_model = DAT_HS_TANKL_MDL_CHASSIS;
   self.conv_min = DAT_HS_TANKL_SPREAD_N; 
   self.conv_max = DAT_HS_TANKL_SPREAD_X; 
   self.m_fspeed = DAT_HS_TANKL_FSPEED;
@@ -56,20 +54,15 @@ void() data_HS_TANKL_ini={
   self.m_bspeed = DAT_HS_TANKL_BSPEED;
   self.m_pitch_max = DAT_HS_TANKL_PITCH_N;
   self.m_pitch_min = DAT_HS_TANKL_PITCH_X;
+  self.comp_id = M_TOR_CENTER;
 };
 
 void() data_HS_TANKL_ctor={
-  self.c_name = M_TOR_CENTER;
-  self.health = DAT_H_TANKL_CTOR_HP;
-  self.max_health = DAT_H_TANKL_CTOR_HP;
-  self.c_model = DAT_HS_TANKL_CTOR_MODEL;
-};
-
-void() data_HS_TANKL_legs={
-  self.c_name = M_LEGS;
+  self.comp_id = M_TOR_CENTER;
   self.health = 1;
   self.max_health = 1;
-  self.c_model = DAT_HS_TANKL_MDL_CHASSIS;
+  self.c_model = DAT_HS_TANKL_CTOR_MODEL;
+  self.yaw_speed = 2;
 };
 
 void() data_HS_TANKL_wep1={  
@@ -91,7 +84,7 @@ void() data_HS_TANKL_wep2={
 };
 
 void() data_HS_TANKL_cam={ 
-  self.c_name = M_TOR_CENTER;
+  self.comp_id = M_TOR_CENTER;
   self.c_ofs = DAT_HS_TANKL_CAM_OFFSET;
   self.c_alt_ofs = DAT_HS_TANKL_CAM_OFFSET_ALT;
   self.c_model = DAT_HS_TANKL_CAM_MODEL;

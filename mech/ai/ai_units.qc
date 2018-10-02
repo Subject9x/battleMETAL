@@ -57,6 +57,7 @@ void() unit_hs_excavat={
 
 void() unit_hs_tank_l={
   self.nextVecChoice = 7;
+  self.flags = self.flags | FL_TURRET;
   ai_tank_skirmish();
 };
 

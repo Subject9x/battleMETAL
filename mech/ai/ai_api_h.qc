@@ -148,7 +148,7 @@ void() ai_face_targ;
   AI STATE FUNCTIONS=====================
 */
 void( float estate ) ai_state_control;
-void() ai_turret_state;
+void( float tstate) ai_turret_control;
 void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states
 void( float startState ) ai_initialize_system;
 

@@ -124,7 +124,7 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
     
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE; 
-    self.c_name = "weapon";
+    self.comp_id = -2;
 
     if( (own.flags & FL_MONSTER) ){
       self.p_damage = ai_pilot_mod_damage( self.ai_rank, cvar("skill"), self.p_damage);
@@ -237,6 +237,17 @@ void(void() func) build_mech_torsoCenter={
   ctor_stand();
 };
 
+entity( void() func ) build_unit_turret={
+  local entity this, comp;
+  this = self;
+  comp = spawn();
+  self = comp;
+    build_unit_component( func, this );
+    self.attack_state = TR_NORM;
+  self = this;
+  return comp;
+};
+
 entity(void() func) build_mech_torsoLeft={
   local entity this, comp;
   this = self;
@@ -246,6 +257,7 @@ entity(void() func) build_mech_torsoLeft={
   self = this;
   return comp;
 };
+
 entity(void() func) build_mech_torsoRight={
   local entity this, comp;
   this = self;
@@ -312,7 +324,7 @@ entity(void() func) build_mech_legs={
 void(void() data_ini) build_vehicle_unit={
   local entity part_chain;
   data_ini();
-  self.unit_ctor();
+
   util_setModel(self.c_model, self.mskin, 0);
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
@@ -324,6 +336,13 @@ void(void() data_ini) build_vehicle_unit={
     self.e_cam = build_unit_camera(self.unit_cam);
   }
   part_chain = self;
+  
+  if( (self.flags & FL_TURRET) ){
+    self.e_tor_c = build_unit_turret( self.unit_ctor );
+    part_chain.c_part = self.e_tor_c;
+    part_chain = part_chain.c_part;
+  }
+  
   if(self.unit_rtor){
     self.e_tor_r = build_mech_torsoRight(self.unit_rtor);
     part_chain.c_part = self.e_tor_r;
@@ -334,11 +353,7 @@ void(void() data_ini) build_vehicle_unit={
     part_chain.c_part = self.e_tor_l;
     part_chain = part_chain.c_part;
   }
-  if(self.unit_legs){
-    self.e_legs = build_vehc_base(self.unit_legs);
-    part_chain.c_part = self.e_legs;
-    part_chain = part_chain.c_part;
-  }
+  
   build_unit_weapon_list();
 };
 

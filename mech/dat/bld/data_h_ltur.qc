@@ -32,26 +32,26 @@ float DAT_TUR_WEP2_GROUP  = 1;
 //this is mostly cosmetics
 
 //LEGS
-string DAT_TUR_LEG_CNAME= M_LEGS;
+float DAT_TUR_LEG_CNAME= M_LEGS;
 vector DAT_TUR_LEG_OFFSET= '0 -7.5 0';
 
 //CENTER TORSO
-string DAT_TUR_CTOR_CNAME= M_TOR_CENTER;
+float DAT_TUR_CTOR_CNAME= M_TOR_CENTER;
 
 //WEAPON1
-string DAT_TUR_WEP1_CPARENT= M_TOR_CENTER;
+float DAT_TUR_WEP1_CPARENT= M_TOR_CENTER;
 vector DAT_TUR_WEP1_OFFSET= '2.5 -0.5 10';
 vector DAT_TUR_WEP1_OFFSET_ALT = '0 0 0';
 vector DAT_TUR_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
-string DAT_TUR_WEP2_CPARENT= M_TOR_CENTER;
+float DAT_TUR_WEP2_CPARENT= M_TOR_CENTER;
 vector DAT_TUR_WEP2_OFFSET= '6 -0.5 10';
 vector DAT_TUR_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_TUR_WEP2_ADJ_ANG= '0 0 90';
 
 //CAMERA
-string DAT_TUR_CAM_CNAME= "camera";
+float DAT_TUR_CAM_CNAME = -1;
 vector DAT_TUR_CAM_OFFSET= '0 0 0';
 vector DAT_TUR_CAM_OFFSET_ALT= '0 0 0';
 
@@ -70,8 +70,8 @@ void() data_tur_ini={
   self.unit_wep2 = data_tur_wep2;
   self.unit_cam = data_tur_cam;
 
-  self.data_idx= ID_BLD_H_TURRET;
-  self.vec_name= DAT_TUR_VEC_NAME;
+  self.data_idx = ID_BLD_H_TURRET;
+  self.vec_name = DAT_TUR_VEC_NAME;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_TUR_RADAR_RANGE;
   self.i_techlvl= DAT_TUR_TECH_LEVEL;
@@ -122,7 +122,7 @@ void() building_tur={
   self.conv_max = '0 0 0';
   self.stat_lck_stt = LOCK_NONE;
   self.ideal_yaw = self.angles * '0 1 0';
-  self.e_legs.prev_angle = self.angles;
+  //self.e_legs.prev_angle = self.angles; TODO fix me
   
   data_iniBuilding(ID_BLD_H_TURRET);
   ai_core_calcranges();
@@ -168,7 +168,7 @@ void() building_tur={
 };
 
 void() data_tur_legs={
-  self.c_name = DAT_TUR_LEG_CNAME;
+  self.comp_id = DAT_TUR_LEG_CNAME;
   self.health = DAT_TUR_LEG_HP;
   self.max_health = DAT_TUR_LEG_HP;
   self.armorvalue = DAT_TUR_LEG_ARMOR;
@@ -178,7 +178,7 @@ void() data_tur_legs={
 };
 
 void() data_tur_ctor={
-  self.c_name = DAT_TUR_CTOR_CNAME;
+  self.comp_id = DAT_TUR_CTOR_CNAME;
   self.health = DAT_TUR_CTOR_HP;
   self.max_health = DAT_TUR_CTOR_HP;
   self.armorvalue = DAT_TUR_CTOR_ARMOR;
@@ -204,7 +204,7 @@ void() data_tur_wep2={
 };
 
 void() data_tur_cam={ 
-  self.c_name = DAT_TUR_CAM_CNAME;
+  self.comp_id = DAT_TUR_CAM_CNAME;
   self.c_ofs = DAT_TUR_CAM_OFFSET;
   self.c_alt_ofs = DAT_TUR_CAM_OFFSET_ALT;
   self.c_model = DAT_TUR_CAM_MODEL;

@@ -22,7 +22,7 @@ void() data_tur_hlite_ini={
   self.unit_cam = data_tur_hlite_cam;
 
   self.data_idx= ID_TUR_HLITE;
-  self.vec_name= DAT_TUR_HLITE_NAME;
+  self.vec_name = DAT_TUR_HLITE_NAME;
   self.data_type = DATA_BLD;
   self.radar_range = DAT_TUR_HLITE_RADRANGE;
   self.en_cur= DAT_TUR_HLITE_EN_MAX;
@@ -41,7 +41,7 @@ void() data_tur_hlite_ini={
 };
 
 void() data_tur_hlite_legs={
-  self.c_name = DAT_TUR_HLITE_LEG_CNAME;
+  self.comp_id = DAT_TUR_HLITE_LEG_CNAME;
   self.health = 1;
   self.max_health = 1;
   self.c_model = DAT_TUR_HLITE_BASE;
@@ -49,7 +49,7 @@ void() data_tur_hlite_legs={
 };
 
 void() data_tur_hlite_ctor={
-  self.c_name = DAT_TUR_HLITE_CTOR_CNAME;
+  self.comp_id = DAT_TUR_HLITE_CTOR_CNAME;
   self.health = DAT_TUR_HLITE_HP;
   self.max_health = DAT_TUR_HLITE_HP;
   self.c_model = DAT_TUR_HLITE_TUR;
@@ -71,7 +71,7 @@ void() data_tur_hlite_wep2={
 };
 
 void() data_tur_hlite_cam={ 
-  self.c_name = DAT_TUR_HLITE_CAM_CNAME;
+  self.comp_id = DAT_TUR_HLITE_CAM_CNAME;
   self.c_ofs = DAT_TUR_HLITE_CAM_OFFSET;
   self.c_alt_ofs = DAT_TUR_HLITE_CAM_OFFSET_ALT;
   self.c_model = DAT_TUR_HLITE_CAM;

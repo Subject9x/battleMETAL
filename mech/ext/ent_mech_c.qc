@@ -7,8 +7,7 @@ Overview: 'class' for mech data / actual ents
 commented vars mean they're already implemented and are here for reference!
 */
 
-//local vars
-.vector prev_angle;
+
 //reactor
 .float en_max;   //max amount
 .float en_cur;  //current amount
@@ -23,6 +22,7 @@ commented vars mean they're already implemented and are here for reference!
 .float rl_rate;
 
 .float vec_size;
+.string vec_name;
 
 .vector conv_min;
 .vector conv_max;

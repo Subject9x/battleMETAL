@@ -363,24 +363,21 @@ void(float bits, float b, float bb, float bbb) util_subThreeBits={
   bits = bits - (bits & (b | bb | bbb) );
 };
  
-entity(string part, entity unit) util_getPartFromName={
-  if(part == M_TOR_RIGHT){
-    return unit.e_tor_r;
-  }
-  else if(part == M_TOR_LEFT){
-    return unit.e_tor_l;
-  }
-  else if(part == M_LEGS){
-    return unit.e_legs;
-  }
-  else if(part == M_ARM_LEFT){
-    return unit.e_arm_l;
-  }
-  else if(part == M_ARM_RIGHT){
-    return unit.e_arm_r;
-  }
-  else{
-    return unit;
+entity(float part, entity unit) util_getPartFromName={
+  
+  switch( part ){
+    case M_TOR_RIGHT:
+      return unit.e_tor_r;
+    case M_TOR_LEFT:
+      return unit.e_tor_l;
+    case M_LEGS:
+      return unit.e_legs;
+    case M_ARM_LEFT:
+      return unit.e_arm_l;
+    case M_ARM_RIGHT:
+      return unit.e_arm_r;
+    default:
+      return unit;
   }
 };
 
