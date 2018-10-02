@@ -37,34 +37,89 @@ void() ai_vtol_stand={
 };
 
 void() ai_vtol_walk={
-  ai_walkgoal();
+  ai_walkgoal( AI_WALK_SPD);
   
 };
 
 void() ai_vtol_run={
-
+  self.attack_finished = 0;
+  if( ai_valid_target( self.enemy ) ){
+    enemy_vis = ai_check_vis( self.enemy );
+    enemy_range = ai_check_range( self.enemy );
+    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+    
+    if( enemy_vis ){
+      if( enemy_range <= 400 ){
+        if( enemy_infront ){
+          ai_next_state( ST_MELEE );
+          self.ai_action_time = self.ai_action_time + 3;
+          return;
+        }
+      }
+      
+      if( enemy_range <= self.ai_minrange ){
+        if( enemy_infront ){
+          if( self.ai_rank < AI_RANK_REG ){
+          self.attack_finished = vectoyaw( self.enemy.origin - self.origin );
+          }
+        }
+      
+      }
+      
+      if( enemy_range > self.ai_minrange ){
+        if( enemy_infront ){
+        
+        }
+      
+      }
+    
+    }
+  }
 };
+
 
 void() ai_vtol_run_strafe={
 
 };
+
 
 void() ai_vtol_run_charge={
 
 };
 
 void() ai_vtol_melee={
-
+  if( self.angles_y != self.ideal_yaw ){
+    ai_face_targ();
+  }
+  
+  ai_move( self.angles_y , self.m_fspeed * AI_WALK_SPD );
+  
+  
+  
+  if( ai_check_face( self.enemy, 0.97 ) ){
+    ai_attack();
+  }
+  
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_STAND );
+    self.ai_action_time = self.ai_action_time + 2;
+    return;
+  }
 };
 
 void() ai_vtol_missile={
 
 };
 
+
 void() ai_vtol_missile_strafe={
 
 };
 
+/*
+  VTOL's are actually allowed to hunt the player,
+  something something no terrain
+*/
 void() ai_vtol_hunt={
 
 };
@@ -120,8 +175,13 @@ void() ai_vtol_th={
     ai_ranged_attack();
     self.button0 = 0;
   }
-
+  
   ai_state_control( self.attack_state );
+  
+  //altitude check
+   //TODO - shutoff when dead
+  ai_fly_alt( self.m_sspeed * AI_WALK_SPD );
+  
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
     self.think = ai_vtol_th;

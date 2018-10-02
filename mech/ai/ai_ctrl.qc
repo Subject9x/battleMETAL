@@ -369,6 +369,48 @@ float( float angmod, float dist ) ai_yaw_move={
   return walkmove( self.ideal_yaw + angmod, dist );
 };
 
+float() ai_fly_update={
+  local vector delta;
+  local float up, dn;
+  
+  makevectors( self.angles );
+  delta = v_up * 300; //TODO - make real value
+  
+  traceline( self.origin, self.origin - delta, MOVE_NORMAL, self);
+  dn = vlen( self.origin - trace_endpos );
+
+  if( dn <= 300 && trace_ent ){
+     //TODO - make real value
+    return 1;
+  }
+  
+  traceline( self.origin, self.origin + delta, MOVE_NORMAL, self);
+  up = vlen( self.origin -  trace_endpos );
+  
+  if( up >= 600 && trace_ent ){
+     //TODO - make real value
+    return -1;
+  }
+  
+  return 0;
+}
+
+//makes the assumption the unit cares about altitude
+float( float dist ) ai_fly_alt={ 
+  local float delta;
+  local vector adj;
+  
+  delta = ai_fly_update();
+  delta = delta * dist;
+  
+  if( delta != FALSE ){
+    adj = self.origin + (v_up * delta);
+    setorigin( self, adj);
+  }
+};
+
+
+
 /*
   Checks to see if Entity T is in the ANG arc of self
 */
