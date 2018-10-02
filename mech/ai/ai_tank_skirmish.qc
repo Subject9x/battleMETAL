@@ -176,6 +176,12 @@ void() ai_tank_sk_die={
   self.colormod = '0.25 0.25 0.25';
   self.attack_state = -1;
   
+  //fire triggers when dead
+  self.target = self.target_die;
+  self.enemy = self.ladder_entity;
+  activator = self.enemy;
+  SUB_UseTargets ();
+
   local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
@@ -183,54 +189,30 @@ void() ai_tank_sk_die={
     w_chain = w_chain.w_slot;
   }
   mech_player_compdie(self.e_cam);
-  
-  //fire triggers when dead
-  self.target = self.target_die;
-  self.enemy = self.ladder_entity;
-  activator = self.enemy;
-  SUB_UseTargets ();
-
-    
-  setmodel( self, self.e_legs.model);
-  setsize(self, '-8 -8 -3' , '8 8 3');
-  setorigin( self, self.e_legs.origin);
-  
-  mech_player_compdie(self.e_legs);
   mech_player_compdie(self.e_tor_l);
   mech_player_compdie(self.e_tor_r);
+  mech_player_compdie(self.e_tor_c);
+  
+  setsize( self, '-8 -8 -3' , '8 8 3' );
+  setorigin( self, self.origin);
   
   self.think = ai_tank_sk_die1;
   self.ai_action_time = time + 120;
   
-  if( self.health <= (self.max_health / 1.25) * -1 ) {
-    //blow the stack
-    local	entity missile;
-    missile = spawn ();
-    missile.owner = self;
-    missile.movetype = MOVETYPE_BOUNCE;
-    missile.solid = SOLID_CORPSE;
-    makevectors (self.angles);
-    local vector randvec;
-    randvec = randomvec();
-    if(randvec_z < 0 ){
-      randvec_z = 1;
-    }
-    missile.velocity = randvec + (150 * v_up) + (v_right * 100*random()) + (v_forward * 100*random() );
-    missile.velocity_z = missile.velocity_z + 250 + 50*random();
-    missile.avelocity = '375 125 250';
-    missile.colormod = '0.15 0.15 0.15';
-  // set missile duration
-    missile.delay = 360;
-    missile.nextthink = 0.1;
-    missile.think = temp_chunk_burn;
-    missile.touch = BecomeExplosion;
-    setmodel (missile, self.model);
-    setsize (missile, '-2 -2 -3', '2 2 3');		
-    setorigin (missile, self.origin + (v_up * self.c_bbx_x_z * 2));
-  }
-  
   //basically overkill damage will just remove the tank (nice and clean)
-  if( self.health <= (self.max_health / 1.5) * -1 ){
+  
+  cons_logAFloat("---self.health", self.health); //DEBUG
+  cons_logAFloat("---(self.max_health / -1.15)",(self.max_health / -1.15)); //DEBUG
+  if( self.health <= (self.max_health / 1.15) * -1 ){
+    cons_logAString(" to->", "ai_tank_sk_die2");//DEBUG
+    self.think = ai_tank_sk_die2;
+  }
+  self.nextthink = time + 0.1;
+};
+
+void() ai_tank_sk_die1a={
+  self.think = ai_tank_sk_die1a;
+  if( time > self.ai_action_time ){
     self.think = ai_tank_sk_die2;
   }
   self.nextthink = time + 0.1;
@@ -245,7 +227,7 @@ void() ai_tank_sk_die1={
   
   self.think = ai_tank_sk_die1;
   if ( time > self.ai_action_time ){
-    self.think = ai_vec_dest_die1a;
+    self.think = ai_tank_sk_die1;
     self.ai_action_time = time + 120;
   }
   self.nextthink = time + 0.1;

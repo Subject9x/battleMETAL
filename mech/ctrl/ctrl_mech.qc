@@ -128,7 +128,6 @@ void() ctrl_die_comp={
         self.avelocity_y = random()*150;
         self.avelocity_z = random()*100;
       }      
-      util_setHealthArmor(10,10,10,10);
       self.th_die = SUB_Remove;
       self.owner = oself.owner;
       util_setCollider(DAMAGE_AIM, SOLID_CORPSE, MOVETYPE_BOUNCE);
@@ -143,6 +142,7 @@ void() ctrl_die_comp={
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;
     setsize(self, '0 0 0', '0 0 0');
+    setorigin( self, self.origin );
     
     if(compType == M_TOR_LEFT){
       killed(self.owner.e_arm_l, self, 0);

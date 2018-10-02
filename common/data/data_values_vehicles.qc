@@ -36,8 +36,7 @@ float ID_VEC_PSC_VTOL_L = 48;
 //-------------------------Human Truck A, B, C
 float DAT_HS_TRUCK_HP = 400;
 //-------------------------Human Test Tank
-float DAT_H_TANKL_CTOR_HP = 300;
-float DAT_H_TANKL_LEG_HP = 300;
+float DAT_H_TANKL_HP = 300;
 //-------------------------Human Tank Destroyer
 float DAT_H_TD_HP_CTOR = 200;
 //-------------------------PSC VTOL Light
