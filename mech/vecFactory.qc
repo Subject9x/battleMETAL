@@ -7,6 +7,8 @@ Overview: builds player vehicle
 */
 
 void(void() func, entity own) build_unit_component={
+  local entity follow;
+  follow = util_getPartFromName( self.c_parent, own );
   func();
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
@@ -14,12 +16,12 @@ void(void() func, entity own) build_unit_component={
   util_setModel(self.c_model, own.mskin, 0);
   util_setBoundBox('-1 -1 -1','1 1 1');
   util_setOffsetOrigin(self, own, self.c_ofs);
-  self.aiment = own;
   self.owner = own;
-  self.punchangle = own.angles;
-  self.view_ofs = self.origin - own.origin;
-  self.angles = own.angles;
-  self.v_angle = self.angles - own.angles;
+  self.aiment = follow;
+  self.punchangle = follow.angles;
+  self.view_ofs = self.origin - follow.origin;
+  self.angles = follow.angles;
+  self.v_angle = self.angles - follow.angles;
   self.th_die = ctrl_die_comp;
 };
 
@@ -110,7 +112,7 @@ void() build_unit_weapon_list={
 };
 
 entity(void() func, float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon={
-  local entity wep, this;
+  local entity wep, this, prt;
   local vector ofs;
   this = self;
   wep = spawn();
@@ -138,13 +140,15 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
     ofs = self.c_ofs + self.c_alt_ofs;
     util_setOffsetOrigin(self, own, ofs);
     
+    prt = util_getPartFromName( self.c_parent, own );
+    
     self.punchangle = self.angles = '0 0 0';
-    self.aiment = own;
+    self.aiment = prt;
     self.owner = own;
-    self.punchangle = own.angles;
-    self.view_ofs = self.origin - own.origin;
-    self.angles = own.angles;
-    self.v_angle = self.angles - own.angles;
+    self.punchangle = prt.angles;
+    self.view_ofs = self.origin - prt.origin;
+    self.angles = prt.angles;
+    self.v_angle = self.angles - prt.angles;
     
     if(self.c_parent == M_ARM_RIGHT){
       self.c_part = own.e_arm_r;
@@ -242,7 +246,16 @@ entity( void() func ) build_unit_turret={
   this = self;
   comp = spawn();
   self = comp;
-    build_unit_component( func, this );
+    func();
+    self.deadflag = DEAD_NO;
+    self.classname = MECH_PIECE; 
+    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
+    util_setModel(self.c_model, this.mskin, 0);
+    util_setBoundBox('-1 -1 -1','1 1 1');
+    util_setOffsetOrigin(self, this, self.c_ofs);
+    self.angles = this.angles;
+    self.owner = this;
+    self.th_die = ctrl_die_comp;
     self.attack_state = TR_NORM;
   self = this;
   return comp;
@@ -324,7 +337,6 @@ entity(void() func) build_mech_legs={
 void(void() data_ini) build_vehicle_unit={
   local entity part_chain;
   data_ini();
-
   util_setModel(self.c_model, self.mskin, 0);
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
@@ -357,55 +369,16 @@ void(void() data_ini) build_vehicle_unit={
   build_unit_weapon_list();
 };
 
-
 void( void() data_ini ) build_vtol_unit={
   build_vehicle_unit( data_ini );
   self.movetype = MOVETYPE_FLY;
   self.flags = self.flags | FL_FLY;
 };
 
-entity(void() func) build_vehc_base={
-  local entity this, base_ent;
-  this = self;
-  base_ent = spawn();
-  self = base_ent;
-    func();
-    self.deadflag = DEAD_NO;
-    self.classname = MECH_PIECE;
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, this.mskin, 0);
-    util_setBoundBox('-1 -1 -1','1 1 1');
-    util_setOffsetOrigin(self, this, self.c_ofs);
-    self.aiment = this;
-    self.owner = this;
-    self.punchangle = this.angles;
-    self.view_ofs = self.origin - this.origin;
-    self.angles = this.angles;
-    self.v_angle = self.angles - this.angles; 
-    self.th_die = ctrl_dieLegs;
-    self.laser_sight_org = '0 0 0';
-    self.laser_sight_timer = time + 0.5; 
-    self.w_firerate = 0; //used to track m_maccel changes
-  self = this;
-  return base_ent;
-};
-
 void(void() data_ini) build_turret_unit={
 
-  local entity part_chain;
-  data_ini();
-  build_turret_top(self.unit_ctor);
-  self.sh_hit = 0;
-  self.chain_timer = time;
-  self.lock_timer = 0;
-  self.e_cam = build_unit_camera(self.unit_cam);
-  part_chain = self;
-  if(self.unit_legs){
-    self.e_legs = build_building_base(self.unit_legs);
-    part_chain.c_part = self.e_legs;
-    part_chain = part_chain.c_part;
-  }
-  build_unit_weapon_list();
+  build_vehicle_unit( data_ini );
+
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   
@@ -414,32 +387,3 @@ void(void() data_ini) build_turret_unit={
   }
   util_setOffsetOrigin(self.e_legs, self, self.e_legs.c_ofs);
 };
-
-void(void() func) build_turret_top={
-  local entity this, ctor;
-  func();
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE);
-  util_setModel(self.c_model, self.mskin, 0);
-  util_setBoundBox(self.c_bbx_n, self.c_bbx_x);
-  self.alpha = 1;
-};
-
-entity(void() func) build_building_base={
-  local entity this, leg_ent;
-  this = self;
-  leg_ent = spawn();
-  self = leg_ent;
-    func();
-    self.deadflag = DEAD_NO;
-    self.classname = MECH_PIECE;
-    self.walkframe = 1;
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
-    util_setModel(self.c_model, this.mskin, 0);
-    util_setBoundBox('-1 -1 -1','1 1 1');
-    util_setOffsetOrigin(self, this, self.c_ofs);
-    self.owner = this;
-    self.view_ofs = self.origin - this.origin;
-  self = this;
-  return leg_ent;
-};
-

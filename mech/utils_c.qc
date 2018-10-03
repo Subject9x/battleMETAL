@@ -366,6 +366,8 @@ void(float bits, float b, float bb, float bbb) util_subThreeBits={
 entity(float part, entity unit) util_getPartFromName={
   
   switch( part ){
+    case M_TOR_CENTER:
+      return unit.e_tor_c;
     case M_TOR_RIGHT:
       return unit.e_tor_r;
     case M_TOR_LEFT:

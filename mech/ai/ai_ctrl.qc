@@ -61,23 +61,27 @@ void( float estate ) ai_state_control={
 };
 
 /*
+  scope = self is AI making the call.
   called every frame if the AI Unit has FL_TURRET
   flag, this  assumes .e_tor_c is the AI's turret ent.
-  
 */
-void(float tstate) ai_turret_control={
+void() ai_turret_control={
   local entity this;
+  local vector am;
   this = self;
   self = this.e_tor_c;
-    switch( tstate ){
+    util_setOffsetOrigin(self, this, self.c_ofs);
+    switch( self.attack_state ){
       case TR_NORM:
         self.ideal_yaw = this.angles_y;
         break;
       case TR_TARG:
-        self.ideal_yaw = vectoyaw( self.enemy.origin - this.origin );
+        self.ideal_yaw = vectoyaw( this.enemy.origin - self.origin );
         break;
       case TR_GOAL:
-        self.ideal_yaw = vectoyaw( self.goalentity.origin - this.origin );
+        self.ideal_yaw = vectoyaw( this.goalentity.origin - self.origin );
+        break;
+      case TR_YAW:
         break;
     }
     ChangeYaw();
@@ -422,11 +426,16 @@ float( float dist ) ai_fly_alt={
 float(entity t, float ang) ai_check_face={
 	local vector	vec;
 	local float		dot;
-	
+	local entity this;
+  this = self;
+  if( (self.flags & FL_TURRET) ){
+    self = self.e_tor_c;
+  }
 	makevectors (self.angles);
 	vec = normalize (t.origin - self.origin);
 	dot = vec * v_forward;
   
+  self = this;
 	if ( dot >= ang){
 		return TRUE;
 	}

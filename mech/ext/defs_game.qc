@@ -78,7 +78,7 @@ float DIR_NW  = 7;
 
 //class vars
 .float data_type;
-.string vecomp_id;
+.string vec_name;
 .float max_armor; //why wasn't this ever included!?
 
 //Armor Types

@@ -56,7 +56,6 @@ void() data_HS_TANKL_ini={
   self.m_bspeed = DAT_HS_TANKL_BSPEED;
   self.m_pitch_max = DAT_HS_TANKL_PITCH_N;
   self.m_pitch_min = DAT_HS_TANKL_PITCH_X;
-  self.comp_id = M_TOR_CENTER;
 };
 
 void() data_HS_TANKL_ctor={
@@ -64,7 +63,9 @@ void() data_HS_TANKL_ctor={
   self.health = 1;
   self.max_health = 1;
   self.c_model = DAT_HS_TANKL_CTOR_MODEL;
-  self.yaw_speed = 2;
+  self.yaw_speed = 10;
+  self.attack_state = 0;
+  self.c_ofs = '0 0 0';
 };
 
 void() data_HS_TANKL_wep1={  

@@ -20,19 +20,25 @@ void() temp_chunk_burn;
 
 void() ai_turret_stand={
   if( ai_check_scan( self.stat_rdr_mode ) ){
+    ai_turret_set_state( TR_TARG );
     return;
   }
   
   if( time > self.ai_action_time ){
     ai_next_state( ST_WALK );
-    self.ai_action_time = time + ai_randyaw_time( self.yaw_speed, 45, 120, 0.1);
+    ai_turret_set_state( TR_YAW );
+    local entity this;
+    this = self;
+    self = self.e_tor_c;
+      this.ai_action_time = time + ai_randyaw_time( self.yaw_speed, 45, 120, 0.1);
+    self = this;
     return;
   }
 };
 
 void() ai_turret_walk={
-  ai_move_turn();
   if( ai_check_scan( self.stat_rdr_mode ) ){
+    ai_turret_set_state( TR_TARG );
     return;
   }
   if( time > self.ai_action_time ){
@@ -43,6 +49,7 @@ void() ai_turret_walk={
 
 void() ai_turret_run={
   if( ai_valid_target( self.enemy ) ){
+    ai_turret_set_state( TR_TARG );
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
@@ -74,7 +81,7 @@ void() ai_turret_run={
 
 void() ai_turret_run_strafe={
   if( ai_valid_target( self.enemy ) ){
-    ai_face_targ();
+    ai_turret_set_state( TR_TARG );
     if( ai_check_face( self.enemy, 0.98 ) ){
       ai_next_state( ST_MISSILE );
       return;
@@ -82,6 +89,7 @@ void() ai_turret_run_strafe={
   }
   else{
     ai_next_state( ST_STAND );
+    ai_turret_set_state( TR_NORM );
     return;
   }
   if( time > self.ai_action_time ){
@@ -91,7 +99,6 @@ void() ai_turret_run_strafe={
 };
 
 void() ai_turret_missile={
-  ai_face_targ();
   if( ai_valid_target( self.enemy ) ){
     if( ai_check_face( self.enemy, 0.97) ){
       ai_attack();
@@ -103,6 +110,7 @@ void() ai_turret_missile={
   }
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
+    ai_turret_set_state( TR_NORM );
     return;
   }
 };
@@ -133,11 +141,6 @@ void() ai_turret_die={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
   self.colormod = '0.25 0.25 0.25';
-  new_org = self.e_legs.origin;
-  nmdl = self.e_legs.model;
-  cmdl = self.model;
-  setmodel(self, nmdl);
-  setorigin(self, self.e_legs.origin);
   
   local entity w_chain;
   w_chain = self.w_slot;
@@ -146,39 +149,14 @@ void() ai_turret_die={
     w_chain = w_chain.w_slot;
   }
   mech_player_compdie(self.e_cam);  
-  mech_player_compdie(self.e_legs);
+  mech_player_compdie(self.e_tor_c);
   
   //fire triggers when dead
   self.target = self.target_die;
   self.enemy = self.ladder_entity;
   activator = self.enemy;
   SUB_UseTargets ();
- 
-  //blow the stack
-  local	entity missile;
-    missile = spawn ();
-    missile.owner = self;
-    missile.movetype = MOVETYPE_BOUNCE;
-    missile.solid = SOLID_NOT;
-    makevectors (self.angles);
-    local vector randvec;
-    randvec = randomvec();
-    if(randvec_z < 0 ){
-      randvec_z = 1;
-    }
-    missile.velocity = randvec + (150 * v_up) + (v_right * 100*random()) + (v_forward * 100*random() );
-    missile.velocity_z = missile.velocity_z + 250 + 50*random();
-    missile.avelocity = '375 125 250';
-    missile.colormod = '0.15 0.15 0.15';
-  // set missile duration
-    missile.delay = 360;
-    missile.nextthink = 0.1;
-    missile.think = temp_chunk_burn;
 
-	setmodel (missile, cmdl);
-	setsize (missile, '0 0 0', '0 0 0');		
-	setorigin (missile, self.origin + (v_up * self.c_bbx_x_z * 2));
-  
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;
 };
@@ -226,9 +204,11 @@ void() ai_turret_th={
     }
     ai_ranged_attack();
     self.button0 = 0;
+    ai_state_control( self.attack_state );   
+    if( (self.flags & FL_TURRET) ){
+      ai_turret_control();
+    }
   }
-
-  ai_state_control( self.attack_state );
   
   self.think = ai_turret_th;
   self.nextthink = time + 0.05; 
@@ -242,6 +222,7 @@ void() ai_turret={
     remove(self);
     return;
   }
+  self.flags = self.flags | FL_TURRET;
   
   ai_unit_ini_var();
   data_iniTurret( self.nextVecChoice );

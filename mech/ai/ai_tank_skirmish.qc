@@ -36,6 +36,7 @@ void() ai_tank_sk_stand={
 
 void() ai_tank_sk_run={
   if( ai_valid_target( self.enemy ) ){
+    ai_turret_set_state( TR_TARG );
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
@@ -83,6 +84,7 @@ void() ai_tank_sk_run={
     }
   }
   else{
+    ai_turret_set_state( TR_NORM );
     ai_leg_frame( leg_stand1 );
     ai_next_state( ST_STAND );
     return;
@@ -91,7 +93,6 @@ void() ai_tank_sk_run={
 
 void() ai_tank_sk_melee={
   ai_face_targ();
-  
   if( ai_check_face(self.enemy, 0.6) ){
     local float moved, avg;
 
@@ -114,7 +115,6 @@ void() ai_tank_sk_melee={
 
 void() ai_tank_sk_missile={
   ai_face_targ();
-  
   if( ai_check_face( self.enemy, 0.92 ) ){
     if( ai_attack() ){
       ai_leg_frame( leg_stand1 );
@@ -133,6 +133,7 @@ void() ai_tank_sk_missile_strafe={
   local float moved;
   
   ai_face_targ();
+  ai_turret_set_state( TR_TARG );
   
   moved = ai_walk_right( self.m_sspeed * AI_WALK_SPD );
   
@@ -200,11 +201,7 @@ void() ai_tank_sk_die={
   self.ai_action_time = time + 120;
   
   //basically overkill damage will just remove the tank (nice and clean)
-  
-  cons_logAFloat("---self.health", self.health); //DEBUG
-  cons_logAFloat("---(self.max_health / -1.15)",(self.max_health / -1.15)); //DEBUG
   if( self.health <= (self.max_health / 1.15) * -1 ){
-    cons_logAString(" to->", "ai_tank_sk_die2");//DEBUG
     self.think = ai_tank_sk_die2;
   }
   self.nextthink = time + 0.1;
@@ -268,10 +265,9 @@ void() ai_tank_sk_th={
     ai_ranged_attack();
     self.button0 = 0;  
     
-    ai_state_control( self.attack_state );
-
+    ai_state_control( self.attack_state );   
     if( (self.flags & FL_TURRET) ){
-      ai_turret_control( self.e_tor_c.attack_state );
+      ai_turret_control();
     }
   }
   
@@ -313,7 +309,7 @@ void() ai_tank_skirmish={
   
   ai_walk_setup();
   self.colormod = '1 0 0'; //DEBUG
-  self.e_legs.colormod = '1 0 0'; //DEBUG
+  self.e_tor_c.colormod = '1 0 0'; //DEBUG
   
   self.think = ai_tank_sk_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){

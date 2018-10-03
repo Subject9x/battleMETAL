@@ -414,7 +414,10 @@ game/gfx/conchars.tga
 //builtin definitions:
 void(entity e, entity tagentity, string tagname) setattachment = #443; // attachs e to a tag on tagentity (note: use "" to attach to entity origin/angles instead of a tag)
 //description:
-//allows entities to be visually attached to model tags (which follow animations perfectly) on other entities, for example attaching a weapon to a player's hand, or upper body attached to lower body, allowing it to change angles and frame separately (note: origin and angles are relative to the tag, use '0 0 0' for both if you want it to follow exactly, this is similar to viewmodelforclient's behavior).
+//allows entities to be visually attached to model tags (which follow animations perfectly) on other entities, 
+//for example attaching a weapon to a player's hand, or upper body attached to lower body, 
+//allowing it to change angles and frame separately (note: origin and angles are relative to the tag, 
+//use '0 0 0' for both if you want it to follow exactly, this is similar to viewmodelforclient's behavior).
 //note 2: if the tag is not found, it defaults to "" (attach to origin/angles of entity)
 //note 3: attaching to world turns off attachment
 //note 4: the entity that this is attached to must be visible for this to work

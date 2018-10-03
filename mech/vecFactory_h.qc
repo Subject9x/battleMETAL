@@ -11,8 +11,6 @@ void(void() func, entity own) build_unit_component;
 entity(void() func, float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon;
 void() build_unit_weapon_list;
 
-entity(void() func) build_building_base;
-
 //mech-specific assembly functions
 void(void() data_ini) build_mech_unit;
 entity(void() func) build_mech_legs;
@@ -25,10 +23,8 @@ entity(void() func) build_mech_armLeft;
 //vehicle-specific assembly functions
 entity( void() func ) build_unit_turret;
 void( void() data_ini ) build_vehicle_unit;
-entity( void() func ) build_vehc_base;
 void( void() data_ini ) build_vtol_unit;
 
 //turret assembly
 void(void() data_ini) build_turret_unit;
 void(void() func) build_turret_top;
-entity(void() func) build_turret_base;

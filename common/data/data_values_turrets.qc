@@ -38,8 +38,8 @@ float DAT_TUR_HLITE_EN_RATE  = 0.25;
 //            BOUNDING BOX
 //============================
 //-------------------------Human Light Turret
-vector DAT_TUR_HLITE_BBN ='-20 -20 -13';
-vector DAT_TUR_HLITE_BBX ='20 20 6';
+vector DAT_TUR_HLITE_BBN ='-20 -20 -6';
+vector DAT_TUR_HLITE_BBX ='20 20 13';
 //============================
 //          YAW SPEEDS    
 //============================
@@ -78,20 +78,16 @@ string DAT_TUR_HLITE_CAM = "q3mdl/testball.md3";
 //            Model Offsets 
 //============================
 //-------------------------Human Light Turret
-float DAT_TUR_HLITE_CTOR_CNAME       = M_TOR_CENTER;
-float DAT_TUR_HLITE_WEP1_CPARENT     = M_TOR_CENTER;
 vector DAT_TUR_HLITE_WEP1_OFFSET      = '2.5 -0.5 13';
 vector DAT_TUR_HLITE_WEP1_OFFSET_ALT  = '0 0 0';
 vector DAT_TUR_HLITE_WEP1_ADJ_ANG     = '0 0 90';
-float DAT_TUR_HLITE_WEP2_CPARENT     = M_TOR_CENTER;
 vector DAT_TUR_HLITE_WEP2_OFFSET      = '6 -0.5 13';
 vector DAT_TUR_HLITE_WEP2_OFFSET_ALT  = '0 0 0';
 vector DAT_TUR_HLITE_WEP2_ADJ_ANG     = '0 0 90';
 float DAT_TUR_HLITE_CAM_CNAME        = -1;
 vector DAT_TUR_HLITE_CAM_OFFSET       = '0 0 0';
 vector DAT_TUR_HLITE_CAM_OFFSET_ALT   = '0 0 0';//LEGS
-float DAT_TUR_HLITE_LEG_CNAME        = M_LEGS;
-vector DAT_TUR_HLITE_LEG_OFFSET       = '0 -7.5 0';
+vector DAT_TUR_HLITE_LEG_OFFSET       = '0 7.5 0';
 
 //============================
 //    NAMES 
