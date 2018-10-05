@@ -69,23 +69,25 @@ void() ai_turret_control={
   local entity this;
   local vector am;
   this = self;
-  self = this.e_tor_c;
-    util_setOffsetOrigin(self, this, self.c_ofs);
-    switch( self.attack_state ){
-      case TR_NORM:
-        self.ideal_yaw = this.angles_y;
-        break;
-      case TR_TARG:
-        self.ideal_yaw = vectoyaw( this.enemy.origin - self.origin );
-        break;
-      case TR_GOAL:
-        self.ideal_yaw = vectoyaw( this.goalentity.origin - self.origin );
-        break;
-      case TR_YAW:
-        break;
-    }
-    ChangeYaw();
-  self = this;
+  if( (this.e_tor_c) ){
+    self = this.e_tor_c;
+      util_setOffsetOrigin(self, this, self.c_ofs);
+      switch( self.attack_state ){
+        case TR_NORM:
+          self.ideal_yaw = this.angles_y;
+          break;
+        case TR_TARG:
+          self.ideal_yaw = vectoyaw( this.enemy.origin - self.origin );
+          break;
+        case TR_GOAL:
+          self.ideal_yaw = vectoyaw( this.goalentity.origin - self.origin );
+          break;
+        case TR_YAW:
+          break;
+      }
+      ChangeYaw();
+    self = this;
+  }
 };
 
 /*

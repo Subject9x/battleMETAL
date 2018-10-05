@@ -112,7 +112,7 @@ void() data_mlgd_atk={
     self.p_lifetime = time + self.p_lifetime;
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     util_setModel(self.c_model, 0, 0);
-    util_setBoundBox('0 0 0', '0 0 0');
+    setsize(self, '0 0 0', '0 0 0');
     setorigin(self, org);
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);

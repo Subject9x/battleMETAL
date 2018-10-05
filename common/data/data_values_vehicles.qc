@@ -111,14 +111,14 @@ float DAT_PSC_VTOLL_BSPEED     = 200;
 //            Bounding Box
 //============================
 //-------------------------Human Tank Light
-vector DAT_HS_TANKL_CTOR_BBX_N ='-20 -20 -10';
-vector DAT_HS_TANKL_CTOR_BBX_X ='20 20 14';
+vector DAT_HS_TANKL_CTOR_BBX_N =  '-20 -20 -10';
+vector DAT_HS_TANKL_CTOR_BBX_X =  '20 20 14';
 //-------------------------Human Tank Destroyer
-vector DAT_H_TD_CTOR_BBX_N ='-20 -20 -10';
-vector DAT_H_TD_CTOR_BBX_X ='20 20 14';
+vector DAT_H_TD_CTOR_BBX_N    =   '-20 -20 -10';
+vector DAT_H_TD_CTOR_BBX_X    =   '20 20 14';
 //-------------------------PSC VTOL Light
-vector DAT_PSC_VTOLL_BBX_N = '-30 -30 -15';
-vector DAT_PSC_VTOLL_BBX_X = '30 30 15';
+vector DAT_PSC_VTOLL_BBX_N    =   '-30 -30 -15';
+vector DAT_PSC_VTOLL_BBX_X    =   '30 30 15';
 //============================
 //            Radar Range and Lock-on Delay
 //============================
@@ -167,11 +167,11 @@ string DAT_PSC_VTOLL_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
 //            Model Offsets 
 //============================
 //-------------------------Human Tank Light
-vector DAT_HS_TANKL_LEG_OFFSET   = '0 0 0';
-vector DAT_HS_TANKL_WEP1_OFFSET  = '-8 6 4';
-vector DAT_HS_TANKL_WEP2_OFFSET  = '8 6 4';
+vector DAT_HS_TANKL_LEG_OFFSET    = '0 0 0';
+vector DAT_HS_TANKL_WEP1_OFFSET   = '-8 6 4';
+vector DAT_HS_TANKL_WEP2_OFFSET   = '8 6 4';
 //-------------------------Human Tank Destroyer
-vector DAT_H_TD_WEP1_OFFSET  = '-8 6 4';
+vector DAT_H_TD_WEP1_OFFSET       = '0 4 4';
 //-------------------------PSC VTOL Light
 vector DAT_PSC_VTOLL_WEP1_OFFSET  = '-8 6 4';
 vector DAT_PSC_VTOLL_WEP2_OFFSET  = '8 6 4';

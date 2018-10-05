@@ -99,7 +99,7 @@ void() building_fuel={
   util_setModel(DAT_BLD_H_FUELTANK_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_FUELTANK_HP, DAT_BLD_H_FUELTANK_HP, 1, 100) ;
-  util_setBoundBox('-40 -40 0', '40 40 40');
+  setsize(self, '-40 -40 0', '40 40 40');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_FUELTANK_SH_MAX;
   self.sh_rate = DAT_BLD_H_FUELTANK_SH_RATE;

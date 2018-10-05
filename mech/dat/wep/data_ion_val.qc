@@ -118,7 +118,7 @@ void() data_ion_atk={
     self.nextthink = time + 0.01;
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     util_setModel(self.c_model, 0, 0);
-    util_setBoundBox('0 0 0', '0 0 0');
+    setsize(self, '0 0 0', '0 0 0');
     setorigin(self, org);
   self = oself;
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);

@@ -126,7 +126,7 @@ void() building_repair={
   util_setModel(DAT_BLD_H_REPAIR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_REPAIR_HP, DAT_BLD_H_REPAIR_HP, 1, 100) ;
-  util_setBoundBox('-72 -72 0', '72 72 40');
+  setsize(self, '-72 -72 0', '72 72 40');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_REPAIR_SH_MAX;
   self.sh_rate= DAT_BLD_H_REPAIR_SH_RATE;
@@ -147,7 +147,7 @@ void() building_repair={
     util_generateBuildingFoundation(self);
   }
   makevectors(self.angles);
-  self.c_ofs = self.origin + (v_forward * 35) + (v_up *( ( self.c_bbx_x_y / 2 ) -3) ) + (v_right * 5);
+  self.c_ofs = self.origin + (v_forward * 35) + (v_up *( ( self.maxs_y / 2 ) -3) ) + (v_right * 5);
   local entity nde, this;
   this  = self;
   nde = spawn();
@@ -155,7 +155,7 @@ void() building_repair={
     util_setModel("q3mdl/testball.md3", self.skin, 0) ;
     util_setCollider(DAMAGE_NO, SOLID_TRIGGER, MOVETYPE_NONE) ;
     util_setHealthArmor(0, 0, 0, 0) ;
-    util_setBoundBox('-8 -8 -8', '8 8 8');
+    setsize(self, '-8 -8 -8', '8 8 8');
     setorigin(self, this.c_ofs);
     self.effects = self.effects | EF_NODRAW;
     self.touch = building_repair_touch;

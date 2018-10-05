@@ -40,35 +40,6 @@ string DAT_MTK_M_BMODEL = "1";
 string DAT_MTK_M_BSIDE = "0.35";
 string DAT_MTK_M_BSPD = "6.55";
 
-//LEGS
-float DAT_MTK_LEG_CNAME= M_LEGS;
-
-//CENTER TORSO
-float DAT_MTK_CTOR_CNAME= M_TOR_CENTER;
-
-//LEFT TORSO
-float DAT_MTK_LTOR_CNAME= M_TOR_LEFT;
-float DAT_MTK_LTOR_CPARENT= M_TOR_CENTER;
-
-
-//RIGHT TORSO
-float DAT_MTK_RTOR_CNAME= M_TOR_RIGHT;
-float DAT_MTK_RTOR_CPARENT= M_TOR_CENTER; 
-
-
-//LEFT ARM 
-float DAT_MTK_LARM_CNAME= M_ARM_LEFT;
-float DAT_MTK_LARM_CPARENT= M_TOR_LEFT;
-
-
-//RIGHT ARM
-float DAT_MTK_RARM_CNAME= M_ARM_RIGHT;
-float DAT_MTK_RARM_CPARENT= M_TOR_RIGHT;
-
-
-//CAMERA
-float DAT_MTK_CAM_CNAME= -1;
-
 //WEAPON1
 float DAT_MTK_WEP1_CPARENT= M_TOR_RIGHT;
 vector DAT_MTK_WEP1_OFFSET_ALT= '0 0 0';
@@ -136,8 +107,6 @@ void() data_mtk_ini={
   self.sh_cur= DAT_MTK_SHIELD_MAX;
   self.sh_max= DAT_MTK_SHIELD_MAX;
   self.sh_rate= DAT_MTK_SHIELD_RATE;
-  self.c_bbx_n = DAT_MTK_CTOR_BBX_N;
-  self.c_bbx_x = DAT_MTK_CTOR_BBX_X;
   self.c_model = DAT_MTK_CTOR_MODEL;
   self.m_rot_speed = DAT_MTK_M_YAW;
   self.conv_min = DAT_MTK_SPREAD_N; 
@@ -163,7 +132,7 @@ void() data_mtk_ini={
   }
 };
 void() data_mtk_legs={
-  self.comp_id = DAT_MTK_LEG_CNAME;
+  self.comp_id = M_LEGS;
   self.health = DAT_MTK_LEG_HP;
   self.max_health = DAT_MTK_LEG_HP;
   self.armorvalue = DAT_MTK_LEG_ARMMAX;
@@ -172,18 +141,19 @@ void() data_mtk_legs={
   self.c_ofs = DAT_MTK_LEG_OFFSET;
 };
 void() data_mtk_ctor={
-  self.comp_id = DAT_MTK_CTOR_CNAME;
+  self.comp_id = M_TOR_CENTER;
   self.health = DAT_MTK_CTOR_HP;
   self.max_health = DAT_MTK_CTOR_HP;
   self.armorvalue = DAT_MTK_CTOR_ARMMAX;
   self.max_armor = DAT_MTK_CTOR_ARMMAX;
   self.c_model = DAT_MTK_CTOR_MODEL;
   self.w_proj = 5;
+  setsize( self, DAT_MTK_CTOR_BBX_N, DAT_MTK_CTOR_BBX_X );
 };
 
 void() data_mtk_ltor={
-  self.comp_id = DAT_MTK_LTOR_CNAME;
-  self.c_parent = DAT_MTK_LTOR_CPARENT;
+  self.comp_id = M_TOR_LEFT;
+  self.c_parent = M_TOR_CENTER;
   self.health = DAT_MTK_LTOR_HP;
   self.max_health = DAT_MTK_LTOR_HP;
   self.armorvalue = DAT_MTK_LTOR_ARMMAX;
@@ -192,8 +162,8 @@ void() data_mtk_ltor={
   self.c_ofs = DAT_MTK_LTOR_OFFSET;
 };
 void() data_mtk_rtor={
-  self.comp_id = DAT_MTK_RTOR_CNAME;
-  self.c_parent = DAT_MTK_RTOR_CPARENT;
+  self.comp_id = M_TOR_RIGHT;
+  self.c_parent = M_TOR_CENTER;
   self.health = DAT_MTK_RTOR_HP;
   self.max_health = DAT_MTK_RTOR_HP;
   self.armorvalue = DAT_MTK_RTOR_ARMMAX;
@@ -202,8 +172,8 @@ void() data_mtk_rtor={
   self.c_ofs = DAT_MTK_RTOR_OFFSET;
 };
 void() data_mtk_larm={  
-  self.comp_id = DAT_MTK_LARM_CNAME;
-  self.c_parent = DAT_MTK_LARM_CPARENT;
+  self.comp_id = M_ARM_LEFT;
+  self.c_parent = M_TOR_LEFT;
   self.health = DAT_MTK_LARM_HP;
   self.max_health = DAT_MTK_LARM_HP;
   self.armorvalue = DAT_MTK_LARM_ARMMAX;
@@ -212,8 +182,8 @@ void() data_mtk_larm={
   self.c_ofs = DAT_MTK_LARM_OFFSET;
 };
 void() data_mtk_rarm={  
-  self.comp_id = DAT_MTK_RARM_CNAME;
-  self.c_parent = DAT_MTK_RARM_CPARENT;
+  self.comp_id = M_ARM_RIGHT;
+  self.c_parent = M_TOR_RIGHT;
   self.health = DAT_MTK_RARM_HP;
   self.max_health = DAT_MTK_RARM_HP;
   self.armorvalue = DAT_MTK_RARM_ARMMAX;
@@ -222,41 +192,41 @@ void() data_mtk_rarm={
   self.c_ofs = DAT_MTK_RARM_OFFSET;
 };
 void() data_mtk_cam={  
-  self.comp_id = DAT_MTK_CAM_CNAME;
+  self.comp_id = -1;
   self.c_ofs = DAT_MTK_CAM_OFFSET;
   self.c_alt_ofs = DAT_MTK_CAM_OFFSET_ALT;
   self.c_model = DAT_MTK_CAM_MODEL;
 };
 void() data_mtk_wep1={  
-  self.c_parent = DAT_MTK_WEP1_CPARENT;
+  self.c_parent = M_ARM_RIGHT;
   self.c_ofs = DAT_MTK_WEP1_OFFSET;
   self.c_alt_ofs = DAT_MTK_WEP1_OFFSET_ALT;
   self.w_adj_ang = DAT_MTK_WEP1_ADJ_ANG;
   self.w_group = WEAPON1;
 };
 void() data_mtk_wep2={  
-  self.c_parent = DAT_MTK_WEP2_CPARENT;
+  self.c_parent = M_ARM_LEFT;
   self.c_ofs = DAT_MTK_WEP2_OFFSET;
   self.c_alt_ofs = DAT_MTK_WEP2_OFFSET_ALT;
   self.w_adj_ang = DAT_MTK_WEP2_ADJ_ANG;
   self.w_group = WEAPON2;
 };
 void() data_mtk_wep3={  
-  self.c_parent = DAT_MTK_WEP3_CPARENT;
+  self.c_parent = M_TOR_RIGHT;
   self.c_ofs = DAT_MTK_WEP3_OFFSET;
   self.c_alt_ofs = DAT_MTK_WEP3_OFFSET_ALT;
   self.w_adj_ang = DAT_MTK_WEP3_ADJ_ANG;
   self.w_group = WEAPON3;
 };
 void() data_mtk_wep4={  
-  self.c_parent = DAT_MTK_WEP4_CPARENT;
+  self.c_parent = M_ARM_LEFT;
   self.c_ofs = DAT_MTK_WEP4_OFFSET;
   self.c_alt_ofs = DAT_MTK_WEP4_OFFSET_ALT;
   self.w_adj_ang = DAT_MTK_WEP4_ADJ_ANG;
   self.w_group = WEAPON4;
 };
 void() data_mtk_wep5={  
-  self.c_parent = DAT_MTK_WEP5_CPARENT;
+  self.c_parent = M_TOR_CENTER;
   self.c_ofs = DAT_MTK_WEP5_OFFSET;
   self.c_alt_ofs = DAT_MTK_WEP5_OFFSET_ALT;
   self.w_adj_ang = DAT_MTK_WEP5_ADJ_ANG;

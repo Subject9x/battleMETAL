@@ -15,12 +15,10 @@ string DAT_H_TD_PITCH_X = "45";
 
 //=========================================
 void() data_H_TD_ini;
-void() data_H_TD_ctor;
 void() data_H_TD_cam;
 void() data_H_TD_wep1;
 
 void() data_H_TD_ini={
-  self.unit_ctor = data_H_TD_ctor;
   self.unit_wep1 = data_H_TD_wep1;
   self.unit_cam = data_H_TD_cam;
     
@@ -29,6 +27,13 @@ void() data_H_TD_ini={
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_H_TD_RADAR_RANGE;
   self.i_techlvl= DAT_H_TD_TECH_LEVEL;
+  
+  self.comp_id = M_TOR_CENTER;
+  self.health = DAT_H_TD_HP_CTOR;
+  self.max_health = DAT_H_TD_HP_CTOR;
+  self.c_model = DAT_H_TD_CTOR_MODEL;
+  setsize(self, DAT_H_TD_CTOR_BBX_N, DAT_H_TD_CTOR_BBX_X);
+  
   self.en_cur= DAT_H_TD_ENERGY_MAX;
   self.en_max= DAT_H_TD_ENERGY_MAX;
   self.en_rate= DAT_H_TD_ENERGY_RATE;
@@ -36,9 +41,6 @@ void() data_H_TD_ini={
   self.sh_max= DAT_H_TD_SHIELD_MAX;
   self.sh_rate= DAT_H_TD_SHIELD_RATE;
   self.m_rot_speed = DAT_HS_TANKDEST_YAW_SPEED;
-  self.c_bbx_n = DAT_H_TD_CTOR_BBX_N;
-  self.c_bbx_x = DAT_H_TD_CTOR_BBX_X;
-  self.c_model = DAT_H_TD_CTOR_MODEL;
   self.conv_min = DAT_H_TD_SPREAD_N; 
   self.conv_max = DAT_H_TD_SPREAD_X; 
   self.m_fspeed = DAT_H_TD_FSPEED;
@@ -48,13 +50,6 @@ void() data_H_TD_ini={
   self.m_pitch_min = DAT_H_TD_PITCH_X;
 };
 
-void() data_H_TD_ctor={
-  self.comp_id = M_TOR_CENTER;
-  self.health = DAT_H_TD_HP_CTOR;
-  self.max_health = DAT_H_TD_HP_CTOR;
-  self.c_model = DAT_H_TD_CTOR_MODEL;
-};
-
 void() data_H_TD_wep1={  
   self.c_parent = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
@@ -62,13 +57,4 @@ void() data_H_TD_wep1={
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON1;
-};
-
-void() data_H_TD_wep2={  
-  self.c_parent = M_TOR_CENTER;
-  self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = DAT_H_TD_WEP1_OFFSET;
-  self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 90';
-  self.w_group = WEAPON2;
 };

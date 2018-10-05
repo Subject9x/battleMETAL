@@ -1,11 +1,12 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
       mod 3/16/2017
       mod 5/17/2017 - normalize time as percent
       mod 2/18/2018
-Overview: utility functions for mod
+      mod 10/05/2018
+Overview: utility functions
 */
 
 
@@ -253,16 +254,6 @@ void(float hp, float max_hp, float arm_type, float arm_val) util_setHealthArmor=
 };
 
 /*
-  call stack scope = self;
-*/
-void(vector bbx_min, vector bbx_max) util_setBoundBox={
-  self.c_bbx_n = bbx_min;
-  self.c_bbx_x = bbx_max;
-  setsize(self, bbx_min, bbx_max);
-};
-
-
-/*
   checks the normal under all 4 points of a model, if normal within 
   tolerance, return true
 */
@@ -367,7 +358,10 @@ entity(float part, entity unit) util_getPartFromName={
   
   switch( part ){
     case M_TOR_CENTER:
-      return unit.e_tor_c;
+      if( (unit.flags & FL_TURRET) ){
+        return unit.e_tor_c;
+      }
+      return unit;
     case M_TOR_RIGHT:
       return unit.e_tor_r;
     case M_TOR_LEFT:

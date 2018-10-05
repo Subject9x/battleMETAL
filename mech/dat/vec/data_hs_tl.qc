@@ -46,8 +46,6 @@ void() data_HS_TANKL_ini={
   self.sh_max= DAT_HS_TANKL_SHIELD_MAX;
   self.sh_rate= DAT_HS_TANKL_SHIELD_RATE;
   self.m_rot_speed = DAT_HS_TANKL_YAW_SPEED;
-  self.c_bbx_n = DAT_HS_TANKL_CTOR_BBX_N;
-  self.c_bbx_x = DAT_HS_TANKL_CTOR_BBX_X;
   self.c_model = DAT_HS_TANKL_MDL_CHASSIS;
   self.conv_min = DAT_HS_TANKL_SPREAD_N; 
   self.conv_max = DAT_HS_TANKL_SPREAD_X; 
@@ -56,6 +54,8 @@ void() data_HS_TANKL_ini={
   self.m_bspeed = DAT_HS_TANKL_BSPEED;
   self.m_pitch_max = DAT_HS_TANKL_PITCH_N;
   self.m_pitch_min = DAT_HS_TANKL_PITCH_X;
+  setsize(self, '-20 -20 -10', '20 20 14');
+  setorigin(self, self.origin);
 };
 
 void() data_HS_TANKL_ctor={

@@ -33,44 +33,18 @@ string DAT_OTL_M_BMODEL     = "1";
 string DAT_OTL_M_BSIDE      = "0.09";
 string DAT_OTL_M_BSPD       = "6";
 
-//LEGS
-float DAT_OTL_LEG_CNAME= M_LEGS;
-
-//CENTER TORSO
-float DAT_OTL_CTOR_CNAME= M_TOR_CENTER;
-
-//LEFT TORSO
-float DAT_OTL_LTOR_CNAME= M_TOR_LEFT;
-float DAT_OTL_LTOR_CPARENT= M_TOR_CENTER;
-
-//RIGHT TORSO
-float DAT_OTL_RTOR_CNAME= M_TOR_RIGHT;
-float DAT_OTL_RTOR_CPARENT= M_TOR_CENTER; 
-
-//LEFT ARM 
-float DAT_OTL_LARM_CNAME= M_ARM_LEFT;
-float DAT_OTL_LARM_CPARENT= M_TOR_LEFT;
-
-
-//RIGHT ARM
-float DAT_OTL_RARM_CNAME= M_ARM_RIGHT;
-float DAT_OTL_RARM_CPARENT= M_TOR_RIGHT;
-
 //CAMERA
 float DAT_OTL_CAM_CNAME = -1;
 
 //WEAPON1
-float DAT_OTL_WEP1_CPARENT= M_ARM_LEFT;
 vector DAT_OTL_WEP1_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP1_ADJ_ANG= '0 0 90';
 
 //WEAPON2
-float DAT_OTL_WEP2_CPARENT= M_ARM_RIGHT;
 vector DAT_OTL_WEP2_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP2_ADJ_ANG= '0 0 90';
 
 //WEAPON3
-float DAT_OTL_WEP3_CPARENT= M_TOR_CENTER;
 vector DAT_OTL_WEP3_OFFSET_ALT= '0 0 0';
 vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 
@@ -111,8 +85,6 @@ void() data_otl_ini={
   self.sh_cur= DAT_OTL_SHIELD_MAX;
   self.sh_max= DAT_OTL_SHIELD_MAX;
   self.sh_rate= DAT_OTL_SHIELD_RATE;
-  self.c_bbx_n = DAT_OTL_CTOR_BBX_N;
-  self.c_bbx_x = DAT_OTL_CTOR_BBX_X;
   self.c_model = DAT_OTL_CTOR_MODEL;
   self.weaponmodel = DAT_OTL_CPIT_MODEL;
   self.weaponframe = 0;
@@ -134,58 +106,50 @@ void() data_otl_ini={
   self.m_bobspd = DAT_OTL_M_BSPD;
   self.w_firetime = DAT_OTL_LOCK; //using this as 'lock on time;
   self.hardpoint_cnt = DAT_BLK_HARDPOINT_CNT;
+  
 };
 void() data_otl_ctor={
-  self.comp_id = DAT_OTL_CTOR_CNAME;
+  self.comp_id = M_TOR_CENTER;
   self.health = DAT_OTL_CTOR_HP;
   self.max_health = DAT_OTL_CTOR_HP;
-  self.armorvalue = DAT_OTL_CTOR_ARMMAX;
-  self.max_armor = DAT_OTL_CTOR_ARMMAX;
   self.c_model = DAT_OTL_CTOR_MODEL;
   self.w_proj = 3;
+  setsize( self, DAT_OTL_CTOR_BBX_N, DAT_OTL_CTOR_BBX_X);
 };
 void() data_otl_legs={
-  self.comp_id = DAT_OTL_LEG_CNAME;
+  self.comp_id = M_LEGS;
   self.health = DAT_OTL_LEG_HP;
   self.max_health = DAT_OTL_LEG_HP;
-  self.armorvalue = DAT_OTL_LEG_ARMMAX;
-  self.max_armor = DAT_OTL_LEG_ARMMAX;
   self.c_model = DAT_OTL_LEG_MODEL;
   self.c_ofs = DAT_OTL_LEG_OFFSET;
 };
 void() data_otl_ltor={
-  self.comp_id = DAT_OTL_LTOR_CNAME;
-  self.c_parent = DAT_OTL_LTOR_CPARENT;
+  self.comp_id = M_TOR_LEFT;
+  self.c_parent = M_TOR_CENTER;
   self.health = DAT_OTL_LTOR_HP;
   self.max_health = DAT_OTL_LTOR_HP;
-  self.armorvalue = DAT_OTL_LTOR_ARMMAX;
-  self.max_armor = DAT_OTL_LTOR_ARMMAX;
   self.c_model = DAT_OTL_LTOR_MODEL;
   self.c_ofs = DAT_OTL_LTOR_OFFSET;
 };
 void() data_otl_rtor={
-  self.comp_id = DAT_OTL_RTOR_CNAME;
-  self.c_parent = DAT_OTL_RTOR_CPARENT;
+  self.comp_id = M_TOR_RIGHT;
+  self.c_parent = M_TOR_CENTER;
   self.health = DAT_OTL_RTOR_HP;
   self.max_health = DAT_OTL_RTOR_HP;
-  self.armorvalue = DAT_OTL_RTOR_ARMMAX;
-  self.max_armor = DAT_OTL_RTOR_ARMMAX;
   self.c_model = DAT_OTL_RTOR_MODEL;
   self.c_ofs = DAT_OTL_RTOR_OFFSET;
 };
 void() data_otl_larm={  
-  self.comp_id = DAT_OTL_LARM_CNAME;
-  self.c_parent = DAT_OTL_LARM_CPARENT;
+  self.comp_id = M_ARM_LEFT;
+  self.c_parent = M_TOR_LEFT;
   self.health = DAT_OTL_LARM_HP;
   self.max_health = DAT_OTL_LARM_HP;
-  self.armorvalue = DAT_OTL_LARM_ARMMAX;
-  self.max_armor = DAT_OTL_LARM_ARMMAX;
   self.c_model = DAT_OTL_LARM_MODEL;
   self.c_ofs = DAT_OTL_LARM_OFFSET;
 };
 void() data_otl_rarm={  
-  self.comp_id = DAT_OTL_RARM_CNAME;
-  self.c_parent = DAT_OTL_RARM_CPARENT;
+  self.comp_id = M_ARM_RIGHT;
+  self.c_parent = M_TOR_RIGHT;
   self.health = DAT_OTL_RARM_HP;
   self.max_health = DAT_OTL_RARM_HP;
   self.armorvalue = DAT_OTL_RARM_ARMMAX;
@@ -200,7 +164,7 @@ void() data_otl_cam={
   self.c_model = DAT_OTL_CAM_MODEL;
 };
 void() data_otl_wep1={  
-  self.c_parent = DAT_OTL_WEP1_CPARENT;
+  self.c_parent = M_ARM_LEFT;
   self.data_idx = DAT_OTL_WEP1_IDX; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP1_OFFSET;
   self.c_alt_ofs = DAT_OTL_WEP1_OFFSET_ALT;
@@ -208,7 +172,7 @@ void() data_otl_wep1={
   self.w_group = WEAPON1;
 };
 void() data_otl_wep2={  
-  self.c_parent = DAT_OTL_WEP2_CPARENT;
+  self.c_parent = M_ARM_RIGHT;
   self.data_idx = DAT_OTL_WEP2_IDX; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP2_OFFSET;
   self.c_alt_ofs = DAT_OTL_WEP2_OFFSET_ALT;
@@ -216,7 +180,7 @@ void() data_otl_wep2={
   self.w_group = WEAPON2;
 };
 void() data_otl_wep3={  
-  self.c_parent = DAT_OTL_WEP3_CPARENT;
+  self.c_parent = M_TOR_CENTER;
   self.data_idx = DAT_OTL_WEP3_IDX; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP3_OFFSET;
   self.c_alt_ofs = DAT_OTL_WEP3_OFFSET_ALT;

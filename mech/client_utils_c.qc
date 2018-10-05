@@ -61,7 +61,7 @@ void() client_push_player_info={
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_r));
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_l));
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_r));
-        WriteShort( MSG_ONE, self.enemy.c_bbx_x_y * 1.5 );
+        WriteShort( MSG_ONE, self.enemy.maxs_y * 1.5 );
         if( self.enemy.netname == "" ){
           self.enemy.netname = self.enemy.vec_name;
         }

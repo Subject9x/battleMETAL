@@ -120,7 +120,7 @@ void() building_radar={
   util_setModel(DAT_BLD_H_SM_RADAR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_SM_RADAR_HP, DAT_BLD_H_SM_RADAR_HP, 1, 100) ;
-  util_setBoundBox('-20 -20 0', '20 20 26');
+  setsize(self, '-20 -20 0', '20 20 26');
   self.sh_cur = 0;
   self.sh_max = DAT_BLD_H_SM_RADAR_SH_MAX;
   self.sh_rate = DAT_BLD_H_SM_RADAR_SH_RATE;

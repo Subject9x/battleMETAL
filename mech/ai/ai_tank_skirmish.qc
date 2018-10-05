@@ -265,8 +265,9 @@ void() ai_tank_sk_th={
     ai_ranged_attack();
     self.button0 = 0;  
     
-    ai_state_control( self.attack_state );   
+      
     if( (self.flags & FL_TURRET) ){
+      ai_state_control( self.attack_state ); 
       ai_turret_control();
     }
   }

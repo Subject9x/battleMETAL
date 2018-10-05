@@ -82,6 +82,7 @@ void() player_makeMech={
     WriteEntity(MSG_ONE, self.e_cam);
     
     client_push_player_info();
+    
   }
   droptofloor();
   self.currentWeaponGroup = self.w_group1;

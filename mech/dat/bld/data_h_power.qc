@@ -83,7 +83,7 @@ void() building_power={
   util_setModel(DAT_BLD_H_POWER_PLANT_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_POWER_PLANT_HP, DAT_BLD_H_POWER_PLANT_HP, 1, 100);
-  util_setBoundBox('-75 -75 0', '75 75 26');
+  setsize(self, '-75 -75 0', '75 75 26');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_POWER_PLANT_SH_MAX;
   self.sh_rate= DAT_BLD_H_POWER_PLANT_SH_RATE;

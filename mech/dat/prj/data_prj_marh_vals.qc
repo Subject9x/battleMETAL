@@ -49,7 +49,7 @@ void() data_prj_marh_th={
   turnrate = 0.7;
 	if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
     makevectors(self.enemy.angles);
-    vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.c_bbx_x_x) * v_right) + (v_forward * (crandom() * self.enemy.c_bbx_x_x));
+    vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.maxs_x) * v_right) + (v_forward * (crandom() * self.enemy.maxs_x));
     olddir = normalize(self.velocity);
 		dir = normalize(vtemp - self.origin);
     if (olddir_x - dir_x > turnrate)

@@ -19,9 +19,7 @@ void() ctor_die1 = [$ctorDie1, ctor_die2]{
     BecomeExplosion();
   self = oself;
   
-  self.c_bbx_n = '-3 -3 -3';
-  self.c_bbx_x = '3 3 3';
-  setsize(self, self.c_bbx_n, self.c_bbx_x);
+  setsize(self, self.mins, self.maxs);
   
   if(pvel_x > 0 || pvel_y > 0 || pvel_z > 0){
     self.velocity = pvel + VelocityForDamage (100);

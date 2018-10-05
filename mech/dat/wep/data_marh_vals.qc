@@ -116,7 +116,7 @@ void() data_marh_atk={
         self.p_lifetime = time + self.p_lifetime;
         util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
         util_setModel(self.c_model, 0, 0);
-        util_setBoundBox('0 0 0', '0 0 0');
+        setsize(self, '0 0 0', '0 0 0');
         setorigin(self, start);
         self.velocity = normalize(arc - start);
         self.velocity = self.velocity * self.p_velocity;

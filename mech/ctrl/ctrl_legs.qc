@@ -23,7 +23,7 @@ void() ctrl_updateLegs={
       local vector dn, angl;
       local float vertic;
       makevectors(self.owner.angles);
-      vertic = self.owner.c_bbx_n_y - 16;
+      vertic = self.owner.absmin - self.owner.origin - 16;
       dn = self.origin + (v_up*vertic);
       traceline(self.origin, dn, TRUE, self.owner);
       //trace_dphittexturename
@@ -42,8 +42,8 @@ void() ctrl_dieLegs={
   this = self;
     local vector v1, v2;
     local float f1, f2, f3;
-    v1 = this.owner.c_bbx_n;
-    v2 = this.owner.c_bbx_x;
+    v1 = this.owner.mins;
+    v2 = this.owner.maxs;
     v1_z = v1_z - (v1_z / 2);
     v2_z = v2_z - (v2_z / 2);
     v1_x = v1_y = v1_x - (v1_x / 2);

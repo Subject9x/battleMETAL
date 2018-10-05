@@ -19,8 +19,6 @@ Overview: definition file for building entities
 .float data_idx;
 .string c_model;
 .float comp_id;
-.vector c_bbx_n;    //min / max of bbox
-.vector c_bbx_x;
 .health;
 .max_health;
 .armortype;

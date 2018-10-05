@@ -21,6 +21,4 @@ commented vars mean they're already implemented and are here for reference!
 .float comp_id;    //component_name,
 .vector c_ofs;
 .vector c_alt_ofs;    //useful alt offset
-.vector c_bbx_n;    //min / max of bbox
-.vector c_bbx_x;
 .entity c_part;

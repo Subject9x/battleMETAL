@@ -117,7 +117,7 @@ void() building_shield={
   util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_SHIELDGEN_HP, DAT_BLD_H_SHIELDGEN_HP, 1, 100) ;
-  util_setBoundBox('-56 -56 0', '56 56 17.5');
+  setsize(self, '-56 -56 0', '56 56 17.5');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_SHIELDGEN_SH_MAX;
   self.sh_rate= DAT_BLD_H_SHIELDGEN_SH_RATE;

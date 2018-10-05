@@ -30,7 +30,7 @@ entity() csqc_setHeader={
     self.walkframe = 1;
     setmodel(self, "q3mdl/testball.md3");
     self.alpha = 0;
-    util_setBoundBox('-1 -1 -1', '1 1 1');
+    setsize( self, '-1 -1 -1', '1 1 1');
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
     setorigin(self, oself.origin);
   self = oself;

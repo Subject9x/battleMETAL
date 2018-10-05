@@ -89,8 +89,8 @@ float m_wep = 6;
 .float m_maccel;
 .string m_pitch_min;
 .string m_pitch_max;
-.vector c_bbx_x;
-.vector c_bbx_n;
+.vector maxs;
+.vector mins;
 .string w_abbr;
 .float player_state;
 

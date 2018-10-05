@@ -124,7 +124,6 @@ Turn in place until within an angle to launch a missile attack
 void() q1_ai_run_missile ={
   self.ideal_yaw = enemy_yaw;
   ChangeYaw ();
-  cons_logAString("q1 call", "FacingIdeal()"); //DEBUG
   //if (FacingIdeal()){
   //  self.th_missile ();
   //  self.attack_state = AS_STRAIGHT;
