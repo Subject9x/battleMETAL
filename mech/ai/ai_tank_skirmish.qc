@@ -22,9 +22,10 @@ void() ai_tank_sk_die2;
 
 void() ai_tank_sk_stand={
   if( ai_valid_target( self.enemy ) ){
-    ai_face_targ();
+    if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25, 25 ) ){
+      ai_face_targ();
+    }
     if( ai_check_face( self.enemy, self.ai_fov ) ){
-      ai_leg_frame( leg_walk1 );
       ai_next_state( ST_RUN );
       return;
     }
@@ -35,6 +36,7 @@ void() ai_tank_sk_stand={
 };
 
 void() ai_tank_sk_run={
+
   if( ai_valid_target( self.enemy ) ){
     ai_turret_set_state( TR_TARG );
     enemy_vis = ai_check_vis( self.enemy );
@@ -42,57 +44,80 @@ void() ai_tank_sk_run={
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
     
     if( enemy_vis ){
+      //MELEE RANGE ===================================================
       if( enemy_range < ( 400 )){
         if( enemy_infront ){
+          if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 15) ){
+            ai_face_targ();
+            return;
+          }
+          if( self.ai_rank >= AI_RANK_REG ){
+            self.ai_action_time = self.ai_action_time + 6;
+            self.ai_dir = anglemod( self.angles_y - 180 );
+            ai_next_state( ST_MELEE );
+            return;
+          }
+          self.ai_action_time = self.ai_action_time + 4;
+          self.ai_dir = anglemod( self.angles_y + 45 );
           ai_next_state( ST_MELEE );
-          self.ai_action_time = self.ai_action_time + 2;
-          self.ai_dir = anglemod( self.ideal_yaw + 45 );
           return;
         }
-        ai_leg_frame( leg_stand1 );
+        if( self.ai_rank < AI_RANK_REG ){
+          ai_next_state( ST_MISSILE_STRAFE );
+          return;
+        }
         ai_next_state( ST_STAND );
         return;
       }
+      //===================================================
+      //NORMAL RANGE ===================================================
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
-          ai_leg_frame( leg_stand1 );
+          if( self.ai_rank <= AI_RANK_VET ){
+            if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 45 ) ){
+              ai_face_targ();
+              return;
+            }
+            ai_next_state( ST_MISSILE_STRAFE );
+            return;
+          }
           ai_next_state( ST_MISSILE );
           return;
         }
-        ai_leg_frame( leg_stand1 );
         ai_next_state( ST_STAND );
         return;
       }
-      if( enemy_range <= (self.ai_minrange * 2) ){
+      //===================================================
+      //LONG RANGE ===================================================
+      if( enemy_range <= (self.ai_minrange * 1.5) ){
         if( enemy_infront ){
           ai_next_state( ST_RUN_STRAFE );
-          ai_leg_frame( leg_walk1 );
           self.ai_action_time = self.ai_action_time + 5;
           return;
         }
-        ai_leg_frame( leg_stand1 );
         ai_next_state( ST_STAND );
         return;
       }
+      //===================================================
       movetogoal( self.m_fspeed * AI_RUN_SPD );
     }
     else{
       self.goalentity = self.enemy;
-      ai_leg_frame( leg_walk1 );
       ai_next_state( ST_HUNT );
       return;
     }
   }
   else{
     ai_turret_set_state( TR_NORM );
-    ai_leg_frame( leg_stand1 );
     ai_next_state( ST_STAND );
     return;
   }
 };
 
 void() ai_tank_sk_melee={
-  ai_face_targ();
+
+  //ai_face_targ();
+  
   if( ai_check_face(self.enemy, 0.6) ){
     local float moved, avg;
 
@@ -100,14 +125,12 @@ void() ai_tank_sk_melee={
     
     moved = ai_move( self.ai_dir, avg * AI_RUN_SPD);
     if( !moved ){
-      ai_leg_frame( leg_walk1 );
       ai_next_state( ST_RUN );
       return;
     }
   }
   
   if( time > self.ai_action_time ){
-    ai_leg_frame( leg_stand1 );
     ai_next_state( ST_MISSILE );
     return;
   }
@@ -117,13 +140,11 @@ void() ai_tank_sk_missile={
   ai_face_targ();
   if( ai_check_face( self.enemy, 0.92 ) ){
     if( ai_attack() ){
-      ai_leg_frame( leg_stand1 );
       ai_next_state( ST_MISSILE );
       return;
     }
   }
   if( time > self.ai_action_time ){
-    ai_leg_frame( leg_walk1 );
     ai_next_state( ST_RUN );
     return;
   }
@@ -132,7 +153,6 @@ void() ai_tank_sk_missile={
 void() ai_tank_sk_missile_strafe={
   local float moved;
   
-  ai_face_targ();
   ai_turret_set_state( TR_TARG );
   
   moved = ai_walk_right( self.m_sspeed * AI_WALK_SPD );
@@ -145,14 +165,12 @@ void() ai_tank_sk_missile_strafe={
     self.lefty = self.lefty * -1;
     moved = ai_walk_left( self.m_sspeed * AI_WALK_SPD );
     if( !moved ){
-      ai_leg_frame( leg_stand1 );
       ai_next_state( ST_MISSILE );
       return;
     }
   }
   
   if( time > self.ai_action_time ){
-    ai_leg_frame( leg_walk1 );
     ai_next_state( ST_RUN );
     return;
   }

@@ -76,6 +76,17 @@ float(float t, float e) util_normalizeTimeAsPercent={
   return t / e;
 };
 
+float( float yee, float targAng, float buffer ) util_checkAngNotIdeal={
+  local float trg_low, trg_high;
+  trg_low = anglemod( targAng - buffer );
+  trg_high = anglemod( targAng + buffer );
+  
+  if( yee < trg_low || yee > trg_high ){
+    return TRUE;
+  }
+  return FALSE;
+};
+
 vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea={
   local vector locus, probe, destin;
   local float dist, side, dir, box;

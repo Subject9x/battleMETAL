@@ -21,6 +21,8 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea;
 float(entity t) util_getMechHpAverage;
 float(entity t) util_getMechHpTotal;
 
+float( float yee, float targAng, float buffer ) util_checkAngNotIdeal;
+
 float(float mod, float targ_val) util_zeroStat;
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin;
 void(string mdl_name, float skinNum, float ef_flags) util_setModel;
