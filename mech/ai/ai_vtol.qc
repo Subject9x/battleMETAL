@@ -9,19 +9,22 @@ Overview: ai unit
     can actually hunt its target
 */
 
-void() ai_vtol_stand;
-void() ai_vtol_walk;
-void() ai_vtol_run;
-void() ai_vtol_run_strafe;
-void() ai_vtol_run_charge;
-void() ai_vtol_melee;
-void() ai_vtol_missile;
-void() ai_vtol_missile_strafe;
-void() ai_vtol_hunt;
-void() ai_vtol_pain;
+void() ai_vtol_crash;
 
+void() ai_vtol_stand;       //normal hanging out
+void() ai_vtol_walk;        //go to patrol node
+void() ai_vtol_run;         //main combat sequencer
+void() ai_vtol_run_strafe;  // attempting to close distance, better pilots may try to attack
+void() ai_vtol_run_charge;  // low rank pilots attempt to do a fly over
+void() ai_vtol_melee;       // high rank pilots do a fly over with attack
+void() ai_vtol_missile;     // normal stationary attack
+void() ai_vtol_missile_strafe;//  good pilot attack
+void() ai_vtol_hunt;        //  will actually hunt player
+void() ai_vtol_pain;        //
+  
 void() ai_vtol_die;
 void() ai_vtol_th;
+
 
 void() ai_vtol_stand={
   if( ai_valid_target( self.enemy ) ){
@@ -38,7 +41,6 @@ void() ai_vtol_stand={
 
 void() ai_vtol_walk={
   ai_walkgoal( AI_WALK_SPD);
-  
 };
 
 void() ai_vtol_run={
@@ -51,8 +53,19 @@ void() ai_vtol_run={
     if( enemy_vis ){
       if( enemy_range <= 400 ){
         if( enemy_infront ){
+          if( self.ai_rank < AI_RANK_REG ){
+            ai_next_state( ST_MISSILE_STRAFE );
+            self.ai_dir = ( 25 + random() * 65 );
+            if( self.lefty > 0 ){
+              self.lefty = self.lefty * -1;
+            }
+            self.ai_dir = self.ai_dir * self.lefty;
+            self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
+            self.ai_action_time = self.ai_action_time + 4;
+            return;
+          }
           ai_next_state( ST_MELEE );
-          self.ai_action_time = self.ai_action_time + 3;
+          self.ai_action_time = self.ai_action_time + 2;
           return;
         }
       }
@@ -60,31 +73,96 @@ void() ai_vtol_run={
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
           if( self.ai_rank < AI_RANK_REG ){
-          self.attack_finished = vectoyaw( self.enemy.origin - self.origin );
+            ai_next_state( ST_MISSILE_STRAFE );
+            self.ai_dir = ( 25 + random() * 65 );
+            if( self.lefty > 0 ){
+              self.lefty = self.lefty * -1;
+            }
+            self.ai_dir = self.ai_dir * self.lefty;
+            self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
+            self.ai_action_time = self.ai_action_time + 4;
+            return;
           }
+          ai_next_state( ST_MISSILE );
+          return;
         }
-      
+        if( self.ai_rank > AI_RANK_VET ){
+          ai_next_state( ST_STAND );
+          return;
+        }
+        ai_next_state( ST_RUN_STRAFE );
+        self.lefty = self.lefty * -45;
+        self.ai_dir = anglemod( self.ideal_yaw + self.lefty );
+        self.ai_action_time = self.ai_action_time + 2;
+        return;
       }
       
-      if( enemy_range > self.ai_minrange ){
+      if( enemy_range <= self.ai_minrange * 2 ){
         if( enemy_infront ){
-        
+          ai_next_state( ST_RUN_STRAFE );
+          self.lefty = self.lefty * -45;
+          self.ai_dir = anglemod( self.ideal_yaw + self.lefty );
+          self.ai_action_time = self.ai_action_time + 2;
+          return;
         }
-      
+        ai_next_state( ST_HUNT );
+        self.goalentity = self.enemy;
+        self.ai_action_time = self.ai_action_time + (skill * 2) - self.ai_rank;
+        return;
       }
-    
+      
+      ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
+      ai_face_targ();
+      return;
     }
+  }
+  else{
+    ai_next_state( ST_STAND );
+    return;
   }
 };
 
 
 void() ai_vtol_run_strafe={
-
+  local float speeed;
+  speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
+  ai_move( self.ai_dir, speeed * AI_RUN_SPD );
+  ai_face_targ();
+  
+  if( time > self.ai_action_time ){
+    if( self.ai_rank < AI_RANK_REG ){
+      ai_next_state( ST_MISSILE_STRAFE );
+      self.ai_dir = ( 25 + random() * 65 );
+      if( self.lefty > 0 ){
+        self.lefty = self.lefty * -1;
+      }
+      self.ai_dir = self.ai_dir * self.lefty;
+      self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
+      self.ai_action_time = self.ai_action_time + 4;
+      return;
+    }
+    if( skill > 2 ){
+      ai_next_state( ST_MISSILE );
+      return;
+    }
+    ai_next_state( ST_RUN );
+    return;
+  }
 };
 
 
 void() ai_vtol_run_charge={
-
+  ai_face_targ();
+  ai_move( self.ai_dir, self.m_fspeed * AI_RUN_SPD );
+  
+  if( time > self.ai_action_time ){
+    if( self.ai_rank > AI_RANK_VET ){
+      ai_next_state( ST_STAND );
+      return;
+    }
+    ai_next_state( ST_RUN );
+    return;
+  }
 };
 
 void() ai_vtol_melee={
@@ -94,26 +172,64 @@ void() ai_vtol_melee={
   
   ai_move( self.angles_y , self.m_fspeed * AI_WALK_SPD );
   
-  
-  
-  if( ai_check_face( self.enemy, 0.97 ) ){
-    ai_attack();
+  if( self.ai_rank < AI_RANK_REG ){
+    if( ai_check_face( self.enemy, 0.97 ) ){
+      ai_attack();
+    }
   }
   
   if( time > self.ai_action_time ){
-    ai_next_state( ST_STAND );
-    self.ai_action_time = self.ai_action_time + 2;
+    if( self.ai_rank == AI_RANK_REG ){
+      ai_next_state( ST_MISSILE );
+      return;
+    }
+    if( self.ai_rank == AI_RANK_ROK ){
+      ai_next_state( ST_STAND );
+      self.ai_action_time = self.ai_action_time + 2;
+      return;
+    } 
+    ai_next_state( ST_RUN );
     return;
   }
 };
 
 void() ai_vtol_missile={
-
+  ai_face_targ();
+  if( ai_check_face( self.enemy, 0.97 ) ){
+    if( ai_attack() ){
+      if( self.ai_rank < AI_RANK_REG ){
+        ai_next_state( ST_MISSILE_STRAFE );
+        return;
+      }
+      ai_next_state( ST_RUN );
+      return;
+    }
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
 };
 
 
 void() ai_vtol_missile_strafe={
-
+  local float speeed;
+  
+  speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
+  ai_move( self.ai_dir, speeed * AI_RUN_SPD );
+  ai_face_targ();
+  
+  if( ai_check_face( self.enemy, 0.97 ) ){
+    if( ai_attack() ){
+      ai_next_state( ST_RUN );
+      return;
+    }
+  }
+  
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
 };
 
 /*
@@ -121,12 +237,30 @@ void() ai_vtol_missile_strafe={
   something something no terrain
 */
 void() ai_vtol_hunt={
-
+  
+  if( ai_valid_target( self.enemy ) ){
+    ai_walkgoal( self.m_fspeed * AI_RUN_SPD );
+    if( ai_check_vis( self.enemy ) ){
+      ai_next_state( ST_RUN );
+      return;
+    }
+  }
+  else{
+    self.goalentity = self.movetarget;
+  }
+  if( time > self.ai_action_time ){
+    self.goalentity = self.movetarget;
+    ai_next_state( ST_STAND );
+    self.ai_action_time = self.ai_action_time + 2;
+    return;
+  }
 };
 
 void() ai_vtol_pain={
 
 };
+
+void() ai_vtol_crash;
 
 void() ai_vtol_die={
   self.deadflag = DEAD_DYING;

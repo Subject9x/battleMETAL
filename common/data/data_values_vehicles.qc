@@ -40,7 +40,7 @@ float DAT_H_TANKL_HP = 300;
 //-------------------------Human Tank Destroyer
 float DAT_H_TD_HP_CTOR = 200;
 //-------------------------PSC VTOL Light
-float DAT_PSC_VTOLL_HP = 100;
+float DAT_PSC_VTOLL_HP = 600;
 //============================
 //            NAMES 
 //============================
@@ -86,7 +86,7 @@ float DAT_HS_TANKL_ENERGY_RATE = 1;
 float DAT_H_TD_ENERGY_MAX    = 350;
 float DAT_H_TD_ENERGY_RATE   = 10;
 //-------------------------PSC VTOL Light
-float DAT_PSC_VTOLL_ENERGY_MAX = 200;
+float DAT_PSC_VTOLL_ENERGY_MAX = 300;
 float DAT_PSC_VTOLL_ENERGY_RATE = 5;
 //============================
 //            Speed  
@@ -104,8 +104,8 @@ float DAT_H_TD_FSPEED          = 50;
 float DAT_H_TD_SSPEED          = 0;
 float DAT_H_TD_BSPEED          = 15;
 //-------------------------PSC VTOL Light
-float DAT_PSC_VTOLL_FSPEED     = 400;
-float DAT_PSC_VTOLL_SSPEED     = 400;
+float DAT_PSC_VTOLL_FSPEED     = 300;
+float DAT_PSC_VTOLL_SSPEED     = 300;
 float DAT_PSC_VTOLL_BSPEED     = 200;
 //============================
 //            Bounding Box
@@ -173,8 +173,8 @@ vector DAT_HS_TANKL_WEP2_OFFSET   = '8 6 4';
 //-------------------------Human Tank Destroyer
 vector DAT_H_TD_WEP1_OFFSET       = '0 4 4';
 //-------------------------PSC VTOL Light
-vector DAT_PSC_VTOLL_WEP1_OFFSET  = '-8 6 4';
-vector DAT_PSC_VTOLL_WEP2_OFFSET  = '8 6 4';
+vector DAT_PSC_VTOLL_WEP1_OFFSET  = '-9 -6 12';
+vector DAT_PSC_VTOLL_WEP2_OFFSET  = '9 -6 12';
 //============================
 //            Tech level  
 //============================

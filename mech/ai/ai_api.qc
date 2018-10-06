@@ -285,7 +285,7 @@ void() ai_ranged_attack={
 void(entity bot, entity attacker) ai_damage_react={
   local entity this;
   local float change;
-  //TODO - panic behavior
+
   if( (bot.flags & FL_NOGUNS) ){
     return;
   }
@@ -327,14 +327,15 @@ void(entity bot, entity attacker) ai_damage_react={
         break;
     }
     if( self.enemy == attacker ){
-      self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-      //ai_action_next( self.th_attack, 0.1, self.ai_action_mod);
+      ai_next_state( ST_STAND );
+      if( self.ai_rank < AI_RANK_REG ){
+        ai_next_state( ST_RUN );
+      }
     }
   }
   else{
     self.enemy = attacker;
-    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-    //ai_action_next( self.th_attack, 0.6, self.ai_action_mod);
+    ai_next_state( ST_RUN );
   }
   self = this;
 };

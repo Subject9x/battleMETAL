@@ -332,7 +332,7 @@ float( float scan_mode) ai_check_scan={
 };
 
 void(float speed) ai_walkgoal={
-  movetogoal( self.m_fspeed * AI_RUN_SPD );
+  movetogoal( self.m_fspeed * speed );
 };
 
 void() ai_move_turn={
@@ -390,7 +390,7 @@ float() ai_fly_update={
   traceline( self.origin, self.origin - delta, MOVE_NORMAL, self);
   dn = vlen( self.origin - trace_endpos );
 
-  if( dn <= 300 && trace_ent ){
+  if( dn <= 200 || trace_ent ){
      //TODO - make real value
     return 1;
   }
@@ -398,7 +398,7 @@ float() ai_fly_update={
   traceline( self.origin, self.origin + delta, MOVE_NORMAL, self);
   up = vlen( self.origin -  trace_endpos );
   
-  if( up >= 600 && trace_ent ){
+  if( up >= 450 || trace_ent ){
      //TODO - make real value
     return -1;
   }

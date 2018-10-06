@@ -87,7 +87,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   else if(trg.data_type == DATA_BLD){
-    //ai_util_defense_callForHelp(attacker);
+    local entity friend;
+    friend = ai_find_friend( self.radar_range );
+    if( friend ){
+      ai_give_target( friend, attacker, (attacker.flags & FL_CLIENT) ) ;
+    }
   }
   
   trg.health = trg.health - dmg_amt;
@@ -512,8 +516,7 @@ void(entity targ, entity attacker) Killed =
 	self.enemy = attacker;
 
 // bump the monster counter
-	if (self.flags & FL_MONSTER)
-	{
+	if( (self.flags & FL_MONSTER) ){
 		killed_monsters = killed_monsters + 1;
 		WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
 	}
