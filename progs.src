@@ -133,6 +133,7 @@ dp/subs.qc
   mech/ai/ai_tank_skirmish.qc
   mech/ai/ai_noncom.qc
   mech/ai/ai_vtol.qc
+  mech/ai/ai_gev.qc
   mech/ai/ai_nodes.qc
   
   mech/t_damage.qc

@@ -428,29 +428,6 @@ float() ai_pilot_rating_patience={
 };
 
 /*
-  time in seconds in-between checks for anger_monster();
-*/
-float() ai_core_hitTimeCalc={
-  local float sec;
-  sec = (self.ai_rank + 2);
-  sec = sec * 1.5;
-  
-  if(self.state_1 == AI_ORDER_ATTACK){
-    sec = sec + 1;
-  }
-  //if(self.ai_style == AI_STYLE_STALK){
-  //  sec = sec + 2.5;
-  //}
-  if(self.ai_type == AI_TYPE_AGGRO){
-    sec = sec - ( sec * 0.25);
-  }
-  if(self.ai_type == AI_TYPE_COWRD){
-    sec = sec - ( sec * 0.5);
-  }
-  return sec;
-};
-
-/*
   a design conceit, to make sure bots are perfectly firing,
   or inhumanly relentlessly attacking, this function creates
   a random amount of time to make the next attack.

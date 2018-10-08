@@ -141,10 +141,29 @@ void() ai_generic_walk={
 };
 /*
   Generic Fly
-  TODO - fill out
+  VTOL behavior says that this should act like a sub ST_RUN state
+  where the VTOL cares about altitude;
 */
 void() ai_generic_fly={
+  local vector flydir;
+  local float fspd, sspd, bspd;
 
+  flydir = self.origin;
+  fspd = (self.m_fspeed / 2) * AI_RUN_SPD;
+  sspd = (self.m_sspeed / 2) * AI_RUN_SPD;
+  bspd = (self.m_bspeed * AI_RUN_SPD) * self.attack_finished;
+  
+  makevectors( self.angles );
+  
+  flydir_y = flydir_y + (v_right * sspd);
+  flydir_x = flydir_x + (v_forward * fspd);
+  flydir_z = flydir_z + (v_up * bspd);
+  
+  ChangeYaw();
+  setorigin( self, flydir );
+  
+  self.attack_finished = 0;
+  ai_next_state( self.ai_prev_state );
 };
 /*
 	Generic Run
@@ -280,9 +299,11 @@ void() ai_generic_melee={
 	AI will make an attack while moving to the left or right.
 */
 void() ai_generic_missile_strafe={
+  local float ang;
   
   ai_face_targ();
-  ai_move( self.angles_y + (self.lefty * 90 ), self.m_fspeed * AI_WALK_SPD );
+  ang = anglemod( self.angles_y + (self.lefty * 90 ) );
+  ai_move( ang, self.m_fspeed * AI_WALK_SPD );
   if( ai_check_face( self.enemy, 0.97 ) ){
     if( ai_attack() ){
       ai_next_state( ST_MISSILE );
@@ -380,47 +401,35 @@ float( float angmod, float dist ) ai_yaw_move={
   return walkmove( self.ideal_yaw + angmod, dist );
 };
 
-float() ai_fly_update={
+void( float alt_low, float alt_max) ai_fly_update={
   local vector delta;
-  local float up, dn;
+  local float dist;
   
   makevectors( self.angles );
-  delta = v_up * 300; //TODO - make real value
   
+  delta = v_up * alt_low;
   traceline( self.origin, self.origin - delta, MOVE_NORMAL, self);
-  dn = vlen( self.origin - trace_endpos );
-
-  if( dn <= 200 || trace_ent ){
-     //TODO - make real value
-    return 1;
+  dist = vlen( self.origin - trace_endpos );
+  cons_logAString("=======", trace_ent.classname);  //DEBUG
+  
+  if( dist < alt_low ){
+    cons_logAFloat( "-------------altitude", dist); //DEBUG
+    self.attack_finished = 1;
+    return;
   }
   
+  delta = v_up * alt_max;
   traceline( self.origin, self.origin + delta, MOVE_NORMAL, self);
-  up = vlen( self.origin -  trace_endpos );
+  dist = vlen( trace_endpos - self.origin );
   
-  if( up >= 450 || trace_ent ){
-     //TODO - make real value
-    return -1;
+  if( dist > alt_max ){
+    cons_logAFloat( "-------------atmo", dist); //DEBUG
+    self.attack_finished = -1;
+    return;
   }
   
-  return 0;
+  self.attack_finished = 0;
 }
-
-//makes the assumption the unit cares about altitude
-float( float dist ) ai_fly_alt={ 
-  local float delta;
-  local vector adj;
-  
-  delta = ai_fly_update();
-  delta = delta * dist;
-  
-  if( delta != FALSE ){
-    adj = self.origin + (v_up * delta);
-    setorigin( self, adj);
-  }
-};
-
-
 
 /*
   Checks to see if Entity T is in the ANG arc of self
@@ -516,13 +525,11 @@ void() ai_walk_setup={
 		}
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
     ai_next_state( ST_WALK );
-    //ai_leg_frame( leg_walk1 );
     return;
 	}
 	else{
 		self.pausetime = 99999999;
     ai_next_state( ST_STAND );
-    //ai_leg_frame( leg_stand1 );
     return;
 	}
 };

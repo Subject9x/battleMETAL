@@ -358,13 +358,7 @@ float(entity wep) ai_attack_blockcheck={
   if( trace_ent.i_faction == self.i_faction ){
     return TRUE;
   }
-  /*if(trace_ent != self.enemy){
-    if(self.p_damage <= AI_RANK_VET){
-      if(self.ai_type != AI_TYPE_AGGRO){
-        return TRUE;
-      }
-    }
-  }*/
+
   return FALSE;
 };
 
@@ -439,7 +433,7 @@ void( string nodename) ai_node_pick_rand={
   
   if( self.target ){
     anode = find(world, targetname, nodename);
-    if( anode && anode.group){
+    if( anode && anode.group ){
       grpid = anode.group;
       total = 0;
       clr = 0;

@@ -240,12 +240,6 @@ void() ai_vec_dest={
   data_iniVehc(self.nextVecChoice);
   ai_pilot_ini_stats(self.ai_rank);
   
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
-  
-  droptofloor();
-
   self.th_stand = ai_dest_stand;
   self.th_walk = ai_generic_walk;
   self.th_run = ai_dest_run;
@@ -256,7 +250,14 @@ void() ai_vec_dest={
   
   ai_initialize_system( ST_STAND );
   
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
+  
   ai_walk_setup();
+  
+  droptofloor();
+  
   self.colormod = '0 0.75 1'; //DEBUG
 
   self.think = ai_dest_th;

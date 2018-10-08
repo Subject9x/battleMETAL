@@ -80,8 +80,7 @@ entity AI_NODES[128];
 .entity ai_hunt_node;  //simple node-on-decay-timer
 .float ai_hunt_total; //current number of hunt nodes
 .float ai_attack_chance;
-.float ai_type;
-.float ai_style;
+.float ai_prev_state;
 .string target_die;
 .float ai_dir;
 
@@ -98,7 +97,6 @@ float() ai_pilot_yaw_mod;
 float() ai_pilot_armor_mod;
 float() ai_pilot_shield_mod;
 float() ai_pilot_rating_patience;
-float() ai_core_hitTimeCalc;
 void() ai_pilot_mech_armor;
 void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
@@ -189,7 +187,7 @@ float( float dist ) ai_yaw_back;
 float( float dist ) ai_yaw_left;
 float( float dist ) ai_yaw_right;
 float( float angmod, float dist ) ai_yaw_move;
-float( float dist ) ai_fly_alt;
+void( float alt_low, float alt_max) ai_fly_update
 //========================================
 
 //q1 legacy code ai_move_q1.qc

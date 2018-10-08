@@ -311,8 +311,6 @@ void() ai_tank_skirmish={
   data_iniVehc( self.nextVecChoice );
   ai_pilot_ini_stats( self.ai_rank );
   
-  droptofloor();
-  
   self.th_stand = ai_tank_sk_stand;
   self.th_walk = ai_generic_walk;
   self.th_run = ai_tank_sk_run;
@@ -325,8 +323,15 @@ void() ai_tank_skirmish={
   self.th_die = ai_tank_sk_die;
   
   ai_initialize_system( ST_STAND );
+
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
   
   ai_walk_setup();
+  
+  droptofloor();
+  
   self.colormod = '1 0 0'; //DEBUG
   self.e_tor_c.colormod = '1 0 0'; //DEBUG
   

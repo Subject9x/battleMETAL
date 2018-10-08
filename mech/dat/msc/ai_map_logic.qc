@@ -94,48 +94,6 @@ void() ai_logic_changeRank_use={
   }
 };
 
-void() ai_logic_changeStyle_use={
-  local entity e;
-  if(self.group){
-    e = findchain(group, self.group);
-    while(e){
-      e.state_1 = self.ai_style;
-      e = e.chain;
-    }
-  }
-  if(self.target){
-    e = find(world, targetname, self.target);
-    if(e){
-      e.state_1 = self.ai_style;
-    }
-  }
-  if(self.w_state == 1){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
-  }
-};
-
-void() ai_logic_changeType_use={
-  local entity e;
-  if(self.group){
-    e = findchain(group, self.group);
-    while(e){
-      e.state_1 = self.ai_type;
-      e = e.chain;
-    }
-  }
-  if(self.target){
-    e = find(world, targetname, self.target);
-    if(e){
-      e.state_1 = self.ai_type;
-    }
-  }
-  if(self.w_state == 1){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
-  }
-};
-
 void() ai_spawner_use={
   if ( self.isActive ){
     self.isActive = FALSE; 
@@ -226,24 +184,11 @@ a bit more controllable ai spawn mechanism
   2 = defend the .target
   3 = patrol the .target
   4 = attack the .target
-"p_damage" : number,AI pilot rating, will affect accuracy
+"ai_rank" : number,AI pilot rating, will affect accuracy
   0 = ACE 
   1 = VETERAN
   2 = REGULAR
   3 = ROOKIE
-"ai_style" : AI's combat style
-  0, or none = skirmisher - normal movement
-  1 = sniper - tries to stay at long range
-  2 = brawler - always stays up close to target
-  3 = flanker - tries to get behind player
-  4 = stalker - extra patience when hunting targets
-  5 = random of 1-4
-"ai_type" : AI's personality
-  0, or none = normal
-  1 = aggressive - will always run around, stay in fight
-  2 = rescue - tries to save friendlies by pulling aggro
-  3 = coward - will run away or to friends easily
-  4 = random of 1-4
 "next_wepn1" : float, data_idx for weapon slot
     this goes to next_wepn9
 */
@@ -310,37 +255,3 @@ set .w_state = 1 to have this remove after firing
 void() ai_logic_changeRank={
   self.use = ai_logic_changeRank_use;
 };
-
-/*QUAKED ai_logic_changeStyle (.25 .25 .25) (-5 -5 -5) (5 5 5)
-changes the i_faction field of targted items
-set .group for use with groups of items
-set .target to specicify by targetname
-set .w_state = 1 to have this remove after firing
-"ai_style" : AI's combat style
-  0, or none = skirmisher - normal movement
-  1 = sniper - tries to stay at long range
-  2 = brawler - always stays up close to target
-  3 = flanker - tries to get behind player
-  4 = stalker - extra patience when hunting targets
-  5 = random of 1-4
-*/
-void() ai_logic_changeStyle={
-  self.use = ai_logic_changeStyle_use;
-};
-
-/*QUAKED ai_logic_changeType (.25 .25 .25) (-5 -5 -5) (5 5 5)
-changes the i_faction field of targted items
-set .group for use with groups of items
-set .target to specicify by targetname
-set .w_state = 1 to have this remove after firing
-"ai_type" : AI's personality
-  0, or none = normal
-  1 = aggressive - will always run around, stay in fight
-  2 = rescue - tries to save friendlies by pulling aggro
-  3 = coward - will run away or to friends easily
-  4 = random of 1-4
-*/
-void() ai_logic_changeType={
-  self.use = ai_logic_changeType_use;
-};
-
