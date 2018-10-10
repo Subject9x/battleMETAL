@@ -76,6 +76,7 @@ void() unit_hs_tnkdest_h={
 
 void() unit_hs_scout={
   self.nextVecChoice = 11;
+  ai_gev();
 };
 
 void() unit_hs_mech_sk={

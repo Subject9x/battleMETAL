@@ -1,27 +1,18 @@
 /*
 battleMETAL 
 Author: Peter Roohr
-Date: 10/05/2018
+Date: 9/25/2018
 Overview: ai unit
-  GEV - hovercraft
-  an on-the-ground hover unit that behaves mostly like a VTOL
-  
-*/
-
-/*
-battleMETAL 
-Author: Peter Roohr
-Date: 10/06/2018
-Overview: ai unit
-  GEV Unit (Ground Effect Vehicle)
-    can have turret
-    'technically' hovers - mostly achieved by having mins_z be longer than model
+  VTOL Unit
+    no turret
+    flies around
+    can actually hunt its target
 */
 
 void() ai_gev_crash;
 
 void() ai_gev_stand;       //normal hanging out
-void() ai_gev_walk;        //go to patrol node
+void() ai_gev_walk;
 void() ai_gev_run;         //main combat sequencer
 void() ai_gev_run_strafe;  // attempting to close distance, better pilots may try to attack
 void() ai_gev_run_charge;  // low rank pilots attempt to do a fly over
@@ -45,11 +36,19 @@ void() ai_gev_stand={
   }
   else{
     ai_generic_stand();
+    //ai_fly_update( 350, 600); 
   }
 };
 
 void() ai_gev_walk={
-  ai_walkgoal( AI_WALK_SPD);
+  if( ai_valid_target(self.enemy) ){
+    ai_face_targ();
+    ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
+  }
+  else{
+    ai_generic_walk();
+  }
+  //ai_fly_update( 350, 600); 
 };
 
 void() ai_gev_run={
@@ -64,7 +63,7 @@ void() ai_gev_run={
         if( enemy_infront ){
           if( self.ai_rank < AI_RANK_REG ){
             ai_next_state( ST_MISSILE_STRAFE );
-            self.ai_dir = ( 25 + random() * 65 );
+            self.ai_dir = ( 25 + random() * 75 );
             if( self.lefty > 0 ){
               self.lefty = self.lefty * -1;
             }
@@ -120,8 +119,8 @@ void() ai_gev_run={
         return;
       }
       
-      ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
       ai_face_targ();
+      ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
       return;
     }
   }
@@ -134,9 +133,11 @@ void() ai_gev_run={
 
 void() ai_gev_run_strafe={
   local float speeed;
+  
+  ai_face_targ();
   speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
   ai_move( self.ai_dir, speeed * AI_RUN_SPD );
-  ai_face_targ();
+  //ai_fly_update( 350, 600); 
   
   if( time > self.ai_action_time ){
     if( self.ai_rank < AI_RANK_REG ){
@@ -163,6 +164,7 @@ void() ai_gev_run_strafe={
 void() ai_gev_run_charge={
   ai_face_targ();
   ai_move( self.ai_dir, self.m_fspeed * AI_RUN_SPD );
+  //ai_fly_update( 350, 600); 
   
   if( time > self.ai_action_time ){
     if( self.ai_rank > AI_RANK_VET ){
@@ -180,6 +182,7 @@ void() ai_gev_melee={
   }
   
   ai_move( self.angles_y , self.m_fspeed * AI_WALK_SPD );
+  //ai_fly_update( 350, 600); 
   
   if( self.ai_rank < AI_RANK_REG ){
     if( ai_check_face( self.enemy, 0.97 ) ){
@@ -204,6 +207,7 @@ void() ai_gev_melee={
 
 void() ai_gev_missile={
   ai_face_targ();
+  //ai_fly_update( 350, 600); 
   if( ai_check_face( self.enemy, 0.97 ) ){
     if( ai_attack() ){
       if( self.ai_rank < AI_RANK_REG ){
@@ -223,18 +227,29 @@ void() ai_gev_missile={
 
 void() ai_gev_missile_strafe={
   local float speeed;
-  
-  speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
-  ai_move( self.ai_dir, speeed * AI_RUN_SPD );
-  ai_face_targ();
-  
-  if( ai_check_face( self.enemy, 0.97 ) ){
-    if( ai_attack() ){
-      ai_next_state( ST_RUN );
-      return;
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
+    ai_move( self.ai_dir, speeed * AI_RUN_SPD );
+    //ai_fly_update( 250, 600); 
+    
+    if( ai_check_face( self.enemy, 0.97 ) ){
+      if( ai_attack() ){
+        ai_next_state( ST_RUN_STRAFE );
+        self.ai_action_time = self.ai_action_time + 2;
+        return;
+      }
     }
   }
-  
+  else{
+    if( self.ai_rank < AI_RANK_REG ){
+      ai_next_state( ST_WALK );
+      return;
+    }
+    ai_next_state( ST_STAND );
+    self.ai_action_time = self.ai_action_time + 2;
+    return;
+  }
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
     return;
@@ -256,6 +271,8 @@ void() ai_gev_hunt={
   }
   else{
     self.goalentity = self.movetarget;
+    ai_next_state( ST_STAND );
+    return;
   }
   if( time > self.ai_action_time ){
     self.goalentity = self.movetarget;
@@ -269,13 +286,20 @@ void() ai_gev_pain={
 
 };
 
-void() ai_gev_crash;
+void() ai_gev_crash={
+  
+  if( other.takedamage > DAMAGE_NO ){
+    t_damage( other, self, self, (self.health * -1), DMG_ENE | EFF_PRC, self.origin, '0 0 0');
+  }
+  
+  self.think = BecomeExplosion;
+  self.nextthink = time + 0.05;
+};
 
 void() ai_gev_die={
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_BOUNCE;
   self.solid = SOLID_CORPSE;
-  self.flags = self.flags - (self.flags & FL_FLY);
   self.colormod = '0.25 0.25 0.25';
   self.attack_state = -1;
   
@@ -291,6 +315,13 @@ void() ai_gev_die={
   self.enemy = self.ladder_entity;
   activator = self.enemy;
   SUB_UseTargets ();
+  
+  local vector v;
+  makevectors( self.angles );
+  v = self.origin + (v_forward * self.m_fspeed) + (v_right * self.m_sspeed) + (v_up * 500);
+  self.velocity = normalize( self.origin - v );
+  self.velocity = self.velocity * 400;
+  self.avelocity = '250 100 500';
 };
 
 void() ai_gev_th={
@@ -317,11 +348,10 @@ void() ai_gev_th={
     } 
     ai_ranged_attack();
     self.button0 = 0;
-  }
-  
-  ai_state_control( self.attack_state );
 
-  
+    ai_state_control( self.attack_state );
+  }
+
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
     self.think = ai_gev_th;
@@ -357,6 +387,12 @@ void() ai_gev={
   self.th_die = ai_gev_die;
   
   ai_initialize_system( ST_STAND );
+  
+  droptofloor();
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
   
   ai_walk_setup();
   
