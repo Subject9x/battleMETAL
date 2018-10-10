@@ -187,7 +187,7 @@ float( float dist ) ai_yaw_back;
 float( float dist ) ai_yaw_left;
 float( float dist ) ai_yaw_right;
 float( float angmod, float dist ) ai_yaw_move;
-void( float alt_low, float alt_max) ai_fly_update
+void( float alt_low, float alt_max ) ai_fly_update
 //========================================
 
 //q1 legacy code ai_move_q1.qc

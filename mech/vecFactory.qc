@@ -350,7 +350,7 @@ void(void() data_ini) build_vehicle_unit={
   util_setModel(self.c_model, self.mskin, 0);
   setsize( self, hmins, hmaxs );
   
-  util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_STEP);
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   
   self.alpha = 1;
   self.sh_hit = 0;
@@ -382,9 +382,8 @@ void(void() data_ini) build_vehicle_unit={
 };
 
 void( void() data_ini ) build_vtol_unit={
-  build_vehicle_unit( data_ini );
-  self.movetype = MOVETYPE_FLY;
   self.flags = self.flags | FL_FLY;
+  build_vehicle_unit( data_ini );
 };
 
 void(void() data_ini) build_turret_unit={

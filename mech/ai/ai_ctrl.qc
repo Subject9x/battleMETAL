@@ -148,22 +148,23 @@ void() ai_generic_fly={
   local vector flydir;
   local float fspd, sspd, bspd;
 
-  flydir = self.origin;
+  if( self.enemy ){
+    ai_face_targ();
+  }
+  
   fspd = (self.m_fspeed / 2) * AI_RUN_SPD;
   sspd = (self.m_sspeed / 2) * AI_RUN_SPD;
   bspd = (self.m_bspeed * AI_RUN_SPD) * self.attack_finished;
   
+  ChangeYaw();
   makevectors( self.angles );
   
-  flydir_y = flydir_y + (v_right * sspd);
-  flydir_x = flydir_x + (v_forward * fspd);
-  flydir_z = flydir_z + (v_up * bspd);
+  flydir = self.origin + (v_up * bspd);
+  flydir = flydir + (v_right * sspd);
+  flydir = flydir + (v_forward * fspd);
   
-  ChangeYaw();
   setorigin( self, flydir );
   
-  self.attack_finished = 0;
-  ai_next_state( self.ai_prev_state );
 };
 /*
 	Generic Run
@@ -401,35 +402,49 @@ float( float angmod, float dist ) ai_yaw_move={
   return walkmove( self.ideal_yaw + angmod, dist );
 };
 
+/*
+  rolled together all the flying code to a one-off call.
+  this should be made everytime a flyer makes an engine-based move.
+*/
 void( float alt_low, float alt_max) ai_fly_update={
-  local vector delta;
-  local float dist;
+  local vector delta, flydir;
+  local float dist, fdir;
+  local float fspd, sspd, bspd;
   
   makevectors( self.angles );
   
-  delta = v_up * alt_low;
-  traceline( self.origin, self.origin - delta, MOVE_NORMAL, self);
-  dist = vlen( self.origin - trace_endpos );
-  cons_logAString("=======", trace_ent.classname);  //DEBUG
-  
-  if( dist < alt_low ){
-    cons_logAFloat( "-------------altitude", dist); //DEBUG
-    self.attack_finished = 1;
-    return;
-  }
-  
-  delta = v_up * alt_max;
-  traceline( self.origin, self.origin + delta, MOVE_NORMAL, self);
+  delta = self.origin + (v_up * -10000);
+  traceline( self.origin, delta, MOVE_NOMONSTERS, self);
   dist = vlen( trace_endpos - self.origin );
   
-  if( dist > alt_max ){
-    cons_logAFloat( "-------------atmo", dist); //DEBUG
-    self.attack_finished = -1;
-    return;
+  if( dist <= alt_low ){
+    fdir = 1;
   }
   
-  self.attack_finished = 0;
+  if( fdir == FALSE ){
+    delta = self.origin + (v_up * 10000);
+    traceline( self.origin, delta, MOVE_NOMONSTERS, self);
+    dist = vlen( trace_endpos - self.origin );
+    
+    if( dist <= alt_max ){
+      fdir = -1;
+    }
+  }
+  
+  if( fdir != 0 ){
+    fspd = (self.m_fspeed / 2) * AI_RUN_SPD;
+    sspd = (self.m_sspeed / 2) * AI_RUN_SPD;
+    bspd = (self.m_bspeed * AI_RUN_SPD) * fdir;
+   
+    
+    flydir = self.origin + (v_up * bspd);
+    flydir = flydir + (v_right * sspd);
+    flydir = flydir + (v_forward * fspd);
+    
+    setorigin( self, flydir );
+  } 
 }
+
 
 /*
   Checks to see if Entity T is in the ANG arc of self

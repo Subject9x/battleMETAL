@@ -232,7 +232,7 @@ void(entity ent, vector pnt) util_chekPointToHitDir={
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
   local vector next;
   makevectors(src.angles);
-  next = src.origin + ((v_up*ofs_y)+(v_right*ofs_x)+(v_forward*ofs_z));
+  next = src.origin + (v_up * ofs_y) + (v_right * ofs_x) + (v_forward * ofs_z);
   setorigin(targ, next);
 };
 

@@ -106,7 +106,7 @@ float DAT_H_TD_BSPEED          = 15;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_FSPEED     = 450;
 float DAT_PSC_VTOLL_SSPEED     = 375;
-float DAT_PSC_VTOLL_BSPEED     = 100;
+float DAT_PSC_VTOLL_BSPEED     = 300;
 //============================
 //            Bounding Box
 //============================

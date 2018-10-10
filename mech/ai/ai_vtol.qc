@@ -12,6 +12,7 @@ Overview: ai unit
 void() ai_vtol_crash;
 
 void() ai_vtol_stand;       //normal hanging out
+void() ai_vtol_walk;
 void() ai_vtol_run;         //main combat sequencer
 void() ai_vtol_run_strafe;  // attempting to close distance, better pilots may try to attack
 void() ai_vtol_run_charge;  // low rank pilots attempt to do a fly over
@@ -30,18 +31,29 @@ void() ai_vtol_stand={
     ai_face_targ();
     if( ai_check_face( self.enemy, self.ai_fov ) ){
       ai_next_state( ST_RUN );
-    cons_logAString("->", "ST_RUN"); //DEBUG
       return;
     }
   }
   else{
     ai_generic_stand();
-    cons_logAString("->", "generic stand"); //DEBUG
+    ai_fly_update( 350, 600); 
   }
 };
 
+void() ai_vtol_walk={
+  if( ai_valid_target(self.enemy) ){
+    ai_face_targ();
+    ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
+  }
+  else{
+    self.ideal_yaw = vectoyaw( self.movetarget.origin - self.origin );
+    ai_move_turn();
+    ai_move( self.angles_y, self.m_fspeed * AI_RUN_SPD );
+  }
+  ai_fly_update( 350, 600); 
+};
+
 void() ai_vtol_run={
-  cons_logAString("here----", "ST_RUN"); //DEBUG
   self.attack_finished = 0;
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
@@ -53,7 +65,6 @@ void() ai_vtol_run={
         if( enemy_infront ){
           if( self.ai_rank < AI_RANK_REG ){
             ai_next_state( ST_MISSILE_STRAFE );
-    cons_logAString("->", "ST_MISSILE_STRAFE"); //DEBUG
             self.ai_dir = ( 25 + random() * 65 );
             if( self.lefty > 0 ){
               self.lefty = self.lefty * -1;
@@ -64,7 +75,6 @@ void() ai_vtol_run={
             return;
           }
           ai_next_state( ST_MELEE );
-    cons_logAString("->", "ST_MELEE"); //DEBUG
           self.ai_action_time = self.ai_action_time + 2;
           return;
         }
@@ -74,7 +84,6 @@ void() ai_vtol_run={
         if( enemy_infront ){
           if( self.ai_rank < AI_RANK_REG ){
             ai_next_state( ST_MISSILE_STRAFE );
-    cons_logAString("->", "ST_MISSILE_STRAFE"); //DEBUG
             self.ai_dir = ( 25 + random() * 65 );
             if( self.lefty > 0 ){
               self.lefty = self.lefty * -1;
@@ -85,16 +94,13 @@ void() ai_vtol_run={
             return;
           }
           ai_next_state( ST_MISSILE );
-    cons_logAString("->", "ST_MISSILE"); //DEBUG
           return;
         }
         if( self.ai_rank > AI_RANK_VET ){
           ai_next_state( ST_STAND );
-    cons_logAString("->", "ST_STAND"); //DEBUG
           return;
         }
         ai_next_state( ST_RUN_STRAFE );
-    cons_logAString("->", "ST_RUN_STRAFE"); //DEBUG
         self.lefty = self.lefty * -45;
         self.ai_dir = anglemod( self.ideal_yaw + self.lefty );
         self.ai_action_time = self.ai_action_time + 2;
@@ -104,43 +110,40 @@ void() ai_vtol_run={
       if( enemy_range <= self.ai_minrange * 2 ){
         if( enemy_infront ){
           ai_next_state( ST_RUN_STRAFE );
-    cons_logAString("->", "ST_RUN_STRAFE"); //DEBUG
           self.lefty = self.lefty * -45;
           self.ai_dir = anglemod( self.ideal_yaw + self.lefty );
           self.ai_action_time = self.ai_action_time + 2;
           return;
         }
         ai_next_state( ST_HUNT );
-    cons_logAString("->", "ST_HUNT"); //DEBUG
         self.goalentity = self.enemy;
         self.ai_action_time = self.ai_action_time + (skill * 2) - self.ai_rank;
         return;
       }
       
-      ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
       ai_face_targ();
+      ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
       return;
     }
   }
   else{
     ai_next_state( ST_STAND );
-    cons_logAString("->", "ST_STAND"); //DEBUG
     return;
   }
 };
 
 
 void() ai_vtol_run_strafe={
-  cons_logAString("here----", "ST_RUN_STRAFE"); //DEBUG
   local float speeed;
+  
+  ai_face_targ();
   speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
   ai_move( self.ai_dir, speeed * AI_RUN_SPD );
-  ai_face_targ();
+  ai_fly_update( 350, 600); 
   
   if( time > self.ai_action_time ){
     if( self.ai_rank < AI_RANK_REG ){
       ai_next_state( ST_MISSILE_STRAFE );
-    cons_logAString("->", "ST_MISSILE_STRAFE"); //DEBUG
       self.ai_dir = ( 25 + random() * 65 );
       if( self.lefty > 0 ){
         self.lefty = self.lefty * -1;
@@ -152,40 +155,36 @@ void() ai_vtol_run_strafe={
     }
     if( skill > 2 ){
       ai_next_state( ST_MISSILE );
-    cons_logAString("->", "ST_MISSILE"); //DEBUG
       return;
     }
     ai_next_state( ST_RUN );
-    cons_logAString("->", "ST_RUN"); //DEBUG
     return;
   }
 };
 
 
 void() ai_vtol_run_charge={
-  cons_logAString("here----", "ST_RUN_CHARGE"); //DEBUG
   ai_face_targ();
   ai_move( self.ai_dir, self.m_fspeed * AI_RUN_SPD );
+  ai_fly_update( 350, 600); 
   
   if( time > self.ai_action_time ){
     if( self.ai_rank > AI_RANK_VET ){
       ai_next_state( ST_STAND );
-    cons_logAString("->", "ST_STAND"); //DEBUG
       return;
     }
     ai_next_state( ST_RUN );
-    cons_logAString("->", "ST_RUN"); //DEBUG
     return;
   }
 };
 
 void() ai_vtol_melee={
-  cons_logAString("here----", "ST_MELEE"); //DEBUG
   if( self.angles_y != self.ideal_yaw ){
     ai_face_targ();
   }
   
   ai_move( self.angles_y , self.m_fspeed * AI_WALK_SPD );
+  ai_fly_update( 350, 600); 
   
   if( self.ai_rank < AI_RANK_REG ){
     if( ai_check_face( self.enemy, 0.97 ) ){
@@ -196,38 +195,32 @@ void() ai_vtol_melee={
   if( time > self.ai_action_time ){
     if( self.ai_rank == AI_RANK_REG ){
       ai_next_state( ST_MISSILE );
-    cons_logAString("->", "ST_MISSILE"); //DEBUG
       return;
     }
     if( self.ai_rank == AI_RANK_ROK ){
       ai_next_state( ST_STAND );
-    cons_logAString("->", "ST_STAND"); //DEBUG
       self.ai_action_time = self.ai_action_time + 2;
       return;
     } 
     ai_next_state( ST_RUN );
-    cons_logAString("->", "ST_RUN"); //DEBUG
     return;
   }
 };
 
 void() ai_vtol_missile={
-  cons_logAString("here----", "ST_MISSILE"); //DEBUG
   ai_face_targ();
+  ai_fly_update( 350, 600); 
   if( ai_check_face( self.enemy, 0.97 ) ){
     if( ai_attack() ){
       if( self.ai_rank < AI_RANK_REG ){
-        cons_logAString("->", "ST_MISSILE_STRAFE"); //DEBUG
         ai_next_state( ST_MISSILE_STRAFE );
         return;
       }
-      cons_logAString("->", "ST_RUN"); //DEBUG
       ai_next_state( ST_RUN );
       return;
     }
   }
   if( time > self.ai_action_time ){
-    cons_logAString("->", "ST_RUN"); //DEBUG
     ai_next_state( ST_RUN );
     return;
   }
@@ -235,18 +228,17 @@ void() ai_vtol_missile={
 
 
 void() ai_vtol_missile_strafe={
-  cons_logAString("here----", "ST_MISSILE_STRAFE"); //DEBUG
   local float speeed;
   if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
     speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
     ai_move( self.ai_dir, speeed * AI_RUN_SPD );
-    ai_face_targ();
+    ai_fly_update( 250, 600); 
     
     if( ai_check_face( self.enemy, 0.97 ) ){
       if( ai_attack() ){
         ai_next_state( ST_RUN_STRAFE );
         self.ai_action_time = self.ai_action_time + 2;
-      cons_logAString("->", "ST_RUN_STRAFE"); //DEBUG
         return;
       }
     }
@@ -262,7 +254,6 @@ void() ai_vtol_missile_strafe={
   }
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
-    cons_logAString("->", "ST_RUN"); //DEBUG
     return;
   }
 };
@@ -282,6 +273,8 @@ void() ai_vtol_hunt={
   }
   else{
     self.goalentity = self.movetarget;
+    ai_next_state( ST_STAND );
+    return;
   }
   if( time > self.ai_action_time ){
     self.goalentity = self.movetarget;
@@ -353,21 +346,10 @@ void() ai_vtol_th={
     } 
     ai_ranged_attack();
     self.button0 = 0;
-    
+
     ai_state_control( self.attack_state );
-    //altitude check
-    ai_fly_update( 300, 500 );
-    if( self.attack_finished != 0 ){
-      cons_logAFloat(" self.attack_finished", self.attack_finished ); //DEBUG
-      if( self.attack_state != ST_FLYDIR ){
-        cons_logAString("->", "ST_FLYDIR" ); //DEBUG
-        self.ai_prev_state = self.attack_state;
-        ai_next_state( ST_FLYDIR );
-      }
-    }
   }
 
-  
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
     self.think = ai_vtol_th;
@@ -391,14 +373,13 @@ void() ai_vtol={
   ai_pilot_ini_stats( self.ai_rank );
   
   self.th_stand = ai_vtol_stand;
-  self.th_walk = ai_generic_walk;
+  self.th_walk = ai_vtol_walk;
   self.th_run = ai_vtol_run;
   self.th_run_strafe = ai_vtol_run_strafe;
   self.th_run_charge = ai_vtol_run_charge;
   self.th_missile = ai_vtol_missile;
   self.th_melee = ai_vtol_melee;
   self.th_missile_strafe = ai_vtol_missile_strafe;
-  self.th_fly = ai_generic_fly;
   self.th_hunt = ai_vtol_hunt;
   self.th_pain = ai_vtol_pain;
   self.th_die = ai_vtol_die;

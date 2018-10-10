@@ -10,12 +10,14 @@ Overview:
 */
 
 void() data_PSC_VTOLL_ini;
+void() data_PSC_VTOLL_cam;
 void() data_PSC_VTOLL_wep1;
 void() data_PSC_VTOLL_wep2;
 
 void() data_PSC_VTOLL_ini={
   self.unit_wep1 = data_PSC_VTOLL_wep1;
   self.unit_wep2 = data_PSC_VTOLL_wep2;
+  self.unit_cam = data_PSC_VTOLL_cam;
     
   self.data_idx= ID_VEC_PSC_VTOL_L;
   self.vec_name= DAT_PSC_VTOLL_NAME;
@@ -45,6 +47,12 @@ void() data_PSC_VTOLL_ini={
   self.m_bspeed = DAT_PSC_VTOLL_BSPEED;
   self.m_pitch_max = DAT_H_TD_PITCH_N;
   self.m_pitch_min = DAT_H_TD_PITCH_X;
+};
+
+void() data_PSC_VTOLL_cam={  
+  self.c_parent = M_TOR_CENTER;
+  self.c_ofs = '0 0 24';
+  self.c_alt_ofs = '0 0 0';
 };
 
 void() data_PSC_VTOLL_wep1={  
