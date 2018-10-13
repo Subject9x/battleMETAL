@@ -51,7 +51,7 @@ void() ai_tank_sk_run={
             ai_face_targ();
             return;
           }
-          if( self.ai_rank >= AI_RANK_REG ){
+          if( self.ai_rank > AI_RANK_VET ){
             self.ai_action_time = self.ai_action_time + 6;
             self.ai_dir = anglemod( self.angles_y - 180 );
             ai_next_state( ST_MELEE );
@@ -282,10 +282,8 @@ void() ai_tank_sk_th={
     
     ai_ranged_attack();
     self.button0 = 0;  
-    
-      
+    ai_state_control( self.attack_state ); 
     if( (self.flags & FL_TURRET) ){
-      ai_state_control( self.attack_state ); 
       ai_turret_control();
     }
   }

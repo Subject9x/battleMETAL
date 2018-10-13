@@ -132,11 +132,9 @@ void() ai_gev_run={
 
 
 void() ai_gev_run_strafe={
-  local float speeed;
-  
+
   ai_face_targ();
-  speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
-  ai_move( self.ai_dir, speeed * AI_RUN_SPD );
+  ai_move( self.ai_dir, self.m_sspeed * AI_RUN_SPD );
   //ai_fly_update( 350, 600); 
   
   if( time > self.ai_action_time ){
@@ -226,11 +224,9 @@ void() ai_gev_missile={
 
 
 void() ai_gev_missile_strafe={
-  local float speeed;
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
-    speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
-    ai_move( self.ai_dir, speeed * AI_RUN_SPD );
+    ai_move( self.ai_dir, self.m_sspeed * AI_RUN_SPD );
     //ai_fly_update( 250, 600); 
     
     if( ai_check_face( self.enemy, 0.97 ) ){

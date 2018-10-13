@@ -55,7 +55,6 @@ float enemy_vis;
 entity AI_NODES[128];
 
 //ENTITY VARS
-.float ai_time;   // flat time for all states
 .void() th_fly;
 .void() th_run_strafe;
 .void() th_run_charge;
@@ -141,16 +140,15 @@ void() ai_found_target;
 void( string grpid ) ai_node_pick_rand
 void(entity bot, entity attacker) ai_damage_react;
 void(void() macro) ai_leg_frame;
-void() ai_face_targ;
 
 /*
   AI STATE FUNCTIONS=====================
 */
 void( float estate ) ai_state_control;
-void() ai_turret_control;
 void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states
 void( float startState ) ai_initialize_system;
 
+void() ai_turret_control;
 void( float estate ) ai_turret_set_state;
 
 //generic state functions

@@ -133,9 +133,15 @@ void() ai_generic_walk={
   if( time > self.ai_action_time ){
     if( self.movetarget ){
       ai_next_state( ST_WALK );
+      if( self.data_type == DATA_MECH ){
+        ai_leg_frame( leg_walk1 );
+      }
       return;
     }
     ai_next_state( ST_STAND );
+      if( self.data_type == DATA_MECH ){
+        ai_leg_frame( leg_stand1 );
+      }
     return;
   }
 };
@@ -387,19 +393,19 @@ float( float angmod, float dist) ai_move={
 	stat when turning
 */
 float( float dist ) ai_yaw_back={
-  return walkmove( self.ideal_yaw + 180, dist );
+  return walkmove( anglemod(self.ideal_yaw + 180), dist );
 };
 
 float( float dist ) ai_yaw_left={
-  return walkmove( self.ideal_yaw + 90, dist );
+  return walkmove( anglemod(self.ideal_yaw + 90), dist );
 };
 
 float( float dist ) ai_yaw_right={
-  return walkmove( self.ideal_yaw - 90, dist );
+  return walkmove( anglemod(self.ideal_yaw - 90), dist );
 };
 
 float( float angmod, float dist ) ai_yaw_move={
-  return walkmove( self.ideal_yaw + angmod, dist );
+  return walkmove( anglemod(self.ideal_yaw + angmod), dist );
 };
 
 /*
@@ -435,7 +441,6 @@ void( float alt_low, float alt_max) ai_fly_update={
     fspd = (self.m_fspeed / 2) * AI_RUN_SPD;
     sspd = (self.m_sspeed / 2) * AI_RUN_SPD;
     bspd = (self.m_bspeed * AI_RUN_SPD) * fdir;
-   
     
     flydir = self.origin + (v_up * bspd);
     flydir = flydir + (v_right * sspd);
@@ -444,7 +449,6 @@ void( float alt_low, float alt_max) ai_fly_update={
     setorigin( self, flydir );
   } 
 }
-
 
 /*
   Checks to see if Entity T is in the ANG arc of self

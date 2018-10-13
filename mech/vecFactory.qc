@@ -8,8 +8,8 @@ Overview: builds player vehicle
 
 void(void() func, entity own) build_unit_component={
   local entity follow;
-  follow = util_getPartFromName( self.c_parent, own );
   func();
+  follow = util_getPartFromName( self.c_parent, own );
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
@@ -150,12 +150,8 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
     self.angles = prt.angles;
     self.v_angle = self.angles - prt.angles;
     
-    if(self.c_parent == M_ARM_RIGHT){
-      self.c_part = own.e_arm_r;
-    }
-    else if(self.c_parent == M_ARM_LEFT){
-      self.c_part = own.e_arm_l;
-    }
+    self.c_part = util_getPartFromName( self.c_parent, own );
+    
     if( (self.p_dmgtype & DMG_MSC) ){
       self.w_think(); //run module's upgrade now;
       self.w_think = SUB_Null;
@@ -171,6 +167,11 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
 
 
 void(void() data_ini) build_mech_unit={
+
+  if( !(self.flags &  FL_CLIENT) ){
+    build_mech_bot( data_ini );
+    return;
+  }
   local entity part_chain;
   data_ini();
   build_mech_torsoCenter(self.unit_ctor);
@@ -243,6 +244,65 @@ void(void() func) build_mech_torsoCenter={
     this.e_tor_c = self;
   self = this;
   ctor_stand();
+};
+
+
+void(void() data_ini) build_mech_bot={
+  local entity part_chain;
+  local vector hmins, hmaxs;
+  local string mdl;
+  
+  data_ini();
+  
+  hmaxs = self.maxs;
+  hmins = self.mins;
+  util_setModel("q3mdl/testball.md3", self.mskin, 0);
+  setsize( self, hmins, hmaxs );
+  
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
+  
+  self.alpha = 1;
+  self.sh_hit = 0;
+  self.chain_timer = time;
+  self.lock_timer = 0;
+  
+  if( (self.unit_cam) ){
+    self.e_cam = build_unit_camera(self.unit_cam);
+  }
+  part_chain = self;
+  
+  self.e_tor_c = build_unit_turret( self.unit_ctor );
+  self.e_tor_c.yaw_speed = self.m_rot_speed;
+  part_chain.c_part = self.e_tor_c;
+  part_chain = part_chain.c_part;
+  
+  if( (self.unit_rtor) ){
+    self.e_tor_r = build_mech_torsoRight(self.unit_rtor);
+    part_chain.c_part = self.e_tor_r;
+    part_chain = part_chain.c_part;
+  }
+  if( (self.unit_ltor) ){
+    self.e_tor_l = build_mech_torsoLeft(self.unit_ltor);
+    part_chain.c_part = self.e_tor_l;
+    part_chain = part_chain.c_part;
+  }
+  if( (self.unit_larm) ){
+    self.e_arm_l = build_mech_torsoLeft(self.unit_larm);
+    part_chain.c_part = self.e_arm_l;
+    part_chain = part_chain.c_part;
+  }
+  if( (self.unit_rarm) ){
+    self.e_arm_r = build_mech_torsoLeft(self.unit_rarm);
+    part_chain.c_part = self.e_arm_r;
+    part_chain = part_chain.c_part;
+  }
+  if( (self.unit_legs) ){
+    self.e_legs = build_mech_legs(self.unit_legs);
+    part_chain.c_part = self.e_legs;
+    part_chain = part_chain.c_part;
+  }
+  
+  build_unit_weapon_list();
 };
 
 entity( void() func ) build_unit_turret={

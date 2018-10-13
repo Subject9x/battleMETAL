@@ -13,9 +13,6 @@ string DAT_MTK_VEC_NAME = "MATOK";
 
 float DAT_MTK_RESERVE_COST = 200;
 
-vector DAT_MTK_CTOR_BBX_N ='-17 -17 -40'; //'-15 -15 -40';
-vector DAT_MTK_CTOR_BBX_X ='17 17 22'; //'15 15 20';
-
 //WEAOPON GROUPS
 float DAT_MTK_WEP1_IDX= ID_WEP_LATC;
 float DAT_MTK_WEP2_IDX= ID_WEP_LATC;
@@ -39,31 +36,6 @@ string DAT_MTK_M_BUP = "0.5";
 string DAT_MTK_M_BMODEL = "1";
 string DAT_MTK_M_BSIDE = "0.35";
 string DAT_MTK_M_BSPD = "6.55";
-
-//WEAPON1
-float DAT_MTK_WEP1_CPARENT= M_TOR_RIGHT;
-vector DAT_MTK_WEP1_OFFSET_ALT= '0 0 0';
-vector DAT_MTK_WEP1_ADJ_ANG= '0 0 90';
-
-//WEAPON2
-float DAT_MTK_WEP2_CPARENT= M_TOR_LEFT;
-vector DAT_MTK_WEP2_OFFSET_ALT= '0 0 0';
-vector DAT_MTK_WEP2_ADJ_ANG= '0 0 90';
-
-//WEAPON3
-float DAT_MTK_WEP3_CPARENT= M_ARM_RIGHT;
-vector DAT_MTK_WEP3_OFFSET_ALT= '0 0 0';
-vector DAT_MTK_WEP3_ADJ_ANG= '0 0 90';
-
-//WEAPON4
-float DAT_MTK_WEP4_CPARENT= M_ARM_LEFT;
-vector DAT_MTK_WEP4_OFFSET_ALT= '0 0 0';
-vector DAT_MTK_WEP4_ADJ_ANG= '0 0 0';
-
-//WEAPON5
-float DAT_MTK_WEP5_CPARENT= M_TOR_CENTER;
-vector DAT_MTK_WEP5_OFFSET_ALT= '0 0 0';
-vector DAT_MTK_WEP5_ADJ_ANG= '0 0 0';
 
 //=========================================
 
@@ -94,10 +66,12 @@ void() data_mtk_ini={
   self.unit_wep4 = data_mtk_wep4;
   self.unit_wep5 = data_mtk_wep5;
 
-  self.data_idx= ID_MCH_MATOK;
+  self.data_idx = ID_MCH_MATOK;
   self.vec_name= DAT_MTK_VEC_NAME;
   self.vec_size = SZ_MCH_MATOK;
   self.data_type = DATA_MECH;
+  self.health = DAT_MTK_CTOR_HP;
+  self.max_health = DAT_MTK_CTOR_HP;
   self.radar_range = DAT_MTK_RADAR_RANGE;
   self.i_techlvl= DAT_MTK_TECH_LEVEL;
   self.i_reserve= DAT_MTK_RESERVE_COST;
@@ -117,7 +91,7 @@ void() data_mtk_ini={
   self.m_maccel = DAT_MTK_M_ACCEL;
   self.w_firetime = DAT_MTK_LOCK; //using this as 'lock on time;
   self.hardpoint_cnt = DAT_MTK_HARDPOINT_CNT;
-  if((self.flags & FL_CLIENT)){
+  if( (self.flags & FL_CLIENT) ){
     self.weaponmodel = DAT_MTK_CPIT_MODEL;
     self.weaponframe = 0;
     self.m_rollangle = DAT_MTK_M_ROLLANGLE;
@@ -130,6 +104,7 @@ void() data_mtk_ini={
     self.m_bside = DAT_MTK_M_BSIDE;
     self.m_bobspd = DAT_MTK_M_BSPD;
   }
+  setsize(self, DAT_MNT_CTOR_BBX_N, DAT_MNT_CTOR_BBX_X);
 };
 void() data_mtk_legs={
   self.comp_id = M_LEGS;
@@ -148,7 +123,6 @@ void() data_mtk_ctor={
   self.max_armor = DAT_MTK_CTOR_ARMMAX;
   self.c_model = DAT_MTK_CTOR_MODEL;
   self.w_proj = 5;
-  setsize( self, DAT_MTK_CTOR_BBX_N, DAT_MTK_CTOR_BBX_X );
 };
 
 void() data_mtk_ltor={
@@ -193,6 +167,7 @@ void() data_mtk_rarm={
 };
 void() data_mtk_cam={  
   self.comp_id = -1;
+  self.c_parent = M_TOR_CENTER;
   self.c_ofs = DAT_MTK_CAM_OFFSET;
   self.c_alt_ofs = DAT_MTK_CAM_OFFSET_ALT;
   self.c_model = DAT_MTK_CAM_MODEL;
@@ -200,35 +175,35 @@ void() data_mtk_cam={
 void() data_mtk_wep1={  
   self.c_parent = M_ARM_RIGHT;
   self.c_ofs = DAT_MTK_WEP1_OFFSET;
-  self.c_alt_ofs = DAT_MTK_WEP1_OFFSET_ALT;
-  self.w_adj_ang = DAT_MTK_WEP1_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON1;
 };
 void() data_mtk_wep2={  
   self.c_parent = M_ARM_LEFT;
   self.c_ofs = DAT_MTK_WEP2_OFFSET;
-  self.c_alt_ofs = DAT_MTK_WEP2_OFFSET_ALT;
-  self.w_adj_ang = DAT_MTK_WEP2_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON2;
 };
 void() data_mtk_wep3={  
   self.c_parent = M_TOR_RIGHT;
   self.c_ofs = DAT_MTK_WEP3_OFFSET;
-  self.c_alt_ofs = DAT_MTK_WEP3_OFFSET_ALT;
-  self.w_adj_ang = DAT_MTK_WEP3_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON3;
 };
 void() data_mtk_wep4={  
   self.c_parent = M_ARM_LEFT;
   self.c_ofs = DAT_MTK_WEP4_OFFSET;
-  self.c_alt_ofs = DAT_MTK_WEP4_OFFSET_ALT;
-  self.w_adj_ang = DAT_MTK_WEP4_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON4;
 };
 void() data_mtk_wep5={  
   self.c_parent = M_TOR_CENTER;
   self.c_ofs = DAT_MTK_WEP5_OFFSET;
-  self.c_alt_ofs = DAT_MTK_WEP5_OFFSET_ALT;
-  self.w_adj_ang = DAT_MTK_WEP5_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON5;
 };

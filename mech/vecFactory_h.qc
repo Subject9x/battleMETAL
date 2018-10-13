@@ -13,6 +13,7 @@ void() build_unit_weapon_list;
 
 //mech-specific assembly functions
 void(void() data_ini) build_mech_unit;
+void(void() data_ini) build_mech_bot;
 entity(void() func) build_mech_legs;
 void(void() func) build_mech_torsoCenter;
 entity(void() func) build_mech_torsoRight;

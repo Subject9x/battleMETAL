@@ -135,6 +135,18 @@ float DAT_MNT_LOCK = 8;
 //            Base Convergence
 //============================
 //-------------------------BALAKET------------------------
+vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
+vector DAT_OTL_CTOR_BBX_X ='14 14 16';
+//-------------------------MATOK------------------------
+vector DAT_MTK_CTOR_BBX_N ='-17 -17 -40';
+vector DAT_MTK_CTOR_BBX_X ='17 17 22';
+//-------------------------MONITOR------------------------
+vector DAT_MNT_CTOR_BBX_N = '-22 -22 -44';
+vector DAT_MNT_CTOR_BBX_X = '22 22 28';
+//============================
+//            Base Convergence
+//============================
+//-------------------------BALAKET------------------------
 vector DAT_OTL_SPREAD_N = '4 4 0.1';
 vector DAT_OTL_SPREAD_X = '8 8 0.1';
 //-------------------------MATOK------------------------
@@ -195,8 +207,8 @@ vector DAT_MTK_LARM_OFFSET    = '-15 11 0';
 vector DAT_MTK_RARM_OFFSET    = '15 11 0';
 vector DAT_MTK_CAM_OFFSET     = '0 14 7';
 vector DAT_MTK_CAM_OFFSET_ALT = '0 1 0';
-vector DAT_MTK_WEP1_OFFSET    = '9.25 8.25 11.5';
-vector DAT_MTK_WEP2_OFFSET    = '-9.25 8.25 11.5';
+vector DAT_MTK_WEP1_OFFSET    = '9.25 8.65 10';
+vector DAT_MTK_WEP2_OFFSET    = '-9.25 8.65 10';
 vector DAT_MTK_WEP3_OFFSET    = '19 2.5 2.25';
 vector DAT_MTK_WEP4_OFFSET    = '-19 2.5 2.25';
 vector DAT_MTK_WEP5_OFFSET    = '0 20 0';

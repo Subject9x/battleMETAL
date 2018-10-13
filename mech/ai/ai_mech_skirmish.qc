@@ -9,24 +9,52 @@ Overview: ai unit
   they can strafe left and right against targets
 */
 
+/*
+float ST_STAND              = 1;  //th_stand
+float ST_WALK               = 2;  //th_walk
+float ST_RUN                = 4;  //th_run
+float ST_RUN_STRAFE         = 5;  //th_run_strafe
+float ST_RUN_CHARGE         = 6;  //th_run_charge
+float ST_MISSILE            = 7;  //th_missile
+float ST_MELEE              = 8;  //th_melee
+float ST_MISSILE_STRAFE     = 9;  //th_missile_strafe
+float ST_HUNT               = 10; //th_hunt
+float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
+float ST_HUNT_START         = 12; //TODO
+float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'staggers' the target
+
+*/
 void() ai_mech_sk_stand;
+
 void() ai_mech_sk_run;
+void() ai_mech_sk_run_strafe;
+void() ai_mech_sk_run_charge;
+
 void() ai_mech_sk_melee;
+
+void() ai_mech_sk_missile;
 void() ai_mech_sk_missile_strafe;
+
 void() ai_mech_sk_hunt;
+
 void() ai_mech_sk_pain;
 
 void() ai_mech_sk_die;
 void() ai_mech_sk_die1;
 void() ai_mech_sk_die2;
 
-//MECH SKIRMISH STAND
+//custom funcs
+void() ai_mech_sk_turn;
+void() ai_mech_sk_turn_back;
+
+/*
+          MECH SKIRMISH STAND
+*/
 void() ai_mech_sk_stand={
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, self.ai_fov ) ){
-      ai_leg_frame( leg_walk1 );
-      ai_next_state( ST_RUN );
+      ai_next_state( ST_MISSILE );
       return;
     }
   }
@@ -35,9 +63,14 @@ void() ai_mech_sk_stand={
   }
 };
 
-//MECH SKIRMISH RUN
+/*
+          MECH SKIRMISH RUN
+*/
 void() ai_mech_sk_run={
+  local float tyaw;
   if( ai_valid_target( self.enemy ) ){
+    tyaw = vectoyaw( self.enemy.origin - self.origin );
+    ai_turret_set_state( TR_TARG );
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
@@ -45,93 +78,256 @@ void() ai_mech_sk_run={
     if( enemy_vis ){
       if( enemy_range < ( 400 )){
         if( enemy_infront ){
-          ai_leg_frame( leg_walk1 );
-          ai_next_state( ST_MELEE );
-          if( self.ai_rank > AI_RANK_REG ){
-            ai_next_state( ST_RUN_STRAFE );
+          if( self.ai_rank < AI_RANK_REG ){
+            //better skirmishers rush the target
+            ai_next_state( ST_RUN_CHARGE );
+            ai_leg_frame( leg_walk1 );
+            self.ai_action_time = self.ai_action_time + 4 + ( random() * 4 );
+            self.lefty = 1;
+            if( random() < 0.6 ){
+              self.lefty = -1;
+            }
+            self.ideal_yaw = anglemod( tyaw + (self.lefty * 60) );
+            return;
           }
+          ai_next_state( ST_RUN_STRAFE );
+          ai_leg_frame( leg_walk1 );
+          self.ai_action_time = self.ai_action_time + 2 + ( random() * 4 );
+          self.lefty = 1;
+          if( random() < 0.6 ){
+            self.lefty = -1;
+          }
+          self.ideal_yaw = anglemod( tyaw + (self.lefty * 90) );
           return;
         }
-        ai_leg_frame( leg_walk1 );
-        ai_next_state( ST_RUN_STRAFE );
+        if( self.ai_rank < AI_RANK_REG ){
+          //injecting custom functions to subvert the state controller?
+          //delightfully devilish, seymour
+          if( self.ai_rank == AI_RANK_ACE ){
+            ai_mech_sk_turn_back();
+            return;
+          }
+          ai_mech_sk_turn();
+          return;
+        }
+        ai_next_state( ST_STAND );
+        ai_leg_frame( leg_stand1 );
         return;
       }
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
-          self.lefty = self.lefty * -1;
-          self.ai_dir = self.angles_y;
-          ai_leg_frame( leg_walk1 );
-          ai_next_state( ST_MISSILE_STRAFE );
+          //MECH SKIRMISH MELEE
+          ai_next_state( ST_MELEE );
+          tyaw = anglemod( tyaw + random() * 360 );
+          self.ideal_yaw = tyaw;
+          self.ai_action_time = self.ai_action_time + 3 + (random() * self.ai_rank);
           return;
         }
+        if( self.ai_rank < AI_RANK_REG ){
+          //better skirmishers rush the target
+          ai_next_state( ST_RUN_CHARGE );
+          ai_leg_frame( leg_walk1 );
+          self.ai_action_time = self.ai_action_time + 4 + ( random() * 4 );
+          self.lefty = 1;
+          if( random() < 0.6 ){
+            self.lefty = -1;
+          }
+          self.ideal_yaw = anglemod( tyaw + (self.lefty * 60) );
+          return;
+        }
+        ai_mech_sk_turn_back();
+        return;
       }
       if( enemy_range <= (self.ai_minrange * 2) ){
         if( enemy_infront ){
-          self.goalentity = self.enemy;
-          ai_leg_frame( leg_walk1 );
-          ai_next_state( ST_HUNT );
-          return;
+          if( self.ai_rank < AI_RANK_REG ){
+            ai_next_state( ST_MISSILE_STRAFE );
+            self.ai_action_time = self.ai_action_time + 5;
+            return;
+          }
         }
+        if( self.ai_rank < AI_RANK_REG ){
+          ai_next_state( ST_WALK );
+          ai_leg_frame( leg_walk1 );
+          return; 
+        }
+        ai_next_state( ST_STAND );
+        ai_leg_frame( leg_stand1 );
+        return;
       }
       movetogoal( self.m_fspeed * AI_RUN_SPD );
-    }
-    else{
-      self.goalentity = self.enemy;
-      ai_leg_frame( leg_walk1 );
-      ai_next_state( ST_HUNT );
+      ai_turret_set_state( TR_NORM );
       return;
     }
+    //hunt
   }
   else{
     ai_leg_frame( leg_stand1 );
+    ai_turret_set_state( TR_NORM );
     ai_next_state( ST_STAND );
     return;
   }
 };
 
-//MECH SKIRMISH MELEE
-void() ai_mech_sk_melee={
+/*
+  custom: MECH SKIRMISH TURN
   
-  ai_face_targ();
-  
-  if( ai_check_face( self.enemy, 0.50 ) ){
-    if( self.ai_rank <= AI_RANK_REG ){
-      if( !ai_yaw_back( self.m_bspeed * AI_WALK_SPD) ){
-        ai_next_state( ST_MISSILE );
-        return;
-      }
-    }
-    if( ai_check_face( self.enemy, 0.97 ) ){
-      ai_attack();
-    }
+  mech walks forward while trying to turn to enemy
+*/
+void() ai_mech_sk_turn={
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    ai_move( self.angles_y, self.m_fspeed * AI_RUN_SPD );
   }
-  
+  else{
+    ai_next_state( ST_STAND );
+    ai_leg_frame( leg_stand1 );
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+void() ai_mech_sk_turn_back={
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    ai_walk_back( self.angles_y, self.m_fspeed * AI_RUN_SPD );
+  }
+  else{
+    ai_next_state( ST_STAND );
+    ai_leg_frame( leg_stand1 );
+  }
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
     return;
   }
 };
 
-//MECH SKIRMISH MISSILE STRAFE
-void() ai_mech_sk_missile_strafe={
-  local float moved;
-  
-  ai_face_targ();
-  
-  moved = ai_walk_left( self.m_sspeed * AI_WALK_SPD );
-  
-  if( ai_check_face( self.enemy, 0.97 ) ){
-    ai_attack();
+
+/*
+            MECH SKIRMISH RUN STRAFE
+*/
+void() ai_mech_sk_run_strafe={
+  if( ai_valid_target( self.enemy ) ){
+    if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25) ){
+      ai_move_turn();
+    }
+    else{
+      local float speed;
+      speed = self.m_fspeed / 3;
+      speed = speed + self.m_sspeed ;
+      speed = speed * AI_RUN_SPD;
+      ai_move( self.angles_y, speed);
+    }
   }
-  
-  if( !moved ){
-    self.lefty = self.lefty * -1;
-    moved = ai_walk_right( self.m_sspeed * AI_WALK_SPD );
-    if( !moved ){
-      ai_next_state( ST_RUN );
+  else{
+    ai_next_state( ST_STAND );
+    ai_leg_frame( leg_stand1 );
+    self.ai_action_time = self.ai_action_time + 1;
+    ai_turret_set_state( TR_NORM );
+    return;
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
+/*
+            MECH SKIRMISH RUN CHARGE
+  more advanced skirmisher pilots will charge the player.
+  the charge is at an offset, and the charge DOES NOT attempt to
+  rotate with the player.
+*/
+void() ai_mech_sk_run_charge={
+  if( ai_valid_target( self.enemy ) ){
+    if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25) ){
+      ai_move_turn();
+    }
+    else{
+      local float speed;
+      speed = self.m_fspeed / 3;
+      speed = speed + self.m_sspeed ;
+      speed = speed * AI_RUN_SPD;
+      ai_move( self.angles_y, speed);
+    }
+    if( ai_attack() ){
+      ai_next_state( ST_MISSILE_STRAFE );
+      self.ai_action_time = self.ai_action_time + 2 + (random() * 2);
       return;
     }
   }
+  else{
+    if( self.ai_rank < AI_RANK_REG ){
+      ai_next_state( ST_WALK );
+      ai_turret_set_state( TR_NORM );
+      ai_leg_frame( leg_walk1 );
+      return;
+    }
+    ai_next_state( ST_STAND );
+    ai_turret_set_state( TR_NORM );
+    ai_leg_frame( leg_stand1 );
+    return;
+  }
+
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
+/*
+            MECH SKIRMISH MELEE
+*/
+void() ai_mech_sk_melee={
+  if( ai_valid_target( self.enemy ) ){
+    if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 35) ){
+      ai_move_turn();
+    }
+    else{
+      local float speed;
+      speed = self.m_fspeed / 3;
+      speed = speed + self.m_sspeed ;
+      speed = speed * AI_RUN_SPD;
+      ai_move( self.angles_y, speed);
+    }
+    if( ai_check_face( self.enemy, 0.95 ) ){
+      if( self.ai_rank < AI_RANK_REG ){
+        ai_next_state( ST_MISSILE_STRAFE );
+        self.ai_action_time = self.ai_action_time + skill + 2;
+        return;
+      }
+      ai_next_state( ST_MISSILE );
+      return;
+    }
+  }
+  else{
+    ai_next_state( ST_STAND );
+    ai_turret_set_state( TR_NORM );
+    ai_leg_frame( leg_stand1 );
+    return;
+  }
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
+/*
+            MECH SKIRMISH MISSILE
+  
+*/
+void() ai_mech_sk_missile={
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    if( ai_check_face( self.enemy, 0.92 ) ){
+      if( ai_attack() ){
+        ai_next_state( ST_WALK );
+        ai_leg_frame( leg_walk1 );
+        return;
+      }
+    }
+  }
   
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
@@ -139,16 +335,50 @@ void() ai_mech_sk_missile_strafe={
   }
 };
 
-//MECH SKIRMISH HUNT
-void() ai_mech_sk_hunt={
-  ai_walkgoal( AI_RUN_SPD );
+/*
+            MECH SKIRMISH MISSILE STRAFE
+  if prev. state was strafe, this will strafe in that direction.
+  if skill is high enough, ai should track target yaw
+*/
+void() ai_mech_sk_missile_strafe={
+  if( ai_valid_target( self.enemy ) ){
+    if( (skill > 2) || (self.ai_rank < AI_RANK_REG) ){
+      ai_face_targ();
+    }
+    ai_move( self.angles_y, self.m_sspeed * AI_RUN_SPD);
+  }
+  else{
+    if( self.ai_rank < AI_RANK_REG ){
+      ai_next_state( ST_WALK );
+      ai_turret_set_state( TR_NORM );
+      ai_leg_frame( leg_walk1 );
+      return;
+    }
+    ai_next_state( ST_STAND );
+    ai_turret_set_state( TR_NORM );
+    ai_leg_frame( leg_stand1 );
+    return;
+  }
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
     return;
   }
 };
 
-//MECH SKIRMISH PAIN
+/*
+            MECH SKIRMISH HUNT
+*/
+void() ai_mech_sk_hunt={
+
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+};
+
+/*
+            MECH SKIRMISH PAIN
+*/
 void() ai_mech_sk_pain={
   
 };
@@ -243,14 +473,15 @@ void() ai_mech_sk_th={
         self.enemy = world;
       }
     }  
-    if(self.e_legs.frame != $l_stand1){
-      self.e_legs.angles_y = self.angles_y;
-    }
     ai_ranged_attack();
     self.button0 = 0;
+    
+    ai_state_control( self.attack_state );
+    if( (self.flags & FL_TURRET) ){
+      ai_turret_control();
+    }
+    self.e_legs.angles_y = self.angles_y;
   }
-
-  ai_state_control( self.attack_state );
   
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
@@ -282,8 +513,9 @@ void() ai_mech_skirmish={
   self.th_stand = ai_mech_sk_stand;
   self.th_walk = ai_generic_walk;
   self.th_run = ai_mech_sk_run;
-  self.th_run_strafe = ai_generic_run_strafe;
-  self.th_missile = ai_generic_missile;
+  self.th_run_strafe = ai_mech_sk_run_strafe;
+  self.th_run_charge = ai_mech_sk_run_charge;
+  self.th_missile = ai_mech_sk_missile;
   self.th_melee = ai_mech_sk_melee;
   self.th_missile_strafe = ai_mech_sk_missile_strafe;
   self.th_hunt = ai_mech_sk_hunt;
@@ -291,6 +523,10 @@ void() ai_mech_skirmish={
   self.th_die = ai_mech_sk_die;
   
   ai_initialize_system( ST_STAND );
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
   
   ai_walk_setup();
   

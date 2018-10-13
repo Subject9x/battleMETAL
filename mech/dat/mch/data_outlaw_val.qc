@@ -9,11 +9,7 @@ Overview: moving all mech values into a single global file for ease of maintenan
 */
 
 //OUTLAW MECH=============================
-string DAT_OTL_VEC_NAME = "Balaket";
 float DAT_OTL_RESERVE_COST = 100;
-
-vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
-vector DAT_OTL_CTOR_BBX_X ='14 14 16';
 
 float DAT_OTL_WEP1_IDX= ID_WEP_LATC;
 float DAT_OTL_WEP2_IDX= ID_WEP_LATC;
@@ -35,18 +31,6 @@ string DAT_OTL_M_BSPD       = "6";
 
 //CAMERA
 float DAT_OTL_CAM_CNAME = -1;
-
-//WEAPON1
-vector DAT_OTL_WEP1_OFFSET_ALT= '0 0 0';
-vector DAT_OTL_WEP1_ADJ_ANG= '0 0 90';
-
-//WEAPON2
-vector DAT_OTL_WEP2_OFFSET_ALT= '0 0 0';
-vector DAT_OTL_WEP2_ADJ_ANG= '0 0 90';
-
-//WEAPON3
-vector DAT_OTL_WEP3_OFFSET_ALT= '0 0 0';
-vector DAT_OTL_WEP3_ADJ_ANG= '0 0 0';
 
 //=========================================
 void() data_otl_legs;
@@ -74,8 +58,10 @@ void() data_otl_ini={
 
   self.data_idx= ID_MCH_BALAKET;
   self.vec_size = SZ_MCH_BALAKET;
-  self.vec_name = DAT_OTL_VEC_NAME;
+  self.vec_name = MCH_NAME_BLK;
   self.data_type = DATA_MECH;
+  self.health = DAT_OTL_CTOR_HP;
+  self.max_health = DAT_OTL_CTOR_HP;
   self.radar_range = DAT_OTL_RADAR_RANGE;
   self.i_techlvl= DAT_OTL_TECH_LEVEL;
   self.i_reserve= DAT_OTL_RESERVE_COST;
@@ -107,6 +93,7 @@ void() data_otl_ini={
   self.w_firetime = DAT_OTL_LOCK; //using this as 'lock on time;
   self.hardpoint_cnt = DAT_BLK_HARDPOINT_CNT;
   
+  setsize(self, DAT_OTL_CTOR_BBX_N, DAT_OTL_CTOR_BBX_X);
 };
 void() data_otl_ctor={
   self.comp_id = M_TOR_CENTER;
@@ -114,7 +101,6 @@ void() data_otl_ctor={
   self.max_health = DAT_OTL_CTOR_HP;
   self.c_model = DAT_OTL_CTOR_MODEL;
   self.w_proj = 3;
-  setsize( self, DAT_OTL_CTOR_BBX_N, DAT_OTL_CTOR_BBX_X);
 };
 void() data_otl_legs={
   self.comp_id = M_LEGS;
@@ -157,7 +143,8 @@ void() data_otl_rarm={
   self.c_model = DAT_OTL_RARM_MODEL;
   self.c_ofs = DAT_OTL_RARM_OFFSET;
 };
-void() data_otl_cam={  
+void() data_otl_cam={
+  self.c_parent = M_TOR_CENTER;
   self.comp_id = DAT_OTL_CAM_CNAME;
   self.c_ofs = DAT_OTL_CAM_OFFSET;
   self.c_alt_ofs = DAT_OTL_CAM_OFFSET_ALT;
@@ -167,23 +154,23 @@ void() data_otl_wep1={
   self.c_parent = M_ARM_LEFT;
   self.data_idx = DAT_OTL_WEP1_IDX; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP1_OFFSET;
-  self.c_alt_ofs = DAT_OTL_WEP1_OFFSET_ALT;
-  self.w_adj_ang = DAT_OTL_WEP1_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON1;
 };
 void() data_otl_wep2={  
   self.c_parent = M_ARM_RIGHT;
   self.data_idx = DAT_OTL_WEP2_IDX; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP2_OFFSET;
-  self.c_alt_ofs = DAT_OTL_WEP2_OFFSET_ALT;
-  self.w_adj_ang = DAT_OTL_WEP2_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON2;
 };
 void() data_otl_wep3={  
   self.c_parent = M_TOR_CENTER;
   self.data_idx = DAT_OTL_WEP3_IDX; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP3_OFFSET;
-  self.c_alt_ofs = DAT_OTL_WEP3_OFFSET_ALT;
-  self.w_adj_ang = DAT_OTL_WEP3_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON3;
 };

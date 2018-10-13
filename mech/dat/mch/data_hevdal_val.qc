@@ -9,11 +9,7 @@ Overview:
 */
 
 //MONITOR MECH=============================
-string DAT_MNT_VEC_NAME = "Monitor";
-
 float DAT_MNT_RESERVE_COST = 200;
-vector DAT_MNT_CTOR_BBX_N = '-22 -22 -44';//'-20 -20 -44';
-vector DAT_MNT_CTOR_BBX_X = '22 22 28';//'20 20 24';
 
 //WEAPON GROUPS
 float DAT_MNT_WEP1_IDX= ID_WEP_LATC;
@@ -39,41 +35,6 @@ string DAT_MNT_M_BMODEL   = "1";
 string DAT_MNT_M_BSIDE    = "0.65";
 string DAT_MNT_M_BSPD     = "3.85";
 
-//WEAPON1
-vector DAT_MNT_WEP1_OFFSET_ALT= DAT_MNT_RARM_OFFSET;
-vector DAT_MNT_WEP1_ADJ_ANG= '0 0 90';
-
-//WEAPON2
-vector DAT_MNT_WEP2_OFFSET_ALT= DAT_MNT_RARM_OFFSET;
-vector DAT_MNT_WEP2_ADJ_ANG= '0 0 90';
-
-//WEAPON3
-vector DAT_MNT_WEP3_OFFSET_ALT= DAT_MNT_LARM_OFFSET;
-vector DAT_MNT_WEP3_ADJ_ANG= '0 0 90';
-
-//WEAPON4
-vector DAT_MNT_WEP4_OFFSET_ALT= DAT_MNT_LARM_OFFSET;
-vector DAT_MNT_WEP4_ADJ_ANG= '0 0 0';
-
-//WEAPON5
-vector DAT_MNT_WEP5_OFFSET_ALT= DAT_MNT_RTOR_OFFSET;
-vector DAT_MNT_WEP5_ADJ_ANG= '0 0 0';
-
-//WEAPON6
-vector DAT_MNT_WEP6_OFFSET_ALT= DAT_MNT_LTOR_OFFSET;
-vector DAT_MNT_WEP6_ADJ_ANG= '0 0 0';
-
-//WEAPON7
-vector DAT_MNT_WEP7_OFFSET_ALT= '0 0 0';
-vector DAT_MNT_WEP7_ADJ_ANG= '0 0 0';
-
-//WEAPON8
-vector DAT_MNT_WEP8_OFFSET_ALT= '0 0 0';
-vector DAT_MNT_WEP8_ADJ_ANG= '0 0 0';
-
-//WEAPON9
-vector DAT_MNT_WEP9_OFFSET_ALT= '0 0 0';
-vector DAT_MNT_WEP9_ADJ_ANG= '0 0 0';
 //=========================================
 void() data_mnt_legs;
 void() data_mnt_ctor;
@@ -111,9 +72,11 @@ void() data_mnt_ini={
   self.unit_wep9 = data_mnt_wep9;
   
   self.data_idx= ID_MCH_MONITOR;
-  self.vec_name= DAT_MNT_VEC_NAME;
+  self.vec_name= MCH_NAME_MNT;
   self.vec_size = SZ_MCH_MONITOR;
   self.data_type = DATA_MECH;
+  self.health = DAT_MNT_CTOR_HP;
+  self.max_health = DAT_MNT_CTOR_HP;
   self.radar_range = DAT_MNT_RADAR_RANGE;
   self.i_techlvl= DAT_MNT_TECH_LEVEL;
   self.i_reserve= DAT_MNT_RESERVE_COST;
@@ -124,8 +87,6 @@ void() data_mnt_ini={
   self.sh_max= DAT_MNT_SHIELD_MAX;
   self.sh_rate= DAT_MNT_SHIELD_RATE;
   self.m_rot_speed = DAT_MNT_M_YAW;
- 
-
   self.c_model = DAT_MNT_CTOR_MODEL;
   self.weaponmodel = DAT_MNT_CPIT_MODEL;
   self.weaponframe = 0;
@@ -146,6 +107,7 @@ void() data_mnt_ini={
   self.m_bobspd = DAT_MNT_M_BSPD;
   self.w_firetime = DAT_MNT_LOCK; //using this as 'lock on time;
   self.hardpoint_cnt = DAT_MNT_HARDPOINT_CNT;
+  setsize( self, DAT_MNT_CTOR_BBX_N, DAT_MNT_CTOR_BBX_X);
 };
 
 void() data_mnt_legs={
@@ -166,7 +128,6 @@ void() data_mnt_ctor={
   self.max_armor = DAT_MNT_CTOR_ARMMAX;
   self.c_model = DAT_MNT_CTOR_MODEL;
   self.w_proj = 9;
-  setsize( self, DAT_MNT_CTOR_BBX_N, DAT_MNT_CTOR_BBX_X);
 };
 
 void() data_mnt_ltor={
@@ -209,72 +170,75 @@ void() data_mnt_rarm={
   self.c_model = DAT_MNT_RARM_MODEL;
   self.c_ofs = DAT_MNT_RARM_OFFSET;
 };
-void() data_mnt_cam={  
+void() data_mnt_cam={
+  self.c_parent = M_TOR_CENTER;
   self.comp_id = -1;
   self.c_ofs = DAT_MNT_CAM_OFFSET;
   self.c_alt_ofs = DAT_MNT_CAM_OFFSET_ALT;
   self.c_model = DAT_MNT_CAM_MODEL;
 };
+
+//TODO - restore offsets d'oh
 void() data_mnt_wep1={  
   self.c_parent = M_ARM_RIGHT;
   self.c_ofs = DAT_MNT_WEP1_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP1_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP1_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON1;
 };
 void() data_mnt_wep2={  
   self.c_parent = M_ARM_RIGHT;
   self.c_ofs = DAT_MNT_WEP2_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP2_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP2_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON2;
 };
 void() data_mnt_wep3={  
   self.c_parent = M_ARM_LEFT;
   self.c_ofs = DAT_MNT_WEP3_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP3_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP3_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON3;
 };
 void() data_mnt_wep4={  
   self.c_parent = M_ARM_LEFT;
   self.c_ofs = DAT_MNT_WEP4_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP4_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP4_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON4;
 };
 void() data_mnt_wep5={  
   self.c_parent = M_TOR_RIGHT;
   self.c_ofs = DAT_MNT_WEP5_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP5_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP5_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON5;
 };
 void() data_mnt_wep6={  
   self.c_parent = M_TOR_LEFT;
   self.c_ofs = DAT_MNT_WEP6_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP6_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP6_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON6;
 };
 void() data_mnt_wep7={  
   self.c_parent = M_TOR_CENTER;
   self.c_ofs = DAT_MNT_WEP7_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP7_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP7_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON7;
 };
 void() data_mnt_wep8={  
   self.c_parent = M_TOR_RIGHT;
   self.c_ofs = DAT_MNT_WEP8_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP8_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP8_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON8;
 };
 void() data_mnt_wep9={  
   self.c_parent = M_TOR_LEFT;
   self.c_ofs = DAT_MNT_WEP9_OFFSET;
-  self.c_alt_ofs = DAT_MNT_WEP9_OFFSET_ALT;
-  self.w_adj_ang = DAT_MNT_WEP9_ADJ_ANG;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
   self.w_group = WEAPON9;
 };
