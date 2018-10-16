@@ -17,5 +17,8 @@ float TE_PAC_BEAM = 67;
 float TE_SMOKE_TEST = 68;
 float TE_SHIELD_TEST = 69;
 
-//ALERT: 70-74 are reserved, otherwise go nuts
-float TE_HUD_SPARK = 75;
+//ALERT: 70-75 are reserved, otherwise go nuts
+float TE_HUD_SPARK = 76;
+float TE_EVT_OBJ = 77;
+float TE_EVT_NAV = 78;
+float TE_EVT_DEP = 79;

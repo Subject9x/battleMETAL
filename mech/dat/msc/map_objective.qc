@@ -47,6 +47,7 @@ void() map_objective_th={
 void() map_objective={
   self.count = 0;
   self.classname = "data";
+  self.flags = self.flags | FL_NODE;
   self.data_type = DATA_OBJT;
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-1 -1 -1', '1 1 1');
@@ -54,8 +55,6 @@ void() map_objective={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.use = map_objective_use;
-  self.SendEntity = send_objective;
-  self.SendFlags = -1;
   self.think = map_objective_th;
   self.nextthink = time + 0.1;
 }

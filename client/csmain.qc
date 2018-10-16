@@ -397,14 +397,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     menu_handleFrame();
   }else{
     if(self.player_state >= PLAYER_POWERUP_BEGIN){
-      local entity nav;
-      nav = findchain(classname, "data");
-      while(nav){
-        if(nav.data_type == DATA_NAVP){
-          ui_renderNav(nav);
-        }
-        nav = nav.chain;
+      //float NAVNAMES_ACTIVE[21]; // 1 = active, 2 = complete, -1 = failed.
+      //vector NAVNAMES_ORG[21];  
+      local float itr;
+      itr = 0;
+      while( itr <= 21 ){
+        ui_renderNav( itr );
+        itr = itr + 1;
       }
+
       local entity player;
       player = findchainflags(flags, FL_CLIENT);
       while(player){
@@ -464,6 +465,15 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_UI_BOX:
       client_get_hud_highlight();
+      return TRUE;
+    case TE_EVT_OBJ:
+      client_event_objective();
+      return TRUE;
+    case TE_EVT_NAV:
+      client_event_navpoint();
+      return TRUE;
+    case TE_EVT_DEP:
+      client_event_deploypoint();
       return TRUE;
     default:
       return te_effect_delegate( id );
@@ -561,7 +571,7 @@ entity(float entnum) CSQC_Ent_Spawn =
 //the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
-  local float id;
+  /*local float id;
   id = ReadByte();
   
   switch( id ){
@@ -574,7 +584,7 @@ void(float isnew) CSQC_Ent_Update =
     case DATA_DEPL:
       receive_ent_mapDeployPoint( isnew );
       return;
-  }
+  }*/
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

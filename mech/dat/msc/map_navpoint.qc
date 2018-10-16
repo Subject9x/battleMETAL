@@ -31,7 +31,7 @@ void() nav_point_th={
   if(self.isActive == TRUE){
     e = findradius(self.origin, 200);
     while(e){
-      if((e.flags & FL_CLIENT)){
+      if( (e.flags & FL_CLIENT) ){
         if(e.i_faction == self.i_faction){
           self.enemy = e;
           self.isActive = FALSE;
@@ -55,12 +55,11 @@ void() nav_point_th={
 */
 void() map_navpoint={
   self.classname = "data";
+  self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;
   setmodel(self, "q3mdl/testball.md3");
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  self.SendEntity = send_navpoint;
-  self.SendFlags = -1;
   self.use = nav_point_use;
   self.think = nav_point_th;
   self.nextthink = time + 0.5;

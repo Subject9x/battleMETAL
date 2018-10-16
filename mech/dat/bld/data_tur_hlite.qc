@@ -66,6 +66,7 @@ void() data_tur_hlite_wep2={
 };
 
 void() data_tur_hlite_cam={
+  self.c_parent = M_TOR_CENTER;
   self.c_ofs = DAT_TUR_HLITE_CAM_OFFSET;
   self.c_alt_ofs = DAT_TUR_HLITE_CAM_OFFSET_ALT;
   self.c_model = DAT_TUR_HLITE_CAM;

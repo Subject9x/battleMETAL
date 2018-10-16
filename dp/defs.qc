@@ -251,6 +251,7 @@ float FL_SKIPTHINK      = 8192;   //tells ai system that main update has been ov
 float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
 float FL_NOGUNS         = 32768;  //bot has no more guns!
 float FL_TURRET         = 65536;  //the FL_MONSTER has a Turret
+float FL_NODE           = 131072;  //kinda ugly but used for non unit things
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves

@@ -43,11 +43,10 @@ player-choosable
 void() map_deploy_point={
   self.classname = "data";
   self.data_type = DATA_DEPL;
+  self.flags = self.flags | FL_NODE;
   setmodel(self, "q3mdl/testball.md3");
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  self.SendEntity = send_deploypoint;
-  self.SendFlags = -1;
   self.use = deploy_point_use;
   self.think = th_deploy;
   self.nextthink = time + 0.5;

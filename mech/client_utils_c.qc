@@ -119,28 +119,71 @@ void( entity targetClient ) client_push_hud_highlight={
   self = this;
 }; 
 
-float(entity ent, float changed) send_vehicle={
-  WriteByte( MSG_ENTITY, DATA_VEHC);
-  WriteByte( MSG_ENTITY, changed);
-  if( (changed & SEND_FLAG_DATA_IDX) ){
-    WriteByte( MSG_ENTITY, self.owner.data_idx );
-    WriteByte( MSG_ENTITY, self.owner.vec_size );
+void( entity navpoint ) client_send_navpoint={
+  msg_entity = self;
+  local float nactive;
+  
+  nactive = navpoint.isActive;
+  if( navpoint.i_faction != self.i_faction ){
+    nactive = FALSE;
   }
-  if( (changed & SEND_FLAG_SHIELD_VAL) ){
-    WriteByte( MSG_ENTITY, self.owner.sh_cur);
+  cons_logAFloat("navid", navpoint.data_idx); //DEBUG
+  cons_logAFloat("nactive", navpoint.isActive); //DEBUG
+  
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_EVT_NAV );
+  
+  WriteByte( MSG_ONE, navpoint.data_idx);
+  WriteByte( MSG_ONE, navpoint.isActive);
+  
+  WriteCoord( MSG_ONE, navpoint.origin_x);
+  WriteCoord( MSG_ONE, navpoint.origin_y);
+  WriteCoord( MSG_ONE, navpoint.origin_z);
+};
+
+void( entity objective ) client_send_objective={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE,  TE_EVT_OBJ);
+  
+  WriteByte( MSG_ONE, objective.data_idx);
+  WriteByte( MSG_ONE, objective.isActive);
+};
+
+void( entity deploy ) client_send_deploypoint={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_EVT_DEP );
+  
+  WriteByte( MSG_ONE, deploy.data_idx);
+  WriteByte( MSG_ONE, deploy.isActive);
+  
+  WriteCoord( MSG_ONE, deploy.origin_x);
+  WriteCoord( MSG_ONE, deploy.origin_y);
+  WriteCoord( MSG_ONE, deploy.origin_z);
+};
+
+/*
+  used by ClientConnect when client signs on.
+  pushes map object info to client.
+*/
+void() client_push_mapobjects={
+  local entity obj;
+  obj = findchainflags( flags, FL_NODE );
+  while( obj ){
+    switch( obj.data_type ){
+      case DATA_DEPL:
+        client_send_deploypoint( obj );
+        break;
+      case DATA_NAVP:
+        client_send_navpoint( obj );
+        break;
+      case DATA_OBJT:
+        client_send_objective( obj );
+        break;
+    }
+    obj = obj.chain;
   }
-  if( (changed & SEND_FLAG_RADAR_MODE) ){
-    WriteByte( MSG_ENTITY, self.owner.stat_rdr_mode);
-  }
-  if( (changed & SEND_FLAG_FACTION) ){
-    WriteByte( MSG_ENTITY, self.owner.i_faction );
-  }
-  if( (changed & SEND_FLAG_ORIGIN) ){
-    WriteCoord( MSG_ENTITY, self.owner.origin_x );
-    WriteCoord( MSG_ENTITY, self.owner.origin_y );
-    WriteCoord( MSG_ENTITY, self.owner.origin_z );
-  }
-  return TRUE;
 };
 
 /*
@@ -182,6 +225,8 @@ void(string str, float tokens) client_ParseMechCommand={
     cvar_set("gamemode", argv(2) );
   }
 };  
+
+
 
 /*
   

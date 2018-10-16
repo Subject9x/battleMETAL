@@ -244,34 +244,46 @@ void() navBarListener={
   }
 };
 
-
-void(entity nav) ui_renderNav={
+/*
+  0 = nav either is not of same faction or not avaialable;
+  -1 = visited and removed
+  1 = active and unvisited
+  2 = active and visited
+*/
+void(float navid) ui_renderNav={
   local vector apos, tofs, iofs, i_sz, nofs;
-  i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
-  nofs = nav.origin;
-  nofs_z = nofs_z + gui_percentYRaw(14);
-  apos = cs_project(nofs);
-  tofs = apos;
-  if (apos_z >= 0) {
-    tofs_x -= stringwidth(nav.w_name, TRUE, '6 6') * 0.5; //align horizontally to centre
-    tofs_y = tofs_y - 14; //align vertically again
-    tofs_z = 0; //shut up dp.
-    apos_z = 0; //shut up dp.
-    iofs = apos;
-    i_sz_x = i_sz_x / 4;
-    i_sz_y = i_sz_y / 4;
-    iofs_x = iofs_x - (i_sz_x/2);
-    iofs_y = iofs_y - (i_sz_y/2);
-    if(nav.i_faction == self.i_faction){
-      if(nav.isActive == TRUE){
-        drawstring(tofs, nav.w_name, '6 6', CLR_DEF_WEP_INRANGE, 1, 0);
-        gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
-      }
-      else{
+  local float nactive;
+  local string navname;
+
+  nactive = NAVNAMES_ACTIVE[navid];
+  navname = NAVNAMES[navid];
+  
+  if( nactive != FALSE ){
+    i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
+    nofs = NAVNAMES_ORG[navid];
+    nofs_z = nofs_z + gui_percentYRaw(14);
+    apos = cs_project(nofs);
+    tofs = apos;
+    if (apos_z >= 0) {
+      tofs_x -= stringwidth(navname, TRUE, '6 6') * 0.5; //align horizontally to centre
+      tofs_y = tofs_y - 14; //align vertically again
+      tofs_z = 0;
+      apos_z = 0;
+      iofs = apos;
+      i_sz_x = i_sz_x / 4;
+      i_sz_y = i_sz_y / 4;
+      iofs_x = iofs_x - (i_sz_x/2);
+      iofs_y = iofs_y - (i_sz_y/2);
+    
+      //if(nav.isActive == TRUE){
+      drawstring(tofs, navname, '6 6', CLR_DEF_WEP_INRANGE, 1, 0);
+      gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+      //}
+      //else{
         //DEBUG
        // drawstring(tofs, nav.w_name, '6 6', '0.65 0.65 0.65', 1, 0);
         //gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, '0.65 0.65 0.65', HUD_ALPHA, 0) ;
-      }
+      //}
     }
   }
 };

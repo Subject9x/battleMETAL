@@ -31,6 +31,12 @@ void( entity targetClient) server_push_player_info; //simply wraps client_push_p
 void( entity radarPing ) client_push_radar_ping;
 void( entity targetClient ) client_push_hud_highlight;
 
+
+void() client_push_mapobjects;
+void( entity navpoint ) client_send_navpoint;
+void( entity objective ) client_send_objective;
+void( entity deploy ) client_send_deploypoint;
+
 //client command layer
 void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;

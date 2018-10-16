@@ -169,8 +169,36 @@ void() receive_ent_bindData={
     self.stat_w7_id = getstati(STAT_WEP7_ID);
     self.stat_w8_id = getstati(STAT_WEP8_ID);
     self.stat_w9_id = getstati(STAT_WEP9_ID);
+};      // 1 = active, 2 = complete, -1 = failed.
+
+void() client_event_navpoint={
+  local float navid;
+  
+  navid = ReadByte();
+  NAVNAMES_ACTIVE[navid] = ReadByte();
+  NAVNAMES_ORG[navid] = te_read_vector();
+  
+  cons_logAFloat("NAVNAMES_ACTIVE[navid]", NAVNAMES_ACTIVE[navid]); //DEBUG
+  cons_logAFloat("navid", navid); //DEBUG
 };
 
+void() client_event_deploypoint={
+  local float depid;
+  
+  depid = ReadByte();
+  DEPLOY_POINTS_ACTIVE[depid] = ReadByte();
+  DEPLOY_POINTS_ORG[depid] = te_read_vector();
+};
+
+void() client_event_objective={
+  local float objid;
+  
+  objid = ReadByte();
+  OBJECTIVES[objid] = ReadByte(); //TODO - MSN_OBJ_STATUS overlap
+};
+
+
+//TODO - deprecate
 void( float isnew ) receive_ent_navPoint={
   if(isnew){
     self.ui_org = '0 0 0'; 

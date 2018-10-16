@@ -33,7 +33,7 @@ void() menu_briefListener={
 void() navpointListener={
   local float lst_idx;
   lst_idx = 0;
-  while(lst_idx <= NAVPOINTS_CNT){
+  while(lst_idx <= 21){
     
     lst_idx = lst_idx + 1;
   }  
@@ -116,14 +116,18 @@ void(vector ofs) menu_briefMissionText={
 
 void(vector ofs) menu_briefMapPanel={
   local vector mpos, ui_msize, ui_msize_in;
+  local vector iofs, map_size;
+  local float itr;
+  
+  itr = 0;
+  
   ui_msize = '325 245';
   ui_msize_in = ui_msize - '8 6';
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(16));
   mpos_y = ofs_y + gui_percentYRaw(48);
   
   drawpic(mpos, UI_DEF_BOX_512, gui_percentToPixelRawVec(ui_msize), '1 1 1', HUD_ALPHA, 0);
-  
-  local vector iofs;
+ 
   iofs = mpos + gui_percentToPixelRawVec('4 3');
   
   if(MSN_MAPPIC != ""){
@@ -140,26 +144,29 @@ void(vector ofs) menu_briefMapPanel={
     drawstring(iofs + gui_percentToPixelRawVec('18 18'), "Satellite Data \n unavailable", '12 12 0', '1 0 0', HUD_ALPHA, 0);
   }
 
-  local vector map_size;
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
 
-  local entity nav;
-  nav = findchain(classname, "data");
-  while(nav){
-    if(nav.data_type == DATA_NAVP){
-      if(nav.i_faction == self.i_faction){
-        local vector nofs, tofs;
-        tofs = nofs = gui_mapCoordToImgCoord(map_size, nav.origin, iofs, gui_percentToPixelRawVec(ui_msize_in));
-        local float nlen;
-        nlen = stringwidth(nav.w_name, 0, '6 6 0');
-        nofs_x = nofs_x - gui_percentXRaw((nlen/2));
-        nofs_y = nofs_y - gui_percentYRaw(16);
-        drawstring(nofs, nav.w_name, '6 6 0', '1 1 1', HUD_ALPHA, 0);
-        gui_renderTintImage(TRUE, tofs + gui_percentToPixelRawVec('-6 -6'), UI_DEF_NAVPOINT, '12 12', CLR_DEF_WHITE, 1, 0) ;
-      }
+  while( itr <= 21 ){
+    local vector navorg, nofs, tofs;
+    local float nactive, nlen;
+    local string navname;
+    nactive = NAVNAMES_ACTIVE[itr];
+    
+    if( nactive != FALSE ){
+      navorg = NAVNAMES_ORG[itr];
+      navname = NAVNAMES[itr];
+    
+      tofs = nofs = gui_mapCoordToImgCoord(map_size, navorg, iofs, gui_percentToPixelRawVec(ui_msize_in));
+      
+      nlen = stringwidth(navname, 0, '6 6 0');
+      nofs_x = nofs_x - gui_percentXRaw((nlen/2));
+      nofs_y = nofs_y - gui_percentYRaw(16);
+      drawstring(nofs, navname, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+      gui_renderTintImage(TRUE, tofs + gui_percentToPixelRawVec('-6 -6'), UI_DEF_NAVPOINT, '12 12', CLR_DEF_WHITE, 1, 0) ;
     }
-    nav = nav.chain;
+
+    itr = itr + 1;
   }
 };
 

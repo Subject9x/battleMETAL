@@ -134,36 +134,7 @@ responsible for configuring the player and spawning them into the level
 ============
 */
 void() PutClientInServer = {
-
-  client_sendMissionFileName();
-  
   local float gamemode;
-  gamemode = cvar("gamemode");
-  
-  client_sendGameMode(gamemode);
-  switch(gamemode){
-    case GAMEMODE_CAMPAIGN:
-      if(world.model == "maps/start.bsp"){
-        //pre-populate default save file
-        savefile_default();
-      }
-      savefile_load();
-      self.i_faction = world.i_faction; //single player setting
-      break;
-    case GAMEMODE_COOP:
-      mapfile_coop_load();
-      break;
-      
-    case GAMEMODE_DM:
-      mapfile_pvp_load(self.i_faction);
-      break;
-  }
-  
-  client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
-  client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
-  client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
-  client_sendAvailableItems(SAVE_ITEMS_ALL);
-  
   local entity spot;
   
   self.flags = FL_CLIENT;
@@ -202,8 +173,37 @@ void() PutClientInServer = {
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
   
+  gamemode = cvar("gamemode");
+  
+  client_sendMissionFileName();
+  client_sendGameMode(gamemode);
+  
+  switch(gamemode){
+    case GAMEMODE_CAMPAIGN:
+      if(world.model == "maps/start.bsp"){
+        //pre-populate default save file
+        savefile_default();
+      }
+      savefile_load();
+      self.i_faction = world.i_faction; //single player setting
+      break;
+    case GAMEMODE_COOP:
+      mapfile_coop_load();
+      break;
+    case GAMEMODE_DM:
+      mapfile_pvp_load(self.i_faction);
+      break;
+  }
+
+  
   if(self.data_type == DATA_POBS){
     player_makeObserver();
+    
+    client_push_mapobjects();
+    client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
+    client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
+    client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
+    client_sendAvailableItems(SAVE_ITEMS_ALL);
     
     if(!coop && !deathmatch){
       self.movetype = MOVETYPE_NONE;

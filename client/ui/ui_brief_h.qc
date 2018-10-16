@@ -12,8 +12,10 @@ Overview: ui header file the deployment menu
   vector INT_BTN_ORG;
   vector INT_BTN_SZ;
 //sadly we need to limit navpoints too
-  float NAVPOINTS[10];  //the contents relate to navpoint id's, and honestly I dont think anyone needs more than 10
-  float NAVPOINTS_CNT;
+ // float NAVPOINTS[10];  //the contents relate to navpoint id's, and honestly I dont think anyone needs more than 10
+  //float NAVPOINTS_CNT;
+  //yeah well see how good that turned out
+  
 //main hook for menu system
 void() menu_briefDrawFrame;
 
