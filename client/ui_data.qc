@@ -627,7 +627,7 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
   if( !cfg ){
     cfg = data_mech_config_load( mechId, 0 );
     cfg = data_mech_config_valid();
-    CFG_INDEX = 0;
+    //CFG_INDEX = 0;
   }
   
   //welp, here goes, lets make the switch
