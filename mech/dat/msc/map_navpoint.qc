@@ -5,25 +5,12 @@ Date: 03/25/2017
 Overview: data file for map nav points
 */
 
-
-float(entity ent, float changed) send_navpoint={
-  WriteByte( MSG_ENTITY, DATA_NAVP );
-  WriteByte( MSG_ENTITY, self.data_idx);
-  WriteByte( MSG_ENTITY, self.i_faction);
-  WriteByte( MSG_ENTITY, self.isActive);
-  WriteCoord( MSG_ENTITY, self.origin_x);
-  WriteCoord( MSG_ENTITY, self.origin_y);
-  WriteCoord( MSG_ENTITY, self.origin_z);
-  return TRUE;
-};
-
 void() nav_point_use={
   if(self.isActive == TRUE){
     self.isActive = FALSE;
   }else{
     self.isActive = TRUE;
   }
-  self.SendFlags = -1;
 };
 
 void() nav_point_th={

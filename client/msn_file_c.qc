@@ -193,7 +193,6 @@ void(float obj_id, string line, string val) msn_setobjdesc={
   if(line == MSN_FILE_OBJ_DESC){
     if(obj_id!=0){    
       MSN_OBJ_DESC[obj_id] = strzone(val);
-      MSN_OBJ_STATUS[obj_id] = FALSE;
     }
   }
 };

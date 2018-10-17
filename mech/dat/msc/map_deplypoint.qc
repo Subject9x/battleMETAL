@@ -5,17 +5,6 @@ Date: 01/04/2018
 Overview: data file for map deployment spots (spawn points)
 */
 
-float(entity ent, float changed) send_deploypoint={
-  WriteByte( MSG_ENTITY, DATA_DEPL ); // Unique Identifier, I suggest you use enums to make it easy on yourself
-  WriteByte( MSG_ENTITY, self.data_idx);
-  WriteByte( MSG_ENTITY, self.i_faction);
-  WriteByte( MSG_ENTITY, self.isActive);
-  WriteCoord( MSG_ENTITY, self.origin_x); // Position X
-  WriteCoord( MSG_ENTITY, self.origin_y); // Position Y
-  WriteCoord( MSG_ENTITY, self.origin_z); // Position Z
-  return TRUE;
-};
-
 void() deploy_point_use={
   if(self.isActive){
     self.isActive = FALSE;

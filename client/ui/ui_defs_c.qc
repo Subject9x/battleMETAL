@@ -226,19 +226,19 @@ void() navBarListener={
         data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
       }
       
-      nav = findchainfloat(data_type, DATA_DEPL);
-      itr = 1;
-      while(nav){
-        if(nav.isActive == TRUE){
-          if(nav.i_faction == self.i_faction){
-            DEPLOY_IDS[itr] = nav.nav_name;
-            itr = itr + 1;
-          }  
+      itr = 0;
+      idx = 0;
+      while( itr <= 32 ){
+        local float nactive;
+        nactive = DEPLOY_POINTS_ACTIVE[itr];
+        if( nactive == TRUE ){
+          DEPLOY_IDS[idx] = itr;
+          idx = idx + 1;
         }
-        nav = nav.chain;
+        itr = itr + 1;
       }
-      DEPLOY_POINT_END = itr;
-      DEPLOY_POINT_ID = 0;
+      DEPLOY_POINT_ID = 1;
+      DEPLOY_POINT_END = idx;
       self.plr_menu_choice = MENU_DEPLOY_ACTIVE;
     }
   }
@@ -275,15 +275,8 @@ void(float navid) ui_renderNav={
       iofs_x = iofs_x - (i_sz_x/2);
       iofs_y = iofs_y - (i_sz_y/2);
     
-      //if(nav.isActive == TRUE){
       drawstring(tofs, navname, '6 6', CLR_DEF_WEP_INRANGE, 1, 0);
       gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
-      //}
-      //else{
-        //DEBUG
-       // drawstring(tofs, nav.w_name, '6 6', '0.65 0.65 0.65', 1, 0);
-        //gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, '0.65 0.65 0.65', HUD_ALPHA, 0) ;
-      //}
     }
   }
 };

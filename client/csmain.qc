@@ -358,7 +358,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     //HUD Highlight Boxes
     ui_renderHUD_Highlight_frame();
-    
     ui_objective_frame(VIEW_ORG);
   }
   else{

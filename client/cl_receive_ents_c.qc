@@ -177,9 +177,6 @@ void() client_event_navpoint={
   navid = ReadByte();
   NAVNAMES_ACTIVE[navid] = ReadByte();
   NAVNAMES_ORG[navid] = te_read_vector();
-  
-  cons_logAFloat("NAVNAMES_ACTIVE[navid]", NAVNAMES_ACTIVE[navid]); //DEBUG
-  cons_logAFloat("navid", navid); //DEBUG
 };
 
 void() client_event_deploypoint={

@@ -44,7 +44,6 @@ float MSN_OBJ;
 .float MSN_SFX_TIME;
 
 string MSN_OBJ_DESC[10];
-float MSN_OBJ_STATUS[10];
 
 void() msn_getfile;
 void() msn_parsefile;

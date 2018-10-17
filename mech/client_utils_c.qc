@@ -127,14 +127,12 @@ void( entity navpoint ) client_send_navpoint={
   if( navpoint.i_faction != self.i_faction ){
     nactive = FALSE;
   }
-  cons_logAFloat("navid", navpoint.data_idx); //DEBUG
-  cons_logAFloat("nactive", navpoint.isActive); //DEBUG
   
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_EVT_NAV );
   
   WriteByte( MSG_ONE, navpoint.data_idx);
-  WriteByte( MSG_ONE, navpoint.isActive);
+  WriteByte( MSG_ONE, nactive);
   
   WriteCoord( MSG_ONE, navpoint.origin_x);
   WriteCoord( MSG_ONE, navpoint.origin_y);
@@ -143,20 +141,33 @@ void( entity navpoint ) client_send_navpoint={
 
 void( entity objective ) client_send_objective={
   msg_entity = self;
+  local float nactive;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE,  TE_EVT_OBJ);
   
-  WriteByte( MSG_ONE, objective.data_idx);
-  WriteByte( MSG_ONE, objective.isActive);
+  WriteByte( MSG_ONE, objective.data_idx); 
+  
+  nactive = objective.isActive;
+  if( objective.i_faction != self.i_faction ){
+    nactive = FALSE;
+  }
+  WriteByte( MSG_ONE, nactive); 
 };
 
 void( entity deploy ) client_send_deploypoint={
   msg_entity = self;
+  local float nactive;
+  
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_EVT_DEP );
   
   WriteByte( MSG_ONE, deploy.data_idx);
-  WriteByte( MSG_ONE, deploy.isActive);
+  
+  nactive = deploy.isActive;
+  if( deploy.i_faction != self.i_faction ){
+    nactive = FALSE;
+  }
+  WriteByte( MSG_ONE, nactive);
   
   WriteCoord( MSG_ONE, deploy.origin_x);
   WriteCoord( MSG_ONE, deploy.origin_y);
@@ -173,13 +184,13 @@ void() client_push_mapobjects={
   while( obj ){
     switch( obj.data_type ){
       case DATA_DEPL:
-        client_send_deploypoint( obj );
+          client_send_deploypoint( obj );
         break;
       case DATA_NAVP:
         client_send_navpoint( obj );
         break;
       case DATA_OBJT:
-        client_send_objective( obj );
+          client_send_objective( obj );
         break;
     }
     obj = obj.chain;

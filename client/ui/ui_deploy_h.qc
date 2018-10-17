@@ -7,7 +7,7 @@ Overview: ui header file the deployment menu
 */
 
 float DEPLOY_CNT;
-float DEPLOY_IDS[100];
+float DEPLOY_IDS[32];
 vector DEPLOY_MAP_ORG;
 float DEPLOY_POINT_ID;
 float DEPLOY_POINT_END;

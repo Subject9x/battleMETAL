@@ -165,7 +165,6 @@ void(vector ofs) menu_briefMapPanel={
       drawstring(nofs, navname, '6 6 0', '1 1 1', HUD_ALPHA, 0);
       gui_renderTintImage(TRUE, tofs + gui_percentToPixelRawVec('-6 -6'), UI_DEF_NAVPOINT, '12 12', CLR_DEF_WHITE, 1, 0) ;
     }
-
     itr = itr + 1;
   }
 };
