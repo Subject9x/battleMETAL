@@ -28,8 +28,7 @@ void() CSQC_Init =
   WEPBITS[6] = 64;
   WEPBITS[7] = 128;
   WEPBITS[8] = 256;
-  
-  SELECTED_MECH = world;  //ini the ui selection reference
+
   SELECT_MECH = 0;
   LAUNCH_VALIDATION = 0; //set launch validation to 0 to prevent invalid deployments to game world
   

@@ -473,7 +473,6 @@ void(vector ofs) menu_arming_energydraw={
   drawstring(ofs + gui_percentToPixelRawVec('4 18'), "by [Weapon Group]", '7 8 0', '1 1 1', HUD_ALPHA, 0);
   
   local float enmax, g1, g2, g3, g4, g5;
-  //enmax = SELECTED_MECH.en_max;
   enmax = MECH_DATA_ENMAX;
 
   drawstring(ofs + gui_percentToPixelRawVec('4 45'), "Group 1", '8 8 0', '1 1 1', HUD_ALPHA, 0);
@@ -671,17 +670,17 @@ string(float bit) getNameOfWepType={
   } 
 };
 
-
 float(float grp) calc_energy_draw={
-  local float sub, bit, lst_idx;
+  local float sub, bit, lst_idx, en, wid;
   local entity dat;
   bit = 1;
   lst_idx = 1;
   sub = 0;
   while(lst_idx <= MECH_DATA_HPOINTS){
     if( (grp & bit) ){
-      dat = m_findData(HARDPOINTS[lst_idx], DATA_WEPN);
-      sub = sub + dat.en_rate;
+      wid = HARDPOINTS[lst_idx];
+      en = data_WeaponEne[wid];
+      sub = sub + en;
     }
     bit = bit * 2;
     lst_idx = lst_idx + 1;

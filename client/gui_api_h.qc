@@ -15,6 +15,44 @@ string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
 float NAVNAMES_ACTIVE[21];    //  1 = active, unvisit, 2 = active, visit, 0 = hidden, -1 = inactive.
 vector NAVNAMES_ORG[21];      //  server origins for all nav points
 
+string DAT_OTL_UI_IMG;
+string DAT_MNT_UI_IMG;
+string DAT_MTK_UI_IMG;
+
+//system const
+vector VIEW_ORG;
+vector VIEW_MAX;
+vector VIEW_SIZE;
+vector VIEW_CTR;
+float VIEW_TOP = 1;
+float VIEW_BOT = 2;
+float VIEW_LFT = 4;
+float VIEW_RGT = 8;
+float VIEW_CTX = 16;
+float VIEW_CTY = 32;
+float VIEW_SCALE;
+float AXIS_H = 1;	
+float AXIS_V = 2;
+float AXIS_LEFT = 4;
+float AXIS_RIGHT = 8;
+float AXIS_UP = 16;
+float AXIS_DOWN = 24;
+float AXIS_CTR = 32;
+float DIR_UP = 1;
+float DIR_DN = 2;
+float DIR_LF = 3;
+float DIR_RT = 4;
+float OBJ_METER = 1;
+float OBJ_SLIDER = 2;
+float OBJ_LIST = 3;
+float PAT_BAR = 1;
+float PAT_SPH = 2;
+float PAT_BOX = 3;
+float HUD_ALPHA = 1;
+
+//common ent vars
+.float data_idx;
+
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
 vector(vector vec, float algn) gui_calcAlign;
@@ -63,53 +101,3 @@ void(string msg, string s1) cons_logAString;
 void(string msg, float val, string split, float val2) cons_log2Float;
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
-
-
-string DAT_OTL_UI_IMG;
-string DAT_MNT_UI_IMG;
-string DAT_MTK_UI_IMG;
-
-//system const
-vector VIEW_ORG;
-vector VIEW_MAX;
-vector VIEW_SIZE;
-vector VIEW_CTR;
-float VIEW_TOP = 1;
-float VIEW_BOT = 2;
-float VIEW_LFT = 4;
-float VIEW_RGT = 8;
-float VIEW_CTX = 16;
-float VIEW_CTY = 32;
-float VIEW_SCALE;
-float AXIS_H = 1;	
-float AXIS_V = 2;
-float AXIS_LEFT = 4;
-float AXIS_RIGHT = 8;
-float AXIS_UP = 16;
-float AXIS_DOWN = 24;
-float AXIS_CTR = 32;
-float DIR_UP = 1;
-float DIR_DN = 2;
-float DIR_LF = 3;
-float DIR_RT = 4;
-float OBJ_METER = 1;
-float OBJ_SLIDER = 2;
-float OBJ_LIST = 3;
-float PAT_BAR = 1;
-float PAT_SPH = 2;
-float PAT_BOX = 3;
-float HUD_ALPHA = 1;
-
-//common ent vars
-.float data_idx;
-/*
-.float data_type;
-.string img;
-.vector parent_org;
-.float scale;
-.float align;
-.float axis;
-.float dir; 
-.vector asize;
-.vector hsize;
-*/

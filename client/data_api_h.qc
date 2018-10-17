@@ -10,6 +10,7 @@ string data_WeaponNames[32];
 string data_WeaponIcons[32];
 float data_WeaponSize[32];
 float data_WeaponType[32];
+float data_WeaponEne[32];
 
 //MECH CONFIG FILE DATA LOAD
 float data_config_buffer_fileNum;

@@ -74,8 +74,7 @@ void() data_ini_arrays={
   data_WeaponType[ID_EQP_LSAR] = 128;
   data_WeaponType[ID_EQP_SCAP] = 128;
   data_WeaponType[ID_EQP_RECAP] = 128;
-  
-  //hey arrays are fast, right?
+
   data_WeaponSize[ID_WEP_LATC] = DAT_LATC_WSIZE;
   data_WeaponSize[ID_WEP_LAS] = DAT_LAS_WSIZE;
   data_WeaponSize[ID_WEP_EMP] = DAT_EMP_WSIZE;
@@ -97,6 +96,28 @@ void() data_ini_arrays={
   data_WeaponSize[ID_EQP_LSAR] = DAT_EQP_LSAR_WSIZE;
   data_WeaponSize[ID_EQP_SCAP] = DAT_EQP_SCAP_WSIZE;
   data_WeaponSize[ID_EQP_RECAP] = DAT_EQP_RECAP_WSIZE;
+  
+  data_WeaponEne[ID_WEP_LATC] = DAT_LATC_EN_RATE;
+  data_WeaponEne[ID_WEP_LAS] = DAT_LAS_EN_RATE;
+  data_WeaponEne[ID_WEP_EMP] = DAT_EMP_EN_RATE;
+  data_WeaponEne[ID_WEP_MIS] = DAT_MIS_EN_RATE;
+  data_WeaponEne[ID_WEP_QRF] = DAT_QRFL_EN_RATE;
+  data_WeaponEne[ID_WEP_RPC] = DAT_RPLAS_EN_RATE;
+  data_WeaponEne[ID_WEP_PAC] = DAT_PAC_EN_RATE;
+  data_WeaponEne[ID_WEP_ESR] = DAT_ESR_EN_RATE;
+  data_WeaponEne[ID_WEP_MLGD] = DAT_MLGD_EN_RATE;
+  data_WeaponEne[ID_WEP_MARH] = DAT_MARH_EN_RATE;
+  data_WeaponEne[ID_WEP_SFGA] = DAT_SFGA_EN_RATE;
+  data_WeaponEne[ID_WEP_FLAK] = DAT_FLAK_EN_RATE;
+  data_WeaponEne[ID_WEP_ION] = DAT_ION_EN_RATE;
+  data_WeaponEne[ID_WEP_SWRM] = DAT_SWRM_EN_RATE;
+  
+  data_WeaponEne[ID_EQP_ATGM] = 0;
+  data_WeaponEne[ID_EQP_ENBAT] = DAT_EQP_ENBAT_EN_RATE * -1;
+  data_WeaponEne[ID_EQP_HSEM] = 0;
+  data_WeaponEne[ID_EQP_LSAR] = 0;
+  data_WeaponEne[ID_EQP_SCAP] = 0;
+  data_WeaponEne[ID_EQP_RECAP] = DAT_EQP_RECAP_EN_RATE * -1;
 };
 
 string(float data_idx) data_get_weapon_name={
