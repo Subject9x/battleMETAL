@@ -1,20 +1,19 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 03/8/2017
 Overview: GUI API header
 */
-
-string NAVNAMES[21];
-
 //so, 'state' for these things is tracked by the proper entry being non-zero
 //  ex: deploy point 5 is 'active' and for this player's faction if DEPLOY_POINTS_ORG[5] != '0 0 0'
-vector DEPLOY_POINTS_ORG[32]; //magic numbers
-float DEPLOY_POINTS_ACTIVE[32];
-float OBJECTIVES[32];       // 1 = active, 2 = complete, 0 = hidden, -1 = failed.
+vector DEPLOY_POINTS_ORG[32]; //  server origins for all deploy points
+float DEPLOY_POINTS_ACTIVE[32];//  1 = active, 0 = hidden, -1 = inactive.
 
-float NAVNAMES_ACTIVE[21]; // 1 = active, 2 = complete, -1 = failed.
-vector NAVNAMES_ORG[21];  
+float OBJECTIVES[32];         //  1 = active, 2 = complete, 0 = hidden, -1 = failed.
+
+string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
+float NAVNAMES_ACTIVE[21];    //  1 = active, unvisit, 2 = active, visit, 0 = hidden, -1 = inactive.
+vector NAVNAMES_ORG[21];      //  server origins for all nav points
  
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
@@ -103,18 +102,14 @@ float HUD_ALPHA = 1;
 
 //common ent vars
 .float data_idx;
+/*
 .float data_type;
 .string img;
 .vector parent_org;
-.vector pos;
 .float scale;
 .float align;
 .float axis;
 .float dir; 
-.float otype;
-.vector margin_ins;
-.float pattern;
-.vector offset;
 .vector asize;
-.vector colortint;
 .vector hsize;
+*/

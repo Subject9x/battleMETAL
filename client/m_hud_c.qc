@@ -226,7 +226,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
 
   local vector  map_size, sweepvec;
   local entity blip;
-  local float sweep, rad;
+  local float sweep, rad, nav;
   
   RADAR_ORG = radarOrg;
   
@@ -255,6 +255,17 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     if( time > kill.en_cur ){
       remove( kill );
     }
+  }
+  nav = 0;
+  while( nav <= 21 ){
+    local float navState;
+    local vector navOrg;
+    navState = NAVNAMES_ACTIVE[nav];
+    navOrg = NAVNAMES_ORG[nav];
+    if( navState > FALSE ){
+      hud_renderRadarNav( navOrg, navState, radarRange );
+    }
+    nav = nav + 1;
   }
 };
 
@@ -301,6 +312,39 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   }
 };
 
+/*
+  RENDER A NAV POINT PIP ON THE RADAR
+*/
+void( vector navOrg, float navState, float radRange ) hud_renderRadarNav={
+  local vector hudorg, colr;
+  local float ang, entAngle, entAngleRadian, radDist, draw;
+
+  radDist = vlen( navOrg - RADAR_ORG) / radRange * 1.5;
+  
+  ang = vectoyaw(navOrg - RADAR_ORG);
+
+  entAngle = anglemod( 90 + (input_angles_y - ang)); //go figure this works
+  entAngleRadian = entAngle * DEG2RAD;
+  hudorg_x = cos(entAngleRadian);
+  hudorg_y = sin(entAngleRadian);
+  hudorg_x = RADAR_VCENTER_x - (hudorg_x * ( RADAR_VSIZE_x * radDist));
+  hudorg_y = RADAR_VCENTER_y - (hudorg_y * ( RADAR_VSIZE_y * radDist));
+
+  draw = TRUE;
+  if( (hudorg_x < RADAR_VORG_x) || (hudorg_x > (RADAR_VORG_x + RADAR_VSIZE_x) ) ){
+    draw = FALSE;
+  }
+  if( (hudorg_y < RADAR_VORG_y) || (hudorg_y > (RADAR_VORG_y + RADAR_VSIZE_y) ) ){
+    draw = FALSE;
+  }
+  if( draw ){
+    colr = CLR_DEF_ARM_OK;
+    if( navState == 2 ){
+      colr = CLR_DEF_TXT_NONSELECT;
+    }
+    drawpic(hudorg - gui_percentToPixelRawVec('3 3'), UI_DEF_NAVPOINT, gui_percentToPixelRawVec('10 10'), colr, HUD_ALPHA, 0);
+  }
+};
 /*
   RENDER RADAR DATA
     draws radar status - ACTIVE OR PASSIVE

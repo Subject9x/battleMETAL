@@ -54,12 +54,11 @@ void(float curSh) snd_hud_vfx_shdlistener;
 void(float amt, float bit, string snd) snd_hud_vfx_armlistener;
 void(float mode) snd_hud_vfx_toggleradar;
 void(float trgArm) snd_hud_vfx_targkill;
-void(float preState, float nexState) snd_hud_vfx_objectivelistener;
-void(float preState, float nexState) snd_hud_vfx_navpointlistener;
 
-
-//hud beeps
-
-
-//map voice
-
+//TE SFX
+//SFX
+void() te_nav_reach;
+void(float type) te_objective_complete;
+void() te_objective_failed;
+void() te_mission_win;
+void() te_mission_lose;

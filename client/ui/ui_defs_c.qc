@@ -251,14 +251,14 @@ void() navBarListener={
   2 = active and visited
 */
 void(float navid) ui_renderNav={
-  local vector apos, tofs, iofs, i_sz, nofs;
+  local vector apos, tofs, iofs, i_sz, nofs, colr;
   local float nactive;
   local string navname;
 
   nactive = NAVNAMES_ACTIVE[navid];
   navname = NAVNAMES[navid];
   
-  if( nactive != FALSE ){
+  if( nactive > 0 ){
     i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
     nofs = NAVNAMES_ORG[navid];
     nofs_z = nofs_z + gui_percentYRaw(14);
@@ -274,9 +274,12 @@ void(float navid) ui_renderNav={
       i_sz_y = i_sz_y / 4;
       iofs_x = iofs_x - (i_sz_x/2);
       iofs_y = iofs_y - (i_sz_y/2);
-    
-      drawstring(tofs, navname, '6 6', CLR_DEF_WEP_INRANGE, 1, 0);
-      gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+      colr = CLR_DEF_WEP_INRANGE;
+      if( nactive == 2 ){
+        colr = CLR_DEF_TXT_NONSELECT;
+      }
+      drawstring(tofs, navname, '6 6', colr, HUD_ALPHA, 0);
+      gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, HUD_ALPHA, 0) ;
     }
   }
 };

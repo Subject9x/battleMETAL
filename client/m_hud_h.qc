@@ -88,6 +88,7 @@ void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector 
 void(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph;
 void(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
 void(entity blip, float plrFaction, float radRange ) hud_renderRadarContact;
+void(vector navOrg, float navState, float radRange ) hud_renderRadarNav;
 void(vector torg, float algn, float status, float radius, float flag) hud_renderRadarStatus1;
 void(vector torg, float algn, float status, float radius, float flag) hud_renderRadarStatus2;
 void(vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon;

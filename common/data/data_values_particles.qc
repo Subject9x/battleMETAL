@@ -22,3 +22,10 @@ float TE_HUD_SPARK = 76;
 float TE_EVT_OBJ = 77;
 float TE_EVT_NAV = 78;
 float TE_EVT_DEP = 79;
+
+//SFX block
+float TE_OBJECTIVE_COMPLETE = 80;
+float TE_OBJECTIVE_FAILED = 81;
+float TE_MISSION_WIN = 82;
+float TE_MISSION_LOSE = 83;
+float TE_NAV_REACH = 84;

@@ -43,7 +43,6 @@ void() highlight_hud_touch;
 
 //ACTUAL TRIGGERS
 void() trigger_reactivate;
-void() trigger_highlighthud;
 void() trigger_multiple; 
 void() trigger_once;
 void() trigger_relay;
@@ -57,3 +56,6 @@ void() trigger_hurt;
 void() trigger_push_touch;
 void() trigger_push;
 void() trigger_monsterjump;
+
+void() trigger_highlighthud;
+void() trigger_activate_node;

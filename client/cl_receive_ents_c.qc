@@ -172,11 +172,24 @@ void() receive_ent_bindData={
 };      // 1 = active, 2 = complete, -1 = failed.
 
 void() client_event_navpoint={
-  local float navid;
+  local float navid, prevState, nexState;
   
   navid = ReadByte();
-  NAVNAMES_ACTIVE[navid] = ReadByte();
+  prevState = NAVNAMES_ACTIVE[navid];
+  nexState = ReadByte();
   NAVNAMES_ORG[navid] = te_read_vector();
+  
+  if( (prevState == TRUE) && (nexState == 2) ){
+    //previous state was 'active unvisit' and next state is 'active and visit'
+    //play sound
+    te_nav_reach();
+  }
+  if( (prevState == 2) && (nexState == 1) ){
+    //previous state was 'active and visit' and next state is 'active unvisit'
+    //ignore state change for this client
+    return;
+  }
+  NAVNAMES_ACTIVE[navid] = nexState;
 };
 
 void() client_event_deploypoint={
@@ -188,70 +201,29 @@ void() client_event_deploypoint={
 };
 
 void() client_event_objective={
-  local float objid;
+  local float objid, prevState, nexState, type;
   
   objid = ReadByte();
-  OBJECTIVES[objid] = ReadByte(); //TODO - MSN_OBJ_STATUS overlap
-};
-
-
-//TODO - deprecate
-void( float isnew ) receive_ent_navPoint={
-  if(isnew){
-    self.ui_org = '0 0 0'; 
-    self.ui_size = '0 0 0';
-    self.classname = "data";
-    self.drawmask = MASK_ENGINE;
-    self.value1 = 0;
-    self.isActive = 0;
+  prevState = OBJECTIVES[objid];
+  nexState = ReadByte();
+  type = ReadByte();
+  
+  cons_logAFloat("objid", objid); //DEBUG
+  cons_logAFloat("prevState", prevState); //DEBUG
+  cons_logAFloat("nexState", nexState); //DEBUG
+  cons_logAFloat("type", type); //DEBUG
+  
+  if( (prevState > FALSE) ){
+    if( prevState == TRUE ){
+      if( (nexState == -1)  ){
+        te_objective_failed();
+      }
+      if( nexState == 2 ){
+       te_objective_complete( type );
+      }
+    }
   }
-  self.data_type = DATA_NAVP;
-  self.nav_name = ReadByte();
-  self.i_faction = ReadByte();
-  self.value1 = self.isActive;
-  self.isActive = ReadByte();
-  self.origin_x = ReadCoord();
-  self.origin_y = ReadCoord();
-  self.origin_z = ReadCoord();
-  setorigin(self, self.origin);
-  self.w_name = gui_getNavName(self.nav_name);
-  snd_hud_vfx_navpointlistener(self.value1, self.isActive);
-};
-
-void( float isnew ) receive_ent_mapObjective={
-  if(isnew){
-    self.classname = "data";
-    self.data_type = DATA_OBJT;
-    self.drawmask = MASK_ENGINE;
-    self.ui_org = '0 0 0'; 
-    self.ui_size = '0 0 0';
-    self.value1 = 0;
-    self.isActive = 0;
-    self.data_idx = 0;
-  }
-  self.data_idx = ReadByte();
-  self.i_faction = ReadByte();
-  self.value1 = self.isActive;
-  self.isActive = ReadByte();
-  setorigin(self, self.origin);
-  snd_hud_vfx_objectivelistener(self.value1, self.isActive);
-};
-
-void( float isnew ) receive_ent_mapDeployPoint={
-  if(isnew){
-    self.ui_org = '0 0 0'; 
-    self.ui_size = '0 0 0';
-    self.classname = "data";
-    self.drawmask = MASK_ENGINE;
-    self.value1 = 0;
-    self.isActive = 0;
-  }
-  self.data_type = DATA_DEPL;
-  self.nav_name = ReadByte();
-  self.i_faction = ReadByte();
-  self.isActive = ReadByte();
-  self.origin_x = ReadCoord();
-  self.origin_y = ReadCoord();
-  self.origin_z = ReadCoord();
-  setorigin(self, self.origin);
+  
+  OBJECTIVES[objid] = nexState;
+  cons_logAFloat(" OBJECTIVES[objid]",  OBJECTIVES[objid]); //DEBUG
 };

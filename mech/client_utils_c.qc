@@ -152,6 +152,7 @@ void( entity objective ) client_send_objective={
     nactive = FALSE;
   }
   WriteByte( MSG_ONE, nactive); 
+  WriteByte( MSG_ONE, objective.state_1);
 };
 
 void( entity deploy ) client_send_deploypoint={

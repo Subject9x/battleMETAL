@@ -1,53 +1,85 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 03/25/2017
 Overview: data file for map nav points
 */
 
-void() nav_point_use={
+/*
+  Nav points only apply to Clients, therefore only Clients
+  can affect the state of a navpoint.
+*/
+void() nav_point_touch={
   if(self.isActive == TRUE){
-    self.isActive = FALSE;
-  }else{
-    self.isActive = TRUE;
+    if( !(other.flags & FL_CLIENT) ){
+      return;
+    }
+    if( other.i_faction == self.i_faction ){
+      self.enemy = other;
+      self.isActive = 2;
+      stemp = self;
+      self = other;
+        client_send_navpoint( stemp );
+      self = stemp;
+      
+      //TODO - test hack, figure out objectives, ya turkey
+      local entity targ;
+      targ = find( world, targetname, self.target );
+      if( targ.data_type = DATA_OBJT ){
+        targ.isActive = 2;
+        targ.count = 1;
+      }
+      
+      //multi_trigger();
+      if( (self.spawnflags & 2) ){
+        self.isActive = 1;
+      }
+      if( (self.spawnflags & 4) ){
+        self.isActive = -1;
+      }
+    }
   }
 };
 
-void() nav_point_th={
-  local entity e;
-  if(self.isActive == TRUE){
-    e = findradius(self.origin, 200);
-    while(e){
-      if( (e.flags & FL_CLIENT) ){
-        if(e.i_faction == self.i_faction){
-          self.enemy = e;
-          self.isActive = FALSE;
-          self.SendFlags = -1;
-          multi_trigger();
-        }
-      }
-      e = e.chain;
-    }
+/*
+  nav is being called by another trigger.
+  all this really does is short-circuit the 'trigger on visit' 
+  to be fired on-demand right now by another trigger.
+*/
+void() nav_point_use={
+  if(self.isActive > FALSE){
+    self.isActive = -1;
+    multi_trigger();
+  }else{
+    self.isActive = TRUE;
+    local string temptarg;
+    temptarg = self.target;
+    self.target = self.vec_name;
+    multi_trigger();
+    self.target = temptarg;
   }
-  self.think = nav_point_th;
-  self.nextthink = time + 0.5;
 };
 
 /*QUAKED map_navpoint (0.2 0.8 0.2) (-10 -10 -10) (10 10 10)
-"i_faction" : bitflags for faction, only visible to that faction
-"data_idx" : number, 1 - 12, MUST BE UNIQUE
-"isActive" : number, allow player to spawn here
-  0 = FALSE
-  1 = TRUE
+"i_faction"   : bitflags for faction, only visible to that faction
+"data_idx"    : number, 1 - 21, MUST BE UNIQUE
+"isActive"    : 1 = active unvisit, 2 = active visit, 0 = hidden, -1 = inactive.
+"target"      : fire trigger when visited once
+"vec_name"    : a trigger to fire when activated
+"spawnflags 2": only updates 'visited' state per-client
+"spawnflags 4": deactivate after use
 */
 void() map_navpoint={
   self.classname = "data";
   self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;
   setmodel(self, "q3mdl/testball.md3");
+  setsize( self, '-150 -150 -100', '150 150 100' ); 
+  setorigin( self, self.origin );
+  self.movetype = MOVETYPE_FLY;
+  droptofloor();
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_NOT;
+  self.solid = SOLID_TRIGGER;
   self.use = nav_point_use;
-  self.think = nav_point_th;
-  self.nextthink = time + 0.5;
+  self.touch = nav_point_touch;
 };

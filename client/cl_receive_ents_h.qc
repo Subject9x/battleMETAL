@@ -23,9 +23,3 @@ void() client_event_deploypoint;
 void() client_event_objective;
 
 void() receive_ent_bindData;
-
-void( float isnew ) receive_ent_navPoint;
-void( float isnew ) receive_ent_mapObjective;
-void( float isnew ) receive_ent_aiBuilding;
-void( float isnew ) receive_ent_aiVehicle;
-void( float isnew ) receive_ent_mapDeployPoint;

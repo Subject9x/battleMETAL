@@ -68,20 +68,46 @@ void(vector org, vector angl) te_shield_test={
   WriteCoord (MSG_BROADCAST, angl_z);
 };
 
-//compound effects
-void(vector org, vector clr) te_muzzle_laser={
-  local entity vfx;
-  vfx = spawn();
-  vfx.movetype = SOLID_NOT;
-  vfx.classname = "missile";
-  setmodel(vfx, "q3mdl/muzzle_laser.spr32");
-  setsize(vfx, '-1 -1 -1', '1 1 1');
-  setorigin(vfx, org);
-  vfx.alpha = 0.85;
-  vfx.glow_color = 250;
-  vfx.glow_size = 1;
-  vfx.glow_trail = TRUE;
-  vfx.color = util_rgbToFloat(clr);
-  vfx.scale = 0.15;
-  s_mzl_las1();
+//HUD Sound Effects
+//make sure to scope self to target client
+void() te_nav_reach={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_NAV_REACH );
 };
+
+void(float type) te_objective_complete={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_OBJECTIVE_COMPLETE );
+  WriteByte( MSG_ONE, type );
+};
+
+void() te_objective_failed={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_OBJECTIVE_FAILED );
+};
+
+void() te_mission_win={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_MISSION_WIN );
+};
+
+void() te_mission_lose={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_MISSION_LOSE );
+};
+
+
+
+
+
+
+
+
+
+
+

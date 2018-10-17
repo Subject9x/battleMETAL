@@ -100,49 +100,37 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
   }
 };
 
-//TODO - fix
-void(float preState, float nexState) snd_hud_vfx_navpointlistener={
-  local entity player;
-  player = entitybyindex(player_localentnum);
-  if(player){
-    if(self.i_faction == player.i_faction){
-      if(nexState == FALSE){
-        if(preState == TRUE){
-          snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
-          //MSN_OBJ_STATUS[self.data_idx] = TRUE;
-        }
-      }
-    }
-  }
+
+//SFX
+void() te_nav_reach={
+  snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
 };
 
-void(float preState, float nexState) snd_hud_vfx_objectivelistener={
-  local entity player;
-  player = entitybyindex(player_localentnum);
-  if(player){
-    if(self.i_faction == player.i_faction){
-      if(nexState == FALSE){
-        if(preState == TRUE){
-          if(self.data_idx == 1){
-            snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME, 1);
-          }
-          else if(self.data_idx == 2){
-            snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_SECON, 1);
-          }
-          else if(self.data_idx == 3){
-            snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD, 1);
-          }
-          else if(self.data_idx == 254){
-            snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_WIN, 1);
-          }
-          else if(self.data_idx == 255){
-            snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
-          }
-        }
-      }
-    }
+void( float type ) te_objective_complete={
+  switch( type ){
+    case 1:
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME, 1);
+      break;
+    case 2:
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_SECON, 1);
+      break;
+    case 3:
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD, 1);
+      break;
   }
 };
+void() te_objective_failed={
+  snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
+};
+
+void() te_mission_win={
+  snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_WIN, 1);
+};
+
+void() te_mission_lose={
+  snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
+};
+
 
 void(float mode) snd_hud_vfx_toggleradar={
   if(self.stat_rdr_mode_prev != mode){

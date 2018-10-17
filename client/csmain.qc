@@ -396,8 +396,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     menu_handleFrame();
   }else{
     if(self.player_state >= PLAYER_POWERUP_BEGIN){
-      //float NAVNAMES_ACTIVE[21]; // 1 = active, 2 = complete, -1 = failed.
-      //vector NAVNAMES_ORG[21];  
       local float itr;
       itr = 0;
       while( itr <= 21 ){
@@ -405,6 +403,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         itr = itr + 1;
       }
 
+      //TODO - fix?
       local entity player;
       player = findchainflags(flags, FL_CLIENT);
       while(player){
@@ -474,9 +473,24 @@ float() CSQC_Parse_TempEntity =
     case TE_EVT_DEP:
       client_event_deploypoint();
       return TRUE;
+    case TE_OBJECTIVE_COMPLETE:
+      te_objective_complete( ReadByte() );
+      return TRUE;
+    case TE_OBJECTIVE_FAILED:
+      te_objective_failed();
+      return TRUE;
+    case TE_MISSION_WIN:
+      te_mission_win();
+      return TRUE;
+    case TE_MISSION_LOSE:
+      te_mission_lose();
+      return TRUE;
+    case TE_NAV_REACH:
+      te_nav_reach();
+      return TRUE;
     default:
       return te_effect_delegate( id );
-  }
+  } 
 	return FALSE;
 };
 
@@ -570,20 +584,6 @@ entity(float entnum) CSQC_Ent_Spawn =
 //the new move at servertime and end at servertime + (servertime - time)
 void(float isnew) CSQC_Ent_Update =
 {
-  /*local float id;
-  id = ReadByte();
-  
-  switch( id ){
-    case DATA_NAVP:
-      receive_ent_navPoint( isnew );
-      return;
-    case DATA_OBJT:
-      receive_ent_mapObjective( isnew );
-      return;
-    case DATA_DEPL:
-      receive_ent_mapDeployPoint( isnew );
-      return;
-  }*/
 };
 
 // called when a network slot is emptied, you may choose to remove(self) or not

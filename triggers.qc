@@ -6,6 +6,9 @@ void() highlight_hud_touch={
   }
 };
 
+void() trigger_activate_node={
+  
+};
 
 void() trigger_reactivate =
 {

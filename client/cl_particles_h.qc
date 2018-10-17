@@ -5,9 +5,6 @@
   Overview: client particle system header
 */
 
-void() te_quick_remove={
-};
-
 void() te_shield_think={
   local entity player;
   player = entitybyindex(PLAYER_ENTITYNUM);
