@@ -14,7 +14,7 @@ float OBJECTIVES[32];         //  1 = active, 2 = complete, 0 = hidden, -1 = fai
 string NAVNAMES[21];          //  21, number of unique nav names, see csmain.qc
 float NAVNAMES_ACTIVE[21];    //  1 = active, unvisit, 2 = active, visit, 0 = hidden, -1 = inactive.
 vector NAVNAMES_ORG[21];      //  server origins for all nav points
- 
+
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
 vector(vector vec, float algn) gui_calcAlign;

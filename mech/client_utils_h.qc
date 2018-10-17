@@ -5,6 +5,9 @@ Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 this is the header.
 */
+float MSG_ENTITY = 5;
+.float(entity ent, float changedflags) SendEntity;
+.float SendFlags;
 
 /*
   ENGINE CONSTANTS
@@ -15,7 +18,7 @@ void() DecodeLevelParms;
 void() respawn;
 entity() SelectSpawnPoint;
 //==========================
-
+float(entity piece) csqc_updateCompStat;
 //legacy wrappers
 void() legacy_PlayerDie;
 

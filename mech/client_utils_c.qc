@@ -92,7 +92,6 @@ void( entity radarPing ) client_push_radar_ping={
   WriteLong( MSG_ONE, vlen(self.origin - radarPing.origin) );
   WriteByte( MSG_ONE, radarPing.data_type );
   WriteByte( MSG_ONE, radarPing.i_faction );
-  
 };
 
 void( entity targetClient ) client_push_hud_highlight={
@@ -577,4 +576,18 @@ void() client_updateWeaponReloads={
     idx = idx + 1;
     e = e.w_slot;
   }
+};
+
+float(entity piece) csqc_updateCompStat={
+
+  if(piece){
+    if(piece.classname != "world"){
+      if(piece.health){
+        local float perc;
+        perc = (piece.health / piece.max_health)*100;
+        return perc;
+      }
+    }
+  }
+  return 0;
 };

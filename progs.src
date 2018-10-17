@@ -35,7 +35,6 @@ triggers_h.qc
   mech/utils_h.qc
   mech/ext/eng_client_h.qc
   mech/ext/eng_player_h.qc
-  mech/svr/server_csqchandler_h.qc
   mech/playerFactory_h.qc
   mech/vecFactory_h.qc
   mech/ctrl/ctrl_all_h.qc
@@ -140,7 +139,6 @@ dp/subs.qc
   mech/t_damage.qc
   mech/svr/server_parmops_c.qc
   mech/svr/server_intermsn_c.qc
-  mech/svr/server_csqchandler_C.qc
   mech/svr/server_sensors_c.qc
   mech/svr/server_savefile_c.qc
   mech/utils_c.qc
