@@ -152,7 +152,6 @@ void() receive_ent_bindData={
   if(self.stat_trg_dataidx > 0){
     self.target_datatype = getstati(STAT_TRG_DATATYPE);
     self.target_faction = getstati(STAT_TRG_FACTION);
-
   }
   else{
     self.target_shield = 0;
@@ -160,16 +159,17 @@ void() receive_ent_bindData={
     self.target_faction = 0;
     self.stat_trg_ddflg = -1;
   }
-    self.stat_w1_id = getstati(STAT_WEP1_ID);
-    self.stat_w2_id = getstati(STAT_WEP2_ID);
-    self.stat_w3_id = getstati(STAT_WEP3_ID);
-    self.stat_w4_id = getstati(STAT_WEP4_ID);
-    self.stat_w5_id = getstati(STAT_WEP5_ID);
-    self.stat_w6_id = getstati(STAT_WEP6_ID);
-    self.stat_w7_id = getstati(STAT_WEP7_ID);
-    self.stat_w8_id = getstati(STAT_WEP8_ID);
-    self.stat_w9_id = getstati(STAT_WEP9_ID);
-};      // 1 = active, 2 = complete, -1 = failed.
+  
+  self.stat_w1_id = getstati(STAT_WEP1_ID);
+  self.stat_w2_id = getstati(STAT_WEP2_ID);
+  self.stat_w3_id = getstati(STAT_WEP3_ID);
+  self.stat_w4_id = getstati(STAT_WEP4_ID);
+  self.stat_w5_id = getstati(STAT_WEP5_ID);
+  self.stat_w6_id = getstati(STAT_WEP6_ID);
+  self.stat_w7_id = getstati(STAT_WEP7_ID);
+  self.stat_w8_id = getstati(STAT_WEP8_ID);
+  self.stat_w9_id = getstati(STAT_WEP9_ID);
+};
 
 void() client_event_navpoint={
   local float navid, prevState, nexState;
@@ -208,11 +208,6 @@ void() client_event_objective={
   nexState = ReadByte();
   type = ReadByte();
   
-  cons_logAFloat("objid", objid); //DEBUG
-  cons_logAFloat("prevState", prevState); //DEBUG
-  cons_logAFloat("nexState", nexState); //DEBUG
-  cons_logAFloat("type", type); //DEBUG
-  
   if( (prevState > FALSE) ){
     if( prevState == TRUE ){
       if( (nexState == -1)  ){
@@ -225,5 +220,4 @@ void() client_event_objective={
   }
   
   OBJECTIVES[objid] = nexState;
-  cons_logAFloat(" OBJECTIVES[objid]",  OBJECTIVES[objid]); //DEBUG
 };

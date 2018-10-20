@@ -26,29 +26,6 @@ void() ai_logic_changeFaction_use={
   }
 };
 
-void() ai_logic_changeOrder_use={
-  local entity e;
-  if(self.group){
-    e = findchain(group, self.group);
-    while(e){
-      e.state_1 = self.state_1;
-      ai_util_firstOrder_nonStatic(e.state_1);
-      e = e.chain;
-    }
-  }
-  if(self.target){
-    e = find(world, targetname, self.target);
-    if(e){
-      e.state_1 = self.state_1;
-      ai_util_firstOrder_nonStatic(e.state_1);
-    }
-  }
-  if(self.w_state == 1){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
-  }
-};
-
 void() ai_logic_changeRank_use={
   local entity e, this;
   if(self.group){
@@ -223,22 +200,6 @@ set .w_state = 1 to have this remove after firing
 */
 void() ai_logic_changeFaction={
   self.use = ai_logic_changeFaction_use;
-};
-
-/*QUAKED ai_logic_changeOrder (.25 .25 .25) (-5 -5 -5) (5 5 5)
-changes the i_faction field of targted items
-set .group for use with groups of items
-set .target to specicify by targetname
-set .w_state = 1 to have this remove after firing
-"state_1" : number, initial order
-  -1 = debug mode (stand still, no interaction)
-  1 = stand at the .target
-  2 = defend the .target
-  3 = patrol the .target
-  4 = attack the .target
-*/
-void() ai_logic_changeOrder={
-  self.use = ai_logic_changeOrder_use;
 };
 
 /*QUAKED ai_logic_changeRank (.25 .25 .25) (-5 -5 -5) (5 5 5)

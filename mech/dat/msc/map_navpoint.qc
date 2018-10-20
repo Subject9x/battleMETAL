@@ -25,7 +25,7 @@ void() nav_point_touch={
       //TODO - test hack, figure out objectives, ya turkey
       local entity targ;
       targ = find( world, targetname, self.target );
-      if( targ.data_type = DATA_OBJT ){
+      if( targ.data_type == DATA_OBJT ){
         targ.isActive = 2;
         targ.count = 1;
       }

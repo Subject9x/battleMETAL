@@ -268,7 +268,10 @@ float EF_DELTA = 8388608;
 .float glow_size;
 .float glow_trail;
 //description:
-//customizable glowing light effect on the entity, glow_color is a paletted (8bit) color in the range 0-255 (note: 0 and 254 are white), glow_size is 0 or higher (up to the engine what limit to cap it to, darkplaces imposes a 1020 limit), if glow_trail is true it will leave a trail of particles of the same color as the light.
+//customizable glowing light effect on the entity, 
+//glow_color is a paletted (8bit) color in the range 0-255 (note: 0 and 254 are white), 
+//glow_size is 0 or higher (up to the engine what limit to cap it to, darkplaces imposes a 1020 limit), 
+//if glow_trail is true it will leave a trail of particles of the same color as the light.
 
 //DP_ENT_GLOWMOD
 //idea: LordHavoc
@@ -276,7 +279,8 @@ float EF_DELTA = 8388608;
 //field definition:
 .vector glowmod;
 //description:
-//controls color of the entity's glow texture (fullbrights), '0 0 0', is forced to be '1 1 1' (otherwise everything would be black), used for tinting objects, see colormod (same color restrictions apply).
+//controls color of the entity's glow texture (fullbrights), '0 0 0', is forced to be '1 1 1' (otherwise everything would be black), 
+//used for tinting objects, see colormod (same color restrictions apply).
 
 //DP_ENT_LOWPRECISION
 //idea: LordHavoc

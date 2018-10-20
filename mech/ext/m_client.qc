@@ -119,7 +119,7 @@ void() ClientConnect = {
   self.client_num = CLIENTS;  //book keeping for multiplayer
   self.stat_plr_stt = PLAYER_SPAWN;
   
-  client_push_player_info( self );
+  client_push_player_info();
 
   if (intermission_running){
     ExitIntermission();

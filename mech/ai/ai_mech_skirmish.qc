@@ -22,7 +22,6 @@ float ST_HUNT               = 10; //th_hunt
 float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
 float ST_HUNT_START         = 12; //TODO
 float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'staggers' the target
-
 */
 void() ai_mech_sk_stand;
 
@@ -288,10 +287,10 @@ void() ai_mech_sk_melee={
       local float speed;
       speed = self.m_fspeed / 3;
       speed = speed + self.m_sspeed ;
-      speed = speed * AI_RUN_SPD;
+      speed = speed * AI_WALK_SPD;
       ai_move( self.angles_y, speed);
     }
-    if( ai_check_face( self.enemy, 0.95 ) ){
+    if( ai_check_face( self.enemy, 0.97 ) ){
       if( self.ai_rank < AI_RANK_REG ){
         ai_next_state( ST_MISSILE_STRAFE );
         self.ai_action_time = self.ai_action_time + skill + 2;
@@ -320,7 +319,7 @@ void() ai_mech_sk_melee={
 void() ai_mech_sk_missile={
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
-    if( ai_check_face( self.enemy, 0.92 ) ){
+    if( ai_check_face( self.enemy, 0.97 ) ){
       if( ai_attack() ){
         ai_next_state( ST_WALK );
         ai_leg_frame( leg_walk1 );
@@ -345,7 +344,7 @@ void() ai_mech_sk_missile_strafe={
     if( (skill > 2) || (self.ai_rank < AI_RANK_REG) ){
       ai_face_targ();
     }
-    ai_move( self.angles_y, self.m_sspeed * AI_RUN_SPD);
+    ai_move( self.angles_y, self.m_sspeed * AI_WALK_SPD);
   }
   else{
     if( self.ai_rank < AI_RANK_REG ){
@@ -477,6 +476,7 @@ void() ai_mech_sk_th={
     self.button0 = 0;
     
     ai_state_control( self.attack_state );
+    self.v_angle = self.angles;
     if( (self.flags & FL_TURRET) ){
       ai_turret_control();
     }
@@ -508,8 +508,6 @@ void() ai_mech_skirmish={
     ai_node_pick_rand( self.target );
   }
   
-  droptofloor();
-  
   self.th_stand = ai_mech_sk_stand;
   self.th_walk = ai_generic_walk;
   self.th_run = ai_mech_sk_run;
@@ -527,6 +525,7 @@ void() ai_mech_skirmish={
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
   }
+  droptofloor();
   
   ai_walk_setup();
   

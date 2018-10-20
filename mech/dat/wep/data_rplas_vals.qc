@@ -64,9 +64,11 @@ void() data_rplas_think={
 
 void() data_rplas_atk={
   local entity player, proj, oself;
-  local vector dir, org, end, adj;
+  local vector dir, org, end, adj, angl;
+  local float range, convx, convy;
+ 
   player = self.owner;
-  
+ 
   if( self.w_currentammo ==  self.w_clipsize){
     if(self.en_rate && (player.en_cur >= self.en_rate)){
       player.en_cur = player.en_cur - self.en_rate;
@@ -78,15 +80,26 @@ void() data_rplas_atk={
       return;
     }
   }
+ 
+  convx = player.stat_spr_x + self.stat_spr_x;
+  convy = player.stat_spr_y + self.stat_spr_y;
+  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
+  angl = player.angles;
+  range = self.w_range;
+  if( (player.flags & FL_MONSTER) ){
+    angl = player.v_angle; //set by each AI, due to FL_TURRET
+    range = player.ai_minrange;    //convergence / spread works differently for AI
+  }
+  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
+ 
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = ai_attack_calcSpread(player); 
+    end = util_traceForAI( org, angl, self.w_range );
   }
-  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+  dir = util_applySpreadToTrace( end, player.v_angle, player.stat_trg_dist, range, convx, convy );//becomes 'endpoint' for shot angle
 
-  
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.rl_cur = 0;
@@ -97,26 +110,25 @@ void() data_rplas_atk={
     self.count1 = time;
   }
   else{
-    if((player.flags & FL_MONSTER)){
-      self.w_firetime = time + (self.rl_rate / 1.5) * 2;
+    if( (player.flags & FL_MONSTER) ){
+        self.w_firetime = time + (self.rl_rate / 1.5) * 2;
     }
     else{
-      self.w_firetime = time + self.rl_rate / 1.5;
+        self.w_firetime = time + self.rl_rate / 1.5;
     }
     self.w_state = RECOIL;
     self.w_isburst = TRUE;
   }
-  
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-  makevectors(player.angles);
-  org = player.origin+ (v_up*adj_y) + (v_right*adj_x) + (v_forward*adj_z);
-
+ 
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 
   local vector sfx;
-  sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-  
+  //sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+  //sfx would be 'org' value now, right?
 
+  local vector sfx;
+  sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+ 
   newmis = spawn();
   newmis.solid = SOLID_NOT;
   newmis.classname = "flash";

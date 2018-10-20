@@ -24,8 +24,6 @@ void() map_objective_use={
 
 void() map_objective_th={
   if(self.isActive == 2){
-    cons_logAFloat("self.isActive", self.isActive); //DEBUG
-    cons_logAFloat("self.count", self.count); //DEBUG
     //multi_trigger();
     local entity player;
     player = findchainflags( flags, FL_CLIENT );

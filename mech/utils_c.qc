@@ -118,7 +118,8 @@ vector(entity own, float range) util_traceForPlayer={
 };
 
 //scope is self = weapon making the call
-vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spready) util_traceForOffset={
+vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spready) util_traceForOffset={  
+  //TODO - fix me
   local vector adj, org, end;
   adj = ofsent.c_ofs + ofsent.w_fire_ofs + ofsent.c_alt_ofs;
   makevectors(own.v_angle);
@@ -129,6 +130,44 @@ vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spre
   traceline(org, end, FALSE, own);
   return (trace_endpos + ( v_forward* 1 ) );
 }; 
+
+
+//applies 'spread' to the endpos of a previous trace
+//spread values are taken as cumulatives - add all spread maximums together
+vector( vector prevTraceEnd, vector viewAngle, float targetDist, float idealRange, float spreadx, float spready) util_applySpreadToTrace={
+  local vector conv, endpos;
+  local float distMod, sprx, spry;
+  
+  distMod = targetDist / idealRange;
+  sprx = spreadx * distMod;
+  spry = spready * distMod;
+  
+  conv_x = sprx * ( random() - 0.5 ) ;
+  conv_y = spry * ( random() - 0.5 );
+  conv_z = 0;
+  
+  makevectors( viewAngle );
+  endpos = prevTraceEnd + (v_forward * conv_z) + (v_up * conv_y) +(v_right * conv_x);
+  return endpos;
+};
+
+//simply returns a vector offset from an origin along a given angle
+vector( vector start, vector offsets, vector viewAngle) util_getOffsetOfVector={
+  local vector v;
+  makevectors( viewAngle );
+  v = start + (v_forward * offsets_z) + (v_up * offsets_y) +(v_right * offsets_x);
+  return v;
+};
+
+vector( vector startOrigin, vector viewAngle, float wepRange, entity parent) util_traceForAI={
+  local vector viewLine;
+  
+  makevectors( viewAngle );
+  viewLine = startOrigin + (v_forward * wepRange);
+  traceline( startOrigin, viewLine, FALSE, parent);
+  
+  return trace_endpos;
+}
 
 float(float mod, float targ_val) util_zeroStat={
   targ_val = targ_val - mod;

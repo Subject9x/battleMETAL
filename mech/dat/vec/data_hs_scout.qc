@@ -12,7 +12,6 @@ Overview:
 void() data_HS_GEVL_ini;
 void() data_HS_GEVL_cam;
 void() data_HS_GEVL_wep1;
-void() data_HS_GEVL_wep2;
 
 void() data_HS_GEVL_ini={
   self.unit_wep1 = data_HS_GEVL_wep1;

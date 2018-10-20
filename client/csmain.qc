@@ -150,17 +150,19 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
     }
     else if(scanx == K_MOUSE1){
       if(MENU_ACTIVE){
-        if(self.plr_menu_choice == MENU_HANGAR_ACTIVE){
-          menu_hangarListener();
-        }
-        else if(self.plr_menu_choice == MENU_BRIEF_ACTIVE){
-          menu_briefListener();
-        }
-        else if(self.plr_menu_choice == MENU_ARMING_ACTIVE){
-          menu_arming_listener();
-        }
-        else if(self.plr_menu_choice == MENU_DEPLOY_ACTIVE){
-          menu_deployListener();
+        switch( self.plr_menu_choice ){
+          case MENU_HANGAR_ACTIVE:
+            menu_hangarListener();
+            break;
+          case MENU_BRIEF_ACTIVE:
+            menu_briefListener();
+            break;
+          case MENU_ARMING_ACTIVE:
+            menu_arming_listener();
+            break;
+          case MENU_DEPLOY_ACTIVE:
+            menu_deployListener();
+            break;
         }
         menu_mainListener();
         self = this;
@@ -300,7 +302,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   this = self;
   //switch to client context
   //self = entitybyindex(player_localentnum);
-  self = entitybyindex(PLAYER_ENTITYNUM);
+  self = entitybyindex( PLAYER_ENTITYNUM );
   
   receive_ent_bindData();
   
@@ -403,7 +405,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       }
 
       //TODO - fix?
-      local entity player;
+      /*local entity player;
       player = findchainflags(flags, FL_CLIENT);
       while(player){
         if( (player.data_type != DATA_POBS) ){
@@ -412,7 +414,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
           }
         }
         player = player.chain;
-      }
+      }*/
     }
   }
   

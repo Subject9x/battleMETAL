@@ -11,16 +11,16 @@ Overview: ai unit
 
 void() ai_gev_crash;
 
-void() ai_gev_stand;       //normal hanging out
-void() ai_gev_walk;
-void() ai_gev_run;         //main combat sequencer
-void() ai_gev_run_strafe;  // attempting to close distance, better pilots may try to attack
-void() ai_gev_run_charge;  // low rank pilots attempt to do a fly over
-void() ai_gev_melee;       // high rank pilots do a fly over with attack
-void() ai_gev_missile;     // normal stationary attack
-void() ai_gev_missile_strafe;//  good pilot attack
-void() ai_gev_hunt;        //  will actually hunt player
-void() ai_gev_pain;        //
+void() ai_gev_stand;        //normal hanging out
+void() ai_gev_walk;         //  velocity style movement 
+void() ai_gev_run;          //main combat sequencer
+void() ai_gev_run_strafe;   // 
+void() ai_gev_run_charge;   // 
+void() ai_gev_melee;        // yaw-based attempt to flank target
+void() ai_gev_missile;      // 
+void() ai_gev_missile_strafe;//  
+void() ai_gev_hunt;         //
+void() ai_gev_pain;         //
   
 void() ai_gev_die;
 void() ai_gev_th;
@@ -36,7 +36,6 @@ void() ai_gev_stand={
   }
   else{
     ai_generic_stand();
-    //ai_fly_update( 350, 600); 
   }
 };
 
@@ -48,7 +47,6 @@ void() ai_gev_walk={
   else{
     ai_generic_walk();
   }
-  //ai_fly_update( 350, 600); 
 };
 
 void() ai_gev_run={
@@ -384,11 +382,10 @@ void() ai_gev={
   
   ai_initialize_system( ST_STAND );
   
-  droptofloor();
-  
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
   }
+  droptofloor();
   
   ai_walk_setup();
   

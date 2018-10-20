@@ -69,8 +69,8 @@ void() ai_turret_control={
   local entity this;
   local vector am;
   this = self;
-  if( (this.e_tor_c) ){
-    self = this.e_tor_c;
+  if( (self.e_tor_c) ){
+    self = self.e_tor_c;
       util_setOffsetOrigin(self, this, self.c_ofs);
       switch( self.attack_state ){
         case TR_NORM:
@@ -86,6 +86,7 @@ void() ai_turret_control={
           break;
       }
       ChangeYaw();
+      self.v_angle = self.angles;
     self = this;
   }
 };
@@ -454,18 +455,18 @@ void( float alt_low, float alt_max) ai_fly_update={
   Checks to see if Entity T is in the ANG arc of self
 */
 float(entity t, float ang) ai_check_face={
-	local vector	vec;
+	local vector	vang, vec;
 	local float		dot;
-	local entity this;
-  this = self;
+  
+  vang = self.angles;
   if( (self.flags & FL_TURRET) ){
-    self = self.e_tor_c;
+    vang = self.e_tor_c.angles;
   }
-	makevectors (self.angles);
+  
+  makevectors ( vang );
 	vec = normalize (t.origin - self.origin);
 	dot = vec * v_forward;
   
-  self = this;
 	if ( dot >= ang){
 		return TRUE;
 	}

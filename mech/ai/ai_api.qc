@@ -214,8 +214,10 @@ vector(entity ai) ai_attack_calcSpread={
   cy = cy + ( cnv / 2 * random() );
   cy = cy * crandom();
   
-  makevectors(ai.angles);
+  makevectors(ai.v_angle);
+  
   hitorg = ai.w_fire_ofs + (v_up * cy) + (v_right * cx);
+  
   return hitorg;
 };
 
@@ -229,7 +231,7 @@ vector(entity wep) ai_attack_trace={
   }
   cam = self.e_cam;
   
-  makevectors(self.angles);
+  makevectors(self.v_angle); 
   traceline (cam.origin + v_forward * 1, self.origin + (lead * wep.w_range), TRUE, self);
   
   return trace_endpos;
@@ -240,8 +242,11 @@ void() ai_ranged_attack={
   local float fired;
   
   this = self;
-  wep_chain = self.w_slot;
+  wep_chain = self.w_slot;     
   self.v_angle = self.angles;
+  if( (self.flags & FL_TURRET) ){
+    self.v_angle = self.e_tor_c.angles;
+  }
   while(wep_chain){
     if(self.button0){
       if(wep_chain.w_state == READY){
@@ -346,10 +351,15 @@ void(entity bot, entity attacker) ai_damage_react={
   friendlies
 */  
 float(entity wep) ai_attack_blockcheck={
-  local vector viewpont;
+  local vector viewpont, vang;
 
+  vang = self.angles;
+  if( (self.flags & FL_TURRET) ){
+    vang = self.e_tor_c.angles;
+  }
+  
   viewpont = normalize(self.enemy.origin - self.e_cam.origin);
-  makevectors(self.angles);
+  makevectors( vang );
   traceline (self.e_cam.origin + v_forward * 1, self.e_cam.origin + viewpont*wep.w_range, FALSE, self);
 
   if(trace_ent == world){

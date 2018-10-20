@@ -61,17 +61,29 @@ void() data_mis_think={
 };
 
 void() data_mis_atk={
-  local entity player, proj, cam, oself;
-  local vector dir, org, end, adj;
+  local entity player, proj, oself;
+  local vector dir, org, end, adj, angl;
+  local float range, convx, convy;
   player = self.owner;
 
+  convx = player.stat_spr_x + self.stat_spr_x;
+  convy = player.stat_spr_y + self.stat_spr_y;
+  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
+  angl = player.angles;
+  range = self.w_range;
+  if( (player.flags & FL_MONSTER) ){
+    angl = player.v_angle; //set by each AI, due to FL_TURRET
+    range = player.ai_minrange;    //convergence / spread works differently for AI
+  }
+  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
+ 
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = ai_attack_calcSpread(player);
+    end = util_traceForAI( org, angl, self.w_range );
   }
-  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+  dir = util_applySpreadToTrace( end, player.v_angle, player.stat_trg_dist, range, convx, convy );//becomes 'endpoint' for shot angle
     
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
@@ -92,10 +104,6 @@ void() data_mis_atk={
     self.w_state = RECOIL;
     self.w_isburst = TRUE;
   }
-  
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
-  makevectors(player.angles);
-  org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   
   newmis = spawn();
   oself = self;

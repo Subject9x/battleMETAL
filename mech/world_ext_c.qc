@@ -69,16 +69,6 @@ void() mh_world_ini={
   addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
 };
 
-void(float build_id) data_iniBuilding={
-  if(build_id == ID_BLD_H_TURRET){
-    //build_vehicle_unit(data_tur_ini);
-  }
-  else{
-    cons_logAFloat("Error: failed to build building with id", build_id);
-    remove(self);
-  }
-};
-
 /*
   SCOPE: self = weapon in question
   calls the appropriate 'ini' function on the 

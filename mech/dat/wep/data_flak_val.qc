@@ -61,18 +61,30 @@ void() data_flak_think={
 };
 
 void() data_flak_atk={
-  local entity player, this, enm;
-  local vector dir, end, adj, org; 
+  local entity player, proj, oself, this, enm;
+  local vector dir, org, end, adj, angl;
+  local float range, convx, convy;
   
   player = self.owner;
   
+  convx = player.stat_spr_x + self.stat_spr_x;
+  convy = player.stat_spr_y + self.stat_spr_y;
+  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
+  angl = player.angles;
+  range = self.w_range;
+  if( (player.flags & FL_MONSTER) ){
+    angl = player.v_angle; //set by each AI, due to FL_TURRET
+    range = player.ai_minrange;    //convergence / spread works differently for AI
+  }
+  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
+ 
   if((player.flags & FL_CLIENT)){
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = ai_attack_calcSpread(player);
+    end = util_traceForAI( org, angl, self.w_range );
   }
-  dir = util_traceForOffset(player, self, end, player.stat_spr_x + self.stat_spr_x, player.stat_spr_y + self.stat_spr_y);
+  dir = util_applySpreadToTrace( end, player.v_angle, player.stat_trg_dist, range, convx, convy );//becomes 'endpoint' for shot angle
   enm = trace_ent;
   
   self.w_currentammo = self.w_currentammo - 1;

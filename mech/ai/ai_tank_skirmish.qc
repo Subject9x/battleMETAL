@@ -22,7 +22,7 @@ void() ai_tank_sk_die2;
 
 void() ai_tank_sk_stand={
   if( ai_valid_target( self.enemy ) ){
-    if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25, 25 ) ){
+    if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25 ) ){
       ai_face_targ();
     }
     if( ai_check_face( self.enemy, self.ai_fov ) ){
