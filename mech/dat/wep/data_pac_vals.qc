@@ -108,17 +108,17 @@ void() data_pac_atk={
 
   local entity laser_org;
   laser_org = spawn();
-  laser_org.movetype = SOLID_NOT;
+  laser_org.movetype = MOVETYPE_NONE;
+  laser_org.solid = SOLID_NOT;
   laser_org.classname = "missile";
   setsize(laser_org, '0 0 0', '0 0 0');
   makevectors(self.angles);
-  self.fx_origin = self.fx_origin + (v_forward*DAT_PAC_FIRE_OFS_z);
-  setorigin(laser_org, self.fx_origin);
+  setorigin(laser_org, org + (v_forward*DAT_PAC_FIRE_OFS_z));
 
   t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
   sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
   
-  te_beam_pac(laser_org.origin, dir);
+  te_beam_pac(org, dir);
   
   te_flamejet(dir, '0 25 0', 5);
   te_plasmaburn(dir);

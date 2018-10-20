@@ -110,25 +110,23 @@ void() data_esr_atk={
     self.w_isburst = TRUE;
   }
 
-  local entity laser_org, this;
   t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
 
   this = self;
-  laser_org = spawn();
-  self = laser_org;
+  proj = spawn();
+  self = proj;
     self.movetype = SOLID_NOT;
     self.classname = "missile";
     makevectors(this.angles);
-    this.fx_origin = this.fx_origin + (v_forward*2);
-    setorigin(self, this.fx_origin);
+    setorigin(self, org + (v_forward*2) );
     setsize(self, '0 0 0', '0 0 0');
     self.scale = 1;
     self.think = SUB_Remove;
     self.nextthink = time + 0.01; //0.01
   self = this;
-  sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
+  sound (proj, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
   
-  te_beam_esr(laser_org.origin, dir);
+  te_beam_esr(proj.origin, dir);
   
   te_flamejet(dir, '0 15 0', 5);
   te_customflash(dir, 4, 10, '0 0 1');

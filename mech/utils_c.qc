@@ -117,21 +117,6 @@ vector(entity own, float range) util_traceForPlayer={
   return trace_endpos;
 };
 
-//scope is self = weapon making the call
-vector(entity own, entity ofsent, vector prev_tracend, float spreadx, float spready) util_traceForOffset={  
-  //TODO - fix me
-  local vector adj, org, end;
-  adj = ofsent.c_ofs + ofsent.w_fire_ofs + ofsent.c_alt_ofs;
-  makevectors(own.v_angle);
-  org = own.origin + ( v_up * adj_y ) + ( v_right * adj_x ) + ( v_forward * own.e_cam.c_ofs_z );
-  ofsent.fx_origin = org;
-  end = prev_tracend + ((crandom() * spreadx) * v_right) + (v_up * (crandom() * spready)) + (v_forward*2);
-  makevectors(self.angles);
-  traceline(org, end, FALSE, own);
-  return (trace_endpos + ( v_forward* 1 ) );
-}; 
-
-
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
 vector( vector prevTraceEnd, vector viewAngle, float targetDist, float idealRange, float spreadx, float spready) util_applySpreadToTrace={

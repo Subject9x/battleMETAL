@@ -104,7 +104,7 @@ void() data_mtk_ini={
     self.m_bside = DAT_MTK_M_BSIDE;
     self.m_bobspd = DAT_MTK_M_BSPD;
   }
-  setsize(self, DAT_MNT_CTOR_BBX_N, DAT_MNT_CTOR_BBX_X);
+  setsize(self, DAT_MTK_CTOR_BBX_N, DAT_MTK_CTOR_BBX_X);
 };
 void() data_mtk_legs={
   self.comp_id = M_LEGS;

@@ -99,7 +99,7 @@ void() data_latc_atk={
   
   if( trace_ent ){
     t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');
-    if( other.sh_cur <= 0 ){
+    if( trace_ent.sh_cur <= 0 ){
       sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
       te_superspike(dir);
     }
@@ -107,13 +107,13 @@ void() data_latc_atk={
   
   local entity bul_fx;
   bul_fx = spawn();
-  bul_fx.movetype = SOLID_NOT;
+  bul_fx.movetype = MOVETYPE_NONE;
+  bul_fx.solid = SOLID_NOT;
   bul_fx.classname = "missile";
   setmodel(bul_fx, "progs/muzzleflash.spr32");
   setsize(bul_fx, '-1 -1 -1', '1 1 1');
   makevectors(self.angles);
-  self.fx_origin = dir + (v_forward * 5);
-  setorigin(bul_fx, self.fx_origin);
+  setorigin(bul_fx, org + (v_forward * 5));
   bul_fx.alpha = 0.85;
   bul_fx.glow_color = 250;
   bul_fx.glow_size = 1;
