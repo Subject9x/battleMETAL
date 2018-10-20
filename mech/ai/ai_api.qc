@@ -296,51 +296,53 @@ void(entity bot, entity attacker) ai_damage_react={
   }
   this = self;
   self = bot;
-  if( self.enemy && self.enemy != attacker  ){
-    // size check
-    if( (self.data_type == DATA_VEHC) && (attacker.data_type == DATA_MECH) ){
-      change = 0.2;
-    }
-    change = attacker.vec_size - self.enemy.vec_size;
-    //health check
-    change = change + (util_getMechHpAverage(attacker) - util_getMechHpAverage(self.enemy));
-    //range check
-    local float  dst1, dst2;
-    dst1 = vlen(self.enemy.origin - self.origin) / self.radar_range;
-    dst2 = vlen(attacker.origin - self.origin) / self.radar_range;
-    change = change + (dst1 - dst2);
-    switch( self.ai_rank ){
-      case AI_RANK_ROK:
-        if( change ){
-          self.enemy = attacker;
+  if( ai_valid_target(self.enemy) && ai_valid_target(attacker) ){
+    if( self.enemy != attacker ){
+      // size check
+      if( (self.data_type == DATA_VEHC) && (attacker.data_type == DATA_MECH) ){
+        change = 0.2;
+      }
+      change = attacker.vec_size - self.enemy.vec_size;
+      //health check
+      change = change + (util_getMechHpAverage(attacker) - util_getMechHpAverage(self.enemy));
+      //range check
+      local float  dst1, dst2;
+      dst1 = vlen(self.enemy.origin - self.origin) / self.radar_range;
+      dst2 = vlen(attacker.origin - self.origin) / self.radar_range;
+      change = change + (dst1 - dst2);
+      switch( self.ai_rank ){
+        case AI_RANK_ROK:
+          if( change ){
+            self.enemy = attacker;
+          }
+          break;
+        case AI_RANK_REG:
+          if( change >= 0.7){
+            self.enemy = attacker;
+          }
+          break;
+        case AI_RANK_VET:
+          if( change > 0.5){
+            self.enemy = attacker;
+          }
+          break;
+        case AI_RANK_ACE:
+          if( change >= 0.25){
+            self.enemy = attacker;
+          }
+          break;
+      }
+      if( self.enemy == attacker ){
+        ai_next_state( ST_STAND );
+        if( self.ai_rank < AI_RANK_REG ){
+          ai_next_state( ST_RUN );
         }
-        break;
-      case AI_RANK_REG:
-        if( change >= 0.7){
-          self.enemy = attacker;
-        }
-        break;
-      case AI_RANK_VET:
-        if( change > 0.5){
-          self.enemy = attacker;
-        }
-        break;
-      case AI_RANK_ACE:
-        if( change >= 0.25){
-          self.enemy = attacker;
-        }
-        break;
-    }
-    if( self.enemy == attacker ){
-      ai_next_state( ST_STAND );
-      if( self.ai_rank < AI_RANK_REG ){
-        ai_next_state( ST_RUN );
       }
     }
-  }
-  else{
-    self.enemy = attacker;
-    ai_next_state( ST_RUN );
+    else{
+      self.enemy = attacker;
+      ai_next_state( ST_RUN );
+    }
   }
   self = this;
 };

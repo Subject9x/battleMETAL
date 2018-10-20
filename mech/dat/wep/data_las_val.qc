@@ -113,7 +113,7 @@ void() data_las_atk={
   laser_org.movetype = SOLID_NOT;
   laser_org.classname = "missile";
   setsize(laser_org, '0 0 0', '0 0 0');
-  setorigin(laser_org, self.fx_origin);
+  setorigin(laser_org, org);
   laser_org.think = SUB_Remove;
   laser_org.nextthink = time + 0.01;// + 0.35;
    
