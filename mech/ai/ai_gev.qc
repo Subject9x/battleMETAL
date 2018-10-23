@@ -128,93 +128,94 @@ void() ai_gev_run={
   }
 };
 
-
+/*
+  ST_RUN_STRAFE
+  Time limit set by distance calc.
+*/
 void() ai_gev_run_strafe={
-
-  ai_face_targ();
-  ai_move( self.ai_dir, self.m_sspeed * AI_RUN_SPD );
-  //ai_fly_update( 350, 600); 
+  local float spd;
   
+  spd = self.m_fspeed / 2 + self.m_sspeed;
+  
+  ai_face_targ();
+  ai_move( self.ai_dir, spd * AI_RUN_SPD );
+
   if( time > self.ai_action_time ){
-    if( self.ai_rank < AI_RANK_REG ){
-      ai_next_state( ST_MISSILE_STRAFE );
-      self.ai_dir = ( 25 + random() * 65 );
-      if( self.lefty > 0 ){
-        self.lefty = self.lefty * -1;
-      }
-      self.ai_dir = self.ai_dir * self.lefty;
-      self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
-      self.ai_action_time = self.ai_action_time + 4;
-      return;
-    }
-    if( skill > 2 ){
-      ai_next_state( ST_MISSILE );
-      return;
-    }
     ai_next_state( ST_RUN );
     return;
   }
 };
 
-
+/*
+  ST_RUN_CHARGE
+  Time limit set by distance calc.
+*/
 void() ai_gev_run_charge={
-  ai_face_targ();
+  
   ai_move( self.ai_dir, self.m_fspeed * AI_RUN_SPD );
-  //ai_fly_update( 350, 600); 
+  
+  if( skill > 1 || self.ai_rank < AI_RANK_REG ){
+    ai_attack();
+  }
   
   if( time > self.ai_action_time ){
-    if( self.ai_rank > AI_RANK_VET ){
-      ai_next_state( ST_STAND );
-      return;
-    }
     ai_next_state( ST_RUN );
-    return;
   }
 };
 
+/*
+  ST_MELEE
+  attempt to strafe around to rear of target
+*/
 void() ai_gev_melee={
-  if( self.angles_y != self.ideal_yaw ){
-    ai_face_targ();
-  }
+  enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+  enemy_range = ai_check_range( self.enemy );
   
-  ai_move( self.angles_y , self.m_fspeed * AI_WALK_SPD );
-  //ai_fly_update( 350, 600); 
+  ai_face_targ();
+  ai_attack();
+  ai_yaw_move( 75, self.m_fspeed * AI_RUN_SPD);
   
-  if( self.ai_rank < AI_RANK_REG ){
-    if( ai_check_face( self.enemy, 0.97 ) ){
-      ai_attack();
-    }
+  if( !enemy_infront ){
+    ai_next_state( ST_MISSILE );
+    return;
   }
   
   if( time > self.ai_action_time ){
-    if( self.ai_rank == AI_RANK_REG ){
-      ai_next_state( ST_MISSILE );
-      return;
-    }
-    if( self.ai_rank == AI_RANK_ROK ){
-      ai_next_state( ST_STAND );
-      self.ai_action_time = self.ai_action_time + 2;
-      return;
-    } 
-    ai_next_state( ST_RUN );
-    return;
-  }
-};
-
-void() ai_gev_missile={
-  ai_face_targ();
-  //ai_fly_update( 350, 600); 
-  if( ai_check_face( self.enemy, 0.97 ) ){
-    if( ai_attack() ){
-      if( self.ai_rank < AI_RANK_REG ){
-        ai_next_state( ST_MISSILE_STRAFE );
+    if( enemy_infront ){
+      if( enemy_range <= 400 ){
+        ai_next_state( ST_RUN_STRAFE );
+        //set dir away from target
         return;
       }
-      ai_next_state( ST_RUN );
+      ai_next_state( ST_MISSILE );
       return;
     }
+    ai_next_state( ST_RUN );
+    return;
   }
+};
+
+/*
+  ST_MISSILE
+  Time limit set by distance calc.
+  no movement.
+  AI tries to deliver fire on target.
+*/
+void() ai_gev_missile={
+  
+  ai_face_targ();
+  ai_attack();
+  
   if( time > self.ai_action_time ){
+    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+    if( enemy_infront ){
+      if( skill > 1 || self.ai_rank < AI_RANK_REG ){
+        ai_next_state( ST_MISSILE_STRAFE );
+        local float duration;
+        duration = (self.m_fspeed * AI_RUN_SPD) * 10 ;
+        duration = (self.m_fspeed * AI_RUN_SPD) * 10 ;
+      }
+    }
     ai_next_state( ST_RUN );
     return;
   }
@@ -222,28 +223,7 @@ void() ai_gev_missile={
 
 
 void() ai_gev_missile_strafe={
-  if( ai_valid_target( self.enemy ) ){
-    ai_face_targ();
-    ai_move( self.ai_dir, self.m_sspeed * AI_RUN_SPD );
-    //ai_fly_update( 250, 600); 
-    
-    if( ai_check_face( self.enemy, 0.97 ) ){
-      if( ai_attack() ){
-        ai_next_state( ST_RUN_STRAFE );
-        self.ai_action_time = self.ai_action_time + 2;
-        return;
-      }
-    }
-  }
-  else{
-    if( self.ai_rank < AI_RANK_REG ){
-      ai_next_state( ST_WALK );
-      return;
-    }
-    ai_next_state( ST_STAND );
-    self.ai_action_time = self.ai_action_time + 2;
-    return;
-  }
+
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
     return;
