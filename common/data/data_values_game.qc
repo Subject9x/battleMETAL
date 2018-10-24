@@ -171,7 +171,6 @@ float RADAR_SWEEP = 2.5;
 .float stat_wep_state;
 .float stat_trg_dist;
 .float stat_trg_face;
-//.float stat_nav_dir; -> make this a CSQC func
 .float stat_wep_rel;
 .float stat_spr_x;
 .float stat_spr_y;
@@ -184,16 +183,6 @@ float RADAR_SWEEP = 2.5;
 .float stat_plr_ang_y;
 .float stat_plr_ang_z;
 .float stat_plr_rep;
-//============================
-//     SEND ENTITY FLAGS       
-//============================
-float SEND_FLAG_DATA_IDX = 1;
-float SEND_FLAG_SHIELD_VAL = 2;
-float SEND_FLAG_RADAR_MODE = 4;
-float SEND_FLAG_FACTION = 8;
-float SEND_FLAG_ORIGIN = 16;
-float SEND_FLAG_ANGLE = 32;
-
 //============================
 //     STAT CHANNELS         
 //============================
@@ -262,16 +251,6 @@ float STAT_TRG_ORGY = 90;
 float STAT_TRG_ORGZ = 91;
 
 float STAT_RAD_SWEEP = 92;
-
-/*float UI_BOX_POSX = 92;
-float UI_BOX_POSY = 93;
-float UI_BOX_SZEX = 94;
-float UI_BOX_SZEY = 95;
-float UI_BOX_CLRX = 96;
-float UI_BOX_CLRY = 97;
-float UI_BOX_CLRZ = 98;
-float UI_BOX_TIME = 99;*/
-
 float STAT_PLR_ANG_X = 100;
 float STAT_PLR_ANG_Y = 101;
 float STAT_PLR_ANG_Z = 102;
@@ -287,3 +266,12 @@ float LOCK_NONE = 1;
 float LOCK_TARG_START = 2;
 float LOCK_TARG_HAS = 4;
 float LOCK_PLYR = 8;
+
+//============================
+//     PLAYER POWER UP TIME  
+//============================
+float POWERUP_DEFAULT = 7;
+float POWERUP_DEBUG   = 0.01;
+float POWERUP_LIGHT   = 3;
+float POWERUP_MEDIUM  = 5;
+float POWERUP_HEAVY   = 7;

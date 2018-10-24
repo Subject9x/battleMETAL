@@ -200,6 +200,14 @@ void( entity ally, entity targ, float override ) ai_give_target={
   }
 };
 
+float() ai_panic_time={
+  local float panic;
+  panic = 4 - skill;
+  panic = panic + (3 - self.ai_rank);
+  panic = panic + ( 2 * random() );
+  return panic;
+};
+
 vector(entity ai) ai_attack_calcSpread={
   local vector hitorg;
   local float rng, cnv, cx, cy;
@@ -286,16 +294,49 @@ void() ai_ranged_attack={
   }
 };
 
-
 void(entity bot, entity attacker) ai_damage_react={
-  local entity this;
-  local float change;
-
-  if( (bot.flags & FL_NOGUNS) ){
+  local entity this, friend;
+  local float change, howAmIDoing, panic, odds;
+  
+  if( bot.attack_state == ST_PAIN ){
+    //bot is blindly panicking
     return;
   }
+  
   this = self;
   self = bot;
+  panic = FALSE;
+  if( (bot.flags & FL_NOGUNS) ){
+    panic = TRUE;
+  }
+  
+  howAmIDoing = util_getMechHpAverage( bot );
+  switch( self.ai_rank ){
+    case SKILL_NOV:
+      odds = 0.65;
+      break;
+    case SKILL_REG:
+      odds = 0.45;
+      break;
+    case SKILL_VET:
+      odds = 0.25;
+      break;
+    case SKILL_ELT:
+      odds = 0.01; //player must love punishment
+      break;
+  }
+  
+  if( howAmIDoing <= odds ){
+    panic = TRUE;
+  }
+  
+  if( panic ){
+    ai_next_state( ST_PAIN );
+    self.ai_action_time = self.ai_action_time + ai_panic_time();
+    self = this;
+    return;
+  }
+  
   if( ai_valid_target(self.enemy) && ai_valid_target(attacker) ){
     if( self.enemy != attacker ){
       // size check

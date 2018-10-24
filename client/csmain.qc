@@ -117,9 +117,9 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   local entity this;
-  cons_logAFloat("scanx", scanx); //DEBUG;
-  cons_logAFloat("chary", chary); //DEBUG;
-  cons_logAFloat("devid", devid); //DEBUG;
+  //cons_logAFloat("scanx", scanx); //DEBUG;
+  //cons_logAFloat("chary", chary); //DEBUG;
+  //cons_logAFloat("devid", devid); //DEBUG;
   this = self;
   //self = entitybyindex(player_localentnum);
   self = entitybyindex(PLAYER_ENTITYNUM);

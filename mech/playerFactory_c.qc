@@ -47,6 +47,9 @@ void() player_makeMech={
   self.data_type = DATA_MECH;
   self.data_idx = self.nextVecChoice;
   self.power_timer = time + 7;
+  if( cvar("mechdev") ){
+    self.power_timer = time + POWERUP_DEBUG;
+  }
   self.power_timer_segment = time + 0.007;
   data_iniMech(self.nextVecChoice);
   //self.touch = touch_mech; shhhhh, not yet
@@ -54,35 +57,12 @@ void() player_makeMech={
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
     mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);
     mh_world_updateClientModelBob(self.m_bmodel, self.m_bside, self.m_bobspd);
-     
-    //test
-    /*newmis = spawn();
-    newmis.movetype = MOVETYPE_FOLLOW;
-    newmis.solid = SOLID_NOT;
-    setmodel(newmis, self.weaponmodel);
-    setsize(newmis, '-1 -1 -1', '1 1 1');
-    setorigin(newmis, self.e_cam.origin);
-    
-    newmis.drawonlytoclient = self;
-    newmis.owner = self.e_cam;
-     
-    newmis.aiment = self;
-    newmis.owner = self;
-    newmis.punchangle = self.angles;
-    newmis.view_ofs = newmis.origin - self.origin;
-    newmis.angles = self.angles;
-    newmis.v_angle = newmis.angles - self.angles;
-     
-
-    newmis.frame = self.weaponframe; */
-    //test===============    
     
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self.e_cam);
     
     client_push_player_info();
-    
   }
   droptofloor();
   self.currentWeaponGroup = self.w_group1;

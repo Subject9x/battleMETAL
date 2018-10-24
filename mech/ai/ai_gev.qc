@@ -9,6 +9,30 @@ Overview: ai unit
     can actually hunt its target
 */
 
+//set state time duration
+float() ai_gev_setDuration={
+  local float duration, vel;
+  duration = 3.1 - skill;
+  duration = duration + (4 - self.ai_rank);
+  duration = duration + (self.vec_size - 1);
+  duration = duration / 10;
+  vel = self.m_fspeed * AI_RUN_SPD;
+  vel = vel * 20 / 500;
+  duration = duration + vel;
+  duration = duration * random();
+  return duration;
+};
+void() ai_gev_setStrafe={
+  
+
+};
+
+float() ai_gev_lefty={
+  if( random() > 0.49 ){
+    self.lefty = 1 - self.lefty;
+  }
+};
+
 void() ai_gev_crash;
 
 void() ai_gev_stand;        //normal hanging out
@@ -42,7 +66,7 @@ void() ai_gev_stand={
 void() ai_gev_walk={
   if( ai_valid_target(self.enemy) ){
     ai_face_targ();
-    ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
+    ai_move( self.angles_y, self.m_fspeed * AI_RUN_SPD );
   }
   else{
     ai_generic_walk();
@@ -50,70 +74,70 @@ void() ai_gev_walk={
 };
 
 void() ai_gev_run={
-  self.attack_finished = 0;
+  local float angl, range;
+  
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
     
     if( enemy_vis ){
-      if( enemy_range <= 400 ){
+      if( enemy_range <= 200 ){
         if( enemy_infront ){
-          if( self.ai_rank < AI_RANK_REG ){
-            ai_next_state( ST_MISSILE_STRAFE );
-            self.ai_dir = ( 25 + random() * 75 );
-            if( self.lefty > 0 ){
-              self.lefty = self.lefty * -1;
-            }
-            self.ai_dir = self.ai_dir * self.lefty;
-            self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
-            self.ai_action_time = self.ai_action_time + 4;
+          if( (skill > 1) || (self.ai_rank < AI_RANK_REG) ){
+            ai_next_state( ST_MELEE );
             return;
           }
-          ai_next_state( ST_MELEE );
-          self.ai_action_time = self.ai_action_time + 2;
+          ai_next_state( ST_RUN_CHARGE );
+          self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
           return;
         }
-      }
-      
-      if( enemy_range <= self.ai_minrange ){
-        if( enemy_infront ){
-          if( self.ai_rank < AI_RANK_REG ){
-            ai_next_state( ST_MISSILE_STRAFE );
-            self.ai_dir = ( 25 + random() * 65 );
-            if( self.lefty > 0 ){
-              self.lefty = self.lefty * -1;
-            }
-            self.ai_dir = self.ai_dir * self.lefty;
-            self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
-            self.ai_action_time = self.ai_action_time + 4;
-            return;
-          }
-          ai_next_state( ST_MISSILE );
-          return;
-        }
-        if( self.ai_rank > AI_RANK_VET ){
-          ai_next_state( ST_STAND );
-          return;
-        }
-        ai_next_state( ST_RUN_STRAFE );
-        self.lefty = self.lefty * -45;
-        self.ai_dir = anglemod( self.ideal_yaw + self.lefty );
-        self.ai_action_time = self.ai_action_time + 2;
+        ai_next_state( ST_MISSILE );
         return;
       }
       
-      if( enemy_range <= self.ai_minrange * 2 ){
-        if( enemy_infront ){
-          ai_next_state( ST_RUN_STRAFE );
-          self.lefty = self.lefty * -45;
-          self.ai_dir = anglemod( self.ideal_yaw + self.lefty );
-          self.ai_action_time = self.ai_action_time + 2;
+      if( enemy_range <= self.ai_minrange ){
+        if( enemy_infront ){ 
+          if( ai_check_face( self.enemy, 0.92 ) ){
+            if( ai_attack() ){
+              angl = 25 + (random() * 90);
+              angl = angl * ai_gev_lefty();
+              ai_next_state( ST_MISSILE_STRAFE );
+              self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
+              self.ai_dir = anglemod( self.ideal_yaw + angl );
+              return;
+            }
+          }
+          ai_next_state( ST_RUN_CHARGE );
+          self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
           return;
         }
-        ai_next_state( ST_HUNT );
-        self.goalentity = self.enemy;
-        self.ai_action_time = self.ai_action_time + (skill * 2) - self.ai_rank;
+        ai_next_state( ST_MISSILE );
+        self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
+        return;
+      }
+      
+      
+      if( enemy_range <= self.ai_minrange * 2 ){
+        if( enemy_infront ){
+          if( (skill > 1) || (self.ai_rank < AI_RANK_REG) ){            
+            if( ai_check_face( self.enemy, 0.92 ) ){
+              if( ai_attack() ){
+                angl = 25 + (random() * 90);
+                angl = angl * ai_gev_lefty();
+                ai_next_state( ST_MISSILE_STRAFE );
+                self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
+                self.ai_dir = anglemod( self.ideal_yaw + angl );
+                return;
+              }
+            }
+          } 
+          ai_next_state( ST_RUN_STRAFE );
+          self.ai_dir = anglemod( self.ideal_yaw - 180 );
+          return;
+        }
+        ai_next_state( ST_RUN_CHARGE );
+        self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
         return;
       }
       
@@ -138,7 +162,9 @@ void() ai_gev_run_strafe={
   spd = self.m_fspeed / 2 + self.m_sspeed;
   
   ai_face_targ();
-  ai_move( self.ai_dir, spd * AI_RUN_SPD );
+  if( !ai_move( self.ai_dir * self.lefty, spd * AI_RUN_SPD ) ){
+    self.lefty = 1 - self.lefty;
+  }
 
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
@@ -152,14 +178,17 @@ void() ai_gev_run_strafe={
 */
 void() ai_gev_run_charge={
   
-  ai_move( self.ai_dir, self.m_fspeed * AI_RUN_SPD );
-  
+  ai_face_targ();
+  ai_move( anglemod(self.angles_y + 45),  self.m_fspeed * AI_RUN_SPD);
   if( skill > 1 || self.ai_rank < AI_RANK_REG ){
-    ai_attack();
+    if( ai_check_face( self.enemy, 0.92 ) ){
+      ai_attack();
+    }
   }
   
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
+    return;
   }
 };
 
@@ -168,26 +197,39 @@ void() ai_gev_run_charge={
   attempt to strafe around to rear of target
 */
 void() ai_gev_melee={
-  enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+  local float insights;
+  
   enemy_range = ai_check_range( self.enemy );
+  otemp = self;
+  self = otemp.enemy;
+    insights = ai_check_face( otemp, 0.87 );
+  self = otemp;
   
   ai_face_targ();
-  ai_attack();
-  ai_yaw_move( 75, self.m_fspeed * AI_RUN_SPD);
   
-  if( !enemy_infront ){
+  if( ai_check_face( self.enemy, 0.92 ) ){
+    ai_attack();
+  }
+  
+  if( !ai_yaw_move( 65 * self.lefty, self.m_fspeed * AI_WALK_SPD) ){
+    self.lefty = 0 - self.lefty;
+  }
+  if( !insights ){
     ai_next_state( ST_MISSILE );
     return;
   }
   
   if( time > self.ai_action_time ){
-    if( enemy_infront ){
-      if( enemy_range <= 400 ){
+    if( !insights ){
+      if( enemy_range <= 100 ){
         ai_next_state( ST_RUN_STRAFE );
         //set dir away from target
+        self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
+        self.ai_dir = anglemod( self.ideal_yaw - 180 );
         return;
       }
       ai_next_state( ST_MISSILE );
+      self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
       return;
     }
     ai_next_state( ST_RUN );
@@ -202,27 +244,57 @@ void() ai_gev_melee={
   AI tries to deliver fire on target.
 */
 void() ai_gev_missile={
-  
-  ai_face_targ();
-  ai_attack();
+  local float insights;
+  if( ai_valid_target(self.enemy) ){
+    otemp = self;
+    self = otemp.enemy;
+      insights = ai_check_face( otemp, 0.87 );
+    self = otemp;
+    
+    ai_face_targ();
+    if( ai_check_face( self.enemy, 0.92 ) ){
+      ai_attack();
+    }
+  }
   
   if( time > self.ai_action_time ){
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
-    if( enemy_infront ){
+    if( insights ){
       if( skill > 1 || self.ai_rank < AI_RANK_REG ){
+        local float angl;
+        angl = 25 + (random() * 90);
+        angl = angl * ai_gev_lefty();
         ai_next_state( ST_MISSILE_STRAFE );
-        local float duration;
-        duration = (self.m_fspeed * AI_RUN_SPD) * 10 ;
-        duration = (self.m_fspeed * AI_RUN_SPD) * 10 ;
+        self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
+        self.ai_dir = anglemod( self.ideal_yaw + angl );
+        return;
       }
+      ai_next_state( ST_RUN_CHARGE );
+      self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
+      return;
     }
     ai_next_state( ST_RUN );
     return;
   }
 };
 
-
 void() ai_gev_missile_strafe={
+  local float spd;
+  
+  spd = self.m_fspeed / 2 + self.m_sspeed;
+  
+  ai_face_targ();
+  if( ai_check_face( self.enemy, 0.92 ) ){
+    ai_attack();
+  }
+  if( !ai_move( self.ai_dir, spd * AI_RUN_SPD) ){        
+    local float angl;
+    angl = 25 + (random() * 90);
+    angl = angl * ai_gev_lefty();
+    ai_next_state( ST_MISSILE_STRAFE );
+    self.ai_dir = anglemod( self.ai_dir - angl );
+    self.ai_action_time = self.ai_action_time + ai_gev_setDuration();
+    return;
+  }
 
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
@@ -236,28 +308,27 @@ void() ai_gev_missile_strafe={
 */
 void() ai_gev_hunt={
   
-  if( ai_valid_target( self.enemy ) ){
-    ai_walkgoal( AI_RUN_SPD );
-    if( ai_check_vis( self.enemy ) ){
-      ai_next_state( ST_RUN );
-      return;
-    }
-  }
-  else{
-    self.goalentity = self.movetarget;
-    ai_next_state( ST_STAND );
-    return;
-  }
-  if( time > self.ai_action_time ){
-    self.goalentity = self.movetarget;
-    ai_next_state( ST_STAND );
-    self.ai_action_time = self.ai_action_time + 2;
-    return;
-  }
+
+  
 };
 
+/*
+  setup 
+  entity( float radiius ) ai_find_friend;
+*/
 void() ai_gev_pain={
-
+  //TODO - finish
+  if( ai_valid_target( self.goalentity ) ){
+    self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+    ai_move_turn();
+    ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD);
+  }
+  
+  if( time > self.ai_action_time ){
+    ai_next_state( ST_RUN );
+    return;
+  }
+  
 };
 
 void() ai_gev_crash={
@@ -270,6 +341,7 @@ void() ai_gev_crash={
   self.nextthink = time + 0.05;
 };
 
+//TODO - fix death, needs to  go flying
 void() ai_gev_die={
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_BOUNCE;

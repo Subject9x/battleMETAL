@@ -44,11 +44,32 @@ float(float numOfSides) util_roll_dice={
   return roll;
 };
 
+
+float( entity t, float max ) util_getPieceHpForAverage{
+  if( t ){
+    if( max ){
+      return t.max_health;
+    }
+    return t.health;
+  }
+  return 0;
+};
+
 float(entity t) util_getMechHpAverage={
   if(t != world){
     local float total, cur;
-    total = t.max_health + (t.e_arm_l.max_health * 2) + (t.e_tor_l.max_health * 2) + t.e_legs.max_health;
-    cur = t.health + t.e_arm_r.health + t.e_arm_l.health + t.e_tor_r.health + t.e_tor_l.health + t.e_legs.health;
+    total = t.max_health;
+    total = total + util_getPieceHpForAverage( t.e_arm_l, TRUE );
+    total = total + util_getPieceHpForAverage( t.e_arm_r, TRUE  );
+    total = total + util_getPieceHpForAverage( t.e_tor_l, TRUE  );
+    total = total + util_getPieceHpForAverage( t.e_tor_r, TRUE  );
+    total = total + util_getPieceHpForAverage( t.e_legs, TRUE  );
+    cur = t.health;
+    cur = cur + util_getPieceHpForAverage( t.e_arm_l, FALSE );
+    cur = cur + util_getPieceHpForAverage( t.e_arm_r, FALSE  );
+    cur = cur + util_getPieceHpForAverage( t.e_tor_l, FALSE  );
+    cur = cur + util_getPieceHpForAverage( t.e_tor_r, FALSE  );
+    cur = cur + util_getPieceHpForAverage( t.e_legs, FALSE  );
     total = cur / total;
     return total;
   }

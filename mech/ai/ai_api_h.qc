@@ -130,7 +130,7 @@ float(float movespeed, float distance, float ticrate) ai_move_time;
 float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
 float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;
-
+float() ai_panic_time;
 //AI CONTROL - ai_ctrl.qc 
 void( float state ) ai_next_state;
 void(void() next_action, float next_time, float time_mod) ai_action_next;
