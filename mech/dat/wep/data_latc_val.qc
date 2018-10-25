@@ -13,7 +13,7 @@ void() data_latc_think;
 void() data_latc_ini={
   self.data_idx = ID_WEP_LATC;
   self.w_name = DAT_LATC_NAME;
-  self.p_dmgtype = self.p_dmgtype | DMG_BAL;
+  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_PRC;
   self.p_damage = DAT_LATC_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_LATC_CLIPSIZE;

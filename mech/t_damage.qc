@@ -8,6 +8,174 @@ according to the original source code, there should only be one
 t_damage function and 1 killed function...for some reason, maybe good house keeping?
 */
 
+/*
+Ballistic Damage
+  IF shields are up, reduce shot damage by half
+  IF EFF_PRC, increase armor damage
+  IF EFF_RAM, cause energy crits
+*/
+float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
+  local float damage, dmgtype, shields, mod, crit;
+  dmgtype = inflictor.p_dmgtype;
+  damage = dmg_amt;
+  shields = targ.sh_cur;
+  
+  if( shields > 0 ){
+    damage = damage - (damage / 2 );
+    shields = shields - damage;
+    damage = 0;
+  }
+  else{
+    if( (dmgtype & EFF_PRC) ){
+      damage = damage * 2;
+    }
+    if( (dmgtype * EFF_RAM) ){
+      crit = 0.25;
+      crit = crit + ((3 - skill) / 10);
+      crit = crit + ((3 - targ.vec_size) / 10);
+      if( (targ.flags & FL_CLIENT) ) {
+        crit = crit / 1.25;
+      }
+      if( random() <= crit ){
+        damage = damage * 1.5;
+      }
+    }
+  }
+  
+  if( shields < 0 ){
+    shields = 0;
+  }
+  targ.sh_cur = shields;
+  
+  if( time > targ.sh_hit){
+    targ.sh_hit = time + (dmg_amt / 100);
+    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
+    targ.sh_hit = targ.sh_hit + (3 - skill);
+    if( shields == FALSE ){
+      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
+    }
+  }
+  
+  return damage;
+};
+
+/*
+Energy Damage
+  IF target shields are up, shields take dmg * 1.5
+  IF EFF_STX, might cause shield crit
+  IF EFF_PRC, shields only consume 25% of damage
+  OR EFF_RAM, spill over damage
+*/
+float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
+  local float damage, dmgtype, shields, mod, crit;
+  
+  if( targ.sh_cur <= 0 ){
+    return damage;
+  }
+  
+  dmgtype = inflictor.p_dmgtype;
+  damage = dmg_amt;
+  shields = targ.sh_cur;
+
+  damage = damage + ( damage * 0.5);
+  
+  if( (dmgtype & EFF_STX) ){
+    crit = 0.25;
+    crit = crit + ((3 - skill) / 10);
+    crit = crit + ((3 - targ.vec_size) / 10);
+    if( (targ.flags & FL_CLIENT) ) {
+      crit = crit / 1.25;
+    }
+    if( random() <= crit ){
+      damage = damage * 1.75;
+    }
+  }
+  if( (dmgtype & EFF_PRC) ){
+    mod = damage * 0.25;
+    shields = shields - mod;
+    damage = damage - mod;
+  }
+  else {
+    shields = shields - damage;
+    if( shields < 0 ){
+      if( (dmgtype & EFF_RAM) ){
+        mod = shields;
+        damage = mod * -1;
+      }
+      else{
+        damage = 0;
+      }
+      shields = 0;
+    }  
+    else{
+      damage = 0;
+    }
+  }
+  targ.sh_cur = shields;
+  
+  if( time > targ.sh_hit){
+    targ.sh_hit = time + (dmg_amt / 100);
+    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
+    targ.sh_hit = targ.sh_hit + (3 - skill);
+    if( shields == FALSE ){
+      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
+    }
+  }
+  //EFF_STX only affects shields;
+  if( (dmgtype & EFF_STX) ){
+    damage = 0;
+  }
+  return damage;
+};
+/*
+Explosive Damage
+  IF target shields > 25%, shields consume entire hit, no exceptions.
+  IF target shields < 25%, treat like EFF_PRC damage
+  IF shields are down, explosive might cause an armor crit
+*/
+float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
+  local float damage, dmgtype, shields, mod, crit, quarter;
+  dmgtype = inflictor.p_dmgtype;
+  damage = dmg_amt;
+  shields = targ.sh_cur;
+  quarter = shields * 0.25;
+  
+  if( targ.sh_cur > quarter ){
+    damage = 0;
+  }
+  else if( (targ.sh_cur <= quarter) && (targ.sh_cur > 0) ){
+    mod = targ.sh_cur / targ.sh_max;
+    mod = mod / 2;
+    damage = damage - mod;
+  }
+  else{
+    //shields be zero
+    crit = 0.25;
+    crit = crit + ((3 - skill) / 10);
+    crit = crit + ((3 - targ.vec_size) / 10);
+    if( (targ.flags & FL_CLIENT) ) {
+      crit = crit / 1.25;
+    }
+    if( random() <= crit ){
+      damage = damage * 1.25;
+    }
+  }
+  
+  targ.sh_cur = shields;
+  
+  if( time > targ.sh_hit){
+    targ.sh_hit = time + (dmg_amt / 100);
+    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
+    targ.sh_hit = targ.sh_hit + (3 - skill);
+    targ.sh_hit = targ.sh_hit / 2;  //cause this is explosive damage
+    if( shields == FALSE ){
+      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
+    }
+  }
+  
+  return damage;
+};
+
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   
   local float new_dmg;
@@ -43,22 +211,22 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
 
   //check shields
-  if(trg.sh_cur >= 0){
-    new_dmg = damage_shield(trg, dmg_amt, dmg_type);
-  } 
-  
-  if( (trg.sh_cur <= (trg.sh_max / 2) ) ){
-    if( (trg.flags & FL_MONSTER) ){
-      ai_damage_react( trg, attacker );
-    }
+  if( (dmg_type & DMG_BAL) ){
+    dmg_amt = t_damage_bal( trg, inflictor, dmg_amt );
+  }
+  else if( (dmg_type & DMG_ENE) ){
+    dmg_amt = t_damage_ene( trg, inflictor, dmg_amt );
+  }
+  else if( (dmg_type & DMG_EXP) ){
+    dmg_amt = t_damage_mis( trg, inflictor, dmg_amt );
   }
   
-  if(trg.sh_cur <= 0){
-    trg.sh_cur = 0;
-  }
   
-  if(new_dmg > 0){
-    dmg_amt = new_dmg;
+  if( (trg.flags & FL_MONSTER) ){
+    ai_damage_react( trg, attacker );
+  }
+
+  if(dmg_amt > 0){
     sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
   }
   else{
@@ -66,10 +234,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     return trg;
   }
   
-  te_spark(dmg_point, inflictor.velocity, new_dmg); 
-  
-  //the special hit-location calculator is only run for P_MECH
-  //units
+  //the special hit-location calculator is only run for DATA_MECH units
   if(trg.data_type == DATA_MECH){
     //filter out leg hits
     if(dmg_point_z < (trg.origin_z - 5)){
@@ -86,7 +251,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
     }
   }
-  else if(trg.data_type == DATA_BLD){
+  if(trg.data_type == DATA_BLD){
     local entity friend;
     friend = ai_find_friend( self.radar_range );
     if( friend ){
@@ -110,7 +275,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   return trg;
 };
-
 
 /*
   2 jan 2017
@@ -187,23 +351,6 @@ entity(entity parent, vector org, float start_rad) closestWeapon={
 };
 
 
-/*
-add game logic here to catch what is 'killed' and adjust that based on logic
-
-*/
-void(entity targ, entity attacker, float dmg_type) filter_killed={
-  local entity filter;
-  filter = targ;
-  if(targ.owner.classname == "player"){
-    if(targ.owner.data_type == DATA_MECH){
-      if(targ.comp_id == M_LEGS){
-        return;
-      }
-    }
-  }
-  killed(filter, attacker, dmg_type);
-};
-
 void(entity targ, entity attacker, float dmg_type) killed={
   local entity oself;
   
@@ -268,174 +415,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
     }
   
   self = oself;
-};
-
-//returns remain damage to be passed on to armor
-float(entity targ, float dmg_amt, float dmg_type) damage_shield={
-  float dmg_remainder;
-  if(dmg_amt > 5){
-    //this makes shields a bit more important, and additionally - anti-shield weapons
-    targ.sh_hit = time + SHIELD_RECHARGE_COOLDOWN;
-  }
-  else{
-    if( dmg_amt != 0 ){
-      targ.sh_hit = time + (SHIELD_RECHARGE_COOLDOWN / 4);
-    }
-  }
-  if( ( dmg_type  & EFF_STX) ){
-    targ.sh_hit = targ.sh_hit  + 4;
-  }
-  dmg_remainder = 0;
-  if((dmg_type & DMG_BAL)){
-    dmg_remainder = shield_vs_bal(targ, dmg_amt, dmg_type);
-  }
-  else if((dmg_type & DMG_EXP)){
-    dmg_remainder = shield_vs_mis(targ, dmg_amt, dmg_type);
-  }
-  else if((dmg_type & DMG_ENE)){
-    dmg_remainder = shield_vs_ene(targ, dmg_amt, dmg_type);
-  }
-
-  if(targ.sh_cur < 0){
-    targ.sh_cur = 0;
-  }
-  
-  return dmg_remainder;
-};
-
-
-float(entity targ, float dmg_amt, float dmg_type) shield_vs_bal={
-
-  local float remainder, mod;
-  if((dmg_type & EFF_PRC)){
-    mod = dmg_amt / SHVBAL_EFFPRC_PERCENTAGE;
-    targ.sh_cur = targ.sh_cur - mod;
-    remainder = dmg_amt - mod;
-  }
-  else if((dmg_type & EFF_STX)){
-    targ.sh_cur = targ.sh_cur - dmg_amt;
-    remainder = 0;
-  }
-  else if((dmg_type & EFF_RAM)){
-    mod = dmg_amt * SHVBAL_EFFRAM_PERCENTAGE;
-    targ.sh_cur = targ.sh_cur - mod;
-    remainder = 0;
-  }
-  else if((dmg_type & EFF_ENG)){
-    mod = dmg_amt;
-    targ.en_cur = targ.en_cur - mod;
-    remainder = 0;
-  }
-  else{
-    if(dmg_amt >= targ.sh_cur){
-      targ.sh_cur = targ.sh_cur - targ.sh_cur;
-      remainder = dmg_amt - (targ.sh_cur * SHVBAL_EFFNON_PERCENTAGE);
-    }
-    else{
-      mod = dmg_amt * SHVBAL_EFFNON_REDUCE;
-      targ.sh_cur = targ.sh_cur - mod;
-      remainder = 0;
-    }
-  }
-  return remainder;
-};
-
-float(entity targ, float dmg_amt, float dmg_type) shield_vs_ene={
-  
-  local float remainder, mod;
-  if((dmg_type & EFF_PRC)){
-    mod = dmg_amt / SHVENE_EFFPRC_PERCENTAGE;
-    targ.sh_cur = targ.sh_cur - mod;
-    remainder = dmg_amt - mod;
-  }
-  else if((dmg_type & EFF_STX)){
-    targ.sh_cur = targ.sh_cur - dmg_amt;
-    remainder = 0;
-  }
-  else if((dmg_type & EFF_RAM)){
-    mod = dmg_amt * SHVENE_EFFRAM_PERCENTAGE;
-    targ.sh_cur = targ.sh_cur - mod;
-    remainder = 0;
-  }  
-  else if((dmg_type & EFF_ENG)){
-    mod = dmg_amt;
-    targ.en_cur = targ.en_cur - mod;
-    remainder = 0;
-  }
-  else{
-    if(dmg_amt >= targ.sh_cur){
-      targ.sh_cur = targ.sh_cur - targ.sh_cur;
-      remainder = dmg_amt - targ.sh_cur;
-    }
-    else{
-      mod = dmg_amt;
-      targ.sh_cur = targ.sh_cur - mod;
-      remainder = 0;
-    }
-  }
-  return remainder;
-};
-
-float(entity targ, float dmg_amt, float dmg_type) shield_vs_mis={
-  
-  local float remainder, mod;
-  if((dmg_type & EFF_PRC)){
-    mod = dmg_amt / SHVEXP_EFFPRC_PERCENTAGE;
-    targ.sh_cur = targ.sh_cur - mod;
-    remainder = dmg_amt - mod;
-  }
-  else if((dmg_type & EFF_STX)){
-    mod = dmg_amt / SHVEXP_EFFSTX_PERCENTAGE;
-    targ.sh_cur = targ.sh_cur - mod;
-    remainder = 0;
-  }
-  else if((dmg_type & EFF_RAM)){
-    mod = dmg_amt * SHVEXP_EFFRAM_PERCENTAGE;
-    targ.sh_cur = targ.sh_cur - mod;
-    remainder = 0;
-  }
-  else if((dmg_type & EFF_ENG)){
-    mod = dmg_amt;
-    targ.en_cur = targ.en_cur - mod;
-    remainder = 0;
-  }
-  else{
-    if(dmg_amt >= targ.sh_cur){      
-      targ.sh_cur = targ.sh_cur - targ.sh_cur;
-      remainder = dmg_amt - (targ.sh_cur * SHVEXP_EFFNON_PERCENTAGE);
-    }
-    else{
-      mod = dmg_amt / SHVEXP_EFFNON_REDUCE;
-      targ.sh_cur = targ.sh_cur - mod;
-      remainder = 0;
-    }
-  }
-  return remainder;
-};
-
-
-float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor={
-  local float mod;
-  if((arm_type & ARM_LIT)){
-    mod = dmg_amt * ARM_LT_MOD;
-    dmg_amt = dmg_amt - mod;
-  }
-  else if((arm_type & ARM_MED)){
-    mod = dmg_amt * ARM_MD_MOD;
-    dmg_amt = dmg_amt - mod;  
-  }
-  else if((arm_type & ARM_HVY)){
-    mod = dmg_amt * ARM_HV_MOD;
-    dmg_amt = dmg_amt - mod;  
-  }
-  return dmg_amt;
-};
-
-/*
-  AI has been hit by something, and has to react to it
-*/
-void(entity trg, entity atk) anger_monster={
-
 };
 
 

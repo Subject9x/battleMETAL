@@ -41,12 +41,6 @@ float AI_ATTACK_REG  =  0.3;
 float AI_ATTACK_VET  =  0.4;
 float AI_ATTACK_ACE  =  0.5;
 
-//QUIRKS - personality
-float AI_TYPE_NORML  = 0;
-float AI_TYPE_AGGRO  = 1;
-float AI_TYPE_RESCU  = 2;
-float AI_TYPE_COWRD  = 3;
-
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
 
@@ -78,10 +72,10 @@ float AI_ROT_ROK = 0.4; //0.25
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
-float AI_ARMOR_EASY =  0.2;
-float AI_ARMOR_MEDM =  0.3;
-float AI_ARMOR_HARD =  0.4;
-float AI_ARMOR_NIGHT = 0.5;
+float AI_ARMOR_EASY =  0.3;
+float AI_ARMOR_MEDM =  0.4;
+float AI_ARMOR_HARD =  0.5;
+float AI_ARMOR_NIGHT = 0.6;
 
 //shield based on difficulty
 //shield = shield * AI_SHIELD
@@ -124,11 +118,3 @@ float AI_REFLEX_ACE = 0.25;
 float AI_REFLEX_VET = 0.2;
 float AI_REFLEX_REG = 0.15;
 float AI_REFLEX_ROK = 0.1;
-
-//AI order constants, refactored from func pointers
-//TODO - remove
-float AI_ORDER_DEBUG = -1;
-float AI_ORDER_STAND = 1;
-float AI_ORDER_DEFEND = 2;
-float AI_ORDER_PATROL = 3;
-float AI_ORDER_ATTACK = 4;
