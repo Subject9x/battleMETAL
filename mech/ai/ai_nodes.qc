@@ -70,10 +70,7 @@ void() ai_node_hunt_t={
       droptofloor();
       local float t;
       t = ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.goalentity.origin - self.origin), 0.05);
-      ai_action_next( self.th_walk, t, self.ai_action_mod );
-      if( self.e_legs){
-        ai_leg_frame( leg_walk1 );
-      }
+
       self.ai_viewtime = time + self.ai_viewcheck;
     self = this;
     remove( self );
@@ -104,8 +101,7 @@ void() ai_node_hunt_th={
         setorigin( self,  self.origin + (v_up * 0.5) );
         droptofloor();
         self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-        ai_action_next( self.th_walk, 1, self.ai_action_mod );
-        ai_leg_frame( leg_walk1 );
+
         self.ai_viewtime = time + self.ai_viewcheck;
         
       self = this;

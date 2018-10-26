@@ -58,7 +58,6 @@ void(float rank) ai_pilot_ini_stats={
   local float mod_am, mod_sh, mod_yaw;
   
   self.ai_fov = ai_pilot_optical_range(rank);
-  self.ai_radar = ai_pilot_radar_range(rank, self.radar_range);  
   self.ai_view = ai_pilot_view_range(rank);
   self.ai_viewcheck = ai_pilot_view_interval(rank);
   ai_wep_calcranges();
@@ -81,8 +80,6 @@ void(float rank) ai_pilot_ini_stats={
   self.ai_leading = ai_pilot_rating_leading();
   self.stat_spr_x = self.conv_min_x + self.conv_max_x;
   self.stat_spr_y = self.conv_min_y + self.conv_max_y;
-  self.ai_rte_cnv = ai_pilot_rating_converg();
-  self.ai_rte_rng = ai_pilot_rating_range();
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
   self.ai_action_mod = ai_pilot_action_mod( rank );
@@ -122,30 +119,6 @@ float(float rank) ai_pilot_optical_range={
     diff = diff + AI_FOV_ROK;
     break;
   }
-  return diff;
-};
-
-float(float rank, float range) ai_pilot_radar_range={
-  local float diff;
-  diff = cvar("skill");
-  diff = diff * 10;
-  
-  switch(rank){
-    case AI_RANK_ACE :
-      diff = diff + 70;
-      break;
-    case AI_RANK_VET :
-      diff = diff + 60;
-      break;
-    case AI_RANK_REG :
-      diff = diff + 50;
-      break;
-    case AI_RANK_REG : 
-    diff = diff + 40;
-    break;
-  }
-  diff = diff / 100;
-  diff = range * diff;
   return diff;
 };
 
@@ -260,41 +233,6 @@ float(float rank) ai_pilot_action_mod={
     mod = 0.1;
   }
   return mod;
-};
-
-//gets convergence factor for pilot rating
-float() ai_pilot_rating_converg={
-  if(self.ai_rank == AI_RANK_ACE){
-    return AI_CNV_ACE;
-  }
-  else if(self.ai_rank == AI_RANK_VET){
-    return AI_CNV_VET;
-  }
-  else if(self.ai_rank == AI_RANK_REG){
-    return AI_CNV_REG;
-  }
-  else{
-    return AI_CNV_ROK;
-  }
-};
-
-//gets range modifier for pilot rating
-float() ai_pilot_rating_range={
-  if(self.ai_rank == AI_RANK_ACE){
-    return AI_RNG_ACE;
-  }
-  else if(self.ai_rank == AI_RANK_VET){
-    return AI_RNG_VET;
-  }
-  else if(self.ai_rank == AI_RANK_REG){
-    return AI_RNG_REG;
-  }
-  else if(self.ai_rank == AI_RANK_ROK){
-    return AI_RNG_ROK;
-  }
-  else{
-    return 1;
-  }
 };
 
 /*

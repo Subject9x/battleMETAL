@@ -81,7 +81,8 @@ void() unit_hs_scout={
 
 void() unit_hs_mech_sk={
   self.flags = self.flags | FL_TURRET;  //enforced for a mech
-  ai_mech_skirmish();
+  //ai_mech_skirmish();
+  ai_mech_sniper();
 };
 
 void() unit_hs_mech_snipe={

@@ -63,34 +63,26 @@ entity AI_NODES[128];
 .float ai_rank;
 .float ai_action_time;  //for executing action states
 .float ai_action_mod;
-.float ai_rte_rng;
-.float ai_rte_cnv;
 .float ai_leading;      //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
 .float ai_minrange;     //minimum range of guns;
 .float ai_fov;      //the angle of the AI's view for visual target finding
 .float ai_view;         //game unit range of vision within the angle
-.float ai_radar;
 .float patience;        //counter for if AI is stuck on something
 .float maxpatience;     //how impatient is the AI
 .vector ai_pitch;     //x = min, y= max, z = pitch speed
-.float ai_wait;
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
 .entity ai_hunt_node;  //simple node-on-decay-timer
 .float ai_hunt_total; //current number of hunt nodes
 .float ai_attack_chance;
-.float ai_prev_state;
 .string target_die;
 .float ai_dir;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 float(float rank) ai_pilot_optical_range;
-float(float rank, float range) ai_pilot_radar_range;
 float(float rank) ai_pilot_view_interval;
 float(float rank) ai_pilot_view_range;
-float() ai_pilot_rating_converg;
-float() ai_pilot_rating_range;
 float() ai_pilot_rating_leading;
 float() ai_pilot_yaw_mod;
 float() ai_pilot_armor_mod;
@@ -131,9 +123,8 @@ float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
 float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;
 float() ai_panic_time;
+
 //AI CONTROL - ai_ctrl.qc 
-void( float state ) ai_next_state;
-void(void() next_action, float next_time, float time_mod) ai_action_next;
 void() ai_hunt_target;
 void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;
@@ -144,6 +135,7 @@ void(void() macro) ai_leg_frame;
 /*
   AI STATE FUNCTIONS=====================
 */
+void( float state ) ai_next_state;
 void( float estate ) ai_state_control;
 void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states
 void( float startState ) ai_initialize_system;

@@ -41,8 +41,6 @@ void() ai_logic_changeRank_use={
         self.ai_leading = ai_pilot_rating_leading();
         self.stat_spr_x = self.conv_min_x + self.conv_max_x;
         self.stat_spr_y = self.conv_min_y + self.conv_max_y;
-        self.ai_rte_cnv = ai_pilot_rating_converg();
-        self.ai_rte_rng = ai_pilot_rating_range();
       self = this;
       e = e.chain;
     }
@@ -60,8 +58,6 @@ void() ai_logic_changeRank_use={
         self.ai_leading = ai_pilot_rating_leading();
         self.stat_spr_x = self.conv_min_x + self.conv_max_x;
         self.stat_spr_y = self.conv_min_y + self.conv_max_y;
-        self.ai_rte_cnv = ai_pilot_rating_converg();
-        self.ai_rte_rng = ai_pilot_rating_range();
       self = this;
     }
   }

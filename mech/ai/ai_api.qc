@@ -595,10 +595,7 @@ float(void() action) ai_hunt_dropnode={
     
     self.goalentity = self.ai_hunt_node = ai_node_hunt(eorg, self.targetname, self.ai_hunt_total, t , action ); 
     self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-    
-    ai_action_next( self.th_walk, t, self.ai_action_mod );
-    ai_leg_frame( leg_walk1 );
-    
+
     self.ai_viewtime = time + self.ai_viewcheck;
     
     self.ai_hunt_total = self.ai_hunt_total + 1;
