@@ -130,6 +130,7 @@ float() ai_panic_time;
 //AI MAP FUNCS
 void( void() ai_to_make ) ai_unit_setup;
 void() ai_unit_make_multi;
+void() ai_unit_make_trigger;
 
 //AI CONTROL - ai_ctrl.qc 
 void() ai_hunt_target;

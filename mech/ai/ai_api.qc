@@ -302,11 +302,13 @@ void(entity bot, entity attacker) ai_damage_react={
     //bot is blindly panicking
     return;
   }
+
+  trigger_event( bot, onDamage );
   
   this = self;
   self = bot;
   panic = FALSE;
-  if( (bot.flags & FL_NOGUNS) ){
+  if( (self.flags & FL_NOGUNS) ){
     panic = TRUE;
   }
   
@@ -675,10 +677,10 @@ float(entity wep) ai_attack_checkEne={
 void( void() ai_to_make ) ai_unit_setup={
   if( (self.spawnflags & AI_SPAWNFLAG_TRIGGERME) && (self.targetname) ){
     //checking the targetname is mostly for validation
-    self.use = ai_unit_setup;
+    self.use = ai_unit_make_trigger;
     self.unit_ini = ai_to_make;
     //allows for multiple spawn even on the 'trigger only' setting
-    self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME); 
+    self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
     return;
   }
   if( (self.delay > 0) && ( !(self.count) || (self.count < 1) ) ){
@@ -695,6 +697,11 @@ void( void() ai_to_make ) ai_unit_setup={
   }
   //fall-through, AI is cleared to happen
   ai_to_make();
+};
+
+void() ai_unit_make_trigger={
+  self.think = self.unit_ini;
+  self.nextthink = time + self.delay;
 };
 
 void() ai_unit_make_multi={

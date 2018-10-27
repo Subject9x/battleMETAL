@@ -1,5 +1,23 @@
 
 
+/*
+  see triggers_h.qc
+*/
+void( entity active, .string event ) trigger_event={
+  local string oldTarget;
+  otemp = self;
+  self = active;
+  oldTarget = self.target;
+  self.target = self.event;
+  if( self.event ){
+    activator = otemp;
+    SUB_UseTargets();
+    self.event = "";  //fired once
+  }
+  self.target = oldTarget;
+  self = otemp;
+};
+
 void() highlight_hud_touch={
   if( (other.flags & FL_CLIENT) ){
     client_push_hud_highlight( other );

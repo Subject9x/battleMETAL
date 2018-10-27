@@ -15,6 +15,19 @@ float	SILENT = 2;
 
 float PUSH_ONCE = 1;
 
+/*
+  Trigger Event Harness
+    each of these is like a tailored 'target' var that is fired
+    at the appropriate time.
+*/
+.string onDeath;
+.string onSpawn;
+.string onDamage;
+.string onPanic;
+.string onAttack;
+
+void( entity active, .string event ) trigger_event;
+
 //TRIGGER UTILS
 void() multi_wait;
 void() multi_trigger;
