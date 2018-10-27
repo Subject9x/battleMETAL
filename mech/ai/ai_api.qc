@@ -303,7 +303,7 @@ void(entity bot, entity attacker) ai_damage_react={
     return;
   }
 
-  trigger_event( bot, onDamage );
+  trigger_event( bot, trigOnDamage );
   
   this = self;
   self = bot;

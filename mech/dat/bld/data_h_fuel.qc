@@ -10,11 +10,12 @@ Overview: data file for building
 
 //Death Animation
 void() hfuel_death1 = [1, hfuel_death2]{
-  activator = self.enemy;
-	SUB_UseTargets ();
+  //fire triggers when dead
+  trigger_event( self, trigOnDeath );
+  
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
-  multi_trigger();
+
   local vector exp;
   exp = randomvec();
   exp_x = exp_x * ( -self.mins_x + random() * self.maxs_x) * 1.5;

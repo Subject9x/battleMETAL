@@ -177,10 +177,7 @@ void() ai_vec_dest_die={
   mech_player_compdie(self.e_cam);
   
   //fire triggers when dead
-  self.target = self.target_die;
-  self.enemy = self.ladder_entity;
-  activator = self.enemy;
-  SUB_UseTargets ();
+  trigger_event( self, trigOnDeath );
 
   self.think = ai_vec_dest_die1;
   self.ai_action_time = time + 120;

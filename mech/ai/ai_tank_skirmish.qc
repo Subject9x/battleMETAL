@@ -196,10 +196,7 @@ void() ai_tank_sk_die={
   self.attack_state = -1;
   
   //fire triggers when dead
-  self.target = self.target_die;
-  self.enemy = self.ladder_entity;
-  activator = self.enemy;
-  SUB_UseTargets ();
+  trigger_event( self, trigOnDeath );
 
   local entity w_chain;
   w_chain = self.w_slot;
@@ -299,15 +296,9 @@ void() ai_tank_sk_th={
   AI SPAWN FUNCTION
 */
 void() ai_tank_skirmish={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
-		objerror ("ai_tank_skirmish - outside of game mode");
-    remove(self);
+  if( !ai_create_unit( data_iniVehc )){
     return;
   }
-  
-  ai_unit_ini_var();
-  data_iniVehc( self.nextVecChoice );
-  ai_pilot_ini_stats( self.ai_rank );
   
   self.th_stand = ai_tank_sk_stand;
   self.th_walk = ai_generic_walk;

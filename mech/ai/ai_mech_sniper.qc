@@ -306,18 +306,9 @@ void() ai_mech_sniper_th={
   AI SPAWN FUNCTION
 */
 void() ai_mech_sniper={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
-		objerror ("ai_mech_sniperirmish - outside of game mode");
-    remove(self);
+
+  if( !ai_create_unit( data_iniMech )){
     return;
-  }
-  
-  ai_unit_ini_var();
-  data_iniMech( self.nextVecChoice );
-  ai_pilot_ini_stats(self.ai_rank);
-  
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
   }
   
   self.th_stand = ai_generic_stand;

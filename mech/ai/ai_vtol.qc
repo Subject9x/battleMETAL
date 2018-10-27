@@ -314,10 +314,8 @@ void() ai_vtol_die={
   }
   
   //fire triggers when dead
-  self.target = self.target_die;
-  self.enemy = self.ladder_entity;
-  activator = self.enemy;
-  SUB_UseTargets ();
+  trigger_event( self, trigOnDeath );
+  
   self.touch = ai_vtol_crash;
   
 };
@@ -362,15 +360,9 @@ void() ai_vtol_th={
   AI SPAWN FUNCTION
 */
 void() ai_vtol={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
-		objerror ("ai_vtol - outside of game mode");
-    remove(self);
+  if( !ai_create_unit( data_iniVehc )){
     return;
   }
-  
-  ai_unit_ini_var();
-  data_iniVehc( self.nextVecChoice );
-  ai_pilot_ini_stats( self.ai_rank );
   
   self.th_stand = ai_vtol_stand;
   self.th_walk = ai_vtol_walk;

@@ -408,10 +408,7 @@ void() ai_mech_sk_die={
   ai_leg_frame( leg_stand1 );
   
   //fire triggers when dead
-  self.target = self.target_die;
-  self.enemy = self.ladder_entity;
-  activator = self.enemy;
-  SUB_UseTargets ();
+  trigger_event( self, trigOnDeath );
   
   self.think = ai_mech_sk_die1;
   self.ai_action_time = time + 300;
@@ -494,18 +491,9 @@ void() ai_mech_sk_th={
   AI SPAWN FUNCTION
 */
 void() ai_mech_skirmish={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
-		objerror ("ai_mech_skirmish - outside of game mode");
-    remove(self);
+  
+  if( !ai_create_unit( data_iniMech )){
     return;
-  }
-  
-  ai_unit_ini_var();
-  data_iniMech( self.nextVecChoice );
-  ai_pilot_ini_stats(self.ai_rank);
-  
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
   }
   
   self.th_stand = ai_mech_sk_stand;

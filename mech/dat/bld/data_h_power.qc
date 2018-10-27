@@ -29,12 +29,11 @@ void() hpower_die = [0, hpower_die1]{
     }
     head = head.chain;
   }
-  activator = self.enemy;
-	SUB_UseTargets ();
+  //fire triggers when dead
+  trigger_event( self, trigOnDeath );
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
-  multi_trigger();
 };
 void() hpower_die1 = [1, hpower_die2]{};
 void() hpower_die2 = [2, hpower_die3]{};

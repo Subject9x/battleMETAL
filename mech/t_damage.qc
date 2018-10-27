@@ -411,9 +411,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
       self.th_die();
     }
     else{
-      if( self.data_type ){
-        trigger_event( self, onDeath );
-      }
       self.th_die();
     }
   

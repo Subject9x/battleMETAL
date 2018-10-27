@@ -33,7 +33,5 @@ void() building_hangar={
   
   self.movetype = MOVETYPE_NONE;
   self.th_die = building_die;
-  self.think = building_think;
-  self.nextthink = time + 1;
   self.use = multi_trigger;
 };

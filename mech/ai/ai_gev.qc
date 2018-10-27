@@ -29,8 +29,9 @@ void() ai_gev_setStrafe={
 
 float() ai_gev_lefty={
   if( random() > 0.49 ){
-    self.lefty = 1 - self.lefty;
+    return self.lefty = 1 - self.lefty;
   }
+  return self.lefty;
 };
 
 void() ai_gev_crash;
@@ -357,10 +358,7 @@ void() ai_gev_die={
   }
   
   //fire triggers when dead
-  self.target = self.target_die;
-  self.enemy = self.ladder_entity;
-  activator = self.enemy;
-  SUB_UseTargets ();
+  trigger_event( self, trigOnDeath );
   
   local vector v;
   makevectors( self.angles );
@@ -409,16 +407,10 @@ void() ai_gev_th={
 /*
   AI SPAWN FUNCTION
 */
-void() ai_gev={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
-		objerror ("ai_gev - outside of game mode");
-    remove(self);
+void() ai_gev={  
+  if( !ai_create_unit( data_iniVehc )){
     return;
   }
-  
-  ai_unit_ini_var();
-  data_iniVehc( self.nextVecChoice );
-  ai_pilot_ini_stats( self.ai_rank );
   
   self.th_stand = ai_gev_stand;
   self.th_walk = ai_gev_walk;

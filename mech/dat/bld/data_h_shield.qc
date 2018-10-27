@@ -18,13 +18,13 @@ void() hshield_die = [0, hshield_die1]{
       }
     }
     head = head.chain;
-  }
-  activator = self.enemy;
-	SUB_UseTargets ();
+  }  
+  //fire triggers when dead
+  trigger_event( self, trigOnDeath );
+  
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
-  multi_trigger();
 };
 void() hshield_die1 = [1, hshield_die2]{};
 void() hshield_die2 = [2, hshield_die3]{};

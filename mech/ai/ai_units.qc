@@ -134,3 +134,22 @@ void() unit_psc_vtol_l={
   self.i_faction = 4;
   ai_unit_setup( ai_vtol );
 };
+
+float( void() ai_unit_ini ) ai_create_unit={
+  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
+    objerror ("ai_unit - outside of game mode");
+    remove(self);
+    return FALSE;
+  }
+  
+  ai_unit_ini_var();
+  ai_unit_ini( self.nextVecChoice );
+  ai_pilot_ini_stats(self.ai_rank);
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
+  
+  trigger_event( self, trigOnSpawn); //event interface
+  return TRUE;
+};

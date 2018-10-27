@@ -78,7 +78,6 @@ entity AI_NODES[128];
 .entity ai_hunt_node;  //simple node-on-decay-timer
 .float ai_hunt_total; //current number of hunt nodes
 .float ai_attack_chance;
-.string target_die;
 .float ai_dir;
 
 //Stat Equations
@@ -143,6 +142,8 @@ void(void() macro) ai_leg_frame;
 /*
   AI STATE FUNCTIONS=====================
 */
+float( void() ai_unit_ini ) ai_create_unit;  //head function for making all ai units
+
 void( float state ) ai_next_state;
 void( float estate ) ai_state_control;
 void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states

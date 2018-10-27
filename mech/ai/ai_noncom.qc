@@ -212,10 +212,7 @@ void() ai_noncom_die={
   self.attack_state = -1;
   
   //fire triggers when dead
-  self.target = self.target_die;
-  self.enemy = self.ladder_entity;
-  activator = self.enemy;
-  SUB_UseTargets ();
+  trigger_event( self, trigOnDeath );
 
   self.think = BecomeExplosion;
   self.nextthink = time + 2;

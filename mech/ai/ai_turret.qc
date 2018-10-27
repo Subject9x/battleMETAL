@@ -152,10 +152,7 @@ void() ai_turret_die={
   mech_player_compdie(self.e_tor_c);
   
   //fire triggers when dead
-  self.target = self.target_die;
-  self.enemy = self.ladder_entity;
-  activator = self.enemy;
-  SUB_UseTargets ();
+  trigger_event( self, trigOnDeath );
 
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;
@@ -218,16 +215,11 @@ void() ai_turret_th={
   SPAWN
 */
 void() ai_turret={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE){
-    remove(self);
-    return;
-  }
   self.flags = self.flags | FL_TURRET;
   
-  ai_unit_ini_var();
-  data_iniTurret( self.nextVecChoice );
-  ai_pilot_ini_stats( ai_pilot_rank_byskill() );
-  
+  if( !ai_create_unit( data_iniTurret )){
+    return;
+  }
   self.th_stand = ai_turret_stand;
   self.th_walk = ai_turret_walk;
   self.th_run = ai_turret_run;

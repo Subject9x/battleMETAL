@@ -94,12 +94,13 @@ void() hrepair_die = [0, hrepair_die1]{
     }
     head = head.chain;
   }
-  activator = self.enemy;
-	SUB_UseTargets ();
+  //fire triggers when dead
+  trigger_event( self, trigOnDeath );
+  
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
-  multi_trigger();
+
 };
 void() hrepair_die1 = [1, hrepair_die2]{};
 void() hrepair_die2 = [2, hrepair_die3]{};

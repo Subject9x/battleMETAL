@@ -1,9 +1,22 @@
 
 
 /*
-  see triggers_h.qc
+  a poor man's interface. Entities can sign up for the even system
+  by invoking trigger_event at the appropriate time (heh or any time really)
+  and this handles the event.
+  
+  .string event is the target name where there are several choices now,
+    .string onDeath;
+    .string onSpawn;
+    .string onDamage;
+    .string onPanic;
+    .string onAttack;
+  and the correct string should be used accordingly.
+  The function then slots that string into its .target value,
+    fires the SUB_UseTargets() function (thus firing target triggers)
+  then reloads the original .target value, and returns.
 */
-void( entity active, .string event ) trigger_event={
+void( entity active, .string event) trigger_event={
   local string oldTarget;
   otemp = self;
   self = active;
