@@ -18,17 +18,18 @@
 */
 void( entity active, .string event) trigger_event={
   local string oldTarget;
-  otemp = self;
+  local entity hold;
+  hold = self;
   self = active;
-  oldTarget = self.target;
-  self.target = self.event;
   if( self.event ){
-    activator = otemp;
+    oldTarget = self.target;
+    self.target = self.event;
+    activator = hold;
     SUB_UseTargets();
-    self.event = "";  //fired once
+    self.event = string_null;  //fired once
   }
   self.target = oldTarget;
-  self = otemp;
+  self = hold;
 };
 
 void() highlight_hud_touch={

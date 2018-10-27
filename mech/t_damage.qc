@@ -70,7 +70,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   local float damage, dmgtype, shields, mod, crit;
   
   if( targ.sh_cur <= 0 ){
-    return damage;
+    return dmg_amt;
   }
   
   dmgtype = inflictor.p_dmgtype;

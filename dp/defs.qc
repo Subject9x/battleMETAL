@@ -730,22 +730,6 @@ vector(vector m1, vector m2) randompos =
 	return  v;
 };
 
-// LordHavoc: made this a builtin function
-/*
-vector() randomvec =
-{
-	local vector v;
-	do
-	{
-		v_x = random() - 0.5; // scaled up in the return()
-		v_y = random() - 0.5;
-		v_z = random() - 0.5;
-	}
-	while (vlen(v) > 0.25);
-	return(v * 2);
-};
-*/
-
 vector() randomvec2 =
 {
 	local vector v;

@@ -52,6 +52,8 @@ void() player_makeMech={
   }
   self.power_timer_segment = time + 0.007;
   data_iniMech(self.nextVecChoice);
+  self.stat_rdr_mode = FALSE;
+  self.stat_rdr_rng = self.radar_range;
   //self.touch = touch_mech; shhhhh, not yet
   if( (self.flags & FL_CLIENT) ){
     mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);

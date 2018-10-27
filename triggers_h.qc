@@ -20,11 +20,12 @@ float PUSH_ONCE = 1;
     each of these is like a tailored 'target' var that is fired
     at the appropriate time.
 */
-.string trigOnDeath;
 .string trigOnSpawn;
-.string trigOnDamage;
-.string trigonPanic;
+.string trigOnDeath;
 .string trigOnAttack;
+.string trigOnDamage;
+.string trigOnPanic;
+.string trigOnTarget;
 
 void( entity active, .string event ) trigger_event;
 

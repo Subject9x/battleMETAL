@@ -6,8 +6,6 @@ Overview: weapon  values are being reorganized to ease maintenance
 -these are utilized by their relevant data entity and its ini functions
 */
 //STANDARD LASER=======================
-float DAT_LAS_HPX = 200;
-
 void() data_las_atk;
 void() data_las_think;
 
@@ -30,8 +28,7 @@ void() data_las_ini={
   self.i_techlvl = DAT_LAS_TECH_LEVEL;
   self.i_size = DAT_LAS_WSIZE;
   self.w_think = data_las_think;
-  self.health = DAT_LAS_HPX;
-  self.max_health = DAT_LAS_HPX;
+  self.max_health = self.health =1;
   self.w_range = DAT_LAS_RANGE;
   self.w_state = READY;
 };

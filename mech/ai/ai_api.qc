@@ -685,11 +685,13 @@ void( void() ai_to_make ) ai_unit_setup={
   }
   if( (self.delay > 0) && ( !(self.count) || (self.count < 1) ) ){
     //this is a delayed one-off
+    self.use = multi_trigger;
     self.nextthink = time + self.delay;
     self.think = ai_to_make;
     return;
   }
   if( self.count > 0 ){
+    self.use = multi_trigger;
     self.unit_ini = ai_to_make;
     self.nextthink = time + self.count1; //baked in automatically
     self.think = ai_unit_make_multi;
@@ -700,6 +702,7 @@ void( void() ai_to_make ) ai_unit_setup={
 };
 
 void() ai_unit_make_trigger={
+  self.use = multi_trigger;
   self.think = self.unit_ini;
   self.nextthink = time + self.delay;
 };
@@ -712,6 +715,7 @@ void() ai_unit_make_multi={
     stemp = self;
     self = newmis;
       self.unit_ini();
+      self.use = multi_trigger;
     self = stemp;
     self.count = self.count - 1;
     self.nextthink = time + self.count1;

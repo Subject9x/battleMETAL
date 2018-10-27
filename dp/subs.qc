@@ -236,13 +236,13 @@ match (string)self.target and call their .use function
 */
 void() SUB_UseTargets =
 {
-	local entity t, stemp, otemp, act;
+
+	local entity t, act;
 
 //
 // check for a delay
 //
-	if (self.delay)
-	{
+	if (self.delay){
 	// create a temp object to fire at a later time
 		t = spawn();
 		t.classname = "DelayedUse";
@@ -269,11 +269,9 @@ void() SUB_UseTargets =
 //
 // kill the killtagets
 //
-	if (self.killtarget)
-	{
+	if (self.killtarget){
 		t = world;
-		do
-		{
+		do{
 			t = find(t, targetname, self.killtarget);
 			if (!t)
 				return;
@@ -283,12 +281,10 @@ void() SUB_UseTargets =
 //
 // fire targets
 //
-	if (self.target)
-	{
+	if (self.target){
 		act = activator;
 		t = world;
-		do
-		{
+		do{
 			t = find(t, targetname, self.target);
 			if (!t)
 				return;
@@ -297,9 +293,7 @@ void() SUB_UseTargets =
 			self = t;
 			other = stemp;
 			if (self.use)
-			if (self.use != SUB_Null){
         self.use ();
-      }
 			self = stemp;
 			other = otemp;
 			activator = act;
