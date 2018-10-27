@@ -20,6 +20,9 @@ float AI_SPAWNFLAG_NOVET        = 1024; //remove from Veteran Difficulty
 float AI_SPAWNFLAG_NOELT        = 2048; //remove from Elit Difficulty
 float AI_SPAWNFLAG_NODROP       = 4096; //don't drop bot to the floor onspawn
 
+float AI_SPAWNFLAG_TRIGGERME        = 8192; //ai only spawns when triggered
+//float AI_SPAWNFLAG_TRIGGERME        = 8192;
+
 //AI STATE CONSTANTS
 float ST_STAND              = 1;  //th_stand
 float ST_WALK               = 2;  //th_walk
@@ -123,6 +126,10 @@ float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
 float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;
 float() ai_panic_time;
+
+//AI MAP FUNCS
+void( void() ai_to_make ) ai_unit_setup;
+void() ai_unit_make_multi;
 
 //AI CONTROL - ai_ctrl.qc 
 void() ai_hunt_target;

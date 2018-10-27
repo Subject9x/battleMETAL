@@ -27,7 +27,6 @@ void() ai_spawner_use;
 void() ai_spawner_think;
 void() ai_spawner_activate;
 
-
 //map objectives
 void() map_objective_th;
 void() map_objective_use;

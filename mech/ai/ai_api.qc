@@ -661,6 +661,58 @@ float(entity wep) ai_attack_checkEne={
 };
 
 
+//AI MAP FUNCS
+/*
+    called by any AI unit that needs to spawn onto the map.
+    This function delegates HOW the AI should be spawned based on its starting parameters.
+    
+    if the AI is to be triggered by another object, then postpone full ini into the use() function
+    if the AI is a multiple - count > 0, as in, 'create multiples', then delegate to ai_unit_make_multi()
+    if the AI count is < 0 but there's a delay param, then delay ini for that amount of time
+    else
+    fall-through and create the ai
+*/
+void( void() ai_to_make ) ai_unit_setup={
+  if( (self.spawnflags & AI_SPAWNFLAG_TRIGGERME) && (self.targetname) ){
+    //checking the targetname is mostly for validation
+    self.use = ai_unit_setup;
+    self.unit_ini = ai_to_make;
+    //allows for multiple spawn even on the 'trigger only' setting
+    self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME); 
+    return;
+  }
+  if( (self.delay > 0) && ( !(self.count) || (self.count < 1) ) ){
+    //this is a delayed one-off
+    self.nextthink = time + self.delay;
+    self.think = ai_to_make;
+    return;
+  }
+  if( self.count > 0 ){
+    self.unit_ini = ai_to_make;
+    self.nextthink = time + self.count1; //baked in automatically
+    self.think = ai_unit_make_multi;
+    return;
+  }
+  //fall-through, AI is cleared to happen
+  ai_to_make();
+};
+
+void() ai_unit_make_multi={
+  if( self.count > 0 ){
+    newmis = spawn();
+    copyentity( self, newmis );
+    newmis.unit_ini = self.unit_ini;
+    stemp = self;
+    self = newmis;
+      self.unit_ini();
+    self = stemp;
+    self.count = self.count - 1;
+    self.nextthink = time + self.count1;
+    self.think = ai_unit_make_multi;
+    return;
+  }
+};
+
 void(float startState) ai_initialize_system={
   ai_pilot_validate_states();
   ai_next_state( startState );

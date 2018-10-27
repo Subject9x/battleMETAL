@@ -525,8 +525,11 @@ void() ai_mech_skirmish={
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
   }
-  droptofloor();
   
+  droptofloor();
+  if( (self.flags & FL_TURRET) ){
+    util_setOffsetOrigin(self.e_tor_c, self, self.e_tor_c.c_ofs);
+  }
   ai_walk_setup();
   
   self.think = ai_mech_sk_th;

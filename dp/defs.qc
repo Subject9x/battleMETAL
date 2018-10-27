@@ -1130,9 +1130,6 @@ float maxdecors;
 //void(vector org, entity en, vector dir, float splattype, float importance) newbloodsplat;
 void(vector org, float bodydamage, float armordamage, vector vel, float damgtype) genericbleedfunc;
 
-
-
-
 // damage stuff
 
 //void(entity targ, entity inflictor, entity attacker, float damage, float bdamage, string dt, float damgtype, vector damgpoint, vector force, void(entity t, entity a, string m, float dtyp) obitfunc) T_Damage;
