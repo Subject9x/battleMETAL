@@ -44,7 +44,6 @@ float(float numOfSides) util_roll_dice={
   return roll;
 };
 
-
 float( entity t, float max ) util_getPieceHpForAverage{
   if( t ){
     if( max ){
@@ -85,17 +84,6 @@ float(entity t) util_getMechHpTotal={
   return FALSE;
 };
 
-vector(vector rgb) util_rgbToFloat={
-  local vector nu;
-  nu_x = rgb_x/255;
-  nu_y = rgb_y/255;
-  nu_z = rgb_z/255;
-  return nu;
-};
-
-float(float t, float e) util_normalizeTimeAsPercent={
-  return t / e;
-};
 
 float( float yee, float targAng, float buffer ) util_checkAngNotIdeal={
   local float trg_low, trg_high;
@@ -134,27 +122,29 @@ vector(entity own, float range) util_traceForPlayer={
   cam = own.e_cam;
   makevectors(own.v_angle);
   vcr = own.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
-  traceline(vcr, vcr + (v_forward* self.w_range), FALSE, own);
+  traceline(vcr, vcr + (v_forward * 10000), FALSE, own);
   return trace_endpos;
 };
 
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
 vector( vector prevTraceEnd, vector viewAngle, float targetDist, float idealRange, float spreadx, float spready) util_applySpreadToTrace={
-  local vector conv, endpos;
-  local float distMod, sprx, spry;
+  local vector wepAim;
+  local vector direction;
+  local vector src;
   
-  distMod = targetDist / idealRange;
-  sprx = spreadx * distMod;
-  spry = spready * distMod;
-  
-  conv_x = sprx * ( random() - 0.5 ) ;
-  conv_y = spry * ( random() - 0.5 );
-  conv_z = 0;
+  wepAim = aim(self.owner, 100000);
   
   makevectors( viewAngle );
-  endpos = prevTraceEnd + (v_forward * conv_z) + (v_up * conv_y) +(v_right * conv_x);
-  return endpos;
+  
+  src = self.origin + (v_forward * 10);
+  src_z = self.owner.absmin_z + self.owner.size_z * 0.7;
+  
+  direction = wepAim + (crandom()*0.1 * v_right) + (crandom()*0.1 * v_up);
+    
+  traceline (src, src + direction*idealRange, FALSE, self.owner);
+  
+  return trace_endpos;
 };
 
 //simply returns a vector offset from an origin along a given angle
@@ -174,14 +164,6 @@ vector( vector startOrigin, vector viewAngle, float wepRange, entity parent) uti
   
   return trace_endpos;
 }
-
-float(float mod, float targ_val) util_zeroStat={
-  targ_val = targ_val - mod;
-  if(targ_val < 0){
-    targ_val = 0;
-  }
-  return targ_val;
-};
 
 //inspired by original inFront function
 float(entity trg) util_checkPointAngle={

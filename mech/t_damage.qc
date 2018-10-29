@@ -707,14 +707,10 @@ void(entity attacker, float damage) T_BeamDamage =
 	}
 };
 
-
-
-
 /*
   2 Jan 2017
     kept here for posterity, apparently agile recursion has no
     place in quake C, the dream was just too beautiful.
-
 
   this is some ugly code...
 
@@ -768,4 +764,4 @@ entity(vector point, float rad, entity src, entity own, entity prev) t_find_recu
   
   return found;
 };
-* 
+*/

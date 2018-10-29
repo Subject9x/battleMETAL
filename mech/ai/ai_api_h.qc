@@ -95,8 +95,8 @@ void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
 float() ai_pilot_rank_byskill;
 float(float rank) ai_pilot_attack_interval;
-float( float rank ) ai_pilot_interval;
 float( float rank, float skl, float damg) ai_pilot_mod_damage;
+vector( float rank, float vec_type) ai_pilot_accuracy;
 
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;

@@ -61,11 +61,6 @@ float M_LEG_R       = 7;
 float M_ARM_LEFT    = 8;
 float M_ARM_RIGHT   = 9;
 
-//vehicle piece classname constants
-string V_CHASSIS = "v_chas";
-string V_TUR_MAIN = "v_tur_main";
-string V_TUR_AUX = "v_tur_aux";
-
 //direction values
 float DIR_N   = 0;
 float DIR_NE  = 1;
@@ -78,7 +73,6 @@ float DIR_NW  = 7;
 
 //class vars
 .float data_type;
-.string vec_name;
 .float max_armor; //why wasn't this ever included!?
 
 //Armor Types

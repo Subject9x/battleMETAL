@@ -27,10 +27,14 @@ commented vars mean they're already implemented and are here for reference!
 .vector conv_min;
 .vector conv_max;
 
+//Weapon Spread Mechanics
+.float spreadAdj;
+.float spread;
+.float spreadMax;
+
 .float m_rot_speed;
 .string m_pitch_min;
 .string m_pitch_max;
-.float m_speed;
 //.float i_techLevel;
 //.string data_type;
 

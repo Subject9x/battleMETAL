@@ -92,6 +92,7 @@ void() unit_hs_scout={
 void() unit_hs_mech_sk={
   self.flags = self.flags | FL_TURRET;  //enforced for a mech
   self.i_faction = 2;
+  self.mskin = 2;
   ai_unit_setup( ai_mech_skirmish );
 };
 

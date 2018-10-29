@@ -136,10 +136,10 @@ void() multi_touch =
 /*QUAKED trigger_highlighthud (.5 .5 .5) ?
 Highlights a section of a client's HUD, mostly used for tutorials n such
 options:
-"ui_box_pos" : vector, position on screen, z=0
-"ui_box_sz"  : vector, size of box, z=0
-"ui_box_clr" : vector, color of box
-"ui_box_time": float, how many seconds to display.
+"fx_origin" : vector, position on screen, z=0
+"c_alt_ofs" : vector, size of box, z=0
+"c_ofs"     : vector, color of box
+"wait"      : float, how many seconds to display.
 */
 //highlight box on hud
 void() trigger_highlighthud={
@@ -153,9 +153,8 @@ void() trigger_highlighthud={
   self.touch = highlight_hud_touch;
   if (self.nextthink > time)
 	{
-		return;		// allready been triggered
+		return;		// already been triggered
 	}
-
 };
 
 /*QUAKED trigger_multiple (.5 .5 .5) ? notouch

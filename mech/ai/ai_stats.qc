@@ -264,10 +264,7 @@ float() ai_pilot_yaw_mod={
   rating. Easier skill modes mean each AI has less armor.
 */
 float() ai_pilot_armor_mod={
-  if(skill == 0){
-    return AI_ARMOR_EASY;
-  }
-  else if(skill == 1){
+  if(skill == 1){
     return AI_ARMOR_MEDM;
   }
   else if(skill == 2){
@@ -286,10 +283,7 @@ float() ai_pilot_armor_mod={
   rating. Easier skill modes mean each AI has less armor.
 */
 float() ai_pilot_shield_mod={
-  if(skill == 0){
-    return AI_SHIELD_EASY;
-  }
-  else if(skill == 1){
+  if(skill == 1){
     return AI_SHIELD_MEDM;
   }
   else if(skill == 2){
@@ -365,7 +359,7 @@ float() ai_pilot_rating_patience={
 };
 
 /*
-  a design conceit, to make sure bots are perfectly firing,
+  a design conceit, to make sure bots are not perfectly firing,
   or inhumanly relentlessly attacking, this function creates
   a random amount of time to make the next attack.
 */
@@ -402,36 +396,35 @@ float(float rank) ai_pilot_attack_interval={
   return interval;
 };
 
-float( float rank ) ai_pilot_interval={
-
-  local float interval;
-  switch( skill ){
-    case 0:
-      interval = 0.95;
+/*
+  AI base accuracy rating
+*/
+vector( float rank, float vec_type ) ai_pilot_accuracy={
+  local vector accuracy;
+  switch( vec_type ){
+    case DATA_VEHC:
+      accuracy = '0 0 0';
       break;
-    case 1:
-      interval = 0.80;
+    case DATA_MECH:
+      accuracy = '0 0 0';
       break;
-    case 2:
-      interval = 0.65;
-      break;
-    case 3:
-      interval = 0.5;
+    case DATA_BLD:
+      accuracy = '0 0 0';
       break;
   }
   switch( rank ){
     case AI_RANK_ROK:
-      interval = interval - AI_REFLEX_ROK;
+      
       break;
     case AI_RANK_REG:
-      interval = interval - AI_REFLEX_REG;
+      
       break;
     case AI_RANK_VET:
-      interval = interval - AI_REFLEX_VET;
+      
       break;
     case AI_RANK_ACE:
-      interval = interval - AI_REFLEX_ACE;
+      
       break;
   }
-  return interval;
+  return accuracy;
 };

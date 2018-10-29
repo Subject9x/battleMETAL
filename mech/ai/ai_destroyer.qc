@@ -195,7 +195,7 @@ void() ai_vec_dest_die={
 void() ai_vec_dest_die1={
   makevectors( world.v_angle );
   local vector sm;
-  sm = world.v_angle + (v_forward * world.m_speed) + (v_right * world.m_speed) + (v_up * world.m_speed);
+  sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
   te_smoke_test(self.origin, sm + '0 0 10', 2);
   
   self.think = ai_vec_dest_die1;

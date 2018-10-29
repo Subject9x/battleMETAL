@@ -425,7 +425,7 @@ void() ai_mech_sk_die={
 void() ai_mech_sk_die1={
   makevectors( world.v_angle );
   local vector sm;
-  sm = world.v_angle + (v_forward * world.m_speed) + (v_right * world.m_speed) + (v_up * world.m_speed);
+  sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
   te_smoke_test(self.origin, sm + '0 0 5', 3);
   te_smoke_test(self.e_tor_l.origin, sm + '0 0 5', 1);
   te_smoke_test(self.e_tor_r.origin, sm + '0 0 5', 1);

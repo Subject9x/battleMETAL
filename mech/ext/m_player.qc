@@ -113,10 +113,6 @@ void() PlayerPostThink = {
   //Update Target information
   server_updateTargetInfo();
   
-  if(self.ui_box_time > 0){
-    self.ui_box_time  = self.ui_box_time - 1;
-  }
-  
 // do weapon stuff
   //STAT UPDATE   
   if(self.data_type == DATA_MECH){

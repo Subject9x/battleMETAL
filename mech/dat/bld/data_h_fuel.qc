@@ -114,9 +114,8 @@ void() building_fuel={
   }
   
   self.th_die = hfuel_death1;
-  self.th_stand = build_stand1;
   self.use = multi_trigger;
   
-  self.nextthink = self.nextthink + random()*0.5;
-  self.think = self.th_stand;
+  //self.nextthink = self.nextthink + random()*0.5;
+  //self.think = self.th_stand;
 };
