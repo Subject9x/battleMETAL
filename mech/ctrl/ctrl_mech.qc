@@ -7,11 +7,13 @@ Overview: implementation for center torso updates
 
 void() ctrl_updateCenterTorso={
   local float diff;
+  local float mx, my;
+  local float rate;
+  local entity cam;
+  local vector v1;
   
   if((self.flags & FL_CLIENT)){
     if(time > self.laser_sight_timer){
-      local entity cam;
-      local vector v1;
       makevectors(self.v_angle);
       v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
       traceline(v1, v1 + v_forward*10000, FALSE, self);
@@ -20,8 +22,6 @@ void() ctrl_updateCenterTorso={
     }
   }
   else{
-    local entity cam;
-    local vector v1;
     makevectors(self.v_angle);
     v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
     traceline(v1, v1 + v_forward * 10000, FALSE, self);
@@ -57,7 +57,6 @@ void() ctrl_updateCenterTorso={
   }
   
   if((self.flags & FL_CLIENT)){
-    local float mx, my;
     mx = self.movement_x;
     if(mx < 0){
       mx = mx * -1;
@@ -67,33 +66,30 @@ void() ctrl_updateCenterTorso={
     if(my < 0){
       my = my * -1;
     }
-    local float r_max, r_min;
-    if(self.stat_rdr_mode){
-      r_max = self.conv_max_z / 2;
-      r_min = self.conv_min_z * 2;
-    }
-    else{
-      r_max = self.conv_max_z;
-      r_min = self.conv_min_z;
-    }
-    if( self.stat_plr_stt > PLAYER_ACTIVE ){
-      self.stat_spr_x = self.stat_spr_x + r_max;
-      if(self.stat_spr_x > self.conv_max_x){
-        self.stat_spr_x =  self.conv_max_x;
+    
+    //TODO - spread
+    if( (my != 0) || (mx != 0) ) {
+      //unit is moving, increase spread factor
+      rate = self.spreadDefault_z;
+      if( !self.stat_rdr_mode ){
+        rate = rate + ( rate * 0.5 );
       }
-      self.stat_spr_y = self.stat_spr_y + r_max;
-      if(self.stat_spr_y > self.conv_max_y){
-        self.stat_spr_y =  self.conv_max_y;
+      rate = rate - self.accuracyMod;
+      self.accuracy = self.accuracy + rate;
+      if( self.accuracy > self.spreadDefault_y ){
+        self.accuracy = self.spreadDefault_y;
       }
     }
-    else{
-      self.stat_spr_x = self.stat_spr_x - r_min;
-      if(self.stat_spr_x < self.conv_min_x){
-        self.stat_spr_x =  self.conv_min_x;
+    if( (my == 0) && (mx == 0) ){
+      //standing still, lessen the spread
+      rate = self.spreadDefault_z;
+      if( self.stat_rdr_mode ){
+        rate = rate + (rate * 0.25);
       }
-      self.stat_spr_y = self.stat_spr_y - r_min;
-      if(self.stat_spr_y < self.conv_min_y){
-        self.stat_spr_y =  self.conv_min_y;
+      rate = rate + self.accuracyMod;
+      self.accuracy = self.accuracy - rate;
+      if( self.accuracy < self.spreadDefault_x ){
+        self.accuracy = self.spreadDefault_x;
       }
     }
   }

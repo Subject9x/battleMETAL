@@ -128,21 +128,27 @@ vector(entity own, float range) util_traceForPlayer={
 
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
-vector( vector prevTraceEnd, vector viewAngle, float targetDist, float idealRange, float spreadx, float spready) util_applySpreadToTrace={
+vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc ) util_applySpreadToTrace={
   local vector wepAim;
   local vector direction;
   local vector src;
-  
+  local vector acc;
+  //weaponSpread
   wepAim = aim(self.owner, 100000);
   
   makevectors( viewAngle );
   
-  src = self.origin + (v_forward * 10);
+  src = self.origin + (v_forward * 4);
   src_z = self.owner.absmin_z + self.owner.size_z * 0.7;
   
-  direction = wepAim + (crandom()*0.1 * v_right) + (crandom()*0.1 * v_up);
+  acc_x = (weaponSpread_x * playerAcc);
+  acc_y = (weaponSpread_y * playerAcc);
+  
+  acc_x = acc_x * crandom();
+  acc_y = acc_y * crandom();
+  direction = wepAim + (acc_x * v_right) + (crandom()*acc_y * v_up);
     
-  traceline (src, src + direction*idealRange, FALSE, self.owner);
+  traceline (src, src + direction*idealRange, FALSE, self);
   
   return trace_endpos;
 };

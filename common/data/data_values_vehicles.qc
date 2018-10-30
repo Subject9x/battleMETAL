@@ -139,28 +139,24 @@ vector DAT_PSC_VTOLL_BBX_X    =   '30 30 15';
 //            Radar Range and Lock-on Delay
 //============================
 //-------------------------Human Tank Light
-float DAT_HS_TANKL_RADAR_RANGE  = 4000;
+float DAT_HS_TANKL_RADAR_RANGE    = 4000;
 //-------------------------Human Tank Destroyer
-float DAT_H_TD_RADAR_RANGE      = 6000;
+float DAT_H_TD_RADAR_RANGE        = 6000;
 //-------------------------Human Gev Light
 float DAT_HS_GEVL_RADAR_RANGE      = 2000;
 //-------------------------PSC VTOL Light
-float DAT_PSC_VTOLL_RADAR_RANGE = 3000;
+float DAT_PSC_VTOLL_RADAR_RANGE   = 3000;
 //============================
 //            Base Convergence
 //============================
 //-------------------------Human Tank Light
-vector DAT_HS_TANKL_SPREAD_N      = '8 6 0.01';
-vector DAT_HS_TANKL_SPREAD_X      = '14 10 0.03';
+vector DAT_HS_TANKL_SPREAD  = '0.1 0.1 0.001';
 //-------------------------Human Tank Destroyer
-vector DAT_H_TD_SPREAD_N      = '4 2 0.02';
-vector DAT_H_TD_SPREAD_X      = '8 6 0.025';
+vector DAT_H_TD_SPREAD      = '0.1 0.1 0.001';
 //-------------------------Human Gev Light
-vector DAT_HS_GEVL_SPREAD_N      = '3.5 3.5 0.02';
-vector DAT_HS_GEVL_SPREAD_X      = '10 10 0.025';
+vector DAT_HS_GEVL_SPREAD   = '0.1 0.1 0.001';
 //-------------------------PSC VTOL Light
-vector DAT_PSC_VTOLL_SPREAD_N      = '2 4 0.02';
-vector DAT_PSC_VTOLL_SPREAD_X      = '4 8 0.025';
+vector DAT_PSC_VTOLL_SPREAD = '0.1 0.1 0.001';
 //============================
 //         Base Yaw Speed
 //============================

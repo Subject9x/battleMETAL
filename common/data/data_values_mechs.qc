@@ -132,7 +132,7 @@ float DAT_MTK_LOCK = 4;
 float DAT_MNT_RADAR_RANGE = 3000;
 float DAT_MNT_LOCK = 8;
 //============================
-//            Base Convergence
+//            HITBOX SIZES
 //============================
 //-------------------------BALAKET------------------------
 vector DAT_OTL_CTOR_BBX_N ='-14 -14 -35';
@@ -147,14 +147,11 @@ vector DAT_MNT_CTOR_BBX_X = '22 22 28';
 //            Base Convergence
 //============================
 //-------------------------BALAKET------------------------
-vector DAT_OTL_SPREAD_N = '4 4 0.1';
-vector DAT_OTL_SPREAD_X = '8 8 0.1';
+vector DAT_OTL_SPREAD   = '0.25 0.85 0.005';
 //-------------------------MATOK------------------------
-vector DAT_MTK_SPREAD_N = '4 4 0.008';
-vector DAT_MTK_SPREAD_X = '8 8 0.008';
+vector DAT_MTK_SPREAD   = '0.1 0.75 0.0025';
 //-------------------------MONITOR------------------------
-vector DAT_MNT_SPREAD_N = '8 6 0.01';
-vector DAT_MNT_SPREAD_X = '14 10 0.03';
+vector DAT_MNT_SPREAD   = '0.35 1 0.008';
 //============================
 //            Models  
 //============================

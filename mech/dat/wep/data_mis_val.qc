@@ -27,8 +27,6 @@ void() data_mis_ini={
   self.en_rate = DAT_MIS_EN_RATE;
   self.fire_sound = DAT_MIS_FIRESOUND;
   self.i_techlvl = DAT_MIS_TECH_LEVEL;
-  self.stat_spr_x = DAT_MIS_SPR_X;
-  self.stat_spr_y = DAT_MIS_SPR_Y;
   self.i_size = DAT_MIS_WSIZE;
   self.w_think = data_mis_think;
   self.health = DAT_MIS_HPX;
@@ -38,6 +36,7 @@ void() data_mis_ini={
   self.w_state = READY;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.p_damage = DAT_MIS_DMG;
+  self.spreadDefault = DAT_MIS_ACC;
 };
 
 void() data_mis_think={
@@ -63,11 +62,9 @@ void() data_mis_think={
 void() data_mis_atk={
   local entity player, proj, oself;
   local vector dir, org, end, adj, angl;
-  local float range, convx, convy;
+  local float range;
   player = self.owner;
 
-  convx = player.stat_spr_x + self.stat_spr_x;
-  convy = player.stat_spr_y + self.stat_spr_y;
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
   angl = player.angles;
   range = self.w_range;
@@ -81,9 +78,9 @@ void() data_mis_atk={
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = util_traceForAI( org, angl, self.w_range );
+    end = util_traceForAI( org, angl, self.w_range, player );
   }
-  dir = util_applySpreadToTrace( end, player.v_angle, player.stat_trg_dist, range, convx, convy );//becomes 'endpoint' for shot angle
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
     
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){

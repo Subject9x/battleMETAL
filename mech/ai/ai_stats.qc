@@ -34,8 +34,9 @@ void() ai_unit_ini_var={
   
   self.stat_spr_x = 0;
   self.stat_spr_y = 0;
-  self.conv_min = '0 0 0';
-  self.conv_max = '0 0 0';
+  self.spreadDefault = '0 0 0';
+  self.accuracy = 0;
+  self.accuracyMod = 0;
   self.stat_lck_stt = LOCK_NONE;
   self.power_timer = 0;
   self.ideal_yaw = self.angles * '0 1 0';
@@ -78,8 +79,9 @@ void(float rank) ai_pilot_ini_stats={
     self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * mod_yaw);
   }
   self.ai_leading = ai_pilot_rating_leading();
-  self.stat_spr_x = self.conv_min_x + self.conv_max_x;
-  self.stat_spr_y = self.conv_min_y + self.conv_max_y;
+  //TODO - spread
+  //self.stat_spr_x = self.spreadDefault_x + self.conv_max_x;
+  //self.stat_spr_y = self.spreadDefault_y + self.conv_max_y;
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
   self.ai_action_mod = ai_pilot_action_mod( rank );

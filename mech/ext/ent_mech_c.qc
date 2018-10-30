@@ -7,6 +7,9 @@ Overview: 'class' for mech data / actual ents
 commented vars mean they're already implemented and are here for reference!
 */
 
+//IMPORT
+//.float i_techLevel;
+//.string data_type;
 
 //reactor
 .float en_max;   //max amount
@@ -24,19 +27,15 @@ commented vars mean they're already implemented and are here for reference!
 .float vec_size;
 .string vec_name;
 
-.vector conv_min;
-.vector conv_max;
-
 //Weapon Spread Mechanics
-.float spreadAdj;
-.float spread;
-.float spreadMax;
+.vector spreadDefault;
+.float accuracyMod;
+.float accuracyAdj;
+.float accuracy; 
 
 .float m_rot_speed;
 .string m_pitch_min;
 .string m_pitch_max;
-//.float i_techLevel;
-//.string data_type;
 
 //child entites
 .entity e_legs;

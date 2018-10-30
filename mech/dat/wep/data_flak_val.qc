@@ -29,14 +29,13 @@ void() data_flak_ini={
   self.en_rate = DAT_FLAK_EN_RATE;
   self.fire_sound = DAT_FLAK_FIRESOUND;
   self.i_techlvl = DAT_FLAK_TECH_LEVEL;
-  self.stat_spr_x = DAT_FLAK_SPR_X;
-  self.stat_spr_y = DAT_FLAK_SPR_Y;
   self.i_size = DAT_FLAK_WSIZE;
   self.w_think = data_flak_think;
   self.health = DAT_FLAK_HPX;
   self.max_health = DAT_FLAK_HPX;
   self.w_range = DAT_FLAK_RANGE;
   self.w_state = READY;
+  self.spreadDefault = DAT_FLAK_ACC;
 };
 
 
@@ -63,12 +62,10 @@ void() data_flak_think={
 void() data_flak_atk={
   local entity player, proj, oself, this, enm;
   local vector dir, org, end, adj, angl;
-  local float range, convx, convy;
+  local float range;
   
   player = self.owner;
   
-  convx = player.stat_spr_x + self.stat_spr_x;
-  convy = player.stat_spr_y + self.stat_spr_y;
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
   angl = player.angles;
   range = self.w_range;
@@ -82,9 +79,9 @@ void() data_flak_atk={
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = util_traceForAI( org, angl, self.w_range );
+    end = util_traceForAI( org, angl, self.w_range, player );
   }
-  dir = util_applySpreadToTrace( end, player.v_angle, player.stat_trg_dist, range, convx, convy );//becomes 'endpoint' for shot angle
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
   enm = trace_ent;
   
   self.w_currentammo = self.w_currentammo - 1;

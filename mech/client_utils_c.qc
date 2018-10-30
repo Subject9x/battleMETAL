@@ -50,7 +50,7 @@ void() client_push_player_info={
       local float enm;
       enm = num_for_edict(self.enemy);
       WriteByte( MSG_ONE, enm );
-      if( enm != num_for_edict( world ) ){
+      if( (enm != num_for_edict(world) ) && (self.enemy.deadflag <= DEAD_NO) ){
         WriteCoord( MSG_ONE, self.enemy.origin_x );
         WriteCoord( MSG_ONE, self.enemy.origin_y );
         WriteCoord( MSG_ONE, self.enemy.origin_z );

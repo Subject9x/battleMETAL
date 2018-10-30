@@ -95,8 +95,9 @@ void() ClientConnect = {
   
   self.stat_spr_x = 0;
   self.stat_spr_y = 0;
-  self.conv_min = '0 0 0';
-  self.conv_max = '0 0 0';
+  self.spreadDefault = '0 0 0';
+  self.accuracy = 0;
+  self.accuracyMod = 0;
   self.stat_plr_fir = FIRE_GROUP;
   self.stat_lck_stt = LOCK_NONE;
   

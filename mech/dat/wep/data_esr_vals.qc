@@ -32,10 +32,9 @@ void() data_esr_ini={
   self.health = DAT_ESR_HPX;
   self.max_health = DAT_ESR_HPX;
   self.w_range = DAT_ESR_RANGE;
-  self.stat_spr_x = DAT_ESR_SPR_X;
-  self.stat_spr_y = DAT_ESR_SPR_Y;
   self.w_state = READY;
   self.w_isburst = FALSE;
+  self.spreadDefault = DAT_ESR_ACC;
 };
 
 void() data_esr_think={
@@ -61,7 +60,7 @@ void() data_esr_think={
 void() data_esr_atk={
   local entity player, proj, oself, this;
   local vector dir, org, end, adj, angl;
-  local float range, convx, convy;
+  local float range;
   player = self.owner;
   
   if( self.w_currentammo == self.w_clipsize){
@@ -76,8 +75,6 @@ void() data_esr_atk={
     }
   }
   
-  convx = player.stat_spr_x + self.stat_spr_x;
-  convy = player.stat_spr_y + self.stat_spr_y;
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
   angl = player.angles;
   range = self.w_range;
@@ -91,9 +88,9 @@ void() data_esr_atk={
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = util_traceForAI( org, angl, self.w_range );
+    end = util_traceForAI( org, angl, self.w_range, player );
   }
-  dir = util_applySpreadToTrace( end, player.v_angle, player.stat_trg_dist, range, convx, convy );//becomes 'endpoint' for shot angle
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){

@@ -192,43 +192,33 @@ float DAT_SWRM_DMG        = 20;
 //            Inaccuracy  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_SPR_X      = 3; 
-float DAT_LATC_SPR_Y      = 3; 
+vector DAT_LATC_ACC       = '0.04 0.04 0';
 //-------------------------RPlas
-float DAT_RPLAS_SPR_X     = 8;
-float DAT_RPLAS_SPR_Y     = 8;
+vector DAT_RPC_ACC       = '0.5 0.5 0';
 //-------------------------QRifle
-float DAT_QRFL_SPR_X      = 0; 
-float DAT_QRFL_SPR_Y      = 0;
+vector DAT_QRFL_ACC       = '0.5 0.5 0';
 //-------------------------SFGA
-float DAT_SFGA_SPR_X      = 3;
-float DAT_SFGA_SPR_Y      = 2;
+vector DAT_SFGA_ACC       = '0.5 0.5 0';
 //-------------------------FLAK
-float DAT_FLAK_SPR_X      = 4;
-float DAT_FLAK_SPR_Y      = 2;
+vector DAT_FLAK_ACC       = '0.5 0.5 0';
 //-------------------------Laser
-float DAT_LAS_SPR_X       = 1;
-float DAT_LAS_SPR_Y       = 1;
+vector DAT_LAS_ACC       = '0.01 0.01 0';
 //-------------------------ION
-float DAT_ION_SPR_X       = 4;
-float DAT_ION_SPR_Y       = 4;
-
+vector DAT_ION_ACC       = '0.03 0.01 0';
 //-------------------------EMP
-
+vector DAT_EMP_ACC       = '0.015 0.015 0';
 //-------------------------ESR
-float DAT_ESR_SPR_X       = 6;
-float DAT_ESR_SPR_Y       = 6;
+vector DAT_ESR_ACC       = '0.06 0.04 0';
 //-------------------------PAC
-float DAT_PAC_SPR_X       = 2;
-float DAT_PAC_SPR_Y       = 2;
+vector DAT_PAC_ACC       = '0.005 0.005 0';
 //-------------------------Rocket
-float DAT_MIS_SPR_X       = 10;
-float DAT_MIS_SPR_Y       = 3;
+vector DAT_MIS_ACC       = '0.06 0.01 0';
 //-------------------------Laser Missile
+vector DAT_LGM_ACC       = '0.03 0.03 0';
 //-------------------------Radar Missile
+vector DAT_MARH_ACC       = '0.03 0.03 0';
 //-------------------------Swarm Missile
-float DAT_SWRM_SPR_X       = 10;
-float DAT_SWRM_SPR_Y       = 10;
+vector DAT_SWRM_ACC       = '0.07 0.07 0';
 //====================================================================================
 //            Clipsize  
 //====================================================================================

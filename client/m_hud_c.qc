@@ -9,19 +9,31 @@ Overview: the implementation of the header file
 /*
   RENDER CROSSHAIRS - UNIVERSAL
 */
-void(float hitdirection, float lockval, float conv_x, float conv_y, float trg_shield) hud_renderCrosshairs={
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs={
   //convergence
   local vector spr_w, spr_h, hitclr, lckclr;
-  spr_w_x = conv_x;
-  spr_w_y = 0;
-  spr_h_y = conv_y;
-  spr_h_x = 0;
+  local vector acc_left, acc_right, acc_up, acc_dn;
+  local vector drift;
   
-  gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('11 1.5') - spr_w), HUT_RET_PIP_HRZ, gui_percentToPixelRawVec('10 3'), HUD_COLOR_DEF, HUD_ALPHA, 0);
-  gui_renderTintImage(TRUE, (VIEW_CTR + spr_w + gui_percentToPixelRawVec('1 -1.5')), HUT_RET_PIP_HRZ, gui_percentToPixelRawVec('10 3'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drift = gui_percentToPixelRaw( 8 * accuracy, 8 * accuracy );
   
-  gui_renderTintImage(TRUE, (VIEW_CTR - gui_percentToPixelRawVec('1.5 11') - spr_h), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
-  gui_renderTintImage(TRUE, (VIEW_CTR + spr_h + gui_percentToPixelRawVec('-1.5 1')), HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  acc_left = VIEW_CTR - gui_percentToPixelRawVec('11 1.5');
+  acc_left_x = acc_left_x - drift_x;
+  
+  acc_right = VIEW_CTR + gui_percentToPixelRawVec('1 -1.5');
+  acc_right_x = acc_right_x + drift_x;
+  
+  acc_up = VIEW_CTR - gui_percentToPixelRawVec('1.5 11');
+  acc_up_y = acc_up_y - drift_y;
+  
+  acc_dn = VIEW_CTR + spr_h + gui_percentToPixelRawVec('-1.5 1');
+  acc_dn_y = acc_dn_y + drift_y;
+  
+  gui_renderTintImage(TRUE, acc_left, HUT_RET_PIP_HRZ, gui_percentToPixelRawVec('10 3'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, acc_right, HUT_RET_PIP_HRZ, gui_percentToPixelRawVec('10 3'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  
+  gui_renderTintImage(TRUE, acc_up, HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  gui_renderTintImage(TRUE, acc_dn, HUT_RET_PIP_VRT, gui_percentToPixelRawVec('3 10'), HUD_COLOR_DEF, HUD_ALPHA, 0);
   
   if( (hitdirection & STAT_HIT_TRG) ){
     hitclr = CLR_DEF_GRAY_H;
@@ -951,7 +963,7 @@ void() data_hud_frame={
   }  
   //CROSSHAIR AND DETAILS
   hud_renderDirectionHit(self.stat_hit_dirs);
-  hud_renderCrosshairs(self.stat_hit_dirs, self.stat_lck_stt, getstatf(STAT_SPR_X), getstatf(STAT_SPR_Y), self.target_shield);
+  hud_renderCrosshairs(self.stat_hit_dirs, self.stat_lck_stt, getstatf(STAT_ACCURACY), self.target_shield); //TODO - spread
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY), input_angles_x * -3, 270, -270);
   hud_renderTargetDirection(self.stat_trg_face, self.i_faction, self.target_faction, self.target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), self.stat_ret_dist) ;

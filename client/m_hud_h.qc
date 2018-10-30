@@ -76,7 +76,7 @@ string HUD_TARGET_BOX;
 .float prev_ang;
 .vector nav_ofs;
 
-void(float hitdirection, float lockval, float conv_x, float conv_y, float trg_shield) hud_renderCrosshairs;
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs;
 void(float hitDirBit) hud_renderDirectionHit;
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection;
 void(vector pos, float algn, float pitchVal, float pitch_max, float pitch_min) hud_renderPitchIndicator;

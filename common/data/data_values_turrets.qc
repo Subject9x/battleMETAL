@@ -63,8 +63,7 @@ float DAT_TUR_HLITE_LOCK     = 10;
 //            Base Convergence
 //============================
 //-------------------------Human Light Turret
-vector DAT_TUR_HLITE_SPREAD_N = '2 3 0.1';
-vector DAT_TUR_HLITE_SPREAD_X = '6 9 0.3';
+vector DAT_TUR_HLITE_SPREAD   = '0.1 0.1 0.001';
 
 //============================
 //            Models  

@@ -29,8 +29,6 @@ void() data_swrm_ini={
   self.en_rate = DAT_SWRM_EN_RATE;
   self.fire_sound = DAT_SWRM_FIRESOUND;
   self.i_techlvl = DAT_SWRM_TECH_LEVEL;
-  self.stat_spr_x = DAT_SWRM_SPR_X;
-  self.stat_spr_y = DAT_SWRM_SPR_Y;
   self.i_size = DAT_SWRM_WSIZE;
   self.health = DAT_SWRM_HPX;
   self.max_health = DAT_SWRM_HPX;
@@ -39,6 +37,7 @@ void() data_swrm_ini={
   self.w_state = READY;
   self.p_dmgtype = self.p_dmgtype | DMG_EXP;
   self.p_damage = DAT_SWRM_DMG;
+  self.spreadDefault = DAT_SWRM_ACC;
 };
 
 void() data_swrm_think={
@@ -64,7 +63,7 @@ void() data_swrm_think={
 void() data_swrm_atk={
   local entity player, proj, oself;
   local vector dir, org, end, adj, angl;
-  local float range, convx, convy, maxtarg;
+  local float range, maxtarg;
   
   player = self.owner;
   
@@ -73,8 +72,6 @@ void() data_swrm_atk={
     return;
   }
   
-  convx = player.stat_spr_x + self.stat_spr_x;
-  convy = player.stat_spr_y + self.stat_spr_y;
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
   angl = player.angles;
   range = self.w_range;
@@ -88,9 +85,9 @@ void() data_swrm_atk={
     end = util_traceForPlayer(player, self.w_range);
   }
   else{
-    end = util_traceForAI( org, angl, self.w_range );
+    end = util_traceForAI( org, angl, self.w_range, player );
   }
-  dir = util_applySpreadToTrace( end, player.v_angle, player.stat_trg_dist, range, convx, convy );//becomes 'endpoint' for shot angle
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
     
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){

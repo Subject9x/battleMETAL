@@ -188,8 +188,8 @@ float RADAR_SWEEP = 2.5;
 //============================
 //float STAT_OBS_FACTION = 32;
 
-float STAT_SPREADX = 33;
-float STAT_SPREADY = 34;
+float STAT_ACCURACY = 33;
+//float STAT_SPREADY = 34;
 
 float STAT_TARG_EID = 35;
 float STAT_VID = 36;
@@ -239,18 +239,17 @@ float STAT_WEP_STT = 78;
 float STAT_WEP_GRP = 79;
 float STAT_WEP_REL = 80;
 float STAT_NAV_DIR = 81;
-float STAT_SPR_X = 82;
-float STAT_SPR_Y = 83;
-float STAT_PLR_FIR = 84;
-float STAT_LCK_STT = 85;
-float STAT_PLR_PTC = 86;
-float STAT_PLR_ANG = 87;
-float STAT_TRG_DDFLG = 88;
-float STAT_TRG_ORGX = 89;
-float STAT_TRG_ORGY = 90;
-float STAT_TRG_ORGZ = 91;
+//float STAT_SPREAD = 82;
+float STAT_PLR_FIR = 83;
+float STAT_LCK_STT = 84;
+float STAT_PLR_PTC = 85;
+float STAT_PLR_ANG = 86;
+float STAT_TRG_DDFLG = 87;
+float STAT_TRG_ORGX = 88;
+float STAT_TRG_ORGY = 89;
+float STAT_TRG_ORGZ = 90;
 
-float STAT_RAD_SWEEP = 92;
+float STAT_RAD_SWEEP = 91;
 float STAT_PLR_ANG_X = 100;
 float STAT_PLR_ANG_Y = 101;
 float STAT_PLR_ANG_Z = 102;

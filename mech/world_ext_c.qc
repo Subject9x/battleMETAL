@@ -58,8 +58,7 @@ void() mh_world_ini={
   addstat(STAT_TRG_DIST, AS_INT, stat_trg_dist);
   addstat(STAT_TRG_FACE, AS_INT, stat_trg_face);
   
-  addstat(STAT_SPR_X, AS_FLOAT, stat_spr_x);
-  addstat(STAT_SPR_Y, AS_FLOAT, stat_spr_y);
+  addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
  
   addstat(STAT_PLR_ANG_X, AS_FLOAT, stat_plr_ang_x);
   addstat(STAT_PLR_ANG_Y, AS_FLOAT, stat_plr_ang_y);
