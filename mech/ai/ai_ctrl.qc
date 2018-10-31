@@ -452,6 +452,33 @@ void( float alt_low, float alt_max) ai_fly_update={
 }
 
 /*
+  Adjust AI's .accuracy setting based on movement
+  
+*/
+void( float move ) ai_update_accuracy={
+  local rate;
+  rate = self.spreadDefault_z;
+  if( move ){
+    if( self.stat_rdr_mode ){
+      rate = rate - ( rate * 0.25 );
+    }
+    self.accuracy = self.accuracy + rate;
+    if( self.accuracy > self.spreadDefault_y ){
+      self.accuracy = self.spreadDefault_y;
+    }
+  }
+  else{
+    if( self.stat_rdr_mode ){
+      rate = rate - ( rate * 0.4 );
+    }
+    self.accuracy = self.accuracy - rate;
+    if( self.accuracy < self.spreadDefault_x ){
+      self.accuracy = self.spreadDefault_x;
+    }
+  }
+};
+
+/*
   Checks to see if Entity T is in the ANG arc of self
 */
 float(entity t, float ang) ai_check_face={

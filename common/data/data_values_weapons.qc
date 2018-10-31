@@ -194,23 +194,23 @@ float DAT_SWRM_DMG        = 20;
 //-------------------------ATC
 vector DAT_LATC_ACC       = '0.04 0.04 0';
 //-------------------------RPlas
-vector DAT_RPC_ACC       = '0.5 0.5 0';
+vector DAT_RPC_ACC       = '0.2 0.1 0';
 //-------------------------QRifle
 vector DAT_QRFL_ACC       = '0.5 0.5 0';
 //-------------------------SFGA
 vector DAT_SFGA_ACC       = '0.5 0.5 0';
 //-------------------------FLAK
-vector DAT_FLAK_ACC       = '0.5 0.5 0';
+vector DAT_FLAK_ACC       = '0.15 0.25 0';
 //-------------------------Laser
-vector DAT_LAS_ACC       = '0.01 0.01 0';
+vector DAT_LAS_ACC       = '0.005 0.005 0';
 //-------------------------ION
 vector DAT_ION_ACC       = '0.03 0.01 0';
 //-------------------------EMP
 vector DAT_EMP_ACC       = '0.015 0.015 0';
 //-------------------------ESR
-vector DAT_ESR_ACC       = '0.06 0.04 0';
+vector DAT_ESR_ACC       = '0.2 0.4 0';
 //-------------------------PAC
-vector DAT_PAC_ACC       = '0.005 0.005 0';
+vector DAT_PAC_ACC       = '0.0025 0.0025 0';
 //-------------------------Rocket
 vector DAT_MIS_ACC       = '0.06 0.01 0';
 //-------------------------Laser Missile

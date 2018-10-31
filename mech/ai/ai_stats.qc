@@ -400,6 +400,7 @@ float(float rank) ai_pilot_attack_interval={
 
 /*
   AI base accuracy rating
+  TODO - accuracy
 */
 vector( float rank, float vec_type ) ai_pilot_accuracy={
   local vector accuracy;
