@@ -41,7 +41,7 @@ void() client_get_info={
     }
     
     client.stat_trg_ent_id = ReadByte();
-    if( client.stat_trg_ent_id != 0 ){
+    if( client.stat_trg_ent_id != num_for_edict(world) ){
       client.target_origin = te_read_vector();
       client.target_shield = ReadByte();
       client.stat_trg_ct_hp = ReadByte();

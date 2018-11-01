@@ -208,27 +208,6 @@ float() ai_panic_time={
   return panic;
 };
 
-vector(entity ai) ai_attack_calcSpread={
-  local vector hitorg;
-  local float rng, cnv, cx, cy;
-  
-  if(ai.stat_trg_dist > ai.ai_minrange){
-    cnv = cnv * rng;
-  }
-  cx = cnv;
-  cx = cx + ( cnv / 2 * random() );
-  cx = cx * crandom();
-  cy = cnv; 
-  cy = cy + ( cnv / 2 * random() );
-  cy = cy * crandom();
-  
-  makevectors(ai.v_angle);
-  
-  hitorg = ai.w_fire_ofs + (v_up * cy) + (v_right * cx);
-  
-  return hitorg;
-};
-
 vector(entity wep) ai_attack_trace={
   local entity cam;
   local vector lead, cam_ofs;
@@ -662,7 +641,16 @@ float(entity wep) ai_attack_checkEne={
   return FALSE;
 };
 
-
+/*
+  AI attempts to hold-off on making an attack until their accuracy is as best as
+  it can be
+*/
+float( float bestAccuracy ) ai_wait_for_shot={
+  if( self.accuracy <= bestAccuracy ){
+    return TRUE;
+  }
+  return FALSE;
+};
 //AI MAP FUNCS
 /*
     called by any AI unit that needs to spawn onto the map.

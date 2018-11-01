@@ -453,10 +453,11 @@ void( float alt_low, float alt_max) ai_fly_update={
 
 /*
   Adjust AI's .accuracy setting based on movement
-  
+  TRUE = unit is moving, adjust self.accuracy up to spreadDefault_y (max)
+  FALSE = unit is standing still, self.accuracy down to spreadDefault_x (min)
 */
 void( float move ) ai_update_accuracy={
-  local rate;
+  local float rate;
   rate = self.spreadDefault_z;
   if( move ){
     if( self.stat_rdr_mode ){

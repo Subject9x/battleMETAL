@@ -41,7 +41,6 @@ void() data_H_TD_ini={
   self.sh_max= DAT_H_TD_SHIELD_MAX;
   self.sh_rate= DAT_H_TD_SHIELD_RATE;
   self.m_rot_speed = DAT_HS_TANKDEST_YAW_SPEED;
-  self.spreadDefault = DAT_H_TD_SPREAD;
   self.m_fspeed = DAT_H_TD_FSPEED;
   self.m_sspeed = DAT_H_TD_SSPEED;
   self.m_bspeed = DAT_H_TD_BSPEED;

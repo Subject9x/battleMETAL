@@ -22,6 +22,7 @@ void() ai_vec_dest_die2;
   ST_STAND
 */
 void() ai_dest_stand={
+  ai_update_accuracy( FALSE );  
   if( ai_check_scan( self.stat_rdr_mode ) ){
     return;
   }
@@ -77,6 +78,7 @@ void() ai_dest_run_strafe={
   ST_MELEE
 */
 void() ai_dest_melee={
+  ai_update_accuracy( TRUE );  
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, 0.99 ) ){
@@ -97,6 +99,7 @@ void() ai_dest_melee={
   ST_MISSILE
 */
 void() ai_dest_missile={
+  ai_update_accuracy( FALSE );  
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, 0.99 ) ){

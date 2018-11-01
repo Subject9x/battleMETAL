@@ -21,6 +21,7 @@ void() ai_tank_sk_die1;
 void() ai_tank_sk_die2;
 
 void() ai_tank_sk_stand={
+  ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25 ) ){
       ai_face_targ();
@@ -115,9 +116,8 @@ void() ai_tank_sk_run={
 };
 
 void() ai_tank_sk_melee={
-
-  //ai_face_targ();
   
+  ai_update_accuracy( TRUE );
   if( ai_check_face(self.enemy, 0.6) ){
     local float moved, avg;
 
@@ -137,6 +137,7 @@ void() ai_tank_sk_melee={
 };
 
 void() ai_tank_sk_missile={
+  ai_update_accuracy( FALSE );
   ai_face_targ();
   if( ai_check_face( self.enemy, 0.92 ) ){
     if( ai_attack() ){
@@ -153,6 +154,7 @@ void() ai_tank_sk_missile={
 void() ai_tank_sk_missile_strafe={
   local float moved;
   
+  ai_update_accuracy( TRUE );
   ai_turret_set_state( TR_TARG );
   
   moved = ai_walk_right( self.m_sspeed * AI_WALK_SPD );
@@ -177,6 +179,7 @@ void() ai_tank_sk_missile_strafe={
 };
 
 void() ai_tank_sk_hunt={
+  ai_update_accuracy( TRUE );
   ai_walkgoal( AI_RUN_SPD );
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );

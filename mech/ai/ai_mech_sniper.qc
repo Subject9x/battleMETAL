@@ -214,9 +214,11 @@ void() ai_mech_sniper_missile={
     }
     //TODO - AI convergence code
     if( ai_check_face( self.enemy, 0.96 ) ){
-      if( ai_attack() ){
-        ai_next_state( ST_RUN );
-        return;
+      if( ai_wait_for_shot( self.spreadDefault_x + 0.2 ) ){      
+        if( ai_attack() ){
+          ai_next_state( ST_RUN );
+          return;
+        }
       }
     }
   }

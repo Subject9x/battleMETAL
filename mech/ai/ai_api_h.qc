@@ -13,15 +13,16 @@ float AI_SPAWNFLAG_COLDSTART    = 16;   //on-spawn, bot will ignore friendly hel
 float AI_SPAWNFLAG_RANDDOMSTART = 32;   //start on random node if AI has patrol path
 float AI_SPAWNFLAG_HASRADAR     = 64;   //radar is expensive to use, use sparingly
                                         //generally this is for mech units
-float AI_SPAWNFLAG_SKILLUP      = 128;  //promote AI by 1 rank depending on skill
-float AI_SPAWNFLAG_NONOV        = 256;  //remove from Novice Difficulty
-float AI_SPAWNFLAG_NOREG        = 512;  //remove from Regular Difficulty
-float AI_SPAWNFLAG_NOVET        = 1024; //remove from Veteran Difficulty
-float AI_SPAWNFLAG_NOELT        = 2048; //remove from Elit Difficulty
-float AI_SPAWNFLAG_NODROP       = 4096; //don't drop bot to the floor onspawn
+                                        
+float AI_SPAWNFLAG_PROMOTE      = 128;  //AI rank is set by skill, this spawnflag bumps it up by 1
+float AI_SPAWNFLAG_DEMOTE       = 256;  //AI rank is set by skill, this spawnflag debuffs it up by 1
+float AI_SPAWNFLAG_NONOV        = 512;  //remove from Novice Difficulty
+float AI_SPAWNFLAG_NOREG        = 1024;  //remove from Regular Difficulty
+float AI_SPAWNFLAG_NOVET        = 2048; //remove from Veteran Difficulty
+float AI_SPAWNFLAG_NOELT        = 4096; //remove from Elit Difficulty
+float AI_SPAWNFLAG_NODROP       = 8192; //don't drop bot to the floor onspawn
 
-float AI_SPAWNFLAG_TRIGGERME        = 8192; //ai only spawns when triggered
-//float AI_SPAWNFLAG_TRIGGERME        = 8192;
+float AI_SPAWNFLAG_TRIGGERME    = 16384; //ai only spawns when triggered
 
 //AI STATE CONSTANTS
 float ST_STAND              = 1;  //th_stand
@@ -93,10 +94,9 @@ float() ai_pilot_rating_patience;
 void() ai_pilot_mech_armor;
 void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
-float() ai_pilot_rank_byskill;
 float(float rank) ai_pilot_attack_interval;
-float( float rank, float skl, float damg) ai_pilot_mod_damage;
-vector( float rank, float vec_type) ai_pilot_accuracy;
+float( float rank, float damg) ai_pilot_mod_damage;
+vector( float rank, vector spread ) ai_pilot_accuracy;
 
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
@@ -117,7 +117,6 @@ vector(entity wep) ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
 float(entity t) ai_valid_target;
-vector(entity ai) ai_attack_calcSpread;
 void() ai_wep_calcranges;
 void(float dst, float grp, float bracket) ai_wep_group_track;
 float(float movespeed, float distance, float ticrate) ai_move_time;
@@ -125,7 +124,7 @@ float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
 float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;
 float() ai_panic_time;
-
+float( float bestAccuracy ) ai_wait_for_shot;
 //AI MAP FUNCS
 void( void() ai_to_make ) ai_unit_setup;
 void() ai_unit_make_multi;
@@ -187,7 +186,7 @@ float( float dist ) ai_yaw_left;
 float( float dist ) ai_yaw_right;
 float( float angmod, float dist ) ai_yaw_move;
 void( float alt_low, float alt_max ) ai_fly_update;
-void( float MOVE ) ai_update_accuracy;
+void( float move ) ai_update_accuracy;
 //========================================
 
 //q1 legacy code ai_move_q1.qc

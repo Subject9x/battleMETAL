@@ -93,7 +93,8 @@ void() player_unmakeMech={
   self.stat_spr_x = 0;
   self.stat_spr_y = 0;
   self.spreadDefault = '0 0 0';
-  //TODO - spread
+  self.accuracy = 0;
+  self.accuracyMod = 0;
   self.stat_plr_stt = PLAYER_IN_MENU;
   self.stat_plr_fir = FIRE_GROUP;
   self.stat_lck_stt = LOCK_NONE;

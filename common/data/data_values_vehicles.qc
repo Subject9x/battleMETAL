@@ -147,17 +147,6 @@ float DAT_HS_GEVL_RADAR_RANGE      = 2000;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_RADAR_RANGE   = 3000;
 //============================
-//            Base Convergence
-//============================
-//-------------------------Human Tank Light
-vector DAT_HS_TANKL_SPREAD  = '0.1 0.1 0.001';
-//-------------------------Human Tank Destroyer
-vector DAT_H_TD_SPREAD      = '0.1 0.1 0.001';
-//-------------------------Human Gev Light
-vector DAT_HS_GEVL_SPREAD   = '0.1 0.1 0.001';
-//-------------------------PSC VTOL Light
-vector DAT_PSC_VTOLL_SPREAD = '0.1 0.1 0.001';
-//============================
 //         Base Yaw Speed
 //============================
 //-------------------------Human Truck A, B, C

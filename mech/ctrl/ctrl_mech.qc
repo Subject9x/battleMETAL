@@ -67,7 +67,7 @@ void() ctrl_updateCenterTorso={
       my = my * -1;
     }
     
-    //TODO - spread
+    //accuracy / spread mechanics
     if( (my != 0) || (mx != 0) ) {
       //unit is moving, increase spread factor
       rate = self.spreadDefault_z;

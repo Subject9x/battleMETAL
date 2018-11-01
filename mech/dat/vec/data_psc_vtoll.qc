@@ -40,7 +40,6 @@ void() data_PSC_VTOLL_ini={
   self.sh_rate= DAT_PSC_VTOLL_SHIELD_RATE;
   self.m_rot_speed = DAT_PSC_VTOLL_YAW_SPEED;
   self.c_model = DAT_PSC_VTOLL_MODEL;
-  self.spreadDefault = DAT_PSC_VTOLL_SPREAD;
   self.m_fspeed = DAT_PSC_VTOLL_FSPEED;
   self.m_sspeed = DAT_PSC_VTOLL_SSPEED;
   self.m_bspeed = DAT_PSC_VTOLL_BSPEED;

@@ -47,7 +47,6 @@ void() data_HS_TANKL_ini={
   self.sh_rate= DAT_HS_TANKL_SHIELD_RATE;
   self.m_rot_speed = DAT_HS_TANKL_YAW_SPEED;
   self.c_model = DAT_HS_TANKL_MDL_CHASSIS;
-  self.spreadDefault = DAT_HS_TANKL_SPREAD; 
   self.m_fspeed = DAT_HS_TANKL_FSPEED;
   self.m_sspeed = DAT_HS_TANKL_SSPEED;
   self.m_bspeed = DAT_HS_TANKL_BSPEED;

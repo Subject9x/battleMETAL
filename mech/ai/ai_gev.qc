@@ -52,6 +52,7 @@ void() ai_gev_th;
 
 
 void() ai_gev_stand={
+  ai_update_accuracy( FALSE );  
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, self.ai_fov ) ){
@@ -65,6 +66,7 @@ void() ai_gev_stand={
 };
 
 void() ai_gev_walk={
+  ai_update_accuracy( TRUE ); 
   if( ai_valid_target(self.enemy) ){
     ai_face_targ();
     ai_move( self.angles_y, self.m_fspeed * AI_RUN_SPD );
@@ -159,6 +161,7 @@ void() ai_gev_run={
 */
 void() ai_gev_run_strafe={
   local float spd;
+  ai_update_accuracy( TRUE );
   
   spd = self.m_fspeed / 2 + self.m_sspeed;
   
@@ -178,7 +181,7 @@ void() ai_gev_run_strafe={
   Time limit set by distance calc.
 */
 void() ai_gev_run_charge={
-  
+  ai_update_accuracy( TRUE );
   ai_face_targ();
   ai_move( anglemod(self.angles_y + 45),  self.m_fspeed * AI_RUN_SPD);
   if( skill > 1 || self.ai_rank < AI_RANK_REG ){
@@ -199,7 +202,7 @@ void() ai_gev_run_charge={
 */
 void() ai_gev_melee={
   local float insights;
-  
+  ai_update_accuracy( TRUE );
   enemy_range = ai_check_range( self.enemy );
   otemp = self;
   self = otemp.enemy;
@@ -246,6 +249,7 @@ void() ai_gev_melee={
 */
 void() ai_gev_missile={
   local float insights;
+  ai_update_accuracy( FALSE );
   if( ai_valid_target(self.enemy) ){
     otemp = self;
     self = otemp.enemy;
@@ -280,7 +284,7 @@ void() ai_gev_missile={
 
 void() ai_gev_missile_strafe={
   local float spd;
-  
+  ai_update_accuracy( TRUE );
   spd = self.m_fspeed / 2 + self.m_sspeed;
   
   ai_face_targ();
@@ -319,6 +323,7 @@ void() ai_gev_hunt={
 */
 void() ai_gev_pain={
   //TODO - finish
+  ai_update_accuracy( TRUE );
   if( ai_valid_target( self.goalentity ) ){
     self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
     ai_move_turn();

@@ -41,8 +41,7 @@ void() data_eqp_atgm_upgrade={
   //stats cached here for restore on equip death
   self.w_firetime = self.owner.w_firetime;
   self.spreadDefault = self.owner.spreadDefault;
-  //TODO - spread
-  //self.conv_max = self.owner.conv_max;
+  self.owner.accuracyMod = self.owner.accuracyMod + self.accuracyMod;
   
   lock = self.owner.w_firetime;
   lock = lock - (lock * self.w_fire_ofs_z);
@@ -51,21 +50,10 @@ void() data_eqp_atgm_upgrade={
   }
   self.owner.w_firetime = lock;
   
-  acc_n = self.owner.spreadDefault_z;
-  acc_n = acc_n + (acc_n * self.w_fire_ofs_x);
-  self.owner.spreadDefault_z = acc_n;
-  
-  //TODO - spread
-  //acc_x = self.owner.conv_max_z;
-  //acc_x = acc_x + (acc_x * self.w_fire_ofs_y);
-  
-  //TODO - spread
-  //self.owner.conv_max_z = acc_x;  
 };
 
 void() data_eqp_atgm_die={
   self.owner.w_firetime = self.w_firetime;
   self.owner.spreadDefault = self.spreadDefault;
-  //TODO - spread
-  //self.owner.conv_max = self.conv_max;
+  self.owner.accuracyMod = self.owner.accuracyMod - self.accuracyMod;
 };

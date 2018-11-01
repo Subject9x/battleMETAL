@@ -39,10 +39,6 @@ void() ai_logic_changeRank_use={
           self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * m);
         }
         self.ai_leading = ai_pilot_rating_leading();
-        
-  //TODO - spread
-        //self.stat_spr_x = self.spreadDefault_x + self.conv_max_x;
-        //self.stat_spr_y = self.spreadDefault_y + self.conv_max_y;
       self = this;
       e = e.chain;
     }
@@ -58,9 +54,6 @@ void() ai_logic_changeRank_use={
           self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * m);
         }
         self.ai_leading = ai_pilot_rating_leading();
-  //TODO - spread
-        //self.stat_spr_x = self.spreadDefault_x + self.conv_max_x;
-        //self.stat_spr_y = self.spreadDefault_y + self.conv_max_y;
       self = this;
     }
   }

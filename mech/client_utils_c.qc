@@ -10,6 +10,9 @@ Overview: client utility methods, pulled from client.qc
 
 */
 void() client_push_player_info={
+  local entity wep;
+  local float enm;
+  local float targShield;
   
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.i_faction;
@@ -40,28 +43,33 @@ void() client_push_player_info={
       WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_r));
       
       WriteByte( MSG_ONE, self.hardpoint_cnt );
-      local entity wep;
       wep = self.w_slot;
       while( wep ){
         WriteByte( MSG_ONE, wep.rl_cur );
         wep = wep.w_slot;
       }
       
-      local float enm;
       enm = num_for_edict(self.enemy);
       WriteByte( MSG_ONE, enm );
-      if( (enm != num_for_edict(world) ) && (self.enemy.deadflag <= DEAD_NO) ){
+      if( self.enemy != world ){
         WriteCoord( MSG_ONE, self.enemy.origin_x );
         WriteCoord( MSG_ONE, self.enemy.origin_y );
         WriteCoord( MSG_ONE, self.enemy.origin_z );
-        WriteByte( MSG_ONE, (self.enemy.sh_cur / self.enemy.sh_max) * 100 );
+        targShield = self.enemy.sh_cur;
+        if( targShield < 0 ){
+          targShield = 0;
+        }
+        else{
+          targShield = (self.enemy.sh_cur / self.enemy.sh_max) * 100;
+        } 
+        WriteByte( MSG_ONE, targShield );
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy));
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_legs));
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_l));
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_r));
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_l));
         WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_r));
-        WriteShort( MSG_ONE, self.enemy.maxs_y * 1.5 );
+        WriteShort( MSG_ONE, self.enemy.maxs_y * 2 );
         if( self.enemy.netname == "" ){
           self.enemy.netname = self.enemy.vec_name;
         }

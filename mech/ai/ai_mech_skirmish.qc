@@ -9,20 +9,6 @@ Overview: ai unit
   they can strafe left and right against targets
 */
 
-/*
-float ST_STAND              = 1;  //th_stand
-float ST_WALK               = 2;  //th_walk
-float ST_RUN                = 4;  //th_run
-float ST_RUN_STRAFE         = 5;  //th_run_strafe
-float ST_RUN_CHARGE         = 6;  //th_run_charge
-float ST_MISSILE            = 7;  //th_missile
-float ST_MELEE              = 8;  //th_melee
-float ST_MISSILE_STRAFE     = 9;  //th_missile_strafe
-float ST_HUNT               = 10; //th_hunt
-float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
-float ST_HUNT_START         = 12; //TODO
-float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'staggers' the target
-*/
 void() ai_mech_sk_stand;
 
 void() ai_mech_sk_run;
@@ -50,6 +36,7 @@ void() ai_mech_sk_turn_back;
           MECH SKIRMISH STAND
 */
 void() ai_mech_sk_stand={
+  ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, self.ai_fov ) ){
@@ -174,6 +161,7 @@ void() ai_mech_sk_run={
   mech walks forward while trying to turn to enemy
 */
 void() ai_mech_sk_turn={
+  ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     ai_move( self.angles_y, self.m_fspeed * AI_RUN_SPD );
@@ -188,6 +176,7 @@ void() ai_mech_sk_turn={
   }
 };
 void() ai_mech_sk_turn_back={
+  ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     ai_walk_back( self.angles_y, self.m_fspeed * AI_RUN_SPD );
@@ -207,6 +196,7 @@ void() ai_mech_sk_turn_back={
             MECH SKIRMISH RUN STRAFE
 */
 void() ai_mech_sk_run_strafe={
+  ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25) ){
       ai_move_turn();
@@ -239,6 +229,7 @@ void() ai_mech_sk_run_strafe={
   rotate with the player.
 */
 void() ai_mech_sk_run_charge={
+  ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25) ){
       ai_move_turn();
@@ -279,6 +270,7 @@ void() ai_mech_sk_run_charge={
             MECH SKIRMISH MELEE
 */
 void() ai_mech_sk_melee={
+  ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 35) ){
       ai_move_turn();
@@ -317,6 +309,7 @@ void() ai_mech_sk_melee={
   
 */
 void() ai_mech_sk_missile={
+  ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, 0.97 ) ){
@@ -340,6 +333,7 @@ void() ai_mech_sk_missile={
   if skill is high enough, ai should track target yaw
 */
 void() ai_mech_sk_missile_strafe={
+  ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     if( (skill > 2) || (self.ai_rank < AI_RANK_REG) ){
       ai_face_targ();

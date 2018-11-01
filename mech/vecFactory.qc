@@ -153,7 +153,7 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
     self.comp_id = -2;
 
     if( (own.flags & FL_MONSTER) ){
-      self.p_damage = ai_pilot_mod_damage( self.ai_rank, cvar("skill"), self.p_damage);
+      self.p_damage = ai_pilot_mod_damage( self.ai_rank, self.p_damage);
       if(self.w_clipsize > 1){
         self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
       }

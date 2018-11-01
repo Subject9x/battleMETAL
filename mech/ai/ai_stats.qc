@@ -32,9 +32,6 @@ void() ai_unit_ini_var={
   self.stat_hit_dirs = 0;
   self.stat_rdr_mode = FALSE;
   
-  self.stat_spr_x = 0;
-  self.stat_spr_y = 0;
-  self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;
   self.stat_lck_stt = LOCK_NONE;
@@ -48,15 +45,30 @@ void() ai_unit_ini_var={
   self.ai_viewtime = 0;
   self.ai_minrange = 0;
   self.ai_hunt_total = -1;
-  
 };
 
 /*
-  Scope : Self
+  Scope : Self = AI 
   initialize all ai pilot stats, cleans up the ini for any ai unit
 */
 void(float rank) ai_pilot_ini_stats={
-  local float mod_am, mod_sh, mod_yaw;
+  local float mod_am;
+  local float mod_sh;
+  local float mod_yaw;
+  
+  self.ai_rank = skill;
+  if( (self.spawnflags & AI_SPAWNFLAG_PROMOTE) ){
+    self.ai_rank = self.ai_rank + 1;
+    if( self.ai_rank > SKILL_ELT ){
+      self.ai_rank = SKILL_ELT;
+    }
+  }
+  if( (self.spawnflags & AI_SPAWNFLAG_DEMOTE) ){
+    self.ai_rank = self.ai_rank - 1;
+    if( self.ai_rank < SKILL_NOV ){
+      self.ai_rank = SKILL_NOV;
+    }
+  }
   
   self.ai_fov = ai_pilot_optical_range(rank);
   self.ai_view = ai_pilot_view_range(rank);
@@ -79,27 +91,12 @@ void(float rank) ai_pilot_ini_stats={
     self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * mod_yaw);
   }
   self.ai_leading = ai_pilot_rating_leading();
-  //TODO - spread
-  //self.stat_spr_x = self.spreadDefault_x + self.conv_max_x;
-  //self.stat_spr_y = self.spreadDefault_y + self.conv_max_y;
+  self.spreadDefault = ai_pilot_accuracy( skill, self.spreadDefault );
+  self.accuracy = self.spreadDefault_y;
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
   self.ai_action_mod = ai_pilot_action_mod( rank );
   self.ai_attack_chance = ai_pilot_attack_interval( rank );
-};
-
-float() ai_pilot_rank_byskill={
-  switch(skill){
-    case 0:
-      return AI_RANK_ROK;
-    case 1:
-      return AI_RANK_REG;
-    case 2:
-      return AI_RANK_VET;
-    case 3:
-      return AI_RANK_ACE;
-  }
-  return AI_RANK_ROK;
 };
 
 float(float rank) ai_pilot_optical_range={
@@ -151,35 +148,20 @@ float(float rank) ai_pilot_view_range={
   AI does not deal full damage like players do (because there's a ton of bots)
   
 */
-float( float rank, float skl, float damg) ai_pilot_mod_damage={
+float( float rank, float damg) ai_pilot_mod_damage={
   local float percent;
-  switch( skl ){
+  switch( rank ){
     case SKILL_NOV:
-      percent = AI_DMG_SKILL_ROK;
+      percent = AI_DMG_SKILL_ROK + AI_DMG_ROK;
       break;
     case SKILL_REG:
-      percent = AI_DMG_SKILL_REG;
+      percent = AI_DMG_SKILL_REG + AI_DMG_REG;
       break;
     case SKILL_VET:
-      percent = AI_DMG_SKILL_VET;
+      percent = AI_DMG_SKILL_VET + AI_DMG_VET;
       break;
     case SKILL_ELT:
-      percent = AI_DMG_SKILL_ACE;
-      break;
-  }
-
-  switch(rank){
-    case AI_RANK_ACE:
-      percent = percent + AI_DMG_ACE;
-      break;
-    case AI_RANK_VET:
-      percent = percent + AI_DMG_VET;
-      break;
-    case AI_RANK_REG:
-      percent = percent + AI_DMG_REG;
-      break;
-    case AI_RANK_ROK:
-      percent = percent + AI_DMG_ROK;
+      percent = AI_DMG_SKILL_ACE + AI_DMG_ACE;
       break;
   }
   percent = damg * percent;
@@ -193,7 +175,7 @@ float( float rank, float skl, float damg) ai_pilot_mod_damage={
 
 float(float rank) ai_pilot_view_interval={
   local float mod;
-  mod = cvar("skill") * 2;
+  mod = rank * 2;
   switch(rank){
     case AI_RANK_ACE:
       mod = AI_VIEW_ACE - mod;
@@ -216,7 +198,7 @@ float(float rank) ai_pilot_view_interval={
 */
 float(float rank) ai_pilot_action_mod={
   local float mod;
-  mod = cvar("skill") / 2;
+  mod = rank / 2;
   switch(rank){
     case AI_RANK_ACE:
       mod = AI_REFLEX_ACE + mod;
@@ -369,30 +351,16 @@ float(float rank) ai_pilot_attack_interval={
   local float interval;
   switch( skill ){
     case 0:
-      interval = 0.1;
+      interval = 0.1 + AI_ATTACK_ROK;
       break;
     case 1:
-      interval = 0.2;
+      interval = 0.2 + AI_ATTACK_REG;
       break;
     case 2:
-      interval = 0.3;
+      interval = 0.3 + AI_ATTACK_VET;
       break;
     case 3:
-      interval = 0.4;
-      break;
-  }
-  switch( rank ){
-    case AI_RANK_ROK:
-      interval = interval + AI_ATTACK_ROK;
-      break;
-    case AI_RANK_REG:
-      interval = interval + AI_ATTACK_REG;
-      break;
-    case AI_RANK_VET:
-      interval = interval + AI_ATTACK_VET;
-      break;
-    case AI_RANK_ACE:
-      interval = interval + AI_ATTACK_ACE;
+      interval = 0.4 + AI_ATTACK_ACE;
       break;
   }
   return interval;
@@ -400,34 +368,43 @@ float(float rank) ai_pilot_attack_interval={
 
 /*
   AI base accuracy rating
-  TODO - accuracy
 */
-vector( float rank, float vec_type ) ai_pilot_accuracy={
+vector( float rank, vector spread ) ai_pilot_accuracy={
   local vector accuracy;
-  switch( vec_type ){
-    case DATA_VEHC:
-      accuracy = '0 0 0';
-      break;
-    case DATA_MECH:
-      accuracy = '0 0 0';
-      break;
-    case DATA_BLD:
-      accuracy = '0 0 0';
-      break;
-  }
+  local float modMin;
+  local float modMax;
+  local float modRate;
+  
+  modMin = accuracy_x;
+  modMax = accuracy_y;
+  modRate = accuracy_z;
+  
   switch( rank ){
-    case AI_RANK_ROK:
-      
+    case SKILL_NOV:
+      modMin = modMin * 0.25;
+      modMax = modMax * 0.5;
+      modRate = modRate * 0.5;
       break;
-    case AI_RANK_REG:
-      
+    case SKILL_REG:
+      modMin = modMin * 0.15;
+      modMax = modMax * 0.4;
+      modRate = modRate * 0.25;
       break;
-    case AI_RANK_VET:
-      
+    case SKILL_VET:
+      modMin = modMin * 0.25;
+      modMax = modMax * 0.5;
+      modRate = modRate * 0.15;
       break;
-    case AI_RANK_ACE:
-      
+    case SKILL_ELT:
+      modMin = modMin * 0.05;
+      modMax = modMax * 0.1;
+      modRate = modRate * 0.05;
       break;
   }
+  modRate = modRate * -1;
+  accuracy_x = accuracy_x + modMin;
+  accuracy_y = accuracy_y + modMax;
+  accuracy_z = accuracy_z + modRate;
+  accuracy = accuracy + spread;
   return accuracy;
 };
