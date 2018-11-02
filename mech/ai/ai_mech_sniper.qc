@@ -27,7 +27,6 @@ float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'stag
 //set state time duration
 float() ai_mech_sniper_setDuration={
   local float duration, vel;
-  duration = 3.1 - skill;
   duration = duration + (4 - skill);
   duration = duration + (self.vec_size - 1);
   duration = duration / 10;
@@ -93,8 +92,7 @@ void() ai_mech_sniper_run={
         }
         
       }
-      
-      if( enemy_range <= self.ai_minrange / 2 ){
+      if( enemy_range <= 800 ){
         if( enemy_infront ){
           ai_next_state( ST_MELEE );
           angl = 100 + ( random() * 100);
@@ -139,7 +137,7 @@ void() ai_mech_sniper_run={
 };
 
 void() ai_mech_sniper_run_strafe={
-  
+  ai_update_accuracy( TRUE );
   if( !ai_move( self.ai_dir, self.m_sspeed * AI_RUN_SPD ) ){
     self.lefty = 0 - self.lefty;
     self.ai_dir = anglemod( self.ideal_yaw - (self.ai_dir * self.lefty) );
@@ -160,7 +158,7 @@ void() ai_mech_sniper_run_strafe={
 
 void() ai_mech_sniper_run_charge={
   local float angl;
-  
+  ai_update_accuracy( TRUE );
   if( !ai_move( self.ai_dir, self.m_sspeed * AI_RUN_SPD ) ){
     angl = 45 + ( random() * 90);
     self.lefty = 0 - self.lefty;
@@ -179,6 +177,7 @@ void() ai_mech_sniper_run_charge={
 };
 
 void() ai_mech_sniper_melee={
+  ai_update_accuracy( FALSE );
   if( ai_valid_target(self.enemy) ){
     ai_move_turn();
     
@@ -202,7 +201,7 @@ void() ai_mech_sniper_melee={
 
 void() ai_mech_sniper_missile={
   local float angl;
-  
+  ai_update_accuracy( FALSE );
   if( ai_valid_target(self.enemy) ){
     enemy_range = ai_check_range( self.enemy );
     if( enemy_range <= 600 ){
@@ -229,6 +228,7 @@ void() ai_mech_sniper_missile={
 };
 
 void() ai_mech_sniper_missile_strafe={
+  ai_update_accuracy( TRUE );
   if( ai_valid_target(self.enemy) ){
     ai_move( self.ai_dir, self.m_fspeed * AI_WALK_SPD );
     if( ai_check_face( self.enemy, 0.96 ) ){

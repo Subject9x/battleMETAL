@@ -118,11 +118,7 @@ void() data_rplas_atk={
   }
  
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-
-  local vector sfx;
-  //sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
-  //sfx would be 'org' value now, right?
-
+  
   local vector sfx;
   sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
  

@@ -223,6 +223,12 @@ void() PutClientInServer = {
     self.power_timer = 0;
   }
   else if(self.data_type == DATA_MECH){
+    self.trigOnSpawn = spot.trigOnSpawn;
+    self.trigOnDeath = spot.trigOnDeath;
+    self.trigOnAttack = spot.trigOnAttack;
+    self.trigOnDamage = spot.trigOnDamage;
+    self.trigOnPanic = spot.trigOnPanic;
+    self.trigOnTarget = spot.trigOnTarget;
     player_makeMech();
     self.count4 = 0;
   }

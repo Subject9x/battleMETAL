@@ -16,7 +16,7 @@ void() data_eqp_atgm_ini={
   self.w_firetime = 0;
   self.w_clipsize = 0;
   self.w_currentammo = 0;
-  self.w_fire_ofs = DAT_EQP_ATGM_FIRE_OFS; //carrier var for modification by equipment
+  self.spreadDefault = DAT_ATGM_ACC;
   self.c_model = DAT_EQP_ATGM_MODEL;
   self.w_attack = SUB_Null;               //dont do anything on attack
   self.unit_wep1 = data_eqp_atgm_die;
@@ -40,8 +40,12 @@ void() data_eqp_atgm_upgrade={
   
   //stats cached here for restore on equip death
   self.w_firetime = self.owner.w_firetime;
-  self.spreadDefault = self.owner.spreadDefault;
+  self.w_fire_ofs = self.owner.spreadDefault;
+  self.accuracyMod = self.spreadDefault_z * self.w_fire_ofs_z;
   self.owner.accuracyMod = self.owner.accuracyMod + self.accuracyMod;
+  self.owner.spreadDefault_x = self.owner.spreadDefault_x - (self.owner.spreadDefault_x * self.spreadDefault_x);
+  self.owner.spreadDefault_y = self.owner.spreadDefault_y - (self.owner.spreadDefault_y * self.spreadDefault_y);
+  self.owner.spreadDefault_z = self.owner.spreadDefault_z - (self.owner.spreadDefault_z * self.spreadDefault_z);
   
   lock = self.owner.w_firetime;
   lock = lock - (lock * self.w_fire_ofs_z);
@@ -54,6 +58,6 @@ void() data_eqp_atgm_upgrade={
 
 void() data_eqp_atgm_die={
   self.owner.w_firetime = self.w_firetime;
-  self.owner.spreadDefault = self.spreadDefault;
+  self.owner.spreadDefault = self.w_fire_ofs;
   self.owner.accuracyMod = self.owner.accuracyMod - self.accuracyMod;
 };

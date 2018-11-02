@@ -106,8 +106,12 @@ void() unit_hs_mech_sk={
   ai_unit_setup( ai_mech_skirmish );
 };
 
-void() unit_hs_mech_snipe={
-  
+void() unit_hs_mech_sniper={
+  self.flags = self.flags | FL_TURRET;  //enforced for a mech
+  self.i_faction = 2;
+  self.mskin = 2;
+  self.spreadDefault = ACCURACY_SNIPER;
+  ai_unit_setup( ai_mech_sniper );
 };
 
 /*

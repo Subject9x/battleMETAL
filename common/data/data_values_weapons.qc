@@ -219,6 +219,8 @@ vector DAT_LGM_ACC       = '0.03 0.03 0';
 vector DAT_MARH_ACC       = '0.03 0.03 0';
 //-------------------------Swarm Missile
 vector DAT_SWRM_ACC       = '0.07 0.07 0';
+//-------------------------ATGM
+vector DAT_ATGM_ACC       = '0.25 0.15 0.25';
 //====================================================================================
 //            Clipsize  
 //====================================================================================
@@ -489,8 +491,6 @@ vector DAT_MARH_FIRE_OFS = '0 0 2';
 //-------------------------Swarm Missile
 vector DAT_SWRM_FIRE_OFS = '0 0 2';
 //EQUIP------------
-//-------------------------ATGM
-vector DAT_EQP_ATGM_FIRE_OFS  = '0.15 0.2 0'; //x = spread reduce speed, y = spread increase reduction , z = lockon decrease both in %'s
 //============================
 //            Projectile ID
 //============================

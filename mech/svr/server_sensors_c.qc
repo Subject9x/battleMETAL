@@ -102,6 +102,7 @@ void() server_getTarget={
       else{
         self.lock_timer = time + (self.w_firetime *1.75);
       }
+      trigger_event( self, trigOnTarget );
     }
   }
   else{
