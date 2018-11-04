@@ -469,7 +469,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
   if( ITEM_DATA_ICONS[w_id] != ""){
-    drawpic(iofs, ITEM_DATA_ICONS[w_id], imgSz, wepState, HUD_ALPHA, 0);
+    drawpic(iofs, ITEM_DATA_ICONS[w_id], imgSz, wepState, 1, 0);
   }
   
   ofs_x = imgSz_x / 2;
@@ -511,7 +511,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
   if( ITEM_DATA_ICONS[w_id] != ""){
-    drawpic(iofs, ITEM_DATA_ICONS[w_id], imgSz, wepState, HUD_ALPHA, 0);
+    drawpic(iofs, ITEM_DATA_ICONS[w_id], imgSz, wepState, 1, 0);
   }
   
   ofs_x = imgSz_x / 2;
@@ -835,7 +835,7 @@ void() data_hud_frame={
         icon = UI_DATA_IMG[uid];
         algn = UI_DATA_ALIGN[uid];
         color1 = UI_DATA_COLOR1[uid];
-        hud_HelmetImage(porg, vsize, icon, algn, HUD_ALPHA, UI_DATA_COLOR1[uid]); 
+        hud_HelmetImage(porg, vsize, icon, algn, 1, UI_DATA_COLOR1[uid]); 
         break;
       case HUD_UID_ENERGY:
         porg = UI_DATA_POS[uid];

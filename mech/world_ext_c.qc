@@ -6,12 +6,12 @@ Overview: function extensions to world.qc
 */
 
 void() mh_world_ini={ 
-  registercvar("mechdev", "0");
-  registercvar("campaign", "0"); 
-  registercvar("saveslot", "0");
-  registercvar("gamemode", "0");
-  registercvar("gametype", "0");
-  
+  registercvar("mechdev", "0", 1);
+  registercvar("campaign", "0", 0); 
+  registercvar("saveslot", "0", 1);
+  registercvar("gamemode", "0", 0);
+  registercvar("gametype", "0", 0);
+  registercvar("cl_hud_alpha", "1", 1);
   
   cvar_set("gamemode", ftos(GAMEMODE_CAMPAIGN));
   if( coop ){
@@ -21,7 +21,6 @@ void() mh_world_ini={
     cvar_set("gamemode", ftos(GAMEMODE_DM));
   }
 
-  
   //oh my
   addstat( STAT_PLR_NAME, AS_STRING, netname);
   addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);

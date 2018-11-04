@@ -13,6 +13,9 @@
 */
 void() m_init={
   dynamic_precache();
+  
+  registercvar("cl_hud_alpha", "0", 1);
+  
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){
     cmd("cd", " play 6");
@@ -133,7 +136,7 @@ void(float width, float height) m_draw={
     local vector p;
     p = VIEW_MAX;
     p_z = 0;
-    drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.9, 0);;
+    drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.9, 0);
   }
   
   //draw the selected Menu_d() function

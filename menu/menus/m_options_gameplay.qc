@@ -20,6 +20,10 @@ entity gameplay_datetime_lbl;
 entity gameplay_datetime_on;
 entity gameplay_datetime_off;
 
+entity gameplay_hudalpha_lbl;
+entity gameplay_hudalpha_up;
+entity gameplay_hudalpha_dn;
+
 entity gameplay_back;
 //gameplay constants
 
@@ -68,8 +72,7 @@ void() click_gameplay_date_off={
   gameplay_datetime_lbl.label = strzone("OFF");
   gameplay_datetime_on.drawme = TRUE;
   gameplay_datetime_off.drawme = FALSE;
-  };
-
+};
 
 void() click_gameplay_fps_on={
   cvar_set("showfps", "1");
@@ -90,6 +93,38 @@ void() click_gameplay_back={
   cmd("saveconfig\n");
   menu_clear_items(M_STATE);
   m_options_f();
+};
+
+void() click_gameplay_hudalpha_up={
+  local float val;
+  val = gameplay_hudalpha_lbl.len;
+  val = val + 0.05;
+  if(val > 1.0){
+    val = 1.0;
+    gameplay_hudalpha_up.drawme = FALSE;
+  }
+  gameplay_hudalpha_lbl.len = val;
+  strunzone(gameplay_hudalpha_lbl.label);
+  gameplay_hudalpha_lbl.label = strzone(sprintf("%0.2f", gameplay_hudalpha_lbl.len) );
+  cvar_set("cl_hud_alpha", gameplay_hudalpha_lbl.label);
+  
+  gameplay_hudalpha_dn.drawme = TRUE;
+};
+
+void() click_gameplay_hudalpha_dn={
+  local float val;
+  val = gameplay_hudalpha_lbl.len;
+  val = val - 0.05;
+  if(val < 0.1){
+    val = 0.1;
+    gameplay_hudalpha_dn.drawme = FALSE;
+  }
+  gameplay_hudalpha_lbl.len = val;
+  strunzone(gameplay_hudalpha_lbl.label);
+  gameplay_hudalpha_lbl.label = strzone(sprintf("%0.2f", gameplay_hudalpha_lbl.len) );
+  cvar_set("cl_hud_alpha", gameplay_hudalpha_lbl.label);
+  
+  gameplay_hudalpha_up.drawme = TRUE;
 };
 
 // ini function, called by '_f' function as a setup func
@@ -132,6 +167,21 @@ void() m_gameplay_i={
     gameplay_fps_off.drawme = FALSE;
   }
   
+  local float clean;
+  clean = cvar("cl_hud_alpha");
+  gameplay_hudalpha_lbl = lbl_text('190 175', '9 9 0', strzone(sprintf("%0.2f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudalpha_lbl.len = cvar("cl_hud_alpha");
+  gameplay_hudalpha_lbl.image1 = "gfx/hud/ret_lock.png";
+  gameplay_hudalpha_up = btn_img_callback('230 175', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudalpha_dn = btn_img_callback('176 175', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
+  if( gameplay_hudalpha_lbl.len < 0.1 ){
+    gameplay_hudalpha_dn.drawme = FALSE;
+  }
+  if( gameplay_hudalpha_lbl.len > 0.95 ){
+    gameplay_hudalpha_up.drawme = FALSE;
+  }
+  
   gameplay_back = btn_img_callback('10 230 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1',CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
@@ -154,7 +204,10 @@ void() m_gameplay_d={
   gui_renderString("Field of View :", gui_percentToPixelRawVec('45 136'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   gui_renderString("Show Date/Time :", gui_percentToPixelRawVec('37 150'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   gui_renderString("Show FPS :", gui_percentToPixelRawVec('85 164'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('85 177'), CLR_DEF_WHITE, '8 8 0', 1, 0);
 
+  drawpic( gui_percentToPixelRawVec('250 167'), gameplay_hudalpha_lbl.image1, '32 32', '1 1 1', gameplay_hudalpha_lbl.len, 0);
+  
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_GAMEPLAY);
   while(widget){

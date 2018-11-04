@@ -1,6 +1,9 @@
 // called during level initialization, before first entities are received, only world is valid at this point
 void() CSQC_Init =
 {
+  registercvar("gamemode", "0");
+  registercvar("gametype", "0");
+
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
 		maxclients = maxclients + 1;
@@ -92,9 +95,6 @@ void() CSQC_Init =
   DEPLOY_CNT = 0;
   CFG_INDEX = 0;
   CFG_INDEX_PREV = CFG_INDEX;
-  
-  registercvar("gamemode", "0");
-  registercvar("gametype", "0");
   
   //ui data from text files /data/ui/
   ui_data_load_mechnames();
@@ -231,7 +231,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", ftos(1));
   }
-
+  HUD_ALPHA = cvar("cl_hud_alpha"); 
 	/*local vector vf_size;
 	local vector vf_min;
 	

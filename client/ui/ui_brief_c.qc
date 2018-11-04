@@ -9,7 +9,7 @@ Overview: class file for the deployment ui
 void() menu_briefDrawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
-  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_BRIEF, HUD_ALPHA, 0);
+  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_BRIEF, 1, 0);
   menu_briefMissionInfo(topleftroot+gui_percentToPixel(0.0082, 0.0395));
   menu_briefPlaySound(topleftroot);
   menu_briefMissionText(topleftroot);
@@ -60,26 +60,26 @@ void() briefSoundListener={
 //panels
 void(vector ofs) menu_briefMissionInfo={
   //10 42
-  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixel(0.19, 0.065), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
+  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixel(0.19, 0.065), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION INFO]", 0, '8 8 0');
   tpos = ofs + gui_percentToPixel(0.0945, 0.002);
   tpos_x = tpos_x - (tlen/2);
-  drawstring(tpos, "[MISSION INFO]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(tpos, "[MISSION INFO]", '8 8 0', '1 1 1', 1, 0);
   
   //mission name
-  drawstring(ofs+gui_percentToPixelRawVec('5 12'), strcat("[NAME]:       ", MSN_NAME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 12'), strcat("[NAME]:       ", MSN_NAME), '6 6 0', '1 1 1', 1, 0);
   //mission type
-  drawstring(ofs+gui_percentToPixelRawVec('5 20'), strcat("[TYPE]:       ",MSN_TYPE), '6 6 0', '1 1 1', HUD_ALPHA, 0); 
+  drawstring(ofs+gui_percentToPixelRawVec('5 20'), strcat("[TYPE]:       ",MSN_TYPE), '6 6 0', '1 1 1', 1, 0); 
   //reserves
-  drawstring(ofs+gui_percentToPixelRawVec('5 28'), strcat("[RESERVES]:   ", ftos(AVAILABLE_RESERVE), "//", MSN_RESERVETOTAL), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 28'), strcat("[RESERVES]:   ", ftos(AVAILABLE_RESERVE), "//", MSN_RESERVETOTAL), '6 6 0', '1 1 1', 1, 0);
   //sector
-  drawstring(ofs+gui_percentToPixelRawVec('5 36'), strcat("[SECTOR]      ", MSN_SECTOR), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 36'), strcat("[SECTOR]      ", MSN_SECTOR), '6 6 0', '1 1 1', 1, 0);
   //location
-  drawstring(ofs+gui_percentToPixelRawVec('5 44'), strcat("[LOCATION]:   ", MSN_LOCATION ), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 44'), strcat("[LOCATION]:   ", MSN_LOCATION ), '6 6 0', '1 1 1', 1, 0);
   //local time
-  drawstring(ofs+gui_percentToPixelRawVec('5 52'), strcat("[LOCAL TIME]: ", MSN_LOCALTIME), '6 6 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(ofs+gui_percentToPixelRawVec('5 52'), strcat("[LOCAL TIME]: ", MSN_LOCALTIME), '6 6 0', '1 1 1', 1, 0);
 };
 
 
@@ -90,25 +90,25 @@ void(vector ofs) menu_briefPlaySound={
     color = '0.25 0.25 0.25';
   }
   spos = ofs + gui_percentToPixelRawVec('10 100');
-  drawpic(spos, UI_DEF_BOX_256, gui_percentToPixelRawVec('243 32'), color, HUD_ALPHA, 0);
+  drawpic(spos, UI_DEF_BOX_256, gui_percentToPixelRawVec('243 32'), color, 1, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("|>PLAY BRIEFING<|", 0, '8 8 0');
   tpos = spos + gui_percentToPixelRawVec('120 10');
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
-  drawstring(tpos, "|>PLAY BRIEFING<|", '8 8 0', color, HUD_ALPHA, 0);
+  drawstring(tpos, "|>PLAY BRIEFING<|", '8 8 0', color, 1, 0);
 };
 
 void(vector ofs) menu_briefMissionText={
   local vector bpos, tpos, fpos;
   local float tlen;
   bpos = ofs + gui_percentToPixelRawVec('10 132');
-  drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('243 340'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
+  drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('243 340'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   
   tlen = stringwidth("[MISSION BRIEF]", 0, '8 8 0');
   tpos = bpos + gui_percentToPixelRawVec('120 5');
   tpos_x = tpos_x - gui_percentXRaw(tlen / 2);
-  drawstring(tpos, "[MISSION BRIEF]", '8 8 0', '1 1 1', HUD_ALPHA, 0);
+  drawstring(tpos, "[MISSION BRIEF]", '8 8 0', '1 1 1', 1, 0);
 
   fpos = bpos + gui_percentToPixelRawVec('2 20');
   gui_wrapText(fpos, '230 300', MSN_BRIEF, '7 8 0', '1 1 1', 1);
@@ -126,7 +126,7 @@ void(vector ofs) menu_briefMapPanel={
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(16));
   mpos_y = ofs_y + gui_percentYRaw(48);
   
-  drawpic(mpos, UI_DEF_BOX_512, gui_percentToPixelRawVec(ui_msize), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
+  drawpic(mpos, UI_DEF_BOX_512, gui_percentToPixelRawVec(ui_msize), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
  
   iofs = mpos + gui_percentToPixelRawVec('4 3');
   
@@ -138,10 +138,10 @@ void(vector ofs) menu_briefMapPanel={
     }
   }
   if(MSN_MAPPIC != ""){
-    drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec(ui_msize_in), '1 1 1', HUD_ALPHA, 0);
+    drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec(ui_msize_in), '1 1 1', 1, 0);
   }
   else{
-    drawstring(iofs + gui_percentToPixelRawVec('18 18'), "Satellite Data \n unavailable", '12 12 0', '1 0 0', HUD_ALPHA, 0);
+    drawstring(iofs + gui_percentToPixelRawVec('18 18'), "Satellite Data \n unavailable", '12 12 0', '1 0 0', 1, 0);
   }
 
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
@@ -162,7 +162,7 @@ void(vector ofs) menu_briefMapPanel={
       nlen = stringwidth(navname, 0, '6 6 0');
       nofs_x = nofs_x - gui_percentXRaw((nlen/2));
       nofs_y = nofs_y - gui_percentYRaw(16);
-      drawstring(nofs, navname, '6 6 0', '1 1 1', HUD_ALPHA, 0);
+      drawstring(nofs, navname, '6 6 0', '1 1 1', 1, 0);
       gui_renderTintImage(TRUE, tofs + gui_percentToPixelRawVec('-6 -6'), UI_DEF_NAVPOINT, '12 12', CLR_DEF_WHITE, 1, 0) ;
     }
     itr = itr + 1;
@@ -190,8 +190,8 @@ void(vector ofs) menu_objIntelSwitchPanel={
   OBJ_BTN_ORG = bpos + gui_percentToPixel(0, 0.0041);
   OBJ_BTN_SZ = isz;
 
-  gui_renderTintImage(odraw, bpos + gui_percentToPixel(0, 0.0041), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
-  gui_renderHighlightString("[OBJECTIVES]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', odraw, '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderTintImage(odraw, bpos + gui_percentToPixel(0, 0.0041), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderHighlightString("[OBJECTIVES]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', odraw, '8 8 0', 1, 0) ;
   
   local vector ipos, iisz, itpos;
   local float ilen;  
@@ -204,8 +204,8 @@ void(vector ofs) menu_objIntelSwitchPanel={
   iisz_y = gui_percentY(0.0166);
   INT_BTN_ORG = ipos + gui_percentToPixel(-0.0046, 0.0041);
   INT_BTN_SZ = isz;
-  gui_renderTintImage(idraw, ipos + gui_percentToPixel(-0.0046, 0.0041), UI_DEF_BOX_256, iisz, CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
-  gui_renderHighlightString("[INTEL]", itpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', idraw, '8 8 0', HUD_ALPHA, 0) ;  
+  gui_renderTintImage(idraw, ipos + gui_percentToPixel(-0.0046, 0.0041), UI_DEF_BOX_256, iisz, CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderHighlightString("[INTEL]", itpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', idraw, '8 8 0', 1, 0) ;  
 };
 
 void(vector ofs) menu_briefObjectivePanel={
@@ -214,7 +214,7 @@ void(vector ofs) menu_briefObjectivePanel={
     
   tlen = stringwidth("[OBJECTIVES]", 0 , '8 8 0');
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
-  drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
+  drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   
   lofs = bpos + gui_percentToPixelRawVec('6 16');
   eol = TRUE;
@@ -240,7 +240,7 @@ void(vector ofs) menu_briefIntelPanel={
   local vector fpos;
   
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
-  drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
+  drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   
   fpos = bpos + gui_percentToPixelRawVec('12 22');
   gui_wrapText(fpos, '300 300', MSN_INTEL, '7 8 0', '1 1 1', 1);

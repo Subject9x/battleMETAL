@@ -89,12 +89,12 @@ void() menu_handleFrame={
       break;
   }
   menu_navBar(VIEW_ORG);
-  drawpic(mpos, UI_CURSOR_IMG,  i_sz, '1 1 1', HUD_ALPHA, 0);
+  drawpic(mpos, UI_CURSOR_IMG,  i_sz, '1 1 1', 1, 0);
   
   //debug info
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', HUD_ALPHA, 0);
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(self.plr_sel_size), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(self.plr_sel_mech), '6 6 0', '1 1 1', HUD_ALPHA, 0);  
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', 1, 0);
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(self.plr_sel_size), '6 6 0', '1 1 1', 1, 0);  
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(self.plr_sel_mech), '6 6 0', '1 1 1', 1, 0);  
 };
 
 void() mechAcceptButtonListener={
@@ -130,19 +130,19 @@ void(vector ofs) menu_navBar={
   local float strwid;
   nvpos = ofs + gui_percentToPixelRawVec('9.984 7.488');
   
-  gui_renderTintImage((self.plr_menu_choice == MENU_BRIEF_ACTIVE), nvpos, UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  gui_renderTintImage((self.plr_menu_choice == MENU_BRIEF_ACTIVE), nvpos, UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, 1, 0) ;
   tpos = nvpos;
   strwid = stringwidth("[BRIEFING]", 0 ,'8 8 0')/2;
   tpos_x = (nvpos_x + gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   tpos_y = nvpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_BRIEF_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_BRIEF_ACTIVE), '8 8 0', 1, 0) ;
   
-  gui_renderTintImage((self.plr_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, HUD_ALPHA, 0) ;
+  gui_renderTintImage((self.plr_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, 1, 0) ;
   hpos = nvpos + gui_percentToPixel(0.075, 0);
   strwid = stringwidth("[HANGAR]", 0 ,'8 8 0')/2;
   hpos_x = (hpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   hpos_y = hpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice == MENU_HANGAR_ACTIVE), '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice == MENU_HANGAR_ACTIVE), '8 8 0', 1, 0) ;
   
   local vector arming_clr;
   local float arming_flt;
@@ -157,12 +157,12 @@ void(vector ofs) menu_navBar={
     arming_clr = '0.25 0.25 0.25';
     arming_flt =  TRUE;
   }
-  gui_renderTintImage(arming_flt, (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), arming_clr, HUD_ALPHA, 0) ;
+  gui_renderTintImage(arming_flt, (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), arming_clr, 1, 0) ;
   apos = nvpos + gui_percentToPixelRawVec('192 0');
   strwid = stringwidth("[ARMING]", 0 ,'8 8 0')/2;
   apos_x = (apos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   apos_y = apos_y + gui_percentY(0.0086);
-  drawstring(apos, "[ARMING]", '8 8 0', arming_clr, HUD_ALPHA, 0);
+  drawstring(apos, "[ARMING]", '8 8 0', arming_clr, 1, 0);
   
   local vector deploy_clr;
   local float deploy_flt;
@@ -174,12 +174,12 @@ void(vector ofs) menu_navBar={
     deploy_clr =  '0.25 0.25 0.25';
     deploy_flt = TRUE;
   }
-  gui_renderTintImage(deploy_flt, (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), deploy_clr, HUD_ALPHA, 0) ;
+  gui_renderTintImage(deploy_flt, (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), deploy_clr, 1, 0) ;
   dpos = nvpos + gui_percentToPixelRawVec('288 0');
   strwid = stringwidth("[DEPLOYMENT]", 0 ,'8 8 0')/2;
   dpos_x = (dpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   dpos_y = dpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[DEPLOYMENT]", dpos, deploy_clr, '0.75 0.75 0.75', deploy_flt, '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderHighlightString("[DEPLOYMENT]", dpos, deploy_clr, '0.75 0.75 0.75', deploy_flt, '8 8 0', 1, 0) ;
 
   
   local vector launch_clr;
@@ -196,8 +196,8 @@ void(vector ofs) menu_navBar={
   lpos_y = (lpos_y + gui_percentX(0.0045));
   isz_x = gui_percentXRaw(stringwidth(">>[!LAUNCH!]>>", 0 ,'8 8 0')) + gui_percentX(0.0093);
   isz_y = gui_percentY(0.025);
-  gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos + gui_percentToPixel(0.005, 0), UI_DEF_BOX_256, isz, launch_clr, CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
-  gui_renderHighlightString(">>[LAUNCH]>>",lpos, launch_clr, CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, '8 8 0', HUD_ALPHA, 0) ;
+  gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos + gui_percentToPixel(0.005, 0), UI_DEF_BOX_256, isz, launch_clr, CLR_DEF_ARM_THREEQ, 1, 0);
+  gui_renderHighlightString(">>[LAUNCH]>>",lpos, launch_clr, CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, '8 8 0', 1, 0) ;
   MENU_BTN_LAUNCH_ORG = rpos + gui_percentToPixel(0.005, 0);
   MENU_BTN_LAUNCH_SZ = isz;
 };
@@ -291,8 +291,8 @@ void(float navid) ui_renderNav={
       if( nactive == 2 ){
         colr = CLR_DEF_TXT_NONSELECT;
       }
-      drawstring(tofs, navname, '6 6', colr, HUD_ALPHA, 0);
-      gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, HUD_ALPHA, 0) ;
+      drawstring(tofs, navname, '6 6', colr, 1, 0);
+      gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, 1, 0) ;
     }
   }
 };
@@ -325,7 +325,7 @@ void(entity clnt) ui_renderClientName={
       //nameproj = gui_percentToPixelRawVec(nameproj);
       nameproj_x = nameproj_x - gui_percentXRaw(namelen / 2);
       nameproj_z = 0;
-      drawstring(nameproj, clnt.netname, '10 10 0', drawcolor, HUD_ALPHA, 0);
+      drawstring(nameproj, clnt.netname, '10 10 0', drawcolor, 1, 0);
     }
     namepos = cs_unproject(nameproj);
   }
@@ -337,10 +337,10 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
     local vector iorg;
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');
-      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
+      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_ARM_THREEQ, 1, 0);
     }
     if( ITEM_DATA_ICONS[wid] != "" ){
-      drawpic( org + gui_percentToPixelRawVec('1 1'), ITEM_DATA_ICONS[wid],  gui_percentToPixelRawVec('28 28'), '1 1 1', HUD_ALPHA, 0);
+      drawpic( org + gui_percentToPixelRawVec('1 1'), ITEM_DATA_ICONS[wid],  gui_percentToPixelRawVec('28 28'), '1 1 1', 1, 0);
     }
   }
 };
@@ -349,22 +349,22 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   local vector pofs, iofs, szofs;
   pofs = org + gui_percentToPixelRawVec('8 0');
   pofs_y = org_y + gui_percentYRaw((hpt_num * 20));
-  drawstring(pofs + gui_percentToPixelRawVec('0 4'), strcat("[#",ftos(hpt_num),"]"), '6 6 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
+  drawstring(pofs + gui_percentToPixelRawVec('0 4'), strcat("[#",ftos(hpt_num),"]"), '6 6 0', CLR_DEF_WHITE,1 , 0);
   local float cnt;
   cnt = 0;
   if((types & DMG_ENE)){
-    drawpic(pofs + gui_percentToPixelRawVec('85 0'), UI_WEP_ENE, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', HUD_ALPHA, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('85 0'), UI_WEP_ENE, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', 1, 0);
   }
   if((types & DMG_BAL)){
-    drawpic(pofs + gui_percentToPixelRawVec('100 0'), UI_WEP_BAL, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_HALF, HUD_ALPHA, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('100 0'), UI_WEP_BAL, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_HALF, 1, 0);
   }
   if((types & DMG_EXP)){
-    drawpic(pofs + gui_percentToPixelRawVec('120 0'), UI_WEP_EXP, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('120 0'), UI_WEP_EXP, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, 1, 0);
   }
   if((types & DMG_MSC)){
-    drawpic(pofs + gui_percentToPixelRawVec('140 0'), UI_WEP_MSC, gui_percentToPixelRawVec('16 16'), CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('140 0'), UI_WEP_MSC, gui_percentToPixelRawVec('16 16'), CLR_DEF_RET_GETLOCK, 1, 0);
   }
-  drawstring(pofs + gui_percentToPixelRawVec('225 4'), ftos(sz), '8 8 0', CLR_DEF_WHITE,HUD_ALPHA , 0);
+  drawstring(pofs + gui_percentToPixelRawVec('225 4'), ftos(sz), '8 8 0', CLR_DEF_WHITE,1 , 0);
 };
 
 void(float num, vector org) ui_renderHardPointNumber={
