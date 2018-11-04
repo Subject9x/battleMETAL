@@ -184,7 +184,7 @@ void() txt_control_bind_chat_all={
 };
 
 void() txt_control_bind_zoom={
-  menu_keybind_change ("+zoom");
+  menu_keybind_change ("+button9");
 };
 
 // ini function, called by '_f' function as a setup func
