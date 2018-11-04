@@ -30,10 +30,10 @@ vector CLR_DEF_UI_PSC_ARMING = '0.4 0.2 0.1';
 vector CLR_DEF_UI_PSC_DEPLOY = '0.42 0.53 0.37';
 
 //Author theming
-vector CLR_DEF_UI_AUTH_BRIEF = '0 0 0';
-vector CLR_DEF_UI_AUTH_HANGAR = '0 0 0';
-vector CLR_DEF_UI_AUTH_ARMING = '0 0 0';
-vector CLR_DEF_UI_AUTH_DEPLOY = '0 0 0';
+vector CLR_DEF_UI_AUTH_BRIEF = '0.12 0.17 0.27';
+vector CLR_DEF_UI_AUTH_HANGAR = '0.14 0.137 0.29';
+vector CLR_DEF_UI_AUTH_ARMING = '0.1 0.21 0.26';
+vector CLR_DEF_UI_AUTH_DEPLOY = '0.27 0.5 0.6';
 
 //armor constants
   //fine
