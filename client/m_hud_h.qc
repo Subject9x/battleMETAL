@@ -10,7 +10,7 @@ every hud ent has to implement this format
 
 
 //HUD CONSTANTS==============================
-vector HUD_COLOR_DEF = '0.2 0.8 0.2';
+vector HUD_COLOR_DEF;
 float HUD_UID_IMG_HELM      = 1;
 float HUD_UID_ENERGY        = 2;
 float HUD_UID_ARM_PLAYER    = 3;

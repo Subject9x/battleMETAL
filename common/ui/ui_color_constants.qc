@@ -24,16 +24,23 @@ vector CLR_DEF_UI_ARMING;
 vector CLR_DEF_UI_DEPLOY;
 
 //PSC theming
-vector CLR_DEF_UI_PSC_BRIEF = '0.54 0.48 0.39';
-vector CLR_DEF_UI_PSC_HANGAR = '0.47 0.47 0.45';
-vector CLR_DEF_UI_PSC_ARMING = '0.4 0.2 0.1';
-vector CLR_DEF_UI_PSC_DEPLOY = '0.42 0.53 0.37';
+vector CLR_UI_PSC_BRIEF = '0.54 0.48 0.39';
+vector CLR_UI_PSC_HANGAR = '0.47 0.47 0.45';
+vector CLR_UI_PSC_ARMING = '0.4 0.2 0.1';
+vector CLR_UI_PSC_DEPLOY = '0.42 0.53 0.37';
 
 //Author theming
-vector CLR_DEF_UI_AUTH_BRIEF = '0.12 0.17 0.27';
-vector CLR_DEF_UI_AUTH_HANGAR = '0.14 0.137 0.29';
-vector CLR_DEF_UI_AUTH_ARMING = '0.1 0.21 0.26';
-vector CLR_DEF_UI_AUTH_DEPLOY = '0.27 0.5 0.6';
+vector CLR_UI_AUTH_BRIEF = '0.12 0.17 0.27';
+vector CLR_UI_AUTH_HANGAR = '0.14 0.137 0.29';
+vector CLR_UI_AUTH_ARMING = '0.1 0.21 0.26';
+vector CLR_UI_AUTH_DEPLOY = '0.27 0.5 0.6';
+
+//HUD Colors
+vector CLR_HUD_WHITE = '0.9 0.9 0.9';     //0
+vector CLR_HUD_GREEN = '0.2 0.8 0.2';     //1
+vector CLR_HUD_ORANGE = '0.93 0.5 0.07';  //2
+vector CLR_HUD_PURPLE = '0.66 0.074 0.93';//3
+vector CLR_HUD_BLUE = '0.074 0.66 0.93';  //4
 
 //armor constants
   //fine

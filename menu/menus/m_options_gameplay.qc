@@ -20,12 +20,50 @@ entity gameplay_datetime_lbl;
 entity gameplay_datetime_on;
 entity gameplay_datetime_off;
 
+entity gameplay_ret_lbl;
+
 entity gameplay_hudalpha_lbl;
 entity gameplay_hudalpha_up;
 entity gameplay_hudalpha_dn;
 
+entity gameplay_hudcolor_lbl;
+entity gameplay_hudcolor_nx;
+entity gameplay_hudcolor_pr;
+
 entity gameplay_back;
+
 //gameplay constants
+string( float id ) gameplay_hudcolor_name={
+  switch( id ){
+    case 1:
+      return "GREEN";
+    case 2:
+      return "ORANGE";
+    case 3:
+      return "PURPLE";
+    case 4:
+      return "BLUE";
+    default:
+      return "WHITE";
+  }
+  return "NONE";
+};
+
+vector( float id ) gameplay_hudcolor_color={
+  switch( id ){
+    case 1:
+      return CLR_HUD_GREEN;
+    case 2:
+      return CLR_HUD_ORANGE;
+    case 3:
+      return CLR_HUD_PURPLE;
+    case 4:
+      return CLR_HUD_BLUE;
+    default:
+      return CLR_HUD_WHITE;
+  }
+};
+
 
 //gameplay callbacks
 void() click_gameplay_fov_more={
@@ -127,6 +165,40 @@ void() click_gameplay_hudalpha_dn={
   gameplay_hudalpha_up.drawme = TRUE;
 };
 
+void() click_gameplay_hudcolor_nx={
+  local float val;
+  val = gameplay_hudcolor_lbl.len;
+  val = val + 1;
+  if(val >= 4){
+    gameplay_hudcolor_nx.drawme = FALSE;
+    val = 4;
+  }
+  gameplay_hudcolor_lbl.len = val;
+  strunzone(gameplay_hudcolor_lbl.label);
+  gameplay_hudcolor_lbl.label = strzone(gameplay_hudcolor_name( gameplay_hudcolor_lbl.len ));
+  gameplay_hudcolor_lbl.color = gameplay_hudcolor_color( val );
+  cvar_set("cl_hud_color", ftos(val) );
+  
+  gameplay_hudcolor_pr.drawme = TRUE;
+};
+
+void() click_gameplay_hudcolor_pr={
+  local float val;
+  val = gameplay_hudcolor_lbl.len;
+  val = val - 1;
+  if(val <= 0){
+    gameplay_hudcolor_pr.drawme = FALSE;
+    val = 0;
+  }
+  gameplay_hudcolor_lbl.len = val;
+  strunzone(gameplay_hudcolor_lbl.label);
+  gameplay_hudcolor_lbl.label = strzone(gameplay_hudcolor_name( gameplay_hudcolor_lbl.len ));
+  gameplay_hudcolor_lbl.color = gameplay_hudcolor_color( val );
+  cvar_set("cl_hud_color", ftos(val) );
+  
+  gameplay_hudcolor_nx.drawme = TRUE;
+};
+
 // ini function, called by '_f' function as a setup func
 void() m_gameplay_i={
   gameplay_title = lbl_img('10 100', '1 1 0', IMG_OPTION_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, (UI_FLAG_SIZE_IMG) );
@@ -182,7 +254,17 @@ void() m_gameplay_i={
     gameplay_hudalpha_up.drawme = FALSE;
   }
   
-  gameplay_back = btn_img_callback('10 230 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1',CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  local string colr;
+  colr = gameplay_hudcolor_name( cvar("cl_hud_color") );
+  gameplay_hudcolor_lbl = lbl_text('190 190', '9 9 0', strzone(colr), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudcolor_lbl.len = cvar("cl_hud_color");
+  gameplay_hudcolor_lbl.color = gameplay_hudcolor_color( gameplay_hudcolor_lbl.len );
+  gameplay_hudcolor_lbl.image1 = "gfx/hud/ret_lock.png";
+  gameplay_hudcolor_nx = btn_img_callback('245 190', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudcolor_pr = btn_img_callback('176 190', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
+  
+  gameplay_back = btn_img_callback('10 230 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
 /*
@@ -205,6 +287,7 @@ void() m_gameplay_d={
   gui_renderString("Show Date/Time :", gui_percentToPixelRawVec('37 150'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   gui_renderString("Show FPS :", gui_percentToPixelRawVec('85 164'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('85 177'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("HUD Color:", gui_percentToPixelRawVec('85 190'), CLR_DEF_WHITE, '8 8 0', 1, 0);
 
   drawpic( gui_percentToPixelRawVec('250 167'), gameplay_hudalpha_lbl.image1, '32 32', '1 1 1', gameplay_hudalpha_lbl.len, 0);
   

@@ -818,6 +818,25 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
 */
 void() data_hud_frame={
   local float uid, hasTarget;
+  
+  switch( cvar("cl_hud_color") ){
+    case 1:
+      HUD_COLOR_DEF = CLR_HUD_GREEN;
+      break;
+    case 2:
+      HUD_COLOR_DEF = CLR_HUD_ORANGE;
+      break;
+    case 3:
+      HUD_COLOR_DEF = CLR_HUD_PURPLE;
+      break;
+    case 4:
+      HUD_COLOR_DEF = CLR_HUD_BLUE;
+      break;
+    default:
+      HUD_COLOR_DEF = CLR_HUD_WHITE;
+      break;
+  }
+  
   hasTarget = FALSE;
   if( self.stat_trg_dataidx > 0 ){
     hasTarget = TRUE;

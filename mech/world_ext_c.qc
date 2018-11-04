@@ -12,6 +12,7 @@ void() mh_world_ini={
   registercvar("gamemode", "0", 0);
   registercvar("gametype", "0", 0);
   registercvar("cl_hud_alpha", "1", 1);
+  registercvar("cl_hud_color", "0", 1);
   
   cvar_set("gamemode", ftos(GAMEMODE_CAMPAIGN));
   if( coop ){

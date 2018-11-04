@@ -15,6 +15,7 @@ void() m_init={
   dynamic_precache();
   
   registercvar("cl_hud_alpha", "0", 1);
+  registercvar("cl_hud_color", "0", 1);
   
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){
