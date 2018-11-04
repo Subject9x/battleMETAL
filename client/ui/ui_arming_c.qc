@@ -183,7 +183,7 @@ void() menu_arming_drawFrame={
   }
   local vector topleftroot;
   topleftroot = VIEW_ORG;
-  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, '1 1 1', HUD_ALPHA, 0);
+  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_ARMING, HUD_ALPHA, 0);
   
   menu_arming_HardpointGraph(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponList(topleftroot + gui_percentToPixel(0, 0.025));
@@ -199,7 +199,7 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   nofs = ofs + gui_percentToPixelRawVec('10 8');
   psize = gui_percentToPixelRawVec('270 236');
-  drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', HUD_ALPHA, 0);
   drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, psize, '0.25 0.25 0.25', HUD_ALPHA, 0);
   
   if( SELECT_MECH > FALSE){
@@ -263,7 +263,7 @@ void(vector ofs) menu_arming_WeaponList={
   nofs = ofs;
   nofs_x = VIEW_CTR_x + gui_percentXRaw(150);
   nofs = nofs + gui_percentToPixelRawVec('12 10');
-  drawpic(nofs, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('148 439'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('148 439'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', HUD_ALPHA, 0);
   menu_arming_WeaponList_BAL(nofs);
   menu_arming_WeaponList_ENE(nofs);
   menu_arming_WeaponList_EXP(nofs);
@@ -290,7 +290,7 @@ void(vector ofs) menu_arming_WeaponList_BAL={
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, HUD_ALPHA, 0);
         }
         if(!(self.plr_sel_hrpnt_types & DMG_BAL) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
-          clr = CLR_DEF_BLACK;
+          clr = CLR_DEF_TXT_CANTSELET;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_BAL_ARR[act_idx] = lst_idx;
@@ -327,7 +327,7 @@ void(vector ofs) menu_arming_WeaponList_ENE={
           clr = CLR_DEF_TXT_NONSELECT;
         }
         if(!(self.plr_sel_hrpnt_types & DMG_ENE) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
-          clr = CLR_DEF_BLACK;
+          clr = CLR_DEF_TXT_CANTSELET;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_ENE_ARR[act_idx] = lst_idx;
@@ -365,7 +365,7 @@ void(vector ofs) menu_arming_WeaponList_EXP={
           clr = CLR_DEF_TXT_NONSELECT;
         }
         if(!(self.plr_sel_hrpnt_types & DMG_EXP) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
-          clr = CLR_DEF_BLACK;
+          clr = CLR_DEF_TXT_CANTSELET;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_EXP_ARR[act_idx] = lst_idx;
@@ -402,7 +402,7 @@ void(vector ofs) menu_arming_WeaponList_MSC={
           clr = CLR_DEF_TXT_NONSELECT;
         }
         if(!(self.plr_sel_hrpnt_types & DMG_MSC) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
-          clr = CLR_DEF_BLACK;
+          clr = CLR_DEF_TXT_CANTSELET;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx] , '5 5 0', clr, HUD_ALPHA, 0);
         WEPLIST_MSC_ARR[act_idx] = lst_idx;
@@ -422,7 +422,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   local float lst_idx, bit;
   nofs_x = ofs_x + gui_percentXRaw(10);
   nofs_y = ofs_y + gui_percentYRaw(325);
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), '1 1 1', HUD_ALPHA,0);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', HUD_ALPHA,0);
   drawstring(nofs + gui_percentToPixelRawVec('24 6'), "[WEAPON GROUPINGS]", '6 6 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
   drawstring(nofs + gui_percentToPixelRawVec('45 14'), "[1][2][3][4][5]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
@@ -470,7 +470,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
 };
 
 void(vector ofs) menu_arming_energydraw={
-  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('126 197'), '1 1 1', HUD_ALPHA,0);
+  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('126 197'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', HUD_ALPHA,0);
   
   drawstring(ofs + gui_percentToPixelRawVec('3 6'), "Energy Draw total ", '7 9 0', CLR_DEF_ENE_FRT, HUD_ALPHA, 0);
   drawstring(ofs + gui_percentToPixelRawVec('4 18'), "by [Weapon Group]", '7 8 0', '1 1 1', HUD_ALPHA, 0);
@@ -504,7 +504,7 @@ void(vector ofs) menu_arming_WeaponInfo={
 
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);
   nofs_y = ofs_y + gui_percentYRaw(12);
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', HUD_ALPHA, 0);
   
   local string title;
   local float tlen;
@@ -639,10 +639,6 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
     gui_wrapText(icol + gui_percentToPixelRawVec('-6 60'), '187 130', ITEM2_DATA_DESC, '6 7 0', '1 1 1', 1);
   }
 };
-
-
-//
-
 
 //UTILITY FUNCS
 float(float comp, float bits) checkIfWeaponInGroup={

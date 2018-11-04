@@ -52,9 +52,22 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
 };
 
 void() menu_handleFrame={
-
   local vector mpos, i_sz;
   
+  //UI Theming
+  if( self.i_faction == 1 ){
+    CLR_DEF_UI_BRIEF = CLR_DEF_UI_PSC_BRIEF;
+    CLR_DEF_UI_HANGAR = CLR_DEF_UI_PSC_HANGAR;
+    CLR_DEF_UI_ARMING = CLR_DEF_UI_PSC_ARMING;
+    CLR_DEF_UI_DEPLOY = CLR_DEF_UI_PSC_DEPLOY;
+  }
+  else if( self.i_faction == 2 ){
+    CLR_DEF_UI_BRIEF = CLR_DEF_UI_AUTH_BRIEF;
+    CLR_DEF_UI_HANGAR = CLR_DEF_UI_AUTH_HANGAR;
+    CLR_DEF_UI_ARMING = CLR_DEF_UI_AUTH_ARMING;
+    CLR_DEF_UI_DEPLOY = CLR_DEF_UI_AUTH_DEPLOY;
+  }
+
   i_sz = draw_getimagesize(UI_CURSOR_IMG);
   i_sz = gui_percentToPixelRawVec( gui_scaleSize(i_sz, VIEW_SCALE/1.25) );
   
@@ -324,7 +337,7 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
     local vector iorg;
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');
-      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_RED, HUD_ALPHA, 0);
+      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_ARM_THREEQ, HUD_ALPHA, 0);
     }
     if( ITEM_DATA_ICONS[wid] != "" ){
       drawpic( org + gui_percentToPixelRawVec('1 1'), ITEM_DATA_ICONS[wid],  gui_percentToPixelRawVec('28 28'), '1 1 1', HUD_ALPHA, 0);

@@ -9,7 +9,7 @@ Overview: class file for the deployment ui
 void() menu_briefDrawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
-  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, '1 1 1', HUD_ALPHA, 0);
+  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_BRIEF, HUD_ALPHA, 0);
   menu_briefMissionInfo(topleftroot+gui_percentToPixel(0.0082, 0.0395));
   menu_briefPlaySound(topleftroot);
   menu_briefMissionText(topleftroot);
@@ -60,7 +60,7 @@ void() briefSoundListener={
 //panels
 void(vector ofs) menu_briefMissionInfo={
   //10 42
-  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixel(0.19, 0.065), '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixel(0.19, 0.065), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION INFO]", 0, '8 8 0');
@@ -103,7 +103,7 @@ void(vector ofs) menu_briefMissionText={
   local vector bpos, tpos, fpos;
   local float tlen;
   bpos = ofs + gui_percentToPixelRawVec('10 132');
-  drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('243 340'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('243 340'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
   
   tlen = stringwidth("[MISSION BRIEF]", 0, '8 8 0');
   tpos = bpos + gui_percentToPixelRawVec('120 5');
@@ -126,7 +126,7 @@ void(vector ofs) menu_briefMapPanel={
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(16));
   mpos_y = ofs_y + gui_percentYRaw(48);
   
-  drawpic(mpos, UI_DEF_BOX_512, gui_percentToPixelRawVec(ui_msize), '1 1 1', HUD_ALPHA, 0);
+  drawpic(mpos, UI_DEF_BOX_512, gui_percentToPixelRawVec(ui_msize), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
  
   iofs = mpos + gui_percentToPixelRawVec('4 3');
   
@@ -214,7 +214,7 @@ void(vector ofs) menu_briefObjectivePanel={
     
   tlen = stringwidth("[OBJECTIVES]", 0 , '8 8 0');
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
-  drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
   
   lofs = bpos + gui_percentToPixelRawVec('6 16');
   eol = TRUE;
@@ -240,7 +240,7 @@ void(vector ofs) menu_briefIntelPanel={
   local vector fpos;
   
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
-  drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', HUD_ALPHA, 0);
   
   fpos = bpos + gui_percentToPixelRawVec('12 22');
   gui_wrapText(fpos, '300 300', MSN_INTEL, '7 8 0', '1 1 1', 1);

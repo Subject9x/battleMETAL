@@ -52,7 +52,7 @@ void() menu_hangarDrawFrame={
   
   local vector topleftroot;
   topleftroot = VIEW_ORG;
-  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, '1 1 1', HUD_ALPHA, 0);
+  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_HANGAR, HUD_ALPHA, 0);
   menu_hangar_MechDisplay(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_hangar_MechList(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_hangar_MechInfo(topleftroot);
@@ -63,8 +63,8 @@ void() menu_hangarDrawFrame={
 void(vector ofs) menu_hangar_MechDisplay={
   local vector nofs, hofs, mpos, i_sz, hpnts;
   nofs = ofs + gui_percentToPixelRawVec('377 8'); //420 8
-  drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('250 250'), '1 1 1', HUD_ALPHA, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('242 242'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('250 250'), CLR_DEF_UI_HANGAR, HUD_ALPHA, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('242 242'), CLR_DEF_UI_HANGAR, HUD_ALPHA, 0);
   if(SELECT_MECH > FALSE){
     i_sz = draw_getimagesize(MECH_DATA_ICON);
     i_sz = gui_percentToPixelRawVec('250 250');
@@ -90,7 +90,7 @@ void(vector ofs) menu_hangar_MechHPoints={
   local float tlen, hlist;
   local entity dat;
   nofs = ofs + gui_percentToPixelRawVec('365 272');
-  drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('255 192'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('255 192'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', HUD_ALPHA, 0);
   
   tlen = strlen("[HARDPOINTS]");
   tofs = nofs;
@@ -114,7 +114,7 @@ void(vector ofs) menu_hangar_MechHPoints={
 
 
 void(vector ofs) menu_hangar_MechList={
-  drawpic(ofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('116 440'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(ofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('116 440'),CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', HUD_ALPHA, 0);
   drawstring(ofs + gui_percentToPixelRawVec('16 16'), "[AVAILABLE METAL]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   menu_hangar_MechListLight(ofs);
   menu_hangar_MechListMedium(ofs);
@@ -245,7 +245,7 @@ void(vector ofs) menu_hangar_MechInfo={
 
   nofs_x = ofs_x + gui_percentXRaw(125);
   nofs_y = ofs_y + gui_percentYRaw(43);
-  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('250 180'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+  drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('250 180'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', HUD_ALPHA, 0);
 
   slen = strlen("[METAL INFO]");
   sofs = nofs;
@@ -318,7 +318,7 @@ void(vector ofs) menu_hangar_MechFluff={
   local vector nofs, fpos;
   local float lne_idx, argc;
   nofs = ofs + gui_percentToPixelRawVec('115 203');
-  drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('250 261'), '1 1 1', HUD_ALPHA, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('250 261'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', HUD_ALPHA, 0);
   drawstring(nofs + gui_percentToPixelRawVec('16 16'), "[DESCRIPTION]", '6 6 0', '1 1 1', HUD_ALPHA, 0);
   
   if(SELECT_MECH > FALSE){

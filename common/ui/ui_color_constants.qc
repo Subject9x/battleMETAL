@@ -17,6 +17,24 @@ vector CLR_DEF_RED = '1 0 0';
 vector CLR_DEF_GREEN = '0 1 0';
 vector CLR_DEF_BLUE = '0 0 1';
 
+//UI Theming
+vector CLR_DEF_UI_BRIEF;
+vector CLR_DEF_UI_HANGAR;
+vector CLR_DEF_UI_ARMING;
+vector CLR_DEF_UI_DEPLOY;
+
+//PSC theming
+vector CLR_DEF_UI_PSC_BRIEF = '0.54 0.48 0.39';
+vector CLR_DEF_UI_PSC_HANGAR = '0.47 0.47 0.45';
+vector CLR_DEF_UI_PSC_ARMING = '0.4 0.2 0.1';
+vector CLR_DEF_UI_PSC_DEPLOY = '0.42 0.53 0.37';
+
+//Author theming
+vector CLR_DEF_UI_AUTH_BRIEF = '0 0 0';
+vector CLR_DEF_UI_AUTH_HANGAR = '0 0 0';
+vector CLR_DEF_UI_AUTH_ARMING = '0 0 0';
+vector CLR_DEF_UI_AUTH_DEPLOY = '0 0 0';
+
 //armor constants
   //fine
   vector CLR_DEF_ARM_OK= '0.2 0.8 0.2';
