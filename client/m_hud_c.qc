@@ -817,7 +817,11 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
   Main API call for new text-based HUD sys
 */
 void() data_hud_frame={
-  local float uid, hasTarget;
+  local float uid;
+  local float hasTarget;
+  local float accuracy;
+  
+  accuracy = getstatf(STAT_ACCURACY);
   
   switch( cvar("cl_hud_color") ){
     case 1:
@@ -980,13 +984,237 @@ void() data_hud_frame={
     hud_renderTargetOverlay(self.target_origin, pmove_org, 0, self.i_faction, self.target_faction, self.radar_range);
     hud_renderShieldOverlay(self.target_origin, pmove_org, 0, self.target_shield, self.radar_range, self.target_vecsize, '64 6', AXIS_H);
   }  
+  
+
+  
   //CROSSHAIR AND DETAILS
   hud_renderDirectionHit(self.stat_hit_dirs);
-  hud_renderCrosshairs(self.stat_hit_dirs, self.stat_lck_stt, getstatf(STAT_ACCURACY), self.target_shield); //TODO - spread
+ // hud_renderCrosshairs(self.stat_hit_dirs, self.stat_lck_stt, getstatf(STAT_ACCURACY), self.target_shield); //TODO - spread
+  
+  switch( cvar("crosshair") ){
+    case 1:
+      hud_renderCrosshair1( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+      break;
+    case 2:
+      hud_renderCrosshair2( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+      break;
+    case 3:
+      hud_renderCrosshair3( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+      break;
+    case 4:
+      hud_renderCrosshair4( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+      break;
+    case 5:
+      hud_renderCrosshair5( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+      break;
+    default:
+      //no crosshair? bold move
+      break;
+  }
+  
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY), input_angles_x * -3, 270, -270);
   hud_renderTargetDirection(self.stat_trg_face, self.i_faction, self.target_faction, self.target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), self.stat_ret_dist) ;
   
   //repair sits above all
   hud_renderRepairValue(getstatf(STAT_PLR_REP));
+};
+
+/*
+  I have no regrets for these
+  yes its a bespoke function for each crosshair style...because a generic system for
+  crosshairs was egregious - ha.
+*/
+/*
+  Crosshair Type 1
+*/
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair1={
+  local float lockAlpha;
+  local vector lockColor;
+  local float hitAlpha;
+  local vector hitColor;
+  
+  local vector imgSize;
+  local vector lockSize;
+  local vector pipSizeH;
+  local vector pipSizeV;
+  local vector drift;
+  
+  local vector imgCenter;
+  local vector lockCenter;
+  local vector pipLeft;
+  local vector pipRight;
+  local vector pipTop;
+  local vector pipBottom;
+  
+  lockAlpha = HUD_ALPHA;
+  hitColor = HUD_COLOR_DEF;
+  hitAlpha = HUD_ALPHA;
+  
+  drift = gui_percentToPixelRaw( 8 * accuracy, 8 * accuracy );
+  imgSize = gui_percentToPixelRawVec('28 28');
+  pipSizeH = gui_percentToPixelRawVec('8 3');
+  pipSizeV = gui_percentToPixelRawVec('3 8');
+  
+  if( (hitdirection & STAT_HIT_TRG) ){
+    if(trg_shield > 0){
+      hitColor = CLR_DEF_ARM_OK;
+      hitAlpha = 1;
+    }
+    else{
+      hitColor = hitColor + '0.8 0.8 0.8';
+      hitAlpha = 1;
+    }
+  }
+  
+  //base image
+  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
+  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
+  drawpic(imgCenter, "gfx/hud/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+
+  //convergence
+  pipLeft = VIEW_CTR - gui_percentToPixelRawVec('11 1.5');
+  pipLeft_x = pipLeft_x - drift_x;
+    
+  pipRight = VIEW_CTR + gui_percentToPixelRawVec('3 -1.5');
+  pipRight_x = pipRight_x + drift_x;
+  
+  pipTop = VIEW_CTR - gui_percentToPixelRawVec('1.5 11');
+  pipTop_y = pipTop_y - drift_y;
+  
+  pipBottom = VIEW_CTR + gui_percentToPixelRawVec('-1.5 3');
+  pipBottom_y = pipBottom_y + drift_y;
+  
+  drawpic(pipLeft, "gfx/hud/crosshair1_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipRight, "gfx/hud/crosshair1_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  
+  drawpic(pipTop, "gfx/hud/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipBottom, "gfx/hud/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+
+  //lock on indicators
+  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
+    lockSize = gui_percentToPixelRawVec('34 34');
+    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
+    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
+    lockColor = CLR_DEF_RET_GETLOCK;
+    lockAlpha = lockAlpha + 0.18;
+    if( (lockval & LOCK_TARG_HAS) ){
+      lockColor = CLR_DEF_RET_HASLOCK;
+      lockAlpha = lockAlpha + 0.05;
+    }
+    if( lockAlpha > 1 ){
+      lockAlpha = 1;
+    }
+    drawpic(lockCenter, "gfx/hud/crosshair1_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+  }
+}; 
+
+/*
+  Crosshair Type 2
+*/
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair2={
+  local float lockAlpha;
+  local vector lockColor;
+  local float hitAlpha;
+  local vector hitColor;
+  
+  local vector imgSize;
+  local vector lockSize;
+  local vector pipSizeH;
+  local vector pipSizeV;
+  local vector drift;
+  
+  local vector imgCenter;
+  local vector lockCenter;
+  local vector pipLeft;
+  local vector pipRight;
+  local vector pipTop;
+  local vector pipBottom;
+  
+  lockAlpha = HUD_ALPHA;
+  hitColor = HUD_COLOR_DEF;
+  hitAlpha = HUD_ALPHA;
+  
+  drift = gui_percentToPixelRaw( 8 * accuracy, 8 * accuracy );
+  imgSize = gui_percentToPixelRawVec('28 28');
+  pipSizeH = gui_percentToPixelRawVec('15 3');
+  pipSizeV = gui_percentToPixelRawVec('3 15');
+  
+  if( (hitdirection & STAT_HIT_TRG) ){
+    if(trg_shield > 0){
+      hitColor = CLR_DEF_ARM_OK;
+      hitAlpha = 1;
+    }
+    else{
+      hitColor = hitColor + '0.8 0.8 0.8';
+      hitAlpha = 1;
+    }
+  }
+  
+  //base image
+  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
+  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
+  drawpic(imgCenter, "gfx/hud/crosshair2.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+
+  //convergence
+  pipLeft = VIEW_CTR - gui_percentToPixelRawVec('17 1.5');
+  pipLeft_x = pipLeft_x - drift_x;
+    
+  pipRight = VIEW_CTR + gui_percentToPixelRawVec('2 -1.5');
+  pipRight_x = pipRight_x + drift_x;
+  
+  pipTop = VIEW_CTR - gui_percentToPixelRawVec('1.5 17');
+  pipTop_y = pipTop_y - drift_y;
+  
+  pipBottom = VIEW_CTR + gui_percentToPixelRawVec('-1.5 2');
+  pipBottom_y = pipBottom_y + drift_y;
+  
+  drawpic(pipLeft, "gfx/hud/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipRight, "gfx/hud/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  
+  drawpic(pipTop, "gfx/hud/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipBottom, "gfx/hud/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+
+  //lock on indicators
+  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
+    lockSize = gui_percentToPixelRawVec('34 34');
+    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
+    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
+    lockColor = CLR_DEF_RET_GETLOCK;
+    lockAlpha = lockAlpha + 0.18;
+    if( (lockval & LOCK_TARG_HAS) ){
+      lockColor = CLR_DEF_RET_HASLOCK;
+      lockAlpha = lockAlpha + 0.05;
+    }
+    if( lockAlpha > 1 ){
+      lockAlpha = 1;
+    }
+    drawpic(lockCenter, "gfx/hud/crosshair2_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+  }
+};
+
+/*
+  Crosshair Type 3
+*/
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair3={
+
+  //base image
+  
+  //accuracy pips
+  
+  //lock on indicators
+};
+
+/*
+  Crosshair Type 4
+*/
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4={
+
+};
+
+/*
+  Crosshair Type 5
+*/
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair5={
+
 };

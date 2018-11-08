@@ -77,6 +77,11 @@ string HUD_TARGET_BOX;
 .vector nav_ofs;
 
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs;
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair1; //I have no regrets for these
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair2;
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair3;
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4;
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair5;
 void(float hitDirBit) hud_renderDirectionHit;
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection;
 void(vector pos, float algn, float pitchVal, float pitch_max, float pitch_min) hud_renderPitchIndicator;

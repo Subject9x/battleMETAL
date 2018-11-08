@@ -68,17 +68,17 @@ void() cs_precache={
   precache_sound("sound/misc/menu2.wav");
   precache_sound("sound/misc/menu3.wav");
   
-  //cursor
-  UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png",0);
-  UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png",0);
-  UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png",0);
-  UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",0);
-  UI_DEF_BOX_64 = precache_pic("gfx/ui/box_64.png",0);
-  UI_DEF_REC_64 = precache_pic("gfx/ui/box_64_rec.png",0);
+  //UI GRAPHICS
+  UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png",8);
+  UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png",8);
+  UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png",8);
+  UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",8);
+  UI_DEF_BOX_64 = precache_pic("gfx/ui/box_64.png",8);
+  UI_DEF_REC_64 = precache_pic("gfx/ui/box_64_rec.png",8);
   HUD_TARGET_BOX = precache_pic("gfx/hud/target_box.png",0);
   UI_DEF_NAVPOINT = precache_pic("gfx/ui/hud_navpoint.png",0);
   UI_DEF_DEPLOYPOINT = precache_pic("gfx/ui/hud_deploypoint.png", 0);
-  UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",0);
+  UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",8);
   UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",0);
   
   UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png",0);
@@ -109,24 +109,19 @@ void() cs_precache={
   UI_EQP_SCAP = precache_pic("gfx/ui/wep_icons/eqp_lscap.png",0);
   UI_EQP_RECAP = precache_pic("gfx/ui/wep_icons/eqp_recap.png",0);
   
-  //UI - mechs
-   DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);
-   DAT_MNT_UI_IMG = precache_pic("gfx/ui/hgr_MNT.png",0);
-   DAT_MTK_UI_IMG = precache_pic("gfx/ui/hgr_mtk.png",0);
-};
-
-entity(float id, float dat_type) m_findData={
-  local entity data_chain;
-  data_chain = findchain(classname, "data");
-  while(data_chain){
-    local float idx;
-    idx = data_chain.data_idx;
-    if(data_chain.data_type == dat_type){
-      if(id == idx){
-        return data_chain;
-      }
-    }
-    data_chain = data_chain.chain;
-  }
-  return data_chain;
+  //HUD GRAPHICS
+  DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);
+  DAT_MNT_UI_IMG = precache_pic("gfx/ui/hgr_MNT.png",0);
+  DAT_MTK_UI_IMG = precache_pic("gfx/ui/hgr_mtk.png",0);
+   
+  //CROSSHAIRS
+  precache_pic("gfx/hud/crosshair1.png",0);
+  precache_pic("gfx/hud/crosshair1_rhrz.png",0);
+  precache_pic("gfx/hud/crosshair1_rvrt.png",0);
+  precache_pic("gfx/hud/crosshair1_lock.png",0);
+   
+  precache_pic("gfx/hud/crosshair2.png",0);
+  precache_pic("gfx/hud/crosshair2_rhrz.png",0);
+  precache_pic("gfx/hud/crosshair2_rvrt.png",0);
+  precache_pic("gfx/hud/crosshair2_lock.png",0);
 };
