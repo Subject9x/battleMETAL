@@ -1197,12 +1197,69 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   Crosshair Type 3
 */
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair3={
-
+  local float lockAlpha;
+  local vector lockColor;
+  local float hitAlpha;
+  local vector hitColor;
+  
+  local vector imgSize;
+  local vector lockSize;
+  local vector pipSizeH;
+  local vector hitSize;
+  
+  local vector imgCenter;
+  local vector lockCenter;
+  local vector pipLeft;
+  local vector hitCenter;
+  
+  lockAlpha = HUD_ALPHA;
+  
+  imgSize = gui_percentToPixelRawVec('28 28');
+  pipSizeH = gui_percentToPixelRawVec('34 34');
+ 
   //base image
+  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
+  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
+  drawpic(imgCenter, "gfx/hud/crosshair3.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   
   //accuracy pips
+  pipSizeH_x = pipSizeH_x * accuracy;
+  pipSizeH_y = pipSizeH_y * accuracy;
+  pipLeft_x = VIEW_CTR_x - pipSizeH_x / 2;
+  pipLeft_y = VIEW_CTR_y - pipSizeH_y / 2;
+  drawpic(pipLeft, "gfx/hud/crosshair3_r.png", pipSizeH, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);
   
-  //lock on indicators
+  //lock on indicators  
+  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
+    lockSize = gui_percentToPixelRawVec('36 36');
+    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
+    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
+    lockColor = CLR_DEF_RET_GETLOCK;
+    lockAlpha = lockAlpha + 0.18;
+    if( (lockval & LOCK_TARG_HAS) ){
+      lockColor = CLR_DEF_RET_HASLOCK;
+      lockAlpha = lockAlpha + 0.05;
+    }
+    if( lockAlpha > 1 ){
+      lockAlpha = 1;
+    }
+    drawpic(lockCenter, "gfx/hud/crosshair3_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+  }
+  
+  if( (hitdirection & STAT_HIT_TRG) ){
+    hitSize = gui_percentToPixelRawVec('27 27');
+    hitCenter_x = VIEW_CTR_x - hitSize_x / 2;
+    hitCenter_y = VIEW_CTR_y - hitSize_y / 2;
+    if(trg_shield > 0){
+      hitColor = CLR_DEF_ARM_OK;
+      hitAlpha = 1;
+    }
+    else{
+      hitColor = hitColor + '0.8 0.8 0.8';
+      hitAlpha = 1;
+    }
+    drawpic(hitCenter, "gfx/hud/crosshair3_hit.png", hitSize, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  }
 };
 
 /*

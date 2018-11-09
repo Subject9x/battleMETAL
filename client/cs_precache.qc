@@ -124,4 +124,9 @@ void() cs_precache={
   precache_pic("gfx/hud/crosshair2_rhrz.png",0);
   precache_pic("gfx/hud/crosshair2_rvrt.png",0);
   precache_pic("gfx/hud/crosshair2_lock.png",0);
+  
+  precache_pic("gfx/hud/crosshair3.png",0);
+  precache_pic("gfx/hud/crosshair3_r.png",0);
+  precache_pic("gfx/hud/crosshair3_lock.png",0);
+  precache_pic("gfx/hud/crosshair3_hit.png",0);
 };
