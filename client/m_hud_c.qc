@@ -1070,7 +1070,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  drawpic(imgCenter, "gfx/hud/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  drawpic(imgCenter, "gfx/hud/ret/crosshair1.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
 
   //convergence
   pipLeft = VIEW_CTR - gui_percentToPixelRawVec('11 1.5');
@@ -1085,11 +1085,11 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   pipBottom = VIEW_CTR + gui_percentToPixelRawVec('-1.5 3');
   pipBottom_y = pipBottom_y + drift_y;
   
-  drawpic(pipLeft, "gfx/hud/crosshair1_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipRight, "gfx/hud/crosshair1_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipLeft, "gfx/hud/ret/crosshair1_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipRight, "gfx/hud/ret/crosshair1_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
   
-  drawpic(pipTop, "gfx/hud/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipBottom, "gfx/hud/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipTop, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipBottom, "gfx/hud/ret/crosshair1_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
 
   //lock on indicators
   if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
@@ -1105,7 +1105,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
     if( lockAlpha > 1 ){
       lockAlpha = 1;
     }
-    drawpic(lockCenter, "gfx/hud/crosshair1_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+    drawpic(lockCenter, "gfx/hud/ret/crosshair1_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
   }
 }; 
 
@@ -1154,7 +1154,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  drawpic(imgCenter, "gfx/hud/crosshair2.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  drawpic(imgCenter, "gfx/hud/ret/crosshair2.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
 
   //convergence
   pipLeft = VIEW_CTR - gui_percentToPixelRawVec('17 1.5');
@@ -1169,11 +1169,11 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   pipBottom = VIEW_CTR + gui_percentToPixelRawVec('-1.5 2');
   pipBottom_y = pipBottom_y + drift_y;
   
-  drawpic(pipLeft, "gfx/hud/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipRight, "gfx/hud/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipLeft, "gfx/hud/ret/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipRight, "gfx/hud/ret/crosshair2_rhrz.png", pipSizeH, hitColor, hitAlpha, DRAWFLAG_NORMAL);
   
-  drawpic(pipTop, "gfx/hud/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
-  drawpic(pipBottom, "gfx/hud/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipTop, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+  drawpic(pipBottom, "gfx/hud/ret/crosshair2_rvrt.png", pipSizeV, hitColor, hitAlpha, DRAWFLAG_NORMAL);
 
   //lock on indicators
   if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
@@ -1189,7 +1189,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
     if( lockAlpha > 1 ){
       lockAlpha = 1;
     }
-    drawpic(lockCenter, "gfx/hud/crosshair2_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+    drawpic(lockCenter, "gfx/hud/ret/crosshair2_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
   }
 };
 
@@ -1220,14 +1220,14 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   //base image
   imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
-  drawpic(imgCenter, "gfx/hud/crosshair3.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  drawpic(imgCenter, "gfx/hud/ret/crosshair3.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   
   //accuracy pips
   pipSizeH_x = pipSizeH_x * accuracy;
   pipSizeH_y = pipSizeH_y * accuracy;
   pipLeft_x = VIEW_CTR_x - pipSizeH_x / 2;
   pipLeft_y = VIEW_CTR_y - pipSizeH_y / 2;
-  drawpic(pipLeft, "gfx/hud/crosshair3_r.png", pipSizeH, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);
+  drawpic(pipLeft, "gfx/hud/ret/crosshair3_r.png", pipSizeH, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);
   
   //lock on indicators  
   if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
@@ -1243,7 +1243,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
     if( lockAlpha > 1 ){
       lockAlpha = 1;
     }
-    drawpic(lockCenter, "gfx/hud/crosshair3_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+    drawpic(lockCenter, "gfx/hud/ret/crosshair3_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
   }
   
   if( (hitdirection & STAT_HIT_TRG) ){
@@ -1258,7 +1258,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
       hitColor = hitColor + '0.8 0.8 0.8';
       hitAlpha = 1;
     }
-    drawpic(hitCenter, "gfx/hud/crosshair3_hit.png", hitSize, hitColor, hitAlpha, DRAWFLAG_NORMAL);
+    drawpic(hitCenter, "gfx/hud/ret/crosshair3_hit.png", hitSize, hitColor, hitAlpha, DRAWFLAG_NORMAL);
   }
 };
 
@@ -1266,7 +1266,53 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   Crosshair Type 4
 */
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4={
-
+  local float lockAlpha;
+  local vector lockColor;
+  local float hitAlpha;
+  local vector hitColor;
+  
+  local vector imgSize;
+  local vector lockSize;
+  local vector pipSizeH;
+  local vector hitSize;
+  
+  local vector imgCenter;
+  local vector lockCenter;
+  local vector pipLeft;
+  local vector hitCenter;
+  
+  lockAlpha = 0.65;
+  
+  imgSize = gui_percentToPixelRawVec('32 32');
+  pipSizeH = gui_percentToPixelRawVec('34 34');
+ 
+  //base image
+  imgCenter_x = VIEW_CTR_x - imgSize_x / 2;
+  imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
+  drawpic(imgCenter, "gfx/hud/ret/crosshair4.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
+  
+  pipSizeH_x = pipSizeH_x * accuracy;
+  pipSizeH_y = pipSizeH_y * accuracy;
+  pipLeft_x = VIEW_CTR_x - pipSizeH_x / 2;
+  pipLeft_y = VIEW_CTR_y - pipSizeH_y / 2;
+  drawpic(pipLeft, "gfx/hud/ret/crosshair4_r.png", pipSizeH, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);
+  
+  //lock on indicators  
+  if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
+    lockSize = gui_percentToPixelRawVec('36 36');
+    lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
+    lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
+    lockColor = CLR_DEF_RET_GETLOCK;
+    lockAlpha = lockAlpha + 0.18;
+    if( (lockval & LOCK_TARG_HAS) ){
+      lockColor = CLR_DEF_RET_HASLOCK;
+      lockAlpha = lockAlpha + 0.1;
+    }
+    if( lockAlpha > 1 ){
+      lockAlpha = 1;
+    }
+    drawpic(lockCenter, "gfx/hud/ret/crosshair4_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+  }
 };
 
 /*

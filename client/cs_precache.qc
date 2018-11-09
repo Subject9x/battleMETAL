@@ -115,18 +115,23 @@ void() cs_precache={
   DAT_MTK_UI_IMG = precache_pic("gfx/ui/hgr_mtk.png",0);
    
   //CROSSHAIRS
-  precache_pic("gfx/hud/crosshair1.png",0);
-  precache_pic("gfx/hud/crosshair1_rhrz.png",0);
-  precache_pic("gfx/hud/crosshair1_rvrt.png",0);
-  precache_pic("gfx/hud/crosshair1_lock.png",0);
+  precache_pic("gfx/hud/ret/crosshair1.png",0);
+  precache_pic("gfx/hud/ret/crosshair1_rhrz.png",0);
+  precache_pic("gfx/hud/ret/crosshair1_rvrt.png",0);
+  precache_pic("gfx/hud/ret/crosshair1_lock.png",0);
    
-  precache_pic("gfx/hud/crosshair2.png",0);
-  precache_pic("gfx/hud/crosshair2_rhrz.png",0);
-  precache_pic("gfx/hud/crosshair2_rvrt.png",0);
-  precache_pic("gfx/hud/crosshair2_lock.png",0);
+  precache_pic("gfx/hud/ret/crosshair2.png",0);
+  precache_pic("gfx/hud/ret/crosshair2_rhrz.png",0);
+  precache_pic("gfx/hud/ret/crosshair2_rvrt.png",0);
+  precache_pic("gfx/hud/ret/crosshair2_lock.png",0);
   
-  precache_pic("gfx/hud/crosshair3.png",0);
-  precache_pic("gfx/hud/crosshair3_r.png",0);
-  precache_pic("gfx/hud/crosshair3_lock.png",0);
-  precache_pic("gfx/hud/crosshair3_hit.png",0);
+  precache_pic("gfx/hud/ret/crosshair3.png",0);
+  precache_pic("gfx/hud/ret/crosshair3_r.png",0);
+  precache_pic("gfx/hud/ret/crosshair3_lock.png",0);
+  precache_pic("gfx/hud/ret/crosshair3_hit.png",0);
+  
+  precache_pic("gfx/hud/ret/crosshair4.png",0);
+  precache_pic("gfx/hud/ret/crosshair4_r.png",0);
+  precache_pic("gfx/hud/ret/crosshair4_lock.png",0);
+  precache_pic("gfx/hud/ret/crosshair4_hit.png",0);
 };

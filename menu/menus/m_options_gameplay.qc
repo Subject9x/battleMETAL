@@ -6,6 +6,7 @@ Overview: options - gameplay menu
 */
 
 //gameplay Globals
+
 entity gameplay_title;
 
 entity gameplay_fov_lbl;
@@ -21,6 +22,10 @@ entity gameplay_datetime_on;
 entity gameplay_datetime_off;
 
 entity gameplay_ret_lbl;
+
+entity gameplay_crosshair_lbl;
+entity gameplay_crosshair_nx;
+entity gameplay_crosshair_pr;
 
 entity gameplay_hudalpha_lbl;
 entity gameplay_hudalpha_up;
@@ -64,6 +69,20 @@ vector( float id ) gameplay_hudcolor_color={
   }
 };
 
+string( float id)gameplay_crosshair_img={
+  switch( id ){
+    case 1:
+      return "gfx/hud/ret/crosshair1.png";
+    case 2:
+      return "gfx/hud/ret/crosshair2.png";
+    case 3:
+      return "gfx/hud/ret/crosshair3.png";
+    case 4:
+      return "gfx/hud/ret/crosshair4.png";
+    default:
+      return "gfx/hud/ret/crosshair1.png";
+  }
+};
 
 //gameplay callbacks
 void() click_gameplay_fov_more={
@@ -133,6 +152,34 @@ void() click_gameplay_back={
   m_options_f();
 };
 
+void() click_gameplay_crosshair_nx={
+  local float val;
+  val = cvar("crosshair");
+  val = val + 1;
+  if( val >= 4 ){
+    gameplay_crosshair_nx.drawme = FALSE;
+  }
+  strunzone(gameplay_crosshair_lbl.label);
+  gameplay_crosshair_lbl.label = strzone(ftos(val));
+  cvar_set("crosshair", ftos(val));
+  gameplay_crosshair_lbl.image1 = gameplay_crosshair_img( cvar("crosshair") );
+  gameplay_crosshair_pr.drawme = TRUE;
+};
+
+void() click_gameplay_crosshair_pr={
+  local float val;
+  val = cvar("crosshair");
+  val = val - 1;
+  if( val <= 1 ){
+    gameplay_crosshair_pr.drawme = FALSE;
+  }
+  strunzone(gameplay_crosshair_lbl.label);
+  gameplay_crosshair_lbl.label = strzone(ftos(val));
+  cvar_set("crosshair", ftos(val));
+  gameplay_crosshair_lbl.image1 = gameplay_crosshair_img( cvar("crosshair") );
+  gameplay_crosshair_nx.drawme = TRUE;
+};
+
 void() click_gameplay_hudalpha_up={
   local float val;
   val = gameplay_hudalpha_lbl.len;
@@ -177,6 +224,9 @@ void() click_gameplay_hudcolor_nx={
   strunzone(gameplay_hudcolor_lbl.label);
   gameplay_hudcolor_lbl.label = strzone(gameplay_hudcolor_name( gameplay_hudcolor_lbl.len ));
   gameplay_hudcolor_lbl.color = gameplay_hudcolor_color( val );
+  cvar_set("crosshair_color_red", ftos(gameplay_hudcolor_lbl.color_x) );
+  cvar_set("crosshair_color_green", ftos(gameplay_hudcolor_lbl.color_y) );
+  cvar_set("crosshair_color_blue", ftos(gameplay_hudcolor_lbl.color_z) );
   cvar_set("cl_hud_color", ftos(val) );
   
   gameplay_hudcolor_pr.drawme = TRUE;
@@ -194,6 +244,9 @@ void() click_gameplay_hudcolor_pr={
   strunzone(gameplay_hudcolor_lbl.label);
   gameplay_hudcolor_lbl.label = strzone(gameplay_hudcolor_name( gameplay_hudcolor_lbl.len ));
   gameplay_hudcolor_lbl.color = gameplay_hudcolor_color( val );
+  cvar_set("crosshair_color_red", ftos(gameplay_hudcolor_lbl.color_x) );
+  cvar_set("crosshair_color_green", ftos(gameplay_hudcolor_lbl.color_y) );
+  cvar_set("crosshair_color_blue", ftos(gameplay_hudcolor_lbl.color_z) );
   cvar_set("cl_hud_color", ftos(val) );
   
   gameplay_hudcolor_nx.drawme = TRUE;
@@ -240,12 +293,18 @@ void() m_gameplay_i={
   }
   
   local float clean;
+  clean = cvar("crosshair");
+  gameplay_crosshair_lbl = lbl_text('190 177', '9 9 0', strzone(sprintf("%0.0f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_crosshair_lbl.len = cvar("cl_hud_alpha");
+  gameplay_crosshair_lbl.image1 = gameplay_crosshair_img( cvar("crosshair") );
+  gameplay_crosshair_nx = btn_img_callback('230 177', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_crosshair_pr = btn_img_callback('176 177', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
   clean = cvar("cl_hud_alpha");
-  gameplay_hudalpha_lbl = lbl_text('190 175', '9 9 0', strzone(sprintf("%0.2f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudalpha_lbl = lbl_text('190 190', '9 9 0', strzone(sprintf("%0.2f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_hudalpha_lbl.len = cvar("cl_hud_alpha");
-  gameplay_hudalpha_lbl.image1 = "gfx/hud/ret_lock.png";
-  gameplay_hudalpha_up = btn_img_callback('230 175', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_hudalpha_dn = btn_img_callback('176 175', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudalpha_up = btn_img_callback('230 190', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudalpha_dn = btn_img_callback('176 190', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if( gameplay_hudalpha_lbl.len < 0.1 ){
     gameplay_hudalpha_dn.drawme = FALSE;
@@ -256,14 +315,14 @@ void() m_gameplay_i={
   
   local string colr;
   colr = gameplay_hudcolor_name( cvar("cl_hud_color") );
-  gameplay_hudcolor_lbl = lbl_text('190 190', '9 9 0', strzone(colr), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudcolor_lbl = lbl_text('190 207', '9 9 0', strzone(colr), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_hudcolor_lbl.len = cvar("cl_hud_color");
-  gameplay_hudcolor_lbl.color = gameplay_hudcolor_color( gameplay_hudcolor_lbl.len );
-  gameplay_hudcolor_lbl.image1 = "gfx/hud/ret_lock.png";
-  gameplay_hudcolor_nx = btn_img_callback('245 190', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_hudcolor_pr = btn_img_callback('176 190', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudcolor_lbl.color_x = cvar("crosshair_color_red");
+  gameplay_hudcolor_lbl.color_y = cvar("crosshair_color_green");
+  gameplay_hudcolor_lbl.color_z = cvar("crosshair_color_blue");
+  gameplay_hudcolor_nx = btn_img_callback('245 207', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudcolor_pr = btn_img_callback('176 207', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  
   gameplay_back = btn_img_callback('10 230 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
@@ -282,14 +341,20 @@ void() m_gameplay_f={
   running on M_STATE to determine which menu_d to execute.
 */
 void() m_gameplay_d={
+  local vector crossColor;
   
   gui_renderString("Field of View :", gui_percentToPixelRawVec('45 136'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   gui_renderString("Show Date/Time :", gui_percentToPixelRawVec('37 150'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   gui_renderString("Show FPS :", gui_percentToPixelRawVec('85 164'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-  gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('85 177'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-  gui_renderString("HUD Color:", gui_percentToPixelRawVec('85 190'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("Crosshair Style:", gui_percentToPixelRawVec('37 177'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('85 190'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("HUD Color:", gui_percentToPixelRawVec('85 207'), CLR_DEF_WHITE, '8 8 0', 1, 0);
 
-  drawpic( gui_percentToPixelRawVec('250 167'), gameplay_hudalpha_lbl.image1, '32 32', '1 1 1', gameplay_hudalpha_lbl.len, 0);
+  crossColor_x = cvar("crosshair_color_red");
+  crossColor_y = cvar("crosshair_color_green");
+  crossColor_z = cvar("crosshair_color_blue");
+  
+  drawpic( gui_percentToPixelRawVec('275 167'), gameplay_crosshair_lbl.image1 , gui_percentToPixelRawVec('64 64'), crossColor, gameplay_hudalpha_lbl.len, 0);
   
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_GAMEPLAY);
