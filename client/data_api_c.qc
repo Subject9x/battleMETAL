@@ -145,16 +145,16 @@ string(float data_idx) data_get_weapon_icon={
 void() data_mech_config_clearBuffer={
   local float itr;
   itr = 1;
-  data_config_buffer_fileNum = 0;
-  if( data_config_buffer_name != "" ){
-    strunzone( data_config_buffer_name );
+  DATA_CONFIG_BUFFER_FILENUM = 0;
+  if( DATA_CONFIG_BUFFER_NAME != "" ){
+    strunzone( DATA_CONFIG_BUFFER_NAME );
   }
-  data_config_buffer_name = "";
+  DATA_CONFIG_BUFFER_NAME = "";
   
-  while( itr <= 9 ){
-    data_config_buffer_weps[itr] = 0;
-    if( itr <= 5 ){
-      data_config_buffer_grps[itr] = 0;
+  while( itr < 10 ){
+    DATA_CONFIG_BUFFER_WEPS[itr] = 0;
+    if( itr < 6 ){
+      DATA_CONFIG_BUFFER_GRPS[itr] = 0;
     }
     itr = itr + 1;
   }
@@ -169,8 +169,8 @@ void( float mechId, float configNum ) data_mech_config_save={
  
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
-  fputs(flannel, strcat("  'id' : ", ftos(data_config_buffer_fileNum), ",\n"));
-  fputs(flannel, strcat("  'name' : ", data_config_buffer_name, ",\n"));
+  fputs(flannel, strcat("  'id' : ", ftos(DATA_CONFIG_BUFFER_FILENUM), ",\n"));
+  fputs(flannel, strcat("  'name' : ", DATA_CONFIG_BUFFER_NAME, ",\n"));
   
   while( itr <= MECH_DATA_HPOINTS ){
     local string wep;
@@ -220,22 +220,22 @@ float( float mechId, float configNum ) data_mech_config_load={
       value = argv(3);
       if( token != ""){
         if( token == "id"){
-          data_config_buffer_fileNum = stof(value);
+          DATA_CONFIG_BUFFER_FILENUM = stof(value);
         }
         if( token == "name"){
-          data_config_buffer_name = strzone(value);
+          DATA_CONFIG_BUFFER_NAME = strzone(value);
         }
         if( strstrofs(token, "hpt",0) != -1 ){
           tokenizebyseparator(token, "_");
           local float idx;
           idx = stof(argv(1));
-          data_config_buffer_weps[idx] = stof(value);
+          DATA_CONFIG_BUFFER_WEPS[idx] = stof(value);
         }
         if( strstrofs(token, "group",0) != -1 ){
           tokenizebyseparator(token, "_");
           local float idx;
           idx = stof(argv(1));
-          data_config_buffer_grps[idx] = stof(value);
+          DATA_CONFIG_BUFFER_GRPS[idx] = stof(value);
         }
       }
     }
@@ -257,14 +257,14 @@ float() data_mech_config_valid={
   while( itr <= MECH_DATA_HPOINTS ){
     local float wepid, wtype, wsize, hptsize, hpttype;
     if( itr > MECH_DATA_HPOINTS ){
-      wepid = data_config_buffer_weps[itr];
+      wepid = DATA_CONFIG_BUFFER_WEPS[itr];
       if( wepid > 0 ){
         cons_logAString("data_mech_config_valid", "FAILED - too many hardpoints");  //DEBUG
         return FALSE; //Trying to sneak more weapons into the config file?
       }
     }
     if( itr <= MECH_DATA_HPOINTS ){
-      wepid = data_config_buffer_weps[itr];
+      wepid = DATA_CONFIG_BUFFER_WEPS[itr];
       wtype = data_WeaponType[wepid];
       wsize = data_WeaponSize[wepid];
       hpttype = MECH_DATA_H_TYPE[itr];

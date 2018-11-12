@@ -13,10 +13,10 @@ float data_WeaponType[32];
 float data_WeaponEne[32];
 
 //MECH CONFIG FILE DATA LOAD
-float data_config_buffer_fileNum;
-string data_config_buffer_name;
-float data_config_buffer_weps[10];
-float data_config_buffer_grps[10];
+float DATA_CONFIG_BUFFER_FILENUM;
+string DATA_CONFIG_BUFFER_NAME;
+float DATA_CONFIG_BUFFER_WEPS[10];
+float DATA_CONFIG_BUFFER_GRPS[10];
 //
 
 //API functions

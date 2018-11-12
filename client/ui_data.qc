@@ -636,15 +636,15 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     self.plr_sel_mech = SELECT_MECH;
     self.plr_sel_size = MECH_DATA_SIZES[SELECT_MECH];
     cleanHardPoints();
-    self.plr_nex_grp1 = data_config_buffer_grps[1];
-    self.plr_nex_grp2 = data_config_buffer_grps[2];
-    self.plr_nex_grp3 = data_config_buffer_grps[3];
-    self.plr_nex_grp4 = data_config_buffer_grps[4];
-    self.plr_nex_grp5 = data_config_buffer_grps[5];
+    self.plr_nex_grp1 = DATA_CONFIG_BUFFER_GRPS[1];
+    self.plr_nex_grp2 = DATA_CONFIG_BUFFER_GRPS[2];
+    self.plr_nex_grp3 = DATA_CONFIG_BUFFER_GRPS[3];
+    self.plr_nex_grp4 = DATA_CONFIG_BUFFER_GRPS[4];
+    self.plr_nex_grp5 = DATA_CONFIG_BUFFER_GRPS[5];
     itr = 1;
     while( itr <= MECH_DATA_HPOINTS ){
       local float buffwep, hpt;
-      buffwep =  data_config_buffer_weps[itr];
+      buffwep =  DATA_CONFIG_BUFFER_WEPS[itr];
       HARDPOINTS[itr] = buffwep;
       itr = itr + 1;
     }

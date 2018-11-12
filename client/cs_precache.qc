@@ -22,10 +22,10 @@ void() cs_precache={
   HUD_MTK_IMG_B = precache_pic("gfx/hud/hud_mtk_bck.png", 0);
   HUD_MNT_IMG_B = precache_pic("gfx/hud/hud_mnt_bck.png", 0);
   
-  HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret_pip_hrz.png", 0);
-  HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret_pip_vrt.png", 0);
-  HUT_RET_LOK = precache_pic("gfx/hud/ret_lock.png", 0);
-  HUD_RET_HIT = precache_pic("gfx/hud/ret_hit.png", 0);
+  HUT_RET_PIP_HRZ = precache_pic("gfx/hud/ret/ret_pip_hrz.png", 0);
+  HUT_RET_PIP_VRT = precache_pic("gfx/hud/ret/ret_pip_vrt.png", 0);
+  HUT_RET_LOK = precache_pic("gfx/hud/ret/ret_lock.png", 0);
+  HUD_RET_HIT = precache_pic("gfx/hud/ret/ret_hit.png", 0);
   HUD_RAD_PIP_BLD = precache_pic("gfx/hud/rad_bld.png", 0);
   HUD_RAD_PIP_MCH = precache_pic("gfx/hud/rad_mch.png", 0);
   HUD_RAD_PIP_NAV = precache_pic("gfx/hud/rad_nav.png", 0);
@@ -35,7 +35,7 @@ void() cs_precache={
   HUD_TRG_PIP_R = precache_pic("gfx/hud/trg_pip_rgt.png", 0);
   HUD_TRG_PIP_B = precache_pic("gfx/hud/trg_pip_bot.png", 0);
   
-  HUD_DMG_PIP_H = precache_pic("gfx/hud/dmg_pip_hrz.png", 0);
+  HUD_DMG_PIP_H = precache_pic("gfx/hud/ret/dmg_pip_hrz.png", 0);
   
   //hangar splash images
   precache_pic("gfx/ui/hgr_otl.png", 0);

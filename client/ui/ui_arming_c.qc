@@ -152,10 +152,10 @@ void() selectNextConfig={
       CFG_INDEX = 0;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
-      if( data_config_buffer_name != "" ){
-        strunzone( data_config_buffer_name );
+      if( DATA_CONFIG_BUFFER_NAME != "" ){
+        strunzone( DATA_CONFIG_BUFFER_NAME );
       }
-      data_config_buffer_name = strzone(ftos(CFG_INDEX));
+      DATA_CONFIG_BUFFER_NAME = strzone(ftos(CFG_INDEX));
     }
   }
 };
@@ -168,10 +168,10 @@ void() selectPrevConfig={
       CFG_INDEX = 6;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
-      if( data_config_buffer_name != "" ){
-        strunzone( data_config_buffer_name );
+      if( DATA_CONFIG_BUFFER_NAME != "" ){
+        strunzone( DATA_CONFIG_BUFFER_NAME );
       }
-      data_config_buffer_name = strzone(ftos(CFG_INDEX));
+      DATA_CONFIG_BUFFER_NAME = strzone(ftos(CFG_INDEX));
     }
   }
 };

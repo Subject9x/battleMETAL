@@ -55,8 +55,9 @@ void() client_push_player_info={
         WriteCoord( MSG_ONE, self.enemy.origin_x );
         WriteCoord( MSG_ONE, self.enemy.origin_y );
         WriteCoord( MSG_ONE, self.enemy.origin_z );
+        //this is silly but precludes forcing the csqc to know the target's max shields
         targShield = self.enemy.sh_cur;
-        if( targShield < 0 ){
+        if( targShield <= 0 ){
           targShield = 0;
         }
         else{
