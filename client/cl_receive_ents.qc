@@ -221,3 +221,7 @@ void() client_event_objective={
   
   OBJECTIVES[objid] = nexState;
 };
+
+void() client_map_cdtrack={
+
+};

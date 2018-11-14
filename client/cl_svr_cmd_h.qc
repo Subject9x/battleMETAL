@@ -19,3 +19,4 @@ void(string mech_data) cl_get_mechs_medium;
 void(string mech_data) cl_get_mechs_heavy;
 void(string item_data) cl_get_items_all;
 void() cl_get_mechs_sort;
+void( string fogSettings ) cl_get_new_fog;

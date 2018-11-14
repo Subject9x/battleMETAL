@@ -34,7 +34,6 @@ void( entity targetClient ) server_push_player_info; //simply wraps client_push_
 void( entity radarPing ) client_push_radar_ping;
 void( entity targetClient ) client_push_hud_highlight;
 
-
 void() client_push_mapobjects;
 void( entity navpoint ) client_send_navpoint;
 void( entity objective ) client_send_objective;
@@ -54,3 +53,4 @@ void(string mechs) client_sendAvailableMediumMechs;
 void(string mechs) client_sendAvailableHeavyMechs;
 void(string itms) client_sendAvailableItems;
 void(float mode) client_sendGameMode;
+void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;

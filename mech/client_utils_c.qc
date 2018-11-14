@@ -390,6 +390,25 @@ void(string cmd, float tokens) client_setNavPoint={
   }
 };
 
+/*
+  scope agnostic means of sending 'fog' settings and cmd to the client
+*/
+void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog={
+  local string fogCmd;
+  
+  fogCmd = "fog ";
+  fogCmd = strcat( fogCmd, ftos(fogDense), " " );
+  fogCmd = strcat( fogCmd, ftos(fogColor_x), " " );
+  fogCmd = strcat( fogCmd, ftos(fogColor_y), " " );
+  fogCmd = strcat( fogCmd, ftos(fogColor_z), " " );
+  fogCmd = strcat( fogCmd, ftos(fogAlpha), " " );
+  fogCmd = strcat( fogCmd, ftos(fogDist_x), " " );
+  fogCmd = strcat( fogCmd, ftos(fogDist_y), " " );
+  fogCmd = strcat( fogCmd, ftos(fogDist_z), " " );
+  fogCmd = strcat( fogCmd, ftos(fogFade), "\n" );
+  stuffcmd( client, fogCmd );
+};
+
 void() respawn={ 
   if (coop){
 		// make a copy of the dead body for appearances sake

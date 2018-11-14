@@ -3,6 +3,7 @@ void() CSQC_Init =
 {
   registercvar("gamemode", "0");
   registercvar("gametype", "0");
+  registercommand("fog");
 
 	maxclients = 0;
 	while (maxclients < 1024 && getplayerkeyvalue(maxclients, "viewentity")){
@@ -290,6 +291,9 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
 	// draw the main view
 	renderscene();
   
+  //alter fog settings if needed
+  cl_particles_fogFrame();
+  
   //mission file load check
   if(MSN_FILEFOUND){
     if(MSN_LOADED == FALSE){
@@ -532,7 +536,12 @@ void(string s) CSQC_Parse_StuffCmd =
     }
   }
   else{
-    localcmd(s);
+    if( argv(0) == "fog" ){
+      cl_get_new_fog( s );
+    }
+    else{
+      localcmd(s);
+    }
   }
   self = this;
 };

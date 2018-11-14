@@ -42,7 +42,7 @@ hud_snd_sys_c.qc
 
 //Client->SERVER LAYER===
 cl_svr_cmd_c.qc
-cl_receive_ents_c.qc
+cl_receive_ents.qc
 //========================
 //MENU SYSTEM============
   ui/ui_defs_c.qc

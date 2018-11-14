@@ -156,3 +156,22 @@ void(string item_data) cl_get_items_all={
     itr = itr + 1;
   }
 };
+
+/*
+  Receive new fog transition info
+*/
+void( string fogSettings ) cl_get_new_fog={
+  
+  tokenizebyseparator( fogSettings, " " );
+
+  FOG_STATE = 1;
+  FOG_TARG_DENSITY = stof(argv(1));
+  FOG_TARG_RED = stof(argv(2));
+  FOG_TARG_GREEN = stof(argv(3));
+  FOG_TARG_BLUE = stof(argv(4));
+  FOG_TARG_ALPHA = stof(argv(5));
+  FOG_TARG_DIST_MIN = stof(argv(6));
+  FOG_TARG_DIST_MAX = stof(argv(7));
+  FOG_TARG_DIST_TOP = stof(argv(8));
+  FOG_TARG_FADE_DEPTH = stof(argv(9));
+};

@@ -186,5 +186,7 @@ doors.qc
 buttons.qc
 triggers.qc
 mech/triggers_map_c.qc
+mech/map/map_changefog.qc
+mech/map/map_changemusic.qc
 plats.qc
 misc.qc

@@ -1,11 +1,15 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/13/2018
-Overview: header for all reception of SendEntity calls made by
-server.
+  mod: 11/13/2018
+Overview: 
+  Header for all client-related function calls. This covers
+  client events like radar pings, player mech info, target info,
+  as well as map object events for Nav Points etc.
 */
 
+//Globals
 //ported some vars over to CSQC
 .float stat_trg_lg_hp;
 .float stat_trg_ct_hp;
@@ -14,6 +18,7 @@ server.
 .float stat_trg_la_hp;
 .float stat_trg_ra_hp;
 
+//function headers
 void() client_get_info;
 void() client_get_contact;
 void() client_get_hud_highlight;
@@ -23,3 +28,5 @@ void() client_event_deploypoint;
 void() client_event_objective;
 
 void() receive_ent_bindData;
+
+void() client_map_cdtrack;
