@@ -69,6 +69,7 @@ void() player_makeMech={
   droptofloor();
   self.currentWeaponGroup = self.w_group1;
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
+  self.flags = self.flags | FL_UNIT;
 };
 
 void() player_unmakeMech={

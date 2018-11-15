@@ -29,6 +29,3 @@ float TE_OBJECTIVE_FAILED = 81;
 float TE_MISSION_WIN = 82;
 float TE_MISSION_LOSE = 83;
 float TE_NAV_REACH = 84;
-
-//MISC BLOCK
-float TE_MAP_CD = 86;

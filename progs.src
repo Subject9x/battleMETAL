@@ -188,5 +188,6 @@ triggers.qc
 mech/triggers_map_c.qc
 mech/map/map_changefog.qc
 mech/map/map_changemusic.qc
+mech/map/map_damagezone.qc
 plats.qc
 misc.qc
