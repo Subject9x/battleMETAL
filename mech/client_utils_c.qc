@@ -409,6 +409,19 @@ void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogD
   stuffcmd( client, fogCmd );
 };
 
+/*
+  scope agnostic means of sending CD track changes to the client
+*/
+void(entity client, float trackNum, float entFlags) client_sendMusic={
+  local string musicCmd;
+  
+  otemp = self;
+  self = client;
+    client_playTrack( trackNum, (entFlags & 2) );
+  self = otemp;
+};
+
+
 void() respawn={ 
   if (coop){
 		// make a copy of the dead body for appearances sake

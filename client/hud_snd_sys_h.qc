@@ -5,6 +5,9 @@ Date: 04/10/2017
 Overview: header file for the hud sound system
 */
 
+//cd track tracker
+float MUSICID;
+
 //sound precache
 string SND_MCH_SFX_REACT;
 
@@ -27,6 +30,7 @@ string SND_HUD_VFX_OBJ_SECON;
 string SND_HUD_VFX_OBJ_THIRD;
 string SND_HUD_VFX_OBJ_FOURT;
 
+//Sound Queue globals
 float SQSIZE; //set to 6
 float STIME;
 float STIME_NEXT;

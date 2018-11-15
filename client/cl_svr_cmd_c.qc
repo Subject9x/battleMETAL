@@ -175,3 +175,19 @@ void( string fogSettings ) cl_get_new_fog={
   FOG_TARG_DIST_TOP = stof(argv(8));
   FOG_TARG_FADE_DEPTH = stof(argv(9));
 };
+
+/*
+  Receive new music track to jam
+*/
+void( string musicSet ) cl_get_new_music={
+  local float music;
+  
+  tokenizebyseparator( musicSet, " ");
+  
+  music = stof( argv(2) );
+  
+  if( music != MUSICID){
+    MUSICID = music;
+    localcmd( musicSet );
+  }
+};

@@ -28,5 +28,3 @@ void() client_event_deploypoint;
 void() client_event_objective;
 
 void() receive_ent_bindData;
-
-void() client_map_cdtrack;

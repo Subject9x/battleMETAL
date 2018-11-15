@@ -101,10 +101,10 @@ float( float fogColor, float fogColorTarg ) cl_particles_fogColorAdjust={
   
   result = fogColor;
   if( result > fogColorTarg ){
-    result = result - 0.0001;
+    result = result - 0.001;
   }
   if( result < fogColorTarg ){
-    result = result + 0.0001;
+    result = result + 0.001;
   }
   return result;
 };
@@ -114,10 +114,10 @@ float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust={
   
   result = fogDist;
   if( result > fogDistTarg ){
-    result = result - 1;
+    result = result - 5;
   }
   if( result < fogDistTarg ){
-    result = result + 1;
+    result = result + 5;
   }
   return result;
 };

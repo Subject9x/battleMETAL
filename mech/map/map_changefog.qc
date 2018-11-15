@@ -30,13 +30,16 @@ Globals
 .vector fog_dist;
 .float fade;
 
-void() map_changefog_th_update={
-  
-};
-
 void() map_changefog_touch={
   
   if( (other.flags & FL_CLIENT) ){
+    activator = other;
+    self.use();
+  }
+};
+
+void() map_changefog_use={
+  if( (activator.flags & FL_CLIENT) ){
     client_sendFog(other, self.fog_density, self.fog_color, self.fog_alpha, self.fog_dist, self.fade);
   
     if( (self.spawnflags & 1) ){
@@ -46,19 +49,21 @@ void() map_changefog_touch={
   }
 };
 
-void() map_changefog_use={
-  
-};
-
 /*QUAKED map_changefog (1 1 1) 
 */
 void() map_changefog={
+  local vector tempMin;
+  local vector tempMax;
+  
+  tempMax = self.maxs;
+  tempMin = self.mins;
+  
   self.solid = SOLID_TRIGGER;
   self.movetype = MOVETYPE_NONE;
   self.use = map_changefog_use;
   self.touch = map_changefog_touch;
   self.stat_wep_state = 1;
   setmodel(self, "q3mdl/testball.md3");
-  setsize(self, self.mins, self.maxs);
+  setsize(self, tempMin, tempMax);
   setorigin(self, self.origin);
 };

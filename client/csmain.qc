@@ -539,6 +539,9 @@ void(string s) CSQC_Parse_StuffCmd =
     if( argv(0) == "fog" ){
       cl_get_new_fog( s );
     }
+    if( argv(0) == "cd" ){  
+      cl_get_new_music( s ) ;
+    }
     else{
       localcmd(s);
     }

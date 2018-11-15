@@ -54,3 +54,4 @@ void(string mechs) client_sendAvailableHeavyMechs;
 void(string itms) client_sendAvailableItems;
 void(float mode) client_sendGameMode;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
+void(entity client, float trackNum, float entFlags) client_sendMusic;
