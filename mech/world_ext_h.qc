@@ -2,10 +2,16 @@
 mech Mod
 Author: Peter Roohr
 Date: 8/27/2016
+mod: 11/16/2018
 Overview: function extensions to world.qc
 */
 
+//GLOBALS
 float CLIENTS;
+vector WINDDIR; //these get set by worldspawn but are here because 
+float WINDSPEED;//  modifying world.value is not kosher
+
+//EXTENSIONS
 .float client_num;
 
 .string msn_file;

@@ -1,7 +1,7 @@
 /*
 battleMETAL
 Author: Peter Roohr
-Date: 11/12/2018
+Date: 11/15/2018
 Overview: 
   Every map can have a wind direction and velocity that affects VFX like sparks and smoke.
   This map object is to allow the map to alter this value.
@@ -11,7 +11,7 @@ Overview:
   world.m_fspeed = wind speed
   
 Inputs
-  .c_alt_ofs = <vector> [wind direction] - the 3d direction of the new wind
+  .c_ofs = <vector> [wind direction] - the 3d direction of the new wind
   .p_velocity = <float> [wind speed] - speed of wind in given direction
   .p_lifetime = <float> - time to live, use with spawnflags[2]
   .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
@@ -22,22 +22,66 @@ Inputs
   .spawnflags = <float> [flag] 16 - restore original wind values
 */
 
-
-void() map_change_wind_new={
-
-}
+void() map_change_wind_new;
 
 void() map_change_wind_revert={
-
+  self.isActive = FALSE;
+  if( (self.spawnflags & 16) ){
+    //revert to original
+    WINDDIR = self.c_alt_ofs;
+    WINDSPEED = self.m_fspeed;
+  }
+  
+  if( (self.spawnflags & 8) ){
+    //we're done here.
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.001;
+  }
+  
+  if( (self.spawnflags & 4) ){
+    //reactivate effect after cooldown.
+    self.think = map_change_wind_new;
+    self.nextthink = time + self.state_1;
+  }
 }
 
-void() map_change_wind_think={
-  
+void() map_change_wind_new={
+  if( (self.spawnflags & 16) ){
+    //cache old wind values
+    self.c_alt_ofs = WINDDIR;
+    self.m_fspeed = WINDSPEED;
+  }
 
-};
-
-void() map_change_wind_use={  
+  WINDDIR = self.c_ofs;
+  WINDSPEED = self.p_velocity;
   
+  self.think = map_change_wind_revert;
+  self.nextthink = time + 0.1;
+  if( (self.spawnflags & 2) ){
+    //wind change lasts for p_lifetime amount of time
+    self.nextthink = time + self.p_lifetime;
+  }
+}
+
+void() map_change_wind_use={
+  if( (self.spawnflags & 1) ){
+    if( !self.isActive ){
+      self.isActive = TRUE;
+    }
+  }
+  
+  if( (self.spawnflags & 4) ){
+    //prevents infinite re-triggering if in cooldown
+    if( time < self.nextthink ){
+      return;
+    }
+  }
+  
+  if( !self.isActive ){
+    self.isActive = TRUE;
+    self.think = map_change_wind_new;
+    self.nextthink = time + 0.01;
+  }
 };
 
 /*QUAKED map_change_wind
@@ -51,8 +95,19 @@ void() map_change_wind={
   
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
-  setmodel( self, "q3mdl/testball.md3" );
+  setmodel( self, "q3mdl/testball.md3" ); //DEBUG
   setsize( self, tempMin, tempMax );
   setorigin( self, self.origin );
   
+  self.m_fspeed = 0;
+  self.c_alt_ofs = '0 0 0';
+  self.use = map_change_wind_use;
+  self.isActive = TRUE;
+  if( (self.spawnflags & 1) ){
+    self.isActive = FALSE;
+    return;
+  }
+  
+  self.think = map_change_wind_new;
+  self.nextthink = time + 0.01;
 };

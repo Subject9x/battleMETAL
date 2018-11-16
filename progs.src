@@ -183,12 +183,14 @@ triggers.qc
   mech/map/triggers_map.qc
   mech/map/map_change_fog.qc
   mech/map/map_change_music.qc
+  mech/map/map_change_wind.qc
   mech/map/map_damage_zone.qc
   mech/map/map_deploy_point.qc
   mech/map/map_nav_point.qc
   mech/map/map_objective.qc
   mech/map/map_misc_model.qc
   mech/map/map_animatic.qc
+  mech/map/map_particles_debug.qc
 //============================
 
 plats.qc

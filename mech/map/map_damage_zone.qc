@@ -51,7 +51,6 @@ void() map_damagezone_think={
 };
 
 void() map_damagezone_cool={
-  dprint("map_damagezone_cool \n");  //DEBUG
   self.isActive = TRUE;
   if( (self.spawnflags & 2) ){
     self.think = map_damagezone_think;
@@ -128,7 +127,7 @@ void() map_damagezone_touch={
 
 /*QUAKED map_damagezone (1 1 1)
 */
-void() map_damagezone={
+void() map_damage_zone={
   local vector tempMin;
   local vector tempMax;
   

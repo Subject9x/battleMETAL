@@ -36,6 +36,11 @@ void() worldspawn =
   
   CLIENTS = 0;
   
+  //setup wind settings
+  WINDDIR = world.c_ofs;
+  WINDSPEED = world.m_fspeed;
+  
+  dprint( strcat("c_ofs", vtos(world.c_ofs),"\n")); //DEBUG
 // custom map attributes
 	if (self.model == "maps/e1m8.bsp")
 		cvar_set ("sv_gravity", "100");
