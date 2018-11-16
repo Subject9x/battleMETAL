@@ -5,8 +5,6 @@ Date: 8/27/2016
 Overview: precache the resources
 called at world.qc
 */
-void() mh_precache_world={ 
-};
 
 void() mh_precache_sound={
   //sfx

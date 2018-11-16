@@ -75,8 +75,6 @@ float(entity t) ai_valid_target={
           return TRUE;
         case DATA_MECH:
           return TRUE;
-        case DATA_MECH_AI:
-          return TRUE;
       }
     }
   }

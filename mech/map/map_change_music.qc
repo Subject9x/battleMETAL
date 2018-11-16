@@ -34,9 +34,16 @@ void() map_changemusic_use={
 /*QUAKED
   
 */
-void() map_changemusic={
+void() map_change_music={
   local vector tempMin;
   local vector tempMax;
+  
+  if( !self.mins ){
+    self.mins = VEC_ORIGIN;
+  }
+  if( !self.maxs ){
+    self.mins = VEC_ORIGIN;
+  }
   
   tempMax = self.maxs;
   tempMin = self.mins;

@@ -51,7 +51,7 @@ void() map_changefog_use={
 
 /*QUAKED map_changefog (1 1 1) 
 */
-void() map_changefog={
+void() map_change_fog={
   local vector tempMin;
   local vector tempMax;
   

@@ -32,9 +32,6 @@ void() map_objective_th;
 void() map_objective_use;
 float(entity ent, float changed) send_objective;
 
-//misc model
-void() misc_model_remove;
-
 //animatic stuff
 void() animatic_event_execute;
 void() animatic_event_use;

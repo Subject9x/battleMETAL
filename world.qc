@@ -6,7 +6,6 @@ void() main =
 {
 	dprint ("main function\n");
 	//q1_precache_world();
-  mh_precache_world();
   //see q1/precache_word.q1_precache_world()
 };
 

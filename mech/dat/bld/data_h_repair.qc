@@ -79,7 +79,8 @@ void() hrepair_die = [0, hrepair_die1]{
   local entity head;
   head = findradius(self.origin, DAT_BLD_H_POWER_PLANT_EN_RADIUS);
   while(head){
-    if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
+    //if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
+    if( head.data_type == DATA_MECH ){
       head.en_cur = head.en_cur + 100;
       if(head.en_cur > head.en_max){
         head.en_cur = head.en_max;

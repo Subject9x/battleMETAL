@@ -45,18 +45,12 @@ triggers_h.qc
   mech/ext/player_mech_h.qc
   mech/ai/ai_api_h.qc
   q1/qwep/wep_fx_h.qc
-  mech/dat/msc/map_objects_h.qc
+  mech/map/map_objects_h.qc
   world_effectinfo_h.qc
-  mech/triggers_map_h.qc
+  mech/map/triggers_map_h.qc
 //==========================
 dp/subs.qc
 //DATA FILES=================
-  //miscellaneous
-  mech/dat/msc/map_deplypoint.qc
-  mech/dat/msc/map_navpoint.qc
-  mech/dat/msc/map_objective.qc
-  mech/dat/msc/misc_model.qc
-  mech/dat/msc/map_animatic.qc
   
   //projectiles
   mech/dat/prj/data_prj_sfga_vals.qc
@@ -185,9 +179,17 @@ world.qc
 doors.qc
 buttons.qc
 triggers.qc
-mech/triggers_map_c.qc
-mech/map/map_changefog.qc
-mech/map/map_changemusic.qc
-mech/map/map_damagezone.qc
+//============================
+  mech/map/triggers_map.qc
+  mech/map/map_change_fog.qc
+  mech/map/map_change_music.qc
+  mech/map/map_damage_zone.qc
+  mech/map/map_deploy_point.qc
+  mech/map/map_nav_point.qc
+  mech/map/map_objective.qc
+  mech/map/map_misc_model.qc
+  mech/map/map_animatic.qc
+//============================
+
 plats.qc
 misc.qc

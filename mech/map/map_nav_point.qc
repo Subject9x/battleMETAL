@@ -2,7 +2,22 @@
 battleMETAL
 Author: Peter Roohr
 Date: 03/25/2017
-Overview: data file for map nav points
+mod: 11/15/2018
+Overview: 
+  Nav Points are points of interest marked on Player maps. Players interact with them by visiting them, 
+  which can then fire triggers to additional game logic. 
+
+Inputs
+  .i_faction = <float> - defines which factions this Nav Point belongs to
+  .data_idx = <float> [enum] - 1 to 21, each must be unique because this determines the 'name' of the nav point client-side
+  .isActive = <float> [enum] - 1 = active unvisit - active, faction hasn't visited that nav yet
+                               2 = active visit -  active, faction has been here
+                               0 = hidden - this means 'hidden from OTHER factions'
+                               -1 = inactive - hidden from EVERYONE
+  .target   = <string> [ent] - fire this map object when VISITED
+  .trigOnSpawn = <string> [ent] - fire this map object when ACTIVATED  
+  .spawnflags = <float> [flag] 2 - only updates 'visited' state per-client
+  .spawnflags = <float> [flag] 4 - deactivate after use
 */
 
 /*
@@ -69,7 +84,7 @@ void() nav_point_use={
 "spawnflags 2": only updates 'visited' state per-client
 "spawnflags 4": deactivate after use
 */
-void() map_navpoint={
+void() map_nav_point={
   self.classname = "data";
   self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;

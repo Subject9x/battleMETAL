@@ -415,7 +415,8 @@ entity(void() func) build_mech_legs={
     self.th_stand = leg_stand1;
     self.th_walk = leg_walk1;
     self.th_die = leg_die1;
-    if( (this.data_type == DATA_MECH) || (this.data_type == DATA_MECH_AI) ){
+    //if( (this.data_type == DATA_MECH) || (this.data_type == DATA_MECH_AI) ){
+    if( this.data_type == DATA_MECH ){
       leg_stand1();
     }
   self = this;

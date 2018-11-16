@@ -6,6 +6,7 @@ Overview:
   A Damage Zone is an area that hurts all units within the zone.
   
 Inputs
+  .targetname = <string> [targetname] - make triggerable
   .p_damage = <float> - amount of damage to impart
   .p_dmgtype = <float> [flag] 1 - DMG SHIELDS
   .p_dmgtype = <float> [flag] 2 - DMG ARMOR
@@ -130,6 +131,13 @@ void() map_damagezone_touch={
 void() map_damagezone={
   local vector tempMin;
   local vector tempMax;
+  
+  if( !self.mins ){
+    self.mins = VEC_HULL_MIN;
+  }
+  if( !self.maxs ){
+    self.mins = VEC_HULL_MAX;
+  }
   
   tempMin = self.mins;
   tempMax = self.maxs;
