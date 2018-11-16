@@ -15,17 +15,53 @@ void() main =
 //=======================
 /*QUAKED worldspawn (0 0 0) ?
 Only used for the world entity.
-Set message to the level name.
-Set sounds to the cd track to play.
 
-World Types:
-0: medieval
-1: metal
-2: base
+"worldtype"
+  <float> [enum]
+    0: DESERT
+    1: ICE
+    2: CITY
+    3: BADLANDS
+    4: TUNDRA
+  This affects things like environmental smoke puffs, possibly lighting, and fog?
 
-"light"
- default light level
+[map scripts]
+  "map_file"
+    <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.sav
+  "msn_file"
+    <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
+
+//COSMETICS
+[lighting]
+  "light"
+   default light level
+[level name]
+  "message"
+    <string> - the in-game name of the level
+    
+[level music]
+  "sounds"
+    <float> [CD track number] - play this track during gameplay
+
+[wind]
+  "c_ofs"
+    <vector> initial wind direction
+  "m_fspeed"
+    <float> initial wind speed
+
+[fog]
+  "fog_density" "1"
+    <float> 
+  "fog_color"
+    <vector> [color] - RGB {0.001 - 1.0} colors of the fog
+  "fog_alpha"
+    <float> [alpha] - {0.001 - 1.0} alpha transparency of the fog
+  "fog_dist"
+    <vector> [min distance, max distance, height] - distances of the fog
+  "fade"
+    <float> [fade depth] - units of fade transition from low alpha to opacity
 */
+
 //=======================
 void() worldspawn =
 {

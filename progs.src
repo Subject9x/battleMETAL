@@ -191,6 +191,7 @@ triggers.qc
   mech/map/map_misc_model.qc
   mech/map/map_animatic.qc
   mech/map/map_particles_debug.qc
+  mech/map/map_projectile_shooter.qc
 //============================
 
 plats.qc

@@ -14,7 +14,7 @@ Inputs
   .c_ofs = <vector> [wind direction] - the 3d direction of the new wind
   .p_velocity = <float> [wind speed] - speed of wind in given direction
   .p_lifetime = <float> - time to live, use with spawnflags[2]
-  .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+  .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
   .spawnflags = <float> [flag] 2 - lifetime
   .spawnflags = <float> [flag] 4 - reactivate after countdown
@@ -41,7 +41,7 @@ void() map_change_wind_revert={
   if( (self.spawnflags & 4) ){
     //reactivate effect after cooldown.
     self.think = map_change_wind_new;
-    self.nextthink = time + self.state_1;
+    self.nextthink = time + self.wait;
   }
 }
 

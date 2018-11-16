@@ -56,7 +56,6 @@ void(vector org, vector vel, float cnt) te_smoke_test={
   WriteByte (MSG_BROADCAST, cnt);
 };
 
-
 void(vector org, vector angl) te_shield_test={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_SHIELD_TEST );

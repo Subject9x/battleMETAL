@@ -13,7 +13,7 @@ Inputs
   .p_dmgtype = <float> [flag] 4 - DMG ENERGY
   .p_dmgtype = <float> [flag] 8 - DMG SPEED
   .p_lifetime = <float> - time to live, use with spawnflags[2]
-  .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+  .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
   .spawnflags = <float> [flag] 2 - lifetime
   .spawnflags = <float> [flag] 4 - reactivate after countdown
@@ -41,7 +41,7 @@ void() map_damagezone_think={
   if( (self.spawnflags & 4) ){
     //reactivate damage zone after timer
     self.think = map_damagezone_cool;
-    self.nextthink = time + self.state_1;
+    self.nextthink = time + self.wait;
     return;
   }
   
@@ -158,7 +158,7 @@ void() map_damage_zone={
   }
   
   if( (self.spawnflags & 4) ){
-    if( !self.state_1 ){
+    if( !self.wait ){
       self.spawnflags = self.spawnflags - (self.spawnflags & 4);
     }
   }
