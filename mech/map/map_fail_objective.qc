@@ -11,6 +11,7 @@ Inputs
   .target = <string> [objective targetname] - objective to trigger.
   .mins = <vector> [lower half of bounding box]
   .maxs = <vector> [upper half of bounding box] - use both of these with spawnflags[2]
+  
   .spawnflag = <float> [flag] 2 - ALLOW TRIGGER TOUCH
 */
 

@@ -24,6 +24,7 @@ Inputs
                     3 = tertiary
    .count = <float> [sum] - only complete objective when count is hit;
    .trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
+   
    .spawnflags = <float> [flag] 1 - START_OFF
    .spawnflags = <float> [flag] 2 - ALLOW TRIGGER TOUCH
 */
@@ -44,7 +45,7 @@ void() map_objective_use={
       return;
     }
     //no counter, regular Objective 'complete'
-    self.isActive == 2;
+    self.isActive = 2;
     return;
   }
   //objective wasn't activated, and now it will be
@@ -59,9 +60,10 @@ void() map_objective_use={
   this is run every time + 0.1, checking isActive every time.
 */
 void() map_objective_th={
+  local entity player;
+    
   if(self.isActive == 2){
     multi_trigger();
-    local entity player;
     player = findchainflags( flags, FL_CLIENT );
     while( player ){
       if( player.i_faction == self.i_faction ){
@@ -77,7 +79,6 @@ void() map_objective_th={
   }
   if( self.isActive == -1 ){
     //objective failed!
-    local entity player;
     player = findchainflags( flags, FL_CLIENT );
     while( player ){
       if( player.i_faction == self.i_faction ){

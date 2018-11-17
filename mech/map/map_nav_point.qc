@@ -18,6 +18,7 @@ Inputs
   .trigOnSpawn = <string> [ent] - fire this map object when ACTIVATED
   .trigOnTarget = <string> [ent] - fire this OBJECTIVE when VISITED (special event channel for objectives)
   .trigOnDeath = <string> [ent] - fire this ENTITY when NAV POINT isActive = FALSE off the use() function
+  
   .spawnflags = <float> [flag] 2 - only updates 'visited' state per-client
   .spawnflags = <float> [flag] 4 - deactivate after use
 */
@@ -61,8 +62,8 @@ void() nav_point_touch={
 */
 void() nav_point_use={
   //nav point is inactive, activate
-  if( self.isActive == FALSE ){
-    trigOnSpawn( activator, trigOnSpawn );
+  if( !self.isActive ){
+    trigger_event( activator, trigOnSpawn );
     self.isActive = TRUE;
     return;
   }

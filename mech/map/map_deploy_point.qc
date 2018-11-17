@@ -10,6 +10,7 @@ Inputs
   .i_faction = <float> - Deploy Point only appears for this faction
   .data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
   .isActive = <float> [bool] - if active, allow players to spawn here.
+  
   .trigOnSpawn = <string> [target] - map object to fire when this is created
 */
 

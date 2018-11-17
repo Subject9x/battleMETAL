@@ -32,11 +32,6 @@ void() map_objective_th;
 void() map_objective_use;
 float(entity ent, float changed) send_objective;
 
-//animatic stuff
-void() animatic_event_execute;
-void() animatic_event_use;
-void() animatic_event_touch;
-
 //player target listener
 void() misc_target_listen_think;
 void() misc_target_listen;

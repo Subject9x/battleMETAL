@@ -12,6 +12,7 @@ Inputs
   .count1 = <float> [rate of fire] - interval to try next shot;
   .p_lifetime = <float> - time to live, use with spawnflags[2]
   .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+  
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
   .spawnflags = <float> [flag] 2 - lifetime
   .spawnflags = <float> [flag] 4 - reactivate after countdown
