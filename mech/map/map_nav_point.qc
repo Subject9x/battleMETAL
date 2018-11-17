@@ -15,7 +15,9 @@ Inputs
                                0 = hidden - this means 'hidden from OTHER factions'
                                -1 = inactive - hidden from EVERYONE
   .target   = <string> [ent] - fire this map object when VISITED
-  .trigOnSpawn = <string> [ent] - fire this map object when ACTIVATED  
+  .trigOnSpawn = <string> [ent] - fire this map object when ACTIVATED
+  .trigOnTarget = <string> [ent] - fire this OBJECTIVE when VISITED (special event channel for objectives)
+  .trigOnDeath = <string> [ent] - fire this ENTITY when NAV POINT isActive = FALSE off the use() function
   .spawnflags = <float> [flag] 2 - only updates 'visited' state per-client
   .spawnflags = <float> [flag] 4 - deactivate after use
 */
@@ -27,6 +29,7 @@ Inputs
 void() nav_point_touch={
   if(self.isActive == TRUE){
     if( !(other.flags & FL_CLIENT) ){
+      //nav points are a player-only thing
       return;
     }
     if( other.i_faction == self.i_faction ){
@@ -37,13 +40,8 @@ void() nav_point_touch={
         client_send_navpoint( stemp );
       self = stemp;
       
-      //TODO - test hack, figure out objectives, ya turkey
-      local entity targ;
-      targ = find( world, targetname, self.target );
-      if( targ.data_type == DATA_OBJT ){
-        targ.isActive = 2;
-        targ.count = 1;
-      }
+      // trigOnTarget is used specifically here to trigger an objective
+      trigger_event( other, trigOnTarget );
       
       //multi_trigger();
       if( (self.spawnflags & 2) ){
@@ -62,35 +60,32 @@ void() nav_point_touch={
   to be fired on-demand right now by another trigger.
 */
 void() nav_point_use={
-  if(self.isActive > FALSE){
-    self.isActive = -1;
-    multi_trigger();
-  }else{
+  //nav point is inactive, activate
+  if( self.isActive == FALSE ){
+    trigOnSpawn( activator, trigOnSpawn );
     self.isActive = TRUE;
-    local string temptarg;
-    temptarg = self.target;
-    self.target = self.vec_name;
-    multi_trigger();
-    self.target = temptarg;
+    return;
+  }
+  
+  if( self.isActive > FALSE ){
+    //deactivate signal
+    self.isActive = FALSE;
+    trigger_event( other, trigOnDeath );
+    return;
   }
 };
 
 /*QUAKED map_navpoint (0.2 0.8 0.2) (-10 -10 -10) (10 10 10)
-"i_faction"   : bitflags for faction, only visible to that faction
-"data_idx"    : number, 1 - 21, MUST BE UNIQUE
-"isActive"    : 1 = active unvisit, 2 = active visit, 0 = hidden, -1 = inactive.
-"target"      : fire trigger when visited once
-"vec_name"    : a trigger to fire when activated
-"spawnflags 2": only updates 'visited' state per-client
-"spawnflags 4": deactivate after use
 */
 void() map_nav_point={
-  self.classname = "data";
+  //self.classname = "data";
+  
   self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;
+  
   setmodel(self, "q3mdl/testball.md3");
-  setsize( self, '-150 -150 -100', '150 150 100' ); 
-  setorigin( self, self.origin );
+  setsize( self, '-150 -150 -100', '150 150 100' ); // this is to make sure nav points
+  setorigin( self, self.origin );                   // end up somewhere a player can reach
   self.movetype = MOVETYPE_FLY;
   droptofloor();
   self.movetype = MOVETYPE_NONE;
