@@ -1,30 +1,66 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 03/25/2017
-Overview: data file for map objectives
+mod: 11/16/2017
+Overview: 
+  An Objective a specific map object.
+  Map Objectives are named triggers that are sent to the client for interaction.
+  Map Objectives MUST map to an Objective ID in the Map's MSN File.
+  These objects don't have to be anywhere specifically, they mostly just help hold game
+  state
+  
+Inputs
+  .data_idx =  <float> [objective id] - must match a number in the msn_file
+  .isActive = <float> [enum]  0 = hidden/inactive 
+                              1 = active
+                              2 = complete
+                              -1 = failed
+  .i_faction = <float> faction for this objective
+  .target = <string> [targetname] - fire THIS trigger when Objective is COMPLETE, isActive == 2
+  .state_1 = <float> [enum] - determines which SFX to play when 'completed'
+                    1 = primary 
+                    2 = secondary
+                    3 = tertiary
+   .count = <float> [sum] - only complete objective when count is hit;
+   .trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
+   .spawnflags = <float> [flag] 1 - START_OFF
+   .spawnflags = <float> [flag] 2 - ALLOW TRIGGER TOUCH
 */
 
 /*
-  The game has sent a trigger call to the Objective.
-  what does the Objective do when triggered?
+  
 */
 void() map_objective_use={
+  self.enemy = activator;
   if( self.isActive ){
-    //objective is 'active' and now firing from the trigger call
-    self.count = 1;
-    self.isActive = -1;
-  }else{
-    //objective wasn't active, so flip it to active
-    //this means a second trigger call is needed to change it
-    self.isActive = TRUE;
-    self.count = 0;
+    if( self.count ){
+      //Objective counter adjust
+      self.count1 = self.count1 + 1;
+      if( self.count1 >= self.count ){
+        //Objective counter hit, send to 'complete' status
+        self.isActive = 2;
+      }
+      return;
+    }
+    //no counter, regular Objective 'complete'
+    self.isActive == 2;
+    return;
+  }
+  //objective wasn't activated, and now it will be
+  if( self.isActive > -1 ){
+    //don't reactivate failed objectives
+    self.isActive = 1;
   }
 };
 
+/*
+  The heart of the Map Objective object.
+  this is run every time + 0.1, checking isActive every time.
+*/
 void() map_objective_th={
   if(self.isActive == 2){
-    //multi_trigger();
+    multi_trigger();
     local entity player;
     player = findchainflags( flags, FL_CLIENT );
     while( player ){
@@ -37,6 +73,24 @@ void() map_objective_th={
       player = player.chain;
     }
     self.isActive = 0;
+    return;
+  }
+  if( self.isActive == -1 ){
+    //objective failed!
+    local entity player;
+    player = findchainflags( flags, FL_CLIENT );
+    while( player ){
+      if( player.i_faction == self.i_faction ){
+        stemp = self;
+        self = player;
+          client_send_objective( stemp );
+        self = stemp;
+      }
+      player = player.chain;
+    }
+    self.isActive = 0;
+    trigger_event( self.enemy, trigOnDeath ) ;
+    return;
   }
   self.think = map_objective_th;
   self.nextthink = time + 0.1;
@@ -44,22 +98,37 @@ void() map_objective_th={
 
 
 /*QUAKED map_objective (0.99 0.8 0) (-10 -10 -10) (10 10 10)
-"data_idx" : float, must match a number in the msn_file
-"isActive" : float, does this start active? 0 = hidden/inactive, 1 = active, 2 = complete, -1 = failed
-"i_faction": float, faction for this objective
-"target"   : string, target another ent, usually a counter
-"state_1"  : float, 1 = primary objective, 2 = secondary, 3 = tertiary
 */
 void() map_objective={
-  self.classname = "data";
+  local vector tempMin;
+  local vector tempMax;
+  
+  if( (self.spawnflags & 2) ){
+    self.solid = SOLID_TRIGGER;
+    tempMax = self.maxs;
+    tempMin = self.mins;
+  }
+  else{
+    self.solid = SOLID_NOT;
+  }
+  //self.classname = "data";
   self.flags = self.flags | FL_NODE;
+  
   self.data_type = DATA_OBJT;
-  setmodel(self, "q3mdl/testball.md3");
-  setsize(self, '-1 -1 -1', '1 1 1');
-  setorigin(self, self.origin);
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_NOT;
+  
+  setmodel(self, "q3mdl/testball.md3");
+  setsize(self, VEC_ORIGIN, VEC_ORIGIN);
+  setorigin(self, self.origin);
+  
   self.use = map_objective_use;
   self.think = map_objective_th;
+  
+  self.isActive = 1;
+  if( (self.spawnflags & 1) ){
+    self.isActive = 0;
+    return;
+  }
+  
   self.nextthink = time + 0.1;
 }

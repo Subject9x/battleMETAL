@@ -42,7 +42,6 @@ void(vector org, vector end) te_beam_pac={
   WriteCoord (MSG_BROADCAST, end_z);
 };
 
-
 //TE_SMOKE_TEST
 void(vector org, vector vel, float cnt) te_smoke_test={
   WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
