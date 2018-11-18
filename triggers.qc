@@ -32,11 +32,7 @@ void( entity active, .string event) trigger_event={
   self = hold;
 };
 
-void() highlight_hud_touch={
-  if( (other.flags & FL_CLIENT) ){
-    client_push_hud_highlight( other );
-  }
-};
+
 
 void() trigger_activate_node={
   
@@ -133,29 +129,6 @@ void() multi_touch =
 };
 
 
-/*QUAKED trigger_highlighthud (.5 .5 .5) ?
-Highlights a section of a client's HUD, mostly used for tutorials n such
-options:
-"fx_origin" : vector, position on screen, z=0
-"c_alt_ofs" : vector, size of box, z=0
-"c_ofs"     : vector, color of box
-"wait"      : float, how many seconds to display.
-*/
-//highlight box on hud
-void() trigger_highlighthud={
-  InitTrigger ();
-  self.noise = "misc/talk.wav";
-  self.solid = SOLID_TRIGGER;
-  if (!self.wait){
-		self.wait = 0.2;
-  }
-  self.use = multi_use;
-  self.touch = highlight_hud_touch;
-  if (self.nextthink > time)
-	{
-		return;		// already been triggered
-	}
-};
 
 /*QUAKED trigger_multiple (.5 .5 .5) ? notouch
 Variable sized repeatable trigger.  Must be targeted at one or more entities.  If "health" is set, the trigger must be killed to activate each time.

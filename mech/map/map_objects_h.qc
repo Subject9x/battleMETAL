@@ -31,7 +31,3 @@ void() ai_spawner_activate;
 void() map_objective_th;
 void() map_objective_use;
 float(entity ent, float changed) send_objective;
-
-//player target listener
-void() misc_target_listen_think;
-void() misc_target_listen;
