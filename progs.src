@@ -193,7 +193,7 @@ triggers.qc
   mech/map/map_particles_debug.qc
   mech/map/map_projectile_shooter.qc
   mech/map/map_fail_objective.qc
-  mech/map/map_hugh_highlight.qc
+  mech/map/map_hud_highlight.qc
 //============================
 
 plats.qc
