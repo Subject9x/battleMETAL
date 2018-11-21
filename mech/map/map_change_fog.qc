@@ -23,12 +23,6 @@ Globals
       0 = do nothing
       1 = transition to new fog
 */
-//controlled on each client
-.float fog_density;
-.vector fog_color;
-.float fog_alpha;
-.vector fog_dist;
-.float fade;
 
 void() map_changefog_touch={
   

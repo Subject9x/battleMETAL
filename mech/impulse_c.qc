@@ -126,6 +126,26 @@ void() ImpulseCommands ={
     }
   }
   
+  if( self.impulse == 30 ){
+  //map_terrain_model
+    local entity e;
+    e = find( world, classname, "map_terrain_model" );
+    if( e ){
+      e.angles_y = anglemod( e.angles_y + 10 );
+      cons_logAVector("terrain angles", e.angles);  //DEBUG
+    }
+  }
+  
+  if( self.impulse == 31 ){
+  //map_terrain_model
+    local entity e;
+    e = find( world, classname, "map_terrain_model" );
+    if( e ){
+      e.angles_y = anglemod( e.angles_y - 10 );
+      cons_logAVector("terrain angles", e.angles);  //DEBUG
+    }
+  }
+  
 	self.impulse = 0;
 };
 

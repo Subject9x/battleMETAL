@@ -124,7 +124,7 @@ void() ClientConnect = {
   self.stat_plr_stt = PLAYER_SPAWN;
   
   client_push_player_info();
-
+  
   if (intermission_running){
     ExitIntermission();
   }
@@ -181,6 +181,7 @@ void() PutClientInServer = {
   
   client_sendMissionFileName();
   client_sendGameMode(gamemode);
+  //client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade); DEBUG
   
   switch(gamemode){
     case GAMEMODE_CAMPAIGN:

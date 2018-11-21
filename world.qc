@@ -13,6 +13,7 @@ void() main =
 //entity	lastspawn;
 
 //=======================
+
 /*QUAKED worldspawn (0 0 0) ?
 Only used for the world entity.
 

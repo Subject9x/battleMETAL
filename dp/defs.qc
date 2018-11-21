@@ -565,7 +565,12 @@ float	AS_MISSILE		= 4;
 //.float		volume;
 
 
-
+//controlled on each client
+.float fog_density;
+.vector fog_color;
+.float fog_alpha;
+.vector fog_dist;
+.float fade;
 
 //===========================================================================
 	
