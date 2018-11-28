@@ -96,6 +96,10 @@ void() map_damagezone_touch={
         if( other.sh_cur < 0 ){
           other.sh_cur = 0;
         }
+        //realized damage can be inverted...
+        if( other.sh_cur > other.sh_max ){
+          other.sh_cur = other.sh_max;
+        }
       }
       if( (self.p_dmgtype & 2) ){
         local vector rpoint;
@@ -111,6 +115,10 @@ void() map_damagezone_touch={
         other.en_cur = other.en_cur - self.p_damage;
         if( other.en_cur < 0 ){
           other.en_cur = 0;
+        }
+        //realized damage can be inverted...
+        if( other.en_cur > other.en_max ){
+          other.en_cur = other.en_max;
         }
       }
       if( (self.p_dmgtype & 8) ){

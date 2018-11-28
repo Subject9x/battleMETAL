@@ -249,7 +249,7 @@ float	FL_WATERJUMP			= 2048;	  // player jumping out of water
 float	FL_JUMPRELEASED		= 4096;	  // for jump debouncing
 float FL_SKIPTHINK      = 8192;   //tells ai system that main update has been ovverridden
 float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
-float FL_NOGUNS         = 32768;  //bot has no more guns!
+float FL_NOSHOOT        = 32768;  //bot has no more guns!
 float FL_TURRET         = 65536;  //the FL_MONSTER has a Turret
 float FL_NODE           = 131072;  //kinda ugly but used for non unit things
 

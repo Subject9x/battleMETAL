@@ -16,6 +16,11 @@ void() toggerRadar={};
 void() playerAttack={
   local entity wep_chain, oself;
   local float wep_count, weaponGroup;
+  
+  if( (self.flags & FL_NOSHOOT) ){
+    return;
+  }
+  
   weaponGroup = 0;
   if(self.button0){
     weaponGroup = self.currentWeaponGroup;

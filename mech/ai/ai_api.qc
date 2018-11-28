@@ -285,7 +285,7 @@ void(entity bot, entity attacker) ai_damage_react={
   this = self;
   self = bot;
   panic = FALSE;
-  if( (self.flags & FL_NOGUNS) ){
+  if( (self.flags & FL_NOSHOOT) ){
     panic = TRUE;
   }
   
@@ -545,7 +545,7 @@ void() ai_wep_calcranges={
     self.ai_minrange = AI_RANGE_L;
   }
   if( self.ai_minrange == 0 ){
-    self.flags = self.flags | FL_NOGUNS;
+    self.flags = self.flags | FL_NOSHOOT;
   }
   
 };
