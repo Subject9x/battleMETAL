@@ -31,7 +31,6 @@ void() th_deploy={
 /*QUAKED map_deploy_point (0.2 0.8 0.2) (-10 -10 -10) (10 10 10)
 */
 void() map_deploy_point={
-  self.classname = "data";
   self.data_type = DATA_DEPL;
   self.flags = self.flags | FL_NODE;
   setmodel(self, "q3mdl/testball.md3");

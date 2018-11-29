@@ -76,11 +76,10 @@ void() nav_point_use={
   }
 };
 
-/*QUAKED map_navpoint (0.2 0.8 0.2) (-10 -10 -10) (10 10 10)
+/*QUAKED map_nav_point (0.2 0.8 0.2) (-10 -10 -10) (10 10 10)
 */
 void() map_nav_point={
-  //self.classname = "data";
-  
+
   self.flags = self.flags | FL_NODE;
   self.data_type = DATA_NAVP;
   

@@ -16,8 +16,6 @@ Inputs
   .spawnflags = <float> [flag] 2 - lifetime
   .spawnflags = <float> [flag] 4 - reactivate after countdown
   .spawnflags = <float> [flag] 8 - remove after first countdown
-  .spawnflags = <float> [flag] 16 - draw the whole weapon model
-  .spawnflags = <float> [flag] 32 - use limited number of shots
   
 */
 
@@ -79,7 +77,7 @@ void() map_noshoot_touch={
 
 /*QUAKED map_noshoot () () ()
 */
-void() map_noshoot={
+void() map_no_shoot={
   local vector tempMin;
   local vector tempMax;
   

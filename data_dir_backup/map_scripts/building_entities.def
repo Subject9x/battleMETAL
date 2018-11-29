@@ -1,0 +1,29 @@
+//for galaxy's sake, make sure all parens are closed without spaces!
+
+
+
+//===========================================================
+//    battleMETAL Buildings Human
+//===========================================================
+/*QUAKED building_human_radar (0 0 1) (-12 -12 0) (12 12 20)
+model="/q3mdl/buildings/mdl_bld_h_radar.md3"
+*/
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-64 -64 0) (64 64 40)
+model="/q3mdl/buildings/mdl_bld_h_shield.md3"
+*/
+/*QUAKED building_human_power (0.074 0.66 0.93) (-56 -56 0) (56 56 46)
+model="/q3mdl/buildings/mdl_bld_h_power.md3"
+*/
+/*QUAKED building_human_hangar (0 0 1) (-64 -64 0) (64 64 40)
+model="/q3mdl/buildings/mdl_bld_h_hangar_l.md3"
+*/
+/*QUAKED building_human_fuel (0 0 1) (-64 -64 0) (64 64 40)
+model="/q3mdl/buildings/mdl_bld_h_fuel.md3"
+*/
+//=================================================================================================
+
+//===========================================================
+//    battleMETAL  Units Human
+//===========================================================
+
+//=================================================================================================

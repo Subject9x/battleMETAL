@@ -1,0 +1,164 @@
+//===========================================================
+//    battleMETAL  Map Objects
+//===========================================================
+/*QUAKED map_nav_point (0.431 0.788 0.753) (-10 -10 -10) (10 10 10) - VISIT_PER_CLIENT OFF_AFTER_USE
+Nav Points are points of interest marked on Player maps. Players interact with them by visiting them, which can then fire triggers to additional game logic.
+
+-------- KEYS -------- 
+i_faction: float defines which factions this Nav Point belongs to
+data_idx: float enum  1 to 21, each must be unique because this determines the 'name' of the nav point client-side
+isActive: float enum  1 active unvisit active, faction hasn't visited that nav yet
+                             2 active visit  active, faction has been here
+                             0 hidden  this means hidden from other factions
+                             -1 inactive  hidden from everyone
+target: string ent  fire this map object when visited
+trigOnSpawn:string ent  fire this map object when activated
+trigOnTarget: string ent fire this OBJECTIVE when visited (special event channel for objectives)
+trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off the use function
+
+-------- SPAWNFLAGS -------- 
+VISIT_PER_CLIENT 2: only updates visited state per client
+OFF_AFTER_USE 4: deactivate after use
+*/
+
+/*QUAKED map_objective (0.431 0.788 0.753) (-10 -10 -10) (10 10 10)
+
+*/
+
+/*QUAKED map_change_fog (0.431 0.788 0.753) (-4 -4 -4) (4 4 4) REMOVE_ONTOUCH
+A Map Wrapper for the fog cvar. Allows a map to take control of the fog setting in a controllabe way. 
+This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
+  
+fog cvar
+  density red green blue alpha mindist maxdist top fadedepth
+  
+-------- KEYS -------- 
+.fog_density = <float> [density] - new fog thickness
+.fog_color = <vector> [red, green, blue] - new color to transition to
+.fog_alpha = <float> [alpha] - new alpha value
+.fog_dist = <vector> [dist min, dist max, height] - new fog distance
+.fade = <float> [fade depth] - transition time
+
+Globals
+.stat_wep_state = <float> event
+    0 = do nothing
+    1 = transition to new fog
+    
+-------- SPAWNFLAGS -------- 
+REMOVE_ONTOUCH 1: remove on first touch
+*/
+/*QUAKED map_change_music (0.431 0.788 0.753) (-3 -3 -3) (3 3 3) REMOVE_FIRSTUSE LOOP
+Primarily a map wrapper for the SVC_CDTRACK message, but also a manager of  it as well. 
+This map ent provides map-level control of the music playback code and sound channel. 
+It runs exlcusively on the CD tracks using a track number, so it is unable to process arbitrary sounds.
+  
+-------- KEYS -------- 
+.comp_id = <float> [trackid] CD Track to play
+.targetname = <string> [targetname] - make triggerable
+
+-------- SPAWNFLAGS -------- 
+REMOVE_FIRSTUSE 1: remove on first fire
+LOOP 1: loop track
+*/
+/*QUAKED map_change_wind (0.431 0.788 0.753) (-5 -5 -5) (5 5 5) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE RESTORE_WORLDVAL
+Every map can have a wind direction and velocity that affects VFX like sparks and smoke.
+This map object is to allow the map to alter this value.
+This is NEVER a touchable map object!
+
+world.v_angle = win direction
+world.m_fspeed = wind speed  
+-------- KEYS -------- 
+.c_ofs = <vector> [wind direction] - the 3d direction of the new wind
+.p_velocity = <float> [wind speed] - speed of wind in given direction
+.p_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1 - START_OFF - only activated by trigger
+LIFETIME 2 - lifetime
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+RESTORE_WORLDVAL 16 - restore original wind values
+*/
+/*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH
+A Damage Zone is an area that hurts all units within the zone.
+  
+-------- KEYS -------- 
+.mins = <vector> lower bounds of box
+.maxs = <vector> upper bounds of box
+.targetname = <string> [targetname] - make triggerable
+.p_damage = <float> - amount of damage to impart
+.p_dmgtype = <float> [flag] 1 - DMG SHIELDS
+.p_dmgtype = <float> [flag] 2 - DMG ARMOR
+.p_dmgtype = <float> [flag] 4 - DMG ENERGY
+.p_dmgtype = <float> [flag] 8 - DMG SPEED
+.p_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1 - START_OFF - only activated by trigger
+LIFETIME 2 - lifetime
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+REMOVE_ONTOUCH 16 - remove on first touch
+ACTIVE_ONTOUCH 32 - activate on-touch
+*/
+/*QUAKED map_deploy_point (0.431 0.788 0.753) (-12 -12 -12) (12 12 12)
+Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
+Deploy points can be tailored to specific i_factions, and can be activated/deactivated.
+
+-------- KEYS -------- 
+.i_faction = <float> - Deploy Point only appears for this faction
+.data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
+.isActive = <float> [bool] - if active, allow players to spawn here.  
+.trigOnSpawn = <string> [target] - map object to fire when this is created
+*/
+/*QUAKED map_fail_objective (0.431 0.788 0.753) (-8 -3 -8) (8 3 8) - ON_TOUCH
+Merely a necessary interstitial map object to set a Mission Objective to 'fail'.
+This should be used sparingly, they clean themsleves up after firing.
+
+-------- KEYS -------- 
+.target = <string> [objective targetname] - objective to trigger.
+.mins = <vector> [lower half of bounding box]
+.maxs = <vector> [upper half of bounding box] - use both of these with spawnflags[2]
+
+-------- SPAWNFLAGS -------- 
+ON_TOUCH 2 - ALLOW TRIGGER TOUCH
+*/
+/*QUAKED map_hud_highlight (0.431 0.788 0.753) (-8 -8 -8) (8 8 8) START_OFF ON_TOUCH REMOVE_FINISH FACTION_ONLY DROPTOFLOOR FREEZE_PLAYER COOLDOWN CALL_BY_TRIGGER
+  HUD Highlighting is a map event sent to chosen clients. This creates a colored box around a portion of the player's screen
+  for a set amount of time. The use case is primarily for information and training purposes, but can be useful in other ways.
+  
+-------- KEYS -------- 
+.movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
+.c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
+.color = <vector> [red, green, blue] - color of the box
+.i_faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+.p_lifetime = <float> [time to draw] - amount of time to draw box for
+
+.target = <string> [ent] - fire this trigger when done
+.wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
+-------- SPAWNFLAGS --------
+START_OFF 1 - will start as deactivated
+ON_TOUCH 2 - will react to being touched by a players
+REMOVE_FINISH 4 - will be removed when finished playing
+FACTION_ONLY 8 - only reacts to this i_faction
+DROPTOFLOOR 16 - object drops to floor for easier touch possibility
+FREEZE_PLAYER 32 - any players that trigger the Animatic are frozen in place
+COOLDOWN 64 - use .wait
+CALL_BY_TRIGGER 128 - must be used with START_OFF
+*/
+/*QUAKE map_no_shoot (0.431 0.788 0.753) (-3 -3 -3) (3 3 3) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE
+A map object that modifies unit flags, controlling whether and for how long a unit has the given flags.
+this is very powerful and mostly only used for FL_NOSHOOT
+
+-------- KEYS -------- 
+.comp_id = <float> [flags]  flags you want modified
+.p_dmgtype = <float> [flags] 1 - Affect FL_CLIENT ONLY
+-------- SPAWNFLAGS --------
+START_OFF 1 -  - only activated by trigger
+LIFETIME 2 - 
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+*/
+//=================================================================================================

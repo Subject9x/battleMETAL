@@ -126,7 +126,6 @@ void() map_hud_highlight={
     setorigin( self, self.origin );
   }
   
-  
   if (!self.wait){
 		self.wait = 0.2;
   }
