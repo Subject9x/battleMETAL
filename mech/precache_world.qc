@@ -102,6 +102,13 @@ void() mh_precache_models={
   //weapon projectiles
   precache_model ("q3mdl/proj_emp.md3");
   precache_model ("q3mdl/proj_mis.md3");
+  precache_model ("q3mdl/proj/mdl_proj_swrm.md3");
+  precache_model ("q3mdl/proj/mdl_proj_lgm.md3");
+  precache_model ("q3mdl/proj/mdl_proj_mis.md3");
+  precache_model ("q3mdl/proj/mdl_proj_marh.md3");
+  precache_model ("q3mdl/proj/mdl_proj_sfga.md3");
+  precache_model ("q3mdl/proj/mdl_proj_rpc.md3");
+  precache_model ("q3mdl/proj/mdl_proj_qrfl.md3");
   precache_model ("progs/casing.mdl");
   precache_model ("q3mdl/fx_shield.md3");
   precache_model ("progs/plasmashot.spr32");

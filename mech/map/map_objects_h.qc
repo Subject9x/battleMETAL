@@ -4,7 +4,7 @@ Author: Peter Roohr
 Date: 03/25/2017
 Overview: map objects header, for cleanliness
 */
-
+//TODO - deprecate, refactor, delete this file
 //nav point stuff
 .float controllingFaction;
 .float isActive;
@@ -12,22 +12,8 @@ Overview: map objects header, for cleanliness
 
 void() building_die;
 
-void() nav_point_use;
-void() nav_point_th;
-float(entity ent, float changed) send_navpoint;
-
-//deploy point stuff
-void() deploy_point_use;
-void() th_deploy;
-float(entity ent, float changed) send_deploypoint;
-
 //AI
 void() ai_mech;
 void() ai_spawner_use;
 void() ai_spawner_think;
 void() ai_spawner_activate;
-
-//map objectives
-void() map_objective_th;
-void() map_objective_use;
-float(entity ent, float changed) send_objective;

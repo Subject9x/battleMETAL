@@ -6,7 +6,6 @@ Overview: ai nodes
   all the various nodes needed for the game
 */
 
-
 //NODE CONSTANTS
 
 //AI Node
@@ -20,11 +19,19 @@ float NODE_SPAWN_REMOVEONTOUCH = 2;
 float NODE_SPAWN_INACTIVE = 4;
 float NODE_SPAWN_INACTIVEONTOUCH = 8;
 
+void() node_use={
+  if( !self.isActive ){
+    self.isActive = TRUE;
+    trigger_event( world, trigOnSpawn );
+  }
+};
+
 /*
   common ini for any node entity
 */
 void() node_setup={
 
+  self.flags = self.flags | FL_NODE;
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
   self.solid = SOLID_CORPSE;
@@ -45,7 +52,9 @@ void() node_setup={
   self.isActive = TRUE;
   if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
     self.isActive = FALSE;
+    return;
   }
+  trigger_event( world, trigOnSpawn );
 };
 
 void() ai_node_hunt_t={
@@ -231,6 +240,7 @@ void() node_touch={
   }
   
   if( (self.spawnflags & NODE_SPAWN_REMOVEONTOUCH) ){
+    trigger_event( world, trigOnDeath );
     remove( self );
   }
   if( (self.spawnflags & NODE_SPAWN_INACTIVEONTOUCH) ){
@@ -242,7 +252,7 @@ void() node_touch={
   QUAKED call
   this is what the map script will actually call to create a node entity
 */  
-void() msc_ai_node={
+void() ai_node={
   if ( !self.targetname ){
 		objerror ("node - missing targetname");
     remove(self);

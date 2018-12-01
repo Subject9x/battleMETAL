@@ -23,8 +23,8 @@ void() deploy_point_use={
   self.isActive = TRUE;
 };
 
-void() th_deploy={
-  self.think = th_deploy;
+void() deploy_point_th={
+  self.think = deploy_point_th;
   self.nextthink = time + 0.5;
 };
 
@@ -37,7 +37,7 @@ void() map_deploy_point={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.use = deploy_point_use;
-  self.think = th_deploy;
+  self.think = deploy_point_th;
   self.nextthink = time + 0.1;
   
   trigger_event( world, trigOnSpawn );

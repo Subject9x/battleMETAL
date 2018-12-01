@@ -69,7 +69,7 @@ void( void() partiFunc ) map_particle_ini={
 /*QUAKED pdebug_smoke (0.25 0.25 0.25)
 
 */
-void() particle_dbg_smoke={
+void() debug_particles_smoke={
 
   map_particle_ini( debug_smoke );
 

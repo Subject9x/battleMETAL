@@ -103,21 +103,21 @@ string DAT_PRJ_EMP_MODEL    = "q3mdl/proj_emp.md3";
 //-------------------------EMP
 string DAT_PRJ_ION_MODEL    = "q3mdl/proj_emp.md3";
 //-------------------------MIS-ARH
-string DAT_PRJ_MARH_MODEL   = "q3mdl/proj_mis.md3";
+string DAT_PRJ_MARH_MODEL   = "q3mdl/proj/mdl_proj_marh.md3";
 //-------------------------Rocket
-string DAT_PRJ_MIS_MODEL    = "q3mdl/proj_mis.md3";
+string DAT_PRJ_MIS_MODEL    = "q3mdl/proj/mdl_proj_mis.md3";
 //-------------------------MIS-LGD
-string DAT_PRJ_MLGD_MODEL   = "q3mdl/proj_mis.md3";
+string DAT_PRJ_MLGD_MODEL   = "q3mdl/proj/mdl_proj_lgm.md3";
 //-------------------------QRifle
-string DAT_PRJ_QRFL_MODEL   = "progs/casing.mdl";
+string DAT_PRJ_QRFL_MODEL   = "q3mdl/proj/mdl_proj_qrfl.md3";
 //-------------------------RPlas
-string DAT_PRJ_RPLAS_MODEL  = "progs/casing.mdl";
+string DAT_PRJ_RPLAS_MODEL  = "q3mdl/proj/mdl_proj_rpc.md3";
 //-------------------------SFGA
-string DAT_PRJ_SFGA_MODEL   = "progs/casing.mdl";
+string DAT_PRJ_SFGA_MODEL   = "q3mdl/proj/mdl_proj_sfga.md3";
 //-------------------------FLAK
 string DAT_PRJ_FLAK_MODEL   = "progs/casing.mdl";
 //-------------------------SWARM
-string DAT_PRJ_SWRM_MODEL   = "q3mdl/proj_mis.md3";
+string DAT_PRJ_SWRM_MODEL   = "q3mdl/proj/mdl_prj_swrm.md3";
 //-------------------------Air-burst Torpedo
 string DAT_PRJ_ABT_MODEL   = "q3mdl/proj_mis.md3";
 //-------------------------Air-burst Torpedo Cluster

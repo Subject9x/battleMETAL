@@ -9,7 +9,7 @@ Overview:
 Inputs
   .data_idx = <float> [weapon id] - the weapon to use
   .count = <float> [particle amount] - set a max number of shots
-  .count1 = <float> [rate of fire] - interval to try next shot;
+  .count3 = <float> [rate of fire] - interval to try next shot;
   .p_lifetime = <float> - time to live, use with spawnflags[2]
   .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   
@@ -23,6 +23,7 @@ Inputs
 
 void() map_projectile_shooter_use={
   
+
   if( (self.spawnflags & 4) ){
     if( time < self.nextthink ){
       //prevent multi-fire while cooling down
@@ -36,9 +37,14 @@ void() map_projectile_shooter_use={
 void() map_projectile_shooter_think={
   
   map_projectile_shooter_use();
+  self.en_cur = 100000;
+  self.w_state = READY;
+  self.rl_cur = self.rl_max;
+  self.w_currentammo = self.w_clipsize;
   
   self.think = map_projectile_shooter_think;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + self.count3;
+  
   if( (self.spawnflags & 32) ){
     //use shot counter
     self.count = self.count - 1;
@@ -76,7 +82,6 @@ void() map_projectile_shooter_think={
       }
     }
   }
-  
 };
 
 /*QUAKED map_projectile_shooter (0.01 0.01 0.01)
@@ -84,13 +89,19 @@ void() map_projectile_shooter_think={
 void() map_projectile_shooter={
   
   self.owner = self;  //haha what
+  self.owner.enemy = self;
   self.owner.angles = self.angles;
   self.owner.v_angle = self.angles;
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
+
+  data_iniWep( self.data_idx );
   self.rl_cur = 100; // bug fix - weapon reload indicator not starting at correct value
   self.en_cur = 10000;  //never run out of energy
-  data_iniWep( self.data_idx );
+  self.owner.stat_rdr_mode = TRUE;
+  self.isActive = TRUE;
+  self.rl_max = self.count3;
+  self.owner.stat_lck_stt = self.owner.stat_lck_stt | LOCK_TARG_HAS;
   
   if( (self.flags & FL_MONSTER) ){
     self.p_damage = ai_pilot_mod_damage( skill, self.p_damage);
@@ -100,7 +111,6 @@ void() map_projectile_shooter={
   }
 
   if( (self.p_dmgtype & DMG_MSC) ){
-    self.w_think(); //run module's upgrade now;
     self.w_think = SUB_Null;
   }
   self.th_die = ctrl_die_weapon;
@@ -135,8 +145,8 @@ void() map_projectile_shooter={
   }
   
   //default interval
-  if( !self.count1 ){
-    self.count1 = 0.05;
+  if( !self.count3 ){
+    self.count3 = 0.05;
   }
   
   if( (self.spawnflags & 1) ){
@@ -144,9 +154,8 @@ void() map_projectile_shooter={
     self.isActive = FALSE;
     return;
   }
-  
-  self.isActive = TRUE;
+
   self.think = map_projectile_shooter_think;
   self.count2 = time + self.p_lifetime;
-  self.nextthink = time + self.count1;
+  self.nextthink = time + self.count3;
 };
