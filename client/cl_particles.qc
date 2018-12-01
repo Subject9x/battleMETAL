@@ -28,6 +28,12 @@ float( float te_id ) te_effect_delegate={
     case TE_SHIELD_TEST:
       hand = te_shield_test( te_read_vector(), te_read_vector() ) ;
       break;
+    case TE_HEAT_SMALL:
+      hand = te_heat_small( te_read_vector(), ReadByte() );
+      break;
+    case TE_MUZZLE_LASER:
+      hand = te_muzzle_laser( te_read_vector(), te_read_vector(), te_read_vector() );
+      break;
     default:
       hand = FALSE;
       break;
@@ -87,9 +93,28 @@ float(vector org, vector angl) te_shield_test={
   burst.think = te_shield_think;
   burst.nextthink = time + 0.1;
   burst.drawmask = MASK_NORMAL;
-  sound(burst, CHAN_VOICE, "sound/fx_shieldhit.ogg", 0.75, ATTN_NORM);
+  sound(burst, CHAN_VOICE, "sound/fx_shieldhit.ogg");
 
   te_customflash(org, 50, 0.3, '0 0 1'); 
+  return TRUE;
+};
+
+float( vector org, float total ) te_heat_small={
+  pointparticles(particleeffectnum("HEAT_SMALL"), org , '0 0 0', total);
+  return TRUE;
+};
+
+/*
+  Muzzle Flashes
+*/
+
+float(vector org, vector angl, vector vel) te_muzzle_laser={
+  makevectors( angl );
+  local vector mz;
+  mz = org + v_forward * 3;
+  
+  te_customflash(mz, 50, 0.1, '0.855 0.776 0.957'); 
+  pointparticles(particleeffectnum("HEAT_SMALL"), mz , '0 0 0', 1);
   return TRUE;
 };
 

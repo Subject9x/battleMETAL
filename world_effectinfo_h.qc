@@ -13,6 +13,10 @@ void(vector org, vector end) te_beam_esr;
 void(vector org, vector end) te_beam_pac;
 void(vector org, vector vel, float cnt) te_smoke_test;
 void(vector org, vector angl) te_shield_test;
+void(vector org, float total) te_heat_small;
+
+//Weapons
+void(vector org, vector angl, vector vel) te_muzzle_laser;
 
 //SFX
 void() te_nav_reach;

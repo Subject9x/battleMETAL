@@ -111,12 +111,13 @@ void() data_las_atk={
   setsize(laser_org, '0 0 0', '0 0 0');
   setorigin(laser_org, org);
   laser_org.think = SUB_Remove;
-  laser_org.nextthink = time + 0.01;// + 0.35;
+  laser_org.nextthink = time + 0.01;
    
   te_beam_laser(laser_org.origin, dir);
   sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
   
-  //te_lightning1(laser_org, laser_org.origin, dir);  
+  te_muzzle_laser( self.origin, self.angles, player.velocity);
+  
   te_flamejet(dir, '0 10 0', 25);
 
   t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');

@@ -1,0 +1,130 @@
+//LASER BEAM================================
+effect BEAM_LASER
+count 1
+countabsolute 1
+type beam
+blend add
+orientation beam
+color 0xBA94DF 0x7F3FBF
+tex 60 60
+size 0.5 1.25
+sizeincrease 1
+alpha 1024 1024 32
+time 0.25 0.25
+gravity 0
+bounce -1
+airfriction 0
+liquidfriction 0
+velocityoffset 0 0 4000
+originjitter 0 0 0
+velocityjitter 0 0 0
+velocitymultiplier 4
+notunderwater
+trailspacing 1
+stretchfactor 0
+rotate 0 0 0 0
+
+effect BEAM_LASER
+lightradius 200
+lightradiusfade 45
+lighttime 0.1
+lightcolor 0.49 0.24 0.74
+lightshadow 0.75
+
+effect MUZZLE_LASER
+
+//==========================================
+//ESR BEAM==================================
+effect BEAM_ESR
+count 1
+countabsolute 1
+type beam
+blend alpha
+orientation beam
+color 0x65A8A3 0xAACFCC
+tex 60 60
+size 0.6 0.75
+sizeincrease 0.25
+alpha 256 512 64
+time 0.05 0.07
+gravity 0
+bounce -1
+liquidfriction 0
+velocityoffset 0 0 0
+originjitter 0 0 0
+velocityjitter 0 0 0
+velocitymultiplier 0
+notunderwater
+trailspacing 0.25
+stretchfactor 0
+rotate 0 0 0 0
+lightradius 200
+lightradiusfade 15
+lighttime 0.05
+lightcolor 0.69 0.75 1
+lightshadow 0.75
+//==========================================
+//PAC BEAM==================================
+effect BEAM_PAC
+count 1
+type beam
+blend alpha
+orientation beam
+color 0xD68204 0xFDB953
+tex 60 60
+size 1.1 1.5
+sizeincrease -0.5
+alpha 32 512 768
+time 2 2
+gravity -1
+airfriction 0
+liquidfriction 0
+velocityoffset 0 0 0
+originjitter 0 0 0
+velocityjitter 0 0 0
+velocitymultiplier 0
+notunderwater
+stretchfactor 0
+
+effect BEAM_PAC
+lightradius 200
+lightradiusfade 15
+lighttime 0.1
+lightcolor 0.49 0.24 0.74
+lightshadow 0.75
+staincolor 0xD68204 0xFDB953
+stainalpha 512 512
+stainsize 8 16
+staintex 62 62
+//==========================================
+//TEST SMOKE==================================
+effect SMOKE_TEST
+count 0.333
+type smoke
+blend alpha
+color 0x1b1c1c 0x303333
+tex 0 7
+size 2 8
+sizeincrease 0.1
+alpha 128 240 32
+time 6 10
+originjitter 1.5 1.5 1.5
+velocityjitter 3 3 2
+velocitymultiplier 1
+//==========================================
+//TEST Heat Distort==================================
+effect HEAT_SMALL
+count 1
+countabsolute 3
+type smoke
+blend alpha
+color 0xe0e0d1 0xf5f5f0
+tex 42 42
+size 1.5 1.5
+alpha 8 12 8
+time 8 8
+gravity -0.025
+originjitter 0.1 0.1 0.1
+velocityjitter 0 0 0
+velocitymultiplier 1
+//

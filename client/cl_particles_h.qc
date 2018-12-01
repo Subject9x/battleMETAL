@@ -58,3 +58,7 @@ float(vector org, vector end) te_beam_esr;
 float(vector org, vector end) te_beam_pac;
 float(vector org, vector vel, float cnt) te_smoke_test;
 float(vector org, vector angl ) te_shield_test;
+float(vector org, float total) te_heat_small;
+
+//MUZZLE FLAHES
+float(vector org, vector angl, vector vel) te_muzzle_laser;

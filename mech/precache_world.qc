@@ -109,6 +109,8 @@ void() mh_precache_models={
   precache_model ("q3mdl/proj/mdl_proj_sfga.md3");
   precache_model ("q3mdl/proj/mdl_proj_rpc.md3");
   precache_model ("q3mdl/proj/mdl_proj_qrfl.md3");
+  precache_model ("q3mdl/proj/mdl_proj_emp.md3");
+  precache_model ("q3mdl/proj/mdl_proj_ion.md3");
   precache_model ("progs/casing.mdl");
   precache_model ("q3mdl/fx_shield.md3");
   precache_model ("progs/plasmashot.spr32");

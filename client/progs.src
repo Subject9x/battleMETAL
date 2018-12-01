@@ -5,16 +5,19 @@ keycodes.qc
 m_csdefs.qc
 m_entdefs.qc
 m_datadefs.qc 
+
 //common values
-  ../common/data/data_values_game.qc
-  ../common/data/data_values_projectiles.qc
-  ../common/data/data_values_buildings.qc
-  ../common/data/data_values_weapons.qc
-  ../common/data/data_values_mechs.qc
-  ../common/data/data_values_vehicles.qc
-  ../common/data/data_values_particles.qc
-  ../common/data/data_values_turrets.qc
-  ../common/ui/ui_color_constants.qc
+../common/data/data_values_game.qc
+../common/data/data_values_projectiles.qc
+../common/data/data_values_buildings.qc
+../common/data/data_values_weapons.qc
+../common/data/data_values_mechs.qc
+../common/data/data_values_vehicles.qc
+../common/data/data_values_particles.qc
+../common/data/data_values_turrets.qc
+../common/ui/ui_color_constants.qc
+//================================
+
 gui_api_h.qc
 hud_api_h.qc
 data_api_h.qc
@@ -26,14 +29,16 @@ cl_receive_ents_h.qc
 msn_file_h.qc
 anim_h.qc
 hud_snd_sys_h.qc
+
 //Client-side UI
-  ui/ui_defs_h.qc
-  ui/ui_hangar_h.qc
-  ui/ui_arming_h.qc
-  ui/ui_brief_h.qc
-  ui/ui_deploy_h.qc
-  ui/ui_objectives_h.qc
+ui/ui_defs_h.qc
+ui/ui_hangar_h.qc
+ui/ui_arming_h.qc
+ui/ui_brief_h.qc
+ui/ui_deploy_h.qc
+ui/ui_objectives_h.qc
 //================
+
 msn_file_c.qc
 anim_c.qc
 gui_api_c.qc

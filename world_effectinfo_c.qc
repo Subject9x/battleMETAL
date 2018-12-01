@@ -66,6 +66,32 @@ void(vector org, vector angl) te_shield_test={
   WriteCoord (MSG_BROADCAST, angl_z);
 };
 
+void( vector org, float total ) te_heat_small={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_HEAT_SMALL );
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+  WriteByte( MSG_BROADCAST, total );
+};
+
+/*
+  MUZZLE FLASHES
+*/
+void(vector org, vector angl, vector vel) te_muzzle_laser={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_MUZZLE_LASER );
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+  WriteCoord (MSG_BROADCAST, angl_x);
+  WriteCoord (MSG_BROADCAST, angl_y);
+  WriteCoord (MSG_BROADCAST, angl_z);
+  WriteCoord (MSG_BROADCAST, vel_x);
+  WriteCoord (MSG_BROADCAST, vel_y);
+  WriteCoord (MSG_BROADCAST, vel_z);
+};
+
 //HUD Sound Effects
 //make sure to scope self to target client
 void() te_nav_reach={

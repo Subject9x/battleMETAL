@@ -99,9 +99,9 @@ float DAT_PRJ_FLAK_EXPRAD     = 50;
 //            Model           
 //============================
 //-------------------------EMP
-string DAT_PRJ_EMP_MODEL    = "q3mdl/proj_emp.md3";
+string DAT_PRJ_EMP_MODEL    = "q3mdl/proj/mdl_proj_emp.md3";
 //-------------------------EMP
-string DAT_PRJ_ION_MODEL    = "q3mdl/proj_emp.md3";
+string DAT_PRJ_ION_MODEL    = "q3mdl/proj/mdl_proj_ion.md3";
 //-------------------------MIS-ARH
 string DAT_PRJ_MARH_MODEL   = "q3mdl/proj/mdl_proj_marh.md3";
 //-------------------------Rocket
@@ -133,6 +133,7 @@ vector DAT_PRJ_EMP_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_EMP_GLOWCOLOR = 255;
 float DAT_PRJ_EMP_GLOWSIZE = 0.0005;
 float DAT_PRJ_EMP_GLOWTRAIL= FALSE;
+
 //-------------------------ION
 float DAT_PRJ_ION_EFFECTS = EF_NOSHADOW;
 float DAT_PRJ_ION_MODELFLAGS = MF_TRACER3;
@@ -141,6 +142,7 @@ vector DAT_PRJ_ION_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_ION_GLOWCOLOR = 255;
 float DAT_PRJ_ION_GLOWSIZE = 0.0005;
 float DAT_PRJ_ION_GLOWTRAIL= FALSE;
+
 //-------------------------MIS-ARH
 float DAT_PRJ_MARH_EFFECTS = 0;
 float DAT_PRJ_MARH_MODELFLAGS = MF_ROCKET;
@@ -149,6 +151,7 @@ vector DAT_PRJ_MARH_COLORMOD = '0 0 0';
 float DAT_PRJ_MARH_GLOWCOLOR = 0;
 float DAT_PRJ_MARH_GLOWSIZE = 0;
 float DAT_PRJ_MARH_GLOWTRAIL= FALSE;
+
 //-------------------------Rocket
 float DAT_PRJ_MIS_EFFECTS = 0;
 float DAT_PRJ_MIS_MODELFLAGS = MF_ROCKET;
@@ -157,6 +160,7 @@ vector DAT_PRJ_MIS_COLORMOD = '0 0 0';
 float DAT_PRJ_MIS_GLOWCOLOR = 0;
 float DAT_PRJ_MIS_GLOWSIZE = 0;
 float DAT_PRJ_MIS_GLOWTRAIL= FALSE;
+
 //-------------------------MIS-LGD
 float DAT_PRJ_MLGD_EFFECTS = 0;
 float DAT_PRJ_MLGD_MODELFLAGS = MF_ROCKET;
@@ -165,22 +169,25 @@ vector DAT_PRJ_MLGD_COLORMOD = '0 0 0';
 float DAT_PRJ_MLGD_GLOWCOLOR = 0;
 float DAT_PRJ_MLGD_GLOWSIZE = 0;
 float DAT_PRJ_MLGD_GLOWTRAIL= FALSE;
+
 //-------------------------QRifle
 float DAT_PRJ_QRFL_EFFECTS = EF_NOSHADOW;
 float DAT_PRJ_QRFL_MODELFLAGS = MF_TRACER3;
 float DAT_PRJ_QRFL_ALPHA = 0.75;
 vector DAT_PRJ_QRFL_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_QRFL_GLOWCOLOR = 255;
-float DAT_PRJ_QRFL_GLOWSIZE = 0.0005;
+float DAT_PRJ_QRFL_GLOWSIZE = 0.0001;
 float DAT_PRJ_QRFL_GLOWTRAIL= FALSE;
+
 //-------------------------RPlas
 float DAT_PRJ_RPLAS_EFFECTS = EF_NOSHADOW;
-float DAT_PRJ_RPLAS_MODELFLAGS = MF_TRACER2;
-float DAT_PRJ_RPLAS_ALPHA = 1;
+float DAT_PRJ_RPLAS_MODELFLAGS = MF_TRACER;
+float DAT_PRJ_RPLAS_ALPHA = 0.75;
 vector DAT_PRJ_RPLAS_COLORMOD = '0.35 0.85 0.45';
-float DAT_PRJ_RPLAS_GLOWCOLOR = 150;
-float DAT_PRJ_RPLAS_GLOWSIZE = 0.1;
+float DAT_PRJ_RPLAS_GLOWCOLOR = 254;
+float DAT_PRJ_RPLAS_GLOWSIZE = 32;
 float DAT_PRJ_RPLAS_GLOWTRAIL= FALSE;
+
 //-------------------------SFGA
 float DAT_PRJ_SFGA_EFFECTS = EF_NOSHADOW;
 float DAT_PRJ_SFGA_MODELFLAGS = MF_GRENADE;
@@ -189,6 +196,7 @@ vector DAT_PRJ_SFGA_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_SFGA_GLOWCOLOR = 240;
 float DAT_PRJ_SFGA_GLOWSIZE = 0.005;
 float DAT_PRJ_SFGA_GLOWTRAIL= FALSE;
+
 //-------------------------FLAK
 float DAT_PRJ_FLAK_EFFECTS = EF_NOSHADOW;
 float DAT_PRJ_FLAK_MODELFLAGS = MF_GRENADE;
@@ -197,6 +205,7 @@ vector DAT_PRJ_FLAK_COLORMOD = '0.1 0.1 0.1';
 float DAT_PRJ_FLAK_GLOWCOLOR = 240;
 float DAT_PRJ_FLAK_GLOWSIZE = 0.005;
 float DAT_PRJ_FLAK_GLOWTRAIL= FALSE;
+
 //-------------------------Swarm
 float DAT_PRJ_SWRM_EFFECTS = 0;
 float DAT_PRJ_SWRM_MODELFLAGS = MF_ROCKET;
@@ -205,6 +214,7 @@ vector DAT_PRJ_SWRM_COLORMOD = '0 0 0';
 float DAT_PRJ_SWRM_GLOWCOLOR = 0;
 float DAT_PRJ_SWRM_GLOWSIZE = 0;
 float DAT_PRJ_SWRM_GLOWTRAIL= FALSE;
+
 //-------------------------Air-burst Torpedo
 float DAT_PRJ_ABT_EFFECTS = 0;
 float DAT_PRJ_ABT_MODELFLAGS = MF_ROCKET;
@@ -213,6 +223,7 @@ vector DAT_PRJ_ABT_COLORMOD = '0 0 0';
 float DAT_PRJ_ABT_GLOWCOLOR = 0;
 float DAT_PRJ_ABT_GLOWSIZE = 0;
 float DAT_PRJ_ABT_GLOWTRAIL= FALSE;
+
 //-------------------------Air-burst Torpedo Cluster
 float DAT_PRJ_ABT_CLST_EFFECTS = 0;
 float DAT_PRJ_ABT_CLST_MODELFLAGS = MF_ROCKET;

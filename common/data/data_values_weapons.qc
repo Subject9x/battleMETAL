@@ -507,7 +507,7 @@ float DAT_FLAK_PROJ_ID    = ID_PRJ_FLAK;
 //-------------------------Laser
 
 //-------------------------ION
-float DAT_ION_PROJ_ID     = ID_PRJ_EMP;
+float DAT_ION_PROJ_ID     = ID_PRJ_ION;
 //-------------------------EMP
 float DAT_EMP_PROJ_ID     = ID_PRJ_EMP;
 //-------------------------ESR
