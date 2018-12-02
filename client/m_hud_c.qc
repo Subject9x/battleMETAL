@@ -749,10 +749,6 @@ void(float delta) hud_renderRepairValue={
   }
 };
 
-//entry point for the mech hud system
-void( float mech_id ) hud_frame={
-};
-
 vector( float wbit ) hud_data_weapon_info={
   local vector wep;
   switch( wbit ){
@@ -795,8 +791,6 @@ vector( float wbit ) hud_data_weapon_info={
   }
   return wep;
 };
-
-
 
 void( float uid, float targetId ) hud_data_renderTarget_Shield={
   local float algn, lflag, lalign, axis;
@@ -984,40 +978,71 @@ void() data_hud_frame={
     hud_renderTargetOverlay(self.target_origin, pmove_org, 0, self.i_faction, self.target_faction, self.radar_range);
     hud_renderShieldOverlay(self.target_origin, pmove_org, 0, self.target_shield, self.radar_range, self.target_vecsize, '64 6', AXIS_H);
   }  
-  
 
-  
   //CROSSHAIR AND DETAILS
   hud_renderDirectionHit(self.stat_hit_dirs);
- // hud_renderCrosshairs(self.stat_hit_dirs, self.stat_lck_stt, getstatf(STAT_ACCURACY), self.target_shield); //TODO - spread
-  
-  switch( cvar("crosshair") ){
-    case 1:
-      hud_renderCrosshair1( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
-      break;
-    case 2:
-      hud_renderCrosshair2( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
-      break;
-    case 3:
-      hud_renderCrosshair3( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
-      break;
-    case 4:
-      hud_renderCrosshair4( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
-      break;
-    case 5:
-      hud_renderCrosshair5( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
-      break;
-    default:
-      //no crosshair? bold move
-      break;
+  if( (self.flags & FL_NOSHOOT) ){
+    //rad_bld.png
+    hud_renderCrosshairDisabled();
   }
-  
+  else{
+    switch( cvar("crosshair") ){
+      case 1:
+        hud_renderCrosshair1( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        break;
+      case 2:
+        hud_renderCrosshair2( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        break;
+      case 3:
+        hud_renderCrosshair3( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        break;
+      case 4:
+        hud_renderCrosshair4( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        break;
+      case 5:
+        hud_renderCrosshair5( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        break;
+      default:
+        //no crosshair? bold move
+        break;
+    }
+  }
+
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY), input_angles_x * -3, 270, -270);
   hud_renderTargetDirection(self.stat_trg_face, self.i_faction, self.target_faction, self.target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), self.stat_ret_dist) ;
   
   //repair sits above all
   hud_renderRepairValue(getstatf(STAT_PLR_REP));
+};
+
+/*
+  This is generally triggered by the player being given the FL_NOSHOOT flag from the server.
+*/
+void() hud_renderCrosshairDisabled={
+  local vector stopOrg;
+  local vector lblOrg;
+  
+  local vector stopSize;
+  local float lblSize;
+  
+  local string lbl;
+  
+  lbl = "[FIRE CONTROL OVERRIDDEN]";
+  
+  stopSize = gui_percentToPixelRawVec('32 32');
+  stopOrg_x = VIEW_CTR_x - (stopSize_x / 2);
+  stopOrg_y = VIEW_CTR_y - (stopSize_y / 2);
+
+  lblSize = stringwidth(lbl, 0, '8 8 0');
+  lblSize = gui_percentXRaw( lblSize );
+  
+  lblOrg_x = VIEW_CTR_x - (lblSize / 2);
+  lblOrg_y = VIEW_CTR_y - gui_percentYRaw( 40 );
+  
+  drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, 1, DRAWFLAG_NORMAL);  
+  
+  drawstring(lblOrg, lbl, '8 8 0', CLR_DEF_RED, 1, 0);
 };
 
 /*

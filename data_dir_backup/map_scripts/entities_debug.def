@@ -1,0 +1,19 @@
+//===========================================================
+//    battleMETAL  Debug Objects
+//===========================================================
+/*QUAKED debug_particles_smoke (0.988 0.267 0.553) (-3 -3 -3) (3 3 3) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE
+  Debugger for particle effects
+  
+-------- KEYS -------- 
+  .data_idx = <float> [particle id] - the particle effect to spawn
+  .c_ofs = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
+  .v_angle = <vector> [speed] -if effect needs a velocity vector
+  .count = <float> [particle amount] - total number of particles in the effect
+  .p_lifetime = <float> - time to live, use with spawnflags[2]
+  .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+-------- SPAWNFLAGS -------- 
+START_OFF 1 -  - only activated by trigger
+LIFETIME 2 - 
+REACTIVATE 4 - reactivate after countdown
+REMOVE_FIRSTUSE 8 - remove after first countdown
+*/

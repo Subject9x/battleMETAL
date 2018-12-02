@@ -1,0 +1,47 @@
+//===========================================================
+//    battleMETAL AI objects
+//===========================================================
+
+/*QUAKED ai_node (0.988 0.976 0.267) (-15 -15 -512) (15 15 512) DROP_ONSPAWN REMOVE_ONTOUCH START_INACTIVE INACTIVE_ONTOUCH
+This is used to setup patrol and move paths for AI
+-------- KEYS -------- 
+.i_faction = <float> [faction number]
+.targetname = <string> used by AI to find node
+.target = <string> should target another AI node to form a chain
+.trigOnDeath = <string> [target] trigger this item when node is removed
+.trigOnSpawn = <string> [target] trigger this item when node isActive = true;
+.data_idx = <float> [enum]
+      AI_NODE_PATROL = 1;
+      AI_NODE_DEFEND = 2;
+      AI_NODE_ATTACK = 3;
+
+-------- SPAWNFLAGS -------- 
+DROP_ONSPAWN 1 - drop to floor on spawn
+REMOVE_ONTOUCH 2 - removed when touched
+START_INACTIVE 4 - start with .isActive = FALSE
+INACTIVE_ONTOUCH 8 - shutoff when touched by AI
+*/
+
+
+/*QUAKED ai_change_faction(0.988 0.976 0.267) (-4 -4 -6) (4 4 6) - REMOVE_ONUSE
+changes the i_faction field of the targeted objects
+
+-------- KEYS --------
+.i_faction = <float> [faction id] - the faction to set the target to
+.group = <string> [group] objects with this groupId will be affected
+.target = <string> [targetname] objects with this targetname will be affected
+-------- SPAWNFLAGS -------- 
+REMOVE_ONUSE 2 - removed after its first use.
+*/
+
+
+/*QUAKED ai_change_rank(0.988 0.976 0.267) (-4 -4 -6) (4 4 6) - REMOVE_ONUSE
+changes the i_faction field of the targeted objects
+
+-------- KEYS -------- 
+.group = <string> [group] objects with this groupId will be affected
+.target = <string> [targetname] objects with this targetname will be affected
+.ai_rank = <float> [rank] rank to change the targets ai_rank to.
+-------- SPAWNFLAGS -------- 
+REMOVE_ONUSE 2 - removed after its first use.
+*/

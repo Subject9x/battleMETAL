@@ -76,6 +76,7 @@ string HUD_TARGET_BOX;
 .float prev_ang;
 .vector nav_ofs;
 
+void() hud_renderCrosshairDisabled;
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs;
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair1; //I have no regrets for these
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair2;
@@ -111,8 +112,6 @@ void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector c
 void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
 void(vector ofs, string targType, float algn) hud_renderTargetName;
 void(float delta) hud_renderRepairValue;
-//entry point for the mech hud system
-void( float mech_id ) hud_frame;
 
 //new text-based hud system
 void( float uid, float targetId ) hud_data_renderTarget_Shield;

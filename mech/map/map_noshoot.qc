@@ -11,6 +11,7 @@ Overview:
 Inputs
   .comp_id = <float> [flags]  flags you want modified
   .p_dmgtype = <float> [flags] 1 - Affect FL_CLIENT ONLY
+  .delay = <float> delayed start
   
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
   .spawnflags = <float> [flag] 2 - lifetime
@@ -20,9 +21,18 @@ Inputs
 */
 
 void() map_noshoot_th={
-  self.isActive = TRUE;
-  self.think = self.use;
-  self.nextthink = time + 0.1;
+  if( !self.isActive ){    
+    self.isActive = TRUE;
+    self.think = self.use;
+    self.nextthink = time + 0.1;
+    return;
+  }
+  else{
+  }
+};
+
+void() map_noshoot_shutoff={
+  
 };
 
 void() map_noshoot_use={
@@ -78,12 +88,7 @@ void() map_noshoot_touch={
 /*QUAKED map_noshoot () () ()
 */
 void() map_no_shoot={
-  local vector tempMin;
-  local vector tempMax;
-  
-  tempMax = self.maxs;
-  tempMin = self.mins;
-  
+ 
   self.solid = SOLID_TRIGGER;
   self.movetype = MOVETYPE_NONE;
   self.touch = map_noshoot_touch;
@@ -91,9 +96,16 @@ void() map_no_shoot={
   self.isActive = TRUE;
   
   setmodel(self, "q3mdl/testball.md3");
-  setsize(self, tempMin, tempMax);
+  setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
 
+  //default wait
+  if( (self.spawnflags & 4) ){
+    if( !self.wait ){
+      self.wait = 10;
+    }
+  }
+  
   //START_OFF
   if( (self.spawnflags & 1) ){
     self.isActive = FALSE;
