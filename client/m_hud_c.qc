@@ -1028,7 +1028,7 @@ void() hud_renderCrosshairDisabled={
   
   local string lbl;
   
-  lbl = "[FIRE CONTROL OVERRIDDEN]";
+  lbl = "[FIRE CONTROL OVERRIDE]";
   
   stopSize = gui_percentToPixelRawVec('32 32');
   stopOrg_x = VIEW_CTR_x - (stopSize_x / 2);

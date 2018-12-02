@@ -17,12 +17,22 @@ Inputs
   .spawnflags = <float> [flag] 2 - lifetime
   .spawnflags = <float> [flag] 4 - reactivate after countdown
   .spawnflags = <float> [flag] 8 - remove after first countdown
+  .spawnflags = <float> [flag] 16 - restore flags (generally for single use() )
   
 */
 
 void() map_noshoot_th={
   if( !self.isActive ){    
     self.isActive = TRUE;
+    
+    if( (self.spawnflags & 16) ){
+      self.use();
+      self.spawnflags = self.spawnflags - (self.spawnflags & 4);
+      self.think = SUB_Null;
+      self.nextthink = time;
+      self.isActive = FALSE;
+      return;
+    }
     self.think = self.use;
     self.nextthink = time + 0.1;
     return;

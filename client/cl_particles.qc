@@ -93,7 +93,7 @@ float(vector org, vector angl) te_shield_test={
   burst.think = te_shield_think;
   burst.nextthink = time + 0.1;
   burst.drawmask = MASK_NORMAL;
-  sound(burst, CHAN_VOICE, "sound/fx_shieldhit.ogg");
+  //sound(burst, CHAN_VOICE, "sound/fx_shieldhit.ogg");
 
   te_customflash(org, 50, 0.3, '0 0 1'); 
   return TRUE;
