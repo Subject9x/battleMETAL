@@ -4,11 +4,12 @@
 ----------------------
 A Total-conversion for the _[DarkPlaces](https://icculus.org/twilight/darkplaces/)_ engine all about mecha combat.
 
-_battleMETAL_ brings giant robot combat inspired by the Mechwarrior and Earthsiege franchises to Quake's frenetic pacing and tech stack. This project adds the following large features to Darkplaces via the Quake C scripting language and use of external file reading.
+_battleMETAL_ brings giant robot combat inspired by the _Mechwarrior_ and _Earthsiege_ franchises to _Quake's_ frenetic pacing and tech stack. This project adds the following large features to _Darkplaces_ via the _Quake C_ scripting language and use of external file reading.
 
 This is just a repo for the code, the media assets (models, texture, fx) aren't available yet because
 I have not fully decoupled all the original _iD_ assets from the mod. 
 
+An important design goal of _battleMETAL_ has been to create a simple SDK for making small mech games. 
 
 ### Game Play
 ----------------------
@@ -23,6 +24,13 @@ I have not fully decoupled all the original _iD_ assets from the mod.
 + Weapons are lost when their parent component is destroyed.
 + Buildings also exist in addition to combat units.
 + Base buildings can be interacted with.
+
+### AI
+----------------------
++ A bespoke solution that replaces the original _Quake_ AI code.
++ Packaged into an API for ease of maintenance.
++ AI uses most of the gameplay features listed here, almost on parity with player.
++ AI behavior is boken down by unit type, each leveraging the API in a few unique ways.
 
 
 ### HUD
@@ -40,19 +48,11 @@ I have not fully decoupled all the original _iD_ assets from the mod.
 
 ### GUI
 ----------------------
-+ I'm defining GUI here as all menus that were not covered by the Main Menu System (Quake keeps these distinct).
++ I'm defining GUI here as all menus that were not covered by the Main Menu System (_Quake_ keeps these distinct).
 + GUI API written from the ground up for the project.
 + GUI can render various common elements such as bar graphs, text wrapping, and buttons.
 + GUI has mouse support just like the Main Menu.
 + GUI is display agnostic, using %'s for screen positions, sizes, and such.
-
-
-### Main Menu System
-----------------------
-+ Completely overhauled
-+ Implmented Darkplaces mouse function extension to the main menu system
-+ New layouts for menus. 
-+ Graphical improvements to menus.
 
 
 ### Map Design
@@ -62,6 +62,19 @@ I have not fully decoupled all the original _iD_ assets from the mod.
 + Map and Mission file system for loading mission briefing files, game save files.
 + Maps can have formal Objectives that are communicated to the player during gameplay.
 + Maps can have Navigation (Nav) points that are marked for the player.
+
+
+### Miscellaneous
+----------------------
++ An _Animatic_ system for cutscenes. These are defined in their own script files and can be called by the map file using map logic.
+
+
+### Main Menu System
+----------------------
++ Completely overhauled
++ Implemented _Darkplaces_ mouse function extension to the main menu system
++ New layouts for menus. 
++ Graphical improvements to menus.
 
 
 ### Graphics
