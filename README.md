@@ -18,7 +18,7 @@ I have not fully decoupled all the original _iD_ assets from the mod.
 + Units (and players) can multiple weapons.
 + These multiple weapons can be fired at the same time by using Weapon Groups.
 + Units have new statistics; Energy, Shields, Radar, pitch limits, etc.
-+ Weapons and Shields are interact in important ways - certain weapons are better at damaging shields.
++ Weapons and Shields can interact in important ways - certain weapons are better at damaging shields.
 + Weapons are assigned to locations on units, and the player can customize their unit.
 + Weapons are lost when their parent component is destroyed.
 + Buildings also exist in addition to combat units.
