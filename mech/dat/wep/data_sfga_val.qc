@@ -14,7 +14,7 @@ void() data_sfga_think;
 void() data_sfga_ini={
   self.data_idx = ID_WEP_SFGA;
   self.w_name = DAT_SFGA_NAME;
-  self.p_dmgtype = self.p_dmgtype | DMG_BAL;
+  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_ARC;
   self.p_damage = DAT_SFGA_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_SFGA_CLIPSIZE;
@@ -108,6 +108,9 @@ void() data_sfga_atk={
     self.velocity = normalize(dir - org);
     self.velocity = self.velocity * self.p_velocity;
     self.velocity_z = self.velocity_z + 200;
+    if( (player.flags & FL_MONSTER) ){
+      self.velocity_z = self.velocity_z + 200;  //extra arc for AI attacks
+    }
     self.think = BecomeExplosion;
     self.nextthink = time + self.p_lifetime;
     util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);

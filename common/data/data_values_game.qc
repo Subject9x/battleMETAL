@@ -126,6 +126,7 @@ float EFF_STX = 32; //dmg only affects shields
 float EFF_ENG = 64; //dmg only affects energy
 float DMG_MSC = 128; //designates weapon as 'equipment'
 float EFF_ENE = 256; //weapon draws energy (client-side flag, really)
+float EFF_ARC = 512;  //weapon has an arcing projectile, used by AI
 //============================
 //     SHARED STATS         
 //============================

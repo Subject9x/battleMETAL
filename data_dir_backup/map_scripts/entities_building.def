@@ -17,6 +17,9 @@ model="/q3mdl/buildings/mdl_bld_h_power.md3"
 /*QUAKED building_human_hangar (0 0 1) (-64 -64 0) (64 64 40)
 model="/q3mdl/buildings/mdl_bld_h_hangar_l.md3"
 */
+/*QUAKED building_repair (0 0 1) (-64 -64 0) (64 64 40)
+model="/q3mdl/buildings/mdl_bld_h_repair.md3"
+*/
 /*QUAKED building_human_fuel (0 0 1) (-64 -64 0) (64 64 40)
 model="/q3mdl/buildings/mdl_bld_h_fuel.md3"
 */

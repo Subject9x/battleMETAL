@@ -112,7 +112,7 @@ float() ai_find_target_visual={
   local float dist, rng;
   
   targ = findradius(self.origin, self.ai_view);
-  dist = self.ai_view;
+  dist = self.ai_view ;
   rng = dist;
   while( targ ){
     if( ai_valid_target(targ) ){
@@ -121,6 +121,9 @@ float() ai_find_target_visual={
           if( ai_check_vis(targ) ){
             local float ndist;
             ndist = vlen(targ.origin - self.origin);
+            if( targ.fog_alpha ){
+              rng = rng - ( targ.fog_alpha * rng ); //FOG?
+            }
             if(ndist < rng){
               rng = ndist;
               found = targ;
@@ -391,69 +394,11 @@ float(entity wep) ai_attack_blockcheck={
     return TRUE;
   }
 
+  if( (wep.p_dmgtype & EFF_ARC) ){
+    return TRUE; // arcing attacks don't need LoS
+  }
   return FALSE;
 };
-
-/*float() ai_check_allattack={
-  if( self.th_check ){
-    return self.th_check();
-  }
-  return ai_check_forattack();
-};*/
-
-/*float() ai_check_forattack={
-  local vector spot1, spot2;
-  local entity targ;
-  local float chance, r;
-  
-  targ = self.enemy;
-  
-  spot1 = self.e_cam.origin;
-  spot2 = targ.origin;
-  
-  traceline(spot1, spot2, FALSE, self);
-  
-  if( trace_ent != targ ){
-    return FALSE;
-  }
-  
-  if( trace_inopen && trace_inwater ){
-    return FALSE;
-  }
-  
-  if( !self.th_attack ){
-    return FALSE;
-  }
-  
-  r = ai_range( self.enemy );
-  
-  if( r > self.ai_minrange ){
-    return FALSE;
-  }
-  
-  if( !ai_visible( self.enemy ) ){
-    return FALSE;
-  }
-  
-  local float i;
-  i = 0.1;
-  if( r == AI_RANGE_S ){
-    i = i + 0.4;
-  }
-  else if( r == AI_RANGE_M ){
-    i = i + 0.3;
-  }
-  else if( r == AI_RANGE_L ){
-    i = i + 0.2;
-  }
-  
-  if( random() < i ){
-    ai_action_next( self.th_attack, 0.5, self.ai_action_mod );
-    ai_leg_frame( leg_stand1 );
-    return TRUE;
-  }
-  return FALSE;
-};*/
 
 /*
   Only used for AI_SPAWNFLAG_RANDDOMSTART
