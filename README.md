@@ -1,12 +1,13 @@
-# battleMETAL
-A Total-conversion for the DarkPlaces engine all about mecha combat.
+# _battleMETAL_
 
 ## Overview
 ----------------------
-This is just a repo for the code, the media assets (models, texture, fx) aren't available yet because
-I have not fully decoupled all the original iD assets from the mod. 
+A Total-conversion for the _[DarkPlaces](https://icculus.org/twilight/darkplaces/)_ engine all about mecha combat.
 
-battleMETAL brings giant robot combat inspired by the Mechwarrior and Earthsiege franchises to Quake's frenetic pacing and tech stack. This project adds the following large features to Darkplaces via the Quake C scripting language and use of external file reading.
+_battleMETAL_ brings giant robot combat inspired by the Mechwarrior and Earthsiege franchises to Quake's frenetic pacing and tech stack. This project adds the following large features to Darkplaces via the Quake C scripting language and use of external file reading.
+
+This is just a repo for the code, the media assets (models, texture, fx) aren't available yet because
+I have not fully decoupled all the original _iD_ assets from the mod. 
 
 
 ### Game Play
