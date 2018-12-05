@@ -7,6 +7,14 @@ Overview: ai objects used for map logic
 
 void() ai_change_faction_use={
   local entity e;
+  if( (self.spawnflags & 4) ){
+    if( time < self.nextthink){
+      return;
+    }
+    self.think = ai_change_rank_use;
+    self.nextthink = time + self.delay;
+    return;
+  }
   if(self.group){
     e = findchain(group, self.group);
     while(e){
@@ -28,6 +36,15 @@ void() ai_change_faction_use={
 
 void() ai_change_rank_use={
   local entity e, this;
+  if( (self.spawnflags & 4) ){
+    if( time < self.nextthink){
+      return;
+    }
+    self.think = ai_change_rank_use;
+    self.nextthink = time + self.delay;
+    return;
+  }
+  
   if(self.group){
     e = findchain(group, self.group);
     while(e){
@@ -63,35 +80,57 @@ void() ai_change_rank_use={
   }
 };
 
-/*QUAKED ai_change_faction(0.988 0.976 0.267) (-4 -4 -6) (4 4 6) - REMOVE_ONUSE
+/*QUAKED ai_change_faction (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
 changes the i_faction field of the targeted objects
 
--------- KEYS -------- 
-.group = <string> [group] objects with this groupId will be affected
-.target = <string> [targetname] objects with this targetname will be affected
+-------- KEYS --------
+.i_faction    <float> [faction id] - the faction to set the target to
+.group        <string> [group] objects with this groupId will be affected
+.target        <string> [targetname] objects with this targetname will be affected
+.targetname    <string> [targetname] - for being called by other objects
+.wait        <float> [time] - use with []2 for delay-after-being-called
 -------- SPAWNFLAGS -------- 
+START_OFF 1 - start inactive
 REMOVE_ONUSE 2 - removed after its first use.
+DELAY 4 - wait after fire before execution
 */
 void() ai_change_faction={
   
   setsize( self, '-3 -3 -3', '3 3 3' );
   setorigin( self, self.origin );
   self.use = ai_change_faction_use;
+  
+  if( (self.spawnflags & 1) ){
+    self.isActive = FALSE;
+    return;
+  }
+  self.isActive = TRUE;
 };
 
-/*QUAKED ai_change_rank (.25 .25 .25) (-5 -5 -5) (5 5 5)
+/*QUAKED ai_change_rank (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
 changes the i_faction field of the targeted objects
 
 -------- KEYS -------- 
-.group = <string> [group] objects with this groupId will be affected
-.target = <string> [targetname] objects with this targetname will be affected
-.ai_rank = <float> [rank] rank to change the targets ai_rank to.
+.group        <string> [group] objects with this groupId will be affected
+.target        <string> [targetname] objects with this targetname will be affected
+.targetname    <string> [targetname] - for being called by other objects
+.ai_rank    <float> [rank] rank to change the targets ai_rank to.
+.wait        <float> [time] - use with []2 for delay-after-being-called
 -------- SPAWNFLAGS -------- 
 REMOVE_ONUSE 2 - removed after its first use.
+START_OFF 1 - start inactive
+REMOVE_ONUSE 2 - removed after its first use.
+DELAY 4 - wait after fire before execution
 */
 void() ai_change_rank={
 
   setsize( self, '-3 -3 -3', '3 3 3' );
   setorigin( self, self.origin );
   self.use = ai_change_rank_use;
+  
+  if( (self.spawnflags & 1) ){
+    self.isActive = FALSE;
+    return;
+  }
+  self.isActive = TRUE;
 };
