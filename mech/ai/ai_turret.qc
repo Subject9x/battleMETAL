@@ -215,11 +215,13 @@ void() ai_turret_th={
   SPAWN
 */
 void() ai_turret={
-  self.flags = self.flags | FL_TURRET;
+  self.flags = self.flags | FL_TURRET | FL_MONSTER;
   
   if( !ai_create_unit( data_iniTurret )){
     return;
   }
+  self.spreadDefault = ACCURACY_LOWTECH;
+  
   self.th_stand = ai_turret_stand;
   self.th_walk = ai_turret_walk;
   self.th_run = ai_turret_run;

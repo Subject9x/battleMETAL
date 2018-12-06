@@ -276,6 +276,8 @@ void(void() data_ini) build_mech_bot={
   local vector hmins, hmaxs;
   local string mdl;
   
+  self.flags = self.flags | FL_MONSTER;
+  
   data_ini();
   
   hmaxs = self.maxs;
@@ -472,7 +474,7 @@ void( void() data_ini ) build_vtol_unit={
 };
 
 void(void() data_ini) build_turret_unit={
-  self.flags = self.flags | FL_TURRET;
+  self.flags = self.flags | FL_TURRET | FL_MONSTER;
   build_vehicle_unit( data_ini );
 
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));

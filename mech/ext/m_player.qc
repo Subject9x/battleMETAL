@@ -185,7 +185,7 @@ void() PlayerPostThink = {
   playerAttack();
   
   client_push_player_info();
-  
+ 
 // check to see if player landed and play landing sound	
 	/*if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
 	{

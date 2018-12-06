@@ -19,7 +19,7 @@ void() client_get_info={
   
   client.entorg = te_read_vector();
   client.radar_range = ReadLong(); 
-  client.data_type = ReadByte();
+  //client.data_type = ReadByte();
   
   if( client.data_type == DATA_MECH ){
     client.en_cur = ReadByte();
@@ -133,8 +133,12 @@ void() client_get_hud_highlight={
 };
 
 void() receive_ent_bindData={
-  self.netname = getstats( STAT_PLR_NAME );
+  //cons_logAFloat("world ent", num_for_edict( world) );    //DEBUG
+  //cons_logAFloat("player ent", num_for_edict( self) );   //DEBUG
+  
   self.flags = getstati( STAT_ROCKETS );
+
+  self.netname = getstats( STAT_PLR_NAME );
   self.player_state = getstati( STAT_ARMOR );
 
   self.data_type = getstati(STAT_PLR_DTYPE);
@@ -169,6 +173,7 @@ void() receive_ent_bindData={
   self.stat_w7_id = getstati(STAT_WEP7_ID);
   self.stat_w8_id = getstati(STAT_WEP8_ID);
   self.stat_w9_id = getstati(STAT_WEP9_ID);
+
 };
 
 void() client_event_navpoint={

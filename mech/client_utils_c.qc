@@ -30,7 +30,7 @@ void() client_push_player_info={
     WriteCoord( MSG_ONE, self.origin_z );
     
     WriteLong( MSG_ONE, self.stat_rdr_rng );
-    WriteByte( MSG_ONE, self.data_type ); 
+    //WriteByte( MSG_ONE, self.data_type ); 
   
     if(self.data_type == DATA_MECH){
       WriteByte( MSG_ONE, (self.en_cur / self.en_max) * 100 );

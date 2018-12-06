@@ -145,12 +145,7 @@ void() PutClientInServer = {
   self.velocity = '0 0 0';	// 1998-07-21 Player moves after respawn fix by Xian
 	self.air_finished = time + 12;
 	self.dmg = 2;   		// initial water damage
-	/*self.super_damage_finished = 0;
-	self.radsuit_finished = 0;
-	self.invisible_finished = 0;
-	self.invincible_finished = 0;*/
 	self.effects = 0;
-	//self.invincible_time = 0;
   
 	self.fixangle = TRUE;		// turn this way immediately
 	
@@ -181,8 +176,7 @@ void() PutClientInServer = {
   
   client_sendMissionFileName();
   client_sendGameMode(gamemode);
-  //client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade); DEBUG
-  
+
   switch(gamemode){
     case GAMEMODE_CAMPAIGN:
       if(world.model == "maps/start.bsp"){

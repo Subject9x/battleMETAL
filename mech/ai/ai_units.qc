@@ -92,6 +92,7 @@ void() unit_hs_tnkdest_h={
 };
 
 void() unit_hs_scout={
+  self.flags = self.flags | FL_MONSTER;  //enforced for a mech
   self.nextVecChoice = 11;
   self.i_faction = 2;
   self.spreadDefault = ACCURACY_LOWTECH;
@@ -99,7 +100,7 @@ void() unit_hs_scout={
 };
 
 void() unit_hs_mech_sk={
-  self.flags = self.flags | FL_TURRET;  //enforced for a mech
+  self.flags = self.flags | FL_TURRET | FL_MONSTER;  //enforced for a mech
   self.i_faction = 2;
   self.mskin = 2;
   self.spreadDefault = ACCURACY_SKIRMISH;
@@ -107,7 +108,7 @@ void() unit_hs_mech_sk={
 };
 
 void() unit_hs_mech_sniper={
-  self.flags = self.flags | FL_TURRET;  //enforced for a mech
+  self.flags = self.flags | FL_TURRET | FL_MONSTER;  //enforced for a mech
   self.i_faction = 2;
   self.mskin = 2;
   self.spreadDefault = ACCURACY_SNIPER;
@@ -148,23 +149,4 @@ void() unit_psc_vtol_l={
   self.nextVecChoice = ID_VEC_PSC_VTOL_L;
   self.i_faction = 4;
   ai_unit_setup( ai_vtol );
-};
-
-float( void() ai_unit_ini ) ai_create_unit={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
-    objerror ("ai_unit - outside of game mode");
-    remove(self);
-    return FALSE;
-  }
-  
-  ai_unit_ini_var();
-  ai_unit_ini( self.nextVecChoice );
-  ai_pilot_ini_stats(self.ai_rank);
-  
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
-  
-  trigger_event( self, trigOnSpawn); //event interface
-  return TRUE;
 };

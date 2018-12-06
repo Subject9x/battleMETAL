@@ -16,22 +16,22 @@ float(float mode) ai_spawn_clean={
   rem = FALSE;
   switch(mode){
     case GAMEMODE_CAMPAIGN:
-      if ( (self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
+      if ( !(self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
         rem = TRUE;
       }
       break;
     case GAMEMODE_COOP:
-      if ( (self.spawnflags & AI_SPAWNFLAG_COOP) ){
+      if ( !(self.spawnflags & AI_SPAWNFLAG_COOP) ){
         rem = TRUE;
       }
       break;
     case GAMEMODE_DM:
-      if ( (self.spawnflags & AI_SPAWNFLAG_DM) ){
+      if ( !(self.spawnflags & AI_SPAWNFLAG_DM) ){
         rem = TRUE;
       }
       break;
     case GAMEMODE_TEAMDM:
-      if ( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
+      if ( !(self.spawnflags & AI_SPAWNFLAG_TDM) ){
         rem = TRUE;
       }
       break;
@@ -594,6 +594,20 @@ float( float bestAccuracy ) ai_wait_for_shot={
   }
   return FALSE;
 };
+
+float( void() ai_unit_ini ) ai_create_unit={
+  ai_unit_ini_var();
+  ai_unit_ini( self.nextVecChoice );
+  ai_pilot_ini_stats(self.ai_rank);
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
+  
+  trigger_event( self, trigOnSpawn); //event interface
+  return TRUE;
+};
+
 //AI MAP FUNCS
 /*
     called by any AI unit that needs to spawn onto the map.
@@ -606,6 +620,20 @@ float( float bestAccuracy ) ai_wait_for_shot={
     fall-through and create the ai
 */
 void( void() ai_to_make ) ai_unit_setup={
+  local float mode;
+ 
+  mode = cvar("gamemode");
+ 
+  if( ai_spawn_clean( mode ) ){
+    objerror ("ai_unit - outside of game mode");
+    remove(self);
+    return;
+  }
+
+  if( !self.nextVecChoice ){
+    self.nextVecChoice = 1;
+  }
+  
   if( (self.spawnflags & AI_SPAWNFLAG_TRIGGERME) && (self.targetname) ){
     //checking the targetname is mostly for validation
     self.use = ai_unit_make_trigger;

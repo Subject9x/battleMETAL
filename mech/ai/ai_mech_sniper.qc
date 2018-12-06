@@ -309,9 +309,7 @@ void() ai_mech_sniper_th={
 */
 void() ai_mech_sniper={
 
-  if( !ai_create_unit( data_iniMech )){
-    return;
-  }
+  ai_create_unit( data_iniMech );
   
   self.th_stand = ai_generic_stand;
   self.th_walk = ai_generic_walk;
