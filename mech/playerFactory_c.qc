@@ -30,7 +30,7 @@ void() player_makeObserver={
 };
 
 void() player_unmakeObserver={
-  if((self.flags & FL_FLY)){
+  if( (self.flags & FL_FLY) ){
     self.flags = self.flags - (self.flags & FL_FLY);
   }
   self.movetype = MOVETYPE_WALK;
@@ -44,6 +44,7 @@ void() player_makeVec={
 };
 
 void() player_makeMech={
+  
   self.data_type = DATA_MECH;
   self.data_idx = self.nextVecChoice;
   self.power_timer = time + 7;
@@ -51,25 +52,26 @@ void() player_makeMech={
     self.power_timer = time + POWERUP_DEBUG;
   }
   self.power_timer_segment = time + 0.007;
+  
   data_iniMech(self.nextVecChoice);
+  
   self.stat_rdr_mode = FALSE;
   self.stat_rdr_rng = self.radar_range;
-  //self.touch = touch_mech; shhhhh, not yet
-  if( (self.flags & FL_CLIENT) ){
-    mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
-    mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);
-    mh_world_updateClientModelBob(self.m_bmodel, self.m_bside, self.m_bobspd);
-    
-    msg_entity = self;
-    WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-    WriteEntity(MSG_ONE, self.e_cam);
-    
-    client_push_player_info();
-  }
+
+  msg_entity = self;
+  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+  WriteEntity(MSG_ONE, self.e_cam);
+  
+  mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
+  mh_world_updateClientViewBob(self.m_bob, self.m_bcycle, self.m_bup);
+  mh_world_updateClientModelBob(self.m_bmodel, self.m_bside, self.m_bobspd);
+  
   droptofloor();
+  
   self.currentWeaponGroup = self.w_group1;
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
   self.flags = self.flags | FL_UNIT;
+ 
 };
 
 void() player_unmakeMech={

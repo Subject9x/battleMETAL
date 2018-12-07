@@ -109,7 +109,7 @@ entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_n
 float(void() action) ai_hunt_dropnode;
 
 //AI UTILS - 
-float(float mode) ai_spawn_clean;
+float() ai_can_spawn;
 float() ai_find_target_visual;
 float() ai_find_target_radar;
 entity( float radiius ) ai_find_friend;
@@ -126,7 +126,7 @@ void( entity ally, entity targ, float override ) ai_give_target;
 float() ai_panic_time;
 float( float bestAccuracy ) ai_wait_for_shot;
 //AI MAP FUNCS
-void( void() ai_to_make ) ai_unit_setup;
+float( void() ai_to_make ) ai_unit_setup;
 void() ai_unit_make_multi;
 void() ai_unit_make_trigger;
 
@@ -141,7 +141,6 @@ void(void() macro) ai_leg_frame;
 /*
   AI STATE FUNCTIONS=====================
 */
-float( void() ai_unit_ini ) ai_create_unit;  //head function for making all ai units
 
 void( float state ) ai_next_state;
 void( float estate ) ai_state_control;

@@ -120,7 +120,10 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   local entity this;
   this = self;
   //self = entitybyindex(player_localentnum);
-  self = entitybyindex(PLAYER_ENTITYNUM);
+  self = entitybyindex( getstati(STAT_PLR_ENT_ID) );
+  
+  cons_logAFloat("CSQC_InputEvent::getstati(STAT_PLR_ENT_ID)", getstati(STAT_PLR_ENT_ID) ); //DEBUG
+  
   self.player_state = getstatf(STAT_PLR_STT);
   //console override
   if(evtype == 0){
@@ -302,12 +305,19 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     }
   }
  
+  /*
+    special rant: the fact that the client itself, isn't a faffing global entity in the CLIENT
+    module of all things is the height of idiocy.
+  */
+  PLAYER_ENTITYNUM = getstati(STAT_PLR_ENT_ID); //this is ridiculous
+ 
+  cons_logAFloat("player_localentnum", player_localentnum); //DEBUG
+ 
   local entity this, player;
   this = self;
   //switch to client context
-  //self = entitybyindex(player_localentnum);
-  self = entitybyindex( PLAYER_ENTITYNUM );
-  
+  self = entitybyindex( getstati(STAT_PLR_ENT_ID) );
+ 
   receive_ent_bindData();
   
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
@@ -359,7 +369,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       spos_y = VIEW_CTR_y + gui_percentYRaw(56);
       drawstring(spos, "[EVASION ON]", '12 10 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
     }
-    
     
     //HUD Highlight Boxes
     ui_renderHUD_Highlight_frame();
@@ -493,6 +502,9 @@ float() CSQC_Parse_TempEntity =
     case TE_NAV_REACH:
       te_nav_reach();
       return TRUE;
+    case TE_MSN_BOUND:
+    
+      return TRUE;
     default:
       return te_effect_delegate( id );
   } 
@@ -583,7 +595,7 @@ float(float event) CSQC_Event =
 // called when a network slot was previously empty, before parsing begins
 // this basically lets you do extra work before returning the result of spawn()
 // OPTIONAL, probably should be deprecated as well
-entity(float entnum) CSQC_Ent_Spawn =
+entity(float entNum) CSQC_Ent_Spawn =
 {
 	return spawn();
 };

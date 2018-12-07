@@ -125,7 +125,11 @@ void() te_mission_lose={
   WriteByte( MSG_ONE, TE_MISSION_LOSE );
 };
 
-
+void() te_msn_boundary={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_MSN_BOUND );
+};
 
 
 

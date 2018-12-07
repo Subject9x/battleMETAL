@@ -116,22 +116,6 @@ float DAT_BLD_H_SM_RADAR_RADAR_RANGE = 10000;
 //-------------------------Human-Light turret
 float DAT_TUR_RADAR_RANGE   = 3000;
 //============================
-//            Base Convergence
-//============================
-//-------------------------Human-Fuel Tank
-
-//-------------------------Human-Large Hangar
-
-//-------------------------Human-Radar Post
-
-//-------------------------Human-Power Plant
-
-//-------------------------Human-Shield Generator
-
-//-------------------------Human-Light turret
-vector DAT_TUR_SPREAD_N = '2 3 0.09';
-vector DAT_TUR_SPREAD_X = '6 6 0.01';
-//============================
 //            Models  
 //============================
 //-------------------------Human-Fuel Tank

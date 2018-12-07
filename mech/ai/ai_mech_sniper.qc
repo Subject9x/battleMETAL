@@ -309,7 +309,15 @@ void() ai_mech_sniper_th={
 */
 void() ai_mech_sniper={
 
-  ai_create_unit( data_iniMech );
+  ai_unit_ini_var();
+  data_iniMech( self.nextVecChoice );
+  ai_pilot_ini_stats(self.ai_rank);
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
+  
+  trigger_event( self, trigOnSpawn); //event interface
   
   self.th_stand = ai_generic_stand;
   self.th_walk = ai_generic_walk;
@@ -325,9 +333,6 @@ void() ai_mech_sniper={
   
   ai_initialize_system( ST_STAND );
   
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
   droptofloor();
   
   ai_walk_setup();

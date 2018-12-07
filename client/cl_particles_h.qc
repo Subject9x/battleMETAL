@@ -34,20 +34,25 @@ float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust;
 void() cl_particles_fogFrame;
 
 
+void() SUB_Remove={
+  remove(self);
+};
+
 //===================================
 void() te_shield_think={
   local entity player;
-  player = entitybyindex(PLAYER_ENTITYNUM);
+  player = entitybyindex( getstati(STAT_PLR_ENT_ID) );
+  
   self.alpha = self.alpha - 0.3;
   self.angles = vectoangles( player.entorg - self.origin );
+  
+  self.think = te_shield_think;
   if( self.alpha <= 0 ){
     self.alpha = 0;
-    
-    remove(self);
-    return;
+    self.think = SUB_Remove;
   }
-  self.think = te_shield_think;
-  self.nextthink = time + 0.1;
+
+  self.nextthink = time + 0.01;
 };
 
 float( float te_id ) te_effect_delegate;

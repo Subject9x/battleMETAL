@@ -230,20 +230,16 @@ void() ai_noncom_th={
 };
 
 void() ai_noncom_tank={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE ){
-		objerror ("ai_noncom_tank - outside of game mode");
-    remove(self);
-    return;
-  }
-  
+
   ai_unit_ini_var();
   data_iniVehc( self.nextVecChoice );
-  ai_pilot_ini_stats( self.ai_rank );
+  ai_pilot_ini_stats(self.ai_rank);
   
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
   }
-  
+  trigger_event( self, trigOnSpawn); //event interface
+    
   droptofloor();
   
   self.th_stand = ai_noncom_stand;

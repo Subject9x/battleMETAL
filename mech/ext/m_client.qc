@@ -123,8 +123,6 @@ void() ClientConnect = {
   self.client_num = CLIENTS;  //book keeping for multiplayer
   self.stat_plr_stt = PLAYER_SPAWN;
   
-  client_push_player_info();
-  
   if (intermission_running){
     ExitIntermission();
   }
@@ -140,6 +138,8 @@ responsible for configuring the player and spawning them into the level
 void() PutClientInServer = {
   local float gamemode;
   local entity spot;
+  
+  self.stat_ent_id = num_for_edict( self );
   
   self.flags = FL_CLIENT;
   self.velocity = '0 0 0';	// 1998-07-21 Player moves after respawn fix by Xian

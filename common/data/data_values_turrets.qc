@@ -77,12 +77,14 @@ string DAT_TUR_HLITE_CAM = "q3mdl/testball.md3";
 //            Model Offsets 
 //============================
 //-------------------------Human Light Turret
-vector DAT_TUR_HLITE_WEP1_OFFSET      = '2.5 -0.5 13';
+vector DAT_TUR_HLITE_WEP1_OFFSET      = '2.5 7.5 11';
 vector DAT_TUR_HLITE_WEP1_OFFSET_ALT  = '0 0 0';
 vector DAT_TUR_HLITE_WEP1_ADJ_ANG     = '0 0 90';
-vector DAT_TUR_HLITE_WEP2_OFFSET      = '6 -0.5 13';
+
+vector DAT_TUR_HLITE_WEP2_OFFSET      = '6 7.5 11';
 vector DAT_TUR_HLITE_WEP2_OFFSET_ALT  = '0 0 0';
 vector DAT_TUR_HLITE_WEP2_ADJ_ANG     = '0 0 90';
+
 float DAT_TUR_HLITE_CAM_CNAME        = -1;
 vector DAT_TUR_HLITE_CAM_OFFSET       = '0 0 0';
 vector DAT_TUR_HLITE_CAM_OFFSET_ALT   = '0 0 0';//LEGS

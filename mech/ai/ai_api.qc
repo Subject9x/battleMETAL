@@ -10,56 +10,65 @@ Overview: Main Impl for AI API
   Check Game Mode and Difficulty Skill
   remove AI if they're flagged to not be in a category; 
 */
-float(float mode) ai_spawn_clean={
-  local float rem;
+float() ai_can_spawn={
+  local float yesWecan;
+  local float gameMode;
   
-  rem = FALSE;
-  switch(mode){
-    case GAMEMODE_CAMPAIGN:
-      if ( !(self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
-        rem = TRUE;
-      }
-      break;
-    case GAMEMODE_COOP:
-      if ( !(self.spawnflags & AI_SPAWNFLAG_COOP) ){
-        rem = TRUE;
-      }
-      break;
-    case GAMEMODE_DM:
-      if ( !(self.spawnflags & AI_SPAWNFLAG_DM) ){
-        rem = TRUE;
-      }
-      break;
-    case GAMEMODE_TEAMDM:
-      if ( !(self.spawnflags & AI_SPAWNFLAG_TDM) ){
-        rem = TRUE;
-      }
-      break;
+  yesWecan = FALSE;
+  gameMode = cvar("gamemode");
+  
+  if( self.nextVecChoice <= 0 ){
+    return FALSE;
+  }
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
+    if( !coop && !deathmatch && !teamplay ){
+      yesWecan = TRUE;
+    }
+  }
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_COOP) ){
+    if( coop && !deathmatch ){
+      yesWecan = TRUE;
+    }
+  }
+
+  if( (self.spawnflags & AI_SPAWNFLAG_DM) ){
+    if( !coop && deathmatch ){
+      yesWecan = TRUE;
+    }
+  }
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
+    if( deathmatch && teamplay ){
+      yesWecan = TRUE;
+    }
   }
   
   switch( skill ){
     case SKILL_NOV:
       if ( (self.spawnflags & AI_SPAWNFLAG_NONOV) ){
-        rem = TRUE;
+        yesWecan = FALSE;
       }
       break;
     case SKILL_REG:
       if ( (self.spawnflags & AI_SPAWNFLAG_NOREG) ){
-        rem = TRUE;
+        yesWecan = FALSE;
       }
       break;
     case SKILL_VET:
       if ( (self.spawnflags & AI_SPAWNFLAG_NOVET) ){
-        rem = TRUE;
+        yesWecan = FALSE;
       }
       break;
     case SKILL_ELT:
       if ( (self.spawnflags & AI_SPAWNFLAG_NOELT) ){
-        rem = TRUE;
+        yesWecan = FALSE;
       }
       break;
   }
-  return rem;
+
+  return yesWecan;
 };
 
 float(entity t) ai_valid_target={
@@ -595,19 +604,6 @@ float( float bestAccuracy ) ai_wait_for_shot={
   return FALSE;
 };
 
-float( void() ai_unit_ini ) ai_create_unit={
-  ai_unit_ini_var();
-  ai_unit_ini( self.nextVecChoice );
-  ai_pilot_ini_stats(self.ai_rank);
-  
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
-  
-  trigger_event( self, trigOnSpawn); //event interface
-  return TRUE;
-};
-
 //AI MAP FUNCS
 /*
     called by any AI unit that needs to spawn onto the map.
@@ -619,16 +615,7 @@ float( void() ai_unit_ini ) ai_create_unit={
     else
     fall-through and create the ai
 */
-void( void() ai_to_make ) ai_unit_setup={
-  local float mode;
- 
-  mode = cvar("gamemode");
- 
-  if( ai_spawn_clean( mode ) ){
-    objerror ("ai_unit - outside of game mode");
-    remove(self);
-    return;
-  }
+float( void() ai_to_make ) ai_unit_setup={
 
   if( !self.nextVecChoice ){
     self.nextVecChoice = 1;
@@ -640,24 +627,24 @@ void( void() ai_to_make ) ai_unit_setup={
     self.unit_ini = ai_to_make;
     //allows for multiple spawn even on the 'trigger only' setting
     self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
-    return;
+    return TRUE;
   }
   if( (self.delay > 0) && ( !(self.count) || (self.count < 1) ) ){
     //this is a delayed one-off
     self.use = multi_trigger;
     self.nextthink = time + self.delay;
     self.think = ai_to_make;
-    return;
+    return TRUE;
   }
   if( self.count > 0 ){
     self.use = multi_trigger;
     self.unit_ini = ai_to_make;
     self.nextthink = time + self.count1; //baked in automatically
     self.think = ai_unit_make_multi;
-    return;
+    return TRUE;
   }
   //fall-through, AI is cleared to happen
-  ai_to_make();
+  return TRUE;
 };
 
 void() ai_unit_make_trigger={

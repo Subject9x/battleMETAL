@@ -19,6 +19,12 @@ Overview: AI Unit impl
 ==============================
 */
 void() unit_hs_truck_cargo={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 1;
   self.i_faction = 2;
   self.ai_rank = AI_RANK_ROK;
@@ -27,6 +33,12 @@ void() unit_hs_truck_cargo={
 };
 
 void() unit_hs_truck_hab={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 2;
   self.i_faction = 2;
   self.ai_rank = AI_RANK_ROK;
@@ -35,6 +47,12 @@ void() unit_hs_truck_hab={
 };
 
 void() unit_hs_truck_const={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 3;
   self.i_faction = 2;
   self.ai_rank = AI_RANK_ROK;
@@ -43,6 +61,12 @@ void() unit_hs_truck_const={
 };
 
 void() unit_hs_dozer={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 4;
   self.i_faction = 2;
   self.ai_rank = AI_RANK_ROK;
@@ -51,6 +75,12 @@ void() unit_hs_dozer={
 };
 
 void() unit_hs_loader={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 5;
   self.i_faction = 2;
   self.ai_rank = AI_RANK_ROK;
@@ -59,6 +89,12 @@ void() unit_hs_loader={
 };
 
 void() unit_hs_excavat={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 6;
   self.i_faction = 2;
   self.ai_rank = AI_RANK_ROK;
@@ -67,6 +103,12 @@ void() unit_hs_excavat={
 };
 
 void() unit_hs_tank_l={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 7;
   self.i_faction = 2;
   self.flags = self.flags | FL_TURRET;
@@ -75,11 +117,23 @@ void() unit_hs_tank_l={
 };
 
 void() unit_hs_tank_h={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 8;
   self.i_faction = 2;
 };
 
 void() unit_hs_tnkdest_l={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 9;
   self.i_faction = 2;
   self.spreadDefault = ACCURACY_SNIPER;
@@ -87,12 +141,24 @@ void() unit_hs_tnkdest_l={
 };
 
 void() unit_hs_tnkdest_h={
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
   self.nextVecChoice = 10;
   self.i_faction = 2;
 };
 
 void() unit_hs_scout={
-  self.flags = self.flags | FL_MONSTER;  //enforced for a mech
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
+  self.flags = 0;
   self.nextVecChoice = 11;
   self.i_faction = 2;
   self.spreadDefault = ACCURACY_LOWTECH;
@@ -100,7 +166,13 @@ void() unit_hs_scout={
 };
 
 void() unit_hs_mech_sk={
-  self.flags = self.flags | FL_TURRET | FL_MONSTER;  //enforced for a mech
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+
+  self.flags = self.flags | FL_TURRET;  //enforced for a mech
   self.i_faction = 2;
   self.mskin = 2;
   self.spreadDefault = ACCURACY_SKIRMISH;
@@ -108,11 +180,38 @@ void() unit_hs_mech_sk={
 };
 
 void() unit_hs_mech_sniper={
-  self.flags = self.flags | FL_TURRET | FL_MONSTER;  //enforced for a mech
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+
+  self.flags = FL_TURRET;  //enforced for a mech
   self.i_faction = 2;
   self.mskin = 2;
   self.spreadDefault = ACCURACY_SNIPER;
-  ai_unit_setup( ai_mech_sniper );
+  
+  if( ai_unit_setup( ai_mech_sniper ) ){
+    ai_mech_sniper();
+  }
+};
+
+void() building_turret_light={
+  self.nextVecChoice = 1; //DEBUG
+  self.next_wepn1 = 1;
+  self.next_wepn2 = 1;
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.i_faction = 1;
+  self.mskin = 1;
+  self.spreadDefault = ACCURACY_LOWTECH;
+  
+  if( ai_unit_setup( ai_turret ) ){
+    ai_turret();
+  }
 };
 
 /*

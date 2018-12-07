@@ -179,7 +179,7 @@ void() ai_mech_sk_turn_back={
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
-    ai_walk_back( self.angles_y, self.m_fspeed * AI_RUN_SPD );
+    ai_walk_back( self.m_fspeed * AI_RUN_SPD );
   }
   else{
     ai_next_state( ST_STAND );
@@ -486,10 +486,15 @@ void() ai_mech_sk_th={
 */
 void() ai_mech_skirmish={
   
-  if( !ai_create_unit( data_iniMech )){
-    return;
-  }
+  ai_unit_ini_var();
+  data_iniMech( self.nextVecChoice );
+  ai_pilot_ini_stats(self.ai_rank);
   
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
+  }
+  trigger_event( self, trigOnSpawn); //event interface
+    
   self.th_stand = ai_mech_sk_stand;
   self.th_walk = ai_generic_walk;
   self.th_run = ai_mech_sk_run;
@@ -504,14 +509,12 @@ void() ai_mech_skirmish={
   
   ai_initialize_system( ST_STAND );
   
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
-  
   droptofloor();
+  
   if( (self.flags & FL_TURRET) ){
     util_setOffsetOrigin(self.e_tor_c, self, self.e_tor_c.c_ofs);
   }
+  
   ai_walk_setup();
   
   self.think = ai_mech_sk_th;

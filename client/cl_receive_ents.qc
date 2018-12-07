@@ -12,51 +12,57 @@ void( entity client, float wep, float delt ) client_get_weapon_delta;
 
 void() client_get_info={
   local entity client;
+  local vector entityOrg;
+  local float radarRange;
+  
   //WARNING:
   //SVC_SETVIEW changes local_playerentum to Camera's Ent ID!
-  PLAYER_ENTITYNUM = ReadByte();
-  client = entitybyindex( PLAYER_ENTITYNUM );
+  client = entitybyindex( getstati(STAT_PLR_ENT_ID) );
+
+  entityOrg = te_read_vector();
+  radarRange = ReadLong(); 
   
-  client.entorg = te_read_vector();
-  client.radar_range = ReadLong(); 
-  //client.data_type = ReadByte();
-  
-  if( client.data_type == DATA_MECH ){
-    client.en_cur = ReadByte();
-    client.sh_cur = ReadByte();
-    
-    client.hp_ctor = ReadByte(); 
-    client.hp_leg = ReadByte(); 
-    client.hp_stor = ReadByte(); 
-    client.hp_stor2 = ReadByte(); 
-    client.hp_arm = ReadByte(); 
-    client.hp_arm2 = ReadByte();
-    
-    client.hardpoint_cnt = ReadByte();
-    local float wep;
-    wep = 1;
-    while( wep <= client.hardpoint_cnt ){
-      client_get_weapon_delta( client, wep, ReadByte() ); 
-      wep = wep + 1;
-    }
-    
-    client.stat_trg_ent_id = ReadByte();
-    if( client.stat_trg_ent_id != num_for_edict(world) ){
-      client.target_origin = te_read_vector();
-      client.target_shield = ReadByte();
-      client.stat_trg_ct_hp = ReadByte();
-      client.stat_trg_lg_hp = ReadByte();
-      client.stat_trg_lt_hp = ReadByte(); 
-      client.stat_trg_rt_hp = ReadByte(); 
-      client.stat_trg_la_hp = ReadByte();
-      client.stat_trg_ra_hp = ReadByte();
-      client.target_vecsize = ReadShort();
-      if( client.w_icon != "" ){
-        strunzone( client.w_icon );
+  if( client != world ){
+    client.entorg = entityOrg;
+    client.radar_range = radarRange;   
+    if( client.data_type == DATA_MECH ){
+      client.en_cur = ReadByte();
+      client.sh_cur = ReadByte();
+      
+      client.hp_ctor = ReadByte(); 
+      client.hp_leg = ReadByte(); 
+      client.hp_stor = ReadByte(); 
+      client.hp_stor2 = ReadByte(); 
+      client.hp_arm = ReadByte(); 
+      client.hp_arm2 = ReadByte();
+      
+      client.hardpoint_cnt = ReadByte();
+      local float wep;
+      wep = 1;
+      while( wep <= client.hardpoint_cnt ){
+        client_get_weapon_delta( client, wep, ReadByte() ); 
+        wep = wep + 1;
       }
-      client.w_icon = strzone( ReadString() );
+      
+      client.stat_trg_ent_id = ReadByte();
+      if( client.stat_trg_ent_id != num_for_edict(world) ){
+        client.target_origin = te_read_vector();
+        client.target_shield = ReadByte();
+        client.stat_trg_ct_hp = ReadByte();
+        client.stat_trg_lg_hp = ReadByte();
+        client.stat_trg_lt_hp = ReadByte(); 
+        client.stat_trg_rt_hp = ReadByte(); 
+        client.stat_trg_la_hp = ReadByte();
+        client.stat_trg_ra_hp = ReadByte();
+        client.target_vecsize = ReadShort();
+        if( client.w_icon != "" ){
+          strunzone( client.w_icon );
+        }
+        client.w_icon = strzone( ReadString() );
+      }
     }
   }
+
 };
 
 void( entity client, float wep, float delt ) client_get_weapon_delta={
@@ -98,7 +104,7 @@ void( entity client, float wep, float delt ) client_get_weapon_delta={
 void() client_get_contact={
   local entity player, blip;
   
-  player = entitybyindex( PLAYER_ENTITYNUM );
+  player = entitybyindex( getstati(STAT_PLR_ENT_ID) );
   
   blip = spawn();
   
@@ -133,47 +139,46 @@ void() client_get_hud_highlight={
 };
 
 void() receive_ent_bindData={
-  //cons_logAFloat("world ent", num_for_edict( world) );    //DEBUG
-  //cons_logAFloat("player ent", num_for_edict( self) );   //DEBUG
-  
-  self.flags = getstati( STAT_ROCKETS );
+ 
+  if( num_for_edict(self) == getstati(STAT_PLR_ENT_ID) ){
+    self.flags = getstati( STAT_ROCKETS );
 
-  self.netname = getstats( STAT_PLR_NAME );
-  self.player_state = getstati( STAT_ARMOR );
+    self.netname = getstats( STAT_PLR_NAME );
+    self.player_state = getstati( STAT_ARMOR );
 
-  self.data_type = getstati(STAT_PLR_DTYPE);
-  self.data_idx = getstati(STAT_PLR_DIDX);
-  self.i_faction = getstati( STAT_CELLS );
-  self.stat_lck_stt = getstati(STAT_LCK_STT);
-  self.stat_rdr_mode = getstati(STAT_PLR_RADMOD);
-  self.stat_hit_dirs = getstati(STAT_PLR_HITDIR);
-  self.stat_ret_dist = getstati(STAT_PLR_RETDIST);
-  
-  self.stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
-  self.stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
-  self.stat_trg_face = getstati(STAT_TRG_FACE);
+    self.data_type = getstati(STAT_PLR_DTYPE);
+    self.data_idx = getstati(STAT_PLR_DIDX);
+    self.i_faction = getstati( STAT_CELLS );
+    self.stat_lck_stt = getstati(STAT_LCK_STT);
+    self.stat_rdr_mode = getstati(STAT_PLR_RADMOD);
+    self.stat_hit_dirs = getstati(STAT_PLR_HITDIR);
+    self.stat_ret_dist = getstati(STAT_PLR_RETDIST);
     
-  if(self.stat_trg_dataidx > 0){
-    self.target_datatype = getstati(STAT_TRG_DATATYPE);
-    self.target_faction = getstati(STAT_TRG_FACTION);
+    self.stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
+    self.stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
+    self.stat_trg_face = getstati(STAT_TRG_FACE);
+      
+    if(self.stat_trg_dataidx > 0){
+      self.target_datatype = getstati(STAT_TRG_DATATYPE);
+      self.target_faction = getstati(STAT_TRG_FACTION);
+    }
+    else{
+      self.target_shield = 0;
+      self.target_datatype = 0;
+      self.target_faction = 0;
+      self.stat_trg_ddflg = -1;
+    }
+    
+    self.stat_w1_id = getstati(STAT_WEP1_ID);
+    self.stat_w2_id = getstati(STAT_WEP2_ID);
+    self.stat_w3_id = getstati(STAT_WEP3_ID);
+    self.stat_w4_id = getstati(STAT_WEP4_ID);
+    self.stat_w5_id = getstati(STAT_WEP5_ID);
+    self.stat_w6_id = getstati(STAT_WEP6_ID);
+    self.stat_w7_id = getstati(STAT_WEP7_ID);
+    self.stat_w8_id = getstati(STAT_WEP8_ID);
+    self.stat_w9_id = getstati(STAT_WEP9_ID);
   }
-  else{
-    self.target_shield = 0;
-    self.target_datatype = 0;
-    self.target_faction = 0;
-    self.stat_trg_ddflg = -1;
-  }
-  
-  self.stat_w1_id = getstati(STAT_WEP1_ID);
-  self.stat_w2_id = getstati(STAT_WEP2_ID);
-  self.stat_w3_id = getstati(STAT_WEP3_ID);
-  self.stat_w4_id = getstati(STAT_WEP4_ID);
-  self.stat_w5_id = getstati(STAT_WEP5_ID);
-  self.stat_w6_id = getstati(STAT_WEP6_ID);
-  self.stat_w7_id = getstati(STAT_WEP7_ID);
-  self.stat_w8_id = getstati(STAT_WEP8_ID);
-  self.stat_w9_id = getstati(STAT_WEP9_ID);
-
 };
 
 void() client_event_navpoint={

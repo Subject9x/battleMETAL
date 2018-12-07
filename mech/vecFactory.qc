@@ -276,7 +276,7 @@ void(void() data_ini) build_mech_bot={
   local vector hmins, hmaxs;
   local string mdl;
   
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   
   data_ini();
   
@@ -429,6 +429,8 @@ void(void() data_ini) build_vehicle_unit={
   local entity part_chain;
   local vector hmins, hmaxs;
   
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  
   data_ini();
   
   hmaxs = self.maxs;
@@ -443,6 +445,7 @@ void(void() data_ini) build_vehicle_unit={
   self.sh_hit = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
+  
   if( (self.unit_cam) ){
     self.e_cam = build_unit_camera(self.unit_cam);
   }
@@ -474,7 +477,7 @@ void( void() data_ini ) build_vtol_unit={
 };
 
 void(void() data_ini) build_turret_unit={
-  self.flags = self.flags | FL_TURRET | FL_MONSTER;
+
   build_vehicle_unit( data_ini );
 
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));

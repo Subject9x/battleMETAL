@@ -79,22 +79,33 @@ float(vector org, vector vel, float cnt) te_smoke_test={
 
 float(vector org, vector angl) te_shield_test={
   local entity burst;
+  local entity oself;
+  
+  oself = self;
   makevectors( angl );
   org = org + v_forward * 10;
-  burst = spawn();
-  setorigin(burst, org);
-  setmodel(burst, "q3mdl/fx_shield.md3");
-  setsize(burst, '-1 -1 -1', '1 1 1');
-  burst.angles = angl;
-  burst.alpha = 1;
-  burst.effects = EF_NOSHADOW | EF_BLUE | EF_ADDITIVE;
-  burst.movetype = MOVETYPE_NONE;
-  burst.solid = SOLID_NOT;
-  burst.think = te_shield_think;
-  burst.nextthink = time + 0.1;
-  burst.drawmask = MASK_NORMAL;
-  //sound(burst, CHAN_VOICE, "sound/fx_shieldhit.ogg");
+ 
+  //burst = nextent( entitybyindex(player_localentnum) );
+   //cons_logAFloat("te_shield_test::burst", num_for_edict(burst) );  //DEBUG
+   cons_logAFloat("te_shield_test::oself", num_for_edict(oself) );  //DEBUG
+   cons_logAFloat("te_shield_test::getstati(STAT_PLR_ENT_ID)", getstati(STAT_PLR_ENT_ID) );  //DEBUG
+  
+ /* self = burst;
+  
+    setorigin(self, org);
+    setmodel(self, "q3mdl/fx_shield.md3");
+    setsize(self, '-1 -1 -1', '1 1 1');
+    self.angles = angl;
+    self.alpha = 1;
+    self.effects = EF_NOSHADOW | EF_BLUE | EF_ADDITIVE;
+    self.movetype = MOVETYPE_NONE;
+    self.solid = SOLID_NOT;
+    self.think = te_shield_think;
+    self.nextthink = time + 0.01;
+    self.drawmask = MASK_NORMAL;
 
+    //sound(burst, CHAN_VOICE, "sound/fx_shieldhit.ogg");
+  self = oself;*/
   te_customflash(org, 50, 0.3, '0 0 1'); 
   return TRUE;
 };

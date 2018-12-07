@@ -413,9 +413,16 @@ void() ai_gev_th={
   AI SPAWN FUNCTION
 */
 void() ai_gev={  
-  if( !ai_create_unit( data_iniVehc )){
-    return;
+
+  ai_unit_ini_var();
+  data_iniVehc( self.nextVecChoice );
+  ai_pilot_ini_stats(self.ai_rank);
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
   }
+  
+  trigger_event( self, trigOnSpawn); //event interface
   
   self.th_stand = ai_gev_stand;
   self.th_walk = ai_gev_walk;
@@ -430,10 +437,7 @@ void() ai_gev={
   self.th_die = ai_gev_die;
   
   ai_initialize_system( ST_STAND );
-  
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
+
   droptofloor();
   
   ai_walk_setup();

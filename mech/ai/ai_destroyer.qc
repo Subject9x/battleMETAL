@@ -230,15 +230,16 @@ void() ai_vec_dest_die2={
   AI SPAWN FUNCTION
 */
 void() ai_vec_dest={
-  if( ai_spawn_clean(cvar("gamemode")) == FALSE){
-		objerror ("ai_vec_dest - outside of game mode");
-    remove(self);
-    return;
+
+  ai_unit_ini_var();
+  data_iniVehc( self.nextVecChoice );
+  ai_pilot_ini_stats(self.ai_rank);
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+    ai_node_pick_rand( self.target );
   }
   
-  ai_unit_ini_var();    
-  data_iniVehc(self.nextVecChoice);
-  ai_pilot_ini_stats(self.ai_rank);
+  trigger_event( self, trigOnSpawn); //event interface
   
   self.th_stand = ai_dest_stand;
   self.th_walk = ai_generic_walk;
@@ -249,10 +250,6 @@ void() ai_vec_dest={
   self.th_die = ai_vec_dest_die;
   
   ai_initialize_system( ST_STAND );
-  
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
   
   ai_walk_setup();
   

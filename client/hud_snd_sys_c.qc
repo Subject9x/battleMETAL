@@ -132,6 +132,11 @@ void() te_mission_lose={
 };
 
 
+void() te_msn_boundary={
+  
+};
+
+
 void(float mode) snd_hud_vfx_toggleradar={
   if(self.stat_rdr_mode_prev != mode){
     self.stat_rdr_mode_prev = mode;

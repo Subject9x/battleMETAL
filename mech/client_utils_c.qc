@@ -19,18 +19,16 @@ void() client_push_player_info={
   self.armorvalue = self.stat_plr_stt;
   
   if( (self.flags & FL_CLIENT) ){
+    self.stat_ent_id = num_for_edict( self );
     msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY );
     WriteByte( MSG_ONE, TE_CLIENT_INFO );
-
-    WriteByte( MSG_ONE, num_for_edict(self) );
     
     WriteCoord( MSG_ONE, self.origin_x );
     WriteCoord( MSG_ONE, self.origin_y );
     WriteCoord( MSG_ONE, self.origin_z );
     
     WriteLong( MSG_ONE, self.stat_rdr_rng );
-    //WriteByte( MSG_ONE, self.data_type ); 
   
     if(self.data_type == DATA_MECH){
       WriteByte( MSG_ONE, (self.en_cur / self.en_max) * 100 );

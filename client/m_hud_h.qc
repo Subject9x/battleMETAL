@@ -8,6 +8,10 @@ Overview: the interface for hud rendering
 every hud ent has to implement this format
 */
 
+//
+string HUD_BLK_IMG_B;
+string HUD_MTK_IMG_B;
+string HUD_MNT_IMG_B;
 
 //HUD CONSTANTS==============================
 vector HUD_COLOR_DEF;

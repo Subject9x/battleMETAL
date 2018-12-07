@@ -19,7 +19,6 @@ m_datadefs.qc
 //================================
 
 gui_api_h.qc
-hud_api_h.qc
 data_api_h.qc
 ui_data_h.qc
 m_hud_h.qc

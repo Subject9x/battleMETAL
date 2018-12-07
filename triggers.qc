@@ -19,8 +19,11 @@
 void( entity active, .string event) trigger_event={
   local string oldTarget;
   local entity hold;
-  hold = self;
-  self = active;
+  
+  if( active != self ){
+    hold = self;
+    self = active;
+  }
   if( self.event ){
     oldTarget = self.target;
     self.target = self.event;
@@ -29,7 +32,10 @@ void( entity active, .string event) trigger_event={
     self.event = string_null;  //fired once
   }
   self.target = oldTarget;
-  self = hold;
+  
+  if( active != self ){
+    self = hold;
+  }
 };
 
 
