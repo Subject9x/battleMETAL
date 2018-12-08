@@ -226,6 +226,16 @@ void() client_event_objective={
   OBJECTIVES[objid] = nexState;
 };
 
+void() client_event_boundary={
+  HUD_WARN_ON = ReadByte();
+  HUD_WARN_DIR = ReadAngle();
+  if( HUD_WARN_ON ){
+    if( time > HUD_WARN_MARK ){
+      HUD_WARN_MARK = time + HUD_WARN_TIME;
+    }
+  }
+};
+
 void() client_map_cdtrack={
 
 };

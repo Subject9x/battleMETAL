@@ -39,6 +39,12 @@ float HUD_UID_ARM_TARG_BLD  = 16;
   vector RADAR_ORG;
   vector RADAR_VCENTER;
   vector RADAR_VSIZE;
+  
+  float HUD_WARN_ON;
+  float HUD_WARN_DIR;
+  float HUD_WARN_MARK;
+  float HUD_WARN_TIME = 2;
+  
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -70,6 +76,7 @@ string HUD_RAD_PIP_VEC;
 string HUD_TRG_PIP_L;
 string HUD_TRG_PIP_R;
 string HUD_TRG_PIP_B;
+string HUD_TRG_PIP_U;
 
 string HUD_DMG_PIP_H;
 
@@ -116,7 +123,7 @@ void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector c
 void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
 void(vector ofs, string targType, float algn) hud_renderTargetName;
 void(float delta) hud_renderRepairValue;
-
+void(float warnOn, float warnDir) hud_render_warningBounds;
 //new text-based hud system
 void( float uid, float targetId ) hud_data_renderTarget_Shield;
 vector( float wbit ) hud_data_weapon_info;

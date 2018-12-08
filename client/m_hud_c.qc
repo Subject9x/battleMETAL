@@ -733,10 +733,11 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
 };
 
 void(float delta) hud_renderRepairValue={
+  local vector vorg, torg;
+  local float len;
+  local string str;
+    
   if(delta > -1){
-    local vector vorg, torg;
-    local float len;
-    local string str;
     str = "[Repair Bay - Current Total]";
     len = stringwidth(str, 0, '8 8 0');
     vorg = gui_percentToPixelRawVec('128 12');
@@ -746,6 +747,59 @@ void(float delta) hud_renderRepairValue={
     torg_y = torg_y - gui_percentYRaw(4);
     gui_renderMeter((delta * 100), vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA, 0, AXIS_H, 0);
     drawstring(torg, str, '8 8 0', CLR_DEF_GRAY_H + '0.05 0.05 0.05', HUD_ALPHA, 0);
+  }
+};
+
+void(float warnOn, float warnDir) hud_render_warningBounds={
+  local vector warnPos;
+  local vector warnClr;
+  local vector warnArrowPos;
+  local vector warnImgSize;
+  local string warnMsg;
+  local string warnImg;
+  local float warnLen;
+  local float guide;
+  local float guideRad;
+  local float warnArrow;
+  
+  if( time < HUD_WARN_MARK ){
+    warnMsg = "[RETURN TO MISSION ZONE]";
+    warnLen = stringwidth( warnMsg, 0, '9 11 0');
+    warnLen = gui_percentXRaw( warnLen );
+    warnPos_x = VIEW_CTR_x - (warnLen / 2);
+    warnPos_y = VIEW_CTR_y - gui_percentYRaw(48);
+    
+    //angle check    
+    guide = anglemod( 90 + (input_angles_y - warnDir) );
+    guideRad = guide * DEG2RAD;
+    warnArrowPos_x = cos(guideRad);
+    warnArrowPos_y = sin(guideRad);
+    warnArrowPos_x = VIEW_CTR_x - (warnArrowPos_x * 64);
+    warnArrowPos_y = VIEW_CTR_y - (warnArrowPos_y * 64);
+  
+    warnArrow = gui_angleToEnum( anglemod(input_angles_y - warnDir) );
+    switch( warnArrow ){
+      default:
+        warnImg = HUD_TRG_PIP_U;
+        break;
+      case 1:
+        warnImg = HUD_TRG_PIP_R;
+        break;
+      case 2:
+        warnImg = HUD_TRG_PIP_B;
+        break;
+      case 3:
+        warnImg = HUD_TRG_PIP_L;
+        break;
+    }
+    warnImgSize = draw_getimagesize(warnImg);
+    warnImgSize = gui_percentToPixelRawVec( warnImgSize * 0.5);
+    
+    warnArrowPos_x = warnArrowPos_x - warnImgSize_x / 2;
+    warnArrowPos_y = warnArrowPos_y - warnImgSize_y / 2;
+    
+    drawstring(warnPos, warnMsg, '9 11 0', CLR_DEF_IFF_ENEMY, 0.9, 0);
+    drawpic(warnArrowPos, warnImg, warnImgSize, CLR_DEF_IFF_ENEMY, 0.9, DRAWFLAG_NORMAL); 
   }
 };
 
@@ -1014,6 +1068,8 @@ void() data_hud_frame={
   
   //repair sits above all
   hud_renderRepairValue(getstatf(STAT_PLR_REP));
+  
+  hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
 };
 
 /*

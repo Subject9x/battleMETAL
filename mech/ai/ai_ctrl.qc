@@ -561,11 +561,17 @@ void() ai_found_target={
 /*
   copy over from Quake's WalkMonsterStart() but
   adapted to battleMETAL
-  
 */
 void() ai_walk_setup={
 	if ( self.target ){
+    if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+      ai_node_pick_rand( self.target );
+    }
+  
 		self.goalentity = self.movetarget = find(world, targetname, self.target);
+    
+    dprint( strcat(self.goalentity.targetname, "\n") );//DEBUG
+    
 		if( !self.movetarget ){
 			dprint ("Monster can't find target at ");
 			dprint (vtos(self.origin));
@@ -594,7 +600,7 @@ void(void() macro) ai_leg_frame={
 };
 
 void() ai_stand={
-  //q1_ai_stand() ;
+
   if( time > self.patience && !self.enemy){  
     //self.patience  = time + self.ai_viewcheck;
     self.patience  = time + 1; //DEBUG
@@ -608,8 +614,6 @@ void() ai_stand={
     self.th_walk();
   }
 };
-
-
 
 void() ai_charge_side={
 	local	vector	dtemp;

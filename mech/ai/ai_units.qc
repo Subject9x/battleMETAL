@@ -152,43 +152,50 @@ void() unit_hs_tnkdest_h={
 };
 
 void() unit_hs_scout={
-  if( !ai_can_spawn() ){
-    remove(self);
-    objerror ("ai_unit - outside of game mode");
-    return;
-  }
 
   self.flags = 0;
   self.nextVecChoice = 11;
   self.i_faction = 2;
   self.spreadDefault = ACCURACY_LOWTECH;
-  ai_unit_setup( ai_gev );
-};
-
-void() unit_hs_mech_sk={
+  
   if( !ai_can_spawn() ){
     remove(self);
     objerror ("ai_unit - outside of game mode");
     return;
   }
 
+  if( ai_unit_setup( ai_gev ) ){
+    ai_gev();
+  }
+};
+
+void() unit_hs_mech_skirmisher={
   self.flags = self.flags | FL_TURRET;  //enforced for a mech
   self.i_faction = 2;
   self.mskin = 2;
   self.spreadDefault = ACCURACY_SKIRMISH;
-  ai_unit_setup( ai_mech_skirmish );
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    objerror ("ai_unit - outside of game mode");
+    return;
+  }
+  
+  if( ai_unit_setup( ai_mech_skirmish ) ){
+    ai_mech_skirmish();
+  }
 };
 
 void() unit_hs_mech_sniper={
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
   self.flags = FL_TURRET;  //enforced for a mech
   self.i_faction = 2;
   self.mskin = 2;
   self.spreadDefault = ACCURACY_SNIPER;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   if( ai_unit_setup( ai_mech_sniper ) ){
     ai_mech_sniper();
@@ -199,15 +206,15 @@ void() building_turret_light={
   self.nextVecChoice = 1; //DEBUG
   self.next_wepn1 = 1;
   self.next_wepn2 = 1;
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
   self.flags = FL_TURRET;  //enforced for a mech
   self.i_faction = 1;
   self.mskin = 1;
   self.spreadDefault = ACCURACY_LOWTECH;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   if( ai_unit_setup( ai_turret ) ){
     ai_turret();

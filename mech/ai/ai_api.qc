@@ -417,7 +417,7 @@ void( string nodename) ai_node_pick_rand={
   local float clr, total, pick;
   local string name, grpid;
   
-  if( self.target ){
+  if( nodename ){
     anode = find(world, targetname, nodename);
     if( anode && anode.group ){
       grpid = anode.group;
@@ -429,13 +429,13 @@ void( string nodename) ai_node_pick_rand={
       }
       
       anode = findchain( group, grpid);
-      if( anode ){  
+      if( anode && (anode.flags & FL_NODE) ){  
         while( anode ){
           AI_NODES[total] = anode;
           total = total + 1;
           anode = anode.chain;
         }
-        pick = crandom() * total;
+        pick = rint(random() * total );
         spot = AI_NODES[pick];
         if( spot ){
           local vector org;
@@ -446,10 +446,14 @@ void( string nodename) ai_node_pick_rand={
           org_z = self.origin_z + 1;
           org_x = spot.origin_x - ( px * self.maxs_x * 3);
           org_y = spot.origin_y - ( py * self.maxs_y * 3);
-          setorigin( self, org);
+          setorigin( self, org );
           self.target = spot.targetname;
         }
       }
+    }
+    else{
+      self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART);
+      return;
     }
   }
 };

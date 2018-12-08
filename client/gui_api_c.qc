@@ -45,6 +45,27 @@ string(float anglee) gui_angleToNav={
   }
 };
 
+float(float anglee) gui_angleToEnum={
+  anglee = anglemod(anglee);
+  if(anglee >= 315 || anglee < 45){
+    return 0;
+  }
+  else if(anglee >= 45 && anglee < 135){
+    return 1;  
+  }
+  else if(anglee >= 135 && anglee <  225){
+    return 2;  
+  }
+  else if(anglee >= 225 && anglee < 315){
+    return 3; 
+  }
+  else{
+    return 0;
+  }
+};
+
+
+
 vector(float pcx, float pcy) gui_percentToPixel={
   local vector pixel;
   pixel_x = VIEW_SIZE_x * pcx;

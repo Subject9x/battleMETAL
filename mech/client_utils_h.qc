@@ -33,6 +33,7 @@ void() client_push_player_info;
 void( entity targetClient ) server_push_player_info; //simply wraps client_push_player_info()
 void( entity radarPing ) client_push_radar_ping;
 void( entity targetClient ) client_push_hud_highlight;
+void( entity targetClient ) client_send_boundary_warning;
 
 void() client_push_mapobjects;
 void( entity navpoint ) client_send_navpoint;

@@ -59,7 +59,17 @@ void() ai_mech_sniper_turn_back;
 
 
 void() ai_mech_sniper_stand={
-  //TODO - ?
+  ai_update_accuracy( FALSE );
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    if( ai_check_face( self.enemy, self.ai_fov ) ){
+      ai_next_state( ST_MISSILE );
+      return;
+    }
+  }
+  else{
+    ai_generic_stand();
+  }
 };
 
 void() ai_mech_sniper_walk={
@@ -312,14 +322,10 @@ void() ai_mech_sniper={
   ai_unit_ini_var();
   data_iniMech( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
-  
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
-  
+    
   trigger_event( self, trigOnSpawn); //event interface
   
-  self.th_stand = ai_generic_stand;
+  self.th_stand = ai_mech_sniper_stand;
   self.th_walk = ai_generic_walk;
   self.th_run = ai_mech_sniper_run;
   self.th_run_strafe = ai_mech_sniper_run_strafe;
@@ -331,12 +337,11 @@ void() ai_mech_sniper={
   self.th_pain = ai_mech_sniper_pain;
   self.th_die = ai_mech_sniper_die;
   
-  ai_initialize_system( ST_STAND );
-  
-  droptofloor();
-  
+  ai_initialize_system( ST_WALK );
+   
   ai_walk_setup();
-  
+  droptofloor();
+ 
   self.think = ai_mech_sniper_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks

@@ -34,6 +34,7 @@ void() cs_precache={
   HUD_TRG_PIP_L = precache_pic("gfx/hud/trg_pip_lft.png", 0);
   HUD_TRG_PIP_R = precache_pic("gfx/hud/trg_pip_rgt.png", 0);
   HUD_TRG_PIP_B = precache_pic("gfx/hud/trg_pip_bot.png", 0);
+  HUD_TRG_PIP_U = precache_pic("gfx/hud/trg_pip_up.png", 0);
   
   HUD_DMG_PIP_H = precache_pic("gfx/hud/ret/dmg_pip_hrz.png", 0);
   

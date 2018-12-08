@@ -131,6 +131,7 @@ void() ai_unit_make_multi;
 void() ai_unit_make_trigger;
 
 //AI CONTROL - ai_ctrl.qc 
+void() ai_walk_setup;
 void() ai_hunt_target;
 void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;

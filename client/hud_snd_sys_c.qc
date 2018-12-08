@@ -100,7 +100,6 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
   }
 };
 
-
 //SFX
 void() te_nav_reach={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);

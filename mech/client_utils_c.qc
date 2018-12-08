@@ -180,6 +180,19 @@ void( entity deploy ) client_send_deploypoint={
   WriteCoord( MSG_ONE, deploy.origin_z);
 };
 
+void( entity targetClient ) client_send_boundary_warning={
+  local entity this;
+  
+  this = self;
+  self = targetClient;
+  msg_entity = self;
+    WriteByte( MSG_ONE, SVC_TEMPENTITY);
+    WriteByte( MSG_ONE, TE_MSN_BOUND);
+    WriteByte( MSG_ONE, this.isActive );
+    WriteAngle( MSG_ONE, this.ai_dir );
+  self = this;
+};
+
 /*
   used by ClientConnect when client signs on.
   pushes map object info to client.
