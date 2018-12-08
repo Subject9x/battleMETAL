@@ -180,19 +180,19 @@ void( float mechId, float configNum ) data_mech_config_save={
     fputs(flannel, wep);
     itr = itr + 1;
   }
-  group = strcat( "  'group_", ftos(1), "' : ", ftos(self.plr_nex_grp1), ",\n");
+  group = strcat( "  'group_", ftos(1), "' : ", ftos(CLIENT_MENU_nex_grp1), ",\n");
   fputs(flannel, group);
   
-  group = strcat( "  'group_", ftos(2), "' : ", ftos(self.plr_nex_grp2), ",\n");
+  group = strcat( "  'group_", ftos(2), "' : ", ftos(CLIENT_MENU_nex_grp2), ",\n");
   fputs(flannel, group);
  
-  group = strcat( "  'group_", ftos(3), "' : ", ftos(self.plr_nex_grp3), ",\n");
+  group = strcat( "  'group_", ftos(3), "' : ", ftos(CLIENT_MENU_nex_grp3), ",\n");
   fputs(flannel, group);
   
-  group = strcat( "  'group_", ftos(4), "' : ", ftos(self.plr_nex_grp4), ",\n");
+  group = strcat( "  'group_", ftos(4), "' : ", ftos(CLIENT_MENU_nex_grp4), ",\n");
   fputs(flannel, group);
   
-  group = strcat( "  'group_", ftos(5), "' : ", ftos(self.plr_nex_grp5), ",\n");
+  group = strcat( "  'group_", ftos(5), "' : ", ftos(CLIENT_MENU_nex_grp5), ",\n");
   fputs(flannel, group);
   
   fputs(flannel, "}");

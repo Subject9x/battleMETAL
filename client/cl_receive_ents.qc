@@ -22,77 +22,75 @@ void() client_get_info={
   entityOrg = te_read_vector();
   radarRange = ReadLong(); 
   
-  if( client != world ){
-    client.entorg = entityOrg;
-    client.radar_range = radarRange;   
-    if( client.data_type == DATA_MECH ){
-      client.en_cur = ReadByte();
-      client.sh_cur = ReadByte();
-      
-      client.hp_ctor = ReadByte(); 
-      client.hp_leg = ReadByte(); 
-      client.hp_stor = ReadByte(); 
-      client.hp_stor2 = ReadByte(); 
-      client.hp_arm = ReadByte(); 
-      client.hp_arm2 = ReadByte();
-      
-      client.hardpoint_cnt = ReadByte();
-      local float wep;
-      wep = 1;
-      while( wep <= client.hardpoint_cnt ){
-        client_get_weapon_delta( client, wep, ReadByte() ); 
-        wep = wep + 1;
+  CLIENT_entorg = entityOrg;
+  CLIENT_radar_range = radarRange;   
+  if( CLIENT_data_type == DATA_MECH ){
+    CLIENT_en_cur = ReadByte();
+    CLIENT_sh_cur = ReadByte();
+    
+    CLIENT_hp_ctor = ReadByte(); 
+    CLIENT_hp_leg = ReadByte(); 
+    CLIENT_hp_stor = ReadByte(); 
+    CLIENT_hp_stor2 = ReadByte(); 
+    CLIENT_hp_arm = ReadByte(); 
+    CLIENT_hp_arm2 = ReadByte();
+    
+    CLIENT_hardpoint_cnt = ReadByte();
+    local float wep;
+    wep = 1;
+    while( wep <= client.hardpoint_cnt ){
+      client_get_weapon_delta( client, wep, ReadByte() ); 
+      wep = wep + 1;
+    }
+    
+    CLIENT_stat_trg_ent_id = ReadByte();
+    if( CLIENT_stat_trg_ent_id != num_for_edict(world) ){
+      CLIENT_target_origin = te_read_vector();
+      CLIENT_target_shield = ReadByte();
+      CLIENT_stat_trg_ct_hp = ReadByte();
+      CLIENT_stat_trg_lg_hp = ReadByte();
+      CLIENT_stat_trg_lt_hp = ReadByte(); 
+      CLIENT_stat_trg_rt_hp = ReadByte(); 
+      CLIENT_stat_trg_la_hp = ReadByte();
+      CLIENT_stat_trg_ra_hp = ReadByte();
+      CLIENT_target_vecsize = ReadShort();
+      if( CLIENT_w_icon != "" ){
+        strunzone( CLIENT_w_icon );
       }
-      
-      client.stat_trg_ent_id = ReadByte();
-      if( client.stat_trg_ent_id != num_for_edict(world) ){
-        client.target_origin = te_read_vector();
-        client.target_shield = ReadByte();
-        client.stat_trg_ct_hp = ReadByte();
-        client.stat_trg_lg_hp = ReadByte();
-        client.stat_trg_lt_hp = ReadByte(); 
-        client.stat_trg_rt_hp = ReadByte(); 
-        client.stat_trg_la_hp = ReadByte();
-        client.stat_trg_ra_hp = ReadByte();
-        client.target_vecsize = ReadShort();
-        if( client.w_icon != "" ){
-          strunzone( client.w_icon );
-        }
-        client.w_icon = strzone( ReadString() );
-      }
+      CLIENT_w_icon = strzone( ReadString() );
     }
   }
-
+  
 };
 
 void( entity client, float wep, float delt ) client_get_weapon_delta={
   switch( wep ){
     case 1:
-      client.stat_w1_rel = delt;
+      CLIENT_stat_w1_rel = delt;
       break;
     case 2:
-      client.stat_w2_rel = delt;
+      CLIENT_stat_w2_rel = delt;
       break;
     case 3:
-      client.stat_w3_rel = delt;
+      CLIENT_stat_w3_rel = delt;
       break;
     case 4:
-      client.stat_w4_rel = delt;
+      CLIENT_stat_w4_rel = delt;
       break;
     case 5:
-      client.stat_w5_rel = delt;
+      CLIENT_stat_w5_rel = delt;
       break;
     case 6:
-      client.stat_w6_rel = delt;
+      CLIENT_stat_w6_rel = delt;
       break;
     case 7:
-      client.stat_w7_rel = delt;
+      CLIENT_stat_w7_rel = delt;
       break;
     case 8:
-      client.stat_w8_rel = delt;
+      CLIENT_stat_w8_rel = delt;
       break;
     case 9:
-      client.stat_w9_rel = delt;
+      CLIENT_stat_w9_rel = delt;
       break;
   }
 };
@@ -139,46 +137,47 @@ void() client_get_hud_highlight={
 };
 
 void() receive_ent_bindData={
- 
-  if( num_for_edict(self) == getstati(STAT_PLR_ENT_ID) ){
-    self.flags = getstati( STAT_ROCKETS );
-
-    self.netname = getstats( STAT_PLR_NAME );
-    self.player_state = getstati( STAT_ARMOR );
-
-    self.data_type = getstati(STAT_PLR_DTYPE);
-    self.data_idx = getstati(STAT_PLR_DIDX);
-    self.i_faction = getstati( STAT_CELLS );
-    self.stat_lck_stt = getstati(STAT_LCK_STT);
-    self.stat_rdr_mode = getstati(STAT_PLR_RADMOD);
-    self.stat_hit_dirs = getstati(STAT_PLR_HITDIR);
-    self.stat_ret_dist = getstati(STAT_PLR_RETDIST);
-    
-    self.stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
-    self.stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
-    self.stat_trg_face = getstati(STAT_TRG_FACE);
-      
-    if(self.stat_trg_dataidx > 0){
-      self.target_datatype = getstati(STAT_TRG_DATATYPE);
-      self.target_faction = getstati(STAT_TRG_FACTION);
+  local string name;
+  
+  name = getstats( STAT_PLR_NAME );
+  
+  CLIENT_flags = getstati( STAT_ROCKETS );
+  
+  if( name != CLIENT_netname){
+    if( CLIENT_netname != ""){
+      strunzone( CLIENT_netname );
     }
-    else{
-      self.target_shield = 0;
-      self.target_datatype = 0;
-      self.target_faction = 0;
-      self.stat_trg_ddflg = -1;
-    }
-    
-    self.stat_w1_id = getstati(STAT_WEP1_ID);
-    self.stat_w2_id = getstati(STAT_WEP2_ID);
-    self.stat_w3_id = getstati(STAT_WEP3_ID);
-    self.stat_w4_id = getstati(STAT_WEP4_ID);
-    self.stat_w5_id = getstati(STAT_WEP5_ID);
-    self.stat_w6_id = getstati(STAT_WEP6_ID);
-    self.stat_w7_id = getstati(STAT_WEP7_ID);
-    self.stat_w8_id = getstati(STAT_WEP8_ID);
-    self.stat_w9_id = getstati(STAT_WEP9_ID);
+    CLIENT_netname = strzone( name );
   }
+  
+  CLIENT_player_state = getstati( STAT_ARMOR );
+
+  CLIENT_data_type = getstati(STAT_PLR_DTYPE);
+  CLIENT_data_idx = getstati(STAT_PLR_DIDX);
+  CLIENT_i_faction = getstati( STAT_CELLS );
+  CLIENT_stat_lck_stt = getstati(STAT_LCK_STT);
+  CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
+  CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);
+  CLIENT_stat_ret_dist = getstati(STAT_PLR_RETDIST);
+
+  CLIENT_stat_trg_dataidx = getstati(STAT_TRG_DATAIDX);
+  CLIENT_stat_trg_ent_id = getstati(STAT_TRG_ENT_ID);
+  CLIENT_stat_trg_face = getstati(STAT_TRG_FACE);
+       
+  CLIENT_target_datatype = getstati(STAT_TRG_DATATYPE);
+  CLIENT_target_faction = getstati(STAT_TRG_FACTION);
+  //CLIENT_target_shield; 
+  //CLIENT_stat_trg_ddflg;
+    
+  CLIENT_stat_w1_id = getstati(STAT_WEP1_ID);
+  CLIENT_stat_w2_id = getstati(STAT_WEP2_ID);
+  CLIENT_stat_w3_id = getstati(STAT_WEP3_ID);
+  CLIENT_stat_w4_id = getstati(STAT_WEP4_ID);
+  CLIENT_stat_w5_id = getstati(STAT_WEP5_ID);
+  CLIENT_stat_w6_id = getstati(STAT_WEP6_ID);
+  CLIENT_stat_w7_id = getstati(STAT_WEP7_ID);
+  CLIENT_stat_w8_id = getstati(STAT_WEP8_ID);
+  CLIENT_stat_w9_id = getstati(STAT_WEP9_ID);
 };
 
 void() client_event_navpoint={

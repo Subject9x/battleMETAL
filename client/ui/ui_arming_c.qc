@@ -22,16 +22,16 @@ void() assignToHardpointListener={
     local float found;
     found = 0;
     if( CFG_INDEX > 0 ){
-      if(self.plr_sel_hrpnt > 0){
-        if(self.plr_sel_list_wep > 0){
-          if((self.plr_sel_hrpnt_types & data_WeaponType[self.plr_sel_list_wep]) && (self.plr_sel_hrpnt_size >= data_WeaponSize[self.plr_sel_list_wep])){
-            HARDPOINTS[self.plr_sel_hrpnt] = self.plr_sel_list_wep;
-            self.plr_sel_wep = self.plr_sel_list_wep;
-            GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
-            GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
-            GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
-            GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
-            GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
+      if(CLIENT_MENU_sel_hrpnt > 0){
+        if(CLIENT_MENU_sel_list_wep > 0){
+          if((CLIENT_MENU_sel_hrpnt_types & data_WeaponType[CLIENT_MENU_sel_list_wep]) && (CLIENT_MENU_sel_hrpnt_size >= data_WeaponSize[CLIENT_MENU_sel_list_wep])){
+            HARDPOINTS[CLIENT_MENU_sel_hrpnt] = CLIENT_MENU_sel_list_wep;
+            CLIENT_MENU_sel_wep = CLIENT_MENU_sel_list_wep;
+            GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
+            GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
+            GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
+            GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
+            GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
           }
         }
       }
@@ -59,8 +59,8 @@ void() weaponSelectListener={
     found = WEPLIST_MSC_ARR[found];
   }
   if(found  > 0){
-    self.plr_sel_list_wep = found;
-    ui_date_load_item1(self.plr_sel_list_wep);
+    CLIENT_MENU_sel_list_wep = found;
+    ui_date_load_item1(CLIENT_MENU_sel_list_wep);
   }
 };
 
@@ -72,18 +72,19 @@ void() hardpointListener={
     wepbit = 1;
     while( hlist <= MECH_DATA_HPOINTS ){
       if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR + gui_percentToPixelRawVec(MECH_DATA_H_ARM[hlist])), gui_percentToPixelRawVec('28 28'))){
-        self.plr_sel_wid = wepbit;
-        self.plr_sel_hrpnt_size = MECH_DATA_H_SIZE[hlist];
-        self.plr_sel_hrpnt_types = MECH_DATA_H_TYPE[hlist];
+        CLIENT_MENU_sel_wid = wepbit;
+        CLIENT_MENU_sel_hrpnt_size = MECH_DATA_H_SIZE[hlist];
+        CLIENT_MENU_sel_hrpnt_types = MECH_DATA_H_TYPE[hlist];
         hpnt = hlist;
       }  
       hlist = hlist + 1;
       wepbit = wepbit * 2;
     } 
     if(hpnt > 0){
-      self.plr_sel_hrpnt = hpnt;
-      self.plr_sel_wep = HARDPOINTS[hpnt];
-      ui_date_load_item2(self.plr_sel_wep);
+      CLIENT_MENU_sel_hrpnt = hpnt;
+      CLIENT_MENU_sel_wep = HARDPOINTS[hpnt];
+      ui_date_load_item2(CLIENT_MENU_sel_wep);
+      ui_date_load_item2(CLIENT_MENU_sel_wep);
     }
   }
 };
@@ -93,53 +94,53 @@ void() weaponGroupPanelListener={
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A)){
     found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A,  gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_A, 0);
     found = WEPBITS[found];
-    if((self.plr_nex_grp1 & found)){
-      self.plr_nex_grp1 = self.plr_nex_grp1 - (self.plr_nex_grp1 & found);
+    if((CLIENT_MENU_nex_grp1 & found)){
+      CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 - (CLIENT_MENU_nex_grp1 & found);
       
     }else{
-      self.plr_nex_grp1 = self.plr_nex_grp1 | found;
+      CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 | found;
     }
-    GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
+    GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_B, WEPNGRP_SIZE_B)){
     found = listListener(WEPNGRP_ORG_B, cursorpos, WEPNGRP_SIZE_B, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_B, 0);
     found = WEPBITS[found];
-    if((self.plr_nex_grp2 & found)){
-      self.plr_nex_grp2 = self.plr_nex_grp2 - (self.plr_nex_grp2 & found);
+    if((CLIENT_MENU_nex_grp2 & found)){
+      CLIENT_MENU_nex_grp2 = CLIENT_MENU_nex_grp2 - (CLIENT_MENU_nex_grp2 & found);
     }else{
-      self.plr_nex_grp2 = self.plr_nex_grp2 | found;
+      CLIENT_MENU_nex_grp2 = CLIENT_MENU_nex_grp2 | found;
     }
-    GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
+    GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
   }  
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_C, WEPNGRP_SIZE_C)){
     found = listListener(WEPNGRP_ORG_C, cursorpos, WEPNGRP_SIZE_C, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_C, 0);
     found = WEPBITS[found];
-    if((self.plr_nex_grp3 & found)){
-      self.plr_nex_grp3 = self.plr_nex_grp3 - (self.plr_nex_grp3 & found);
+    if((CLIENT_MENU_nex_grp3 & found)){
+      CLIENT_MENU_nex_grp3 = CLIENT_MENU_nex_grp3 - (CLIENT_MENU_nex_grp3 & found);
     }else{
-      self.plr_nex_grp3 = self.plr_nex_grp3 | found;
+      CLIENT_MENU_nex_grp3 = CLIENT_MENU_nex_grp3 | found;
     }
-    GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
+    GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_D, WEPNGRP_SIZE_D)){
     found = listListener(WEPNGRP_ORG_D, cursorpos, WEPNGRP_SIZE_D, gui_percentToPixel(0.0109, 0.018), WEPNGRP_CNT_D, 0);
     found = WEPBITS[found];
-    if((self.plr_nex_grp4 & found)){
-      self.plr_nex_grp4 = self.plr_nex_grp4 - (self.plr_nex_grp4 & found);
+    if((CLIENT_MENU_nex_grp4 & found)){
+      CLIENT_MENU_nex_grp4 = CLIENT_MENU_nex_grp4 - (CLIENT_MENU_nex_grp4 & found);
     }else{
-      self.plr_nex_grp4 = self.plr_nex_grp4 | found;
+      CLIENT_MENU_nex_grp4 = CLIENT_MENU_nex_grp4 | found;
     }
-    GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
+    GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_E, WEPNGRP_SIZE_E)){
     found = listListener(WEPNGRP_ORG_E, cursorpos, WEPNGRP_SIZE_E, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_E, 0);
     found = WEPBITS[found];
-    if((self.plr_nex_grp5 & found)){
-      self.plr_nex_grp5 = self.plr_nex_grp5 - (self.plr_nex_grp5 & found);
+    if((CLIENT_MENU_nex_grp5 & found)){
+      CLIENT_MENU_nex_grp5 = CLIENT_MENU_nex_grp5 - (CLIENT_MENU_nex_grp5 & found);
     }else{
-      self.plr_nex_grp5 = self.plr_nex_grp5 | found;
+      CLIENT_MENU_nex_grp5 = CLIENT_MENU_nex_grp5 | found;
     }
-    GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
+    GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
   }
 };
 
@@ -178,7 +179,7 @@ void() selectPrevConfig={
 
 //main hook for the menu system
 void() menu_arming_drawFrame={
-  if(self.plr_sel_mech <= 0){
+  if(CLIENT_MENU_sel_mech <= 0){
     cleanHardPoints();
   }
   local vector topleftroot;
@@ -214,7 +215,7 @@ void(vector ofs) menu_arming_HardpointGraph={
     while( hlist <= MECH_DATA_HPOINTS ){
       local vector vofs;
       vofs = gui_percentToPixelRawVec(MECH_DATA_H_ARM[hlist]);
-      ui_renderHardPointGraphic(HARDPOINTS[hlist], (hpnts + vofs), (self.plr_sel_hrpnt == hlist));
+      ui_renderHardPointGraphic(HARDPOINTS[hlist], (hpnts + vofs), (CLIENT_MENU_sel_hrpnt == hlist));
       ui_renderHardPointNumber(hlist, (hpnts + vofs));
       hlist = hlist + 1;
     }
@@ -285,11 +286,11 @@ void(vector ofs) menu_arming_WeaponList_BAL={
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
         clr = CLR_DEF_TXT_NONSELECT;
-        if( lst_idx == self.plr_sel_list_wep){
+        if( lst_idx == CLIENT_MENU_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, 1, 0);
         }
-        if(!(self.plr_sel_hrpnt_types & DMG_BAL) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
+        if(!(CLIENT_MENU_sel_hrpnt_types & DMG_BAL) || (data_WeaponSize[lst_idx] > CLIENT_MENU_sel_hrpnt_size)){
           clr = CLR_DEF_TXT_CANTSELET;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, 1, 0);
@@ -319,14 +320,14 @@ void(vector ofs) menu_arming_WeaponList_ENE={
       if( (data_WeaponType[lst_idx] & DMG_ENE) ){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-        if(lst_idx == self.plr_sel_list_wep){
+        if(lst_idx == CLIENT_MENU_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, 1, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
-        if(!(self.plr_sel_hrpnt_types & DMG_ENE) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
+        if(!(CLIENT_MENU_sel_hrpnt_types & DMG_ENE) || (data_WeaponSize[lst_idx] > CLIENT_MENU_sel_hrpnt_size)){
           clr = CLR_DEF_TXT_CANTSELET;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, 1, 0);
@@ -357,14 +358,14 @@ void(vector ofs) menu_arming_WeaponList_EXP={
       if( (data_WeaponType[lst_idx] & DMG_EXP) ){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-        if( lst_idx == self.plr_sel_list_wep){
+        if( lst_idx == CLIENT_MENU_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, 1, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
-        if(!(self.plr_sel_hrpnt_types & DMG_EXP) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
+        if(!(CLIENT_MENU_sel_hrpnt_types & DMG_EXP) || (data_WeaponSize[lst_idx] > CLIENT_MENU_sel_hrpnt_size)){
           clr = CLR_DEF_TXT_CANTSELET;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx], '5 5 0', clr, 1, 0);
@@ -394,14 +395,14 @@ void(vector ofs) menu_arming_WeaponList_MSC={
       if( (data_WeaponType[lst_idx] & DMG_MSC) ){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
-        if( lst_idx == self.plr_sel_list_wep){
+        if( lst_idx == CLIENT_MENU_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, 1, 0);
         }
         else{
           clr = CLR_DEF_TXT_NONSELECT;
         }
-        if(!(self.plr_sel_hrpnt_types & DMG_MSC) || (data_WeaponSize[lst_idx] > self.plr_sel_hrpnt_size)){
+        if(!(CLIENT_MENU_sel_hrpnt_types & DMG_MSC) || (data_WeaponSize[lst_idx] > CLIENT_MENU_sel_hrpnt_size)){
           clr = CLR_DEF_TXT_CANTSELET;
         }
         drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[lst_idx] , '5 5 0', clr, 1, 0);
@@ -444,11 +445,11 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
       //ok that's funny and cool ^
       drawpic(lofs + gui_percentToPixelRawVec('16 -5'), ITEM_DATA_ICONS[HARDPOINTS[lst_idx]], gui_percentToPixelRawVec('22 24'), '1 1 1', 1,0);
     }
-    gui_renderTintImage((self.plr_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((self.plr_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((self.plr_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((self.plr_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((self.plr_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
     bit = bit * 2;
     lst_idx = lst_idx + 1;
   }
@@ -518,8 +519,8 @@ void(vector ofs) menu_arming_WeaponInfo={
   local vector nmpos;
   local string name;
   local float nlen;
-  if(ITEM_DATA_ICONS[self.plr_sel_list_wep] != ""){
-    drawpic((nofs + gui_percentToPixelRawVec('6 6')), ITEM_DATA_ICONS[self.plr_sel_list_wep], gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, 1, 0); 
+  if(ITEM_DATA_ICONS[CLIENT_MENU_sel_list_wep] != ""){
+    drawpic((nofs + gui_percentToPixelRawVec('6 6')), ITEM_DATA_ICONS[CLIENT_MENU_sel_list_wep], gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, 1, 0); 
   }
   name = ITEM1_DATA_NAME;
   nlen = stringwidth(name, 0, '7 8 0');
@@ -597,8 +598,8 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector nmpos;
   local string name;
   local float nlen;
-  if( ITEM_DATA_ICONS[self.plr_sel_wep] != "" ){
-    drawpic((nofs + gui_percentToPixelRawVec('6 6')), ITEM_DATA_ICONS[self.plr_sel_wep], gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, 1, 0); 
+  if( ITEM_DATA_ICONS[CLIENT_MENU_sel_wep] != "" ){
+    drawpic((nofs + gui_percentToPixelRawVec('6 6')), ITEM_DATA_ICONS[CLIENT_MENU_sel_wep], gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, 1, 0); 
   }
   name = ITEM2_DATA_NAME;
   nlen = stringwidth(name, 0, '7 8 0');

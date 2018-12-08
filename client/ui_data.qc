@@ -607,10 +607,10 @@ float(float id) ui_date_load_item2={
 float( float mechId, float fileNum ) ui_mech_config_switch={
   local float cfg, itr;
   
-  if( self.plr_sel_mech > 0 ){
+  if( CLIENT_MENU_sel_mech > 0 ){
     if( CFG_INDEX_PREV > 0 ){
       //prevents overriding Config 0 - the default config for each mech
-      data_mech_config_save( self.plr_sel_mech, CFG_INDEX_PREV );
+      data_mech_config_save( CLIENT_MENU_sel_mech, CFG_INDEX_PREV );
     }
     data_mech_config_clearBuffer();
   }
@@ -632,14 +632,14 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
   //welp, here goes, lets make the switch
   if( cfg ){
     SELECT_MECH = mechId;
-    self.plr_sel_mech = SELECT_MECH;
-    self.plr_sel_size = MECH_DATA_SIZES[SELECT_MECH];
+    CLIENT_MENU_sel_mech = SELECT_MECH;
+    CLIENT_MENU_sel_size = MECH_DATA_SIZES[SELECT_MECH];
     cleanHardPoints();
-    self.plr_nex_grp1 = DATA_CONFIG_BUFFER_GRPS[1];
-    self.plr_nex_grp2 = DATA_CONFIG_BUFFER_GRPS[2];
-    self.plr_nex_grp3 = DATA_CONFIG_BUFFER_GRPS[3];
-    self.plr_nex_grp4 = DATA_CONFIG_BUFFER_GRPS[4];
-    self.plr_nex_grp5 = DATA_CONFIG_BUFFER_GRPS[5];
+    CLIENT_MENU_nex_grp1 = DATA_CONFIG_BUFFER_GRPS[1];
+    CLIENT_MENU_nex_grp2 = DATA_CONFIG_BUFFER_GRPS[2];
+    CLIENT_MENU_nex_grp3 = DATA_CONFIG_BUFFER_GRPS[3];
+    CLIENT_MENU_nex_grp4 = DATA_CONFIG_BUFFER_GRPS[4];
+    CLIENT_MENU_nex_grp5 = DATA_CONFIG_BUFFER_GRPS[5];
     itr = 1;
     while( itr <= MECH_DATA_HPOINTS ){
       local float buffwep, hpt;
@@ -647,11 +647,11 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
       HARDPOINTS[itr] = buffwep;
       itr = itr + 1;
     }
-    GROUP_ENE_1 = calc_energy_draw(self.plr_nex_grp1);
-    GROUP_ENE_2 = calc_energy_draw(self.plr_nex_grp2);
-    GROUP_ENE_3 = calc_energy_draw(self.plr_nex_grp3);
-    GROUP_ENE_4 = calc_energy_draw(self.plr_nex_grp4);
-    GROUP_ENE_5 = calc_energy_draw(self.plr_nex_grp5);
+    GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
+    GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
+    GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
+    GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
+    GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
   }
 
 };

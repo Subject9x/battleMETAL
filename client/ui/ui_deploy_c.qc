@@ -33,16 +33,16 @@ void() navSelectListener={
     while(nav){
       if(nav.isActive){
         if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
-          self.plr_nav_pnt = nav.nav_name;
+          CLIENT_MENU_nav_pnt = nav.nav_name;
         }
         else{
-          self.plr_nav_pnt = -1;
+          CLIENT_MENU_nav_pnt = -1;
         }
       }
       check = check + 1;
       nav = nav.chain;
     }
-    if(self.plr_nav_pnt > 0){
+    if(CLIENT_MENU_nav_pnt > 0){
       if( !(LAUNCH_VALIDATION & VALID_NODE) ){
         LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
@@ -61,7 +61,7 @@ void() navListSelectListener={
     if(DEPLOY_POINT_ID > DEPLOY_POINT_END){
       DEPLOY_POINT_ID = 0;
     }
-    self.plr_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+    CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
   }
   if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('15 135'), gui_percentToPixelRawVec('20 44')) ){
     
@@ -69,9 +69,9 @@ void() navListSelectListener={
     if(DEPLOY_POINT_ID < 0){
       DEPLOY_POINT_ID = DEPLOY_POINT_END;
     }
-    self.plr_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+    CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
   }
-  if(self.plr_nav_pnt > 0){
+  if(CLIENT_MENU_nav_pnt > 0){
     if( !(LAUNCH_VALIDATION & VALID_NODE) ){
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
     }
@@ -126,12 +126,12 @@ void(vector ofs) menu_deploy_navInfoPanel={
   //current spawn point
   local string navlbl;
   local vector hclr;
-  if(self.plr_nav_pnt > 0){
-    navlbl = gui_getNavName(self.plr_nav_pnt);
+  if(CLIENT_MENU_nav_pnt > 0){
+    navlbl = gui_getNavName(CLIENT_MENU_nav_pnt);
     hclr = CLR_DEF_GREEN;
   }
   else{
-    navlbl = "RANDOM!";
+    navlbl = "Select One";
     hclr = CLR_DEF_RED;
   } 
   drawstring(ofs + gui_percentToPixelRawVec('69 131'), "[CURRENT]", '9 9', '1 1 1', 1, 0);
@@ -149,7 +149,7 @@ void(vector ofs) menu_deploy_mechInfoPanel={
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[SELECTED METAL]", '8 8 0', '1 1 1', 1, 0);
   spos = ofs + gui_percentToPixel(0.0125, 0.1531);
-  if(self.plr_sel_mech > 0){
+  if(CLIENT_MENU_sel_mech > 0){
     drawstring(spos, strcat("[NAME] ", MECH_DATA_NAME), '6 6 0', '1 1 1', 1, 0);
     // MECH SIZE
     if(MECH_DATA_SIZE == 1){
@@ -232,10 +232,10 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       else{
         nclr = CLR_DEF_ARM_HALF;
       }
-      if(self.plr_nav_pnt == itr){
+      if(CLIENT_MENU_nav_pnt == itr){
         gui_renderTintImage(TRUE, nofs - gui_percentToPixelRawVec('6 6'), UI_DEF_REC_64, gui_percentToPixelRawVec('28 28'), CLR_DEF_GREEN, 0.85, 0);
       }
-      gui_renderTintImage2((self.plr_nav_pnt == itr), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
+      gui_renderTintImage2((CLIENT_MENU_nav_pnt == itr), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
     }
 
     itr = itr + 1;
@@ -248,7 +248,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     player = findchainflags(flags, FL_CLIENT);
     while(player){
       if(player.data_type == DATA_MECH){
-        if(player.i_faction == self.i_faction){
+        if(player.i_faction == CLIENT_i_faction){
           local vector friend_org;
           friend_org = gui_mapCoordToImgCoord(map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
           drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);

@@ -7,6 +7,8 @@ Overview:
   To that end, I've moved all the client-specific data to constants, ugly but necessary.
 */
 
+float CLIENT_currentWeaponGroup;
+
 float CLIENT_flags;
 string CLIENT_netname;
 float CLIENT_player_state;
@@ -31,7 +33,7 @@ float CLIENT_target_datatype;
 float CLIENT_target_faction;
 float CLIENT_stat_trg_ddflg;
     
-float CLIENT_stat_w_id;
+float CLIENT_stat_w1_id;
 float CLIENT_stat_w2_id;
 float CLIENT_stat_w3_id;
 float CLIENT_stat_w4_id;
@@ -56,19 +58,19 @@ float CLIENT_hp_arm2;
 
 float CLIENT_hardpoint_cnt;
 
-float CLIENT_weapon1_reload;
-float CLIENT_weapon2_reload;
-float CLIENT_weapon3_reload;
-float CLIENT_weapon4_reload;
-float CLIENT_weapon5_reload;
-float CLIENT_weapon6_reload;
-float CLIENT_weapon7_reload;
-float CLIENT_weapon8_reload;
-float CLIENT_weapon9_reload;
+float CLIENT_stat_w1_rel;
+float CLIENT_stat_w2_rel;
+float CLIENT_stat_w3_rel;
+float CLIENT_stat_w4_rel;
+float CLIENT_stat_w5_rel;
+float CLIENT_stat_w6_rel;
+float CLIENT_stat_w7_rel;
+float CLIENT_stat_w8_rel;
+float CLIENT_stat_w9_rel;
 
 float CLIENT_stat_trg_ent_id;
 
-float CLIENT_target_origin;
+vector CLIENT_target_origin;
 float CLIENT_target_shield;
 float CLIENT_stat_trg_ct_hp;
 float CLIENT_stat_trg_lg_hp;
@@ -78,7 +80,5 @@ float CLIENT_stat_trg_la_hp;
 float CLIENT_stat_trg_ra_hp;
 float CLIENT_target_vecsize;
 
-strunzone( CLIENT_w_icon );
-CLIENT_w_icon = strzone( ReadString() );
-
+string CLIENT_w_icon;
 

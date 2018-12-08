@@ -32,7 +32,7 @@ void() mechSelectListener={
       if( (LAUNCH_VALIDATION & VALID_MECH) ){
         LAUNCH_VALIDATION = LAUNCH_VALIDATION - ( LAUNCH_VALIDATION & VALID_MECH) ;
       }
-      if(found != self.plr_sel_mech){
+      if(found != CLIENT_MENU_sel_mech){
         ui_mech_config_switch( found, 0 );
       }
 
@@ -46,7 +46,7 @@ void() mechSelectListener={
 //main hook for menu system
 void() menu_hangarDrawFrame={
   
-  if(self.plr_sel_mech <= 0){
+  if(CLIENT_MENU_sel_mech <= 0){
     cleanHardPoints();
   }
   
@@ -139,7 +139,7 @@ void(vector ofs) menu_hangar_MechListLight={
     if(MECHLIST_LIGHT_ARR[dat_id] != 0){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(siz == self.plr_sel_size && dat_id == self.plr_sel_mech){
+      if(siz == CLIENT_MENU_sel_size && dat_id == CLIENT_MENU_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
         gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, 1, 0);
       }
@@ -178,7 +178,7 @@ void(vector ofs) menu_hangar_MechListMedium={
     if(MECHLIST_MEDIUM_ARR[dat_id] != 0){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(siz == self.plr_sel_size && dat_id == self.plr_sel_mech){
+      if(siz == CLIENT_MENU_sel_size && dat_id == CLIENT_MENU_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
         gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, 1, 0);
       }
@@ -217,7 +217,7 @@ void(vector ofs) menu_hangar_MechListHeavy={
     if(MECHLIST_HEAVY_ARR[dat_id] != 0){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
-      if(siz == self.plr_sel_size && dat_id == self.plr_sel_mech){
+      if(siz == CLIENT_MENU_sel_size && dat_id == CLIENT_MENU_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
         gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, 1, 0);
       }

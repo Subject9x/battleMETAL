@@ -28,14 +28,14 @@ string ANM_FILE_TAG_TXT_CLR = "text_color";
 float ANM_FRAME_MAX = 20; //this is here for reference, but if modified, MODIFY THE FOLLOWING ARRAY LIMITS!
 float ANM_FRAME_SLICE = 0.1; //used for alpha blending timer
 
-.float ANM_FILE_STATUS;
-.float ANM_FRAME_TOTAL;
-.float ANM_FRAME_CUR;
-.float ANM_FRAME_TIME;
-.float ANM_FRAME_ALPHA_CUR;
-.float ANM_FRAME_CUR_FADE_START;
-.float ANM_FRAME_CUR_FADE_END;
-.float ANM_FRAME_CUR_FADE_RATE;
+float ANM_FILE_STATUS;
+float ANM_FRAME_TOTAL;
+float ANM_FRAME_CUR;
+float ANM_FRAME_TIME;
+float ANM_FRAME_ALPHA_CUR;
+float ANM_FRAME_CUR_FADE_START;
+float ANM_FRAME_CUR_FADE_END;
+float ANM_FRAME_CUR_FADE_RATE;
 /*
 Animatic frames are expressed by 3 things;
   frame_image = the image to display for this frame

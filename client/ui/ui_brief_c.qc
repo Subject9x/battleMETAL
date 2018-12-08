@@ -50,9 +50,9 @@ void() objIntelSwitchListener={
 
 void() briefSoundListener={
   if(menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('10 100'), gui_percentToPixelRawVec('243 32'))){
-    if( (MSN_ANIM != "") && (time > self.MSN_SFX_COUNT) ){
+    if( (MSN_ANIM != "") && (time > MSN_SFX_COUNT) ){
       anm_parseFile(MSN_ANIM);
-      self.MSN_SFX_COUNT = time + anm_total_runtime();
+      MSN_SFX_COUNT = time + anm_total_runtime();
     }
   }
 };
@@ -86,7 +86,7 @@ void(vector ofs) menu_briefMissionInfo={
 void(vector ofs) menu_briefPlaySound={
   local vector spos, color;
   color = CLR_DEF_WEP_INRANGE;
-  if( (MSN_ANIM == "") || (time < self.MSN_SFX_COUNT) ){
+  if( (MSN_ANIM == "") || (time < MSN_SFX_COUNT) ){
     color = '0.25 0.25 0.25';
   }
   spos = ofs + gui_percentToPixelRawVec('10 100');

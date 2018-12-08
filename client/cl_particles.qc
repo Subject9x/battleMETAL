@@ -85,11 +85,6 @@ float(vector org, vector angl) te_shield_test={
   makevectors( angl );
   org = org + v_forward * 10;
  
-  //burst = nextent( entitybyindex(player_localentnum) );
-   //cons_logAFloat("te_shield_test::burst", num_for_edict(burst) );  //DEBUG
-   cons_logAFloat("te_shield_test::oself", num_for_edict(oself) );  //DEBUG
-   cons_logAFloat("te_shield_test::getstati(STAT_PLR_ENT_ID)", getstati(STAT_PLR_ENT_ID) );  //DEBUG
-  
  /* self = burst;
   
     setorigin(self, org);

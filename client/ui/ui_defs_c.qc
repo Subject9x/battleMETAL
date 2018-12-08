@@ -55,13 +55,13 @@ void() menu_handleFrame={
   local vector mpos, i_sz;
   
   //UI Theming
-  if( self.i_faction == 1 ){
+  if( CLIENT_i_faction== 1 ){
     CLR_DEF_UI_BRIEF = CLR_UI_PSC_BRIEF;
     CLR_DEF_UI_HANGAR = CLR_UI_PSC_HANGAR;
     CLR_DEF_UI_ARMING = CLR_UI_PSC_ARMING;
     CLR_DEF_UI_DEPLOY = CLR_UI_PSC_DEPLOY;
   }
-  else if( self.i_faction == 2 ){
+  else if( CLIENT_i_faction == 2 ){
     CLR_DEF_UI_BRIEF = CLR_UI_AUTH_BRIEF;
     CLR_DEF_UI_HANGAR = CLR_UI_AUTH_HANGAR;
     CLR_DEF_UI_ARMING = CLR_UI_AUTH_ARMING;
@@ -74,7 +74,7 @@ void() menu_handleFrame={
   mpos_x = cursorpos_x - gui_percentXRaw(2);
   mpos_y = cursorpos_y -  gui_percentXRaw(4);
   
-  switch( self.plr_menu_choice ){
+  switch( CLIENT_MENU_menu_choice ){
     case MENU_HANGAR_ACTIVE:
       menu_hangarDrawFrame(); 
       break;
@@ -93,15 +93,15 @@ void() menu_handleFrame={
   
   //debug info
   drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', 1, 0);
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(self.plr_sel_size), '6 6 0', '1 1 1', 1, 0);  
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(self.plr_sel_mech), '6 6 0', '1 1 1', 1, 0);  
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(CLIENT_MENU_sel_size), '6 6 0', '1 1 1', 1, 0);  
+  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(CLIENT_MENU_sel_mech), '6 6 0', '1 1 1', 1, 0);  
 };
 
 void() mechAcceptButtonListener={
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
     if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_MECH) ){
-      cl_setspawnpoint(self.plr_nav_pnt);
-      cl_setmech(self.plr_sel_size, MECH_DATA_ID);
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+      cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
       local float lst_idx, bit;
       lst_idx = 1;
       bit = 1;
@@ -110,15 +110,15 @@ void() mechAcceptButtonListener={
         bit = bit * 2;
         lst_idx = lst_idx + 1;
       }
-      cl_setweapongroup(1, self.plr_nex_grp1);
-      cl_setweapongroup(2, self.plr_nex_grp2);
-      cl_setweapongroup(3, self.plr_nex_grp3);
-      cl_setweapongroup(4, self.plr_nex_grp4);
-      cl_setweapongroup(5, self.plr_nex_grp5);
+      cl_setweapongroup(1, CLIENT_MENU_nex_grp1);
+      cl_setweapongroup(2, CLIENT_MENU_nex_grp2);
+      cl_setweapongroup(3, CLIENT_MENU_nex_grp3);
+      cl_setweapongroup(4, CLIENT_MENU_nex_grp4);
+      cl_setweapongroup(5, CLIENT_MENU_nex_grp5);
       cl_spawnmech();
       MENU_ACTIVE = FALSE;
       setcursormode(0);
-      self.plr_nav_pnt = -1;
+      CLIENT_MENU_nav_pnt = -1;
       LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
       ui_data_load_hud( MECH_DATA_ID );
     }
@@ -130,25 +130,25 @@ void(vector ofs) menu_navBar={
   local float strwid;
   nvpos = ofs + gui_percentToPixelRawVec('9.984 7.488');
   
-  gui_renderTintImage((self.plr_menu_choice == MENU_BRIEF_ACTIVE), nvpos, UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), nvpos, UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, 1, 0) ;
   tpos = nvpos;
   strwid = stringwidth("[BRIEFING]", 0 ,'8 8 0')/2;
   tpos_x = (nvpos_x + gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   tpos_y = nvpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice ==MENU_BRIEF_ACTIVE), '8 8 0', 1, 0) ;
+  gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice ==MENU_BRIEF_ACTIVE), '8 8 0', 1, 0) ;
   
-  gui_renderTintImage((self.plr_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256, gui_percentToPixel(0.075, 0.025), CLR_DEF_WEP_INRANGE, 1, 0) ;
   hpos = nvpos + gui_percentToPixel(0.075, 0);
   strwid = stringwidth("[HANGAR]", 0 ,'8 8 0')/2;
   hpos_x = (hpos_x +  gui_percentX(0.0375)) - gui_percentXRaw(strwid);
   hpos_y = hpos_y + gui_percentY(0.0086);
-  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (self.plr_menu_choice == MENU_HANGAR_ACTIVE), '8 8 0', 1, 0) ;
+  gui_renderHighlightString("[HANGAR]", hpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), '8 8 0', 1, 0) ;
   
   local vector arming_clr;
   local float arming_flt;
   if(SELECT_MECH != 0){
     arming_clr = '0.75 0.75 0.75';
-    arming_flt = (self.plr_menu_choice == MENU_ARMING_ACTIVE);
+    arming_flt = (CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE);
     if(arming_flt){
       arming_clr = CLR_DEF_WEP_INRANGE;
     }
@@ -168,7 +168,7 @@ void(vector ofs) menu_navBar={
   local float deploy_flt;
   if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS) ) ){
     deploy_clr = CLR_DEF_WEP_INRANGE;
-    deploy_flt = (self.plr_menu_choice == MENU_DEPLOY_ACTIVE);
+    deploy_flt = (CLIENT_MENU_menu_choice == MENU_DEPLOY_ACTIVE);
   }
   else{
     deploy_clr =  '0.25 0.25 0.25';
@@ -204,7 +204,7 @@ void(vector ofs) menu_navBar={
 
 void() menu_mainListener={
   //prevent menu switch during briefing
-  if(self.ANM_FILE_STATUS == 1){
+  if(ANM_FILE_STATUS == 1){
     return;
   }
   navBarListener();
@@ -213,21 +213,21 @@ void() menu_mainListener={
 
 void() navBarListener={
   if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.0097, 0.0109), gui_percentToPixel(0.075, 0.025))){
-    if( self.plr_menu_choice == MENU_ARMING_ACTIVE ){
+    if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
     }
-    self.plr_menu_choice = MENU_BRIEF_ACTIVE;
+    CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025))){
-    if( self.plr_menu_choice == MENU_ARMING_ACTIVE ){
+    if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
     }
-    self.plr_menu_choice = MENU_HANGAR_ACTIVE;
+    CLIENT_MENU_menu_choice = MENU_HANGAR_ACTIVE;
     cl_get_mechs_sort();
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
     if(SELECT_MECH != 0){
-      self.plr_menu_choice = MENU_ARMING_ACTIVE;
+      CLIENT_MENU_menu_choice = MENU_ARMING_ACTIVE;
     }
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025))){
@@ -235,7 +235,7 @@ void() navBarListener={
       local entity nav;
       local float itr, idx;
       
-      if( self.plr_menu_choice == MENU_ARMING_ACTIVE ){
+      if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
         data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
       }
       
@@ -252,7 +252,7 @@ void() navBarListener={
       }
       DEPLOY_POINT_ID = 1;
       DEPLOY_POINT_END = idx;
-      self.plr_menu_choice = MENU_DEPLOY_ACTIVE;
+      CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
     }
   }
 };

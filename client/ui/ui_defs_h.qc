@@ -14,12 +14,27 @@ float MENU_ARMING_ACTIVE = 3;
 float MENU_DEPLOY_ACTIVE = 4;
 float MENU_LAUNCH_ROLLOVER = 5;
 
+//CLIENT MENU CONST
+float CLIENT_MENU_menu_choice;
+float CLIENT_MENU_sel_hrpnt;
+float CLIENT_MENU_sel_list_wep;
+float CLIENT_MENU_sel_hrpnt_types;
+float CLIENT_MENU_sel_hrpnt_size;
+float CLIENT_MENU_sel_wep;
+float CLIENT_MENU_sel_wid;
+float CLIENT_MENU_sel_mech;
+float CLIENT_MENU_sel_size;
+float CLIENT_MENU_nav_pnt;
+
+float CLIENT_MENU_nex_grp1;
+float CLIENT_MENU_nex_grp2;
+float CLIENT_MENU_nex_grp3;
+float CLIENT_MENU_nex_grp4;
+float CLIENT_MENU_nex_grp5;
+//
+
 vector cursorpos;
 vector last_view;
-
-.void(vector org) menu_renderHardpoints;    //the mech data ent implements these
-.float(vector org) menu_hardpointListener; //the mech data ent implements these
-.void(vector org) menu_hardpointRows;
 
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;

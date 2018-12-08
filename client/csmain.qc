@@ -118,43 +118,41 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
   local entity this;
-  this = self;
+  //this = self;
   //self = entitybyindex(player_localentnum);
-  self = entitybyindex( getstati(STAT_PLR_ENT_ID) );
-  
-  cons_logAFloat("CSQC_InputEvent::getstati(STAT_PLR_ENT_ID)", getstati(STAT_PLR_ENT_ID) ); //DEBUG
-  
-  self.player_state = getstatf(STAT_PLR_STT);
+  //self = entitybyindex( getstati(STAT_PLR_ENT_ID) );
+
+  CLIENT_player_state = getstatf(STAT_PLR_STT);
   //console override
   if(evtype == 0){
     if( (scanx == K_TIL) || (scanx == K_APOS) || (scanx == K_ESCAPE) ){
-      self = this;
+      //self = this;
       return FALSE; 
     }
   }
   //=====================
-  if( (self.player_state == PLAYER_POWERUP_BEGIN) || (self.player_state == PLAYER_ANIM_STOP) ){
-    self = this;
+  if( (CLIENT_player_state == PLAYER_POWERUP_BEGIN) || (CLIENT_player_state == PLAYER_ANIM_STOP) ){
+    //self = this;
     return TRUE;
   }
   if(evtype == 0){
-    if((scanx == K_TAB && self.data_type == DATA_POBS)){
+    if((scanx == K_TAB && CLIENT_data_type == DATA_POBS)){
         if(MENU_ACTIVE){
           MENU_ACTIVE = FALSE;
-          self.plr_menu_choice = 0;
+          CLIENT_MENU_menu_choice = 0;
           setcursormode(0);
         }
         else{
           MENU_ACTIVE = TRUE;
-          self.plr_menu_choice = MENU_BRIEF_ACTIVE;
+          CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
           setcursormode(1);
         }
-        self = this;
+        //self = this;
         return TRUE;
     }
     else if(scanx == K_MOUSE1){
       if(MENU_ACTIVE){
-        switch( self.plr_menu_choice ){
+        switch( CLIENT_MENU_menu_choice ){
           case MENU_HANGAR_ACTIVE:
             menu_hangarListener();
             break;
@@ -169,11 +167,11 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
             break;
         }
         menu_mainListener();
-        self = this;
+        //self = this;
         return TRUE;
       }
       else{
-        self = this;
+        //self = this;
         return FALSE;
       }
     }
@@ -184,11 +182,11 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       else{
         UI_OBJECTIVE_ACTIVE = TRUE;
       }
-      self = this;
+      //self = this;
       return TRUE;
     }
     else if(scanx == K_SHIFT){
-      self = this;
+      //self = this;
       return FALSE;
     }
   }
@@ -209,21 +207,21 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       else if(cursorpos_y > VIEW_MAX_y){
         cursorpos_y = VIEW_MAX_y;
       }
-      self = this;
+      //self = this;
       return TRUE;
     }
     else{
-      self = this;
+      //self = this;
       return FALSE;
     }
   }
   
   if(MENU_ACTIVE){
-    self = this;
+    //self = this;
     return TRUE;
   }
   else{
-    self = this;
+    //self = this;
     return FALSE;
   }
 };
@@ -311,7 +309,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   */
   PLAYER_ENTITYNUM = getstati(STAT_PLR_ENT_ID); //this is ridiculous
  
-  cons_logAFloat("player_localentnum", player_localentnum); //DEBUG
+
  
   local entity this, player;
   this = self;
@@ -328,39 +326,39 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //draw hud
   
   AVAILABLE_RESERVE = 0;
-  if(self.player_state == PLAYER_SPAWN){
+  if(CLIENT_player_state == PLAYER_SPAWN){
     localcmd(strcat("stopsound", "\n"));
   }
   
-  if(self.data_type == DATA_MECH){  
+  if(CLIENT_data_type == DATA_MECH){  
     if(MENU_ACTIVE){
-      if(self.player_state == PLAYER_POWERUP_BEGIN){
+      if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
         MENU_ACTIVE = FALSE;
-        self.plr_menu_choice = 0;
+        CLIENT_MENU_menu_choice = 0;
         setcursormode(0);
-        if( MECH_DATA_ID != self.data_idx){
-          ui_data_load_mech(self.data_idx);
+        if( MECH_DATA_ID != CLIENT_data_idx){
+          ui_data_load_mech(CLIENT_data_idx);
         }
       }
     }
     
     //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(self.hp_stor2, 2, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(self.hp_stor, 4, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(self.hp_arm2, 8, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(self.hp_arm, 16, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener( self.hp_leg, 32, SND_HUD_VFX_CRITLEG);
+    snd_hud_vfx_armlistener(CLIENT_hp_stor2, 2, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(CLIENT_hp_stor, 4, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(CLIENT_hp_arm2, 8, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(CLIENT_hp_arm, 16, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(CLIENT_hp_leg, 32, SND_HUD_VFX_CRITLEG);
     
     //HUD SOUND SYSTEM LISTENERS
-    snd_hud_vfx_statelistener(self.player_state);
-    snd_hud_vfx_enelistener(self.en_cur);
-    snd_hud_vfx_toggleradar(self.stat_rdr_mode);
-    snd_hud_vfx_targkill(self.stat_trg_ddflg);
+    snd_hud_vfx_statelistener(CLIENT_player_state);
+    snd_hud_vfx_enelistener(CLIENT_en_cur);
+    snd_hud_vfx_toggleradar(CLIENT_stat_rdr_mode);
+    snd_hud_vfx_targkill(CLIENT_stat_trg_ddflg);
     
     //HUD RENDER FRAME SYSTEM
     data_hud_frame();
     
-    if(self.player_state == PLAYER_SPRINT_ON){
+    if(CLIENT_player_state == PLAYER_SPRINT_ON){
       local float slen;
       local vector spos;
       slen = stringwidth("[EVASION ON]", 0, '12 10 0');
@@ -375,10 +373,10 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     ui_objective_frame(VIEW_ORG);
   }
   else{
-    if(self.player_state == PLAYER_IN_MENU){
+    if(CLIENT_player_state == PLAYER_IN_MENU){
       if(!MENU_ACTIVE){
         MENU_ACTIVE = TRUE;
-        self.plr_menu_choice = MENU_BRIEF_ACTIVE;
+        CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
         setcursormode(1);
       }
     } 
@@ -386,11 +384,11 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
       local float len;
       local vector og;
       local string mesg;
-      if(self.player_state == PLAYER_SPAWN){
+      if(CLIENT_player_state == PLAYER_SPAWN){
         len = stringwidth("Press any key to respawn", 0, '8 8 0');
         mesg = "Press any key to respawn";
       }
-      else if(self.player_state == PLAYER_IN_MENU){
+      else if(CLIENT_player_state == PLAYER_IN_MENU){
         len = stringwidth("Press [TAB] For Hangar Menu", 0, '8 8 0');
         mesg = "Press [TAB] For Hangar Menu";
       }
@@ -409,7 +407,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     cursorpos = getmousepos();
     menu_handleFrame();
   }else{
-    if(self.player_state >= PLAYER_POWERUP_BEGIN){
+    if(CLIENT_player_state >= PLAYER_POWERUP_BEGIN){
       local float itr;
       itr = 0;
       while( itr <= 21 ){
@@ -433,7 +431,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   
   //put this last on the rendering order to make sure it 
   //plays above all
-  if(self.ANM_FILE_STATUS == 1){
+  if(ANM_FILE_STATUS == 1){
     anm_execute_frame();
   }
   
@@ -515,10 +513,7 @@ float() CSQC_Parse_TempEntity =
 void(string s) CSQC_Parse_StuffCmd =
 {
   local float argc;
-  local entity client, this;
-  client = entitybyindex(player_localentnum);
-  this = self;
-  self = client;
+
   argc = tokenize(s);
   if(argv(0) == "mech"){
     if(argv(1) == "msn_file"){
@@ -558,7 +553,6 @@ void(string s) CSQC_Parse_StuffCmd =
       localcmd(s);
     }
   }
-  self = this;
 };
 
 // if string is interesting, deal with it, otherwise pass it to print() to invoke the engine code.

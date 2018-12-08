@@ -39,34 +39,6 @@ float ARM_HVY = 8;  //radiation armor
 float ARM_CER = 16; 
 float ARM_RAD = 24;
 
-.float plr_sel_mech; //used for mech selection
-.float plr_sel_size;
-.float plr_sel_cfg; // mech config file num
-.float plr_sel_hrpnt;
-.float plr_sel_wep;
-.float plr_sel_list_wep;
-.float plr_sel_wid;
-.float plr_sel_grp;
-.float plr_nex_mech;
-.float plr_nex_wep1;
-.float plr_nex_wep2;
-.float plr_nex_wep3;
-.float plr_nex_wep4;
-.float plr_nex_wep5;
-.float plr_nex_wep6;
-.float plr_nex_wep7;
-.float plr_nex_wep8;
-.float plr_nex_wep9;
-.float plr_nex_grp1;
-.float plr_nex_grp2;
-.float plr_nex_grp3;
-.float plr_nex_grp4;
-.float plr_nex_grp5;
-.float plr_nav_pnt;
-.float plr_sel_hrpnt_size;
-.float plr_sel_hrpnt_types;
-.float plr_menu_choice; 
-
 //widget vars
 .string c_mdl;
 .string c_ui_hf;

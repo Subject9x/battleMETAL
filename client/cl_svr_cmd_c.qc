@@ -48,7 +48,7 @@ void(string fileName) cl_get_msnfile={
 };
 
 void(string fileName) cl_get_animfile={
-  if(self.ANM_FILE_STATUS == 0){
+  if(ANM_FILE_STATUS == 0){
     anm_parseFile(fileName);
   }
 };

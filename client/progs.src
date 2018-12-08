@@ -16,6 +16,7 @@ m_datadefs.qc
 ../common/data/data_values_particles.qc
 ../common/data/data_values_turrets.qc
 ../common/ui/ui_color_constants.qc
+client_constants.qc
 //================================
 
 gui_api_h.qc

@@ -40,7 +40,7 @@ string MSN_INTEL;
 string MSN_ANIM;
 float MSN_OBJ;
 
-.float MSN_SFX_COUNT;
+float MSN_SFX_COUNT;
 .float MSN_SFX_TIME;
 
 string MSN_OBJ_DESC[10];

@@ -542,7 +542,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
       aSize_y = mSize_y;
     }
     vpos = org;
-    vpos_z = vpos_z + self.target_vecsize;
+    vpos_z = vpos_z + CLIENT_target_vecsize;
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);
@@ -587,7 +587,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     }
     
     vpos = org;
-    vpos_z = vpos_z - self.target_vecsize;
+    vpos_z = vpos_z - CLIENT_target_vecsize;
     nofs = cs_project(vpos);
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);
@@ -718,7 +718,7 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   local string msg;
   
   factionColor = CLR_DEF_IFF_ENEMY;
-  if(self.i_faction == self.target_faction){
+  if(CLIENT_i_faction == CLIENT_target_faction){
     factionColor = CLR_DEF_IIF_FRIEND;
   }
 
@@ -753,40 +753,40 @@ vector( float wbit ) hud_data_weapon_info={
   local vector wep;
   switch( wbit ){
     case WEAPON1:
-      wep_x = self.stat_w1_id;
-      wep_y = self.stat_w1_rel;
+      wep_x = CLIENT_stat_w1_id;
+      wep_y = CLIENT_stat_w1_rel;
       break;
     case WEAPON2:
-      wep_x = self.stat_w2_id;
-      wep_y = self.stat_w2_rel;
+      wep_x = CLIENT_stat_w2_id;
+      wep_y = CLIENT_stat_w2_rel;
       break;
     case WEAPON3:
-      wep_x = self.stat_w3_id;
-      wep_y = self.stat_w3_rel;
+      wep_x = CLIENT_stat_w3_id;
+      wep_y = CLIENT_stat_w3_rel;
       break;
     case WEAPON4:
-      wep_x = self.stat_w4_id;
-      wep_y = self.stat_w4_rel;
+      wep_x = CLIENT_stat_w4_id;
+      wep_y = CLIENT_stat_w4_rel;
       break;
     case WEAPON5:
-      wep_x = self.stat_w5_id;
-      wep_y = self.stat_w5_rel;
+      wep_x = CLIENT_stat_w5_id;
+      wep_y = CLIENT_stat_w5_rel;
       break;
     case WEAPON6:
-      wep_x = self.stat_w6_id;
-      wep_y = self.stat_w6_rel;
+      wep_x = CLIENT_stat_w6_id;
+      wep_y = CLIENT_stat_w6_rel;
       break;
     case WEAPON7:
-      wep_x = self.stat_w7_id;
-      wep_y = self.stat_w7_rel;
+      wep_x = CLIENT_stat_w7_id;
+      wep_y = CLIENT_stat_w7_rel;
       break;
     case WEAPON8:
-      wep_x = self.stat_w8_id;
-      wep_y = self.stat_w8_rel;
+      wep_x = CLIENT_stat_w8_id;
+      wep_y = CLIENT_stat_w8_rel;
       break;
     case WEAPON9:
-      wep_x = self.stat_w9_id;
-      wep_y = self.stat_w9_rel;
+      wep_x = CLIENT_stat_w9_id;
+      wep_y = CLIENT_stat_w9_rel;
       break;
   }
   return wep;
@@ -803,7 +803,7 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
     lalign = UI_DATA_LABEL_ALIGN[uid];
     lblofs = UI_DATA_LABEL_OFS[uid];
     axis = UI_DATA_AXIS_FLAG[uid];
-    hud_renderShield(porg, algn, self.target_shield, vsize, lflag, lalign, lblofs, axis);
+    hud_renderShield(porg, algn, CLIENT_target_shield, vsize, lflag, lalign, lblofs, axis);
   }
 };
 
@@ -836,7 +836,7 @@ void() data_hud_frame={
   }
   
   hasTarget = FALSE;
-  if( self.stat_trg_dataidx > 0 ){
+  if( CLIENT_stat_trg_dataidx > 0 ){
     hasTarget = TRUE;
   }
   uid = 1;
@@ -862,12 +862,12 @@ void() data_hud_frame={
         lalign = UI_DATA_LABEL_ALIGN[uid];
         lblofs = UI_DATA_LABEL_OFS[uid];
         axis = UI_DATA_AXIS_FLAG[uid];
-        hud_renderEnergy(porg, algn, self.en_cur, vsize, lflag, lalign, lblofs, axis);
+        hud_renderEnergy(porg, algn, CLIENT_en_cur, vsize, lflag, lalign, lblofs, axis);
         break;
       case HUD_UID_ARM_PLAYER: 
         porg = UI_DATA_POS[uid];
         algn = UI_DATA_ALIGN[uid];
-        hud_renderArmorGraph(porg, algn, self.hp_ctor, self.hp_stor, self.hp_stor2, self.hp_arm, self.hp_arm2, self.hp_leg);
+        hud_renderArmorGraph(porg, algn, CLIENT_hp_ctor, CLIENT_hp_stor, CLIENT_hp_stor2, CLIENT_hp_arm, CLIENT_hp_arm2, CLIENT_hp_leg);
         break;
       case HUD_UID_SHIELD_PLAYER: 
         porg = UI_DATA_POS[uid];
@@ -877,19 +877,19 @@ void() data_hud_frame={
         lalign = UI_DATA_LABEL_ALIGN[uid];
         lblofs = UI_DATA_LABEL_OFS[uid];
         axis = UI_DATA_AXIS_FLAG[uid];
-        hud_renderShield(porg, algn, self.sh_cur, vsize, lflag, lalign, lblofs, axis);
+        hud_renderShield(porg, algn, CLIENT_sh_cur, vsize, lflag, lalign, lblofs, axis);
         break;
       case HUD_UID_ARM_TARGET:  
         if( hasTarget ){
-          if( self.target_datatype == DATA_MECH ){
+          if( CLIENT_target_datatype == DATA_MECH ){
             porg = UI_DATA_POS[uid];
             algn = UI_DATA_ALIGN[uid];
-            hud_renderArmorGraph(porg, algn, self.stat_trg_ct_hp, self.stat_trg_lt_hp, self.stat_trg_rt_hp, self.stat_trg_la_hp, self.stat_trg_ra_hp, self.stat_trg_lg_hp);
+            hud_renderArmorGraph(porg, algn, CLIENT_stat_trg_ct_hp, CLIENT_stat_trg_lt_hp, CLIENT_stat_trg_rt_hp, CLIENT_stat_trg_la_hp, CLIENT_stat_trg_ra_hp, CLIENT_stat_trg_lg_hp);
           }
         }
         break;
       case HUD_UID_SHIELD_TARGET: 
-        hud_data_renderTarget_Shield( uid, self.stat_trg_dataidx );
+        hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
         break;
       case HUD_UID_WEP_TYPE1:
         local vector wep;
@@ -901,7 +901,7 @@ void() data_hud_frame={
           vsize = '32 32 0';  //default here
         }
         wep = hud_data_weapon_info( wbit );
-        hud_renderWeapon(porg, vsize, algn, self.currentWeaponGroup, wep_x, WEAPON1, wep_y);
+        hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, WEAPON1, wep_y);
         break;
       case HUD_UID_WEP_TYPE2:    
         local vector wep;
@@ -913,23 +913,23 @@ void() data_hud_frame={
           vsize = '32 32 0';  //default here
         }
         wep = hud_data_weapon_info( wbit );
-        hud_renderWeapon2(porg, vsize, algn, self.currentWeaponGroup, wep_x, WEAPON1, wep_y);
+        hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, WEAPON1, wep_y);
         break;
       case HUD_UID_RADAR_TYPE1: 
         porg = UI_DATA_POS[uid]; 
         algn = UI_DATA_ALIGN[uid];  
-        hud_renderRadarStatus1(porg, algn, self.stat_rdr_mode, self.radar_range, 0);
+        hud_renderRadarStatus1(porg, algn, CLIENT_stat_rdr_mode, CLIENT_radar_range, 0);
         break;
       case HUD_UID_RADAR_TYPE2: 
         porg = UI_DATA_POS[uid]; 
         algn = UI_DATA_ALIGN[uid]; 
-        hud_renderRadarStatus2(porg, algn, self.stat_rdr_mode, self.radar_range, 0);
+        hud_renderRadarStatus2(porg, algn, CLIENT_stat_rdr_mode, CLIENT_radar_range, 0);
         break;
       case HUD_UID_RADAR_GRAPH: 
         porg = UI_DATA_POS[uid]; 
         algn = UI_DATA_ALIGN[uid];
         vsize = UI_DATA_SIZE[uid];
-        hud_renderRadar(porg, algn, self.i_faction, pmove_org, self.radar_range, self.stat_rdr_mode, vsize);
+        hud_renderRadar(porg, algn, CLIENT_i_faction, pmove_org, CLIENT_radar_range, CLIENT_stat_rdr_mode, vsize);
         break;
       case HUD_UID_NAV:      
         porg = UI_DATA_POS[uid]; 
@@ -940,33 +940,33 @@ void() data_hud_frame={
         if( hasTarget){
           porg = UI_DATA_POS[uid]; 
           algn = UI_DATA_ALIGN[uid];
-          hud_renderTargetName(porg, self.w_icon, algn);
+          hud_renderTargetName(porg, CLIENT_w_icon, algn);
         }
         break;
       case HUD_UID_TARGET_RANGE:
         if( hasTarget ){
           porg = UI_DATA_POS[uid]; 
           algn = UI_DATA_ALIGN[uid];
-          hud_renderTargetRange(porg, self.target_origin, pmove_org, algn);
+          hud_renderTargetRange(porg, CLIENT_target_origin, pmove_org, algn);
         }
         break;
       case HUD_UID_ARM_TARG_VEC:  
         if( hasTarget ){ 
-          if( self.target_datatype == DATA_VEHC ){
+          if( CLIENT_target_datatype == DATA_VEHC ){
             porg = UI_DATA_POS[uid];
             algn = UI_DATA_ALIGN[uid];
             vsize = UI_DATA_SIZE[uid];
-            hud_renderArmorBuilding(porg, algn, vsize, self.stat_trg_ct_hp);
+            hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
           }
         }
         break;
       case HUD_UID_ARM_TARG_BLD:
         if( hasTarget ){
-          if( self.target_datatype == DATA_BLD ){
+          if( CLIENT_target_datatype == DATA_BLD ){
             porg = UI_DATA_POS[uid];
             algn = UI_DATA_ALIGN[uid];
             vsize = UI_DATA_SIZE[uid];
-            hud_renderArmorBuilding(porg, algn, vsize, self.stat_trg_ct_hp);
+            hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
           }
         }
         break;
@@ -974,33 +974,33 @@ void() data_hud_frame={
     uid = uid + 1;
   }
   
-  if( self.stat_trg_dataidx > 0 ){
-    hud_renderTargetOverlay(self.target_origin, pmove_org, 0, self.i_faction, self.target_faction, self.radar_range);
-    hud_renderShieldOverlay(self.target_origin, pmove_org, 0, self.target_shield, self.radar_range, self.target_vecsize, '64 6', AXIS_H);
+  if( CLIENT_stat_trg_dataidx > 0 ){
+    hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_i_faction, CLIENT_target_faction, CLIENT_radar_range);
+    hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H);
   }  
 
   //CROSSHAIR AND DETAILS
-  hud_renderDirectionHit(self.stat_hit_dirs);
-  if( (self.flags & FL_NOSHOOT) ){
+  hud_renderDirectionHit(CLIENT_stat_hit_dirs);
+  if( (CLIENT_flags & FL_NOSHOOT) ){
     //rad_bld.png
     hud_renderCrosshairDisabled();
   }
   else{
     switch( cvar("crosshair") ){
       case 1:
-        hud_renderCrosshair1( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
         break;
       case 2:
-        hud_renderCrosshair2( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
         break;
       case 3:
-        hud_renderCrosshair3( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
         break;
       case 4:
-        hud_renderCrosshair4( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
         break;
       case 5:
-        hud_renderCrosshair5( self.stat_hit_dirs, self.stat_lck_stt, accuracy, self.target_shield );
+        hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
         break;
       default:
         //no crosshair? bold move
@@ -1009,8 +1009,8 @@ void() data_hud_frame={
   }
 
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY), input_angles_x * -3, 270, -270);
-  hud_renderTargetDirection(self.stat_trg_face, self.i_faction, self.target_faction, self.target_datatype);
-  hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), self.stat_ret_dist) ;
+  hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_i_faction, CLIENT_target_faction, CLIENT_target_datatype);
+  hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
   
   //repair sits above all
   hud_renderRepairValue(getstatf(STAT_PLR_REP));
