@@ -27,7 +27,3 @@ void(float prj_id) data_iniProjectile;
 void(float vec_id) data_iniTurret;
 
 //the following should probably be spun out to client_utils - Roohr 3/24/2018
-void(float fwd, float side, float bck, string accel, string roll) mh_world_updateClientSpeed;
-void(string bob, string cycle, string up) mh_world_updateClientViewBob;
-void(string bobmodel, string side, string bmod_speed) mh_world_updateClientModelBob;
-void(string p_max, string p_min) mh_world_updateClientViewPitch;

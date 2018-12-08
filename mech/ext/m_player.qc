@@ -47,7 +47,7 @@ void() PlayerPreThink = {
   if( !self.button8 ){
     if( self.stat_plr_stt == PLAYER_SPRINT_ON){
       self.stat_plr_stt = PLAYER_ACTIVE;
-      mh_world_updateClientSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
+      client_update_moveSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
     }
   }
   if( !self.button9 ){

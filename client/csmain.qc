@@ -117,22 +117,17 @@ void() CSQC_Shutdown =
 // typ 3 = mousepos (x, y) if inputmode is on
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
-  local entity this;
-  //this = self;
-  //self = entitybyindex(player_localentnum);
-  //self = entitybyindex( getstati(STAT_PLR_ENT_ID) );
 
   CLIENT_player_state = getstatf(STAT_PLR_STT);
+  
   //console override
   if(evtype == 0){
     if( (scanx == K_TIL) || (scanx == K_APOS) || (scanx == K_ESCAPE) ){
-      //self = this;
       return FALSE; 
     }
   }
   //=====================
   if( (CLIENT_player_state == PLAYER_POWERUP_BEGIN) || (CLIENT_player_state == PLAYER_ANIM_STOP) ){
-    //self = this;
     return TRUE;
   }
   if(evtype == 0){
@@ -147,7 +142,6 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
           CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
           setcursormode(1);
         }
-        //self = this;
         return TRUE;
     }
     else if(scanx == K_MOUSE1){
@@ -167,11 +161,9 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
             break;
         }
         menu_mainListener();
-        //self = this;
         return TRUE;
       }
       else{
-        //self = this;
         return FALSE;
       }
     }
@@ -182,11 +174,9 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       else{
         UI_OBJECTIVE_ACTIVE = TRUE;
       }
-      //self = this;
       return TRUE;
     }
     else if(scanx == K_SHIFT){
-      //self = this;
       return FALSE;
     }
   }
@@ -207,21 +197,17 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
       else if(cursorpos_y > VIEW_MAX_y){
         cursorpos_y = VIEW_MAX_y;
       }
-      //self = this;
       return TRUE;
     }
     else{
-      //self = this;
       return FALSE;
     }
   }
   
   if(MENU_ACTIVE){
-    //self = this;
     return TRUE;
   }
   else{
-    //self = this;
     return FALSE;
   }
 };
@@ -307,15 +293,8 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     special rant: the fact that the client itself, isn't a faffing global entity in the CLIENT
     module of all things is the height of idiocy.
   */
-  PLAYER_ENTITYNUM = getstati(STAT_PLR_ENT_ID); //this is ridiculous
- 
+  //PLAYER_ENTITYNUM = getstati(STAT_PLR_ENT_ID); //this is ridiculous
 
- 
-  local entity this, player;
-  this = self;
-  //switch to client context
-  self = entitybyindex( getstati(STAT_PLR_ENT_ID) );
- 
   receive_ent_bindData();
   
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
@@ -448,8 +427,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0);
     drawstring(torg + gui_percentToPixelRawVec('1 -10'), strcat("Tag Origin: ", vtos( viewang )), '8 8 0', '0.85 0.85 0.85', 1, 0); 
   }
-  
-  self = this;
 };
 
 // called on all console commands, but be sure to registercmd() first so the tab completion works!
@@ -589,10 +566,10 @@ float(float event) CSQC_Event =
 // called when a network slot was previously empty, before parsing begins
 // this basically lets you do extra work before returning the result of spawn()
 // OPTIONAL, probably should be deprecated as well
-entity(float entNum) CSQC_Ent_Spawn =
+/*entity(float entNum) CSQC_Ent_Spawn =
 {
 	return spawn();
-};
+};*/
 
 
 // parse a network update, isnew indicates this network slot was previously empty

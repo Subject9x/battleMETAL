@@ -66,8 +66,6 @@ void() mh_world_ini={
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
   addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
-  
-  addstat(STAT_PLR_ENT_ID, AS_INT, stat_ent_id);
 };
 
 /*
@@ -276,44 +274,4 @@ void(float wep_id) data_iniWep={
       data_eqp_scap_ini();
       return;
   }
-};
-
-void(float fwd, float side, float bck, string accel, string roll) mh_world_updateClientSpeed={
-  stuffcmd(self, strcat("cl_forwardspeed ", ftos(fwd), "\n"));
-  stuffcmd(self, strcat("cl_sidespeed ", ftos(side), "\n"));
-  stuffcmd(self, strcat("cl_backspeed ", ftos(bck), "\n"));
-  stuffcmd(self, strcat("cl_movespeedkey ", accel, "\n"));
-  stuffcmd(self, strcat("cl_rollangle ", roll, "\n"));
-};
-
-void(string bob, string cycle, string up) mh_world_updateClientViewBob={
-  stuffcmd(self, "cl_bob ");
-  stuffcmd(self, bob); //0.02
-  stuffcmd(self, "\n");
-  stuffcmd(self, "cl_bobcycle ");
-  stuffcmd(self, cycle); //0.6
-  stuffcmd(self, "\n");
-  stuffcmd(self, "cl_bobup ");
-  stuffcmd(self, up); //0.5
-  stuffcmd(self, "\n");
-};
-void(string bobmodel, string side, string bmod_speed) mh_world_updateClientModelBob={
-  stuffcmd(self, "cl_bobmodel ");
-  stuffcmd(self, bobmodel); //1
-  stuffcmd(self, "\n");
-  stuffcmd(self, "cl_bobmodel_side ");
-  stuffcmd(self, side); //	0.05
-  stuffcmd(self, "\n");
-  stuffcmd(self, "cl_bobmodel_speed ");
-  stuffcmd(self, bmod_speed); //	7
-  stuffcmd(self, "\n");
-};
-
-void(string p_max, string p_min) mh_world_updateClientViewPitch={
-  stuffcmd(self, "in_pitch_max ");
-  stuffcmd(self, p_max);
-  stuffcmd(self, "\n");
-  stuffcmd(self, "in_pitch_min ");
-  stuffcmd(self, p_min);
-  stuffcmd(self, "\n");
 };

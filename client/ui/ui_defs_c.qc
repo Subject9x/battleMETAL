@@ -98,11 +98,14 @@ void() menu_handleFrame={
 };
 
 void() mechAcceptButtonListener={
+  local float lst_idx;
+  local float bit;
+  
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
     if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_MECH) ){
       cl_setspawnpoint( CLIENT_MENU_nav_pnt );
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
-      local float lst_idx, bit;
+      
       lst_idx = 1;
       bit = 1;
       while(lst_idx <= MECH_DATA_HPOINTS){
@@ -302,15 +305,15 @@ void(entity clnt) ui_renderClientName={
   local float namelen,drawcheck, drawdist;
   drawcheck = FALSE;
   drawdist = vlen(pmove_org - clnt.origin);
-  if(self.i_faction == clnt.i_faction){
-    if(drawdist <= self.radar_range * 2){
+  if(CLIENT_i_faction == clnt.i_faction){
+    if(drawdist <= CLIENT_radar_range * 2){
       drawcheck = TRUE;
       drawcolor = CLR_DEF_IIF_FRIEND;
     }
   }
   else{
-    if(self.stat_rdr_mode){
-      if(drawdist <= self.radar_range){
+    if(CLIENT_stat_rdr_mode){
+      if(drawdist <= CLIENT_radar_range){
         drawcheck = TRUE;
         drawcolor = CLR_DEF_IFF_ENEMY;
       }

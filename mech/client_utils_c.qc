@@ -17,63 +17,61 @@ void() client_push_player_info={
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.i_faction;
   self.armorvalue = self.stat_plr_stt;
+
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_CLIENT_INFO );
   
-  if( (self.flags & FL_CLIENT) ){
-    self.stat_ent_id = num_for_edict( self );
-    msg_entity = self;
-    WriteByte( MSG_ONE, SVC_TEMPENTITY );
-    WriteByte( MSG_ONE, TE_CLIENT_INFO );
-    
-    WriteCoord( MSG_ONE, self.origin_x );
-    WriteCoord( MSG_ONE, self.origin_y );
-    WriteCoord( MSG_ONE, self.origin_z );
-    
-    WriteLong( MSG_ONE, self.stat_rdr_rng );
+  WriteCoord( MSG_ONE, self.origin_x );
+  WriteCoord( MSG_ONE, self.origin_y );
+  WriteCoord( MSG_ONE, self.origin_z );
   
-    if(self.data_type == DATA_MECH){
-      WriteByte( MSG_ONE, (self.en_cur / self.en_max) * 100 );
-      WriteByte( MSG_ONE, (self.sh_cur / self.sh_max) * 100 );
-      WriteByte( MSG_ONE, csqc_updateCompStat(self));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_legs));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_tor_l));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_tor_r));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_l));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_r));
-      
-      WriteByte( MSG_ONE, self.hardpoint_cnt );
-      wep = self.w_slot;
-      while( wep ){
-        WriteByte( MSG_ONE, wep.rl_cur );
-        wep = wep.w_slot;
+  WriteLong( MSG_ONE, self.stat_rdr_rng );
+
+  WriteByte( MSG_ONE, self.data_type ); //sync integrity
+  if(self.data_type == DATA_MECH){
+    WriteShort( MSG_ONE, (self.en_cur / self.en_max) * 100 );
+    WriteShort( MSG_ONE, (self.sh_cur / self.sh_max) * 100 );
+    WriteByte( MSG_ONE, csqc_updateCompStat(self));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_legs));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_tor_l));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_tor_r));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_l));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_r));
+    
+    WriteByte( MSG_ONE, self.hardpoint_cnt );
+    wep = self.w_slot;
+    while( wep ){
+      WriteByte( MSG_ONE, wep.rl_cur );
+      wep = wep.w_slot;
+    }
+    
+    enm = num_for_edict(self.enemy);
+    WriteByte( MSG_ONE, enm );
+    if( self.enemy != world ){
+      WriteCoord( MSG_ONE, self.enemy.origin_x );
+      WriteCoord( MSG_ONE, self.enemy.origin_y );
+      WriteCoord( MSG_ONE, self.enemy.origin_z );
+      //this is silly but precludes forcing the csqc to know the target's max shields
+      targShield = self.enemy.sh_cur;
+      if( targShield <= 0 ){
+        targShield = 0;
       }
-      
-      enm = num_for_edict(self.enemy);
-      WriteByte( MSG_ONE, enm );
-      if( self.enemy != world ){
-        WriteCoord( MSG_ONE, self.enemy.origin_x );
-        WriteCoord( MSG_ONE, self.enemy.origin_y );
-        WriteCoord( MSG_ONE, self.enemy.origin_z );
-        //this is silly but precludes forcing the csqc to know the target's max shields
-        targShield = self.enemy.sh_cur;
-        if( targShield <= 0 ){
-          targShield = 0;
-        }
-        else{
-          targShield = (self.enemy.sh_cur / self.enemy.sh_max) * 100;
-        } 
-        WriteByte( MSG_ONE, targShield );
-        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy));
-        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_legs));
-        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_l));
-        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_r));
-        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_l));
-        WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_r));
-        WriteShort( MSG_ONE, self.enemy.maxs_y * 2 );
-        if( self.enemy.netname == "" ){
-          self.enemy.netname = self.enemy.vec_name;
-        }
-        WriteString( MSG_ONE, self.enemy.netname );
+      else{
+        targShield = (self.enemy.sh_cur / self.enemy.sh_max) * 100;
+      } 
+      WriteByte( MSG_ONE, targShield );
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_legs));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_l));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_r));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_l));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_r));
+      WriteShort( MSG_ONE, self.enemy.maxs_y * 2 );
+      if( self.enemy.netname == "" ){
+        self.enemy.netname = self.enemy.vec_name;
       }
+      WriteString( MSG_ONE, self.enemy.netname );
     }
   }
 };
@@ -126,8 +124,9 @@ void( entity targetClient ) client_push_hud_highlight={
 }; 
 
 void( entity navpoint ) client_send_navpoint={
-  msg_entity = self;
   local float nactive;
+  
+  msg_entity = self;
   
   nactive = navpoint.isActive;
   if( navpoint.i_faction != self.i_faction ){
@@ -194,7 +193,7 @@ void() client_push_mapobjects={
           client_send_deploypoint( obj );
         break;
       case DATA_NAVP:
-        client_send_navpoint( obj );
+          client_send_navpoint( obj );
         break;
       case DATA_OBJT:
           client_send_objective( obj );
@@ -226,7 +225,7 @@ void(string str, float tokens) client_ParseMechCommand={
       player_unmakeObserver();
       player_makeMech();
       spawnpoint_select();
-      client_playTrack(world.sounds, TRUE);
+      client_playTrack( world.sounds, TRUE );
     }
   }
   else if(argv(1) == "setgroup"){
@@ -243,8 +242,6 @@ void(string str, float tokens) client_ParseMechCommand={
     cvar_set("gamemode", argv(2) );
   }
 };  
-
-
 
 /*
   
@@ -417,6 +414,46 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
   self = client;
     client_playTrack( trackNum, (entFlags & 2) );
   self = otemp;
+};
+
+void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed={
+  local string comd;
+  
+  comd = strcat("cl_forwardspeed ", ftos(fwd), " \n ");
+  comd = strcat( comd, strcat("cl_sidespeed ", ftos(side), " \n ") );
+  comd = strcat( comd, strcat("cl_backspeed ", ftos(bck), " \n ") );
+  comd = strcat( comd, strcat("cl_movespeedkey ", accel, " \n ") );
+  comd = strcat( comd, strcat("cl_rollangle ", roll, " \n") );
+  
+  stuffcmd(self, comd);
+};
+
+void(string bob, string cycle, string up) client_update_viewBob={
+  local string comd;
+  
+  comd = strcat("cl_bob ", bob, " \n ");
+  comd = strcat(comd, "cl_bobcycle ", cycle, " \n ");
+  comd = strcat(comd, "cl_bobup ", up, " \n");
+  
+  stuffcmd(self, comd );
+};
+void(string bobmodel, string side, string bmod_speed) client_update_modelBob={
+  local string comd;
+  
+  comd = strcat("cl_bobmodel ", bobmodel,  " \n ");
+  comd = strcat(comd, "cl_bobmodel_side ", side,  " \n ");
+  comd = strcat(comd, "cl_bobmodel_speed ", bmod_speed,  " \n");
+  
+  stuffcmd(self, comd );
+};
+
+void(string p_max, string p_min) client_update_viewPitch={
+  local string comd;
+  
+  comd = strcat("in_pitch_max ", p_max, " \n ");
+  comd = strcat(comd, "in_pitch_min ", p_min, "\n");
+  
+  stuffcmd(self, comd);
 };
 
 

@@ -18,6 +18,7 @@ float CLIENT_data_idx;
 float CLIENT_i_faction;
 float CLIENT_stat_lck_stt;
 float CLIENT_stat_rdr_mode;
+float CLIENT_stat_rdr_mode_prev;
 float CLIENT_stat_hit_dirs;
 float CLIENT_stat_ret_dist;
 

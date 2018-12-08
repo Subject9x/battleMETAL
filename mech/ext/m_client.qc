@@ -123,6 +123,8 @@ void() ClientConnect = {
   self.client_num = CLIENTS;  //book keeping for multiplayer
   self.stat_plr_stt = PLAYER_SPAWN;
   
+  client_push_player_info();
+  
   if (intermission_running){
     ExitIntermission();
   }
@@ -138,8 +140,6 @@ responsible for configuring the player and spawning them into the level
 void() PutClientInServer = {
   local float gamemode;
   local entity spot;
-  
-  self.stat_ent_id = num_for_edict( self );
   
   self.flags = FL_CLIENT;
   self.velocity = '0 0 0';	// 1998-07-21 Player moves after respawn fix by Xian
@@ -207,9 +207,9 @@ void() PutClientInServer = {
     if(!coop && !deathmatch){
       self.movetype = MOVETYPE_NONE;
       self.flags = self.flags - (self.flags & FL_FLY);
-      mh_world_updateClientSpeed(0, 0, 0, "0","0");
-      mh_world_updateClientViewBob("0", "0", "0");
-      mh_world_updateClientModelBob("0", "0", "0");
+      client_update_moveSpeed(0, 0, 0, "0","0");
+      client_update_viewBob("0", "0", "0");
+      client_update_modelBob("0", "0", "0");
       self.stat_plr_stt = PLAYER_IN_MENU;
     }
     else{

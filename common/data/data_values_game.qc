@@ -131,7 +131,7 @@ float EFF_ARC = 512;  //weapon has an arcing projectile, used by AI
 //     SHARED STATS         
 //============================
 float RADAR_SWEEP = 2.5;
-.float stat_ent_id;
+
 .float radar_time;
 .float radar_range;
 .float hardpoint_cnt;
@@ -258,8 +258,6 @@ float STAT_PLR_ANG_Z = 102;
 float STAT_PLR_REP = 103; //remaining repair delta
 
 float STAT_PLR_NAME = 104;
-
-float STAT_PLR_ENT_ID = 105;
 
 //============================
 //     LOCK STATES   

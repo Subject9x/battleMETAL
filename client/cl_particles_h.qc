@@ -40,11 +40,9 @@ void() SUB_Remove={
 
 //===================================
 void() te_shield_think={
-  local entity player;
-  player = entitybyindex( getstati(STAT_PLR_ENT_ID) );
-  
+
   self.alpha = self.alpha - 0.3;
-  self.angles = vectoangles( player.entorg - self.origin );
+  self.angles = vectoangles( CLIENT_entorg - self.origin );
   
   self.think = te_shield_think;
   if( self.alpha <= 0 ){

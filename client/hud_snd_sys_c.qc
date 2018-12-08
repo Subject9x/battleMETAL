@@ -60,13 +60,13 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
 };
 
 void(float playerState) snd_hud_vfx_statelistener={
-  if(self.player_state == PLAYER_POWERUP_BEGIN){
+  if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
     if( CRITBITS < 0){
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
       CRITBITS = 0;    
     }
   }
-  else if(self.player_state == PLAYER_ACTIVE){
+  else if(CLIENT_player_state == PLAYER_ACTIVE){
     if(CRITBITS == 0){
       CRITBITS = CRITBITS | 1 | 2 | 4 | 8 | 16 | 32;
     }
@@ -138,8 +138,8 @@ void() te_msn_boundary={
 
 
 void(float mode) snd_hud_vfx_toggleradar={
-  if(self.stat_rdr_mode_prev != mode){
-    self.stat_rdr_mode_prev = mode;
+  if(CLIENT_stat_rdr_mode_prev != mode){
+    CLIENT_stat_rdr_mode_prev = mode;
     if(mode){
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE, 3);
     }

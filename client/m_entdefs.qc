@@ -12,9 +12,6 @@ entity CLIENTDATA;
 .entity viewmodel;
 
 .float sh_cur;
-.float stat_rdr_mode_prev;
-.float stat_rdr_mode;
-
 .float target_faction;
 .float target_vecsize;
 .float target_datatype;

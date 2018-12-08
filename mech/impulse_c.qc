@@ -160,7 +160,7 @@ void() ButtonCommands={
     if( self.en_cur > 0 ){
       if( self.stat_plr_stt == PLAYER_ACTIVE ){
         self.stat_plr_stt = PLAYER_SPRINT_ON;
-        mh_world_updateClientSpeed(self.m_fspeed * self.m_maccel, self.m_sspeed * self.m_maccel, self.m_bspeed * self.m_maccel, ftos(self.m_maccel), self.m_rollangle);
+        client_update_moveSpeed(self.m_fspeed * self.m_maccel, self.m_sspeed * self.m_maccel, self.m_bspeed * self.m_maccel, ftos(self.m_maccel), self.m_rollangle);
       }
     }
   }

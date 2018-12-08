@@ -191,14 +191,19 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
 
 
 void(void() data_ini) build_mech_unit={
+  local entity part_chain;
 
   if( !(self.flags & FL_CLIENT) ){
     build_mech_bot( data_ini );
     return;
   }
-  local entity part_chain;
+  
+  self.data_type = DATA_MECH;
+  self.flags = self.flags | FL_UNIT;
+  
   data_ini();
   build_mech_torsoCenter(self.unit_ctor);
+  
   self.sh_hit = 0;
   self.chain_timer = time;
   self.lock_timer = 0;

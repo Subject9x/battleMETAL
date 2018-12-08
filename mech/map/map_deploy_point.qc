@@ -33,12 +33,15 @@ void() deploy_point_th={
 void() map_deploy_point={
   self.data_type = DATA_DEPL;
   self.flags = self.flags | FL_NODE;
+  
   setmodel(self, "q3mdl/testball.md3");
+  setorigin( self, self.origin );
+  
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.use = deploy_point_use;
   self.think = deploy_point_th;
   self.nextthink = time + 0.1;
   
-  trigger_event( world, trigOnSpawn );
+  trigger_event( self, trigOnSpawn );
 }

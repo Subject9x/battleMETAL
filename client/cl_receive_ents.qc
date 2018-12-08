@@ -8,25 +8,22 @@ tired of trying to scroll through them all in csmain.
 self scope for all is the ent being received
 */
 
-void( entity client, float wep, float delt ) client_get_weapon_delta;
+void( float wep, float delt ) client_get_weapon_delta;
 
 void() client_get_info={
-  local entity client;
-  local vector entityOrg;
-  local float radarRange;
-  
+  local float localDataType;
   //WARNING:
   //SVC_SETVIEW changes local_playerentum to Camera's Ent ID!
-  client = entitybyindex( getstati(STAT_PLR_ENT_ID) );
+  //client = entitybyindex( getstati(STAT_PLR_ENT_ID) );
 
-  entityOrg = te_read_vector();
-  radarRange = ReadLong(); 
+  CLIENT_entorg  = te_read_vector();
+  CLIENT_radar_range  = ReadLong(); 
+  CLIENT_data_type = getstati(STAT_PLR_DTYPE);
   
-  CLIENT_entorg = entityOrg;
-  CLIENT_radar_range = radarRange;   
-  if( CLIENT_data_type == DATA_MECH ){
-    CLIENT_en_cur = ReadByte();
-    CLIENT_sh_cur = ReadByte();
+  localDataType = ReadByte();
+  if( localDataType == DATA_MECH ){
+    CLIENT_en_cur = ReadShort();
+    CLIENT_sh_cur = ReadShort();
     
     CLIENT_hp_ctor = ReadByte(); 
     CLIENT_hp_leg = ReadByte(); 
@@ -38,13 +35,13 @@ void() client_get_info={
     CLIENT_hardpoint_cnt = ReadByte();
     local float wep;
     wep = 1;
-    while( wep <= client.hardpoint_cnt ){
-      client_get_weapon_delta( client, wep, ReadByte() ); 
+    while( wep <= CLIENT_hardpoint_cnt ){
+      client_get_weapon_delta( wep, ReadByte() ); 
       wep = wep + 1;
     }
     
     CLIENT_stat_trg_ent_id = ReadByte();
-    if( CLIENT_stat_trg_ent_id != num_for_edict(world) ){
+    if( CLIENT_stat_trg_ent_id != 0 ){
       CLIENT_target_origin = te_read_vector();
       CLIENT_target_shield = ReadByte();
       CLIENT_stat_trg_ct_hp = ReadByte();
@@ -60,10 +57,9 @@ void() client_get_info={
       CLIENT_w_icon = strzone( ReadString() );
     }
   }
-  
 };
 
-void( entity client, float wep, float delt ) client_get_weapon_delta={
+void( float wep, float delt ) client_get_weapon_delta={
   switch( wep ){
     case 1:
       CLIENT_stat_w1_rel = delt;
@@ -100,9 +96,8 @@ void( entity client, float wep, float delt ) client_get_weapon_delta={
   blips fade out over a given amount of time 
 */
 void() client_get_contact={
-  local entity player, blip;
+  local entity blip;
   
-  player = entitybyindex( getstati(STAT_PLR_ENT_ID) );
   
   blip = spawn();
   
