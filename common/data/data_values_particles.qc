@@ -34,3 +34,9 @@ float TE_MSN_BOUND = 99;
 float TE_HEAT_SMALL = 100;
 
 float TE_MUZZLE_LASER = 101;
+float TE_MIS_TRAIL = 102;
+float TE_MIS_FLAME = 103;
+float TE_MIS_MUZZLE = 104;
+float TE_MIS_EXPL = 105;
+
+float TE_LAS_HIT = 106;

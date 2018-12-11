@@ -34,6 +34,21 @@ float( float te_id ) te_effect_delegate={
     case TE_MUZZLE_LASER:
       hand = te_muzzle_laser( te_read_vector(), te_read_vector(), te_read_vector() );
       break;
+    case TE_MIS_TRAIL:
+      hand = te_mis_trail( te_read_vector(), te_read_vector(), ReadByte());
+      break;
+    case TE_MIS_FLAME:
+      hand = te_mis_flame( te_read_vector(), ReadByte() );
+      break;
+    case TE_MIS_MUZZLE:
+      hand = te_mis_muzzle( te_read_vector(), te_read_vector()  );
+      break;
+    case TE_MIS_EXPL:
+      hand = te_mis_expl( te_read_vector());
+      break;
+    case TE_LAS_HIT:
+      hand = te_laser_hit( te_read_vector(), ReadByte(), ReadByte());
+      break;
     default:
       hand = FALSE;
       break;
@@ -109,6 +124,42 @@ float( vector org, float total ) te_heat_small={
   pointparticles(particleeffectnum("HEAT_SMALL"), org , '0 0 0', total);
   return TRUE;
 };
+
+float(vector org, vector end, float cnt) te_mis_trail={
+  trailparticles(world, particleeffectnum("TE_MIS_TRAIL"), org , end, cnt);
+  return TRUE;
+};
+
+float( vector org, float total) te_mis_flame={
+  pointparticles(particleeffectnum("TE_MIS_FLAME"), org , '0 0 0', total);
+  return TRUE;
+};
+
+float( vector org, vector angl ) te_mis_muzzle={
+  local vector dir;
+  dir = angl * 10;
+  pointparticles(particleeffectnum("TE_MIS_MUZZLE"), org , dir, 1);
+  return TRUE;
+};
+
+float( vector org ) te_mis_expl={
+  pointparticles(particleeffectnum("TE_MIS_EXPL"), org , '0 0 0', 1);
+  return TRUE;
+};
+
+
+
+float(vector org, float total, float armor) te_laser_hit={
+  if( armor ){
+    pointparticles(particleeffectnum("TE_LAS_HIT"), org , '0 0 0', total);
+  }
+  else{
+    pointparticles(particleeffectnum("TE_LAS_DIRT"), org , '0 0 0', total);
+  }
+  
+  return TRUE;
+};
+
 
 /*
   Muzzle Flashes

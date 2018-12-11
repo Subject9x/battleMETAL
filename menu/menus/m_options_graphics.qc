@@ -604,7 +604,6 @@ void() click_graphics_accept={
     
     cvar_set("vid_conwidth", ftos(VID_CNEXT_x));
     cvar_set("vid_conheight", ftos(VID_CNEXT_y));
-
   }
   cvar_set("saved1", ftos(graphics_effects_lbl.len));
   cvar_set("saved2", ftos(graphics_gfx_lbl.len));

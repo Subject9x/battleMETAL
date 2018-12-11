@@ -2,7 +2,7 @@
 //    battleMETAL AI objects
 //===========================================================
 
-/*QUAKED ai_node (0.988 0.976 0.267) (-15 -15 -512) (15 15 512) DROP_ONSPAWN REMOVE_ONTOUCH START_INACTIVE INACTIVE_ONTOUCH
+/*QUAKED ai_node (0.988 0.976 0.267) (-10 -10 -18) (10 10 18) DROP_ONSPAWN REMOVE_ONTOUCH START_INACTIVE INACTIVE_ONTOUCH
 This is used to setup patrol and move paths for AI
 -------- KEYS -------- 
 .i_faction = <float> [faction number]

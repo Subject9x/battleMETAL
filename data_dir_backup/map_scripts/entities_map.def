@@ -220,4 +220,12 @@ REMOVE_FIRSTUSE 8 - remove after first countdown
 DRAW_MODEL 16 - draw the whole weapon model
 LIMITED_FIRE 32 - use limited number of shots
 */
+
+
+/*QUAKED func_mission_boundary ((0.95 0.99 0) ?
+Defines the boundaries for a player, this will send warnings about leaving 
+the mission area if player stays inside this bounds.
+usually pair this will a killbox if player wanders outside map.
+
+*/
 //=================================================================================================

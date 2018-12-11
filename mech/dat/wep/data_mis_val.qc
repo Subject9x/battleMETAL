@@ -81,7 +81,9 @@ void() data_mis_atk={
     end = util_traceForAI( org, angl, self.w_range, player );
   }
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
-    
+
+  te_mis_muzzle( org + (v_forward * 1), normalize( dir - org ) );
+  
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.rl_cur = 0;
@@ -116,8 +118,8 @@ void() data_mis_atk={
     self.velocity = normalize(dir - org);
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);
-    self.think = BecomeExplosion;
-    self.nextthink = time + self.p_lifetime;
+    self.c_ofs = oself.origin;
+    self.power_timer = time + self.p_lifetime;
   self = oself;
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };

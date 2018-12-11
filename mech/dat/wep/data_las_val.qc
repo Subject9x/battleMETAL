@@ -118,7 +118,9 @@ void() data_las_atk={
   
   te_muzzle_laser( self.origin, self.angles, player.velocity);
   
-  te_flamejet(dir, '0 10 0', 25);
-
   t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
+  if( trace_ent.sh_cur <= 0 ){
+    
+    te_laser_hit( dir + (v_forward * -4), random() * 4, (self.takedamage > DAMAGE_NO) );
+  }
 };

@@ -75,6 +75,57 @@ void( vector org, float total ) te_heat_small={
   WriteByte( MSG_BROADCAST, total );
 };
 
+void( vector org, vector end, float total) te_mis_trail={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_MIS_TRAIL );
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+  WriteCoord (MSG_BROADCAST, end_x);
+  WriteCoord (MSG_BROADCAST, end_y);
+  WriteCoord (MSG_BROADCAST, end_z);
+  WriteByte( MSG_BROADCAST, total );
+};
+
+void( vector org, float total) te_mis_flame={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_MIS_FLAME );
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+  WriteByte( MSG_BROADCAST, total );
+};
+
+void( vector org, vector angl ) te_mis_muzzle={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_MIS_MUZZLE );
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+  WriteCoord (MSG_BROADCAST, angl_x);
+  WriteCoord (MSG_BROADCAST, angl_y);
+  WriteCoord (MSG_BROADCAST, angl_z);
+};
+
+void( vector org ) te_mis_expl={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_MIS_EXPL );
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+};
+
+void(vector org, float total, float armor) te_laser_hit={
+  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
+  WriteByte( MSG_BROADCAST, TE_LAS_HIT );
+  WriteCoord (MSG_BROADCAST, org_x);
+  WriteCoord (MSG_BROADCAST, org_y);
+  WriteCoord (MSG_BROADCAST, org_z);
+  WriteByte( MSG_BROADCAST, total );
+  WriteByte( MSG_BROADCAST, armor );
+};
+
+
 /*
   MUZZLE FLASHES
 */
@@ -91,6 +142,7 @@ void(vector org, vector angl, vector vel) te_muzzle_laser={
   WriteCoord (MSG_BROADCAST, vel_y);
   WriteCoord (MSG_BROADCAST, vel_z);
 };
+
 
 //HUD Sound Effects
 //make sure to scope self to target client
