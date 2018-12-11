@@ -31,8 +31,8 @@ float( float te_id ) te_effect_delegate={
     case TE_HEAT_SMALL:
       hand = te_heat_small( te_read_vector(), ReadByte() );
       break;
-    case TE_MUZZLE_LASER:
-      hand = te_muzzle_laser( te_read_vector(), te_read_vector(), te_read_vector() );
+    case TE_LAS_MUZZLE:
+      hand = te_muzzle_laser( te_read_vector(), te_read_vector(), te_read_vector(), ReadByte());
       break;
     case TE_MIS_TRAIL:
       hand = te_mis_trail( te_read_vector(), te_read_vector(), ReadByte());
@@ -41,13 +41,16 @@ float( float te_id ) te_effect_delegate={
       hand = te_mis_flame( te_read_vector(), ReadByte() );
       break;
     case TE_MIS_MUZZLE:
-      hand = te_mis_muzzle( te_read_vector(), te_read_vector()  );
+      hand = te_mis_muzzle( te_read_vector(), te_read_vector(), te_read_vector(), ReadByte() );
       break;
     case TE_MIS_EXPL:
       hand = te_mis_expl( te_read_vector());
       break;
     case TE_LAS_HIT:
       hand = te_laser_hit( te_read_vector(), ReadByte(), ReadByte());
+      break;
+    case TE_RPC_MUZZLE:
+      hand = te_rpc_muzzle( te_read_vector(), te_read_vector(), te_read_vector(), ReadByte());
       break;
     default:
       hand = FALSE;
@@ -68,11 +71,6 @@ vector() te_read_vector={
   newv_y = ReadCoord();
   newv_z = ReadCoord();
   return newv;
-};
-
-float(vector org, vector end) te_beam_laser={
-  trailparticles(world, particleeffectnum("BEAM_LASER"), org, end);
-  return TRUE;
 };
 
 
@@ -125,17 +123,20 @@ float( vector org, float total ) te_heat_small={
   return TRUE;
 };
 
+
+
+
 float(vector org, vector end, float cnt) te_mis_trail={
   trailparticles(world, particleeffectnum("TE_MIS_TRAIL"), org , end, cnt);
   return TRUE;
 };
 
 float( vector org, float total) te_mis_flame={
-  pointparticles(particleeffectnum("TE_MIS_FLAME"), org , '0 0 0', total);
+  //pointparticles(particleeffectnum("TE_MIS_FLAME"), org , '0 0 0', total);
   return TRUE;
 };
 
-float( vector org, vector angl ) te_mis_muzzle={
+float( vector org, vector angl, vector vel, float total ) te_mis_muzzle={
   local vector dir;
   dir = angl * 10;
   pointparticles(particleeffectnum("TE_MIS_MUZZLE"), org , dir, 1);
@@ -147,7 +148,20 @@ float( vector org ) te_mis_expl={
   return TRUE;
 };
 
+float(vector org, vector end) te_beam_laser={
+  trailparticles(world, particleeffectnum("BEAM_LASER"), org, end);
+  return TRUE;
+};
 
+float(vector org, vector angl, vector vel, float total) te_muzzle_laser={
+  makevectors( angl );
+  local vector mz;
+  mz = org + v_forward * 3;
+  
+  te_customflash(mz, 50, 0.1, '0.855 0.776 0.957'); 
+  pointparticles(particleeffectnum("HEAT_SMALL"), mz , '0 0 0', 1);
+  return TRUE;
+};
 
 float(vector org, float total, float armor) te_laser_hit={
   if( armor ){
@@ -161,19 +175,18 @@ float(vector org, float total, float armor) te_laser_hit={
 };
 
 
+float( vector org, vector angl, vector vel, float total) te_rpc_muzzle={
+  local vector dir;
+  dir = angl * 10;
+  pointparticles( particleeffectnum("TE_RPC_MUZZLE"), org, dir, total);
+  return TRUE;
+};
+
+
 /*
   Muzzle Flashes
 */
 
-float(vector org, vector angl, vector vel) te_muzzle_laser={
-  makevectors( angl );
-  local vector mz;
-  mz = org + v_forward * 3;
-  
-  te_customflash(mz, 50, 0.1, '0.855 0.776 0.957'); 
-  pointparticles(particleeffectnum("HEAT_SMALL"), mz , '0 0 0', 1);
-  return TRUE;
-};
 
 /*
   Fog subsystem

@@ -43,7 +43,7 @@ void(vector org, vector end) te_beam_pac={
 };
 
 //TE_SMOKE_TEST
-void(vector org, vector vel, float cnt) te_smoke_test={
+void(vector org, vector vel, float total) te_smoke_test={
   WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
   WriteByte (MSG_BROADCAST, TE_SMOKE_TEST);
   WriteCoord (MSG_BROADCAST, org_x);
@@ -52,7 +52,7 @@ void(vector org, vector vel, float cnt) te_smoke_test={
   WriteCoord (MSG_BROADCAST, vel_x);
   WriteCoord (MSG_BROADCAST, vel_y);
   WriteCoord (MSG_BROADCAST, vel_z);
-  WriteByte (MSG_BROADCAST, cnt);
+  WriteByte (MSG_BROADCAST, total);
 };
 
 void(vector org, vector angl) te_shield_test={
@@ -96,17 +96,6 @@ void( vector org, float total) te_mis_flame={
   WriteByte( MSG_BROADCAST, total );
 };
 
-void( vector org, vector angl ) te_mis_muzzle={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_MIS_MUZZLE );
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteCoord (MSG_BROADCAST, angl_x);
-  WriteCoord (MSG_BROADCAST, angl_y);
-  WriteCoord (MSG_BROADCAST, angl_z);
-};
-
 void( vector org ) te_mis_expl={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_MIS_EXPL );
@@ -129,9 +118,9 @@ void(vector org, float total, float armor) te_laser_hit={
 /*
   MUZZLE FLASHES
 */
-void(vector org, vector angl, vector vel) te_muzzle_laser={
+void(vector org, vector angl, vector vel, float teType, float total) te_muzzle_generic={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_MUZZLE_LASER );
+  WriteByte( MSG_BROADCAST, teType );
   WriteCoord (MSG_BROADCAST, org_x);
   WriteCoord (MSG_BROADCAST, org_y);
   WriteCoord (MSG_BROADCAST, org_z);
@@ -141,8 +130,8 @@ void(vector org, vector angl, vector vel) te_muzzle_laser={
   WriteCoord (MSG_BROADCAST, vel_x);
   WriteCoord (MSG_BROADCAST, vel_y);
   WriteCoord (MSG_BROADCAST, vel_z);
+  WriteByte( MSG_BROADCAST, total);
 };
-
 
 //HUD Sound Effects
 //make sure to scope self to target client

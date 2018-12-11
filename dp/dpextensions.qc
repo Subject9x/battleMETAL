@@ -1312,7 +1312,13 @@ float(string sample) soundlength = #534; // returns length of sound sample in se
 //solid definitions:
 float SOLID_CORPSE = 5;
 //description:
-//the entity will not collide with SOLID_CORPSE and SOLID_SLIDEBOX entities (and likewise they will not collide with it), this is useful if you want dead bodies that are shootable but do not obstruct movement by players and monsters, note that if you traceline with a SOLID_SLIDEBOX entity as the ignoreent, it will ignore SOLID_CORPSE entities, this is desirable for visibility and movement traces, but not for bullets, for the traceline to hit SOLID_CORPSE you must temporarily force the player (or whatever) to SOLID_BBOX and then restore to SOLID_SLIDEBOX after the traceline.
+//the entity will not collide with SOLID_CORPSE and SOLID_SLIDEBOX entities 
+//(and likewise they will not collide with it), this is useful if you want dead bodies that are 
+//shootable but do not obstruct movement by players and monsters, 
+//note that if you traceline with a SOLID_SLIDEBOX entity as the ignoreent, 
+//it will ignore SOLID_CORPSE entities, this is desirable for visibility and movement traces, 
+//but not for bullets, for the traceline to hit SOLID_CORPSE you must temporarily force the player (or whatever) to
+// SOLID_BBOX and then restore to SOLID_SLIDEBOX after the traceline.
 
 //DP_SPRITE32
 //idea: LordHavoc

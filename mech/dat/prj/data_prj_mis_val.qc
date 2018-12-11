@@ -34,14 +34,14 @@ void() data_prj_mis_th={
   
   smk1 = self.origin + (v_forward * -2.5);
   
-  te_mis_trail(self.origin, self.c_ofs, 1);
+  //te_mis_trail(self.origin, self.c_ofs, 1);
   te_mis_flame( smk1, 1) ;
   
   self.think = data_prj_mis_th;
   self.nextthink = time + 0.05;
   if( time > self.power_timer ){
     self.think = BecomeExplosion;
-    self.nextthink = time + 0.01;
+    self.nextthink = time + 0.05;
   }
 };
 
@@ -61,7 +61,9 @@ void() data_prj_mis_ini={
   self.glow_color = DAT_PRJ_MIS_GLOWCOLOR;
   self.glow_size = DAT_PRJ_MIS_GLOWSIZE;
   self.glow_trail = DAT_PRJ_MIS_GLOWTRAIL;
-  self.think = data_prj_mis_th;
-  self.nextthink = time + (random() * 0.05);
+  self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");  //DEBUG
+  
+  //self.think = data_prj_mis_th;
+  //self.nextthink = time + (random() * 0.01);
 };
 

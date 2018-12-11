@@ -23,10 +23,6 @@ void() ctrl_updateLegs={
       local vector dn, angl;
       local float vertic;
       makevectors(self.owner.angles);
-      vertic = self.owner.absmin - self.owner.origin - 16;
-      dn = self.origin + (v_up*vertic);
-      traceline(self.origin, dn, TRUE, self.owner);
-      //trace_dphittexturename
       local vector m;
       m = self.owner.movement;
       m_y = m_y * -1;

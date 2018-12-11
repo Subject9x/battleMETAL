@@ -467,7 +467,7 @@ vector DAT_LATC_FIRE_OFS    = '0 0 2';
 //-------------------------ATC
 vector DAT_FLAK_FIRE_OFS    = '0 0 2';
 //-------------------------RPlas
-vector DAT_RPLAS_FIRE_OFS   = '0 0 4';
+vector DAT_RPLAS_FIRE_OFS   = '0 0 6';
 //-------------------------QRifle
 vector DAT_QRFL_FIRE_OFS    = '0 0 2';
 //-------------------------SFGA
@@ -483,7 +483,7 @@ vector DAT_ESR_FIRE_OFS     = '0 0 3.5';
 //-------------------------PAC
 vector DAT_PAC_FIRE_OFS     = '0 0 8';
 //-------------------------Rocket
-vector DAT_MIS_FIRE_OFS     = '0 0 2';
+vector DAT_MIS_FIRE_OFS     = '0 0 3';
 //-------------------------Laser Missile
 vector DAT_MLGD_FIRE_OFS = '0 0 2';
 //-------------------------Radar Missile

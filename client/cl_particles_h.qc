@@ -58,6 +58,7 @@ vector() te_read_vector;
 
 float(vector org, vector end) te_beam_laser;
 float(vector org, float total, float armor) te_laser_hit;
+float(vector org, vector angl, vector vel, float total) te_muzzle_laser;
 
 float(vector org, vector end) te_beam_esr;
 float(vector org, vector end) te_beam_pac;
@@ -67,8 +68,7 @@ float(vector org, float total) te_heat_small;
 
 float( vector org, vector end, float total) te_mis_trail;
 float( vector org, float total) te_mis_flame;
-float( vector org, vector angl ) te_mis_muzzle;
+float( vector org, vector angl, vector vel, float total) te_mis_muzzle;
 float( vector org ) te_mis_expl;
 
-//MUZZLE FLAHES
-float(vector org, vector angl, vector vel) te_muzzle_laser;
+float( vector org, vector angl, vector vel, float total) te_rpc_muzzle;

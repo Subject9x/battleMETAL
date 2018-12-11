@@ -279,7 +279,6 @@ void(void() func) build_mech_torsoCenter={
 void(void() data_ini) build_mech_bot={
   local entity part_chain;
   local vector hmins, hmaxs;
-  local string mdl;
   
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   

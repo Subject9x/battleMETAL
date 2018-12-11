@@ -159,7 +159,7 @@ float DAT_PRJ_MIS_ALPHA = 1;
 vector DAT_PRJ_MIS_COLORMOD = '0 0 0';
 float DAT_PRJ_MIS_GLOWCOLOR = 0;
 float DAT_PRJ_MIS_GLOWSIZE = 0;
-float DAT_PRJ_MIS_GLOWTRAIL= FALSE;
+float DAT_PRJ_MIS_GLOWTRAIL= TRUE;
 
 //-------------------------MIS-LGD
 float DAT_PRJ_MLGD_EFFECTS = 0;

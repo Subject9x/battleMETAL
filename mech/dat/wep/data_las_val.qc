@@ -116,7 +116,7 @@ void() data_las_atk={
   te_beam_laser(laser_org.origin, dir);
   sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
   
-  te_muzzle_laser( self.origin, self.angles, player.velocity);
+  te_muzzle_generic(self.origin, player.angles, player.velocity, TE_LAS_MUZZLE, 1);
   
   t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
   if( trace_ent.sh_cur <= 0 ){

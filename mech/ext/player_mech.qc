@@ -113,8 +113,8 @@ void() mech_player_die={
 void(entity comp) mech_player_compdie={
   if(comp.model){
     if(comp != world && comp.owner == self){
-      local entity old;
-      old = self;
+      local entity this;
+      this = self;
       self = comp;
         if(self.th_die){
           self.th_die();
@@ -123,7 +123,7 @@ void(entity comp) mech_player_compdie={
           self.think = SUB_Remove;
           self.nextthink = time + 0.1;
         }
-      self = old;
+      self = this;
     }
   }
 };
@@ -146,13 +146,13 @@ void() mech_player_removecamera={
 };
 
 void(entity comp) mech_player_removecomp={
-  local entity old;
+  local entity this;
   if(comp.model){
     if(comp != world && comp.owner == self){
-      old = self;
+      this = self;
       self = comp;
         remove(self);
-      self = old;
+      self = this;
     }
   }
 };

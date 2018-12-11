@@ -82,8 +82,8 @@ void() data_mis_atk={
   }
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
 
-  te_mis_muzzle( org + (v_forward * 1), normalize( dir - org ) );
-  
+  te_muzzle_generic( org + (v_forward * 1), normalize( dir - org ), player.velocity, TE_MIS_MUZZLE, 1);
+
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.rl_cur = 0;
@@ -104,6 +104,9 @@ void() data_mis_atk={
     self.w_isburst = TRUE;
   }
   
+  player.punchangle_x = -2 + random() * -2;
+  player.punchangle_y = -3 + random() * -4;
+  
   newmis = spawn();
   oself = self;
   self = newmis;
@@ -111,7 +114,8 @@ void() data_mis_atk={
     data_iniProjectile(oself.w_proj);
     self.p_dmgtype = oself.p_dmgtype;
     self.p_damage = oself.p_damage;
-    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
+    self.solid = SOLID_BBOX;
+    self.movetype = MOVETYPE_FLYMISSILE;
     util_setModel(self.c_model, 0, 0);
     setsize(self, '0 0 0', '0 0 0');
     setorigin(self, org);

@@ -22,7 +22,7 @@ void() data_rplas_ini={
   self.w_clipsize = DAT_RPLAS_CLIPSIZE;
   self.w_currentammo = DAT_RPLAS_CLIPSIZE;
   self.w_fire_ofs = DAT_RPLAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
-  self.c_model = DAT_RPLAS_MODEL;
+  self.c_model = "progs/casing.mdl";//DAT_RPLAS_MODEL;
   self.w_attack = data_rplas_atk;
   self.w_proj = DAT_RPLAS_PROJ_ID;
   self.rl_cur = DAT_RPLAS_RL_MAX;
@@ -62,7 +62,7 @@ void() data_rplas_think={
 };
 
 void() data_rplas_atk={
-  local entity player, proj, oself;
+  local entity player, oself;
   local vector dir, org, end, adj, angl;
   local float range;
  
@@ -119,39 +119,26 @@ void() data_rplas_atk={
  
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   
-  local vector sfx;
-  sfx = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
- 
-  newmis = spawn();
-  newmis.solid = SOLID_NOT;
-  newmis.classname = "flash";
-  newmis.movetype = MOVETYPE_NONE;
-  newmis.glow_color = 250;
-  newmis.glow_size = 1;
-  newmis.glow_trail = TRUE;
-  newmis.color = '0 1 0';
-  newmis.alpha = 0.5;
-  setmodel(newmis, "progs/muzzleflash.spr32");
-  setsize(newmis, '0 0 0', '0 0 0');
-  setorigin(newmis, sfx);
-  newmis.think = SUB_Remove;
-  newmis.nextthink = time + 0.1;// + 0.35;
-
+  te_muzzle_generic( org, player.angles, player.velocity, TE_RPC_MUZZLE, 1);
+  
   newmis = spawn();
   oself = self;
   self = newmis;
+    cons_logAFloat("plas #", num_for_edict( self ));  //DEBUG
     self.owner = player;
     data_iniProjectile(oself.w_proj);
-    self.think = SUB_Remove;
-    self.nextthink = time + self.p_lifetime;
     self.p_dmgtype = oself.p_dmgtype;
     self.p_damage = oself.p_damage;
-    util_setModel(self.c_model, 0, 0);
-    util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-    setsize(self, '0 0 0', '0 0 0');        
-    setorigin(self, org);
+    self.movetype = MOVETYPE_FLYMISSILE;
+    self.solid = SOLID_BBOX;
+    self.classname = "missile";
     self.velocity = normalize(dir - org);
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);
+    self.think = SUB_Remove;
+    self.nextthink = time + self.p_lifetime;
+    util_setModel(self.c_model, 0, 0);
+    setsize(self, '0 0 0', '0 0 0');        
+    setorigin(self, org);
   self = oself;
 };

@@ -209,7 +209,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
     }
   }
-
+  
   //check shields
   if( (dmg_type & DMG_BAL) ){
     dmg_amt = t_damage_bal( trg, inflictor, dmg_amt );
@@ -220,7 +220,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   else if( (dmg_type & DMG_EXP) ){
     dmg_amt = t_damage_mis( trg, inflictor, dmg_amt );
   }
-  
+  cons_logAFloat("dmg_amt2", dmg_amt);//DEBUG
   
   if( (trg.flags & FL_MONSTER) ){
     ai_damage_react( trg, attacker );
