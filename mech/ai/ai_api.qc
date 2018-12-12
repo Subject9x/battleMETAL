@@ -295,6 +295,7 @@ void(entity bot, entity attacker) ai_damage_react={
   trigger_event( bot, trigOnDamage );
   
   this = self;
+  
   self = bot;
   panic = FALSE;
   if( (self.flags & FL_NOSHOOT) ){

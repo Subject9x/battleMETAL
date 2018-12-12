@@ -34,21 +34,19 @@ void() data_prj_rplas_burn={
 
 void() data_prj_rplas_touch={
   local entity hit;
-    
+  local entity this;
+  
+  this = self;
+  
   if (pointcontents(self.origin) == CONTENT_SKY){
 		remove(self);
 		return;
 	}
 
-  cons_logAFloat(" self solid", self.solid ); //DEBUG
-  cons_logAFloat(" other solid", other.solid ); //DEBUG
-  
-  pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+  pointparticles( particleeffectnum("TE_RPC_HIT"), this.origin, '0 0 0', 1);
   if(other.takedamage){
-    //hit = t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-    if(other.sh_cur <= 0){
-      cons_logAFloat(" self solid", self.solid ); //DEBUG
-      cons_logAFloat(" other solid", other.solid ); //DEBUG
+    hit = t_damage(other, this, this.owner, this.p_damage, this.p_dmgtype, this.origin, '0 0 0');
+    //if(other.sh_cur <= 0){
       /*self.movetype = MOVETYPE_FOLLOW;
       self.solid = SOLID_NOT;
       self.velocity = '0 0 0';
@@ -69,7 +67,7 @@ void() data_prj_rplas_touch={
       
       //remove(self);
       //return;
-    }
+    //}
 	}
   remove(self);
 };
@@ -78,7 +76,7 @@ void() data_prj_rplas_ini={
   self.touch = data_prj_rplas_touch;
   self.data_idx = ID_PRJ_RPLAS;
   self.p_velocity = DAT_PRJ_RPLAS_VELOCITY;
-  self.c_model = "q3mdl/proj_mis.md3";//DAT_PRJ_RPLAS_MODEL;
+  self.c_model = DAT_PRJ_RPLAS_MODEL;
   self.p_lifetime = DAT_PRJ_RPLAS_LIFETIME;
   
   //cosmetics

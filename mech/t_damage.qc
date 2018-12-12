@@ -177,6 +177,13 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 };
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
+  local entity dmgTrg, dmgInflictor
+  local float dmgAmt;
+  
+  dmgTrg = trg;
+  dmgInflictor = inflictor;
+  dmgAmt = dmg_amt;
+  
   local entity oself, targ_act;
     
   if( !trg.takedamage ){
@@ -192,7 +199,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     if( skill <= 0 ){
       return trg;
     }
-    dmg_amt = dmg_amt / 2;
+    dmgAmt = dmgAmt / 2;
   }
   
   if( (trg.flags & FL_CLIENT) ){
@@ -213,21 +220,24 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   //check shields
   if( (dmg_type & DMG_BAL) ){
-    dmg_amt = t_damage_bal( trg, inflictor, dmg_amt );
+    dmgAmt = t_damage_bal( dmgTrg, dmgInflictor, dmgAmt );
   }
   else if( (dmg_type & DMG_ENE) ){
-    dmg_amt = t_damage_ene( trg, inflictor, dmg_amt );
+    dmgAmt = t_damage_ene( dmgTrg, dmgInflictor, dmgAmt );
   }
   else if( (dmg_type & DMG_EXP) ){
-    dmg_amt = t_damage_mis( trg, inflictor, dmg_amt );
+    dmgAmt = t_damage_mis( dmgTrg, dmgInflictor, dmgAmt );
   }
   
   if( (trg.flags & FL_MONSTER) ){
-    ai_damage_react( trg, attacker );
+    otemp = self;
+    self = dmgTrg;
+      ai_damage_react( dmgTrg, attacker );
+    self = otemp;
   }
-
-  if(dmg_amt > 0){
-    sound (trg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
+  
+  if(dmgAmt > 0){
+    sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
   }
   else{
     te_shield_test( dmg_point, vectoangles( attacker.origin - dmg_point ) );
@@ -238,15 +248,15 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if(trg.data_type == DATA_MECH){
     //filter out leg hits
     if(dmg_point_z < (trg.origin_z - 5)){
-      trg = trg.e_legs;
+      dmgTrg = dmgTrg.e_legs;
     }
     else{
       local float irad;
       irad = vlen(dmg_point - trg.origin);
-      targ_act = t_find_part(dmg_point, irad, trg);
+      targ_act = t_find_part(dmg_point, irad, dmgTrg);
       if(targ_act != world){
         if(targ_act.deadflag <= DEAD_NO){
-          trg = targ_act;
+          dmgTrg = targ_act;
         }
       }
     }
@@ -255,16 +265,16 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if(trg.data_type == DATA_BLD){
     local entity friend;
     otemp = self;
-    self = trg;
-      friend = ai_find_friend( trg.radar_range );
+    self = dmgTrg;
+      friend = ai_find_friend( self.radar_range );
       if( friend ){
         ai_give_target( friend, attacker, (attacker.flags & FL_CLIENT) ) ;
       }
     self = otemp;
   }
   
-  trg.health = trg.health - dmg_amt;
-  
+  trg.health = trg.health - dmgAmt;
+
   if( trg.health <= 0 ){
     if( trg.th_die ){
       if( trg.comp_id == M_LEGS ){

@@ -14,8 +14,8 @@ void() building_human_hangar={
   self.vec_size = 3;
   
   self.movetype = MOVETYPE_NONE;
-  self.takedamage = DAMAGE_YES;
-  self.solid = SOLID_SLIDEBOX;
+  self.takedamage = DAMAGE_AIM;
+  self.solid = SOLID_BSP;
   
   self.sh_cur = 0;
   self.sh_max = DAT_BLD_H_LG_HANGAR_SH_MAX;
@@ -34,5 +34,5 @@ void() building_human_hangar={
   if(util_cornerSlopeCheck(self, 1)){
     util_generateBuildingFoundation(self);
   }
-  self.solid = SOLID_SLIDEBOX;
+
 };
