@@ -94,7 +94,7 @@ float DAT_LATC_RL_MAX     = 0.2;
 float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
 float DAT_RPLAS_RL_RATE   = 0.15;
-float DAT_RPLAS_RL_MAX    = 1;//5;
+float DAT_RPLAS_RL_MAX    = 5;
 float DAT_RPLAS_EN_RATE   = 3.33;
 //-------------------------QRifle
 float DAT_QRFL_RL_RATE    = 0.1;
@@ -229,7 +229,7 @@ float DAT_LATC_CLIPSIZE     = 1;
 //-------------------------FLAK
 float DAT_FLAK_CLIPSIZE     = 4;
 //-------------------------RPlas
-float DAT_RPLAS_CLIPSIZE    = 1;//8;
+float DAT_RPLAS_CLIPSIZE    = 8;
 //-------------------------QRifle
 float DAT_QRFL_CLIPSIZE     = 1;
 //-------------------------SFGA

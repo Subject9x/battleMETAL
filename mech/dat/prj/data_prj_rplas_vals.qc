@@ -9,10 +9,10 @@ Overview:
 */
 
 //ROTARY PLASMA SHOT==================
-void() data_prj_rplas_burn={
+void() data_prj_rplas_burn_th={
   local entity e;
   
-  if(self.enemy.deadflag > DEAD_NO){
+  if( (self.enemy.deadflag > DEAD_NO) || (self.e_cam.deadflag > DEAD_NO) ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
     return;
@@ -27,9 +27,28 @@ void() data_prj_rplas_burn={
     return;
   }
   else{
-    self.think = data_prj_rplas_burn;
+    self.think = data_prj_rplas_burn_th;
     self.nextthink = time + 0.1;
   }
+};
+
+/*
+  pieced this out its own ini
+*/
+void() data_prj_rplas_burn_ini={
+  self.movetype = MOVETYPE_FOLLOW;
+  self.solid = SOLID_NOT;
+  self.velocity = '0 0 0';
+  self.avelocity = '0 0 0';
+  self.aiment = self.e_cam;
+  self.punchangle = self.e_cam.angles;
+  self.view_ofs = self.origin - self.e_cam.origin;
+  self.angles = self.e_cam.angles;
+  self.v_angle = self.angles - self.e_cam.angles;
+  self.think = data_prj_rplas_burn_th;
+  self.nextthink = time + 0.01;
+  self.p_lifetime = time + self.p_lifetime;
+  self.alpha = 0;
 };
 
 void() data_prj_rplas_touch={
@@ -46,28 +65,26 @@ void() data_prj_rplas_touch={
   pointparticles( particleeffectnum("TE_RPC_HIT"), this.origin, '0 0 0', 1);
   if(other.takedamage){
     hit = t_damage(other, this, this.owner, this.p_damage, this.p_dmgtype, this.origin, '0 0 0');
-    //if(other.sh_cur <= 0){
-      /*self.movetype = MOVETYPE_FOLLOW;
-      self.solid = SOLID_NOT;
-      self.velocity = '0 0 0';
-      self.avelocity = '0 0 0';
-      self.enemy = other;
-      self.e_cam = hit; //hack!
-      self.aiment = self.e_cam;
-      self.punchangle = self.e_cam.angles;
-      self.view_ofs = self.origin - self.e_cam.origin;
-      self.angles = self.e_cam.angles;
-      self.v_angle = self.angles - self.e_cam.angles;
-      self.think = data_prj_rplas_burn;
-      self.nextthink = time + 0.01;
-      self.p_lifetime = time + self.p_lifetime;
-      setmodel(self, "progs/plasmashot.spr32");
-      setsize(self, '-1 -1 -1', '1 1 1');
-      setorigin(self, self.e_cam.origin);*/
-      
-      //remove(self);
-      //return;
-    //}
+    if(other.sh_cur <= 0){
+      newmis = spawn();
+      newmis.enemy = other;
+      newmis.e_cam = hit;
+      newmis.p_lifetime = self.p_lifetime;
+      newmis.p_damage = self.p_damage;
+      newmis.p_dmgtype = self.p_dmgtype;
+      newmis.owner = self.owner;
+      setmodel(newmis, "q3mdl/testball.md3");
+      setsize(newmis, '-1 -1 -1', '1 1 1');
+      if( (other.data_type == DATA_MECH) ){
+        setorigin(newmis, newmis.e_cam.origin);
+      }
+      else{
+        setorigin(newmis, self.origin);
+      }
+      newmis.effects = EF_NODRAW;
+      newmis.think = data_prj_rplas_burn_ini;
+      newmis.nextthink = time + 0.01; 
+    }
 	}
   remove(self);
 };

@@ -338,6 +338,20 @@ time 1 1.25
 gravity -0.05
 originjitter 0.5 0.5 00.5
 velocityjitter 2 2 2
+
+effect TE_RPC_BURN
+count 1
+type spark
+blend alpha
+color 0x40FF00 0xF7F8E0
+tex 35 35
+size 0.2 0.3
+alpha 256 512 768
+time 1 1.25
+gravity 0.075
+originjitter 0.5 0.5 00.5
+velocityjitter 2 2 2
+stretchfactor 8
 //=====================================================
 
 

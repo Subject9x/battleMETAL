@@ -22,7 +22,7 @@ void() data_rplas_ini={
   self.w_clipsize = DAT_RPLAS_CLIPSIZE;
   self.w_currentammo = DAT_RPLAS_CLIPSIZE;
   self.w_fire_ofs = DAT_RPLAS_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
-  self.c_model = "progs/casing.mdl";//DAT_RPLAS_MODEL;
+  self.c_model = DAT_RPLAS_MODEL;
   self.w_attack = data_rplas_atk;
   self.w_proj = DAT_RPLAS_PROJ_ID;
   self.rl_cur = DAT_RPLAS_RL_MAX;
@@ -124,7 +124,6 @@ void() data_rplas_atk={
   newmis = spawn();
   oself = self;
   self = newmis;
-    cons_logAFloat("plas #", num_for_edict( self ));  //DEBUG
     self.owner = player;
     data_iniProjectile(oself.w_proj);
     self.p_dmgtype = oself.p_dmgtype;
