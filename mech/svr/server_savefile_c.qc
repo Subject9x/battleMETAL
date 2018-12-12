@@ -49,8 +49,8 @@ void() savefile_append={
   }
 };
 
-void(string nextmap) savefile_changemap={
-  SAVE_MAP = nextmap;
+void(string mapNext) savefile_changemap={
+  SAVE_MAP = mapNext;
 };
 
 //checks to see if item is already on list

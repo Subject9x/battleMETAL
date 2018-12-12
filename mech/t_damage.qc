@@ -15,7 +15,7 @@ Ballistic Damage
   IF EFF_RAM, cause energy crits
 */
 float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
-  local float damage, dmgtype, shields, mod, crit;
+  local float damage, dmgtype, shields, crit;
   dmgtype = inflictor.p_dmgtype;
   damage = dmg_amt;
   shields = targ.sh_cur;
@@ -177,8 +177,6 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 };
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
-  
-  local float new_dmg;
   local entity oself, targ_act;
     
   if( !trg.takedamage ){
@@ -191,6 +189,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   //add in ignore team damage
   if(trg.i_faction == attacker.i_faction){
+    if( skill <= 0 ){
+      return trg;
+    }
     dmg_amt = dmg_amt / 2;
   }
   
@@ -220,7 +221,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   else if( (dmg_type & DMG_EXP) ){
     dmg_amt = t_damage_mis( trg, inflictor, dmg_amt );
   }
-  cons_logAFloat("dmg_amt2", dmg_amt);//DEBUG
   
   if( (trg.flags & FL_MONSTER) ){
     ai_damage_react( trg, attacker );
@@ -251,12 +251,16 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
     }
   }
+  
   if(trg.data_type == DATA_BLD){
     local entity friend;
-    friend = ai_find_friend( self.radar_range );
-    if( friend ){
-      ai_give_target( friend, attacker, (attacker.flags & FL_CLIENT) ) ;
-    }
+    otemp = self;
+    self = trg;
+      friend = ai_find_friend( trg.radar_range );
+      if( friend ){
+        ai_give_target( friend, attacker, (attacker.flags & FL_CLIENT) ) ;
+      }
+    self = otemp;
   }
   
   trg.health = trg.health - dmg_amt;
@@ -386,14 +390,14 @@ void(entity targ, entity attacker, float dmg_type) killed={
     self.takedamage = DAMAGE_NO;
     self.touch = SUB_Null;
     
-    if (!self.iscorpse){
+    /*if (!self.iscorpse){
       // bump the monster counter
       if ( (self.flags & FL_MONSTER) ){
-        /*self.enemy = attacker;
+        self.enemy = attacker;
         killed_monsters = killed_monsters + 1;
-        WriteByte (MSG_ALL, SVC_KILLEDMONSTER);*/
+        WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
       }
-    }
+    }*/
     
     self.doobits = 0;
     
@@ -534,8 +538,8 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 	damage_attacker = attacker;
 
 // check for quad damage powerup on the attacker
-	if (attacker.super_damage_finished > time)
-		damage = damage * 4;
+	//if (attacker.super_damage_finished > time)
+		//damage = damage * 4;
 
 // save damage based on the target's armor level
 
@@ -571,7 +575,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 // check for godmode or invincibility
 	if (targ.flags & FL_GODMODE)
 		return;
-	if (targ.invincible_finished >= time)
+	/*if (targ.invincible_finished >= time)
 	{
 		if (self.invincible_sound < time)
 		{
@@ -579,7 +583,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 			self.invincible_sound = time + 2;
 		}
 		return;
-	}
+	}*/
 
 // team play damage avoidance
 //	if ( (teamplay == 1) && (targ.team > 0)&&(targ.team == attacker.team) )

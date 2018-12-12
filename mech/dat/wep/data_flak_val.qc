@@ -16,7 +16,6 @@ void() data_flak_ini={
   self.w_name = DAT_FLAK_NAME;
   self.p_dmgtype = self.p_dmgtype | DMG_BAL;
   self.p_damage = DAT_FLAK_DMG;
-  self.w_proj = DAT_FLAK_PROJ_ID;
   self.w_firetime = 0;
   self.w_clipsize = DAT_FLAK_CLIPSIZE;
   self.w_currentammo = DAT_FLAK_CLIPSIZE;
@@ -51,18 +50,21 @@ void() data_flak_think={
       self.w_state = READY;
     }
     else{
-      local float delta, max;
+      local float delta, lim;
       delta = time - self.count1;
-      max = self.rl_max;      
-      self.rl_cur = (delta / max) * 100;
+      lim = self.rl_max;      
+      self.rl_cur = (delta / lim) * 100;
     }
   }
 };
 
 void() data_flak_atk={
-  local entity player, proj, oself, this, enm;
+  local entity player, oself, this, enm;
   local vector dir, org, end, adj, angl;
   local float range;
+  local entity boom;
+  local vector ang, v;
+  local float d;
   
   player = self.owner;
   
@@ -117,9 +119,6 @@ void() data_flak_atk={
     }
     else{
       while(totes > 0){
-        local entity boom;
-        local vector ang, v;
-        local float d;
         d = vlen(enm.origin - dir);
         ang = vectoangles(enm.origin - dir);
         makevectors(ang);
@@ -137,7 +136,6 @@ void() data_flak_atk={
     }
   }
   else{
-    local entity boom;
     boom = spawn();
     boom.color = '0.1 0.1 0.1';
     setorigin(boom, dir);

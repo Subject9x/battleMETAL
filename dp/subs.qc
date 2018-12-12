@@ -76,7 +76,6 @@ self.origin traveling at speed
 */
 void(entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt =
 {
-	local entity stemp;
 	stemp = self;
 	self = ent;
 
@@ -156,7 +155,6 @@ The calling function should make sure self.think is valid
 */
 void(entity ent, vector destangle, float tspeed, void() func) SUB_CalcAngleMoveEnt =
 {
-	local entity stemp;
 	stemp = self;
 	self = ent;
 	SUB_CalcAngleMove (destangle, tspeed, func);

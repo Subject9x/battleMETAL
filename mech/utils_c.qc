@@ -44,9 +44,9 @@ float(float numOfSides) util_roll_dice={
   return roll;
 };
 
-float( entity t, float max ) util_getPieceHpForAverage{
+float( entity t, float hpMax ) util_getPieceHpForAverage{
   if( t ){
-    if( max ){
+    if( hpMax ){
       return t.max_health;
     }
     return t.health;

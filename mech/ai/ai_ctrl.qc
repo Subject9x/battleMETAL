@@ -360,8 +360,8 @@ float( float scan_mode) ai_check_scan={
   return FALSE;
 };
 
-void(float speed) ai_walkgoal={
-  movetogoal( self.m_fspeed * speed );
+void(float moveSpeed) ai_walkgoal={
+  movetogoal( self.m_fspeed * moveSpeed );
 };
 
 void() ai_move_turn={

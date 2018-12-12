@@ -76,6 +76,8 @@ void() playerAttack={
 };
 
 void() ImpulseCommands ={
+  local entity e;
+    
   if(self.impulse == IMP_FGROUP){
     self.stat_plr_fir = FIRE_GROUP;
   }
@@ -133,7 +135,6 @@ void() ImpulseCommands ={
   
   if( self.impulse == 30 ){
   //map_terrain_model
-    local entity e;
     e = find( world, classname, "map_terrain_model" );
     if( e ){
       e.angles_y = anglemod( e.angles_y + 10 );
@@ -143,7 +144,6 @@ void() ImpulseCommands ={
   
   if( self.impulse == 31 ){
   //map_terrain_model
-    local entity e;
     e = find( world, classname, "map_terrain_model" );
     if( e ){
       e.angles_y = anglemod( e.angles_y - 10 );

@@ -202,11 +202,11 @@ void() ai_mech_sk_run_strafe={
       ai_move_turn();
     }
     else{
-      local float speed;
-      speed = self.m_fspeed / 3;
-      speed = speed + self.m_sspeed ;
-      speed = speed * AI_RUN_SPD;
-      ai_move( self.angles_y, speed);
+      local float moveSpeed;
+      moveSpeed = self.m_fspeed / 3;
+      moveSpeed = moveSpeed + self.m_sspeed ;
+      moveSpeed = moveSpeed * AI_RUN_SPD;
+      ai_move( self.angles_y, moveSpeed);
     }
   }
   else{
@@ -235,11 +235,11 @@ void() ai_mech_sk_run_charge={
       ai_move_turn();
     }
     else{
-      local float speed;
-      speed = self.m_fspeed / 3;
-      speed = speed + self.m_sspeed ;
-      speed = speed * AI_RUN_SPD;
-      ai_move( self.angles_y, speed);
+      local float moveSpeed;
+      moveSpeed = self.m_fspeed / 3;
+      moveSpeed = moveSpeed + self.m_sspeed ;
+      moveSpeed = moveSpeed * AI_RUN_SPD;
+      ai_move( self.angles_y, moveSpeed);
     }
     if( ai_attack() ){
       ai_next_state( ST_MISSILE_STRAFE );
@@ -276,11 +276,11 @@ void() ai_mech_sk_melee={
       ai_move_turn();
     }
     else{
-      local float speed;
-      speed = self.m_fspeed / 3;
-      speed = speed + self.m_sspeed ;
-      speed = speed * AI_WALK_SPD;
-      ai_move( self.angles_y, speed);
+      local float moveSpeed;
+      moveSpeed = self.m_fspeed / 3;
+      moveSpeed = moveSpeed + self.m_sspeed ;
+      moveSpeed = moveSpeed * AI_WALK_SPD;
+      ai_move( self.angles_y, moveSpeed);
     }
     if( ai_check_face( self.enemy, 0.97 ) ){
       if( self.ai_rank < AI_RANK_REG ){

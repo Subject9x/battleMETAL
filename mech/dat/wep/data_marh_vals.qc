@@ -49,10 +49,10 @@ void() data_marh_think={
       self.w_state = READY;
     }
     else{
-      local float delta, max;
+      local float delta, lim;
       delta = time - self.count1;
-      max = self.rl_max;      
-      self.rl_cur = (delta / max) * 100;
+      lim = self.rl_max;      
+      self.rl_cur = (delta / lim) * 100;
     }
   }
 };
@@ -64,7 +64,6 @@ void() data_marh_atk={
 
   if(player.stat_rdr_mode == TRUE){
     if(player.stat_lck_stt & LOCK_TARG_HAS){ 
-      local entity player, proj, oself;
       local vector dir, org, end, adj, angl;
       local float range;
       adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin

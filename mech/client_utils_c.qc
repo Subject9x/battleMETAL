@@ -618,10 +618,10 @@ void() spawnpoint_Random={
 
 void() legacy_PlayerDie={
 	self.items = self.items - (self.items & (IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD) );
-	self.invisible_finished = 0;
-	self.invincible_finished = 0;
-	self.super_damage_finished = 0;
-	self.radsuit_finished = 0;
+	//self.invisible_finished = 0;
+	//self.invincible_finished = 0;
+	//self.super_damage_finished = 0;
+	//self.radsuit_finished = 0;
 };
 
 void() client_updateWeaponReloads={

@@ -17,11 +17,10 @@ float ID_PRJ_MARH = 5;
 float ID_PRJ_RPLAS = 6;
 float ID_PRJ_QRFL = 7;
 float ID_PRJ_SFGA = 8;
-float ID_PRJ_FLAK = 9;
-float ID_PRJ_ION = 10;
-float ID_PRJ_SWRM = 11;
-float ID_PRJ_ABT = 12;
-float ID_PRJ_ABT_CLST = 13;
+float ID_PRJ_ION = 9;
+float ID_PRJ_SWRM = 10;
+float ID_PRJ_ABT = 11;
+float ID_PRJ_ABT_CLST = 12;
 //============================
 //            Velocity         
 //============================

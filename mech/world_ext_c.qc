@@ -190,9 +190,6 @@ void(float prj_id) data_iniProjectile={
     case ID_PRJ_SFGA:
       data_prj_sfga_ini();
       return;
-    case ID_PRJ_FLAK:
-      data_prj_flak_ini();
-      return;
     case ID_PRJ_ION:
       data_prj_ion_ini();
       return;

@@ -370,14 +370,14 @@ float(float rank) ai_pilot_attack_interval={
   AI base accuracy rating
 */
 vector( float rank, vector spread ) ai_pilot_accuracy={
-  local vector accuracy;
+  local vector acc;
   local float modMin;
   local float modMax;
   local float modRate;
   
-  modMin = accuracy_x;
-  modMax = accuracy_y;
-  modRate = accuracy_z;
+  modMin = acc_x;
+  modMax = acc_y;
+  modRate = acc_z;
   
   switch( rank ){
     case SKILL_NOV:
@@ -402,9 +402,9 @@ vector( float rank, vector spread ) ai_pilot_accuracy={
       break;
   }
   modRate = modRate * -1;
-  accuracy_x = accuracy_x + modMin;
-  accuracy_y = accuracy_y + modMax;
-  accuracy_z = accuracy_z + modRate;
-  accuracy = accuracy + spread;
-  return accuracy;
+  acc_x = acc_x + modMin;
+  acc_y = acc_y + modMax;
+  acc_z = acc_z + modRate;
+  acc = acc + spread;
+  return acc;
 };

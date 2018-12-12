@@ -49,10 +49,10 @@ void() data_pac_think={
       self.w_state = READY;
     }
     else{
-      local float delta, max;
+      local float delta, lim;
       delta = time - self.count1;
-      max = self.rl_max;      
-      self.rl_cur = (delta / max) * 100;
+      lim = self.rl_max;      
+      self.rl_cur = (delta / lim) * 100;
     }
   }
 };

@@ -93,7 +93,7 @@ float(entity t) ai_valid_target={
 entity( float radiius) ai_find_friend={
   local entity ally, this, friend;
   local float dist, rad;
-  this = self;
+  
   rad = radiius;
   
   ally = findchainfloat( i_faction, self.i_faction );

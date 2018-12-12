@@ -403,17 +403,17 @@ void() tdeath_touch =
 		return;
 
 // frag anyone who teleports in on top of an invincible player
-	if (other.classname == "player")
-	{
-		if (other.invincible_finished > time)
-			self.classname = "teledeath2";
-		if (self.owner.classname != "player")
-		{	// other monsters explode themselves
-			T_Damage (self.owner, self, self, 50000);
-			return;
-		}
+	//if (other.classname == "player")
+	//{
+		//if (other.invincible_finished > time)
+			//self.classname = "teledeath2";
+		//if (self.owner.classname != "player")
+		//{	// other monsters explode themselves
+			//T_Damage (self.owner, self, self, 50000);
+			//return;
+		//}
 		
-	}
+	//}
 
 	if (other.health)
 	{
