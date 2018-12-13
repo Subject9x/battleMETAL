@@ -7,7 +7,7 @@ Overview: data def file for a weapon projectile
 
 //Rocket Launcher rocket=======================
 void() data_prj_mis_touch={
-	if (pointcontents(self.origin) == CONTENT_SKY){
+	if ( pointcontents(self.origin) == CONTENT_SKY){
 		remove(self);
 		return;
 	}
