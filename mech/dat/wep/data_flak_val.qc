@@ -111,6 +111,8 @@ void() data_flak_atk={
   makevectors(player.angles);
   org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   
+  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), org + v_forward * 3 + v_up * 0.5, normalize( dir - org ) * 4, 1);
+  
   if(enm && enm != world){
     local float totes;
     totes = DAT_FLAK_SHRAP_TOTAL;
@@ -142,21 +144,4 @@ void() data_flak_atk={
     boom.nextthink = time + 0.1;
     boom.think = BecomeExplosion;
   }
-  
-  local entity bul_fx;
-  bul_fx = spawn();
-  bul_fx.movetype = MOVETYPE_NONE;
-  bul_fx.solid = SOLID_NOT;
-  bul_fx.classname = "missile";
-  setmodel(bul_fx, "progs/muzzleflash.spr32");
-  setsize(bul_fx, '-1 -1 -1', '1 1 1');
-  makevectors(self.angles);
-  setorigin(bul_fx, org + (v_forward * 5));
-  bul_fx.alpha = 0.85;
-  bul_fx.glow_color = 250;
-  bul_fx.glow_size = 1;
-  bul_fx.glow_trail = TRUE;
-  bul_fx.color = '1 0 0';
-  bul_fx.think = SUB_Remove;
-  bul_fx.nextthink = time + 0.01;// + 0.35;
 };
