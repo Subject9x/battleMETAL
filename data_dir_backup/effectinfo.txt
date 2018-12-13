@@ -284,6 +284,202 @@ stretchfactor 4
 
 
 
+//ATC EFFECTS==================================
+  //TE_FLK_MUZZLE - TRACER
+    effect TE_FLK_MUZZLE
+    countabsolute 1
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFF8000 0xFE2E2E
+    tex 40 40
+    size 0.75 0.75
+    alpha 256 256 64
+    time 2 2
+    velocitymultiplier 750
+    //stretchfactor -2
+    
+  //TE_FLK_MUZZLE - SMOKE
+    effect TE_FLK_MUZZLE
+    count 10
+    type spark
+    blend alpha
+    color 0x000000 0x1C1C1C
+    tex 46 46
+    size 1.25 1.4 
+    sizeincrease 1
+    alpha 175 190 150
+    time 0.4 0.6
+    gravity -0.0025
+    originjitter 0.15 0.15 0.15
+    velocitymultiplier 2
+    velocityjitter 2 2 2
+    stretchfactor 4
+
+  //TE_FLK_MUZZLE - FLAME
+    effect TE_FLK_MUZZLE
+    count 1
+    type spark
+    blend alpha
+    color 0xFF8000 0xFF8000
+    tex 46 46
+    size 0.65 1 
+    alpha 256 256 128
+    time 0.075 0.1
+    originjitter 0 0 0
+    velocityjitter 1 1 1
+    velocitymultiplier 1
+    stretchfactor 1
+
+  //TE_FLK_MUZZLE - SPARKS
+    effect TE_FLK_MUZZLE
+    count 12
+    type spark
+    blend alpha
+    color 0xFF8000 0xFF8000
+    tex 38 38
+    size 0.01 0.035
+    alpha 256 512 1024
+    time 0.2 0.3
+    originjitter 0 0 0
+    velocityjitter 15 15 15
+    velocitymultiplier 3
+    stretchfactor 1
+
+  //TE_FLK_MUZZLE - LIGHT
+    effect TE_FLK_MUZZLE
+    lightradius 15
+    lightradiusfade 1
+    lighttime 0.05
+    lightcolor 1 0.251 0
+    lightshadow 0.6
+    notunderwater
+
+  //TE_FLK_IMPACT - SMOKE
+    effect TE_FLK_IMPACT
+    count 2
+    type smoke
+    blend alpha
+    color 0x000000 0x1C1C1C
+    tex 0 7
+    size 9 11
+    sizeincrease 0.25
+    alpha 240 256 0.01
+    time 7 9
+    originjitter 0.15 0.15 0.15
+    velocityjitter 0.05 0.5 1
+    
+  //TE_FLK_IMPACT - BULLET FRAGS
+    effect TE_FLK_IMPACT
+    count 10
+    type spark
+    blend alpha
+    orientation spark
+    color 0x0D8D8D8 0xF2F2F2
+    tex 38 41
+    size 0.25 0.65
+    alpha 256 512 2048
+    time 0.15 0.25
+    originjitter 3 3 3
+    velocityjitter 10 10 10
+    velocitymultiplier 2
+    notunderwater
+    stretchfactor 4
+    
+  //TE_FLK_IMPACT - FLAME
+    effect TE_FLK_IMPACT
+    count 1
+    type spark
+    blend alpha
+    color 0xFF8000 0xFF8000
+    tex 46 46
+    size 0.65 1 
+    alpha 256 256 128
+    time 0.075 0.1
+    originjitter 0 0 0
+    velocityjitter 1 1 1
+    velocitymultiplier 1
+    stretchfactor 1
+    
+  //TE_FLK_IMPACT - LIGHT
+    effect TE_FLK_IMPACT
+    lightradius 45
+    lightradiusfade 5
+    lighttime 0.075
+    lightcolor 0.961 0.855 0.506
+    lightshadow 0.3
+    notunderwater
+    
+  //TE_FLK_DIRT - SMOKE
+    effect TE_FLK_DIRT
+    count 2
+    type smoke
+    blend alpha
+    color 0x000000 0x1C1C1C
+    tex 0 7
+    size 9 11
+    sizeincrease 0.25
+    alpha 240 256 64
+    time 7 9
+    originjitter 0.15 0.15 0.15
+    velocityjitter 0.05 0.5 1
+    
+  //TE_FLK_DIRT - GRAVEL BITS
+    effect TE_FLK_DIRT
+    count 5
+    type alphastatic
+    blend alpha
+    orientation spark
+    color 0xF5DA81 0xE6E6E6
+    tex 44 46
+    size 0.25 0.65
+    alpha 256 512 256
+    time 0.65 0.9
+    originjitter 3 3 3
+    velocityjitter 10 10 10
+    velocitymultiplier 2
+    gravity 0.25
+    notunderwater
+
+  //TE_FLK_DIRT - BULLET FRAGS
+    effect TE_FLK_DIRT
+    count 2
+    type spark
+    blend alpha
+    orientation spark
+    color 0x0D8D8D8 0xF2F2F2
+    tex 38 41
+    size 0.25 0.65
+    alpha 256 512 2048
+    time 0.25 0.4
+    originjitter 3 3 3
+    velocitymultiplier 10
+    velocityjitter 20 20 1
+    notunderwater
+    stretchfactor 2
+    bounce 1
+
+  //TE_FLK_DIRT - DECAL
+    effect TE_FLK_DIRT
+    staincolor 0xF5DA81 0xE6E6E6 
+    stainalpha 256 512
+    stainsize 2 2.5
+    staintex 36 36
+
+  //TE_FLK_DIRT - LIGHT
+    effect TE_FLK_DIRT
+    lightradius 45
+    lightradiusfade 5
+    lighttime 0.075
+    lightcolor 0.961 0.855 0.506
+    lightshadow 0.3
+    notunderwater
+    
+//=====================================================
+
+
+
+
 
 //ROCKET POD EFFECTS==================================
   //TE_MIS_TRAIL - SMOKE

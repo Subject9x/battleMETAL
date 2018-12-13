@@ -107,11 +107,21 @@ void() data_flak_atk={
   }
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;
   makevectors(player.angles);
   org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
   
-  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), org + v_forward * 3 + v_up * 0.5, normalize( dir - org ) * 4, 1);
+  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), org + v_forward * 3, normalize( dir - org ) * 4, 1);
+  
+  if( (trace_dphitcontents & DPCONTENTS_SKY) ){
+    return;
+  }  
+  
+  if( !trace_ent.takedamage ){
+    if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) ){
+      pointparticles( particleeffectnum("TE_FLK_DIRT"), dir + (v_up * 3) + (v_forward * -7), normalize( dir - org ) * 20, 1);
+    }
+    return;
+  }
   
   if(enm && enm != world){
     local float totes;
@@ -130,18 +140,7 @@ void() data_flak_atk={
         t_damage(enm, self, self.owner, self.p_damage, self.p_dmgtype, trace_endpos, '0 0 0');
         totes = totes - 1;
       }
-      boom = spawn();
-      boom.color = '0.1 0.1 0.1';
-      setorigin(boom, dir);
-      boom.nextthink = time + 0.1;
-      boom.think = BecomeExplosion;
+      pointparticles( particleeffectnum("TE_FLK_IMPACT"), dir - (v_forward * 2), '1 1 1', 1);
     }
-  }
-  else{
-    boom = spawn();
-    boom.color = '0.1 0.1 0.1';
-    setorigin(boom, dir);
-    boom.nextthink = time + 0.1;
-    boom.think = BecomeExplosion;
   }
 };

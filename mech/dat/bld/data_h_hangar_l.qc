@@ -13,9 +13,7 @@ void() building_human_hangar={
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 3;
   
-  self.movetype = MOVETYPE_NONE;
   self.takedamage = DAMAGE_AIM;
-  self.solid = SOLID_BSP;
   
   self.sh_cur = 0;
   self.sh_max = DAT_BLD_H_LG_HANGAR_SH_MAX;
@@ -24,13 +22,16 @@ void() building_human_hangar={
   
   self.th_die = building_die;
   self.use = multi_trigger;
-  
+  self.solid = SOLID_BSP;
   util_setHealthArmor(DAT_BLD_H_LG_HANGAR_HP, DAT_BLD_H_LG_HANGAR_HP, 1, 100) ;
   util_setModel(DAT_BLD_H_LG_HANGAR_MODEL, self.skin, 0) ;
-  setsize(self, '-72 -72 0', '72 72 80');
+  setsize(self, self.mins, self.maxs);
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
-    
+  
+  
+  self.movetype = MOVETYPE_NONE;
+  
   if(util_cornerSlopeCheck(self, 1)){
     util_generateBuildingFoundation(self);
   }
