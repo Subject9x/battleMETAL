@@ -106,6 +106,8 @@ void() data_emp_atk={
     self.w_state = RECOIL;
   }
   
+  pointparticles( particleeffectnum("TE_EMP_MUZZLE"), org + v_forward * 3 + v_up * 0.1, normalize( dir - org ) * 4, 1);
+  
   newmis = spawn();
   oself = self;
   self = newmis;

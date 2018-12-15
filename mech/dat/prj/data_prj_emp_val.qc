@@ -25,7 +25,8 @@ void() data_prj_emp_ini={
   self.colormod = DAT_PRJ_EMP_COLORMOD;
   self.glow_color = DAT_PRJ_EMP_GLOWCOLOR;
   self.glow_size = DAT_PRJ_EMP_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_EMP_GLOWTRAIL;
+  self.glow_trail = 0;
+  self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");  //DEBUG
 };
 
 void()data_prj_emp_think={
@@ -88,19 +89,18 @@ void()data_prj_emp_explode={
     }
     lst = lst.chain;
   }
-  te_tarexplosion(self.origin);
+  pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
 };
 
 void() data_prj_emp_touch={
-	if (pointcontents(self.origin) == CONTENT_SKY){
+	if( pointcontents(self.origin) == CONTENT_SKY ){
 		remove(self);
 		return;
 	}
   
   if(other.classname == "worldspawn"){
-    te_tarexplosion(self.origin);
     self.nextthink = time + 0.01;
     self.think = data_prj_emp_explode;
     return;
@@ -111,7 +111,7 @@ void() data_prj_emp_touch={
   }
   
   if(other.takedamage){
-    te_tarexplosion(self.origin);
+    pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
   }
   remove(self);

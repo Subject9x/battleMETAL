@@ -480,6 +480,172 @@ stretchfactor 4
 
 
 
+// EFFECTS==================================
+  //TE_EMP_MUZZLE
+  
+  //TE_EMP_TRAIL
+    
+    
+  //TE_EMP_IMPACT_SHIELD
+  
+  //TE_EMP_IMPACT
+
+//=====================================================
+
+
+
+
+
+//EMP EFFECTS==================================
+  //TE_EMP_MUZZLE - SMOKE
+    effect TE_EMP_MUZZLE
+    count 1
+    type alphastatic
+    blend alpha
+    color 0xFF0080 0xFF0040 
+    tex 0 7
+    size 4 4
+    sizeincrease -3
+    alpha 16 24 -96
+    time 1 1.1
+    originjitter 0.2 0.2 0.2
+    velocityjitter 1 1 1
+    
+  //TE_EMP_MUZZLE - SMOKE RINGS
+    effect TE_EMP_MUZZLE
+    countabsolute 1
+    type alphastatic
+    blend alpha
+    color 0x58ACFA 0x819FF7
+    tex 33 33
+    size 6 7
+    sizeincrease -6
+    alpha 32 64 -256
+    time 0.7 0.8  
+    
+  //TE_EMP_MUZZLE - LIGHT
+    effect TE_EMP_MUZZLE
+    lightradius 100
+    lighttime 0.05
+    lightcolor 0.18 0.18 0.996
+    lightshadow 0.25
+    
+  //TE_EMP_TRAIL - SMOKE RINGS
+    effect TE_EMP_TRAIL
+    count 1
+    type alphastatic
+    blend alpha
+    color 0xA901DB 0xF781F3
+    tex 32 32
+    size 1 2
+    sizeincrease 4
+    alpha 150 170 100
+    time 8 10
+    originjitter 0.2 0.2 0.2
+    trailspacing 48
+    rotate 0 0 15 35
+    
+  //TE_EMP_TRAIL - SMOKE DISTORT
+    effect TE_EMP_TRAIL
+    count 1
+    type alphastatic
+    blend alpha
+    color 0xA4A4A4 0xF2F2F2
+    tex 0 7
+    size 3 3
+    sizeincrease 2
+    alpha 12 12 12
+    time 4 8
+    originjitter 0.2 0.2 0.2
+    trailspacing 16
+  
+  //TE_EMP_TRAIL - SPARK CLOUD TRAIL
+    effect TE_EMP_TRAIL
+    count 15
+    type spark
+    blend alpha
+    color 0xA901DB 0xF781F3
+    tex 40 40
+    size 0.2 0.4
+    sizeincrease 2
+    alpha 96 96 45
+    time 0.3 0.5
+    originjitter 1.75 1.75 1.75
+    velocitymultiplier -0.085
+    trailspacing 32
+  
+  //TE_EMP_TRAIL - SPARK CLOUD
+    effect TE_EMP_TRAIL
+    count 5
+    type smoke
+    blend alpha
+    color 0xA901DB 0xF781F3
+    tex 40 40
+    size 0.2 0.4
+    sizeincrease 2
+    alpha 96 96 45
+    time 0.2 0.4
+    originjitter 1.75 1.75 1.75
+    velocitymultiplier 1
+    trailspacing 16
+    rotate 0 180 75 100
+    
+  //TE_EMP_TRAIL - LIGHT
+    effect TE_EMP_TRAIL
+    lightradius 25
+    lightradiusfade 50
+    lightcolor 0.827 0.345 0.969
+    lightshadow 0.25
+
+  //TE_EMP_EXPL - SMOKE PUFF RED
+    effect TE_EMP_EXPL
+    count 2
+    type alphastatic
+    blend alpha
+    color 0xFF0080 0xFF0040 
+    tex 0 7
+    size 3 4
+    sizeincrease 3
+    alpha 32 48 -50
+    time 1 3
+    originjitter 1 1 1
+    velocityjitter 1 1 1
+    
+  //TE_EMP_EXPL - SMOKE RING
+    effect TE_EMP_EXPL
+    count 5
+    type smoke
+    blend alpha
+    color 0x58ACFA 0x819FF7
+    tex 41 41
+    size 12 14
+    sizeincrease -1
+    alpha 175 200 100
+    time 3 6
+  
+  //TE_EMP_EXPL - SPARKS
+    effect TE_EMP_EXPL
+    count 5
+    type spark
+    blend alpha
+    color 0xA901DB 0xF781F3
+    tex 40 40
+    size 0.2 0.4
+    sizeincrease 2
+    alpha 128 128 64
+    time 2 3
+    originjitter 1.75 1.75 1.75
+    velocityjitter 10 10 10
+    velocitymultiplier 20
+    rotate 0 180 75 100
+    airfriction 0.1
+    stretchfactor 10
+    
+//=====================================================
+
+
+
+
 
 //ROCKET POD EFFECTS==================================
   //TE_MIS_TRAIL - SMOKE
@@ -523,29 +689,6 @@ stretchfactor 4
     lightshadow 0.25
     notunderwater
 
-effect TE_MIS_FLAME
-count 3
-type beam
-blend alpha
-color 0xFF8000 0xFF8000
-tex 35 35
-size 0.25 1
-alpha 256 256 100
-time 1 2
-originjitter 0.25 0.25 0
-velocityjitter 0.25 0.25 1
-velocitymultiplier 5
-gravity 0
-notunderwater
-
-effect TE_MIS_FLAME
-lightradius 75
-lightradiusfade 75
-lighttime 0.05
-lightcolor 1 0.251 0
-lightshadow 1
-notunderwater
-
   //TE_MIS_MUZZLE - SMOKE
     effect TE_MIS_MUZZLE
     count 2
@@ -576,22 +719,6 @@ notunderwater
     velocityjitter 5 1 5
     velocitymultiplier 1
     stretchfactor 8
-
-effect TE_MIS_EXPL
-countabsolute 1
-type decal
-blend alpha
-color 0xFF8000 0xFF8000
-tex 35 35
-size 5 10
-alpha 1024 1024 10
-time 12 12
-notunderwater
-staincolor 0xFF8000 0xFF8000
-stainalpha 512 512
-stainsize 5 10
-staintex 35 35
-
 //==========================================
 
 

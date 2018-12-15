@@ -62,8 +62,6 @@ void() data_prj_mis_ini={
   self.glow_size = DAT_PRJ_MIS_GLOWSIZE;
   self.glow_trail = DAT_PRJ_MIS_GLOWTRAIL;
   self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");  //DEBUG
-  
-  //self.think = data_prj_mis_th;
-  //self.nextthink = time + (random() * 0.01);
+
 };
 
