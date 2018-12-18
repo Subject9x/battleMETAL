@@ -59,11 +59,20 @@ void() data_qrfl_think={
   }
 };
 
-
 void() data_qrfl_atk={
   local entity player, proj, oself;
   local vector dir, org, end, adj, angl;
   local float range;
+  local float qbits;
+  local vector hitZone;
+  local vector hitMin;
+  local vector hitMax;
+  local vector rando;
+
+  local vector prtclRail_org;
+  local vector prtclRail_end;
+  local vector prtclSpark_org;
+  
   player = self.owner;
   
   if( self.w_currentammo ==  self.w_clipsize){
@@ -108,7 +117,17 @@ void() data_qrfl_atk={
     self.w_state = RECOIL;
   }
   
-  local float qbits;
+  hitZone = dir;
+  hitMax = '25 25 25';
+  hitMin = '-25 -25 -25';
+  if( trace_ent.takedamage ){
+    hitZone = trace_ent.origin;
+    hitMin = trace_ent.mins * 2;
+    hitMax = trace_ent.maxs * 2;
+  }
+  
+
+  
   qbits = DAT_QRFL_QBITS;
   while(qbits > 0){
     newmis = spawn();
@@ -116,14 +135,13 @@ void() data_qrfl_atk={
     self = newmis;
       self.owner = player;
       data_iniProjectile(oself.w_proj);
-      local vector rando;
       rando = randomvec();
-      rando_x = (dir_x + rando_x) + (50 + crandom() * 100);
-      rando_y = (dir_y + rando_y) + (50 + crandom() * 100);
-      rando_z = (dir_z + rando_z) + (50 + crandom() * 100);
+      rando_x = hitZone_x + (hitMin_x - rando_x * hitMin_x) + (hitMax_x + random() * hitMax_x);
+      rando_y = hitZone_y + (hitMin_y - rando_y * hitMin_y) + (hitMax_y + random() * hitMax_y);
+      rando_z = hitZone_z + (hitMin_z - rando_z * hitMin_z) + (hitMax_z + random() * hitMax_z);
       self.p_dmgtype = oself.p_dmgtype;
       self.p_damage = oself.p_damage;
-      self.velocity = normalize(dir - rando);
+      self.velocity = normalize(hitZone - rando);
       self.think = SUB_Remove;
       self.nextthink = time + self.p_lifetime;
       self.velocity = self.velocity * self.p_velocity;
@@ -138,4 +156,16 @@ void() data_qrfl_atk={
       self = oself;
   }
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  
+    te_beam_laser( rando, self.origin );
+  
+  prtclRail_org = org + (v_forward * 2);
+  prtclRail_end = org + (v_forward * 48);
+  prtclSpark_org = org + (v_forward * 22);
+  
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( dir - org ), 1);
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( dir - org ) * 30, 1);
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( dir - org ) * 30, 1);
+  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5));
+  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5));
 };

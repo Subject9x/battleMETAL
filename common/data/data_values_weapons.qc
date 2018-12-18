@@ -196,7 +196,7 @@ vector DAT_LATC_ACC       = '0.04 0.04 0';
 //-------------------------RPlas
 vector DAT_RPC_ACC       = '0.2 0.1 0';
 //-------------------------QRifle
-vector DAT_QRFL_ACC       = '0.5 0.5 0';
+vector DAT_QRFL_ACC       = '0.02 0.2 0';
 //-------------------------SFGA
 vector DAT_SFGA_ACC       = '0.5 0.5 0';
 //-------------------------FLAK

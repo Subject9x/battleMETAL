@@ -122,7 +122,7 @@ void() data_flak_atk={
     }
     return;
   }
-  
+  pointparticles( particleeffectnum("TE_FLK_IMPACT"), dir - (v_forward * 2), '1 1 1', 1);
   if(enm && enm != world){
     local float totes;
     totes = DAT_FLAK_SHRAP_TOTAL;
@@ -140,7 +140,7 @@ void() data_flak_atk={
         t_damage(enm, self, self.owner, self.p_damage, self.p_dmgtype, trace_endpos, '0 0 0');
         totes = totes - 1;
       }
-      pointparticles( particleeffectnum("TE_FLK_IMPACT"), dir - (v_forward * 2), '1 1 1', 1);
+      
     }
   }
 };

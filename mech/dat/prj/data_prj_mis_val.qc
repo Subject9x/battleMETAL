@@ -12,10 +12,6 @@ void() data_prj_mis_touch={
 		return;
 	}
 
-  if(other == self.owner){
-    return;
-  }
-  
   if(other.takedamage){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
     if( other.sh_cur > 0 ){
@@ -34,7 +30,6 @@ void() data_prj_mis_th={
   
   smk1 = self.origin + (v_forward * -2.5);
   
-  //te_mis_trail(self.origin, self.c_ofs, 1);
   te_mis_flame( smk1, 1) ;
   
   self.think = data_prj_mis_th;

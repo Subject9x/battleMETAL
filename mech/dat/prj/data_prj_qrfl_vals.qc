@@ -24,9 +24,10 @@ void() data_prj_qrfl_ini={
   self.modelflags = DAT_PRJ_QRFL_MODELFLAGS;
   self.alpha = DAT_PRJ_QRFL_ALPHA;
   self.colormod = DAT_PRJ_QRFL_COLORMOD;
-  self.glow_color = DAT_PRJ_QRFL_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_QRFL_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_QRFL_GLOWTRAIL;
+  self.glow_color = 0;
+  self.glow_size = 0;
+  self.glow_trail = 0;
+  self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");  //DEBUG
 };
 
 void() data_prj_qrfl_touch={
@@ -35,18 +36,15 @@ void() data_prj_qrfl_touch={
 		return;
 	}
   
-  if(other.classname == "worldspawn"){
-    te_superspike(self.origin);
-    remove(self);
-    return;
-  }
-
-  if(other == self.owner){
-    return;
-  }
-  
   if(other.takedamage){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    if( other.sh_cur > 0 ){
+      pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
+    }
+    remove(self);
+    return;
   }  
+  
+  pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
   remove(self);
 };

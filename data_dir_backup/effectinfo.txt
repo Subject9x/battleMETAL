@@ -480,16 +480,187 @@ stretchfactor 4
 
 
 
-// EFFECTS==================================
-  //TE_EMP_MUZZLE
-  
-  //TE_EMP_TRAIL
+//QRFL EFFECTS==================================
+  //TE_QRFL_MUZZLE_SPARK - SPARKS
+    effect TE_QRFL_MUZZLE_SPARK
+    countabsolute 1
+    type spark
+    blend alpha
+    orientation spark
+    color 0xDF013A 0xFF0000
+    tex 40 40
+    size 2 2 
+    size 2 2 
+    alpha 256 256 300
+    time 0.75 0.9
+    velocitymultiplier 3
+    stretchfactor 10
+    airfriction 2.5
+    bounce -1
     
+  //TE_QRFL_MUZZLE_SPARK - BUBBLE
+    effect TE_QRFL_MUZZLE_RAIL
+    count 2
+    type smoke
+    blend alpha
+    color 0xB4045F 0xD0A9F5
+    tex 63 63
+    size 0.1 0.2
+    alpha 180 220 128
+    time 4 6
+    velocityjitter 0.5 0.5 0.5
+    stretchfactor 2
+    gravity -0.0008
+    trailspacing 2
+    bounce -1
     
-  //TE_EMP_IMPACT_SHIELD
+  //TE_QRFL_MUZZLE_SPARK - HEAT DISTORT
+    effect TE_QRFL_MUZZLE_RAIL
+    count 4
+    type spark
+    blend alpha
+    color 0xFAFAFA 0xFAFAFA
+    tex 0 15
+    size 1 2
+    alpha 1 1 0.005
+    time 3 5
+    originjitter 0.5 0.5 0.5
+    velocityoffset 0.01 0.05 0.1
+    velocityjitter 0.5 0.5 0.5
+    velocitymultiplier 1
+    stretchfactor 2
+    gravity -0.00001
+    trailspacing 8
+    bounce -1
+    
+  //TE_QRFL_MUZZLE - PURPLE FLAME
+    effect TE_QRFL_MUZZLE
+    countabsolute 1
+    type smoke
+    blend alpha
+    color 0x170B3B 0x380B61
+    tex 33 33
+    size 4 4
+    alpha 512 512 64
+    time 1 1
+    sizeincrease -3
+    originjitter 0 0 0
+    velocitymultiplier 1
+    
+  //TE_QRFL_MUZZLE - BLACK FLAME
+    effect TE_QRFL_MUZZLE
+    countabsolute 1
+    type smoke
+    blend alpha
+    color 0x000000 0x000000
+    tex 32 32
+    size 4 4
+    alpha 512 512 64
+    time 1 1
+    sizeincrease -3
+    originjitter 0 0 0
+    velocitymultiplier 1
   
-  //TE_EMP_IMPACT
+  //TE_QRFL_MUZZLE - SMOKE
+    effect TE_QRFL_MUZZLE
+    count 7
+    type spark
+    blend alpha
+    color 0xFF8000 0xFF8000
+    tex 38 38
+    size 0.01 0.035
+    alpha 256 512 1024
+    time 0.1 0.2
+    originjitter 0 0 0
+    velocityjitter 15 15 15
+    velocitymultiplier 3
+    stretchfactor 1
 
+  //TE_QRFL_MUZZLE - LIGHT
+    effect TE_QRFL_MUZZLE
+    lightradius 40
+    lightradiusfade 10
+    lightcolor 0.373 0.016 0.706
+    lightshadow 0.9
+    notunderwater
+ 
+  //TE_QRFL_QBIT_TRAIL - BLACK FLAME
+    effect TE_QRFL_QBIT_TRAIL
+    countabsolute 1
+    type smoke
+    blend alpha
+    color 0x000000 0x000000
+    tex 32 32
+    size 2 3
+    alpha 64 64 64
+    time 0.15 0.25
+    sizeincrease -6
+    originjitter 0 0 0
+    velocitymultiplier -0.25
+    velocityjitter 2 2 2
+    trailspacing 10
+  
+  //TE_QRFL_QBIT_TRAIL - RED PARTICLES
+    effect TE_QRFL_QBIT_TRAIL
+    countabsolute 1
+    type spark
+    blend alpha
+    orientation spark
+    color 0xDF013A 0xFF0000
+    tex 62 62
+    size 0.08 0.15
+    alpha 64 64 64
+    time 0.15 0.25
+    originjitter 0 0 0
+    velocitymultiplier -0.25
+    velocityjitter 2 2 2
+    trailspacing 15
+    stretchfactor 10
+  
+   //TE_QRFL_QBIT_TRAIL - LIGHT
+    effect TE_QRFL_QBIT_TRAIL
+    lightradius 10
+    lightradiusfade 25
+    lightcolor 0.675 0.345 0.98
+    lightshadow 0.25
+  
+    
+  //TE_QRFL_IMPACT_SHIELD - BLACK LINES
+    effect TE_QRFL_IMPACT_SHIELD
+    count 1
+    type alphastatic
+    blend alpha
+    orientation spark
+    color 0x000000 0x000000
+    tex 47 47
+    size 2 3
+    alpha 96 96 128
+    time 0.5 1
+    originjitter 1 1 1
+    velocityjitter 35 35 1
+    velocitymultiplier 1
+    trailspacing 1
+    stretchfactor 1
+    bounce -1
+    
+  //TE_QRFL_QBIT_IMPACT - NON-SHIELD - PURPLE BUBBLES
+    effect TE_QRFL_QBIT_IMPACT
+    count 10
+    type alphastatic
+    blend alpha
+    orientation spark
+    color 0xDF013A 0x819FF7
+    tex 63 63
+    size 2 3
+    alpha 96 96 128
+    time 1 2
+    originjitter 1 1 1
+    velocityjitter 180 180 180
+    velocitymultiplier -1
+    trailspacing 1
+    stretchfactor 2
+    airfriction 1
+  
 //=====================================================
 
 
@@ -544,6 +715,7 @@ stretchfactor 4
     originjitter 0.2 0.2 0.2
     trailspacing 48
     rotate 0 0 15 35
+    bounce -1
     
   //TE_EMP_TRAIL - SMOKE DISTORT
     effect TE_EMP_TRAIL
@@ -558,6 +730,7 @@ stretchfactor 4
     time 4 8
     originjitter 0.2 0.2 0.2
     trailspacing 16
+    bounce -1
   
   //TE_EMP_TRAIL - SPARK CLOUD TRAIL
     effect TE_EMP_TRAIL
@@ -573,6 +746,7 @@ stretchfactor 4
     originjitter 1.75 1.75 1.75
     velocitymultiplier -0.085
     trailspacing 32
+    bounce -1
   
   //TE_EMP_TRAIL - SPARK CLOUD
     effect TE_EMP_TRAIL
@@ -589,6 +763,7 @@ stretchfactor 4
     velocitymultiplier 1
     trailspacing 16
     rotate 0 180 75 100
+    bounce -1
     
   //TE_EMP_TRAIL - LIGHT
     effect TE_EMP_TRAIL
@@ -640,7 +815,6 @@ stretchfactor 4
     rotate 0 180 75 100
     airfriction 0.1
     stretchfactor 10
-    
 //=====================================================
 
 
