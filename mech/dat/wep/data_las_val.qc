@@ -104,23 +104,12 @@ void() data_las_atk={
     self.w_state = RECOIL;
   }
 
-  local entity laser_org;
-  laser_org = spawn();
-  laser_org.movetype = SOLID_NOT;
-  laser_org.classname = "missile";
-  setsize(laser_org, '0 0 0', '0 0 0');
-  setorigin(laser_org, org);
-  laser_org.think = SUB_Remove;
-  laser_org.nextthink = time + 0.01;
-   
-  te_beam_laser(laser_org.origin, dir);
-  sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
-  
   te_muzzle_generic(self.origin, player.angles, player.velocity, TE_LAS_MUZZLE, 1);
-  
+  sound ( self, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
   t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
+  trailparticles( world, particleeffectnum("TE_LAS_RAIL"), org, dir);
+  
   if( trace_ent.sh_cur <= 0 ){
-    
     te_laser_hit( dir + (v_forward * -4), random() * 4, (self.takedamage > DAMAGE_NO) );
   }
 };

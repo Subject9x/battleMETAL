@@ -126,8 +126,6 @@ void() data_qrfl_atk={
     hitMax = trace_ent.maxs * 2;
   }
   
-
-  
   qbits = DAT_QRFL_QBITS;
   while(qbits > 0){
     newmis = spawn();

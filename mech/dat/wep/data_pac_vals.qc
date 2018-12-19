@@ -104,24 +104,27 @@ void() data_pac_atk={
     self.w_firetime = time + self.w_firerate;
     self.w_state = RECOIL;
   }
-
-  local entity laser_org;
-  laser_org = spawn();
-  laser_org.movetype = MOVETYPE_NONE;
-  laser_org.solid = SOLID_NOT;
-  laser_org.classname = "missile";
-  setsize(laser_org, '0 0 0', '0 0 0');
-  makevectors(self.angles);
-  setorigin(laser_org, org + (v_forward*DAT_PAC_FIRE_OFS_z));
-
-  t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
-  sound (laser_org, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM); 
-  
-  te_beam_pac(org, dir);
-  
-  te_flamejet(dir, '0 25 0', 5);
-  te_plasmaburn(dir);
  
-  laser_org.think = SUB_Remove;
-  laser_org.nextthink = time + 0.011;// + 0.35;
+  makevectors( self.angles );
+  pointparticles( particleeffectnum("TE_PAC_MUZZLE"), org + (v_forward* -1.25), normalize( dir - org ) * 4, 1);
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  
+  trailparticles( world, particleeffectnum("TE_PAC_RAIL"), org + (v_forward* -1.25), dir);
+
+  //armor test
+  pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), dir + (v_forward * -5), normalize( dir - org ) * -4, 1);
+  
+  if( trace_ent.takedamage ){
+    t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
+    if( trace_ent.sh_cur > 0 ){
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), dir + (v_forward * -5), normalize( dir - org ) * -4, 1);
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), dir + (v_forward * -5), '0 0 0', 1);
+    }
+    else{
+      
+    }
+    return;
+  }
+  
+  //pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), dir + (v_forward * -5), normalize( dir - org ) * -4, 1);
 };
