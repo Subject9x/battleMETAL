@@ -1,33 +1,228 @@
 //https://web.archive.org/web/20100729132930/http://dpwiki.slipgateconstruct.com/index.php?title=Effectinfo_Scripting_Reference#Particles_leaving_decals
 //ESR BEAM==================================
-effect BEAM_ESR
-count 1
-countabsolute 1
-type beam
-blend add
-orientation beam
-color 0x65A8A3 0xAACFCC
-tex 60 60
-size 0.6 0.75
-sizeincrease 0.25
-alpha 256 512 64
-time 0.05 0.07
-gravity 0
-bounce -1
-liquidfriction 0
-velocityoffset 0 0 0
-originjitter 0 0 0
-velocityjitter 0 0 0
-velocitymultiplier 0
-notunderwater
-trailspacing 0.25
-stretchfactor 0
-rotate 0 0 0 0
-lightradius 200
-lightradiusfade 15
-lighttime 0.05
-lightcolor 0.69 0.75 1
-lightshadow 0.75
+
+  //TE_ESR_MUZZLE - CENTER PARTICLE1
+    effect TE_ESR_MUZZLE
+    countabsolute 1
+    type smoke
+    blend alpha
+    color 0x81DAF5 0xA9D0F5
+    tex 26 31
+    size 1 1
+    sizeincrease 1
+    alpha 256 512 90
+    time 0.2 0.3
+    velocitymultiplier 0
+
+  //TE_ESR_MUZZLE - LONG SPARKS
+    effect TE_ESR_MUZZLE
+    count 2
+    type spark
+    blend alpha
+    color 0x00BFFF 0xA9F5F2
+    tex 34 34
+    size 0.2 0.055
+    alpha 256 512 400
+    time 1 2
+    originjitter 0.25 0.25 0.25
+    velocityoffset 10 10 10
+    velocityjitter 45 45 45
+    velocitymultiplier 0
+    stretchfactor 15
+    airfriction 10
+   
+  //TE_ESR_MUZZLE - SPARK PUFFS
+    effect TE_ESR_MUZZLE
+    count 4
+    type spark
+    blend alpha
+    color 0x81DAF5 0xA9D0F5
+    tex 43 45
+    size 0.2 0.055
+    alpha 256 512 180
+    time 1 2
+    originjitter 0.25 0.25 0.25
+    velocityoffset 5 5 5
+    velocityjitter 25 25 25
+    velocitymultiplier 20
+    stretchfactor 2
+    airfriction 4
+   
+  //TE_ESR_MUZZLE - LIGHT
+    effect TE_ESR_MUZZLE
+    lightradius 75
+    lightradiusfade 75
+    lightcolor 0.663 0.961 0.949
+    lightshadow 0.75
+  
+  //TE_ESR_RAIL - MAIN RAIL
+    effect TE_ESR_RAIL
+    countabsolute 1
+    type beam
+    blend add
+    orientation beam
+    color 0x65A8A3 0xAACFCC
+    tex 60 60
+    size 0.4 0.5
+    alpha 512 1024 64
+    time 0.05 0.07
+    bounce -1
+    notunderwater
+    trailspacing 0.2
+    stretchfactor 4
+    
+  //TE_ESR_RAIL - RAIL HEAT DISTORT
+    effect TE_ESR_RAIL
+    count 8
+    type spark
+    blend alpha
+    color 0xFAFAFA 0xFAFAFA
+    tex 0 15
+    size 1 2
+    alpha 1 1 0.005
+    time 3 5
+    originjitter 0.5 0.5 0.5
+    velocityoffset 0.01 0.05 0.1
+    velocityjitter 0.5 0.5 0.5
+    velocitymultiplier 1
+    stretchfactor 2
+    gravity -0.00001
+    trailspacing 16
+    bounce -1  
+  
+  //TE_ESR_IMPACT_DIRT - GRAVEL BITS
+    effect TE_ESR_IMPACT_DIRT
+    count 5
+    type alphastatic
+    blend alpha
+    orientation spark
+    color 0xF5DA81 0xE6E6E6
+    tex 44 46
+    size 0.25 0.65
+    alpha 256 512 256
+    time 0.65 0.9
+    originjitter 3 3 3
+    velocityjitter 10 10 10
+    velocitymultiplier 2
+    gravity 0.25
+    notunderwater
+
+  //TE_ESR_IMPACT_DIRT - LIGHTNING FRAG
+    effect TE_ESR_IMPACT_DIRT
+    count 1
+    type spark
+    blend alpha
+    orientation spark
+    color 0x00BFFF 0xA9F5F2
+    tex 38 41
+    size 0.25 0.65
+    alpha 256 512 1024
+    time 0.35 0.55
+    originjitter 0.25 0.25 0.25
+    velocityjitter 30 30 30
+    velocitymultiplier 3
+    notunderwater
+    stretchfactor 10
+
+  //TE_ESR_IMPACT_DIRT - SMOKE PUFF
+    effect TE_ESR_IMPACT_DIRT
+    countabsolute 1
+    type alphastatic
+    blend alpha
+    color 0x151515 0x2E2E2E
+    tex 0 7
+    size 0.75 1
+    sizeincrease 0.5
+    alpha 512 1024 512
+    time 0.25 0.35
+    notunderwater
+    stretchfactor 3
+    
+  //TE_ESR_IMPACT_DIRT - LIGHT
+    effect TE_ESR_IMPACT_DIRT
+    lightradius 50
+    lightradiusfade 50
+    lightcolor 0.039 0.133 0.161
+    lightshadow 0.25
+  
+  //TE_ESR_IMPACT_ARMOR - LIGHTNING FRAG
+    effect TE_ESR_IMPACT_ARMOR
+    count 2
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFAAC58 0x81F7F3
+    tex 38 41
+    size 0.25 0.65
+    alpha 256 512 128
+    time 0.3 0.5
+    originjitter 0.1 0.1 0.1
+    velocityjitter 10 10 10
+    velocitymultiplier -30
+    notunderwater
+    stretchfactor 25
+    airfriction 0.01
+  
+  //TE_ESR_IMPACT_ARMOR - SMOKE PUFF
+    effect TE_ESR_IMPACT_ARMOR
+    count 1
+    type smoke
+    blend alpha
+    color 0xFAAC58 0x81F7F3
+    tex 63 63
+    size 1 2
+    alpha 256 512 256
+    time 3 5
+    originjitter 0.1 0.1 0.1
+    velocitymultiplier 0
+    notunderwater
+    
+  //TE_ESR_IMPACT_ARMOR - LIGHTNING FRAG
+    effect TE_ESR_IMPACT_ARMOR
+    lightradius 15
+    lightradiusfade 100
+    lightcolor 0.875 0.004 0.004
+    lightshadow 0.25
+  
+  //TE_ESR_IMPACT_SHIELD - LIGHTNING FRAG
+    effect TE_ESR_IMPACT_SHIELD
+    count 4
+    type spark
+    blend alpha
+    color 0x08298A 0x8181F7
+    tex 43 45
+    size 1 2
+    alpha 256 512 180
+    time 1 2
+    originjitter 0.25 0.25 0.25
+    velocityoffset 5 5 5
+    velocityjitter 25 25 25
+    velocitymultiplier 40
+    stretchfactor 2
+    airfriction 4
+  
+  //TE_ESR_IMPACT_SHIELD - SMOKE PUFF
+    effect TE_ESR_IMPACT_SHIELD
+    count 1
+    type smoke
+    blend alpha
+    color 0x08298A 0x8181F7
+    tex 63 63
+    size 2 4
+    sizeincrease 1
+    alpha 256 512 256
+    time 2 4
+    originjitter 0.1 0.1 0.1
+    velocitymultiplier 0
+    notunderwater
+    
+  //TE_ESR_IMPACT_SHIELD - LIGHTNING FRAG
+    effect TE_ESR_IMPACT_SHIELD
+    lightradius 15
+    lightradiusfade 100
+    lightcolor 0.031 0.031 0.541
+    lightshadow 0.25
+  
 //==========================================
 
 //TEST SMOKE==================================
@@ -234,19 +429,64 @@ velocitymultiplier 1
     alpha 256 256 150
     time 3 4
     
-  //TE_PAC_IMPACT_ARMOR - 
+  //TE_PAC_IMPACT_ARMOR - BURN SMOKE RING
     effect TE_PAC_IMPACT_ARMOR
     countabsolute 1
     type smoke
     blend alpha
     color 0xFE2E2E 0xDF7401
     tex 32 32
-    size 2 4
+    size 5 5
     sizeincrease 1.5
-    alpha 256 256 150
+    alpha 256 256 80
     time 3 4
     
+  //TE_PAC_IMPACT_ARMOR - BURN SMOKE RING SMALL
+    effect TE_PAC_IMPACT_ARMOR
+    countabsolute 1
+    type smoke
+    blend alpha
+    color 0xFE2E2E 0xDF7401
+    tex 32 32
+    size 1 1
+    sizeincrease 1.5
+    alpha 256 256 80
+    time 3 4
   
+  //TE_PAC_IMPACT_ARMOR - BURN SMOKE RING SMALLEST
+    effect TE_PAC_IMPACT_ARMOR
+    countabsolute 1
+    type smoke
+    blend alpha
+    color 0xFE2E2E 0xDF7401
+    tex 32 32
+    size 3 3
+    sizeincrease 1.5
+    alpha 256 256 80
+    time 3 4
+  
+  //TE_PAC_IMPACT_ARMOR - SLOSH 
+    effect TE_PAC_IMPACT_ARMOR
+    count 4
+    type spark
+    blend alpha
+    color 0xFE2E2E 0xDF7401
+    tex 35 35
+    size 1 2
+    sizeincrease -0.5
+    alpha 256 256 32
+    time 3 4
+    gravity 0.075
+    originjitter 0.5 0.5 00.5
+    velocityjitter 2 2 2
+    stretchfactor 2
+  
+  //TE_PAC_IMPACT_ARMOR - LIGHT
+    effect TE_PAC_IMPACT_ARMOR
+    lightradius 100
+    lightradiusfade 25
+    lightcolor 1 0.502 0
+    lightshadow 0.8
   
   //TE_PAC_IMPACT_GROUND - SPARKS ACCEL
     effect TE_PAC_IMPACT_GROUND

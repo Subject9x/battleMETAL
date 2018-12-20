@@ -111,9 +111,6 @@ void() data_pac_atk={
   
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), org + (v_forward* -1.25), dir);
 
-  //armor test
-  pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), dir + (v_forward * -5), normalize( dir - org ) * -4, 1);
-  
   if( trace_ent.takedamage ){
     t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
     if( trace_ent.sh_cur > 0 ){
@@ -121,10 +118,10 @@ void() data_pac_atk={
       pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), dir + (v_forward * -5), '0 0 0', 1);
     }
     else{
-      
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), dir + (v_forward * -5), normalize( dir - org ) * -4, 1);
     }
     return;
   }
   
-  //pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), dir + (v_forward * -5), normalize( dir - org ) * -4, 1);
+  pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), dir + (v_forward * -5), normalize( dir - org ) * -4, 1);
 };

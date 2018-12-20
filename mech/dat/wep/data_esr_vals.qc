@@ -106,25 +106,25 @@ void() data_esr_atk={
     self.w_state = RECOIL;
     self.w_isburst = TRUE;
   }
-
-  t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
-
-  this = self;
-  proj = spawn();
-  self = proj;
-    self.movetype = SOLID_NOT;
-    self.classname = "missile";
-    makevectors(this.angles);
-    setorigin(self, org + (v_forward*2) );
-    setsize(self, '0 0 0', '0 0 0');
-    self.scale = 1;
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01; //0.01
-  self = this;
+  
   sound (proj, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_ESR_MUZZLE"), org + v_forward * 4, normalize( dir - org ) * 1, 1);
+  trailparticles( world, particleeffectnum("TE_ESR_RAIL"), org + (v_forward* 4), dir);
   
-  te_beam_esr(proj.origin, dir);
+  if( pointcontents(dir) == CONTENT_SKY ){
+    return;
+  }
   
-  te_flamejet(dir, '0 15 0', 5);
-  te_customflash(dir, 4, 10, '0 0 1');
+  if( trace_ent.takedamage ){
+    t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
+    if( trace_ent.sh_cur > 0 ){
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), dir + v_up * 1, normalize( dir - org ) * 1, 1);
+    }
+    else{
+       pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), dir + v_up * 1, normalize( dir - org ) * 1, 1);
+    }
+    return;
+  }
+  
+  pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), dir + v_up * 1, normalize( dir - org ) * 1, 1);
 };

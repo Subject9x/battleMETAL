@@ -106,10 +106,20 @@ void() data_las_atk={
 
   te_muzzle_generic(self.origin, player.angles, player.velocity, TE_LAS_MUZZLE, 1);
   sound ( self, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
-  t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
+  
   trailparticles( world, particleeffectnum("TE_LAS_RAIL"), org, dir);
   
-  if( trace_ent.sh_cur <= 0 ){
-    te_laser_hit( dir + (v_forward * -4), random() * 4, (self.takedamage > DAMAGE_NO) );
+  if( pointcontents(dir) == CONTENT_SKY ){
+    return;
   }
+  
+  if( trace_ent.takedamage ){
+    t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
+    if( trace_ent.sh_cur <= 0 ){
+      pointparticles(particleeffectnum("TE_LAS_HIT"), dir , '0 0 0', 1);
+    }
+    return;
+  }
+  
+  pointparticles(particleeffectnum("TE_LAS_DIRT"), dir , '0 0 0', 1);
 };
