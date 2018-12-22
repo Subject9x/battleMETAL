@@ -66,9 +66,6 @@ void() data_prj_mlgd_touch={
 		return;
 	}
 
-  if(other == self.owner){
-    return;
-  }
   if(other.takedamage){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
     if( other.sh_cur > 0 ){

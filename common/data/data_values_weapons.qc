@@ -198,7 +198,7 @@ vector DAT_RPC_ACC       = '0.2 0.1 0';
 //-------------------------QRifle
 vector DAT_QRFL_ACC       = '0.02 0.2 0';
 //-------------------------SFGA
-vector DAT_SFGA_ACC       = '0.5 0.5 0';
+vector DAT_SFGA_ACC       = '0.08 0.02 0';
 //-------------------------FLAK
 vector DAT_FLAK_ACC       = '0.15 0.25 0';
 //-------------------------Laser

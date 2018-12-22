@@ -5,26 +5,27 @@ Date: 02/25/2017
 Overview: long-range, low damage, homing missile
 */
 //=======MISSILE: ACTIVE-RADAR========
-float DAT_PRJ_MARH_IDX = ID_PRJ_MARH;
+float DAT_PRJ_MARH_IDX = ;
 float DAT_PRJ_MARH_DAMAGE = 2;
 float DAT_PRJ_MARH_DMGTYPE = DMG_EXP;
 
 void() data_prj_marh_th;
+void() data_prj_marh_th_delay;
 void() data_prj_marh_touch;
 
 void() data_prj_marh_ini={
   self.classname = "prj_marh";
   self.touch = data_prj_marh_touch;
-  self.data_idx = DAT_PRJ_MARH_IDX;
+  self.data_idx = ID_PRJ_MARH;
   self.p_velocity = DAT_PRJ_MARH_VELOCITY;
   self.c_model = DAT_PRJ_MARH_MODEL;
   self.p_lifetime = DAT_PRJ_MARH_LIFETIME;
   self.p_damage = DAT_PRJ_MARH_DAMAGE;
   self.p_dmgtype = DMG_EXP;
   //cosmetics
-  self.effects = self.effects - (self.effects & EF_NOMODELFLAGS);
-  self.effects = self.effects | EF_NOSHADOW;
+  self.effects = EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MARH_MODELFLAGS;
+  self.traileffectnum = 0;
   self.c_ofs = '0 0 0';
 };
 
@@ -73,7 +74,16 @@ void() data_prj_marh_th={
   else{
     self.think = data_prj_marh_th;
   }
-    self.nextthink = time + 0.3;
+  self.nextthink = time + 0.3;
+};
+
+//oh what I do for cosmetics
+void() data_prj_marh_th_delay={
+  if( !self.traileffectnum ){
+    self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
+  }
+  self.think = data_prj_marh_th; 
+  self.nextthink = time + 0.5;
 };
 
 void() data_prj_marh_touch={
@@ -81,18 +91,13 @@ void() data_prj_marh_touch={
 		remove(self);
 		return;
 	}
-  
-  if(other.classname == "worldspawn"){
-    BecomeExplosion();
-    return;
-  }
-
-  if(other == self.owner){
-    return;
-  }
 
   if(other.takedamage){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    if( other.sh_cur > 0 ){
+      remove(self);
+      return;
+    }
   }
   
   BecomeExplosion();

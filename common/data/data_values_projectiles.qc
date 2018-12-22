@@ -126,7 +126,7 @@ string DAT_PRJ_ABT_CLST_MODEL   = "q3mdl/casing.mdl";
 //============================
 //-------------------------EMP
 float DAT_PRJ_EMP_EFFECTS = EF_NOSHADOW;
-float DAT_PRJ_EMP_MODELFLAGS = MF_TRACER3;
+float DAT_PRJ_EMP_MODELFLAGS = 0;
 float DAT_PRJ_EMP_ALPHA = 0.75;
 vector DAT_PRJ_EMP_COLORMOD = '0.85 0.45 0.45';
 float DAT_PRJ_EMP_GLOWCOLOR = 255;

@@ -110,7 +110,7 @@ void() data_marh_atk={
       arc = arc + (v_up * (300 + (crandom() * 20))) + (v_right * (crandom() * 20));
       arc = arc + (v_right * (crandom() * 20));
       
-      start = org + ((crandom() * 2) * v_right) + (v_up * (crandom() * 4));
+      start = org + ((crandom() * 1.5) * v_right) + (v_up * (crandom() * 3.5));
       newmis = spawn();
       oself = self;
       self = newmis;
@@ -128,8 +128,8 @@ void() data_marh_atk={
         self.velocity = normalize(arc - start);
         self.velocity = self.velocity * self.p_velocity;
         self.angles = vectoangles(self.velocity);
-        self.think = data_prj_marh_th;
-        self.nextthink = time + 1;
+        self.think = data_prj_marh_th_delay;
+        self.nextthink = time + 0.5;
         sound (self, CHAN_ITEM, oself.fire_sound, 1, ATTN_NORM);
       self = oself;
     }
