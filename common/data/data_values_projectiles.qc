@@ -39,7 +39,7 @@ float DAT_PRJ_QRFL_VELOCITY = 200;
 //-------------------------RPlas
 float DAT_PRJ_RPLAS_VELOCITY = 1600;
 //-------------------------SFGA
-float DAT_PRJ_SFGA_VELOCITY = 1500;
+float DAT_PRJ_SFGA_VELOCITY = 1000; //was 1500 but altered proj gravity so 1000 is better
 //-------------------------FLAK
 float DAT_PRJ_FLAK_VELOCITY = 4500;
 //-------------------------SWARM
@@ -144,30 +144,15 @@ float DAT_PRJ_ION_GLOWTRAIL= FALSE;
 
 //-------------------------MIS-ARH
 float DAT_PRJ_MARH_EFFECTS = 0;
-float DAT_PRJ_MARH_MODELFLAGS = MF_ROCKET;
-float DAT_PRJ_MARH_ALPHA = 1;
-vector DAT_PRJ_MARH_COLORMOD = '0 0 0';
-float DAT_PRJ_MARH_GLOWCOLOR = 0;
-float DAT_PRJ_MARH_GLOWSIZE = 0;
-float DAT_PRJ_MARH_GLOWTRAIL= FALSE;
+float DAT_PRJ_MARH_MODELFLAGS = 0;
 
 //-------------------------Rocket
 float DAT_PRJ_MIS_EFFECTS = 0;
-float DAT_PRJ_MIS_MODELFLAGS = MF_ROCKET;
-float DAT_PRJ_MIS_ALPHA = 1;
-vector DAT_PRJ_MIS_COLORMOD = '0 0 0';
-float DAT_PRJ_MIS_GLOWCOLOR = 0;
-float DAT_PRJ_MIS_GLOWSIZE = 0;
-float DAT_PRJ_MIS_GLOWTRAIL= TRUE;
+float DAT_PRJ_MIS_MODELFLAGS = 0;
 
 //-------------------------MIS-LGD
 float DAT_PRJ_MLGD_EFFECTS = 0;
-float DAT_PRJ_MLGD_MODELFLAGS = MF_ROCKET;
-float DAT_PRJ_MLGD_ALPHA = 1;
-vector DAT_PRJ_MLGD_COLORMOD = '0 0 0';
-float DAT_PRJ_MLGD_GLOWCOLOR = 0;
-float DAT_PRJ_MLGD_GLOWSIZE = 0;
-float DAT_PRJ_MLGD_GLOWTRAIL= FALSE;
+float DAT_PRJ_MLGD_MODELFLAGS = 0;
 
 //-------------------------QRifle
 float DAT_PRJ_QRFL_EFFECTS = EF_NOSHADOW;
@@ -192,9 +177,6 @@ float DAT_PRJ_SFGA_EFFECTS = EF_NOSHADOW;
 float DAT_PRJ_SFGA_MODELFLAGS = MF_GRENADE;
 float DAT_PRJ_SFGA_ALPHA = 1;
 vector DAT_PRJ_SFGA_COLORMOD = '0.85 0.45 0.45';
-float DAT_PRJ_SFGA_GLOWCOLOR = 240;
-float DAT_PRJ_SFGA_GLOWSIZE = 0.005;
-float DAT_PRJ_SFGA_GLOWTRAIL= FALSE;
 
 //-------------------------FLAK
 float DAT_PRJ_FLAK_EFFECTS = EF_NOSHADOW;

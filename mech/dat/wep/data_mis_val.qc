@@ -104,8 +104,8 @@ void() data_mis_atk={
     self.w_isburst = TRUE;
   }
   
-  player.punchangle_x = -2 + random() * -2;
-  player.punchangle_y = -3 + random() * -4;
+  player.punchangle_x = -2 + crandom() * -2;
+  player.punchangle_y = -3 + crandom() * -4;
   
   newmis = spawn();
   oself = self;

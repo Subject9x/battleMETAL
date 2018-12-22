@@ -11,6 +11,8 @@ Overview: data def file for a weapon projectile
 void() data_prj_sfga_touch;
 void() data_prj_sfga_raddmg;
 
+void() data_prj_sfga_th;
+
 void() data_prj_sfga_ini={
   self.classname = "prj_sfga";
   self.touch = data_prj_sfga_touch;
@@ -24,37 +26,44 @@ void() data_prj_sfga_ini={
   self.effects = self.effects | DAT_PRJ_SFGA_EFFECTS;
   self.modelflags = DAT_PRJ_SFGA_MODELFLAGS;
   self.alpha = DAT_PRJ_SFGA_ALPHA;
-  self.colormod = DAT_PRJ_SFGA_COLORMOD;
-  self.glow_color = DAT_PRJ_SFGA_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_SFGA_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_SFGA_GLOWTRAIL;
+  //self.colormod = DAT_PRJ_SFGA_COLORMOD;
+  self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
 };
 
 void() data_prj_sfga_touch={
-	if (pointcontents(self.origin) == CONTENT_SKY){
-		remove(self);
-		return;
-	}
   
-  if(other.classname == "worldspawn"){
-    data_prj_sfga_raddmg();
-    BecomeExplosion();
-    return;
-  }
-
-  if(other == self.owner){
+  if( pointcontents(self.origin) == CONTENT_SKY ){
+    remove(self);
     return;
   }
   
-  if(other.takedamage){
-    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-    if( other.sh_cur > 0 ){
+  if( other.takedamage ){
+    if( other.sh_cur > 0){
+      pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
       remove(self);
       return;
     }
   }
+  
   data_prj_sfga_raddmg();
-  BecomeExplosion();
+  self.think = BecomeExplosion;
+  self.nextthink = time + 0.01;
+  self.velocity = '0 0 0';
+  self.avelocity = '0 0 0';
+  return;
+};
+
+//kinda dumb but for cosmetics
+void() data_prj_sfga_th={
+  local vector dir;
+  
+  dir = normalize( self.origin - self.c_ofs ) * self.p_velocity;
+  self.angles = vectoangles(dir);
+  
+  self.think = data_prj_sfga_th;
+
+  self.nextthink = time + 0.01;
+  self.c_ofs = self.origin;
 };
 
 void() data_prj_sfga_raddmg={

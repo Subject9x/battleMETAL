@@ -107,6 +107,10 @@ void() data_esr_atk={
     self.w_isburst = TRUE;
   }
   
+  proj = spawn();
+  proj.think = SUB_Remove;
+  proj.nextthink = time + 0.001;
+  
   sound (proj, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_ESR_MUZZLE"), org + v_forward * 4, normalize( dir - org ) * 1, 1);
   trailparticles( world, particleeffectnum("TE_ESR_RAIL"), org + (v_forward* 4), dir);

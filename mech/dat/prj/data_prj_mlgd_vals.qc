@@ -20,13 +20,9 @@ void() data_prj_mlgd_ini={
   self.p_lifetime = DAT_PRJ_MLGD_LIFETIME;
   
   //cosmetics
-  self.effects = EF_ADDITIVE + EF_NOSHADOW;
+  self.effects = EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MLGD_MODELFLAGS;
-  self.alpha = DAT_PRJ_MLGD_ALPHA;
-  self.colormod = DAT_PRJ_MLGD_COLORMOD;
-  self.glow_color = DAT_PRJ_MLGD_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_MLGD_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_MLGD_GLOWTRAIL;
+  self.traileffectnum = particleeffectnum("TE_LGM_TRAIL"); 
 };
 
 void() data_prj_mlgd_th={

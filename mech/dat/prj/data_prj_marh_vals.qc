@@ -25,11 +25,6 @@ void() data_prj_marh_ini={
   self.effects = self.effects - (self.effects & EF_NOMODELFLAGS);
   self.effects = self.effects | EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MARH_MODELFLAGS;
-  self.alpha = DAT_PRJ_MARH_ALPHA;
-  self.colormod = DAT_PRJ_MARH_COLORMOD;
-  self.glow_color = DAT_PRJ_MARH_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_MARH_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_MARH_GLOWTRAIL;
   self.c_ofs = '0 0 0';
 };
 

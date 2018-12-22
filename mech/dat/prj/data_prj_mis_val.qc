@@ -49,14 +49,8 @@ void() data_prj_mis_ini={
   self.p_lifetime = DAT_PRJ_MIS_LIFETIME;
   
   //cosmetics
-  self.effects = self.effects | EF_NOSHADOW;
-  self.modelflags = 0;//DAT_PRJ_MIS_MODELFLAGS;
-  self.alpha = DAT_PRJ_MIS_ALPHA;
-  self.colormod = DAT_PRJ_MIS_COLORMOD;
-  self.glow_color = DAT_PRJ_MIS_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_MIS_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_MIS_GLOWTRAIL;
+  self.effects = EF_NOSHADOW;
+  self.modelflags = DAT_PRJ_MIS_MODELFLAGS;
   self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");  //DEBUG
-
 };
 

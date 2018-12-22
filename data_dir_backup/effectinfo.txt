@@ -123,6 +123,7 @@
     velocitymultiplier 3
     notunderwater
     stretchfactor 10
+    bounce 6
 
   //TE_ESR_IMPACT_DIRT - SMOKE PUFF
     effect TE_ESR_IMPACT_DIRT
@@ -162,6 +163,7 @@
     notunderwater
     stretchfactor 25
     airfriction 0.01
+    bounce 2
   
   //TE_ESR_IMPACT_ARMOR - SMOKE PUFF
     effect TE_ESR_IMPACT_ARMOR
@@ -200,6 +202,7 @@
     velocitymultiplier 40
     stretchfactor 2
     airfriction 4
+    bounce 4
   
   //TE_ESR_IMPACT_SHIELD - SMOKE PUFF
     effect TE_ESR_IMPACT_SHIELD
@@ -1365,8 +1368,192 @@ velocitymultiplier 1
     originjitter 0.5 0.5 00.5
     velocityjitter 2 2 2
     stretchfactor 8
-//=====================================================
+//==========================================
 
+
+
+
+//SFGA EFFECTS==================================
+  //TE_SFGA_MUZZLE - SMOKE BLOW 
+    effect TE_SFGA_MUZZLE
+    count 1
+    type smoke
+    blend alpha
+    color 0x000000 0x1C1C1C
+    tex 8 15
+    size 1 1
+    alpha 256 512 128
+    time 1 3
+    sizeincrease 0.25
+    gravity -0.001
+    originjitter 1 1 1
+    velocityjitter 1 1 1
+    velocitymultiplier 2
+    airfriction 0.0005
+    
+  //TE_SFGA_MUZZLE - FLAME RING
+    effect TE_SFGA_MUZZLE
+    countabsolute 1
+    type smoke
+    blend alpha
+    orientation oriented 
+    color 0xFE642E 0xFF8000
+    tex 32 32
+    size 1 1
+    alpha 256 256 164
+    time 1 1
+    sizeincrease 2
+    velocitymultiplier 1
+    
+  //TE_SFGA_MUZZLE - SMOKE RING
+    effect TE_SFGA_MUZZLE
+    countabsolute 1
+    type smoke
+    blend alpha
+    orientation oriented 
+    color 0x151515 0x2E2E2E
+    tex 32 32
+    size 2 2
+    alpha 256 256 164
+    time 1 1
+    sizeincrease 2
+    velocitymultiplier 1
+  
+  //TE_SFGA_MUZZLE - SPARKS 
+    effect TE_SFGA_MUZZLE
+    count 8
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFF8000 0xFF8000
+    tex 38 38
+    size 0.05 0.1
+    alpha 256 512 1024
+    time 1 3
+    originjitter 1 1 1
+    velocityjitter 10 10 10
+    velocitymultiplier 10
+    stretchfactor 10
+    airfriction 0.001
+    
+  //TE_SFGA_MUZZLE - LIGHT
+    effect TE_SFGA_MUZZLE
+    lightradius 125
+    lightradiusfade 100
+    lightcolor 0.996 0.392 0.18
+    lightshadow 0.5
+    notunderwater
+    
+  //TE_SFGA_TRAIL - SMOKE
+    effect TE_SFGA_TRAIL
+    count 2
+    type alphastatic
+    blend alpha
+    color 0xD8D8D8 0xFAFAFA
+    tex 8 15
+    size 0.15 0.25
+    sizeincrease 0.1
+    alpha 32 48 200
+    time 1.75 2.2
+    originjitter 0.2 0.2 0.2
+    velocityjitter 1 1 3
+    gravity -0.025
+    stretchfactor 4
+    trailspacing 8
+
+  //TE_SFGA_TRAIL - SPARKS
+    effect TE_SFGA_TRAIL
+    count 10
+    type spark
+    blend alpha
+    color 0xFF8000 0xFF8000
+    tex 35 35
+    size 0.05 0.075
+    alpha 256 512 256
+    time 0.05 0.07
+    originjitter 0.15 0.15 0.15
+    velocityjitter 0.25 0.25 0.25
+    velocitymultiplier -1
+    notunderwater
+    stretchfactor 0.25
+  
+  //TE_SFGA_TRAIL - LIGHT
+    effect TE_SFGA_TRAIL
+    lightradius 5
+    lightradiusfade 100
+    lightcolor 0.996 0.392 0.18
+    lightshadow 0.5
+    notunderwater
+    
+  //TE_SFGA_IMPACT_SHIELD
+    
+  
+  //TE_SFGA_IMPACT_ARMOR
+  
+  //TE_SFGA_IMPACT_DIRT
+
+
+//==========================================
+
+
+
+
+//LG MISSILE EFFECTS==================================
+  //TE_LGM_MUZZLE
+  
+  
+  //TE_LGM_TRAIL - FLAME
+    effect TE_LGM_TRAIL
+    count 2
+    type smoke
+    blend alpha
+    orientation oriented
+    color 0xFAAC58 0x81BEF7
+    tex 32 32
+    size 0.5 0.5
+    sizeincrease -0.25
+    alpha 256 512 256
+    time 0.03 0.03
+    originjitter 0.05 0.05 0.05
+    velocityjitter 0.25 0.25 0.25
+    velocitymultiplier -0.5
+    notunderwater
+    stretchfactor 0.25
+    trailspacing 3
+    
+  //TE_LGM_TRAIL - LIGHT
+    effect TE_LGM_TRAIL
+    lightradius 20
+    lightradiusfade 150
+    lightcolor 0.663, 0.886, 0.953
+    lightshadow 0.5
+    notunderwater
+    
+  //TE_LGM_TRAIL - SMOKE
+    effect TE_LGM_TRAIL
+    count 5
+    type smoke
+    blend alpha
+    color 0xD8D8D8 0xFAFAFA
+    tex 8 15
+    size 0.15 0.25
+    sizeincrease 0.1
+    alpha 32 48 48
+    time 3 3
+    originjitter 0.05 0.05 0.05
+    velocityjitter 1 1 3
+    gravity -0.0001
+    stretchfactor 6
+    trailspacing 8
+  
+  //TE_LGM_IMPACT_SHIELD
+  
+  //TE_LGM_IMPACT_DIRT
+  
+  //TE_LGM_IMPACT_ARMOR
+
+
+//==========================================
 
 //TEST Heat Distort==================================
 effect HEAT_SMALL

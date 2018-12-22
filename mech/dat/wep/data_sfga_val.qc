@@ -39,7 +39,6 @@ void() data_sfga_ini={
   self.spreadDefault = DAT_SFGA_ACC;
 };
 
-
 void() data_sfga_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
@@ -97,7 +96,6 @@ void() data_sfga_atk={
     self.w_state = RECOIL;
   }
   
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   newmis = spawn();
   oself = self;
   self = newmis;
@@ -111,29 +109,22 @@ void() data_sfga_atk={
     if( (player.flags & FL_MONSTER) ){
       self.velocity_z = self.velocity_z + 200;  //extra arc for AI attacks
     }
-    self.think = BecomeExplosion;
-    self.nextthink = time + self.p_lifetime;
+    self.avelocity = '0 0 500';
     util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
     util_setModel(self.c_model, 0, 0);
     setsize(self, '0 0 0', '0 0 0');
-    setorigin(self, org);
+    setorigin(self, org + (v_forward * 6));
     self.angles = vectoangles(self.velocity);
+    self.think = data_prj_sfga_th;
+    self.nextthink = time + 0.01;
+    self.gravity = 0.50;
   self = oself;
+  
   if((player.flags & FL_CLIENT)){
-    player.punchangle = randomvec();
+    player.punchangle_x = -2 + crandom() * -6;
+    player.punchangle_y = -3 + crandom() * -6;
   }
     
-  local entity bul_fx;
-  bul_fx = spawn();
-  bul_fx.movetype = SOLID_NOT;
-  bul_fx.classname = "missile";
-  setmodel(bul_fx, "progs/muzzleflash.spr32");
-  setsize(bul_fx, '0 0 0', '0 0 0');
-  setorigin(bul_fx, self.fx_origin);
-  bul_fx.glow_color = 250;
-  bul_fx.glow_size = 1;
-  bul_fx.glow_trail = TRUE;
-  bul_fx.color = '1 0 0';
-  bul_fx.think = SUB_Remove;
-  bul_fx.nextthink = time + 0.001;// + 0.35;
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), org + (v_forward * 7), normalize(dir-org), 1);
 };
