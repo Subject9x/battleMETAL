@@ -59,8 +59,8 @@ void() data_mlgd_think={
 };
 
 void() data_mlgd_atk={
-  local entity player, proj, oself;
-  local vector dir, org, end, adj, angl;
+  local entity player, oself;
+  local vector dir, org, end, adj, angl, lasOrg;
   local float range;
   player = self.owner;
   
@@ -106,6 +106,16 @@ void() data_mlgd_atk={
     self.w_state = RECOIL;
   }
   
+  lasOrg = org + (v_forward * 2.1) + (v_up * -0.5);
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), org + (v_forward * 2) + (v_right * -0.65), normalize((org + v_up * 2) - org), 1);
+  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), org + (v_forward * 2) + (v_right * 0.65), normalize((org + v_up * 2) - org), 1);
+  pointparticles( particleeffectnum("TE_LGM_MUZZLE"), org + (v_forward * 2) + (v_up * 1), normalize((org + v_up * 2) - org), 1);
+  
+  
+  trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), lasOrg + (v_right * 0.5), lasOrg + (v_forward * 16) + (v_right * 0.5) );
+  trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), lasOrg + (v_right * -0.5), lasOrg + (v_forward * 16) + (v_right * -0.5) );
+  
   newmis = spawn();
   oself = self;
   self = newmis;
@@ -120,9 +130,8 @@ void() data_mlgd_atk={
     util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
     util_setModel(self.c_model, 0, 0);
     setsize(self, '0 0 0', '0 0 0');
-    setorigin(self, org);
+    setorigin(self, org + (v_forward * 4));
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);
   self = oself;
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };

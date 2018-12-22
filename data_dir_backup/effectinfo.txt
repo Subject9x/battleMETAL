@@ -1500,7 +1500,36 @@ velocitymultiplier 1
 
 //LG MISSILE EFFECTS==================================
   //TE_LGM_MUZZLE
-  
+    effect TE_LGM_MUZZLE
+    count 10
+    type smoke
+    blend alpha
+    color 0xB43104 0x000000
+    tex 0 7
+    size 0.25 0.5
+    sizeincrease 0.1
+    alpha 64 96 48
+    originjitter 0.05 0.05 0.05
+    velocityjitter 0.25 0.25 0.25
+    velocitymultiplier 0.25
+    notunderwater
+    stretchfactor 0.25
+    
+  //TE_LGM_MUZZLE_LASER - LAS
+    effect TE_LGM_MUZZLE_LASER
+    countabsolute 1
+    type beam
+    blend add
+    orientation beam
+    color 0xFF0000 0xFF0000
+    tex 60 60
+    size 0.2 0.2
+    alpha 128 128 128
+    bounce -1
+    velocityoffset 0 0 4000
+    velocitymultiplier 4
+    notunderwater
+    trailspacing 0.24
   
   //TE_LGM_TRAIL - FLAME
     effect TE_LGM_TRAIL
@@ -1544,7 +1573,7 @@ velocitymultiplier 1
     velocityjitter 1 1 3
     gravity -0.0001
     stretchfactor 6
-    trailspacing 8
+    trailspacing 6
   
   //TE_LGM_IMPACT_SHIELD
   
