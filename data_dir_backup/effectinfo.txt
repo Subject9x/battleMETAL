@@ -21,14 +21,15 @@
     blend alpha
     color 0x00BFFF 0xA9F5F2
     tex 34 34
-    size 0.2 0.055
+    //size 0.2 0.55
+    size 0.01 0.05
     alpha 256 512 400
     time 1 2
     originjitter 0.25 0.25 0.25
     velocityoffset 10 10 10
     velocityjitter 45 45 45
     velocitymultiplier 0
-    stretchfactor 15
+    stretchfactor 3
     airfriction 10
    
   //TE_ESR_MUZZLE - SPARK PUFFS
@@ -1084,7 +1085,6 @@ velocitymultiplier 1
     originjitter 0.2 0.2 0.2
     trailspacing 48
     rotate 0 0 15 35
-    bounce -1
     
   //TE_EMP_TRAIL - SMOKE DISTORT
     effect TE_EMP_TRAIL
@@ -1099,7 +1099,6 @@ velocitymultiplier 1
     time 4 8
     originjitter 0.2 0.2 0.2
     trailspacing 16
-    bounce -1
   
   //TE_EMP_TRAIL - SPARK CLOUD TRAIL
     effect TE_EMP_TRAIL
@@ -1115,7 +1114,6 @@ velocitymultiplier 1
     originjitter 1.75 1.75 1.75
     velocitymultiplier -0.085
     trailspacing 32
-    bounce -1
   
   //TE_EMP_TRAIL - SPARK CLOUD
     effect TE_EMP_TRAIL
@@ -1132,7 +1130,6 @@ velocitymultiplier 1
     velocitymultiplier 1
     trailspacing 16
     rotate 0 180 75 100
-    bounce -1
     
   //TE_EMP_TRAIL - LIGHT
     effect TE_EMP_TRAIL
@@ -1184,6 +1181,190 @@ velocitymultiplier 1
     rotate 0 180 75 100
     airfriction 0.1
     stretchfactor 10
+    
+  //TE_EMP_EXPL - LIGHT
+    effect TE_EMP_EXPL
+    lightradius 200
+    lightradiusfade 75
+    lightcolor 0.345 0.675 0.98
+    lightshadow 0.25
+    
+//=====================================================
+
+
+
+
+
+//ION COIL EFFECTS==================================
+
+  //TE_ION_MUZZLE - SMOKE
+    effect TE_ION_MUZZLE
+    count 1
+    type alphastatic
+    blend alpha
+    color 0xFF0080 0xFF0040 
+    tex 0 7
+    size 1 1
+    sizeincrease 1
+    alpha 64 96 24
+    originjitter 0.2 0.2 0.2
+    velocityjitter 1 1 1
+    
+  //TE_ION_MUZZLE - SMOKE RINGS
+    effect TE_ION_MUZZLE
+    count 1
+    type alphastatic
+    blend alpha
+    color 0x58ACFA 0x819FF7
+    tex 32 32
+    size 4 5
+    sizeincrease -4
+    originjitter 0.5 0.5 0.5
+    alpha 32 64 -256
+    time 0.7 0.8  
+    
+  //TE_ION_MUZZLE - LIGHT
+    effect TE_ION_MUZZLE
+    lightradius 100
+    lighttime 0.05
+    lightcolor 0.18 0.18 0.996
+    lightshadow 0.25
+  
+  //TE_ION_TRAIL - SMOKE RINGS
+    effect TE_ION_TRAIL
+    count 1
+    type alphastatic
+    blend alpha
+    color 0xFA5882 0xF5A9D0
+    tex 32 32
+    size 1 2
+    sizeincrease 0.25
+    alpha 150 170 100
+    time 8 10
+    originjitter 0.2 0.2 0.2
+    trailspacing 64
+    rotate 0 0 15 35
+    
+  //TE_ION_TRAIL - SMOKE DISTORT
+    effect TE_ION_TRAIL
+    count 1
+    type alphastatic
+    blend alpha
+    color 0xA4A4A4 0xF2F2F2
+    tex 0 7
+    size 2 4
+    sizeincrease 1
+    alpha 4 8 4
+    time 4 8
+    originjitter 0.2 0.2 0.2
+    trailspacing 16
+  
+  //TE_ION_TRAIL - SPARK CLOUD TRAIL
+    effect TE_ION_TRAIL
+    count 15
+    type spark
+    blend alpha
+    color 0xA901DB 0xF781F3
+    tex 40 40
+    size 0.2 0.4
+    sizeincrease 2
+    alpha 96 96 64
+    originjitter 1.75 1.75 1.75
+    velocityjitter 4 4 4
+    velocitymultiplier -0.005
+    trailspacing 32
+  
+  //TE_ION_TRAIL - SPARK CLOUD
+    effect TE_ION_TRAIL
+    count 5
+    type smoke
+    blend alpha
+    color 0xA901DB 0xF781F3
+    tex 40 40
+    size 0.2 0.4
+    sizeincrease 2
+    alpha 96 96 45
+    time 0.2 0.4
+    originjitter 1.75 1.75 1.75
+    velocitymultiplier 1
+    trailspacing 16
+    rotate 0 180 75 100
+    
+  //TE_ION_TRAIL - LIGHT
+    effect TE_ION_TRAIL
+    lightradius 10
+    lightradiusfade 50
+    lightcolor 0.827 0.345 0.969
+    lightshadow 0.25
+  
+  //TE_ION_EXPL - SMOKE PUFF RED
+    effect TE_ION_EXPL
+    count 2
+    type alphastatic
+    blend alpha
+    color 0xFF0080 0xFF0040 
+    tex 26 31
+    size 3 4
+    sizeincrease 3
+    alpha 16 32 -50
+    time 1 3
+    originjitter 1 1 1
+    velocityjitter 1 1 1
+    
+  //TE_ION_EXPL - BLUE PUFF
+    effect TE_ION_EXPL
+    count 5
+    type smoke
+    blend alpha
+    color 0x58ACFA 0x819FF7
+    tex 41 41
+    size 8 10
+    sizeincrease -1
+    alpha 256 256 512
+  
+  //TE_ION_EXPL - SPARKS
+    effect TE_ION_EXPL
+    count 5
+    type spark
+    blend alpha
+    color 0xA901DB 0xF781F3
+    tex 40 40
+    size 0.2 0.4
+    sizeincrease 2
+    alpha 128 128 32
+    time 1 2
+    originjitter 1.75 1.75 1.75
+    velocityjitter 10 10 10
+    velocitymultiplier 20
+    rotate 0 180 75 100
+    airfriction 0.01
+    stretchfactor 10
+  
+  //TE_ION_EXPL - LIGHT
+    effect TE_ION_EXPL
+    lightradius 150
+    lightradiusfade 100
+    lightcolor 0.345 0.675 0.98
+    lightshadow 0.25
+
+  //TE_ION_IMPACT_ARMOR - SPARKS
+    effect TE_ION_IMPACT_ARMOR
+    count 5
+    type spark
+    blend alpha
+    color 0xA901DB 0xF781F3
+    tex 40 40
+    size 0.2 0.4
+    sizeincrease 2
+    alpha 128 128 32
+    time 1 2
+    originjitter 1.75 1.75 1.75
+    velocityjitter 10 10 10
+    velocitymultiplier 20
+    rotate 0 180 75 100
+    airfriction 0.01
+    stretchfactor 5
+    
 //=====================================================
 
 
@@ -1552,9 +1733,9 @@ velocitymultiplier 1
     
   //TE_LGM_TRAIL - LIGHT
     effect TE_LGM_TRAIL
-    lightradius 20
+    lightradius 10
     lightradiusfade 150
-    lightcolor 0.663, 0.886, 0.953
+    lightcolor 0.663 0.886 0.953
     lightshadow 0.5
     notunderwater
     
@@ -1584,6 +1765,96 @@ velocitymultiplier 1
 
 //==========================================
 
+
+
+
+
+//ARH MISSILE EFFECTS==================================  
+  //TE_ARH_MUZZLE - SPARKS 
+    effect TE_ARH_MUZZLE
+    count 1
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFF8000 0xFF8000
+    tex 38 38
+    size 0.05 0.1
+    alpha 256 512 1024
+    time 1 3
+    originjitter 1 1 1
+    velocityjitter 10 10 10
+    velocitymultiplier 10
+    stretchfactor 4
+    airfriction 0.01
+ 
+  //TE_ARH_MUZZLE - LIGHT 
+    effect TE_ARH_MUZZLE
+    lightradius 25
+    lightradiusfade 125
+    lightcolor 0.969 0.996 0.18
+    lightshadow 0.75
+    notunderwater
+    
+  //TE_ARH_MUZZLE - SMOKE
+    effect TE_ARH_MUZZLE
+    count 7
+    type smoke
+    blend alpha
+    color 0x848484 0xBDBDBD
+    tex 0 7
+    size 0.75 1
+    sizeincrease 0.25
+    alpha 64 96 24
+    originjitter 0.1 0.1 0.1
+    velocityjitter 0.1 0.1 0.1
+    gravity -0.01
+  
+  
+  //TE_ARH_TRAIL - FLAME
+    effect TE_ARH_TRAIL
+    count 2
+    type smoke
+    blend alpha
+    orientation oriented
+    color 0xFAAC58 0x81BEF7
+    tex 32 32
+    size 0.5 0.5
+    sizeincrease -0.25
+    alpha 256 512 256
+    time 0.03 0.03
+    originjitter 0.05 0.05 0.05
+    velocityjitter 0.25 0.25 0.25
+    velocitymultiplier -0.5
+    notunderwater
+    stretchfactor 0.2
+    
+  //TE_ARH_TRAIL - LIGHT
+    effect TE_ARH_TRAIL
+    lightradius 10
+    lighttime 0.5
+    lightcolor 0.969 0.996 0.18
+    lightshadow 0.25
+    notunderwater
+    
+  //TE_ARH_TRAIL - SMOKE
+    effect TE_ARH_TRAIL
+    count 7
+    type smoke
+    blend alpha
+    color 0x848484 0xBDBDBD
+    tex 8 15
+    size 0.1 0.15
+    sizeincrease 0.1
+    alpha 64 96 16
+    originjitter 0.1 0.1 0.1
+    velocityjitter 1 1 1
+    gravity -0.0001
+    stretchfactor 6
+    trailspacing 6
+  
+  
+
+//==========================================
 //TEST Heat Distort==================================
 effect HEAT_SMALL
 count 1

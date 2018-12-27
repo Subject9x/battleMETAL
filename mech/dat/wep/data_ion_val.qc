@@ -128,5 +128,7 @@ void() data_ion_atk={
     setsize(self, '0 0 0', '0 0 0');
     setorigin(self, org);
   self = oself;
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  
+  sound (newmis, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_ION_MUZZLE"), org + v_forward * 3 + v_up * 0.1, normalize( dir - org ) * 4, 1);
 };

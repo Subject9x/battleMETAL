@@ -22,10 +22,7 @@ void() data_prj_ion_ini={
   self.effects = self.effects | (EF_ADDITIVE | EF_NOSHADOW);
   self.modelflags = DAT_PRJ_ION_MODELFLAGS;
   self.alpha = DAT_PRJ_ION_ALPHA;
-  self.colormod = DAT_PRJ_ION_COLORMOD;
-  self.glow_color = DAT_PRJ_ION_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_ION_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_ION_GLOWTRAIL;
+  self.traileffectnum = particleeffectnum("TE_ION_TRAIL");  //DEBUG
 };
 
 void()data_prj_ion_think={
@@ -89,7 +86,7 @@ void()data_prj_ion_explode={
     }
     lst = lst.chain;
   }
-  te_tarexplosion(self.origin);
+  pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
   self.think = SUB_Remove;
   self.nextthink = time + 0.001;
 };
@@ -99,21 +96,19 @@ void() data_prj_ion_touch={
 		remove(self);
 		return;
 	}
+  self.traileffectnum = FALSE;
   
-  if(other.classname == "worldspawn"){
-    te_tarexplosion(self.origin);
-    self.nextthink = time + 0.01;
-    self.think = data_prj_ion_explode;
-    return;
-  }
-
-  if(other == self.owner){
-    return;
-  }
-
   if(other.takedamage){
-    te_tarexplosion(self.origin);
+    if( other.sh_cur > 0 ){
+      pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
+    }
+    else{
+      pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
+    }
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    return;
   }
-  remove(self);
+  
+  self.nextthink = time + 0.01;
+  self.think = data_prj_ion_explode;
 };

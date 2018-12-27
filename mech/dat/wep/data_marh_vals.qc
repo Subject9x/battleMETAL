@@ -110,7 +110,7 @@ void() data_marh_atk={
       arc = arc + (v_up * (300 + (crandom() * 20))) + (v_right * (crandom() * 20));
       arc = arc + (v_right * (crandom() * 20));
       
-      start = org + ((crandom() * 1.5) * v_right) + (v_up * (crandom() * 3.5));
+      start = org + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
       newmis = spawn();
       oself = self;
       self = newmis;
@@ -126,12 +126,14 @@ void() data_marh_atk={
         setsize(self, '0 0 0', '0 0 0');
         setorigin(self, start);
         self.velocity = normalize(arc - start);
-        self.velocity = self.velocity * self.p_velocity;
+        self.velocity = self.velocity * 100;
         self.angles = vectoangles(self.velocity);
         self.think = data_prj_marh_th_delay;
-        self.nextthink = time + 0.5;
-        sound (self, CHAN_ITEM, oself.fire_sound, 1, ATTN_NORM);
+        self.nextthink = time + 0.15;
       self = oself;
+      
+      sound (newmis, CHAN_ITEM, oself.fire_sound, 1, ATTN_NORM);
+      pointparticles( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
     }
   }
 };

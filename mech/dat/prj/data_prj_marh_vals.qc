@@ -82,8 +82,11 @@ void() data_prj_marh_th_delay={
   if( !self.traileffectnum ){
     self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
   }
+  self.velocity = self.velocity * self.p_velocity;
+  self.angles = vectoangles(self.velocity);
+  
   self.think = data_prj_marh_th; 
-  self.nextthink = time + 0.5;
+  self.nextthink = time + 0.3;
 };
 
 void() data_prj_marh_touch={
