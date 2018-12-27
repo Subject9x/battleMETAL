@@ -114,10 +114,9 @@ void() data_swrm_atk={
           if( targs.i_faction != player.i_faction){
             if(targs.deadflag == DEAD_NO){
               maxtarg = maxtarg - 1;
-              local entity mis;
-              mis = spawn();
+              newmis = spawn();
               oself = self;
-              self = mis;
+              self = newmis;
                 self.owner = player;
                 data_iniProjectile(oself.w_proj);
                 util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
@@ -137,6 +136,7 @@ void() data_swrm_atk={
                 self.angles = vectoangles(self.velocity);
               self = oself;
               sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+              pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), self.origin, normalize( targs.origin - org ), 1);
             }
           }
         }

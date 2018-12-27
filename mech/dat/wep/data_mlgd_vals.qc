@@ -112,7 +112,6 @@ void() data_mlgd_atk={
   pointparticles( particleeffectnum("TE_LGM_MUZZLE"), org + (v_forward * 2) + (v_right * 0.65), normalize((org + v_up * 2) - org), 1);
   pointparticles( particleeffectnum("TE_LGM_MUZZLE"), org + (v_forward * 2) + (v_up * 1), normalize((org + v_up * 2) - org), 1);
   
-  
   trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), lasOrg + (v_right * 0.5), lasOrg + (v_forward * 16) + (v_right * 0.5) );
   trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), lasOrg + (v_right * -0.5), lasOrg + (v_forward * 16) + (v_right * -0.5) );
   

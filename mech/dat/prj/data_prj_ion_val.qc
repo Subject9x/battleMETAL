@@ -106,6 +106,7 @@ void() data_prj_ion_touch={
       pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
     }
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    remove(self);
     return;
   }
   

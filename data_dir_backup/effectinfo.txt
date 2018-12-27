@@ -280,28 +280,48 @@ velocitymultiplier 1
     count 1
     type spark
     blend alpha
+    orientation spark
     color 0xFF8000 0xFF8000
     tex 61 61
     size 0.75 1.25
     alpha 256 512 256
     time 4 8
-    gravity 0.2
-    originjitter 0.1 1 1
+    gravity 0.1
+    originjitter 0.5 0.5 0.5
     velocityjitter 5 1 1
     velocitymultiplier 1
-    stretchfactor 3
-    bounce 1
+    stretchfactor 4
+    bounce 0.1
 
   //TE_LAS_HIT - RING
     effect TE_LAS_HIT
     count 1
     type alphastatic 
     blend alpha
-    color 0x7F3FBF 0x7F3FBF
+    color 0xB40404 0xFF0040
     tex 32 33
     size 1.75 2.25
     alpha 128 256 180
+    time 4 8 
+    
+  //TE_LAS_HIT - CENTER HOLE
+    effect TE_LAS_HIT
+    countabsolute 1
+    type alphastatic 
+    blend alpha
+    color 0xFF4000 0xFFBF00
+    tex 47 47
+    size 1.75 2.25
+    alpha 128 256 180
     time 4 8
+    
+  //TE_LAS_HIT - LIGHT
+    effect TE_LAS_RAIL
+    lightradius 200
+    lightradiusfade 45
+    lighttime 0.1
+    lightcolor 0.49 0.24 0.74
+    lightshadow 0.55
 
   //TE_LAS_DIR
     effect TE_LAS_DIRT
@@ -1809,7 +1829,6 @@ velocitymultiplier 1
     velocityjitter 0.1 0.1 0.1
     gravity -0.01
   
-  
   //TE_ARH_TRAIL - FLAME
     effect TE_ARH_TRAIL
     count 2
@@ -1851,10 +1870,85 @@ velocitymultiplier 1
     gravity -0.0001
     stretchfactor 6
     trailspacing 6
-  
-  
 
 //==========================================
+
+
+
+
+//SWARM MISSILE EFFECTS==================================  
+  //TE_SWRM_MUZZLE - SMOKE
+    effect TE_SWRM_MUZZLE
+    count 2
+    type smoke
+    blend alpha
+    color 0xF5D0A9 0xF2F5A9
+    tex 48 55
+    size 1 2
+    sizeincrease 0.5
+    alpha 64 96 32
+    originjitter 0.05 0.05 0.05
+    velocityjitter 0.05 0.05 0.05
+    velocityoffset 0.5 0 0
+   
+  //TE_SWRM_MUZZLE - LIGHT
+    effect TE_SWRM_MUZZLE
+    lightradius 25
+    lightradiusfade 125
+    lightcolor 0.969 0.996 0.18
+    lightshadow 0.75
+    notunderwater
+  
+  //TE_SWRM_TRAIL - FLAME
+    effect TE_SWRM_TRAIL
+    count 5
+    type smoke
+    blend alpha
+    orientation oriented
+    color 0xFAAC58 0x81BEF7
+    tex 34 34
+    size 0.5 0.5
+    sizeincrease 0.25
+    alpha 256 512 256
+    time 0.03 0.03
+    originjitter 0.05 0.05 0.05
+    velocityjitter 0.25 0.25 0.25
+    velocitymultiplier -1
+    notunderwater
+    stretchfactor 0.5
+    
+  //TE_SWRM_TRAIL - LIGHT
+    effect TE_SWRM_TRAIL
+    lightradius 25
+    lighttime 0.25
+    lightcolor 1 0 0.251
+    lightshadow 0.25
+    notunderwater
+    
+  //TE_SWRM_TRAIL - SMOKE
+    effect TE_SWRM_TRAIL
+    count 7
+    type smoke
+    blend alpha
+    color 0xF5D0A9 0xF2F5A9
+    tex 48 55
+    size 0.1 0.15
+    sizeincrease 0.1
+    alpha 64 96 32
+    originjitter 0.05 0.05 0.05
+    velocityjitter 0.05 0.05 0.05
+    gravity -0.00005
+    stretchfactor 6
+    trailspacing 3
+  
+  //TE_SWRM_EXPL
+
+//==========================================
+
+
+
+
+
 //TEST Heat Distort==================================
 effect HEAT_SMALL
 count 1

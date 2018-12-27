@@ -21,15 +21,12 @@ void() data_prj_swrm_ini={
   self.effects = self.effects | EF_ADDITIVE | EF_NOSHADOW;
   self.modelflags = DAT_PRJ_SWRM_MODELFLAGS;
   self.alpha = DAT_PRJ_SWRM_ALPHA;
-  self.colormod = DAT_PRJ_SWRM_COLORMOD;
-  self.glow_color = DAT_PRJ_SWRM_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_SWRM_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_SWRM_GLOWTRAIL;
+  self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL");
 };
 
 //thanks, inside3d for the homing missile tut.
 void() data_prj_swrm_think={
-	//Declarations
+
 	local vector vele, vels;					//velocity enemy, velocity self
 	local vector ph;						//Place holder
 	
@@ -69,8 +66,7 @@ void() data_prj_swrm_think={
 	self.angles = vectoangles(self.velocity);			//Set angle
 	self.aflag = self.aflag + 1;					//Add to "idle hands" counter
 	
-	if(self.aflag >= 500)						//5.25 seconds is up....
-	{
+	if(self.aflag >= 500){						//5.25 seconds is up....
 		self.owner = world;
 	}
 	
@@ -84,14 +80,6 @@ void() data_prj_swrm_touch={
 		return;
 	}
   
-  if(other.classname == "worldspawn"){
-    BecomeExplosion();
-    return;
-  }
-
-  if(other == self.owner){
-    return;
-  }
   if(other.takedamage){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
     if( other.sh_cur > 0 ){

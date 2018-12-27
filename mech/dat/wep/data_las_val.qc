@@ -104,9 +104,8 @@ void() data_las_atk={
     self.w_state = RECOIL;
   }
 
-  te_muzzle_generic(self.origin, player.angles, player.velocity, TE_LAS_MUZZLE, 1);
   sound ( self, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
-  
+  pointparticles( particleeffectnum("TE_LAS_MUZZLE"), self.origin, player.angles, 1);
   trailparticles( world, particleeffectnum("TE_LAS_RAIL"), org, dir);
   
   if( pointcontents(dir) == CONTENT_SKY ){
@@ -116,7 +115,7 @@ void() data_las_atk={
   if( trace_ent.takedamage ){
     t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
     if( trace_ent.sh_cur <= 0 ){
-      pointparticles(particleeffectnum("TE_LAS_HIT"), dir , '0 0 0', 1);
+      pointparticles(particleeffectnum("TE_LAS_HIT"), dir , normalize( org - dir ), 1);
     }
     return;
   }
