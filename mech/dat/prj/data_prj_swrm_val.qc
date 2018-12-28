@@ -20,7 +20,6 @@ void() data_prj_swrm_ini={
   //cosmetics
   self.effects = self.effects | EF_ADDITIVE | EF_NOSHADOW;
   self.modelflags = DAT_PRJ_SWRM_MODELFLAGS;
-  self.alpha = DAT_PRJ_SWRM_ALPHA;
   self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL");
 };
 

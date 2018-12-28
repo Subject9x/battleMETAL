@@ -22,11 +22,6 @@ void() data_prj_qrfl_ini={
   //cosmetics
   self.effects = self.effects | DAT_PRJ_QRFL_EFFECTS;
   self.modelflags = DAT_PRJ_QRFL_MODELFLAGS;
-  self.alpha = DAT_PRJ_QRFL_ALPHA;
-  self.colormod = DAT_PRJ_QRFL_COLORMOD;
-  self.glow_color = 0;
-  self.glow_size = 0;
-  self.glow_trail = 0;
   self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");  //DEBUG
 };
 

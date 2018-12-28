@@ -22,10 +22,6 @@ void() data_prj_emp_ini={
   self.effects = self.effects | (EF_ADDITIVE | EF_NOSHADOW);
   self.modelflags = DAT_PRJ_EMP_MODELFLAGS;
   self.alpha = DAT_PRJ_EMP_ALPHA;
-  self.colormod = DAT_PRJ_EMP_COLORMOD;
-  self.glow_color = DAT_PRJ_EMP_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_EMP_GLOWSIZE;
-  self.glow_trail = 0;
   self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");  //DEBUG
 };
 

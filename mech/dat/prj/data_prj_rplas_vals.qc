@@ -98,12 +98,6 @@ void() data_prj_rplas_ini={
   
   //cosmetics
   self.effects = self.effects | DAT_PRJ_RPLAS_EFFECTS;
-  //self.modelflags = self.modelflags | DAT_PRJ_RPLAS_MODELFLAGS;
   self.modelflags = 0;
-  self.alpha = DAT_PRJ_RPLAS_ALPHA;
-  self.colormod = DAT_PRJ_RPLAS_COLORMOD;
-  self.glow_color = DAT_PRJ_RPLAS_GLOWCOLOR;
-  self.glow_size = DAT_PRJ_RPLAS_GLOWSIZE;
-  self.glow_trail = DAT_PRJ_RPLAS_GLOWTRAIL;
   self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");  //DEBUG
 };

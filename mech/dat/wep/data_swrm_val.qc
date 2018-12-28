@@ -77,7 +77,6 @@ void() data_swrm_atk={
   range = self.w_range;
   if( (player.flags & FL_MONSTER) ){
     angl = player.v_angle; //set by each AI, due to FL_TURRET
-    range = player.ai_minrange;    //convergence / spread works differently for AI
   }
   org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
  

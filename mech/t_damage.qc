@@ -232,7 +232,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( (trg.flags & FL_MONSTER) ){
     otemp = self;
     self = dmgTrg;
-      ai_damage_react( dmgTrg, attacker );
+      //ai_damage_react( dmgTrg, attacker );
     self = otemp;
   }
   

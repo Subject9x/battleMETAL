@@ -130,7 +130,7 @@ void() ai_generic_walk={
   }
   
   ai_walkgoal( AI_WALK_SPD );
-  
+
   if( time > self.ai_action_time ){
     if( self.movetarget ){
       ai_next_state( ST_WALK );

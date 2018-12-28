@@ -24,9 +24,6 @@ void() data_prj_sfga_ini={
   
   //cosmetics
   self.effects = self.effects | DAT_PRJ_SFGA_EFFECTS;
-  self.modelflags = DAT_PRJ_SFGA_MODELFLAGS;
-  self.alpha = DAT_PRJ_SFGA_ALPHA;
-  //self.colormod = DAT_PRJ_SFGA_COLORMOD;
   self.traileffectnum = particleeffectnum("TE_SFGA_TRAIL");
 };
 

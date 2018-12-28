@@ -10,6 +10,7 @@ Overview: ai unit
 */
 
 void() ai_mech_sk_stand;
+void() ai_mech_sk_walk;
 
 void() ai_mech_sk_run;
 void() ai_mech_sk_run_strafe;
@@ -36,6 +37,7 @@ void() ai_mech_sk_turn_back;
           MECH SKIRMISH STAND
 */
 void() ai_mech_sk_stand={
+  cons_logAString("[STATE]", "ai_mech_sk_stand");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
@@ -50,9 +52,28 @@ void() ai_mech_sk_stand={
 };
 
 /*
+          MECH SKIRMISH WALK
+*/
+void() ai_mech_sk_walk={
+  cons_logAString("[STATE]", "ai_mech_sk_walk");  //DEBUG
+  ai_update_accuracy( FALSE );
+  if( ai_valid_target( self.enemy ) ){
+    ai_face_targ();
+    if( ai_check_face( self.enemy, self.ai_fov ) ){
+      ai_next_state( ST_MISSILE );
+      return;
+    }
+  }
+  else{
+    ai_generic_walk();
+  }
+};
+
+/*
           MECH SKIRMISH RUN
 */
 void() ai_mech_sk_run={
+  cons_logAString("[STATE]", "ai_mech_sk_run");  //DEBUG
   local float tyaw;
   if( ai_valid_target( self.enemy ) ){
     tyaw = vectoyaw( self.enemy.origin - self.origin );
@@ -62,6 +83,11 @@ void() ai_mech_sk_run={
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
     
     if( enemy_vis ){
+      if( enemy_range <= 25 ){
+        //too close back it up
+        ai_mech_sk_turn_back();
+        return;
+      }
       if( enemy_range < ( 400 )){
         if( enemy_infront ){
           if( self.ai_rank < AI_RANK_REG ){
@@ -143,9 +169,9 @@ void() ai_mech_sk_run={
       }
       movetogoal( self.m_fspeed * AI_RUN_SPD );
       ai_turret_set_state( TR_NORM );
+      ai_leg_frame( leg_walk1 );
       return;
     }
-    //hunt
   }
   else{
     ai_leg_frame( leg_stand1 );
@@ -161,6 +187,7 @@ void() ai_mech_sk_run={
   mech walks forward while trying to turn to enemy
 */
 void() ai_mech_sk_turn={
+  cons_logAString("[STATE]", "ai_mech_sk_turn");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
@@ -176,6 +203,7 @@ void() ai_mech_sk_turn={
   }
 };
 void() ai_mech_sk_turn_back={
+  cons_logAString("[STATE]", "ai_mech_sk_turn_back");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
@@ -196,6 +224,7 @@ void() ai_mech_sk_turn_back={
             MECH SKIRMISH RUN STRAFE
 */
 void() ai_mech_sk_run_strafe={
+  cons_logAString("[STATE]", "ai_mech_sk_run_strafe");  //DEBUG
   ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25) ){
@@ -229,6 +258,7 @@ void() ai_mech_sk_run_strafe={
   rotate with the player.
 */
 void() ai_mech_sk_run_charge={
+  cons_logAString("[STATE]", "ai_mech_sk_run_charge");  //DEBUG
   ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25) ){
@@ -270,6 +300,7 @@ void() ai_mech_sk_run_charge={
             MECH SKIRMISH MELEE
 */
 void() ai_mech_sk_melee={
+  cons_logAString("[STATE]", "ai_mech_sk_melee");  //DEBUG
   ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 35) ){
@@ -285,7 +316,7 @@ void() ai_mech_sk_melee={
     if( ai_check_face( self.enemy, 0.97 ) ){
       if( self.ai_rank < AI_RANK_REG ){
         ai_next_state( ST_MISSILE_STRAFE );
-        self.ai_action_time = self.ai_action_time + skill + 2;
+        self.ai_action_time = self.ai_action_time + skill;
         return;
       }
       ai_next_state( ST_MISSILE );
@@ -309,13 +340,13 @@ void() ai_mech_sk_melee={
   
 */
 void() ai_mech_sk_missile={
+  cons_logAString("[STATE]", "ai_mech_sk_missile");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
     if( ai_check_face( self.enemy, 0.97 ) ){
       if( ai_attack() ){
-        ai_next_state( ST_WALK );
-        ai_leg_frame( leg_walk1 );
+        ai_next_state( ST_RUN );
         return;
       }
     }
@@ -333,12 +364,21 @@ void() ai_mech_sk_missile={
   if skill is high enough, ai should track target yaw
 */
 void() ai_mech_sk_missile_strafe={
+  cons_logAString("[STATE]", "ai_mech_sk_missile_strafe");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
-    if( (skill > 2) || (self.ai_rank < AI_RANK_REG) ){
+    if( (skill > 2) ){
       ai_face_targ();
     }
     ai_move( self.angles_y, self.m_sspeed * AI_WALK_SPD);
+    if( ai_check_face( self.enemy, 0.97 ) ){
+      if( ai_attack() ){
+        ai_next_state( ST_WALK );
+        ai_leg_frame( leg_walk1 );
+        return;
+      }
+    }
+    
   }
   else{
     if( self.ai_rank < AI_RANK_REG ){
@@ -362,6 +402,7 @@ void() ai_mech_sk_missile_strafe={
             MECH SKIRMISH HUNT
 */
 void() ai_mech_sk_hunt={
+  cons_logAString("[STATE]", "ai_mech_sk_hunt");  //DEBUG
 
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );
@@ -496,7 +537,7 @@ void() ai_mech_skirmish={
   trigger_event( self, trigOnSpawn); //event interface
     
   self.th_stand = ai_mech_sk_stand;
-  self.th_walk = ai_generic_walk;
+  self.th_walk = ai_mech_sk_walk;
   self.th_run = ai_mech_sk_run;
   self.th_run_strafe = ai_mech_sk_run_strafe;
   self.th_run_charge = ai_mech_sk_run_charge;

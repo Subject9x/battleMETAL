@@ -229,7 +229,7 @@ vector(entity wep) ai_attack_trace={
   cam = self.e_cam;
   
   makevectors(self.v_angle); 
-  traceline (cam.origin + v_forward * 1, self.origin + (lead * wep.w_range), TRUE, self);
+  traceline (cam.origin + v_forward * 1, self.origin + (lead * wep.w_range), FALSE, self);
   
   return trace_endpos;
 };
@@ -721,3 +721,39 @@ void() ai_pilot_validate_states={
     self.th_pain = SUB_Null;
   }
 };
+
+/*
+  initialize weapon loadout default IF
+  the weapon slot is not overridden -
+  ie the map spawn call can override any and all weapon
+  choices.
+*/
+void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons={
+  if( !self.next_wepn1 ){
+    self.next_wepn1 = wep1;
+  }
+  if( !self.next_wepn2 ){
+    self.next_wepn2 = wep2;
+  }
+  if( !self.next_wepn3 ){
+    self.next_wepn3 = wep3;
+  }
+  if( !self.next_wepn4 ){
+    self.next_wepn4 = wep4;
+  }
+  if( !self.next_wepn5 ){
+    self.next_wepn5 = wep5;
+  }
+  if( !self.next_wepn6 ){
+    self.next_wepn6 = wep6;
+  }
+  if( !self.next_wepn7 ){
+    self.next_wepn7 = wep7;
+  }
+  if( !self.next_wepn8 ){
+    self.next_wepn8 = wep8;
+  }
+  if( !self.next_wepn9 ){
+    self.next_wepn9 = wep9;
+  }
+}; 

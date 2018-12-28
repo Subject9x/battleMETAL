@@ -186,6 +186,84 @@ void() unit_hs_mech_skirmisher={
   }
 };
 
+
+/*
+      UNIT: BALAKET
+      --------------------------------
+*/
+void() unit_balaket_sniper={
+
+  self.style = TYPE_SNIPER;
+
+  self.flags = FL_TURRET;  //enforced for a mech
+  
+  if( !self.i_faction ){
+    self.i_faction = 2;
+  }
+  self.mskin = self.i_faction;
+  self.spreadDefault = ACCURACY_SNIPER;
+  self.nextVecChoice = 1;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_mech_sniper ) ){
+    ai_mech_sniper();
+  }
+};
+
+void() unit_balaket_brawl={
+
+  self.style = TYPE_BRAWL;
+
+  self.flags = FL_TURRET;  //enforced for a mech
+  
+  if( !self.i_faction ){
+    self.i_faction = 2;
+  }
+  self.mskin = self.i_faction;
+  self.spreadDefault = ACCURACY_SKIRMISH;
+  self.nextVecChoice = 1;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_mech_skirmish ) ){
+    ai_mech_skirmish();
+  }
+};
+
+/*
+      UNIT: MATOK
+      --------------------------------
+*/
+void() unit_matok_brawl={
+
+  self.style = TYPE_BRAWL;
+
+  self.flags = FL_TURRET;  //enforced for a mech
+  
+  if( !self.i_faction ){
+    self.i_faction = 2;
+  }
+  self.mskin = self.i_faction;
+  self.spreadDefault = ACCURACY_SKIRMISH;
+  self.nextVecChoice = 2;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_mech_skirmish ) ){
+    ai_mech_skirmish();
+  }
+};
+
 void() unit_hs_mech_sniper={
   self.flags = FL_TURRET;  //enforced for a mech
   self.i_faction = 2;
@@ -199,6 +277,33 @@ void() unit_hs_mech_sniper={
   
   if( ai_unit_setup( ai_mech_sniper ) ){
     ai_mech_sniper();
+  }
+};
+
+/*
+      UNIT: MONITOR
+      --------------------------------
+*/
+void() unit_monitor_brawl={
+
+  self.style = TYPE_BRAWL;
+
+  self.flags = FL_TURRET;  //enforced for a mech
+  
+  if( !self.i_faction ){
+    self.i_faction = 2;
+  }
+  self.mskin = self.i_faction;
+  self.spreadDefault = ACCURACY_SKIRMISH;
+  self.nextVecChoice = 3;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_mech_skirmish ) ){
+    ai_mech_skirmish();
   }
 };
 

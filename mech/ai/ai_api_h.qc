@@ -58,6 +58,11 @@ float enemy_yaw;
 float enemy_vis;
 entity AI_NODES[128];
 
+//UNIT VARIANTS - .style var
+float TYPE_BRAWL  = 1;
+float TYPE_SNIPER = 2;
+float TYPE_SKIRM  = 3;
+
 //ENTITY VARS
 .void() th_fly;
 .void() th_run_strafe;
@@ -125,10 +130,12 @@ float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;
 float() ai_panic_time;
 float( float bestAccuracy ) ai_wait_for_shot;
+
 //AI MAP FUNCS
 float( void() ai_to_make ) ai_unit_setup;
 void() ai_unit_make_multi;
 void() ai_unit_make_trigger;
+void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
 
 //AI CONTROL - ai_ctrl.qc 
 void() ai_walk_setup;

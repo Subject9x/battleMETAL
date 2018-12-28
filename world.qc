@@ -5,6 +5,7 @@
 void() main =
 {
 	dprint ("main function\n");
+	skill = cvar("skill");
 	//q1_precache_world();
   //see q1/precache_word.q1_precache_world()
 };
@@ -66,6 +67,7 @@ Only used for the world entity.
 //=======================
 void() worldspawn =
 {
+	skill = cvar("skill");
   world.data_idx = -1;
 	lastspawn = world;
 	InitBodyQue ();
@@ -77,7 +79,7 @@ void() worldspawn =
   WINDDIR = world.c_ofs;
   WINDSPEED = world.m_fspeed;
   
-  dprint( strcat("c_ofs", vtos(world.c_ofs),"\n")); //DEBUG
+  dprint( strcat("WINDDIR(c_ofs)", vtos(world.c_ofs),"\n")); //DEBUG
 // custom map attributes
 	if (self.model == "maps/e1m8.bsp")
 		cvar_set ("sv_gravity", "100");

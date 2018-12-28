@@ -79,7 +79,6 @@ void() data_las_atk={
   range = self.w_range;
   if( (player.flags & FL_MONSTER) ){
     angl = player.v_angle; //set by each AI, due to FL_TURRET
-    range = player.ai_minrange;    //convergence / spread works differently for AI
   }
   org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
  
@@ -89,7 +88,7 @@ void() data_las_atk={
   else{
     end = util_traceForAI( org, angl, self.w_range, player );
   }
-  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
+  dir = util_applySpreadToTrace( player.v_angle, self.w_range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
 
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){

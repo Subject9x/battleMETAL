@@ -92,8 +92,38 @@ void() data_otl_ini={
   self.w_firetime = DAT_OTL_LOCK; //using this as 'lock on time;
   self.hardpoint_cnt = DAT_BLK_HARDPOINT_CNT;
   
+  //unit variants
+  if( (self.flags & FL_MONSTER) ){
+    //brawler
+    if( self.style == TYPE_BRAWL ){
+     if( skill < 2 ){
+        ai_ini_weapons( 3, 3, 4, -1, -1, -1, -1, -1, -1);
+      }
+      else if( skill == 2 ){
+        ai_ini_weapons( 3, 3, 6, -1, -1, -1, -1, -1, -1);
+      }
+      else if( skill == 3 ){
+        ai_ini_weapons( 12, 1, 8, -1, -1, -1, -1, -1, -1);
+      } 
+    }
+      
+    //sniper
+    if( self.style == TYPE_SNIPER ){
+      if( skill < 2 ){
+        ai_ini_weapons( 12, 12, 13, -1, -1, -1, -1, -1, -1);
+      }
+      else if( skill == 2 ){
+        ai_ini_weapons( 1, 1, 2, -1, -1, -1, -1, -1, -1);
+      }
+      else if( skill == 3 ){
+        ai_ini_weapons( 1, 1, 7, -1, -1, -1, -1, -1, -1);
+      } 
+    }
+  }
+  
   setsize(self, DAT_OTL_CTOR_BBX_N, DAT_OTL_CTOR_BBX_X);
 };
+
 void() data_otl_ctor={
   self.comp_id = M_TOR_CENTER;
   self.health = DAT_OTL_CTOR_HP;

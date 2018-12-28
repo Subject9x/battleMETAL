@@ -53,7 +53,7 @@ void() build_unit_weapon_list={
   local entity wslot;
   wslot = self;
   if(self.unit_wep1){
-    if(self.next_wepn1){
+    if(self.next_wepn1 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep1, self.next_wepn1, self, WEAPON1_OK, WEAPON1_DD, WEAPON1_REL, stat_w1_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){
@@ -62,7 +62,7 @@ void() build_unit_weapon_list={
     }
   }
   if(self.unit_wep2){
-    if(self.next_wepn2){
+    if(self.next_wepn2 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep2, self.next_wepn2, self, WEAPON2_OK, WEAPON2_DD, WEAPON2_REL, stat_w2_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){
@@ -71,7 +71,7 @@ void() build_unit_weapon_list={
     }
   }
   if(self.unit_wep3){
-    if(self.next_wepn3){
+    if(self.next_wepn3 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep3, self.next_wepn3, self, WEAPON3_OK, WEAPON3_DD, WEAPON3_REL, stat_w3_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){
@@ -80,7 +80,7 @@ void() build_unit_weapon_list={
     }
   }
   if(self.unit_wep4){
-    if(self.next_wepn4){
+    if(self.next_wepn4 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep4, self.next_wepn4, self, WEAPON4_OK, WEAPON4_DD, WEAPON4_REL, stat_w4_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){
@@ -89,7 +89,7 @@ void() build_unit_weapon_list={
     }
   }
   if(self.unit_wep5){
-    if(self.next_wepn5){
+    if(self.next_wepn5 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep5, self.next_wepn5, self, WEAPON5_OK, WEAPON5_DD, WEAPON5_REL, stat_w5_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){
@@ -98,7 +98,7 @@ void() build_unit_weapon_list={
     }
   }
   if(self.unit_wep6){
-    if(self.next_wepn6){
+    if(self.next_wepn6 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep6, self.next_wepn6, self, WEAPON6_OK, WEAPON6_DD, WEAPON6_REL, stat_w6_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){
@@ -107,7 +107,7 @@ void() build_unit_weapon_list={
     }
   }
   if(self.unit_wep7){
-    if(self.next_wepn7){
+    if(self.next_wepn7 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep7, self.next_wepn7, self, WEAPON7_OK, WEAPON7_DD, WEAPON7_REL, stat_w7_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){
@@ -116,7 +116,7 @@ void() build_unit_weapon_list={
     }
   }
   if(self.unit_wep8){
-    if(self.next_wepn8){
+    if(self.next_wepn8 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep8, self.next_wepn8, self, WEAPON8_OK, WEAPON8_DD, WEAPON8_REL, stat_w8_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){
@@ -125,7 +125,7 @@ void() build_unit_weapon_list={
     }
   }
   if(self.unit_wep9){
-    if(self.next_wepn9){
+    if(self.next_wepn9 > 0){
       wslot.w_slot = build_unit_weapon(self.unit_wep9, self.next_wepn9, self, WEAPON9_OK, WEAPON9_DD, WEAPON9_REL, stat_w9_id);
       wslot = wslot.w_slot;
       if( (self.flags & FL_CLIENT)){

@@ -31,7 +31,7 @@ void() data_ion_ini={
   self.w_think = data_ion_think;
   self.health = DAT_ION_HPX;
   self.max_health = DAT_ION_HPX;
-  self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_STX | EFF_ENE;
+  self.p_dmgtype = self.p_dmgtype | (DMG_ENE | EFF_STX | EFF_ENE);
   self.w_range = DAT_ION_RANGE;
   self.w_state = READY;
   self.p_damage = DAT_ION_DMG;
@@ -82,7 +82,6 @@ void() data_ion_atk={
   range = self.w_range;
   if( (player.flags & FL_MONSTER) ){
     angl = player.v_angle; //set by each AI, due to FL_TURRET
-    range = player.ai_minrange;    //convergence / spread works differently for AI
   }
   org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
  
