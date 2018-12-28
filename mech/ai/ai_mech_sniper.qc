@@ -269,7 +269,68 @@ void() ai_mech_sniper_pain={
   }
 };
 
-//TODO - die
+/*
+  TH_DIE
+*/ 
+void() ai_mech_sniper_die={
+  self.deadflag = DEAD_DYING;
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_CORPSE;
+  self.colormod = '0.05 0.05 0.05';
+  self.attack_state = -1;
+  
+  droptofloor();
+  
+  local entity w_chain;
+  w_chain = self.w_slot;
+  while(w_chain){
+    mech_player_compdie(w_chain);
+    w_chain = w_chain.w_slot;
+  }
+  mech_player_compdie(self.e_tor_l);
+  mech_player_compdie(self.e_tor_r);
+  mech_player_compdie(self.e_arm_l);
+  mech_player_compdie(self.e_arm_r);
+  mech_player_compdie(self.e_cam);
+  ai_leg_frame( leg_stand1 );
+  
+  //fire triggers when dead
+  trigger_event( self, trigOnDeath );
+  
+  self.think = ai_mech_sniper_die1;
+  self.ai_action_time = time + 300;
+  //basically overkill damage will just remove the mech (nice and clean)
+  if( self.health <= (self.max_health / 1.5) * -1 ){
+    self.think = ai_mech_sniper_die2;
+  }
+  self.nextthink = time + 0.1;
+};
+
+/*
+  smoking wreck
+*/
+void() ai_mech_sniper_die1={
+  makevectors( world.v_angle );
+  local vector sm;
+  sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
+  te_smoke_test(self.origin, sm + '0 0 5', 3);
+  te_smoke_test(self.e_tor_l.origin, sm + '0 0 5', 1);
+  te_smoke_test(self.e_tor_r.origin, sm + '0 0 5', 1);
+  
+  self.think = ai_mech_sniper_die1;
+  if( time > self.ai_action_time ){
+    self.think = ai_mech_sniper_die2;
+  } 
+  self.nextthink = time + 0.1;
+};
+
+//explode
+void() ai_mech_sniper_die2={
+  mech_cleanupMech();
+  self.nextthink = time + 0.1;
+  self.think = BecomeExplosion;
+};
+
 
 /*
   SNIPER MECH THINK FUNCTION

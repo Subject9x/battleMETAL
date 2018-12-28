@@ -294,7 +294,7 @@ void() unit_monitor_brawl={
     self.i_faction = 2;
   }
   self.mskin = self.i_faction;
-  self.spreadDefault = ACCURACY_SKIRMISH;
+  self.spreadDefault = ACCURACY_LOWTECH;
   self.nextVecChoice = 3;
   
   if( !ai_can_spawn() ){

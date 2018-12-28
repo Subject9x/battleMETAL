@@ -532,11 +532,11 @@ float() ai_attack={
     if( self.currentWeaponGroup > 0 ){
       if( random() <= self.ai_attack_chance ){
         self.button0 = 1;
-        return TRUE;
+        return self.button0;
       }
     }
   }
-  return FALSE;
+  return self.button0;
 };
 /*
 ===================================================

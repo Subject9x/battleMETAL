@@ -249,12 +249,12 @@ void() ai_ranged_attack={
       if(wep_chain.w_state == READY){
         if( (self.currentWeaponGroup & wep_chain.w_group) ){
           if( self.stat_trg_dist <= wep_chain.w_range ){
-            self.w_fire_ofs = ai_attack_trace(wep_chain);
+            //self.w_fire_ofs = ai_attack_trace(wep_chain);
             if( !ai_attack_blockcheck(wep_chain) ){
               if( ai_attack_checkEne(wep_chain) ){
                 self = wep_chain;
                   if( (self.p_dmgtype & EFF_STX) ){
-                    if (this.enemy.sh_cur >= self.p_damage){
+                    if (this.enemy.sh_cur > self.p_damage / 2){
                       fired = fired + 1;
                       self.w_attack();
                     }

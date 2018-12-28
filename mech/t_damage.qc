@@ -62,7 +62,8 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
 /*
 Energy Damage
   IF target shields are up, shields take dmg * 1.5
-  IF EFF_STX, might cause shield crit but damage is SHIELD-ONLY
+  IF EFF_ENE, only affects shields
+  IF EFF_STX, might cause shield crit
   IF EFF_PRC, shields only consume 25% of damage
   OR EFF_RAM, spill over damage
 */
@@ -73,11 +74,11 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   damage = dmg_amt;
   shields = targ.sh_cur;
 
-  if( targ.sh_cur <= 0 ){
-    if( !(dmgtype & EFF_STX) ){
-      return damage;
+  if( shields <= 0 ){
+    if( (dmgtype & EFF_ENE) ){
+      return 0;
     }
-    return 0;
+    return damage;
   }
   
   damage = damage + ( damage * 0.5);
@@ -110,9 +111,6 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
       }
       shields = 0;
     }  
-    else{
-      damage = 0;
-    }
   }
   targ.sh_cur = shields;
   
@@ -181,12 +179,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor
-  local float dmgAmt;
-  
-  dmgTrg = trg;
-  dmgInflictor = inflictor;
-  dmgAmt = dmg_amt;
-  
+  local float dmgAmt;  
   local entity oself, targ_act;
     
   if( !trg.takedamage ){
@@ -197,9 +190,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     return trg;
   }
   
-  //add in ignore team damage
+  dmgTrg = trg;
+  dmgInflictor = inflictor;
+  dmgAmt = dmg_amt;
+  
+  //reduce friendly fire damage on easier settings
   if(trg.i_faction == attacker.i_faction){
-    if( skill <= 0 ){
+    if( skill < 0 ){
       return trg;
     }
     dmgAmt = dmgAmt / 2;
@@ -243,7 +240,8 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
   }
   else{
-    te_shield_test( dmg_point, vectoangles( attacker.origin - dmg_point ) );
+    //te_shield_test( dmg_point, vectoangles( attacker.origin - dmg_point ) );
+    //TODO - shield impact particles
     return trg;
   }
   
@@ -265,7 +263,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
-  if(trg.data_type == DATA_BLD){
+  if(dmgTrg.data_type == DATA_BLD){
     local entity friend;
     otemp = self;
     self = dmgTrg;
@@ -276,21 +274,21 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = otemp;
   }
   
-  trg.health = trg.health - dmgAmt;
+  dmgTrg.health = dmgTrg.health - dmgAmt;
 
-  if( trg.health <= 0 ){
-    if( trg.th_die ){
-      if( trg.comp_id == M_LEGS ){
-        trg.owner.m_fspeed = trg.owner.m_fspeed / 2;
-        trg.deadflag = DEAD_DYING;
+  if( dmgTrg.health <= 0 ){
+    if( dmgTrg.th_die ){
+      if( dmgTrg.comp_id == M_LEGS ){
+        dmgTrg.owner.m_fspeed = dmgTrg.owner.m_fspeed / 2;
+        dmgTrg.deadflag = DEAD_DYING;
       }
       else{
-        killed(trg, attacker, dmg_type);     
-        return trg;
+        killed(dmgTrg, attacker, dmg_type);     
+        return dmgTrg;
       }
     }
   }
-  return trg;
+  return dmgTrg;
 };
 
 /*

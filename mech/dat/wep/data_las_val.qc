@@ -11,7 +11,7 @@ void() data_las_think;
 
 void() data_las_ini={
   self.data_idx = ID_WEP_LAS;
-  self.p_dmgtype = self.p_dmgtype | DMG_ENE | EFF_STX | EFF_ENE;
+  self.p_dmgtype = (DMG_ENE | EFF_STX);
   self.p_damage = DAT_LAS_DMG;
   self.w_name = DAT_LAS_NAME;
   self.w_firetime = 0;
@@ -112,7 +112,7 @@ void() data_las_atk={
   }
   
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
+    t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir, '0 0 0');
     if( trace_ent.sh_cur <= 0 ){
       pointparticles(particleeffectnum("TE_LAS_HIT"), dir , normalize( org - dir ), 1);
     }
