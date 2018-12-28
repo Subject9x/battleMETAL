@@ -62,21 +62,24 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
 /*
 Energy Damage
   IF target shields are up, shields take dmg * 1.5
-  IF EFF_STX, might cause shield crit
+  IF EFF_STX, might cause shield crit but damage is SHIELD-ONLY
   IF EFF_PRC, shields only consume 25% of damage
   OR EFF_RAM, spill over damage
 */
 float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   local float damage, dmgtype, shields, mod, crit;
   
-  if( targ.sh_cur <= 0 ){
-    return dmg_amt;
-  }
-  
   dmgtype = inflictor.p_dmgtype;
   damage = dmg_amt;
   shields = targ.sh_cur;
 
+  if( targ.sh_cur <= 0 ){
+    if( !(dmgtype & EFF_STX) ){
+      return damage;
+    }
+    return 0;
+  }
+  
   damage = damage + ( damage * 0.5);
   
   if( (dmgtype & EFF_STX) ){
