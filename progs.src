@@ -147,7 +147,6 @@ dp/subs.qc
   mech/ctrl/ctrl_weapon.qc
   mech/ctrl/ctrl_mech.qc
   mech/ctrl/ctrl_legs.qc
-  mech/ctrl/ctrl_turret.qc
   mech/ctrl/ctrl_building.qc
 //==========================
 

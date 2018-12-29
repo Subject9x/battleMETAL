@@ -23,6 +23,7 @@ float AI_SPAWNFLAG_NOELT        = 4096; //remove from Elit Difficulty
 float AI_SPAWNFLAG_NODROP       = 8192; //don't drop bot to the floor onspawn
 
 float AI_SPAWNFLAG_TRIGGERME    = 16384; //ai only spawns when triggered
+float AI_SPAWNFLAG_DEBUG        = 32768;  //dont do anything
 
 //AI STATE CONSTANTS
 float ST_STAND              = 1;  //th_stand

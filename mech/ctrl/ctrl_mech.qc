@@ -93,6 +93,40 @@ void() ctrl_updateCenterTorso={
       }
     }
   }
+  
+  //damage-based cosmetics for unit component pieces
+  local entity piece;
+  local float hp;
+  local vector spark;
+  local entity partParent;
+  piece = self.c_part;
+  while( piece ){
+    if( piece.deadflag <= DEAD_NO ){
+      hp = piece.health / piece.max_health;
+      if( hp < 0.75){
+        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1);
+        if( hp < 0.5){
+          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1.25);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 1.5);
+          if( hp < 0.25){
+            spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1.5);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 1.75);
+          }
+        }
+      }
+    }
+    else{
+      partParent = util_getPartFromName(piece.c_parent, self); 
+      if( partParent.deadflag <= DEAD_NO ){
+        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+        pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5, 1);
+      }
+    }
+    piece = piece.c_part;
+  }
 };
 
 void() ctrl_die_comp={
@@ -133,6 +167,7 @@ void() ctrl_die_comp={
       self.touch = touch_mechPiece;
       self.think = BecomeExplosion;
       self.nextthink = time + 100;
+      self.colormod = oself.colormod;
     self = oself;
 
     self.deadflag = DEAD_DEAD;

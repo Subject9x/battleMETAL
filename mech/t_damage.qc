@@ -178,7 +178,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 };
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
-  local entity dmgTrg, dmgInflictor
+  local entity dmgTrg, dmgInflictor;
   local float dmgAmt;  
   local entity oself, targ_act;
     

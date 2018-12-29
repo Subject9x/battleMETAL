@@ -251,7 +251,7 @@ void() unit_matok_brawl={
     self.i_faction = 2;
   }
   self.mskin = self.i_faction;
-  self.spreadDefault = ACCURACY_SKIRMISH;
+  self.spreadDefault = ACCURACY_MARKSMAN;
   self.nextVecChoice = 2;
   
   if( !ai_can_spawn() ){
@@ -261,22 +261,6 @@ void() unit_matok_brawl={
   
   if( ai_unit_setup( ai_mech_skirmish ) ){
     ai_mech_skirmish();
-  }
-};
-
-void() unit_hs_mech_sniper={
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.i_faction = 2;
-  self.mskin = 2;
-  self.spreadDefault = ACCURACY_SNIPER;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-  
-  if( ai_unit_setup( ai_mech_sniper ) ){
-    ai_mech_sniper();
   }
 };
 
@@ -306,6 +290,25 @@ void() unit_monitor_brawl={
     ai_mech_skirmish();
   }
 };
+
+
+void() unit_hs_mech_sniper={
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.i_faction = 2;
+  self.mskin = 2;
+  self.spreadDefault = ACCURACY_SNIPER;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_mech_sniper ) ){
+    ai_mech_sniper();
+  }
+};
+
+
 
 void() building_turret_light={
   self.nextVecChoice = 1; //DEBUG

@@ -15,8 +15,6 @@ void() ctrl_die_comp;
 void() touch_mech;
 void() touch_mechPiece;
 
-void() ctrl_updateTurret;
-
 ///building controllers
 void() building_think;
 void() building_die;

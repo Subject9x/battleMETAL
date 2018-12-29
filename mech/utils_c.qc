@@ -271,7 +271,6 @@ void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
 
 
 void(string mdl_name, float skinNum, float ef_flags) util_setModel={
-  //self.model = mdl_name;
   self.effects = self.effects | ef_flags;
   setmodel(self, mdl_name);
   self.skin = skinNum;
@@ -315,26 +314,21 @@ float(entity t, float tolerance) util_cornerSlopeCheck={
   c4 = start + (v_forward * self.maxs_x) + (v_right * self.mins_y);
   
   traceline(c1, c1 + (v_up * -128), FALSE, t);
-  //te_beam_laser(c1, c1 + (v_up * -128)); //DEBUG
-    //cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
   if( trace_plane_normal_z < tolerance){
     val = TRUE;
   }
+  
   traceline(c2, c2 + (v_up * -128), FALSE, t);
-  //te_beam_laser(c2, c2 + (v_up * -128)); //DEBUG
-    //cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
   if( trace_plane_normal_z < tolerance){
     val = TRUE;
   }
+  
   traceline(c3, c3 + (v_up * -128), FALSE, t);
-  //te_beam_laser(c3, c3 + (v_up * -128)); //DEBUG
-    //cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
   if( trace_plane_normal_z < tolerance){
     val = TRUE;
   }
+  
   traceline(c4, c4 + (v_up * -128), FALSE, t);
-  //te_beam_laser(c4, c4 + (v_up * -128)); //DEBUG
-    //cons_logAFloat("trace_plane_normal_z", trace_plane_normal_z); //DEBUG
   if( trace_plane_normal_z < tolerance){
     val = TRUE;
   }

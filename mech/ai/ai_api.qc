@@ -249,7 +249,6 @@ void() ai_ranged_attack={
       if(wep_chain.w_state == READY){
         if( (self.currentWeaponGroup & wep_chain.w_group) ){
           if( self.stat_trg_dist <= wep_chain.w_range ){
-            //self.w_fire_ofs = ai_attack_trace(wep_chain);
             if( !ai_attack_blockcheck(wep_chain) ){
               if( ai_attack_checkEne(wep_chain) ){
                 self = wep_chain;

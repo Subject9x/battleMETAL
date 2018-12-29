@@ -23,6 +23,7 @@ void(void() func, entity own) build_unit_component={
   self.angles = follow.angles;
   self.v_angle = self.angles - follow.angles;
   self.th_die = ctrl_die_comp;
+  self.colormod = '1 1 1';
 };
 
 entity(void() func) build_unit_camera={
@@ -271,6 +272,7 @@ void(void() func) build_mech_torsoCenter={
     self.angles = this.angles;
     self.v_angle = self.angles - this.angles;
     this.e_tor_c = self;
+    self.colormod = '1 1 1';
   self = this;
   ctor_stand();
 };
@@ -351,6 +353,7 @@ entity( void() func ) build_unit_turret={
     self.owner = this;
     self.th_die = ctrl_die_comp;
     self.attack_state = TR_NORM;
+    self.colormod = '1 1 1';
   self = this;
   return comp;
 };
@@ -425,6 +428,7 @@ entity(void() func) build_mech_legs={
     if( this.data_type == DATA_MECH ){
       leg_stand1();
     }
+    self.colormod = '1 1 1';
   self = this;
   return leg_ent;
 };

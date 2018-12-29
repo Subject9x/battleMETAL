@@ -1,7 +1,6 @@
 //https://web.archive.org/web/20100729132930/http://dpwiki.slipgateconstruct.com/index.php?title=Effectinfo_Scripting_Reference#Particles_leaving_decals
 //ESR BEAM==================================
-
-  //TE_ESR_MUZZLE - CENTER PARTICLE1
+  //TE_ESR_MUZZLE - CENTER PARTICLE
     effect TE_ESR_MUZZLE
     countabsolute 1
     type smoke
@@ -1246,7 +1245,7 @@ velocitymultiplier 1
   //TE_ION_MUZZLE - LIGHT
     effect TE_ION_MUZZLE
     lightradius 100
-    lighttime 0.05
+    lightradiusfade 50
     lightcolor 0.18 0.18 0.996
     lightshadow 0.25
   
@@ -1948,6 +1947,80 @@ velocitymultiplier 1
 
 
 
+// DAMAGED MECH COMPONENTS==================
+  //TE_MECHPIECE_DAMAGE - BLUE SPARKS
+  effect TE_MECHPIECE_DAMAGE
+  count 0.05
+  type spark
+  blend alpha
+  orientation spark
+  color 0x81DAF5 0xA9D0F5
+  tex 43 45
+  size 0.1 0.2
+  alpha 180 256 256
+  originjitter 5 5 5
+  velocityoffset 5 5 5
+  velocityjitter 2 2 2
+  velocitymultiplier 15
+  gravity 0.25
+  stretchfactor 2
+  airfriction 4
+  bounce 1
+  
+  //TE_MECHPIECE_DAMAGE - RISING SMOKE
+  effect TE_MECHPIECE_DAMAGE
+  count 0.1
+  type smoke
+  blend alpha
+  color 0x1C1C1C 0x585858
+  tex 0 7
+  size 2 2
+  sizeincrease 0.1
+  alpha 220 220 64
+  originjitter 2 2 2
+  velocityjitter 1 1 1
+  gravity -0.0075
+
+  //TE_MECHPIECE_DAMAGE_HOT - RED SPARKS
+  effect TE_MECHPIECE_DAMAGE_HOT
+  count 0.1
+  type spark
+  blend alpha
+  orientation spark
+  color 0xFE2E2E 0xF7FE2E
+  tex 43 45
+  size 0.25 0.35
+  alpha 256 256 128
+  originjitter 5 5 5
+  velocityoffset 1 1 1
+  velocityjitter 2 2 2
+  velocitymultiplier 10
+  gravity 0.25
+  stretchfactor 2
+  airfriction 4
+  bounce 1
+  
+  effect TE_MECHPIECE_DEAD_BURN
+  lightradius 25
+  lightradiusfade 100
+  lightcolor 0.875 0.227 0.004
+  lightshadow 0.4
+  notunderwater
+  
+  effect TE_MECHPIECE_DEAD_BURN
+  count 0.1
+  type smoke
+  blend alpha
+  color 0x1C1C1C 0x1C1C1C
+  tex 8 15
+  size 1 2
+  sizeincrease 0.25
+  alpha 220 220 48
+  originjitter 1 1 1
+  velocityjitter 1 1 1
+  gravity -0.005
+
+//==========================================
 
 //TEST Heat Distort==================================
 effect HEAT_SMALL
