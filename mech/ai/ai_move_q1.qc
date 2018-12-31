@@ -197,10 +197,11 @@ void(float dist) q1_ai_run =
 // check knowledge of enemy
 	//enemy_vis = ai_visible(self.enemy);
 	if (enemy_vis)
-		self.search_time = time + self.maxpatience;
+		//self.search_time = time + self.maxpatience;
 
 // look for other coop players
-	if (coop && self.search_time < time)
+	//if (coop && self.search_time < time)
+	if (coop )
 	{
     if(  ai_find_target_visual()) {
       return;

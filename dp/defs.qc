@@ -461,7 +461,7 @@ float		skill;
 
 .float	lefty;
 
-.float	search_time;
+//.float	search_time;
 .float	attack_state;
 
 float	AS_STRAIGHT		= 1;
@@ -482,7 +482,7 @@ float	AS_MISSILE		= 4;
 
 //.float		axhitme; deprecated
 
-.float		show_hostile;	// set to time+0.2 whenever a client fires a
+//.float		show_hostile;	// set to time+0.2 whenever a client fires a
 							// weapon or takes damage.  Used to alert
 							// monsters that otherwise would let the player go
 .float		jump_flag;		// player jump flag

@@ -5,43 +5,6 @@
   Overview: custom TE_'s using the effectinfo.txt system
 */
 
-
-//TE_LASER_BEAM
-void(vector org, vector end) te_beam_laser={
-  WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-  WriteByte (MSG_BROADCAST, TE_LASER_BEAM);
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteCoord (MSG_BROADCAST, end_x);
-  WriteCoord (MSG_BROADCAST, end_y);
-  WriteCoord (MSG_BROADCAST, end_z);
-};
-
-//TE_ESR_BEAM
-void(vector org, vector end) te_beam_esr={
-  WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-  WriteByte (MSG_BROADCAST, TE_ESR_BEAM);
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteCoord (MSG_BROADCAST, end_x);
-  WriteCoord (MSG_BROADCAST, end_y);
-  WriteCoord (MSG_BROADCAST, end_z);
-};
-
-//TE_PAC_BEAM
-void(vector org, vector end) te_beam_pac={
-  WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-  WriteByte (MSG_BROADCAST, TE_PAC_BEAM);
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteCoord (MSG_BROADCAST, end_x);
-  WriteCoord (MSG_BROADCAST, end_y);
-  WriteCoord (MSG_BROADCAST, end_z);
-};
-
 //TE_SMOKE_TEST
 void(vector org, vector vel, float total) te_smoke_test={
   WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
@@ -55,17 +18,6 @@ void(vector org, vector vel, float total) te_smoke_test={
   WriteByte (MSG_BROADCAST, total);
 };
 
-void(vector org, vector angl) te_shield_test={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_SHIELD_TEST );
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteCoord (MSG_BROADCAST, angl_x);
-  WriteCoord (MSG_BROADCAST, angl_y);
-  WriteCoord (MSG_BROADCAST, angl_z);
-};
-
 void( vector org, float total ) te_heat_small={
   WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
   WriteByte( MSG_BROADCAST, TE_HEAT_SMALL );
@@ -73,64 +25,6 @@ void( vector org, float total ) te_heat_small={
   WriteCoord (MSG_BROADCAST, org_y);
   WriteCoord (MSG_BROADCAST, org_z);
   WriteByte( MSG_BROADCAST, total );
-};
-
-void( vector org, vector end, float total) te_mis_trail={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_MIS_TRAIL );
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteCoord (MSG_BROADCAST, end_x);
-  WriteCoord (MSG_BROADCAST, end_y);
-  WriteCoord (MSG_BROADCAST, end_z);
-  WriteByte( MSG_BROADCAST, total );
-};
-
-void( vector org, float total) te_mis_flame={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_MIS_FLAME );
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteByte( MSG_BROADCAST, total );
-};
-
-void( vector org ) te_mis_expl={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_MIS_EXPL );
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-};
-
-void(vector org, float total, float armor) te_laser_hit={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_LAS_HIT );
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteByte( MSG_BROADCAST, total );
-  WriteByte( MSG_BROADCAST, armor );
-};
-
-
-/*
-  MUZZLE FLASHES
-*/
-void(vector org, vector angl, vector vel, float teType, float total) te_muzzle_generic={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, teType );
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteCoord (MSG_BROADCAST, angl_x);
-  WriteCoord (MSG_BROADCAST, angl_y);
-  WriteCoord (MSG_BROADCAST, angl_z);
-  WriteCoord (MSG_BROADCAST, vel_x);
-  WriteCoord (MSG_BROADCAST, vel_y);
-  WriteCoord (MSG_BROADCAST, vel_z);
-  WriteByte( MSG_BROADCAST, total);
 };
 
 //HUD Sound Effects

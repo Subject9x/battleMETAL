@@ -12,8 +12,6 @@ float TE_CLIENT_HIT = 82;  //not a particle but here for completeness
 float TE_CLIENT_DMG = 83;  //not a particle but here for completeness
 float TE_UI_BOX = 84;      //not a particle but here for completeness
 
-float TE_ESR_BEAM = 86;
-float TE_PAC_BEAM = 87;
 float TE_SMOKE_TEST = 88;
 float TE_SHIELD_TEST = 89;
 
@@ -32,17 +30,3 @@ float TE_MSN_BOUND = 99;
 
 //MOAR Particles
 float TE_HEAT_SMALL = 100;
-
-float TE_MIS_TRAIL = 102;
-float TE_MIS_FLAME = 103;
-float TE_MIS_MUZZLE = 104;
-float TE_MIS_EXPL = 105;
-
-float TE_LASER_BEAM = 85;
-float TE_LAS_MUZZLE = 101;
-float TE_LAS_HIT = 106;
-
-float TE_RPC_MUZZLE = 107;
-float TE_RPC_TRAIL = 108;
-float TE_RPC_HIT = 109;
-float TE_RPC_BURN = 110;

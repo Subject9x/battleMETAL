@@ -5,10 +5,6 @@ Date: 02/25/2017
 Overview: long-range, low damage, homing missile
 */
 //=======MISSILE: ACTIVE-RADAR========
-float DAT_PRJ_MARH_IDX = ;
-float DAT_PRJ_MARH_DAMAGE = 2;
-float DAT_PRJ_MARH_DMGTYPE = DMG_EXP;
-
 void() data_prj_marh_th;
 void() data_prj_marh_th_delay;
 void() data_prj_marh_touch;
@@ -20,8 +16,7 @@ void() data_prj_marh_ini={
   self.p_velocity = DAT_PRJ_MARH_VELOCITY;
   self.c_model = DAT_PRJ_MARH_MODEL;
   self.p_lifetime = DAT_PRJ_MARH_LIFETIME;
-  self.p_damage = DAT_PRJ_MARH_DAMAGE;
-  self.p_dmgtype = DMG_EXP;
+  
   //cosmetics
   self.effects = EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MARH_MODELFLAGS;

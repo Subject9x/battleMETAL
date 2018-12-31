@@ -28,7 +28,7 @@ void() data_las_ini={
   self.i_techlvl = DAT_LAS_TECH_LEVEL;
   self.i_size = DAT_LAS_WSIZE;
   self.w_think = data_las_think;
-  self.max_health = self.health =1;
+  self.max_health = self.health = 1;
   self.w_range = DAT_LAS_RANGE;
   self.w_state = READY;
   self.spreadDefault = DAT_LAS_ACC;

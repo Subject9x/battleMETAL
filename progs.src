@@ -39,7 +39,7 @@ triggers_h.qc
   mech/vecFactory_h.qc
   mech/ctrl/ctrl_all_h.qc
   mech/ctrl/ctrl_weapon_h.qc
-  mech/anim/mch_anim_h.qc
+  mech/models/models_h.qc
   mech/impulse_h.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
@@ -168,9 +168,9 @@ world.qc
   //player types
   mech/ext/player_mech.qc
   
-  //animations
-  mech/anim/mch_leg.qc
-  mech/anim/mch_ctor.qc
+  //models quake c
+  mech/models/models_leg.qc
+  mech/models/models_ctor.qc
   
   //effects
   world_effectinfo_c.qc

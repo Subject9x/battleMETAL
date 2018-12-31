@@ -2,8 +2,20 @@
 mech mod
 Author: Peter Roohr
 Date: 9/22/2016
-Overview: test animation harness
+Refactor: 12/29/2018
+Overview: 
+  old - test animation harness
+  
+  
 */
+
+/*
+  Leg animation state controller.
+  uses FrameStart / end to track between animation groups
+*/
+void( entity legs ) anim_leg_control={
+
+};
 
 /*void()	mech_walk2 =	[$walk2, mech_walk3] {};
 void()	mech_walk3 =	[$walk3, mech_walk4] {};

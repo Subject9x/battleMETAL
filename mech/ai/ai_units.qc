@@ -169,28 +169,11 @@ void() unit_hs_scout={
   }
 };
 
-void() unit_hs_mech_skirmisher={
-  self.flags = self.flags | FL_TURRET;  //enforced for a mech
-  self.i_faction = 2;
-  self.mskin = 2;
-  self.spreadDefault = ACCURACY_SKIRMISH;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    objerror ("ai_unit - outside of game mode");
-    return;
-  }
-  
-  if( ai_unit_setup( ai_mech_skirmish ) ){
-    ai_mech_skirmish();
-  }
-};
-
-
 /*
-      UNIT: BALAKET
-      --------------------------------
+  UNIT: BALAKET
+  --------------------------------
 */
+//        SNIPER VARIANTS
 void() unit_balaket_sniper={
 
   self.style = TYPE_SNIPER;
@@ -214,6 +197,7 @@ void() unit_balaket_sniper={
   }
 };
 
+//        BRAWLER VARIANTS
 void() unit_balaket_brawl={
 
   self.style = TYPE_BRAWL;
@@ -238,9 +222,10 @@ void() unit_balaket_brawl={
 };
 
 /*
-      UNIT: MATOK
-      --------------------------------
+  UNIT: MATOK
+  --------------------------------
 */
+//        BRAWLER VARIANTS
 void() unit_matok_brawl={
 
   self.style = TYPE_BRAWL;
@@ -265,9 +250,10 @@ void() unit_matok_brawl={
 };
 
 /*
-      UNIT: MONITOR
-      --------------------------------
+  UNIT: MONITOR
+  --------------------------------
 */
+//        BRAWLER VARIANTS
 void() unit_monitor_brawl={
 
   self.style = TYPE_BRAWL;
@@ -290,24 +276,6 @@ void() unit_monitor_brawl={
     ai_mech_skirmish();
   }
 };
-
-
-void() unit_hs_mech_sniper={
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.i_faction = 2;
-  self.mskin = 2;
-  self.spreadDefault = ACCURACY_SNIPER;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-  
-  if( ai_unit_setup( ai_mech_sniper ) ){
-    ai_mech_sniper();
-  }
-};
-
 
 
 void() building_turret_light={

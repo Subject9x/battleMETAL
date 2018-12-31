@@ -117,8 +117,7 @@ void() data_rplas_atk={
   }
  
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  
-  te_muzzle_generic( org, player.angles, player.velocity, TE_RPC_MUZZLE, 1);
+  pointparticles( particleeffectnum("TE_RPC_MUZZLE"), org, normalize(dir - org) * 2, 1);
   
   newmis = spawn();
   oself = self;

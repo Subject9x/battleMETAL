@@ -152,10 +152,8 @@ void() data_qrfl_atk={
       }
       self = oself;
   }
+  
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  
-    te_beam_laser( rando, self.origin );
-  
   prtclRail_org = org + (v_forward * 2);
   prtclRail_end = org + (v_forward * 48);
   prtclSpark_org = org + (v_forward * 22);

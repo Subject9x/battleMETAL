@@ -53,7 +53,7 @@ void() hrepair_rep = [0, hrepair_rep]{
       local vector fx;
       makevectors(self.angles);
       fx = self.origin + (v_forward * 45) + (v_up * 40);
-      te_beam_laser(fx, fix.origin);
+      //te_beam_laser(fx, fix.origin); TODO - fixme
       
       fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
       self.rl_cur = self.rl_cur - (self.rl_rate * self.trigger_field.vec_size);

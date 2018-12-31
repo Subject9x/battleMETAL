@@ -97,12 +97,15 @@ void() data_otl_ini={
     //brawler
     if( self.style == TYPE_BRAWL ){
      if( skill < 2 ){
+        //LAS | LAS | MIS
         ai_ini_weapons( 3, 3, 4, -1, -1, -1, -1, -1, -1);
       }
       else if( skill == 2 ){
+        //LAS | LAS | RPC
         ai_ini_weapons( 3, 3, 6, -1, -1, -1, -1, -1, -1);
       }
       else if( skill == 3 ){
+        //FLAK | LATC | ESR
         ai_ini_weapons( 12, 1, 8, -1, -1, -1, -1, -1, -1);
       } 
     }
@@ -110,12 +113,15 @@ void() data_otl_ini={
     //sniper
     if( self.style == TYPE_SNIPER ){
       if( skill < 2 ){
+        //FLAK | FLAK | ION
         ai_ini_weapons( 12, 12, 13, -1, -1, -1, -1, -1, -1);
       }
       else if( skill == 2 ){
+        //LATC | LATC | EMP
         ai_ini_weapons( 1, 1, 2, -1, -1, -1, -1, -1, -1);
       }
       else if( skill == 3 ){
+        //LATC | LATC | PAC
         ai_ini_weapons( 1, 1, 7, -1, -1, -1, -1, -1, -1);
       } 
     }

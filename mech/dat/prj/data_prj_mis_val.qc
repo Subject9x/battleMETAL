@@ -19,19 +19,11 @@ void() data_prj_mis_touch={
       return;
     }
   }
-  te_mis_expl( self.origin );
   BecomeExplosion();
 };
 
 void() data_prj_mis_th={
-  local vector smk1;
-  
-  makevectors( self.angles );
-  
-  smk1 = self.origin + (v_forward * -2.5);
-  
-  te_mis_flame( smk1, 1) ;
-  
+
   self.think = data_prj_mis_th;
   self.nextthink = time + 0.05;
   if( time > self.power_timer ){

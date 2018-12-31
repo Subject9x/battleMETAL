@@ -81,7 +81,7 @@ void() data_mis_atk={
   }
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
 
-  te_muzzle_generic( org + (v_forward * 1), normalize( dir - org ), player.velocity, TE_MIS_MUZZLE, 1);
+  pointparticles( particleeffectnum("TE_MIS_MUZZLE"), org + (v_forward * 1), normalize( dir - org ), 1);
 
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){

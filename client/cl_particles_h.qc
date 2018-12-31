@@ -56,19 +56,6 @@ void() te_shield_think={
 float( float te_id ) te_effect_delegate;
 vector() te_read_vector;
 
-float(vector org, vector end) te_beam_laser;
-float(vector org, float total, float armor) te_laser_hit;
-float(vector org, vector angl, vector vel, float total) te_muzzle_laser;
-
-float(vector org, vector end) te_beam_esr;
-float(vector org, vector end) te_beam_pac;
 float(vector org, vector vel, float cnt) te_smoke_test;
-float(vector org, vector angl ) te_shield_test;
 float(vector org, float total) te_heat_small;
 
-float( vector org, vector end, float total) te_mis_trail;
-float( vector org, float total) te_mis_flame;
-float( vector org, vector angl, vector vel, float total) te_mis_muzzle;
-float( vector org ) te_mis_expl;
-
-float( vector org, vector angl, vector vel, float total) te_rpc_muzzle;

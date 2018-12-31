@@ -121,8 +121,8 @@ vector(entity own, float range) util_traceForPlayer={
   local vector vcr;
   cam = own.e_cam;
   makevectors(own.v_angle);
-  vcr = own.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
-  traceline(vcr, vcr + (v_forward * 10000), FALSE, own);
+  vcr = own.origin + (v_right * cam.c_ofs_x) + (v_up * cam.c_ofs_y) + (v_forward * cam.c_ofs_z);
+  traceline(vcr, vcr + (v_forward * range), FALSE, own);
   return trace_endpos;
 };
 
@@ -134,7 +134,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   local vector src;
   local vector acc;
   //weaponSpread
-  wepAim = aim(self.owner, 100000);
+  wepAim = aim(self.owner, idealRange);
   
   makevectors( viewAngle );
   
