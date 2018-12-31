@@ -12,9 +12,6 @@ float TE_CLIENT_HIT = 82;  //not a particle but here for completeness
 float TE_CLIENT_DMG = 83;  //not a particle but here for completeness
 float TE_UI_BOX = 84;      //not a particle but here for completeness
 
-float TE_SMOKE_TEST = 88;
-float TE_SHIELD_TEST = 89;
-
 float TE_HUD_SPARK = 90;
 float TE_EVT_OBJ = 91;
 float TE_EVT_NAV = 92;

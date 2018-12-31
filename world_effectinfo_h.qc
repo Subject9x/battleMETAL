@@ -7,9 +7,7 @@
 
 .float traileffectnum;  //seriously?
 
-void(vector org, vector vel, float cnt) te_smoke_test;
-void(vector org, vector angl) te_shield_test;
-void(vector org, float total) te_heat_small;
+void(vector org, vector vel, float total) te_smoke_test;
 
 //SFX
 void() te_nav_reach;

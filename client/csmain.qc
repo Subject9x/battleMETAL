@@ -480,8 +480,6 @@ float() CSQC_Parse_TempEntity =
     case TE_MSN_BOUND:
       client_event_boundary();
       return TRUE;
-    default:
-      return te_effect_delegate( id );
   } 
 	return FALSE;
 };

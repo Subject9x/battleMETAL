@@ -5,20 +5,6 @@
   Overview: impl of the client particle system
 */
 
-/*
-  TE_ delegate for all particle effects,
-  other TE's are routed in a different direction
-*/
-float( float te_id ) te_effect_delegate={
-  local float hand;
-  hand = TRUE;
-  switch( te_id ){
-    default:
-      hand = FALSE;
-      break;
-  }
-  return hand;
-};
 
 /*
   probably should be a utility.
@@ -32,18 +18,6 @@ vector() te_read_vector={
   newv_y = ReadCoord();
   newv_z = ReadCoord();
   return newv;
-};
-
-float(vector org, vector vel, float cnt) te_smoke_test={
-  pointparticles(particleeffectnum("SMOKE_TEST"), org , vel, cnt);
-  return TRUE;
-};
-
-
-
-float( vector org, float total ) te_heat_small={
-  pointparticles(particleeffectnum("HEAT_SMALL"), org , '0 0 0', total);
-  return TRUE;
 };
 
 /*

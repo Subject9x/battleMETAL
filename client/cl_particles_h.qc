@@ -53,9 +53,4 @@ void() te_shield_think={
   self.nextthink = time + 0.01;
 };
 
-float( float te_id ) te_effect_delegate;
 vector() te_read_vector;
-
-float(vector org, vector vel, float cnt) te_smoke_test;
-float(vector org, float total) te_heat_small;
-

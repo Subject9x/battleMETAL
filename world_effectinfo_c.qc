@@ -7,24 +7,7 @@
 
 //TE_SMOKE_TEST
 void(vector org, vector vel, float total) te_smoke_test={
-  WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-  WriteByte (MSG_BROADCAST, TE_SMOKE_TEST);
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteCoord (MSG_BROADCAST, vel_x);
-  WriteCoord (MSG_BROADCAST, vel_y);
-  WriteCoord (MSG_BROADCAST, vel_z);
-  WriteByte (MSG_BROADCAST, total);
-};
-
-void( vector org, float total ) te_heat_small={
-  WriteByte( MSG_BROADCAST, SVC_TEMPENTITY );
-  WriteByte( MSG_BROADCAST, TE_HEAT_SMALL );
-  WriteCoord (MSG_BROADCAST, org_x);
-  WriteCoord (MSG_BROADCAST, org_y);
-  WriteCoord (MSG_BROADCAST, org_z);
-  WriteByte( MSG_BROADCAST, total );
+  pointparticles(particleeffectnum("SMOKE_TEST"), org , vel, total);
 };
 
 //HUD Sound Effects
