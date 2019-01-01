@@ -11,10 +11,6 @@ Overview: moving all mech values into a single global file for ease of maintenan
 //OUTLAW MECH=============================
 float DAT_OTL_RESERVE_COST = 100;
 
-float DAT_OTL_WEP1_IDX= ID_WEP_LATC;
-float DAT_OTL_WEP2_IDX= ID_WEP_LATC;
-float DAT_OTL_WEP3_IDX= ID_WEP_EMP;
-
 float DAT_OTL_WEP1_GROUP= 1;
 float DAT_OTL_WEP2_GROUP= 1;
 float DAT_OTL_WEP3_GROUP= 2;
@@ -187,7 +183,7 @@ void() data_otl_cam={
 };
 void() data_otl_wep1={  
   self.c_parent = M_ARM_LEFT;
-  self.data_idx = DAT_OTL_WEP1_IDX; //consult weapon idx table!
+  self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP1_OFFSET;
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
@@ -195,7 +191,7 @@ void() data_otl_wep1={
 };
 void() data_otl_wep2={  
   self.c_parent = M_ARM_RIGHT;
-  self.data_idx = DAT_OTL_WEP2_IDX; //consult weapon idx table!
+  self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP2_OFFSET;
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
@@ -203,7 +199,7 @@ void() data_otl_wep2={
 };
 void() data_otl_wep3={  
   self.c_parent = M_TOR_CENTER;
-  self.data_idx = DAT_OTL_WEP3_IDX; //consult weapon idx table!
+  self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_OTL_WEP3_OFFSET;
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';

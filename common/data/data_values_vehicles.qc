@@ -53,7 +53,7 @@ string DAT_HS_TRUCKB_NAME = "Convoy Hab";
 //-------------------------Human Truck C
 string DAT_HS_TRUCKC_NAME = "Convoy Supply";
 //-------------------------Human Test Tank
-string DAT_HS_TANKL_NAME = "<Medium Tank>";
+string DAT_HS_TANKL_NAME = "Foslager";
 //-------------------------Human Tank Destroyer
 string DAT_H_TD_VEC_NAME = "<Tank Destroyer>";
 //-------------------------Human Gev Light
@@ -124,8 +124,8 @@ float DAT_PSC_VTOLL_BSPEED     = 300;
 //            Bounding Box
 //============================
 //-------------------------Human Tank Light
-vector DAT_HS_TANKL_CTOR_BBX_N =  '-20 -20 -10';
-vector DAT_HS_TANKL_CTOR_BBX_X =  '20 20 14';
+vector DAT_HS_TANKL_CTOR_BBX_N =  '-20 -20 -7.75';
+vector DAT_HS_TANKL_CTOR_BBX_X =  '20 20 12';
 //-------------------------Human Tank Destroyer
 vector DAT_H_TD_CTOR_BBX_N    =   '-20 -20 -10';
 vector DAT_H_TD_CTOR_BBX_X    =   '20 20 14';
@@ -163,8 +163,8 @@ float DAT_PSC_VTOLL_YAW_SPEED   = 8;
 //            Models  
 //============================
 //-------------------------Human Tank Light
-string DAT_HS_TANKL_CTOR_MODEL   = "q3mdl/vecs/mdl_tank_tur.md3";
-string DAT_HS_TANKL_MDL_CHASSIS    = "q3mdl/vecs/mdl_tank_chas.md3";
+string DAT_HS_TANKL_CTOR_MODEL   = "q3mdl/vecs/foslager/mdl_foslager_tur.md3";
+string DAT_HS_TANKL_MDL_CHASSIS    = "q3mdl/vecs/foslager/mdl_foslager_chas.md3";
 string DAT_HS_TANKL_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------Human Tank Destroyer
 string DAT_H_TD_CTOR_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
@@ -179,8 +179,9 @@ string DAT_PSC_VTOLL_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
 //============================
 //-------------------------Human Tank Light
 vector DAT_HS_TANKL_LEG_OFFSET    = '0 0 0';
-vector DAT_HS_TANKL_WEP1_OFFSET   = '-8 6 4';
-vector DAT_HS_TANKL_WEP2_OFFSET   = '8 6 4';
+vector DAT_HS_TANKL_WEP1_OFFSET   = '1.5 11 4';
+vector DAT_HS_TANKL_WEP2_OFFSET   = '-5.1 11.5 3';
+vector DAT_HS_TANKL_WEP3_OFFSET   = '-1.5 6 9';
 //-------------------------Human Tank Destroyer
 vector DAT_H_TD_WEP1_OFFSET       = '0 4 4';
 //-------------------------Human Gev Light

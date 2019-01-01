@@ -25,11 +25,13 @@ void() data_HS_TANKL_ctor;
 void() data_HS_TANKL_cam;
 void() data_HS_TANKL_wep1;
 void() data_HS_TANKL_wep2;
+void() data_HS_TANKL_wep3;
 
 void() data_HS_TANKL_ini={
   self.unit_ctor = data_HS_TANKL_ctor;
   self.unit_wep1 = data_HS_TANKL_wep1;
   self.unit_wep2 = data_HS_TANKL_wep2;
+  self.unit_wep3 = data_HS_TANKL_wep3;
   self.unit_cam = data_HS_TANKL_cam;
     
   self.data_idx= ID_VEC_HS_TANK_L;
@@ -52,8 +54,28 @@ void() data_HS_TANKL_ini={
   self.m_bspeed = DAT_HS_TANKL_BSPEED;
   self.m_pitch_max = DAT_HS_TANKL_PITCH_N;
   self.m_pitch_min = DAT_HS_TANKL_PITCH_X;
-  setsize(self, '-20 -20 -10', '20 20 14');
+ 
+  setsize(self, DAT_HS_TANKL_CTOR_BBX_N, DAT_HS_TANKL_CTOR_BBX_X);
   setorigin(self, self.origin);
+  
+  //unit variants
+  if( (self.flags & FL_MONSTER) ){
+    //brawler
+    if( self.style == TYPE_BRAWL ){
+     if( skill < 2 ){
+        //MIS | LATC | LAS
+        ai_ini_weapons( 4, 1, 3, -1, -1, -1, -1, -1, -1);
+      }
+      else if( skill == 2 ){
+        //MLG | LATC | LAS
+        ai_ini_weapons( 9, 1, 3, -1, -1, -1, -1, -1, -1);
+      }
+      else if( skill == 3 ){
+        //ION | LATC | FLAK
+        ai_ini_weapons( 13, 1, 12, -1, -1, -1, -1, -1, -1);
+      } 
+    }
+  }
 };
 
 void() data_HS_TANKL_ctor={
@@ -63,14 +85,14 @@ void() data_HS_TANKL_ctor={
   self.c_model = DAT_HS_TANKL_CTOR_MODEL;
   self.yaw_speed = 10;
   self.attack_state = 0;
-  self.c_ofs = '0 0 0';
+  self.c_ofs = '0 10.5 -3.75';
 };
 
 void() data_HS_TANKL_wep1={  
   self.c_parent = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_HS_TANKL_WEP1_OFFSET;
-  self.c_alt_ofs = '0 0 0 ';
+  self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON1;
 };
@@ -82,6 +104,15 @@ void() data_HS_TANKL_wep2={
   self.c_alt_ofs = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON2;
+};
+
+void() data_HS_TANKL_wep3={  
+  self.c_parent = M_LEGS;
+  self.data_idx = 0; //consult weapon idx table!
+  self.c_ofs = DAT_HS_TANKL_WEP3_OFFSET;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 0';
+  self.w_group = WEAPON3;
 };
 
 void() data_HS_TANKL_cam={ 

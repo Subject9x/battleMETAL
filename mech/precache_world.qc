@@ -73,6 +73,11 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/mnt/mdl_mnt_cpt.md3");
  
   //test tank
+  
+  //Foslage Medium Tank
+  precache_model ("q3mdl/vecs/foslager/mdl_foslager_chas.md3");
+  precache_model ("q3mdl/vecs/foslager/mdl_foslager_tur.md3"); 
+  
   precache_model ("q3mdl/vecs/mdl_tank_chas.md3");
   precache_model ("q3mdl/vecs/mdl_tank_tur.md3");
   

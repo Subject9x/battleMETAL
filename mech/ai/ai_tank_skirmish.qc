@@ -326,9 +326,6 @@ void() ai_tank_skirmish={
   
   droptofloor();
   
-  self.colormod = '1 0 0'; //DEBUG
-  self.e_tor_c.colormod = '1 0 0'; //DEBUG
-  
   self.think = ai_tank_sk_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks

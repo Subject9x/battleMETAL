@@ -405,6 +405,9 @@ entity(float part, entity unit) util_getPartFromName={
     case M_TOR_LEFT:
       return unit.e_tor_l;
     case M_LEGS:
+      if( (unit.data_type == DATA_VEHC) ){
+        return unit;  //edge case for hull-mounted weapons on a turreted object
+      }
       return unit.e_legs;
     case M_ARM_LEFT:
       return unit.e_arm_l;

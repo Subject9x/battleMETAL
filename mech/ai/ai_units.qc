@@ -170,7 +170,33 @@ void() unit_hs_scout={
 };
 
 /*
+  UNIT: FOSLAGER
+  TYPE: TANK
+  SIZE: MEDIUM
+  --------------------------------
+*/
+void() unit_foslager_h={
+
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 7;
+  self.i_faction = 2;
+  self.flags = self.flags | FL_TURRET;
+  self.spreadDefault = ACCURACY_SKIRMISH;
+  
+    if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_tank_skirmish ) ){
+    ai_tank_skirmish();
+  }
+};
+
+/*
   UNIT: BALAKET
+  TYPE: METAL
+  SIZE: LIGHT
   --------------------------------
 */
 //        SNIPER VARIANTS
@@ -223,6 +249,8 @@ void() unit_balaket_brawl={
 
 /*
   UNIT: MATOK
+  TYPE: METAL
+  SIZE: MEDIUM
   --------------------------------
 */
 //        BRAWLER VARIANTS
@@ -251,6 +279,8 @@ void() unit_matok_brawl={
 
 /*
   UNIT: MONITOR
+  TYPE: METAL
+  SIZE: MEDIUM
   --------------------------------
 */
 //        BRAWLER VARIANTS
