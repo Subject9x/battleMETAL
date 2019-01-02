@@ -10,15 +10,129 @@
 //
 //      HUMAN TANKS
 //
-/*QUAKED unit_hs_scout (1 0 0.75) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME
+/*QUAKED unit_hs_scout (1 0 0.75) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
 
 */
-//
-//      HUMAN METALS
-//
-/*QUAKED unit_hs_mech_sniper (1 0 1) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME
 
+/*QUAKED unit_foslager_h (1 0 0.75) (-20 -20 -7.75) (20 20 12) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Weapon 1 - MIS
+  Weapon 2 - LATC
+  Weapon 3 - LAS
+  ----VET------
+  Weapon 1 - MLG
+  Weapon 2 - LATC
+  Weapon 3 - LAS
+  ----ACE------
+  Weapon 1 - ION
+  Weapon 2 - LATC
+  Weapon 3 - FLAK
 */
-/*QUAKED unit_hs_mech_skirmisher (1 0 0.75) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME
 
+//
+//  METAL : BALAKET
+//
+/*QUAKED unit_balaket_sniper (1 0 1) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Weapon 1 - FLAK
+  Weapon 2 - FLAK
+  Weapon 3 - ION
+  ----VET------
+  Weapon 1 - LATC
+  Weapon 2 - LATC
+  Weapon 3 - EMP
+  ----ACE------
+  Weapon 1 - LATC
+  Weapon 2 - LATC
+  Weapon 3 - PAC
+  
+*/
+/*QUAKED unit_balaket_brawl (1 0 1) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Weapon 1 - LAS
+  Weapon 2 - LAS
+  Weapon 3 - MIS
+  ----VET------
+  Weapon 1 - LAS
+  Weapon 2 - LAS
+  Weapon 3 - RPC
+  ----ACE------
+  Weapon 1 - FLAK
+  Weapon 2 - LATC
+  Weapon 3 - ESR
+*/
+
+//
+//  METAL : MATOK
+//
+/*QUAKED unit_matok_sniper (1 0 1) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Weapon 1 - LAS
+  Weapon 2 - LAS
+  Weapon 3 - ION
+  Weapon 4 - ION
+  Weapon 5 - MLGD
+  ----VET------
+  Weapon 1 - QRF
+  Weapon 2 - QRF
+  Weapon 3 - LAS
+  Weapon 4 - ION
+  Weapon 5 - ENBAT
+  ----ACE------
+  Weapon 1 - LAS
+  Weapon 2 - LAS
+  Weapon 3 - LAS
+  Weapon 4 - LAS
+  Weapon 5 - HSEM
+  
+*/
+/*QUAKED unit_matok_brawl (1 0 1) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Weapon 1 - LAS
+  Weapon 2 - LAS
+  Weapon 3 - LATC
+  Weapon 4 - LATC
+  Weapon 5 - MIS
+  ----VET------
+  Weapon 1 - LAS
+  Weapon 2 - LAS
+  Weapon 3 - QRF
+  Weapon 4 - FLAK
+  Weapon 5 - MLGD
+  ----ACE------
+  Weapon 1 - LAS
+  Weapon 2 - LAS
+  Weapon 3 - RPC
+  Weapon 4 - RPC
+  Weapon 5 - ESR
+*/
+
+//
+//  METAL : MONITOR
+//
+/*QUAKED unit_monitor_brawl (1 0 1) (-20 -20 -24) (20 20 24) CAMPAIGN COOP DM TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE
+  Weapon 1 - LAS
+  Weapon 2 - LATC
+  Weapon 3 - LAS
+  Weapon 4 - LATC
+  Weapon 5 - FLAK
+  Weapon 6 - FLAK
+  Weapon 7 - MIS 
+  Weapon 8 - MIS
+  Weapon 9 - MIS
+  ----VET------
+  Weapon 1 - LAS
+  Weapon 2 - LATC
+  Weapon 3 - LAS
+  Weapon 4 - LATC
+  Weapon 5 - ION
+  Weapon 6 - QRF
+  Weapon 7 - MLGD 
+  Weapon 8 - MIS
+  Weapon 9 - MIS
+  ----ACE------
+  Weapon 1 - LATC
+  Weapon 2 - LATC
+  Weapon 3 - LATC
+  Weapon 4 - LATC
+  Weapon 5 - ION
+  Weapon 6 - PAC
+  Weapon 7 - ENBAT 
+  Weapon 8 - ENBAT
+  Weapon 9 - MIS
 */
