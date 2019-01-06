@@ -193,6 +193,32 @@ void() unit_foslager_h={
   }
 };
 
+
+
+/*
+  UNIT: ONNEK
+  TYPE: TANK DESTROYER
+  SIZE: MEDIUM
+  --------------------------------
+*/
+void() unit_onnek_h={
+
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 9;
+  self.i_faction = 2;
+  self.flags = self.flags;
+  self.spreadDefault = ACCURACY_SNIPER;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_vec_dest ) ){
+    ai_vec_dest();
+  }
+};
+
 /*
   UNIT: BALAKET
   TYPE: METAL

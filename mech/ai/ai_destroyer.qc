@@ -254,8 +254,6 @@ void() ai_vec_dest={
   ai_walk_setup();
   
   droptofloor();
-  
-  self.colormod = '0 0.75 1'; //DEBUG
 
   self.think = ai_dest_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){

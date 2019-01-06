@@ -78,6 +78,9 @@ void() mh_precache_models={
   precache_model ("q3mdl/vecs/foslager/mdl_foslager_chas.md3");
   precache_model ("q3mdl/vecs/foslager/mdl_foslager_tur.md3"); 
   
+  //Onnek Tank Destroyer
+  precache_model ("q3mdl/vecs/onnek/mdl_onnek_chas.md3");
+  
   precache_model ("q3mdl/vecs/mdl_tank_chas.md3");
   precache_model ("q3mdl/vecs/mdl_tank_tur.md3");
   

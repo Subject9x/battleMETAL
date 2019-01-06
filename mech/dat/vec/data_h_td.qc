@@ -46,6 +46,13 @@ void() data_H_TD_ini={
   self.m_bspeed = DAT_H_TD_BSPEED;
   self.m_pitch_max = DAT_H_TD_PITCH_N;
   self.m_pitch_min = DAT_H_TD_PITCH_X;
+  
+    //unit variants
+  if( (self.flags & FL_MONSTER) ){
+    //MIS | LATC | LAS
+    ai_ini_weapons( 7, -1, -1, -1, -1, -1, -1, -1, -1);
+  }
+  
 };
 
 void() data_H_TD_wep1={  

@@ -55,7 +55,7 @@ string DAT_HS_TRUCKC_NAME = "Convoy Supply";
 //-------------------------Human Test Tank
 string DAT_HS_TANKL_NAME = "Foslager";
 //-------------------------Human Tank Destroyer
-string DAT_H_TD_VEC_NAME = "<Tank Destroyer>";
+string DAT_H_TD_VEC_NAME = "Onnek";
 //-------------------------Human Gev Light
 string DAT_HS_GEVL_NAME = "<Light GEV>";
 //-------------------------PSC VTOL Light
@@ -167,7 +167,7 @@ string DAT_HS_TANKL_CTOR_MODEL   = "q3mdl/vecs/foslager/mdl_foslager_tur.md3";
 string DAT_HS_TANKL_MDL_CHASSIS    = "q3mdl/vecs/foslager/mdl_foslager_chas.md3";
 string DAT_HS_TANKL_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------Human Tank Destroyer
-string DAT_H_TD_CTOR_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
+string DAT_H_TD_CTOR_MODEL   = "q3mdl/vecs/onnek/mdl_onnek_chas.md3";
 string DAT_H_TD_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------Human Gev Light
 string DAT_HS_GEVL_MDL   = "q3mdl/vecs/mdl_tank_chas.md3";
@@ -183,7 +183,7 @@ vector DAT_HS_TANKL_WEP1_OFFSET   = '1.5 11 4';
 vector DAT_HS_TANKL_WEP2_OFFSET   = '-5.1 11.5 3';
 vector DAT_HS_TANKL_WEP3_OFFSET   = '-1.5 6 9';
 //-------------------------Human Tank Destroyer
-vector DAT_H_TD_WEP1_OFFSET       = '0 4 4';
+vector DAT_H_TD_WEP1_OFFSET       = '7.25 3.5 12';
 //-------------------------Human Gev Light
 vector DAT_HS_GEVL_WEP1_OFFSET    = '0 12 24';
 //-------------------------PSC VTOL Light
