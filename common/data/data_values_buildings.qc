@@ -123,7 +123,7 @@ string DAT_BLD_H_FUELTANK_MODEL = "q3mdl/buildings/mdl_bld_h_fuel.md3";
 //-------------------------Human-Large Hangar
 string DAT_BLD_H_LG_HANGAR_MODEL = "q3mdl/buildings/mdl_bld_h_hangar_l.md3";
 //-------------------------Human-Repair Bay
-string DAT_BLD_H_REPAIR_MODEL = "q3mdl/buildings/mdl_bld_h_repair.md3";
+string DAT_BLD_H_REPAIR_MODEL = "q3mdl/buildings/repair_bay/mdl_repair_bay.md3";
 //-------------------------Human-Radar Post
 string DAT_BLD_H_SM_RADAR_MODEL = "q3mdl/buildings/mdl_bld_h_radar.md3";
 //-------------------------Human-Power Plant
