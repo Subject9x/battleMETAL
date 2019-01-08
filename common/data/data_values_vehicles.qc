@@ -170,7 +170,6 @@ string DAT_HS_TANKL_CAM_MODEL    = "q3mdl/testball.md3";
 string DAT_H_TD_CTOR_MODEL   = "q3mdl/vecs/onnek/mdl_onnek_chas.md3";
 string DAT_H_TD_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------Human Gev Light
-string DAT_HS_GEVL_MDL   = "q3mdl/vecs/mdl_tank_chas.md3";
 string DAT_HS_GEVL_MDL_CAM    = "q3mdl/testball.md3";
 //-------------------------PSC VTOL Light
 string DAT_PSC_VTOLL_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
@@ -185,7 +184,8 @@ vector DAT_HS_TANKL_WEP3_OFFSET   = '-1.5 6 9';
 //-------------------------Human Tank Destroyer
 vector DAT_H_TD_WEP1_OFFSET       = '7.25 3.5 12';
 //-------------------------Human Gev Light
-vector DAT_HS_GEVL_WEP1_OFFSET    = '0 12 24';
+vector DAT_HS_GEVL_WEP1_OFFSET    = '-1.5 5.25 2';
+vector DAT_HS_GEVL_WEP2_OFFSET    = '1.5 5.25 2';
 //-------------------------PSC VTOL Light
 vector DAT_PSC_VTOLL_WEP1_OFFSET  = '-9 -6 28';
 vector DAT_PSC_VTOLL_WEP2_OFFSET  = '9 -6 28';

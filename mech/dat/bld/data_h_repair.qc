@@ -119,12 +119,12 @@ void() building_human_repair={
   self.data_idx = ID_BLD_H_REPAIR;
   self.data_type = DATA_BLD;
   self.vec_name = "Repair Bay";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 3;
   util_setModel(DAT_BLD_H_REPAIR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_REPAIR_HP, DAT_BLD_H_REPAIR_HP, 1, 100) ;
-  setsize(self, '-72 -72 0', '72 72 40');
+  setsize(self, '-53 -53 0', '53 53 40');
   self.sh_cur= 0;
   self.sh_max= DAT_BLD_H_REPAIR_SH_MAX;
   self.sh_rate= DAT_BLD_H_REPAIR_SH_RATE;
@@ -135,7 +135,6 @@ void() building_human_repair={
   
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
-  
   self.movetype = MOVETYPE_NONE;
   self.nextthink = time + 0.1;
   self.use = multi_trigger;

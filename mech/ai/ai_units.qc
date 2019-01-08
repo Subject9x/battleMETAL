@@ -168,6 +168,30 @@ void() unit_hs_scout={
     ai_gev();
   }
 };
+/*
+  UNIT: DUNERUNNER
+  TYPE: GEV
+  SIZE: SMALL
+  --------------------------------
+*/
+void() unit_dunerunner_h={
+  
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 11;
+  self.i_faction = 2;
+  self.flags = self.flags | FL_TURRET;
+  self.spreadDefault = ACCURACY_LOWTECH;
+  
+    if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_gev ) ){
+    ai_gev();
+  }
+  
+};
 
 /*
   UNIT: FOSLAGER

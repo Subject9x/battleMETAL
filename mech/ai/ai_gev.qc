@@ -385,6 +385,7 @@ void() ai_gev_th={
     
   if( !self.deadflag ){
     if( self.enemy ){
+    ai_turret_set_state( TR_TARG );
       if( ai_valid_target( self.enemy ) ){
         self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
         ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
@@ -396,9 +397,11 @@ void() ai_gev_th={
       }
     } 
     ai_ranged_attack();
-    self.button0 = 0;
-
-    ai_state_control( self.attack_state );
+    self.button0 = 0;  
+    ai_state_control( self.attack_state ); 
+    if( (self.flags & FL_TURRET) ){
+      ai_turret_control();
+    }
   }
 
   if( !(self.flags & FL_SKIPTHINK) ){

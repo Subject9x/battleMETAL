@@ -24,7 +24,6 @@ void() mh_precache_sound={
 };
 
 void() mh_precache_models={
-  precache_model("progs/v_dpshot.mdl");
   
   //terrains
   precache_model("models/terrain/t1m3_exp2.obj");
@@ -80,6 +79,10 @@ void() mh_precache_models={
   
   //Onnek Tank Destroyer
   precache_model ("q3mdl/vecs/onnek/mdl_onnek_chas.md3");
+  
+  //Dunerunner GEV
+  precache_model ("q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3");
+  precache_model ("q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3"); 
   
   precache_model ("q3mdl/vecs/mdl_tank_chas.md3");
   precache_model ("q3mdl/vecs/mdl_tank_tur.md3");
