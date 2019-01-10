@@ -121,17 +121,17 @@ void(float vec_id) data_iniVehc={
     case ID_VEC_HS_EXCAT:
       build_vehicle_unit( data_HS_Excat_ini );
       break;
-    case ID_VEC_HS_TDEST_L:
-      build_vehicle_unit( data_H_TD_ini );
+    case ID_VEC_onnek:
+      build_vehicle_unit( data_onnek_ini );
       break;
-    case ID_VEC_HS_TANK_L:
-      build_vehicle_unit( data_HS_TANKL_ini );
+    case ID_VEC_foslager:
+      build_vehicle_unit( data_foslager_ini );
       break;
     case ID_VEC_TROWEL:
       build_vehicle_unit( data_TROWEL_ini );
       break;
-    case ID_VEC_HS_SCOUT:
-      build_vehicle_unit( data_HS_GEVL_ini );
+    case ID_VEC_dunerunner:
+      build_vehicle_unit( data_dunerunner_ini );
       break;
     case ID_VEC_PSC_VTOL_L:
       build_vtol_unit( data_PSC_VTOLL_ini );

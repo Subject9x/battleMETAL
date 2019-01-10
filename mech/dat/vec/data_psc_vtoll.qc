@@ -23,14 +23,14 @@ void() data_PSC_VTOLL_ini={
   self.vec_name= DAT_PSC_VTOLL_NAME;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_PSC_VTOLL_RADAR_RANGE;
-  self.i_techlvl= DAT_H_TD_TECH_LEVEL;
+  self.i_techlvl= DAT_vtol_TECH_LEVEL;
   
   setsize(self, DAT_PSC_VTOLL_BBX_N, DAT_PSC_VTOLL_BBX_X);
 
   self.comp_id = M_TOR_CENTER;
-  self.health = DAT_H_TD_HP_CTOR;
-  self.max_health = DAT_H_TD_HP_CTOR;
-  self.c_model = DAT_H_TD_CTOR_MODEL;
+  self.health = 1;
+  self.max_health = 1;
+  self.c_model = "";
   
   self.en_cur= DAT_PSC_VTOLL_ENERGY_MAX;
   self.en_max= DAT_PSC_VTOLL_ENERGY_MAX;
@@ -43,8 +43,8 @@ void() data_PSC_VTOLL_ini={
   self.m_fspeed = DAT_PSC_VTOLL_FSPEED;
   self.m_sspeed = DAT_PSC_VTOLL_SSPEED;
   self.m_bspeed = DAT_PSC_VTOLL_BSPEED;
-  self.m_pitch_max = DAT_H_TD_PITCH_N;
-  self.m_pitch_min = DAT_H_TD_PITCH_X;
+  self.m_pitch_max = DAT_vtol_PITCH_N;
+  self.m_pitch_min = DAT_vtol_PITCH_X;
 };
 
 void() data_PSC_VTOLL_cam={  
