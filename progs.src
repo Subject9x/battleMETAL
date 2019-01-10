@@ -104,6 +104,7 @@ dp/subs.qc
   mech/dat/vec/data_foslager.qc
   mech/dat/vec/data_hs_scout.qc
   mech/dat/vec/data_psc_vtoll.qc
+  mech/dat/vec/data_trowel.qc
   
   //buildings
   mech/dat/bld/data_h_radar.qc

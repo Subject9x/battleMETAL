@@ -127,6 +127,9 @@ void(float vec_id) data_iniVehc={
     case ID_VEC_HS_TANK_L:
       build_vehicle_unit( data_HS_TANKL_ini );
       break;
+    case ID_VEC_TROWEL:
+      build_vehicle_unit( data_TROWEL_ini );
+      break;
     case ID_VEC_HS_SCOUT:
       build_vehicle_unit( data_HS_GEVL_ini );
       break;

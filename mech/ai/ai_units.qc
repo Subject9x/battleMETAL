@@ -102,72 +102,7 @@ void() unit_hs_excavat={
   ai_unit_setup( ai_noncom_tank );
 };
 
-void() unit_hs_tank_l={
-  if( !ai_can_spawn() ){
-    remove(self);
-    objerror ("ai_unit - outside of game mode");
-    return;
-  }
 
-  self.nextVecChoice = 7;
-  self.i_faction = 2;
-  self.flags = self.flags | FL_TURRET;
-  self.spreadDefault = ACCURACY_SKIRMISH;
-  ai_unit_setup( ai_tank_skirmish );
-};
-
-void() unit_hs_tank_h={
-  if( !ai_can_spawn() ){
-    remove(self);
-    objerror ("ai_unit - outside of game mode");
-    return;
-  }
-
-  self.nextVecChoice = 8;
-  self.i_faction = 2;
-};
-
-void() unit_hs_tnkdest_l={
-  if( !ai_can_spawn() ){
-    remove(self);
-    objerror ("ai_unit - outside of game mode");
-    return;
-  }
-
-  self.nextVecChoice = 9;
-  self.i_faction = 2;
-  self.spreadDefault = ACCURACY_SNIPER;
-  ai_unit_setup( ai_vec_dest );
-};
-
-void() unit_hs_tnkdest_h={
-  if( !ai_can_spawn() ){
-    remove(self);
-    objerror ("ai_unit - outside of game mode");
-    return;
-  }
-
-  self.nextVecChoice = 10;
-  self.i_faction = 2;
-};
-
-void() unit_hs_scout={
-
-  self.flags = 0;
-  self.nextVecChoice = 11;
-  self.i_faction = 2;
-  self.spreadDefault = ACCURACY_LOWTECH;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    objerror ("ai_unit - outside of game mode");
-    return;
-  }
-
-  if( ai_unit_setup( ai_gev ) ){
-    ai_gev();
-  }
-};
 /*
   UNIT: DUNERUNNER
   TYPE: GEV
@@ -182,7 +117,7 @@ void() unit_dunerunner_h={
   self.flags = self.flags | FL_TURRET;
   self.spreadDefault = ACCURACY_LOWTECH;
   
-    if( !ai_can_spawn() ){
+  if( !ai_can_spawn() ){
     remove(self);
     return;
   }
@@ -207,7 +142,7 @@ void() unit_foslager_h={
   self.flags = self.flags | FL_TURRET;
   self.spreadDefault = ACCURACY_SKIRMISH;
   
-    if( !ai_can_spawn() ){
+  if( !ai_can_spawn() ){
     remove(self);
     return;
   }
@@ -217,7 +152,29 @@ void() unit_foslager_h={
   }
 };
 
+/*
+  UNIT: TROWEL
+  TYPE: TANK
+  SIZE: HEAVY
+  --------------------------------
+*/
+void() unit_trowel_m={
 
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 8;
+  self.i_faction = 2;
+  self.flags = self.flags | FL_TURRET;
+  self.spreadDefault = ACCURACY_SKIRMISH;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_tank_skirmish ) ){
+    ai_tank_skirmish();
+  }
+};
 
 /*
   UNIT: ONNEK

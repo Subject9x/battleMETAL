@@ -84,6 +84,10 @@ void() mh_precache_models={
   precache_model ("q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3");
   precache_model ("q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3"); 
   
+  //Trowel Heavy Tank
+  precache_model ("q3mdl/vecs/trowel/mdl_trowel_chas.md3");
+  precache_model ("q3mdl/vecs/trowel/mdl_trowel_tur.md3"); 
+  
   precache_model ("q3mdl/vecs/mdl_tank_chas.md3");
   precache_model ("q3mdl/vecs/mdl_tank_tur.md3");
   
