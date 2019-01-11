@@ -46,16 +46,7 @@ void() data_dunerunner_ini={
   
   setsize(self, DAT_dunerunner_BBX_N, DAT_dunerunner_BBX_X);
   setorigin(self, self.origin);
-  
-    //unit variants
-  if( (self.flags & FL_MONSTER) ){
-    //brawler
-    if( self.style == TYPE_BRAWL ){
-      //LATC | LAS
-      ai_ini_weapons( 1, 3, -1, -1, -1, -1, -1, -1, -1);
-    }
-  }
-  
+    
 };
 
 void() data_dunerunner_ctor={

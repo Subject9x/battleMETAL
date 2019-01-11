@@ -105,6 +105,7 @@ dp/subs.qc
   mech/dat/vec/data_dunerunner.qc
   mech/dat/vec/data_psc_vtoll.qc
   mech/dat/vec/data_trowel.qc
+  mech/dat/vec/data_sorcerer.qc
   
   //buildings
   mech/dat/bld/data_h_radar.qc

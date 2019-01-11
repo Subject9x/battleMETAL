@@ -57,25 +57,6 @@ void() data_foslager_ini={
  
   setsize(self, DAT_foslager_CTOR_BBX_N, DAT_foslager_CTOR_BBX_X);
   setorigin(self, self.origin);
-  
-  //unit variants
-  if( (self.flags & FL_MONSTER) ){
-    //brawler
-    if( self.style == TYPE_BRAWL ){
-     if( skill < 2 ){
-        //MIS | LATC | LAS
-        ai_ini_weapons( 4, 1, 3, -1, -1, -1, -1, -1, -1);
-      }
-      else if( skill == 2 ){
-        //MLG | LATC | LAS
-        ai_ini_weapons( 9, 1, 3, -1, -1, -1, -1, -1, -1);
-      }
-      else if( skill == 3 ){
-        //ION | LATC | FLAK
-        ai_ini_weapons( 13, 1, 12, -1, -1, -1, -1, -1, -1);
-      } 
-    }
-  }
 };
 
 void() data_foslager_ctor={

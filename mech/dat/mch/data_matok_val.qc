@@ -104,35 +104,6 @@ void() data_mtk_ini={
     self.m_bobspd = DAT_MTK_M_BSPD;
   }
   
-    //unit variants
-  if( (self.flags & FL_MONSTER) ){
-    //brawler
-    if( self.style == TYPE_BRAWL ){
-     if( skill < 2 ){
-        ai_ini_weapons( 3, 3, 1, 1, 4, -1, -1, -1, -1);
-      }
-      else if( skill == 2 ){
-        ai_ini_weapons( 3, 3, 5, 12, 9, -1, -1, -1, -1);
-      }
-      else if( skill == 3 ){
-        ai_ini_weapons( 3, 3, 6, 6, 8, -1, -1, -1, -1);
-      } 
-    }
-      
-    //sniper
-    if( self.style == TYPE_SNIPER ){
-      if( skill < 2 ){
-        ai_ini_weapons( 3, 3, 13, 13, 9, -1, -1, -1, -1);
-      }
-      else if( skill == 2 ){
-        ai_ini_weapons( 5, 5, 3, 13, 16, -1, -1, -1, -1);
-      }
-      else if( skill == 3 ){
-        ai_ini_weapons( 3, 3, 3, 3, 17, -1, -1, -1, -1);
-      } 
-    }
-  }
-  
   setsize(self, DAT_MTK_CTOR_BBX_N, DAT_MTK_CTOR_BBX_X);
 };
 void() data_mtk_legs={

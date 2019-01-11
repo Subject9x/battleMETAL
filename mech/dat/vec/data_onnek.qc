@@ -47,12 +47,6 @@ void() data_onnek_ini={
   self.m_pitch_max = DAT_onnek_PITCH_N;
   self.m_pitch_min = DAT_onnek_PITCH_X;
   
-    //unit variants
-  if( (self.flags & FL_MONSTER) ){
-    //MIS | LATC | LAS
-    ai_ini_weapons( 7, -1, -1, -1, -1, -1, -1, -1, -1);
-  }
-  
 };
 
 void() data_onnek_wep1={  

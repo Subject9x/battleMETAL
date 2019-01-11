@@ -16,13 +16,17 @@ float ID_VEC_HS_TRUCK_CS = 3;
 float ID_VEC_HS_DOZER = 4;
 float ID_VEC_HS_LOADR = 5;
 float ID_VEC_HS_EXCAT = 6;
-//-------------------------Human Tank Light
+//-------------------------Foslager
 float ID_VEC_foslager = 7;
+//-------------------------Trowel
 float ID_VEC_TROWEL = 8;
-//-------------------------Human Tank Destroyer
+//-------------------------Onnek
 float ID_VEC_onnek = 9;
-float ID_VEC_HS_TDEST_H = 10;
+//-------------------------Sorcerer
+float ID_VEC_sorcerer = 10;
+//-------------------------Dunerunner
 float ID_VEC_dunerunner = 11;
+
 //HUMAN RAIDERS
 
 //SYNTH
@@ -35,14 +39,16 @@ float ID_VEC_PSC_VTOL_L = 48;
 //============================
 //-------------------------Human Truck A, B, C
 float DAT_HS_TRUCK_HP = 400;
-//-------------------------Human Test Tank
+//-------------------------Foslager
 float DAT_foslager_HP = 300;
 //-------------------------Trowel
 float DAT_TROWEL_HP = 750;
-//-------------------------Human Tank Destroyer
+//-------------------------Onnek
 float DAT_onnek_HP_CTOR = 200;
-//-------------------------Human Gev Light
+//-------------------------Dunerunner
 float DAT_dunerunner_HP = 200;
+//-------------------------Sorcerer
+float DAT_sorcerer_HP = 500;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_HP = 600;
 //============================
@@ -54,14 +60,16 @@ string DAT_HS_TRUCKA_NAME = "Convoy Track";
 string DAT_HS_TRUCKB_NAME = "Convoy Hab";
 //-------------------------Human Truck C
 string DAT_HS_TRUCKC_NAME = "Convoy Supply";
-//-------------------------Human Test Tank
+//-------------------------Foslager
 string DAT_foslager_NAME = "Foslager";
 //-------------------------Trowel
-string DAT_TROWEL_NAME = "Foslager";
-//-------------------------Human Tank Destroyer
+string DAT_TROWEL_NAME = "Trowel";
+//-------------------------Onnek
 string DAT_onnek_VEC_NAME = "Onnek";
-//-------------------------Human Gev Light
+//-------------------------Dunerunner
 string DAT_dunerunner_NAME = "Dunerunner";
+//-------------------------Sorcerer
+string DAT_sorcerer_NAME = "Sorcerer";
 //-------------------------PSC VTOL Light
 string DAT_PSC_VTOLL_NAME = "<recon killer>";
 //============================
@@ -86,24 +94,30 @@ float DAT_onnek_SHIELD_RATE      = 0.35;
 //-------------------------Dunerunner
 float DAT_dunerunner_SHIELD_RATE   = 0.05;
 float DAT_dunerunner_SHIELD_MAX    = 50;
+//-------------------------Sorcerer
+float DAT_sorcerer_SHIELD_RATE   = 0.1;
+float DAT_sorcerer_SHIELD_MAX    = 500;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_SHIELD_MAX  = 100;
 float DAT_PSC_VTOLL_SHIELD_RATE = 0.15;
 //============================
 //            Energy  
 //============================
-//-------------------------Human Tank Light
+//-------------------------Foslager
 float DAT_foslager_ENERGY_MAX   = 300;
 float DAT_foslager_ENERGY_RATE  = 1;
 //-------------------------Trowel
 float DAT_TROWEL_ENERGY_MAX   = 500;
 float DAT_TROWEL_ENERGY_RATE  = 1;
-//-------------------------Human Tank Destroyer
+//-------------------------Onnek
 float DAT_onnek_ENERGY_MAX       = 350;
 float DAT_onnek_ENERGY_RATE      = 10;
-//-------------------------Human Gev Light
+//-------------------------Dunerunner
 float DAT_dunerunner_ENERGY_MAX    = 100;
 float DAT_dunerunner_ENERGY_RATE   = 1;
+//-------------------------Sorcerer
+float DAT_sorcerer_ENERGY_MAX    = 250;
+float DAT_sorcerer_ENERGY_RATE   = 0.5;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_ENERGY_MAX  = 300;
 float DAT_PSC_VTOLL_ENERGY_RATE = 5;
@@ -130,6 +144,10 @@ float DAT_onnek_BSPEED          = 15;
 float DAT_dunerunner_FSPEED          = 300;
 float DAT_dunerunner_SSPEED          = 200;
 float DAT_dunerunner_BSPEED          = 100;
+//-------------------------Sorcerer
+float DAT_sorcerer_FSPEED          = 170;
+float DAT_sorcerer_SSPEED          = 150;
+float DAT_sorcerer_BSPEED          = 100;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_FSPEED     = 450;
 float DAT_PSC_VTOLL_SSPEED     = 375;
@@ -149,6 +167,9 @@ vector DAT_onnek_CTOR_BBX_X    =   '20 20 14';
 //-------------------------Dunerunner
 vector DAT_dunerunner_BBX_N    =   '-20 -20 -10';
 vector DAT_dunerunner_BBX_X    =   '20 20 14';
+//-------------------------Sorcerer
+vector DAT_sorcerer_CTOR_BBX_N    =   '-20 -20 -10';
+vector DAT_sorcerer_CTOR_BBX_X    =   '20 20 14';
 //-------------------------PSC VTOL Light
 vector DAT_PSC_VTOLL_BBX_N    =   '-30 -30 -15';
 vector DAT_PSC_VTOLL_BBX_X    =   '30 30 15';
@@ -156,13 +177,15 @@ vector DAT_PSC_VTOLL_BBX_X    =   '30 30 15';
 //            Radar Range and Lock-on Delay
 //============================
 //-------------------------Foslager
-float DAT_foslager_RADAR_RANGE    = 4000;
+float DAT_foslager_RADAR_RANGE    = 1000;
 //-------------------------Trowel
-float DAT_TROWEL_RADAR_RANGE    = 2000;
+float DAT_TROWEL_RADAR_RANGE    = 500;
 //-------------------------Onnek
-float DAT_onnek_RADAR_RANGE        = 6000;
+float DAT_onnek_RADAR_RANGE        = 1500;
 //-------------------------Dunerunner
-float DAT_dunerunner_RADAR_RANGE      = 2000;
+float DAT_dunerunner_RADAR_RANGE      = 500;
+//-------------------------Sorcerer
+float DAT_sorcerer_RADAR_RANGE      = 2000;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_RADAR_RANGE   = 3000;
 //============================
@@ -173,11 +196,13 @@ float DAT_HS_TRUCK_YAW_SPEED    = 1.9;
 //-------------------------Foslager
 float DAT_foslager_YAW_SPEED    = 2.5;
 //-------------------------Trowel
-float DAT_TROWEL_YAW_SPEED    = 1.5;
+float DAT_TROWEL_YAW_SPEED      = 0.75;
 //-------------------------Onnek
-float DAT_HS_TANKDEST_YAW_SPEED = 2.5;
+float DAT_HS_TANKDEST_YAW_SPEED = 1;
 //-------------------------Dunerunner
-float DAT_dunerunner_YAW_SPEED     = 5;
+float DAT_dunerunner_YAW_SPEED  = 5;
+//-------------------------Sorcerer
+float DAT_sorcerer_YAW_SPEED    = 2;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_YAW_SPEED   = 8;
 //============================
@@ -195,6 +220,8 @@ string DAT_onnek_CTOR_MODEL   = "q3mdl/vecs/onnek/mdl_onnek_chas.md3";
 string DAT_onnek_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------Dunerunner
 string DAT_dunerunner_MDL_CAM    = "q3mdl/testball.md3";
+//-------------------------Sorcerer
+string DAT_sorcerer_MODEL   = "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3";
 //-------------------------PSC VTOL Light
 string DAT_PSC_VTOLL_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
 //============================
@@ -214,6 +241,9 @@ vector DAT_onnek_WEP1_OFFSET       = '7.25 3.5 12';
 //-------------------------Dunerunner
 vector DAT_dunerunner_WEP1_OFFSET    = '-1.5 5.25 2';
 vector DAT_dunerunner_WEP2_OFFSET    = '1.5 5.25 2';
+//-------------------------Sorcerer
+vector DAT_sorcerer_WEP1_OFFSET    = '-10.5 8 -7';
+vector DAT_sorcerer_WEP2_OFFSET    = '10.5 8 -7';
 //-------------------------PSC VTOL Light
 vector DAT_PSC_VTOLL_WEP1_OFFSET  = '-9 -6 28';
 vector DAT_PSC_VTOLL_WEP2_OFFSET  = '9 -6 28';
@@ -237,5 +267,7 @@ float DAT_TROWEL_TECH_LEVEL = 2;
 float DAT_onnek_TECH_LEVEL = 1;
 //-------------------------Dunerunner
 float DAT_dunerunner_TECH_LEVEL = 1;
+//-------------------------Sorcerer
+float DAT_sorcerer_TECH_LEVEL = 2;
 //-------------------------VTOL
 float DAT_vtol_TECH_LEVEL = 1;

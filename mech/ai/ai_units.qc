@@ -122,6 +122,9 @@ void() unit_dunerunner_h={
     return;
   }
   
+  //LATC | LAS
+  ai_ini_weapons( 1, 3, -1, -1, -1, -1, -1, -1, -1);
+      
   if( ai_unit_setup( ai_gev ) ){
     ai_gev();
   }
@@ -147,6 +150,19 @@ void() unit_foslager_h={
     return;
   }
   
+  if( skill < 2 ){
+    //MIS | LATC | LAS
+    ai_ini_weapons( 4, 1, 3, -1, -1, -1, -1, -1, -1);
+  }
+  else if( skill == 2 ){
+    //MLG | LATC | LAS
+    ai_ini_weapons( 9, 1, 3, -1, -1, -1, -1, -1, -1);
+  }
+  else if( skill == 3 ){
+    //ION | LATC | FLAK
+    ai_ini_weapons( 13, 1, 12, -1, -1, -1, -1, -1, -1);
+  } 
+  
   if( ai_unit_setup( ai_tank_skirmish ) ){
     ai_tank_skirmish();
   }
@@ -170,6 +186,9 @@ void() unit_trowel_m={
     remove(self);
     return;
   }
+
+  
+  ai_ini_weapons( 7, 9, -1, -1, -1, -1, -1, -1, -1);
   
   if( ai_unit_setup( ai_tank_skirmish ) ){
     ai_tank_skirmish();
@@ -195,6 +214,36 @@ void() unit_onnek_h={
     return;
   }
   
+  //
+  ai_ini_weapons( 7, -1, -1, -1, -1, -1, -1, -1, -1);
+    
+  if( ai_unit_setup( ai_vec_dest ) ){
+    ai_vec_dest();
+  }
+};
+
+/*
+  UNIT: SORCERER
+  TYPE: TANK MISSILE
+  SIZE: MEDIUM
+  --------------------------------
+*/
+void() unit_sorcerer_h={
+
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 10;
+  self.i_faction = 2;
+  self.flags = self.flags;
+  self.spreadDefault = ACCURACY_MARKSMAN;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  //MARH | MARH
+  ai_ini_weapons( 10, 10, -1, -1, -1, -1, -1, -1, -1);
+    
   if( ai_unit_setup( ai_vec_dest ) ){
     ai_vec_dest();
   }
@@ -224,7 +273,20 @@ void() unit_balaket_sniper={
     remove(self);
     return;
   }
-  
+  //sniper
+  if( skill < 2 ){
+    //FLAK | FLAK | ION
+    ai_ini_weapons( 12, 12, 13, -1, -1, -1, -1, -1, -1);
+  }
+  else if( skill == 2 ){
+    //LATC | LATC | EMP
+    ai_ini_weapons( 1, 1, 2, -1, -1, -1, -1, -1, -1);
+  }
+  else if( skill == 3 ){
+    //LATC | LATC | PAC
+    ai_ini_weapons( 1, 1, 7, -1, -1, -1, -1, -1, -1);
+  } 
+
   if( ai_unit_setup( ai_mech_sniper ) ){
     ai_mech_sniper();
   }
@@ -248,7 +310,20 @@ void() unit_balaket_brawl={
     remove(self);
     return;
   }
-  
+
+  if( skill < 2 ){
+    //LAS | LAS | MIS
+    ai_ini_weapons( 3, 3, 4, -1, -1, -1, -1, -1, -1);
+  }
+  else if( skill == 2 ){
+    //LAS | LAS | RPC
+    ai_ini_weapons( 3, 3, 6, -1, -1, -1, -1, -1, -1);
+  }
+  else if( skill == 3 ){
+    //FLAK | LATC | ESR
+    ai_ini_weapons( 12, 1, 8, -1, -1, -1, -1, -1, -1);
+  } 
+    
   if( ai_unit_setup( ai_mech_skirmish ) ){
     ai_mech_skirmish();
   }
@@ -278,6 +353,29 @@ void() unit_matok_brawl={
     remove(self);
     return;
   }
+
+  if( skill < 2 ){
+    ai_ini_weapons( 3, 3, 1, 1, 4, -1, -1, -1, -1);
+  }
+  else if( skill == 2 ){
+    ai_ini_weapons( 3, 3, 5, 12, 9, -1, -1, -1, -1);
+  }
+  else if( skill == 3 ){
+    ai_ini_weapons( 3, 3, 6, 6, 8, -1, -1, -1, -1);
+  } 
+   
+ /*
+  sniper
+  if( skill < 2 ){
+    ai_ini_weapons( 3, 3, 13, 13, 9, -1, -1, -1, -1);
+  }
+  else if( skill == 2 ){
+    ai_ini_weapons( 5, 5, 3, 13, 16, -1, -1, -1, -1);
+  }
+  else if( skill == 3 ){
+    ai_ini_weapons( 3, 3, 3, 3, 17, -1, -1, -1, -1);
+  } 
+ */
   
   if( ai_unit_setup( ai_mech_skirmish ) ){
     ai_mech_skirmish();
@@ -308,6 +406,17 @@ void() unit_monitor_brawl={
     remove(self);
     return;
   }
+  
+  
+  if( skill < 2 ){
+    ai_ini_weapons( 3, 1, 3, 1, 12, 12, 4, 4, 4);
+  }
+  else if( skill == 2 ){
+    ai_ini_weapons( 3, 1, 3, 1, 13, 5, 9, 4, 4);
+  }
+  else if( skill == 3 ){
+    ai_ini_weapons( 1, 1, 1, 1, 13, 7, 16, 16, 4);
+  } 
   
   if( ai_unit_setup( ai_mech_skirmish ) ){
     ai_mech_skirmish();

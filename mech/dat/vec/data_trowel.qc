@@ -1,7 +1,7 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
-Date: 09/22/2018
+Date: 01/09/2019
 Overview:
   name    : TROWEL
   faction : Human Survivors | Mil
@@ -56,11 +56,7 @@ void() data_TROWEL_ini={
  
   setsize(self, DAT_TROWEL_CTOR_BBX_N, DAT_TROWEL_CTOR_BBX_X);
   setorigin(self, self.origin);
-  
-  //unit variants
-  if( (self.flags & FL_MONSTER) ){
-    ai_ini_weapons( 7, 9, -1, -1, -1, -1, -1, -1, -1);
-  }
+
 };
 
 void() data_TROWEL_ctor={

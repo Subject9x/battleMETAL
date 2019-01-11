@@ -105,20 +105,7 @@ void() data_mnt_ini={
   self.m_bobspd = DAT_MNT_M_BSPD;
   self.w_firetime = DAT_MNT_LOCK; //using this as 'lock on time;
   self.hardpoint_cnt = DAT_MNT_HARDPOINT_CNT;
-  
-  //unit variants
-  if( (self.flags & FL_MONSTER) ){
-   if( skill < 2 ){
-      ai_ini_weapons( 3, 1, 3, 1, 12, 12, 4, 4, 4);
-    }
-    else if( skill == 2 ){
-      ai_ini_weapons( 3, 1, 3, 1, 13, 5, 9, 4, 4);
-    }
-    else if( skill == 3 ){
-      ai_ini_weapons( 1, 1, 1, 1, 13, 7, 16, 16, 4);
-    } 
-  }
-  
+
   setsize( self, DAT_MNT_CTOR_BBX_N, DAT_MNT_CTOR_BBX_X);
 };
 

@@ -133,6 +133,9 @@ void(float vec_id) data_iniVehc={
     case ID_VEC_dunerunner:
       build_vehicle_unit( data_dunerunner_ini );
       break;
+    case ID_VEC_sorcerer:
+      build_vehicle_unit( data_sorcerer_ini );
+      break;
     case ID_VEC_PSC_VTOL_L:
       build_vtol_unit( data_PSC_VTOLL_ini );
       break;

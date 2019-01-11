@@ -1,0 +1,95 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 01/11/2019
+Overview:
+  name    : SORCERER
+  faction : Human Survivors | Mil
+  type    : vehicle
+  size    : medium
+*/
+
+//HUMAN SURVIVORS TANK LIGHT=============================
+
+string DAT_sorcerer_PITCH_N = "-25";
+string DAT_sorcerer_PITCH_X = "45";
+
+//CAMERA
+float DAT_sorcerer_CAM_CNAME= -1;
+vector DAT_sorcerer_CAM_OFFSET= '0 0 0';
+vector DAT_sorcerer_CAM_OFFSET_ALT= '0 0 0';
+
+//=========================================
+void() data_sorcerer_ini;
+void() data_sorcerer_ctor;
+void() data_sorcerer_cam;
+void() data_sorcerer_wep1;
+void() data_sorcerer_wep2;
+void() data_sorcerer_wep3;
+
+void() data_sorcerer_ini={
+  self.unit_ctor = data_sorcerer_ctor;
+  self.unit_wep1 = data_sorcerer_wep1;
+  self.unit_wep2 = data_sorcerer_wep2;
+  self.unit_cam = data_sorcerer_cam;
+    
+  self.data_idx = ID_VEC_sorcerer;
+  self.vec_name= DAT_sorcerer_NAME;
+  self.data_type = DATA_VEHC;
+  self.health = DAT_sorcerer_HP;
+  self.max_health = DAT_sorcerer_HP;
+  self.radar_range = DAT_sorcerer_RADAR_RANGE;
+  self.i_techlvl= DAT_sorcerer_TECH_LEVEL;
+  self.en_cur= DAT_sorcerer_ENERGY_MAX;
+  self.en_max= DAT_sorcerer_ENERGY_MAX;
+  self.en_rate= DAT_sorcerer_ENERGY_RATE;
+  self.sh_cur= DAT_sorcerer_SHIELD_MAX;
+  self.sh_max= DAT_sorcerer_SHIELD_MAX;
+  self.sh_rate= DAT_sorcerer_SHIELD_RATE;
+  self.m_rot_speed = DAT_sorcerer_YAW_SPEED;
+  self.c_model = DAT_sorcerer_MODEL;
+  self.m_fspeed = DAT_sorcerer_FSPEED;
+  self.m_sspeed = DAT_sorcerer_SSPEED;
+  self.m_bspeed = DAT_sorcerer_BSPEED;
+  self.m_pitch_max = DAT_sorcerer_PITCH_N;
+  self.m_pitch_min = DAT_sorcerer_PITCH_X;
+ 
+  setsize(self, DAT_sorcerer_CTOR_BBX_N, DAT_sorcerer_CTOR_BBX_X);
+  setorigin(self, self.origin);
+
+};
+
+void() data_sorcerer_ctor={
+  self.comp_id = M_TOR_CENTER;
+  self.health = 1;
+  self.max_health = 1;
+  self.c_model = DAT_sorcerer_MODEL;
+  self.yaw_speed = 10;
+  self.attack_state = 0;
+  self.c_ofs = '0 13.5 0';
+};
+
+void() data_sorcerer_wep1={  
+  self.c_parent = M_TOR_CENTER;
+  self.data_idx = 0; //consult weapon idx table!
+  self.c_ofs = DAT_sorcerer_WEP1_OFFSET;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.w_group = WEAPON1;
+};
+
+void() data_sorcerer_wep2={  
+  self.c_parent = M_TOR_CENTER;
+  self.data_idx = 0; //consult weapon idx table!
+  self.c_ofs = DAT_sorcerer_WEP2_OFFSET;
+  self.c_alt_ofs = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.w_group = WEAPON2;
+};
+
+void() data_sorcerer_cam={ 
+  self.comp_id = M_TOR_CENTER;
+  self.c_ofs = DAT_sorcerer_CAM_OFFSET;
+  self.c_alt_ofs = DAT_sorcerer_CAM_OFFSET_ALT;
+  self.c_model = "q3mdl/testball.md3";
+};
