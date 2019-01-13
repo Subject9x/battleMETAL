@@ -1,13 +1,10 @@
 
-//void() InitBodyQue;
-
+void() InitBodyQue;
 
 void() main =
 {
 	dprint ("main function\n");
 	skill = cvar("skill");
-	//q1_precache_world();
-  //see q1/precache_word.q1_precache_world()
 };
 
 
@@ -95,9 +92,7 @@ void() worldspawn =
   q1_precache_models();
   
   FRIK_FILE_precaches();
-  
-  mh_precache_sound();
-  mh_precache_models();
+    
   mh_world_ini();
 //
 // Setup light animation tables. 'a' is total darkness, 'z' is maxbright.

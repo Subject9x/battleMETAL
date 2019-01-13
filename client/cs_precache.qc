@@ -5,17 +5,48 @@ Date: 10/31/2016
 Overview: header for mech hud functions
 */
 
+void() dynamic_precache =
+{
+	local float f;                                      // file handle, basically assigns a number to whatever file is open
+	local string ln;                                    // ln = line of the file being read
+	f = fopen(strcat("data/cache/precache_client.txt") , FILE_READ);        // opens "system/precache.txt" to be read
+	if (f != -1)                                        // if f = -1 then the file could not be found
+	{ 
+		ln = fgets(f);                              // this line sets ln to the string read from the file with the file handle of f
+		while(ln != "EOF")                    // while there is still text to be read do the following
+		{ 
+      if( ln != "" && substring(ln,0, 2) != "//" ){       
+        if(strstrofs(ln, ".wav",0) != -1)   // this checks if the file extension is .wav for a sound file
+        {
+          precache_sound(ln);         // if it is a sound, then it precaches said sound
+        }
+        else if(strstrofs(ln, ".ogg",0) != -1){
+          precache_sound(ln);
+        }
+        else if(strstrofs(ln, ".md3",0) != -1){
+          precache_model(ln);         // so precache the model
+        }
+        else if( strstrofs(ln, ".obj", 0) != -1){
+          precache_model(ln);
+        }
+        else if( strstrofs(ln, ".bsp", 0) != -1){
+          precache_file(ln);
+        }
+        else if( strstrofs(ln, ".png", 0) != -1){
+          precache_pic(ln, 0);
+        }
+      }
+			ln = fgets(f);                      // get a new line from the file
+		} 
+	} 
+	fclose(f);  
+};
 
 void() cs_removeEnt={
   remove(self);
 };
 
 void() cs_precache={
-
-  //cockpit models
-  precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.md3");
-  precache_model ("q3mdl/mechs/mtmk/mdl_mtk_cpt.md3");
-  precache_model ("q3mdl/mechs/mnt/mdl_mnt_cpt.md3");
 
   //cockpit images 
   HUD_BLK_IMG_B = precache_pic("gfx/hud/hud_blk_bck.png", 0);
@@ -37,12 +68,7 @@ void() cs_precache={
   HUD_TRG_PIP_U = precache_pic("gfx/hud/trg_pip_up.png", 0);
   
   HUD_DMG_PIP_H = precache_pic("gfx/hud/ret/dmg_pip_hrz.png", 0);
-  
-  //hangar splash images
-  precache_pic("gfx/ui/hgr_otl.png", 0);
-  precache_pic("gfx/ui/hgr_mtk.png", 0);
-  precache_pic("gfx/ui/hgr_mnt.png", 0);
-  
+
   //cockpit voice
   SND_MCH_SFX_REACT = precache_sound2("sound/mech_react.ogg");
   SND_HUD_VFX_ONLINE = precache_sound2("sound/comp/online.ogg");
@@ -62,12 +88,7 @@ void() cs_precache={
   SND_HUD_VFX_MSN_WIN = precache_sound2("sound/comp/msn_success.ogg");
   SND_HUD_VFX_MSN_FAL = precache_sound2("sound/comp/msn_fail.ogg");
   
-  precache_sound("sound/weapons/atc_reload.ogg");
-  
-  //ui sounds
-  precache_sound("sound/misc/menu1.wav");
-  precache_sound("sound/misc/menu2.wav");
-  precache_sound("sound/misc/menu3.wav");
+
   
   //UI GRAPHICS
   UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png",8);
@@ -115,24 +136,5 @@ void() cs_precache={
   DAT_MNT_UI_IMG = precache_pic("gfx/ui/hgr_MNT.png",0);
   DAT_MTK_UI_IMG = precache_pic("gfx/ui/hgr_mtk.png",0);
    
-  //CROSSHAIRS
-  precache_pic("gfx/hud/ret/crosshair1.png",0);
-  precache_pic("gfx/hud/ret/crosshair1_rhrz.png",0);
-  precache_pic("gfx/hud/ret/crosshair1_rvrt.png",0);
-  precache_pic("gfx/hud/ret/crosshair1_lock.png",0);
-   
-  precache_pic("gfx/hud/ret/crosshair2.png",0);
-  precache_pic("gfx/hud/ret/crosshair2_rhrz.png",0);
-  precache_pic("gfx/hud/ret/crosshair2_rvrt.png",0);
-  precache_pic("gfx/hud/ret/crosshair2_lock.png",0);
-  
-  precache_pic("gfx/hud/ret/crosshair3.png",0);
-  precache_pic("gfx/hud/ret/crosshair3_r.png",0);
-  precache_pic("gfx/hud/ret/crosshair3_lock.png",0);
-  precache_pic("gfx/hud/ret/crosshair3_hit.png",0);
-  
-  precache_pic("gfx/hud/ret/crosshair4.png",0);
-  precache_pic("gfx/hud/ret/crosshair4_r.png",0);
-  precache_pic("gfx/hud/ret/crosshair4_lock.png",0);
-  precache_pic("gfx/hud/ret/crosshair4_hit.png",0);
+
 };

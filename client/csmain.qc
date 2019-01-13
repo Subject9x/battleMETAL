@@ -84,14 +84,13 @@ void() CSQC_Init =
   
   //get mission file
   cs_precache();
+  dynamic_precache();
   data_ini_arrays();
   
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");
   MAP_NAME = argv(1);
   MAP_NAME = strzone(MAP_NAME);
-  
-  FRIK_FILE_precaches();
   
   DEPLOY_CNT = 0;
   CFG_INDEX = 0;

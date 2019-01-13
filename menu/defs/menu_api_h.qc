@@ -117,18 +117,20 @@ void() dynamic_precache =
 	f = fopen("data/cache/precache_menu.txt", FILE_READ);        // opens "system/precache.txt" to be read
 	if (f != -1)                                        // if f = -1 then the file could not be found
 	{ 
-		ln = fgets(f); 
-		while(ln != "")    
+		ln = fgets(f);    
+		while(ln != "EOF")    
 		{ 
-			if(strstrofs(ln, ".png",0) != -1)   // this checks if the file extension is .png for a sound file
-			{
-				precache_pic(ln, 0);
-        print(strcat("loaded menu img : ", ln, "\n"));  //DEBUG
-			}
+      if( ln != "" && substring(ln,0, 2) != "//" ){ 
+        if(strstrofs(ln, ".png",0) != -1)   // this checks if the file extension is .png for a sound file
+        {
+          precache_pic(ln, 0);
+          dprint(strcat("loaded menu img : ", ln, "\n"));  //DEBUG
+        }
+      }
 			ln = fgets(f);
 		} 
-	} 
-	fclose(f);                                          
+    fclose(f);
+	}                                           
 };
 
 string(float typ) map_list_getmap ={

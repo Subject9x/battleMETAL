@@ -156,9 +156,6 @@ q1/qwep/qwep_header.qc
 q1/qwep/wep_fx.qc
 
 q1/precache_world.qc
-//============================
-  mech/precache_world.qc
-//============================
 world.qc
 //============================
   mech/map_objects_c.qc
