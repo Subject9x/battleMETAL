@@ -24,10 +24,7 @@ void() mh_precache_sound={
 };
 
 void() mh_precache_models={
-  
-  //terrains
-  precache_model("models/terrain/t1m3_exp2.obj");
-  
+
   //buildings
   precache_model("q3mdl/base_small.obj");
   precache_model("q3mdl/base_med.obj");
@@ -44,7 +41,8 @@ void() mh_precache_models={
   
   //mech model
   precache_model ("q3mdl/testball.md3");
-  //balaket
+  
+  //Balaket
   precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.md3");
   precache_model ("q3mdl/mechs/notl/mdl_blk_cpt.obj");
   precache_model ("q3mdl/mechs/notl/mdl_blk_t_cent.md3");
@@ -54,7 +52,7 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/notl/mdl_blk_l_arm.md3");
   precache_model ("q3mdl/mechs/notl/mdl_blk_r_arm.md3");
 
-  //matok
+  //Matok
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_legs.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_t_cent.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_t_left.md3");
@@ -62,7 +60,8 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_l_arm.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_r_arm.md3");
   precache_model ("q3mdl/mechs/ntmk/mdl_mtk_cpt.md3");
-  //koblen
+  
+  //Monitor
   precache_model ("q3mdl/mechs/mnt/mdl_mnt_legs.md3");
   precache_model ("q3mdl/mechs/mnt/mdl_mnt_t_cent.md3");
   precache_model ("q3mdl/mechs/mnt/mdl_mnt_t_left.md3");
@@ -70,8 +69,6 @@ void() mh_precache_models={
   precache_model ("q3mdl/mechs/mnt/mdl_mnt_l_arm.md3");
   precache_model ("q3mdl/mechs/mnt/mdl_mnt_r_arm.md3");
   precache_model ("q3mdl/mechs/mnt/mdl_mnt_cpt.md3");
- 
-  //test tank
   
   //Foslage Medium Tank
   precache_model ("q3mdl/vecs/foslager/mdl_foslager_chas.md3");
@@ -83,6 +80,9 @@ void() mh_precache_models={
   //Dunerunner GEV
   precache_model ("q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3");
   precache_model ("q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3"); 
+  
+  //Sorcerer Heavy Tank
+  precache_model ("q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3");
   
   //Trowel Heavy Tank
   precache_model ("q3mdl/vecs/trowel/mdl_trowel_chas.md3");
@@ -128,17 +128,13 @@ void() mh_precache_models={
   precache_model ("q3mdl/proj/mdl_proj_emp.md3");
   precache_model ("q3mdl/proj/mdl_proj_ion.md3");
   
-  precache_model ("progs/casing.mdl");
   precache_model ("q3mdl/fx_shield.md3");
-  precache_model ("progs/plasmashot.spr32");
-  precache_model ("progs/muzzleflash.spr32");
-  precache_model ("q3mdl/muzzle_laser.spr32");
   precache_model ("progs/s_explod.spr");
   
   //maps
-  precache_file ("maps/t1m1.bsp");
+  /*precache_file ("maps/t1m1.bsp");
   precache_file ("maps/t1m2.bsp");
   precache_file ("maps/start.bsp");
   precache_file ("maps/c1m1.bsp");
-  precache_file ("maps/t1m3.bsp");
+  precache_file ("maps/t1m3.bsp");*/
 };

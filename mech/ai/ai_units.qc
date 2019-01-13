@@ -102,7 +102,6 @@ void() unit_hs_excavat={
   ai_unit_setup( ai_noncom_tank );
 };
 
-
 /*
   UNIT: DUNERUNNER
   TYPE: GEV
@@ -113,22 +112,72 @@ void() unit_dunerunner_h={
   
   self.style = TYPE_BRAWL;
   self.nextVecChoice = 11;
-  self.i_faction = 2;
+  self.i_faction = FACTION_SURVEST;
   self.flags = self.flags | FL_TURRET;
-  self.spreadDefault = ACCURACY_LOWTECH;
   
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
   
-  //LATC | LAS
-  ai_ini_weapons( 1, 3, -1, -1, -1, -1, -1, -1, -1);
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_LOWTECH;
+      //FLAK | ATC
+      ai_ini_weapons( 12, 1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      //LATC | LAS
+      ai_ini_weapons( 3, 3, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_PRIMITVE;
+      //ATC | ATC
+      ai_ini_weapons( 1, 1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+  }
       
   if( ai_unit_setup( ai_gev ) ){
     ai_gev();
   }
+};
+
+void() unit_dunerunner_m={
   
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 11;
+  self.i_faction = FACTION_MILITAR;
+  self.flags = self.flags | FL_TURRET;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      //LAS | LAS
+      ai_ini_weapons( 3, 3, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //LAS | QRFL
+      ai_ini_weapons( 3, 5, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_LOWTECH;
+      //LAS | ATC
+      ai_ini_weapons( 3, 1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+  }
+      
+  if( ai_unit_setup( ai_gev ) ){
+    ai_gev();
+  }
 };
 
 /*
@@ -141,32 +190,74 @@ void() unit_foslager_h={
 
   self.style = TYPE_BRAWL;
   self.nextVecChoice = 7;
-  self.i_faction = 2;
+  self.i_faction = FACTION_SURVEST;
   self.flags = self.flags | FL_TURRET;
-  self.spreadDefault = ACCURACY_SKIRMISH;
   
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
   
-  if( skill < 2 ){
-    //MIS | LATC | LAS
-    ai_ini_weapons( 4, 1, 3, -1, -1, -1, -1, -1, -1);
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      //MLG | LAS | LATC 
+      ai_ini_weapons( 9, 3, 1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //ION | LAS | FLAK
+      ai_ini_weapons( 13, 3, 12, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_LOWTECH;
+      //MIS | LAS | LATC 
+      ai_ini_weapons( 4, 3, 1, -1, -1, -1, -1, -1, -1);
+      break;
   }
-  else if( skill == 2 ){
-    //MLG | LATC | LAS
-    ai_ini_weapons( 9, 1, 3, -1, -1, -1, -1, -1, -1);
-  }
-  else if( skill == 3 ){
-    //ION | LATC | FLAK
-    ai_ini_weapons( 13, 1, 12, -1, -1, -1, -1, -1, -1);
-  } 
   
   if( ai_unit_setup( ai_tank_skirmish ) ){
     ai_tank_skirmish();
   }
 };
+
+void() unit_foslager_m={
+
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 7;
+  self.i_faction = FACTION_MILITAR;
+  self.flags = self.flags | FL_TURRET;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //PAC | LATC | FLAK
+      ai_ini_weapons( 7, 1, 12, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SNIPER;
+      // ION | RPC | FLAK
+      ai_ini_weapons( 13, 6, 12, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      //ESR | LATC | LAS
+      ai_ini_weapons( 8, 1, 3, -1, -1, -1, -1, -1, -1);
+      break;
+  }
+  
+  if( ai_unit_setup( ai_tank_skirmish ) ){
+    ai_tank_skirmish();
+  }
+};
+
 
 /*
   UNIT: TROWEL
@@ -178,17 +269,68 @@ void() unit_trowel_m={
 
   self.style = TYPE_BRAWL;
   self.nextVecChoice = 8;
-  self.i_faction = 2;
+  self.i_faction = FACTION_MILITAR;
   self.flags = self.flags | FL_TURRET;
-  self.spreadDefault = ACCURACY_SKIRMISH;
   
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
 
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //ESR | SFGA
+      ai_ini_weapons( 8, 11, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SNIPER;
+      //PAC | SFGA
+      ai_ini_weapons( 7, 11, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //ESR | ESR
+      ai_ini_weapons( 8, 8, -1, -1, -1, -1, -1, -1, -1);
+      break;
+  }
   
-  ai_ini_weapons( 7, 9, -1, -1, -1, -1, -1, -1, -1);
+  if( ai_unit_setup( ai_tank_skirmish ) ){
+    ai_tank_skirmish();
+  }
+};
+
+void() unit_trowel_h={
+
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 8;
+  self.i_faction = FACTION_SURVEST;
+  self.flags = self.flags | FL_TURRET;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //RPC | ION
+      ai_ini_weapons( 6, 13, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SNIPER;
+      //SFGA | EMP
+      ai_ini_weapons( 11, 2, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //MIS | ION
+      ai_ini_weapons(4, 13, -1, -1, -1, -1, -1, -1, -1);
+      break;
+  }
   
   if( ai_unit_setup( ai_tank_skirmish ) ){
     ai_tank_skirmish();
@@ -205,17 +347,66 @@ void() unit_onnek_h={
 
   self.style = TYPE_BRAWL;
   self.nextVecChoice = 9;
-  self.i_faction = 2;
-  self.flags = self.flags;
-  self.spreadDefault = ACCURACY_SNIPER;
+  self.i_faction = FACTION_SURVEST;
   
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
   
-  //
-  ai_ini_weapons( 7, -1, -1, -1, -1, -1, -1, -1, -1);
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      //EMP
+      ai_ini_weapons(13, -1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //ESR
+      ai_ini_weapons( 2, -1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_LOWTECH;
+      //ION
+      ai_ini_weapons( 8, -1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+  }
+    
+  if( ai_unit_setup( ai_vec_dest ) ){
+    ai_vec_dest();
+  }
+};
+
+void() unit_onnek_m={
+
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 9;
+  self.i_faction = FACTION_MILITAR;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      //EMP
+      ai_ini_weapons( 3, -1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SNIPER;
+      //SFGA
+      ai_ini_weapons( 11, -1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      //PAC
+      ai_ini_weapons( 7, -1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+  }
     
   if( ai_unit_setup( ai_vec_dest ) ){
     ai_vec_dest();
@@ -232,17 +423,67 @@ void() unit_sorcerer_h={
 
   self.style = TYPE_BRAWL;
   self.nextVecChoice = 10;
-  self.i_faction = 2;
-  self.flags = self.flags;
-  self.spreadDefault = ACCURACY_MARKSMAN;
+  self.i_faction = FACTION_SURVEST;
   
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
   
-  //MARH | MARH
-  ai_ini_weapons( 10, 10, -1, -1, -1, -1, -1, -1, -1);
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_LOWTECH;
+      // MIS | MLG
+      ai_ini_weapons( 4, 9, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      //MLG | MLG
+      ai_ini_weapons( 9, 9, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_PRIMITVE;
+      //MIS | MIS
+      ai_ini_weapons( 4, 4, -1, -1, -1, -1, -1, -1, -1);
+      break;
+  }
+    
+  if( ai_unit_setup( ai_vec_dest ) ){
+    ai_vec_dest();
+  }
+};
+
+
+void() unit_sorcerer_m={
+
+  self.style = TYPE_BRAWL;
+  self.nextVecChoice = 10;
+  self.i_faction = FACTION_MILITAR;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_LOWTECH;
+      // MLG | MLG
+      ai_ini_weapons( 9, 9, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      //SWRM | SWRM
+      ai_ini_weapons( 14, 14, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_PRIMITVE;
+      //ARH | ARH
+      ai_ini_weapons( 10, 10, -1, -1, -1, -1, -1, -1, -1);
+      break;
+  }
     
   if( ai_unit_setup( ai_vec_dest ) ){
     ai_vec_dest();

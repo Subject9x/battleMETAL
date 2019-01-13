@@ -26,34 +26,12 @@ void() unit_hs_dozer;
 void() unit_hs_loader;
 void() unit_hs_excavat;
 
-void() unit_hs_tank_l;
-void() unit_hs_tank_h;
-
-void() unit_hs_tnkdest_l;
-void() unit_hs_tnkdest_h;
-
-void() unit_hs_scout;
-
-void() unit_hs_mech_sk;
-void() unit_hs_mech_snipe;
 
 /*
 ==============================
   FACTION - HUMAN - RAIDERS
 ==============================
 */
-
-void() unit_hr_tank_l;
-void() unit_hr_tank_m;
-void() unit_hr_tank_h;
-void() unit_hr_tank_mis;
-void() unit_hr_tankdest;
-
-void() unit_hr_gev_l;
-void() unit_hr_gev_m;
-
-void() unit_hr_arty_m;
-void() unit_hr_arty_c;
 
 /*
 ==============================

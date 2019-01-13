@@ -55,21 +55,7 @@ void(float rank) ai_pilot_ini_stats={
   local float mod_am;
   local float mod_sh;
   local float mod_yaw;
-  
-  self.ai_rank = skill;
-  if( (self.spawnflags & AI_SPAWNFLAG_PROMOTE) ){
-    self.ai_rank = self.ai_rank + 1;
-    if( self.ai_rank > SKILL_ELT ){
-      self.ai_rank = SKILL_ELT;
-    }
-  }
-  if( (self.spawnflags & AI_SPAWNFLAG_DEMOTE) ){
-    self.ai_rank = self.ai_rank - 1;
-    if( self.ai_rank < SKILL_NOV ){
-      self.ai_rank = SKILL_NOV;
-    }
-  }
-  
+    
   self.ai_fov = ai_pilot_optical_range(rank);
   self.ai_view = ai_pilot_view_range(rank);
   self.ai_viewcheck = ai_pilot_view_interval(rank);
@@ -296,6 +282,22 @@ float() ai_pilot_rating_leading={
       return AI_LEAD_REG;
     default :
       return AI_LEAD_ROK;
+  }
+};
+
+void() ai_promote={
+  self.ai_rank = skill;
+  if( (self.spawnflags & AI_SPAWNFLAG_PROMOTE) ){
+    self.ai_rank = self.ai_rank + 1;
+    if( self.ai_rank > SKILL_ELT ){
+      self.ai_rank = SKILL_ELT;
+    }
+  }
+  if( (self.spawnflags & AI_SPAWNFLAG_DEMOTE) ){
+    self.ai_rank = self.ai_rank - 1;
+    if( self.ai_rank < SKILL_NOV ){
+      self.ai_rank = SKILL_NOV;
+    }
   }
 };
 

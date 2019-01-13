@@ -89,6 +89,7 @@ float TYPE_SKIRM  = 3;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
+void() ai_promote;
 float(float rank) ai_pilot_optical_range;
 float(float rank) ai_pilot_view_interval;
 float(float rank) ai_pilot_view_range;

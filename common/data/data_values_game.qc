@@ -29,6 +29,10 @@ void() FRIK_FILE_precaches =
 			else if( strstrofs(ln, ".obj", 0) != -1){
 				precache_model(ln);
 			}
+			else if( strstrofs(ln, ".bsp", 0) != -1){
+				precache_file(ln);
+			}
+      
 			ln = fgets(f);                      // get a new line from the file
 		} 
 	} 
@@ -284,3 +288,10 @@ vector ACCURACY_SNIPER      = '0.1 0.5 0.002';
 vector ACCURACY_MARKSMAN    = '0.35 0.75 0.005';
 vector ACCURACY_LOWTECH     = '0.5 0.9 0.0075';
 vector ACCURACY_PRIMITVE    = '0.6 1 0.001';
+
+//============================
+//     FACTIONS
+//============================
+float FACTION_PSC = 1;
+float FACTION_SURVEST = 2;
+float FACTION_MILITAR = 3;

@@ -94,6 +94,8 @@ void() worldspawn =
   q1_precache_sound();
   q1_precache_models();
   
+  FRIK_FILE_precaches();
+  
   mh_precache_sound();
   mh_precache_models();
   mh_world_ini();
