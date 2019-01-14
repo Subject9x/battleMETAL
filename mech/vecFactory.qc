@@ -346,7 +346,7 @@ entity( void() func ) build_unit_turret={
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE; 
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
-    util_setModel(self.c_model, this.mskin, 0);
+    util_setModel(self.c_model, this.i_faction, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.angles = this.angles;
@@ -443,7 +443,7 @@ void(void() data_ini) build_vehicle_unit={
   hmaxs = self.maxs;
   hmins = self.mins;
   
-  util_setModel(self.c_model, self.mskin, 0);
+  util_setModel(self.c_model, self.i_faction, 0);
   setsize( self, hmins, hmaxs );
   
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
