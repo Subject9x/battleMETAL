@@ -43,7 +43,6 @@ void() data_sorcerer_ini={
   self.en_cur= DAT_sorcerer_ENERGY_MAX;
   self.en_max= DAT_sorcerer_ENERGY_MAX;
   self.en_rate= DAT_sorcerer_ENERGY_RATE;
-  self.sh_cur= DAT_sorcerer_SHIELD_MAX;
   self.sh_max= DAT_sorcerer_SHIELD_MAX;
   self.sh_rate= DAT_sorcerer_SHIELD_RATE;
   self.m_rot_speed = DAT_sorcerer_YAW_SPEED;

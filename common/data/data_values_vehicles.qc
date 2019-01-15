@@ -82,24 +82,25 @@ float DAT_TNK_LEG_ARMOR = 1;
 //============================
 //            Shield  
 //============================
+//note: vehicles don't get shields UNLESS they're near a friendly Shield Generator!
 //-------------------------Foslager
 float DAT_foslager_SHIELD_MAX   = 200;
-float DAT_foslager_SHIELD_RATE  = 0.35;
+float DAT_foslager_SHIELD_RATE  = 0;
 //-------------------------Trowel
 float DAT_TROWEL_SHIELD_MAX   = 200;
-float DAT_TROWEL_SHIELD_RATE  = 0.35;
+float DAT_TROWEL_SHIELD_RATE  = 0;
 //-------------------------Onnek
 float DAT_onnek_SHIELD_MAX       = 200;
-float DAT_onnek_SHIELD_RATE      = 0.35;
+float DAT_onnek_SHIELD_RATE      = 0;
 //-------------------------Dunerunner
-float DAT_dunerunner_SHIELD_RATE   = 0.05;
+float DAT_dunerunner_SHIELD_RATE   = 0;
 float DAT_dunerunner_SHIELD_MAX    = 50;
 //-------------------------Sorcerer
-float DAT_sorcerer_SHIELD_RATE   = 0.1;
+float DAT_sorcerer_SHIELD_RATE   = 0;
 float DAT_sorcerer_SHIELD_MAX    = 500;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_SHIELD_MAX  = 100;
-float DAT_PSC_VTOLL_SHIELD_RATE = 0.15;
+float DAT_PSC_VTOLL_SHIELD_RATE = 0;
 //============================
 //            Energy  
 //============================

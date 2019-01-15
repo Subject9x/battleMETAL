@@ -12,9 +12,6 @@ void() ctrl_updateTank={
   local vector v1;
   local entity wep;
   
-  //death check on fresh frame
-  
-  
   makevectors(self.v_angle);
   v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
   traceline(v1, v1 + v_forward * 10000, FALSE, self);
@@ -29,17 +26,6 @@ void() ctrl_updateTank={
         self.en_cur = self.en_max;
       }
     }  
-    if(self.sh_cur < self.sh_max){
-      if(time > self.sh_hit){
-        if(self.en_cur > 0){
-          self.sh_cur = self.sh_cur + self.sh_rate;
-          self.en_cur = self.en_cur - self.sh_rate;
-          if(self.sh_cur > self.sh_max){
-            self.sh_cur = self.sh_max;
-          }
-        }
-      }
-    }
     if(self.en_cur < 0){
       self.en_cur = 0;
     }

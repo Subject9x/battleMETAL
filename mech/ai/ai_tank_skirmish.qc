@@ -264,11 +264,6 @@ void() ai_tank_sk_th={
   local entity wep;
   
   ctrl_updateTank();
-  wep = self.w_slot;
-  while(wep){
-    ctrl_wpn_think(wep);
-    wep = wep.w_slot;
-  }
   
   if( !self.deadflag ){
     if( self.enemy ){

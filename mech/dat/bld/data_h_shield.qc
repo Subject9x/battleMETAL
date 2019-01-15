@@ -105,14 +105,14 @@ void() hshield_th = [0, hshield_th]{
   }
 }
 
-/*QUAKED building_shield (.1 .1 .1) (-64 -64 -17.5) (64 64 17.5)
+/*QUAKED building_shield (.1 .1 .1) (-56 -56 0) (56 56 17.5)
 */
 void() building_shield={
   self.data_idx = ID_BLD_H_SHIELD;
   self.data_type = DATA_BLD;
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.data_type = DATA_BLD;
   util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;

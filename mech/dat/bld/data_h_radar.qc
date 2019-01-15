@@ -109,7 +109,7 @@ void() building_radar_think={
   self.nextthink = time + 0.1;
 };
 
-/*QUAKED building_radar (.1 .1 .1) (-20 -20 -13) (20 20 13)
+/*QUAKED building_radar (.1 .1 .1) (-20 -20 0) (20 20 13)
 */
 void() building_radar={
   self.data_idx = ID_BLD_H_RADAR;

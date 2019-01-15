@@ -44,7 +44,6 @@ void() data_foslager_ini={
   self.en_cur= DAT_foslager_ENERGY_MAX;
   self.en_max= DAT_foslager_ENERGY_MAX;
   self.en_rate= DAT_foslager_ENERGY_RATE;
-  self.sh_cur= DAT_foslager_SHIELD_MAX;
   self.sh_max= DAT_foslager_SHIELD_MAX;
   self.sh_rate= DAT_foslager_SHIELD_RATE;
   self.m_rot_speed = DAT_foslager_YAW_SPEED;

@@ -37,7 +37,6 @@ void() data_onnek_ini={
   self.en_cur= DAT_onnek_ENERGY_MAX;
   self.en_max= DAT_onnek_ENERGY_MAX;
   self.en_rate= DAT_onnek_ENERGY_RATE;
-  self.sh_cur= DAT_onnek_SHIELD_MAX;
   self.sh_max= DAT_onnek_SHIELD_MAX;
   self.sh_rate= DAT_onnek_SHIELD_RATE;
   self.m_rot_speed = DAT_HS_TANKDEST_YAW_SPEED;

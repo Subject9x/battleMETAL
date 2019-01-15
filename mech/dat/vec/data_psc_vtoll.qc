@@ -35,7 +35,6 @@ void() data_PSC_VTOLL_ini={
   self.en_cur= DAT_PSC_VTOLL_ENERGY_MAX;
   self.en_max= DAT_PSC_VTOLL_ENERGY_MAX;
   self.en_rate= DAT_PSC_VTOLL_ENERGY_RATE;
-  self.sh_cur= 0;
   self.sh_max= DAT_PSC_VTOLL_SHIELD_MAX;
   self.sh_rate= DAT_PSC_VTOLL_SHIELD_RATE;
   self.m_rot_speed = DAT_PSC_VTOLL_YAW_SPEED;

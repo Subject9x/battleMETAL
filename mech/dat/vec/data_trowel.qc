@@ -43,7 +43,6 @@ void() data_TROWEL_ini={
   self.en_cur= DAT_TROWEL_ENERGY_MAX;
   self.en_max= DAT_TROWEL_ENERGY_MAX;
   self.en_rate= DAT_TROWEL_ENERGY_RATE;
-  self.sh_cur= DAT_TROWEL_SHIELD_MAX;
   self.sh_max= DAT_TROWEL_SHIELD_MAX;
   self.sh_rate= DAT_TROWEL_SHIELD_RATE;
   self.m_rot_speed = DAT_TROWEL_YAW_SPEED;
