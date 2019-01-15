@@ -17,8 +17,6 @@ void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
 //=========================================================================
 
-
-
 vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea;
 
 float(entity t) util_getMechHpAverage;

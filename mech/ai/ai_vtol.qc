@@ -321,14 +321,8 @@ void() ai_vtol_die={
 };
 
 void() ai_vtol_th={
-  local entity wep;
   
-  ctrl_updateCenterTorso();
-  wep = self.w_slot;
-  while(wep){
-    ctrl_wpn_think(wep);
-    wep = wep.w_slot;
-  }
+  ctrl_updateTank();
     
   if( !self.deadflag ){
     if( self.enemy ){

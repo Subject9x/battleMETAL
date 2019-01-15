@@ -549,20 +549,6 @@ void() ai_hunt_target={
   ai_next_state( ST_RUN );
 };
 
-void(float ifaction, float datatype) ai_sfx_spotted={
-  if( (self.enemy.flags & FL_CLIENT) ){
-    if( !self.ai_voice_spot ){
-      if( cvar("developer") ){
-        cons_logAString(self.classname, "<missing 'spot' sound>"); 
-        cons_logAString("Bot says", "I'VE SEEN YOU!");  //DEBUG
-      }
-      return;
-    }
-    self.voiceTime = time + 3;
-    client_send_ai_voice( self.enemy, self.ai_voice_spot );
-  }
-};
-
 void() ai_found_target={
   ai_sfx_spotted(self.i_faction, self.data_type);
   ai_hunt_target();
@@ -580,7 +566,7 @@ void() ai_walk_setup={
   
 		self.goalentity = self.movetarget = find(world, targetname, self.target);
     
-    dprint( strcat(self.goalentity.targetname, "\n") );//DEBUG
+    dprint( strcat(self.goalentity.targetname, "\n") );
     
 		if( !self.movetarget ){
 			dprint ("Monster can't find target at ");
@@ -612,11 +598,9 @@ void(void() macro) ai_leg_frame={
 void() ai_stand={
 
   if( time > self.patience && !self.enemy){  
-    //self.patience  = time + self.ai_viewcheck;
-    self.patience  = time + 1; //DEBUG
-    cons_logAString("Bot Here", "Having a look around"); //DEBUG
+    self.patience  = time + self.ai_viewcheck;
     if( ai_find_target_visual() ){
-      cons_logAString("Bot Here", "found target!"); //DEBUG
+
       return;
     }
   }

@@ -374,15 +374,9 @@ void() ai_gev_die={
 };
 
 void() ai_gev_th={
-  local entity wep;
+
+  ctrl_updateTank();
   
-  ctrl_updateCenterTorso();
-  wep = self.w_slot;
-  while(wep){
-    ctrl_wpn_think(wep);
-    wep = wep.w_slot;
-  }
-    
   if( !self.deadflag ){
     if( self.enemy ){
     ai_turret_set_state( TR_TARG );

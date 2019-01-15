@@ -72,22 +72,30 @@ float() ai_can_spawn={
 };
 
 float(entity t) ai_valid_target={
+  local float val;
+  val = FALSE;
   if ( t ){
     if( (t.flags & FL_NOTARGET) ){
-      return FALSE;
+      val = FALSE;
     }
     if( t.deadflag <= DEAD_NO ){
       switch( t.data_type ){
         case DATA_VEHC:
-          return TRUE;
+          val =  TRUE;
         case DATA_BLD:
-          return TRUE;
+          val =  TRUE;
         case DATA_MECH:
-          return TRUE;
+          val =  TRUE;
       }
     }
   }
-  return FALSE;
+  
+  if( val == FALSE ){
+    if( self.enemy = t ){
+      
+    }
+  }
+  return val;
 };
 
 entity( float radiius) ai_find_friend={

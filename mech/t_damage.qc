@@ -136,6 +136,7 @@ Explosive Damage
 */
 float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
   local float damage, dmgtype, shields, mod, crit, quarter;
+  
   dmgtype = inflictor.p_dmgtype;
   damage = dmg_amt;
   shields = targ.sh_cur;
@@ -276,6 +277,15 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   dmgTrg.health = dmgTrg.health - dmgAmt;
 
+  if( (trg.flags & FL_MONSTER) ){
+    if( util_getMechHpAverage( trg ) < 0.25 ){
+      oself = self;
+      self = trg;
+        ai_sfx_dying();
+      self = oself;
+    }
+  }
+  
   if( dmgTrg.health <= 0 ){
     if( dmgTrg.th_die ){
       if( dmgTrg.comp_id == M_LEGS ){

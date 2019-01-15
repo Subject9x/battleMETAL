@@ -132,6 +132,7 @@ dp/subs.qc
   mech/ai/ai_vtol.qc
   mech/ai/ai_gev.qc
   mech/ai/ai_nodes.qc
+  mech/ai/ai_voice.qc
   
   mech/t_damage.qc
   mech/svr/server_parmops_c.qc
@@ -150,6 +151,7 @@ dp/subs.qc
   mech/ctrl/ctrl_mech.qc
   mech/ctrl/ctrl_legs.qc
   mech/ctrl/ctrl_building.qc
+  mech/ctrl/ctrl_tank.qc
 //==========================
 
 q1/qwep/qwep_header.qc

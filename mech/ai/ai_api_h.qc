@@ -88,11 +88,15 @@ float TYPE_SKIRM  = 3;
 .float ai_dir;
 
 .float voiceTime; //when next to say something
+.string ai_voice_warn;
 .string ai_voice_spot;
 .string ai_voice_huntStart;
 .string ai_voice_huntEnd;
 .string ai_voice_dying;
 .string ai_voice_dead;
+.string ai_voice_kill;
+.string ai_voice_roger;
+.string ai_voice_help;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -149,11 +153,21 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
 //AI CONTROL - ai_ctrl.qc 
 void() ai_walk_setup;
 void() ai_hunt_target;
-void(float ifaction, float datatype ) ai_sfx_spotted;
 void() ai_found_target;
 void( string grpid ) ai_node_pick_rand
 void(entity bot, entity attacker) ai_damage_react;
 void(void() macro) ai_leg_frame;
+
+//AI VOICE STUFF
+void(float ifaction, float datatype ) ai_sfx_spotted;
+void(float ifaction, float datatype ) ai_sfx_warning;
+void() ai_sfx_huntStart;
+void() ai_sfx_huntEnd;
+void() ai_sfx_dying;
+void() ai_sfx_dead;
+void() ai_sfx_kill;
+void() ai_sfx_roger;
+void() ai_sfx_help;
 
 /*
   AI STATE FUNCTIONS=====================

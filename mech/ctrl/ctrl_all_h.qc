@@ -2,6 +2,7 @@
 mech mod
 Author: Peter Roohr
 Date: 9/1/2016
+mod - 1/15/2019 - a few refactors
 Overview: header for all mech component controllers
 */
 
@@ -18,3 +19,5 @@ void() touch_mechPiece;
 ///building controllers
 void() building_think;
 void() building_die;
+
+void() ctrl_updateTank;
