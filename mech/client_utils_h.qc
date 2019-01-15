@@ -40,6 +40,8 @@ void( entity navpoint ) client_send_navpoint;
 void( entity objective ) client_send_objective;
 void( entity deploy ) client_send_deploypoint;
 
+void( entity client, string voiceMessage ) client_send_ai_voice;
+
 //client command layer
 void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;

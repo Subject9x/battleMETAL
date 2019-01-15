@@ -216,6 +216,19 @@ void() client_push_mapobjects={
   }
 };
 
+void( entity client, string voiceMessage ) client_send_ai_voice={
+  local entity this;
+  
+  if( voiceMessage != "" ){
+    this = self;
+    self = client;
+    WriteByte( MSG_ONE, SVC_TEMPENTITY);
+    WriteByte( MSG_ONE, TE_AI_VOICE );
+    WriteString( MSG_ONE, strcat(voiceMessage,"\n"));
+    self = this;
+  }
+};
+
 /*
   client sends string 'cmd mech foo'
   where foo is the command, first parm must be 'mech'

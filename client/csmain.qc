@@ -15,13 +15,21 @@ void() CSQC_Init =
   VIEW_ORG = '0 0';
   
   //ini the HUD sound system
+  CRITBITS = -1;
   SQSIZE = 6; //set to 6
   STIME = 0;
   STIME_NEXT = 0;
   VQSIZE = 6;
-  VQIDX = 0;
-  CRITBITS = -1;
   SQUED = FALSE;
+  
+  TQSIZE = 3;
+  TRTIME = 0;
+  TR_TIME_NEXT = 0;
+  TQUED = FALSE;
+  
+  TRANSMISSIONQUEUE[0] = strzone(NULL_SOUND);
+  TRANSMISSIONQUEUE[1] = strzone(NULL_SOUND);
+  TRANSMISSIONQUEUE[2] = strzone(NULL_SOUND);
   
   WEPBITS[0] = 1;
   WEPBITS[1] = 2;
@@ -80,7 +88,6 @@ void() CSQC_Init =
   NAVNAMES[18] = "Upsilon";
   NAVNAMES[19] = "Phi";
   NAVNAMES[20] = "Omega";
-  snd_hud_vfx_cleanqueue();
   
   //get mission file
   cs_precache();
@@ -478,6 +485,9 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_MSN_BOUND:
       client_event_boundary();
+      return TRUE;
+    case TE_AI_VOICE:
+      snd_hud_trnsmsn_addtoqueue(ReadString(), 1);
       return TRUE;
   } 
 	return FALSE;

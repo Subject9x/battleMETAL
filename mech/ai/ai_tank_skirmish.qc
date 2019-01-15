@@ -300,6 +300,12 @@ void() ai_tank_sk_th={
 */
 void() ai_tank_skirmish={
 
+  //DEBUG
+  self.ai_voice_spot = "sound/voice/bot/bot_spotted.ogg";
+  self.ai_voice_nolos = "sound/voice/bot/bot_nospot.ogg";
+  self.ai_voice_dying = "sound/voice/bot/bot_dying.ogg";
+  // /DEBUG
+ 
   ai_unit_ini_var();
   data_iniVehc( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);

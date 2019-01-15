@@ -9,6 +9,8 @@ Overview: header file for the hud sound system
 float MUSICID;
 
 //sound precache
+string NULL_SOUND = "null";
+
 string SND_MCH_SFX_REACT;
 
 string SND_HUD_VFX_ONLINE;
@@ -35,7 +37,6 @@ float SQSIZE; //set to 6
 float STIME;
 float STIME_NEXT;
 float VQSIZE;
-float VQIDX;
 float SQUED;
 string SOUNDQUEUE[6]; //match this with SQSIZE / VQSIZE
 string SQ1;
@@ -45,11 +46,24 @@ string SQ4;
 string SQ5;
 string SQ6;
 
+//Transmission Queue - for AI voices
+float TRSIZE;
+float TRTIME;
+float TR_TIME_NEXT;
+float TQSIZE;
+float TQUED;
+string TRANSMISSIONQUEUE[3];
+string TRQ1;
+string TRQ2;
+string TRQ3;
+
+
 float CRITBITS; //tracks sound playing for critical loss of mech parts
 
 void() snd_hud_vfx_frame;
 void() snd_hud_vfx_cleanqueue;
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue;
+void(string requestedSound, float cnt) snd_hud_trnsmsn_addtoqueue;
 
 void(float playerState) snd_hud_vfx_statelistener;
 void(float lockstate) snd_hud_vfx_locklistener;

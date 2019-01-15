@@ -5,9 +5,15 @@ Date: 04/10/2017
 Overview: impl file for the hud sound system
 */
 
+/*
+  
+*/
 void() snd_hud_vfx_frame={
+  local float sfx_len;
+  local float itr;
+  local float prev;
+  
   if(time > STIME_NEXT){
-    local float sfx_len, itr;
     if(SOUNDQUEUE[0] != "null"){
       sfx_len = soundlength(SOUNDQUEUE[0]);
       pointsound(pmove_org, SOUNDQUEUE[0], 1, ATTN_NONE);
@@ -15,17 +21,29 @@ void() snd_hud_vfx_frame={
     }
     itr = SQSIZE;
     while( itr > -1 ){
-      local float prev;
       prev = itr - 1;
       SOUNDQUEUE[prev] = SOUNDQUEUE[itr];
       SOUNDQUEUE[itr] = "null";
       itr = itr - 1;
     }
   }
-};
-
-void() snd_hud_vfx_cleanqueue={
-
+  
+  if( time > TR_TIME_NEXT ){
+    if(TRANSMISSIONQUEUE[0] != NULL_SOUND){
+      cons_logAString("play?", TRANSMISSIONQUEUE[0]); //DEBUG
+      sfx_len = soundlength(TRANSMISSIONQUEUE[0]);
+      pointsound(pmove_org, TRANSMISSIONQUEUE[0], 1, ATTN_NONE);
+      cons_logAFloat("snd len", sfx_len); //DEBUG
+      TR_TIME_NEXT = time + sfx_len + 0.05;
+    }
+    itr = TQSIZE;
+    while( itr > -1 ){
+      prev = itr - 1;
+      TRANSMISSIONQUEUE[prev] = TRANSMISSIONQUEUE[itr];
+      TRANSMISSIONQUEUE[itr] = NULL_SOUND;
+      itr = itr - 1;
+    }
+  }
 };
 
 //count == how many instances of 1 sound can be queued at a time
@@ -59,10 +77,56 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
   SQUED = FALSE;
 };
 
+void(string requestedSound, float cnt) snd_hud_trnsmsn_addtoqueue={
+  local float idx, cur;
+  local float pathLen;
+  local float termin;
+  
+  idx = cur = 0;
+  TQUED = FALSE;  
+
+  //apparently have to account for the '/n' coming in from the server
+  pathLen = strlen(requestedSound);
+  termin = strstrofs(requestedSound, ".ogg",0);
+  requestedSound = substring(requestedSound, 0, termin + 4 );
+
+  while(idx < TQSIZE){
+    if(TRANSMISSIONQUEUE[idx] == requestedSound){
+      cur = cur + 1;
+    }
+    idx = idx + 1;
+  }
+  if(cur >= cnt){
+    return;
+  }
+  cur = 0;
+  idx = 0;
+  while(idx < TQSIZE){
+    if(TRANSMISSIONQUEUE[idx] == requestedSound){
+      cur = cur + 1;
+    }
+    if(TRANSMISSIONQUEUE[idx] == NULL_SOUND){
+      if(cur < cnt){
+        
+        TRANSMISSIONQUEUE[idx] = strzone(requestedSound);
+        cur = cur + 1;
+      }
+    }
+    idx = idx + 1;
+  }
+  cons_logAString("TRANSMISSIONQUEUE[0] =", TRANSMISSIONQUEUE[0]); //DEBUG
+  cons_logAString("TRANSMISSIONQUEUE[1] =", TRANSMISSIONQUEUE[1]); //DEBUG
+  cons_logAString("TRANSMISSIONQUEUE[2] =", TRANSMISSIONQUEUE[2]); //DEBUG
+  TQUED = FALSE;
+};
+
 void(float playerState) snd_hud_vfx_statelistener={
   if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
     if( CRITBITS < 0){
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
+      if( !cvar("developer") ){
+        snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
+      }
+      
       CRITBITS = 0;    
     }
   }
@@ -140,7 +204,8 @@ void(float mode) snd_hud_vfx_toggleradar={
   if(CLIENT_stat_rdr_mode_prev != mode){
     CLIENT_stat_rdr_mode_prev = mode;
     if(mode){
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE, 3);
+     //snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE, 3);
+     snd_hud_trnsmsn_addtoqueue("sound/voice/bot/bot_spotted.ogg", 1); //DEBUG
     }
     else{
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRPASSIVE, 3); 

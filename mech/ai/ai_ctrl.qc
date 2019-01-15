@@ -550,7 +550,17 @@ void() ai_hunt_target={
 };
 
 void(float ifaction, float datatype) ai_sfx_spotted={
-  cons_logAString("Bot says", "I'VE SEEN YOU!");  //DEBUG
+  if( (self.enemy.flags & FL_CLIENT) ){
+    if( !self.ai_voice_spot ){
+      if( cvar("developer") ){
+        cons_logAString(self.classname, "<missing 'spot' sound>"); 
+        cons_logAString("Bot says", "I'VE SEEN YOU!");  //DEBUG
+      }
+      return;
+    }
+    self.voiceTime = time + 3;
+    client_send_ai_voice( self.enemy, self.ai_voice_spot );
+  }
 };
 
 void() ai_found_target={

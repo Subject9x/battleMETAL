@@ -87,6 +87,13 @@ float TYPE_SKIRM  = 3;
 .float ai_attack_chance;
 .float ai_dir;
 
+.float voiceTime; //when next to say something
+.string ai_voice_spot;
+.string ai_voice_huntStart;
+.string ai_voice_huntEnd;
+.string ai_voice_dying;
+.string ai_voice_dead;
+
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 void() ai_promote;
