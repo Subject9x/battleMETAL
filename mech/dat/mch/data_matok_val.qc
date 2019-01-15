@@ -66,7 +66,7 @@ void() data_mtk_ini={
   self.unit_wep4 = data_mtk_wep4;
   self.unit_wep5 = data_mtk_wep5;
 
-  self.data_idx = ID_MCH_MATOK;
+  self.data_idx = ID_MCH_matok;
   self.vec_name= DAT_MTK_VEC_NAME;
   self.vec_size = SZ_MCH_MATOK;
   self.data_type = DATA_MECH;

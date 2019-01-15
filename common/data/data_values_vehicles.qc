@@ -19,7 +19,7 @@ float ID_VEC_HS_EXCAT = 6;
 //-------------------------Foslager
 float ID_VEC_foslager = 7;
 //-------------------------Trowel
-float ID_VEC_TROWEL = 8;
+float ID_VEC_trowel = 8;
 //-------------------------Onnek
 float ID_VEC_onnek = 9;
 //-------------------------Sorcerer
@@ -156,19 +156,19 @@ float DAT_PSC_VTOLL_BSPEED     = 300;
 //            Bounding Box
 //============================
 //-------------------------Foslager
-vector DAT_foslager_CTOR_BBX_N =  '-20 -20 -7.75';
+vector DAT_foslager_CTOR_BBX_N =  '-20 -20 -8';
 vector DAT_foslager_CTOR_BBX_X =  '20 20 12';
 //-------------------------Trowel
-vector DAT_TROWEL_CTOR_BBX_N =  '-24 -24 -7.75';
-vector DAT_TROWEL_CTOR_BBX_X =  '24 24 20';
+vector DAT_TROWEL_CTOR_BBX_N =  '-30 -30 -7.75';
+vector DAT_TROWEL_CTOR_BBX_X =  '30 30 20';
 //-------------------------Onnek
-vector DAT_onnek_CTOR_BBX_N    =   '-20 -20 -10';
-vector DAT_onnek_CTOR_BBX_X    =   '20 20 14';
+vector DAT_onnek_CTOR_BBX_N    =   '-25 -25 -10.25';
+vector DAT_onnek_CTOR_BBX_X    =   '25 25 14';
 //-------------------------Dunerunner
 vector DAT_dunerunner_BBX_N    =   '-20 -20 -10';
 vector DAT_dunerunner_BBX_X    =   '20 20 14';
 //-------------------------Sorcerer
-vector DAT_sorcerer_CTOR_BBX_N    =   '-20 -20 -10';
+vector DAT_sorcerer_CTOR_BBX_N    =   '-20 -20 -11';
 vector DAT_sorcerer_CTOR_BBX_X    =   '20 20 14';
 //-------------------------PSC VTOL Light
 vector DAT_PSC_VTOLL_BBX_N    =   '-30 -30 -15';
@@ -229,21 +229,21 @@ string DAT_PSC_VTOLL_MODEL   = "q3mdl/vecs/mdl_tank_chas.md3";
 //============================
 //-------------------------Foslager
 vector DAT_foslager_LEG_OFFSET    = '0 0 0';
-vector DAT_foslager_WEP1_OFFSET   = '1.5 11 4';
+vector DAT_foslager_WEP1_OFFSET   = '1.5 11 2';
 vector DAT_foslager_WEP2_OFFSET   = '-5.1 11.5 3';
 vector DAT_foslager_WEP3_OFFSET   = '-1.5 6 9';
 //-------------------------Trowel
 vector DAT_TROWEL_LEG_OFFSET    = '0 0 0';
-vector DAT_TROWEL_WEP1_OFFSET   = '-4.75 12 12';
-vector DAT_TROWEL_WEP2_OFFSET   = '-4.75 16.75 12';
+vector DAT_TROWEL_WEP1_OFFSET   = '-4.75 12 10.5';
+vector DAT_TROWEL_WEP2_OFFSET   = '-4.75 16.75 10.5';
 //-------------------------Onnek
 vector DAT_onnek_WEP1_OFFSET       = '7.25 3.5 12';
 //-------------------------Dunerunner
 vector DAT_dunerunner_WEP1_OFFSET    = '-1.5 5.25 2';
 vector DAT_dunerunner_WEP2_OFFSET    = '1.5 5.25 2';
 //-------------------------Sorcerer
-vector DAT_sorcerer_WEP1_OFFSET    = '-10.5 8 -7';
-vector DAT_sorcerer_WEP2_OFFSET    = '10.5 8 -7';
+vector DAT_sorcerer_WEP1_OFFSET    = '-10.5 5 -7';
+vector DAT_sorcerer_WEP2_OFFSET    = '10.5 5 -7';
 //-------------------------PSC VTOL Light
 vector DAT_PSC_VTOLL_WEP1_OFFSET  = '-9 -6 28';
 vector DAT_PSC_VTOLL_WEP2_OFFSET  = '9 -6 28';

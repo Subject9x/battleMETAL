@@ -70,7 +70,7 @@ void() data_mnt_ini={
   self.unit_wep8 = data_mnt_wep8;
   self.unit_wep9 = data_mnt_wep9;
   
-  self.data_idx= ID_MCH_MONITOR;
+  self.data_idx= ID_MCH_monitor;
   self.vec_name= MCH_NAME_MNT;
   self.vec_size = SZ_MCH_MONITOR;
   self.data_type = DATA_MECH;

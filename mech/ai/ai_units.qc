@@ -26,7 +26,7 @@ void() unit_hs_truck_cargo={
   }
 
   self.nextVecChoice = 1;
-  self.i_faction = 2;
+  self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   ai_unit_setup( ai_noncom_tank );
@@ -40,7 +40,7 @@ void() unit_hs_truck_hab={
   }
 
   self.nextVecChoice = 2;
-  self.i_faction = 2;
+  self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   ai_unit_setup( ai_noncom_tank );
@@ -54,7 +54,7 @@ void() unit_hs_truck_const={
   }
 
   self.nextVecChoice = 3;
-  self.i_faction = 2;
+  self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   ai_unit_setup( ai_noncom_tank );
@@ -68,7 +68,7 @@ void() unit_hs_dozer={
   }
 
   self.nextVecChoice = 4;
-  self.i_faction = 2;
+  self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   ai_unit_setup( ai_noncom_tank );
@@ -82,7 +82,7 @@ void() unit_hs_loader={
   }
 
   self.nextVecChoice = 5;
-  self.i_faction = 2;
+  self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   ai_unit_setup( ai_noncom_tank );
@@ -96,7 +96,7 @@ void() unit_hs_excavat={
   }
 
   self.nextVecChoice = 6;
-  self.i_faction = 2;
+  self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   ai_unit_setup( ai_noncom_tank );
@@ -111,7 +111,7 @@ void() unit_hs_excavat={
 void() unit_dunerunner_h={
   
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 11;
+  self.nextVecChoice = ID_VEC_dunerunner;
   self.i_faction = FACTION_SURVEST;
   self.flags = self.flags | FL_TURRET;
   
@@ -147,7 +147,7 @@ void() unit_dunerunner_h={
 void() unit_dunerunner_m={
   
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 11;
+  self.nextVecChoice = ID_VEC_dunerunner;
   self.i_faction = FACTION_MILITAR;
   self.flags = self.flags | FL_TURRET;
   
@@ -189,7 +189,7 @@ void() unit_dunerunner_m={
 void() unit_foslager_h={
 
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 7;
+  self.nextVecChoice = ID_VEC_foslager;
   self.i_faction = FACTION_SURVEST;
   self.flags = self.flags | FL_TURRET;
   
@@ -225,7 +225,7 @@ void() unit_foslager_h={
 void() unit_foslager_m={
 
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 7;
+  self.nextVecChoice = ID_VEC_foslager;
   self.i_faction = FACTION_MILITAR;
   self.flags = self.flags | FL_TURRET;
   
@@ -268,7 +268,7 @@ void() unit_foslager_m={
 void() unit_trowel_m={
 
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 8;
+  self.nextVecChoice = ID_VEC_trowel;
   self.i_faction = FACTION_MILITAR;
   self.flags = self.flags | FL_TURRET;
   
@@ -304,7 +304,7 @@ void() unit_trowel_m={
 void() unit_trowel_h={
 
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 8;
+  self.nextVecChoice = ID_VEC_trowel;
   self.i_faction = FACTION_SURVEST;
   self.flags = self.flags | FL_TURRET;
   
@@ -346,7 +346,7 @@ void() unit_trowel_h={
 void() unit_onnek_h={
 
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 9;
+  self.nextVecChoice = ID_VEC_onnek;
   self.i_faction = FACTION_SURVEST;
   
   if( !ai_can_spawn() ){
@@ -381,7 +381,7 @@ void() unit_onnek_h={
 void() unit_onnek_m={
 
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 9;
+  self.nextVecChoice = ID_VEC_onnek;
   self.i_faction = FACTION_MILITAR;
   
   if( !ai_can_spawn() ){
@@ -422,7 +422,7 @@ void() unit_onnek_m={
 void() unit_sorcerer_h={
 
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 10;
+  self.nextVecChoice = ID_VEC_sorcerer;
   self.i_faction = FACTION_SURVEST;
   
   if( !ai_can_spawn() ){
@@ -458,7 +458,7 @@ void() unit_sorcerer_h={
 void() unit_sorcerer_m={
 
   self.style = TYPE_BRAWL;
-  self.nextVecChoice = 10;
+  self.nextVecChoice = ID_VEC_sorcerer;
   self.i_faction = FACTION_MILITAR;
   
   if( !ai_can_spawn() ){
@@ -500,38 +500,59 @@ void() unit_sorcerer_m={
 void() unit_balaket_sniper={
 
   self.style = TYPE_SNIPER;
-
   self.flags = FL_TURRET;  //enforced for a mech
-  
   if( !self.i_faction ){
     self.i_faction = 2;
   }
   self.mskin = self.i_faction;
-  self.spreadDefault = ACCURACY_SNIPER;
-  self.nextVecChoice = 1;
+  self.nextVecChoice = ID_MCH_balaket;
   
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
-  //sniper
-  if( skill < 2 ){
-    //FLAK | FLAK | ION
-    ai_ini_weapons( 12, 12, 13, -1, -1, -1, -1, -1, -1);
-  }
-  else if( skill == 2 ){
-    //LATC | LATC | EMP
-    ai_ini_weapons( 1, 1, 2, -1, -1, -1, -1, -1, -1);
-  }
-  else if( skill == 3 ){
-    //LATC | LATC | PAC
-    ai_ini_weapons( 1, 1, 7, -1, -1, -1, -1, -1, -1);
-  } 
 
   if( ai_unit_setup( ai_mech_sniper ) ){
     ai_mech_sniper();
   }
 };
+
+void() unit_balaket_sniper_h={
+  self.i_faction = FACTION_SURVEST;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+
+      break;
+    case 3:
+
+      break;
+    default:
+
+      break;
+  }
+  unit_balaket_sniper();
+};
+
+void() unit_balaket_sniper_m={
+  self.i_faction = FACTION_MILITAR;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+
+      break;
+    case 3:
+
+      break;
+    default:
+
+      break;
+  }
+  unit_balaket_sniper();
+};
+
 
 //        BRAWLER VARIANTS
 void() unit_balaket_brawl={
@@ -544,7 +565,6 @@ void() unit_balaket_brawl={
     self.i_faction = 2;
   }
   self.mskin = self.i_faction;
-  self.spreadDefault = ACCURACY_SKIRMISH;
   self.nextVecChoice = 1;
   
   if( !ai_can_spawn() ){
@@ -552,23 +572,48 @@ void() unit_balaket_brawl={
     return;
   }
 
-  if( skill < 2 ){
-    //LAS | LAS | MIS
-    ai_ini_weapons( 3, 3, 4, -1, -1, -1, -1, -1, -1);
-  }
-  else if( skill == 2 ){
-    //LAS | LAS | RPC
-    ai_ini_weapons( 3, 3, 6, -1, -1, -1, -1, -1, -1);
-  }
-  else if( skill == 3 ){
-    //FLAK | LATC | ESR
-    ai_ini_weapons( 12, 1, 8, -1, -1, -1, -1, -1, -1);
-  } 
     
   if( ai_unit_setup( ai_mech_skirmish ) ){
     ai_mech_skirmish();
   }
 };
+
+void() unit_balaket_brawl_h={
+  self.i_faction = FACTION_SURVEST;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+
+      break;
+    case 3:
+
+      break;
+    default:
+
+      break;
+  }
+  unit_balaket_brawl();
+};
+
+void() unit_balaket_brawl_m={
+  self.i_faction = FACTION_MILITAR;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+
+      break;
+    case 3:
+
+      break;
+    default:
+
+      break;
+  }
+  unit_balaket_brawl();
+};
+
 
 /*
   UNIT: MATOK
@@ -587,46 +632,63 @@ void() unit_matok_brawl={
     self.i_faction = 2;
   }
   self.mskin = self.i_faction;
-  self.spreadDefault = ACCURACY_MARKSMAN;
-  self.nextVecChoice = 2;
+  self.nextVecChoice = ID_MCH_matok;
   
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
-
-  if( skill < 2 ){
-    ai_ini_weapons( 3, 3, 1, 1, 4, -1, -1, -1, -1);
-  }
-  else if( skill == 2 ){
-    ai_ini_weapons( 3, 3, 5, 12, 9, -1, -1, -1, -1);
-  }
-  else if( skill == 3 ){
-    ai_ini_weapons( 3, 3, 6, 6, 8, -1, -1, -1, -1);
-  } 
-   
- /*
-  sniper
-  if( skill < 2 ){
-    ai_ini_weapons( 3, 3, 13, 13, 9, -1, -1, -1, -1);
-  }
-  else if( skill == 2 ){
-    ai_ini_weapons( 5, 5, 3, 13, 16, -1, -1, -1, -1);
-  }
-  else if( skill == 3 ){
-    ai_ini_weapons( 3, 3, 3, 3, 17, -1, -1, -1, -1);
-  } 
- */
   
   if( ai_unit_setup( ai_mech_skirmish ) ){
     ai_mech_skirmish();
   }
 };
 
+void() unit_matok_sniper={
+  self.style = TYPE_BRAWL;
+
+  self.flags = FL_TURRET;  //enforced for a mech
+  
+  if( !self.i_faction ){
+    self.i_faction = 2;
+  }
+  self.mskin = self.i_faction;
+  self.nextVecChoice = ID_MCH_matok;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
+  if( ai_unit_setup( ai_mech_sniper ) ){
+    ai_mech_sniper();
+  }
+};
+
+void() unit_matok_sniper_h={
+  unit_matok_sniper();
+};
+
+void() unit_matok_sniper_m={
+
+  unit_matok_sniper();
+};
+
+void() unit_matok_brawl_h={
+
+  unit_matok_brawl();
+};
+void() unit_matok_brawl_m={
+
+  unit_matok_brawl();
+};
+
+
+
 /*
   UNIT: MONITOR
   TYPE: METAL
-  SIZE: MEDIUM
+  SIZE: HEAVY
   --------------------------------
 */
 //        BRAWLER VARIANTS
@@ -640,29 +702,51 @@ void() unit_monitor_brawl={
     self.i_faction = 2;
   }
   self.mskin = self.i_faction;
-  self.spreadDefault = ACCURACY_LOWTECH;
-  self.nextVecChoice = 3;
+  self.nextVecChoice = ID_MCH_monitor;
   
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
-  
-  
-  if( skill < 2 ){
-    ai_ini_weapons( 3, 1, 3, 1, 12, 12, 4, 4, 4);
-  }
-  else if( skill == 2 ){
-    ai_ini_weapons( 3, 1, 3, 1, 13, 5, 9, 4, 4);
-  }
-  else if( skill == 3 ){
-    ai_ini_weapons( 1, 1, 1, 1, 13, 7, 16, 16, 4);
-  } 
-  
+
   if( ai_unit_setup( ai_mech_skirmish ) ){
     ai_mech_skirmish();
   }
 };
+
+void() unit_monitor_sniper={
+  self.flags = FL_TURRET;  //enforced for a mech
+  
+  if( !self.i_faction ){
+    self.i_faction = 2;
+  }
+  self.mskin = self.i_faction;
+  self.nextVecChoice = ID_MCH_monitor;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+
+  if( ai_unit_setup( ai_mech_sniper ) ){
+    ai_mech_sniper();
+  }
+};
+
+void() unit_monitor_brawl_h={
+
+  unit_monitor_brawl();
+};
+
+void() unit_monitor_brawl_m={
+
+  unit_monitor_brawl();
+};
+
+void() unit_monitor_sniper_m={
+  unit_monitor_sniper();
+};
+
 
 
 void() building_turret_light={
@@ -690,17 +774,6 @@ void() building_turret_light={
 ==============================
 */
 
-void() unit_hr_tank_l={};
-void() unit_hr_tank_m={};
-void() unit_hr_tank_h={};
-void() unit_hr_tank_mis={};
-void() unit_hr_tankdest={};
-
-void() unit_hr_gev_l={};
-void() unit_hr_gev_m={};
-
-void() unit_hr_arty_m={};
-void() unit_hr_arty_c={};
 
 /*
 ==============================

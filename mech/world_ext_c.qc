@@ -78,13 +78,13 @@ void() mh_world_ini={
 void(float mech_id) data_iniMech={
   //guess the mech id's should just be flat
   switch(mech_id){
-    case ID_MCH_BALAKET:
+    case ID_MCH_balaket:
       build_mech_unit(data_otl_ini);
       break;
-    case ID_MCH_MATOK:
+    case ID_MCH_matok:
       build_mech_unit(data_mtk_ini);
       break;
-    case ID_MCH_MONITOR:
+    case ID_MCH_monitor:
       build_mech_unit(data_mnt_ini);
       break;
     default :
@@ -127,7 +127,7 @@ void(float vec_id) data_iniVehc={
     case ID_VEC_foslager:
       build_vehicle_unit( data_foslager_ini );
       break;
-    case ID_VEC_TROWEL:
+    case ID_VEC_trowel:
       build_vehicle_unit( data_TROWEL_ini );
       break;
     case ID_VEC_dunerunner:

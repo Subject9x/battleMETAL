@@ -17,13 +17,13 @@ string MCH_NAME_MNT = "Monitor";
 //            DATA ID's           
 //============================
 //-------------------------BALAKET------------------------
-float ID_MCH_BALAKET = 1;
+float ID_MCH_balaket = 1;
 float SZ_MCH_BALAKET = 1;
 //-------------------------MATOK------------------------
-float ID_MCH_MATOK = 2;
+float ID_MCH_matok = 2;
 float SZ_MCH_MATOK = 2;
 //-------------------------MONITOR------------------------
-float ID_MCH_MONITOR = 3;
+float ID_MCH_monitor = 3;
 float SZ_MCH_MONITOR = 3;
 
 //============================

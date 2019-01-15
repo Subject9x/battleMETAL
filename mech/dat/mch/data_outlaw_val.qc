@@ -52,7 +52,7 @@ void() data_otl_ini={
   self.unit_wep2 = data_otl_wep2;
   self.unit_wep3 = data_otl_wep3;
 
-  self.data_idx= ID_MCH_BALAKET;
+  self.data_idx = ID_MCH_balaket;
   self.vec_size = SZ_MCH_BALAKET;
   self.vec_name = MCH_NAME_BLK;
   self.data_type = DATA_MECH;

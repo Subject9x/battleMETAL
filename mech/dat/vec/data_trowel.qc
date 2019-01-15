@@ -33,7 +33,7 @@ void() data_TROWEL_ini={
   self.unit_wep2 = data_TROWEL_wep2;
   self.unit_cam = data_TROWEL_cam;
     
-  self.data_idx = ID_VEC_TROWEL;
+  self.data_idx = ID_VEC_trowel;
   self.vec_name= DAT_TROWEL_NAME;
   self.data_type = DATA_VEHC;
   self.health = DAT_TROWEL_HP;
