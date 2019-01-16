@@ -523,13 +523,16 @@ void() unit_balaket_sniper_h={
   ai_promote();
   switch( self.ai_rank ){
     case 2:
-
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LATC, ID_WEP_FLAK, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
-
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_MLGD, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
-
+      ai_ini_weapons( ID_WEP_LATC, ID_WEP_LATC, ID_WEP_LAS, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
   unit_balaket_sniper();
@@ -541,13 +544,16 @@ void() unit_balaket_sniper_m={
   ai_promote();
   switch( self.ai_rank ){
     case 2:
-
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_MARH, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
-
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_QRF, ID_WEP_PAC, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
-
+      ai_ini_weapons( ID_WEP_LATC, ID_WEP_LATC, ID_WEP_QRF, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
   unit_balaket_sniper();
@@ -584,13 +590,16 @@ void() unit_balaket_brawl_h={
   ai_promote();
   switch( self.ai_rank ){
     case 2:
-
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_MIS, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_LOWTECH;
       break;
     case 3:
-
+      ai_ini_weapons( ID_WEP_LATC, ID_WEP_LATC, ID_WEP_ESR, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     default:
-
+      ai_ini_weapons( ID_WEP_FLAK, ID_WEP_FLAK, ID_WEP_ION, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_PRIMITVE;
       break;
   }
   unit_balaket_brawl();
@@ -602,15 +611,19 @@ void() unit_balaket_brawl_m={
   ai_promote();
   switch( self.ai_rank ){
     case 2:
-
+      ai_ini_weapons( ID_WEP_FLAK, ID_WEP_FLAK, ID_WEP_ESR, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
       break;
     case 3:
-
+      ai_ini_weapons( ID_WEP_LATC, ID_WEP_LATC, ID_WEP_PAC, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
-
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_RPC, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
+  
   unit_balaket_brawl();
 };
 
@@ -666,20 +679,84 @@ void() unit_matok_sniper={
 };
 
 void() unit_matok_sniper_h={
+  self.i_faction = FACTION_SURVEST;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      ai_ini_weapons( ID_WEP_FLAK, ID_WEP_FLAK, ID_WEP_ION, ID_WEP_LAS, ID_WEP_QRF, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    case 3:
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_LAS, ID_WEP_LAS, ID_WEP_LAS,  -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
+    default:
+      ai_ini_weapons( ID_WEP_LATC, ID_WEP_LATC, ID_WEP_FLAK, ID_WEP_FLAK, ID_WEP_ION, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+  }
   unit_matok_sniper();
 };
 
 void() unit_matok_sniper_m={
-
+  self.i_faction = FACTION_MILITAR;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_QRF, ID_WEP_FLAK, ID_WEP_MARH, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
+    case 3:
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_QRF, ID_WEP_LATC, ID_WEP_PAC, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
+    default:
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_QRF, ID_WEP_FLAK, ID_WEP_ION, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+  }
   unit_matok_sniper();
 };
 
-void() unit_matok_brawl_h={
+void() unit_matok_brawl_h={  
+
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_MLGD, ID_WEP_MIS, ID_WEP_SFGA, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+    case 3:
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, ID_WEP_ION, ID_WEP_LAS, ID_WEP_RPC, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+    default:
+      ai_ini_weapons( ID_WEP_LATC, ID_WEP_FLAK, ID_WEP_LAS, ID_WEP_MIS, ID_WEP_ION, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_LOWTECH;
+      break;
+  }
 
   unit_matok_brawl();
 };
-void() unit_matok_brawl_m={
+void() unit_matok_brawl_m={  
 
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      ai_ini_weapons(  ID_WEP_QRF, ID_WEP_FLAK, ID_WEP_ESR, ID_WEP_RPC, ID_WEP_MLGD, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    case 3:
+      ai_ini_weapons( ID_WEP_QRF, ID_WEP_LAS, ID_WEP_RPC, ID_WEP_RPC, ID_WEP_EMP -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    default:
+      ai_ini_weapons( ID_WEP_LATC, ID_WEP_LATC, ID_WEP_ESR, ID_WEP_ION, ID_WEP_MIS, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+  }
   unit_matok_brawl();
 };
 
@@ -734,16 +811,62 @@ void() unit_monitor_sniper={
 };
 
 void() unit_monitor_brawl_h={
-
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      ai_ini_weapons(ID_WEP_LATC,ID_WEP_FLAK,ID_WEP_LATC,ID_WEP_FLAK,ID_WEP_ESR,ID_WEP_EMP,ID_WEP_MIS,ID_WEP_MIS,ID_WEP_MIS);
+      self.spreadDefault = ACCURACY_LOWTECH;
+      break;
+    case 3:
+      ai_ini_weapons(ID_WEP_LAS,ID_WEP_LATC,ID_WEP_LAS,ID_WEP_LATC,ID_WEP_SFGA,ID_WEP_SFGA,ID_WEP_MIS,ID_WEP_MIS,ID_WEP_MIS);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+    default:
+      ai_ini_weapons(ID_WEP_LATC,ID_WEP_FLAK,ID_WEP_LATC,ID_WEP_FLAK,ID_WEP_LAS,ID_WEP_LAS,ID_WEP_MIS,ID_WEP_MARH,ID_WEP_MIS);
+      self.spreadDefault = ACCURACY_PRIMITVE;
+      break;
+  }
   unit_monitor_brawl();
 };
 
 void() unit_monitor_brawl_m={
-
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LATC, ID_WEP_LAS, ID_WEP_LATC, ID_WEP_EMP, ID_WEP_ESR, ID_WEP_MLGD, ID_WEP_MLGD, ID_WEP_MLGD);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+    case 3:
+      ai_ini_weapons( ID_WEP_LAS,ID_WEP_LAS,ID_WEP_LAS,ID_WEP_LAS, ID_WEP_ESR, ID_WEP_ESR, ID_EQP_ENBAT, ID_EQP_ENBAT, ID_EQP_RECAP);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    default:
+      ai_ini_weapons( ID_WEP_FLAK,ID_WEP_FLAK,ID_WEP_FLAK,ID_WEP_FLAK,ID_WEP_RPC, ID_WEP_EMP, ID_WEP_MIS, ID_WEP_MARH, ID_WEP_MARH);
+      self.spreadDefault = ACCURACY_LOWTECH;
+      break;
+  }
   unit_monitor_brawl();
 };
 
-void() unit_monitor_sniper_m={
+void() unit_monitor_sniper_m={  
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      ai_ini_weapons(ID_WEP_LATC,ID_WEP_LATC,ID_WEP_LATC,ID_WEP_LATC,ID_WEP_PAC,ID_WEP_PAC,ID_EQP_ATGM,ID_EQP_ENBAT,ID_EQP_HSEM);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
+    case 3:
+      ai_ini_weapons(ID_WEP_LAS,ID_WEP_LAS,ID_WEP_LAS,ID_WEP_LAS,ID_WEP_MLGD,ID_WEP_MLGD,ID_EQP_ENBAT,ID_EQP_ATGM,ID_EQP_HSEM);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
+    default:
+      ai_ini_weapons(ID_WEP_LAS,ID_WEP_LATC,ID_WEP_LAS,ID_WEP_LATC,ID_WEP_PAC,ID_WEP_QRF,ID_WEP_MARH,ID_EQP_ENBAT,ID_EQP_ATGM);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+  }
   unit_monitor_sniper();
 };
 
