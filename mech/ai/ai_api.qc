@@ -412,7 +412,7 @@ float(entity wep) ai_attack_blockcheck={
   }
 
   if( (wep.p_dmgtype & EFF_ARC) ){
-    return TRUE; // arcing attacks don't need LoS
+    return FALSE; // arcing attacks don't need LoS
   }
   return FALSE;
 };

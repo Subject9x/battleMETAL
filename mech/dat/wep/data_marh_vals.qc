@@ -35,6 +35,7 @@ void() data_marh_ini={
   self.max_health = DAT_MARH_HPX;
   self.w_isburst = FALSE;
   self.spreadDefault = DAT_MARH_ACC;
+  self.w_range = DAT_MARH_RANGE; 
 };
 
 void() data_marh_think={
@@ -63,7 +64,7 @@ void() data_marh_atk={
   player = self.owner;
 
   if(player.stat_rdr_mode == TRUE){
-    if(player.stat_lck_stt & LOCK_TARG_HAS){ 
+    if( (player.stat_lck_stt & LOCK_TARG_HAS) ){
       local vector dir, org, end, adj, angl;
       local float range;
       adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
