@@ -137,6 +137,7 @@ void() ai_dest_th={
         ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
         ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
         ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L); 
+        ai_lock_on();
       }
       else{ 
         self.enemy = world;
@@ -231,6 +232,10 @@ void() ai_vec_dest={
   
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
+  }
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_HASRADAR) ){
+    self.stat_rdr_mode = TRUE;
   }
   
   trigger_event( self, trigOnSpawn); //event interface

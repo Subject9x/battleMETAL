@@ -616,6 +616,42 @@ float( float bestAccuracy ) ai_wait_for_shot={
   return FALSE;
 };
 
+void() ai_lock_on={
+  //can only lock-on to enemy units
+  if( self.enemy.i_faction != self.i_faction ){
+    if( util_lockOnChoke(self.enemy.origin) ){
+      if( !(self.stat_lck_stt & LOCK_TARG_START) && !(self.stat_lck_stt & LOCK_TARG_HAS) ){
+        self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_START;
+        self.power_timer_segment = time;
+        if(self.stat_rdr_mode){
+          self.lock_timer = time + self.w_firetime;
+        }
+        else{
+          self.lock_timer = time + (self.w_firetime * 2);
+        }
+      }
+      if( time > self.lock_timer ){
+        if( !(self.stat_lck_stt & LOCK_TARG_HAS) ){
+          self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
+          self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_HAS;
+        }
+      }
+    }
+    else{
+      if( (self.stat_lck_stt & LOCK_TARG_START) ){
+        self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
+      }
+      if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
+        self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
+      } 
+      if( (self.enemy.stat_lck_stt & LOCK_PLYR) ){
+        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
+      }
+    }
+    
+  }
+};
+
 //AI MAP FUNCS
 /*
     called by any AI unit that needs to spawn onto the map.

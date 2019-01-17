@@ -43,7 +43,7 @@ void() data_dunerunner_ini={
   self.m_bspeed = DAT_dunerunner_BSPEED;
   self.m_pitch_max = DAT_dunerunner_PITCH_N;
   self.m_pitch_min = DAT_dunerunner_PITCH_X;
-  
+  self.w_firetime = DAT_dunerunner_LOCK_ON;
   setsize(self, DAT_dunerunner_BBX_N, DAT_dunerunner_BBX_X);
   setorigin(self, self.origin);
     

@@ -352,6 +352,7 @@ void() ai_mech_sniper_th={
         ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
         ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
         ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
+        ai_lock_on();
       }
       else{ 
         self.enemy = world;

@@ -143,6 +143,7 @@ float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;
 float() ai_panic_time;
 float( float bestAccuracy ) ai_wait_for_shot;
+void() ai_lock_on;
 
 //AI MAP FUNCS
 float( void() ai_to_make ) ai_unit_setup;

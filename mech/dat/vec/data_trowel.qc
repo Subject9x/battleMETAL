@@ -52,7 +52,7 @@ void() data_TROWEL_ini={
   self.m_bspeed = DAT_TROWEL_BSPEED;
   self.m_pitch_max = DAT_TROWEL_PITCH_N;
   self.m_pitch_min = DAT_TROWEL_PITCH_X;
- 
+  self.w_firetime = DAT_trowel_LOCK_ON;
   setsize(self, DAT_TROWEL_CTOR_BBX_N, DAT_TROWEL_CTOR_BBX_X);
   setorigin(self, self.origin);
 

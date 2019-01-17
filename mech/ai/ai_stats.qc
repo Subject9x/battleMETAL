@@ -410,3 +410,21 @@ vector( float rank, vector spread ) ai_pilot_accuracy={
   acc = acc + spread;
   return acc;
 };
+
+/*
+  Adjust lock-on time by difficulty
+*/
+float( float rank, float lockOn ) ai_pilot_lock_time={
+
+  switch( rank ){
+    case 1:
+      self.w_firetime = self.w_firetime - (self.w_firetime * 0.15);
+      break;
+    case 2:
+      self.w_firetime = self.w_firetime - (self.w_firetime * 0.25);
+      break;
+    case 3:
+      self.w_firetime = self.w_firetime - (self.w_firetime * 0.35);
+      break;
+  }
+};

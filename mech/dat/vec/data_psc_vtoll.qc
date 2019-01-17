@@ -44,6 +44,7 @@ void() data_PSC_VTOLL_ini={
   self.m_bspeed = DAT_PSC_VTOLL_BSPEED;
   self.m_pitch_max = DAT_vtol_PITCH_N;
   self.m_pitch_min = DAT_vtol_PITCH_X;
+  self.w_firetime = DAT_vtol_LOCK_ON;
 };
 
 void() data_PSC_VTOLL_cam={  

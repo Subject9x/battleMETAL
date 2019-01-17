@@ -53,7 +53,7 @@ void() data_foslager_ini={
   self.m_bspeed = DAT_foslager_BSPEED;
   self.m_pitch_max = DAT_foslager_PITCH_N;
   self.m_pitch_min = DAT_foslager_PITCH_X;
- 
+  self.w_firetime = DAT_foslager_LOCK_ON;
   setsize(self, DAT_foslager_CTOR_BBX_N, DAT_foslager_CTOR_BBX_X);
   setorigin(self, self.origin);
 };

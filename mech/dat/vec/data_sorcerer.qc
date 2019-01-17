@@ -52,7 +52,7 @@ void() data_sorcerer_ini={
   self.m_bspeed = DAT_sorcerer_BSPEED;
   self.m_pitch_max = DAT_sorcerer_PITCH_N;
   self.m_pitch_min = DAT_sorcerer_PITCH_X;
- 
+  self.w_firetime = DAT_sorcerer_LOCK_ON;
   setsize(self, DAT_sorcerer_CTOR_BBX_N, DAT_sorcerer_CTOR_BBX_X);
   setorigin(self, self.origin);
 

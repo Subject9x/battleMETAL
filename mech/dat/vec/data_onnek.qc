@@ -45,7 +45,7 @@ void() data_onnek_ini={
   self.m_bspeed = DAT_onnek_BSPEED;
   self.m_pitch_max = DAT_onnek_PITCH_N;
   self.m_pitch_min = DAT_onnek_PITCH_X;
-  
+  self.w_firetime = DAT_onnek_LOCK_ON;
 };
 
 void() data_onnek_wep1={  
