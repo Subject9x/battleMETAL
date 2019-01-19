@@ -272,8 +272,8 @@ void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
 
 void(string mdl_name, float skinNum, float ef_flags) util_setModel={
   self.effects = self.effects | ef_flags;
-  setmodel(self, mdl_name);
   self.skin = skinNum;
+  setmodel(self, mdl_name);
 };
 
 /*

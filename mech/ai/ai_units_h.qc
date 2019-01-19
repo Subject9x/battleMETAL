@@ -18,13 +18,6 @@ Overview: AI Unit headers
   FACTION - HUMAN - SURVIVOR
 ==============================
 */
-void() unit_hs_truck_cargo;
-void() unit_hs_truck_hab;
-void() unit_hs_truck_const;
-
-void() unit_hs_dozer;
-void() unit_hs_loader;
-void() unit_hs_excavat;
 
 
 /*

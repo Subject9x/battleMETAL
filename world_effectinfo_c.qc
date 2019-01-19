@@ -10,11 +10,31 @@ void(vector org, vector vel, float total) te_smoke_test={
   pointparticles(particleeffectnum("SMOKE_TEST"), org , vel, total);
 };
 
+void() te_debris_touch={
+  remove(self);
+};
+
+void() te_debris_th2={
+  self.alpha = self.alpha - 0.1;
+  self.think = te_debris_th2;
+  if( self.alpha >= 0 ){
+    self.think = SUB_Remove;
+  } 
+  self.nextthink = time + 0.5;
+}
+
+void() te_debris_th1={
+  self.solid = SOLID_BBOX;
+  self.touch = te_debris_touch;
+  self.think = te_debris_th2;
+  self.nextthink = time + 0.1;
+};
+
 /*
   Creates a small flying smoking debris field
   mostly used for mech piece explosions
 */
-void( vector org, vector angl, float vel, float total, float particleNum) te_debris_smoke_small={
+void( vector org, vector angl, vector vel, float total) te_debris_small={
   local float totals;
   
   totals = total;
@@ -23,15 +43,18 @@ void( vector org, vector angl, float vel, float total, float particleNum) te_deb
     newmis.movetype = MOVETYPE_BOUNCE;
     newmis.solid = SOLID_NOT;
     newmis.classname = "missile";
-    newmis.velocity = normalize(angl);
-    newmis.velocity = newmis.velocity * vel;
-    newmis.angles = vectoangles(newmis.velocity);
-    newmis.think = SUB_Remove;
-    newmis.nextthink = time + newmis.p_lifetime;
-    setmodel(newmis, "q3mdl/testball.md3"); //DEBUG - TODO
+    newmis.velocity = vel;
+    newmis.velocity_z = newmis.velocity_z + 50;
+    newmis.avelocity_x = random()*150;
+    newmis.avelocity_y = random()*150;
+    newmis.avelocity_z = random()*100;
+    newmis.think = te_debris_th1;
+    newmis.nextthink = time + 1;
+    setmodel(newmis, "q3mdl/fx/debris1/mdl_debris_1.md3"); //DEBUG - TODO
     setsize(newmis, '0 0 0', '0 0 0');        
     setorigin(newmis, org);
-    newmis.traileffectnum = particleNum;  //TODO - finish
+    newmis.gravity = 0.15;
+    newmis.traileffectnum = particleeffectnum("TE_MIS_TRAIL");  //TODO - finish
     totals = totals - 1;
   }
 };

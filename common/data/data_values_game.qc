@@ -294,6 +294,6 @@ vector ACCURACY_PRIMITVE    = '0.6 1 0.001';
 //============================
 //     FACTIONS
 //============================
-float FACTION_PSC = 0;
-float FACTION_SURVEST = 1;
-float FACTION_MILITAR = 2;
+float FACTION_PSC = 1;
+float FACTION_SURVEST = 2;
+float FACTION_MILITAR = 3;

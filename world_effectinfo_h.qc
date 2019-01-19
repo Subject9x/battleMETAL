@@ -9,7 +9,9 @@
 
 void(vector org, vector vel, float total) te_smoke_test;
 
-void( vector org, vector angl, float vel, float total, float particleNum) te_debris_smoke_small;
+void( vector org, vector angl, vector vel, float total) te_debris_small;
+
+
 
 //SFX
 void() te_nav_reach;

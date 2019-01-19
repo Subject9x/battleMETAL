@@ -157,7 +157,7 @@ void() ctrl_die_comp={
         self.avelocity_x = random()*150;
         self.avelocity_y = random()*150;
         self.avelocity_z = random()*100;
-      }      
+      }
       self.th_die = SUB_Remove;
       self.owner = oself.owner;
       util_setCollider(DAMAGE_AIM, SOLID_CORPSE, MOVETYPE_BOUNCE);
@@ -168,6 +168,9 @@ void() ctrl_die_comp={
       self.think = BecomeExplosion;
       self.nextthink = time + 100;
       self.colormod = oself.colormod;
+      pvel = normalize(self.origin - oself.owner.origin) * 10;
+      pvel_z = pvel_z + 50;
+      te_debris_small( self.origin, self.angles, normalize(self.origin - oself.owner.origin) * 10, oself.owner.vec_size * 2); 
     self = oself;
 
     self.deadflag = DEAD_DEAD;

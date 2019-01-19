@@ -510,14 +510,13 @@ void() ai_mech_sk_th={
       self.button0 = 0;
       
       ai_state_control( self.attack_state );
-      self.v_angle = self.angles;
-      if( (self.flags & FL_TURRET) ){
-        ai_turret_control();
-      }
-      self.e_legs.angles_y = self.angles_y;
     }
   }
-  
+ self.v_angle = self.angles;
+  if( (self.flags & FL_TURRET) ){
+    ai_turret_control();
+  }
+  self.e_legs.angles_y = self.angles_y;
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
     self.think = ai_mech_sk_th;

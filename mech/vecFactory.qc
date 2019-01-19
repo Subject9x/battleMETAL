@@ -6,6 +6,31 @@ mod: 11/27/2017 - data system refactor
 Overview: builds player vehicle
 */
 
+/*
+  rewiring to use md3 tags would also involve changes to shot angle calcs for weapons..
+  so, maybe one day
+*/ 
+/*void(void() func, entity own) build_unit_tag_component={
+  local entity follow;
+  func();
+  follow = util_getPartFromName( self.c_parent, own );
+  self.deadflag = DEAD_NO;
+  self.classname = MECH_PIECE; 
+  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+  util_setModel(self.c_model, own.skin, 0);
+  setsize(self, '-1 -1 -1', '1 1 1');
+  util_setOffsetOrigin(self, own, self.c_ofs);
+  self.owner = own;
+  //self.aiment = follow;
+  //self.punchangle = follow.angles;
+  //self.view_ofs = self.origin - follow.origin;
+  //self.angles = follow.angles;
+  //self.v_angle = self.angles - follow.angles;
+  self.th_die = ctrl_die_comp;
+  self.colormod = '1 1 1';
+  setattachment(self, follow, "tag_tor_l");
+};*/
+
 void(void() func, entity own) build_unit_component={
   local entity follow;
   func();
@@ -13,7 +38,8 @@ void(void() func, entity own) build_unit_component={
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(self.c_model, own.mskin, 0);
+  util_setModel(self.c_model, own.skin, 0);
+  
   setsize(self, '-1 -1 -1', '1 1 1');
   util_setOffsetOrigin(self, own, self.c_ofs);
   self.owner = own;
@@ -193,7 +219,13 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
 
 void(void() data_ini) build_mech_unit={
   local entity part_chain;
-
+  
+  //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
+  self.skin = self.i_faction - 1;
+  if( self.skin < 0 ){
+    self.skin = 0;
+  }
+  
   if( !(self.flags & FL_CLIENT) ){
     build_mech_bot( data_ini );
     return;
@@ -261,7 +293,7 @@ void(void() func) build_mech_torsoCenter={
   this = self;
   self = ctor;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(this.c_model, this.mskin, 0);
+    util_setModel(this.c_model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, '0 0 0');
     self.punchangle = self.angles = '0 0 0';
@@ -277,7 +309,6 @@ void(void() func) build_mech_torsoCenter={
   ctor_stand();
 };
 
-
 void(void() data_ini) build_mech_bot={
   local entity part_chain;
   local vector hmins, hmaxs;
@@ -288,7 +319,7 @@ void(void() data_ini) build_mech_bot={
   
   hmaxs = self.maxs;
   hmins = self.mins;
-  util_setModel("q3mdl/testball.md3", self.mskin, 0);
+  util_setModel("q3mdl/testball.md3", self.skin, 0);
   setsize( self, hmins, hmaxs );
   
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
@@ -346,7 +377,7 @@ entity( void() func ) build_unit_turret={
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE; 
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
-    util_setModel(self.c_model, this.i_faction, 0);
+    util_setModel(self.c_model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.angles = this.angles;
@@ -364,6 +395,7 @@ entity(void() func) build_mech_torsoLeft={
   comp = spawn();
   self = comp;
     build_unit_component(func, this);
+    //build_unit_tag_component(func, this);
   self = this;
   return comp;
 };
@@ -408,7 +440,7 @@ entity(void() func) build_mech_legs={
     self.classname = MECH_PIECE;
     self.walkframe = 1;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, this.mskin, 0);
+    util_setModel(self.c_model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.aiment = this;
@@ -443,9 +475,13 @@ void(void() data_ini) build_vehicle_unit={
   hmaxs = self.maxs;
   hmins = self.mins;
   
-  util_setModel(self.c_model, self.i_faction, 0);
+  //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
+  self.skin = self.i_faction - 1;
+  if( self.skin < 0 ){
+    self.skin = 0;
+  }
+  util_setModel(self.c_model, self.skin, 0);
   setsize( self, hmins, hmaxs );
-  
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   
   self.alpha = 1;

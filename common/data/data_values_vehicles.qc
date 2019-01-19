@@ -223,7 +223,7 @@ string DAT_foslager_CAM_MODEL    = "q3mdl/testball.md3";
 string DAT_TROWEL_CTOR_MODEL   = "q3mdl/vecs/trowel/mdl_trowel_tur.md3";
 string DAT_TROWEL_MDL_CHASSIS    = "q3mdl/vecs/trowel/mdl_trowel_chas.md3";
 //-------------------------Onnek
-string DAT_onnek_CTOR_MODEL   = "q3mdl/vecs/onnek/mdl_onnek_chas.md3";
+string DAT_onnek_CTOR_MODEL   = "q3mdl/vecs/onnek/onnek.md3";
 string DAT_onnek_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------Dunerunner
 string DAT_dunerunner_MDL_CAM    = "q3mdl/testball.md3";

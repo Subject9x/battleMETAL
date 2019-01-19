@@ -147,31 +147,31 @@ vector DAT_MNT_CTOR_BBX_X = '22 22 28';
 //            Models  
 //============================
 //-------------------------BALAKET------------------------
-string DAT_OTL_CPIT_MODEL   = "q3mdl/mechs/notl/mdl_blk_cpt.md3";
-string DAT_OTL_CTOR_MODEL   = "q3mdl/mechs/notl/mdl_blk_t_cent.md3";
-string DAT_OTL_LEG_MODEL    = "q3mdl/mechs/notl/mdl_blk_legs.md3";
-string DAT_OTL_LTOR_MODEL   = "q3mdl/mechs/notl/mdl_blk_t_left.md3";
-string DAT_OTL_RTOR_MODEL   = "q3mdl/mechs/notl/mdl_blk_t_right.md3";
-string DAT_OTL_LARM_MODEL   = "q3mdl/mechs/notl/mdl_blk_l_arm.md3";
-string DAT_OTL_RARM_MODEL   = "q3mdl/mechs/notl/mdl_blk_r_arm.md3";
+string DAT_OTL_CPIT_MODEL   = "q3mdl/mechs/balaket/balaket_view.md3";
+string DAT_OTL_CTOR_MODEL   = "q3mdl/mechs/balaket/balaket_tor_c.md3";
+string DAT_OTL_LTOR_MODEL   = "q3mdl/mechs/balaket/balaket_tor_l.md3";
+string DAT_OTL_RTOR_MODEL   = "q3mdl/mechs/balaket/balaket_tor_r.md3";
+string DAT_OTL_LARM_MODEL   = "q3mdl/mechs/balaket/balaket_arm_l.md3";
+string DAT_OTL_RARM_MODEL   = "q3mdl/mechs/balaket/balaket_arm_r.md3";
+string DAT_OTL_LEG_MODEL    = "q3mdl/mechs/balaket/balaket_legs.md3";
 string DAT_OTL_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------MATOK------------------------
-string DAT_MTK_CPIT_MODEL   = "q3mdl/mechs/ntmk/mdl_mtk_cpt.md3";
-string DAT_MTK_CTOR_MODEL   = "q3mdl/mechs/ntmk/mdl_mtk_t_cent.md3";
-string DAT_MTK_LEG_MODEL    = "q3mdl/mechs/ntmk/mdl_mtk_legs.md3";
-string DAT_MTK_LTOR_MODEL   = "q3mdl/mechs/ntmk/mdl_mtk_t_left.md3";
-string DAT_MTK_RTOR_MODEL   = "q3mdl/mechs/ntmk/mdl_mtk_t_right.md3";
-string DAT_MTK_LARM_MODEL   = "q3mdl/mechs/ntmk/mdl_mtk_l_arm.md3";
-string DAT_MTK_RARM_MODEL   = "q3mdl/mechs/ntmk/mdl_mtk_r_arm.md3";
+string DAT_MTK_CPIT_MODEL   = "q3mdl/mechs/matok/matok_hud.md3";
+string DAT_MTK_CTOR_MODEL   = "q3mdl/mechs/matok/matok_tor_c.md3";
+string DAT_MTK_LEG_MODEL    = "q3mdl/mechs/matok/matok_legs.md3";
+string DAT_MTK_LTOR_MODEL   = "q3mdl/mechs/matok/matok_tor_l.md3";
+string DAT_MTK_RTOR_MODEL   = "q3mdl/mechs/matok/matok_tor_r.md3";
+string DAT_MTK_LARM_MODEL   = "q3mdl/mechs/matok/matok_arm_l.md3";
+string DAT_MTK_RARM_MODEL   = "q3mdl/mechs/matok/matok_arm_r.md3";
 string DAT_MTK_CAM_MODEL    = "q3mdl/testball.md3";
 //-------------------------MONITOR------------------------
-string DAT_MNT_CPIT_MODEL   = "q3mdl/mechs/mnt/mdl_mnt_cpt.md3";
-string DAT_MNT_CTOR_MODEL   = "q3mdl/mechs/mnt/mdl_mnt_t_cent.md3";
-string DAT_MNT_LEG_MODEL    = "q3mdl/mechs/mnt/mdl_mnt_legs.md3";
-string DAT_MNT_LTOR_MODEL   = "q3mdl/mechs/mnt/mdl_mnt_t_left.md3";
-string DAT_MNT_RTOR_MODEL   = "q3mdl/mechs/mnt/mdl_mnt_t_right.md3";
-string DAT_MNT_LARM_MODEL   = "q3mdl/mechs/mnt/mdl_mnt_l_arm.md3";
-string DAT_MNT_RARM_MODEL   = "q3mdl/mechs/mnt/mdl_mnt_r_arm.md3";
+string DAT_MNT_CPIT_MODEL   = "q3mdl/mechs/monitor/monitor_hud.md3";
+string DAT_MNT_CTOR_MODEL   = "q3mdl/mechs/monitor/monitor_tor_c.md3";
+string DAT_MNT_LEG_MODEL    = "q3mdl/mechs/monitor/monitor_legs.md3";
+string DAT_MNT_LTOR_MODEL   = "q3mdl/mechs/monitor/monitor_tor_l.md3";
+string DAT_MNT_RTOR_MODEL   = "q3mdl/mechs/monitor/monitor_tor_r.md3";
+string DAT_MNT_LARM_MODEL   = "q3mdl/mechs/monitor/monitor_arm_l.md3";
+string DAT_MNT_RARM_MODEL   = "q3mdl/mechs/monitor/monitor_arm_r.md3";
 string DAT_MNT_CAM_MODEL    = "q3mdl/testball.md3";
 //============================
 //            Model Offsets 

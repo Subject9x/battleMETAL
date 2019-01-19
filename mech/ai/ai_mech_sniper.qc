@@ -344,31 +344,30 @@ void() ai_mech_sniper_th={
     ctrl_wpn_think(wep);
     wep = wep.w_slot;
   }
-  
-  if( !self.deadflag ){
-    if( self.enemy ){
-      if( ai_valid_target( self.enemy ) ){
-        self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
-        ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
-        ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
-        ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
-        ai_lock_on();
-      }
-      else{ 
-        self.enemy = world;
-      }
-    }  
-    ai_ranged_attack();
-    self.button0 = 0;
-    
-    ai_state_control( self.attack_state );
-    self.v_angle = self.angles;
-    if( (self.flags & FL_TURRET) ){
-      ai_turret_control();
+  if( !(self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
+    if( !self.deadflag ){
+      if( self.enemy ){
+        if( ai_valid_target( self.enemy ) ){
+          self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
+          ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
+          ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
+          ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
+          ai_lock_on();
+        }
+        else{ 
+          self.enemy = world;
+        }
+      }  
+      ai_ranged_attack();
+      self.button0 = 0;
+      ai_state_control( self.attack_state );
     }
-    self.e_legs.angles_y = self.angles_y;
   }
-  
+  self.v_angle = self.angles;
+  if( (self.flags & FL_TURRET) ){
+    ai_turret_control();
+  }
+  self.e_legs.angles_y = self.angles_y;
   if( !(self.flags & FL_SKIPTHINK) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);
     self.think = ai_mech_sniper_th;
