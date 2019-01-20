@@ -22,10 +22,6 @@ float() ai_gev_setDuration={
   duration = duration * random();
   return duration;
 };
-void() ai_gev_setStrafe={
-  
-
-};
 
 float() ai_gev_lefty={
   if( random() > 0.49 ){
@@ -33,8 +29,6 @@ float() ai_gev_lefty={
   }
   return self.lefty;
 };
-
-void() ai_gev_crash;
 
 void() ai_gev_stand;        //normal hanging out
 void() ai_gev_walk;         //  velocity style movement 
@@ -49,7 +43,6 @@ void() ai_gev_pain;         //
   
 void() ai_gev_die;
 void() ai_gev_th;
-
 
 void() ai_gev_stand={
   ai_update_accuracy( FALSE );  
@@ -87,7 +80,7 @@ void() ai_gev_run={
     if( enemy_vis ){
       if( enemy_range <= 200 ){
         if( enemy_infront ){
-          if( (skill > 1) || (self.ai_rank < AI_RANK_REG) ){
+          if( self.ai_rank < AI_RANK_REG ){
             ai_next_state( ST_MELEE );
             return;
           }
@@ -120,10 +113,9 @@ void() ai_gev_run={
         return;
       }
       
-      
       if( enemy_range <= self.ai_minrange * 2 ){
         if( enemy_infront ){
-          if( (skill > 1) || (self.ai_rank < AI_RANK_REG) ){            
+          if( self.ai_rank < AI_RANK_REG ){            
             if( ai_check_face( self.enemy, 0.92 ) ){
               if( ai_attack() ){
                 angl = 25 + (random() * 90);
@@ -337,50 +329,88 @@ void() ai_gev_pain={
   
 };
 
-void() ai_gev_crash={
-  
-  if( other.takedamage > DAMAGE_NO ){
-    t_damage( other, self, self, (self.health * -1), DMG_ENE | EFF_PRC, self.origin, '0 0 0');
+void() ai_gev_die2={
+  self.think = ai_gev_die2;
+  if( time > self.ai_action_time ){
+    self.think = SUB_Remove;
   }
+  self.nextthink = time + 1;
+};
+
+void() ai_gev_die1={
+
+  te_smoke_test(self.origin, '1 1 10', 4) ;
   
-  self.think = BecomeExplosion;
+  self.think = ai_gev_die1;
+  if( time > self.ai_action_time ){
+    self.ai_action_time = time + (random() * 2000);
+    self.think = ai_gev_die2;
+  }
+  self.nextthink = time + 0.5;
+};
+
+void() ai_gev_touch_death={
+  self.think = ai_gev_die2;
   self.nextthink = time + 0.05;
 };
 
-//TODO - fix death, needs to  go flying
 void() ai_gev_die={
+  local entity w_chain;
+  local vector v;
+  local vector t;
+  
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_BOUNCE;
   self.solid = SOLID_CORPSE;
-  self.colormod = '0.25 0.25 0.25';
-  self.attack_state = -1;
+  self.colormod = '0.1 0.1 0.1'; 
+  setsize(self, self.mins * 0.45, self.maxs * 0.65);
+  setorigin(self, self.origin);
   
-  local entity w_chain;
+  //fire triggers when dead
+  trigger_event( self, trigOnDeath );
+  ai_sfx_dead();
+ 
   w_chain = self.w_slot;
   while(w_chain){
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
+  mech_player_compdie(self.e_cam);
+  if( (self.flags & FL_TURRET) ){
+    mech_player_compdie(self.e_tor_c);
+  }
   
-  //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  t_y = self.ideal_yaw;
   
-  local vector v;
   makevectors( self.angles );
-  v = self.origin + (v_forward * self.m_fspeed) + (v_right * self.m_sspeed) + (v_up * 500);
-  self.velocity = normalize( self.origin - v );
-  self.velocity = self.velocity * 400;
-  self.avelocity = '250 100 500';
+
+  v = self.origin + (v_forward * 2) + (v_right * (crandom() * 3)) + (v_up * 3);
+  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size);
+    
+  if( self.attack_state != ST_STAND ){
+    self.velocity = normalize( v - self.origin);
+    self.velocity = self.velocity * 200;
+    self.gravity = 0.25;
+    self.avelocity_x = crandom() * 150;
+    self.avelocity_y = crandom() * 300; 
+    self.avelocity_z = crandom() * 400;
+  }
+  self.attack_state = -1;
+  self.think = ai_gev_die1;
+  self.nextthink = time + 0.01;
+  self.ai_action_time = time + (random() * 500);
+  self.attack_state = -1;
+  self.touch = ai_gev_touch_death;
 };
 
 void() ai_gev_th={
 
   ctrl_updateTank();
-  
+
   if( !(self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
     if( !self.deadflag ){
       if( self.enemy ){
-      ai_turret_set_state( TR_TARG );
+        ai_turret_set_state( TR_TARG );
         if( ai_valid_target( self.enemy ) ){
           self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
           ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
@@ -395,10 +425,10 @@ void() ai_gev_th={
       ai_ranged_attack();
       self.button0 = 0;  
       ai_state_control( self.attack_state ); 
-      if( (self.flags & FL_TURRET) ){
-        ai_turret_control();
-      }
     }
+  }
+  if( (self.flags & FL_TURRET) ){
+    ai_turret_control();
   }
 
   if( !(self.flags & FL_SKIPTHINK) ){

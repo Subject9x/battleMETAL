@@ -35,6 +35,7 @@ void() data_sorcerer_ini={
     
   self.data_idx = ID_VEC_sorcerer;
   self.vec_name= DAT_sorcerer_NAME;
+  self.vec_size = DAT_sorcerer_SIZE;
   self.data_type = DATA_VEHC;
   self.health = DAT_sorcerer_HP;
   self.max_health = DAT_sorcerer_HP;

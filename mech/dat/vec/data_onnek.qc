@@ -24,6 +24,7 @@ void() data_onnek_ini={
     
   self.data_idx= ID_VEC_onnek;
   self.vec_name= DAT_onnek_VEC_NAME;
+  self.vec_size = DAT_onnek_SIZE;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_onnek_RADAR_RANGE;
   self.i_techlvl= DAT_onnek_TECH_LEVEL;

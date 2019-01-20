@@ -36,6 +36,7 @@ void() data_foslager_ini={
     
   self.data_idx= ID_VEC_foslager;
   self.vec_name= DAT_foslager_NAME;
+  self.vec_size = DAT_foslager_SIZE;
   self.data_type = DATA_VEHC;
   self.health = DAT_foslager_HP;
   self.max_health = DAT_foslager_HP;

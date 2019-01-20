@@ -71,6 +71,13 @@ float() ai_can_spawn={
   return yesWecan;
 };
 
+float( entity t ) ai_line_of_sight={
+  //use FoV choke
+  //check turret
+  //return false if blocked by world
+  //check for radar.
+}:
+
 float(entity t) ai_valid_target={
   local float val;
   val = FALSE;
@@ -90,11 +97,6 @@ float(entity t) ai_valid_target={
     }
   }
   
-  if( val == FALSE ){
-    if( self.enemy = t ){
-      
-    }
-  }
   return val;
 };
 

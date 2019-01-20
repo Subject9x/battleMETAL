@@ -5,13 +5,16 @@
   Overview: custom TE_'s using the effectinfo.txt system
 */
 
+void(string gibname, float dm) ThrowGib ;
+vector(float dm) VelocityForDamage;
+
 .float traileffectnum;  //seriously?
 
 void(vector org, vector vel, float total) te_smoke_test;
 
-void( vector org, vector angl, vector vel, float total) te_debris_small;
+void( vector org, vector angl, vector vel, float total, float debrType) te_debris;
 
-
+void( vector org, vector angl, vector vel, float total) te_unit_dust;
 
 //SFX
 void() te_nav_reach;

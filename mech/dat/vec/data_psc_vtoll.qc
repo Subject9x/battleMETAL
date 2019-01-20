@@ -19,8 +19,9 @@ void() data_PSC_VTOLL_ini={
   self.unit_wep2 = data_PSC_VTOLL_wep2;
   self.unit_cam = data_PSC_VTOLL_cam;
     
-  self.data_idx= ID_VEC_PSC_VTOL_L;
-  self.vec_name= DAT_PSC_VTOLL_NAME;
+  self.data_idx = ID_VEC_PSC_VTOL_L;
+  self.vec_name = DAT_PSC_VTOLL_NAME;
+  self.vec_size = DAT_PSC_VTOLL_SIZE;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_PSC_VTOLL_RADAR_RANGE;
   self.i_techlvl= DAT_vtol_TECH_LEVEL;

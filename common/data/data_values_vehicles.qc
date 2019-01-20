@@ -264,6 +264,23 @@ string DAT_dunerunner_PITCH_X = "25";
 string DAT_vtol_PITCH_N = "-45";
 string DAT_vtol_PITCH_X = "15";
 //============================
+//         Base Yaw Speed
+//============================
+//-------------------------Human Truck A, B, C
+float DAT_HS_TRUCK_SIZE    = 2;
+//-------------------------Foslager
+float DAT_foslager_SIZE    = 2;
+//-------------------------Trowel
+float DAT_trowel_SIZE      = 3;
+//-------------------------Onnek
+float DAT_onnek_SIZE        = 2;
+//-------------------------Dunerunner
+float DAT_dunerunner_SIZE  = 1;
+//-------------------------Sorcerer
+float DAT_sorcerer_SIZE    = 2;
+//-------------------------PSC VTOL Light
+float DAT_PSC_VTOLL_SIZE   = 8;
+//============================
 //            Tech level  
 //============================
 //-------------------------Foslager

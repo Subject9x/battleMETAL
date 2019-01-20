@@ -39,6 +39,8 @@ void() ctrl_updateTank={
     ctrl_wpn_think(wep);
     wep = wep.w_slot;
   }
+
+  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   //damage-based cosmetics for unit component pieces
   local entity piece;

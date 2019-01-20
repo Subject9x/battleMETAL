@@ -23,6 +23,7 @@ void() data_dunerunner_ini={
     
   self.data_idx= ID_VEC_dunerunner;
   self.vec_name= DAT_dunerunner_NAME;
+  self.vec_size = DAT_dunerunner_SIZE;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_dunerunner_RADAR_RANGE;
   self.i_techlvl= DAT_dunerunner_TECH_LEVEL;

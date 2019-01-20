@@ -35,6 +35,7 @@ void() data_TROWEL_ini={
     
   self.data_idx = ID_VEC_trowel;
   self.vec_name= DAT_TROWEL_NAME;
+  self.vec_size = DAT_trowel_SIZE;
   self.data_type = DATA_VEHC;
   self.health = DAT_TROWEL_HP;
   self.max_health = DAT_TROWEL_HP;

@@ -192,19 +192,19 @@ void() ai_tank_sk_pain={
 };
 
 void() ai_tank_sk_die={
+  local entity w_chain;
+  local vector v;
 
-  ai_sfx_dead();
-  
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
-  self.colormod = '0.25 0.25 0.25';
+  self.colormod = '0.1 0.1 0.1';
   self.attack_state = -1;
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
+  ai_sfx_dead();
 
-  local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
     mech_player_compdie(w_chain);
@@ -215,12 +215,13 @@ void() ai_tank_sk_die={
   mech_player_compdie(self.e_tor_r);
   mech_player_compdie(self.e_tor_c);
   
-  setsize( self, '-8 -8 -3' , '8 8 3' );
-  setorigin( self, self.origin);
-  
   self.think = ai_tank_sk_die1;
   self.ai_action_time = time + 120;
   
+  makevectors( self.angles );
+  v = self.origin + (v_up * 2);
+  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
+    
   //basically overkill damage will just remove the tank (nice and clean)
   if( self.health <= (self.max_health / 1.15) * -1 ){
     self.think = ai_tank_sk_die2;
@@ -252,6 +253,10 @@ void() ai_tank_sk_die1={
 };
 
 void() ai_tank_sk_die2={
+  local vector v;
+  makevectors( self.angles );
+  v = self.origin + (v_up * 2);
+  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 8, self.vec_size + 1);
   mech_cleanupMech();
   self.nextthink = time + 0.1;
   self.think = BecomeExplosion;
@@ -279,14 +284,14 @@ void() ai_tank_sk_th={
           self.enemy = world;
         }
       } 
-      
       ai_ranged_attack();
       self.button0 = 0;  
-      ai_state_control( self.attack_state ); 
-      if( (self.flags & FL_TURRET) ){
-        ai_turret_control();
-      }
+      ai_state_control( self.attack_state );
     }
+  }
+   
+  if( (self.flags & FL_TURRET) ){
+    ai_turret_control();
   }
   
   if( !(self.flags & FL_SKIPTHINK) ){

@@ -144,10 +144,10 @@ void() ai_dest_th={
         }
       }
       ai_ranged_attack();
+      ai_state_control( self.attack_state );
       self.button0 = 0;
     }
   }
-  ai_state_control( self.attack_state );
   
   if( !(self.flags & FL_SKIPTHINK ) ){
     self.flags = self.flags - (self.flags & FL_SKIPTHINK);

@@ -161,7 +161,7 @@ void() ctrl_die_comp={
       self.th_die = SUB_Remove;
       self.owner = oself.owner;
       util_setCollider(DAMAGE_AIM, SOLID_CORPSE, MOVETYPE_BOUNCE);
-      util_setModel(oself.model, oself.owner.mskin, 0);
+      util_setModel(oself.model, oself.owner.skin, 0);
       setsize(self, '-3 -3 -3', '3 3 3');
       setorigin(self, oself.origin);
       self.touch = touch_mechPiece;
@@ -170,7 +170,7 @@ void() ctrl_die_comp={
       self.colormod = oself.colormod;
       pvel = normalize(self.origin - oself.owner.origin) * 10;
       pvel_z = pvel_z + 50;
-      te_debris_small( self.origin, self.angles, normalize(self.origin - oself.owner.origin) * 10, oself.owner.vec_size * 2); 
+      te_debris( self.origin, self.angles, normalize(self.origin - oself.owner.origin) * 10, oself.owner.vec_size * 2, 1); 
     self = oself;
 
     self.deadflag = DEAD_DEAD;
