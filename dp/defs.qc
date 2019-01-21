@@ -1070,7 +1070,7 @@ float CHAN_WEAPON2            = 7;
 
 .vector dest, dest1, dest2, dest3, dest4;//, dest5;
 
-.entity flame;			// the flame burning this thing
+//.entity flame;			// the flame burning this thing
 
 .float doobits;		// set if this should do obit on death
 

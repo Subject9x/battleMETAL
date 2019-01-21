@@ -2,6 +2,7 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 7/17/2018
+mod - 01/20/2019
 Overview: ai nodes
   all the various nodes needed for the game
 */
@@ -12,6 +13,8 @@ Overview: ai nodes
 float AI_NODE_PATROL = 1;
 float AI_NODE_DEFEND = 2;
 float AI_NODE_ATTACK = 3;
+float AI_NODE_RECALL = 4;
+float AI_NODE_HUNT = 5;
 
 //SPAWNFLAGS
 float NODE_SPAWN_DROP = 1;
@@ -22,7 +25,7 @@ float NODE_SPAWN_INACTIVEONTOUCH = 8;
 void() node_use={
   if( !self.isActive ){
     self.isActive = TRUE;
-    trigger_event( world, trigOnSpawn );
+    trigger_event( self, trigOnSpawn );
   }
 };
 
@@ -34,17 +37,13 @@ void() node_setup={
   self.flags = self.flags | FL_NODE;
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
-  self.solid = SOLID_CORPSE;
-  self.movetype = MOVETYPE_TOSS;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_TRIGGER;
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-10 -10 -18','10 10 18');
   if( (self.spawnflags & NODE_SPAWN_DROP) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
     droptofloor();
   }
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_TRIGGER;
   
   if( !self.pausetime ){
     self.pausetime = 0.1; 
@@ -56,108 +55,50 @@ void() node_setup={
     self.isActive = FALSE;
     return;
   }
-  trigger_event( world, trigOnSpawn );
+  trigger_event( self, trigOnSpawn );
 };
 
-void() ai_node_hunt_t={
-  if( other == self.owner && self.owner.deadflag == DEAD_NO){
-    local entity this;
+/*
+  Only fires when node.owner touches this node.
+  Sets owner state to ST_STAND, and updates owner.goalentity -> Recall Node;
+*/
+void() node_hunt_touch={
+  local entity this;
+  if( (self.owner.deadflag == DEAD_NO) && (other == self.owner) ){
     this = self;
     self = other;
-      self.ai_hunt_total = self.ai_hunt_total - 1;
-      if( self.ai_hunt_total == -1 ){
-        self.goalentity = self.movetarget;
-      }
-      else{
-        if( this.target){
-          self.goalentity = self.ai_hunt_node = find(world, targetname, this.target );
-         }
-        else{
-          self.goalentity = self.movetarget;
-        }
-      }
-      makevectors( self.angles );
-      setorigin( self,  self.origin + (v_up * 0.5) );
-      droptofloor();
-      local float t;
-      t = ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.goalentity.origin - self.origin), 0.05);
-
-      self.ai_viewtime = time + self.ai_viewcheck;
+      self.goalentity = self.ai_node_recall;
+      ai_next_state( ST_STAND );
+      self.ai_action_time = self.ai_action_time + (1 + (self.ai_rank * 2));
+      self.ai_node_recall.ai_action_time = self.ai_action_time + ai_move_time(self.owner.m_fspeed * AI_WALK_SPD, vlen(self.goalentity.origin - self.owner.origin), 0.1);
+      ai_sfx_huntEnd();
     self = this;
-    remove( self );
+    remove(self);
     return;
   }
   return;
 };
 
-void() ai_node_hunt_th={
-  if( time > self.pausetime ){
-    if( self.owner && self.owner.deadflag == DEAD_NO){
-      local entity this;
+void() node_recall_touch={
+  local entity this;
+  if( (self.owner.deadflag == DEAD_NO) && (other == self.owner) ){
+    if( other.attack_state != ST_HUNT ){
       this = self;
-      self = this.owner;
-        self.ai_hunt_total = self.ai_hunt_total - 1;
-        if( self.ai_hunt_total == -1 ){
+      self = other;
+        if( self.movetarget ){
           self.goalentity = self.movetarget;
+          ai_next_state( ST_WALK );
         }
         else{
-          if( this.target ){
-            self.goalentity = self.ai_hunt_node = find(world, targetname, this.target);
-          }
-          else{
-            self.goalentity = self.movetarget;
-          }
+          ai_next_state( ST_STAND );
         }
-        makevectors( self.angles );
-        setorigin( self,  self.origin + (v_up * 0.5) );
-        droptofloor();
-        self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-
-        self.ai_viewtime = time + self.ai_viewcheck;
-        
+        self.ai_action_time = self.ai_action_time + (1 + (self.ai_rank * 2)); 
       self = this;
+      remove(self);
+      return;
     }
-    remove(self);
-    return;
   }
-  self.nextthink = time + 0.1;
-  self.think = ai_node_hunt_th;
-};
-
-/*
-  hunting nodes are generated when an AI loses LoS with a target.
-  the node only lasts for FADETIME number of seconds, regardless if
-  the hunting AI reaches the node. when the node expires, it orders
-  its owner, the AI, to go back to w/e it was doing.
-*/
-entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_node_hunt={
-  local entity this, tnode;
-  local float totes;
-  totes = id;
-  tnode = spawn();
-  this = self;
-  self = tnode;
-    self.solid = SOLID_TRIGGER;
-    setsize( self, '-2 -2 -16', '2 2 16' );
-    setorigin( self, orig );
-    droptofloor();
-    self.targetname = strzone( strcat( nodeid,"_",ftos( id ) ) );
-    
-    totes = totes - 1;
-    if( totes > -1){
-      self.target = strzone(strcat(nodeid,"_",ftos( totes )));
-    }
-    else{
-      self.target = this.movetarget.targetname;
-    }
-    self.pausetime = time + fadetime;
-    self.owner = this;
-    self.th_stand = action;
-    self.touch = ai_node_hunt_t;
-    self.nextthink = time + 0.1;
-    self.think = ai_node_hunt_th;
-  self = this;
-  return tnode;
+  return;
 };
 
 
@@ -167,9 +108,8 @@ entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_n
   and send it on its way.
   
 */
-void(entity o) node_patrol_t={
-  local entity	temp;
-  //other = o;
+void() node_patrol_touch={
+  local entity this;
   
   if( other.movetarget != self ){
     return;
@@ -180,9 +120,9 @@ void(entity o) node_patrol_t={
   }
   
   if( self.i_faction == other.i_faction ){  
-    temp = self;
+    this = self;
     self = other;
-    other = temp;
+    other = this;
 
     //if (self.classname == "monster_ogre")
       //sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
@@ -195,25 +135,25 @@ void(entity o) node_patrol_t={
       if( other.pausetime ){
         ai_next_state( ST_STAND );
         self.ai_action_time = self.ai_action_time + other.pausetime;
-        self = temp;
+        self = this;
         return;
       }
       ai_next_state( ST_WALK );
       ai_leg_frame( leg_walk1 );
-      self = temp;
+      self = this;
       return;
     }
     ai_next_state( ST_STAND );
-    self = temp;
+    self = this;
     return;
   }
 };
 
-void() ai_node_t_defend={
+void() node_defend_touch={
   
 };
 
-void() ai_node_t_attack={
+void() node_attack_touch={
   
 };
 
@@ -230,13 +170,19 @@ void() node_touch={
   if( (other.flags & FL_MONSTER ) ){
     switch( self.data_idx ){
       case AI_NODE_PATROL:
-        node_patrol_t( other );
+        node_patrol_touch();
         break;
       case AI_NODE_DEFEND:
         //TODO - defend node behavior?
         break;
       case AI_NODE_ATTACK:
         //TODO - attack node behavior?
+        break;
+      case AI_NODE_HUNT:
+        node_hunt_touch();
+        break;
+      case AI_NODE_RECALL:
+        node_recall_touch();
         break;
     }
   }
@@ -248,6 +194,63 @@ void() node_touch={
   if( (self.spawnflags & NODE_SPAWN_INACTIVEONTOUCH) ){
     self.isActive = FALSE;
   }
+};
+
+/*
+  Recall Nodes are created when an AI spawns a Hunt Node,
+  Recall Nodes act as a breadcrumb to bring the AI back to exactly where they were before hunting.
+  This only exist for a limited amount of time.
+*/
+entity( entity huntNode ) node_recall_setup={
+  local entity recallNode;
+  local entity theBot;
+  
+  recallNode = spawn();
+  theBot = self;
+  self = recallNode;
+    setorigin( self, huntNode.owner.origin);
+    self.data_idx = AI_NODE_RECALL;
+    node_setup();
+    self.owner = huntNode.owner;
+  self = theBot;
+  
+  return recallNode;
+};
+
+/*
+  Hunt Nodes are dropped when an AI loses LoS to their .enemy.
+  These only last for a certain amount of time.
+  If the bot reaches this node, it'll hang around for a bit before returning
+  to its Recall Node. 
+*/
+void() node_hunt_setup={
+  local entity huntNode;
+  local entity recallNode;
+  local entity bot;
+  local float moveTime;
+  
+  huntNode = spawn();
+  bot = self;
+  self = huntNode;
+    self.data_idx = AI_NODE_HUNT;
+    setorigin( self, bot.enemy.origin);
+    node_setup();
+    self.owner = bot;
+  self = bot;
+  self.ai_node_hunt = huntNode;
+  
+  if( !self.ai_node_recall ){
+    recallNode = node_recall_setup( huntNode ); 
+    self.ai_node_recall = recallNode;
+  }
+  
+  self.goalentity = self.ai_node_hunt;
+  
+  moveTime = time + ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.ai_node_hunt.origin - self.origin), 0.1);
+  
+  self.ai_node_hunt.ai_action_time = moveTime;
+  self.ai_node_recall.ai_action_time = moveTime * 2;
+  self.ai_action_time = moveTime;
 };
 
 /*

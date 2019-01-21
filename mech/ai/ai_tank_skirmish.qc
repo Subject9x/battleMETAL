@@ -179,11 +179,39 @@ void() ai_tank_sk_missile_strafe={
 };
 
 void() ai_tank_sk_hunt={
-  ai_update_accuracy( TRUE );
-  ai_walkgoal( AI_RUN_SPD );
-  if( time > self.ai_action_time ){
+  ai_update_accuracy( TRUE ); 
+  if( ai_valid_target(self.enemy) ){
+    //as long as enemy is valid, move to node
+    ai_walkgoal( AI_RUN_SPD );    
+  }
+  
+  if( ai_line_of_sight( self.enemy ) ){
+    //if spotted, dump hunt node, add more time to recall node
     ai_next_state( ST_RUN );
+    if( self.ai_node_hunt ){
+      remove(self.ai_node_hunt);
+    }
     return;
+  }
+  
+  if( time > self.ai_node_hunt.ai_action_time ){
+    ai_sfx_huntEnd();
+    //timer to reach the hunt node expired, recall time
+    if( self.ai_node_hunt ){
+      remove(self.ai_node_hunt);
+    }
+    if( self.ai_node_recall ){
+      self.goalentity = self.ai_node_recall;
+      ai_next_state( ST_WALK );
+      self.ai_action_time = self.ai_action_time + ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.ai_node_recall.origin - self.origin), 0.1);
+      return;
+    }
+    
+    if( self.movetarget ){
+      self.goalentity = self.goalentity.goalentity; //hunt node's recall node
+      ai_next_state( ST_WALK );
+      return;
+    }
   }
 };
 
@@ -238,9 +266,10 @@ void() ai_tank_sk_die1a={
 };
 
 void() ai_tank_sk_die1={
-
-  makevectors( world.v_angle );
   local vector sm;
+  
+  self.deadflag = DEAD_DEAD;
+  makevectors( world.v_angle );
   sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
   te_smoke_test(self.origin, sm + '0 0 10', 2);
   
@@ -254,6 +283,8 @@ void() ai_tank_sk_die1={
 
 void() ai_tank_sk_die2={
   local vector v;
+  
+  self.deadflag = DEAD_DEAD;
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 8, self.vec_size + 1);
@@ -269,16 +300,24 @@ void() ai_tank_sk_th={
   local entity wep;
   
   ctrl_updateTank();
-  
   if( !(self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
     if( !self.deadflag ){
       if( self.enemy ){
+        //this is only for hunting functionality
+        if( self.attack_state != ST_HUNT ){
+          if( !ai_line_of_sight( self.enemy ) ){
+            ai_hunt_setup();
+          }
+        }
+        else{
+          ai_turret_set_state( TR_TARG );
+        }
         if( ai_valid_target( self.enemy ) ){
           self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
           ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
           ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
           ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
-          ai_lock_on();
+          ai_lock_on();    
         }
         else{ 
           self.enemy = world;
@@ -286,10 +325,9 @@ void() ai_tank_sk_th={
       } 
       ai_ranged_attack();
       self.button0 = 0;  
-      ai_state_control( self.attack_state );
+      ai_state_control( self.attack_state ); 
     }
   }
-   
   if( (self.flags & FL_TURRET) ){
     ai_turret_control();
   }

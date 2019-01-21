@@ -52,6 +52,7 @@ void( float estate ) ai_state_control={
       self.th_missile_strafe();
       break;
     case ST_HUNT:
+      cons_logAFloat("ai_state_control:self.ai_node_hunt.ai_action_time", self.ai_node_hunt.ai_action_time);  //DEBUG
       self.th_hunt();
       break;
     case ST_PAIN:
@@ -66,28 +67,28 @@ void( float estate ) ai_state_control={
   flag, this  assumes .e_tor_c is the AI's turret ent.
 */
 void() ai_turret_control={
-  local entity this;
+  local entity turretOwner;
   local vector am;
-  this = self;
+  turretOwner = self;
   if( (self.e_tor_c) ){
     self = self.e_tor_c;
-      util_setOffsetOrigin(self, this, self.c_ofs);
+      util_setOffsetOrigin(self, turretOwner, self.c_ofs);
       switch( self.attack_state ){
         case TR_NORM:
-          self.ideal_yaw = this.angles_y;
+          self.ideal_yaw = turretOwner.angles_y;
           break;
         case TR_TARG:
-          self.ideal_yaw = vectoyaw( this.enemy.origin - self.origin );
+          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.origin );
           break;
         case TR_GOAL:
-          self.ideal_yaw = vectoyaw( this.goalentity.origin - self.origin );
+          self.ideal_yaw = vectoyaw( turretOwner.goalentity.origin - self.origin );
           break;
         case TR_YAW:
           break;
       }
       ChangeYaw();
       self.v_angle = self.angles;
-    self = this;
+    self = turretOwner;
   }
 };
 
@@ -583,6 +584,23 @@ void() ai_walk_setup={
     return;
 	}
 };
+
+void() ai_hunt_setup={
+
+  //ai_sfx_huntStart
+  ai_sfx_huntStart();
+  
+  //create hunt node
+  node_hunt_setup();  
+  
+  //set next bot state
+  ai_next_state( ST_HUNT );
+  
+  if( (self.flags & FL_TURRET) ){
+    ai_turret_set_state( TR_GOAL );
+  }
+};
+
 
 //simple handler function to push state changes down to legs
 void(void() macro) ai_leg_frame={

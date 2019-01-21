@@ -299,14 +299,41 @@ void() ai_gev_missile_strafe={
   }
 };
 
-/*
-  VTOL's are actually allowed to hunt the player,
-  something something no terrain
-*/
 void() ai_gev_hunt={
+  ai_update_accuracy( TRUE ); 
+  if( ai_valid_target(self.enemy) ){
+    //as long as enemy is valid, move to node
+    ai_walkgoal( AI_RUN_SPD );    
+  }
   
-
+  if( ai_line_of_sight( self.enemy ) ){
+    //if spotted, dump hunt node, add more time to recall node
+    ai_next_state( ST_RUN );
+    if( self.ai_node_hunt ){
+      remove(self.ai_node_hunt);
+    }
+    return;
+  }
   
+  if( time > self.ai_node_hunt.ai_action_time ){
+    ai_sfx_huntEnd();
+    //timer to reach the hunt node expired, recall time
+    if( self.ai_node_hunt ){
+      remove(self.ai_node_hunt);
+    }
+    if( self.ai_node_recall ){
+      self.goalentity = self.ai_node_recall;
+      ai_next_state( ST_WALK );
+      self.ai_action_time = self.ai_action_time + ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.ai_node_recall.origin - self.origin), 0.1);
+      return;
+    }
+    
+    if( self.movetarget ){
+      self.goalentity = self.goalentity.goalentity; //hunt node's recall node
+      ai_next_state( ST_WALK );
+      return;
+    }
+  }
 };
 
 /*
@@ -338,7 +365,7 @@ void() ai_gev_die2={
 };
 
 void() ai_gev_die1={
-
+  self.deadflag = DEAD_DEAD;
   te_smoke_test(self.origin, '1 1 10', 4) ;
   
   self.think = ai_gev_die1;
@@ -406,17 +433,25 @@ void() ai_gev_die={
 void() ai_gev_th={
 
   ctrl_updateTank();
-
+  te_unit_dust( self.origin, self.angles, self.velocity, 1 );
   if( !(self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
     if( !self.deadflag ){
       if( self.enemy ){
-        ai_turret_set_state( TR_TARG );
+        //this is only for hunting functionality
+        if( self.attack_state != ST_HUNT ){
+          if( !ai_line_of_sight( self.enemy ) ){
+            ai_hunt_setup();
+          }
+        }
+        else{
+          ai_turret_set_state( TR_TARG );
+        }
         if( ai_valid_target( self.enemy ) ){
           self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
           ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
           ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
           ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
-          ai_lock_on();
+          ai_lock_on();    
         }
         else{ 
           self.enemy = world;

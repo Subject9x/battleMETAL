@@ -82,7 +82,6 @@ float TYPE_SKIRM  = 3;
 .vector ai_pitch;     //x = min, y= max, z = pitch speed
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
-.entity ai_hunt_node;  //simple node-on-decay-timer
 .float ai_hunt_total; //current number of hunt nodes
 .float ai_attack_chance;
 .float ai_dir;
@@ -97,6 +96,10 @@ float TYPE_SKIRM  = 3;
 .string ai_voice_kill;
 .string ai_voice_roger;
 .string ai_voice_help;
+
+//ugh
+.entity ai_node_hunt;
+.entity ai_node_recall;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -115,16 +118,20 @@ float(float rank) ai_pilot_action_mod;
 float(float rank) ai_pilot_attack_interval;
 float( float rank, float damg) ai_pilot_mod_damage;
 vector( float rank, vector spread ) ai_pilot_accuracy;
-
+float( float rank, float lockOn ) ai_pilot_lock_time;
 void() ai_unit_ini_var;
 void(float rank) ai_pilot_ini_stats;
 
-void() node_touch;
+//AI NODES
 void() node_setup;
-void() ai_node_t_defend;
-void() ai_node_t_attack;
-entity(vector orig, string nodeid, float id, float fadetime, void() action) ai_node_hunt;
-float(void() action) ai_hunt_dropnode;
+void() node_touch;
+void() node_patrol_touch;
+void() node_defend_touch;
+void() node_attack_touch;
+void() node_hunt_touch;
+void() node_recall_touch;
+void() node_hunt_setup;
+entity( entity huntNode ) node_recall_setup;
 
 //AI UTILS - 
 float() ai_can_spawn;
@@ -144,6 +151,7 @@ void( entity ally, entity targ, float override ) ai_give_target;
 float() ai_panic_time;
 float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
+float( entity t ) ai_line_of_sight;
 
 //AI MAP FUNCS
 float( void() ai_to_make ) ai_unit_setup;
@@ -153,6 +161,7 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
 
 //AI CONTROL - ai_ctrl.qc 
 void() ai_walk_setup;
+void() ai_hunt_setup;
 void() ai_hunt_target;
 void() ai_found_target;
 void( string grpid ) ai_node_pick_rand

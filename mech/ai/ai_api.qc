@@ -76,7 +76,23 @@ float( entity t ) ai_line_of_sight={
   //check turret
   //return false if blocked by world
   //check for radar.
-}:
+  
+  local entity trace;
+  
+  trace = self;
+  if( (self.flags & FL_TURRET) ){
+    trace = self.e_cam;
+  }
+  
+  traceline( trace.origin, t.origin, MOVE_WORLDONLY, self);
+  
+  if( trace_fraction < 1 ){
+    cons_logAString("ai_line_of_sight", "FALSE");  //DEBUG
+    return FALSE;
+  }
+  cons_logAString("ai_line_of_sight", "TRUE");  //DEBUG
+  return TRUE;
+};
 
 float(entity t) ai_valid_target={
   local float val;
@@ -85,14 +101,16 @@ float(entity t) ai_valid_target={
     if( (t.flags & FL_NOTARGET) ){
       val = FALSE;
     }
-    if( t.deadflag <= DEAD_NO ){
-      switch( t.data_type ){
-        case DATA_VEHC:
-          val =  TRUE;
-        case DATA_BLD:
-          val =  TRUE;
-        case DATA_MECH:
-          val =  TRUE;
+    else{
+      if( t.deadflag <= DEAD_NO ){
+        switch( t.data_type ){
+          case DATA_VEHC:
+            val =  TRUE;
+          case DATA_BLD:
+            val =  TRUE;
+          case DATA_MECH:
+            val =  TRUE;
+        }
       }
     }
   }
@@ -101,7 +119,7 @@ float(entity t) ai_valid_target={
 };
 
 entity( float radiius) ai_find_friend={
-  local entity ally, this, friend;
+  local entity ally, friend;
   local float dist, rad;
   
   rad = radiius;
@@ -516,52 +534,6 @@ void() ai_wep_calcranges={
     self.flags = self.flags | FL_NOSHOOT;
   }
   
-};
-
-float(void() action) ai_hunt_dropnode={
-  if( self.ai_hunt_total < AI_HUNT_VET ){
-    if( self.ai_hunt_total < 0 ){
-      self.ai_hunt_total = self.ai_hunt_total + 1;
-      //start of hunt chain
-      local float it;
-      local vector torg;
-      it = ai_move_time(self.m_fspeed * AI_WALK_SPD, 250, 0.1);
-      
-      makevectors( self.angles );
-      torg = self.origin - (v_forward * (self.maxs_x * 2 + 2) );
-      
-      ai_node_hunt(torg, self.targetname, self.ai_hunt_total, it , action );
-      self.ai_hunt_total = self.ai_hunt_total + 1;
-    }
-    local float t;
-    t = ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.enemy.origin - self.origin), 0.1);
-
-    local vector eorg;
-    makevectors( self.enemy.angles );
-    eorg = self.enemy.origin + (v_up * (self.enemy.maxs_z / 1.5) );
-    
-    self.goalentity = self.ai_hunt_node = ai_node_hunt(eorg, self.targetname, self.ai_hunt_total, t , action ); 
-    self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-
-    self.ai_viewtime = time + self.ai_viewcheck;
-    
-    self.ai_hunt_total = self.ai_hunt_total + 1;
-    
-    local float update;
-    update = self.ai_hunt_total;
-    while( update > -1 ){
-      local string tname;
-      local entity e;
-      tname = strcat(self.targetname, "_", ftos(update) );
-      e = find( world, targetname, tname);
-      if( (e) && (e != self.goalentity) ){
-        e.pausetime = e.pausetime + (t * 2);
-      }
-      update = update - 1;
-    }
-    return TRUE;
-  }
-  return FALSE;
 };
 
 /*

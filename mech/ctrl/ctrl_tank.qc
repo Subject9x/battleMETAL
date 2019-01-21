@@ -9,8 +9,12 @@ Overview:
 
 void() ctrl_updateTank={
   local entity cam;
-  local vector v1;
   local entity wep;
+  local entity piece;
+  local entity partParent;
+  local vector v1;
+  local vector spark;
+  local float hp;
   
   makevectors(self.v_angle);
   v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
@@ -39,14 +43,8 @@ void() ctrl_updateTank={
     ctrl_wpn_think(wep);
     wep = wep.w_slot;
   }
-
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   //damage-based cosmetics for unit component pieces
-  local entity piece;
-  local float hp;
-  local vector spark;
-  local entity partParent;
   piece = self.c_part;
   while( piece ){
     if( piece.deadflag <= DEAD_NO ){

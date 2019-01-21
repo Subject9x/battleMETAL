@@ -77,8 +77,9 @@ void(float rank) ai_pilot_ini_stats={
     self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * mod_yaw);
   }
   self.ai_leading = ai_pilot_rating_leading();
-  self.spreadDefault = ai_pilot_accuracy( skill, self.spreadDefault );
+  self.spreadDefault = ai_pilot_accuracy( rank, self.spreadDefault );
   self.accuracy = self.spreadDefault_y;
+  self.w_firetime = ai_pilot_lock_time( rank, self.w_firetime );
   self.stat_rdr_mode = TRUE;
   self.maxpatience = ai_pilot_rating_patience();
   self.ai_action_mod = ai_pilot_action_mod( rank );
@@ -427,4 +428,5 @@ float( float rank, float lockOn ) ai_pilot_lock_time={
       self.w_firetime = self.w_firetime - (self.w_firetime * 0.35);
       break;
   }
+  return self.w_firetime;
 };
