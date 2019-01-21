@@ -16,6 +16,10 @@ void( vector org, vector angl, vector vel, float total, float debrType) te_debri
 
 void( vector org, vector angl, vector vel, float total) te_unit_dust;
 
+void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_small_flame_start;
+void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_med_flame_start;
+void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_big_flame_start;
+
 //SFX
 void() te_nav_reach;
 void( float type ) te_objective_complete;

@@ -14,6 +14,7 @@ void() data_dunerunner_ctor;
 void() data_dunerunner_cam;
 void() data_dunerunner_wep1;
 void() data_dunerunner_wep2;
+void() data_dunerunner_death;
 
 void() data_dunerunner_ini={
   self.unit_ctor = data_dunerunner_ctor;
@@ -48,6 +49,14 @@ void() data_dunerunner_ini={
   setsize(self, DAT_dunerunner_BBX_N, DAT_dunerunner_BBX_X);
   setorigin(self, self.origin);
     
+};
+
+/*
+  these are cosmetic, th_die() is per AI template and not cosmetic
+  .anim_death() functions are called by the AI template th_die().
+*/
+void() data_dunerunner_death={
+  
 };
 
 void() data_dunerunner_ctor={

@@ -2067,7 +2067,359 @@ gravity -0.025
 originjitter 0.1 0.1 0.1
 velocityjitter 0 0 0
 velocitymultiplier 1
-//
+//=================================================
+
+
+
+
+
+//TE_FIRE_SMALL====================================
+  //TE_FIRE_SMALL - SMOKE
+  effect TE_FIRE_SMALL
+  count 0.1
+  type smoke
+  blend alpha
+  color 0x1C1C1C 0x424242
+  tex 8 15
+  size 2 3
+  sizeincrease 0.5
+  alpha 96 128 8
+  gravity -0.005
+  originjitter 0.25 0.25 -8
+  velocityjitter 1 1 1
+  
+  //TE_FIRE_SMALL - FLAME
+  effect TE_FIRE_SMALL
+  count 1
+  type spark
+  blend alpha
+  orientation spark
+  color 0xe0e0d1 0xf5f5f0
+  tex 37 39
+  size 1 3
+  sizeincrease -0.25
+  alpha 128 128 96
+  gravity -0.005
+  originjitter 1 1 0
+  velocityjitter 1 1 1
+  velocitymultiplier 1
+  stretchfactor 4
+  
+  //TE_FIRE_SMALL - HOT SMOKE
+  effect TE_FIRE_SMALL
+  count 0.075
+  type smoke
+  blend alpha
+  color 0xDF7401 0xB43104
+  tex 8 17
+  size 1 2
+  sizeincrease 0.25
+  alpha 16 32 4
+  time 2 3
+  gravity -0.006
+  originjitter 0.25 0.25 0.25
+  velocityjitter 2 2 2
+  
+  //TE_FIRE_SMALL - LIGHT
+  effect TE_FIRE_SMALL
+  lightradius 75
+  lightradiusfade 200
+  lightcolor 0.996 0.392 0.18
+  lightshadow 0.5
+  notunderwater
+  
+//=================================================
+
+
+
+
+
+//TE_FIRE_MED======================================
+  //TE_FIRE_MED - SMOKE
+  effect TE_FIRE_MED
+  count 0.1
+  type smoke
+  blend alpha
+  color 0x1C1C1C 0x424242
+  tex 8 15
+  size 4 5
+  sizeincrease 1
+  alpha 128 200 16
+  gravity -0.005
+  originjitter 0.25 0.25 -8
+  velocityjitter 1 1 1
+  
+  //TE_FIRE_MED - LIGHT
+  effect TE_FIRE_MED
+  lightradius 100
+  lightradiusfade 250
+  lightcolor 0.996 0.392 0.18
+  lightshadow 0.5
+  notunderwater
+  
+  //TE_FIRE_MED - FLAME
+  effect TE_FIRE_MED
+  count 1
+  type smoke
+  blend alpha
+  color 0xe0e0d1 0xf5f5f0
+  tex 37 39
+  size 2.5 4.5
+  sizeincrease -0.25
+  alpha 128 128 96
+  gravity -0.005
+  originjitter 3 3 2
+  velocityjitter 2 2 2
+  velocitymultiplier 3
+  
+  //TE_FIRE_MED - HOT SMOKE
+  effect TE_FIRE_MED
+  count 0.075
+  type smoke
+  blend alpha
+  color 0xDF7401 0xB43104
+  tex 8 17
+  size 3 4
+  sizeincrease 0.5
+  alpha 64 96 8
+  time 4 5
+  gravity -0.006
+  originjitter 0.25 0.25 0.25
+  velocityjitter 2 2 2
+  
+  //TE_FIRE_MED - SPARKS
+  effect TE_FIRE_MED
+  count 2
+  type spark
+  blend alpha
+  orientation spark
+  color 0xFF8000 0xFF8000
+  tex 38 38
+  size 0.05 0.1
+  alpha 256 512 256
+  originjitter 6 6 6
+  velocityjitter 2 2 2
+  velocitymultiplier 10
+  stretchfactor 2
+  airfriction 1
+  
+//=================================================
+
+
+
+
+//TE_FIRE_BIG======================================
+  //TE_FIRE_BIG - SMOKE
+  effect TE_FIRE_BIG
+  count 0.1
+  type smoke
+  blend alpha
+  color 0x1C1C1C 0x424242
+  tex 8 15
+  size 6 7
+  sizeincrease 1.5
+  alpha 128 200 16
+  gravity -0.005
+  originjitter 0.25 0.25 -8
+  velocityjitter 1 1 1
+  
+  //TE_FIRE_BIG - LIGHT
+  effect TE_FIRE_BIG
+  lightradius 150
+  lightradiusfade 350
+  lightcolor 0.996 0.392 0.18
+  lightshadow 0.5
+  notunderwater
+  
+  //TE_FIRE_BIG - FLAME
+  effect TE_FIRE_BIG
+  count 2
+  type smoke
+  blend alpha
+  color 0xe0e0d1 0xf5f5f0
+  tex 37 39
+  size 4.5 5.5
+  sizeincrease -0.5
+  alpha 128 128 96
+  gravity -0.0025
+  originjitter 6 6 6
+  velocityjitter 3 3 3
+  velocitymultiplier 4
+  
+  //TE_FIRE_BIG - HOT SMOKE
+  effect TE_FIRE_BIG
+  count 0.075
+  type smoke
+  blend alpha
+  color 0xDF7401 0xB43104
+  tex 8 17
+  size 4 5
+  sizeincrease 0.75
+  alpha 100 150 16
+  time 4 5
+  gravity -0.006
+  originjitter 0.25 0.25 0.25
+  velocityjitter 2 2 2
+  
+  //TE_FIRE_BIG - SPARKS
+  effect TE_FIRE_BIG
+  count 3
+  type spark
+  blend alpha
+  orientation spark
+  color 0xFF8000 0xFF8000
+  tex 38 38
+  size 0.05 0.1
+  alpha 256 512 256
+  originjitter 8 8 8
+  velocityjitter 4 4 4
+  velocitymultiplier 10
+  stretchfactor 2
+  airfriction 0.25
+  
+//=================================================
+
+
+
+
+
+//SMALL DEBRIS EFFECT==================================
+  //TE_DEBRIS_TRAIL_SMALL - SMOKE
+    effect TE_DEBRIS_TRAIL_SMALL
+    count 5
+    type alphastatic
+    blend alpha
+    color 0x151515 0x2E2E2E
+    tex 8 15
+    size 0.45 1
+    sizeincrease 0.1
+    alpha 240 240 150
+    time 1.75 2.2
+    originjitter 0.2 0.2 0.2
+    velocityjitter 1 1 3
+    gravity -0.025
+    stretchfactor 4
+    trailspacing 12
+
+  //TE_DEBRIS_TRAIL_SMALL - SPARKS
+    effect TE_DEBRIS_TRAIL_SMALL
+    count 2
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFF8000 0xFF8000
+    tex 35 35
+    size 0.25 1
+    alpha 256 512 100
+    time 1 2
+    originjitter 0.15 0.15 0.15
+    notunderwater
+    stretchfactor 5
+    trailspacing 2
+
+  //TE_DEBRIS_TRAIL_SMALL - LIGHT
+    effect TE_DEBRIS_TRAIL_SMALL
+    lightradius 10
+    lighttime 0.1
+    lightcolor 1 0.251 0
+    lightshadow 0.4
+    notunderwater  
+//================================================
+
+
+
+
+//MED DEBRIS EFFECT==================================
+  //TE_DEBRIS_TRAIL_MED - SMOKE
+    effect TE_DEBRIS_TRAIL_MED
+    count 5
+    type alphastatic
+    blend alpha
+    color 0x151515 0x2E2E2E
+    tex 8 15
+    size 0.45 1
+    sizeincrease 0.1
+    alpha 240 240 150
+    time 1.75 2.2
+    originjitter 0.2 0.2 0.2
+    velocityjitter 1 1 3
+    gravity -0.025
+    stretchfactor 4
+    trailspacing 12
+
+  //TE_DEBRIS_TRAIL_MED - SPARKS
+    effect TE_DEBRIS_TRAIL_MED
+    count 2
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFF8000 0xFF8000
+    tex 35 35
+    size 0.25 1
+    alpha 256 512 100
+    time 1 2
+    originjitter 0.15 0.15 0.15
+    notunderwater
+    stretchfactor 5
+    trailspacing 2
+
+  //TE_DEBRIS_TRAIL_MED - LIGHT
+    effect TE_DEBRIS_TRAIL_MED
+    lightradius 10
+    lighttime 0.1
+    lightcolor 1 0.251 0
+    lightshadow 0.6
+    notunderwater  
+//================================================
+
+
+
+
+//BIG DEBRIS EFFECT==================================
+  //TE_DEBRIS_TRAIL_BIG - SMOKE
+    effect TE_DEBRIS_TRAIL_BIG
+    count 5
+    type alphastatic
+    blend alpha
+    color 0x151515 0x2E2E2E
+    tex 8 15
+    size 0.45 1
+    sizeincrease 0.1
+    alpha 240 240 150
+    time 1.75 2.2
+    originjitter 0.2 0.2 0.2
+    velocityjitter 1 1 3
+    gravity -0.025
+    stretchfactor 4
+    trailspacing 12
+
+  //TE_DEBRIS_TRAIL_BIG - SPARKS
+    effect TE_DEBRIS_TRAIL_BIG
+    count 2
+    type spark
+    blend alpha
+    orientation spark
+    color 0xFF8000 0xFF8000
+    tex 35 35
+    size 0.25 1
+    alpha 256 512 100
+    time 1 2
+    originjitter 0.15 0.15 0.15
+    notunderwater
+    stretchfactor 5
+    trailspacing 2
+
+  //TE_DEBRIS_TRAIL_BIG - LIGHT
+    effect TE_DEBRIS_TRAIL_BIG
+    lightradius 10
+    lighttime 0.1
+    lightcolor 1 0.251 0
+    lightshadow 0.6
+    notunderwater  
+//================================================
+
+
+
 
 //TE_DUST_DESERT==================================
 effect TE_DUST_DESERT

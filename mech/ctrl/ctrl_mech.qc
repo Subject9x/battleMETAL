@@ -170,7 +170,7 @@ void() ctrl_die_comp={
       self.colormod = oself.colormod;
       pvel = normalize(self.origin - oself.owner.origin) * 10;
       pvel_z = pvel_z + 50;
-      te_debris( self.origin, self.angles, normalize(self.origin - oself.owner.origin) * 10, oself.owner.vec_size * 2, 1); 
+      te_debris( self.origin, self.angles, normalize(self.origin - oself.owner.origin) * 5, oself.owner.vec_size * 2, self.vec_size); 
     self = oself;
 
     self.deadflag = DEAD_DEAD;

@@ -26,6 +26,7 @@ void() data_TROWEL_cam;
 void() data_TROWEL_wep1;
 void() data_TROWEL_wep2;
 void() data_TROWEL_wep3;
+void() data_trowel_death;
 
 void() data_TROWEL_ini={
   self.unit_ctor = data_TROWEL_ctor;
@@ -57,6 +58,14 @@ void() data_TROWEL_ini={
   setsize(self, DAT_TROWEL_CTOR_BBX_N, DAT_TROWEL_CTOR_BBX_X);
   setorigin(self, self.origin);
 
+};
+
+/*
+  these are cosmetic, th_die() is per AI template and not cosmetic
+  .anim_death() functions are called by the AI template th_die().
+*/
+void() data_trowel_death={
+  
 };
 
 void() data_TROWEL_ctor={

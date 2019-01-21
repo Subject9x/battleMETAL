@@ -241,6 +241,7 @@ void() ai_gev_melee={
 */
 void() ai_gev_missile={
   local float insights;
+  
   ai_update_accuracy( FALSE );
   if( ai_valid_target(self.enemy) ){
     otemp = self;
@@ -276,6 +277,7 @@ void() ai_gev_missile={
 
 void() ai_gev_missile_strafe={
   local float spd;
+  
   ai_update_accuracy( TRUE );
   spd = self.m_fspeed / 2 + self.m_sspeed;
   
@@ -377,6 +379,24 @@ void() ai_gev_die1={
 };
 
 void() ai_gev_touch_death={
+  local vector vel;
+  if( other == world ){
+    self.movetype = MOVETYPE_NONE;
+    makevectors( self.angles );
+    vel = self.origin + (v_up * 2);
+    switch( self.vec_size ){
+      case 2:
+        te_med_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
+        break;
+      case 3:
+        te_big_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
+        break;
+      default:
+        te_small_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
+        break;
+    }
+    self.touch = SUB_Null;
+  }
   self.think = ai_gev_die2;
   self.nextthink = time + 0.05;
 };
@@ -388,9 +408,9 @@ void() ai_gev_die={
   
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_BOUNCE;
-  self.solid = SOLID_CORPSE;
+  self.solid = SOLID_BBOX;
   self.colormod = '0.1 0.1 0.1'; 
-  setsize(self, self.mins * 0.45, self.maxs * 0.65);
+  setsize(self, self.mins * 0.35, self.maxs * 0.35);
   setorigin(self, self.origin);
   
   //fire triggers when dead
@@ -412,8 +432,8 @@ void() ai_gev_die={
   makevectors( self.angles );
 
   v = self.origin + (v_forward * 2) + (v_right * (crandom() * 3)) + (v_up * 3);
-  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size);
-    
+  te_debris( self.origin, self.angles, normalize(v - self.origin) * 100, self.vec_size + (random() * 5), self.vec_size);
+  
   if( self.attack_state != ST_STAND ){
     self.velocity = normalize( v - self.origin);
     self.velocity = self.velocity * 200;
@@ -421,6 +441,11 @@ void() ai_gev_die={
     self.avelocity_x = crandom() * 150;
     self.avelocity_y = crandom() * 300; 
     self.avelocity_z = crandom() * 400;
+  }
+  else{
+    self.velocity = normalize( (self.origin + (v_up * -2)) - self.origin);
+    self.velocity_z = self.velocity_z - 10;
+    self.gravity = 0.25;
   }
   self.attack_state = -1;
   self.think = ai_gev_die1;

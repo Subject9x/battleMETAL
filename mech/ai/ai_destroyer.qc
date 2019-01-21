@@ -160,13 +160,16 @@ void() ai_dest_th={
   TH_DIE Main
 */
 void() ai_vec_dest_die={
+  local entity w_chain;
+  local vector vel;
+  local vector v;
+  
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
   self.colormod = '0.25 0.25 0.25';
   self.attack_state = -1;
   
-  local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
     mech_player_compdie(w_chain);
@@ -184,6 +187,23 @@ void() ai_vec_dest_die={
   if( self.health <= (self.max_health / 1.5) * -1 ){
     self.think = ai_vec_dest_die2;
   }
+  
+  makevectors( self.angles );  v = self.origin + (v_up * 2);
+  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
+   
+  vel = self.origin + (v_up * 2);
+  switch( self.vec_size ){
+    case 2:
+      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      break;
+    case 3:
+      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      break;
+    default:
+      te_small_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      break;
+  }
+  
   self.nextthink = time + 0.1;
 };
 

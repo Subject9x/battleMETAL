@@ -222,6 +222,7 @@ void() ai_tank_sk_pain={
 void() ai_tank_sk_die={
   local entity w_chain;
   local vector v;
+  local vector vel;
 
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
@@ -254,6 +255,20 @@ void() ai_tank_sk_die={
   if( self.health <= (self.max_health / 1.15) * -1 ){
     self.think = ai_tank_sk_die2;
   }
+  
+  vel = self.origin + (v_up * 2);
+  switch( self.vec_size ){
+    case 2:
+      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      break;
+    case 3:
+      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      break;
+    default:
+      te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      break;
+  }
+  
   self.nextthink = time + 0.1;
 };
 

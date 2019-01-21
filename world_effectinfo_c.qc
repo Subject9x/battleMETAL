@@ -40,16 +40,20 @@ void(vector org, vector vel, float total) te_smoke_test={
 void( vector org, vector angl, vector vel, float total, float debrType) te_debris={
   local float totals;
   local string debrisMdl;
+  local float trailNum;
   
   switch( debrType ){
     case 2:
       debrisMdl = "q3mdl/fx/debris2/mdl_debris_2.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_MED");
       break;
     case 3:
       debrisMdl = "q3mdl/fx/debris3/mdl_debris_3.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_BIG");
       break;
     default:
       debrisMdl = "q3mdl/fx/debris1/mdl_debris_1.md3";
+      trailNum = particleeffectnum("TE_DEBRIS_TRAIL_SMALL");
       break;
   }
   
@@ -73,7 +77,7 @@ void( vector org, vector angl, vector vel, float total, float debrType) te_debri
     newmis.frame = 0;
     newmis.flags = 0;
     newmis.gravity = 0.15;
-    newmis.traileffectnum = particleeffectnum("TE_MIS_TRAIL");  //TODO - finish
+    newmis.traileffectnum = trailNum;
     totals = totals - 1;
   }
 };
@@ -107,6 +111,78 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
   }
   
   pointparticles( partcle, torg , dir * 2, total);
+};
+
+void() te_flame_th={
+  
+  makevectors( self.angles );
+  self.c_alt_ofs = self.origin + (v_up * self.c_ofs_y) + (v_forward * self.c_ofs_z) + (v_right * self.c_ofs_x);
+  pointparticles( particleeffectnum(self.vec_name), self.origin, normalize(self.c_alt_ofs - self.origin) * 1, self.count);
+
+  self.think = te_flame_th;
+  if( self.p_lifetime > 0 ){
+    if( time > self.p_lifetime ){
+      self.think = SUB_Remove;
+    }
+  }
+  self.nextthink = time + self.count2;
+};
+
+void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_small_flame_start={
+  local entity fire;
+  
+  fire = spawn();
+  fire.w_firetime = ticrate;
+  fire.movetype = MOVETYPE_NONE;
+  fire.solid = SOLID_NOT;
+  fire.angles = angl;
+  fire.think = te_flame_th;
+  fire.nextthink = time + fire.w_firetime;
+  fire.c_ofs = vel; //holds velocity;
+  fire.count = total;
+  fire.vec_name = "TE_FIRE_SMALL";
+  if( lifetime > 0 ){
+    fire.p_lifetime = time + lifetime;
+  }
+  setorigin( fire, org );
+};
+
+void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_med_flame_start={
+  local entity fire;
+  
+  fire = spawn();
+  fire.w_firetime = ticrate;
+  fire.movetype = MOVETYPE_NONE;
+  fire.solid = SOLID_NOT;
+  fire.angles = angl;
+  fire.think = te_flame_th;
+  fire.nextthink = time + fire.w_firetime;
+  fire.c_ofs = vel; //holds velocity;
+  fire.count = total;
+  fire.vec_name = "TE_FIRE_MED";
+  if( lifetime > 0 ){
+    fire.p_lifetime = time + lifetime;
+  }
+  setorigin( fire, org );
+};
+
+void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_big_flame_start={
+  local entity fire;
+  
+  fire = spawn();
+  fire.w_firetime = ticrate;
+  fire.movetype = MOVETYPE_NONE;
+  fire.solid = SOLID_NOT;
+  fire.angles = angl;
+  fire.think = te_flame_th;
+  fire.nextthink = time + fire.w_firetime;
+  fire.c_ofs = vel; //holds velocity;
+  fire.count = total;
+  fire.vec_name = "TE_FIRE_BIG";
+  if( lifetime > 0 ){
+    fire.p_lifetime = time + lifetime;
+  }
+  setorigin( fire, org );
 };
 
 //HUD Sound Effects
