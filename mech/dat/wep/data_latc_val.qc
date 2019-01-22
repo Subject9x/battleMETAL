@@ -111,7 +111,7 @@ void() data_latc_atk={
   if( trace_ent ){
     t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');
     if( trace_ent.sh_cur <= 0 ){
-      te_superspike(dir);
+      pointparticles( particleeffectnum("TE_ATC_ARMOR"), dir + v_forward * -3, normalize( dir - org ) * 4, 3);
     }
   }
 };

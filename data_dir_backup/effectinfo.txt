@@ -670,6 +670,37 @@ velocitymultiplier 1
     lightcolor 0.45 0.25 0.25
     lightshadow 0.5
     notunderwater
+    
+  //TE_ATC_ARMOR - BULLET FRAGS
+    effect TE_ATC_ARMOR
+    count 0.25
+    type spark
+    blend alpha
+    orientation spark
+    color 0x0D8D8D8 0xF2F2F2
+    tex 38 41
+    size 0.25 0.65
+    alpha 256 512 2048
+    time 0.15 0.25
+    originjitter 3 3 3
+    velocityjitter 10 10 10
+    velocitymultiplier 3
+    notunderwater
+    stretchfactor 4
+
+  //TE_ATC_ARMOR - SMOKE PUFF
+    effect TE_ATC_ARMOR
+    countabsolute 1
+    type alphastatic
+    blend alpha
+    color 0x424242 0x848484
+    tex 0 7
+    size 0.75 1
+    sizeincrease 0.5
+    alpha 512 1024 512
+    time 0.25 0.35
+    notunderwater
+    stretchfactor 3
 //=====================================================
 
 
@@ -2025,7 +2056,7 @@ velocitymultiplier 1
 //SHIELD IMPACT=============================
   //TE_SHIELD_HIT_HIGH - BLUE SPARKS
   effect TE_SHIELD_HIT_HIGH
-  count 0.05
+  count 1
   type spark
   blend alpha
   orientation spark
@@ -2034,20 +2065,43 @@ velocitymultiplier 1
   size 0.1 0.2
   alpha 180 256 256
   originjitter 5 5 5
-  velocityoffset 5 5 5
   velocityjitter 2 2 2
   velocitymultiplier 15
-  gravity 0.25
+  gravity 0.05
   stretchfactor 2
   airfriction 4
   bounce 1
+
+  //TE_SHIELD_HIT_HIGH - BLUE SPLASH
+  effect TE_SHIELD_HIT_HIGH
+  countabsolute 1
+  type alphastatic
+  blend alpha
+  color 0x04B486 0x81DAF5
+  tex 26 31
+  size 1 2
+  alpha 16 24 -96
+  time 1 1.1
+  originjitter 0.2 0.2 0.2
+  velocityjitter 1 1 1
   
+  //TE_SHIELD_HIT_HIGH - GREEN RING
+  effect TE_SHIELD_HIT_HIGH
+  countabsolute 1
+  type alphastatic
+  blend alpha
+  color 0x01DF3A 0x9AFE2E
+  tex 33 33
+  size 2 3
+  sizeincrease 1
+  alpha 96 128 120
+
   //TE_SHIELD_HIT_HIGH - BLUE LIGHT
   effect TE_SHIELD_HIT_HIGH
-  lightradius 25
-  lightradiusfade 50
+  lightradius 50
+  lightradiusfade 100
   lightcolor 0 1 1
-  lightshadow 0.4
+  lightshadow 0.05
   notunderwater
 
 //==========================================

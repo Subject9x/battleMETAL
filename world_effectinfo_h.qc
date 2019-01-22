@@ -20,6 +20,8 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
 void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_med_flame_start;
 void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_big_flame_start;
 
+void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high;
+
 //SFX
 void() te_nav_reach;
 void( float type ) te_objective_complete;

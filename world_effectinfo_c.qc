@@ -185,6 +185,18 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   setorigin( fire, org );
 };
 
+
+void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
+  local vector vel;
+  local float demg;
+  
+  demg = hitDmg / 10;
+  vel = angl * demg;
+  
+  pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, demg + total);
+
+};
+
 //HUD Sound Effects
 //make sure to scope self to target client
 void() te_nav_reach={

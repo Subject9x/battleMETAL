@@ -21,7 +21,7 @@ void() data_dunerunner_ini={
   self.unit_wep1 = data_dunerunner_wep1;
   self.unit_wep2 = data_dunerunner_wep2;
   self.unit_cam = data_dunerunner_cam;
-    
+  
   self.data_idx= ID_VEC_dunerunner;
   self.vec_name= DAT_dunerunner_NAME;
   self.vec_size = DAT_dunerunner_SIZE;

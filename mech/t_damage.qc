@@ -243,6 +243,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   else{
     //te_shield_test( dmg_point, vectoangles( attacker.origin - dmg_point ) );
     //TODO - shield impact particles
+    te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
   
