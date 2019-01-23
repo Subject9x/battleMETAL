@@ -19,7 +19,9 @@ void() data_prj_mis_touch={
       return;
     }
   }
-  BecomeExplosion();
+  makevectors(self.angles);
+  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.p_damage / 5, 1);
+  remove(self);
 };
 
 void() data_prj_mis_th={

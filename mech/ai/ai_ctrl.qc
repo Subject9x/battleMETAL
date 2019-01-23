@@ -551,7 +551,7 @@ void() ai_hunt_target={
 };
 
 void() ai_found_target={
-  ai_sfx_spotted(self.i_faction, self.data_type);
+  ai_sfx_spotted();
   ai_hunt_target();
 };
 

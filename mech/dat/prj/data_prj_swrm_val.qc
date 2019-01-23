@@ -86,5 +86,7 @@ void() data_prj_swrm_touch={
       return;
     }
   }
-  BecomeExplosion();
+  makevectors(self.angles);
+  te_missile_explode(  self.origin + (v_up * -5), 1, '1 0 0.251', self.p_damage / 5, 1);
+  remove(self);
 };

@@ -225,6 +225,41 @@ void( vector org, float vecSize ) te_shield_explode={
   //pointparticles?
 };
 
+void() te_missile_explode_th={
+  self.alpha = self.alpha - 0.015;
+  self.scale = self.scale + 0.01;
+  self.think = te_shield_explode_th;
+  if( self.alpha < 0.01 ){
+    self.think = SUB_Remove;
+  }
+  self.nextthink = time + 0.01;
+};
+
+void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType ) te_missile_explode={
+  local entity explode;
+ 
+  sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
+ 
+  explode = spawn();
+  explode.movetype = MOVETYPE_NONE;
+  explode.solid = SOLID_NOT;
+  explode.think = te_shield_explode_th;
+  explode.nextthink = time + 0.05;
+  explode.p_lifetime = 10;
+  explode.scale = explodeSize;
+  explode.alpha = 1;
+  explode.avelocity = randomvec() * 300;
+  if( explodeColor != '0 0 0' ){
+    explode.color = explodeColor;
+  }
+  
+  setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
+  setorigin( explode, org);
+  te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
+  te_customflash( org, explodeSize * 25, 1, explodeColor); 
+  //pointparticles?
+};
+
 //HUD Sound Effects
 //make sure to scope self to target client
 void() te_nav_reach={

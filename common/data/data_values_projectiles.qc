@@ -104,7 +104,7 @@ string DAT_PRJ_RPLAS_MODEL  = "q3mdl/proj/mdl_proj_rpc.md3";
 //-------------------------SFGA
 string DAT_PRJ_SFGA_MODEL   = "q3mdl/proj/mdl_proj_sfga.md3";
 //-------------------------SWARM
-string DAT_PRJ_SWRM_MODEL   = "q3mdl/proj/mdl_prj_swrm.md3";
+string DAT_PRJ_SWRM_MODEL   = "q3mdl/proj/mdl_proj_swrm.md3";
 
 //============================
 //            Effects           

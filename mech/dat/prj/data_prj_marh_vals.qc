@@ -98,5 +98,7 @@ void() data_prj_marh_touch={
     }
   }
   
-  BecomeExplosion();
+  makevectors(self.angles);
+  te_missile_explode(  self.origin + (v_up * -5), 1, '0.969 0.996 0.18', self.p_damage / 5, 1);
+  remove(self);
 };

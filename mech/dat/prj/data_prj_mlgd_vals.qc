@@ -73,6 +73,7 @@ void() data_prj_mlgd_touch={
       return;
     }
   }
-  
-  BecomeExplosion();
+  makevectors(self.angles);
+  te_missile_explode(  self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.p_damage / 5, 1);
+  remove(self);
 };

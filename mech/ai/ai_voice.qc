@@ -6,7 +6,7 @@ Overview:
   Impl file for AI voice events
 */
 
-void(float ifaction, float datatype) ai_sfx_spotted={
+void() ai_sfx_spotted={
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
       if( !self.ai_voice_spot ){
@@ -22,7 +22,7 @@ void(float ifaction, float datatype) ai_sfx_spotted={
   }
 };
 
-void(float ifaction, float datatype ) ai_sfx_warning={
+void() ai_sfx_warning={
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
       if( !self.ai_voice_warn ){

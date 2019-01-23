@@ -169,8 +169,8 @@ void(entity bot, entity attacker) ai_damage_react;
 void(void() macro) ai_leg_frame;
 
 //AI VOICE STUFF
-void(float ifaction, float datatype ) ai_sfx_spotted;
-void(float ifaction, float datatype ) ai_sfx_warning;
+void() ai_sfx_spotted;
+void() ai_sfx_warning;
 void() ai_sfx_huntStart;
 void() ai_sfx_huntEnd;
 void() ai_sfx_dying;
@@ -178,6 +178,7 @@ void() ai_sfx_dead;
 void() ai_sfx_kill;
 void() ai_sfx_roger;
 void() ai_sfx_help;
+
 
 /*
   AI STATE FUNCTIONS=====================

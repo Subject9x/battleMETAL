@@ -272,14 +272,6 @@ void() ai_tank_sk_die={
   self.nextthink = time + 0.1;
 };
 
-void() ai_tank_sk_die1a={
-  self.think = ai_tank_sk_die1a;
-  if( time > self.ai_action_time ){
-    self.think = ai_tank_sk_die2;
-  }
-  self.nextthink = time + 0.1;
-};
-
 void() ai_tank_sk_die1={
   local vector sm;
   
