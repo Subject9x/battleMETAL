@@ -197,6 +197,34 @@ void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
 
 };
 
+
+void() te_shield_explode_th={
+  self.alpha = self.alpha - 0.015;
+  self.scale = self.scale + 0.01;
+  self.think = te_shield_explode_th;
+  if( self.alpha < 0.01 ){
+    self.think = SUB_Remove;
+  }
+  self.nextthink = time + 0.01;
+};
+
+void( vector org, float vecSize ) te_shield_explode={
+  local entity explode;
+ 
+  explode = spawn();
+  explode.movetype = MOVETYPE_NONE;
+  explode.solid = SOLID_NOT;
+  explode.think = te_shield_explode_th;
+  explode.nextthink = time + 0.05;
+  explode.p_lifetime = 10;
+  explode.scale = 0.1 + (vecSize / 3);
+  explode.alpha = 0.75;
+  setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
+  setorigin( explode, org);
+  
+  //pointparticles?
+};
+
 //HUD Sound Effects
 //make sure to scope self to target client
 void() te_nav_reach={

@@ -51,7 +51,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
     targ.sh_hit = time + (dmg_amt / 100);
     targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
     targ.sh_hit = targ.sh_hit + (3 - skill);
-    if( shields == FALSE ){
+    if( shields <= FALSE ){
       targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
     }
   }
@@ -118,7 +118,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     targ.sh_hit = time + (dmg_amt / 100);
     targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
     targ.sh_hit = targ.sh_hit + (3 - skill);
-    if( shields == FALSE ){
+    if( shields <= FALSE ){
       targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
     }
   }
@@ -170,7 +170,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
     targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
     targ.sh_hit = targ.sh_hit + (3 - skill);
     targ.sh_hit = targ.sh_hit / 2;  //cause this is explosive damage
-    if( shields == FALSE ){
+    if( shields <= FALSE ){
       targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
     }
   }
@@ -180,9 +180,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
-  local float dmgAmt;  
   local entity oself, targ_act;
-    
+  local float dmgAmt, prevShields;  
+  
   if( !trg.takedamage ){
     return trg;
   }
@@ -194,6 +194,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
+  
+  
+  prevShields = trg.sh_cur;
   
   //reduce friendly fire damage on easier settings
   if(trg.i_faction == attacker.i_faction){
@@ -237,6 +240,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = otemp;
   }
   
+  if( (prevShields > 0) && (trg.sh_cur <= 0) ){
+    te_shield_explode( trg.origin, trg.vec_size );
+  }
+  
   if(dmgAmt > 0){
     sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
   }
@@ -246,7 +253,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
-  
+
   //the special hit-location calculator is only run for DATA_MECH units
   if(trg.data_type == DATA_MECH){
     //filter out leg hits
