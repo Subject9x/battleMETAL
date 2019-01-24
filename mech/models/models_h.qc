@@ -58,6 +58,30 @@ void() leg_walk5;
 void() leg_walk6;
 void() leg_walk7;
 void() leg_walk8;
+//not sure how easy it is to reverse anims here;
+void() leg_back1;
+void() leg_back2;
+void() leg_back3;
+void() leg_back4;
+void() leg_back5;
+void() leg_back6;
+void() leg_back7;
+void() leg_back8;
+
+
+void() bot_leg_stand1;
+void() bot_leg_die1;
+void() bot_leg_die2;
+void() bot_leg_die3;
+void() bot_leg_die4;
+void() bot_leg_walk1;
+void() bot_leg_walk2;
+void() bot_leg_walk3;
+void() bot_leg_walk4;
+void() bot_leg_walk5;
+void() bot_leg_walk6;
+void() bot_leg_walk7;
+void() bot_leg_walk8;
 
 /*
   CENTER TORSO

@@ -262,15 +262,17 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
     local vector fx, vel;
-   
+    local vector leftMin;
+    
     makevectors( angl );
     fx = org ;
     fx_z = fx_z + unitMins_z;
+    leftMin = v_right * (unitMins_x * 0.8);
     if( left ){
-       fx = fx + (v_right * unitMins_x);
+       fx = fx + leftMin;
     }
     else{
-       fx = fx - (v_right * unitMins_x);
+       fx = fx - leftMin;
     }
     
     vel = fx + (v_up * 2);
