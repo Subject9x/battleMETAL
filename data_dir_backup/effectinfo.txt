@@ -1762,6 +1762,14 @@ velocitymultiplier 1
     notunderwater
     trailspacing 0.24
   
+  //TE_LGM_TRAIL - LIGHT
+    effect TE_LGM_TRAIL
+    lightradius 25
+    lightradiusfade 25
+    lightcolor 0.663 0.886 0.953
+    lightshadow 0.5
+    notunderwater
+  
   //TE_LGM_TRAIL - FLAME
     effect TE_LGM_TRAIL
     count 2
@@ -2473,8 +2481,89 @@ velocitymultiplier 1
 //================================================
 
 
+//FOOT STOMP SAND EFFECT==================================
+  //TE_STOMP_SAND - GRAVEL BITS
+    effect TE_STOMP_SAND
+    count 5
+    type alphastatic
+    blend alpha
+    orientation spark
+    color 0xF5DA81 0xE6E6E6
+    tex 44 46
+    size 0.25 0.65
+    alpha 256 512 256
+    time 0.65 0.9
+    originjitter 3 3 3
+    velocityjitter 10 10 10
+    velocitymultiplier 2
+    gravity 0.25
+    notunderwater
+
+  //TE_STOMP_SAND - SMOKE PUFF
+    effect TE_STOMP_SAND
+    countabsolute 1
+    type alphastatic
+    blend alpha
+    color 0x424242 0x848484
+    tex 0 7
+    size 0.75 1
+    sizeincrease 0.5
+    alpha 512 1024 512
+    time 0.25 0.35
+    notunderwater
+    stretchfactor 3
+//================================================
 
 
+
+
+
+//FOOT STOMP CITY EFFECT==================================
+  //TE_STOMP_CITY - GRAVEL BITS
+    effect TE_STOMP_CITY
+    count 5
+    type alphastatic
+    blend alpha
+    orientation spark
+    color 0xF5DA81 0xE6E6E6
+    tex 44 46
+    size 1 2
+    alpha 256 512 64
+    originjitter 6 6 4
+    velocityjitter 10 10 10
+    velocitymultiplier 4
+    gravity 0.25
+    notunderwater
+
+  //TE_STOMP_CITY- BULLET FRAGS
+    effect TE_STOMP_CITY
+    count 1
+    type spark
+    blend alpha
+    orientation spark
+    color 0x0D8D8D8 0xF2F2F2
+    tex 38 41
+    size 0.25 0.65
+    alpha 256 512 1024
+    originjitter 3 3 3
+    velocityjitter 10 10 10
+    velocitymultiplier 4
+    notunderwater
+    stretchfactor 4
+
+  //TE_STOMP_CITY - SMOKE PUFF
+    effect TE_STOMP_CITY
+    countabsolute 1
+    type alphastatic
+    blend alpha
+    color 0x424242 0x848484
+    tex 0 7
+    size 2 4
+    sizeincrease 0.5
+    alpha 512 1024 512
+    notunderwater
+    stretchfactor 3
+//================================================
 //TE_DUST_DESERT==================================
 effect TE_DUST_DESERT
 count 2

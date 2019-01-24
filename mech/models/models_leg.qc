@@ -49,11 +49,8 @@ void() leg_walk3 = [$l_walk3, leg_walk4]{
   local entity player;
   player = self.owner;
   if( (player.flags & FL_ONGROUND) ){
-    local vector ofs;
-    makevectors(player.angles);
-    ofs = player.origin + ((v_up*-44)+(v_forward*8)+(v_right*10));
-    te_spark(ofs, '0 0 25', 15);
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    te_foot_stomp( player.origin, player.angles, player.vec_size, player.mins, TRUE);
   }
 };
 void() leg_walk4 = [$l_walk4, leg_walk5]{};
@@ -62,11 +59,8 @@ void() leg_walk6 = [$l_walk6, leg_walk7]{
   local entity player;
   player = self.owner;
   if((player.flags & FL_ONGROUND)){
-    local vector ofs;
-    makevectors(player.angles);
-    ofs = player.origin + ((v_up*-44)+(v_forward*8)+(v_right*-10));
-    te_spark(ofs, '0 0 25', 15);
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    te_foot_stomp( player.origin, player.angles, player.vec_size, player.mins, FALSE);
   }
 };
 void() leg_walk7 = [$l_walk7, leg_walk8]{};

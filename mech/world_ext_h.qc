@@ -11,6 +11,8 @@ float CLIENTS;
 vector WINDDIR; //these get set by worldspawn but are here because 
 float WINDSPEED;//  modifying world.value is not kosher
 
+float TE_STOMP_TYPE;  //set by world type
+
 //EXTENSIONS
 .float client_num;
 

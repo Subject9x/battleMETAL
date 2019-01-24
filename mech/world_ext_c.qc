@@ -66,6 +66,24 @@ void() mh_world_ini={
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
   addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
+
+  switch( world.worldtype ){
+    case 0:
+      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_DESERT");
+      break;
+    case 1:
+      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_ICE");
+      break;
+    case 2:
+      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_CITY");
+      break;
+    case 3:
+      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_BADLANDS");
+      break;
+    case 4:
+      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_TUNDRA");
+      break;
+  }
 };
 
 /*

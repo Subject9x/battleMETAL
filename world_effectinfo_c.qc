@@ -221,7 +221,7 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.alpha = 0.75;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
-  
+  te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22'); 
   //pointparticles?
 };
 
@@ -256,8 +256,27 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   setmodel( explode, "q3mdl/fx/explosions/te_missile_explode.md3");
   setorigin( explode, org);
   te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
-  te_customflash( org, explodeSize * 25, 1, explodeColor); 
+  te_customflash( org, explodeSize * 50, 1, explodeColor); 
   //pointparticles?
+};
+
+void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
+    local vector fx, vel;
+   
+    makevectors( angl );
+    fx = org ;
+    fx_z = fx_z + unitMins_z;
+    if( left ){
+       fx = fx + (v_right * unitMins_x);
+    }
+    else{
+       fx = fx - (v_right * unitMins_x);
+    }
+    
+    vel = fx + (v_up * 2);
+    
+    pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 2,  vecSize * 1.5);
+    
 };
 
 //HUD Sound Effects
