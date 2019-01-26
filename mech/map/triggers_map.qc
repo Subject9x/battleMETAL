@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/23/2018
 Overview: sv_saveentfile console command does print out all the entities in a map to a text file, and 

@@ -196,6 +196,7 @@ triggers.qc
   mech/map/map_fail_objective.qc
   mech/map/map_hud_highlight.qc
   mech/map/map_mission_boundary.qc
+  mech/map/map_scenery.qc
 //============================
 
 plats.qc

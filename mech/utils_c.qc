@@ -345,17 +345,18 @@ void(entity t) util_generateBuildingFoundation={
   self = n;
     self.classname = "map_terrain";
     if( t.vec_size == 1){
-      util_setModel("q3mdl/base_small.obj", 0, 0) ;
+      util_setModel("q3mdl/map/plats/plat_small.obj", 0, 0) ;
     }
     else if( t.vec_size == 2){
-      util_setModel("q3mdl/base_med.obj", 0, 0) ;
+      util_setModel("q3mdl/map/plats/plat_meidum.obj", 0, 0) ;
     }
     else if( t.vec_size == 3){
-      util_setModel("q3mdl/base_large.obj", 0, 0);
+      util_setModel("q3mdl/map/plats/plat_large.obj", 0, 0);
     }
     util_setCollider(DAMAGE_NO, SOLID_BSP, MOVETYPE_NONE);
     setsize(self, self.mins, self.maxs);
     self.angles = t.angles;
+    self.angles_z = self.angles_z + 90;  //correcting for bsp export
     setorigin(self, v);
   self = this;
 };
