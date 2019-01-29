@@ -169,6 +169,9 @@ void() PutClientInServer = {
   spot  = SelectSpawnPoint();
   
   self.i_faction = spot.i_faction;
+  if( !self.i_faction ){
+    self.i_faction = TRUE;  //default to 1 to satisfy game code
+  }
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
   

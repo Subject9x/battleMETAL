@@ -540,7 +540,7 @@ velocitymultiplier 1
 
 //ATC EFFECTS==================================
   //TE_ATC_MUZZLE - TRACER
-    effect TE_ATC_MUZZLE
+    effect TE_ATC_TRACER
     countabsolute 1
     type spark
     blend alpha
@@ -551,7 +551,6 @@ velocitymultiplier 1
     alpha 256 256 64
     time 2 2
     velocitymultiplier 500
-    //stretchfactor 2
     
   //TE_ATC_MUZZLE - SPARKS
     effect TE_ATC_MUZZLE
@@ -706,8 +705,8 @@ velocitymultiplier 1
 
 
 //FLK EFFECTS==================================
-  //TE_FLK_MUZZLE - TRACER
-    effect TE_FLK_MUZZLE
+  //TE_FLK_TRACER - TRACER
+    effect TE_FLK_TRACER
     countabsolute 1
     type spark
     blend alpha
@@ -718,7 +717,6 @@ velocitymultiplier 1
     alpha 256 256 64
     time 2 2
     velocitymultiplier 750
-    //stretchfactor -2
     
   //TE_FLK_MUZZLE - SMOKE
     effect TE_FLK_MUZZLE

@@ -348,7 +348,7 @@ void(entity t) util_generateBuildingFoundation={
       util_setModel("q3mdl/map/plats/plat_small.obj", 0, 0) ;
     }
     else if( t.vec_size == 2){
-      util_setModel("q3mdl/map/plats/plat_meidum.obj", 0, 0) ;
+      util_setModel("q3mdl/map/plats/plat_medium.obj", 0, 0) ;
     }
     else if( t.vec_size == 3){
       util_setModel("q3mdl/map/plats/plat_large.obj", 0, 0);

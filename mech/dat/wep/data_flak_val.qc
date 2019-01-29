@@ -111,6 +111,10 @@ void() data_flak_atk={
   
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), org + v_forward * 3, normalize( dir - org ) * 4, 1);
   
+  if( vlen(trace_endpos - org) > 100 ){
+    pointparticles( particleeffectnum("TE_FLK_TRACER"), org + v_forward * 3 + v_up * 0.5, normalize( dir - org ) * 4, 1);
+  }
+  
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){
     return;
   }  

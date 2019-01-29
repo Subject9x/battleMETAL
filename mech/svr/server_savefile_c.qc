@@ -156,11 +156,19 @@ void() savefile_default={
 
 //coop options
 void() mapfile_coop_load={
-  local string file, line, contents;
+  local string mapFile, file, line, contents;
   local float flannel, line_tag, argc;
   tokenizebyseparator(mapname, ".");
+  
+  if( !world.map_file ){
+    mapFile = argv(0);
+  }
+  else{
+    mapFile = world.map_file;
+  }
+  
   file = argv(0);
-  file = strcat(PATH_DATA_MAP, "/", file, "/", world.map_file, SAVE_FILE_EXT);
+  file = strcat(PATH_DATA_MAP, "/", file, "/", mapFile, SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);
@@ -194,10 +202,17 @@ void() mapfile_coop_load={
 //pvp options
 //scope this for the client
 void(float faction) mapfile_pvp_load={
-  local string file, line, contents;
+  local string mapFile, file, line, contents;
   local float flannel, line_tag, argc;
   
-  file = strcat(PATH_DATA_MAP, "/", mapname, "/", world.map_file, "_", ftos(faction), SAVE_FILE_EXT);
+  if( !world.map_file ){
+    mapFile = argv(0);
+  }
+  else{
+    mapFile = world.map_file;
+  }
+  
+  file = strcat(PATH_DATA_MAP, "/", mapname, "/", mapFile, "_", ftos(faction), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);

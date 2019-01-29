@@ -383,8 +383,16 @@ void(float track, float loop) client_playTrack={
 };
 
 void() client_sendMissionFileName={
-  local string cmd;
-  cmd = strcat("mech msn_file ", world.msn_file, "\n");
+  local string cmd, msnFile;
+  
+  if( !world.msn_file ){
+    msnFile = world.msn_file;
+  }
+  else{
+    tokenizebyseparator(mapname, ".");
+    msnFile = argv(0);
+  }
+  cmd = strcat("mech msn_file ", msnFile, "\n");
   stuffcmd(self, cmd);
 };
 

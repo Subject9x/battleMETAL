@@ -97,6 +97,10 @@ void() data_latc_atk={
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), org + v_forward * 3 + v_up * 0.5, normalize( dir - org ) * 4, 1);
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   
+  if( vlen(trace_endpos - org) > 100 ){
+    pointparticles( particleeffectnum("TE_ATC_TRACER"), org + v_forward * 3 + v_up * 0.5, normalize( dir - org ) * 4, 1);
+  }
+  
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){
     return;
   }  
@@ -109,8 +113,8 @@ void() data_latc_atk={
   }
   
   if( trace_ent ){
-    t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');
-    if( trace_ent.sh_cur <= 0 ){
+    t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');    
+    if( trace_ent.sh_cur <= 0 ){ 
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), dir + v_forward * -3, normalize( dir - org ) * 4, 3);
     }
   }
