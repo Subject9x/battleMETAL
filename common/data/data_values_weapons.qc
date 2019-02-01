@@ -166,7 +166,7 @@ float DAT_RPLAS_DMG_BURN  = 0.5;
 //-------------------------QRifle
 float DAT_QRFL_DMG        = 10;
 //-------------------------SFGA
-float DAT_SFGA_DMG        = 400;
+float DAT_SFGA_DMG        = 300;
 //-------------------------FLAK
 float DAT_FLAK_DMG        = 0.5;
 float DAT_FLAK_SHRAP_TOTAL= 14;

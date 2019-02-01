@@ -37,7 +37,7 @@ void() ai_mech_sk_turn_back;
           MECH SKIRMISH STAND
 */
 void() ai_mech_sk_stand={
-  cons_logAString("[STATE]", "ai_mech_sk_stand");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_stand");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
@@ -55,7 +55,7 @@ void() ai_mech_sk_stand={
           MECH SKIRMISH WALK
 */
 void() ai_mech_sk_walk={
-  cons_logAString("[STATE]", "ai_mech_sk_walk");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_walk");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
@@ -73,7 +73,7 @@ void() ai_mech_sk_walk={
           MECH SKIRMISH RUN
 */
 void() ai_mech_sk_run={
-  cons_logAString("[STATE]", "ai_mech_sk_run");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_run");  //DEBUG
   local float tyaw;
   if( ai_valid_target( self.enemy ) ){
     tyaw = vectoyaw( self.enemy.origin - self.origin );
@@ -187,7 +187,7 @@ void() ai_mech_sk_run={
   mech walks forward while trying to turn to enemy
 */
 void() ai_mech_sk_turn={
-  cons_logAString("[STATE]", "ai_mech_sk_turn");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_turn");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
@@ -203,7 +203,7 @@ void() ai_mech_sk_turn={
   }
 };
 void() ai_mech_sk_turn_back={
-  cons_logAString("[STATE]", "ai_mech_sk_turn_back");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_turn_back");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
@@ -224,7 +224,7 @@ void() ai_mech_sk_turn_back={
             MECH SKIRMISH RUN STRAFE
 */
 void() ai_mech_sk_run_strafe={
-  cons_logAString("[STATE]", "ai_mech_sk_run_strafe");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_run_strafe");  //DEBUG
   ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25) ){
@@ -258,7 +258,7 @@ void() ai_mech_sk_run_strafe={
   rotate with the player.
 */
 void() ai_mech_sk_run_charge={
-  cons_logAString("[STATE]", "ai_mech_sk_run_charge");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_run_charge");  //DEBUG
   ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 25) ){
@@ -300,7 +300,7 @@ void() ai_mech_sk_run_charge={
             MECH SKIRMISH MELEE
 */
 void() ai_mech_sk_melee={
-  cons_logAString("[STATE]", "ai_mech_sk_melee");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_melee");  //DEBUG
   ai_update_accuracy( TRUE );
   if( ai_valid_target( self.enemy ) ){
     if( util_checkAngNotIdeal( self.angles_y, self.ideal_yaw, 35) ){
@@ -340,7 +340,7 @@ void() ai_mech_sk_melee={
   
 */
 void() ai_mech_sk_missile={
-  cons_logAString("[STATE]", "ai_mech_sk_missile");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_missile");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
@@ -364,7 +364,7 @@ void() ai_mech_sk_missile={
   if skill is high enough, ai should track target yaw
 */
 void() ai_mech_sk_missile_strafe={
-  cons_logAString("[STATE]", "ai_mech_sk_missile_strafe");  //DEBUG
+ // cons_logAString("[STATE]", "ai_mech_sk_missile_strafe");  //DEBUG
   ai_update_accuracy( FALSE );
   if( ai_valid_target( self.enemy ) ){
     if( (skill > 2) ){
@@ -402,7 +402,7 @@ void() ai_mech_sk_missile_strafe={
             MECH SKIRMISH HUNT
 */
 void() ai_mech_sk_hunt={
-  cons_logAString("[STATE]", "ai_mech_sk_hunt");  //DEBUG
+  //cons_logAString("[STATE]", "ai_mech_sk_hunt");  //DEBUG
 
   if( time > self.ai_action_time ){
     ai_next_state( ST_RUN );

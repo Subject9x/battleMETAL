@@ -34,19 +34,22 @@ void() data_prj_sfga_touch={
     return;
   }
   
+  makevectors(self.angles);
   if( other.takedamage ){
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
     if( other.sh_cur > 0){
       pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
-      remove(self);
-      return;
+    }else{
+      te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.p_damage / 7, 1);
     }
+    remove(self);
+    return;
   }
-  
+  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.8 0.5', self.p_damage / 7, ceil( random() * 3) );
   data_prj_sfga_raddmg();
-  self.think = BecomeExplosion;
-  self.nextthink = time + 0.01;
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
+  remove(self);
   return;
 };
 
@@ -64,26 +67,19 @@ void() data_prj_sfga_th={
 };
 
 void() data_prj_sfga_raddmg={
-  local entity f;
-  f = findradius(self.origin, self.w_range);
-  while(f){
-    if(f != other){
-      if(f.comp_id > 0){
-        local float d, dmg_act;
-        d = vlen(f.origin - self.origin);
-        if(d < (DAT_PRJ_SFGA_RAD/4)){
-          dmg_act = self.p_damage;
-        }
-        else if(d > (DAT_PRJ_SFGA_RAD/4) && d < (DAT_PRJ_SFGA_RAD/2)){
-          dmg_act = self.p_damage/2;
-        }
-        else{
-          dmg_act = self.p_damage/4;
-        }
-        traceline(self.origin, f.origin, FALSE, self.owner);
-        t_damage(f, self, self.owner, dmg_act, self.p_dmgtype, trace_endpos, '0 0 0');
-      }
+  local entity radiusTarg;
+  local float d, dmg_act;
+        
+  radiusTarg = findradius(self.origin, self.w_range);
+  while(radiusTarg){
+    if( (radiusTarg.flags & FL_UNIT) ){
+      if( CanDamage( radiusTarg, self )){
+        d = vlen(radiusTarg.origin - self.origin);
+        d = d / self.w_range;
+        dmg_act = self.p_damage - (self.p_damage * d);
+        t_damage(radiusTarg, self, self.owner, dmg_act, self.p_dmgtype, trace_endpos, '0 0 0');
+      } 
     }
-    f = f.chain;
+    radiusTarg = radiusTarg.chain;
   }
 };

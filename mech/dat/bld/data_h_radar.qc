@@ -13,6 +13,7 @@ void() building_radar_cooldown={
   if( time > self.ai_action_time ){
     self.enemy = world;
     ai_next_state( ST_STAND );
+    ai_sfx_huntEnd();
     return;
   }
 };
@@ -28,13 +29,15 @@ void() building_radar_has_enemy={
   }
   
   //target player is outside radar range
-  if( dist > self.radar_range ){
+  if( dist > rng ){
     ai_next_state( ST_HUNT );
-    self.ai_action_time = self.ai_action_time + 5;
+    self.ai_action_time = self.ai_action_time + self.w_firetime;
+    ai_sfx_huntStart();
     return;
   }
   
   if( time > self.ai_action_time ){
+    ai_sfx_spotted();
     ai_next_state( ST_MISSILE );
     return;
   }
@@ -95,8 +98,9 @@ void() building_radar_sweep={
   
   if( found != world){
     self.enemy = found;
+    ai_sfx_warning();
     ai_next_state( ST_RUN );
-    self.ai_action_time = self.ai_action_time + 5;
+    self.ai_action_time = self.ai_action_time + self.w_firetime;
     return;
   }
 };
@@ -116,8 +120,10 @@ void() building_radar_think={
 void() building_human_radar={
   self.data_idx = ID_BLD_H_RADAR;
   self.data_type = DATA_BLD;
+  self.ai_rank = skill;
+  self.w_firetime = DAT_BLD_H_SM_RADAR_LOCK_ON;
   self.vec_name = "Listening Post";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = (FL_MONSTER | FL_UNIT);
   self.vec_size = 1;
   util_setModel(DAT_BLD_H_SM_RADAR_MODEL, self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
@@ -128,6 +134,24 @@ void() building_human_radar={
   self.sh_rate = DAT_BLD_H_SM_RADAR_SH_RATE;
   self.stat_rdr_mode = TRUE;
   self.radar_range = DAT_BLD_H_SM_RADAR_RADAR_RANGE;
+  
+  switch( self.ai_rank ){
+    case 1:
+      self.radar_range = self.radar_range * 0.7;
+      self.w_firetime = self.w_firetime * 0.85;
+      break;
+    case 2:
+      self.radar_range = self.radar_range * 0.85;
+      self.w_firetime = self.w_firetime * 0.70;
+      break;
+    case 3:
+      self.w_firetime = self.w_firetime * 0.55;
+      break;
+    default:
+      self.radar_range = self.radar_range * 0.55;
+      break;
+  }
+  
   self.scale = 1;
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));

@@ -87,10 +87,8 @@ float( entity t ) ai_line_of_sight={
   traceline( trace.origin, t.origin, MOVE_WORLDONLY, self);
   
   if( trace_fraction < 1 ){
-    cons_logAString("ai_line_of_sight", "FALSE");  //DEBUG
     return FALSE;
   }
-  cons_logAString("ai_line_of_sight", "TRUE");  //DEBUG
   return TRUE;
 };
 
