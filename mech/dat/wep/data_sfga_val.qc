@@ -67,11 +67,9 @@ void() data_sfga_atk={
   player = self.owner;
 
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
-  angl = player.angles;
   range = self.w_range;
-  if( (player.flags & FL_MONSTER) ){
-    angl = player.v_angle; //set by each AI, due to FL_TURRET
-  }
+  angl = player.v_angle; //set by each AI, due to FL_TURRET
+ 
   org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
  
   if((player.flags & FL_CLIENT)){
@@ -114,8 +112,6 @@ void() data_sfga_atk={
     setsize(self, '0 0 0', '0 0 0');
     setorigin(self, org + (v_forward * 6));
     self.angles = vectoangles(self.velocity);
-    self.think = data_prj_sfga_th;
-    self.nextthink = time + 0.01;
     self.gravity = 0.50;
   self = oself;
   

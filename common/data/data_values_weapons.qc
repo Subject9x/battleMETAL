@@ -346,7 +346,7 @@ float DAT_EQP_RECAP_WSIZE = 3;
 //-------------------------ATC
 string DAT_LATC_FIRESOUND = "sound/weapons/atc_fire.ogg";
 //-------------------------FLAK
-string DAT_FLAK_FIRESOUND = "sound/weapons/atc_fire.ogg";
+string DAT_FLAK_FIRESOUND = "sound/weapons/flak_fire.ogg";
 //-------------------------RPlas
 string DAT_RPLAS_FIRESOUND = "sound/weapons/atc_fire.ogg";
 //-------------------------QRifle

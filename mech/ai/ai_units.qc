@@ -921,12 +921,28 @@ void() unit_monitor_sniper_m={
 
 void() building_turret_light={
   self.nextVecChoice = 1; //DEBUG
-  self.next_wepn1 = 1;
-  self.next_wepn2 = 1;
   self.flags = FL_TURRET;  //enforced for a mech
-  self.i_faction = 1;
-  self.skin = 1;
-  self.spreadDefault = ACCURACY_LOWTECH;
+  self.skin = self.i_faction;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    case 1:
+      ai_ini_weapons(ID_WEP_LAS, ID_WEP_LAS, -1, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_LOWTECH;
+      break;
+    case 2:
+      ai_ini_weapons(ID_WEP_FLAK, ID_WEP_LAS, -1, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+    case 3:
+      ai_ini_weapons(ID_WEP_LAS, ID_WEP_QRF, -1, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    default:
+      ai_ini_weapons(ID_WEP_LATC, ID_WEP_LATC, -1, -1, -1, -1, -1, -1, -1);
+      self.spreadDefault = ACCURACY_PRIMITVE;
+      break;
+  }
   
   if( !ai_can_spawn() ){
     remove(self);

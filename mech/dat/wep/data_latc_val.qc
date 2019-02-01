@@ -65,11 +65,8 @@ void() data_latc_atk={
   player = self.owner;
   
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
-  angl = player.angles;
   range = self.w_range;
-  if( (player.flags & FL_MONSTER) ){
-    angl = player.v_angle; //set by each AI, due to FL_TURRET
-  }
+  angl = player.v_angle; //set by each AI, due to FL_TURRET
   org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
  
   if((player.flags & FL_CLIENT)){

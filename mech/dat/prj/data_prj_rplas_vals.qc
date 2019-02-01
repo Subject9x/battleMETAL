@@ -99,5 +99,5 @@ void() data_prj_rplas_ini={
   //cosmetics
   self.effects = self.effects | DAT_PRJ_RPLAS_EFFECTS;
   self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");  //DEBUG
+  self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
 };

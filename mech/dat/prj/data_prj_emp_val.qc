@@ -22,7 +22,7 @@ void() data_prj_emp_ini={
   self.effects = self.effects | (EF_ADDITIVE | EF_NOSHADOW);
   self.modelflags = DAT_PRJ_EMP_MODELFLAGS;
   self.alpha = DAT_PRJ_EMP_ALPHA;
-  self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");  //DEBUG
+  self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");
 };
 
 void()data_prj_emp_think={

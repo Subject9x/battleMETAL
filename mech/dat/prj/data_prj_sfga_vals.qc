@@ -6,12 +6,8 @@ Overview: data def file for a weapon projectile
 */
 
 //SNUB FIELD GUN ARTILLERY ROUND==================
-
-
 void() data_prj_sfga_touch;
 void() data_prj_sfga_raddmg;
-
-void() data_prj_sfga_th;
 
 void() data_prj_sfga_ini={
   self.classname = "prj_sfga";
@@ -51,19 +47,6 @@ void() data_prj_sfga_touch={
   self.avelocity = '0 0 0';
   remove(self);
   return;
-};
-
-//kinda dumb but for cosmetics
-void() data_prj_sfga_th={
-  local vector dir;
-  
-  dir = normalize( self.origin - self.c_ofs ) * self.p_velocity;
-  self.angles = vectoangles(dir);
-  
-  self.think = data_prj_sfga_th;
-
-  self.nextthink = time + 0.01;
-  self.c_ofs = self.origin;
 };
 
 void() data_prj_sfga_raddmg={

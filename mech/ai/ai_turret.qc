@@ -115,7 +115,6 @@ void() ai_turret_missile={
   }
 };
 
-//this should really be moved to an FX impl
 void() temp_chunk_burn={
   if( time > self.delay){
     self.think = SUB_Remove;
@@ -134,7 +133,7 @@ void() temp_chunk_burn={
   TH_DIE
 */
 void() ai_turret_die={
-  local vector new_org, vfx_org;
+  local vector new_org, vfx_org, v;
   local string nmdl, cmdl;
   
   self.deadflag = DEAD_DYING;
@@ -154,21 +153,22 @@ void() ai_turret_die={
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
 
+  makevectors( self.angles );
+  v = self.origin + (v_up * 2);
+  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
+  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( v - self.origin ) * 8, self.vec_size, 360, self.vec_size / 20); 
+  
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;
 };
 
 void() ai_turret_die_burn={  
-  makevectors( world.v_angle );
-  
-  local vector sm;
-  sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
-  te_smoke_test(self.origin, sm + '0 0 10', 1);
-  
+
   self.think = ai_turret_die_burn;
   self.nextthink = time + 0.1;
   
   if ( time > self.ai_action_time ){
+   
     self.think = BecomeExplosion;
     self.nextthink = time + 0.01;
   }

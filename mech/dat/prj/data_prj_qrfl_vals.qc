@@ -22,7 +22,7 @@ void() data_prj_qrfl_ini={
   //cosmetics
   self.effects = self.effects | DAT_PRJ_QRFL_EFFECTS;
   self.modelflags = DAT_PRJ_QRFL_MODELFLAGS;
-  self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");  //DEBUG
+  self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
 };
 
 void() data_prj_qrfl_touch={

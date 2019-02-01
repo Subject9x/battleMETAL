@@ -188,7 +188,8 @@ void() ai_vec_dest_die={
     self.think = ai_vec_dest_die2;
   }
   
-  makevectors( self.angles );  v = self.origin + (v_up * 2);
+  makevectors( self.angles );  
+  v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
    
   vel = self.origin + (v_up * 2);

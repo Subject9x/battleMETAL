@@ -70,7 +70,24 @@
     notunderwater
     trailspacing 0.2
     stretchfactor 4
-    
+  
+  //TE_ESR_RAIL - RAIL PARTICLES
+    effect TE_ESR_RAIL
+    count 1
+    type smoke
+    blend alpha
+    orientation spark
+    color 0x65A8A3 0xAACFCC
+    tex 34 34
+    size 0.75 1
+    alpha 512 512 2048
+    originjitter 1 1 1
+    velocityjitter 0.25 0.25 0.25
+    velocitymultiplier 0
+    notunderwater
+    trailspacing 1
+    bounce -1
+
   //TE_ESR_RAIL - RAIL HEAT DISTORT
     effect TE_ESR_RAIL
     count 8
@@ -2135,7 +2152,7 @@ velocitymultiplier 1
 
 //TE_FIRE_SMALL====================================
   //TE_FIRE_SMALL - SMOKE
-  effect TE_FIRE_SMALL
+  effect TE_FIRE_1
   count 0.1
   type smoke
   blend alpha
@@ -2149,7 +2166,7 @@ velocitymultiplier 1
   velocityjitter 1 1 1
   
   //TE_FIRE_SMALL - FLAME
-  effect TE_FIRE_SMALL
+  effect TE_FIRE_1
   count 1
   type spark
   blend alpha
@@ -2166,7 +2183,7 @@ velocitymultiplier 1
   stretchfactor 4
   
   //TE_FIRE_SMALL - HOT SMOKE
-  effect TE_FIRE_SMALL
+  effect TE_FIRE_1
   count 0.075
   type smoke
   blend alpha
@@ -2181,7 +2198,7 @@ velocitymultiplier 1
   velocityjitter 2 2 2
   
   //TE_FIRE_SMALL - LIGHT
-  effect TE_FIRE_SMALL
+  effect TE_FIRE_1
   lightradius 75
   lightradiusfade 200
   lightcolor 0.996 0.392 0.18
@@ -2196,7 +2213,7 @@ velocitymultiplier 1
 
 //TE_FIRE_MED======================================
   //TE_FIRE_MED - SMOKE
-  effect TE_FIRE_MED
+  effect TE_FIRE_2
   count 0.1
   type smoke
   blend alpha
@@ -2210,7 +2227,7 @@ velocitymultiplier 1
   velocityjitter 1 1 1
   
   //TE_FIRE_MED - LIGHT
-  effect TE_FIRE_MED
+  effect TE_FIRE_2
   lightradius 100
   lightradiusfade 250
   lightcolor 0.996 0.392 0.18
@@ -2218,7 +2235,7 @@ velocitymultiplier 1
   notunderwater
   
   //TE_FIRE_MED - FLAME
-  effect TE_FIRE_MED
+  effect TE_FIRE_2
   count 1
   type smoke
   blend alpha
@@ -2233,7 +2250,7 @@ velocitymultiplier 1
   velocitymultiplier 3
   
   //TE_FIRE_MED - HOT SMOKE
-  effect TE_FIRE_MED
+  effect TE_FIRE_2
   count 0.075
   type smoke
   blend alpha
@@ -2248,7 +2265,7 @@ velocitymultiplier 1
   velocityjitter 2 2 2
   
   //TE_FIRE_MED - SPARKS
-  effect TE_FIRE_MED
+  effect TE_FIRE_2
   count 2
   type spark
   blend alpha
@@ -2270,7 +2287,7 @@ velocitymultiplier 1
 
 //TE_FIRE_BIG======================================
   //TE_FIRE_BIG - SMOKE
-  effect TE_FIRE_BIG
+  effect TE_FIRE_3
   count 0.1
   type smoke
   blend alpha
@@ -2284,7 +2301,7 @@ velocitymultiplier 1
   velocityjitter 1 1 1
   
   //TE_FIRE_BIG - LIGHT
-  effect TE_FIRE_BIG
+  effect TE_FIRE_3
   lightradius 150
   lightradiusfade 350
   lightcolor 0.996 0.392 0.18
@@ -2292,7 +2309,7 @@ velocitymultiplier 1
   notunderwater
   
   //TE_FIRE_BIG - FLAME
-  effect TE_FIRE_BIG
+  effect TE_FIRE_3
   count 2
   type smoke
   blend alpha
@@ -2307,7 +2324,7 @@ velocitymultiplier 1
   velocitymultiplier 4
   
   //TE_FIRE_BIG - HOT SMOKE
-  effect TE_FIRE_BIG
+  effect TE_FIRE_3
   count 0.075
   type smoke
   blend alpha
@@ -2322,7 +2339,7 @@ velocitymultiplier 1
   velocityjitter 2 2 2
   
   //TE_FIRE_BIG - SPARKS
-  effect TE_FIRE_BIG
+  effect TE_FIRE_3
   count 3
   type spark
   blend alpha

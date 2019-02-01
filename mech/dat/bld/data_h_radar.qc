@@ -25,6 +25,14 @@ void() building_radar_has_enemy={
   //target player is running PASSIVE radar
   rng = self.radar_range;
   if( self.enemy.stat_rdr_mode == 0 ){
+    makevectors( self.angles );
+    traceline( self.origin + (v_up * 32), self.enemy.origin, TRUE, self);
+    if( trace_fraction < 1 ){
+      ai_next_state( ST_HUNT );
+      self.ai_action_time = self.ai_action_time + (self.w_firetime * 1.5); 
+      ai_sfx_huntStart();
+      return;
+    }
     rng = self.radar_range / 2;
   }
   

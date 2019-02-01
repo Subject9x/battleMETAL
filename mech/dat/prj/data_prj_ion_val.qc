@@ -22,7 +22,7 @@ void() data_prj_ion_ini={
   self.effects = self.effects | (EF_ADDITIVE | EF_NOSHADOW);
   self.modelflags = DAT_PRJ_ION_MODELFLAGS;
   self.alpha = DAT_PRJ_ION_ALPHA;
-  self.traileffectnum = particleeffectnum("TE_ION_TRAIL");  //DEBUG
+  self.traileffectnum = particleeffectnum("TE_ION_TRAIL");
 };
 
 void()data_prj_ion_think={

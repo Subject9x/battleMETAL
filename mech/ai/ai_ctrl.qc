@@ -52,7 +52,6 @@ void( float estate ) ai_state_control={
       self.th_missile_strafe();
       break;
     case ST_HUNT:
-      cons_logAFloat("ai_state_control:self.ai_node_hunt.ai_action_time", self.ai_node_hunt.ai_action_time);  //DEBUG
       self.th_hunt();
       break;
     case ST_PAIN:

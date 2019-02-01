@@ -45,6 +45,6 @@ void() data_prj_mis_ini={
   //cosmetics
   self.effects = EF_NOSHADOW;
   self.modelflags = DAT_PRJ_MIS_MODELFLAGS;
-  self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");  //DEBUG
+  self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");
 };
 
