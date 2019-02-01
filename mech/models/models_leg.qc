@@ -34,7 +34,7 @@ void() leg_walk1 = [$l_walk1, leg_walk2]{
 void() leg_walk2 = [$l_walk2, leg_walk3]{
   self.walkframe = $l_walk2; 
   if( (self.owner.flags & FL_ONGROUND) ){
-    sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   }
 };
@@ -93,7 +93,7 @@ void() leg_back5=[$l_walk5, leg_back4]{
 void() leg_back6=[$l_walk6, leg_back5]{
   self.walkframe = $l_walk6;
   if((self.owner.flags & FL_ONGROUND)){
-    sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   }
 

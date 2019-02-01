@@ -20,6 +20,7 @@ void() hrepair_th = [0, hrepair_th]{
       }
     }
   }
+  building_burn();
 };
 
 void() hrepair_rep = [0, hrepair_rep]{
@@ -76,44 +77,34 @@ void() hrepair_rep = [0, hrepair_rep]{
 };
 
 void() hrepair_die = [0, hrepair_die1]{
-  local entity head;
-  head = findradius(self.origin, DAT_BLD_H_POWER_PLANT_EN_RADIUS);
-  while(head){
-    //if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
-    if( head.data_type == DATA_MECH ){
-      head.en_cur = head.en_cur + 100;
-      if(head.en_cur > head.en_max){
-        head.en_cur = head.en_max;
-      }
-    }
-    if( head.data_type == DATA_BLD ){
-      if( head.i_faction == self.i_faction ){
-        if( head.data_idx != ID_BLD_H_POWER){
-          head.en_rate = 0;
-        }
-      }
-    }
-    head = head.chain;
-  }
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
-
+  building_die_removeFire();
 };
-void() hrepair_die1 = [1, hrepair_die2]{};
-void() hrepair_die2 = [2, hrepair_die3]{};
+void() hrepair_die1 = [1, hrepair_die2]{
+  te_object_explode( '0.75 0.75 0.6' );};
+void() hrepair_die2 = [2, hrepair_die3]{
+  te_object_explode( '0.75 0.75 0.6' );};
 void() hrepair_die3 = [3, hrepair_die4]{};
 void() hrepair_die4 = [4, hrepair_die5]{};
-void() hrepair_die5 = [5, hrepair_die6]{};
-void() hrepair_die6 = [6, hrepair_die7]{};
+void() hrepair_die5 = [5, hrepair_die6]{
+  te_object_explode( '0.75 0.75 0.6' );};
+void() hrepair_die6 = [6, hrepair_die7]{
+  te_object_explode( '0.75 0.75 0.6' );};
 void() hrepair_die7 = [7, hrepair_die8]{};
 void() hrepair_die8 = [8, hrepair_die9]{};
-void() hrepair_die9 = [9, hrepair_die10]{};
-void() hrepair_die10 = [10, hrepair_die11]{};
-void() hrepair_die11 = [11, BecomeExplosion]{};
+void() hrepair_die9 = [9, hrepair_die10]{
+  te_object_explode( '0.75 0.75 0.6' );};
+void() hrepair_die10 = [10, hrepair_die11]{
+  te_object_explode( '0.75 0.75 0.6' );};
+void() hrepair_die11 = [11, BecomeExplosion]{
+  te_object_explode( '0.75 0.75 0.6' );
+  
+};
 
 void() building_human_repair={
   self.data_idx = ID_BLD_H_REPAIR;

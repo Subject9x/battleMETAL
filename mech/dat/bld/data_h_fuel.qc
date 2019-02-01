@@ -16,78 +16,39 @@ void() hfuel_death1 = [1, hfuel_death2]{
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
 
-  local vector exp;
-  exp = randomvec();
-  exp_x = exp_x * ( -self.mins_x + random() * self.maxs_x) * 1.5;
-  exp_y = exp_y * ( -self.mins_y + random() * self.maxs_y) * 1.5;
-  exp_z = exp_z * ( -self.mins_z + random() * self.maxs_z) * 2;
-  makevectors(self.angles);
-  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
+  te_object_explode( '1 0.75 0' );
   
-  local entity boom;
-  boom = spawn();
-  boom.color = '0.1 0.1 0.1';
-  setorigin(boom, exp);
-  boom.nextthink = time + 0.01;
-  boom.think = BecomeExplosion;
+  building_die_removeFire();
+  
 };
 void() hfuel_death2 = [2, hfuel_death3]{};
 void() hfuel_death3 = [3, hfuel_death4]{};
 void() hfuel_death4 = [4, hfuel_death5]{
-  local vector exp;
-  exp = randomvec();
-  exp_x = exp_x * ( -self.mins_x + random() * self.maxs_x) * 1.5;
-  exp_y = exp_y * ( -self.mins_y + random() * self.maxs_y) * 1.5;
-  exp_z = exp_z * ( -self.mins_z + random() * self.maxs_z) * 2;
-  makevectors(self.angles);
-  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
-  
-  local entity boom;
-  boom = spawn();
-  boom.color = '0.1 0.1 0.1';
-  setorigin(boom, exp);
-  boom.nextthink = time + 0.01;
-  boom.think = BecomeExplosion;
-  
+
+  te_object_explode( '1 0.75 0' );
 };
 void() hfuel_death5 = [5, hfuel_death6]{};
 void() hfuel_death6 = [6, hfuel_death7]{};
 void() hfuel_death7 = [7, hfuel_death8]{
-  local vector exp;
-  exp = randomvec();
-  exp_x = exp_x * ( -self.mins_x + random() * self.maxs_x) * 1.5;
-  exp_y = exp_y * ( -self.mins_y + random() * self.maxs_y) * 1.5;
-  exp_z = exp_z * ( -self.mins_z + random() * self.maxs_z) * 2;
-  makevectors(self.angles);
-  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
-  
-  local entity boom;
-  boom = spawn();
-  boom.color = '0.1 0.1 0.1';
-  setorigin(boom, exp);
-  boom.nextthink = time + 0.01;
-  boom.think = BecomeExplosion;
+
+  te_object_explode( '1 0.75 0' );
 };
 void() hfuel_death8 = [8, hfuel_death9]{};
 void() hfuel_death9 = [9, hfuel_death10]{};
 void() hfuel_death10 = [10, hfuel_death11]{
-  local vector exp;
-  exp = randomvec();
-  exp_x = exp_x * ( -self.mins_x + random() * self.maxs_x) * 1.5;
-  exp_y = exp_y * ( -self.mins_y + random() * self.maxs_y) * 1.5;
-  exp_z = exp_z * ( -self.mins_z + random() * self.maxs_z) * 2;
-  makevectors(self.angles);
-  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
-  
-  local entity boom;
-  boom = spawn();
-  boom.color = '0.1 0.1 0.1';
-  setorigin(boom, exp);
-  boom.nextthink = time + 0.01;
-  boom.think = BecomeExplosion;
+
+  te_object_explode( '1 0.75 0' );
 };
 void() hfuel_death11 = [11, hfuel_death12]{};
 void() hfuel_death12 = [12, BecomeExplosion]{};
+
+void() building_human_fuel_th={
+  
+  building_burn();
+  
+  self.think = building_human_fuel_th;
+  self.nextthink = self.nextthink + random()*0.5;
+};
 
 /*QUAKED building_fuel (.1 .1 .1) (-40 -40 -32) (40 40 32)
 */
@@ -116,6 +77,6 @@ void() building_human_fuel={
   self.th_die = hfuel_death1;
   self.use = multi_trigger;
   
-  //self.nextthink = self.nextthink + random()*0.5;
-  //self.think = self.th_stand;
+  self.think = building_human_fuel_th;
+  self.nextthink = self.nextthink + random()*0.5;
 };

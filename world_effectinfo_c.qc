@@ -140,7 +140,7 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   fire.nextthink = time + fire.w_firetime;
   fire.c_ofs = vel; //holds velocity;
   fire.count = total;
-  fire.vec_name = "TE_FIRE_SMALL";
+  fire.vec_name = "TE_FIRE_1";
   if( lifetime > 0 ){
     fire.p_lifetime = time + lifetime;
   }
@@ -159,7 +159,7 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   fire.nextthink = time + fire.w_firetime;
   fire.c_ofs = vel; //holds velocity;
   fire.count = total;
-  fire.vec_name = "TE_FIRE_MED";
+  fire.vec_name = "TE_FIRE_2";
   if( lifetime > 0 ){
     fire.p_lifetime = time + lifetime;
   }
@@ -178,7 +178,7 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   fire.nextthink = time + fire.w_firetime;
   fire.c_ofs = vel; //holds velocity;
   fire.count = total;
-  fire.vec_name = "TE_FIRE_BIG";
+  fire.vec_name = "TE_FIRE_3";
   if( lifetime > 0 ){
     fire.p_lifetime = time + lifetime;
   }
@@ -258,6 +258,22 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   te_debris( org, '0 0 0', '0 0 0', random() * debrisCount, 1);
   te_customflash( org, explodeSize * 50, 1, explodeColor); 
   //pointparticles?
+};
+
+/*
+  item is exploding, use its bbox size for area
+*/
+void( vector explodeColor ) te_object_explode={
+  local vector exp;
+  
+  exp_x = crandom() * (self.maxs_x * 2);
+  exp_y = crandom() * (self.maxs_y * 2);
+  exp_z = crandom() * (self.maxs_z * 2);
+  makevectors(self.angles);
+  exp = self.origin + (v_up * exp_z) + ( v_forward * exp_y) + (v_right * exp_x);
+  
+  te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
+
 };
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={

@@ -81,6 +81,10 @@ void() nav_point_use={
 void() map_nav_point={
 
   self.flags = self.flags | FL_NODE;
+  self.effects = self.effects | EF_NODRAW;
+  if( cvar("developer") ){
+    self.effects = self.effects - (self.effects & EF_NODRAW);
+  }
   self.data_type = DATA_NAVP;
   
   setmodel(self, "q3mdl/testball.md3");

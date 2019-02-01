@@ -5,6 +5,14 @@ Date: 5/10/2017
 Overview: data file for building
 */
 
+
+void() building_human_hangar_th={
+  
+  building_burn();
+  self.think = building_human_hangar_th;
+  self.nextthink = time + 0.1;
+};
+
 void() building_human_hangar={
 
   self.data_idx = ID_BLD_H_HANGAR_L;
@@ -35,5 +43,7 @@ void() building_human_hangar={
   if(util_cornerSlopeCheck(self, 1)){
     util_generateBuildingFoundation(self);
   }
-
+  
+  self.think = building_human_hangar_th;
+  self.nextthink = time + (random() * 0.1);
 };

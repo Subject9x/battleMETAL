@@ -25,6 +25,10 @@ void() hshield_die = [0, hshield_die1]{
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
+  building_die_removeFire();
+  te_object_explode( '0.25 1 0.05' );
+  te_object_explode( '0.25 1 0.05' );
+  te_object_explode( '0.25 1 0.05' );
 };
 void() hshield_die1 = [1, hshield_die2]{};
 void() hshield_die2 = [2, hshield_die3]{};
@@ -32,10 +36,14 @@ void() hshield_die3 = [3, hshield_die4]{};
 void() hshield_die4 = [4, hshield_die5]{};
 void() hshield_die5 = [5, hshield_die6]{};
 void() hshield_die6 = [6, hshield_die7]{};
-void() hshield_die7 = [7, hshield_die8]{};
-void() hshield_die8 = [8, hshield_die9]{};
-void() hshield_die9 = [9, hshield_die10]{};
-void() hshield_die10 = [10, hshield_die11]{};
+void() hshield_die7 = [7, hshield_die8]{
+  te_object_explode( '0.25 1 0.05' );};
+void() hshield_die8 = [8, hshield_die9]{
+  te_object_explode( '0.5 1 0.05' );};
+void() hshield_die9 = [9, hshield_die10]{
+  te_object_explode( '0.75 1 0.05' );};
+void() hshield_die10 = [10, hshield_die11]{
+  te_object_explode( '1 1 0.05' );};
 void() hshield_die11 = [11, BecomeExplosion]{};
 
 void() hshield_th = [0, hshield_th]{
@@ -48,11 +56,13 @@ void() hshield_th = [0, hshield_th]{
   
   if(self.sh_cur < self.sh_max){
     if(self.en_cur > 0){
-      self.sh_cur = self.sh_cur + self.sh_rate * 2;
-      self.en_cur = self.en_cur - self.sh_rate / 2; 
-      if(self.sh_cur > self.sh_max){
-        self.sh_cur = self.sh_max;
-      }  
+      if( time > self.sh_hit ){
+        self.sh_cur = self.sh_cur + self.sh_rate * 2;
+        self.en_cur = self.en_cur - self.sh_rate / 2; 
+        if(self.sh_cur > self.sh_max){
+          self.sh_cur = self.sh_max;
+        }  
+      }
     }
   }
 
@@ -103,6 +113,7 @@ void() hshield_th = [0, hshield_th]{
     }
     p = p.chain;
   }
+  building_burn();
 }
 
 /*QUAKED building_human_shield (.1 .1 .1) (-56 -56 0) (56 56 17.5)

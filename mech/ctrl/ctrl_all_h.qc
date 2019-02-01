@@ -17,6 +17,9 @@ void() touch_mech;
 void() touch_mechPiece;
 
 ///building controllers
+void() building_burn_th;
+void() building_burn;
+void() building_die_removeFire;
 void() building_think;
 void() building_die;
 

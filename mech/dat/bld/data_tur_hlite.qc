@@ -21,6 +21,7 @@ void() data_tur_hlite_ini={
 
   self.data_idx= ID_TUR_HLITE;
   self.vec_name = DAT_TUR_HLITE_NAME;
+  self.vec_size = 1;
   self.data_type = DATA_BLD;
   self.radar_range = DAT_TUR_HLITE_RADRANGE;
   self.en_cur= DAT_TUR_HLITE_EN_MAX;

@@ -23,6 +23,8 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
 void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high;
 void( vector org, float vecSize ) te_shield_explode;
 void( vector org, float explodeSize, vector explodeColor, float debrisCount, float debrType) te_missile_explode;
+void( vector explodeColor ) te_object_explode;
+
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp;
 
 //SFX

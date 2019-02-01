@@ -428,6 +428,27 @@ float(float v) anglemod =
 	return v;
 };
 
+vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge={
+  local vector angl;
+  local vector newpos;
+  local float len;
+  local float height;
+  
+  angl = entAng;
+  angl_y = anglemod(angl_y +  45 + random() * 270);
+
+  len = entMaxs_x * 0.75;
+  
+  height = entMaxs_z * 0.65;
+  height = height + (random() * (entMaxs_z * 0.25));
+  
+  newpos = entOrg;
+  makevectors( angl );
+  newpos = newpos + (v_forward * len);
+  newpos = newpos + (v_up *  height);
+  return newpos;
+};
+
 void(string msg, float val) cons_logAFloat={
   bprint(strcat(msg,":", ftos(val)," \n"));
 };

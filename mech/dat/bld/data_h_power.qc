@@ -35,18 +35,29 @@ void() hpower_die = [0, hpower_die1]{
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
+  building_die_removeFire();
+  te_object_explode( '0.75 0.75 0.6' );
 };
 void() hpower_die1 = [1, hpower_die2]{};
 void() hpower_die2 = [2, hpower_die3]{};
-void() hpower_die3 = [3, hpower_die4]{};
+void() hpower_die3 = [3, hpower_die4]{
+  te_object_explode( '0.75 0.75 0.6' );};
 void() hpower_die4 = [4, hpower_die5]{};
-void() hpower_die5 = [5, hpower_die6]{};
+void() hpower_die5 = [5, hpower_die6]{
+  te_object_explode( '0.75 0.75 0.6' );};
 void() hpower_die6 = [6, hpower_die7]{};
 void() hpower_die7 = [7, hpower_die8]{};
-void() hpower_die8 = [8, hpower_die9]{};
-void() hpower_die9 = [9, hpower_die10]{};
-void() hpower_die10 = [10, hpower_die11]{};
-void() hpower_die11 = [11, BecomeExplosion]{};
+void() hpower_die8 = [8, hpower_die9]{
+  te_object_explode( '0.75 0.75 0.6' );};
+void() hpower_die9 = [9, hpower_die10]{
+  te_object_explode( '0.75 0.75 0.6' );
+  te_object_explode( '0.75 0.75 0.6' );};
+void() hpower_die10 = [10, hpower_die11]{
+  te_object_explode( '0.75 0.75 0.6' );
+  te_object_explode( '0.75 0.75 0.6' );};
+void() hpower_die11 = [11, BecomeExplosion]{
+  te_object_explode( '0.75 0.75 0.6' );
+  te_object_explode( '0.75 0.75 0.6' );};
 
 void() hpower_th = [0, hpower_th]{
   if(self.en_cur < self.en_max){
@@ -69,6 +80,7 @@ void() hpower_th = [0, hpower_th]{
     }
     t = t.chain;
   }
+  building_burn();
 }; 
 
 
@@ -100,7 +112,7 @@ void() building_human_power={
     util_generateBuildingFoundation(self);
   }
   
-  self.th_die = hpower_die1;
+  self.th_die = hpower_die;
   self.use = multi_trigger;
   
   hpower_th();

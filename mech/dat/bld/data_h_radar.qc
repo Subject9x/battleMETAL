@@ -105,6 +105,8 @@ void() building_radar_think={
   
   ai_state_control( self.attack_state );
   
+  building_burn();
+  
   self.think = building_radar_think;
   self.nextthink = time + 0.1;
 };
