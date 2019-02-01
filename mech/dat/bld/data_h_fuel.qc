@@ -91,7 +91,7 @@ void() hfuel_death12 = [12, BecomeExplosion]{};
 
 /*QUAKED building_fuel (.1 .1 .1) (-40 -40 -32) (40 40 32)
 */
-void() building_fuel={
+void() building_human_fuel={
   self.data_idx = ID_BLD_H_FUEL;
   self.data_type = DATA_BLD;
   self.vec_name = "Fuel Tank";

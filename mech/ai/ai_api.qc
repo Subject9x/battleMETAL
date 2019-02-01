@@ -14,7 +14,7 @@ float() ai_can_spawn={
   local float yesWecan;
   local float gameMode;
   
-  yesWecan = FALSE;
+  yesWecan = TRUE;
   gameMode = cvar("gamemode");
   
   if( self.nextVecChoice <= 0 ){
@@ -23,25 +23,25 @@ float() ai_can_spawn={
   
   if( (self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
     if( !coop && !deathmatch && !teamplay ){
-      yesWecan = TRUE;
+      yesWecan = FALSE;
     }
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_COOP) ){
     if( coop && !deathmatch ){
-      yesWecan = TRUE;
+      yesWecan = FALSE;
     }
   }
 
   if( (self.spawnflags & AI_SPAWNFLAG_DM) ){
     if( !coop && deathmatch ){
-      yesWecan = TRUE;
+      yesWecan = FALSE;
     }
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
     if( deathmatch && teamplay ){
-      yesWecan = TRUE;
+      yesWecan = FALSE;
     }
   }
   

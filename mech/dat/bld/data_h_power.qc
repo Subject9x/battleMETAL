@@ -72,9 +72,9 @@ void() hpower_th = [0, hpower_th]{
 }; 
 
 
-/*QUAKED building_power (.1 .1 .1) (-56 -56 0) (56 56 46)
+/*QUAKED building_human_power (.1 .1 .1) (-56 -56 0) (56 56 46)
 */
-void() building_power={
+void() building_human_power={
   self.data_idx = ID_BLD_H_POWER;
   self.data_type = DATA_BLD;
   self.vec_name = "Power Generator";

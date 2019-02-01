@@ -143,23 +143,23 @@ void() building_human_repair={
     util_generateBuildingFoundation(self);
   }
   makevectors(self.angles);
-  self.c_ofs = self.origin + (v_forward * 35) + (v_up *( ( self.maxs_y / 2 ) -3) ) + (v_right * 5);
-  local entity nde, this;
+  self.c_ofs = self.origin + (v_forward * -20) + (v_up * 30) + (v_right * 4);
+  local entity repairNode, this;
   this  = self;
-  nde = spawn();
-  self = nde;
-    util_setModel("q3mdl/testball.md3", self.skin, 0) ;
+  repairNode = spawn();
+  repairNode.effects = repairNode.effects | EF_NODRAW;
+  repairNode.touch = building_repair_touch;
+  repairNode.deadflag = DEAD_NO;
+  repairNode.trigger_field = world;
+  repairNode.owner = this;
+  this.e_cam = repairNode;
+  self = repairNode;
+    util_setModel("q3mdl/testball.md3", repairNode.skin, 0) ;
     util_setCollider(FALSE, SOLID_TRIGGER, MOVETYPE_NONE) ;
     util_setHealthArmor(0, 0, 0, 0) ;
-    setsize(self, '-8 -8 -8', '8 8 8');
-    setorigin(self, this.c_ofs);
-    self.effects = self.effects | EF_NODRAW;
-    self.touch = building_repair_touch;
-    self.deadflag = DEAD_NO;
-    self.trigger_field = world;
-    self.owner = this;
   self = this;
-  this.e_cam = nde;
+  setsize(repairNode, '-16 -16 -24', '16 16 32');
+  setorigin(repairNode, this.c_ofs);
   
   self.th_die = hrepair_die;
   self.th_stand = hrepair_th;

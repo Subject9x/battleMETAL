@@ -5,10 +5,10 @@ Date: 7/9/2018
 Overview: AI API Header, covers multiple impl files
 */
 //CONSTANTS
-float AI_SPAWNFLAG_CAMPAIGN     = 1;    //belongs in campaign mode
-float AI_SPAWNFLAG_COOP         = 2;    //belongs in co-op mode
-float AI_SPAWNFLAG_DM           = 4;    //belongs in DeathMatch
-float AI_SPAWNFLAG_TDM          = 8;    //belongs in Team DeathMatch
+float AI_SPAWNFLAG_CAMPAIGN     = 1;    //remove from campaign mode
+float AI_SPAWNFLAG_COOP         = 2;    //remove from co-op mode
+float AI_SPAWNFLAG_DM           = 4;    //remove from DeathMatch
+float AI_SPAWNFLAG_TDM          = 8;    //remove from Team DeathMatch
 float AI_SPAWNFLAG_COLDSTART    = 16;   //on-spawn, bot will ignore friendly help calls
 float AI_SPAWNFLAG_RANDDOMSTART = 32;   //start on random node if AI has patrol path
 float AI_SPAWNFLAG_HASRADAR     = 64;   //radar is expensive to use, use sparingly

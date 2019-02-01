@@ -105,9 +105,9 @@ void() hshield_th = [0, hshield_th]{
   }
 }
 
-/*QUAKED building_shield (.1 .1 .1) (-56 -56 0) (56 56 17.5)
+/*QUAKED building_human_shield (.1 .1 .1) (-56 -56 0) (56 56 17.5)
 */
-void() building_shield={
+void() building_human_shield={
   self.data_idx = ID_BLD_H_SHIELD;
   self.data_type = DATA_BLD;
   self.vec_name = "Shield Generator";
