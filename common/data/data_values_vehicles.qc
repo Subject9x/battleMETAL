@@ -40,15 +40,15 @@ float ID_VEC_PSC_VTOL_L = 48;
 //-------------------------Human Truck A, B, C
 float DAT_HS_TRUCK_HP = 400;
 //-------------------------Foslager
-float DAT_foslager_HP = 300;
+float DAT_foslager_HP = 1000;
 //-------------------------Trowel
-float DAT_TROWEL_HP = 750;
+float DAT_TROWEL_HP = 2000;
 //-------------------------Onnek
-float DAT_onnek_HP_CTOR = 200;
+float DAT_onnek_HP_CTOR = 1500;
 //-------------------------Dunerunner
-float DAT_dunerunner_HP = 200;
+float DAT_dunerunner_HP = 500;
 //-------------------------Sorcerer
-float DAT_sorcerer_HP = 500;
+float DAT_sorcerer_HP = 1250;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_HP = 600;
 //============================
@@ -84,20 +84,20 @@ float DAT_TNK_LEG_ARMOR = 1;
 //============================
 //note: vehicles don't get shields UNLESS they're near a friendly Shield Generator!
 //-------------------------Foslager
-float DAT_foslager_SHIELD_MAX   = 200;
+float DAT_foslager_SHIELD_MAX   = 100;
 float DAT_foslager_SHIELD_RATE  = 0;
 //-------------------------Trowel
-float DAT_TROWEL_SHIELD_MAX   = 200;
+float DAT_TROWEL_SHIELD_MAX   = 250;
 float DAT_TROWEL_SHIELD_RATE  = 0;
 //-------------------------Onnek
-float DAT_onnek_SHIELD_MAX       = 200;
+float DAT_onnek_SHIELD_MAX       = 175;
 float DAT_onnek_SHIELD_RATE      = 0;
 //-------------------------Dunerunner
 float DAT_dunerunner_SHIELD_RATE   = 0;
 float DAT_dunerunner_SHIELD_MAX    = 50;
 //-------------------------Sorcerer
 float DAT_sorcerer_SHIELD_RATE   = 0;
-float DAT_sorcerer_SHIELD_MAX    = 500;
+float DAT_sorcerer_SHIELD_MAX    = 225;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_SHIELD_MAX  = 100;
 float DAT_PSC_VTOLL_SHIELD_RATE = 0;
@@ -105,20 +105,20 @@ float DAT_PSC_VTOLL_SHIELD_RATE = 0;
 //            Energy  
 //============================
 //-------------------------Foslager
-float DAT_foslager_ENERGY_MAX   = 300;
-float DAT_foslager_ENERGY_RATE  = 1;
+float DAT_foslager_ENERGY_MAX   = 250;
+float DAT_foslager_ENERGY_RATE  = 1.2;
 //-------------------------Trowel
-float DAT_TROWEL_ENERGY_MAX   = 500;
-float DAT_TROWEL_ENERGY_RATE  = 1;
+float DAT_TROWEL_ENERGY_MAX   = 700;
+float DAT_TROWEL_ENERGY_RATE  = 1.85;
 //-------------------------Onnek
-float DAT_onnek_ENERGY_MAX       = 350;
-float DAT_onnek_ENERGY_RATE      = 10;
+float DAT_onnek_ENERGY_MAX       = 400;
+float DAT_onnek_ENERGY_RATE      = 2;
 //-------------------------Dunerunner
-float DAT_dunerunner_ENERGY_MAX    = 100;
-float DAT_dunerunner_ENERGY_RATE   = 1;
+float DAT_dunerunner_ENERGY_MAX    = 125;
+float DAT_dunerunner_ENERGY_RATE   = 0.5;
 //-------------------------Sorcerer
-float DAT_sorcerer_ENERGY_MAX    = 250;
-float DAT_sorcerer_ENERGY_RATE   = 0.5;
+float DAT_sorcerer_ENERGY_MAX    = 300;
+float DAT_sorcerer_ENERGY_RATE   = 1;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_ENERGY_MAX  = 300;
 float DAT_PSC_VTOLL_ENERGY_RATE = 5;
@@ -130,25 +130,25 @@ float DAT_HS_TRUCK_FSPEED      = 100;
 float DAT_HS_TRUCK_SSPEED      = 75;
 float DAT_HS_TRUCK_BSPEED      = 25;
 //-------------------------Foslager
-float DAT_foslager_FSPEED      = 100;
-float DAT_foslager_SSPEED      = 75;
-float DAT_foslager_BSPEED      = 25;
+float DAT_foslager_FSPEED      = 150;
+float DAT_foslager_SSPEED      = 0;
+float DAT_foslager_BSPEED      = 75;
 //-------------------------Trowel
-float DAT_TROWEL_FSPEED      = 65;
-float DAT_TROWEL_SSPEED      = 45;
-float DAT_TROWEL_BSPEED      = 15;
+float DAT_TROWEL_FSPEED      = 100;
+float DAT_TROWEL_SSPEED      = 0;
+float DAT_TROWEL_BSPEED      = 50;
 //-------------------------Onnek
-float DAT_onnek_FSPEED          = 50;
+float DAT_onnek_FSPEED          = 75;
 float DAT_onnek_SSPEED          = 0;
-float DAT_onnek_BSPEED          = 15;
+float DAT_onnek_BSPEED          = 75;
 //-------------------------Dunerunner
-float DAT_dunerunner_FSPEED          = 300;
-float DAT_dunerunner_SSPEED          = 200;
-float DAT_dunerunner_BSPEED          = 100;
+float DAT_dunerunner_FSPEED          = 200;
+float DAT_dunerunner_SSPEED          = 100;
+float DAT_dunerunner_BSPEED          = 175;
 //-------------------------Sorcerer
-float DAT_sorcerer_FSPEED          = 170;
-float DAT_sorcerer_SSPEED          = 150;
-float DAT_sorcerer_BSPEED          = 100;
+float DAT_sorcerer_FSPEED          = 125;
+float DAT_sorcerer_SSPEED          = 0;
+float DAT_sorcerer_BSPEED          = 50;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_FSPEED     = 450;
 float DAT_PSC_VTOLL_SSPEED     = 375;
@@ -178,23 +178,23 @@ vector DAT_PSC_VTOLL_BBX_X    =   '30 30 15';
 //            Radar Range and Lock-on Delay
 //============================
 //-------------------------Foslager
-float DAT_foslager_RADAR_RANGE    = 1000;
-float DAT_foslager_LOCK_ON = 5;
+float DAT_foslager_RADAR_RANGE  = 500;
+float DAT_foslager_LOCK_ON      = 5;
 //-------------------------Trowel
-float DAT_TROWEL_RADAR_RANGE    = 500;
-float DAT_trowel_LOCK_ON = 4;
+float DAT_TROWEL_RADAR_RANGE    = 750;
+float DAT_trowel_LOCK_ON        = 4;
 //-------------------------Onnek
-float DAT_onnek_RADAR_RANGE        = 1500;
-float DAT_onnek_LOCK_ON = 6;
+float DAT_onnek_RADAR_RANGE     = 1500;
+float DAT_onnek_LOCK_ON         = 6;
 //-------------------------Dunerunner
-float DAT_dunerunner_RADAR_RANGE      = 500;
-float DAT_dunerunner_LOCK_ON = 4;
+float DAT_dunerunner_RADAR_RANGE= 1250;
+float DAT_dunerunner_LOCK_ON    = 4;
 //-------------------------Sorcerer
-float DAT_sorcerer_RADAR_RANGE      = 2000;
-float DAT_sorcerer_LOCK_ON = 3;
+float DAT_sorcerer_RADAR_RANGE  = 2000;
+float DAT_sorcerer_LOCK_ON      = 3;
 //-------------------------PSC VTOL Light
-float DAT_PSC_VTOLL_RADAR_RANGE   = 3000;
-float DAT_vtol_LOCK_ON = 6;
+float DAT_PSC_VTOLL_RADAR_RANGE = 3000;
+float DAT_vtol_LOCK_ON          = 6;
 //============================
 //         Base Yaw Speed
 //============================

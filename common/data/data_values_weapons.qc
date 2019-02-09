@@ -86,63 +86,35 @@ float DAT_MARH_RANGE      = 3600;
 //-------------------------Swarm Missile
 float DAT_SWRM_RANGE      = 1600;
 //====================================================================================
-//            Recharge Time  
+//            ENERGY COSTS  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_RL_RATE    = 0.2;
-float DAT_LATC_RL_MAX     = 0.2;
 float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
-float DAT_RPLAS_RL_RATE   = 0.15;
-float DAT_RPLAS_RL_MAX    = 5;
 float DAT_RPLAS_EN_RATE   = 3.33;
 //-------------------------QRifle
-float DAT_QRFL_RL_RATE    = 0.1;
-float DAT_QRFL_RL_MAX     = 5;
 float DAT_QRFL_EN_RATE    = 100;
 //-------------------------SFGA
-float DAT_SFGA_RL_RATE    = 0.1;
-float DAT_SFGA_RL_MAX     = 10;
 float DAT_SFGA_EN_RATE    = 0;
 //-------------------------FLAK
-float DAT_FLAK_RL_RATE    = 0.35;
-float DAT_FLAK_RL_MAX     = 4;
 float DAT_FLAK_EN_RATE    = 0;
 //-------------------------Laser
-float DAT_LAS_RL_RATE     = 0.6;
-float DAT_LAS_RL_MAX      = 0.6;
 float DAT_LAS_EN_RATE     = 6.67;
 //-------------------------ION
-float DAT_ION_RL_RATE     = 0.12;
-float DAT_ION_RL_MAX      = 5;
 float DAT_ION_EN_RATE     = 133.33;
 //-------------------------EMP
-float DAT_EMP_RL_RATE     = 0.1;
-float DAT_EMP_RL_MAX      = 6;
 float DAT_EMP_EN_RATE     = 266.7;
 //-------------------------ESR
-float DAT_ESR_RL_RATE     = 0.07;
-float DAT_ESR_RL_MAX      = 5;
 float DAT_ESR_EN_RATE     = 200;
 //-------------------------PAC
-float DAT_PAC_RL_RATE     = 0.1;
-float DAT_PAC_RL_MAX      = 8;
 float DAT_PAC_EN_RATE     = 333.33;
 //-------------------------Rocket
-float DAT_MIS_RL_RATE     = 0.22;
-float DAT_MIS_RL_MAX      = 8;
 float DAT_MIS_EN_RATE     = 0;
 //-------------------------Laser Missile
-float DAT_MLGD_RL_RATE    = 0.2;
-float DAT_MLGD_RL_MAX     = 6;
 float DAT_MLGD_EN_RATE    = 5;
 //-------------------------Radar Missile
-float DAT_MARH_RL_RATE    = 0.28;
-float DAT_MARH_RL_MAX     = 7;
 float DAT_MARH_EN_RATE    = 0;
 //-------------------------Swarm Missile
-float DAT_SWRM_RL_RATE    = 0.1;
-float DAT_SWRM_RL_MAX     = 10;
 float DAT_SWRM_EN_RATE    = 0;
 //EQUIP------------
 //-------------------------ENBAT
@@ -155,6 +127,57 @@ float DAT_EQP_LSAR_EN_RATE  = 0.3;  //holds large sensor upgrade
 float DAT_EQP_HSEM_EN_RATE  = 0.5;  //holds shield recharge upgrade
 //-------------------------SCAP
 float DAT_EQP_SCAP_EN_RATE  = 0.15;  //holds shield capacity upgrade
+//====================================================================================
+//            Recharge Time  
+//====================================================================================
+//-------------------------ATC
+float DAT_LATC_RL_RATE    = 0.2;
+float DAT_LATC_RL_MAX     = 0.2;
+//-------------------------RPlas
+float DAT_RPLAS_RL_RATE   = 0.15;
+float DAT_RPLAS_RL_MAX    = 5;
+//-------------------------QRifle
+float DAT_QRFL_RL_RATE    = 0.1;
+float DAT_QRFL_RL_MAX     = 5;
+//-------------------------SFGA
+float DAT_SFGA_RL_RATE    = 0.1;
+float DAT_SFGA_RL_MAX     = 10;
+//-------------------------FLAK
+float DAT_FLAK_RL_RATE    = 0.35;
+float DAT_FLAK_RL_MAX     = 4;
+//-------------------------Laser
+float DAT_LAS_RL_RATE     = 0.6;
+float DAT_LAS_RL_MAX      = 0.6;
+//-------------------------ION
+float DAT_ION_RL_RATE     = 0.12;
+float DAT_ION_RL_MAX      = 5;
+//-------------------------EMP
+float DAT_EMP_RL_RATE     = 0.1;
+float DAT_EMP_RL_MAX      = 6;
+//-------------------------ESR
+float DAT_ESR_RL_RATE     = 0.07;
+float DAT_ESR_RL_MAX      = 5;
+//-------------------------PAC
+float DAT_PAC_RL_RATE     = 0.1;
+float DAT_PAC_RL_MAX      = 8;
+//-------------------------Rocket
+float DAT_MIS_RL_RATE     = 0.22;
+float DAT_MIS_RL_MAX      = 8;
+//-------------------------Laser Missile
+float DAT_MLGD_RL_RATE    = 0.2;
+float DAT_MLGD_RL_MAX     = 6;
+//-------------------------Radar Missile
+float DAT_MARH_RL_RATE    = 0.28;
+float DAT_MARH_RL_MAX     = 7;
+//-------------------------Swarm Missile
+float DAT_SWRM_RL_RATE    = 0.1;
+float DAT_SWRM_RL_MAX     = 10;
+//EQUIP------------
+//-------------------------ENBAT
+//-------------------------RECAP
+//-------------------------LSAR
+//-------------------------HSEM
+//-------------------------SCAP
 //====================================================================================
 //            Damage  
 //====================================================================================

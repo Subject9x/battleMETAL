@@ -86,16 +86,18 @@ void() building_radar_sweep={
   while( blip ){
     if( blip.deadflag <= DEAD_NO ){
       if( (blip.flags & FL_CLIENT) ){
-        if( blip.i_faction != self.i_faction ){
-          rng = self.radar_range;
-          //target player is running PASSIVE radar
-          if( blip.stat_rdr_mode == FALSE){
-            rng = self.radar_range / 2;
-          }
-          yaw = vectoyaw( self.origin - blip.origin);
-          if( (yaw >= low) && (yaw <= high) ){
-            if( vlen( blip.origin - self.origin ) <= rng ){
-              found = blip;
+        if( blip.data_type == DATA_MECH ){
+          if( blip.i_faction != self.i_faction ){
+            rng = self.radar_range;
+            //target player is running PASSIVE radar
+            if( blip.stat_rdr_mode == FALSE){
+              rng = self.radar_range / 2;
+            }
+            yaw = vectoyaw( self.origin - blip.origin);
+            if( (yaw >= low) && (yaw <= high) ){
+              if( vlen( blip.origin - self.origin ) <= rng ){
+                found = blip;
+              }
             }
           }
         }
