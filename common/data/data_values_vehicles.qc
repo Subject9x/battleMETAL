@@ -184,16 +184,16 @@ float DAT_foslager_LOCK_ON      = 5;
 float DAT_TROWEL_RADAR_RANGE    = 750;
 float DAT_trowel_LOCK_ON        = 4;
 //-------------------------Onnek
-float DAT_onnek_RADAR_RANGE     = 1500;
+float DAT_onnek_RADAR_RANGE     = 1800;//1500;
 float DAT_onnek_LOCK_ON         = 6;
 //-------------------------Dunerunner
-float DAT_dunerunner_RADAR_RANGE= 1250;
+float DAT_dunerunner_RADAR_RANGE= 1600;//1250;
 float DAT_dunerunner_LOCK_ON    = 4;
 //-------------------------Sorcerer
-float DAT_sorcerer_RADAR_RANGE  = 2000;
+float DAT_sorcerer_RADAR_RANGE  = 1200;//2000;
 float DAT_sorcerer_LOCK_ON      = 3;
 //-------------------------PSC VTOL Light
-float DAT_PSC_VTOLL_RADAR_RANGE = 3000;
+float DAT_PSC_VTOLL_RADAR_RANGE = 2000;//3000;
 float DAT_vtol_LOCK_ON          = 6;
 //============================
 //         Base Yaw Speed

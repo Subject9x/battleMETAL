@@ -31,11 +31,12 @@ void() ctrl_updateCenterTorso={
 
   if( time > self.count4 ){
     self.count4 = time + 0.1;
-    if(self.en_cur >= 0){
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur > self.en_max){
-        self.en_cur = self.en_max;
+    if(self.en_cur > -1){
+      diff = self.en_rate;
+      if( self.stat_plr_stt == PLAYER_SPRINT_ON ){
+        diff = diff * 0.35;
       }
+      self.en_cur = self.en_cur + diff;
     }  
     if(self.sh_cur < self.sh_max){
       if(time > self.sh_hit){

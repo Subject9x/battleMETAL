@@ -354,6 +354,7 @@ float( float scan_mode) ai_check_scan={
     self.ai_viewtime = time + self.ai_viewcheck;
     if( scan_mode ){
       //TODO - radar
+      
     }
     return ai_find_target_visual();
   }

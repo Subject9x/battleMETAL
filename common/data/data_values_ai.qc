@@ -2,6 +2,7 @@
 mech Mod
 Author: Peter Roohr
 Date: 8/30/2018
+Mod: 02/11/2019
 Overview: AI values that have been spun off from common/game
 */
 
@@ -18,12 +19,6 @@ float AI_RANK_VET = 1;  //veteran
 float AI_RANK_REG = 2;  //regular
 float AI_RANK_ROK = 3;  //rookie
 
-//
-float AI_HUNT_NOV = 1;
-float AI_HUNT_REG = 2;
-float AI_HUNT_VET = 3;
-float AI_HUNT_ELT = 4;
-
 //DAMAGE DETUNING
 float AI_DMG_SKILL_ROK = 0.2;
 float AI_DMG_SKILL_REG = 0.3;
@@ -35,7 +30,6 @@ float AI_DMG_REG = 0.05;
 float AI_DMG_VET = 0.075;
 float AI_DMG_ACE = 0.1;
 
-//
 float AI_ATTACK_ROK  =  0.2;
 float AI_ATTACK_REG  =  0.3;
 float AI_ATTACK_VET  =  0.4;
@@ -43,13 +37,6 @@ float AI_ATTACK_ACE  =  0.5;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
-
-//STATE VALUES
-float AI_PATROL_DIST      = 100;  //how close to get to node before counting as 'close'
-float AI_DEFEND_DIST_MIN  = 200;  //how close to get to a defense node before counting as close
-float AI_DEFEND_DIST      = 3500;
-float AI_ASSAULT_DIST_MIN = 400;
-float AI_ASSAULT_DIST     = 1200;
 
 //how well does the AI handle weapon convergence
 float AI_CNV_ACE = 10;
@@ -85,10 +72,10 @@ float AI_SHIELD_HARD =  0.8;
 float AI_SHIELD_NIGHT = 1;
 
 //ai_leading ratings, how well an ai tracks a slippery target
-float AI_LEAD_ACE = 0.06;
-float AI_LEAD_VET = 0.08;
-float AI_LEAD_REG = 0.1;
-float AI_LEAD_ROK = 0.12;
+float AI_LEAD_ACE = 0.08;
+float AI_LEAD_VET = 0.1;
+float AI_LEAD_REG = 0.12;
+float AI_LEAD_ROK = 0.14;
 
 //ai's patience in hunting a target, the better the pilot the longer they hunting
 float AI_PTNCE_ACE = 40;
@@ -97,9 +84,9 @@ float AI_PTNCE_REG = 20;
 float AI_PTNCE_ROK = 10;
 
 //common engage ranges
-float AI_RANGE_S = 1000;
-float AI_RANGE_M = 2400;
-float AI_RANGE_L = 4000;
+float AI_RANGE_S = 400;
+float AI_RANGE_M = 1000;
+float AI_RANGE_L = 1600;
 
 //view check intervals
 float AI_VIEW_ROK = 8;

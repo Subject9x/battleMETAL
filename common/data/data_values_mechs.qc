@@ -91,10 +91,10 @@ float DAT_MNT_SHIELD_RATE   = 0.7;
 //============================
 //-------------------------BALAKET------------------------
 float DAT_OTL_ENERGY_MAX    = 400;
-float DAT_OTL_ENERGY_RATE   = 4;
+float DAT_OTL_ENERGY_RATE   = 3.5;  //4;
 //-------------------------MATOK------------------------
 float DAT_MTK_ENERGY_MAX    = 800;
-float DAT_MTK_ENERGY_RATE   = 5;
+float DAT_MTK_ENERGY_RATE   = 4.25; //5;
 //-------------------------MONITOR------------------------
 float DAT_MNT_ENERGY_MAX    = 700;
 float DAT_MNT_ENERGY_RATE   = 3;
@@ -123,13 +123,13 @@ float DAT_MNT_M_YAW         = 1;
 //            Radar Range and Lock-on Delay
 //============================
 //-------------------------BALAKET------------------------
-float DAT_OTL_RADAR_RANGE = 7000;
+float DAT_OTL_RADAR_RANGE = 1500; //7000;
 float DAT_OTL_LOCK = 6;
 //-------------------------MATOK------------------------
-float DAT_MTK_RADAR_RANGE = 5000;
+float DAT_MTK_RADAR_RANGE = 1200; //5000;
 float DAT_MTK_LOCK = 4;
 //-------------------------MONITOR------------------------
-float DAT_MNT_RADAR_RANGE = 3000;
+float DAT_MNT_RADAR_RANGE = 750;  //3000;
 float DAT_MNT_LOCK = 8;
 //============================
 //            HITBOX SIZES

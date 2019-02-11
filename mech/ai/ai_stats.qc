@@ -37,7 +37,6 @@ void() ai_unit_ini_var={
   self.stat_lck_stt = LOCK_NONE;
   self.power_timer = 0;
   self.ideal_yaw = self.angles * '0 1 0';
-  self.maxpatience = 0;
   self.patience = 0;
   self.ai_viewcheck = 0;
   self.ai_view = 0;
@@ -81,7 +80,6 @@ void(float rank) ai_pilot_ini_stats={
   self.accuracy = self.spreadDefault_y;
   self.w_firetime = ai_pilot_lock_time( rank, self.w_firetime );
   self.stat_rdr_mode = TRUE;
-  self.maxpatience = ai_pilot_rating_patience();
   self.ai_action_mod = ai_pilot_action_mod( rank );
   self.ai_attack_chance = ai_pilot_attack_interval( rank );
 };
@@ -300,49 +298,6 @@ void() ai_promote={
       self.ai_rank = SKILL_NOV;
     }
   }
-};
-
-/*
-  Determines the starting patience value of the AI.
-  Patience is primarily used for ai_combat_huntTarget,
-  where patience is initialized to: time + <this value>
-  better AI's can hold their patience a bit longer
-*/
-float() ai_pilot_rating_patience={
-  local float ePatience;
-  if(self.ai_rank == AI_RANK_ACE){
-    ePatience = AI_PTNCE_ACE;
-  }
-  else if(self.ai_rank == AI_RANK_VET){
-    ePatience =  AI_PTNCE_VET;
-  }
-  else if(self.ai_rank == AI_RANK_REG){
-    ePatience =  AI_PTNCE_REG;
-  }
-  else if(self.ai_rank == AI_RANK_ROK){
-    ePatience =  AI_PTNCE_ROK;
-  }
-  else{
-    ePatience =  AI_PTNCE_ROK;
-  }
-  //skill mod
-  ePatience = ePatience + (ePatience * (skill / 100));
-  
-  //ai quirks mods
-  //if(self.count1 == AI_STYLE_STALK){
-    //stalkers should have the longest patience
-   // ePatience = ePatience + (ePatience * 0.5);
-  //} else
-  /*if(self.count1 ==- AI_STYLE_FLANK){
-    //flankers get a minor bump in patience
-    ePatience = ePatience + (ePatience * 0.25);
-  }
-  //yes you can have an aggressive stalker, but it wont be great
-  //for long hunts
-  if(self.count2 == AI_TYPE_AGGRO){
-    ePatience = ePatience - (ePatience / 2);
-  }*/
-  return ePatience; 
 };
 
 /*

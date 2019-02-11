@@ -58,42 +58,42 @@ string DAT_EQP_RECAP_NAME = "Recharge Capacitor";
 //            Range  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_RANGE      = 3800;
+float DAT_LATC_RANGE      = 1800; //3800;
 //-------------------------RPlas
-float DAT_RPLAS_RANGE     = 2400;
+float DAT_RPLAS_RANGE     = 1000; //2400;
 //-------------------------QRifle
-float DAT_QRFL_RANGE      = 3600;
+float DAT_QRFL_RANGE      = 2000; //3600;
 //-------------------------SFGA
-float DAT_SFGA_RANGE      = 3600;
+float DAT_SFGA_RANGE      = 1300; //3600;
 //-------------------------FLAK
-float DAT_FLAK_RANGE      = 4000;
+float DAT_FLAK_RANGE      = 1600; //4000;
 //-------------------------Laser
-float DAT_LAS_RANGE       = 4000;
+float DAT_LAS_RANGE       = 2000;//4000;
 //-------------------------ION
-float DAT_ION_RANGE       = 3800;
+float DAT_ION_RANGE       = 800;  //3800;
 //-------------------------EMP
-float DAT_EMP_RANGE       = 1900;
+float DAT_EMP_RANGE       = 1700;//1900;
 //-------------------------ESR
-float DAT_ESR_RANGE       = 800;
+float DAT_ESR_RANGE       = 200;  //800;
 //-------------------------PAC
-float DAT_PAC_RANGE       = 3200;
+float DAT_PAC_RANGE       = 2000; //3200;
 //-------------------------Rocket
-float DAT_MIS_RANGE       = 1000;
+float DAT_MIS_RANGE       = 400;  //1000;
 //-------------------------Laser Missile
-float DAT_MLGD_RANGE      = 2400;
+float DAT_MLGD_RANGE      = 1000; //2400;
 //-------------------------Radar Missile
-float DAT_MARH_RANGE      = 3600;
+float DAT_MARH_RANGE      = 1500; //3600;
 //-------------------------Swarm Missile
-float DAT_SWRM_RANGE      = 1600;
+float DAT_SWRM_RANGE      = 600;  //1600;
 //====================================================================================
 //            ENERGY COSTS  
 //====================================================================================
 //-------------------------ATC
 float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
-float DAT_RPLAS_EN_RATE   = 3.33;
+float DAT_RPLAS_EN_RATE   = 1;  //3.33;
 //-------------------------QRifle
-float DAT_QRFL_EN_RATE    = 100;
+float DAT_QRFL_EN_RATE    = 10; //100;
 //-------------------------SFGA
 float DAT_SFGA_EN_RATE    = 0;
 //-------------------------FLAK

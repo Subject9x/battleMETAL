@@ -78,7 +78,6 @@ float TYPE_SKIRM  = 3;
 .float ai_fov;      //the angle of the AI's view for visual target finding
 .float ai_view;         //game unit range of vision within the angle
 .float patience;        //counter for if AI is stuck on something
-.float maxpatience;     //how impatient is the AI
 .vector ai_pitch;     //x = min, y= max, z = pitch speed
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
@@ -111,7 +110,6 @@ float() ai_pilot_rating_leading;
 float() ai_pilot_yaw_mod;
 float() ai_pilot_armor_mod;
 float() ai_pilot_shield_mod;
-float() ai_pilot_rating_patience;
 void() ai_pilot_mech_armor;
 void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
