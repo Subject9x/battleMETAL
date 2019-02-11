@@ -72,10 +72,10 @@ float AI_ROT_ROK = 0.4; //0.25
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
-float AI_ARMOR_EASY =  0.3;
-float AI_ARMOR_MEDM =  0.4;
-float AI_ARMOR_HARD =  0.5;
-float AI_ARMOR_NIGHT = 0.6;
+float AI_ARMOR_EASY =  0.2;
+float AI_ARMOR_MEDM =  0.3;
+float AI_ARMOR_HARD =  0.4;
+float AI_ARMOR_NIGHT = 0.5;
 
 //shield based on difficulty
 //shield = shield * AI_SHIELD
