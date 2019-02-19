@@ -45,7 +45,7 @@ vector DAT_TUR_HLITE_BBX ='20 20 13';
 //============================
 //-------------------------Human Light Turret
 float DAT_TUR_HLITE_YAWS = 3;
-
+float DAT_TUR_HLITE_TURRET_YAW = 4;
 //============================
 //          PITCH SPEEDS    
 //============================

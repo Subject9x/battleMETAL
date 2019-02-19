@@ -53,7 +53,7 @@ void() ai_change_rank_use={
         if (!self.yaw_speed){
           local float m;
           m = ai_pilot_yaw_mod();
-          self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * m);
+          self.yaw_speed = ai_pilot_yaw_mod()
         }
         self.ai_leading = ai_pilot_rating_leading();
       self = this;
@@ -68,7 +68,7 @@ void() ai_change_rank_use={
         if (!self.yaw_speed){
           local float m;
           m = ai_pilot_yaw_mod();
-          self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * m);
+          self.yaw_speed = ai_pilot_yaw_mod();
         }
         self.ai_leading = ai_pilot_rating_leading();
       self = this;

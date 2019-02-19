@@ -107,18 +107,21 @@ float DAT_OTL_M_SSPEED      = 175;
 float DAT_OTL_M_BSPEED      = 150;
 float DAT_OTL_M_ACCEL       = 1.5;
 float DAT_OTL_M_YAW         = 4;
+float DAT_OTL_TUR_YAW       = 4;
 //-------------------------MATOK------------------------
 float DAT_MTK_M_FSPEED      = 150;
 float DAT_MTK_M_SSPEED      = 100;
 float DAT_MTK_M_BSPEED      = 90;
 float DAT_MTK_M_ACCEL       = 1.5;
 float DAT_MTK_M_YAW         = 2.5;
+float DAT_MTK_TUR_YAW       = 2.5;
 //-------------------------MONITOR------------------------
 float DAT_MNT_M_FSPEED      = 85;
 float DAT_MNT_M_SSPEED      = 85;
 float DAT_MNT_M_BSPEED      = 85;
 float DAT_MNT_M_ACCEL       = 2;
 float DAT_MNT_M_YAW         = 1;
+float DAT_MNT_TUR_YAW       = 1;
 //============================
 //            Radar Range and Lock-on Delay
 //============================

@@ -9,265 +9,9 @@ Overview: ai unit
   close-up they're kinda useless, only should attack at longer ranges
 */
 
-/*
-float ST_STAND              = 1;  //th_stand
-float ST_WALK               = 2;  //th_walk
-float ST_RUN                = 4;  //th_run
-float ST_RUN_STRAFE         = 5;  //th_run_strafe
-float ST_RUN_CHARGE         = 6;  //th_run_charge
-float ST_MISSILE            = 7;  //th_missile
-float ST_MELEE              = 8;  //th_melee
-float ST_MISSILE_STRAFE     = 9;  //th_missile_strafe
-float ST_HUNT               = 10; //th_hunt
-float ST_RADAR              = 11; //TODO, th_radar, - turn to face target even if LoS is lost
-float ST_HUNT_START         = 12; //TODO
-float ST_PAIN               = 13; //TODO - a fun holdover from Quake, this 'staggers' the target
-*/
-
-//set state time duration
-float() ai_mech_sniper_setDuration={
-  local float duration, vel;
-  duration = duration + (4 - skill);
-  duration = duration + (self.vec_size - 1);
-  duration = duration / 10;
-  vel = self.m_fspeed * AI_WALK_SPD;
-  vel = vel * 20 / 500;
-  duration = duration + vel;
-  duration = duration * random();
-  return duration;
-};
-
-
-void() ai_mech_sniper_stand;
-void() ai_mech_sniper_walk;
-void() ai_mech_sniper_run;
-void() ai_mech_sniper_run_strafe;
-void() ai_mech_sniper_run_charge;
-void() ai_mech_sniper_melee;
-void() ai_mech_sniper_missile;
-void() ai_mech_sniper_missile_strafe;
-void() ai_mech_sniper_hunt;
-void() ai_mech_sniper_pain;
-
 void() ai_mech_sniper_die;
 void() ai_mech_sniper_die1;
 void() ai_mech_sniper_die2;
-
-//custom funcs
-void() ai_mech_sniper_turn;
-void() ai_mech_sniper_turn_back;
-
-
-void() ai_mech_sniper_stand={
-  ai_update_accuracy( FALSE );
-  if( ai_valid_target( self.enemy ) ){
-    ai_face_targ();
-    if( ai_check_face( self.enemy, self.ai_fov ) ){
-      ai_next_state( ST_MISSILE );
-      return;
-    }
-  }
-  else{
-    ai_generic_stand();
-  }
-};
-
-void() ai_mech_sniper_walk={
-  if( ai_valid_target(self.enemy) ){
-  
-  }
-  if( time > self.ai_action_time ){
-  
-  
-  }
-};
-
-void() ai_mech_sniper_run={
-  local float angl;
-  
-  if( ai_valid_target(self.enemy) ){
-    ai_turret_set_state( TR_TARG );
-    enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = ai_check_range( self.enemy );
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
-    
-    if(enemy_vis){
-      if( enemy_range <= 400 ){
-        if( enemy_infront ){
-          ai_next_state( ST_MELEE );
-          angl = 100 + ( random() * 100);
-          self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-          self.ai_dir = anglemod( self.ideal_yaw - angl );
-          return;
-        }
-        
-      }
-      if( enemy_range <= 800 ){
-        if( enemy_infront ){
-          ai_next_state( ST_MELEE );
-          angl = 100 + ( random() * 100);
-          self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-          self.ai_dir = anglemod( self.ideal_yaw - angl );
-          return;
-        }
-        ai_next_state( ST_RUN_STRAFE );
-        self.lefty = 0 - self.lefty;
-        self.ai_dir = anglemod( self.ideal_yaw - (80 * self.lefty) );
-        self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-        return;
-      }
-      
-      if( enemy_range <= self.ai_minrange ){
-        if( enemy_infront ){
-          ai_next_state( ST_MISSILE );
-          self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-          return;
-        }
-        ai_next_state( ST_RUN_STRAFE );
-        self.lefty = 0 - self.lefty;
-        self.ai_dir = anglemod( self.ideal_yaw - (80 * self.lefty) );
-        self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-        return;
-      }
-      ai_next_state( ST_RUN_CHARGE );
-      self.ai_dir = anglemod( self.ideal_yaw  );
-      self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-      return;
-    }
-    else{
-      ai_next_state( ST_STAND);
-      self.enemy = world;
-      return;
-    }
-  }
-  else{
-    ai_next_state( ST_STAND);
-    return;
-  }
-};
-
-void() ai_mech_sniper_run_strafe={
-  ai_update_accuracy( TRUE );
-  if( !ai_move( self.ai_dir, self.m_sspeed * AI_RUN_SPD ) ){
-    self.lefty = 0 - self.lefty;
-    self.ai_dir = anglemod( self.ideal_yaw - (self.ai_dir * self.lefty) );
-  }
-  
-  if( time > self.ai_action_time ){
-    if( (skill > 1) || (self.ai_rank < 2) ){
-      ai_next_state( ST_MISSILE_STRAFE );
-      self.lefty = 0 - self.lefty;
-      self.ai_dir = self.ai_dir * self.lefty;
-      self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-      return;
-    }
-    ai_next_state( ST_RUN );
-    return;
-  }
-};
-
-void() ai_mech_sniper_run_charge={
-  local float angl;
-  ai_update_accuracy( TRUE );
-  if( !ai_move( self.ai_dir, self.m_sspeed * AI_RUN_SPD ) ){
-    angl = 45 + ( random() * 90);
-    self.lefty = 0 - self.lefty;
-    self.ai_dir = anglemod( self.ideal_yaw - (self.ai_dir * self.lefty) );
-  }
-  
-  if( time > self.ai_action_time ){
-    if( (skill > 1) || (self.ai_rank < 2) ){
-      ai_next_state( ST_MISSILE );
-      self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-      return;
-    }
-    ai_next_state( ST_RUN );
-    return;
-  }
-};
-
-void() ai_mech_sniper_melee={
-  ai_update_accuracy( FALSE );
-  if( ai_valid_target(self.enemy) ){
-    ai_move_turn();
-    
-    if( ai_check_face( self.enemy, 0.96 ) ){
-      ai_attack();
-    }
-    
-    if( !ai_move( self.ai_dir, self.m_bspeed * AI_WALK_SPD ) ){
-      ai_next_state( ST_RUN_STRAFE );
-      self.lefty = 0 - self.lefty;
-      self.ai_dir = anglemod( self.ideal_yaw - (80 * self.lefty) );
-      self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-      return;
-    }
-  }
-  if( time > self.ai_action_time ){
-    ai_next_state( ST_RUN );
-    return;
-  }
-};
-
-void() ai_mech_sniper_missile={
-  local float angl;
-  ai_update_accuracy( FALSE );
-  if( ai_valid_target(self.enemy) ){
-    enemy_range = ai_check_range( self.enemy );
-    if( enemy_range <= 600 ){
-      ai_next_state( ST_MELEE );
-      angl = 100 + ( random() * 100);
-      self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-      self.ai_dir = anglemod( self.ideal_yaw - angl );
-      return;
-    }
-    //TODO - AI convergence code
-    if( ai_check_face( self.enemy, 0.96 ) ){
-      if( ai_wait_for_shot( self.spreadDefault_x + 0.2 ) ){      
-        if( ai_attack() ){
-          ai_next_state( ST_RUN );
-          return;
-        }
-      }
-    }
-  }
-  else{
-    ai_next_state( ST_STAND );
-    return;
-  }
-};
-
-void() ai_mech_sniper_missile_strafe={
-  ai_update_accuracy( TRUE );
-  if( ai_valid_target(self.enemy) ){
-    ai_move( self.ai_dir, self.m_fspeed * AI_WALK_SPD );
-    if( ai_check_face( self.enemy, 0.96 ) ){
-      if( !ai_attack() ){
-        ai_next_state( ST_MISSILE );
-        self.ai_action_time = self.ai_action_time + ai_mech_sniper_setDuration();
-        return;
-      }
-    }
-  }
-  else{
-    ai_next_state( ST_STAND );
-    return;
-  }
-  if( time > self.ai_action_time ){
-    ai_next_state( ST_RUN );
-    return;
-  }
-};
-
-void() ai_mech_sniper_hunt={};
-
-void() ai_mech_sniper_pain={
-  
-  if( time > self.ai_action_time ){
-    ai_next_state( ST_RUN );
-    return;
-  }
-};
 
 /*
   TH_DIE
@@ -292,7 +36,11 @@ void() ai_mech_sniper_die={
   mech_player_compdie(self.e_arm_l);
   mech_player_compdie(self.e_arm_r);
   mech_player_compdie(self.e_cam);
-  ai_leg_frame( leg_stand1 );
+  
+  otemp = self;
+  self = self.e_legs;
+    bot_leg_die1();
+  self = otemp;
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
@@ -331,49 +79,860 @@ void() ai_mech_sniper_die2={
   self.think = BecomeExplosion;
 };
 
+/*
+  macro rebuild
+*/
+
+void() ai_mech_sniper_walk1;
+void() ai_mech_sniper_stand1;
+
+void() ai_mech_sniper_patrol1;
+void() ai_mech_sniper_patrol_walk1;
+
+void() ai_mech_sniper_fight_prep;
+
+void() ai_mech_sniper_reverse1;
+void() ai_mech_sniper_reverse2;
+void() ai_mech_sniper_reverse3;
+void() ai_mech_sniper_reverse4;
+void() ai_mech_sniper_reverse5;
+void() ai_mech_sniper_reverse6;
+void() ai_mech_sniper_reverse7;
+void() ai_mech_sniper_reverse8;
+void() ai_mech_sniper_reverse9;
+void() ai_mech_sniper_reverse10;
+void() ai_mech_sniper_reverse11;
+void() ai_mech_sniper_reverse12;
+void() ai_mech_sniper_reverse13;
+void() ai_mech_sniper_reverse14;
+void() ai_mech_sniper_reverse15;
+void() ai_mech_sniper_reverse16;
+
+void() ai_mech_sniper_charge1;
+void() ai_mech_sniper_charge2;
+void() ai_mech_sniper_charge3;
+void() ai_mech_sniper_charge4;
+void() ai_mech_sniper_charge5;
+void() ai_mech_sniper_charge6;
+void() ai_mech_sniper_charge7;
+void() ai_mech_sniper_charge8;
+void() ai_mech_sniper_charge9;
+void() ai_mech_sniper_charge10;
+void() ai_mech_sniper_charge11;
+void() ai_mech_sniper_charge12;
+void() ai_mech_sniper_charge13;
+void() ai_mech_sniper_charge14;
+void() ai_mech_sniper_charge15;
+void() ai_mech_sniper_charge16;
+
+void() ai_mech_sniper_rotate1;
+void() ai_mech_sniper_rotate2;
+void() ai_mech_sniper_rotate3;
+void() ai_mech_sniper_rotate4;
+void() ai_mech_sniper_rotate5;
+void() ai_mech_sniper_rotate6;
+void() ai_mech_sniper_rotate7;
+void() ai_mech_sniper_rotate8;
+
+void() ai_mech_sniper_snipe1;
+void() ai_mech_sniper_snipe2;
+void() ai_mech_sniper_snipe3;
+void() ai_mech_sniper_snipe4;
+void() ai_mech_sniper_snipe5;
+void() ai_mech_sniper_snipe6;
+void() ai_mech_sniper_snipe7;
+void() ai_mech_sniper_snipe8;
 
 /*
-  SNIPER MECH THINK FUNCTION
+  melee for veterans, tries to shoot some,
+  then strafes
 */
-void() ai_mech_sniper_th={  
-  local entity wep;
+void() ai_mech_sniper_melee1;
+void() ai_mech_sniper_melee2;
+void() ai_mech_sniper_melee3;
+void() ai_mech_sniper_melee4;
+void() ai_mech_sniper_melee5;
+void() ai_mech_sniper_melee6;
+void() ai_mech_sniper_melee7;
+void() ai_mech_sniper_melee8;
+void() ai_mech_sniper_melee9;
+void() ai_mech_sniper_melee10;
+void() ai_mech_sniper_melee11;
+void() ai_mech_sniper_melee12;
+void() ai_mech_sniper_melee13;
+void() ai_mech_sniper_melee14;
+
+void() ai_mech_sniper_walk1={
+  ai_update_accuracy( FALSE ); 
+  macro_ai_update(ctrl_update_mechplayer)
   
-  ctrl_updateCenterTorso();
-  wep = self.w_slot;
-  while(wep){
-    ctrl_wpn_think(wep);
-    wep = wep.w_slot;
+  macro_ai_frame(ai_mech_sniper_walk1)
+};
+
+void() ai_mech_sniper_stand1={
+  ai_update_accuracy( FALSE ); 
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  otemp = self;
+  self = self.e_legs;
+    bot_leg_stand1();
+    self.attack_state = TR_YAW;
+  self = otemp;
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sniper_fight_prep)
+    return;
   }
-  if( !(self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
-    if( !self.deadflag ){
-      if( self.enemy ){
-        if( ai_valid_target( self.enemy ) ){
-          self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
-          ai_wep_group_track(self.stat_trg_dist, self.w_group1, AI_RANGE_S); 
-          ai_wep_group_track(self.stat_trg_dist, self.w_group2, AI_RANGE_M); 
-          ai_wep_group_track(self.stat_trg_dist, self.w_group3, AI_RANGE_L);
-          ai_lock_on();
+  
+  macro_ai_frame(ai_mech_sniper_stand1)
+};
+
+void() ai_mech_sniper_fight_prep={
+  local float rand;
+  rand = random();
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_valid_target(self.enemy) ){
+    self.ai_action_time = self.ai_action_mod;
+    enemy_vis = ai_check_vis( self.enemy );
+    enemy_range = ai_check_range( self.enemy );
+    enemy_infront = ai_check_face( self.enemy, self.ai_fov, TRUE);
+    
+    if( enemy_vis == VIS_FRAC ){
+      if( enemy_range < 200 ){
+        if( enemy_infront ){
+          if( self.ai_rank > AI_RANK_REG ){
+            self.lefty = self.lefty * -1;
+            self.ai_dir = (50 + ceil(random() * 60)) * self.lefty;
+            self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+            self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
+            macro_ai_frame(ai_mech_sniper_melee1)
+            return;
+          }
+          if( rand < 0.35 ){
+            self.lefty = self.lefty * -1;
+            self.ai_dir = (random() * 45) * 2;
+            self.ai_dir = self.ai_dir * self.lefty;
+            self.ai_dir = anglemod( self.angles_y + self.ai_dir );
+            macro_ai_frame(ai_mech_sniper_charge1)
+            return;
+          }
+          macro_ai_frame(ai_mech_sniper_reverse1)
+          return;
         }
-        else{ 
-          self.enemy = world;
+        if( self.ai_rank > AI_RANK_REG ){
+          macro_ai_frame(ai_mech_sniper_reverse1)
+          return;
         }
-      }  
-      ai_ranged_attack();
-      self.button0 = 0;
-      ai_state_control( self.attack_state );
+        macro_ai_frame(ai_mech_sniper_rotate1)
+        return;
+      }
+      if( enemy_range <= self.ai_minrange ){
+        if( enemy_infront ){
+          if( self.ai_rank > AI_RANK_REG ){
+            if( rand < 0.35 ){
+              macro_ai_frame(ai_mech_sniper_reverse1)
+              return;
+            }
+            if( rand < 0.67 ){
+              //melee
+              self.lefty = self.lefty * -1;
+              self.ai_dir = (50 + ceil(random() * 60)) * self.lefty;
+              self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+              self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
+              macro_ai_frame(ai_mech_sniper_melee1)
+              return;
+            }
+          }
+          if( rand < 0.15 ){
+            macro_ai_frame(ai_mech_sniper_snipe1)
+            return;
+          }
+          if( rand < 0.3 ){
+            macro_ai_frame(ai_mech_sniper_reverse1)
+            return;
+          }
+          if( rand < 0.67 ){
+            self.lefty = self.lefty * -1;
+            self.ai_dir = (random() * 45) * 2;
+            self.ai_dir = self.ai_dir * self.lefty;
+            self.ai_dir = anglemod( self.angles_y + self.ai_dir );
+            macro_ai_frame(ai_mech_sniper_charge1)
+            return;
+          }
+          macro_ai_frame(ai_mech_sniper_rotate1)
+          return;
+        }
+        if( self.ai_rank > AI_RANK_REG ){
+          if( rand < 0.2 ){
+            //melee
+            self.lefty = self.lefty * -1;
+            self.ai_dir = (50 + ceil(random() * 60)) * self.lefty;
+            self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+            self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
+            macro_ai_frame(ai_mech_sniper_melee1)
+            return;
+          }
+          self.lefty = self.lefty * -1;
+          self.ai_dir = (random() * 45) * 2;
+          self.ai_dir = self.ai_dir * self.lefty;
+          self.ai_dir = anglemod( self.angles_y + self.ai_dir );
+          macro_ai_frame(ai_mech_sniper_charge1)
+          return;
+        }
+        if( rand < 0.4 ){
+          macro_ai_frame(ai_mech_sniper_reverse1)
+          return;
+        }
+        macro_ai_frame(ai_mech_sniper_rotate1)
+        return;
+      }
+      if( enemy_range > self.ai_minrange ){
+        if( enemy_infront ){
+          local float rand;
+          rand = random();
+          if( rand < 0.35 ){
+            self.lefty = self.lefty * -1;
+            self.ai_dir = (random() * 45) * 2;
+            self.ai_dir = self.ai_dir * self.lefty;
+            self.ai_dir = anglemod( self.angles_y + self.ai_dir );
+            macro_ai_frame(ai_mech_sniper_charge1)
+            return;
+          }
+          if( rand < 0.5 ){
+            macro_ai_frame(ai_mech_sniper_snipe1)
+            return;
+          }
+        }
+        macro_ai_frame(ai_mech_sniper_rotate1)
+        return;
+      }
+    }
+    if( enemy_vis == VIS_FRN ){
+      if( self.ai_rank > AI_RANK_REG ){
+        //melee
+        self.lefty = self.lefty * -1;
+        self.ai_dir = (50 + ceil(random() * 60)) * self.lefty;
+        self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+        self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
+        macro_ai_frame(ai_mech_sniper_melee1)
+        return;
+      }
+      macro_ai_frame(ai_mech_sniper_reverse1)
+      return;
+    }
+    if( enemy_vis == VIS_FAIL ){
+      self.enemy = world;
+      //TODO - snipers don't hunt
     }
   }
-  self.v_angle = self.angles;
-  if( (self.flags & FL_TURRET) ){
-    ai_turret_control();
+  
+  macro_ai_frame(ai_mech_sniper_stand1)
+};
+
+void() ai_mech_sniper_reverse1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.attack_state = TR_NORM;
+  
+  macro_ai_frame(ai_mech_sniper_reverse2)
+};
+void() ai_mech_sniper_reverse2={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_reverse3)
+};
+void() ai_mech_sniper_reverse3={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_reverse4)
+};
+void() ai_mech_sniper_reverse4={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_reverse5)
+};
+void() ai_mech_sniper_reverse5={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  otemp = self;
+  self = self.e_legs;
+    bot_leg_back1();
+    self.attack_state = TR_YAW;
+    self.ai_dir = anglemod(self.angles_y + 180);
+  self = otemp;
+  walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
+  
+  macro_ai_frame(ai_mech_sniper_reverse6)
+};
+void() ai_mech_sniper_reverse6={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
+  
+  macro_ai_frame(ai_mech_sniper_reverse7)
+};
+void() ai_mech_sniper_reverse7={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
+  
+  macro_ai_frame(ai_mech_sniper_reverse8)
+};
+void() ai_mech_sniper_reverse8={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
+  
+  macro_ai_frame(ai_mech_sniper_reverse9)
+};
+void() ai_mech_sniper_reverse9={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
+  
+  macro_ai_frame(ai_mech_sniper_reverse10)
+};
+void() ai_mech_sniper_reverse10={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
+  
+  macro_ai_frame(ai_mech_sniper_reverse11)
+};
+void() ai_mech_sniper_reverse11={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
+  
+  macro_ai_frame(ai_mech_sniper_reverse12)
+};
+void() ai_mech_sniper_reverse12={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
+  
+  macro_ai_frame(ai_mech_sniper_reverse13)
+};
+void() ai_mech_sniper_reverse13={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
   }
-  self.e_legs.angles_y = self.angles_y;
-  if( !(self.flags & FL_SKIPTHINK) ){
-    self.flags = self.flags - (self.flags & FL_SKIPTHINK);
-    self.think = ai_mech_sniper_th;
-    self.nextthink = time + 0.05;
+  
+  macro_ai_frame(ai_mech_sniper_reverse14)
+};
+void() ai_mech_sniper_reverse14={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
   }
-}
+  
+  macro_ai_frame(ai_mech_sniper_reverse15)
+};
+void() ai_mech_sniper_reverse15={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_reverse16)
+};
+void() ai_mech_sniper_reverse16={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_fight_prep)
+};
+
+/*
+  charges in direction of self.ai_dir
+  
+*/
+void() ai_mech_sniper_charge1={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  self.ideal_yaw = self.ai_dir;
+  ai_move_turn(); 
+  otemp = self;
+  self = self.e_legs;
+    bot_leg_walk1();
+    self.attack_state = TR_NORM;
+  self = otemp;
+  walkmove( self.angles_y, self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sniper_charge2)
+};
+void() ai_mech_sniper_charge2={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sniper_charge3)
+};
+void() ai_mech_sniper_charge3={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sniper_charge4)
+};
+void() ai_mech_sniper_charge4={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sniper_charge5)
+};
+void() ai_mech_sniper_charge5={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
+  
+  macro_ai_frame(ai_mech_sniper_charge6)
+};
+void() ai_mech_sniper_charge6={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
+  
+  macro_ai_frame(ai_mech_sniper_charge7)
+};
+void() ai_mech_sniper_charge7={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_charge8)
+};
+void() ai_mech_sniper_charge8={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+
+  macro_ai_frame(ai_mech_sniper_charge9)
+};
+void() ai_mech_sniper_charge9={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+
+  macro_ai_frame(ai_mech_sniper_charge10)
+};
+void() ai_mech_sniper_charge10={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+
+  macro_ai_frame(ai_mech_sniper_charge11)
+};
+void() ai_mech_sniper_charge11={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+
+  macro_ai_frame(ai_mech_sniper_charge12)
+};
+void() ai_mech_sniper_charge12={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+ 
+  macro_ai_frame(ai_mech_sniper_charge13)
+};
+void() ai_mech_sniper_charge13={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_charge14)
+};
+void() ai_mech_sniper_charge14={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_charge15)
+};
+void() ai_mech_sniper_charge15={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+
+  macro_ai_frame(ai_mech_sniper_charge16)
+};
+void() ai_mech_sniper_charge16={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_fight_prep)
+};
+
+
+
+void() ai_mech_sniper_rotate1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  self.e_legs.attack_state = TR_NORM;
+  
+  macro_ai_frame(ai_mech_sniper_rotate2)
+};
+void() ai_mech_sniper_rotate2={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_rotate3)
+};
+void() ai_mech_sniper_rotate3={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_rotate4)
+};
+void() ai_mech_sniper_rotate4={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_rotate5)
+};
+void() ai_mech_sniper_rotate5={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_rotate6)
+};
+void() ai_mech_sniper_rotate6={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
+  
+  macro_ai_frame(ai_mech_sniper_rotate7)
+};
+void() ai_mech_sniper_rotate7={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
+  
+  macro_ai_frame(ai_mech_sniper_rotate8)
+};
+void() ai_mech_sniper_rotate8={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_fight_prep)
+};
+
+void() ai_mech_sniper_snipe1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_snipe2)
+};
+void() ai_mech_sniper_snipe2={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_snipe3)
+};
+void() ai_mech_sniper_snipe3={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_snipe4)
+};
+void() ai_mech_sniper_snipe4={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sniper_snipe5)
+};
+void() ai_mech_sniper_snipe5={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_snipe6)
+};
+void() ai_mech_sniper_snipe6={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_snipe7)
+};
+void() ai_mech_sniper_snipe7={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_snipe8)
+};
+void() ai_mech_sniper_snipe8={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  ai_attack();
+  
+  macro_ai_frame_count(ai_mech_sniper_snipe1)
+  macro_ai_frame(ai_mech_sniper_fight_prep)
+};
+
+/*
+  melee for veterans, tries to shoot some,
+  then strafes.
+  self.ai_dir = strafe dir, rotate first
+*/
+void() ai_mech_sniper_melee1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  self.ideal_yaw = self.ai_dir;
+  ai_move_turn();
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee2={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee3={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+
+  ai_move_turn();
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee4={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee5={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee6={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee7={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+   
+  otemp = self;
+  self = self.e_legs;
+    self.attack_state = TR_NORM;
+    bot_leg_walk1();
+  self = otemp;
+  
+  walkmove( self.angles_y, self.m_sspeed );
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee8={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  walkmove( self.angles_y, self.m_sspeed );
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee9={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  walkmove( self.angles_y, self.m_sspeed );
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee10={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  walkmove( self.angles_y, self.m_sspeed );
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee11={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  walkmove( self.angles_y, self.m_sspeed );
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee12={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  walkmove( self.angles_y, self.m_sspeed );
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee13={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  walkmove( self.angles_y, self.m_sspeed );
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
+void() ai_mech_sniper_melee14={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  walkmove( self.angles_y, self.m_sspeed );
+  
+  macro_ai_frame_count(ai_mech_sniper_melee5)
+  
+  macro_ai_frame(ai_mech_sniper_melee2)
+};
 
 /*
   AI SPAWN FUNCTION
@@ -386,24 +945,17 @@ void() ai_mech_sniper={
     
   trigger_event( self, trigOnSpawn); //event interface
   
-  self.th_stand = ai_mech_sniper_stand;
-  self.th_walk = ai_generic_walk;
-  self.th_run = ai_mech_sniper_run;
-  self.th_run_strafe = ai_mech_sniper_run_strafe;
-  self.th_run_charge = ai_mech_sniper_run_charge;
-  self.th_missile = ai_mech_sniper_missile;
-  self.th_melee = ai_mech_sniper_melee;
-  self.th_missile_strafe = ai_mech_sniper_missile_strafe;
-  self.th_hunt = ai_mech_sniper_hunt;
-  self.th_pain = ai_mech_sniper_pain;
+  self.th_stand = ai_mech_sniper_stand1;
+  self.th_walk = ai_mech_sniper_walk1;
   self.th_die = ai_mech_sniper_die;
   
-  ai_initialize_system( ST_WALK );
-   
-  ai_walk_setup();
+  ai_setup_patrol();
+  if( (self.flags & FL_TURRET) ){
+    util_setOffsetOrigin(self.e_tor_c, self, self.e_tor_c.c_ofs);
+  }
+  util_setOffsetOrigin(self.e_legs, self, self.e_legs.c_ofs);
   droptofloor();
- 
-  self.think = ai_mech_sniper_th;
+  
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks
   }

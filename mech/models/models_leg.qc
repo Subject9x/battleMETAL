@@ -96,7 +96,6 @@ void() leg_back6=[$l_walk6, leg_back5]{
     sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   }
-
 };
 
 void() leg_back7=[$l_walk7, leg_back6]{
@@ -133,43 +132,76 @@ void() leg_die4 = [$l_die4, leg_die4]{
 */
 void() bot_leg_stand1 = [$l_stand1, bot_leg_stand1]{
   self.frame = $l_stand1;
-  if (self.owner.velocity_x || self.owner.velocity_y){
-    bot_leg_walk1();
-    return;
-  }
 };
 
 void() bot_leg_walk1 = [$l_walk1, bot_leg_walk2]{
-  self.walkframe = $l_walk1;
-  if((self.owner.flags & FL_CLIENT)){  
-    if (!self.owner.velocity_x && !self.owner.velocity_y){
-      leg_stand1();
-      return;
-    }
-  }
+  self.frame = $l_walk1;
 };
 
-void() bot_leg_walk2 = [$l_walk2, bot_leg_walk3]{};
+void() bot_leg_walk2 = [$l_walk2, bot_leg_walk3]{
+  self.frame = $l_walk2;
+  if((self.owner.flags & FL_ONGROUND)){
+    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
+  } 
+};
 void() bot_leg_walk3 = [$l_walk3, bot_leg_walk4]{
-  local entity player;
-  player = self.owner;
-  if( (player.flags & FL_ONGROUND) ){
-    sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( player.origin, player.angles, player.vec_size, player.mins, TRUE);
-  }
+  self.frame = $l_walk3; 
 };
-void() bot_leg_walk4 = [$l_walk4, bot_leg_walk5]{};
-void() bot_leg_walk5 = [$l_walk5, bot_leg_walk6]{};
+void() bot_leg_walk4 = [$l_walk4, bot_leg_walk5]{
+  self.frame = $l_walk4; 
+};
+void() bot_leg_walk5 = [$l_walk5, bot_leg_walk6]{
+  self.frame = $l_walk5; 
+};
 void() bot_leg_walk6 = [$l_walk6, bot_leg_walk7]{
-  local entity player;
-  player = self.owner;
-  if((player.flags & FL_ONGROUND)){
-    sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( player.origin, player.angles, player.vec_size, player.mins, FALSE);
+  self.frame = $l_walk6;
+  if((self.owner.flags & FL_ONGROUND)){
+    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   }
 };
-void() bot_leg_walk7 = [$l_walk7, bot_leg_walk8]{};
-void() bot_leg_walk8 = [$l_walk8, bot_leg_walk1]{};
+void() bot_leg_walk7 = [$l_walk7, bot_leg_walk8]{
+  self.frame = $l_walk7;
+};
+void() bot_leg_walk8 = [$l_walk8, bot_leg_walk1]{
+  self.frame = $l_walk8;
+};
+
+void() bot_leg_back1 = [$l_walk1, bot_leg_back8]{
+  self.frame = $l_walk1;
+};
+
+void() bot_leg_back2 = [$l_walk2, bot_leg_back1]{
+  self.frame = $l_walk2;
+  if((self.owner.flags & FL_ONGROUND)){
+    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
+  } 
+};
+void() bot_leg_back3 = [$l_walk3, bot_leg_back2]{
+  self.frame = $l_walk3; 
+};
+void() bot_leg_back4 = [$l_walk4, bot_leg_back3]{
+  self.frame = $l_walk4; 
+};
+void() bot_leg_back5 = [$l_walk5, bot_leg_back4]{
+  self.frame = $l_walk5; 
+};
+void() bot_leg_back6 = [$l_walk6, bot_leg_back5]{
+  self.frame = $l_walk6;
+  if((self.owner.flags & FL_ONGROUND)){
+    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
+  }
+};
+void() bot_leg_back7 = [$l_walk7, bot_leg_back6]{
+  self.frame = $l_walk7;
+};
+void() bot_leg_back8 = [$l_walk8, bot_leg_back7]{
+  self.frame = $l_walk8;
+};
+
 
 void() bot_leg_die1 = [$l_die1, leg_die2]{
   self.movetype = MOVETYPE_BOUNCE;

@@ -68,9 +68,9 @@ void() node_hunt_touch={
     this = self;
     self = other;
       self.goalentity = self.ai_node_recall;
-      ai_next_state( ST_STAND );
+      //ai_next_state( ST_STAND );
       self.ai_action_time = self.ai_action_time + (1 + (self.ai_rank * 2));
-      self.ai_node_recall.ai_action_time = self.ai_action_time + ai_move_time(self.owner.m_fspeed * AI_WALK_SPD, vlen(self.goalentity.origin - self.owner.origin), 0.1);
+      //self.ai_node_recall.ai_action_time = self.ai_action_time + ai_move_time(self.owner.m_fspeed * AI_WALK_SPD, vlen(self.goalentity.origin - self.owner.origin), 0.1);
       ai_sfx_huntEnd();
     self = this;
     remove(self);
@@ -87,10 +87,10 @@ void() node_recall_touch={
       self = other;
         if( self.movetarget ){
           self.goalentity = self.movetarget;
-          ai_next_state( ST_WALK );
+          //ai_next_state( ST_WALK );
         }
         else{
-          ai_next_state( ST_STAND );
+//ai_next_state( ST_STAND );
         }
         self.ai_action_time = self.ai_action_time + (1 + (self.ai_rank * 2)); 
       self = this;
@@ -124,26 +124,23 @@ void() node_patrol_touch={
     self = other;
     other = this;
 
-    //if (self.classname == "monster_ogre")
-      //sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
-
   //dprint ("t_movetarget\n");
     self.goalentity = self.movetarget = find (world, targetname, other.target);
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
     ai_leg_frame( leg_stand1 );
     if ( self.movetarget ){
       if( other.pausetime ){
-        ai_next_state( ST_STAND );
+        //ai_next_state( ST_STAND );
         self.ai_action_time = self.ai_action_time + other.pausetime;
         self = this;
         return;
       }
-      ai_next_state( ST_WALK );
-      ai_leg_frame( leg_walk1 );
+      //ai_next_state( ST_WALK );
+      //ai_leg_frame( leg_walk1 );
       self = this;
       return;
     }
-    ai_next_state( ST_STAND );
+    //ai_next_state( ST_STAND );
     self = this;
     return;
   }
@@ -201,6 +198,7 @@ void() node_touch={
   Recall Nodes act as a breadcrumb to bring the AI back to exactly where they were before hunting.
   This only exist for a limited amount of time.
 */
+//FIX ME - remove entity from method signature
 entity( entity huntNode ) node_recall_setup={
   local entity recallNode;
   local entity theBot;
@@ -208,10 +206,10 @@ entity( entity huntNode ) node_recall_setup={
   recallNode = spawn();
   theBot = self;
   self = recallNode;
-    setorigin( self, huntNode.owner.origin);
+    setorigin( self, theBot.origin);
     self.data_idx = AI_NODE_RECALL;
     node_setup();
-    self.owner = huntNode.owner;
+    self.owner = theBot;
   self = theBot;
   
   return recallNode;
@@ -246,11 +244,11 @@ void() node_hunt_setup={
   
   self.goalentity = self.ai_node_hunt;
   
-  moveTime = time + ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.ai_node_hunt.origin - self.origin), 0.1);
+  //moveTime = time + ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.ai_node_hunt.origin - self.origin), 0.1);
   
-  self.ai_node_hunt.ai_action_time = moveTime;
-  self.ai_node_recall.ai_action_time = moveTime * 2;
-  self.ai_action_time = moveTime;
+  //self.ai_node_hunt.ai_action_time = moveTime;
+  //self.ai_node_recall.ai_action_time = moveTime * 2;
+  //self.ai_action_time = moveTime;
 };
 
 /*

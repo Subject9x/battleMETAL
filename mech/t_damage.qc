@@ -47,14 +47,16 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   }
   targ.sh_cur = shields;
   
-  if( time > targ.sh_hit){
-    targ.sh_hit = time + (dmg_amt / 100);
-    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-    targ.sh_hit = targ.sh_hit + (3 - skill);
-    if( shields <= FALSE ){
-      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
-    }
+  targ.sh_hit = dmg_amt / 100;
+  targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
+  targ.sh_hit = targ.sh_hit + (3 - skill);
+  if( shields <= FALSE ){
+    targ.sh_hit = targ.sh_hit + (targ.sh_hit * 6);
   }
+  else{
+    targ.sh_hit = targ.sh_hit * 3;
+  }
+  targ.sh_hit = time + targ.sh_hit;
   
   return damage;
 };
@@ -113,15 +115,18 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     }  
   }
   targ.sh_cur = shields;
-  
-  if( time > targ.sh_hit){
-    targ.sh_hit = time + (dmg_amt / 100);
-    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-    targ.sh_hit = targ.sh_hit + (3 - skill);
-    if( shields <= FALSE ){
-      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
-    }
+ 
+  targ.sh_hit = dmg_amt / 100;
+  targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
+  targ.sh_hit = targ.sh_hit + (3 - skill);
+  if( shields <= FALSE ){
+    targ.sh_hit = targ.sh_hit + (targ.sh_hit * 6);
   }
+  else{
+    targ.sh_hit = targ.sh_hit * 3;
+  }
+  targ.sh_hit = time + targ.sh_hit;
+  
   //EFF_STX only affects shields;
   if( (dmgtype & EFF_STX) ){
     damage = 0;
@@ -164,16 +169,17 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
   }
   
   targ.sh_cur = shields;
-  
-  if( time > targ.sh_hit){
-    targ.sh_hit = time + (dmg_amt / 100);
-    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-    targ.sh_hit = targ.sh_hit + (3 - skill);
-    targ.sh_hit = targ.sh_hit / 2;  //cause this is explosive damage
-    if( shields <= FALSE ){
-      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
-    }
+
+  targ.sh_hit = dmg_amt / 100;
+  targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
+  targ.sh_hit = targ.sh_hit + (3 - skill);
+  if( shields <= FALSE ){
+    targ.sh_hit = targ.sh_hit + (targ.sh_hit * 6);
   }
+  else{
+    targ.sh_hit = targ.sh_hit * 3;
+  }
+  targ.sh_hit = time + targ.sh_hit;
   
   return damage;
 };
