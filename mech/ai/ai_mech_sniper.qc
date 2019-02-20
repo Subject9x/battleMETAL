@@ -134,6 +134,11 @@ void() ai_mech_sniper_rotate6;
 void() ai_mech_sniper_rotate7;
 void() ai_mech_sniper_rotate8;
 
+void() ai_mech_sniper_turn1;
+void() ai_mech_sniper_turn2;
+void() ai_mech_sniper_turn3;
+void() ai_mech_sniper_turn4;
+
 void() ai_mech_sniper_snipe1;
 void() ai_mech_sniper_snipe2;
 void() ai_mech_sniper_snipe3;
@@ -196,7 +201,7 @@ void() ai_mech_sniper_fight_prep={
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov, TRUE);
+    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
     
     if( enemy_vis == VIS_FRAC ){
       if( enemy_range < 200 ){
@@ -321,13 +326,14 @@ void() ai_mech_sniper_fight_prep={
       macro_ai_frame(ai_mech_sniper_reverse1)
       return;
     }
-    if( enemy_vis == VIS_FAIL ){
-      self.enemy = world;
-      //TODO - snipers don't hunt
-    }
+    self.enemy = world;
+    //snipers don't hunt, snapshot last known yaw
+    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+    macro_ai_frame(ai_mech_sniper_turn1)
+    return;
   }
   
-  macro_ai_frame(ai_mech_sniper_stand1)
+  macro_ai_frame(ai_mech_sniper_patrol1)
 };
 
 void() ai_mech_sniper_reverse1={
@@ -657,7 +663,9 @@ void() ai_mech_sniper_charge16={
 };
 
 
-
+/*
+  Mech Sniper rotates to face target
+*/  
 void() ai_mech_sniper_rotate1={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
@@ -727,6 +735,50 @@ void() ai_mech_sniper_rotate8={
   
   ai_face_targ();
   ai_attack();
+  
+  macro_ai_frame(ai_mech_sniper_fight_prep)
+};
+
+/*
+  Turns to face ideal_yaw,
+  but not based on target
+*/
+void() ai_mech_sniper_turn1={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  
+  macro_ai_frame(ai_mech_sniper_turn2)
+};
+void() ai_mech_sniper_turn2={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  
+  macro_ai_frame(ai_mech_sniper_turn3)
+};
+void() ai_mech_sniper_turn3={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  
+  macro_ai_frame(ai_mech_sniper_turn4)
+};
+void() ai_mech_sniper_turn4={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_move_turn();
+  
+  if( !ai_check_vis(self.enemy) ){
+    self.enemy = world;
+    macro_ai_frame(ai_mech_sniper_patrol1)
+  }
+  
+  macro_ai_frame_count(ai_mech_sniper_turn1)
   
   macro_ai_frame(ai_mech_sniper_fight_prep)
 };
@@ -947,7 +999,9 @@ void() ai_mech_sniper={
   
   self.th_stand = ai_mech_sniper_stand1;
   self.th_walk = ai_mech_sniper_walk1;
+  self.th_missile = ai_mech_sniper_fight_prep;
   self.th_die = ai_mech_sniper_die;
+  self.touch = ai_touch;
   
   ai_setup_patrol();
   if( (self.flags & FL_TURRET) ){

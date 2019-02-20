@@ -84,6 +84,21 @@ void() ai_update={
   self.button0 = 0;  
 };
 
+void() ai_touch={
+  if( other.i_faction == self.i_faction ){
+    return;
+  }
+  
+  if( !self.enemy ){
+    if( ai_valid_target(other) ){
+      self.enemy = other;
+      self.th_missile();
+      return;
+    }
+  }
+  
+};
+
 /*
 ===================================================
   AI Actions
@@ -114,18 +129,6 @@ void() ai_face_targ={
 	ChangeYaw ();
 };
 
-float( float dist ) ai_walk_back={
-  return ai_move( (self.angles_y + 180), dist );
-};
-
-float( float dist ) ai_walk_left={
-  return ai_move( (self.angles_y + 90), dist );
-};
-
-float( float dist ) ai_walk_right={
-  return ai_move( (self.angles_y - 90), dist );
-};
-
 float( float angmod, float dist) ai_move={
   return walkmove( angmod, dist );
 };
@@ -134,18 +137,6 @@ float( float angmod, float dist) ai_move={
 	Yaw moves use the AI's ideal_yaw
 	stat when turning
 */
-float( float dist ) ai_yaw_back={
-  return walkmove( anglemod(self.ideal_yaw + 180), dist );
-};
-
-float( float dist ) ai_yaw_left={
-  return walkmove( anglemod(self.ideal_yaw + 90), dist );
-};
-
-float( float dist ) ai_yaw_right={
-  return walkmove( anglemod(self.ideal_yaw - 90), dist );
-};
-
 float( float angmod, float dist ) ai_yaw_move={
   return walkmove( anglemod(self.ideal_yaw + angmod), dist );
 };
@@ -343,36 +334,6 @@ void() ai_setup_patrol={
 	}
 };
 
-/*
-  copy over from Quake's WalkMonsterStart() but
-  adapted to battleMETAL
-*/
-void() ai_walk_setup={
-	if ( self.target ){
-    if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-      ai_node_pick_rand( self.target );
-    }
-  
-		self.goalentity = self.movetarget = find(world, targetname, self.target);
-    
-    dprint( strcat(self.goalentity.targetname, "\n") );
-    
-		if( !self.movetarget ){
-			dprint ("Monster can't find target at ");
-			dprint (vtos(self.origin));
-			dprint ("\n");
-		}
-		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    //ai_next_state( ST_WALK );
-    return;
-	}
-	else{
-		self.pausetime = 99999999;
-    //ai_next_state( ST_STAND );
-    return;
-	}
-};
-
 void() ai_hunt_setup={
 
   //ai_sfx_huntStart
@@ -386,18 +347,6 @@ void() ai_hunt_setup={
 
   if( (self.flags & FL_TURRET) ){
     ai_turret_set_state( TR_GOAL );
-  }
-};
-
-
-//simple handler function to push state changes down to legs
-void(void() macro) ai_leg_frame={
-  if( self.e_legs ){
-    local entity this;
-    this = self;
-    self = this.e_legs;
-      macro();
-    self = this;
   }
 };
 

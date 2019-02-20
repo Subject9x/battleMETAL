@@ -367,19 +367,10 @@ void() ai_vtol={
   
   self.th_stand = ai_vtol_stand;
   self.th_walk = ai_vtol_walk;
-  self.th_run = ai_vtol_run;
-  self.th_run_strafe = ai_vtol_run_strafe;
-  self.th_run_charge = ai_vtol_run_charge;
-  self.th_missile = ai_vtol_missile;
-  self.th_melee = ai_vtol_melee;
-  self.th_missile_strafe = ai_vtol_missile_strafe;
   self.th_hunt = ai_vtol_hunt;
   self.th_pain = ai_vtol_pain;
   self.th_die = ai_vtol_die;
-  
-  ai_initialize_system( ST_STAND );
-  
-  ai_walk_setup();
+
   
   self.think = ai_vtol_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){

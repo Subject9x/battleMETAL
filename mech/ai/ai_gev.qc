@@ -306,16 +306,8 @@ void() ai_gev_fight_prep={
       macro_ai_frame(ai_gev_strafe1)
       return;
     }
-    if( !self.ai_node_recall ){
-      ai_sfx_huntStart();
-      node_recall_setup( world );
-      self.goalentity = self.enemy;
-      macro_ai_frame(ai_gev_hunt1)
-      return;
-    }
-    self.goalentity = self.ai_node_recall;
-    macro_ai_frame(ai_gev_hunt1)
-    return;
+    //goto hunting
+    macro_ai_frame_hunt(ai_gev_hunt1)
   }
   if( self.movetarget ){
     self.goalentity = self.movetarget;
@@ -967,6 +959,7 @@ void() ai_gev={
   self.th_stand = ai_gev_stand1;
   self.th_walk = ai_gev_patrol1;
   self.th_pain = ai_gev_pain;
+  self.th_missile = ai_gev_fight_prep;
   self.th_die = ai_gev_die;
   self.touch = ai_touch;
   

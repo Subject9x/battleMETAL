@@ -1279,18 +1279,7 @@ void() ai_tank_sk_hunt10={
   
   if( !ai_check_vis( self.enemy ) ){
     if( self.stat_rdr_mode ){
-      macro_ai_frame(ai_tank_sk_hunt1)
-      return;
-    }
-    if( self.ai_rank > AI_RANK_REG ){
-      if( random() < 0.5 ){
-        macro_ai_frame(ai_tank_sk_hunt1)
-        return;
-      }
-    }
-    if( random() < 0.3 ){
-      macro_ai_frame(ai_tank_sk_hunt5)
-      return;
+      macro_ai_frame_count(ai_tank_sk_hunt5)
     }
   }
   
@@ -1334,7 +1323,11 @@ void() ai_tank_skirmish={
   }
   trigger_event( self, trigOnSpawn); //event interface
   
+  self.th_stand = ai_tank_sk_stand1;
+  self.th_walk = ai_tank_sk_patrol1;
+  self.th_missile = ai_tank_sk_fight_prep;
   self.th_die = ai_tank_sk_die;
+  self.touch = ai_touch;
   
   ai_setup_patrol();
   

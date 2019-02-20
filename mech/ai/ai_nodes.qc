@@ -127,7 +127,6 @@ void() node_patrol_touch={
   //dprint ("t_movetarget\n");
     self.goalentity = self.movetarget = find (world, targetname, other.target);
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    ai_leg_frame( leg_stand1 );
     if ( self.movetarget ){
       if( other.pausetime ){
         //ai_next_state( ST_STAND );
@@ -136,7 +135,6 @@ void() node_patrol_touch={
         return;
       }
       //ai_next_state( ST_WALK );
-      //ai_leg_frame( leg_walk1 );
       self = this;
       return;
     }

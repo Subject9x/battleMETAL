@@ -47,17 +47,6 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   }
   targ.sh_cur = shields;
   
-  targ.sh_hit = dmg_amt / 100;
-  targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-  targ.sh_hit = targ.sh_hit + (3 - skill);
-  if( shields <= FALSE ){
-    targ.sh_hit = targ.sh_hit + (targ.sh_hit * 6);
-  }
-  else{
-    targ.sh_hit = targ.sh_hit * 3;
-  }
-  targ.sh_hit = time + targ.sh_hit;
-  
   return damage;
 };
 
@@ -113,20 +102,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
       }
       shields = 0;
     }  
-  }
+  }  
   targ.sh_cur = shields;
  
-  targ.sh_hit = dmg_amt / 100;
-  targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-  targ.sh_hit = targ.sh_hit + (3 - skill);
-  if( shields <= FALSE ){
-    targ.sh_hit = targ.sh_hit + (targ.sh_hit * 6);
-  }
-  else{
-    targ.sh_hit = targ.sh_hit * 3;
-  }
-  targ.sh_hit = time + targ.sh_hit;
-  
   //EFF_STX only affects shields;
   if( (dmgtype & EFF_STX) ){
     damage = 0;
@@ -169,17 +147,6 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
   }
   
   targ.sh_cur = shields;
-
-  targ.sh_hit = dmg_amt / 100;
-  targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-  targ.sh_hit = targ.sh_hit + (3 - skill);
-  if( shields <= FALSE ){
-    targ.sh_hit = targ.sh_hit + (targ.sh_hit * 6);
-  }
-  else{
-    targ.sh_hit = targ.sh_hit * 3;
-  }
-  targ.sh_hit = time + targ.sh_hit;
   
   return damage;
 };
@@ -200,7 +167,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
-  
   
   prevShields = trg.sh_cur;
   
@@ -239,6 +205,19 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     dmgAmt = t_damage_mis( dmgTrg, dmgInflictor, dmgAmt );
   }
   
+  //shield delay chech
+  trg.sh_hit = dmg_amt / 100;
+  trg.sh_hit = trg.sh_hit + (4 - trg.vec_size);
+  trg.sh_hit = trg.sh_hit + (3 - skill);
+  if( trg.sh_cur <= FALSE ){
+    trg.sh_hit = trg.sh_hit + (trg.sh_hit * 6);
+  }
+  else{
+    trg.sh_hit = trg.sh_hit * 3;
+  }
+  trg.sh_hit = time + trg.sh_hit;
+  
+  //AI react to Damage
   if( (trg.flags & FL_MONSTER) ){
     otemp = self;
     self = dmgTrg;
@@ -254,8 +233,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
   }
   else{
-    //te_shield_test( dmg_point, vectoangles( attacker.origin - dmg_point ) );
-    //TODO - shield impact particles
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }

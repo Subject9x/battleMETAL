@@ -100,6 +100,17 @@ void() ai_turret_combat4;
 void() ai_turret_combat5;
 void() ai_turret_combat6;
 
+void() ai_turret_hunt1;
+void() ai_turret_hunt2;
+void() ai_turret_hunt3;
+void() ai_turret_hunt4;
+void() ai_turret_hunt5;
+void() ai_turret_hunt6;
+void() ai_turret_hunt7;
+void() ai_turret_hunt8;
+void() ai_turret_hunt9;
+void() ai_turret_hunt10;
+
 void() ai_turret_idle1;
 void() ai_turret_idle2;
 void() ai_turret_idle3;
@@ -224,6 +235,11 @@ void() ai_turret_fight_prep={
         macro_ai_frame(ai_turret_patrol1)
         return;
       }
+      ai_turret_set_state( TR_YAW );
+      self.e_tor_c.ai_dir = vectoyaw( self.enemy.origin - self.origin );
+      ai_sfx_huntStart();
+      macro_ai_frame(ai_turret_hunt1)
+      return;
     }
   }
   
@@ -342,7 +358,138 @@ void() ai_turret_combat6={
     ai_attack();
   }
   
-  macro_ai_frame(ai_turret_fight_prep);
+  macro_ai_frame(ai_turret_fight_prep)
+};
+
+void() ai_turret_hunt1={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( ai_check_vis(self.enemy) != VIS_FAIL ){
+    ai_turret_set_state(TR_TARG);
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
+  }
+  
+  macro_ai_frame(ai_turret_hunt2)
+};
+void() ai_turret_hunt2={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    if( ai_check_vis(self.enemy) != VIS_FAIL ){
+      ai_turret_set_state(TR_TARG);
+      macro_ai_frame(ai_turret_fight_prep)
+      return;
+    }
+  }
+  
+  macro_ai_frame(ai_turret_hunt3)
+};
+void() ai_turret_hunt3={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( ai_check_vis(self.enemy) != VIS_FAIL ){
+    ai_turret_set_state(TR_TARG);
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
+  }
+
+  macro_ai_frame(ai_turret_hunt4)
+};
+void() ai_turret_hunt4={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    if( ai_check_vis(self.enemy) != VIS_FAIL ){
+      ai_turret_set_state(TR_TARG);
+      macro_ai_frame(ai_turret_fight_prep)
+      return;
+    }
+  }
+  
+  macro_ai_frame(ai_turret_hunt5)
+};
+void() ai_turret_hunt5={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+
+  if( ai_check_vis(self.enemy) != VIS_FAIL ){
+    ai_turret_set_state(TR_TARG);
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
+  }
+  
+  macro_ai_frame(ai_turret_hunt6)
+};
+void() ai_turret_hunt6={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    if( ai_check_vis(self.enemy) != VIS_FAIL ){
+      ai_turret_set_state(TR_TARG);
+      macro_ai_frame(ai_turret_fight_prep)
+      return;
+    }
+  }
+  
+  macro_ai_frame(ai_turret_hunt7)
+};
+void() ai_turret_hunt7={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( ai_check_vis(self.enemy) != VIS_FAIL ){
+    ai_turret_set_state(TR_TARG);
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
+  }
+
+  macro_ai_frame(ai_turret_hunt8)
+};
+void() ai_turret_hunt8={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    if( ai_check_vis(self.enemy) != VIS_FAIL ){
+      ai_turret_set_state(TR_TARG);
+      macro_ai_frame(ai_turret_fight_prep)
+      return;
+    }
+  }
+  
+  macro_ai_frame(ai_turret_hunt9)
+};
+void() ai_turret_hunt9={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( ai_check_vis(self.enemy) != VIS_FAIL ){
+    ai_turret_set_state(TR_TARG);
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
+  }
+  
+  macro_ai_frame(ai_turret_hunt10)
+};
+void() ai_turret_hunt10={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    if( ai_check_vis(self.enemy) != VIS_FAIL ){
+      ai_turret_set_state(TR_TARG);
+      macro_ai_frame(ai_turret_fight_prep)
+      return;
+    }
+  }
+  ai_turret_set_state(TR_NORM);
+  macro_ai_frame(ai_turret_patrol1)
 };
 
 /*

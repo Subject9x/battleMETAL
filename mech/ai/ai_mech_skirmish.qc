@@ -162,6 +162,14 @@ void() ai_mech_sk_hunt5;
 void() ai_mech_sk_hunt6;
 void() ai_mech_sk_hunt7;
 void() ai_mech_sk_hunt8;
+void() ai_mech_sk_hunt9;
+void() ai_mech_sk_hunt10;
+void() ai_mech_sk_hunt11;
+void() ai_mech_sk_hunt12;
+void() ai_mech_sk_hunt13;
+void() ai_mech_sk_hunt14;
+void() ai_mech_sk_hunt15;
+void() ai_mech_sk_hunt16;
 
 void() ai_mech_sk_fight_prep={
   ai_update_accuracy( FALSE );
@@ -186,7 +194,7 @@ void() ai_mech_sk_fight_prep={
             self.ai_dir = self.lefty * (45 + (random() * 75));
             self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
             self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
-            macro_ai_update(ai_mech_sk_flank1)
+            macro_ai_update(ai_mech_sk_strafe1)
             return;
           }
           if( random() < 0.25){
@@ -264,8 +272,24 @@ void() ai_mech_sk_fight_prep={
         return;
       }
     }
+    if( enemy_vis == VIS_FRN ){
+      if( rand < 0.33 ){
+        self.lefty = self.lefty * -1;
+        self.ai_dir = self.lefty * (25 + (random() * 45));
+        self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+        self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
+        macro_ai_update(ai_mech_sk_strafe1)
+        return;
+      }
+      self.lefty = self.lefty * -1;
+      self.ai_dir = self.lefty * (45 + (random() * 60));
+      macro_ai_update(ai_mech_sk_flank1)
+      return;
+    }
+    //goto hunting
+    macro_ai_frame_hunt(ai_mech_sk_hunt1)
   }
-  macro_ai_frame(ai_mech_sk_stand1)
+  macro_ai_frame(ai_mech_sk_patrol1)
 };
 
 void() ai_mech_sk_patrol1={
@@ -996,6 +1020,233 @@ void() ai_mech_sk_pivot4={
 };
 
 /*
+  Mech Skirmish Hunt mode
+*/
+void() ai_mech_sk_hunt1={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt2)
+};
+void() ai_mech_sk_hunt2={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt3)
+};
+void() ai_mech_sk_hunt3={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt4)
+};
+void() ai_mech_sk_hunt4={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt5)
+};
+void() ai_mech_sk_hunt5={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt6)
+};
+void() ai_mech_sk_hunt6={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt7)
+};
+void() ai_mech_sk_hunt7={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt8)
+};
+void() ai_mech_sk_hunt8={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt9)
+};
+void() ai_mech_sk_hunt9={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt10)
+};
+void() ai_mech_sk_hunt10={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt11)
+};
+void() ai_mech_sk_hunt11={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt12)
+};
+void() ai_mech_sk_hunt12={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt13)
+};
+void() ai_mech_sk_hunt13={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt14)
+};
+void() ai_mech_sk_hunt14={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt15)
+};
+void() ai_mech_sk_hunt15={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  macro_ai_frame(ai_mech_sk_hunt16)
+};
+void() ai_mech_sk_hunt16={
+  ai_update_accuracy( TRUE ); 
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  movetogoal( self.m_fspeed );
+  
+  if( !ai_valid_target(self.enemy) ){
+    ai_sfx_kill();
+    ai_sfx_huntEnd();
+    self.goalentity = self.ai_node_recall;
+  }
+  
+  if( !ai_check_vis( self.enemy ) ){
+    macro_ai_frame_count(ai_mech_sk_hunt1)
+  }
+  
+  ai_sfx_huntEnd();
+  if( self.movetarget ){
+    self.goalentity = self.movetarget;
+    macro_ai_frame(ai_mech_sk_patrol1)
+    remove(self.ai_node_recall);
+    return;
+  }
+  if( self.ai_node_recall ){
+    remove(self.ai_node_recall);
+  }
+  macro_ai_frame(ai_mech_sk_fight_prep)
+};
+
+/*
   AI SPAWN FUNCTION
 */
 void() ai_mech_skirmish={
@@ -1011,7 +1262,9 @@ void() ai_mech_skirmish={
     
   self.th_stand = ai_mech_sk_stand1;
   self.th_walk = ai_mech_sk_patrol1;
+  self.th_missile = ai_mech_sk_fight_prep;
   self.th_die = ai_mech_sk_die;
+  self.touch = ai_touch;
   
   ai_setup_patrol();
   

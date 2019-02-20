@@ -119,6 +119,14 @@ void() ai_spg_rotate7;
 void() ai_spg_rotate8;
 
 /*
+  Turn in place, to ideal_yaw
+*/
+void() ai_spg_turn1;
+void() ai_spg_turn2;
+void() ai_spg_turn3;
+void() ai_spg_turn4;
+
+/*
   maintain yaw to enemy
   move backwards
 */
@@ -260,14 +268,16 @@ void() ai_spg_fight_prep={
       }
     }
     if( enemy_vis == VIS_FRN ){
+      self.lefty = self.lefty * -1;
+      self.ai_dir = 35 + ceil(random() * 60);
+      self.ai_dir = self.ai_dir * self.lefty;
+      self.ai_dir = anglemod( self.angles_y + self.ai_dir );
       macro_ai_frame(ai_spg_strafe1)
       return;
     }
-    if( enemy_vis == VIS_FAIL ){
-      //tank destroyers dont hunt
-      macro_ai_frame(ai_spg_rotate1)
-      return;
-    }
+    //tank destroyers dont hunt
+    macro_ai_frame(ai_spg_rotate1)
+    return; 
   }
 
   macro_ai_frame(ai_spg_stand1)
@@ -338,6 +348,44 @@ void() ai_spg_rotate8={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
+  
+  macro_ai_frame(ai_spg_fight_prep)
+};
+
+/*
+  Turn in place, to ideal_yaw
+*/
+void() ai_spg_turn1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_updateTank)
+  
+  ai_move_turn();
+  
+  macro_ai_frame(ai_spg_turn2)
+};
+void() ai_spg_turn2={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_updateTank)
+  
+  ai_move_turn();
+  
+  macro_ai_frame(ai_spg_turn3)
+};
+void() ai_spg_turn3={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_updateTank)
+  
+  ai_move_turn();
+  
+  macro_ai_frame(ai_spg_turn4)
+};
+void() ai_spg_turn4={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_updateTank)
+  
+  ai_move_turn();
+  
+  macro_ai_frame_count(ai_spg_turn1)
   
   macro_ai_frame(ai_spg_fight_prep)
 };
@@ -732,7 +780,9 @@ void() ai_vec_dest={
   
   self.th_stand = ai_spg_stand1;
   self.th_walk = ai_spg_walk1;
+  self.th_missile = ai_spg_fight_prep;
   self.th_die = ai_vec_dest_die;
+  self.touch = ai_touch;
   
   ai_setup_patrol();
   

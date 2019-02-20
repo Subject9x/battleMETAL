@@ -9,10 +9,7 @@ Overview: data file for building
   faction: humans
   func: provides radar scanning to all friendly units in radius
 */
-
-void() building_radar_cooldown={
-};
-
+void() building_radar_patrol1;
 
 /*
   macro rebuild
@@ -146,9 +143,7 @@ void() building_human_radar={
   self.stat_rdr_mode = TRUE;
   self.radar_range = DAT_BLD_H_SM_RADAR_RADAR_RANGE;
   
-  
   ai_pilot_view_range( self.ai_rank );
-  
   switch( self.ai_rank ){
     case AI_RANK_ROK:
       self.w_firetime = self.w_firetime * AI_POST_LOCK_ROK;
@@ -163,7 +158,6 @@ void() building_human_radar={
       break;
   }
   
-  self.scale = 1;
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();  

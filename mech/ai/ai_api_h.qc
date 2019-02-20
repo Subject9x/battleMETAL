@@ -9,7 +9,7 @@ Overview: AI API Header, covers multiple impl files
 #define macro_ai_frame(next_func) if((self.flags&FL_TURRET)){ai_turret_control();}if(self.e_legs){ai_leg_control();} self.think=next_func; self.nextthink=time+0.05;
 #define macro_ai_update(update_func) update_func(); if(!(self.spawnflags&AI_SPAWNFLAG_DEBUG)){if(!self.deadflag){ai_update();}}
 #define macro_ai_frame_count(repeat_frame) if( self.ai_action_time > 0 ){self.ai_action_time = self.ai_action_time - 1;macro_ai_frame(repeat_frame) return;}
-
+#define macro_ai_frame_hunt(hunt_func) if(!self.ai_node_recall){ai_sfx_huntStart();node_recall_setup(world);self.goalentity=self.enemy;macro_ai_frame(hunt_func) return;} self.goalentity=self.ai_node_recall;macro_ai_frame(hunt_func) return;
 //CONSTANTS
 float AI_SPAWNFLAG_CAMPAIGN     = 1;    //remove from campaign mode
 float AI_SPAWNFLAG_COOP         = 2;    //remove from co-op mode
@@ -156,14 +156,12 @@ void() ai_unit_make_trigger;
 void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
 
 //AI CONTROL - ai_ctrl.qc 
-void() ai_touch;  //TODO
+void() ai_touch;
 void() ai_setup_patrol;
-void() ai_walk_setup;
 void() ai_hunt_setup;
 void() ai_hunt_target;
 void( string grpid ) ai_node_pick_rand
 void(entity bot, entity attacker) ai_damage_react;
-void(void() macro) ai_leg_frame;
 
 //AI VOICE STUFF
 void() ai_sfx_spotted;
@@ -198,12 +196,6 @@ float(entity targ) ai_check_vis;
 float() ai_attack;
 void() ai_move_turn;
 float( float angmod, float dist) ai_move;
-float( float dist ) ai_walk_back;
-float( float dist ) ai_walk_left;
-float( float dist ) ai_walk_right;
-float( float dist ) ai_yaw_back;
-float( float dist ) ai_yaw_left;
-float( float dist ) ai_yaw_right;
 float( float angmod, float dist ) ai_yaw_move;
 void( float alt_low, float alt_max ) ai_fly_update;
 void( float move ) ai_update_accuracy;
