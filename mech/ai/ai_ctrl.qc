@@ -81,22 +81,24 @@ void() ai_update={
     self.enemy = world;
   }
   ai_ranged_attack();
-  self.button0 = 0;  
+  self.button0 = 0;
 };
 
+/*
+  Primary Generic touch function for AI.
+*/
 void() ai_touch={
   if( other.i_faction == self.i_faction ){
     return;
   }
   
-  if( !self.enemy ){
-    if( ai_valid_target(other) ){
+  if( ai_valid_target(other) ){
+    if( !self.enemy ){
       self.enemy = other;
       self.th_missile();
       return;
     }
   }
-  
 };
 
 /*
@@ -298,13 +300,6 @@ float() ai_attack={
 ===================================================
 */
 
-void() ai_hunt_target={
-  //only applies to ai that can actually move
-  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-  self.goalentity = self.enemy;
-  //ai_next_state( ST_RUN );
-};
-
 /*
   Rebuild of ai_walk_setup using AI macro frame functions
 */
@@ -313,41 +308,26 @@ void() ai_setup_patrol={
     if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
       ai_node_pick_rand( self.target );
     }
-  
 		self.goalentity = self.movetarget = find(world, targetname, self.target);
     
     dprint( strcat(self.goalentity.targetname, "\n") );
+    bprint( strcat(self.goalentity.targetname, "\n") );
     
 		if( !self.movetarget ){
 			dprint ("Monster can't find target at ");
 			dprint (vtos(self.origin));
 			dprint ("\n");
+      self.pausetime = 99999999;
+      self.th_stand();
+      return;
 		}
 		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
     self.th_walk();
     return;
 	}
-	else{
-		self.pausetime = 99999999;
-    self.th_stand();
-    return;
-	}
-};
-
-void() ai_hunt_setup={
-
-  //ai_sfx_huntStart
-  ai_sfx_huntStart();
-  
-  //create hunt node
-  node_hunt_setup();  
-  
-  //set next bot state
-  //ai_next_state( ST_HUNT );
-
-  if( (self.flags & FL_TURRET) ){
-    ai_turret_set_state( TR_GOAL );
-  }
+  self.pausetime = 99999999;
+  self.th_stand();
+  return;
 };
 
 void() ai_charge_side={
@@ -364,20 +344,4 @@ void() ai_charge_side={
 	heading = vectoyaw(dtemp - self.origin);
 	
 	walkmove(heading, self.m_fspeed * AI_RUN_SPD);
-};
-
-void( float angl, float dist ) ai_move_forward={
-  walkmove( angl, dist );
-};
-
-void( float angl, float dist ) ai_move_backward={
-  walkmove( (angl + 180), dist );
-};
-
-void( float angl, float dist ) ai_move_left={
-  walkmove( (angl + 90), dist );
-};
-
-void( float angl, float dist ) ai_move_right={
-  walkmove( (angl - 90), dist );
 };

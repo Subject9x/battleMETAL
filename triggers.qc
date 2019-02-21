@@ -30,9 +30,8 @@ void( entity active, .string event) trigger_event={
     activator = hold;
     SUB_UseTargets();
     self.event = string_null;  //fired once
+    self.target = oldTarget;
   }
-  self.target = oldTarget;
-  
   if( active != self ){
     self = hold;
   }

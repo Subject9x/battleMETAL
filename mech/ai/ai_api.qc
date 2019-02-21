@@ -176,7 +176,6 @@ float() ai_find_target_visual={
   if( found ){
     self.enemy = found;
     ai_sfx_spotted();
-    ai_hunt_target();
     return TRUE;
   }
   return FALSE;
@@ -226,7 +225,6 @@ float() ai_find_target_radar={
   if( found ){
     self.enemy = found;
     ai_sfx_spotted();
-    ai_hunt_target();
     return TRUE;
   }
   return FALSE;
@@ -239,7 +237,6 @@ void( entity ally, entity targ, float override ) ai_give_target={
     self = ally;
       self.enemy = this.enemy;
       ai_sfx_spotted();
-      ai_hunt_target();
     self = this;
   }
 };

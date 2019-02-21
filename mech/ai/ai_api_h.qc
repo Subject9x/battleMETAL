@@ -9,7 +9,7 @@ Overview: AI API Header, covers multiple impl files
 #define macro_ai_frame(next_func) if((self.flags&FL_TURRET)){ai_turret_control();}if(self.e_legs){ai_leg_control();} self.think=next_func; self.nextthink=time+0.05;
 #define macro_ai_update(update_func) update_func(); if(!(self.spawnflags&AI_SPAWNFLAG_DEBUG)){if(!self.deadflag){ai_update();}}
 #define macro_ai_frame_count(repeat_frame) if( self.ai_action_time > 0 ){self.ai_action_time = self.ai_action_time - 1;macro_ai_frame(repeat_frame) return;}
-#define macro_ai_frame_hunt(hunt_func) if(!self.ai_node_recall){ai_sfx_huntStart();node_recall_setup(world);self.goalentity=self.enemy;macro_ai_frame(hunt_func) return;} self.goalentity=self.ai_node_recall;macro_ai_frame(hunt_func) return;
+#define macro_ai_frame_hunt(hunt_func) if(!self.ai_node_recall){ai_sfx_huntStart();node_recall_setup();self.goalentity=self.enemy;macro_ai_frame(hunt_func) return;} self.goalentity=self.ai_node_recall;macro_ai_frame(hunt_func) return;
 //CONSTANTS
 float AI_SPAWNFLAG_CAMPAIGN     = 1;    //remove from campaign mode
 float AI_SPAWNFLAG_COOP         = 2;    //remove from co-op mode
@@ -76,14 +76,15 @@ float TYPE_SKIRM  = 3;
 .float ai_action_mod;   //how many times to repeat a frameset before adjusting
 .float ai_leading;      //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
 .float ai_minrange;     //minimum range of guns;
-.float ai_fov;      //the angle of the AI's view for visual target finding
+.float ai_fov;          //the angle of the AI's view for visual target finding
 .float ai_view;         //range in game units of AI's vision
-.vector ai_pitch;     //x = min, y= max, z = pitch speed
+.vector ai_pitch;       //x = min, y= max, z = pitch speed
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
-.float ai_hunt_total; //current number of hunt nodes
+.float ai_hunt_total;   //current number of hunt nodes
 .float ai_attack_chance;
-.float ai_dir;      //chassis facing vs .angles
+.float ai_dir;          //chassis facing vs .angles
+.entity ai_node_recall;
 
 .float voiceTime; //when next to say something
 .string ai_voice_warn;
@@ -96,9 +97,6 @@ float TYPE_SKIRM  = 3;
 .string ai_voice_roger;
 .string ai_voice_help;
 
-//ugh
-.entity ai_node_hunt;
-.entity ai_node_recall;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
@@ -127,10 +125,8 @@ void() node_touch;
 void() node_patrol_touch;
 void() node_defend_touch;
 void() node_attack_touch;
-void() node_hunt_touch;
 void() node_recall_touch;
-void() node_hunt_setup;
-entity( entity huntNode ) node_recall_setup;
+entity() node_recall_setup;
 
 //AI UTILS - 
 float() ai_can_spawn;
@@ -159,7 +155,6 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
 void() ai_touch;
 void() ai_setup_patrol;
 void() ai_hunt_setup;
-void() ai_hunt_target;
 void( string grpid ) ai_node_pick_rand
 void(entity bot, entity attacker) ai_damage_react;
 

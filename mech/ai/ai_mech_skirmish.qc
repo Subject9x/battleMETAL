@@ -85,7 +85,23 @@ void() ai_mech_sk_die2={
 
 void() ai_mech_sk_fight_prep;
 void() ai_mech_sk_patrol1;
+void() ai_mech_sk_patrol2;
+void() ai_mech_sk_patrol3;
+void() ai_mech_sk_patrol4;
+void() ai_mech_sk_patrol5;
+void() ai_mech_sk_patrol6;
+void() ai_mech_sk_patrol7;
+void() ai_mech_sk_patrol8;
+void() ai_mech_sk_patrol9;
+void() ai_mech_sk_patrol10;
+void() ai_mech_sk_patrol11;
+void() ai_mech_sk_patrol12;
+void() ai_mech_sk_patrol13;
+void() ai_mech_sk_patrol14;
+void() ai_mech_sk_patrol15;
+void() ai_mech_sk_patrol16;
 void() ai_mech_sk_patrol_stand1;
+void() ai_mech_sk_patrol_stand2;
 void() ai_mech_sk_stand1;
 
 /*
@@ -292,8 +308,217 @@ void() ai_mech_sk_fight_prep={
   macro_ai_frame(ai_mech_sk_patrol1)
 };
 
+
+/* 
+  Patrol frames,
+  16 for frame binding at 2 ai : 1 leg anim frame
+*/
 void() ai_mech_sk_patrol1={
+
+  cons_logAFloat("ai_mech_sk_patrol1", 1);  //DEBUG
   ai_update_accuracy( TRUE ); 
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  self.e_legs.ideal_yaw = self.angles_y;
+  self.e_legs.attack_state = TR_NORM;
+  otemp = self;
+  self = self.e_legs;
+    bot_leg_walk1();
+  self = otemp;
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol2)
+};
+void() ai_mech_sk_patrol2={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol3)
+};
+void() ai_mech_sk_patrol3={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol4)
+};
+void() ai_mech_sk_patrol4={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol5)
+};
+void() ai_mech_sk_patrol5={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol6)
+};
+void() ai_mech_sk_patrol6={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol7)
+};
+void() ai_mech_sk_patrol7={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol8)
+};
+void() ai_mech_sk_patrol8={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol9)
+};
+void() ai_mech_sk_patrol9={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol10)
+};
+void() ai_mech_sk_patrol10={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol11)
+};
+void() ai_mech_sk_patrol11={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol12)
+};
+void() ai_mech_sk_patrol12={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol13)
+};
+void() ai_mech_sk_patrol13={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol14)
+};
+void() ai_mech_sk_patrol14={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol15)
+};
+void() ai_mech_sk_patrol15={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_mech_sk_patrol16)
+};
+void() ai_mech_sk_patrol16={
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
@@ -306,7 +531,40 @@ void() ai_mech_sk_patrol1={
   macro_ai_frame(ai_mech_sk_patrol1)
 };
 
+void() ai_mech_sk_patrol_stand1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  self.e_legs.attack_state = TR_YAW;
+  otemp = self;
+  self = self.e_legs;
+    bot_leg_stand1();
+  self = otemp;
+  
+  macro_ai_frame(ai_mech_sk_patrol_stand2)
+};
+void() ai_mech_sk_patrol_stand2={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  self.e_legs.attack_state = TR_YAW;
+  otemp = self;
+  self = self.e_legs;
+    bot_leg_stand1();
+  self = otemp;
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  if( time > self.pausetime ){
+    macro_ai_frame(ai_mech_sk_patrol1)
+  }
+};
+
 void() ai_mech_sk_stand1={
+  cons_logAFloat("ai_mech_sk_stand1", 1);  //DEBUG
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -1250,7 +1508,6 @@ void() ai_mech_sk_hunt16={
   AI SPAWN FUNCTION
 */
 void() ai_mech_skirmish={
-  
   ai_unit_ini_var();
   data_iniMech( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
@@ -1262,6 +1519,7 @@ void() ai_mech_skirmish={
     
   self.th_stand = ai_mech_sk_stand1;
   self.th_walk = ai_mech_sk_patrol1;
+  self.th_melee = ai_mech_sk_patrol_stand1;
   self.th_missile = ai_mech_sk_fight_prep;
   self.th_die = ai_mech_sk_die;
   self.touch = ai_touch;
