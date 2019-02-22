@@ -128,7 +128,6 @@ void() ai_gev_stand1;
 void() ai_gev_walk1;
 
 void() ai_gev_patrol1;
-void() ai_gev_patrol_stand1;
 
 void() ai_gev_fight_prep;
 

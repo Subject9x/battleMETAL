@@ -104,8 +104,6 @@ void() ai_mech_sk_patrol13;
 void() ai_mech_sk_patrol14;
 void() ai_mech_sk_patrol15;
 void() ai_mech_sk_patrol16;
-void() ai_mech_sk_patrol_stand1;
-void() ai_mech_sk_patrol_stand2;
 void() ai_mech_sk_stand1;
 
 /*
@@ -533,39 +531,6 @@ void() ai_mech_sk_patrol16={
   movetogoal( self.m_fspeed );
   
   macro_ai_frame(ai_mech_sk_patrol1)
-};
-
-void() ai_mech_sk_patrol_stand1={
-  local entity this;
-
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
-  this = self;
-  self = self.e_legs;
-    self.attack_state = TR_YAW;
-    bot_leg_stand1();
-  self = this;
-  
-  if( ai_check_scan( self.stat_rdr_mode ) ){
-    macro_ai_frame(ai_mech_sk_fight_prep)
-    return;
-  }
-  if( time > self.pausetime ){
-    macro_ai_frame(ai_mech_sk_patrol1)
-  }
-  macro_ai_frame(ai_mech_sk_patrol_stand1)
-};
-void() ai_mech_sk_patrol_stand2={
-  local entity this;
-  
-  ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
-  
-  this = self;
-  self = this.e_legs;
-    self.attack_state = TR_YAW;
-    bot_leg_stand1();
-  self = this;
 };
 
 void() ai_mech_sk_stand1={
@@ -1530,7 +1495,6 @@ void() ai_mech_skirmish={
     
   self.th_stand = ai_mech_sk_stand1;
   self.th_walk = ai_mech_sk_patrol1;
-  self.th_melee = ai_mech_sk_patrol_stand1;
   self.th_missile = ai_mech_sk_fight_prep;
   self.th_die = ai_mech_sk_die;
   self.touch = ai_touch;

@@ -103,7 +103,6 @@ void() ai_vec_dest_die2={
 void() ai_spg_stand1;
 void() ai_spg_walk1;
 void() ai_spg_patrol1;
-void() ai_spg_patrol_stand1;
 void() ai_spg_fight_prep;
 
 /*
@@ -208,10 +207,18 @@ void() ai_spg_stand1={
 };
 
 void() ai_spg_patrol1={
-  SUB_Null(); //FIX ME
+  ai_update_accuracy( FALSE ); 
+  macro_ai_update(ctrl_updateTank)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){    
+    macro_ai_frame(ai_spg_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_spg_patrol1)
 };
-
-//void() ai_spg_patrol_stand1={};
 
 void() ai_spg_fight_prep={
   ai_update_accuracy( TRUE );
@@ -775,7 +782,7 @@ void() ai_vec_dest={
   trigger_event( self, trigOnSpawn ); //event interface
   
   self.th_stand = ai_spg_stand1;
-  self.th_walk = ai_spg_walk1;
+  self.th_walk = ai_spg_patrol1;
   self.th_missile = ai_spg_fight_prep;
   self.th_die = ai_vec_dest_die;
   self.touch = ai_touch;

@@ -98,7 +98,6 @@ void() ai_tank_sk_die2={
 */
 void() ai_tank_sk_stand1;
 void() ai_tank_sk_patrol1;
-void() ai_tank_sk_patrol_stand1;
 void() ai_tank_sk_fight_prep;
 
 /*
@@ -328,6 +327,20 @@ void() ai_tank_sk_fight_prep={
     return;
   }
   macro_ai_frame(ai_tank_sk_stand1)
+};
+
+void() ai_tank_sk_patrol1={
+  ai_update_accuracy( FALSE ); 
+  macro_ai_update(ctrl_updateTank)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){    
+    macro_ai_frame(ai_tank_sk_fight_prep)
+    return;
+  }
+  
+  movetogoal( self.m_fspeed );
+  
+  macro_ai_frame(ai_tank_sk_patrol1)
 };
 
 void() ai_tank_sk_stand1={
