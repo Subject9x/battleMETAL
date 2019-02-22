@@ -37,6 +37,9 @@ void() node_setup={
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
   self.solid = SOLID_TRIGGER;
+  self.touch = node_touch;  
+  self.isActive = TRUE;
+  
   setmodel(self, "q3mdl/testball.md3");
   
   //only render nodes when debugging
@@ -54,11 +57,8 @@ void() node_setup={
   }
   
   if( !self.pausetime ){
-    self.pausetime = 0.1; 
+    self.pausetime = ((4 - skill) * -1) * 1.65; 
   }
-  self.touch = node_touch;
-  
-  self.isActive = TRUE;
   if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
     self.isActive = FALSE;
     return;
@@ -74,12 +74,12 @@ void() node_recall_touch={
       self = other;
         if( self.movetarget ){
           self.goalentity = self.movetarget;
-          //ai_next_state( ST_WALK );
+          self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+          self.th_walk();
         }
         else{
-//ai_next_state( ST_STAND );
+          self.th_stand();
         }
-        self.ai_action_time = self.ai_action_time + (1 + (self.ai_rank * 2)); 
       self = this;
       remove(self);
       return;
@@ -96,41 +96,42 @@ void() node_recall_touch={
   
 */
 void() node_patrol_touch={
+  local entity node;
+  local entity thisNode;
+  thisNode = self;
   
-  if( !self.isActive ){
+  if( other.enemy ){
     return;
   }
   
   if( other.movetarget != self ){
     return;
   }
-  
-  if( other.enemy ){
-    return;
-  }
-  
-  if( self.i_faction == other.i_faction ){
-    if( self.target ){
-      local entity node;
-      node = find (world, targetname, other.target);
-      if( node ){
-        otemp = self;
-        self = other;
-        other = otemp;
-          self.goalentity = self.movetarget = node;
-          self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-          if( other.pausetime ){
-            self.pausetime = other.pausetime;
-            self.pausetime = self.pausetime * (self.ai_action_mod / 10);
-            self.pausetime = time + self.pausetime;
-            self.th_melee();
-            self = otemp;
-            return;
-          }
-        self.th_walk();
-        self = otemp;
-        return;
+
+  if( time > other.pausetime ){
+    if( self.i_faction == other.i_faction ){
+      if( self.target ){
+        node = find (world, targetname, self.target);
+        if( node ){
+          self = other;
+            self.target = thisNode.target;
+            self.goalentity = self.movetarget = node;
+            self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+            self.th_walk();
+            if( thisNode.pausetime ){
+              self.pausetime = thisNode.pausetime;
+              self.pausetime = self.pausetime * (self.ai_action_mod / 10);
+              self.pausetime = self.pausetime + time;
+              self.th_stand();
+            }
+          self = thisNode;
+          return;
+        }
       }
+      self = other;
+        self.th_stand();
+      self = thisNode;
+      return;
     }
   }
 };
@@ -200,15 +201,28 @@ entity() node_recall_setup={
   return recallNode;
 };
 
+void() ai_node_check={
+  local entity nodeCheck;
+  if( self.target ){
+    nodeCheck = find(world, targetname, self.target );
+    if( !nodeCheck ){
+      self.target = "";
+    }
+  }
+};
+
 /*
   QUAKED call
   this is what the map script will actually call to create a node entity
 */  
 void() ai_node={
+  
   if ( !self.targetname ){
 		objerror ("node - missing targetname");
     remove(self);
     return;
   }
   node_setup();
+  self.think = ai_node_check;
+  self.nextthink = time + 1;
 };

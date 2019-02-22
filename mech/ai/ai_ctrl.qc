@@ -88,12 +88,18 @@ void() ai_update={
   Primary Generic touch function for AI.
 */
 void() ai_touch={
+
   if( other.i_faction == self.i_faction ){
     return;
   }
   
   if( ai_valid_target(other) ){
     if( !self.enemy ){
+      self.enemy = other;
+      self.th_missile();
+      return;
+    }
+    if( self.ai_rank < AI_RANK_VET ){
       self.enemy = other;
       self.th_missile();
       return;
@@ -304,44 +310,52 @@ float() ai_attack={
   Rebuild of ai_walk_setup using AI macro frame functions
 */
 void() ai_setup_patrol={
-	if ( self.target ){
+  local entity spot, spot2;
+  local vector org;
+  local float angl, px, py;
+  
+  self.nextthink = time + 0.05;
+  if( self.target ){
     if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-      ai_node_pick_rand( self.target );
+      spot = ai_node_pick_rand();
     }
-		self.goalentity = self.movetarget = find(world, targetname, self.target);
+    else{
+      spot = self;
+    }
     
-    dprint( strcat(self.goalentity.targetname, "\n") );
-    bprint( strcat(self.goalentity.targetname, "\n") );
-    
-		if( !self.movetarget ){
-			dprint ("Monster can't find target at ");
-			dprint (vtos(self.origin));
-			dprint ("\n");
-      self.pausetime = 99999999;
-      self.th_stand();
-      return;
-		}
-		self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    self.th_walk();
-    return;
-	}
-  self.pausetime = 99999999;
-  self.th_stand();
-  return;
-};
-
-void() ai_charge_side={
-	local	vector	dtemp;
-	local	float	heading, t;
-	
-// aim to the left of the enemy for a flyby
-
-	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-	ChangeYaw ();
-  t = self.lefty * 55;
-	makevectors (self.angles);
-	dtemp = self.enemy.origin - ( t * v_right );
-	heading = vectoyaw(dtemp - self.origin);
-	
-	walkmove(heading, self.m_fspeed * AI_RUN_SPD);
+    if( spot ){
+      angl = self.angles_y * DEG2RAD;
+      px = cos(angl);
+      py = sin(angl);
+      org_z = self.origin_z + 1;
+      org_x = spot.origin_x - px * (  random() * self.maxs_x * 3);
+      org_y = spot.origin_y - py * (  random() * self.maxs_y * 3);
+      
+      if( (pointcontents(org) != CONTENT_SOLID) && (pointcontents(org) != CONTENT_EMPTY) && (pointcontents(org) != CONTENT_SKY) ){
+        setorigin( self, org );
+      }
+      else{
+        setorigin( self, spot.origin);
+      }
+      droptofloor();
+      if( (self.flags & FL_TURRET) ){
+        util_setOffsetOrigin(self.e_tor_c, self, self.e_tor_c.c_ofs);
+      }
+      if( self.e_legs ){
+        util_setOffsetOrigin(self.e_legs, self, self.e_legs.c_ofs);
+      }  
+      
+      if( spot.target ){
+        spot2 = find(world, targetname, spot.target);
+        if( spot2 ){
+          self.goalentity = self.movetarget = spot2;
+          self.ideal_yaw = vectoyaw( spot2.origin - self.origin);
+          self.think = self.th_walk;
+          macro_ai_frame(self.th_walk)
+          return;
+        }
+      }
+    } 
+  }
+  macro_ai_frame(self.th_stand)
 };

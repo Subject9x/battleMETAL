@@ -246,8 +246,6 @@ void() ai_noncom_tank={
   self.th_die = ai_noncom_die;
  
   
-  self.colormod = '0.55 1 0'; //DEBUG
-  
   self.think = ai_noncom_th;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks

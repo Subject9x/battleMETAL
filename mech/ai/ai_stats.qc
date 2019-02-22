@@ -47,6 +47,7 @@ void() ai_unit_ini_var={
   if( random() > 0.5 ){
     self.lefty = -1;
   }
+  self.pausetime = time;
 };
 
 /*

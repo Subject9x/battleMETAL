@@ -313,7 +313,7 @@ void() ai_tank_sk_fight_prep={
     }
     if( !self.ai_node_recall ){
       ai_sfx_huntStart();
-      node_recall_setup( world );
+      node_recall_setup();
       self.goalentity = self.enemy;
       macro_ai_frame(ai_tank_sk_hunt1)
       return;
@@ -1318,9 +1318,6 @@ void() ai_tank_skirmish={
   data_iniVehc( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
   trigger_event( self, trigOnSpawn); //event interface
   
   self.th_stand = ai_tank_sk_stand1;
@@ -1329,10 +1326,7 @@ void() ai_tank_skirmish={
   self.th_die = ai_tank_sk_die;
   self.touch = ai_touch;
   
-  ai_setup_patrol();
-  
-  droptofloor();
- 
+  self.think = ai_setup_patrol;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks
   }

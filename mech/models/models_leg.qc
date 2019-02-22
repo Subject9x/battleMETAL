@@ -204,7 +204,7 @@ void() bot_leg_back8 = [$l_walk8, bot_leg_back7]{
 
 
 void() bot_leg_die1 = [$l_die1, leg_die2]{
-  self.movetype = MOVETYPE_BOUNCE;
+  self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BBOX;
 };
 void() bot_leg_die2 = [$l_die2, bot_leg_die3]{};

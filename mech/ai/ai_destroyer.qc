@@ -772,10 +772,6 @@ void() ai_vec_dest={
   data_iniVehc( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
-  
   trigger_event( self, trigOnSpawn ); //event interface
   
   self.th_stand = ai_spg_stand1;
@@ -783,11 +779,8 @@ void() ai_vec_dest={
   self.th_missile = ai_spg_fight_prep;
   self.th_die = ai_vec_dest_die;
   self.touch = ai_touch;
-  
-  ai_setup_patrol();
-  
-  droptofloor();
 
+  self.think = ai_setup_patrol;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = (time + 7) + random()*1; //spread out thinks
   }

@@ -10,6 +10,7 @@ Overview: AI API Header, covers multiple impl files
 #define macro_ai_update(update_func) update_func(); if(!(self.spawnflags&AI_SPAWNFLAG_DEBUG)){if(!self.deadflag){ai_update();}}
 #define macro_ai_frame_count(repeat_frame) if( self.ai_action_time > 0 ){self.ai_action_time = self.ai_action_time - 1;macro_ai_frame(repeat_frame) return;}
 #define macro_ai_frame_hunt(hunt_func) if(!self.ai_node_recall){ai_sfx_huntStart();node_recall_setup();self.goalentity=self.enemy;macro_ai_frame(hunt_func) return;} self.goalentity=self.ai_node_recall;macro_ai_frame(hunt_func) return;
+
 //CONSTANTS
 float AI_SPAWNFLAG_CAMPAIGN     = 1;    //remove from campaign mode
 float AI_SPAWNFLAG_COOP         = 2;    //remove from co-op mode
@@ -154,8 +155,7 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
 //AI CONTROL - ai_ctrl.qc 
 void() ai_touch;
 void() ai_setup_patrol;
-void() ai_hunt_setup;
-void( string grpid ) ai_node_pick_rand
+entity() ai_node_pick_rand
 void(entity bot, entity attacker) ai_damage_react;
 
 //AI VOICE STUFF

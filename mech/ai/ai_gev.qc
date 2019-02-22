@@ -950,10 +950,6 @@ void() ai_gev={
   data_iniVehc( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
-  
   trigger_event( self, trigOnSpawn ); //event interface
  
   self.th_stand = ai_gev_stand1;
@@ -963,10 +959,7 @@ void() ai_gev={
   self.th_die = ai_gev_die;
   self.touch = ai_touch;
   
-  ai_setup_patrol();
-  
-  droptofloor();
-  
+  self.think = ai_setup_patrol;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks
   }

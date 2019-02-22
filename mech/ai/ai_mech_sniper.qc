@@ -1003,13 +1003,7 @@ void() ai_mech_sniper={
   self.th_die = ai_mech_sniper_die;
   self.touch = ai_touch;
   
-  ai_setup_patrol();
-  if( (self.flags & FL_TURRET) ){
-    util_setOffsetOrigin(self.e_tor_c, self, self.e_tor_c.c_ofs);
-  }
-  util_setOffsetOrigin(self.e_legs, self, self.e_legs.c_ofs);
-  droptofloor();
-  
+  self.think = ai_setup_patrol;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks
   }

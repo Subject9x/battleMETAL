@@ -221,7 +221,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( (trg.flags & FL_MONSTER) ){
     otemp = self;
     self = dmgTrg;
-      //ai_damage_react( dmgTrg, attacker );
+      ai_damage_react( dmgTrg, attacker );
     self = otemp;
   }
   
@@ -229,14 +229,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     te_shield_explode( trg.origin, trg.vec_size );
   }
   
-  if(dmgAmt > 0){
-    sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
-  }
-  else{
+  if( !dmgAmt ){
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
-
+  sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
+  
   //the special hit-location calculator is only run for DATA_MECH units
   if(trg.data_type == DATA_MECH){
     //filter out leg hits

@@ -16,6 +16,8 @@ void() ai_mech_sk_die2;
   TH_DIE
 */ 
 void() ai_mech_sk_die={
+  local entity this;
+  
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
@@ -34,12 +36,14 @@ void() ai_mech_sk_die={
   mech_player_compdie(self.e_tor_r);
   mech_player_compdie(self.e_arm_l);
   mech_player_compdie(self.e_arm_r);
+  mech_player_compdie(self.e_legs);
   mech_player_compdie(self.e_cam);
   
-  otemp = self;
+  this = self;
   self = self.e_legs;
+    self.attack_state = TR_YAW;
     bot_leg_die1();
-  self = otemp;
+  self = this;
   
   
   //fire triggers when dead
@@ -314,17 +318,17 @@ void() ai_mech_sk_fight_prep={
   16 for frame binding at 2 ai : 1 leg anim frame
 */
 void() ai_mech_sk_patrol1={
-
-  cons_logAFloat("ai_mech_sk_patrol1", 1);  //DEBUG
+  local entity this;
+  
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_update_mechplayer)
   
-  self.e_legs.ideal_yaw = self.angles_y;
-  self.e_legs.attack_state = TR_NORM;
-  otemp = self;
+  this = self;
   self = self.e_legs;
+    self.ideal_yaw = self.angles_y;
+    self.attack_state = TR_NORM;
     bot_leg_walk1();
-  self = otemp;
+  self = this;
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_mech_sk_fight_prep)
@@ -532,26 +536,49 @@ void() ai_mech_sk_patrol16={
 };
 
 void() ai_mech_sk_patrol_stand1={
+  local entity this;
+
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
-  
-  self.e_legs.attack_state = TR_YAW;
-  otemp = self;
+  this = self;
   self = self.e_legs;
+    self.attack_state = TR_YAW;
     bot_leg_stand1();
-  self = otemp;
+  self = this;
   
-  macro_ai_frame(ai_mech_sk_patrol_stand2)
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  if( time > self.pausetime ){
+    macro_ai_frame(ai_mech_sk_patrol1)
+  }
+  macro_ai_frame(ai_mech_sk_patrol_stand1)
 };
 void() ai_mech_sk_patrol_stand2={
+  local entity this;
+  
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  self.e_legs.attack_state = TR_YAW;
-  otemp = self;
-  self = self.e_legs;
+  this = self;
+  self = this.e_legs;
+    self.attack_state = TR_YAW;
     bot_leg_stand1();
-  self = otemp;
+  self = this;
+};
+
+void() ai_mech_sk_stand1={
+  local entity this;
+  
+  ai_update_accuracy( FALSE ); 
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  this = self;
+  self = this.e_legs;
+  self.attack_state = TR_YAW;
+    bot_leg_stand1();
+  self = this;
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_mech_sk_fight_prep)
@@ -559,24 +586,10 @@ void() ai_mech_sk_patrol_stand2={
   }
   
   if( time > self.pausetime ){
-    macro_ai_frame(ai_mech_sk_patrol1)
-  }
-};
-
-void() ai_mech_sk_stand1={
-  cons_logAFloat("ai_mech_sk_stand1", 1);  //DEBUG
-  ai_update_accuracy( FALSE ); 
-  macro_ai_update(ctrl_update_mechplayer)
-  
-  self.e_legs.attack_state = TR_YAW;
-  otemp = self;
-  self = self.e_legs;
-    bot_leg_stand1();
-  self = otemp;
-  
-  if( ai_check_scan( self.stat_rdr_mode ) ){
-    macro_ai_frame(ai_mech_sk_fight_prep)
-    return;
+    if( self.target ){
+      macro_ai_frame(ai_mech_sk_patrol1)
+      return;
+    }
   }
   macro_ai_frame(ai_mech_sk_stand1)
 };
@@ -1508,13 +1521,11 @@ void() ai_mech_sk_hunt16={
   AI SPAWN FUNCTION
 */
 void() ai_mech_skirmish={
+
   ai_unit_ini_var();
   data_iniMech( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-    ai_node_pick_rand( self.target );
-  }
   trigger_event( self, trigOnSpawn); //event interface
     
   self.th_stand = ai_mech_sk_stand1;
@@ -1523,16 +1534,8 @@ void() ai_mech_skirmish={
   self.th_missile = ai_mech_sk_fight_prep;
   self.th_die = ai_mech_sk_die;
   self.touch = ai_touch;
-  
-  ai_setup_patrol();
-  
-  if( (self.flags & FL_TURRET) ){
-    util_setOffsetOrigin(self.e_tor_c, self, self.e_tor_c.c_ofs);
-  }
-  util_setOffsetOrigin(self.e_legs, self, self.e_legs.c_ofs);
-  
-  droptofloor();
 
+  self.think = ai_setup_patrol;
   self.nextthink = time + (random()*0.9); //spread out thinks
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks
