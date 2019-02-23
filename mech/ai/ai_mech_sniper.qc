@@ -201,6 +201,12 @@ void() ai_mech_sniper_stand1={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
+  if( time > self.pausetime ){
+    if( self.movetarget ){
+      macro_ai_frame(ai_mech_sniper_patrol1)
+      return;
+    }
+  }
   
   macro_ai_frame(ai_mech_sniper_stand1)
 };

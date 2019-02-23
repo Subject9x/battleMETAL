@@ -90,6 +90,54 @@ void() node_recall_touch={
 
 
 /*
+  passes pausetime data in a nicer way,
+  cause somehow (probably method parm stack limits) the normal
+  method of using the node's touch function wasn't executing the functions
+  needed.
+*/
+void() ai_node_pause={
+  local entity these;
+  local entity node;
+  local entity thisNode;
+  
+  thisNode = self;
+  these = findradius(self.origin, self.maxs_x * 2);
+  while( these ){
+    if( (these.flags & FL_UNIT) ){
+      if( self.i_faction == these.i_faction ){
+        if( self.target ){
+          node = find (world, targetname, self.target);
+          if( node ){
+            self = these;
+              self.target = thisNode.target;
+              self.goalentity = self.movetarget = node;
+              self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+              self.th_walk();
+              if( thisNode.pausetime ){
+                self.pausetime = thisNode.pausetime;
+                self.pausetime = self.pausetime * (self.ai_action_mod / 10);
+                self.pausetime = self.pausetime + time;
+                self.th_stand();
+              }
+            self = thisNode;
+          }
+          else{
+            self = these;
+              self.th_stand();
+            self = thisNode;
+          }
+        }
+        else{
+          self = these;
+            self.th_stand();
+          self = thisNode;
+        }
+      }
+    }
+    these = these.chain;
+  }
+};
+/*
   touch function that defines a node as a Patrol Node
   this will set the touchee's movetarget to self.target
   and send it on its way.
@@ -109,30 +157,9 @@ void() node_patrol_touch={
   }
 
   if( time > other.pausetime ){
-    if( self.i_faction == other.i_faction ){
-      if( self.target ){
-        node = find (world, targetname, self.target);
-        if( node ){
-          self = other;
-            self.target = thisNode.target;
-            self.goalentity = self.movetarget = node;
-            self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-            self.th_walk();
-            if( thisNode.pausetime ){
-              self.pausetime = thisNode.pausetime;
-              self.pausetime = self.pausetime * (self.ai_action_mod / 10);
-              self.pausetime = self.pausetime + time;
-              self.th_stand();
-            }
-          self = thisNode;
-          return;
-        }
-      }
-      self = other;
-        self.th_stand();
-      self = thisNode;
-      return;
-    }
+    self.think = ai_node_pause;
+    self.nextthink = time + 0.001;
+    return;
   }
 };
 
@@ -200,6 +227,7 @@ entity() node_recall_setup={
   
   return recallNode;
 };
+
 
 void() ai_node_check={
   local entity nodeCheck;

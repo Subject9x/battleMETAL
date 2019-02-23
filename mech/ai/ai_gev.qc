@@ -205,10 +205,18 @@ void() ai_gev_stand1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
   te_unit_dust( self.origin, self.angles, self.velocity, 1 );
+  
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_gev_fight_prep)
     return;
   }
+  if( time > self.pausetime ){
+    if( self.movetarget ){
+      macro_ai_frame(ai_gev_patrol1)
+      return;
+    }
+  }
+  
   macro_ai_frame(ai_gev_stand1)
 };
 

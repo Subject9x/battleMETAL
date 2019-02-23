@@ -352,6 +352,13 @@ void() ai_tank_sk_stand1={
     return;
   }
   
+  if( time > self.pausetime ){
+    if( self.movetarget ){
+      macro_ai_frame(ai_tank_sk_patrol1)
+      return;
+    }
+  }
+  
   macro_ai_frame(ai_tank_sk_stand1)
 };
 

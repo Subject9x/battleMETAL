@@ -6,7 +6,9 @@ Overview: AI Controller functions, ported mainly from Quake 1
 */
 
 void( float estate ) ai_turret_set_state={
-  self.e_tor_c.attack_state = estate;
+  if( self.e_tor_c) {
+    self.e_tor_c.attack_state = estate;
+  }
 };
 
 /*
