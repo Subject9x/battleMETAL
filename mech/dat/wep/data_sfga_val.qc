@@ -71,13 +71,6 @@ void() data_sfga_atk={
   angl = player.v_angle; //set by each AI, due to FL_TURRET
  
   org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
- 
-  if((player.flags & FL_CLIENT)){
-    end = util_traceForPlayer(player, self.w_range);
-  }
-  else{
-    end = util_traceForAI( org, angl, self.w_range, player );
-  }
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
   
   self.w_currentammo = self.w_currentammo - 1;

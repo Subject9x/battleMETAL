@@ -115,16 +115,6 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
   return  trace_endpos;
 };
 
-//scope is self = weapon making the call
-vector(entity own, float range) util_traceForPlayer={
-  local entity cam;
-  local vector vcr;
-  cam = own.e_cam;
-  makevectors(own.v_angle);
-  vcr = own.origin + (v_right * cam.c_ofs_x) + (v_up * cam.c_ofs_y) + (v_forward * cam.c_ofs_z);
-  traceline(vcr, vcr + (v_forward * range), FALSE, own);
-  return trace_endpos;
-};
 
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
@@ -134,8 +124,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   local vector src;
   local vector acc;
   //weaponSpread
-  wepAim = aim(self.owner, idealRange);
-  
+  wepAim = normalize( self.owner.laser_sight_org - self.origin );
   makevectors( viewAngle );
   
   src = self.origin + (v_forward * 4);
@@ -146,7 +135,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   
   acc_x = acc_x * crandom();
   acc_y = acc_y * crandom();
-  direction = wepAim + (acc_x * v_right) + (crandom()*acc_y * v_up);
+  direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
     
   traceline (src, src + direction*idealRange, FALSE, self);
   
@@ -160,16 +149,6 @@ vector( vector start, vector offsets, vector viewAngle) util_getOffsetOfVector={
   v = start + (v_forward * offsets_z) + (v_up * offsets_y) +(v_right * offsets_x);
   return v;
 };
-
-vector( vector startOrigin, vector viewAngle, float wepRange, entity parent) util_traceForAI={
-  local vector viewLine;
-  
-  makevectors( viewAngle );
-  viewLine = startOrigin + (v_forward * wepRange);
-  traceline( startOrigin, viewLine, FALSE, parent);
-  
-  return trace_endpos;
-}
 
 //inspired by original inFront function
 float(entity trg) util_checkPointAngle={
@@ -344,14 +323,16 @@ void(entity t) util_generateBuildingFoundation={
   this = self;
   self = n;
     self.classname = "map_terrain";
-    if( t.vec_size == 1){
-      util_setModel("q3mdl/map/plats/plat_small.obj", 0, 0) ;
-    }
-    else if( t.vec_size == 2){
-      util_setModel("q3mdl/map/plats/plat_medium.obj", 0, 0) ;
-    }
-    else if( t.vec_size == 3){
-      util_setModel("q3mdl/map/plats/plat_large.obj", 0, 0);
+    switch( t.vec_size ){
+      case 1:
+        util_setModel("q3mdl/map/plats/plat_small.obj", 0, 0) ;
+        break;
+      case 2:
+        util_setModel("q3mdl/map/plats/plat_medium.obj", 0, 0) ;
+        break;
+      case 3:
+        util_setModel("q3mdl/map/plats/plat_large.obj", 0, 0);
+        break;
     }
     util_setCollider(DAMAGE_NO, SOLID_BSP, MOVETYPE_NONE);
     setsize(self, self.mins, self.maxs);
