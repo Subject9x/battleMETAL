@@ -109,7 +109,6 @@ float DAT_TUR_ENERGY_RATE             = 1;
 
 //-------------------------Human-Radar Post
 float DAT_BLD_H_SM_RADAR_RADAR_RANGE = 2000;
-float DAT_BLD_H_SM_RADAR_LOCK_ON = 7;
 //-------------------------Human-Power Plant
 
 //-------------------------Human-Shield Generator

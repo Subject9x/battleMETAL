@@ -221,7 +221,14 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( (trg.flags & FL_MONSTER) ){
     otemp = self;
     self = dmgTrg;
+    if( self.data_type == DATA_BLD ){
+      if( self.data_idx == ID_BLD_H_RADAR ){
+        self.th_missile();
+      }
+    }
+    else{
       ai_damage_react( dmgTrg, attacker );
+    }
     self = otemp;
   }
   

@@ -2,6 +2,7 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 7/20/2018
+rebuild: 2/16/2019
 Overview: ai unit
   Mech - Skirmisher
   an on-ground, turreted, walking unit
@@ -198,6 +199,8 @@ void() ai_mech_sk_fight_prep={
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
+    enemy_hunt = FALSE;
+    
     if( enemy_vis == VIS_FRAC ){
       if( enemy_range < 200 ){
         if( enemy_infront ){
@@ -304,12 +307,39 @@ void() ai_mech_sk_fight_prep={
       macro_ai_update(ai_mech_sk_flank1)
       return;
     }
-    //goto hunting
-    macro_ai_frame_hunt(ai_mech_sk_hunt1)
+    if( enemy_vis == VIS_FAIL ){
+      if( self.ai_rank > AI_RANK_REG ){
+        if( util_getMechHpAverage(self) > 0.45){
+          enemy_hunt = TRUE;
+        }
+        if( util_getMechHpAverage(self.enemy) <= 0.25 ){
+          enemy_hunt = TRUE;
+        }
+      }
+      if( util_getMechHpAverage(self) > 0.75 ){
+        if( self.enemy.vec_size < self.vec_size ){
+          enemy_hunt = TRUE;
+        }
+      }
+      if( util_getMechHpAverage(self.enemy) <= 0.25 ){
+          enemy_hunt = TRUE;
+      }
+    }
+  }
+  if( enemy_hunt ){
+    if( !self.ai_node_recall ){
+      ai_sfx_huntStart();
+      node_recall_setup();
+      self.goalentity = self.enemy;
+      macro_ai_frame(ai_mech_sk_hunt1)
+      return;
+    }
+    self.goalentity = self.ai_node_recall;
+    macro_ai_frame(ai_mech_sk_hunt1)
+    return;
   }
   macro_ai_frame(ai_mech_sk_patrol1)
 };
-
 
 /* 
   Patrol frames,

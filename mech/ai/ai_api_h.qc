@@ -64,6 +64,7 @@ float enemy_infront;
 float enemy_range;
 float enemy_yaw;
 float enemy_vis;
+float enemy_hunt;
 entity AI_NODES[128];
 
 //UNIT VARIANTS - .style var

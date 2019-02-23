@@ -354,37 +354,36 @@ vector( float rank, vector spread ) ai_pilot_accuracy={
   local float modMax;
   local float modRate;
   
-  modMin = acc_x;
-  modMax = acc_y;
-  modRate = acc_z;
+  modMin = spread_x;
+  modMax = spread_y;
+  modRate = spread_z;
   
   switch( rank ){
     case SKILL_NOV:
-      modMin = modMin * 0.25;
-      modMax = modMax * 0.5;
-      modRate = modRate * 0.5;
+      modMin = modMin * AI_CNV_MIN_ROK;
+      modMax = modMax * AI_CNV_MAX_ROK;
+      modRate = modRate * AI_CNV_RATE_ROK;
       break;
     case SKILL_REG:
-      modMin = modMin * 0.15;
-      modMax = modMax * 0.4;
-      modRate = modRate * 0.25;
+      modMin = modMin * 1;
+      modMax = modMax * 1;
+      modRate = modRate * AI_CNV_RATE_REG;
       break;
     case SKILL_VET:
-      modMin = modMin * 0.25;
-      modMax = modMax * 0.5;
-      modRate = modRate * 0.15;
+      modMin = modMin * AI_CNV_MIN_VET;
+      modMax = modMax *AI_CNV_MAX_VET;
+      modRate = modRate * AI_CNV_RATE_VET;
       break;
     case SKILL_ELT:
-      modMin = modMin * 0.05;
-      modMax = modMax * 0.1;
-      modRate = modRate * 0.05;
+      modMin = modMin * AI_CNV_MIN_ACE;
+      modMax = modMax * AI_CNV_MAX_ACE;
+      modRate = modRate * AI_CNV_RATE_ACE;
       break;
   }
   modRate = modRate * -1;
-  acc_x = acc_x + modMin;
-  acc_y = acc_y + modMax;
-  acc_z = acc_z + modRate;
-  acc = acc + spread;
+  acc_x = modMin;
+  acc_y = modMax;
+  acc_z = modRate;
   return acc;
 };
 

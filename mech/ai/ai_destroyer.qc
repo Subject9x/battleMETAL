@@ -2,6 +2,7 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 7/12/2018
+rebuild: 2/16/2019
 Overview: ai unit
   Tank Destroyer
   an on-ground, turret-less vehicle

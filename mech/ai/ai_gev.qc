@@ -253,6 +253,7 @@ void() ai_gev_fight_prep={
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+    enemy_hunt = FALSE;
     
     if( enemy_vis == VIS_FRAC ){
       if( enemy_range <= 200 ){
@@ -313,8 +314,36 @@ void() ai_gev_fight_prep={
       macro_ai_frame(ai_gev_strafe1)
       return;
     }
-    //goto hunting
-    macro_ai_frame_hunt(ai_gev_hunt1)
+    if( enemy_vis == VIS_FAIL ){      
+      if( self.ai_rank > AI_RANK_REG ){
+        if( util_getMechHpAverage(self) > 0.45){
+          enemy_hunt = TRUE;
+        }
+        if( util_getMechHpAverage(self.enemy) <= 0.25 ){
+          enemy_hunt = TRUE;
+        }
+      }
+      if( util_getMechHpAverage(self) > 0.75 ){
+        if( self.enemy.vec_size < self.vec_size ){
+          enemy_hunt = TRUE;
+        }
+      }
+      if( util_getMechHpAverage(self.enemy) <= 0.25 ){
+          enemy_hunt = TRUE;
+      }
+    }
+  }
+  if( enemy_hunt ){
+    if( !self.ai_node_recall ){
+      ai_sfx_huntStart();
+      node_recall_setup();
+      self.goalentity = self.enemy;
+      macro_ai_frame(ai_gev_hunt1)
+      return;
+    }
+    self.goalentity = self.ai_node_recall;
+    macro_ai_frame(ai_gev_hunt1)
+    return;
   }
   if( self.movetarget ){
     self.goalentity = self.movetarget;

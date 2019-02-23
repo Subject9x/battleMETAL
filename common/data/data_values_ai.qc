@@ -15,6 +15,15 @@ float AI_RUN_FACTOR = 1.25;
 float AI_MECH_MOVE_FACTOR = 0.85; //mechs cannot move as fast as player
 float AI_RUN_SPD = 0.2;
 
+//Radar post
+float AI_POST_SWEEP_SIZE = 6;
+float AI_POST_SPOT_TIME = 32;
+//lock on time modifiers for Radar Post
+float AI_POST_LOCK_ROK = 2;
+float AI_POST_LOCK_REG = 1;
+float AI_POST_LOCK_VET = 0.75;
+float AI_POST_LOCK_ACE = 0.5;
+
 //PILOT RANKS - determines base states, and some realtime decisions
 float AI_RANK_ACE = 3;
 float AI_RANK_VET = 2;  //veteran
@@ -48,12 +57,6 @@ float AI_VIEW_REG = 1;
 float AI_VIEW_VET = 0.75;
 float AI_VIEW_ACE = 0.5;
 
-//lock on time modifiers for Radar Post
-float AI_POST_LOCK_ROK = 2;
-float AI_POST_LOCK_REG = 1;
-float AI_POST_LOCK_VET = 0.75;
-float AI_POST_LOCK_ACE = 0.5;
-
 //View Ranges, multipliers against ai.radar_range
 float AI_VIEW_RANGE_ROK = 0.75;
 float AI_VIEW_RANGE_VET = 1.1;
@@ -71,6 +74,22 @@ float AI_ATTACK_ACE  =  0.5;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
+
+//Minimum convergence modifier
+float AI_CNV_MIN_ROK  = 1.25;
+float AI_CNV_MIN_VET  = 0.85;
+float AI_CNV_MIN_ACE  = 0.75;
+
+//Maximum convergence modifier
+float AI_CNV_MAX_ROK  = 1.25;
+float AI_CNV_MAX_VET  = 0.75;
+float AI_CNV_MAX_ACE  = 0.65;
+
+//Convergence Rate modifier
+float AI_CNV_RATE_ROK  = 0.45;
+float AI_CNV_RATE_REG  = 0.6;
+float AI_CNV_RATE_VET  = 0.85;
+float AI_CNV_RATE_ACE  = 1;
 
 //how well does the AI handle weapon convergence
 float AI_CNV_ACE = 10;

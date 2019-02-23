@@ -2,6 +2,7 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 10/24/2018
+rebuild: 2/16/2019
 Overview: ai unit
   Mech - Sniper
   an on-ground, turreted, walking unit
