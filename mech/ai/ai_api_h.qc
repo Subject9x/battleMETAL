@@ -4,6 +4,13 @@ Author: Peter Roohr
 Date: 7/9/2018
 Overview: AI API Header, covers multiple impl files
 */
+
+//will it blend?
+#define macro_ai_frame(next_func) if((self.flags&FL_TURRET)){ai_turret_control();}if(self.e_legs){ai_leg_control();} self.think=next_func; self.nextthink=time+0.05;
+#define macro_ai_update(update_func) update_func(); if(!(self.spawnflags&AI_SPAWNFLAG_DEBUG)){if(!self.deadflag){ai_update();}}
+#define macro_ai_frame_count(repeat_frame) if( self.ai_action_time > 0 ){self.ai_action_time = self.ai_action_time - 1;macro_ai_frame(repeat_frame) return;}
+#define macro_ai_frame_hunt(hunt_func) if(!self.ai_node_recall){ai_sfx_huntStart();node_recall_setup();self.goalentity=self.enemy;macro_ai_frame(hunt_func) return;} self.goalentity=self.ai_node_recall;macro_ai_frame(hunt_func) return;
+
 //CONSTANTS
 float AI_SPAWNFLAG_CAMPAIGN     = 1;    //remove from campaign mode
 float AI_SPAWNFLAG_COOP         = 2;    //remove from co-op mode
@@ -57,6 +64,7 @@ float enemy_infront;
 float enemy_range;
 float enemy_yaw;
 float enemy_vis;
+float enemy_hunt;
 entity AI_NODES[128];
 
 //UNIT VARIANTS - .style var
@@ -65,26 +73,20 @@ float TYPE_SNIPER = 2;
 float TYPE_SKIRM  = 3;
 
 //ENTITY VARS
-.void() th_fly;
-.void() th_run_strafe;
-.void() th_run_charge;
-.void() th_missile_strafe;
-.void() th_hunt;
 .float ai_rank;
 .float ai_action_time;  //for executing action states
-.float ai_action_mod;
+.float ai_action_mod;   //how many times to repeat a frameset before adjusting
 .float ai_leading;      //how bad does the ai suck? 0.0 is ACE, 0.2 is pretty bad
 .float ai_minrange;     //minimum range of guns;
-.float ai_fov;      //the angle of the AI's view for visual target finding
-.float ai_view;         //game unit range of vision within the angle
-.float patience;        //counter for if AI is stuck on something
-.float maxpatience;     //how impatient is the AI
-.vector ai_pitch;     //x = min, y= max, z = pitch speed
+.float ai_fov;          //the angle of the AI's view for visual target finding
+.float ai_view;         //range in game units of AI's vision
+.vector ai_pitch;       //x = min, y= max, z = pitch speed
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
-.float ai_hunt_total; //current number of hunt nodes
+.float ai_hunt_total;   //current number of hunt nodes
 .float ai_attack_chance;
-.float ai_dir;
+.float ai_dir;          //chassis facing vs .angles
+.entity ai_node_recall;
 
 .float voiceTime; //when next to say something
 .string ai_voice_warn;
@@ -97,21 +99,18 @@ float TYPE_SKIRM  = 3;
 .string ai_voice_roger;
 .string ai_voice_help;
 
-//ugh
-.entity ai_node_hunt;
-.entity ai_node_recall;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 void() ai_promote;
-float(float rank) ai_pilot_optical_range;
+float(float rank) ai_pilot_field_of_view;
 float(float rank) ai_pilot_view_interval;
 float(float rank) ai_pilot_view_range;
 float() ai_pilot_rating_leading;
 float() ai_pilot_yaw_mod;
+float() ai_turret_yaw_mod;
 float() ai_pilot_armor_mod;
 float() ai_pilot_shield_mod;
-float() ai_pilot_rating_patience;
 void() ai_pilot_mech_armor;
 void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
@@ -128,10 +127,8 @@ void() node_touch;
 void() node_patrol_touch;
 void() node_defend_touch;
 void() node_attack_touch;
-void() node_hunt_touch;
 void() node_recall_touch;
-void() node_hunt_setup;
-entity( entity huntNode ) node_recall_setup;
+entity() node_recall_setup;
 
 //AI UTILS - 
 float() ai_can_spawn;
@@ -144,11 +141,8 @@ float(entity wep) ai_attack_blockcheck;
 float(entity t) ai_valid_target;
 void() ai_wep_calcranges;
 void(float dst, float grp, float bracket) ai_wep_group_track;
-float(float movespeed, float distance, float ticrate) ai_move_time;
-float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time;
 float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;
-float() ai_panic_time;
 float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
 float( entity t ) ai_line_of_sight;
@@ -160,13 +154,10 @@ void() ai_unit_make_trigger;
 void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
 
 //AI CONTROL - ai_ctrl.qc 
-void() ai_walk_setup;
-void() ai_hunt_setup;
-void() ai_hunt_target;
-void() ai_found_target;
-void( string grpid ) ai_node_pick_rand
+void() ai_touch;
+void() ai_setup_patrol;
+entity() ai_node_pick_rand
 void(entity bot, entity attacker) ai_damage_react;
-void(void() macro) ai_leg_frame;
 
 //AI VOICE STUFF
 void() ai_sfx_spotted;
@@ -179,33 +170,14 @@ void() ai_sfx_kill;
 void() ai_sfx_roger;
 void() ai_sfx_help;
 
-
 /*
   AI STATE FUNCTIONS=====================
 */
-
-void( float state ) ai_next_state;
-void( float estate ) ai_state_control;
-void() ai_pilot_validate_states;  // assigns SUB_Null to any empty th_ states
-void( float startState ) ai_initialize_system;
-
+void() ai_update;
 void() ai_turret_control;
+void() ai_leg_control;
 void( float estate ) ai_turret_set_state;
 
-//generic state functions
-//any and all can be replaced by an AI's own th_func standins
-void() ai_generic_stand;
-void() ai_generic_walk;
-void() ai_generic_fly;
-void() ai_generic_run;
-void() ai_generic_run_strafe;
-void() ai_generic_run_charge;
-void() ai_generic_missile;
-void() ai_generic_melee;
-void() ai_generic_missile_strafe;
-void() ai_generic_hunt;
-void() ai_generic_pain;
-//=======================================
 /*
   AI ACTION SET==========================
   Headers
@@ -214,28 +186,13 @@ float( float scan_mode) ai_check_scan;
 void(float speed) ai_walkgoal;
 void() ai_face_targ;
 float(entity targ, float ang_limit) ai_check_face;
+float(entity t, float ang, float useTurret) ai_check_targ_infront;
 float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
 void() ai_move_turn;
 float( float angmod, float dist) ai_move;
-float( float dist ) ai_walk_back;
-float( float dist ) ai_walk_left;
-float( float dist ) ai_walk_right;
-float( float dist ) ai_yaw_back;
-float( float dist ) ai_yaw_left;
-float( float dist ) ai_yaw_right;
 float( float angmod, float dist ) ai_yaw_move;
 void( float alt_low, float alt_max ) ai_fly_update;
 void( float move ) ai_update_accuracy;
 //========================================
-
-//q1 legacy code ai_move_q1.qc
-void(float dist) q1_ai_forward;
-void(float dist) q1_ai_back;
-void() q1_ai_stand;
-void(float dist) q1_ai_walk;
-void() q1_ai_turn;
-void(float dist) q1_ai_run;
-void() q1_ai_run_slide;
-void() q1_ai_run_attack;

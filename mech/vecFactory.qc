@@ -335,7 +335,7 @@ void(void() data_ini) build_mech_bot={
   part_chain = self;
   
   self.e_tor_c = build_unit_turret( self.unit_ctor );
-  self.e_tor_c.yaw_speed = self.m_rot_speed;
+  self.e_tor_c.yaw_speed = self.turret_yaw_speed;
   part_chain.c_part = self.e_tor_c;
   part_chain = part_chain.c_part;
   
@@ -363,8 +363,17 @@ void(void() data_ini) build_mech_bot={
     self.e_legs = build_mech_legs(self.unit_legs);
     part_chain.c_part = self.e_legs;
     part_chain = part_chain.c_part;
+    self.e_legs.th_walk = leg_walk1;
+    self.e_legs.th_run = leg_back1;
+    self.e_legs.th_stand = leg_stand1;
+    self.e_legs.movetype = MOVETYPE_NONE;
+    self.e_legs.yaw_speed = self.yaw_speed * 1.5;
+    self.e_legs.attack_state = TR_NORM;
+    self.ai_dir = self.angles_y;
   }
-  
+  self.m_fspeed = self.m_fspeed * AI_MECH_MOVE_FACTOR;
+  self.m_sspeed = self.m_sspeed * AI_MECH_MOVE_FACTOR;
+  self.m_bspeed = self.m_bspeed * AI_MECH_MOVE_FACTOR;
   build_unit_weapon_list();
 };
 
@@ -439,16 +448,20 @@ entity(void() func) build_mech_legs={
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE;
     self.walkframe = 1;
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
+    if( (this.flags & FL_CLIENT) ){
+      util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+      self.aiment = this;
+    }
     util_setModel(self.c_model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
-    self.aiment = this;
     self.owner = this;
     self.punchangle = this.angles;
     self.view_ofs = self.origin - this.origin;
     self.angles = this.angles;
     self.v_angle = self.angles - this.angles; 
+    
     self.th_die = ctrl_dieLegs;
     self.laser_sight_org = '0 0 0';
     self.laser_sight_timer = time + 0.5; 
@@ -496,6 +509,7 @@ void(void() data_ini) build_vehicle_unit={
   
   if( (self.flags & FL_TURRET) ){
     self.e_tor_c = build_unit_turret( self.unit_ctor );
+    self.e_tor_c.yaw_speed = self.turret_yaw_speed;
     part_chain.c_part = self.e_tor_c;
     part_chain = part_chain.c_part;
   }

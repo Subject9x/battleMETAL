@@ -117,8 +117,8 @@ void() PlayerPostThink = {
   //STAT UPDATE   
   if(self.data_type == DATA_MECH){
     makevectors(self.v_angle);
-    traceline(self.origin, self.origin + (v_forward * 5000), FALSE,self);
-    self.stat_ret_dist = (5000 * trace_fraction);
+    traceline(self.origin, self.origin + (v_forward * self.radar_range), FALSE,self);
+    self.stat_ret_dist = (self.radar_range * trace_fraction);
     self.stat_plr_camx = self.e_cam.c_ofs_x;
     self.stat_plr_camy = self.e_cam.c_ofs_y; 
     self.stat_plr_camz = self.e_cam.c_ofs_z;

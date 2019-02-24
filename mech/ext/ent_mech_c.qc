@@ -33,7 +33,7 @@ commented vars mean they're already implemented and are here for reference!
 .float accuracyAdj;
 .float accuracy; 
 
-.float m_rot_speed;
+.float turret_yaw_speed;
 .string m_pitch_min;
 .string m_pitch_max;
 

@@ -25,32 +25,30 @@ void() ctrl_updateLegs={
     if(self.movetype != MOVETYPE_FOLLOW){
       self.movetype = MOVETYPE_FOLLOW;
     }
-    if( (self.owner.flags & FL_CLIENT) ){
-      velDir = vectoyaw( self.owner.movement );
-      playerDir = vectoyaw( self.owner.v_angle );
-      velDir = anglemod( playerDir - velDir);
-      right = anglemod( playerDir + 90 );
-      left = anglemod( playerDir - 90 );
-      nextDirs = vectoangles(self.owner.movement);
+    velDir = vectoyaw( self.owner.movement );
+    playerDir = vectoyaw( self.owner.v_angle );
+    velDir = anglemod( playerDir - velDir);
+    right = anglemod( playerDir + 90 );
+    left = anglemod( playerDir - 90 );
+    nextDirs = vectoangles(self.owner.movement);
 
-      if( (velDir >= left) || (velDir <= right) ){
-        nextDirs_y = nextDirs_y * -1;
-        if( self.ai_dir != 1 ){
-          self.ai_dir = 1; // animation switch -> 'forward'
-          leg_walk5();
-        }
+    if( (velDir >= left) || (velDir <= right) ){
+      nextDirs_y = nextDirs_y * -1;
+      if( self.ai_dir != 1 ){
+        self.ai_dir = 1; // animation switch -> 'forward'
+        leg_walk5();
       }
-      else{
-        nextDirs_y = anglemod( nextDirs_y + 180) * -1;
-        if( self.ai_dir != -1 ){
-          self.ai_dir = -1; // animation switch -> 'reverse'
-          leg_back4();
-        }
-      }
-      
-      self.angles =  nextDirs;
-      self.v_angle = self.angles;
     }
+    else{
+      nextDirs_y = anglemod( nextDirs_y + 180) * -1;
+      if( self.ai_dir != -1 ){
+        self.ai_dir = -1; // animation switch -> 'reverse'
+        leg_back4();
+      }
+    }
+    
+    self.angles =  nextDirs;
+    self.v_angle = self.angles;
   }
 };
 

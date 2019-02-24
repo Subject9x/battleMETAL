@@ -67,20 +67,7 @@ void() data_flak_atk={
   local float d;
   
   player = self.owner;
-  
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
   range = self.w_range;
-  angl = player.v_angle; //set by each AI, due to FL_TURRET
-
-  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
- 
-  if((player.flags & FL_CLIENT)){
-    end = util_traceForPlayer(player, self.w_range);
-  }
-  else{
-    end = util_traceForAI( org, angl, self.w_range, player );
-  }
-  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
   enm = trace_ent;
   
   self.w_currentammo = self.w_currentammo - 1;
@@ -103,14 +90,16 @@ void() data_flak_atk={
     self.w_isburst = TRUE;
   }
   
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  makevectors(player.angles);
-  org = player.origin+(v_up*adj_y)+(v_right*adj_x)+(v_forward*adj_z);
+  adj = self.c_ofs + self.w_fire_ofs;
+  makevectors( player.angles );
+  org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
   
-  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), org + v_forward * 3, normalize( dir - org ) * 4, 1);
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  pointparticles( particleeffectnum("TE_FLK_MUZZLE"), org, normalize( dir - org ) * 4, 1);
   
   if( vlen(trace_endpos - org) > 100 ){
-    pointparticles( particleeffectnum("TE_FLK_TRACER"), org + v_forward * 3 + v_up * 0.5, normalize( dir - org ) * 4, 1);
+    pointparticles( particleeffectnum("TE_FLK_TRACER"), org, normalize( dir - org ) * 4, 1);
   }
   
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){

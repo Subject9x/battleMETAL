@@ -121,15 +121,14 @@ dp/subs.qc
 //impl files
   mech/ai/ai_stats.qc
   mech/ai/ai_api.qc
-  mech/ai/ai_move_q1.qc
   mech/ai/ai_ctrl.qc
   mech/ai/ai_turret.qc
   mech/ai/ai_mech_skirmish.qc
   mech/ai/ai_mech_sniper.qc
   mech/ai/ai_destroyer.qc
   mech/ai/ai_tank_skirmish.qc
-  mech/ai/ai_noncom.qc
-  mech/ai/ai_vtol.qc
+  //mech/ai/ai_noncom.qc TODO
+  //mech/ai/ai_vtol.qc TODO
   mech/ai/ai_gev.qc
   mech/ai/ai_nodes.qc
   mech/ai/ai_voice.qc

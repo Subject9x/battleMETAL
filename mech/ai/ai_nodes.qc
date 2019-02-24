@@ -14,7 +14,6 @@ float AI_NODE_PATROL = 1;
 float AI_NODE_DEFEND = 2;
 float AI_NODE_ATTACK = 3;
 float AI_NODE_RECALL = 4;
-float AI_NODE_HUNT = 5;
 
 //SPAWNFLAGS
 float NODE_SPAWN_DROP = 1;
@@ -38,7 +37,19 @@ void() node_setup={
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
   self.solid = SOLID_TRIGGER;
+  self.touch = node_touch;  
+  self.isActive = TRUE;
+  
   setmodel(self, "q3mdl/testball.md3");
+  
+  //only render nodes when debugging
+  if( cvar("developer" ) ){
+    self.alpha = 1;
+  }
+  else{
+    self.alpha = 0;
+  }
+  
   setsize(self, '-10 -10 -18','10 10 18');
   if( (self.spawnflags & NODE_SPAWN_DROP) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
@@ -46,37 +57,13 @@ void() node_setup={
   }
   
   if( !self.pausetime ){
-    self.pausetime = 0.1; 
+    self.pausetime = ((4 - skill) * -1) * 1.65; 
   }
-  self.touch = node_touch;
-  
-  self.isActive = TRUE;
   if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
     self.isActive = FALSE;
     return;
   }
   trigger_event( self, trigOnSpawn );
-};
-
-/*
-  Only fires when node.owner touches this node.
-  Sets owner state to ST_STAND, and updates owner.goalentity -> Recall Node;
-*/
-void() node_hunt_touch={
-  local entity this;
-  if( (self.owner.deadflag == DEAD_NO) && (other == self.owner) ){
-    this = self;
-    self = other;
-      self.goalentity = self.ai_node_recall;
-      ai_next_state( ST_STAND );
-      self.ai_action_time = self.ai_action_time + (1 + (self.ai_rank * 2));
-      self.ai_node_recall.ai_action_time = self.ai_action_time + ai_move_time(self.owner.m_fspeed * AI_WALK_SPD, vlen(self.goalentity.origin - self.owner.origin), 0.1);
-      ai_sfx_huntEnd();
-    self = this;
-    remove(self);
-    return;
-  }
-  return;
 };
 
 void() node_recall_touch={
@@ -87,12 +74,12 @@ void() node_recall_touch={
       self = other;
         if( self.movetarget ){
           self.goalentity = self.movetarget;
-          ai_next_state( ST_WALK );
+          self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+          self.th_walk();
         }
         else{
-          ai_next_state( ST_STAND );
+          self.th_stand();
         }
-        self.ai_action_time = self.ai_action_time + (1 + (self.ai_rank * 2)); 
       self = this;
       remove(self);
       return;
@@ -103,48 +90,75 @@ void() node_recall_touch={
 
 
 /*
+  passes pausetime data in a nicer way,
+  cause somehow (probably method parm stack limits) the normal
+  method of using the node's touch function wasn't executing the functions
+  needed.
+*/
+void() ai_node_pause={
+  local entity these;
+  local entity node;
+  local entity thisNode;
+  
+  thisNode = self;
+  these = findradius(self.origin, self.maxs_x * 2);
+  while( these ){
+    if( (these.flags & FL_UNIT) ){
+      if( self.i_faction == these.i_faction ){
+        if( self.target ){
+          node = find (world, targetname, self.target);
+          if( node ){
+            self = these;
+              self.target = thisNode.target;
+              self.goalentity = self.movetarget = node;
+              self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+              self.th_walk();
+              if( thisNode.pausetime ){
+                self.pausetime = thisNode.pausetime;
+                self.pausetime = self.pausetime * (self.ai_action_mod / 10);
+                self.pausetime = self.pausetime + time;
+                self.th_stand();
+              }
+            self = thisNode;
+          }
+          else{
+            self = these;
+              self.th_stand();
+            self = thisNode;
+          }
+        }
+        else{
+          self = these;
+            self.th_stand();
+          self = thisNode;
+        }
+      }
+    }
+    these = these.chain;
+  }
+};
+/*
   touch function that defines a node as a Patrol Node
   this will set the touchee's movetarget to self.target
   and send it on its way.
   
 */
 void() node_patrol_touch={
-  local entity this;
-  
-  if( other.movetarget != self ){
-    return;
-  }
+  local entity node;
+  local entity thisNode;
+  thisNode = self;
   
   if( other.enemy ){
     return;
   }
   
-  if( self.i_faction == other.i_faction ){  
-    this = self;
-    self = other;
-    other = this;
+  if( other.movetarget != self ){
+    return;
+  }
 
-    //if (self.classname == "monster_ogre")
-      //sound (self, CHAN_VOICE, "ogre/ogdrag.wav", 1, ATTN_IDLE);// play chainsaw drag sound
-
-  //dprint ("t_movetarget\n");
-    self.goalentity = self.movetarget = find (world, targetname, other.target);
-    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-    ai_leg_frame( leg_stand1 );
-    if ( self.movetarget ){
-      if( other.pausetime ){
-        ai_next_state( ST_STAND );
-        self.ai_action_time = self.ai_action_time + other.pausetime;
-        self = this;
-        return;
-      }
-      ai_next_state( ST_WALK );
-      ai_leg_frame( leg_walk1 );
-      self = this;
-      return;
-    }
-    ai_next_state( ST_STAND );
-    self = this;
+  if( time > other.pausetime ){
+    self.think = ai_node_pause;
+    self.nextthink = time + 0.001;
     return;
   }
 };
@@ -178,9 +192,6 @@ void() node_touch={
       case AI_NODE_ATTACK:
         //TODO - attack node behavior?
         break;
-      case AI_NODE_HUNT:
-        node_hunt_touch();
-        break;
       case AI_NODE_RECALL:
         node_recall_touch();
         break;
@@ -201,56 +212,31 @@ void() node_touch={
   Recall Nodes act as a breadcrumb to bring the AI back to exactly where they were before hunting.
   This only exist for a limited amount of time.
 */
-entity( entity huntNode ) node_recall_setup={
+entity() node_recall_setup={
   local entity recallNode;
   local entity theBot;
   
   recallNode = spawn();
   theBot = self;
   self = recallNode;
-    setorigin( self, huntNode.owner.origin);
+    setorigin( self, theBot.origin);
     self.data_idx = AI_NODE_RECALL;
     node_setup();
-    self.owner = huntNode.owner;
+    self.owner = theBot;
   self = theBot;
   
   return recallNode;
 };
 
-/*
-  Hunt Nodes are dropped when an AI loses LoS to their .enemy.
-  These only last for a certain amount of time.
-  If the bot reaches this node, it'll hang around for a bit before returning
-  to its Recall Node. 
-*/
-void() node_hunt_setup={
-  local entity huntNode;
-  local entity recallNode;
-  local entity bot;
-  local float moveTime;
-  
-  huntNode = spawn();
-  bot = self;
-  self = huntNode;
-    self.data_idx = AI_NODE_HUNT;
-    setorigin( self, bot.enemy.origin);
-    node_setup();
-    self.owner = bot;
-  self = bot;
-  self.ai_node_hunt = huntNode;
-  
-  if( !self.ai_node_recall ){
-    recallNode = node_recall_setup( huntNode ); 
-    self.ai_node_recall = recallNode;
+
+void() ai_node_check={
+  local entity nodeCheck;
+  if( self.target ){
+    nodeCheck = find(world, targetname, self.target );
+    if( !nodeCheck ){
+      self.target = "";
+    }
   }
-  
-  self.goalentity = self.ai_node_hunt;
-  
-  moveTime = time + ai_move_time(self.m_fspeed * AI_WALK_SPD, vlen(self.ai_node_hunt.origin - self.origin), 0.1);
-  
-  self.ai_node_hunt.ai_action_time = moveTime;
-  self.ai_node_recall.ai_action_time = moveTime * 2;
-  self.ai_action_time = moveTime;
 };
 
 /*
@@ -258,10 +244,13 @@ void() node_hunt_setup={
   this is what the map script will actually call to create a node entity
 */  
 void() ai_node={
+  
   if ( !self.targetname ){
 		objerror ("node - missing targetname");
     remove(self);
     return;
   }
   node_setup();
+  self.think = ai_node_check;
+  self.nextthink = time + 1;
 };

@@ -13,7 +13,7 @@ void() data_latc_think;
 void() data_latc_ini={
   self.data_idx = ID_WEP_LATC;
   self.w_name = DAT_LATC_NAME;
-  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_PRC;
+  self.p_dmgtype = (DMG_BAL | EFF_PRC);
   self.p_damage = DAT_LATC_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_LATC_CLIPSIZE;
@@ -63,19 +63,7 @@ void() data_latc_atk={
   local float range;
   
   player = self.owner;
-  
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
   range = self.w_range;
-  angl = player.v_angle; //set by each AI, due to FL_TURRET
-  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
- 
-  if((player.flags & FL_CLIENT)){
-    end = util_traceForPlayer(player, self.w_range);
-  }
-  else{
-    end = util_traceForAI( org, angl, self.w_range, player );
-  }
-  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
 
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
@@ -90,12 +78,16 @@ void() data_latc_atk={
     self.w_state = RECOIL;
   }
   
-  makevectors( self.angles );
-  pointparticles( particleeffectnum("TE_ATC_MUZZLE"), org + v_forward * 3 + v_up * 0.5, normalize( dir - org ) * 4, 1);
+  adj = self.c_ofs + self.w_fire_ofs;
+  makevectors( player.angles );
+  org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
+  
+  pointparticles( particleeffectnum("TE_ATC_MUZZLE"), org, normalize( dir - org ) * 4, 1);
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   
-  if( vlen(trace_endpos - org) > 100 ){
-    pointparticles( particleeffectnum("TE_ATC_TRACER"), org + v_forward * 3 + v_up * 0.5, normalize( dir - org ) * 4, 1);
+  if( vlen(dir - org) > 100 ){
+    pointparticles( particleeffectnum("TE_ATC_TRACER"), org, normalize( dir - org ) * 4, 1);
   }
   
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){

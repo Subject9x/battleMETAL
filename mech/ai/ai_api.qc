@@ -150,18 +150,20 @@ float() ai_find_target_visual={
   dist = self.ai_view ;
   rng = dist;
   while( targ ){
-    if( ai_valid_target(targ) ){
-      if( targ.i_faction != self.i_faction ){
-        if( ai_check_face(targ, self.ai_fov) ){
-          if( ai_check_vis(targ) ){
-            local float ndist;
-            ndist = vlen(targ.origin - self.origin);
-            if( targ.fog_alpha ){
-              rng = rng - ( targ.fog_alpha * rng ); //FOG?
-            }
-            if(ndist < rng){
-              rng = ndist;
-              found = targ;
+    if( targ != self ){
+      if( ai_valid_target(targ) ){
+        if( targ.i_faction != self.i_faction ){
+          if( ai_check_face(targ, self.ai_fov) ){
+            if( ai_check_vis(targ) ){
+              local float ndist;
+              ndist = vlen(targ.origin - self.origin);
+              if( targ.fog_alpha ){
+                rng = rng - ( targ.fog_alpha * rng ); //FOG?
+              }
+              if(ndist < rng){
+                rng = ndist;
+                found = targ;
+              }
             }
           }
         }
@@ -169,45 +171,50 @@ float() ai_find_target_visual={
     }
     targ = targ.chain;
   }
+  
   if( found ){
-    if( found == self.enemy ){
-      return FALSE;
-    }
     self.enemy = found;
-    ai_found_target();
+    ai_sfx_spotted();
     return TRUE;
   }
   return FALSE;
 };
 
 float() ai_find_target_radar={
+  if( self.enemy ){
+    return FALSE;
+  }
   local entity targ, found;
   local float dist, rng;
   
   targ = findchainflags(flags, FL_UNIT);
   dist = self.radar_range;
   rng = dist;
-  if( self.stat_rdr_mode ){
-    rng = rng * 2;
-  }
   while( targ ){
-    if( ai_valid_target(targ) ){
-      local float ndist, nrng;
-      nrng = rng;
-      ndist = vlen(targ.origin - self.origin);
-      if( ndist <= rng ){
-        if( (targ.flags & FL_CLIENT) ){
-          if( !targ.stat_rdr_mode ){
-            if( ndist <= (nrng / 2 ) ){
-              nrng = ndist;
-              found = targ;
+    if( targ != self ){
+      if( ai_valid_target(targ) ){
+        local float ndist, nrng;
+        nrng = rng;
+        ndist = vlen(targ.origin - self.origin);
+        if( ndist <= rng ){
+          if( (targ.flags & FL_CLIENT) ){
+            if( !targ.stat_rdr_mode ){
+              if( ndist <= (nrng / 2 ) ){
+                if( ai_line_of_sight(targ) ){
+                  nrng = ndist;
+                  found = targ;
+                  
+                }
+              }
             }
           }
-        }
-        else{
-          if(ndist < nrng){
-            nrng = ndist;
-            found = targ;
+          else{
+            if(ndist < nrng){
+              if( ai_line_of_sight(targ) ){
+                nrng = ndist;
+                found = targ;
+              }
+            }
           }
         }
       }
@@ -215,11 +222,8 @@ float() ai_find_target_radar={
     targ = targ.chain;
   }
   if( found ){
-    if( found == self.enemy ){
-      return FALSE;
-    }
     self.enemy = found;
-    ai_found_target();
+    ai_sfx_spotted();
     return TRUE;
   }
   return FALSE;
@@ -231,17 +235,9 @@ void( entity ally, entity targ, float override ) ai_give_target={
   if( !(ally.enemy) || override){
     self = ally;
       self.enemy = this.enemy;
-      ai_found_target();
+      ai_sfx_spotted();
     self = this;
   }
-};
-
-float() ai_panic_time={
-  local float panic;
-  panic = 4 - skill;
-  panic = panic + (3 - self.ai_rank);
-  panic = panic + ( 2 * random() );
-  return panic;
 };
 
 vector(entity wep) ai_attack_trace={
@@ -263,12 +259,15 @@ vector(entity wep) ai_attack_trace={
 void() ai_ranged_attack={
   local entity wep_chain, this;
   local float fired;
+  local vector diff;
   
   this = self;
   wep_chain = self.w_slot;     
   self.v_angle = self.angles;
   if( (self.flags & FL_TURRET) ){
     self.v_angle = self.e_tor_c.angles;
+    diff = vectoangles( self.enemy.origin - self.e_cam.origin);
+    self.v_angle_x = diff_x * -1;
   }
   while(wep_chain){
     if(self.button0){
@@ -308,102 +307,53 @@ void() ai_ranged_attack={
   }
 };
 
+/*
+  How does the AI react to being shot?
+*/
 void(entity bot, entity attacker) ai_damage_react={
   local entity this, friend;
-  local float change, howAmIDoing, panic, odds;
+  local float my_hp;
+  local float enemy_hp, enemy_size;
+  local float atk_hp, atk_size;
+  local float engage;
   
-  if( bot.attack_state == ST_PAIN ){
-    //bot is blindly panicking
-    return;
-  }
-
-  trigger_event( bot, trigOnDamage );
+  my_hp = util_getMechHpAverage(self);
+  atk_hp = util_getMechHpAverage(attacker);
+  atk_size = attacker.vec_size;
   
-  this = self;
-  
-  self = bot;
-  panic = FALSE;
-  if( (self.flags & FL_NOSHOOT) ){
-    panic = TRUE;
-  }
-  
-  howAmIDoing = util_getMechHpAverage( bot );
-  switch( self.ai_rank ){
-    case SKILL_NOV:
-      odds = 0.65;
-      break;
-    case SKILL_REG:
-      odds = 0.45;
-      break;
-    case SKILL_VET:
-      odds = 0.25;
-      break;
-    case SKILL_ELT:
-      odds = 0.01; //player must love punishment
-      break;
-  }
-  
-  if( howAmIDoing <= odds ){
-    panic = TRUE;
-  }
-  
-  if( panic ){
-    ai_next_state( ST_PAIN );
-    self.ai_action_time = self.ai_action_time + ai_panic_time();
-    self = this;
+  if( !self.enemy ){
+    self.enemy = attacker;
+    self.th_missile();
     return;
   }
   
-  if( ai_valid_target(self.enemy) && ai_valid_target(attacker) ){
-    if( self.enemy != attacker ){
-      // size check
-      if( (self.data_type == DATA_VEHC) && (attacker.data_type == DATA_MECH) ){
-        change = 0.2;
+  if( self.enemy ){
+    enemy_hp  = util_getMechHpAverage(self.enemy);
+    enemy_size = self.enemy.vec_size;
+    if( self.ai_rank > AI_RANK_REG ){
+      if( atk_hp < enemy_hp ){
+        if( ai_check_face( attacker, self.ai_fov) ){
+          self.enemy = attacker;
+          self.th_missile();
+          return;
+        }
       }
-      change = attacker.vec_size - self.enemy.vec_size;
-      //health check
-      change = change + (util_getMechHpAverage(attacker) - util_getMechHpAverage(self.enemy));
-      //range check
-      local float  dst1, dst2;
-      dst1 = vlen(self.enemy.origin - self.origin) / self.radar_range;
-      dst2 = vlen(attacker.origin - self.origin) / self.radar_range;
-      change = change + (dst1 - dst2);
-      switch( self.ai_rank ){
-        case AI_RANK_ROK:
-          if( change ){
-            self.enemy = attacker;
-          }
-          break;
-        case AI_RANK_REG:
-          if( change >= 0.7){
-            self.enemy = attacker;
-          }
-          break;
-        case AI_RANK_VET:
-          if( change > 0.5){
-            self.enemy = attacker;
-          }
-          break;
-        case AI_RANK_ACE:
-          if( change >= 0.25){
-            self.enemy = attacker;
-          }
-          break;
-      }
-      if( self.enemy == attacker ){
-        ai_next_state( ST_STAND );
-        if( self.ai_rank < AI_RANK_REG ){
-          ai_next_state( ST_RUN );
+      if( atk_size > enemy_size ){
+        if( atk_hp < enemy_hp ){
+          self.enemy = attacker;
+          self.th_missile();
+          return;
         }
       }
     }
-    else{
+    if( ai_check_face( attacker, self.ai_fov) && !ai_check_face( self.enemy, self.ai_fov) ){
       self.enemy = attacker;
-      ai_next_state( ST_RUN );
+      self.th_missile();
+      return;
     }
   }
-  self = this;
 };
+
 
 /*
   Don't fire if the weapon's barrel is blocked by things like:
@@ -428,6 +378,10 @@ float(entity wep) ai_attack_blockcheck={
   if( trace_ent.i_faction == self.i_faction ){
     return TRUE;
   }
+  
+  if( (viewpont * v_forward) <= 0.95 ){
+    return TRUE;
+  }
 
   if( (wep.p_dmgtype & EFF_ARC) ){
     return FALSE; // arcing attacks don't need LoS
@@ -438,13 +392,13 @@ float(entity wep) ai_attack_blockcheck={
 /*
   Only used for AI_SPAWNFLAG_RANDDOMSTART
 */
-void( string nodename) ai_node_pick_rand={
+entity() ai_node_pick_rand={
   local entity anode, spot;
   local float clr, total, pick;
   local string name, grpid;
   
-  if( nodename ){
-    anode = find(world, targetname, nodename);
+  if( self.target ){
+    anode = find(world, targetname, self.target);
     if( anode && anode.group ){
       grpid = anode.group;
       total = 0;
@@ -463,25 +417,13 @@ void( string nodename) ai_node_pick_rand={
         }
         pick = rint(random() * total );
         spot = AI_NODES[pick];
-        if( spot ){
-          local vector org;
-          local float angl, px, py;
-          angl = self.angles_y * DEG2RAD;
-          px = cos(angl);
-          py = sin(angl);
-          org_z = self.origin_z + 1;
-          org_x = spot.origin_x - ( px * self.maxs_x * 3);
-          org_y = spot.origin_y - ( py * self.maxs_y * 3);
-          setorigin( self, org );
-          self.target = spot.targetname;
-        }
       }
     }
     else{
       self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART);
-      return;
     }
   }
+  return anode;
 };
 
 void(float dst, float grp, float bracket) ai_wep_group_track={
@@ -539,30 +481,6 @@ void() ai_wep_calcranges={
 */
 float(entity targ) ai_range={
   return vlen( self.origin - targ.origin );
-};
-
-/*
-  calculates the number of game seconds the AI needs
-  to traverse a given distance at a desired speed
-*/
-float(float movespeed, float distance, float ticrate) ai_move_time={
-  local float t;
-  t = movespeed * (1 / ticrate );
-  t = distance / t;
-  return t;
-};
-
-/*
-  calculates the number of game seconds the AI needs
-  to rotate to a desired angle
-*/
-float( float yawspeed, float angmin, float angmax, float tim) ai_randyaw_time={
-  local float turn;
-  self.ideal_yaw = anglemod(angmin + crandom() * angmax - self.angles_y);
-  turn = anglemod(self.ideal_yaw - self.angles_y);
-  turn = (turn / yawspeed);
-  turn = turn / tim;
-  return turn;
 };
 
 /*
@@ -687,53 +605,6 @@ void() ai_unit_make_multi={
     self.nextthink = time + self.count1;
     self.think = ai_unit_make_multi;
     return;
-  }
-};
-
-void(float startState) ai_initialize_system={
-  ai_pilot_validate_states();
-  ai_next_state( startState );
-};
-
-/*
-  this should be called right after assigning
-  specific-action functions for a unit. This ini's
-  any null action functions to SUB_Null to prevent
-  <null function error>
-*/
-void() ai_pilot_validate_states={
-  if( !(self.th_stand) ){
-    self.th_stand = SUB_Null;
-  }
-  if( !(self.th_walk) ){
-    self.th_walk = SUB_Null;
-  }
-  if( !(self.th_fly) ){
-    self.th_fly = SUB_Null;
-  }
-  if( !(self.th_run) ){
-    self.th_run = SUB_Null;
-  }
-  if( !(self.th_run_strafe) ){
-    self.th_run_strafe = SUB_Null;
-  }
-  if( !(self.th_run_charge) ){
-    self.th_run_charge = SUB_Null;
-  }
-  if( !(self.th_missile) ){
-    self.th_missile = SUB_Null;
-  }
-  if( !(self.th_melee) ){
-    self.th_melee = SUB_Null;
-  }
-  if( !(self.th_missile_strafe) ){
-    self.th_missile_strafe = SUB_Null;
-  }
-  if( !(self.th_hunt) ){
-    self.th_hunt = SUB_Null;
-  }
-  if( !(self.th_pain) ){
-    self.th_pain = SUB_Null;
   }
 };
 

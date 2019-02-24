@@ -28,7 +28,7 @@ void() data_prj_mis_th={
 
   self.think = data_prj_mis_th;
   self.nextthink = time + 0.05;
-  if( time > self.power_timer ){
+  if( time > self.p_lifetime ){
     self.think = BecomeExplosion;
     self.nextthink = time + 0.05;
   }

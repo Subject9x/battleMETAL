@@ -83,7 +83,14 @@ void() bot_leg_walk5;
 void() bot_leg_walk6;
 void() bot_leg_walk7;
 void() bot_leg_walk8;
-
+void() bot_leg_back1;
+void() bot_leg_back2;
+void() bot_leg_back3;
+void() bot_leg_back4;
+void() bot_leg_back5;
+void() bot_leg_back6;
+void() bot_leg_back7;
+void() bot_leg_back8;
 /*
   CENTER TORSO
 */

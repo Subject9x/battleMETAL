@@ -66,26 +66,13 @@ void() data_swrm_atk={
   local float range, maxtarg;
   
   player = self.owner;
+  range = self.w_range; 
   
   if( !player.stat_rdr_mode ){
     //only fires if radar is on
     return;
   }
   
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
-  range = self.w_range;
-  angl = player.v_angle; //set by each AI, due to FL_TURRET
-
-  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
- 
-  if((player.flags & FL_CLIENT)){
-    end = util_traceForPlayer(player, self.w_range);
-  }
-  else{
-    end = util_traceForAI( org, angl, self.w_range, player );
-  }
-  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
-    
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.rl_cur = 0;
@@ -101,6 +88,11 @@ void() data_swrm_atk={
     self.w_isburst = TRUE;
   }
   
+  adj = self.c_ofs + self.w_fire_ofs;
+  makevectors( player.angles );
+  org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
+
   local entity targs;
   maxtarg = 3;
   targs = findradius(player.origin, self.w_range);

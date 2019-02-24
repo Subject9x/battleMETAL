@@ -1,24 +1,28 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 01/21/2017
 mod : 09/19/2018
+mod : 02/18/2019 - refactor
 Overview: data file for building
   type: radar tower
   faction: humans
   func: provides radar scanning to all friendly units in radius
 */
 
-void() building_radar_cooldown={
-  if( time > self.ai_action_time ){
-    self.enemy = world;
-    ai_next_state( ST_STAND );
-    ai_sfx_huntEnd();
-    return;
-  }
-};
+/*
+  macro rebuild
+*/
+void() building_radar_detect1;  //th_stand
+void() building_radar_patrol1;  //th_walk
+void() building_radar_alert1;   //th_missile
+void() building_radar_cool1;    //th_melee
+void() building_radar_touch;    //touch
 
-void() building_radar_has_enemy={
+/*
+  th_stand
+*/
+void() building_radar_detect1=[0, building_radar_detect1]{
   local float dist, rng;
   dist = vlen( self.origin - self.enemy.origin );
   
@@ -28,9 +32,9 @@ void() building_radar_has_enemy={
     makevectors( self.angles );
     traceline( self.origin + (v_up * 32), self.enemy.origin, TRUE, self);
     if( trace_fraction < 1 ){
-      ai_next_state( ST_HUNT );
-      self.ai_action_time = self.ai_action_time + (self.w_firetime * 1.5); 
       ai_sfx_huntStart();
+      self.pausetime = time + self.w_firetime;
+      self.th_melee();
       return;
     }
     rng = self.radar_range / 2;
@@ -38,49 +42,32 @@ void() building_radar_has_enemy={
   
   //target player is outside radar range
   if( dist > rng ){
-    ai_next_state( ST_HUNT );
-    self.ai_action_time = self.ai_action_time + self.w_firetime;
     ai_sfx_huntStart();
+    self.pausetime = time + self.w_firetime;
+    self.th_melee();
     return;
   }
   
-  if( time > self.ai_action_time ){
+  if( time > self.pausetime ){
     ai_sfx_spotted();
-    ai_next_state( ST_MISSILE );
+    self.th_missile();
     return;
   }
 };
 
-void() building_radar_send_target={
-  local entity ally, this;
-  this = self;
-  ally = findchainfloat( i_faction, self.i_faction );
-  while( ally ){
-    if( vlen( ally.origin - self.origin ) <= (self.radar_range / 2) ){
-      if( ai_valid_target(ally) ){
-        //heh, sloppy check for combat units
-        if( ally.w_slot != world ){
-          ai_give_target( ally, self.enemy, FALSE );
-        }
-      }
-    }
-    ally = ally.chain;
-  }
-  
-  self.enemy = world;
-  ai_next_state( ST_STAND );
-  return;
-};
-
-void() building_radar_sweep={
+/*
+  th_walk
+*/
+void() building_radar_patrol1=[0, building_radar_patrol1]{
   local entity blip, found;
   local float rng, sweep, low, high, yaw;
-  //TODO - Magic numbers
-  self.radar_time = anglemod( self.radar_time + 6 );
+  
+  building_burn();
+  self.radar_time = anglemod( self.radar_time + AI_POST_SWEEP_SIZE );
 
   sweep = self.radar_time;
-  low = anglemod( sweep - 5 );
-  high = anglemod( sweep + 1 );
+  low = anglemod( sweep - AI_POST_SWEEP_SIZE / 2 );
+  high = anglemod( sweep + AI_POST_SWEEP_SIZE / 2 );
   
   blip = findradius( self.origin, self.radar_range );
   while( blip ){
@@ -108,21 +95,61 @@ void() building_radar_sweep={
   
   if( found != world){
     self.enemy = found;
+    self.pausetime = time + self.w_firetime;
     ai_sfx_warning();
-    ai_next_state( ST_RUN );
-    self.ai_action_time = self.ai_action_time + self.w_firetime;
+    self.th_stand();
     return;
   }
 };
 
-void() building_radar_think={
-  
-  ai_state_control( self.attack_state );
-  
-  building_burn();
-  
-  self.think = building_radar_think;
-  self.nextthink = time + 0.1;
+/*
+  th_missile
+*/
+void() building_radar_alert1=[0, building_radar_alert1]{
+  local entity ally, this;
+  this = self;
+  ally = findchainfloat( i_faction, self.i_faction );
+  while( ally ){
+    if( vlen( ally.origin - self.origin ) <= (self.radar_range / 2) ){
+      if( ai_valid_target(ally) ){
+        //heh, sloppy check for combat capable entities
+        if( ally.w_slot != world ){
+          ai_give_target( ally, self.enemy, FALSE );
+        }
+      }
+    }
+    ally = ally.chain;
+  }
+  self.enemy = world;
+  self.th_walk();
+  return;
+};
+
+/*
+  th_melee
+*/
+void() building_radar_cool1=[0, building_radar_cool1]{
+  if( time > self.pausetime ){
+    self.enemy = world;
+    ai_sfx_huntEnd();
+    self.th_walk();
+    return;
+  }
+};
+
+/*
+  Touch Function
+*/
+void() building_radar_touch={
+  if( (other.flags & FL_UNIT) ){
+    if( other.i_faction != self.i_faction ){
+      if( !self.enemy ){
+        self.enemy = other;
+        self.th_missile();
+        return;
+      }
+    }
+  }
 };
 
 /*QUAKED building_human_radar (.1 .1 .1) (-20 -20 0) (20 20 13)
@@ -131,7 +158,7 @@ void() building_human_radar={
   self.data_idx = ID_BLD_H_RADAR;
   self.data_type = DATA_BLD;
   self.ai_rank = skill;
-  self.w_firetime = DAT_BLD_H_SM_RADAR_LOCK_ON;
+  self.w_firetime = AI_POST_SPOT_TIME;
   self.vec_name = "Listening Post";
   self.flags = (FL_MONSTER | FL_UNIT);
   self.vec_size = 1;
@@ -145,42 +172,33 @@ void() building_human_radar={
   self.stat_rdr_mode = TRUE;
   self.radar_range = DAT_BLD_H_SM_RADAR_RADAR_RANGE;
   
+  ai_pilot_view_range( self.ai_rank );
   switch( self.ai_rank ){
-    case 1:
-      self.radar_range = self.radar_range * 0.7;
-      self.w_firetime = self.w_firetime * 0.85;
+    case AI_RANK_ROK:
+      self.w_firetime = self.w_firetime * AI_POST_LOCK_ROK;
       break;
-    case 2:
-      self.radar_range = self.radar_range * 0.85;
-      self.w_firetime = self.w_firetime * 0.70;
+    case AI_RANK_VET:
+      self.w_firetime = self.w_firetime * AI_POST_LOCK_VET;
       break;
-    case 3:
-      self.w_firetime = self.w_firetime * 0.55;
-      break;
-    default:
-      self.radar_range = self.radar_range * 0.55;
+    case AI_RANK_ACE:
+      self.w_firetime = self.w_firetime * AI_POST_LOCK_ACE;
       break;
   }
   
-  self.scale = 1;
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();  
   
-  self.th_stand = building_radar_sweep;
-  self.th_run = building_radar_has_enemy;
-  self.th_missile = building_radar_send_target;
-  self.th_hunt = building_radar_cooldown;
-  
-  self.ai_action_mod = 0.15;
-  
-  ai_initialize_system( ST_STAND );
-  
   if(util_cornerSlopeCheck(self, 1)){
     util_generateBuildingFoundation(self);
   }
+  self.th_walk = building_radar_patrol1;
+  self.th_stand = building_radar_detect1;
+  self.th_missile = building_radar_alert1;
+  self.th_melee = building_radar_cool1;
   self.th_die = building_die;
-  self.think = building_radar_think;
+  self.think = building_radar_patrol1;
   self.use = multi_trigger;
+  self.touch = building_radar_touch;
   self.nextthink = time + 1;
 };

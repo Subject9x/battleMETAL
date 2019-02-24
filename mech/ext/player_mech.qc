@@ -7,7 +7,6 @@ Date: 9/7/2016
 Overview: implementation of mech player functions,
 */
 
-
 void() mech_clearWeaponGroups={
   self.w_group1 = 0;
   self.w_group2 = 0;
@@ -19,13 +18,22 @@ void() mech_clearWeaponGroups={
 
 void() ctrl_update_mechplayer={
   local entity oself;
-  oself = self;
+  local entity wep;
+  
   ctrl_updateCenterTorso();
-  if(oself.e_legs){
-    if(oself.e_legs != world && oself.e_legs.owner == oself){
+  if( (self.flags&FL_CLIENT) ){  
+    if( oself.e_legs.deadflag <= DEAD_NO ){
+      oself = self;
       self = oself.e_legs;
         ctrl_updateLegs();
       self = oself;
+    }
+  }
+  else{
+    wep = self.w_slot;
+    while(wep){
+      ctrl_wpn_think(wep);
+      wep = wep.w_slot;
     }
   }
 };
@@ -84,7 +92,6 @@ void() mech_cleanupMech={
   }
 };
 
-
 void() mech_player_die={
   local entity w_chain;
   
@@ -108,7 +115,6 @@ void() mech_player_die={
     ctor_die1();
   }
 };
-
 
 void(entity comp) mech_player_compdie={
   if(comp.model){

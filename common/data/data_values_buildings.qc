@@ -21,20 +21,20 @@ float ID_BLD_H_REPAIR   = 7;
 //            Health           
 //============================
 //-------------------------Human-Fuel Tank
-float DAT_BLD_H_FUELTANK_HP     = 150;
+float DAT_BLD_H_FUELTANK_HP     = 75;
 //-------------------------Human-Large Hangar
-float DAT_BLD_H_LG_HANGAR_HP    = 2000;
+float DAT_BLD_H_LG_HANGAR_HP    = 800;
 //-------------------------Human-Radar Post
-float DAT_BLD_H_SM_RADAR_HP     = 250;
+float DAT_BLD_H_SM_RADAR_HP     = 100;
 //-------------------------Human-Power Plant
-float DAT_BLD_H_POWER_PLANT_HP  = 2500;
+float DAT_BLD_H_POWER_PLANT_HP  = 1200;
 //-------------------------Human-Shield Generator
-float DAT_BLD_H_SHIELDGEN_HP    = 1000;
+float DAT_BLD_H_SHIELDGEN_HP    = 500;
 //-------------------------Human-Light turret
 float DAT_TUR_CTOR_HP           = 100;
 float DAT_TUR_LEG_HP            = 100;
 //-------------------------Human-Repair Bay
-float DAT_BLD_H_REPAIR_HP       = 3000;
+float DAT_BLD_H_REPAIR_HP       = 600;
 //============================
 //            Armor  ! NOT IMPLEMENTED !
 //============================
@@ -108,14 +108,13 @@ float DAT_TUR_ENERGY_RATE             = 1;
 //-------------------------Human-Large Hangar
 
 //-------------------------Human-Radar Post
-float DAT_BLD_H_SM_RADAR_RADAR_RANGE = 5000;
-float DAT_BLD_H_SM_RADAR_LOCK_ON = 7;
+float DAT_BLD_H_SM_RADAR_RADAR_RANGE = 2000;
 //-------------------------Human-Power Plant
 
 //-------------------------Human-Shield Generator
 
 //-------------------------Human-Light turret
-float DAT_TUR_RADAR_RANGE   = 3000;
+float DAT_TUR_RADAR_RANGE   = 750;
 //============================
 //            Models  
 //============================

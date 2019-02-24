@@ -37,14 +37,17 @@ void() ai_unit_ini_var={
   self.stat_lck_stt = LOCK_NONE;
   self.power_timer = 0;
   self.ideal_yaw = self.angles * '0 1 0';
-  self.maxpatience = 0;
-  self.patience = 0;
   self.ai_viewcheck = 0;
   self.ai_view = 0;
   self.ai_action_mod = 0;
   self.ai_viewtime = 0;
   self.ai_minrange = 0;
   self.ai_hunt_total = -1;
+  self.lefty = 1;
+  if( random() > 0.5 ){
+    self.lefty = -1;
+  }
+  self.pausetime = time;
 };
 
 /*
@@ -56,7 +59,7 @@ void(float rank) ai_pilot_ini_stats={
   local float mod_sh;
   local float mod_yaw;
     
-  self.ai_fov = ai_pilot_optical_range(rank);
+  self.ai_fov = ai_pilot_field_of_view(rank);
   self.ai_view = ai_pilot_view_range(rank);
   self.ai_viewcheck = ai_pilot_view_interval(rank);
   ai_wep_calcranges();
@@ -72,61 +75,67 @@ void(float rank) ai_pilot_ini_stats={
   mod_sh = ai_pilot_shield_mod();
   self.sh_max = self.sh_cur = self.sh_cur * mod_sh;
   
-  if (!self.yaw_speed){
-    mod_yaw = ai_pilot_yaw_mod();
-    self.yaw_speed = self.m_rot_speed - (self.m_rot_speed * mod_yaw);
+  if(self.yaw_speed){
+    self.yaw_speed = ai_pilot_yaw_mod();
+  }
+  if(self.turret_yaw_speed){
+    self.turret_yaw_speed = ai_turret_yaw_mod();
   }
   self.ai_leading = ai_pilot_rating_leading();
   self.spreadDefault = ai_pilot_accuracy( rank, self.spreadDefault );
   self.accuracy = self.spreadDefault_y;
   self.w_firetime = ai_pilot_lock_time( rank, self.w_firetime );
-  self.stat_rdr_mode = TRUE;
-  self.maxpatience = ai_pilot_rating_patience();
-  self.ai_action_mod = ai_pilot_action_mod( rank );
+  
+  self.stat_rdr_mode = FALSE;
+  if( (self.spawnflags & AI_SPAWNFLAG_HASRADAR) ){
+    self.stat_rdr_mode = TRUE;
+  }
+  
+  self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( rank );
   self.ai_attack_chance = ai_pilot_attack_interval( rank );
+  
+  self.m_fspeed = self.m_fspeed * AI_WALK_SPD;
+  self.m_sspeed = self.m_sspeed * AI_WALK_SPD;
+  self.m_bspeed = self.m_bspeed * AI_WALK_SPD;
 };
 
-float(float rank) ai_pilot_optical_range={
+float(float rank) ai_pilot_field_of_view={
   local float diff;
-  diff = cvar("skill");
-  diff = (diff / 10) / 2;
+  diff = AI_FOV;
   
   switch(rank){
     case AI_RANK_ACE:
-      diff = diff + AI_FOV_ACE;
+      diff = diff * AI_FOV_ACE;
       break;
     case AI_RANK_VET:
-      diff = diff + AI_FOV_VET;
+      diff = diff * AI_FOV_VET;
       break;
     case AI_RANK_REG:
-      diff = diff + AI_FOV_REG;
+      diff = diff * AI_FOV_REG;
       break;
     case AI_RANK_ROK : 
-    diff = diff + AI_FOV_ROK;
+    diff = diff * AI_FOV_ROK;
     break;
   }
   return diff;
 };
 
 float(float rank) ai_pilot_view_range={
-  local float val, skl;
-  skl = cvar("skill");
+  local float val;
+  
   switch(rank){
     case AI_RANK_ACE:
-      val = 1200;
+      val = self.radar_range * AI_VIEW_RANGE_ACE;
       break;
     case AI_RANK_VET:
-      val = 1000;
+      val = self.radar_range * AI_VIEW_RANGE_VET;
       break;
     case AI_RANK_REG:
-      val = 800;
+      val = self.radar_range;
       break;
     case AI_RANK_ROK:
-      val = 400;
+      val = self.radar_range * AI_VIEW_RANGE_ROK;
       break;
-  }
-  if(skl > 0){
-    val = val * ( skl + 1);
   }
   return val;
 };
@@ -162,19 +171,19 @@ float( float rank, float damg) ai_pilot_mod_damage={
 
 float(float rank) ai_pilot_view_interval={
   local float mod;
-  mod = rank * 2;
+  mod = AI_VIEW_INTERVAL;
   switch(rank){
     case AI_RANK_ACE:
-      mod = AI_VIEW_ACE - mod;
+      mod = mod * AI_VIEW_ACE;
       break;
     case AI_RANK_VET:
-       mod = AI_VIEW_VET - mod;
+       mod = mod * AI_VIEW_VET;
       break;
     case AI_RANK_REG:
-       mod = AI_VIEW_REG - mod;
+       mod = mod * AI_VIEW_REG;
       break;
     case AI_RANK_ROK:
-       mod = AI_VIEW_ROK - mod;
+       mod = mod * AI_VIEW_ROK;
       break;
   }
   return mod;
@@ -184,26 +193,16 @@ float(float rank) ai_pilot_view_interval={
   reduce action_timer by this amount
 */
 float(float rank) ai_pilot_action_mod={
-  local float mod;
-  mod = rank / 2;
   switch(rank){
     case AI_RANK_ACE:
-      mod = AI_REFLEX_ACE + mod;
-      break;
+      return AI_REFLEX_ACE;
     case AI_RANK_VET:
-       mod = AI_REFLEX_VET + mod;
-      break;
-    case AI_RANK_REG:
-       mod = AI_REFLEX_REG + mod;
-      break;
+      return AI_REFLEX_VET;
     case AI_RANK_ROK:
-       mod = AI_REFLEX_ROK + mod;
-      break;
+      return AI_REFLEX_ROK;
+    default:
+      return AI_REFLEX_REG;
   }
-  if( mod < 0.1 ){
-    mod = 0.1;
-  }
-  return mod;
 };
 
 /*
@@ -213,21 +212,39 @@ float(float rank) ai_pilot_action_mod={
   having 'slower reflexes'.
 */
 float() ai_pilot_yaw_mod={
-  if(self.ai_rank == AI_RANK_ACE){
-    return AI_ROT_ACE;
+  local float yawspeed;
+  yawspeed = self.yaw_speed;
+ 
+  switch( self.ai_rank ){
+    case AI_RANK_ACE:
+      yawspeed = yawspeed * AI_YAW_ACE;
+      break;
+    case AI_RANK_VET:
+      yawspeed = yawspeed * AI_YAW_VET;
+      break;
+    case AI_RANK_ROK:
+      yawspeed = yawspeed * AI_YAW_ROK;
+      break;
   }
-  else if(self.ai_rank == AI_RANK_VET){
-    return AI_ROT_VET;
+  return yawspeed;
+};
+
+float() ai_turret_yaw_mod={
+  local float yawspeed;
+  yawspeed = self.turret_yaw_speed;
+ 
+  switch( self.ai_rank ){
+    case AI_RANK_ACE:
+      yawspeed = yawspeed * AI_YAW_ACE;
+      break;
+    case AI_RANK_VET:
+      yawspeed = yawspeed * AI_YAW_VET;
+      break;
+    case AI_RANK_ROK:
+      yawspeed = yawspeed * AI_YAW_ROK;
+      break;
   }
-  else if(self.ai_rank == AI_RANK_REG){
-    return AI_ROT_REG;
-  }
-  else if(self.ai_rank == AI_RANK_ROK){
-    return AI_ROT_ROK;
-  }
-  else{
-    return 1;
-  }
+  return yawspeed;
 };
 
 /*
@@ -250,21 +267,23 @@ float() ai_pilot_armor_mod={
 }
 
 /*
-  Armor amounts for AI units is modified by tshe game's skill
-  rating. Easier skill modes mean each AI has less armor.
+  Shield modifier based on difficulty.
+  Either way, AI never gets player-comparable shield values
 */
 float() ai_pilot_shield_mod={
-  if(skill == 1){
-    return AI_SHIELD_MEDM;
-  }
-  else if(skill == 2){
-    return AI_SHIELD_HARD;
-  }
-  else if(skill == 3){
-    return AI_SHIELD_NIGHT;
-  }
-  else{
-    return AI_SHIELD_EASY;
+  switch( self.ai_rank ){
+    case AI_RANK_ROK:
+      return AI_SHIELD_ROK;
+      break;
+    case AI_RANK_VET:
+      return AI_SHIELD_VET;
+      break;
+    case AI_RANK_ACE:
+      return AI_SHIELD_ACE;
+      break;
+    default:
+      return AI_SHIELD_REG;
+      break;
   }
 }
 
@@ -303,49 +322,6 @@ void() ai_promote={
 };
 
 /*
-  Determines the starting patience value of the AI.
-  Patience is primarily used for ai_combat_huntTarget,
-  where patience is initialized to: time + <this value>
-  better AI's can hold their patience a bit longer
-*/
-float() ai_pilot_rating_patience={
-  local float ePatience;
-  if(self.ai_rank == AI_RANK_ACE){
-    ePatience = AI_PTNCE_ACE;
-  }
-  else if(self.ai_rank == AI_RANK_VET){
-    ePatience =  AI_PTNCE_VET;
-  }
-  else if(self.ai_rank == AI_RANK_REG){
-    ePatience =  AI_PTNCE_REG;
-  }
-  else if(self.ai_rank == AI_RANK_ROK){
-    ePatience =  AI_PTNCE_ROK;
-  }
-  else{
-    ePatience =  AI_PTNCE_ROK;
-  }
-  //skill mod
-  ePatience = ePatience + (ePatience * (skill / 100));
-  
-  //ai quirks mods
-  //if(self.count1 == AI_STYLE_STALK){
-    //stalkers should have the longest patience
-   // ePatience = ePatience + (ePatience * 0.5);
-  //} else
-  /*if(self.count1 ==- AI_STYLE_FLANK){
-    //flankers get a minor bump in patience
-    ePatience = ePatience + (ePatience * 0.25);
-  }
-  //yes you can have an aggressive stalker, but it wont be great
-  //for long hunts
-  if(self.count2 == AI_TYPE_AGGRO){
-    ePatience = ePatience - (ePatience / 2);
-  }*/
-  return ePatience; 
-};
-
-/*
   a design conceit, to make sure bots are not perfectly firing,
   or inhumanly relentlessly attacking, this function creates
   a random amount of time to make the next attack.
@@ -378,37 +354,36 @@ vector( float rank, vector spread ) ai_pilot_accuracy={
   local float modMax;
   local float modRate;
   
-  modMin = acc_x;
-  modMax = acc_y;
-  modRate = acc_z;
+  modMin = spread_x;
+  modMax = spread_y;
+  modRate = spread_z;
   
   switch( rank ){
     case SKILL_NOV:
-      modMin = modMin * 0.25;
-      modMax = modMax * 0.5;
-      modRate = modRate * 0.5;
+      modMin = modMin * AI_CNV_MIN_ROK;
+      modMax = modMax * AI_CNV_MAX_ROK;
+      modRate = modRate * AI_CNV_RATE_ROK;
       break;
     case SKILL_REG:
-      modMin = modMin * 0.15;
-      modMax = modMax * 0.4;
-      modRate = modRate * 0.25;
+      modMin = modMin * 1;
+      modMax = modMax * 1;
+      modRate = modRate * AI_CNV_RATE_REG;
       break;
     case SKILL_VET:
-      modMin = modMin * 0.25;
-      modMax = modMax * 0.5;
-      modRate = modRate * 0.15;
+      modMin = modMin * AI_CNV_MIN_VET;
+      modMax = modMax *AI_CNV_MAX_VET;
+      modRate = modRate * AI_CNV_RATE_VET;
       break;
     case SKILL_ELT:
-      modMin = modMin * 0.05;
-      modMax = modMax * 0.1;
-      modRate = modRate * 0.05;
+      modMin = modMin * AI_CNV_MIN_ACE;
+      modMax = modMax * AI_CNV_MAX_ACE;
+      modRate = modRate * AI_CNV_RATE_ACE;
       break;
   }
   modRate = modRate * -1;
-  acc_x = acc_x + modMin;
-  acc_y = acc_y + modMax;
-  acc_z = acc_z + modRate;
-  acc = acc + spread;
+  acc_x = modMin;
+  acc_y = modMax;
+  acc_z = modRate;
   return acc;
 };
 
@@ -418,14 +393,17 @@ vector( float rank, vector spread ) ai_pilot_accuracy={
 float( float rank, float lockOn ) ai_pilot_lock_time={
 
   switch( rank ){
+    case 0:
+      self.w_firetime = self.w_firetime * 2;
+      break;
     case 1:
-      self.w_firetime = self.w_firetime - (self.w_firetime * 0.15);
+      self.w_firetime = self.w_firetime * 1;
       break;
     case 2:
-      self.w_firetime = self.w_firetime - (self.w_firetime * 0.25);
+      self.w_firetime = self.w_firetime * 0.75;
       break;
     case 3:
-      self.w_firetime = self.w_firetime - (self.w_firetime * 0.35);
+      self.w_firetime = self.w_firetime * 0.6;
       break;
   }
   return self.w_firetime;

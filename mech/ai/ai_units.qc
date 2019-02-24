@@ -23,7 +23,7 @@ void() unit_hs_truck_cargo={
   self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
-  ai_unit_setup( ai_noncom_tank );
+  //ai_unit_setup( ai_noncom_tank );
 };
 
 void() unit_hs_truck_hab={
@@ -37,7 +37,7 @@ void() unit_hs_truck_hab={
   self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
-  ai_unit_setup( ai_noncom_tank );
+  //ai_unit_setup( ai_noncom_tank );
 };
 
 void() unit_hs_truck_const={
@@ -51,7 +51,7 @@ void() unit_hs_truck_const={
   self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
-  ai_unit_setup( ai_noncom_tank );
+  //ai_unit_setup( ai_noncom_tank );
 };
 
 void() unit_hs_dozer={
@@ -65,7 +65,7 @@ void() unit_hs_dozer={
   self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
-  ai_unit_setup( ai_noncom_tank );
+  //ai_unit_setup( ai_noncom_tank );
 };
 
 void() unit_hs_loader={
@@ -79,7 +79,7 @@ void() unit_hs_loader={
   self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
-  ai_unit_setup( ai_noncom_tank );
+  //ai_unit_setup( ai_noncom_tank );
 };
 
 void() unit_hs_excavat={
@@ -93,7 +93,7 @@ void() unit_hs_excavat={
   self.i_faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
-  ai_unit_setup( ai_noncom_tank );
+  //ai_unit_setup( ai_noncom_tank );
 };
 
 /*
@@ -574,7 +574,6 @@ void() unit_balaket_brawl={
     return;
   }
 
-    
   if( ai_unit_setup( ai_mech_skirmish ) ){
     ai_mech_skirmish();
   }
@@ -957,5 +956,5 @@ void() building_turret_light={
 void() unit_psc_vtol_l={
   self.nextVecChoice = ID_VEC_PSC_VTOL_L;
   self.i_faction = 4;
-  ai_unit_setup( ai_vtol );
+  //ai_unit_setup( ai_vtol );
 };

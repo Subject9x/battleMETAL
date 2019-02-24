@@ -39,8 +39,6 @@ entity(float part, entity unit) util_getPartFromName;
 
 float(float numOfSides) util_roll_dice;
 
-vector(entity own, float range) util_traceForPlayer;
-vector( vector startOrigin, vector viewAngle, float wepRange, entity parent) util_traceForAI;
 vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc) util_applySpreadToTrace;
 vector( vector start, vector offsets, vector viewAngle) util_getOffsetOfVector;
 

@@ -47,15 +47,6 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   }
   targ.sh_cur = shields;
   
-  if( time > targ.sh_hit){
-    targ.sh_hit = time + (dmg_amt / 100);
-    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-    targ.sh_hit = targ.sh_hit + (3 - skill);
-    if( shields <= FALSE ){
-      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
-    }
-  }
-  
   return damage;
 };
 
@@ -111,17 +102,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
       }
       shields = 0;
     }  
-  }
+  }  
   targ.sh_cur = shields;
-  
-  if( time > targ.sh_hit){
-    targ.sh_hit = time + (dmg_amt / 100);
-    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-    targ.sh_hit = targ.sh_hit + (3 - skill);
-    if( shields <= FALSE ){
-      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
-    }
-  }
+ 
   //EFF_STX only affects shields;
   if( (dmgtype & EFF_STX) ){
     damage = 0;
@@ -165,22 +148,13 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
   
   targ.sh_cur = shields;
   
-  if( time > targ.sh_hit){
-    targ.sh_hit = time + (dmg_amt / 100);
-    targ.sh_hit = targ.sh_hit + (4 - targ.vec_size);
-    targ.sh_hit = targ.sh_hit + (3 - skill);
-    targ.sh_hit = targ.sh_hit / 2;  //cause this is explosive damage
-    if( shields <= FALSE ){
-      targ.sh_hit = targ.sh_hit + (targ.sh_hit * 2);
-    }
-  }
-  
   return damage;
 };
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
   local entity oself, targ_act;
+  local entity notTarg;
   local float dmgAmt, prevShields;  
   
   if( !trg.takedamage ){
@@ -194,7 +168,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
-  
   
   prevShields = trg.sh_cur;
   
@@ -233,27 +206,43 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     dmgAmt = t_damage_mis( dmgTrg, dmgInflictor, dmgAmt );
   }
   
+  //shield delay chech
+  trg.sh_hit = dmg_amt / 100;
+  trg.sh_hit = trg.sh_hit + (4 - trg.vec_size);
+  trg.sh_hit = trg.sh_hit + (3 - skill);
+  if( trg.sh_cur <= FALSE ){
+    trg.sh_hit = trg.sh_hit + (trg.sh_hit * 6);
+  }
+  else{
+    trg.sh_hit = trg.sh_hit * 3;
+  }
+  trg.sh_hit = time + trg.sh_hit;
+  
+  //AI react to Damage
   if( (trg.flags & FL_MONSTER) ){
-    otemp = self;
+    notTarg = self;
     self = dmgTrg;
-      //ai_damage_react( dmgTrg, attacker );
-    self = otemp;
+    if( self.data_type == DATA_BLD ){
+      if( self.data_idx == ID_BLD_H_RADAR ){
+        self.th_missile();
+      }
+    }
+    else{
+      ai_damage_react( dmgTrg, attacker );
+    }
+    self = notTarg;
   }
   
   if( (prevShields > 0) && (trg.sh_cur <= 0) ){
     te_shield_explode( trg.origin, trg.vec_size );
   }
   
-  if(dmgAmt > 0){
-    sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
-  }
-  else{
-    //te_shield_test( dmg_point, vectoangles( attacker.origin - dmg_point ) );
-    //TODO - shield impact particles
+  if( !dmgAmt ){
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
-
+  sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
+  
   //the special hit-location calculator is only run for DATA_MECH units
   if(trg.data_type == DATA_MECH){
     //filter out leg hits
@@ -274,13 +263,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if(dmgTrg.data_type == DATA_BLD){
     local entity friend;
-    otemp = self;
+    notTarg = self;
     self = dmgTrg;
       friend = ai_find_friend( self.radar_range );
       if( friend ){
         ai_give_target( friend, attacker, (attacker.flags & FL_CLIENT) ) ;
       }
-    self = otemp;
+    self = notTarg;
   }
   
   dmgTrg.health = dmgTrg.health - dmgAmt;

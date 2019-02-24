@@ -31,6 +31,7 @@ void() data_tur_hlite_ini={
   self.sh_max= DAT_TUR_HLITE_SH_MAX;
   self.sh_rate= DAT_TUR_HLITE_SH_RATE;
   self.yaw_speed = DAT_TUR_HLITE_YAWS;
+  self.turret_yaw_speed = DAT_TUR_HLITE_TURRET_YAW;
   self.mins = DAT_TUR_HLITE_BBN;
   self.maxs = DAT_TUR_HLITE_BBX;
   self.spreadDefault = DAT_TUR_HLITE_SPREAD; 

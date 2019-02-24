@@ -65,21 +65,8 @@ void() data_sfga_atk={
   local float range;
   
   player = self.owner;
-
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
   range = self.w_range;
-  angl = player.v_angle; //set by each AI, due to FL_TURRET
- 
-  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
- 
-  if((player.flags & FL_CLIENT)){
-    end = util_traceForPlayer(player, self.w_range);
-  }
-  else{
-    end = util_traceForAI( org, angl, self.w_range, player );
-  }
-  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
-  
+
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.rl_cur = 0;
@@ -93,6 +80,11 @@ void() data_sfga_atk={
     self.w_state = RECOIL;
   }
   
+  adj = self.c_ofs + self.w_fire_ofs;
+  makevectors( player.angles );
+  org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
+
   newmis = spawn();
   oself = self;
   self = newmis;
@@ -110,7 +102,7 @@ void() data_sfga_atk={
     util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
     util_setModel(self.c_model, 0, 0);
     setsize(self, '0 0 0', '0 0 0');
-    setorigin(self, org + (v_forward * 6));
+    setorigin(self, org);
     self.angles = vectoangles(self.velocity);
     self.gravity = 0.50;
   self = oself;
@@ -121,5 +113,5 @@ void() data_sfga_atk={
   }
     
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), org + (v_forward * 7), normalize(dir-org), 1);
+  pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), org, normalize(dir-org), 1);
 };
