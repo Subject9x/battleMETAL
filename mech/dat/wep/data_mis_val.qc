@@ -111,7 +111,9 @@ void() data_mis_atk={
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);
     self.c_ofs = oself.origin;
-    self.power_timer = time + self.p_lifetime;
+    self.p_lifetime = time + self.p_lifetime;
+    self.think = data_prj_mis_th;
+    self.nextthink = time + 0.01;
   self = oself;
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };
