@@ -154,6 +154,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
   local entity oself, targ_act;
+  local entity notTarg;
   local float dmgAmt, prevShields;  
   
   if( !trg.takedamage ){
@@ -219,7 +220,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   //AI react to Damage
   if( (trg.flags & FL_MONSTER) ){
-    otemp = self;
+    notTarg = self;
     self = dmgTrg;
     if( self.data_type == DATA_BLD ){
       if( self.data_idx == ID_BLD_H_RADAR ){
@@ -229,7 +230,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     else{
       ai_damage_react( dmgTrg, attacker );
     }
-    self = otemp;
+    self = notTarg;
   }
   
   if( (prevShields > 0) && (trg.sh_cur <= 0) ){
@@ -262,13 +263,13 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if(dmgTrg.data_type == DATA_BLD){
     local entity friend;
-    otemp = self;
+    notTarg = self;
     self = dmgTrg;
       friend = ai_find_friend( self.radar_range );
       if( friend ){
         ai_give_target( friend, attacker, (attacker.flags & FL_CLIENT) ) ;
       }
-    self = otemp;
+    self = notTarg;
   }
   
   dmgTrg.health = dmgTrg.health - dmgAmt;

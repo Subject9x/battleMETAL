@@ -61,7 +61,9 @@ void() data_esr_atk={
   local entity player, proj, oself, this;
   local vector dir, org, end, adj, angl;
   local float range;
+  
   player = self.owner;
+  range = self.w_range;
   
   if( self.w_currentammo == self.w_clipsize){
     if(self.en_rate && (player.en_cur >= self.en_rate)){
@@ -74,12 +76,6 @@ void() data_esr_atk={
       return;
     }
   }
-  
-  adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
-  range = self.w_range;
-  angl = player.v_angle; //set by each AI, due to FL_TURRET
-  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
-  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
@@ -95,10 +91,11 @@ void() data_esr_atk={
     self.w_state = RECOIL;
     self.w_isburst = TRUE;
   }
-  
-  proj = spawn();
-  proj.think = SUB_Remove;
-  proj.nextthink = time + 0.01;
+
+  adj = self.c_ofs + self.w_fire_ofs;
+  makevectors( player.angles );
+  org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
+  dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
   
   sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_ESR_MUZZLE"), org + v_forward * 4, normalize( dir - org ) * 1, 1);

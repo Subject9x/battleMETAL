@@ -46,25 +46,25 @@ float DAT_PRJ_SWRM_VELOCITY = 1600;
 //            lifetime           
 //============================
 //-------------------------EMP
-float DAT_PRJ_EMP_LIFETIME = 1.6;
+float DAT_PRJ_EMP_LIFETIME = 1.43;
 //-------------------------ION
-float DAT_PRJ_ION_LIFETIME = 9; //was 4;
+float DAT_PRJ_ION_LIFETIME = 2.57;
 //-------------------------MIS-ARH
-float DAT_PRJ_MARH_LIFETIME = 13;
+float DAT_PRJ_MARH_LIFETIME = 8;
 //-------------------------Rocket
-float DAT_PRJ_MIS_LIFETIME = 1.4;
+float DAT_PRJ_MIS_LIFETIME = 0.56;
 //-------------------------MIS-LGD
-float DAT_PRJ_MLGD_LIFETIME = 1.75;
+float DAT_PRJ_MLGD_LIFETIME = 2;
 //-------------------------QRifle
 float DAT_PRJ_QRFL_LIFETIME = 4;
 //-------------------------RPlas
-float DAT_PRJ_RPLAS_LIFETIME = 1.558;
+float DAT_PRJ_RPLAS_LIFETIME = 0.649;
 //-------------------------SFGA
 float DAT_PRJ_SFGA_LIFETIME = 8;
 //-------------------------FLAK
 float DAT_PRJ_FLAK_LIFETIME = 4.8;
 //-------------------------SWARM
-float DAT_PRJ_SWRM_LIFETIME = 2.5;
+float DAT_PRJ_SWRM_LIFETIME = 1.2;
 //============================
 //            radius           
 //============================

@@ -12,10 +12,10 @@ void() ctrl_updateCenterTorso={
   local entity cam;
   local vector v1;
   
-  if((self.flags & FL_CLIENT)){
+  if( (self.flags & FL_CLIENT) ){
     if(time > self.laser_sight_timer){
       makevectors(self.v_angle);
-      v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
+      v1 = self.e_cam.origin;
       traceline(v1, v1 + v_forward*10000, FALSE, self);
       self.laser_sight_org = trace_endpos;
       self.laser_sight_timer = time + 0.05;

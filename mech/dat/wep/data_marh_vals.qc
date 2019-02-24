@@ -61,17 +61,16 @@ void() data_marh_think={
 
 void() data_marh_atk={
   local entity player, proj, cam, oself;
+  local vector dir, org, end, adj, angl;
+  local float range;
+  local float dist;
+  local vector arc, start;
+  
   player = self.owner;
+  range = self.w_range;
 
   if(player.stat_rdr_mode == TRUE){
     if( (player.stat_lck_stt & LOCK_TARG_HAS) ){
-      local vector dir, org, end, adj, angl;
-      local float range;
-      adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
-      range = self.w_range;
-      angl = player.v_angle; //set by each AI, due to FL_TURRET
-      org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
-      dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
 
       self.w_currentammo = self.w_currentammo - 1;
       if(self.w_currentammo <= 0){
@@ -92,9 +91,11 @@ void() data_marh_atk={
         self.w_state = RECOIL;
         self.w_isburst = TRUE;
       }
-
-      local float dist;
-      local vector arc, start;
+      adj = self.c_ofs + self.w_fire_ofs;
+      makevectors( player.angles );
+      org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
+      dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
+      
       dist = vlen(dir - org);
       arc = org + (v_forward * (300 + (crandom() * 20)));
       arc = arc + (v_up * (300 + (crandom() * 20))) + (v_right * (crandom() * 20));

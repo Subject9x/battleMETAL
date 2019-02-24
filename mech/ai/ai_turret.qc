@@ -587,6 +587,7 @@ void() ai_turret={
 
   self.th_stand = ai_turret_patrol1;
   self.th_walk = ai_turret_idle1;
+  self.th_missile = ai_turret_fight_prep;
   self.th_die = ai_turret_die;
   
   self.think = ai_turret_patrol1;

@@ -123,18 +123,19 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   local vector direction;
   local vector src;
   local vector acc;
+  local vector adj;
+  
   //weaponSpread
   wepAim = normalize( self.owner.laser_sight_org - self.origin );
   makevectors( viewAngle );
   
-  src = self.origin + (v_forward * 4);
-  src_z = self.owner.absmin_z + self.owner.size_z * 0.7;
-  
+  adj = self.c_ofs + self.w_fire_ofs;
+  src = self.owner.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);  
   acc_x = (weaponSpread_x * playerAcc);
   acc_y = (weaponSpread_y * playerAcc);
   
-  acc_x = (random() * acc_x) * rint(crandom());
-  acc_y = (random() * acc_y) * rint(crandom());
+  acc_x = acc_x * crandom();
+  acc_y = acc_y * crandom();
   direction = wepAim + (acc_x * v_right) + (acc_y * v_up);
     
   traceline (src, src + direction*idealRange, FALSE, self);

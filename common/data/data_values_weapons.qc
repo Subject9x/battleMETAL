@@ -58,33 +58,33 @@ string DAT_EQP_RECAP_NAME = "Recharge Capacitor";
 //            Range  
 //====================================================================================
 //-------------------------ATC
-float DAT_LATC_RANGE      = 1800; //3800;
+float DAT_LATC_RANGE      = 1800;
 //-------------------------RPlas
-float DAT_RPLAS_RANGE     = 1000; //2400;
+float DAT_RPLAS_RANGE     = 1000;
 //-------------------------QRifle
-float DAT_QRFL_RANGE      = 2000; //3600;
+float DAT_QRFL_RANGE      = 2000;
 //-------------------------SFGA
-float DAT_SFGA_RANGE      = 1300; //3600;
+float DAT_SFGA_RANGE      = 1300;
 //-------------------------FLAK
-float DAT_FLAK_RANGE      = 1600; //4000;
+float DAT_FLAK_RANGE      = 1600;
 //-------------------------Laser
-float DAT_LAS_RANGE       = 2000;//4000;
+float DAT_LAS_RANGE       = 2000;
 //-------------------------ION
-float DAT_ION_RANGE       = 800;  //3800;
+float DAT_ION_RANGE       = 800;
 //-------------------------EMP
-float DAT_EMP_RANGE       = 1700;//1900;
+float DAT_EMP_RANGE       = 1700;
 //-------------------------ESR
-float DAT_ESR_RANGE       = 200;  //800;
+float DAT_ESR_RANGE       = 200;
 //-------------------------PAC
-float DAT_PAC_RANGE       = 2000; //3200;
+float DAT_PAC_RANGE       = 2000;
 //-------------------------Rocket
-float DAT_MIS_RANGE       = 400;  //1000;
+float DAT_MIS_RANGE       = 400;
 //-------------------------Laser Missile
-float DAT_MLGD_RANGE      = 1000; //2400;
+float DAT_MLGD_RANGE      = 1000;
 //-------------------------Radar Missile
-float DAT_MARH_RANGE      = 1500; //3600;
+float DAT_MARH_RANGE      = 1500;
 //-------------------------Swarm Missile
-float DAT_SWRM_RANGE      = 600;  //1600;
+float DAT_SWRM_RANGE      = 600;
 //====================================================================================
 //            ENERGY COSTS  
 //====================================================================================
@@ -215,27 +215,27 @@ float DAT_SWRM_DMG        = 20;
 //            Inaccuracy  
 //====================================================================================
 //-------------------------ATC
-vector DAT_LATC_ACC       = '0.04 0.04 0';
+vector DAT_LATC_ACC       = '0.01 0.01 0';
 //-------------------------RPlas
-vector DAT_RPC_ACC       = '0.1 0.075 0';//'0.2 0.1 0';
+vector DAT_RPC_ACC       = '0.015 0.015 0';
 //-------------------------QRifle
-vector DAT_QRFL_ACC       = '0.001 0.001 0';//'0.02 0.2 0';
+vector DAT_QRFL_ACC       = '0.005 0.005 0';
 //-------------------------SFGA
-vector DAT_SFGA_ACC       = '0.02 0.02 0';//'0.08 0.02 0';
+vector DAT_SFGA_ACC       = '0.02 0.02 0';
 //-------------------------FLAK
-vector DAT_FLAK_ACC       = '0.08 0.08 0';//'0.15 0.25 0';
+vector DAT_FLAK_ACC       = '0.015 0.012 0';
 //-------------------------Laser
-vector DAT_LAS_ACC       = '0.005 0.005 0';
+vector DAT_LAS_ACC       = '0.0075 0.0075 0';
 //-------------------------ION
-vector DAT_ION_ACC       = '0.03 0.01 0';
+vector DAT_ION_ACC       = '0.018 0.013 0';
 //-------------------------EMP
-vector DAT_EMP_ACC       = '0.015 0.015 0';
+vector DAT_EMP_ACC       = '0.009 0.008 0';
 //-------------------------ESR
-vector DAT_ESR_ACC       = '0.1 0.2 0';//'0.2 0.4 0';
+vector DAT_ESR_ACC       = '0.1 0.1 0';
 //-------------------------PAC
 vector DAT_PAC_ACC       = '0.0025 0.0025 0';
 //-------------------------Rocket
-vector DAT_MIS_ACC       = '0.06 0.01 0';
+vector DAT_MIS_ACC       = '0.02 0.02 0';
 //-------------------------Laser Missile
 vector DAT_LGM_ACC       = '0.03 0.03 0';
 //-------------------------Radar Missile
@@ -486,25 +486,25 @@ string DAT_EQP_RECAP_ICON = "gfx/ui/wep_icons/eqp_recap.png";
 //            Model Offset 
 //============================
 //-------------------------ATC
-vector DAT_LATC_FIRE_OFS    = '0 0 2';
+vector DAT_LATC_FIRE_OFS    = '0 0.5 5';
 //-------------------------ATC
-vector DAT_FLAK_FIRE_OFS    = '0 0 2';
+vector DAT_FLAK_FIRE_OFS    = '0 0 5';
 //-------------------------RPlas
 vector DAT_RPLAS_FIRE_OFS   = '0 0 6';
 //-------------------------QRifle
 vector DAT_QRFL_FIRE_OFS    = '0 0 2';
 //-------------------------SFGA
-vector DAT_SFGA_FIRE_OFS    = '0 0 2';
+vector DAT_SFGA_FIRE_OFS    = '0 0 9';
 //-------------------------Laser
-vector DAT_LAS_FIRE_OFS     = '0 0 3';
+vector DAT_LAS_FIRE_OFS     = '0 0 3.5';
 //-------------------------ION
 vector DAT_ION_FIRE_OFS     = '0 0 4';
 //-------------------------EMP
 vector DAT_EMP_FIRE_OFS     = '0 0 4';
 //-------------------------ESR
-vector DAT_ESR_FIRE_OFS     = '0 0 3.5';
+vector DAT_ESR_FIRE_OFS     = '0 0 4.5';
 //-------------------------PAC
-vector DAT_PAC_FIRE_OFS     = '0 0 8';
+vector DAT_PAC_FIRE_OFS     = '0 0 6.75';
 //-------------------------Rocket
 vector DAT_MIS_FIRE_OFS     = '0 0 3';
 //-------------------------Laser Missile
