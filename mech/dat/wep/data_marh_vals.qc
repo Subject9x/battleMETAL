@@ -60,8 +60,8 @@ void() data_marh_think={
 
 
 void() data_marh_atk={
-  local entity player, proj, cam, oself;
-  local vector dir, org, end, adj, angl;
+  local entity player, oself, part;
+  local vector dir, org, adj;
   local float range;
   local float dist;
   local vector arc, start;
@@ -92,7 +92,8 @@ void() data_marh_atk={
         self.w_isburst = TRUE;
       }
       adj = self.c_ofs + self.w_fire_ofs;
-      makevectors( player.angles );
+      part = util_getPartFromName(self.c_parent, player);
+      makevectors( part.angles );
       org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
       dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
       

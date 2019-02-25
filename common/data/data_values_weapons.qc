@@ -500,9 +500,9 @@ vector DAT_LAS_FIRE_OFS     = '0 0 3.5';
 //-------------------------ION
 vector DAT_ION_FIRE_OFS     = '0 0 4';
 //-------------------------EMP
-vector DAT_EMP_FIRE_OFS     = '0 0 4';
+vector DAT_EMP_FIRE_OFS     = '0 0.1 7';
 //-------------------------ESR
-vector DAT_ESR_FIRE_OFS     = '0 0 4.5';
+vector DAT_ESR_FIRE_OFS     = '0 0 6';
 //-------------------------PAC
 vector DAT_PAC_FIRE_OFS     = '0 0 6.75';
 //-------------------------Rocket

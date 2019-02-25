@@ -131,9 +131,9 @@ float DAT_HS_TRUCK_FSPEED       = 100;
 float DAT_HS_TRUCK_SSPEED       = 75;
 float DAT_HS_TRUCK_BSPEED       = 25;
 //-------------------------Foslager
-float DAT_foslager_FSPEED       = 150;
+float DAT_foslager_FSPEED       = 100;
 float DAT_foslager_SSPEED       = 0;
-float DAT_foslager_BSPEED       = 75;
+float DAT_foslager_BSPEED       = 25;
 //-------------------------Trowel
 float DAT_TROWEL_FSPEED         = 100;
 float DAT_TROWEL_SSPEED         = 0;
@@ -143,13 +143,13 @@ float DAT_onnek_FSPEED          = 75;
 float DAT_onnek_SSPEED          = 0;
 float DAT_onnek_BSPEED          = 75;
 //-------------------------Dunerunner
-float DAT_dunerunner_FSPEED     = 200;
-float DAT_dunerunner_SSPEED     = 100;
-float DAT_dunerunner_BSPEED     = 175;
+float DAT_dunerunner_FSPEED     = 133;
+float DAT_dunerunner_SSPEED     = 85;
+float DAT_dunerunner_BSPEED     = 100;
 //-------------------------Sorcerer
 float DAT_sorcerer_FSPEED       = 125;
 float DAT_sorcerer_SSPEED       = 0;
-float DAT_sorcerer_BSPEED       = 50;
+float DAT_sorcerer_BSPEED       = 25;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_FSPEED      = 450;
 float DAT_PSC_VTOLL_SSPEED      = 375;

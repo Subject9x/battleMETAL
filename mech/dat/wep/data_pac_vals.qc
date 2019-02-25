@@ -58,8 +58,8 @@ void() data_pac_think={
 };
 
 void() data_pac_atk={
-  local entity player, proj, oself;
-  local vector dir, org, end, adj, angl;
+  local entity player, part;
+  local vector dir, org, adj;
   local float range;
   
   player = self.owner;
@@ -91,7 +91,8 @@ void() data_pac_atk={
   }
  
   adj = self.c_ofs + self.w_fire_ofs;
-  makevectors( player.angles );
+  part = util_getPartFromName(self.c_parent, player);
+  makevectors( part.angles );
   org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
   

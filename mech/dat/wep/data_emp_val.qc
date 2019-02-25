@@ -59,10 +59,12 @@ void() data_emp_think={
 };
 
 void() data_emp_atk={
-  local entity player, proj, oself;
-  local vector dir, org, end, adj, angl;
+  local entity player, oself, part;
+  local vector dir, org, adj;
   local float range;
+  
   player = self.owner;
+  range = self.w_range;
   
   if( self.w_currentammo ==  self.w_clipsize){
     if(self.en_rate && (player.en_cur >= self.en_rate)){
@@ -77,10 +79,9 @@ void() data_emp_atk={
   }
   
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
-  range = self.w_range;
-  angl = player.v_angle; //set by each AI, due to FL_TURRET
-  
-  org = util_getOffsetOfVector( player.origin, adj, angl );    //origin for barrel of weapon
+  part = util_getPartFromName(self.c_parent, player);
+  makevectors( part.angles );
+  org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
 
   self.w_currentammo = self.w_currentammo - 1;
