@@ -286,7 +286,6 @@ void() ai_spg_fight_prep={
       self.ai_dir = 35 + ceil(random() * 60);
       self.ai_dir = self.ai_dir * self.lefty;
       self.ai_dir = anglemod( self.angles_y + self.ai_dir );
-      macro_ai_frame(ai_spg_strafe1)
       return;
     }
     //tank destroyers dont hunt

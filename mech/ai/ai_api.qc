@@ -321,6 +321,10 @@ void(entity bot, entity attacker) ai_damage_react={
   atk_hp = util_getMechHpAverage(attacker);
   atk_size = attacker.vec_size;
   
+  if( attacker.i_faction == self.i_faction ){
+    return;
+  }
+  
   if( !self.enemy ){
     self.enemy = attacker;
     self.th_missile();
@@ -363,15 +367,20 @@ void(entity bot, entity attacker) ai_damage_react={
 float(entity wep) ai_attack_blockcheck={
   local vector viewpont, vang;
 
-  vang = self.angles;
   if( (self.flags & FL_TURRET) ){
     vang = self.e_tor_c.angles;
+  }
+  else{
+    vang = self.angles;
   }
   
   viewpont = normalize(self.enemy.origin - self.e_cam.origin);
   makevectors( vang );
   traceline (self.e_cam.origin + v_forward * 1, self.e_cam.origin + viewpont*wep.w_range, FALSE, self);
-
+  if( (wep.p_dmgtype & EFF_ARC) ){
+    return FALSE; // arcing attacks don't need LoS
+  }
+  
   if(trace_ent == world){
     return TRUE;
   }
@@ -383,9 +392,7 @@ float(entity wep) ai_attack_blockcheck={
     return TRUE;
   }
 
-  if( (wep.p_dmgtype & EFF_ARC) ){
-    return FALSE; // arcing attacks don't need LoS
-  }
+  
   return FALSE;
 };
 

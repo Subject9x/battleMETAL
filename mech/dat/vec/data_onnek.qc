@@ -9,11 +9,12 @@ Overview:
   size    : medium
 */
 
-//HUMAN LIGHT TNKRET=============================
 string DAT_onnek_PITCH_N = "-25";
 string DAT_onnek_PITCH_X = "45";
 
-//=========================================
+vector DAT_onnek_CAM_OFFSET = '-5 3 10';
+vector DAT_onnek_CAM_OFFSET_ALT = '0 0 0';
+  
 void() data_onnek_ini;
 void() data_onnek_cam;
 void() data_onnek_wep1;
@@ -47,6 +48,13 @@ void() data_onnek_ini={
   self.m_pitch_max = DAT_onnek_PITCH_N;
   self.m_pitch_min = DAT_onnek_PITCH_X;
   self.w_firetime = DAT_onnek_LOCK_ON;
+};
+
+void() data_onnek_cam={
+  self.comp_id = M_TOR_CENTER;
+  self.c_ofs = DAT_onnek_CAM_OFFSET;
+  self.c_alt_ofs = DAT_onnek_CAM_OFFSET_ALT;
+  self.c_model = "q3mdl/testball.md3";
 };
 
 void() data_onnek_wep1={  

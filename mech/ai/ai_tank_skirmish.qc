@@ -336,7 +336,7 @@ void() ai_tank_sk_fight_prep={
   if( enemy_hunt ){
     if( !self.ai_node_recall ){
       ai_sfx_huntStart();
-      node_recall_setup();
+      self.ai_node_recall = node_recall_setup();
       self.goalentity = self.enemy;
       macro_ai_frame(ai_tank_sk_hunt1)
       return;

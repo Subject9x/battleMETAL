@@ -66,26 +66,37 @@ void() node_setup={
   trigger_event( self, trigOnSpawn );
 };
 
-void() node_recall_touch={
+void() node_recall_think={
   local entity this;
-  if( (self.owner.deadflag == DEAD_NO) && (other == self.owner) ){
-    if( other.attack_state != ST_HUNT ){
-      this = self;
-      self = other;
-        if( self.movetarget ){
-          self.goalentity = self.movetarget;
-          self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-          self.th_walk();
-        }
-        else{
-          self.th_stand();
-        }
-      self = this;
-      remove(self);
-      return;
+  this = self;
+  self = self.owner;
+    if( ai_check_vis( self.enemy ) ){
+      self.th_missile();
     }
+    else{
+      if( self.movetarget ){
+        self.goalentity = self.movetarget;
+        self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+        self.th_walk();
+      }
+      else{
+        self.th_stand();
+      }
+    }
+  self = this;
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.001;
+};
+
+void() node_recall_touch={
+  if( (self.owner.deadflag == DEAD_NO) && (other == self.owner) ){
+    self.think = node_recall_think;
+    self.nextthink = time + 0.001;
+    return;
   }
-  return;
+  else{
+    return;
+  }
 };
 
 
