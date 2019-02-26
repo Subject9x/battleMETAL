@@ -91,9 +91,9 @@ float DAT_SWRM_RANGE      = 600;
 //-------------------------ATC
 float DAT_LATC_EN_RATE    = 0;
 //-------------------------RPlas
-float DAT_RPLAS_EN_RATE   = 1;  //3.33;
+float DAT_RPLAS_EN_RATE   = 1;
 //-------------------------QRifle
-float DAT_QRFL_EN_RATE    = 10; //100;
+float DAT_QRFL_EN_RATE    = 10;
 //-------------------------SFGA
 float DAT_SFGA_EN_RATE    = 0;
 //-------------------------FLAK
