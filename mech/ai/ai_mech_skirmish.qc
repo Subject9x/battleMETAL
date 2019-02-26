@@ -40,12 +40,15 @@ void() ai_mech_sk_die={
   mech_player_compdie(self.e_legs);
   mech_player_compdie(self.e_cam);
   
+  if( self.ai_node_recall ){
+    remove(self.ai_node_recall);
+  }
+  
   this = self;
   self = self.e_legs;
     self.attack_state = TR_YAW;
     bot_leg_die1();
   self = this;
-  
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
@@ -191,6 +194,8 @@ void() ai_mech_sk_hunt15;
 void() ai_mech_sk_hunt16;
 
 void() ai_mech_sk_fight_prep={
+  local entity nodeRecall;
+  
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -329,8 +334,16 @@ void() ai_mech_sk_fight_prep={
   if( enemy_hunt ){
     if( !self.ai_node_recall ){
       ai_sfx_huntStart();
-      self.ai_node_recall = node_recall_setup();
+      nodeRecall = node_recall_setup();
+      self.ai_node_recall = nodeRecall;
       self.goalentity = self.enemy;
+        self.ai_action_time = (0 - self.ai_action_mod) * -1;
+      if( self.stat_rdr_mode ){
+        self.ai_action_time = ceil(self.ai_action_time * 4);
+      }
+      else{
+        self.ai_action_time = ceil(self.ai_action_time * 2);
+      }
       macro_ai_frame(ai_mech_sk_hunt1)
       return;
     }
@@ -338,7 +351,12 @@ void() ai_mech_sk_fight_prep={
     macro_ai_frame(ai_mech_sk_hunt1)
     return;
   }
-  macro_ai_frame(ai_mech_sk_patrol1)
+  if( self.movetarget ){
+    self.goalentity = self.movetarget;
+    macro_ai_frame(ai_mech_sk_patrol1)
+    return;
+  }
+  macro_ai_frame(ai_mech_sk_stand1)
 };
 
 /* 
@@ -1487,7 +1505,7 @@ void() ai_mech_sk_hunt16={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_update_mechplayer)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_kill();
@@ -1495,21 +1513,35 @@ void() ai_mech_sk_hunt16={
     self.goalentity = self.ai_node_recall;
   }
   
-  if( !ai_check_vis( self.enemy ) ){
-    macro_ai_frame_count(ai_mech_sk_hunt1)
-  }
-  
+  macro_ai_frame_count(ai_mech_sk_hunt1)
+
   ai_sfx_huntEnd();
+  
   if( self.movetarget ){
-    self.goalentity = self.movetarget;
-    macro_ai_frame(ai_mech_sk_patrol1)
-    remove(self.ai_node_recall);
+    ai_turret_set_state( TR_NORM );
+    local float dist1, dist2;
+    dist1 = vlen( self.movetarget.origin - self.origin );
+    dist2 = vlen( self.ai_node_recall.origin - self.origin );
+    if( dist1 < dist2 ){
+      self.goalentity = self.movetarget;
+      macro_ai_frame(ai_mech_sk_patrol1)
+      remove(self.ai_node_recall);
+      return;
+    }
+  }
+  //the recall portion of hunting
+  if( self.ai_node_recall && self.goalentity != self.ai_node_recall ){
+    ai_turret_set_state( TR_NORM );
+    self.goalentity = self.ai_node_recall;
+    self.ai_action_time = (0 - self.ai_action_mod) * -1;
+    self.ai_action_time = ceil(self.ai_action_time * 4);
+    macro_ai_frame(ai_mech_sk_hunt1)
     return;
   }
-  if( self.ai_node_recall ){
-    remove(self.ai_node_recall);
-  }
-  macro_ai_frame(ai_mech_sk_fight_prep)
+  remove(self.ai_node_recall);
+  self.ai_node_recall = world;
+  self.enemy = world;
+  macro_ai_frame(ai_mech_sk_stand1)
 };
 
 /*

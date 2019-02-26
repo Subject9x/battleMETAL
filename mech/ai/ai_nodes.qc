@@ -33,7 +33,7 @@ void() node_use={
 */
 void() node_setup={
 
-  self.flags = self.flags | FL_NODE;
+  self.flags = FL_NODE;
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
   self.solid = SOLID_TRIGGER;
@@ -41,62 +41,75 @@ void() node_setup={
   self.isActive = TRUE;
   
   setmodel(self, "q3mdl/testball.md3");
-  
-  //only render nodes when debugging
-  if( cvar("developer" ) ){
-    self.alpha = 1;
-  }
-  else{
-    self.alpha = 0;
-  }
-  
   setsize(self, '-10 -10 -18','10 10 18');
   if( (self.spawnflags & NODE_SPAWN_DROP) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
     droptofloor();
   }
   
+  //only render nodes when debugging
+  //DEBUG
+  if( cvar("developer" ) ){
+    self.alpha = 1;
+    switch( self.data_idx ){
+      case AI_NODE_PATROL:
+        self.color = '1 1 0';
+        break;
+      case AI_NODE_RECALL:
+        self.color = '1 0 1';
+        break;
+    }
+  }
+  else{
+    self.alpha = 0;
+  }
+  
+  trigger_event( self, trigOnSpawn );
   if( !self.pausetime ){
     self.pausetime = ((4 - skill) * -1) * 1.65; 
   }
   if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
     self.isActive = FALSE;
-    return;
   }
-  trigger_event( self, trigOnSpawn );
 };
 
-void() node_recall_think={
-  local entity this;
-  this = self;
-  self = self.owner;
-    if( ai_check_vis( self.enemy ) ){
-      self.th_missile();
-    }
-    else{
-      if( self.movetarget ){
-        self.goalentity = self.movetarget;
-        self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-        self.th_walk();
-      }
-      else{
-        self.th_stand();
-      }
-    }
-  self = this;
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.001;
+/*
+  recallNode's are spawned instantly on switching to hunt state,
+  therefore, delay the node's touch function assignment to give the
+  bot a chance to move away from recallNode's origin
+*/
+void() node_recall_delay={
+  self.isActive = TRUE;
 };
 
 void() node_recall_touch={
-  if( (self.owner.deadflag == DEAD_NO) && (other == self.owner) ){
-    self.think = node_recall_think;
-    self.nextthink = time + 0.001;
-    return;
+  local entity this;
+  if( (other == self.owner) && (self.owner.deadflag == DEAD_NO) ){
+    if( other.goalentity = self ){
+      this = self;
+      self = other;
+        self.ai_node_recall = world;
+        if( ai_check_vis( self.enemy ) ){
+          self.th_missile();
+        }
+        else{
+          self.enemy = world;
+          ai_turret_set_state( TR_NORM );
+          if( self.movetarget ){
+            self.goalentity = self.movetarget;
+            self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
+            self.th_walk();
+          }
+          else{
+            self.th_stand();
+          }
+        }
+      self = this;
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.001;
+    }
   }
-  else{
-    return;
-  }
+
 };
 
 
@@ -167,6 +180,11 @@ void() node_patrol_touch={
     return;
   }
 
+  if( self.ai_node_recall ){
+    //AI is currently chasing down a target / or resetting
+    return;
+  }
+  
   if( time > other.pausetime ){
     self.think = ai_node_pause;
     self.nextthink = time + 0.001;
@@ -188,6 +206,8 @@ void() node_attack_touch={
   
 */
 void() node_touch={
+  dprint("node_touch\n"); //DEBUG
+  dprint(strcat("self.isActive: ", ftos(self.isActive),"\n"));  //DEBUG
   if( !self.isActive ){
     return;
   }
@@ -224,19 +244,30 @@ void() node_touch={
   This only exist for a limited amount of time.
 */
 entity() node_recall_setup={
-  local entity recallNode;
   local entity theBot;
+  local entity theNode;
+  local vector nodeOrg;
   
-  recallNode = spawn();
+  theNode = spawn();
   theBot = self;
-  self = recallNode;
-    setorigin( self, theBot.origin);
+  self = theNode;
+    self.spawnflags = NODE_SPAWN_INACTIVE;
     self.data_idx = AI_NODE_RECALL;
     node_setup();
+    makevectors( theBot.angles );
+    nodeOrg = theBot.origin + (v_up * theBot.mins_z) + (v_forward * (self.mins_x + 10));
+    traceline( nodeOrg, nodeOrg + (v_up * 18), TRUE, theBot);
+    setorigin( self, trace_endpos );
+    self.targetname = strzone(strcat("node_recall_for_", ftos(num_for_edict(theBot))));
+    if( theBot.movetarget ){
+      self.target = theBot.movetarget.targetname;
+    }
     self.owner = theBot;
+    self.think = node_recall_delay;//see node_recall_delay_touch
+    self.nextthink = time + 1.5;
   self = theBot;
   
-  return recallNode;
+  return theNode;
 };
 
 

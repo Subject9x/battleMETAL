@@ -11,7 +11,6 @@ Overview: ai unit
 void() ai_vec_dest_die;
 void() ai_vec_dest_die1;
 void() ai_vec_dest_die1a;
-void() ai_vec_dest_die2;
 /*
   TH_DIE Main
 */
@@ -37,12 +36,7 @@ void() ai_vec_dest_die={
   trigger_event( self, trigOnDeath );
 
   self.think = ai_vec_dest_die1;
-  self.ai_action_time = time + 120;
-  
-  //basically overkill damage will just remove the tank (nice and clean)
-  if( self.health <= (self.max_health / 1.5) * -1 ){
-    self.think = ai_vec_dest_die2;
-  }
+  self.ai_action_time = time + 600;
   
   makevectors( self.angles );  
   v = self.origin + (v_up * 2);
@@ -76,26 +70,20 @@ void() ai_vec_dest_die1={
   self.think = ai_vec_dest_die1;
   if ( time > self.ai_action_time ){
     self.think = ai_vec_dest_die1a;
-    self.ai_action_time = time + 120;
-  }
-  self.nextthink = time + 0.1;
-};
-//stops smoking
-void() ai_vec_dest_die1a={
-  self.think = ai_vec_dest_die1a;
-  if( time > self.ai_action_time ){
-    self.think = ai_vec_dest_die2;
+    self.ai_action_time = time + 0.05;
   }
   self.nextthink = time + 0.1;
 };
 
-/*
-  explode the thing
-*/
-void() ai_vec_dest_die2={
-  mech_cleanupMech();
+//stops smoking
+void() ai_vec_dest_die1a={
+  self.think = ai_vec_dest_die1a;
+  if( time > self.ai_action_time ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 7200;
+    return;
+  }
   self.nextthink = time + 0.1;
-  self.think = BecomeExplosion;
 };
 
 /*

@@ -61,8 +61,6 @@ float DAT_PRJ_QRFL_LIFETIME = 4;
 float DAT_PRJ_RPLAS_LIFETIME = 0.649;
 //-------------------------SFGA
 float DAT_PRJ_SFGA_LIFETIME = 8;
-//-------------------------FLAK
-float DAT_PRJ_FLAK_LIFETIME = 4.8;
 //-------------------------SWARM
 float DAT_PRJ_SWRM_LIFETIME = 1.2;
 //============================

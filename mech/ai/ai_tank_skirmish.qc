@@ -11,7 +11,6 @@ Overview: ai unit
 
 void() ai_tank_sk_die;
 void() ai_tank_sk_die1;
-void() ai_tank_sk_die2;
 
 void() ai_tank_sk_die={
   local entity w_chain;
@@ -21,7 +20,7 @@ void() ai_tank_sk_die={
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
-  self.colormod = '0.1 0.1 0.1';
+  self.colormod = '0.33 0.33 0.33';
   self.attack_state = -1;
   
   //fire triggers when dead
@@ -38,17 +37,16 @@ void() ai_tank_sk_die={
   mech_player_compdie(self.e_tor_r);
   mech_player_compdie(self.e_tor_c);
   
+  if( self.ai_node_recall ){
+    remove(self.ai_node_recall);
+  }
+  
   self.think = ai_tank_sk_die1;
-  self.ai_action_time = time + 120;
+  self.ai_action_time = time + 600;
   
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-    
-  //basically overkill damage will just remove the tank (nice and clean)
-  if( self.health <= (self.max_health / 1.15) * -1 ){
-    self.think = ai_tank_sk_die2;
-  }
   
   vel = self.origin + (v_up * 2);
   switch( self.vec_size ){
@@ -76,22 +74,10 @@ void() ai_tank_sk_die1={
   
   self.think = ai_tank_sk_die1;
   if ( time > self.ai_action_time ){
-    self.think = ai_tank_sk_die1;
-    self.ai_action_time = time + 120;
+    self.think = SUB_Remove;
+    self.ai_action_time = time + 7200;
   }
   self.nextthink = time + 0.1;
-};
-
-void() ai_tank_sk_die2={
-  local vector v;
-  
-  self.deadflag = DEAD_DEAD;
-  makevectors( self.angles );
-  v = self.origin + (v_up * 2);
-  te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 8, self.vec_size + 1);
-  mech_cleanupMech();
-  self.nextthink = time + 0.1;
-  self.think = BecomeExplosion;
 };
 
 /*
@@ -208,6 +194,8 @@ void() ai_tank_sk_hunt9;
 void() ai_tank_sk_hunt10;
 
 void() ai_tank_sk_fight_prep={
+  local entity nodeRecall;
+  
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -254,7 +242,7 @@ void() ai_tank_sk_fight_prep={
             if( random() < 0.5 ){
               self.lefty = self.lefty * -1;
               macro_ai_frame(ai_tank_sk_charge1)
-            dprint("ai_tank_sk_fight_prep-> ai_tank_sk_charge1 \n"); //DEBUG
+              dprint("ai_tank_sk_fight_prep-> ai_tank_sk_charge1 \n"); //DEBUG
               return;
             }
             self.lefty = self.lefty * -1;
@@ -327,7 +315,8 @@ void() ai_tank_sk_fight_prep={
       macro_ai_frame(ai_tank_sk_strafe1)
       return;
     }
-    if( enemy_vis == VIS_FAIL ){     
+    if( enemy_vis == VIS_FAIL ){
+      dprint("enemy_vis == VIS_FAIL \n"); //DEBUG
       if( self.ai_rank > AI_RANK_REG ){
         if( util_getMechHpAverage(self) > 0.45){
           enemy_hunt = TRUE;
@@ -351,8 +340,16 @@ void() ai_tank_sk_fight_prep={
   if( enemy_hunt ){
     if( !self.ai_node_recall ){
       ai_sfx_huntStart();
-      self.ai_node_recall = node_recall_setup();
+      nodeRecall = node_recall_setup();
+      self.ai_node_recall = nodeRecall;
       self.goalentity = self.enemy;
+        self.ai_action_time = (0 - self.ai_action_mod) * -1;
+      if( self.stat_rdr_mode ){
+        self.ai_action_time = ceil(self.ai_action_time * 4);
+      }
+      else{
+        self.ai_action_time = ceil(self.ai_action_time * 2);
+      }
       macro_ai_frame(ai_tank_sk_hunt1)
       return;
     }
@@ -411,6 +408,8 @@ void() ai_tank_sk_charge1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  dprint("ai_tank_sk_charge1 \n");  //DEBUG
+  
   ai_face_targ();
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed ) ;
@@ -428,6 +427,9 @@ void() ai_tank_sk_charge2={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  dprint("ai_tank_sk_charge2 \n");  //DEBUG
+  
+  
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed ) ;
   }
@@ -443,6 +445,9 @@ void() ai_tank_sk_charge2={
 void() ai_tank_sk_charge3={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
+  
+  dprint("ai_tank_sk_charge3 \n");  //DEBUG
+  
   
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed ) ;
@@ -460,6 +465,9 @@ void() ai_tank_sk_charge4={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  dprint("ai_tank_sk_charge4 \n");  //DEBUG
+  
+  
   ai_face_targ();
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed ) ;
@@ -475,6 +483,9 @@ void() ai_tank_sk_charge5={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  dprint("ai_tank_sk_charge5 \n");  //DEBUG
+  
+  
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed ) ;
   }
@@ -487,6 +498,9 @@ void() ai_tank_sk_charge5={
 void() ai_tank_sk_charge6={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
+  
+  dprint("ai_tank_sk_charge6 \n");  //DEBUG
+  
   
   ai_face_targ();
   if( self.lefty > 0 ){
@@ -502,6 +516,9 @@ void() ai_tank_sk_charge7={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  dprint("ai_tank_sk_charge7 \n");  //DEBUG
+  
+  
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed );
   }
@@ -515,6 +532,9 @@ void() ai_tank_sk_charge7={
 void() ai_tank_sk_charge8={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
+  
+  dprint("ai_tank_sk_charge8 \n");  //DEBUG
+  
   
   ai_face_targ();
   if( self.lefty > 0 ){
@@ -533,6 +553,9 @@ void() ai_tank_sk_charge9={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  dprint("ai_tank_sk_charge9 \n");  //DEBUG
+  
+  
   ai_face_targ();
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed ) ;
@@ -546,6 +569,9 @@ void() ai_tank_sk_charge9={
 void() ai_tank_sk_charge10={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
+  
+  dprint("ai_tank_sk_charge10 \n");  //DEBUG
+  
 
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed ) ;
@@ -556,6 +582,7 @@ void() ai_tank_sk_charge10={
   
   macro_ai_frame_count(ai_tank_sk_charge1)
   
+  dprint("ai_tank_sk_charge10->ai_tank_sk_fight_prep \n");  //DEBUG
   macro_ai_frame(ai_tank_sk_fight_prep)
 };
 
@@ -1205,7 +1232,6 @@ void() ai_tank_sk_hunt1={
   macro_ai_frame(ai_tank_sk_hunt2)
 };
 void() ai_tank_sk_hunt2={
-  ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -1220,7 +1246,6 @@ void() ai_tank_sk_hunt2={
   macro_ai_frame(ai_tank_sk_hunt3)
 };
 void() ai_tank_sk_hunt3={
-  ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -1235,7 +1260,6 @@ void() ai_tank_sk_hunt3={
   macro_ai_frame(ai_tank_sk_hunt4)
 };
 void() ai_tank_sk_hunt4={
-  ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -1250,7 +1274,6 @@ void() ai_tank_sk_hunt4={
   macro_ai_frame(ai_tank_sk_hunt5)
 };
 void() ai_tank_sk_hunt5={
-  ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -1265,7 +1288,6 @@ void() ai_tank_sk_hunt5={
   macro_ai_frame(ai_tank_sk_hunt6)
 };
 void() ai_tank_sk_hunt6={
-  ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -1280,7 +1302,6 @@ void() ai_tank_sk_hunt6={
   macro_ai_frame(ai_tank_sk_hunt7)
 };
 void() ai_tank_sk_hunt7={
-  ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -1295,7 +1316,6 @@ void() ai_tank_sk_hunt7={
   macro_ai_frame(ai_tank_sk_hunt8)
 };
 void() ai_tank_sk_hunt8={
-  ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -1310,7 +1330,6 @@ void() ai_tank_sk_hunt8={
   macro_ai_frame(ai_tank_sk_hunt9)
 };
 void() ai_tank_sk_hunt9={
-  ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -1336,23 +1355,35 @@ void() ai_tank_sk_hunt10={
     self.goalentity = self.ai_node_recall;
   }
   
-  if( !ai_check_vis( self.enemy ) ){
-    if( self.stat_rdr_mode ){
-      macro_ai_frame_count(ai_tank_sk_hunt5)
+  macro_ai_frame_count(ai_tank_sk_hunt1)
+
+  ai_sfx_huntEnd();
+  
+  if( self.movetarget ){
+    ai_turret_set_state( TR_NORM );
+    local float dist1, dist2;
+    dist1 = vlen( self.movetarget.origin - self.origin );
+    dist2 = vlen( self.ai_node_recall.origin - self.origin );
+    if( dist1 < dist2 ){
+      self.goalentity = self.movetarget;
+      macro_ai_frame(ai_tank_sk_patrol1)
+      remove(self.ai_node_recall);
+      return;
     }
   }
-  
-  ai_sfx_huntEnd();
-  if( self.movetarget ){
-    self.goalentity = self.movetarget;
-    macro_ai_frame(ai_tank_sk_patrol1)
-    remove(self.ai_node_recall);
+  //the recall portion of hunting
+  if( self.ai_node_recall && self.goalentity != self.ai_node_recall ){
+    ai_turret_set_state( TR_NORM );
+    self.goalentity = self.ai_node_recall;
+    self.ai_action_time = (0 - self.ai_action_mod) * -1;
+    self.ai_action_time = ceil(self.ai_action_time * 4);
+    macro_ai_frame(ai_tank_sk_hunt1)
     return;
   }
-  if( (self.ai_node_recall) ){
-    remove(self.ai_node_recall);
-  }
-  macro_ai_frame(ai_tank_sk_fight_prep)
+  remove(self.ai_node_recall);
+  self.ai_node_recall = world;
+  self.enemy = world;
+  macro_ai_frame(ai_tank_sk_stand1)
 };
 
 /*

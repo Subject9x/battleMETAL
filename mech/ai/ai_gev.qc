@@ -24,22 +24,14 @@ void() ai_gev_pain={
   
 };
 
-void() ai_gev_die2={
-  self.think = ai_gev_die2;
-  if( time > self.ai_action_time ){
-    self.think = SUB_Remove;
-  }
-  self.nextthink = time + 1;
-};
-
 void() ai_gev_die1={
   self.deadflag = DEAD_DEAD;
   te_smoke_test(self.origin, '1 1 10', 4) ;
   
   self.think = ai_gev_die1;
   if( time > self.ai_action_time ){
-    self.ai_action_time = time + (random() * 2000);
-    self.think = ai_gev_die2;
+    self.ai_action_time = time + (random() * 7200);
+    self.think = SUB_Remove;
   }
   self.nextthink = time + 0.5;
 };
@@ -63,8 +55,6 @@ void() ai_gev_touch_death={
     }
     self.touch = SUB_Null;
   }
-  self.think = ai_gev_die2;
-  self.nextthink = time + 0.05;
 };
 
 void() ai_gev_die={
@@ -75,7 +65,7 @@ void() ai_gev_die={
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_BOUNCE;
   self.solid = SOLID_BBOX;
-  self.colormod = '0.1 0.1 0.1'; 
+  self.colormod = '0.33 0.33 0.33'; 
   setsize(self, self.mins * 0.35, self.maxs * 0.35);
   setorigin(self, self.origin);
   
@@ -91,6 +81,9 @@ void() ai_gev_die={
   mech_player_compdie(self.e_cam);
   if( (self.flags & FL_TURRET) ){
     mech_player_compdie(self.e_tor_c);
+  }
+  if( self.ai_node_recall ){
+    remove(self.ai_node_recall);
   }
   
   t_y = self.ideal_yaw;
@@ -244,6 +237,7 @@ void() ai_gev_patrol1={
 };
 
 void() ai_gev_fight_prep={
+  local entity nodeRecall;
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
@@ -336,8 +330,16 @@ void() ai_gev_fight_prep={
   if( enemy_hunt ){
     if( !self.ai_node_recall ){
       ai_sfx_huntStart();
-      self.ai_node_recall = node_recall_setup();
+      nodeRecall = node_recall_setup();
+      self.ai_node_recall = nodeRecall;
       self.goalentity = self.enemy;
+        self.ai_action_time = (0 - self.ai_action_mod) * -1;
+      if( self.stat_rdr_mode ){
+        self.ai_action_time = ceil(self.ai_action_time * 4);
+      }
+      else{
+        self.ai_action_time = ceil(self.ai_action_time * 2);
+      }
       macro_ai_frame(ai_gev_hunt1)
       return;
     }
@@ -960,21 +962,35 @@ void() ai_gev_hunt12={
     self.goalentity = self.ai_node_recall;
   }
   
-  if( !ai_check_vis( self.enemy ) ){
-    macro_ai_frame_count(ai_gev_hunt1)
-  }
-  
+  macro_ai_frame_count(ai_tank_sk_hunt1)
+
   ai_sfx_huntEnd();
+  
   if( self.movetarget ){
-    self.goalentity = self.movetarget;
-    macro_ai_frame(ai_gev_patrol1)
-    remove(self.ai_node_recall);
+    ai_turret_set_state( TR_NORM );
+    local float dist1, dist2;
+    dist1 = vlen( self.movetarget.origin - self.origin );
+    dist2 = vlen( self.ai_node_recall.origin - self.origin );
+    if( dist1 < dist2 ){
+      self.goalentity = self.movetarget;
+      macro_ai_frame(ai_gev_patrol1)
+      remove(self.ai_node_recall);
+      return;
+    }
+  }
+  //the recall portion of hunting
+  if( self.ai_node_recall && self.goalentity != self.ai_node_recall ){
+    ai_turret_set_state( TR_NORM );
+    self.goalentity = self.ai_node_recall;
+    self.ai_action_time = (0 - self.ai_action_mod) * -1;
+    self.ai_action_time = ceil(self.ai_action_time * 4);
+    macro_ai_frame(ai_gev_hunt1)
     return;
   }
-  if( self.ai_node_recall ){
-    remove(self.ai_node_recall);
-  }
-  macro_ai_frame(ai_gev_fight_prep)
+  remove(self.ai_node_recall);
+  self.ai_node_recall = world;
+  self.enemy = world;
+  macro_ai_frame(ai_gev_stand1)
 };
 
 /*
