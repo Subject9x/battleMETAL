@@ -20,16 +20,16 @@ void( entity active, .string event) trigger_event={
   local string oldTarget;
   local entity hold;
   
+  hold = self;
   if( active != self ){
-    hold = self;
     self = active;
   }
-  if( self.event ){
+  if( hold.event ){
     oldTarget = self.target;
-    self.target = self.event;
-    activator = hold;
+    self.target = hold.event;
+    activator = self;
     SUB_UseTargets();
-    self.event = string_null;  //fired once
+    hold.event = string_null;  //fired once
     self.target = oldTarget;
   }
   if( active != self ){
@@ -308,7 +308,6 @@ void() counter_use =
 	self.count = self.count - 1;
 	if (self.count < 0)
 		return;
-	
 	if (self.count != 0)
 	{
 		if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0)

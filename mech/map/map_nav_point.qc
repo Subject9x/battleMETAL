@@ -28,6 +28,9 @@ Inputs
   can affect the state of a navpoint.
 */
 void() nav_point_touch={
+  local entity this;
+  local entity that;
+  
   if(self.isActive == TRUE){
     if( !(other.flags & FL_CLIENT) ){
       //nav points are a player-only thing
@@ -36,13 +39,14 @@ void() nav_point_touch={
     if( other.i_faction == self.i_faction ){
       self.enemy = other;
       self.isActive = 2;
-      stemp = self;
+      this = self;
       self = other;
-        client_send_navpoint( stemp );
-      self = stemp;
+        client_send_navpoint( this );
+      self = this;
+      that = other;
       
       // trigOnTarget is used specifically here to trigger an objective
-      trigger_event( other, trigOnTarget );
+      trigger_event( that, trigOnTarget );
       
       //multi_trigger();
       if( (self.spawnflags & 2) ){

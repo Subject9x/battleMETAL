@@ -109,9 +109,7 @@ void() node_recall_touch={
       self.nextthink = time + 0.001;
     }
   }
-
 };
-
 
 /*
   passes pausetime data in a nicer way,
@@ -141,19 +139,25 @@ void() ai_node_pause={
                 self.pausetime = thisNode.pausetime;
                 self.pausetime = self.pausetime * (self.ai_action_mod / 10);
                 self.pausetime = self.pausetime + time;
-                self.th_stand();
+                if( self.th_stand ){
+                  self.th_stand();
+                }
               }
             self = thisNode;
           }
           else{
             self = these;
-              self.th_stand();
+              if( self.th_stand ){
+                self.th_stand();
+              }
             self = thisNode;
           }
         }
         else{
           self = these;
-            self.th_stand();
+            if( self.th_stand ){
+              self.th_stand();
+            }
           self = thisNode;
         }
       }
@@ -180,7 +184,7 @@ void() node_patrol_touch={
     return;
   }
 
-  if( self.ai_node_recall ){
+  if( self.ai_node_recall || (self.ai_node_recall != world) ){
     //AI is currently chasing down a target / or resetting
     return;
   }
@@ -188,7 +192,6 @@ void() node_patrol_touch={
   if( time > other.pausetime ){
     self.think = ai_node_pause;
     self.nextthink = time + 0.001;
-    return;
   }
 };
 
@@ -203,11 +206,8 @@ void() node_attack_touch={
 /*
   node touch function is generic with a switch for a specific type
   they are required to be isActive, and to have a data_idx > 0;
-  
 */
 void() node_touch={
-  dprint("node_touch\n"); //DEBUG
-  dprint(strcat("self.isActive: ", ftos(self.isActive),"\n"));  //DEBUG
   if( !self.isActive ){
     return;
   }

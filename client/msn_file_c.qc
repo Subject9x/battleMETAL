@@ -39,7 +39,7 @@ void() msn_parsefile={
       line_tag = tokenizebyseparator(line, "'", "'", ": ","'","'");
       if (argv(1) == MSN_FILE_IMG){
         if( argv(token) != "" ){
-          MSN_MAPPIC = strzone(argv(token));
+          MSN_MAPPIC = strzone(strcat("data/map_scripts/",argv(token)));
         }
       }
       if (argv(1) == MSN_FILE_NAME){
