@@ -316,7 +316,12 @@ void() ai_setup_patrol={
   local vector org;
   local float angl, px, py;
   
-  self.nextthink = time + 0.05;
+  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+    self.nextthink = time + (7 + random() * 1); //spread out thinks
+  }
+  else{
+    self.nextthink = time + (random() * 0.1);
+  }
   if( self.target ){
     if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
       spot = ai_node_pick_rand();
@@ -324,7 +329,6 @@ void() ai_setup_patrol={
     else{
       spot = self;
     }
-    
     if( spot ){
       angl = self.angles_y * DEG2RAD;
       px = cos(angl);

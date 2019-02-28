@@ -782,10 +782,5 @@ void() ai_vec_dest={
   self.touch = ai_touch;
 
   self.think = ai_setup_patrol;
-  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-    self.nextthink = (time + 7) + random()*1; //spread out thinks
-  }
-  else{
-    self.nextthink = time + random()*1; //spread out thinks
-  }
+  self.nextthink = time + random()*1; //spread out thinks
 };

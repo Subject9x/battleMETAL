@@ -1563,7 +1563,4 @@ void() ai_mech_skirmish={
 
   self.think = ai_setup_patrol;
   self.nextthink = time + (random()*0.9); //spread out thinks
-  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-    self.nextthink = time + (7 + random()* 1); //spread out thinks
-  }
 };

@@ -1248,10 +1248,5 @@ void() ai_mech_sniper={
   self.touch = ai_touch;
   
   self.think = ai_setup_patrol;
-  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-    self.nextthink = time + (7 + random()* 1); //spread out thinks
-  }
-  else{
-    self.nextthink = time + (random()*0.9); //spread out thinks
-  }
+  self.nextthink = time + (random()*0.9); //spread out thinks
 };

@@ -151,8 +151,8 @@ float() ai_find_target_visual={
   rng = dist;
   while( targ ){
     if( targ != self ){
-      if( ai_valid_target(targ) ){
-        if( targ.i_faction != self.i_faction ){
+      if( targ.i_faction != self.i_faction ){
+        if( ai_valid_target(targ) ){
           if( ai_check_face(targ, self.ai_fov) ){
             if( ai_check_vis(targ) ){
               local float ndist;
@@ -192,27 +192,29 @@ float() ai_find_target_radar={
   rng = dist;
   while( targ ){
     if( targ != self ){
-      if( ai_valid_target(targ) ){
-        local float ndist, nrng;
-        nrng = rng;
-        ndist = vlen(targ.origin - self.origin);
-        if( ndist <= rng ){
-          if( (targ.flags & FL_CLIENT) ){
-            if( !targ.stat_rdr_mode ){
-              if( ndist <= (nrng / 2 ) ){
-                if( ai_line_of_sight(targ) ){
-                  nrng = ndist;
-                  found = targ;
-                  
+      if( targ.i_faction != self.i_faction ){
+        if( ai_valid_target(targ) ){
+          local float ndist, nrng;
+          nrng = rng;
+          ndist = vlen(targ.origin - self.origin);
+          if( ndist <= rng ){
+            if( (targ.flags & FL_CLIENT) ){
+              if( !targ.stat_rdr_mode ){
+                if( ndist <= (nrng / 2 ) ){
+                  if( ai_line_of_sight(targ) ){
+                    nrng = ndist;
+                    found = targ;
+                    
+                  }
                 }
               }
             }
-          }
-          else{
-            if(ndist < nrng){
-              if( ai_line_of_sight(targ) ){
-                nrng = ndist;
-                found = targ;
+            else{
+              if(ndist < nrng){
+                if( ai_line_of_sight(targ) ){
+                  nrng = ndist;
+                  found = targ;
+                }
               }
             }
           }
@@ -400,7 +402,7 @@ float(entity wep) ai_attack_blockcheck={
   Only used for AI_SPAWNFLAG_RANDDOMSTART
 */
 entity() ai_node_pick_rand={
-  local entity anode, spot;
+  local entity anode;
   local float clr, total, pick;
   local string name, grpid;
   
@@ -423,7 +425,7 @@ entity() ai_node_pick_rand={
           anode = anode.chain;
         }
         pick = rint(random() * total );
-        spot = AI_NODES[pick];
+        anode = AI_NODES[pick];
       }
     }
     else{
