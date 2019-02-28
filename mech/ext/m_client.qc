@@ -206,6 +206,7 @@ void() PutClientInServer = {
     client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
     client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
     client_sendAvailableItems(SAVE_ITEMS_ALL);
+    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     
     if(!coop && !deathmatch){
       self.movetype = MOVETYPE_NONE;
