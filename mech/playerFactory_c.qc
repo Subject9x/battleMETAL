@@ -60,9 +60,11 @@ void() player_makeMech={
   
   self.currentWeaponGroup = self.w_group1;  
   
-  self.power_timer = time + 7;
-  if( cvar("mechdev") ){
+  if( cvar("developer") ){
     self.power_timer = time + POWERUP_DEBUG;
+  }
+  else{
+    self.power_timer = time + 7;
   }
   self.power_timer_segment = time + 0.007;
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
