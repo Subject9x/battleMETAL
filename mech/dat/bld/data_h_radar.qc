@@ -109,12 +109,14 @@ void() building_radar_alert1=[0, building_radar_alert1]{
   local entity ally, this;
   this = self;
   ally = findchainfloat( i_faction, self.i_faction );
+  ai_sfx_help();
   while( ally ){
     if( vlen( ally.origin - self.origin ) <= (self.radar_range / 2) ){
       if( ai_valid_target(ally) ){
-        //heh, sloppy check for combat capable entities
-        if( ally.w_slot != world ){
-          ai_give_target( ally, self.enemy, FALSE );
+        if( ally != self ){        
+          if( (ally.flags & FL_UNIT) && !(ally.flags & FL_DISARMED)){
+            ai_give_target( ally, self.enemy, ( self.ai_rank > AI_RANK_REG ));
+          }
         }
       }
     }

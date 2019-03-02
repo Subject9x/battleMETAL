@@ -342,12 +342,8 @@ void() ai_vtol_th={
 
     ai_state_control( self.attack_state );
   }
-
-  if( !(self.flags & FL_SKIPTHINK) ){
-    self.flags = self.flags - (self.flags & FL_SKIPTHINK);
-    self.think = ai_vtol_th;
-    self.nextthink = time + 0.05;
-  }
+  self.think = ai_vtol_th;
+  self.nextthink = time + 0.05;
 };
 
 

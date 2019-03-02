@@ -234,10 +234,11 @@ float() ai_find_target_radar={
 void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
   this = self;
-  if( !(ally.enemy) || override){
+  if( !ai_valid_target(ally.enemy) || override){
     self = ally;
       self.enemy = this.enemy;
-      ai_sfx_spotted();
+      ai_sfx_roger();
+      self.th_missile();
     self = this;
   }
 };
@@ -279,15 +280,17 @@ void() ai_ranged_attack={
             if( !ai_attack_blockcheck(wep_chain) ){
               if( ai_attack_checkEne(wep_chain) ){
                 self = wep_chain;
-                  if( (self.p_dmgtype & EFF_STX) ){
-                    if (this.enemy.sh_cur > self.p_damage / 2){
+                  if( ai_check_face(this.enemy, 0.95) ){
+                    if( (self.p_dmgtype & EFF_STX) ){
+                      if (this.enemy.sh_cur > self.p_damage / 2){
+                        fired = fired + 1;
+                        self.w_attack();
+                      }
+                    }
+                    else{
                       fired = fired + 1;
                       self.w_attack();
                     }
-                  }
-                  else{
-                    fired = fired + 1;
-                    self.w_attack();
                   }
                 self = this; 
               }         
@@ -480,7 +483,7 @@ void() ai_wep_calcranges={
     self.ai_minrange = AI_RANGE_L;
   }
   if( self.ai_minrange == 0 ){
-    self.flags = self.flags | FL_NOSHOOT;
+    self.flags = self.flags | FL_DISARMED;
   }
   
 };

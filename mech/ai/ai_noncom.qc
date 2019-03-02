@@ -221,11 +221,9 @@ void() ai_noncom_die={
 void() ai_noncom_th={
 
 
-  if( !(self.flags & FL_SKIPTHINK) ){
-    self.flags = self.flags - (self.flags & FL_SKIPTHINK);
-    self.think = ai_noncom_th;
-    self.nextthink = time + 0.05;
-  }
+  self.think = ai_noncom_th;
+  self.nextthink = time + 0.05;
+  
 };
 
 void() ai_noncom_tank={

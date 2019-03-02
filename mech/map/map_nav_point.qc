@@ -80,19 +80,18 @@ void() nav_point_use={
   }
 };
 
-/*QUAKED map_nav_point (0.2 0.8 0.2) (-10 -10 -10) (10 10 10)
+/*QUAKED map_nav_point (0.2 0.8 0.2) (-32 -32 -75) (32 32 1)
 */
 void() map_nav_point={
 
   self.flags = self.flags | FL_NODE;
-  self.effects = self.effects | EF_NODRAW;
-  if( cvar("developer") ){
-    self.effects = self.effects - (self.effects & EF_NODRAW);
+  if( !cvar("developer") ){
+    self.effects = self.effects | EF_NODRAW;
   }
   self.data_type = DATA_NAVP;
   
   setmodel(self, "q3mdl/testball.md3");
-  setsize( self, '-150 -150 -100', '150 150 100' ); // this is to make sure nav points
+  setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   self.movetype = MOVETYPE_FLY;
   droptofloor();

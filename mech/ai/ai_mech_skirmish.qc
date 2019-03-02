@@ -199,6 +199,11 @@ void() ai_mech_sk_fight_prep={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
+  if( (self.flags & FL_DISARMED) ){
+    //macro_ai_frame( panic );
+    //return TODO
+  }
+  
   if( ai_valid_target(self.enemy) ){
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );

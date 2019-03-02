@@ -239,7 +239,7 @@ float	FL_FLY					  = 1;
 float	FL_SWIM					  = 2;
 float	FL_CLIENT				  = 8;	    // set for all client edicts
 float	FL_INWATER				= 16;	    // for enter / leave water splash
-float	FL_MONSTER				= 32;
+float	FL_MONSTER				= 32;     // All non-CLIENTs
 float	FL_GODMODE				= 64;	    // player cheat
 float	FL_NOTARGET				= 128;	  // player cheat
 float	FL_ITEM					  = 256;	  // extra wide size for bonus items
@@ -247,11 +247,11 @@ float	FL_ONGROUND				= 512;	  // standing on something
 float	FL_PARTIALGROUND	= 1024;	  // not all corners are valid
 float	FL_WATERJUMP			= 2048;	  // player jumping out of water
 float	FL_JUMPRELEASED		= 4096;	  // for jump debouncing
-float FL_SKIPTHINK      = 8192;   //tells ai system that main update has been ovverridden
+float FL_DISARMED      = 8192;    //used for FL_MONSTER, tells the AI they have no more guns left
 float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
-float FL_NOSHOOT        = 32768;  //bot has no more guns!
+float FL_NOSHOOT        = 32768;  //shuts off FL_CLIENT ability to use their weapons
 float FL_TURRET         = 65536;  //the FL_MONSTER has a Turret
-float FL_NODE           = 131072;  //kinda ugly but used for non unit things
+float FL_NODE           = 131072; //kinda ugly but used for non unit things
 
 // edict.movetype values
 float	MOVETYPE_NONE			= 0;	// never moves

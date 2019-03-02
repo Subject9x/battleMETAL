@@ -256,10 +256,12 @@ const float	FL_ONGROUND				= 512;	// standing on something
 const float	FL_PARTIALGROUND		= 1024;	// not all corners are valid
 const float	FL_WATERJUMP			= 2048;	// player jumping out of water
 const float	FL_JUMPRELEASED			= 4096;	// for jump debouncing
+const float FL_DISARMED      = 8192;    //used for FL_MONSTER, tells the AI they have no more guns left
+const float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
+const float FL_NOSHOOT        = 32768;  //shuts off FL_CLIENT ability to use their weapons
+const float FL_TURRET         = 65536;  //the FL_MONSTER has a Turret
+const float FL_NODE           = 131072; //kinda ugly but used for non unit things
 
-float FL_SKIPTHINK        = 8192; //tells ai system that main update has been ovverridden
-float FL_UNIT           = 16384;  //kinda ugly but used for all clients and monsters
-float FL_NOSHOOT        = 32768;  //if unit has this flag, stop them from shooting
 // edict.movetype values
 const float	MOVETYPE_NONE			= 0;	// never moves
 //float	MOVETYPE_ANGLENOCLIP	= 1;

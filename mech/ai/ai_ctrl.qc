@@ -363,5 +363,6 @@ void() ai_setup_patrol={
       }
     } 
   }
+  self.pausetime = 99999999;
   macro_ai_frame(self.th_stand)
 };
