@@ -51,6 +51,12 @@ void() building_radar_detect1=[0, building_radar_detect1]{
   if( time > self.pausetime ){
     ai_sfx_spotted();
     self.th_missile();
+    if( self.trigOnTarget ){
+      if( time > self.wait ){
+        trigger_event( self, trigOnTarget );
+        self.wait = time + self.delay;
+      }
+    }
     return;
   }
 };
@@ -203,4 +209,16 @@ void() building_human_radar={
   self.use = multi_trigger;
   self.touch = building_radar_touch;
   self.nextthink = time + 1;
+  self.wait = time;
+  //allows RADAR to call a specific trigger when it spots something
+  if( self.trigOnTarget ){
+    if( self.delay == -1 ){
+      self.delay = 99999999;
+    }
+    else{
+      if( !self.delay ){
+        self.delay = self.w_firetime * 1.67;
+      }
+    }
+  }
 };

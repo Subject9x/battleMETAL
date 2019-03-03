@@ -577,21 +577,21 @@ float( void() ai_to_make ) ai_unit_setup={
     self.unit_ini = ai_to_make;
     //allows for multiple spawn even on the 'trigger only' setting
     self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
-    return TRUE;
+    return FALSE;
   }
   if( (self.delay > 0) && ( !(self.count) || (self.count < 1) ) ){
     //this is a delayed one-off
     self.use = multi_trigger;
     self.nextthink = time + self.delay;
     self.think = ai_to_make;
-    return TRUE;
+    return FALSE;
   }
   if( self.count > 0 ){
     self.use = multi_trigger;
     self.unit_ini = ai_to_make;
     self.nextthink = time + self.count1; //baked in automatically
     self.think = ai_unit_make_multi;
-    return TRUE;
+    return FALSE;
   }
   //fall-through, AI is cleared to happen
   return TRUE;
