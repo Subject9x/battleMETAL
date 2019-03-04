@@ -122,7 +122,7 @@ void() node_patrol_touch={
   local entity thisNode;
   thisNode = self;
   
-  if( other.enemy ){
+  if( ai_valid_target(other.enemy) ){
     return;
   }
   
@@ -135,8 +135,8 @@ void() node_patrol_touch={
     return;
   }
   
-  if( time > other.pausetime ){ 
-    if( (other.flags & (FL_MONSTER | FL_UNIT)) ){
+  if( (other.flags & (FL_UNIT)) ){
+    if( time > other.pausetime ){ 
       if( self.i_faction == other.i_faction ){
         if( self.target ){
           node = find (world, targetname, self.target);
@@ -191,7 +191,7 @@ void() node_touch={
     return;
   }
   
-  if( (other.flags & FL_MONSTER ) ){
+  if( (other.flags & FL_MONSTER) ){
     switch( self.data_idx ){
       case AI_NODE_PATROL:
         node_patrol_touch();

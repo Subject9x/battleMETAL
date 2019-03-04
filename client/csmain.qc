@@ -346,11 +346,21 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     if(CLIENT_player_state == PLAYER_SPRINT_ON){
       local float slen;
       local vector spos;
-      slen = stringwidth("[EVASION ON]", 0, '12 10 0');
+      local string msg;
+      local vector msgClr;
+      if( cvar("cl_movespeedkey") > 1 ){
+        msg = "[EVASION ON]";
+        msgClr = CLR_DEF_RET_GETLOCK;
+      }
+      else{
+        msg = "[EVASION DISABLED]";
+        msgClr = CLR_DEF_RED;
+      }
+        slen = stringwidth(msg, 0, '12 10 0');
       slen = gui_percentXRaw(slen);
       spos_x = VIEW_CTR_x - slen / 2;
       spos_y = VIEW_CTR_y + gui_percentYRaw(56);
-      drawstring(spos, "[EVASION ON]", '12 10 0', CLR_DEF_RET_GETLOCK, HUD_ALPHA, 0);
+      drawstring(spos, msg, '12 10 0', msgClr, HUD_ALPHA, 0);
     }
     
     //HUD Highlight Boxes

@@ -153,7 +153,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
-  local entity oself, targ_act;
+  local entity otherSelf, targ_act;
   local entity notTarg;
   local float dmgAmt, prevShields;  
   
@@ -272,22 +272,37 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = notTarg;
   }
   
-  dmgTrg.health = dmgTrg.health - dmgAmt;
-
+  if( dmgTrg.health > 0 ){
+    dmgTrg.health = dmgTrg.health - dmgAmt;
+    if( dmgTrg.health < 0){
+      dmgTrg.health = 0;
+    }
+  }
+  
   if( (trg.flags & FL_MONSTER) ){
     if( util_getMechHpAverage( trg ) < 0.25 ){
-      oself = self;
+      otherSelf = self;
       self = trg;
         ai_sfx_dying();
-      self = oself;
+      self = otherSelf;
     }
   }
   
   if( dmgTrg.health <= 0 ){
     if( dmgTrg.th_die ){
       if( dmgTrg.comp_id == M_LEGS ){
-        dmgTrg.owner.m_fspeed = dmgTrg.owner.m_fspeed / 2;
-        dmgTrg.deadflag = DEAD_DYING;
+        if( !(dmgTrg.flags & FL_DISARMED) ){
+          dmgTrg.owner.m_fspeed = dmgTrg.owner.m_fspeed / 2;
+          dmgTrg.owner.m_sspeed = dmgTrg.owner.m_sspeed / 2;
+          dmgTrg.owner.m_bspeed = dmgTrg.owner.m_bspeed / 2;
+          dmgTrg.flags = dmgTrg.flags | FL_DISARMED;
+          if( (dmgTrg.owner.flags & FL_CLIENT) ){
+            otherSelf = self;
+            self = dmgTrg.owner;
+              client_update_moveSpeed(dmgTrg.owner.m_fspeed, dmgTrg.owner.m_sspeed, dmgTrg.owner.m_bspeed, "1", "0"); 
+            self = otherSelf;
+          }
+        }
       }
       else{
         killed(dmgTrg, attacker, dmg_type);     

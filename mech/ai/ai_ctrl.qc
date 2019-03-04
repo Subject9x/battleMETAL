@@ -91,6 +91,11 @@ void() ai_update={
 */
 void() ai_touch={
 
+  if( (other.flags & FL_NODE) ){
+    //ignore nodes straight away, logic for these touches are in ai_nodes
+    return;
+  }
+
   if( other.i_faction == self.i_faction ){
     return;
   }

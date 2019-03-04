@@ -45,7 +45,7 @@ void() click_main_multi={
 
 void() click_main_quit={
   menu_clear_items(M_STATE);
-  cmd("quit");
+  cmd("quit\n");
 };
 
 void() click_main_options={

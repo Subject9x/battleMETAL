@@ -210,6 +210,7 @@ void() building_human_radar={
   self.touch = building_radar_touch;
   self.nextthink = time + 1;
   self.wait = time;
+  
   //allows RADAR to call a specific trigger when it spots something
   if( self.trigOnTarget ){
     if( self.delay == -1 ){
