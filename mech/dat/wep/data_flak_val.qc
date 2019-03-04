@@ -100,7 +100,7 @@ void() data_flak_atk={
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), org, normalize( dir - org ) * 4, 1);
   
   if( vlen(trace_endpos - org) > 100 ){
-    pointparticles( particleeffectnum("TE_FLK_TRACER"), org, normalize( dir - org ) * 4, 1);
+    pointparticles( particleeffectnum("TE_FLK_TRACER"), org, normalize( dir - org ) * 1600, 1);
   }
   
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){

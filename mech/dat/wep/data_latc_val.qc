@@ -88,7 +88,7 @@ void() data_latc_atk={
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   
   if( vlen(dir - org) > 100 ){
-    pointparticles( particleeffectnum("TE_ATC_TRACER"), org, normalize( dir - org ) * 4, 1);
+    pointparticles( particleeffectnum("TE_ATC_TRACER"), org, normalize( dir - org ) * 1400, 1);
   }
   
   if( (trace_dphitcontents & DPCONTENTS_SKY) ){
