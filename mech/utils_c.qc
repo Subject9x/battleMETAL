@@ -126,7 +126,13 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   local vector adj;
   
   //weaponSpread
-  wepAim = normalize( self.owner.laser_sight_org - self.origin );
+  if( (self.owner.flags & FL_MONSTER) ){
+    wepAim = normalize( self.owner.enemy.e_cam.origin - self.origin );
+  }
+  else{
+    wepAim = normalize( self.owner.laser_sight_org - self.origin ); 
+  }
+ 
   makevectors( viewAngle );
   
   adj = self.c_ofs + self.w_fire_ofs;

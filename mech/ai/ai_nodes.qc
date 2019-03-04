@@ -121,20 +121,7 @@ void() node_patrol_touch={
   local entity node;
   local entity thisNode;
   thisNode = self;
-  
-  if( ai_valid_target(other.enemy) ){
-    return;
-  }
-  
-  if( other.movetarget != self ){
-    return;
-  }
-
-  if( self.ai_node_recall || (self.ai_node_recall != world) ){
-    //AI is currently chasing down a target / or resetting
-    return;
-  }
-  
+    
   if( (other.flags & (FL_UNIT)) ){
     if( time > other.pausetime ){ 
       if( self.i_faction == other.i_faction ){
@@ -190,22 +177,42 @@ void() node_touch={
   if( !self.isActive ){
     return;
   }
+  dprint("self.isActive\n"); //DEBUG
   
   if( (other.flags & FL_MONSTER) ){
-    switch( self.data_idx ){
-      case AI_NODE_PATROL:
-        node_patrol_touch();
-        break;
-      case AI_NODE_DEFEND:
-        //TODO - defend node behavior?
-        break;
-      case AI_NODE_ATTACK:
-        //TODO - attack node behavior?
-        break;
-      case AI_NODE_RECALL:
-        node_recall_touch();
-        break;
+    dprint("(other.flags & FL_MONSTER)\n"); //DEBUG
+    
+    if( ai_valid_target(other.enemy) ){
+      return;
     }
+    dprint("!ai_valid_target(other.enemy)\n"); //DEBUG
+     
+    if( other.movetarget != self ){
+      return;
+    }
+    dprint("other.movetarget == self\n"); //DEBUG
+
+    if( (self.ai_node_recall.flags & FL_NODE) || (self.ai_node_recall != world) ){
+      //AI is currently chasing down a target / or resetting
+      return;
+    }
+    dprint("self.ai_node_recall.flags & FL_NODE\n"); //DEBUG
+    
+
+      switch( self.data_idx ){
+        case AI_NODE_PATROL:
+          node_patrol_touch();
+          break;
+        case AI_NODE_DEFEND:
+          //TODO - defend node behavior?
+          break;
+        case AI_NODE_ATTACK:
+          //TODO - attack node behavior?
+          break;
+        case AI_NODE_RECALL:
+          node_recall_touch();
+          break;
+      }
   }
   
   if( (self.spawnflags & NODE_SPAWN_REMOVEONTOUCH) ){

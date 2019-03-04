@@ -371,6 +371,17 @@ void(void() data_ini) build_mech_bot={
     self.e_legs.attack_state = TR_NORM;
     self.ai_dir = self.angles_y;
   }
+  
+  //speed limits for AI because they change directions instantly :/
+  if( self.m_fspeed > 175 ){
+    self.m_fspeed = 175;
+  }
+  if( self.m_sspeed > 175 ){
+    self.m_sspeed = 175;
+  }
+  if( self.m_bspeed > 175 ){
+    self.m_bspeed = 175;
+  }
   self.m_fspeed = self.m_fspeed * AI_MECH_MOVE_FACTOR;
   self.m_sspeed = self.m_sspeed * AI_MECH_MOVE_FACTOR;
   self.m_bspeed = self.m_bspeed * AI_MECH_MOVE_FACTOR;

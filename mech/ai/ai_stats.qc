@@ -328,18 +328,18 @@ void() ai_promote={
 */
 float(float rank) ai_pilot_attack_interval={
   local float interval;
-  switch( skill ){
+  switch( rank ){
     case 0:
-      interval = 0.1 + AI_ATTACK_ROK;
+      interval = 0.05 + AI_ATTACK_ROK;
       break;
     case 1:
-      interval = 0.2 + AI_ATTACK_REG;
+      interval = 0.1 + AI_ATTACK_REG;
       break;
     case 2:
-      interval = 0.3 + AI_ATTACK_VET;
+      interval = 0.2 + AI_ATTACK_VET;
       break;
     case 3:
-      interval = 0.4 + AI_ATTACK_ACE;
+      interval = 0.3 + AI_ATTACK_ACE;
       break;
   }
   return interval;
@@ -365,13 +365,13 @@ vector( float rank, vector spread ) ai_pilot_accuracy={
       modRate = modRate * AI_CNV_RATE_ROK;
       break;
     case SKILL_REG:
-      modMin = modMin * 1;
-      modMax = modMax * 1;
+      modMin = modMin * AI_CNV_MIN_REG;
+      modMax = modMax * AI_CNV_MAX_REG;
       modRate = modRate * AI_CNV_RATE_REG;
       break;
     case SKILL_VET:
       modMin = modMin * AI_CNV_MIN_VET;
-      modMax = modMax *AI_CNV_MAX_VET;
+      modMax = modMax * AI_CNV_MAX_VET;
       modRate = modRate * AI_CNV_RATE_VET;
       break;
     case SKILL_ELT:

@@ -211,7 +211,7 @@ void() ai_tank_sk_fight_prep={
         if( enemy_infront){
           if( self.ai_rank > AI_RANK_REG ){
             self.lefty = self.lefty * -1;
-            self.ai_dir = self.lefty * ( 35 + (random() * 45));
+            self.ai_dir = self.lefty * ( 25 + (random() * 30));
             macro_ai_frame(ai_tank_sk_flank1)
             return;
           }
@@ -241,7 +241,7 @@ void() ai_tank_sk_fight_prep={
               return;
             }
             self.lefty = self.lefty * -1;
-            self.ai_dir = self.lefty * ( 35 + (random() * 45));
+            self.ai_dir = self.lefty * ( 25 + (random() * 30));
             macro_ai_frame(ai_tank_sk_flank1)
             return;
           }
@@ -276,7 +276,7 @@ void() ai_tank_sk_fight_prep={
         if( enemy_infront){
           if( self.ai_rank > AI_RANK_REG ){
             self.lefty = self.lefty * -1;
-            self.ai_dir = self.lefty * ( 35 + (random() * 45));
+            self.ai_dir = self.lefty * ( 25 + (random() * 30));
             macro_ai_frame(ai_tank_sk_flank1)
             return;
           }
@@ -392,6 +392,7 @@ void() ai_tank_sk_charge1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
 
+  dprint("ai_tank_sk_charge1\n"); //DEBUG
   ai_face_targ();
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed ) ;
@@ -549,9 +550,12 @@ void() ai_tank_sk_charge10={
 void() ai_tank_sk_flank1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
+  dprint("ai_tank_sk_flank1\n"); //DEBUG
   
-  ai_face_targ();
-  ai_yaw_move( self.ai_dir, self.m_fspeed * AI_RUN_FACTOR);
+  self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank2)
@@ -559,9 +563,11 @@ void() ai_tank_sk_flank1={
 void() ai_tank_sk_flank2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-  
-  ai_face_targ();
-  ai_yaw_move( self.ai_dir, self.m_fspeed * AI_RUN_FACTOR);
+    
+  self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank3)
@@ -569,9 +575,11 @@ void() ai_tank_sk_flank2={
 void() ai_tank_sk_flank3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-  
-  ai_face_targ();
-  ai_yaw_move( self.ai_dir, self.m_fspeed * AI_RUN_FACTOR);
+    
+  self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank4)
@@ -579,9 +587,11 @@ void() ai_tank_sk_flank3={
 void() ai_tank_sk_flank4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-  
-  ai_face_targ();
-  ai_yaw_move( self.ai_dir, self.m_fspeed * AI_RUN_FACTOR);
+    
+  self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank5)
@@ -589,9 +599,11 @@ void() ai_tank_sk_flank4={
 void() ai_tank_sk_flank5={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-  
-  ai_face_targ();
-  ai_yaw_move( self.ai_dir, self.m_fspeed * AI_RUN_FACTOR);
+    
+  self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank6)
@@ -599,9 +611,11 @@ void() ai_tank_sk_flank5={
 void() ai_tank_sk_flank6={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-  
-  ai_face_targ();
-  ai_yaw_move( self.ai_dir, self.m_fspeed * AI_RUN_FACTOR);
+    
+  self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank7)
@@ -609,9 +623,11 @@ void() ai_tank_sk_flank6={
 void() ai_tank_sk_flank7={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-  
-  ai_face_targ();
-  ai_yaw_move( self.ai_dir, self.m_fspeed * AI_RUN_FACTOR);
+    
+  self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank8)
@@ -619,9 +635,11 @@ void() ai_tank_sk_flank7={
 void() ai_tank_sk_flank8={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-  
-  ai_face_targ();
-  ai_yaw_move( self.ai_dir, self.m_fspeed * AI_RUN_FACTOR);
+    
+  self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
+  ai_move_turn();
+  walkmove( self.angles_y, self.m_fspeed );
   ai_attack();
   
   macro_ai_frame_count(ai_tank_sk_flank1)
@@ -637,6 +655,7 @@ void() ai_tank_sk_flank8={
 void() ai_tank_sk_strafe1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
+  dprint("ai_tank_sk_strafe1\n"); //DEBUG
   
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -762,6 +781,7 @@ void() ai_tank_sk_strafe8={
 void() ai_tank_sk_juke1={
   ai_update_accuracy(TRUE);
   macro_ai_update(ctrl_updateTank)
+  dprint("ai_tank_sk_juke1\n"); //DEBUG
   
   ai_face_targ();
   walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
@@ -862,6 +882,7 @@ void() ai_tank_sk_juke10={
 void() ai_tank_sk_reverse1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
+  dprint("ai_tank_sk_reverse1\n"); //DEBUG
   
   self.ideal_yaw = anglemod( self.ai_dir + 180);
   ai_move_turn();
@@ -982,6 +1003,7 @@ void() ai_tank_sk_rotate1={
   
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
+  dprint("ai_tank_sk_rotate1\n"); //DEBUG
   
   tempYaw = self.yaw_speed;  //tanks be slow on stationary turning;
   self.yaw_speed = self.yaw_speed * 0.67;
@@ -1175,6 +1197,7 @@ void() ai_tank_sk_hunt1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  dprint("ai_tank_sk_hunt1\n"); //DEBUG
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){

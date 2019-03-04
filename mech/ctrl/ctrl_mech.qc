@@ -67,11 +67,10 @@ void() ctrl_updateCenterTorso={
     if(my < 0){
       my = my * -1;
     }
-    
+    rate = self.spreadDefault_z;
     //accuracy / spread mechanics
     if( (my != 0) || (mx != 0) ) {
       //unit is moving, increase spread factor
-      rate = self.spreadDefault_z;
       if( !self.stat_rdr_mode ){
         rate = rate + ( rate * 0.5 );
       }
@@ -83,7 +82,6 @@ void() ctrl_updateCenterTorso={
     }
     if( (my == 0) && (mx == 0) ){
       //standing still, lessen the spread
-      rate = self.spreadDefault_z;
       if( self.stat_rdr_mode ){
         rate = rate + (rate * 0.25);
       }

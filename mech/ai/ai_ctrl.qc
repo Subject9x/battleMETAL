@@ -81,6 +81,9 @@ void() ai_update={
   }
   else{ 
     self.enemy = world;
+    if( self.e_tor_c.attack_state != TR_NORM ){
+      ai_turret_set_state( TR_NORM );
+    }
   }
   ai_ranged_attack();
   self.button0 = 0;
@@ -206,19 +209,17 @@ void( float alt_low, float alt_max) ai_fly_update={
 void( float move ) ai_update_accuracy={
   local float rate;
   rate = self.spreadDefault_z;
-  if( move ){
-    if( self.stat_rdr_mode ){
-      rate = rate - ( rate * 0.25 );
-    }
+  if( move ){      
+    //unit is moving, increase spread factor
+    rate = rate - self.accuracyMod;
     self.accuracy = self.accuracy + rate;
     if( self.accuracy > self.spreadDefault_y ){
       self.accuracy = self.spreadDefault_y;
     }
   }
   else{
-    if( self.stat_rdr_mode ){
-      rate = rate - ( rate * 0.4 );
-    }
+    //standing still, lessen the spread
+    rate = rate + self.accuracyMod;
     self.accuracy = self.accuracy - rate;
     if( self.accuracy < self.spreadDefault_x ){
       self.accuracy = self.spreadDefault_x;
