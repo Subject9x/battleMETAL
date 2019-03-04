@@ -11,8 +11,8 @@ Overview:
 
 //HUMAN SURVIVORS TANK LIGHT=============================
 
-string DAT_foslager_PITCH_N = "-25";
-string DAT_foslager_PITCH_X = "45";
+float DAT_foslager_PITCH_N = -25;
+float DAT_foslager_PITCH_X = 45;
 
 //CAMERA
 float DAT_foslager_CAM_CNAME= -1;

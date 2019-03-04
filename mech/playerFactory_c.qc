@@ -73,6 +73,7 @@ void() player_makeMech={
   client_update_moveSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
   client_update_viewBob(self.m_bob, self.m_bcycle, self.m_bup);
   client_update_modelBob(self.m_bmodel, self.m_bside, self.m_bobspd);
+  client_update_viewPitch( self.m_pitch_min, self.m_pitch_max );
 };
 
 void() player_unmakeMech={

@@ -9,10 +9,10 @@ Overview:
   size    : large
 */
 
-//HUMAN SURVIVORS TANK LIGHT=============================
+//HUMAN SURVIVORS TANK HEAVY=============================
 
-string DAT_TROWEL_PITCH_N = "-25";
-string DAT_TROWEL_PITCH_X = "45";
+float DAT_TROWEL_PITCH_N = -25;
+float DAT_TROWEL_PITCH_X = 45;
 
 //CAMERA
 float DAT_TROWEL_CAM_CNAME= -1;

@@ -9,8 +9,8 @@ Overview:
   size    : medium
 */
 
-string DAT_onnek_PITCH_N = "-25";
-string DAT_onnek_PITCH_X = "45";
+float DAT_onnek_PITCH_N = -25;
+float DAT_onnek_PITCH_X = 45;
 
 vector DAT_onnek_CAM_OFFSET = '-5 3 10';
 vector DAT_onnek_CAM_OFFSET_ALT = '0 0 0';

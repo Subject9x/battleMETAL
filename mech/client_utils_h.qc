@@ -63,4 +63,4 @@ void(entity client, float trackNum, float entFlags) client_sendMusic;
 void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed;
 void(string bob, string cycle, string up) client_update_viewBob;
 void(string bobmodel, string side, string bmod_speed) client_update_modelBob;
-void(string p_max, string p_min) client_update_viewPitch;
+void(float p_max, float p_min) client_update_viewPitch;

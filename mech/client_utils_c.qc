@@ -479,11 +479,11 @@ void(string bobmodel, string side, string bmod_speed) client_update_modelBob={
   stuffcmd(self, comd );
 };
 
-void(string p_max, string p_min) client_update_viewPitch={
+void(float p_min, float p_max) client_update_viewPitch={
   local string comd;
   
-  comd = strcat("in_pitch_max ", p_max, " \n ");
-  comd = strcat(comd, "in_pitch_min ", p_min, "\n");
+  comd = strcat("in_pitch_max ", ftos(p_max), " \n ");
+  comd = strcat(comd, "in_pitch_min ", ftos(p_min), " \n");
   
   stuffcmd(self, comd);
 };

@@ -16,8 +16,8 @@ float DAT_OTL_WEP2_GROUP= 1;
 float DAT_OTL_WEP3_GROUP= 2;
 
 string DAT_OTL_M_ROLLANGLE  = "2";
-string DAT_OTL_M_PITCH_N    = "90";
-string DAT_OTL_M_PITCH_X    = "-90";
+float DAT_OTL_M_PITCH_N    = 40;
+float DAT_OTL_M_PITCH_X    = -50;
 string DAT_OTL_M_BOB        = "0.0008";
 string DAT_OTL_M_BCYCLE     = "0.5";
 string DAT_OTL_M_BUP        = "0.15";

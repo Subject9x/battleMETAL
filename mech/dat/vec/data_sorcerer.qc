@@ -11,8 +11,8 @@ Overview:
 
 //HUMAN SURVIVORS TANK LIGHT=============================
 
-string DAT_sorcerer_PITCH_N = "-25";
-string DAT_sorcerer_PITCH_X = "45";
+float DAT_sorcerer_PITCH_N = -25;
+float DAT_sorcerer_PITCH_X = 45;
 
 //CAMERA
 float DAT_sorcerer_CAM_CNAME= -1;

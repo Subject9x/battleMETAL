@@ -25,8 +25,8 @@ float DAT_MNT_WEP1_GROUP= 1;
 
 //this is mostly cosmetics
 string DAT_MNT_M_ROLLANGLE= "2.25";
-string DAT_MNT_M_PITCH_N  = "90";
-string DAT_MNT_M_PITCH_X  = "-90";
+float DAT_MNT_M_PITCH_N  = 45;
+float DAT_MNT_M_PITCH_X  = -25;
 string DAT_MNT_M_BOB      = "0.03";
 string DAT_MNT_M_BCYCLE   =  "0.85";
 string DAT_MNT_M_BUP      = "0.5";

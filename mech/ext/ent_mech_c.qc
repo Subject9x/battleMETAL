@@ -34,8 +34,8 @@ commented vars mean they're already implemented and are here for reference!
 .float accuracy; 
 
 .float turret_yaw_speed;
-.string m_pitch_min;
-.string m_pitch_max;
+.float m_pitch_min;
+.float m_pitch_max;
 
 //child entites
 .entity e_legs;

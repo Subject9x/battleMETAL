@@ -113,28 +113,37 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
 /*
   RENDER TORSO PITCH INDICATOR
 */
-void(vector pos, float algn, float pitchVal, float pitch_max, float pitch_min) hud_renderPitchIndicator={
-  local float pcur, perc;
+void(vector pos, float algn) hud_renderPitchIndicator={
+  local float pcur, perc, pmax, pmin;
   local vector ofs;
   
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
   
-  pcur = pitchVal;
-  if(pcur > -1){
-    perc = (pcur / pitch_max) * 100;
+  pmax = HUD_PITCH_MAX * -1;
+  pmin = HUD_PITCH_MIN * -1;
+
+  pcur = input_angles_x;
+  if( pcur < 0 ){
+    //min is up
+    pcur = pcur * -1;
+    perc = (pcur / pmin) * 100;
   }
   else{
-    pitch_min = pitch_min * -1;
-    pcur = pcur *-1;
-    perc = (pcur / pitch_min) * 100;
-    perc = perc * -1;
+    perc = (pcur / pmax) * 100;
   }
+  
+  
   ofs = gui_percentToPixelRawVec('2 13');
   ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_TOP), pos);
   gui_renderMeter(perc, ofs, gui_percentToPixelRawVec('4 26'), '-1 0 0', HUD_COLOR_DEF, HUD_ALPHA, 0, AXIS_V, 0);
   drawfill((ofs - gui_percentToPixelRawVec('0 0')), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);
   drawfill((ofs + gui_percentToPixelRawVec('0 52')), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+
+  if( cvar("developer") ){
+    drawstring('100 250', ftos(input_angles_x), '8 8', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  }
+  
 };
 
 /*
@@ -1062,7 +1071,7 @@ void() data_hud_frame={
     }
   }
 
-  hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY), input_angles_x * -3, 270, -270);
+  hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
   hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_i_faction, CLIENT_target_faction, CLIENT_target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
   

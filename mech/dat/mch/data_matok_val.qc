@@ -28,8 +28,8 @@ float DAT_MTK_WEP5_GROUP= 3;
 //this is mostly cosmetics
 
 string DAT_MTK_M_ROLLANGLE="2.25";
-string DAT_MTK_M_PITCH_N="90";
-string DAT_MTK_M_PITCH_X="-90";
+float DAT_MTK_M_PITCH_N = 55;
+float DAT_MTK_M_PITCH_X = -45;
 string DAT_MTK_M_BOB = "0.0008";
 string DAT_MTK_M_BCYCLE =  "0.5";
 string DAT_MTK_M_BUP = "0.5";

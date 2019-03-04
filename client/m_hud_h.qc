@@ -64,6 +64,9 @@ float UI_DATA_WEPBIT[32];
 
 //==========================================
 
+float HUD_PITCH_MIN;
+float HUD_PITCH_MAX;
+
 string HUT_RET_PIP_HRZ;
 string HUT_RET_PIP_VRT;
 string HUT_RET_LOK;
@@ -96,7 +99,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair5;
 void(float hitDirBit) hud_renderDirectionHit;
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection;
-void(vector pos, float algn, float pitchVal, float pitch_max, float pitch_min) hud_renderPitchIndicator;
+void(vector pos, float algn) hud_renderPitchIndicator;
 void(vector pos, float algn, float val) hud_renderReticleRange;
 void(vector pos, float algn, vector angle) hud_renderNavHeading;
 void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderShield;

@@ -540,8 +540,13 @@ void(string s) CSQC_Parse_StuffCmd =
     if( argv(0) == "fog" ){
       cl_get_new_fog( s );
     }
-    if( argv(0) == "cd" ){  
+    else if( argv(0) == "cd" ){  
       cl_get_new_music( s ) ;
+    }
+    else if( argv(0) == "in_pitch_max" ){
+      HUD_PITCH_MAX = stof(argv(1));
+      HUD_PITCH_MIN = stof(argv(3));
+      localcmd(s);
     }
     else{
       localcmd(s);

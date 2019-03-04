@@ -262,11 +262,11 @@ vector DAT_PSC_VTOLL_WEP2_OFFSET= '9 -6 28';
 //            PITCH?
 //============================
 //-------------------------Dunerunner
-string DAT_dunerunner_PITCH_N  = "-25";
-string DAT_dunerunner_PITCH_X  = "25";
+float DAT_dunerunner_PITCH_N  = -25;
+float DAT_dunerunner_PITCH_X  = 25;
 //-------------------------VTOL
-string DAT_vtol_PITCH_N        = "-45";
-string DAT_vtol_PITCH_X        = "15";
+float DAT_vtol_PITCH_N        = -45;
+float DAT_vtol_PITCH_X        = 15;
 //============================
 //         VEHICLE SIZE
 //============================

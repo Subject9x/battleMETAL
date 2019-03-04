@@ -20,6 +20,10 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   damage = dmg_amt;
   shields = targ.sh_cur;
   
+  if( (dmgtype & EFF_STX) ){
+    return t_damage_ene( targ, inflictor, damage );
+  }
+  
   if( shields > 0 ){
     damage = damage - (damage / 2 );
     shields = shields - damage;
