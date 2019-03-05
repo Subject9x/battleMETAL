@@ -310,13 +310,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
       else{
         killed(dmgTrg, attacker, dmg_type);
-        local entity note;
-        note = findchainflags(flags, FL_CLIENT);
-        //TODO - target kill notification
-        while( note ){
-          client_send_hud_target_kill( note );
-          note = note.chain;
-        }
         return dmgTrg;
       }
     }
@@ -424,11 +417,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
       }
     }
 
-    //AI mech / tank death trigger fix
-    if( (self.data_type == DATA_MECH) || (self.data_type == DATA_VEHC) || (self.data_type == DATA_BLD)){
-      self.ladder_entity = attacker;
-    }
-    
     self.enemy = attacker;
     
     self.takedamage = DAMAGE_NO;
@@ -444,6 +432,18 @@ void(entity targ, entity attacker, float dmg_type) killed={
     }*/
     
     self.doobits = 0;
+    
+    if( (self.flags & FL_UNIT) || (self.data_type == DATA_BLD) ){      
+      local entity note;
+      note = findchainflags(flags, FL_CLIENT);
+      while( note ){
+        if( note.enemy = self ){
+          client_send_hud_target_kill( note );
+        }
+        note = note.chain;
+      }
+    }
+      
     
     if( (self.classname == MECH_PIECE) && (self.comp_id != -1) ){
       local entity wep;
