@@ -141,7 +141,7 @@ void(vector ofs) menu_briefMapPanel={
     drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec(ui_msize_in), '1 1 1', 1, 0);
   }
   else{
-    drawstring(iofs + gui_percentToPixelRawVec('18 18'), "Satellite Data \n unavailable", '12 12 0', '1 0 0', 1, 0);
+    gui_wrapText(iofs + gui_percentToPixelRaw(ui_msize_in_x / 4.75, ui_msize_in_y / 3) , '210 32', "Satellite Data |  unavailable", '12 12 0', '1 0 0', 1);
   }
 
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
