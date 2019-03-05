@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 04/14/2018
 Overview: Made the csqc color constants defs into a /common/ file

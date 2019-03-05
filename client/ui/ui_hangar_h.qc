@@ -17,7 +17,7 @@ Overview: ui header file the hangar menu
   float DISP_MAX_ARM_ST = 1200;
   float DISP_MAX_ARM_AR = 1200;
   float DISP_MAX_ARM_LG = 1500;
-  float DISP_MAX_RAD_RANGE = 9000;
+  float DISP_MAX_RAD_RANGE = 2000;
 //might as well go wild with the globals
   float MECHLIST_LIGHT_ARR[GAME_TOTAL_MECHS];
   float MECHLIST_LIGHT_VAL[GAME_TOTAL_MECHS];

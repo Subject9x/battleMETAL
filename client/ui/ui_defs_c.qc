@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/8/2017
 Overview:  class file for ui system
@@ -367,7 +367,7 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
     drawpic(pofs + gui_percentToPixelRawVec('120 0'), UI_WEP_EXP, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, 1, 0);
   }
   if((types & DMG_MSC)){
-    drawpic(pofs + gui_percentToPixelRawVec('140 0'), UI_WEP_MSC, gui_percentToPixelRawVec('16 16'), CLR_DEF_RET_GETLOCK, 1, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('140 0'), UI_WEP_MSC, gui_percentToPixelRawVec('16 16'), CLR_HUD_PURPLE, 1, 0);
   }
   drawstring(pofs + gui_percentToPixelRawVec('225 4'), ftos(sz), '8 8 0', CLR_DEF_WHITE,1 , 0);
 };

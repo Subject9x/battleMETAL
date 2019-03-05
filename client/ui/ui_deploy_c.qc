@@ -1,8 +1,9 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/26/2017
-    mod 4/9//2017
+    mod 04/09/2017
+    mod 03/05/2019
 Overview: class file for the deployment ui
 */
 
@@ -134,43 +135,49 @@ void(vector ofs) menu_deploy_navInfoPanel={
   drawstring(ofs + gui_percentToPixelRawVec('82 150'), navlbl, '12 12', hclr, 1, 0);
 };
 
-void(vector ofs) menu_deploy_mechInfoPanel={
-  drawpic(ofs + gui_percentToPixel(0.008, 0.19), UI_DEF_BOX_256, gui_percentToPixel(0.1648, 0.0729), CLR_DEF_UI_DEPLOY, 1, 0);
+void(vector ofs) menu_deploy_mechInfoPanel={  
   local float tlen;
-  local vector tpos, spos, t_color;
-  local string type;
+  local vector panelOfs;
+  local vector tpos;
+  local vector spos;
+  local vector t_color;
   
+  local string type;
+ 
+  panelOfs = ofs + gui_percentToPixelRawVec('10 183');
+ 
+  drawpic(panelOfs, UI_DEF_BOX_256, gui_percentToPixelRawVec('210 70'), CLR_DEF_UI_DEPLOY, 1, 0);
+
   tlen = stringwidth("[SELECTED METAL]", 0, '8 8 0');
-  tpos = ofs + gui_percentToPixel(0.0902, 0.1916);
-  tpos_x = tpos_x - gui_percentXRaw((tlen/2));
-  drawstring(tpos, "[SELECTED METAL]", '8 8 0', '1 1 1', 1, 0);
-  spos = ofs + gui_percentToPixel(0.0125, 0.1531);
+  tpos = panelOfs + gui_percentToPixelRawVec('101 4');
+  tpos_x = tpos_x - gui_percentXRaw( (tlen/2) );
+  drawstring(tpos, "[SELECTED METAL]", '8 8 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+  
   if(CLIENT_MENU_sel_mech > 0){
-    drawstring(spos, strcat("[NAME] ", MECH_DATA_NAME), '6 6 0', '1 1 1', 1, 0);
     // MECH SIZE
-    if(MECH_DATA_SIZE == 1){
-      type = "Light";
-      t_color = STATUS_AOK;
+    switch( MECH_DATA_SIZE ){
+      case 1:
+        type = "Light";
+        t_color = CLR_DEF_ARM_ONEQ;
+        break;
+      case 2:
+        type = "Medium";
+        t_color = CLR_DEF_ARM_HALF;
+        break;
+      case 3:
+        type = "Heavy";
+        t_color = CLR_DEF_ARM_OK;
+        break;
     }
-    else if(MECH_DATA_SIZE == 2){
-      type = "Medium";
-      t_color = STATUS_DMG;
-    }
-    else if(MECH_DATA_SIZE == 3){
-      type = "Heavy";
-      t_color = STATUS_REL;
-    }
-    drawstring(spos + gui_percentToPixel(0, 0.0083), "[TYPE] ", '6 6 0', '1 1 1', 1, 0);
-    drawstring(spos + gui_percentToPixel(0.0375, 0.0083),  type, '6 6 0', t_color, 1, 0);
-    drawstring(spos + gui_percentToPixel(0, 0.0166), "[COST] ", '6 6 0', '1 1 1', 1, 0);
-    drawstring(spos + gui_percentToPixel(0.0375, 0.0166),  "0", '6 6 0', t_color, 1, 0);
-    drawstring(spos + gui_percentToPixel(0, 0.025), "[FACTION] ", '6 6 0', '1 1 1', 1, 0);
-    drawstring(spos + gui_percentToPixel(0.0437, 0.025),  "0", '6 6 0', t_color, 1, 0);
-  }
-  else{
-    drawstring(spos, "NO METAL SELECTED!", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-    drawstring(spos + gui_percentToPixel(0, 0.0083), "SELECT ONE FROM THE HANGAR BEFORE", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-    drawstring(spos + gui_percentToPixel(0, 0.0166), "DEPLOYMENT!", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+    spos = panelOfs + gui_percentToPixelRawVec('4 20');
+    drawstring(spos, "[NAME]", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawstring(spos + gui_percentToPixelRawVec('40 -4'), MECH_DATA_NAMES[CLIENT_MENU_sel_mech], '12 12 0', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
+    drawstring(spos + gui_percentToPixelRawVec('0 14'), "[TYPE] ", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawstring(spos + gui_percentToPixelRawVec('40 10'), type, '10 10 0', t_color, 1, 0);
+    //drawstring(spos + gui_percentToPixel(0, 0.0166), "[COST] ", '6 6 0', '1 1 1', 1, 0);
+    //drawstring(spos + gui_percentToPixel(0.0375, 0.0166),  "0", '6 6 0', t_color, 1, 0);
+    //drawstring(spos + gui_percentToPixel(0, 0.025), "[FACTION] ", '6 6 0', '1 1 1', 1, 0);
+    //drawstring(spos + gui_percentToPixel(0.0437, 0.025),  "0", '6 6 0', t_color, 1, 0);
   }
 };
 
