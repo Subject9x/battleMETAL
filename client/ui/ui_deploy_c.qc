@@ -83,25 +83,40 @@ void() navListSelectListener={
 
 //panels
 void(vector ofs) menu_deploy_missionInfoPanel={
-  drawpic(ofs + gui_percentToPixel(0.008, 0.044), UI_DEF_BOX_256, gui_percentToPixel(0.1648, 0.0729), CLR_DEF_UI_DEPLOY, 1, 0);
   local float tlen;
+  local vector panelOfs;
   local vector tpos;
+  local vector namePos;
+  panelOfs = ofs + gui_percentToPixelRawVec('13 36');
+  
+  drawpic(panelOfs, UI_DEF_BOX_256, gui_percentToPixelRawVec('210 70'), CLR_DEF_UI_DEPLOY, 1, 0);
+ 
   tlen = stringwidth("[MISSION STATUS]", 0, '8 8 0');
-  tpos = ofs + gui_percentToPixel(0.0902, 0.048);
+  tpos = panelOfs + gui_percentToPixelRawVec('105 4');
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[MISSION STATUS]", '8 8 0', '1 1 1', 1, 0);
   
   //mission name
-  drawstring(ofs+gui_percentToPixel(0.0109, 0.06), strcat("[NAME]:            ", MSN_NAME), '6 6 0', '1 1 1', 1, 0);
+  drawstring(panelOfs + gui_percentToPixelRawVec('4 16'), "[NAME]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+  namePos = panelOfs + gui_percentToPixelRawVec('0 24');
+  namePos_x = namePos_x + (105 - stringwidth(MSN_NAME, 0, '8 8 0') / 2 );
+  drawstring(namePos, MSN_NAME, '8 8 0', '1 1 1', 1, 0);
+  
   //mission type
-  drawstring(ofs+gui_percentToPixel(0.0109, 0.07), strcat("[TYPE]:            ", MSN_TYPE), '6 6 0', '1 1 1', 1, 0); 
+  drawstring(panelOfs + gui_percentToPixelRawVec('4 36'), "[TYPE]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0); 
+  drawstring(panelOfs + gui_percentToPixelRawVec('52 34'), MSN_TYPE, '8 8 0', '1 1 1', 1, 0); 
+  
   //reserves
-  drawstring(ofs+gui_percentToPixel(0.0109, 0.08), strcat("[RESOURCE POINTS]: ", ftos(AVAILABLE_RESERVE)), '6 6 0', '1 1 1', 1, 0);
+  //drawstring(panelOfs+gui_percentToPixel(0.0109, 0.08), "[RESOURCE POINTS]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+  //drawstring(panelOfs+gui_percentToPixelRawVec('0 0'), ftos(AVAILABLE_RESERVE), '8 8 0', '1 1 1', 1, 0);
+  
   //sector
   //drawstring(ofs+'14 80', strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', '1 1 1', 1, 0);
+  
   //location
   //drawstring(ofs+'14 88', strcat("[LOCATION]:        ", MSN_LOCATION ), '6 6 0', '1 1 1', 1, 0);
-  ////local time
+  
+  //local time
   //drawstring(ofs+'14 96', strcat("[LOCAL TIME]:      ", MSN_LOCALTIME), '6 6 0', '1 1 1', 1, 0);
 };
 
