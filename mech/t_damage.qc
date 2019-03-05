@@ -309,7 +309,14 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
         }
       }
       else{
-        killed(dmgTrg, attacker, dmg_type);     
+        killed(dmgTrg, attacker, dmg_type);
+        local entity note;
+        note = findchainflags(flags, FL_CLIENT);
+        //TODO - target kill notification
+        while( note ){
+          client_send_hud_target_kill( note );
+          note = note.chain;
+        }
         return dmgTrg;
       }
     }

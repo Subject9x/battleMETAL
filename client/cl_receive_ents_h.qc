@@ -20,5 +20,6 @@ void() client_event_navpoint;
 void() client_event_deploypoint;
 void() client_event_objective;
 void() client_event_boundary;
+void() client_event_targ_kill;
 
 void() receive_ent_bindData;

@@ -26,3 +26,4 @@ float TE_NAV_REACH = 98;
 float TE_MSN_BOUND = 99;
 
 float TE_AI_VOICE = 100;
+float TE_TARG_KILL = 101;

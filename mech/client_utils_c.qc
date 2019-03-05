@@ -222,11 +222,20 @@ void( entity client, string voiceMessage ) client_send_ai_voice={
   if( voiceMessage != "" ){
     this = self;
     self = client;
+    msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY);
     WriteByte( MSG_ONE, TE_AI_VOICE );
     WriteString( MSG_ONE, strcat(voiceMessage,"\n"));
     self = this;
   }
+};
+
+void( entity client ) client_send_hud_target_kill={
+  local entity notClient;
+  notClient = self;
+  self = client;
+    te_targ_kill();
+  self = notClient;
 };
 
 /*

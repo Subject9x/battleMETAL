@@ -305,6 +305,12 @@ void() te_nav_reach={
   WriteByte( MSG_ONE, TE_NAV_REACH );
 };
 
+void() te_targ_kill={
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_TARG_KILL );
+};
+
 void(float type) te_objective_complete={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );

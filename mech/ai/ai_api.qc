@@ -483,9 +483,11 @@ void() ai_wep_calcranges={
     self.ai_minrange = AI_RANGE_L;
   }
   if( self.ai_minrange == 0 ){
-    self.flags = self.flags | FL_DISARMED;
+    if( !(self.flags & FL_DISARMED) ){
+      self.flags = self.flags | FL_DISARMED;
+      //TODO - panic
+    }
   }
-  
 };
 
 /*

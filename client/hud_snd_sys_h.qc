@@ -81,4 +81,5 @@ void() te_objective_failed;
 void() te_mission_win;
 void() te_mission_lose;
 void() te_msn_boundary;
+void() te_targ_kill;
 

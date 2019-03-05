@@ -41,6 +41,7 @@ void( entity objective ) client_send_objective;
 void( entity deploy ) client_send_deploypoint;
 
 void( entity client, string voiceMessage ) client_send_ai_voice;
+void( entity client ) client_send_hud_target_kill;
 
 //client command layer
 void( float track, float loop) client_playTrack;

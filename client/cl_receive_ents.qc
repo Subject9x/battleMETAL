@@ -236,6 +236,11 @@ void() client_event_boundary={
   }
 };
 
+
+void() client_event_targ_kill={
+  
+};
+
 void() client_map_cdtrack={
 
 };

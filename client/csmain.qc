@@ -499,6 +499,9 @@ float() CSQC_Parse_TempEntity =
     case TE_AI_VOICE:
       snd_hud_trnsmsn_addtoqueue(ReadString(), 1);
       return TRUE;
+    case TE_TARG_KILL:
+      te_targ_kill();
+      return TRUE;
   } 
 	return FALSE;
 };

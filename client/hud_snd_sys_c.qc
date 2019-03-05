@@ -169,6 +169,10 @@ void() te_nav_reach={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
 };
 
+void() te_targ_kill={
+  snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL, 3);
+};
+
 void( float type ) te_objective_complete={
   switch( type ){
     case 1:
