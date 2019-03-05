@@ -66,6 +66,7 @@ void( vector org, vector angl, vector vel, float total, float debrType) te_debri
     newmis.velocity_x = 100 * crandom();
     newmis.velocity_y = 100 * crandom();
     newmis.velocity_z = 50 + 100 * random();
+    newmis.effects = newmis.effects | EF_NOSHADOW;
     newmis.movetype = MOVETYPE_BOUNCE;
     newmis.solid = SOLID_NOT;
     newmis.avelocity_x = random()*450;
@@ -219,6 +220,7 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.p_lifetime = 10;
   explode.scale = 0.1 + (vecSize / 3);
   explode.alpha = 0.75;
+  explode.effects = explode.effects | EF_NOSHADOW;
   setmodel( explode, "q3mdl/fx/explosions/te_shield_explode.md3");
   setorigin( explode, org);
   te_customflash( org, vecSize * 50, 1, '0.003 0.87 0.22'); 

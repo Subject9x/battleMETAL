@@ -244,7 +244,7 @@ void() navBarListener={
       
       itr = 0;
       idx = 0;
-      while( itr <= 32 ){
+      while( itr < 33 ){
         local float nactive;
         nactive = DEPLOY_POINTS_ACTIVE[itr];
         if( nactive == TRUE ){
@@ -253,10 +253,11 @@ void() navBarListener={
         }
         itr = itr + 1;
       }
+      //this does assume there's at least 1 deploy point on the map for the player...
       DEPLOY_POINT_ID = 0;
-      DEPLOY_POINT_END = idx;
+      DEPLOY_POINT_END = idx - 1;
       CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
-      CLIENT_MENU_nav_pnt = 1;
+      CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
     }
   }
 };

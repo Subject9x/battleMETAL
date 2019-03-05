@@ -27,9 +27,7 @@ void() menu_deployListener={
 void() navSelectListener={
   if ( menu_checkMouseInBounds(cursorpos, DEPLOY_MAP_ORG, gui_percentToPixelRawVec('380 380')) ){
     local entity nav;
-    local float check;
     nav = findchainfloat(data_type, DATA_DEPL);
-    check = 1;
     while(nav){
       if(nav.isActive){
         if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size)){
@@ -39,7 +37,6 @@ void() navSelectListener={
           CLIENT_MENU_nav_pnt = -1;
         }
       }
-      check = check + 1;
       nav = nav.chain;
     }
     if(CLIENT_MENU_nav_pnt > 0){
@@ -59,18 +56,18 @@ void() navListSelectListener={
   if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('188 135'), gui_percentToPixelRawVec('20 44')) ){
     DEPLOY_POINT_ID = DEPLOY_POINT_ID + 1;
     if(DEPLOY_POINT_ID > DEPLOY_POINT_END){
-      DEPLOY_POINT_ID = DEPLOY_POINT_END;
+      DEPLOY_POINT_ID = 0;
     }
     CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
   }
   if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('15 135'), gui_percentToPixelRawVec('20 44')) ){
     DEPLOY_POINT_ID = DEPLOY_POINT_ID - 1;
     if( DEPLOY_POINT_ID < 0 ){
-      DEPLOY_POINT_ID = 0;
+      DEPLOY_POINT_ID = DEPLOY_POINT_END;
     }
     CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
   }
-  if(CLIENT_MENU_nav_pnt > 0){
+  if(CLIENT_MENU_nav_pnt > -1){
     if( !(LAUNCH_VALIDATION & VALID_NODE) ){
       LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
     }
@@ -116,14 +113,12 @@ void(vector ofs) menu_deploy_navInfoPanel={
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
   drawstring(tpos, "[SELECTED DROP POINT]", '8 8 0', '1 1 1', 1, 0);
 
-  if( CLIENT_MENU_nav_pnt != DEPLOY_POINT_END){
-    drawstring(ofs + gui_percentToPixelRawVec('180 125'), "[Next]", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-    drawpic(ofs + gui_percentToPixelRawVec('188 135'), HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
-  }
-  if( CLIENT_MENU_nav_pnt != 1){
-    drawstring(ofs + gui_percentToPixelRawVec('15 125'), "[Prev]", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-    drawpic(ofs + gui_percentToPixelRawVec('15 135'), HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
-  }
+  drawstring(ofs + gui_percentToPixelRawVec('180 125'), "[Next]", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  drawpic(ofs + gui_percentToPixelRawVec('188 135'), HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
+
+  drawstring(ofs + gui_percentToPixelRawVec('15 125'), "[Prev]", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  drawpic(ofs + gui_percentToPixelRawVec('15 135'), HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
+
   //current spawn point
   local string navlbl;
   local vector hclr;
@@ -195,7 +190,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec('380 380'), '1 1 1', 1, 0);
   }
   else{
-    drawstring(iofs + gui_percentToPixelRawVec('25 25'), "Satellite Data unavailable", '12 12', '1 0 0', 1, 0);
+    gui_wrapText(iofs + gui_percentToPixelRaw(380/ 3.85, 380 / 2.5) , '210 32', "Satellite Data |  unavailable", '12 12 0', '1 0 0', 1);
   }
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
@@ -242,8 +237,6 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     itr = itr + 1;
   }
 
-  
-  
   if( (cvar("coop")) || (cvar("deathmatch")) ){
     local entity player;
     player = findchainflags(flags, FL_CLIENT);

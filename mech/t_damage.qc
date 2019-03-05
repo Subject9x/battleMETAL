@@ -437,7 +437,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
       local entity note;
       note = findchainflags(flags, FL_CLIENT);
       while( note ){
-        if( note.enemy = self ){
+        if( note.enemy == self ){
           client_send_hud_target_kill( note );
         }
         note = note.chain;
