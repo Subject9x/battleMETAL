@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/31/2016
 mod: 11/27/2017 - data system refactor
@@ -26,7 +26,7 @@ Overview: builds player vehicle
   //self.view_ofs = self.origin - follow.origin;
   //self.angles = follow.angles;
   //self.v_angle = self.angles - follow.angles;
-  self.th_die = ctrl_die_comp;
+  self.th_die = ctrl_component_die;
   self.colormod = '1 1 1';
   setattachment(self, follow, "tag_tor_l");
 };*/
@@ -48,7 +48,7 @@ void(void() func, entity own) build_unit_component={
   self.view_ofs = self.origin - follow.origin;
   self.angles = follow.angles;
   self.v_angle = self.angles - follow.angles;
-  self.th_die = ctrl_die_comp;
+  self.th_die = ctrl_component_die;
   self.colormod = '1 1 1';
 };
 
@@ -402,7 +402,7 @@ entity( void() func ) build_unit_turret={
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.angles = this.angles;
     self.owner = this;
-    self.th_die = ctrl_die_comp;
+    self.th_die = ctrl_component_die;
     self.attack_state = TR_NORM;
     self.colormod = '1 1 1';
   self = this;
@@ -480,6 +480,11 @@ entity(void() func) build_mech_legs={
     self.th_stand = leg_stand1;
     self.th_walk = leg_walk1;
     self.th_die = leg_die1;
+    //we pack the unit's original speed values here, to allow us to restore them if the unit repairs its legs
+    self.m_fspeed = this.m_fspeed;
+    self.m_bspeed = this.m_bspeed;
+    self.m_sspeed = this.m_sspeed;
+    self.m_maccel = this.m_maccel;
     if( this.data_type == DATA_MECH ){
       leg_stand1();
     }

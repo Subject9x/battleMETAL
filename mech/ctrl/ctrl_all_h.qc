@@ -11,7 +11,9 @@ void() ctrl_updateCenterTorso;
 void() ctrl_updateLegs;
 void() ctrl_dieLegs;
 void() ctrl_die_weapon;
-void() ctrl_die_comp;
+void() ctrl_component_die;
+void() ctrl_component_burn;
+void() ctrl_component_drop;
 
 void() touch_mech;
 void() touch_mechPiece;

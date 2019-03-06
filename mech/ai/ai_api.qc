@@ -92,6 +92,30 @@ float( entity t ) ai_line_of_sight={
   return TRUE;
 };
 
+
+void( entity t ) ai_call_for_help={
+  local float allies;
+  local entity ally;
+  
+  ally = findchainflags( flags, FL_MONSTER );
+  while( ally ){
+    if( ai_valid_target(ally) ){
+      if( vlen( ally.origin - self.origin ) <= self.ai_view ){
+        if( ally != self ){
+          if( (ally.flags & FL_UNIT) && !(ally.flags & FL_DISARMED)){
+            ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
+            allies = allies + 1;
+          }
+        }
+      }
+    }
+    ally = ally.chain;
+  }
+  if( allies ){
+    ai_sfx_help();
+  }
+}; 
+
 float(entity t) ai_valid_target={
   local float val;
   val = FALSE;
@@ -315,26 +339,32 @@ void() ai_ranged_attack={
 /*
   How does the AI react to being shot?
 */
-void(entity bot, entity attacker) ai_damage_react={
+float(entity bot, entity attacker) ai_damage_react={
   local entity this, friend;
   local float my_hp;
   local float enemy_hp, enemy_size;
   local float atk_hp, atk_size;
   local float engage;
   
-  my_hp = util_getMechHpAverage(self);
-  atk_hp = util_getMechHpAverage(attacker);
-  atk_size = attacker.vec_size;
+  if( (self.flags & FL_DISARMED) ){
+    ai_sfx_help( attacker );
+    return FALSE;
+  }
   
   if( attacker.i_faction == self.i_faction ){
-    return;
+    return FALSE;
   }
   
   if( !self.enemy ){
     self.enemy = attacker;
     self.th_missile();
-    return;
+    ai_sfx_spotted();
+    return TRUE;
   }
+  
+  my_hp = util_getMechHpAverage(self);
+  atk_hp = util_getMechHpAverage(attacker);
+  atk_size = attacker.vec_size;
   
   if( self.enemy ){
     enemy_hp  = util_getMechHpAverage(self.enemy);
@@ -344,23 +374,24 @@ void(entity bot, entity attacker) ai_damage_react={
         if( ai_check_face( attacker, self.ai_fov) ){
           self.enemy = attacker;
           self.th_missile();
-          return;
+          return TRUE;
         }
       }
       if( atk_size > enemy_size ){
         if( atk_hp < enemy_hp ){
           self.enemy = attacker;
           self.th_missile();
-          return;
+          return TRUE;
         }
       }
     }
     if( ai_check_face( attacker, self.ai_fov) && !ai_check_face( self.enemy, self.ai_fov) ){
       self.enemy = attacker;
       self.th_missile();
-      return;
+      return TRUE;
     }
   }
+  return FALSE;
 };
 
 

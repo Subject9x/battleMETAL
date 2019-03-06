@@ -128,66 +128,30 @@ void() ctrl_updateCenterTorso={
   }
 };
 
-void() ctrl_die_comp={
+void() ctrl_component_die={
   if(self.deadflag <= DEAD_NO){
-    local entity oself, tmp;
-    local vector pvel;
-    local float compType;
-    compType = self.comp_id;
-    oself = self;
-    pvel = self.owner.velocity;
-    newmis = spawn();
-    self = newmis;
-      setorigin(newmis, oself.origin);
-      BecomeExplosion();
-    self = oself;
+    local entity piece;
+    piece = self;
     
-    newmis = spawn();
-    self = newmis;
-      self.angles = oself.angles;
-      if(pvel_x > 0 || pvel_y > 0 || pvel_z > 0){
-        self.velocity = pvel + VelocityForDamage (100);
-        self.avelocity_x = random()*150;
-        self.avelocity_y = random()*150;
-        self.avelocity_z = random()*100;
-      }
-      else{
-        self.velocity = VelocityForDamage (100);
-        self.avelocity_x = random()*150;
-        self.avelocity_y = random()*150;
-        self.avelocity_z = random()*100;
-      }
-      self.th_die = SUB_Remove;
-      self.owner = oself.owner;
-      util_setCollider(DAMAGE_AIM, SOLID_CORPSE, MOVETYPE_BOUNCE);
-      util_setModel(oself.model, oself.owner.skin, 0);
-      setsize(self, '-3 -3 -3', '3 3 3');
-      setorigin(self, oself.origin);
-      self.touch = touch_mechPiece;
-      self.think = BecomeExplosion;
-      self.nextthink = time + 100;
-      self.colormod = oself.colormod;
-      pvel = normalize(self.origin - oself.owner.origin) * 10;
-      pvel_z = pvel_z + 50;
-      te_debris( self.origin, self.angles, normalize(self.origin - oself.owner.origin) * 5, oself.owner.vec_size * 2, self.vec_size); 
-    self = oself;
+    te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
+    te_mech_piece_explode( piece, piece.origin, piece.angles, self.owner.velocity, piece.model, piece.skin );
 
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;
     setsize(self, '0 0 0', '0 0 0');
     setorigin( self, self.origin );
     
-    if(compType == M_TOR_LEFT){
+    if(self.comp_id == M_TOR_LEFT){
       killed(self.owner.e_arm_l, self, 0);
     }
-    else if(compType == M_TOR_RIGHT){
+    else if(self.comp_id == M_TOR_RIGHT){
       killed(self.owner.e_arm_r, self, 0);
     }
     
     local entity c;
     c = self.owner.w_slot;
     while(c){
-      if(c.c_parent == compType){
+      if(c.c_parent == self.comp_id){
         killed(c, self, 0);
       }
       c = c.w_slot;
@@ -201,6 +165,29 @@ void() ctrl_die_comp={
      // }
     }
   }
+};
+
+
+void() ctrl_component_burn={
+  local vector spark;
+  makevectors( self.angles );
+  spark = self.origin + (v_up * 10);
+  pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - self.origin) * 5, self.vec_size * 1.5);
+  self.think = ctrl_component_burn;
+  self.nextthink = time + 0.1;
+  if( time > self.ai_action_time ){
+    self.think = ctrl_component_drop;
+    self.nextthink = time + 0.1;
+    self.ai_action_time = time + 7200;
+    return;
+  }
+};
+
+
+void() ctrl_component_drop={
+
+  self.think = SUB_Remove;
+  self.nextthink = self.ai_action_time;
 };
 
 void() touch_mech={

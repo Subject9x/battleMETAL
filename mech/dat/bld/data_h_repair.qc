@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/21/2018
 Overview: data file for the human repair bay
@@ -58,8 +58,17 @@ void() hrepair_rep = [0, hrepair_rep]{
       
       fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
       self.rl_cur = self.rl_cur - (self.rl_rate * self.trigger_field.vec_size);
-      if(fix.health > fix.max_health){
+      if(fix.health >= fix.max_health){
         fix.health = fix.max_health;
+        if( fix.comp_id == M_LEGS ){
+          if( (fix.flags & FL_DISARMED) ) {
+            fix.flags = fix.flags - (fix.flags & FL_DISARMED);
+            fix.owner.m_fspeed = fix.m_fspeed;
+            fix.owner.m_bspeed = fix.m_bspeed;
+            fix.owner.m_sspeed = fix.m_sspeed;
+            fix.owner.m_maccel = fix.m_maccel;
+          }
+        }
       }
       self.trigger_field.stat_plr_rep = (self.rl_cur / self.rl_max);
     }

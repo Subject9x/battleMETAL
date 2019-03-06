@@ -27,6 +27,8 @@ void( vector explodeColor ) te_object_explode;
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp;
 
+void( entity source, vector org, vector angl, vector vel, string modl, float skinNum ) te_mech_piece_explode;
+
 //SFX
 void() te_nav_reach;
 void( float type ) te_objective_complete;

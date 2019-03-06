@@ -1,7 +1,8 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/6/2016
+mod 03/05/2019
 Overview: header for t_damage class
 
 according to the original source code, there should only be one 
@@ -177,7 +178,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   //reduce friendly fire damage on easier settings
   if(trg.i_faction == attacker.i_faction){
-    if( skill < 0 ){
+    if( skill == 0 ){
       return trg;
     }
     dmgAmt = dmgAmt / 2;
@@ -193,7 +194,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   util_chekPointToHitDir(trg, dmg_point);
   
   if( (attacker.flags & FL_CLIENT) ){
-    attacker.w_proj = time + 0.15;
+    attacker.w_proj = time + 0.2;
     if( !(attacker.hitdir_buffer & STAT_HIT_TRG) ){
       attacker.hitdir_buffer = attacker.hitdir_buffer | STAT_HIT_TRG;
     }
@@ -228,7 +229,16 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = dmgTrg;
     if( self.data_type == DATA_BLD ){
       if( self.data_idx == ID_BLD_H_RADAR ){
-        self.th_missile();
+        if( self.enemy != attacker ){
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.th_missile();
+          self.enemy = self.oldenemy;
+        }
+        else{
+          self.enemy = attacker;
+          self.th_missile();
+        }
       }
     }
     else{
@@ -265,17 +275,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
-  if(dmgTrg.data_type == DATA_BLD){
-    local entity friend;
-    notTarg = self;
-    self = dmgTrg;
-      friend = ai_find_friend( self.radar_range );
-      if( friend ){
-        ai_give_target( friend, attacker, (attacker.flags & FL_CLIENT) ) ;
-      }
-    self = notTarg;
-  }
-  
   if( dmgTrg.health > 0 ){
     dmgTrg.health = dmgTrg.health - dmgAmt;
     if( dmgTrg.health < 0){
@@ -288,6 +287,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       otherSelf = self;
       self = trg;
         ai_sfx_dying();
+        ai_call_for_help();
       self = otherSelf;
     }
   }
@@ -442,8 +442,10 @@ void(entity targ, entity attacker, float dmg_type) killed={
         }
         note = note.chain;
       }
+      if( self.ai_rank > AI_RANK_REG ){
+        ai_call_for_help( attacker );
+      }
     }
-      
     
     if( (self.classname == MECH_PIECE) && (self.comp_id != -1) ){
       local entity wep;

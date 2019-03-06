@@ -326,7 +326,15 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         }
       }
     }
-    
+    //nav points are occluded by player 2D HUD so that the overlap doesn't interfere with reading the HUD
+    if(CLIENT_player_state >= PLAYER_POWERUP_BEGIN){
+      local float itr;
+      itr = 0;
+      while( itr <= 21 ){
+        ui_renderNav( itr );
+        itr = itr + 1;
+      }
+    }
     //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(CLIENT_hp_stor2, 2, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(CLIENT_hp_stor, 4, SND_HUD_VFX_CRITTOR);
@@ -430,7 +438,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     anm_execute_frame();
   }
   
-  if(cvar("mechdev") == TRUE){
+  if( cvar("developer") ){
     local vector viewspot, viewang, porg, pang, torg;
     viewang_x = getstatf(STAT_PLR_ANG_X);
     viewang_y = getstatf(STAT_PLR_ANG_Y);

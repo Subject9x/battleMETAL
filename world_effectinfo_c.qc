@@ -60,9 +60,9 @@ void( vector org, vector angl, vector vel, float total, float debrType) te_debri
   totals = total;
   while( totals > 0 ){
   	newmis = spawn();
-    newmis.origin = self.origin;
     setmodel (newmis, debrisMdl);
     setsize (newmis, '0 0 0', '0 0 0');
+    setorigin(newmis, org);
     newmis.velocity_x = 100 * crandom();
     newmis.velocity_y = 100 * crandom();
     newmis.velocity_z = 50 + 100 * random();
@@ -277,6 +277,47 @@ void( vector explodeColor ) te_object_explode={
   te_missile_explode( exp, self.vec_size, explodeColor, self.vec_size * 1.5, self.vec_size );
 
 };
+
+void( entity source, vector org, vector angl, vector vel, string modl, float skinNum ) te_mech_piece_explode={
+  local entity notChunk;
+  local vector localVel;
+  notChunk = self;
+  
+  localVel = vel;
+  newmis = spawn();
+  self = newmis;
+    self.vec_size = notChunk.owner.vec_size;
+    self.angles = angl;
+    if(localVel_x > 0 || localVel_y > 0 ||localVel_z > 0){
+      self.velocity = vel + VelocityForDamage (100);
+      self.avelocity_x = random()*150;
+      self.avelocity_y = random()*150;
+      self.avelocity_z = random()*100;
+    }
+    else{
+      self.velocity = VelocityForDamage (100);
+      self.avelocity_x = random()*150;
+      self.avelocity_y = random()*150;
+      self.avelocity_z = random()*100;
+    }
+    self.th_die = SUB_Remove;
+    self.owner = notChunk.owner;
+    util_setCollider(DAMAGE_AIM, SOLID_CORPSE, MOVETYPE_BOUNCE);
+    util_setModel(modl, skinNum, 0);
+    setsize(self, '-4 -4 -4', '4 4 4');
+    setorigin(self, notChunk.origin);
+    self.touch = touch_mechPiece;
+    self.think = ctrl_component_burn;
+    self.nextthink = time + (random() * 1);
+    self.ai_action_time = time + (random() * (self.owner.vec_size * 4824));
+    self.colormod = notChunk.colormod;
+    localVel = normalize(self.origin - self.owner.origin) * 10;
+    localVel_z = localVel_z + 50;
+    te_debris( self.origin, self.angles, normalize(self.origin - self.owner.origin) * 5, self.owner.vec_size * 2, self.owner.vec_size);
+  self = notChunk;
+};
+
+
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
     local vector fx, vel;

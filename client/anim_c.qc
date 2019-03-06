@@ -48,6 +48,9 @@ void(string fileToOpen) anm_parseFile={
       if( argv(1) == ANM_FILE_META_TRANS ){
         ANM_META_DATA[3] = strzone(argv(3));
       }
+      if( argv(1) == ANM_FILE_META_SKIP ){
+        ANM_META_DATA[4] = strzone(argv(3));
+      }
       //===================
       //frame data
       if( (argv(1) == ANM_FILE_TAG_IMG) ){
