@@ -148,13 +148,15 @@ entity( float radiius) ai_find_friend={
   
   ally = findchainfloat( i_faction, self.i_faction );
   while( ally ){
-    dist = vlen( ally.origin - self.origin );
-    if( dist <= rad ){
-      rad = dist;
-      if( ai_valid_target(ally) ){
-        //heh, sloppy check for combat units
-        if( ally.w_slot != world ){
-          friend = ally;
+    if( (ally.flags & FL_UNIT) ){
+      dist = vlen( ally.origin - self.origin );
+      if( dist <= rad ){
+        rad = dist;
+        if( ai_valid_target(ally) ){
+          //heh, sloppy check for combat units
+          if( ally.w_slot != world ){
+            friend = ally;
+          }
         }
       }
     }
@@ -195,11 +197,24 @@ float() ai_find_target_visual={
     }
     targ = targ.chain;
   }
-  
+
   if( found ){
-    self.enemy = found;
-    ai_sfx_spotted();
-    return TRUE;
+    if( (self.flags & FL_DISARMED) ){
+      if( self.stat_rdr_mode ){
+        local entity ally;        
+        ai_sfx_help();
+        ally = ai_find_friend( self.radar_range );
+        if( ally ){
+          ai_give_target( ally, found, (ally.ai_rank < self.ai_rank));
+        }
+      }
+      return FALSE;
+    }
+    else{
+      self.enemy = found;
+      ai_sfx_spotted();
+      return TRUE;
+    }
   }
   return FALSE;
 };
@@ -248,9 +263,22 @@ float() ai_find_target_radar={
     targ = targ.chain;
   }
   if( found ){
-    self.enemy = found;
-    ai_sfx_spotted();
-    return TRUE;
+    if( (self.flags & FL_DISARMED) ){
+      if( self.stat_rdr_mode ){
+        local entity ally;        
+        ai_sfx_help();
+        ally = ai_find_friend( self.radar_range );
+        if( ally ){
+          ai_give_target( ally, found, (ally.ai_rank < self.ai_rank));
+        }
+      }
+      return FALSE;
+    }
+    else{
+      self.enemy = found;
+      ai_sfx_spotted();
+      return TRUE;
+    }
   }
   return FALSE;
 };
@@ -359,6 +387,13 @@ float(entity bot, entity attacker) ai_damage_react={
     self.enemy = attacker;
     self.th_missile();
     ai_sfx_spotted();
+    if( self.ai_rank < AI_RANK_VET ){
+      if( util_getMechHpAverage(self) <= 0.25){
+        if( random() <= 0.5 ){
+          self.th_pain( self.enemy );
+        }
+      }
+    }
     return TRUE;
   }
   

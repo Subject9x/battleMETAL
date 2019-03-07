@@ -193,6 +193,20 @@ void() ai_tank_sk_hunt8;
 void() ai_tank_sk_hunt9;
 void() ai_tank_sk_hunt10;
 
+/*
+  th_pain == 'panic'
+*/
+void(entity attacker) ai_tank_sk_panic1;
+void() ai_tank_sk_panic2;
+void() ai_tank_sk_panic3;
+void() ai_tank_sk_panic4;
+void() ai_tank_sk_panic5;
+void() ai_tank_sk_panic6;
+void() ai_tank_sk_panic7;
+void() ai_tank_sk_panic8;
+void() ai_tank_sk_panic9;
+void() ai_tank_sk_panic10;
+
 void() ai_tank_sk_fight_prep={
   local entity nodeRecall;
   
@@ -1357,6 +1371,128 @@ void() ai_tank_sk_hunt10={
 };
 
 /*
+  th_pain == 'panic'
+  unit runs to its nearest node or ally
+  if either are lacking, it'll just run in a rando direction
+*/
+void(entity attacker) ai_tank_sk_panic1={
+  local entity friend;
+  local float vis;
+  
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+  
+  self.ai_dir = self.angles_y;
+  friend = ai_find_friend( self.ai_view );
+  if( friend ){
+    self.goalentity = friend;
+  }
+  else if( self.movetarget ){
+    self.goalentity = self.movetarget;
+  }
+  else{
+    self.goalentity = world;
+    //would we really know the difference?
+  }
+  
+  macro_ai_frame( ai_tank_sk_panic2 )
+};
+void() ai_tank_sk_panic2={
+  local float low, high, tyaw;
+  
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+  
+  high = anglemod( self.angles_y + 45 );
+  low = anglemod( self.angles_y - 45 );
+  tyaw = vectoyaw( self.goalentity.origin - self.origin );
+  
+  if( (tyaw > high) || (tyaw < low) ){
+    self.ideal_yaw = tyaw;
+    ai_move_turn();
+    macro_ai_frame( ai_tank_sk_panic2 )
+    return;
+  }
+  
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  
+  macro_ai_frame( ai_tank_sk_panic3 )
+};
+void() ai_tank_sk_panic3={
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+    movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  macro_ai_frame( ai_tank_sk_panic4 )};
+void() ai_tank_sk_panic4={
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+  
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  
+  macro_ai_frame( ai_tank_sk_panic5 )
+};
+void() ai_tank_sk_panic5={
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+  
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  
+  macro_ai_frame( ai_tank_sk_panic6 )
+};
+void() ai_tank_sk_panic6={
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+ 
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+
+  macro_ai_frame( ai_tank_sk_panic7 )
+};
+void() ai_tank_sk_panic7={
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+  
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  
+  macro_ai_frame( ai_tank_sk_panic8 )
+};
+void() ai_tank_sk_panic8={
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+  
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  
+  macro_ai_frame( ai_tank_sk_panic9 )
+};
+void() ai_tank_sk_panic9={
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+  
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  
+  macro_ai_frame( ai_tank_sk_panic10 )
+};
+void() ai_tank_sk_panic10={
+  ai_update_accuracy( TRUE );
+  macro_ai_update( ctrl_updateTank )
+  
+  macro_ai_frame_count( ai_tank_sk_panic1 )
+  
+  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  
+  if( ai_valid_target(self.enemy) ){
+    macro_ai_frame( ai_tank_sk_fight_prep )
+    return;
+  }
+  
+  if( self.movetarget ){
+    macro_ai_frame( ai_tank_sk_patrol1 )
+    return;
+  }
+  
+  macro_ai_frame( ai_tank_sk_stand1 )
+};
+
+/*
   AI SPAWN FUNCTION
 */
 void() ai_tank_skirmish={
@@ -1383,6 +1519,7 @@ void() ai_tank_skirmish={
   self.th_stand = ai_tank_sk_stand1;
   self.th_walk = ai_tank_sk_patrol1;
   self.th_missile = ai_tank_sk_fight_prep;
+  self.th_pain = ai_tank_sk_panic1;
   self.th_die = ai_tank_sk_die;
   self.touch = ai_touch;
   
