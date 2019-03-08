@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 01/21/2017
 Overview: moving all mech values into a single global file for ease of maintenance.
@@ -12,18 +12,6 @@ Overview: moving all mech values into a single global file for ease of maintenan
 string DAT_MTK_VEC_NAME = "MATOK";
 
 float DAT_MTK_RESERVE_COST = 200;
-
-//WEAOPON GROUPS
-float DAT_MTK_WEP1_IDX= ID_WEP_LATC;
-float DAT_MTK_WEP2_IDX= ID_WEP_LATC;
-float DAT_MTK_WEP3_IDX= ID_WEP_LAS;
-float DAT_MTK_WEP4_IDX= ID_WEP_LAS;
-float DAT_MTK_WEP5_IDX= ID_WEP_ESR;
-float DAT_MTK_WEP1_GROUP= 1;
-float DAT_MTK_WEP2_GROUP= 1;
-float DAT_MTK_WEP3_GROUP= 2;
-float DAT_MTK_WEP4_GROUP= 2;
-float DAT_MTK_WEP5_GROUP= 3;
 
 //this is mostly cosmetics
 

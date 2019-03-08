@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 01/21/2017
 Overview: moving all mech values into a single global file for ease of maintenance.
@@ -8,12 +8,8 @@ Overview: moving all mech values into a single global file for ease of maintenan
 -these are utilized by their relevant data entity and its ini functions
 */
 
-//OUTLAW MECH=============================
+//BALAKET MECH=============================
 float DAT_OTL_RESERVE_COST = 100;
-
-float DAT_OTL_WEP1_GROUP= 1;
-float DAT_OTL_WEP2_GROUP= 1;
-float DAT_OTL_WEP3_GROUP= 2;
 
 string DAT_OTL_M_ROLLANGLE  = "2";
 float DAT_OTL_M_PITCH_N    = 40;

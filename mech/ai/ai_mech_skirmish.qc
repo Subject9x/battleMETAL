@@ -18,6 +18,9 @@ void() ai_mech_sk_die2;
 */ 
 void() ai_mech_sk_die={
   local entity this;
+  local entity w_chain;
+  local vector vel;
+  local vector forg;
   
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
@@ -27,7 +30,6 @@ void() ai_mech_sk_die={
   
   droptofloor();
   
-  local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){
     mech_player_compdie(w_chain);
@@ -54,12 +56,23 @@ void() ai_mech_sk_die={
   trigger_event( self, trigOnDeath );
   
   self.think = ai_mech_sk_die1;
-  self.ai_action_time = time + 300;
-  //basically overkill damage will just remove the mech (nice and clean)
-  if( self.health <= (self.max_health / 1.5) * -1 ){
-    self.think = ai_mech_sk_die2;
-  }
+  self.ai_action_time = time + 600;
   self.nextthink = time + 0.1;
+  
+  makevectors( self.e_tor_c.angles );
+  vel = self.origin + (v_up * 2);
+  forg = self.origin + (v_up * (self.maxs_y / 2) ) + (v_forward * (self.mins_x / 1.5));
+  switch( self.vec_size ){
+    case 2:
+      te_med_flame_start( forg, self.angles, normalize( vel - self.origin ) * 8, self.vec_size, 600, self.vec_size / 20); 
+      break;
+    case 3:
+      te_big_flame_start( forg, self.angles, normalize( vel - self.origin ) * 8, self.vec_size, 600, self.vec_size / 20); 
+      break;
+    default:
+      te_small_flame_start( forg, self.angles, normalize( vel - self.origin ) * 8, self.vec_size, 600, self.vec_size / 20); 
+      break;
+  }
 };
 
 /*
@@ -69,7 +82,6 @@ void() ai_mech_sk_die1={
   makevectors( world.v_angle );
   local vector sm;
   sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
-  te_smoke_test(self.origin, sm + '0 0 5', 3);
   te_smoke_test(self.e_tor_l.origin, sm + '0 0 5', 1);
   te_smoke_test(self.e_tor_r.origin, sm + '0 0 5', 1);
   
@@ -84,7 +96,7 @@ void() ai_mech_sk_die1={
 void() ai_mech_sk_die2={
   mech_cleanupMech();
   self.nextthink = time + 0.1;
-  self.think = BecomeExplosion;
+  self.think = SUB_Null;
 };
 
 /*
@@ -605,7 +617,7 @@ void() ai_mech_sk_patrol16={
 
 void() ai_mech_sk_stand1={
   local entity this;
-  
+
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -808,19 +820,19 @@ void() ai_mech_sk_charge1={
   
   ai_face_targ();
   if( self.lefty > 0 ){
-    otemp = self;
     walkmove( self.angles_y, self.m_fspeed );
-    self.e_legs.attack_state = TR_NORM;
-    self = self.e_legs;
+    otemp = self;
+    self = otemp.e_legs;
+      self.attack_state = TR_NORM;
       bot_leg_walk1();
     self = otemp;
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
     otemp = self;
-    self.e_legs.attack_state = TR_GOAL;
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
-    self = self.e_legs;
+    self = otemp.e_legs;
+      self.attack_state = TR_GOAL;
+      self.ai_dir = anglemod(self.angles_y + 180);
       bot_leg_back1();
     self = otemp;
   }
@@ -1083,14 +1095,14 @@ void() ai_mech_sk_flank1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  self.e_legs.th_walk();
+  
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
   self.e_legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   self.e_legs.attack_state = TR_GOAL;
   otemp = self;
   self = self.e_legs;
-  bot_leg_walk1();
+    bot_leg_walk1();
   self = otemp;
   
   macro_ai_frame(ai_mech_sk_flank2)
@@ -1566,7 +1578,7 @@ void(entity attacker) ai_mech_sk_panic1={
   local float vis;
   
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   self.ai_dir = self.angles_y;
   friend = ai_find_friend( self.ai_view );
@@ -1585,7 +1597,7 @@ void(entity attacker) ai_mech_sk_panic1={
 };
 void() ai_mech_sk_panic2={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
 
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1593,7 +1605,7 @@ void() ai_mech_sk_panic2={
 };
 void() ai_mech_sk_panic3={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1601,7 +1613,7 @@ void() ai_mech_sk_panic3={
 };
 void() ai_mech_sk_panic4={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1609,7 +1621,7 @@ void() ai_mech_sk_panic4={
 };
 void() ai_mech_sk_panic5={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1617,7 +1629,7 @@ void() ai_mech_sk_panic5={
 };
 void() ai_mech_sk_panic6 ={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
  
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
 
@@ -1625,7 +1637,7 @@ void() ai_mech_sk_panic6 ={
 };
 void() ai_mech_sk_panic7={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1633,7 +1645,7 @@ void() ai_mech_sk_panic7={
 };
 void() ai_mech_sk_panic8={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1641,7 +1653,7 @@ void() ai_mech_sk_panic8={
 };
 void() ai_mech_sk_panic9={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1649,7 +1661,7 @@ void() ai_mech_sk_panic9={
 };
 void() ai_mech_sk_panic10={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1657,7 +1669,7 @@ void() ai_mech_sk_panic10={
 };
 void() ai_mech_sk_panic11={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1665,7 +1677,7 @@ void() ai_mech_sk_panic11={
 };
 void() ai_mech_sk_panic12={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1673,7 +1685,7 @@ void() ai_mech_sk_panic12={
 };
 void() ai_mech_sk_panic13={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1681,7 +1693,7 @@ void() ai_mech_sk_panic13={
 };
 void() ai_mech_sk_panic14={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1689,7 +1701,7 @@ void() ai_mech_sk_panic14={
 };
 void() ai_mech_sk_panic15={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
@@ -1697,7 +1709,7 @@ void() ai_mech_sk_panic15={
 };
 void() ai_mech_sk_panic16={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_updateTank )
+  macro_ai_update( ctrl_update_mechplayer )
   
   macro_ai_frame_count( ai_mech_sk_panic1 )
   

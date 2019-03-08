@@ -67,11 +67,6 @@ float enemy_vis;
 float enemy_hunt;
 entity AI_NODES[128];
 
-//UNIT VARIANTS - .style var
-float TYPE_BRAWL  = 1;
-float TYPE_SNIPER = 2;
-float TYPE_SKIRM  = 3;
-
 //ENTITY VARS
 .float ai_rank;
 .float ai_action_time;  //for executing action states
@@ -98,7 +93,6 @@ float TYPE_SKIRM  = 3;
 .string ai_voice_kill;
 .string ai_voice_roger;
 .string ai_voice_help;
-
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc

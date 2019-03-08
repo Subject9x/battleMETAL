@@ -1,12 +1,13 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/22/2016
 Refactor: 12/29/2018
 Overview: 
   old - test animation harness
   
-  
+  worked out animation frame binding for leg models.
+  the leg entities execute the frame macros, whereas leg-state is handled by the controller functions ( ctrl_updateLegs )
 */
 
 /*
@@ -14,7 +15,7 @@ Overview:
   uses FrameStart / end to track between animation groups
 */
 void( entity legs ) anim_leg_control={
-
+  //TODO?
 };
 /*
   Client Leg Animations - Stand
@@ -92,7 +93,7 @@ void() leg_back5=[$l_walk5, leg_back4]{
 
 void() leg_back6=[$l_walk6, leg_back5]{
   self.walkframe = $l_walk6;
-  if((self.owner.flags & FL_ONGROUND)){
+  if( (self.owner.flags & FL_ONGROUND) ){
     sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   }
@@ -105,12 +106,11 @@ void() leg_back7=[$l_walk7, leg_back6]{
 
 void() leg_back8=[$l_walk8, leg_back7]{
   self.walkframe = $l_walk8;
-  if((self.owner.flags & FL_ONGROUND)){
+  if( (self.owner.flags & FL_ONGROUND) ){
     sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
   }
 };
-
 
 
 void() leg_die1 = [$l_die1, leg_die2]{
@@ -140,7 +140,7 @@ void() bot_leg_walk1 = [$l_walk1, bot_leg_walk2]{
 
 void() bot_leg_walk2 = [$l_walk2, bot_leg_walk3]{
   self.frame = $l_walk2;
-  if((self.owner.flags & FL_ONGROUND)){
+  if( (self.owner.flags & FL_ONGROUND) ){
     sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   } 
@@ -156,7 +156,7 @@ void() bot_leg_walk5 = [$l_walk5, bot_leg_walk6]{
 };
 void() bot_leg_walk6 = [$l_walk6, bot_leg_walk7]{
   self.frame = $l_walk6;
-  if((self.owner.flags & FL_ONGROUND)){
+  if( (self.owner.flags & FL_ONGROUND) ){
     sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   }
@@ -174,7 +174,7 @@ void() bot_leg_back1 = [$l_walk1, bot_leg_back8]{
 
 void() bot_leg_back2 = [$l_walk2, bot_leg_back1]{
   self.frame = $l_walk2;
-  if((self.owner.flags & FL_ONGROUND)){
+  if( (self.owner.flags & FL_ONGROUND) ){
     sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   } 
@@ -190,7 +190,7 @@ void() bot_leg_back5 = [$l_walk5, bot_leg_back4]{
 };
 void() bot_leg_back6 = [$l_walk6, bot_leg_back5]{
   self.frame = $l_walk6;
-  if((self.owner.flags & FL_ONGROUND)){
+  if( (self.owner.flags & FL_ONGROUND) ){
     sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
     te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
   }
@@ -202,7 +202,9 @@ void() bot_leg_back8 = [$l_walk8, bot_leg_back7]{
   self.frame = $l_walk8;
 };
 
-
+/*
+  Bot Leg death frames
+*/
 void() bot_leg_die1 = [$l_die1, leg_die2]{
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BBOX;
@@ -213,7 +215,7 @@ void() bot_leg_die4 = [$l_die4, bot_leg_die4]{
   
   self.deadflag = DEAD_DEAD;
   self.think = SUB_Remove;
-  self.nextthink = time + 100;
+  self.nextthink = time + 7200;
 };
 
 void() player_movestart =

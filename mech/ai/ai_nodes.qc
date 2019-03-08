@@ -85,7 +85,7 @@ void() node_recall_delay={
 void() node_recall_touch={
   local entity this;
   if( (other == self.owner) && (self.owner.deadflag == DEAD_NO) ){
-    if( other.goalentity = self ){
+    if( other.goalentity == self ){
       this = self;
       self = other;
         self.ai_node_recall = world;

@@ -131,6 +131,8 @@ void() ctrl_updateCenterTorso={
 void() ctrl_component_die={
   if(self.deadflag <= DEAD_NO){
     local entity piece;
+    local entity this;
+    
     piece = self;
     
     te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
@@ -159,14 +161,15 @@ void() ctrl_component_die={
     
     self.health = 0;
     
-    if((self.owner.flags & FL_MONSTER)){
-      //if( ai_core_noguns()){
-        //TODO - panic behavior
-     // }
+    if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
+      //if the bot loses all guns, have it panic
+      this = self;
+      self = self.owner;
+        self.th_pain( self.owner.enemy );
+      self = this;
     }
   }
 };
-
 
 void() ctrl_component_burn={
   local vector spark;

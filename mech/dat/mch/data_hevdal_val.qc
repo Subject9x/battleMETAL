@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 02/14/2017
 Overview:
@@ -10,18 +10,6 @@ Overview:
 
 //MONITOR MECH=============================
 float DAT_MNT_RESERVE_COST = 200;
-
-//WEAPON GROUPS
-float DAT_MNT_WEP1_IDX= ID_WEP_LATC;
-float DAT_MNT_WEP2_IDX= ID_WEP_LAS;
-float DAT_MNT_WEP3_IDX= ID_WEP_LATC;
-float DAT_MNT_WEP4_IDX= ID_WEP_LAS;
-float DAT_MNT_WEP5_IDX= ID_WEP_EMP;
-float DAT_MNT_WEP6_IDX= ID_WEP_EMP;
-float DAT_MNT_WEP7_IDX= ID_WEP_MIS;
-float DAT_MNT_WEP8_IDX= ID_WEP_MIS;
-float DAT_MNT_WEP9_IDX= ID_WEP_MIS;
-float DAT_MNT_WEP1_GROUP= 1;
 
 //this is mostly cosmetics
 string DAT_MNT_M_ROLLANGLE= "2.25";
@@ -70,8 +58,8 @@ void() data_mnt_ini={
   self.unit_wep8 = data_mnt_wep8;
   self.unit_wep9 = data_mnt_wep9;
   
-  self.data_idx= ID_MCH_monitor;
-  self.vec_name= MCH_NAME_MNT;
+  self.data_idx = ID_MCH_monitor;
+  self.vec_name = MCH_NAME_MNT;
   self.vec_size = SZ_MCH_MONITOR;
   self.data_type = DATA_MECH;
   self.health = DAT_MNT_CTOR_HP;
@@ -88,24 +76,27 @@ void() data_mnt_ini={
   self.yaw_speed = DAT_MNT_M_YAW;
   self.turret_yaw_speed = DAT_MNT_TUR_YAW;
   self.c_model = DAT_MNT_CTOR_MODEL;
-  self.weaponmodel = DAT_MNT_CPIT_MODEL;
-  self.weaponframe = 0;
   self.spreadDefault = ACCURACY_LOWTECH; 
   self.m_fspeed = DAT_MNT_M_FSPEED;
   self.m_sspeed = DAT_MNT_M_SSPEED;
   self.m_bspeed = DAT_MNT_M_BSPEED;
   self.m_maccel = DAT_MNT_M_ACCEL;
-  self.m_rollangle = DAT_MNT_M_ROLLANGLE;
-  self.m_pitch_max = DAT_MNT_M_PITCH_N;
-  self.m_pitch_min = DAT_MNT_M_PITCH_X;
-  self.m_bob = DAT_MNT_M_BOB;
-  self.m_bcycle = DAT_MNT_M_BCYCLE;
-  self.m_bup = DAT_MNT_M_BUP;
-  self.m_bmodel = DAT_MNT_M_BMODEL;
-  self.m_bside = DAT_MNT_M_BSIDE;
-  self.m_bobspd = DAT_MNT_M_BSPD;
   self.w_firetime = DAT_MNT_LOCK; //using this as 'lock on time;
   self.hardpoint_cnt = DAT_MNT_HARDPOINT_CNT;
+  
+  if( (self.flags & FL_CLIENT) ){
+    self.weaponmodel = DAT_MNT_CPIT_MODEL;
+    self.weaponframe = 0;
+    self.m_rollangle = DAT_MNT_M_ROLLANGLE;
+    self.m_pitch_max = DAT_MNT_M_PITCH_N;
+    self.m_pitch_min = DAT_MNT_M_PITCH_X;
+    self.m_bob = DAT_MNT_M_BOB;
+    self.m_bcycle = DAT_MNT_M_BCYCLE;
+    self.m_bup = DAT_MNT_M_BUP;
+    self.m_bmodel = DAT_MNT_M_BMODEL;
+    self.m_bside = DAT_MNT_M_BSIDE;
+    self.m_bobspd = DAT_MNT_M_BSPD;
+  }
 
   setsize( self, DAT_MNT_CTOR_BBX_N, DAT_MNT_CTOR_BBX_X);
 };
@@ -114,8 +105,6 @@ void() data_mnt_legs={
   self.comp_id = M_LEGS;
   self.health = DAT_MNT_LEG_HP;
   self.max_health = DAT_MNT_LEG_HP;
-  self.armorvalue = DAT_MNT_LEG_ARMMAX;
-  self.max_armor = DAT_MNT_LEG_ARMMAX;
   self.c_model = DAT_MNT_LEG_MODEL;
   self.c_ofs = DAT_MNT_LEG_OFFSET;
 };
@@ -124,8 +113,6 @@ void() data_mnt_ctor={
   self.comp_id = M_TOR_CENTER;
   self.health = DAT_MNT_CTOR_HP;
   self.max_health = DAT_MNT_CTOR_HP;
-  self.armorvalue = DAT_MNT_CTOR_ARMMAX;
-  self.max_armor = DAT_MNT_CTOR_ARMMAX;
   self.c_model = DAT_MNT_CTOR_MODEL;
   self.w_proj = 9;
 };
@@ -135,8 +122,6 @@ void() data_mnt_ltor={
   self.c_parent = M_TOR_CENTER;
   self.health = DAT_MNT_LTOR_HP;
   self.max_health = DAT_MNT_LTOR_HP;
-  self.armorvalue = DAT_MNT_LTOR_ARMMAX;
-  self.max_armor = DAT_MNT_LTOR_ARMMAX;
   self.c_model = DAT_MNT_LTOR_MODEL;
   self.c_ofs = DAT_MNT_LTOR_OFFSET;
 };
@@ -145,8 +130,6 @@ void() data_mnt_rtor={
   self.c_parent = M_TOR_CENTER;
   self.health = DAT_MNT_RTOR_HP;
   self.max_health = DAT_MNT_RTOR_HP;
-  self.armorvalue = DAT_MNT_RTOR_ARMMAX;
-  self.max_armor = DAT_MNT_RTOR_ARMMAX;
   self.c_model = DAT_MNT_RTOR_MODEL;
   self.c_ofs = DAT_MNT_RTOR_OFFSET;
 };
@@ -155,8 +138,6 @@ void() data_mnt_larm={
   self.c_parent = M_TOR_LEFT;
   self.health = DAT_MNT_LARM_HP;
   self.max_health = DAT_MNT_LARM_HP;
-  self.armorvalue = DAT_MNT_LARM_ARMMAX;
-  self.max_armor = DAT_MNT_LARM_ARMMAX;
   self.c_model = DAT_MNT_LARM_MODEL;
   self.c_ofs = DAT_MNT_LARM_OFFSET;
 };
@@ -165,8 +146,6 @@ void() data_mnt_rarm={
   self.c_parent = M_TOR_RIGHT;
   self.health = DAT_MNT_RARM_HP;
   self.max_health = DAT_MNT_RARM_HP;
-  self.armorvalue = DAT_MNT_RARM_ARMMAX;
-  self.max_armor = DAT_MNT_RARM_ARMMAX;
   self.c_model = DAT_MNT_RARM_MODEL;
   self.c_ofs = DAT_MNT_RARM_OFFSET;
 };
@@ -183,62 +162,71 @@ void() data_mnt_wep1={
   self.c_parent = M_ARM_RIGHT;
   self.c_ofs = DAT_MNT_WEP1_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON1;
 };
 void() data_mnt_wep2={  
   self.c_parent = M_ARM_RIGHT;
   self.c_ofs = DAT_MNT_WEP2_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON2;
 };
 void() data_mnt_wep3={  
   self.c_parent = M_ARM_LEFT;
   self.c_ofs = DAT_MNT_WEP3_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON3;
 };
 void() data_mnt_wep4={  
   self.c_parent = M_ARM_LEFT;
   self.c_ofs = DAT_MNT_WEP4_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON4;
 };
 void() data_mnt_wep5={  
   self.c_parent = M_TOR_RIGHT;
   self.c_ofs = DAT_MNT_WEP5_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON5;
 };
 void() data_mnt_wep6={  
   self.c_parent = M_TOR_LEFT;
   self.c_ofs = DAT_MNT_WEP6_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON6;
 };
 void() data_mnt_wep7={  
   self.c_parent = M_TOR_CENTER;
   self.c_ofs = DAT_MNT_WEP7_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON7;
 };
 void() data_mnt_wep8={  
   self.c_parent = M_TOR_RIGHT;
   self.c_ofs = DAT_MNT_WEP8_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON8;
 };
 void() data_mnt_wep9={  
   self.c_parent = M_TOR_LEFT;
   self.c_ofs = DAT_MNT_WEP9_OFFSET;
   self.c_alt_ofs = '0 0 0';
-  self.w_adj_ang = '0 0 0';
+  self.w_adj_ang = '0 0 90';
+  self.data_idx = 0;
   self.w_group = WEAPON9;
 };

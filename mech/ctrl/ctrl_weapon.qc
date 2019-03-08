@@ -8,20 +8,20 @@ Overview: weapon controller header
 
 void(entity wep) ctrl_wpn_think={
 
-  local entity oself;
-  oself = self;
+  local entity data_idx;
+  data_idx = self;
   self = wep;
     if(self.deadflag >= DEAD_DYING){
       self.deadflag = DEAD_DEAD;
-      self = oself;
+      self = data_idx;
       return;
     }
     if(self.deadflag == DEAD_DEAD){
-      self = oself;
+      self = data_idx;
       return;
     }  
     if(self.w_think){
-      if( (oself.flags & FL_CLIENT) ){
+      if( (data_idx.flags & FL_CLIENT) ){
         if(self.w_isready){
           ctrl_weapon_isReady(self, self.stat_wep_rel);
         }else{
@@ -30,7 +30,7 @@ void(entity wep) ctrl_wpn_think={
       }
       self.w_think();
     }
-  self = oself;
+  self = data_idx;
 };
 
 void() ctrl_wpn_think_clip={
@@ -73,7 +73,7 @@ void() ctrl_die_weapon={
     newmis = spawn();
     self = newmis;
       setorigin(newmis, oself.origin);
-      BecomeExplosion();
+      BecomeExplosion();//TODO - replace with te_explosion
     self = oself;
     if((oself.currentWeaponGroup & self.w_group)){
       oself.currentWeaponGroup = oself.currentWeaponGroup - (oself.currentWeaponGroup & self.w_group);
@@ -92,7 +92,7 @@ void() ctrl_die_weapon={
     setsize(self, '0 0 0', '0 0 0');
     
     if( (self.p_dmgtype & DMG_MSC) ){
-      //weapon is equip, run death func
+      //weapon is equip, run death func which undoes the module's upgrades
        self.unit_wep1();
     }
   }

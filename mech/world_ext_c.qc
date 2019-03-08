@@ -1,8 +1,10 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
-Overview: function extensions to world.qc
+Overview: 
+  Extension functions to world.qc 
+  these functions are here for their abstraction level.
 */
 
 void() mh_world_ini={ 
@@ -68,9 +70,6 @@ void() mh_world_ini={
   addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
 
   switch( world.worldtype ){
-    case 0:
-      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_DESERT");
-      break;
     case 1:
       TE_STOMP_TYPE = particleeffectnum("TE_STOMP_ICE");
       break;
@@ -82,6 +81,9 @@ void() mh_world_ini={
       break;
     case 4:
       TE_STOMP_TYPE = particleeffectnum("TE_STOMP_TUNDRA");
+      break;
+    default:
+      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_DESERT");
       break;
   }
 };

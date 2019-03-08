@@ -97,6 +97,7 @@ void( entity t ) ai_call_for_help={
   local float allies;
   local entity ally;
   
+  ai_sfx_help();
   ally = findchainflags( flags, FL_MONSTER );
   while( ally ){
     if( ai_valid_target(ally) ){
@@ -110,9 +111,6 @@ void( entity t ) ai_call_for_help={
       }
     }
     ally = ally.chain;
-  }
-  if( allies ){
-    ai_sfx_help();
   }
 }; 
 
@@ -375,7 +373,7 @@ float(entity bot, entity attacker) ai_damage_react={
   local float engage;
   
   if( (self.flags & FL_DISARMED) ){
-    ai_sfx_help( attacker );
+    ai_call_for_help( attacker );
     return FALSE;
   }
   
@@ -551,7 +549,6 @@ void() ai_wep_calcranges={
   if( self.ai_minrange == 0 ){
     if( !(self.flags & FL_DISARMED) ){
       self.flags = self.flags | FL_DISARMED;
-      //TODO - panic
     }
   }
 };

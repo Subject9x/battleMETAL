@@ -18,6 +18,9 @@ void() ai_mech_sniper_die2;
   TH_DIE
 */ 
 void() ai_mech_sniper_die={
+  local vector vel;
+  local vector forg;
+  
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
@@ -53,6 +56,21 @@ void() ai_mech_sniper_die={
     self.think = ai_mech_sniper_die2;
   }
   self.nextthink = time + 0.1;
+  
+  makevectors( self.e_tor_c.angles );
+  vel = self.origin + (v_up * 2);
+  forg = self.origin + (v_up * (self.maxs_y / 2) ) + (v_forward * (self.mins_x / 1.5));
+  switch( self.vec_size ){
+    case 2:
+      te_med_flame_start( forg, self.angles, normalize( vel - self.origin ) * 8, self.vec_size, 600, self.vec_size / 20); 
+      break;
+    case 3:
+      te_big_flame_start( forg, self.angles, normalize( vel - self.origin ) * 8, self.vec_size, 600, self.vec_size / 20); 
+      break;
+    default:
+      te_small_flame_start( forg, self.angles, normalize( vel - self.origin ) * 8, self.vec_size, 600, self.vec_size / 20); 
+      break;
+  }
 };
 
 /*
@@ -1461,6 +1479,7 @@ void() ai_mech_sniper={
   self.th_stand = ai_mech_sniper_stand1;
   self.th_walk = ai_mech_sniper_patrol1;
   self.th_missile = ai_mech_sniper_fight_prep;
+  self.th_pain = ai_mech_sniper_panic1;
   self.th_die = ai_mech_sniper_die;
   self.touch = ai_touch;
   

@@ -1,9 +1,12 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/6/2016
 mod - 5/10/2017 - added terrain check
-Overview: implementation for leg model updates
+mod - 03/08/2019 - modding some death logic
+
+Overview: 
+  main controller functions for mech leg entities
 */
 
 void() ctrl_updateLegs={
@@ -51,6 +54,7 @@ void() ctrl_updateLegs={
     self.v_angle = self.angles;
   }
 };
+
 
 void() ctrl_dieLegs={
   local entity this;

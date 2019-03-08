@@ -287,7 +287,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       otherSelf = self;
       self = trg;
         ai_sfx_dying();
-        ai_call_for_help();
+        ai_call_for_help( attacker );
       self = otherSelf;
     }
   }
@@ -669,7 +669,8 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 
 	if (self.th_pain)
 	{
-		self.th_pain (attacker, take, 0, "");
+		//self.th_pain (attacker, take, 0, "");
+		self.th_pain (attacker);
 	// nightmare mode monsters don't go into pain frames often
 		if ( skill == 3 )
 			self.pain_finished = time + 5;

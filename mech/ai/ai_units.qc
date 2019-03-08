@@ -104,7 +104,7 @@ void() unit_hs_excavat={
 */
 void() unit_dunerunner_h={
   
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_dunerunner;
   self.i_faction = FACTION_SURVEST;
    
@@ -141,7 +141,7 @@ void() unit_dunerunner_h={
 
 void() unit_dunerunner_m={
   
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_dunerunner;
   self.i_faction = FACTION_MILITAR;
    
@@ -184,7 +184,7 @@ void() unit_dunerunner_m={
 */
 void() unit_foslager_h={
 
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_foslager;
   self.i_faction = FACTION_SURVEST;
    
@@ -221,7 +221,7 @@ void() unit_foslager_h={
 
 void() unit_foslager_m={
 
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_foslager;
   self.i_faction = FACTION_MILITAR;
    
@@ -265,7 +265,7 @@ void() unit_foslager_m={
 */
 void() unit_trowel_m={
 
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_trowel;
   self.i_faction = FACTION_MILITAR;
    
@@ -302,7 +302,7 @@ void() unit_trowel_m={
 
 void() unit_trowel_h={
 
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_trowel;
   self.i_faction = FACTION_SURVEST;
    
@@ -345,7 +345,7 @@ void() unit_trowel_h={
 */
 void() unit_onnek_h={
 
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_onnek;
   self.i_faction = FACTION_SURVEST;
    
@@ -381,7 +381,7 @@ void() unit_onnek_h={
 
 void() unit_onnek_m={
 
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_onnek;
   self.i_faction = FACTION_MILITAR;
    
@@ -423,7 +423,7 @@ void() unit_onnek_m={
 */
 void() unit_sorcerer_h={
 
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_sorcerer;
   self.i_faction = FACTION_SURVEST;
    
@@ -460,7 +460,7 @@ void() unit_sorcerer_h={
 
 void() unit_sorcerer_m={
 
-  self.style = TYPE_BRAWL;
+  
   self.nextVecChoice = ID_VEC_sorcerer;
   self.i_faction = FACTION_MILITAR;
    
@@ -503,7 +503,7 @@ void() unit_sorcerer_m={
 //        SNIPER VARIANTS
 void() unit_balaket_sniper={
 
-  self.style = TYPE_SNIPER;
+  
   self.flags = FL_TURRET;  //enforced for a mech
    
   self.nextVecChoice = ID_MCH_balaket;
@@ -564,7 +564,7 @@ void() unit_balaket_sniper_m={
 //        BRAWLER VARIANTS
 void() unit_balaket_brawl={
 
-  self.style = TYPE_BRAWL;
+  
   self.flags = FL_TURRET;  //enforced for a mech
    
   self.nextVecChoice = ID_MCH_balaket;
@@ -653,7 +653,7 @@ void() unit_balaket_brawl_p={
 //        BRAWLER VARIANTS
 void() unit_matok_brawl={
 
-  self.style = TYPE_BRAWL;
+  
   self.flags = FL_TURRET;  //enforced for a mech
    
   self.nextVecChoice = ID_MCH_matok;
@@ -670,7 +670,7 @@ void() unit_matok_brawl={
 
 void() unit_matok_sniper={
 
-  self.style = TYPE_BRAWL;
+  
   self.flags = FL_TURRET;  //enforced for a mech
    
   self.nextVecChoice = ID_MCH_matok;
@@ -779,7 +779,7 @@ void() unit_matok_brawl_m={
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     case 3:
-      ai_ini_weapons( ID_WEP_QRF, ID_WEP_LAS, ID_WEP_RPC, ID_WEP_RPC, ID_WEP_EMP -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_QRF, ID_WEP_LAS, ID_WEP_RPC, ID_WEP_RPC, ID_WEP_EMP, -1, -1, -1, -1);
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
@@ -801,9 +801,7 @@ void() unit_matok_brawl_m={
 //        BRAWLER VARIANTS
 void() unit_monitor_brawl={
 
-  self.style = TYPE_BRAWL;
   self.flags = FL_TURRET;  //enforced for a mech
-   
   self.nextVecChoice = ID_MCH_monitor;
   
   if( !ai_can_spawn() ){
@@ -819,7 +817,6 @@ void() unit_monitor_brawl={
 void() unit_monitor_sniper={
 
   self.flags = FL_TURRET;  //enforced for a mech
-   
   self.nextVecChoice = ID_MCH_monitor;
   
   if( !ai_can_spawn() ){
