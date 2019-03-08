@@ -274,16 +274,12 @@ float() ai_pilot_shield_mod={
   switch( self.ai_rank ){
     case AI_RANK_ROK:
       return AI_SHIELD_ROK;
-      break;
     case AI_RANK_VET:
       return AI_SHIELD_VET;
-      break;
     case AI_RANK_ACE:
       return AI_SHIELD_ACE;
-      break;
     default:
       return AI_SHIELD_REG;
-      break;
   }
 }
 

@@ -44,91 +44,75 @@ entity audio_save;
 
 //audio constants
 float(float channels, float headphone_check) audio_speakers_mode_get={
-  local float val;
   if( (channels == 2) && headphone_check){
     return 0;
   }
   switch(channels){
-    case 1:
-      val = 2;
-      break;
     case 2:
-      val = 4;
-      break;
-    case 3:
-      val = 5;
-      break;
+      return 1;
     case 4:
-      val = 7;
-      break;
+      return 2;
+    case 5:
+      return 3;
+    case 7:
+      return 4;
   }
-  return val;
 };
 
 string(float select) audio_speakers_mode_val={
-  local string val;
+
   switch(select){
     case 0:
-      val = "Headphones";
-      break;
+      return "Headphones";
     case 1:
-      val = "Stereo";
-      break;
+      return "Stereo";
     case 2:
-      val = "Quadrophonic";
-      break;
+      return "Quadrophonic";
     case 3:
-      val = "5.1 Surround";
-      break;
+      return "5.1 Surround";
     case 4:
-      val = "7.1 Surround";
-      break;
+      return "7.1 Surround";
   }
-  return val;
 };
 
 void(float select) audio_speakers_mode_setcvar={
-  cvar_set("snd_spatialization_control", "0");
   switch(select){
     case 0:
       cvar_set("snd_spatialization_control", "1");
       cvar_set("snd_channels", "2");
       break;
     case 1:
+      cvar_set("snd_spatialization_control", "0");
       cvar_set("snd_channels", "2");
       break;
     case 2:
+      cvar_set("snd_spatialization_control", "0");
       cvar_set("snd_channels", "4");
       break;
     case 3:
+      cvar_set("snd_spatialization_control", "0");
       cvar_set("snd_channels", "5");
       break;
     case 4:
+      cvar_set("snd_spatialization_control", "0");
       cvar_set("snd_channels", "7");
       break;
   }
 };
 
 string(float select) audio_speed_get_val={
-  local string val;
   switch(select){
     case 0:
-      val = "11025";
-    break;
+      return "11025";
     case 1:
-      val = "16000";
-    break;
+      return "16000";
     case 2:
-      val = "22050";
-    break;
+      return "22050";
     case 3:
-      val = "32000";
-    break;
+      return "32000";
     case 4:
-      val = "44100";
-    break;
+      return "44100";
   }
-  return val;
 };
 
 float(float sndspeed) audio_speed_get={
@@ -367,14 +351,14 @@ void() click_audio_save={
   audio_speed_set(audio_quality_lbl.len);
   
   cmd("saveconfig\n");
-
+  
   if( !isdemo() && (clientstate() != CS_CONNECTED)){
-    cmd("snd_restart\n");
+    //cmd("snd_restart\n");
   }  
   
   if( isdemo() && (clientstate() == CS_CONNECTED) ){
     cmd("disconnect\n");
-    cmd("snd_restart\n");
+   // cmd("snd_restart\n");
     cmd("playdemo demo1\n");
   }
   click_audio_back();
@@ -426,13 +410,13 @@ void() m_audio_i={
   audio_music_up = btn_img_callback('180 148', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_music_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   audio_music_dn = btn_img_callback('140 148', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_music_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
-  local float sfx_vol;
-  sfx_vol = cvar("volume");
-  if(sfx_vol > 0){
+  local float mus_vol;
+  mus_vol = cvar("bgmvolume");
+  if(mus_vol > 0){
     audio_music_toggle_lbl.label = strzone("ON");
     audio_music_toggle_on.drawme = FALSE;
     
-    audio_music_vol_lbl.len = sfx_vol;
+    audio_music_vol_lbl.len = mus_vol;
     audio_music_vol_lbl.label = strzone(ftos(floor(audio_music_vol_lbl.len * 10)));
     if( audio_music_vol_lbl.len == 0.1){
       audio_music_dn.drawme = FALSE;
@@ -444,7 +428,7 @@ void() m_audio_i={
   else{
     audio_music_toggle_lbl.label = strzone("OFF");
     audio_music_toggle_off.drawme = FALSE;
-    audio_music_vol_lbl.len = sfx_vol; 
+    audio_music_vol_lbl.len = mus_vol; 
     audio_music_vol_lbl.label = strzone(ftos(floor(audio_music_vol_lbl.len * 10)));
     audio_music_up.drawme = FALSE;
     audio_music_dn.drawme = FALSE;
@@ -477,7 +461,6 @@ void() m_audio_i={
   else{
     audio_mute_idle_off.drawme = FALSE;
   }
-  
 
   audio_quality_lbl = lbl_text('154 229', '9 9 0'," ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, 1, 0);
   audio_quality_up = btn_img_callback('200 228', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_AUDIO, click_quality_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -515,23 +498,23 @@ void() m_audio_f={
 void() m_audio_d={
   gui_renderString("[- AUDIO SETTINGS -]", gui_percentToPixelRawVec('190 64'), CLR_DEF_WHITE, '10 10 0', 1, 0);
 
-    gui_renderString("Sound On/Off :", gui_percentToPixelRawVec('25 94'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Sound Volume :", gui_percentToPixelRawVec('25 108'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Music On/Off :", gui_percentToPixelRawVec('25 135'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Music Volume :", gui_percentToPixelRawVec('25 150'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    
-    local string lbl;
-    if( !isdemo() && clientstate() == CS_CONNECTED){
-      lbl = "Advanced Settings - changes will require restart";
-    }
-    else{
-      lbl = "Advanced Settings";
-    }
-    gui_renderString(lbl, gui_percentToPixelRawVec('25 174'), CLR_DEF_ARM_THREEQ, '9 9 0', 1, 0);
-    gui_renderString("Speaker Mode :", gui_percentToPixelRawVec('25 198'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Mute Minimized :", gui_percentToPixelRawVec('9 214'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Sound Quality :", gui_percentToPixelRawVec('17 230'), CLR_DEF_WHITE, '8 8 0', 1, 0);  
+  gui_renderString("Sound On/Off :", gui_percentToPixelRawVec('25 94'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("Sound Volume :", gui_percentToPixelRawVec('25 108'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("Music On/Off :", gui_percentToPixelRawVec('25 135'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("Music Volume :", gui_percentToPixelRawVec('25 150'), CLR_DEF_WHITE, '8 8 0', 1, 0);
   
+  local string lbl;
+  if( !isdemo() && clientstate() == CS_CONNECTED){
+    lbl = "Advanced Settings - changes will require restart";
+  }
+  else{
+    lbl = "Advanced Settings";
+  }
+  gui_renderString(lbl, gui_percentToPixelRawVec('25 174'), CLR_DEF_ARM_THREEQ, '9 9 0', 1, 0);
+  gui_renderString("Speaker Mode :", gui_percentToPixelRawVec('25 198'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("Mute Minimized :", gui_percentToPixelRawVec('9 214'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("Sound Quality :", gui_percentToPixelRawVec('17 230'), CLR_DEF_WHITE, '8 8 0', 1, 0);  
+
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_AUDIO);
   while(widget){

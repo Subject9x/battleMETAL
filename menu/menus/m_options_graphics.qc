@@ -609,9 +609,7 @@ void() click_graphics_accept={
   cvar_set("saved2", ftos(graphics_gfx_lbl.len));
   
   cmd("saveconfig\n");
-  cmd("loadconfig\n");
   cmd("vid_restart\n");
-  cmd("r_restart\n");
 };
 
 // ini function, called by '_f' function as a setup func

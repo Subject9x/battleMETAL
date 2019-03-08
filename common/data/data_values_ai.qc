@@ -77,22 +77,22 @@ float AI_ATTACK_ACE  =  0.5;//0.5;
 float AI_WEAPON_RPS_MOD = 1500;
 
 //Minimum convergence modifier
-float AI_CNV_MIN_ROK  = 2;
-float AI_CNV_MIN_REG  = 1.5;
-float AI_CNV_MIN_VET  = 1.25;
-float AI_CNV_MIN_ACE  = 1;
+float AI_CNV_MIN_ROK  = 3.25;
+float AI_CNV_MIN_REG  = 2.5;
+float AI_CNV_MIN_VET  = 1.75;
+float AI_CNV_MIN_ACE  = 1.25;
 
 //Maximum convergence modifier
-float AI_CNV_MAX_ROK  = 2.5;
-float AI_CNV_MAX_REG  = 2;
-float AI_CNV_MAX_VET  = 1.5;
-float AI_CNV_MAX_ACE  = 1;
+float AI_CNV_MAX_ROK  = 3.5;
+float AI_CNV_MAX_REG  = 3;
+float AI_CNV_MAX_VET  = 2.5;
+float AI_CNV_MAX_ACE  = 2;
 
 //Convergence Rate modifier
-float AI_CNV_RATE_ROK  = 0.15;
-float AI_CNV_RATE_REG  = 0.25;
-float AI_CNV_RATE_VET  = 0.45;
-float AI_CNV_RATE_ACE  = 0.55;
+float AI_CNV_RATE_ROK  = 0.1;
+float AI_CNV_RATE_REG  = 0.2;
+float AI_CNV_RATE_VET  = 0.3;
+float AI_CNV_RATE_ACE  = 0.4;
 
 //how well does the AI handle weapon convergence
 float AI_CNV_ACE = 10;
