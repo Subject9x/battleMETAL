@@ -283,10 +283,14 @@ float() ai_find_target_radar={
 
 void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
+  if( !ally.th_missile ){
+    return;
+  }
   this = self;
   if( !ai_valid_target(ally.enemy) || override){
     self = ally;
       self.enemy = this.enemy;
+      dprint( strcat( "ai_give_target()->self.classname: ", self.classname, "\n")); //DEBUG
       ai_sfx_roger();
       self.th_missile();
     self = this;
@@ -385,10 +389,13 @@ float(entity bot, entity attacker) ai_damage_react={
     self.enemy = attacker;
     self.th_missile();
     ai_sfx_spotted();
-    if( self.ai_rank < AI_RANK_VET ){
-      if( util_getMechHpAverage(self) <= 0.25){
-        if( random() <= 0.5 ){
-          self.th_pain( self.enemy );
+    if( self.th_pain ){
+      if( self.ai_rank < AI_RANK_VET ){
+        if( util_getMechHpAverage(self) <= 0.25){
+          if( random() <= 0.5 ){
+            
+            self.th_pain( self.enemy );
+          }
         }
       }
     }
