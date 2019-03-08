@@ -44,7 +44,7 @@ entity audio_save;
 
 //audio constants
 float(float channels, float headphone_check) audio_speakers_mode_get={
-  if( (channels == 2) && headphone_check){
+  if( headphone_check && (channels == 2) ){
     return 0;
   }
   switch(channels){
