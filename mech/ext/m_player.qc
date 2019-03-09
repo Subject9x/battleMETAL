@@ -187,26 +187,32 @@ void() PlayerPostThink = {
   client_push_player_info();
  
 // check to see if player landed and play landing sound	
-	/*if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))
+	if ((self.jump_flag < FALL_THRESHOLD) && (self.flags & FL_ONGROUND) && (self.health > 0))
 	{
 		//if (self.watertype == CONTENT_WATER)
 			//sound (self, CHAN_BODY, "player/h2ojump.wav", 1, ATTN_NORM);
 		//else
-    if (self.jump_flag < -650)
-		{
+    local float legDmg;
+    if (self.jump_flag < (FALL_THRESHOLD * 1.25)){
 			//T_Damage (self, world, world, 5); 
 			//sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
-			self.deathtype = "falling";
+			//self.deathtype = "falling";
+      legDmg = (self.jump_flag * -1);
+      legDmg = legDmg / (4 - self.vec_size);
+      t_damage( self, world, world, legDmg, 0, self.e_legs.origin, '0 0 0');
+      self.power_timer = time + ( self.vec_size / 10) * 3.5;
 		}
-		else
-			//sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
+		else{
+      //sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
+      self.power_timer = time + ( self.vec_size / 10) * 3.5;
+    }
 
 		self.jump_flag = 0;
 	}
 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
-  */
+  
   
   if(self.data_type == DATA_MECH){
     self.stat_plr_camx = self.e_cam.c_ofs_x;

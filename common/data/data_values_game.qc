@@ -118,6 +118,7 @@ float WEAPON9 = 256;
 //============================
 //     COMBAT STATS
 //============================
+float FALL_THRESHOLD = -200;  //quake has this set to 300
 float SHIELD_DELAY = 5;
 float SHIELD_SOAK = 4;
 //============================

@@ -290,7 +290,6 @@ void( entity ally, entity targ, float override ) ai_give_target={
   if( !ai_valid_target(ally.enemy) || override){
     self = ally;
       self.enemy = this.enemy;
-      dprint( strcat( "ai_give_target()->self.classname: ", self.classname, "\n")); //DEBUG
       ai_sfx_roger();
       self.th_missile();
     self = this;
