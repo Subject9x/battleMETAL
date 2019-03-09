@@ -66,7 +66,7 @@ float DAT_QRFL_RANGE      = 2000;
 //-------------------------SFGA
 float DAT_SFGA_RANGE      = 1300;
 //-------------------------FLAK
-float DAT_FLAK_RANGE      = 1600;
+float DAT_FLAK_RANGE      = 2000;
 //-------------------------Laser
 float DAT_LAS_RANGE       = 2000;
 //-------------------------ION
@@ -216,7 +216,7 @@ float DAT_SWRM_DMG        = 20;
 //            Inaccuracy  
 //====================================================================================
 //-------------------------ATC
-vector DAT_LATC_ACC       = '0.01 0.01 0';
+vector DAT_LATC_ACC       = '0.025 0.025 0';
 //-------------------------RPlas
 vector DAT_RPC_ACC       = '0.015 0.015 0';
 //-------------------------QRifle
@@ -224,7 +224,7 @@ vector DAT_QRFL_ACC       = '0.005 0.005 0';
 //-------------------------SFGA
 vector DAT_SFGA_ACC       = '0.02 0.02 0';
 //-------------------------FLAK
-vector DAT_FLAK_ACC       = '0.015 0.012 0';
+vector DAT_FLAK_ACC       = '0.017 0.015 0';
 //-------------------------Laser
 vector DAT_LAS_ACC       = '0.0075 0.0075 0';
 //-------------------------ION
