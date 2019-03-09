@@ -143,8 +143,8 @@ float DAT_QRFL_RL_MAX     = 5;
 float DAT_SFGA_RL_RATE    = 0.1;
 float DAT_SFGA_RL_MAX     = 10;
 //-------------------------FLAK
-float DAT_FLAK_RL_RATE    = 0.35;
-float DAT_FLAK_RL_MAX     = 4;
+float DAT_FLAK_RL_RATE    = 0.3;//0.35;
+float DAT_FLAK_RL_MAX     = 0.3;//4;
 //-------------------------Laser
 float DAT_LAS_RL_RATE     = 0.6;
 float DAT_LAS_RL_MAX      = 0.6;
@@ -193,6 +193,7 @@ float DAT_SFGA_DMG        = 300;
 //-------------------------FLAK
 float DAT_FLAK_DMG        = 0.5;
 float DAT_FLAK_SHRAP_TOTAL= 14;
+vector DAT_FLAK_SHRAP_SPREAD = '0.3 0.3 64';
 //-------------------------Laser
 float DAT_LAS_DMG         = 10;
 //-------------------------ION
@@ -250,7 +251,7 @@ vector DAT_ATGM_ACC       = '0.25 0.15 0.25';
 //-------------------------ATC
 float DAT_LATC_CLIPSIZE     = 1;
 //-------------------------FLAK
-float DAT_FLAK_CLIPSIZE     = 4;
+float DAT_FLAK_CLIPSIZE     = 1;//4;
 //-------------------------RPlas
 float DAT_RPLAS_CLIPSIZE    = 8;
 //-------------------------QRifle
