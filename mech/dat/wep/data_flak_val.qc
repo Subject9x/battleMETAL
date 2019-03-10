@@ -87,7 +87,7 @@ void() data_flak_atk={
       self.w_firetime = time + self.rl_rate / 2;
     }
     self.w_state = RECOIL;
-    self.w_isburst = TRUE;
+    self.w_isburst = FALSE;
   }
   
   adj = self.c_ofs + self.w_fire_ofs;
@@ -113,21 +113,25 @@ void() data_flak_atk={
     }
     return;
   }
-  pointparticles( particleeffectnum("TE_FLK_IMPACT"), dir - (v_forward * 2), '1 1 1', 1);
   if(enm && enm != world){
     local float totes;
     totes = DAT_FLAK_SHRAP_TOTAL;
-    if(enm.sh_cur > (self.p_damage * totes)){
+    if(enm.sh_cur > 0){
       t_damage(enm, self, self.owner, self.p_damage * totes, self.p_dmgtype, trace_endpos, '0 0 0');
     }
     else{
+      local vector shotpoint;
+      local vector shrapPoint;
+      local vector shotDir;
+      local vector shrapDir;
+      
+      shotpoint = trace_endpos + (v_forward * -32);
+      shotDir = normalize(trace_endpos - shotpoint);
+      pointparticles( particleeffectnum("TE_FLK_IMPACT"), shotpoint, shotDir * 4, 1);
       while(totes > 0){
-        d = vlen(enm.origin - dir);
-        ang = vectoangles(enm.origin - dir);
-        makevectors(ang);
-        v = dir + (v_forward * (d )) + (v_right * (crandom() * (random() * DAT_PRJ_FLAK_EXPRAD/3)))
-                + (v_up * (crandom() * (random() * DAT_PRJ_FLAK_EXPRAD/3)));
-        traceline(dir, v, FALSE, self);
+        shrapDir = shotDir + (crandom()*DAT_FLAK_SHRAP_SPREAD_x*v_right) + (crandom()*DAT_FLAK_SHRAP_SPREAD_y*v_up);
+        shrapPoint = shotpoint + shrapDir*DAT_FLAK_SHRAP_SPREAD_z;
+        traceline( shotpoint, shrapPoint, FALSE, self.owner);
         t_damage(enm, self, self.owner, self.p_damage, self.p_dmgtype, trace_endpos, '0 0 0');
         totes = totes - 1;
       }
