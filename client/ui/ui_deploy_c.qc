@@ -20,7 +20,7 @@ void() menu_deployDrawFrame={
 
 //hook for input system
 void() menu_deployListener={
-  navSelectListener();
+  //navSelectListener();
   navListSelectListener();
 };
 

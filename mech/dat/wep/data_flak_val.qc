@@ -1,8 +1,12 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 01/18/2018
-Overview: new year, new toys
+mod - 03/09/2019
+Overview:
+  slight upgrade from the ATC
+  fires at rate 2/3 slower than ATC
+  shrapnel explodes in front of target, like a small shotgun
 */
 //FLAK CANNON=======================
 
@@ -36,7 +40,6 @@ void() data_flak_ini={
   self.w_state = READY;
   self.spreadDefault = DAT_FLAK_ACC;
 };
-
 
 void() data_flak_think={
   if(self.w_state == RECOIL){
@@ -135,7 +138,6 @@ void() data_flak_atk={
         t_damage(enm, self, self.owner, self.p_damage, self.p_dmgtype, trace_endpos, '0 0 0');
         totes = totes - 1;
       }
-      
     }
   }
 };

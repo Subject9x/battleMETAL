@@ -126,27 +126,31 @@ void(vector ofs) menu_hangar_MechListLight={
   local float ui_lst_cnt, dat_id,ui_lst_act;
   nofs = ofs;
   nofs = nofs + gui_percentToPixelRawVec('16 24');
-  drawstring(nofs + gui_percentToPixelRawVec('0 1'), "======LIGHT======", '6 6 0', '1 1 1', 1, 0);
+  drawstring(nofs + gui_percentToPixelRawVec('0 1'), "======LIGHT======", '6 6 0', CLR_DEF_ARM_ONEQ, 1, 0);
   ui_lst_cnt = 1;
   ui_lst_act = 0;
   dat_id = 1;
   sofs = nofs;
   sofs_y = sofs_y + gui_percentYRaw(4);
   while(ui_lst_cnt <= GAME_TOTAL_MECHS){
-    local vector lofs, clr;
+    local vector lofs, clr, iofs;
     local float siz;
+    local float nameLen;
     siz = MECH_DATA_SIZES[dat_id];
     if(MECHLIST_LIGHT_ARR[dat_id] != 0){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
       if(siz == CLIENT_MENU_sel_size && dat_id == CLIENT_MENU_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
-        gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, 1, 0);
+        gui_renderTintImage(TRUE, lofs - gui_percentToPixelRawVec('2 2'), UI_BOX_SELECT, gui_percentToPixelRawVec('108 13'), CLR_DEF_ARM_OK, 1, 0);
       }
       else{
         clr = CLR_DEF_TXT_NONSELECT;
       }
-      drawstring(lofs + gui_percentToPixel(0.0093, 0), MECH_DATA_NAMES[dat_id], '6 6 0', clr, 1, 0);
+      nameLen = stringwidth( MECH_DATA_NAMES[dat_id], 0, '8 8 0');
+      iofs = lofs;
+      iofs_x = iofs_x + gui_percentXRaw( 50 - nameLen / 2);
+      drawstring(iofs, MECH_DATA_NAMES[dat_id], '8 8 0', clr, 1, 0);
       MECHLIST_LIGHT_VAL[ui_lst_act] = dat_id;
       ui_lst_act = ui_lst_act + 1;
     }
@@ -165,27 +169,31 @@ void(vector ofs) menu_hangar_MechListMedium={
   local float ui_lst_cnt, dat_id,ui_lst_act;
   nofs = ofs;
   nofs = nofs + gui_percentToPixelRawVec('16 150');
-  drawstring(nofs + gui_percentToPixelRawVec('0 2'), "======MEDIUM======", '6 6 0', '1 1 1', 1, 0);
+  drawstring(nofs + gui_percentToPixelRawVec('0 2'), "======MEDIUM======", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
   ui_lst_cnt = 1;
   ui_lst_act = 0;
   dat_id = 1;
   sofs = nofs;
   sofs_y = sofs_y + gui_percentYRaw(4);
   while(ui_lst_cnt <= GAME_TOTAL_MECHS){
-    local vector lofs, clr;
+    local vector lofs, clr, iofs;
     local float siz;
+    local float nameLen;
     siz = MECH_DATA_SIZES[dat_id];
     if(MECHLIST_MEDIUM_ARR[dat_id] != 0){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
       if(siz == CLIENT_MENU_sel_size && dat_id == CLIENT_MENU_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
-        gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, 1, 0);
+        gui_renderTintImage(TRUE, lofs - gui_percentToPixelRawVec('2 2'), UI_BOX_SELECT, gui_percentToPixelRawVec('108 13'), CLR_DEF_ARM_OK, 1, 0);
       }
       else{
         clr = CLR_DEF_TXT_NONSELECT;
       }
-      drawstring(lofs + gui_percentToPixel(0.0093, 0), MECH_DATA_NAMES[dat_id], '6 6 0', clr, 1, 0);
+      nameLen = stringwidth( MECH_DATA_NAMES[dat_id], 0, '8 8 0');
+      iofs = lofs;
+      iofs_x = iofs_x + gui_percentXRaw( 50 - nameLen / 2);
+      drawstring(iofs, MECH_DATA_NAMES[dat_id], '8 8 0', clr, 1, 0);
       MECHLIST_MEDIUM_VAL[ui_lst_act] = dat_id;
       ui_lst_act = ui_lst_act + 1;
     }
@@ -203,28 +211,31 @@ void(vector ofs) menu_hangar_MechListHeavy={
   local float ui_lst_cnt, dat_id,ui_lst_act;
   nofs = ofs;
   nofs = nofs + gui_percentToPixelRawVec('16 275');
-  drawstring(nofs + gui_percentToPixelRawVec('0 2'), "======HEAVY======", '6 6 0', '1 1 1', 1, 0);
+  drawstring(nofs + gui_percentToPixelRawVec('0 2'), "======HEAVY======", '6 6 0', CLR_DEF_ARM_OK, 1, 0);
   ui_lst_cnt = 1;
   ui_lst_act = 0;
   dat_id = 1;
   sofs = nofs;
   sofs_y = sofs_y + gui_percentYRaw(4);
   while(ui_lst_cnt <= GAME_TOTAL_MECHS){
-    local vector lofs, clr;   
+    local vector lofs, clr, iofs;
     local float siz;
-    
+    local float nameLen;
     siz = MECH_DATA_SIZES[dat_id];
     if(MECHLIST_HEAVY_ARR[dat_id] != 0){
       lofs_x = sofs_x;
       lofs_y = sofs_y + gui_percentYRaw(8 + ui_lst_act * 16);
       if(siz == CLIENT_MENU_sel_size && dat_id == CLIENT_MENU_sel_mech){
         clr = CLR_DEF_TXT_HIGHLIGHT;
-        gui_renderTintImage(TRUE, lofs - gui_percentToPixel(0.0015, 0.0015), UI_BOX_SELECT, gui_percentToPixel(0.075, 0.01), CLR_DEF_ARM_OK, 1, 0);
+        gui_renderTintImage(TRUE, lofs - gui_percentToPixelRawVec('2 2'), UI_BOX_SELECT, gui_percentToPixelRawVec('108 13'), CLR_DEF_ARM_OK, 1, 0);
       }
       else{
         clr = CLR_DEF_TXT_NONSELECT;
       }
-      drawstring(lofs + gui_percentToPixel(0.0093, 0), MECH_DATA_NAMES[dat_id], '6 6 0', clr, 1, 0);
+      nameLen = stringwidth( MECH_DATA_NAMES[dat_id], 0, '8 8 0');
+      iofs = lofs;
+      iofs_x = iofs_x + gui_percentXRaw( 50 - nameLen / 2);
+      drawstring(iofs, MECH_DATA_NAMES[dat_id], '8 8 0', clr, 1, 0);
       MECHLIST_HEAVY_VAL[ui_lst_act] = dat_id;
       ui_lst_act = ui_lst_act + 1;
     }

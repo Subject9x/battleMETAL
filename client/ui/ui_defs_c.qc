@@ -258,6 +258,9 @@ void() navBarListener={
       DEPLOY_POINT_END = idx - 1;
       CLIENT_MENU_menu_choice = MENU_DEPLOY_ACTIVE;
       CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
+      if( CLIENT_MENU_nav_pnt != -1 ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
+      }
     }
   }
 };
