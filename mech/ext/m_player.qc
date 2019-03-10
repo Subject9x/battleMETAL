@@ -78,7 +78,7 @@ void() PlayerPostThink = {
     return;
   }
 
-  if(self.data_type != DATA_POBS){
+  if(self.data_type != DATA_POBS){ 
     //power up sequence
     if(time < self.power_timer){
       if(self.movetype != MOVETYPE_NONE){
@@ -93,7 +93,7 @@ void() PlayerPostThink = {
         self.power_timer = 0;
         self.movetype = MOVETYPE_WALK;
         self.stat_plr_stt = PLAYER_ACTIVE;
-      }
+      } 
     }    
     self.stat_hit_dirs =  self.hitdir_buffer;
     if(time >= self.w_proj){
@@ -187,26 +187,23 @@ void() PlayerPostThink = {
   client_push_player_info();
  
 // check to see if player landed and play landing sound	
-	if ((self.jump_flag < FALL_THRESHOLD) && (self.flags & FL_ONGROUND) && (self.health > 0))
-	{
-		//if (self.watertype == CONTENT_WATER)
-			//sound (self, CHAN_BODY, "player/h2ojump.wav", 1, ATTN_NORM);
-		//else
+  if ((self.jump_flag < self.fall_dist) && (self.flags & FL_ONGROUND) && (self.health > 0)){
+    //if (self.watertype == CONTENT_WATER)
+      //sound (self, CHAN_BODY, "player/h2ojump.wav", 1, ATTN_NORM);
+    //else
     local float legDmg;
-    if (self.jump_flag < (FALL_THRESHOLD * 1.25)){
-			//T_Damage (self, world, world, 5); 
-			//sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
-			//self.deathtype = "falling";
-      legDmg = (self.jump_flag * -1);
-      legDmg = legDmg / (4 - self.vec_size);
+    if (self.jump_flag < self.fall_slam){
+      //T_Damage (self, world, world, 5); 
+      //sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
+      //self.deathtype = "falling";
+      legDmg = self.fall_slam / self.jump_flag;
+      legDmg = legDmg / 3;
+      legDmg = legDmg * self.e_legs.health;
       t_damage( self, world, world, legDmg, 0, self.e_legs.origin, '0 0 0');
-      self.power_timer = time + ( self.vec_size / 10) * 3.5;
 		}
 		else{
       //sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
-      self.power_timer = time + ( self.vec_size / 10) * 3.5;
     }
-
 		self.jump_flag = 0;
 	}
 
@@ -223,9 +220,7 @@ void() PlayerPostThink = {
 
 
 void() PlayerDie={
-  //local float f;
-	if (self.deadflag)
-	{
+	if( self.deadflag ){
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}

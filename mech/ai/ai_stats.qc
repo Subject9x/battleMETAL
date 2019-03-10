@@ -162,8 +162,8 @@ float( float rank, float damg) ai_pilot_mod_damage={
   }
   percent = damg * percent;
   //this prevents super-low damage weapons from being flattened
-  if( percent < 3 ){
-    percent = 3;
+  if( percent < 0.5 ){
+    percent = 0.5;
   }
   return percent;
 };

@@ -270,6 +270,16 @@ void(void() data_ini) build_mech_unit={
     part_chain = part_chain.c_part;
   }
   build_unit_weapon_list();
+  
+  self.fall_dist = 4 - self.vec_size;
+  self.fall_dist = self.fall_dist * 100;
+  self.fall_slam = self.fall_dist * FALL_DMG_MULTIPLIER;
+  
+  self.fall_dist = self.fall_dist * -1;
+  self.fall_slam = self.fall_slam * -1;
+  
+  self.fall_dmg = self.vec_size;
+  self.fall_dmg = self.fall_dmg / 10;
 };
 
 void(void() func) build_mech_torsoCenter={

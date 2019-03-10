@@ -37,6 +37,11 @@ commented vars mean they're already implemented and are here for reference!
 .float m_pitch_min;
 .float m_pitch_max;
 
+.float fall_dist; //distance fallen to trigger 'stumble'
+.float fall_slam; //distance fallen to trigger leg damage
+.float fall_dmg;  //damage increments when falling
+.vector previousVel;
+
 //child entites
 .entity e_legs;
 .entity e_cam;
