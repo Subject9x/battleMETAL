@@ -250,19 +250,34 @@ float() ai_turret_yaw_mod={
 /*
   Armor amounts for AI units is modified by the game's skill
   rating. Easier skill modes mean each AI has less armor.
+  Mechs are a special case because health-wise they're like 5 vhicles combined
+  into 1 unit...
 */
 float() ai_pilot_armor_mod={
-  if(skill == 1){
-    return AI_ARMOR_MEDM;
-  }
-  else if(skill == 2){
-    return AI_ARMOR_HARD;
-  }
-  else if(skill == 3){
-    return AI_ARMOR_NIGHT;
+
+  if( self.data_type == DATA_MECH ){
+    switch( self.ai_rank ){
+      case SKILL_NOV:
+        return AI_ARMOR_MECH_EASY;
+      case SKILL_VET:
+        return AI_ARMOR_MECH_HARD;
+      case SKILL_ELT:
+        return AI_ARMOR_MECH_NIGHT;
+      default:
+        return AI_ARMOR_MECH_MEDM;
+    }
   }
   else{
+    switch( self.ai_rank ){
+      case SKILL_NOV:
     return AI_ARMOR_EASY;
+      case SKILL_VET:
+        return AI_ARMOR_HARD;
+      case SKILL_ELT:
+        return AI_ARMOR_NIGHT;
+      default:
+        return AI_ARMOR_MECH_MEDM;
+    }
   }
 }
 

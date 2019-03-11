@@ -113,6 +113,11 @@ float AI_ARMOR_MEDM =  1;
 float AI_ARMOR_HARD =  1.25;
 float AI_ARMOR_NIGHT = 1.35;
 
+float AI_ARMOR_MECH_EASY = 0.3;
+float AI_ARMOR_MECH_MEDM = 0.4;
+float AI_ARMOR_MECH_HARD = 0.5;
+float AI_ARMOR_MECH_NIGHT = 0.6;
+
 //shield based on difficulty
 //shield = shield * AI_SHIELD
 float AI_SHIELD_ROK = 0.2;

@@ -34,7 +34,7 @@ void() ctrl_updateCenterTorso={
     if(self.en_cur > -1){
       diff = self.en_rate;
       if( self.stat_plr_stt == PLAYER_SPRINT_ON ){
-        diff = diff * 0.35;
+        diff = diff * 0.33;
       }
       self.en_cur = self.en_cur + diff;
     }  
@@ -42,7 +42,7 @@ void() ctrl_updateCenterTorso={
       if(time > self.sh_hit){
         if(self.en_cur > 0){
           self.sh_cur = self.sh_cur + self.sh_rate;
-          self.en_cur = self.en_cur - self.sh_rate;
+          self.en_cur = self.en_cur - (self.sh_rate * 3);
           if(self.sh_cur > self.sh_max){
             self.sh_cur = self.sh_max;
           }

@@ -42,10 +42,10 @@ void() node_setup={
   
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-10 -10 -18','10 10 18');
-  if( (self.spawnflags & NODE_SPAWN_DROP) ){
+  /*if( (self.spawnflags & NODE_SPAWN_DROP) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
     droptofloor();
-  }
+  }*/
   
   //only render nodes when debugging
   //DEBUG

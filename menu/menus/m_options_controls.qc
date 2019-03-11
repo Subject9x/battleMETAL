@@ -59,6 +59,9 @@ entity controls_mouse_invert;
 entity controls_mouse_invert_more;
 entity controls_mouse_invert_less;
 
+entity controls_back;
+entity controls_accept;
+
 void() click_control_mouse_sense_more={
   local float val;
   val = controls_mouse_sense.len;
@@ -187,6 +190,16 @@ void() txt_control_bind_zoom={
   menu_keybind_change ("+button9");
 };
 
+void() click_controls_back={
+  menu_clear_items(M_STATE);
+  m_options_f();
+};
+
+void() click_controls_accept={
+  
+  cmd("saveconfig\n");
+};
+
 // ini function, called by '_f' function as a setup func
 void() m_controls_i={
   controls_title = lbl_img('10 50', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, (UI_FLAG_SIZE_IMG) );
@@ -275,6 +288,9 @@ void() m_controls_i={
   controls_chat_all = inp_keybindfield('515 173', '10 10 0', txt_control_bind_chat_all, "messagemode", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
   controls_zoom = inp_keybindfield('515 185', '10 10 0', txt_control_bind_zoom, "+zoom", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+
+  controls_back = btn_img_callback('25 323', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_controls_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_accept = btn_img_callback('285 323', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_controls_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };
 
 /*
@@ -349,7 +365,7 @@ void(float key, float ascii) m_controls_k={
   switch(key){
     case K_ESCAPE:
       localsound("sound/misc/menu2.wav");
-      cmd("saveconfig");
+      cmd("saveconfig\n");
       menu_clear_items(M_STATE);
       M_STATE = M_OPTIONS;
       m_options_f();

@@ -195,7 +195,7 @@ void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
   vel = angl * demg;
   
   pointparticles( particleeffectnum("TE_SHIELD_HIT_HIGH"), org, vel, demg + total);
-
+  pointsound( org, "sound/fx_shieldhit.ogg", 1, ATTN_NORM );
 };
 
 
