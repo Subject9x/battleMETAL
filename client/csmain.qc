@@ -522,7 +522,7 @@ void(string s) CSQC_Parse_StuffCmd =
   argc = tokenize(s);
   if(argv(0) == "mech"){
     if(argv(1) == "msn_file"){
-      cl_get_msnfile(strzone(argv(2)));
+      cl_get_msnfile( argv(2) );
     }
     else if(argv(1) == "anm_file"){
       cl_get_animfile( argv(2) );

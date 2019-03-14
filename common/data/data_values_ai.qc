@@ -42,7 +42,7 @@ float AI_DMG_VET = 0.075;
 float AI_DMG_ACE = 0.1;
 
 //Field of View as normalized dot product
-float AI_FOV     = 0.3;
+float AI_FOV     = 0.5;//0.3;
 //these are multipliers
 float AI_FOV_ROK = 0.5;
 float AI_FOV_REG = 1;
@@ -58,9 +58,10 @@ float AI_VIEW_VET = 0.75;
 float AI_VIEW_ACE = 0.5;
 
 //View Ranges, multipliers against ai.radar_range
-float AI_VIEW_RANGE_ROK = 0.75;
-float AI_VIEW_RANGE_VET = 1.1;
-float AI_VIEW_RANGE_ACE = 1.25;
+float AI_VIEW_RANGE_ROK = 0.85;
+float AI_VIEW_RANGE_REG = 1;
+float AI_VIEW_RANGE_VET = 1.25;
+float AI_VIEW_RANGE_ACE = 1.5;
 
 //Adjust yaw_speed
 float AI_YAW_ROK = 0.75;

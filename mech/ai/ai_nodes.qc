@@ -62,6 +62,7 @@ void() node_setup={
   }
   else{
     self.alpha = 0;
+    self.effects = self.effects | EF_NODRAW;
   }
   
   trigger_event( self, trigOnSpawn );

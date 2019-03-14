@@ -48,7 +48,7 @@ void() ClientConnect = {
   self.data_idx = 0;
   self.data_type = DATA_POBS;
   self.currentWeaponGroup = self.currentWeaponGroup;
-  self.i_faction = 0;
+  self.i_faction = FACTION_PSC; //default
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;
@@ -58,6 +58,7 @@ void() ClientConnect = {
   self.stat_cofs_x = 0;
   self.stat_cofs_y = 0;
   self.stat_cofs_z = 0;
+  
   self.stat_w1_id = -1;
   self.stat_w2_id = -1;
   self.stat_w3_id = -1;
@@ -160,7 +161,7 @@ void() PutClientInServer = {
 	self.pausetime = 0;
   self.view_ofs = '0 0 1';
   
-  if( !cvar("mechdev") ){
+  if( !cvar("developer") ){
     if( coop ){
       spot = spawnpoint_coop();
     }
@@ -169,8 +170,8 @@ void() PutClientInServer = {
   spot  = SelectSpawnPoint();
   
   self.i_faction = spot.i_faction;
-  if( !self.i_faction ){
-    self.i_faction = TRUE;  //default to 1 to satisfy game code
+  if( self.i_faction < 1 ){
+    self.i_faction = FACTION_PSC;  //default to 1 to satisfy game code
   }
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
@@ -187,7 +188,6 @@ void() PutClientInServer = {
         savefile_default();
       }
       savefile_load();
-      self.i_faction = world.i_faction; //single player setting
       break;
     case GAMEMODE_COOP:
       mapfile_coop_load();

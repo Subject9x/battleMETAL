@@ -186,7 +186,7 @@ void() ai_spg_panic8;
 void() ai_spg_panic9;
 void() ai_spg_panic10;
 
-void() ai_spg_walkl1={
+void() ai_spg_walk1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
@@ -197,6 +197,8 @@ void() ai_spg_walkl1={
   
   macro_ai_frame(ai_spg_walk1)
 };
+
+
 
 void() ai_spg_stand1={
   ai_update_accuracy( TRUE );

@@ -121,23 +121,17 @@ float(float rank) ai_pilot_field_of_view={
 };
 
 float(float rank) ai_pilot_view_range={
-  local float val;
-  
   switch(rank){
     case AI_RANK_ACE:
-      val = self.radar_range * AI_VIEW_RANGE_ACE;
-      break;
+      return self.radar_range * AI_VIEW_RANGE_ACE;
     case AI_RANK_VET:
-      val = self.radar_range * AI_VIEW_RANGE_VET;
-      break;
+      return self.radar_range * AI_VIEW_RANGE_VET;
     case AI_RANK_REG:
-      val = self.radar_range;
-      break;
+      return self.radar_range * AI_VIEW_RANGE_REG;
     case AI_RANK_ROK:
-      val = self.radar_range * AI_VIEW_RANGE_ROK;
-      break;
+      return self.radar_range * AI_VIEW_RANGE_ROK;
   }
-  return val;
+  return 1;
 };
 
 /*
@@ -167,7 +161,6 @@ float( float rank, float damg) ai_pilot_mod_damage={
   }
   return percent;
 };
-
 
 float(float rank) ai_pilot_view_interval={
   local float mod;

@@ -39,7 +39,7 @@ void() msn_parsefile={
       line_tag = tokenizebyseparator(line, "'", "'", ": ","'","'");
       if (argv(1) == MSN_FILE_IMG){
         if( argv(token) != "" ){
-          MSN_MAPPIC = strzone(strcat("data/map_scripts/",argv(token)));
+          msn_setmappic( argv(1), strcat("data/map_scripts/",argv(token)));
         }
       }
       if (argv(1) == MSN_FILE_NAME){
@@ -84,7 +84,7 @@ void() msn_parsefile={
       }
       if (argv(1) == MSN_FILE_OBJS){
         if( argv(token) != "" ){
-          MSN_OBJ = stof(strzone(argv(token)));
+          MSN_OBJ = stof(argv(token));
         }
       }
       if (argv(1) == MSN_FILE_ANIM){
@@ -104,18 +104,16 @@ void() msn_parsefile={
 };
 
 void(string line, string val) msn_setmappic={
-  if(line == "MSN_PIC"){
-    MSN_MAPPIC = strzone(val);
-    if(MSN_MAPPIC != ""){
-      local string s;
-      s = precache_pic(MSN_MAPPIC, 0);
-      if(s != ""){
-        MSN_MAPPIC = s;
-      }
-      else{
-        MSN_MAPPIC = "";
-        print(strcat("MSN File error: Pic ", MSN_MAPPIC, " null or doesnt exist!\n"));
-      }
+  MSN_MAPPIC = strzone(val);
+  if(MSN_MAPPIC != ""){
+    local string s;
+    s = precache_pic(MSN_MAPPIC, 0);
+    if(s != ""){
+      MSN_MAPPIC = s;
+    }
+    else{
+      MSN_MAPPIC = "";
+      print(strcat("MSN File error: Pic ", MSN_MAPPIC, " null or doesnt exist!\n"));
     }
   }
 };
@@ -174,6 +172,7 @@ void(string line, string val) msn_settotalobjectives={
     MSN_OBJ = stof(val);
   }
 };
+
 float(string line, string val) msn_mapobjid={
   local float obj_id;
   if(line == MSN_FILE_OBJ_ID){
@@ -191,7 +190,7 @@ float(string line, string val) msn_mapobjid={
 };
 void(float obj_id, string line, string val) msn_setobjdesc={
   if(line == MSN_FILE_OBJ_DESC){
-    if(obj_id!=0){    
+    if(obj_id != 0){    
       MSN_OBJ_DESC[obj_id] = strzone(val);
     }
   }

@@ -17,10 +17,10 @@ void() mh_world_ini={
   registercvar("cl_hud_color", "0", 1);
   
   cvar_set("gamemode", ftos(GAMEMODE_CAMPAIGN));
-  if( coop ){
+  if( coop && cvar("maxplayers") > 1){
     cvar_set("gamemode", ftos(GAMEMODE_COOP));
   }
-  if( deathmatch ){
+  if( deathmatch && cvar("maxplayers") > 1){
     cvar_set("gamemode", ftos(GAMEMODE_DM));
   }
 
