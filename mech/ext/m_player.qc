@@ -191,15 +191,28 @@ void() PlayerPostThink = {
     //if (self.watertype == CONTENT_WATER)
       //sound (self, CHAN_BODY, "player/h2ojump.wav", 1, ATTN_NORM);
     //else
-    local float legDmg;
     if (self.jump_flag < self.fall_slam){
-      //T_Damage (self, world, world, 5); 
-      //sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
-      //self.deathtype = "falling";
-      legDmg = self.fall_slam / self.jump_flag;
-      legDmg = legDmg / 3;
-      legDmg = legDmg * self.e_legs.health;
-      t_damage( self, world, world, legDmg, 0, self.e_legs.origin, '0 0 0');
+      if( self.jump_flag < self.fall_dist * FALL_KILL_MULTIPLIER){
+        //player fell from great height and is killed outright...whoops
+        t_damage( self, world, world, self.e_legs.health, 0, self.e_legs.origin, '0 0 0');
+        t_damage( self, world, world, self.health, 0, self.origin, '0 0 0');
+      }
+      else{
+        local float legDmg, ctDmg;
+        //T_Damage (self, world, world, 5); 
+        //sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
+        //self.deathtype = "falling";
+        legDmg = self.fall_slam / self.jump_flag;
+        legDmg = legDmg / 3;
+        legDmg = legDmg * self.e_legs.max_health;
+        t_damage( self, world, world, legDmg, 0, self.e_legs.origin, '0 0 0');
+        if( self.jump_flag < self.fall_dist * FALL_CT_MULTIPLIER ){
+          ctDmg = self.fall_slam / self.jump_flag;
+          ctDmg = ctDmg / 4;
+          ctDmg = ctDmg * self.max_health;
+          t_damage( self, world, world, ctDmg, 0, self.origin, '0 0 0');
+        }
+      }
 		}
 		else{
       //sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);

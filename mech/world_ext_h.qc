@@ -21,6 +21,9 @@ float TE_STOMP_TYPE;  //set by world type
 
 void() mh_world_ini;
 
+void() world_get_fog;
+float( entity t ) world_calc_fog;
+
 //functional-style data lookup
 void(float wep_id) data_iniWep;
 void(float mech_id) data_iniMech;

@@ -30,6 +30,12 @@ void() map_changefog_touch={
     activator = other;
     self.use();
   }
+  else if( (other.flags & FL_MONSTER) ){
+   other.fog_density = self.fog_density;
+   other.fog_alpha = self.fog_alpha;
+   other.fog_dist = self.fog_dist;
+   other.fade = self.fade;
+  }
 };
 
 void() map_changefog_use={

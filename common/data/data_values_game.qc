@@ -119,7 +119,9 @@ float WEAPON9 = 256;
 //     COMBAT STATS
 //============================
 float FALL_THRESHOLD = -400;  //quake has this set to 300
-float FALL_DMG_MULTIPLIER = 2.5;  //quake has this set to 300
+float FALL_DMG_MULTIPLIER = 2.5;  //fall threshold * multiplier = if legs are damaged in fall
+float FALL_CT_MULTIPLIER = 3;  //fall threshold * multiplier = if center torso is damaged in fall
+float FALL_KILL_MULTIPLIER = 3.5;  //fall threshold * multiplier = player killed by fall
 float SHIELD_DELAY = 5;
 float SHIELD_SOAK = 4;
 //============================

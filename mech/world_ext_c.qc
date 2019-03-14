@@ -89,6 +89,51 @@ void() mh_world_ini={
 };
 
 /*
+  finds the closest fog settings for the unit in question.
+*/
+void() world_get_fog={
+  local entity this, theFog, found;
+  local float radi;
+  local float dist;
+  local float front;
+  
+  this = self;
+  theFog = findchain(classname, "map_changefog");
+  radi = 10000;
+  
+  while( theFog ){
+    front = FALSE;
+    dist = vlen( theFog.origin - self.origin );
+    if( dist < radi ){
+      self = theFog;
+        front = ai_check_targ_infront( this, 0.5, FALSE ); 
+      self = this;
+      if( front ){
+        radi = dist;
+        found = theFog;
+      }
+    }
+  }
+  
+  if( !found ){
+    found = world;
+  }
+  
+  self.fog_density = found.fog_density;
+  self.fog_alpha = found.fog_alpha;
+  self.fog_dist = found.fog_dist;
+  self.fade = found.fade;
+};
+
+/*
+  used for adjusting line of sight based on target's fog settings.
+  the code keeps fog settings at the entity level
+*/
+float( entity t ) world_calc_fog={
+
+};
+
+/*
   SCOPE: self = weapon in question
   calls the appropriate 'ini' function on the 
   ent that is making the call. essentially this

@@ -97,6 +97,8 @@ void(float rank) ai_pilot_ini_stats={
   self.m_fspeed = self.m_fspeed * AI_WALK_SPD;
   self.m_sspeed = self.m_sspeed * AI_WALK_SPD;
   self.m_bspeed = self.m_bspeed * AI_WALK_SPD;
+  
+  world_get_fog();
 };
 
 float(float rank) ai_pilot_field_of_view={
@@ -114,8 +116,8 @@ float(float rank) ai_pilot_field_of_view={
       diff = diff * AI_FOV_REG;
       break;
     case AI_RANK_ROK : 
-    diff = diff * AI_FOV_ROK;
-    break;
+      diff = diff * AI_FOV_ROK;
+      break;
   }
   return diff;
 };

@@ -168,22 +168,30 @@ float() ai_find_target_visual={
     return FALSE;
   }
   local entity targ, found;
-  local float dist, rng;
+  local float rng, fog, fogLen, ndist;
   
   targ = findradius(self.origin, self.ai_view);
-  dist = self.ai_view ;
-  rng = dist;
+  rng =  self.ai_view;
+  if( self.fog_alpha ){
+    fogLen = self.fog_dist_y - self.fog_dist_x;
+    
+    fog = self.fog_alpha * self.fog_density;
+    fog = fog * fogLen;
+    
+    rng = self.ai_view - fogLen;
+    if( rng < AI_RANGE_S ){
+      rng = AI_RANGE_S;
+    }
+    rng = rng + fog;
+  }
+
   while( targ ){
     if( targ != self ){
       if( targ.i_faction != self.i_faction ){
         if( ai_valid_target(targ) ){
           if( ai_check_face(targ, self.ai_fov) ){
             if( ai_check_vis(targ) ){
-              local float ndist;
               ndist = vlen(targ.origin - self.origin);
-              if( targ.fog_alpha ){
-                rng = rng - ( targ.fog_alpha * rng ); //FOG?
-              }
               if(ndist < rng){
                 rng = ndist;
                 found = targ;
@@ -203,7 +211,7 @@ float() ai_find_target_visual={
         ai_sfx_help();
         ally = ai_find_friend( self.radar_range );
         if( ally ){
-          ai_give_target( ally, found, (ally.ai_rank < self.ai_rank));
+          ai_give_target( ally, found, (ally.ai_rank <= self.ai_rank));
         }
       }
       return FALSE;
@@ -222,16 +230,14 @@ float() ai_find_target_radar={
     return FALSE;
   }
   local entity targ, found;
-  local float dist, rng;
+  local float rng, ndist, nrng;
   
   targ = findchainflags(flags, FL_UNIT);
-  dist = self.radar_range;
-  rng = dist;
+  rng = self.radar_range;
   while( targ ){
     if( targ != self ){
       if( targ.i_faction != self.i_faction ){
         if( ai_valid_target(targ) ){
-          local float ndist, nrng;
           nrng = rng;
           ndist = vlen(targ.origin - self.origin);
           if( ndist <= rng ){
@@ -267,7 +273,7 @@ float() ai_find_target_radar={
         ai_sfx_help();
         ally = ai_find_friend( self.radar_range );
         if( ally ){
-          ai_give_target( ally, found, (ally.ai_rank < self.ai_rank));
+          ai_give_target( ally, found, (ally.ai_rank <= self.ai_rank));
         }
       }
       return FALSE;

@@ -52,7 +52,7 @@ float AI_FOV_ACE = 1.5;
 //time interval between view sweeps
 float AI_VIEW_INTERVAL = 3;
 //these are multipliers
-float AI_VIEW_ROK = 1.5;
+float AI_VIEW_ROK = 1.25;
 float AI_VIEW_REG = 1;
 float AI_VIEW_VET = 0.75;
 float AI_VIEW_ACE = 0.5;
@@ -127,10 +127,10 @@ float AI_SHIELD_VET = 0.6;
 float AI_SHIELD_ACE = 0.8;
 
 //ai_leading ratings, how well an ai tracks a slippery target
-float AI_LEAD_ACE = 0.08;
-float AI_LEAD_VET = 0.1;
-float AI_LEAD_REG = 0.12;
-float AI_LEAD_ROK = 0.14;
+float AI_LEAD_ACE = 0.06;//0.08;
+float AI_LEAD_VET = 0.1;//0.1;
+float AI_LEAD_REG = 0.14;//0.12;
+float AI_LEAD_ROK = 0.18;//0.14;
 
 //common engage ranges
 float AI_RANGE_S = 400;
