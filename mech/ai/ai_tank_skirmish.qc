@@ -48,7 +48,7 @@ void() ai_tank_sk_die={
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
   
-  vel = self.origin + (v_up * 2);
+  vel = self.origin + (v_up * self.vec_size);
   switch( self.vec_size ){
     case 2:
       te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
@@ -336,17 +336,17 @@ void() ai_tank_sk_fight_prep={
     }
   }
   if( enemy_hunt ){
-    if( !self.ai_node_recall ){
+    if( !(self.ai_node_recall.flags & FL_NODE) ){
       ai_sfx_huntStart();
       nodeRecall = node_recall_setup();
       self.ai_node_recall = nodeRecall;
       self.goalentity = self.enemy;
         self.ai_action_time = (0 - self.ai_action_mod) * -1;
       if( self.stat_rdr_mode ){
-        self.ai_action_time = ceil(self.ai_action_time * 4);
+        self.ai_action_time = ceil(self.ai_action_time * 8);
       }
       else{
-        self.ai_action_time = ceil(self.ai_action_time * 2);
+        self.ai_action_time = ceil(self.ai_action_time * 4);
       }
       macro_ai_frame(ai_tank_sk_hunt1)
       return;
@@ -1208,7 +1208,6 @@ void() ai_tank_sk_hunt1={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1222,7 +1221,6 @@ void() ai_tank_sk_hunt2={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1236,7 +1234,6 @@ void() ai_tank_sk_hunt3={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1250,7 +1247,6 @@ void() ai_tank_sk_hunt4={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1264,7 +1260,6 @@ void() ai_tank_sk_hunt5={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1278,7 +1273,6 @@ void() ai_tank_sk_hunt6={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1292,7 +1286,6 @@ void() ai_tank_sk_hunt7={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1306,7 +1299,6 @@ void() ai_tank_sk_hunt8={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1320,7 +1312,6 @@ void() ai_tank_sk_hunt9={
   movetogoal( self.m_fspeed );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1334,7 +1325,6 @@ void() ai_tank_sk_hunt10={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1356,7 +1346,7 @@ void() ai_tank_sk_hunt10={
     }
   }
   //the recall portion of hunting
-  if( self.ai_node_recall && self.goalentity != self.ai_node_recall ){
+  if( self.ai_node_recall && (self.goalentity != self.ai_node_recall) ){
     ai_turret_set_state( TR_NORM );
     self.goalentity = self.ai_node_recall;
     self.ai_action_time = (0 - self.ai_action_mod) * -1;
@@ -1422,7 +1412,8 @@ void() ai_tank_sk_panic3={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )
     movetogoal( self.m_fspeed * AI_RUN_FACTOR );
-  macro_ai_frame( ai_tank_sk_panic4 )};
+  macro_ai_frame( ai_tank_sk_panic4 )
+};
 void() ai_tank_sk_panic4={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )

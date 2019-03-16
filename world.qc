@@ -76,6 +76,10 @@ void() worldspawn =
   WINDDIR = world.c_ofs;
   WINDSPEED = world.m_fspeed;
   
+  if( !world.worldtype ){
+    world.worldtype = 0;
+  }
+  
   dprint( strcat("WINDDIR(c_ofs)", vtos(world.c_ofs),"\n")); //DEBUG
 // custom map attributes
 	if (self.model == "maps/e1m8.bsp")

@@ -910,7 +910,6 @@ void() ai_gev_hunt1={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -925,7 +924,6 @@ void() ai_gev_hunt2={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -940,7 +938,6 @@ void() ai_gev_hunt3={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -955,7 +952,6 @@ void() ai_gev_hunt4={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -970,7 +966,6 @@ void() ai_gev_hunt5={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -985,7 +980,6 @@ void() ai_gev_hunt6={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1000,7 +994,6 @@ void() ai_gev_hunt7={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1023,7 +1016,6 @@ void() ai_gev_hunt8={
   }
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1038,7 +1030,6 @@ void() ai_gev_hunt9={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1053,7 +1044,6 @@ void() ai_gev_hunt10={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1068,7 +1058,6 @@ void() ai_gev_hunt11={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1083,7 +1072,6 @@ void() ai_gev_hunt12={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }

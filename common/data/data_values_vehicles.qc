@@ -143,9 +143,9 @@ float DAT_onnek_FSPEED          = 75;
 float DAT_onnek_SSPEED          = 0;
 float DAT_onnek_BSPEED          = 75;
 //-------------------------Dunerunner
-float DAT_dunerunner_FSPEED     = 133;
-float DAT_dunerunner_SSPEED     = 85;
-float DAT_dunerunner_BSPEED     = 100;
+float DAT_dunerunner_FSPEED     = 167;//133;
+float DAT_dunerunner_SSPEED     = 113;//85;
+float DAT_dunerunner_BSPEED     = 133;//100;
 //-------------------------Sorcerer
 float DAT_sorcerer_FSPEED       = 125;
 float DAT_sorcerer_SSPEED       = 0;
@@ -159,7 +159,7 @@ float DAT_PSC_VTOLL_BSPEED      = 300;
 //============================
 //-------------------------Foslager
 vector DAT_foslager_CTOR_BBX_N  = '-20 -20 -8';
-vector DAT_foslager_CTOR_BBX_X  = '20 20 12';
+vector DAT_foslager_CTOR_BBX_X  = '20 20 14';
 //-------------------------Trowel
 vector DAT_TROWEL_CTOR_BBX_N    = '-30 -30 -7.75';
 vector DAT_TROWEL_CTOR_BBX_X    = '30 30 20';
@@ -203,17 +203,17 @@ float DAT_vtol_LOCK_ON          = 6;
 float DAT_HS_TRUCK_YAW_SPEED    = 1.9;
 //-------------------------Dunerunner
 float DAT_dunerunner_YAW_SPEED  = 5;
-float DAT_dunerunner_TUR_YAW    = 5;
+float DAT_dunerunner_TUR_YAW    = 4;
 //-------------------------Foslager
 float DAT_foslager_YAW_SPEED    = 2.5;
-float DAT_foslager_TUR_YAW      = 2.5;
+float DAT_foslager_TUR_YAW      = 3;
 //-------------------------Sorcerer
-float DAT_sorcerer_YAW_SPEED    = 2;
+float DAT_sorcerer_YAW_SPEED    = 2.5;
 //-------------------------Onnek
-float DAT_onnek_YAW_SPEED       = 1;
+float DAT_onnek_YAW_SPEED       = 2;
 //-------------------------Trowel
 float DAT_trowel_YAW_SPEED      = 0.75;
-float DAT_trowel_TUR_YAW        = 1;
+float DAT_trowel_TUR_YAW        = 1.25;
 //-------------------------PSC VTOL Light
 float DAT_PSC_VTOLL_YAW_SPEED   = 8;
 //============================

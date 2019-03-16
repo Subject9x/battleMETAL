@@ -94,7 +94,7 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
   dir = normalize( dir - vel );
   
   switch( world.worldtype ){
-    case 0:
+    default:
       partcle = particleeffectnum("TE_DUST_DESERT");
       break;
     case 1:

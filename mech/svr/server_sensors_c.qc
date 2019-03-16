@@ -87,7 +87,7 @@ void() server_make_sweep={
 void() server_getTarget={
   local entity src;
   makevectors(self.v_angle);
-    src = self;
+  src = self;
   if(self.e_cam != world){
     src = self.e_cam;
   }

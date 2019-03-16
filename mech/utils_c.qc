@@ -420,20 +420,20 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
   local vector angl;
   local vector newpos;
   local float len;
-  local float height;
+  local float hight;
   
   angl = entAng;
   angl_y = anglemod(angl_y +  45 + random() * 270);
 
   len = entMaxs_x * 0.75;
   
-  height = entMaxs_z * 0.65;
-  height = height + (random() * (entMaxs_z * 0.25));
+  hight = entMaxs_z * 0.65;
+  hight = hight + (random() * (entMaxs_z * 0.25));
   
   newpos = entOrg;
   makevectors( angl );
   newpos = newpos + (v_forward * len);
-  newpos = newpos + (v_up *  height);
+  newpos = newpos + (v_up *  hight);
   return newpos;
 };
 

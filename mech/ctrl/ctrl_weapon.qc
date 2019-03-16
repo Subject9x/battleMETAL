@@ -1,27 +1,27 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/1/2016
-      mod - 3/4/2017
+mod - 3/4/2017
+mod - 3/16/2019
 Overview: weapon controller header
 */
 
 void(entity wep) ctrl_wpn_think={
-
-  local entity data_idx;
-  data_idx = self;
+  local entity this;
+  this = self;
   self = wep;
     if(self.deadflag >= DEAD_DYING){
       self.deadflag = DEAD_DEAD;
-      self = data_idx;
+      self = this;
       return;
     }
     if(self.deadflag == DEAD_DEAD){
-      self = data_idx;
+      self = this;
       return;
     }  
     if(self.w_think){
-      if( (data_idx.flags & FL_CLIENT) ){
+      if( (this.flags & FL_CLIENT) ){
         if(self.w_isready){
           ctrl_weapon_isReady(self, self.stat_wep_rel);
         }else{
@@ -30,7 +30,7 @@ void(entity wep) ctrl_wpn_think={
       }
       self.w_think();
     }
-  self = data_idx;
+  self = this;
 };
 
 void() ctrl_wpn_think_clip={

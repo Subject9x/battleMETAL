@@ -98,7 +98,7 @@ void() world_get_fog={
   local float front;
   
   this = self;
-  theFog = findchain(classname, "map_changefog");
+  theFog = findchain(classname, "map_change_fog");
   radi = 10000;
   
   while( theFog ){

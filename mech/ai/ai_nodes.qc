@@ -42,10 +42,6 @@ void() node_setup={
   
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-10 -10 -18','10 10 18');
-  /*if( (self.spawnflags & NODE_SPAWN_DROP) ){
-    setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4))); 
-    droptofloor();
-  }*/
   
   //only render nodes when debugging
   //DEBUG
@@ -145,16 +141,16 @@ void() node_patrol_touch={
           }
           else{
             self = other;
-              if( self.th_stand ){
-                self.th_stand();
-              }
+            if( self.th_stand ){
+              self.th_stand();
+            }
           }
         }
         else{
           self = other;
-            if( self.th_stand ){
-              self.th_stand();
-            }
+          if( self.th_stand ){
+            self.th_stand();
+          }
         }
       }
     }
@@ -189,7 +185,7 @@ void() node_touch={
       return;
     }
 
-    if( (self.ai_node_recall.flags & FL_NODE) || (self.ai_node_recall != world) ){
+    if( (self.ai_node_recall.flags & FL_NODE) ){
       //AI is currently chasing down a target / or resetting
       return;
     }

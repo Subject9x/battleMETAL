@@ -156,9 +156,11 @@ void() map_damage_zone={
   setmodel( self, "q3mdl/testball.md3" ); //DEBUG
   setsize( self, tempMin, tempMax );
   setorigin( self, self.origin );
-
-  //self.effects = self.effects | EF_NODRAW;  //DEBUG
-
+  
+  if( !cvar("developer") ){
+    self.effects = self.effects | EF_NODRAW;
+  }
+  
   if( (self.spawnflags & 2) ){
     if( !self.p_lifetime ){
       self.spawnflags = self.spawnflags - (self.spawnflags & 2);

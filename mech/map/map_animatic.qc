@@ -115,6 +115,10 @@ void() animatic_event={
   
   setmodel(self, "q3mdl/testball.md3"); //DEBUG
   
+  if( !cvar("developer") ){
+    self.effects = self.effects | EF_NODRAW;
+  }
+  
   //touchable check
   if( (self.spawnflags & 2) ){
     self.solid = SOLID_TRIGGER;

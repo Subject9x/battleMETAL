@@ -6,7 +6,7 @@ Overview: AI Controller functions, ported mainly from Quake 1
 */
 
 void( float estate ) ai_turret_set_state={
-  if( self.e_tor_c) {
+  if( (self.e_tor_c) ) {
     self.e_tor_c.attack_state = estate;
   }
 };
@@ -19,8 +19,8 @@ void( float estate ) ai_turret_set_state={
 void() ai_turret_control={
   local entity turretOwner;
   local vector am;
-  turretOwner = self;
   if( (self.e_tor_c) ){
+    turretOwner = self;
     self = self.e_tor_c;
       util_setOffsetOrigin(self, turretOwner, self.c_ofs);
       switch( self.attack_state ){
@@ -81,7 +81,7 @@ void() ai_update={
   }
   else{ 
     self.enemy = world;
-    if( self.e_tor_c.attack_state != TR_NORM ){
+    if( self.e_tor_c.attack_state != TR_YAW ){
       ai_turret_set_state( TR_NORM );
     }
   }

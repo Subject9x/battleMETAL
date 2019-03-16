@@ -373,10 +373,10 @@ void() ai_mech_sk_fight_prep={
       self.goalentity = self.enemy;
         self.ai_action_time = (0 - self.ai_action_mod) * -1;
       if( self.stat_rdr_mode ){
-        self.ai_action_time = ceil(self.ai_action_time * 4);
+        self.ai_action_time = ceil(self.ai_action_time * 6);
       }
       else{
-        self.ai_action_time = ceil(self.ai_action_time * 2);
+        self.ai_action_time = ceil(self.ai_action_time * 4);
       }
       macro_ai_frame(ai_mech_sk_hunt1)
       return;
@@ -1336,7 +1336,6 @@ void() ai_mech_sk_hunt1={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1349,7 +1348,6 @@ void() ai_mech_sk_hunt2={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1362,7 +1360,6 @@ void() ai_mech_sk_hunt3={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1375,7 +1372,6 @@ void() ai_mech_sk_hunt4={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1388,7 +1384,6 @@ void() ai_mech_sk_hunt5={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1401,7 +1396,6 @@ void() ai_mech_sk_hunt6={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1414,7 +1408,6 @@ void() ai_mech_sk_hunt7={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1427,7 +1420,6 @@ void() ai_mech_sk_hunt8={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1440,7 +1432,6 @@ void() ai_mech_sk_hunt9={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1453,7 +1444,6 @@ void() ai_mech_sk_hunt10={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1466,7 +1456,6 @@ void() ai_mech_sk_hunt11={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1479,7 +1468,6 @@ void() ai_mech_sk_hunt12={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1492,7 +1480,6 @@ void() ai_mech_sk_hunt13={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1505,7 +1492,6 @@ void() ai_mech_sk_hunt14={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1518,7 +1504,6 @@ void() ai_mech_sk_hunt15={
   
   movetogoal( self.m_fspeed );
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
@@ -1532,7 +1517,6 @@ void() ai_mech_sk_hunt16={
   movetogoal( self.m_fspeed * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
-    ai_sfx_kill();
     ai_sfx_huntEnd();
     self.goalentity = self.ai_node_recall;
   }
