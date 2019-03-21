@@ -104,7 +104,6 @@ void() unit_hs_excavat={
 */
 void() unit_dunerunner_h={
   
-  
   self.nextVecChoice = ID_VEC_dunerunner;
   self.i_faction = FACTION_SURVEST;
    
@@ -119,18 +118,15 @@ void() unit_dunerunner_h={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_LOWTECH;
-      //FLAK | ATC
-      ai_ini_weapons( 12, 1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( 12, ID_WEP_LATC, -1, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      //LATC | LAS
-      ai_ini_weapons( 3, 3, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_PRIMITVE;
-      //ATC | ATC
-      ai_ini_weapons( 1, 1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_LATC, ID_WEP_LATC, -1, -1, -1, -1, -1, -1, -1);
       break;
   }
       
@@ -140,7 +136,6 @@ void() unit_dunerunner_h={
 };
 
 void() unit_dunerunner_m={
-  
   
   self.nextVecChoice = ID_VEC_dunerunner;
   self.i_faction = FACTION_MILITAR;
@@ -156,18 +151,15 @@ void() unit_dunerunner_m={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      //LAS | LAS
-      ai_ini_weapons( 3, 3, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LAS, -1, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //LAS | QRFL
-      ai_ini_weapons( 3, 5, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_QRF, -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_LOWTECH;
-      //LAS | ATC
-      ai_ini_weapons( 3, 1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_LAS, ID_WEP_LATC, -1, -1, -1, -1, -1, -1, -1);
       break;
   }
       
@@ -184,7 +176,6 @@ void() unit_dunerunner_m={
 */
 void() unit_foslager_h={
 
-  
   self.nextVecChoice = ID_VEC_foslager;
   self.i_faction = FACTION_SURVEST;
    
@@ -199,18 +190,15 @@ void() unit_foslager_h={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      //MLG | LAS | LATC 
-      ai_ini_weapons( 9, 3, 1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_MLGD, ID_WEP_LAS, ID_WEP_LATC, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //ION | LAS | FLAK
-      ai_ini_weapons( 13, 3, 12, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_ION, ID_WEP_LAS, ID_WEP_FLAK, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_LOWTECH;
-      //MIS | LAS | LATC 
-      ai_ini_weapons( 4, 3, 1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_MIS, ID_WEP_LAS, ID_WEP_LATC, -1, -1, -1, -1, -1, -1);
       break;
   }
   
@@ -221,7 +209,6 @@ void() unit_foslager_h={
 
 void() unit_foslager_m={
 
-  
   self.nextVecChoice = ID_VEC_foslager;
   self.i_faction = FACTION_MILITAR;
    
@@ -236,18 +223,15 @@ void() unit_foslager_m={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //PAC | LATC | FLAK
-      ai_ini_weapons( 7, 1, 12, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_PAC, ID_WEP_LATC, ID_WEP_FLAK, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
-      // ION | RPC | FLAK
-      ai_ini_weapons( 13, 6, 12, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_ION, ID_WEP_RPC, ID_WEP_FLAK, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      //ESR | LATC | LAS
-      ai_ini_weapons( 8, 1, 3, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_ESR, ID_WEP_LATC, ID_WEP_LAS, -1, -1, -1, -1, -1, -1);
       break;
   }
   
@@ -264,7 +248,6 @@ void() unit_foslager_m={
   --------------------------------
 */
 void() unit_trowel_m={
-
   
   self.nextVecChoice = ID_VEC_trowel;
   self.i_faction = FACTION_MILITAR;
@@ -280,18 +263,15 @@ void() unit_trowel_m={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //ESR | SFGA
-      ai_ini_weapons( 8, 11, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_ESR, ID_WEP_SFGA, -1, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
-      //PAC | SFGA
-      ai_ini_weapons( 7, 11, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_PAC, ID_WEP_SFGA, -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //ESR | ESR
-      ai_ini_weapons( 8, 8, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_ESR, ID_WEP_ESR, -1, -1, -1, -1, -1, -1, -1);
       break;
   }
   
@@ -302,7 +282,6 @@ void() unit_trowel_m={
 
 void() unit_trowel_h={
 
-  
   self.nextVecChoice = ID_VEC_trowel;
   self.i_faction = FACTION_SURVEST;
    
@@ -317,18 +296,15 @@ void() unit_trowel_h={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //RPC | ION
-      ai_ini_weapons( 6, 13, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_RPC, ID_WEP_ION, -1, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
-      //SFGA | EMP
-      ai_ini_weapons( 11, 2, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_SFGA, ID_WEP_EMP, -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //MIS | ION
-      ai_ini_weapons(4, 13, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_MIS, ID_WEP_ION, -1, -1, -1, -1, -1, -1, -1);
       break;
   }
   
@@ -345,11 +321,9 @@ void() unit_trowel_h={
 */
 void() unit_onnek_h={
 
-  
   self.nextVecChoice = ID_VEC_onnek;
   self.i_faction = FACTION_SURVEST;
-   
-  
+
   if( !ai_can_spawn() ){
     remove(self);
     return;
@@ -359,18 +333,19 @@ void() unit_onnek_h={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      //EMP
-      ai_ini_weapons(13, -1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_ION, -1, -1, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //ESR
-      ai_ini_weapons( 2, -1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_EMP, -1, -1, -1, -1, -1, -1, -1, -1);
+      break;
+    case 1:
+      self.spreadDefault = ACCURACY_LOWTECH;
+      ai_ini_weapons( ID_WEP_QRF, -1, -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_LOWTECH;
-      //ION
-      ai_ini_weapons( 8, -1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_LAS, -1, -1, -1, -1, -1, -1, -1, -1);
       break;
   }
     
@@ -381,11 +356,9 @@ void() unit_onnek_h={
 
 void() unit_onnek_m={
 
-  
   self.nextVecChoice = ID_VEC_onnek;
   self.i_faction = FACTION_MILITAR;
    
-  
   if( !ai_can_spawn() ){
     remove(self);
     return;
@@ -395,18 +368,15 @@ void() unit_onnek_m={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_MARKSMAN;
-      //EMP
-      ai_ini_weapons( 3, -1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_EMP, -1, -1, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_SNIPER;
-      //SFGA
-      ai_ini_weapons( 11, -1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_SFGA, -1, -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      //PAC
-      ai_ini_weapons( 7, -1, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_PAC, -1, -1, -1, -1, -1, -1, -1, -1);
       break;
   }
     
@@ -423,11 +393,9 @@ void() unit_onnek_m={
 */
 void() unit_sorcerer_h={
 
-  
   self.nextVecChoice = ID_VEC_sorcerer;
   self.i_faction = FACTION_SURVEST;
    
-  
   if( !ai_can_spawn() ){
     remove(self);
     return;
@@ -437,18 +405,15 @@ void() unit_sorcerer_h={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_LOWTECH;
-      // MIS | MLG
-      ai_ini_weapons( 4, 9, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_MIS, ID_WEP_MLGD, -1, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      //MLG | MLG
-      ai_ini_weapons( 9, 9, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_MLGD, ID_WEP_MLGD, -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_PRIMITVE;
-      //MIS | MIS
-      ai_ini_weapons( 4, 4, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_MIS, ID_WEP_MIS, -1, -1, -1, -1, -1, -1, -1);
       break;
   }
     
@@ -474,18 +439,15 @@ void() unit_sorcerer_m={
   switch( self.ai_rank ){
     case 2:
       self.spreadDefault = ACCURACY_LOWTECH;
-      // MLG | MLG
-      ai_ini_weapons( 9, 9, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_MLGD, ID_WEP_MLGD, -1, -1, -1, -1, -1, -1, -1);
       break;
     case 3:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      //SWRM | SWRM
-      ai_ini_weapons( 14, 14, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_SWRM, ID_WEP_SWRM -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_PRIMITVE;
-      //ARH | ARH
-      ai_ini_weapons( 10, 10, -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_MARH, ID_WEP_MARH, -1, -1, -1, -1, -1, -1, -1);
       break;
   }
     

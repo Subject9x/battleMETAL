@@ -100,13 +100,16 @@ void()	s_explode6	=	[5,		SUB_Remove] {};*/
 
 void() BecomeExplosion =
 {
+  makevectors( self.angles );
+  te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.p_damage / 5, 1);
   
   sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
   self.deadflag = DEAD_DEAD;
 	self.movetype = MOVETYPE_NONE;
 	self.velocity = '0 0 0';
 	self.touch = SUB_Null;
-	setmodel (self, "progs/s_explod.spr");
+	setmodel (self, "");
 	self.solid = SOLID_NOT;
-	s_explode1 ();
+  self.think = SUB_Remove;
+	self.nextthink = time + 0.1;
 };

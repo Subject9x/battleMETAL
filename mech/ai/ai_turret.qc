@@ -130,8 +130,7 @@ void() ai_turret_patrol1={
   self.e_tor_c.ai_dir = self.e_tor_c.ai_dir + 45;
   self.e_tor_c.ai_dir = self.e_tor_c.ai_dir * crandom();
   self.e_tor_c.ai_dir = anglemod( self.e_tor_c.angles_y + self.e_tor_c.ai_dir);
-  cons_logAFloat("ai_turret_patrol1()->turret.ai_dir",  self.e_tor_c.ai_dir); //DEBUG
-  cons_logAFloat("ai_turret_patrol2()->turret.angles_y",  self.e_tor_c.angles_y); //DEBUG
+  
   ai_turret_set_state(TR_YAW);
   
   if( ai_check_scan(self.stat_rdr_mode) ){
@@ -145,7 +144,6 @@ void() ai_turret_patrol2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  cons_logAFloat("ai_turret_patrol2()->turret.angles_y",  self.e_tor_c.angles_y); //DEBUG
   if( ai_check_scan(self.stat_rdr_mode) ){
     macro_ai_frame(ai_turret_fight_prep)
     return;
@@ -157,7 +155,6 @@ void() ai_turret_patrol3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  cons_logAFloat("ai_turret_patrol3()->turret.angles_y",  self.e_tor_c.angles_y); //DEBUG
   if( ai_check_scan(self.stat_rdr_mode) ){
     macro_ai_frame(ai_turret_fight_prep)
     return;
@@ -169,7 +166,6 @@ void() ai_turret_patrol4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  cons_logAFloat("ai_turret_patrol4()->turret.angles_y",  self.e_tor_c.angles_y); //DEBUG
   if( ai_check_scan(self.stat_rdr_mode) ){
     macro_ai_frame(ai_turret_fight_prep)
     return;
@@ -181,7 +177,6 @@ void() ai_turret_patrol5={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  cons_logAFloat("ai_turret_patrol5()->turret.angles_y",  self.e_tor_c.angles_y); //DEBUG
   if( ai_check_scan(self.stat_rdr_mode) ){
     macro_ai_frame(ai_turret_fight_prep)
     return;

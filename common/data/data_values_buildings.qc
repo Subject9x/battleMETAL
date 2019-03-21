@@ -119,18 +119,14 @@ float DAT_TUR_RADAR_RANGE   = 750;
 //            Models  
 //============================
 //-------------------------Human-Fuel Tank
-string DAT_BLD_H_FUELTANK_MODEL = "q3mdl/buildings/mdl_bld_h_fuel.md3";
+string DAT_BLD_H_FUELTANK_MODEL = "q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3";
 //-------------------------Human-Large Hangar
-string DAT_BLD_H_LG_HANGAR_MODEL = "q3mdl/buildings/mdl_bld_h_hangar_l.md3";
+string DAT_BLD_H_LG_HANGAR_MODEL = "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3";
 //-------------------------Human-Repair Bay
 string DAT_BLD_H_REPAIR_MODEL = "q3mdl/buildings/repair_bay/mdl_repair_bay.md3";
 //-------------------------Human-Radar Post
-string DAT_BLD_H_SM_RADAR_MODEL = "q3mdl/buildings/mdl_bld_h_radar.md3";
+string DAT_BLD_H_SM_RADAR_MODEL = "q3mdl/buildings/radar/mdl_bld_h_radar.md3";
 //-------------------------Human-Power Plant
-string DAT_BLD_H_POWER_PLANT_MODEL = "q3mdl/buildings/mdl_bld_h_power.md3";
+string DAT_BLD_H_POWER_PLANT_MODEL = "q3mdl/buildings/power_plant/mdl_bld_h_power.md3";
 //-------------------------Human-Shield Generator
-string DAT_BLD_H_SHIELDGEN_MODEL = "q3mdl/buildings/mdl_bld_h_shield.md3";
-//-------------------------Human-Light turret
-string DAT_TUR_CTOR_MODEL     = "q3mdl/buildings/mdl_bld_h_ltur.md3";
-string DAT_TUR_LEG_MODEL      = "q3mdl/buildings/mdl_bld_h_ltur_base.md3";
-string DAT_TUR_CAM_MODEL      = "q3mdl/testball.md3";
+string DAT_BLD_H_SHIELDGEN_MODEL = "q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3";

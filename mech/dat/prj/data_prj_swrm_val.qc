@@ -18,7 +18,7 @@ void() data_prj_swrm_ini={
   self.p_lifetime = DAT_PRJ_SWRM_LIFETIME;
   
   //cosmetics
-  self.effects = self.effects | EF_ADDITIVE | EF_NOSHADOW;
+  self.effects = self.effects | (EF_ADDITIVE | EF_NOSHADOW);
   self.modelflags = DAT_PRJ_SWRM_MODELFLAGS;
   self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL");
 };
@@ -82,11 +82,12 @@ void() data_prj_swrm_touch={
   if(other.takedamage){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
     if( other.sh_cur > 0 ){
+      
       remove(self);
       return;
     }
   }
   makevectors(self.angles);
-  te_missile_explode(  self.origin + (v_up * -5), 1, '1 0 0.251', self.p_damage / 5, 1);
+  te_missile_explode( self.origin + (v_up * -5), 1, '1 0 0.251', self.p_damage / 5, 1);
   remove(self);
 };

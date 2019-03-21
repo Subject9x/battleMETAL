@@ -60,17 +60,11 @@ float DAT_TUR_HLITE_RADRANGE = 1000;
 float DAT_TUR_HLITE_LOCK     = 10;
 
 //============================
-//            Base Convergence
-//============================
-//-------------------------Human Light Turret
-vector DAT_TUR_HLITE_SPREAD   = '0.1 0.1 0.001';
-
-//============================
 //            Models  
 //============================
 //-------------------------Human Light Turret
-string DAT_TUR_HLITE_TUR = "q3mdl/buildings/mdl_bld_h_ltur.md3";
-string DAT_TUR_HLITE_BASE = "q3mdl/buildings/mdl_bld_h_ltur_base.md3";
+string DAT_TUR_HLITE_TUR = "q3mdl/buildings/turret_light/mdl_bld_h_ltur.md3";
+string DAT_TUR_HLITE_BASE = "q3mdl/buildings/turret_light/mdl_bld_h_ltur_base.md3";
 string DAT_TUR_HLITE_CAM = "q3mdl/testball.md3";
 
 //============================
