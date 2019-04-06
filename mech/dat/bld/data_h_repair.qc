@@ -53,9 +53,11 @@ void() hrepair_rep = [0, hrepair_rep]{
       end_repair = FALSE;
       local vector fx;
       makevectors(self.angles);
-      fx = self.origin + (v_forward * 45) + (v_up * 40);
-      //te_beam_laser(fx, fix.origin); TODO - fixme
-      
+      fx = self.origin + (v_up * 75) + (v_forward * -24);
+      pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 3, 1);
+      pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
+      trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
+  
       fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
       self.rl_cur = self.rl_cur - (self.rl_rate * self.trigger_field.vec_size);
       if(fix.health >= fix.max_health){

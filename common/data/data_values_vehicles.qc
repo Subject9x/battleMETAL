@@ -159,7 +159,7 @@ float DAT_PSC_VTOLL_BSPEED      = 300;
 //============================
 //-------------------------Foslager
 vector DAT_foslager_CTOR_BBX_N  = '-20 -20 -8';
-vector DAT_foslager_CTOR_BBX_X  = '20 20 14';
+vector DAT_foslager_CTOR_BBX_X  = '20 20 16';
 //-------------------------Trowel
 vector DAT_TROWEL_CTOR_BBX_N    = '-30 -30 -7.75';
 vector DAT_TROWEL_CTOR_BBX_X    = '30 30 20';
