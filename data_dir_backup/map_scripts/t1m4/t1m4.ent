@@ -8,7 +8,7 @@
 "classname" "worldspawn"
 "msn_file" "t1m4.dat"
 "fog" "1 0.85 0.65 0.5 0.45 6000 10000 8000 2500"
-"i_faction" "1"
+"faction" "1"
 "sounds" "3"
 "message" "Canon of silence\n"
 "inv_items" "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17"
@@ -22,7 +22,7 @@
 "origin" "0 0 1000"
 "classname" "info_player_start"
 "angle" "90"
-"i_faction" "1"
+"faction" "1"
 }
 /*
 ========================
@@ -46,7 +46,7 @@
 "classname" "map_objective"
 "origin" "0 20 1000"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx" "255"
 "delay" "2"
 }
@@ -56,7 +56,7 @@
 "origin" "10 0 1000"
 "isActive" "1"
 "data_idx" "1"
-"i_faction" "1"
+"faction" "1"
 "target" "nav_delta"
 }
 {
@@ -65,7 +65,7 @@
 "origin" "20 0 1000"
 "isActive" "1"
 "data_idx" "2"
-"i_faction" "1"
+"faction" "1"
 "target" "objective_win"
 }
 //----------------------------
@@ -78,7 +78,7 @@
 "classname" "map_deploy_point"
 "origin" "3688.3 -5043.6 -1080.5"
 "angles" "0 78.5 0"
-"i_faction" "1"
+"faction" "1"
 "isActive" "1"
 "data_idx" "1"
 }
@@ -92,21 +92,21 @@
 "classname" "map_navpoint"
 "origin" "-3648.7 3194.7 -479.1"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx"  "1"
 }
 {
 "classname" "map_navpoint"
 "origin" "4397.1 4568.3 -72"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx"  "2"
 }
 {
 "classname" "map_navpoint"
 "origin" "-3900 -4059 -1179.1"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx"  "3"
 }
 {
@@ -114,7 +114,7 @@
 "classname" "map_navpoint"
 "origin" "4009.3 -4556 -1045"
 "isActive" "0"
-"i_faction" "1"
+"faction" "1"
 "data_idx"  "4"
 "target" "objective2"
 }
@@ -128,19 +128,19 @@
 "classname" "building_repair"
 "origin" "3654.2 -5232.9 -1109"
 "angles" "0 79.4 0"
-"i_faction" "1"
+"faction" "1"
 }
 {
 "classname" "building_fuel"
 "origin" "3968.4 -5291.2 -1108.6"
 "angles" "0 48 0"
-"i_faction" "1"
+"faction" "1"
 }
 {
 "classname" "building_fuel"
 "origin" "3849.2 -5439.5 -1131.3"
 "angles" "0 121 0"
-"i_faction" "1"
+"faction" "1"
 }
 //===================================
 /*
@@ -153,34 +153,34 @@
 "classname" "building_hangar"
 "origin" "-3301.7 3270.5 -500"
 "angles" "0 15 0"
-"i_faction" "2"
+"faction" "2"
 }
 {
 "classname" "building_fuel"
 "origin" "-3957.7 3032 -500"
-"i_faction" "2"
+"faction" "2"
 }
 {
 "classname" "building_fuel"
 "origin" "-3549.6 2898.1 -500"
-"i_faction" "2"
+"faction" "2"
 }
 {
 "classname" "building_fuel"
 "origin" "-3269.9 2928.4 -500"
-"i_faction" "2"
+"faction" "2"
 }
 {
 "classname" "building_fuel"
 "origin" "-3097.2 2795.8 -500"
-"i_faction" "2"
+"faction" "2"
 }
 //@ NAV BETA
 {
 "classname" "building_radar"
 "origin" "4703.8 5060.6 30"
 "angles" "0 21 0"
-"i_faction" "2"
+"faction" "2"
 }
 
 //@ NAV GAMMA
@@ -188,19 +188,19 @@
 "classname" "building_hangar"
 "origin" "-4427.2 -4889.3 -1100.7"
 "angles" "0 61 0"
-"i_faction" "2"
+"faction" "2"
 }
 {
 "classname" "building_hangar"
 "origin" "-4775.2 -4288.1 -1100.0"
 "angles" "0 1.1 0"
-"i_faction" "2"
+"faction" "2"
 }
 {
 "classname" "building_power"
 "origin" "-5067.8 -5036.0 -1100.0"
 "angles" "0 157.5 0"
-"i_faction" "2"
+"faction" "2"
 }
 //======================
 /*
@@ -213,7 +213,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "3257.3 4218.0 -242.8"
 "group" "boss_patrol"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "boss_patrol1"
 "target" "boss_patrol2"
 }
@@ -222,7 +222,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "2317.1 3720.7 -333.9"
 "group" "boss_patrol"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "boss_patrol2"
 "target" "boss_patrol3"
 }
@@ -231,7 +231,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "1376.1 2389.6 -489.5"
 "group" "boss_patrol"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "boss_patrol3"
 "target" "boss_patrol4"
 }
@@ -240,7 +240,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "430.2 1016.3 -1002.0"
 "group" "boss_patrol"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "boss_patrol4"
 "target" "boss_patrol5"
 }
@@ -249,7 +249,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "-414.6 -412.9 -1005.7"
 "group" "boss_patrol"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "boss_patrol5"
 "target" "boss_patrol6"
 }
@@ -258,7 +258,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "-2030.7 -117.9 -1004.6"
 "group" "boss_patrol"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "boss_patrol6"
 "target" "boss_patrol7"
 }
@@ -267,7 +267,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "-3348.8 -1374.2 -1025.9"
 "group" "boss_patrol"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "boss_patrol7"
 "target" "boss_patrol8"
 }
@@ -276,7 +276,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "-3784.2 -3784.7 -1188.7"
 "group" "boss_patrol"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "boss_patrol8"
 }
 {
@@ -293,7 +293,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn2" "3"
 "targetname" "boss_patrol_tank1"
 "target" "boss_patrol1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "0"
 }
 {
@@ -310,7 +310,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn2" "3"
 "targetname" "boss_patrol_tank2"
 "target" "boss_patrol1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "0"
 }
 {
@@ -335,7 +335,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "targetname" "boss_patrol_boss"
 "target" "boss_patrol1"
 "target_die" "objective1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "0"
 }
 //======================
@@ -349,7 +349,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "-2967.6 3169.3 -566.9"
 "group" "alpha_defend"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "alpha_defend1"
 }
 {
@@ -366,7 +366,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn2" "6"
 "targetname" "alpha_defend_tank1"
 "target" "alpha_defend1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "0"
 }
 {
@@ -383,7 +383,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn2" "16"
 "targetname" "alpha_defend_tank2"
 "target" "alpha_defend1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "0"
 }
 {
@@ -400,7 +400,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn2" "9"
 "targetname" "alpha_defend_tank3"
 "target" "alpha_defend1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "0"
 }
 //======================
@@ -414,7 +414,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "4043.5 3857.4 -229.1"
 "group" "beta_defend"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "beta_defend1"
 }
 {
@@ -422,7 +422,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "4527.5 4855.2 -24.6"
 "group" "beta_defend"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "beta_defend2"
 }
 {
@@ -430,7 +430,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "3065.4 4313.8 -258.6"
 "group" "beta_defend"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "beta_defend3"
 "target" "beta_defend1"
 }
@@ -439,7 +439,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "4747.8 2935.1 -425.2"
 "group" "beta_defend"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "beta_defend4"
 "target" "beta_defend1"
 }
@@ -460,7 +460,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn5" "7"
 "targetname" "beta_defend_mech1"
 "target" "beta_defend1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "1"
 }
 {
@@ -480,7 +480,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn5" "17"
 "targetname" "beta_defend_mech1"
 "target" "beta_defend2"
-"i_faction" "2"
+"faction" "2"
 "mskin" "1"
 }
 
@@ -495,7 +495,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "-4425.5 -4487.1 -1216.3"
 "group" "gamma_defend"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "gamma_defend1"
 }
 {
@@ -503,7 +503,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "origin" "-4909.7 -4821.0 -1000"
 "group" "gamma_defend"
 "isActive" "1"
-"i_faction" "2"
+"faction" "2"
 "targetname" "gamma_defend2"
 }
 {
@@ -521,7 +521,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn3" "3"
 "targetname" "gamma_defend1_mech1"
 "target" "gamma_defend1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "1"
 }
 {
@@ -539,7 +539,7 @@ AI PATROL - NAV BETA -> NAV GAMMA
 "next_wepn3" "4"
 "targetname" "gamma_defend1_mech1"
 "target" "gamma_defend1"
-"i_faction" "2"
+"faction" "2"
 "mskin" "1"
 }
 

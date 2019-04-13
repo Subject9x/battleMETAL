@@ -20,7 +20,7 @@ void() unit_hs_truck_cargo={
   }
 
   self.nextVecChoice = 1;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   //ai_unit_setup( ai_noncom_tank );
@@ -34,7 +34,7 @@ void() unit_hs_truck_hab={
   }
 
   self.nextVecChoice = 2;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   //ai_unit_setup( ai_noncom_tank );
@@ -48,7 +48,7 @@ void() unit_hs_truck_const={
   }
 
   self.nextVecChoice = 3;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   //ai_unit_setup( ai_noncom_tank );
@@ -62,7 +62,7 @@ void() unit_hs_dozer={
   }
 
   self.nextVecChoice = 4;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   //ai_unit_setup( ai_noncom_tank );
@@ -76,7 +76,7 @@ void() unit_hs_loader={
   }
 
   self.nextVecChoice = 5;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   //ai_unit_setup( ai_noncom_tank );
@@ -90,7 +90,7 @@ void() unit_hs_excavat={
   }
 
   self.nextVecChoice = 6;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   self.ai_rank = AI_RANK_ROK;
   self.spreadDefault = '0 0 0';
   //ai_unit_setup( ai_noncom_tank );
@@ -105,7 +105,7 @@ void() unit_hs_excavat={
 void() unit_dunerunner_h={
   
   self.nextVecChoice = ID_VEC_dunerunner;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
    
   self.flags = self.flags | FL_TURRET;
   
@@ -138,7 +138,7 @@ void() unit_dunerunner_h={
 void() unit_dunerunner_m={
   
   self.nextVecChoice = ID_VEC_dunerunner;
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
    
   self.flags = self.flags | FL_TURRET;
   
@@ -177,7 +177,7 @@ void() unit_dunerunner_m={
 void() unit_foslager_h={
 
   self.nextVecChoice = ID_VEC_foslager;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
    
   self.flags = self.flags | FL_TURRET;
   
@@ -210,7 +210,7 @@ void() unit_foslager_h={
 void() unit_foslager_m={
 
   self.nextVecChoice = ID_VEC_foslager;
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
    
   self.flags = self.flags | FL_TURRET;
   
@@ -250,7 +250,7 @@ void() unit_foslager_m={
 void() unit_trowel_m={
   
   self.nextVecChoice = ID_VEC_trowel;
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
    
   self.flags = self.flags | FL_TURRET;
   
@@ -283,7 +283,7 @@ void() unit_trowel_m={
 void() unit_trowel_h={
 
   self.nextVecChoice = ID_VEC_trowel;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
    
   self.flags = self.flags | FL_TURRET;
   
@@ -322,7 +322,7 @@ void() unit_trowel_h={
 void() unit_onnek_h={
 
   self.nextVecChoice = ID_VEC_onnek;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
 
   if( !ai_can_spawn() ){
     remove(self);
@@ -357,7 +357,7 @@ void() unit_onnek_h={
 void() unit_onnek_m={
 
   self.nextVecChoice = ID_VEC_onnek;
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
    
   if( !ai_can_spawn() ){
     remove(self);
@@ -394,7 +394,7 @@ void() unit_onnek_m={
 void() unit_sorcerer_h={
 
   self.nextVecChoice = ID_VEC_sorcerer;
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
    
   if( !ai_can_spawn() ){
     remove(self);
@@ -427,7 +427,7 @@ void() unit_sorcerer_m={
 
   
   self.nextVecChoice = ID_VEC_sorcerer;
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
    
   
   if( !ai_can_spawn() ){
@@ -481,7 +481,7 @@ void() unit_balaket_sniper={
 };
 
 void() unit_balaket_sniper_h={
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -502,7 +502,7 @@ void() unit_balaket_sniper_h={
 };
 
 void() unit_balaket_sniper_m={
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -542,7 +542,7 @@ void() unit_balaket_brawl={
 };
 
 void() unit_balaket_brawl_h={
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -563,7 +563,7 @@ void() unit_balaket_brawl_h={
 };
 
 void() unit_balaket_brawl_m={
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -585,7 +585,7 @@ void() unit_balaket_brawl_m={
 };
 
 void() unit_balaket_brawl_p={
-  self.i_faction = FACTION_PSC;
+  self.faction = FACTION_PSC;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -648,7 +648,7 @@ void() unit_matok_sniper={
 };
 
 void() unit_matok_sniper_h={
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -669,7 +669,7 @@ void() unit_matok_sniper_h={
 };
 
 void() unit_matok_sniper_m={
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -690,7 +690,7 @@ void() unit_matok_sniper_m={
 };
 
 void() unit_matok_sniper_p={
-  self.i_faction = FACTION_PSC;
+  self.faction = FACTION_PSC;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -711,7 +711,7 @@ void() unit_matok_sniper_p={
 };
 
 void() unit_matok_brawl_h={ 
-  self.i_faction = FACTION_SURVEST; 
+  self.faction = FACTION_SURVEST; 
 
   ai_promote();
   switch( self.ai_rank ){
@@ -732,7 +732,7 @@ void() unit_matok_brawl_h={
   unit_matok_brawl();
 };
 void() unit_matok_brawl_m={  
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
 
   ai_promote();
   switch( self.ai_rank ){
@@ -792,7 +792,7 @@ void() unit_monitor_sniper={
 };
 
 void() unit_monitor_brawl_h={
-  self.i_faction = FACTION_SURVEST;
+  self.faction = FACTION_SURVEST;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -813,7 +813,7 @@ void() unit_monitor_brawl_h={
 };
 
 void() unit_monitor_brawl_m={
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -834,7 +834,7 @@ void() unit_monitor_brawl_m={
 };
 
 void() unit_monitor_brawl_p={
-  self.i_faction = FACTION_PSC;
+  self.faction = FACTION_PSC;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -855,7 +855,7 @@ void() unit_monitor_brawl_p={
 };
 
 void() unit_monitor_sniper_m={  
-  self.i_faction = FACTION_MILITAR;
+  self.faction = FACTION_MILITAR;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -880,7 +880,7 @@ void() unit_monitor_sniper_m={
 void() building_turret_light={
   self.nextVecChoice = 1; //DEBUG
   self.flags = FL_TURRET;  //enforced for a mech
-  self.skin = self.i_faction;
+  self.skin = self.faction;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -914,6 +914,6 @@ void() building_turret_light={
 
 void() unit_psc_vtol_l={
   self.nextVecChoice = ID_VEC_PSC_VTOL_L;
-  self.i_faction = 4;
+  self.faction = 4;
   //ai_unit_setup( ai_vtol );
 };

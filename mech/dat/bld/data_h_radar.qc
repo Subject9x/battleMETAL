@@ -80,7 +80,7 @@ void() building_radar_patrol1=[0, building_radar_patrol1]{
     if( blip.deadflag <= DEAD_NO ){
       if( (blip.flags & FL_CLIENT) ){
         if( blip.data_type == DATA_MECH ){
-          if( blip.i_faction != self.i_faction ){
+          if( blip.faction != self.faction ){
             rng = self.radar_range;
             //target player is running PASSIVE radar
             if( blip.stat_rdr_mode == FALSE){
@@ -114,7 +114,7 @@ void() building_radar_patrol1=[0, building_radar_patrol1]{
 void() building_radar_alert1=[0, building_radar_alert1]{
   local entity ally, this;
   this = self;
-  ally = findchainfloat( i_faction, self.i_faction );
+  ally = findchainfloat( faction, self.faction );
   ai_sfx_help();
   while( ally ){
     if( vlen( ally.origin - self.origin ) <= (self.radar_range / 2) ){
@@ -150,7 +150,7 @@ void() building_radar_cool1=[0, building_radar_cool1]{
 */
 void() building_radar_touch={
   if( (other.flags & FL_UNIT) ){
-    if( other.i_faction != self.i_faction ){
+    if( other.faction != self.faction ){
       if( !self.enemy ){
         self.enemy = other;
         self.th_missile();

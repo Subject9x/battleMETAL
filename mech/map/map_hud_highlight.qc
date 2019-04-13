@@ -11,7 +11,7 @@ Inputs
   .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
   .c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
   .color = <vector> [red, green, blue] - color of the box
-  .i_faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+  .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
   .p_lifetime = <float> [time to draw] - amount of time to draw box for
   
   .target = <string> [ent] - fire this trigger when done
@@ -20,7 +20,7 @@ Inputs
   .spawnflags = <float> [flag] 1 - START_OFF - will start as deactivated
   .spawnflags = <float> [flag] 2 - ON_TOUCH - will react to being touched by a players
   .spawnflags = <float> [flag] 4 - REMOVE_FINISH - will be removed when finished playing
-  .spawnflags = <float> [flag] 8 - FACTION_ONLY - only reacts to this i_faction
+  .spawnflags = <float> [flag] 8 - FACTION_ONLY - only reacts to this faction
   .spawnflags = <float> [flag] 16 - DROPTOFLOOR - object drops to floor for easier touch possibility
   .spawnflags = <float> [flag] 32 - FREEZE_PLAYER - any players that trigger the Animatic are frozen in place
   .spawnflags = <float> [flag] 64 - COOLDOWN - use .wait
@@ -33,7 +33,7 @@ Inputs
 void() highlight_hud_touch={
   if( (other.flags & FL_CLIENT) ){
     if( (self.spawnflags & 8) ){
-      if( other.i_faction != self.i_faction ){
+      if( other.faction != self.faction ){
         return;
       }
     }
@@ -66,7 +66,7 @@ void() map_hud_highlight_use={
     while(client){
       //FACTION_ONLY setting
       if( (self.spawnflags & 8) ){
-        if(self.i_faction != client.i_faction){
+        if(self.faction != client.faction){
           continue;
         }
       }

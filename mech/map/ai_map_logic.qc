@@ -18,14 +18,14 @@ void() ai_change_faction_use={
   if(self.group){
     e = findchain(group, self.group);
     while(e){
-      e.i_faction = self.i_faction;
+      e.faction = self.faction;
       e = e.chain;
     }
   }
   if(self.target){
     e = find(world, targetname, self.target);
     if(e){
-      e.i_faction = self.i_faction;
+      e.faction = self.faction;
     }
   }
   if( (self.spawnflags & 2) ){
@@ -81,10 +81,10 @@ void() ai_change_rank_use={
 };
 
 /*QUAKED ai_change_faction (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
-changes the i_faction field of the targeted objects
+changes the faction field of the targeted objects
 
 -------- KEYS --------
-.i_faction    <float> [faction id] - the faction to set the target to
+.faction    <float> [faction id] - the faction to set the target to
 .group        <string> [group] objects with this groupId will be affected
 .target        <string> [targetname] objects with this targetname will be affected
 .targetname    <string> [targetname] - for being called by other objects
@@ -108,7 +108,7 @@ void() ai_change_faction={
 };
 
 /*QUAKED ai_change_rank (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
-changes the i_faction field of the targeted objects
+changes the faction field of the targeted objects
 
 -------- KEYS -------- 
 .group        <string> [group] objects with this groupId will be affected

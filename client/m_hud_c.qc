@@ -319,13 +319,13 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
   if( draw ){
     switch( blip.data_type ){
       case DATA_BLD:
-        hud_RenderRadar_Building(hudorg, plrFaction, blip.i_faction, blip.hardpoint_cnt );  
+        hud_RenderRadar_Building(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt );  
         break;
       case DATA_VEHC:
-        hud_RenderRadar_Vehc(hudorg, plrFaction, blip.i_faction, blip.hardpoint_cnt);
+        hud_RenderRadar_Vehc(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt);
         break;
       case DATA_MECH:
-        hud_RenderRadar_Mech(hudorg, plrFaction, blip.i_faction, blip.hardpoint_cnt); 
+        hud_RenderRadar_Mech(hudorg, plrFaction, blip.faction, blip.hardpoint_cnt); 
         break;
       default:
         drawpic(hudorg - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);

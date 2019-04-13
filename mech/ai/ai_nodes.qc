@@ -121,7 +121,7 @@ void() node_patrol_touch={
     
   if( (other.flags & (FL_UNIT)) ){
     if( time > other.pausetime ){ 
-      if( self.i_faction == other.i_faction ){
+      if( self.faction == other.faction ){
         if( self.target ){
           node = find (world, targetname, self.target);
           if( node ){

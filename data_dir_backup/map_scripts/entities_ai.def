@@ -5,7 +5,7 @@
 /*QUAKED ai_node (0.988 0.976 0.267) (-10 -10 -18) (10 10 18) DROP_ONSPAWN REMOVE_ONTOUCH START_INACTIVE INACTIVE_ONTOUCH
 This is used to setup patrol and move paths for AI
 -------- KEYS -------- 
-.i_faction = <float> [faction number]
+.faction = <float> [faction number]
 .targetname = <string> used by AI to find node
 .target = <string> should target another AI node to form a chain
 .trigOnDeath = <string> [target] trigger this item when node is removed
@@ -24,10 +24,10 @@ INACTIVE_ONTOUCH 8 - shutoff when touched by AI
 
 
 /*QUAKED ai_change_faction (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
-changes the i_faction field of the targeted objects
+changes the faction field of the targeted objects
 
 -------- KEYS --------
-.i_faction    <float> [faction id] - the faction to set the target to
+.faction    <float> [faction id] - the faction to set the target to
 .group        <string> [group] objects with this groupId will be affected
 .target        <string> [targetname] objects with this targetname will be affected
 .targetname    <string> [targetname] - for being called by other objects
@@ -40,7 +40,7 @@ DELAY 4 - wait after fire before execution
 
 
 /*QUAKED ai_change_rank (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
-changes the i_faction field of the targeted objects
+changes the faction field of the targeted objects
 
 -------- KEYS -------- 
 .group        <string> [group] objects with this groupId will be affected

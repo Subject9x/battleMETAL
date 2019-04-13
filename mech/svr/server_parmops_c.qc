@@ -23,7 +23,7 @@ void() SetChangeParms={
 		self.health = 50;
 	parm1 = self.i_reserve;
 	parm2 = self.health;
-	parm3 = self.i_faction;
+	parm3 = self.faction;
 	if (self.ammo_shells < 25)
 		parm4 = 25;
 	else

@@ -16,7 +16,7 @@ Inputs
                               1 = active
                               2 = complete
                               -1 = failed
-  .i_faction = <float> faction for this objective
+  .faction = <float> faction for this objective
   .target = <string> [targetname] - fire THIS trigger when Objective is COMPLETE, isActive == 2
   .state_1 = <float> [enum] - determines which SFX to play when 'completed'
                     1 = primary 
@@ -66,7 +66,7 @@ void() map_objective_th={
     multi_trigger();
     player = findchainflags( flags, FL_CLIENT );
     while( player ){
-      if( player.i_faction == self.i_faction ){
+      if( player.faction == self.faction ){
         stemp = self;
         self = player;
           client_send_objective( stemp );
@@ -81,7 +81,7 @@ void() map_objective_th={
     //objective failed!
     player = findchainflags( flags, FL_CLIENT );
     while( player ){
-      if( player.i_faction == self.i_faction ){
+      if( player.faction == self.faction ){
         stemp = self;
         self = player;
           client_send_objective( stemp );

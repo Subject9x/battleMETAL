@@ -73,7 +73,7 @@ float m_wep = 6;
 .float en_max;
 .float i_techlvl;
 .float data_type;
-.float i_faction;   //which faction? consult table
+.float faction;   //which faction? consult table
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
 .float i_reserve; //how many reserve points does the unit cost?
 .float en_max;   //max amount

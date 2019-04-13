@@ -12,7 +12,7 @@
 //  8 - hud_renderWeapon_t2 (vector pos, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) 
 //  9 - hud_renderRadarStatus1(vector torg, float algn, float status, float radius, float flag) 
 //  10 - hud_renderRadarStatus2(vector torg, float algn, float status, float radius, float flag) 
-//  11 - hud_renderRadar(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
+//  11 - hud_renderRadar(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
 //  12 - hud_renderNavHeading(vector pos, float algn, vector angle) 
 //
 
@@ -106,7 +106,7 @@
   'flag'  : <float>
 }
 {
-  //hud_renderRadar(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
+  //hud_renderRadar(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) 
   'uid'   : 11,
   'pos'   : <vector>
   'align' : <float>   //bitflag for alignment

@@ -144,7 +144,7 @@ entity( float radiius) ai_find_friend={
   
   rad = radiius;
   
-  ally = findchainfloat( i_faction, self.i_faction );
+  ally = findchainfloat( faction, self.faction );
   while( ally ){
     if( (ally.flags & FL_UNIT) ){
       dist = vlen( ally.origin - self.origin );
@@ -187,7 +187,7 @@ float() ai_find_target_visual={
 
   while( targ ){
     if( targ != self ){
-      if( targ.i_faction != self.i_faction ){
+      if( targ.faction != self.faction ){
         if( ai_valid_target(targ) ){
           if( ai_check_face(targ, self.ai_fov) ){
             if( ai_check_vis(targ) ){
@@ -236,7 +236,7 @@ float() ai_find_target_radar={
   rng = self.radar_range;
   while( targ ){
     if( targ != self ){
-      if( targ.i_faction != self.i_faction ){
+      if( targ.faction != self.faction ){
         if( ai_valid_target(targ) ){
           nrng = rng;
           ndist = vlen(targ.origin - self.origin);
@@ -386,7 +386,7 @@ float(entity bot, entity attacker) ai_damage_react={
     return FALSE;
   }
   
-  if( attacker.i_faction == self.i_faction ){
+  if( attacker.faction == self.faction ){
     return FALSE;
   }
   
@@ -465,7 +465,7 @@ float(entity wep) ai_attack_blockcheck={
   if(trace_ent == world){
     return TRUE;
   }
-  if( trace_ent.i_faction == self.i_faction ){
+  if( trace_ent.faction == self.faction ){
     return TRUE;
   }
   
@@ -597,7 +597,7 @@ float( float bestAccuracy ) ai_wait_for_shot={
 
 void() ai_lock_on={
   //can only lock-on to enemy units
-  if( self.enemy.i_faction != self.i_faction ){
+  if( self.enemy.faction != self.faction ){
     if( util_lockOnChoke(self.enemy.origin) ){
       if( !(self.stat_lck_stt & LOCK_TARG_START) && !(self.stat_lck_stt & LOCK_TARG_HAS) ){
         self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_START;

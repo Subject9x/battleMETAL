@@ -99,7 +99,7 @@ void() ai_touch={
     return;
   }
 
-  if( other.i_faction == self.i_faction ){
+  if( other.faction == self.faction ){
     return;
   }
   
@@ -292,7 +292,7 @@ float( entity targ ) ai_check_vis={
   }
   
   if( trace_ent != targ ) {
-    if( trace_ent.i_faction == self.i_faction ){
+    if( trace_ent.faction == self.faction ){
       return VIS_FRN;
     }
   }

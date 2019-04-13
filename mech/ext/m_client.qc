@@ -48,7 +48,7 @@ void() ClientConnect = {
   self.data_idx = 0;
   self.data_type = DATA_POBS;
   self.currentWeaponGroup = self.currentWeaponGroup;
-  self.i_faction = FACTION_PSC; //default
+  self.faction = FACTION_PSC; //default
   self.en_cur = 0;
   self.en_max = 0;
   self.en_rate = 0;
@@ -169,9 +169,9 @@ void() PutClientInServer = {
 
   spot  = SelectSpawnPoint();
   
-  self.i_faction = spot.i_faction;
-  if( self.i_faction < 1 ){
-    self.i_faction = FACTION_PSC;  //default to 1 to satisfy game code
+  self.faction = spot.faction;
+  if( self.faction < 1 ){
+    self.faction = FACTION_PSC;  //default to 1 to satisfy game code
   }
 	self.origin = self.oldorigin = spot.origin + '0 0 1';	// 1998-07-21 Respawning where player died fix by Robert Field
   self.angles = spot.angles;
@@ -193,7 +193,7 @@ void() PutClientInServer = {
       mapfile_coop_load();
       break;
     case GAMEMODE_DM:
-      mapfile_pvp_load(self.i_faction);
+      mapfile_pvp_load(self.faction);
       break;
   }
 

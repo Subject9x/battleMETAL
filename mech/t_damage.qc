@@ -177,7 +177,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   prevShields = trg.sh_cur;
   
   //reduce friendly fire damage on easier settings
-  if(trg.i_faction == attacker.i_faction){
+  if(trg.faction == attacker.faction){
     if( skill == 0 ){
       return trg;
     }

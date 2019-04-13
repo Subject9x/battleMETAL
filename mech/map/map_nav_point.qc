@@ -8,7 +8,7 @@ Overview:
   which can then fire triggers to additional game logic. 
 
 Inputs
-  .i_faction = <float> - defines which factions this Nav Point belongs to
+  .faction = <float> - defines which factions this Nav Point belongs to
   .data_idx = <float> [enum] - 1 to 21, each must be unique because this determines the 'name' of the nav point client-side
   .isActive = <float> [enum] - 1 = active unvisit - active, faction hasn't visited that nav yet
                                2 = active visit -  active, faction has been here
@@ -36,7 +36,7 @@ void() nav_point_touch={
       //nav points are a player-only thing
       return;
     }
-    if( other.i_faction == self.i_faction ){
+    if( other.faction == self.faction ){
       self.enemy = other;
       self.isActive = 2;
       this = self;

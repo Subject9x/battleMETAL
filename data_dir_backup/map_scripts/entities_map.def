@@ -5,7 +5,7 @@
 Nav Points are points of interest marked on Player maps. Players interact with them by visiting them, which can then fire triggers to additional game logic.
 
 -------- KEYS -------- 
-i_faction: float defines which factions this Nav Point belongs to
+faction: float defines which factions this Nav Point belongs to
 data_idx: float enum  1 to 21, each must be unique because this determines the 'name' of the nav point client-side
 isActive: float enum  1 active unvisit active, faction hasn't visited that nav yet
                              2 active visit  active, faction has been here
@@ -111,7 +111,7 @@ Deploy Points are like a subset of info_player_start. They're bespoke spawn poin
 Deploy points can be tailored to specific i_factions, and can be activated/deactivated.
 
 -------- KEYS -------- 
-.i_faction = <float> - Deploy Point only appears for this faction
+.faction = <float> - Deploy Point only appears for this faction
 .data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
 .isActive = <float> [bool] - if active, allow players to spawn here.  
 .trigOnSpawn = <string> [target] - map object to fire when this is created
@@ -140,7 +140,7 @@ ON_TOUCH 2 - ALLOW TRIGGER TOUCH
 .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
 .c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
 .color = <vector> [red, green, blue] - color of the box
-.i_faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+.faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
 .p_lifetime = <float> [time to draw] - amount of time to draw box for
 
 .target = <string> [ent] - fire this trigger when done
@@ -149,7 +149,7 @@ ON_TOUCH 2 - ALLOW TRIGGER TOUCH
 START_OFF 1 - will start as deactivated
 ON_TOUCH 2 - will react to being touched by a players
 REMOVE_FINISH 4 - will be removed when finished playing
-FACTION_ONLY 8 - only reacts to this i_faction
+FACTION_ONLY 8 - only reacts to this faction
 DROPTOFLOOR 16 - object drops to floor for easier touch possibility
 FREEZE_PLAYER 32 - any players that trigger the Animatic are frozen in place
 COOLDOWN 64 - use .wait
@@ -186,7 +186,7 @@ REMOVE_FIRSTUSE 8 - remove after first countdown
                             1 = active
                             2 = complete
                             -1 = failed
-.i_faction = <float> faction for this objective
+.faction = <float> faction for this objective
 .target = <string> [targetname] - fire THIS trigger when Objective is COMPLETE, isActive == 2
 .state_1 = <float> [enum] - determines which SFX to play when 'completed'
                   1 = primary 

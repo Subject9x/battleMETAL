@@ -221,7 +221,7 @@ void(void() data_ini) build_mech_unit={
   local entity part_chain;
   
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
-  self.skin = self.i_faction - 1;
+  self.skin = self.faction - 1;
   if( self.skin < 0 ){
     self.skin = 0;
   }
@@ -515,7 +515,7 @@ void(void() data_ini) build_vehicle_unit={
   hmins = self.mins;
   
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
-  self.skin = self.i_faction - 1;
+  self.skin = self.faction - 1;
   if( self.skin < 0 ){
     self.skin = 0;
   }

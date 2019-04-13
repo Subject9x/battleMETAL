@@ -22,7 +22,7 @@ void() hpower_die = [0, hpower_die1]{
       }
     }
     if( head.data_type == DATA_BLD ){
-      if( head.i_faction == self.i_faction ){
+      if( head.faction == self.faction ){
         if( head.data_idx != ID_BLD_H_POWER){
           head.en_rate = 0;
         }
@@ -71,7 +71,7 @@ void() hpower_th = [0, hpower_th]{
   local entity t;
   t = findchainfloat(data_type, DATA_BLD);
   while(t){
-    if(t.i_faction == self.i_faction){
+    if(t.faction == self.faction){
       if(t != self){
         if(vlen(t.origin - self.origin) <= DAT_BLD_H_POWER_PLANT_EN_RADIUS){
           t.en_rate = self.en_rate;

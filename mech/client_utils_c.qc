@@ -15,7 +15,7 @@ void() client_push_player_info={
   local float targShield;
   
   self.ammo_rockets = self.flags;
-  self.ammo_cells = self.i_faction;
+  self.ammo_cells = self.faction;
   self.armorvalue = self.stat_plr_stt;
 
   msg_entity = self;
@@ -96,7 +96,7 @@ void( entity radarPing ) client_push_radar_ping={
   
   WriteLong( MSG_ONE, vlen(self.origin - radarPing.origin) );
   WriteByte( MSG_ONE, radarPing.data_type );
-  WriteByte( MSG_ONE, radarPing.i_faction );
+  WriteByte( MSG_ONE, radarPing.faction );
 };
 
 void( entity targetClient ) client_push_hud_highlight={
@@ -129,7 +129,7 @@ void( entity navpoint ) client_send_navpoint={
   msg_entity = self;
   
   nactive = navpoint.isActive;
-  if( navpoint.i_faction != self.i_faction ){
+  if( navpoint.faction != self.faction ){
     nactive = FALSE;
   }
   
@@ -153,7 +153,7 @@ void( entity objective ) client_send_objective={
   WriteByte( MSG_ONE, objective.data_idx); 
   
   nactive = objective.isActive;
-  if( objective.i_faction != self.i_faction ){
+  if( objective.faction != self.faction ){
     nactive = FALSE;
   }
   WriteByte( MSG_ONE, nactive); 
@@ -170,7 +170,7 @@ void( entity deploy ) client_send_deploypoint={
   WriteByte( MSG_ONE, deploy.data_idx);
   
   nactive = deploy.isActive;
-  if( deploy.i_faction != self.i_faction ){
+  if( deploy.faction != self.faction ){
     nactive = FALSE;
   }
   WriteByte( MSG_ONE, nactive);
@@ -270,8 +270,8 @@ void(string str, float tokens) client_ParseMechCommand={
     client_setNavPoint(str, tokens);
   }
   else if(argv(1) == "setfaction"){
-    self.i_faction = stof( argv(2) );
-    mapfile_pvp_load(self.i_faction);
+    self.faction = stof( argv(2) );
+    mapfile_pvp_load(self.faction);
   }
   else if( argv(1) == "setmode" ){
     cvar_set("gamemode", argv(2) );
@@ -416,7 +416,7 @@ void(string cmd, float tokens) client_setNavPoint={
   nav = findchainfloat(data_type, DATA_DEPL);
   while(nav){
     if(nav.isActive){
-      if(nav.i_faction == self.i_faction){
+      if(nav.faction == self.faction){
         if(nav.data_idx == nav_id){
           self.goalentity = nav;
         }
@@ -535,7 +535,7 @@ entity() spawnpoint_coop={
   local entity locus;
   locus = findchainfloat(data_type, DATA_INFO_COOP);
   while(locus){
-    if(locus.i_faction == self.i_faction){
+    if(locus.faction == self.faction){
       if(locus.target == self.goalentity.targetname){
         if(locus.data_idx == self.client_num){
           self.goalentity = locus;

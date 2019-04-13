@@ -104,7 +104,7 @@ void() client_get_contact={
   setorigin( blip, te_read_vector() );
   blip.radar_range = ReadLong();
   blip.data_type = ReadByte();
-  blip.i_faction = ReadByte();
+  blip.faction = ReadByte();
   
   blip.data_idx = -2; //hack
   //Radar 1 - settings

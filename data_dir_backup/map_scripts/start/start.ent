@@ -2,17 +2,17 @@
 "classname" "worldspawn"
 "message" "The cold rise from sleep"
 "msn_file" "start.dat"
-"i_faction" "1"
+"faction" "1"
 }
 {
 "classname" "info_player_start"
 "origin" "-48 -86 34"
-"i_faction" "1"
+"faction" "1"
 }
 {
 "classname" "map_deploy_point"
 "origin" "-72 -88 64"
-"i_faction" "1"
+"faction" "1"
 "isActive" "1"
 "data_idx" "1"
 }
@@ -138,11 +138,11 @@
 "classname" "map_navpoint"
 "origin" "0 304 56"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx" "1"
 }
 {
-"i_faction" "1"
+"faction" "1"
 "isActive" "1"
 "origin" "368 400 -8"
 "classname" "map_navpoint"
@@ -152,11 +152,11 @@
 "classname" "map_navpoint"
 "origin" "1664 296 -8"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx" "3"
 }
 {
-"i_faction" "1"
+"faction" "1"
 "isActive" "1"
 "origin" "1888 -136 -8"
 "classname" "map_navpoint"
@@ -166,11 +166,11 @@
 "classname" "map_navpoint"
 "origin" "1704 -408 -8"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx" "5"
 }
 {
-"i_faction" "1"
+"faction" "1"
 "isActive" "1"
 "origin" "2112 -416 -8"
 "classname" "map_navpoint"
@@ -180,11 +180,11 @@
 "classname" "map_navpoint"
 "origin" "2512 -416 -8"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx" "7"
 }
 {
-"i_faction" "1"
+"faction" "1"
 "isActive" "1"
 "origin" "2600 -96 -8"
 "classname" "map_navpoint"
@@ -194,11 +194,11 @@
 "classname" "map_navpoint"
 "origin" "2600 288 -8"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx" "9"
 }
 {
-"i_faction" "1"
+"faction" "1"
 "isActive" "1"
 "origin" "2608 832 -8"
 "classname" "map_navpoint"
@@ -208,7 +208,7 @@
 "classname" "map_navpoint"
 "origin" "2472 1144 -8"
 "isActive" "1"
-"i_faction" "1"
+"faction" "1"
 "data_idx" "11"
 }
 {
@@ -220,7 +220,7 @@
 {
 "classname" "ai_mech"
 "origin" "82 -10 34"
-"i_faction" "1"
+"faction" "1"
 "nextVecChoice" "2"
 "vec_size" "2"
 "state_1" "-1"
@@ -243,7 +243,7 @@
 "state_1" "-1"
 "vec_size" "3"
 "nextVecChoice" "3"
-"i_faction" "1"
+"faction" "1"
 "origin" "82 70 34"
 "classname" "ai_mech"
 "next_wepn6" "2"
@@ -258,7 +258,7 @@
 "next_wepn6" "2"
 "classname" "ai_mech"
 "origin" "-82 68 34"
-"i_faction" "1"
+"faction" "1"
 "nextVecChoice" "3"
 "vec_size" "3"
 "state_1" "-1"
@@ -281,7 +281,7 @@
 "state_1" "-1"
 "vec_size" "2"
 "nextVecChoice" "2"
-"i_faction" "1"
+"faction" "1"
 "origin" "-82 -10 34"
 "classname" "ai_mech"
 }
@@ -294,13 +294,13 @@
 "state_1" "-1"
 "vec_size" "1"
 "nextVecChoice" "1"
-"i_faction" "1"
+"faction" "1"
 "origin" "82 -88 34"
 "classname" "ai_mech"
 }
 {
 "angle" "90"
-"i_faction" "2"
+"faction" "2"
 "origin" "1576 -824 -56"
 "classname" "building_fuel"
 }
@@ -308,7 +308,7 @@
 "angle" "90"
 "state_1" "-1"
 "nextVecChoice" "1"
-"i_faction" "2"
+"faction" "2"
 "origin" "1696 -800 -32"
 "classname" "ai_tank"
 "vec_size" "1"
@@ -324,7 +324,7 @@
 {
 "classname" "ai_tank"
 "origin" "1952 -1248 -32"
-"i_faction" "2"
+"faction" "2"
 "nextVecChoice" "1"
 "state_1" "-1"
 "angle" "90"
@@ -342,7 +342,7 @@
 "angle" "90"
 "state_1" "-1"
 "nextVecChoice" "1"
-"i_faction" "2"
+"faction" "2"
 "origin" "2400 -1632 -32"
 "classname" "ai_tank"
 "vec_size" "1"

@@ -134,7 +134,7 @@ void() server_updateTargetInfo={
   self.stat_trg_ent_id = num_for_edict(self.enemy);
   self.stat_trg_dataidx = self.enemy.data_idx;
   self.stat_trg_dat = self.enemy.data_type;
-  self.stat_trg_faction = self.enemy.i_faction;
+  self.stat_trg_faction = self.enemy.faction;
 
   local float dst;
   dst = vlen( self.enemy.origin - self.origin );
@@ -148,7 +148,7 @@ void() server_updateTargetInfo={
   self.stat_trg_face = util_checkPointAngle(self.enemy);
   
   //can only lock-on to enemy units
-  if( self.enemy.i_faction != self.i_faction ){
+  if( self.enemy.faction != self.faction ){
     if( util_lockOnChoke(self.enemy.origin) ){
       if( !(self.stat_lck_stt & LOCK_TARG_START) && !(self.stat_lck_stt & LOCK_TARG_HAS) ){
         self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_START;

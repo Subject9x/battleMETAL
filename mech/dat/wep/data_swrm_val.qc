@@ -101,7 +101,7 @@ void() data_swrm_atk={
     if( maxtarg > 0 ){
       if( (ai_check_face(targs, 0.7)) && (targs != player) ){
         if( (targs.flags & FL_CLIENT) || (targs.flags & FL_MONSTER) ){
-          if( targs.i_faction != player.i_faction){
+          if( targs.faction != player.faction){
             if(targs.deadflag == DEAD_NO){
               maxtarg = maxtarg - 1;
               newmis = spawn();

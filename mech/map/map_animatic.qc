@@ -12,7 +12,7 @@ Overview:
 
 Inputs
   .msn_file = <string> [file] - the .anim file to be loaded from /data/anim/
-  .i_faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+  .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
   .count1 = <float> [freeze time] - defaults to 15 sec if not defined, use with spawnflags[32]
   .target = <string> [ent] - fire this trigger when done
   .wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
@@ -20,7 +20,7 @@ Inputs
   .spawnflags = <float> [flag] 1 - START_OFF - will start as deactivated
   .spawnflags = <float> [flag] 2 - ON_TOUCH - will react to being touched by a players
   .spawnflags = <float> [flag] 4 - REMOVE_FINISH - will be removed when finished playing
-  .spawnflags = <float> [flag] 8 - FACTION_ONLY - only reacts to this i_faction
+  .spawnflags = <float> [flag] 8 - FACTION_ONLY - only reacts to this faction
   .spawnflags = <float> [flag] 16 - DROPTOFLOOR - object drops to floor for easier touch possibility
   .spawnflags = <float> [flag] 32 - FREEZE_PLAYER - any players that trigger the Animatic are frozen in place
   .spawnflags = <float> [flag] 64 - COOLDOWN - use .wait
@@ -36,7 +36,7 @@ void() animatic_event_execute={
     while(client){
       //FACTION_ONLY setting
       if( (self.spawnflags & 8) ){
-        if(self.i_faction != client.i_faction){
+        if(self.faction != client.faction){
           continue;
         }
       }

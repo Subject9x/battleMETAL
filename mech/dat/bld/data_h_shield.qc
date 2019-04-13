@@ -68,7 +68,7 @@ void() hshield_th = [0, hshield_th]{
 
   t = findchainflags(flags, FL_MONSTER);
   while(t){
-    if(t.i_faction == self.i_faction){
+    if(t.faction == self.faction){
       if(t != self){
         local float dist;
         dist = vlen(t.origin - self.origin);
@@ -94,7 +94,7 @@ void() hshield_th = [0, hshield_th]{
   
   p = findchainflags(flags, FL_CLIENT);
   while(p){
-    if(p.i_faction == self.i_faction){
+    if(p.faction == self.faction){
       local float pdist;
       pdist = vlen(t.origin - self.origin);
       if(pdist <= DAT_BLD_H_SHIELD_RADIUS){

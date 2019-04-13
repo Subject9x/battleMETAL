@@ -106,7 +106,7 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
 void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderEnergy;
 void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label) hud_renderArmorMeter;
 void(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph;
-void(vector vorg, float algn, float i_faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
+void(vector vorg, float algn, float faction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar;
 void(entity blip, float plrFaction, float radRange ) hud_renderRadarContact;
 void(vector navOrg, float navState, float radRange ) hud_renderRadarNav;
 void(vector torg, float algn, float status, float radius, float flag) hud_renderRadarStatus1;

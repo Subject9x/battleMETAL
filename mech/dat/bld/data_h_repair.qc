@@ -176,7 +176,7 @@ void() building_repair_touch={
   if( vlen(other.origin - self.origin) <= 32){
     if(self.owner.rl_cur > 0){
       if(other.data_type == DATA_MECH){
-        if(other.i_faction == self.owner.i_faction){
+        if(other.faction == self.owner.faction){
           if(util_getMechHpAverage(other) < 1){
             if( (other.flags & FL_CLIENT) ){
               centerprint( other, "[Press 'E' to start REPAIR]\n");

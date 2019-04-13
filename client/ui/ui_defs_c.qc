@@ -310,7 +310,7 @@ void(entity clnt) ui_renderClientName={
   local float namelen,drawcheck, drawdist;
   drawcheck = FALSE;
   drawdist = vlen(pmove_org - clnt.origin);
-  if(CLIENT_i_faction == clnt.i_faction){
+  if(CLIENT_i_faction == clnt.faction){
     if(drawdist <= CLIENT_radar_range * 2){
       drawcheck = TRUE;
       drawcolor = CLR_DEF_IIF_FRIEND;

@@ -85,7 +85,7 @@ float ARM_RAD = 24;
 .float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
 .float i_reserve; //how many reserve points does the unit cost?
 .float i_size;
-.float i_faction;
+.float faction;
 .float w_range;
 .string note1;
 .string note2;
