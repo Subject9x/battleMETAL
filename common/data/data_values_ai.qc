@@ -31,10 +31,10 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING
-float AI_DMG_SKILL_ROK = 0.2;
-float AI_DMG_SKILL_REG = 0.3;
-float AI_DMG_SKILL_VET = 0.4;
-float AI_DMG_SKILL_ACE = 0.5;
+float AI_DMG_SKILL_ROK = 0.1;
+float AI_DMG_SKILL_REG = 0.2;
+float AI_DMG_SKILL_VET = 0.3;
+float AI_DMG_SKILL_ACE = 0.4;
 
 float AI_DMG_ROK = 0.025;
 float AI_DMG_REG = 0.05;
@@ -69,10 +69,10 @@ float AI_YAW_VET = 1.1;
 float AI_YAW_ACE = 1.2;
 
 //attack chances
-float AI_ATTACK_ROK  =  0.2;//0.2;
-float AI_ATTACK_REG  =  0.3;//0.3;
-float AI_ATTACK_VET  =  0.4;//0.4;
-float AI_ATTACK_ACE  =  0.5;//0.5;
+float AI_ATTACK_ROK  =  0.15;//0.2;
+float AI_ATTACK_REG  =  0.25;//0.3;
+float AI_ATTACK_VET  =  0.35;//0.4;
+float AI_ATTACK_ACE  =  0.45;//0.5;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
