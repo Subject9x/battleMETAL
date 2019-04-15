@@ -322,26 +322,15 @@ void() ai_setup_patrol={
   local vector org;
   local float angl, px, py;
   
-  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-    self.nextthink = time + (7 + random() * 1); //spread out thinks
-  }
-  else{
-    self.nextthink = time + (random() * 0.1);
-  }
   if( self.target ){
     if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-      spot = ai_node_pick_rand();
-    }
-    else{
-      spot = self;
-    }
-    if( spot ){
+      spot = ai_node_pick_rand();     
       angl = self.angles_y * DEG2RAD;
       px = cos(angl);
       py = sin(angl);
       org_z = self.origin_z + 1;
-      org_x = spot.origin_x - px * (  random() * self.maxs_x * 3);
-      org_y = spot.origin_y - py * (  random() * self.maxs_y * 3);
+      org_x = spot.origin_x - px * (random() * self.maxs_x * 3);
+      org_y = spot.origin_y - py * (random() * self.maxs_y * 3);
       
       if( (pointcontents(org) != CONTENT_SOLID) && (pointcontents(org) != CONTENT_EMPTY) && (pointcontents(org) != CONTENT_SKY) ){
         setorigin( self, org );
@@ -349,6 +338,12 @@ void() ai_setup_patrol={
       else{
         setorigin( self, spot.origin);
       }
+    }
+    else{
+      spot = self;
+      setorigin( self, spot.origin);
+    }
+    if( spot ){
       droptofloor();
       if( (self.flags & FL_TURRET) ){
         util_setOffsetOrigin(self.e_tor_c, self, self.e_tor_c.c_ofs);
@@ -356,19 +351,29 @@ void() ai_setup_patrol={
       if( self.e_legs ){
         util_setOffsetOrigin(self.e_legs, self, self.e_legs.c_ofs);
       }  
-      
-      if( spot.target ){
-        spot2 = find(world, targetname, spot.target);
-        if( spot2 ){
-          self.goalentity = self.movetarget = spot2;
-          self.ideal_yaw = vectoyaw( spot2.origin - self.origin);
-          self.think = self.th_walk;
-          macro_ai_frame(self.th_walk)
-          return;
+    }
+    if( spot.target ){
+      spot2 = find(world, targetname, spot.target);
+      if( spot2 ){
+        self.goalentity = self.movetarget = spot2;
+        self.ideal_yaw = vectoyaw( spot2.origin - self.origin);
+        macro_ai_frame(self.th_walk)
+        if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+          self.nextthink = time + (7 + random() * 1); //spread out thinks
         }
+        else{
+          self.nextthink = time + (random() * 0.1);
+        }
+        return;
       }
-    } 
+    }
   }
   self.pausetime = 99999999;
   macro_ai_frame(self.th_stand)
+  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+    self.nextthink = time + (7 + random() * 1); //spread out thinks
+  }
+  else{
+    self.nextthink = time + (random() * 0.1);
+  }
 };

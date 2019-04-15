@@ -92,8 +92,6 @@ void() worldspawn =
 // the area based ambient sounds MUST be the first precache_sounds
   
   //see q1/precache_world.q1_precache_sound();
-  q1_precache_sound();
-  q1_precache_models();
   
   FRIK_FILE_precaches();
     

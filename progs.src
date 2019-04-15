@@ -44,7 +44,6 @@ triggers_h.qc
   mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
   mech/ai/ai_api_h.qc
-  q1/qwep/wep_fx_h.qc
   mech/map/map_objects_h.qc
   world_effectinfo_h.qc
   mech/map/triggers_map_h.qc
@@ -152,11 +151,6 @@ dp/subs.qc
   mech/ctrl/ctrl_building.qc
   mech/ctrl/ctrl_tank.qc
 //==========================
-
-q1/qwep/qwep_header.qc
-q1/qwep/wep_fx.qc
-
-q1/precache_world.qc
 world.qc
 //============================
   mech/map_objects_c.qc

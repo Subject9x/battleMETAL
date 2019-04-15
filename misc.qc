@@ -305,10 +305,11 @@ void() spikeshooter_use =
 	else
 	{
 		sound (self, CHAN_VOICE, "weapons/spike2.wav", 1, ATTN_NORM);
-		launch_spike (self.origin, self.movedir);
+		//launch_spike (self.origin, self.movedir);
 		newmis.velocity = self.movedir * 500;
-		if (self.spawnflags & SPAWNFLAG_SUPERSPIKE)
-			newmis.touch = superspike_touch;
+		if (self.spawnflags & SPAWNFLAG_SUPERSPIKE){
+			//newmis.touch = superspike_touch;
+    }
 	}
 };
 

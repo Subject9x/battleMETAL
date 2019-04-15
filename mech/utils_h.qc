@@ -51,3 +51,5 @@ void(entity t) util_generateBuildingFoundation;
 vector(vector angl, vector org, float zAdjust) util_dropToGround;
 
 vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge;
+
+void() BecomeExplosion;

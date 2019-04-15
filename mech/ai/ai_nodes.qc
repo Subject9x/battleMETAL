@@ -112,7 +112,6 @@ void() node_recall_touch={
   touch function that defines a node as a Patrol Node
   this will set the touchee's movetarget to self.target
   and send it on its way.
-  
 */
 void() node_patrol_touch={
   local entity node;
@@ -124,18 +123,20 @@ void() node_patrol_touch={
       if( self.faction == other.faction ){
         if( self.target ){
           node = find (world, targetname, self.target);
+          
           if( node ){
             self = other;
               self.target = thisNode.target;
               self.goalentity = self.movetarget = node;
               self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-              self.th_walk();
+              //
+              macro_ai_frame(  self.th_walk );
               if( thisNode.pausetime ){
                 self.pausetime = thisNode.pausetime;
-                self.pausetime = self.pausetime * (self.ai_action_mod / 10);
+                self.pausetime = self.pausetime + (self.pausetime * (self.ai_action_mod / 10));
                 self.pausetime = self.pausetime + time;
                 if( self.th_stand ){
-                  self.th_stand();
+                  macro_ai_frame( self.th_stand );
                 }
               }
           }
