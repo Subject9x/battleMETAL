@@ -33,11 +33,8 @@ void() leg_walk1 = [$l_walk1, leg_walk2]{
 };
 
 void() leg_walk2 = [$l_walk2, leg_walk3]{
-  self.walkframe = $l_walk2; 
-  if( (self.owner.flags & FL_ONGROUND) ){
-    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
-  }
+  self.walkframe = $l_walk2;
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
 };
 void() leg_walk3 = [$l_walk3, leg_walk4]{
   self.walkframe = $l_walk3; 
@@ -53,10 +50,7 @@ void() leg_walk5 = [$l_walk5, leg_walk6]{
 
 void() leg_walk6 = [$l_walk6, leg_walk7]{
   self.walkframe = $l_walk6; 
-  if((self.owner.flags & FL_ONGROUND)){
-    sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
-  }
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
 };
 
 void() leg_walk7 = [$l_walk7, leg_walk8]{
@@ -93,10 +87,7 @@ void() leg_back5=[$l_walk5, leg_back4]{
 
 void() leg_back6=[$l_walk6, leg_back5]{
   self.walkframe = $l_walk6;
-  if( (self.owner.flags & FL_ONGROUND) ){
-    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
-  }
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
 };
 
 void() leg_back7=[$l_walk7, leg_back6]{
@@ -106,10 +97,7 @@ void() leg_back7=[$l_walk7, leg_back6]{
 
 void() leg_back8=[$l_walk8, leg_back7]{
   self.walkframe = $l_walk8;
-  if( (self.owner.flags & FL_ONGROUND) ){
-    sound (self, CHAN_BODY, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
-  }
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
 };
 
 
@@ -140,10 +128,7 @@ void() bot_leg_walk1 = [$l_walk1, bot_leg_walk2]{
 
 void() bot_leg_walk2 = [$l_walk2, bot_leg_walk3]{
   self.frame = $l_walk2;
-  if( (self.owner.flags & FL_ONGROUND) ){
-    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
-  } 
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
 };
 void() bot_leg_walk3 = [$l_walk3, bot_leg_walk4]{
   self.frame = $l_walk3; 
@@ -156,10 +141,7 @@ void() bot_leg_walk5 = [$l_walk5, bot_leg_walk6]{
 };
 void() bot_leg_walk6 = [$l_walk6, bot_leg_walk7]{
   self.frame = $l_walk6;
-  if( (self.owner.flags & FL_ONGROUND) ){
-    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
-  }
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
 };
 void() bot_leg_walk7 = [$l_walk7, bot_leg_walk8]{
   self.frame = $l_walk7;
@@ -174,10 +156,7 @@ void() bot_leg_back1 = [$l_walk1, bot_leg_back8]{
 
 void() bot_leg_back2 = [$l_walk2, bot_leg_back1]{
   self.frame = $l_walk2;
-  if( (self.owner.flags & FL_ONGROUND) ){
-    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
-  } 
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
 };
 void() bot_leg_back3 = [$l_walk3, bot_leg_back2]{
   self.frame = $l_walk3; 
@@ -190,10 +169,7 @@ void() bot_leg_back5 = [$l_walk5, bot_leg_back4]{
 };
 void() bot_leg_back6 = [$l_walk6, bot_leg_back5]{
   self.frame = $l_walk6;
-  if( (self.owner.flags & FL_ONGROUND) ){
-    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
-  }
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
 };
 void() bot_leg_back7 = [$l_walk7, bot_leg_back6]{
   self.frame = $l_walk7;

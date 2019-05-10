@@ -83,7 +83,7 @@ void() mh_world_ini={
       TE_STOMP_TYPE = particleeffectnum("TE_STOMP_TUNDRA");
       break;
     default:
-      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_DESERT");
+      TE_STOMP_TYPE = particleeffectnum("TE_STOMP_SAND");
       break;
   }
 };

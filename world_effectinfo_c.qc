@@ -323,7 +323,7 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
     local vector fx, vel;
     local vector leftMin;
     
-    makevectors( angl );
+    makevectors( angl ); 
     fx = org ;
     fx_z = fx_z + unitMins_z;
     leftMin = v_right * (unitMins_x * 0.8);
@@ -335,9 +335,12 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
     }
     
     vel = fx + (v_up * 2);
-    
-    pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 2,  vecSize * 1.5);
-    
+    traceline(self.owner.origin, self.owner.origin + (v_up * (unitMins_z - 16)), MOVE_HITMODEL, self.owner);
+    if( !trace_ent.model ){
+      return;
+    }
+    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+    pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 16,  vecSize * 3);
 };
 
 //HUD Sound Effects
@@ -384,12 +387,3 @@ void() te_msn_boundary={
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_MSN_BOUND );
 };
-
-
-
-
-
-
-
-
-

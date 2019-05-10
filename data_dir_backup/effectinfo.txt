@@ -2503,15 +2503,14 @@ velocitymultiplier 1
     type alphastatic
     blend alpha
     orientation spark
-    color 0xF5DA81 0xE6E6E6
+    color 0xB45F04 0xFACC2E
     tex 44 46
-    size 0.25 0.65
+    size 0.55 0.85
     alpha 256 512 256
-    time 0.65 0.9
-    originjitter 3 3 3
+    originjitter 8 8 5
     velocityjitter 10 10 10
     velocitymultiplier 2
-    gravity 0.25
+    gravity 0.1
     notunderwater
 
   //TE_STOMP_SAND - SMOKE PUFF
@@ -2519,14 +2518,15 @@ velocitymultiplier 1
     countabsolute 1
     type alphastatic
     blend alpha
-    color 0x424242 0x848484
+    color 0xB45F04 0xFACC2E
     tex 0 7
-    size 0.75 1
-    sizeincrease 0.5
-    alpha 512 1024 512
-    time 0.25 0.35
+    size 1.5 1.9
+    sizeincrease 0.25
+    alpha 350 400 128
     notunderwater
-    stretchfactor 3
+    stretchfactor 5    
+    velocityjitter 10 10 10
+    velocitymultiplier 0.1
 //================================================
 
 
