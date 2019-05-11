@@ -63,6 +63,7 @@ void() PlayerPreThink = {
 void() PlayerPostThink = {
   switch(self.stat_plr_stt){
     case PLAYER_ANIM_STOP:
+      cons_logAString("PlayerPostThink", "PLAYER_ANIM_STOP"); //DEBUG
       if( time >= self.count2){
         self.stat_plr_stt = self.count1;
         self.movetype = self.count3;
@@ -104,7 +105,11 @@ void() PlayerPostThink = {
     }
   }
   ////
-
+	if( self.impulse ){
+		ImpulseCommands ();
+  }
+  ButtonCommands();
+  
   server_make_sweep();
   self.stat_cofs_x = self.origin_x;
   self.stat_cofs_y = self.origin_y;
@@ -115,7 +120,7 @@ void() PlayerPostThink = {
   
 // do weapon stuff
   //STAT UPDATE   
-  if(self.data_type == DATA_MECH){
+  if( self.data_type == DATA_MECH ){
     makevectors(self.v_angle);
     traceline(self.origin, self.origin + (v_forward * self.radar_range), FALSE,self);
     self.stat_ret_dist = (self.radar_range * trace_fraction);
@@ -130,7 +135,7 @@ void() PlayerPostThink = {
         }
       }
     }*/
-    client_updateWeaponReloads();
+    
     ctrl_update_mechplayer();
     
     local entity wep_chain;
@@ -139,13 +144,7 @@ void() PlayerPostThink = {
       ctrl_wpn_think(wep_chain);
       wep_chain = wep_chain.w_slot;
     }
-    
-    //pay cost for sprinting
-    if( self.stat_plr_stt == PLAYER_SPRINT_ON){
-      if( self.en_cur > 0){
-        self.en_cur = self.en_cur - (self.en_rate - self.m_maccel);
-      }
-    }
+    client_updateWeaponReloads();
     
     //REPAIR BAY
     self.repair_request = FALSE;
@@ -156,15 +155,9 @@ void() PlayerPostThink = {
     }
   }
   
-	if( self.impulse ){
-		ImpulseCommands ();
-  }
-    
-  ButtonCommands();
-  
   //DEBUG / DEV ONLY!
   local vector v;
-  if(cvar("mechdev") == TRUE){
+  if( cvar("developer") ){
     if(self.button0){
       makevectors(self.v_angle);
       traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
@@ -178,14 +171,11 @@ void() PlayerPostThink = {
     self.stat_plr_ang_y = trace_endpos_y;
     self.stat_plr_ang_z = trace_endpos_z;
   }
-  
   //========================================  
 
 // check for attack
   playerAttack();
-  
-  client_push_player_info();
- 
+
 // check to see if player landed and play landing sound	
   if ((self.jump_flag < self.fall_dist) && (self.flags & FL_ONGROUND) && (self.health > 0)){
     //if (self.watertype == CONTENT_WATER)
@@ -220,6 +210,9 @@ void() PlayerPostThink = {
 		self.jump_flag = 0;
 	}
 
+  //after server processes everything, push data to client
+  client_push_player_info();
+ 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
   

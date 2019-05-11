@@ -5,7 +5,7 @@ Author: Peter Roohr
   Client qc
   I split the client and player code up because 
   there isn't really a reason both need to be in the same file
-  and having to modifiy a 1k line file is a pain in the rear
+  and having to modifiy a 1k line file is a pain in the rear.
   
 */
 
@@ -303,7 +303,7 @@ void() ClientDisconnect = {
   }
   bprint (self.netname);
 	bprint (" has fled the field of battle!\n");
-
+  
   if(self.data_type == DATA_MECH){
     mech_player_die();
     player_unmakeMech();

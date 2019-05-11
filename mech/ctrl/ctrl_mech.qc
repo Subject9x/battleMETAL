@@ -13,7 +13,7 @@ void() ctrl_updateCenterTorso={
   local vector v1;
   
   if( (self.flags & FL_CLIENT) ){
-    if(time > self.laser_sight_timer){
+    if( time > self.laser_sight_timer ){
       makevectors(self.v_angle);
       v1 = self.e_cam.origin;
       traceline(v1, v1 + v_forward*10000, FALSE, self);
@@ -31,10 +31,10 @@ void() ctrl_updateCenterTorso={
 
   if( time > self.count4 ){
     self.count4 = time + 0.1;
-    if(self.en_cur > -1){
+    if( self.en_cur > -1 ){
       diff = self.en_rate;
       if( self.stat_plr_stt == PLAYER_SPRINT_ON ){
-        diff = diff * 0.33;
+        diff = diff * EVADE_DRAIN_PERCENT;
       }
       self.en_cur = self.en_cur + diff;
     }  

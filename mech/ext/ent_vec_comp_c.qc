@@ -1,5 +1,5 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
 Overview: 'class' for a vehicle component

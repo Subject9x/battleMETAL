@@ -22,3 +22,27 @@ void(float normal) SUB_AttackFinished;
 float (entity targ) visible;
 void (void() thinkst) SUB_CheckRefire;
 vector (vector ang) SUB_NormalizeAngles;
+
+vector(float dm) VelocityForDamage =
+{
+	local vector v;
+
+	v_x = 100 * crandom();
+	v_y = 100 * crandom();
+	v_z = 200 + 100 * random();
+
+	if (dm > -50)
+	{
+//		dprint ("level 1\n");
+		v = v * 0.7;
+	}
+	else if (dm > -200)
+	{
+//		dprint ("level 3\n");
+		v = v * 2;
+	}
+	else
+		v = v * 10;
+
+	return v;
+};

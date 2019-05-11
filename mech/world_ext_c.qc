@@ -130,7 +130,7 @@ void() world_get_fog={
   the code keeps fog settings at the entity level
 */
 float( entity t ) world_calc_fog={
-
+  return FALSE; //TODO - clarify
 };
 
 /*

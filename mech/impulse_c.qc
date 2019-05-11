@@ -44,7 +44,7 @@ void() playerAttack={
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
-    if( (weaponGroup > 0) && (self.stat_plr_stt == PLAYER_ACTIVE)){
+    if( (weaponGroup > 0) && ( (self.stat_plr_stt == PLAYER_ACTIVE) || (self.stat_plr_stt == PLAYER_SPRINT_ON) )){
       if( (weaponGroup& wgrp) ){
         if(wep_chain.w_state == READY){
           self = wep_chain;

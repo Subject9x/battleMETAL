@@ -206,7 +206,9 @@ float( float mechId, float configNum ) data_mech_config_load={
   file = strcat(PATH_DATA_UI, "/loadouts/", ftos(mechId), "/", ftos(configNum),".dat");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
-    //cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  //DEBUG
+    if( cvar("developer") ){
+      cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));
+    }
     return FALSE;
   }
   contents = fgets(flannel);

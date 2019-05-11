@@ -443,7 +443,7 @@ void() unit_sorcerer_m={
       break;
     case 3:
       self.spreadDefault = ACCURACY_SKIRMISH;
-      ai_ini_weapons( ID_WEP_SWRM, ID_WEP_SWRM -1, -1, -1, -1, -1, -1, -1);
+      ai_ini_weapons( ID_WEP_SWRM, ID_WEP_SWRM, -1, -1, -1, -1, -1, -1, -1);
       break;
     default:
       self.spreadDefault = ACCURACY_PRIMITVE;

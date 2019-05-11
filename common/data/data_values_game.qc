@@ -124,6 +124,7 @@ float FALL_CT_MULTIPLIER = 3;  //fall threshold * multiplier = if center torso i
 float FALL_KILL_MULTIPLIER = 3.5;  //fall threshold * multiplier = player killed by fall
 float SHIELD_DELAY = 5;
 float SHIELD_SOAK = 4;
+float EVADE_DRAIN_PERCENT = 0.33;  //reduce en_rate by this amount when player is sprinting
 //============================
 //     WEAPON FLAGS
 //============================

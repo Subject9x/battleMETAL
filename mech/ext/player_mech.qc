@@ -17,16 +17,16 @@ void() mech_clearWeaponGroups={
 };
 
 void() ctrl_update_mechplayer={
-  local entity oself;
+  local entity parent;
   local entity wep;
+  parent = self;
   
   ctrl_updateCenterTorso();
-  if( (self.flags&FL_CLIENT) ){  
-    if( oself.e_legs.deadflag <= DEAD_NO ){
-      oself = self;
-      self = oself.e_legs;
+  if( (self.flags & FL_CLIENT) ){  
+    if( parent.e_legs.deadflag <= DEAD_NO ){
+      self = self.e_legs;
         ctrl_updateLegs();
-      self = oself;
+      self = parent;
     }
   }
   else{
@@ -86,7 +86,7 @@ void() mech_cleanupMech={
     self.stat_w8_id = -1;
     self.stat_w9_id = -1;
   }
-  if((self.flags & FL_MONSTER)){
+  if( (self.flags & FL_MONSTER) ){
     mech_player_removecomp(self.e_cam);
     remove(self);
   }
@@ -116,9 +116,9 @@ void() mech_player_die={
   }
 };
 
-void(entity comp) mech_player_compdie={
-  if(comp.model){
-    if(comp != world && comp.owner == self){
+void( entity comp ) mech_player_compdie={
+  if( comp.model ){
+    if( (comp != world) && (comp.owner == self) ){
       local entity this;
       this = self;
       self = comp;
@@ -142,7 +142,7 @@ void() mech_player_cameradie={
 }
 
 void() mech_player_removecamera={
-  if(self.e_cam.classname){
+  if( self.e_cam.classname ){
     self.view_ofs = '0 0 1';
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
@@ -154,7 +154,7 @@ void() mech_player_removecamera={
 void(entity comp) mech_player_removecomp={
   local entity this;
   if(comp.model){
-    if(comp != world && comp.owner == self){
+    if( (comp != world) && (comp.owner == self) ){
       this = self;
       self = comp;
         remove(self);
