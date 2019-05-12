@@ -2523,10 +2523,10 @@ velocitymultiplier 1
     size 1.5 1.9
     sizeincrease 0.25
     alpha 350 400 128
-    notunderwater
-    stretchfactor 5    
     velocityjitter 10 10 10
     velocitymultiplier 0.1
+    notunderwater
+    stretchfactor 5    
 //================================================
 
 
@@ -2534,13 +2534,13 @@ velocitymultiplier 1
 
 
 //FOOT STOMP CITY EFFECT==================================
-  //TE_STOMP_CITY - GRAVEL BITS
+  //TE_STOMP_CITY - PAVEMENT BITS
     effect TE_STOMP_CITY
-    count 5
+    count 0.25
     type alphastatic
     blend alpha
     orientation spark
-    color 0xF5DA81 0xE6E6E6
+    color 0x2E2E2E 0xA4A4A4
     tex 44 46
     size 1 2
     alpha 256 512 64
@@ -2560,25 +2560,88 @@ velocitymultiplier 1
     tex 38 41
     size 0.25 0.65
     alpha 256 512 1024
-    originjitter 3 3 3
+    originjitter 10 2 10
     velocityjitter 10 10 10
-    velocitymultiplier 4
+    velocitymultiplier 1
     notunderwater
     stretchfactor 4
 
   //TE_STOMP_CITY - SMOKE PUFF
     effect TE_STOMP_CITY
-    countabsolute 1
+    count 1
     type alphastatic
     blend alpha
     color 0x424242 0x848484
     tex 0 7
-    size 2 4
+    size 0.67 1
     sizeincrease 0.5
+    alpha 128 256 64
+    originjitter 6 2 6
+    velocityjitter 2 2 2
+    notunderwater
+    stretchfactor 3
+//================================================
+
+
+
+
+
+
+
+
+
+
+//FOOT STOMP ICE EFFECT==================================
+  //TE_STOMP_ICE - SNOW PUFFS
+    effect TE_STOMP_ICE
+    count 0.25
+    type alphastatic
+    blend alpha
+    color 0x848484 0xD8D8D8
+    tex 42 42
+    size 2.33 3
+    alpha 256 356 128 
+    originjitter 6 6 4
+    velocityjitter 10 10 10
+    velocitymultiplier 1
+    gravity 0.05
+    notunderwater
+
+  //TE_STOMP_ICE- ICE CHIPS
+    effect TE_STOMP_ICE
+    count 1
+    type spark
+    blend alpha
+    orientation spark
+    color 0x0174DF 0x81DAF5
+    tex 48 55
+    size 0.33 0.67
+    alpha 128 256 512
+    originjitter 10 10 10
+    velocityjitter 10 10 10
+    velocitymultiplier 3
+    stretchfactor 4
+    notunderwater
+
+  //TE_STOMP_ICE - SMOKE PUFF
+    effect TE_STOMP_ICE
+    count 0.25
+    type alphastatic
+    blend alpha
+    color 0x424242 0x848484
+    tex 8 15
+    size 0.25 0.5
+    sizeincrease 0.5
+    originjitter 6 6 4
     alpha 512 1024 512
     notunderwater
     stretchfactor 3
 //================================================
+
+
+
+
+
 //TE_DUST_DESERT==================================
 effect TE_DUST_DESERT
 count 2
