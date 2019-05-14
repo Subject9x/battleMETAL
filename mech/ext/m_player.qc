@@ -61,7 +61,9 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
-  if( self.stat_plr_stt == PLAYER_ANIM_STOP ){
+  //can't stop mech players with cutscenes, instead use triggered clipping objects
+  //in map - roohr
+  if( (self.stat_plr_stt == PLAYER_ANIM_STOP) && (self.data_type == DATA_POBS)){
     if( time >= self.count2){
       self.stat_plr_stt = self.count1;
       self.movetype = self.count3;
@@ -69,7 +71,7 @@ void() PlayerPostThink = {
       self.avelocity = '0 0 0';
     }
   }
-  
+
   if (self.view_ofs == '0 0 0'){
 		return;		// intermission or finale
   }
