@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
 mod: 9/11/2018 - rebuilt
@@ -7,7 +7,8 @@ Overview: client utility methods, pulled from client.qc
 */
 
 /*
-
+  primary info function set to CSQC. 
+  This pushes client data to the owner, every PostPlayerThink() call.
 */
 void() client_push_player_info={
   local entity wep;
@@ -250,31 +251,55 @@ void(string str, float tokens) client_ParseMechCommand={
     if(self.deadflag >= DEAD_NO){
       client_setWeapon(str, tokens);
     }
+    return;
   }
-  else if(argv(1) == "setmech"){
+  
+  if(argv(1) == "setmech"){
     self.vec_size = stof(argv(2));
     self.nextVecChoice = stof(argv(3));
+    return;
   }
-  else if(argv(1) == "spawn"){
+  
+  if(argv(1) == "spawn"){
     if(self.data_type == DATA_POBS){
       player_unmakeObserver();
       player_makeMech();
       spawnpoint_select();
       client_playTrack( world.sounds, TRUE );
     }
+    return;
   }
-  else if(argv(1) == "setgroup"){
+  
+  if(argv(1) == "setgroup"){
     client_setWeaponGroup(str, tokens);
+    return;
   }
-  else if(argv(1) == "setnav"){
+  
+  //
+  if(argv(1) == "setnav"){
     client_setNavPoint(str, tokens);
+    return;
   }
-  else if(argv(1) == "setfaction"){
+  
+  //changes player's .faction var
+  if(argv(1) == "setfaction"){
     self.faction = stof( argv(2) );
     mapfile_pvp_load(self.faction);
+    return;
   }
-  else if( argv(1) == "setmode" ){
+  
+  if( argv(1) == "setmode" ){
     cvar_set("gamemode", argv(2) );
+    return;
+  }
+  
+  //player wants to skip an animatic
+  if( argv(1) == "exitanim" ){
+    if( self.stat_plr_stt == PLAYER_ANIM_STOP) {
+      self.count2 = 0;
+      self.velocity = '0 0 0';
+      self.avelocity = '0 0 0';
+    }
   }
 };  
 

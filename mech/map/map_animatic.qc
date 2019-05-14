@@ -42,12 +42,14 @@ void() animatic_event_execute={
       }
       self = client;
         self.count1 = self.stat_plr_stt;
-        self.stat_plr_stt = PLAYER_ANIM_STOP;
-        self.count2 = time + this.count1;
-        self.count3 = self.movetype;
-        self.movetype = MOVETYPE_NONE;
-        self.velocity = '0 0 0';
-        self.avelocity = '0 0 0';
+        if( (this.spawnflags & 32) ){
+          self.stat_plr_stt = PLAYER_ANIM_STOP;
+          self.count2 = time + this.count1;
+          self.count3 = self.movetype;
+          self.movetype = MOVETYPE_NONE;
+          self.velocity = '0 0 0';
+          self.avelocity = '0 0 0';
+        }
         client_sendAnimaticFileName(this.msn_file);
       self = this;
       client = client.chain;
@@ -101,9 +103,9 @@ void() animatic_event_touch={
   }
 };
 
-/*QUAKED animatic_event (.7 .5 .3) (-5 -5 -5) (5 5 5) TOUCH FINISH_REMOVE FACTION_ONLY DROPTOFLOOR
+/*QUAKED map_animatic (.7 .5 .3) (-5 -5 -5) (5 5 5) TOUCH FINISH_REMOVE FACTION_ONLY DROPTOFLOOR
 */
-void() animatic_event={
+void() map_animatic={
   local vector tempMin;
   local vector tempMax;
   tempMin = self.mins;
@@ -115,8 +117,9 @@ void() animatic_event={
   
   setmodel(self, "q3mdl/testball.md3"); //DEBUG
   
-  if( !cvar("developer") ){
-    self.effects = self.effects | EF_NODRAW;
+  self.alpha = 0;
+  if( cvar("developer") ){
+    self.alpha = 1;
   }
   
   //touchable check
@@ -147,9 +150,9 @@ void() animatic_event={
   }
   
   if( (self.spawnflags & 32) ){
-    if( !self.count) {
+    if( !self.count1 ) {
       //set default freeze time
-      self.count = 15;
+      self.count1 = 15;
     }
   }
 

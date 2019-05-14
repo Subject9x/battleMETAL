@@ -50,7 +50,7 @@ void() leg_walk5 = [$l_walk5, leg_walk6]{
 
 void() leg_walk6 = [$l_walk6, leg_walk7]{
   self.walkframe = $l_walk6; 
-  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUEwa);
+  te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, TRUE);
 };
 
 void() leg_walk7 = [$l_walk7, leg_walk8]{

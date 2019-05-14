@@ -15,13 +15,16 @@ void(string fileToOpen) anm_getFile={
     fclose(flannel);
   }
   else{
-    cons_logAString("Anim file", strcat(fileToOpen," was not found!"));
+    if( cvar("developer") ){
+      cons_logAString("Anim file", strcat(fileToOpen," was not found!"));
+    }
   }
 };
 
 void(string fileToOpen) anm_parseFile={
   local float flannel, argc, line_tag, line_val, frame_count;
   local string file, contents, line;
+  
   file = strcat(PATH_DATA_ANIM, "/", fileToOpen);
   flannel = fopen( file, FILE_READ);
   contents = fgets(flannel);
@@ -116,7 +119,6 @@ void() anm_execute_frame={
         localcmd("cd pause");
       }
       if(ANM_META_DATA[0] != ""){
-        //sound7(self, CHAN_WEAPON, ANM_META_DATA[0], 1, ATTN_NORM, 100, SOUNDFLAG_RELIABLE);
         pointsound(pmove_org, ANM_META_DATA[0], 1, ATTN_NORM); 
       }
     }
@@ -131,11 +133,12 @@ void() anm_execute_frame={
       pointsound(pmove_org, ANM_FRAME_SND[ANM_FRAME_CUR], 1, ATTN_NONE);
     }
     ANM_FRAME_TIME = time + ANM_FRAME_TIM[ANM_FRAME_CUR];
-    local float frm_slice;
-    frm_slice = ANM_FRAME_TIM[ANM_FRAME_CUR] * ANM_FRAME_SLICE;
-    ANM_FRAME_CUR_FADE_START = time + frm_slice;
-    ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[ANM_FRAME_CUR] - frm_slice);
-    ANM_FRAME_CUR_FADE_RATE = (ANM_FRAME_ALPHA[ANM_FRAME_CUR] * frm_slice) / ANM_FRAME_TIM[ANM_FRAME_CUR];
+    
+    local float frameSlice;
+    frameSlice = ANM_FRAME_TIM[ANM_FRAME_CUR] * ANM_FRAME_SLICE;
+    ANM_FRAME_CUR_FADE_START = time + frameSlice;
+    ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[ANM_FRAME_CUR] - frameSlice);
+    ANM_FRAME_CUR_FADE_RATE = (ANM_FRAME_ALPHA[ANM_FRAME_CUR] * frameSlice) / ANM_FRAME_TIM[ANM_FRAME_CUR];
   }
   else{
     local vector siz, org, frm_color, txt_color;

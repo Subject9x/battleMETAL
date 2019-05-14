@@ -61,14 +61,13 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
-  switch(self.stat_plr_stt){
-    case PLAYER_ANIM_STOP:
-      cons_logAString("PlayerPostThink", "PLAYER_ANIM_STOP"); //DEBUG
-      if( time >= self.count2){
-        self.stat_plr_stt = self.count1;
-        self.movetype = self.count3;
-      }
-      break;
+  if( self.stat_plr_stt == PLAYER_ANIM_STOP ){
+    if( time >= self.count2){
+      self.stat_plr_stt = self.count1;
+      self.movetype = self.count3;
+      self.velocity = '0 0 0';
+      self.avelocity = '0 0 0';
+    }
   }
   
   if (self.view_ofs == '0 0 0'){

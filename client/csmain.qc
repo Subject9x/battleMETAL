@@ -89,6 +89,8 @@ void() CSQC_Init =
   NAVNAMES[19] = "Phi";
   NAVNAMES[20] = "Omega";
   
+  ANM_FILE_STATUS = 0;
+  
   //get mission file
   cs_precache();
   dynamic_precache();
@@ -133,11 +135,16 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
     }
   }
   //=====================
-  if( (CLIENT_player_state == PLAYER_POWERUP_BEGIN) || (CLIENT_player_state == PLAYER_ANIM_STOP) ){
+  if( (CLIENT_player_state == PLAYER_POWERUP_BEGIN) ){
     return TRUE;
   }
+  if( ANM_FILE_STATUS == 1 ){
+    if( scanx == K_SPACE ){
+      cl_exit_animatic();
+    }
+  }
   if(evtype == 0){
-    if((scanx == K_TAB && CLIENT_data_type == DATA_POBS)){
+    if( (scanx == K_TAB) && (CLIENT_data_type == DATA_POBS) ){
         if(MENU_ACTIVE){
           MENU_ACTIVE = FALSE;
           CLIENT_MENU_menu_choice = 0;
