@@ -75,7 +75,7 @@ void() ui_data_load_itemicons={
     local float flannel;
     filename = ITEM_DATA_NAMES[count];
     if(filename != ""){
-      file = strcat("ui/item/", filename,".dat");
+      file = strcat("ui/item/", filename,".item");
       flannel = fopen(file, FILE_READ);
       if(flannel != -1){
         local string line, ico;
@@ -118,7 +118,7 @@ void() ui_data_load_mechsizes={
     local float flannel;
     filename = MECH_DATA_NAMES[count];
     if(filename != ""){
-      file = strcat("ui/vec/mech/", filename,".dat");
+      file = strcat("ui/vec/mech/", filename,".unit");
       flannel = fopen(file, FILE_READ);
       if(flannel != -1){
         local string line;
@@ -279,7 +279,7 @@ float(float id) ui_data_load_mech={
   ui_data_clear_mechdata();
   local float flannel, line_tag, line_val;
   local string file, contents, line;
-  file = strcat(PATH_DATA_UI, "/vec/mech/", MECH_DATA_NAMES[id],".dat");
+  file = strcat(PATH_DATA_UI, "/vec/mech/", MECH_DATA_NAMES[id],".unit");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
     cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
@@ -407,7 +407,7 @@ float( float id ) ui_data_load_hud={
   ui_data_clear_huddata();
   local float flannel, line_tag, uid;
   local string file, contents, line;
-  file = strcat(PATH_DATA_UI, "/hud/", HUD_DATA_NAMES[id], ".dat");
+  file = strcat(PATH_DATA_UI, "/hud/", HUD_DATA_NAMES[id], ".hud");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
     cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
@@ -479,7 +479,7 @@ float(float id) ui_date_load_item1={
   ui_data_clear_item1();
   local float flannel, line_tag, line_val;
   local string file, contents, line;
-  file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".dat");
+  file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".item");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
     cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
@@ -543,7 +543,7 @@ float(float id) ui_date_load_item2={
   ui_data_clear_item2();
   local float flannel, line_tag, line_val;
   local string file, contents, line;
-  file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".dat");
+  file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".item");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
     cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  

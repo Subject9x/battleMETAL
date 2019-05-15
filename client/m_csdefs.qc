@@ -61,6 +61,7 @@ float m_arm_r = 4;
 float m_arm_l = 5;
 float m_wep = 6;
 
+.float vec_size;
 .string c_model;
 .string w_name;       //label for weapon, need to keep 'classname' reserved for actual class    
 .float w_firerate;

@@ -8,7 +8,7 @@ Overview: header for the mission file handler.
 void() msn_getfile={
   local float flannel;
   local string file;
-  file = strcat(PATH_DATA_MAP, "/", MAP_NAME, "/", MSN_FILENAME, ".dat");
+  file = strcat(PATH_DATA_MAP, "/", MAP_NAME, "/", MSN_FILENAME, ".msn");
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     MSN_FILEFOUND = TRUE;
@@ -28,7 +28,7 @@ void() msn_getfile={
 void() msn_parsefile={
   local float tobj, flannel, argc, line_tag, token;
   local string file, contents, line;
-  file = strcat(PATH_DATA_MAP, "/", MAP_NAME, "/", MSN_FILENAME, ".dat");
+  file = strcat(PATH_DATA_MAP, "/", MAP_NAME, "/", MSN_FILENAME, ".msn");
   flannel = fopen(file, FILE_READ);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{",",","}");

@@ -4,7 +4,6 @@
 keycodes.qc
 m_csdefs.qc
 m_entdefs.qc
-m_datadefs.qc 
 
 //common values
 ../common/data/data_values_game.qc
