@@ -126,7 +126,7 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 
-  return handle_input(float evtype, float scanx, float chary, float devid);
+  return handle_input(evtype, scanx, chary, devid);
 
  
 };

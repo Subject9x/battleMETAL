@@ -29,9 +29,9 @@ network/headers/receive_entities.qh
 
 //CSQC Menu System Headers
   ui/headers/gui_api.qh
-  ui/headers/m_hud.qh
+  ui/headers/hud_view.qh
   ui/headers/anim.qh
-  ui/headers/hud_snd_sys.qh
+  ui/headers/system_hud_sound.qh
 //================
 
 util/headers/particle_sys.qh
@@ -47,8 +47,8 @@ util/headers/particle_sys.qh
 
 ui/anim.qc
 ui/gui_api.qc
-ui/hud/m_hud.qc
-ui/hud/hud_snd_sys.qc
+ui/hud/hud_view.qc
+ui/hud/system_hud_sound.qc
 
 //Client / Server CMD===
   network/server_localcmd.qc
