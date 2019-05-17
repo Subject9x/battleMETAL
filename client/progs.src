@@ -1,9 +1,9 @@
 ../../csprogs.dat
 
 ../dp/csprogsdefs.qc
-keycodes.qc
-m_csdefs.qc
-m_entdefs.qc
+data/keycodes.qc
+data/defs_clientside.qc
+data/defs_entity.qc
 
 //common values
 ../common/data/data_values_game.qc
@@ -15,51 +15,58 @@ m_entdefs.qc
 ../common/data/data_values_particles.qc
 ../common/data/data_values_turrets.qc
 ../common/ui/ui_color_constants.qc
-client_constants.qc
 //================================
 
-gui_api_h.qc
-data_api_h.qc
-ui_data_h.qc
-m_hud_h.qc
-cl_particles_h.qc
-cl_svr_cmd_h.qc
-cl_receive_ents_h.qc
-msn_file_h.qc
-anim_h.qc
-hud_snd_sys_h.qc
+data/headers/data_api.qh
+data/headers/ui_data.qh
+data/headers/msn_file.qh
+
+network/headers/client_globals.qh
+network/headers/server_localcmd.qh
+network/headers/receive_entities.qh
+
+ui/headers/gui_api.qh
+ui/headers/m_hud.qh
+ui/headers/anim.qh
+ui/headers/hud_snd_sys.qh
+
+util/headers/particle_sys.qh
 
 //Client-side UI
-ui/ui_defs_h.qc
-ui/ui_hangar_h.qc
-ui/ui_arming_h.qc
-ui/ui_brief_h.qc
-ui/ui_deploy_h.qc
-ui/ui_objectives_h.qc
+  ui/menu/headers/ui_defs.qh
+  ui/menu/headers/ui_hangar.qh
+  ui/menu/headers/ui_arming.qh
+  ui/menu/headers/ui_brief.qh
+  ui/menu/headers/ui_deploy.qh
+  ui/menu/headers/ui_objectives.qh
 //================
 
-msn_file_c.qc
-anim_c.qc
-gui_api_c.qc
-m_hud_c.qc
-hud_snd_sys_c.qc
+data/msn_file.qc
+
+ui/anim.qc
+ui/gui_api.qc
+ui/hud/m_hud.qc
+ui/hud/hud_snd_sys.qc
 
 //Client->SERVER LAYER===
-cl_svr_cmd_c.qc
-cl_receive_ents.qc
+  network/server_localcmd.qc
+  network/receive_entities.qc
 //========================
+
 //MENU SYSTEM============
-  ui/ui_defs_c.qc
-  ui/ui_hangar_c.qc
-  ui/ui_arming_c.qc
-  ui/ui_brief_c.qc
-  ui/ui_deploy_c.qc
-  ui/ui_objectives_c.qc
-//======================= 
-//EFFECTS================
-  cl_particles.qc
+  ui/menu/headers/ui_defs.qc
+  ui/menu/ui_hangar.qc
+  ui/menu/ui_arming.qc
+  ui/menu/ui_brief.qc
+  ui/menu/ui_deploy.qc
+  ui/menu/ui_objectives.qc
 //=======================
-cs_precache.qc
-data_api_c.qc
-ui_data.qc
-csmain.qc
+
+//EFFECTS================
+  util/particle_sys.qc
+//=======================
+data/client_precache.qc
+data/data_api.qc
+data/ui_data.qc
+
+client_main.qc

@@ -1,0 +1,108 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 1/6/2018
+Overview: part of splitting the hangar into more understandable chunks
+  'arming' is where the player can select weapons, compare them, 
+  set weapon groups.
+*/
+
+float WEPLIST_ALL[24];
+float WEPLIST_BAL_ARR[8];
+float WEPLIST_ENE_ARR[8];
+float WEPLIST_EXP_ARR[8];
+float WEPLIST_MSC_ARR[8];
+
+float HARDPOINTS[10]; //somehow making this '10' fixed a bug with hardpoint #9
+float WEPBITS[9];
+
+float UI_TOTAL_WEAPONS = 24; //weapon id's
+
+vector WEPNLIST_ORG;
+vector WEPNLIST_SIZE;
+float WEPNLIST_CNT;
+//ballistic weapon list globals
+  float WEPNLIST_CNT_BAL;
+  vector WEPNLIST_ORG_BAL;
+  vector WEPNLIST_SIZE_BAL;
+//energy weapon  mech list globals
+  float WEPNLIST_CNT_ENE;
+  vector WEPNLIST_ORG_ENE;
+  vector WEPNLIST_SIZE_ENE;
+//missile / explosive weapon  mech list globals
+  float WEPNLIST_CNT_EXP;
+  vector WEPNLIST_ORG_EXP;
+  vector WEPNLIST_SIZE_EXP;
+// miscellaneous weapon list globals
+  float WEPNLIST_CNT_MSC;
+  vector WEPNLIST_ORG_MSC;
+  vector WEPNLIST_SIZE_MSC;
+  
+// weapon group A
+  float WEPNGRP_CNT_A;
+  vector WEPNGRP_ORG_A;
+  vector WEPNGRP_SIZE_A;
+// weapon group B
+  float WEPNGRP_CNT_B;
+  vector WEPNGRP_ORG_B;
+  vector WEPNGRP_SIZE_B;
+// weapon group C
+  float WEPNGRP_CNT_C;
+  vector WEPNGRP_ORG_C;
+  vector WEPNGRP_SIZE_C;
+
+// weapon group D
+  float WEPNGRP_CNT_D;
+  vector WEPNGRP_ORG_D;
+  vector WEPNGRP_SIZE_D;
+  
+// weapon group E
+  float WEPNGRP_CNT_E;
+  vector WEPNGRP_ORG_E;
+  vector WEPNGRP_SIZE_E;  
+
+//hardpoint count
+  float HARDPOINT_CNT;
+  
+//energy draw group vals
+float GROUP_ENE_1;
+float GROUP_ENE_2;
+float GROUP_ENE_3;
+float GROUP_ENE_4;
+float GROUP_ENE_5;
+  
+//config buttons
+vector BTN_CFG_P;
+vector BTN_CFG_N;
+
+float CFG_INDEX;
+float CFG_INDEX_PREV;
+  
+void() menu_arming_listener;
+void() weaponSelectListener;
+void() hardpointListener;
+void() weaponGroupPanelListener;
+void() assignToHardpointListener;
+void() selectNextConfig;
+void() selectPrevConfig;
+
+float(float grp) calc_energy_draw;
+
+void() menu_arming_drawFrame;
+
+void(vector ofs) menu_arming_HardpointGraph;
+
+void(vector ofs) menu_arming_WeaponList;
+void(vector ofs) menu_arming_WeaponList_BAL;
+void(vector ofs) menu_arming_WeaponList_ENE;
+void(vector ofs) menu_arming_WeaponList_EXP;
+void(vector ofs) menu_arming_WeaponList_MSC;
+void(vector ofs) menu_arming_WeaponGroupPanel;
+void(vector ofs) menu_arming_energydraw;
+void(vector ofs) menu_arming_WeaponInfo;
+void(vector ofs) menu_arming_WeaponInHardpoint;
+void(vector ofs) menu_arming_AssignToHardpoint_btn;
+
+float(float comp, float bits) checkIfWeaponInGroup;
+void() cleanHardPoints;
+string(float bit) getNameOfWepType;
