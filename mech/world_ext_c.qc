@@ -343,3 +343,81 @@ void(float wep_id) data_iniWep={
       return;
   }
 };
+
+/*
+  Real-time Light entity exporter functionality.
+    RTLights file data can now be bound to maps at the map-editor layer.
+    new entity - "realtime_light" can be found in misc.qc
+    new console command.
+    
+    This writes an .rtlights file based on mapname, and written to /data/maps/rtexport/
+      mostly because fopen() can't access higher level folders.
+  
+*/
+void( float overrideFlag ) world_export_realtimelights={
+  local string fileName;
+  local float fileExists;
+  local float developer;
+  local entity lights;
+  
+  developer = cvar("developer");
+  fileName = strcat("maps/rtexport/", mapname, ".rtlights");
+  if( developer ){
+    cons_logAString("world_export_realtimelights()|[fileName]", fileName);  //DEBUG
+  }
+ 
+  fileExists = fopen(fileName, FILE_WRITE);
+ 
+  //overrideFlag was false but file exists! so don't overwrite
+  if( (fileExists == TRUE) && !overrideFlag ){
+    if( developer ){
+      cons_logAString("world_export_realtimelights()|", "[WARN]: Failed to write rtlights file, overrideFlag = FALSE but file already exists!");  //DEBUG
+    }
+    fclose(fileExists);
+    return;
+  }
+  
+  //if file doesnt exists
+  lights = findchain(classname, "realtime_light");
+  if( lights ){
+    while(lights){
+      world_export_realtimelights_write( lights, fileExists );
+      lights = lights.chain;
+    }
+    if( developer ){
+      cons_logAString("world_export_realtimelights()", "[INFO]: Write complete.");  //DEBUG
+    }
+  }
+  else{
+    if( developer ){
+      cons_logAString("world_export_realtimelights()", "[WARN]: No {realtime_light} entities found in map file.");  //DEBUG
+    }
+  }
+  fclose(fileExists);
+};
+
+void( entity light, float fileData ) world_export_realtimelights_write={
+  local string lightData;
+  lightData = "";
+  if( light.rtlShadows == TRUE){
+    lightData = strcat(lightData, "!"); 
+  }    
+  lightData = strcat( lightData, ftos(light.origin_x), " ", ftos(light.origin_y), " ", ftos(light.origin_z));
+  lightData = strcat( lightData, " ", ftos(light.rtlLight) );
+  lightData = strcat( lightData, " ", ftos(light.color_x)," ", ftos(light.color_y)," ", ftos(light.color_z) );
+  lightData = strcat( lightData, " ", ftos(light.rtlStyle) );
+  lightData = strcat( lightData, " \"", light.vec_name,"\" " );
+  lightData = strcat( lightData, " ", ftos(light.rtlCorona) );
+  lightData = strcat( lightData, " ", ftos(light.angles_x), " ", ftos(light.angles_y), " ", ftos(light.angles_z) );
+  lightData = strcat( lightData, " ", ftos(light.rtlCoronaSize) );
+  lightData = strcat( lightData, " ", ftos(light.rtlAmbient) );
+  lightData = strcat( lightData, " ", ftos(light.rtlDiffuse) );
+  lightData = strcat( lightData, " ", ftos(light.rtlSpecular) );
+  lightData = strcat( lightData, " ", ftos(light.rtlMode), "\n");
+  
+  if( cvar("developer") ){
+    cons_logAString("[Writing RTLight Data]", lightData); //DEBUG
+  }
+  fputs(fileData, lightData);
+
+};

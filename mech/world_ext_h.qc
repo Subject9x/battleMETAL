@@ -31,4 +31,26 @@ void(float vec_id) data_iniVehc;
 void(float prj_id) data_iniProjectile;
 void(float vec_id) data_iniTurret;
 
-//the following should probably be spun out to client_utils - Roohr 3/24/2018
+//RTLight converter system---------------------------------------------
+.float rtlShadows; //FALSE = write nothin | TRUE = write '!'
+//.vector rtlOrigin; -> light ent's .origin
+.float rtlLight;  //functionally equivalent to .light but doesn't trigger bsp light calc
+//.vector color; -> already covered
+.float rtlStyle;
+//.string vec_name; -> write out as 'cubemap'
+.float rtlCorona;
+//.vector angles; -> light ent's .angles
+.float rtlCoronaSize;
+.float rtlAmbient;
+.float rtlDiffuse;
+.float rtlSpecular;
+.float rtlMode;
+/*
+  0 = normalmode NO && realtimemode NO
+  1 = normalmode YES && realtimemode NO
+  2 = normalmode NO && realtimemode YES
+  3 = normalmode YES && realtimemode YES
+*/
+
+void( float overrideFlag ) world_export_realtimelights;
+void( entity light, float fileData ) world_export_realtimelights_write;

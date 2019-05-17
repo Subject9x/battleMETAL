@@ -139,12 +139,6 @@ void() anm_execute_frame={
     ANM_FRAME_CUR_FADE_START = time + frameSlice;
     ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[ANM_FRAME_CUR] - frameSlice);
     ANM_FRAME_CUR_FADE_RATE = (ANM_FRAME_ALPHA[ANM_FRAME_CUR] * frameSlice) / ANM_FRAME_TIM[ANM_FRAME_CUR];
-    cons_logAFloat("ANM_FRAME_CUR", ANM_FRAME_CUR);  //DEBUG
-    cons_logAFloat("ANM_FRAME_SLICE", ANM_FRAME_SLICE);  //DEBUG
-    cons_logAFloat("ANM_FRAME_CUR_FADE_END", ANM_FRAME_CUR_FADE_END);  //DEBUG
-    cons_logAFloat("ANM_FRAME_CUR_FADE_START", ANM_FRAME_CUR_FADE_START);  //DEBUG
-    cons_logAFloat("ANM_FRAME_TIM[ANM_FRAME_CUR]",ANM_FRAME_TIM[ANM_FRAME_CUR]);  //DEBUG
-    cons_logAFloat("ANM_FRAME_TIM[ANM_FRAME_CUR]",ANM_FRAME_TIM[ANM_FRAME_CUR]);  //DEBUG
   }
   else{
     local vector siz, org, frm_color, txt_color;

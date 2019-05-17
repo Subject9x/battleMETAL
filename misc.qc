@@ -56,6 +56,42 @@ void() light =
 	}
 };
 
+/*QUAKED realtime_light (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
+will be converted to rtlight file line on console command
+
+-------- KEYS --------
+.rtlShadows = <bool> use real-time shadows or not.
+.rtlLight = <float> radius of light.
+.color = <vector>[0-1] used to denote color of light.
+.style = <string> same as Light ent.
+.vec_name = <string> becomes Light's Cubemap image path.
+.rtlCorona = <float> intensity of Corona.
+.angles = <vector> directional angles for Light, '0 0 0' is non-directional.
+.rtlCoronaSize = <float> size of corona
+.rtlAmbient = <float>[0-1] Ambient lighting effect.
+.rtlDiffuse = <float>[0-1] Diffuse lighting intensity.
+.rtlSpecular = <float>[01] Specular lighting intensity.
+.rtlMode = <enum>
+  0 = normalmode NO && realtimemode NO
+  1 = normalmode YES && realtimemode NO
+  2 = normalmode NO && realtimemode YES
+  3 = normalmode YES && realtimemode YES
+-------- SPAWNFLAGS --------
+None
+*/
+void() realtime_light={
+  self.classname = "realtime_light";
+  setmodel(self, "q3mdl/testball.md3");
+  setsize(self, '-4 -4 -4', '4 4 4');
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.alpha = 0;
+  if( cvar("developer") ){
+    self.alpha = 1;
+    self.color = '0 0.75 0.75';
+  }
+};
+
 /*QUAKED light_fluoro (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
 Non-displayed light.
 Default light value is 300

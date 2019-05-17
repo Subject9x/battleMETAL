@@ -300,6 +300,12 @@ void(string str, float tokens) client_ParseMechCommand={
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
     }
+    return;
+  }
+  
+  if( argv(1) == "rtexport" ){
+    world_export_realtimelights( stof(argv(2)) );
+    return;
   }
 };  
 
