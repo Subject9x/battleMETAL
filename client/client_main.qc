@@ -126,6 +126,8 @@ void() CSQC_Shutdown =
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 
+  
+
   CLIENT_player_state = getstatf(STAT_PLR_STT);
   
   //console override

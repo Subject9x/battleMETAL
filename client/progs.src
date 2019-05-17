@@ -17,6 +17,8 @@ data/defs_entity.qc
 ../common/ui/ui_color_constants.qc
 //================================
 
+util/headers/input_events.qh
+
 data/headers/data_api.qh
 data/headers/ui_data.qh
 data/headers/msn_file.qh
@@ -25,14 +27,16 @@ network/headers/client_globals.qh
 network/headers/server_localcmd.qh
 network/headers/receive_entities.qh
 
-ui/headers/gui_api.qh
-ui/headers/m_hud.qh
-ui/headers/anim.qh
-ui/headers/hud_snd_sys.qh
+//CSQC Menu System Headers
+  ui/headers/gui_api.qh
+  ui/headers/m_hud.qh
+  ui/headers/anim.qh
+  ui/headers/hud_snd_sys.qh
+//================
 
 util/headers/particle_sys.qh
 
-//Client-side UI
+//CSQC Menu Headers
   ui/menu/headers/ui_defs.qh
   ui/menu/headers/ui_hangar.qh
   ui/menu/headers/ui_arming.qh
@@ -41,14 +45,12 @@ util/headers/particle_sys.qh
   ui/menu/headers/ui_objectives.qh
 //================
 
-data/msn_file.qc
-
 ui/anim.qc
 ui/gui_api.qc
 ui/hud/m_hud.qc
 ui/hud/hud_snd_sys.qc
 
-//Client->SERVER LAYER===
+//Client / Server CMD===
   network/server_localcmd.qc
   network/receive_entities.qc
 //========================
@@ -65,8 +67,11 @@ ui/hud/hud_snd_sys.qc
 //EFFECTS================
   util/particle_sys.qc
 //=======================
+
 data/client_precache.qc
 data/data_api.qc
 data/ui_data.qc
+data/msn_file.qc
 
+input_events.qc
 client_main.qc

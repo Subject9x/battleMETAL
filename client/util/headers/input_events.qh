@@ -1,0 +1,10 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 05/17/2019
+Overview:
+  Header file for input events handled by CSQC.
+  currently just 1 file.
+*/
+
+float(float evtype, float scanx, float chary, float devid) handle_input;
