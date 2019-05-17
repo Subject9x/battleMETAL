@@ -1,0 +1,110 @@
+// Game: battleMETAL
+// Format: Quake3
+// entity 0
+{
+"classname" "worldspawn"
+"_tb_textures" "textures/building;textures/common;textures/radiant;textures/radicals"
+"_tb_def" "builtin:battleMETAL.def"
+// brush 0
+{
+( 112 128 256 ) ( 112 -128 256 ) ( 112 128 -16 ) building/ba_concrete -0 -0 -0 1 1
+( 112 -128 -16 ) ( 112 -128 256 ) ( 128 -128 -16 ) building/ba_concrete 0 0 0 1 1
+( 112 128 -16 ) ( 112 -128 -16 ) ( 128 128 -16 ) building/ba_concrete 0 0 0 1 1
+( 112 -128 256 ) ( 112 128 256 ) ( 128 -128 256 ) building/ba_concrete 0 0 0 1 1
+( 112 128 256 ) ( 112 128 -16 ) ( 128 128 256 ) building/ba_concrete 0 0 0 1 1
+( 128 -128 256 ) ( 128 128 256 ) ( 128 -128 -16 ) building/ba_concrete 0 0 0 1 1
+}
+// brush 1
+{
+( -128 128 -16 ) ( -128 128 256 ) ( -128 -128 -16 ) building/ba_concrete 0 0 0 1 1
+( -112 -128 256 ) ( -112 -128 -16 ) ( -128 -128 256 ) building/ba_concrete 0 0 0 1 1
+( -112 -128 -16 ) ( -112 128 -16 ) ( -128 -128 -16 ) building/ba_concrete 0 0 0 1 1
+( -112 128 256 ) ( -112 -128 256 ) ( -128 128 256 ) building/ba_concrete 0 0 0 1 1
+( -112 128 -16 ) ( -112 128 256 ) ( -128 128 -16 ) building/ba_concrete 0 0 0 1 1
+( -112 -128 -16 ) ( -112 -128 256 ) ( -112 128 -16 ) building/ba_concrete -0 -0 -0 1 1
+}
+// brush 2
+{
+( -112 112 256 ) ( -112 112 -16 ) ( -112 128 256 ) building/ba_concrete 0 0 0 1 1
+( 112 112 256 ) ( 112 112 -16 ) ( -112 112 256 ) building/ba_concrete -0 -0 -0 1 1
+( -112 112 -16 ) ( 112 112 -16 ) ( -112 128 -16 ) building/ba_concrete 0 0 0 1 1
+( 112 112 256 ) ( -112 112 256 ) ( 112 128 256 ) building/ba_concrete 0 0 0 1 1
+( -112 128 256 ) ( -112 128 -16 ) ( 112 128 256 ) building/ba_concrete 0 0 0 1 1
+( 112 112 -16 ) ( 112 112 256 ) ( 112 128 -16 ) building/ba_concrete 0 0 0 1 1
+}
+// brush 3
+{
+( -112 -112 -16 ) ( -112 -112 256 ) ( -112 -128 -16 ) building/ba_concrete 0 0 0 1 1
+( -112 -128 -16 ) ( -112 -128 256 ) ( 112 -128 -16 ) building/ba_concrete 0 0 0 1 1
+( 112 -112 -16 ) ( -112 -112 -16 ) ( 112 -128 -16 ) building/ba_concrete 0 0 0 1 1
+( -112 -112 256 ) ( 112 -112 256 ) ( -112 -128 256 ) building/ba_concrete 0 0 0 1 1
+( -112 -112 -16 ) ( 112 -112 -16 ) ( -112 -112 256 ) building/ba_concrete -0 -0 -0 1 1
+( 112 -112 256 ) ( 112 -112 -16 ) ( 112 -128 256 ) building/ba_concrete 0 0 0 1 1
+}
+// brush 4
+{
+( -112 -112 240 ) ( -112 112 240 ) ( -112 -112 256 ) building/ba_concrete 0 0 0 1 1
+( 112 -112 240 ) ( -112 -112 240 ) ( 112 -112 256 ) building/ba_concrete 0 0 0 1 1
+( 112 112 240 ) ( -112 112 240 ) ( 112 -112 240 ) building/ba_concrete -0 -0 -0 1 1
+( 112 -112 256 ) ( -112 -112 256 ) ( 112 112 256 ) building/ba_concrete 0 0 0 1 1
+( -112 112 240 ) ( 112 112 240 ) ( -112 112 256 ) building/ba_concrete 0 0 0 1 1
+( 112 112 240 ) ( 112 -112 240 ) ( 112 112 256 ) building/ba_concrete 0 0 0 1 1
+}
+// brush 5
+{
+( -112 112 -0 ) ( -112 -112 -0 ) ( -112 112 -16 ) building/ba_concrete 0 0 0 1 1
+( -112 -112 -0 ) ( 112 -112 -0 ) ( -112 -112 -16 ) building/ba_concrete 0 0 0 1 1
+( -112 -112 -16 ) ( 112 -112 -16 ) ( -112 112 -16 ) building/ba_concrete 0 0 0 1 1
+( -112 -112 -0 ) ( -112 112 -0 ) ( 112 -112 -0 ) building/ba_concrete -0 -0 -0 1 1
+( 112 112 -0 ) ( -112 112 -0 ) ( 112 112 -16 ) building/ba_concrete 0 0 0 1 1
+( 112 -112 -0 ) ( 112 112 -0 ) ( 112 -112 -16 ) building/ba_concrete 0 0 0 1 1
+}
+}
+// entity 1
+{
+"classname" "info_player_start"
+"origin" "-80 80 40"
+"angle" "300"
+}
+// entity 2
+{
+"classname" "trigger_once"
+"target" "anim1"
+// brush 0
+{
+( -112 -0 16 ) ( -112 1 16 ) ( -112 -0 17 ) common/trigger 0 0 0 1 1
+( -112 -0 16 ) ( -112 -0 17 ) ( -111 -0 16 ) common/trigger 0 0 0 1 1
+( -112 -0 16 ) ( -111 -0 16 ) ( -112 1 16 ) common/trigger 0 0 0 1 1
+( -0 32 128 ) ( -0 33 128 ) ( 1 32 128 ) common/trigger 0 0 0 1 1
+( -0 32 128 ) ( 1 32 128 ) ( -0 32 129 ) common/trigger 0 0 0 1 1
+( -0 32 128 ) ( -0 32 129 ) ( -0 33 128 ) common/trigger 0 0 0 1 1
+}
+}
+// entity 3
+{
+"classname" "map_animatic"
+"origin" "21 53 168"
+"targetname" "anim1"
+"faction" "1"
+"count1" "100"
+"wait" "110"
+"spawnflags" "96"
+"msn_file" "t1m3_brief.anim"
+}
+// entity 4
+{
+"classname" "realtime_light"
+"origin" "-8 -8 136"
+"angles" "0 0 0"
+"rtlShadows" "1"
+"color" "1 0.25 0.25"
+"vec_name" ""
+"rtlCorona" "0"
+"rtlCoronaSize" "0"
+"rtlAmbient" "0"
+"rtlDiffuse" "1"
+"rtlSpecular" "0.25"
+"rtlMode" "2"
+"rtlStyle" "0"
+"rtlLight" "300"
+}

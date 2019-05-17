@@ -1,0 +1,17 @@
+/*
+DATA SPEC
+!     =   <bool>shadows y/n [.rtlShadows] TRUE = write '!', FALSE = write nothing, not even a space
+x y z =   <vector> origin   [.origin]
+a     =   <float> radius    [.rtlLight]
+b c d =   <vector> color    [.color]
+e     =   <int> style       [.rtlStyle]
+""    =   <string> cubemap  [.vec_name] maintain quotes!
+f     =   <float> corona    [.rtlCorona]
+g h i =   <vector> angles   [.angles]
+j     =   <float>coronaSize [.rtlCoronaSize]
+k     =   <float>ambient    [.rtlAmbient]
+l     =   <float>diffuse    [.rtlDiffuse]
+m     =   <float>specular   [.rtlSpecular]
+n     =   <int> mode        [.rtlMode]
+*/
+!-8 -8 136 300 0 0.750000 0.750000 0 ""  0 0 0 0 0 0 1 0.250000 2
