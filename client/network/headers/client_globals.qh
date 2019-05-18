@@ -1,0 +1,85 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 12/07/2018
+Overview: 
+  I'm tired of fighting CSQC on client entity context vs self and the never ending synchronization headache that this is causing.
+  To that end, I've moved all the client-specific data to constants, ugly but necessary.
+*/
+
+float CLIENT_currentWeaponGroup;
+
+float CLIENT_flags;
+string CLIENT_netname;
+float CLIENT_player_state;
+
+float CLIENT_data_type;
+float CLIENT_data_idx;
+float CLIENT_i_faction;
+float CLIENT_stat_lck_stt;
+float CLIENT_stat_rdr_mode;
+float CLIENT_stat_rdr_mode_prev;
+float CLIENT_stat_hit_dirs;
+float CLIENT_stat_ret_dist;
+
+float CLIENT_stat_trg_dataidx;
+float CLIENT_stat_trg_ent_id;
+float CLIENT_stat_trg_face;
+       
+float CLIENT_target_datatype;
+float CLIENT_target_faction;
+
+float CLIENT_target_shield; 
+float CLIENT_target_datatype;  
+float CLIENT_target_faction;
+float CLIENT_stat_trg_ddflg;
+    
+float CLIENT_stat_w1_id;
+float CLIENT_stat_w2_id;
+float CLIENT_stat_w3_id;
+float CLIENT_stat_w4_id;
+float CLIENT_stat_w5_id;
+float CLIENT_stat_w6_id;
+float CLIENT_stat_w7_id;
+float CLIENT_stat_w8_id;
+float CLIENT_stat_w9_id;
+
+vector CLIENT_entorg;
+float CLIENT_radar_range;
+
+float CLIENT_en_cur;
+float CLIENT_sh_cur;
+
+float CLIENT_hp_ctor;
+float CLIENT_hp_leg;
+float CLIENT_hp_stor;
+float CLIENT_hp_stor2;
+float CLIENT_hp_arm;
+float CLIENT_hp_arm2;
+
+float CLIENT_hardpoint_cnt;
+
+float CLIENT_stat_w1_rel;
+float CLIENT_stat_w2_rel;
+float CLIENT_stat_w3_rel;
+float CLIENT_stat_w4_rel;
+float CLIENT_stat_w5_rel;
+float CLIENT_stat_w6_rel;
+float CLIENT_stat_w7_rel;
+float CLIENT_stat_w8_rel;
+float CLIENT_stat_w9_rel;
+
+float CLIENT_stat_trg_ent_id;
+
+vector CLIENT_target_origin;
+float CLIENT_target_shield;
+float CLIENT_stat_trg_ct_hp;
+float CLIENT_stat_trg_lg_hp;
+float CLIENT_stat_trg_lt_hp;
+float CLIENT_stat_trg_rt_hp;
+float CLIENT_stat_trg_la_hp;
+float CLIENT_stat_trg_ra_hp;
+float CLIENT_target_vecsize;
+
+string CLIENT_w_icon;
+
