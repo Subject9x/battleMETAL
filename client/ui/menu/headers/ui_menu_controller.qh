@@ -1,9 +1,24 @@
 /*
 battleMETAL
 Author: Peter Roohr
-Date: 3/8/2017
-Overview:  header file for ui system
+Date: 05/17/2019
+Overview:
+  Header for ui_menu_controller.qc
+  contains necessary globals, constants, and function defines 
+  to run the whole menu sub system.
 */
+
+vector cursorpos;
+vector last_view;
+
+float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
+float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
+
+void() menu_handleFrame;
+void(vector ofs) menu_navBar;
+void() menu_mainListener;
+void() navBarListener;
+void() mechAcceptButtonListener;
 
 float AVAILABLE_RESERVE;
 float SELECT_MECH;  //replaces entity functionality, used in conjunction with ui_data file loading - Roohr 6/26/2018
@@ -13,6 +28,8 @@ float MENU_HANGAR_ACTIVE = 2;
 float MENU_ARMING_ACTIVE = 3;
 float MENU_DEPLOY_ACTIVE = 4;
 float MENU_LAUNCH_ROLLOVER = 5;
+vector MENU_BTN_LAUNCH_ORG;
+vector MENU_BTN_LAUNCH_SZ;
 
 //CLIENT MENU CONST
 float CLIENT_MENU_menu_choice;
@@ -32,29 +49,6 @@ float CLIENT_MENU_nex_grp3;
 float CLIENT_MENU_nex_grp4;
 float CLIENT_MENU_nex_grp5;
 //
-
-vector cursorpos;
-vector last_view;
-
-float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;
-float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
-
-void( entity box ) ui_renderHUDHighlight;
-void() ui_renderHUD_Highlight_frame;
-
-vector MENU_BTN_LAUNCH_ORG;
-vector MENU_BTN_LAUNCH_SZ;
-
-void() menu_handleFrame;
-void(vector ofs) menu_navBar;
-void() menu_mainListener;
-void() navBarListener;
-void() mechAcceptButtonListener;
-void(float wid, vector org, float selected) ui_renderHardPointGraphic;
-void(float navid) ui_renderNav;
-void(entity clnt) ui_renderClientName;
-void(float num, vector org) ui_renderHardPointNumber;
-void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 
 string MISSION_OBJECTIVES[12];
 float MISSION_OBJ_STATUS[12];
