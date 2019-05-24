@@ -11,6 +11,42 @@ Overview:
   
 */
 
+entity weaponList;  //used by data functions to populate weapon lists for units
+entity weaponBuild; //used by vehicle factory to build current weapon
+
+/*
+  called when building something with common/data info.
+  instantiates the target object and populates it with
+  parameter values.
+*/
+void( float partId, string modelPath, float maxHp, vector partOffset, entity parentPart, .entity partSlot ) data_ini_unitPiece_={
+  local entity piece;
+  piece = spawn();
+  piece.comp_id = partId;
+  piece.c_parent = parentPart.comp_id;
+  piece.max_health = piece.health = maxHp;
+  piece.model = modelPath;
+  piece.c_ofs = partOffset;
+  self.partSlot = piece;
+  parentPart.partSlot = piece;
+  piece.owner = self;
+};
+
+void( float weaponNum, float parentPartId, vector pointOffset, vector offsetAdjust, vector adjustAngle ) data_ini_unitHardpoint_={
+  local entity item;
+  item = spawn();
+  item.data_idx = 0;
+  item.w_group = weaponNum;
+  item.c_parent = parentPartId;
+  item.c_ofs = pointOffset;
+  item.c_alt_ofs = offsetAdjust;
+  item.w_adj_ang = adjustAngle;
+  item.owner = self;
+  weaponList.w_slot = item;
+  weaponList = item;
+};
+
+
 .void() unit_ini;
 .void() unit_legs;
 .void() unit_ctor;

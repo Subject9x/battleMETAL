@@ -3,7 +3,11 @@ battleMETAL
 Author: Peter Roohr
 Date: 8/31/2016
 mod: 11/27/2017 - data system refactor
-Overview: builds player vehicle
+mod: 05/23/2019 - another refactor
+Overview: 
+  responsible for building all units found in the game.
+  This takes common/data/ and binds it to entities.
+  Setups up entity sub-pieces, and attaches weapons.
 */
 
 /*
@@ -31,14 +35,14 @@ Overview: builds player vehicle
   setattachment(self, follow, "tag_tor_l");
 };*/
 
-void(void() func, entity own) build_unit_component={
+void(entity own) build_unit_component={
   local entity follow;
-  func();
+  //func();
   follow = util_getPartFromName( self.c_parent, own );
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(self.c_model, own.skin, 0);
+  util_setModel(self.model, own.skin, 0);
   
   setsize(self, '-1 -1 -1', '1 1 1');
   util_setOffsetOrigin(self, own, self.c_ofs);
@@ -52,16 +56,15 @@ void(void() func, entity own) build_unit_component={
   self.colormod = '1 1 1';
 };
 
-entity(void() func) build_unit_camera={
+void() build_unit_camera={
   local entity this, cam;
-  cam = spawn();
   this = self;
-  self = cam;
+  
+  self = self.e_cam;
     self.classname = "camera";
     self.scale = 0.05;
-    func();
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, 0, 0);
+    util_setModel(self.model, 0, 0);
     self.alpha = 0;
     setsize(self, '-1 -1 -1', '1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
@@ -73,102 +76,84 @@ entity(void() func) build_unit_camera={
     self.angles = this.angles;
     self.v_angle = self.angles - this.angles;
   self = this;
-  return cam;
 };
 
 void() build_unit_weapon_list={
   local entity wslot;
+  local float weaponCount;
+  
   wslot = self;
-  if(self.unit_wep1){
-    if(self.next_wepn1 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep1, self.next_wepn1, self, WEAPON1_OK, WEAPON1_DD, WEAPON1_REL, stat_w1_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w1_rel = 100;
-      }
+  weaponCount = 1;
+  
+  while( weaponCount <= self.hardpoint_cnt ){
+    wslot = wslot.w_slot;
+    weaponBuild = wslot;
+    switch( weaponCount ){
+      case 1:
+        build_unit_weapon( self.next_wepn1, self, WEAPON1_OK, WEAPON1_DD, WEAPON1_REL, stat_w1_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w1_rel = 100;
+        }
+        break;
+      case 2:
+        build_unit_weapon( self.next_wepn2, self, WEAPON2_OK, WEAPON2_DD, WEAPON2_REL, stat_w2_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w2_rel = 100;
+        }
+        break;
+      case 3:
+        build_unit_weapon( self.next_wepn3, self, WEAPON3_OK, WEAPON3_DD, WEAPON3_REL, stat_w3_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w3_rel = 100;
+        }
+        break;
+      case 4:
+        build_unit_weapon( self.next_wepn4, self, WEAPON4_OK, WEAPON4_DD, WEAPON4_REL, stat_w4_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w4_rel = 100;
+        }
+        break;
+      case 5:
+        build_unit_weapon( self.next_wepn5, self, WEAPON5_OK, WEAPON5_DD, WEAPON5_REL, stat_w5_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w5_rel = 100;
+        }
+        break;
+      case 6:
+        build_unit_weapon( self.next_wepn6, self, WEAPON6_OK, WEAPON6_DD, WEAPON6_REL, stat_w6_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w6_rel = 100;
+        }
+        break;
+      case 7:
+        build_unit_weapon( self.next_wepn7, self, WEAPON7_OK, WEAPON7_DD, WEAPON7_REL, stat_w7_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w7_rel = 100;
+        }
+        break;
+      case 8:
+        build_unit_weapon( self.next_wepn8, self, WEAPON8_OK, WEAPON8_DD, WEAPON8_REL, stat_w8_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w8_rel = 100;
+        }
+        break;
+      case 9:
+        build_unit_weapon( self.next_wepn9, self, WEAPON9_OK, WEAPON9_DD, WEAPON9_REL, stat_w9_id);
+        if( (self.flags & FL_CLIENT)){
+          self.stat_w9_rel = 100;
+        }
+        break;
     }
-  }
-  if(self.unit_wep2){
-    if(self.next_wepn2 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep2, self.next_wepn2, self, WEAPON2_OK, WEAPON2_DD, WEAPON2_REL, stat_w2_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w2_rel = 100;
-      }
-    }
-  }
-  if(self.unit_wep3){
-    if(self.next_wepn3 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep3, self.next_wepn3, self, WEAPON3_OK, WEAPON3_DD, WEAPON3_REL, stat_w3_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w3_rel = 100;
-      }
-    }
-  }
-  if(self.unit_wep4){
-    if(self.next_wepn4 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep4, self.next_wepn4, self, WEAPON4_OK, WEAPON4_DD, WEAPON4_REL, stat_w4_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w4_rel = 100;
-      }
-    }
-  }
-  if(self.unit_wep5){
-    if(self.next_wepn5 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep5, self.next_wepn5, self, WEAPON5_OK, WEAPON5_DD, WEAPON5_REL, stat_w5_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w5_rel = 100;
-      }
-    }
-  }
-  if(self.unit_wep6){
-    if(self.next_wepn6 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep6, self.next_wepn6, self, WEAPON6_OK, WEAPON6_DD, WEAPON6_REL, stat_w6_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w6_rel = 100;
-      }
-    }
-  }
-  if(self.unit_wep7){
-    if(self.next_wepn7 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep7, self.next_wepn7, self, WEAPON7_OK, WEAPON7_DD, WEAPON7_REL, stat_w7_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w7_rel = 100;
-      }
-    }
-  }
-  if(self.unit_wep8){
-    if(self.next_wepn8 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep8, self.next_wepn8, self, WEAPON8_OK, WEAPON8_DD, WEAPON8_REL, stat_w8_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w8_rel = 100;
-      }
-    }
-  }
-  if(self.unit_wep9){
-    if(self.next_wepn9 > 0){
-      wslot.w_slot = build_unit_weapon(self.unit_wep9, self.next_wepn9, self, WEAPON9_OK, WEAPON9_DD, WEAPON9_REL, stat_w9_id);
-      wslot = wslot.w_slot;
-      if( (self.flags & FL_CLIENT)){
-        self.stat_w9_rel = 100;
-      }
-    }
+    weaponCount = weaponCount + 1;
   }
 };
 
-entity(void() func, float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon={
-  local entity wep, this, prt;
+void( float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon={
+  local entity this, prt;
   local vector ofs;
   this = self;
-  wep = spawn();
-  self = wep;
-    func();
+  
+  self = weaponBuild;
     self.data_idx = nex_wep;
     this.stat = self.data_idx;
     data_iniWep(nex_wep);
@@ -213,7 +198,6 @@ entity(void() func, float nex_wep, entity own, float state1, float state2, float
     self.stat_wep_rel = state3;
     ctrl_weapon_addState(self, self.state_1);
   self = this;
-  return wep;
 };
 
 
@@ -235,41 +219,45 @@ void(void() data_ini) build_mech_unit={
   self.flags = self.flags | FL_UNIT;
   
   data_ini();
-  build_mech_torsoCenter(self.unit_ctor);
+  build_mech_torsoCenter();
   
   self.sh_hit = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
-  if( self.unit_cam ){
-    self.e_cam = build_unit_camera(self.unit_cam);
+  if( self.e_cam ){
+    build_unit_camera();
   }
   part_chain = self;
-  if(self.unit_rtor){
-    self.e_tor_r = build_mech_torsoRight(self.unit_rtor);
+  if( self.e_tor_r ){
+    build_mech_torsoRight();
     part_chain.c_part = self.e_tor_r;
     part_chain = part_chain.c_part;
   }
-  if(self.unit_ltor){
-    self.e_tor_l = build_mech_torsoLeft(self.unit_ltor);
+  if( self.e_tor_l ){
+    build_mech_torsoLeft();
     part_chain.c_part = self.e_tor_l;
     part_chain = part_chain.c_part;
   }
-  if(self.unit_rarm){
-    self.e_arm_r = build_mech_armRight(self.unit_rarm);
+  if( self.e_arm_r ){
+    build_mech_armRight();
     part_chain.c_part = self.e_arm_r;
     part_chain = part_chain.c_part;
   }
-  if(self.unit_larm){
-    self.e_arm_l = build_mech_armLeft(self.unit_larm);
+  if( self.e_arm_l ){
+    build_mech_armLeft();
     part_chain.c_part = self.e_arm_l;
     part_chain = part_chain.c_part;
   }
-  if(self.unit_legs){
-    self.e_legs = build_mech_legs(self.unit_legs);
+  if( self.e_legs ){
+    build_mech_legs();
     part_chain.c_part = self.e_legs;
     part_chain = part_chain.c_part;
   }
   build_unit_weapon_list();
+  
+  self.en_cur = self.en_max;
+  self.sh_cur = self.sh_max;
+  self.health = self.max_health;
   
   self.fall_dist = 4 - self.vec_size;
   self.fall_dist = self.fall_dist * 100;
@@ -279,13 +267,13 @@ void(void() data_ini) build_mech_unit={
   self.fall_slam = self.fall_slam * -1;
   
   self.fall_dmg = self.vec_size;
-  self.fall_dmg = self.fall_dmg / 10;
+  self.fall_dmg = self.fall_dmg / 20;
 };
 
-void(void() func) build_mech_torsoCenter={
-  local entity this, ctor;
+void() build_mech_torsoCenter={
+  local entity this;
   local vector hmins, hmaxs;
-  func();
+
   if( (self.flags & FL_CLIENT) ){
     util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_WALK);
   }
@@ -299,11 +287,10 @@ void(void() func) build_mech_torsoCenter={
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
-  ctor = spawn();
   this = self;
-  self = ctor;
+  self = self.e_tor_c;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(this.c_model, this.skin, 0);
+    util_setModel(self.model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, '0 0 0');
     self.punchangle = self.angles = '0 0 0';
@@ -339,38 +326,38 @@ void(void() data_ini) build_mech_bot={
   self.chain_timer = time;
   self.lock_timer = 0;
   
-  if( (self.unit_cam) ){
-    self.e_cam = build_unit_camera(self.unit_cam);
+  if( (self.e_cam) ){
+    build_unit_camera();
   }
   part_chain = self;
   
-  self.e_tor_c = build_unit_turret( self.unit_ctor );
+  build_unit_turret();
   self.e_tor_c.yaw_speed = self.turret_yaw_speed;
   part_chain.c_part = self.e_tor_c;
   part_chain = part_chain.c_part;
   
-  if( (self.unit_rtor) ){
-    self.e_tor_r = build_mech_torsoRight(self.unit_rtor);
+  if( (self.e_tor_r) ){
+    build_mech_torsoRight();
     part_chain.c_part = self.e_tor_r;
     part_chain = part_chain.c_part;
   }
-  if( (self.unit_ltor) ){
-    self.e_tor_l = build_mech_torsoLeft(self.unit_ltor);
+  if( (self.e_tor_l) ){
+    build_mech_torsoLeft();
     part_chain.c_part = self.e_tor_l;
     part_chain = part_chain.c_part;
   }
-  if( (self.unit_larm) ){
-    self.e_arm_l = build_mech_torsoLeft(self.unit_larm);
+  if( (self.e_arm_l) ){
+    build_mech_torsoLeft();
     part_chain.c_part = self.e_arm_l;
     part_chain = part_chain.c_part;
   }
-  if( (self.unit_rarm) ){
-    self.e_arm_r = build_mech_torsoLeft(self.unit_rarm);
+  if( (self.e_arm_r) ){
+    build_mech_torsoLeft();
     part_chain.c_part = self.e_arm_r;
     part_chain = part_chain.c_part;
   }
-  if( (self.unit_legs) ){
-    self.e_legs = build_mech_legs(self.unit_legs);
+  if( (self.e_legs) ){
+    build_mech_legs();
     part_chain.c_part = self.e_legs;
     part_chain = part_chain.c_part;
     self.e_legs.th_walk = leg_walk1;
@@ -398,16 +385,14 @@ void(void() data_ini) build_mech_bot={
   build_unit_weapon_list();
 };
 
-entity( void() func ) build_unit_turret={
+void() build_unit_turret={
   local entity this, comp;
   this = self;
-  comp = spawn();
-  self = comp;
-    func();
+  self = self.e_tor_c;
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE; 
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
-    util_setModel(self.c_model, this.skin, 0);
+    util_setModel(self.model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.angles = this.angles;
@@ -416,56 +401,48 @@ entity( void() func ) build_unit_turret={
     self.attack_state = TR_NORM;
     self.colormod = '1 1 1';
   self = this;
-  return comp;
 };
 
-entity(void() func) build_mech_torsoLeft={
-  local entity this, comp;
+void() build_mech_torsoLeft={
+  local entity this;
   this = self;
-  comp = spawn();
-  self = comp;
-    build_unit_component(func, this);
+  self = self.e_tor_l;
+    build_unit_component( this );
     //build_unit_tag_component(func, this);
   self = this;
-  return comp;
 };
 
-entity(void() func) build_mech_torsoRight={
-  local entity this, comp;
+void() build_mech_torsoRight={
+  local entity this;
   this = self;
-  comp = spawn();
-  self = comp;
-    build_unit_component(func, this);
+  self = self.e_tor_r;
+    build_unit_component( this );
   self = this;
-  return comp;
 };
-entity(void() func) build_mech_armLeft={
-  local entity this, comp;
+
+void() build_mech_armLeft={
+  local entity this;
   this = self;
-  comp = spawn();
-  self = comp;
-    build_unit_component(func, this);
+  self = self.e_arm_l;
+    build_unit_component( this );
     self.c_part = this.e_tor_l;
   self = this;
-  return comp;
-};
-entity(void() func) build_mech_armRight={
-  local entity this, comp;
-  this = self;
-  comp = spawn();
-  self = comp;
-    build_unit_component(func, this);
-    self.c_part = this.e_tor_r;
-  self = this;
-  return comp;
 };
 
-entity(void() func) build_mech_legs={
-  local entity this, leg_ent;
+void() build_mech_armRight={
+  local entity this;
   this = self;
-  leg_ent = spawn();
-  self = leg_ent;
-    func();
+  self = self.e_arm_r;
+    build_unit_component( this );
+    self.c_part = this.e_tor_r;
+  self = this;
+};
+
+void() build_mech_legs={
+  local entity this;
+  this = self;
+  
+  self = self.e_legs;
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE;
     self.walkframe = 1;
@@ -474,7 +451,7 @@ entity(void() func) build_mech_legs={
       util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
       self.aiment = this;
     }
-    util_setModel(self.c_model, this.skin, 0);
+    util_setModel(self.model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.owner = this;
@@ -500,7 +477,6 @@ entity(void() func) build_mech_legs={
     }
     self.colormod = '1 1 1';
   self = this;
-  return leg_ent;
 };
 
 void(void() data_ini) build_vehicle_unit={
@@ -528,25 +504,25 @@ void(void() data_ini) build_vehicle_unit={
   self.chain_timer = time;
   self.lock_timer = 0;
   
-  if( (self.unit_cam) ){
-    self.e_cam = build_unit_camera(self.unit_cam);
+  if( (self.e_cam) ){
+    build_unit_camera(self.unit_cam);
   }
   part_chain = self;
   
   if( (self.flags & FL_TURRET) ){
-    self.e_tor_c = build_unit_turret( self.unit_ctor );
+    build_unit_turret();
     self.e_tor_c.yaw_speed = self.turret_yaw_speed;
     part_chain.c_part = self.e_tor_c;
     part_chain = part_chain.c_part;
   }
   
-  if( (self.unit_rtor) ){
-    self.e_tor_r = build_mech_torsoRight(self.unit_rtor);
+  if( (self.e_tor_r) ){
+    build_mech_torsoRight();
     part_chain.c_part = self.e_tor_r;
     part_chain = part_chain.c_part;
   }
-  if( (self.unit_ltor) ){
-    self.e_tor_l = build_mech_torsoLeft(self.unit_ltor);
+  if( (self.e_tor_l) ){
+    build_mech_torsoLeft();
     part_chain.c_part = self.e_tor_l;
     part_chain = part_chain.c_part;
   }

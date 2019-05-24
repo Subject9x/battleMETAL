@@ -6,26 +6,26 @@ mod:  1/21/2017 - refactored due to new data value storage methods
 Overview: used to build vehicles for players, this is the header
 */
 //Basic unit assembly functions
-entity(void() func) build_unit_camera;
-void(void() func, entity own) build_unit_component;
-entity(void() func, float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon;
+void() build_unit_camera;
+void(entity own) build_unit_component;
+void(float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon;
 void() build_unit_weapon_list;
 
 //mech-specific assembly functions
 void(void() data_ini) build_mech_unit;
 void(void() data_ini) build_mech_bot;
-entity(void() func) build_mech_legs;
-void(void() func) build_mech_torsoCenter;
-entity(void() func) build_mech_torsoRight;
-entity(void() func) build_mech_torsoLeft;
-entity(void() func) build_mech_armRight;
-entity(void() func) build_mech_armLeft;
+void() build_mech_legs;
+void() build_mech_torsoCenter;
+void() build_mech_torsoRight;
+void() build_mech_torsoLeft;
+void() build_mech_armRight;
+void() build_mech_armLeft;
 
 //vehicle-specific assembly functions
-entity( void() func ) build_unit_turret;
+void() build_unit_turret;
 void( void() data_ini ) build_vehicle_unit;
 void( void() data_ini ) build_vtol_unit;
 
 //turret assembly
 void(void() data_ini) build_turret_unit;
-void(void() func) build_turret_top;
+void() build_turret_top;

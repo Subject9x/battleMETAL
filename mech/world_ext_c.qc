@@ -141,16 +141,36 @@ float( entity t ) world_calc_fog={
   -Peter Roohr 11/27/2017
 */
 void(float mech_id) data_iniMech={
+  weaponList = self;  //prepare to build unit's weapon list
+  
   //guess the mech id's should just be flat
   switch(mech_id){
     case ID_MCH_balaket:
-      build_mech_unit(data_otl_ini);
+      if( data_ini_balaket_ ){
+        build_mech_unit(data_ini_balaket_);
+      }
+      else{
+        cons_logAFloat("Error: failed to build mech with id", mech_id);
+        remove(self);
+      }
       break;
     case ID_MCH_matok:
-      build_mech_unit(data_mtk_ini);
+      if( data_ini_balaket_ ){
+        build_mech_unit(data_ini_matok_);
+      }
+      else{
+        cons_logAFloat("Error: failed to build mech with id", mech_id);
+        remove(self);
+      }
       break;
     case ID_MCH_monitor:
-      build_mech_unit(data_mnt_ini);
+      if( data_ini_balaket_ ){
+        build_mech_unit(data_mnt_ini);
+      }
+      else{
+        cons_logAFloat("Error: failed to build mech with id", mech_id);
+        remove(self);
+      }
       break;
     default :
       cons_logAFloat("Error: failed to build mech with id", mech_id);
@@ -167,6 +187,7 @@ void(float mech_id) data_iniMech={
   -Peter Roohr 11/27/2017
 */
 void(float vec_id) data_iniVehc={
+  weaponList = self;  //prepare to build unit's weapon list
   switch(vec_id){
     case ID_VEC_HS_TRUCK_C:
       build_vehicle_unit( data_HS_TruckA_ini );
@@ -220,6 +241,7 @@ void(float vec_id) data_iniVehc={
   Turrets really are their own class of unit
 */
 void(float vec_id) data_iniTurret={
+  weaponList = self;  //prepare to build unit's weapon list
   switch(vec_id){
     case ID_TUR_HLITE:
       build_turret_unit(data_tur_hlite_ini);

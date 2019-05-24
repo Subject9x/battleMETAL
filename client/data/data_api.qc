@@ -284,3 +284,32 @@ float() data_mech_config_valid={
   }
   return TRUE;
 };
+
+//functional-style data lookup
+void(entity item) client_data_ini_weapon={
+
+};
+void(entity item) client_data_ini_mech={
+};
+
+void(float wep_id) data_iniWep={
+
+};
+void(float mech_id) data_iniMech={
+  //guess the mech id's should just be flat
+  switch(mech_id){
+    case ID_MCH_balaket:
+      //build_mech_unit(data_otl_ini);
+      break;
+    case ID_MCH_matok:
+     // build_mech_unit(data_mtk_ini);
+      break;
+    case ID_MCH_monitor:
+      //build_mech_unit(data_mnt_ini);
+      break;
+    default :
+      cons_logAFloat("Error: failed to build mech with id", mech_id);
+      remove(self);
+      break;
+  }
+};

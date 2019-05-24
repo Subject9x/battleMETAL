@@ -12,10 +12,32 @@ triggers_h.qc
   mech/ext/ent_wep_c.qc
   mech/ext/ent_proj_c.qc
   mech/ext/defs_cs.qc
-  mech/ext/defs_data.qc
   mech/ext/defs_impulse.qc
   mech/ext/defs_combat.qc
+//================================
+  
+//Common Game Data================
   common/data/data_values_game.qc
+  common/data/data_values_ai.qc
+  common/data/data_header.qc
+  
+  //Mechs
+  common/data/mechs/data_balaket.qc
+  common/data/mechs/data_matok.qc
+  common/data/mechs/data_monitor.qc
+  //-------------------------------
+  
+  //Vehicles-----------------------
+  
+  //-------------------------------
+  
+  //Buildings----------------------
+  
+  //-------------------------------
+  
+  //Turrets------------------------
+  
+  //-------------------------------
   common/data/data_values_projectiles.qc
   common/data/data_values_weapons.qc
   common/data/data_values_mechs.qc
@@ -23,8 +45,8 @@ triggers_h.qc
   common/data/data_values_buildings.qc
   common/data/data_values_turrets.qc
   common/data/data_values_particles.qc
-  common/data/data_values_ai.qc
-//==========================
+//================================
+
 //mech header files
   mech/world_ext_h.qc
   mech/client_utils_h.qc
@@ -49,8 +71,8 @@ triggers_h.qc
   mech/map/triggers_map_h.qc
 //==========================
 dp/subs.qc
-//DATA FILES=================
-  
+
+//DATA FILES=================  
   //projectiles
   mech/dat/prj/data_prj_sfga_vals.qc
   mech/dat/prj/data_prj_emp_val.qc
@@ -86,11 +108,6 @@ dp/subs.qc
   mech/dat/itm/data_lsar_val.qc
   mech/dat/itm/data_hsem_val.qc
   mech/dat/itm/data_scap_val.qc
-  
-  //mechs
-  mech/dat/mch/data_outlaw_val.qc
-  mech/dat/mch/data_matok_val.qc
-  mech/dat/mch/data_hevdal_val.qc
   
   //vehicles
   mech/dat/vec/data_hs_trucka.qc
