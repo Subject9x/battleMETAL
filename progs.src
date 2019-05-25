@@ -28,7 +28,11 @@ triggers_h.qc
   //-------------------------------
   
   //Vehicles-----------------------
-  
+  common/data/vehicles/data_dunerunner.qc
+  common/data/vehicles/data_foslager.qc
+  common/data/vehicles/data_sorcerer.qc
+  common/data/vehicles/data_onnek.qc
+  common/data/vehicles/data_trowel.qc
   //-------------------------------
   
   //Buildings----------------------
@@ -40,7 +44,6 @@ triggers_h.qc
   //-------------------------------
   common/data/data_values_projectiles.qc
   common/data/data_values_weapons.qc
-  common/data/data_values_mechs.qc
   common/data/data_values_vehicles.qc
   common/data/data_values_buildings.qc
   common/data/data_values_turrets.qc
@@ -108,20 +111,6 @@ dp/subs.qc
   mech/dat/itm/data_lsar_val.qc
   mech/dat/itm/data_hsem_val.qc
   mech/dat/itm/data_scap_val.qc
-  
-  //vehicles
-  mech/dat/vec/data_hs_trucka.qc
-  mech/dat/vec/data_hs_truckb.qc
-  mech/dat/vec/data_hs_truckc.qc
-  mech/dat/vec/data_hs_dozer.qc
-  mech/dat/vec/data_hs_loadr.qc
-  mech/dat/vec/data_hs_excat.qc
-  mech/dat/vec/data_onnek.qc
-  mech/dat/vec/data_foslager.qc
-  mech/dat/vec/data_dunerunner.qc
-  mech/dat/vec/data_psc_vtoll.qc
-  mech/dat/vec/data_trowel.qc
-  mech/dat/vec/data_sorcerer.qc
   
   //buildings
   mech/dat/bld/data_h_radar.qc

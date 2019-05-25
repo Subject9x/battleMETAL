@@ -142,10 +142,11 @@ float( entity t ) world_calc_fog={
 */
 void(float mech_id) data_iniMech={
   weaponList = self;  //prepare to build unit's weapon list
+  self.hardpoint_cnt = 0;
   
   //guess the mech id's should just be flat
   switch(mech_id){
-    case ID_MCH_balaket:
+    case 1:
       if( data_ini_balaket_ ){
         build_mech_unit(data_ini_balaket_);
       }
@@ -154,7 +155,7 @@ void(float mech_id) data_iniMech={
         remove(self);
       }
       break;
-    case ID_MCH_matok:
+    case 2:
       if( data_ini_matok_ ){
         build_mech_unit(data_ini_matok_);
       }
@@ -163,7 +164,7 @@ void(float mech_id) data_iniMech={
         remove(self);
       }
       break;
-    case ID_MCH_monitor:
+    case 3:
       if( data_ini_monitor_ ){
         build_mech_unit(data_ini_monitor_);
       }
@@ -188,42 +189,44 @@ void(float mech_id) data_iniMech={
 */
 void(float vec_id) data_iniVehc={
   weaponList = self;  //prepare to build unit's weapon list
+  self.hardpoint_cnt = 0;
+  
   switch(vec_id){
     case ID_VEC_HS_TRUCK_C:
-      build_vehicle_unit( data_HS_TruckA_ini );
+      //build_vehicle_unit( data_HS_TruckA_ini );
       break;
     case ID_VEC_HS_TRUCK_H:
-      build_vehicle_unit( data_HS_TruckB_ini );
+      //build_vehicle_unit( data_HS_TruckB_ini );
       break;
     case ID_VEC_HS_TRUCK_CS:
-      build_vehicle_unit( data_HS_TruckC_ini );
+      //build_vehicle_unit( data_HS_TruckC_ini );
       break;
     case ID_VEC_HS_DOZER:
-      build_vehicle_unit( data_HS_Dozer_ini );
+      //build_vehicle_unit( data_HS_Dozer_ini );
       break;
     case ID_VEC_HS_LOADR:
-      build_vehicle_unit( data_HS_Loader_ini );
+      //build_vehicle_unit( data_HS_Loader_ini );
       break;
     case ID_VEC_HS_EXCAT:
-      build_vehicle_unit( data_HS_Excat_ini );
+      //build_vehicle_unit( data_HS_Excat_ini );
       break;
-    case ID_VEC_onnek:
-      build_vehicle_unit( data_onnek_ini );
+    case 9:
+      build_vehicle_unit( data_ini_onnek_ );
       break;
-    case ID_VEC_foslager:
-      build_vehicle_unit( data_foslager_ini );
+    case 7:
+      build_vehicle_unit( data_ini_foslager_ );
       break;
-    case ID_VEC_trowel:
-      build_vehicle_unit( data_TROWEL_ini );
+    case 8:
+      build_vehicle_unit( data_ini_trowel_ );
       break;
-    case ID_VEC_dunerunner:
-      build_vehicle_unit( data_dunerunner_ini );
+    case 11:
+      build_vehicle_unit( data_ini_dunerunner_ );
       break;
-    case ID_VEC_sorcerer:
-      build_vehicle_unit( data_sorcerer_ini );
+    case 10:
+      build_vehicle_unit( data_ini_sorcerer_ );
       break;
     case ID_VEC_PSC_VTOL_L:
-      build_vtol_unit( data_PSC_VTOLL_ini );
+      //build_vtol_unit( data_PSC_VTOLL_ini );
       break;
     default :
       cons_logAFloat("Error: failed to build vehicle with id", vec_id);

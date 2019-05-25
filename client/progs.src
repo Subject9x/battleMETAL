@@ -6,16 +6,37 @@ data/defs_clientside.qc
 data/defs_entity.qc
 
 //Common Game Data================
-  ../common/data/data_header.qc
-  ../common/data/data_values_game.qc
-  ../common/data/data_values_projectiles.qc
-  ../common/data/data_values_buildings.qc
-  ../common/data/data_values_weapons.qc
-  ../common/data/data_values_mechs.qc
-  ../common/data/data_values_vehicles.qc
-  ../common/data/data_values_particles.qc
-  ../common/data/data_values_turrets.qc
-  ../common/ui/ui_color_constants.qc
+  common/data/data_values_game.qc
+  common/data/data_values_ai.qc
+  common/data/data_header.qc
+  
+  //Mechs
+  common/data/mechs/data_balaket.qc
+  common/data/mechs/data_matok.qc
+  common/data/mechs/data_monitor.qc
+  //-------------------------------
+  
+  //Vehicles-----------------------
+  common/data/vehicles/data_dunerunner.qc
+  common/data/vehicles/data_foslager.qc
+  common/data/vehicles/data_sorcerer.qc
+  common/data/vehicles/data_onnek.qc
+  common/data/vehicles/data_trowel.qc
+  //-------------------------------
+  
+  //Buildings----------------------
+  
+  //-------------------------------
+  
+  //Turrets------------------------
+  
+  //-------------------------------
+  common/data/data_values_projectiles.qc
+  common/data/data_values_weapons.qc
+  common/data/data_values_vehicles.qc
+  common/data/data_values_buildings.qc
+  common/data/data_values_turrets.qc
+  common/data/data_values_particles.qc
 //================================
 
 util/headers/input_events.qh

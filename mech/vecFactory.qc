@@ -347,12 +347,12 @@ void(void() data_ini) build_mech_bot={
     part_chain = part_chain.c_part;
   }
   if( (self.e_arm_l) ){
-    build_mech_torsoLeft();
+    build_mech_armLeft();
     part_chain.c_part = self.e_arm_l;
     part_chain = part_chain.c_part;
   }
   if( (self.e_arm_r) ){
-    build_mech_torsoLeft();
+    build_mech_armRight();
     part_chain.c_part = self.e_arm_r;
     part_chain = part_chain.c_part;
   }
@@ -386,7 +386,7 @@ void(void() data_ini) build_mech_bot={
 };
 
 void() build_unit_turret={
-  local entity this, comp;
+  local entity this;
   this = self;
   self = self.e_tor_c;
     self.deadflag = DEAD_NO;
@@ -483,6 +483,7 @@ void(void() data_ini) build_vehicle_unit={
   local entity part_chain;
   local vector hmins, hmaxs;
   
+  self.data_type = DATA_VEHC;
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   
   data_ini();
@@ -495,7 +496,7 @@ void(void() data_ini) build_vehicle_unit={
   if( self.skin < 0 ){
     self.skin = 0;
   }
-  util_setModel(self.c_model, self.skin, 0);
+  util_setModel(self.model, self.skin, 0);
   setsize( self, hmins, hmaxs );
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   
@@ -505,11 +506,11 @@ void(void() data_ini) build_vehicle_unit={
   self.lock_timer = 0;
   
   if( (self.e_cam) ){
-    build_unit_camera(self.unit_cam);
+    build_unit_camera();
   }
   part_chain = self;
   
-  if( (self.flags & FL_TURRET) ){
+  if( (self.flags & FL_TURRET) && (self.e_tor_c) ){
     build_unit_turret();
     self.e_tor_c.yaw_speed = self.turret_yaw_speed;
     part_chain.c_part = self.e_tor_c;
@@ -528,6 +529,8 @@ void(void() data_ini) build_vehicle_unit={
   }
   
   build_unit_weapon_list();
+  
+  self.health = self.max_health;
 };
 
 void( void() data_ini ) build_vtol_unit={

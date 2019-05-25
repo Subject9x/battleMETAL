@@ -67,7 +67,6 @@ void() data_ini_balaket_={
 //=====================================
  
 //HARDPOINTS==========================
-  self.hardpoint_cnt = 3;
   data_ini_unitHardpoint_( WEAPON1, M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 90', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_( WEAPON2, M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 1, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_( WEAPON3, M_TOR_CENTER, '-2 10.5 0', '0 0 90', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC));
@@ -77,13 +76,12 @@ void() data_ini_balaket_={
   self.m_pitch_max = 45;  //DEBUG
   self.m_pitch_min = -15;
   self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.md3";
-/*
-  self.m_rollangle = 1;
-  self.m_bob = "1";
-  self.m_bcycle =  "0";
-  self.m_bup = "1";
+  self.m_rollangle = "2";
+  self.m_bob = "0.0008";
+  self.m_bcycle =  "0.5";
+  self.m_bup = "0.15";
   self.m_bmodel = "1";
-  self.m_bside = "1";
-  self.m_bobspd = "1";*/
+  self.m_bside = "0.09";
+  self.m_bobspd = "16";
 //====================================
 };

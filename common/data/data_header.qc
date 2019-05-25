@@ -45,6 +45,7 @@ void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngl
   item.p_dmgtype = hardpointType;
   weaponList.w_slot = item;
   weaponList = item;
+  self.hardpoint_cnt = self.hardpoint_cnt + 1;
 };
 
 

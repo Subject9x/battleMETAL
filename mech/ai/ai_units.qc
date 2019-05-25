@@ -104,7 +104,7 @@ void() unit_hs_excavat={
 */
 void() unit_dunerunner_h={
   
-  self.nextVecChoice = ID_VEC_dunerunner;
+  self.nextVecChoice = 11;
   self.faction = FACTION_SURVEST;
    
   self.flags = self.flags | FL_TURRET;
@@ -137,7 +137,7 @@ void() unit_dunerunner_h={
 
 void() unit_dunerunner_m={
   
-  self.nextVecChoice = ID_VEC_dunerunner;
+  self.nextVecChoice = 11;
   self.faction = FACTION_MILITAR;
    
   self.flags = self.flags | FL_TURRET;
@@ -176,7 +176,7 @@ void() unit_dunerunner_m={
 */
 void() unit_foslager_h={
 
-  self.nextVecChoice = ID_VEC_foslager;
+  self.nextVecChoice = 7;
   self.faction = FACTION_SURVEST;
    
   self.flags = self.flags | FL_TURRET;
@@ -209,7 +209,7 @@ void() unit_foslager_h={
 
 void() unit_foslager_m={
 
-  self.nextVecChoice = ID_VEC_foslager;
+  self.nextVecChoice = 7;
   self.faction = FACTION_MILITAR;
    
   self.flags = self.flags | FL_TURRET;
@@ -249,7 +249,7 @@ void() unit_foslager_m={
 */
 void() unit_trowel_m={
   
-  self.nextVecChoice = ID_VEC_trowel;
+  self.nextVecChoice = 8;
   self.faction = FACTION_MILITAR;
    
   self.flags = self.flags | FL_TURRET;
@@ -282,7 +282,7 @@ void() unit_trowel_m={
 
 void() unit_trowel_h={
 
-  self.nextVecChoice = ID_VEC_trowel;
+  self.nextVecChoice = 8;
   self.faction = FACTION_SURVEST;
    
   self.flags = self.flags | FL_TURRET;
@@ -321,7 +321,7 @@ void() unit_trowel_h={
 */
 void() unit_onnek_h={
 
-  self.nextVecChoice = ID_VEC_onnek;
+  self.nextVecChoice = 9;
   self.faction = FACTION_SURVEST;
 
   if( !ai_can_spawn() ){
@@ -356,7 +356,7 @@ void() unit_onnek_h={
 
 void() unit_onnek_m={
 
-  self.nextVecChoice = ID_VEC_onnek;
+  self.nextVecChoice = 9;
   self.faction = FACTION_MILITAR;
    
   if( !ai_can_spawn() ){
@@ -393,7 +393,7 @@ void() unit_onnek_m={
 */
 void() unit_sorcerer_h={
 
-  self.nextVecChoice = ID_VEC_sorcerer;
+  self.nextVecChoice = 10;
   self.faction = FACTION_SURVEST;
    
   if( !ai_can_spawn() ){
@@ -426,7 +426,7 @@ void() unit_sorcerer_h={
 void() unit_sorcerer_m={
 
   
-  self.nextVecChoice = ID_VEC_sorcerer;
+  self.nextVecChoice = 10;
   self.faction = FACTION_MILITAR;
    
   
@@ -468,7 +468,7 @@ void() unit_balaket_sniper={
   
   self.flags = FL_TURRET;  //enforced for a mech
    
-  self.nextVecChoice = ID_MCH_balaket;
+  self.nextVecChoice = 1;
   
   if( !ai_can_spawn() ){
     remove(self);
@@ -529,7 +529,7 @@ void() unit_balaket_brawl={
   
   self.flags = FL_TURRET;  //enforced for a mech
    
-  self.nextVecChoice = ID_MCH_balaket;
+  self.nextVecChoice = 1;
   
   if( !ai_can_spawn() ){
     remove(self);
@@ -618,7 +618,7 @@ void() unit_matok_brawl={
   
   self.flags = FL_TURRET;  //enforced for a mech
    
-  self.nextVecChoice = ID_MCH_matok;
+  self.nextVecChoice = 2;
   
   if( !ai_can_spawn() ){
     remove(self);
@@ -635,7 +635,7 @@ void() unit_matok_sniper={
   
   self.flags = FL_TURRET;  //enforced for a mech
    
-  self.nextVecChoice = ID_MCH_matok;
+  self.nextVecChoice = 2;
   
   if( !ai_can_spawn() ){
     remove(self);
@@ -764,7 +764,7 @@ void() unit_matok_brawl_m={
 void() unit_monitor_brawl={
 
   self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = ID_MCH_monitor;
+  self.nextVecChoice = 3;
   
   if( !ai_can_spawn() ){
     remove(self);
@@ -779,7 +779,7 @@ void() unit_monitor_brawl={
 void() unit_monitor_sniper={
 
   self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = ID_MCH_monitor;
+  self.nextVecChoice = 3;
   
   if( !ai_can_spawn() ){
     remove(self);

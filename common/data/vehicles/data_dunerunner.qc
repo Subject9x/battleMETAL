@@ -1,0 +1,64 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 05/24/2019
+Overview:
+  Data File - Unit - Vehicle
+      DuneRunner
+        super light recon GEV.
+        NON-PLAYABLE
+*/
+
+/*
+  Main ini function for unit.
+  Register this in <world_ext_c>
+*/
+void() data_ini_dunerunner_={
+
+  self.data_idx = 11;  //
+  self.vec_size = 1;  //
+  self.vec_name = "Dunerunner";
+ 
+  self.max_health = 100;
+  setsize(self, '-20 -20 -10', '20 20 14');
+  
+//ENERGY AND SHIELDS===================
+  self.en_max = 125;
+  self.en_rate= 0.5;
+  self.sh_max = 50;
+  self.sh_rate= 0;
+//=====================================
+ 
+//RADAR================================
+  self.radar_range = 2100;
+  self.w_firetime = 4;  //lock-on time in seconds
+//=====================================
+
+//SPEED================================
+  self.m_fspeed = 167;
+  self.m_sspeed = 113;
+  self.m_bspeed = 133;
+  self.m_maccel = 1;
+  self.yaw_speed = 5;    //AI-only 
+  self.turret_yaw_speed = 4;//AI-only
+//=====================================
+ 
+//MECH COMPONENTS====================
+  self.model = "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3";
+  //camera location
+  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 12 20', self, e_cam);
+  
+  //tank turret
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 0, '0 0 0', self, e_tor_c);
+//=====================================
+ 
+//HARDPOINTS==========================
+  self.hardpoint_cnt = 2;
+  data_ini_unitHardpoint_( WEAPON1, M_TOR_CENTER, '-1.5 5.25 2', '0 0 90', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_( WEAPON2, M_TOR_CENTER, '1.5 5.25 2', '0 0 90', 1, (DMG_BAL | DMG_ENE));
+//=====================================
+
+//HUD DATA=============================
+  //Unit is non-playable
+//====================================
+};
