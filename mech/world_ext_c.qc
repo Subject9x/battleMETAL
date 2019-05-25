@@ -155,7 +155,7 @@ void(float mech_id) data_iniMech={
       }
       break;
     case ID_MCH_matok:
-      if( data_ini_balaket_ ){
+      if( data_ini_matok_ ){
         build_mech_unit(data_ini_matok_);
       }
       else{
@@ -164,8 +164,8 @@ void(float mech_id) data_iniMech={
       }
       break;
     case ID_MCH_monitor:
-      if( data_ini_balaket_ ){
-        build_mech_unit(data_mnt_ini);
+      if( data_ini_monitor_ ){
+        build_mech_unit(data_ini_monitor_);
       }
       else{
         cons_logAFloat("Error: failed to build mech with id", mech_id);

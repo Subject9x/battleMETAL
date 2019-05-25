@@ -12,7 +12,7 @@ Overview:
 
 /*
   rewiring to use md3 tags would also involve changes to shot angle calcs for weapons..
-  so, maybe one day
+  so, maybe one day...
 */ 
 /*void(void() func, entity own) build_unit_tag_component={
   local entity follow;

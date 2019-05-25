@@ -68,9 +68,9 @@ void() data_ini_balaket_={
  
 //HARDPOINTS==========================
   self.hardpoint_cnt = 3;
-  data_ini_unitHardpoint_( WEAPON1, M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 0', '0 0 90');
-  data_ini_unitHardpoint_( WEAPON2, M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 0', '0 0 90');
-  data_ini_unitHardpoint_( WEAPON3, M_TOR_CENTER, '-2 10.5 0', '0 0 0', '0 0 90');
+  data_ini_unitHardpoint_( WEAPON1, M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 90', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_( WEAPON2, M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_( WEAPON3, M_TOR_CENTER, '-2 10.5 0', '0 0 90', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC));
 //=====================================
 
 //HUD DATA=============================

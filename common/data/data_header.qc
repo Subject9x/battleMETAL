@@ -32,16 +32,17 @@ void( float partId, string modelPath, float maxHp, vector partOffset, entity par
   piece.owner = self;
 };
 
-void( float weaponNum, float parentPartId, vector pointOffset, vector offsetAdjust, vector adjustAngle ) data_ini_unitHardpoint_={
+void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_={
   local entity item;
   item = spawn();
   item.data_idx = 0;
   item.w_group = weaponNum;
   item.c_parent = parentPartId;
   item.c_ofs = pointOffset;
-  item.c_alt_ofs = offsetAdjust;
   item.w_adj_ang = adjustAngle;
   item.owner = self;
+  item.vec_size = hardpointSize;
+  item.p_dmgtype = hardpointType;
   weaponList.w_slot = item;
   weaponList = item;
 };
