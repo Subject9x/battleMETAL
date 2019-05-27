@@ -913,7 +913,7 @@ void() building_turret_light={
 };
 
 void() unit_psc_vtol_l={
-  self.nextVecChoice = ID_VEC_PSC_VTOL_L;
+  self.nextVecChoice = -0;
   self.faction = 4;
   //ai_unit_setup( ai_vtol );
 };

@@ -147,31 +147,13 @@ void(float mech_id) data_iniMech={
   //guess the mech id's should just be flat
   switch(mech_id){
     case 1:
-      if( data_ini_balaket_ ){
-        build_mech_unit(data_ini_balaket_);
-      }
-      else{
-        cons_logAFloat("Error: failed to build mech with id", mech_id);
-        remove(self);
-      }
+      build_mech_unit(data_ini_balaket_);
       break;
     case 2:
-      if( data_ini_matok_ ){
-        build_mech_unit(data_ini_matok_);
-      }
-      else{
-        cons_logAFloat("Error: failed to build mech with id", mech_id);
-        remove(self);
-      }
+      build_mech_unit(data_ini_matok_);
       break;
     case 3:
-      if( data_ini_monitor_ ){
-        build_mech_unit(data_ini_monitor_);
-      }
-      else{
-        cons_logAFloat("Error: failed to build mech with id", mech_id);
-        remove(self);
-      }
+      build_mech_unit(data_ini_monitor_);
       break;
     default :
       cons_logAFloat("Error: failed to build mech with id", mech_id);
@@ -192,24 +174,6 @@ void(float vec_id) data_iniVehc={
   self.hardpoint_cnt = 0;
   
   switch(vec_id){
-    case ID_VEC_HS_TRUCK_C:
-      //build_vehicle_unit( data_HS_TruckA_ini );
-      break;
-    case ID_VEC_HS_TRUCK_H:
-      //build_vehicle_unit( data_HS_TruckB_ini );
-      break;
-    case ID_VEC_HS_TRUCK_CS:
-      //build_vehicle_unit( data_HS_TruckC_ini );
-      break;
-    case ID_VEC_HS_DOZER:
-      //build_vehicle_unit( data_HS_Dozer_ini );
-      break;
-    case ID_VEC_HS_LOADR:
-      //build_vehicle_unit( data_HS_Loader_ini );
-      break;
-    case ID_VEC_HS_EXCAT:
-      //build_vehicle_unit( data_HS_Excat_ini );
-      break;
     case 9:
       build_vehicle_unit( data_ini_onnek_ );
       break;
@@ -225,9 +189,9 @@ void(float vec_id) data_iniVehc={
     case 10:
       build_vehicle_unit( data_ini_sorcerer_ );
       break;
-    case ID_VEC_PSC_VTOL_L:
+    //case ID_VEC_PSC_VTOL_L:
       //build_vtol_unit( data_PSC_VTOLL_ini );
-      break;
+      //break;
     default :
       cons_logAFloat("Error: failed to build vehicle with id", vec_id);
       remove(self);

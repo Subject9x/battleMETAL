@@ -50,9 +50,8 @@ void() data_ini_sorcerer_={
 //=====================================
  
 //HARDPOINTS==========================
-  self.hardpoint_cnt = 2;
-  data_ini_unitHardpoint_( WEAPON1, M_LEGS, '-10.5 5 -7', '0 0 90', 1, (DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_( WEAPON2, M_LEGS, '10.5 5 -7', '0 0 90', 1, (DMG_EXP | DMG_MSC));
+  data_ini_unitHardpoint_1( M_LEGS, '-10.5 5 -7', '0 0 90', 1, (DMG_EXP | DMG_MSC));
+  data_ini_unitHardpoint_2( M_LEGS, '10.5 5 -7', '0 0 90', 1, (DMG_EXP | DMG_MSC));
 //=====================================
 
 //HUD DATA=============================

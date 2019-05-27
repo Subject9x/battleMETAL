@@ -53,9 +53,8 @@ void() data_ini_trowel_={
 //=====================================
  
 //HARDPOINTS==========================
-  self.hardpoint_cnt = 2;
-  data_ini_unitHardpoint_( WEAPON1, M_TOR_CENTER, '-4.75 12 10.5', '0 0 90', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_( WEAPON2, M_TOR_CENTER, '-4.75 16.75 10.5', '0 0 90', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.75 12 10.5', '0 0 90', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.75 16.75 10.5', '0 0 90', 3, (DMG_ENE | DMG_BAL));
 //=====================================
 
 //HUD DATA=============================

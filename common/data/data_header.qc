@@ -48,6 +48,39 @@ void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngl
   self.hardpoint_cnt = self.hardpoint_cnt + 1;
 };
 
+/*
+  Simple wrapper functions for data_ini_unitHardpoint_.
+  these are probably easier to read / write than t
+*/
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_1={
+ data_ini_unitHardpoint_( WEAPON1, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_2={
+ data_ini_unitHardpoint_( WEAPON2, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_3={
+ data_ini_unitHardpoint_( WEAPON3, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_4={
+ data_ini_unitHardpoint_( WEAPON4, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_5={
+ data_ini_unitHardpoint_( WEAPON5, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_6={
+ data_ini_unitHardpoint_( WEAPON6, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_7={
+ data_ini_unitHardpoint_( WEAPON7, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_8={
+ data_ini_unitHardpoint_( WEAPON8, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_9={
+ data_ini_unitHardpoint_( WEAPON9, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+};
+
+
 
 .void() unit_ini;
 .void() unit_legs;
@@ -66,11 +99,6 @@ void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngl
 .void() unit_wep7;
 .void() unit_wep8;
 .void() unit_wep9;
-
-//MECH INI
-void() data_otl_ini;
-void() data_mtk_ini;
-void() data_mnt_ini;
 
 //WEAPON INI
 void() data_emp_ini;

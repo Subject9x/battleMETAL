@@ -49,13 +49,12 @@ void() data_ini_dunerunner_={
   data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 12 20', self, e_cam);
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 0, '0 0 0', self, e_tor_c);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', self, e_tor_c);
 //=====================================
  
 //HARDPOINTS==========================
-  self.hardpoint_cnt = 2;
-  data_ini_unitHardpoint_( WEAPON1, M_TOR_CENTER, '-1.5 5.25 2', '0 0 90', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_( WEAPON2, M_TOR_CENTER, '1.5 5.25 2', '0 0 90', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-1.5 5.25 2', '0 0 90', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '1.5 5.25 2', '0 0 90', 1, (DMG_BAL | DMG_ENE));
 //=====================================
 
 //HUD DATA=============================

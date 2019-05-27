@@ -50,8 +50,7 @@ void() data_ini_onnek_={
 //=====================================
  
 //HARDPOINTS==========================
-  self.hardpoint_cnt = 1;
-  data_ini_unitHardpoint_( WEAPON1, M_LEGS, '7.25 3.5 12', '0 0 90', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_1( M_LEGS, '7.25 3.5 12', '0 0 90', 3, (DMG_ENE | DMG_BAL));
 //=====================================
 
 //HUD DATA=============================
