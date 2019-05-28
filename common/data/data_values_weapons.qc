@@ -143,8 +143,8 @@ float DAT_QRFL_RL_MAX     = 5;
 float DAT_SFGA_RL_RATE    = 0.1;
 float DAT_SFGA_RL_MAX     = 10;
 //-------------------------FLAK
-float DAT_FLAK_RL_RATE    = 0.3;//0.35;
-float DAT_FLAK_RL_MAX     = 0.3;//4;
+float DAT_FLAK_RL_RATE    = 0.3;
+float DAT_FLAK_RL_MAX     = 0.3;
 //-------------------------Laser
 float DAT_LAS_RL_RATE     = 0.6;
 float DAT_LAS_RL_MAX      = 0.6;

@@ -25,7 +25,6 @@ void() data_prj_mis_touch={
 };
 
 void() data_prj_mis_th={
-
   self.think = data_prj_mis_th;
   self.nextthink = time + 0.05;
   if( time > self.p_lifetime ){
@@ -35,7 +34,7 @@ void() data_prj_mis_th={
 };
 
 void() data_prj_mis_ini={
-  self.classname = "prj_rck";
+  self.classname = "missile";
   self.touch = data_prj_mis_touch;
   self.data_idx = ID_PRJ_MIS;
   self.p_velocity = DAT_PRJ_MIS_VELOCITY;

@@ -43,6 +43,7 @@ void() data_ion_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
       self.w_state = READY;
+      self.rl_cur = (self.w_currentammo / self.w_clipsize) * 100;
     }
   }
   else if(self.w_state == RELOADING){

@@ -37,7 +37,7 @@ Overview:
 
 void(entity own) build_unit_component={
   local entity follow;
-  //func();
+
   follow = util_getPartFromName( self.c_parent, own );
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
@@ -82,11 +82,9 @@ void() build_unit_weapon_list={
   local entity wslot;
   local float weaponCount;
   
-  wslot = self;
+  wslot = self.w_slot;
   weaponCount = 1;
-  
-  while( weaponCount <= self.hardpoint_cnt ){
-    wslot = wslot.w_slot;
+  while( wslot ){
     weaponBuild = wslot;
     switch( weaponCount ){
       case 1:
@@ -145,6 +143,7 @@ void() build_unit_weapon_list={
         break;
     }
     weaponCount = weaponCount + 1;
+    wslot = wslot.w_slot;
   }
 };
 
@@ -154,8 +153,7 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
   this = self;
   
   self = weaponBuild;
-    self.data_idx = nex_wep;
-    this.stat = self.data_idx;
+    self.data_idx = own.stat = nex_wep;
     data_iniWep(nex_wep);
     
     self.rl_cur = 100; // bug fix - weapon reload indicator not starting at correct value
@@ -176,17 +174,15 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
     ofs = self.c_ofs + self.c_alt_ofs;
     util_setOffsetOrigin(self, own, ofs);
     
-    prt = util_getPartFromName( self.c_parent, own );
+    self.c_part = util_getPartFromName( self.c_parent, own );
     
     self.punchangle = self.angles = '0 0 0';
-    self.aiment = prt;
+    self.aiment = self.c_part;
     self.owner = own;
-    self.punchangle = prt.angles;
-    self.view_ofs = self.origin - prt.origin;
-    self.angles = prt.angles;
-    self.v_angle = self.angles - prt.angles;
-    
-    self.c_part = util_getPartFromName( self.c_parent, own );
+    self.punchangle = self.c_part.angles;
+    self.view_ofs = self.origin - self.c_part.origin;
+    self.angles = self.c_part.angles;
+    self.v_angle = self.angles - self.c_part.angles;
     
     if( (self.p_dmgtype & DMG_MSC) ){
       self.w_think(); //run module's upgrade now;
@@ -253,7 +249,10 @@ void(void() data_ini) build_mech_unit={
     part_chain.c_part = self.e_legs;
     part_chain = part_chain.c_part;
   }
-  build_unit_weapon_list();
+  
+  if( self.hardpoint_cnt > 0 ){
+    build_unit_weapon_list();
+  }
   
   self.en_cur = self.en_max;
   self.sh_cur = self.sh_max;
@@ -382,7 +381,10 @@ void(void() data_ini) build_mech_bot={
   self.m_fspeed = self.m_fspeed * AI_MECH_MOVE_FACTOR;
   self.m_sspeed = self.m_sspeed * AI_MECH_MOVE_FACTOR;
   self.m_bspeed = self.m_bspeed * AI_MECH_MOVE_FACTOR;
-  build_unit_weapon_list();
+  
+  if( self.hardpoint_cnt > 0 ){
+    build_unit_weapon_list();
+  }
 };
 
 void() build_unit_turret={
@@ -528,7 +530,9 @@ void(void() data_ini) build_vehicle_unit={
     part_chain = part_chain.c_part;
   }
   
-  build_unit_weapon_list();
+  if( self.hardpoint_cnt > 0 ){
+    build_unit_weapon_list();
+  }
   
   self.health = self.max_health;
 };

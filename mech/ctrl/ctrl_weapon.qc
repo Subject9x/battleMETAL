@@ -8,29 +8,29 @@ Overview: weapon controller header
 */
 
 void(entity wep) ctrl_wpn_think={
-  local entity this;
-  this = self;
+  local entity weaponOwner;
+  weaponOwner = self;
   self = wep;
     if(self.deadflag >= DEAD_DYING){
       self.deadflag = DEAD_DEAD;
-      self = this;
+      self = weaponOwner;
       return;
     }
     if(self.deadflag == DEAD_DEAD){
-      self = this;
+      self = weaponOwner;
       return;
     }  
-    if(self.w_think){
-      if( (this.flags & FL_CLIENT) ){
+    if( self.w_think ){
+      self.w_think();
+      if( (weaponOwner.flags & FL_CLIENT) ){
         if(self.w_isready){
           ctrl_weapon_isReady(self, self.stat_wep_rel);
         }else{
           ctrl_weapon_isReload(self, self.stat_wep_rel);
         }
       }
-      self.w_think();
     }
-  self = this;
+  self = weaponOwner;
 };
 
 void() ctrl_wpn_think_clip={

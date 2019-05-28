@@ -28,11 +28,10 @@ void( float partId, string modelPath, float maxHp, vector partOffset, entity par
   piece.model = modelPath;
   piece.c_ofs = partOffset;
   self.partSlot = piece;
-  parentPart.partSlot = piece;
   piece.owner = self;
 };
 
-void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_={
+void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_={
   local entity item;
   item = spawn();
   item.data_idx = 0;
@@ -41,8 +40,8 @@ void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngl
   item.c_ofs = pointOffset;
   item.w_adj_ang = adjustAngle;
   item.owner = self;
-  item.vec_size = hardpointSize;
-  item.p_dmgtype = hardpointType;
+  item.hardpointSize = hardpoint_Size;
+  item.hardpointType = hardpoint_Type;
   weaponList.w_slot = item;
   weaponList = item;
   self.hardpoint_cnt = self.hardpoint_cnt + 1;
@@ -50,34 +49,35 @@ void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngl
 
 /*
   Simple wrapper functions for data_ini_unitHardpoint_.
-  these are probably easier to read / write than t
+  these are probably easier to read / write than 
+  using the wrapped function.
 */
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_1={
- data_ini_unitHardpoint_( WEAPON1, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_1={
+ data_ini_unitHardpoint_( WEAPON1, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_2={
- data_ini_unitHardpoint_( WEAPON2, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_2={
+ data_ini_unitHardpoint_( WEAPON2, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_3={
- data_ini_unitHardpoint_( WEAPON3, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_3={
+ data_ini_unitHardpoint_( WEAPON3, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_4={
- data_ini_unitHardpoint_( WEAPON4, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_4={
+ data_ini_unitHardpoint_( WEAPON4, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_5={
- data_ini_unitHardpoint_( WEAPON5, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_5={
+ data_ini_unitHardpoint_( WEAPON5, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_6={
- data_ini_unitHardpoint_( WEAPON6, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_6={
+ data_ini_unitHardpoint_( WEAPON6, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_7={
- data_ini_unitHardpoint_( WEAPON7, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_7={
+ data_ini_unitHardpoint_( WEAPON7, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_8={
- data_ini_unitHardpoint_( WEAPON8, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_8={
+ data_ini_unitHardpoint_( WEAPON8, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
-void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpointSize, float hardpointType ) data_ini_unitHardpoint_9={
- data_ini_unitHardpoint_( WEAPON9, parentPartId, pointOffset, adjustAngle, hardpointSize, hardpointType );
+void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_9={
+ data_ini_unitHardpoint_( WEAPON9, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
 
 

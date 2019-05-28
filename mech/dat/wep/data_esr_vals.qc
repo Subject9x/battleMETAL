@@ -40,6 +40,7 @@ void() data_esr_ini={
 void() data_esr_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
+      self.rl_cur = (self.w_currentammo / self.w_clipsize) * 100;
       self.w_state = READY;
     }
   }

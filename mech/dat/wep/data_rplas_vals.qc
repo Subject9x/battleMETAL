@@ -16,7 +16,7 @@ void() data_rplas_ini={
   self.data_idx = ID_WEP_RPC;
   self.w_name = DAT_RPC_NAME;
   self.w_isready = 0;
-  self.p_dmgtype = self.p_dmgtype | DMG_BAL | EFF_PRC;
+  self.p_dmgtype = (DMG_BAL | EFF_PRC);
   self.p_damage = DAT_RPLAS_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_RPLAS_CLIPSIZE;
@@ -45,6 +45,7 @@ void() data_rplas_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
       self.w_state = READY;
+      self.rl_cur = (self.w_currentammo / self.w_clipsize) * 100;
     }
   }
   else if(self.w_state == RELOADING){

@@ -148,17 +148,17 @@ void(float mech_id) data_iniMech={
   switch(mech_id){
     case 1:
       build_mech_unit(data_ini_balaket_);
-      break;
+      return;
     case 2:
       build_mech_unit(data_ini_matok_);
-      break;
+      return;
     case 3:
       build_mech_unit(data_ini_monitor_);
-      break;
+      return;
     default :
       cons_logAFloat("Error: failed to build mech with id", mech_id);
       remove(self);
-      break;
+      return;
   }
 };
 
@@ -176,26 +176,26 @@ void(float vec_id) data_iniVehc={
   switch(vec_id){
     case 9:
       build_vehicle_unit( data_ini_onnek_ );
-      break;
+      return;
     case 7:
       build_vehicle_unit( data_ini_foslager_ );
-      break;
+      return;
     case 8:
       build_vehicle_unit( data_ini_trowel_ );
-      break;
+      return;
     case 11:
       build_vehicle_unit( data_ini_dunerunner_ );
-      break;
+      return;
     case 10:
       build_vehicle_unit( data_ini_sorcerer_ );
-      break;
+      return;
     //case ID_VEC_PSC_VTOL_L:
       //build_vtol_unit( data_PSC_VTOLL_ini );
       //break;
     default :
       cons_logAFloat("Error: failed to build vehicle with id", vec_id);
       remove(self);
-      break;
+      return;
   }
 };
 

@@ -42,7 +42,7 @@ void() data_mis_ini={
 void() data_mis_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
-      self.rl_cur = 100;
+      self.rl_cur = (self.w_currentammo / self.w_clipsize) * 100;
       self.w_state = READY;
     }
   }
@@ -60,7 +60,7 @@ void() data_mis_think={
 };
 
 void() data_mis_atk={
-  local entity player, oself, part;
+  local entity player, thisWeapon, part;
   local vector dir, org, adj;
   local float range;
   player = self.owner;
@@ -76,7 +76,7 @@ void() data_mis_atk={
     self.count1 = time;
   }
   else{
-    if((player.flags & FL_MONSTER)){
+    if( (player.flags & FL_MONSTER) ){
       self.w_firetime = time + (self.rl_rate / 1.5) * 2.25;
     }
     else{
@@ -97,12 +97,12 @@ void() data_mis_atk={
   pointparticles( particleeffectnum("TE_MIS_MUZZLE"), org + (v_forward * 1), normalize( dir - org ), 1);
 
   newmis = spawn();
-  oself = self;
+  thisWeapon = self;
   self = newmis;
     self.owner = player;
-    data_iniProjectile(oself.w_proj);
-    self.p_dmgtype = oself.p_dmgtype;
-    self.p_damage = oself.p_damage;
+    data_iniProjectile(thisWeapon.w_proj);
+    self.p_dmgtype = thisWeapon.p_dmgtype;
+    self.p_damage = thisWeapon.p_damage;
     self.solid = SOLID_BBOX;
     self.movetype = MOVETYPE_FLYMISSILE;
     util_setModel(self.c_model, 0, 0);
@@ -111,10 +111,10 @@ void() data_mis_atk={
     self.velocity = normalize(dir - org);
     self.velocity = self.velocity * self.p_velocity;
     self.angles = vectoangles(self.velocity);
-    self.c_ofs = oself.origin;
+    self.c_ofs = thisWeapon.origin;
     self.p_lifetime = time + self.p_lifetime;
     self.think = data_prj_mis_th;
     self.nextthink = time + 0.01;
-  self = oself;
+  self = thisWeapon;
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };
