@@ -24,12 +24,8 @@ void() mh_world_ini;
 void() world_get_fog;
 float( entity t ) world_calc_fog;
 
-//functional-style data lookup
-void(float wep_id) data_iniWep;
-void(float mech_id) data_iniMech;
-void(float vec_id) data_iniVehc;
 void(float prj_id) data_iniProjectile;
-void(float vec_id) data_iniTurret;
+
 
 //RTLight converter system---------------------------------------------
 .float rtlShadows; //FALSE = write nothin | TRUE = write '!'

@@ -67,8 +67,8 @@ float DAT_PRJ_SWRM_LIFETIME = 1.2;
 //            radius           
 //============================
 //-------------------------EMP
-float DAT_PRJ_EMP_PROXYRAD    = 200;
-float DAT_PRJ_EMP_EXPRAD      = 300;
+//float DAT_PRJ_EMP_PROXYRAD    = 200;
+//float DAT_PRJ_EMP_EXPRAD      = 300;
 //-------------------------EMP
 float DAT_PRJ_ION_PROXYRAD    = 200;
 float DAT_PRJ_ION_EXPRAD      = 300;

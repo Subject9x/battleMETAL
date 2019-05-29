@@ -19,7 +19,8 @@ void() data_ini_balaket_={
   self.vec_name = "Balaket";
  
   self.max_health = 500;
-  setsize(self, '-14 -14 -35', '14 14 16');
+  self.mins = '-14 -14 -35';
+  self.maxs = '14 14 16';
   
 //ENERGY AND SHIELDS===================
   self.en_max = 400;
@@ -45,7 +46,7 @@ void() data_ini_balaket_={
  
 //MECH COMPONENTS====================
   //camera location
-  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 7 7', self, e_cam);
+  data_ini_camera_( '0 7 7' );
   
   //center torso
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', self, e_tor_c);

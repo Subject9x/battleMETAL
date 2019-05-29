@@ -875,8 +875,6 @@ void() unit_monitor_sniper_m={
   unit_monitor_sniper();
 };
 
-
-
 void() building_turret_light={
   self.nextVecChoice = 1; //DEBUG
   self.flags = FL_TURRET;  //enforced for a mech

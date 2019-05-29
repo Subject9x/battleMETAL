@@ -33,18 +33,24 @@ void( float partId, string modelPath, float maxHp, vector partOffset, entity par
 
 void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngle, float hardpoint_Size, float hardpoint_Type ) data_ini_unitHardpoint_={
   local entity item;
-  item = spawn();
-  item.data_idx = 0;
-  item.w_group = weaponNum;
-  item.c_parent = parentPartId;
-  item.c_ofs = pointOffset;
-  item.w_adj_ang = adjustAngle;
-  item.owner = self;
-  item.hardpointSize = hardpoint_Size;
-  item.hardpointType = hardpoint_Type;
-  weaponList.w_slot = item;
-  weaponList = item;
-  self.hardpoint_cnt = self.hardpoint_cnt + 1;
+  if( self.hardpoint_cnt < 10){
+    item = spawn();
+    item.data_idx = 0;
+    item.w_group = weaponNum;
+    item.c_parent = parentPartId;
+    item.c_ofs = pointOffset;
+    item.w_adj_ang = adjustAngle;
+    item.owner = self;
+    item.hardpointSize = hardpoint_Size;
+    item.hardpointType = hardpoint_Type;
+    weaponList.w_slot = item;
+    weaponList = item;
+    self.hardpoint_cnt = self.hardpoint_cnt + 1;
+  }
+};
+
+void( vector partOffset ) data_ini_camera_={
+  data_ini_unitPiece_( -1,  "q3mdl/testball.md3",  1,  partOffset,  self, e_cam );
 };
 
 /*
@@ -80,7 +86,39 @@ void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoin
  data_ini_unitHardpoint_( WEAPON9, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
 
+void(float wep_id) data_iniWep;
+void(float mech_id) data_iniMech;
+void(float vec_id) data_iniVehc;
 
+void(float vec_id) data_iniTurret;
+
+/*
+  this is the default weapon update function used by
+  all weapons. you can replace this in any weapon 
+  by defining another function before assignment.
+  -Roohr
+*/
+void() default_weapon_think={
+  if(self.w_state == RECOIL){
+    if(time > self.w_firetime){
+      self.w_state = READY;
+    }
+  }
+  else if(self.w_state == RELOADING){
+    if(time > self.w_firetime){
+      self.rl_cur = 100;
+      self.w_state = READY;
+    }
+    else{
+      local float delta, lim;
+      delta = time - self.count1;
+      lim = self.rl_max;      
+      self.rl_cur = (delta / lim) * 100;
+    }
+  }
+};
+
+.void() data_ini_projectile;
 
 .void() unit_ini;
 .void() unit_legs;

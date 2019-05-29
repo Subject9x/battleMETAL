@@ -157,7 +157,12 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
     data_iniWep(nex_wep);
     
     self.rl_cur = 100; // bug fix - weapon reload indicator not starting at correct value
-    
+    self.w_firetime = 0;
+    self.w_currentammo = self.w_clipsize;
+    self.w_state = READY;
+    self.health = 1;
+    self.max_health = 1;
+  
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE; 
     self.comp_id = -2;
@@ -169,7 +174,7 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
       }
     }
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.c_model, 0, 0);
+    util_setModel(self.model, 0, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     ofs = self.c_ofs + self.c_alt_ofs;
     util_setOffsetOrigin(self, own, ofs);
@@ -199,7 +204,7 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
 
 void(void() data_ini) build_mech_unit={
   local entity part_chain;
-  
+  local vector tempMin, tempMax;
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
   self.skin = self.faction - 1;
   if( self.skin < 0 ){
@@ -215,7 +220,12 @@ void(void() data_ini) build_mech_unit={
   self.flags = self.flags | FL_UNIT;
   
   data_ini();
+  tempMin = self.mins;
+  tempMax = self.maxs;
+  
   build_mech_torsoCenter();
+  
+  setsize(self, tempMin, tempMax);
   
   self.sh_hit = 0;
   self.chain_timer = time;
@@ -315,6 +325,7 @@ void(void() data_ini) build_mech_bot={
   
   hmaxs = self.maxs;
   hmins = self.mins;
+  
   util_setModel("q3mdl/testball.md3", self.skin, 0);
   setsize( self, hmins, hmaxs );
   

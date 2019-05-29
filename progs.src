@@ -4,6 +4,7 @@ dp/defs.qc
 dp/dpextensions.qc
 subs_h.qc
 triggers_h.qc
+
 //mech classes / extensions
   mech/ext/defs_game.qc
   mech/ext/ent_player_c.qc
@@ -14,14 +15,22 @@ triggers_h.qc
   mech/ext/defs_cs.qc
   mech/ext/defs_impulse.qc
   mech/ext/defs_combat.qc
-//================================
   
+//================================
+
+mech/utils_h.qc
+mech/t_damage_h.qc
+
 //Common Game Data================
   common/data/data_values_game.qc
   common/data/data_values_ai.qc
   common/data/data_header.qc
   
-  //Mechs
+  //Projectiles--------------------
+  common/data/projectiles/data_projectile_emp.qc
+  //-------------------------------
+  
+  //Mechs--------------------------
   common/data/mechs/data_balaket.qc
   common/data/mechs/data_matok.qc
   common/data/mechs/data_monitor.qc
@@ -42,6 +51,15 @@ triggers_h.qc
   //Turrets------------------------
   
   //-------------------------------
+
+  //Weapons------------------------
+  common/data/item/weapon/data_emp.qc
+  common/data/item/weapon/data_light_laser.qc
+  //-------------------------------
+  
+  //Items--------------------------
+  
+  //-------------------------------
   common/data/data_values_projectiles.qc
   common/data/data_values_weapons.qc
   common/data/data_values_buildings.qc
@@ -56,7 +74,7 @@ triggers_h.qc
   mech/svr/server_intermsn_h.qc
   mech/svr/server_sensors_h.qc
   mech/svr/server_savefile_h.qc
-  mech/utils_h.qc
+
   mech/ext/eng_client_h.qc
   mech/ext/eng_player_h.qc
   mech/playerFactory_h.qc
@@ -65,51 +83,52 @@ triggers_h.qc
   mech/ctrl/ctrl_weapon_h.qc
   mech/models/models_h.qc
   mech/impulse_h.qc
-  mech/t_damage_h.qc
   mech/ext/player_mech_h.qc
   mech/ai/ai_api_h.qc
   mech/map/map_objects_h.qc
   world_effectinfo_h.qc
   mech/map/triggers_map_h.qc
 //==========================
-dp/subs.qc
+  
+  dp/subs.qc  
+  mech/data_system.qc
 
 //DATA FILES=================  
   //projectiles
-  mech/dat/prj/data_prj_sfga_vals.qc
-  mech/dat/prj/data_prj_emp_val.qc
-  mech/dat/prj/data_prj_mis_val.qc
-  mech/dat/prj/data_prj_mlgd_vals.qc
-  mech/dat/prj/data_prj_marh_vals.qc
-  mech/dat/prj/data_prj_rplas_vals.qc  
-  mech/dat/prj/data_prj_qrfl_vals.qc
+  //mech/dat/prj/data_prj_sfga_vals.qc
+  //mech/dat/prj/data_prj_emp_val.qc
+  //mech/dat/prj/data_prj_mis_val.qc
+  //mech/dat/prj/data_prj_mlgd_vals.qc
+  //mech/dat/prj/data_prj_marh_vals.qc
+  //mech/dat/prj/data_prj_rplas_vals.qc  
+  //mech/dat/prj/data_prj_qrfl_vals.qc
 
-  mech/dat/prj/data_prj_ion_val.qc 
-  mech/dat/prj/data_prj_swrm_val.qc
+  //mech/dat/prj/data_prj_ion_val.qc 
+  //mech/dat/prj/data_prj_swrm_val.qc
   
   //weapons
-  mech/dat/wep/data_latc_val.qc
-  mech/dat/wep/data_flak_val.qc
-  mech/dat/wep/data_sfga_val.qc
-  mech/dat/wep/data_emp_val.qc
-  mech/dat/wep/data_ion_val.qc
-  mech/dat/wep/data_mis_val.qc
-  mech/dat/wep/data_las_val.qc
-  mech/dat/wep/data_mlgd_vals.qc
-  mech/dat/wep/data_marh_vals.qc
-  mech/dat/wep/data_rplas_vals.qc
-  mech/dat/wep/data_qrfl_vals.qc
-  mech/dat/wep/data_esr_vals.qc
-  mech/dat/wep/data_pac_vals.qc
-  mech/dat/wep/data_swrm_val.qc
+  //mech/dat/wep/data_latc_val.qc
+  //mech/dat/wep/data_flak_val.qc
+  //mech/dat/wep/data_sfga_val.qc
+  //mech/dat/wep/data_emp_val.qc
+  //mech/dat/wep/data_ion_val.qc
+  //mech/dat/wep/data_mis_val.qc
+  //mech/dat/wep/data_las_val.qc
+  //mech/dat/wep/data_mlgd_vals.qc
+  //mech/dat/wep/data_marh_vals.qc
+  //mech/dat/wep/data_rplas_vals.qc
+  //mech/dat/wep/data_qrfl_vals.qc
+  //mech/dat/wep/data_esr_vals.qc
+  //mech/dat/wep/data_pac_vals.qc
+  //mech/dat/wep/data_swrm_val.qc
 
   //equipment
-  mech/dat/itm/data_atgm_val.qc
-  mech/dat/itm/data_enbat_val.qc
-  mech/dat/itm/data_recap_val.qc
-  mech/dat/itm/data_lsar_val.qc
-  mech/dat/itm/data_hsem_val.qc
-  mech/dat/itm/data_scap_val.qc
+  //mech/dat/itm/data_atgm_val.qc
+  //mech/dat/itm/data_enbat_val.qc
+  //mech/dat/itm/data_recap_val.qc
+  //mech/dat/itm/data_lsar_val.qc
+  //mech/dat/itm/data_hsem_val.qc
+  //mech/dat/itm/data_scap_val.qc
   
   //buildings
   mech/dat/bld/data_h_radar.qc

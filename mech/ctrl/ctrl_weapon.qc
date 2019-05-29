@@ -33,13 +33,6 @@ void(entity wep) ctrl_wpn_think={
   self = weaponOwner;
 };
 
-void() ctrl_wpn_think_clip={
-  
-};
-void() ctrl_wpn_think_ene={
-
-};
-
 //gross
 void(entity wep, float wstate) ctrl_weapon_addState={
   if(!(wep.owner.stat_wep_state & wstate)){

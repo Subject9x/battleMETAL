@@ -2464,4 +2464,10 @@ void(float pause) setpause = #531;
 //builtin definitions: (SVQC)
 float(string url, float id, string content_type, string delim, float buf, float keyid) crypto_uri_postbuf = #513;
 //description:
-//use -1 as buffer handle to justs end delim as postdata 
+//use -1 as buffer handle to justs end delim as postdata
+
+.float traileffectnum; 
+  //no idea when this added,
+  //use this with the 'particleeffectnum' system to have particles trail autonomically.
+  //-Roohr (I dont take credit, just adding here)
+ 

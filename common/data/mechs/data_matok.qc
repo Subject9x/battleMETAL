@@ -19,7 +19,9 @@ void() data_ini_matok_={
   self.vec_name = "Matok";
  
   self.max_health = 650;
-  setsize(self, '-17 -17 -40', '17 17 22');
+  self.mins = '-17 -17 -40';
+  self.maxs = '17 17 22';
+  
   
 //ENERGY AND SHIELDS===================
   self.en_max   = 800;
@@ -45,7 +47,7 @@ void() data_ini_matok_={
  
 //MECH COMPONENTS====================
   //camera location
-  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 15 7', self, e_cam);
+  data_ini_camera_( '0 15 7' );
   
   //center torso
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', self, e_tor_c);

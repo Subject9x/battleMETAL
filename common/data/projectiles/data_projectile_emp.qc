@@ -1,31 +1,41 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
-Date: 01/22/2017
-Overview: data def file for a weapon projectile
+Date: 05/28/2019
+Overview: 
+  Data File - Projectile
+    EMP projetile 
+      AoE radius.
+      
 */
 
 //EMP CANNON SHOT=======================
-void() projectile_touch_emp_;
+void() data_prj_emp_touch;
 void() data_prj_emp_think;
 void() data_prj_emp_explode;
 
-void() data_prj_emp_ini={
+float DAT_PRJ_EMP_PROXYRAD    = 200;
+float DAT_PRJ_EMP_EXPRAD      = 300;
+
+void() data_projectile_ini_emp_={
   self.classname = "prj_emp";
-  self.touch = projectile_touch_emp_;
-  self.data_idx = ID_PRJ_EMP;
-  self.p_velocity = DAT_PRJ_EMP_VELOCITY;
-  self.c_model = DAT_PRJ_EMP_MODEL;
-  self.p_lifetime = DAT_PRJ_EMP_LIFETIME;
+  self.touch = data_prj_emp_touch;
+  self.data_idx = 0;
+  self.p_velocity = 1500;
+  self.model = "q3mdl/proj/mdl_proj_emp.md3";
+  self.p_lifetime = 1.43;
+  
+  self.think = data_prj_emp_think;
   
   //cosmetics
-  self.effects = self.effects | (EF_ADDITIVE | EF_NOSHADOW);
-  self.modelflags = DAT_PRJ_EMP_MODELFLAGS;
-  self.alpha = DAT_PRJ_EMP_ALPHA;
+  self.effects = (EF_ADDITIVE | EF_NOSHADOW);
+  self.modelflags = 0;
+  self.alpha = 0.75;
   self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");
+  
 };
 
-void() data_prj_emp_think={
+void()data_prj_emp_think={
 
   local float dist;
   local float explode;
@@ -90,7 +100,7 @@ void()data_prj_emp_explode={
   self.nextthink = time + 0.1;
 };
 
-void() projectile_touch_emp_={
+void() data_prj_emp_touch={
 	if( pointcontents(self.origin) == CONTENT_SKY ){
 		remove(self);
 		return;

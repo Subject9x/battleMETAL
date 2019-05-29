@@ -19,7 +19,8 @@ void() data_ini_monitor_={
   self.vec_name = "Monitor";
  
   self.max_health = 1200;
-  setsize(self, '-22 -22 -44', '22 22 28');
+  self.mins = '-22 -22 -44';
+  self.maxs = '22 22 28';
   
 //ENERGY AND SHIELDS===================
   self.en_max = 700;
@@ -45,7 +46,7 @@ void() data_ini_monitor_={
  
 //MECH COMPONENTS====================
   //camera location
-  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 18 8', self, e_cam);
+  data_ini_camera_( '0 18 8' );
   
   //center torso
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0', self, e_tor_c);

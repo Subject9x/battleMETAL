@@ -8,7 +8,6 @@
 void(string gibname, float dm) ThrowGib ;
 vector(float dm) VelocityForDamage;
 
-.float traileffectnum;  //seriously?
 
 void(vector org, vector vel, float total) te_smoke_test;
 
