@@ -84,20 +84,20 @@ void(float vec_id) data_iniVehc={
 */
 void(float wep_id) data_iniWep={ 
   switch(wep_id){
-    case ID_WEP_LATC:
-      //data_latc_ini();
+    case 1:
+      data_ini_light_atc_();
       return;
-    case ID_WEP_EMP:
+    case 2:
       data_ini_emp_();
       return;
-    case ID_WEP_LAS:
-      //data_las_ini();
+    case 3:
+      data_ini_light_laser_();
       return;
-    case ID_WEP_MIS:
-      //data_mis_ini();
+    case 4:
+      data_ini_rockets_();
       return;
     case ID_WEP_QRF:
-      //data_qrfl_ini();
+      data_ini_quantum_();
       return;
     case ID_WEP_RPC:
       //data_rplas_ini();

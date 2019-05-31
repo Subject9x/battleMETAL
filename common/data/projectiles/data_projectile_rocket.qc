@@ -1,0 +1,54 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 05/29/2019
+Overview: 
+  Data File - Projectile
+   Rocket Launcher projetile 
+    Explodes on touch
+*/
+
+void() data_prj_mis_touch;
+void() data_projectile_rocket_think_;
+
+void() data_projectile_ini_rocket_={
+  self.classname = "missile";
+  self.touch = data_prj_mis_touch;
+  self.p_velocity = 1300;
+  self.model = "q3mdl/proj/mdl_proj_mis.md3";
+  self.p_lifetime = 0.56;
+  
+  //cosmetics
+  self.effects = EF_NOSHADOW;
+  self.modelflags = 0;
+  self.traileffectnum = particleeffectnum("TE_MIS_TRAIL");
+  self.think = data_projectile_rocket_think_;
+};
+
+void() data_prj_mis_touch={
+	if ( pointcontents(self.origin) == CONTENT_SKY){
+		remove(self);
+		return;
+	}
+
+  if(other.takedamage){
+    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    if( other.sh_cur > 0 ){
+      remove(self);
+      return;
+    }
+  }
+  makevectors(self.angles);
+  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.p_damage / 5, 1);
+  remove(self);
+};
+
+void() data_projectile_rocket_think_={
+  self.think = data_projectile_rocket_think_;
+  self.nextthink = time + 0.05;
+  if( time > self.p_lifetime ){
+    self.think = BecomeExplosion;
+    self.nextthink = time + 0.05;
+  }
+};
+

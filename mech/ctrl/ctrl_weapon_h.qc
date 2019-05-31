@@ -11,3 +11,7 @@ void(entity wep, float state) ctrl_weapon_subState;
 void(entity wep, float state1, float state2) ctrl_weapon_clearState;
 void(entity wep, float state) ctrl_weapon_isReload;
 void(entity wep, float state) ctrl_weapon_isReady;
+void() ctrl_weapon_fireOffset;
+void( float burstFire, float burstRate ) ctrl_weapon_updateAmmo;
+void( float updateDelay ) ctrl_weapon_make_projectile;
+float() ctrl_weapon_checkEnergy;

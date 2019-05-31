@@ -1,9 +1,19 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
+mod:  05/30/2019
 Overview: extends the global defs
 */
+
+//used by ctrl_weapon_fireOffset
+vector FIRE_OFFSET;
+entity WEAPON_PARENT;
+entity FIRE_ENT;
+entity NEWSHOT;
+vector FIRE_ORIGIN;
+vector FIRE_ENDPOINT;
+
 //Difficulty
 float SKILL_NOV = 0;
 float SKILL_REG = 1;

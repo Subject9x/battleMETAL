@@ -116,6 +116,7 @@ void() default_weapon_think={
       self.rl_cur = (delta / lim) * 100;
     }
   }
+  self.think = default_weapon_think;
 };
 
 .void() data_ini_projectile;

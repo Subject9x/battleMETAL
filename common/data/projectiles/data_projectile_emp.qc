@@ -8,10 +8,8 @@ Overview:
       AoE radius.
       
 */
-
-//EMP CANNON SHOT=======================
 void() data_prj_emp_touch;
-void() data_prj_emp_think;
+void() data_projectile_emp_think_;
 void() data_prj_emp_explode;
 
 float DAT_PRJ_EMP_PROXYRAD    = 200;
@@ -25,17 +23,15 @@ void() data_projectile_ini_emp_={
   self.model = "q3mdl/proj/mdl_proj_emp.md3";
   self.p_lifetime = 1.43;
   
-  self.think = data_prj_emp_think;
-  
   //cosmetics
   self.effects = (EF_ADDITIVE | EF_NOSHADOW);
   self.modelflags = 0;
   self.alpha = 0.75;
   self.traileffectnum = particleeffectnum("TE_EMP_TRAIL");
-  
+  self.think = data_projectile_emp_think_;
 };
 
-void()data_prj_emp_think={
+void() data_projectile_emp_think_={
 
   local float dist;
   local float explode;
@@ -73,7 +69,7 @@ void()data_prj_emp_think={
   if(explode){
     self.think = data_prj_emp_explode;
   }else{
-    self.think = data_prj_emp_think;
+    self.think = data_projectile_emp_think_;
   }
   self.nextthink = time + 0.01;
 };

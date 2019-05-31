@@ -4,6 +4,9 @@ dp/defs.qc
 dp/dpextensions.qc
 subs_h.qc
 triggers_h.qc
+world_effectinfo_h.qc
+mech/ctrl/ctrl_all_h.qc
+mech/ctrl/ctrl_weapon_h.qc
 
 //mech classes / extensions
   mech/ext/defs_game.qc
@@ -28,6 +31,8 @@ mech/t_damage_h.qc
   
   //Projectiles--------------------
   common/data/projectiles/data_projectile_emp.qc
+  common/data/projectiles/data_projectile_rocket.qc
+  common/data/projectiles/data_projectile_quantum_bit.qc
   //-------------------------------
   
   //Mechs--------------------------
@@ -55,6 +60,9 @@ mech/t_damage_h.qc
   //Weapons------------------------
   common/data/item/weapon/data_emp.qc
   common/data/item/weapon/data_light_laser.qc
+  common/data/item/weapon/data_light_atc.qc
+  common/data/item/weapon/data_rockets.qc
+  common/data/item/weapon/data_quantum_rifle.qc
   //-------------------------------
   
   //Items--------------------------
@@ -79,14 +87,11 @@ mech/t_damage_h.qc
   mech/ext/eng_player_h.qc
   mech/playerFactory_h.qc
   mech/vecFactory_h.qc
-  mech/ctrl/ctrl_all_h.qc
-  mech/ctrl/ctrl_weapon_h.qc
   mech/models/models_h.qc
   mech/impulse_h.qc
   mech/ext/player_mech_h.qc
   mech/ai/ai_api_h.qc
   mech/map/map_objects_h.qc
-  world_effectinfo_h.qc
   mech/map/triggers_map_h.qc
 //==========================
   
