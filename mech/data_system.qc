@@ -96,22 +96,22 @@ void(float wep_id) data_iniWep={
     case 4:
       data_ini_rockets_();
       return;
-    case ID_WEP_QRF:
+    case 5:
       data_ini_quantum_();
       return;
-    case ID_WEP_RPC:
-      //data_rplas_ini();
+    case 6:
+      data_ini_plasma_();
       return;
-    case ID_WEP_SFGA:
-      //data_sfga_ini();
+    case 11:
+      data_ini_snub_artillery_();
       return;
-    case ID_WEP_PAC:
-      //data_pac_ini();
+    case 7:
+      data_ini_particle_cannon_();
       return;
-    case ID_WEP_ESR:
-      //data_esr_ini();
+    case 8:
+      data_ini_electro_repeater_();
       return;
-    case ID_WEP_MLGD:
+    case 9:
       //data_mlgd_ini();
       return;
     case ID_WEP_MARH:

@@ -4,7 +4,7 @@ Author: Peter Roohr
 Date: 05/29/2019
 Overview: 
   Data File - Projectile
-   Rocket Launcher projetile 
+   Rocket Launcher projectile 
     Explodes on touch
 */
 

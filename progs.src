@@ -33,6 +33,9 @@ mech/t_damage_h.qc
   common/data/projectiles/data_projectile_emp.qc
   common/data/projectiles/data_projectile_rocket.qc
   common/data/projectiles/data_projectile_quantum_bit.qc
+  common/data/projectiles/data_projectile_plasma.qc
+  common/data/projectiles/data_projectile_snub_artillery.qc
+  common/data/projectiles/data_projectile_missile_laserguide.qc
   //-------------------------------
   
   //Mechs--------------------------
@@ -63,6 +66,11 @@ mech/t_damage_h.qc
   common/data/item/weapon/data_light_atc.qc
   common/data/item/weapon/data_rockets.qc
   common/data/item/weapon/data_quantum_rifle.qc
+  common/data/item/weapon/data_rotary_plasma.qc
+  common/data/item/weapon/data_snub_artillery.qc
+  common/data/item/weapon/data_particle_cannon.qc
+  common/data/item/weapon/data_electro_repeater.qc
+  common/data/item/weapon/data_missile_laserguide.qc
   //-------------------------------
   
   //Items--------------------------

@@ -78,7 +78,7 @@ float DAT_PRJ_ION_EXPRAD      = 300;
 //-------------------------QRifle
 //-------------------------RPlas
 //-------------------------SFGA
-float DAT_PRJ_SFGA_RAD        = 300;
+//float DAT_PRJ_SFGA_RAD        = 300;
 //-------------------------FLAK
 float DAT_PRJ_FLAK_PROXYRAD   = 45;
 float DAT_PRJ_FLAK_EXPRAD     = 50;
