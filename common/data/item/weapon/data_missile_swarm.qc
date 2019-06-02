@@ -1,0 +1,84 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 05/31/2019
+Overview: 
+  Data File - Item - Weapon
+    Missile - Swarm
+      Range: short
+      3rnd burst
+      Arcing
+      Needs radar lock
+      3mis per up-to 3 targets
+*/
+void() data_ini_attack_missile_swarm_;
+
+float DATA_SWARM_MAX_TARGETS = 3;
+
+void() data_ini_missile_swarm_={
+
+  self.data_idx = 14;  
+  self.w_name = "Missile - Swarm";
+  
+  self.w_clipsize = 3;
+  self.rl_rate = 0.1;
+  self.rl_max = 10;
+  self.en_rate = 0;
+  self.spreadDefault = '0.07 0.07 0';
+  
+  self.w_range = 600;
+  self.p_damage = 20;
+  self.p_dmgtype = (DMG_EXP | EFF_ARC);
+  
+  self.w_attack = data_ini_attack_missile_swarm_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_missile_swarm_;
+  
+  self.w_fire_ofs = '0 0 2';
+  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.model = "q3mdl/weapons/w_swrm.md3";
+  self.i_techlvl = 3;
+  self.i_size = 2;
+  
+  self.w_isburst = FALSE;
+};
+
+void() data_ini_attack_missile_swarm_={
+  local float maxtarg;
+  
+  if( self.owner.stat_rdr_mode == TRUE ){
+    //check for 'Active' Radar
+    if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
+      //check to see if owner has a target lock
+      ctrl_weapon_updateAmmo( TRUE, 1);
+    
+      ctrl_weapon_fireOffset();
+      
+      local entity targs;
+      maxtarg = DATA_SWARM_MAX_TARGETS;
+      targs = findradius(self.owner.origin, self.w_range);
+      while(targs){
+        if( maxtarg > 0 ){
+          if( (ai_check_face(targs, 0.7)) && (targs != self.owner) ){
+            if( (targs.flags & FL_CLIENT) || (targs.flags & FL_MONSTER) ){
+              if( targs.faction != self.owner.faction){
+                if(targs.deadflag == DEAD_NO){
+                  maxtarg = maxtarg - 1;
+                  ctrl_weapon_make_projectile( 1 );
+                  NEWSHOT.enemy = targs;
+                  NEWSHOT.velocity = normalize(targs.origin - FIRE_ORIGIN);
+                  NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.p_velocity;
+                  NEWSHOT.velocity_z = NEWSHOT.velocity_z + 500;
+                  NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
+                  sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+                  pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), self.origin, normalize( targs.origin - FIRE_ORIGIN ) * 3, 1);
+                }
+              }
+            }
+          }
+        }
+        targs = targs.chain;
+      }
+    }
+  }
+};

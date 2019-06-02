@@ -1,7 +1,7 @@
 /*
 battleMETAL
 Author: Peter Roohr
-Date: 05/29/2019
+Date: 06/02/2019
 Overview: 
   Data File - Projectile
    Missile - Laser Guided
@@ -9,24 +9,24 @@ Overview:
     follows player reticle
 */
 
-void() data_projectile_missile_laserguide_touch;
-void() data_projectile_missile_laserguide_think;
+void() data_projectile_missile_swarm_touch;
+void() data_projectile_missile_swarm_think;
 
-void() data_projectile_ini_missile_laserguide_={
+void() data_projectile_ini_missile_swarm_={
   self.classname = "missile";
-  self.touch = data_projectile_missile_laserguide_touch;
-  self.p_velocity = 800;
+  self.touch = data_projectile_missile_swarm_touch;
+  self.p_velocity = 1600;
   self.model = "q3mdl/proj/mdl_proj_lgm.md3";
-  self.p_lifetime = 2;
+  self.p_lifetime = 1.2;
   
   //cosmetics
   self.effects = EF_NOSHADOW;
   self.modelflags = 0;
-  self.traileffectnum = particleeffectnum("TE_LGM_TRAIL");
-  self.think = data_projectile_missile_laserguide_think;
+  self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL");
+  self.think = data_projectile_missile_swarm_think;
 };
 
-void() data_projectile_missile_laserguide_touch={
+void() data_projectile_missile_swarm_touch={
 	if (pointcontents(self.origin) == CONTENT_SKY){
 		remove(self);
 		return;
@@ -44,7 +44,7 @@ void() data_projectile_missile_laserguide_touch={
   remove(self);
 };
 
-void() data_projectile_missile_laserguide_think={
+void() data_projectile_missile_swarm_think={
   local vector lorg, dir, olddir, nuv;
   local float turnrate;
 
@@ -75,7 +75,7 @@ void() data_projectile_missile_laserguide_think={
   }
   else{
     self.nextthink = time + 0.2; //0.05
-    self.think = data_projectile_missile_laserguide_think;
+    self.think = data_projectile_missile_swarm_think;
   }
 };
 

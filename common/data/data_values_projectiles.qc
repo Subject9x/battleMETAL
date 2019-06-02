@@ -70,8 +70,8 @@ float DAT_PRJ_SWRM_LIFETIME = 1.2;
 //float DAT_PRJ_EMP_PROXYRAD    = 200;
 //float DAT_PRJ_EMP_EXPRAD      = 300;
 //-------------------------EMP
-float DAT_PRJ_ION_PROXYRAD    = 200;
-float DAT_PRJ_ION_EXPRAD      = 300;
+//float DAT_PRJ_ION_PROXYRAD    = 200;
+//float DAT_PRJ_ION_EXPRAD      = 300;
 //-------------------------MIS-ARH
 //-------------------------Rocket
 //-------------------------MIS-LGD
@@ -80,8 +80,7 @@ float DAT_PRJ_ION_EXPRAD      = 300;
 //-------------------------SFGA
 //float DAT_PRJ_SFGA_RAD        = 300;
 //-------------------------FLAK
-float DAT_PRJ_FLAK_PROXYRAD   = 45;
-float DAT_PRJ_FLAK_EXPRAD     = 50;
+
 //============================
 //            Model           
 //============================

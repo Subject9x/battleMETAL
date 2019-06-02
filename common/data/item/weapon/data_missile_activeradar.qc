@@ -1,0 +1,74 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 05/31/2019
+Overview: 
+  Data File - Item - Weapon
+    Missile - Active Radar
+      Range: Long
+      10rnd burst
+      Arcing
+      Needs radar lock
+*/
+void() data_ini_attack_missile_activeradar_;
+
+void() data_ini_missile_activeradar_={
+
+  self.data_idx = 10;  
+  self.w_name = "Missile - Active Radar";
+  
+  self.w_clipsize = 10;
+  self.rl_rate = 0.28;
+  self.rl_max = 7;
+  self.en_rate = 0;
+  self.spreadDefault = '0.03 0.03 0';
+  
+  self.w_range = 1500;
+  self.p_damage = 7;
+  self.p_dmgtype = (DMG_EXP | EFF_ARC);
+  
+  self.w_attack = data_ini_attack_missile_laserguide_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
+  
+  self.w_fire_ofs = '0 0 2';
+  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.model = "q3mdl/weapons/w_arh.md3";
+  self.i_techlvl = 2;
+  self.i_size = 3;
+  
+  self.w_isburst = FALSE;
+};
+
+void() data_ini_attack_missile_activeradar_={
+  local vector lasOrg;
+  local vector arc; //calculate the initial arc value before lock-on adjustment
+  local vector start;
+  
+  if( self.owner.stat_rdr_mode == TRUE ){
+    //check for 'Active' Radar
+    if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
+      //check to see if owner has a target lock
+      ctrl_weapon_updateAmmo( TRUE, 1);
+    
+      ctrl_weapon_fireOffset();
+      
+      arc = FIRE_ORIGIN + (v_forward * (300 + (crandom() * 20)));
+      arc = arc + (v_up * (300 + (crandom() * 20))) + (v_right * (crandom() * 20));
+      arc = arc + (v_right * (crandom() * 20));
+     
+      start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
+      
+      ctrl_weapon_make_projectile( 0.15 );
+      NEWSHOT.c_ofs = arc;
+      NEWSHOT.enemy = self.owner.enemy;
+      NEWSHOT.velocity = normalize( arc - start );
+      NEWSHOT.velocity = NEWSHOT.velocity * 100;
+      NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
+      
+      sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+      pointparticles( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
+      return;
+    }
+  }
+};

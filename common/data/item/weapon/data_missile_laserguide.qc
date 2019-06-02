@@ -4,9 +4,10 @@ Author: Peter Roohr
 Date: 05/31/2019
 Overview: 
   Data File - Item - Weapon
-    Snub Field Artillery
+    Missile - Laser Guided
       Range: Medium
-      Medium AoE
+      High Damage
+      follow's player reticle
       Arcing
 */
 void() data_ini_attack_missile_laserguide_;
@@ -44,7 +45,7 @@ void() data_ini_attack_missile_laserguide_={
   
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE, 0 );
+  ctrl_weapon_updateAmmo( FALSE, 1 );
    
   ctrl_weapon_make_projectile( 0.05 );
   

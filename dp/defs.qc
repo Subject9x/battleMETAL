@@ -713,8 +713,7 @@ float(entity targ, entity inflictor) CanDamage;
 //	WriteCoord(msg, a_z);
 //};
 
-float() crandom =
-{
+float() crandom ={
 	return 2*(random() - 0.5);
 };
 

@@ -21,8 +21,26 @@ mech/ctrl/ctrl_weapon_h.qc
   
 //================================
 
-mech/utils_h.qc
-mech/t_damage_h.qc
+//mech header files
+  mech/world_ext_h.qc
+  mech/client_utils_h.qc
+  mech/svr/server_parmops_h.qc
+  mech/svr/server_intermsn_h.qc
+  mech/svr/server_sensors_h.qc
+  mech/svr/server_savefile_h.qc
+  mech/utils_h.qc
+  mech/t_damage_h.qc
+  mech/ext/eng_client_h.qc
+  mech/ext/eng_player_h.qc
+  mech/playerFactory_h.qc
+  mech/vecFactory_h.qc
+  mech/models/models_h.qc
+  mech/impulse_h.qc
+  mech/ext/player_mech_h.qc
+  mech/ai/ai_api_h.qc
+  mech/map/map_objects_h.qc
+  mech/map/triggers_map_h.qc
+//==========================
 
 //Common Game Data================
   common/data/data_values_game.qc
@@ -36,6 +54,9 @@ mech/t_damage_h.qc
   common/data/projectiles/data_projectile_plasma.qc
   common/data/projectiles/data_projectile_snub_artillery.qc
   common/data/projectiles/data_projectile_missile_laserguide.qc
+  common/data/projectiles/data_projectile_missile_activeradar.qc
+  common/data/projectiles/data_projectile_ion.qc
+  common/data/projectiles/data_projectile_missile_swarm.qc
   //-------------------------------
   
   //Mechs--------------------------
@@ -71,6 +92,10 @@ mech/t_damage_h.qc
   common/data/item/weapon/data_particle_cannon.qc
   common/data/item/weapon/data_electro_repeater.qc
   common/data/item/weapon/data_missile_laserguide.qc
+  common/data/item/weapon/data_missile_activeradar.qc
+  common/data/item/weapon/data_flak_cannon.qc
+  common/data/item/weapon/data_ion.qc
+  common/data/item/weapon/data_missile_swarm.qc
   //-------------------------------
   
   //Items--------------------------
@@ -83,25 +108,7 @@ mech/t_damage_h.qc
   common/data/data_values_particles.qc
 //================================
 
-//mech header files
-  mech/world_ext_h.qc
-  mech/client_utils_h.qc
-  mech/svr/server_parmops_h.qc
-  mech/svr/server_intermsn_h.qc
-  mech/svr/server_sensors_h.qc
-  mech/svr/server_savefile_h.qc
 
-  mech/ext/eng_client_h.qc
-  mech/ext/eng_player_h.qc
-  mech/playerFactory_h.qc
-  mech/vecFactory_h.qc
-  mech/models/models_h.qc
-  mech/impulse_h.qc
-  mech/ext/player_mech_h.qc
-  mech/ai/ai_api_h.qc
-  mech/map/map_objects_h.qc
-  mech/map/triggers_map_h.qc
-//==========================
   
   dp/subs.qc  
   mech/data_system.qc

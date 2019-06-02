@@ -112,13 +112,13 @@ void(float wep_id) data_iniWep={
       data_ini_electro_repeater_();
       return;
     case 9:
-      //data_mlgd_ini();
+      data_ini_missile_laserguide_();
       return;
-    case ID_WEP_MARH:
-      //data_marh_ini();
+    case 11:
+      data_ini_missile_activeradar_();
       return;
-    case ID_WEP_FLAK:
-      //data_flak_ini();
+    case 12:
+      data_ini_flak_cannon_();
       return;
     case ID_WEP_ION:
       //data_ion_ini();

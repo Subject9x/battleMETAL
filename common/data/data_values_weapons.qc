@@ -21,6 +21,7 @@ float ID_WEP_MARH  = 10;
 float ID_WEP_SFGA  = 11;
 float ID_WEP_FLAK  = 12;
 float ID_WEP_ION   = 13;
+//
 float ID_WEP_SWRM  = 14;
 //-----EQUIP------------
 float ID_EQP_ATGM  = 15;
@@ -192,8 +193,6 @@ float DAT_QRFL_DMG        = 10;
 float DAT_SFGA_DMG        = 300;
 //-------------------------FLAK
 float DAT_FLAK_DMG        = 0.5;
-float DAT_FLAK_SHRAP_TOTAL= 14;
-vector DAT_FLAK_SHRAP_SPREAD = '0.3 0.3 64';
 //-------------------------Laser
 float DAT_LAS_DMG         = 10;
 //-------------------------ION
