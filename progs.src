@@ -99,7 +99,12 @@ mech/ctrl/ctrl_weapon_h.qc
   //-------------------------------
   
   //Items--------------------------
-  
+  common/data/item/equip/data_equip_shield_capacitor.qc
+  common/data/item/equip/data_equip_energy_battery.qc
+  common/data/item/equip/data_equip_recharge_capacitor.qc
+  common/data/item/equip/data_equip_sensor_array.qc
+  common/data/item/equip/data_equip_shield_emitter.qc
+  common/data/item/equip/data_equip_target_module.qc
   //-------------------------------
   common/data/data_values_projectiles.qc
   common/data/data_values_weapons.qc

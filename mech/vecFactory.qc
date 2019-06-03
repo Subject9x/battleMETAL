@@ -191,8 +191,9 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
     self.v_angle = self.angles - self.c_part.angles;
     
     if( (self.p_dmgtype & DMG_MSC) ){
-      self.w_think(); //run module's upgrade now;
-      self.w_think = SUB_Null;
+      if( self.w_attack ){
+        self.w_attack();
+      }
     }
     self.th_die = ctrl_die_weapon;
     self.state_1 = state1;

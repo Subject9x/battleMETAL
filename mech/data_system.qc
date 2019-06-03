@@ -102,9 +102,6 @@ void(float wep_id) data_iniWep={
     case 6:
       data_ini_plasma_();
       return;
-    case 11:
-      data_ini_snub_artillery_();
-      return;
     case 7:
       data_ini_particle_cannon_();
       return;
@@ -114,35 +111,38 @@ void(float wep_id) data_iniWep={
     case 9:
       data_ini_missile_laserguide_();
       return;
-    case 11:
+    case 10:
       data_ini_missile_activeradar_();
+      return;
+    case 11:
+      data_ini_snub_artillery_();
       return;
     case 12:
       data_ini_flak_cannon_();
       return;
-    case ID_WEP_ION:
-      //data_ion_ini();
+    case 13:
+      data_ini_ion_();
       return;
-    case ID_WEP_SWRM:
-      //data_swrm_ini();
+    case 14:
+      data_ini_missile_swarm_();
       return;
-    case ID_EQP_ATGM:
-      //data_eqp_atgm_ini();
+    case 15:
+      data_ini_equip_target_module_();
       return;
-    case ID_EQP_ENBAT:
-      //data_eqp_enbat_ini();
+    case 16:
+      data_ini_equip_energy_battery_();
       return;
-    case ID_EQP_RECAP:
-      //data_eqp_recap_ini();
+    case 17:
+      data_ini_equip_shield_emitter_();
       return;
-    case ID_EQP_LSAR:
-      //data_eqp_lsar_ini();
+    case 18:
+      data_ini_equip_sensor_array_();
       return;
-    case ID_EQP_HSEM:
-      //data_eqp_hsem_ini();
+    case 19:
+      data_ini_equip_shield_capacitor_();
       return;
-    case ID_EQP_SCAP:
-      //data_eqp_scap_ini();
+    case 20:
+      data_ini_equip_recharge_capacitor_();
       return;
   }
 };
