@@ -143,10 +143,7 @@ float EFF_ARC = 512;  //weapon has an arcing projectile, used by AI
 //============================
 float RADAR_SWEEP = 2.5;
 
-.float radar_time;
-.float radar_range;
-.float hardpoint_cnt;
-.float currentWeaponGroup;
+
 .float stat_plr_camx;
 .float stat_plr_camy;
 .float stat_plr_camz;

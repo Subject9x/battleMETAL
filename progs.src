@@ -43,6 +43,13 @@ mech/ctrl/ctrl_weapon_h.qc
 //==========================
 
 //Common Game Data================
+  //Entity Fields-------------------
+  common/data/defs/defs_player.qc 	AI/player top-level vars
+  common/data/defs/defs_unit.qc		all fields related specifically to unit data
+  common/data/defs/defs_part.qc		all fields related to unit sub components
+  common/data/defs/defs_item.qc		all fields related to items
+  //--------------------------------
+  
   common/data/data_values_game.qc
   common/data/data_values_ai.qc
   common/data/data_header.qc
@@ -113,7 +120,6 @@ mech/ctrl/ctrl_weapon_h.qc
   common/data/item/equip/data_equip_shield_emitter.qc
   common/data/item/equip/data_equip_target_module.qc
   //-------------------------------
-  
   common/data/data_values_buildings.qc
   common/data/data_values_particles.qc
 //================================

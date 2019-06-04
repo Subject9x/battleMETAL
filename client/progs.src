@@ -6,37 +6,78 @@ data/defs_clientside.qc
 data/defs_entity.qc
 
 //Common Game Data================
-  common/data/data_values_game.qc
-  common/data/data_values_ai.qc
-  common/data/data_header.qc
+  ../common/data/data_values_game.qc
+  ../common/data/data_values_ai.qc
+  ../common/data/data_header.qc
   
-  //Mechs
-  common/data/mechs/data_balaket.qc
-  common/data/mechs/data_matok.qc
-  common/data/mechs/data_monitor.qc
+  //Unique ID listings-------------
+  ../common/data/mechs/uid_mechs.qc
+  ../common/data/vehicles/uid_vehicles.qc
+  ../common/data/item/uid_items.qc
+  //---------------------------------
+  
+  //Projectiles--------------------
+  ../common/data/projectiles/data_projectile_emp.qc
+  ../common/data/projectiles/data_projectile_rocket.qc
+  ../common/data/projectiles/data_projectile_quantum_bit.qc
+  ../common/data/projectiles/data_projectile_plasma.qc
+  ../common/data/projectiles/data_projectile_snub_artillery.qc
+  ../common/data/projectiles/data_projectile_missile_laserguide.qc
+  ../common/data/projectiles/data_projectile_missile_activeradar.qc
+  ../common/data/projectiles/data_projectile_ion.qc
+  ../common/data/projectiles/data_projectile_missile_swarm.qc
+  //-------------------------------
+  
+  //Mechs--------------------------
+  ../common/data/mechs/data_balaket.qc
+  ../common/data/mechs/data_matok.qc
+  ../common/data/mechs/data_monitor.qc
   //-------------------------------
   
   //Vehicles-----------------------
-  common/data/vehicles/data_dunerunner.qc
-  common/data/vehicles/data_foslager.qc
-  common/data/vehicles/data_sorcerer.qc
-  common/data/vehicles/data_onnek.qc
-  common/data/vehicles/data_trowel.qc
+  ../common/data/vehicles/data_dunerunner.qc
+  ../common/data/vehicles/data_foslager.qc
+  ../common/data/vehicles/data_sorcerer.qc
+  ../common/data/vehicles/data_onnek.qc
+  ../common/data/vehicles/data_trowel.qc
   //-------------------------------
   
   //Buildings----------------------
+  ../common/data/buildings/uid_buildings.qc
   
   //-------------------------------
   
   //Turrets------------------------
-  
+  ../common/data/buildings/data_turret_light.qc
   //-------------------------------
-  common/data/data_values_projectiles.qc
-  common/data/data_values_weapons.qc
-  common/data/data_values_vehicles.qc
-  common/data/data_values_buildings.qc
-  common/data/data_values_turrets.qc
-  common/data/data_values_particles.qc
+
+  //Weapons------------------------
+  ../common/data/item/weapon/data_emp.qc
+  ../common/data/item/weapon/data_light_laser.qc
+  ../common/data/item/weapon/data_light_atc.qc
+  ../common/data/item/weapon/data_rockets.qc
+  ../common/data/item/weapon/data_quantum_rifle.qc
+  ../common/data/item/weapon/data_rotary_plasma.qc
+  ../common/data/item/weapon/data_snub_artillery.qc
+  ../common/data/item/weapon/data_particle_cannon.qc
+  ../common/data/item/weapon/data_electro_repeater.qc
+  ../common/data/item/weapon/data_missile_laserguide.qc
+  ../common/data/item/weapon/data_missile_activeradar.qc
+  ../common/data/item/weapon/data_flak_cannon.qc
+  ../common/data/item/weapon/data_ion.qc
+  ../common/data/item/weapon/data_missile_swarm.qc
+  //-------------------------------
+  
+  //Equip--------------------------
+  ../common/data/item/equip/data_equip_shield_capacitor.qc
+  ../common/data/item/equip/data_equip_energy_battery.qc
+  ../common/data/item/equip/data_equip_recharge_capacitor.qc
+  ../common/data/item/equip/data_equip_sensor_array.qc
+  ../common/data/item/equip/data_equip_shield_emitter.qc
+  ../common/data/item/equip/data_equip_target_module.qc
+  //-------------------------------
+  ../common/data/data_values_buildings.qc
+  ../common/data/data_values_particles.qc
 //================================
 
 util/headers/input_events.qh
