@@ -227,6 +227,10 @@ void(void() data_ini) build_mech_unit={
   
   build_mech_torsoCenter();
   
+  self.en_cur = self.en_max;
+  self.sh_cur = self.sh_max;
+  self.health = self.max_health;
+  
   setsize(self, tempMin, tempMax);
   
   self.sh_hit = 0;
@@ -266,9 +270,7 @@ void(void() data_ini) build_mech_unit={
     build_unit_weapon_list();
   }
   
-  self.en_cur = self.en_max;
-  self.sh_cur = self.sh_max;
-  self.health = self.max_health;
+
   
   self.fall_dist = 4 - self.vec_size;
   self.fall_dist = self.fall_dist * 100;
@@ -328,15 +330,18 @@ void(void() data_ini) build_mech_bot={
   hmaxs = self.maxs;
   hmins = self.mins;
   
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   util_setModel("q3mdl/testball.md3", self.skin, 0);
   setsize( self, hmins, hmaxs );
-  
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   
   self.alpha = 1;
   self.sh_hit = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
+  
+  self.en_cur = self.en_max;
+  self.sh_cur = self.sh_max;
+  self.health = self.max_health;
   
   if( (self.e_cam) ){
     build_unit_camera();
@@ -511,9 +516,9 @@ void(void() data_ini) build_vehicle_unit={
   if( self.skin < 0 ){
     self.skin = 0;
   }
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   util_setModel(self.model, self.skin, 0);
   setsize( self, hmins, hmaxs );
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
   
   self.alpha = 1;
   self.sh_hit = 0;

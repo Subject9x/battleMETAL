@@ -78,7 +78,7 @@ mech/ctrl/ctrl_weapon_h.qc
   //-------------------------------
   
   //Turrets------------------------
-  
+  common/data/buildings/data_turret_light.qc
   //-------------------------------
 
   //Weapons------------------------

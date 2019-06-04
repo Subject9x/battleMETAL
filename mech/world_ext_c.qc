@@ -133,26 +133,6 @@ float( entity t ) world_calc_fog={
   return FALSE; //TODO - clarify
 };
 
-/*
-  SCOPE: self = turret in question
-  calls the appropriate 'ini' function on the 
-  ent that is making the call. essentially this
-  func holds 'state' for finding the right 'data'
- 
-  Turrets really are their own class of unit
-*/
-void(float vec_id) data_iniTurret={
-  weaponList = self;  //prepare to build unit's weapon list
-  switch(vec_id){
-    case ID_TUR_HLITE:
-      build_turret_unit(data_tur_hlite_ini);
-      return;
-    default:
-      cons_logAFloat("Error: failed to build turret with id", vec_id);
-      remove(self);
-      return;
-  }
-};
 
 /*
   SCOPE: self = projectile in question
