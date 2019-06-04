@@ -14,6 +14,28 @@ Overview:
 entity weaponList;  //used by data functions to populate weapon lists for units
 entity weaponBuild; //used by vehicle factory to build current weapon
 
+float ID_WEP_LATC  = 1;
+float ID_WEP_EMP   = 2;
+float ID_WEP_LAS   = 3;
+float ID_WEP_MIS   = 4;
+float ID_WEP_QRF   = 5;
+float ID_WEP_RPC   = 6;
+float ID_WEP_PAC   = 7;
+float ID_WEP_ESR   = 8;
+float ID_WEP_MLGD  = 9;
+float ID_WEP_MARH  = 10;
+float ID_WEP_SFGA  = 11;
+float ID_WEP_FLAK  = 12;
+float ID_WEP_ION   = 13;
+float ID_WEP_SWRM  = 14;
+//-----EQUIP------------
+float ID_EQP_ATGM  = 15;
+float ID_EQP_ENBAT = 16;
+float ID_EQP_HSEM  = 17;
+float ID_EQP_LSAR  = 18;
+float ID_EQP_SCAP  = 19;
+float ID_EQP_RECAP = 20;
+
 /*
   called when building something with common/data info.
   instantiates the target object and populates it with
