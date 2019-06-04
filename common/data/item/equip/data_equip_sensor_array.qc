@@ -13,7 +13,7 @@ void() sensor_array_remove_;
 
 void() data_ini_equip_sensor_array_={
 
-  self.data_idx = 18;  
+  self.data_idx = UID_ITEM_large_sensors;  
   self.w_name = "Large Sensor Array";
   
   self.w_clipsize = 1;

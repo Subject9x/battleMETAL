@@ -1471,7 +1471,7 @@ void() ai_mech_sniper_panic16={
 void() ai_mech_sniper={
 
   ai_unit_ini_var();
-  data_iniMech( self.nextVecChoice );
+  initialize_data_mech_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
     
   trigger_event( self, trigOnSpawn); //event interface

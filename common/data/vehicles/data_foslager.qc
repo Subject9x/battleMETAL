@@ -15,7 +15,7 @@ Overview:
 */
 void() data_ini_foslager_={
 
-  self.data_idx = 7;  //
+  self.data_idx = UID_VEHICLE_foslager;  //
   self.vec_size = 2;  //
   self.vec_name = "Foslager";
  
@@ -46,7 +46,7 @@ void() data_ini_foslager_={
 //MECH COMPONENTS====================
   self.model = "q3mdl/vecs/foslager/mdl_foslager_chas.md3";
   //camera location
-  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 12 20', self, e_cam);
+  data_ini_camera_( '0 12 20' );
   
   //tank turret
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/foslager/mdl_foslager_tur.md3", 1, '0 10.25 -3.75', self, e_tor_c);

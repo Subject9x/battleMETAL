@@ -625,7 +625,7 @@ void() ai_turret_idle10={
 void() ai_turret={
   
   ai_unit_ini_var();
-  data_iniTurret( self.nextVecChoice );
+  initialize_data_turret_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
   trigger_event( self, trigOnSpawn); //event interface

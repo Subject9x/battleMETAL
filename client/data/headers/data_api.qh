@@ -33,5 +33,5 @@ float() data_mech_config_valid;
 //functional-style data lookup
 void(entity item) client_data_ini_weapon;
 void(entity item) client_data_ini_mech;
-void(float wep_id) data_iniWep;
-void(float mech_id) data_iniMech;
+void(float wep_id) initialize_data_item_;
+void(float mech_id) initialize_data_mech_;

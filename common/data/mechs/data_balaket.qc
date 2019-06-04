@@ -14,7 +14,7 @@ Overview:
 */
 void() data_ini_balaket_={
 
-  self.data_idx = 1;  //
+  self.data_idx = UID_MECH_balaket;  //
   self.vec_size = 1;  //
   self.vec_name = "Balaket";
  

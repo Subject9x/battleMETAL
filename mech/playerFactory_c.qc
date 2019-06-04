@@ -47,7 +47,7 @@ void() player_makeMech={
   
   self.data_idx = self.nextVecChoice;
   
-  data_iniMech( self.nextVecChoice );
+  initialize_data_mech_( self.nextVecChoice );
   
   self.stat_rdr_mode = FALSE;
   self.stat_rdr_rng = self.radar_range;

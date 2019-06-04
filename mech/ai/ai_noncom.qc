@@ -229,7 +229,7 @@ void() ai_noncom_th={
 void() ai_noncom_tank={
 
   ai_unit_ini_var();
-  data_iniVehc( self.nextVecChoice );
+  initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 

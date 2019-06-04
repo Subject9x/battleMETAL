@@ -155,7 +155,7 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
   self = weaponBuild;
     self.data_idx = own.stat = nex_wep;
     self.p_dmgtype = 0; //zero-out this stat
-    data_iniWep(nex_wep);
+    initialize_data_item_(nex_wep);
     
     self.rl_cur = 100; // bug fix - weapon reload indicator not starting at correct value
     self.w_firetime = 0;

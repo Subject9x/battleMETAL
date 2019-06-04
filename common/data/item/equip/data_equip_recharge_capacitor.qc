@@ -13,7 +13,7 @@ void() recharge_capacitor_remove_;
 
 void() data_ini_equip_recharge_capacitor_={
 
-  self.data_idx = 20;  
+  self.data_idx = UID_ITEM_recharge_capacitor;  
   self.w_name = "Recharge Capacitor";
   
   self.w_clipsize = 1;

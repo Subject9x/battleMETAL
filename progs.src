@@ -47,6 +47,12 @@ mech/ctrl/ctrl_weapon_h.qc
   common/data/data_values_ai.qc
   common/data/data_header.qc
   
+  //Unique ID listings-------------
+  common/data/mechs/uid_mechs.qc
+  common/data/vehicles/uid_vehicles.qc
+  common/data/item/uid_items.qc
+  //---------------------------------
+  
   //Projectiles--------------------
   common/data/projectiles/data_projectile_emp.qc
   common/data/projectiles/data_projectile_rocket.qc
@@ -74,6 +80,7 @@ mech/ctrl/ctrl_weapon_h.qc
   //-------------------------------
   
   //Buildings----------------------
+  common/data/buildings/uid_buildings.qc
   
   //-------------------------------
   
@@ -106,64 +113,21 @@ mech/ctrl/ctrl_weapon_h.qc
   common/data/item/equip/data_equip_shield_emitter.qc
   common/data/item/equip/data_equip_target_module.qc
   //-------------------------------
-  common/data/data_values_projectiles.qc
-  common/data/data_values_weapons.qc
+  
   common/data/data_values_buildings.qc
-  common/data/data_values_turrets.qc
   common/data/data_values_particles.qc
 //================================
-
-
-  
   dp/subs.qc  
   mech/data_system.qc
 
 //DATA FILES=================  
-  //projectiles
-  //mech/dat/prj/data_prj_sfga_vals.qc
-  //mech/dat/prj/data_prj_emp_val.qc
-  //mech/dat/prj/data_prj_mis_val.qc
-  //mech/dat/prj/data_prj_mlgd_vals.qc
-  //mech/dat/prj/data_prj_marh_vals.qc
-  //mech/dat/prj/data_prj_rplas_vals.qc  
-  //mech/dat/prj/data_prj_qrfl_vals.qc
-
-  //mech/dat/prj/data_prj_ion_val.qc 
-  //mech/dat/prj/data_prj_swrm_val.qc
-  
-  //weapons
-  //mech/dat/wep/data_latc_val.qc
-  //mech/dat/wep/data_flak_val.qc
-  //mech/dat/wep/data_sfga_val.qc
-  //mech/dat/wep/data_emp_val.qc
-  //mech/dat/wep/data_ion_val.qc
-  //mech/dat/wep/data_mis_val.qc
-  //mech/dat/wep/data_las_val.qc
-  //mech/dat/wep/data_mlgd_vals.qc
-  //mech/dat/wep/data_marh_vals.qc
-  //mech/dat/wep/data_rplas_vals.qc
-  //mech/dat/wep/data_qrfl_vals.qc
-  //mech/dat/wep/data_esr_vals.qc
-  //mech/dat/wep/data_pac_vals.qc
-  //mech/dat/wep/data_swrm_val.qc
-
-  //equipment
-  //mech/dat/itm/data_atgm_val.qc
-  //mech/dat/itm/data_enbat_val.qc
-  //mech/dat/itm/data_recap_val.qc
-  //mech/dat/itm/data_lsar_val.qc
-  //mech/dat/itm/data_hsem_val.qc
-  //mech/dat/itm/data_scap_val.qc
-  
   //buildings
   mech/dat/bld/data_h_radar.qc
   mech/dat/bld/data_h_shield.qc
   mech/dat/bld/data_h_power.qc
   mech/dat/bld/data_h_hangar_l.qc
   mech/dat/bld/data_h_fuel.qc
-  mech/dat/bld/data_h_repair.qc
-  mech/dat/bld/data_tur_hlite.qc
-  
+  mech/dat/bld/data_h_repair.qc 
 //===========================
 
 //impl files

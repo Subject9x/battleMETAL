@@ -15,7 +15,7 @@ Overview:
 */
 void() data_ini_sorcerer_={
 
-  self.data_idx = 10;  //
+  self.data_idx = UID_VEHICLE_sorcerer;  //
   self.vec_size = 2;  //
   self.vec_name = "Sorcerer";
  
@@ -46,7 +46,7 @@ void() data_ini_sorcerer_={
 //MECH COMPONENTS====================
   self.model = "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3";
   //camera location
-  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 12 20', self, e_cam);
+  data_ini_camera_( '0 12 20' );
 //=====================================
  
 //HARDPOINTS==========================

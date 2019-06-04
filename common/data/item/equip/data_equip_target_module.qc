@@ -13,7 +13,7 @@ void() target_module_remove_;
 
 void() data_ini_equip_target_module_={
 
-  self.data_idx = 15;  
+  self.data_idx = UID_ITEM_target_module;  
   self.w_name = "Adv. Target Module";
   
   self.w_clipsize = 1;

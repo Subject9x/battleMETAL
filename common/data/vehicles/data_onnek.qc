@@ -15,7 +15,7 @@ Overview:
 */
 void() data_ini_onnek_={
 
-  self.data_idx = 10;  //
+  self.data_idx = UID_VEHICLE_onnek;  //
   self.vec_size = 2;  //
   self.vec_name = "Onnek";
  
@@ -46,7 +46,7 @@ void() data_ini_onnek_={
 //MECH COMPONENTS====================
   self.model = "q3mdl/vecs/onnek/onnek.md3";
   //camera location
-  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '-5 3 10', self, e_cam);
+  data_ini_camera_( '-5 3 10' );
 //=====================================
  
 //HARDPOINTS==========================

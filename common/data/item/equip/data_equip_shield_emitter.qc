@@ -12,7 +12,7 @@ void() shield_emitter_remove_;
 
 void() data_ini_equip_shield_emitter_={
 
-  self.data_idx = 17;  
+  self.data_idx = UID_ITEM_shield_emitter;  
   self.w_name = "Heavy Shield Emitter";
   
   self.w_clipsize = 1;

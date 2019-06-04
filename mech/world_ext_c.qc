@@ -133,48 +133,6 @@ float( entity t ) world_calc_fog={
   return FALSE; //TODO - clarify
 };
 
-
-/*
-  SCOPE: self = projectile in question
-  calls the appropriate 'ini' function on the 
-  ent that is making the call. essentially this
-  func holds 'state' for finding the right 'data'
-  -Peter Roohr 11/26/2017
-*/
-void(float prj_id) data_iniProjectile={
-  switch(prj_id){
-    case ID_PRJ_EMP:
-      //data_prj_emp_ini();
-      return;
-    case ID_PRJ_MIS:
-      //data_prj_mis_ini();
-      return;
-    case ID_PRJ_MLGD:
-      //data_prj_mlgd_ini();
-      return;
-    case ID_PRJ_MARH:
-      //data_prj_marh_ini();
-      return;
-    case ID_PRJ_RPLAS:
-      //data_prj_rplas_ini();
-      return;
-    case ID_PRJ_QRFL:
-      //data_prj_qrfl_ini();
-      return;
-    case ID_PRJ_SFGA:
-      //data_prj_sfga_ini();
-      return;
-    case ID_PRJ_ION:
-      //data_prj_ion_ini();
-      return;
-    case ID_PRJ_SWRM:
-      //data_prj_swrm_ini();
-      return;
-  }
-  cons_logAFloat("Error: failed to find projectile of ", prj_id);
-  remove(self);
-};
-
 /*
   Real-time Light entity exporter functionality.
     RTLights file data can now be bound to maps at the map-editor layer.

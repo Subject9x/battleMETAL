@@ -14,7 +14,7 @@ Overview:
 */
 void() data_ini_monitor_={
 
-  self.data_idx = 3;  //
+  self.data_idx = UID_MECH_monitor;  //
   self.vec_size = 3;  //
   self.vec_name = "Monitor";
  

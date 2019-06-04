@@ -12,7 +12,7 @@ void() shield_capacitor_remove_;
 
 void() data_ini_equip_shield_capacitor_={
 
-  self.data_idx = 19;  
+  self.data_idx = UID_ITEM_shield_capacitor;  
   self.w_name = "Shield Capacitor";
   
   self.w_clipsize = 1;

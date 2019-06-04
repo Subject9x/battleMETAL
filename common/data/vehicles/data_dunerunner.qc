@@ -15,7 +15,7 @@ Overview:
 */
 void() data_ini_dunerunner_={
 
-  self.data_idx = 11;  //
+  self.data_idx = UID_VEHICLE_dunerunner;  //
   self.vec_size = 1;  //
   self.vec_name = "Dunerunner";
  
@@ -46,7 +46,7 @@ void() data_ini_dunerunner_={
 //MECH COMPONENTS====================
   self.model = "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3";
   //camera location
-  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 12 20', self, e_cam);
+  data_ini_camera_( '0 12 20' );
   
   //tank turret
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', self, e_tor_c);

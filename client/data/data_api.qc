@@ -292,10 +292,10 @@ void(entity item) client_data_ini_weapon={
 void(entity item) client_data_ini_mech={
 };
 
-void(float wep_id) data_iniWep={
+void(float wep_id) initialize_data_item_={
 
 };
-void(float mech_id) data_iniMech={
+void(float mech_id) initialize_data_mech_={
   //guess the mech id's should just be flat
   switch(mech_id){
     case ID_MCH_balaket:

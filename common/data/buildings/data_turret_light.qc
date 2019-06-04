@@ -15,7 +15,7 @@ Overview:
 */
 void() data_ini_light_turret_={
 
-  self.data_idx = 1;  //
+  self.data_idx = UID_TURRET_light_turret;  //
   self.vec_size = 1;  //
   self.vec_name = "Light Turret";
  
@@ -43,7 +43,7 @@ void() data_ini_light_turret_={
 //MECH COMPONENTS====================
   self.model = "q3mdl/buildings/turret_light/mdl_bld_h_ltur.md3";
   //camera location
-  data_ini_unitPiece_( -1, "q3mdl/testball.md3", 0, '0 12 20', self, e_cam);
+  data_ini_camera_( '0 12 20' );
   
   //tank turret
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_light/mdl_bld_h_ltur_base.md3", 1, '0 13.5 0', self, e_tor_c);

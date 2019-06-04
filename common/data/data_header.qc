@@ -14,28 +14,6 @@ Overview:
 entity weaponList;  //used by data functions to populate weapon lists for units
 entity weaponBuild; //used by vehicle factory to build current weapon
 
-float ID_WEP_LATC  = 1;
-float ID_WEP_EMP   = 2;
-float ID_WEP_LAS   = 3;
-float ID_WEP_MIS   = 4;
-float ID_WEP_QRF   = 5;
-float ID_WEP_RPC   = 6;
-float ID_WEP_PAC   = 7;
-float ID_WEP_ESR   = 8;
-float ID_WEP_MLGD  = 9;
-float ID_WEP_MARH  = 10;
-float ID_WEP_SFGA  = 11;
-float ID_WEP_FLAK  = 12;
-float ID_WEP_ION   = 13;
-float ID_WEP_SWRM  = 14;
-//-----EQUIP------------
-float ID_EQP_ATGM  = 15;
-float ID_EQP_ENBAT = 16;
-float ID_EQP_HSEM  = 17;
-float ID_EQP_LSAR  = 18;
-float ID_EQP_SCAP  = 19;
-float ID_EQP_RECAP = 20;
-
 /*
   called when building something with common/data info.
   instantiates the target object and populates it with
@@ -108,11 +86,10 @@ void( float parentPartId, vector pointOffset, vector adjustAngle, float hardpoin
  data_ini_unitHardpoint_( WEAPON9, parentPartId, pointOffset, adjustAngle, hardpoint_Size, hardpoint_Type );
 };
 
-void(float wep_id) data_iniWep;
-void(float mech_id) data_iniMech;
-void(float vec_id) data_iniVehc;
-
-void(float vec_id) data_iniTurret;
+void(float wep_id) initialize_data_item_;
+void(float mech_id) initialize_data_mech_;
+void(float vec_id) initialize_data_vehicle_;
+void(float vec_id) initialize_data_turret_;
 
 /*
   this is the default weapon update function used by
@@ -160,38 +137,3 @@ void() default_weapon_think={
 .void() unit_wep7;
 .void() unit_wep8;
 .void() unit_wep9;
-
-//WEAPON INI
-void() data_emp_ini;
-void() data_esr_ini;
-void() data_las_ini;
-void() data_latc_ini;
-void() data_marh_ini;
-void() data_mis_ini;
-void() data_mlgd_ini;
-void() data_pac_ini;
-void() data_qrfl_ini;
-void() data_rplas_ini;
-void() data_sfga_ini;
-void() data_flak_ini;
-void() data_swrm_ini;
-
-//EQUIP INI
-void() data_eqp_atgm_ini;
-void() data_eqp_enbat_ini;
-void() data_eqp_recap_ini;
-void() data_eqp_lsar_ini;
-void() data_eqp_hsem_ini;
-void() data_eqp_scap_ini;
-
-//PROJECTILE INI
-void() data_prj_emp_ini;
-void() data_prj_sfga_ini;
-void() data_prj_marh_ini;
-void() data_prj_mis_ini;
-void() data_prj_mlgd_ini;
-void() data_prj_qrfl_ini;
-void() data_prj_rplas_ini;
-void() data_prj_sfga_ini;
-void() data_prj_flak_ini;
-void() data_prj_swrm_ini;

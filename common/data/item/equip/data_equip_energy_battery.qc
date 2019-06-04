@@ -13,7 +13,7 @@ void() energy_battery_remove_;
 
 void() data_ini_equip_energy_battery_={
 
-  self.data_idx = 16;  
+  self.data_idx = UID_ITEM_energy_battery;  
   self.w_name = "Energy Battery";
   
   self.w_clipsize = 1;

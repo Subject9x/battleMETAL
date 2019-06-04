@@ -95,7 +95,7 @@ void() map_projectile_shooter={
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
 
-  data_iniWep( self.data_idx );
+  initialize_data_item_( self.data_idx );
   self.rl_cur = 100; // bug fix - weapon reload indicator not starting at correct value
   self.en_cur = 10000;  //never run out of energy
   self.owner.stat_rdr_mode = TRUE;
