@@ -27,7 +27,7 @@ void() data_ini_missile_activeradar_={
   self.p_damage = 7;
   self.p_dmgtype = (DMG_EXP | EFF_ARC);
   
-  self.w_attack = data_ini_attack_missile_laserguide_;
+  self.w_attack = data_ini_attack_missile_activeradar_;
   self.think = default_weapon_think;
   self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
   
@@ -41,34 +41,46 @@ void() data_ini_missile_activeradar_={
 };
 
 void() data_ini_attack_missile_activeradar_={
-  local vector lasOrg;
   local vector arc; //calculate the initial arc value before lock-on adjustment
   local vector start;
+  local float canFire;
   
-  if( self.owner.stat_rdr_mode == TRUE ){
-    //check for 'Active' Radar
-    if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
-      //check to see if owner has a target lock
-      ctrl_weapon_updateAmmo( TRUE, 1);
-    
-      ctrl_weapon_fireOffset();
-      
-      arc = FIRE_ORIGIN + (v_forward * (300 + (crandom() * 20)));
-      arc = arc + (v_up * (300 + (crandom() * 20))) + (v_right * (crandom() * 20));
-      arc = arc + (v_right * (crandom() * 20));
-     
-      start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
-      
-      ctrl_weapon_make_projectile( 0.15 );
-      NEWSHOT.c_ofs = arc;
-      NEWSHOT.enemy = self.owner.enemy;
-      NEWSHOT.velocity = normalize( arc - start );
-      NEWSHOT.velocity = NEWSHOT.velocity * 100;
-      NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
-      
-      sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-      pointparticles( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
-      return;
+  canFire = FALSE;
+  
+  if( self.w_isburst == TRUE ){
+    canFire = TRUE;
+  }
+  else{
+    if( self.owner.stat_rdr_mode == TRUE ){
+      //check for 'Active' Radar
+      if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
+        //check to see if owner has a target lock
+        canFire = TRUE;
+      }
     }
+  }
+  
+  
+  if( canFire ){
+    ctrl_weapon_updateAmmo( TRUE, 1);
+  
+    ctrl_weapon_fireOffset();
+    
+    arc = FIRE_ORIGIN + (v_forward * (300 + (crandom() * 20)));
+    arc = arc + (v_up * (300 + (crandom() * 20))) + (v_right * (crandom() * 20));
+    arc = arc + (v_right * (crandom() * 20));
+   
+    start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
+    
+    ctrl_weapon_make_projectile( 0.15 );
+    NEWSHOT.c_ofs = arc;
+    NEWSHOT.enemy = self.owner.enemy;
+    NEWSHOT.velocity = normalize( arc - start );
+    NEWSHOT.velocity = NEWSHOT.velocity * 100;
+    NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
+    setorigin(NEWSHOT, start);
+    
+    sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+    pointparticles( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
   }
 };
