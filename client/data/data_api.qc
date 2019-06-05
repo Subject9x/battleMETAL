@@ -5,9 +5,30 @@ Date: 01/28/2018
 Overview: implementation
 */
 
+//Wrapping data_system functionalities for cleanliness.
+void( entity item, float id ) data_get_client_item_;
+void( entity item, float id ) data_get_client_mech_;
+void( entity item, float id ) data_get_client_vehicle_;
+void( entity item, float id ) data_get_client_turret_;
+void( entity item, float id ) data_get_client_building_;
+
+void() a_func={
+	cons_logAString("waddle", "dee");	//DEBUG
+};
+
+string someFunctions[64];	//TEST
+
+void() test={
+	someFunctions[0] = "a_func";
+};
+
 void() data_ini_arrays={
+	if( isfunction(someFunctions[0]) ){
+		callfunction(someFunctions[0]);
+	}
+	
   //Weapon Names
-  data_WeaponNames[ID_WEP_LATC] = DAT_LATC_NAME;
+  /*data_WeaponNames[ID_WEP_LATC] = DAT_LATC_NAME;
   data_WeaponNames[ID_WEP_LAS] = DAT_LAS_NAME;
   data_WeaponNames[ID_WEP_EMP] = DAT_EMP_NAME;
   data_WeaponNames[ID_WEP_MIS] = DAT_MIS_NAME;
@@ -27,10 +48,10 @@ void() data_ini_arrays={
   data_WeaponNames[ID_EQP_HSEM] = DAT_EQP_HSEM_NAME;
   data_WeaponNames[ID_EQP_LSAR] = DAT_EQP_LSAR_NAME;
   data_WeaponNames[ID_EQP_SCAP] = DAT_EQP_SCAP_NAME;
-  data_WeaponNames[ID_EQP_RECAP] = DAT_EQP_RECAP_NAME;
+  data_WeaponNames[ID_EQP_RECAP] = DAT_EQP_RECAP_NAME;*/
 
   //Weapon Icons
-  data_WeaponIcons[ID_WEP_LATC] = DAT_LATC_ICON;
+  /*data_WeaponIcons[ID_WEP_LATC] = DAT_LATC_ICON;
   data_WeaponIcons[ID_WEP_LAS] = DAT_LAS_ICON;
   data_WeaponIcons[ID_WEP_EMP] = DAT_EMP_ICON;
   data_WeaponIcons[ID_WEP_MIS] = DAT_MIS_ICON;
@@ -50,10 +71,10 @@ void() data_ini_arrays={
   data_WeaponIcons[ID_EQP_HSEM] = DAT_EQP_HSEM_ICON;
   data_WeaponIcons[ID_EQP_LSAR] = DAT_EQP_LSAR_ICON;
   data_WeaponIcons[ID_EQP_SCAP] = DAT_EQP_SCAP_ICON;
-  data_WeaponIcons[ID_EQP_RECAP] = DAT_EQP_RECAP_ICON;
+  data_WeaponIcons[ID_EQP_RECAP] = DAT_EQP_RECAP_ICON;*/
   
   //hey arrays are fast, right?
-  data_WeaponType[ID_WEP_LATC] = 1;
+  /*data_WeaponType[ID_WEP_LATC] = 1;
   data_WeaponType[ID_WEP_LAS] = 2;
   data_WeaponType[ID_WEP_EMP] = 2;
   data_WeaponType[ID_WEP_MIS] = 4;
@@ -73,9 +94,9 @@ void() data_ini_arrays={
   data_WeaponType[ID_EQP_HSEM] = 128;
   data_WeaponType[ID_EQP_LSAR] = 128;
   data_WeaponType[ID_EQP_SCAP] = 128;
-  data_WeaponType[ID_EQP_RECAP] = 128;
+  data_WeaponType[ID_EQP_RECAP] = 128;*/
 
-  data_WeaponSize[ID_WEP_LATC] = DAT_LATC_WSIZE;
+  /*data_WeaponSize[ID_WEP_LATC] = DAT_LATC_WSIZE;
   data_WeaponSize[ID_WEP_LAS] = DAT_LAS_WSIZE;
   data_WeaponSize[ID_WEP_EMP] = DAT_EMP_WSIZE;
   data_WeaponSize[ID_WEP_MIS] = DAT_MIS_WSIZE;
@@ -88,16 +109,16 @@ void() data_ini_arrays={
   data_WeaponSize[ID_WEP_SFGA] = DAT_SFGA_WSIZE;
   data_WeaponSize[ID_WEP_FLAK] = DAT_FLAK_WSIZE;
   data_WeaponSize[ID_WEP_ION] = DAT_ION_WSIZE;
-  data_WeaponSize[ID_WEP_SWRM] = DAT_SWRM_WSIZE;
+  data_WeaponSize[ID_WEP_SWRM] = DAT_SWRM_WSIZE;*/
   
-  data_WeaponSize[ID_EQP_ATGM] = DAT_EQP_ATGM_WSIZE;
+  /*data_WeaponSize[ID_EQP_ATGM] = DAT_EQP_ATGM_WSIZE;
   data_WeaponSize[ID_EQP_ENBAT] = DAT_EQP_ENBAT_WSIZE;
   data_WeaponSize[ID_EQP_HSEM] = DAT_EQP_HSEM_WSIZE;
   data_WeaponSize[ID_EQP_LSAR] = DAT_EQP_LSAR_WSIZE;
   data_WeaponSize[ID_EQP_SCAP] = DAT_EQP_SCAP_WSIZE;
-  data_WeaponSize[ID_EQP_RECAP] = DAT_EQP_RECAP_WSIZE;
+  data_WeaponSize[ID_EQP_RECAP] = DAT_EQP_RECAP_WSIZE;*/
   
-  data_WeaponEne[ID_WEP_LATC] = DAT_LATC_EN_RATE;
+  /*data_WeaponEne[ID_WEP_LATC] = DAT_LATC_EN_RATE;
   data_WeaponEne[ID_WEP_LAS] = DAT_LAS_EN_RATE;
   data_WeaponEne[ID_WEP_EMP] = DAT_EMP_EN_RATE;
   data_WeaponEne[ID_WEP_MIS] = DAT_MIS_EN_RATE;
@@ -117,29 +138,31 @@ void() data_ini_arrays={
   data_WeaponEne[ID_EQP_HSEM] = 0;
   data_WeaponEne[ID_EQP_LSAR] = 0;
   data_WeaponEne[ID_EQP_SCAP] = 0;
-  data_WeaponEne[ID_EQP_RECAP] = DAT_EQP_RECAP_EN_RATE * -1;
+  data_WeaponEne[ID_EQP_RECAP] = DAT_EQP_RECAP_EN_RATE * -1;*/
 };
 
-string(float data_idx) data_get_weapon_name={
+string(float dataIdx) data_get_weapon_name={
   local float idx;
   idx = 0;
   while(idx < UI_TOTAL_WEAPONS){
-    if(idx == data_idx){
+    if(idx == dataIdx){
       return data_WeaponNames[idx];
     }
     idx = idx + 1;
   }
+  return "";
 };
 
-string(float data_idx) data_get_weapon_icon={
+string(float dataIdx) data_get_weapon_icon={
   local float idx;
   idx = 0;
   while(idx < UI_TOTAL_WEAPONS){
-    if(idx == data_idx){
+    if(idx == dataIdx){
       return data_WeaponIcons[idx];
     }
     idx = idx + 1;
   }
+  return "";
 };
 
 void() data_mech_config_clearBuffer={
@@ -201,6 +224,7 @@ void( float mechId, float configNum ) data_mech_config_save={
 
 float( float mechId, float configNum ) data_mech_config_load={
   local float flannel, line_tag, line_val;
+  local float idx;
   local string file, contents, line;
   
   file = strcat(PATH_DATA_UI, "/loadouts/", ftos(mechId), "/", ftos(configNum),".dat");
@@ -229,13 +253,11 @@ float( float mechId, float configNum ) data_mech_config_load={
         }
         if( strstrofs(token, "hpt",0) != -1 ){
           tokenizebyseparator(token, "_");
-          local float idx;
           idx = stof(argv(1));
           DATA_CONFIG_BUFFER_WEPS[idx] = stof(value);
         }
         if( strstrofs(token, "group",0) != -1 ){
           tokenizebyseparator(token, "_");
-          local float idx;
           idx = stof(argv(1));
           DATA_CONFIG_BUFFER_GRPS[idx] = stof(value);
         }
@@ -283,33 +305,4 @@ float() data_mech_config_valid={
     itr = itr + 1;
   }
   return TRUE;
-};
-
-//functional-style data lookup
-void(entity item) client_data_ini_weapon={
-
-};
-void(entity item) client_data_ini_mech={
-};
-
-void(float wep_id) initialize_data_item_={
-
-};
-void(float mech_id) initialize_data_mech_={
-  //guess the mech id's should just be flat
-  switch(mech_id){
-    case ID_MCH_balaket:
-      //build_mech_unit(data_otl_ini);
-      break;
-    case ID_MCH_matok:
-     // build_mech_unit(data_mtk_ini);
-      break;
-    case ID_MCH_monitor:
-      //build_mech_unit(data_mnt_ini);
-      break;
-    default :
-      cons_logAFloat("Error: failed to build mech with id", mech_id);
-      remove(self);
-      break;
-  }
 };

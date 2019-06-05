@@ -24,8 +24,8 @@ void() data_ini_missile_activeradar_={
   self.spreadDefault = '0.03 0.03 0';
   
   self.w_range = 1500;
-  self.p_damage = 7;
-  self.p_dmgtype = (DMG_EXP | EFF_ARC);
+  self.damageValue = 7;
+  self.damageType = (DMG_EXP | EFF_ARC);
   
   self.w_attack = data_ini_attack_missile_activeradar_;
   self.think = default_weapon_think;

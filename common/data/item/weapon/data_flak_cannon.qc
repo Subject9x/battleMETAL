@@ -30,8 +30,8 @@ void() data_ini_flak_cannon_={
   self.spreadDefault = '0.017 0.015 0';
   
   self.w_range = 2000;
-  self.p_damage = 0.5;
-  self.p_dmgtype = DMG_BAL;
+  self.damageValue = 0.5;
+  self.damageType = DMG_BAL;
   
   self.w_attack = data_ini_attack_flak_;
   self.think = default_weapon_think;
@@ -70,7 +70,7 @@ void() data_ini_attack_flak_={
     local float totes;
     totes = DAT_FLAK_SHRAP_TOTAL;
     if(trace_ent.shield > 0){
-      t_damage(trace_ent, self, self.owner, self.p_damage * totes, self.p_dmgtype, trace_endpos, '0 0 0');
+      t_damage(trace_ent, self, self.owner, self.damageValue * totes, self.damageType, trace_endpos, '0 0 0');
     }
     else{
       local vector shotpoint;
@@ -85,7 +85,7 @@ void() data_ini_attack_flak_={
         shrapDir = shotDir + (crandom()*DAT_FLAK_SHRAP_SPREAD_x*v_right) + (crandom()*DAT_FLAK_SHRAP_SPREAD_y*v_up);
         shrapPoint = shotpoint + shrapDir*DAT_FLAK_SHRAP_SPREAD_z;
         traceline( shotpoint, shrapPoint, FALSE, self.owner);
-        t_damage(trace_ent, self, self.owner, self.p_damage, self.p_dmgtype, trace_endpos, '0 0 0');
+        t_damage(trace_ent, self, self.owner, self.damageValue, self.damageType, trace_endpos, '0 0 0');
         totes = totes - 1;
       }
     }

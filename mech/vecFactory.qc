@@ -154,7 +154,7 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
   
   self = weaponBuild;
     self.data_idx = own.stat = nex_wep;
-    self.p_dmgtype = 0; //zero-out this stat
+    self.damageType = 0; //zero-out this stat
     initialize_data_item_(nex_wep);
     
     self.reloadValue = 100; // bug fix - weapon reload indicator not starting at correct value
@@ -169,7 +169,7 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
     self.partTypeId = -2;
 
     if( (own.flags & FL_MONSTER) ){
-      self.p_damage = ai_pilot_mod_damage( own.ai_rank, self.p_damage);
+      self.damageValue = ai_pilot_mod_damage( own.ai_rank, self.damageValue);
       if(self.w_clipsize > 1){
         self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
       }
@@ -190,7 +190,7 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
     self.angles = self.partNext.angles;
     self.v_angle = self.angles - self.partNext.angles;
     
-    if( (self.p_dmgtype & DMG_MSC) ){
+    if( (self.damageType & DMG_MSC) ){
       if( self.w_attack ){
         self.w_attack();
       }

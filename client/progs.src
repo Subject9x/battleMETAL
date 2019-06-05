@@ -121,10 +121,17 @@ util/headers/particle_sys.qh
   ui/menu/headers/ui_objectives.qh
 //================
 
+data/client_precache.qc
+data/data_system.qc
+data/data_api.qc
+data/ui_data.qc
+data/msn_file.qc
+
 ui/anim.qc
 ui/gui_api.qc
 ui/hud/hud_view.qc
 ui/hud/system_hud_sound.qc
+
 
 //Client / Server CMD===
   network/server_localcmd.qc
@@ -144,11 +151,6 @@ ui/hud/system_hud_sound.qc
 //EFFECTS================
   util/particle_sys.qc
 //=======================
-
-data/client_precache.qc
-data/data_api.qc
-data/ui_data.qc
-data/msn_file.qc
 
 input_events.qc
 client_main.qc

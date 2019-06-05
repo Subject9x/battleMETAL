@@ -22,8 +22,8 @@ void() data_ini_equip_target_module_={
   self.energyRate = 0.2;
   
   self.w_range = 0;
-  self.p_damage = 0;
-  self.p_dmgtype = (DMG_MSC);
+  self.damageValue = 0;
+  self.damageType = (DMG_MSC);
   
   self.spreadDefault = '0.25 0.15 0.25';  //upgrades Unit's accuracy
   

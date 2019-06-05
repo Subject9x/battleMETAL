@@ -22,8 +22,8 @@ void() data_ini_equip_recharge_capacitor_={
   self.energyRate = 0.2;  // percent multiplier to unit's radar range
   
   self.w_range = 0;
-  self.p_damage = 0;
-  self.p_dmgtype = (DMG_MSC);
+  self.damageValue = 0;
+  self.damageType = (DMG_MSC);
   
   self.w_attack = recharge_capacitor_upgrade_;
   self.think = SUB_Null;

@@ -726,7 +726,7 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   local vector tofs, msgSize, factionColor;
   local string msg;
   
-  if(CLIENT_i_faction == CLIENT_target_faction){
+  if(CLIENT_faction == CLIENT_target_faction){
     factionColor = CLR_DEF_IIF_FRIEND;
   }
   else{
@@ -994,7 +994,7 @@ void() data_hud_frame={
         porg = UI_DATA_POS[uid]; 
         algn = UI_DATA_ALIGN[uid];
         vsize = UI_DATA_SIZE[uid];
-        hud_renderRadar(porg, algn, CLIENT_i_faction, pmove_org, CLIENT_radar_range, CLIENT_stat_rdr_mode, vsize);
+        hud_renderRadar(porg, algn, CLIENT_faction, pmove_org, CLIENT_radar_range, CLIENT_stat_rdr_mode, vsize);
         break;
       case HUD_UID_NAV:      
         porg = UI_DATA_POS[uid]; 
@@ -1040,7 +1040,7 @@ void() data_hud_frame={
   }
   
   if( CLIENT_stat_trg_dataidx > 0 ){
-    hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_i_faction, CLIENT_target_faction, CLIENT_radar_range);
+    hud_renderTargetOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_faction, CLIENT_target_faction, CLIENT_radar_range);
     hud_renderShieldOverlay(CLIENT_target_origin, pmove_org, 0, CLIENT_target_shield, CLIENT_radar_range, CLIENT_target_vecsize, '64 6', AXIS_H);
   }  
 
@@ -1074,7 +1074,7 @@ void() data_hud_frame={
   }
 
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
-  hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_i_faction, CLIENT_target_faction, CLIENT_target_datatype);
+  hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
   
   //repair sits above all

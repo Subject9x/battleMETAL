@@ -13,8 +13,8 @@ void() data_pac_think;
 void() data_pac_ini={
   self.data_idx = ID_WEP_PAC;
   self.w_name = DAT_PAC_NAME;
-  self.p_damage = DAT_PAC_DMG;
-  self.p_dmgtype = ( DMG_ENE | EFF_PRC);
+  self.damageValue = DAT_PAC_DMG;
+  self.damageType = ( DMG_ENE | EFF_PRC);
   self.w_firetime = 0;
   self.w_clipsize = DAT_PAC_CLIPSIZE;
   self.w_currentammo = DAT_PAC_CLIPSIZE;
@@ -103,7 +103,7 @@ void() data_pac_atk={
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), org, dir);
 
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, player, self.p_damage, self.p_dmgtype, dir + (v_forward*3), '0 0 0');
+    t_damage(trace_ent, self, player, self.damageValue, self.damageType, dir + (v_forward*3), '0 0 0');
     if( trace_ent.shield > 0 ){
       pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), dir + (v_forward * -5), normalize( dir - org ) * -4, 1);
       pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), dir + (v_forward * -5), '0 0 0', 1);

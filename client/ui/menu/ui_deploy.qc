@@ -264,7 +264,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     player = findchainflags(flags, FL_CLIENT);
     while(player){
       if(player.data_type == DATA_MECH){
-        if(player.faction == CLIENT_i_faction){
+        if(player.faction == CLIENT_faction){
           local vector friend_org;
           friend_org = gui_mapCoordToImgCoord(map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
           drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);

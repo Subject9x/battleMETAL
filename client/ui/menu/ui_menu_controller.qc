@@ -15,13 +15,13 @@ void() menu_handleFrame={
   local vector mpos, i_sz;
   
   //UI Theming
-  if( CLIENT_i_faction == 1 ){
+  if( CLIENT_faction == 1 ){
     CLR_DEF_UI_BRIEF = CLR_UI_PSC_BRIEF;
     CLR_DEF_UI_HANGAR = CLR_UI_PSC_HANGAR;
     CLR_DEF_UI_ARMING = CLR_UI_PSC_ARMING;
     CLR_DEF_UI_DEPLOY = CLR_UI_PSC_DEPLOY;
   }
-  else if( CLIENT_i_faction == 2 ){
+  else if( CLIENT_faction == 2 ){
     CLR_DEF_UI_BRIEF = CLR_UI_AUTH_BRIEF;
     CLR_DEF_UI_HANGAR = CLR_UI_AUTH_HANGAR;
     CLR_DEF_UI_ARMING = CLR_UI_AUTH_ARMING;

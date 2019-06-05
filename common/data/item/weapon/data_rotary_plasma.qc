@@ -24,8 +24,8 @@ void() data_ini_plasma_={
   self.spreadDefault = '0.015 0.015 0';
   
   self.w_range = 1000;
-  self.p_damage = 10.8;
-  self.p_dmgtype = (DMG_BAL | EFF_PRC);
+  self.damageValue = 10.8;
+  self.damageType = (DMG_BAL | EFF_PRC);
   
   self.w_attack = data_ini_attack_plasma_;
   self.think = default_weapon_think;

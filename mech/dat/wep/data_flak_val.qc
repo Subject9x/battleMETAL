@@ -18,8 +18,8 @@ void() data_flak_think;
 void() data_flak_ini={
   self.data_idx = ID_WEP_FLAK;
   self.w_name = DAT_FLAK_NAME;
-  self.p_dmgtype = self.p_dmgtype | DMG_BAL;
-  self.p_damage = DAT_FLAK_DMG;
+  self.damageType = self.damageType | DMG_BAL;
+  self.damageValue = DAT_FLAK_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_FLAK_CLIPSIZE;
   self.w_currentammo = DAT_FLAK_CLIPSIZE;
@@ -120,7 +120,7 @@ void() data_flak_atk={
     local float totes;
     totes = DAT_FLAK_SHRAP_TOTAL;
     if(enm.shield > 0){
-      t_damage(enm, self, self.owner, self.p_damage * totes, self.p_dmgtype, trace_endpos, '0 0 0');
+      t_damage(enm, self, self.owner, self.damageValue * totes, self.damageType, trace_endpos, '0 0 0');
     }
     else{
       local vector shotpoint;
@@ -135,7 +135,7 @@ void() data_flak_atk={
         shrapDir = shotDir + (crandom()*DAT_FLAK_SHRAP_SPREAD_x*v_right) + (crandom()*DAT_FLAK_SHRAP_SPREAD_y*v_up);
         shrapPoint = shotpoint + shrapDir*DAT_FLAK_SHRAP_SPREAD_z;
         traceline( shotpoint, shrapPoint, FALSE, self.owner);
-        t_damage(enm, self, self.owner, self.p_damage, self.p_dmgtype, trace_endpos, '0 0 0');
+        t_damage(enm, self, self.owner, self.damageValue, self.damageType, trace_endpos, '0 0 0');
         totes = totes - 1;
       }
     }

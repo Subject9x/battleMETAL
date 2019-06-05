@@ -22,8 +22,8 @@ void() data_ini_equip_sensor_array_={
   self.energyRate = 0.3;  // percent multiplier to unit's radar range
   
   self.w_range = 0;
-  self.p_damage = 0;
-  self.p_dmgtype = (DMG_MSC);
+  self.damageValue = 0;
+  self.damageType = (DMG_MSC);
   
   self.w_attack = sensor_array_upgrade_;
   self.think = SUB_Null;

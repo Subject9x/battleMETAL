@@ -79,7 +79,7 @@ void()data_prj_emp_explode={
         local float ln;
         ln = vlen(trace_endpos - self.origin);
         if(ln <= DAT_PRJ_EMP_EXPRAD){
-          t_damage(lst, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+          t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
         }
       }
     }
@@ -105,7 +105,7 @@ void() projectile_touch_emp_={
     else{
       pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
     }
-    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     remove(self);
     return;
   }

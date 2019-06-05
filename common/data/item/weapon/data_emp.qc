@@ -24,8 +24,8 @@ void() data_ini_emp_={
   self.spreadDefault = '0.009 0.008 0';
   
   self.w_range = 1700;
-  self.p_damage = 400;
-  self.p_dmgtype = (DMG_ENE | EFF_STX | EFF_ENE);
+  self.damageValue = 400;
+  self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   
   self.w_attack = data_ini_attack_emp_;
   self.think = default_weapon_think;

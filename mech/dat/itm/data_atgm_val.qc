@@ -31,7 +31,7 @@ void() data_eqp_atgm_ini={
   self.w_think = data_eqp_atgm_upgrade;   //fired once on-spawn, then replaced by SUB_Null
   self.health = 1;
   self.max_health = 1;
-  self.p_dmgtype = self.p_dmgtype | DMG_MSC;
+  self.damageType = self.damageType | DMG_MSC;
   self.w_range = 0;
 };
 

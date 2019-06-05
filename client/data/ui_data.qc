@@ -276,9 +276,12 @@ void() ui_data_clear_item2={
 };
 
 float(float id) ui_data_load_mech={
-  ui_data_clear_mechdata();
   local float flannel, line_tag, line_val;
   local string file, contents, line;
+  local float idx; 
+  
+  ui_data_clear_mechdata();
+  
   file = strcat(PATH_DATA_UI, "/vec/mech/", MECH_DATA_NAMES[id],".unit");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
@@ -361,37 +364,31 @@ float(float id) ui_data_load_mech={
         }
         if( strstrofs(token, "types",0) != -1 ){
           tokenizebyseparator(token, "_");
-          local float idx;
           idx = stof(argv(2));
           MECH_DATA_H_TYPE[idx] = stof(value); 
         }
         if( strstrofs(token, "size",0) != -1 ){
           tokenizebyseparator(token, "_");
-          local float idx;
           idx = stof(argv(2));
           MECH_DATA_H_SIZE[idx] = stof(value);
         }
         if( strstrofs(token, "arm",0) != -1 ){
           tokenizebyseparator(token, "_");
-          local float idx;
           idx = stof(argv(2));
           MECH_DATA_H_ARM[idx] = stov(value);
         }
         if( strstrofs(token, "hang",0) != -1 ){
           tokenizebyseparator(token, "_");
-          local float idx;
           idx = stof(argv(2));
           MECH_DATA_H_HNG[idx] = stov(value);
         }
         if( strstrofs(token, "stock",0) != -1 ){
           tokenizebyseparator(token, "_");
-          local float idx;
           idx = stof(argv(2));
           MECH_DATA_STOCK[idx] = stof(value); 
         }
         if( strstrofs(token, "grps",0) != -1 ){
           tokenizebyseparator(token, "_");
-          local float idx;
           idx = stof(argv(2));
           MECH_DATA_GRPS[idx] = stof(value); 
         }
@@ -476,16 +473,34 @@ float( float id ) ui_data_load_hud={
 
 
 float(float id) ui_date_load_item1={
+  //local float flannel, line_tag, line_val;
+  //local string file, contents, line;
+  
   ui_data_clear_item1();
-  local float flannel, line_tag, line_val;
-  local string file, contents, line;
-  file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".item");
+  /*file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".item");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
     cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
     return FALSE;
-  }
-  contents = fgets(flannel);
+  }*/
+  
+  UI_ARMING_item_a.data_idx = id;
+  data_get_client_item_(UI_ARMING_item_a, id);
+  
+  ITEM1_DATA_ID = UI_ARMING_item_a.data_idx;
+  ITEM1_DATA_ABBR = UI_ARMING_item_a.w_abbr;
+  ITEM1_DATA_NAME = UI_ARMING_item_a.vec_name;
+  ITEM1_DATA_ICON = precache_pic(UI_ARMING_item_a.icon);
+  ITEM1_DATA_DMG = UI_ARMING_item_a.damageValue;
+  ITEM1_DATA_TYPE = UI_ARMING_item_a.damageType;
+  ITEM1_DATA_EN = UI_ARMING_item_a.energyMax;
+  ITEM1_DATA_RANGE = UI_ARMING_item_a.w_range;
+  ITEM1_DATA_CLIP = UI_ARMING_item_a.w_clipsize;
+  ITEM1_DATA_SIZE = UI_ARMING_item_a.i_size;
+  ITEM1_DATA_TECH = UI_ARMING_item_a.techLevel;
+  ITEM1_DATA_DESC = UI_ARMING_item_a.description;
+  
+  /*contents = fgets(flannel);
   line = fgets(flannel);
   while( (line != "") ){
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
@@ -535,13 +550,31 @@ float(float id) ui_date_load_item1={
     }
    line = fgets(flannel);
   }
-  fclose(flannel);
+  fclose(flannel);*/
   return TRUE;
 };
 
 float(float id) ui_date_load_item2={
   ui_data_clear_item2();
-  local float flannel, line_tag, line_val;
+  
+  UI_ARMING_item_a.data_idx = id;
+  data_get_client_item_(UI_ARMING_item_b, id);
+  
+  ITEM2_DATA_ID = UI_ARMING_item_b.data_idx;
+  ITEM2_DATA_ABBR = UI_ARMING_item_b.w_abbr;
+  ITEM2_DATA_NAME = UI_ARMING_item_b.vec_name;
+  ITEM2_DATA_ICON = precache_pic(UI_ARMING_item_b.icon);
+  ITEM2_DATA_DMG = UI_ARMING_item_b.damageValue;
+  ITEM2_DATA_TYPE = UI_ARMING_item_b.damageType;
+  ITEM2_DATA_EN = UI_ARMING_item_b.energyMax;
+  ITEM2_DATA_RANGE = UI_ARMING_item_b.w_range;
+  ITEM2_DATA_CLIP = UI_ARMING_item_b.w_clipsize;
+  ITEM2_DATA_SIZE = UI_ARMING_item_b.i_size;
+  ITEM2_DATA_TECH = UI_ARMING_item_b.techLevel;
+  ITEM2_DATA_DESC = UI_ARMING_item_b.description;
+  
+  
+ /* local float flannel, line_tag, line_val;
   local string file, contents, line;
   file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".item");
   flannel = fopen(file, FILE_READ);
@@ -600,7 +633,7 @@ float(float id) ui_date_load_item2={
     }
    line = fgets(flannel);
   }
-  fclose(flannel);
+  fclose(flannel);*/
   return TRUE;
 };
 

@@ -24,8 +24,8 @@ void() data_ini_missile_laserguide_={
   self.spreadDefault = '0.03 0.03 0';
   
   self.w_range = 1000;
-  self.p_damage = 275;
-  self.p_dmgtype = (DMG_EXP);
+  self.damageValue = 275;
+  self.damageType = (DMG_EXP);
   
   self.w_attack = data_ini_attack_missile_laserguide_;
   self.think = default_weapon_think;

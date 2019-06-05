@@ -1542,9 +1542,7 @@ vector gettaginfo_right;
 vector gettaginfo_up;
 float checkpvs(vector viewpos, entity viewee) = #240;
 
-
-//compatability
-
+//compatability with common/data stuff - Roohr
 float() crandom;
 void() SUB_Null={};
 void() SUB_Remove={remove(self);};

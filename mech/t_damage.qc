@@ -17,7 +17,7 @@ Ballistic Damage
 */
 float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   local float damage, dmgtype, shields, crit;
-  dmgtype = inflictor.p_dmgtype;
+  dmgtype = inflictor.damageType;
   damage = dmg_amt;
   shields = targ.shield;
   
@@ -66,7 +66,7 @@ Energy Damage
 float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   local float damage, dmgtype, shields, mod, crit;
   
-  dmgtype = inflictor.p_dmgtype;
+  dmgtype = inflictor.damageType;
   damage = dmg_amt;
   shields = targ.shield;
 
@@ -125,7 +125,7 @@ Explosive Damage
 float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
   local float damage, dmgtype, shields, mod, crit, quarter;
   
-  dmgtype = inflictor.p_dmgtype;
+  dmgtype = inflictor.damageType;
   damage = dmg_amt;
   shields = targ.shield;
   quarter = shields * 0.25;

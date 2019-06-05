@@ -13,8 +13,8 @@ void() data_marh_think;
 
 void() data_marh_ini={
   self.data_idx = ID_WEP_MARH;
-  self.p_dmgtype = (DMG_EXP | EFF_ARC);
-  self.p_damage = DAT_MARH_DMG;
+  self.damageType = (DMG_EXP | EFF_ARC);
+  self.damageValue = DAT_MARH_DMG;
   self.w_name = DAT_MARH_NAME;
   self.w_firetime = 0;
   self.w_clipsize = DAT_MARH_CLIPSIZE;
@@ -109,8 +109,8 @@ void() data_marh_atk={
       self = newmis;
         self.owner = player;
         data_iniProjectile(oself.w_proj);
-        self.p_dmgtype = oself.p_dmgtype;
-        self.p_damage = oself.p_damage;
+        self.damageType = oself.damageType;
+        self.damageValue = oself.damageValue;
         self.enemy = self.owner.enemy;
         self.c_ofs = arc;
         self.p_lifetime = time + self.p_lifetime;

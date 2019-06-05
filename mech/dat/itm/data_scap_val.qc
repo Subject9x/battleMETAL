@@ -32,7 +32,7 @@ void() data_eqp_scap_ini={
   self.fire_sound = "";
   self.health = 1;
   self.max_health = 1;
-  self.p_dmgtype = self.p_dmgtype | DMG_MSC;
+  self.damageType = self.damageType | DMG_MSC;
   self.w_range = 0;
 };
 

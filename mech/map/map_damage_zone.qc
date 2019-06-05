@@ -7,11 +7,11 @@ Overview:
   
 Inputs
   .targetname = <string> [targetname] - make triggerable
-  .p_damage = <float> - amount of damage to impart
-  .p_dmgtype = <float> [flag] 1 - DMG SHIELDS
-  .p_dmgtype = <float> [flag] 2 - DMG ARMOR
-  .p_dmgtype = <float> [flag] 4 - DMG ENERGY
-  .p_dmgtype = <float> [flag] 8 - DMG SPEED
+  .damageValue = <float> - amount of damage to impart
+  .damageType = <float> [flag] 1 - DMG SHIELDS
+  .damageType = <float> [flag] 2 - DMG ARMOR
+  .damageType = <float> [flag] 4 - DMG ENERGY
+  .damageType = <float> [flag] 8 - DMG SPEED
   .p_lifetime = <float> - time to live, use with spawnflags[2]
   .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
@@ -22,12 +22,12 @@ Inputs
   .spawnflags = <float> [flag] 32 - activate on-touch
 */
 
-void() map_damagezone_use;
-void() map_damagezone_cool;
+void() madamageValuezone_use;
+void() madamageValuezone_cool;
 /*
   p_lifetime countdown timer hit.
 */
-void() map_damagezone_think={
+void() madamageValuezone_think={
   
   self.isActive = FALSE;
   
@@ -40,7 +40,7 @@ void() map_damagezone_think={
   
   if( (self.spawnflags & 4) ){
     //reactivate damage zone after timer
-    self.think = map_damagezone_cool;
+    self.think = madamageValuezone_cool;
     self.nextthink = time + self.wait;
     return;
   }
@@ -50,10 +50,10 @@ void() map_damagezone_think={
   self.nextthink = time + 0.1;
 };
 
-void() map_damagezone_cool={
+void() madamageValuezone_cool={
   self.isActive = TRUE;
   if( (self.spawnflags & 2) ){
-    self.think = map_damagezone_think;
+    self.think = madamageValuezone_think;
     self.nextthink = time + self.p_lifetime;
   }
 };
@@ -61,7 +61,7 @@ void() map_damagezone_cool={
 /*
   Primary trigger channel, called by other map logic
 */
-void() map_damagezone_use={
+void() madamageValuezone_use={
 
   if( (self.spawnflags & 4) ){
     //prevents mutli-activation if in cooldown
@@ -73,17 +73,17 @@ void() map_damagezone_use={
   if( !self.isActive ){
     self.isActive = TRUE;
     if( (self.spawnflags & 2) ){
-      self.think = map_damagezone_think;
+      self.think = madamageValuezone_think;
       self.nextthink = time + self.p_lifetime;
     }
   }
 };
 
-void() map_damagezone_touch={
+void() madamageValuezone_touch={
 
   if( (self.spawnflags & 32) ){
     if( !self.isActive ){
-      self.think = map_damagezone_use;
+      self.think = madamageValuezone_use;
       self.nextthink = time + 0.1;
       return;
     }
@@ -91,8 +91,8 @@ void() map_damagezone_touch={
 
   if( self.isActive ){
     if( (other.flags & FL_UNIT) ){
-      if( (self.p_dmgtype & 1) ){
-        other.shield = other.shield - self.p_damage;
+      if( (self.damageType & 1) ){
+        other.shield = other.shield - self.damageValue;
         if( other.shield < 0 ){
           other.shield = 0;
         }
@@ -101,18 +101,18 @@ void() map_damagezone_touch={
           other.shield = other.shieldMax;
         }
       }
-      if( (self.p_dmgtype & 2) ){
+      if( (self.damageType & 2) ){
         local vector rpoint;
         rpoint = randomvec();
         rpoint_x = rpoint_x * (random() * self.maxs_x);
         rpoint_y = rpoint_y * (random() * self.maxs_y);
         rpoint_z = rpoint_z * (random() * self.maxs_z);
         rpoint = other.origin + rpoint;
-        t_damage(other, self, world, self.p_damage, 0, rpoint, '0 0 0');
+        t_damage(other, self, world, self.damageValue, 0, rpoint, '0 0 0');
 
       }
-      if( (self.p_dmgtype & 4) ){
-        other.energy = other.energy - self.p_damage;
+      if( (self.damageType & 4) ){
+        other.energy = other.energy - self.damageValue;
         if( other.energy < 0 ){
           other.energy = 0;
         }
@@ -121,7 +121,7 @@ void() map_damagezone_touch={
           other.energy = other.energyMax;
         }
       }
-      if( (self.p_dmgtype & 8) ){
+      if( (self.damageType & 8) ){
         //TODO - impact speed?
       }
       if( (self.spawnflags & 16) ){
@@ -133,9 +133,9 @@ void() map_damagezone_touch={
   }
 };
 
-/*QUAKED map_damagezone (1 1 1)
+/*QUAKED madamageValuezone (1 1 1)
 */
-void() map_damage_zone={
+void() madamageValue_zone={
   local vector tempMin;
   local vector tempMax;
   
@@ -151,7 +151,7 @@ void() map_damage_zone={
   
   self.solid = SOLID_TRIGGER;
   self.movetype = MOVETYPE_NONE;
-  self.touch = map_damagezone_touch;
+  self.touch = madamageValuezone_touch;
   
   setmodel( self, "q3mdl/testball.md3" ); //DEBUG
   setsize( self, tempMin, tempMax );
@@ -182,7 +182,7 @@ void() map_damage_zone={
   self.isActive = 1;
   if( (self.spawnflags & 2) ){
     //map needs the countdown timer  
-    self.think = map_damagezone_think;
+    self.think = madamageValuezone_think;
     self.nextthink = time + self.p_lifetime;
   }
 };

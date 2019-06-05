@@ -32,16 +32,16 @@ void() data_prj_sfga_touch={
   
   makevectors(self.angles);
   if( other.takedamage ){
-    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0){
       pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
     }else{
-      te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.p_damage / 7, 1);
+      te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 7, 1);
     }
     remove(self);
     return;
   }
-  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.8 0.5', self.p_damage / 7, ceil( random() * 3) );
+  te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.8 0.5', self.damageValue / 7, ceil( random() * 3) );
   data_prj_sfga_raddmg();
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
@@ -59,8 +59,8 @@ void() data_prj_sfga_raddmg={
       if( CanDamage( radiusTarg, self )){
         d = vlen(radiusTarg.origin - self.origin);
         d = d / self.w_range;
-        dmg_act = self.p_damage - (self.p_damage * d);
-        t_damage(radiusTarg, self, self.owner, dmg_act, self.p_dmgtype, trace_endpos, '0 0 0');
+        dmg_act = self.damageValue - (self.damageValue * d);
+        t_damage(radiusTarg, self, self.owner, dmg_act, self.damageType, trace_endpos, '0 0 0');
       } 
     }
     radiusTarg = radiusTarg.chain;

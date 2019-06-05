@@ -31,10 +31,10 @@ void() data_emp_ini={
   self.w_think = data_emp_think;
   self.health = DAT_EMP_HPX;
   self.max_health = DAT_EMP_HPX;
-  self.p_dmgtype = (DMG_ENE | EFF_STX | EFF_ENE);
+  self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   self.w_range = DAT_EMP_RANGE;
   self.w_state = READY;
-  self.p_damage = DAT_EMP_DMG;
+  self.damageValue = DAT_EMP_DMG;
   self.spreadDefault = DAT_EMP_ACC;
 };
 
@@ -103,8 +103,8 @@ void() data_emp_atk={
     self.owner = player;
     data_iniProjectile(oself.w_proj);
     self.velocity = normalize(dir - org);
-    self.p_dmgtype = oself.p_dmgtype;
-    self.p_damage = oself.p_damage;
+    self.damageType = oself.damageType;
+    self.damageValue = oself.damageValue;
     self.p_lifetime = time + self.p_lifetime;
     self.w_firetime = time + 0.5;
     self.velocity = self.velocity * self.p_velocity;

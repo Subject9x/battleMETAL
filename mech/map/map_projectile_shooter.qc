@@ -104,13 +104,13 @@ void() map_projectile_shooter={
   self.owner.stat_lck_stt = self.owner.stat_lck_stt | LOCK_TARG_HAS;
   
   if( (self.flags & FL_MONSTER) ){
-    self.p_damage = ai_pilot_mod_damage( skill, self.p_damage);
+    self.damageValue = ai_pilot_mod_damage( skill, self.damageValue);
     if(self.w_clipsize > 1){
       self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
     }
   }
 
-  if( (self.p_dmgtype & DMG_MSC) ){
+  if( (self.damageType & DMG_MSC) ){
     self.w_think = SUB_Null;
   }
   self.th_die = ctrl_die_weapon;

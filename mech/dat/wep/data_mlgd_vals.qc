@@ -14,8 +14,8 @@ void() data_mlgd_think;
 void() data_mlgd_ini={
   self.data_idx = ID_WEP_MLGD;
   self.w_name = DAT_MLGD_NAME;
-  self.p_dmgtype = self.p_dmgtype | DMG_EXP;
-  self.p_damage = DAT_MLGD_DMG;
+  self.damageType = self.damageType | DMG_EXP;
+  self.damageValue = DAT_MLGD_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_MLGD_CLIPSIZE;
   self.w_currentammo = DAT_MLGD_CLIPSIZE;
@@ -111,8 +111,8 @@ void() data_mlgd_atk={
   self = newmis;
     self.owner = player;
     data_iniProjectile(oself.w_proj);
-    self.p_dmgtype = oself.p_dmgtype;
-    self.p_damage = oself.p_damage;
+    self.damageType = oself.damageType;
+    self.damageValue = oself.damageValue;
     self.velocity = normalize(dir - org);
     self.think = data_prj_mlgd_th;
     self.nextthink = time + 0.05;

@@ -23,8 +23,8 @@ void() data_ini_snub_artillery_={
   self.spreadDefault = '0.02 0.02 0';
   
   self.w_range = 1000;
-  self.p_damage = 300;
-  self.p_dmgtype = (DMG_BAL | EFF_ARC);
+  self.damageValue = 300;
+  self.damageType = (DMG_BAL | EFF_ARC);
   
   self.w_attack = data_ini_attack_snub_artillery_;
   self.think = default_weapon_think;

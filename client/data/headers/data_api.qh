@@ -29,9 +29,3 @@ void() data_mech_config_clearBuffer;
 void( float mechId, float configNum ) data_mech_config_save;
 float( float mechId, float configNum ) data_mech_config_load;
 float() data_mech_config_valid;
-
-//functional-style data lookup
-void(entity item) client_data_ini_weapon;
-void(entity item) client_data_ini_mech;
-void(float wep_id) initialize_data_item_;
-void(float mech_id) initialize_data_mech_;

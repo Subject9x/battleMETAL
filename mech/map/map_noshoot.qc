@@ -10,7 +10,7 @@ Overview:
   
 Inputs
   .partTypeId = <float> [flags]  flags you want modified
-  .p_dmgtype = <float> [flags] 1 - Affect FL_CLIENT ONLY
+  .damageType = <float> [flags] 1 - Affect FL_CLIENT ONLY
   .delay = <float> delayed start
   
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
@@ -51,7 +51,7 @@ void() map_noshoot_use={
     local entity e;
     local float findFlags;
     findFlags = FL_MONSTER;
-    if( (self.p_dmgtype) ){
+    if( (self.damageType) ){
       findFlags = findFlags | FL_CLIENT;
     }
     e = findchainflags(flags, findFlags);

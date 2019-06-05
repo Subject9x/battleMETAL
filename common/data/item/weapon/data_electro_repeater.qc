@@ -29,8 +29,8 @@ void() data_ini_electro_repeater_={
   self.w_attack = data_ini_attack_electro_repeater_;
 
   self.w_range = 200;
-  self.p_damage = 25;
-  self.p_dmgtype = (DMG_ENE | EFF_PRC);
+  self.damageValue = 25;
+  self.damageType = (DMG_ENE | EFF_PRC);
  
   self.w_fire_ofs = '0 0 6'; 
   self.fire_sound = "sound/weapons/esr_fire.ogg";
@@ -60,7 +60,7 @@ void() data_ini_attack_electro_repeater_={
   }
   
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, FIRE_ENT, self.p_damage, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
     if( trace_ent.shield > 0 ){
       pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
     }

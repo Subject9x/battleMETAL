@@ -13,8 +13,8 @@ void() data_esr_think;
 void() data_esr_ini={
   self.data_idx = ID_WEP_ESR;
   self.w_name = DAT_ESR_NAME;
-  self.p_dmgtype =  ( DMG_ENE | EFF_STX );
-  self.p_damage = DAT_ESR_DMG;
+  self.damageType =  ( DMG_ENE | EFF_STX );
+  self.damageValue = DAT_ESR_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_ESR_CLIPSIZE;
   self.w_currentammo = DAT_ESR_CLIPSIZE;
@@ -108,7 +108,7 @@ void() data_esr_atk={
   }
   
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, player, self.p_damage, DMG_ENE, dir, '0 0 0');
+    t_damage(trace_ent, self, player, self.damageValue, DMG_ENE, dir, '0 0 0');
     if( trace_ent.shield > 0 ){
       pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), dir + v_up * 1, normalize( dir - org ) * 1, 1);
     }

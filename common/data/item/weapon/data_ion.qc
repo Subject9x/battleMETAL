@@ -24,8 +24,8 @@ void() data_ini_ion_={
   self.spreadDefault = '0.018 0.013 0';
   
   self.w_range = 800;
-  self.p_damage = 75;
-  self.p_dmgtype = (DMG_ENE | EFF_STX | EFF_ENE);
+  self.damageValue = 75;
+  self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   
   self.w_attack = data_ini_attack_ion_;
   self.think = default_weapon_think;

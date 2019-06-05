@@ -12,5 +12,3 @@ Overview:
 
 .float p_lifetime;	//  game seconds the projectile lives for unless it hits something.
 .float p_velocity;	//  initialized velocity value (convert at function level )
-.float p_damage;	//	is this still needed? REFACTOR
-.float p_dmgtype;	//  Enumerated Float, see defs_game.qc

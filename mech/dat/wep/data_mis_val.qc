@@ -34,8 +34,8 @@ void() data_mis_ini={
   self.w_range = DAT_MIS_RANGE;
   self.w_isburst = FALSE;
   self.w_state = READY;
-  self.p_dmgtype = self.p_dmgtype | DMG_EXP;
-  self.p_damage = DAT_MIS_DMG;
+  self.damageType = self.damageType | DMG_EXP;
+  self.damageValue = DAT_MIS_DMG;
   self.spreadDefault = DAT_MIS_ACC;
 };
 
@@ -101,8 +101,8 @@ void() data_mis_atk={
   self = newmis;
     self.owner = player;
     data_iniProjectile(thisWeapon.w_proj);
-    self.p_dmgtype = thisWeapon.p_dmgtype;
-    self.p_damage = thisWeapon.p_damage;
+    self.damageType = thisWeapon.damageType;
+    self.damageValue = thisWeapon.damageValue;
     self.solid = SOLID_BBOX;
     self.movetype = MOVETYPE_FLYMISSILE;
     util_setModel(self.c_model, 0, 0);

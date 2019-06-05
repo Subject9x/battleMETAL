@@ -14,8 +14,8 @@ void() data_sfga_think;
 void() data_sfga_ini={
   self.data_idx = ID_WEP_SFGA;
   self.w_name = DAT_SFGA_NAME;
-  self.p_dmgtype = self.p_dmgtype | (DMG_BAL | EFF_ARC);
-  self.p_damage = DAT_SFGA_DMG;
+  self.damageType = self.damageType | (DMG_BAL | EFF_ARC);
+  self.damageValue = DAT_SFGA_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_SFGA_CLIPSIZE;
   self.w_currentammo = 1;
@@ -91,8 +91,8 @@ void() data_sfga_atk={
   self = newmis;
     self.owner = player;
     data_iniProjectile(oself.w_proj);
-    self.p_dmgtype = oself.p_dmgtype;
-    self.p_damage = oself.p_damage;
+    self.damageType = oself.damageType;
+    self.damageValue = oself.damageValue;
     self.velocity = normalize(dir - org);
     self.velocity = self.velocity * self.p_velocity;
     self.velocity_z = self.velocity_z + 100;

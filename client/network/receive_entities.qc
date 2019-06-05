@@ -149,7 +149,7 @@ void() receive_ent_bindData={
 
   CLIENT_data_type = getstati(STAT_PLR_DTYPE);
   CLIENT_data_idx = getstati(STAT_PLR_DIDX);
-  CLIENT_i_faction = getstati( STAT_CELLS );
+  CLIENT_faction = getstati( STAT_CELLS );
   CLIENT_stat_lck_stt = getstati(STAT_LCK_STT);
   CLIENT_stat_rdr_mode = getstati(STAT_PLR_RADMOD);
   CLIENT_stat_hit_dirs = getstati(STAT_PLR_HITDIR);

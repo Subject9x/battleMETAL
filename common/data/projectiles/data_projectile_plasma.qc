@@ -50,7 +50,7 @@ void() data_projectile_plasma_burn_th={
     self.nextthink = time + 0.01;
     return;
   }
-  t_damage(self.e_cam, self, self.owner, 0.5, self.p_dmgtype, self.e_cam.origin, '0 0 0');
+  t_damage(self.e_cam, self, self.owner, 0.5, self.damageType, self.e_cam.origin, '0 0 0');
 
   pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   
@@ -78,14 +78,14 @@ void() data_projectile_plasma_touch={
 
   pointparticles( particleeffectnum("TE_RPC_HIT"), this.origin, '0 0 0', 1);
   if(other.takedamage){
-    hit = t_damage(other, this, this.owner, this.p_damage, this.p_dmgtype, this.origin, '0 0 0');
+    hit = t_damage(other, this, this.owner, this.damageValue, this.damageType, this.origin, '0 0 0');
     if(other.shield <= 0){
       newmis = spawn();
       newmis.enemy = other;
       newmis.e_cam = hit;
       newmis.p_lifetime = self.p_lifetime;
-      newmis.p_damage = self.p_damage;
-      newmis.p_dmgtype = self.p_dmgtype;
+      newmis.damageValue = self.damageValue;
+      newmis.damageType = self.damageType;
       newmis.owner = self.owner;
       setmodel(newmis, "q3mdl/testball.md3");
       setsize(newmis, '-1 -1 -1', '1 1 1');

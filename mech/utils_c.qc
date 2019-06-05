@@ -459,7 +459,7 @@ void(string msg, string s1, string split, string s2) cons_log2Strings={
 
 void() BecomeExplosion={
   makevectors( self.angles );
-  te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.p_damage / 5, 1);
+  te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
   
   sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
   self.deadflag = DEAD_DEAD;

@@ -94,8 +94,8 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
     NEWSHOT = spawn();
     self = NEWSHOT;
       self.owner = FIRE_ENT;
-      self.p_dmgtype = theWeapon.p_dmgtype;
-      self.p_damage = theWeapon.p_damage;
+      self.damageType = theWeapon.damageType;
+      self.damageValue = theWeapon.damageValue;
       theWeapon.data_ini_projectile();
       self.p_lifetime = time + self.p_lifetime;
       self.w_firetime = time + 0.5;
@@ -172,7 +172,7 @@ void() ctrl_die_weapon={
     self.effects = EF_NODRAW;
     setsize(self, '0 0 0', '0 0 0');
     
-    if( (self.p_dmgtype & DMG_MSC) ){
+    if( (self.damageType & DMG_MSC) ){
       //weapon is equip, run death func which undoes the module's upgrades
        self.unit_wep1();
     }

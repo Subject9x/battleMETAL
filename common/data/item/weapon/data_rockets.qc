@@ -23,8 +23,8 @@ void() data_ini_rockets_={
   self.spreadDefault = '0.02 0.02 0';
   
   self.w_range = 400;
-  self.p_damage = 75;
-  self.p_dmgtype = (DMG_EXP);
+  self.damageValue = 75;
+  self.damageType = (DMG_EXP);
   
   self.w_attack = data_ini_attack_rockets_;
   self.think = default_weapon_think;

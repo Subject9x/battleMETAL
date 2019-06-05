@@ -81,18 +81,18 @@ RESTORE_WORLDVAL 16 - restore original wind values
 */
 
 
-/*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH
+/*QUAKED madamageValue_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH
 A Damage Zone is an area that hurts all units within the zone.
   
 -------- KEYS -------- 
 .mins = <vector> lower bounds of box
 .maxs = <vector> upper bounds of box
 .targetname = <string> [targetname] - make triggerable
-.p_damage = <float> - amount of damage to impart
-.p_dmgtype = <float> [flag] 1 - DMG SHIELDS
-.p_dmgtype = <float> [flag] 2 - DMG ARMOR
-.p_dmgtype = <float> [flag] 4 - DMG ENERGY
-.p_dmgtype = <float> [flag] 8 - DMG SPEED
+.damageValue = <float> - amount of damage to impart
+.damageType = <float> [flag] 1 - DMG SHIELDS
+.damageType = <float> [flag] 2 - DMG ARMOR
+.damageType = <float> [flag] 4 - DMG ENERGY
+.damageType = <float> [flag] 8 - DMG SPEED
 .p_lifetime = <float> - time to live, use with spawnflags[2]
 .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
 
@@ -163,7 +163,7 @@ this is very powerful and mostly only used for FL_NOSHOOT
 
 -------- KEYS -------- 
 .partTypeId = <float> [flags]  flags you want modified
-.p_dmgtype = <float> [flags] 1 - Affect FL_CLIENT ONLY
+.damageType = <float> [flags] 1 - Affect FL_CLIENT ONLY
 .delay = <float> delayed start
 
 -------- SPAWNFLAGS --------

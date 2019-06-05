@@ -9,6 +9,7 @@ Overview:
 */
 
 float UID_ITEM_EMPTY = -1;
+
 float UID_ITEM_light_autocannon  = 1;
 float UID_ITEM_emp   = 2;
 float UID_ITEM_light_laser   = 3;
@@ -23,6 +24,7 @@ float UID_ITEM_snub_artillery  = 11;
 float UID_ITEM_flak  = 12;
 float UID_ITEM_ion_coil   = 13;
 float UID_ITEM_missile_swarm  = 14;
+
 //-----EQUIP------------
 float UID_ITEM_target_module  = 15;
 float UID_ITEM_energy_battery = 16;

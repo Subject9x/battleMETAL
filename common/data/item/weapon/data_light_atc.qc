@@ -23,8 +23,8 @@ void() data_ini_light_atc_={
   self.spreadDefault = '0.025 0.025 0';
   
   self.w_range = 1800;
-  self.p_damage = 3.5;
-  self.p_dmgtype = DMG_BAL;
+  self.damageValue = 3.5;
+  self.damageType = DMG_BAL;
   
   self.w_attack = data_ini_attack_latc_;
   self.think = default_weapon_think;
@@ -61,7 +61,7 @@ void() data_ini_attack_latc_={
   }
   
   if( trace_ent ){
-    t_damage(trace_ent, self, FIRE_ENT, self.p_damage, DMG_BAL, FIRE_ENDPOINT, '0 0 0');    
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_BAL, FIRE_ENDPOINT, '0 0 0');    
     if( trace_ent.shield <= 0 ){ 
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), FIRE_ENDPOINT + v_forward * -3, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 3);
     }

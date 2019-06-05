@@ -9,14 +9,11 @@ Overview
 	define: Item Entity Fields
 	
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
-
 */
 
 .float reloadMax;	//-> reloadMax refactor
 .float reloadValue;
 .float reloadRate;
-
-
 .string fire_sound;
 
 .float state_1;
@@ -38,4 +35,8 @@ Overview
 .vector fx_origin;
 .float w_range;
 .float w_isburst;   //ugh
-.float w_state; //double ugh
+.float w_state; 	//double ugh
+.float damageValue;	//	is this still needed? REFACTOR
+.float damageType;	//  Enumerated Float, see defs_game.qc\
+.string icon;		//client-side
+.string description;//client-side

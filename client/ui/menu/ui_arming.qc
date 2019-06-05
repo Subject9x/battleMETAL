@@ -84,7 +84,6 @@ void() hardpointListener={
       CLIENT_MENU_sel_hrpnt = hpnt;
       CLIENT_MENU_sel_wep = HARDPOINTS[hpnt];
       ui_date_load_item2(CLIENT_MENU_sel_wep);
-      ui_date_load_item2(CLIENT_MENU_sel_wep);
     }
   }
 };

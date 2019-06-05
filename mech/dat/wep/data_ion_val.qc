@@ -31,10 +31,10 @@ void() data_ion_ini={
   self.w_think = data_ion_think;
   self.health = DAT_ION_HPX;
   self.max_health = DAT_ION_HPX;
-  self.p_dmgtype = (DMG_ENE | EFF_STX | EFF_ENE);
+  self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   self.w_range = DAT_ION_RANGE;
   self.w_state = READY;
-  self.p_damage = DAT_ION_DMG;
+  self.damageValue = DAT_ION_DMG;
   self.w_isburst = FALSE;
   self.spreadDefault = DAT_ION_ACC;
 };
@@ -106,8 +106,8 @@ void() data_ion_atk={
     self.owner = player;
     data_iniProjectile(oself.w_proj);
     self.velocity = normalize(dir - org);
-    self.p_dmgtype = oself.p_dmgtype;
-    self.p_damage = oself.p_damage;
+    self.damageType = oself.damageType;
+    self.damageValue = oself.damageValue;
     self.p_lifetime = time + self.p_lifetime;
     self.w_firetime = time + 0.5;
     self.velocity = self.velocity * self.p_velocity;

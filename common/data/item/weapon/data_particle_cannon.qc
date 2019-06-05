@@ -29,8 +29,8 @@ void() data_ini_particle_cannon_={
   self.w_attack = data_ini_attack_particle_cannon_;
 
   self.w_range = 2000;
-  self.p_damage = 250;
-  self.p_dmgtype = (DMG_ENE | EFF_PRC);
+  self.damageValue = 250;
+  self.damageType = (DMG_ENE | EFF_PRC);
  
   self.w_fire_ofs = '0 0 6.75'; 
   self.fire_sound = "sound/weapons/pac_fire.ogg";
@@ -55,7 +55,7 @@ void() data_ini_attack_particle_cannon_={
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
 
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, FIRE_ENT, self.p_damage, self.p_dmgtype, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
     if( trace_ent.shield > 0 ){
       pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), FIRE_ENDPOINT + (v_forward * -5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
       pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), FIRE_ENDPOINT + (v_forward * -5), '0 0 0', 1);

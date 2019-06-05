@@ -27,8 +27,8 @@ void() data_ini_quantum_={
   self.spreadDefault = '0.005 0.005 0';
   
   self.w_range = 2000;
-  self.p_damage = 10;
-  self.p_dmgtype = (DMG_ENE | EFF_STX | EFF_ENE);
+  self.damageValue = 10;
+  self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   
   self.w_attack = data_ini_attack_quantum_;
   self.think = default_weapon_think;

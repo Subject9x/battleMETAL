@@ -37,7 +37,7 @@ void() building_die_removeFire={
 void() building_burn_th={
   makevectors( self.angles );
   self.c_alt_ofs = self.origin + (v_up * 4);
-  pointparticles( self.p_damage, self.origin, normalize(self.c_alt_ofs - self.origin) * 1, self.count);
+  pointparticles( self.damageValue, self.origin, normalize(self.c_alt_ofs - self.origin) * 1, self.count);
   self.think = building_burn_th;
   self.nextthink = time + 0.1;
 };
@@ -47,7 +47,7 @@ void() building_burn={
     if( !self.armLeft || (self.armLeft == world) ){
       self.armLeft = spawn();
       self.armLeft.origin = util_pointNearBoxEdge( self.origin, self.angles, self.mins, self.maxs );
-      self.armLeft.p_damage = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
+      self.armLeft.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
       self.armLeft.think = building_burn_th;
       self.armLeft.nextthink = time + 0.1;
       self.armLeft.angles = self.angles;
@@ -59,7 +59,7 @@ void() building_burn={
       if( !self.armRight || (self.armRight == world) ){
         self.armRight = spawn();
         self.armRight.origin = util_pointNearBoxEdge( self.origin, self.angles, self.mins, self.maxs );
-        self.armRight.p_damage = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
+        self.armRight.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
         self.armRight.think = building_burn_th;
         self.armRight.nextthink = time + 0.1;
         self.armRight.angles = self.angles;
@@ -71,7 +71,7 @@ void() building_burn={
         if( !self.torsoLeft || (self.torsoLeft == world) ){
           self.torsoLeft = spawn();
           self.torsoLeft.origin = util_pointNearBoxEdge( self.origin, self.angles, self.mins, self.maxs );
-          self.torsoLeft.p_damage = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
+          self.torsoLeft.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
           self.torsoLeft.think = building_burn_th;
           self.torsoLeft.nextthink = time + 0.1;
           self.torsoLeft.angles = self.angles;

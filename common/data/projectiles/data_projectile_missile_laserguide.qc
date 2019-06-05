@@ -33,14 +33,14 @@ void() data_projectile_missile_laserguide_touch={
 	}
 
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
       remove(self);
       return;
     }
   }
   makevectors(self.angles);
-  te_missile_explode(  self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.p_damage / 5, 1);
+  te_missile_explode(  self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
   remove(self);
 };
 

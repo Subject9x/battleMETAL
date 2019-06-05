@@ -13,8 +13,8 @@ void() data_latc_think;
 void() data_latc_ini={
   self.data_idx = ID_WEP_LATC;
   self.w_name = DAT_LATC_NAME;
-  self.p_dmgtype = (DMG_BAL | EFF_PRC);
-  self.p_damage = DAT_LATC_DMG;
+  self.damageType = (DMG_BAL | EFF_PRC);
+  self.damageValue = DAT_LATC_DMG;
   self.w_firetime = 0;
   self.w_clipsize = DAT_LATC_CLIPSIZE;
   self.w_currentammo = DAT_LATC_CLIPSIZE;
@@ -103,7 +103,7 @@ void() data_latc_atk={
   }
   
   if( trace_ent ){
-    t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');    
+    t_damage(trace_ent, self, player, self.damageValue, DMG_BAL, dir, '0 0 0');    
     if( trace_ent.shield <= 0 ){ 
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), dir + v_forward * -3, normalize( dir - org ) * 4, 3);
     }

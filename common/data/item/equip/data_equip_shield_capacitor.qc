@@ -21,8 +21,8 @@ void() data_ini_equip_shield_capacitor_={
   self.energyRate = 0.15;  // percent multiplier to unit's shieldMax
   
   self.w_range = 0;
-  self.p_damage = 0;
-  self.p_dmgtype = (DMG_MSC);
+  self.damageValue = 0;
+  self.damageType = (DMG_MSC);
   
   self.w_attack = shield_capacitor_upgrade_;
   self.think = SUB_Null;

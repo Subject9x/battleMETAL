@@ -340,8 +340,8 @@ void() ai_ranged_attack={
               if( ai_attack_checkEne(wep_chain) ){
                 self = wep_chain;
                   if( ai_check_face(this.enemy, 0.95) ){
-                    if( (self.p_dmgtype & EFF_STX) ){
-                      if (this.enemy.shield > self.p_damage / 2){
+                    if( (self.damageType & EFF_STX) ){
+                      if (this.enemy.shield > self.damageValue / 2){
                         fired = fired + 1;
                         self.w_attack();
                       }
@@ -458,7 +458,7 @@ float(entity wep) ai_attack_blockcheck={
   viewpont = normalize(self.enemy.origin - self.e_cam.origin);
   makevectors( vang );
   traceline (self.e_cam.origin + v_forward * 1, self.e_cam.origin + viewpont*wep.w_range, FALSE, self);
-  if( (wep.p_dmgtype & EFF_ARC) ){
+  if( (wep.damageType & EFF_ARC) ){
     return FALSE; // arcing attacks don't need LoS
   }
   
@@ -530,7 +530,7 @@ void() ai_wep_calcranges={
   while(w){
     if(w.deadflag <= DEAD_NO){
       local float damg;
-      damg = w.p_damage * w.w_clipsize;
+      damg = w.damageValue * w.w_clipsize;
       if(w.w_range <= AI_RANGE_S){ 
         self.w_group1 = self.w_group1 | w.w_group;
         sh = sh + damg;

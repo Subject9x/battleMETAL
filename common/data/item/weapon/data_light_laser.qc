@@ -27,8 +27,8 @@ void() data_ini_light_laser_={
   self.w_attack = data_ini_attack_laser_;
 
   self.w_range = 2000;
-  self.p_damage = 10;
-  self.p_dmgtype = (DMG_ENE | EFF_STX);
+  self.damageValue = 10;
+  self.damageType = (DMG_ENE | EFF_STX);
  
   self.w_fire_ofs = '0 0 3.5'; 
   self.fire_sound = "sound/weapons/laser_fire.ogg";
@@ -56,7 +56,7 @@ void() data_ini_attack_laser_={
   }
   
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, FIRE_ENT, self.p_damage, self.p_dmgtype, FIRE_ENDPOINT, '0 0 0');
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
     if( trace_ent.shield <= 0 ){
       pointparticles(particleeffectnum("TE_LAS_HIT"), FIRE_ENDPOINT , normalize( FIRE_ORIGIN - FIRE_ENDPOINT ), 1);
     }

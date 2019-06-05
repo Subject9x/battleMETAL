@@ -35,8 +35,8 @@ void() data_swrm_ini={
   self.w_range = DAT_SWRM_RANGE;
   self.w_isburst = FALSE;
   self.w_state = READY;
-  self.p_dmgtype = self.p_dmgtype | DMG_EXP;
-  self.p_damage = DAT_SWRM_DMG;
+  self.damageType = self.damageType | DMG_EXP;
+  self.damageValue = DAT_SWRM_DMG;
   self.spreadDefault = DAT_SWRM_ACC;
 };
 
@@ -113,8 +113,8 @@ void() data_swrm_atk={
                 util_setCollider(0, SOLID_BBOX, MOVETYPE_BOUNCE);
                 util_setModel(self.c_model, 0, 0);
                 setsize(self, '0 0 0', '0 0 0');
-                self.p_dmgtype = oself.p_dmgtype;
-                self.p_damage = oself.p_damage;
+                self.damageType = oself.damageType;
+                self.damageValue = oself.damageValue;
                 self.enemy = targs;
                 self.p_lifetime = time + self.p_lifetime;
                 self.touch = data_prj_swrm_touch;

@@ -27,8 +27,8 @@ void() data_ini_missile_swarm_={
   self.spreadDefault = '0.07 0.07 0';
   
   self.w_range = 600;
-  self.p_damage = 20;
-  self.p_dmgtype = (DMG_EXP | EFF_ARC);
+  self.damageValue = 20;
+  self.damageType = (DMG_EXP | EFF_ARC);
   
   self.w_attack = data_ini_attack_missile_swarm_;
   self.think = default_weapon_think;
