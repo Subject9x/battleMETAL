@@ -5,6 +5,8 @@ Date: 3/8/2017
 Overview: ui header file the hangar menu
 */
 
+entity UI_HANGAR_DATA_mech;
+
 //DISPLAY CONSTANT
   float DISP_MAX_FSPEED = 225;
   float DISP_MAX_SSPEED = 200;

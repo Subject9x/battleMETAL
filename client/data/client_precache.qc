@@ -99,34 +99,7 @@ void() cs_precache={
   UI_DEF_DEPLOYPOINT = precache_pic("gfx/ui/hud_deploypoint.png", 0);
   UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",8);
   UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",0);
-  
-  UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png",0);
-  UI_WEP_BAL = precache_pic("gfx/ui/wep_icons/wep_bal.png",0);
-  UI_WEP_EXP = precache_pic("gfx/ui/wep_icons/wep_exp.png",0);
-  UI_WEP_MSC = precache_pic("gfx/ui/wep_icons/wep_msc.png",0);
-  
-  UI_WEP_LAS = precache_pic("gfx/ui/wep_icons/wi_las.png",0);
-  UI_WEP_ESR = precache_pic("gfx/ui/wep_icons/wi_esr.png",0);
-  UI_WEP_PAC = precache_pic("gfx/ui/wep_icons/wi_pac.png",0);
-  UI_WEP_EMP = precache_pic("gfx/ui/wep_icons/wi_emp.png",0);
-  UI_WEP_RCK = precache_pic("gfx/ui/wep_icons/wi_rck.png",0);
-  UI_WEP_MLGD = precache_pic("gfx/ui/wep_icons/wi_mlgd.png",0);
-  UI_WEP_MARH = precache_pic("gfx/ui/wep_icons/wi_marh.png",0);
-  UI_WEP_ATC = precache_pic("gfx/ui/wep_icons/wi_atc.png",0);
-  UI_WEP_QRF = precache_pic("gfx/ui/wep_icons/wi_qrf.png",0);
-  UI_WEP_RPC = precache_pic("gfx/ui/wep_icons/wi_rpc.png",0);
-  UI_WEP_SFG = precache_pic("gfx/ui/wep_icons/wi_sfg.png",0);
-  UI_WEP_FLAK = precache_pic("gfx/ui/wep_icons/wi_flak.png",0);
-  UI_WEP_ION = precache_pic("gfx/ui/wep_icons/wi_ion.png",0);
-  UI_WEP_SWRM = precache_pic("gfx/ui/wep_icons/wi_swrm.png",0);
-  UI_WEP_ABT = precache_pic("gfx/ui/wep_icons/wi_abt.png",0);
-  
-  UI_EQP_ATGM = precache_pic("gfx/ui/wep_icons/eqp_atgm.png",0);
-  UI_EQP_ENBAT = precache_pic("gfx/ui/wep_icons/eqp_enbat.png",0);
-  UI_EQP_HSEM = precache_pic("gfx/ui/wep_icons/eqp_hsem.png",0);
-  UI_EQP_LSAR = precache_pic("gfx/ui/wep_icons/eqp_lsar.png",0);
-  UI_EQP_SCAP = precache_pic("gfx/ui/wep_icons/eqp_lscap.png",0);
-  UI_EQP_RECAP = precache_pic("gfx/ui/wep_icons/eqp_recap.png",0);
+ 
   
   //HUD GRAPHICS
   DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);

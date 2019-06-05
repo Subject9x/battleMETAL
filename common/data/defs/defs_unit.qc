@@ -51,3 +51,6 @@ Overview:
 .entity armLeft;  //arms can be optional
 .entity torsoRight;
 .entity armRight;  //arms can be optional
+
+.string ui_hud_image;	//client-side, display this as the background hud image
+.string ui_menu_icon;	//client-side, display this image in the hangar

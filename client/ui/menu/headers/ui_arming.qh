@@ -7,8 +7,8 @@ Overview: part of splitting the hangar into more understandable chunks
   set weapon groups.
 */
 
-entity UI_ARMING_item_a;
-entity UI_ARMING_item_b;
+entity UI_ARMING_DATA_item_a;
+entity UI_ARMING_DATA_item_b;
 
 float WEPLIST_ALL[24];
 float WEPLIST_BAL_ARR[8];
