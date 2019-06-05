@@ -10,6 +10,7 @@ This is just a repo for the code, the media assets (models, texture, fx) aren't 
 I have not fully decoupled all the original _iD_ assets from the mod. 
 
 An important design goal of _battleMETAL_ has been to create a simple SDK for making small mech games. 
+https://github.com/Subject9x/battleMETAL/wiki
 
 ### Game Play
 ----------------------
