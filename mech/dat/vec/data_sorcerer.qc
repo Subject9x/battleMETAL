@@ -40,12 +40,12 @@ void() data_sorcerer_ini={
   self.health = DAT_sorcerer_HP;
   self.max_health = DAT_sorcerer_HP;
   self.radar_range = DAT_sorcerer_RADAR_RANGE;
-  self.i_techlvl= DAT_sorcerer_TECH_LEVEL;
-  self.en_cur= DAT_sorcerer_ENERGY_MAX;
-  self.en_max= DAT_sorcerer_ENERGY_MAX;
-  self.en_rate= DAT_sorcerer_ENERGY_RATE;
-  self.sh_max= DAT_sorcerer_SHIELD_MAX;
-  self.sh_rate= DAT_sorcerer_SHIELD_RATE;
+  self.techLevel= DAT_sorcerer_TECH_LEVEL;
+  self.energy= DAT_sorcerer_ENERGY_MAX;
+  self.energyMax= DAT_sorcerer_ENERGY_MAX;
+  self.energyRate= DAT_sorcerer_ENERGY_RATE;
+  self.shieldMax= DAT_sorcerer_SHIELD_MAX;
+  self.shieldRate= DAT_sorcerer_SHIELD_RATE;
   self.yaw_speed = DAT_sorcerer_YAW_SPEED;
   self.c_model = DAT_sorcerer_MODEL;
   self.m_fspeed = DAT_sorcerer_FSPEED;
@@ -60,7 +60,7 @@ void() data_sorcerer_ini={
 };
 
 void() data_sorcerer_ctor={
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.health = 1;
   self.max_health = 1;
   self.c_model = DAT_sorcerer_MODEL;
@@ -70,7 +70,7 @@ void() data_sorcerer_ctor={
 };
 
 void() data_sorcerer_wep1={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_sorcerer_WEP1_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -79,7 +79,7 @@ void() data_sorcerer_wep1={
 };
 
 void() data_sorcerer_wep2={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_sorcerer_WEP2_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -88,7 +88,7 @@ void() data_sorcerer_wep2={
 };
 
 void() data_sorcerer_cam={ 
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.c_ofs = DAT_sorcerer_CAM_OFFSET;
   self.c_alt_ofs = DAT_sorcerer_CAM_OFFSET_ALT;
   self.c_model = "q3mdl/testball.md3";

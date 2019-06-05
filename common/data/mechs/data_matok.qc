@@ -24,10 +24,10 @@ void() data_ini_matok_={
   
   
 //ENERGY AND SHIELDS===================
-  self.en_max   = 800;
-  self.en_rate  = 4.25;
-  self.sh_max   = 425;
-  self.sh_rate  = 1.5;
+  self.energyMax   = 800;
+  self.energyRate  = 4.25;
+  self.shieldMax   = 425;
+  self.shieldRate  = 1.5;
 //=====================================
  
 //RADAR================================
@@ -50,22 +50,22 @@ void() data_ini_matok_={
   data_ini_camera_( '0 15 7' );
   
   //center torso
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', self, e_tor_c);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', self, torsoCenter);
  
   //left torso
-  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1.5', self, e_tor_l);
+  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1.5', self, torsoLeft);
  
   //right torso
-  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1.5', self, e_tor_r);
+  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1.5', self, torsoRight);
  
   //left arm
-  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-15 11 0', self.e_tor_l, e_arm_l);
+  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-15 11 0', self.torsoLeft, armLeft);
  
   //right arm
-  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/matok/matok_arm_r.md3", 675, '15 11 0', self.e_tor_r, e_arm_r);
+  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/matok/matok_arm_r.md3", 675, '15 11 0', self.torsoRight, armRight);
    
   //legs
-  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0', self, e_legs);
+  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0', self, legs);
 //=====================================
  
 //HARDPOINT DATA======================

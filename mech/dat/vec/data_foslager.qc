@@ -41,12 +41,12 @@ void() data_foslager_ini={
   self.health = DAT_foslager_HP;
   self.max_health = DAT_foslager_HP;
   self.radar_range = DAT_foslager_RADAR_RANGE;
-  self.i_techlvl= DAT_foslager_TECH_LEVEL;
-  self.en_cur= DAT_foslager_ENERGY_MAX;
-  self.en_max= DAT_foslager_ENERGY_MAX;
-  self.en_rate= DAT_foslager_ENERGY_RATE;
-  self.sh_max= DAT_foslager_SHIELD_MAX;
-  self.sh_rate= DAT_foslager_SHIELD_RATE;
+  self.techLevel= DAT_foslager_TECH_LEVEL;
+  self.energy= DAT_foslager_ENERGY_MAX;
+  self.energyMax= DAT_foslager_ENERGY_MAX;
+  self.energyRate= DAT_foslager_ENERGY_RATE;
+  self.shieldMax= DAT_foslager_SHIELD_MAX;
+  self.shieldRate= DAT_foslager_SHIELD_RATE;
   self.yaw_speed = DAT_foslager_YAW_SPEED;
   self.turret_yaw_speed = DAT_foslager_TUR_YAW;
   self.c_model = DAT_foslager_MDL_CHASSIS;
@@ -61,7 +61,7 @@ void() data_foslager_ini={
 };
 
 void() data_foslager_ctor={
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.health = 1;
   self.max_health = 1;
   self.c_model = DAT_foslager_CTOR_MODEL;
@@ -71,7 +71,7 @@ void() data_foslager_ctor={
 };
 
 void() data_foslager_wep1={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_foslager_WEP1_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -80,7 +80,7 @@ void() data_foslager_wep1={
 };
 
 void() data_foslager_wep2={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_foslager_WEP2_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -89,7 +89,7 @@ void() data_foslager_wep2={
 };
 
 void() data_foslager_wep3={  
-  self.c_parent = M_LEGS;
+  self.partParentId = M_LEGS;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_foslager_WEP3_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -98,7 +98,7 @@ void() data_foslager_wep3={
 };
 
 void() data_foslager_cam={ 
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.c_ofs = DAT_foslager_CAM_OFFSET;
   self.c_alt_ofs = DAT_foslager_CAM_OFFSET_ALT;
   self.c_model = DAT_foslager_CAM_MODEL;

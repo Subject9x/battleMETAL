@@ -23,10 +23,10 @@ void() data_ini_balaket_={
   self.maxs = '14 14 16';
   
 //ENERGY AND SHIELDS===================
-  self.en_max = 400;
-  self.en_rate= 3.5;
-  self.sh_max = 300;
-  self.sh_rate= 2;
+  self.energyMax = 400;
+  self.energyRate= 3.5;
+  self.shieldMax = 300;
+  self.shieldRate= 2;
 //=====================================
  
 //RADAR================================
@@ -49,22 +49,22 @@ void() data_ini_balaket_={
   data_ini_camera_( '0 7 7' );
   
   //center torso
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', self, e_tor_c);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', self, torsoCenter);
  
   //left torso
-  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', self, e_tor_l);
+  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', self, torsoLeft);
  
   //right torso
-  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', self, e_tor_r);
+  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', self, torsoRight);
  
   //left arm
-  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-12.1 7 -3', self.e_tor_l, e_arm_l);
+  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-12.1 7 -3', self.torsoLeft, armLeft);
  
   //right arm
-  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '12.1 7 -3', self.e_tor_r, e_arm_r);
+  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '12.1 7 -3', self.torsoRight, armRight);
    
   //legs
-  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0', self, e_legs);
+  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0', self, legs);
 //=====================================
  
 //HARDPOINTS==========================

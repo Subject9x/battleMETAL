@@ -23,8 +23,8 @@ void() ctrl_update_mechplayer={
   
   ctrl_updateCenterTorso();
   if( (self.flags & FL_CLIENT) ){  
-    if( parent.e_legs.deadflag <= DEAD_NO ){
-      self = self.e_legs;
+    if( parent.legs.deadflag <= DEAD_NO ){
+      self = self.legs;
         ctrl_updateLegs();
       self = parent;
     }
@@ -45,20 +45,20 @@ void() mech_cleanupMech={
   
   local entity w_chain, next, lstp;
   
-  mech_player_removecomp(self.e_tor_c);
-  mech_player_removecomp(self.e_tor_l);
-  mech_player_removecomp(self.e_tor_r);
-  mech_player_removecomp(self.e_arm_l);
-  mech_player_removecomp(self.e_arm_r);
-  if(self.e_legs){
-    if(self.e_legs != world && self.e_legs.owner == self){
+  mech_player_removecomp(self.torsoCenter);
+  mech_player_removecomp(self.torsoLeft);
+  mech_player_removecomp(self.torsoRight);
+  mech_player_removecomp(self.armLeft);
+  mech_player_removecomp(self.armRight);
+  if(self.legs){
+    if(self.legs != world && self.legs.owner == self){
       local entity this;
       this = self;
-      self = self.e_legs;
+      self = self.legs;
         self.think = leg_die1;
         self.nextthink = time + 0.1;
       self = this;
-      mech_player_removecomp(self.e_legs);
+      mech_player_removecomp(self.legs);
     }
   }
 
@@ -104,14 +104,14 @@ void() mech_player_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.e_tor_c);
-  mech_player_compdie(self.e_tor_l);
-  mech_player_compdie(self.e_tor_r);
-  mech_player_compdie(self.e_arm_l);
-  mech_player_compdie(self.e_arm_r);
+  mech_player_compdie(self.torsoCenter);
+  mech_player_compdie(self.torsoLeft);
+  mech_player_compdie(self.torsoRight);
+  mech_player_compdie(self.armLeft);
+  mech_player_compdie(self.armRight);
   self.stat_ctor_hp = 0;
   if( (self.flags & FL_CLIENT) ){
-    mech_player_compdie(self.e_legs);
+    mech_player_compdie(self.legs);
     ctor_die1();
   }
 };

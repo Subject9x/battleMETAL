@@ -25,9 +25,9 @@ entity graphics_refresh_lbl;
 entity graphics_refresh_on;
 entity graphics_refresh_off;
 
-entity graphics_refresh_rate_lbl;
-entity graphics_refresh_rate_up;
-entity graphics_refresh_rate_dn;
+entity graphics_refreshieldRate_lbl;
+entity graphics_refreshieldRate_up;
+entity graphics_refreshieldRate_dn;
 
 entity graphics_fullscreen_lbl;
 entity graphics_fullscreen_on;
@@ -227,11 +227,11 @@ void() click_refresh_on={
   graphics_refresh_off.drawme = TRUE;
   graphics_refresh_on.drawme = FALSE;
   
-  graphics_refresh_rate_lbl.len = 60;
-  strunzone(graphics_refresh_rate_lbl.label); 
-  graphics_refresh_rate_lbl.label = strzone(ftos(cvar("vid_refreshrate")));
-  graphics_refresh_rate_up.drawme = TRUE;
-  graphics_refresh_rate_dn.drawme = TRUE;
+  graphics_refreshieldRate_lbl.len = 60;
+  strunzone(graphics_refreshieldRate_lbl.label); 
+  graphics_refreshieldRate_lbl.label = strzone(ftos(cvar("vid_refreshrate")));
+  graphics_refreshieldRate_up.drawme = TRUE;
+  graphics_refreshieldRate_dn.drawme = TRUE;
 };
 void() click_refresh_off={
   strunzone(graphics_refresh_lbl.label); 
@@ -241,42 +241,42 @@ void() click_refresh_off={
   graphics_refresh_off.drawme = FALSE;
   graphics_refresh_on.drawme = TRUE;
   
-  graphics_refresh_rate_lbl.len = 0;
-  strunzone(graphics_refresh_rate_lbl.label); 
-  graphics_refresh_rate_lbl.label = strzone("[OFF]");
-  graphics_refresh_rate_up.drawme = FALSE;
-  graphics_refresh_rate_dn.drawme = FALSE;
+  graphics_refreshieldRate_lbl.len = 0;
+  strunzone(graphics_refreshieldRate_lbl.label); 
+  graphics_refreshieldRate_lbl.label = strzone("[OFF]");
+  graphics_refreshieldRate_up.drawme = FALSE;
+  graphics_refreshieldRate_dn.drawme = FALSE;
 };
 
-void() click_refresh_rate_up={
+void() click_refreshieldRate_up={
   local float rate;
-  rate = graphics_refresh_rate_lbl.len;
+  rate = graphics_refreshieldRate_lbl.len;
   rate = rate + 10;
   if(rate >= 120){
     rate = 120;
-    graphics_refresh_rate_up.drawme = FALSE;
+    graphics_refreshieldRate_up.drawme = FALSE;
   }
-  strunzone(graphics_refresh_rate_lbl.label);
-  graphics_refresh_rate_lbl.label = strzone(ftos(rate));
-  graphics_refresh_rate_lbl.len = rate;
-  if( !graphics_refresh_rate_dn.drawme ){
-    graphics_refresh_rate_dn.drawme = TRUE;
+  strunzone(graphics_refreshieldRate_lbl.label);
+  graphics_refreshieldRate_lbl.label = strzone(ftos(rate));
+  graphics_refreshieldRate_lbl.len = rate;
+  if( !graphics_refreshieldRate_dn.drawme ){
+    graphics_refreshieldRate_dn.drawme = TRUE;
   }
 };
-void() click_refresh_rate_dn={
+void() click_refreshieldRate_dn={
   local float rate;
-  rate = graphics_refresh_rate_lbl.len;
+  rate = graphics_refreshieldRate_lbl.len;
   rate = rate - 10;
   if(rate <= 50){
     rate = 50;
-    graphics_refresh_rate_dn.drawme = FALSE;
+    graphics_refreshieldRate_dn.drawme = FALSE;
   }
-  strunzone(graphics_refresh_rate_lbl.label);
-  graphics_refresh_rate_lbl.label = strzone(ftos(rate));
-  graphics_refresh_rate_lbl.len = rate;
+  strunzone(graphics_refreshieldRate_lbl.label);
+  graphics_refreshieldRate_lbl.label = strzone(ftos(rate));
+  graphics_refreshieldRate_lbl.len = rate;
   
-  if( !graphics_refresh_rate_up.drawme ){
-    graphics_refresh_rate_up.drawme = TRUE;
+  if( !graphics_refreshieldRate_up.drawme ){
+    graphics_refreshieldRate_up.drawme = TRUE;
   }
 };
 
@@ -584,9 +584,9 @@ void() click_graphics_accept={
   
   cvar_set("vid_bitsperpixel", graphics_bits_lbl.label);
   cvar_set("vid_samples", graphics_aa_lbl.label);
-  if(graphics_refresh_rate_lbl.label != "[OFF]"){
+  if(graphics_refreshieldRate_lbl.label != "[OFF]"){
     cvar_set("vid_userefreshrate", ftos(graphics_refresh_lbl.len));
-    cvar_set("vid_refreshrate", ftos(graphics_refresh_rate_lbl.len));
+    cvar_set("vid_refreshrate", ftos(graphics_refreshieldRate_lbl.len));
   }
   else{
     cvar_set("vid_userefreshrate", ftos(0));
@@ -667,19 +667,19 @@ void() m_graphics_i={
     graphics_refresh_on.drawme = FALSE;
   }
   
-  graphics_refresh_rate_lbl = lbl_text('190 177', '9 9 0', ftos(cvar("vid_refreshrate")), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
-  graphics_refresh_rate_up = btn_img_callback('238 176 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_refresh_rate_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  graphics_refresh_rate_dn = btn_img_callback('176 176 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_refresh_rate_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_refreshieldRate_lbl = lbl_text('190 177', '9 9 0', ftos(cvar("vid_refreshrate")), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_refreshieldRate_up = btn_img_callback('238 176 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_refreshieldRate_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_refreshieldRate_dn = btn_img_callback('176 176 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_refreshieldRate_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(graphics_refresh_lbl.label == "[OFF]"){
-    graphics_refresh_rate_lbl.len = 0;
-    graphics_refresh_rate_lbl.label = strzone("OFF");
-    graphics_refresh_rate_up.drawme = FALSE;
-    graphics_refresh_rate_dn.drawme = FALSE;
+    graphics_refreshieldRate_lbl.len = 0;
+    graphics_refreshieldRate_lbl.label = strzone("OFF");
+    graphics_refreshieldRate_up.drawme = FALSE;
+    graphics_refreshieldRate_dn.drawme = FALSE;
   }
   else{
-    graphics_refresh_rate_lbl.len = stof(graphics_refresh_rate_lbl.label);
-    graphics_refresh_rate_lbl.label = strzone(graphics_refresh_rate_lbl.label);
+    graphics_refreshieldRate_lbl.len = stof(graphics_refreshieldRate_lbl.label);
+    graphics_refreshieldRate_lbl.label = strzone(graphics_refreshieldRate_lbl.label);
   }
   
   //fullscreen

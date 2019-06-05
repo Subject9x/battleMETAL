@@ -24,20 +24,20 @@ void() data_PSC_VTOLL_ini={
   self.vec_size = DAT_PSC_VTOLL_SIZE;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_PSC_VTOLL_RADAR_RANGE;
-  self.i_techlvl= DAT_vtol_TECH_LEVEL;
+  self.techLevel= DAT_vtol_TECH_LEVEL;
   
   setsize(self, DAT_PSC_VTOLL_BBX_N, DAT_PSC_VTOLL_BBX_X);
 
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.health = 1;
   self.max_health = 1;
   self.c_model = "";
   
-  self.en_cur= DAT_PSC_VTOLL_ENERGY_MAX;
-  self.en_max= DAT_PSC_VTOLL_ENERGY_MAX;
-  self.en_rate= DAT_PSC_VTOLL_ENERGY_RATE;
-  self.sh_max= DAT_PSC_VTOLL_SHIELD_MAX;
-  self.sh_rate= DAT_PSC_VTOLL_SHIELD_RATE;
+  self.energy= DAT_PSC_VTOLL_ENERGY_MAX;
+  self.energyMax= DAT_PSC_VTOLL_ENERGY_MAX;
+  self.energyRate= DAT_PSC_VTOLL_ENERGY_RATE;
+  self.shieldMax= DAT_PSC_VTOLL_SHIELD_MAX;
+  self.shieldRate= DAT_PSC_VTOLL_SHIELD_RATE;
   self.yaw_speed = DAT_PSC_VTOLL_YAW_SPEED;
   self.c_model = DAT_PSC_VTOLL_MODEL;
   self.m_fspeed = DAT_PSC_VTOLL_FSPEED;
@@ -49,13 +49,13 @@ void() data_PSC_VTOLL_ini={
 };
 
 void() data_PSC_VTOLL_cam={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.c_ofs = '0 0 24';
   self.c_alt_ofs = '0 0 0';
 };
 
 void() data_PSC_VTOLL_wep1={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_PSC_VTOLL_WEP1_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -64,7 +64,7 @@ void() data_PSC_VTOLL_wep1={
 };
 
 void() data_PSC_VTOLL_wep2={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_PSC_VTOLL_WEP2_OFFSET;
   self.c_alt_ofs = '0 0 0';

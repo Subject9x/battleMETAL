@@ -92,13 +92,13 @@ void() map_damagezone_touch={
   if( self.isActive ){
     if( (other.flags & FL_UNIT) ){
       if( (self.p_dmgtype & 1) ){
-        other.sh_cur = other.sh_cur - self.p_damage;
-        if( other.sh_cur < 0 ){
-          other.sh_cur = 0;
+        other.shield = other.shield - self.p_damage;
+        if( other.shield < 0 ){
+          other.shield = 0;
         }
         //realized damage can be inverted...
-        if( other.sh_cur > other.sh_max ){
-          other.sh_cur = other.sh_max;
+        if( other.shield > other.shieldMax ){
+          other.shield = other.shieldMax;
         }
       }
       if( (self.p_dmgtype & 2) ){
@@ -112,13 +112,13 @@ void() map_damagezone_touch={
 
       }
       if( (self.p_dmgtype & 4) ){
-        other.en_cur = other.en_cur - self.p_damage;
-        if( other.en_cur < 0 ){
-          other.en_cur = 0;
+        other.energy = other.energy - self.p_damage;
+        if( other.energy < 0 ){
+          other.energy = 0;
         }
         //realized damage can be inverted...
-        if( other.en_cur > other.en_max ){
-          other.en_cur = other.en_max;
+        if( other.energy > other.energyMax ){
+          other.energy = other.energyMax;
         }
       }
       if( (self.p_dmgtype & 8) ){

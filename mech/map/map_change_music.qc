@@ -8,7 +8,7 @@ Overview:
   It runs exlcusively on the CD tracks using a track number, so it is unable to process arbitrary sounds.
   
 Inputs
-  .comp_id = <float> [trackid] CD Track to play
+  .partTypeId = <float> [trackid] CD Track to play
   .targetname = <string> [targetname] - make triggerable
   .spawnflags 1 = <float> [flag] remove on first fire
   .spawnflags 2 = <float> [flag] loop
@@ -23,7 +23,7 @@ void() map_changemusic_touch={
 
 void() map_changemusic_use={
   if( (activator.flags & FL_CLIENT) ){
-    client_sendMusic( activator, self.comp_id, self.spawnflags);
+    client_sendMusic( activator, self.partTypeId, self.spawnflags);
     if( (self.spawnflags & 1) ){
       self.think = SUB_Remove;
       self.nextthink = 0.001;

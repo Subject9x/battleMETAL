@@ -35,11 +35,11 @@ void() ai_mech_sk_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.e_tor_l);
-  mech_player_compdie(self.e_tor_r);
-  mech_player_compdie(self.e_arm_l);
-  mech_player_compdie(self.e_arm_r);
-  mech_player_compdie(self.e_legs);
+  mech_player_compdie(self.torsoLeft);
+  mech_player_compdie(self.torsoRight);
+  mech_player_compdie(self.armLeft);
+  mech_player_compdie(self.armRight);
+  mech_player_compdie(self.legs);
   mech_player_compdie(self.e_cam);
   
   if( self.ai_node_recall ){
@@ -47,7 +47,7 @@ void() ai_mech_sk_die={
   }
   
   this = self;
-  self = self.e_legs;
+  self = self.legs;
     self.attack_state = TR_YAW;
     bot_leg_die1();
   self = this;
@@ -59,7 +59,7 @@ void() ai_mech_sk_die={
   self.ai_action_time = time + 600;
   self.nextthink = time + 0.1;
   
-  makevectors( self.e_tor_c.angles );
+  makevectors( self.torsoCenter.angles );
   vel = self.origin + (v_up * 2);
   forg = self.origin + (v_up * (self.maxs_y / 2) ) + (v_forward * (self.mins_x / 1.5));
   switch( self.vec_size ){
@@ -82,8 +82,8 @@ void() ai_mech_sk_die1={
   makevectors( world.v_angle );
   local vector sm;
   sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
-  te_smoke_test(self.e_tor_l.origin, sm + '0 0 5', 1);
-  te_smoke_test(self.e_tor_r.origin, sm + '0 0 5', 1);
+  te_smoke_test(self.torsoLeft.origin, sm + '0 0 5', 1);
+  te_smoke_test(self.torsoRight.origin, sm + '0 0 5', 1);
   
   self.think = ai_mech_sk_die1;
   if( time > self.ai_action_time ){
@@ -404,7 +404,7 @@ void() ai_mech_sk_patrol1={
   macro_ai_update(ctrl_update_mechplayer)
   
   this = self;
-  self = self.e_legs;
+  self = self.legs;
     self.ideal_yaw = self.angles_y;
     self.attack_state = TR_NORM;
     bot_leg_walk1();
@@ -622,7 +622,7 @@ void() ai_mech_sk_stand1={
   macro_ai_update(ctrl_update_mechplayer)
   
   this = self;
-  self = this.e_legs;
+  self = this.legs;
   self.attack_state = TR_YAW;
     bot_leg_stand1();
   self = this;
@@ -652,9 +652,9 @@ void() ai_mech_sk_strafe1={
   macro_ai_update(ctrl_update_mechplayer)
    
   ai_move_turn();
-  self.e_legs.attack_state = TR_NORM;
+  self.legs.attack_state = TR_NORM;
   otemp = self;
-  self = self.e_legs;
+  self = self.legs;
     bot_leg_walk1();
   self = otemp;
   if( self.angles_y == self.ideal_yaw ){
@@ -822,7 +822,7 @@ void() ai_mech_sk_charge1={
   if( self.lefty > 0 ){
     walkmove( self.angles_y, self.m_fspeed );
     otemp = self;
-    self = otemp.e_legs;
+    self = otemp.legs;
       self.attack_state = TR_NORM;
       bot_leg_walk1();
     self = otemp;
@@ -830,7 +830,7 @@ void() ai_mech_sk_charge1={
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
     otemp = self;
-    self = otemp.e_legs;
+    self = otemp.legs;
       self.attack_state = TR_GOAL;
       self.ai_dir = anglemod(self.angles_y + 180);
       bot_leg_back1();
@@ -849,7 +849,7 @@ void() ai_mech_sk_charge2={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -866,7 +866,7 @@ void() ai_mech_sk_charge3={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   
   macro_ai_frame(ai_mech_sk_charge4)
@@ -882,7 +882,7 @@ void() ai_mech_sk_charge4={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   
   macro_ai_frame(ai_mech_sk_charge5)
@@ -898,7 +898,7 @@ void() ai_mech_sk_charge5={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   
   macro_ai_frame(ai_mech_sk_charge6)
@@ -913,7 +913,7 @@ void() ai_mech_sk_charge6={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -929,7 +929,7 @@ void() ai_mech_sk_charge7={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -945,7 +945,7 @@ void() ai_mech_sk_charge8={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -961,7 +961,7 @@ void() ai_mech_sk_charge9={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -977,7 +977,7 @@ void() ai_mech_sk_charge10={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -993,7 +993,7 @@ void() ai_mech_sk_charge11={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -1009,7 +1009,7 @@ void() ai_mech_sk_charge12={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -1025,7 +1025,7 @@ void() ai_mech_sk_charge13={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -1041,7 +1041,7 @@ void() ai_mech_sk_charge14={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -1057,7 +1057,7 @@ void() ai_mech_sk_charge15={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   ai_attack();
   
@@ -1073,7 +1073,7 @@ void() ai_mech_sk_charge16={
   }
   else{
     walkmove( anglemod(self.angles_y + 180), self.m_bspeed);
-    self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+    self.legs.ai_dir = anglemod(self.angles_y + 180);
   }
   
   macro_ai_frame_count(ai_mech_sk_strafe1)
@@ -1098,10 +1098,10 @@ void() ai_mech_sk_flank1={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
-  self.e_legs.attack_state = TR_GOAL;
+  self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
+  self.legs.attack_state = TR_GOAL;
   otemp = self;
-  self = self.e_legs;
+  self = self.legs;
     bot_leg_walk1();
   self = otemp;
   
@@ -1113,7 +1113,7 @@ void() ai_mech_sk_flank2={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
+  self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank3)
@@ -1124,7 +1124,7 @@ void() ai_mech_sk_flank3={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
+  self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank4)
@@ -1135,7 +1135,7 @@ void() ai_mech_sk_flank4={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
+  self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank5)
@@ -1146,7 +1146,7 @@ void() ai_mech_sk_flank5={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
+  self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank6)
@@ -1157,7 +1157,7 @@ void() ai_mech_sk_flank6={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
+  self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank7)
@@ -1168,7 +1168,7 @@ void() ai_mech_sk_flank7={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank8)
@@ -1179,7 +1179,7 @@ void() ai_mech_sk_flank8={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank9)
@@ -1190,7 +1190,7 @@ void() ai_mech_sk_flank9={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank10)
@@ -1201,7 +1201,7 @@ void() ai_mech_sk_flank10={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank11)
@@ -1212,7 +1212,7 @@ void() ai_mech_sk_flank11={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank12)
@@ -1223,7 +1223,7 @@ void() ai_mech_sk_flank12={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank13)
@@ -1234,7 +1234,7 @@ void() ai_mech_sk_flank13={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame(ai_mech_sk_flank14)
@@ -1245,7 +1245,7 @@ void() ai_mech_sk_flank14={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
 
   macro_ai_frame(ai_mech_sk_flank15)
@@ -1256,7 +1256,7 @@ void() ai_mech_sk_flank15={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
 
   macro_ai_frame(ai_mech_sk_flank16)
@@ -1267,7 +1267,7 @@ void() ai_mech_sk_flank16={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + self.ai_dir), self.m_sspeed);
-  self.e_legs.angles_y = anglemod(self.angles_y + self.ai_dir);
+  self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   ai_attack();
   
   macro_ai_frame_count(ai_mech_sk_flank1)
@@ -1289,11 +1289,11 @@ void() ai_mech_sk_pivot1={
   
   ai_face_targ();
   otemp = self;
-  self = self.e_legs;
+  self = self.legs;
     bot_leg_walk1();
   self = otemp;
   
-  self.e_legs.attack_state = TR_NORM;
+  self.legs.attack_state = TR_NORM;
   
   macro_ai_frame(ai_mech_sk_pivot2)
 };

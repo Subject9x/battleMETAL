@@ -17,9 +17,9 @@ void() data_ini_equip_sensor_array_={
   self.w_name = "Large Sensor Array";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0;
-  self.rl_max = 0;
-  self.en_rate = 0.3;  // percent multiplier to unit's radar range
+  self.reloadRate = 0;
+  self.reloadMax = 0;
+  self.energyRate = 0.3;  // percent multiplier to unit's radar range
   
   self.w_range = 0;
   self.p_damage = 0;
@@ -29,7 +29,7 @@ void() data_ini_equip_sensor_array_={
   self.think = SUB_Null;
 
   self.model = "q3mdl/weapons/e_lsar.md3";
-  self.i_techlvl = 1;
+  self.techLevel = 1;
   self.i_size = 1;
   
   self.unit_wep1 = sensor_array_remove_;
@@ -38,11 +38,11 @@ void() data_ini_equip_sensor_array_={
 };
 
 void() sensor_array_upgrade_={
-  self.en_max = self.owner.radar_range;
+  self.energyMax = self.owner.radar_range;
   
-  self.owner.radar_range  = self.owner.radar_range  + (self.owner.radar_range  * self.en_rate);
+  self.owner.radar_range  = self.owner.radar_range  + (self.owner.radar_range  * self.energyRate);
 };
 
 void() sensor_array_remove_={
-  self.owner.radar_range  = self.en_max;
+  self.owner.radar_range  = self.energyMax;
 };

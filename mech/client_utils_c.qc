@@ -31,19 +31,19 @@ void() client_push_player_info={
 
   WriteByte( MSG_ONE, self.data_type ); //sync integrity
   if(self.data_type == DATA_MECH){
-    WriteShort( MSG_ONE, (self.en_cur / self.en_max) * 100 );
-    WriteShort( MSG_ONE, (self.sh_cur / self.sh_max) * 100 );
+    WriteShort( MSG_ONE, (self.energy / self.energyMax) * 100 );
+    WriteShort( MSG_ONE, (self.shield / self.shieldMax) * 100 );
     WriteByte( MSG_ONE, csqc_updateCompStat(self));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_legs));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_tor_l));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_tor_r));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_l));
-    WriteByte( MSG_ONE, csqc_updateCompStat(self.e_arm_r));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.legs));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.torsoLeft));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.torsoRight));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.armLeft));
+    WriteByte( MSG_ONE, csqc_updateCompStat(self.armRight));
     
     WriteByte( MSG_ONE, self.hardpoint_cnt );
     wep = self.w_slot;
     while( wep ){
-      WriteByte( MSG_ONE, wep.rl_cur );
+      WriteByte( MSG_ONE, wep.reloadValue );
       wep = wep.w_slot;
     }
     
@@ -54,20 +54,20 @@ void() client_push_player_info={
       WriteCoord( MSG_ONE, self.enemy.origin_y );
       WriteCoord( MSG_ONE, self.enemy.origin_z );
       //this is silly but precludes forcing the csqc to know the target's max shields
-      targShield = self.enemy.sh_cur;
+      targShield = self.enemy.shield;
       if( targShield <= 0 ){
         targShield = 0;
       }
       else{
-        targShield = (self.enemy.sh_cur / self.enemy.sh_max) * 100;
+        targShield = (self.enemy.shield / self.enemy.shieldMax) * 100;
       } 
       WriteByte( MSG_ONE, targShield );
       WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_legs));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_l));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_tor_r));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_l));
-      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.e_arm_r));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.legs));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.torsoLeft));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.torsoRight));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armLeft));
+      WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armRight));
       WriteShort( MSG_ONE, self.enemy.maxs_y * 2 );
       if( self.enemy.netname == "" ){
         self.enemy.netname = self.enemy.vec_name;
@@ -690,7 +690,7 @@ void() client_updateWeaponReloads={
   e = self.w_slot;
   while(e){
     local float delta, wid;
-    delta = e.rl_cur;
+    delta = e.reloadValue;
     wid = e.data_idx;
     switch(idx){
       case 1: 

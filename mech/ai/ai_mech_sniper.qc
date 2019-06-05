@@ -35,14 +35,14 @@ void() ai_mech_sniper_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.e_tor_l);
-  mech_player_compdie(self.e_tor_r);
-  mech_player_compdie(self.e_arm_l);
-  mech_player_compdie(self.e_arm_r);
+  mech_player_compdie(self.torsoLeft);
+  mech_player_compdie(self.torsoRight);
+  mech_player_compdie(self.armLeft);
+  mech_player_compdie(self.armRight);
   mech_player_compdie(self.e_cam);
   
   otemp = self;
-  self = self.e_legs;
+  self = self.legs;
     bot_leg_die1();
   self = otemp;
   
@@ -57,7 +57,7 @@ void() ai_mech_sniper_die={
   }
   self.nextthink = time + 0.1;
   
-  makevectors( self.e_tor_c.angles );
+  makevectors( self.torsoCenter.angles );
   vel = self.origin + (v_up * 2);
   forg = self.origin + (v_up * (self.maxs_y / 2) ) + (v_forward * (self.mins_x / 1.5));
   switch( self.vec_size ){
@@ -81,8 +81,8 @@ void() ai_mech_sniper_die1={
   local vector sm;
   sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
   te_smoke_test(self.origin, sm + '0 0 5', 3);
-  te_smoke_test(self.e_tor_l.origin, sm + '0 0 5', 1);
-  te_smoke_test(self.e_tor_r.origin, sm + '0 0 5', 1);
+  te_smoke_test(self.torsoLeft.origin, sm + '0 0 5', 1);
+  te_smoke_test(self.torsoRight.origin, sm + '0 0 5', 1);
   
   self.think = ai_mech_sniper_die1;
   if( time > self.ai_action_time ){
@@ -233,7 +233,7 @@ void() ai_mech_sniper_stand1={
   macro_ai_update(ctrl_update_mechplayer)
   
   otemp = self;
-  self = self.e_legs;
+  self = self.legs;
     bot_leg_stand1();
     self.attack_state = TR_YAW;
   self = otemp;
@@ -262,7 +262,7 @@ void() ai_mech_sniper_patrol1={
   macro_ai_update(ctrl_update_mechplayer)
   
   this = self;
-  self = self.e_legs;
+  self = self.legs;
     self.ideal_yaw = self.angles_y;
     self.attack_state = TR_NORM;
     bot_leg_walk1();
@@ -624,7 +624,7 @@ void() ai_mech_sniper_reverse1={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.attack_state = TR_NORM;
+  self.legs.attack_state = TR_NORM;
   ai_attack();
   
   macro_ai_frame(ai_mech_sniper_reverse2)
@@ -662,7 +662,7 @@ void() ai_mech_sniper_reverse5={
   
   ai_face_targ();
   otemp = self;
-  self = self.e_legs;
+  self = self.legs;
     bot_leg_back1();
     self.attack_state = TR_YAW;
     self.ai_dir = anglemod(self.angles_y + 180);
@@ -677,7 +677,7 @@ void() ai_mech_sniper_reverse6={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  self.legs.ai_dir = anglemod(self.angles_y + 180);
   walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
   ai_attack();
   
@@ -688,7 +688,7 @@ void() ai_mech_sniper_reverse7={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  self.legs.ai_dir = anglemod(self.angles_y + 180);
   walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
   ai_attack();
   
@@ -699,7 +699,7 @@ void() ai_mech_sniper_reverse8={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  self.legs.ai_dir = anglemod(self.angles_y + 180);
   walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
   ai_attack();
   
@@ -710,7 +710,7 @@ void() ai_mech_sniper_reverse9={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  self.legs.ai_dir = anglemod(self.angles_y + 180);
   walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
   ai_attack();
   
@@ -721,7 +721,7 @@ void() ai_mech_sniper_reverse10={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  self.legs.ai_dir = anglemod(self.angles_y + 180);
   walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
   ai_attack();
   
@@ -732,7 +732,7 @@ void() ai_mech_sniper_reverse11={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  self.legs.ai_dir = anglemod(self.angles_y + 180);
   walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
   ai_attack();
   
@@ -743,7 +743,7 @@ void() ai_mech_sniper_reverse12={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.ai_dir = anglemod(self.angles_y + 180);
+  self.legs.ai_dir = anglemod(self.angles_y + 180);
   walkmove( anglemod(self.angles_y + 180), self.m_bspeed );
   ai_attack();
   
@@ -797,7 +797,7 @@ void() ai_mech_sniper_charge1={
   self.ideal_yaw = self.ai_dir;
   ai_move_turn(); 
   otemp = self;
-  self = self.e_legs;
+  self = self.legs;
     bot_leg_walk1();
     self.attack_state = TR_NORM;
   self = otemp;
@@ -966,7 +966,7 @@ void() ai_mech_sniper_rotate1={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.e_legs.attack_state = TR_NORM;
+  self.legs.attack_state = TR_NORM;
   ai_attack();
   
   macro_ai_frame(ai_mech_sniper_rotate2)
@@ -1228,7 +1228,7 @@ void() ai_mech_sniper_melee7={
   macro_ai_update(ctrl_update_mechplayer)
    
   otemp = self;
-  self = self.e_legs;
+  self = self.legs;
     self.attack_state = TR_NORM;
     bot_leg_walk1();
   self = otemp;

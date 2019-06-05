@@ -22,8 +22,8 @@ entity weaponBuild; //used by vehicle factory to build current weapon
 void( float partId, string modelPath, float maxHp, vector partOffset, entity parentPart, .entity partSlot ) data_ini_unitPiece_={
   local entity piece;
   piece = spawn();
-  piece.comp_id = partId;
-  piece.c_parent = parentPart.comp_id;
+  piece.partTypeId = partId;
+  piece.partParentId = parentPart.partTypeId;
   piece.max_health = piece.health = maxHp;
   piece.model = modelPath;
   piece.c_ofs = partOffset;
@@ -37,7 +37,7 @@ void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngl
     item = spawn();
     item.data_idx = 0;
     item.w_group = weaponNum;
-    item.c_parent = parentPartId;
+    item.partParentId = parentPartId;
     item.c_ofs = pointOffset;
     item.w_adj_ang = adjustAngle;
     item.owner = self;
@@ -105,14 +105,14 @@ void() default_weapon_think={
   }
   else if(self.w_state == RELOADING){
     if(time > self.w_firetime){
-      self.rl_cur = 100;
+      self.reloadValue = 100;
       self.w_state = READY;
     }
     else{
       local float delta, lim;
       delta = time - self.count1;
-      lim = self.rl_max;      
-      self.rl_cur = (delta / lim) * 100;
+      lim = self.reloadMax;      
+      self.reloadValue = (delta / lim) * 100;
     }
   }
   self.think = default_weapon_think;

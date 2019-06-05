@@ -47,8 +47,8 @@ float CLIENT_stat_w9_id;
 vector CLIENT_entorg;
 float CLIENT_radar_range;
 
-float CLIENT_en_cur;
-float CLIENT_sh_cur;
+float CLIENT_energy;
+float CLIENT_shield;
 
 float CLIENT_hp_ctor;
 float CLIENT_hp_leg;

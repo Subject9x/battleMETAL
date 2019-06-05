@@ -20,9 +20,9 @@ void() data_ini_particle_cannon_={
   self.w_name = "PAC";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0.1;
-  self.rl_max = 8;
-  self.en_rate =  333.33;
+  self.reloadRate = 0.1;
+  self.reloadMax = 8;
+  self.energyRate =  333.33;
   self.spreadDefault = '0.0025 0.0025 0';
   
   self.think = default_weapon_think;
@@ -35,7 +35,7 @@ void() data_ini_particle_cannon_={
   self.w_fire_ofs = '0 0 6.75'; 
   self.fire_sound = "sound/weapons/pac_fire.ogg";
   self.model = "q3mdl/weapons/w_pac.md3";
-  self.i_techlvl = 3;
+  self.techLevel = 3;
   self.i_size = 3;
 };
 
@@ -56,7 +56,7 @@ void() data_ini_attack_particle_cannon_={
 
   if( trace_ent.takedamage ){
     t_damage(trace_ent, self, FIRE_ENT, self.p_damage, self.p_dmgtype, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
-    if( trace_ent.sh_cur > 0 ){
+    if( trace_ent.shield > 0 ){
       pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), FIRE_ENDPOINT + (v_forward * -5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
       pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), FIRE_ENDPOINT + (v_forward * -5), '0 0 0', 1);
     }

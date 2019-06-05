@@ -23,10 +23,10 @@ void() data_ini_sorcerer_={
   setsize(self, '-20 -20 -11', '20 20 14');
   
 //ENERGY AND SHIELDS===================
-  self.en_max = 300;
-  self.en_rate= 1;
-  self.sh_max = 225;
-  self.sh_rate= 0;
+  self.energyMax = 300;
+  self.energyRate= 1;
+  self.shieldMax = 225;
+  self.shieldRate= 0;
 //=====================================
  
 //RADAR================================

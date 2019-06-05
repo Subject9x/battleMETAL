@@ -185,7 +185,7 @@ void() PlayerPostThink = {
     if (self.jump_flag < self.fall_slam){
       if( self.jump_flag < self.fall_dist * FALL_KILL_MULTIPLIER){
         //player fell from great height and is killed outright...whoops
-        t_damage( self, world, world, self.e_legs.health, 0, self.e_legs.origin, '0 0 0');
+        t_damage( self, world, world, self.legs.health, 0, self.legs.origin, '0 0 0');
         t_damage( self, world, world, self.health, 0, self.origin, '0 0 0');
       }
       else{
@@ -195,8 +195,8 @@ void() PlayerPostThink = {
         //self.deathtype = "falling";
         legDmg = self.fall_slam / self.jump_flag;
         legDmg = legDmg / 3;
-        legDmg = legDmg * self.e_legs.max_health;
-        t_damage( self, world, world, legDmg, 0, self.e_legs.origin, '0 0 0');
+        legDmg = legDmg * self.legs.max_health;
+        t_damage( self, world, world, legDmg, 0, self.legs.origin, '0 0 0');
         if( self.jump_flag < self.fall_dist * FALL_CT_MULTIPLIER ){
           ctDmg = self.fall_slam / self.jump_flag;
           ctDmg = ctDmg / 4;

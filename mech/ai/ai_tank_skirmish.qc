@@ -33,9 +33,9 @@ void() ai_tank_sk_die={
     w_chain = w_chain.w_slot;
   }
   mech_player_compdie(self.e_cam);
-  mech_player_compdie(self.e_tor_l);
-  mech_player_compdie(self.e_tor_r);
-  mech_player_compdie(self.e_tor_c);
+  mech_player_compdie(self.torsoLeft);
+  mech_player_compdie(self.torsoRight);
+  mech_player_compdie(self.torsoCenter);
   
   if( self.ai_node_recall ){
     remove(self.ai_node_recall);

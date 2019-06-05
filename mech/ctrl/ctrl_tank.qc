@@ -24,17 +24,17 @@ void() ctrl_updateTank={
 
   if( time > self.count4 ){
     self.count4 = time + 0.1;
-    if(self.en_cur >= 0){
-      self.en_cur = self.en_cur + self.en_rate;
-      if(self.en_cur > self.en_max){
-        self.en_cur = self.en_max;
+    if(self.energy >= 0){
+      self.energy = self.energy + self.energyRate;
+      if(self.energy > self.energyMax){
+        self.energy = self.energyMax;
       }
     }  
-    if(self.en_cur < 0){
-      self.en_cur = 0;
+    if(self.energy < 0){
+      self.energy = 0;
     }
-    else if(self.en_cur > self.en_max){
-      self.en_cur = self.en_max;
+    else if(self.energy > self.energyMax){
+      self.energy = self.energyMax;
     }
   }
   
@@ -45,7 +45,7 @@ void() ctrl_updateTank={
   }
   
   //damage-based cosmetics for unit component pieces
-  piece = self.c_part;
+  piece = self.partNext;
   while( piece ){
     if( piece.deadflag <= DEAD_NO ){
       hp = piece.health / piece.max_health;
@@ -65,12 +65,12 @@ void() ctrl_updateTank={
       }
     }
     else{
-      partParent = util_getPartFromName(piece.c_parent, self); 
+      partParent = util_getPartFromName(piece.partParentId, self); 
       if( partParent.deadflag <= DEAD_NO ){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
         pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5, 1);
       }
     }
-    piece = piece.c_part;
+    piece = piece.partNext;
   }
 };

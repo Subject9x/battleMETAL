@@ -134,6 +134,20 @@ void		end_sys_globals;		// flag for structure dumping
 
 .entity		owner;		// who launched a missile
 
+//
+.float() t_remove; // called by CSQC_Ent_Remove to clean up this entity, return TRUE if remove(self) should be performed afterward
+
+//added from normal defs.qc
+.float health;
+.float max_health;
+.float count1, count2, count3, count4, count5, count6;
+.float modelflags;
+.float takedamage;
+.float traileffectnum;
+.float yaw_speed;
+.string weaponmodel;
+.vector punchangle;
+.float deadflag;
 //================================================
 void		end_sys_fields;			// flag for structure dumping
 //================================================
@@ -1527,3 +1541,11 @@ vector gettaginfo_forward;
 vector gettaginfo_right;
 vector gettaginfo_up;
 float checkpvs(vector viewpos, entity viewee) = #240;
+
+
+//compatability
+
+float() crandom;
+void() SUB_Null={};
+void() SUB_Remove={remove(self);};
+entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={};

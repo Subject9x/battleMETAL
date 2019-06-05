@@ -1,27 +1,30 @@
 ../progs.dat
 
-dp/defs.qc
-dp/dpextensions.qc
+dp/defs.qc          //original Quake defs, should always be first.
+dp/dpextensions.qc  //DPExtensions that most of the magic work.
+
+//Common Defs=====================
+  common/data/defs/defs_player.qc     //AI/player top-level vars.
+  common/data/defs/defs_unit.qc		    //all fields related specifically to unit data.
+  common/data/defs/defs_part.qc		    //all fields related to unit sub components.
+  common/data/defs/defs_item.qc		    //all fields related to items.
+  common/data/defs/defs_projectile.qc //all fields related to projectiles.
+//================================
+
 subs_h.qc
 triggers_h.qc
 world_effectinfo_h.qc
 mech/ctrl/ctrl_all_h.qc
 mech/ctrl/ctrl_weapon_h.qc
 
-//mech classes / extensions
+//Server Defs=====================
   mech/ext/defs_game.qc
-  mech/ext/ent_player_c.qc
-  mech/ext/ent_mech_c.qc
-  mech/ext/ent_vec_comp_c.qc
-  mech/ext/ent_wep_c.qc
-  mech/ext/ent_proj_c.qc
   mech/ext/defs_cs.qc
   mech/ext/defs_impulse.qc
   mech/ext/defs_combat.qc
-  
 //================================
 
-//mech header files
+//battleMETAL Header Files===
   mech/world_ext_h.qc
   mech/client_utils_h.qc
   mech/svr/server_parmops_h.qc
@@ -43,12 +46,6 @@ mech/ctrl/ctrl_weapon_h.qc
 //==========================
 
 //Common Game Data================
-  //Entity Fields-------------------
-  common/data/defs/defs_player.qc 	AI/player top-level vars
-  common/data/defs/defs_unit.qc		all fields related specifically to unit data
-  common/data/defs/defs_part.qc		all fields related to unit sub components
-  common/data/defs/defs_item.qc		all fields related to items
-  //--------------------------------
   
   common/data/data_values_game.qc
   common/data/data_values_ai.qc
@@ -136,7 +133,8 @@ mech/ctrl/ctrl_weapon_h.qc
   mech/dat/bld/data_h_repair.qc 
 //===========================
 
-//impl files
+//Custom battleMETAL Functionality
+  //AI Module---------------------
   mech/ai/ai_stats.qc
   mech/ai/ai_api.qc
   mech/ai/ai_ctrl.qc
@@ -150,27 +148,41 @@ mech/ctrl/ctrl_weapon_h.qc
   mech/ai/ai_gev.qc
   mech/ai/ai_nodes.qc
   mech/ai/ai_voice.qc
+  //-------------------------------
   
   mech/t_damage.qc
+  
+  //Savefile and Mission Files-----
   mech/svr/server_parmops_c.qc
   mech/svr/server_intermsn_c.qc
   mech/svr/server_sensors_c.qc
   mech/svr/server_savefile_c.qc
+  //-------------------------------
+  
   mech/utils_c.qc
   mech/playerFactory_c.qc
   mech/svr/server_playermovement_c.qc
+  
   mech/world_ext_c.qc
+  
   mech/client_utils_c.qc
+  
   mech/impulse_c.qc
   
-  //controllers
+  //Model + Entity Controllers-----
   mech/ctrl/ctrl_weapon.qc
   mech/ctrl/ctrl_mech.qc
   mech/ctrl/ctrl_legs.qc
   mech/ctrl/ctrl_building.qc
   mech/ctrl/ctrl_tank.qc
+  //-------------------------------
 //==========================
+
 world.qc
+doors.qc
+buttons.qc
+triggers.qc
+
 //============================
   mech/map_objects_c.qc
   mech/ai/ai_units.qc
@@ -188,10 +200,10 @@ world.qc
   //effects
   world_effectinfo_c.qc
 //============================
-doors.qc
-buttons.qc
-triggers.qc
-//============================
+
+
+
+//Map Entities================
   mech/map/triggers_map.qc
   mech/map/map_change_fog.qc
   mech/map/map_change_music.qc

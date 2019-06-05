@@ -17,9 +17,9 @@ void() data_ini_rockets_={
   self.w_name = "Rocket Launcher";
   
   self.w_clipsize = 6;
-  self.rl_rate = 0.22;
-  self.rl_max = 8;
-  self.en_rate = 0;
+  self.reloadRate = 0.22;
+  self.reloadMax = 8;
+  self.energyRate = 0;
   self.spreadDefault = '0.02 0.02 0';
   
   self.w_range = 400;
@@ -33,7 +33,7 @@ void() data_ini_rockets_={
   self.w_fire_ofs = '0 0 3';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_mis.md3";
-  self.i_techlvl = 1;
+  self.techLevel = 1;
   self.i_size = 1;
   
   self.w_isburst = FALSE;

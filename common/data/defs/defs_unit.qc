@@ -10,18 +10,19 @@ Overview:
 	
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
+
+.float data_idx;
 .float vec_size;
 .string vec_name;
 .float hardpoint_cnt;
 
 //reactor
-REFACTOR -> energyMax, energyRate, energy, shieldMax, shieldRate, shield
-.float en_max;   //max amount
-.float en_cur;  //current amount
-.float en_rate; //how much energy built per frame
-.float sh_max;    //max shields
-.float sh_cur;    //current amount of shields
-.float sh_rate;   //shield recharge rate
+.float energyMax;   //max amount
+.float energy;  //current amount
+.float energyRate; //how much energy built per frame
+.float shieldMax;    //max shields
+.float shield;    //current amount of shields
+.float shieldRate;   //shield recharge rate
 .float sh_hit;
 
 //Weapon Spread Mechanics
@@ -31,7 +32,6 @@ REFACTOR -> energyMax, energyRate, energy, shieldMax, shieldRate, shield
 .float accuracy; 
 .float radar_time;
 .float radar_range;
-.float currentWeaponGroup;
 
 //Client-side data and cosmetics -> REFACTOR speedForward | speedStrafe | speedBackwards | speedAccel
 .float m_fspeed; //forward speed
@@ -43,20 +43,11 @@ REFACTOR -> energyMax, energyRate, energy, shieldMax, shieldRate, shield
 .float m_pitch_min;
 .float m_pitch_max;
 
-//Unit subcomponents -> REFACTOR to .legs | .torso | torsoLeft | torsoRight | camera | armLeft | armRight
-.entity e_legs;
+//Unit subcomponents
+.entity legs;
 .entity e_cam;
-.entity e_tor_c;
-.entity e_tor_l;
-.entity e_arm_l;  //arms can be optional
-.entity e_tor_r;
-.entity e_arm_r;  //arms can be optional
-
-
-.string m_bob;    //bob settings are important for dat immersion
-.string m_bcycle;
-.string m_bup;  
-.string m_rollangle;
-.string m_bmodel;
-.string m_bside;
-.string m_bobspd;
+.entity torsoCenter;
+.entity torsoLeft;
+.entity armLeft;  //arms can be optional
+.entity torsoRight;
+.entity armRight;  //arms can be optional

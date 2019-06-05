@@ -58,17 +58,17 @@ float(entity t) util_getMechHpAverage={
   if(t != world){
     local float total, cur;
     total = t.max_health;
-    total = total + util_getPieceHpForAverage( t.e_arm_l, TRUE );
-    total = total + util_getPieceHpForAverage( t.e_arm_r, TRUE  );
-    total = total + util_getPieceHpForAverage( t.e_tor_l, TRUE  );
-    total = total + util_getPieceHpForAverage( t.e_tor_r, TRUE  );
-    total = total + util_getPieceHpForAverage( t.e_legs, TRUE  );
+    total = total + util_getPieceHpForAverage( t.armLeft, TRUE );
+    total = total + util_getPieceHpForAverage( t.armRight, TRUE  );
+    total = total + util_getPieceHpForAverage( t.torsoLeft, TRUE  );
+    total = total + util_getPieceHpForAverage( t.torsoRight, TRUE  );
+    total = total + util_getPieceHpForAverage( t.legs, TRUE  );
     cur = t.health;
-    cur = cur + util_getPieceHpForAverage( t.e_arm_l, FALSE );
-    cur = cur + util_getPieceHpForAverage( t.e_arm_r, FALSE  );
-    cur = cur + util_getPieceHpForAverage( t.e_tor_l, FALSE  );
-    cur = cur + util_getPieceHpForAverage( t.e_tor_r, FALSE  );
-    cur = cur + util_getPieceHpForAverage( t.e_legs, FALSE  );
+    cur = cur + util_getPieceHpForAverage( t.armLeft, FALSE );
+    cur = cur + util_getPieceHpForAverage( t.armRight, FALSE  );
+    cur = cur + util_getPieceHpForAverage( t.torsoLeft, FALSE  );
+    cur = cur + util_getPieceHpForAverage( t.torsoRight, FALSE  );
+    cur = cur + util_getPieceHpForAverage( t.legs, FALSE  );
     total = cur / total;
     return total;
   }
@@ -78,7 +78,7 @@ float(entity t) util_getMechHpAverage={
 float(entity t) util_getMechHpTotal={
   if(t != world){
     local float total, cur;
-    total = t.max_health + (t.e_arm_l.max_health * 2) + (t.e_tor_l.max_health * 2) + t.e_legs.max_health;
+    total = t.max_health + (t.armLeft.max_health * 2) + (t.torsoLeft.max_health * 2) + t.legs.max_health;
     return total;
   }
   return FALSE;
@@ -386,22 +386,22 @@ entity(float part, entity unit) util_getPartFromName={
   switch( part ){
     case M_TOR_CENTER:
       if( (unit.flags & FL_TURRET) ){
-        return unit.e_tor_c;
+        return unit.torsoCenter;
       }
       return unit;
     case M_TOR_RIGHT:
-      return unit.e_tor_r;
+      return unit.torsoRight;
     case M_TOR_LEFT:
-      return unit.e_tor_l;
+      return unit.torsoLeft;
     case M_LEGS:
       if( (unit.data_type == DATA_VEHC) ){
         return unit;  //edge case for hull-mounted weapons on a turreted object
       }
-      return unit.e_legs;
+      return unit.legs;
     case M_ARM_LEFT:
-      return unit.e_arm_l;
+      return unit.armLeft;
     case M_ARM_RIGHT:
-      return unit.e_arm_r;
+      return unit.armRight;
     default:
       return unit;
   }

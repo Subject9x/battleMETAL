@@ -38,7 +38,7 @@ void() data_prj_emp_think={
         traceline(self.origin, proxy.origin, FALSE, self.owner);
         if(trace_ent){
           local entity f;
-          if(trace_ent.comp_id > 0){
+          if(trace_ent.partTypeId > 0){
             f = trace_ent.owner;
           }
           else{
@@ -99,7 +99,7 @@ void() projectile_touch_emp_={
   self.traileffectnum = FALSE;
   
   if(other.takedamage){
-    if( other.sh_cur > 0 ){
+    if( other.shield > 0 ){
       pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
     }
     else{

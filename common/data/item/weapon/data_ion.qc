@@ -18,9 +18,9 @@ void() data_ini_ion_={
   self.w_name = "Ion Coil";
   
   self.w_clipsize = 3;
-  self.rl_rate = 0.12;
-  self.rl_max = 5;
-  self.en_rate = 133.3;
+  self.reloadRate = 0.12;
+  self.reloadMax = 5;
+  self.energyRate = 133.3;
   self.spreadDefault = '0.018 0.013 0';
   
   self.w_range = 800;
@@ -34,7 +34,7 @@ void() data_ini_ion_={
   self.w_fire_ofs = '0 0 4';
   self.fire_sound = "sound/weapons/emp_fire.ogg";
   self.model = "q3mdl/weapons/w_ion.md3";
-  self.i_techlvl = 1;
+  self.techLevel = 1;
   self.i_size = 2;
 };
 

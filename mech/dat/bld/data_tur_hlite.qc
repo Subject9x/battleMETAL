@@ -24,12 +24,12 @@ void() data_tur_hlite_ini={
   self.vec_size = 1;
   self.data_type = DATA_BLD;
   self.radar_range = DAT_TUR_HLITE_RADRANGE;
-  self.en_cur= DAT_TUR_HLITE_EN_MAX;
-  self.en_max= DAT_TUR_HLITE_EN_MAX;
-  self.en_rate= DAT_TUR_HLITE_EN_RATE;
-  self.sh_cur= DAT_TUR_HLITE_SH_MAX;
-  self.sh_max= DAT_TUR_HLITE_SH_MAX;
-  self.sh_rate= DAT_TUR_HLITE_SH_RATE;
+  self.energy= DAT_TUR_HLITE_EN_MAX;
+  self.energyMax= DAT_TUR_HLITE_EN_MAX;
+  self.energyRate= DAT_TUR_HLITE_EN_RATE;
+  self.shield= DAT_TUR_HLITE_SH_MAX;
+  self.shieldMax= DAT_TUR_HLITE_SH_MAX;
+  self.shieldRate= DAT_TUR_HLITE_SH_RATE;
   self.yaw_speed = DAT_TUR_HLITE_YAWS;
   self.turret_yaw_speed = DAT_TUR_HLITE_TURRET_YAW;
   self.mins = DAT_TUR_HLITE_BBN;
@@ -41,7 +41,7 @@ void() data_tur_hlite_ini={
 };
 
 void() data_tur_hlite_ctor={
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.health = 1;
   self.max_health = 1;
   self.c_model = DAT_TUR_HLITE_TUR;
@@ -51,14 +51,14 @@ void() data_tur_hlite_ctor={
 };
 
 void() data_tur_hlite_wep1={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.c_ofs = DAT_TUR_HLITE_WEP1_OFFSET;
   self.c_alt_ofs = DAT_TUR_HLITE_WEP1_OFFSET_ALT;
   self.w_adj_ang = DAT_TUR_HLITE_WEP1_ADJ_ANG;
   self.w_group = WEAPON1;
 };
 void() data_tur_hlite_wep2={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.c_ofs = DAT_TUR_HLITE_WEP2_OFFSET;
   self.c_alt_ofs = DAT_TUR_HLITE_WEP2_OFFSET_ALT;
   self.w_adj_ang = DAT_TUR_HLITE_WEP2_ADJ_ANG;
@@ -66,7 +66,7 @@ void() data_tur_hlite_wep2={
 };
 
 void() data_tur_hlite_cam={
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.c_ofs = DAT_TUR_HLITE_CAM_OFFSET;
   self.c_alt_ofs = DAT_TUR_HLITE_CAM_OFFSET_ALT;
   self.c_model = DAT_TUR_HLITE_CAM;

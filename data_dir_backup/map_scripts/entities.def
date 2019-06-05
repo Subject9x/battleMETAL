@@ -429,7 +429,7 @@ Keys:
 "count"
  adjusts snow density, this many particles fall every second, experiment to see the effects (default is based on area size)
 */
-/*QUAKED func_particlecube (0 .5 .8) ? GRAVITY
+/*QUAKED funpartNexticlecube (0 .5 .8) ? GRAVITY
 This is an invisible area like a trigger, which particles spawn in.
 
 Flags:

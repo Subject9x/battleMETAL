@@ -17,9 +17,9 @@ void() data_ini_light_atc_={
   self.w_name = "Light Autocannon";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0.2;
-  self.rl_max = 0.2;
-  self.en_rate = 0;
+  self.reloadRate = 0.2;
+  self.reloadMax = 0.2;
+  self.energyRate = 0;
   self.spreadDefault = '0.025 0.025 0';
   
   self.w_range = 1800;
@@ -32,7 +32,7 @@ void() data_ini_light_atc_={
   self.w_fire_ofs = '0 0.5 5';
   self.fire_sound = "sound/weapons/atc_fire.ogg";
   self.model = "q3mdl/weapons/w_atc.md3";
-  self.i_techlvl = 1;
+  self.techLevel = 1;
   self.i_size = 1;
 };
 
@@ -62,7 +62,7 @@ void() data_ini_attack_latc_={
   
   if( trace_ent ){
     t_damage(trace_ent, self, FIRE_ENT, self.p_damage, DMG_BAL, FIRE_ENDPOINT, '0 0 0');    
-    if( trace_ent.sh_cur <= 0 ){ 
+    if( trace_ent.shield <= 0 ){ 
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), FIRE_ENDPOINT + v_forward * -3, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 3);
     }
   }

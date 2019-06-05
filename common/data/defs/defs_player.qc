@@ -1,9 +1,28 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
-Date: 8/27/2016
-Overview: extends the player's entity.
+Date: 06/04/2019
+Overview:
+	'defs' because 'defs.qc' is the original Quake defs file.
+	
+	define: Player Entity Fields
+	
+	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
+
+.float data_type;
+.float max_armor; //why wasn't this ever included!?
+
+.float currentWeaponGroup;
+
+.string m_bob;    //bob settings are important for dat immersion
+.string m_bcycle;
+.string m_bup;  
+.string m_rollangle;
+.string m_bmodel;
+.string m_bside;
+.string m_bobspd;
+
 
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame
@@ -13,7 +32,6 @@ Overview: extends the player's entity.
 
 .float currentWeaponGroup;
 .float nextVecChoice;
-.float data_idx;
 
 .float w_group1;
 .float w_group2;
@@ -23,7 +41,7 @@ Overview: extends the player's entity.
 //.float w_firemode;
 
 .float faction;   //which faction? consult table
-.float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
+.float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
 .float i_reserve; //how many reserve points does the unit cost?
 .float i_size;
 .entity w_slot;     //use this for teh linked list goodness

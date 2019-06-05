@@ -23,10 +23,10 @@ void() data_ini_onnek_={
   setsize(self, '-25 -25 -10.25', '25 25 14');
   
 //ENERGY AND SHIELDS===================
-  self.en_max = 400;
-  self.en_rate= 2;
-  self.sh_max = 175;
-  self.sh_rate= 0;
+  self.energyMax = 400;
+  self.energyRate= 2;
+  self.shieldMax = 175;
+  self.shieldRate= 0;
 //=====================================
  
 //RADAR================================

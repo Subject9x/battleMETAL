@@ -23,12 +23,12 @@ void() data_marh_ini={
   self.c_model = DAT_MARH_MODEL;
   self.w_attack = data_marh_atk;
   self.w_proj = DAT_MARH_PROJ_ID;
-  self.rl_cur = DAT_MARH_RL_MAX;
-  self.rl_rate = DAT_MARH_RL_RATE;
-  self.rl_max = DAT_MARH_RL_MAX;
-  self.en_max = DAT_MARH_EN_RATE;
+  self.reloadValue = DAT_MARH_RL_MAX;
+  self.reloadRate = DAT_MARH_RL_RATE;
+  self.reloadMax = DAT_MARH_RL_MAX;
+  self.energyMax = DAT_MARH_EN_RATE;
   self.fire_sound = DAT_MARH_FIRESOUND;
-  self.i_techlvl = DAT_MARH_TECH_LEVEL;
+  self.techLevel = DAT_MARH_TECH_LEVEL;
   self.i_size = DAT_MARH_WSIZE;
   self.w_think = data_marh_think;
   self.health = DAT_MARH_HPX;
@@ -42,19 +42,19 @@ void() data_marh_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
       self.w_state = READY;
-      self.rl_cur = (self.w_currentammo / self.w_clipsize) * 100;
+      self.reloadValue = (self.w_currentammo / self.w_clipsize) * 100;
     }
   }
   else if(self.w_state == RELOADING){
     if(time > self.w_firetime){
-      self.rl_cur = 100;
+      self.reloadValue = 100;
       self.w_state = READY;
     }
     else{
       local float delta, lim;
       delta = time - self.count1;
-      lim = self.rl_max;      
-      self.rl_cur = (delta / lim) * 100;
+      lim = self.reloadMax;      
+      self.reloadValue = (delta / lim) * 100;
     }
   }
 };
@@ -75,25 +75,25 @@ void() data_marh_atk={
 
       self.w_currentammo = self.w_currentammo - 1;
       if(self.w_currentammo <= 0){
-        self.rl_cur = 0;
+        self.reloadValue = 0;
         self.w_currentammo = self.w_clipsize;
         self.w_state = RELOADING;
         self.w_isburst = FALSE;
-        self.w_firetime = time + self.rl_max;
+        self.w_firetime = time + self.reloadMax;
         self.count1 = time;
       }
       else{
         if( (player.flags & FL_MONSTER) ){
-          self.w_firetime = time + self.rl_rate ;
+          self.w_firetime = time + self.reloadRate ;
         }
         else{
-          self.w_firetime = time + self.rl_rate;
+          self.w_firetime = time + self.reloadRate;
         }
         self.w_state = RECOIL;
         self.w_isburst = TRUE;
       }
       adj = self.c_ofs + self.w_fire_ofs;
-      part = util_getPartFromName(self.c_parent, player);
+      part = util_getPartFromName(self.partParentId, player);
       makevectors( part.angles );
       org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
       dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle

@@ -80,7 +80,7 @@ void() ai_gev_die={
   }
   mech_player_compdie(self.e_cam);
   if( (self.flags & FL_TURRET) ){
-    mech_player_compdie(self.e_tor_c);
+    mech_player_compdie(self.torsoCenter);
   }
   if( self.ai_node_recall ){
     remove(self.ai_node_recall);

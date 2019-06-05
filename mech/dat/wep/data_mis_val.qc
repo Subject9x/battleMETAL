@@ -21,12 +21,12 @@ void() data_mis_ini={
   self.c_model = DAT_MIS_MODEL;
   self.w_attack = data_mis_atk;
   self.w_proj = DAT_MIS_PROJ_ID;
-  self.rl_cur = DAT_MIS_RL_MAX;
-  self.rl_rate = DAT_MIS_RL_RATE;
-  self.rl_max = DAT_MIS_RL_MAX;
-  self.en_rate = DAT_MIS_EN_RATE;
+  self.reloadValue = DAT_MIS_RL_MAX;
+  self.reloadRate = DAT_MIS_RL_RATE;
+  self.reloadMax = DAT_MIS_RL_MAX;
+  self.energyRate = DAT_MIS_EN_RATE;
   self.fire_sound = DAT_MIS_FIRESOUND;
-  self.i_techlvl = DAT_MIS_TECH_LEVEL;
+  self.techLevel = DAT_MIS_TECH_LEVEL;
   self.i_size = DAT_MIS_WSIZE;
   self.w_think = data_mis_think;
   self.health = DAT_MIS_HPX;
@@ -42,7 +42,7 @@ void() data_mis_ini={
 void() data_mis_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
-      self.rl_cur = (self.w_currentammo / self.w_clipsize) * 100;
+      self.reloadValue = (self.w_currentammo / self.w_clipsize) * 100;
       self.w_state = READY;
     }
   }
@@ -53,8 +53,8 @@ void() data_mis_think={
     else{
       local float delta, lim;
       delta = time - self.count1;
-      lim = self.rl_max;      
-      self.rl_cur = (delta / lim) * 100;
+      lim = self.reloadMax;      
+      self.reloadValue = (delta / lim) * 100;
     }
   }
 };
@@ -68,26 +68,26 @@ void() data_mis_atk={
  
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.rl_cur = 0;
+    self.reloadValue = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
     self.w_isburst = FALSE;
-    self.w_firetime = time + self.rl_max;
+    self.w_firetime = time + self.reloadMax;
     self.count1 = time;
   }
   else{
     if( (player.flags & FL_MONSTER) ){
-      self.w_firetime = time + (self.rl_rate / 1.5) * 2.25;
+      self.w_firetime = time + (self.reloadRate / 1.5) * 2.25;
     }
     else{
-      self.w_firetime = time + self.rl_rate / 1.75;
+      self.w_firetime = time + self.reloadRate / 1.75;
     }
     self.w_state = RECOIL;
     self.w_isburst = TRUE;
   }
    
   adj = self.c_ofs + self.w_fire_ofs;
-  part = util_getPartFromName(self.c_parent, player);
+  part = util_getPartFromName(self.partParentId, player);
   makevectors( part.angles );
   org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle

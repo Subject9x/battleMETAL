@@ -16,8 +16,6 @@ float CON_H;
 float CON_CW;
 float CON_CH;
 
-//
-.float() t_remove; // called by CSQC_Ent_Remove to clean up this entity, return TRUE if remove(self) should be performed afterward
 // protocol bytes
 float SVC_SETVIEWPORT = 5;
 float SVC_SETANGLES = 10;
@@ -36,44 +34,6 @@ float	DEAD_DEAD				= 2;
 float	DEAD_RESPAWNABLE		= 3;
 float	DEAD_RESPAWNING			= 4; // dead, waiting for buttons to be released
 
-//COMP_TYPE
-float m_tor_c = 0;
-float m_tor_l = 1;
-float m_tor_r = 2;
-float m_legs = 3;
-float m_arm_r = 4;
-float m_arm_l = 5;
-float m_wep = 6;
-
-.float vec_size;
-.string c_model;
-.string w_name;       //label for weapon, need to keep 'classname' reserved for actual class    
-.float w_firerate;
-.float w_firemod;     //used for modifying fire rate;
-.float w_firemoddur;  //duration of effect;
-.float w_reloadtime;
-.float w_clipsize;
-.float w_ammotype;
-.float w_spread;
-.float en_max;
-.float i_techlvl;
-.float data_type;
-.float faction;   //which faction? consult table
-.float i_techlvl; //what is the appropriate tech level of the unit? this is also used for levels 
-.float i_reserve; //how many reserve points does the unit cost?
-.float en_max;   //max amount
-.float en_cur;  //current amount
-.float en_rate; //how much energy built per frame
-.float sh_max;    //max shields
-.float sh_cur;    //current amount of shields
-.float sh_rate;   //shield recharge rate
-.float sh_hit;
-.float m_fspeed; //forward speed
-.float m_sspeed; //side strafe speed
-.float m_bspeed; //backward speed
-.float m_maccel;
-.float m_pitch_min;
-.float m_pitch_max;
 .vector maxs;
 .vector mins;
 .string w_abbr;
@@ -82,18 +42,6 @@ float m_wep = 6;
 .float stat_hit_dirs;
 .float target_entid;
 .vector target_origin;
-
-//These should have been floats from the start
-//these are component id's (compid) for model pieces
-string MECH_PIECE    = "mech_piece";
-float M_TOR_CENTER  = 2;
-float M_TOR_RIGHT   = 3;
-float M_TOR_LEFT    = 4;
-float M_LEGS        = 5;
-float M_LEG_L       = 6;
-float M_LEG_R       = 7;
-float M_ARM_LEFT    = 8;
-float M_ARM_RIGHT   = 9;
 
 //hit direction bit flags
 float STAT_HIT_CL = 1;
@@ -139,3 +87,78 @@ float WEAPON6_REL = 32;
 float WEAPON7_REL = 64;
 float WEAPON8_REL = 128;
 float WEAPON9_REL = 256;
+
+
+//Difficulty
+float SKILL_NOV = 0;
+float SKILL_REG = 1;
+float SKILL_VET = 2;
+float SKILL_ELT = 3;
+
+//WEAPON FIRE STATUS
+float READY = 0;
+float RELOADING = 1;
+float WAITING = 2;
+float RECOIL = 4;
+
+//used for worldspaw, dictates unlocks to save file post-mission
+.string inv_items;
+.string inv_m_light;
+.string inv_m_medim;
+.string inv_m_heavy;
+
+.entity lst_p; //linked list parent
+
+//from world.qc
+entity lastspawn;
+void() InitBodyQue;
+void(entity ent) CopyToBodyQue;
+//======================
+
+//from client.qc
+string nextmap;
+float	intermission_running;
+float	intermission_exittime;
+//======================
+
+//direction values
+float DIR_N   = 0;
+float DIR_NE  = 1;
+float DIR_E   = 2;
+float DIR_SE  = 3;
+float DIR_S   = 4;
+float DIR_SW  = 5;
+float DIR_W   = 6;
+float DIR_NW  = 7;
+
+//used by ctrl_weapon_fireOffset
+vector FIRE_OFFSET;
+entity WEAPON_PARENT;
+entity FIRE_ENT;
+entity NEWSHOT;
+vector FIRE_ORIGIN;
+vector FIRE_ENDPOINT;
+
+//These should have been floats from the start
+//these are component id's (compid) for model pieces
+string MECH_PIECE    = "mech_piece";
+float M_TOR_CENTER  = 2;
+float M_TOR_RIGHT   = 3;
+float M_TOR_LEFT    = 4;
+float M_LEGS        = 5;
+float M_LEG_L       = 6;
+float M_LEG_R       = 7;
+float M_ARM_LEFT    = 8;
+float M_ARM_RIGHT   = 9;
+
+//Armor Types
+float ARM_LIT = 2;  //light armor
+float ARM_MED = 4;  //heavy armor;
+float ARM_HVY = 8;  //radiation armor
+float ARM_CER = 16; 
+float ARM_RAD = 24;
+
+//fire modes
+float FIRE_SINGLE = 1;
+float FIRE_GROUP = 2;
+float FIRE_CHAIN = 3;

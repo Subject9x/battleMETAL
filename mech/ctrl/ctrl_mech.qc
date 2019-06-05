@@ -31,29 +31,29 @@ void() ctrl_updateCenterTorso={
 
   if( time > self.count4 ){
     self.count4 = time + 0.1;
-    if( self.en_cur > -1 ){
-      diff = self.en_rate;
+    if( self.energy > -1 ){
+      diff = self.energyRate;
       if( self.stat_plr_stt == PLAYER_SPRINT_ON ){
         diff = diff * EVADE_DRAIN_PERCENT;
       }
-      self.en_cur = self.en_cur + diff;
+      self.energy = self.energy + diff;
     }  
-    if(self.sh_cur < self.sh_max){
+    if(self.shield < self.shieldMax){
       if(time > self.sh_hit){
-        if(self.en_cur > 0){
-          self.sh_cur = self.sh_cur + self.sh_rate;
-          self.en_cur = self.en_cur - (self.sh_rate * 3);
-          if(self.sh_cur > self.sh_max){
-            self.sh_cur = self.sh_max;
+        if(self.energy > 0){
+          self.shield = self.shield + self.shieldRate;
+          self.energy = self.energy - (self.shieldRate * 3);
+          if(self.shield > self.shieldMax){
+            self.shield = self.shieldMax;
           }
         }
       }
     }
-    if(self.en_cur < 0){
-      self.en_cur = 0;
+    if(self.energy < 0){
+      self.energy = 0;
     }
-    else if(self.en_cur > self.en_max){
-      self.en_cur = self.en_max;
+    else if(self.energy > self.energyMax){
+      self.energy = self.energyMax;
     }
   }
   
@@ -98,7 +98,7 @@ void() ctrl_updateCenterTorso={
   local float hp;
   local vector spark;
   local entity partParent;
-  piece = self.c_part;
+  piece = self.partNext;
   while( piece ){
     if( piece.deadflag <= DEAD_NO ){
       hp = piece.health / piece.max_health;
@@ -118,13 +118,13 @@ void() ctrl_updateCenterTorso={
       }
     }
     else{
-      partParent = util_getPartFromName(piece.c_parent, self); 
+      partParent = util_getPartFromName(piece.partParentId, self); 
       if( partParent.deadflag <= DEAD_NO ){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
         pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5, 1);
       }
     }
-    piece = piece.c_part;
+    piece = piece.partNext;
   }
 };
 
@@ -143,17 +143,17 @@ void() ctrl_component_die={
     setsize(self, '0 0 0', '0 0 0');
     setorigin( self, self.origin );
     
-    if(self.comp_id == M_TOR_LEFT){
-      killed(self.owner.e_arm_l, self, 0);
+    if(self.partTypeId == M_TOR_LEFT){
+      killed(self.owner.armLeft, self, 0);
     }
-    else if(self.comp_id == M_TOR_RIGHT){
-      killed(self.owner.e_arm_r, self, 0);
+    else if(self.partTypeId == M_TOR_RIGHT){
+      killed(self.owner.armRight, self, 0);
     }
     
     local entity c;
     c = self.owner.w_slot;
     while(c){
-      if(c.c_parent == self.comp_id){
+      if(c.partParentId == self.partTypeId){
         killed(c, self, 0);
       }
       c = c.w_slot;

@@ -17,9 +17,9 @@ void() data_ini_equip_target_module_={
   self.w_name = "Adv. Target Module";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0;
-  self.rl_max = 0;
-  self.en_rate = 0.2;
+  self.reloadRate = 0;
+  self.reloadMax = 0;
+  self.energyRate = 0.2;
   
   self.w_range = 0;
   self.p_damage = 0;
@@ -31,7 +31,7 @@ void() data_ini_equip_target_module_={
   self.think = SUB_Null;
 
   self.model = "q3mdl/weapons/e_atgm.md3";
-  self.i_techlvl = 1;
+  self.techLevel = 1;
   self.i_size = 2;
   
   self.unit_wep1 = target_module_remove_;

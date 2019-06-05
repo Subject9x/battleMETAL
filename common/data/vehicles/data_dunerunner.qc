@@ -23,10 +23,10 @@ void() data_ini_dunerunner_={
   setsize(self, '-20 -20 -10', '20 20 14');
   
 //ENERGY AND SHIELDS===================
-  self.en_max = 125;
-  self.en_rate= 0.5;
-  self.sh_max = 50;
-  self.sh_rate= 0;
+  self.energyMax = 125;
+  self.energyRate= 0.5;
+  self.shieldMax = 50;
+  self.shieldRate= 0;
 //=====================================
  
 //RADAR================================
@@ -49,7 +49,7 @@ void() data_ini_dunerunner_={
   data_ini_camera_( '0 12 20' );
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', self, e_tor_c);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', self, torsoCenter);
 //=====================================
  
 //HARDPOINTS==========================

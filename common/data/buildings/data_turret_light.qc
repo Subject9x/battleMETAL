@@ -23,10 +23,10 @@ void() data_ini_light_turret_={
   setsize(self, '-20 -20 -6', '20 20 13');
   
 //ENERGY AND SHIELDS===================
-  self.en_max  = 100;
-  self.en_rate = 0.25;
-  self.sh_max  = 100;
-  self.sh_rate = 0.25;
+  self.energyMax  = 100;
+  self.energyRate = 0.25;
+  self.shieldMax  = 100;
+  self.shieldRate = 0.25;
 //=====================================
  
 //RADAR================================
@@ -46,7 +46,7 @@ void() data_ini_light_turret_={
   data_ini_camera_( '0 12 20' );
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_light/mdl_bld_h_ltur_base.md3", 1, '0 13.5 0', self, e_tor_c);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_light/mdl_bld_h_ltur_base.md3", 1, '0 13.5 0', self, torsoCenter);
 //=====================================
  
 //HARDPOINTS==========================

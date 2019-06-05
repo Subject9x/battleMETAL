@@ -22,8 +22,8 @@ void() client_get_info={
   
   localDataType = ReadByte();
   if( localDataType == DATA_MECH ){
-    CLIENT_en_cur = ReadShort();
-    CLIENT_sh_cur = ReadShort();
+    CLIENT_energy = ReadShort();
+    CLIENT_shield = ReadShort();
     
     CLIENT_hp_ctor = ReadByte(); 
     CLIENT_hp_leg = ReadByte(); 
@@ -108,12 +108,12 @@ void() client_get_contact={
   
   blip.data_idx = -2; //hack
   //Radar 1 - settings
-  //blip.en_cur = time + 6;
+  //blip.energy = time + 6;
   //blip.hardpoint_cnt = 1; //alpha fade
   //blip.radar_time = 0.001;
   
   //Radar 2 - settings
-  blip.en_cur = time + 3;
+  blip.energy = time + 3;
   blip.hardpoint_cnt = 1; //alpha fade
   blip.radar_time = 0.0025;
   

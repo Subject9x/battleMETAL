@@ -18,9 +18,9 @@ void() data_ini_light_laser_={
   self.w_name = "Light Laser";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0.6;
-  self.rl_max = 0.6;
-  self.en_rate =  6.67;
+  self.reloadRate = 0.6;
+  self.reloadMax = 0.6;
+  self.energyRate =  6.67;
   self.spreadDefault = '0.0075 0.0075 0';
   
   self.think = default_weapon_think;
@@ -33,7 +33,7 @@ void() data_ini_light_laser_={
   self.w_fire_ofs = '0 0 3.5'; 
   self.fire_sound = "sound/weapons/laser_fire.ogg";
   self.model = "q3mdl/weapons/w_laser.md3";
-  self.i_techlvl = 1;
+  self.techLevel = 1;
   self.i_size = 1;
 };
 
@@ -57,7 +57,7 @@ void() data_ini_attack_laser_={
   
   if( trace_ent.takedamage ){
     t_damage(trace_ent, self, FIRE_ENT, self.p_damage, self.p_dmgtype, FIRE_ENDPOINT, '0 0 0');
-    if( trace_ent.sh_cur <= 0 ){
+    if( trace_ent.shield <= 0 ){
       pointparticles(particleeffectnum("TE_LAS_HIT"), FIRE_ENDPOINT , normalize( FIRE_ORIGIN - FIRE_ENDPOINT ), 1);
     }
     return;

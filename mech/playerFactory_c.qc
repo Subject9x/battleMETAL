@@ -106,8 +106,8 @@ void() player_unmakeMech={
   self.stat_ctor_hp = 0;
   self.stat_rdr_mode = FALSE;
   self.stat_rdr_rng = 0;
-  self.en_cur = 0;
-  self.sh_cur = 0;
+  self.energy = 0;
+  self.shield = 0;
   self.enemy = world;
   mech_clearWeaponGroups();
 };

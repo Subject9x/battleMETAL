@@ -50,7 +50,7 @@ This map ent provides map-level control of the music playback code and sound cha
 It runs exlcusively on the CD tracks using a track number, so it is unable to process arbitrary sounds.
   
 -------- KEYS -------- 
-.comp_id = <float> [trackid] CD Track to play
+.partTypeId = <float> [trackid] CD Track to play
 .targetname = <string> [targetname] - make triggerable
 
 -------- SPAWNFLAGS -------- 
@@ -162,7 +162,7 @@ A map object that modifies unit flags, controlling whether and for how long a un
 this is very powerful and mostly only used for FL_NOSHOOT
 
 -------- KEYS -------- 
-.comp_id = <float> [flags]  flags you want modified
+.partTypeId = <float> [flags]  flags you want modified
 .p_dmgtype = <float> [flags] 1 - Affect FL_CLIENT ONLY
 .delay = <float> delayed start
 

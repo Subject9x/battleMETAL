@@ -23,10 +23,10 @@ void() data_ini_foslager_={
   setsize(self, '-20 -20 -8', '20 20 16');
   
 //ENERGY AND SHIELDS===================
-  self.en_max = 250;
-  self.en_rate= 1.2;
-  self.sh_max = 100;
-  self.sh_rate= 0;
+  self.energyMax = 250;
+  self.energyRate= 1.2;
+  self.shieldMax = 100;
+  self.shieldRate= 0;
 //=====================================
  
 //RADAR================================
@@ -49,7 +49,7 @@ void() data_ini_foslager_={
   data_ini_camera_( '0 12 20' );
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/foslager/mdl_foslager_tur.md3", 1, '0 10.25 -3.75', self, e_tor_c);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/foslager/mdl_foslager_tur.md3", 1, '0 10.25 -3.75', self, torsoCenter);
 //=====================================
  
 //HARDPOINTS==========================

@@ -65,7 +65,7 @@ void() data_prj_rplas_touch={
   pointparticles( particleeffectnum("TE_RPC_HIT"), this.origin, '0 0 0', 1);
   if(other.takedamage){
     hit = t_damage(other, this, this.owner, this.p_damage, this.p_dmgtype, this.origin, '0 0 0');
-    if(other.sh_cur <= 0){
+    if(other.shield <= 0){
       newmis = spawn();
       newmis.enemy = other;
       newmis.e_cam = hit;

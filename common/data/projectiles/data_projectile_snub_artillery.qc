@@ -38,7 +38,7 @@ void() data_projectile_snub_artillery_touch_={
   makevectors(self.angles);
   if( other.takedamage ){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-    if( other.sh_cur > 0){
+    if( other.shield > 0){
       pointparticles( particleeffectnum("TE_SFGA_IMPACT_SHIELD"), self.origin, self.velocity, 1);
     }else{
       te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.p_damage / 7, 1);

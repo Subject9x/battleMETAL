@@ -33,11 +33,6 @@ float( float fogColor, float fogColorTarg  ) cl_particles_fogColorAdjust;
 float( float fogDist, float fogDistTarg ) cl_particles_fogDistAdjust;
 void() cl_particles_fogFrame;
 
-
-void() SUB_Remove={
-  remove(self);
-};
-
 //===================================
 void() te_shield_think={
 

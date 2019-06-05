@@ -26,12 +26,12 @@ void() data_flak_ini={
   self.w_fire_ofs = DAT_FLAK_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_FLAK_MODEL;
   self.w_attack = data_flak_atk;
-  self.rl_cur = DAT_FLAK_RL_MAX;
-  self.rl_rate = DAT_FLAK_RL_RATE;
-  self.rl_max = DAT_FLAK_RL_MAX;
-  self.en_rate = DAT_FLAK_EN_RATE;
+  self.reloadValue = DAT_FLAK_RL_MAX;
+  self.reloadRate = DAT_FLAK_RL_RATE;
+  self.reloadMax = DAT_FLAK_RL_MAX;
+  self.energyRate = DAT_FLAK_EN_RATE;
   self.fire_sound = DAT_FLAK_FIRESOUND;
-  self.i_techlvl = DAT_FLAK_TECH_LEVEL;
+  self.techLevel = DAT_FLAK_TECH_LEVEL;
   self.i_size = DAT_FLAK_WSIZE;
   self.w_think = data_flak_think;
   self.health = DAT_FLAK_HPX;
@@ -49,14 +49,14 @@ void() data_flak_think={
   }
   else if(self.w_state == RELOADING){
     if(time > self.w_firetime){
-      self.rl_cur = 100;
+      self.reloadValue = 100;
       self.w_state = READY;
     }
     else{
       local float delta, lim;
       delta = time - self.count1;
-      lim = self.rl_max;      
-      self.rl_cur = (delta / lim) * 100;
+      lim = self.reloadMax;      
+      self.reloadValue = (delta / lim) * 100;
     }
   }
 };
@@ -75,26 +75,26 @@ void() data_flak_atk={
   
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.rl_cur = 0;
+    self.reloadValue = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
     self.w_isburst = FALSE;
-    self.w_firetime = time + self.rl_max;
+    self.w_firetime = time + self.reloadMax;
     self.count1 = time;
   }
   else{
     if((self.flags * FL_MONSTER)){
-      self.w_firetime = time + (self.rl_rate / 10 ) / 1.5;
+      self.w_firetime = time + (self.reloadRate / 10 ) / 1.5;
     }
     else{
-      self.w_firetime = time + self.rl_rate / 2;
+      self.w_firetime = time + self.reloadRate / 2;
     }
     self.w_state = RECOIL;
     self.w_isburst = FALSE;
   }
   
   adj = self.c_ofs + self.w_fire_ofs;
-  part = util_getPartFromName(self.c_parent, player);
+  part = util_getPartFromName(self.partParentId, player);
   makevectors( part.angles );
   org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
@@ -119,7 +119,7 @@ void() data_flak_atk={
   if(enm && enm != world){
     local float totes;
     totes = DAT_FLAK_SHRAP_TOTAL;
-    if(enm.sh_cur > 0){
+    if(enm.shield > 0){
       t_damage(enm, self, self.owner, self.p_damage * totes, self.p_dmgtype, trace_endpos, '0 0 0');
     }
     else{

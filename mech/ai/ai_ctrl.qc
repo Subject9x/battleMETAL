@@ -6,22 +6,22 @@ Overview: AI Controller functions, ported mainly from Quake 1
 */
 
 void( float estate ) ai_turret_set_state={
-  if( (self.e_tor_c) ) {
-    self.e_tor_c.attack_state = estate;
+  if( (self.torsoCenter) ) {
+    self.torsoCenter.attack_state = estate;
   }
 };
 
 /*
   scope = self is AI making the call.
   called every frame if the AI Unit has FL_TURRET
-  flag, this  assumes .e_tor_c is the AI's turret ent.
+  flag, this  assumes .torsoCenter is the AI's turret ent.
 */
 void() ai_turret_control={
   local entity turretOwner;
   local vector am;
-  if( (self.e_tor_c) ){
+  if( (self.torsoCenter) ){
     turretOwner = self;
-    self = self.e_tor_c;
+    self = self.torsoCenter;
       util_setOffsetOrigin(self, turretOwner, self.c_ofs);
       switch( self.attack_state ){
         case TR_NORM:
@@ -47,8 +47,8 @@ void() ai_leg_control={
   local entity legOwner;
   local vector am;
   legOwner = self;
-  if( (self.e_legs) ){
-      self = self.e_legs;
+  if( (self.legs) ){
+      self = self.legs;
       util_setOffsetOrigin(self, legOwner, self.c_ofs);
       switch( self.attack_state ){
         case TR_NORM:
@@ -81,7 +81,7 @@ void() ai_update={
   }
   else{ 
     self.enemy = world;
-    if( self.e_tor_c.attack_state != TR_YAW ){
+    if( self.torsoCenter.attack_state != TR_YAW ){
       ai_turret_set_state( TR_NORM );
     }
   }
@@ -236,7 +236,7 @@ float(entity t, float ang) ai_check_face={
   
   vang = self.angles;
   if( (self.flags & FL_TURRET) ){
-    vang = self.e_tor_c.angles;
+    vang = self.torsoCenter.angles;
   }
   
   makevectors ( vang );
@@ -259,7 +259,7 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
   vang = self.angles;
   if( (self.flags & FL_TURRET) ){
     if( useTurret ){
-      vang = self.e_tor_c.angles;
+      vang = self.torsoCenter.angles;
     }
   }
   
@@ -346,10 +346,10 @@ void() ai_setup_patrol={
     if( spot ){
       droptofloor();
       if( (self.flags & FL_TURRET) ){
-        util_setOffsetOrigin(self.e_tor_c, self, self.e_tor_c.c_ofs);
+        util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.c_ofs);
       }
-      if( self.e_legs ){
-        util_setOffsetOrigin(self.e_legs, self, self.e_legs.c_ofs);
+      if( self.legs ){
+        util_setOffsetOrigin(self.legs, self, self.legs.c_ofs);
       }  
     }
     if( spot.target ){

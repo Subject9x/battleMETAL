@@ -313,16 +313,16 @@ float(float id) ui_data_load_mech={
         if( token == "icon"){
           MECH_DATA_ICON = strzone(value);
         }
-        if( token == "en_max"){
+        if( token == "energyMax"){
           MECH_DATA_ENMAX = stof(value);
         }
-        if( token == "en_rate"){
+        if( token == "energyRate"){
           MECH_DATA_ENRATE = stof(value);
         }
-        if( token == "sh_max"){
+        if( token == "shieldMax"){
           MECH_DATA_SHMAX = stof(value);
         }
-        if( token == "sh_rate"){
+        if( token == "shieldRate"){
           MECH_DATA_SHRATE = stof(value);
         }
         if( token == "hpoints"){

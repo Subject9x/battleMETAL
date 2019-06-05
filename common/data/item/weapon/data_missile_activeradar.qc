@@ -18,9 +18,9 @@ void() data_ini_missile_activeradar_={
   self.w_name = "Missile - Active Radar";
   
   self.w_clipsize = 10;
-  self.rl_rate = 0.28;
-  self.rl_max = 7;
-  self.en_rate = 0;
+  self.reloadRate = 0.28;
+  self.reloadMax = 7;
+  self.energyRate = 0;
   self.spreadDefault = '0.03 0.03 0';
   
   self.w_range = 1500;
@@ -34,7 +34,7 @@ void() data_ini_missile_activeradar_={
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_arh.md3";
-  self.i_techlvl = 2;
+  self.techLevel = 2;
   self.i_size = 3;
   
   self.w_isburst = FALSE;

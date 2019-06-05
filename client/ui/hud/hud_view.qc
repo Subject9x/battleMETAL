@@ -273,7 +273,7 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
     hud_renderRadarContact( blip, plrFaction, radarRange );
     kill = blip;
     blip = blip.chain;
-    if( time > kill.en_cur ){
+    if( time > kill.energy ){
       remove( kill );
     }
   }
@@ -927,7 +927,7 @@ void() data_hud_frame={
         lalign = UI_DATA_LABEL_ALIGN[uid];
         lblofs = UI_DATA_LABEL_OFS[uid];
         axis = UI_DATA_AXIS_FLAG[uid];
-        hud_renderEnergy(porg, algn, CLIENT_en_cur, vsize, lflag, lalign, lblofs, axis);
+        hud_renderEnergy(porg, algn, CLIENT_energy, vsize, lflag, lalign, lblofs, axis);
         break;
       case HUD_UID_ARM_PLAYER: 
         porg = UI_DATA_POS[uid];
@@ -942,7 +942,7 @@ void() data_hud_frame={
         lalign = UI_DATA_LABEL_ALIGN[uid];
         lblofs = UI_DATA_LABEL_OFS[uid];
         axis = UI_DATA_AXIS_FLAG[uid];
-        hud_renderShield(porg, algn, CLIENT_sh_cur, vsize, lflag, lalign, lblofs, axis);
+        hud_renderShield(porg, algn, CLIENT_shield, vsize, lflag, lalign, lblofs, axis);
         break;
       case HUD_UID_ARM_TARGET:  
         if( hasTarget ){

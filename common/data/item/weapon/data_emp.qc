@@ -18,9 +18,9 @@ void() data_ini_emp_={
   self.w_name = "EMP Cannon";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0.1;
-  self.rl_max = 6;
-  self.en_rate = 266.7;
+  self.reloadRate = 0.1;
+  self.reloadMax = 6;
+  self.energyRate = 266.7;
   self.spreadDefault = '0.009 0.008 0';
   
   self.w_range = 1700;
@@ -34,7 +34,7 @@ void() data_ini_emp_={
   self.w_fire_ofs = '0 0.1 7';
   self.fire_sound = "sound/weapons/emp_fire.ogg";
   self.model = "q3mdl/weapons/w_emp.md3";
-  self.i_techlvl = 2;
+  self.techLevel = 2;
   self.i_size = 3;
 };
 

@@ -174,9 +174,9 @@ void() building_human_radar={
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_SM_RADAR_HP, DAT_BLD_H_SM_RADAR_HP, 1, 100) ;
   setsize(self, '-20 -20 0', '20 20 26');
-  self.sh_cur = 0;
-  self.sh_max = DAT_BLD_H_SM_RADAR_SH_MAX;
-  self.sh_rate = DAT_BLD_H_SM_RADAR_SH_RATE;
+  self.shield = 0;
+  self.shieldMax = DAT_BLD_H_SM_RADAR_SH_MAX;
+  self.shieldRate = DAT_BLD_H_SM_RADAR_SH_RATE;
   self.stat_rdr_mode = TRUE;
   self.radar_range = DAT_BLD_H_SM_RADAR_RADAR_RANGE;
   

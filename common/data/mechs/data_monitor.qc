@@ -23,10 +23,10 @@ void() data_ini_monitor_={
   self.maxs = '22 22 28';
   
 //ENERGY AND SHIELDS===================
-  self.en_max = 700;
-  self.en_rate= 3;
-  self.sh_max = 600;
-  self.sh_rate= 0.7;
+  self.energyMax = 700;
+  self.energyRate= 3;
+  self.shieldMax = 600;
+  self.shieldRate= 0.7;
 //=====================================
  
 //RADAR================================
@@ -49,22 +49,22 @@ void() data_ini_monitor_={
   data_ini_camera_( '0 18 8' );
   
   //center torso
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0', self, e_tor_c);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0', self, torsoCenter);
  
   //left torso
-  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 15.5 0', self, e_tor_l);
+  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 15.5 0', self, torsoLeft);
  
   //right torso
-  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/monitor/monitor_tor_r.md3", 375, '11.5 15.5 0', self, e_tor_r);
+  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/monitor/monitor_tor_r.md3", 375, '11.5 15.5 0', self, torsoRight);
  
   //left arm
-  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/monitor/monitor_arm_l.md3", 1000, '-18 13 -1', self.e_tor_l, e_arm_l);
+  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/monitor/monitor_arm_l.md3", 1000, '-18 13 -1', self.torsoLeft, armLeft);
  
   //right arm
-  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/monitor/monitor_arm_r.md3", 1000, '18 13 -1', self.e_tor_r, e_arm_r);
+  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/monitor/monitor_arm_r.md3", 1000, '18 13 -1', self.torsoRight, armRight);
    
   //legs
-  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0', self, e_legs);
+  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0', self, legs);
 //=====================================
  
 //HARDPOINT DATA======================

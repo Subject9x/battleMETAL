@@ -17,9 +17,9 @@ void() data_ini_equip_energy_battery_={
   self.w_name = "Energy Battery";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0;
-  self.rl_max = 0;
-  self.en_rate = 0.2;  // percent multiplier to unit's radar range
+  self.reloadRate = 0;
+  self.reloadMax = 0;
+  self.energyRate = 0.2;  // percent multiplier to unit's radar range
   
   self.w_range = 0;
   self.p_damage = 0;
@@ -29,7 +29,7 @@ void() data_ini_equip_energy_battery_={
   self.think = SUB_Null;
 
   self.model = "q3mdl/weapons/e_enbat.md3";
-  self.i_techlvl = 2;
+  self.techLevel = 2;
   self.i_size = 3;
   
   self.unit_wep1 = energy_battery_remove_;
@@ -38,10 +38,10 @@ void() data_ini_equip_energy_battery_={
 };
 
 void() energy_battery_upgrade_={
-  self.en_max = self.owner.en_max;
-  self.owner.en_max = self.owner.en_max + (self.owner.en_max * self.en_rate);
+  self.energyMax = self.owner.energyMax;
+  self.owner.energyMax = self.owner.energyMax + (self.owner.energyMax * self.energyRate);
 };
 
 void() energy_battery_remove_={
-  self.owner.en_max = self.en_max;
+  self.owner.energyMax = self.energyMax;
 };

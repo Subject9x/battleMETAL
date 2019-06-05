@@ -17,9 +17,9 @@ void() data_ini_snub_artillery_={
   self.w_name = "Snub Field Artillery";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0.1;
-  self.rl_max = 10;
-  self.en_rate = 0;
+  self.reloadRate = 0.1;
+  self.reloadMax = 10;
+  self.energyRate = 0;
   self.spreadDefault = '0.02 0.02 0';
   
   self.w_range = 1000;
@@ -33,7 +33,7 @@ void() data_ini_snub_artillery_={
   self.w_fire_ofs = '0 0 9';
   self.fire_sound = "sound/fx_boom.ogg";
   self.model = "q3mdl/weapons/w_sfga.md3";
-  self.i_techlvl = 2;
+  self.techLevel = 2;
   self.i_size = 3;
   
   self.w_isburst = FALSE;

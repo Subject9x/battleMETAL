@@ -157,7 +157,7 @@ void() ImpulseCommands ={
 
 void() ButtonCommands={
   if( self.button8 ){
-    if( self.en_cur > 0 && !(self.e_legs.flags & FL_DISARMED)){
+    if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
       if( self.stat_plr_stt == PLAYER_ACTIVE ){
         self.stat_plr_stt = PLAYER_SPRINT_ON;
         client_update_moveSpeed(self.m_fspeed * self.m_maccel, self.m_sspeed * self.m_maccel, self.m_bspeed * self.m_maccel, ftos(self.m_maccel), self.m_rollangle);

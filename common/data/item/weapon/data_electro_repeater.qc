@@ -20,9 +20,9 @@ void() data_ini_electro_repeater_={
   self.w_name = "ESR";
   
   self.w_clipsize = 20;
-  self.rl_rate = 0.07;
-  self.rl_max = 5;
-  self.en_rate =  200;
+  self.reloadRate = 0.07;
+  self.reloadMax = 5;
+  self.energyRate =  200;
   self.spreadDefault = '0.1 0.1 0';
   
   self.think = default_weapon_think;
@@ -35,7 +35,7 @@ void() data_ini_electro_repeater_={
   self.w_fire_ofs = '0 0 6'; 
   self.fire_sound = "sound/weapons/esr_fire.ogg";
   self.model = "q3mdl/weapons/w_esr.md3";
-  self.i_techlvl = 2;
+  self.techLevel = 2;
   self.i_size = 2;
   self.w_isburst = FALSE;
   
@@ -61,7 +61,7 @@ void() data_ini_attack_electro_repeater_={
   
   if( trace_ent.takedamage ){
     t_damage(trace_ent, self, FIRE_ENT, self.p_damage, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
-    if( trace_ent.sh_cur > 0 ){
+    if( trace_ent.shield > 0 ){
       pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
     }
     else{

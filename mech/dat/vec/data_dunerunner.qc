@@ -27,18 +27,18 @@ void() data_dunerunner_ini={
   self.vec_size = DAT_dunerunner_SIZE;
   self.data_type = DATA_VEHC;
   self.radar_range = DAT_dunerunner_RADAR_RANGE;
-  self.i_techlvl= DAT_dunerunner_TECH_LEVEL;
+  self.techLevel= DAT_dunerunner_TECH_LEVEL;
   
   self.health = DAT_dunerunner_HP;
   self.max_health = DAT_dunerunner_HP;
   self.c_model = "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3";
   
-  self.en_cur= DAT_dunerunner_ENERGY_MAX;
-  self.en_max= DAT_dunerunner_ENERGY_MAX;
-  self.en_rate= DAT_dunerunner_ENERGY_RATE;
-  self.sh_cur= 0;
-  self.sh_max= DAT_dunerunner_SHIELD_MAX;
-  self.sh_rate= DAT_dunerunner_SHIELD_RATE;
+  self.energy= DAT_dunerunner_ENERGY_MAX;
+  self.energyMax= DAT_dunerunner_ENERGY_MAX;
+  self.energyRate= DAT_dunerunner_ENERGY_RATE;
+  self.shield= 0;
+  self.shieldMax= DAT_dunerunner_SHIELD_MAX;
+  self.shieldRate= DAT_dunerunner_SHIELD_RATE;
   self.yaw_speed = DAT_dunerunner_YAW_SPEED;
   self.turret_yaw_speed = DAT_dunerunner_TUR_YAW;
   self.m_fspeed = DAT_dunerunner_FSPEED;
@@ -61,7 +61,7 @@ void() data_dunerunner_death={
 };
 
 void() data_dunerunner_ctor={
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.health = 1;
   self.max_health = 1;
   self.c_model = "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3";
@@ -71,13 +71,13 @@ void() data_dunerunner_ctor={
 };
 
 void() data_dunerunner_cam={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.c_ofs = '0 12 20';
   self.c_alt_ofs = '0 0 0';
 };
 
 void() data_dunerunner_wep1={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_dunerunner_WEP1_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -86,7 +86,7 @@ void() data_dunerunner_wep1={
 };
 
 void() data_dunerunner_wep2={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_dunerunner_WEP2_OFFSET;
   self.c_alt_ofs = '0 0 0';

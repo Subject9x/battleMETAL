@@ -16,9 +16,9 @@ void() data_ini_equip_shield_capacitor_={
   self.w_name = "Shield Capacitor";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0;
-  self.rl_max = 0;
-  self.en_rate = 0.15;  // percent multiplier to unit's sh_max
+  self.reloadRate = 0;
+  self.reloadMax = 0;
+  self.energyRate = 0.15;  // percent multiplier to unit's shieldMax
   
   self.w_range = 0;
   self.p_damage = 0;
@@ -28,7 +28,7 @@ void() data_ini_equip_shield_capacitor_={
   self.think = SUB_Null;
 
   self.model = "q3mdl/weapons/e_scap.md3";
-  self.i_techlvl = 3;
+  self.techLevel = 3;
   self.i_size = 2;
   
   self.unit_wep1 = shield_capacitor_remove_;
@@ -37,11 +37,11 @@ void() data_ini_equip_shield_capacitor_={
 };
 
 void() shield_capacitor_upgrade_={
-  self.en_max = self.owner.sh_max;
+  self.energyMax = self.owner.shieldMax;
   
-  self.owner.sh_max  = self.owner.sh_max + (self.owner.sh_max  * self.en_rate);
+  self.owner.shieldMax  = self.owner.shieldMax + (self.owner.shieldMax  * self.energyRate);
 };
 
 void() shield_capacitor_remove_={
-  self.owner.sh_max  = self.en_max;
+  self.owner.shieldMax  = self.energyMax;
 };

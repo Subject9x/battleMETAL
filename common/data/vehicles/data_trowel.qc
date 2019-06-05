@@ -23,10 +23,10 @@ void() data_ini_trowel_={
   setsize(self, '-30 -30 -7.75', '30 30 20');
   
 //ENERGY AND SHIELDS===================
-  self.en_max = 700;
-  self.en_rate= 1.85;
-  self.sh_max = 250;
-  self.sh_rate= 0;
+  self.energyMax = 700;
+  self.energyRate= 1.85;
+  self.shieldMax = 250;
+  self.shieldRate= 0;
 //=====================================
  
 //RADAR================================
@@ -49,7 +49,7 @@ void() data_ini_trowel_={
   data_ini_camera_( '0 12 20' );
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', self, e_tor_c);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', self, torsoCenter);
 //=====================================
  
 //HARDPOINTS==========================

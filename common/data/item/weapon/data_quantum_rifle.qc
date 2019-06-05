@@ -21,9 +21,9 @@ void() data_ini_quantum_={
   self.w_name = "Quantum Rifle";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0.1;
-  self.rl_max = 5;
-  self.en_rate = 10;
+  self.reloadRate = 0.1;
+  self.reloadMax = 5;
+  self.energyRate = 10;
   self.spreadDefault = '0.005 0.005 0';
   
   self.w_range = 2000;
@@ -37,7 +37,7 @@ void() data_ini_quantum_={
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/qrfl_fire.ogg";
   self.model = "q3mdl/weapons/w_qrf.md3";
-  self.i_techlvl = 2;
+  self.techLevel = 2;
   self.i_size = 1;
 };
 

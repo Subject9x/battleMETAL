@@ -257,7 +257,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
     
     //HUD SOUND SYSTEM LISTENERS
     snd_hud_vfx_statelistener(CLIENT_player_state);
-    snd_hud_vfx_enelistener(CLIENT_en_cur);
+    snd_hud_vfx_enelistener(CLIENT_energy);
     snd_hud_vfx_toggleradar(CLIENT_stat_rdr_mode);
     snd_hud_vfx_targkill(CLIENT_stat_trg_ddflg);
     

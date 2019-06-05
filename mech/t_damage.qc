@@ -19,7 +19,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   local float damage, dmgtype, shields, crit;
   dmgtype = inflictor.p_dmgtype;
   damage = dmg_amt;
-  shields = targ.sh_cur;
+  shields = targ.shield;
   
   if( (dmgtype & EFF_STX) ){
     return t_damage_ene( targ, inflictor, damage );
@@ -50,7 +50,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   if( shields < 0 ){
     shields = 0;
   }
-  targ.sh_cur = shields;
+  targ.shield = shields;
   
   return damage;
 };
@@ -68,7 +68,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   
   dmgtype = inflictor.p_dmgtype;
   damage = dmg_amt;
-  shields = targ.sh_cur;
+  shields = targ.shield;
 
   if( shields <= 0 ){
     if( (dmgtype & EFF_ENE) ){
@@ -108,7 +108,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
       shields = 0;
     }  
   }  
-  targ.sh_cur = shields;
+  targ.shield = shields;
  
   //EFF_STX only affects shields;
   if( (dmgtype & EFF_STX) ){
@@ -127,14 +127,14 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
   
   dmgtype = inflictor.p_dmgtype;
   damage = dmg_amt;
-  shields = targ.sh_cur;
+  shields = targ.shield;
   quarter = shields * 0.25;
   
-  if( targ.sh_cur > quarter ){
+  if( targ.shield > quarter ){
     damage = 0;
   }
-  else if( (targ.sh_cur <= quarter) && (targ.sh_cur > 0) ){
-    mod = targ.sh_cur / targ.sh_max;
+  else if( (targ.shield <= quarter) && (targ.shield > 0) ){
+    mod = targ.shield / targ.shieldMax;
     mod = mod / 2;
     damage = damage - mod;
   }
@@ -151,7 +151,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
     }
   }
   
-  targ.sh_cur = shields;
+  targ.shield = shields;
   
   return damage;
 };
@@ -174,7 +174,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
   
-  prevShields = trg.sh_cur;
+  prevShields = trg.shield;
   
   //reduce friendly fire damage on easier settings
   if(trg.faction == attacker.faction){
@@ -215,7 +215,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   trg.sh_hit = dmg_amt / 100;
   trg.sh_hit = trg.sh_hit + (4 - trg.vec_size);
   trg.sh_hit = trg.sh_hit + (3 - skill);
-  if( trg.sh_cur <= FALSE ){
+  if( trg.shield <= FALSE ){
     trg.sh_hit = trg.sh_hit + (trg.sh_hit * 6);
   }
   else{
@@ -247,7 +247,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = notTarg;
   }
   
-  if( (prevShields > 0) && (trg.sh_cur <= 0) ){
+  if( (prevShields > 0) && (trg.shield <= 0) ){
     te_shield_explode( trg.origin, trg.vec_size );
   }
   
@@ -261,7 +261,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if(trg.data_type == DATA_MECH){
     //filter out leg hits
     if(dmg_point_z < (trg.origin_z - 5)){
-      dmgTrg = dmgTrg.e_legs;
+      dmgTrg = dmgTrg.legs;
     }
     else{
       local float irad;
@@ -294,7 +294,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if( dmgTrg.health <= 0 ){
     if( dmgTrg.th_die ){
-      if( dmgTrg.comp_id == M_LEGS ){
+      if( dmgTrg.partTypeId == M_LEGS ){
         if( !(dmgTrg.flags & FL_DISARMED) ){
           dmgTrg.owner.m_fspeed = dmgTrg.owner.m_fspeed / 2;
           dmgTrg.owner.m_sspeed = dmgTrg.owner.m_sspeed / 2;
@@ -344,7 +344,7 @@ entity(vector point, float rad, entity trg) t_find_part={
         }
       }
     }
-    cprt = cprt.c_part;
+    cprt = cprt.partNext;
   }
   //NOTE - perhaps only check for weapons when armor is below a certain threshold?
   /*f_wep = closestWeapon(trg, point, rad);
@@ -354,7 +354,7 @@ entity(vector point, float rad, entity trg) t_find_part={
       chk = vlen(point - f_wep.origin);
       if(chk < cur_dist){
         local entity part;
-        part = util_getPartFromName(f_wep.c_parent, trg);
+        part = util_getPartFromName(f_wep.partParentId, trg);
         if(part.health < (part.max_health / 3)){
           toSender = f_wep;
         }
@@ -447,12 +447,12 @@ void(entity targ, entity attacker, float dmg_type) killed={
       }
     }
     
-    if( (self.classname == MECH_PIECE) && (self.comp_id != -1) ){
+    if( (self.classname == MECH_PIECE) && (self.partTypeId != -1) ){
       local entity wep;
       wep = self.owner;
       while(wep){
         wep = wep.w_slot;
-        if(wep.c_parent == self.comp_id){
+        if(wep.partParentId == self.partTypeId){
           if(wep.deadflag <= DEAD_NO){
             killed(wep, attacker, 0);      
           }
@@ -775,7 +775,7 @@ entity(entity targ, entity inflictor, entity attacker, vector dmg_point) damage_
   if(found == world){
     found = targ;
   }
-  if(found.comp_id == "cpit"){
+  if(found.partTypeId == "cpit"){
     found = targ;
   }
   return found;
@@ -792,7 +792,7 @@ entity(vector point, float rad, entity src, entity own, entity prev) t_find_recu
   while(elm){
     if(elm != world){
       if(elm.owner == own){
-        if((elm.comp_id) && (elm.comp_id != "cpit")){
+        if((elm.partTypeId) && (elm.partTypeId != "cpit")){
           cur_dist =  vlen(elm.origin - point);
           if(cur_dist < rad_dist){
             rad_dist = cur_dist;

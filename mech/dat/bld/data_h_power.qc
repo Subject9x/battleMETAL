@@ -16,15 +16,15 @@ void() hpower_die = [0, hpower_die1]{
   while(head){
     //if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
     if( head.data_type == DATA_MECH ){
-      head.en_cur = head.en_cur + 100;
-      if(head.en_cur > head.en_max){
-        head.en_cur = head.en_max;
+      head.energy = head.energy + 100;
+      if(head.energy > head.energyMax){
+        head.energy = head.energyMax;
       }
     }
     if( head.data_type == DATA_BLD ){
       if( head.faction == self.faction ){
         if( head.data_idx != ID_BLD_H_POWER){
-          head.en_rate = 0;
+          head.energyRate = 0;
         }
       }
     }
@@ -60,10 +60,10 @@ void() hpower_die11 = [11, BecomeExplosion]{
   te_object_explode( '0.75 0.75 0.6' );};
 
 void() hpower_th = [0, hpower_th]{
-  if(self.en_cur < self.en_max){
-    self.en_cur = self.en_cur + self.en_rate;
-    if(self.en_cur > self.en_max){
-      self.en_cur = self.en_max;
+  if(self.energy < self.energyMax){
+    self.energy = self.energy + self.energyRate;
+    if(self.energy > self.energyMax){
+      self.energy = self.energyMax;
     }
   }
   
@@ -74,7 +74,7 @@ void() hpower_th = [0, hpower_th]{
     if(t.faction == self.faction){
       if(t != self){
         if(vlen(t.origin - self.origin) <= DAT_BLD_H_POWER_PLANT_EN_RADIUS){
-          t.en_rate = self.en_rate;
+          t.energyRate = self.energyRate;
         }
       }
     }
@@ -96,12 +96,12 @@ void() building_human_power={
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_POWER_PLANT_HP, DAT_BLD_H_POWER_PLANT_HP, 1, 100);
   setsize(self, '-75 -75 0', '75 75 26');
-  self.sh_cur= 0;
-  self.sh_max= DAT_BLD_H_POWER_PLANT_SH_MAX;
-  self.sh_rate= DAT_BLD_H_POWER_PLANT_SH_RATE;
-  self.en_cur= 0;
-  self.en_max= DAT_BLD_H_POWER_PLANT_EN_MAX;
-  self.en_rate= DAT_BLD_H_POWER_PLANT_EN_RATE;
+  self.shield= 0;
+  self.shieldMax= DAT_BLD_H_POWER_PLANT_SH_MAX;
+  self.shieldRate= DAT_BLD_H_POWER_PLANT_SH_RATE;
+  self.energy= 0;
+  self.energyMax= DAT_BLD_H_POWER_PLANT_EN_MAX;
+  self.energyRate= DAT_BLD_H_POWER_PLANT_EN_RATE;
   
   self.scale = 1;
   self.deadflag = DEAD_NO;

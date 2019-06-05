@@ -23,9 +23,9 @@ void() building_human_hangar={
   
   self.takedamage = DAMAGE_AIM;
   
-  self.sh_cur = 0;
-  self.sh_max = DAT_BLD_H_LG_HANGAR_SH_MAX;
-  self.sh_rate = DAT_BLD_H_LG_HANGAR_SH_RATE;
+  self.shield = 0;
+  self.shieldMax = DAT_BLD_H_LG_HANGAR_SH_MAX;
+  self.shieldRate = DAT_BLD_H_LG_HANGAR_SH_RATE;
   self.deadflag = DEAD_NO;
   
   self.th_die = building_die;

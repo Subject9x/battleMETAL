@@ -13,12 +13,12 @@ void() ai_unit_ini_var={
 
   //ini all the unit stats
   self.data_idx = 0;
-  self.en_cur = 0;
-  self.en_max = 0;
-  self.en_rate = 0;
-  self.sh_cur = 0;
-  self.sh_max = 0;
-  self.sh_rate = 0;
+  self.energy = 0;
+  self.energyMax = 0;
+  self.energyRate = 0;
+  self.shield = 0;
+  self.shieldMax = 0;
+  self.shieldRate = 0;
   self.stat_legs_hp = 0;
   self.stat_ctor_hp = 0;
   self.stat_ltor_hp = 0;
@@ -66,14 +66,14 @@ void(float rank) ai_pilot_ini_stats={
   
   mod_am = ai_pilot_armor_mod();
   self.max_health = self.health = self.health * mod_am; 
-  self.e_legs.max_health = self.e_legs.health = self.e_legs.health * mod_am; 
-  self.e_tor_l.max_health = self.e_tor_l.health = self.e_tor_l.health * mod_am; 
-  self.e_tor_r.max_health = self.e_tor_r.health = self.e_tor_r.health * mod_am; 
-  self.e_arm_r.max_health = self.e_arm_r.health = self.e_arm_r.health * mod_am; 
-  self.e_arm_l.max_health = self.e_arm_l.health = self.e_arm_l.health * mod_am;
+  self.legs.max_health = self.legs.health = self.legs.health * mod_am; 
+  self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * mod_am; 
+  self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * mod_am; 
+  self.armRight.max_health = self.armRight.health = self.armRight.health * mod_am; 
+  self.armLeft.max_health = self.armLeft.health = self.armLeft.health * mod_am;
   
   mod_sh = ai_pilot_shield_mod();
-  self.sh_max = self.sh_cur = self.sh_cur * mod_sh;
+  self.shieldMax = self.shield = self.shield * mod_sh;
   
   if(self.yaw_speed){
     self.yaw_speed = ai_pilot_yaw_mod();

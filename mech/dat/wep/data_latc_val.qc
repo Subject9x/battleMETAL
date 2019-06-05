@@ -21,12 +21,12 @@ void() data_latc_ini={
   self.w_fire_ofs = DAT_LATC_FIRE_OFS; //kinda important, this helps the traceline clear the player bboxes
   self.c_model = DAT_LATC_MODEL;
   self.w_attack = data_latc_atk;
-  self.rl_cur = DAT_LATC_RL_MAX;
-  self.rl_rate = DAT_LATC_RL_RATE;
-  self.rl_max = DAT_LATC_RL_MAX;
-  self.en_rate = DAT_LATC_EN_RATE;
+  self.reloadValue = DAT_LATC_RL_MAX;
+  self.reloadRate = DAT_LATC_RL_RATE;
+  self.reloadMax = DAT_LATC_RL_MAX;
+  self.energyRate = DAT_LATC_EN_RATE;
   self.fire_sound = DAT_LATC_FIRESOUND;
-  self.i_techlvl = DAT_LATC_TECH_LEVEL;
+  self.techLevel = DAT_LATC_TECH_LEVEL;
   self.i_size = DAT_LATC_WSIZE;
   self.w_think = data_latc_think;
   self.health = DAT_LATC_HPX;
@@ -45,14 +45,14 @@ void() data_latc_think={
   }
   else if(self.w_state == RELOADING){
     if(time > self.w_firetime){
-      self.rl_cur = 100;
+      self.reloadValue = 100;
       self.w_state = READY;
     }
     else{
       local float delta, lim;
       delta = time - self.count1;
-      lim = self.rl_max;      
-      self.rl_cur = (delta / lim) * 100;
+      lim = self.reloadMax;      
+      self.reloadValue = (delta / lim) * 100;
     }
   }
 };
@@ -67,10 +67,10 @@ void() data_latc_atk={
 
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.rl_cur = 0;
+    self.reloadValue = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
-    self.w_firetime = time + self.rl_max;
+    self.w_firetime = time + self.reloadMax;
     self.count1 = time;
   }
   else{
@@ -79,7 +79,7 @@ void() data_latc_atk={
   }
   
   adj = self.c_ofs + self.w_fire_ofs;
-  part = util_getPartFromName(self.c_parent, player);
+  part = util_getPartFromName(self.partParentId, player);
   makevectors( part.angles );
   org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
@@ -104,7 +104,7 @@ void() data_latc_atk={
   
   if( trace_ent ){
     t_damage(trace_ent, self, player, self.p_damage, DMG_BAL, dir, '0 0 0');    
-    if( trace_ent.sh_cur <= 0 ){ 
+    if( trace_ent.shield <= 0 ){ 
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), dir + v_forward * -3, normalize( dir - org ) * 4, 3);
     }
   }

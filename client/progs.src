@@ -1,9 +1,20 @@
 ../../csprogs.dat
-
 ../dp/csprogsdefs.qc
+
 data/keycodes.qc
 data/defs_clientside.qc
 data/defs_entity.qc
+data/defs_linker.qc
+../mech/ctrl/ctrl_weapon_h.qc  //compatability
+../mech/ai/ai_api_h.qc
+
+//Common Defs=====================
+  ../common/data/defs/defs_player.qc     //AI/player top-level vars.
+  ../common/data/defs/defs_unit.qc		    //all fields related specifically to unit data.
+  ../common/data/defs/defs_part.qc		    //all fields related to unit sub components.
+  ../common/data/defs/defs_item.qc		    //all fields related to items.
+  ../common/data/defs/defs_projectile.qc //all fields related to projectiles.
+//================================
 
 //Common Game Data================
   ../common/data/data_values_game.qc
@@ -17,15 +28,15 @@ data/defs_entity.qc
   //---------------------------------
   
   //Projectiles--------------------
-  ../common/data/projectiles/data_projectile_emp.qc
-  ../common/data/projectiles/data_projectile_rocket.qc
-  ../common/data/projectiles/data_projectile_quantum_bit.qc
-  ../common/data/projectiles/data_projectile_plasma.qc
-  ../common/data/projectiles/data_projectile_snub_artillery.qc
-  ../common/data/projectiles/data_projectile_missile_laserguide.qc
-  ../common/data/projectiles/data_projectile_missile_activeradar.qc
-  ../common/data/projectiles/data_projectile_ion.qc
-  ../common/data/projectiles/data_projectile_missile_swarm.qc
+  //../common/data/projectiles/data_projectile_emp.qc
+  //../common/data/projectiles/data_projectile_rocket.qc
+  //../common/data/projectiles/data_projectile_quantum_bit.qc
+  //../common/data/projectiles/data_projectile_plasma.qc
+  //../common/data/projectiles/data_projectile_snub_artillery.qc
+  //../common/data/projectiles/data_projectile_missile_laserguide.qc
+  //../common/data/projectiles/data_projectile_missile_activeradar.qc
+  //../common/data/projectiles/data_projectile_ion.qc
+  //../common/data/projectiles/data_projectile_missile_swarm.qc
   //-------------------------------
   
   //Mechs--------------------------
@@ -78,6 +89,7 @@ data/defs_entity.qc
   //-------------------------------
   ../common/data/data_values_buildings.qc
   ../common/data/data_values_particles.qc
+  ../common/ui/ui_color_constants.qc
 //================================
 
 util/headers/input_events.qh

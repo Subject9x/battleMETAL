@@ -13,10 +13,10 @@ void() hrepair_th = [0, hrepair_th]{
     return;
   }
   else{
-    if(self.rl_cur < self.rl_max){
-      self.rl_cur = self.rl_cur + self.rl_rate;
-      if(self.rl_cur > self.rl_max){
-        self.rl_cur = self.rl_max;
+    if(self.reloadValue < self.reloadMax){
+      self.reloadValue = self.reloadValue + self.reloadRate;
+      if(self.reloadValue > self.reloadMax){
+        self.reloadValue = self.reloadMax;
       }
     }
   }
@@ -35,7 +35,7 @@ void() hrepair_rep = [0, hrepair_rep]{
     else{
       local entity part;
       local float lowHP;
-      part = repairMe.c_part;
+      part = repairMe.partNext;
       lowHP = 99.99;
       while(part){
         if(part.deadflag <= DEAD_NO){
@@ -46,7 +46,7 @@ void() hrepair_rep = [0, hrepair_rep]{
             fix = part;
           }
         }
-        part = part.c_part;
+        part = part.partNext;
       }
     }
     if(fix){
@@ -58,11 +58,11 @@ void() hrepair_rep = [0, hrepair_rep]{
       pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
       trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
   
-      fix.health = fix.health + self.rl_rate * DAT_BLD_H_REPAIR_RL_RATIO;
-      self.rl_cur = self.rl_cur - (self.rl_rate * self.trigger_field.vec_size);
+      fix.health = fix.health + self.reloadRate * DAT_BLD_H_REPAIR_RL_RATIO;
+      self.reloadValue = self.reloadValue - (self.reloadRate * self.trigger_field.vec_size);
       if(fix.health >= fix.max_health){
         fix.health = fix.max_health;
-        if( fix.comp_id == M_LEGS ){
+        if( fix.partTypeId == M_LEGS ){
           if( (fix.flags & FL_DISARMED) ) {
             fix.flags = fix.flags - (fix.flags & FL_DISARMED);
             fix.owner.m_fspeed = fix.m_fspeed;
@@ -72,7 +72,7 @@ void() hrepair_rep = [0, hrepair_rep]{
           }
         }
       }
-      self.trigger_field.stat_plr_rep = (self.rl_cur / self.rl_max);
+      self.trigger_field.stat_plr_rep = (self.reloadValue / self.reloadMax);
     }
   }
   if(end_repair){
@@ -127,12 +127,12 @@ void() building_human_repair={
   util_setCollider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_REPAIR_HP, DAT_BLD_H_REPAIR_HP, 1, 100) ;
   setsize(self, '-53 -53 0', '53 53 40');
-  self.sh_cur= 0;
-  self.sh_max= DAT_BLD_H_REPAIR_SH_MAX;
-  self.sh_rate= DAT_BLD_H_REPAIR_SH_RATE;
-  self.rl_cur = DAT_BLD_H_REPAIR_RL_MAX;
-  self.rl_rate = DAT_BLD_H_REPAIR_RL_RATE;
-  self.rl_max = DAT_BLD_H_REPAIR_RL_MAX;
+  self.shield= 0;
+  self.shieldMax= DAT_BLD_H_REPAIR_SH_MAX;
+  self.shieldRate= DAT_BLD_H_REPAIR_SH_RATE;
+  self.reloadValue = DAT_BLD_H_REPAIR_RL_MAX;
+  self.reloadRate = DAT_BLD_H_REPAIR_RL_RATE;
+  self.reloadMax = DAT_BLD_H_REPAIR_RL_MAX;
   self.deadflag = DEAD_NO;
   
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
@@ -174,7 +174,7 @@ void() building_repair_think={
 
 void() building_repair_touch={
   if( vlen(other.origin - self.origin) <= 32){
-    if(self.owner.rl_cur > 0){
+    if(self.owner.reloadValue > 0){
       if(other.data_type == DATA_MECH){
         if(other.faction == self.owner.faction){
           if(util_getMechHpAverage(other) < 1){

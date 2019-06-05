@@ -36,10 +36,10 @@ void(entity wep) ctrl_wpn_think={
 
 float() ctrl_weapon_checkEnergy={
   if( self.w_currentammo ==  self.w_clipsize){
-    if(self.en_rate && (self.owner.en_cur >= self.en_rate)){
-      self.owner.en_cur = self.owner.en_cur - self.en_rate;
-      if(self.owner.en_cur < 0){
-        self.owner.en_cur = 0;
+    if(self.energyRate && (self.owner.energy >= self.energyRate)){
+      self.owner.energy = self.owner.energy - self.energyRate;
+      if(self.owner.energy < 0){
+        self.owner.energy = 0;
       }
     }
     else{
@@ -53,8 +53,8 @@ float() ctrl_weapon_checkEnergy={
 void() ctrl_weapon_fireOffset={
   FIRE_ENT = self.owner; 
   FIRE_OFFSET = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
-  if( self.c_part ){
-    WEAPON_PARENT= self.c_part;
+  if( self.partNext ){
+    WEAPON_PARENT= self.partNext;
   }
   else{
     WEAPON_PARENT = FIRE_ENT;
@@ -68,19 +68,19 @@ void() ctrl_weapon_fireOffset={
 void( float burstFire, float burstRate ) ctrl_weapon_updateAmmo={
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.rl_cur = 0;
+    self.reloadValue = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
     self.w_isburst = FALSE;
-    self.w_firetime = time + self.rl_max;
+    self.w_firetime = time + self.reloadMax;
     self.count1 = time;
   }
   else{
     if( (FIRE_ENT.flags & FL_MONSTER) ){
-      self.w_firetime = time + (self.rl_rate / burstRate) * 2.25;
+      self.w_firetime = time + (self.reloadRate / burstRate) * 2.25;
     }
     else{
-      self.w_firetime = time + self.rl_rate / burstRate;
+      self.w_firetime = time + self.reloadRate / burstRate;
     }
     self.w_state = RECOIL;
     self.w_isburst = burstFire;

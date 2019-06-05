@@ -355,7 +355,7 @@ void() PlayerDie =
 	//setmodel(self, "progs/player.mdl");
   
   self.e_mech.m_isdead = TRUE;
-  self.e_legs.m_isdead = TRUE;
+  self.legs.m_isdead = TRUE;
   
   BecomeCorpse(self, player_die_ax1);
 	/*if (self.weapon == IT_WEAPON1)

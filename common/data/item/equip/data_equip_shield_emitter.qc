@@ -5,7 +5,7 @@ Date: 06/02/2019
 Overview: 
   Data File - Item - Equipemnt
     High Strength Shield Emitters
-      Increases Unit's sh_rate, ie shield recharge buff
+      Increases Unit's shieldRate, ie shield recharge buff
 */
 void() shield_emitter_upgrade_;
 void() shield_emitter_remove_;
@@ -16,9 +16,9 @@ void() data_ini_equip_shield_emitter_={
   self.w_name = "Heavy Shield Emitter";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0;
-  self.rl_max = 0;
-  self.en_rate = 0.5;  // percent multiplier to unit's sh_rate
+  self.reloadRate = 0;
+  self.reloadMax = 0;
+  self.energyRate = 0.5;  // percent multiplier to unit's shieldRate
   
   self.w_range = 0;
   self.p_damage = 0;
@@ -28,7 +28,7 @@ void() data_ini_equip_shield_emitter_={
   self.think = SUB_Null;
 
   self.model = "q3mdl/weapons/e_hsem.md3";
-  self.i_techlvl = 2;
+  self.techLevel = 2;
   self.i_size = 2;
   
   self.unit_wep1 = shield_capacitor_remove_;
@@ -37,11 +37,11 @@ void() data_ini_equip_shield_emitter_={
 };
 
 void() shield_emitter_upgrade_={
-  self.en_max = self.owner.sh_rate;
+  self.energyMax = self.owner.shieldRate;
   
-  self.owner.sh_rate  = self.owner.sh_rate + (self.owner.sh_rate  * self.en_rate);
+  self.owner.shieldRate  = self.owner.shieldRate + (self.owner.shieldRate  * self.energyRate);
 };
 
 void() shield_emitter_remove_={
-  self.owner.sh_rate  = self.en_max;
+  self.owner.shieldRate  = self.energyMax;
 };

@@ -18,9 +18,9 @@ void() data_ini_plasma_={
   self.w_name = "Rotary Plasma Chamber";
   
   self.w_clipsize = 6;
-  self.rl_rate = 0.15;
-  self.rl_max = 5;
-  self.en_rate = 1;
+  self.reloadRate = 0.15;
+  self.reloadMax = 5;
+  self.energyRate = 1;
   self.spreadDefault = '0.015 0.015 0';
   
   self.w_range = 1000;
@@ -34,7 +34,7 @@ void() data_ini_plasma_={
   self.w_fire_ofs = '0 0 6';
   self.fire_sound = "sound/weapons/atc_fire.ogg";
   self.model = "q3mdl/weapons/w_rpc.md3";
-  self.i_techlvl = 3;
+  self.techLevel = 3;
   self.i_size = 2;
   
   self.w_isburst = FALSE;

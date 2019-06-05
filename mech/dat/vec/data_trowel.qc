@@ -41,12 +41,12 @@ void() data_TROWEL_ini={
   self.health = DAT_TROWEL_HP;
   self.max_health = DAT_TROWEL_HP;
   self.radar_range = DAT_TROWEL_RADAR_RANGE;
-  self.i_techlvl= DAT_TROWEL_TECH_LEVEL;
-  self.en_cur= DAT_TROWEL_ENERGY_MAX;
-  self.en_max= DAT_TROWEL_ENERGY_MAX;
-  self.en_rate= DAT_TROWEL_ENERGY_RATE;
-  self.sh_max= DAT_TROWEL_SHIELD_MAX;
-  self.sh_rate= DAT_TROWEL_SHIELD_RATE;
+  self.techLevel= DAT_TROWEL_TECH_LEVEL;
+  self.energy= DAT_TROWEL_ENERGY_MAX;
+  self.energyMax= DAT_TROWEL_ENERGY_MAX;
+  self.energyRate= DAT_TROWEL_ENERGY_RATE;
+  self.shieldMax= DAT_TROWEL_SHIELD_MAX;
+  self.shieldRate= DAT_TROWEL_SHIELD_RATE;
   self.yaw_speed = DAT_trowel_YAW_SPEED;
   self.turret_yaw_speed = DAT_trowel_TUR_YAW;
   self.c_model = DAT_TROWEL_MDL_CHASSIS;
@@ -70,7 +70,7 @@ void() data_trowel_death={
 };
 
 void() data_TROWEL_ctor={
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.health = 1;
   self.max_health = 1;
   self.c_model = DAT_TROWEL_CTOR_MODEL;
@@ -80,7 +80,7 @@ void() data_TROWEL_ctor={
 };
 
 void() data_TROWEL_wep1={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_TROWEL_WEP1_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -89,7 +89,7 @@ void() data_TROWEL_wep1={
 };
 
 void() data_TROWEL_wep2={  
-  self.c_parent = M_TOR_CENTER;
+  self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
   self.c_ofs = DAT_TROWEL_WEP2_OFFSET;
   self.c_alt_ofs = '0 0 0';
@@ -98,7 +98,7 @@ void() data_TROWEL_wep2={
 };
 
 void() data_TROWEL_cam={ 
-  self.comp_id = M_TOR_CENTER;
+  self.partTypeId = M_TOR_CENTER;
   self.c_ofs = DAT_TROWEL_CAM_OFFSET;
   self.c_alt_ofs = DAT_TROWEL_CAM_OFFSET_ALT;
   self.c_model = "q3mdl/testball.md3";

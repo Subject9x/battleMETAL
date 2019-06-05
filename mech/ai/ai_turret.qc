@@ -44,7 +44,7 @@ void() ai_turret_die={
     w_chain = w_chain.w_slot;
   }
   mech_player_compdie(self.e_cam);  
-  mech_player_compdie(self.e_tor_c);
+  mech_player_compdie(self.torsoCenter);
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
@@ -126,10 +126,10 @@ void() ai_turret_patrol1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  self.e_tor_c.ai_dir = random() * 75;
-  self.e_tor_c.ai_dir = self.e_tor_c.ai_dir + 45;
-  self.e_tor_c.ai_dir = self.e_tor_c.ai_dir * crandom();
-  self.e_tor_c.ai_dir = anglemod( self.e_tor_c.angles_y + self.e_tor_c.ai_dir);
+  self.torsoCenter.ai_dir = random() * 75;
+  self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + 45;
+  self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
+  self.torsoCenter.ai_dir = anglemod( self.torsoCenter.angles_y + self.torsoCenter.ai_dir);
   
   ai_turret_set_state(TR_YAW);
   
@@ -214,7 +214,7 @@ void() ai_turret_patrol8={
     return;
   }
   
-  if( self.e_tor_c.angles_y != self.e_tor_c.ai_dir ){
+  if( self.torsoCenter.angles_y != self.torsoCenter.ai_dir ){
     macro_ai_frame(ai_turret_patrol2)
     return;
   }
@@ -268,7 +268,7 @@ void() ai_turret_fight_prep={
         return;
       }
       ai_turret_set_state( TR_YAW );
-      self.e_tor_c.ai_dir = vectoyaw( self.enemy.origin - self.origin );
+      self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.origin );
       ai_sfx_huntStart();
       macro_ai_frame(ai_turret_hunt1)
       return;
@@ -546,7 +546,7 @@ void() ai_turret_idle1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  self.e_tor_c.ideal_yaw = anglemod( self.angles_y + (35 + (random() * 25) + (random() * 45)) * crandom() );
+  self.torsoCenter.ideal_yaw = anglemod( self.angles_y + (35 + (random() * 25) + (random() * 45)) * crandom() );
   ai_turret_set_state(TR_YAW);
   
   macro_ai_frame(ai_turret_idle2)

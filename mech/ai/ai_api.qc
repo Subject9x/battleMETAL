@@ -327,7 +327,7 @@ void() ai_ranged_attack={
   wep_chain = self.w_slot;     
   self.v_angle = self.angles;
   if( (self.flags & FL_TURRET) ){
-    self.v_angle = self.e_tor_c.angles;
+    self.v_angle = self.torsoCenter.angles;
     diff = vectoangles( self.enemy.origin - self.e_cam.origin);
     self.v_angle_x = diff_x * -1;
   }
@@ -341,7 +341,7 @@ void() ai_ranged_attack={
                 self = wep_chain;
                   if( ai_check_face(this.enemy, 0.95) ){
                     if( (self.p_dmgtype & EFF_STX) ){
-                      if (this.enemy.sh_cur > self.p_damage / 2){
+                      if (this.enemy.shield > self.p_damage / 2){
                         fired = fired + 1;
                         self.w_attack();
                       }
@@ -449,7 +449,7 @@ float(entity wep) ai_attack_blockcheck={
   local vector viewpont, vang;
 
   if( (self.flags & FL_TURRET) ){
-    vang = self.e_tor_c.angles;
+    vang = self.torsoCenter.angles;
   }
   else{
     vang = self.angles;
@@ -578,7 +578,7 @@ float(entity targ) ai_range={
   on-hand
 */  
 float(entity wep) ai_attack_checkEne={
-  if(self.en_cur  >= wep.en_rate ){
+  if(self.energy  >= wep.energyRate ){
     return TRUE;
   }
   return FALSE;

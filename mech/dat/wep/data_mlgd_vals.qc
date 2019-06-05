@@ -23,12 +23,12 @@ void() data_mlgd_ini={
   self.c_model = DAT_MLGD_MODEL;
   self.w_attack = data_mlgd_atk;
   self.w_proj = DAT_MLGD_PROJ_ID;
-  self.rl_cur = DAT_MLGD_RL_MAX;
-  self.rl_rate = DAT_MLGD_RL_RATE;
-  self.rl_max = DAT_MLGD_RL_MAX;
-  self.en_rate = DAT_MLGD_EN_RATE;
+  self.reloadValue = DAT_MLGD_RL_MAX;
+  self.reloadRate = DAT_MLGD_RL_RATE;
+  self.reloadMax = DAT_MLGD_RL_MAX;
+  self.energyRate = DAT_MLGD_EN_RATE;
   self.fire_sound = DAT_MLGD_FIRESOUND;
-  self.i_techlvl = DAT_MLGD_TECH_LEVEL;
+  self.techLevel = DAT_MLGD_TECH_LEVEL;
   self.i_size = DAT_MLGD_WSIZE;
   self.w_think = data_mlgd_think;
   self.health = DAT_MLGD_HPX;
@@ -41,7 +41,7 @@ void() data_mlgd_ini={
 void() data_mlgd_think={
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
-      self.rl_cur = 100;
+      self.reloadValue = 100;
       self.w_state = READY;
     }
   }
@@ -52,8 +52,8 @@ void() data_mlgd_think={
     else{
       local float delta, lim;
       delta = time - self.count1;
-      lim = self.rl_max;      
-      self.rl_cur = (delta / lim) * 100;
+      lim = self.reloadMax;      
+      self.reloadValue = (delta / lim) * 100;
     }
   }
 };
@@ -67,10 +67,10 @@ void() data_mlgd_atk={
   range = self.w_range;
   
   if( self.w_currentammo ==  self.w_clipsize){
-    if(self.en_rate && (player.en_cur >= self.en_rate)){
-      player.en_cur = player.en_cur - self.en_rate;
-      if(player.en_cur < 0){
-        player.en_cur = 0;
+    if(self.energyRate && (player.energy >= self.energyRate)){
+      player.energy = player.energy - self.energyRate;
+      if(player.energy < 0){
+        player.energy = 0;
       }
     }
     else{
@@ -80,19 +80,19 @@ void() data_mlgd_atk={
 
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
-    self.rl_cur = 0;
+    self.reloadValue = 0;
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
-    self.w_firetime = time + self.rl_max;
+    self.w_firetime = time + self.reloadMax;
     self.count1 = time;
   }
   else{
-    self.w_firetime = time + self.rl_rate;
+    self.w_firetime = time + self.reloadRate;
     self.w_state = RECOIL;
   }
   
   adj = self.c_ofs + self.w_fire_ofs;
-  part = util_getPartFromName(self.c_parent, player);
+  part = util_getPartFromName(self.partParentId, player);
   makevectors( part.angles );
   org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle

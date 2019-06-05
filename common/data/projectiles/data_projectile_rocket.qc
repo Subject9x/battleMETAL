@@ -33,7 +33,7 @@ void() data_prj_mis_touch={
 
   if(other.takedamage){
     t_damage(other, self, self.owner, self.p_damage, self.p_dmgtype, self.origin, '0 0 0');
-    if( other.sh_cur > 0 ){
+    if( other.shield > 0 ){
       remove(self);
       return;
     }

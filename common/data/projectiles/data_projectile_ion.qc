@@ -43,7 +43,7 @@ void() data_projectile_ion_think_={
         traceline(self.origin, proxy.origin, FALSE, self.owner);
         if(trace_ent){
           local entity f;
-          if(trace_ent.comp_id > 0){
+          if(trace_ent.partTypeId > 0){
             f = trace_ent.owner;
           }
           else{
@@ -103,7 +103,7 @@ void() data_projectile_ion_touch={
   self.traileffectnum = FALSE;
   
   if(other.takedamage){
-    if( other.sh_cur > 0 ){
+    if( other.shield > 0 ){
       pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
     }
     else{

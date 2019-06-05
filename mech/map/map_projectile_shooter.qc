@@ -37,9 +37,9 @@ void() map_projectile_shooter_use={
 void() map_projectile_shooter_think={
   
   map_projectile_shooter_use();
-  self.en_cur = 100000;
+  self.energy = 100000;
   self.w_state = READY;
-  self.rl_cur = self.rl_max;
+  self.reloadValue = self.reloadMax;
   self.w_currentammo = self.w_clipsize;
   
   self.think = map_projectile_shooter_think;
@@ -96,11 +96,11 @@ void() map_projectile_shooter={
   self.movetype = MOVETYPE_NONE;
 
   initialize_data_item_( self.data_idx );
-  self.rl_cur = 100; // bug fix - weapon reload indicator not starting at correct value
-  self.en_cur = 10000;  //never run out of energy
+  self.reloadValue = 100; // bug fix - weapon reload indicator not starting at correct value
+  self.energy = 10000;  //never run out of energy
   self.owner.stat_rdr_mode = TRUE;
   self.isActive = TRUE;
-  self.rl_max = self.count3;
+  self.reloadMax = self.count3;
   self.owner.stat_lck_stt = self.owner.stat_lck_stt | LOCK_TARG_HAS;
   
   if( (self.flags & FL_MONSTER) ){

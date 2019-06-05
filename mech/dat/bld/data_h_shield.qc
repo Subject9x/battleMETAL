@@ -12,9 +12,9 @@ void() hshield_die = [0, hshield_die1]{
   head = findradius(self.origin, 400);
   while(head){
     if(head.data_type == DATA_MECH){
-      head.sh_cur = head.sh_cur + 250;
-      if(head.sh_cur > head.sh_max){
-        head.sh_cur = head.sh_max;
+      head.shield = head.shield + 250;
+      if(head.shield > head.shieldMax){
+        head.shield = head.shieldMax;
       }
     }
     head = head.chain;
@@ -49,18 +49,18 @@ void() hshield_die11 = [11, BecomeExplosion]{};
 void() hshield_th = [0, hshield_th]{
   local entity t, p;
 
-  self.en_cur = self.en_cur + self.en_rate;
-  if(self.en_cur > self.en_max){
-    self.en_cur = self.en_max;
+  self.energy = self.energy + self.energyRate;
+  if(self.energy > self.energyMax){
+    self.energy = self.energyMax;
   }
   
-  if(self.sh_cur < self.sh_max){
-    if(self.en_cur > 0){
+  if(self.shield < self.shieldMax){
+    if(self.energy > 0){
       if( time > self.sh_hit ){
-        self.sh_cur = self.sh_cur + self.sh_rate * 2;
-        self.en_cur = self.en_cur - self.sh_rate / 2; 
-        if(self.sh_cur > self.sh_max){
-          self.sh_cur = self.sh_max;
+        self.shield = self.shield + self.shieldRate * 2;
+        self.energy = self.energy - self.shieldRate / 2; 
+        if(self.shield > self.shieldMax){
+          self.shield = self.shieldMax;
         }  
       }
     }
@@ -73,15 +73,15 @@ void() hshield_th = [0, hshield_th]{
         local float dist;
         dist = vlen(t.origin - self.origin);
         if(dist <= DAT_BLD_H_SHIELD_RADIUS){
-          if(self.en_cur > 0){
+          if(self.energy > 0){
             if( time > t.sh_hit){
-              if(t.sh_cur < t.sh_max){
+              if(t.shield < t.shieldMax){
                 local float mod;
-                mod = self.sh_rate / 2;
-                t.sh_cur = t.sh_cur + mod;
-                self.en_cur = self.en_cur - mod;
-                if(t.sh_cur > t.sh_max){
-                  t.sh_cur = t.sh_max;
+                mod = self.shieldRate / 2;
+                t.shield = t.shield + mod;
+                self.energy = self.energy - mod;
+                if(t.shield > t.shieldMax){
+                  t.shield = t.shieldMax;
                 }
               }
             }
@@ -98,14 +98,14 @@ void() hshield_th = [0, hshield_th]{
       local float pdist;
       pdist = vlen(t.origin - self.origin);
       if(pdist <= DAT_BLD_H_SHIELD_RADIUS){
-        if(self.en_cur > 0){
-          if(p.sh_cur < p.sh_max){
+        if(self.energy > 0){
+          if(p.shield < p.shieldMax){
             local float pmod;
-            pmod = self.sh_rate;
-            p.sh_cur = p.sh_cur + pmod;
-            self.en_cur = self.en_cur - pmod;
-            if(p.sh_cur > p.sh_max){
-              p.sh_cur = p.sh_max;
+            pmod = self.shieldRate;
+            p.shield = p.shield + pmod;
+            self.energy = self.energy - pmod;
+            if(p.shield > p.shieldMax){
+              p.shield = p.shieldMax;
             }
           }
         }
@@ -129,12 +129,12 @@ void() building_human_shield={
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_SHIELDGEN_HP, DAT_BLD_H_SHIELDGEN_HP, 1, 100) ;
   setsize(self, '-56 -56 0', '56 56 17.5');
-  self.sh_cur= 0;
-  self.sh_max= DAT_BLD_H_SHIELDGEN_SH_MAX;
-  self.sh_rate= DAT_BLD_H_SHIELDGEN_SH_RATE;
-  self.en_cur = 0;
-  self.en_rate = 0;
-  self.en_max= DAT_BLD_H_POWER_PLANT_EN_MAX / 2;
+  self.shield= 0;
+  self.shieldMax= DAT_BLD_H_SHIELDGEN_SH_MAX;
+  self.shieldRate= DAT_BLD_H_SHIELDGEN_SH_RATE;
+  self.energy = 0;
+  self.energyRate = 0;
+  self.energyMax= DAT_BLD_H_POWER_PLANT_EN_MAX / 2;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));

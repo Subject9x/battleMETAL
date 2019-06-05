@@ -62,9 +62,9 @@ void() building_human_fuel={
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(DAT_BLD_H_FUELTANK_HP, DAT_BLD_H_FUELTANK_HP, 1, 100) ;
   setsize(self, '-20 -20 0', '20 20 40');
-  self.sh_cur= 0;
-  self.sh_max= DAT_BLD_H_FUELTANK_SH_MAX;
-  self.sh_rate = DAT_BLD_H_FUELTANK_SH_RATE;
+  self.shield= 0;
+  self.shieldMax= DAT_BLD_H_FUELTANK_SH_MAX;
+  self.shieldRate = DAT_BLD_H_FUELTANK_SH_RATE;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));

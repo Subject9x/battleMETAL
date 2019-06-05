@@ -21,12 +21,12 @@ void() data_emp_ini={
   self.c_model = DAT_EMP_MODEL;
   self.w_attack = data_emp_atk;
   self.w_proj = DAT_EMP_PROJ_ID;
-  self.rl_cur = DAT_EMP_RL_MAX;
-  self.rl_rate = DAT_EMP_RL_RATE;
-  self.rl_max = DAT_EMP_RL_MAX;
-  self.en_rate = DAT_EMP_EN_RATE;
+  self.reloadValue = DAT_EMP_RL_MAX;
+  self.reloadRate = DAT_EMP_RL_RATE;
+  self.reloadMax = DAT_EMP_RL_MAX;
+  self.energyRate = DAT_EMP_EN_RATE;
   self.fire_sound = DAT_EMP_FIRESOUND;
-  self.i_techlvl = DAT_EMP_TECH_LEVEL;
+  self.techLevel = DAT_EMP_TECH_LEVEL;
   self.i_size = DAT_EMP_WSIZE;
   self.w_think = data_emp_think;
   self.health = DAT_EMP_HPX;
@@ -46,14 +46,14 @@ void() data_emp_think={
   }
   else if(self.w_state == RELOADING){
     if(time > self.w_firetime){
-      self.rl_cur = 100;
+      self.reloadValue = 100;
       self.w_state = READY;
     }
     else{
       local float delta, lim;
       delta = time - self.count1;
-      lim = self.rl_max;      
-      self.rl_cur = (delta / lim) * 100;
+      lim = self.reloadMax;      
+      self.reloadValue = (delta / lim) * 100;
     }
   }
 };
@@ -67,10 +67,10 @@ void() data_emp_atk={
   range = self.w_range;
   
   if( self.w_currentammo ==  self.w_clipsize){
-    if(self.en_rate && (player.en_cur >= self.en_rate)){
-      player.en_cur = player.en_cur - self.en_rate;
-      if(player.en_cur < 0){
-        player.en_cur = 0;
+    if(self.energyRate && (player.energy >= self.energyRate)){
+      player.energy = player.energy - self.energyRate;
+      if(player.energy < 0){
+        player.energy = 0;
       }
     }
     else{
@@ -79,7 +79,7 @@ void() data_emp_atk={
   }
   
   adj = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
-  part = util_getPartFromName(self.c_parent, player);
+  part = util_getPartFromName(self.partParentId, player);
   makevectors( part.angles );
   org = player.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);
   dir = util_applySpreadToTrace( player.v_angle, range, self.spreadDefault, player.accuracy );//becomes 'endpoint' for shot angle
@@ -88,8 +88,8 @@ void() data_emp_atk={
   if(self.w_currentammo <= 0){
     self.w_currentammo = self.w_clipsize;
     self.w_state = RELOADING;
-    self.w_firetime = time + self.rl_max;
-    self.rl_cur = 0;
+    self.w_firetime = time + self.reloadMax;
+    self.reloadValue = 0;
     self.count1 = time;
   }
   else{

@@ -21,9 +21,9 @@ void() data_ini_missile_swarm_={
   self.w_name = "Missile - Swarm";
   
   self.w_clipsize = 3;
-  self.rl_rate = 0.1;
-  self.rl_max = 10;
-  self.en_rate = 0;
+  self.reloadRate = 0.1;
+  self.reloadMax = 10;
+  self.energyRate = 0;
   self.spreadDefault = '0.07 0.07 0';
   
   self.w_range = 600;
@@ -37,7 +37,7 @@ void() data_ini_missile_swarm_={
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_swrm.md3";
-  self.i_techlvl = 3;
+  self.techLevel = 3;
   self.i_size = 2;
   
   self.w_isburst = FALSE;

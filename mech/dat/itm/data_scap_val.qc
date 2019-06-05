@@ -15,8 +15,8 @@ void() data_eqp_scap_ini={
   self.w_name = DAT_EQP_SCAP_NAME;
   self.c_model = DAT_EQP_SCAP_MODEL;
   self.unit_wep1 = data_eqp_scap_die;
-  self.en_rate = DAT_EQP_SCAP_EN_RATE;
-  self.i_techlvl = DAT_EQP_SCAP_TECH_LEVEL;
+  self.energyRate = DAT_EQP_SCAP_EN_RATE;
+  self.techLevel = DAT_EQP_SCAP_TECH_LEVEL;
   self.i_size = DAT_EQP_SCAP_WSIZE;
   self.w_think = data_eqp_scap_upgrade;   //fired once on-spawn, then replaced by SUB_Null
   
@@ -26,9 +26,9 @@ void() data_eqp_scap_ini={
   self.w_fire_ofs = '0 0 0'; 
   self.w_attack = SUB_Null;               //dont do anything on attack
   self.w_proj = 0;
-  self.rl_cur = 0;
-  self.rl_rate = 0;
-  self.rl_max = 0;
+  self.reloadValue = 0;
+  self.reloadRate = 0;
+  self.reloadMax = 0;
   self.fire_sound = "";
   self.health = 1;
   self.max_health = 1;
@@ -37,11 +37,11 @@ void() data_eqp_scap_ini={
 };
 
 void() data_eqp_scap_upgrade={
-  self.en_max = self.owner.sh_max;
+  self.energyMax = self.owner.shieldMax;
   
-  self.owner.sh_max  = self.owner.sh_max + (self.owner.sh_max  * self.en_rate);
+  self.owner.shieldMax  = self.owner.shieldMax + (self.owner.shieldMax  * self.energyRate);
 };
 
 void() data_eqp_scap_die={
-  self.owner.sh_max  = self.en_max;
+  self.owner.shieldMax  = self.energyMax;
 };

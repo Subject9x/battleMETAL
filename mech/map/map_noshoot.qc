@@ -9,7 +9,7 @@ Overview:
   this is very powerful and mostly only used for FL_NOSHOOT
   
 Inputs
-  .comp_id = <float> [flags]  flags you want modified
+  .partTypeId = <float> [flags]  flags you want modified
   .p_dmgtype = <float> [flags] 1 - Affect FL_CLIENT ONLY
   .delay = <float> delayed start
   
@@ -56,12 +56,12 @@ void() map_noshoot_use={
     }
     e = findchainflags(flags, findFlags);
     while( e ){
-      if( (e.flags & self.comp_id) ){
-        e.flags = e.flags - (e.flags & self.comp_id);
+      if( (e.flags & self.partTypeId) ){
+        e.flags = e.flags - (e.flags & self.partTypeId);
       }
       else{
         //simple revert code
-        e.flags = e.flags | self.comp_id;
+        e.flags = e.flags | self.partTypeId;
       }
       e = e.chain;
     }

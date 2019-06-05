@@ -12,9 +12,9 @@ Overview
 
 */
 
-.float rl_max;	//-> reloadMax refactor
-.float rl_cur;
-.float rl_rate;
+.float reloadMax;	//-> reloadMax refactor
+.float reloadValue;
+.float reloadRate;
 
 
 .string fire_sound;

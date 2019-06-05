@@ -82,8 +82,6 @@ float DIR_W   = 6;
 float DIR_NW  = 7;
 
 //class vars
-.float data_type;
-.float max_armor; //why wasn't this ever included!?
 
 //Armor Types
 float ARM_LIT = 2;  //light armor

@@ -24,9 +24,9 @@ void() data_ini_flak_cannon_={
   self.w_name = "Flak Cannon";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0.3;
-  self.rl_max = 0.3;
-  self.en_rate = 0;
+  self.reloadRate = 0.3;
+  self.reloadMax = 0.3;
+  self.energyRate = 0;
   self.spreadDefault = '0.017 0.015 0';
   
   self.w_range = 2000;
@@ -39,7 +39,7 @@ void() data_ini_flak_cannon_={
   self.w_fire_ofs = '0 0 5';
   self.fire_sound = "sound/weapons/flak_fire.ogg";
   self.model = "q3mdl/weapons/w_flk.md3";
-  self.i_techlvl = 1;
+  self.techLevel = 1;
   self.i_size = 1;
 };
 
@@ -69,7 +69,7 @@ void() data_ini_attack_flak_={
   if(trace_ent && trace_ent != world){
     local float totes;
     totes = DAT_FLAK_SHRAP_TOTAL;
-    if(trace_ent.sh_cur > 0){
+    if(trace_ent.shield > 0){
       t_damage(trace_ent, self, self.owner, self.p_damage * totes, self.p_dmgtype, trace_endpos, '0 0 0');
     }
     else{

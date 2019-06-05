@@ -18,9 +18,9 @@ void() data_ini_missile_laserguide_={
   self.w_name = "Missile - Laser Guide";
   
   self.w_clipsize = 1;
-  self.rl_rate = 0.22;
-  self.rl_max = 8;
-  self.en_rate = 5;
+  self.reloadRate = 0.22;
+  self.reloadMax = 8;
+  self.energyRate = 5;
   self.spreadDefault = '0.03 0.03 0';
   
   self.w_range = 1000;
@@ -34,7 +34,7 @@ void() data_ini_missile_laserguide_={
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_lgm.md3";
-  self.i_techlvl = 1;
+  self.techLevel = 1;
   self.i_size = 1;
   
   self.w_isburst = FALSE;
