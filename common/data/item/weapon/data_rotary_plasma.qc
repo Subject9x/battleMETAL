@@ -38,6 +38,10 @@ void() data_ini_plasma_={
   self.i_size = 2;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "RPC";
+  self.description = "Burst-Fires 6 sub-munitions. | Submunitions burn over time on unshielded targets.~";
+  self.icon = "gfx/ui/wep_icons/wi_rpc.png";
 };
 
 void() data_ini_attack_plasma_={

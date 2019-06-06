@@ -40,3 +40,4 @@ Overview
 .float damageType;	//  Enumerated Float, see defs_game.qc\
 .string icon;		//client-side
 .string description;//client-side
+.string abbrev;

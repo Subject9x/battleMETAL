@@ -105,6 +105,11 @@ void() CSQC_Init =
   CFG_INDEX = 0;
   CFG_INDEX_PREV = CFG_INDEX;
   
+  UI_HANGAR_DATA_mech = spawn();
+  UI_ARMING_DATA_item_a = spawn();
+  UI_ARMING_DATA_item_b = spawn();
+  UI_ARMING_DATA_item_list = spawn();
+  
   //ui data from text files /data/ui/
   ui_data_load_mechnames();
   ui_data_load_mechsizes();

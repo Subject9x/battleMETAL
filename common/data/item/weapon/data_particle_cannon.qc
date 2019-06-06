@@ -37,6 +37,12 @@ void() data_ini_particle_cannon_={
   self.model = "q3mdl/weapons/w_pac.md3";
   self.techLevel = 3;
   self.i_size = 3;
+  
+  self.w_isburst = FALSE;
+  
+  self.abbrev = "PAC";
+  self.description = "IGNORE most of Target's shields.~";
+  self.icon = "gfx/ui/wep_icons/wi_pac.png";
 };
 
 void() data_ini_attack_particle_cannon_={

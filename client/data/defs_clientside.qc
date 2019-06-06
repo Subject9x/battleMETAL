@@ -34,9 +34,7 @@ float	DEAD_DEAD				= 2;
 float	DEAD_RESPAWNABLE		= 3;
 float	DEAD_RESPAWNING			= 4; // dead, waiting for buttons to be released
 
-.vector maxs;
-.vector mins;
-.string w_abbr;
+
 .float player_state;
 
 .float stat_hit_dirs;

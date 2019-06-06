@@ -70,3 +70,8 @@ string UI_DEF_DEPLOYPOINT;
 string UI_HANGAR_BOX;
 string UI_BOX_SELECT;
 string UI_CURSOR_IMG;
+
+string UI_WEP_ENE;
+string UI_WEP_BAL;
+string UI_WEP_EXP;
+string UI_WEP_MSC;

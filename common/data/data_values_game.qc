@@ -131,11 +131,11 @@ float EVADE_DRAIN_PERCENT = 0.33;  //reduce energyRate by this amount when playe
 float DMG_BAL = 1;  //ballstic damage
 float DMG_ENE = 2;  //energy damage
 float DMG_EXP = 4;  //explosive damage
-float EFF_PRC = 8;  //piercing damage
-float EFF_RAM = 16; //dmg is doubled
-float EFF_STX = 32; //dmg only affects shields
-float EFF_ENG = 64; //dmg only affects energy
-float DMG_MSC = 128; //designates weapon as 'equipment'
+float DMG_MSC = 8;  //piercing damage
+float EFF_PRC = 16; //dmg is doubled
+float EFF_RAM = 32; //dmg only affects shields
+float EFF_STX = 64; //dmg only affects energy
+float EFF_ENG = 128; //designates weapon as 'equipment'
 float EFF_ENE = 256; //weapon draws energy (client-side flag, really)
 float EFF_ARC = 512;  //weapon has an arcing projectile, used by AI
 //============================

@@ -34,6 +34,10 @@ void() data_ini_equip_shield_capacitor_={
   self.unit_wep1 = shield_capacitor_remove_;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "SCAP";
+  self.description = "Increases SHIELD TOTAL by 15%.~";
+  self.icon = "gfx/ui/wep_icons/eqp_scap.png";
 };
 
 void() shield_capacitor_upgrade_={

@@ -35,6 +35,12 @@ void() data_ini_light_laser_={
   self.model = "q3mdl/weapons/w_laser.md3";
   self.techLevel = 1;
   self.i_size = 1;
+  
+  self.w_isburst = FALSE;
+  
+  self.abbrev = "LAS";
+  self.description = "Small bonus damage against shields.~";
+  self.icon = "gfx/ui/wep_icons/wi_las.png";
 };
 
 void() data_ini_attack_laser_={

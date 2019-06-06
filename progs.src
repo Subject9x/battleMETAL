@@ -208,7 +208,7 @@ triggers.qc
   mech/map/map_change_fog.qc
   mech/map/map_change_music.qc
   mech/map/map_change_wind.qc
-  mech/map/madamageValue_zone.qc
+  mech/map/map_damage_zone.qc
   mech/map/map_deploy_point.qc
   mech/map/map_nav_point.qc
   mech/map/map_objective.qc

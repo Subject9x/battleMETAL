@@ -150,15 +150,15 @@ void() ui_data_load_mechsizes={
 void() ui_data_clear_mechdata={
   MECH_DATA_ID = 0;
   if( MECH_DATA_ABR != "" ){
-    strunzone(MECH_DATA_ABR);
+    MECH_DATA_ABR = "";
   }
   if( MECH_DATA_NAME != "" ){
-    strunzone(MECH_DATA_NAME);
+    MECH_DATA_NAME = "";
   }
   MECH_DATA_SIZE = 0;
   MECH_DATA_TECH = 0;
   if( MECH_DATA_ICON != "" ){
-    strunzone(MECH_DATA_ICON);
+    MECH_DATA_ICON = "";
   }
   MECH_DATA_ENMAX = 0;
   MECH_DATA_ENRATE = 0;
@@ -175,13 +175,12 @@ void() ui_data_clear_mechdata={
   MECH_DATA_HPLG = 0;
   MECH_DATA_RAD = 0;
   if( MECH_DATA_DESC != "" ){
-    strunzone(MECH_DATA_DESC);
+    MECH_DATA_DESC = "";
   }
 
   local float itr;
   itr = 1;
   while(itr <= 9){
-  
     MECH_DATA_H_TYPE[itr] = 0;
     MECH_DATA_H_SIZE[itr] = 0;
     MECH_DATA_H_ARM[itr] = '0 0 0';
@@ -193,6 +192,45 @@ void() ui_data_clear_mechdata={
     }
     itr = itr + 1;
   }
+  
+  local entity mech_piece;
+  mech_piece = UI_HANGAR_DATA_mech.w_slot;
+  while( mech_piece ){
+    local entity next_hardpoint;
+    next_hardpoint = mech_piece.w_slot;
+    remove(mech_piece);
+    mech_piece = next_hardpoint;
+  }
+  
+  if( UI_HANGAR_DATA_mech.legs ){
+    remove(UI_HANGAR_DATA_mech.legs);
+  }
+  
+  if( UI_HANGAR_DATA_mech.e_cam ){
+    remove(UI_HANGAR_DATA_mech.e_cam);
+  }
+  
+  if( UI_HANGAR_DATA_mech.armLeft ){
+    remove(UI_HANGAR_DATA_mech.armLeft);
+  }
+  
+  if( UI_HANGAR_DATA_mech.armRight ){
+    remove(UI_HANGAR_DATA_mech.armRight);
+  }
+  
+  if( UI_HANGAR_DATA_mech.torsoLeft ){
+    remove(UI_HANGAR_DATA_mech.torsoLeft);
+  }
+  
+  if( UI_HANGAR_DATA_mech.torsoRight ){
+    remove(UI_HANGAR_DATA_mech.torsoRight);
+  }
+  
+  if( UI_HANGAR_DATA_mech.torsoCenter ){
+    remove(UI_HANGAR_DATA_mech.torsoCenter);
+  }
+  
+  
 };
 
 void() ui_data_clear_huddata={
@@ -225,15 +263,15 @@ void() ui_data_clear_item1={
  
   ITEM1_DATA_ID = 0;
   if( ITEM1_DATA_ABBR != "" ){
-    strunzone(ITEM1_DATA_ABBR);
+    ITEM1_DATA_ABBR = "";
   }
 
   if( ITEM1_DATA_NAME != "" ){
-    strunzone(ITEM1_DATA_NAME);
+    ITEM1_DATA_NAME = "";
   }
   
   if( ITEM1_DATA_ICON != "" ){
-    strunzone(ITEM1_DATA_ICON);
+    ITEM1_DATA_ICON = "";
   }
   ITEM1_DATA_DMG = 0;
   ITEM1_DATA_TYPE = 0;
@@ -243,7 +281,7 @@ void() ui_data_clear_item1={
   ITEM1_DATA_SIZE = 0;
   ITEM1_DATA_TECH = 0;
   if( ITEM1_DATA_DESC != "" ){
-    strunzone(ITEM1_DATA_DESC);
+    ITEM1_DATA_DESC = "";
   }
 };
 
@@ -254,13 +292,13 @@ void() ui_data_clear_item2={
   }
   ITEM2_DATA_ID = 0;
   if( ITEM2_DATA_ABBR != "" ){
-    strunzone(ITEM2_DATA_ABBR);
+    ITEM2_DATA_ABBR = "";
   }
   if( ITEM2_DATA_NAME != "" ){
-    strunzone(ITEM2_DATA_NAME);
+    ITEM2_DATA_NAME = "";
   }
   if( ITEM2_DATA_ICON != "" ){
-    strunzone(ITEM2_DATA_ICON);
+    ITEM2_DATA_ICON = "";
   }
   ITEM2_DATA_DMG = 0;
   ITEM2_DATA_TYPE = 0;
@@ -271,7 +309,7 @@ void() ui_data_clear_item2={
   ITEM2_DATA_TECH = 0;
   
   if( ITEM2_DATA_DESC != "" ){
-    strunzone(ITEM2_DATA_DESC);
+    ITEM2_DATA_DESC = "";
   }
 };
 
@@ -282,6 +320,42 @@ float(float id) ui_data_load_mech={
   
   ui_data_clear_mechdata();
   
+  data_get_client_mech_( UI_HANGAR_DATA_mech, id );
+  UI_HANGAR_DATA_mech.data_idx = id;
+  
+  MECH_DATA_ID = UI_HANGAR_DATA_mech.data_idx;
+  MECH_DATA_ABR = UI_HANGAR_DATA_mech.abbrev;
+  MECH_DATA_NAME = UI_HANGAR_DATA_mech.vec_name;
+  MECH_DATA_SIZE = UI_HANGAR_DATA_mech.vec_size;
+  MECH_DATA_TECH = UI_HANGAR_DATA_mech.techLevel;
+  MECH_DATA_ICON = UI_HANGAR_DATA_mech.icon;
+  MECH_DATA_ENMAX = UI_HANGAR_DATA_mech.energyMax;
+  MECH_DATA_ENRATE = UI_HANGAR_DATA_mech.energyRate;
+  MECH_DATA_SHMAX = UI_HANGAR_DATA_mech.shieldMax;
+  MECH_DATA_SHRATE = UI_HANGAR_DATA_mech.shieldRate;
+  MECH_DATA_HPOINTS = UI_HANGAR_DATA_mech.hardpoint_cnt;
+  MECH_DATA_SPEEDF = UI_HANGAR_DATA_mech.m_fspeed;
+  MECH_DATA_SPEEDS = UI_HANGAR_DATA_mech.m_sspeed;
+  MECH_DATA_SPEEDB = UI_HANGAR_DATA_mech.m_bspeed;
+  MECH_DATA_ACCEL = UI_HANGAR_DATA_mech.m_maccel;
+  MECH_DATA_HPCT = UI_HANGAR_DATA_mech.max_health;
+  MECH_DATA_HPST = UI_HANGAR_DATA_mech.torsoLeft.max_health;
+  MECH_DATA_HPAR = UI_HANGAR_DATA_mech.armLeft.max_health;
+  MECH_DATA_HPLG = UI_HANGAR_DATA_mech.legs.max_health;
+  MECH_DATA_RAD = UI_HANGAR_DATA_mech.radar_range;
+  MECH_DATA_DESC = UI_HANGAR_DATA_mech.description;
+  
+  local entity hardpoint;
+  local float itr;
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  itr = 1;
+  while( hardpoint ){
+    MECH_DATA_H_TYPE[itr] = hardpoint.hardpointType;
+    MECH_DATA_H_SIZE[itr] = hardpoint.hardpointSize;
+    itr = itr + 1;
+    hardpoint = hardpoint.w_slot;
+  }
+
   file = strcat(PATH_DATA_UI, "/vec/mech/", MECH_DATA_NAMES[id],".unit");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
@@ -298,80 +372,6 @@ float(float id) ui_data_load_mech={
       token = argv(1);
       value = argv(3);
       if( token != ""){
-        if( token == "id"){
-          MECH_DATA_ID = stof(value);
-        }
-        if( token == "abbr"){
-          MECH_DATA_ABR = strzone(value);
-        }
-        if( token == "name"){
-          MECH_DATA_NAME = strzone(value);
-        }
-        if( token == "size"){
-          MECH_DATA_SIZE = stof(value);
-        }
-        if( token == "tech"){
-          MECH_DATA_TECH = stof(value);
-        }
-        if( token == "icon"){
-          MECH_DATA_ICON = strzone(value);
-        }
-        if( token == "energyMax"){
-          MECH_DATA_ENMAX = stof(value);
-        }
-        if( token == "energyRate"){
-          MECH_DATA_ENRATE = stof(value);
-        }
-        if( token == "shieldMax"){
-          MECH_DATA_SHMAX = stof(value);
-        }
-        if( token == "shieldRate"){
-          MECH_DATA_SHRATE = stof(value);
-        }
-        if( token == "hpoints"){
-          MECH_DATA_HPOINTS = stof(value);
-        }
-        if( token == "fspeed"){
-          MECH_DATA_SPEEDF = stof(value);
-        }
-        if( token == "sspeed"){
-          MECH_DATA_SPEEDS = stof(value);
-        }
-        if( token == "bspeed"){
-          MECH_DATA_SPEEDB = stof(value);
-        }
-        if( token == "accel"){
-          MECH_DATA_ACCEL = stof(value);
-        }
-        if( token == "hp_ct"){
-          MECH_DATA_HPCT = stof(value);
-        }
-        if( token == "hp_st"){
-          MECH_DATA_HPST = stof(value);
-        }
-        if( token == "hp_am"){
-          MECH_DATA_HPAR = stof(value);
-        }
-        if( token == "hp_lg"){
-          MECH_DATA_HPLG = stof(value);
-        }
-        if( token == "radrng"){
-          MECH_DATA_RAD = stof(value);
-        }
-        if( token == "desc"){
-          tokenizebyseparator(line, ": ", "~");
-          MECH_DATA_DESC = strzone(argv(1));
-        }
-        if( strstrofs(token, "types",0) != -1 ){
-          tokenizebyseparator(token, "_");
-          idx = stof(argv(2));
-          MECH_DATA_H_TYPE[idx] = stof(value); 
-        }
-        if( strstrofs(token, "size",0) != -1 ){
-          tokenizebyseparator(token, "_");
-          idx = stof(argv(2));
-          MECH_DATA_H_SIZE[idx] = stof(value);
-        }
         if( strstrofs(token, "arm",0) != -1 ){
           tokenizebyseparator(token, "_");
           idx = stof(argv(2));
@@ -473,24 +473,15 @@ float( float id ) ui_data_load_hud={
 
 
 float(float id) ui_date_load_item1={
-  //local float flannel, line_tag, line_val;
-  //local string file, contents, line;
   
   ui_data_clear_item1();
-  /*file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".item");
-  flannel = fopen(file, FILE_READ);
-  if(flannel == -1){
-    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
-    return FALSE;
-  }*/
-  
   
   data_get_client_item_(UI_ARMING_DATA_item_a, id);
   UI_ARMING_DATA_item_a.data_idx = id;
   
   ITEM1_DATA_ID = UI_ARMING_DATA_item_a.data_idx;
-  ITEM1_DATA_ABBR = UI_ARMING_DATA_item_a.w_abbr;
-  ITEM1_DATA_NAME = UI_ARMING_DATA_item_a.vec_name;
+  ITEM1_DATA_ABBR = UI_ARMING_DATA_item_a.abbrev;
+  ITEM1_DATA_NAME = UI_ARMING_DATA_item_a.w_name;
   ITEM1_DATA_ICON = precache_pic(UI_ARMING_DATA_item_a.icon);
   ITEM1_DATA_DMG = UI_ARMING_DATA_item_a.damageValue;
   ITEM1_DATA_TYPE = UI_ARMING_DATA_item_a.damageType;
@@ -500,70 +491,20 @@ float(float id) ui_date_load_item1={
   ITEM1_DATA_SIZE = UI_ARMING_DATA_item_a.i_size;
   ITEM1_DATA_TECH = UI_ARMING_DATA_item_a.techLevel;
   ITEM1_DATA_DESC = UI_ARMING_DATA_item_a.description;
-  
-  /*contents = fgets(flannel);
-  line = fgets(flannel);
-  while( (line != "") ){
-    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-      line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
-      local string token, value;
-      token = argv(1);
-      value = argv(3);
-      if( token != ""){
-        if( token == "id" ){
-          ITEM1_DATA_ID = stof(value);
-        }
-        if( token == "abbr" ){
-          ITEM1_DATA_ABBR = strzone(value);
-        }
-        if( token == "name" ){
-          ITEM1_DATA_NAME = strzone(value);
-        }
-        if( token == "icon" ){
-          ITEM1_DATA_ICON = strzone(value);
-        }
-        if( token == "dmg" ){
-          ITEM1_DATA_DMG = stof(value); 
-        }
-        if( token == "type" ){
-          ITEM1_DATA_TYPE = stof(value);
-        }
-        if( token == "energy" ){
-          ITEM1_DATA_EN = stof(value);
-        }
-        if( token == "range" ){
-          ITEM1_DATA_RANGE = stof(value);
-        }
-        if( token == "clipsize" ){
-          ITEM1_DATA_CLIP = stof(value);
-        }
-        if( token == "size" ){
-          ITEM1_DATA_SIZE = stof(value);
-        }
-        if( token == "tech" ){
-          ITEM1_DATA_TECH = stof(value);
-        }
-        if( token == "note" ){          
-          tokenizebyseparator(line, ": ", "~");
-          ITEM1_DATA_DESC = strzone(argv(1));
-        }
-      }
-    }
-   line = fgets(flannel);
-  }
-  fclose(flannel);*/
+
   return TRUE;
 };
 
 float(float id) ui_date_load_item2={
+
   ui_data_clear_item2();
   
   data_get_client_item_(UI_ARMING_DATA_item_b, id);
   UI_ARMING_DATA_item_b.data_idx = id;
   
   ITEM2_DATA_ID = UI_ARMING_DATA_item_b.data_idx;
-  ITEM2_DATA_ABBR = UI_ARMING_DATA_item_b.w_abbr;
-  ITEM2_DATA_NAME = UI_ARMING_DATA_item_b.vec_name;
+  ITEM2_DATA_ABBR = UI_ARMING_DATA_item_b.abbrev;
+  ITEM2_DATA_NAME = UI_ARMING_DATA_item_b.w_name;
   ITEM2_DATA_ICON = precache_pic(UI_ARMING_DATA_item_b.icon);
   ITEM2_DATA_DMG = UI_ARMING_DATA_item_b.damageValue;
   ITEM2_DATA_TYPE = UI_ARMING_DATA_item_b.damageType;
@@ -574,67 +515,6 @@ float(float id) ui_date_load_item2={
   ITEM2_DATA_TECH = UI_ARMING_DATA_item_b.techLevel;
   ITEM2_DATA_DESC = UI_ARMING_DATA_item_b.description;
   
-  
- /* local float flannel, line_tag, line_val;
-  local string file, contents, line;
-  file = strcat(PATH_DATA_UI, "/item/", ITEM_DATA_NAMES[id],".item");
-  flannel = fopen(file, FILE_READ);
-  if(flannel == -1){
-    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
-    return FALSE;
-  }
-  contents = fgets(flannel);
-  //tokenizebyseparator(contents, "{", ",", "}");
-  line = fgets(flannel);
-  while( (line != "") ){
-    if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-      line_tag = tokenizebyseparator(line, "  '","'",": ", ",");
-      local string token, value;
-      token = argv(1);
-      value = argv(3);
-      if( token != ""){
-        if( token == "id" ){
-          ITEM2_DATA_ID = stof(value);
-        }
-        if( token == "abbr" ){
-          ITEM2_DATA_ABBR = strzone(value);
-        }
-        if( token == "name" ){
-          ITEM2_DATA_NAME = strzone(value);
-        }
-        if( token == "icon" ){
-          ITEM2_DATA_ICON = strzone(value);
-        }
-        if( token == "dmg" ){
-          ITEM2_DATA_DMG = stof(value); 
-        }
-        if( token == "type" ){
-          ITEM2_DATA_TYPE = stof(value);
-        }
-        if( token == "energy" ){
-          ITEM2_DATA_EN = stof(value);
-        }
-        if( token == "range" ){
-          ITEM2_DATA_RANGE = stof(value);
-        }
-        if( token == "clipsize" ){
-          ITEM2_DATA_CLIP = stof(value);
-        }
-        if( token == "size" ){
-          ITEM2_DATA_SIZE = stof(value);
-        }
-        if( token == "tech" ){
-          ITEM2_DATA_TECH = stof(value);
-        }
-        if( token == "note" ){          
-          tokenizebyseparator(line, ": ", "~");
-          ITEM2_DATA_DESC = strzone(argv(1));
-        }
-      }
-    }
-   line = fgets(flannel);
-  }
-  fclose(flannel);*/
   return TRUE;
 };
 

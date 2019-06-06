@@ -157,6 +157,7 @@ void(string item_data) cl_get_items_all={
     if( argv(itr) != "" ){
       item = stof( argv(itr) );
       if(item > 0){
+        //TODO - fix me, don't use true/false, just send the id dammit
         WEPLIST_ALL[item] = 1;
       }
       else{

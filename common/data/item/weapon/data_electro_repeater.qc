@@ -37,7 +37,12 @@ void() data_ini_electro_repeater_={
   self.model = "q3mdl/weapons/w_esr.md3";
   self.techLevel = 2;
   self.i_size = 2;
+  
   self.w_isburst = FALSE;
+  
+  self.abbrev = "ESR";
+  self.description = "Burst-Fire lightning beams. | Devastating short range weapon. | innaccurate.~";
+  self.icon = "gfx/ui/wep_icons/wi_esr.png";
   
 };
 

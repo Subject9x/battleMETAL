@@ -139,7 +139,6 @@ void(float wep_id) initialize_data_item_={
 void( entity item, float id ) data_get_client_item_={
   local entity this;
   this = self;
-  item = spawn();
   self = item;
 	initialize_data_item_(id);
   self = this;
@@ -148,7 +147,6 @@ void( entity item, float id ) data_get_client_item_={
 void( entity mech, float id ) data_get_client_mech_={
   local entity this;
   this = self;
-  mech = spawn();
   self = mech;
 	initialize_data_mech_(id);
   self = this;

@@ -36,6 +36,12 @@ void() data_ini_emp_={
   self.model = "q3mdl/weapons/w_emp.md3";
   self.techLevel = 2;
   self.i_size = 3;
+  
+  self.w_isburst = FALSE;
+  
+  self.abbrev = "EMP";
+  self.description = "Only damages Target's SHIELDS. | Proximity detonation at longer ranges.~";
+  self.icon = "gfx/ui/wep_icons/wi_emp.png";
 };
 
 void() data_ini_attack_emp_={

@@ -238,6 +238,22 @@ void() navBarListener={
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
     if(SELECT_MECH != 0){
       CLIENT_MENU_menu_choice = MENU_ARMING_ACTIVE;
+      local float wepId;
+      wepId = 1;
+      while( wepId <= UI_TOTAL_WEAPONS ){
+        if( WEPLIST_ALL[wepId] != 0 ){
+          data_get_client_item_( UI_ARMING_DATA_item_list, wepId );
+          data_WeaponNames[wepId] = UI_ARMING_DATA_item_list.w_name;
+          data_WeaponSize[wepId] = UI_ARMING_DATA_item_list.i_size;
+          data_WeaponType[wepId] = UI_ARMING_DATA_item_list.damageType;
+          cons_logAFloat("wepId", wepId); //DEBUG
+          cons_logAString("data_WeaponNames", data_WeaponNames[wepId]); //DEBUG
+          cons_logAFloat("data_WeaponSize", data_WeaponSize[wepId]); //DEBUG
+          cons_logAFloat("data_WeaponType", data_WeaponType[wepId]); //DEBUG
+          
+        }
+        wepId = wepId + 1;
+      }
     }
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025))){

@@ -37,6 +37,10 @@ void() data_ini_rockets_={
   self.i_size = 1;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "RCK";
+  self.description = "Damage is PER MISSILE. | Fires entire clip at once. | Does not require [ACTIVE] RADAR. | Does not require TARGET LOCK.~";
+  self.icon = "gfx/ui/wep_icons/wi_rck.png";
 };
 
 void() data_ini_attack_rockets_={

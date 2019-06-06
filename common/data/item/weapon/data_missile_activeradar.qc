@@ -38,6 +38,10 @@ void() data_ini_missile_activeradar_={
   self.i_size = 3;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "MARH";
+  self.description = "Requires RADAR to be [ACTIVE]. | Requires TARGET LOCK on target. | Has minimum range.~";
+  self.icon = "gfx/ui/wep_icons/wi_marh.png";
 };
 
 void() data_ini_attack_missile_activeradar_={

@@ -36,6 +36,12 @@ void() data_ini_ion_={
   self.model = "q3mdl/weapons/w_ion.md3";
   self.techLevel = 1;
   self.i_size = 2;
+  
+  self.w_isburst = FALSE;
+  
+  self.abbrev = "ION";
+  self.description = "3-Round burst. | Damages Shields ONLY. | Small proximity detonation.~";
+  self.icon = "gfx/ui/wep_icons/wi_ion.png";
 };
 
 void() data_ini_attack_ion_={

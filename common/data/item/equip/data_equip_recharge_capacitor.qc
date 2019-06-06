@@ -35,6 +35,10 @@ void() data_ini_equip_recharge_capacitor_={
   self.unit_wep1 = recharge_capacitor_remove_;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "RECAP";
+  self.description = "Increases Reactor RECHARGE rate by 20%~";
+  self.icon = "gfx/ui/wep_icons/eqp_recap.png";
 };
 
 void() recharge_capacitor_upgrade_={

@@ -41,6 +41,12 @@ void() data_ini_flak_cannon_={
   self.model = "q3mdl/weapons/w_flk.md3";
   self.techLevel = 1;
   self.i_size = 1;
+  
+  self.w_isburst = FALSE;
+  
+  self.abbrev = "FLAK";
+  self.description = "Full-Auto | Shotgun damage when target's shields are down.~";
+  self.icon = "gfx/ui/wep_icons/wi_flak.png";
 };
 
 void() data_ini_attack_flak_={

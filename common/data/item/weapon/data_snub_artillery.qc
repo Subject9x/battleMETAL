@@ -37,6 +37,10 @@ void() data_ini_snub_artillery_={
   self.i_size = 3;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "SFGA";
+  self.description = "Minor parabolic arc. | Large AoE blast.~";
+  self.icon = "gfx/ui/wep_icons/wi_sfg.png";
 };
 
 void() data_ini_attack_snub_artillery_={

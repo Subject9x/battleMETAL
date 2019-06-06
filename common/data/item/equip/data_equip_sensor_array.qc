@@ -35,6 +35,10 @@ void() data_ini_equip_sensor_array_={
   self.unit_wep1 = sensor_array_remove_;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "LSAR";
+  self.description = "Increases RADAR RANGE by 30%.~";
+  self.icon = "gfx/ui/wep_icons/eqp_lsar.png";
 };
 
 void() sensor_array_upgrade_={

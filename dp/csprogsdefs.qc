@@ -92,6 +92,7 @@ void		end_sys_globals;		// flag for structure dumping
 //
 .float		modelindex;		// *** model index in the precached list
 .vector		absmin, absmax;	// *** origin + mins / maxs
+.vector maxs, mins;
 
 .float		entnum;	// *** the ent number as on the server
 .float		drawmask;

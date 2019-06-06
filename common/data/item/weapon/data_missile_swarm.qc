@@ -41,6 +41,10 @@ void() data_ini_missile_swarm_={
   self.i_size = 2;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "SWRM";
+  self.description = "Requires [ACTIVE RADAR]. | Fires 3 Missiles at Target. | UP TO 3 TARGETS.~";
+  self.icon = "gfx/ui/wep_icons/wi_swrm.png";
 };
 
 void() data_ini_attack_missile_swarm_={

@@ -9,6 +9,7 @@ Overview: part of splitting the hangar into more understandable chunks
 
 entity UI_ARMING_DATA_item_a;
 entity UI_ARMING_DATA_item_b;
+entity UI_ARMING_DATA_item_list;
 
 float WEPLIST_ALL[24];
 float WEPLIST_BAL_ARR[8];

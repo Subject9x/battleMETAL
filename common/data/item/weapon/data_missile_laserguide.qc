@@ -38,6 +38,10 @@ void() data_ini_missile_laserguide_={
   self.i_size = 1;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "MLGD";
+  self.description = "Missile will follow your reticle. | | Does not require [ACTIVE] RADAR. | | Does not require TARGET LOCK.~";
+  self.icon = "gfx/ui/wep_icons/wi_mlgd.png";
 };
 
 void() data_ini_attack_missile_laserguide_={

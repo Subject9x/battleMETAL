@@ -36,7 +36,11 @@ void() data_ini_equip_target_module_={
   
   self.unit_wep1 = target_module_remove_;
   
-  self.w_isburst = FALSE;
+  self.w_isburst = FALSE; 
+
+  self.abbrev = "ATGM";
+  self.description = "Decrease LOCK-ON time by 20% | Increase Convergence recovery by 15%.~";
+  self.icon = "gfx/ui/wep_icons/eqp_atgm.png";
 };
 
 void() target_module_upgrade_={

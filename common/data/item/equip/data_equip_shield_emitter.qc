@@ -33,7 +33,11 @@ void() data_ini_equip_shield_emitter_={
   
   self.unit_wep1 = shield_capacitor_remove_;
   
-  self.w_isburst = FALSE;
+  self.w_isburst = FALSE;  
+  
+  self.abbrev = "HSEM";
+  self.description = "Increases SHIELD RECHARGE by 50%.~";
+  self.icon = "gfx/ui/wep_icons/eqp_hsem.png";
 };
 
 void() shield_emitter_upgrade_={

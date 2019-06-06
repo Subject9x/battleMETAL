@@ -35,6 +35,10 @@ void() data_ini_equip_energy_battery_={
   self.unit_wep1 = energy_battery_remove_;
   
   self.w_isburst = FALSE;
+  
+  self.abbrev = "ENBAT";
+  self.description = "Increases TOTAL MECH ENERGY by 25%.~";
+  self.icon = "gfx/ui/wep_icons/eqp_enbat.png";
 };
 
 void() energy_battery_upgrade_={

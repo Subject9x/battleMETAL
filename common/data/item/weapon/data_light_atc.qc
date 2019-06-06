@@ -34,6 +34,12 @@ void() data_ini_light_atc_={
   self.model = "q3mdl/weapons/w_atc.md3";
   self.techLevel = 1;
   self.i_size = 1;
+  
+  self.w_isburst = FALSE;
+  
+  self.abbrev = "ATC";
+  self.description = "Basic automatic cannon.~";
+  self.icon = "gfx/ui/wep_icons/wi_atc.png";
 };
 
 void() data_ini_attack_latc_={

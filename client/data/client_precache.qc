@@ -100,6 +100,10 @@ void() cs_precache={
   UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",8);
   UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",0);
  
+  UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png",0);
+  UI_WEP_BAL = precache_pic("gfx/ui/wep_icons/wep_bal.png",0);
+  UI_WEP_EXP = precache_pic("gfx/ui/wep_icons/wep_exp.png",0);
+  UI_WEP_MSC = precache_pic("gfx/ui/wep_icons/wep_msc.png",0);
   
   //HUD GRAPHICS
   DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);
