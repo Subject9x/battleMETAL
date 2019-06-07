@@ -35,7 +35,6 @@ float(vector org) util_lockOnChoke;
 void(entity ent, vector pnt) util_chekPointToHitDir;
 
 void(float bits, float b, float bb, float bbb) util_subThreeBits;
-entity(float part, entity unit) util_getPartFromName;
 
 float(float numOfSides) util_roll_dice;
 

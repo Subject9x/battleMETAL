@@ -84,8 +84,8 @@ void(vector ofs) menu_hangar_MechDisplay={
     hlist = 1;
     while( hardpoint ){
 	  //TODO - hardpoint offset calc
-      if( MECH_DATA_H_HNG[hlist] != '0 0 0'){
-        ui_renderHardPointNumber(hlist, (hpnts + gui_percentToPixelRawVec(MECH_DATA_H_HNG[hlist] )));
+      if( MECH_DATA_HARDPOINT_OFFSET[hlist] != '0 0 0'){
+        ui_renderHardPointNumber(hlist, (hpnts + gui_percentToPixelRawVec(MECH_DATA_HARDPOINT_OFFSET[hlist] )));
       }
       hlist = hlist + 1;
 	  hardpoint = hardpoint.w_slot;
@@ -112,8 +112,8 @@ void(vector ofs) menu_hangar_MechHPoints={
   if(SELECT_MECH > FALSE){
     hlist = 1;
     while( hlist <= 9) {
-      if( MECH_DATA_H_TYPE[hlist] > 0 ){
-        ui_renderHardpointRow((nofs + gui_percentToPixelRawVec('16 24')), hlist, MECH_DATA_H_TYPE[hlist], MECH_DATA_H_SIZE[hlist]);
+      if( MECH_DATA_HARDPOINT_TYPE[hlist] > 0 ){
+        ui_renderHardpointRow((nofs + gui_percentToPixelRawVec('16 24')), hlist, MECH_DATA_HARDPOINT_TYPE[hlist], MECH_DATA_HARDPOINT_SIZE[hlist]);
       } 
       hlist = hlist + 1;
     }

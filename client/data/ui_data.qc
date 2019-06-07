@@ -5,7 +5,7 @@ Date: 6/26/2018
 Overview: refactor ui data to file loading, impl
 */
 
-
+//DEPRECATED
 void() ui_data_load_mechnames={
   local float f, idx;
   local string ln;
@@ -177,21 +177,6 @@ void() ui_data_clear_mechdata={
   if( MECH_DATA_DESC != "" ){
     MECH_DATA_DESC = "";
   }
-
-  local float itr;
-  itr = 1;
-  while(itr <= 9){
-    MECH_DATA_H_TYPE[itr] = 0;
-    MECH_DATA_H_SIZE[itr] = 0;
-    MECH_DATA_H_ARM[itr] = '0 0 0';
-    MECH_DATA_H_HNG[itr] = '0 0 0';
-    MECH_DATA_STOCK[itr] = 0;
-    
-    if(itr <= 5){
-      MECH_DATA_GRPS[itr] = 0;
-    }
-    itr = itr + 1;
-  }
   
   ui_data_cleanup_mechlist_entity( UI_HANGAR_DATA_mech );
 };
@@ -203,12 +188,23 @@ void() ui_data_clear_mechdata={
 */
 void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
   local entity mech_piece;
+  local float itr;
   
+  itr = 1;
   mech_piece = mechEntity.w_slot;
+  
   while( mech_piece ){
     local entity next_hardpoint;
     next_hardpoint = mech_piece.w_slot;
     remove(mech_piece);
+    MECH_DATA_HARDPOINT_TYPE[itr] = 0;
+    MECH_DATA_HARDPOINT_SIZE[itr] = 0;
+	MECH_DATA_HARDPOINT_OFFSET[itr] = '0 0 0';
+    MECH_DATA_STOCK[itr] = 0;
+	if( itr <= 5 ){
+      MECH_DATA_GRPS[itr] = 0;
+	}
+	
     mech_piece = next_hardpoint;
   }
   
@@ -358,8 +354,17 @@ float(float id) ui_data_load_mech={
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   itr = 1;
   while( hardpoint ){
-    MECH_DATA_H_TYPE[itr] = hardpoint.hardpointType;
-    MECH_DATA_H_SIZE[itr] = hardpoint.hardpointSize;
+	local entity parentPart;
+	local vector partOffset;
+	
+	partOffset = hardpoint.c_ofs;
+	parentPart = util_getPartFromName( hardpoint.partParentId, UI_HANGAR_DATA_mech);
+	if( parentPart ){
+		partOffset = partOffset + parentPart.c_ofs;
+	}
+    MECH_DATA_HARDPOINT_TYPE[itr] = hardpoint.hardpointType;
+    MECH_DATA_HARDPOINT_SIZE[itr] = hardpoint.hardpointSize;
+	MECH_DATA_HARDPOINT_OFFSET[itr] = partOffset;
     itr = itr + 1;
     hardpoint = hardpoint.w_slot;
   }
@@ -370,8 +375,8 @@ float(float id) ui_data_load_mech={
     cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
     return FALSE;
   }
+  
   contents = fgets(flannel);
-  //tokenizebyseparator(contents, "{", ",", "}");
   line = fgets(flannel);
   while( (line != "") ){
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
@@ -380,16 +385,6 @@ float(float id) ui_data_load_mech={
       token = argv(1);
       value = argv(3);
       if( token != ""){
-        if( strstrofs(token, "arm",0) != -1 ){
-          tokenizebyseparator(token, "_");
-          idx = stof(argv(2));
-          MECH_DATA_H_ARM[idx] = stov(value);
-        }
-        if( strstrofs(token, "hang",0) != -1 ){
-          tokenizebyseparator(token, "_");
-          idx = stof(argv(2));
-          MECH_DATA_H_HNG[idx] = stov(value);
-        }
         if( strstrofs(token, "stock",0) != -1 ){
           tokenizebyseparator(token, "_");
           idx = stof(argv(2));

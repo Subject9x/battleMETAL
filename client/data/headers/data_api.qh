@@ -22,8 +22,6 @@ float DATA_CONFIG_BUFFER_GRPS[10];
 //API functions
 void() data_ini_arrays;
 void(float data_idx) data_get_weapon;
-string(float data_idx) data_get_weapon_name;
-string(float data_idx) data_get_weapon_icon;
 
 void() data_mech_config_clearBuffer;
 void( float mechId, float configNum ) data_mech_config_save;

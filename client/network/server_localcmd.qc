@@ -85,67 +85,30 @@ void() cl_get_mechs_sort={
   
 };
 
-//TODO - size no longer dictates mech collection, roll
 // all mech unlocks to same array
-void(string mech_data) cl_get_mechs_light={
-  local string val;
-  local float itr, tokens;
-  tokens = tokenizebyseparator(mech_data, " ");
-  itr = 0;
-  while(itr <= tokens){
-    local float item;
-    if( argv(itr) != "" ){
-      item = stof( argv(itr) );
-      if(item > 0){
-        UNLOCKED_MECHS[item] = 1;
-      }
-      else{
-        UNLOCKED_MECHS[item] = 0;
-      }
-    }
-    itr = itr + 1;
-  }
-};
-
-void(string mech_data) cl_get_mechs_medium={
-  local string val;
-  local float itr, tokens;
-  tokens = tokenizebyseparator(mech_data, " ",",");
-  itr = 0;
-  while(itr <= tokens){
-    local float item;
-    if( argv(itr) != "" ){
-      item = stof( argv(itr) );
-      if(item > 0){
-        UNLOCKED_MECHS[item] = 1;
-      }
-      else{
-        UNLOCKED_MECHS[item] = 0;
-      }
-    }
-    itr = itr + 1;
-  }
-};
-
-void(string mech_data) cl_get_mechs_heavy={
+void(string mech_data) cl_get_mechs_all={
   local string val;
   local float itrTokens, itrUnlocks, tokens;
-  local float item;
+  local float mechId;
   
-  tokens = tokenizebyseparator(mech_data, " ");
+  tokens = tokenizebyseparator(mech_data, " ",",");
   itrTokens = 0;
   itrUnlocks = 0;
   
+  //TODO - possible duplication error
   while(itrTokens <= tokens){
     if( argv(itrTokens) != "" ){
-      item = stof( argv(itrTokens) );
-      if(item > 0){
-        UNLOCKED_MECHS[itrUnlocks] = item;
+      mechId = stof( argv(itrTokens) );
+      if(mechId > 0){
+		//order of items doesn't really matter
+        UNLOCKED_MECHS[itrUnlocks] = mechId;
 		itrUnlocks = itrUnlocks + 1;
       }
     }
     itrTokens = itrTokens + 1;
   }
+  //we store the total for headache reduction later in UI code.
+  UNLOCKED_MECHS_TOTAL = itrUnlocks;
 };
 
 void(string item_data) cl_get_items_all={

@@ -30,29 +30,6 @@ void() data_ini_arrays={
   /*data_WeaponEne[ID_WEP_LATC] = DAT_LATC_EN_RATE;*/
 };
 
-string(float dataIdx) data_get_weapon_name={
-  local float idx;
-  idx = 0;
-  while(idx < UI_TOTAL_WEAPONS){
-    if(idx == dataIdx){
-      return data_WeaponNames[idx];
-    }
-    idx = idx + 1;
-  }
-  return "";
-};
-
-string(float dataIdx) data_get_weapon_icon={
-  local float idx;
-  idx = 0;
-  while(idx < UI_TOTAL_WEAPONS){
-    if(idx == dataIdx){
-      return data_WeaponIcons[idx];
-    }
-    idx = idx + 1;
-  }
-  return "";
-};
 
 void() data_mech_config_clearBuffer={
   local float itr;
@@ -180,8 +157,8 @@ float() data_mech_config_valid={
       if( wepid > 0 ){
         wtype = data_WeaponType[wepid];
         wsize = data_WeaponSize[wepid];
-        hpttype = MECH_DATA_H_TYPE[itr];
-        hptsize = MECH_DATA_H_SIZE[itr];
+        hpttype = MECH_DATA_HARDPOINT_TYPE[itr];
+        hptsize = MECH_DATA_HARDPOINT_SIZE[itr];
         if( (wtype != 0) && !(hpttype & wtype) ){
           cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Type mismatch");  //DEBUG
           return FALSE;

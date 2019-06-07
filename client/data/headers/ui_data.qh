@@ -35,10 +35,9 @@ float   MECH_DATA_HPLG;
 float   MECH_DATA_RAD;
 string  MECH_DATA_DESC;
 
-float   MECH_DATA_H_TYPE[10];
-float   MECH_DATA_H_SIZE[10];
-vector  MECH_DATA_H_ARM[10];
-vector  MECH_DATA_H_HNG[10];
+float   MECH_DATA_HARDPOINT_TYPE[10];
+float   MECH_DATA_HARDPOINT_SIZE[10];
+vector MECH_DATA_HARDPOINT_OFFSET[10];
 float   MECH_DATA_STOCK[10];
 float   MECH_DATA_GRPS[6];
 
@@ -73,7 +72,7 @@ float ITEM2_DATA_TECH;
 string ITEM2_DATA_DESC;
 
 //functions
-void() ui_data_load_mechnames;
+void() ui_data_load_mechnames;	//DEPRECATED
 void() ui_data_load_mechsizes;
 void() ui_data_load_hudnames;
 float(float id) ui_data_load_mech;

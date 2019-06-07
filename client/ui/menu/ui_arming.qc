@@ -71,10 +71,10 @@ void() hardpointListener={
     hlist = 1;
     wepbit = 1;
     while( hlist <= MECH_DATA_HPOINTS ){
-      if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR + gui_percentToPixelRawVec(MECH_DATA_H_ARM[hlist])), gui_percentToPixelRawVec('28 28'))){
+      if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR + gui_percentToPixelRawVec(MECH_DATA_HARDPOINT_OFFSET[hlist])), gui_percentToPixelRawVec('28 28'))){
         CLIENT_MENU_sel_wid = wepbit;
-        CLIENT_MENU_sel_hrpnt_size = MECH_DATA_H_SIZE[hlist];
-        CLIENT_MENU_sel_hrpnt_types = MECH_DATA_H_TYPE[hlist];
+        CLIENT_MENU_sel_hrpnt_size = MECH_DATA_HARDPOINT_SIZE[hlist];
+        CLIENT_MENU_sel_hrpnt_types = MECH_DATA_HARDPOINT_TYPE[hlist];
         hpnt = hlist;
       }  
       hlist = hlist + 1;
@@ -211,9 +211,10 @@ void(vector ofs) menu_arming_HardpointGraph={
     MECHPANEL_CTR = hpnts;
     local float hlist;
     hlist = 1;
+	//TODO - finish porting hardpoint functionality over
     while( hlist <= MECH_DATA_HPOINTS ){
       local vector vofs;
-      vofs = gui_percentToPixelRawVec(MECH_DATA_H_ARM[hlist]);
+      vofs = gui_percentToPixelRawVec(MECH_DATA_HARDPOINT_OFFSET[hlist]);
       ui_renderHardPointGraphic(HARDPOINTS[hlist], (hpnts + vofs), (CLIENT_MENU_sel_hrpnt == hlist));
       ui_renderHardPointNumber(hlist, (hpnts + vofs));
       hlist = hlist + 1;

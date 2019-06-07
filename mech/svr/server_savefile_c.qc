@@ -102,15 +102,9 @@ void() savefile_load={
       if( argv(1) == SAVE_FILE_MSN_NAME) {
         SAVE_MAP = strzone(argv(3));
       }
-      if( argv(1) == SAVE_FILE_MECHS_LIGHT ){
-        SAVE_MECHS_LIGHT = strzone(argv(3));
-      }
-      if( argv(1) == SAVE_FILE_MECHS_MEDIUM ){
-        SAVE_MECHS_MEDIM = strzone(argv(3));
-      }
-      if( argv(1) == SAVE_FILE_MECHS_HEAVY ){
-        SAVE_MECHS_HEAVY = strzone(argv(3));
-      }
+	  if( argv(1) == SAVE_FILE_MECH_LIST ){
+        SAVE_MECHS_LIST = strzone(argv(3));
+	  }
       if( argv(1) == SAVE_FILE_ITEMS ){
         SAVE_ITEMS_ALL = strzone(argv(3));
       }
@@ -178,15 +172,9 @@ void() mapfile_coop_load={
         if( argv(1) == SAVE_FILE_MSN_NAME) {
           
         }
-        if( argv(1) == SAVE_FILE_MECHS_LIGHT ){
-          client_sendAvailableLightMechs( argv(3) );
-        }
-        if( argv(1) == SAVE_FILE_MECHS_MEDIUM ){
-          client_sendAvailableMediumMechs( argv(3) );
-        }
-        if( argv(1) == SAVE_FILE_MECHS_HEAVY ){
-          client_sendAvailableHeavyMechs( argv(3) );
-        }
+		if( argv(1) == SAVE_FILE_MECH_LIST ){
+		  client_sendAvailable_Mechs( argv(3) );
+		}
         if( argv(1) == SAVE_FILE_ITEMS ){
           client_sendAvailableItems( argv(3) );
         }
@@ -222,15 +210,9 @@ void(float faction) mapfile_pvp_load={
         if( argv(1) == SAVE_FILE_MSN_NAME) {
           
         }
-        if( argv(1) == SAVE_FILE_MECHS_LIGHT ){
-          client_sendAvailableLightMechs( argv(3) );
-        }
-        if( argv(1) == SAVE_FILE_MECHS_MEDIUM ){
-          client_sendAvailableMediumMechs( argv(3) );
-        }
-        if( argv(1) == SAVE_FILE_MECHS_HEAVY ){
-          client_sendAvailableHeavyMechs( argv(3) );
-        }
+		if( argv(1) == SAVE_FILE_MECH_LIST ){
+		  client_sendAvailable_Mechs( argv(3) );
+		}
         if( argv(1) == SAVE_FILE_ITEMS ){
           client_sendAvailableItems( argv(3) );
         }

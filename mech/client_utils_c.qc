@@ -336,21 +336,9 @@ void(string cmd, float tokens) client_setWeaponGroup={
   }
 };
 
-void(string mechs) client_sendAvailableLightMechs={
+void(string mechs) client_sendAvailable_Mechs={
   local string cmd;
-  cmd = strcat("mech list_light [", mechs,"]\n");
-  stuffcmd(self, cmd);
-};
-
-void(string mechs) client_sendAvailableMediumMechs={
-  local string cmd;
-  cmd = strcat("mech list_med [", mechs,"]\n");
-  stuffcmd(self, cmd);
-};
-
-void(string mechs) client_sendAvailableHeavyMechs={
-  local string cmd;
-  cmd = strcat("mech list_hvy [", mechs,"]\n");
+  cmd = strcat("mech list [", mechs, "]\n");
   stuffcmd(self, cmd);
 };
 

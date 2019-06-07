@@ -381,32 +381,6 @@ void(float bits, float b, float bb, float bbb) util_subThreeBits={
   bits = bits - (bits & (b | bb | bbb) );
 };
  
-entity(float part, entity unit) util_getPartFromName={
-  
-  switch( part ){
-    case M_TOR_CENTER:
-      if( (unit.flags & FL_TURRET) ){
-        return unit.torsoCenter;
-      }
-      return unit;
-    case M_TOR_RIGHT:
-      return unit.torsoRight;
-    case M_TOR_LEFT:
-      return unit.torsoLeft;
-    case M_LEGS:
-      if( (unit.data_type == DATA_VEHC) ){
-        return unit;  //edge case for hull-mounted weapons on a turreted object
-      }
-      return unit.legs;
-    case M_ARM_LEFT:
-      return unit.armLeft;
-    case M_ARM_RIGHT:
-      return unit.armRight;
-    default:
-      return unit;
-  }
-};
-
 float(float v) anglemod =
 {
 	while (v >= 360)

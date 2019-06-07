@@ -202,9 +202,7 @@ void() PutClientInServer = {
     player_makeObserver();
     
     client_push_mapobjects();
-    client_sendAvailableLightMechs(SAVE_MECHS_LIGHT);
-    client_sendAvailableMediumMechs(SAVE_MECHS_MEDIM);
-    client_sendAvailableHeavyMechs(SAVE_MECHS_HEAVY);
+    client_sendAvailable_Mechs(SAVE_MECHS_LIST);
     client_sendAvailableItems(SAVE_ITEMS_ALL);
     client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
     

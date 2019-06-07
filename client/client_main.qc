@@ -111,7 +111,7 @@ void() CSQC_Init =
   UI_ARMING_DATA_item_list = spawn();
   
   //ui data from text files /data/ui/
-  ui_data_load_mechnames();
+  //ui_data_load_mechnames();
   ui_data_load_mechsizes();
   ui_data_load_itemnames();
   ui_data_load_itemicons();
@@ -431,7 +431,7 @@ float() CSQC_Parse_TempEntity =
   } 
 	return FALSE;
 };
-
+//TODO - mechs are no longer stored by id + size, rather just id, so, refactor this
 // if string is interesting, deal with it, otherwise pass it to localcmd() and let engine parse it (note: will not be executed immediately).
 void(string s) CSQC_Parse_StuffCmd =
 {
@@ -445,17 +445,9 @@ void(string s) CSQC_Parse_StuffCmd =
     else if(argv(1) == "anm_file"){
       cl_get_animfile( argv(2) );
     }
-    else if(argv(1) == "list_light"){
+    else if(argv(1) == "list"){
       tokenizebyseparator(s, "[", "]");
-      cl_get_mechs_light( argv(1) );
-    }
-    else if(argv(1) == "list_med"){
-      tokenizebyseparator(s, "[", "]");
-      cl_get_mechs_medium( argv(1) );
-    }
-    else if(argv(1) == "list_hvy"){
-      tokenizebyseparator(s, "[", "]");
-      cl_get_mechs_heavy( argv(1) );
+      cl_get_mechs_all( argv(1) );
     }
     else if(argv(1) == "list_items"){
       tokenizebyseparator(s, "[", "]");

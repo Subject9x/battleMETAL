@@ -1,8 +1,10 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/17/2018
-Overview: This code writes out the single player save file.
+mod: 6/7/2019
+Overview: 
+This code writes out the single player save file.
 The save file is mostly an inter-level intermediary file
 to track player unlocks
 */
@@ -10,6 +12,7 @@ to track player unlocks
 //globals
 string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
 string SAVE_MAP;
+string SAVE_MECHS_LIST;
 string SAVE_MECHS_LIGHT;
 string SAVE_MECHS_MEDIM;
 string SAVE_MECHS_HEAVY;
@@ -20,6 +23,7 @@ string SAVE_FILE_EXT = ".sav";
 
 //file tags
 string SAVE_FILE_MSN_NAME = "mission";
+string SAVE_FILE_MECH_LIST = "mechs";
 string SAVE_FILE_MECHS_LIGHT = "light";
 string SAVE_FILE_MECHS_MEDIUM = "medium";
 string SAVE_FILE_MECHS_HEAVY = "heavy";
