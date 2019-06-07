@@ -54,7 +54,7 @@ void() CSQC_Init =
   //clear out and prepare mech lists
   cnt = 1;
   while(cnt <= GAME_TOTAL_MECHS){
-    MECHLIST_TOTAL[cnt] = 0;
+    UNLOCKED_MECHS[cnt] = 0;
     MECHLIST_LIGHT_ARR[cnt] = 0;
     MECHLIST_MEDIUM_ARR[cnt] = 0;
     MECHLIST_HEAVY_ARR[cnt] = 0;
@@ -63,7 +63,7 @@ void() CSQC_Init =
   //clear out and prepare master weapon list
   cnt = 1;
   while(cnt <= 32){
-    WEPLIST_ALL[cnt] = 0;
+    UNLOCKED_ITEMS[cnt] = 0;
     cnt = cnt + 1;
   }
   

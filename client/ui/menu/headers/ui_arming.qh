@@ -7,11 +7,13 @@ Overview: part of splitting the hangar into more understandable chunks
   set weapon groups.
 */
 
-entity UI_ARMING_DATA_item_a;
-entity UI_ARMING_DATA_item_b;
-entity UI_ARMING_DATA_item_list;
+entity UI_ARMING_DATA_item_a;		//used when player views a weapon from the weapon lists
+entity UI_ARMING_DATA_item_b;		//used when player views weapon-in-a-hardpoint
+entity UI_ARMING_DATA_item_list;	//pointer for weapon list operations
+ 
+float UNLOCKED_ITEMS[24];	//populated by server call
+float UNLOCKED_ITEMS_TOTAL;
 
-float WEPLIST_ALL[24];
 float WEPLIST_BAL_ARR[8];
 float WEPLIST_ENE_ARR[8];
 float WEPLIST_EXP_ARR[8];
@@ -97,10 +99,12 @@ void() menu_arming_drawFrame;
 void(vector ofs) menu_arming_HardpointGraph;
 
 void(vector ofs) menu_arming_WeaponList;
+void(vector ofs, float weaponType, string listName, vector listNameColor, float listCountValue, vector listOriginValue, vector listSizeValue) menu_arming_WeaponList_draw;
 void(vector ofs) menu_arming_WeaponList_BAL;
 void(vector ofs) menu_arming_WeaponList_ENE;
 void(vector ofs) menu_arming_WeaponList_EXP;
 void(vector ofs) menu_arming_WeaponList_MSC;
+
 void(vector ofs) menu_arming_WeaponGroupPanel;
 void(vector ofs) menu_arming_energydraw;
 void(vector ofs) menu_arming_WeaponInfo;

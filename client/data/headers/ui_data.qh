@@ -76,16 +76,16 @@ string ITEM2_DATA_DESC;
 void() ui_data_load_mechnames;
 void() ui_data_load_mechsizes;
 void() ui_data_load_hudnames;
-void() ui_data_clear_mechdata;
-void() ui_data_clear_huddata;
 float(float id) ui_data_load_mech;
-
 float( float id ) ui_data_load_hud;
-
 void() ui_data_load_itemnames;
 void() ui_data_load_itemicons;
 float(float id) ui_date_load_item1;
 float(float id) ui_date_load_item2;
+
+void() ui_data_clear_mechdata;
+void() ui_data_clear_huddata;
+void( entity mechListItem ) ui_data_cleanup_mechlist_entity;
 void() ui_data_clear_item1;
 void() ui_data_clear_item2;
 

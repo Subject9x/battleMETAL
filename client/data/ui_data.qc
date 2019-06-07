@@ -193,8 +193,18 @@ void() ui_data_clear_mechdata={
     itr = itr + 1;
   }
   
+  ui_data_cleanup_mechlist_entity( UI_HANGAR_DATA_mech );
+};
+
+/*
+  when entity is populated with game data, its child entities are built too,
+	so, if we want to re-use this entity, tis better to clean up its data before
+	loading the next data set.
+*/
+void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
   local entity mech_piece;
-  mech_piece = UI_HANGAR_DATA_mech.w_slot;
+  
+  mech_piece = mechEntity.w_slot;
   while( mech_piece ){
     local entity next_hardpoint;
     next_hardpoint = mech_piece.w_slot;
@@ -202,35 +212,33 @@ void() ui_data_clear_mechdata={
     mech_piece = next_hardpoint;
   }
   
-  if( UI_HANGAR_DATA_mech.legs ){
-    remove(UI_HANGAR_DATA_mech.legs);
+  if( mechEntity.legs ){
+    remove(mechEntity.legs);
   }
   
-  if( UI_HANGAR_DATA_mech.e_cam ){
-    remove(UI_HANGAR_DATA_mech.e_cam);
+  if( mechEntity.e_cam ){
+    remove(mechEntity.e_cam);
   }
   
-  if( UI_HANGAR_DATA_mech.armLeft ){
-    remove(UI_HANGAR_DATA_mech.armLeft);
+  if( mechEntity.armLeft ){
+    remove(mechEntity.armLeft);
   }
   
-  if( UI_HANGAR_DATA_mech.armRight ){
-    remove(UI_HANGAR_DATA_mech.armRight);
+  if( mechEntity.armRight ){
+    remove(mechEntity.armRight);
   }
   
-  if( UI_HANGAR_DATA_mech.torsoLeft ){
-    remove(UI_HANGAR_DATA_mech.torsoLeft);
+  if( mechEntity.torsoLeft ){
+    remove(mechEntity.torsoLeft);
   }
   
-  if( UI_HANGAR_DATA_mech.torsoRight ){
-    remove(UI_HANGAR_DATA_mech.torsoRight);
+  if( mechEntity.torsoRight ){
+    remove(mechEntity.torsoRight);
   }
   
-  if( UI_HANGAR_DATA_mech.torsoCenter ){
-    remove(UI_HANGAR_DATA_mech.torsoCenter);
+  if( mechEntity.torsoCenter ){
+    remove(mechEntity.torsoCenter);
   }
-  
-  
 };
 
 void() ui_data_clear_huddata={

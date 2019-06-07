@@ -5,7 +5,8 @@ Date: 3/8/2017
 Overview: ui header file the hangar menu
 */
 
-entity UI_HANGAR_DATA_mech;
+entity UI_HANGAR_DATA_mech;	//holder of mech data for UI interactions
+float UNLOCKED_MECHS_TOTAL;
 
 //DISPLAY CONSTANT
   float DISP_MAX_FSPEED = 225;
@@ -20,6 +21,7 @@ entity UI_HANGAR_DATA_mech;
   float DISP_MAX_ARM_AR = 1200;
   float DISP_MAX_ARM_LG = 1500;
   float DISP_MAX_RAD_RANGE = 2000;
+  
 //might as well go wild with the globals
   float MECHLIST_LIGHT_ARR[GAME_TOTAL_MECHS];
   float MECHLIST_LIGHT_VAL[GAME_TOTAL_MECHS];
@@ -30,6 +32,7 @@ entity UI_HANGAR_DATA_mech;
   float MECHLIST_HEAVY_ARR[GAME_TOTAL_MECHS];
   float MECHLIST_HEAVY_VAL[GAME_TOTAL_MECHS];
   vector MECHPANEL_CTR;
+  
 //light mech list globals
   vector MECHLIST_SIZE_LIGHT;
   vector MECHLIST_ORG_LIGHT;
@@ -55,6 +58,7 @@ void() mechAcceptButtonListener;
 
 void(vector ofs) menu_hangar_MechDisplay;
 void(vector ofs) menu_hangar_MechList;
+void(vector ofs, float mechSize, string listName, vector listNameColor, float mechListTotalValue, vector mechListOriginValue, vector mechListSizeValue ) menu_hangar_MechList_draw;
 void(vector ofs) menu_hangar_MechListLight;
 void(vector ofs) menu_hangar_MechListMedium;
 void(vector ofs) menu_hangar_MechListHeavy;

@@ -4,7 +4,8 @@ Author: Peter Roohr
 Date: 06/05/2019
 Overview: 
 	A variation on the data_system.qc found in the server code.
-	This uses the same function calls and setup, but changes the impl.
+	This uses the same function calls and setup, but changes the implementation
+	to only copy data into the target entity and that's it.
 */
 
 void(float mech_id) initialize_data_mech_={

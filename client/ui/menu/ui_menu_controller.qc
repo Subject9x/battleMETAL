@@ -222,6 +222,9 @@ void() menu_mainListener={
 };
 
 void() navBarListener={
+  local float itemUnlockCounter;
+  local float itemId;
+  
   if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.0097, 0.0109), gui_percentToPixel(0.075, 0.025))){
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
@@ -238,21 +241,23 @@ void() navBarListener={
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
     if(SELECT_MECH != 0){
       CLIENT_MENU_menu_choice = MENU_ARMING_ACTIVE;
-      local float wepId;
-      wepId = 1;
-      while( wepId <= UI_TOTAL_WEAPONS ){
-        if( WEPLIST_ALL[wepId] != 0 ){
-          data_get_client_item_( UI_ARMING_DATA_item_list, wepId );
-          data_WeaponNames[wepId] = UI_ARMING_DATA_item_list.w_name;
-          data_WeaponSize[wepId] = UI_ARMING_DATA_item_list.i_size;
-          data_WeaponType[wepId] = UI_ARMING_DATA_item_list.damageType;
-          cons_logAFloat("wepId", wepId); //DEBUG
-          cons_logAString("data_WeaponNames", data_WeaponNames[wepId]); //DEBUG
-          cons_logAFloat("data_WeaponSize", data_WeaponSize[wepId]); //DEBUG
-          cons_logAFloat("data_WeaponType", data_WeaponType[wepId]); //DEBUG
-          
+      itemUnlockCounter = 0;
+      while( itemUnlockCounter <= UNLOCKED_ITEMS_TOTAL ){
+        if( UNLOCKED_ITEMS[itemUnlockCounter] != 0 ){
+		  itemId = UNLOCKED_ITEMS[itemUnlockCounter];
+	      //UI_ARMING_DATA_item_list is used as a sort-of pointer for list-style operations
+          data_get_client_item_( UI_ARMING_DATA_item_list, itemId );	
+		  
+		  //lists are stateful, so we offload the data we care about to clunky arrays.
+          data_WeaponNames[itemId] = UI_ARMING_DATA_item_list.w_name;
+          data_WeaponSize[itemId] = UI_ARMING_DATA_item_list.i_size;
+          data_WeaponType[itemId] = UI_ARMING_DATA_item_list.damageType;
+          cons_logAFloat("wepId", itemId); //DEBUG
+          cons_logAString("data_WeaponNames", data_WeaponNames[itemId]); //DEBUG
+          cons_logAFloat("data_WeaponSize", data_WeaponSize[itemId]); //DEBUG
+          cons_logAFloat("data_WeaponType", data_WeaponType[itemId]); //DEBUG
         }
-        wepId = wepId + 1;
+        itemUnlockCounter = itemUnlockCounter + 1;
       }
     }
   }

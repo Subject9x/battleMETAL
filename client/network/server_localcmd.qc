@@ -63,30 +63,30 @@ void() cl_exit_animatic={
   }
 };
 
-//sorts master mech array into UI arrays
+//Setup dependent UI arrays based on the master UNLOCKED_MECHS array.
 void() cl_get_mechs_sort={
-  local float itr;
+  local float itr, mechId, mechSize;
+  local entity mechListItem;
+  mechListItem = spawn();
+  
   itr = 1;
-  while( itr <= GAME_TOTAL_MECHS){
-    if( MECHLIST_TOTAL[itr] == TRUE ){
-      local float siz;
-      siz = MECH_DATA_SIZES[itr];
-      switch(siz){
-        case 1:
-          MECHLIST_LIGHT_ARR[itr] = 1;
-          break;
-        case 2:
-          MECHLIST_MEDIUM_ARR[itr] = 1; 
-          break;
-        case 3:
-          MECHLIST_HEAVY_ARR[itr] = 1;
-          break;
-      } 
+  while( itr < UNLOCKED_MECHS_TOTAL){
+    mechId = UNLOCKED_MECHS[itr];
+	data_get_client_mech_( mechListItem, mechId );
+	if( mechListItem.data_idx ){
+	  MECH_DATA_SIZES[mechId] = mechListItem.vec_size;
+	  MECH_DATA_NAMES[mechId] = mechListItem.vec_name;
+	  ui_data_cleanup_mechlist_entity( mechListItem );
     }
     itr = itr + 1;
   }
+  
+  remove(mechListItem);
+  
 };
 
+//TODO - size no longer dictates mech collection, roll
+// all mech unlocks to same array
 void(string mech_data) cl_get_mechs_light={
   local string val;
   local float itr, tokens;
@@ -97,10 +97,10 @@ void(string mech_data) cl_get_mechs_light={
     if( argv(itr) != "" ){
       item = stof( argv(itr) );
       if(item > 0){
-        MECHLIST_TOTAL[item] = 1;
+        UNLOCKED_MECHS[item] = 1;
       }
       else{
-        MECHLIST_TOTAL[item] = 0;
+        UNLOCKED_MECHS[item] = 0;
       }
     }
     itr = itr + 1;
@@ -117,10 +117,10 @@ void(string mech_data) cl_get_mechs_medium={
     if( argv(itr) != "" ){
       item = stof( argv(itr) );
       if(item > 0){
-        MECHLIST_TOTAL[item] = 1;
+        UNLOCKED_MECHS[item] = 1;
       }
       else{
-        MECHLIST_TOTAL[item] = 0;
+        UNLOCKED_MECHS[item] = 0;
       }
     }
     itr = itr + 1;
@@ -129,43 +129,47 @@ void(string mech_data) cl_get_mechs_medium={
 
 void(string mech_data) cl_get_mechs_heavy={
   local string val;
-  local float itr, tokens;
+  local float itrTokens, itrUnlocks, tokens;
+  local float item;
+  
   tokens = tokenizebyseparator(mech_data, " ");
-  itr = 0;
-  while(itr <= tokens){
-    local float item;
-    if( argv(itr) != "" ){
-      item = stof( argv(itr) );
+  itrTokens = 0;
+  itrUnlocks = 0;
+  
+  while(itrTokens <= tokens){
+    if( argv(itrTokens) != "" ){
+      item = stof( argv(itrTokens) );
       if(item > 0){
-        MECHLIST_TOTAL[item] = 1;
-      }
-      else{
-        MECHLIST_TOTAL[item] = 0;
+        UNLOCKED_MECHS[itrUnlocks] = item;
+		itrUnlocks = itrUnlocks + 1;
       }
     }
-    itr = itr + 1;
+    itrTokens = itrTokens + 1;
   }
 };
 
 void(string item_data) cl_get_items_all={
-    local string val;
-  local float itr, tokens;
+  local string val;
+  local float itrTokens, itrUnlocks, tokens;
+  local float itemId;
+  
   tokens = tokenizebyseparator(item_data, " ",",");
-  itr = 0;
-  while(itr <= tokens){
-    local float item;
-    if( argv(itr) != "" ){
-      item = stof( argv(itr) );
-      if(item > 0){
-        //TODO - fix me, don't use true/false, just send the id dammit
-        WEPLIST_ALL[item] = 1;
-      }
-      else{
-        WEPLIST_ALL[item] = 0;
+  itrTokens = 0;
+  itrUnlocks = 0;
+  
+  while(itrTokens <= tokens){
+    if( argv(itrTokens) != "" ){
+      itemId = stof( argv(itrTokens) );
+      if(itemId > 0){
+		//order of items doesn't really matter
+        UNLOCKED_ITEMS[itrUnlocks] = itemId;
+		itrUnlocks = itrUnlocks + 1;
       }
     }
-    itr = itr + 1;
+    itrTokens = itrTokens + 1;
   }
+  //we store the total for headache reduction later in UI code.
+  UNLOCKED_ITEMS_TOTAL = itrUnlocks;
 };
 
 /*

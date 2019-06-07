@@ -85,7 +85,7 @@ float PLAYER_SPRINT_OFF = 8;
 //============================
 float GAME_TOTAL_MECHS = 256; //how many distinct mechs the game should assume might exist for UI / unit data purposes
 float GAME_TOTAL_ITEMS = 64; //how many distinct mechs the game should assume might exist for UI / unit data purposes
-float MECHLIST_TOTAL[256];
+float UNLOCKED_MECHS[256];
   //don't mess with this really unless...no just don't mess with it.
 string DATA = "data";
 float DATA_POBS = 1; //player observer mode

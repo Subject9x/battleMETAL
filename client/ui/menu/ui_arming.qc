@@ -264,10 +264,63 @@ void(vector ofs) menu_arming_WeaponList={
   nofs_x = VIEW_CTR_x + gui_percentXRaw(150);
   nofs = nofs + gui_percentToPixelRawVec('12 10');
   drawpic(nofs, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('148 439'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
-  menu_arming_WeaponList_BAL(nofs);
+  menu_arming_WeaponList_draw(ofs + gui_percentToPixelRawVec('-7.9 12'), DMG_BAL, "==BALLISTIC==", CLR_DEF_ARM_HALF, WEPNLIST_CNT_BAL, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL);
+  //menu_arming_WeaponList_BAL(nofs); //TODO test ^
   menu_arming_WeaponList_ENE(nofs);
   menu_arming_WeaponList_EXP(nofs);
   menu_arming_WeaponList_MSC(nofs);
+};
+
+void(vector ofs, float weaponType, string listName, vector listNameColor, float listCountValue, vector listOriginValue, vector listSizeValue) menu_arming_WeaponList_draw={
+  local vector nofs, clr;
+  local float lst_idx, act_idx;
+  local float itemId;
+  
+  nofs = ofs;
+  //TODO - center the text
+  drawstring(nofs + gui_percentToPixel(0.0312, 0.002), listName, '6 6 0', listNameColor, 1, 0);
+  act_idx = 1;
+  lst_idx = 1;
+ 
+  while(lst_idx <= UNLOCKED_ITEMS_TOTAL){
+    local vector lofs, clr;
+	itemId = UNLOCKED_ITEMS[lst_idx];
+    if( itemId != 0){
+      if( (data_WeaponType[itemId] & weaponType) ){
+        lofs_x = nofs_x;
+        lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
+        clr = CLR_DEF_TXT_NONSELECT;
+        if( itemId == CLIENT_MENU_sel_list_wep){
+          clr = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, lofs + gui_percentToPixel(0.008, -0.0015), UI_BOX_SELECT, gui_percentToPixel(0.11, 0.01), CLR_DEF_ARM_OK, 1, 0);
+        }
+        if(!(CLIENT_MENU_sel_hrpnt_types & weaponType) || (data_WeaponSize[itemId] > CLIENT_MENU_sel_hrpnt_size)){
+          clr = CLR_DEF_TXT_CANTSELET;
+        }
+        drawstring(lofs + gui_percentToPixel(0.0093, 0), data_WeaponNames[itemId], '5 5 0', clr, 1, 0);
+        
+		//can't pass arrays to functions :|
+		if( (weaponType & DMG_BAL) ){
+		  WEPLIST_BAL_ARR[act_idx] = lst_idx;
+		}
+		else if( (weaponType & DMG_ENE) ){
+		  WEPLIST_ENE_ARR[act_idx] = lst_idx;
+		}
+	    else if( (weaponType & DMG_EXP) ){
+		  WEPLIST_EXP_ARR[act_idx] = lst_idx;
+		}
+		else{
+		  WEPLIST_MSC_ARR[act_idx] = lst_idx;
+		}
+		act_idx = act_idx + 1;
+      }
+    }
+    lst_idx = lst_idx + 1;
+  }
+  listCountValue = act_idx;
+  listOriginValue = nofs;
+  listSizeValue_x = gui_percentX(0.0687);
+  listSizeValue_y = gui_percentY(act_idx * 0.0166);
 };
 
 void(vector ofs) menu_arming_WeaponList_BAL={
@@ -278,9 +331,9 @@ void(vector ofs) menu_arming_WeaponList_BAL={
   drawstring(nofs + gui_percentToPixel(0.0312, 0.002), "==BALLISTIC==", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
   act_idx = 1;
   lst_idx = 1;
-  while(lst_idx <= UI_TOTAL_WEAPONS){
+  while(lst_idx <= UNLOCKED_ITEMS_TOTAL){
     local vector lofs, clr;
-    if(WEPLIST_ALL[lst_idx] != 0){
+    if(UNLOCKED_ITEMS[lst_idx] != 0){
       if( (data_WeaponType[lst_idx] & DMG_BAL)){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
@@ -313,9 +366,9 @@ void(vector ofs) menu_arming_WeaponList_ENE={
   drawstring(nofs + gui_percentToPixel(0.0375, 0.002), "==ENERGY==", '6 6 0', CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', 1, 0);
   act_idx = 1;
   lst_idx = 1;
-  while(lst_idx <= UI_TOTAL_WEAPONS){
+  while(lst_idx <= UNLOCKED_ITEMS_TOTAL){
     local vector lofs, clr;
-    if(WEPLIST_ALL[lst_idx] != 0){
+    if(UNLOCKED_ITEMS[lst_idx] != 0){
       if( (data_WeaponType[lst_idx] & DMG_ENE) ){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
@@ -351,9 +404,9 @@ void(vector ofs) menu_arming_WeaponList_EXP={
   drawstring(nofs + gui_percentToPixel(0.0375, 0.002), "==MISSILE==", '6 6 0', CLR_DEF_ARM_OK, 1, 0);
   act_idx = 1;
   lst_idx = 1;
-  while(lst_idx <= UI_TOTAL_WEAPONS){
+  while(lst_idx <= UNLOCKED_ITEMS_TOTAL){
     local vector lofs, clr;
-    if(WEPLIST_ALL[lst_idx] != 0){
+    if(UNLOCKED_ITEMS[lst_idx] != 0){
       if( (data_WeaponType[lst_idx] & DMG_EXP) ){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
@@ -390,7 +443,7 @@ void(vector ofs) menu_arming_WeaponList_MSC={
   lst_idx = 1;
   while(lst_idx <= UI_TOTAL_WEAPONS){
     local vector lofs, clr;
-    if(WEPLIST_ALL[lst_idx] > 0){
+    if(UNLOCKED_ITEMS[lst_idx] > 0){
       if( (data_WeaponType[lst_idx] & DMG_MSC) ){
         lofs_x = nofs_x;
         lofs_y = nofs_y + gui_percentY(act_idx * 0.0166);
