@@ -153,11 +153,11 @@ vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec={
   return ret;
 };
 
-vector(vector map_size, vector obj_coords, vector ui_coords, vector img_sz) gui_mapCoordToImgCoord={
+vector(vector area_min, vector map_size, vector obj_coords, vector ui_coords, vector img_sz) gui_mapCoordToImgCoord={
   local vector map_ctr, obj_trans, obj_prc, obj_ui;
-  map_ctr_x = ((world.mins_x*-1)/map_size_x) * map_size_x;
+  map_ctr_x = ((area_min_x*-1)/map_size_x) * map_size_x;
   map_ctr_x = map_size_x - map_ctr_x;
-  map_ctr_y = ((world.mins_y*-1)/map_size_y) * map_size_y;
+  map_ctr_y = ((area_min_y*-1)/map_size_y) * map_size_y;
   map_ctr_y = map_size_y - map_ctr_y;
   obj_trans = map_ctr - obj_coords;
   obj_trans_z = 0;

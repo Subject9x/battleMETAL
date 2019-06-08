@@ -244,7 +244,7 @@ void() navBarListener={
       itemUnlockCounter = 0;
       while( itemUnlockCounter <= UNLOCKED_ITEMS_TOTAL ){
         if( UNLOCKED_ITEMS[itemUnlockCounter] != 0 ){
-		  itemId = UNLOCKED_ITEMS[itemUnlockCounter];
+          itemId = UNLOCKED_ITEMS[itemUnlockCounter];
 	      //UI_ARMING_DATA_item_list is used as a sort-of pointer for list-style operations
           data_get_client_item_( UI_ARMING_DATA_item_list, itemId );	
 		  

@@ -157,7 +157,7 @@ void(vector ofs) menu_briefMapPanel={
       navorg = NAVNAMES_ORG[itr];
       navname = NAVNAMES[itr];
     
-      tofs = nofs = gui_mapCoordToImgCoord(map_size, navorg, iofs, gui_percentToPixelRawVec(ui_msize_in));
+      tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec(ui_msize_in));
       
       nlen = stringwidth(navname, 0, '6 6 0');
       nofs_x = nofs_x - gui_percentXRaw((nlen/2));

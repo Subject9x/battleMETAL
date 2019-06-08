@@ -67,22 +67,22 @@ void() cl_exit_animatic={
 void() cl_get_mechs_sort={
   local float itr, mechId, mechSize;
   local entity mechListItem;
-  mechListItem = spawn();
   
-  itr = 1;
+  mechListItem = spawn();
+  itr = 0;
+  
   while( itr < UNLOCKED_MECHS_TOTAL){
     mechId = UNLOCKED_MECHS[itr];
-	data_get_client_mech_( mechListItem, mechId );
-	if( mechListItem.data_idx ){
-	  MECH_DATA_SIZES[mechId] = mechListItem.vec_size;
-	  MECH_DATA_NAMES[mechId] = mechListItem.vec_name;
-	  ui_data_cleanup_mechlist_entity( mechListItem );
+    data_get_client_mech_( mechListItem, mechId );
+    if( mechListItem.data_idx ){
+      MECH_DATA_SIZES[mechId] = mechListItem.vec_size;
+      MECH_DATA_NAMES[mechId] = mechListItem.vec_name;
+      ui_data_cleanup_mechlist_entity( mechListItem );
     }
     itr = itr + 1;
   }
   
   remove(mechListItem);
-  
 };
 
 // all mech unlocks to same array
@@ -100,9 +100,10 @@ void(string mech_data) cl_get_mechs_all={
     if( argv(itrTokens) != "" ){
       mechId = stof( argv(itrTokens) );
       if(mechId > 0){
-		//order of items doesn't really matter
+        //order of items doesn't really matter
         UNLOCKED_MECHS[itrUnlocks] = mechId;
-		itrUnlocks = itrUnlocks + 1;
+        itrUnlocks = itrUnlocks + 1;
+        cons_logAFloat("mech:", mechId);  //DEBUG
       }
     }
     itrTokens = itrTokens + 1;
@@ -124,9 +125,9 @@ void(string item_data) cl_get_items_all={
     if( argv(itrTokens) != "" ){
       itemId = stof( argv(itrTokens) );
       if(itemId > 0){
-		//order of items doesn't really matter
+        //order of items doesn't really matter
         UNLOCKED_ITEMS[itrUnlocks] = itemId;
-		itrUnlocks = itrUnlocks + 1;
+        itrUnlocks = itrUnlocks + 1;
       }
     }
     itrTokens = itrTokens + 1;

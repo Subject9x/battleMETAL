@@ -74,7 +74,7 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alph
 void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm_clr, float alpha, float flg) gui_renderTintImage2;
 vector(float dmg_type) gui_colorForWeaponType;
 void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float alpha, float flg) gui_renderHighlightString;
-vector(vector map_size, vector obj_coords, vector ui_coords, vector img_sz) gui_mapCoordToImgCoord;
+vector(vector area_min, vector map_size, vector obj_coords, vector ui_coords, vector img_sz) gui_mapCoordToImgCoord;
 string(float navname) gui_getNavName;
 void(vector ofs, float bool, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalFill;
 vector(float pcx, float pcy) gui_percentToPixel;

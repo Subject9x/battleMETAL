@@ -230,7 +230,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         navorg = NAVNAMES_ORG[itr];
         navname = NAVNAMES[itr];
       
-        tofs = nofs = gui_mapCoordToImgCoord(map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
+        tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
         
         nlen = stringwidth(navname, 0, '6 6 0');
         nofs_x = nofs_x - gui_percentXRaw((nlen/2));
@@ -243,7 +243,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     nactive = DEPLOY_POINTS_ACTIVE[itr];
     if( nactive != FALSE ){    
       navorg = DEPLOY_POINTS_ORG[itr]; 
-      tofs = nofs = gui_mapCoordToImgCoord(map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
+      tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
       if( nactive ){
         nclr = CLR_DEF_ARM_OK;
       }
@@ -266,7 +266,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       if(player.data_type == DATA_MECH){
         if(player.faction == CLIENT_faction){
           local vector friend_org;
-          friend_org = gui_mapCoordToImgCoord(map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
+          friend_org = gui_mapCoordToImgCoord(world.mins, map_size, player.origin, iofs, gui_percentToPixelRawVec('380 380'));
           drawpic(friend_org, HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('12 12'), CLR_DEF_IIF_FRIEND, 1, 0);
         }
       }

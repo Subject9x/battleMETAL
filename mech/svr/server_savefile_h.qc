@@ -13,9 +13,6 @@ to track player unlocks
 string SAVE_FILE_NAME = "save_"; //bake this in cause the name shouldnt change
 string SAVE_MAP;
 string SAVE_MECHS_LIST;
-string SAVE_MECHS_LIGHT;
-string SAVE_MECHS_MEDIM;
-string SAVE_MECHS_HEAVY;
 string SAVE_ITEMS_ALL;
 float SAVE_MISSN_POINTS;
 
@@ -24,9 +21,6 @@ string SAVE_FILE_EXT = ".sav";
 //file tags
 string SAVE_FILE_MSN_NAME = "mission";
 string SAVE_FILE_MECH_LIST = "mechs";
-string SAVE_FILE_MECHS_LIGHT = "light";
-string SAVE_FILE_MECHS_MEDIUM = "medium";
-string SAVE_FILE_MECHS_HEAVY = "heavy";
 string SAVE_FILE_ITEMS = "items";
 string SAVE_FILES_POINTS = "points";
 

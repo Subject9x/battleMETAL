@@ -338,7 +338,7 @@ void(string cmd, float tokens) client_setWeaponGroup={
 
 void(string mechs) client_sendAvailable_Mechs={
   local string cmd;
-  cmd = strcat("mech list [", mechs, "]\n");
+  cmd = strcat("mech list_mechs [", mechs, "]\n");
   stuffcmd(self, cmd);
 };
 

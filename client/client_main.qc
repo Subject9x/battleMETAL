@@ -445,7 +445,7 @@ void(string s) CSQC_Parse_StuffCmd =
     else if(argv(1) == "anm_file"){
       cl_get_animfile( argv(2) );
     }
-    else if(argv(1) == "list"){
+    else if(argv(1) == "list_mechs"){
       tokenizebyseparator(s, "[", "]");
       cl_get_mechs_all( argv(1) );
     }

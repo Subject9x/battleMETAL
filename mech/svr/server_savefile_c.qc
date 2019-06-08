@@ -12,30 +12,12 @@ to track player unlocks
   appends new save data from mission to single-player save file
 */
 void() savefile_append={
-  if(world.inv_m_light != ""){
-    if(SAVE_MECHS_LIGHT != ""){
-      SAVE_MECHS_LIGHT = savefile_insert(world.inv_m_light, SAVE_MECHS_LIGHT);
+  if(world.inv_mechs != ""){
+    if(SAVE_MECHS_LIST != ""){
+      SAVE_MECHS_LIST = savefile_insert(world.inv_mechs, SAVE_MECHS_LIST);
     }
     else{
-      SAVE_MECHS_LIGHT = strzone(world.inv_m_light);
-    }
-  }
-  
-  if(world.inv_m_medim != ""){
-    if(SAVE_MECHS_MEDIM != ""){
-      SAVE_MECHS_MEDIM = savefile_insert(world.inv_m_medim, SAVE_MECHS_MEDIM);
-    }
-    else{
-      SAVE_MECHS_MEDIM = strzone(world.inv_m_medim);
-    }
-  }
-  
-  if(world.inv_m_heavy != ""){
-    if(SAVE_MECHS_HEAVY != ""){
-      SAVE_MECHS_HEAVY = savefile_insert(world.inv_m_heavy, SAVE_MECHS_HEAVY);
-    }
-    else{
-      SAVE_MECHS_HEAVY = strzone(world.inv_m_heavy);
+      SAVE_MECHS_LIST = strzone(world.inv_mechs);
     }
   }
   
@@ -122,9 +104,7 @@ void() savefile_save={
   fputs(flannel, "{\n");
   fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
   fputs(flannel, strcat("  'mission' : ", SAVE_MAP, ",\n"));
-  fputs(flannel, strcat("  'light' : ", SAVE_MECHS_LIGHT, ",\n"));
-  fputs(flannel, strcat("  'medium' : ", SAVE_MECHS_MEDIM, ",\n"));
-  fputs(flannel, strcat("  'heavy' : ", SAVE_MECHS_HEAVY, ",\n"));
+  fputs(flannel, strcat("  'mechs' : ", SAVE_MECHS_LIST, ",\n"));
   fputs(flannel, strcat("  'items' : ", SAVE_ITEMS_ALL, ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, "}");
@@ -139,9 +119,7 @@ void() savefile_default={
   fputs(flannel, "{\n");
   fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
   fputs(flannel, "  'mission' : start,\n");
-  fputs(flannel, "  'light' : 1,\n");
-  fputs(flannel, "  'medium' : 2,\n");
-  fputs(flannel, "  'heavy' : 3,\n");
+  fputs(flannel, "  'mechs' : 1 2 3,\n");
   fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25,\n");
   fputs(flannel, "  'points' : ,\n");
   fputs(flannel, "}");
@@ -172,9 +150,9 @@ void() mapfile_coop_load={
         if( argv(1) == SAVE_FILE_MSN_NAME) {
           
         }
-		if( argv(1) == SAVE_FILE_MECH_LIST ){
-		  client_sendAvailable_Mechs( argv(3) );
-		}
+        if( argv(1) == SAVE_FILE_MECH_LIST ){
+          client_sendAvailable_Mechs( argv(3) );
+        }
         if( argv(1) == SAVE_FILE_ITEMS ){
           client_sendAvailableItems( argv(3) );
         }
@@ -210,9 +188,9 @@ void(float faction) mapfile_pvp_load={
         if( argv(1) == SAVE_FILE_MSN_NAME) {
           
         }
-		if( argv(1) == SAVE_FILE_MECH_LIST ){
-		  client_sendAvailable_Mechs( argv(3) );
-		}
+        if( argv(1) == SAVE_FILE_MECH_LIST ){
+          client_sendAvailable_Mechs( argv(3) );
+        }
         if( argv(1) == SAVE_FILE_ITEMS ){
           client_sendAvailableItems( argv(3) );
         }
