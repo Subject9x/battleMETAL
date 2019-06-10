@@ -72,7 +72,6 @@ float ITEM2_DATA_TECH;
 string ITEM2_DATA_DESC;
 
 //functions
-void() ui_data_load_mechnames;	//DEPRECATED
 void() ui_data_load_mechsizes;
 void() ui_data_load_hudnames;
 float(float id) ui_data_load_mech;

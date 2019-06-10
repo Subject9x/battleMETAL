@@ -5,27 +5,6 @@ Date: 6/26/2018
 Overview: refactor ui data to file loading, impl
 */
 
-//DEPRECATED
-void() ui_data_load_mechnames={
-  local float f, idx;
-  local string ln;
-  idx = 1;
-  f = fopen("ui/vec/mech/dir.meta", FILE_READ);
-  if (f != -1){ 
-    ln = fgets(f);
-    while( ln != "" ){
-      if( strstrofs(ln, "//", 0) == -1 ){
-        if(idx <= GAME_TOTAL_MECHS){
-          MECH_DATA_NAMES[idx] = strzone(ln);
-        }
-        idx = idx + 1;
-      }
-      ln = fgets(f);
-    } 
-  } 
-  fclose(f); 
-};
-
 void() ui_data_load_hudnames={
   local float f, idx;
   local string ln;

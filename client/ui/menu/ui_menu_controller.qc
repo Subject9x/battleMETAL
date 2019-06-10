@@ -4,6 +4,8 @@ Author: Peter Roohr
 Date: 05/17/2019
 Overview:
   the entry function for the CSQC / client menu system.
+  this code also handles menu bar (top buttons) input and it details
+  the transition between menus.
   
 */
 
@@ -252,10 +254,7 @@ void() navBarListener={
           data_WeaponNames[itemId] = UI_ARMING_DATA_item_list.w_name;
           data_WeaponSize[itemId] = UI_ARMING_DATA_item_list.i_size;
           data_WeaponType[itemId] = UI_ARMING_DATA_item_list.damageType;
-          cons_logAFloat("wepId", itemId); //DEBUG
-          cons_logAString("data_WeaponNames", data_WeaponNames[itemId]); //DEBUG
-          cons_logAFloat("data_WeaponSize", data_WeaponSize[itemId]); //DEBUG
-          cons_logAFloat("data_WeaponType", data_WeaponType[itemId]); //DEBUG
+		  data_WeaponIcons[itemId] = UI_ARMING_DATA_item_list.icon;
         }
         itemUnlockCounter = itemUnlockCounter + 1;
       }

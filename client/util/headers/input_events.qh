@@ -7,4 +7,4 @@ Overview:
   currently just 1 file.
 */
 
-float(float evtype, float scanx, float chary, float devid) handle_input;
+float(float inputEventType, float scanx, float chary, float devid) handle_input;

@@ -18,7 +18,6 @@ void() mechSelectListener={
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT)){
       found = listListener(MECHLIST_ORG_LIGHT, cursorpos, MECHLIST_SIZE_LIGHT, gui_percentToPixelRawVec('90 16'), MECHLIST_CNT_LIGHT, 0);
       found = MECHLIST_LIGHT_VAL[found];
-      cons_logAFloat("found", found); //DEBUG
     }
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_MEDIUM, MECHLIST_SIZE_MEDIUM)){
       found = listListener(MECHLIST_ORG_MEDIUM, cursorpos, MECHLIST_SIZE_MEDIUM, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_MEDIUM, 0);
@@ -84,7 +83,6 @@ void(vector ofs) menu_hangar_MechDisplay={
     hardpointGraphCenter_y = hofs_y + i_sz_y;
     hardpointGraphCenter_y = hardpointGraphCenter_y + ( gui_percentYRaw( UI_HANGAR_DATA_mech.mins_z * 5) );
 
-    
     MECHPANEL_CTR = hardpointGraphCenter;
 
     hardpoint = UI_HANGAR_DATA_mech.w_slot;

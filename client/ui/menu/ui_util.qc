@@ -105,8 +105,8 @@ void(float wid, vector org, float selected) ui_renderHardPointGraphic={
       iorg = org - gui_percentToPixelRawVec('2 2');
       gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_ARM_THREEQ, 1, 0);
     }
-    if( ITEM_DATA_ICONS[wid] != "" ){
-      drawpic( org + gui_percentToPixelRawVec('1 1'), ITEM_DATA_ICONS[wid],  gui_percentToPixelRawVec('28 28'), '1 1 1', 1, 0);
+    if( data_WeaponIcons[wid] != "" ){
+      drawpic( org + gui_percentToPixelRawVec('1 1'), data_WeaponIcons[wid],  gui_percentToPixelRawVec('28 28'), '1 1 1', 1, 0);
     }
   }
 };

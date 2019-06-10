@@ -111,7 +111,6 @@ void() CSQC_Init =
   UI_ARMING_DATA_item_list = spawn();
   
   //ui data from text files /data/ui/
-  //ui_data_load_mechnames();
   ui_data_load_mechsizes();
   ui_data_load_itemnames();
   ui_data_load_itemicons();
@@ -130,10 +129,7 @@ void() CSQC_Shutdown =
 // typ 3 = mousepos (x, y) if inputmode is on
 // return TRUE if you want to eat this event or FALSE if you want to pass it along to the engine code
 float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
-
   return handle_input(evtype, scanx, chary, devid);
-
- 
 };
 
 // the most important function in CSQC...

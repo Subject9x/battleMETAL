@@ -36,10 +36,24 @@ float	DEAD_RESPAWNING			= 4; // dead, waiting for buttons to be released
 
 
 .float player_state;
-
 .float stat_hit_dirs;
 .float target_entid;
 .vector target_origin;
+
+//input globals and constants
+float INPUT_EVENT_KEYDOWN = 0;
+float INPUT_EVENT_KEYUP = 1;
+float INPUT_EVENT_MOUSE_MOVE = 2;
+float INPUT_EVENT_MOUSE_POS = 3;
+
+float INPUT_mouse_state;  //set by handle_input();
+float INPUT_mouse_state_prev;
+float MOUSE_DOWN = TRUE; 
+float MOUSE_UP = FALSE;
+float MOUSE_DRAG = 2;
+
+float MOUSE_drag_timer;
+float MOUSE_drag_trigger = 2;
 
 //hit direction bit flags
 float STAT_HIT_CL = 1;

@@ -2,6 +2,7 @@
 battleMETAL
 Author: Peter Roohr
 Date: 1/6/2018
+mod: 6/10/2019
 Overview: part of splitting the hangar into more understandable chunks
   'arming' is where the player can select weapons, compare them, 
   set weapon groups.
@@ -9,12 +10,31 @@ Overview: part of splitting the hangar into more understandable chunks
 
 //hook for inputs
 void() menu_arming_listener={
+
   weaponSelectListener();
   hardpointListener();
   weaponGroupPanelListener();
   assignToHardpointListener();
   selectNextConfig();
   selectPrevConfig();
+};
+void() weaponDragListener={
+  if( (INPUT_mouse_state == MOUSE_DRAG) && (INPUT_mouse_state_prev == MOUSE_DOWN) ){
+    if( CLIENT_MENU_sel_list_wep > 0 ){
+	  if( !UI_ARMING_item_drag ){
+	    UI_ARMING_item_drag = spawn();
+	  }
+	  UI_ARMING_item_drag.data_idx = CLIENT_MENU_sel_list_wep;
+	  data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
+	}
+  }
+  if( (INPUT_mouse_state == INPUT_EVENT_KEYUP) && (INPUT_mouse_state_prev == MOUSE_DOWN) ){
+    if( UI_ARMING_item_drag || UI_ARMING_item_drag != world ){
+	  //TODO check hardpoint bounds
+	  //if yes, install info into hardpoint, remove drag item
+	  remove(UI_ARMING_item_drag);
+	}
+  }
 };
 
 void() assignToHardpointListener={
@@ -61,14 +81,43 @@ void() weaponSelectListener={
   if(found  > 0){
     CLIENT_MENU_sel_list_wep = found;
     ui_date_load_item1(CLIENT_MENU_sel_list_wep);
+
   }
 };
 
 void() hardpointListener={
   local float hpnt, hlist, wepbit;
+  local entity hardpoint;
+  local vector hardpointOffset;
+  local float hardpointItr;
+  local float weaponBitFlag;
   
   if( SELECT_MECH > FALSE){
-    hlist = 1;
+	
+    hardpoint = UI_HANGAR_DATA_mech.w_slot;
+    hardpointItr = 1;
+	weaponBitFlag = 1;
+	while( hardpoint ){
+	  hardpointOffset = hardpoint.c_ofs;
+
+      hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 4 );
+      hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4 );
+      
+      hardpointOffset_z = 0;
+      if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR + hardpointOffset), gui_percentToPixelRawVec('28 28'))){
+		CLIENT_MENU_sel_wid = wepbit;
+        CLIENT_MENU_sel_hrpnt_size = hardpoint.hardpointSize;
+        CLIENT_MENU_sel_hrpnt_types = hardpoint.hardpointType;
+        CLIENT_MENU_sel_hrpnt = hardpointItr;
+		CLIENT_MENU_sel_wep = hardpoint.data_idx;
+        ui_date_load_item2(CLIENT_MENU_sel_wep);
+      }
+      hardpointItr = hardpointItr + 1;
+	  weaponBitFlag = weaponBitFlag * 2;
+      hardpoint = hardpoint.w_slot;
+    }	
+  
+    /*hlist = 1;
     wepbit = 1;
     while( hlist <= MECH_DATA_HPOINTS ){
       if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR + gui_percentToPixelRawVec(MECH_DATA_HARDPOINT_OFFSET[hlist])), gui_percentToPixelRawVec('28 28'))){
@@ -81,10 +130,8 @@ void() hardpointListener={
       wepbit = wepbit * 2;
     } 
     if(hpnt > 0){
-      CLIENT_MENU_sel_hrpnt = hpnt;
       CLIENT_MENU_sel_wep = HARDPOINTS[hpnt];
-      ui_date_load_item2(CLIENT_MENU_sel_wep);
-    }
+    }*/
   }
 };
 
@@ -143,7 +190,6 @@ void() weaponGroupPanelListener={
   }
 };
 
-
 void() selectNextConfig={
   if(menu_checkMouseInBounds(cursorpos, BTN_CFG_N, gui_percentToPixelRawVec('20 38') )){
     CFG_INDEX_PREV = CFG_INDEX;
@@ -192,41 +238,64 @@ void() menu_arming_drawFrame={
   menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_AssignToHardpoint_btn(VIEW_CTR);
+  menu_arming_DrawItemDragIcon();
 };
 
 void(vector ofs) menu_arming_HardpointGraph={
-  local vector nofs, hofs, hpnts, psize;
+  local vector nofs, hofs, hardpointCenter, panelImageSize;
+  local entity hardpoint;
+  local vector hardpointOffset;
+  local float hardpointItr;
   
   nofs = ofs + gui_percentToPixelRawVec('10 8');
-  psize = gui_percentToPixelRawVec('270 236');
+  panelImageSize = gui_percentToPixelRawVec('270 236');
   drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, psize, '0.25 0.25 0.25', 1, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, panelImageSize, '0.25 0.25 0.25', 1, 0);
   
   if( SELECT_MECH > FALSE){
     drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
-    
-    hpnts_x = nofs_x + gui_percentXRaw(139);
-    hpnts_y = nofs_y + gui_percentYRaw(118);
-    hpnts = nofs + gui_percentToPixelRawVec('139 122');
-    MECHPANEL_CTR = hpnts;
-    local float hlist;
+   
+    hardpointCenter_x = nofs_x + gui_percentXRaw(139);
+    hardpointCenter_y = nofs_y + gui_percentYRaw(118);
+    hardpointCenter = nofs + gui_percentToPixelRawVec('139 122');
+    MECHPANEL_CTR = hardpointCenter;
+	
+	hardpoint = UI_HANGAR_DATA_mech.w_slot;
+	hardpointItr = 1;
+	while( hardpoint ){	
+      hardpointOffset = hardpoint.c_ofs;
+
+      hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 4 );
+      hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4 );
+      
+      hardpointOffset_z = 0;
+      hardpointOffset = hardpointCenter - hardpointOffset;
+	  
+      ui_renderHardPointGraphic( hardpoint.data_idx, hardpointOffset, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
+      ui_renderHardPointNumber(hardpointItr, hardpointOffset);
+	  
+      hardpointItr = hardpointItr + 1;
+      hardpoint = hardpoint.w_slot;
+	}
+	
+    /*local float hlist;
     hlist = 1;
 	//TODO - finish porting hardpoint functionality over
     while( hlist <= MECH_DATA_HPOINTS ){
       local vector vofs;
       vofs = gui_percentToPixelRawVec(MECH_DATA_HARDPOINT_OFFSET[hlist]);
-      ui_renderHardPointGraphic(HARDPOINTS[hlist], (hpnts + vofs), (CLIENT_MENU_sel_hrpnt == hlist));
-      ui_renderHardPointNumber(hlist, (hpnts + vofs));
+      ui_renderHardPointGraphic(HARDPOINTS[hlist], (hardpointCenter + vofs), (CLIENT_MENU_sel_hrpnt == hlist));
+      ui_renderHardPointNumber(hlist, (hardpointCenter + vofs));
       hlist = hlist + 1;
-    }
+    }*/
   }
   
   local vector nbtn, pbtn, pctr, lctr;
-  pctr_x = psize_x / 2;
-  pctr_y = psize_y / 2;
+  pctr_x = panelImageSize_x / 2;
+  pctr_y = panelImageSize_y / 2;
   nbtn = pbtn = nofs;
   pbtn_y = pbtn_y + pctr_y;
-  nbtn_x = nbtn_x + psize_x - gui_percentXRaw(14);
+  nbtn_x = nbtn_x + panelImageSize_x - gui_percentXRaw(14);
   nbtn_y = nbtn_y + pctr_y;
   
   BTN_CFG_P = pbtn;
@@ -265,19 +334,20 @@ void(vector ofs) menu_arming_WeaponList={
   nofs_x = VIEW_CTR_x + gui_percentXRaw(150);
   nofs = nofs + gui_percentToPixelRawVec('12 10');
   drawpic(nofs, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('148 439'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
-  menu_arming_WeaponList_draw(ofs + gui_percentToPixelRawVec('-7.9 12'), DMG_BAL, "==BALLISTIC==", CLR_DEF_ARM_HALF, WEPNLIST_CNT_BAL, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL);
+  menu_arming_WeaponList_draw(nofs, gui_percentToPixelRawVec('-7.9 12'), DMG_BAL, "==BALLISTIC==", CLR_DEF_ARM_HALF, WEPNLIST_CNT_BAL, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL);
   //menu_arming_WeaponList_BAL(nofs); //TODO test ^
   menu_arming_WeaponList_ENE(nofs);
   menu_arming_WeaponList_EXP(nofs);
   menu_arming_WeaponList_MSC(nofs);
 };
 
-void(vector ofs, float weaponType, string listName, vector listNameColor, float listCountValue, vector listOriginValue, vector listSizeValue) menu_arming_WeaponList_draw={
+void(vector parentOffset, vector offsetAdjust, float weaponType, string listName, vector listNameColor, float listCountValue, vector listOriginValue, vector listSizeValue) menu_arming_WeaponList_draw={
   local vector nofs, clr;
   local float lst_idx, act_idx;
   local float itemId;
   
-  nofs = ofs;
+  nofs = parentOffset;
+  nofs = nofs + offsetAdjust;
   //TODO - center the text
   drawstring(nofs + gui_percentToPixel(0.0312, 0.002), listName, '6 6 0', listNameColor, 1, 0);
   act_idx = 1;
@@ -694,22 +764,31 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   }
 };
 
+void() menu_arming_DrawItemDragIcon={
+  //todo
+  local vector iconOffset;
+  if( UI_ARMING_item_drag && (UI_ARMING_item_drag.icon != "") ){
+    iconOffset_x = cursorpos_x - gui_percentXRaw(14);
+    iconOffset_y = cursorpos_y - gui_percentYRaw(14);
+    drawpic(iconOffset, UI_ARMING_item_drag.icon, gui_percentToPixelRawVec('28 28'), CLR_DEF_WHITE, 1, 0); 
+  }
+};
+
 //UTILITY FUNCS
 float(float comp, float bits) checkIfWeaponInGroup={
   if((bits & comp)){
     return TRUE;
   }
-  else{
-    return FALSE;
-  }
+  return FALSE;
 };
 
 void() cleanHardPoints={
-  local float lst_idx;
-  lst_idx = 1;
-  while(lst_idx <= MECH_DATA_HPOINTS){
-    HARDPOINTS[lst_idx] = 0;
-    lst_idx = lst_idx + 1;
+  local entity hardpoint;
+  
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  while( hardpoint ){
+	hardpoint.data_idx = 0;
+	hardpoint = hardpoint.w_slot;
   }
 };
 
@@ -726,9 +805,7 @@ string(float bit) getNameOfWepType={
   else if((bit & DMG_MSC)){
     return "EQUIPMENT";
   }
-  else{
-    return "unknown";
-  } 
+  return "unknown"; 
 };
 
 float(float grp) calc_energy_draw={
