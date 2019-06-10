@@ -10,15 +10,21 @@ Overview: part of splitting the hangar into more understandable chunks
 
 //hook for inputs
 void() menu_arming_listener={
-
-  weaponSelectListener();
-  hardpointListener();
-  weaponGroupPanelListener();
-  assignToHardpointListener();
-  selectNextConfig();
-  selectPrevConfig();
+  weaponDragListener();
+  if( INPUT_mouse_state == MOUSE_DOWN ){
+	weaponSelectListener();
+	hardpointListener();
+	weaponGroupPanelListener();
+	assignToHardpointListener();
+	selectNextConfig();
+	selectPrevConfig();
+  }
 };
+
 void() weaponDragListener={
+  local entity hardpoint;
+  local vector hardpointOffset;
+  
   if( (INPUT_mouse_state == MOUSE_DRAG) && (INPUT_mouse_state_prev == MOUSE_DOWN) ){
     if( CLIENT_MENU_sel_list_wep > 0 ){
 	  if( !UI_ARMING_item_drag ){
@@ -28,8 +34,19 @@ void() weaponDragListener={
 	  data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
 	}
   }
-  if( (INPUT_mouse_state == INPUT_EVENT_KEYUP) && (INPUT_mouse_state_prev == MOUSE_DOWN) ){
+  if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev == MOUSE_DRAG) ){
     if( UI_ARMING_item_drag || UI_ARMING_item_drag != world ){
+	  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+	  while( hardpoint ){
+		hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 4 );
+        hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4 );
+		
+		if(menu_checkMouseInBounds(cursorpos, MECHPANEL_CTR + hardpointOffset, gui_percentToPixelRawVec('28 28'))){
+		  hardpoint.data_idx = UI_ARMING_item_drag.data_idx;
+		  hardpoint.icon = UI_ARMING_item_drag.icon;
+		}
+	    hardpoint = hardpoint.w_slot;
+	  }
 	  //TODO check hardpoint bounds
 	  //if yes, install info into hardpoint, remove drag item
 	  remove(UI_ARMING_item_drag);
@@ -81,7 +98,6 @@ void() weaponSelectListener={
   if(found  > 0){
     CLIENT_MENU_sel_list_wep = found;
     ui_date_load_item1(CLIENT_MENU_sel_list_wep);
-
   }
 };
 
@@ -271,7 +287,7 @@ void(vector ofs) menu_arming_HardpointGraph={
       hardpointOffset_z = 0;
       hardpointOffset = hardpointCenter - hardpointOffset;
 	  
-      ui_renderHardPointGraphic( hardpoint.data_idx, hardpointOffset, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
+      ui_renderHardPointGraphic( hardpoint.data_idx, hardpointOffset, hardpoint.icon, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
       ui_renderHardPointNumber(hardpointItr, hardpointOffset);
 	  
       hardpointItr = hardpointItr + 1;
