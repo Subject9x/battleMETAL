@@ -148,7 +148,7 @@ void() build_unit_weapon_list={
 };
 
 void( float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon={
-  local entity this, prt;
+  local entity this, partParent;
   local vector ofs;
   this = self;
   
@@ -180,15 +180,15 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
     ofs = self.c_ofs + self.c_alt_ofs;
     util_setOffsetOrigin(self, own, ofs);
     
-    self.partNext = util_getPartFromName( self.partParentId, own );
+    partParent = util_getPartFromName( self.partParentId, own );
     
     self.punchangle = self.angles = '0 0 0';
-    self.aiment = self.partNext;
+    self.aiment = partParent;
     self.owner = own;
-    self.punchangle = self.partNext.angles;
-    self.view_ofs = self.origin - self.partNext.origin;
-    self.angles = self.partNext.angles;
-    self.v_angle = self.angles - self.partNext.angles;
+    self.punchangle = partParent.angles;
+    self.view_ofs = self.origin - partParent.origin;
+    self.angles = partParent.angles;
+    self.v_angle = self.angles - partParent.angles;
     
     if( (self.damageType & DMG_MSC) ){
       if( self.w_attack ){
@@ -269,8 +269,6 @@ void(void() data_ini) build_mech_unit={
   if( self.hardpoint_cnt > 0 ){
     build_unit_weapon_list();
   }
-  
-
   
   self.fall_dist = 4 - self.vec_size;
   self.fall_dist = self.fall_dist * 100;

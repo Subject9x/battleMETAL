@@ -141,7 +141,12 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
 
 */
 void(float num, vector org) ui_renderHardPointNumber={
-  drawstring(org, ftos(num), gui_percentToPixelRawVec('12 10'), CLR_DEF_RET_HASLOCK, 1, 0);
+  local vector numberOrg;
+  local float width;
+  width = stringwidth(ftos(num), 0, gui_percentToPixelRawVec('12 10'));
+  numberOrg = org;
+  numberOrg_x = numberOrg_x - (width / 2);
+  drawstring(numberOrg, ftos(num), gui_percentToPixelRawVec('12 10'), CLR_DEF_RET_HASLOCK, 1, 0);
 };
 
 /*

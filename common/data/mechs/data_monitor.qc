@@ -55,7 +55,7 @@ void() data_ini_monitor_={
   data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 15.5 0', self, torsoLeft);
  
   //right torso
-  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/monitor/monitor_tor_r.md3", 375, '11.5 15.5 0', self, torsoRight);
+  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/monitor/monitor_tor_r.md3", 1200, '11.5 15.5 0', self, torsoRight);
  
   //left arm
   data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/monitor/monitor_arm_l.md3", 1000, '-18 13 -1', self.torsoLeft, armLeft);

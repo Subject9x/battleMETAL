@@ -63,10 +63,10 @@ void() menu_hangarDrawFrame={
 };
 
 void(vector ofs) menu_hangar_MechDisplay={
-  local vector nofs, hofs, mpos, i_sz, hpnts;
+  local vector nofs, hofs, mpos, i_sz, hardpointGraphCenter;
   local float hardpointItr;
   local entity hardpoint;
-  local vector hardpointOffset, mechSize;
+  local vector hardpointOffset;
   local entity partParent;
   
   nofs = ofs + gui_percentToPixelRawVec('377 8'); //420 8
@@ -80,21 +80,24 @@ void(vector ofs) menu_hangar_MechDisplay={
       drawpic(hofs, MECH_DATA_ICON, i_sz, '1 1 1', 1, 0);	
     }
     
-   	hpnts_x = hofs_x + (i_sz_x / 2);
-    hpnts_y = hofs_y + (i_sz_y / 2);
-    MECHPANEL_CTR = hpnts;
+    hardpointGraphCenter_x = hofs_x + (i_sz_x / 2);
+    hardpointGraphCenter_y = hofs_y + i_sz_y;
+    hardpointGraphCenter_y = hardpointGraphCenter_y + ( gui_percentYRaw( UI_HANGAR_DATA_mech.mins_z * 5) );
+
     
+    MECHPANEL_CTR = hardpointGraphCenter;
+
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
       hardpointOffset = hardpoint.c_ofs;
-      partParent = util_getPartFromName( hardpoint.partParentId, UI_HANGAR_DATA_mech);
-      if( partParent ){
-        hardpointOffset = hardpointOffset + partParent.c_ofs;
-      }
-      mechSize_x = UI_HANGAR_DATA_mech.maxs_x * 2;
-      mechSize_y = UI_HANGAR_DATA_mech.maxs_y * 2;
-      hardpointOffset = gui_mapCoordToImgCoord( UI_HANGAR_DATA_mech.mins, mechSize, hardpointOffset * 0.25, hofs, gui_percentToPixelRawVec('250 250') );
+
+      hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 4 );
+      hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4 );
+      
+      hardpointOffset_z = 0;
+      hardpointOffset = hardpointGraphCenter - hardpointOffset;
+
       ui_renderHardPointNumber( hardpointItr, hardpointOffset );
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
