@@ -102,11 +102,7 @@ void() menu_arming_drawFrame;
 void(vector ofs) menu_arming_HardpointGraph;
 
 void(vector ofs) menu_arming_WeaponList;
-void(vector parentOffset, vector offsetAdjust, float weaponType, string listName, vector listNameColor, float listCountValue, vector listOriginValue, vector listSizeValue) menu_arming_WeaponList_draw;
-void(vector ofs) menu_arming_WeaponList_BAL;
-void(vector ofs) menu_arming_WeaponList_ENE;
-void(vector ofs) menu_arming_WeaponList_EXP;
-void(vector ofs) menu_arming_WeaponList_MSC;
+void(vector parentOffset, vector offsetAdjust, float weaponType, string listName, vector listNameColor ) menu_arming_WeaponList_draw;
 
 void(vector ofs) menu_arming_WeaponGroupPanel;
 void(vector ofs) menu_arming_energydraw;

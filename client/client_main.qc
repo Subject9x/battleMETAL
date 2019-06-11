@@ -94,7 +94,6 @@ void() CSQC_Init =
   //get mission file
   cs_precache();
   dynamic_precache();
-  data_ini_arrays();
   
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");

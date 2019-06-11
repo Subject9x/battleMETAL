@@ -20,7 +20,6 @@ float DATA_CONFIG_BUFFER_GRPS[10];
 //
 
 //API functions
-void() data_ini_arrays;
 void(float data_idx) data_get_weapon;
 
 void() data_mech_config_clearBuffer;

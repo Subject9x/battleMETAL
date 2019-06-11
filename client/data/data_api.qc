@@ -12,25 +12,6 @@ void( entity item, float id ) data_get_client_vehicle_;
 void( entity item, float id ) data_get_client_turret_;
 void( entity item, float id ) data_get_client_building_;
 
-void() data_ini_arrays={
-
-  //TODO - run this weapon-entity chicanery when loading the menu, leverage existing data_Arrays for the job
-	
-  //Weapon Names
-  /*data_WeaponNames[ID_WEP_LATC] = DAT_LATC_NAME;*/
-
-  //Weapon Icons
-  /*data_WeaponIcons[ID_WEP_LATC] = DAT_LATC_ICON;*/
-  
-  //hey arrays are fast, right?
-  /*data_WeaponType[ID_WEP_LATC] = 1;*/
-
-  /*data_WeaponSize[ID_WEP_LATC] = DAT_LATC_WSIZE;*/
-  
-  /*data_WeaponEne[ID_WEP_LATC] = DAT_LATC_EN_RATE;*/
-};
-
-
 void() data_mech_config_clearBuffer={
   local float itr;
   itr = 1;
