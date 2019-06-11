@@ -168,12 +168,12 @@ void() ui_data_clear_mechdata={
 void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
   local entity mech_piece;
   local float itr;
+  local entity next_hardpoint;
   
   itr = 1;
   mech_piece = mechEntity.w_slot;
   
   while( mech_piece ){
-    local entity next_hardpoint;
     next_hardpoint = mech_piece.w_slot;
     remove(mech_piece);
     MECH_DATA_HARDPOINT_TYPE[itr] = 0;
@@ -327,31 +327,12 @@ float(float id) ui_data_load_mech={
   MECH_DATA_HPLG = UI_HANGAR_DATA_mech.legs.max_health;
   MECH_DATA_RAD = UI_HANGAR_DATA_mech.radar_range;
   MECH_DATA_DESC = UI_HANGAR_DATA_mech.description;
-  
-  local entity hardpoint;
-  local float itr;
-  hardpoint = UI_HANGAR_DATA_mech.w_slot;
-  itr = 1;
-  while( hardpoint ){
-	local entity parentPart;
-	local vector partOffset;
-	
-	partOffset = hardpoint.c_ofs;
-	parentPart = util_getPartFromName( hardpoint.partParentId, UI_HANGAR_DATA_mech);
-	if( parentPart ){
-		partOffset = partOffset + parentPart.c_ofs;
-	}
-    MECH_DATA_HARDPOINT_TYPE[itr] = hardpoint.hardpointType;
-    MECH_DATA_HARDPOINT_SIZE[itr] = hardpoint.hardpointSize;
-	MECH_DATA_HARDPOINT_OFFSET[itr] = partOffset;
-    itr = itr + 1;
-    hardpoint = hardpoint.w_slot;
-  }
 
-  file = strcat(PATH_DATA_UI, "/vec/mech/", MECH_DATA_NAMES[id],".unit");
+  file = strcat(PATH_DATA_UI, "/vec/mech/", UI_HANGAR_DATA_mech.vec_name,".unit");
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
-    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND"));  
+    cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND")); 
+	fclose(flannel);
     return FALSE;
   }
   
@@ -364,21 +345,45 @@ float(float id) ui_data_load_mech={
       token = argv(1);
       value = argv(3);
       if( token != ""){
-        if( strstrofs(token, "stock",0) != -1 ){
-          tokenizebyseparator(token, "_");
-          idx = stof(argv(2));
-          MECH_DATA_STOCK[idx] = stof(value); 
-        }
-        if( strstrofs(token, "grps",0) != -1 ){
-          tokenizebyseparator(token, "_");
-          idx = stof(argv(2));
-          MECH_DATA_GRPS[idx] = stof(value); 
+        if( strstrofs(token, "stock", 0) != -1 ){
+		  if( strstrofs(token, "hpt", 0) != -1 ){
+            tokenizebyseparator(token, "_");
+            idx = stof(argv(2));
+            MECH_DATA_STOCK[idx] = stof(value);
+		  }
+          if( strstrofs(token, "grps",0) != -1 ){
+            tokenizebyseparator(token, "_");
+            idx = stof(argv(2));
+            MECH_DATA_GRPS[idx] = stof(value); 
+          }
         }
       }
     }
     line = fgets(flannel);
   }
   fclose(flannel);
+  
+  local entity hardpoint;
+  local float itr;
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  itr = 1;
+  while( hardpoint ){
+	local entity parentPart;
+	local vector partOffset;
+	
+	partOffset = hardpoint.c_ofs;
+    MECH_DATA_HARDPOINT_TYPE[itr] = hardpoint.hardpointType;
+    MECH_DATA_HARDPOINT_SIZE[itr] = hardpoint.hardpointSize;
+	MECH_DATA_HARDPOINT_OFFSET[itr] = partOffset;
+
+	if( MECH_DATA_STOCK[itr] > 0){
+	  hardpoint.data_idx = MECH_DATA_STOCK[itr];
+	  data_get_client_item_( hardpoint, MECH_DATA_STOCK[itr] );
+	}
+    itr = itr + 1;
+    hardpoint = hardpoint.w_slot;
+  }
+  
   return TRUE;
 };
 
@@ -502,6 +507,7 @@ float(float id) ui_date_load_item2={
 
 float( float mechId, float fileNum ) ui_mech_config_switch={
   local float cfg, itr;
+  local entity hardpoint;
   
   if( CLIENT_MENU_sel_mech > 0 ){
     if( CFG_INDEX_PREV > 0 ){
@@ -529,7 +535,7 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
   if( cfg ){
     SELECT_MECH = mechId;
     CLIENT_MENU_sel_mech = SELECT_MECH;
-    CLIENT_MENU_sel_size = MECH_DATA_SIZES[SELECT_MECH];
+    CLIENT_MENU_sel_size = UI_HANGAR_DATA_mech.vec_size;
     cleanHardPoints();
     CLIENT_MENU_nex_grp1 = DATA_CONFIG_BUFFER_GRPS[1];
     CLIENT_MENU_nex_grp2 = DATA_CONFIG_BUFFER_GRPS[2];
@@ -537,11 +543,11 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     CLIENT_MENU_nex_grp4 = DATA_CONFIG_BUFFER_GRPS[4];
     CLIENT_MENU_nex_grp5 = DATA_CONFIG_BUFFER_GRPS[5];
     itr = 1;
-    while( itr <= MECH_DATA_HPOINTS ){
-      local float buffwep, hpt;
-      buffwep =  DATA_CONFIG_BUFFER_WEPS[itr];
-      HARDPOINTS[itr] = buffwep;
+	hardpoint = UI_HANGAR_DATA_mech.w_slot;
+    while( hardpoint ){
+	  data_get_client_item_(hardpoint, DATA_CONFIG_BUFFER_WEPS[itr]);
       itr = itr + 1;
+	  hardpoint = hardpoint.w_slot;
     }
     GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
     GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);

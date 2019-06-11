@@ -97,17 +97,16 @@ void(entity clnt) ui_renderClientName={
   Renders the weapon icon, and a highlight box for a selected hardpoint in
   the Arming Menu.
 */
-void(float wid, vector org, float selected) ui_renderHardPointGraphic={
-  if(wid > 0 ){
-    local entity wep;
-    local vector iorg;
+void(string imageIcon, vector org, float selected) ui_renderHardPointGraphic={
+  local entity wep;
+  local vector iorg;
+	
+  if( imageIcon != ""){
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');
       gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_ARM_THREEQ, 1, 0);
     }
-    if( data_WeaponIcons[wid] != "" ){
-      drawpic( org + gui_percentToPixelRawVec('1 1'), data_WeaponIcons[wid],  gui_percentToPixelRawVec('28 28'), '1 1 1', 1, 0);
-    }
+    drawpic( org + gui_percentToPixelRawVec('1 1'), imageIcon,  gui_percentToPixelRawVec('28 28'), '1 1 1', 1, 0);
   }
 };
 

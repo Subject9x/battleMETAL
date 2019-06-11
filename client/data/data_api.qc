@@ -33,7 +33,11 @@ void() data_mech_config_clearBuffer={
 void( float mechId, float configNum ) data_mech_config_save={
   local float flannel, itr;
   local string file, line, group;
-
+  
+  local entity hardpoint;
+  local string writeWeaponLine;
+  local float weaponId;
+  
   itr = 1;
   file = strcat(PATH_DATA_UI, "/loadouts/", ftos(mechId), "/", ftos(configNum),".dat");
  
@@ -42,13 +46,13 @@ void( float mechId, float configNum ) data_mech_config_save={
   fputs(flannel, strcat("  'id' : ", ftos(DATA_CONFIG_BUFFER_FILENUM), ",\n"));
   fputs(flannel, strcat("  'name' : ", DATA_CONFIG_BUFFER_NAME, ",\n"));
   
-  while( itr <= MECH_DATA_HPOINTS ){
-    local string wep;
-    local float wepid;
-    wepid = HARDPOINTS[itr];
-    wep = strcat( "  'hpt_", ftos(itr), "' : ", ftos(wepid), ",\n");
-    fputs(flannel, wep);
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  while( hardpoint ){
+    weaponId = hardpoint.data_idx;
+    writeWeaponLine = strcat( "  'hpt_", ftos(itr), "' : ", ftos(weaponId), ",\n");
+    fputs(flannel, writeWeaponLine);
     itr = itr + 1;
+	hardpoint = hardpoint.w_slot;
   }
   group = strcat( "  'group_", ftos(1), "' : ", ftos(CLIENT_MENU_nex_grp1), ",\n");
   fputs(flannel, group);
@@ -122,35 +126,39 @@ float( float mechId, float configNum ) data_mech_config_load={
 */
 float() data_mech_config_valid={
   local float valid, itr;
+  local entity hardpoint;
+  local entity weaponEnt;
+  local float weaponId;
   
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  weaponEnt = spawn();
   itr = 1;
-  while( itr <= MECH_DATA_HPOINTS ){
-    local float wepid, wtype, wsize, hptsize, hpttype;
-    if( itr > MECH_DATA_HPOINTS ){
-      wepid = DATA_CONFIG_BUFFER_WEPS[itr];
-      if( wepid > 0 ){
+  while( hardpoint ){
+    //the data is now self-correcting, only reading a number of hardpoints == to common/data/ defs
+	/*if( itr > MECH_DATA_HPOINTS ){
+      weaponId = DATA_CONFIG_BUFFER_WEPS[itr];
+      if( weaponId > 0 ){
         cons_logAString("data_mech_config_valid", "FAILED - too many hardpoints");  //DEBUG
         return FALSE; //Trying to sneak more weapons into the config file?
       }
-    }
-    if( itr <= MECH_DATA_HPOINTS ){
-      wepid = DATA_CONFIG_BUFFER_WEPS[itr];
-      if( wepid > 0 ){
-        wtype = data_WeaponType[wepid];
-        wsize = data_WeaponSize[wepid];
-        hpttype = MECH_DATA_HARDPOINT_TYPE[itr];
-        hptsize = MECH_DATA_HARDPOINT_SIZE[itr];
-        if( (wtype != 0) && !(hpttype & wtype) ){
-          cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Type mismatch");  //DEBUG
-          return FALSE;
-        }
-        if( (wsize != 0) && (wsize > hptsize) ){
-          cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Size mismatch");  //DEBUG
-          return FALSE;
-        }
+    }*/
+    weaponId = DATA_CONFIG_BUFFER_WEPS[itr];
+    if( weaponId > 0 ){
+	  data_get_client_item_(weaponEnt, weaponId);
+      if( (weaponEnt.damageType != 0) && !(hardpoint.hardpointType & weaponEnt.damageType) ){
+        cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Type mismatch");  //DEBUG
+		remove(weaponEnt);
+        return FALSE;
+      }
+      if( (weaponEnt.i_size != 0) && (weaponEnt.i_size > hardpoint.hardpointSize) ){
+        cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Size mismatch");  //DEBUG
+		remove(weaponEnt);
+        return FALSE;
       }
     }
     itr = itr + 1;
+	hardpoint = hardpoint.w_slot;
   }
+  remove(weaponEnt);
   return TRUE;
 };

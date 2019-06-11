@@ -9,7 +9,8 @@ Overview:
 
 void( entity box ) ui_renderHUDHighlight;
 void() ui_renderHUD_Highlight_frame;
-void(float wid, vector org, float selected) ui_renderHardPointGraphic;
+/**/
+void( string imageICon, vector org, float selected) ui_renderHardPointGraphic;
 void(float navid) ui_renderNav;
 void(entity clnt) ui_renderClientName;
 void(float num, vector org) ui_renderHardPointNumber;

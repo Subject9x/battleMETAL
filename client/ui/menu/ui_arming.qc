@@ -246,7 +246,7 @@ void(vector ofs) menu_arming_HardpointGraph={
   drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
   drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, panelImageSize, '0.25 0.25 0.25', 1, 0);
   
-  if( SELECT_MECH > FALSE){
+  if( SELECT_MECH > FALSE ){
     drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
    
     hardpointCenter_x = nofs_x + gui_percentXRaw(139);
@@ -265,7 +265,7 @@ void(vector ofs) menu_arming_HardpointGraph={
       hardpointOffset_z = 0;
       hardpointOffset = hardpointCenter - hardpointOffset;
 	  
-      ui_renderHardPointGraphic( hardpoint.data_idx, hardpointOffset, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
+      ui_renderHardPointGraphic( hardpoint.icon, hardpointOffset, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
       ui_renderHardPointNumber(hardpointItr, hardpointOffset);
 	  
       hardpointItr = hardpointItr + 1;
@@ -408,6 +408,8 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
 void(vector ofs) menu_arming_WeaponGroupPanel={
   local vector nofs, col_a, col_b, col_c, col_d, col_e;
   local float lst_idx, bit;
+  local entity hardpoint;
+  
   nofs_x = ofs_x + gui_percentXRaw(10);
   nofs_y = ofs_y + gui_percentYRaw(325);
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1,0);
@@ -423,14 +425,14 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   
   lst_idx = 1;
   bit = 1;
-  while(lst_idx <= MECH_DATA_HPOINTS){
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  while( hardpoint ){
     local vector lofs;
     lofs_x = nofs_x + gui_percentXRaw(6);
     lofs_y = nofs_y + gui_percentYRaw(lst_idx * 24);
     drawstring(lofs, strcat("[",ftos(lst_idx),"]"), '6 6 0', '1 1 1', 1, 0);
-    if( ITEM_DATA_ICONS[HARDPOINTS[lst_idx]] != "" ){
-      //ok that's funny and cool ^
-      drawpic(lofs + gui_percentToPixelRawVec('16 -5'), ITEM_DATA_ICONS[HARDPOINTS[lst_idx]], gui_percentToPixelRawVec('22 24'), '1 1 1', 1,0);
+    if( hardpoint.icon != "" ){
+      drawpic(lofs + gui_percentToPixelRawVec('16 -5'), hardpoint.icon, gui_percentToPixelRawVec('22 24'), '1 1 1', 1,0);
     }
     gui_renderTintImage((CLIENT_MENU_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
     gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
@@ -439,18 +441,21 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     gui_renderTintImage((CLIENT_MENU_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
     bit = bit * 2;
     lst_idx = lst_idx + 1;
+	hardpoint = hardpoint.w_slot;
   }
-  //lst_idx = lst_idx;
+  
   WEPNGRP_CNT_A = lst_idx;
   WEPNGRP_CNT_B = lst_idx;
   WEPNGRP_CNT_C = lst_idx;
   WEPNGRP_CNT_D = lst_idx;
   WEPNGRP_CNT_E = lst_idx;
+  
   WEPNGRP_ORG_A = col_a;
   WEPNGRP_ORG_B = col_b;
   WEPNGRP_ORG_C = col_c;
   WEPNGRP_ORG_D = col_d;
   WEPNGRP_ORG_E = col_e;
+  
   WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = gui_percentXRaw(14);
   WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = gui_percentXRaw(14);
   WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * 24);
@@ -629,13 +634,12 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
 };
 
 void() menu_arming_DrawItemDragIcon={
-  //todo
   local vector iconOffset;
   if( INPUT_mouse_state == MOUSE_DRAG ){
     if( UI_ARMING_item_drag && (UI_ARMING_item_drag.icon != "") ){
-      iconOffset_x = cursorpos_x - gui_percentXRaw(14);
-      iconOffset_y = cursorpos_y - gui_percentYRaw(14);
-      drawpic(iconOffset, UI_ARMING_item_drag.icon, gui_percentToPixelRawVec('28 28'), CLR_DEF_WHITE, 1, 0); 
+      iconOffset_x = cursorpos_x - gui_percentXRaw(16);
+      iconOffset_y = cursorpos_y - gui_percentYRaw(16);
+      drawpic(iconOffset, UI_ARMING_item_drag.icon, gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, 1, 0); 
     }
   }
 };
@@ -654,6 +658,7 @@ void() cleanHardPoints={
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   while( hardpoint ){
 	hardpoint.data_idx = 0;
+	hardpoint.icon = "";
 	hardpoint = hardpoint.w_slot;
   }
 };

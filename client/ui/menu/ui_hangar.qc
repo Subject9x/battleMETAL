@@ -31,7 +31,7 @@ void() mechSelectListener={
     if(found > FALSE){
 
       if( (LAUNCH_VALIDATION & VALID_MECH) ){
-        LAUNCH_VALIDATION = LAUNCH_VALIDATION - ( LAUNCH_VALIDATION & VALID_MECH) ;
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_MECH) ;
       }
       if(found != CLIENT_MENU_sel_mech){
         ui_mech_config_switch( found, 0 );
