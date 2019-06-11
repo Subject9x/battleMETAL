@@ -98,14 +98,16 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   //Mouse input
   if( inputEventType == INPUT_EVENT_KEYDOWN ){
 	if(scanx == K_MOUSE1){
-	  //mouse drag-and-drop logic
 	  INPUT_mouse_state_prev = INPUT_mouse_state;
 	  if( (time > MOUSE_drag_timer) && (INPUT_mouse_state != MOUSE_DRAG) ){
 		MOUSE_drag_timer = time + MOUSE_drag_trigger;
 		INPUT_mouse_state = MOUSE_DOWN;
 	  }
-	  if( (time == MOUSE_drag_timer) && (INPUT_mouse_state != MOUSE_DRAG) ){
+	  else if( (time == MOUSE_drag_timer) && (INPUT_mouse_state != MOUSE_DRAG) ){
 		INPUT_mouse_state = MOUSE_DRAG;
+	  }
+	  else{
+	    INPUT_mouse_state = MOUSE_DOWN;
 	  }
 	  
 	  if(MENU_ACTIVE){
@@ -135,29 +137,14 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
 	if( scanx == K_MOUSE1 ){
 	  INPUT_mouse_state_prev = INPUT_mouse_state;
 	  INPUT_mouse_state == MOUSE_UP;
-	  //
-	  if(MENU_ACTIVE){
-		switch( CLIENT_MENU_menu_choice ){
-		  case MENU_HANGAR_ACTIVE:
-			menu_hangarListener();
-			break;
-		  case MENU_BRIEF_ACTIVE:
-			menu_briefListener();
-			break;
-		  case MENU_ARMING_ACTIVE:
-			menu_arming_listener();
-			break;
-		  case MENU_DEPLOY_ACTIVE:
-			menu_deployListener();
-			break;
-		}
-		menu_mainListener();
-	  }
 	}
   }
    
   if(MENU_ACTIVE){
     return TRUE;
+  }
+  else{
+    return FALSE;
   }
   return FALSE;
 };
