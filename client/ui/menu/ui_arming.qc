@@ -3,35 +3,43 @@ battleMETAL
 Author: Peter Roohr
 Date: 1/6/2018
 mod: 6/10/2019
-Overview: part of splitting the hangar into more understandable chunks
+Overview: 
+  Part of splitting the hangar into more understandable chunks.
   'arming' is where the player can select weapons, compare them, 
   set weapon groups.
 */
 
 //hook for inputs
 void() menu_arming_listener={
-  cons_logAFloat("mouse state", INPUT_mouse_state); //DEBUG
-  weaponDragListener();
   weaponSelectListener();
   hardpointListener();
   weaponGroupPanelListener();
   assignToHardpointListener();
   selectNextConfig();
   selectPrevConfig();
+  weaponDragListener();
 };
 
 void() weaponDragListener={
-  if( (INPUT_mouse_state == MOUSE_DRAG) && (INPUT_mouse_state_prev == MOUSE_DOWN) ){
+  if( INPUT_mouse_state_prev == MOUSE_DOWN ){
     if( CLIENT_MENU_sel_list_wep > 0 ){
       if( !UI_ARMING_item_drag ){
         UI_ARMING_item_drag = spawn();
       }
       UI_ARMING_item_drag.data_idx = CLIENT_MENU_sel_list_wep;
-      data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
+    }
+    else{
+      
     }
   }
-  if( (INPUT_mouse_state == INPUT_EVENT_KEYUP) && (INPUT_mouse_state_prev == MOUSE_DOWN) ){
-    if( UI_ARMING_item_drag || UI_ARMING_item_drag != world ){
+  if( INPUT_mouse_state == MOUSE_DRAG ){
+    data_get_client_item_( UI_ARMING_item_drag, UI_ARMING_item_drag.data_idx);
+    cons_logAFloat("UI_ARMING_item_drag.data_idx", UI_ARMING_item_drag.data_idx); //DEBUG
+    cons_logAString("UI_ARMING_item_drag.icon", UI_ARMING_item_drag.icon); //DEBUG
+  }
+  if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev == MOUSE_DRAG) ){
+    cons_logAFloat("remove?", 1); //DEBUG
+    if( UI_ARMING_item_drag ){
       //TODO check hardpoint bounds
       //if yes, install info into hardpoint, remove drag item
       remove(UI_ARMING_item_drag);
@@ -64,11 +72,6 @@ void() assignToHardpointListener={
 void() weaponSelectListener={
   local float found;
   found = listListener(WEPNLIST_ORG, cursorpos, WEPNLIST_SIZE, gui_percentToPixelRawVec('96 13.92'), WEPNLIST_CNT, 0);
-  cons_logAFloat("WEPNLIST_CNT_BAL", WEPNLIST_CNT_BAL); //DEBUG
-  cons_logAFloat("WEPNLIST_CNT_ENE", WEPNLIST_CNT_ENE); //DEBUG
-  cons_logAFloat("WEPNLIST_CNT_EXP", WEPNLIST_CNT_EXP); //DEBUG
-  cons_logAFloat("WEPNLIST_CNT_MSC", WEPNLIST_CNT_MSC); //DEBUG
-
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL)){
     found = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_BAL, 0);
     found = WEPLIST_BAL_ARR[found];
@@ -628,10 +631,12 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
 void() menu_arming_DrawItemDragIcon={
   //todo
   local vector iconOffset;
-  if( UI_ARMING_item_drag && (UI_ARMING_item_drag.icon != "") ){
-    iconOffset_x = cursorpos_x - gui_percentXRaw(14);
-    iconOffset_y = cursorpos_y - gui_percentYRaw(14);
-    drawpic(iconOffset, UI_ARMING_item_drag.icon, gui_percentToPixelRawVec('28 28'), CLR_DEF_WHITE, 1, 0); 
+  if( INPUT_mouse_state == MOUSE_DRAG ){
+    if( UI_ARMING_item_drag && (UI_ARMING_item_drag.icon != "") ){
+      iconOffset_x = cursorpos_x - gui_percentXRaw(14);
+      iconOffset_y = cursorpos_y - gui_percentYRaw(14);
+      drawpic(iconOffset, UI_ARMING_item_drag.icon, gui_percentToPixelRawVec('28 28'), CLR_DEF_WHITE, 1, 0); 
+    }
   }
 };
 

@@ -53,7 +53,8 @@ float MOUSE_UP = FALSE;
 float MOUSE_DRAG = 2;
 
 float MOUSE_drag_timer;
-float MOUSE_drag_trigger = 2;
+float MOUSE_drag_rate = 0.005;
+float MOUSE_drag_max = 2;
 
 //hit direction bit flags
 float STAT_HIT_CL = 1;
