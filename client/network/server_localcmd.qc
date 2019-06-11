@@ -103,7 +103,6 @@ void(string mech_data) cl_get_mechs_all={
         //order of items doesn't really matter
         UNLOCKED_MECHS[itrUnlocks] = mechId;
         itrUnlocks = itrUnlocks + 1;
-        cons_logAFloat("mech:", mechId);  //DEBUG
       }
     }
     itrTokens = itrTokens + 1;
@@ -119,7 +118,7 @@ void(string item_data) cl_get_items_all={
   
   tokens = tokenizebyseparator(item_data, " ",",");
   itrTokens = 0;
-  itrUnlocks = 0;
+  itrUnlocks = 1;
   
   while(itrTokens <= tokens){
     if( argv(itrTokens) != "" ){

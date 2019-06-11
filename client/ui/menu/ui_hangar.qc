@@ -68,7 +68,7 @@ void(vector ofs) menu_hangar_MechDisplay={
   local vector hardpointOffset;
   local entity partParent;
   
-  nofs = ofs + gui_percentToPixelRawVec('377 8'); //420 8
+  nofs = ofs + gui_percentToPixelRawVec('377 8');
   drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('250 250'), CLR_DEF_UI_HANGAR, 1, 0);
   drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('242 242'), CLR_DEF_UI_HANGAR, 1, 0);
   if(SELECT_MECH > FALSE){

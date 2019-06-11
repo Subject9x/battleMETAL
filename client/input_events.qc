@@ -88,6 +88,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       else if(cursorpos_y > VIEW_MAX_y){
         cursorpos_y = VIEW_MAX_y;
       }
+      
       return TRUE;
     }
     else{
@@ -97,48 +98,42 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   
   //Mouse input
   if( inputEventType == INPUT_EVENT_KEYDOWN ){
-	if(scanx == K_MOUSE1){
-	  INPUT_mouse_state_prev = INPUT_mouse_state;
-	  if( (time > MOUSE_drag_timer) && (INPUT_mouse_state != MOUSE_DRAG) ){
-		MOUSE_drag_timer = time + MOUSE_drag_trigger;
-		INPUT_mouse_state = MOUSE_DOWN;
-	  }
-	  else if( (time == MOUSE_drag_timer) && (INPUT_mouse_state != MOUSE_DRAG) ){
-		INPUT_mouse_state = MOUSE_DRAG;
-	  }
-	  else{
-	    INPUT_mouse_state = MOUSE_DOWN;
-	  }
-	  
-	  if(MENU_ACTIVE){
-		switch( CLIENT_MENU_menu_choice ){
-		  case MENU_HANGAR_ACTIVE:
-			menu_hangarListener();
-			break;
-		  case MENU_BRIEF_ACTIVE:
-			menu_briefListener();
-			break;
-		  case MENU_ARMING_ACTIVE:
-			menu_arming_listener();
-			break;
-		  case MENU_DEPLOY_ACTIVE:
-			menu_deployListener();
-			break;
-		}
-		menu_mainListener();
-		return TRUE;
-	  }
-	  else{
-		return FALSE;
-	  }
-	}
+    if(scanx == K_MOUSE1){
+      INPUT_mouse_state_prev = INPUT_mouse_state;
+      INPUT_mouse_state = MOUSE_DOWN;
+      cons_logAFloat("MOUSE_drag_timer", MOUSE_drag_timer); //DEBUG
+      
+      if(MENU_ACTIVE){
+        switch( CLIENT_MENU_menu_choice ){
+          case MENU_HANGAR_ACTIVE:
+            menu_hangarListener();
+            break;
+          case MENU_BRIEF_ACTIVE:
+            menu_briefListener();
+            break;
+          case MENU_ARMING_ACTIVE:
+            menu_arming_listener();
+            break;
+          case MENU_DEPLOY_ACTIVE:
+            menu_deployListener();
+            break;
+        }
+        menu_mainListener();
+        return TRUE;
+      }
+      else{
+        return FALSE;
+      }
+    }
   }
   else if( inputEventType == INPUT_EVENT_KEYUP ){
-	if( scanx == K_MOUSE1 ){
-	  INPUT_mouse_state_prev = INPUT_mouse_state;
-	  INPUT_mouse_state == MOUSE_UP;
-	}
-  }
+    if( scanx == K_MOUSE1 ){
+      INPUT_mouse_state_prev = INPUT_mouse_state;
+      INPUT_mouse_state = MOUSE_UP;
+      MOUSE_drag_timer = 0;
+      return TRUE;
+    }
+  } 
    
   if(MENU_ACTIVE){
     return TRUE;

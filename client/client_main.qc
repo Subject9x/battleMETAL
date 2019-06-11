@@ -94,7 +94,6 @@ void() CSQC_Init =
   //get mission file
   cs_precache();
   dynamic_precache();
-  data_ini_arrays();
   
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");
@@ -109,6 +108,8 @@ void() CSQC_Init =
   UI_ARMING_DATA_item_a = spawn();
   UI_ARMING_DATA_item_b = spawn();
   UI_ARMING_DATA_item_list = spawn();
+  
+  MOUSE_drag_timer = 0;
   
   //ui data from text files /data/ui/
   ui_data_load_mechsizes();
@@ -322,8 +323,36 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //menu system
   if(MENU_ACTIVE){
     cursorpos = getmousepos();
+    
+    if( INPUT_mouse_state == MOUSE_DOWN ){
+      if( MOUSE_drag_timer < MOUSE_drag_max ){
+        MOUSE_drag_timer = MOUSE_drag_timer + MOUSE_drag_rate;
+      }
+      if( MOUSE_drag_timer >= MOUSE_drag_max){
+        INPUT_mouse_state_prev = MOUSE_DOWN;
+        INPUT_mouse_state = MOUSE_DRAG;
+        switch( CLIENT_MENU_menu_choice ){
+          case MENU_HANGAR_ACTIVE:
+            menu_hangarListener();
+            break;
+          case MENU_BRIEF_ACTIVE:
+            menu_briefListener();
+            break;
+          case MENU_ARMING_ACTIVE:
+            menu_arming_listener();
+            break;
+          case MENU_DEPLOY_ACTIVE:
+            menu_deployListener();
+            break;
+        }
+        menu_mainListener();
+        cons_logAFloat("INPUT_mouse_state", INPUT_mouse_state);  //DEBUG
+      } 
+    }
+    
     menu_handleFrame();
-  }else{
+  }
+  else{
     if(CLIENT_player_state >= PLAYER_POWERUP_BEGIN){
       local float itr;
       itr = 0;
