@@ -237,9 +237,11 @@ void() navBarListener={
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025))){
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
+	  ui_data_cleanup_mechlist_entity( UI_HANGAR_DATA_mech );
     }
     CLIENT_MENU_menu_choice = MENU_HANGAR_ACTIVE;
     cl_get_mechs_sort();
+	SELECT_MECH = CLIENT_MENU_sel_mech = 0;
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
     if(SELECT_MECH != 0){

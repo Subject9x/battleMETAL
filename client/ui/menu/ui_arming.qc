@@ -29,6 +29,7 @@ void() weaponDragListener={
   local float weaponType;
   
   if( INPUT_mouse_state == MOUSE_DRAG ){
+	UI_ARMING_item_drag.damageType = 0;
     data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
     cons_logAFloat("UI_ARMING_item_drag.data_idx", UI_ARMING_item_drag.data_idx); //DEBUG
     cons_logAString("UI_ARMING_item_drag.icon", UI_ARMING_item_drag.icon); //DEBUG
@@ -46,13 +47,18 @@ void() weaponDragListener={
         hardpointOffset_z = 0;
         if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR - hardpointOffset), gui_percentToPixelRawVec('32 32'))){
 	      cons_logAString("HARDPOINT", "yes"); //DEBUG
+		  cons_logAFloat("hardpoint num", hardpoint.data_idx ); //DEBUG
 	      cons_log2Float("UI_ARMING_item_drag.i_size", UI_ARMING_item_drag.i_size, "hardpoint.hardpointSize", hardpoint.hardpointSize); //DEBUG
 	      cons_log2Float("UI_ARMING_item_drag.damageType", UI_ARMING_item_drag.damageType, "hardpoint.damageType", hardpoint.damageType); //DEBUG
 	      cons_logAFloat("type compare", (weaponType & hardpoint.damageType) ); //DEBUG
+	      cons_logAFloat("hardpoint num", hardpoint.w_group ); //DEBUG
 		  weaponType = UI_ARMING_item_drag.damageType;
-		  if( (UI_ARMING_item_drag.i_size <= hardpoint.hardpointSize) && (weaponType & hardpoint.damageType) ){		  
-		    data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
-            ui_date_load_item1(UI_ARMING_item_drag.data_idx);
+		  if( (UI_ARMING_item_drag.i_size <= hardpoint.hardpointSize) && (weaponType & hardpoint.damageType) ){
+			if( (weaponType & hardpoint.damageType) ){
+				data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
+				ui_date_load_item1(UI_ARMING_item_drag.data_idx);
+			
+			}
 		  }
 		  else{
 		    cons_logAString("weapon not valid", "yes"); //DEBUG

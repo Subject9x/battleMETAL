@@ -176,14 +176,11 @@ void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
   while( mech_piece ){
     next_hardpoint = mech_piece.w_slot;
     remove(mech_piece);
-    MECH_DATA_HARDPOINT_TYPE[itr] = 0;
-    MECH_DATA_HARDPOINT_SIZE[itr] = 0;
-	MECH_DATA_HARDPOINT_OFFSET[itr] = '0 0 0';
     MECH_DATA_STOCK[itr] = 0;
 	if( itr <= 5 ){
       MECH_DATA_GRPS[itr] = 0;
 	}
-	
+	itr = itr + 1;
     mech_piece = next_hardpoint;
   }
   
@@ -372,10 +369,7 @@ float(float id) ui_data_load_mech={
 	local vector partOffset;
 	
 	partOffset = hardpoint.c_ofs;
-    MECH_DATA_HARDPOINT_TYPE[itr] = hardpoint.hardpointType;
-    MECH_DATA_HARDPOINT_SIZE[itr] = hardpoint.hardpointSize;
-	MECH_DATA_HARDPOINT_OFFSET[itr] = partOffset;
-
+	//TODO - migjht be source of hardpoint type bug
 	if( MECH_DATA_STOCK[itr] > 0){
 	  hardpoint.data_idx = MECH_DATA_STOCK[itr];
 	  data_get_client_item_( hardpoint, MECH_DATA_STOCK[itr] );
