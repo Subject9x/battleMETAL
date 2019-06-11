@@ -111,6 +111,5 @@ void(vector ofs) menu_arming_WeaponInHardpoint;
 void(vector ofs) menu_arming_AssignToHardpoint_btn;
 void() menu_arming_DrawItemDragIcon;
 
-float(float comp, float bits) checkIfWeaponInGroup;
 void() cleanHardPoints;
 string(float bit) getNameOfWepType;

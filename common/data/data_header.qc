@@ -42,7 +42,7 @@ void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngl
     item.w_adj_ang = adjustAngle;
     item.owner = self;
     item.hardpointSize = hardpoint_Size;
-    item.hardpointType = hardpoint_Type;
+    item.hardpointType = 0 | hardpoint_Type;
     weaponList.w_slot = item;
     weaponList = item;
     self.hardpoint_cnt = self.hardpoint_cnt + 1;

@@ -130,8 +130,28 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     if( scanx == K_MOUSE1 ){
       INPUT_mouse_state_prev = INPUT_mouse_state;
       INPUT_mouse_state = MOUSE_UP;
-      MOUSE_drag_timer = 0;
-      return TRUE;
+      MOUSE_drag_timer = 0;      
+	  if(MENU_ACTIVE){
+        switch( CLIENT_MENU_menu_choice ){
+          case MENU_HANGAR_ACTIVE:
+            menu_hangarListener();
+            break;
+          case MENU_BRIEF_ACTIVE:
+            menu_briefListener();
+            break;
+          case MENU_ARMING_ACTIVE:
+            menu_arming_listener();
+            break;
+          case MENU_DEPLOY_ACTIVE:
+            menu_deployListener();
+            break;
+        }
+        menu_mainListener();
+        return TRUE;
+      }
+      else{
+        return FALSE;
+      }
     }
   } 
    

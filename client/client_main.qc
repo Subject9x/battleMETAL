@@ -108,6 +108,7 @@ void() CSQC_Init =
   UI_ARMING_DATA_item_a = spawn();
   UI_ARMING_DATA_item_b = spawn();
   UI_ARMING_DATA_item_list = spawn();
+  UI_ARMING_item_drag = spawn();
   
   MOUSE_drag_timer = 0;
   

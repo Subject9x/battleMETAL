@@ -107,21 +107,22 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
 };
 
 void() mechAcceptButtonListener={
-  local float lst_idx;
+  local entity hardpoint;
   local float bit;
   
   if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
     if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_MECH) ){
       cl_setspawnpoint( CLIENT_MENU_nav_pnt );
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
-      
-      lst_idx = 1;
+     
       bit = 1;
-      while(lst_idx <= MECH_DATA_HPOINTS){
-        cl_setweapon(bit, HARDPOINTS[lst_idx]);
+	  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+	  while( hardpoint ){
+        cl_setweapon(bit, hardpoint.data_idx);
         bit = bit * 2;
-        lst_idx = lst_idx + 1;
-      }
+		hardpoint = hardpoint.w_slot;
+	  }
+	  
       cl_setweapongroup(1, CLIENT_MENU_nex_grp1);
       cl_setweapongroup(2, CLIENT_MENU_nex_grp2);
       cl_setweapongroup(3, CLIENT_MENU_nex_grp3);
