@@ -347,7 +347,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
             break;
         }
         menu_mainListener();
-        cons_logAFloat("INPUT_mouse_state", INPUT_mouse_state);  //DEBUG
       } 
     }
     

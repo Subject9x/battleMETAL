@@ -52,7 +52,7 @@ void( float mechId, float configNum ) data_mech_config_save={
     writeWeaponLine = strcat( "  'hpt_", ftos(itr), "' : ", ftos(weaponId), ",\n");
     fputs(flannel, writeWeaponLine);
     itr = itr + 1;
-	hardpoint = hardpoint.w_slot;
+    hardpoint = hardpoint.w_slot;
   }
   group = strcat( "  'group_", ftos(1), "' : ", ftos(CLIENT_MENU_nex_grp1), ",\n");
   fputs(flannel, group);
@@ -134,30 +134,22 @@ float() data_mech_config_valid={
   weaponEnt = spawn();
   itr = 1;
   while( hardpoint ){
-    //the data is now self-correcting, only reading a number of hardpoints == to common/data/ defs
-	/*if( itr > MECH_DATA_HPOINTS ){
-      weaponId = DATA_CONFIG_BUFFER_WEPS[itr];
-      if( weaponId > 0 ){
-        cons_logAString("data_mech_config_valid", "FAILED - too many hardpoints");  //DEBUG
-        return FALSE; //Trying to sneak more weapons into the config file?
-      }
-    }*/
     weaponId = DATA_CONFIG_BUFFER_WEPS[itr];
     if( weaponId > 0 ){
-	  data_get_client_item_(weaponEnt, weaponId);
+      data_get_client_item_(weaponEnt, weaponId);
       if( (weaponEnt.damageType != 0) && !(hardpoint.hardpointType & weaponEnt.damageType) ){
         cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Type mismatch");  //DEBUG
-		remove(weaponEnt);
+        remove(weaponEnt);
         return FALSE;
       }
       if( (weaponEnt.i_size != 0) && (weaponEnt.i_size > hardpoint.hardpointSize) ){
         cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Size mismatch");  //DEBUG
-		remove(weaponEnt);
+        remove(weaponEnt);
         return FALSE;
       }
     }
     itr = itr + 1;
-	hardpoint = hardpoint.w_slot;
+    hardpoint = hardpoint.w_slot;
   }
   remove(weaponEnt);
   return TRUE;

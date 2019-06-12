@@ -12,13 +12,12 @@ Overview:
 //hook for inputs
 void() menu_arming_listener={
   if( INPUT_mouse_state == MOUSE_DOWN ){
-	weaponSelectListener();
-	hardpointListener();
-	weaponGroupPanelListener();
-	assignToHardpointListener();
-	selectNextConfig();
-	selectPrevConfig();
-  
+    weaponSelectListener();
+    hardpointListener();
+    weaponGroupPanelListener();
+    //assignToHardpointListener();
+    selectNextConfig();
+    selectPrevConfig();
   }
   weaponDragListener();
 };
@@ -29,15 +28,13 @@ void() weaponDragListener={
   local float weaponType;
   
   if( INPUT_mouse_state == MOUSE_DRAG ){
-	UI_ARMING_item_drag.damageType = 0;
+    UI_ARMING_item_drag.damageType = 0;
     data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
-    cons_logAFloat("UI_ARMING_item_drag.data_idx", UI_ARMING_item_drag.data_idx); //DEBUG
-    cons_logAString("UI_ARMING_item_drag.icon", UI_ARMING_item_drag.icon); //DEBUG
   }
   if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
 
-    if( (UI_ARMING_item_drag.data_idx > 0) ){
-	  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+    if( (UI_ARMING_item_drag.data_idx > 0) && (CFG_INDEX > 0) ){
+      hardpoint = UI_HANGAR_DATA_mech.w_slot;
       while( hardpoint ){
         hardpointOffset = hardpoint.c_ofs;
 
@@ -46,33 +43,31 @@ void() weaponDragListener={
       
         hardpointOffset_z = 0;
         if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR - hardpointOffset), gui_percentToPixelRawVec('32 32'))){
-	      cons_logAString("HARDPOINT", "yes"); //DEBUG
-		  cons_logAFloat("hardpoint num", hardpoint.data_idx ); //DEBUG
-	      cons_log2Float("UI_ARMING_item_drag.i_size", UI_ARMING_item_drag.i_size, "hardpoint.hardpointSize", hardpoint.hardpointSize); //DEBUG
-	      cons_log2Float("UI_ARMING_item_drag.damageType", UI_ARMING_item_drag.damageType, "hardpoint.damageType", hardpoint.damageType); //DEBUG
-	      cons_logAFloat("type compare", (weaponType & hardpoint.damageType) ); //DEBUG
-	      cons_logAFloat("hardpoint num", hardpoint.w_group ); //DEBUG
-		  weaponType = UI_ARMING_item_drag.damageType;
-		  if( (UI_ARMING_item_drag.i_size <= hardpoint.hardpointSize) && (weaponType & hardpoint.damageType) ){
-			if( (weaponType & hardpoint.damageType) ){
-				data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
-				ui_date_load_item1(UI_ARMING_item_drag.data_idx);
-			
-			}
-		  }
-		  else{
-		    cons_logAString("weapon not valid", "yes"); //DEBUG
-		  }
+          weaponType = UI_ARMING_item_drag.damageType;
+          if( (UI_ARMING_item_drag.i_size <= hardpoint.hardpointSize) ){
+            if( (weaponType & hardpoint.hardpointType) ){
+              data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
+              ui_date_load_item1(UI_ARMING_item_drag.data_idx);
+            
+            }
+          }
+          else{
+            //TODO - play 'no' sound
+            if( cvar("developer") ){
+              cons_logAString("[WARN]", "Weapon invalid for hardpoint"); //INFO
+            }
+          }
         }
         hardpoint = hardpoint.w_slot;
       }
       UI_ARMING_item_drag.data_idx = 0;
-	  UI_ARMING_item_drag.icon = "";
+      UI_ARMING_item_drag.icon = "";
     }
   }
 };
 
-void() assignToHardpointListener={
+//DEPRECATED for now but leaving for reference
+/*void() assignToHardpointListener={
   if(menu_checkMouseInBounds(cursorpos, VIEW_CTR + gui_percentToPixelRawVec('-34 -14'), gui_percentToPixelRawVec('195 24'))){
     local float found;
     found = 0;
@@ -92,7 +87,7 @@ void() assignToHardpointListener={
       }
     }
   }
-};
+};*/
 
 void() weaponSelectListener={
   local float found;
@@ -257,7 +252,7 @@ void() menu_arming_drawFrame={
   menu_arming_energydraw(gui_percentToPixelRawVec('160 276'));
   menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
-  menu_arming_AssignToHardpoint_btn(VIEW_CTR);
+  //menu_arming_AssignToHardpoint_btn(VIEW_CTR);
   menu_arming_DrawItemDragIcon();
 };
 
@@ -319,9 +314,11 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   lctr = nofs + pctr;
   lctr_y = lctr_y + pctr_y - gui_percentYRaw(8);
+  
   local string cfg;
   local float len;
   local vector colr;
+  
   //this is quite hilarious
   cfg = NAVNAMES[CFG_INDEX];
   colr = CLR_DEF_ARM_OK;
@@ -581,6 +578,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   }
 };
 
+/* DEPRECATED for now
 void(vector ofs) menu_arming_AssignToHardpoint_btn={
   local vector nofs, colr1, colr2, colr3;
   colr1 = CLR_DEF_ARM_OK;
@@ -596,7 +594,7 @@ void(vector ofs) menu_arming_AssignToHardpoint_btn={
   drawpic(nofs + gui_percentToPixelRawVec('8 9'), HUD_TRG_PIP_B, gui_percentToPixelRawVec('16 8'), colr2, 1, 0);
   drawpic(nofs + gui_percentToPixelRawVec('172 9'), HUD_TRG_PIP_B, gui_percentToPixelRawVec('16 8'), colr2, 1, 0);
   drawstring(nofs+gui_percentToPixelRawVec('28 2'), "[ASSIGN TO HARDPOINT]", '7 8 0', colr3, 1, 0);
-};
+};*/
 
 void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector nofs;

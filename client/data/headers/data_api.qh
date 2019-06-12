@@ -7,10 +7,8 @@ trying to not use entities as data collections cause its playing havoc with othe
 */
 
 string data_WeaponNames[32];
-string data_WeaponIcons[32];
 float data_WeaponSize[32];
 float data_WeaponType[32];
-float data_WeaponEne[32];
 
 //MECH CONFIG FILE DATA LOAD
 float DATA_CONFIG_BUFFER_FILENUM;

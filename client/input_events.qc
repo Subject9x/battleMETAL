@@ -101,7 +101,6 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     if(scanx == K_MOUSE1){
       INPUT_mouse_state_prev = INPUT_mouse_state;
       INPUT_mouse_state = MOUSE_DOWN;
-      cons_logAFloat("MOUSE_drag_timer", MOUSE_drag_timer); //DEBUG
       
       if(MENU_ACTIVE){
         switch( CLIENT_MENU_menu_choice ){
