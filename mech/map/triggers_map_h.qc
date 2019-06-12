@@ -2,7 +2,9 @@
 mech Mod
 Author: Peter Roohr
 Date: 3/23/2018
-Overview: sv_saveentfile console command does print out all the entities in a map to a text file, and 
+Overview: 
+
+sv_saveentfile console command does print out all the entities in a map to a text file, and 
 changes to that text file can be loaded back into the map. Unfortunately the function prints out brush-based
 trigger ents with a "model" reference that's too tightly coupled to compiled maps. Therefore to decouple triggers
 from brushes, this function set exists to make triggers / map logic ents via the text file, using the builtin

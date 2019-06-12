@@ -201,7 +201,8 @@ triggers.qc
   world_effectinfo_c.qc
 //============================
 
-
+plats.qc
+misc.qc
 
 //Map Entities================
   mech/map/triggers_map.qc
@@ -223,5 +224,3 @@ triggers.qc
   mech/map/map_scenery.qc
 //============================
 
-plats.qc
-misc.qc

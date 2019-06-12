@@ -707,3 +707,153 @@ void() misc_noisemaker =
 	self.nextthink = time + 0.1 + random();
 	self.think = noise_think;
 };
+
+void() func_particle_cube_use={
+  self.think = self.w_think;
+  self.nextthink = time + 0.1;
+  if( (self.spawnflags & 2) ){
+	self.p_lifetime = time + self.p_lifetime;
+  }
+ 
+  if( (self.spawnflags & 4) ){
+	self.nextthink = time + self.delay;
+  }
+};
+
+void() func_rain_think={
+	local float variedCount;
+	local float randomizer;
+	
+	variedCount = self.count;
+	if( (self.spawnflags & 32) ){
+		randomizer = (0.5 - random());
+		variedCount = variedCount * (0.25 + randomizer);
+		cons_logAFloat("variedCount", variedCount);	//DEBUG
+	}
+	
+	te_particlerain(self.absmin, self.absmax, self.velocity, variedCount, self.skin);
+	self.think = self.w_think;
+	
+	if( (self.spawnflags & 2) ){
+		if( time > self.p_lifetime ){
+		  if( self.trigOnDeath ){
+			trigger_event( self, trigOnDeath );
+		  }
+		  if( (self.spawnflags & 64) ){
+			remove(self);
+		  }
+		  return;
+		}
+	}
+	self.nextthink = time + 0.1;
+};
+
+/*QUAKED func_rain (0 .8 1) ? START_OFF LIFETIME DELAY INTERVAL USE_WIND VARIABLE_COUNT REMOVE
+ Using te_particlerain, this slightly overwrites a DP original ent.
+ Creates a particle cube of rain based on a brush defined in the bsp.
+ 
+ .velocity = <vector> the directional value of the rain.
+ .skin = <float> 8bit color value of particle.
+ .count = <float> amount of particulate.
+ 
+ .targetname = <string> allow this entity to be activated by trigger system.
+ .onSpawn = <string> fire entity when this spawns.
+ .onDeath = <string> fire entity when lifetime runs out.
+ 
+ .delay = <float> delay before starting when triggered.
+ .p_lifetime = <float> game time before effect shuts off.
+ 
+ 1 START_OFF = Requires targetname and a trigger call.
+ 2 LIFETIME = Func is turned off after .p_lifetime game seconds.
+ 4 DELAY = wait .delay game seconds after being activated to begin.
+ 8 INTERVAL = fluctuate between on-and-off.
+ 16 USE_WIND = rain will be affected by map's WIND values.
+ 32 VARIABLE_COUNT = .count will be subject to slight randomization.
+ 64 REMOVE = remove this after lifetime expires, or when turned off.
+*/
+void() func_rain={
+  setmodel(self, self.model);
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+  self.w_think = func_rain_think;
+  self.use = func_particle_cube_use;
+  
+  if( self.trigOnSpawn ){
+	trigger_event( self, trigOnSpawn );
+  }
+  
+  if( (self.spawnflags & 1) ){
+	return;
+  }
+  
+  self.use();
+};
+
+void() func_snow_think={
+	local float variedCount;
+	local float randomizer;
+	
+	variedCount = self.count;
+	if( (self.spawnflags & 32) ){
+		randomizer = ( random()  * 0.75);
+		variedCount = variedCount * (0.25 + randomizer);
+		cons_logAFloat("variedCount", variedCount);	//DEBUG
+	}
+	
+	te_particlesnow(self.absmin, self.absmax, self.velocity, variedCount, self.skin);
+	self.think = self.w_think;
+	
+	if( (self.spawnflags & 2) ){
+		if( time > self.p_lifetime ){
+		  if( self.trigOnDeath ){
+			trigger_event( self, trigOnDeath );
+		  }
+		  if( (self.spawnflags & 64) ){
+			remove(self);
+		  }
+		  return;
+		}
+	}
+	self.nextthink = time + 0.1;
+};
+
+/*QUAKED func_snow (0 .8 1) ? START_OFF LIFETIME DELAY INTERVAL USE_WIND VARIABLE_COUNT REMOVE
+ Using te_particlerain, this slightly overwrites a DP original ent.
+ Creates a particle cube of rain based on a brush defined in the bsp.
+ 
+ .velocity = <vector> the directional value of the rain.
+ .skin = <float> 8bit color value of particle.
+ .count = <float> amount of particulate.
+ 
+ .targetname = <string> allow this entity to be activated by trigger system.
+ .onSpawn = <string> fire entity when this spawns.
+ .onDeath = <string> fire entity when lifetime runs out.
+ 
+ .delay = <float> delay before starting when triggered.
+ .p_lifetime = <float> game time before effect shuts off.
+ 
+ 1 START_OFF = Requires targetname and a trigger call.
+ 2 LIFETIME = Func is turned off after .p_lifetime game seconds.
+ 4 DELAY = wait .delay game seconds after being activated to begin.
+ 8 INTERVAL = fluctuate between on-and-off.
+ 16 USE_WIND = rain will be affected by map's WIND values.
+ 32 VARIABLE_COUNT = .count will be subject to slight randomization.
+ 64 REMOVE = remove this after lifetime expires, or when turned off.
+*/
+void() func_snow={
+  setmodel(self, self.model);
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+  self.w_think = func_snow_think;
+  self.use = func_particle_cube_use;
+  
+  if( self.trigOnSpawn ){
+	trigger_event( self, trigOnSpawn );
+  }
+  
+  if( (self.spawnflags & 1) ){
+	return;
+  }
+  
+  self.use();
+};

@@ -14,7 +14,7 @@ void() map_initTrigger={
 // trigger angles are used for one-way touches.  An angle of 0 is assumed
 // to mean no restrictions, so use a yaw of 360 instead.
 	if (self.movedir == '0 0 0')
-	if (self.angles != '0 0 0')
+	  if (self.angles != '0 0 0')
 		SetMovedir ();
 	self.solid = SOLID_TRIGGER;
 	//setmodel (self, self.model);	// set size and link into world
@@ -22,8 +22,8 @@ void() map_initTrigger={
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
   self.movetype = MOVETYPE_NONE;
-	self.modelindex = 0;
-	self.model = "";
+  self.modelindex = 0;
+  self.model = "";
 };
 
 
@@ -182,4 +182,59 @@ void() map_trigger_push={
 	self.touch = trigger_push_touch;
 	if (!self.speed)
 		self.speed = 1000;
+};
+
+/*QUAKED func_rain (0 .8 1) ? START_OFF LIFETIME DELAY INTERVAL USE_WIND VARIABLE_COUNT REMOVE
+ Using te_particlerain, this slightly overwrites a DP original ent.
+ Creates a particle cube of rain based on a brush defined in the bsp.
+ 
+ .velocity = <vector> the directional value of the rain.
+ .skin = <float> 8bit color value of particle.
+ .count = <float> amount of particulate.
+ 
+ .targetname = <string> allow this entity to be activated by trigger system.
+ .onSpawn = <string> fire entity when this spawns.
+ .onDeath = <string> fire entity when lifetime runs out.
+ 
+ .delay = <float> delay before starting when triggered.
+ .p_lifetime = <float> game time before effect shuts off.
+ 
+ 1 START_OFF = Requires targetname and a trigger call.
+ 2 LIFETIME = Func is turned off after .p_lifetime game seconds.
+ 4 DELAY = wait .delay game seconds after being activated to begin.
+ 8 INTERVAL = fluctuate between on-and-off.
+ 16 USE_WIND = rain will be affected by map's WIND values.
+ 32 VARIABLE_COUNT = .count will be subject to slight randomization.
+ 64 REMOVE = remove this after lifetime expires, or when turned off.
+*/
+void() map_func_rain={
+  local vector tempMin, tempMax, velocityAdj;
+  tempMin = self.mins;
+  tempMax = self.maxs;
+  
+  self.angles = '0 0 0';
+  setmodel(self, "");
+  setsize(self, tempMin, tempMax);
+  setorigin(self, self.origin);
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  
+  makevectors(self.angles);
+  velocityAdj = (v_up * 0) + (v_right * 15) + (v_forward * 15);
+  velocityAdj = normalize( velocityAdj - self.origin );
+  self.velocity = self.velocity * 25;
+  self.velocity_z = self.velocity_z - 250;
+  
+  self.w_think = func_rain_think;
+  self.use = func_particle_cube_use;
+  
+  if( self.trigOnSpawn ){
+	trigger_event( self, trigOnSpawn );
+  }
+  
+  if( (self.spawnflags & 1) ){
+	return;
+  }
+  self.think = self.use;
+  self.nextthink = time + 0.1;
 };
