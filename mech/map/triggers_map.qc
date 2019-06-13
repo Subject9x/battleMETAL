@@ -184,7 +184,7 @@ void() map_trigger_push={
 		self.speed = 1000;
 };
 
-/*QUAKED func_rain (0 .8 1) ? START_OFF LIFETIME DELAY INTERVAL USE_WIND VARIABLE_COUNT REMOVE
+/*QUAKED func_rain (0 .8 1) (-8 -8 -64) (8 8 64) START_OFF LIFETIME DELAY INTERVAL USE_WIND VARIABLE_COUNT REMOVE
  Using te_particlerain, this slightly overwrites a DP original ent.
  Creates a particle cube of rain based on a brush defined in the bsp.
  
@@ -220,12 +220,12 @@ void() map_func_rain={
   self.movetype = MOVETYPE_NONE;
   
   makevectors(self.angles);
-  velocityAdj = (v_up * 0) + (v_right * 15) + (v_forward * 15);
+  velocityAdj = (v_up * 0) + (v_right * 48) + (v_forward * 32);
   velocityAdj = normalize( velocityAdj - self.origin );
-  self.velocity = self.velocity * 25;
-  self.velocity_z = self.velocity_z - 250;
+  self.velocity = self.velocity * 50;
+  self.velocity = '0 0 -100';
   
-  self.w_think = func_rain_think;
+  self.w_think = func_snow_think;
   self.use = func_particle_cube_use;
   
   if( self.trigOnSpawn ){

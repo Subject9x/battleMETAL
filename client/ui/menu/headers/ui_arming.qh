@@ -86,14 +86,20 @@ vector BTN_CFG_N;
 float CFG_INDEX;
 float CFG_INDEX_PREV;
   
-void() menu_arming_listener;
-void() weaponDragListener;
+void() menu_armingListener_onClick;
 void() weaponSelectListener;
 void() hardpointListener;
 void() weaponGroupPanelListener;
 void() assignToHardpointListener;
 void() selectNextConfig;
 void() selectPrevConfig;
+
+void() menu_armingListener_onDrag;
+void() weaponDragListener;
+
+void() menu_armingListener_onHover;
+
+void() menu_armingListener_onKeyUp;
 
 float(float grp) calc_energy_draw;
 

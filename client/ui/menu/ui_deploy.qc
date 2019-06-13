@@ -19,9 +19,15 @@ void() menu_deployDrawFrame={
 };
 
 //hook for input system
-void() menu_deployListener={
+void() menu_deployListener_onClick={
   //navSelectListener();
   navListSelectListener();
+};
+
+void() menu_deployListener_onDrag={
+};
+
+void() menu_deployListener_onHover={
 };
 
 //Listener hooks calle by menu_briefListener

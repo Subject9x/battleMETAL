@@ -20,7 +20,10 @@ Overview: ui header file the deployment menu
 void() menu_briefDrawFrame;
 
 //hook for input system
-void() menu_briefListener;
+void() menu_briefListener_onClick;
+void() menu_briefListener_onDrag;
+void() menu_briefListener_onHover;
+void() menu_briefListener_onKeyUp;
 
 //Listener hooks called by menu_deployListener
 void() navpointListener;

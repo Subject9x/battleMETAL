@@ -726,9 +726,8 @@ void() func_rain_think={
 	
 	variedCount = self.count;
 	if( (self.spawnflags & 32) ){
-		randomizer = (0.5 - random());
+		randomizer = (0.5 * random());
 		variedCount = variedCount * (0.25 + randomizer);
-		cons_logAFloat("variedCount", variedCount);	//DEBUG
 	}
 	
 	te_particlerain(self.absmin, self.absmax, self.velocity, variedCount, self.skin);
@@ -795,9 +794,8 @@ void() func_snow_think={
 	
 	variedCount = self.count;
 	if( (self.spawnflags & 32) ){
-		randomizer = ( random()  * 0.75);
+		randomizer = (0.5 * random());
 		variedCount = variedCount * (0.25 + randomizer);
-		cons_logAFloat("variedCount", variedCount);	//DEBUG
 	}
 	
 	te_particlesnow(self.absmin, self.absmax, self.velocity, variedCount, self.skin);

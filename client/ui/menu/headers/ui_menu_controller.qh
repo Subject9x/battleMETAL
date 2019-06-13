@@ -20,6 +20,11 @@ void() menu_mainListener;
 void() navBarListener;
 void() mechAcceptButtonListener;
 
+void() menu_listen_onClick;
+void() menu_listen_onHover;
+void() menu_listen_onDrag;
+void() menu_listen_onKeyUp;
+
 float AVAILABLE_RESERVE;
 float SELECT_MECH;  //replaces entity functionality, used in conjunction with ui_data file loading - Roohr 6/26/2018
 float MENU_ACTIVE;

@@ -233,6 +233,7 @@ void() navBarListener={
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
     }
     CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
+	
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025))){
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){

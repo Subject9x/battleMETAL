@@ -18,7 +18,9 @@ float DEPLOY_POINT_END;
 void() menu_deployDrawFrame;
 
 //hook for input system
-void() menu_deployListener;
+void() menu_deployListener_onClick;
+void() menu_deployListener_onDrag;
+void() menu_deployListener_onHover;
 
 //Listener hooks calle by menu_deployListener
 void() navSelectListener;

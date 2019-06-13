@@ -24,9 +24,17 @@ void() menu_briefDrawFrame={
 };
 
 //hook for input system
-void() menu_briefListener={
+void() menu_briefListener_onClick={
   objIntelSwitchListener();
   briefSoundListener();
+};
+
+void() menu_briefListener_onDrag={
+	
+};
+
+void() menu_briefListener_onHover={
+	
 };
 
 //Listener hooks called by menu_briefListener

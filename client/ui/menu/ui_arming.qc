@@ -10,27 +10,31 @@ Overview:
 */
 
 //hook for inputs
-void() menu_arming_listener={
-  if( INPUT_mouse_state == MOUSE_DOWN ){
-    weaponSelectListener();
-    hardpointListener();
-    weaponGroupPanelListener();
-    //assignToHardpointListener();
-    selectNextConfig();
-    selectPrevConfig();
-  }
+void() menu_armingListener_onClick={
+  weaponSelectListener();
+  hardpointListener();
+  weaponGroupPanelListener();
+  //assignToHardpointListener();
+  selectNextConfig();
+  selectPrevConfig();
+};
+
+void() menu_armingListener_onDrag={
   weaponDragListener();
 };
 
-void() weaponDragListener={
+void() menu_armingListener_onHover={
+	//tooltip
+	//TODO - use entity for tooltip object
+	if( menu_checkMouseInBounds(cursorpos, gui_percentToPixelRawVec('0 0 0'), gui_percentToPixelRawVec('32 32 0'))){
+		 gui_wrapText(cursorpos, '32 32', "HELP ME", '7 8 0', '1 1 1', 1);
+	}
+};
+
+void() menu_armingListener_onKeyUp={
   local entity hardpoint;
   local vector hardpointOffset;
   local float weaponType;
-  
-  if( INPUT_mouse_state == MOUSE_DRAG ){
-    UI_ARMING_item_drag.damageType = 0;
-    data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
-  }
   if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
 
     if( (UI_ARMING_item_drag.data_idx > 0) && (CFG_INDEX > 0) ){
@@ -64,6 +68,16 @@ void() weaponDragListener={
       UI_ARMING_item_drag.icon = "";
     }
   }
+
+};
+
+void() weaponDragListener={
+  
+  if( INPUT_mouse_state == MOUSE_DRAG ){
+    UI_ARMING_item_drag.damageType = 0;
+    data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
+  }
+
 };
 
 //DEPRECATED for now but leaving for reference

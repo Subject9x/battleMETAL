@@ -88,7 +88,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       else if(cursorpos_y > VIEW_MAX_y){
         cursorpos_y = VIEW_MAX_y;
       }
-      
+      handle_input_hover( inputEventType, scanx, chary, devid );
       return TRUE;
     }
     else{
@@ -105,16 +105,17 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       if(MENU_ACTIVE){
         switch( CLIENT_MENU_menu_choice ){
           case MENU_HANGAR_ACTIVE:
-            menu_hangarListener();
+            menu_hangarListener_onClick();
             break;
           case MENU_BRIEF_ACTIVE:
-            menu_briefListener();
+            //menu_briefListener_onClick();
+			menu_listen_onClick();
             break;
           case MENU_ARMING_ACTIVE:
-            menu_arming_listener();
+            menu_armingListener_onClick();
             break;
           case MENU_DEPLOY_ACTIVE:
-            menu_deployListener();
+            menu_deployListener_onClick();
             break;
         }
         menu_mainListener();
@@ -133,16 +134,16 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
 	  if(MENU_ACTIVE){
         switch( CLIENT_MENU_menu_choice ){
           case MENU_HANGAR_ACTIVE:
-            menu_hangarListener();
+            //menu_hangarListener_onKeyUp();
             break;
           case MENU_BRIEF_ACTIVE:
-            menu_briefListener();
+            //menu_briefListener_onKeyUp();
             break;
           case MENU_ARMING_ACTIVE:
-            menu_arming_listener();
+            menu_armingListener_onKeyUp();
             break;
           case MENU_DEPLOY_ACTIVE:
-            menu_deployListener();
+            //menu_deployListener_onKeyUp();
             break;
         }
         menu_mainListener();
@@ -160,5 +161,59 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   else{
     return FALSE;
   }
+  return FALSE;
+};
+
+/*
+  Called every CSQC update frame.
+  When player is 'dragging' the mouse 
+*/
+void() handle_input_drag={
+    if( INPUT_mouse_state == MOUSE_DOWN ){
+      if( MOUSE_drag_timer < MOUSE_drag_max ){
+        MOUSE_drag_timer = MOUSE_drag_timer + MOUSE_drag_rate;
+      }
+      if( MOUSE_drag_timer >= MOUSE_drag_max){
+        INPUT_mouse_state_prev = MOUSE_DOWN;
+        INPUT_mouse_state = MOUSE_DRAG;
+        switch( CLIENT_MENU_menu_choice ){
+          case MENU_HANGAR_ACTIVE:
+            menu_hangarListener_onDrag();
+            break;
+          case MENU_BRIEF_ACTIVE:
+            menu_briefListener_onDrag();
+            break;
+          case MENU_ARMING_ACTIVE:
+            menu_armingListener_onDrag();
+            break;
+          case MENU_DEPLOY_ACTIVE:
+            menu_deployListener_onDrag();
+            break;
+        }
+        menu_mainListener();
+      } 
+    }
+};
+
+/*
+  Called when mouse is moved.
+  Used here to primarily drive tooltip functionality.
+  Parameter names altered slightly for call-stack purposes.
+*/
+float(float inputEventTypeSub, float scanxSub, float charySub, float devidSub) handle_input_hover={
+  switch( CLIENT_MENU_menu_choice ){
+    case MENU_HANGAR_ACTIVE:
+      menu_hangarListener_onHover();
+      break;
+    case MENU_BRIEF_ACTIVE:
+      menu_briefListener_onHover();
+      break;
+    case MENU_ARMING_ACTIVE:
+      menu_armingListener_onHover();
+      break;
+    case MENU_DEPLOY_ACTIVE:
+      menu_deployListener_onHover();
+      break;
+  }  
   return FALSE;
 };

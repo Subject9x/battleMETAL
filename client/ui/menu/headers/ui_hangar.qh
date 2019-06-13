@@ -50,9 +50,11 @@ float UNLOCKED_MECHS_TOTAL;
 void() menu_hangarDrawFrame;
 
 //hook for input system
-void() menu_hangarListener;
+void() menu_hangarListener_onClick;
+void() menu_hangarListener_onDrag;
+void() menu_hangarListener_onHover;
 
-//Listener Hooks called by menu_hangarListener
+//Listener Hooks called by menu_hangarListener_onClick
 void() mechSelectListener;
 void() mechAcceptButtonListener;
 

@@ -324,32 +324,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   //menu system
   if(MENU_ACTIVE){
     cursorpos = getmousepos();
-    
-    if( INPUT_mouse_state == MOUSE_DOWN ){
-      if( MOUSE_drag_timer < MOUSE_drag_max ){
-        MOUSE_drag_timer = MOUSE_drag_timer + MOUSE_drag_rate;
-      }
-      if( MOUSE_drag_timer >= MOUSE_drag_max){
-        INPUT_mouse_state_prev = MOUSE_DOWN;
-        INPUT_mouse_state = MOUSE_DRAG;
-        switch( CLIENT_MENU_menu_choice ){
-          case MENU_HANGAR_ACTIVE:
-            menu_hangarListener();
-            break;
-          case MENU_BRIEF_ACTIVE:
-            menu_briefListener();
-            break;
-          case MENU_ARMING_ACTIVE:
-            menu_arming_listener();
-            break;
-          case MENU_DEPLOY_ACTIVE:
-            menu_deployListener();
-            break;
-        }
-        menu_mainListener();
-      } 
-    }
-    
+    handle_input_drag();
     menu_handleFrame();
   }
   else{

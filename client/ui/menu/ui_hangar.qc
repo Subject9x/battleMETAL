@@ -7,8 +7,16 @@ Overview: class file for hangar ui
 */
 
 //hook for input events
-void() menu_hangarListener={
+void() menu_hangarListener_onClick={
   mechSelectListener();
+};
+
+void() menu_hangarListener_onDrag={
+
+};
+
+void() menu_hangarListener_onHover={
+
 };
 
 void() mechSelectListener={
