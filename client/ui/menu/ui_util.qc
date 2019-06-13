@@ -103,12 +103,12 @@ void(string imageIcon, vector org, float selected) ui_renderHardPointGraphic={
   local vector noEditColorAdj;
   
   if( CFG_INDEX == 0 ){
-    noEditColorAdj = '0.33 0.33 0.33';
+    noEditColorAdj = '0.4 0.4 0.4';
   }
   if( imageIcon != ""){
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');
-      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_ARM_THREEQ - noEditColorAdj, 1, 0);
+      gui_renderTintImage(selected, iorg, UI_DEF_BOX_256, gui_percentToPixelRawVec('34 34'), CLR_DEF_ARM_THREEQ + '0.1 0.1 0.1' , 1, 0);
     }
     drawpic( org + gui_percentToPixelRawVec('1 1'), imageIcon,  gui_percentToPixelRawVec('28 28'), '1 1 1' - noEditColorAdj, 1, 0);
   }

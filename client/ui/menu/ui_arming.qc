@@ -315,22 +315,27 @@ void(vector ofs) menu_arming_HardpointGraph={
   lctr = nofs + pctr;
   lctr_y = lctr_y + pctr_y - gui_percentYRaw(8);
   
-  local string cfg;
+  local string cfg, warn;
   local float len;
   local vector colr;
-  
+  local vector warnOrg;
   //this is quite hilarious
   cfg = NAVNAMES[CFG_INDEX];
   colr = CLR_DEF_ARM_OK;
   if( CFG_INDEX == 0 ){
     cfg = "DEFAULT";
     colr = CLR_DEF_ARM_HALF;
+    warnOrg = lctr;
+    warn = "[=Cannot modify Default=]";
+    len = stringwidth(warn, 0, '8 9 0');
+    warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
+    warnOrg_y = warnOrg_y - gui_percentYRaw( 24 );
+    drawstring(warnOrg, warn, '8 9 0', '1 0.15 0.15' , 1, 0);
   }
   cfg = strcat("CONFIG: ", cfg);
   len = stringwidth(cfg, 0, '8 9 0');
   lctr_x = lctr_x - gui_percentXRaw( len / 2 );
   drawstring(lctr, cfg, '8 9 0', colr, 1, 0);
-  
 };
 
 void(vector ofs) menu_arming_WeaponList={
@@ -402,29 +407,24 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
     WEPNLIST_ORG_BAL = nofs + gui_percentToPixelRawVec('0 10');
     WEPNLIST_SIZE_BAL_x = gui_percentXRaw(138);
     WEPNLIST_SIZE_BAL_y = gui_percentYRaw(act_idx * 14);
-    gui_DrawRect(WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL, '2 2 0', listNameColor);  //DEBUG
-    drawline(4, WEPNLIST_ORG_BAL, WEPNLIST_ORG_BAL + WEPNLIST_SIZE_BAL, '0 1 1', 1, 0); //DEBUG
   }
   else if( (weaponType & DMG_ENE) ){
     WEPNLIST_CNT_ENE = act_idx;
     WEPNLIST_ORG_ENE = nofs + gui_percentToPixelRawVec('0 12');
     WEPNLIST_SIZE_ENE_x = gui_percentXRaw(138);
     WEPNLIST_SIZE_ENE_y = gui_percentYRaw(act_idx * 14);
-    gui_DrawRect(WEPNLIST_ORG_ENE, WEPNLIST_SIZE_ENE, '2 2 0', listNameColor);  //DEBUG
   }
   else if( (weaponType & DMG_EXP) ){
     WEPNLIST_CNT_EXP = act_idx;
     WEPNLIST_ORG_EXP = nofs + gui_percentToPixelRawVec('0 12');
     WEPNLIST_SIZE_EXP_x = gui_percentXRaw(138);
     WEPNLIST_SIZE_EXP_y = gui_percentYRaw(act_idx * 14);
-    gui_DrawRect(WEPNLIST_ORG_EXP, WEPNLIST_SIZE_EXP, '2 2 0', listNameColor);  //DEBUG
   }
   else if( (weaponType & DMG_MSC) ){
     WEPNLIST_CNT_MSC = act_idx;
     WEPNLIST_ORG_MSC = nofs + gui_percentToPixelRawVec('0 12');
     WEPNLIST_SIZE_MSC_x = gui_percentXRaw(138);
     WEPNLIST_SIZE_MSC_y = gui_percentYRaw(act_idx * 14);
-    gui_DrawRect(WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC, '2 2 0', listNameColor);  //DEBUG
   }  
 };
 
