@@ -48,10 +48,10 @@ void() navpointListener={
 };
 
 void() objIntelSwitchListener={
-  if(menu_checkMouseInBounds(cursorpos, OBJ_BTN_ORG, OBJ_BTN_SZ), TRUE){
+  if(menu_checkMouseInBounds(cursorpos, OBJ_BTN_ORG, OBJ_BTN_SZ, TRUE)){
     INFO_SWITCH = TRUE;
   }
-  else if(menu_checkMouseInBounds(cursorpos, INT_BTN_ORG, INT_BTN_SZ), TRUE){ 
+  else if(menu_checkMouseInBounds(cursorpos, INT_BTN_ORG, INT_BTN_SZ, TRUE)){ 
     INFO_SWITCH = FALSE;
   }
 };

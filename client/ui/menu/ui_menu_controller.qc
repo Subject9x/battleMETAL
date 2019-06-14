@@ -16,7 +16,6 @@ Overview:
 void() menu_handleFrame={
   local vector mpos, i_sz;
   
-  
   cursorpos = getmousepos();
   handle_input_drag();
   
@@ -83,18 +82,20 @@ float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseI
   and returns the index number of the item if any'
 */
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener={
-  if(menu_checkMouseInBounds(cursorpos, org, list_size)){
+  if( menu_checkMouseInBounds(cursorpos, org, list_size, FALSE) ){
     local vector ofs, mx;
     local entity dat;
     local float lst_idx, toSender;
-    lst_idx = 1;
+    
+	lst_idx = 1;
     toSender = 0;
+	
     while(lst_idx <= max_items){
       local vector lofs;
       local float chk;
       lofs_x = org_x;
       lofs_y = org_y + (lst_idx * row_size_y);
-      chk = menu_checkMouseInBounds(cursorpos, lofs, row_size);
+      chk = menu_checkMouseInBounds(cursorpos, lofs, row_size, FALSE);
       gui_DrawRect(lofs, gui_percentToPixel(row_size_x, row_size_y), '0 0 0', '1 1 1');
       if(chk){
         gui_DrawRect(lofs, lofs + row_size, '2 2', '1 1 1');
@@ -113,7 +114,7 @@ void() mechAcceptButtonListener={
   local entity hardpoint;
   local float bit;
   
-  if(menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ)){
+  if( menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ, FALSE) ){
     if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_MECH) ){
       cl_setspawnpoint( CLIENT_MENU_nav_pnt );
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
@@ -231,14 +232,14 @@ void() navBarListener={
   local float itemUnlockCounter;
   local float itemId;
   
-  if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.0097, 0.0109), gui_percentToPixel(0.075, 0.025))){
+  if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.0097, 0.0109), gui_percentToPixel(0.075, 0.025), TRUE)){
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
     }
     CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
 	
   }
-  else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025))){
+  else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025), TRUE)){
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
     }
@@ -246,7 +247,7 @@ void() navBarListener={
     SELECT_MECH = CLIENT_MENU_sel_mech = 0;
     cl_get_mechs_sort();
   }
-  else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025))){
+  else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025), TRUE)){
     if(SELECT_MECH != 0){
       CLIENT_MENU_menu_choice = MENU_ARMING_ACTIVE;
       itemUnlockCounter = 0;
@@ -265,7 +266,7 @@ void() navBarListener={
       }
     }
   }
-  else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025))){
+  else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025), TRUE)){
     if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS) ) ){
       local entity nav;
       local float itr, idx;
