@@ -14,7 +14,7 @@ Overview:
   renders the NavBar at the top, along with the chosen menu sub function
 */
 void() menu_handleFrame={
-  local vector mpos, i_sz;
+  local vector mpos, cursorImageSize;
   
   cursorpos = getmousepos();
   handle_input_drag();
@@ -33,8 +33,8 @@ void() menu_handleFrame={
     CLR_DEF_UI_DEPLOY = CLR_UI_AUTH_DEPLOY;
   }
 
-  i_sz = draw_getimagesize(UI_CURSOR_IMG);
-  i_sz = gui_percentToPixelRawVec( gui_scaleSize(i_sz, VIEW_SCALE/1.25) );
+  cursorImageSize = draw_getimagesize(UI_CURSOR_IMG);
+  cursorImageSize = gui_percentToPixelRawVec( gui_scaleSize(cursorImageSize, VIEW_SCALE/1.25) );
   
   mpos_x = cursorpos_x - gui_percentXRaw(2);
   mpos_y = cursorpos_y - gui_percentXRaw(4);
@@ -53,8 +53,8 @@ void() menu_handleFrame={
       menu_deployDrawFrame();
       break;
   }
-  menu_navBar(VIEW_ORG);
-  drawpic(mpos, UI_CURSOR_IMG,  i_sz, '1 1 1', 1, 0);
+  menu_navBar_drawFrame(VIEW_ORG);
+  drawpic(mpos, UI_CURSOR_IMG, cursorImageSize, '1 1 1', 1, 0);
   
   //debug info
   drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', 1, 0);
@@ -66,9 +66,9 @@ void() menu_handleFrame={
 */
 float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds={
 
-  local vector asz;
-  asz = org+sz;
-  if(((mpos_x > org_x) && (mpos_x < asz_x)) && ((mpos_y > org_y) && (mpos_y < asz_y))){
+  local vector areaSize;
+  areaSize = org+sz;
+  if( ((mpos_x > org_x) && (mpos_x < areaSize_x)) && ((mpos_y > org_y) && (mpos_y < areaSize_y)) ){
 	if( playClickSound ){
 		pointsound(pmove_org, "sound/misc/menu1.wav", 1, ATTN_NORM); //maybe not the best place for this.
 	}
@@ -83,25 +83,26 @@ float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseI
 */
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener={
   if( menu_checkMouseInBounds(cursorpos, org, list_size, FALSE) ){
-    local vector ofs, mx;
-    local entity dat;
-    local float lst_idx, toSender;
+    local float listIndex, toSender;
+    local vector listOffset;
+    local float selectCheck;
     
-	lst_idx = 1;
+	listIndex = 1;
     toSender = 0;
 	
-    while(lst_idx <= max_items){
-      local vector lofs;
-      local float chk;
-      lofs_x = org_x;
-      lofs_y = org_y + (lst_idx * row_size_y);
-      chk = menu_checkMouseInBounds(cursorpos, lofs, row_size, FALSE);
-      gui_DrawRect(lofs, gui_percentToPixel(row_size_x, row_size_y), '0 0 0', '1 1 1');
-      if(chk){
-        gui_DrawRect(lofs, lofs + row_size, '2 2', '1 1 1');
-        toSender = lst_idx;
+    while(listIndex <= max_items){
+      listOffset_x = org_x;
+      listOffset_y = org_y + (listIndex * row_size_y);
+      
+	  selectCheck = menu_checkMouseInBounds(cursorpos, listOffset, row_size, FALSE);
+      
+	  gui_DrawRect(listOffset, gui_percentToPixel(row_size_x, row_size_y), '0 0 0', '1 1 1');
+      
+	  if( selectCheck ){
+        gui_DrawRect(listOffset, listOffset + row_size, '2 2', '1 1 1');
+        toSender = listIndex;
       }
-      lst_idx = lst_idx + 1;
+      listIndex = listIndex + 1;
     }
     return toSender;
   }
@@ -142,7 +143,7 @@ void() mechAcceptButtonListener={
   }
 };
 
-void(vector ofs) menu_navBar={
+void(vector ofs) menu_navBar_drawFrame={
   local vector nvpos, hpos, tpos, dpos, rpos, lpos, isz, apos;
   local float strwid;
   nvpos = ofs + gui_percentToPixelRawVec('9.984 7.488');
@@ -220,9 +221,9 @@ void(vector ofs) menu_navBar={
 };
 
 void() menu_mainListener={
-  //prevent menu switch during briefing
+  //stop briefing if its playing
   if(ANM_FILE_STATUS == 1){
-    return;
+      cl_exit_animatic();
   }
   navBarListener();
   mechAcceptButtonListener();

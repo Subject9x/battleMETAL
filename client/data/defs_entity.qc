@@ -59,13 +59,6 @@ vector vPlayerVelocity;
 .float hp_arm2;
 .float hp_leg;
 
-//weapon
-.string note1;
-.string note2;
-.string note3;
-.string note4;
-.string w_icon;
-
 //navpoint
 .float obj_status;
 .float controllingFaction;

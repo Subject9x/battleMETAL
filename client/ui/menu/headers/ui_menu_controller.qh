@@ -17,7 +17,6 @@ float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseI
 float(vector org, vector mpos, vector list_size, vector row_size, float max_items, float space) listListener;
 
 void() menu_handleFrame;
-void(vector ofs) menu_navBar;
 void() menu_mainListener;
 void() navBarListener;
 void() mechAcceptButtonListener;
@@ -26,6 +25,8 @@ void() menu_listen_onClick;
 void() menu_listen_onHover;
 void() menu_listen_onDrag;
 void() menu_listen_onKeyUp;
+
+void(vector ofs) menu_navBar_drawFrame;
 
 float AVAILABLE_RESERVE;
 float SELECT_MECH;  //replaces entity functionality, used in conjunction with ui_data file loading - Roohr 6/26/2018

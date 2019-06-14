@@ -37,16 +37,6 @@ void() menu_briefListener_onHover={
 	
 };
 
-//Listener hooks called by menu_briefListener
-void() navpointListener={
-  local float lst_idx;
-  lst_idx = 0;
-  while(lst_idx <= 21){
-    
-    lst_idx = lst_idx + 1;
-  }  
-};
-
 void() objIntelSwitchListener={
   if(menu_checkMouseInBounds(cursorpos, OBJ_BTN_ORG, OBJ_BTN_SZ, TRUE)){
     INFO_SWITCH = TRUE;
