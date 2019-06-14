@@ -48,16 +48,16 @@ void() navpointListener={
 };
 
 void() objIntelSwitchListener={
-  if(menu_checkMouseInBounds(cursorpos, OBJ_BTN_ORG, OBJ_BTN_SZ)){
+  if(menu_checkMouseInBounds(cursorpos, OBJ_BTN_ORG, OBJ_BTN_SZ), TRUE){
     INFO_SWITCH = TRUE;
   }
-  else if(menu_checkMouseInBounds(cursorpos, INT_BTN_ORG, INT_BTN_SZ)){ 
+  else if(menu_checkMouseInBounds(cursorpos, INT_BTN_ORG, INT_BTN_SZ), TRUE){ 
     INFO_SWITCH = FALSE;
   }
 };
 
 void() briefSoundListener={
-  if(menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('10 100'), gui_percentToPixelRawVec('243 32'))){
+  if(menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('10 100'), gui_percentToPixelRawVec('243 32'), TRUE)){
     if( (MSN_ANIM != "") && (time > MSN_SFX_COUNT) ){
       anm_parseFile(MSN_ANIM);
       MSN_SFX_COUNT = time + anm_total_runtime();

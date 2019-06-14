@@ -65,13 +65,14 @@ void() menu_handleFrame={
   When Player clicks the mouse button, this runs a check to see if the mouse coords area
   within the function coords. If they are, return TRUE.
 */
-float(vector mpos, vector org, vector sz) menu_checkMouseInBounds={
+float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds={
 
   local vector asz;
   asz = org+sz;
-  if(((mpos_x > org_x) && (mpos_x < asz_x))
-  && ((mpos_y > org_y) && (mpos_y < asz_y))){
-    pointsound(pmove_org, "sound/misc/menu1.wav", 1, ATTN_NORM); //maybe not the best place for this.
+  if(((mpos_x > org_x) && (mpos_x < asz_x)) && ((mpos_y > org_y) && (mpos_y < asz_y))){
+	if( playClickSound ){
+		pointsound(pmove_org, "sound/misc/menu1.wav", 1, ATTN_NORM); //maybe not the best place for this.
+	}
     return TRUE;
   }
   return FALSE;

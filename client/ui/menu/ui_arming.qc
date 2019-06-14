@@ -25,7 +25,7 @@ void() menu_armingListener_onDrag={
 void() menu_armingListener_onHover={
 	//tooltip
   
-	if( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('4 28'), gui_percentToPixelRawVec('270 236'))){
+	if( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('4 28'), gui_percentToPixelRawVec('270 236'), FALSE)){
      toolTip.data_idx = MENU_ARMING_ACTIVE;
      toolTip.mins = '128 32 0';
      toolTip.description = "[HELP ME] This is a toolTip, ya dummy.";
@@ -53,7 +53,7 @@ void() menu_armingListener_onKeyUp={
         hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4.5 );
       
         hardpointOffset_z = 0;
-        if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR - hardpointOffset), gui_percentToPixelRawVec('32 32'))){
+        if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR - hardpointOffset), gui_percentToPixelRawVec('32 32'), FALSE)){
           weaponType = UI_ARMING_item_drag.damageType;
           if( (UI_ARMING_item_drag.i_size <= hardpoint.hardpointSize) ){
             if( (weaponType & hardpoint.hardpointType) ){
@@ -113,19 +113,19 @@ void() weaponDragListener={
 void() weaponSelectListener={
   local float found;
   found = listListener(WEPNLIST_ORG, cursorpos, WEPNLIST_SIZE, gui_percentToPixelRawVec('96 13.92'), WEPNLIST_CNT, 0);
-  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL, TRUE)){
     found = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_BAL, 0);
     found = WEPLIST_BAL_ARR[found];
   }
-  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_ENE, WEPNLIST_SIZE_ENE)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_ENE, WEPNLIST_SIZE_ENE, TRUE)){
     found = listListener(WEPNLIST_ORG_ENE, cursorpos, WEPNLIST_SIZE_ENE, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_ENE, 0);
     found = WEPLIST_ENE_ARR[found];
   }
-  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_EXP, WEPNLIST_SIZE_EXP)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_EXP, WEPNLIST_SIZE_EXP, TRUE)){
     found = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_EXP, 0);
     found = WEPLIST_EXP_ARR[found];
   }
-  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC, TRUE)){
     found = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_MSC, 0);
     found = WEPLIST_MSC_ARR[found];
   }
@@ -154,7 +154,7 @@ void() hardpointListener={
         hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4.5 );
       
         hardpointOffset_z = 0;
-        if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR - hardpointOffset), gui_percentToPixelRawVec('28 28'))){
+        if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR - hardpointOffset), gui_percentToPixelRawVec('28 28'), TRUE)){
           CLIENT_MENU_sel_wid = wepbit;
           CLIENT_MENU_sel_hrpnt_size = hardpoint.hardpointSize;
           CLIENT_MENU_sel_hrpnt_types = hardpoint.hardpointType;
@@ -172,7 +172,7 @@ void() hardpointListener={
 
 void() weaponGroupPanelListener={
   local float found;
-  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A, TRUE)){
     found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A,  gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_A, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp1 & found)){
@@ -183,7 +183,7 @@ void() weaponGroupPanelListener={
     }
     GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
   }
-  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_B, WEPNGRP_SIZE_B)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_B, WEPNGRP_SIZE_B, TRUE)){
     found = listListener(WEPNGRP_ORG_B, cursorpos, WEPNGRP_SIZE_B, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_B, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp2 & found)){
@@ -193,7 +193,7 @@ void() weaponGroupPanelListener={
     }
     GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
   }  
-  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_C, WEPNGRP_SIZE_C)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_C, WEPNGRP_SIZE_C, TRUE)){
     found = listListener(WEPNGRP_ORG_C, cursorpos, WEPNGRP_SIZE_C, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_C, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp3 & found)){
@@ -203,7 +203,7 @@ void() weaponGroupPanelListener={
     }
     GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
   }
-  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_D, WEPNGRP_SIZE_D)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_D, WEPNGRP_SIZE_D, TRUE)){
     found = listListener(WEPNGRP_ORG_D, cursorpos, WEPNGRP_SIZE_D, gui_percentToPixel(0.0109, 0.018), WEPNGRP_CNT_D, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp4 & found)){
@@ -213,7 +213,7 @@ void() weaponGroupPanelListener={
     }
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
   }
-  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_E, WEPNGRP_SIZE_E)){
+  if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_E, WEPNGRP_SIZE_E, TRUE)){
     found = listListener(WEPNGRP_ORG_E, cursorpos, WEPNGRP_SIZE_E, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_E, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp5 & found)){
@@ -226,7 +226,7 @@ void() weaponGroupPanelListener={
 };
 
 void() selectNextConfig={
-  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_N, gui_percentToPixelRawVec('20 38') )){
+  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_N, gui_percentToPixelRawVec('20 38'), TRUE )){
     CFG_INDEX_PREV = CFG_INDEX;
     CFG_INDEX = CFG_INDEX + 1;
     if( CFG_INDEX > 6 ){
@@ -242,7 +242,7 @@ void() selectNextConfig={
 };
 
 void() selectPrevConfig={
-  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_P, gui_percentToPixelRawVec('20 38') )){
+  if(menu_checkMouseInBounds(cursorpos, BTN_CFG_P, gui_percentToPixelRawVec('20 38'), TRUE )){
     CFG_INDEX_PREV = CFG_INDEX;
     CFG_INDEX = CFG_INDEX - 1;
     if( CFG_INDEX < 0 ){
@@ -275,8 +275,7 @@ void() menu_arming_drawFrame={
   //menu_arming_AssignToHardpoint_btn(VIEW_CTR);
   menu_arming_DrawItemDragIcon();
   if( toolTip.data_idx == MENU_ARMING_ACTIVE ){
-    drawpic(cursorpos + gui_percentToPixelRawVec('12 0'), UI_DEF_BOX_64, '128 32', '0.67 0.67 0.67', 1, 0);
-    gui_wrapText(cursorpos + gui_percentToPixelRawVec('12 0'),  toolTip.mins, toolTip.description, toolTip.maxs, toolTip.angles, toolTip.alpha);
+	gui_toolTipMessage(toolTip.description, toolTip.mins, toolTip.maxs, UI_DEF_BOX_64, gui_percentToPixelRawVec('12 0'), toolTip.angles, '0.85 0.85 0.85', 1 ); 
   }
 };
 

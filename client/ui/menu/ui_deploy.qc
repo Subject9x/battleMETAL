@@ -32,7 +32,7 @@ void() menu_deployListener_onHover={
 
 //Listener hooks calle by menu_briefListener
 void() navSelectListener={
-  if ( menu_checkMouseInBounds(cursorpos, DEPLOY_MAP_ORG, gui_percentToPixelRawVec('380 380')) ){
+  if ( menu_checkMouseInBounds(cursorpos, DEPLOY_MAP_ORG, gui_percentToPixelRawVec('380 380'), TRUE) ){
     local entity nav;
     nav = findchainfloat(data_type, DATA_DEPL);
     while(nav){
@@ -60,14 +60,14 @@ void() navSelectListener={
 };
 
 void() navListSelectListener={
-  if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('188 135'), gui_percentToPixelRawVec('20 44')) ){
+  if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('188 135'), gui_percentToPixelRawVec('20 44'), TRUE) ){
     DEPLOY_POINT_ID = DEPLOY_POINT_ID + 1;
     if(DEPLOY_POINT_ID > DEPLOY_POINT_END){
       DEPLOY_POINT_ID = 0;
     }
     CLIENT_MENU_nav_pnt = DEPLOY_IDS[DEPLOY_POINT_ID];
   }
-  if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('15 135'), gui_percentToPixelRawVec('20 44')) ){
+  if ( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('15 135'), gui_percentToPixelRawVec('20 44'), TRUE) ){
     DEPLOY_POINT_ID = DEPLOY_POINT_ID - 1;
     if( DEPLOY_POINT_ID < 0 ){
       DEPLOY_POINT_ID = DEPLOY_POINT_END;

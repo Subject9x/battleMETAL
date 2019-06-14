@@ -510,7 +510,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   token = 0;
   line = "";
   torg = loc;
-  line_cnt = 1;
+  line_cnt = 0;
   line_rtn = 1;
   while(token <= totes){
     local vector charpos;
@@ -546,6 +546,31 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   }
   return line_cnt * fsize_y;
 };
+
+/*
+	tipMessage = string for the tooltip.
+	targetSize = ideal size for the text and (optional) image panel - final size isn't fixed, you will have to adjust size to match output.
+	fontSize = size of the font for text.
+	panelImage = if != "", this will draw your desired image as the background panel to the tip.
+	cursorOffset = offset from mouse's screen position to draw the tooltip.
+	textColor = color for the text.
+	boxColor = color TINT of image, '1 1 1' means no color tinting.
+	alph = alpha, the alpha of the tooltip.
+*/
+void(string tipMessage, vector targetSize, vector fontSize, string panelImage, vector cursorOffset, vector textColor, vector panelColor, float alph ) gui_toolTipMessage={
+	local vector toolTipOrigin;
+	local vector panelAdjust;
+	
+	toolTipOrigin = cursorpos + cursorOffset;
+	
+	if( panelImage && (panelImage != "") ){
+		panelAdjust_x = targetSize_x * 0.025;
+		panelAdjust_y = targetSize_y * -0.075;
+		drawpic( toolTipOrigin + panelAdjust, panelImage, targetSize, panelColor, alph + 0.25);
+	}
+	gui_wrapText( toolTipOrigin, targetSize, tipMessage, fontSize, textColor, alph); 
+};
+
 
 void(string msg, float val) cons_logAFloat={
   print(strcat(msg,":", ftos(val),"\n"));
