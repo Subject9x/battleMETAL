@@ -71,7 +71,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       return FALSE;
     }
   }
-  else if(inputEventType == INPUT_EVENT_MOUSE_MOVE){
+  else if(inputEventType == INPUT_EVENT_MOUSE_POS){
     if(MENU_ACTIVE){
       cursorpos_x = cursorpos_x + scanx;
       cursorpos_y = cursorpos_y + chary;
@@ -102,14 +102,13 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       INPUT_mouse_state_prev = INPUT_mouse_state;
       INPUT_mouse_state = MOUSE_DOWN;
       
-      if(MENU_ACTIVE){
+      if( MENU_ACTIVE ){
         switch( CLIENT_MENU_menu_choice ){
           case MENU_HANGAR_ACTIVE:
             menu_hangarListener_onClick();
             break;
           case MENU_BRIEF_ACTIVE:
-            //menu_briefListener_onClick();
-			menu_listen_onClick();
+            menu_briefListener_onClick();
             break;
           case MENU_ARMING_ACTIVE:
             menu_armingListener_onClick();

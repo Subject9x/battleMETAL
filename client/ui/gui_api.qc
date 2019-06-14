@@ -483,35 +483,6 @@ void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr,
   
 };
 
-string(float bit) gui_getWeaponId={
-  if(bit == WEAPON1){
-    return "1";
-  }
-  else if(bit == WEAPON2){
-    return "2";
-  }
-  else if(bit == WEAPON3){
-    return "3";
-  }
-  else if(bit == WEAPON4){
-    return "4";
-  }
-  else if(bit == WEAPON5){
-    return "5";
-  }
-  else if(bit == WEAPON6){
-    return "6";
-  }
-  else if(bit == WEAPON7){
-    return "7";
-  }
-  else if(bit == WEAPON8){
-    return "8";
-  }
-  else if(bit == WEAPON9){
-    return "9";
-  }
-};
 
 void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector ln_sz2, vector clr2) gui_DrawHighlightRect={
   if(select){

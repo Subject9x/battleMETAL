@@ -14,7 +14,6 @@ void() menu_armingListener_onClick={
   weaponSelectListener();
   hardpointListener();
   weaponGroupPanelListener();
-  //assignToHardpointListener();
   selectNextConfig();
   selectPrevConfig();
 };
@@ -25,10 +24,18 @@ void() menu_armingListener_onDrag={
 
 void() menu_armingListener_onHover={
 	//tooltip
-	//TODO - use entity for tooltip object
-	if( menu_checkMouseInBounds(cursorpos, gui_percentToPixelRawVec('0 0 0'), gui_percentToPixelRawVec('32 32 0'))){
-		 gui_wrapText(cursorpos, '32 32', "HELP ME", '7 8 0', '1 1 1', 1);
+  
+	if( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('4 28'), gui_percentToPixelRawVec('270 236'))){
+     toolTip.data_idx = MENU_ARMING_ACTIVE;
+     toolTip.mins = '128 32 0';
+     toolTip.description = "[HELP ME] This is a toolTip, ya dummy.";
+     toolTip.angles = '1 0.67 0.33';
+     toolTip.maxs = '7 8 0';
+     toolTip.alpha = 1;
 	}
+  else{
+    toolTip.data_idx = FALSE;
+  }
 };
 
 void() menu_armingListener_onKeyUp={
@@ -136,8 +143,8 @@ void() hardpointListener={
   local float weaponBitFlag;
   
   if( SELECT_MECH > FALSE){
-	if( INPUT_mouse_state == MOUSE_DOWN ){
-	  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+    if( INPUT_mouse_state == MOUSE_DOWN ){
+      hardpoint = UI_HANGAR_DATA_mech.w_slot;
       hardpointItr = 1;
       weaponBitFlag = 1;
       while( hardpoint ){
@@ -159,8 +166,7 @@ void() hardpointListener={
         weaponBitFlag = weaponBitFlag * 2;
         hardpoint = hardpoint.w_slot;
       }
-	}
-  
+    }
   }
 };
 
@@ -268,6 +274,10 @@ void() menu_arming_drawFrame={
   menu_arming_WeaponInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
   //menu_arming_AssignToHardpoint_btn(VIEW_CTR);
   menu_arming_DrawItemDragIcon();
+  if( toolTip.data_idx == MENU_ARMING_ACTIVE ){
+    drawpic(cursorpos + gui_percentToPixelRawVec('12 0'), UI_DEF_BOX_64, '128 32', '0.67 0.67 0.67', 1, 0);
+    gui_wrapText(cursorpos + gui_percentToPixelRawVec('12 0'),  toolTip.mins, toolTip.description, toolTip.maxs, toolTip.angles, toolTip.alpha);
+  }
 };
 
 void(vector ofs) menu_arming_HardpointGraph={
@@ -688,9 +698,9 @@ void() cleanHardPoints={
   
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   while( hardpoint ){
-	hardpoint.data_idx = 0;
-	hardpoint.icon = "";
-	hardpoint = hardpoint.w_slot;
+    hardpoint.data_idx = 0;
+    hardpoint.icon = "";
+    hardpoint = hardpoint.w_slot;
   }
 };
 
@@ -720,12 +730,12 @@ float(float grp) calc_energy_draw={
   
   while( hardpoint ){
     if( (grp & weaponGroupBit) ){
-	  if( hardpoint.energyRate ){
-		energySubTotal = energySubTotal + hardpoint.energyRate;
-	  }
+      if( hardpoint.energyRate ){
+      energySubTotal = energySubTotal + hardpoint.energyRate;
+      }
     }
     weaponGroupBit = weaponGroupBit * 2;
-	hardpoint = hardpoint.w_slot;
+    hardpoint = hardpoint.w_slot;
   }
   energySubTotal = energySubTotal - MECH_DATA_ENRATE;
   if( energySubTotal < 0){

@@ -41,7 +41,6 @@ float HUD_ALPHA = 1;
 
 //unused by menu
 //string NAVNAMES[21];
-//string(float bit) gui_getWeaponId;
 //vector(float val) gui_getColorForArmor;
 //vector(float val) gui_getColorForShield;
 //string(float anglee) gui_angleToNav;

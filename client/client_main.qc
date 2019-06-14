@@ -103,7 +103,9 @@ void() CSQC_Init =
   DEPLOY_CNT = 0;
   CFG_INDEX = 0;
   CFG_INDEX_PREV = CFG_INDEX;
-  
+
+  toolTip = spawn();
+
   UI_HANGAR_DATA_mech = spawn();
   UI_ARMING_DATA_item_a = spawn();
   UI_ARMING_DATA_item_b = spawn();
@@ -323,8 +325,6 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
  
   //menu system
   if(MENU_ACTIVE){
-    cursorpos = getmousepos();
-    handle_input_drag();
     menu_handleFrame();
   }
   else{

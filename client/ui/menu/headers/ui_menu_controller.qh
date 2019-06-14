@@ -8,6 +8,8 @@ Overview:
   to run the whole menu sub system.
 */
 
+entity toolTip;
+
 vector cursorpos;
 vector last_view;
 

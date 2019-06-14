@@ -16,6 +16,10 @@ Overview:
 void() menu_handleFrame={
   local vector mpos, i_sz;
   
+  
+  cursorpos = getmousepos();
+  handle_input_drag();
+  
   //UI Theming
   if( CLIENT_faction == 1 ){
     CLR_DEF_UI_BRIEF = CLR_UI_PSC_BRIEF;
@@ -34,7 +38,7 @@ void() menu_handleFrame={
   i_sz = gui_percentToPixelRawVec( gui_scaleSize(i_sz, VIEW_SCALE/1.25) );
   
   mpos_x = cursorpos_x - gui_percentXRaw(2);
-  mpos_y = cursorpos_y -  gui_percentXRaw(4);
+  mpos_y = cursorpos_y - gui_percentXRaw(4);
   
   switch( CLIENT_MENU_menu_choice ){
     case MENU_HANGAR_ACTIVE:
@@ -55,8 +59,6 @@ void() menu_handleFrame={
   
   //debug info
   drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', 1, 0);
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 10'), ftos(CLIENT_MENU_sel_size), '6 6 0', '1 1 1', 1, 0);  
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 18'), ftos(CLIENT_MENU_sel_mech), '6 6 0', '1 1 1', 1, 0);  
 };
 
 /*
