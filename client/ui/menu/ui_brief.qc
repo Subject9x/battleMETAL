@@ -57,8 +57,8 @@ void() briefSoundListener={
 
 //panels
 void(vector ofs) menu_briefMissionInfo={
-  //10 42
-  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixel(0.19, 0.065), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
+  
+  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('243.2 4'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION INFO]", 0, '8 8 0');
@@ -78,6 +78,11 @@ void(vector ofs) menu_briefMissionInfo={
   drawstring(ofs+gui_percentToPixelRawVec('5 44'), strcat("[LOCATION]:   ", MSN_LOCATION ), '6 6 0', '1 1 1', 1, 0);
   //local time
   drawstring(ofs+gui_percentToPixelRawVec('5 52'), strcat("[LOCAL TIME]: ", MSN_LOCALTIME), '6 6 0', '1 1 1', 1, 0);
+  
+  local vector helpOrg;
+  helpOrg = ofs;
+  helpOrg_x = helpOrg_x + gui_percentXRaw(243) - gui_percentXRaw(12); 
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 
@@ -121,10 +126,11 @@ void(vector ofs) menu_briefMapPanel={
   
   ui_msize = '325 245';
   ui_msize_in = ui_msize - '8 6';
+  ui_msize = gui_percentToPixelRawVec(ui_msize);
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(16));
   mpos_y = ofs_y + gui_percentYRaw(48);
   
-  drawpic(mpos, UI_DEF_BOX_512, gui_percentToPixelRawVec(ui_msize), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
+  drawpic(mpos, UI_DEF_BOX_512, ui_msize, CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
  
   iofs = mpos + gui_percentToPixelRawVec('4 3');
   
@@ -165,6 +171,11 @@ void(vector ofs) menu_briefMapPanel={
     }
     itr = itr + 1;
   }
+   
+  local vector helpOrg;
+  helpOrg = mpos;
+  helpOrg_x = helpOrg_x + ui_msize_x - gui_percentXRaw(12); 
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void(vector ofs) menu_objIntelSwitchPanel={
@@ -203,7 +214,7 @@ void(vector ofs) menu_objIntelSwitchPanel={
   INT_BTN_ORG = ipos + gui_percentToPixel(-0.0046, 0.0041);
   INT_BTN_SZ = isz;
   gui_renderTintImage(idraw, ipos + gui_percentToPixel(-0.0046, 0.0041), UI_DEF_BOX_256, iisz, CLR_DEF_WEP_INRANGE, 1, 0) ;
-  gui_renderHighlightString("[INTEL]", itpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', idraw, '8 8 0', 1, 0) ;  
+  gui_renderHighlightString("[INTEL]", itpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', idraw, '8 8 0', 1, 0) ;
 };
 
 void(vector ofs) menu_briefObjectivePanel={
@@ -230,6 +241,11 @@ void(vector ofs) menu_briefObjectivePanel={
     }
     lst_idx = lst_idx + 1;
   }
+  
+  local vector helpOrg;
+  helpOrg = bpos;
+  helpOrg_x = helpOrg_x + gui_percentToPixelRaw(377.6) - gui_percentXRaw(12); 
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void(vector ofs) menu_briefIntelPanel={
@@ -242,4 +258,9 @@ void(vector ofs) menu_briefIntelPanel={
   
   fpos = bpos + gui_percentToPixelRawVec('12 22');
   gui_wrapText(fpos, '300 300', MSN_INTEL, '7 8 0', '1 1 1', 1);
+  
+  local vector helpOrg;
+  helpOrg = bpos;
+  helpOrg_x = helpOrg_x + gui_percentToPixelRaw(377.6) - gui_percentXRaw(12); 
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };

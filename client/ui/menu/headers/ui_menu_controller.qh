@@ -11,6 +11,7 @@ Overview:
 entity toolTip;
 
 vector cursorpos;
+vector cursorImageSize;
 vector last_view;
 
 float(vector mpos, vector org, vector sz, float playClickSound) menu_checkMouseInBounds;
@@ -78,6 +79,7 @@ string UI_DEF_DEPLOYPOINT;
 string UI_HANGAR_BOX;
 string UI_BOX_SELECT;
 string UI_CURSOR_IMG;
+string UI_HELP_IMG;
 
 string UI_WEP_ENE;
 string UI_WEP_BAL;

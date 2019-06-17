@@ -14,7 +14,7 @@ Overview:
   renders the NavBar at the top, along with the chosen menu sub function
 */
 void() menu_handleFrame={
-  local vector mpos, cursorImageSize;
+  local vector mpos;
   
   cursorpos = getmousepos();
   handle_input_drag();

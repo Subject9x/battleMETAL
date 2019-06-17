@@ -561,7 +561,17 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
 	local vector toolTipOrigin;
 	local vector panelAdjust;
 	
+	local vector boundsCheck;
+	
 	toolTipOrigin = cursorpos + cursorOffset;
+	
+	if( (toolTipOrigin_x + targetSize_x) > VIEW_MAX_x ){
+		toolTipOrigin_x = toolTipOrigin_x - (cursorImageSize_x + targetSize_x);
+	}
+	
+	if( (toolTipOrigin_y + targetSize_y) > VIEW_MAX_y ){
+		toolTipOrigin_y = toolTipOrigin_y - (cursorImageSize_y + targetSize_y);
+	}
 	
 	if( panelImage && (panelImage != "") ){
 		panelAdjust_x = targetSize_x * 0.025;

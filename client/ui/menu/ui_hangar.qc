@@ -109,6 +109,11 @@ void(vector ofs) menu_hangar_MechDisplay={
       hardpoint = hardpoint.w_slot;
     }
   }
+  
+  local vector helpOrg;
+  helpOrg = nofs;
+  helpOrg_x = nofs_x + gui_percentXRaw(250) - gui_percentXRaw(12); 
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void(vector ofs) menu_hangar_MechHPoints={
@@ -137,6 +142,11 @@ void(vector ofs) menu_hangar_MechHPoints={
       hardpoint = hardpoint.w_slot;
     }
   }
+  
+  local vector helpOrg;
+  helpOrg = nofs;
+  helpOrg_x = helpOrg_x + gui_percentXRaw(365) - gui_percentXRaw(12); 
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void(vector ofs) menu_hangar_MechList={
