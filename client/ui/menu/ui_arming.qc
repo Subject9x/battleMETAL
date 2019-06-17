@@ -275,7 +275,7 @@ void() menu_arming_drawFrame={
   //menu_arming_AssignToHardpoint_btn(VIEW_CTR);
   menu_arming_DrawItemDragIcon();
   if( toolTip.data_idx == MENU_ARMING_ACTIVE ){
-	gui_toolTipMessage(toolTip.description, toolTip.mins, toolTip.maxs, UI_DEF_BOX_64, gui_percentToPixelRawVec('12 0'), toolTip.angles, '0.85 0.85 0.85', 1 ); 
+	gui_toolTipMessage(toolTip.description, toolTip.mins, toolTip.maxs, UI_DEF_BOX_512, gui_percentToPixelRawVec('12 0'), toolTip.angles, '0.85 0.85 0.85', 1 ); 
   }
 };
 

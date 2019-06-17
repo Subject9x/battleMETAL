@@ -3,7 +3,8 @@ battleMETAL
 Author: Peter Roohr
 Date: 3/23/2018
 Overview: 
-  these map ents are for scenery
+  Entire file contains all necessary code for doodads.
+  Doodads are mostly non-interactive bits of scenery like rocks and wreckage.
 
   spawnflag[1] = random choice of model
   spawnflag[2] = random yaw 
@@ -18,9 +19,56 @@ void() scenery_obj={
   self.classname = "scenery";
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
+  self.model = precache_model(self.model);
   setmodel( self, self.model );
   setsize( self, self.mins, self.maxs );
   setorigin( self, self.origin );
+};
+
+
+void() doodad_rocks_desert_small_1={
+  self.model = "q3mdl/map/rocks/rock1t.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (5 + (crandom() * 5) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (5 + (crandom() * 5) );
+  }
+  scenery_obj();
+};
+void() doodad_rocks_desert_small_2={
+  self.model = "q3mdl/map/rocks/rock2.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (5 + (crandom() * 5) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (5 + (crandom() * 5) );
+  }
+  scenery_obj();
+};
+void() doodad_rocks_desert_small_3={
+  self.model = "q3mdl/map/rocks/rock1t.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (5 + (crandom() * 5) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (5 + (crandom() * 5) );
+  }
+  scenery_obj();
+};
+
+void() doodad_rocks_desert_small_random={
+  local float diceRoll;
+  diceRoll = ceil(random() * 3);
+  switch( diceRoll ){
+    default:
+      doodad_rocks_desert_small_1();
+      return;
+    case 2:
+      doodad_rocks_desert_small_2();
+      return;
+    case 3:
+      doodad_rocks_desert_small_3();
+      return;
+    
+  }
 };
 
 /*
