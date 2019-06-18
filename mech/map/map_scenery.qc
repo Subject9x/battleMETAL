@@ -45,7 +45,7 @@ void() doodad_rocks_desert_small_2={
   scenery_obj();
 };
 void() doodad_rocks_desert_small_3={
-  self.model = "q3mdl/map/rocks/rock1t.obj";
+  self.model = "q3mdl/map/rocks/rock3.obj";
   if( (self.spawnflags & 1)) {
     self.angles_x = self.angles_x + (5 + (crandom() * 5) );
     self.angles_y = self.angles_y + (25 + (crandom() * 180) );
@@ -70,6 +70,17 @@ void() doodad_rocks_desert_small_random={
     
   }
 };
+
+void() doodad_urban_barrier_small={
+  self.model = "q3mdl/map/urban/barrier.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (5 + (crandom() * 5) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (5 + (crandom() * 5) );
+  }
+  scenery_obj();
+};
+
 
 /*
 

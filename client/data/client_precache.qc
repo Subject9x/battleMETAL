@@ -99,7 +99,7 @@ void() cs_precache={
   UI_DEF_DEPLOYPOINT = precache_pic("gfx/ui/hud_deploypoint.png", 0);
   UI_HANGAR_BOX = precache_pic("gfx/ui/hangar_portrait.png",8);
   UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",0);
-  UI_HELP_IMG = precache_pic("gfx/ui/helpTest.png", 0);
+  UI_HELP_IMG = precache_pic("gfx/ui/box_64_help.png", 8);
  
   UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png",0);
   UI_WEP_BAL = precache_pic("gfx/ui/wep_icons/wep_bal.png",0);
