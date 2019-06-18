@@ -9,4 +9,4 @@ Overview:
 
 float(float inputEventType, float scanx, float chary, float devid) handle_input;
 void() handle_input_drag;
-float(float inputEventType, float scanx, float chary, float devid) handle_input_hover;
+void() handle_input_hover;

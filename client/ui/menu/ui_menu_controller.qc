@@ -17,7 +17,6 @@ void() menu_handleFrame={
   local vector mpos;
   
   cursorpos = getmousepos();
-  handle_input_drag();
   
   //UI Theming
   if( CLIENT_faction == 1 ){
@@ -39,6 +38,9 @@ void() menu_handleFrame={
   mpos_x = cursorpos_x - gui_percentXRaw(2);
   mpos_y = cursorpos_y - gui_percentXRaw(4);
   
+  handle_input_drag();
+  handle_input_hover();
+  
   switch( CLIENT_MENU_menu_choice ){
     case MENU_HANGAR_ACTIVE:
       menu_hangarDrawFrame(); 
@@ -54,10 +56,10 @@ void() menu_handleFrame={
       break;
   }
   menu_navBar_drawFrame(VIEW_ORG);
+  if( toolTip.data_idx > FALSE ){
+    gui_toolTipMessage(toolTip.description, toolTip.mins, toolTip.maxs, UI_DEF_BOX_512, gui_percentToPixelRawVec('12 0'), toolTip.angles, '0.85 0.85 0.85', 1 ); 
+  }
   drawpic(mpos, UI_CURSOR_IMG, cursorImageSize, '1 1 1', 1, 0);
-  
-  //debug info
-  drawstring(VIEW_ORG + gui_percentToPixelRawVec('2 2'), vtos(cursorpos), '6 6 0', '1 1 1', 1, 0);
 };
 
 /*
@@ -121,12 +123,12 @@ void() mechAcceptButtonListener={
       cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
      
       bit = 1;
-	  hardpoint = UI_HANGAR_DATA_mech.w_slot;
-	  while( hardpoint ){
+      hardpoint = UI_HANGAR_DATA_mech.w_slot;
+      while( hardpoint ){
         cl_setweapon(bit, hardpoint.data_idx);
         bit = bit * 2;
-		hardpoint = hardpoint.w_slot;
-	  }
+        hardpoint = hardpoint.w_slot;
+      }
 	  
       cl_setweapongroup(1, CLIENT_MENU_nex_grp1);
       cl_setweapongroup(2, CLIENT_MENU_nex_grp2);

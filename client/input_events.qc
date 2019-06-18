@@ -88,7 +88,6 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       else if(cursorpos_y > VIEW_MAX_y){
         cursorpos_y = VIEW_MAX_y;
       }
-      handle_input_hover( inputEventType, scanx, chary, devid );
       return TRUE;
     }
     else{
@@ -130,7 +129,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
       INPUT_mouse_state_prev = INPUT_mouse_state;
       INPUT_mouse_state = MOUSE_UP;
       MOUSE_drag_timer = 0;      
-	  if(MENU_ACTIVE){
+      if(MENU_ACTIVE){
         switch( CLIENT_MENU_menu_choice ){
           case MENU_HANGAR_ACTIVE:
             //menu_hangarListener_onKeyUp();
@@ -199,20 +198,21 @@ void() handle_input_drag={
   Used here to primarily drive tooltip functionality.
   Parameter names altered slightly for call-stack purposes.
 */
-float(float inputEventTypeSub, float scanxSub, float charySub, float devidSub) handle_input_hover={
-  switch( CLIENT_MENU_menu_choice ){
-    case MENU_HANGAR_ACTIVE:
-      menu_hangarListener_onHover();
-      break;
-    case MENU_BRIEF_ACTIVE:
-      menu_briefListener_onHover();
-      break;
-    case MENU_ARMING_ACTIVE:
-      menu_armingListener_onHover();
-      break;
-    case MENU_DEPLOY_ACTIVE:
-      menu_deployListener_onHover();
-      break;
-  }  
-  return FALSE;
+void() handle_input_hover={
+  if( INPUT_mouse_state == MOUSE_UP ){
+    switch( CLIENT_MENU_menu_choice ){
+      case MENU_BRIEF_ACTIVE:
+        menu_briefListener_onHover();
+        break;
+      case MENU_HANGAR_ACTIVE:
+        menu_hangarListener_onHover();
+        break;
+      case MENU_ARMING_ACTIVE:
+        menu_armingListener_onHover();
+        break;
+      case MENU_DEPLOY_ACTIVE:
+        menu_deployListener_onHover();
+        break;
+    } 
+  }
 };

@@ -2,25 +2,29 @@
 battleMETAL
 Author: Peter Roohr
 Date: 3/26/2017
+mod: 6/18/2019
 Overview: class file for the deployment ui
 */
 
 //main hook for menu system
 void() menu_briefDrawFrame={
   local vector topleftroot;
+  
   topleftroot = VIEW_ORG;
+  
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_BRIEF, 1, 0);
-  menu_briefMissionInfo(topleftroot+gui_percentToPixel(0.0082, 0.0395));
-  menu_briefPlaySound(topleftroot);
-  menu_briefMissionText(topleftroot);
-  menu_briefMapPanel(topleftroot);
+  
+  menu_briefMissionInfo( topleftroot+gui_percentToPixelRawVec('10 38') );
+  menu_briefPlaySound( topleftroot );
+  menu_briefMissionText( topleftroot );
+  menu_briefMapPanel( topleftroot );
   if(INFO_SWITCH){
-    menu_briefObjectivePanel(topleftroot);
+    menu_briefObjectivePanel( topleftroot );
   }
   else{
-    menu_briefIntelPanel(topleftroot);
+    menu_briefIntelPanel( topleftroot );
   }
-  menu_objIntelSwitchPanel(topleftroot);
+  menu_objIntelSwitchPanel( topleftroot );
 };
 
 //hook for input system
@@ -34,7 +38,48 @@ void() menu_briefListener_onDrag={
 };
 
 void() menu_briefListener_onHover={
-	
+
+  if( menu_checkMouseInBounds(cursorpos, BRIEF_MAP_HELP_ORG, gui_percentToPixelRawVec('12 12'), FALSE) ){
+     toolTip.data_idx = MENU_BRIEF_ACTIVE;
+     toolTip.mins = gui_percentToPixelRawVec('164 48 0');
+     toolTip.description = "The [Map Panel] displays (Nav) markers and <Drop Points> for the mission.";
+     toolTip.angles = '0.85 0.85 0.85';
+     toolTip.maxs = '7 8 0';
+     toolTip.alpha = 1;
+     return;
+  }
+  if( menu_checkMouseInBounds(cursorpos, BRIEF_MISSION_HELP_ORG, gui_percentToPixelRawVec('12 12'), FALSE) ){
+     toolTip.data_idx = MENU_BRIEF_ACTIVE;
+     toolTip.mins = gui_percentToPixelRawVec('164 48 0');
+     toolTip.description = "This panel displays the basic information for the mission.";
+     toolTip.angles = '0.85 0.85 0.85';
+     toolTip.maxs = '7 8 0';
+     toolTip.alpha = 1;
+     return;
+  }
+  
+  if( (menu_checkMouseInBounds(cursorpos, BRIEF_OBJECTIVE_HELP_ORG, gui_percentToPixelRawVec('12 12'), FALSE)) && INFO_SWITCH ){
+    toolTip.data_idx = MENU_BRIEF_ACTIVE;
+    toolTip.mins = gui_percentToPixelRawVec('196 32 0');
+    toolTip.description = "These are the [Objectives] required to complete the mission.";
+    toolTip.angles = '0.85 0.85 0.85';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+  if( (menu_checkMouseInBounds(cursorpos, BRIEF_OBJECTIVE_HELP_ORG, gui_percentToPixelRawVec('12 12'), FALSE)) && !INFO_SWITCH ){
+    toolTip.data_idx = MENU_BRIEF_ACTIVE;
+    toolTip.mins = gui_percentToPixelRawVec('196 48 0');
+    toolTip.description = "[Intel] provides a little bit of foresight into what you might face in the mission or what you should take for equipment.";
+    toolTip.angles = '0.85 0.85 0.85';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+    toolTip.data_idx = FALSE;
+  
 };
 
 void() objIntelSwitchListener={
@@ -58,7 +103,7 @@ void() briefSoundListener={
 //panels
 void(vector ofs) menu_briefMissionInfo={
   
-  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('243.2 4'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
+  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('243.2 62.4'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION INFO]", 0, '8 8 0');
@@ -81,7 +126,8 @@ void(vector ofs) menu_briefMissionInfo={
   
   local vector helpOrg;
   helpOrg = ofs;
-  helpOrg_x = helpOrg_x + gui_percentXRaw(243) - gui_percentXRaw(12); 
+  helpOrg_x = helpOrg_x + gui_percentXRaw(243) - gui_percentXRaw(12);
+  BRIEF_MISSION_HELP_ORG = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
@@ -121,13 +167,14 @@ void(vector ofs) menu_briefMapPanel={
   local vector mpos, ui_msize, ui_msize_in;
   local vector iofs, map_size;
   local float itr;
+  local string s;
   
   itr = 0;
   
   ui_msize = '325 245';
   ui_msize_in = ui_msize - '8 6';
   ui_msize = gui_percentToPixelRawVec(ui_msize);
-  mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(16));
+  mpos_x = (VIEW_CTR_x - gui_percentXRaw(16));
   mpos_y = ofs_y + gui_percentYRaw(48);
   
   drawpic(mpos, UI_DEF_BOX_512, ui_msize, CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
@@ -135,7 +182,6 @@ void(vector ofs) menu_briefMapPanel={
   iofs = mpos + gui_percentToPixelRawVec('4 3');
   
   if(MSN_MAPPIC != ""){
-    local string s;
     s = precache_pic(MSN_MAPPIC, 0);
     if(s != ""){
       MSN_MAPPIC = s;
@@ -174,7 +220,8 @@ void(vector ofs) menu_briefMapPanel={
    
   local vector helpOrg;
   helpOrg = mpos;
-  helpOrg_x = helpOrg_x + ui_msize_x - gui_percentXRaw(12); 
+  helpOrg_x = (helpOrg_x + ui_msize_x) - gui_percentXRaw(12);
+  BRIEF_MAP_HELP_ORG = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
@@ -225,7 +272,7 @@ void(vector ofs) menu_briefObjectivePanel={
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
   drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   
-  lofs = bpos + gui_percentToPixelRawVec('6 16');
+  lofs = bpos + gui_percentToPixelRawVec('6 24');
   eol = TRUE;
   lst_idx = 1;
   line_rtn = 0;
@@ -244,7 +291,8 @@ void(vector ofs) menu_briefObjectivePanel={
   
   local vector helpOrg;
   helpOrg = bpos;
-  helpOrg_x = helpOrg_x + gui_percentToPixelRaw(377.6) - gui_percentXRaw(12); 
+  helpOrg_x = helpOrg_x + gui_percentToPixelRaw(377.6) - gui_percentXRaw(12);
+  BRIEF_OBJECTIVE_HELP_ORG = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
@@ -262,5 +310,6 @@ void(vector ofs) menu_briefIntelPanel={
   local vector helpOrg;
   helpOrg = bpos;
   helpOrg_x = helpOrg_x + gui_percentToPixelRaw(377.6) - gui_percentXRaw(12); 
+  BRIEF_INTEL_HELP_ORG = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };

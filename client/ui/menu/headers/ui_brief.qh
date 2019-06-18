@@ -11,6 +11,13 @@ Overview: ui header file the deployment menu
   vector OBJ_BTN_SZ;
   vector INT_BTN_ORG;
   vector INT_BTN_SZ;
+  
+  //Tooltip origins
+  vector BRIEF_MAP_HELP_ORG;
+  vector BRIEF_MISSION_HELP_ORG;
+  vector BRIEF_OBJECTIVE_HELP_ORG;
+  vector BRIEF_INTEL_HELP_ORG;
+  
 //sadly we need to limit navpoints too
  // float NAVPOINTS[10];  //the contents relate to navpoint id's, and honestly I dont think anyone needs more than 10
   //float NAVPOINTS_CNT;
