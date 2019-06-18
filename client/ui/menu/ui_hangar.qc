@@ -16,7 +16,26 @@ void() menu_hangarListener_onDrag={
 };
 
 void() menu_hangarListener_onHover={
-
+  if( menu_checkMouseInBounds(cursorpos, HANGAR_HELP_GRAPH, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_BRIEF_ACTIVE;
+    toolTip.mins = gui_percentToPixelRawVec('164 56 0');
+    toolTip.description = "Hardpoints are where Weapons and Equipment are mounted to your mech. This panel shows where on the mech the weapons will be.";
+    toolTip.angles = '0.85 0.85 0.85';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+  if( menu_checkMouseInBounds(cursorpos, HANGAR_HELP_HARDPOINT_LIST, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_BRIEF_ACTIVE;
+    toolTip.mins = gui_percentToPixelRawVec('164 64 0');
+    toolTip.description = "Hardpoints can only accept certain {Types} and {Sizes} of Weapons and Equipment.";
+    toolTip.angles = '0.85 0.85 0.85';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  toolTip.data_idx = FALSE;
 };
 
 void() mechSelectListener={
@@ -54,12 +73,12 @@ void() mechSelectListener={
 
 //main hook for menu system
 void() menu_hangarDrawFrame={
+  local vector topleftroot;
   
   if(CLIENT_MENU_sel_mech <= 0){
     cleanHardPoints();
   }
   
-  local vector topleftroot;
   topleftroot = VIEW_ORG;
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_HANGAR, 1, 0);
   menu_hangar_MechDisplay(topleftroot + gui_percentToPixelRawVec('0 24'));
@@ -77,8 +96,10 @@ void(vector ofs) menu_hangar_MechDisplay={
   local entity partParent;
   
   nofs = ofs + gui_percentToPixelRawVec('377 8');
+  
   drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('250 250'), CLR_DEF_UI_HANGAR, 1, 0);
   drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, gui_percentToPixelRawVec('242 242'), CLR_DEF_UI_HANGAR, 1, 0);
+  
   if(SELECT_MECH > FALSE){
     i_sz = gui_percentToPixelRawVec('250 250');
     hofs_x = nofs_x;
@@ -112,7 +133,8 @@ void(vector ofs) menu_hangar_MechDisplay={
   
   local vector helpOrg;
   helpOrg = nofs;
-  helpOrg_x = nofs_x + gui_percentXRaw(250) - gui_percentXRaw(12); 
+  helpOrg_x = nofs_x + gui_percentXRaw(250) - gui_percentXRaw(12);
+  HANGAR_HELP_GRAPH = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
@@ -124,10 +146,9 @@ void(vector ofs) menu_hangar_MechHPoints={
   nofs = ofs + gui_percentToPixelRawVec('365 272');
   drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('255 192'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   
-  tlen = strlen("[HARDPOINTS]");
-  tofs = nofs;
-  tofs_x = tofs_x + gui_percentXRaw((255/2) - (tlen/2));
-  tofs_y = tofs_y + gui_percentYRaw(16);
+  tlen = gui_percentXRaw(stringwidth("[HARDPOINTS]", 0, '6 6 0'));
+  tofs_x = nofs_x + gui_percentXRaw(255/2) - (tlen/2);
+  tofs_y = nofs_y + gui_percentYRaw(16);
   drawstring(tofs, "[HARDPOINTS]", '6 6 0', CLR_DEF_WHITE, 1, 0);
   drawstring(nofs + gui_percentToPixelRawVec('16 24'), "[hardpoint]", '6 6 0', CLR_DEF_WHITE,1 , 0);
   drawstring(nofs + gui_percentToPixelRawVec('125 24'), "[types]", '6 6 0', CLR_DEF_WHITE,1 , 0);
@@ -144,8 +165,9 @@ void(vector ofs) menu_hangar_MechHPoints={
   }
   
   local vector helpOrg;
-  helpOrg = nofs;
-  helpOrg_x = helpOrg_x + gui_percentXRaw(365) - gui_percentXRaw(12); 
+  helpOrg_x = nofs_x + gui_percentXRaw(260) - gui_percentXRaw(12);
+  helpOrg_y = nofs_y + gui_percentYRaw(12);
+  HANGAR_HELP_HARDPOINT_LIST = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 

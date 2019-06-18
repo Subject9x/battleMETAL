@@ -78,7 +78,7 @@ void() menu_briefListener_onHover={
     return;
   }
   
-    toolTip.data_idx = FALSE;
+  toolTip.data_idx = FALSE;
   
 };
 

@@ -8,6 +8,11 @@ Overview: ui header file the hangar menu
 entity UI_HANGAR_DATA_mech;	//holder of mech data for UI interactions
 float UNLOCKED_MECHS_TOTAL;
 
+//TOOLTIPs
+  vector HANGAR_HELP_GRAPH;
+  vector HANGAR_HELP_HARDPOINT_LIST;
+  
+
 //DISPLAY CONSTANT
   float DISP_MAX_FSPEED = 225;
   float DISP_MAX_SSPEED = 200;

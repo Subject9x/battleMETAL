@@ -514,12 +514,16 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   line_rtn = 1;
   while(token <= totes){
     local vector charpos;
-    local float charlen, line_len;
+    local float charlen, line_len, pipe;
     local string toke;
     toke = argv(token);
-    if(toke == "|"){
+    if( toke == "|" ){
       //code can't seem to understand '\n' character read in from a strzone'd string, so use '|' for line breaks on external strings
       toke = "\n";
+    }
+    pipe = strstrofs(toke, "\n", 0);
+    if( pipe != -1 ){
+      toke = substring(toke, pipe, strlen(toke));
     }
     if(toke != "\n"){
       if( (token > 0) || (line_rtn == 0) ){

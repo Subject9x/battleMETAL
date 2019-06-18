@@ -25,17 +25,64 @@ void() menu_armingListener_onDrag={
 void() menu_armingListener_onHover={
 	//tooltip
   
-	if( menu_checkMouseInBounds(cursorpos, VIEW_ORG + gui_percentToPixelRawVec('4 28'), gui_percentToPixelRawVec('270 236'), FALSE)){
-     toolTip.data_idx = MENU_ARMING_ACTIVE;
-     toolTip.mins = '128 32 0';
-     toolTip.description = "[HELP ME] This is a toolTip, ya dummy.";
-     toolTip.angles = '1 0.67 0.33';
-     toolTip.maxs = '7 8 0';
-     toolTip.alpha = 1;
-	}
-  else{
-    toolTip.data_idx = FALSE;
+  /*
+  ;
+   ;
+  ARMING_HELP_LIST_WEAPON;
+   ARMING_HELP_HARDPOINT_WEAPON;
+  */
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_GRAPH, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_ARMING_ACTIVE;
+    toolTip.mins = '128 48 0';
+    toolTip.description = "Click on [Hardpoints] to see the stats for the Weapon mounted in the hardpoint.";
+    toolTip.angles = '0.85 0.85 0.85';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
   }
+  
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_WEAPON_GROUPS, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_ARMING_ACTIVE;
+    toolTip.mins = '200 56 0';
+    toolTip.description = "[Groups] are collections of weapons that will fire at the same time when you select that group and press the 'Fire' button.";
+    toolTip.angles = '0.9 0.9 0.9';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_ENERGY_GROUPS, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_ARMING_ACTIVE;
+    toolTip.mins = '200 56 0';
+    toolTip.description = "This panel shows you how much <Energy> will be drained from your Reactor when you fire this Group.";
+    toolTip.angles = '0.9 0.9 0.9';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_LIST_WEAPON, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_ARMING_ACTIVE;
+    toolTip.mins = '200 56 0';
+    toolTip.description = "Click on a weapon to the >Right> to see its statistics in this window.";
+    toolTip.angles = '0.9 0.9 0.9';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+  if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_WEAPON, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_ARMING_ACTIVE;
+    toolTip.mins = '200 56 0';
+    toolTip.description = "Click on a HARDPOINT to the <Left< to see the stats for the weapon mounted there, in this window.";
+    toolTip.angles = '0.9 0.9 0.9';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+  toolTip.data_idx = FALSE;
+  
 };
 
 void() menu_armingListener_onKeyUp={
@@ -357,6 +404,12 @@ void(vector ofs) menu_arming_HardpointGraph={
   len = stringwidth(cfg, 0, '8 9 0');
   lctr_x = lctr_x - gui_percentXRaw( len / 2 );
   drawstring(lctr, cfg, '8 9 0', colr, 1, 0);
+  
+  local vector helpOrg;
+  helpOrg = nofs;
+  helpOrg_x = nofs_x + gui_percentXRaw(276) - gui_percentXRaw(12);
+  ARMING_HELP_HARDPOINT_GRAPH = helpOrg;
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void(vector ofs) menu_arming_WeaponList={
@@ -504,6 +557,13 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = gui_percentXRaw(14);
   WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * 24);
   WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw(lst_idx * 24);
+  
+  local vector helpOrg;
+  helpOrg = nofs;
+  helpOrg_x = nofs_x + gui_percentXRaw(150) - gui_percentXRaw(12);
+  helpOrg_y = nofs_y - gui_percentYRaw(10);
+  ARMING_HELP_WEAPON_GROUPS = helpOrg;
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void(vector ofs) menu_arming_energydraw={
@@ -534,6 +594,12 @@ void(vector ofs) menu_arming_energydraw={
   drawstring(ofs + gui_percentToPixelRawVec('4 153'), "Group 5", '8 8 0', '1 1 1', 1, 0);
     g5 = (GROUP_ENE_5 / enmax)*100;
     gui_renderMeter(g5, ofs + gui_percentToPixelRawVec('60 153'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g5), 1, 0, AXIS_H, 0);
+    
+  local vector helpOrg;
+  helpOrg = ofs;
+  helpOrg_x = ofs_x + gui_percentXRaw(126) - gui_percentXRaw(12);
+  ARMING_HELP_ENERGY_GROUPS = helpOrg;
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void(vector ofs) menu_arming_WeaponInfo={
@@ -549,7 +615,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   title = "[WEAPON INFO FROM LIST]";
   tlen = stringwidth(title, 0, '6 6 0');
   tpos = nofs + gui_percentToPixelRawVec('0 6');
-  tpos_x= (nofs_x + gui_percentXRaw(108)) - gui_percentXRaw((tlen/2));
+  tpos_x = (nofs_x + gui_percentXRaw(108)) - gui_percentXRaw((tlen/2));
   drawstring(tpos, title, '6 6 0', '1 1 1', 1, 0);
   
   local vector nmpos;
@@ -597,6 +663,11 @@ void(vector ofs) menu_arming_WeaponInfo={
   if( ITEM1_DATA_DESC != "" ){ 
     gui_wrapText(icol + gui_percentToPixelRawVec('-6 58'), '187 130', ITEM1_DATA_DESC, '6 7 0', '1 1 1', 1);
   }
+    local vector helpOrg;
+  helpOrg = nofs;
+  helpOrg_x = nofs_x + gui_percentXRaw(195) - gui_percentXRaw(12);
+  ARMING_HELP_LIST_WEAPON = helpOrg;
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 /* DEPRECATED for now
@@ -676,6 +747,12 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   if( ITEM2_DATA_DESC != "" ){ 
     gui_wrapText(icol + gui_percentToPixelRawVec('-6 60'), '187 130', ITEM2_DATA_DESC, '6 7 0', '1 1 1', 1);
   }
+  
+  local vector helpOrg;
+  helpOrg = nofs;
+  helpOrg_x = nofs_x + gui_percentXRaw(195) - gui_percentXRaw(12);
+  ARMING_HELP_HARDPOINT_WEAPON  = helpOrg;
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void() menu_arming_DrawItemDragIcon={
