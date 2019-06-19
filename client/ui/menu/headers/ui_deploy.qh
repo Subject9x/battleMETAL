@@ -3,6 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 3/24/2017
  mod 4/9//2017
+ mod 6/19/2019
 Overview: ui header file the deployment menu
 */
 
@@ -13,6 +14,12 @@ float DEPLOY_POINT_ID;
 float DEPLOY_POINT_END;
 
 //sadly we need to limit navpoints too
+
+
+//tooltips
+  vector DEPLOY_HELP_NAV_MAP;
+  vector DEPLOY_HELP_NAV_PICK;
+  
 
 //main hook for menu system
 void() menu_deployDrawFrame;

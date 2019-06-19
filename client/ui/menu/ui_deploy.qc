@@ -4,6 +4,7 @@ Author: Peter Roohr
 Date: 3/26/2017
     mod 04/09/2017
     mod 03/05/2019
+    mod 06/19/2019
 Overview: class file for the deployment ui
 */
 
@@ -28,6 +29,28 @@ void() menu_deployListener_onDrag={
 };
 
 void() menu_deployListener_onHover={
+
+  if( menu_checkMouseInBounds( cursorpos, DEPLOY_HELP_NAV_MAP, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_DEPLOY_ACTIVE;
+    toolTip.mins = gui_percentToPixelRawVec('256 64 0');
+    toolTip.description = "This is the Deployment map.\n Here you can see all possible <Deploy> points and <NAV> markers. \n The currently selected <Deploy> point is highlighted in green.";
+    toolTip.angles = '0.85 0.85 0.85';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+    if( menu_checkMouseInBounds( cursorpos, DEPLOY_HELP_NAV_PICK, gui_percentToPixelRawVec('12 12'), FALSE) ){
+    toolTip.data_idx = MENU_DEPLOY_ACTIVE;
+    toolTip.mins = gui_percentToPixelRawVec('256 64 0');
+    toolTip.description = "<Deploy> points are where you will start the mission. \n Clicking < and > will select different <Deploy> points on the map.";
+    toolTip.angles = '0.85 0.85 0.85';
+    toolTip.maxs = '7 8 0';
+    toolTip.alpha = 1;
+    return;
+  }
+  
+  toolTip.data_idx = FALSE;
 };
 
 //Listener hooks calle by menu_briefListener
@@ -127,9 +150,11 @@ void(vector ofs) menu_deploy_missionInfoPanel={
 };
 
 void(vector ofs) menu_deploy_navInfoPanel={
-  drawpic(ofs + gui_percentToPixelRawVec('10 113'), UI_DEF_BOX_256, gui_percentToPixelRawVec('211 70'), CLR_DEF_UI_DEPLOY, 1, 0);
   local float tlen;
   local vector tpos, icosize, icopos1, icopos2;
+
+  drawpic(ofs + gui_percentToPixelRawVec('10 113'), UI_DEF_BOX_256, gui_percentToPixelRawVec('211 70'), CLR_DEF_UI_DEPLOY, 1, 0);
+
   tlen = stringwidth("[SELECTED DROP POINT]", 0, '8 8 0');
   tpos = ofs + gui_percentToPixel(0.0902, 0.12);
   tpos_x = tpos_x - gui_percentXRaw((tlen/2));
@@ -154,6 +179,13 @@ void(vector ofs) menu_deploy_navInfoPanel={
   } 
   drawstring(ofs + gui_percentToPixelRawVec('69 131'), "[CURRENT]", '9 9', '1 1 1', 1, 0);
   drawstring(ofs + gui_percentToPixelRawVec('82 150'), navlbl, '12 12', hclr, 1, 0);
+  
+  local vector helpOrg;
+  helpOrg = ofs + gui_percentToPixelRawVec('10 111');
+  helpOrg_x = helpOrg_x + gui_percentXRaw(211) - gui_percentXRaw(12);
+  DEPLOY_HELP_NAV_PICK = helpOrg;
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  
 };
 
 void(vector ofs) menu_deploy_mechInfoPanel={  
@@ -209,7 +241,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   itr = 0;
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(96));
   mpos_y = ofs_y + gui_percentYRaw(44);
-  drawpic(mpos, UI_DEF_BOX_256, gui_percentToPixel(0.3164, 0.4218), CLR_DEF_UI_DEPLOY, 1, 0);
+  drawpic(mpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('405 405'), CLR_DEF_UI_DEPLOY, 1, 0);
   
   iofs = mpos + gui_percentToPixelRawVec('12 12');
   DEPLOY_MAP_ORG = iofs;
@@ -264,6 +296,12 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
 
     itr = itr + 1;
   }
+
+  local vector helpOrg;
+  helpOrg = mpos;
+  helpOrg_x = helpOrg_x + gui_percentXRaw(405) - gui_percentXRaw(12);
+  DEPLOY_HELP_NAV_MAP = helpOrg;
+  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 
   if( (cvar("coop")) || (cvar("deathmatch")) ){
     local entity player;

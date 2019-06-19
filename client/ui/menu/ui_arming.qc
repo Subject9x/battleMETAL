@@ -33,7 +33,7 @@ void() menu_armingListener_onHover={
   */
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_GRAPH, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
-    toolTip.mins = '128 48 0';
+    toolTip.mins = '132 56 0';
     toolTip.description = "Click on [Hardpoints] to see the stats for the Weapon mounted in the hardpoint.";
     toolTip.angles = '0.85 0.85 0.85';
     toolTip.maxs = '7 8 0';
@@ -43,7 +43,7 @@ void() menu_armingListener_onHover={
   
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_WEAPON_GROUPS, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
-    toolTip.mins = '200 56 0';
+    toolTip.mins = '200 48 0';
     toolTip.description = "[Groups] are collections of weapons that will fire at the same time when you select that group and press the 'Fire' button.";
     toolTip.angles = '0.9 0.9 0.9';
     toolTip.maxs = '7 8 0';
@@ -53,8 +53,8 @@ void() menu_armingListener_onHover={
   
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_ENERGY_GROUPS, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
-    toolTip.mins = '200 56 0';
-    toolTip.description = "This panel shows you how much <Energy> will be drained from your Reactor when you fire this Group.";
+    toolTip.mins = '156 48 0';
+    toolTip.description = "This panel shows you how much <Energy> will be drained from your Reactor when you fire each Group.";
     toolTip.angles = '0.9 0.9 0.9';
     toolTip.maxs = '7 8 0';
     toolTip.alpha = 1;
@@ -63,7 +63,7 @@ void() menu_armingListener_onHover={
   
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_LIST_WEAPON, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
-    toolTip.mins = '200 56 0';
+    toolTip.mins = '200 32 0';
     toolTip.description = "Click on a weapon to the >Right> to see its statistics in this window.";
     toolTip.angles = '0.9 0.9 0.9';
     toolTip.maxs = '7 8 0';
@@ -73,7 +73,7 @@ void() menu_armingListener_onHover={
   
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_WEAPON, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
-    toolTip.mins = '200 56 0';
+    toolTip.mins = '200 40 0';
     toolTip.description = "Click on a HARDPOINT to the <Left< to see the stats for the weapon mounted there, in this window.";
     toolTip.angles = '0.9 0.9 0.9';
     toolTip.maxs = '7 8 0';
