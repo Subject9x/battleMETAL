@@ -118,26 +118,28 @@ float WEAPON9 = 256;
 //============================
 //     COMBAT STATS
 //============================
-float FALL_THRESHOLD = -400;  //quake has this set to 300
-float FALL_DMG_MULTIPLIER = 2.5;  //fall threshold * multiplier = if legs are damaged in fall
-float FALL_CT_MULTIPLIER = 3;  //fall threshold * multiplier = if center torso is damaged in fall
-float FALL_KILL_MULTIPLIER = 3.5;  //fall threshold * multiplier = player killed by fall
-float SHIELD_DELAY = 5;
-float SHIELD_SOAK = 4;
+float MAX_VEHICLE_SIZE = 4;
+float FALL_THRESHOLD = -150;  //quake has this set to 300
+float FALL_DMG_MULTIPLIER = 2;
+float FALL_CT_MULTIPLIER = 3;
+float FALL_KILL_MULTIPLIER = 3.5; 
+float FALL_DAMAGE_FRACTION = 0.25;
+float SHIELD_DELAY = 5; //game timer to pause before shields are brought backonline
 float EVADE_DRAIN_PERCENT = 0.33;  //reduce energyRate by this amount when player is sprinting
 //============================
 //     WEAPON FLAGS
 //============================
-float DMG_BAL = 1;  //ballstic damage
-float DMG_ENE = 2;  //energy damage
-float DMG_EXP = 4;  //explosive damage
-float DMG_MSC = 8;  //piercing damage
-float EFF_PRC = 16; //dmg is doubled
-float EFF_RAM = 32; //dmg only affects shields
-float EFF_STX = 64; //dmg only affects energy
-float EFF_ENG = 128; //designates weapon as 'equipment'
-float EFF_ENE = 256; //weapon draws energy (client-side flag, really)
-float EFF_ARC = 512;  //weapon has an arcing projectile, used by AI
+//Primary Damage Types
+  float DMG_BAL = 1;  //ballstic damage
+  float DMG_ENE = 2;  //energy damage
+  float DMG_EXP = 4;  //explosive damage
+  float DMG_MSC = 8;  //piercing damage
+//Secondary Effect Types
+  float EFF_PRC = 16; //dmg is doubled
+  float EFF_RAM = 32; //dmg only affects shields
+  float EFF_STX = 64; //dmg only affects energy
+  float EFF_ENE = 128; //weapon draws energy (client-side flag, really)
+  float EFF_ARC = 256;  //weapon has an arcing projectile, used by AI
 //============================
 //     SHARED STATS         
 //============================

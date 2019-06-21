@@ -270,15 +270,16 @@ void(void() data_ini) build_mech_unit={
     build_unit_weapon_list();
   }
   
-  self.fall_dist = 4 - self.vec_size;
-  self.fall_dist = self.fall_dist * 100;
+  //fall_dist = fall velocity, if exceeded, check for slam
+  self.fall_dist = MAX_VEHICLE_SIZE - self.vec_size;
+  self.fall_dist = self.fall_dist * FALL_THRESHOLD;
+  
+  //fall_slam = fall velocity to check for damage
   self.fall_slam = self.fall_dist * FALL_DMG_MULTIPLIER;
   
-  self.fall_dist = self.fall_dist * -1;
-  self.fall_slam = self.fall_slam * -1;
+  //fall_dmg = actual damage applied
+  self.fall_dmg = FALL_DAMAGE_FRACTION;
   
-  self.fall_dmg = self.vec_size;
-  self.fall_dmg = self.fall_dmg / 20;
 };
 
 void() build_mech_torsoCenter={
