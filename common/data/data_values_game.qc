@@ -123,7 +123,7 @@ float FALL_THRESHOLD = -150;  //quake has this set to 300
 float FALL_DMG_MULTIPLIER = 2;
 float FALL_CT_MULTIPLIER = 3;
 float FALL_KILL_MULTIPLIER = 3.5; 
-float FALL_DAMAGE_FRACTION = 0.25;
+float FALL_DAMAGE_FRACTION = 0.2;
 float SHIELD_DELAY = 5; //game timer to pause before shields are brought backonline
 float EVADE_DRAIN_PERCENT = 0.33;  //reduce energyRate by this amount when player is sprinting
 //============================
