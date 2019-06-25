@@ -344,7 +344,6 @@ void(entity t) util_generateBuildingFoundation={
     util_setCollider(DAMAGE_NO, SOLID_BSP, MOVETYPE_NONE);
     setsize(self, self.mins, self.maxs);
     self.angles = t.angles;
-    self.angles_z = self.angles_z + 90;  //correcting for bsp export
     setorigin(self, v);
   self = this;
 };

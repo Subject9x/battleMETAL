@@ -10,8 +10,6 @@ Overview:
   spawnflag[2] = random yaw 
 */
 
-
-
 /*
   root spawn function
 */
@@ -55,9 +53,7 @@ void() doodad_rocks_desert_small_3={
 };
 
 void() doodad_rocks_desert_small_random={
-  local float diceRoll;
-  diceRoll = ceil(random() * 3);
-  switch( diceRoll ){
+  switch(  ceil(random() * 3) ){
     default:
       doodad_rocks_desert_small_1();
       return;
@@ -67,20 +63,41 @@ void() doodad_rocks_desert_small_random={
     case 3:
       doodad_rocks_desert_small_3();
       return;
-    
+  }
+};
+
+void() doodad_urban_barrier_small_touch={
+  local vector crunchVel;
+  
+  if( (other.flags & FL_CLIENT) || (other.flags & FL_MONSTER) ){
+    self.angles_x = anglemod( self.angles_x - 180 );
+    //TODO - crunch sound
+    makevectors(other.angles);
+    crunchVel = other.origin + v_forward * 2;
+    crunchVel = normalize( crunchVel - other.origin);
+    te_debris( self.origin + '0 0 6', other.angles, crunchVel, 5 + (random() * 10) , 1);
+    self.solid = SOLID_NOT;
+    self.touch = SUB_Null;
   }
 };
 
 void() doodad_urban_barrier_small={
-  self.model = "q3mdl/map/urban/barrier.obj";
+  self.model = "q3mdl/map/walls/wall_small.obj";
   if( (self.spawnflags & 1)) {
     self.angles_x = self.angles_x + (5 + (crandom() * 5) );
     self.angles_y = self.angles_y + (25 + (crandom() * 180) );
     self.angles_z = self.angles_z + (5 + (crandom() * 5) );
   }
   scenery_obj();
+  
+  if( (self.spawnflags & 2) ){
+    self.touch = doodad_urban_barrier_small_touch;
+  }
+  else{
+    //hint that object is not destructible
+    self.color = '0.87 0.87 0.87';
+  }
 };
-
 
 /*
 
