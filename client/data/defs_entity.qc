@@ -32,14 +32,7 @@ vector vPlayerVelocity;
 .float pmove_flags;
 
 //widget vars
-.string c_mdl;
-.string c_ui_hf;
 .float scale;
-.string img1;
-.string img2;
-.vector img1_sz;
-.vector img2_sz;
-.float() actionCallback;
 .float drawme;
 .vector drawsize;
 .vector drawcolor1; //these are interpreted differently
@@ -66,9 +59,6 @@ vector vPlayerVelocity;
 .float nav_name;
 .vector ui_org;
 .vector ui_size;
-
-//objectives
-.string obj_desc;
 
 //ai mech
 .string e_model;

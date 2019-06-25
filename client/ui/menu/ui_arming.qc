@@ -23,14 +23,7 @@ void() menu_armingListener_onDrag={
 };
 
 void() menu_armingListener_onHover={
-	//tooltip
-  
-  /*
-  ;
-   ;
-  ARMING_HELP_LIST_WEAPON;
-   ARMING_HELP_HARDPOINT_WEAPON;
-  */
+  //toolTips
   if( menu_checkMouseInBounds(cursorpos, ARMING_HELP_HARDPOINT_GRAPH, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_ARMING_ACTIVE;
     toolTip.mins = '132 56 0';
@@ -89,24 +82,18 @@ void() menu_armingListener_onKeyUp={
   local entity hardpoint;
   local vector hardpointOffset;
   local float weaponType;
+  
   if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
-
     if( (UI_ARMING_item_drag.data_idx > 0) && (CFG_INDEX > 0) ){
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
-      while( hardpoint ){
-        hardpointOffset = hardpoint.c_ofs;
-
-        hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 4.5 );
-        hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4.5 );
       
-        hardpointOffset_z = 0;
-        if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR - hardpointOffset), gui_percentToPixelRawVec('32 32'), FALSE)){
+      while( hardpoint ){
+        if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), FALSE)){
           weaponType = UI_ARMING_item_drag.damageType;
           if( (UI_ARMING_item_drag.i_size <= hardpoint.hardpointSize) ){
             if( (weaponType & hardpoint.hardpointType) ){
               data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
               ui_date_load_item1(UI_ARMING_item_drag.data_idx);
-            
             }
           }
           else{
@@ -118,6 +105,7 @@ void() menu_armingListener_onKeyUp={
         }
         hardpoint = hardpoint.w_slot;
       }
+      
       UI_ARMING_item_drag.data_idx = 0;
       UI_ARMING_item_drag.icon = "";
     }
@@ -194,14 +182,9 @@ void() hardpointListener={
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
       hardpointItr = 1;
       weaponBitFlag = 1;
-      while( hardpoint ){
-        hardpointOffset = hardpoint.c_ofs;
-
-        hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 4.5 );
-        hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4.5 );
       
-        hardpointOffset_z = 0;
-        if(menu_checkMouseInBounds(cursorpos, (MECHPANEL_CTR - hardpointOffset), gui_percentToPixelRawVec('28 28'), TRUE)){
+      while( hardpoint ){
+        if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), TRUE)){
           CLIENT_MENU_sel_wid = wepbit;
           CLIENT_MENU_sel_hrpnt_size = hardpoint.hardpointSize;
           CLIENT_MENU_sel_hrpnt_types = hardpoint.hardpointType;
@@ -209,6 +192,7 @@ void() hardpointListener={
           CLIENT_MENU_sel_wep = hardpoint.data_idx;
           ui_date_load_item2(CLIENT_MENU_sel_wep);
         }
+        
         hardpointItr = hardpointItr + 1;
         weaponBitFlag = weaponBitFlag * 2;
         hardpoint = hardpoint.w_slot;
@@ -330,32 +314,58 @@ void(vector ofs) menu_arming_HardpointGraph={
   local entity hardpoint;
   local vector hardpointOffset;
   local float hardpointItr;
+  local vector hardpointLineColor;
   
   nofs = ofs + gui_percentToPixelRawVec('10 8');
   panelImageSize = gui_percentToPixelRawVec('270 236');
-  drawpic(nofs , UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
+  drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
   drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, panelImageSize, '0.25 0.25 0.25', 1, 0);
   
   if( SELECT_MECH > FALSE ){
-    drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
+    //drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
    
-    hardpointCenter_x = nofs_x + gui_percentXRaw(126);
-    hardpointCenter_y = nofs_y + gui_percentYRaw( (UI_HANGAR_DATA_mech.maxs_z) * 5);
+    hardpointCenter_x = nofs_x + gui_percentXRaw(139);
+    hardpointCenter_y = nofs_y + gui_percentYRaw(122);
     MECHPANEL_CTR = hardpointCenter;
     
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){	
       hardpointOffset = hardpoint.c_ofs;
-
-      hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 4.5 );
-      hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 4.5 );
+      
+      hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 5) ;
+      hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 5) ;
       
       hardpointOffset_z = 0;
       hardpointOffset = hardpointCenter - hardpointOffset;
-	  
-      ui_renderHardPointGraphic( hardpoint.icon, hardpointOffset, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
-      ui_renderHardPointNumber(hardpointItr, hardpointOffset);
+      hardpoint.ui_size = hardpointOffset;
+      
+      //TEST - normalize hardpoints into tiles
+      if( hardpointOffset_x < hardpointCenter_x){
+        hardpointOffset_x = rint(hardpointOffset_x / gui_percentXRaw(32));
+      }
+      else{
+        hardpointOffset_x = ceil(hardpointOffset_x / gui_percentXRaw(32));
+      }
+      hardpointOffset_y = floor(hardpointOffset_y / gui_percentYRaw(32));
+      
+      hardpointOffset_x = nofs_x + (hardpointOffset_x * gui_percentXRaw(32));
+      hardpointOffset_y = nofs_y + (hardpointOffset_y * gui_percentYRaw(32));
+      //==========
+      hardpoint.ui_org = hardpointOffset;
+    
+      //draws helpful line from hardpoint graphic to where the weapon really is located
+      if( CLIENT_MENU_sel_hrpnt == hardpointItr ){
+        hardpointLineColor = '0.85 0.85 0';
+      }
+      else{
+        hardpointLineColor = '0.75 0.75 0.75';
+      }
+      //drawline (4, hardpoint.ui_org + gui_percentToPixelRawVec('14 14'), hardpoint.ui_size, hardpointLineColor, 1, 0);
+      drawline (4, hardpoint.ui_org + gui_percentToPixelRawVec('14 14'), hardpoint.ui_size, hardpointLineColor, 1, 0);  //DEBUG
+      
+      ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
+      ui_renderHardPointNumber(hardpointItr, hardpoint.ui_org);
 	  
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
