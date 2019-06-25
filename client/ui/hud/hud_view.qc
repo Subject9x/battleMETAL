@@ -574,7 +574,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
       factionColor = CLR_DEF_IFF_ENEMY;
     }
     dist = vlen(org - torg);
-    dist = 1 - (dist / 1000);
+    dist = 1 - (dist / 2000);
     imgSize = draw_getimagesize(HUD_TARGET_BOX);
     imgSize = gui_percentToPixelRawVec(imgSize);
     imgSize = imgSize + gui_percentToPixelRawVec('50 50');

@@ -18,6 +18,7 @@ float TE_STOMP_TYPE;  //set by world type
 
 .string msn_file;
 .string map_file;
+.entity particleCube; //used by mech/map/map_particlecube_effect.qc
 
 void() mh_world_ini;
 

@@ -50,7 +50,6 @@ void() map_particle_debug_th={
     pointparticles( particleeffectnum(self.vec_name), self.origin, pvel, self.count);
   }
   
-  
   self.think = map_particle_debug_th;
   self.nextthink = time + self.count2;
 };

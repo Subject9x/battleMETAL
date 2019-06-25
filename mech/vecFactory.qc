@@ -207,19 +207,20 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
 void(void() data_ini) build_mech_unit={
   local entity part_chain;
   local vector tempMin, tempMax;
+  
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
   self.skin = self.faction - 1;
   if( self.skin < 0 ){
     self.skin = 0;
   }
   
+  self.data_type = DATA_MECH;
+  self.flags = self.flags | FL_UNIT;
+  
   if( !(self.flags & FL_CLIENT) ){
     build_mech_bot( data_ini );
     return;
   }
-  
-  self.data_type = DATA_MECH;
-  self.flags = self.flags | FL_UNIT;
   
   data_ini();
   tempMin = self.mins;
