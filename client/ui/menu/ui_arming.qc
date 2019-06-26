@@ -410,8 +410,14 @@ void(vector ofs) menu_arming_HardpointGraph={
         hardpoint.ui_org_x = hardpoint.ui_org_x - tileSizeX;
       }
       
+      if( hardpoint.ui_org_y < (hardpointCenter_y - (tileSizeY*2))){
+        hardpoint.ui_org_y = hardpoint.ui_org_y + tileSizeY;
+      }
       if( hardpoint.ui_org_y < panelOffset_y ){
         hardpoint.ui_org_y = panelOffset_y;
+      }
+      if( hardpoint.ui_org_y > (panelOffset_y + panelImageSize_y) ){
+        hardpoint.ui_org_y = hardpoint.ui_org_y - tileSizeY;
       }
     
       //draws helpful line from hardpoint graphic to where the weapon really is located
