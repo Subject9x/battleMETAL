@@ -309,29 +309,62 @@ void() menu_arming_drawFrame={
 };
 
 void(vector ofs) menu_arming_HardpointGraph={
-  local vector nofs, hofs, hardpointCenter, panelImageSize;
+  local vector nofs, panelOffset, hofs, hardpointCenter, panelImageSize;
   local entity hardpoint;
   local vector hardpointOffset;
   local float hardpointItr;
   local vector hardpointLineColor;
   local float hardpointX, hardpointY;
+  local float hardpointTileX, hardpointTileY;
+  local float maxTileX, maxTileY;
+  local float tileSizeX, tileSizeY;
   
   nofs = ofs + gui_percentToPixelRawVec('10 8');
+  panelOffset = nofs + gui_percentToPixelRawVec('4 4');
   panelImageSize = gui_percentToPixelRawVec('270 236');
   drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
-  drawpic(nofs + gui_percentToPixelRawVec('4 4'), UI_HANGAR_BOX, panelImageSize, '0.25 0.25 0.25', 1, 0);
+  drawpic(panelOffset, UI_HANGAR_BOX, panelImageSize, '0.25 0.25 0.25', 1, 0);
   
   if( SELECT_MECH > FALSE ){
     //drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
     //TODO - replace images with properly scaled ones?
-    hardpointCenter_x = nofs_x + gui_percentXRaw(139);
-    hardpointCenter_y = nofs_y + gui_percentYRaw(122);
+    hardpointCenter_x = panelOffset_x + (panelImageSize_x / 2);
+    hardpointCenter_y = panelOffset_y + (panelImageSize_y / 1.67); //most weapons are above the waist line, so we don't need the hardpoint graph center to be
+                                                          //dead center of the panel
     MECHPANEL_CTR = hardpointCenter;
+    
+    tileSizeX = gui_percentXRaw(32);
+    tileSizeY = gui_percentYRaw(32);
+    
+    maxTileX = rint(panelImageSize_x / tileSizeX);
+    maxTileY = rint(panelImageSize_y / tileSizeY);
+    
+    cons_logAFloat("maxTileX", maxTileX);
+    cons_logAFloat("maxTileY", maxTileY);
+    
+    //debug draw grid
+    if( cvar("developer") ){
+      local float gx, gy;
+      local vector v;
+      gy = 0;
+      while( gy < maxTileY ){
+        gx = 0;
+        while( gx < maxTileX ){
+          v_x = gx * gui_percentXRaw(tileSizeX);
+          v_y = gy * gui_percentYRaw(tileSizeY);
+          gui_DrawRect(panelOffset + v, gui_percentToPixelRaw(tileSizeX, tileSizeY), '2 1', '1 1 1');
+          gx = gx + 1;
+        }
+        gy = gy + 1;
+      }
+    }
+    //===========
     
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-
+      //find on-screen coords of hardpoint
+      //% here are magic numbers
       hardpointX = hardpoint.c_ofs_x;
       hardpointY = hardpoint.c_ofs_y;
      
@@ -344,49 +377,63 @@ void(vector ofs) menu_arming_HardpointGraph={
       }
       
       if( hardpointY < 0 ){
-        hardpointY = hardpointY  / UI_HANGAR_DATA_mech.maxs_y * -1;
+        hardpointY = hardpointY  / (UI_HANGAR_DATA_mech.maxs_y * -1);
       }
       else{
-        hardpointY = (hardpointY / UI_HANGAR_DATA_mech.maxs_y ) ;
+        hardpointY = hardpointY / UI_HANGAR_DATA_mech.maxs_y ;
       }
       
-      hardpointOffset_x = (hardpointX * 0.75) * gui_percentXRaw(139);
-      hardpointOffset_y = (hardpointY * 0.9) * gui_percentYRaw(122);      
-      hardpointOffset_z = 0;
+      hardpointOffset_x = gui_percentXRaw( hardpointX * 135);
+      hardpointOffset_y = gui_percentYRaw( hardpointY * 152);      
       
-      hardpointOffset = hardpointCenter - hardpointOffset;
-      hardpoint.ui_size = hardpointOffset;
+      hardpoint.ui_size = hardpointCenter - hardpointOffset;//determines on-screen location of hardpoint
+      
+      //now tile the panel to prevent hardpoint overlap
+      
+      hardpointTileX = quantisize( hardpoint.ui_size_x, tileSizeX );
+      hardpointTileY = quantisize( hardpoint.ui_size_y, tileSizeY );
 
-      if( hardpointOffset_x < hardpointCenter_x){
-        hardpointOffset_x = rint(hardpointOffset_x / gui_percentXRaw(30));
+      cons_logAFloat("hardpointTileX", hardpointTileX); //DEBUG
+
+
+      hardpoint.ui_org_x = hardpointTileX;//- (tileSizeX / 2);
+      hardpoint.ui_org_y = hardpointTileY + (tileSizeY / 6);
+    
+    
+      if( hardpoint.ui_org_x < (hardpointCenter_x - (tileSizeX*2))){
+        hardpoint.ui_org_x = hardpoint.ui_org_x + tileSizeX;
       }
-      else{
-        hardpointOffset_x = floor(hardpointOffset_x / gui_percentXRaw(30));
+      if( hardpoint.ui_org_x < panelOffset_x ){
+        hardpoint.ui_org_x = panelOffset_x;
       }
-      hardpointOffset_y = (hardpointOffset_y / gui_percentYRaw(30));
+      if( hardpoint.ui_org_x > (panelOffset_x + panelImageSize_x) ){
+        hardpoint.ui_org_x = hardpoint.ui_org_x - tileSizeX;
+      }
       
-      hardpointOffset_x = (hardpointOffset_x * gui_percentXRaw(30));
-      hardpointOffset_y = (hardpointOffset_y * gui_percentYRaw(30));
-      hardpoint.ui_org = hardpointOffset;
+      if( hardpoint.ui_org_y < panelOffset_y ){
+        hardpoint.ui_org_y = panelOffset_y;
+      }
     
       //draws helpful line from hardpoint graphic to where the weapon really is located
       if( CLIENT_MENU_sel_hrpnt == hardpointItr ){
         hardpointLineColor = '0.85 0.85 0';
       }
       else{
-        hardpointLineColor = '0.75 0.75 0.75';
+        hardpointLineColor = '1 0 0';
       }
       //drawline (4, hardpoint.ui_org + gui_percentToPixelRawVec('14 14'), hardpoint.ui_size, hardpointLineColor, 1, 0);
-      drawline (4, hardpoint.ui_org + gui_percentToPixelRawVec('14 14'), hardpoint.ui_size, hardpointLineColor, 1, 0);  //DEBUG
       
       ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
-      ui_renderHardPointNumber(hardpointItr, hardpoint.ui_org);
+      //ui_renderHardPointNumber( hardpointItr, hardpoint.ui_org );
 	  
+    drawline (4, hardpoint.ui_org, hardpoint.ui_size, hardpointLineColor, 1, 0);  //DEBUG
+    
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
   }
-  
+   drawstring(cursorpos, vtos( gui_percentToPixelRawVec(cursorpos) ), '6 6 0', CLR_DEF_ARM_HALF, 1, 0);  //DEBUG
+    
   local vector nbtn, pbtn, pctr, lctr;
   pctr_x = panelImageSize_x / 2;
   pctr_y = panelImageSize_y / 2;

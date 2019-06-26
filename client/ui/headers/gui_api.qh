@@ -93,6 +93,7 @@ float(float pct, float ox, float mx) gui_percentCustom;
 
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText;
 void(string tipMessage, vector targetSize, vector fontSize, string panelImage, vector cursorOffset, vector textColor, vector boxColor, float alph ) gui_toolTipMessage;
+float( float num, float mod ) quantisize;
 
 //console logging
 void(string msg, float val) cons_logAFloat;
