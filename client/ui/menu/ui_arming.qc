@@ -310,11 +310,11 @@ void() menu_arming_drawFrame={
 
 void(vector ofs) menu_arming_HardpointGraph={
   local vector nofs, hofs, hardpointCenter, panelImageSize;
-  
   local entity hardpoint;
   local vector hardpointOffset;
   local float hardpointItr;
   local vector hardpointLineColor;
+  local float hardpointX, hardpointY;
   
   nofs = ofs + gui_percentToPixelRawVec('10 8');
   panelImageSize = gui_percentToPixelRawVec('270 236');
@@ -323,35 +323,50 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   if( SELECT_MECH > FALSE ){
     //drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
-   
+    //TODO - replace images with properly scaled ones?
     hardpointCenter_x = nofs_x + gui_percentXRaw(139);
     hardpointCenter_y = nofs_y + gui_percentYRaw(122);
     MECHPANEL_CTR = hardpointCenter;
     
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
-    while( hardpoint ){	
-      hardpointOffset = hardpoint.c_ofs;
-      
-      hardpointOffset_x = gui_percentXRaw( hardpointOffset_x * 5) ;
-      hardpointOffset_y = gui_percentYRaw( hardpointOffset_y * 5) ;
-      
-      hardpointOffset_z = 0;
-      hardpointOffset = hardpointCenter - hardpointOffset;
-      hardpoint.ui_size = hardpointOffset;
-      
-      //TEST - normalize hardpoints into tiles
-      if( hardpointOffset_x < hardpointCenter_x){
-        hardpointOffset_x = rint(hardpointOffset_x / gui_percentXRaw(32));
+    while( hardpoint ){
+
+      hardpointX = hardpoint.c_ofs_x;
+      hardpointY = hardpoint.c_ofs_y;
+     
+      if( hardpointX < 0 ){
+        hardpointX = hardpointX / UI_HANGAR_DATA_mech.mins_x;
+        hardpointX = hardpointX * -1;
       }
       else{
-        hardpointOffset_x = ceil(hardpointOffset_x / gui_percentXRaw(32));
+        hardpointX =  hardpointX / UI_HANGAR_DATA_mech.maxs_x;
       }
-      hardpointOffset_y = floor(hardpointOffset_y / gui_percentYRaw(32));
       
-      hardpointOffset_x = nofs_x + (hardpointOffset_x * gui_percentXRaw(32));
-      hardpointOffset_y = nofs_y + (hardpointOffset_y * gui_percentYRaw(32));
-      //==========
+      if( hardpointY < 0 ){
+        hardpointY = hardpointY  / UI_HANGAR_DATA_mech.maxs_y * -1;
+      }
+      else{
+        hardpointY = (hardpointY / UI_HANGAR_DATA_mech.maxs_y ) ;
+      }
+      
+      hardpointOffset_x = (hardpointX * 0.75) * gui_percentXRaw(139);
+      hardpointOffset_y = (hardpointY * 0.9) * gui_percentYRaw(122);      
+      hardpointOffset_z = 0;
+      
+      hardpointOffset = hardpointCenter - hardpointOffset;
+      hardpoint.ui_size = hardpointOffset;
+
+      if( hardpointOffset_x < hardpointCenter_x){
+        hardpointOffset_x = rint(hardpointOffset_x / gui_percentXRaw(30));
+      }
+      else{
+        hardpointOffset_x = floor(hardpointOffset_x / gui_percentXRaw(30));
+      }
+      hardpointOffset_y = (hardpointOffset_y / gui_percentYRaw(30));
+      
+      hardpointOffset_x = (hardpointOffset_x * gui_percentXRaw(30));
+      hardpointOffset_y = (hardpointOffset_y * gui_percentYRaw(30));
       hardpoint.ui_org = hardpointOffset;
     
       //draws helpful line from hardpoint graphic to where the weapon really is located
