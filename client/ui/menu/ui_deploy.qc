@@ -122,18 +122,18 @@ void(vector ofs) menu_deploy_missionInfoPanel={
  
   tlen = stringwidth("[MISSION STATUS]", 0, '8 8 0');
   tpos = panelOfs + gui_percentToPixelRawVec('105 4');
-  tpos_x = tpos_x - gui_percentXRaw((tlen/2));
+  tpos_x = tpos_x - gui_percentXRaw( tlen / 2 );
   drawstring(tpos, "[MISSION STATUS]", '8 8 0', '1 1 1', 1, 0);
   
   //mission name
-  drawstring(panelOfs + gui_percentToPixelRawVec('4 16'), "[NAME]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
-  namePos = panelOfs + gui_percentToPixelRawVec('0 24');
-  namePos_x = namePos_x + (105 - stringwidth(MSN_NAME, 0, '8 8 0') / 2 );
+  drawstring(panelOfs + gui_percentToPixelRawVec('4 19'), "[NAME]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+  namePos = panelOfs + gui_percentToPixelRawVec('0 18');
+  namePos_x = namePos_x + gui_percentXRaw( (105 - stringwidth(MSN_NAME, 0, '8 8 0') / 2 ) );
   drawstring(namePos, MSN_NAME, '8 8 0', '1 1 1', 1, 0);
   
   //mission type
   drawstring(panelOfs + gui_percentToPixelRawVec('4 36'), "[TYPE]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0); 
-  drawstring(panelOfs + gui_percentToPixelRawVec('52 34'), MSN_TYPE, '8 8 0', '1 1 1', 1, 0); 
+  drawstring(panelOfs + gui_percentToPixelRawVec('50 34'), MSN_TYPE, '8 8 0', '1 1 1', 1, 0); 
   
   //reserves
   //drawstring(panelOfs+gui_percentToPixel(0.0109, 0.08), "[RESOURCE POINTS]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
@@ -179,7 +179,7 @@ void(vector ofs) menu_deploy_navInfoPanel={
   } 
   drawstring(ofs + gui_percentToPixelRawVec('69 131'), "[CURRENT]", '9 9', '1 1 1', 1, 0);
   drawstring(ofs + gui_percentToPixelRawVec('82 150'), navlbl, '12 12', hclr, 1, 0);
-  
+    
   local vector helpOrg;
   helpOrg = ofs + gui_percentToPixelRawVec('10 111');
   helpOrg_x = helpOrg_x + gui_percentXRaw(211) - gui_percentXRaw(12);
@@ -290,12 +290,22 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       }
       if(CLIENT_MENU_nav_pnt == itr){
         gui_renderTintImage(TRUE, nofs - gui_percentToPixelRawVec('6 6'), UI_DEF_REC_64, gui_percentToPixelRawVec('28 28'), CLR_DEF_GREEN, 0.85, 0);
+        CLIENT_MENU_nav_ui_org = tofs;
       }
       gui_renderTintImage2((CLIENT_MENU_nav_pnt == itr), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
     }
 
     itr = itr + 1;
   }
+
+  //if( nactive != FALSE ){
+    local vector lineOrg;
+    lineOrg = mpos + gui_percentToPixelRawVec('5 110');
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 1'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 1'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 2'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 2'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 3'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 3'), '0.85 0.85 0', 0.75, 0);
+    drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
+  //}
 
   local vector helpOrg;
   helpOrg = mpos;

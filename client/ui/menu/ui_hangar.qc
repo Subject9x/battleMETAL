@@ -260,8 +260,7 @@ void(vector ofs) menu_hangar_MechInfo={
   local float slen;
   local string type;
 
-  nofs_x = ofs_x + gui_percentXRaw(125);
-  nofs_y = ofs_y + gui_percentYRaw(43);
+  nofs = ofs + gui_percentToPixelRawVec('125 32');
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('250 180'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
 
   slen = strlen("[METAL INFO]");

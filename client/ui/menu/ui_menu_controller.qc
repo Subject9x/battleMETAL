@@ -210,12 +210,12 @@ void(vector ofs) menu_navBar_drawFrame={
     launch_clr = '0.25 0.25 0.25';
   }
   rpos = nvpos;
-  rpos_x = VIEW_MAX_x - gui_percentX(0.1);
+  rpos_x = VIEW_MAX_x - gui_percentXRaw(138);
   lpos = rpos;
-  lpos_x = (lpos_x + gui_percentX(0.05)) - (stringwidth(">>[LAUNCH]>>", 0 ,'8 8 0')/2);
-  lpos_y = (lpos_y + gui_percentX(0.0045));
+  lpos_x = (lpos_x + gui_percentXRaw(64)) - (stringwidth(">>[LAUNCH]>>", 0 ,'8 8 0')/2);
+  lpos_y = (lpos_y + gui_percentYRaw(4.32));
   isz_x = gui_percentXRaw(stringwidth(">>[!LAUNCH!]>>", 0 ,'8 8 0')) + gui_percentX(0.0093);
-  isz_y = gui_percentY(0.025);
+  isz_y = gui_percentYRaw(24);
   gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos + gui_percentToPixel(0.005, 0), UI_DEF_BOX_256, isz, launch_clr, CLR_DEF_ARM_THREEQ, 1, 0);
   gui_renderHighlightString(">>[LAUNCH]>>",lpos, launch_clr, CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, '8 8 0', 1, 0) ;
   MENU_BTN_LAUNCH_ORG = rpos + gui_percentToPixel(0.005, 0);
@@ -245,6 +245,9 @@ void() navBarListener={
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025), TRUE)){
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
+      if( (LAUNCH_VALIDATION & VALID_MECH) ){
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION& VALID_MECH);
+      }
     }
     CLIENT_MENU_menu_choice = MENU_HANGAR_ACTIVE;
     SELECT_MECH = CLIENT_MENU_sel_mech = 0;

@@ -51,6 +51,7 @@ float CLIENT_MENU_sel_wid;
 float CLIENT_MENU_sel_mech;
 float CLIENT_MENU_sel_size;
 float CLIENT_MENU_nav_pnt;
+vector CLIENT_MENU_nav_ui_org;
 
 float CLIENT_MENU_nex_grp1;
 float CLIENT_MENU_nex_grp2;

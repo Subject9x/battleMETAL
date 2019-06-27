@@ -149,19 +149,19 @@ void() weaponSelectListener={
   local float found;
   found = listListener(WEPNLIST_ORG, cursorpos, WEPNLIST_SIZE, gui_percentToPixelRawVec('96 13.92'), WEPNLIST_CNT, 0);
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL, TRUE)){
-    found = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_BAL, 0);
+    found = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_BAL, 0);
     found = WEPLIST_BAL_ARR[found];
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_ENE, WEPNLIST_SIZE_ENE, TRUE)){
-    found = listListener(WEPNLIST_ORG_ENE, cursorpos, WEPNLIST_SIZE_ENE, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_ENE, 0);
+    found = listListener(WEPNLIST_ORG_ENE, cursorpos, WEPNLIST_SIZE_ENE, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_ENE, 0);
     found = WEPLIST_ENE_ARR[found];
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_EXP, WEPNLIST_SIZE_EXP, TRUE)){
-    found = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_EXP, 0);
+    found = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_EXP, 0);
     found = WEPLIST_EXP_ARR[found];
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC, TRUE)){
-    found = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixelRawVec('90 13'), WEPNLIST_CNT_MSC, 0);
+    found = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_MSC, 0);
     found = WEPLIST_MSC_ARR[found];
   }
   if(found  > 0){
@@ -203,8 +203,9 @@ void() hardpointListener={
 
 void() weaponGroupPanelListener={
   local float found;
+  found = 0;
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A, TRUE)){
-    found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A,  gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_A, 0);
+    found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A, gui_percentToPixelRawVec('18.56 20'), WEPNGRP_CNT_A, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp1 & found)){
       CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 - (CLIENT_MENU_nex_grp1 & found);
@@ -215,7 +216,7 @@ void() weaponGroupPanelListener={
     GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_B, WEPNGRP_SIZE_B, TRUE)){
-    found = listListener(WEPNGRP_ORG_B, cursorpos, WEPNGRP_SIZE_B, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_B, 0);
+    found = listListener(WEPNGRP_ORG_B, cursorpos, WEPNGRP_SIZE_B, gui_percentToPixelRawVec('18.56 20'), WEPNGRP_CNT_B, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp2 & found)){
       CLIENT_MENU_nex_grp2 = CLIENT_MENU_nex_grp2 - (CLIENT_MENU_nex_grp2 & found);
@@ -225,7 +226,7 @@ void() weaponGroupPanelListener={
     GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
   }  
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_C, WEPNGRP_SIZE_C, TRUE)){
-    found = listListener(WEPNGRP_ORG_C, cursorpos, WEPNGRP_SIZE_C, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_C, 0);
+    found = listListener(WEPNGRP_ORG_C, cursorpos, WEPNGRP_SIZE_C, gui_percentToPixelRawVec('18.56 20'), WEPNGRP_CNT_C, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp3 & found)){
       CLIENT_MENU_nex_grp3 = CLIENT_MENU_nex_grp3 - (CLIENT_MENU_nex_grp3 & found);
@@ -235,7 +236,7 @@ void() weaponGroupPanelListener={
     GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_D, WEPNGRP_SIZE_D, TRUE)){
-    found = listListener(WEPNGRP_ORG_D, cursorpos, WEPNGRP_SIZE_D, gui_percentToPixel(0.0109, 0.018), WEPNGRP_CNT_D, 0);
+    found = listListener(WEPNGRP_ORG_D, cursorpos, WEPNGRP_SIZE_D, gui_percentToPixelRawVec('18.56 20'), WEPNGRP_CNT_D, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp4 & found)){
       CLIENT_MENU_nex_grp4 = CLIENT_MENU_nex_grp4 - (CLIENT_MENU_nex_grp4 & found);
@@ -245,7 +246,7 @@ void() weaponGroupPanelListener={
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_E, WEPNGRP_SIZE_E, TRUE)){
-    found = listListener(WEPNGRP_ORG_E, cursorpos, WEPNGRP_SIZE_E, gui_percentToPixel(0.0145, 0.018), WEPNGRP_CNT_E, 0);
+    found = listListener(WEPNGRP_ORG_E, cursorpos, WEPNGRP_SIZE_E, gui_percentToPixelRawVec('18.56 20'), WEPNGRP_CNT_E, 0);
     found = WEPBITS[found];
     if((CLIENT_MENU_nex_grp5 & found)){
       CLIENT_MENU_nex_grp5 = CLIENT_MENU_nex_grp5 - (CLIENT_MENU_nex_grp5 & found);
@@ -298,10 +299,10 @@ void() menu_arming_drawFrame={
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_ARMING, 1, 0);
   
   menu_arming_HardpointGraph(topleftroot + gui_percentToPixelRawVec('0 24'));
-  menu_arming_WeaponList(topleftroot + gui_percentToPixel(0, 0.025));
-  menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
+  menu_arming_WeaponList(topleftroot + gui_percentToPixelRawVec('0 24'));
+  menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 276'));
   menu_arming_energydraw(gui_percentToPixelRawVec('160 276'));
-  //menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
+  menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_DrawItemDragIcon();
   
@@ -426,22 +427,22 @@ void(vector ofs) menu_arming_HardpointGraph={
   pctr_x = panelImageSize_x / 2;
   pctr_y = panelImageSize_y / 2;
   nbtn = pbtn = nofs;
-  pbtn_y = pbtn_y + pctr_y;
-  nbtn_x = nbtn_x + panelImageSize_x - gui_percentXRaw(14);
-  nbtn_y = nbtn_y + pctr_y;
+  pbtn_y = pbtn_y + (pctr_y + pctr_y);
+  nbtn_x = nbtn_x + panelImageSize_x - gui_percentXRaw(24);
+  nbtn_y = nbtn_y + (pctr_y + pctr_y);
   
-  BTN_CFG_P = pbtn;
-  drawstring(pbtn + gui_percentToPixelRawVec('0 -19'), "PREV", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawstring(pbtn + gui_percentToPixelRawVec('0 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-  //drawpic(pbtn, HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 38'), CLR_DEF_ARM_THREEQ, 1, 0);      
+  BTN_CFG_P = pbtn + gui_percentToPixelRawVec('6 -32');
+  drawstring(pbtn + gui_percentToPixelRawVec('6 -40'), "PREV", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  ///drawstring(pbtn + gui_percentToPixelRawVec('0 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  drawpic(BTN_CFG_P, HUD_TRG_PIP_L, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);      
   
-  BTN_CFG_N = nbtn;
-  drawstring(nbtn + gui_percentToPixelRawVec('-9 -19'), "NEXT", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawstring(nbtn + gui_percentToPixelRawVec('-9 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-  //drawpic(nbtn, HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 38'), CLR_DEF_ARM_THREEQ, 1, 0);
+  BTN_CFG_N = nbtn + gui_percentToPixelRawVec('0 -32');
+  drawstring(nbtn + gui_percentToPixelRawVec('-6 -40'), "NEXT", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  //drawstring(nbtn + gui_percentToPixelRawVec('-9 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  drawpic(BTN_CFG_N, HUD_TRG_PIP_R, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);
   
   lctr = nofs + pctr;
-  lctr_y = lctr_y + pctr_y - gui_percentYRaw(8);
+  lctr_y = lctr_y + pctr_y - gui_percentYRaw(20);
   
   local string cfg, warn;
   local float len;
@@ -457,7 +458,7 @@ void(vector ofs) menu_arming_HardpointGraph={
     warn = "[=Cannot modify Default=]";
     len = stringwidth(warn, 0, '8 9 0');
     warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
-    warnOrg_y = warnOrg_y - gui_percentYRaw( 24 );
+    warnOrg_y = warnOrg_y - gui_percentYRaw( -10 );
     drawstring(warnOrg, warn, '8 9 0', '1 0.15 0.15' , 1, 0);
   }
   cfg = strcat("CONFIG: ", cfg);
@@ -477,23 +478,31 @@ void(vector ofs) menu_arming_WeaponList={
   
   menuOffset = ofs;
   menuOffset_x = VIEW_CTR_x + gui_percentXRaw(150);
-  menuOffset = menuOffset + gui_percentToPixelRawVec('12 10');
+  menuOffset = menuOffset + gui_percentToPixelRawVec('12 8');
   drawpic(menuOffset, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('148 439'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
-  menu_arming_WeaponList_draw(menuOffset, gui_percentToPixelRawVec('5 12'), DMG_BAL, "==BALLISTIC==", CLR_DEF_ARM_HALF );
-  menu_arming_WeaponList_draw(menuOffset, gui_percentToPixelRawVec('5 89.93'), DMG_ENE, "==ENERGY==", CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2' );
-  menu_arming_WeaponList_draw(menuOffset, gui_percentToPixelRawVec('5 199.98'), DMG_EXP, "==MISSILE==", CLR_DEF_ARM_OK );
-  menu_arming_WeaponList_draw(menuOffset, gui_percentToPixelRawVec('5 284.94'), DMG_MSC, "==MISCELLANEOUS==", CLR_DEF_RET_GETLOCK );
+  menu_arming_WeaponList_draw(menuOffset, gui_percentToPixelRawVec('2 6'), DMG_BAL, "==BALLISTIC==", CLR_DEF_ARM_HALF );
+  menu_arming_WeaponList_draw(menuOffset, gui_percentToPixelRawVec('2 100'), DMG_ENE, "==ENERGY==", CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2' );
+  menu_arming_WeaponList_draw(menuOffset, gui_percentToPixelRawVec('2 200'), DMG_EXP, "==MISSILE==", CLR_DEF_ARM_OK );
+  menu_arming_WeaponList_draw(menuOffset, gui_percentToPixelRawVec('2 290'), DMG_MSC, "==UPGRADES==", CLR_HUD_PURPLE + '0.15 0.15 0.15' );
 };
 
 void(vector parentOffset, vector offsetAdjust, float weaponType, string listName, vector listNameColor) menu_arming_WeaponList_draw={
-  local vector nofs, clr;
+  local vector nofs, labelOrg, clr;
+  local float labelLen;
   local float lst_idx, act_idx;
   local float itemId;
   
   nofs = parentOffset;
   nofs = nofs + offsetAdjust;
+  
   //TODO - center the text
-  drawstring(nofs + gui_percentToPixelRawVec('39.93 1.92'), listName, '6 6 0', listNameColor, 1, 0);
+  labelLen = gui_percentXRaw(stringwidth( listName, 0, '6 6'));
+  labelLen = labelLen / 2;
+  labelLen = (gui_percentXRaw(138) / 2) - labelLen;
+  labelOrg = nofs + gui_percentToPixelRawVec('0 1.92');
+  labelOrg_x = labelOrg_x + labelLen;
+  drawstring(labelOrg , listName, '6 6 0', listNameColor, 1, 0);
+  
   act_idx = 0;
   lst_idx = 0;
  
@@ -505,7 +514,7 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
       data_get_client_item_( UI_ARMING_DATA_item_list, itemId );
       if( (UI_ARMING_DATA_item_list.damageType & weaponType) ){
         lofs_x = nofs_x;
-        lofs_y = nofs_y + gui_percentYRaw( (act_idx + 1) * 16);
+        lofs_y = nofs_y + gui_percentYRaw( (act_idx + 1) * 14);
         clr = CLR_DEF_TXT_NONSELECT;
         if( itemId == CLIENT_MENU_sel_list_wep){
           clr = CLR_DEF_TXT_HIGHLIGHT;
@@ -566,16 +575,18 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   local vector nofs, col_a, col_b, col_c, col_d, col_e;
   local float lst_idx, bit;
   local entity hardpoint;
+  local vector groupButtonSize;
   
-  nofs_x = ofs_x + gui_percentXRaw(10);
-  nofs_y = ofs_y + gui_percentYRaw(325);
+  nofs = ofs + gui_percentToPixelRawVec('10 0');
+  groupButtonSize = gui_percentToPixelRawVec('12 12');
+  
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1,0);
   drawstring(nofs + gui_percentToPixelRawVec('24 6'), "[WEAPON GROUPINGS]", '6 6 0', CLR_DEF_RET_GETLOCK, 1, 0);
   drawstring(nofs + gui_percentToPixelRawVec('45 14'), "[1][2][3][4][5]", '6 6 0', '1 1 1', 1, 0);
   
   nofs = nofs + gui_percentToPixelRawVec('0 10');
   col_a = nofs + gui_percentToPixelRawVec('46 14');
-  col_b = nofs + gui_percentToPixelRawVec('66  14');
+  col_b = nofs + gui_percentToPixelRawVec('66 14');
   col_c = nofs + gui_percentToPixelRawVec('86 14');
   col_d = nofs + gui_percentToPixelRawVec('106 14');
   col_e = nofs + gui_percentToPixelRawVec('126 14');
@@ -586,19 +597,20 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   while( hardpoint ){
     local vector lofs;
     lofs_x = nofs_x + gui_percentXRaw(6);
-    lofs_y = nofs_y + gui_percentYRaw(lst_idx * 24);
+    lofs_y = nofs_y + gui_percentYRaw(lst_idx * 20);
+    
     drawstring(lofs, strcat("[",ftos(lst_idx),"]"), '6 6 0', '1 1 1', 1, 0);
     if( hardpoint.icon != "" ){
-      drawpic(lofs + gui_percentToPixelRawVec('16 -5'), hardpoint.icon, gui_percentToPixelRawVec('22 24'), '1 1 1', 1,0);
+      drawpic(lofs + gui_percentToPixelRawVec('16 -5'), hardpoint.icon, gui_percentToPixelRawVec('20 20'), '1 1 1', 1,0);
     }
-    gui_renderTintImage((CLIENT_MENU_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((CLIENT_MENU_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((CLIENT_MENU_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((CLIENT_MENU_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, gui_percentToPixelRawVec('14 14'), CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+    gui_renderTintImage((CLIENT_MENU_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
     bit = bit * 2;
     lst_idx = lst_idx + 1;
-	hardpoint = hardpoint.w_slot;
+    hardpoint = hardpoint.w_slot;
   }
   
   WEPNGRP_CNT_A = lst_idx;
@@ -613,10 +625,10 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   WEPNGRP_ORG_D = col_d;
   WEPNGRP_ORG_E = col_e;
   
-  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = gui_percentXRaw(14);
-  WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = gui_percentXRaw(14);
-  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * 24);
-  WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw(lst_idx * 24);
+  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = groupButtonSize_x;
+  WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = groupButtonSize_y;
+  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * (groupButtonSize_y + 2));
+  WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw(lst_idx * (groupButtonSize_y + 2));
   
   local vector helpOrg;
   helpOrg = nofs;
@@ -666,7 +678,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   local vector nofs;
 
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);
-  nofs_y = ofs_y + gui_percentYRaw(12);
+  nofs_y = ofs_y + gui_percentYRaw(8);
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
   
   local string title;
@@ -721,9 +733,10 @@ void(vector ofs) menu_arming_WeaponInfo={
   drawstring(icol + gui_percentToPixelRawVec('0 56'), "[NOTES]:", '7 7 0', '1 1 1', 1, 0);
   
   if( ITEM1_DATA_DESC != "" ){ 
-    gui_wrapText(icol + gui_percentToPixelRawVec('-6 58'), '187 130', ITEM1_DATA_DESC, '6 7 0', '1 1 1', 1);
+    gui_wrapText(icol + gui_percentToPixelRawVec('-6 66'), '187 130', ITEM1_DATA_DESC, '6 7 0', '1 1 1', 1);
   }
-    local vector helpOrg;
+  
+  local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(195) - gui_percentXRaw(12);
   ARMING_HELP_LIST_WEAPON = helpOrg;
@@ -805,7 +818,7 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   //desc
   drawstring(icol + gui_percentToPixelRawVec('0 56'), "[NOTES]:", '7 7 0', '1 1 1', 1, 0);
   if( ITEM2_DATA_DESC != "" ){ 
-    gui_wrapText(icol + gui_percentToPixelRawVec('-6 60'), '187 130', ITEM2_DATA_DESC, '6 7 0', '1 1 1', 1);
+    gui_wrapText(icol + gui_percentToPixelRawVec('-6 66'), '187 130', ITEM2_DATA_DESC, '6 7 0', '1 1 1', 1);
   }
   
   local vector helpOrg;

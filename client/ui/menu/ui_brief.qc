@@ -14,7 +14,7 @@ void() menu_briefDrawFrame={
   
   drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_BRIEF, 1, 0);
   
-  menu_briefMissionInfo( topleftroot+gui_percentToPixelRawVec('10 38') );
+  menu_briefMissionInfo( topleftroot + gui_percentToPixelRawVec('10 32') );
   menu_briefPlaySound( topleftroot );
   menu_briefMissionText( topleftroot );
   menu_briefMapPanel( topleftroot );
@@ -107,7 +107,7 @@ void(vector ofs) menu_briefMissionInfo={
   local float tlen;
   local vector tpos;
   tlen = stringwidth("[MISSION INFO]", 0, '8 8 0');
-  tpos = ofs + gui_percentToPixel(0.0945, 0.002);
+  tpos = ofs + gui_percentToPixelRawVec('121 2');
   tpos_x = tpos_x - (tlen/2);
   drawstring(tpos, "[MISSION INFO]", '8 8 0', '1 1 1', 1, 0);
   
@@ -126,7 +126,7 @@ void(vector ofs) menu_briefMissionInfo={
   
   local vector helpOrg;
   helpOrg = ofs;
-  helpOrg_x = helpOrg_x + gui_percentXRaw(243) - gui_percentXRaw(12);
+  helpOrg_x = helpOrg_x + gui_percentXRaw(231);
   BRIEF_MISSION_HELP_ORG = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
@@ -171,11 +171,11 @@ void(vector ofs) menu_briefMapPanel={
   
   itr = 0;
   
-  ui_msize = '325 245';
+  ui_msize = '325 250';
   ui_msize_in = ui_msize - '8 6';
   ui_msize = gui_percentToPixelRawVec(ui_msize);
   mpos_x = (VIEW_CTR_x - gui_percentXRaw(16));
-  mpos_y = ofs_y + gui_percentYRaw(48);
+  mpos_y = ofs_y + gui_percentYRaw(32);
   
   drawpic(mpos, UI_DEF_BOX_512, ui_msize, CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
  
