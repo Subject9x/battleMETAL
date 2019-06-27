@@ -5,25 +5,6 @@ Date: 03/8/2017
 Overview: GUI API class file
 */
 
-/*
-Which is, um, divide by interval, round to integer, multiply by interval
-X = q * floor (x /q)
-q= gridsize
-*/
-//todo- rename
-float( float num, float mod ) quantisize={
-  local float result;
-  local float tempNum, tempMod;
-  
-  tempNum = num;
-  tempMod = mod;
-  
-  result = tempMod * floor( tempNum / tempMod );
-  
-  return result;
-};
-
-
 float(float v) anglemod =
 {
 	while (v >= 360)
@@ -124,9 +105,25 @@ vector(float pcx, float pcy) gui_percentToPixelRaw={
   return gui_percentToPixel(pct_x, pct_y);
 };
 
-
 vector(vector p) gui_percentToPixelRawVec={
-  return gui_percentToPixelRaw(p_x, p_y);
+  local vector pct;
+  if(p_x < 0){
+    pct_x = 0 - p_x;
+    pct_x = pct_x / 1280;
+    pct_x = 0 - pct_x;
+  }
+  else{
+    pct_x = p_x / 1280;
+  }
+  if(p_y < 0){
+    pct_y = 0 - p_y;
+    pct_y = pct_y / 960;
+    pct_y = 0 - pct_y;
+  }
+  else{
+    pct_y = p_y / 960;
+  }
+  return gui_percentToPixel(pct_x, pct_y);
 };
 
 float(float pcx) gui_percentXRaw={

@@ -301,7 +301,7 @@ void() menu_arming_drawFrame={
   menu_arming_WeaponList(topleftroot + gui_percentToPixel(0, 0.025));
   menu_arming_WeaponGroupPanel(topleftroot + gui_percentToPixelRawVec('0 32'));
   menu_arming_energydraw(gui_percentToPixelRawVec('160 276'));
-  menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
+  //menu_arming_WeaponInfo(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_WeaponInHardpoint(topleftroot + gui_percentToPixelRawVec('0 24'));
   menu_arming_DrawItemDragIcon();
   
@@ -313,7 +313,6 @@ void(vector ofs) menu_arming_HardpointGraph={
   local entity hardpoint;
   local vector hardpointOffset;
   local float hardpointItr;
-  local vector hardpointLineColor;
   local float hardpointX, hardpointY;
   local float hardpointTileX, hardpointTileY;
   local float maxTileX, maxTileY;
@@ -329,44 +328,19 @@ void(vector ofs) menu_arming_HardpointGraph={
     //drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
     //TODO - replace images with properly scaled ones?
     hardpointCenter_x = panelOffset_x + (panelImageSize_x / 2);
-    hardpointCenter_y = panelOffset_y + (panelImageSize_y / 1.67); //most weapons are above the waist line, so we don't need the hardpoint graph center to be
+    hardpointCenter_y = panelOffset_y + (panelImageSize_y / 2); //most weapons are above the waist line, so we don't need the hardpoint graph center to be
                                                           //dead center of the panel
     MECHPANEL_CTR = hardpointCenter;
     
-    tileSizeX = gui_percentXRaw(32);
-    tileSizeY = gui_percentYRaw(32);
-    
-    maxTileX = rint(panelImageSize_x / tileSizeX);
-    maxTileY = rint(panelImageSize_y / tileSizeY);
-    
-    cons_logAFloat("maxTileX", maxTileX);
-    cons_logAFloat("maxTileY", maxTileY);
-    
-    //debug draw grid
-    if( cvar("developer") ){
-      local float gx, gy;
-      local vector v;
-      gy = 0;
-      while( gy < maxTileY ){
-        gx = 0;
-        while( gx < maxTileX ){
-          v_x = gx * gui_percentXRaw(tileSizeX);
-          v_y = gy * gui_percentYRaw(tileSizeY);
-          gui_DrawRect(panelOffset + v, gui_percentToPixelRaw(tileSizeX, tileSizeY), '2 1', '1 1 1');
-          gx = gx + 1;
-        }
-        gy = gy + 1;
-      }
-    }
-    //===========
-    
+    tileSizeX = panelImageSize_x / 10;
+    tileSizeY = panelImageSize_y / 10;
+  
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
       //find on-screen coords of hardpoint
-      //% here are magic numbers
-      hardpointX = hardpoint.c_ofs_x;
-      hardpointY = hardpoint.c_ofs_y;
+      hardpointX = hardpoint.c_ofs_x * 0.65;
+      hardpointY = hardpoint.c_ofs_y ;
      
       if( hardpointX < 0 ){
         hardpointX = hardpointX / UI_HANGAR_DATA_mech.mins_x;
@@ -383,62 +357,70 @@ void(vector ofs) menu_arming_HardpointGraph={
         hardpointY = hardpointY / UI_HANGAR_DATA_mech.maxs_y ;
       }
       
-      hardpointOffset_x = gui_percentXRaw( hardpointX * 135);
-      hardpointOffset_y = gui_percentYRaw( hardpointY * 152);      
+      hardpointOffset_x = gui_percentXRaw( hardpointX * (panelImageSize_x / 2)) * -1; //corrects mirroring
+      hardpointOffset_y = gui_percentYRaw( hardpointY * (panelImageSize_y / 2));      
       
       hardpoint.ui_size = hardpointCenter - hardpointOffset;//determines on-screen location of hardpoint
       
       //now tile the panel to prevent hardpoint overlap
+      //I tried to do programmatic methods...but adapative coordinates is just too far.
+      switch( hardpointItr ){
+        case 1:
+          hardpointTileX = 0;
+          hardpointTileY = 4;
+          break;
+        case 2:
+          hardpointTileX = 0;
+          hardpointTileY = 2;
+          break;
+        case 3:
+          hardpointTileX = 0;
+          hardpointTileY = 0;
+          break;
+        case 4:
+          hardpointTileX = 2;
+          hardpointTileY = 0;
+          break;
+        case 5:
+          hardpointTileX = 4.5;
+          hardpointTileY = 0;
+          break;
+        case 6:
+          hardpointTileX = 7;
+          hardpointTileY = 0;
+          break;
+        case 7:
+          hardpointTileX = 9;
+          hardpointTileY = 0;
+          break;
+        case 8:
+          hardpointTileX = 9;
+          hardpointTileY = 2;
+          break;
+        case 9:
+          hardpointTileX = 9;
+          hardpointTileY = 4;
+          break;
+      }
       
-      hardpointTileX = quantisize( hardpoint.ui_size_x, tileSizeX );
-      hardpointTileY = quantisize( hardpoint.ui_size_y, tileSizeY );
-
-      cons_logAFloat("hardpointTileX", hardpointTileX); //DEBUG
-
-
-      hardpoint.ui_org_x = hardpointTileX;//- (tileSizeX / 2);
-      hardpoint.ui_org_y = hardpointTileY + (tileSizeY / 6);
-    
-    
-      if( hardpoint.ui_org_x < (hardpointCenter_x - (tileSizeX*2))){
-        hardpoint.ui_org_x = hardpoint.ui_org_x + tileSizeX;
-      }
-      if( hardpoint.ui_org_x < panelOffset_x ){
-        hardpoint.ui_org_x = panelOffset_x;
-      }
-      if( hardpoint.ui_org_x > (panelOffset_x + panelImageSize_x) ){
-        hardpoint.ui_org_x = hardpoint.ui_org_x - tileSizeX;
-      }
-      
-      if( hardpoint.ui_org_y < (hardpointCenter_y - (tileSizeY*2))){
-        hardpoint.ui_org_y = hardpoint.ui_org_y + tileSizeY;
-      }
-      if( hardpoint.ui_org_y < panelOffset_y ){
-        hardpoint.ui_org_y = panelOffset_y;
-      }
-      if( hardpoint.ui_org_y > (panelOffset_y + panelImageSize_y) ){
-        hardpoint.ui_org_y = hardpoint.ui_org_y - tileSizeY;
-      }
+      hardpoint.ui_org_x = panelOffset_x + (hardpointTileX * tileSizeX);
+      hardpoint.ui_org_y = panelOffset_y + (hardpointTileY * tileSizeY);
     
       //draws helpful line from hardpoint graphic to where the weapon really is located
       if( CLIENT_MENU_sel_hrpnt == hardpointItr ){
-        hardpointLineColor = '0.85 0.85 0';
+        drawline(4, hardpoint.ui_org, hardpoint.ui_size, '0.85 0.85 0', 1, 0);
+        ui_renderHardPointNumber( hardpointItr, hardpoint.ui_size );
       }
-      else{
-        hardpointLineColor = '1 0 0';
-      }
-      //drawline (4, hardpoint.ui_org + gui_percentToPixelRawVec('14 14'), hardpoint.ui_size, hardpointLineColor, 1, 0);
-      
       ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
-      //ui_renderHardPointNumber( hardpointItr, hardpoint.ui_org );
-	  
-    drawline (4, hardpoint.ui_org, hardpoint.ui_size, hardpointLineColor, 1, 0);  //DEBUG
-    
+
+      //I know, I know
+      if( CLIENT_MENU_sel_hrpnt == hardpointItr ){
+      
+      }
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
   }
-   drawstring(cursorpos, vtos( gui_percentToPixelRawVec(cursorpos) ), '6 6 0', CLR_DEF_ARM_HALF, 1, 0);  //DEBUG
     
   local vector nbtn, pbtn, pctr, lctr;
   pctr_x = panelImageSize_x / 2;
@@ -451,12 +433,12 @@ void(vector ofs) menu_arming_HardpointGraph={
   BTN_CFG_P = pbtn;
   drawstring(pbtn + gui_percentToPixelRawVec('0 -19'), "PREV", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
   drawstring(pbtn + gui_percentToPixelRawVec('0 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawpic(pbtn, HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 38'), CLR_DEF_ARM_THREEQ, 1, 0);
+  //drawpic(pbtn, HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 38'), CLR_DEF_ARM_THREEQ, 1, 0);      
   
   BTN_CFG_N = nbtn;
   drawstring(nbtn + gui_percentToPixelRawVec('-9 -19'), "NEXT", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
   drawstring(nbtn + gui_percentToPixelRawVec('-9 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawpic(nbtn, HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 38'), CLR_DEF_ARM_THREEQ, 1, 0);
+  //drawpic(nbtn, HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 38'), CLR_DEF_ARM_THREEQ, 1, 0);
   
   lctr = nofs + pctr;
   lctr_y = lctr_y + pctr_y - gui_percentYRaw(8);
