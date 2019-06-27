@@ -326,7 +326,13 @@ void(vector ofs) menu_arming_HardpointGraph={
   drawpic(panelOffset, UI_HANGAR_BOX, panelImageSize, '0.25 0.25 0.25', 1, 0);
   
   if( SELECT_MECH > FALSE ){
-    //drawpic(nofs , MECH_DATA_ICON, gui_percentToPixelRawVec('278 244'), CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
+    local vector mechIconOrg;
+    local vector mechIconSize;
+    
+    mechIconSize = gui_percentToPixelRawVec('475 475');
+    mechIconOrg_x = (panelOffset_x + panelImageSize_x/2) - mechIconSize_x/2;
+    mechIconOrg_y = (panelOffset_y + gui_percentYRaw(-16) );
+    drawpic(mechIconOrg, MECH_DATA_ICON, mechIconSize, CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
     //TODO - replace images with properly scaled ones?
     hardpointCenter_x = panelOffset_x + (panelImageSize_x / 2);
     hardpointCenter_y = panelOffset_y + (panelImageSize_y / 2); //most weapons are above the waist line, so we don't need the hardpoint graph center to be
