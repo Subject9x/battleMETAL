@@ -314,8 +314,8 @@ void(vector ofs) menu_arming_HardpointGraph={
   local entity hardpoint;
   local float hardpointItr;
   
-  local vector mechSize;
-  local vector mechMins;
+  local vector mechSize, iconSize;
+  local vector mechMins, iconMins;
   local vector mechIconCenter;
   local vector mechIconOrg;
   local vector mechIconSize;
@@ -336,19 +336,22 @@ void(vector ofs) menu_arming_HardpointGraph={
     
     mechMins_x = UI_HANGAR_DATA_mech.mins_x;
     mechMins_y = (UI_HANGAR_DATA_mech.maxs_y * 0.75) * -1;
-
-    mechIconCenter = gui_mapCoordToImgCoord( mechMins, mechSize, '0 0 0', panelOffset, panelImageSize );
-
-    mechIconTopOffset_x = 0;
-    mechIconTopOffset_y = UI_HANGAR_DATA_mech.maxs_y;
-    mechIconTopOffset = gui_mapCoordToImgCoord( mechMins, mechSize, mechIconTopOffset, panelOffset, panelImageSize );
     
-    mechIconOrg_x = mechIconCenter_x - (panelImageSize_x / 2);
-    mechIconOrg_y = mechIconCenter_y - mechIconTopOffset_y;
+    //pieces
+    iconSize = mechSize;
+    iconSize_y = iconSize_y + (UI_HANGAR_DATA_mech.maxs_y * 0.25);
+    iconMins = mechMins;
+    iconMins_y = UI_HANGAR_DATA_mech.mins_y;
     
-    drawpic(mechIconOrg, MECH_DATA_ICON, panelImageSize, CLR_DEF_GRAY_H - '0.15 0.15 0.15' , 1, 0);
-
-    ui_renderHardPointNumber( -1, mechIconCenter );//DEBUG
+    mechIconSize_x = panelImageSize_x;
+    mechIconSize_y = panelImageSize_y * 2;
+    
+    mechIconTopOffset_x = mechMins_x;
+    mechIconTopOffset_y = UI_HANGAR_DATA_mech.maxs_y * 0.87;
+    mechIconOrg = gui_mapCoordToImgCoord( iconMins, iconSize, mechIconTopOffset, panelOffset, mechIconSize );
+    mechIconOrg_x = (panelOffset_x + (panelImageSize_x / 2)) - (gui_percentXRaw(360) / 2 ); //'360' is not a typo, just a lazy screen adjustment.
+    
+    drawpic(mechIconOrg, MECH_DATA_ICON, gui_percentToPixelRawVec('350 375'), CLR_DEF_GRAY_H - '0.1 0.1 0.1' , 1, 0);
 
     MECHPANEL_CTR = hardpointCenter;
 
