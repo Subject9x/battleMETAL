@@ -110,7 +110,7 @@ void(vector ofs) menu_hangar_MechDisplay={
     
     hardpointGraphCenter_x = hofs_x + (i_sz_x / 2);
     hardpointGraphCenter_y = hofs_y + i_sz_y;
-    hardpointGraphCenter_y = hardpointGraphCenter_y + ( gui_percentYRaw( UI_HANGAR_DATA_mech.mins_z * 5) );
+    hardpointGraphCenter_y = hardpointGraphCenter_y + ( gui_percentYRaw( UI_HANGAR_DATA_mech.mins_z * 3.75) );
 
     MECHPANEL_CTR = hardpointGraphCenter;
 

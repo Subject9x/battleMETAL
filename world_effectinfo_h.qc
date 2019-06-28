@@ -28,6 +28,8 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
 
 void( entity source, vector org, vector angl, vector vel, string modl, float skinNum ) te_mech_piece_explode;
 
+entity( entity targetBuilding ) te_building_fire_start;
+
 //SFX
 void() te_nav_reach;
 void( float type ) te_objective_complete;
