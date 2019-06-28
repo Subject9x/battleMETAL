@@ -83,7 +83,7 @@ void() data_ini_balaket_={
   self.m_bup = "0.15";
   self.m_bmodel = "1";
   self.m_bside = "0.09";
-  self.m_bobspd = "16";
+  self.m_bobspd = "6";
 //====================================
 
 //UI Data=============================

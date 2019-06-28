@@ -312,12 +312,16 @@ void() menu_arming_drawFrame={
 void(vector ofs) menu_arming_HardpointGraph={
   local vector nofs, panelOffset, hofs, hardpointCenter, panelImageSize;
   local entity hardpoint;
-  local vector hardpointOffset;
   local float hardpointItr;
-  local float hardpointX, hardpointY;
-  local float hardpointTileX, hardpointTileY;
-  local float maxTileX, maxTileY;
-  local float tileSizeX, tileSizeY;
+  
+  local vector mechSize;
+  local vector mechMins;
+  local vector mechIconCenter;
+  local vector mechIconOrg;
+  local vector mechIconSize;
+  local vector mechIconTopOffset;
+  
+  local vector hardpointCoord;
   
   nofs = ofs + gui_percentToPixelRawVec('10 8');
   panelOffset = nofs + gui_percentToPixelRawVec('4 4');
@@ -326,104 +330,38 @@ void(vector ofs) menu_arming_HardpointGraph={
   drawpic(panelOffset, UI_HANGAR_BOX, panelImageSize, '0.25 0.25 0.25', 1, 0);
   
   if( SELECT_MECH > FALSE ){
-    local vector mechIconOrg;
-    local vector mechIconSize;
+    mechSize_x = (UI_HANGAR_DATA_mech.mins_x * -1) + UI_HANGAR_DATA_mech.maxs_x;
+    mechSize_y = UI_HANGAR_DATA_mech.maxs_y;
+    mechSize_y = (mechSize_y * 0.75) + UI_HANGAR_DATA_mech.maxs_y;
     
-    mechIconSize = gui_percentToPixelRawVec('475 475');
-    mechIconOrg_x = (panelOffset_x + panelImageSize_x/2) - mechIconSize_x/2;
-    mechIconOrg_y = (panelOffset_y + gui_percentYRaw(-16) );
-    drawpic(mechIconOrg, MECH_DATA_ICON, mechIconSize, CLR_DEF_GRAY_H - '0.25 0.25 0.25' , 1, 0);
-    //TODO - replace images with properly scaled ones?
-    hardpointCenter_x = panelOffset_x + (panelImageSize_x / 2);
-    hardpointCenter_y = panelOffset_y + (panelImageSize_y / 2); //most weapons are above the waist line, so we don't need the hardpoint graph center to be
-                                                          //dead center of the panel
+    mechMins_x = UI_HANGAR_DATA_mech.mins_x;
+    mechMins_y = (UI_HANGAR_DATA_mech.maxs_y * 0.75) * -1;
+
+    mechIconCenter = gui_mapCoordToImgCoord( mechMins, mechSize, '0 0 0', panelOffset, panelImageSize );
+
+    mechIconTopOffset_x = 0;
+    mechIconTopOffset_y = UI_HANGAR_DATA_mech.maxs_y;
+    mechIconTopOffset = gui_mapCoordToImgCoord( mechMins, mechSize, mechIconTopOffset, panelOffset, panelImageSize );
+    
+    mechIconOrg_x = mechIconCenter_x - (panelImageSize_x / 2);
+    mechIconOrg_y = mechIconCenter_y - mechIconTopOffset_y;
+    
+    drawpic(mechIconOrg, MECH_DATA_ICON, panelImageSize, CLR_DEF_GRAY_H - '0.15 0.15 0.15' , 1, 0);
+
+    ui_renderHardPointNumber( -1, mechIconCenter );//DEBUG
+
     MECHPANEL_CTR = hardpointCenter;
-    
-    tileSizeX = panelImageSize_x / 10;
-    tileSizeY = panelImageSize_y / 10;
-  
+
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-      //find on-screen coords of hardpoint
-      hardpointX = hardpoint.c_ofs_x * 0.65;
-      hardpointY = hardpoint.c_ofs_y ;
+      hardpointCoord = gui_mapCoordToImgCoord( mechMins,  mechSize, hardpoint.c_ofs * 0.75, panelOffset, panelImageSize );
+      hardpoint.ui_org = hardpointCoord - gui_percentToPixelRawVec('17 17');
      
-      if( hardpointX < 0 ){
-        hardpointX = hardpointX / UI_HANGAR_DATA_mech.mins_x;
-        hardpointX = hardpointX * -1;
-      }
-      else{
-        hardpointX =  hardpointX / UI_HANGAR_DATA_mech.maxs_x;
-      }
+      ui_renderHardPointNumber( hardpointItr, hardpointCoord );
       
-      if( hardpointY < 0 ){
-        hardpointY = hardpointY  / (UI_HANGAR_DATA_mech.maxs_y * -1);
-      }
-      else{
-        hardpointY = hardpointY / UI_HANGAR_DATA_mech.maxs_y ;
-      }
-      
-      hardpointOffset_x = gui_percentXRaw( hardpointX * (panelImageSize_x / 2)) * -1; //corrects mirroring
-      hardpointOffset_y = gui_percentYRaw( hardpointY * (panelImageSize_y / 2));      
-      
-      hardpoint.ui_size = hardpointCenter - hardpointOffset;//determines on-screen location of hardpoint
-      
-      //now tile the panel to prevent hardpoint overlap
-      //I tried to do programmatic methods...but adapative coordinates is just too far.
-      switch( hardpointItr ){
-        case 1:
-          hardpointTileX = 0;
-          hardpointTileY = 4;
-          break;
-        case 2:
-          hardpointTileX = 0;
-          hardpointTileY = 2;
-          break;
-        case 3:
-          hardpointTileX = 0;
-          hardpointTileY = 0;
-          break;
-        case 4:
-          hardpointTileX = 2;
-          hardpointTileY = 0;
-          break;
-        case 5:
-          hardpointTileX = 4.5;
-          hardpointTileY = 0;
-          break;
-        case 6:
-          hardpointTileX = 7;
-          hardpointTileY = 0;
-          break;
-        case 7:
-          hardpointTileX = 9;
-          hardpointTileY = 0;
-          break;
-        case 8:
-          hardpointTileX = 9;
-          hardpointTileY = 2;
-          break;
-        case 9:
-          hardpointTileX = 9;
-          hardpointTileY = 4;
-          break;
-      }
-      
-      hardpoint.ui_org_x = panelOffset_x + (hardpointTileX * tileSizeX);
-      hardpoint.ui_org_y = panelOffset_y + (hardpointTileY * tileSizeY);
-    
-      //draws helpful line from hardpoint graphic to where the weapon really is located
-      if( CLIENT_MENU_sel_hrpnt == hardpointItr ){
-        drawline(4, hardpoint.ui_org, hardpoint.ui_size, '0.85 0.85 0', 1, 0);
-        ui_renderHardPointNumber( hardpointItr, hardpoint.ui_size );
-      }
-      ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
+      ui_renderHardPointGraphic( hardpoint.icon,  hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
 
-      //I know, I know
-      if( CLIENT_MENU_sel_hrpnt == hardpointItr ){
-      
-      }
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
