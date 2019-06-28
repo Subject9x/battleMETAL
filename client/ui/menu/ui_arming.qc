@@ -349,9 +349,9 @@ void(vector ofs) menu_arming_HardpointGraph={
     mechIconTopOffset_x = mechMins_x;
     mechIconTopOffset_y = UI_HANGAR_DATA_mech.maxs_y * 0.87;
     mechIconOrg = gui_mapCoordToImgCoord( iconMins, iconSize, mechIconTopOffset, panelOffset, mechIconSize );
-    mechIconOrg_x = (panelOffset_x + (panelImageSize_x / 2)) - (gui_percentXRaw(360) / 2 ); //'360' is not a typo, just a lazy screen adjustment.
+    mechIconOrg_x = (panelOffset_x + (panelImageSize_x / 2)) - (gui_percentXRaw(360 / 2)  ); //'360' is not a typo, just a lazy screen adjustment.
     
-    drawpic(mechIconOrg, MECH_DATA_ICON, gui_percentToPixelRawVec('350 375'), CLR_DEF_GRAY_H - '0.1 0.1 0.1' , 1, 0);
+    drawpic(mechIconOrg, MECH_DATA_ICON, gui_percentToPixelRawVec('350 375'), CLR_DEF_WHITE - '0.1 0.1 0.1' , 1, 0);
 
     MECHPANEL_CTR = hardpointCenter;
 
@@ -546,9 +546,13 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     lofs_x = nofs_x + gui_percentXRaw(6);
     lofs_y = nofs_y + gui_percentYRaw(lst_idx * 20);
     
+    if( CLIENT_MENU_sel_hrpnt == lst_idx){
+      drawpic(lofs + gui_percentToPixelRawVec('-2 -5'), UI_DEF_BOX_256, gui_percentToPixelRawVec('143 20'), '0.85 0.85 0', 1,0);
+    }
+    
     drawstring(lofs, strcat("[",ftos(lst_idx),"]"), '6 6 0', '1 1 1', 1, 0);
     if( hardpoint.icon != "" ){
-      drawpic(lofs + gui_percentToPixelRawVec('16 -5'), hardpoint.icon, gui_percentToPixelRawVec('20 20'), '1 1 1', 1,0);
+      drawpic(lofs + gui_percentToPixelRawVec('16 -8'), hardpoint.icon, gui_percentToPixelRawVec('20 20'), '1 1 1', 1,0);
     }
     gui_renderTintImage((CLIENT_MENU_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
     gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
@@ -558,6 +562,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     bit = bit * 2;
     lst_idx = lst_idx + 1;
     hardpoint = hardpoint.w_slot;
+    gui_DrawRect(lofs, gui_percentToPixelRawVec('140 20'), '1 1 0', '1 1 1');
   }
   
   WEPNGRP_CNT_A = lst_idx;
@@ -574,8 +579,8 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   
   WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = groupButtonSize_x;
   WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = groupButtonSize_y;
-  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * (groupButtonSize_y + 2));
-  WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw(lst_idx * (groupButtonSize_y + 2));
+  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * (groupButtonSize_y + 8));
+  WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw(lst_idx * (groupButtonSize_y + 8));
   
   local vector helpOrg;
   helpOrg = nofs;

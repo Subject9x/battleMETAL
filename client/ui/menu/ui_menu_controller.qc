@@ -96,11 +96,9 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
       listOffset_x = org_x;
       listOffset_y = org_y + (listIndex * row_size_y);
       
-	  selectCheck = menu_checkMouseInBounds(cursorpos, listOffset, row_size, FALSE);
-      
-	  gui_DrawRect(listOffset, gui_percentToPixel(row_size_x, row_size_y), '0 0 0', '1 1 1');
-      
-	  if( selectCheck ){
+      selectCheck = menu_checkMouseInBounds(cursorpos, listOffset, row_size, FALSE);
+   
+      if( selectCheck ){
         gui_DrawRect(listOffset, listOffset + row_size, '2 2', '1 1 1');
         toSender = listIndex;
       }

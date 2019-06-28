@@ -170,17 +170,21 @@ vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec={
   return ret;
 };
 
-vector(vector area_min, vector map_size, vector obj_coords, vector ui_coords, vector img_sz) gui_mapCoordToImgCoord={
-  local vector map_ctr, obj_trans, obj_prc, obj_ui;
-  map_ctr_x = ((area_min_x*-1)/map_size_x) * map_size_x;
-  map_ctr_x = map_size_x - map_ctr_x;
-  map_ctr_y = ((area_min_y*-1)/map_size_y) * map_size_y;
-  map_ctr_y = map_size_y - map_ctr_y;
-  obj_trans = map_ctr - obj_coords;
-  obj_trans_z = 0;
-  obj_prc = gui_percentCustomVec(obj_trans, map_size, img_sz);
-  obj_ui = ui_coords + gui_percentToPixelRawVec(obj_prc);
-  return obj_ui;
+vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffsetStart, vector uiAreaSize) gui_mapCoordToImgCoord={
+  local vector mapCenter, objectTransform, objectPercent, objectUIOrg;
+  
+  mapCenter_x = ((areaMins_x*-1)/areaMinAndMax_x) * areaMinAndMax_x;
+  mapCenter_x = areaMinAndMax_x - mapCenter_x;
+  
+  mapCenter_y = ((areaMins_y*-1)/areaMinAndMax_y) * areaMinAndMax_y;
+  mapCenter_y = areaMinAndMax_y - mapCenter_y;
+  
+  objectTransform = mapCenter - objectCoords;
+  objectTransform_z = 0;
+  
+  objectPercent = gui_percentCustomVec(objectTransform, areaMinAndMax, uiAreaSize);
+  objectUIOrg = uiOffsetStart + gui_percentToPixelRawVec(objectPercent);
+  return objectUIOrg;
 };
 string(float navname) gui_getNavName={
   return NAVNAMES[navname];
