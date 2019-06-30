@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 01/21/2017
 Overview: data file for building
@@ -18,14 +18,9 @@ void() hshield_die = [0, hshield_die1]{
       }
     }
     head = head.chain;
-  }  
-  //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  }
   
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DYING;
-  self.solid = SOLID_CORPSE;
-  building_die_removeFire();
+  building_die();
   te_object_explode( '0.25 1 0.05' );
   te_object_explode( '0.25 1 0.05' );
   te_object_explode( '0.25 1 0.05' );
@@ -44,7 +39,9 @@ void() hshield_die9 = [9, hshield_die10]{
   te_object_explode( '0.75 1 0.05' );};
 void() hshield_die10 = [10, hshield_die11]{
   te_object_explode( '1 1 0.05' );};
-void() hshield_die11 = [11, BecomeExplosion]{};
+void() hshield_die11 = [11, BecomeExplosion]{
+  
+};
 
 void() hshield_th = [0, hshield_th]{
   local entity t, p;

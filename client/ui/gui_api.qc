@@ -601,6 +601,7 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
 	if( panelImage && (panelImage != "") ){
 		panelAdjust_x = targetSize_x * 0.025;
 		panelAdjust_y = targetSize_y * -0.075;
+		drawpic( toolTipOrigin + panelAdjust - gui_percentToPixelRawVec('2 2'), panelImage, targetSize + gui_percentToPixelRawVec('4 4'), panelColor - (panelColor * 0.85), alph + 0.25);
 		drawpic( toolTipOrigin + panelAdjust, panelImage, targetSize, panelColor, alph + 0.25);
 	}
 	gui_wrapText( toolTipOrigin, targetSize, tipMessage, fontSize, textColor, alph); 

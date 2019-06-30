@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 01/21/2017
 Overview: data file for building
@@ -7,8 +7,6 @@ Overview: data file for building
   faction: humans
   func: provides radar scanning to all friendly units in radius
 */
-
-void() building_power_die;
 
 void() hpower_die = [0, hpower_die1]{
   local entity head;
@@ -30,13 +28,9 @@ void() hpower_die = [0, hpower_die1]{
     }
     head = head.chain;
   }
-  //fire triggers when dead
-  trigger_event( self, trigOnDeath );
-  self.takedamage = DAMAGE_NO;
-  self.deadflag = DEAD_DYING;
-  self.solid = SOLID_CORPSE;
-  building_die_removeFire();
+
   te_object_explode( '0.75 0.75 0.6' );
+  building_die();
 };
 void() hpower_die1 = [1, hpower_die2]{};
 void() hpower_die2 = [2, hpower_die3]{};

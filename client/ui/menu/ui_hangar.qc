@@ -152,17 +152,13 @@ void(vector ofs) menu_hangar_MechHPoints={
   
   nofs = ofs + gui_percentToPixelRawVec('365 272');
   drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('255 192'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('18.5 32'), UI_DEF_BOX_512, gui_percentToPixelRawVec('236 38'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
+  drawpic(nofs + gui_percentToPixelRawVec('18.5 70'), UI_DEF_BOX_512, gui_percentToPixelRawVec('236 128'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   
   tlen = gui_percentXRaw(stringwidth("[HARDPOINT DATA]", 0, '8 8 0'));
   tofs_x = nofs_x + gui_percentXRaw(255/2) - (tlen/2);
   tofs_y = nofs_y + gui_percentYRaw(10);
   drawstring(tofs, "[HARDPOINT DATA]", '8 8 0', CLR_DEF_WHITE, 1, 0);
-  
-  drawpic(nofs + gui_percentToPixelRawVec('18.5 32'), UI_DEF_BOX_512, gui_percentToPixelRawVec('236 38'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('20 32'), "-Sizes-", '7 8 0', CLR_DEF_WHITE, 1, 0);
-  
-  drawpic(nofs + gui_percentToPixelRawVec('18.5 70'), UI_DEF_BOX_512, gui_percentToPixelRawVec('236 128'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('20 72'), "-Types-", '7 8 0', CLR_DEF_WHITE, 1, 0);
     
   if(SELECT_MECH > FALSE){
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
@@ -173,6 +169,10 @@ void(vector ofs) menu_hangar_MechHPoints={
       hardpoint = hardpoint.w_slot;
     }
   }
+  drawstring(nofs + gui_percentToPixelRawVec('20 32'), "-Sizes-", '7 8 0', CLR_DEF_WHITE, 1, 0);
+  
+  
+  drawstring(nofs + gui_percentToPixelRawVec('20 72'), "-Types-", '7 8 0', CLR_DEF_WHITE, 1, 0);
   
   local vector helpOrg;
   helpOrg_x = nofs_x + gui_percentXRaw(260) - gui_percentXRaw(12);

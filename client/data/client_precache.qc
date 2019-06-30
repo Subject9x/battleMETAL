@@ -92,6 +92,7 @@ void() cs_precache={
   UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png",8);
   UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png",8);
   UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",8);
+  UI_DEF_BOX_256_BOX = precache_pic("gfx/ui/box_256_select.png",8);
   UI_DEF_BOX_64 = precache_pic("gfx/ui/box_64.png",8);
   UI_DEF_REC_64 = precache_pic("gfx/ui/box_64_rec.png",8);
   HUD_TARGET_BOX = precache_pic("gfx/hud/target_box.png",0);

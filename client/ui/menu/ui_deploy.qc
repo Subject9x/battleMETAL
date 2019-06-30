@@ -298,14 +298,14 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
     itr = itr + 1;
   }
 
-  //if( nactive != FALSE ){
+  if( nactive != FALSE ){
     local vector lineOrg;
     lineOrg = mpos + gui_percentToPixelRawVec('5 110');
     drawline(1, lineOrg + gui_percentToPixelRawVec('0 1'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 1'), '0.85 0.85 0', 0.75, 0);
     drawline(1, lineOrg + gui_percentToPixelRawVec('0 2'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 2'), '0.85 0.85 0', 0.75, 0);
     drawline(1, lineOrg + gui_percentToPixelRawVec('0 3'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 3'), '0.85 0.85 0', 0.75, 0);
     drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
-  //}
+  }
 
   local vector helpOrg;
   helpOrg = mpos;

@@ -326,7 +326,6 @@ void(vector ofs) menu_arming_HardpointGraph={
   nofs = ofs + gui_percentToPixelRawVec('10 8');
   panelOffset = nofs + gui_percentToPixelRawVec('4 4');
   panelImageSize = gui_percentToPixelRawVec('270 236');
-  drawpic(nofs, UI_DEF_BOX_512, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
   drawpic(panelOffset, UI_HANGAR_BOX, panelImageSize, '0.25 0.25 0.25', 1, 0);
   
   if( SELECT_MECH > FALSE ){
@@ -362,14 +361,13 @@ void(vector ofs) menu_arming_HardpointGraph={
       hardpoint.ui_org = hardpointCoord - gui_percentToPixelRawVec('17 17');
      
       ui_renderHardPointNumber( hardpointItr, hardpointCoord );
-      
       ui_renderHardPointGraphic( hardpoint.icon,  hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
-
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
   }
-    
+  drawpic(nofs, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
+  
   local vector nbtn, pbtn, pctr, lctr;
   pctr_x = panelImageSize_x / 2;
   pctr_y = panelImageSize_y / 2;
@@ -378,23 +376,24 @@ void(vector ofs) menu_arming_HardpointGraph={
   nbtn_x = nbtn_x + panelImageSize_x - gui_percentXRaw(24);
   nbtn_y = nbtn_y + (pctr_y + pctr_y);
   
+  drawpic( pbtn + gui_percentToPixelRawVec('7 -44') , UI_DEF_BOX_512, gui_percentToPixelRawVec('265 48'), CLR_DEF_UI_ARMING + '0.15 0.15 0.15', 1, 0);
+  
   BTN_CFG_P = pbtn + gui_percentToPixelRawVec('6 -32');
   drawstring(pbtn + gui_percentToPixelRawVec('6 -40'), "PREV", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-  ///drawstring(pbtn + gui_percentToPixelRawVec('0 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
   drawpic(BTN_CFG_P, HUD_TRG_PIP_L, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);      
   
   BTN_CFG_N = nbtn + gui_percentToPixelRawVec('0 -32');
   drawstring(nbtn + gui_percentToPixelRawVec('-6 -40'), "NEXT", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
-  //drawstring(nbtn + gui_percentToPixelRawVec('-9 -13'), "CONFIG", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
   drawpic(BTN_CFG_N, HUD_TRG_PIP_R, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);
   
   lctr = nofs + pctr;
-  lctr_y = lctr_y + pctr_y - gui_percentYRaw(20);
+  lctr_y = lctr_y + pctr_y - gui_percentYRaw(32);
   
   local string cfg, warn;
   local float len;
   local vector colr;
   local vector warnOrg;
+  
   //this is quite hilarious
   cfg = NAVNAMES[CFG_INDEX];
   colr = CLR_DEF_ARM_OK;
@@ -529,14 +528,19 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1,0);
   drawstring(nofs + gui_percentToPixelRawVec('24 6'), "[WEAPON GROUPINGS]", '6 6 0', CLR_DEF_RET_GETLOCK, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('45 14'), "[1][2][3][4][5]", '6 6 0', '1 1 1', 1, 0);
   
-  nofs = nofs + gui_percentToPixelRawVec('0 10');
-  col_a = nofs + gui_percentToPixelRawVec('46 14');
-  col_b = nofs + gui_percentToPixelRawVec('66 14');
-  col_c = nofs + gui_percentToPixelRawVec('86 14');
-  col_d = nofs + gui_percentToPixelRawVec('106 14');
-  col_e = nofs + gui_percentToPixelRawVec('126 14');
+  nofs = nofs + gui_percentToPixelRawVec('0 3');
+  col_a = nofs + gui_percentToPixelRawVec('46 20');
+  col_b = nofs + gui_percentToPixelRawVec('66 20');
+  col_c = nofs + gui_percentToPixelRawVec('86 20');
+  col_d = nofs + gui_percentToPixelRawVec('106 20');
+  col_e = nofs + gui_percentToPixelRawVec('126 20');
+  
+  drawstring(col_a - gui_percentToPixelRawVec('1 10'), " 1 ", '6 6 0', '1 1 1', 1, 0);
+  drawstring(col_b - gui_percentToPixelRawVec('1 10'), " 2 ", '6 6 0', '1 1 1', 1, 0);
+  drawstring(col_c - gui_percentToPixelRawVec('1 10'), " 3 ", '6 6 0', '1 1 1', 1, 0);
+  drawstring(col_d - gui_percentToPixelRawVec('1 10'), " 4 ", '6 6 0', '1 1 1', 1, 0);
+  drawstring(col_e - gui_percentToPixelRawVec('1 10'), " 5 ", '6 6 0', '1 1 1', 1, 0);
   
   lst_idx = 1;
   bit = 1;
@@ -547,7 +551,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     lofs_y = nofs_y + gui_percentYRaw(lst_idx * 20);
     
     if( CLIENT_MENU_sel_hrpnt == lst_idx){
-      drawpic(lofs + gui_percentToPixelRawVec('-2 -5'), UI_DEF_BOX_256, gui_percentToPixelRawVec('143 20'), '0.85 0.85 0', 1,0);
+      drawpic(lofs + gui_percentToPixelRawVec('-2 -8'), UI_DEF_BOX_256, gui_percentToPixelRawVec('143 20'), '0.85 0.85 0', 1,0);
     }
     
     drawstring(lofs, strcat("[",ftos(lst_idx),"]"), '6 6 0', '1 1 1', 1, 0);
@@ -562,7 +566,6 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     bit = bit * 2;
     lst_idx = lst_idx + 1;
     hardpoint = hardpoint.w_slot;
-    gui_DrawRect(lofs, gui_percentToPixelRawVec('140 20'), '1 1 0', '1 1 1');
   }
   
   WEPNGRP_CNT_A = lst_idx;
@@ -577,10 +580,8 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   WEPNGRP_ORG_D = col_d;
   WEPNGRP_ORG_E = col_e;
   
-  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = groupButtonSize_x;
-  WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = groupButtonSize_y;
-  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = gui_percentYRaw(lst_idx * (groupButtonSize_y + 8));
-  WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw(lst_idx * (groupButtonSize_y + 8));
+  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = groupButtonSize_x;
+  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw((lst_idx - 1) * 20);
   
   local vector helpOrg;
   helpOrg = nofs;
