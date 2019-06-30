@@ -120,24 +120,41 @@ void(string imageIcon, vector org, float selected) ui_renderHardPointGraphic={
 */
 void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   local vector pofs, iofs, szofs;
-  pofs = org + gui_percentToPixelRawVec('8 0');
-  pofs_y = org_y + gui_percentYRaw((hpt_num * 20));
-  drawstring(pofs + gui_percentToPixelRawVec('0 4'), strcat("[#",ftos(hpt_num),"]"), '6 6 0', CLR_DEF_WHITE,1 , 0);
-  local float cnt;
-  cnt = 0;
+  local float hardpointSize;
+  local string hardpointSizeLabel;
+  
+  pofs = org + gui_percentToPixelRawVec('0 8');
+  pofs_x = org_x + gui_percentXRaw((hpt_num * 26));
+  
+  drawpic( pofs + gui_percentToPixelRawVec('0 -2'), UI_BOX_SELECT, gui_percentToPixelRawVec('25 150'), '0.45 0.45 0.45', 0.75, 0);
+  
+  hardpointSize = sz;
+  hardpointSizeLabel = strcat( "(", ftos(hardpointSize), ")");
+  
+  drawstring(pofs, strcat("[",ftos(hpt_num + 1),"]"), '8 8 0', CLR_DEF_RET_HASLOCK, 1, 0);
+  
+  if( hardpointSize == 2 ){
+    drawstring(pofs + gui_percentToPixelRawVec('0 24'), hardpointSizeLabel, '8 8 0', CLR_DEF_WHITE,1 , 0);
+  }
+  else if( hardpointSize == 3){
+    drawstring(pofs+ gui_percentToPixelRawVec('0 24'), hardpointSizeLabel, '8 8 0', CLR_DEF_WHITE,1 , 0);
+  }
+  else{
+    drawstring(pofs+ gui_percentToPixelRawVec('0 24'), hardpointSizeLabel, '8 8 0', CLR_DEF_WHITE,1 , 0);
+  }
+  
   if((types & DMG_ENE)){
-    drawpic(pofs + gui_percentToPixelRawVec('85 0'), UI_WEP_ENE, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', 1, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('3 60'), UI_WEP_ENE, gui_percentToPixelRawVec('18 18'), CLR_DEF_ARM_ONEQ + '0.25 0.2 0.2', 1, 0);
   }
   if((types & DMG_BAL)){
-    drawpic(pofs + gui_percentToPixelRawVec('100 0'), UI_WEP_BAL, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_HALF, 1, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('3 80'), UI_WEP_BAL, gui_percentToPixelRawVec('18 18'), CLR_DEF_ARM_HALF, 1, 0);
   }
   if((types & DMG_EXP)){
-    drawpic(pofs + gui_percentToPixelRawVec('120 0'), UI_WEP_EXP, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, 1, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('3 100'), UI_WEP_EXP, gui_percentToPixelRawVec('18 18'), CLR_DEF_ARM_OK, 1, 0);
   }
   if((types & DMG_MSC)){
-    drawpic(pofs + gui_percentToPixelRawVec('140 0'), UI_WEP_MSC, gui_percentToPixelRawVec('16 16'), CLR_HUD_PURPLE, 1, 0);
+    drawpic(pofs + gui_percentToPixelRawVec('3 120'), UI_WEP_MSC, gui_percentToPixelRawVec('18 18'), CLR_HUD_PURPLE, 1, 0);
   }
-  drawstring(pofs + gui_percentToPixelRawVec('225 4'), ftos(sz), '8 8 0', CLR_DEF_WHITE,1 , 0);
 };
 
 /*

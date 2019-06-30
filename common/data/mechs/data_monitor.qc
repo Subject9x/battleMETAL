@@ -75,8 +75,8 @@ void() data_ini_monitor_={
   data_ini_unitHardpoint_5( M_TOR_RIGHT, '9.45 15.9 6', '0 0 90', 3, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_6( M_TOR_LEFT, '-9.45 15.9 6', '0 0 90', 3, (DMG_BAL | DMG_ENE));
   data_ini_unitHardpoint_7( M_TOR_CENTER, '0 5 5.5', '0 0 90', 3, DMG_EXP);
-  data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 4.5', '0 0 90', 3, (DMG_EXP | DMG_EXP));
-  data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 4.5', '0 0 90', 3, (DMG_EXP | DMG_EXP));
+  data_ini_unitHardpoint_8( M_TOR_RIGHT, '9 6 4.5', '0 0 90', 3, (DMG_EXP | DMG_MSC));
+  data_ini_unitHardpoint_9( M_TOR_LEFT, '-9 6 4.5', '0 0 90', 3, (DMG_EXP | DMG_MSC));
 //=====================================
 
 //HUD Data=============================
