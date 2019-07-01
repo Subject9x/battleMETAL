@@ -59,7 +59,7 @@ https://github.com/Subject9x/battleMETAL/wiki
 ### Map Design
 ----------------------
 + Documented pipeline for implementing full 3D terrain meshes for engine.
-+ All custom game entities have supporting documentation for use in engine standard map editors such as NetRadiant and GTKRadiant.
++ All custom game entities have supporting documentation for use in engine standard map editors such as Trenchbroom, NetRadiant and GTKRadiant.
 + Map and Mission file system for loading mission briefing files, game save files.
 + Maps can have formal Objectives that are communicated to the player during gameplay.
 + Maps can have Navigation (Nav) points that are marked for the player.
