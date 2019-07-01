@@ -90,6 +90,12 @@ void(float vec_id) initialize_data_turret_={
     case UID_TURRET_light_turret:
       build_turret_unit(data_ini_light_turret_);
       return;
+    case UID_TURRET_missile_turret:
+      data_ini_missile_turret_();
+      return;
+    case UID_TURRET_heavy_turret:
+      data_ini_heavy_turret_();
+      return;
     default:
       cons_logAFloat("Error: failed to build turret with id", vec_id);
       remove(self);

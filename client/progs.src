@@ -60,6 +60,8 @@ data/defs_linker.qc
   
   //Turrets------------------------
   ../common/data/buildings/data_turret_light.qc
+  ../common/data/buildings/data_turret_heavy.qc
+  ../common/data/buildings/data_turret_missile.qc
   //-------------------------------
 
   //Weapons------------------------

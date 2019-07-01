@@ -10,5 +10,7 @@ Overview:
 
 //Turrets
 float UID_TURRET_light_turret = 1;
+float UID_TURRET_missile_turret = 2;
+float UID_TURRET_heavy_turret = 3;
 
 //Buildings
