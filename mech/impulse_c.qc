@@ -133,7 +133,8 @@ void() ImpulseCommands ={
     }
   }
   
-  if( self.impulse == 30 ){
+  //DEPRECATED
+  /*if( self.impulse == 30 ){
   //map_terrain_model
     e = find( world, classname, "map_terrain_model" );
     if( e ){
@@ -149,7 +150,7 @@ void() ImpulseCommands ={
       e.angles_y = anglemod( e.angles_y - 10 );
       cons_logAVector("terrain angles", e.angles);  //DEBUG
     }
-  }
+  }*/
   
 	self.impulse = 0;
 };
