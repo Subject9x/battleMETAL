@@ -50,11 +50,11 @@ void() data_foslager_ini={
   self.yaw_speed = DAT_foslager_YAW_SPEED;
   self.turret_yaw_speed = DAT_foslager_TUR_YAW;
   self.c_model = DAT_foslager_MDL_CHASSIS;
-  self.m_fspeed = DAT_foslager_FSPEED;
-  self.m_sspeed = DAT_foslager_SSPEED;
-  self.m_bspeed = DAT_foslager_BSPEED;
-  self.m_pitch_max = DAT_foslager_PITCH_N;
-  self.m_pitch_min = DAT_foslager_PITCH_X;
+  self.data_speed_forward = DAT_foslager_FSPEED;
+  self.data_speed_strafe = DAT_foslager_SSPEED;
+  self.data_speed_backward = DAT_foslager_BSPEED;
+  self.pitchMax = DAT_foslager_PITCH_N;
+  self.pitchMin = DAT_foslager_PITCH_X;
   self.w_firetime = DAT_foslager_LOCK_ON;
   setsize(self, DAT_foslager_CTOR_BBX_N, DAT_foslager_CTOR_BBX_X);
   setorigin(self, self.origin);

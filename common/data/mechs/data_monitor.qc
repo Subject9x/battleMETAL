@@ -36,10 +36,10 @@ void() data_ini_monitor_={
 //=====================================
 
 //SPEED================================
-  self.m_fspeed = 85;
-  self.m_sspeed = 85;
-  self.m_bspeed = 85;
-  self.m_maccel = 2;
+  self.data_speed_forward = 85;
+  self.data_speed_strafe = 85;
+  self.data_speed_backward = 85;
+  self.data_speed_accel = 2;
   self.yaw_speed = 1;    //AI-only 
   self.turret_yaw_speed = 1;//AI-only
 //=====================================
@@ -49,22 +49,22 @@ void() data_ini_monitor_={
   data_ini_camera_( '0 18 8' );
   
   //center torso
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0', self, torsoCenter);
+  data_ini_torso_center_(  "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0' );
  
   //left torso
-  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 15.5 0', self, torsoLeft);
+  data_ini_torso_left_( "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 15.5 0' );
  
   //right torso
-  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/monitor/monitor_tor_r.md3", 1200, '11.5 15.5 0', self, torsoRight);
+  data_ini_torso_right_( "q3mdl/mechs/monitor/monitor_tor_r.md3", 1200, '11.5 15.5 0' );
  
   //left arm
-  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/monitor/monitor_arm_l.md3", 1000, '-18 13 -1', self.torsoLeft, armLeft);
+  data_ini_arm_left_( "q3mdl/mechs/monitor/monitor_arm_l.md3", 1000, '-18 13 -1' );
  
   //right arm
-  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/monitor/monitor_arm_r.md3", 1000, '18 13 -1', self.torsoRight, armRight);
+  data_ini_arm_right_( "q3mdl/mechs/monitor/monitor_arm_r.md3", 1000, '18 13 -1' );
    
   //legs
-  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0', self, legs);
+  data_ini_legs_( "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0' );
 //=====================================
  
 //HARDPOINT DATA======================
@@ -80,16 +80,16 @@ void() data_ini_monitor_={
 //=====================================
 
 //HUD Data=============================
-  self.m_pitch_max = 45;  //DEBUG
-  self.m_pitch_min = -25;
+  self.pitchMax = 45;  //DEBUG
+  self.pitchMin = -25;
   self.weaponmodel = "q3mdl/mechs/monitor/monitor_hud.md3";
-  self.m_rollangle = "2.25";
-  self.m_bob = "0.03";
-  self.m_bcycle =  "0.85";
-  self.m_bup = "0.5";
-  self.m_bmodel = "1";
-  self.m_bside = "0.65";
-  self.m_bobspd = "3.85";
+  self.hud_rollangle = "2.25";
+  self.hud_bob = "0.03";
+  self.hud_bob_cycle =  "0.85";
+  self.hud_bob_up = "0.5";
+  self.hud_bob_model = "1";
+  self.hud_bob_side = "0.65";
+  self.hud_bob_speed = "3.85";
 //====================================
 
 //UI Data=============================

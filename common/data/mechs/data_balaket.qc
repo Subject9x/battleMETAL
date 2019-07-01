@@ -36,10 +36,10 @@ void() data_ini_balaket_={
 //=====================================
 
 //SPEED================================
-  self.m_fspeed = 225;
-  self.m_sspeed = 175;
-  self.m_bspeed = 150;
-  self.m_maccel = 1.5;
+  self.data_speed_forward = 225;
+  self.data_speed_strafe = 175;
+  self.data_speed_backward = 150;
+  self.data_speed_accel = 1.5;
   self.yaw_speed = 2.75;    //AI-only 
   self.turret_yaw_speed = 3;//AI-only
 //=====================================
@@ -49,22 +49,22 @@ void() data_ini_balaket_={
   data_ini_camera_( '0 7 7' );
   
   //center torso
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', self, torsoCenter);
+  data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0' );
  
   //left torso
-  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', self, torsoLeft);
+  data_ini_torso_left_( "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5');
  
   //right torso
-  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', self, torsoRight);
+  data_ini_torso_right_( "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5');
  
   //left arm
-  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-12.1 7 -3', self.torsoLeft, armLeft);
+  data_ini_arm_left_( "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-12.1 7 -3');
  
   //right arm
-  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '12.1 7 -3', self.torsoRight, armRight);
+  data_ini_arm_right_( "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '12.1 7 -3');
    
-  //legs
-  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0', self, legs);
+  //legs      
+  data_ini_legs_( "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');
 //=====================================
  
 //HARDPOINTS==========================
@@ -74,16 +74,16 @@ void() data_ini_balaket_={
 //=====================================
 
 //HUD DATA=============================
-  self.m_pitch_max = 45;  //DEBUG
-  self.m_pitch_min = -15;
+  self.pitchMax = 45;  //DEBUG
+  self.pitchMin = -15;
   self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.md3";
-  self.m_rollangle = "2";
-  self.m_bob = "0.0008";
-  self.m_bcycle =  "0.5";
-  self.m_bup = "0.15";
-  self.m_bmodel = "1";
-  self.m_bside = "0.09";
-  self.m_bobspd = "6";
+  self.hud_rollangle = "2";
+  self.hud_bob = "0.0008";
+  self.hud_bob_cycle =  "0.5";
+  self.hud_bob_up = "0.15";
+  self.hud_bob_model = "1";
+  self.hud_bob_side = "0.09";
+  self.hud_bob_speed = "6";
 //====================================
 
 //UI Data=============================

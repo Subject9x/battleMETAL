@@ -40,11 +40,11 @@ void() data_PSC_VTOLL_ini={
   self.shieldRate= DAT_PSC_VTOLL_SHIELD_RATE;
   self.yaw_speed = DAT_PSC_VTOLL_YAW_SPEED;
   self.c_model = DAT_PSC_VTOLL_MODEL;
-  self.m_fspeed = DAT_PSC_VTOLL_FSPEED;
-  self.m_sspeed = DAT_PSC_VTOLL_SSPEED;
-  self.m_bspeed = DAT_PSC_VTOLL_BSPEED;
-  self.m_pitch_max = DAT_vtol_PITCH_N;
-  self.m_pitch_min = DAT_vtol_PITCH_X;
+  self.data_speed_forward = DAT_PSC_VTOLL_FSPEED;
+  self.data_speed_strafe = DAT_PSC_VTOLL_SSPEED;
+  self.data_speed_backward = DAT_PSC_VTOLL_BSPEED;
+  self.pitchMax = DAT_vtol_PITCH_N;
+  self.pitchMin = DAT_vtol_PITCH_X;
   self.w_firetime = DAT_vtol_LOCK_ON;
 };
 

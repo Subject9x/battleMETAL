@@ -43,12 +43,12 @@ void() ai_vtol_stand={
 void() ai_vtol_walk={
   if( ai_valid_target(self.enemy) ){
     ai_face_targ();
-    ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
+    ai_move( self.ideal_yaw, self.data_speed_forward * AI_RUN_SPD );
   }
   else{
     self.ideal_yaw = vectoyaw( self.movetarget.origin - self.origin );
     ai_move_turn();
-    ai_move( self.angles_y, self.m_fspeed * AI_RUN_SPD );
+    ai_move( self.angles_y, self.data_speed_forward * AI_RUN_SPD );
   }
   ai_fly_update( 350, 600); 
 };
@@ -122,7 +122,7 @@ void() ai_vtol_run={
       }
       
       ai_face_targ();
-      ai_move( self.ideal_yaw, self.m_fspeed * AI_RUN_SPD );
+      ai_move( self.ideal_yaw, self.data_speed_forward * AI_RUN_SPD );
       return;
     }
   }
@@ -137,7 +137,7 @@ void() ai_vtol_run_strafe={
   local float speeed;
   
   ai_face_targ();
-  speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
+  speeed = ( self.data_speed_forward + self.data_speed_strafe ) / 2;
   ai_move( self.ai_dir, speeed * AI_RUN_SPD );
   ai_fly_update( 350, 600); 
   
@@ -165,7 +165,7 @@ void() ai_vtol_run_strafe={
 
 void() ai_vtol_run_charge={
   ai_face_targ();
-  ai_move( self.ai_dir, self.m_fspeed * AI_RUN_SPD );
+  ai_move( self.ai_dir, self.data_speed_forward * AI_RUN_SPD );
   ai_fly_update( 350, 600); 
   
   if( time > self.ai_action_time ){
@@ -183,7 +183,7 @@ void() ai_vtol_melee={
     ai_face_targ();
   }
   
-  ai_move( self.angles_y , self.m_fspeed * AI_WALK_SPD );
+  ai_move( self.angles_y , self.data_speed_forward * AI_WALK_SPD );
   ai_fly_update( 350, 600); 
   
   if( self.ai_rank < AI_RANK_REG ){
@@ -231,7 +231,7 @@ void() ai_vtol_missile_strafe={
   local float speeed;
   if( ai_valid_target( self.enemy ) ){
     ai_face_targ();
-    speeed = ( self.m_fspeed + self.m_sspeed ) / 2;
+    speeed = ( self.data_speed_forward + self.data_speed_strafe ) / 2;
     ai_move( self.ai_dir, speeed * AI_RUN_SPD );
     ai_fly_update( 250, 600); 
     

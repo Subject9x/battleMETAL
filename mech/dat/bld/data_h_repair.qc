@@ -65,10 +65,10 @@ void() hrepair_rep = [0, hrepair_rep]{
         if( fix.partTypeId == M_LEGS ){
           if( (fix.flags & FL_DISARMED) ) {
             fix.flags = fix.flags - (fix.flags & FL_DISARMED);
-            fix.owner.m_fspeed = fix.m_fspeed;
-            fix.owner.m_bspeed = fix.m_bspeed;
-            fix.owner.m_sspeed = fix.m_sspeed;
-            fix.owner.m_maccel = fix.m_maccel;
+            fix.owner.data_speed_forward = fix.data_speed_forward;
+            fix.owner.data_speed_backward = fix.data_speed_backward;
+            fix.owner.data_speed_strafe = fix.data_speed_strafe;
+            fix.owner.data_speed_accel = fix.data_speed_accel;
           }
         }
       }

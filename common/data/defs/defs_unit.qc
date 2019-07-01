@@ -34,14 +34,14 @@ Overview:
 .float radar_range;
 
 //Client-side data and cosmetics -> REFACTOR speedForward | speedStrafe | speedBackwards | speedAccel
-.float m_fspeed; //forward speed
-.float m_sspeed; //side strafe speed
-.float m_bspeed; //backward speed
-.float m_maccel;	//cl_speedkey acceleration factor
+.float data_speed_forward; //forward speed
+.float data_speed_strafe; //side strafe speed
+.float data_speed_backward; //backward speed
+.float data_speed_accel;	//cl_speedkey acceleration factor
 
 .float turret_yaw_speed;
-.float m_pitch_min;
-.float m_pitch_max;
+.float pitchMin;
+.float pitchMax;
 
 //Unit subcomponents
 .entity legs;

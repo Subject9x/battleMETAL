@@ -94,9 +94,9 @@ void(float rank) ai_pilot_ini_stats={
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( rank );
   self.ai_attack_chance = ai_pilot_attack_interval( rank );
   
-  self.m_fspeed = self.m_fspeed * AI_WALK_SPD;
-  self.m_sspeed = self.m_sspeed * AI_WALK_SPD;
-  self.m_bspeed = self.m_bspeed * AI_WALK_SPD;
+  self.data_speed_forward = self.data_speed_forward * AI_WALK_SPD;
+  self.data_speed_strafe = self.data_speed_strafe * AI_WALK_SPD;
+  self.data_speed_backward = self.data_speed_backward * AI_WALK_SPD;
   
   world_get_fog();
 };

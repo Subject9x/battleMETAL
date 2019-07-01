@@ -35,10 +35,10 @@ void() data_ini_trowel_={
 //=====================================
 
 //SPEED================================
-  self.m_fspeed = 100;
-  self.m_sspeed = 0;
-  self.m_bspeed = 50;
-  self.m_maccel = 1;
+  self.data_speed_forward = 100;
+  self.data_speed_strafe = 0;
+  self.data_speed_backward = 50;
+  self.data_speed_accel = 1;
   self.yaw_speed = 0.75;    //AI-only 
   self.turret_yaw_speed = 1.25;//AI-only - but has no turret
 //=====================================

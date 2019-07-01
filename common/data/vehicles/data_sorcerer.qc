@@ -35,10 +35,10 @@ void() data_ini_sorcerer_={
 //=====================================
 
 //SPEED================================
-  self.m_fspeed = 125;
-  self.m_sspeed = 0;
-  self.m_bspeed = 25;
-  self.m_maccel = 1;
+  self.data_speed_forward = 125;
+  self.data_speed_strafe = 0;
+  self.data_speed_backward = 25;
+  self.data_speed_accel = 1;
   self.yaw_speed = 2.5;    //AI-only 
   //self.turret_yaw_speed = 3;//AI-only - but has no turret
 //=====================================

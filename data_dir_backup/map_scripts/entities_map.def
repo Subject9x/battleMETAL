@@ -65,7 +65,7 @@ This map object is to allow the map to alter this value.
 This is NEVER a touchable map object!
 
 world.v_angle = win direction
-world.m_fspeed = wind speed  
+world.data_speed_forward = wind speed  
 -------- KEYS -------- 
 .c_ofs = <vector> [wind direction] - the 3d direction of the new wind
 .p_velocity = <float> [wind speed] - speed of wind in given direction

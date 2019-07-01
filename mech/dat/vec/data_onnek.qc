@@ -42,11 +42,11 @@ void() data_onnek_ini={
   self.shieldMax= DAT_onnek_SHIELD_MAX;
   self.shieldRate= DAT_onnek_SHIELD_RATE;
   self.yaw_speed = DAT_onnek_YAW_SPEED;
-  self.m_fspeed = DAT_onnek_FSPEED;
-  self.m_sspeed = DAT_onnek_SSPEED;
-  self.m_bspeed = DAT_onnek_BSPEED;
-  self.m_pitch_max = DAT_onnek_PITCH_N;
-  self.m_pitch_min = DAT_onnek_PITCH_X;
+  self.data_speed_forward = DAT_onnek_FSPEED;
+  self.data_speed_strafe = DAT_onnek_SSPEED;
+  self.data_speed_backward = DAT_onnek_BSPEED;
+  self.pitchMax = DAT_onnek_PITCH_N;
+  self.pitchMin = DAT_onnek_PITCH_X;
   self.w_firetime = DAT_onnek_LOCK_ON;
 };
 

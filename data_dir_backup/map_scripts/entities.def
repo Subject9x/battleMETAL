@@ -808,7 +808,7 @@ Only used for the world entity.
 [wind]
   "c_ofs"
     <vector> initial wind direction
-  "m_fspeed"
+  "data_speed_forward"
     <float> initial wind speed
 
 [fog]

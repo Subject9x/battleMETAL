@@ -69,7 +69,7 @@ void() ai_tank_sk_die1={
   
   self.deadflag = DEAD_DEAD;
   makevectors( world.v_angle );
-  sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
+  sm = world.v_angle + (v_forward * world.data_speed_forward) + (v_right * world.data_speed_forward) + (v_up * world.data_speed_forward);
   te_smoke_test(self.origin, sm + '0 0 10', 2);
   
   self.think = ai_tank_sk_die1;
@@ -372,7 +372,7 @@ void() ai_tank_sk_patrol1={
     return;
   }
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   macro_ai_frame(ai_tank_sk_patrol1)
 };
@@ -408,10 +408,10 @@ void() ai_tank_sk_charge1={
 
   ai_face_targ();
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -424,10 +424,10 @@ void() ai_tank_sk_charge2={
   macro_ai_update(ctrl_updateTank)
   
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -440,10 +440,10 @@ void() ai_tank_sk_charge3={
   macro_ai_update(ctrl_updateTank)
 
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -457,10 +457,10 @@ void() ai_tank_sk_charge4={
   
   ai_face_targ();
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
   ai_attack();
 
@@ -471,10 +471,10 @@ void() ai_tank_sk_charge5={
   macro_ai_update(ctrl_updateTank)
   
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
 
   macro_ai_frame(ai_tank_sk_charge6)
@@ -485,10 +485,10 @@ void() ai_tank_sk_charge6={
   
   ai_face_targ();
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
 
   macro_ai_frame(ai_tank_sk_charge7)
@@ -498,10 +498,10 @@ void() ai_tank_sk_charge7={
   macro_ai_update(ctrl_updateTank)
   
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed );
+    walkmove( self.angles_y, self.data_speed_forward );
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
   ai_attack();
 
@@ -513,10 +513,10 @@ void() ai_tank_sk_charge8={
   
   ai_face_targ();
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -530,10 +530,10 @@ void() ai_tank_sk_charge9={
   
   ai_face_targ();
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
 
   macro_ai_frame(ai_tank_sk_charge10)
@@ -543,10 +543,10 @@ void() ai_tank_sk_charge10={
   macro_ai_update(ctrl_updateTank)
   
   if( self.lefty > 0 ){
-    walkmove( self.angles_y, self.m_fspeed ) ;
+    walkmove( self.angles_y, self.data_speed_forward ) ;
   }
   else{
-    walkmove( anglemod(self.angles_y + 180), self.m_bspeed ) ;
+    walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ;
   }
   
   macro_ai_frame_count(ai_tank_sk_charge1)
@@ -567,7 +567,7 @@ void() ai_tank_sk_flank1={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ai_move_turn();
-  walkmove( self.angles_y, self.m_fspeed );
+  walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank2)
@@ -579,7 +579,7 @@ void() ai_tank_sk_flank2={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ai_move_turn();
-  walkmove( self.angles_y, self.m_fspeed );
+  walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank3)
@@ -591,7 +591,7 @@ void() ai_tank_sk_flank3={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ai_move_turn();
-  walkmove( self.angles_y, self.m_fspeed );
+  walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank4)
@@ -603,7 +603,7 @@ void() ai_tank_sk_flank4={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ai_move_turn();
-  walkmove( self.angles_y, self.m_fspeed );
+  walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank5)
@@ -615,7 +615,7 @@ void() ai_tank_sk_flank5={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ai_move_turn();
-  walkmove( self.angles_y, self.m_fspeed );
+  walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank6)
@@ -627,7 +627,7 @@ void() ai_tank_sk_flank6={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ai_move_turn();
-  walkmove( self.angles_y, self.m_fspeed );
+  walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank7)
@@ -639,7 +639,7 @@ void() ai_tank_sk_flank7={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ai_move_turn();
-  walkmove( self.angles_y, self.m_fspeed );
+  walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
   macro_ai_frame(ai_tank_sk_flank8)
@@ -651,7 +651,7 @@ void() ai_tank_sk_flank8={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ai_move_turn();
-  walkmove( self.angles_y, self.m_fspeed );
+  walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
   macro_ai_frame_count(ai_tank_sk_flank1)
@@ -686,10 +686,10 @@ void() ai_tank_sk_strafe2={
  
   ai_attack();
   if( self.lefty > 0 ){
-    ai_move( self.angles_y, self.m_fspeed );
+    ai_move( self.angles_y, self.data_speed_forward );
   }
   else{
-    ai_move( anglemod(self.angles_y + 180), self.m_bspeed );
+    ai_move( anglemod(self.angles_y + 180), self.data_speed_backward );
   }
   
   macro_ai_frame(ai_tank_sk_strafe3)
@@ -702,10 +702,10 @@ void() ai_tank_sk_strafe3={
     ai_attack();
   }
   if( self.lefty > 0 ){
-    ai_move( self.angles_y, self.m_fspeed );
+    ai_move( self.angles_y, self.data_speed_forward );
   }
   else{
-    ai_move( anglemod(self.angles_y + 180), self.m_bspeed );
+    ai_move( anglemod(self.angles_y + 180), self.data_speed_backward );
   }
   
   macro_ai_frame(ai_tank_sk_strafe4)
@@ -716,10 +716,10 @@ void() ai_tank_sk_strafe4={
   
   ai_attack();
   if( self.lefty > 0 ){
-    ai_move( self.angles_y, self.m_fspeed );
+    ai_move( self.angles_y, self.data_speed_forward );
   }
   else{
-    ai_move( anglemod(self.angles_y + 180), self.m_bspeed );
+    ai_move( anglemod(self.angles_y + 180), self.data_speed_backward );
   }
   
   macro_ai_frame(ai_tank_sk_strafe5)
@@ -732,10 +732,10 @@ void() ai_tank_sk_strafe5={
     ai_attack();
   }
   if( self.lefty > 0 ){
-    ai_move( self.angles_y, self.m_fspeed );
+    ai_move( self.angles_y, self.data_speed_forward );
   }
   else{
-    ai_move( anglemod(self.angles_y + 180), self.m_bspeed );
+    ai_move( anglemod(self.angles_y + 180), self.data_speed_backward );
   }
   
   macro_ai_frame(ai_tank_sk_strafe6)
@@ -746,10 +746,10 @@ void() ai_tank_sk_strafe6={
   
   ai_attack();
   if( self.lefty > 0 ){
-    ai_move( self.angles_y, self.m_fspeed );
+    ai_move( self.angles_y, self.data_speed_forward );
   }
   else{
-    ai_move( anglemod(self.angles_y + 180), self.m_bspeed );
+    ai_move( anglemod(self.angles_y + 180), self.data_speed_backward );
   }
   
   macro_ai_frame(ai_tank_sk_strafe7)
@@ -762,10 +762,10 @@ void() ai_tank_sk_strafe7={
     ai_attack();
   }
   if( self.lefty > 0 ){
-    ai_move( self.angles_y, self.m_fspeed );
+    ai_move( self.angles_y, self.data_speed_forward );
   }
   else{
-    ai_move( anglemod(self.angles_y + 180), self.m_bspeed );
+    ai_move( anglemod(self.angles_y + 180), self.data_speed_backward );
   }
   
   macro_ai_frame(ai_tank_sk_strafe8)
@@ -776,10 +776,10 @@ void() ai_tank_sk_strafe8={
 
   ai_attack();
   if( self.lefty > 0 ){
-    ai_move( self.angles_y, self.m_fspeed );
+    ai_move( self.angles_y, self.data_speed_forward );
   }
   else{
-    ai_move( anglemod(self.angles_y + 180), self.m_bspeed );
+    ai_move( anglemod(self.angles_y + 180), self.data_speed_backward );
   }
   
   macro_ai_frame_count(ai_tank_sk_strafe1)
@@ -794,7 +794,7 @@ void() ai_tank_sk_juke1={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke2)
 };
@@ -803,7 +803,7 @@ void() ai_tank_sk_juke2={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke3)
 };
@@ -812,7 +812,7 @@ void() ai_tank_sk_juke3={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke4)
 };
@@ -821,7 +821,7 @@ void() ai_tank_sk_juke4={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke5)
 };
@@ -830,7 +830,7 @@ void() ai_tank_sk_juke5={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke6)
 };
@@ -839,7 +839,7 @@ void() ai_tank_sk_juke6={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke7)
 };
@@ -848,7 +848,7 @@ void() ai_tank_sk_juke7={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke8)
 };
@@ -857,7 +857,7 @@ void() ai_tank_sk_juke8={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke9)
 };
@@ -866,7 +866,7 @@ void() ai_tank_sk_juke9={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame(ai_tank_sk_juke10)
 };
@@ -875,7 +875,7 @@ void() ai_tank_sk_juke10={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( self.angles_y, self.m_fspeed * AI_RUN_FACTOR );
+  walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR );
   
   if( ai_check_targ_infront(self.enemy, self.ai_fov, FALSE) ){
     macro_ai_frame(ai_tank_sk_fight_prep)
@@ -906,7 +906,7 @@ void() ai_tank_sk_reverse2={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse3)
 };
@@ -915,7 +915,7 @@ void() ai_tank_sk_reverse3={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse4)
 };
@@ -924,7 +924,7 @@ void() ai_tank_sk_reverse4={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse5)
 };
@@ -933,7 +933,7 @@ void() ai_tank_sk_reverse5={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse6)
 };
@@ -942,7 +942,7 @@ void() ai_tank_sk_reverse6={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse7)
 };
@@ -951,7 +951,7 @@ void() ai_tank_sk_reverse7={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse8)
 };
@@ -961,7 +961,7 @@ void() ai_tank_sk_reverse8={
   
   ai_attack();
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse9)
 };
@@ -970,7 +970,7 @@ void() ai_tank_sk_reverse9={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse10)
 };
@@ -979,7 +979,7 @@ void() ai_tank_sk_reverse10={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse11)
 };
@@ -988,7 +988,7 @@ void() ai_tank_sk_reverse11={
   macro_ai_update(ctrl_updateTank)
 
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame(ai_tank_sk_reverse12)
 };
@@ -998,7 +998,7 @@ void() ai_tank_sk_reverse12={
   
   ai_attack();
   ai_move_turn();
-  walkmove( self.ai_dir, self.m_bspeed  );
+  walkmove( self.ai_dir, self.data_speed_backward  );
   
   macro_ai_frame_count(ai_tank_sk_reverse1)
   macro_ai_frame(ai_tank_sk_fight_prep)
@@ -1205,7 +1205,7 @@ void() ai_tank_sk_hunt1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1218,7 +1218,7 @@ void() ai_tank_sk_hunt2={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1231,7 +1231,7 @@ void() ai_tank_sk_hunt3={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1244,7 +1244,7 @@ void() ai_tank_sk_hunt4={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1257,7 +1257,7 @@ void() ai_tank_sk_hunt5={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1270,7 +1270,7 @@ void() ai_tank_sk_hunt6={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1283,7 +1283,7 @@ void() ai_tank_sk_hunt7={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1296,7 +1296,7 @@ void() ai_tank_sk_hunt8={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1309,7 +1309,7 @@ void() ai_tank_sk_hunt9={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed );
+  movetogoal( self.data_speed_forward );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1322,7 +1322,7 @@ void() ai_tank_sk_hunt10={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
   if( !ai_valid_target(self.enemy) ){
     ai_sfx_huntEnd();
@@ -1404,21 +1404,21 @@ void() ai_tank_sk_panic2={
     return;
   }
   
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame( ai_tank_sk_panic3 )
 };
 void() ai_tank_sk_panic3={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )
-    movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+    movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   macro_ai_frame( ai_tank_sk_panic4 )
 };
 void() ai_tank_sk_panic4={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )
   
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame( ai_tank_sk_panic5 )
 };
@@ -1426,7 +1426,7 @@ void() ai_tank_sk_panic5={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )
   
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame( ai_tank_sk_panic6 )
 };
@@ -1434,7 +1434,7 @@ void() ai_tank_sk_panic6={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )
  
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
 
   macro_ai_frame( ai_tank_sk_panic7 )
 };
@@ -1442,7 +1442,7 @@ void() ai_tank_sk_panic7={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )
   
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame( ai_tank_sk_panic8 )
 };
@@ -1450,7 +1450,7 @@ void() ai_tank_sk_panic8={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )
   
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame( ai_tank_sk_panic9 )
 };
@@ -1458,7 +1458,7 @@ void() ai_tank_sk_panic9={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )
   
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
   macro_ai_frame( ai_tank_sk_panic10 )
 };
@@ -1468,7 +1468,7 @@ void() ai_tank_sk_panic10={
   
   macro_ai_frame_count( ai_tank_sk_panic1 )
   
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
   if( ai_valid_target(self.enemy) ){
     macro_ai_frame( ai_tank_sk_fight_prep )

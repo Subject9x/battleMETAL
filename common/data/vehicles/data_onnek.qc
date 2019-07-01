@@ -35,10 +35,10 @@ void() data_ini_onnek_={
 //=====================================
 
 //SPEED================================
-  self.m_fspeed = 75;
-  self.m_sspeed = 0;
-  self.m_bspeed = 75;
-  self.m_maccel = 1;
+  self.data_speed_forward = 75;
+  self.data_speed_strafe = 0;
+  self.data_speed_backward = 75;
+  self.data_speed_accel = 1;
   self.yaw_speed = 2;    //AI-only 
   //self.turret_yaw_speed = 3;//AI-only - but has no turret
 //=====================================

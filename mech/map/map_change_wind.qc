@@ -8,7 +8,7 @@ Overview:
   This is NEVER a touchable map object!
   
   world.v_angle = win direction
-  world.m_fspeed = wind speed
+  world.data_speed_forward = wind speed
   
 Inputs
   .c_ofs = <vector> [wind direction] - the 3d direction of the new wind
@@ -29,7 +29,7 @@ void() map_change_wind_revert={
   if( (self.spawnflags & 16) ){
     //revert to original
     WINDDIR = self.c_alt_ofs;
-    WINDSPEED = self.m_fspeed;
+    WINDSPEED = self.data_speed_forward;
   }
   
   if( (self.spawnflags & 8) ){
@@ -49,7 +49,7 @@ void() map_change_wind_new={
   if( (self.spawnflags & 16) ){
     //cache old wind values
     self.c_alt_ofs = WINDDIR;
-    self.m_fspeed = WINDSPEED;
+    self.data_speed_forward = WINDSPEED;
   }
 
   WINDDIR = self.c_ofs;
@@ -99,7 +99,7 @@ void() map_change_wind={
   setsize( self, tempMin, tempMax );
   setorigin( self, self.origin );
   
-  self.m_fspeed = 0;
+  self.data_speed_forward = 0;
   self.c_alt_ofs = '0 0 0';
   self.use = map_change_wind_use;
   self.isActive = TRUE;

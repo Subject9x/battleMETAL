@@ -70,10 +70,10 @@ void() player_makeMech={
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
   
   client_push_player_info();
-  client_update_moveSpeed(self.m_fspeed, self.m_sspeed, self.m_bspeed, ftos(self.m_maccel), self.m_rollangle);
-  client_update_viewBob(self.m_bob, self.m_bcycle, self.m_bup);
-  client_update_modelBob(self.m_bmodel, self.m_bside, self.m_bobspd);
-  client_update_viewPitch( self.m_pitch_min, self.m_pitch_max );
+  client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
+  client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
+  client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
+  client_update_viewPitch( self.pitchMin, self.pitchMax );
 };
 
 void() player_unmakeMech={

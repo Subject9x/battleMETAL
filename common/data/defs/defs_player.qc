@@ -15,13 +15,13 @@ Overview:
 
 .float currentWeaponGroup;
 
-.string m_bob;    //bob settings are important for dat immersion
-.string m_bcycle;
-.string m_bup;  
-.string m_rollangle;
-.string m_bmodel;
-.string m_bside;
-.string m_bobspd;
+.string hud_bob;    //bob settings are important for dat immersion
+.string hud_bob_cycle;
+.string hud_bob_up;  
+.string hud_rollangle;
+.string hud_bob_model;
+.string hud_bob_side;
+.string hud_bob_speed;
 
 
 .float was_hit; //used for hit direction calculation mostly

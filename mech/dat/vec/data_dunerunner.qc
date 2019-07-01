@@ -41,11 +41,11 @@ void() data_dunerunner_ini={
   self.shieldRate= DAT_dunerunner_SHIELD_RATE;
   self.yaw_speed = DAT_dunerunner_YAW_SPEED;
   self.turret_yaw_speed = DAT_dunerunner_TUR_YAW;
-  self.m_fspeed = DAT_dunerunner_FSPEED;
-  self.m_sspeed = DAT_dunerunner_SSPEED;
-  self.m_bspeed = DAT_dunerunner_BSPEED;
-  self.m_pitch_max = DAT_dunerunner_PITCH_N;
-  self.m_pitch_min = DAT_dunerunner_PITCH_X;
+  self.data_speed_forward = DAT_dunerunner_FSPEED;
+  self.data_speed_strafe = DAT_dunerunner_SSPEED;
+  self.data_speed_backward = DAT_dunerunner_BSPEED;
+  self.pitchMax = DAT_dunerunner_PITCH_N;
+  self.pitchMin = DAT_dunerunner_PITCH_X;
   self.w_firetime = DAT_dunerunner_LOCK_ON;
   setsize(self, DAT_dunerunner_BBX_N, DAT_dunerunner_BBX_X);
   setorigin(self, self.origin);

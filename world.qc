@@ -45,7 +45,7 @@ Only used for the world entity.
 [wind]
   "c_ofs"
     <vector> initial wind direction
-  "m_fspeed"
+  "data_speed_forward"
     <float> initial wind speed
 
 [fog]
@@ -74,7 +74,7 @@ void() worldspawn =
   
   //setup wind settings
   WINDDIR = world.c_ofs;
-  WINDSPEED = world.m_fspeed;
+  WINDSPEED = world.data_speed_forward;
   
   if( !world.worldtype ){
     world.worldtype = 0;

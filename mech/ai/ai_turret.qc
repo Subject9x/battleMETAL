@@ -18,7 +18,7 @@ void() temp_chunk_burn={
   else{  
     makevectors( world.v_angle );
     local vector sm;
-    sm = world.v_angle + (v_forward * world.m_fspeed) + (v_right * world.m_fspeed) + (v_up * world.m_fspeed);
+    sm = world.v_angle + (v_forward * world.data_speed_forward) + (v_right * world.data_speed_forward) + (v_up * world.data_speed_forward);
     te_smoke_test(self.origin, sm + '0 0 15', 3);
     self.think = temp_chunk_burn;
   }

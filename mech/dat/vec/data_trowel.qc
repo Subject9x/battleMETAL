@@ -50,11 +50,11 @@ void() data_TROWEL_ini={
   self.yaw_speed = DAT_trowel_YAW_SPEED;
   self.turret_yaw_speed = DAT_trowel_TUR_YAW;
   self.c_model = DAT_TROWEL_MDL_CHASSIS;
-  self.m_fspeed = DAT_TROWEL_FSPEED;
-  self.m_sspeed = DAT_TROWEL_SSPEED;
-  self.m_bspeed = DAT_TROWEL_BSPEED;
-  self.m_pitch_max = DAT_TROWEL_PITCH_N;
-  self.m_pitch_min = DAT_TROWEL_PITCH_X;
+  self.data_speed_forward = DAT_TROWEL_FSPEED;
+  self.data_speed_strafe = DAT_TROWEL_SSPEED;
+  self.data_speed_backward = DAT_TROWEL_BSPEED;
+  self.pitchMax = DAT_TROWEL_PITCH_N;
+  self.pitchMin = DAT_TROWEL_PITCH_X;
   self.w_firetime = DAT_trowel_LOCK_ON;
   setsize(self, DAT_TROWEL_CTOR_BBX_N, DAT_TROWEL_CTOR_BBX_X);
   setorigin(self, self.origin);

@@ -37,10 +37,10 @@ void() data_ini_matok_={
 //=====================================
 
 //SPEED================================
-  self.m_fspeed = 150;
-  self.m_sspeed = 100;
-  self.m_bspeed = 90;
-  self.m_maccel = 1.5;
+  self.data_speed_forward = 150;
+  self.data_speed_strafe = 100;
+  self.data_speed_backward = 90;
+  self.data_speed_accel = 1.5;
   self.yaw_speed = 2.5;    //AI-only 
   self.turret_yaw_speed = 2.5;//AI-only
 //=====================================
@@ -50,22 +50,22 @@ void() data_ini_matok_={
   data_ini_camera_( '0 15 7' );
   
   //center torso
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', self, torsoCenter);
+  data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0' );
  
   //left torso
-  data_ini_unitPiece_( M_TOR_LEFT, "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1.5', self, torsoLeft);
+  data_ini_torso_left_( "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1.5' );
  
   //right torso
-  data_ini_unitPiece_( M_TOR_RIGHT, "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1.5', self, torsoRight);
+  data_ini_torso_right_( "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1.5' );
  
   //left arm
-  data_ini_unitPiece_( M_ARM_LEFT, "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-15 11 0', self.torsoLeft, armLeft);
+  data_ini_arm_left_( "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-15 11 0' );
  
   //right arm
-  data_ini_unitPiece_( M_ARM_RIGHT, "q3mdl/mechs/matok/matok_arm_r.md3", 675, '15 11 0', self.torsoRight, armRight);
-   
+  data_ini_arm_right_( "q3mdl/mechs/matok/matok_arm_r.md3", 675, '15 11 0' );
+
   //legs
-  data_ini_unitPiece_( M_LEGS, "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0', self, legs);
+  data_ini_legs_( "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0' );
 //=====================================
  
 //HARDPOINT DATA======================
@@ -77,16 +77,16 @@ void() data_ini_matok_={
 //=====================================
 
 //HUD Data=============================
-  self.m_pitch_max = 55;  //DEBUG
-  self.m_pitch_min = -45;
+  self.pitchMax = 55;  //DEBUG
+  self.pitchMin = -45;
   self.weaponmodel = "q3mdl/mechs/matok/matok_hud.md3";
-  self.m_rollangle = "2.25";
-  self.m_bob = "0.0008";
-  self.m_bcycle =  "0.5";
-  self.m_bup = "0.5";
-  self.m_bmodel = "1";
-  self.m_bside = "0.35";
-  self.m_bobspd = "6.55";
+  self.hud_rollangle = "2.25";
+  self.hud_bob = "0.0008";
+  self.hud_bob_cycle =  "0.5";
+  self.hud_bob_up = "0.5";
+  self.hud_bob_model = "1";
+  self.hud_bob_side = "0.35";
+  self.hud_bob_speed = "6.55";
 //====================================
 
 //UI Data=============================

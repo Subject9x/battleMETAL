@@ -48,11 +48,11 @@ void() data_sorcerer_ini={
   self.shieldRate= DAT_sorcerer_SHIELD_RATE;
   self.yaw_speed = DAT_sorcerer_YAW_SPEED;
   self.c_model = DAT_sorcerer_MODEL;
-  self.m_fspeed = DAT_sorcerer_FSPEED;
-  self.m_sspeed = DAT_sorcerer_SSPEED;
-  self.m_bspeed = DAT_sorcerer_BSPEED;
-  self.m_pitch_max = DAT_sorcerer_PITCH_N;
-  self.m_pitch_min = DAT_sorcerer_PITCH_X;
+  self.data_speed_forward = DAT_sorcerer_FSPEED;
+  self.data_speed_strafe = DAT_sorcerer_SSPEED;
+  self.data_speed_backward = DAT_sorcerer_BSPEED;
+  self.pitchMax = DAT_sorcerer_PITCH_N;
+  self.pitchMin = DAT_sorcerer_PITCH_X;
   self.w_firetime = DAT_sorcerer_LOCK_ON;
   setsize(self, DAT_sorcerer_CTOR_BBX_N, DAT_sorcerer_CTOR_BBX_X);
   setorigin(self, self.origin);

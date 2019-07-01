@@ -160,7 +160,7 @@ void() ButtonCommands={
     if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
       if( self.stat_plr_stt == PLAYER_ACTIVE ){
         self.stat_plr_stt = PLAYER_SPRINT_ON;
-        client_update_moveSpeed(self.m_fspeed * self.m_maccel, self.m_sspeed * self.m_maccel, self.m_bspeed * self.m_maccel, ftos(self.m_maccel), self.m_rollangle);
+        client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);
       }
     }
   }

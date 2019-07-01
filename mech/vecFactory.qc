@@ -387,18 +387,18 @@ void(void() data_ini) build_mech_bot={
   }
   
   //speed limits for AI because they change directions instantly :/
-  if( self.m_fspeed > 175 ){
-    self.m_fspeed = 175;
+  if( self.data_speed_forward > 175 ){
+    self.data_speed_forward = 175;
   }
-  if( self.m_sspeed > 175 ){
-    self.m_sspeed = 175;
+  if( self.data_speed_strafe > 175 ){
+    self.data_speed_strafe = 175;
   }
-  if( self.m_bspeed > 175 ){
-    self.m_bspeed = 175;
+  if( self.data_speed_backward > 175 ){
+    self.data_speed_backward = 175;
   }
-  self.m_fspeed = self.m_fspeed * AI_MECH_MOVE_FACTOR;
-  self.m_sspeed = self.m_sspeed * AI_MECH_MOVE_FACTOR;
-  self.m_bspeed = self.m_bspeed * AI_MECH_MOVE_FACTOR;
+  self.data_speed_forward = self.data_speed_forward * AI_MECH_MOVE_FACTOR;
+  self.data_speed_strafe = self.data_speed_strafe * AI_MECH_MOVE_FACTOR;
+  self.data_speed_backward = self.data_speed_backward * AI_MECH_MOVE_FACTOR;
   
   if( self.hardpoint_cnt > 0 ){
     build_unit_weapon_list();
@@ -483,15 +483,15 @@ void() build_mech_legs={
     self.th_die = ctrl_dieLegs;
     self.laser_sight_org = '0 0 0';
     self.laser_sight_timer = time + 0.5; 
-    self.w_firerate = 0; //used to track m_maccel changes
+    self.w_firerate = 0; //used to track data_speed_accel changes
     self.th_stand = leg_stand1;
     self.th_walk = leg_walk1;
     self.th_die = leg_die1;
     //we pack the unit's original speed values here, to allow us to restore them if the unit repairs its legs
-    self.m_fspeed = this.m_fspeed;
-    self.m_bspeed = this.m_bspeed;
-    self.m_sspeed = this.m_sspeed;
-    self.m_maccel = this.m_maccel;
+    self.data_speed_forward = this.data_speed_forward;
+    self.data_speed_backward = this.data_speed_backward;
+    self.data_speed_strafe = this.data_speed_strafe;
+    self.data_speed_accel = this.data_speed_accel;
     if( this.data_type == DATA_MECH ){
       leg_stand1();
     }

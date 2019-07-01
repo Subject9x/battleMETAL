@@ -31,23 +31,49 @@ void( float partId, string modelPath, float maxHp, vector partOffset, entity par
   piece.owner = self;
 };
 
+
+//just some syntactic sugar wrappings
+void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_center_={
+  data_ini_unitPiece_( M_TOR_CENTER, pathToModel, healthMax, offsetOrigin, self, torsoCenter );
+};
+
+void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_right_={
+  data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self, torsoRight );
+};
+
+void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_left_={
+  data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self, torsoLeft );
+};
+
+void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_legs_={
+  data_ini_unitPiece_( M_LEGS, pathToModel, healthMax, offsetOrigin, self, legs );
+};
+
+void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_arm_left_={
+  data_ini_unitPiece_( M_ARM_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoLeft, armLeft );
+};
+
+void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_arm_right_={
+  data_ini_unitPiece_( M_ARM_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoRight, armRight );
+};
+
 void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngle, float newHardPointSize, float newHardPointType ) data_ini_unitHardpoint_={
   local entity item;
   local entity notItem;
   if( self.hardpoint_cnt < 10){
     item = spawn();
-	notItem = self;
-	self = item;
-    self.data_idx = 0;
-    self.w_group = weaponNum;
-    self.partParentId = parentPartId;
-    self.c_ofs = pointOffset;
-    self.w_adj_ang = adjustAngle;
-    self.owner = notItem;
-    self.hardpointSize = newHardPointSize;
-    self.hardpointType = newHardPointType;
-    weaponList.w_slot = self;
-	self = notItem;
+    notItem = self;
+    self = item;
+      self.data_idx = 0;
+      self.w_group = weaponNum;
+      self.partParentId = parentPartId;
+      self.c_ofs = pointOffset;
+      self.w_adj_ang = adjustAngle;
+      self.owner = notItem;
+      self.hardpointSize = newHardPointSize;
+      self.hardpointType = newHardPointType;
+      weaponList.w_slot = self;
+    self = notItem;
     weaponList = item;
     self.hardpoint_cnt = self.hardpoint_cnt + 1;
   }

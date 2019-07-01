@@ -135,7 +135,7 @@ float( float scan_mode) ai_check_scan={
 };
 
 void(float moveSpeed) ai_walkgoal={
-  movetogoal( self.m_fspeed * AI_RUN_FACTOR );
+  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
 };
 
 void() ai_move_turn={
@@ -189,9 +189,9 @@ void( float alt_low, float alt_max) ai_fly_update={
   }
   
   if( fdir != 0 ){
-    fspd = (self.m_fspeed / 2) * AI_RUN_SPD;
-    sspd = (self.m_sspeed / 2) * AI_RUN_SPD;
-    bspd = (self.m_bspeed * AI_RUN_SPD) * fdir;
+    fspd = (self.data_speed_forward / 2) * AI_RUN_SPD;
+    sspd = (self.data_speed_strafe / 2) * AI_RUN_SPD;
+    bspd = (self.data_speed_backward * AI_RUN_SPD) * fdir;
     
     flydir = self.origin + (v_up * bspd);
     flydir = flydir + (v_right * sspd);

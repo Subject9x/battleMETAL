@@ -296,14 +296,14 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     if( dmgTrg.th_die ){
       if( dmgTrg.partTypeId == M_LEGS ){
         if( !(dmgTrg.flags & FL_DISARMED) ){
-          dmgTrg.owner.m_fspeed = dmgTrg.owner.m_fspeed / 2;
-          dmgTrg.owner.m_sspeed = dmgTrg.owner.m_sspeed / 2;
-          dmgTrg.owner.m_bspeed = dmgTrg.owner.m_bspeed / 2;
+          dmgTrg.owner.data_speed_forward = dmgTrg.owner.data_speed_forward / 2;
+          dmgTrg.owner.data_speed_strafe = dmgTrg.owner.data_speed_strafe / 2;
+          dmgTrg.owner.data_speed_backward = dmgTrg.owner.data_speed_backward / 2;
           dmgTrg.flags = dmgTrg.flags | FL_DISARMED;
           if( (dmgTrg.owner.flags & FL_CLIENT) ){
             otherSelf = self;
             self = dmgTrg.owner;
-              client_update_moveSpeed(dmgTrg.owner.m_fspeed, dmgTrg.owner.m_sspeed, dmgTrg.owner.m_bspeed, "1", "0"); 
+              client_update_moveSpeed(dmgTrg.owner.data_speed_forward, dmgTrg.owner.data_speed_strafe, dmgTrg.owner.data_speed_backward, "1", "0"); 
             self = otherSelf;
           }
         }
