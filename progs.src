@@ -140,14 +140,14 @@ mech/ctrl/ctrl_weapon_h.qc
   mech/ai/ai_stats.qc
   mech/ai/ai_api.qc
   mech/ai/ai_ctrl.qc
-  mech/ai/ai_turret.qc
-  mech/ai/ai_mech_skirmish.qc
-  mech/ai/ai_mech_sniper.qc
-  mech/ai/ai_destroyer.qc
-  mech/ai/ai_tank_skirmish.qc
-  //mech/ai/ai_noncom.qc TODO
-  //mech/ai/ai_vtol.qc TODO
-  mech/ai/ai_gev.qc
+  mech/ai/behaviors/ai_turret.qc
+  mech/ai/behaviors/ai_mech_skirmish.qc
+  mech/ai/behaviors/ai_mech_sniper.qc
+  mech/ai/behaviors/ai_destroyer.qc
+  mech/ai/behaviors/ai_tank_skirmish.qc
+  //mech/ai/behaviors/ai_noncom.qc TODO
+  //mech/ai/behaviors/ai_vtol.qc TODO
+  mech/ai/behaviors/ai_gev.qc
   mech/ai/ai_nodes.qc
   mech/ai/ai_voice.qc
   //-------------------------------
