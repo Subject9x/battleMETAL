@@ -75,7 +75,7 @@ entity AI_NODES[128];
 .float ai_minrange;     //minimum range of guns;
 .float ai_fov;          //the angle of the AI's view for visual target finding
 .float ai_view;         //range in game units of AI's vision
-.vector ai_pitch;       //x = min, y= max, z = pitch speed
+.vector ai_angleLimits;       //x = min, y= max, z = pitch speed
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
 .float ai_hunt_total;   //current number of hunt nodes
@@ -141,6 +141,7 @@ float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
 float( entity t ) ai_line_of_sight;
 void( entity t) ai_call_for_help;
+float( float aiYaw, float yawMin, float yawMax ) ai_check_turret_yaw;
 
 //AI MAP FUNCS
 float( void() ai_to_make ) ai_unit_setup;

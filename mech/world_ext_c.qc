@@ -96,14 +96,14 @@ void() mh_world_ini={
   setorigin(WeatherDominator, world.origin);
   WeatherDominator.movetype = MOVETYPE_NONE;
   WeatherDominator.solid = SOLID_NOT;
-  WeatherDominator.wind = WeatherDominator.ai_pitch = WINDDIR;
+  WeatherDominator.wind = WeatherDominator.ai_angleLimits = WINDDIR;
   //sets variance limits for wind so it doesn't wrap-around its rotation.
   WeatherDominator.wind_x = anglemod( WeatherDominator.wind_x - 10);
   WeatherDominator.wind_y = anglemod( WeatherDominator.wind_y - 35);
   WeatherDominator.wind_z = WeatherDominator.wind_z - 2;
-  WeatherDominator.ai_pitch_x = anglemod( WeatherDominator.ai_pitch_x + 10);
-  WeatherDominator.ai_pitch_y = anglemod( WeatherDominator.ai_pitch_y + 35);
-  WeatherDominator.ai_pitch_z = WeatherDominator.ai_pitch_z + 2;
+  WeatherDominator.ai_angleLimits_x = anglemod( WeatherDominator.ai_angleLimits_x + 10);
+  WeatherDominator.ai_angleLimits_y = anglemod( WeatherDominator.ai_angleLimits_y + 35);
+  WeatherDominator.ai_angleLimits_z = WeatherDominator.ai_angleLimits_z + 2;
   WeatherDominator.think = WeatherDominator_think;
   WeatherDominator.nextthink = time + (random() * 0.085);
   
@@ -170,20 +170,20 @@ void() WeatherDominator_think={
   if( randPitch < WeatherDominator.wind_x ){
     randPitch = WeatherDominator.wind_x;
   }
-  if( WINDDIR_x > WeatherDominator.ai_pitch_x ){
-    WINDDIR_x = WeatherDominator.ai_pitch_x;
+  if( WINDDIR_x > WeatherDominator.ai_angleLimits_x ){
+    WINDDIR_x = WeatherDominator.ai_angleLimits_x;
   }
   if( randYaw < WeatherDominator.wind_x ){
     randYaw = WeatherDominator.wind_x;
   }
-  if( randYaw > WeatherDominator.ai_pitch_y ){
-    randYaw = WeatherDominator.ai_pitch_y;
+  if( randYaw > WeatherDominator.ai_angleLimits_y ){
+    randYaw = WeatherDominator.ai_angleLimits_y;
   }
   if( randSpeed < WeatherDominator.wind_z ){
     randSpeed = WeatherDominator.wind_z;
   }
-  if( randSpeed > WeatherDominator.ai_pitch_z ){
-    randSpeed = WeatherDominator.ai_pitch_z;
+  if( randSpeed > WeatherDominator.ai_angleLimits_z ){
+    randSpeed = WeatherDominator.ai_angleLimits_z;
   }
   WINDDIR_x = randPitch;
   WINDDIR_y = randYaw;

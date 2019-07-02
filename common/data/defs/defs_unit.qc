@@ -42,6 +42,7 @@ Overview:
 .float turret_yaw_speed;
 .float pitchMin;
 .float pitchMax;
+.float evasionDrain;
 
 //Unit subcomponents
 .entity legs;

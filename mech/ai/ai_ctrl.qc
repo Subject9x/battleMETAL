@@ -18,7 +18,7 @@ void( float estate ) ai_turret_set_state={
 */
 void() ai_turret_control={
   local entity turretOwner;
-  local vector am;
+  local float turMax, turMin;
   if( (self.torsoCenter) ){
     turretOwner = self;
     self = self.torsoCenter;
@@ -37,9 +37,17 @@ void() ai_turret_control={
           self.ideal_yaw = self.ai_dir;
           break;
       }
-      ChangeYaw();
+      if( ai_check_turret_yaw( self.ideal_yaw, anglemod( turretOwner.angles_y - 90 ), anglemod( turretOwner.angles_y - 90 ) ) ){
+        ChangeYaw();
+      }
       self.v_angle = self.angles;
     self = turretOwner;
+  }
+};
+
+float( float aiYaw, float yawMin, float yawMax ) ai_check_turret_yaw={
+  if( yawMin > yawMax ){
+    return (( yawMin < aiYaw ) || ( aiYaw < yawMax ));
   }
 };
 
