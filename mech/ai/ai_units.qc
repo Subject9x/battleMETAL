@@ -873,10 +873,8 @@ void() unit_monitor_sniper_m={
 */
 
 void() building_turret_ini={
-  self.nextVecChoice = UID_TURRET_light_turret; //DEBUG
   self.flags = FL_TURRET;  //enforced for a mech
-  self.skin = self.faction;
-  ai_promote();
+  self.skin = 1;
   
   if( !ai_can_spawn() ){
     remove(self);
@@ -889,6 +887,9 @@ void() building_turret_ini={
 };
 
 void() building_turret_light_s={
+  self.nextVecChoice = UID_TURRET_light_turret;
+  self.faction = FACTION_SURVEST;
+  ai_promote();
   switch( self.ai_rank ){
     case 1:
       ai_ini_weapons(UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
@@ -911,6 +912,9 @@ void() building_turret_light_s={
 };
 
 void() building_turret_light_m={
+  self.nextVecChoice = UID_TURRET_light_turret;
+  self.faction = FACTION_MILITAR;
+  ai_promote();
   switch( self.ai_rank ){
     case 1:
       ai_ini_weapons(UID_ITEM_flak, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
@@ -933,6 +937,9 @@ void() building_turret_light_m={
 };
 
 void() building_turret_missile_s={
+  self.nextVecChoice = UID_TURRET_missile_turret;
+  self.faction = FACTION_SURVEST;
+  ai_promote();
   switch( self.ai_rank ){
     case 1:
       ai_ini_weapons(UID_ITEM_missile_laserguide, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
@@ -955,6 +962,9 @@ void() building_turret_missile_s={
 };
 
 void() building_turret_missile_m={
+  self.nextVecChoice = UID_TURRET_missile_turret;
+  self.faction = FACTION_MILITAR;
+  ai_promote();
   switch( self.ai_rank ){
     case 1:
       ai_ini_weapons(UID_ITEM_missile_activeradar, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
@@ -977,6 +987,9 @@ void() building_turret_missile_m={
 };
 
 void() building_turret_heavy_s={
+  self.nextVecChoice = UID_TURRET_heavy_turret;
+  self.faction = FACTION_SURVEST;
+  ai_promote();
   switch( self.ai_rank ){
     case 1:
       ai_ini_weapons(UID_ITEM_ion_coil, UID_ITEM_light_autocannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
@@ -999,6 +1012,9 @@ void() building_turret_heavy_s={
 };
 
 void() building_turret_heavy_m={
+  self.nextVecChoice = UID_TURRET_heavy_turret;
+  self.faction = FACTION_MILITAR;
+  ai_promote();
   switch( self.ai_rank ){
     case 1:
       ai_ini_weapons( UID_ITEM_emp, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
