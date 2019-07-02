@@ -1,9 +1,21 @@
 /*
-  battleMETAL
-  Date: 11/29/2017
-  Author: Peter Roohr
-  Overview: custom TE_'s using the effectinfo.txt system
+battleMETAL
+Date: 11/29/2017
+mod: 07/02/2019
+Author: Peter Roohr
+Overview: 
+  custom TE_'s using the effectinfo.txt system
 */
+
+
+vector( vector startOrg ) te_apply_wind={
+  local vector windVel;
+  
+  makevectors(world.wind);
+  windVel = startOrg + (v_up * WINDDIR_z) + (v_forward * (-1 * (WINDDIR_z/2)) );
+  return windVel;
+};
+
 
 //ported over from classice Quake C
 void(string gibname, float dm) ThrowGib =
@@ -42,9 +54,10 @@ entity( entity targetBuilding ) te_building_fire_start={
 };
 
 //TE_SMOKE_TEST
-void(vector org, vector vel, float total) te_smoke_test={
-  
-  pointparticles(particleeffectnum("SMOKE_TEST"), org , vel, total);
+void(vector org, float total) te_smoke_test={
+  local vector smoke;
+  smoke = te_apply_wind( org );
+  pointparticles(particleeffectnum("SMOKE_TEST"), org , smoke * WINDDIR_z, total);
 };
 
 /*
@@ -104,8 +117,8 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
   
   makevectors(self.angles);
   torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
-  dir = (WINDDIR + angl) * WINDSPEED;
-  dir = normalize( dir - vel );
+  dir = te_apply_wind( torg );
+  dir = normalize( dir - vel ) * WINDDIR_z;
   
   switch( world.worldtype ){
     default:
@@ -130,9 +143,8 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
 
 void() te_flame_th={
   
-  makevectors( self.angles );
-  self.c_alt_ofs = self.origin + (v_up * self.c_ofs_y) + (v_forward * self.c_ofs_z) + (v_right * self.c_ofs_x);
-  pointparticles( particleeffectnum(self.vec_name), self.origin, normalize(self.c_alt_ofs - self.origin) * 1, self.count);
+  self.c_alt_ofs = te_apply_wind( self.origin );
+  pointparticles( particleeffectnum(self.vec_name), self.origin, normalize(self.c_alt_ofs - self.origin) * WINDDIR_z, self.count);
 
   self.think = te_flame_th;
   if( self.p_lifetime > 0 ){
@@ -143,7 +155,7 @@ void() te_flame_th={
   self.nextthink = time + self.count2;
 };
 
-void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_small_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate) te_small_flame_start={
   local entity fire;
   
   fire = spawn();
@@ -153,7 +165,6 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   fire.angles = angl;
   fire.think = te_flame_th;
   fire.nextthink = time + fire.w_firetime;
-  fire.c_ofs = vel; //holds velocity;
   fire.count = total;
   fire.vec_name = "TE_FIRE_1";
   if( lifetime > 0 ){
@@ -162,7 +173,7 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   setorigin( fire, org );
 };
 
-void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_med_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate) te_med_flame_start={
   local entity fire;
   
   fire = spawn();
@@ -172,7 +183,6 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   fire.angles = angl;
   fire.think = te_flame_th;
   fire.nextthink = time + fire.w_firetime;
-  fire.c_ofs = vel; //holds velocity;
   fire.count = total;
   fire.vec_name = "TE_FIRE_2";
   if( lifetime > 0 ){
@@ -181,7 +191,7 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   setorigin( fire, org );
 };
 
-void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_big_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate) te_big_flame_start={
   local entity fire;
   
   fire = spawn();
@@ -191,7 +201,6 @@ void( vector org, vector angl, vector vel, float total, float lifetime, float ti
   fire.angles = angl;
   fire.think = te_flame_th;
   fire.nextthink = time + fire.w_firetime;
-  fire.c_ofs = vel; //holds velocity;
   fire.count = total;
   fire.vec_name = "TE_FIRE_3";
   if( lifetime > 0 ){
@@ -354,7 +363,7 @@ void( vector org, vector angl, float vecSize, vector unitMins, float left) te_fo
       return;
     }
     sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 16,  vecSize * 3);
+    pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
 };
 
 //HUD Sound Effects

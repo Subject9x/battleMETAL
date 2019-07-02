@@ -29,7 +29,6 @@ void() map_change_wind_revert={
   if( (self.spawnflags & 16) ){
     //revert to original
     WINDDIR = self.c_alt_ofs;
-    WINDSPEED = self.data_speed_forward;
   }
   
   if( (self.spawnflags & 8) ){
@@ -49,11 +48,9 @@ void() map_change_wind_new={
   if( (self.spawnflags & 16) ){
     //cache old wind values
     self.c_alt_ofs = WINDDIR;
-    self.data_speed_forward = WINDSPEED;
   }
 
   WINDDIR = self.c_ofs;
-  WINDSPEED = self.p_velocity;
   
   self.think = map_change_wind_revert;
   self.nextthink = time + 0.1;

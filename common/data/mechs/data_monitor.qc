@@ -80,7 +80,7 @@ void() data_ini_monitor_={
 //=====================================
 
 //HUD Data=============================
-  self.pitchMax = 45;  //DEBUG
+  self.pitchMax = 45;
   self.pitchMin = -25;
   self.weaponmodel = "q3mdl/mechs/monitor/monitor_hud.md3";
   self.hud_rollangle = "2.25";

@@ -2,6 +2,7 @@
 battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
+mod: 07/02/2019
 Overview: 
   Extension functions to world.qc 
   these functions are here for their abstraction level.
@@ -86,6 +87,26 @@ void() mh_world_ini={
       TE_STOMP_TYPE = particleeffectnum("TE_STOMP_SAND");
       break;
   }
+  
+  //setup wind settings
+  WINDDIR = world.wind;
+  
+  WeatherDominator = spawn();
+  setsize(WeatherDominator, '-1 -1 -1', '1 1 1');
+  setorigin(WeatherDominator, world.origin);
+  WeatherDominator.movetype = MOVETYPE_NONE;
+  WeatherDominator.solid = SOLID_NOT;
+  WeatherDominator.wind = WeatherDominator.ai_pitch = WINDDIR;
+  //sets variance limits for wind so it doesn't wrap-around its rotation.
+  WeatherDominator.wind_x = anglemod( WeatherDominator.wind_x - 10);
+  WeatherDominator.wind_y = anglemod( WeatherDominator.wind_y - 35);
+  WeatherDominator.wind_z = WeatherDominator.wind_z - 2;
+  WeatherDominator.ai_pitch_x = anglemod( WeatherDominator.ai_pitch_x + 10);
+  WeatherDominator.ai_pitch_y = anglemod( WeatherDominator.ai_pitch_y + 35);
+  WeatherDominator.ai_pitch_z = WeatherDominator.ai_pitch_z + 2;
+  WeatherDominator.think = WeatherDominator_think;
+  WeatherDominator.nextthink = time + (random() * 0.085);
+  
 };
 
 /*
@@ -131,6 +152,45 @@ void() world_get_fog={
 */
 float( entity t ) world_calc_fog={
   return FALSE; //TODO - clarify
+};
+
+/*
+  Put all weather control effects here.
+  1) Handles WINDDIR variance.
+*/
+void() WeatherDominator_think={
+  //wind shifter
+  local float randPitch, randYaw, randSpeed;
+  randPitch = 10 + (random() * 10);
+  randYaw = 17 + (crandom() * 17);
+  randSpeed = 1 + (crandom() * 2);
+  randPitch = anglemod( WINDDIR_x + randPitch );
+  randYaw = anglemod( WINDDIR_y + randYaw );
+  randSpeed = randSpeed;
+  if( randPitch < WeatherDominator.wind_x ){
+    randPitch = WeatherDominator.wind_x;
+  }
+  if( WINDDIR_x > WeatherDominator.ai_pitch_x ){
+    WINDDIR_x = WeatherDominator.ai_pitch_x;
+  }
+  if( randYaw < WeatherDominator.wind_x ){
+    randYaw = WeatherDominator.wind_x;
+  }
+  if( randYaw > WeatherDominator.ai_pitch_y ){
+    randYaw = WeatherDominator.ai_pitch_y;
+  }
+  if( randSpeed < WeatherDominator.wind_z ){
+    randSpeed = WeatherDominator.wind_z;
+  }
+  if( randSpeed > WeatherDominator.ai_pitch_z ){
+    randSpeed = WeatherDominator.ai_pitch_z;
+  }
+  WINDDIR_x = randPitch;
+  WINDDIR_y = randYaw;
+  WINDDIR_z = randSpeed;
+  
+  WeatherDominator.think = WeatherDominator_think;
+  WeatherDominator.nextthink = time + 0.05;
 };
 
 /*

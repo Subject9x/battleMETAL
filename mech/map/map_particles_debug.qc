@@ -24,9 +24,7 @@ Inputs
 
 //TE_SMOKE_TEST
 void() debug_smoke={
-  local vector dir;
-  dir = (WINDDIR + self.v_angle) * WINDSPEED;
-  te_smoke_test(self.origin, dir, self.count);
+  te_smoke_test(self.origin, self.count);
 };
 
 /*

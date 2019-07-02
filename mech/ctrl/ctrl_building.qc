@@ -60,9 +60,9 @@ void() building_die_removeFire={
 };
 
 void() building_burn_th={
-  makevectors( self.angles );
-  self.c_alt_ofs = self.origin + (v_up * 4);
-  pointparticles( self.damageValue, self.origin, normalize(self.c_alt_ofs - self.origin) * 1, self.count);
+
+  self.c_alt_ofs = te_apply_wind( self.origin );
+  pointparticles( self.damageValue, self.origin, normalize(self.c_alt_ofs - self.origin) * WINDDIR_z, self.count);
   self.think = building_burn_th;
   self.nextthink = time + 0.1;
 };
@@ -71,41 +71,14 @@ void() building_burn={
   if( self.health < self.max_health * 0.65){
     if( !self.armLeft || (self.armLeft == world) ){
       self.armLeft  = te_building_fire_start( self );
-      /*self.armLeft = spawn();
-      self.armLeft.origin = util_pointNearBoxEdge( self.origin, self.angles, self.mins, self.maxs );
-      self.armLeft.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
-      self.armLeft.think = building_burn_th;
-      self.armLeft.nextthink = time + 0.1;
-      self.armLeft.angles = self.angles;
-      self.armLeft.count = self.vec_size+1/3;
-      te_debris(self.armLeft.origin, self.angles, '1 1 8', random() * (self.vec_size * 6), self.vec_size);
-      self.color = self.color - '0.1 0.1 0.1';*/
     }
     if( self.health < self.max_health * 0.45){
       if( !self.armRight || (self.armRight == world) ){
         self.armRight = te_building_fire_start( self );
-        /*self.armRight = spawn();
-        self.armRight.origin = util_pointNearBoxEdge( self.origin, self.angles, self.mins, self.maxs );
-        self.armRight.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
-        self.armRight.think = building_burn_th;
-        self.armRight.nextthink = time + 0.1;
-        self.armRight.angles = self.angles;
-        self.armRight.count = self.vec_size+1/3;
-        te_debris(self.armRight.origin, self.angles, '1 1 5', random() * (self.vec_size * 5), self.vec_size);
-        self.color = self.color - '0.1 0.1 0.1';*/
       }
       if( self.health < self.max_health *0.25){
         if( !self.torsoLeft || (self.torsoLeft == world) ){
           self.torsoLeft = te_building_fire_start( self );
-          /*self.torsoLeft = spawn();
-          self.torsoLeft.origin = util_pointNearBoxEdge( self.origin, self.angles, self.mins, self.maxs );
-          self.torsoLeft.damageValue = particleeffectnum(strcat("TE_FIRE_", ftos(self.vec_size)));
-          self.torsoLeft.think = building_burn_th;
-          self.torsoLeft.nextthink = time + 0.1;
-          self.torsoLeft.angles = self.angles;
-          self.torsoLeft.count = self.vec_size+1/3;
-          te_debris(self.torsoLeft.origin, self.angles, '1 1 3', random() * (self.vec_size * 4), self.vec_size);
-          self.color = self.color - '0.1 0.1 0.1';*/
         }
       }
     }

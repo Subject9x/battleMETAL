@@ -7,9 +7,6 @@ void() main =
 	skill = cvar("skill");
 };
 
-
-//entity	lastspawn;
-
 //=======================
 
 /*QUAKED worldspawn (0 0 0) ?
@@ -43,10 +40,9 @@ Only used for the world entity.
     <float> [CD track number] - play this track during gameplay
 
 [wind]
-  "c_ofs"
-    <vector> initial wind direction
-  "data_speed_forward"
-    <float> initial wind speed
+  "wind"
+    <vector> wind direction and speed
+    X Y Z = pitch, yaw, speed
 
 [fog]
   "fog_density" "1"
@@ -72,24 +68,20 @@ void() worldspawn =
   
   CLIENTS = 0;
   
-  //setup wind settings
-  WINDDIR = world.c_ofs;
-  WINDSPEED = world.data_speed_forward;
-  
+  //defaults worldtype to DESERT if var is missing.
   if( !world.worldtype ){
     world.worldtype = 0;
   }
-  
-  dprint( strcat("WINDDIR(c_ofs)", vtos(world.c_ofs),"\n")); //DEBUG
+
 // custom map attributes
-	if (self.model == "maps/e1m8.bsp")
+	/*if (self.model == "maps/e1m8.bsp")
 		cvar_set ("sv_gravity", "100");
 	else
 		cvar_set ("sv_gravity", "800");
-
+  */
     
   //setmodel(self, "maps/t_train0.bsp");
-// the area based ambient sounds MUST be the first precache_sounds
+  // the area based ambient sounds MUST be the first precache_sounds
   
   //see q1/precache_world.q1_precache_sound();
   

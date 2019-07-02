@@ -51,13 +51,13 @@ void() ai_tank_sk_die={
   vel = self.origin + (v_up * self.vec_size);
   switch( self.vec_size ){
     case 2:
-      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
       break;
     case 3:
-      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
       break;
     default:
-      te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
       break;
   }
   
@@ -65,12 +65,10 @@ void() ai_tank_sk_die={
 };
 
 void() ai_tank_sk_die1={
-  local vector sm;
-  
+
   self.deadflag = DEAD_DEAD;
-  makevectors( world.v_angle );
-  sm = world.v_angle + (v_forward * world.data_speed_forward) + (v_right * world.data_speed_forward) + (v_up * world.data_speed_forward);
-  te_smoke_test(self.origin, sm + '0 0 10', 2);
+
+  te_smoke_test(self.origin, 2);
   
   self.think = ai_tank_sk_die1;
   if ( time > self.ai_action_time ){

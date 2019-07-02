@@ -26,7 +26,7 @@ void() ai_gev_pain={
 
 void() ai_gev_die1={
   self.deadflag = DEAD_DEAD;
-  te_smoke_test(self.origin, '1 1 10', 4) ;
+  te_smoke_test(self.origin, 4) ;
   
   self.think = ai_gev_die1;
   if( time > self.ai_action_time ){
@@ -44,13 +44,13 @@ void() ai_gev_touch_death={
     vel = self.origin + (v_up * 2);
     switch( self.vec_size ){
       case 2:
-        te_med_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
+        te_med_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
         break;
       case 3:
-        te_big_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
+        te_big_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
         break;
       default:
-        te_small_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, normalize( vel - self.origin ) * 8, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
+        te_small_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50); 
         break;
     }
     self.touch = SUB_Null;

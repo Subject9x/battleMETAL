@@ -77,7 +77,7 @@ void() data_ini_matok_={
 //=====================================
 
 //HUD Data=============================
-  self.pitchMax = 55;  //DEBUG
+  self.pitchMax = 55;
   self.pitchMin = -45;
   self.weaponmodel = "q3mdl/mechs/matok/matok_hud.md3";
   self.hud_rollangle = "2.25";

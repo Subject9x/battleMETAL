@@ -2054,6 +2054,7 @@ velocitymultiplier 1
   airfriction 4
   bounce 1
   
+  //TE_MECHPIECE_DEAD_BURN - Light
   effect TE_MECHPIECE_DEAD_BURN
   lightradius 25
   lightradiusfade 100
@@ -2061,6 +2062,7 @@ velocitymultiplier 1
   lightshadow 0.4
   notunderwater
   
+  //TE_MECHPIECE_DEAD_BURN - Smoke
   effect TE_MECHPIECE_DEAD_BURN
   count 0.1
   type smoke
@@ -2164,6 +2166,7 @@ velocitymultiplier 1
   gravity -0.005
   originjitter 0.25 0.25 -8
   velocityjitter 1 1 1
+  velocitymultiplier 2
   
   //TE_FIRE_SMALL - FLAME
   effect TE_FIRE_1
@@ -2195,7 +2198,8 @@ velocitymultiplier 1
   time 2 3
   gravity -0.006
   originjitter 0.25 0.25 0.25
-  velocityjitter 2 2 2
+  velocityjitter 1 1 0
+  velocitymultiplier 2
   
   //TE_FIRE_SMALL - LIGHT
   effect TE_FIRE_1
@@ -2225,6 +2229,7 @@ velocitymultiplier 1
   gravity -0.005
   originjitter 0.25 0.25 -8
   velocityjitter 1 1 1
+  velocitymultiplier 1.75
   
   //TE_FIRE_MED - LIGHT
   effect TE_FIRE_2
@@ -2247,7 +2252,7 @@ velocitymultiplier 1
   gravity -0.005
   originjitter 3 3 2
   velocityjitter 2 2 2
-  velocitymultiplier 3
+  velocitymultiplier 2
   
   //TE_FIRE_MED - HOT SMOKE
   effect TE_FIRE_2
@@ -2263,6 +2268,7 @@ velocitymultiplier 1
   gravity -0.006
   originjitter 0.25 0.25 0.25
   velocityjitter 2 2 2
+  velocitymultiplier 1.75
   
   //TE_FIRE_MED - SPARKS
   effect TE_FIRE_2
@@ -2299,6 +2305,7 @@ velocitymultiplier 1
   gravity -0.005
   originjitter 0.25 0.25 -8
   velocityjitter 1 1 1
+  velocitymultiplier 1.5
   
   //TE_FIRE_BIG - LIGHT
   effect TE_FIRE_3
@@ -2321,7 +2328,7 @@ velocitymultiplier 1
   gravity -0.0025
   originjitter 6 6 6
   velocityjitter 3 3 3
-  velocitymultiplier 4
+  velocitymultiplier 3
   
   //TE_FIRE_BIG - HOT SMOKE
   effect TE_FIRE_3
@@ -2337,6 +2344,7 @@ velocitymultiplier 1
   gravity -0.006
   originjitter 0.25 0.25 0.25
   velocityjitter 2 2 2
+  velocitymultiplier 1.75
   
   //TE_FIRE_BIG - SPARKS
   effect TE_FIRE_3
@@ -2524,7 +2532,7 @@ velocitymultiplier 1
     sizeincrease 0.25
     alpha 350 400 128
     velocityjitter 10 10 10
-    velocitymultiplier 0.1
+    velocitymultiplier 1
     notunderwater
     stretchfactor 5    
 //================================================
@@ -2578,6 +2586,7 @@ velocitymultiplier 1
     alpha 128 256 64
     originjitter 6 2 6
     velocityjitter 2 2 2
+    velocitymultiplier 1.5
     notunderwater
     stretchfactor 3
 //================================================
@@ -2636,6 +2645,7 @@ velocitymultiplier 1
     alpha 512 1024 512
     notunderwater
     stretchfactor 3
+    velocitymultiplier 1.5
 //================================================
 
 

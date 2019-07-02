@@ -8,8 +8,10 @@ Overview: function extensions to world.qc
 
 //GLOBALS
 float CLIENTS;
+
+entity WeatherDominator;  //global weather controlling entity.
 vector WINDDIR; //these get set by worldspawn but are here because 
-float WINDSPEED;//  modifying world.value is not kosher
+void() WeatherDominator_think;
 
 float TE_STOMP_TYPE;  //set by world type
 
@@ -19,6 +21,7 @@ float TE_STOMP_TYPE;  //set by world type
 .string msn_file;
 .string map_file;
 .entity particleCube; //used by mech/map/map_particlecube_effect.qc
+.vector wind;
 
 void() mh_world_ini;
 

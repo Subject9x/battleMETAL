@@ -74,7 +74,7 @@ void() data_ini_balaket_={
 //=====================================
 
 //HUD DATA=============================
-  self.pitchMax = 45;  //DEBUG
+  self.pitchMax = 45;
   self.pitchMin = -15;
   self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.md3";
   self.hud_rollangle = "2";

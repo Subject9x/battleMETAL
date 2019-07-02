@@ -8,16 +8,17 @@
 void(string gibname, float dm) ThrowGib ;
 vector(float dm) VelocityForDamage;
 
+vector( vector startOrg ) te_apply_wind;
 
-void(vector org, vector vel, float total) te_smoke_test;
+void(vector org, float total) te_smoke_test;
 
 void( vector org, vector angl, vector vel, float total, float debrType) te_debris;
 
 void( vector org, vector angl, vector vel, float total) te_unit_dust;
 
-void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_small_flame_start;
-void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_med_flame_start;
-void( vector org, vector angl, vector vel, float total, float lifetime, float ticrate) te_big_flame_start;
+void( vector org, vector angl, float total, float lifetime, float ticrate) te_small_flame_start;
+void( vector org, vector angl, float total, float lifetime, float ticrate) te_med_flame_start;
+void( vector org, vector angl, float total, float lifetime, float ticrate) te_big_flame_start;
 
 void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high;
 void( vector org, float vecSize ) te_shield_explode;

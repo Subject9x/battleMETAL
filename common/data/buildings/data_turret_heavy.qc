@@ -41,12 +41,12 @@ void() data_ini_heavy_turret_={
 //=====================================
  
 //MECH COMPONENTS====================
-  self.model = precache_model("q3mdl/buildings/turret_heavy/mdl_turret_heavy_base.md3");
+  self.model = "q3mdl/buildings/turret_heavy/mdl_turret_heavy_base.md3";
   //camera location
   data_ini_camera_( '0 12 20' );
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, precache_model("q3mdl/buildings/turret_heavy/mdl_turret_heavy_turret.md3"), 1, '0 8 0', self, torsoCenter); 
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_heavy/mdl_turret_heavy_turret.md3", 1, '0 8 0', self, torsoCenter); 
 //=====================================
  
 //HARDPOINTS==========================

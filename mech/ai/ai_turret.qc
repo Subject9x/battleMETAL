@@ -16,10 +16,7 @@ void() temp_chunk_burn={
     self.think = SUB_Remove;
   }
   else{  
-    makevectors( world.v_angle );
-    local vector sm;
-    sm = world.v_angle + (v_forward * world.data_speed_forward) + (v_right * world.data_speed_forward) + (v_up * world.data_speed_forward);
-    te_smoke_test(self.origin, sm + '0 0 15', 3);
+    te_smoke_test(self.origin, 3);
     self.think = temp_chunk_burn;
   }
 	self.nextthink = time + 0.1;
@@ -52,7 +49,7 @@ void() ai_turret_die={
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, normalize( v - self.origin ) * 8, self.vec_size, 360, self.vec_size / 20); 
+  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, 360, self.vec_size / 20); 
   
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;

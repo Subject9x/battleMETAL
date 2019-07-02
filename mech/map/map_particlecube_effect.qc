@@ -52,19 +52,8 @@ Inputs
 */
 void() map_particlecube_effect_think={
   local float cubeLen;
-  local vector playerMove, playerOffsetOrigin;
+  local vector playerMove, playerOffsetOrigin, particleVelocity;
 
-  switch( self.data_idx ){
-    case 1:
-      te_particlerain(self.absmin, self.absmax, self.velocity, self.count, self.count1);
-      break;
-    case 2:
-      te_particlesnow(self.absmin, self.absmax, self.velocity, self.count, self.count1);
-      break;
-    default:
-      te_particlecube(self.absmin, self.absmax, self.velocity, self.count, self.count1, self.jump_flag, self.count2);
-      break;
-  }
   
   playerMove = vectoangles( self.owner.velocity );
   makevectors( playerMove );
@@ -73,6 +62,23 @@ void() map_particlecube_effect_think={
   if( cubeLen > self.maxs_x ){
     setorigin( self, self.owner.origin + (v_forward * (self.maxs_x * 0.9)) ) ; 
   }
+  
+  particleVelocity = te_apply_wind( self.origin );
+  particleVelocity = normalize( particleVelocity - self.origin );
+  particleVelocity_z = self.velocity_z;
+  
+  switch( self.data_idx ){
+    case 1:
+      te_particlerain(self.absmin, self.absmax, particleVelocity, self.count, self.count1);
+      break;
+    case 2:
+      te_particlesnow(self.absmin, self.absmax, particleVelocity, self.count, self.count1);
+      break;
+    default:
+      te_particlecube(self.absmin, self.absmax, particleVelocity, self.count, self.count1, self.jump_flag, self.count2);
+      break;
+  }
+  
   
   self.nextthink = time + 0.025;
   self.think = map_particlecube_effect_think;
