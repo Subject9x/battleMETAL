@@ -41,6 +41,7 @@ void() data_ini_foslager_={
   self.data_speed_accel = 1;
   self.yaw_speed = 2.5;    //AI-only 
   self.turret_yaw_speed = 3;//AI-only
+  self.ai_angleLimits = '-135 135 0';
 //=====================================
  
 //MECH COMPONENTS====================

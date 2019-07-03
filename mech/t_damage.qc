@@ -211,17 +211,18 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     dmgAmt = t_damage_mis( dmgTrg, dmgInflictor, dmgAmt );
   }
   
-  //shield delay chech
-  trg.sh_hit = dmg_amt / 100;
+  //shield delay check
   trg.sh_hit = trg.sh_hit + (4 - trg.vec_size);
   trg.sh_hit = trg.sh_hit + (3 - skill);
   if( trg.shield <= FALSE ){
-    trg.sh_hit = trg.sh_hit + (trg.sh_hit * 6);
+    trg.sh_hit = trg.sh_hit + (trg.sh_hit * 3);
   }
   else{
-    trg.sh_hit = trg.sh_hit * 3;
+    trg.sh_hit = trg.sh_hit * 2;
   }
-  trg.sh_hit = time + trg.sh_hit;
+  trg.sh_hit = trg.sh_hit / 100;
+  trg.sh_hit = trg.sh_hit + (dmg_amt / 500);
+  trg.sh_hit = time + (trg.sh_hit + SHIELD_DELAY);
   
   //AI react to Damage
   if( (trg.flags & FL_MONSTER) ){

@@ -257,8 +257,9 @@ sizeincrease 0.1
 alpha 128 240 32
 time 6 10
 originjitter 1.5 1.5 1.5
-velocityjitter 3 3 2
+velocityjitter 1 1 1
 velocitymultiplier 1
+gravity -0.005
 //==========================================
 
 
@@ -2074,7 +2075,8 @@ velocitymultiplier 1
   alpha 220 220 48
   originjitter 1 1 1
   velocityjitter 1 1 1
-  gravity -0.005
+  gravity -0.0005
+  velocitymultiplier 1
 
 //==========================================
 

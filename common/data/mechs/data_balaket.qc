@@ -42,6 +42,7 @@ void() data_ini_balaket_={
   self.data_speed_accel = 1.5;
   self.yaw_speed = 2.75;    //AI-only 
   self.turret_yaw_speed = 3;//AI-only
+  self.ai_angleLimits = '-125 125 0';
 //=====================================
  
 //MECH COMPONENTS====================

@@ -41,6 +41,7 @@ void() data_ini_trowel_={
   self.data_speed_accel = 1;
   self.yaw_speed = 0.75;    //AI-only 
   self.turret_yaw_speed = 1.25;//AI-only - but has no turret
+  self.ai_angleLimits = '-90 90 0';
 //=====================================
  
 //MECH COMPONENTS====================

@@ -57,7 +57,7 @@ entity( entity targetBuilding ) te_building_fire_start={
 void(vector org, float total) te_smoke_test={
   local vector smoke;
   smoke = te_apply_wind( org );
-  pointparticles(particleeffectnum("SMOKE_TEST"), org , smoke * WINDDIR_z, total);
+  pointparticles(particleeffectnum("SMOKE_TEST"), org , normalize(smoke - org) * WINDDIR_z, total);
 };
 
 /*

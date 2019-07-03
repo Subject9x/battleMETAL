@@ -37,7 +37,7 @@ void() ai_turret_control={
           self.ideal_yaw = self.ai_dir;
           break;
       }
-      if( ai_check_turret_yaw( self.ideal_yaw, anglemod( turretOwner.angles_y - 90 ), anglemod( turretOwner.angles_y - 90 ) ) ){
+      if( ai_check_turret_yaw( self.ideal_yaw, anglemod( turretOwner.angles_y - turretOwner.ai_angleLimits_x ), anglemod( turretOwner.angles_y + turretOwner.ai_angleLimits_y ) ) ){
         ChangeYaw();
       }
       self.v_angle = self.angles;
@@ -47,8 +47,14 @@ void() ai_turret_control={
 
 float( float aiYaw, float yawMin, float yawMax ) ai_check_turret_yaw={
   if( yawMin > yawMax ){
-    return (( yawMin < aiYaw ) || ( aiYaw < yawMax ));
+    if( yawMin <= aiYaw ){
+      return TRUE;
+    }
+    if( aiYaw <= yawMax ){
+      return TRUE;
+    }
   }
+  return FALSE;
 };
 
 void() ai_leg_control={

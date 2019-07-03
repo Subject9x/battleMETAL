@@ -89,7 +89,11 @@ void() mh_world_ini={
   }
   
   //setup wind settings
-  WINDDIR = world.wind;
+  if( !world.wind ){
+    WINDDIR = '-15 90 3';
+  }else{
+    WINDDIR = world.wind;
+  }
   
   WeatherDominator = spawn();
   setsize(WeatherDominator, '-1 -1 -1', '1 1 1');

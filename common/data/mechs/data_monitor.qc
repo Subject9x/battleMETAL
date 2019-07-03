@@ -42,6 +42,7 @@ void() data_ini_monitor_={
   self.data_speed_accel = 2;
   self.yaw_speed = 1;    //AI-only 
   self.turret_yaw_speed = 1;//AI-only
+  self.ai_angleLimits = '-60 60 0';
 //=====================================
  
 //MECH COMPONENTS====================

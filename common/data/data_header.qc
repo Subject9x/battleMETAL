@@ -57,7 +57,7 @@ void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_arm_ri
   data_ini_unitPiece_( M_ARM_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoRight, armRight );
 };
 
-void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngle, float newHardPointSize, float newHardPointType ) data_ini_unitHardpoint_={
+void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjustAngleVec, float newHardPointSizeVal, float newHardPointTypeVal ) data_ini_unitHardpoint_={
   local entity item;
   local entity notItem;
   if( self.hardpoint_cnt < 10){
@@ -65,13 +65,13 @@ void( float weaponNum, float parentPartId, vector pointOffset, vector adjustAngl
     notItem = self;
     self = item;
       self.data_idx = 0;
-      self.w_group = weaponNum;
-      self.partParentId = parentPartId;
-      self.c_ofs = pointOffset;
-      self.w_adj_ang = adjustAngle;
+      self.w_group = weaponBit;
+      self.partParentId = parentPartID;
+      self.c_ofs = pointOffsetVec;
+      self.w_adj_ang = adjustAngleVec;
       self.owner = notItem;
-      self.hardpointSize = newHardPointSize;
-      self.hardpointType = newHardPointType;
+      self.hardpointSize = newHardPointSizeVal;
+      self.hardpointType = newHardPointTypeVal;
       weaponList.w_slot = self;
     self = notItem;
     weaponList = item;

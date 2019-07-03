@@ -20,7 +20,7 @@ void() data_ini_missile_turret_={
   self.vec_name = "Missile Turret";
  
   self.max_health = 200;
-  setsize(self, '-20 -20 -13', '20 20 40');
+  setsize(self, '-20 -20 -13', '20 20 20');
   
 //ENERGY AND SHIELDS===================
   self.energyMax  = 100;
@@ -38,20 +38,21 @@ void() data_ini_missile_turret_={
   //only yaw speeds because turrets can't move...
   self.yaw_speed = 0;    //AI-only 
   self.turret_yaw_speed = 3;//AI-only - but has no turret
+  self.ai_angleLimits = '-360 360 0';
 //=====================================
  
 //MECH COMPONENTS====================
-  self.model = "q3mdl/buildings/turret_missile/mdl_turret_missile_base.md3";
+  self.model = "q3mdl/buildings/turret_missile/mdl_turret_missile_base.obj";
   //camera location
   data_ini_camera_( '0 12 20' );
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3", 1, '0 16 0', self, torsoCenter); 
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3", 1, '0 -12 0', self, torsoCenter); 
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-9 16 11', '0 0 90', 2, DMG_EXP);
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '9 16 11', '0 0 90', 2, DMG_EXP);
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-9 17 11', '0 0 90', 2, DMG_EXP);
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '9 17 11', '0 0 90', 2, DMG_EXP);
 //=====================================
 
 //HUD DATA=============================

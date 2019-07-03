@@ -121,7 +121,8 @@ void() ctrl_updateCenterTorso={
       partParent = util_getPartFromName(piece.partParentId, self); 
       if( partParent.deadflag <= DEAD_NO ){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5, 1);
+        spark = te_apply_wind( spark );
+        pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * WINDDIR_z, 1);
       }
     }
     piece = piece.partNext;
@@ -175,9 +176,8 @@ void() ctrl_component_die={
 
 void() ctrl_component_burn={
   local vector spark;
-  makevectors( self.angles );
-  spark = self.origin + (v_up * 10);
-  pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - self.origin) * 5, self.vec_size * 1.5);
+  spark = te_apply_wind( self.origin );
+  pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - self.origin) * WINDDIR_z, self.vec_size * 1.5);
   self.think = ctrl_component_burn;
   self.nextthink = time + 0.1;
   if( time > self.ai_action_time ){

@@ -1,13 +1,10 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/16/2017
 overview: the defs file for damage calculation numbers
 primarily used by t_damage stuff.
 */
-
-//Shield cooldown time
-float SHIELD_RECHARGE_COOLDOWN = 8;
 
 //shield vs effect by damage type
 float SHVBAL_EFFPRC_PERCENTAGE = 5;

@@ -46,7 +46,9 @@ void() data_ini_equip_super_charger_={
 void() super_charger_upgrade_={
   if( (self.owner.flags & FL_CLIENT) ){
     
+    #if !CSQC
     client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, "TODO", self.owner.hud_rollangle);
+    #endif
   }
 };
 

@@ -1,5 +1,6 @@
 ../../csprogs.dat
 ../dp/csprogsdefs.qc
+#define CSQC
 
 data/keycodes.qc
 data/defs_clientside.qc

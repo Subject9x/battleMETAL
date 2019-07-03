@@ -43,6 +43,7 @@ void() data_ini_matok_={
   self.data_speed_accel = 1.5;
   self.yaw_speed = 2.5;    //AI-only 
   self.turret_yaw_speed = 2.5;//AI-only
+  self.ai_angleLimits = '-75 75 0';
 //=====================================
  
 //MECH COMPONENTS====================
