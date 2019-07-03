@@ -37,24 +37,32 @@ void() ai_turret_control={
           self.ideal_yaw = self.ai_dir;
           break;
       }
-      if( ai_check_turret_yaw( self.ideal_yaw, anglemod( turretOwner.angles_y - turretOwner.ai_angleLimits_x ), anglemod( turretOwner.angles_y + turretOwner.ai_angleLimits_y ) ) ){
-        ChangeYaw();
-      }
+      //run check to see if ideal_yaw is within unit's max rotation limits.
+      self.ideal_yaw = ai_check_turret_yaw( self.ideal_yaw, turretOwner.angles_y, turretOwner.ai_angleLimits_x, turretOwner.ai_angleLimits_y);
+      ChangeYaw(); 
       self.v_angle = self.angles;
     self = turretOwner;
   }
 };
 
-float( float aiYaw, float yawMin, float yawMax ) ai_check_turret_yaw={
-  if( yawMin > yawMax ){
-    if( yawMin <= aiYaw ){
-      return TRUE;
+float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw={
+  local float min, max;
+  min = anglemod(facingAngle + limitMin);
+  max = anglemod(facingAngle + limitMax);
+  
+  if( max > min ){
+    if( (min <= angleOfTarget) && (angleOfTarget <= max) ){
+      return angleOfTarget;
     }
-    if( aiYaw <= yawMax ){
-      return TRUE;
-    }
+    return self.angles_y; //turret rotation lockout.
   }
-  return FALSE;
+  else {
+    if( (min <= angleOfTarget) || (angleOfTarget <= max) ){
+      return angleOfTarget;
+    }
+    return self.angles_y; //turret rotation lockout.
+  }
+  
 };
 
 void() ai_leg_control={

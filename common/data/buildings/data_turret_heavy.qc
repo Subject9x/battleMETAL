@@ -37,7 +37,7 @@ void() data_ini_heavy_turret_={
 //SPEED================================
   //only yaw speeds because turrets can't move...
   self.yaw_speed = 0;    //AI-only 
-  self.turret_yaw_speed = 6;//AI-only - but has no turret
+  self.turret_yaw_speed = 6;//AI-only
   self.ai_angleLimits = '-360 360 0';
 //=====================================
  

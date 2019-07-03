@@ -34,8 +34,6 @@ float(vector orig) util_checkPointAngleImpl;
 float(vector org) util_lockOnChoke;
 void(entity ent, vector pnt) util_chekPointToHitDir;
 
-void(float bits, float b, float bb, float bbb) util_subThreeBits;
-
 float(float numOfSides) util_roll_dice;
 
 vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc) util_applySpreadToTrace;

@@ -374,11 +374,6 @@ float(vector p, vector pmin, vector pmax) util_checkInBounds={
   }
   
 };
-
-//dont ask
-void(float bits, float b, float bb, float bbb) util_subThreeBits={
-  bits = bits - (bits & (b | bb | bbb) );
-};
  
 float(float v) anglemod =
 {

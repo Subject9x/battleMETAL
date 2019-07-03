@@ -141,7 +141,7 @@ float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
 float( entity t ) ai_line_of_sight;
 void( entity t) ai_call_for_help;
-float( float aiYaw, float yawMin, float yawMax ) ai_check_turret_yaw;
+float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
 
 //AI MAP FUNCS
 float( void() ai_to_make ) ai_unit_setup;

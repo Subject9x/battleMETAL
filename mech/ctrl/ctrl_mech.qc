@@ -34,12 +34,12 @@ void() ctrl_updateCenterTorso={
     if( self.energy > -1 ){
       diff = self.energyRate;
       if( self.stat_plr_stt == PLAYER_SPRINT_ON ){
-        diff = diff * EVADE_DRAIN_PERCENT;
+        diff = diff * self.evasionDrain;
       }
       self.energy = self.energy + diff;
     }  
     if(self.shield < self.shieldMax){
-      if(time > self.sh_hit){
+      if(time > self.shieldHitDelay){
         if(self.energy > 0){
           self.shield = self.shield + self.shieldRate;
           self.energy = self.energy - (self.shieldRate * 3);

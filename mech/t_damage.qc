@@ -211,18 +211,23 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     dmgAmt = t_damage_mis( dmgTrg, dmgInflictor, dmgAmt );
   }
   
-  //shield delay check
-  trg.sh_hit = trg.sh_hit + (4 - trg.vec_size);
-  trg.sh_hit = trg.sh_hit + (3 - skill);
+  //shield delay check=============================
+  /*
+    the idea is to make sure the delay is proportionate to the 'damage dealt.' 
+    IE it doesn't make sense (to the designer) that shield delay is the same whether hit by an autocannon or an EMP blast.
+  */
+  trg.shieldHitDelay = trg.shieldHitDelay + (4 - trg.vec_size); //simulates larger reactor size on larger units.
+  trg.shieldHitDelay = trg.shieldHitDelay + (3 - skill);        //easier game modes have shorter recharge delays.
   if( trg.shield <= FALSE ){
-    trg.sh_hit = trg.sh_hit + (trg.sh_hit * 3);
+    trg.shieldHitDelay = trg.shieldHitDelay + (trg.shieldHitDelay * 3); //easier to disable shields that are already down.
   }
   else{
-    trg.sh_hit = trg.sh_hit * 2;
+    trg.shieldHitDelay = trg.shieldHitDelay * 2;
   }
-  trg.sh_hit = trg.sh_hit / 100;
-  trg.sh_hit = trg.sh_hit + (dmg_amt / 500);
-  trg.sh_hit = time + (trg.sh_hit + SHIELD_DELAY);
+  trg.shieldHitDelay = trg.shieldHitDelay / 100;
+  trg.shieldHitDelay = trg.shieldHitDelay + (dmg_amt / 500);  
+  trg.shieldHitDelay = time + (trg.shieldHitDelay + SHIELD_DELAY);
+  //================================================
   
   //AI react to Damage
   if( (trg.flags & FL_MONSTER) ){

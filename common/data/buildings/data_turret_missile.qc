@@ -16,7 +16,7 @@ Overview:
 void() data_ini_missile_turret_={
 
   self.data_idx = UID_TURRET_missile_turret;  //
-  self.vec_size = 1;  //
+  self.vec_size = 2;  //
   self.vec_name = "Missile Turret";
  
   self.max_health = 200;
@@ -37,7 +37,7 @@ void() data_ini_missile_turret_={
 //SPEED================================
   //only yaw speeds because turrets can't move...
   self.yaw_speed = 0;    //AI-only 
-  self.turret_yaw_speed = 3;//AI-only - but has no turret
+  self.turret_yaw_speed = 3;//AI-only
   self.ai_angleLimits = '-360 360 0';
 //=====================================
  

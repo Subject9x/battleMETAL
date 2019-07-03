@@ -17,13 +17,13 @@ Overview:
 .float hardpoint_cnt;
 
 //reactor
-.float energyMax;   //max amount
-.float energy;  //current amount
-.float energyRate; //how much energy built per frame
-.float shieldMax;    //max shields
-.float shield;    //current amount of shields
-.float shieldRate;   //shield recharge rate
-.float sh_hit;
+.float energyMax;     //max amount
+.float energy;        //current amount
+.float energyRate;    //how much energy built per frame
+.float shieldMax;     //max shields
+.float shield;        //current amount of shields
+.float shieldRate;    //shield recharge rate
+.float shieldHitDelay;//cool down before shield recharge begins
 
 //Weapon Spread Mechanics
 .vector spreadDefault;

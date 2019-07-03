@@ -231,10 +231,11 @@ void(void() data_ini) build_mech_unit={
   self.energy = self.energyMax;
   self.shield = self.shieldMax;
   self.health = self.max_health;
+  self.evasionDrain = EVADE_DRAIN_PERCENT;
   
   setsize(self, tempMin, tempMax);
   
-  self.sh_hit = 0;
+  self.shieldHitDelay = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
   if( self.e_cam ){
@@ -335,13 +336,14 @@ void(void() data_ini) build_mech_bot={
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
-  self.sh_hit = 0;
+  self.shieldHitDelay = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
   
   self.energy = self.energyMax;
   self.shield = self.shieldMax;
   self.health = self.max_health;
+  self.evasionDrain = EVADE_DRAIN_PERCENT;
   
   if( (self.e_cam) ){
     build_unit_camera();
@@ -521,9 +523,10 @@ void(void() data_ini) build_vehicle_unit={
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
-  self.sh_hit = 0;
+  self.shieldHitDelay = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
+  self.evasionDrain = EVADE_DRAIN_PERCENT;
   
   if( (self.e_cam) ){
     build_unit_camera();

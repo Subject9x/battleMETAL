@@ -53,7 +53,7 @@ void() hshield_th = [0, hshield_th]{
   
   if(self.shield < self.shieldMax){
     if(self.energy > 0){
-      if( time > self.sh_hit ){
+      if( time > self.shieldHitDelay ){
         self.shield = self.shield + self.shieldRate * 2;
         self.energy = self.energy - self.shieldRate / 2; 
         if(self.shield > self.shieldMax){
@@ -71,7 +71,7 @@ void() hshield_th = [0, hshield_th]{
         dist = vlen(t.origin - self.origin);
         if(dist <= DAT_BLD_H_SHIELD_RADIUS){
           if(self.energy > 0){
-            if( time > t.sh_hit){
+            if( time > t.shieldHitDelay){
               if(t.shield < t.shieldMax){
                 local float mod;
                 mod = self.shieldRate / 2;

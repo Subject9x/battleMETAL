@@ -140,8 +140,8 @@ void(float wep_id) initialize_data_item_={
     case UID_ITEM_recharge_capacitor:
       data_ini_equip_recharge_capacitor_();
       return;
-    case UID_ITEM_super_charger:
-      data_ini_equip_super_charger_();
+    case UID_ITEM_turbo_charger:
+      data_ini_equip_turbo_charger_();
       return;
   }
 };
