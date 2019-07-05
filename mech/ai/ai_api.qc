@@ -341,7 +341,7 @@ void() ai_ranged_attack={
                 self = wep_chain;
                   if( ai_check_face(this.enemy, 0.95) ){
                     if( (self.damageType & EFF_STX) ){
-                      if (this.enemy.shield > self.damageValue / 2){
+                      if( this.enemy.shield > (this.enemy.shield * 0.15) ){
                         fired = fired + 1;
                         self.w_attack();
                       }

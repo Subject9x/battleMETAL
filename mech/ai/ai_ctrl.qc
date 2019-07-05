@@ -256,9 +256,12 @@ float(entity t, float ang) ai_check_face={
 	local vector	vang, vec;
 	local float		dot;
   
-  vang = self.angles;
+  
   if( (self.flags & FL_TURRET) ){
     vang = self.torsoCenter.angles;
+  }
+  else{
+    vang = self.angles;
   }
   
   makevectors ( vang );
