@@ -39,7 +39,7 @@ void() ai_mech_sniper_die={
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
-  mech_player_compdie(self.e_cam);
+  mech_player_compdie(self.cockpit);
   
   otemp = self;
   self = self.legs;

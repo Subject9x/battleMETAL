@@ -88,8 +88,8 @@ void() server_getTarget={
   local entity src;
   makevectors(self.v_angle);
   src = self;
-  if(self.e_cam != world){
-    src = self.e_cam;
+  if(self.cockpit != world){
+    src = self.cockpit;
   }
 
   traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);

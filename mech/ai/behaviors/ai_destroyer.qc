@@ -30,7 +30,7 @@ void() ai_vec_dest_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.e_cam);
+  mech_player_compdie(self.cockpit);
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );

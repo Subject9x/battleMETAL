@@ -78,7 +78,7 @@ void() ai_gev_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.e_cam);
+  mech_player_compdie(self.cockpit);
   if( (self.flags & FL_TURRET) ){
     mech_player_compdie(self.torsoCenter);
   }

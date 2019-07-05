@@ -9,7 +9,7 @@ Overview:
 
 void() data_tur_hlite_ini;
 void() data_tur_hlite_ctor;
-void() data_tur_hlite_cam;
+void() data_tur_hlitcockpit;
 void() data_tur_hlite_wep1;
 void() data_tur_hlite_wep2;
 
@@ -17,7 +17,7 @@ void() data_tur_hlite_ini={
   self.unit_ctor = data_tur_hlite_ctor;
   self.unit_wep1 = data_tur_hlite_wep1;
   self.unit_wep2 = data_tur_hlite_wep2;
-  self.unit_cam = data_tur_hlite_cam;
+  self.unit_cam = data_tur_hlitcockpit;
 
   self.data_idx= ID_TUR_HLITE;
   self.vec_name = DAT_TUR_HLITE_NAME;
@@ -65,9 +65,9 @@ void() data_tur_hlite_wep2={
   self.w_group = WEAPON2;
 };
 
-void() data_tur_hlite_cam={
+void() data_tur_hlitcockpit={
   self.partParentId = M_TOR_CENTER;
-  self.c_ofs = DAT_TUR_HLITE_CAM_OFFSET;
-  self.c_alt_ofs = DAT_TUR_HLITE_CAM_OFFSET_ALT;
-  self.c_model = DAT_TUR_HLITE_CAM;
+  self.c_ofs = DAT_TUR_HLITcockpit_OFFSET;
+  self.c_alt_ofs = DAT_TUR_HLITcockpit_OFFSET_ALT;
+  self.c_model = DAT_TUR_HLITcockpit;
 };

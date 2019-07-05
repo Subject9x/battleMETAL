@@ -45,8 +45,9 @@ void() data_ini_sorcerer_={
  
 //MECH COMPONENTS====================
   self.model = "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3";
+  
   //camera location
-  data_ini_camera_( '0 12 20' );
+  data_ini_camera_( '0 6 8', self );
 //=====================================
  
 //HARDPOINTS==========================

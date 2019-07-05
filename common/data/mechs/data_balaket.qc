@@ -46,8 +46,6 @@ void() data_ini_balaket_={
 //=====================================
  
 //MECH COMPONENTS====================
-  //camera location
-  data_ini_camera_( '0 7 7' );
   
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0' );
@@ -66,6 +64,9 @@ void() data_ini_balaket_={
    
   //legs      
   data_ini_legs_( "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');
+  
+  //camera location
+  data_ini_camera_( '0 7 7', self.torsoCenter);
 //=====================================
  
 //HARDPOINTS==========================

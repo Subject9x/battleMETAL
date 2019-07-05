@@ -57,24 +57,26 @@ void(entity own) build_unit_component={
 };
 
 void() build_unit_camera={
-  local entity this, cam;
+  local entity this, cam, partParent;
   this = self;
+  cam = this.cockpit;
+  partParent = util_getPartFromName( cam.partParentId, self);
   
-  self = self.e_cam;
+  self = cam;
     self.classname = "camera";
-    self.scale = 0.05;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
     util_setModel(self.model, 0, 0);
-    self.alpha = 0;
     setsize(self, '-1 -1 -1', '1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
+    self.scale = 1;
+    self.alpha = 0;
     
-    self.aiment = this;
+    self.aiment = partParent;
     self.owner = this;
-    self.punchangle = this.angles;
-    self.view_ofs = self.origin - this.origin;
-    self.angles = this.angles;
-    self.v_angle = self.angles - this.angles;
+    self.punchangle = partParent.angles;
+    self.view_ofs = self.origin - partParent.origin;
+    self.angles = partParent.angles;
+    self.v_angle = self.angles - partParent.angles;
   self = this;
 };
 
@@ -238,9 +240,6 @@ void(void() data_ini) build_mech_unit={
   self.shieldHitDelay = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
-  if( self.e_cam ){
-    build_unit_camera();
-  }
   part_chain = self;
   if( self.torsoRight ){
     build_mech_torsoRight();
@@ -266,6 +265,10 @@ void(void() data_ini) build_mech_unit={
     build_mech_legs();
     part_chain.partNext = self.legs;
     part_chain = part_chain.partNext;
+  }
+  
+  if( self.cockpit ){
+    build_unit_camera();
   }
   
   if( self.hardpoint_cnt > 0 ){
@@ -345,9 +348,6 @@ void(void() data_ini) build_mech_bot={
   self.health = self.max_health;
   self.evasionDrain = EVADE_DRAIN_PERCENT;
   
-  if( (self.e_cam) ){
-    build_unit_camera();
-  }
   part_chain = self;
   
   build_unit_turret();
@@ -386,6 +386,10 @@ void(void() data_ini) build_mech_bot={
     self.legs.yaw_speed = self.yaw_speed * 1.5;
     self.legs.attack_state = TR_NORM;
     self.ai_dir = self.angles_y;
+  }
+  
+  if( (self.cockpit) ){
+    build_unit_camera();
   }
   
   //speed limits for AI because they change directions instantly :/
@@ -528,11 +532,7 @@ void(void() data_ini) build_vehicle_unit={
   self.lock_timer = 0;
   self.evasionDrain = EVADE_DRAIN_PERCENT;
   
-  if( (self.e_cam) ){
-    build_unit_camera();
-  }
   part_chain = self;
-  
   if( (self.flags & FL_TURRET) && (self.torsoCenter) ){
     build_unit_turret();
     self.torsoCenter.yaw_speed = self.turret_yaw_speed;
@@ -550,11 +550,15 @@ void(void() data_ini) build_vehicle_unit={
     part_chain.partNext = self.torsoLeft;
     part_chain = part_chain.partNext;
   }
+  if( (self.cockpit) ){
+    build_unit_camera();
+  }
+  
   
   if( self.hardpoint_cnt > 0 ){
     build_unit_weapon_list();
   }
-  
+   
   self.health = self.max_health;
 };
 

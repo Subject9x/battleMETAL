@@ -87,7 +87,7 @@ void() mech_cleanupMech={
     self.stat_w9_id = -1;
   }
   if( (self.flags & FL_MONSTER) ){
-    mech_player_removecomp(self.e_cam);
+    mech_player_removecomp(self.cockpit);
     remove(self);
   }
 };
@@ -142,12 +142,12 @@ void() mech_player_cameradie={
 }
 
 void() mech_player_removecamera={
-  if( self.e_cam.classname ){
+  if( self.cockpit.classname ){
     self.view_ofs = '0 0 1';
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self);
-    remove(self.e_cam);
+    remove(self.cockpit);
   }
 };
 

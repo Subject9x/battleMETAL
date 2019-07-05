@@ -81,7 +81,7 @@ float( entity t ) ai_line_of_sight={
   
   trace = self;
   if( (self.flags & FL_TURRET) ){
-    trace = self.e_cam;
+    trace = self.cockpit;
   }
   
   traceline( trace.origin, t.origin, MOVE_WORLDONLY, self);
@@ -310,7 +310,7 @@ vector(entity wep) ai_attack_trace={
     lead = self.enemy.origin - (self.enemy.velocity * self.ai_leading);
     lead = normalize(lead - self.origin);
   }
-  cam = self.e_cam;
+  cam = self.cockpit;
   
   makevectors(self.v_angle); 
   traceline (cam.origin + v_forward * 1, self.origin + (lead * wep.w_range), FALSE, self);
@@ -328,7 +328,7 @@ void() ai_ranged_attack={
   self.v_angle = self.angles;
   if( (self.flags & FL_TURRET) ){
     self.v_angle = self.torsoCenter.angles;
-    diff = vectoangles( self.enemy.origin - self.e_cam.origin);
+    diff = vectoangles( self.enemy.origin - self.cockpit.origin);
     self.v_angle_x = diff_x * -1;
   }
   while(wep_chain){
@@ -455,9 +455,9 @@ float(entity wep) ai_attack_blockcheck={
     vang = self.angles;
   }
   
-  viewpont = normalize(self.enemy.origin - self.e_cam.origin);
+  viewpont = normalize(self.enemy.origin - self.cockpit.origin);
   makevectors( vang );
-  traceline (self.e_cam.origin + v_forward * 1, self.e_cam.origin + viewpont*wep.w_range, FALSE, self);
+  traceline (self.cockpit.origin + v_forward * 1, self.cockpit.origin + viewpont*wep.w_range, FALSE, self);
   if( (wep.damageType & EFF_ARC) ){
     return FALSE; // arcing attacks don't need LoS
   }

@@ -54,13 +54,13 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
     if( (min <= angleOfTarget) && (angleOfTarget <= max) ){
       return angleOfTarget;
     }
-    return self.angles_y; //turret rotation lockout.
+    return max; //turret rotation lockout.
   }
   else {
     if( (min <= angleOfTarget) || (angleOfTarget <= max) ){
       return angleOfTarget;
     }
-    return self.angles_y; //turret rotation lockout.
+    return min; //turret rotation lockout.
   }
   
 };

@@ -182,7 +182,7 @@ void() PutClientInServer = {
   client_sendGameMode(gamemode);
 
   switch(gamemode){
-    case GAMEMODE_CAMPAIGN:
+    case GAMEMODcockpitPAIGN:
       if(world.model == "maps/start.bsp"){
         //pre-populate default save file
         savefile_default();

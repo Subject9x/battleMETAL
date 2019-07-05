@@ -31,18 +31,17 @@ void( float partId, string modelPath, float maxHp, vector partOffset, entity par
   piece.owner = self;
 };
 
-
 //just some syntactic sugar wrappings
 void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_center_={
   data_ini_unitPiece_( M_TOR_CENTER, pathToModel, healthMax, offsetOrigin, self, torsoCenter );
 };
 
 void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_right_={
-  data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self, torsoRight );
+  data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoRight );
 };
 
 void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_left_={
-  data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self, torsoLeft );
+  data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoLeft );
 };
 
 void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_legs_={
@@ -79,8 +78,8 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
   }
 };
 
-void( vector partOffset ) data_ini_camera_={
-  data_ini_unitPiece_( -1,  "q3mdl/testball.md3",  1,  partOffset,  self, e_cam );
+void( vector thisPartOffset, entity partParent ) data_ini_camera_={
+  data_ini_unitPiece_( -1,  "q3mdl/testball.md3",  1, thisPartOffset, partParent, cockpit );
 };
 
 /*

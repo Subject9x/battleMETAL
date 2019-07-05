@@ -46,8 +46,6 @@ void() data_ini_monitor_={
 //=====================================
  
 //MECH COMPONENTS====================
-  //camera location
-  data_ini_camera_( '0 18 8' );
   
   //center torso
   data_ini_torso_center_(  "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0' );
@@ -66,6 +64,9 @@ void() data_ini_monitor_={
    
   //legs
   data_ini_legs_( "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0' );
+  
+  //camera location
+  data_ini_camera_( '0 18 8', self.torsoCenter );
 //=====================================
  
 //HARDPOINT DATA======================

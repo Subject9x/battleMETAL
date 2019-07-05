@@ -46,7 +46,7 @@ Overview:
 
 //Unit subcomponents
 .entity legs;
-.entity e_cam;
+.entity cockpit;
 .entity torsoCenter;
 .entity torsoLeft;
 .entity armLeft;  //arms can be optional

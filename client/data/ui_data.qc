@@ -188,8 +188,8 @@ void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
     remove(mechEntity.legs);
   }
   
-  if( mechEntity.e_cam ){
-    remove(mechEntity.e_cam);
+  if( mechEntity.cockpit ){
+    remove(mechEntity.cockpit);
   }
   
   if( mechEntity.armLeft ){

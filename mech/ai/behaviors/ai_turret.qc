@@ -40,7 +40,7 @@ void() ai_turret_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.e_cam);  
+  mech_player_compdie(self.cockpit);  
   mech_player_compdie(self.torsoCenter);
   
   //fire triggers when dead
@@ -123,8 +123,8 @@ void() ai_turret_patrol1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  self.torsoCenter.ai_dir = random() * 75;
-  self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + 45;
+  self.torsoCenter.ai_dir = (random() * self.ai_angleLimits_x) * -1;
+  self.torsoCenter.ai_dir = self.torsoCenter.ai_dir + self.ai_angleLimits_y;
   self.torsoCenter.ai_dir = self.torsoCenter.ai_dir * crandom();
   self.torsoCenter.ai_dir = anglemod( self.torsoCenter.angles_y + self.torsoCenter.ai_dir);
   

@@ -15,7 +15,7 @@ void() ctrl_updateCenterTorso={
   if( (self.flags & FL_CLIENT) ){
     if( time > self.laser_sight_timer ){
       makevectors(self.v_angle);
-      v1 = self.e_cam.origin;
+      v1 = self.cockpit.origin;
       traceline(v1, v1 + v_forward*10000, FALSE, self);
       self.laser_sight_org = trace_endpos;
       self.laser_sight_timer = time + 0.05;

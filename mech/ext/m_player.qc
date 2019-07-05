@@ -125,9 +125,9 @@ void() PlayerPostThink = {
     makevectors(self.v_angle);
     traceline(self.origin, self.origin + (v_forward * self.radar_range), FALSE,self);
     self.stat_ret_dist = (self.radar_range * trace_fraction);
-    self.stat_plr_camx = self.e_cam.c_ofs_x;
-    self.stat_plr_camy = self.e_cam.c_ofs_y; 
-    self.stat_plr_camz = self.e_cam.c_ofs_z;
+    self.stat_plr_camx = self.cockpit.c_ofs_x;
+    self.stat_plr_camy = self.cockpit.c_ofs_y; 
+    self.stat_plr_camz = self.cockpit.c_ofs_z;
     //TODO notify target of lock
     /*if((self.stat_lck_stt & LOCK_TARG)){
       if(self.enemy != world){
@@ -215,9 +215,9 @@ void() PlayerPostThink = {
   
   
   if(self.data_type == DATA_MECH){
-    self.stat_plr_camx = self.e_cam.c_ofs_x;
-    self.stat_plr_camy = self.e_cam.c_ofs_y; 
-    self.stat_plr_camz = self.e_cam.c_ofs_z;
+    self.stat_plr_camx = self.cockpit.c_ofs_x;
+    self.stat_plr_camy = self.cockpit.c_ofs_y; 
+    self.stat_plr_camz = self.cockpit.c_ofs_z;
   }
 };
 

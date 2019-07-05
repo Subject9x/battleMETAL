@@ -41,7 +41,7 @@ void() data_ini_equip_turbo_charger_={
 
   self.abbrev = "TCHR";
   self.description = "Increase Evasion speed by 20%. | | Increase Evasion cost  by 13%~";
-  self.icon = "gfx/ui/wep_icons/eqp_atgm.png"; //TODO - new icon
+  self.icon = "gfx/ui/wep_icons/eqp_tchr.png"; //TODO - new icon
 };
 
 void() turbo_charger_upgrade_={

@@ -26,7 +26,7 @@ void() hrepair_th = [0, hrepair_th]{
 void() hrepair_rep = [0, hrepair_rep]{
   local float end_repair;
   end_repair = TRUE;
-  if( vlen(self.trigger_field.origin - self.e_cam.origin) <= 16 ){
+  if( vlen(self.trigger_field.origin - self.cockpit.origin) <= 16 ){
     local entity repairMe,fix;  
     repairMe = self.trigger_field;
     if(csqc_updateCompStat(repairMe) < 100){
@@ -154,7 +154,7 @@ void() building_human_repair={
   repairNode.deadflag = DEAD_NO;
   repairNode.trigger_field = world;
   repairNode.owner = this;
-  this.e_cam = repairNode;
+  this.cockpit = repairNode;
   self = repairNode;
     util_setModel("q3mdl/testball.md3", repairNode.skin, 0) ;
     util_setCollider(FALSE, SOLID_TRIGGER, MOVETYPE_NONE) ;
@@ -197,7 +197,7 @@ void() building_repair_touch={
 };
 
 void() building_repair_die={
-  self.e_cam.trigger_field = world;
-  remove(self.e_cam);
+  self.cockpit.trigger_field = world;
+  remove(self.cockpit);
   building_die();
 };

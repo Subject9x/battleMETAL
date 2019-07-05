@@ -54,7 +54,7 @@ string NEWLINE = "\n";
 //============================
 //   GAME MODES
 //============================
-float GAMEMODE_CAMPAIGN = 1;
+float GAMEMODcockpitPAIGN = 1;
 float GAMEMODE_COOP = 2;
 float GAMEMODE_DM = 3;
 float GAMEMODE_TEAMDM = 4;

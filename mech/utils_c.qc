@@ -127,7 +127,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
-    wepAim = normalize( self.owner.enemy.e_cam.origin - self.origin );
+    wepAim = normalize( self.owner.enemy.cockpit.origin - self.origin );
   }
   else{
     wepAim = normalize( self.owner.laser_sight_org - self.origin ); 
@@ -341,10 +341,13 @@ void(entity t) util_generateBuildingFoundation={
         util_setModel("q3mdl/map/plats/plat_large.obj", 0, 0);
         break;
     }
-    util_setCollider(DAMAGE_NO, SOLID_BSP, MOVETYPE_NONE);
+    self.takedamage = DAMAGE_NO;
+    self.solid = SOLID_NOT; //just for placement
+    self.movetype = MOVETYPE_NONE;
     setsize(self, self.mins, self.maxs);
     self.angles = t.angles;
     setorigin(self, v);
+    self.solid = SOLID_BSP; //lock it in.
   self = this;
 };
 

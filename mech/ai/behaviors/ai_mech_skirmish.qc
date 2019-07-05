@@ -40,7 +40,7 @@ void() ai_mech_sk_die={
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   mech_player_compdie(self.legs);
-  mech_player_compdie(self.e_cam);
+  mech_player_compdie(self.cockpit);
   
   if( self.ai_node_recall ){
     remove(self.ai_node_recall);

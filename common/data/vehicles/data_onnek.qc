@@ -45,8 +45,9 @@ void() data_ini_onnek_={
  
 //MECH COMPONENTS====================
   self.model = "q3mdl/vecs/onnek/onnek.md3";
+  
   //camera location
-  data_ini_camera_( '-5 3 10' );
+  data_ini_camera_( '0 10 18', self );
 //=====================================
  
 //HARDPOINTS==========================

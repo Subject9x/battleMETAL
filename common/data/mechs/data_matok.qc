@@ -47,8 +47,6 @@ void() data_ini_matok_={
 //=====================================
  
 //MECH COMPONENTS====================
-  //camera location
-  data_ini_camera_( '0 15 7' );
   
   //center torso
   data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0' );
@@ -67,6 +65,9 @@ void() data_ini_matok_={
 
   //legs
   data_ini_legs_( "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0' );
+  
+  //camera location
+  data_ini_camera_( '0 15 7', self.torsoCenter);
 //=====================================
  
 //HARDPOINT DATA======================
