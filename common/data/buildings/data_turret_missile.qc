@@ -16,7 +16,7 @@ Overview:
 void() data_ini_missile_turret_={
 
   self.data_idx = UID_TURRET_missile_turret;  //
-  self.vec_size = 2;  //
+  self.vec_size = 1;  //
   self.vec_name = "Missile Turret";
  
   self.max_health = 200;
@@ -48,7 +48,7 @@ void() data_ini_missile_turret_={
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3", 1, '0 -12 0', self, torsoCenter); 
   
   //camera location
-  data_ini_camera_( '0 24 8', self.torsoCenter );
+  data_ini_camera_( '0 20 8', self.torsoCenter );
 //=====================================
  
 //HARDPOINTS==========================

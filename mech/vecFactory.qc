@@ -60,16 +60,16 @@ void() build_unit_camera={
   local entity this, cam, partParent;
   this = self;
   cam = this.cockpit;
-  partParent = util_getPartFromName( cam.partParentId, self);
+  partParent = util_getPartFromName( cam.partParentId, this);
   
   self = cam;
     self.classname = "camera";
-    self.scale = 1;
-    self.alpha = 0.01;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    setmodel( self, self.model);
+    setmodel( self, "q3mdl/testball.md3");
     setsize(self, '-1 -1 -1', '1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
+    
+    self.scale = 0.001;
     
     self.aiment = partParent;
     self.owner = this;
