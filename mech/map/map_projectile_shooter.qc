@@ -10,7 +10,7 @@ Inputs
   .data_idx = <float> [weapon id] - the weapon to use
   .count = <float> [particle amount] - set a max number of shots
   .count3 = <float> [rate of fire] - interval to try next shot;
-  .p_lifetime = <float> - time to live, use with spawnflags[2]
+  .data_lifetime = <float> - time to live, use with spawnflags[2]
   .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
@@ -156,6 +156,6 @@ void() map_projectile_shooter={
   }
 
   self.think = map_projectile_shooter_think;
-  self.count2 = time + self.p_lifetime;
+  self.count2 = time + self.data_lifetime;
   self.nextthink = time + self.count3;
 };

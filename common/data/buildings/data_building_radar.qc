@@ -193,11 +193,8 @@ void() building_human_radar={
       break;
   }
   
-  self.deadflag = DEAD_NO;
-  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-  droptofloor();  
-  
-  if(util_cornerSlopeCheck(self, 1)){
+  self.deadflag = DEAD_NO;  
+  if( util_cornerSlopeCheck(self, 1) ){
     util_generateBuildingFoundation(self);
   }
   self.th_walk = building_radar_patrol1;

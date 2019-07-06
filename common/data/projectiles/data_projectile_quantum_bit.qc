@@ -14,9 +14,9 @@ void() data_projectile_ini_quantum_bit_={
   self.classname = "prj_qrfl";
   self.touch = data_projectile_ini_quantum_bit_touch_;
   self.data_idx = 0;
-  self.p_velocity = 200;
+  self.data_velocity = 200;
   self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
-  self.p_lifetime = 4;
+  self.data_lifetime = 4;
   
   //cosmetics
   self.effects = EF_NOSHADOW;

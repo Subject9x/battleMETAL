@@ -341,7 +341,7 @@ void() ai_ranged_attack={
                 self = wep_chain;
                   if( ai_check_face(this.enemy, 0.95) ){
                     if( (self.damageType & EFF_STX) ){
-                      if( this.enemy.shield > (this.enemy.shield * 0.15) ){
+                      if( this.enemy.shield > (this.enemy.shieldMax * 0.15) ){
                         fired = fired + 1;
                         self.w_attack();
                       }
@@ -573,12 +573,11 @@ float(entity targ) ai_range={
 };
 
 /*
-  simple validation, AI should only fire a weapon that
-  has a power draw IF the AI has more than half of the current energy
-  on-hand
+  AI checks to see if it has enough energy to fire this weapon in relation
+  to the total energy cost of ALL its energy weapons.
 */  
 float(entity wep) ai_attack_checkEne={
-  if(self.energy  >= wep.energyRate ){
+  if( self.energy >= self.ai_weaponEnergy ){
     return TRUE;
   }
   return FALSE;

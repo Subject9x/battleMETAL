@@ -351,7 +351,8 @@ void(vector ofs) menu_arming_HardpointGraph={
     mechIconOrg_x = (panelOffset_x + (panelImageSize_x / 2)) - (gui_percentXRaw(360 / 2)  ); //'360' is not a typo, just a lazy screen adjustment.
     
     drawpic(mechIconOrg, MECH_DATA_ICON, gui_percentToPixelRawVec('350 375'), CLR_DEF_WHITE - '0.1 0.1 0.1' , 1, 0);
-
+    drawpic(nofs, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
+    
     MECHPANEL_CTR = hardpointCenter;
 
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
@@ -366,7 +367,6 @@ void(vector ofs) menu_arming_HardpointGraph={
       hardpoint = hardpoint.w_slot;
     }
   }
-  drawpic(nofs, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('278 244'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
   
   local vector nbtn, pbtn, pctr, lctr;
   pctr_x = panelImageSize_x / 2;

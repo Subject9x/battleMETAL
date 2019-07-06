@@ -16,9 +16,9 @@ void() data_projectile_missile_activeradar_touch;
 void() data_projectile_ini_missile_active_radar_={
   self.classname = "prj_marh";
   self.touch = data_projectile_missile_activeradar_touch;
-  self.p_velocity = 650;
+  self.data_velocity = 650;
   self.model = "q3mdl/proj/mdl_proj_marh.md3";
-  self.p_lifetime = 8;
+  self.data_lifetime = 8;
   
   //cosmetics
   self.effects = EF_NOSHADOW;
@@ -59,15 +59,15 @@ void() data_projectile_missile_activeradar_think={
       dir_z = olddir_z - turnrate;
     if (olddir_z - dir_z < -1 * turnrate)
       dir_z = olddir_z + turnrate;
-    self.velocity = dir * self.p_velocity;
+    self.velocity = dir * self.data_velocity;
 		self.angles = vectoangles(self.velocity);
 	}
   else{
-    self.p_lifetime = self.p_lifetime - 0.25;
+    self.data_lifetime = self.data_lifetime - 0.25;
     return;
   }
   
-  if(time > self.p_lifetime){
+  if(time > self.data_lifetime){
     self.think = BecomeExplosion;
   }
   else{
@@ -81,7 +81,7 @@ void() data_projectile_missile_activeradar_delay={
   if( !self.traileffectnum ){
     self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
   }
-  self.velocity = self.velocity * self.p_velocity;
+  self.velocity = self.velocity * self.data_velocity;
   self.angles = vectoangles(self.velocity);
   
   self.think = data_projectile_missile_activeradar_think; 

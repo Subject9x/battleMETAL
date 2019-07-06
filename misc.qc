@@ -712,7 +712,7 @@ void() func_particle_cube_use={
   self.think = self.w_think;
   self.nextthink = time + 0.1;
   if( (self.spawnflags & 2) ){
-	self.p_lifetime = time + self.p_lifetime;
+	self.data_lifetime = time + self.data_lifetime;
   }
  
   if( (self.spawnflags & 4) ){
@@ -734,7 +734,7 @@ void() func_rain_think={
 	self.think = self.w_think;
 	
 	if( (self.spawnflags & 2) ){
-		if( time > self.p_lifetime ){
+		if( time > self.data_lifetime ){
 		  if( self.trigOnDeath ){
 			trigger_event( self, trigOnDeath );
 		  }
@@ -760,10 +760,10 @@ void() func_rain_think={
  .onDeath = <string> fire entity when lifetime runs out.
  
  .delay = <float> delay before starting when triggered.
- .p_lifetime = <float> game time before effect shuts off.
+ .data_lifetime = <float> game time before effect shuts off.
  
  1 START_OFF = Requires targetname and a trigger call.
- 2 LIFETIME = Func is turned off after .p_lifetime game seconds.
+ 2 LIFETIME = Func is turned off after .data_lifetime game seconds.
  4 DELAY = wait .delay game seconds after being activated to begin.
  8 INTERVAL = fluctuate between on-and-off.
  16 USE_WIND = rain will be affected by map's WIND values.
@@ -802,7 +802,7 @@ void() func_snow_think={
 	self.think = self.w_think;
 	
 	if( (self.spawnflags & 2) ){
-		if( time > self.p_lifetime ){
+		if( time > self.data_lifetime ){
 		  if( self.trigOnDeath ){
 			trigger_event( self, trigOnDeath );
 		  }
@@ -828,10 +828,10 @@ void() func_snow_think={
  .onDeath = <string> fire entity when lifetime runs out.
  
  .delay = <float> delay before starting when triggered.
- .p_lifetime = <float> game time before effect shuts off.
+ .data_lifetime = <float> game time before effect shuts off.
  
  1 START_OFF = Requires targetname and a trigger call.
- 2 LIFETIME = Func is turned off after .p_lifetime game seconds.
+ 2 LIFETIME = Func is turned off after .data_lifetime game seconds.
  4 DELAY = wait .delay game seconds after being activated to begin.
  8 INTERVAL = fluctuate between on-and-off.
  16 USE_WIND = rain will be affected by map's WIND values.

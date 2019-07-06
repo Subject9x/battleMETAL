@@ -97,16 +97,16 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       self.damageType = theWeapon.damageType;
       self.damageValue = theWeapon.damageValue;
       theWeapon.data_ini_projectile();
-      self.p_lifetime = time + self.p_lifetime;
+      self.data_lifetime = time + self.data_lifetime;
       self.w_firetime = time + 0.5;
       self.velocity = normalize(FIRE_ENDPOINT - FIRE_ORIGIN);
-      self.velocity = self.velocity * self.p_velocity;
+      self.velocity = self.velocity * self.data_velocity;
       self.angles = vectoangles(self.velocity);
       if( updateDelay > -1 ){
         self.nextthink = time + updateDelay;
       }
       else if( updateDelay == -1 ){
-        self.nextthink = time + self.p_lifetime;
+        self.nextthink = time + self.data_lifetime;
       }
       util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
       util_setModel(self.model, 0, 0);

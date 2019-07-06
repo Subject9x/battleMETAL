@@ -83,6 +83,8 @@ entity AI_NODES[128];
 .float ai_dir;          //chassis facing vs .angles
 .entity ai_node_recall;
 
+.float ai_weaponEnergy; //current max energy cost.
+
 .float voiceTime; //when next to say something
 .string ai_voice_warn;
 .string ai_voice_spot;

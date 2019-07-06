@@ -39,8 +39,10 @@ void() ctrl_updateTank={
   }
   
   wep = self.w_slot;
+  self.ai_weaponEnergy = 0;
   while(wep){
     ctrl_wpn_think(wep);
+    self.ai_weaponEnergy = self.ai_weaponEnergy + wep.energyRate; //keep running tab on total energy cost
     wep = wep.w_slot;
   }
   

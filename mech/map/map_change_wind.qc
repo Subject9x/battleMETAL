@@ -12,8 +12,8 @@ Overview:
   
 Inputs
   .c_ofs = <vector> [wind direction] - the 3d direction of the new wind
-  .p_velocity = <float> [wind speed] - speed of wind in given direction
-  .p_lifetime = <float> - time to live, use with spawnflags[2]
+  .data_velocity = <float> [wind speed] - speed of wind in given direction
+  .data_lifetime = <float> - time to live, use with spawnflags[2]
   .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
   .spawnflags = <float> [flag] 2 - lifetime
@@ -55,8 +55,8 @@ void() map_change_wind_new={
   self.think = map_change_wind_revert;
   self.nextthink = time + 0.1;
   if( (self.spawnflags & 2) ){
-    //wind change lasts for p_lifetime amount of time
-    self.nextthink = time + self.p_lifetime;
+    //wind change lasts for data_lifetime amount of time
+    self.nextthink = time + self.data_lifetime;
   }
 }
 

@@ -19,9 +19,9 @@ void() data_projectile_ini_emp_={
   self.classname = "prj_emp";
   self.touch = data_prj_emp_touch;
   self.data_idx = 0;
-  self.p_velocity = 1500;
+  self.data_velocity = 1500;
   self.model = "q3mdl/proj/mdl_proj_emp.md3";
-  self.p_lifetime = 1.43;
+  self.data_lifetime = 1.43;
   
   //cosmetics
   self.effects = (EF_ADDITIVE | EF_NOSHADOW);
@@ -62,7 +62,7 @@ void() data_projectile_emp_think_={
     }
   }
   
-  if(time > self.p_lifetime){
+  if(time > self.data_lifetime){
     explode = TRUE;
   }
   

@@ -8,6 +8,8 @@ Overview:
     burns-over-time on unshielded targets.
 */
 
+float data_projectile_plasma_burn_time = 2;
+
 void() data_projectile_plasma_touch;
 void() data_projectile_plasma_burn_ini_;
 void() data_projectile_plasma_burn_th;
@@ -15,9 +17,9 @@ void() data_projectile_plasma_think_;
 
 void() data_projectile_ini_plasma_={
   self.touch = data_projectile_plasma_touch;
-  self.p_velocity = 1600;
+  self.data_velocity = 1600;
   self.model = "q3mdl/proj/mdl_proj_rpc.md3";
-  self.p_lifetime = 0.649;
+  self.data_lifetime = 0.649;
   
   //cosmetics
   self.effects = (EF_NOSHADOW | EF_ADDITIVE);
@@ -38,7 +40,7 @@ void() data_projectile_plasma_burn_ini_={
   self.v_angle = self.angles - self.cockpit.angles;
   self.think = data_projectile_plasma_burn_th;
   self.nextthink = time + 0.01;
-  self.p_lifetime = time + self.p_lifetime;
+  self.data_lifetime = time + self.data_lifetime;
   self.alpha = 0;
 };
 
@@ -54,7 +56,7 @@ void() data_projectile_plasma_burn_th={
 
   pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   
-  if(time > self.p_lifetime){
+  if(time > self.data_lifetime){
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
     return;
@@ -72,9 +74,9 @@ void() data_projectile_plasma_touch={
   this = self;
   
   if (pointcontents(self.origin) == CONTENT_SKY){
-		remove(self);
-		return;
-	}
+    remove(self);
+    return;
+  }
 
   pointparticles( particleeffectnum("TE_RPC_HIT"), this.origin, '0 0 0', 1);
   if(other.takedamage){
@@ -83,7 +85,7 @@ void() data_projectile_plasma_touch={
       newmis = spawn();
       newmis.enemy = other;
       newmis.cockpit = hit;
-      newmis.p_lifetime = time + self.p_lifetime;
+      newmis.data_lifetime = time + data_projectile_plasma_burn_time;
       newmis.damageValue = self.damageValue;
       newmis.damageType = self.damageType;
       newmis.owner = self.owner;
@@ -106,7 +108,7 @@ void() data_projectile_plasma_touch={
 void() data_projectile_plasma_think_={
   self.think = data_projectile_plasma_think_;
   self.nextthink = time + 0.05;
-  if( time > self.p_lifetime ){
+  if( time > self.data_lifetime ){
     self.think = BecomeExplosion;
     self.nextthink = time + 0.05;
   }

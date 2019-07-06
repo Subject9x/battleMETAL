@@ -14,9 +14,9 @@ void() data_projectile_snub_artillery_touch_;
 
 void() data_projectile_ini_snub_artillery_={
   self.classname = "missile";
-  self.p_velocity = 1000;
+  self.data_velocity = 1000;
   self.model = "q3mdl/proj/mdl_proj_sfga.md3";
-  self.p_lifetime = 8;
+  self.data_lifetime = 8;
   
   //cosmetics
   self.effects = (EF_NOSHADOW);

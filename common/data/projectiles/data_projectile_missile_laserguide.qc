@@ -15,9 +15,9 @@ void() data_projectile_missile_laserguide_think;
 void() data_projectile_ini_missile_laserguide_={
   self.classname = "missile";
   self.touch = data_projectile_missile_laserguide_touch;
-  self.p_velocity = 800;
+  self.data_velocity = 800;
   self.model = "q3mdl/proj/mdl_proj_lgm.md3";
-  self.p_lifetime = 2;
+  self.data_lifetime = 2;
   
   //cosmetics
   self.effects = EF_NOSHADOW;
@@ -66,10 +66,10 @@ void() data_projectile_missile_laserguide_think={
       dir_z = olddir_z - turnrate;
     if (olddir_z - dir_z < -1 * turnrate)
       dir_z = olddir_z + turnrate;
-    self.velocity = dir * self.p_velocity;
+    self.velocity = dir * self.data_velocity;
 		self.angles = vectoangles(self.velocity);
 	}
-  if(time > self.p_lifetime){
+  if(time > self.data_lifetime){
     self.nextthink = time + 0.1;
     self.think = BecomeExplosion;
   }

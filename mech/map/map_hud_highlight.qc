@@ -12,7 +12,7 @@ Inputs
   .c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
   .color = <vector> [red, green, blue] - color of the box
   .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
-  .p_lifetime = <float> [time to draw] - amount of time to draw box for
+  .data_lifetime = <float> [time to draw] - amount of time to draw box for
   
   .target = <string> [ent] - fire this trigger when done
   .wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]

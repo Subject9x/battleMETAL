@@ -119,7 +119,7 @@ void( entity targetClient ) client_push_hud_highlight={
     WriteCoord( MSG_ONE, this.color_y );
     WriteCoord( MSG_ONE, this.color_z );
 
-    WriteShort( MSG_ONE, this.p_lifetime );
+    WriteShort( MSG_ONE, this.data_lifetime );
   
   self = this;
 }; 

@@ -84,7 +84,7 @@ void() data_ini_attack_quantum_={
         rando_y = hitZone_y + (hitMin_y - rando_y * hitMin_y) + (hitMax_y + random() * hitMax_y);
         rando_z = hitZone_z + (hitMin_z - rando_z * hitMin_z) + (hitMax_z + random() * hitMax_z);
         NEWSHOT.velocity = normalize(hitZone - rando);
-        NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.p_velocity;
+        NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
         NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
         if(pointcontents(rando) != CONTENT_SOLID){
           setsize(NEWSHOT, '0 0 0', '0 0 0');

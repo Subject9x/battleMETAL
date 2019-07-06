@@ -71,7 +71,7 @@ void() data_ini_attack_missile_swarm_={
                   ctrl_weapon_make_projectile( 1 );
                   NEWSHOT.enemy = targs;
                   NEWSHOT.velocity = normalize(targs.origin - FIRE_ORIGIN);
-                  NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.p_velocity;
+                  NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
                   NEWSHOT.velocity_z = NEWSHOT.velocity_z + 500;
                   NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
                   sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);

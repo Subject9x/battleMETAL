@@ -10,5 +10,5 @@ Overview:
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
 
-.float p_lifetime;	//  game seconds the projectile lives for unless it hits something.
-.float p_velocity;	//  initialized velocity value (convert at function level )
+.float data_lifetime;	//  game seconds the projectile lives for unless it hits something.
+.float data_velocity;	//  initialized velocity value (convert at function level )

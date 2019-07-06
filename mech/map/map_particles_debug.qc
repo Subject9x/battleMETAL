@@ -10,7 +10,7 @@ Inputs
   .c_ofs = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
   .dest1 = <vector> [speed] -if effect needs a velocity vector
   .count = <float> [particle amount] - total number of particles in the effect
-  .p_lifetime = <float> - time to live, use with spawnflags[2]
+  .data_lifetime = <float> - time to live, use with spawnflags[2]
   .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .count2 = <float> - speed, rate of particle cycle
   .count3 = <bool> - 0 = pointparticle, 1 = trailparticle

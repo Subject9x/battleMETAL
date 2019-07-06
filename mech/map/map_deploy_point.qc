@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 01/04/2018
 Overview: 
@@ -15,7 +15,6 @@ Inputs
 */
 
 void() deploy_point_use={
-  //simple light switch
   if( self.isActive ){
     self.isActive = FALSE;
     return;

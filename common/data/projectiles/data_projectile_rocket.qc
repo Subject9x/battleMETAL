@@ -14,9 +14,9 @@ void() data_projectile_rocket_think_;
 void() data_projectile_ini_rocket_={
   self.classname = "missile";
   self.touch = data_prj_mis_touch;
-  self.p_velocity = 1300;
+  self.data_velocity = 1300;
   self.model = "q3mdl/proj/mdl_proj_mis.md3";
-  self.p_lifetime = 0.56;
+  self.data_lifetime = 0.56;
   
   //cosmetics
   self.effects = EF_NOSHADOW;
@@ -46,7 +46,7 @@ void() data_prj_mis_touch={
 void() data_projectile_rocket_think_={
   self.think = data_projectile_rocket_think_;
   self.nextthink = time + 0.05;
-  if( time > self.p_lifetime ){
+  if( time > self.data_lifetime ){
     self.think = BecomeExplosion;
     self.nextthink = time + 0.05;
   }

@@ -39,9 +39,6 @@ void() building_human_hangar={
   if( util_cornerSlopeCheck(self, 1) ){
     util_generateBuildingFoundation(self);
   }
-  //setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-  //droptofloor();
-  
   
   self.think = building_human_hangar_th;
   self.nextthink = time + (random() * 0.1);

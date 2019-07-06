@@ -37,7 +37,31 @@ void() hfuel_death8 = [8, hfuel_death9]{};
 void() hfuel_death9 = [9, hfuel_death10]{};
 void() hfuel_death10 = [10, hfuel_death11]{
 
-  te_object_explode( '1 0.75 0' );
+  te_object_explode( '1 0.75 0' ); 
+  local entity ruins;
+  ruins = spawn();
+  ruins.solid = SOLID_CORPSE;
+  ruins.movetype = MOVETYPE_NONE;
+  switch( self.vec_size ){
+    case 2:
+      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
+      break;
+    case 3:
+      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
+      break;
+    default:
+      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
+      break;
+  }
+  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
+  setorigin(ruins, self.origin);
+  ruins.vec_size = self.vec_size;
+  ruins.angles = self.angles;
+  ruins.armLeft = te_building_fire_start( ruins );
+  if( ruins.vec_size > 1 ){
+    ruins.armRight = te_building_fire_start( ruins );
+    ruins.torsoLeft = te_building_fire_start( ruins );
+  }
 };
 void() hfuel_death11 = [11, hfuel_death12]{};
 void() hfuel_death12 = [12, BecomeExplosion]{};
@@ -67,13 +91,10 @@ void() building_human_fuel={
   self.shieldRate = 1;
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-  droptofloor();
-   
-  if(util_cornerSlopeCheck(self, 1)){
+  if( util_cornerSlopeCheck(self, 1) ){
     util_generateBuildingFoundation(self);
   }
-  
+
   self.th_die = hfuel_death1;
   self.use = multi_trigger;
   

@@ -95,6 +95,7 @@ void() hrepair_die = [0, hrepair_die1]{
   self.deadflag = DEAD_DYING;
   self.solid = SOLID_CORPSE;
   building_die_removeFire();
+  
 };
 void() hrepair_die1 = [1, hrepair_die2]{
   te_object_explode( '0.75 0.75 0.6' );};
@@ -109,12 +110,37 @@ void() hrepair_die6 = [6, hrepair_die7]{
 void() hrepair_die7 = [7, hrepair_die8]{};
 void() hrepair_die8 = [8, hrepair_die9]{};
 void() hrepair_die9 = [9, hrepair_die10]{
-  te_object_explode( '0.75 0.75 0.6' );};
+  te_object_explode( '0.75 0.75 0.6' );
+  
+  local entity ruins;
+  ruins = spawn();
+  ruins.solid = SOLID_CORPSE;
+  ruins.movetype = MOVETYPE_NONE;
+  switch( self.vec_size ){
+    case 2:
+      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
+      break;
+    case 3:
+      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
+      break;
+    default:
+      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
+      break;
+  }
+  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
+  setorigin(ruins, self.origin);
+  ruins.vec_size = self.vec_size;
+  ruins.angles = self.angles;
+  ruins.armLeft = te_building_fire_start( ruins );
+  if( ruins.vec_size > 1 ){
+    ruins.armRight = te_building_fire_start( ruins );
+    ruins.torsoLeft = te_building_fire_start( ruins );
+  }  
+};
 void() hrepair_die10 = [10, hrepair_die11]{
   te_object_explode( '0.75 0.75 0.6' );};
 void() hrepair_die11 = [11, BecomeExplosion]{
   te_object_explode( '0.75 0.75 0.6' );
-  
 };
 
 void() building_human_repair={
@@ -135,8 +161,10 @@ void() building_human_repair={
   self.reloadMax = 2000;
   self.deadflag = DEAD_NO;
   
-  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-  droptofloor();
+
+  if( util_cornerSlopeCheck(self, 1) ){
+    util_generateBuildingFoundation(self);
+  }
   self.movetype = MOVETYPE_NONE;
   self.nextthink = time + 0.1;
   self.use = multi_trigger;

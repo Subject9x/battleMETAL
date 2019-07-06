@@ -197,10 +197,10 @@ void() map_trigger_push={
  .onDeath = <string> fire entity when lifetime runs out.
  
  .delay = <float> delay before starting when triggered.
- .p_lifetime = <float> game time before effect shuts off.
+ .data_lifetime = <float> game time before effect shuts off.
  
  1 START_OFF = Requires targetname and a trigger call.
- 2 LIFETIME = Func is turned off after .p_lifetime game seconds.
+ 2 LIFETIME = Func is turned off after .data_lifetime game seconds.
  4 DELAY = wait .delay game seconds after being activated to begin.
  8 INTERVAL = fluctuate between on-and-off.
  16 USE_WIND = rain will be affected by map's WIND values.

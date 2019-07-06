@@ -147,8 +147,8 @@ void() te_flame_th={
   pointparticles( particleeffectnum(self.vec_name), self.origin, normalize(self.c_alt_ofs - self.origin) * WINDDIR_z, self.count);
 
   self.think = te_flame_th;
-  if( self.p_lifetime > 0 ){
-    if( time > self.p_lifetime ){
+  if( self.data_lifetime > 0 ){
+    if( time > self.data_lifetime ){
       self.think = SUB_Remove;
     }
   }
@@ -168,7 +168,7 @@ void( vector org, vector angl, float total, float lifetime, float ticrate) te_sm
   fire.count = total;
   fire.vec_name = "TE_FIRE_1";
   if( lifetime > 0 ){
-    fire.p_lifetime = time + lifetime;
+    fire.data_lifetime = time + lifetime;
   }
   setorigin( fire, org );
 };
@@ -186,7 +186,7 @@ void( vector org, vector angl, float total, float lifetime, float ticrate) te_me
   fire.count = total;
   fire.vec_name = "TE_FIRE_2";
   if( lifetime > 0 ){
-    fire.p_lifetime = time + lifetime;
+    fire.data_lifetime = time + lifetime;
   }
   setorigin( fire, org );
 };
@@ -204,7 +204,7 @@ void( vector org, vector angl, float total, float lifetime, float ticrate) te_bi
   fire.count = total;
   fire.vec_name = "TE_FIRE_3";
   if( lifetime > 0 ){
-    fire.p_lifetime = time + lifetime;
+    fire.data_lifetime = time + lifetime;
   }
   setorigin( fire, org );
 };
@@ -240,7 +240,7 @@ void( vector org, float vecSize ) te_shield_explode={
   explode.solid = SOLID_NOT;
   explode.think = te_shield_explode_th;
   explode.nextthink = time + 0.05;
-  explode.p_lifetime = 10;
+  explode.data_lifetime = 10;
   explode.scale = 0.1 + (vecSize / 3);
   explode.alpha = 0.75;
   explode.effects = explode.effects | EF_NOSHADOW;
@@ -270,7 +270,7 @@ void( vector org, float explodeSize, vector explodeColor, float debrisCount, flo
   explode.solid = SOLID_NOT;
   explode.think = te_shield_explode_th;
   explode.nextthink = time + 0.05;
-  explode.p_lifetime = 10;
+  explode.data_lifetime = 10;
   explode.scale = explodeSize;
   explode.alpha = 1;
   explode.avelocity = randomvec() * 300;

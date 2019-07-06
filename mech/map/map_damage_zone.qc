@@ -12,7 +12,7 @@ Inputs
   .damageType = <float> [flag] 2 - DMG ARMOR
   .damageType = <float> [flag] 4 - DMG ENERGY
   .damageType = <float> [flag] 8 - DMG SPEED
-  .p_lifetime = <float> - time to live, use with spawnflags[2]
+  .data_lifetime = <float> - time to live, use with spawnflags[2]
   .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
   .spawnflags = <float> [flag] 2 - lifetime
@@ -25,7 +25,7 @@ Inputs
 void() madamageValuezone_use;
 void() madamageValuezone_cool;
 /*
-  p_lifetime countdown timer hit.
+  data_lifetime countdown timer hit.
 */
 void() madamageValuezone_think={
   
@@ -54,7 +54,7 @@ void() madamageValuezone_cool={
   self.isActive = TRUE;
   if( (self.spawnflags & 2) ){
     self.think = madamageValuezone_think;
-    self.nextthink = time + self.p_lifetime;
+    self.nextthink = time + self.data_lifetime;
   }
 };
 
@@ -74,7 +74,7 @@ void() madamageValuezone_use={
     self.isActive = TRUE;
     if( (self.spawnflags & 2) ){
       self.think = madamageValuezone_think;
-      self.nextthink = time + self.p_lifetime;
+      self.nextthink = time + self.data_lifetime;
     }
   }
 };
@@ -162,7 +162,7 @@ void() madamageValue_zone={
   }
   
   if( (self.spawnflags & 2) ){
-    if( !self.p_lifetime ){
+    if( !self.data_lifetime ){
       self.spawnflags = self.spawnflags - (self.spawnflags & 2);
     }
   }
@@ -183,6 +183,6 @@ void() madamageValue_zone={
   if( (self.spawnflags & 2) ){
     //map needs the countdown timer  
     self.think = madamageValuezone_think;
-    self.nextthink = time + self.p_lifetime;
+    self.nextthink = time + self.data_lifetime;
   }
 };
