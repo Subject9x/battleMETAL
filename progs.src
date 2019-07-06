@@ -46,15 +46,16 @@ mech/ctrl/ctrl_weapon_h.qc
 //==========================
 
 //Common Game Data================
-  
   common/data/data_values_game.qc
   common/data/data_values_ai.qc
   common/data/data_header.qc
+  common/data/data_values_particles.qc
   
   //Unique ID listings-------------
   common/data/mechs/uid_mechs.qc
   common/data/vehicles/uid_vehicles.qc
   common/data/item/uid_items.qc
+  common/data/buildings/uid_buildings.qc
   //---------------------------------
   
   //Projectiles--------------------
@@ -84,8 +85,12 @@ mech/ctrl/ctrl_weapon_h.qc
   //-------------------------------
   
   //Buildings----------------------
-  common/data/buildings/uid_buildings.qc
-  
+  common/data/buildings/data_building_hangar_large.qc
+  common/data/buildings/data_building_radar.qc
+  common/data/buildings/data_building_power_plant.qc
+  common/data/buildings/data_building_shield_generator.qc
+  common/data/buildings/data_building_fuel_tank.qc
+  common/data/buildings/data_building_repair_bay.qc
   //-------------------------------
   
   //Turrets------------------------
@@ -120,21 +125,9 @@ mech/ctrl/ctrl_weapon_h.qc
   common/data/item/equip/data_equip_target_module.qc
   common/data/item/equip/data_equip_turbo_charger.qc
   //-------------------------------
-  common/data/data_values_buildings.qc
-  common/data/data_values_particles.qc
 //================================
   dp/subs.qc  
   mech/data_system.qc
-
-//DATA FILES=================  
-  //buildings
-  mech/dat/bld/data_h_radar.qc
-  mech/dat/bld/data_h_shield.qc
-  mech/dat/bld/data_h_power.qc
-  mech/dat/bld/data_h_hangar_l.qc
-  mech/dat/bld/data_h_fuel.qc
-  mech/dat/bld/data_h_repair.qc 
-//===========================
 
 //Custom battleMETAL Functionality
   //AI Module---------------------

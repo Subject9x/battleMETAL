@@ -1,11 +1,14 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
       mod 3/16/2017
       mod 10/28/2018
+      mod 07/05/2019
 Overview: utility functions for mod, header
 */
+
+
 
 //console logging==========================================================
 void(string msg, float val) cons_logAFloat;

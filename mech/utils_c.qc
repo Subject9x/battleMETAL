@@ -226,23 +226,25 @@ void(entity ent, vector pnt) util_chekPointToHitDir={
   self = ent;
   hit_ang = util_checkPointAngleImpl(pnt);
   
-  if(hit_ang == 0){
-    if( (self.hitdir_buffer & STAT_HIT_LF) == FALSE ){
-      self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_LF;
-    }
-  }
-  else if(hit_ang == 1){
-    if( (self.hitdir_buffer & STAT_HIT_RT) == FALSE ){
-      self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_RT;
-    }
-  }
-  else if(hit_ang == 2){
-    if( (self.hitdir_buffer & STAT_HIT_RT) == FALSE ){
-      self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_RT;
-    }
-    if( (self.hitdir_buffer & STAT_HIT_LF) == FALSE  ){
-      self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_LF;
-    }
+  switch( hit_ang ){
+    case 1:
+      if( (self.hitdir_buffer & STAT_HIT_RT) == FALSE ){
+        self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_RT;
+      }
+      break;
+    case 2:
+      if( (self.hitdir_buffer & STAT_HIT_RT) == FALSE ){
+        self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_RT;
+      }
+      if( (self.hitdir_buffer & STAT_HIT_LF) == FALSE  ){
+        self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_LF;
+      }
+      break;
+    default:
+      if( (self.hitdir_buffer & STAT_HIT_LF) == FALSE ){
+        self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_LF;
+      }
+      break;
   }
   self = this;
 };
@@ -257,9 +259,11 @@ void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
 
 
 void(string mdl_name, float skinNum, float ef_flags) util_setModel={
+  string path;
   self.effects = self.effects | ef_flags;
   self.skin = skinNum;
-  setmodel(self, mdl_name);
+  path = precache_model2( mdl_name );
+  setmodel(self, path);
 };
 
 /*
@@ -283,48 +287,71 @@ void(float hp, float max_hp, float arm_type, float arm_val) util_setHealthArmor=
 };
 
 /*
-  checks the normal under all 4 points of a model, if normal within 
-  tolerance, return true
+  Runs a traceline from all 4 bottom corners of the entity.
+  if normal of any of the points is less than the tolerance, 
+    adjust the origin of the entity to slightly above the slope.
 */
 float(entity t, float tolerance) util_cornerSlopeCheck={
-  local vector start, c1,c2,c3,c4;
-  local float val;
-  
-  val = FALSE;
-  start = t.origin + (v_up * self.mins_z);
+  local vector start, c1,c2,c3,c4, check;
+  local float distanceCheck, comparator;
   
   makevectors(t.angles);
+  start = t.origin + (v_up * self.mins_z);
   c1 = start + (v_forward * self.maxs_x) + (v_right * self.maxs_y);
   c2 = start + (v_forward * self.mins_x) + (v_right * self.maxs_y);
   c3 = start + (v_forward * self.mins_x) + (v_right * self.mins_y);
   c4 = start + (v_forward * self.maxs_x) + (v_right * self.mins_y);
   
-  traceline(c1, c1 + (v_up * -128), FALSE, t);
+  traceline(c1, c1 + (v_up * -1000), FALSE, t);
   if( trace_plane_normal_z < tolerance){
-    val = TRUE;
+    distanceCheck = vlen( ( c1 + (v_up * -1000)) - c1 );
+    check = trace_endpos;
   }
   
-  traceline(c2, c2 + (v_up * -128), FALSE, t);
+  traceline(c2, c2 + (v_up * -1000), FALSE, t);
   if( trace_plane_normal_z < tolerance){
-    val = TRUE;
+    comparator = vlen( ( c2 + (v_up * -1000)) - c2 );
+    if( comparator < distanceCheck ){
+      distanceCheck = comparator;
+      check = trace_endpos;
+    }
   }
   
-  traceline(c3, c3 + (v_up * -128), FALSE, t);
+  traceline(c3, c3 + (v_up * -1000), FALSE, t);
   if( trace_plane_normal_z < tolerance){
-    val = TRUE;
+    comparator = vlen( ( c3 + (v_up * -1000)) - c3 );
+    if( comparator < distanceCheck ){
+      distanceCheck = comparator;
+      check = trace_endpos;
+    }
   }
   
-  traceline(c4, c4 + (v_up * -128), FALSE, t);
+  traceline(c4, c4 + (v_up * -1000), FALSE, t);
   if( trace_plane_normal_z < tolerance){
-    val = TRUE;
+    comparator = vlen( ( c4 + (v_up * -1000)) - c4 );
+    if( comparator < distanceCheck ){
+      distanceCheck = comparator;
+      check = trace_endpos;
+    }
   }
-  return val;
+  
+  if( check ){
+    local float d;
+    d = distanceCheck;
+    check_x = t.origin_x;
+    check_y = t.origin_y;
+    check = check + (v_up * (self.mins_z *-1) );
+    return TRUE;
+  }
+  
+  return FALSE;
 };
 
 void(entity t) util_generateBuildingFoundation={
-  makevectors(t.angles);
   local vector v;
   local entity this, n;
+  
+  makevectors(t.angles);
   v = t.origin + (v_up * t.mins_z);
   n = spawn();
   this = self;

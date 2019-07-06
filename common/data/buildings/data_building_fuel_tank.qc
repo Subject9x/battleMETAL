@@ -53,18 +53,18 @@ void() building_human_fuel_th={
 /*QUAKED building_fuel (.1 .1 .1) (-40 -40 -32) (40 40 32)
 */
 void() building_human_fuel={
-  self.data_idx = ID_BLD_H_FUEL;
+  self.data_idx = UI_BUILDING_fuel_tank;
   self.data_type = DATA_BLD;
   self.vec_name = "Fuel Tank";
   self.flags = self.flags | FL_MONSTER;
   self.vec_size = 2;
-  util_setModel(DAT_BLD_H_FUELTANK_MODEL, self.skin, 0) ;
+  util_setModel("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(DAT_BLD_H_FUELTANK_HP, DAT_BLD_H_FUELTANK_HP, 1, 100) ;
+  util_setHealthArmor(75, 75, 1, 100) ;
   setsize(self, '-20 -20 0', '20 20 40');
   self.shield= 0;
-  self.shieldMax= DAT_BLD_H_FUELTANK_SH_MAX;
-  self.shieldRate = DAT_BLD_H_FUELTANK_SH_RATE;
+  self.shieldMax= 100;
+  self.shieldRate = 1;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));

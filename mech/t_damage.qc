@@ -234,7 +234,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     notTarg = self;
     self = dmgTrg;
     if( self.data_type == DATA_BLD ){
-      if( self.data_idx == ID_BLD_H_RADAR ){
+      if( self.data_idx == UI_BUILDING_radar ){
         if( self.enemy != attacker ){
           self.oldenemy = self.enemy;
           self.enemy = attacker;

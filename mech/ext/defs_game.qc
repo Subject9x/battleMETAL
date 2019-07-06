@@ -28,7 +28,7 @@ float RECOIL = 4;
 
 //used for worldspaw, dictates unlocks to save file post-mission
 .string inv_items;
-.string inv_mechs
+.string inv_mechs;
 .entity lst_p; //linked list parent
 
 //from world.qc

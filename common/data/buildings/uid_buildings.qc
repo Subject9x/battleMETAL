@@ -14,3 +14,9 @@ float UID_TURRET_missile_turret = 2;
 float UID_TURRET_heavy_turret = 3;
 
 //Buildings
+float UI_BUILDING_radar = 1;
+float UI_BUILDING_shield_generator = 2;
+float UI_BUILDING_power_plant = 3
+float UI_BUILDING_hangar_large = 4;
+float UI_BUILDING_fuel_tank = 5;
+float UI_BUILDING_repair_bay = 6;

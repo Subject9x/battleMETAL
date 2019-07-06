@@ -233,6 +233,7 @@ void		end_sys_fields;			// flag for structure dumping
 
 float	FALSE					= 0;
 float TRUE					= 1;
+vector NULLVEC      = '0 0 0';
 
 // edict.flags
 float	FL_FLY					  = 1;

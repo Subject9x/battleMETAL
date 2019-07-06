@@ -18,6 +18,8 @@ data/defs_linker.qc
 //================================
 
 //Common Game Data================
+  ../common/data/data_values_particles.qc
+  ../common/ui/ui_color_constants.qc
   ../common/data/data_values_game.qc
   ../common/data/data_values_ai.qc
   ../common/data/data_header.qc
@@ -91,9 +93,6 @@ data/defs_linker.qc
   ../common/data/item/equip/data_equip_target_module.qc
   ../common/data/item/equip/data_equip_turbo_charger.qc
   //-------------------------------
-  ../common/data/data_values_buildings.qc
-  ../common/data/data_values_particles.qc
-  ../common/ui/ui_color_constants.qc
 //================================
 
 util/headers/input_events.qh

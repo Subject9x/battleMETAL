@@ -3,9 +3,9 @@ battleMETAL
 Author: Peter Roohr
 Date: 01/21/2017
 Overview: data file for building
-  type: radar tower
+  type: Shield Generator
   faction: humans
-  func: provides radar scanning to all friendly units in radius
+  func: provides shields to all friendly units in its radius, but requires a nearby power plant.
 */
 void() hshield_die = [0, hshield_die1]{
   local entity head;
@@ -69,7 +69,7 @@ void() hshield_th = [0, hshield_th]{
       if(t != self){
         local float dist;
         dist = vlen(t.origin - self.origin);
-        if(dist <= DAT_BLD_H_SHIELD_RADIUS){
+        if(dist <= 1000){
           if(self.energy > 0){
             if( time > t.shieldHitDelay){
               if(t.shield < t.shieldMax){
@@ -94,7 +94,7 @@ void() hshield_th = [0, hshield_th]{
     if(p.faction == self.faction){
       local float pdist;
       pdist = vlen(t.origin - self.origin);
-      if(pdist <= DAT_BLD_H_SHIELD_RADIUS){
+      if(pdist <= 1000){
         if(self.energy > 0){
           if(p.shield < p.shieldMax){
             local float pmod;
@@ -116,22 +116,22 @@ void() hshield_th = [0, hshield_th]{
 /*QUAKED building_human_shield (.1 .1 .1) (-56 -56 0) (56 56 17.5)
 */
 void() building_human_shield={
-  self.data_idx = ID_BLD_H_SHIELD;
+  self.data_idx = UI_BUILDING_shield_generator;
   self.data_type = DATA_BLD;
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.data_type = DATA_BLD;
-  util_setModel(DAT_BLD_H_SHIELDGEN_MODEL, self.skin, 0) ;
+  util_setModel("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(DAT_BLD_H_SHIELDGEN_HP, DAT_BLD_H_SHIELDGEN_HP, 1, 100) ;
+  util_setHealthArmor(500, 500, 1, 100) ;
   setsize(self, '-56 -56 0', '56 56 17.5');
   self.shield= 0;
-  self.shieldMax= DAT_BLD_H_SHIELDGEN_SH_MAX;
-  self.shieldRate= DAT_BLD_H_SHIELDGEN_SH_RATE;
+  self.shieldMax= 1000;
+  self.shieldRate= 1;
   self.energy = 0;
   self.energyRate = 0;
-  self.energyMax= DAT_BLD_H_POWER_PLANT_EN_MAX / 2;
+  self.energyMax = 2000;
   self.scale = 1;
   self.deadflag = DEAD_NO;
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));

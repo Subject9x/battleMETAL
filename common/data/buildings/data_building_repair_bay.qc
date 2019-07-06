@@ -58,7 +58,7 @@ void() hrepair_rep = [0, hrepair_rep]{
       pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
       trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
   
-      fix.health = fix.health + self.reloadRate * DAT_BLD_H_REPAIR_RL_RATIO;
+      fix.health = fix.health + self.reloadRate * 2;
       self.reloadValue = self.reloadValue - (self.reloadRate * self.trigger_field.vec_size);
       if(fix.health >= fix.max_health){
         fix.health = fix.max_health;
@@ -118,21 +118,21 @@ void() hrepair_die11 = [11, BecomeExplosion]{
 };
 
 void() building_human_repair={
-  self.data_idx = ID_BLD_H_REPAIR;
+  self.data_idx = UI_BUILDING_repair_bay;
   self.data_type = DATA_BLD;
   self.vec_name = "Repair Bay";
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 3;
-  util_setModel(DAT_BLD_H_REPAIR_MODEL, self.skin, 0) ;
+  util_setModel("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(DAT_BLD_H_REPAIR_HP, DAT_BLD_H_REPAIR_HP, 1, 100) ;
+  util_setHealthArmor(600, 600, 1, 100) ;
   setsize(self, '-53 -53 0', '53 53 40');
   self.shield= 0;
-  self.shieldMax= DAT_BLD_H_REPAIR_SH_MAX;
-  self.shieldRate= DAT_BLD_H_REPAIR_SH_RATE;
-  self.reloadValue = DAT_BLD_H_REPAIR_RL_MAX;
-  self.reloadRate = DAT_BLD_H_REPAIR_RL_RATE;
-  self.reloadMax = DAT_BLD_H_REPAIR_RL_MAX;
+  self.shieldMax= 750;
+  self.shieldRate= 1;
+  self.reloadValue = 2000;
+  self.reloadRate = 1;
+  self.reloadMax = 2000;
   self.deadflag = DEAD_NO;
   
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
@@ -167,9 +167,6 @@ void() building_human_repair={
   self.th_stand = hrepair_th;
   self.th_walk = hrepair_rep;
   hrepair_th();
-};
-
-void() building_repair_think={
 };
 
 void() building_repair_touch={

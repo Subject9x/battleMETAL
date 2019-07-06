@@ -10,7 +10,7 @@ Overview: data file for building
 
 void() hpower_die = [0, hpower_die1]{
   local entity head;
-  head = findradius(self.origin, DAT_BLD_H_POWER_PLANT_EN_RADIUS);
+  head = findradius(self.origin, 800);
   while(head){
     //if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
     if( head.data_type == DATA_MECH ){
@@ -21,7 +21,7 @@ void() hpower_die = [0, hpower_die1]{
     }
     if( head.data_type == DATA_BLD ){
       if( head.faction == self.faction ){
-        if( head.data_idx != ID_BLD_H_POWER){
+        if( head.data_idx != UI_BUILDING_power_plant){
           head.energyRate = 0;
         }
       }
@@ -67,7 +67,7 @@ void() hpower_th = [0, hpower_th]{
   while(t){
     if(t.faction == self.faction){
       if(t != self){
-        if(vlen(t.origin - self.origin) <= DAT_BLD_H_POWER_PLANT_EN_RADIUS){
+        if(vlen(t.origin - self.origin) <= 800){
           t.energyRate = self.energyRate;
         }
       }
@@ -81,21 +81,21 @@ void() hpower_th = [0, hpower_th]{
 /*QUAKED building_human_power (.1 .1 .1) (-56 -56 0) (56 56 46)
 */
 void() building_human_power={
-  self.data_idx = ID_BLD_H_POWER;
+  self.data_idx = UI_BUILDING_power_plant;
   self.data_type = DATA_BLD;
   self.vec_name = "Power Generator";
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
-  util_setModel(DAT_BLD_H_POWER_PLANT_MODEL, self.skin, 0) ;
+  util_setModel("q3mdl/buildings/power_plant/mdl_bld_h_power.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(DAT_BLD_H_POWER_PLANT_HP, DAT_BLD_H_POWER_PLANT_HP, 1, 100);
+  util_setHealthArmor(1200, 1200, 1, 100);
   setsize(self, '-75 -75 0', '75 75 26');
   self.shield= 0;
-  self.shieldMax= DAT_BLD_H_POWER_PLANT_SH_MAX;
-  self.shieldRate= DAT_BLD_H_POWER_PLANT_SH_RATE;
+  self.shieldMax = 600;
+  self.shieldRate = 1;
   self.energy= 0;
-  self.energyMax= DAT_BLD_H_POWER_PLANT_EN_MAX;
-  self.energyRate= DAT_BLD_H_POWER_PLANT_EN_RATE;
+  self.energyMax= 4000;
+  self.energyRate= 4;
   
   self.scale = 1;
   self.deadflag = DEAD_NO;

@@ -163,22 +163,22 @@ void() building_radar_touch={
 /*QUAKED building_human_radar (.1 .1 .1) (-20 -20 0) (20 20 13)
 */
 void() building_human_radar={
-  self.data_idx = ID_BLD_H_RADAR;
+  self.data_idx = UI_BUILDING_radar;
   self.data_type = DATA_BLD;
   self.ai_rank = skill;
   self.w_firetime = AI_POST_SPOT_TIME;
   self.vec_name = "Listening Post";
   self.flags = (FL_MONSTER | FL_UNIT);
   self.vec_size = 1;
-  util_setModel(DAT_BLD_H_SM_RADAR_MODEL, self.skin, 0) ;
+  util_setModel("q3mdl/buildings/radar/mdl_bld_h_radar.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
-  util_setHealthArmor(DAT_BLD_H_SM_RADAR_HP, DAT_BLD_H_SM_RADAR_HP, 1, 100) ;
+  util_setHealthArmor(100, 100, 1, 100) ;
   setsize(self, '-20 -20 0', '20 20 26');
   self.shield = 0;
-  self.shieldMax = DAT_BLD_H_SM_RADAR_SH_MAX;
-  self.shieldRate = DAT_BLD_H_SM_RADAR_SH_RATE;
+  self.shieldMax = 150;
+  self.shieldRate = 1;
   self.stat_rdr_mode = TRUE;
-  self.radar_range = DAT_BLD_H_SM_RADAR_RADAR_RANGE;
+  self.radar_range = 2000;
   
   ai_pilot_view_range( self.ai_rank );
   switch( self.ai_rank ){
