@@ -48,7 +48,7 @@ void() data_ini_heavy_turret_={
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_heavy/mdl_turret_heavy_turret.obj", 1, '0 20 0', self, torsoCenter); 
   
   //camera location
-  data_ini_camera_( '0 12 20', self.torsoCenter );
+  data_ini_camera_( '0 28 8', self.torsoCenter );
 //=====================================
  
 //HARDPOINTS==========================

@@ -341,6 +341,7 @@ float(entity t, float tolerance) util_cornerSlopeCheck={
     check_x = t.origin_x;
     check_y = t.origin_y;
     check = check + (v_up * (self.mins_z *-1) );
+    setorigin( self, check );
     return TRUE;
   }
   

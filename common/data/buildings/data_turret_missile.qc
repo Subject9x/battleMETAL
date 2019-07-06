@@ -48,7 +48,7 @@ void() data_ini_missile_turret_={
   data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3", 1, '0 -12 0', self, torsoCenter); 
   
   //camera location
-  data_ini_camera_( '0 12 20', self.torsoCenter );
+  data_ini_camera_( '0 24 8', self.torsoCenter );
 //=====================================
  
 //HARDPOINTS==========================

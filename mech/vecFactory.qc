@@ -70,6 +70,7 @@ void() build_unit_camera={
     util_setOffsetOrigin(self, this, self.c_ofs);
     self.scale = 1;
     self.alpha = 0;
+    self.effects = self.effects | EF_NODRAW;
     
     self.aiment = partParent;
     self.owner = this;

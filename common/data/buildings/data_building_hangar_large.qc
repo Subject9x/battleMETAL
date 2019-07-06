@@ -34,14 +34,14 @@ void() building_human_hangar={
   util_setHealthArmor(800, 800, 1, 100) ;
   util_setModel( "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3", self.skin, 0) ;
   setsize(self, self.mins, self.maxs);
-  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-  //droptofloor();
-  
   self.movetype = MOVETYPE_NONE;
   
   if( util_cornerSlopeCheck(self, 1) ){
     util_generateBuildingFoundation(self);
   }
+  //setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
+  //droptofloor();
+  
   
   self.think = building_human_hangar_th;
   self.nextthink = time + (random() * 0.1);
