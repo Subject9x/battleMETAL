@@ -26,7 +26,6 @@ void() legacy_PlayerDie;
 void() spawnpoint_select;
 void() spawnpoint_Random;
 entity() spawnpoint_coop;
-entity() spawnpoint_single;
 
 //SendEnt
 void() client_push_player_info;

@@ -46,21 +46,21 @@ void() ai_turret_control={
 };
 
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw={
-  local float min, max;
-  min = anglemod(facingAngle + limitMin);
-  max = anglemod(facingAngle + limitMax);
+  local float angleMin, angleMax;
+  angleMin = anglemod(facingAngle + limitMin);
+  angleMax = anglemod(facingAngle + limitMax);
   
-  if( max > min ){
-    if( (min <= angleOfTarget) && (angleOfTarget <= max) ){
+  if( angleMax > angleMin ){
+    if( (angleMin <= angleOfTarget) && (angleOfTarget <= angleMax) ){
       return angleOfTarget;
     }
-    return min; //turret rotation lockout.
+    return angleMin; //turret rotation lockout.
   }
   else {
-    if( (min <= angleOfTarget) || (angleOfTarget <= max) ){
+    if( (angleMin <= angleOfTarget) || (angleOfTarget <= angleMax) ){
       return angleOfTarget;
     }
-    return max; //turret rotation lockout.
+    return angleMax; //turret rotation lockout.
   }
   
 };

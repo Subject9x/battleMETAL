@@ -129,14 +129,14 @@ void() node_patrol_touch={
               self.target = thisNode.target;
               self.goalentity = self.movetarget = node;
               self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-              //
-              macro_ai_frame(  self.th_walk );
+             
+              macro_ai_frame(  self.th_walk )
               if( thisNode.pausetime ){
                 self.pausetime = thisNode.pausetime;
                 self.pausetime = self.pausetime + (self.pausetime * (self.ai_action_mod / 10));
                 self.pausetime = self.pausetime + time;
                 if( self.th_stand ){
-                  macro_ai_frame( self.th_stand );
+                  macro_ai_frame( self.th_stand )
                 }
               }
           }

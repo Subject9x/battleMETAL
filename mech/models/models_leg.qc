@@ -14,7 +14,7 @@ Overview:
   Leg animation state controller.
   uses FrameStart / end to track between animation groups
 */
-void( entity legs ) anim_leg_control={
+void( entity unitLegs ) anim_leg_control={
   //TODO?
 };
 /*

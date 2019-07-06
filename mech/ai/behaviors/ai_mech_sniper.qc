@@ -575,7 +575,6 @@ void() ai_mech_sniper_fight_prep={
       }
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
-          local float rand;
           rand = random();
           if( rand < 0.35 ){
             self.lefty = self.lefty * -1;

@@ -165,7 +165,7 @@ void() mapfile_coop_load={
 
 //pvp options
 //scope this for the client
-void(float faction) mapfile_pvp_load={
+void( float playerFaction ) mapfile_pvp_load={
   local string mapFile, file, line, contents;
   local float flannel, line_tag, argc;
   
@@ -176,7 +176,7 @@ void(float faction) mapfile_pvp_load={
     mapFile = world.map_file;
   }
   
-  file = strcat(PATH_DATA_MAP, "/", mapname, "/", mapFile, "_", ftos(faction), SAVE_FILE_EXT);
+  file = strcat(PATH_DATA_MAP, "/", mapname, "/", mapFile, "_", ftos(playerFaction), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);

@@ -566,10 +566,6 @@ entity() spawnpoint_coop={
   return self.goalentity;
 };
 
-entity() spawnpoint_single={
-};
-
-
 entity() SelectSpawnPoint={
   local	entity spot;
 	local	entity thing;

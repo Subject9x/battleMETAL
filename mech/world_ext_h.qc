@@ -28,9 +28,6 @@ void() mh_world_ini;
 void() world_get_fog;
 float( entity t ) world_calc_fog;
 
-void(float prj_id) data_iniProjectile;
-
-
 //RTLight converter system---------------------------------------------
 .float rtlShadows; //FALSE = write nothin | TRUE = write '!'
 //.vector rtlOrigin; -> light ent's .origin

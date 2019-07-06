@@ -55,3 +55,6 @@ Overview:
 
 .string ui_hud_image;	//client-side, display this as the background hud image
 .string ui_menu_icon;	//client-side, display this image in the hangar
+
+.float isActive;
+.float nav_name;
