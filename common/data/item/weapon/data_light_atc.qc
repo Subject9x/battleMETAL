@@ -9,7 +9,9 @@ Overview:
       Rapid fire
       low accuracy
 */
+#ifndef CSQC
 void() data_ini_attack_latc_;
+#endif
 
 void() data_ini_light_atc_={
 
@@ -20,28 +22,32 @@ void() data_ini_light_atc_={
   self.reloadRate = 0.2;
   self.reloadMax = 0.2;
   self.energyRate = 0;
-  self.spreadDefault = '0.025 0.025 0';
   
   self.w_range = 1800;
   self.damageValue = 3.5;
   self.damageType = DMG_BAL;
-  
-  self.w_attack = data_ini_attack_latc_;
-  self.think = default_weapon_think;
-  
-  self.w_fire_ofs = '0 0.5 5';
-  self.fire_sound = "sound/weapons/atc_fire.ogg";
-  self.model = "q3mdl/weapons/w_atc.md3";
+
   self.techLevel = 1;
   self.i_size = 1;
   
-  self.w_isburst = FALSE;
-  
+  #ifdef CSQC  
   self.abbrev = "ATC";
   self.description = "Basic automatic cannon.~";
   self.icon = "gfx/ui/wep_icons/wi_atc.png";
+  #endif
+  
+  #ifndef CSQC  
+  self.spreadDefault = '0.025 0.025 0';
+  self.w_attack = data_ini_attack_latc_;
+  self.think = default_weapon_think;
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0.5 5';
+  self.fire_sound = "sound/weapons/atc_fire.ogg";
+  self.model = "q3mdl/weapons/w_atc.md3";
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_latc_={
 
   ctrl_weapon_fireOffset();
@@ -73,3 +79,4 @@ void() data_ini_attack_latc_={
     }
   }
 };
+#endif

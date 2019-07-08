@@ -10,7 +10,9 @@ Overview:
       Small AoE.
       Consumes Energy
 */
+#ifndef CSQC
 void() data_ini_attack_emp_;
+#endif
 
 void() data_ini_emp_={
 
@@ -21,29 +23,33 @@ void() data_ini_emp_={
   self.reloadRate = 0.1;
   self.reloadMax = 6;
   self.energyRate = 266.7;
-  self.spreadDefault = '0.009 0.008 0';
   
   self.w_range = 1700;
   self.damageValue = 400;
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   
-  self.w_attack = data_ini_attack_emp_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_emp_;
-  
-  self.w_fire_ofs = '0 0.1 7';
-  self.fire_sound = "sound/weapons/emp_fire.ogg";
-  self.model = "q3mdl/weapons/w_emp.md3";
   self.techLevel = 2;
   self.i_size = 3;
   
-  self.w_isburst = FALSE;
-  
+  #ifdef CSQC
   self.abbrev = "EMP";
   self.description = "Only damages Target's SHIELDS. | Proximity detonation at longer ranges.~";
   self.icon = "gfx/ui/wep_icons/wi_emp.png";
+  #endif
+  
+  #ifndef CSQC
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0.1 7';
+  self.fire_sound = "sound/weapons/emp_fire.ogg";
+  self.model = "q3mdl/weapons/w_emp.md3";
+  self.w_attack = data_ini_attack_emp_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_emp_;
+  self.spreadDefault = '0.009 0.008 0';
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_emp_={
 
   if( !ctrl_weapon_checkEnergy() ){
@@ -62,3 +68,4 @@ void() data_ini_attack_emp_={
   sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_EMP_MUZZLE"), FIRE_ORIGIN + v_forward * 3 + v_up * 0.1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
 };
+#endif

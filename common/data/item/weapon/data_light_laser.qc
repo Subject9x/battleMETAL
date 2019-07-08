@@ -10,7 +10,9 @@ Overview:
       Mild Dmg buff against shields
 
 */
+#ifndef CSQC
 void() data_ini_attack_laser_;
+#endif
 
 void() data_ini_light_laser_={
   
@@ -21,28 +23,32 @@ void() data_ini_light_laser_={
   self.reloadRate = 0.6;
   self.reloadMax = 0.6;
   self.energyRate =  6.67;
-  self.spreadDefault = '0.0075 0.0075 0';
-  
-  self.think = default_weapon_think;
-  self.w_attack = data_ini_attack_laser_;
 
   self.w_range = 2000;
   self.damageValue = 10;
   self.damageType = (DMG_ENE | EFF_STX);
- 
-  self.w_fire_ofs = '0 0 3.5'; 
-  self.fire_sound = "sound/weapons/laser_fire.ogg";
-  self.model = "q3mdl/weapons/w_laser.md3";
+
   self.techLevel = 1;
   self.i_size = 1;
-  
-  self.w_isburst = FALSE;
-  
+
+  #ifdef CSQC
   self.abbrev = "LAS";
   self.description = "Small bonus damage against shields.~";
   self.icon = "gfx/ui/wep_icons/wi_las.png";
+  #endif
+  
+  #ifndef CSQC
+  self.spreadDefault = '0.0075 0.0075 0';
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0 3.5'; 
+  self.fire_sound = "sound/weapons/laser_fire.ogg";
+  self.model = "q3mdl/weapons/w_laser.md3";
+  self.think = default_weapon_think;
+  self.w_attack = data_ini_attack_laser_;
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_laser_={
   
   if( !ctrl_weapon_checkEnergy() ){
@@ -71,3 +77,4 @@ void() data_ini_attack_laser_={
   
   pointparticles(particleeffectnum("TE_LAS_DIRT"), FIRE_ENDPOINT , '0 0 0', 1);
 };
+#endif

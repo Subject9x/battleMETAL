@@ -9,7 +9,9 @@ Overview:
       Medium AoE
       Arcing
 */
+#ifndef CSQC
 void() data_ini_attack_snub_artillery_;
+#endif
 
 void() data_ini_snub_artillery_={
 
@@ -20,29 +22,32 @@ void() data_ini_snub_artillery_={
   self.reloadRate = 0.1;
   self.reloadMax = 10;
   self.energyRate = 0;
-  self.spreadDefault = '0.02 0.02 0';
   
   self.w_range = 1000;
   self.damageValue = 300;
   self.damageType = (DMG_BAL | EFF_ARC);
-  
-  self.w_attack = data_ini_attack_snub_artillery_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_snub_artillery_;
-  
-  self.w_fire_ofs = '0 0 9';
-  self.fire_sound = "sound/fx_boom.ogg";
-  self.model = "q3mdl/weapons/w_sfga.md3";
+
   self.techLevel = 2;
   self.i_size = 3;
-  
-  self.w_isburst = FALSE;
-  
+
+  #ifdef CSQC
   self.abbrev = "SFGA";
   self.description = "Minor parabolic arc. | Large AoE blast.~";
   self.icon = "gfx/ui/wep_icons/wi_sfg.png";
+  #endif 
+  
+  #ifndef CSQC
+  self.w_isburst = FALSE;
+  self.spreadDefault = '0.02 0.02 0';
+  self.w_attack = data_ini_attack_snub_artillery_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_snub_artillery_;
+  self.w_fire_ofs = '0 0 9';
+  self.fire_sound = "sound/fx_boom.ogg";
+  self.model = "q3mdl/weapons/w_sfga.md3";
+  #endif
 };
-
+#ifndef CSQC
 void() data_ini_attack_snub_artillery_={
 
   ctrl_weapon_fireOffset();
@@ -58,3 +63,4 @@ void() data_ini_attack_snub_artillery_={
   }
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };
+#endif

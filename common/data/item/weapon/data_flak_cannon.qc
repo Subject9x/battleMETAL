@@ -10,13 +10,14 @@ Overview:
       low accuracy
       small AoE when shields are gone
 */
-
+#ifndef CSQC
 float DAT_FLAK_SHRAP_TOTAL= 14;
 vector DAT_FLAK_SHRAP_SPREAD = '0.3 0.3 64';
 float DAT_PRJ_FLAK_PROXYRAD   = 45;
 float DAT_PRJ_FLAK_EXPRAD     = 50;
 
 void() data_ini_attack_flak_;
+#endif
 
 void() data_ini_flak_cannon_={
 
@@ -27,28 +28,32 @@ void() data_ini_flak_cannon_={
   self.reloadRate = 0.3;
   self.reloadMax = 0.3;
   self.energyRate = 0;
-  self.spreadDefault = '0.017 0.015 0';
   
   self.w_range = 2000;
   self.damageValue = 0.5;
   self.damageType = DMG_BAL;
   
-  self.w_attack = data_ini_attack_flak_;
-  self.think = default_weapon_think;
-  
-  self.w_fire_ofs = '0 0 5';
-  self.fire_sound = "sound/weapons/flak_fire.ogg";
-  self.model = "q3mdl/weapons/w_flk.md3";
   self.techLevel = 1;
   self.i_size = 1;
   
-  self.w_isburst = FALSE;
-  
+  #ifdef CSQC
   self.abbrev = "FLAK";
   self.description = "Full-Auto | Shotgun damage when target's shields are down.~";
   self.icon = "gfx/ui/wep_icons/wi_flak.png";
+  #endif
+  
+  #ifndef CSQC
+  self.spreadDefault = '0.017 0.015 0';
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0 5';
+  self.fire_sound = "sound/weapons/flak_fire.ogg";
+  self.model = "q3mdl/weapons/w_flk.md3";
+  self.w_attack = data_ini_attack_flak_;
+  self.think = default_weapon_think;
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_flak_={
 
   ctrl_weapon_fireOffset();
@@ -97,3 +102,4 @@ void() data_ini_attack_flak_={
     }
   }
 };
+#endif

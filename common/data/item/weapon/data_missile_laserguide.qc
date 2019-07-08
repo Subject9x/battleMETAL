@@ -10,7 +10,9 @@ Overview:
       follow's player reticle
       Arcing
 */
+#ifndef CSQC
 void() data_ini_attack_missile_laserguide_;
+#endif
 
 void() data_ini_missile_laserguide_={
 
@@ -21,29 +23,33 @@ void() data_ini_missile_laserguide_={
   self.reloadRate = 0.22;
   self.reloadMax = 8;
   self.energyRate = 5;
-  self.spreadDefault = '0.03 0.03 0';
   
   self.w_range = 1000;
   self.damageValue = 275;
   self.damageType = (DMG_EXP);
+
+  self.techLevel = 1;
+  self.i_size = 1;
+
+  #ifdef CSQC
+   self.abbrev = "MLGD";
+  self.description = "Missile will follow your reticle. | | Does not require [ACTIVE] RADAR. | | Does not require TARGET LOCK.~";
+  self.icon = "gfx/ui/wep_icons/wi_mlgd.png";  
+  #endif 
   
+  #ifndef CSQC
+  self.spreadDefault = '0.03 0.03 0';
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0 2';
+  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.model = "q3mdl/weapons/w_lgm.md3";  
   self.w_attack = data_ini_attack_missile_laserguide_;
   self.think = default_weapon_think;
   self.data_ini_projectile = data_projectile_ini_missile_laserguide_;
-  
-  self.w_fire_ofs = '0 0 2';
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_lgm.md3";
-  self.techLevel = 1;
-  self.i_size = 1;
-  
-  self.w_isburst = FALSE;
-  
-  self.abbrev = "MLGD";
-  self.description = "Missile will follow your reticle. | | Does not require [ACTIVE] RADAR. | | Does not require TARGET LOCK.~";
-  self.icon = "gfx/ui/wep_icons/wi_mlgd.png";
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_missile_laserguide_={
   local vector lasOrg;
   
@@ -61,5 +67,5 @@ void() data_ini_attack_missile_laserguide_={
   
   trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), lasOrg + (v_right * 0.5), lasOrg + (v_forward * 16) + (v_right * 0.5) );
   trailparticles( world, particleeffectnum("TE_LGM_MUZZLE_LASER"), lasOrg + (v_right * -0.5), lasOrg + (v_forward * 16) + (v_right * -0.5) );
-  
 };
+#endif

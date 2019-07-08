@@ -6,8 +6,6 @@ data/keycodes.qc
 data/defs_clientside.qc
 data/defs_entity.qc
 data/defs_linker.qc
-../mech/ctrl/ctrl_weapon_h.qc  //compatability
-../mech/ai/ai_api_h.qc
 
 //Common Defs=====================
   ../common/data/defs/defs_player.qc     //AI/player top-level vars.
@@ -21,7 +19,6 @@ data/defs_linker.qc
   ../common/data/data_values_particles.qc
   ../common/ui/ui_color_constants.qc
   ../common/data/data_values_game.qc
-  ../common/data/data_values_ai.qc
   ../common/data/data_header.qc
   
   //Unique ID listings-------------

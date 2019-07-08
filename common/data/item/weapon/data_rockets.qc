@@ -9,7 +9,9 @@ Overview:
       6rnd Burst.
       low accuracy.
 */
+#ifndef CSQC
 void() data_ini_attack_rockets_;
+#endif
 
 void() data_ini_rockets_={
 
@@ -20,29 +22,33 @@ void() data_ini_rockets_={
   self.reloadRate = 0.22;
   self.reloadMax = 8;
   self.energyRate = 0;
-  self.spreadDefault = '0.02 0.02 0';
   
   self.w_range = 400;
   self.damageValue = 75;
   self.damageType = (DMG_EXP);
   
-  self.w_attack = data_ini_attack_rockets_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_rocket_;
-  
-  self.w_fire_ofs = '0 0 3';
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_mis.md3";
   self.techLevel = 1;
   self.i_size = 1;
   
-  self.w_isburst = FALSE;
-  
+  #ifdef CSQC
   self.abbrev = "RCK";
   self.description = "Damage is PER MISSILE. | Fires entire clip at once. | Does not require [ACTIVE] RADAR. | Does not require TARGET LOCK.~";
-  self.icon = "gfx/ui/wep_icons/wi_rck.png";
+  self.icon = "gfx/ui/wep_icons/wi_rck.png";  
+  #endif 
+  
+  #ifndef CSQC
+  self.spreadDefault = '0.02 0.02 0';
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0 3';
+  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.model = "q3mdl/weapons/w_mis.md3";
+  self.w_attack = data_ini_attack_rockets_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_rocket_;
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_rockets_={
 
   ctrl_weapon_fireOffset();
@@ -56,3 +62,4 @@ void() data_ini_attack_rockets_={
   ctrl_weapon_make_projectile( 0.01 );
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };
+#endif

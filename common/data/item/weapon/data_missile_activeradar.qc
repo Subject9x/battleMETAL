@@ -10,7 +10,9 @@ Overview:
       Arcing
       Needs radar lock
 */
+#ifndef CSQC
 void() data_ini_attack_missile_activeradar_;
+#endif 
 
 void() data_ini_missile_activeradar_={
 
@@ -21,29 +23,33 @@ void() data_ini_missile_activeradar_={
   self.reloadRate = 0.28;
   self.reloadMax = 7;
   self.energyRate = 0;
-  self.spreadDefault = '0.03 0.03 0';
   
   self.w_range = 1500;
   self.damageValue = 7;
   self.damageType = (DMG_EXP | EFF_ARC);
-  
-  self.w_attack = data_ini_attack_missile_activeradar_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
-  
-  self.w_fire_ofs = '0 0 2';
-  self.fire_sound = "sound/weapons/mis_fire.ogg";
-  self.model = "q3mdl/weapons/w_arh.md3";
+ 
   self.techLevel = 2;
   self.i_size = 3;
   
-  self.w_isburst = FALSE;
-  
+  #ifdef CSQC  
   self.abbrev = "MARH";
   self.description = "Requires RADAR to be [ACTIVE]. | Requires TARGET LOCK on target. | Has minimum range.~";
   self.icon = "gfx/ui/wep_icons/wi_marh.png";
+  #endif
+  
+  #ifndef CSQC
+  self.spreadDefault = '0.03 0.03 0';
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0 2';
+  self.fire_sound = "sound/weapons/mis_fire.ogg";
+  self.model = "q3mdl/weapons/w_arh.md3";
+  self.w_attack = data_ini_attack_missile_activeradar_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_missile_active_radar_;
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_missile_activeradar_={
   local vector arc; //calculate the initial arc value before lock-on adjustment
   local vector start;
@@ -88,3 +94,4 @@ void() data_ini_attack_missile_activeradar_={
     pointparticles( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
   }
 };
+#endif

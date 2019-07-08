@@ -12,7 +12,9 @@ Overview:
       Single shot
       hit scan
 */
+#ifndef CSQC
 void() data_ini_attack_particle_cannon_;
+#endif
 
 void() data_ini_particle_cannon_={
   
@@ -23,28 +25,32 @@ void() data_ini_particle_cannon_={
   self.reloadRate = 0.1;
   self.reloadMax = 8;
   self.energyRate =  333.33;
-  self.spreadDefault = '0.0025 0.0025 0';
-  
-  self.think = default_weapon_think;
-  self.w_attack = data_ini_attack_particle_cannon_;
 
   self.w_range = 2000;
   self.damageValue = 250;
   self.damageType = (DMG_ENE | EFF_PRC);
  
-  self.w_fire_ofs = '0 0 6.75'; 
-  self.fire_sound = "sound/weapons/pac_fire.ogg";
-  self.model = "q3mdl/weapons/w_pac.md3";
   self.techLevel = 3;
   self.i_size = 3;
   
-  self.w_isburst = FALSE;
-  
+  #ifdef CSQC
   self.abbrev = "PAC";
   self.description = "IGNORE most of Target's shields.~";
-  self.icon = "gfx/ui/wep_icons/wi_pac.png";
+  self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
+  #endif 
+  
+  #ifndef CSQC
+  self.spreadDefault = '0.0025 0.0025 0';
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0 6.75'; 
+  self.fire_sound = "sound/weapons/pac_fire.ogg";
+  self.model = "q3mdl/weapons/w_pac.md3";
+  self.think = default_weapon_think;
+  self.w_attack = data_ini_attack_particle_cannon_;
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_particle_cannon_={
   
   if( !ctrl_weapon_checkEnergy() ){
@@ -74,3 +80,4 @@ void() data_ini_attack_particle_cannon_={
   
   pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), FIRE_ENDPOINT + (v_forward * -5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
 };
+#endif

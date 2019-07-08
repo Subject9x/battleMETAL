@@ -12,7 +12,9 @@ Overview:
       hit scan
       Inaccurate
 */
+#ifndef CSQC
 void() data_ini_attack_electro_repeater_;
+#endif 
 
 void() data_ini_electro_repeater_={
   
@@ -23,29 +25,33 @@ void() data_ini_electro_repeater_={
   self.reloadRate = 0.07;
   self.reloadMax = 5;
   self.energyRate =  200;
-  self.spreadDefault = '0.1 0.1 0';
   
-  self.think = default_weapon_think;
-  self.w_attack = data_ini_attack_electro_repeater_;
-
   self.w_range = 200;
   self.damageValue = 25;
   self.damageType = (DMG_ENE | EFF_PRC);
- 
-  self.w_fire_ofs = '0 0 6'; 
-  self.fire_sound = "sound/weapons/esr_fire.ogg";
-  self.model = "q3mdl/weapons/w_esr.md3";
+
   self.techLevel = 2;
   self.i_size = 2;
-  
-  self.w_isburst = FALSE;
-  
+
+  #ifdef CSQC  
   self.abbrev = "ESR";
   self.description = "Burst-Fire lightning beams. | Devastating short range weapon. | innaccurate.~";
   self.icon = "gfx/ui/wep_icons/wi_esr.png";
+  #endif
+  
+  #ifndef CSQC
+  self.spreadDefault = '0.1 0.1 0';
+  self.w_isburst = FALSE;
+  self.w_fire_ofs = '0 0 6'; 
+  self.fire_sound = "sound/weapons/esr_fire.ogg";
+  self.model = "q3mdl/weapons/w_esr.md3";
+  self.think = default_weapon_think;
+  self.w_attack = data_ini_attack_electro_repeater_;
+  #endif
   
 };
 
+#ifndef CSQC
 void() data_ini_attack_electro_repeater_={
   
   if( !ctrl_weapon_checkEnergy() ){
@@ -77,3 +83,4 @@ void() data_ini_attack_electro_repeater_={
   
   pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
 };
+#endif

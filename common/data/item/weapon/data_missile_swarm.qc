@@ -11,9 +11,11 @@ Overview:
       Needs radar lock
       3mis per up-to 3 targets
 */
+#ifndef CSQC
 void() data_ini_attack_missile_swarm_;
 
 float DATA_SWARM_MAX_TARGETS = 3;
+#endif
 
 void() data_ini_missile_swarm_={
 
@@ -24,29 +26,33 @@ void() data_ini_missile_swarm_={
   self.reloadRate = 0.1;
   self.reloadMax = 10;
   self.energyRate = 0;
-  self.spreadDefault = '0.07 0.07 0';
   
   self.w_range = 600;
   self.damageValue = 20;
   self.damageType = (DMG_EXP | EFF_ARC);
+ 
+  self.techLevel = 3;
+  self.i_size = 2;
+
+  #ifdef CSQC
+  self.abbrev = "SWRM";
+  self.description = "Requires [ACTIVE RADAR]. | Fires 3 Missiles at Target. | UP TO 3 TARGETS.~";
+  self.icon = "gfx/ui/wep_icons/wi_swrm.png";  
+  #endif 
   
-  self.w_attack = data_ini_attack_missile_swarm_;
-  self.think = default_weapon_think;
-  self.data_ini_projectile = data_projectile_ini_missile_swarm_;
-  
+  #ifndef CSQC
+  self.spreadDefault = '0.07 0.07 0';
+  self.w_isburst = FALSE;
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_swrm.md3";
-  self.techLevel = 3;
-  self.i_size = 2;
-  
-  self.w_isburst = FALSE;
-  
-  self.abbrev = "SWRM";
-  self.description = "Requires [ACTIVE RADAR]. | Fires 3 Missiles at Target. | UP TO 3 TARGETS.~";
-  self.icon = "gfx/ui/wep_icons/wi_swrm.png";
+  self.w_attack = data_ini_attack_missile_swarm_;
+  self.think = default_weapon_think;
+  self.data_ini_projectile = data_projectile_ini_missile_swarm_;
+  #endif
 };
 
+#ifndef CSQC
 void() data_ini_attack_missile_swarm_={
   local float maxtarg;
   
@@ -86,3 +92,4 @@ void() data_ini_attack_missile_swarm_={
     }
   }
 };
+#endif
