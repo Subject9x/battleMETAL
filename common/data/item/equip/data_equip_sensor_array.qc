@@ -8,8 +8,10 @@ Overview:
       30% increase in Unit's max radar range.
       
 */
+#ifndef CSQC
 void() sensor_array_upgrade_;
 void() sensor_array_remove_;
+#endif
 
 void() data_ini_equip_sensor_array_={
 
@@ -25,28 +27,31 @@ void() data_ini_equip_sensor_array_={
   self.damageValue = 0;
   self.damageType = (DMG_MSC);
   
-  self.w_attack = sensor_array_upgrade_;
-  self.think = SUB_Null;
-
-  self.model = "q3mdl/weapons/e_lsar.md3";
   self.techLevel = 1;
   self.i_size = 1;
   
-  self.unit_wep1 = sensor_array_remove_;
-  
-  self.w_isburst = FALSE;
-  
+  #ifdef CSQC
   self.abbrev = "LSAR";
   self.description = "Increases RADAR RANGE by 30%.~";
   self.icon = "gfx/ui/wep_icons/eqp_lsar.png";
+  #endif
+  
+  #ifndef
+  self.unit_wep1 = sensor_array_remove_;
+  self.w_attack = sensor_array_upgrade_;
+  self.think = SUB_Null;
+  self.w_isburst = FALSE;
+  self.model = "q3mdl/weapons/e_lsar.md3";
+  #endif
 };
 
+#ifndef CSQC
 void() sensor_array_upgrade_={
   self.energyMax = self.owner.radar_range;
-  
   self.owner.radar_range  = self.owner.radar_range  + (self.owner.radar_range  * self.energyRate);
 };
 
 void() sensor_array_remove_={
   self.owner.radar_range  = self.energyMax;
 };
+#endif

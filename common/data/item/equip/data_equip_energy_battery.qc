@@ -8,8 +8,10 @@ Overview:
       Increases Unit's Energy maximum
       
 */
+#ifndef CSQC
 void() energy_battery_upgrade_;
 void() energy_battery_remove_;
+#endif
 
 void() data_ini_equip_energy_battery_={
 
@@ -24,23 +26,26 @@ void() data_ini_equip_energy_battery_={
   self.w_range = 0;
   self.damageValue = 0;
   self.damageType = (DMG_MSC);
-  
-  self.w_attack = energy_battery_upgrade_;
-  self.think = SUB_Null;
-
-  self.model = "q3mdl/weapons/e_enbat.md3";
+ 
   self.techLevel = 2;
   self.i_size = 3;
   
-  self.unit_wep1 = energy_battery_remove_;
-  
-  self.w_isburst = FALSE;
-  
+  #ifdef CSQC
   self.abbrev = "ENBAT";
   self.description = "Increases TOTAL MECH ENERGY by 25%.~";
   self.icon = "gfx/ui/wep_icons/eqp_enbat.png";
+  #endif
+  
+  #ifndef CSQC
+  self.w_attack = energy_battery_upgrade_;
+  self.think = SUB_Null;
+  self.unit_wep1 = energy_battery_remove_;
+  self.model = "q3mdl/weapons/e_enbat.md3";
+  self.w_isburst = FALSE;
+  #endif
 };
 
+#ifndef CSQC
 void() energy_battery_upgrade_={
   self.energyMax = self.owner.energyMax;
   self.owner.energyMax = self.owner.energyMax + (self.owner.energyMax * self.energyRate);
@@ -49,3 +54,4 @@ void() energy_battery_upgrade_={
 void() energy_battery_remove_={
   self.owner.energyMax = self.energyMax;
 };
+#endif

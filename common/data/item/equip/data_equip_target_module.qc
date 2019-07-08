@@ -8,8 +8,10 @@ Overview:
       significant upgrade to unit's accuracy variables.
       
 */
+#ifndef CSQC
 void() target_module_upgrade_;
 void() target_module_remove_;
+#endif
 
 void() data_ini_equip_target_module_={
 
@@ -24,25 +26,28 @@ void() data_ini_equip_target_module_={
   self.w_range = 0;
   self.damageValue = 0;
   self.damageType = (DMG_MSC);
-  
-  self.spreadDefault = '0.25 0.15 0.25';  //upgrades Unit's accuracy
-  
-  self.w_attack = target_module_upgrade_;
-  self.think = SUB_Null;
 
-  self.model = "q3mdl/weapons/e_atgm.md3";
   self.techLevel = 1;
   self.i_size = 2;
   
-  self.unit_wep1 = target_module_remove_;
-  
-  self.w_isburst = FALSE; 
-
+  #ifdef CSQC
   self.abbrev = "ATGM";
   self.description = "Decrease LOCK-ON time by 20% | Increase Convergence recovery by 15%.~";
   self.icon = "gfx/ui/wep_icons/eqp_atgm.png";
+  #endif
+  
+  #ifndef CSQC
+  self.spreadDefault = '0.25 0.15 0.25';  //upgrades Unit's accuracy
+  self.w_attack = target_module_upgrade_;
+  self.unit_wep1 = target_module_remove_;
+  self.think = SUB_Null;
+  self.w_isburst = FALSE;
+  self.model = "q3mdl/weapons/e_atgm.md3";
+  #endif
+
 };
 
+#ifndef CSQC
 void() target_module_upgrade_={
   local float lock, acc_n, acc_x;
   
@@ -68,3 +73,4 @@ void() target_module_remove_={
   self.owner.spreadDefault = self.w_fire_ofs;
   self.owner.accuracyMod = self.owner.accuracyMod - self.accuracyMod;
 };
+#endif

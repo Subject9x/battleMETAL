@@ -22,7 +22,6 @@ void() data_ini_matok_={
   self.mins = '-17 -17 -40';
   self.maxs = '17 17 22';
   
-  
 //ENERGY AND SHIELDS===================
   self.energyMax   = 800;
   self.energyRate  = 4.25;
@@ -41,9 +40,11 @@ void() data_ini_matok_={
   self.data_speed_strafe = 100;
   self.data_speed_backward = 90;
   self.data_speed_accel = 1.5;
+  #ifndef CSQC
   self.yaw_speed = 2.5;    //AI-only 
   self.turret_yaw_speed = 2.5;//AI-only
   self.ai_angleLimits = '-75 75 0';
+  #endif
 //=====================================
  
 //MECH COMPONENTS====================

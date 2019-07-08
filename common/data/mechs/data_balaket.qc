@@ -40,9 +40,11 @@ void() data_ini_balaket_={
   self.data_speed_strafe = 175;
   self.data_speed_backward = 150;
   self.data_speed_accel = 1.5;
+  #ifndef CSQC
   self.yaw_speed = 2.75;    //AI-only 
   self.turret_yaw_speed = 3;//AI-only
   self.ai_angleLimits = '-125 125 0';
+  #endif
 //=====================================
  
 //MECH COMPONENTS====================
@@ -89,8 +91,10 @@ void() data_ini_balaket_={
 //====================================
 
 //UI Data=============================
+  #ifdef CSQC
   self.abbrev = "BLK";
   self.description = "A primitive combat platform, BALAKETTs come from the early days of the Federation. Originally billed as exploration vehicles, Federation Military found them able anti-partisan units. | | BALAKETT units are best against other light and smaller targets. Their weapon mount limitations prevent them from engaging larger foes one-on-one. | | They are dangerous in packs though, their quick speed and variable-enough loadouts keeping singular targets distracted; unable to land that fatal blow.~";
   self.icon = "gfx/ui/mech_icons/icon_balaket.png";
+  #endif
 //====================================
 };

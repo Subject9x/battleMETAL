@@ -39,9 +39,11 @@ void() data_ini_dunerunner_={
   self.data_speed_strafe = 113;
   self.data_speed_backward = 133;
   self.data_speed_accel = 1;
+  #ifndef CSQC
   self.yaw_speed = 5;    //AI-only 
   self.turret_yaw_speed = 4;//AI-only
   self.ai_angleLimits = '-125 125 0';
+  #endif
 //=====================================
  
 //MECH COMPONENTS====================

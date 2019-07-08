@@ -39,8 +39,10 @@ void() data_ini_sorcerer_={
   self.data_speed_strafe = 0;
   self.data_speed_backward = 25;
   self.data_speed_accel = 1;
+  #ifndef CSQC
   self.yaw_speed = 2.5;    //AI-only 
   //self.turret_yaw_speed = 3;//AI-only - but has no turret
+  #endif
 //=====================================
  
 //MECH COMPONENTS====================

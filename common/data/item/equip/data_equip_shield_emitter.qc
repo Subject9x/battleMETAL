@@ -7,8 +7,10 @@ Overview:
     High Strength Shield Emitters
       Increases Unit's shieldRate, ie shield recharge buff
 */
+#ifndef CSQC
 void() shield_emitter_upgrade_;
 void() shield_emitter_remove_;
+#endif
 
 void() data_ini_equip_shield_emitter_={
 
@@ -24,22 +26,26 @@ void() data_ini_equip_shield_emitter_={
   self.damageValue = 0;
   self.damageType = (DMG_MSC);
   
-  self.w_attack = shield_emitter_upgrade_;
-  self.think = SUB_Null;
-
-  self.model = "q3mdl/weapons/e_hsem.md3";
   self.techLevel = 2;
   self.i_size = 2;
   
-  self.unit_wep1 = shield_capacitor_remove_;
-  
-  self.w_isburst = FALSE;  
-  
+  #ifdef CSQC
   self.abbrev = "HSEM";
   self.description = "Increases SHIELD RECHARGE by 50%.~";
   self.icon = "gfx/ui/wep_icons/eqp_hsem.png";
+  #endif
+  
+  #ifndef CSQC
+  self.unit_wep1 = shield_capacitor_remove_;
+  self.w_attack = shield_emitter_upgrade_;
+  self.think = SUB_Null;
+  self.w_isburst = FALSE;
+  self.model = "q3mdl/weapons/e_hsem.md3";
+  #endif
+  
 };
 
+#ifndef CSQC
 void() shield_emitter_upgrade_={
   self.energyMax = self.owner.shieldRate;
   
@@ -49,3 +55,4 @@ void() shield_emitter_upgrade_={
 void() shield_emitter_remove_={
   self.owner.shieldRate  = self.energyMax;
 };
+#endif

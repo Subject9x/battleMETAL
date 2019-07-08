@@ -39,9 +39,11 @@ void() data_ini_foslager_={
   self.data_speed_strafe = 0;
   self.data_speed_backward = 25;
   self.data_speed_accel = 1;
+  #ifndef CSQC
   self.yaw_speed = 2.5;    //AI-only 
   self.turret_yaw_speed = 3;//AI-only
   self.ai_angleLimits = '-45 45 0';
+  #endif
 //=====================================
  
 //MECH COMPONENTS====================

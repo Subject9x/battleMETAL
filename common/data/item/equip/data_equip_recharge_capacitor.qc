@@ -8,8 +8,10 @@ Overview:
       Increases Unit's Energy recharge speed.
       
 */
+#ifndef CSQC
 void() recharge_capacitor_upgrade_;
 void() recharge_capacitor_remove_;
+#endif
 
 void() data_ini_equip_recharge_capacitor_={
 
@@ -25,20 +27,22 @@ void() data_ini_equip_recharge_capacitor_={
   self.damageValue = 0;
   self.damageType = (DMG_MSC);
   
-  self.w_attack = recharge_capacitor_upgrade_;
-  self.think = SUB_Null;
-
-  self.model = "q3mdl/weapons/e_recap.md3";
   self.techLevel = 3;
   self.i_size = 3;
-  
-  self.unit_wep1 = recharge_capacitor_remove_;
-  
-  self.w_isburst = FALSE;
-  
+
+  #ifdef CSQC
   self.abbrev = "RECAP";
   self.description = "Increases Reactor RECHARGE rate by 20%~";
   self.icon = "gfx/ui/wep_icons/eqp_recap.png";
+  #endif
+  
+  #ifndef CSQC
+  self.w_attack = recharge_capacitor_upgrade_;
+  self.think = SUB_Null;
+  self.unit_wep1 = recharge_capacitor_remove_;
+  self.model = "q3mdl/weapons/e_recap.md3";
+  self.w_isburst = FALSE;
+  #endif
 };
 
 void() recharge_capacitor_upgrade_={

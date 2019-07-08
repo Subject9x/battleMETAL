@@ -39,9 +39,11 @@ void() data_ini_trowel_={
   self.data_speed_strafe = 0;
   self.data_speed_backward = 50;
   self.data_speed_accel = 1;
+  #ifndef CSQC
   self.yaw_speed = 0.75;    //AI-only 
   self.turret_yaw_speed = 1.25;//AI-only - but has no turret
   self.ai_angleLimits = '-90 90 0';
+  #endif
 //=====================================
  
 //MECH COMPONENTS====================
