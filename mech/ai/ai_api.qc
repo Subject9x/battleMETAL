@@ -442,7 +442,7 @@ float(entity bot, entity attacker) ai_damage_react={
 
 /*
   Don't fire if the weapon's barrel is blocked by things like:
-  non-target entity
+  non-target entity,
   friendlies
 */  
 float(entity wep) ai_attack_blockcheck={
@@ -473,7 +473,6 @@ float(entity wep) ai_attack_blockcheck={
     return TRUE;
   }
 
-  
   return FALSE;
 };
 
@@ -563,13 +562,6 @@ void() ai_wep_calcranges={
       self.flags = self.flags | FL_DISARMED;
     }
   }
-};
-
-/*
-  ported over from Quake and adapted here
-*/
-float(entity targ) ai_range={
-  return vlen( self.origin - targ.origin );
 };
 
 /*
