@@ -126,6 +126,7 @@ void(float vec_id) initialize_data_turret_;
   by defining another function before assignment.
   -Roohr
 */
+#ifndef CSQC
 void() default_weapon_think={
   local float delta, lim;
   
@@ -155,6 +156,7 @@ void() default_weapon_think={
 
 .void() data_ini_projectile;
 
+#endif
 /*
 	This was promoted up to common/data because its portable and
 	reuseable in both client and server.

@@ -59,10 +59,14 @@ void(entity wep) ctrl_weapon_think_ai={
       self.think = self.think;
     }
     
-    if( ai_valid_target( self.enemy ) ){
+    if( ai_valid_target( weaponOwner.enemy ) ){
+      cons_logAString("weapon think()", "::::");  //DEBUG
       if( weaponOwner.stat_trg_dist <= self.w_range ){
+        cons_logAString("in range", "o");  //DEBUG
         if( time >= self.ai_nextFireTime ){
+        cons_logAString("time > firetime", "oo");  //DEBUG
           if( (self.damageType & EFF_LOK) && (weaponOwner.stat_lck_stt & LOCK_TARG_HAS) ){
+            cons_logAString("targ lock true", "ooo");  //DEBUG
             stackWeapon = TRUE;
           }
           else{
@@ -70,13 +74,16 @@ void(entity wep) ctrl_weapon_think_ai={
           }
           energyCost = weaponOwner.ai_weaponEnergy + self.energyRate;
           if( energyCost < weaponOwner.energy ){
+            cons_logAString("energy cost ", "ooo");  //DEBUG
             stackWeapon = TRUE;
           }
           else{
             stackWeapon = FALSE;
           }
           if( (self.damageType & EFF_STX) ){
+            cons_logAString("static shock ", "ooo");  //DEBUG
             if( weaponOwner.enemy.shield < (weaponOwner.enemy.shieldMax * 0.1) ){
+            cons_logAString("shield check ", "ooo");  //DEBUG
               stackWeapon = FALSE;
             }
           }

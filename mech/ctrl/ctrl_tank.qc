@@ -43,12 +43,13 @@ void() ctrl_updateTank={
   self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
   self.ai_weaponEnergy = 0;
   self.currentWeaponGroup = 0;
+  
   wep = self.w_slot;
   while(wep){
     ctrl_weapon_think_ai(wep);
     wep = wep.w_slot;
   }
-      cons_logAFloat("ctrl_updateTank()->self.currentWeaponGroup", self.currentWeaponGroup); //DEBUG
+      //cons_logAFloat("ctrl_updateTank()->self.currentWeaponGroup", self.currentWeaponGroup); //DEBUG
   
   //damage-based cosmetics for unit component pieces
   piece = self.partNext;
