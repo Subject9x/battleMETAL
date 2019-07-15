@@ -42,6 +42,7 @@ void() data_ini_quantum_={
   #ifndef CSQC
   self.spreadDefault = '0.005 0.005 0';
   self.w_isburst = FALSE;
+  self.burstRate = 0;
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/qrfl_fire.ogg";
   self.model = "q3mdl/weapons/w_qrf.md3";
@@ -69,7 +70,7 @@ void() data_ini_attack_quantum_={
   
   ctrl_weapon_fireOffset();  
   
-  ctrl_weapon_updateAmmo( FALSE, 0 );
+  ctrl_weapon_updateAmmo( FALSE );
  
   hitZone = FIRE_ENDPOINT;
   hitMax = '25 25 25';

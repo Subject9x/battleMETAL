@@ -16,6 +16,8 @@ void() ctrl_updateTank={
   local vector spark;
   local float hp;
   
+  cam = self.cockpit;
+  
   makevectors(self.v_angle);
   v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
   traceline(v1, v1 + v_forward * 10000, FALSE, self);
@@ -38,13 +40,15 @@ void() ctrl_updateTank={
     }
   }
   
-  wep = self.w_slot;
+  self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
   self.ai_weaponEnergy = 0;
+  self.currentWeaponGroup = 0;
+  wep = self.w_slot;
   while(wep){
-    ctrl_wpn_think(wep);
-    self.ai_weaponEnergy = self.ai_weaponEnergy + wep.energyRate; //keep running tab on total energy cost
+    ctrl_weapon_think_ai(wep);
     wep = wep.w_slot;
   }
+      cons_logAFloat("ctrl_updateTank()->self.currentWeaponGroup", self.currentWeaponGroup); //DEBUG
   
   //damage-based cosmetics for unit component pieces
   piece = self.partNext;

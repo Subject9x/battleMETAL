@@ -40,6 +40,7 @@ void() data_ini_light_laser_={
   #ifndef CSQC
   self.spreadDefault = '0.0075 0.0075 0';
   self.w_isburst = FALSE;
+  self.burstRate = 0;
   self.w_fire_ofs = '0 0 3.5'; 
   self.fire_sound = "sound/weapons/laser_fire.ogg";
   self.model = "q3mdl/weapons/w_laser.md3";
@@ -57,7 +58,7 @@ void() data_ini_attack_laser_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE, 0 );
+  ctrl_weapon_updateAmmo( FALSE );
   
   sound ( self, CHAN_WEAPON, self.fire_sound, 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_LAS_MUZZLE"), self.origin, FIRE_ENT.angles, 1);

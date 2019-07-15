@@ -40,6 +40,7 @@ void() data_ini_missile_laserguide_={
   #ifndef CSQC
   self.spreadDefault = '0.03 0.03 0';
   self.w_isburst = FALSE;
+  self.burstRate = 1;
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_lgm.md3";  
@@ -55,7 +56,7 @@ void() data_ini_attack_missile_laserguide_={
   
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE, 1 );
+  ctrl_weapon_updateAmmo( FALSE );
    
   ctrl_weapon_make_projectile( 0.05 );
   

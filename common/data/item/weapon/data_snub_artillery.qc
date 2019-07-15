@@ -38,6 +38,7 @@ void() data_ini_snub_artillery_={
   
   #ifndef CSQC
   self.w_isburst = FALSE;
+  self.burstRate = 0;
   self.spreadDefault = '0.02 0.02 0';
   self.w_attack = data_ini_attack_snub_artillery_;
   self.think = default_weapon_think;
@@ -52,7 +53,7 @@ void() data_ini_attack_snub_artillery_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE, 0 );
+  ctrl_weapon_updateAmmo( FALSE );
    
   pointparticles( particleeffectnum("TE_SFGA_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 2, 1);
   

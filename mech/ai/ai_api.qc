@@ -333,27 +333,16 @@ void() ai_ranged_attack={
   }
   while(wep_chain){
     if(self.button0){
+      cons_logAFloat("ai_ranged_attack()->self.currentWeaponGroup", self.currentWeaponGroup); //DEBUG
       if(wep_chain.w_state == READY){
         if( (self.currentWeaponGroup & wep_chain.w_group) ){
-          if( self.stat_trg_dist <= wep_chain.w_range ){
-            if( !ai_attack_blockcheck(wep_chain) ){
-              if( ai_attack_checkEne(wep_chain) ){
-                self = wep_chain;
-                  if( ai_check_face(this.enemy, 0.95) ){
-                    if( (self.damageType & EFF_STX) ){
-                      if( this.enemy.shield > (this.enemy.shieldMax * 0.15) ){
-                        fired = fired + 1;
-                        self.w_attack();
-                      }
-                    }
-                    else{
-                      fired = fired + 1;
-                      self.w_attack();
-                    }
-                  }
-                self = this; 
-              }         
-            }
+          if( !ai_attack_blockcheck(wep_chain) ){
+            self = wep_chain;
+              if( ai_check_face(this.enemy, 0.95) ){
+                fired = fired + 1;
+                self.w_attack();
+              }
+            self = this;
           }
         }
       }
@@ -369,6 +358,7 @@ void() ai_ranged_attack={
     }
     wep_chain = wep_chain.w_slot;
   }
+  
 };
 
 /*

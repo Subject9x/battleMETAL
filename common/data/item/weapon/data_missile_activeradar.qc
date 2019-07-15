@@ -26,7 +26,7 @@ void() data_ini_missile_activeradar_={
   
   self.w_range = 1500;
   self.damageValue = 7;
-  self.damageType = (DMG_EXP | EFF_ARC);
+  self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;
   self.i_size = 3;
@@ -40,6 +40,7 @@ void() data_ini_missile_activeradar_={
   #ifndef CSQC
   self.spreadDefault = '0.03 0.03 0';
   self.w_isburst = FALSE;
+  self.burstRate = 1;
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_arh.md3";
@@ -72,7 +73,7 @@ void() data_ini_attack_missile_activeradar_={
   
   
   if( canFire ){
-    ctrl_weapon_updateAmmo( TRUE, 1);
+    ctrl_weapon_updateAmmo( TRUE );
   
     ctrl_weapon_fireOffset();
     

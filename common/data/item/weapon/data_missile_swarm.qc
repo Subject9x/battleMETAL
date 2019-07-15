@@ -29,7 +29,7 @@ void() data_ini_missile_swarm_={
   
   self.w_range = 600;
   self.damageValue = 20;
-  self.damageType = (DMG_EXP | EFF_ARC);
+  self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 3;
   self.i_size = 2;
@@ -43,6 +43,7 @@ void() data_ini_missile_swarm_={
   #ifndef CSQC
   self.spreadDefault = '0.07 0.07 0';
   self.w_isburst = FALSE;
+  self.burstRate = 1;
   self.w_fire_ofs = '0 0 2';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_swrm.md3";
@@ -60,7 +61,7 @@ void() data_ini_attack_missile_swarm_={
     //check for 'Active' Radar
     if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
       //check to see if owner has a target lock
-      ctrl_weapon_updateAmmo( TRUE, 1);
+      ctrl_weapon_updateAmmo( TRUE );
     
       ctrl_weapon_fireOffset();
       

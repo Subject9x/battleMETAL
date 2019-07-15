@@ -79,11 +79,8 @@ entity AI_NODES[128];
 .float ai_viewtime;
 .float ai_viewcheck;    //interval for checking for enemies
 .float ai_hunt_total;   //current number of hunt nodes
-.float ai_attack_chance;
 .float ai_dir;          //chassis facing vs .angles
 .entity ai_node_recall;
-
-.float ai_weaponEnergy; //current max energy cost.
 
 .float voiceTime; //when next to say something
 .string ai_voice_warn;

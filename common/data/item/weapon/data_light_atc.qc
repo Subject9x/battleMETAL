@@ -41,6 +41,7 @@ void() data_ini_light_atc_={
   self.w_attack = data_ini_attack_latc_;
   self.think = default_weapon_think;
   self.w_isburst = FALSE;
+  self.burstRate = 1;
   self.w_fire_ofs = '0 0.5 5';
   self.fire_sound = "sound/weapons/atc_fire.ogg";
   self.model = "q3mdl/weapons/w_atc.md3";
@@ -52,7 +53,7 @@ void() data_ini_attack_latc_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE, 1 );
+  ctrl_weapon_updateAmmo( FALSE );
   
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);

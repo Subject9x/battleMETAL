@@ -39,6 +39,7 @@ void() data_ini_plasma_={
   #ifndef CSQC
   self.spreadDefault = '0.015 0.015 0';
   self.w_isburst = FALSE;
+  self.burstRate = 1.5;
   self.w_fire_ofs = '0 0 6';
   self.fire_sound = "sound/weapons/atc_fire.ogg";
   self.model = "q3mdl/weapons/w_rpc.md3";
@@ -57,7 +58,7 @@ void() data_ini_attack_plasma_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( TRUE, 1.5 );
+  ctrl_weapon_updateAmmo( TRUE );
    
   pointparticles( particleeffectnum("TE_RPC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 2, 1);
   

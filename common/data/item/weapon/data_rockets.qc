@@ -39,6 +39,7 @@ void() data_ini_rockets_={
   #ifndef CSQC
   self.spreadDefault = '0.02 0.02 0';
   self.w_isburst = FALSE;
+  self.burstRate = 1.75;
   self.w_fire_ofs = '0 0 3';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_mis.md3";
@@ -53,7 +54,7 @@ void() data_ini_attack_rockets_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( TRUE, 1.75 );
+  ctrl_weapon_updateAmmo( TRUE );
    
   self.owner.punchangle_x = -2 + crandom() * -2;
   self.owner.punchangle_y = -3 + crandom() * -4;

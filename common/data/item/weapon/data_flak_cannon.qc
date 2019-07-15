@@ -44,6 +44,7 @@ void() data_ini_flak_cannon_={
   
   #ifndef CSQC
   self.spreadDefault = '0.017 0.015 0';
+  self.burstRate = 2;
   self.w_isburst = FALSE;
   self.w_fire_ofs = '0 0 5';
   self.fire_sound = "sound/weapons/flak_fire.ogg";
@@ -58,7 +59,7 @@ void() data_ini_attack_flak_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE, 2 );
+  ctrl_weapon_updateAmmo( FALSE );
   
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_FLK_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);

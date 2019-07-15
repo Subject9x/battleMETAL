@@ -142,7 +142,7 @@ void() PlayerPostThink = {
     local entity wep_chain;
     wep_chain = self.w_slot;
     while(wep_chain){
-      ctrl_wpn_think(wep_chain);
+      ctrl_weapon_think(wep_chain);
       wep_chain = wep_chain.w_slot;
     }
     client_updateWeaponReloads();

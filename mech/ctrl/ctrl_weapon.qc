@@ -7,7 +7,7 @@ mod - 3/16/2019
 Overview: weapon controller header
 */
 
-void(entity wep) ctrl_wpn_think={
+void(entity wep) ctrl_weapon_think={
   local entity weaponOwner;
   weaponOwner = self;
   self = wep;
@@ -22,14 +22,71 @@ void(entity wep) ctrl_wpn_think={
     }  
     if( self.think ){
       self.think();
-      if( (weaponOwner.flags & FL_CLIENT) ){
         if(self.w_isready){
           ctrl_weapon_isReady(self, self.stat_wep_rel);
         }else{
           ctrl_weapon_isReload(self, self.stat_wep_rel);
         }
-      }
       self.think = self.think;
+    }
+  self = weaponOwner;
+};
+
+/*
+.float ai_weaponEnergy; //current max energy cost.
+.float ai_attackPreviousEnergy; //cached every attack call, compared when new attack is made.
+.float ai_nextFireTime; //last time this WEAPON was fired.
+*/
+void(entity wep) ctrl_weapon_think_ai={
+  local entity weaponOwner;
+  local float stackWeapon;
+  local float energyCost;
+  
+  weaponOwner = self;
+  stackWeapon = FALSE;
+  self = wep;
+    if(self.deadflag >= DEAD_DYING){
+      self.deadflag = DEAD_DEAD;
+      self = weaponOwner;
+      return;
+    }
+    if(self.deadflag == DEAD_DEAD){
+      self = weaponOwner;
+      return;
+    }  
+    if( self.think ){
+      self.think();
+      self.think = self.think;
+    }
+    
+    if( ai_valid_target( self.enemy ) ){
+      if( weaponOwner.stat_trg_dist <= self.w_range ){
+        if( time >= self.ai_nextFireTime ){
+          if( (self.damageType & EFF_LOK) && (weaponOwner.stat_lck_stt & LOCK_TARG_HAS) ){
+            stackWeapon = TRUE;
+          }
+          else{
+            stackWeapon = FALSE;
+          }
+          energyCost = weaponOwner.ai_weaponEnergy + self.energyRate;
+          if( energyCost < weaponOwner.energy ){
+            stackWeapon = TRUE;
+          }
+          else{
+            stackWeapon = FALSE;
+          }
+          if( (self.damageType & EFF_STX) ){
+            if( weaponOwner.enemy.shield < (weaponOwner.enemy.shieldMax * 0.1) ){
+              stackWeapon = FALSE;
+            }
+          }
+        }
+      }
+    }
+  
+    if( stackWeapon == TRUE ){
+      weaponOwner.currentWeaponGroup = weaponOwner.currentWeaponGroup + self.w_group;
+      weaponOwner.ai_weaponEnergy = energyCost;
     }
   self = weaponOwner;
 };
@@ -65,7 +122,7 @@ void() ctrl_weapon_fireOffset={
   FIRE_ENDPOINT = util_applySpreadToTrace( FIRE_ENT.v_angle, self.w_range, self.spreadDefault, FIRE_ENT.accuracy );//becomes 'endpoint' for shot angle
 };
 
-void( float burstFire, float burstRate ) ctrl_weapon_updateAmmo={
+void( float burstFire ) ctrl_weapon_updateAmmo={
   self.w_currentammo = self.w_currentammo - 1;
   if(self.w_currentammo <= 0){
     self.reloadValue = 0;
@@ -77,10 +134,10 @@ void( float burstFire, float burstRate ) ctrl_weapon_updateAmmo={
   }
   else{
     if( (FIRE_ENT.flags & FL_MONSTER) ){
-      self.w_firetime = time + (self.reloadRate / burstRate) * 2.25;
+      self.w_firetime = time + (self.reloadRate / self.burstRate) * 2.25;
     }
     else{
-      self.w_firetime = time + self.reloadRate / burstRate;
+      self.w_firetime = time + self.reloadRate / self.burstRate;
     }
     self.w_state = RECOIL;
     self.w_isburst = burstFire;

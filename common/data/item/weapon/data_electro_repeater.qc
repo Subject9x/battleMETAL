@@ -42,6 +42,7 @@ void() data_ini_electro_repeater_={
   #ifndef CSQC
   self.spreadDefault = '0.1 0.1 0';
   self.w_isburst = FALSE;
+  self.burstRate = 1;
   self.w_fire_ofs = '0 0 6'; 
   self.fire_sound = "sound/weapons/esr_fire.ogg";
   self.model = "q3mdl/weapons/w_esr.md3";
@@ -60,7 +61,7 @@ void() data_ini_attack_electro_repeater_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( TRUE, 1 );
+  ctrl_weapon_updateAmmo( TRUE );
   
   sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
   pointparticles( particleeffectnum("TE_ESR_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);

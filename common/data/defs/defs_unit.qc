@@ -58,3 +58,5 @@ Overview:
 
 .float isActive;
 .float nav_name;
+
+.float ai_attack_chance;

@@ -139,7 +139,8 @@ float EVADE_DRAIN_PERCENT = 0.75;  //reduce energyRate by this % when unit is Ev
   float EFF_RAM = 32; //dmg only affects shields
   float EFF_STX = 64; //dmg only affects energy
   float EFF_ENE = 128; //weapon draws energy (client-side flag, really)
-  float EFF_ARC = 256;  //weapon has an arcing projectile, used by AI
+  float EFF_ARC = 256;  //AI-ONLY: weapon has an arcing projectile
+  float EFF_LOK = 512;  //AI-ONLY: weapon requires a target lock
 //============================
 //     SHARED STATS         
 //============================

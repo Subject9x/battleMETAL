@@ -39,7 +39,8 @@ void() data_ini_ion_={
   
   #ifndef CSQC
   self.spreadDefault = '0.018 0.013 0';
-  self.w_isburst = FALSE;  
+  self.w_isburst = FALSE;
+  self.burstRate = 1;
   self.w_fire_ofs = '0 0 4';
   self.fire_sound = "sound/weapons/emp_fire.ogg";
   self.model = "q3mdl/weapons/w_ion.md3";
@@ -58,7 +59,7 @@ void() data_ini_attack_ion_={
   
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( TRUE, 1 );
+  ctrl_weapon_updateAmmo( TRUE );
   
   ctrl_weapon_make_projectile( 0.01 );
   if( NEWSHOT ){

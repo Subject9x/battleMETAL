@@ -30,9 +30,12 @@ void() ctrl_update_mechplayer={
     }
   }
   else{
+    self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
+    self.ai_weaponEnergy = 0;
+    self.currentWeaponGroup = 0;
     wep = self.w_slot;
     while(wep){
-      ctrl_wpn_think(wep);
+      ctrl_weapon_think_ai(wep);
       wep = wep.w_slot;
     }
   }

@@ -42,6 +42,7 @@ void() data_ini_particle_cannon_={
   #ifndef CSQC
   self.spreadDefault = '0.0025 0.0025 0';
   self.w_isburst = FALSE;
+  self.burstRate = 0;
   self.w_fire_ofs = '0 0 6.75'; 
   self.fire_sound = "sound/weapons/pac_fire.ogg";
   self.model = "q3mdl/weapons/w_pac.md3";
@@ -59,7 +60,7 @@ void() data_ini_attack_particle_cannon_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE, 0 );
+  ctrl_weapon_updateAmmo( FALSE );
   
   pointparticles( particleeffectnum("TE_PAC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);

@@ -127,6 +127,8 @@ void(float vec_id) initialize_data_turret_;
   -Roohr
 */
 void() default_weapon_think={
+  local float delta, lim;
+  
   if(self.w_state == RECOIL){
     if(time > self.w_firetime){
       self.w_state = READY;
@@ -136,11 +138,15 @@ void() default_weapon_think={
     if(time > self.w_firetime){
       self.reloadValue = 100;
       self.w_state = READY;
+      if( (self.owner.flags & FL_MONSTER) ){
+        self.ai_nextFireTime = self.owner.ai_attack_chance + self.reloadMax;
+        self.ai_nextFireTime = self.ai_nextFireTime + (4 - self.owner.ai_rank) * 2;
+        self.ai_nextFireTime = time + (random() * self.ai_nextFireTime);
+      }
     }
     else{
-      local float delta, lim;
       delta = time - self.count1;
-      lim = self.reloadMax;      
+      lim = self.reloadMax;
       self.reloadValue = (delta / lim) * 100;
     }
   }
@@ -191,8 +197,3 @@ entity(float part, entity unit) util_getPartFromName={
 .void() unit_wep2;
 .void() unit_wep3;
 .void() unit_wep4;
-.void() unit_wep5;
-.void() unit_wep6;
-.void() unit_wep7;
-.void() unit_wep8;
-.void() unit_wep9;

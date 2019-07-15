@@ -11,10 +11,11 @@ Overview
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
 
-.float reloadMax;	//-> reloadMax refactor
+.float reloadMax;
 .float reloadValue;
 .float reloadRate;
 .string fire_sound;
+.float burstRate; //percentage of reloadRate to use for burst-fire intervals.
 
 .float state_1;
 .float state_2;
@@ -35,9 +36,13 @@ Overview
 .vector fx_origin;
 .float w_range;
 .float w_isburst;   //ugh
-.float w_state; 	//double ugh
-.float damageValue;	//	is this still needed? REFACTOR
-.float damageType;	//  Enumerated Float, see defs_game.qc\
-.string icon;		//client-side
+.float w_state;   //double ugh
+.float damageValue;
+.float damageType;  //  Enumerated Float, see defs_game.qc\
+.string icon;       //client-side
 .string description;//client-side
 .string abbrev;
+
+.float ai_weaponEnergy; //current max energy cost.
+.float ai_attackPreviousEnergy; //cached every attack call, compared when new attack is made.
+.float ai_nextFireTime; //last time this WEAPON was fired.
