@@ -2597,11 +2597,6 @@ velocitymultiplier 1
 
 
 
-
-
-
-
-
 //FOOT STOMP ICE EFFECT==================================
   //TE_STOMP_ICE - SNOW PUFFS
     effect TE_STOMP_ICE
@@ -2669,6 +2664,11 @@ velocityjitter 1 1 -6
 velocitymultiplier 2
 //==========================================
 
+
+
+
+
+
 //TE_DUST_ICE===============================
 effect TE_DUST_ICE
 count 0.25
@@ -2682,6 +2682,11 @@ alpha 200 240 96
 originjitter 8 8 1
 velocityjitter 1 1 -6
 //==========================================
+
+
+
+
+
 
 //TE_DUST_URBAN=============================
 effect TE_DUST_URBAN
@@ -2699,6 +2704,11 @@ velocityjitter 1 1 6
 velocitymultiplier 2
 //==========================================
 
+
+
+
+
+
 //TE_DUST_BADLANDS===========================
 effect TE_DUST_BADLANDS
 count 0.25
@@ -2715,6 +2725,11 @@ velocityjitter 1 1 6
 velocitymultiplier 2
 //==========================================
 
+
+
+
+
+
 //TE_DUST_TUNDRA============================
 effect TE_DUST_TUNDRA
 count 0.25
@@ -2730,6 +2745,11 @@ originjitter 8 8 1
 velocityjitter 1 1 6
 velocitymultiplier 2
 //==========================================
+
+
+
+
+
 
 //REPAIR BEAM==================================
   //TE_REPAIR_MUZZLE - CENTER PARTICLE
@@ -2863,4 +2883,47 @@ velocitymultiplier 2
     lightcolor 0.65 1.0 0.4
     lightshadow 0.25
   
+//==========================================
+
+
+
+//RADIATION FIELD===========================
+  //TE_FIELD_RAD - glob
+    effect TE_FIELD_RAD
+    count 4
+    type alphastatic
+    blend alpha
+    color 0x40FF00 0xF7F8E0
+    tex 21 25
+    size 4 6
+    sizeincrease 4
+    alpha 256 512 512
+    time 0.76 1
+    gravity 0.0085
+    originjitter 0.5 0.5 0
+    velocityjitter 2 2 2
+    
+   //TE_FIELD_RAD - splash up
+    effect TE_FIELD_RAD 
+    count 1
+    type spark
+    blend alpha
+    color 0x40FF00 0xF7F8E0
+    tex 35 35
+    size 0.2 0.3
+    alpha 256 512 768
+    time 1 1.25
+    gravity -0.075
+    originjitter 0.5 0.5 00.5
+    velocityjitter 2 2 4
+    stretchfactor 8
+  
+  //TE_FIELD_RAD - light
+    effect TE_FIELD_RAD
+    lightradius 100
+    lightradiusfade 25
+    lightcolor 0.33 1.0 0.4
+    lightshadow 0.25
+  
+
 //==========================================

@@ -31,6 +31,8 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
 
 entity( entity targetBuilding ) te_building_fire_start;
 
+void( vector org, vector setVelocity, float total ) te_field_rad;
+
 //SFX
 void() te_nav_reach;
 void( float type ) te_objective_complete;
