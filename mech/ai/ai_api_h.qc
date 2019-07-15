@@ -132,7 +132,6 @@ vector(entity wep) ai_attack_trace;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
 float(entity t) ai_valid_target;
-void() ai_wep_calcranges;
 void(float dst, float grp, float bracket) ai_wep_group_track;
 float(entity wep) ai_attack_checkEne;
 void( entity ally, entity targ, float override ) ai_give_target;

@@ -41,9 +41,10 @@ void(entity wep) ctrl_weapon_think_ai={
   local entity weaponOwner;
   local float stackWeapon;
   local float energyCost;
+  local float spreadRange;
   
   weaponOwner = self;
-  stackWeapon = FALSE;
+  stackWeapon = TRUE;
   self = wep;
     if(self.deadflag >= DEAD_DYING){
       self.deadflag = DEAD_DEAD;
@@ -60,46 +61,68 @@ void(entity wep) ctrl_weapon_think_ai={
     }
     
     if( ai_valid_target( weaponOwner.enemy ) ){
-      cons_logAString("weapon think()", "::::");  //DEBUG
-      if( weaponOwner.stat_trg_dist <= self.w_range ){
-        cons_logAString("in range", "o");  //DEBUG
-        if( time >= self.ai_nextFireTime ){
-        cons_logAString("time > firetime", "oo");  //DEBUG
-          if( (self.damageType & EFF_LOK) && (weaponOwner.stat_lck_stt & LOCK_TARG_HAS) ){
-            cons_logAString("targ lock true", "ooo");  //DEBUG
-            stackWeapon = TRUE;
-          }
-          else{
+      if( weaponOwner.stat_trg_dist > self.w_range ){
+        stackWeapon = FALSE;
+      }
+      else{
+
+        if( time < self.ai_nextFireTime ){
+          stackWeapon = FALSE;
+        }
+        else{
+          //Weapon REQUIRES a target lock to work, see if owner has a Target Lock
+          if( (self.damageType & EFF_LOK) && !(weaponOwner.stat_lck_stt & LOCK_TARG_HAS) ){
             stackWeapon = FALSE;
           }
-          energyCost = weaponOwner.ai_weaponEnergy + self.energyRate;
-          if( energyCost < weaponOwner.energy ){
-            cons_logAString("energy cost ", "ooo");  //DEBUG
-            stackWeapon = TRUE;
-          }
-          else{
-            stackWeapon = FALSE;
-          }
-          if( (self.damageType & EFF_STX) ){
-            cons_logAString("static shock ", "ooo");  //DEBUG
-            if( weaponOwner.enemy.shield < (weaponOwner.enemy.shieldMax * 0.1) ){
-            cons_logAString("shield check ", "ooo");  //DEBUG
+          
+          if( stackWeapon ){
+            //This is energy rationing to prevent the AI from trying to fire Weapons it doesn't have energy for.
+            energyCost = weaponOwner.ai_weaponEnergy + self.energyRate;
+            if( energyCost > weaponOwner.energy ){
               stackWeapon = FALSE;
+            }
+          }
+          
+          if( stackWeapon ){
+            //If Weapon is a shield-breaked (eff-stx), only fire if the target has any amount of shielding worth breaking.
+            if( (self.damageType & EFF_STX) ){
+              if( self.damageValue > (weaponOwner.enemy.shieldMax * 0.1) ){
+                stackWeapon = FALSE;
+              }
+            }
+          }
+          
+          if( stackWeapon ){
+            if( weaponOwner.ai_rank > AI_RANK_REG ){
+              if( self.damageValue > 100 ){
+                //magic number describing high-damage attacks.
+                spreadRange = weaponOwner.spreadDefault_x + (weaponOwner.spreadDefault_x * 0.33);
+                if( weaponOwner.accuracy >= spreadRange ){
+                  stackWeapon = FALSE;
+                }
+              }
             }
           }
         }
       }
     }
+    else{
+      stackWeapon = FALSE;
+    }
   
     if( stackWeapon == TRUE ){
-      weaponOwner.currentWeaponGroup = weaponOwner.currentWeaponGroup + self.w_group;
+      weaponOwner.currentWeaponGroup = weaponOwner.currentWeaponGroup | self.w_group;
       weaponOwner.ai_weaponEnergy = energyCost;
     }
   self = weaponOwner;
 };
 
+/*
+  Only fires weapon if there's enough energy to do so, 
+  AI ignores this, as this is filtered out in ctrl_weapon_think_ai
+*/
 float() ctrl_weapon_checkEnergy={
-  if( self.w_currentammo ==  self.w_clipsize){
+  if( self.w_currentammo == self.w_clipsize){
     if(self.energyRate && (self.owner.energy >= self.energyRate)){
       self.owner.energy = self.owner.energy - self.energyRate;
       if(self.owner.energy < 0){
@@ -228,9 +251,7 @@ void() ctrl_die_weapon={
       ctrl_weapon_subState(self, self.state_1);
       ctrl_weapon_addState(self, self.state_2);
     }
-    else{
-      ai_wep_calcranges();
-    }
+    
     self.w_attack = SUB_Null;
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;

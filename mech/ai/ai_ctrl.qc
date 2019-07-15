@@ -231,7 +231,7 @@ void( float move ) ai_update_accuracy={
   if( move ){      
     //unit is moving, increase spread factor
     rate = rate - self.accuracyMod;
-    self.accuracy = self.accuracy + rate;
+    self.accuracy = self.accuracy + (rate * 2); //scale up bad spread.
     if( self.accuracy > self.spreadDefault_y ){
       self.accuracy = self.spreadDefault_y;
     }

@@ -140,9 +140,10 @@ void() default_weapon_think={
       self.reloadValue = 100;
       self.w_state = READY;
       if( (self.owner.flags & FL_MONSTER) ){
-        self.ai_nextFireTime = self.owner.ai_attack_chance + self.reloadMax;
-        self.ai_nextFireTime = self.ai_nextFireTime + (4 - self.owner.ai_rank) * 2;
-        self.ai_nextFireTime = time + (random() * self.ai_nextFireTime);
+        //AI re-fire timing is offset to be more fair to the player.
+        self.ai_nextFireTime = self.owner.ai_attack_chance + self.reloadMax;  //ai_attack_chance set by ai_stats.qc
+        self.ai_nextFireTime = self.ai_nextFireTime + ((4 - self.owner.ai_rank) / 2); //4 is magic, its max skill (3) + 1, tougher AI attacks more frequently
+        self.ai_nextFireTime = time + (random() * self.ai_nextFireTime);  //gotta love randomization
       }
     }
     else{
@@ -188,14 +189,4 @@ entity(float part, entity unit) util_getPartFromName={
 };
 
 .void() unit_ini;
-.void() unit_legs;
-.void() unit_ctor;
-.void() unit_ltor;
-.void() unit_rtor;
-.void() unit_larm;
-.void() unit_rarm;
-.void() unit_cam;
-.void() unit_wep1;
-.void() unit_wep2;
-.void() unit_wep3;
-.void() unit_wep4;
+.void() unit_wep1;  //TODO - Refactor all references

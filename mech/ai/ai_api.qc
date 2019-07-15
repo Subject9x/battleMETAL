@@ -318,29 +318,34 @@ vector(entity wep) ai_attack_trace={
   return trace_endpos;
 };
 
+/*
+  Main AI attack function, called when AI's self.button0 = 1.
+  Runs through AI's weapon list, and finds which are able to be fired, then calls that function.
+*/
 void() ai_ranged_attack={
   local entity wep_chain, this;
   local float fired;
   local vector diff;
   
+  self.ai_weaponEnergy = 0;
   this = self;
   wep_chain = self.w_slot;     
   self.v_angle = self.angles;
   if( (self.flags & FL_TURRET) ){
+    //if the AI has a turret, use the turret's angles for Line of Sight offset origins.
     self.v_angle = self.torsoCenter.angles;
     diff = vectoangles( self.enemy.origin - self.cockpit.origin);
-    self.v_angle_x = diff_x * -1;
+    self.v_angle_x = diff_x * -1; //still correcting for age-old pitch bug
   }
   while(wep_chain){
     if(self.button0){
-      cons_logAFloat("ai_ranged_attack()->self.currentWeaponGroup", self.currentWeaponGroup); //DEBUG
       if(wep_chain.w_state == READY){
         if( (self.currentWeaponGroup & wep_chain.w_group) ){
           if( !ai_attack_blockcheck(wep_chain) ){
             self = wep_chain;
               if( ai_check_face(this.enemy, 0.95) ){
-                fired = fired + 1;
                 self.w_attack();
+                fired = fired + 1;
               }
             self = this;
           }
@@ -348,6 +353,7 @@ void() ai_ranged_attack={
       }
     }
     else{
+      //Weapon has a bust-fire mode, and has been fired at least once, run through the burst.
       if(wep_chain.w_isburst == TRUE){
         if(wep_chain.w_state == READY){
           self = wep_chain;
@@ -358,7 +364,6 @@ void() ai_ranged_attack={
     }
     wep_chain = wep_chain.w_slot;
   }
-  
 };
 
 /*
@@ -509,48 +514,6 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
   }
   else{
     self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & grp);
-  }
-};
-
-void() ai_wep_calcranges={
-  local entity w;
-  local float sh, m, l;
-  w = self.w_slot;
-  while(w){
-    if(w.deadflag <= DEAD_NO){
-      local float damg;
-      damg = w.damageValue * w.w_clipsize;
-      if(w.w_range <= AI_RANGE_S){ 
-        self.w_group1 = self.w_group1 | w.w_group;
-        sh = sh + damg;
-      }
-      if(w.w_range > AI_RANGE_S){
-        if(w.w_range <= AI_RANGE_M){
-          self.w_group2 = self.w_group2 | w.w_group;
-          m = m + damg;
-        }
-      }
-      if(w.w_range > AI_RANGE_M){
-        self.w_group3 = self.w_group3 | w.w_group;
-        l = l + damg;
-      }
-    }
-    w = w.w_slot;
-  }
-  
-  if( (sh > m) && (sh > l) ){
-    self.ai_minrange = AI_RANGE_S;
-  }
-  if( (m > sh) && (m > l) ){
-    self.ai_minrange = AI_RANGE_M;
-  }
-  if( (l > sh) && (l > m) ){
-    self.ai_minrange = AI_RANGE_L;
-  }
-  if( self.ai_minrange == 0 ){
-    if( !(self.flags & FL_DISARMED) ){
-      self.flags = self.flags | FL_DISARMED;
-    }
   }
 };
 

@@ -62,8 +62,7 @@ void(float rank) ai_pilot_ini_stats={
   self.ai_fov = ai_pilot_field_of_view(rank);
   self.ai_view = ai_pilot_view_range(rank);
   self.ai_viewcheck = ai_pilot_view_interval(rank);
-  ai_wep_calcranges();
-  
+
   mod_am = ai_pilot_armor_mod();
   self.max_health = self.health = self.health * mod_am; 
   self.legs.max_health = self.legs.health = self.legs.health * mod_am; 

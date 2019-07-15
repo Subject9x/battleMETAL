@@ -49,7 +49,6 @@ void() ctrl_updateTank={
     ctrl_weapon_think_ai(wep);
     wep = wep.w_slot;
   }
-      //cons_logAFloat("ctrl_updateTank()->self.currentWeaponGroup", self.currentWeaponGroup); //DEBUG
   
   //damage-based cosmetics for unit component pieces
   piece = self.partNext;

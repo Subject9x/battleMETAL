@@ -78,34 +78,22 @@ float AI_ATTACK_ACE  =  0.15;
 float AI_WEAPON_RPS_MOD = 1500;
 
 //Minimum convergence modifier
-float AI_CNV_MIN_ROK  = 3.25;
-float AI_CNV_MIN_REG  = 2.5;
-float AI_CNV_MIN_VET  = 1.75;
-float AI_CNV_MIN_ACE  = 1.25;
+float AI_CNV_MIN_ROK  = 3.5; //3.25
+float AI_CNV_MIN_REG  = 3;  //2.5
+float AI_CNV_MIN_VET  = 2.5; //1.75
+float AI_CNV_MIN_ACE  = 2; //1.25
 
 //Maximum convergence modifier
-float AI_CNV_MAX_ROK  = 3.5;
-float AI_CNV_MAX_REG  = 3;
-float AI_CNV_MAX_VET  = 2.5;
-float AI_CNV_MAX_ACE  = 2;
+float AI_CNV_MAX_ROK  = 7;  //3.5
+float AI_CNV_MAX_REG  = 6;    //3
+float AI_CNV_MAX_VET  = 5;  //2.5
+float AI_CNV_MAX_ACE  = 4;    //2
 
 //Convergence Rate modifier
-float AI_CNV_RATE_ROK  = 0.1;
-float AI_CNV_RATE_REG  = 0.2;
-float AI_CNV_RATE_VET  = 0.3;
-float AI_CNV_RATE_ACE  = 0.4;
-
-//how well does the AI handle weapon convergence
-float AI_CNV_ACE = 10;
-float AI_CNV_VET = 15;
-float AI_CNV_REG = 20;
-float AI_CNV_ROK = 25;
-
-//how does range affect the AI's accuracy
-float AI_RNG_ACE = 1;
-float AI_RNG_VET = 1.15;
-float AI_RNG_REG = 1.25;
-float AI_RNG_ROK = 1.5;
+float AI_CNV_RATE_ROK  = 0.05; //0.1
+float AI_CNV_RATE_REG  = 0.1; //0.2
+float AI_CNV_RATE_VET  = 0.15; //0.3
+float AI_CNV_RATE_ACE  = 0.2; //0.4
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
