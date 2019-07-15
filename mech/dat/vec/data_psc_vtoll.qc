@@ -15,9 +15,9 @@ void() data_PSC_VTOLL_wep1;
 void() data_PSC_VTOLL_wep2;
 
 void() data_PSC_VTOLL_ini={
-  self.unit_wep1 = data_PSC_VTOLL_wep1;
-  self.unit_wep2 = data_PSC_VTOLL_wep2;
-  self.unit_cam = data_PSC_VTOLL_cam;
+  //self.unit_wep1 = data_PSC_VTOLL_wep1;
+  //self.unit_wep2 = data_PSC_VTOLL_wep2;
+  //self.unit_cam = data_PSC_VTOLL_cam;
     
   self.data_idx = ID_VEC_PSC_VTOL_L;
   self.vec_name = DAT_PSC_VTOLL_NAME;

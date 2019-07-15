@@ -24,7 +24,7 @@ void() data_ini_equip_shield_emitter_={
   
   self.w_range = 0;
   self.damageValue = 0;
-  self.damageType = (DMG_MSC);
+  self.damageType = DMG_MSC;
   
   self.techLevel = 2;
   self.i_size = 2;
@@ -47,12 +47,12 @@ void() data_ini_equip_shield_emitter_={
 
 #ifndef CSQC
 void() shield_emitter_upgrade_={
+
   self.energyMax = self.owner.shieldRate;
-  
   self.owner.shieldRate  = self.owner.shieldRate + (self.owner.shieldRate  * self.energyRate);
 };
 
 void() shield_emitter_remove_={
-  self.owner.shieldRate  = self.energyMax;
+  self.owner.shieldRate = self.energyMax;
 };
 #endif

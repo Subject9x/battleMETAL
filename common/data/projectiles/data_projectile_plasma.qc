@@ -8,7 +8,7 @@ Overview:
     burns-over-time on unshielded targets.
 */
 
-float data_projectile_plasma_burn_time = 2;
+float data_projectile_plasma_burn_time = 0.67;
 
 void() data_projectile_plasma_touch;
 void() data_projectile_plasma_burn_ini_;
@@ -40,7 +40,7 @@ void() data_projectile_plasma_burn_ini_={
   self.v_angle = self.angles - self.cockpit.angles;
   self.think = data_projectile_plasma_burn_th;
   self.nextthink = time + 0.01;
-  self.data_lifetime = time + self.data_lifetime;
+  self.data_lifetime = time + data_projectile_plasma_burn_time;
   self.alpha = 0;
 };
 
@@ -61,10 +61,10 @@ void() data_projectile_plasma_burn_th={
     self.nextthink = time + 0.1;
     return;
   }
-  else{
-    self.think = data_projectile_plasma_burn_th;
-    self.nextthink = time + 0.1;
-  }
+
+  self.think = data_projectile_plasma_burn_th;
+  self.nextthink = time + 0.1;
+  
 };
 
 void() data_projectile_plasma_touch={
@@ -85,11 +85,10 @@ void() data_projectile_plasma_touch={
       newmis = spawn();
       newmis.enemy = other;
       newmis.cockpit = hit;
-      newmis.data_lifetime = time + data_projectile_plasma_burn_time;
       newmis.damageValue = self.damageValue;
       newmis.damageType = self.damageType;
       newmis.owner = self.owner;
-      setmodel(newmis, "q3mdl/testball.md3");
+      //setmodel(newmis, "q3mdl/testball.md3");
       setsize(newmis, '-1 -1 -1', '1 1 1');
       if( (other.data_type == DATA_MECH) ){
         setorigin(newmis, newmis.cockpit.origin);
@@ -97,7 +96,7 @@ void() data_projectile_plasma_touch={
       else{
         setorigin(newmis, self.origin);
       }
-      newmis.effects = EF_NODRAW;
+      //newmis.effects = EF_NODRAW;
       newmis.think = data_projectile_plasma_burn_ini_;
       newmis.nextthink = time + 0.01; 
     }

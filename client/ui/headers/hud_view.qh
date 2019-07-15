@@ -90,6 +90,8 @@ string HUD_TARGET_BOX;
 .float prev_ang;
 .vector nav_ofs;
 
+entity HUD_DATA_weapon;
+
 void() hud_renderCrosshairDisabled;
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs;
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair1; //I have no regrets for these

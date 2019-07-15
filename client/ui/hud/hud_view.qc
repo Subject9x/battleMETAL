@@ -455,6 +455,8 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   local entity wep_dat;
   local vector iofs, ofs, metSize, wepState;
   
+  data_get_client_item_( HUD_DATA_weapon, w_id );
+  
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
   
@@ -477,8 +479,9 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
-  if( ITEM_DATA_ICONS[w_id] != ""){
-    drawpic(iofs, ITEM_DATA_ICONS[w_id], imgSz, wepState, 1, 0);
+  
+  if( HUD_DATA_weapon.icon != ""){
+    drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, 1, 0);
   }
   
   ofs_x = imgSz_x / 2;
@@ -497,6 +500,8 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   local entity wep_dat;
   local vector iofs, ofs, metSize, wepState;
   
+  data_get_client_item_( HUD_DATA_weapon, w_id );
+  
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
   
@@ -507,7 +512,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   }
   if(w_rel < 100){
     //weapon reloading
-    if((wepGrp & w_bit)){ 
+    if( (wepGrp & w_bit) ){ 
       wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
     }
     else{
@@ -519,8 +524,8 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
-  if( ITEM_DATA_ICONS[w_id] != ""){
-    drawpic(iofs, ITEM_DATA_ICONS[w_id], imgSz, wepState, 1, 0);
+  if( HUD_DATA_weapon.icon != ""){
+    drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, 1, 0);
   }
   
   ofs_x = imgSz_x / 2;

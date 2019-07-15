@@ -1,8 +1,13 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 11/26/2017
-Overview: controller functions for buildings, mostly generics
+mod: 07/15/2019 
+  Overview: 
+    controller functions for buildings.
+    Generic 'die' functon.
+    Building Fire management.
+      Building Fires are cosmetic entities that spawn fire effects as the building is damaged.
 */
 
 void() building_die={
@@ -60,7 +65,6 @@ void() building_die_removeFire={
 };
 
 void() building_burn_th={
-
   self.c_alt_ofs = te_apply_wind( self.origin );
   pointparticles( self.damageValue, self.origin, normalize(self.c_alt_ofs - self.origin) * WINDDIR_z, self.count);
   self.think = building_burn_th;
@@ -68,15 +72,15 @@ void() building_burn_th={
 };
 
 void() building_burn={
-  if( self.health < self.max_health * 0.65){
+  if( self.health < self.max_health * 0.75){
     if( !self.armLeft || (self.armLeft == world) ){
       self.armLeft  = te_building_fire_start( self );
     }
-    if( self.health < self.max_health * 0.45){
+    if( self.health < self.max_health * 0.55){
       if( !self.armRight || (self.armRight == world) ){
         self.armRight = te_building_fire_start( self );
       }
-      if( self.health < self.max_health *0.25){
+      if( self.health < self.max_health *0.33){
         if( !self.torsoLeft || (self.torsoLeft == world) ){
           self.torsoLeft = te_building_fire_start( self );
         }

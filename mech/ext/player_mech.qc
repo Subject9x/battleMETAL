@@ -5,6 +5,8 @@ Date: 9/7/2016
       mod 3/10/2017
       mod 5/22/2017 - addded some monster flag checks
 Overview: implementation of mech player functions,
+
+TODO - roll this into ctrl_mech.qc - Roohr 07/15/2019
 */
 
 void() mech_clearWeaponGroups={
