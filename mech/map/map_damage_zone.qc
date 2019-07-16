@@ -4,7 +4,10 @@ Author: Peter Roohr
 Date: 11/14/2018
 Overview: 
   A Damage Zone is an area that hurts all units within the zone.
-  
+  These are brush-based model usually, but can be set via entity text editing.
+  HOW TO USE
+    where ever you put 1 of the 'radical' textures, if you want that area to damage the player,
+    then you place this entity over that textured spot.
 Inputs
   .targetname = <string> [targetname] - make triggerable
   .damageValue = <float> - amount of damage to impart
