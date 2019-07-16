@@ -2925,6 +2925,104 @@ velocitymultiplier 2
     lightradiusfade 75
     lightcolor 0.45 1.0 0.2
     lightshadow 0.1
-  
+//==========================================
 
+
+
+
+//MINERAL FIELD===========================
+   //TE_FIELD_MINERAL - splash up
+    effect TE_FIELD_MINERAL
+    count 4
+    type spark
+    blend alpha
+    color 0x00BFFF 0xA9F5F2
+    tex 35 35
+    size 0.1 0.5
+    alpha 256 512 400
+    time 1 2
+    originjitter 2 2 2
+    velocityoffset 10 10 10
+    velocityjitter 45 45 45
+    velocitymultiplier 2
+    stretchfactor 5
+    airfriction 7
+  
+  //TE_FIELD_MINERAL - light
+    effect TE_FIELD_MINERAL_LIGHT
+    countabsolute 1
+    lightradius 75
+    lightradiusfade 25
+    lightcolor 0.2 0.45 1.0
+    lightshadow 0.1
+//==========================================
+
+
+
+
+
+//QUANTUM FIELD===========================
+ //TE_FIELD_QUANTUM - BLACK FLAME
+    effect TE_FIELD_QUANTUM
+    countabsolute 1
+    type smoke
+    blend alpha
+    color 0x000000 0x000000
+    tex 32 32
+    size 2 3
+    alpha 64 64 64
+    time 0.15 0.25
+    sizeincrease -6
+    originjitter 0 0 0
+    velocitymultiplier -0.25
+    velocityjitter 2 2 2
+  
+  //TE_FIELD_QUANTUM - RED PARTICLES
+    effect TE_FIELD_QUANTUM
+    countabsolute 1
+    type spark
+    blend alpha
+    orientation spark
+    color 0xDF013A 0xFF0000
+    tex 62 62
+    size 0.08 0.15
+    alpha 64 64 64
+    time 0.15 0.25
+    originjitter 0 0 0
+    velocitymultiplier -0.25
+    velocityjitter 2 2 2
+    stretchfactor 10
+  
+   //TE_FIELD_QUANTUM - LIGHT
+    effect TE_FIELD_QUANTUM
+    lightradius 10
+    lightradiusfade 25
+    lightcolor 0.675 0.345 0.98
+    lightshadow 0.25
+  
+  //TE_FIELD_QUANTUM - BLACK LINES
+    effect TE_FIELD_QUANTUM
+    count 1
+    type alphastatic
+    blend alpha
+    orientation spark
+    color 0x000000 0x000000
+    tex 47 47
+    size 2 3
+    alpha 96 96 128
+    time 0.5 1
+    originjitter 1 1 1
+    velocityjitter 35 35 1
+    velocitymultiplier 1
+    stretchfactor 1
+    bounce -1
+
+
+  //TE_FIELD_QUANTUM - light
+    effect TE_FIELD_QUANTUM_LIGHT
+    count 1
+    lightradius 300
+    lightradiusfade 75 
+    lightcolor 1 0.1 0.45
+    lightshadow 0.3
 //==========================================

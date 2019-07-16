@@ -26,45 +26,102 @@ Inputs
   .spawnflags = <float> [flag] 32 - activate on-touch
 */
 
-float PARTICLE_GRID_SIZE = 64;
-
 void() map_damage_zone_particles_shields={
-  local vector velocityOffset;
-  velocityOffset = self.origin + (v_up * 2);
-  te_particlecube( self.mins, self.maxs, normalize(velocityOffset - self.origin) * 4, self.damageValue * 10, 244, FALSE, 1);
+  local vector velocityOffset, particleOrigin, particleOffset;
+  
+  velocityOffset = self.origin + (v_up * 16);
+  te_particlerain( self.absmin, self.absmax, normalize(velocityOffset - self.origin) * 50, floor(self.maxs_x / 32), 244); 
+
+  if( time > self.count1 ){
+    self.count1 = time + (random() * 0.5);
+    
+    particleOffset_x = crandom() * self.maxs_x;
+    particleOffset_z = crandom() * self.maxs_y;
+    particleOffset_y = random() * (self.maxs_z * 0.25);
+    
+    particleOffset = self.origin + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
+    if( random() < 0.8){
+      te_field_mineral(particleOffset, normalize(velocityOffset - self.origin) * 25, 5);
+    }
+    
+    te_field_mineral_light(particleOffset, 1);
+    if( self.maxs_x > 128){
+      te_field_mineral_light(particleOffset, 1);
+      if( self.maxs_x > 256){
+        te_field_mineral_light(particleOffset, 1);
+        if( self.maxs_x > 512){
+          te_field_mineral_light(particleOffset, 1);
+        }
+      }
+    }
+  }
 };
 
 void() map_damage_zone_particles_armor={
   local vector velocityOffset, particleOrigin, particleOffset;
   
   velocityOffset = self.origin + (v_up * 16);
-  te_particlecube( self.mins, self.maxs, normalize(velocityOffset - self.origin) * 5, self.damageValue * self.maxs_x, 176, FALSE, 1); 
+  te_particlecube( self.absmin, self.absmax, normalize(velocityOffset - self.origin) * 5, floor(self.maxs_x / 32), 176, FALSE, 1); 
 
-  particleOffset_x = crandom() * self.maxs_x;
-  particleOffset_z = crandom() * self.maxs_y;
-  particleOffset_y = random() * (self.maxs_z / 2);
-  
-  particleOffset = self.origin + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
-  if( random() < 0.2){
-    te_field_rad(particleOffset, normalize(velocityOffset - self.origin) * 4, 1);
-  }
-  
-  te_field_rad_light(particleOffset, 1);
-  if( self.maxs_x > 256){
+  if( time > self.count1 ){
+    self.count1 = time + (random() * 0.5);
+    
+    particleOffset_x = crandom() * self.maxs_x;
+    particleOffset_z = crandom() * self.maxs_y;
+    particleOffset_y = random() * (self.maxs_z / 2);
+    
+    particleOffset = self.origin + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
+    if( random() < 0.2){
+      te_field_rad(particleOffset, normalize(velocityOffset - self.origin) * 4, 1);
+    }
+    
     te_field_rad_light(particleOffset, 1);
-    if( self.maxs_x > 512){
+    if( self.maxs_x > 256){
       te_field_rad_light(particleOffset, 1);
-      if( self.maxs_x > 1024){
+      if( self.maxs_x > 512){
         te_field_rad_light(particleOffset, 1);
+        if( self.maxs_x > 1024){
+          te_field_rad_light(particleOffset, 1);
+        }
       }
     }
   }
 };
 
 void() map_damage_zone_particles_energy={
-  local vector velocityOffset;
+  local vector velocityOffset, particleOrigin, particleOffset;
+  
   velocityOffset = self.origin + (v_up * 2);
-  te_particlecube( self.mins, self.maxs, normalize(velocityOffset - self.origin) * 5, self.damageValue * 10, 128, TRUE, 10); 
+  te_particlecube( self.absmin, self.absmax, '0 0 0', floor(self.maxs_x / 48), 128, FALSE, 10); 
+  
+  if( time > self.count1 ){
+    self.count1 = time + (random() * 0.5);
+    
+    particleOffset_x = crandom() * self.maxs_x;
+    particleOffset_z = crandom() * self.maxs_y;
+    particleOffset_y = random() * (self.maxs_z / 2);
+    
+    particleOffset = self.origin + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
+    
+    if( random() <= 0.8 ){
+      particleOrigin_x = crandom() * self.maxs_x;
+      particleOrigin_z = crandom() * self.maxs_y;
+      particleOrigin_y = random() * self.maxs_z;
+      particleOrigin = self.origin + (v_right * particleOrigin_x) + (v_forward * particleOrigin_z) + (v_up * particleOrigin_y);
+      te_field_quantum(particleOffset, particleOrigin);
+    }
+    
+    te_field_quantum_light(particleOffset, 1);
+    if( self.maxs_x > 256){
+      te_field_quantum_light(particleOffset, 1);
+      if( self.maxs_x > 512){
+        te_field_quantum_light(particleOffset, 1);
+        if( self.maxs_x > 1024){
+          te_field_quantum_light(particleOffset, 1);
+        }
+      }
+    }
+  }
 };
 
 void() map_damage_zone_use;
@@ -101,7 +158,7 @@ void() map_damage_zone_think={
   
   //otherwise do nothing else
   self.think = map_damage_zone_think;
-  self.nextthink = time + 0.5;
+  self.nextthink = time + 0.1;
 };
 
 void() map_damage_zone_cool={
@@ -219,6 +276,7 @@ void() map_damage_zone={
   self.movetype = MOVETYPE_NONE;
   self.touch = map_damage_zone_touch;
   self.think = map_damage_zone_think;
+  self.count1 = time + (random() * 0.5);
   
   //setmodel( self, "q3mdl/testball.md3" ); //DEBUG
   setsize( self, tempMin, tempMax );

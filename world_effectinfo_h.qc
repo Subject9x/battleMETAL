@@ -34,6 +34,12 @@ entity( entity targetBuilding ) te_building_fire_start;
 void( vector org, vector setVelocity, float total ) te_field_rad;
 void( vector org, float total ) te_field_rad_light;
 
+void( vector org, vector setVelocity, float total ) te_field_mineral;
+void( vector org, float total ) te_field_mineral_light;
+
+void( vector particleOrg, vector particleEnd ) te_field_quantum;
+void( vector org, float total ) te_field_quantum_light;
+
 //SFX
 void() te_nav_reach;
 void( float type ) te_objective_complete;

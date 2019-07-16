@@ -348,28 +348,46 @@ void( vector org, float total ) te_field_rad_light={
   pointparticles( particleeffectnum("TE_FIELD_RAD_LIGHT"), org, '0 0 0',  total);
 };
 
+void( vector org, vector setVelocity, float total ) te_field_mineral={
+  pointparticles( particleeffectnum("TE_FIELD_MINERAL"), org, setVelocity,  total);
+};
+
+void( vector org, float total ) te_field_mineral_light={
+  pointparticles( particleeffectnum("TE_FIELD_MINERAL_LIGHT"), org, '0 0 0',  total);
+};
+
+void( vector particleOrg, vector particleEnd ) te_field_quantum={
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), particleOrg, normalize( particleEnd - particleOrg ), 1);
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), particleOrg, normalize( particleEnd - particleOrg ) * 30, 1);
+  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), particleOrg, particleEnd);
+};
+
+void( vector org, float total ) te_field_quantum_light={
+  pointparticles( particleeffectnum("TE_FIELD_QUANTUM_LIGHT"), org, '0 0 0',  total);
+};
+
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
-    local vector fx, vel;
-    local vector leftMin;
-    
-    makevectors( angl ); 
-    fx = org ;
-    fx_z = fx_z + unitMins_z;
-    leftMin = v_right * (unitMins_x * 0.8);
-    if( left ){
-       fx = fx + leftMin;
-    }
-    else{
-       fx = fx - leftMin;
-    }
-    
-    vel = fx + (v_up * 2);
-    traceline(self.owner.origin, self.owner.origin + (v_up * (unitMins_z - 16)), MOVE_HITMODEL, self.owner);
-    if( !trace_ent.model ){
-      return;
-    }
-    sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
-    pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
+  local vector fx, vel;
+  local vector leftMin;
+  
+  makevectors( angl ); 
+  fx = org ;
+  fx_z = fx_z + unitMins_z;
+  leftMin = v_right * (unitMins_x * 0.8);
+  if( left ){
+     fx = fx + leftMin;
+  }
+  else{
+     fx = fx - leftMin;
+  }
+  
+  vel = fx + (v_up * 2);
+  traceline(self.owner.origin, self.owner.origin + (v_up * (unitMins_z - 16)), MOVE_HITMODEL, self.owner);
+  if( !trace_ent.model ){
+    return;
+  }
+  sound (self, CHAN_FOOT, "sound/mech_stomp.ogg", 1, ATTN_NORM);
+  pointparticles( TE_STOMP_TYPE, fx, normalize(vel - fx) * 10,  vecSize * 3);
 };
 
 //HUD Sound Effects
