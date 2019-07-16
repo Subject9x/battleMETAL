@@ -4,6 +4,9 @@ Author: Peter Roohr
 Date: 03/8/2017
 Overview: GUI API header
 */
+
+float FONT_NUM_ARIAL;
+
 //so, 'state' for these things is tracked by the proper entry being non-zero
 //  ex: deploy point 5 is 'active' and for this player's faction if DEPLOY_POINTS_ORG[5] != '0 0 0'
 vector DEPLOY_POINTS_ORG[32]; //  server origins for all deploy points

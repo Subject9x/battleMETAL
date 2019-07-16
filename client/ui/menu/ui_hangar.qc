@@ -348,7 +348,7 @@ void(vector ofs) menu_hangar_MechFluff={
   drawstring(nofs + gui_percentToPixelRawVec('16 16'), "[DESCRIPTION]", '6 6 0', '1 1 1', 1, 0);
   
   if(SELECT_MECH > FALSE){
-    fpos = nofs + gui_percentToPixelRawVec('10 26');
-    gui_wrapText(fpos, '235 210', MECH_DATA_DESC, '7 8 0', '0.9 0.9 0.9', 1);
+    fpos = nofs + gui_percentToPixelRawVec('12 26');
+    gui_wrapText(fpos, '235 210', MECH_DATA_DESC, '10 10 0', '0.9 0.9 0.9', 1);
   }
 };

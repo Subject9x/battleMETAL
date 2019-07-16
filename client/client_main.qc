@@ -120,6 +120,11 @@ void() CSQC_Init =
   ui_data_load_itemnames();
   ui_data_load_itemicons();
   ui_data_load_hudnames();
+
+  //loadfont(string fontname, string fontmaps, string sizes, float slot, float fix_scale, float fix_voffset)
+  FONT_NUM_ARIAL = loadfont("arial", "gfx/fonts/arial", "8 12 16 32", FONT_USER0, TRUE, FALSE);
+  loadfont("segoeui", "gfx/fonts/segoeui", "6 8 10 12 16", FONT_DEFAULT, TRUE, FALSE);
+  loadfont("segoeui", "gfx/fonts/segoeui", "6 8 10 12 16", FONT_CONSOLE, TRUE, FALSE);
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
