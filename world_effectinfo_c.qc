@@ -344,6 +344,9 @@ void( vector org, vector setVelocity, float total ) te_field_rad={
   pointparticles( particleeffectnum("TE_FIELD_RAD"), org, setVelocity,  total);
 };
 
+void( vector org, float total ) te_field_rad_light={
+  pointparticles( particleeffectnum("TE_FIELD_RAD_LIGHT"), org, '0 0 0',  total);
+};
 
 void( vector org, vector angl, float vecSize, vector unitMins, float left) te_foot_stomp={
     local vector fx, vel;

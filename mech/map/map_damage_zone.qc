@@ -23,6 +23,8 @@ Inputs
   .spawnflags = <float> [flag] 32 - activate on-touch
 */
 
+float PARTICLE_GRID_SIZE = 64;
+
 void() map_damage_zone_particles_shields={
   local vector velocityOffset;
   velocityOffset = self.origin + (v_up * 2);
@@ -30,29 +32,36 @@ void() map_damage_zone_particles_shields={
 };
 
 void() map_damage_zone_particles_armor={
-  local vector velocityOffset, particleOrigin;
-  velocityOffset = self.origin + (v_up * 4);
-  te_particlesnow( self.mins, self.maxs, normalize(velocityOffset - self.origin) * 1, self.damageValue * 5, 176); 
-  /*
-    TODO - actual te_radiation particles
-    like an inverted drip
-    slosh particles at base
-    drip particles shooting up
-    small green flash at base
-  */
-  //if( random() >= 0.5 ){
-    particleOrigin_x = crandom() * self.maxs_x;
-    particleOrigin_y = crandom() * self.maxs_y;
-    particleOrigin_z = (random() * self.maxs_z);
-    te_field_rad( particleOrigin, normalize(velocityOffset - self.origin) * 8, 4);
+  local vector velocityOffset, particleOrigin, particleOffset;
   
-  //}
+  velocityOffset = self.origin + (v_up * 16);
+  te_particlecube( self.mins, self.maxs, normalize(velocityOffset - self.origin) * 5, self.damageValue * self.maxs_x, 176, FALSE, 1); 
+
+  particleOffset_x = crandom() * self.maxs_x;
+  particleOffset_z = crandom() * self.maxs_y;
+  particleOffset_y = random() * (self.maxs_z / 2);
+  
+  particleOffset = self.origin + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
+  if( random() < 0.2){
+    te_field_rad(particleOffset, normalize(velocityOffset - self.origin) * 4, 1);
+  }
+  
+  te_field_rad_light(particleOffset, 1);
+  if( self.maxs_x > 256){
+    te_field_rad_light(particleOffset, 1);
+    if( self.maxs_x > 512){
+      te_field_rad_light(particleOffset, 1);
+      if( self.maxs_x > 1024){
+        te_field_rad_light(particleOffset, 1);
+      }
+    }
+  }
 };
 
 void() map_damage_zone_particles_energy={
   local vector velocityOffset;
   velocityOffset = self.origin + (v_up * 2);
-  te_particlecube( self.mins, self.maxs, normalize(velocityOffset - self.origin) * 5, self.damageValue * 10, 128, FALSE, 10); 
+  te_particlecube( self.mins, self.maxs, normalize(velocityOffset - self.origin) * 5, self.damageValue * 10, 128, TRUE, 10); 
 };
 
 void() map_damage_zone_use;
@@ -89,7 +98,7 @@ void() map_damage_zone_think={
   
   //otherwise do nothing else
   self.think = map_damage_zone_think;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.5;
 };
 
 void() map_damage_zone_cool={
@@ -213,7 +222,7 @@ void() map_damage_zone={
   setorigin( self, self.origin );
   
   if( !cvar("developer") ){
-    self.effects = self.effects | EF_NODRAW;
+    //self.effects = self.effects | EF_NODRAW;
   }
   
   if( (self.spawnflags & 2) ){
