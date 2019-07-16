@@ -525,6 +525,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   local vector vloc, varea, torg;
   local string line;
  
+  drawfont = FONT_USER0;  //DEBUG
   varea = gui_percentToPixelRawVec(area);
   totes = tokenizebyseparator(text, " ");
   
@@ -569,6 +570,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
     }
     token = token + 1;
   }
+  drawfont = FONT_DEFAULT; //DEBUG
   return line_cnt * fsize_y;
 };
 

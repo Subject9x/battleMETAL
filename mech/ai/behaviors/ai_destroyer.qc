@@ -339,7 +339,10 @@ void() ai_spg_rotate5={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  ai_attack();
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_spg_rotate6)
 };
@@ -357,7 +360,10 @@ void() ai_spg_rotate7={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  ai_attack();
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_spg_rotate8)
 };
@@ -395,6 +401,10 @@ void() ai_spg_turn3={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
+    
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_spg_turn4)
 };
@@ -403,6 +413,8 @@ void() ai_spg_turn4={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
+  
+  ai_attack();
   
   macro_ai_frame_count(ai_spg_turn1)
   
@@ -429,6 +441,10 @@ void() ai_spg_reverse2={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + 180), self.data_speed_backward );
+    
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_spg_reverse3)
 };
@@ -448,6 +464,10 @@ void() ai_spg_reverse4={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + 180), self.data_speed_backward );
+    
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_spg_reverse5)
 };
@@ -457,8 +477,7 @@ void() ai_spg_reverse5={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + 180), self.data_speed_backward );
-  ai_attack();
-  
+
   macro_ai_frame(ai_spg_reverse6)
 };
 void() ai_spg_reverse6={
@@ -476,9 +495,6 @@ void() ai_spg_reverse7={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + 180), self.data_speed_backward );
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_attack();
-  }
   
   macro_ai_frame(ai_spg_reverse8)
 };
@@ -488,8 +504,7 @@ void() ai_spg_reverse8={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + 180), self.data_speed_backward );
-  ai_attack();
-  
+
   macro_ai_frame(ai_spg_reverse9)
 };
 void() ai_spg_reverse9={
@@ -498,7 +513,6 @@ void() ai_spg_reverse9={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + 180), self.data_speed_backward );
-  ai_attack();
   
   macro_ai_frame(ai_spg_reverse10)
 };
@@ -508,7 +522,6 @@ void() ai_spg_reverse10={
   
   ai_face_targ();
   walkmove( anglemod(self.angles_y + 180), self.data_speed_backward );
-  ai_attack();
   
   macro_ai_frame(ai_spg_fight_prep)
 };
@@ -543,6 +556,10 @@ void() ai_spg_strafe3={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
+    
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_spg_strafe4)
 };
@@ -551,7 +568,6 @@ void() ai_spg_strafe4={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  ai_attack();
   
   macro_ai_frame(ai_spg_strafe5)
 };
@@ -560,7 +576,6 @@ void() ai_spg_strafe5={
   macro_ai_update(ctrl_updateTank)
   
   ai_move_turn();
-  ai_attack();
   
   macro_ai_frame(ai_spg_strafe6)
 };
@@ -578,7 +593,10 @@ void() ai_spg_strafe7={
   
   walkmove( self.angles_y, self.data_speed_forward);
   macro_ai_frame_count(ai_spg_strafe7)
-  ai_attack();
+   
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
  
   macro_ai_frame(ai_spg_strafe8)
 };
@@ -743,7 +761,10 @@ void() ai_spg_charge1={
   
   ai_face_targ();
   walkmove( self.angles_y, self.data_speed_forward );
-  ai_attack();
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_spg_charge2)
 };

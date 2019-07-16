@@ -292,16 +292,13 @@ void() ai_turret_rotate1={
 void() ai_turret_rotate2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-   
-  ai_attack();
+  
  
   macro_ai_frame(ai_turret_rotate3)
 };
 void() ai_turret_rotate3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-   
-  ai_attack();
 
   macro_ai_frame(ai_turret_rotate4)
 };
@@ -316,16 +313,12 @@ void() ai_turret_rotate4={
 void() ai_turret_rotate5={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-   
-  ai_attack();
 
   macro_ai_frame(ai_turret_rotate6)
 };
 void() ai_turret_rotate6={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-   
-  ai_attack();
   
   macro_ai_frame(ai_turret_rotate7)
 };
@@ -340,8 +333,10 @@ void() ai_turret_rotate7={
 void() ai_turret_rotate8={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-   
-  ai_attack();
+  
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_turret_fight_prep)
 };
@@ -372,17 +367,11 @@ void() ai_turret_combat3={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_attack();
-  
   macro_ai_frame(ai_turret_combat4)
 };
 void() ai_turret_combat4={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
-  
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_attack();
-  }
   
   macro_ai_frame(ai_turret_combat5)
 };
