@@ -102,27 +102,36 @@ void() briefSoundListener={
 
 //panels
 void(vector ofs) menu_briefMissionInfo={
+  local vector fontSizeSmall, fontSizeMedium;
   
-  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('243.2 62.4'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
+  fontSizeSmall = '8 8';
+  fontSizeMedium = '10 8';
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_LIGHT;
+  
+  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('243.2 68'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   local float tlen;
   local vector tpos;
-  tlen = stringwidth("[MISSION INFO]", 0, '8 8 0');
+  tlen = stringwidth("-MISSION INFO-", 0, '14 12 0');
   tpos = ofs + gui_percentToPixelRawVec('121 2');
   tpos_x = tpos_x - (tlen/2);
-  drawstring(tpos, "[MISSION INFO]", '8 8 0', '1 1 1', 1, 0);
-  
+  drawstring(tpos, "-MISSION INFO-", '14 12 0', '1 1 1', 1, 0);
+
   //mission name
-  drawstring(ofs+gui_percentToPixelRawVec('5 12'), strcat("[NAME]:       ", MSN_NAME), '6 6 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('5 12'), strcat("[NAME]:       ", MSN_NAME), fontSizeSmall, '1 1 1', 1, 0);
   //mission type
-  drawstring(ofs+gui_percentToPixelRawVec('5 20'), strcat("[TYPE]:       ",MSN_TYPE), '6 6 0', '1 1 1', 1, 0); 
+  drawstring( ofs + gui_percentToPixelRawVec('5 20'), strcat("[TYPE]:       ",MSN_TYPE), '10 8 0', '1 1 1', 1, 0); 
   //reserves
-  drawstring(ofs+gui_percentToPixelRawVec('5 28'), strcat("[RESERVES]:   ", ftos(AVAILABLE_RESERVE), "//", MSN_RESERVETOTAL), '6 6 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('5 28'), strcat("[RESERVES]:   ", ftos(AVAILABLE_RESERVE), "//", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
   //sector
-  drawstring(ofs+gui_percentToPixelRawVec('5 36'), strcat("[SECTOR]      ", MSN_SECTOR), '6 6 0', '1 1 1', 1, 0);
+  drawstring( ofs+ gui_percentToPixelRawVec('5 36'), strcat("[SECTOR]      ", MSN_SECTOR), '10 8 0', '1 1 1', 1, 0);
   //location
-  drawstring(ofs+gui_percentToPixelRawVec('5 44'), strcat("[LOCATION]:   ", MSN_LOCATION ), '6 6 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('5 44'), strcat("[LOCATION]:   ", MSN_LOCATION ), '10 8 0', '1 1 1', 1, 0);
   //local time
-  drawstring(ofs+gui_percentToPixelRawVec('5 52'), strcat("[LOCAL TIME]: ", MSN_LOCALTIME), '6 6 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('5 52'), strcat("[LOCAL TIME]: ", MSN_LOCALTIME), '10 8 0', '1 1 1', 1, 0);
+  
+  drawfont = drawfont_prev;
   
   local vector helpOrg;
   helpOrg = ofs;
