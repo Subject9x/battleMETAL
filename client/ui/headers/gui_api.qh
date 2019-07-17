@@ -2,10 +2,15 @@
 battleMETAL
 Author: Peter Roohr
 Date: 03/8/2017
-Overview: GUI API header
+Overview: 
+  GUI API header
 */
 
-float FONT_NUM_ARIAL;
+float FONT_NUM_ROBOT_LIGHT;
+float FONT_NUM_ROBOT_THIN;
+float FONT_NUM_ROBOT_REGULAR;
+float FONT_NUM_ROBOT_MEDIUM;
+float drawfont_prev;
 
 //so, 'state' for these things is tracked by the proper entry being non-zero
 //  ex: deploy point 5 is 'active' and for this player's faction if DEPLOY_POINTS_ORG[5] != '0 0 0'
@@ -27,13 +32,16 @@ vector VIEW_ORG;
 vector VIEW_MAX;
 vector VIEW_SIZE;
 vector VIEW_CTR;
+float VIEW_SCALE;
+
 float VIEW_TOP = 1;
 float VIEW_BOT = 2;
 float VIEW_LFT = 4;
 float VIEW_RGT = 8;
 float VIEW_CTX = 16;
 float VIEW_CTY = 32;
-float VIEW_SCALE;
+
+
 float AXIS_H = 1;	
 float AXIS_V = 2;
 float AXIS_LEFT = 4;
@@ -41,13 +49,16 @@ float AXIS_RIGHT = 8;
 float AXIS_UP = 16;
 float AXIS_DOWN = 24;
 float AXIS_CTR = 32;
+
 float DIR_UP = 1;
 float DIR_DN = 2;
 float DIR_LF = 3;
 float DIR_RT = 4;
+
 float OBJ_METER = 1;
 float OBJ_SLIDER = 2;
 float OBJ_LIST = 3;
+
 float PAT_BAR = 1;
 float PAT_SPH = 2;
 float PAT_BOX = 3;

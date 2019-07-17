@@ -122,9 +122,12 @@ void() CSQC_Init =
   ui_data_load_hudnames();
 
   //loadfont(string fontname, string fontmaps, string sizes, float slot, float fix_scale, float fix_voffset)
-  FONT_NUM_ARIAL = loadfont("arial", "gfx/fonts/arial", "8 12 16 32", FONT_USER0, TRUE, FALSE);
-  loadfont("segoeui", "gfx/fonts/segoeui", "6 8 10 12 16", FONT_DEFAULT, TRUE, FALSE);
-  loadfont("segoeui", "gfx/fonts/segoeui", "6 8 10 12 16", FONT_CONSOLE, TRUE, FALSE);
+  FONT_NUM_ROBOT_LIGHT = loadfont("Roboto_Light", "gfx/fonts/Roboto_Light", "8 12 16 32", FONT_USER0, FALSE, FALSE);
+  FONT_NUM_ROBOT_THIN = loadfont("Roboto_Thin", "gfx/fonts/Roboto_Thin", "8 12 16 32", FONT_USER1, FALSE, FALSE);
+  FONT_NUM_ROBOT_REGULAR = loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "8 12 16 32", FONT_USER2, FALSE, FALSE);
+  FONT_NUM_ROBOT_MEDIUM = loadfont("Roboto_Medium", "gfx/fonts/Roboto_Medium", "8 12 16 32", FONT_USER2, FALSE, FALSE);
+  loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, FALSE, FALSE);
+  loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
