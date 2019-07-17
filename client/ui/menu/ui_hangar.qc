@@ -343,12 +343,18 @@ void(vector ofs) menu_hangar_MechInfo={
 void(vector ofs) menu_hangar_MechFluff={
   local vector nofs, fpos;
   local float lne_idx, argc;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
   nofs = ofs + gui_percentToPixelRawVec('115 203');
   drawpic(nofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('250 261'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   drawstring(nofs + gui_percentToPixelRawVec('16 16'), "[DESCRIPTION]", '6 6 0', '1 1 1', 1, 0);
   
   if(SELECT_MECH > FALSE){
     fpos = nofs + gui_percentToPixelRawVec('12 26');
-    gui_wrapText(fpos, '235 210', MECH_DATA_DESC, '12 10 0', '0.9 0.9 0.9', 1);
+    gui_wrapText(fpos, '235 210', MECH_DATA_DESC, '12 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
   }
+  
+  drawfont = drawfont_prev;
 };

@@ -7,6 +7,7 @@ so that these defs can be shared / expanded by menu.dat
 */
 
 //ui constants
+vector CLR_DEF_TXT_GRAY_SMOOTH = '0.78 0.78 0.78';
 vector CLR_DEF_TXT_HIGHLIGHT = '0.98 0.98 0.98';
 vector CLR_DEF_TXT_NONSELECT = '0.75 0.75 0.75';
 vector CLR_DEF_TXT_CANTSELET = '0.4 0.4 0.4';

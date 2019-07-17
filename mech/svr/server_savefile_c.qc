@@ -1,10 +1,11 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/17/2018
-Overview: This code writes out the single player save file.
-The save file is mostly an inter-level intermediary file
-to track player unlocks
+Overview: 
+  This code writes out the single player save file.
+  The save file is mostly an inter-level intermediary file
+    to track player unlocks.
 */
 
 

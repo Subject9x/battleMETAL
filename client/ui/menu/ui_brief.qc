@@ -42,9 +42,9 @@ void() menu_briefListener_onHover={
   if( menu_checkMouseInBounds(cursorpos, BRIEF_MAP_HELP_ORG, gui_percentToPixelRawVec('12 12'), FALSE) ){
      toolTip.data_idx = MENU_BRIEF_ACTIVE;
      toolTip.mins = gui_percentToPixelRawVec('164 48 0');
-     toolTip.description = "The [Map Panel] displays (Nav) markers and <Drop Points> for the mission.";
-     toolTip.angles = '0.85 0.85 0.85';
-     toolTip.maxs = '7 8 0';
+     toolTip.description = "The -Map Panel- displays (Nav) markers and <Drop Points> for the mission.";
+     toolTip.angles = '0.92 0.92 0.92';
+     toolTip.maxs = '12 10 0';
      toolTip.alpha = 1;
      return;
   }
@@ -52,8 +52,8 @@ void() menu_briefListener_onHover={
      toolTip.data_idx = MENU_BRIEF_ACTIVE;
      toolTip.mins = gui_percentToPixelRawVec('164 48 0');
      toolTip.description = "This panel displays the basic information for the mission.";
-     toolTip.angles = '0.85 0.85 0.85';
-     toolTip.maxs = '7 8 0';
+     toolTip.angles = '0.92 0.92 0.92';
+     toolTip.maxs = '12 10 0';
      toolTip.alpha = 1;
      return;
   }
@@ -62,8 +62,8 @@ void() menu_briefListener_onHover={
     toolTip.data_idx = MENU_BRIEF_ACTIVE;
     toolTip.mins = gui_percentToPixelRawVec('196 32 0');
     toolTip.description = "These are the [Objectives] required to complete the mission.";
-    toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '7 8 0';
+    toolTip.angles = '0.92 0.92 0.92';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -71,9 +71,9 @@ void() menu_briefListener_onHover={
   if( (menu_checkMouseInBounds(cursorpos, BRIEF_OBJECTIVE_HELP_ORG, gui_percentToPixelRawVec('12 12'), FALSE)) && !INFO_SWITCH ){
     toolTip.data_idx = MENU_BRIEF_ACTIVE;
     toolTip.mins = gui_percentToPixelRawVec('196 48 0');
-    toolTip.description = "[Intel] provides a little bit of foresight into what you might face in the mission or what you should take for equipment.";
-    toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '7 8 0';
+    toolTip.description = "[Intel] provides a little bit of foresight into what you might face in the mission or which weapons/equipment might work best.";
+    toolTip.angles = '0.92 0.92 0.92';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -108,28 +108,34 @@ void(vector ofs) menu_briefMissionInfo={
   fontSizeMedium = '10 8';
   
   drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_LIGHT;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('243.2 68'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
+  drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('243.2 75'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   local float tlen;
   local vector tpos;
   tlen = stringwidth("-MISSION INFO-", 0, '14 12 0');
   tpos = ofs + gui_percentToPixelRawVec('121 2');
   tpos_x = tpos_x - (tlen/2);
   drawstring(tpos, "-MISSION INFO-", '14 12 0', '1 1 1', 1, 0);
-
+  
   //mission name
-  drawstring( ofs + gui_percentToPixelRawVec('5 12'), strcat("[NAME]:       ", MSN_NAME), fontSizeSmall, '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('7 14'), "Name:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('42 14'), MSN_NAME, fontSizeMedium, '1 1 1', 1, 0);
   //mission type
-  drawstring( ofs + gui_percentToPixelRawVec('5 20'), strcat("[TYPE]:       ",MSN_TYPE), '10 8 0', '1 1 1', 1, 0); 
+  drawstring( ofs + gui_percentToPixelRawVec('7 24'), "Type:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0); 
+  drawstring( ofs + gui_percentToPixelRawVec('42 24'), MSN_TYPE,fontSizeMedium, '1 1 1', 1, 0); 
   //reserves
-  drawstring( ofs + gui_percentToPixelRawVec('5 28'), strcat("[RESERVES]:   ", ftos(AVAILABLE_RESERVE), "//", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('7 34'), "Reserves:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('42 34'), strcat(ftos(AVAILABLE_RESERVE), "/", MSN_RESERVETOTAL), '10 8 0', '1 1 1', 1, 0);
   //sector
-  drawstring( ofs+ gui_percentToPixelRawVec('5 36'), strcat("[SECTOR]      ", MSN_SECTOR), '10 8 0', '1 1 1', 1, 0);
+  drawstring( ofs+ gui_percentToPixelRawVec('7 44'), "Sector:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs+ gui_percentToPixelRawVec('42 44'), MSN_SECTOR, '10 8 0', '1 1 1', 1, 0);
   //location
-  drawstring( ofs + gui_percentToPixelRawVec('5 44'), strcat("[LOCATION]:   ", MSN_LOCATION ), '10 8 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('7 54'), "Location:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('42 54'), MSN_LOCATION, '10 8 0', '1 1 1', 1, 0);
   //local time
-  drawstring( ofs + gui_percentToPixelRawVec('5 52'), strcat("[LOCAL TIME]: ", MSN_LOCALTIME), '10 8 0', '1 1 1', 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('7 64'), "Local time:", fontSizeSmall, CLR_DEF_TXT_NONSELECT, 1, 0);
+  drawstring( ofs + gui_percentToPixelRawVec('42 64'), MSN_LOCALTIME, '10 8 0', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
   
@@ -140,38 +146,53 @@ void(vector ofs) menu_briefMissionInfo={
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
-
 void(vector ofs) menu_briefPlaySound={
   local vector spos, color;
-  color = CLR_DEF_WEP_INRANGE;
+  
+  color = CLR_HUD_ORANGE;
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
   if( (MSN_ANIM == "") || (time < MSN_SFX_COUNT) ){
     color = '0.25 0.25 0.25';
   }
-  spos = ofs + gui_percentToPixelRawVec('10 100');
+  spos = ofs + gui_percentToPixelRawVec('10 107');
   drawpic(spos, UI_DEF_BOX_256, gui_percentToPixelRawVec('243 32'), color, 1, 0);
+  
   local float tlen;
   local vector tpos;
-  tlen = stringwidth("|>PLAY BRIEFING<|", 0, '8 8 0');
-  tpos = spos + gui_percentToPixelRawVec('120 10');
-  tpos_x = tpos_x - gui_percentXRaw((tlen/2));
-  drawstring(tpos, "|>PLAY BRIEFING<|", '8 8 0', color, 1, 0);
+  tlen = stringwidth("[PLAY BRIEFING]", 0, '14 12 0');
+  tpos = spos;
+  tpos_x = tpos_x + gui_percentXRaw( 243 / 2 );
+  tpos_y = tpos_y + gui_percentYRaw( 32 / 2 );
+  
+  tpos_x = tpos_x - gui_percentXRaw( tlen / 2 );
+  tpos_y = tpos_y - gui_percentYRaw( 6 );
+  drawstring(tpos, "[PLAY BRIEFING]", '14 12 0', color, 1, 0);
+  
+  drawfont = drawfont_prev;
 };
 
 void(vector ofs) menu_briefMissionText={
-  local vector bpos, tpos, fpos;
-  local float tlen;
-  bpos = ofs + gui_percentToPixelRawVec('10 132');
-  drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('243 340'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
-  
-  tlen = stringwidth("[MISSION BRIEF]", 0, '8 8 0');
-  tpos = bpos + gui_percentToPixelRawVec('120 5');
-  tpos_x = tpos_x - gui_percentXRaw(tlen / 2);
-  drawstring(tpos, "[MISSION BRIEF]", '8 8 0', '1 1 1', 1, 0);
+  local vector bpos, fpos;
 
-  fpos = bpos + gui_percentToPixelRawVec('2 20');
-  gui_wrapText(fpos, '230 300', MSN_BRIEF, '7 8 0', '1 1 1', 1);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  bpos = ofs + gui_percentToPixelRawVec('10 139');
+  drawpic(bpos, UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('243 333'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
+
+  fpos = bpos + gui_percentToPixelRawVec('8 6');
+  gui_wrapText(fpos, '230 300', MSN_BRIEF, '12 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+  
+  drawfont = drawfont_prev;
 };
 
+/*
+  Panel - Mission Briefing
+    maps to the 'brief' value in the .msn file.
+    renders briefing text in text-wrapping block.
+*/
 void(vector ofs) menu_briefMapPanel={
   local vector mpos, ui_msize, ui_msize_in;
   local vector iofs, map_size;
@@ -200,7 +221,7 @@ void(vector ofs) menu_briefMapPanel={
     drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec(ui_msize_in), '1 1 1', 1, 0);
   }
   else{
-    gui_wrapText(iofs + gui_percentToPixelRaw(ui_msize_in_x / 4.75, ui_msize_in_y / 3) , '210 32', "Satellite Data |  unavailable", '12 12 0', '1 0 0', 1);
+    gui_wrapText(iofs + gui_percentToPixelRaw(ui_msize_in_x / 4.75, ui_msize_in_y / 3) , '210 32', "Satellite Data: unavailable", '16 14 0', '1 0 0', 1);
   }
 
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
@@ -234,9 +255,23 @@ void(vector ofs) menu_briefMapPanel={
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
+/*
+  Panel - Objectives / Intel Parent panel
+    draws background of objectives / intel.
+    renders button bar for the panel.
+*/
 void(vector ofs) menu_objIntelSwitchPanel={
   local vector bpos, tpos, isz;
   local float tlen, idraw, odraw;
+  local vector fontSize, fontSizeSmall, fontSizeMedium;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  fontSizeSmall = '8 8 0';
+  fontSizeMedium = '10 10 0';
+  fontSize = fontSizeSmall;
+  
   if(INFO_SWITCH){
     idraw = FALSE;
     odraw = TRUE;
@@ -245,58 +280,86 @@ void(vector ofs) menu_objIntelSwitchPanel={
     idraw = TRUE;
     odraw = FALSE;
   }
+  if( !idraw && odraw ){
+    fontSize = fontSizeMedium;
+  }
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-56 40');
-  tlen = stringwidth("[OBJECTIVES]", 0 ,'8 8 0');
-  tpos = bpos;
-  tpos_x = (bpos_x + gui_percentX(0.035)) - gui_percentXRaw((tlen/2));
-  tpos_y = bpos_y + gui_percentY(0.0083);
-  isz_x = tlen + gui_percentX(0.0093);
-  isz_y = gui_percentY(0.0166);
-  OBJ_BTN_ORG = bpos + gui_percentToPixel(0, 0.0041);
+  
+  isz = gui_percentToPixelRawVec('64 16');
+  
+  tlen = stringwidth("[OBJECTIVES]", 0, fontSize);
+  tpos_x = (bpos_x + gui_percentXRaw(32)) - gui_percentXRaw( tlen / 2 );
+  tpos_y = (bpos_y + gui_percentYRaw(12)) - gui_percentYRaw( fontSize_y / 2 );
+  
+  OBJ_BTN_ORG = bpos + gui_percentToPixelRawVec('0 4');
   OBJ_BTN_SZ = isz;
 
-  gui_renderTintImage(odraw, bpos + gui_percentToPixel(0, 0.0041), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, 1, 0) ;
-  gui_renderHighlightString("[OBJECTIVES]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', odraw, '8 8 0', 1, 0) ;
+  gui_renderTintImage(odraw, bpos + gui_percentToPixelRawVec('0 4'), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderHighlightString("[OBJECTIVES]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', odraw, fontSize, 1, 0) ;
   
-  local vector ipos, iisz, itpos;
-  local float ilen;  
-  ipos = bpos;
-  ipos_x = ipos_x + isz_x;
-  ilen = stringwidth("[INTEL]", 0 ,'8 8 0');
-  itpos = ipos;
-  itpos_y = itpos_y + gui_percentY(0.0083);
-  iisz_x = ilen + gui_percentX(0.0093);
-  iisz_y = gui_percentY(0.0166);
-  INT_BTN_ORG = ipos + gui_percentToPixel(-0.0046, 0.0041);
-  INT_BTN_SZ = isz;
-  gui_renderTintImage(idraw, ipos + gui_percentToPixel(-0.0046, 0.0041), UI_DEF_BOX_256, iisz, CLR_DEF_WEP_INRANGE, 1, 0) ;
-  gui_renderHighlightString("[INTEL]", itpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', idraw, '8 8 0', 1, 0) ;
+  if( idraw && !odraw ){
+    fontSize = fontSizeMedium;
+  }else{
+    fontSize = fontSizeSmall;
+  }
+  
+  local vector intelPos, intelSize, intelLabelPos;
+  local float ilen; 
+  
+  intelPos = bpos;
+  intelPos_x = intelPos_x + isz_x;
+  ilen = stringwidth("[INTEL]", 0 , fontSize);
+  
+  intelLabelPos_x = (intelPos_x + gui_percentXRaw(32)) - gui_percentXRaw( ilen / 2 );
+  intelLabelPos_y = (intelPos_y + gui_percentYRaw(12)) - gui_percentXRaw( fontSize_y / 2 );
+  
+  intelSize = gui_percentToPixelRawVec('64 16');
+  
+  INT_BTN_ORG = intelPos + gui_percentToPixelRawVec('-6 4');
+  INT_BTN_SZ = intelSize;
+  gui_renderTintImage(idraw, intelPos + gui_percentToPixelRawVec('0 4'), UI_DEF_BOX_256, intelSize, CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderHighlightString("[INTEL]", intelLabelPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', idraw, fontSize, 1, 0) ;
+  
+  drawfont = drawfont_prev;
 };
 
+/*
+  Panel - Objectives
+  maps to the 'obj' values in the .msn file.
+  lists objectives in numbered order based on MSN_OBJ_DESC[] array order.
+*/
 void(vector ofs) menu_briefObjectivePanel={
-  local vector bpos,tpos, lofs;
-  local float tlen, lst_idx, eol, line_rtn;
-    
-  tlen = stringwidth("[OBJECTIVES]", 0 , '8 8 0');
+  local vector bpos, tpos, lofs;
+  local float lst_idx, eol, line_rtn;
+  local vector objectiveOffset;
+  local string desc;
+  local string text;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
   drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   
-  lofs = bpos + gui_percentToPixelRawVec('6 24');
+  lofs = bpos + gui_percentToPixelRawVec('12 24');
   eol = TRUE;
   lst_idx = 1;
   line_rtn = 0;
   while(eol){
-    local vector oofs;
-    oofs = lofs;
-    oofs_y = oofs_y + gui_percentYRaw(line_rtn) + ( (lst_idx - 1) * gui_percentXRaw(4));
-    local string desc;
+    objectiveOffset = lofs;
+    objectiveOffset_y = objectiveOffset_y + gui_percentYRaw(line_rtn) + ( (lst_idx - 1) * gui_percentYRaw(14));
+    
     desc = MSN_OBJ_DESC[lst_idx];
-    line_rtn = gui_wrapText(oofs, '300 300', strcat("[", ftos(lst_idx),"]: ", desc, " \n \n "), '8 8 0', '1 1 1', 1);
-    if(MSN_OBJ_DESC[(lst_idx+1)] ==""){
+    text = strcat( ftos(lst_idx),") ", desc);
+    line_rtn = gui_wrapText(objectiveOffset, '350 150', text, '12 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+    
+    if(MSN_OBJ_DESC[(lst_idx+1)] == ""){
       eol = FALSE;
     }
     lst_idx = lst_idx + 1;
   }
+  
+  drawfont = drawfont_prev;
   
   local vector helpOrg;
   helpOrg = bpos;
@@ -305,16 +368,25 @@ void(vector ofs) menu_briefObjectivePanel={
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
+/*
+  Panel - Intel
+  maps to the 'intel' value in the .msn file.
+*/
 void(vector ofs) menu_briefIntelPanel={
   local vector bpos;
   local string intel;
   local vector fpos;
   
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
   bpos = VIEW_CTR + gui_percentToPixelRawVec('-66 40');
   drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   
   fpos = bpos + gui_percentToPixelRawVec('12 22');
-  gui_wrapText(fpos, '300 300', MSN_INTEL, '7 8 0', '1 1 1', 1);
+  gui_wrapText(fpos, '350 192', MSN_INTEL, '12 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
+  
+  drawfont = drawfont_prev;
   
   local vector helpOrg;
   helpOrg = bpos;
