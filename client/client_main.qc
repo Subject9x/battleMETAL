@@ -112,6 +112,7 @@ void() CSQC_Init =
   UI_ARMING_DATA_item_list = spawn();
   UI_ARMING_item_drag = spawn();
   HUD_DATA_weapon = spawn();
+  UI_HANGAR_DATA_mech_list = spawn();
   
   MOUSE_drag_timer = 0;
   

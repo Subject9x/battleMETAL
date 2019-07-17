@@ -6,6 +6,7 @@ Overview: ui header file the hangar menu
 */
 
 entity UI_HANGAR_DATA_mech;	//holder of mech data for UI interactions
+entity UI_HANGAR_DATA_mech_list;
 float UNLOCKED_MECHS_TOTAL;
 
 //TOOLTIPs
