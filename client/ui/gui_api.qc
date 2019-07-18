@@ -182,6 +182,7 @@ vector(vector areaMins, vector areaMinAndMax, vector objectCoords, vector uiOffs
   
   objectPercent = gui_percentCustomVec(objectTransform, areaMinAndMax, uiAreaSize);
   objectUIOrg = uiOffsetStart + gui_percentToPixelRawVec(objectPercent);
+  
   return objectUIOrg;
 };
 string(float navname) gui_getNavName={
