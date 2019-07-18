@@ -38,7 +38,7 @@ void() data_ini_flak_cannon_={
   
   #ifdef CSQC
   self.abbrev = "FLAK";
-  self.description = "Full-Auto | Shotgun damage when target's shields are down.~";
+  self.description = "+ Instant-impact weapon. + Shotgun Damage pattern when Target has no <shields>. + 14 sub-munitions.";
   self.icon = "gfx/ui/wep_icons/wi_flak.png";
   #endif
   

@@ -328,20 +328,19 @@ void(vector ofs) menu_hangar_MechInfo={
   drawstring(labelOrg, "-METAL INFO-", '10 10 0', CLR_DEF_WHITE, 1, 0);
   
   fontSize = fontSizeSmall;
-  drawstring(nofs + gui_percentToPixelRawVec('8 23'), "Type:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 33'), "Speed:Forward:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 43'), "Speed:Strafe:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 53'), "Speed:Reverse:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 65'), "Max Energy:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 75'), "Energy Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 87'), "Max Shield:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 97'), "Shield Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 109'), "Armor:Center:", fontSize,CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 119'), "Armor:Sides:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 129'), "Armor:Arms:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 139'), "Armor:Legs:", fontSize, CLR_DEF_GRAY_H, 1, 0);
-  drawstring(nofs + gui_percentToPixelRawVec('8 151'), "Radar Range:", fontSize,CLR_DEF_GRAY_H, 1, 0);
-  
+    drawstring(nofs + gui_percentToPixelRawVec('8 23'), "Type:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 33'), "Speed:Forward:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 43'), "Speed:Strafe:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 53'), "Speed:Reverse:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 65'), "Max Energy:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 75'), "Energy Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 87'), "Max Shield:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 97'), "Shield Recharge:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 109'), "Armor:Center:", fontSize,CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 119'), "Armor:Sides:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 129'), "Armor:Arms:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 139'), "Armor:Legs:", fontSize, CLR_DEF_GRAY_H, 1, 0);
+    drawstring(nofs + gui_percentToPixelRawVec('8 151'), "Radar Range:", fontSize,CLR_DEF_GRAY_H, 1, 0);
   drawfont = drawfont_prev;
   
   if(SELECT_MECH > FALSE){

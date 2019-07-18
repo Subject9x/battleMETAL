@@ -33,7 +33,7 @@ void() data_ini_emp_={
   
   #ifdef CSQC
   self.abbrev = "EMP";
-  self.description = "Only damages Target's SHIELDS. | Proximity detonation at longer ranges.~";
+  self.description = "+ Damages <shields> ONLY. + Small proximity detonation.";
   self.icon = "gfx/ui/wep_icons/wi_emp.png";
   #endif
   

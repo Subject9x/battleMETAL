@@ -32,7 +32,7 @@ void() data_ini_rockets_={
   
   #ifdef CSQC
   self.abbrev = "RCK";
-  self.description = "Damage is PER MISSILE. | Fires entire clip at once. | Does not require [ACTIVE] RADAR. | Does not require TARGET LOCK.~";
+  self.description = "+ Burst fires whole clip. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.icon = "gfx/ui/wep_icons/wi_rck.png";  
   #endif 
   

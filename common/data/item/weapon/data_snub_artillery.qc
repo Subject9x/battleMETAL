@@ -32,7 +32,7 @@ void() data_ini_snub_artillery_={
 
   #ifdef CSQC
   self.abbrev = "SFGA";
-  self.description = "Minor parabolic arc. | Large AoE blast.~";
+  self.description = "+ Minor parabolic arc. + Shot has Blast Radius.";
   self.icon = "gfx/ui/wep_icons/wi_sfg.png";
   #endif 
   

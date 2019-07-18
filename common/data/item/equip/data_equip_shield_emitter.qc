@@ -31,7 +31,7 @@ void() data_ini_equip_shield_emitter_={
   
   #ifdef CSQC
   self.abbrev = "HSEM";
-  self.description = "Increases SHIELD RECHARGE by 50%.~";
+  self.description = "+ Increases <Shield recharge> by 50%.";
   self.icon = "gfx/ui/wep_icons/eqp_hsem.png";
   #endif
   

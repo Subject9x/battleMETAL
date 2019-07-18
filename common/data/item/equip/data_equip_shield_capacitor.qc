@@ -31,7 +31,7 @@ void() data_ini_equip_shield_capacitor_={
   
   #ifdef CSQC
   self.abbrev = "SCAP";
-  self.description = "Increases SHIELD TOTAL by 15%.~";
+  self.description = "+ Increases <Shield Maximum> by 15%.";
   self.icon = "gfx/ui/wep_icons/eqp_lscap.png";
   #endif
   

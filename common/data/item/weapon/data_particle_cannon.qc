@@ -35,7 +35,7 @@ void() data_ini_particle_cannon_={
   
   #ifdef CSQC
   self.abbrev = "PAC";
-  self.description = "IGNORE most of Target's shields.~";
+  self.description = "+ Instant-impact weapon. + Ignores 75% of Target's <shields>.";
   self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
   #endif 
   

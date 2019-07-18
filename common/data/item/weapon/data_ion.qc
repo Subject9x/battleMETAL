@@ -33,7 +33,7 @@ void() data_ini_ion_={
   
   #ifdef CSQC
   self.abbrev = "ION";
-  self.description = "3-Round burst. | Damages Shields ONLY. | Small proximity detonation.~";
+  self.description = "+ Damages <shields> ONLY. + 3-Round burst. + Small proximity detonation.";
   self.icon = "gfx/ui/wep_icons/wi_ion.png";
   #endif
   

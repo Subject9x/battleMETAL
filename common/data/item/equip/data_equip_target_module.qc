@@ -32,7 +32,7 @@ void() data_ini_equip_target_module_={
   
   #ifdef CSQC
   self.abbrev = "ATGM";
-  self.description = "Decrease LOCK-ON time by 20% | Increase Convergence recovery by 15%.~";
+  self.description = "+ Decrease <Lock-on> time by 20%. + Increase <Convergence> recovery by 15%.";
   self.icon = "gfx/ui/wep_icons/eqp_atgm.png";
   #endif
   

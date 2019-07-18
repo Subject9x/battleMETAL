@@ -36,7 +36,7 @@ void() data_ini_missile_swarm_={
 
   #ifdef CSQC
   self.abbrev = "SWRM";
-  self.description = "Requires [ACTIVE RADAR]. | Fires 3 Missiles at Target. | UP TO 3 TARGETS.~";
+  self.description = "+ Requires <Active Radar> to fire. + Requires <Targe Lock> on 1 target to fire. + Fires 3 missiles at up to 3 targets.";
   self.icon = "gfx/ui/wep_icons/wi_swrm.png";  
   #endif 
   

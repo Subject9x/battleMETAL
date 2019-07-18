@@ -33,7 +33,7 @@ void() data_ini_light_laser_={
 
   #ifdef CSQC
   self.abbrev = "LAS";
-  self.description = "Small bonus damage against shields.~";
+  self.description = "+ Instant-impact weapon. + Small damage bonus against <shields>.";
   self.icon = "gfx/ui/wep_icons/wi_las.png";
   #endif
   

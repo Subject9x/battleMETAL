@@ -32,7 +32,7 @@ void() data_ini_light_atc_={
   
   #ifdef CSQC  
   self.abbrev = "ATC";
-  self.description = "Basic automatic cannon.~";
+  self.description = "+ Instant-impact weapon.";
   self.icon = "gfx/ui/wep_icons/wi_atc.png";
   #endif
   

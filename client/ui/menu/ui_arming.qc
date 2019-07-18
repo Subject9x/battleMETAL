@@ -29,7 +29,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '132 56 0';
     toolTip.description = "Click on [Hardpoints] to see the stats for the Weapon mounted in the hardpoint.";
     toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '7 8 0';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -39,7 +39,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '200 48 0';
     toolTip.description = "[Groups] are collections of weapons that will fire at the same time when you select that group and press the 'Fire' button.";
     toolTip.angles = '0.9 0.9 0.9';
-    toolTip.maxs = '7 8 0';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -49,7 +49,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '156 48 0';
     toolTip.description = "This panel shows you how much <Energy> will be drained from your Reactor when you fire each Group.";
     toolTip.angles = '0.9 0.9 0.9';
-    toolTip.maxs = '7 8 0';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -59,7 +59,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '200 32 0';
     toolTip.description = "Click on a weapon to the >Right> to see its statistics in this window.";
     toolTip.angles = '0.9 0.9 0.9';
-    toolTip.maxs = '7 8 0';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -69,7 +69,7 @@ void() menu_armingListener_onHover={
     toolTip.mins = '200 40 0';
     toolTip.description = "Click on a HARDPOINT to the <Left< to see the stats for the weapon mounted there, in this window.";
     toolTip.angles = '0.9 0.9 0.9';
-    toolTip.maxs = '7 8 0';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -94,6 +94,11 @@ void() menu_armingListener_onKeyUp={
             if( (weaponType & hardpoint.hardpointType) ){
               data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
               ui_date_load_item1(UI_ARMING_item_drag.data_idx);
+              GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
+              GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
+              GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
+              GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
+              GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
             }
           }
           else{
@@ -378,12 +383,15 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   drawpic( pbtn + gui_percentToPixelRawVec('7 -44') , UI_DEF_BOX_512, gui_percentToPixelRawVec('265 48'), CLR_DEF_UI_ARMING + '0.15 0.15 0.15', 1, 0);
   
-  BTN_CFG_P = pbtn + gui_percentToPixelRawVec('6 -32');
-  drawstring(pbtn + gui_percentToPixelRawVec('6 -40'), "PREV", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  BTN_CFG_P = pbtn + gui_percentToPixelRawVec('8 -32');
+  drawstring(pbtn + gui_percentToPixelRawVec('8 -44'), "PREV", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
   drawpic(BTN_CFG_P, HUD_TRG_PIP_L, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);      
   
-  BTN_CFG_N = nbtn + gui_percentToPixelRawVec('0 -32');
-  drawstring(nbtn + gui_percentToPixelRawVec('-6 -40'), "NEXT", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  BTN_CFG_N = nbtn + gui_percentToPixelRawVec('-2 -32');
+  drawstring(nbtn + gui_percentToPixelRawVec('-4 -44'), "NEXT", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
   drawpic(BTN_CFG_N, HUD_TRG_PIP_R, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);
   
   lctr = nofs + pctr;
@@ -401,16 +409,18 @@ void(vector ofs) menu_arming_HardpointGraph={
     cfg = "DEFAULT";
     colr = CLR_DEF_ARM_HALF;
     warnOrg = lctr;
-    warn = "[=Cannot modify Default=]";
-    len = stringwidth(warn, 0, '8 9 0');
+    warn = "!-Cannot modify Default-!";
+    len = stringwidth(warn, 0, '14 12 0');
     warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
     warnOrg_y = warnOrg_y - gui_percentYRaw( -10 );
-    drawstring(warnOrg, warn, '8 9 0', '1 0.15 0.15' , 1, 0);
+    drawstring(warnOrg, warn, '14 12 0', '1 0.15 0.15' , 1, 0);
   }
-  cfg = strcat("CONFIG: ", cfg);
-  len = stringwidth(cfg, 0, '8 9 0');
+  cfg = strcat("Loadout: ", cfg);
+  len = stringwidth(cfg, 0, '12 10 0');
   lctr_x = lctr_x - gui_percentXRaw( len / 2 );
-  drawstring(lctr, cfg, '8 9 0', colr, 1, 0);
+  drawstring(lctr, cfg, '12 10 0', colr, 1, 0);
+  
+  drawfont = drawfont_prev;
   
   local vector helpOrg;
   helpOrg = nofs;
@@ -437,39 +447,52 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
   local float labelLen;
   local float lst_idx, act_idx;
   local float itemId;
+  local float drawFontLocal;
   
   nofs = parentOffset;
   nofs = nofs + offsetAdjust;
   
-  //TODO - center the text
-  labelLen = gui_percentXRaw(stringwidth( listName, 0, '6 6'));
-  labelLen = labelLen / 2;
-  labelLen = (gui_percentXRaw(138) / 2) - labelLen;
-  labelOrg = nofs + gui_percentToPixelRawVec('0 1.92');
-  labelOrg_x = labelOrg_x + labelLen;
-  drawstring(labelOrg , listName, '6 6 0', listNameColor, 1, 0);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_LIGHT;
+    labelLen = stringwidth( listName, 0, '12 12');
+    labelLen = labelLen / 2;
+    labelLen = (gui_percentXRaw(138) / 2) - gui_percentXRaw(labelLen);
+    labelOrg = nofs + gui_percentToPixelRawVec('0 2');
+    labelOrg_x = labelOrg_x + labelLen;
+    drawstring(labelOrg , listName, '12 12 0', listNameColor, 1, 0);
+  drawfont = drawfont_prev;
   
   act_idx = 0;
   lst_idx = 0;
  
   while(lst_idx <= UNLOCKED_ITEMS_TOTAL){
-    local vector lofs, clr;
+    local vector listItemOffset, listItemColor, listItemLabelOrg;
+    local float listItemLabelLen;
+    
     itemId = UNLOCKED_ITEMS[lst_idx];
     
     if( itemId != 0){
       data_get_client_item_( UI_ARMING_DATA_item_list, itemId );
       if( (UI_ARMING_DATA_item_list.damageType & weaponType) ){
-        lofs_x = nofs_x;
-        lofs_y = nofs_y + gui_percentYRaw( (act_idx + 1) * 14);
-        clr = CLR_DEF_TXT_NONSELECT;
+        listItemOffset_x = nofs_x;
+        listItemOffset_y = nofs_y + gui_percentYRaw( (act_idx + 1) * 14);
+        listItemColor = CLR_DEF_TXT_NONSELECT;
         if( itemId == CLIENT_MENU_sel_list_wep){
-          clr = CLR_DEF_TXT_HIGHLIGHT;
-          gui_renderTintImage(TRUE, lofs + gui_percentToPixelRawVec('0 -1.44'), UI_BOX_SELECT, gui_percentToPixelRawVec('140.8 9.6'), CLR_DEF_ARM_OK, 1, 0);
+          listItemColor = CLR_DEF_TXT_HIGHLIGHT;
+          gui_renderTintImage(TRUE, listItemOffset + gui_percentToPixelRawVec('0 -1.44'), UI_BOX_SELECT, gui_percentToPixelRawVec('140.8 12'), CLR_DEF_ARM_OK, 1, 0);
         }
         if(!(CLIENT_MENU_sel_hrpnt_types & weaponType) || (UI_ARMING_DATA_item_list.i_size > CLIENT_MENU_sel_hrpnt_size)){
-          clr = CLR_DEF_TXT_CANTSELET;
+          listItemColor = CLR_DEF_TXT_CANTSELET;
         }
-        drawstring(lofs + gui_percentToPixelRawVec('12 0'), UI_ARMING_DATA_item_list.w_name, '5 5 0', clr, 1, 0);
+        listItemLabelLen = stringwidth( UI_ARMING_DATA_item_list.w_name, 0, '12 10');
+        listItemLabelLen = listItemLabelLen / 2;
+        listItemLabelOrg = listItemOffset;
+        listItemLabelOrg_x = listItemLabelOrg_x + gui_percentXRaw(70.4) - gui_percentXRaw( listItemLabelLen );
+        
+        drawFontLocal = drawfont;
+        drawfont = FONT_NUM_ROBOT_REGULAR;
+          drawstring(listItemLabelOrg, UI_ARMING_DATA_item_list.w_name, '12 10 0', listItemColor, 1, 0);
+        drawfont = drawFontLocal;
         
         //can't pass arrays to functions :|
         if( (weaponType & DMG_BAL) ){
@@ -523,11 +546,23 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   local entity hardpoint;
   local vector groupButtonSize;
   
+  local float groupLabelLen;
+  local vector groupLabelOrg;
+  
   nofs = ofs + gui_percentToPixelRawVec('10 0');
   groupButtonSize = gui_percentToPixelRawVec('12 12');
   
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('150 198'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1,0);
-  drawstring(nofs + gui_percentToPixelRawVec('24 6'), "[WEAPON GROUPINGS]", '6 6 0', CLR_DEF_RET_GETLOCK, 1, 0);
+  
+  //Panel label
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+    groupLabelLen = stringwidth(  "-Weapon Groups-", 0, '10 10 0');
+    groupLabelLen = groupLabelLen / 2;
+    groupLabelOrg = nofs;
+    groupLabelOrg_x = groupLabelOrg_x + gui_percentXRaw(75) - gui_percentXRaw(groupLabelLen);
+    drawstring(groupLabelOrg, "-Weapon Groups-", '10 10 0', CLR_DEF_RET_GETLOCK, 1, 0);
+  drawfont = drawfont_prev;
   
   nofs = nofs + gui_percentToPixelRawVec('0 3');
   col_a = nofs + gui_percentToPixelRawVec('46 20');
@@ -536,11 +571,14 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   col_d = nofs + gui_percentToPixelRawVec('106 20');
   col_e = nofs + gui_percentToPixelRawVec('126 20');
   
-  drawstring(col_a - gui_percentToPixelRawVec('1 10'), " 1 ", '6 6 0', '1 1 1', 1, 0);
-  drawstring(col_b - gui_percentToPixelRawVec('1 10'), " 2 ", '6 6 0', '1 1 1', 1, 0);
-  drawstring(col_c - gui_percentToPixelRawVec('1 10'), " 3 ", '6 6 0', '1 1 1', 1, 0);
-  drawstring(col_d - gui_percentToPixelRawVec('1 10'), " 4 ", '6 6 0', '1 1 1', 1, 0);
-  drawstring(col_e - gui_percentToPixelRawVec('1 10'), " 5 ", '6 6 0', '1 1 1', 1, 0);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_LIGHT;  
+    drawstring(col_a - gui_percentToPixelRawVec('-4 12'), "1", '10 10 0', '1 1 1', 1, 0);
+    drawstring(col_b - gui_percentToPixelRawVec('-4 12'), "2", '10 10 0', '1 1 1', 1, 0);
+    drawstring(col_c - gui_percentToPixelRawVec('-4 12'), "3", '10 10 0', '1 1 1', 1, 0);
+    drawstring(col_d - gui_percentToPixelRawVec('-4 12'), "4", '10 10 0', '1 1 1', 1, 0);
+    drawstring(col_e - gui_percentToPixelRawVec('-4 12'), "5", '10 10 0', '1 1 1', 1, 0);
+  drawfont = drawfont_prev;
   
   lst_idx = 1;
   bit = 1;
@@ -554,7 +592,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
       drawpic(lofs + gui_percentToPixelRawVec('-2 -8'), UI_DEF_BOX_256, gui_percentToPixelRawVec('143 20'), '0.85 0.85 0', 1,0);
     }
     
-    drawstring(lofs, strcat("[",ftos(lst_idx),"]"), '6 6 0', '1 1 1', 1, 0);
+    drawstring(lofs +  gui_percentToPixelRawVec('0 -4'), strcat("{",ftos(lst_idx),"}"), '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
     if( hardpoint.icon != "" ){
       drawpic(lofs + gui_percentToPixelRawVec('16 -8'), hardpoint.icon, gui_percentToPixelRawVec('20 20'), '1 1 1', 1,0);
     }
@@ -586,39 +624,57 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(150) - gui_percentXRaw(12);
-  helpOrg_y = nofs_y - gui_percentYRaw(10);
   ARMING_HELP_WEAPON_GROUPS = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
 void(vector ofs) menu_arming_energydraw={
+  local float enmax, g1, g2, g3, g4, g5;
+  
+  local float energyLabelLen;
+  local vector energyLabelOrg;
+  
   drawpic(ofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('126 197'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1,0);
   
-  drawstring(ofs + gui_percentToPixelRawVec('3 6'), "Energy Draw total ", '7 9 0', CLR_DEF_ENE_FRT, 1, 0);
-  drawstring(ofs + gui_percentToPixelRawVec('4 18'), "by [Weapon Group]", '7 8 0', '1 1 1', 1, 0);
-  
-  local float enmax, g1, g2, g3, g4, g5;
-  enmax = MECH_DATA_ENMAX;
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
 
-  drawstring(ofs + gui_percentToPixelRawVec('4 45'), "Group 1", '8 8 0', '1 1 1', 1, 0);
-    g1 = (GROUP_ENE_1 / enmax)*100;
-    gui_renderMeter(g1, ofs + gui_percentToPixelRawVec('60 45'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g1), 1, 0, AXIS_H, 0);
+  energyLabelLen = stringwidth( "-Group Energy Cost-", 0, '10 10');
+  energyLabelLen = energyLabelLen / 2;
+  energyLabelOrg = ofs;
+  energyLabelOrg_x = energyLabelOrg_x + gui_percentXRaw(63) - gui_percentXRaw(energyLabelLen);
+  energyLabelOrg_y = energyLabelOrg_y + gui_percentYRaw(6);
+  drawstring(energyLabelOrg, "-Group Energy Cost-", '10 10 0', CLR_DEF_ENE_FRT, 1, 0);
   
-  drawstring(ofs + gui_percentToPixelRawVec('4 72'), "Group 2", '8 8 0', '1 1 1', 1, 0);
-    g2 = (GROUP_ENE_2 / enmax)*100;
-    gui_renderMeter(g2, ofs + gui_percentToPixelRawVec('60 72'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g2), 1, 0, AXIS_H, 0);
+  enmax = UI_HANGAR_DATA_mech.energyMax;
+
+  drawfont_prev = drawfont;
+  drawstring(ofs + gui_percentToPixelRawVec('6 30'), "Group 1", '12 12 0', '1 1 1', 1, 0);
+    g1 = (GROUP_ENE_1 / enmax) * 100;
+    gui_renderMeter(g1, ofs + gui_percentToPixelRawVec('47 30'), gui_percentToPixelRawVec('32 11'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g1), 1, 0, AXIS_H, 0);
+    drawstring(ofs + gui_percentToPixelRawVec('86 30'), sprintf("%0.2f", GROUP_ENE_1), '12 12', gui_getColorForArmor(100 - g1), 1, 0);
   
-  drawstring(ofs + gui_percentToPixelRawVec('4 99'), "Group 3", '8 8 0', '1 1 1', 1, 0);
-    g3 = (GROUP_ENE_3 / enmax)*100;
-    gui_renderMeter(g3, ofs + gui_percentToPixelRawVec('60 99'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g3), 1, 0, AXIS_H, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('6 57'), "Group 2", '12 12 0', '1 1 1', 1, 0);
+    g2 = (GROUP_ENE_2 / enmax) * 100;
+    gui_renderMeter(g2, ofs + gui_percentToPixelRawVec('47 57'), gui_percentToPixelRawVec('32 11'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g2), 1, 0, AXIS_H, 0);
+    drawstring(ofs + gui_percentToPixelRawVec('86 57'), sprintf("%0.2f", GROUP_ENE_2), '12 12', gui_getColorForArmor(100 - g2), 1, 0);
   
-  drawstring(ofs + gui_percentToPixelRawVec('4 126'), "Group 4", '8 8 0', '1 1 1', 1, 0);
-    g4 = (GROUP_ENE_4 / enmax)*100;
-    gui_renderMeter(g4, ofs + gui_percentToPixelRawVec('60 126'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g4), 1, 0, AXIS_H, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('6 84'), "Group 3", '12 12 0', '1 1 1', 1, 0);
+    g3 = (GROUP_ENE_3 / enmax) * 100;
+    gui_renderMeter(g3, ofs + gui_percentToPixelRawVec('47 84'), gui_percentToPixelRawVec('32 11'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g3), 1, 0, AXIS_H, 0);
+    drawstring(ofs + gui_percentToPixelRawVec('86 84'), sprintf("%0.2f", GROUP_ENE_3), '12 12', gui_getColorForArmor(100 - g3), 1, 0);
+  
+  drawstring(ofs + gui_percentToPixelRawVec('6 111'), "Group 4", '12 12 0', '1 1 1', 1, 0);
+    g4 = (GROUP_ENE_4 / enmax) * 100;
+    gui_renderMeter(g4, ofs + gui_percentToPixelRawVec('47 111'), gui_percentToPixelRawVec('32 11'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g4), 1, 0, AXIS_H, 0);
+    drawstring(ofs + gui_percentToPixelRawVec('86 111'), sprintf("%0.2f", GROUP_ENE_4), '12 12', gui_getColorForArmor(100 - g4), 1, 0);
     
-  drawstring(ofs + gui_percentToPixelRawVec('4 153'), "Group 5", '8 8 0', '1 1 1', 1, 0);
-    g5 = (GROUP_ENE_5 / enmax)*100;
-    gui_renderMeter(g5, ofs + gui_percentToPixelRawVec('60 153'), gui_percentToPixelRawVec('32 10'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g5), 1, 0, AXIS_H, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('6 138'), "Group 5", '12 12 0', '1 1 1', 1, 0);
+    g5 = (GROUP_ENE_5 / enmax) * 100;
+    gui_renderMeter(g5, ofs + gui_percentToPixelRawVec('47 138'), gui_percentToPixelRawVec('32 11'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - g5), 1, 0, AXIS_H, 0);
+    drawstring(ofs + gui_percentToPixelRawVec('86 138'), sprintf("%0.2f", GROUP_ENE_5), '12 12', gui_getColorForArmor(100 - g5), 1, 0);
+    
+  drawfont = drawfont_prev;
     
   local vector helpOrg;
   helpOrg = ofs;
@@ -631,62 +687,84 @@ void(vector ofs) menu_arming_WeaponInfo={
   local vector nofs;
 
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);
-  nofs_y = ofs_y + gui_percentYRaw(8);
+  nofs_y = VIEW_CTR_y + gui_percentYRaw(12);
+  
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_UI_ARMING + '0.3 0.3 0.3', 1, 0);
   
-  local string title;
-  local float tlen;
-  local vector tpos;
-  title = "[WEAPON INFO FROM LIST]";
-  tlen = stringwidth(title, 0, '6 6 0');
-  tpos = nofs + gui_percentToPixelRawVec('0 6');
-  tpos_x = (nofs_x + gui_percentXRaw(108)) - gui_percentXRaw((tlen/2));
-  drawstring(tpos, title, '6 6 0', '1 1 1', 1, 0);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  local vector nmpos;
-  local string name;
-  local float nlen;
+  local string panelLabel;
+  local float panelLabelLen;
+  local vector labelOrg;
+  panelLabel = "-Weapon from List-";
+  panelLabelLen = stringwidth(panelLabel, 0, '10 10 0');
+  labelOrg = nofs + gui_percentToPixelRawVec('0 6');
+  labelOrg_x = nofs_x + gui_percentXRaw(97.5) - gui_percentXRaw( panelLabelLen / 2 );
+  drawstring(labelOrg, panelLabel, '10 10 0', '1 1 1', 1, 0);
+  
+  local vector weaponNameOrg;
+  local float weaponNameLen;
   if( ITEM1_DATA_ICON != ""){
     drawpic((nofs + gui_percentToPixelRawVec('6 6')), ITEM1_DATA_ICON, gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, 1, 0); 
   }
-  name = ITEM1_DATA_NAME;
-  nlen = stringwidth(name, 0, '7 8 0');
-  nmpos = nofs + gui_percentToPixelRawVec('0 38');
-  nmpos_x = (nmpos_x + gui_percentXRaw(97)) - gui_percentXRaw((nlen/2)); 
-  drawstring(nmpos, name, '7 8 0', '1 1 1', 1, 0);
+  weaponNameLen = stringwidth(ITEM1_DATA_NAME, 0, '14 14 0');
+  weaponNameOrg = nofs + gui_percentToPixelRawVec('0 20');
+  weaponNameOrg_x = (weaponNameOrg_x + gui_percentXRaw(108)) - gui_percentXRaw( weaponNameLen / 2 ); 
+  drawstring(weaponNameOrg, ITEM1_DATA_NAME, '14 14 0', '1 1 1', 1, 0);
+  
+  drawfont = drawfont_prev;
   
   //type
   local vector icol;
-  icol = nofs + gui_percentToPixelRawVec('4 50');
+  icol = nofs + gui_percentToPixelRawVec('8 42');
   
+  //LABELS---------
   //damage
-  drawstring(icol, "[DAMAGE/SHOT]:", '7 7 0', '1 1 1', 1, 0);
-  gui_renderMeter((ITEM1_DATA_DMG / 600)*100, icol + gui_percentToPixelRawVec('112 -2'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-  
-  //type
-  drawstring(icol + gui_percentToPixelRawVec('0 8'), strcat("[TYPE]:         ",getNameOfWepType(ITEM1_DATA_TYPE)), '7 7 0', '1 1 1', 1, 0);
-  
+  drawstring(icol, "Total Damage:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+
   //en cost
-  drawstring(icol + gui_percentToPixelRawVec('0 16'), "[ENERGY]:", '7 7 0', '1 1 1', 1, 0);
-  gui_renderMeter((ITEM1_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('112 16'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM1_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 12'), "Energy Cost:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //range
-  drawstring(icol + gui_percentToPixelRawVec('0 24'), strcat("[RANGE]:        ",ftos(ITEM1_DATA_RANGE)),'7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 26'), "Max Range:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //clip
-  drawstring(icol + gui_percentToPixelRawVec('0 32'), strcat("[CLIPSIZE]:     ",ftos(ITEM1_DATA_CLIP)), '7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 40'), "Clip size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //reload
-  drawstring(icol + gui_percentToPixelRawVec('0 40'),strcat("[SIZE]:         ",ftos(ITEM1_DATA_SIZE)), '7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 54'),"Hardpoint Size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //tech
-  drawstring(icol + gui_percentToPixelRawVec('0 48'), strcat("[TECH LEVEL]:   ",ftos(ITEM1_DATA_TECH)), '7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 68'), "Tech Level:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //desc
-  drawstring(icol + gui_percentToPixelRawVec('0 56'), "[NOTES]:", '7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 82'), "Info:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
+  //VALUES-----------
+  //damage
+  gui_renderMeter(((ITEM1_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + gui_percentToPixelRawVec('75 -2'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+  drawstring(icol + gui_percentToPixelRawVec('112 -2'), sprintf("%0.2f", ITEM1_DATA_DMG * ITEM1_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+  
+  //en cost
+  gui_renderMeter((ITEM1_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('75 11'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM1_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+  drawstring(icol + gui_percentToPixelRawVec('112 11'), sprintf("%0.2f", ITEM1_DATA_EN), '14 14', '1 1 1', 1, 0);
+  
+  //range
+  drawstring(icol + gui_percentToPixelRawVec('112 25'), ftos(ITEM1_DATA_RANGE), '14 14', '1 1 1', 1, 0);
+  
+  //clip
+  drawstring(icol + gui_percentToPixelRawVec('112 39'), ftos(ITEM1_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+  
+  //reload
+  drawstring(icol + gui_percentToPixelRawVec('112 53'), ftos(ITEM1_DATA_SIZE), '14 14', '1 1 1', 1, 0);
+  
+  //tech
+  drawstring(icol + gui_percentToPixelRawVec('112 67'), ftos(ITEM1_DATA_TECH), '14 14', '1 1 1', 1, 0);
+  
+  //desc
   if( ITEM1_DATA_DESC != "" ){ 
-    gui_wrapText(icol + gui_percentToPixelRawVec('-6 66'), '187 130', ITEM1_DATA_DESC, '6 7 0', '1 1 1', 1);
+    gui_wrapText(icol + gui_percentToPixelRawVec('0 81'), '187 130', ITEM1_DATA_DESC, '12 10 0', '1 1 1', 1);
   }
   
   local vector helpOrg;
@@ -716,68 +794,92 @@ void(vector ofs) menu_arming_AssignToHardpoint_btn={
 
 void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector nofs;
+  
   nofs_x = ofs_x + VIEW_CTR_x - gui_percentXRaw(34);
-  nofs_y = VIEW_CTR_y + gui_percentYRaw(12);
+  nofs_y = ofs_y + gui_percentYRaw(8);
+  
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('195 193'), CLR_DEF_ARM_THREEQ, 1, 0);
+
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  local string title;
-  local float tlen;
-  local vector tpos;
-  title = "[WEAPON ON HARDPOINT]";
-  tlen = stringwidth(title, 0, '6 6 0');
-  tpos = nofs + gui_percentToPixelRawVec('0 6');
-  tpos_x= (nofs_x + gui_percentXRaw(108)) - gui_percentXRaw((tlen/2));
-  drawstring(tpos, title, '6 6 0', '1 1 1', 1, 0);
+  local string panelLabel;
+  local float panelLabelLen;
+  local vector labelOrg;
+  panelLabel = "-Weapon In Hardpoint-";
+  panelLabelLen = stringwidth(panelLabel, 0, '10 10 0');
+  labelOrg = nofs + gui_percentToPixelRawVec('0 6');
+  labelOrg_x = nofs_x + gui_percentXRaw(97.5) - gui_percentXRaw( panelLabelLen / 2 );
+  drawstring(labelOrg, panelLabel, '10 10 0', '1 1 1', 1, 0);
   
-  local vector nmpos;
-  local string name;
-  local float nlen;
-  if( ITEM2_DATA_ICON != "" ){
+  local vector weaponNameOrg;
+  local float weaponNameLen;
+  if( ITEM2_DATA_ICON != ""){
     drawpic((nofs + gui_percentToPixelRawVec('6 6')), ITEM2_DATA_ICON, gui_percentToPixelRawVec('32 32'), CLR_DEF_WHITE, 1, 0); 
   }
-  name = ITEM2_DATA_NAME;
-  nlen = stringwidth(name, 0, '7 8 0');
-  nmpos = nofs + gui_percentToPixelRawVec('0 38');
-  nmpos_x = (nmpos_x + gui_percentXRaw(97)) - gui_percentXRaw((nlen/2)); 
-  drawstring(nmpos, name, '7 8 0', '1 1 1', 1, 0);
+  weaponNameLen = stringwidth(ITEM2_DATA_NAME, 0, '14 14 0');
+  weaponNameOrg = nofs + gui_percentToPixelRawVec('0 20');
+  weaponNameOrg_x = (weaponNameOrg_x + gui_percentXRaw(108)) - gui_percentXRaw( weaponNameLen / 2 ); 
+  drawstring(weaponNameOrg, ITEM2_DATA_NAME, '14 14 0', '1 1 1', 1, 0);
+  
+  drawfont = drawfont_prev;
   
   //type
   local vector icol;
-  icol = nofs + gui_percentToPixelRawVec('4 57');
+  icol = nofs + gui_percentToPixelRawVec('8 42');
   
+  //LABELS---------
   //damage
-  drawstring(icol, "[DAMAGE/SHOT]:", '7 7 0', '1 1 1', 1, 0);
-  gui_renderMeter((ITEM2_DATA_DMG / 600)*100, icol + gui_percentToPixelRawVec('112 -2'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-  
-  //type
-  drawstring(icol + gui_percentToPixelRawVec('0 8'), strcat("[TYPE]:         ",getNameOfWepType(ITEM2_DATA_TYPE)), '7 7 0', '1 1 1', 1, 0);
-  
+  drawstring(icol, "Total Damage:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+
   //en cost
-  drawstring(icol + gui_percentToPixelRawVec('0 16'), "[ENERGY]:", '7 7 0', '1 1 1', 1, 0);
-  gui_renderMeter((ITEM2_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('112 16'), gui_percentToPixelRawVec('64 8'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM2_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 12'), "Energy Cost:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //range
-  drawstring(icol + gui_percentToPixelRawVec('0 24'), strcat("[RANGE]:        ", ftos(ITEM2_DATA_RANGE)),'7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 26'), "Max Range:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //clip
-  drawstring(icol + gui_percentToPixelRawVec('0 32'), strcat("[CLIPSIZE]:     ",ftos(ITEM2_DATA_CLIP)), '7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 40'), "Clip size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //reload
-  drawstring(icol + gui_percentToPixelRawVec('0 40'),strcat("[SIZE]:         ",ftos(ITEM2_DATA_SIZE)), '7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 54'),"Hardpoint Size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //tech
-  drawstring(icol + gui_percentToPixelRawVec('0 48'), strcat("[TECH LEVEL]:   ",ftos(ITEM2_DATA_TECH)), '7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 68'), "Tech Level:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
   
   //desc
-  drawstring(icol + gui_percentToPixelRawVec('0 56'), "[NOTES]:", '7 7 0', '1 1 1', 1, 0);
+  drawstring(icol + gui_percentToPixelRawVec('0 82'), "Info:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+  
+  //VALUES-----------
+  //damage
+  gui_renderMeter(((ITEM2_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + gui_percentToPixelRawVec('75 -2'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+  drawstring(icol + gui_percentToPixelRawVec('112 -2'), sprintf("%0.2f", ITEM2_DATA_DMG * ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+  
+  //en cost
+  gui_renderMeter((ITEM2_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('75 11'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM1_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+  drawstring(icol + gui_percentToPixelRawVec('112 11'), sprintf("%0.2f", ITEM2_DATA_EN), '14 14', '1 1 1', 1, 0);
+  
+  //range
+  drawstring(icol + gui_percentToPixelRawVec('112 25'), ftos(ITEM2_DATA_RANGE), '14 14', '1 1 1', 1, 0);
+  
+  //clip
+  drawstring(icol + gui_percentToPixelRawVec('112 39'), ftos(ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+  
+  //reload
+  drawstring(icol + gui_percentToPixelRawVec('112 53'), ftos(ITEM2_DATA_SIZE), '14 14', '1 1 1', 1, 0);
+  
+  //tech
+  drawstring(icol + gui_percentToPixelRawVec('112 67'), ftos(ITEM2_DATA_TECH), '14 14', '1 1 1', 1, 0);
+  
+  //desc
   if( ITEM2_DATA_DESC != "" ){ 
-    gui_wrapText(icol + gui_percentToPixelRawVec('-6 66'), '187 130', ITEM2_DATA_DESC, '6 7 0', '1 1 1', 1);
+    gui_wrapText(icol + gui_percentToPixelRawVec('0 81'), '187 130', ITEM2_DATA_DESC, '12 10 0', '1 1 1', 1);
   }
   
   local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(195) - gui_percentXRaw(12);
-  ARMING_HELP_HARDPOINT_WEAPON  = helpOrg;
+  ARMING_HELP_HARDPOINT_WEAPON = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };
 
@@ -823,6 +925,7 @@ string(float bit) getNameOfWepType={
 float(float grp) calc_energy_draw={
   local float energySubTotal, weaponGroupBit;
   local entity hardpoint;
+  local string formatMe;
   
   weaponGroupBit = 1;
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
@@ -831,15 +934,16 @@ float(float grp) calc_energy_draw={
   while( hardpoint ){
     if( (grp & weaponGroupBit) ){
       if( hardpoint.energyRate ){
-      energySubTotal = energySubTotal + hardpoint.energyRate;
+        energySubTotal = energySubTotal + hardpoint.energyRate;
       }
     }
     weaponGroupBit = weaponGroupBit * 2;
     hardpoint = hardpoint.w_slot;
   }
-  energySubTotal = energySubTotal - MECH_DATA_ENRATE;
+  
   if( energySubTotal < 0){
     energySubTotal = 0;
   }
+
   return energySubTotal;
 };

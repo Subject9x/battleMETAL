@@ -32,7 +32,7 @@ void() data_ini_equip_energy_battery_={
   
   #ifdef CSQC
   self.abbrev = "ENBAT";
-  self.description = "Increases TOTAL MECH ENERGY by 25%.~";
+  self.description = "+ Increases <Energy maximum> by 25%.";
   self.icon = "gfx/ui/wep_icons/eqp_enbat.png";
   #endif
   

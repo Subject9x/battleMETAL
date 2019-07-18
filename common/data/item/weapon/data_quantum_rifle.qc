@@ -35,7 +35,7 @@ void() data_ini_quantum_={
  
   #ifdef CSQC
   self.abbrev = "QRF";
-  self.description = "Affects Shields Only. | Instant-impact weapon. | 8 submunitions.~";
+  self.description = "+ Damages Shields ONLY. + Instant-impact weapon. + 8 sub-munitions. + sub-munitions home on impact spot.";
   self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
   #endif 
   

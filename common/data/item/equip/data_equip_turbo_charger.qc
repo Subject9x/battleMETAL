@@ -34,7 +34,7 @@ void() data_ini_equip_turbo_charger_={
   
   #ifdef CSQC
   self.abbrev = "TCHR";
-  self.description = "Increase Evasion speed by 20%. | | Increase Evasion cost  by 13%~";
+  self.description = "+ Increase <Evasion> speed by 20%. + Increase <Evasion> energy cost  by 13%.";
   self.icon = "gfx/ui/wep_icons/eqp_tchr.png"; //TODO - new icon
   #endif
   

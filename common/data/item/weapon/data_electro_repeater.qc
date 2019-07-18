@@ -28,14 +28,14 @@ void() data_ini_electro_repeater_={
   
   self.w_range = 200;
   self.damageValue = 25;
-  self.damageType = (DMG_ENE | EFF_PRC);
+  self.damageType = DMG_ENE;
 
   self.techLevel = 2;
   self.i_size = 2;
 
   #ifdef CSQC  
   self.abbrev = "ESR";
-  self.description = "Burst-Fire lightning beams. | Devastating short range weapon. | innaccurate.~";
+  self.description = "+ Instant-impact weapon. + Burst-fire. + Inaccurate.";
   self.icon = "gfx/ui/wep_icons/wi_esr.png";
   #endif
   

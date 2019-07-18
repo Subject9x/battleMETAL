@@ -32,7 +32,7 @@ void() data_ini_plasma_={
   
   #ifdef CSQC  
   self.abbrev = "RPC";
-  self.description = "Burst-Fires 6 sub-munitions. | Submunitions burn over time on unshielded targets.~";
+  self.description = "+ Burst-Fires 6 sub-munitions. + Submunitions burn over time on unshielded targets.";
   self.icon = "gfx/ui/wep_icons/wi_rpc.png";
   #endif 
   

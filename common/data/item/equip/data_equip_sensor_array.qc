@@ -32,7 +32,7 @@ void() data_ini_equip_sensor_array_={
   
   #ifdef CSQC
   self.abbrev = "LSAR";
-  self.description = "Increases RADAR RANGE by 30%.~";
+  self.description = "+ Increases <Radar Range> by 30%.";
   self.icon = "gfx/ui/wep_icons/eqp_lsar.png";
   #endif
   

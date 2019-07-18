@@ -32,7 +32,7 @@ void() data_ini_equip_recharge_capacitor_={
 
   #ifdef CSQC
   self.abbrev = "RECAP";
-  self.description = "Increases Reactor RECHARGE rate by 20%~";
+  self.description = "+ Increases <Energy recharge> rate by 20%.";
   self.icon = "gfx/ui/wep_icons/eqp_recap.png";
   #endif
   
