@@ -229,3 +229,23 @@ void( entity box ) ui_renderHUDHighlight={
   gui_DrawRect (l2, bx_sz, '1 2', box.drawcolor1);
   gui_DrawRect (l3, bx_sz, '2 1', box.drawcolor1);
 };
+
+/*
+float SPRITE_deploy_point_FRAME;
+float SPRITE_deploy_point_FRAME_MAX;
+string SPRITE_deploy_point_FRAMES[3];
+*/
+void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_renderSprite_DeployPoint={
+  local vector imageOrg, screenImageSize;
+  
+  screenImageSize = gui_percentToPixelRawVec( imageSize );
+  imageOrg_x = org_x - (screenImageSize_x / 2);
+  imageOrg_y = org_y - (screenImageSize_y / 2);
+  if( SPRITE_deploy_point_FRAMES[SPRITE_deploy_point_FRAME] != "" ){
+    drawpic( imageOrg, SPRITE_deploy_point_FRAMES[SPRITE_deploy_point_FRAME], screenImageSize, imageColor, imageAlpha, 0);
+  }
+  SPRITE_deploy_point_FRAME = SPRITE_deploy_point_FRAME + 1;
+  if( SPRITE_deploy_point_FRAME > SPRITE_deploy_point_FRAME_MAX ){
+    SPRITE_deploy_point_FRAME = 1;
+  }
+};

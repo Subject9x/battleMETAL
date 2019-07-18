@@ -36,6 +36,9 @@ void() dynamic_precache =
         else if( strstrofs(ln, ".png", 0) != -1){
           precache_pic(ln, 0);
         }
+        else if( strstrofs(ln, ".tga", 0) != -1){
+          precache_pic(ln, 0);
+        }
       }
 			ln = fgets(f);                      // get a new line from the file
 		} 
@@ -85,8 +88,6 @@ void() cs_precache={
   SND_HUD_VFX_MSN_WIN = precache_sound2("sound/comp/msn_success.ogg");
   SND_HUD_VFX_MSN_FAL = precache_sound2("sound/comp/msn_fail.ogg");
   
-
-  
   //UI GRAPHICS
   UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png",8);
   UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png",8);
@@ -102,10 +103,15 @@ void() cs_precache={
   UI_BOX_SELECT = precache_pic("gfx/ui/box_select.png",0);
   UI_HELP_IMG = precache_pic("gfx/ui/box_64_help.png", 8);
  
-  UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png",0);
-  UI_WEP_BAL = precache_pic("gfx/ui/wep_icons/wep_bal.png",0);
-  UI_WEP_EXP = precache_pic("gfx/ui/wep_icons/wep_exp.png",0);
-  UI_WEP_MSC = precache_pic("gfx/ui/wep_icons/wep_msc.png",0);
+  UI_WEP_ENE = precache_pic("gfx/ui/wep_icons/wep_ene.png", 0);
+  UI_WEP_BAL = precache_pic("gfx/ui/wep_icons/wep_bal.png", 0);
+  UI_WEP_EXP = precache_pic("gfx/ui/wep_icons/wep_exp.png", 0);
+  UI_WEP_MSC = precache_pic("gfx/ui/wep_icons/wep_msc.png", 0);
+  
+  SPRITE_deploy_point_FRAMES[1] = "gfx/ui/sprite/deploy_1.tga";
+  SPRITE_deploy_point_FRAMES[2] = "gfx/ui/sprite/deploy_2.tga";
+  SPRITE_deploy_point_FRAMES[3] = "gfx/ui/sprite/deploy_3.tga";
+  SPRITE_deploy_point_FRAMES[4] = "gfx/ui/sprite/deploy_4.tga";
   
   //HUD GRAPHICS
   DAT_OTL_UI_IMG = precache_pic("gfx/ui/hgr_otl.png",0);

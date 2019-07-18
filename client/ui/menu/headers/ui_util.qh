@@ -2,6 +2,7 @@
 battleMETAL
 Author: Peter Roohr
 Date: 05/17/2019
+mod:  07/18/2019
 Overview:
   Header file for ui utility functions.
   
@@ -15,3 +16,11 @@ void(float navid) ui_renderNav;
 void(entity clnt) ui_renderClientName;
 void(float num, vector org) ui_renderHardPointNumber;
 void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
+
+/*
+  Animated images, don't make regular use :/
+*/
+float SPRITE_deploy_point_FRAME;
+float SPRITE_deploy_point_FRAME_MAX = 4;
+string SPRITE_deploy_point_FRAMES[4];
+void( vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_renderSprite_DeployPoint;

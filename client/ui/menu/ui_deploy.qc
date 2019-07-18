@@ -33,9 +33,9 @@ void() menu_deployListener_onHover={
   if( menu_checkMouseInBounds( cursorpos, DEPLOY_HELP_NAV_MAP, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_DEPLOY_ACTIVE;
     toolTip.mins = gui_percentToPixelRawVec('256 64 0');
-    toolTip.description = "This is the Deployment map.\n Here you can see all possible <Deploy> points and <NAV> markers. \n The currently selected <Deploy> point is highlighted in green.";
+    toolTip.description = "This is the Deployment map. Here you can see all possible <Deploy> points and <NAV> markers. The currently selected <Deploy> point is highlighted in green.";
     toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '7 8 0';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -43,9 +43,9 @@ void() menu_deployListener_onHover={
     if( menu_checkMouseInBounds( cursorpos, DEPLOY_HELP_NAV_PICK, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_DEPLOY_ACTIVE;
     toolTip.mins = gui_percentToPixelRawVec('256 64 0');
-    toolTip.description = "<Deploy> points are where you will start the mission. \n Clicking < and > will select different <Deploy> points on the map.";
+    toolTip.description = "<Deploy> points are where you will start the mission. Clicking <| and |> will select different <Deploy> points on the map.";
     toolTip.angles = '0.85 0.85 0.85';
-    toolTip.maxs = '7 8 0';
+    toolTip.maxs = '12 10 0';
     toolTip.alpha = 1;
     return;
   }
@@ -112,58 +112,66 @@ void() navListSelectListener={
 
 //panels
 void(vector ofs) menu_deploy_missionInfoPanel={
-  local float tlen;
+  local float panelLabelLen;
   local vector panelOfs;
-  local vector tpos;
+  local vector pabelLabelOrg;
   local vector namePos;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
   panelOfs = ofs + gui_percentToPixelRawVec('13 36');
   
   drawpic(panelOfs, UI_DEF_BOX_256, gui_percentToPixelRawVec('210 70'), CLR_DEF_UI_DEPLOY, 1, 0);
  
-  tlen = stringwidth("[MISSION STATUS]", 0, '8 8 0');
-  tpos = panelOfs + gui_percentToPixelRawVec('105 4');
-  tpos_x = tpos_x - gui_percentXRaw( tlen / 2 );
-  drawstring(tpos, "[MISSION STATUS]", '8 8 0', '1 1 1', 1, 0);
+  panelLabelLen = stringwidth("-Misson Status-", 0, '10 10 0');
+  pabelLabelOrg = panelOfs + gui_percentToPixelRawVec('105 4');
+  pabelLabelOrg_x = pabelLabelOrg_x - gui_percentXRaw( panelLabelLen / 2 );
+  drawstring(pabelLabelOrg, "-Misson Status-", '10 10 0', '1 1 1', 1, 0);
   
   //mission name
-  drawstring(panelOfs + gui_percentToPixelRawVec('4 19'), "[NAME]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
-  namePos = panelOfs + gui_percentToPixelRawVec('0 18');
-  namePos_x = namePos_x + gui_percentXRaw( (105 - stringwidth(MSN_NAME, 0, '8 8 0') / 2 ) );
-  drawstring(namePos, MSN_NAME, '8 8 0', '1 1 1', 1, 0);
+  drawstring(panelOfs + gui_percentToPixelRawVec('6 19'), "Name:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+  namePos = panelOfs + gui_percentToPixelRawVec('32 18');
+  drawstring(namePos, MSN_NAME, '12 10 0', '1 1 1', 1, 0);
   
   //mission type
-  drawstring(panelOfs + gui_percentToPixelRawVec('4 36'), "[TYPE]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0); 
-  drawstring(panelOfs + gui_percentToPixelRawVec('50 34'), MSN_TYPE, '8 8 0', '1 1 1', 1, 0); 
+  drawstring(panelOfs + gui_percentToPixelRawVec('6 36'), "Type:", '10 8 0', CLR_DEF_GRAY_H, 1, 0); 
+  drawstring(panelOfs + gui_percentToPixelRawVec('32 34'), MSN_TYPE, '12 10 0', '1 1 1', 1, 0); 
   
+  drawfont = drawfont_prev;
+ 
   //reserves
-  //drawstring(panelOfs+gui_percentToPixel(0.0109, 0.08), "[RESOURCE POINTS]:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+  //drawstring(panelOfs+gui_percentToPixel(0.0109, 0.08), "[RESOURCE POINTS]:", '6 6 0', CLR_DEF_GRAY_H, 1, 0);
   //drawstring(panelOfs+gui_percentToPixelRawVec('0 0'), ftos(AVAILABLE_RESERVE), '8 8 0', '1 1 1', 1, 0);
   
   //sector
-  //drawstring(ofs+'14 80', strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', '1 1 1', 1, 0);
+  //drawstring(ofs+'14 80', strcat("[SECTOR]:          ", MSN_SECTOR), '6 6 0', CLR_DEF_GRAY_H, 1, 0);
   
   //location
-  //drawstring(ofs+'14 88', strcat("[LOCATION]:        ", MSN_LOCATION ), '6 6 0', '1 1 1', 1, 0);
+  //drawstring(ofs+'14 88', strcat("[LOCATION]:        ", MSN_LOCATION ), '6 6 0', CLR_DEF_GRAY_H, 1, 0);
   
   //local time
-  //drawstring(ofs+'14 96', strcat("[LOCAL TIME]:      ", MSN_LOCALTIME), '6 6 0', '1 1 1', 1, 0);
+  //drawstring(ofs+'14 96', strcat("[LOCAL TIME]:      ", MSN_LOCALTIME), '6 6 0', CLR_DEF_GRAY_H, 1, 0);
 };
 
 void(vector ofs) menu_deploy_navInfoPanel={
-  local float tlen;
-  local vector tpos, icosize, icopos1, icopos2;
+  local float panelLabelLen;
+  local vector panelLabelOrg, icosize, icopos1, icopos2;
+
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
 
   drawpic(ofs + gui_percentToPixelRawVec('10 113'), UI_DEF_BOX_256, gui_percentToPixelRawVec('211 70'), CLR_DEF_UI_DEPLOY, 1, 0);
 
-  tlen = stringwidth("[SELECTED DROP POINT]", 0, '8 8 0');
-  tpos = ofs + gui_percentToPixel(0.0902, 0.12);
-  tpos_x = tpos_x - gui_percentXRaw((tlen/2));
-  drawstring(tpos, "[SELECTED DROP POINT]", '8 8 0', '1 1 1', 1, 0);
+  panelLabelLen = stringwidth("-Select Drop Point-", 0, '10 10 0');
+  panelLabelOrg = ofs + gui_percentToPixelRawVec('114 115');
+  panelLabelOrg_x = panelLabelOrg_x - gui_percentXRaw( panelLabelLen / 2 );
+  drawstring(panelLabelOrg, "-Select Drop Point-", '10 10 0', '1 1 1', 1, 0);
 
-  drawstring(ofs + gui_percentToPixelRawVec('180 125'), "[Next]", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('180 125'), "Next", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
   drawpic(ofs + gui_percentToPixelRawVec('188 135'), HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
 
-  drawstring(ofs + gui_percentToPixelRawVec('15 125'), "[Prev]", '6 6 0', CLR_DEF_ARM_HALF, 1, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('15 125'), "Prev", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
   drawpic(ofs + gui_percentToPixelRawVec('15 135'), HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
 
   //current spawn point
@@ -174,37 +182,41 @@ void(vector ofs) menu_deploy_navInfoPanel={
     hclr = CLR_DEF_GREEN;
   }
   else{
-    navlbl = "[SELECT]";
+    navlbl = "!- SELECT -!";
     hclr = CLR_DEF_RED;
   } 
-  drawstring(ofs + gui_percentToPixelRawVec('69 131'), "[CURRENT]", '9 9', '1 1 1', 1, 0);
+  drawstring(ofs + gui_percentToPixelRawVec('69 131'), "Deploy Point:", '10 8', '1 1 1', 1, 0);
   drawstring(ofs + gui_percentToPixelRawVec('82 150'), navlbl, '12 12', hclr, 1, 0);
+   
+  drawfont = drawfont_prev;
     
   local vector helpOrg;
   helpOrg = ofs + gui_percentToPixelRawVec('10 111');
   helpOrg_x = helpOrg_x + gui_percentXRaw(211) - gui_percentXRaw(12);
   DEPLOY_HELP_NAV_PICK = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
-  
 };
 
 void(vector ofs) menu_deploy_mechInfoPanel={  
   local float tlen;
   local vector panelOfs;
-  local vector tpos;
+  local vector panelLabelOrg;
   local vector spos;
   local vector t_color;
   
   local string type;
  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+ 
   panelOfs = ofs + gui_percentToPixelRawVec('10 183');
  
   drawpic(panelOfs, UI_DEF_BOX_256, gui_percentToPixelRawVec('210 70'), CLR_DEF_UI_DEPLOY, 1, 0);
 
-  tlen = stringwidth("[SELECTED METAL]", 0, '8 8 0');
-  tpos = panelOfs + gui_percentToPixelRawVec('101 4');
-  tpos_x = tpos_x - gui_percentXRaw( (tlen/2) );
-  drawstring(tpos, "[SELECTED METAL]", '8 8 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+  tlen = stringwidth("-Chosen Metal-", 0, '10 10 0');
+  panelLabelOrg = panelOfs + gui_percentToPixelRawVec('101 4');
+  panelLabelOrg_x = panelLabelOrg_x - gui_percentXRaw( tlen / 2 );
+  drawstring(panelLabelOrg, "-Chosen Metal-", '10 10 0', '1 1 1', 1, 0);
   
   if(CLIENT_MENU_sel_mech > 0){
     // MECH SIZE
@@ -223,10 +235,13 @@ void(vector ofs) menu_deploy_mechInfoPanel={
         break;
     }
     spos = panelOfs + gui_percentToPixelRawVec('4 20');
-    drawstring(spos, "[NAME]", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+    drawstring(spos, "Name:", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
     drawstring(spos + gui_percentToPixelRawVec('40 -4'), MECH_DATA_NAMES[CLIENT_MENU_sel_mech], '12 12 0', CLR_DEF_TXT_HIGHLIGHT, 1, 0);
-    drawstring(spos + gui_percentToPixelRawVec('0 14'), "[TYPE] ", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
+    
+    drawstring(spos + gui_percentToPixelRawVec('0 14'), "Type: ", '6 6 0', CLR_DEF_TXT_NONSELECT, 1, 0);
     drawstring(spos + gui_percentToPixelRawVec('40 10'), type, '10 10 0', t_color, 1, 0);
+    
+    drawfont = drawfont_prev;
     //drawstring(spos + gui_percentToPixel(0, 0.0166), "[COST] ", '6 6 0', '1 1 1', 1, 0);
     //drawstring(spos + gui_percentToPixel(0.0375, 0.0166),  "0", '6 6 0', t_color, 1, 0);
     //drawstring(spos + gui_percentToPixel(0, 0.025), "[FACTION] ", '6 6 0', '1 1 1', 1, 0);
@@ -246,11 +261,11 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   iofs = mpos + gui_percentToPixelRawVec('12 12');
   DEPLOY_MAP_ORG = iofs;
   
-  if(MSN_MAPPIC != ""){
+  if( MSN_MAPPIC != "" ){
     drawpic(iofs, MSN_MAPPIC, gui_percentToPixelRawVec('380 380'), '1 1 1', 1, 0);
   }
   else{
-    gui_wrapText(iofs + gui_percentToPixelRaw(380/ 3.85, 380 / 2.5) , '210 32', "Satellite Data |  unavailable", '12 12 0', '1 0 0', 1);
+    gui_wrapText(iofs + gui_percentToPixelRaw(380/ 3.85, 380 / 2.5) , '210 32', "Satellite Data unavailable", '14 14 0', '1 0 0', 1);
   }
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
@@ -277,35 +292,39 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         drawstring(nofs, navname, '6 6 0', '1 1 1', 1, 0);
       }
     }
-    local vector nclr;
+    local vector deployColor;
     nactive = DEPLOY_POINTS_ACTIVE[itr];
     if( nactive != FALSE ){    
       navorg = DEPLOY_POINTS_ORG[itr]; 
       tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
       if( nactive ){
-        nclr = CLR_DEF_ARM_OK;
+        deployColor = CLR_DEF_ARM_OK;
       }
       else{
-        nclr = CLR_DEF_ARM_HALF;
+        deployColor = CLR_DEF_ARM_HALF;
       }
       if(CLIENT_MENU_nav_pnt == itr){
         gui_renderTintImage(TRUE, nofs - gui_percentToPixelRawVec('6 6'), UI_DEF_REC_64, gui_percentToPixelRawVec('28 28'), CLR_DEF_GREEN, 0.85, 0);
         CLIENT_MENU_nav_ui_org = tofs;
+        ui_renderSprite_DeployPoint( tofs, '16 16', CLR_DEF_GREEN, 1 ) ;
       }
-      gui_renderTintImage2((CLIENT_MENU_nav_pnt == itr), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
+      else{
+        gui_renderTintImage2((CLIENT_MENU_nav_pnt == itr), nofs, UI_DEF_DEPLOYPOINT, gui_percentToPixelRawVec('16 16'), CLR_DEF_ARM_OK, CLR_DEF_ARM_HALF, 1, 0) ;
+      }
     }
-
+    if( nactive != FALSE ){
+      local vector lineOrg;
+      lineOrg = mpos + gui_percentToPixelRawVec('5 110');
+      drawline(1, lineOrg + gui_percentToPixelRawVec('0 1'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 1'), '0.85 0.85 0', 0.75, 0);
+      drawline(1, lineOrg + gui_percentToPixelRawVec('0 2'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 2'), '0.85 0.85 0', 0.75, 0);
+      drawline(1, lineOrg + gui_percentToPixelRawVec('0 3'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 3'), '0.85 0.85 0', 0.75, 0);
+      drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
+    }
+   
     itr = itr + 1;
   }
 
-  if( nactive != FALSE ){
-    local vector lineOrg;
-    lineOrg = mpos + gui_percentToPixelRawVec('5 110');
-    drawline(1, lineOrg + gui_percentToPixelRawVec('0 1'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 1'), '0.85 0.85 0', 0.75, 0);
-    drawline(1, lineOrg + gui_percentToPixelRawVec('0 2'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 2'), '0.85 0.85 0', 0.75, 0);
-    drawline(1, lineOrg + gui_percentToPixelRawVec('0 3'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 3'), '0.85 0.85 0', 0.75, 0);
-    drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
-  }
+
 
   local vector helpOrg;
   helpOrg = mpos;

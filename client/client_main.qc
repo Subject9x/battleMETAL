@@ -92,8 +92,10 @@ void() CSQC_Init =
   ANM_FILE_STATUS = 0;
   
   //get mission file
-  cs_precache();
   dynamic_precache();
+  cs_precache();
+  
+  SPRITE_deploy_point_FRAME = 1;
   
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");
