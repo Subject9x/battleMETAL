@@ -30,7 +30,7 @@ void() map_damage_zone_particles_shields={
   local vector velocityOffset, particleOrigin, particleOffset;
   
   velocityOffset = self.origin + (v_up * 16);
-  te_particlerain( self.absmin, self.absmax, normalize(velocityOffset - self.origin) * 50, floor(self.maxs_x / 32), 244); 
+  te_particlerain( self.absmin, self.absmax, normalize(velocityOffset - self.origin) * 50, floor(self.maxs_x / 84), 244); 
 
   if( time > self.count1 ){
     self.count1 = time + (random() * 0.5);

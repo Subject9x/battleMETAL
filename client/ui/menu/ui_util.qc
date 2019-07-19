@@ -236,16 +236,18 @@ float SPRITE_deploy_point_FRAME_MAX;
 string SPRITE_deploy_point_FRAMES[3];
 */
 void(vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_renderSprite_DeployPoint={
-  local vector imageOrg, screenImageSize;
+  local vector screenImageSize;
   
   screenImageSize = gui_percentToPixelRawVec( imageSize );
-  imageOrg_x = org_x - (screenImageSize_x / 2);
-  imageOrg_y = org_y - (screenImageSize_y / 2);
   if( SPRITE_deploy_point_FRAMES[SPRITE_deploy_point_FRAME] != "" ){
-    drawpic( imageOrg, SPRITE_deploy_point_FRAMES[SPRITE_deploy_point_FRAME], screenImageSize, imageColor, imageAlpha, 0);
+    drawpic( org, SPRITE_deploy_point_FRAMES[SPRITE_deploy_point_FRAME], screenImageSize, imageColor, imageAlpha, 0);
   }
-  SPRITE_deploy_point_FRAME = SPRITE_deploy_point_FRAME + 1;
-  if( SPRITE_deploy_point_FRAME > SPRITE_deploy_point_FRAME_MAX ){
-    SPRITE_deploy_point_FRAME = 1;
+  
+  if( time > SPRITE_deploy_point_FRAME_TIMER ){
+    SPRITE_deploy_point_FRAME = SPRITE_deploy_point_FRAME + 1;
+    if( SPRITE_deploy_point_FRAME > SPRITE_deploy_point_FRAME_MAX ){
+      SPRITE_deploy_point_FRAME = 1;
+    }
+    SPRITE_deploy_point_FRAME_TIMER = time + 0.15;
   }
 };

@@ -38,3 +38,4 @@ void(vector ofs) menu_deploy_missionInfoPanel;
 void(vector ofs) menu_deploy_navInfoPanel;
 void(vector ofs) menu_deploy_mechInfoPanel;
 void(vector ofs) menu_deploy_mapOverviewPanel;
+void(vector ofs) menu_deploy_mapKeyPanel;

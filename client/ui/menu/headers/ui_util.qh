@@ -22,5 +22,6 @@ void(vector org, float hpt_num, float types, float sz)  ui_renderHardpointRow;
 */
 float SPRITE_deploy_point_FRAME;
 float SPRITE_deploy_point_FRAME_MAX = 4;
+float SPRITE_deploy_point_FRAME_TIMER;
 string SPRITE_deploy_point_FRAMES[4];
 void( vector org, vector imageSize, vector imageColor, float imageAlpha ) ui_renderSprite_DeployPoint;
