@@ -78,8 +78,8 @@ void() data_ini_balaket_={
 //=====================================
 
 //HUD DATA=============================
-  self.pitchMax = 45;
-  self.pitchMin = -15;
+  self.pitchMax = 30; //pitch down limit
+  self.pitchMin = -35;//pitch up limit
   self.weaponmodel = "q3mdl/mechs/balaket/balaket_view.md3";
   self.hud_rollangle = "2";
   self.hud_bob = "0.0008";

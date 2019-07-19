@@ -3,7 +3,9 @@ battleMETAL
 Author: Peter Roohr
 Date: 01/29/2018
 mod: 9/15/2018
-Overview: the implementation of the header file
+mod: 07/19/2019
+Overview:
+  Implementation of HUD functions.
 */
 
 /*
@@ -133,15 +135,14 @@ void(vector pos, float algn) hud_renderPitchIndicator={
     perc = (pcur / pmax) * 100;
   }
   
-  
   ofs = gui_percentToPixelRawVec('2 13');
   ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_TOP), pos);
   gui_renderMeter(perc, ofs, gui_percentToPixelRawVec('4 26'), '-1 0 0', HUD_COLOR_DEF, HUD_ALPHA, 0, AXIS_V, 0);
-  drawfill((ofs - gui_percentToPixelRawVec('0 0')), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);
-  drawfill((ofs + gui_percentToPixelRawVec('0 52')), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drawfill( (ofs - gui_percentToPixelRawVec('0 0') ), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drawfill( (ofs + gui_percentToPixelRawVec('0 52') ), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);
 
   if( cvar("developer") ){
-    drawstring('100 250', ftos(input_angles_x), '8 8', HUD_COLOR_DEF, HUD_ALPHA, 0);
+    drawstring(gui_percentToPixelRawVec('100 250'), ftos(input_angles_x), '12 10', HUD_COLOR_DEF, HUD_ALPHA, 0);
   }
   
 };
@@ -160,7 +161,12 @@ void(vector pos, float algn, float val) hud_renderReticleRange={
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
   
-  drawstring(pos, dist, '8 8', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  drawstring(pos, dist, '12 12', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  
+  drawfont = drawfont_prev;
 };
 
 /*
@@ -169,7 +175,13 @@ void(vector pos, float algn, float val) hud_renderReticleRange={
 void(vector pos, float algn, vector angle) hud_renderNavHeading={
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
-  drawstring(pos, gui_angleToNav(angle_y), gui_percentToPixelRawVec('16 16'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  drawstring(pos, gui_angleToNav(angle_y), gui_percentToPixelRawVec('20 20'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  
+  drawfont = drawfont_prev;
 };
 
 /*
@@ -182,8 +194,11 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
   pos = gui_calcAlign(pos, algn);
   gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, gui_getColorForShield(val), HUD_ALPHA, 0, meterAxis, 0);
   if(bool_label){
-    label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos); 
-    drawstring(label_org, "SHIELD", '4 4 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+    label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos);
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+      drawstring(label_org, "SHIELD", '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+    drawfont = drawfont_prev;
   }
 };
 
@@ -197,8 +212,11 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
   pos = gui_calcAlign(pos, algn);
   gui_renderMeter(val, pos, meterSize, CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA, 0, meterAxis, 0);
   if(bool_label){
-    label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos); 
-    drawstring(label_org, "ENERGY", '4 4 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+    label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos);
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+      drawstring(label_org, "ENERGY", '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+    drawfont = drawfont_prev;
   }
 };
 
@@ -214,8 +232,12 @@ void( vector pos, vector grpCtr, float val, vector mSize, float lbl_algn, vector
   pos = gui_calcAlignCustom(pos, (VIEW_CTX | VIEW_CTY), shofs);
   
   gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, gui_getColorForArmor(val), HUD_ALPHA, 0, meterAxis, 0);
-  label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), (VIEW_LFT | VIEW_TOP), pos); 
-  drawstring(label_org, label, '4 4 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), (VIEW_LFT | VIEW_TOP), pos);
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+    drawstring(label_org, label, '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drawfont = drawfont_prev; 
 };
 
 /*
@@ -377,9 +399,13 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   local float lbl_len_stat, lbl_len_range;
   local string stat;
   local vector tsize, colr, morg, radorg, rdorg;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
-  tsize = '6 6 0';
+  tsize = '10 10 0';
   stat = "--PASSIVE--";
   colr = CLR_DEF_ENG_DED;
   if(status){
@@ -399,6 +425,8 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   rdorg_x = rdorg_x + gui_percentXRaw(lbl_len_range + 4);
   drawstring(radorg, "[RADIUS]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag);
   drawstring(rdorg, ftos(radius), tsize, colr, HUD_ALPHA, flag);
+  
+  drawfont = drawfont_prev;
 };
 
 /*
@@ -414,10 +442,14 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   local float lbl_len_stat, lbl_len_range, stat_len, rad_len;
   local string stat;
   local vector tsize, colr, sorg, morg, radorg, rdorg;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
   
-  tsize = '6 6 0';
+  tsize = '10 10 0';
   stat = "--PASSIVE--";
   colr = CLR_DEF_ENG_DED;
   if(status){
@@ -444,6 +476,8 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   rdorg_y = rdorg_y + gui_percentYRaw(12);
   drawstring(radorg, "[RADIUS]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag);
   drawstring(rdorg, ftos(radius), tsize, colr, HUD_ALPHA, flag);
+  
+  drawfont = drawfont_prev;
 };
 
 
@@ -712,15 +746,21 @@ void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange={
   local float dist, msgLen;
   local vector tofs, msgSize;
   local string msg;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
   ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlign(ofs, algn);
   dist = ceil(vlen(torg - porg));
   msg = strcat("[RANGE] ", ftos(dist));
-  msgLen = stringwidth(msg, 0, '6 6 0');
+  msgLen = stringwidth(msg, 0, '10 10 0');
   msgSize_x = gui_percentXRaw(msgLen/2);
   msgSize_y = gui_percentYRaw(6);
   tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
-  drawstring(tofs, msg, '6 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drawstring(tofs, msg, '10 10 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  
+  drawfont = drawfont_prev;
 };
 
 /*
@@ -730,6 +770,9 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   local float msgLen;
   local vector tofs, msgSize, factionColor;
   local string msg;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
   
   if(CLIENT_faction == CLIENT_target_faction){
     factionColor = CLR_DEF_IIF_FRIEND;
@@ -741,11 +784,13 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   ofs = gui_percentToPixelRawVec(ofs);
   ofs = gui_calcAlign(ofs, algn);
   msg = strcat("[TARGET] ", targType);
-  msgLen = stringwidth(msg, 0, '6 6 0');
+  msgLen = stringwidth(msg, 0, '10 10 0');
   msgSize_x = gui_percentXRaw(msgLen/2);
   msgSize_y = gui_percentYRaw(6);
   tofs = gui_calcAlignCustom('0 0', (VIEW_LFT | VIEW_CTY), ofs);
-  drawstring(tofs, msg, '6 6 0', factionColor, HUD_ALPHA, 0);
+  drawstring(tofs, msg, '10 10 0', factionColor, HUD_ALPHA, 0);
+  
+  drawfont = drawfont_prev;
 };
 
 void(float delta) hud_renderRepairValue={
@@ -762,7 +807,11 @@ void(float delta) hud_renderRepairValue={
     torg_x = torg_x - gui_percentXRaw( len / 2 ) ;
     torg_y = torg_y - gui_percentYRaw(4);
     gui_renderMeter((delta * 100), vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA, 0, AXIS_H, 0);
-    drawstring(torg, str, '8 8 0', CLR_DEF_GRAY_H + '0.05 0.05 0.05', HUD_ALPHA, 0);
+    
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+    drawstring(torg, str, '12 12 0', CLR_DEF_GRAY_H + '0.05 0.05 0.05', HUD_ALPHA, 0);
+    drawfont = drawfont_prev;
   }
 };
 
@@ -780,7 +829,7 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
   
   if( time < HUD_WARN_MARK ){
     warnMsg = "[RETURN TO MISSION ZONE]";
-    warnLen = stringwidth( warnMsg, 0, '9 11 0');
+    warnLen = stringwidth( warnMsg, 0, '12 12 0');
     warnLen = gui_percentXRaw( warnLen );
     warnPos_x = VIEW_CTR_x - (warnLen / 2);
     warnPos_y = VIEW_CTR_y - gui_percentYRaw(48);
@@ -814,7 +863,7 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
     warnArrowPos_x = warnArrowPos_x - warnImgSize_x / 2;
     warnArrowPos_y = warnArrowPos_y - warnImgSize_y / 2;
     
-    drawstring(warnPos, warnMsg, '9 11 0', CLR_DEF_IFF_ENEMY, 0.9, 0);
+    drawstring(warnPos, warnMsg, '12 12 0', CLR_DEF_IFF_ENEMY, 0.9, 0);
     drawpic(warnArrowPos, warnImg, warnImgSize, CLR_DEF_IFF_ENEMY, 0.9, DRAWFLAG_NORMAL); 
   }
 };
@@ -1114,7 +1163,10 @@ void() hud_renderCrosshairDisabled={
   
   drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, 1, DRAWFLAG_NORMAL);  
   
-  drawstring(lblOrg, lbl, '8 8 0', CLR_DEF_RED, 1, 0);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  drawstring(lblOrg, lbl, '14 14 0', CLR_DEF_RED, 1, 0);
+  drawfont = drawfont_prev;
 };
 
 /*
