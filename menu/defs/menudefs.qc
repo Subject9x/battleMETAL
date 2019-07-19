@@ -275,6 +275,9 @@ string	search_getfilename(float handle, float num) = #77;
 
 string	chr(float ascii) = #78;
 
+float findfont(string s) = #356; // find font by fontname and return it's index
+float loadfont(string fontname, string fontmaps, string sizes, float slot, float fix_scale, float fix_voffset) = #357; 
+
 /////////////////////////////////////////////////
 // Write* Functions
 /////////////////////////////////////////////////

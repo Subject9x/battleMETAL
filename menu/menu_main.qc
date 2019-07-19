@@ -29,6 +29,10 @@ void() m_init={
   UI_KEYBIND_ACTIVE = FALSE;
   SUB_MENU = FALSE;
   
+  FONT_NUM_ROBOT_THIN = loadfont( "robot_thin", "gfx/fonts/Roboto_Thin", "6 8 10 12 14 18", FONT_USER, FALSE, FALSE);
+  FONT_NUM_ROBOT_LIGHT = loadfont( "robot_light", "gfx/fonts/Roboto_Light", "6 8 10 12 14 18",  FONT_USER+1, FALSE, FALSE);
+  FONT_NUM_ROBOT_REGULAR = loadfont( "robot_regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 14 18", FONT_USER+2, FALSE, FALSE);
+  
   //setup textfield key filter;
   menu_ini_txtfilter();
 };
@@ -126,8 +130,8 @@ void(float width, float height) m_draw={
   VIEW_MAX_y = cvar("vid_conheight");
   VIEW_MAX_z = cvar("vid_pixelheight");
   
-  VIEW_CTR_x = VIEW_CTR_x / 2;
-  VIEW_CTR_y = VIEW_CTR_y / 2;
+  VIEW_CTR_x = VIEW_MAX_x / 2;
+  VIEW_CTR_y = VIEW_MAX_y / 2;
   VIEW_MPOS = getmousepos();
   VIEW_ACT_x = cvar("vid_width");
   VIEW_ACT_y = cvar("vid_height");
@@ -208,7 +212,7 @@ void(float width, float height) m_draw={
 };
 
 /*
-  Quake C api hook - called, I believe when 'togglemenu' console command is invoke
+  Quake C api hook - called, I believe when 'togglemenu' console command is invoked
 */
 void(float mode) m_toggle={
   

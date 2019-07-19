@@ -56,6 +56,7 @@ float UI_FLAG_TXTFIELD_FUNC = 1024;
 .float len; //used if needed to track char len of entity.
 .string data_text;
 .float subid; //sub menu, used sparingly
+.vector size; //used to size elements
 
 //some of this ported over from ui_defs in the client code
 float(vector mpos, vector org, vector sz) menu_checkMouseInBounds;

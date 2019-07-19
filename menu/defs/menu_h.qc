@@ -1,4 +1,5 @@
 /*
+battleMETAL
   author: Peter Roohr
   date: 04/11/2018
   overview: header for menu system
@@ -37,6 +38,11 @@ float M_RESET   = 20;
 float M_MODS    = 21;
 float M_HELP    = 22;
 float M_CREDITS  = 23;
+
+float drawfont_prev;
+float FONT_NUM_ROBOT_THIN;
+float FONT_NUM_ROBOT_LIGHT;
+float FONT_NUM_ROBOT_REGULAR;
 
 string MAPS_COOP[128];
 string MAPS_TDM[128];

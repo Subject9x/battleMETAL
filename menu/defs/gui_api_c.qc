@@ -1,7 +1,8 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 03/8/2017
+mod: 07/19/2019
 Overview: GUI API class file
 */
 
@@ -18,19 +19,12 @@ vector(float pcx, float pcy) gui_percentToPixel={
   local vector pixel;
   pixel_x = VIEW_MAX_x * pcx;
   pixel_y = VIEW_MAX_y * pcy;
+  pixel_z = 0;
   return pixel;
 };
 
-float(float pcx) gui_percentX={
-  return (VIEW_MAX_x * pcx);
-};
-
-float(float pcy) gui_percentY={
-  return (VIEW_MAX_y * pcy);
-}; 
-
 //Raw is for dynamically generated values
-//the UI was aligned on a 640x480 (console size of 1280x960) display
+//the UI was aligned on a 1280x960 display
 vector(float pcx, float pcy) gui_percentToPixelRaw={
   local vector pct;
   if(pcx < 0){
@@ -52,9 +46,25 @@ vector(float pcx, float pcy) gui_percentToPixelRaw={
   return gui_percentToPixel(pct_x, pct_y);
 };
 
-//oops
 vector(vector p) gui_percentToPixelRawVec={
-  return gui_percentToPixelRaw(p_x, p_y);
+  local vector pct;
+  if(p_x < 0){
+    pct_x = 0 - p_x;
+    pct_x = pct_x / 640;
+    pct_x = 0 - pct_x;
+  }
+  else{
+    pct_x = p_x / 640;
+  }
+  if(p_y < 0){
+    pct_y = 0 - p_y;
+    pct_y = pct_y / 480;
+    pct_y = 0 - pct_y;
+  }
+  else{
+    pct_y = p_y / 480;
+  }
+  return gui_percentToPixel(pct_x, pct_y);
 };
 
 float(float pcx) gui_percentXRaw={
@@ -62,27 +72,28 @@ float(float pcx) gui_percentXRaw={
   if(pcx < 0){
     pcx = pcx * -1;
     pct = pcx / 640;
-    pct = gui_percentX(pct);
+    pct = pct * VIEW_MAX_x;
     pct = pct * -1;
   }
   else{
     pct = pcx / 640;
-    pct = gui_percentX(pct);
+    pct = pct * VIEW_MAX_x;
   }
   return pct;
 };
+
 
 float(float pcy) gui_percentYRaw={
   local float pct;
   if(pcy < 0){
     pcy = pcy * -1;
     pct = pcy / 480;
-    pct = gui_percentY(pct);
+    pct = pct * VIEW_MAX_y;
     pct = pct * -1;
   }
   else{
     pct = pcy / 480;
-    pct = gui_percentY(pct);
+    pct = pct * VIEW_MAX_y;
   }
   return pct;
 };

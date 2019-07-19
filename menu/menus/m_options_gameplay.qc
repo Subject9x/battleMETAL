@@ -1,8 +1,12 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/17/2018
-Overview: options - gameplay menu
+mod: 07/19/2019
+Overview: 
+  options - gameplay menu
+    fun and helpful tweaks to the game experience like:
+      showing FPS counter, adjusting HUD color and reticles.
 */
 
 //gameplay Globals
@@ -256,7 +260,7 @@ void() click_gameplay_hudcolor_pr={
 void() m_gameplay_i={
   gameplay_title = lbl_img('10 100', '1 1 0', IMG_OPTION_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, (UI_FLAG_SIZE_IMG) );
   
-  gameplay_fov_lbl = lbl_text('190 133', '9 9 0', strzone(ftos(cvar("fov"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_fov_lbl = lbl_text('190 133', '14 14 0', strzone(ftos(cvar("fov"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_fov_lbl.len = cvar("fov");
   gameplay_fov_more = btn_img_callback('222 132', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fov_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_fov_less = btn_img_callback('176 132', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fov_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
@@ -268,10 +272,10 @@ void() m_gameplay_i={
     gameplay_fov_more.drawme = FALSE;
   }
   
-  gameplay_datetime_lbl = lbl_text('190 149', '9 9 0', strzone(menu_float_bool(cvar("showdate"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_datetime_lbl = lbl_text('190 155', '14 14 0', strzone(menu_float_bool(cvar("showdate"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_datetime_lbl.len = cvar("showdate");
-  gameplay_datetime_on = btn_img_callback('222 148', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_date_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_datetime_off = btn_img_callback('176 148', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_date_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_datetime_on = btn_img_callback('222 154', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_date_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_datetime_off = btn_img_callback('176 154', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_date_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gameplay_datetime_lbl.len){
     gameplay_datetime_on.drawme = FALSE;
@@ -280,10 +284,10 @@ void() m_gameplay_i={
     gameplay_datetime_off.drawme = FALSE;
   }
    
-  gameplay_fps_lbl = lbl_text('190 162', '9 9 0', strzone(menu_float_bool(cvar("showfps"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_fps_lbl = lbl_text('190 177', '14 14 0', strzone(menu_float_bool(cvar("showfps"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_fps_lbl.len = cvar("showfps");
-  gameplay_fps_on = btn_img_callback('222 162', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fps_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_fps_off = btn_img_callback('176 162', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fps_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_fps_on = btn_img_callback('222 176', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fps_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_fps_off = btn_img_callback('176 176', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_fps_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(gameplay_fps_lbl.len){
     gameplay_fps_on.drawme = FALSE;
@@ -294,17 +298,17 @@ void() m_gameplay_i={
   
   local float clean;
   clean = cvar("crosshair");
-  gameplay_crosshair_lbl = lbl_text('190 177', '9 9 0', strzone(sprintf("%0.0f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
-  gameplay_crosshair_lbl.len = cvar("cl_hud_alpha");
+  gameplay_crosshair_lbl = lbl_text('200 199', '14 14 0', strzone(sprintf("%0.0f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_crosshair_lbl.len = cvar("crosshair");
   gameplay_crosshair_lbl.image1 = gameplay_crosshair_img( cvar("crosshair") );
-  gameplay_crosshair_nx = btn_img_callback('230 177', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_crosshair_pr = btn_img_callback('176 177', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_crosshair_nx = btn_img_callback('230 197', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_crosshair_pr = btn_img_callback('176 197', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_crosshair_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   clean = cvar("cl_hud_alpha");
-  gameplay_hudalpha_lbl = lbl_text('190 190', '9 9 0', strzone(sprintf("%0.2f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudalpha_lbl = lbl_text('190 221', '14 14 0', strzone(sprintf("%0.2f", clean)), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_hudalpha_lbl.len = cvar("cl_hud_alpha");
-  gameplay_hudalpha_up = btn_img_callback('230 190', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_hudalpha_dn = btn_img_callback('176 190', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudalpha_up = btn_img_callback('230 220', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_up, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudalpha_dn = btn_img_callback('176 220', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudalpha_dn, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if( gameplay_hudalpha_lbl.len < 0.1 ){
     gameplay_hudalpha_dn.drawme = FALSE;
@@ -315,13 +319,13 @@ void() m_gameplay_i={
   
   local string colr;
   colr = gameplay_hudcolor_name( cvar("cl_hud_color") );
-  gameplay_hudcolor_lbl = lbl_text('190 207', '9 9 0', strzone(colr), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hudcolor_lbl = lbl_text('190 243', '14 14', strzone(colr), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
   gameplay_hudcolor_lbl.len = cvar("cl_hud_color");
   gameplay_hudcolor_lbl.color_x = cvar("crosshair_color_red");
   gameplay_hudcolor_lbl.color_y = cvar("crosshair_color_green");
   gameplay_hudcolor_lbl.color_z = cvar("crosshair_color_blue");
-  gameplay_hudcolor_nx = btn_img_callback('245 207', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  gameplay_hudcolor_pr = btn_img_callback('176 207', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudcolor_nx = btn_img_callback('245 242', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hudcolor_pr = btn_img_callback('176 242', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   gameplay_back = btn_img_callback('10 230 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
@@ -343,12 +347,12 @@ void() m_gameplay_f={
 void() m_gameplay_d={
   local vector crossColor;
   
-  gui_renderString("Field of View :", gui_percentToPixelRawVec('45 136'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-  gui_renderString("Show Date/Time :", gui_percentToPixelRawVec('37 150'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-  gui_renderString("Show FPS :", gui_percentToPixelRawVec('85 164'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-  gui_renderString("Crosshair Style:", gui_percentToPixelRawVec('37 177'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-  gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('85 190'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-  gui_renderString("HUD Color:", gui_percentToPixelRawVec('85 207'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  gui_renderString("Field of View:", gui_percentToPixelRawVec('96 133'), CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("Show Date/Time:", gui_percentToPixelRawVec('74 155'), CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("Show FPS:", gui_percentToPixelRawVec('110 177'), CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("Crosshair Style:", gui_percentToPixelRawVec('83 197'), CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('108 221'), CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("HUD Color:", gui_percentToPixelRawVec('108 243'), CLR_DEF_WHITE, '14 14 0', 1, 0);
 
   crossColor_x = cvar("crosshair_color_red");
   crossColor_y = cvar("crosshair_color_green");
