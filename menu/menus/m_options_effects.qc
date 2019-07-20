@@ -1,8 +1,10 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/19/2018
-Overview: multiplayer join game menu
+mod: 07/20/2019
+Overview: 
+  Graphical Details settings
 */
 //effects Globals
 entity effects_title;
@@ -198,6 +200,7 @@ void() click_effects_particles_on={
   effects_particles_quality_lbl.drawme = TRUE;
   effects_particles_quality_more.drawme = TRUE;
   effects_particles_quality_less.drawme = TRUE;
+  effects_particles_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_particles_off={
   effects_particles_lbl.len = 0;
@@ -208,6 +211,7 @@ void() click_effects_particles_off={
   effects_particles_quality_lbl.drawme = FALSE;
   effects_particles_quality_more.drawme = FALSE;
   effects_particles_quality_less.drawme = FALSE;
+  effects_particles_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effets_particles_quality_more={
@@ -273,6 +277,7 @@ void() click_effects_bulletimpact_on={
   effects_bullet_impact_lbl.label = strzone(menu_float_bool(effects_bullet_impact_lbl.len));
   effects_bullet_impact_on.drawme = FALSE;
   effects_bullet_impact_off.drawme = TRUE;
+  effects_bullet_impact_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_bulletimpact_off={
   effects_bullet_impact_lbl.len = 0;
@@ -280,6 +285,7 @@ void() click_effects_bulletimpact_off={
   effects_bullet_impact_lbl.label = strzone(menu_float_bool(effects_bullet_impact_lbl.len));
   effects_bullet_impact_on.drawme = TRUE;
   effects_bullet_impact_off.drawme = FALSE;
+  effects_bullet_impact_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_smoke_on={
@@ -288,6 +294,7 @@ void() click_effects_smoke_on={
   effects_smoke_lbl.label = strzone(menu_float_bool(effects_smoke_lbl.len));
   effects_smoke_on.drawme = FALSE;
   effects_smoke_off.drawme = TRUE;
+  effects_smoke_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_smoke_off={
   effects_smoke_lbl.len = 0;
@@ -295,6 +302,7 @@ void() click_effects_smoke_off={
   effects_smoke_lbl.label = strzone(menu_float_bool(effects_smoke_lbl.len));
   effects_smoke_on.drawme = TRUE;
   effects_smoke_off.drawme = FALSE;
+  effects_smoke_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_sparks_on={
@@ -303,6 +311,7 @@ void() click_effects_sparks_on={
   effects_sparks_lbl.label = strzone(menu_float_bool(effects_sparks_lbl.len));
   effects_sparks_on.drawme = FALSE;
   effects_sparks_off.drawme = TRUE;
+  effects_sparks_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_sparks_off={
   effects_sparks_lbl.len = 0;
@@ -310,6 +319,7 @@ void() click_effects_sparks_off={
   effects_sparks_lbl.label = strzone(menu_float_bool(effects_sparks_lbl.len));
   effects_sparks_on.drawme = TRUE;
   effects_sparks_off.drawme = FALSE;
+  effects_sparks_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_bubbles_on={
@@ -318,6 +328,7 @@ void() click_effects_bubbles_on={
   effects_bubbles_lbl.label = strzone(menu_float_bool(effects_bubbles_lbl.len));
   effects_bubbles_on.drawme = FALSE;
   effects_bubbles_off.drawme = TRUE;
+  effects_bubbles_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_bubbles_off={
   effects_bubbles_lbl.len = 0;
@@ -325,6 +336,7 @@ void() click_effects_bubbles_off={
   effects_bubbles_lbl.label = strzone(menu_float_bool(effects_bubbles_lbl.len));
   effects_bubbles_on.drawme = TRUE;
   effects_bubbles_off.drawme = FALSE;
+  effects_bubbles_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_rain_on={
@@ -333,13 +345,15 @@ void() click_effects_rain_on={
   effects_rain_lbl.label = strzone(menu_float_bool(effects_rain_lbl.len));
   effects_rain_on.drawme = FALSE;
   effects_rain_off.drawme = TRUE;
+  effects_rain_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_rain_off={
   effects_rain_lbl.len = 0;
   strunzone(effects_rain_lbl.label);
   effects_rain_lbl.label = strzone(menu_float_bool(effects_rain_lbl.len));
-  effects_rain_on.drawme = FALSE;
-  effects_rain_off.drawme = TRUE;
+  effects_rain_on.drawme = TRUE;
+  effects_rain_off.drawme = FALSE;
+  effects_rain_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_snow_on={
@@ -348,6 +362,7 @@ void() click_effects_snow_on={
   effects_snow_lbl.label = strzone(menu_float_bool(effects_snow_lbl.len));
   effects_snow_on.drawme = FALSE;
   effects_snow_off.drawme = TRUE;
+  effects_snow_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_snow_off={
   effects_snow_lbl.len = 0;
@@ -355,6 +370,7 @@ void() click_effects_snow_off={
   effects_snow_lbl.label = strzone(menu_float_bool(effects_snow_lbl.len));
   effects_snow_on.drawme = TRUE;
   effects_snow_off.drawme = FALSE;
+  effects_snow_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_interpol_model_on={
@@ -363,6 +379,7 @@ void() click_effects_interpol_model_on={
   effects_model_interpol_lbl.label = strzone(menu_float_bool(effects_model_interpol_lbl.len));
   effects_model_interpol_on.drawme = FALSE;
   effects_model_interpol_off.drawme = TRUE;
+  effects_model_interpol_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_interpol_model_off={
   effects_model_interpol_lbl.len = 0;
@@ -370,6 +387,7 @@ void() click_effects_interpol_model_off={
   effects_model_interpol_lbl.label = strzone(menu_float_bool(effects_model_interpol_lbl.len));
   effects_model_interpol_on.drawme = TRUE;
   effects_model_interpol_off.drawme = FALSE;
+  effects_model_interpol_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_interpol_sprite_on={
@@ -378,6 +396,7 @@ void() click_effects_interpol_sprite_on={
   effects_sprite_interpol_lbl.label = strzone(menu_float_bool(effects_sprite_interpol_lbl.len));
   effects_sprite_interpol_on.drawme = FALSE;
   effects_sprite_interpol_off.drawme = TRUE;
+  effects_sprite_interpol_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_interpol_sprite_off={
   effects_sprite_interpol_lbl.len = 0;
@@ -385,6 +404,7 @@ void() click_effects_interpol_sprite_off={
   effects_sprite_interpol_lbl.label = strzone(menu_float_bool(effects_sprite_interpol_lbl.len));
   effects_sprite_interpol_on.drawme = TRUE;
   effects_sprite_interpol_off.drawme = FALSE;
+  effects_sprite_interpol_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_interpol_flicker_on={
@@ -393,6 +413,7 @@ void() click_effects_interpol_flicker_on={
   effects_flicker_interpol_lbl.label = strzone(menu_float_bool(effects_sprite_interpol_lbl.len));
   effects_flicker_interpol_on.drawme = FALSE;
   effects_flicker_interpol_off.drawme = TRUE;
+  effects_flicker_interpol_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_effects_interpol_flicker_off={
   effects_flicker_interpol_lbl.len = 0;
@@ -400,6 +421,7 @@ void() click_effects_interpol_flicker_off={
   effects_flicker_interpol_lbl.label = strzone(menu_float_bool(effects_flicker_interpol_lbl.len));
   effects_flicker_interpol_on.drawme = TRUE;
   effects_flicker_interpol_off.drawme = FALSE;
+  effects_flicker_interpol_lbl.color = CLR_DEF_GRAY_H;
 };
 
 void() click_effects_back{
@@ -427,7 +449,7 @@ void() click_effects_save={
   cvar_set("r_lerpsprites", ftos(effects_sprite_interpol_lbl.len));
   cvar_set("r_lerplightstyles", ftos(effects_flicker_interpol_lbl.len));
   cvar_set("saved1", "0");
-  cmd("saveconfig");
+  cmd("saveconfig\n");
   menu_clear_items(M_STATE);
   m_graphics_f();
 };
@@ -437,17 +459,17 @@ void() m_effects_i={
   effects_title = lbl_img('10 25', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, (UI_FLAG_SIZE_IMG) );
   
   //particles
-  effects_particles_lbl = lbl_text('215 93', '9 9 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_particles_lbl = lbl_text('150 83', '14 14  0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
     effects_particles_lbl.len = cvar("cl_particles");
-  effects_particles_on = btn_img_callback('250 92 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_particles_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_particles_off = btn_img_callback('204 92 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_particles_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_particles_on = btn_img_callback('175 83 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_particles_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_particles_off = btn_img_callback('138 83 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_particles_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  effects_particles_quality_lbl = lbl_text('215 107', '9 9 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_particles_quality_lbl = lbl_text('150 103', '14 14  0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
     effects_particles_quality_lbl.len = effects_particle_quality_get_val();
     effects_particles_quality_lbl.label = strzone(effects_particle_quality_get(effects_particles_quality_lbl.len));
   
-  effects_particles_quality_more = btn_img_callback('275 106 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effets_particles_quality_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_particles_quality_less = btn_img_callback('204 106 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effets_particles_quality_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_particles_quality_more = btn_img_callback('200 103 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effets_particles_quality_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_particles_quality_less = btn_img_callback('138 103 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effets_particles_quality_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(cvar("cl_particles")){
     effects_particles_lbl.label = strzone("ON");
@@ -468,12 +490,12 @@ void() m_effects_i={
   }
 
   //decals
-  effects_decals_select_lbl = lbl_text('215 121', '9 9 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_decals_select_lbl = lbl_text('150 123', '14 14  0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_decals_select_lbl.len = effects_decals_get_val();
   effects_decals_select_lbl.label = strzone(effects_decals_mode_select(effects_decals_select_lbl.len));
   
-  effects_decals_select_next = btn_img_callback('275 120', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_decals_select_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_decals_select_prev = btn_img_callback('204 120', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_decals_select_prev, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_decals_select_next = btn_img_callback('200 123', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_decals_select_next, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_decals_select_prev = btn_img_callback('138 123', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_decals_select_prev, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_decals_select_lbl.len == 0){
     effects_decals_select_prev.drawme = FALSE;
@@ -483,10 +505,10 @@ void() m_effects_i={
   }
   
   //Bullet impact options
-  effects_bullet_impact_lbl = lbl_text('215 134', '9 9 0', strzone(menu_float_bool(cvar("cl_particles_bulletimpacts"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_bullet_impact_lbl = lbl_text('150 143', '14 14  0', strzone(menu_float_bool(cvar("cl_particles_bulletimpacts"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_bullet_impact_lbl.len = cvar("cl_particles_bulletimpacts");
-  effects_bullet_impact_on = btn_img_callback('250 133', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_bulletimpact_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_bullet_impact_off = btn_img_callback('204 133', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_bulletimpact_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_bullet_impact_on = btn_img_callback('175 143', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_bulletimpact_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_bullet_impact_off = btn_img_callback('138 143', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_bulletimpact_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_bullet_impact_lbl.len){
     effects_bullet_impact_on.drawme = FALSE;
@@ -496,10 +518,10 @@ void() m_effects_i={
   }
   
   //Smoke options
-  effects_smoke_lbl = lbl_text('215 149', '9 9 0', strzone(menu_float_bool(cvar("cl_particles_smoke"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_smoke_lbl = lbl_text('150 163', '14 14  0', strzone(menu_float_bool(cvar("cl_particles_smoke"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_smoke_lbl.len = cvar("cl_particles_smoke");
-  effects_smoke_on = btn_img_callback('250 148', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_smoke_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_smoke_off = btn_img_callback('204 148', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_smoke_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_smoke_on = btn_img_callback('175 163', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_smoke_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_smoke_off = btn_img_callback('138 163', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_smoke_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_smoke_lbl.len){
     effects_smoke_on.drawme = FALSE;
@@ -509,10 +531,10 @@ void() m_effects_i={
   }
 
   //Sparks options
-  effects_sparks_lbl = lbl_text('215 163', '9 9 0', strzone(menu_float_bool(cvar("cl_particles_sparks"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_sparks_lbl = lbl_text('150 183', '14 14 0', strzone(menu_float_bool(cvar("cl_particles_sparks"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_sparks_lbl.len = cvar("cl_particles_sparks");
-  effects_sparks_on = btn_img_callback('250 162', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_sparks_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_sparks_off = btn_img_callback('204 162', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_sparks_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_sparks_on = btn_img_callback('175 183', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_sparks_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_sparks_off = btn_img_callback('138 183', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_sparks_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_sparks_lbl.len){
     effects_sparks_on.drawme = FALSE;
@@ -522,10 +544,10 @@ void() m_effects_i={
   }
 
   //bubble options
-  effects_bubbles_lbl = lbl_text('215 177', '9 9 0', strzone(menu_float_bool(cvar("cl_particles_bubbles"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_bubbles_lbl = lbl_text('150 203', '14 14  0', strzone(menu_float_bool(cvar("cl_particles_bubbles"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_bubbles_lbl.len = cvar("cl_particles_bubbles");
-  effects_bubbles_on = btn_img_callback('250 176', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_bubbles_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_bubbles_off = btn_img_callback('204 176', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_bubbles_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_bubbles_on = btn_img_callback('175 203', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_bubbles_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_bubbles_off = btn_img_callback('138 203', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_bubbles_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_bubbles_lbl.len){
     effects_bubbles_on.drawme = FALSE;
@@ -535,10 +557,10 @@ void() m_effects_i={
   }
 
   //rain options
-  effects_rain_lbl = lbl_text('215 191', '9 9 0', strzone(menu_float_bool(cvar("cl_particles_rain"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_rain_lbl = lbl_text('150 223', '14 14  0', strzone(menu_float_bool(cvar("cl_particles_rain"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_rain_lbl.len = cvar("cl_particles_rain");
-  effects_rain_on = btn_img_callback('250 190', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_rain_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_rain_off = btn_img_callback('204 190', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_rain_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_rain_on = btn_img_callback('175 223', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_rain_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_rain_off = btn_img_callback('138 223', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_rain_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_rain_lbl.len){
     effects_rain_on.drawme = FALSE;
@@ -548,10 +570,10 @@ void() m_effects_i={
   }
   
   //rain options
-  effects_snow_lbl = lbl_text('215 205', '9 9 0', strzone(menu_float_bool(cvar("cl_particles_snow"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_snow_lbl = lbl_text('150 243', '14 14 0', strzone(menu_float_bool(cvar("cl_particles_snow"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_snow_lbl.len = cvar("cl_particles_snow");
-  effects_snow_on = btn_img_callback('250 204', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_snow_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_snow_off = btn_img_callback('204 204', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_snow_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_snow_on = btn_img_callback('175 243', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_snow_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_snow_off = btn_img_callback('138 243', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_snow_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_snow_lbl.len){
     effects_snow_on.drawme = FALSE;
@@ -561,10 +583,10 @@ void() m_effects_i={
   }
   
   //animation
-  effects_model_interpol_lbl = lbl_text('215 219', '9 9 0', strzone(menu_float_bool(cvar("r_lerpmodels"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_model_interpol_lbl = lbl_text('150 263', '14 14  0', strzone(menu_float_bool(cvar("r_lerpmodels"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_model_interpol_lbl.len = cvar("r_lerpmodels");
-  effects_model_interpol_on = btn_img_callback('250 218', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_model_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_model_interpol_off = btn_img_callback('204 218', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_model_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_model_interpol_on = btn_img_callback('175 263', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_model_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_model_interpol_off = btn_img_callback('138 263', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_model_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_model_interpol_lbl.len){
     effects_model_interpol_on.drawme = FALSE;
@@ -573,10 +595,10 @@ void() m_effects_i={
     effects_model_interpol_off.drawme = FALSE;
   }
 
-  effects_sprite_interpol_lbl = lbl_text('215 233', '9 9 0', strzone(menu_float_bool(cvar("r_lerpsprites"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_sprite_interpol_lbl = lbl_text('150 283', '14 14  0', strzone(menu_float_bool(cvar("r_lerpsprites"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_sprite_interpol_lbl.len = cvar("r_lerpsprites");
-  effects_sprite_interpol_on = btn_img_callback('250 232', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_sprite_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_rain_off = btn_img_callback('204 232', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_sprite_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_sprite_interpol_on = btn_img_callback('175 283', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_sprite_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_sprite_interpol_off = btn_img_callback('138 283', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_sprite_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_sprite_interpol_lbl.len){
     effects_sprite_interpol_on.drawme = FALSE;
@@ -585,10 +607,10 @@ void() m_effects_i={
     effects_sprite_interpol_off.drawme = FALSE;
   }
 
-  effects_flicker_interpol_lbl = lbl_text('215 247', '9 9 0', strzone(menu_float_bool(cvar("r_lerplightstyles"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
+  effects_flicker_interpol_lbl = lbl_text('150 303', '14 14 0', strzone(menu_float_bool(cvar("r_lerplightstyles"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, 1, 0);
   effects_flicker_interpol_lbl.len = cvar("r_lerplightstyles");
-  effects_flicker_interpol_on = btn_img_callback('250 246', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_flicker_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_flicker_interpol_off = btn_img_callback('204 246', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_flicker_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_flicker_interpol_on = btn_img_callback('175 303', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_flicker_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_flicker_interpol_off = btn_img_callback('138 303', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_interpol_flicker_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
   if(effects_flicker_interpol_lbl.len){
     effects_flicker_interpol_on.drawme = FALSE;
@@ -598,8 +620,8 @@ void() m_effects_i={
   }
 
   //operations
-  effects_back = btn_img_callback('25 282 0', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  effects_save = btn_img_callback('285 282 0', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_save, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_back = btn_img_callback('25 330 0', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  effects_save = btn_img_callback('285 330 0', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_EFFECT, click_effects_save, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };
 
 /*
@@ -616,21 +638,27 @@ void() m_effects_f={
   menu_d functions are the render functions, inside m_draw, there's a select case
   running on M_STATE to determine which menu_d to execute.
 */
-void() m_effects_d={  
-  gui_renderString("[- GRAPHICS SETTINGS -]", gui_percentToPixelRawVec('190 64'), CLR_DEF_WHITE, '10 10 0', 1, 0);
+void() m_effects_d={
   
-    gui_renderString("Particle Effects :", gui_percentToPixelRawVec('53 94'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Particle Quality :", gui_percentToPixelRawVec('53 108'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Decal Mode :", gui_percentToPixelRawVec('101 122'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Bullet Impact :", gui_percentToPixelRawVec('77 135'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Smoke :", gui_percentToPixelRawVec('141 150'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Sparks :", gui_percentToPixelRawVec('133 164'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Bubbles :", gui_percentToPixelRawVec('125 178'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Rain :", gui_percentToPixelRawVec('149 192'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Snow :", gui_percentToPixelRawVec('149 206'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Model Interpolation :", gui_percentToPixelRawVec('29 220'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Sprite Interpolation :", gui_percentToPixelRawVec('21 234'), CLR_DEF_WHITE, '8 8 0', 1, 0);
-    gui_renderString("Light Interpolation :", gui_percentToPixelRawVec('29 248'), CLR_DEF_WHITE, '8 8 0', 1, 0);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+  gui_renderString("- Graphics Settings -", gui_percentToPixelRawVec('190 64'), CLR_DEF_WHITE, '16 16 0', 1, 0);
+  
+    gui_renderString("Particle Effects:", gui_percentToPixelRawVec('53 83'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Particle Quality:", gui_percentToPixelRawVec('53 103'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Decal Mode:", gui_percentToPixelRawVec('69 123'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bullet Impact:", gui_percentToPixelRawVec('62 143'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Smoke:", gui_percentToPixelRawVec('91 163'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Sparks:", gui_percentToPixelRawVec('91 183'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Bubbles:", gui_percentToPixelRawVec('86 203'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Rain:", gui_percentToPixelRawVec('102 223'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Snow:", gui_percentToPixelRawVec('98 243'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Model Interpolation:", gui_percentToPixelRawVec('37 263'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Sprite Interpolation:", gui_percentToPixelRawVec('38 283'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Light Interpolation:", gui_percentToPixelRawVec('41 303'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+
+  drawfont = drawfont_prev;
 
   local entity widget;
   widget = findchainfloat(menuId, M_OPTIONS_EFFECT);
