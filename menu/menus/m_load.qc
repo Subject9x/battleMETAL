@@ -1,7 +1,8 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/14/2018
+mod: 07/20/2019
 Overview: load campaign menu
 */
 
@@ -22,15 +23,17 @@ void() click_load_back={
 };
 
 void() click_load_loadgame={
-  menu_clear_items(M_STATE);
-  menu_exit_togame();
-  cvar_set("saveslot", ftos(self.data_bind));
-  cvar_set("gamemode", ftos(1));
-  cvar_set("coop", ftos(0));
-  cvar_set("deathmatch", ftos(0));
-  tokenizebyseparator(GAME_SAVES_DRAWNAME[self.data_bind], "  ");
-  
-  cmd("map ", strcat(argv(1),"\n"));
+  if( GAME_SAVES_DRAWNAME[self.data_bind] != "- NEW SAVE SLOT -"){
+    menu_clear_items(M_STATE);
+    menu_exit_togame();
+    cvar_set("saveslot", ftos(self.data_bind));
+    cvar_set("gamemode", ftos(1));
+    cvar_set("coop", ftos(0));
+    cvar_set("deathmatch", ftos(0));
+    tokenizebyseparator(GAME_SAVES_DRAWNAME[self.data_bind], "  ");
+    
+    cmd("map ", strcat(argv(1),"\n"));
+  }
 };
 
 // ini function, called by '_f' function as a setup func
@@ -46,7 +49,7 @@ void() m_load_i={
   itr = 0;
   
   if(GAME_SAVES[itr] != ""){
-    load_list = btn_text_callback(start,'8 8 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+    load_list = btn_text_callback(start,'14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
     load_list.data_bind = itr; //databind
     itr = itr + 1;
     if(GAME_SAVES[itr] != ""){
@@ -54,8 +57,8 @@ void() m_load_i={
         local entity list;
         local vector next;
         next = start;
-        next_y = next_y + (itr * 10);
-        list = btn_text_callback(next, '8 8 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+        next_y = next_y + (itr * 20);
+        list = btn_text_callback(next, '14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
         list.data_bind = itr; //databind
         itr = itr + 1;
       }
