@@ -2121,14 +2121,14 @@ gravity -0.005
   tex 33 33
   size 2 3
   sizeincrease 1
-  alpha 96 128 120
+  alpha 96 128 75
 
   //TE_SHIELD_HIT_HIGH - BLUE LIGHT
   effect TE_SHIELD_HIT_HIGH
   lightradius 50
   lightradiusfade 100
   lightcolor 0 1 1
-  lightshadow 0.05
+  lightshadow 0.1
   notunderwater
 
 //==========================================

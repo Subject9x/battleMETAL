@@ -27,6 +27,7 @@ void() data_ini_monitor_={
   self.energyRate= 3;
   self.shieldMax = 600;
   self.shieldRate= 0.7;
+  self.startupDelay = 9;
 //=====================================
  
 //RADAR================================

@@ -27,6 +27,7 @@ void() data_ini_balaket_={
   self.energyRate= 3.5;
   self.shieldMax = 300;
   self.shieldRate= 2;
+  self.startupDelay = 5;
 //=====================================
  
 //RADAR================================

@@ -24,6 +24,7 @@ Overview:
 .float shield;        //current amount of shields
 .float shieldRate;    //shield recharge rate
 .float shieldHitDelay;//cool down before shield recharge begins
+.float startupDelay; //time in game seconds for unit to activate after spawn.
 
 //Weapon Spread Mechanics
 .vector spreadDefault;

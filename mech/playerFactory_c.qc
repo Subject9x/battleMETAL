@@ -64,9 +64,9 @@ void() player_makeMech={
     self.power_timer = time + POWERUP_DEBUG;
   }
   else{
-    self.power_timer = time + 7;
+    self.power_timer = time + self.startupDelay;
   }
-  self.power_timer_segment = time + 0.007;
+  self.power_timer_segment = time + (self.startupDelay / 100 );
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
   
   client_push_player_info();

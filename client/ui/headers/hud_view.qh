@@ -45,6 +45,11 @@ float HUD_UID_ARM_TARG_BLD  = 16;
   float HUD_WARN_MARK;
   float HUD_WARN_TIME = 2;
   
+  float HUD_ALPHA_TIME;
+  float HUD_ALPHA_DELTA;
+  float HUD_ALPHA_RATE;
+  float HUD_ALPHA_INC;
+  
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -61,7 +66,6 @@ vector UI_DATA_COLOR2[32];
 string UI_DATA_IMG[32]; //background image if needed
 string UI_DATA_LABEL[32];
 float UI_DATA_WEPBIT[32];
-
 //==========================================
 
 float HUD_PITCH_MIN;

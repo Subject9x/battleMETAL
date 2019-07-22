@@ -27,6 +27,7 @@ void() data_ini_matok_={
   self.energyRate  = 4.25;
   self.shieldMax   = 425;
   self.shieldRate  = 1.5;
+  self.startupDelay = 7;
 //=====================================
  
 //RADAR================================

@@ -515,7 +515,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
   
   if( HUD_DATA_weapon.icon != ""){
-    drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, 1, 0);
+    drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
   ofs_x = imgSz_x / 2;
@@ -559,7 +559,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   iofs_y = imgSz_y;
   iofs = gui_calcAlignCustom(iofs, (VIEW_CTX | VIEW_CTY), torg);
   if( HUD_DATA_weapon.icon != ""){
-    drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, 1, 0);
+    drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
   ofs_x = imgSz_x / 2;
@@ -927,12 +927,33 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
 };
 
 /*
-  Main API call for new text-based HUD sys
+  Main API call for new text-based HUD system
 */
 void() data_hud_frame={
   local float uid;
   local float hasTarget;
   local float accuracy;
+  
+  //Alpha fade-in of HUD as mech powers up.
+  if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
+    if(HUD_ALPHA_TIME <= 0){
+      HUD_ALPHA_TIME = time + UI_HANGAR_DATA_mech.startupDelay;
+      HUD_ALPHA_RATE = cvar("cl_hud_alpha") * (0.01 / UI_HANGAR_DATA_mech.startupDelay);
+      HUD_ALPHA = 0;
+      HUD_ALPHA_INC = time + 0.01;
+    }
+  }
+  if( HUD_ALPHA != cvar("cl_hud_alpha") ){
+    if( time < HUD_ALPHA_TIME ){
+      if( time > HUD_ALPHA_INC ){
+        HUD_ALPHA = HUD_ALPHA + HUD_ALPHA_RATE;
+        HUD_ALPHA_INC = time + 0.01;
+      }
+    }
+    else{
+      HUD_ALPHA = cvar("cl_hud_alpha");
+    }
+  }
   
   accuracy = getstatf(STAT_ACCURACY);
   
@@ -1135,6 +1156,7 @@ void() data_hud_frame={
   hud_renderRepairValue(getstatf(STAT_PLR_REP));
   
   hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
+  
 };
 
 /*

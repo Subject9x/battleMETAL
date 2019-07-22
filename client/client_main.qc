@@ -156,18 +156,21 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", ftos(1));
   }
-  HUD_ALPHA = cvar("cl_hud_alpha"); 
-	/*local vector vf_size;
+  //HUD_ALPHA = cvar("cl_hud_alpha");  - TODO - remove;
+  
+	/*
+  local vector vf_size;
 	local vector vf_min;
-	
 	local float chasecam, vid_width, vid_height,vid_conwidth,vid_conheight,vid_pixelheight;
+  
 	vf_size = getpropertyvec(VF_SIZE);
 	vf_min = getpropertyvec(VF_MIN);
-CON_W = vid_conwidth = cvar("vid_conwidth");
+  CON_W = vid_conwidth = cvar("vid_conwidth");
 	CON_H = vid_conheight = cvar("vid_conheight");
 	vid_pixelheight = cvar("vid_pixelheight");
   VIEW_SCALE = (w/h)/10;
-	chasecam = cvar("chase_active") != 0;*/
+	chasecam = cvar("chase_active") != 0;
+  */
 
 	// do any manipulation we want on fov here (weapon zoom, respawn zoom, etc)
 	// nothing right now
@@ -266,7 +269,7 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
         itr = itr + 1;
       }
     }
-    //snd_hud_vfx_armlistener(plr_ct, 1, SND_HUD_VFX_CRITTOR);
+ 
     snd_hud_vfx_armlistener(CLIENT_hp_stor2, 2, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(CLIENT_hp_stor, 4, SND_HUD_VFX_CRITTOR);
     snd_hud_vfx_armlistener(CLIENT_hp_arm2, 8, SND_HUD_VFX_CRITARM);
