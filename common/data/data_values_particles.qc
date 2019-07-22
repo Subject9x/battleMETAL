@@ -27,3 +27,6 @@ float TE_MSN_BOUND = 99;
 
 float TE_AI_VOICE = 100;
 float TE_TARG_KILL = 101;
+
+//Other?
+float TE_MISSION_NAME = 102;

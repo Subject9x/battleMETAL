@@ -236,6 +236,19 @@ void() client_event_boundary={
   }
 };
 
+/*
+  server Mapping = client_sendMissionName();
+  receive map's mission name, and diplay it while the player boots up.
+*/
+void() client_event_mission_name={
+  
+};
+
+/*
+
+*/
+void() client_event_hazard_warn={
+};
 
 void() client_event_targ_kill={
   

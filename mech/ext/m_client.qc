@@ -1,14 +1,16 @@
 /*
-battleMETAL 
-Author: Peter Roohr
+Quake 1**
+Author: iD software
+Overview:
 
-  Client qc
+  Client.qc
   I split the client and player code up because 
   there isn't really a reason both need to be in the same file
   and having to modifiy a 1k line file is a pain in the rear.
-  
-*/
 
+** - this has been modified to be incorporated into battleMETAL and is not compatible with
+      other code bases.
+*/
 
 /*
   very important; parse every client call starting with 'cmd'
@@ -228,6 +230,7 @@ void() PutClientInServer = {
     self.trigOnTarget = spot.trigOnTarget;
     player_makeMech();
     self.count4 = 0;
+    client_sendMissionName();
   }
 
   if (deathmatch || coop)

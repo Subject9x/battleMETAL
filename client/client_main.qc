@@ -131,6 +131,7 @@ void() CSQC_Init =
   FONT_NUM_ROBOT_MEDIUM = loadfont("Roboto_Medium", "gfx/fonts/Roboto_Medium", "8 12 16 32", FONT_USER2, FALSE, FALSE);
   loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, FALSE, FALSE);
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
+  loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)

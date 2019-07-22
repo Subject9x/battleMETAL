@@ -1,5 +1,12 @@
 /*
-  player qc
+Quake 1**
+author: iD software.
+Overview:
+  This is the collection of the Player think() functions originally found in client.qc
+  I decided to separate out player_ functions from client_ functions for my own clarity.
+
+** - this has been modified to be incorporated into battleMETAL and is not compatible with
+      other code bases.
 */
 void() PlayerPreThink = {
   //local	float	mspeed, aspeed;

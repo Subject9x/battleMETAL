@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
@@ -41,6 +41,7 @@ void( entity deploy ) client_send_deploypoint;
 
 void( entity client, string voiceMessage ) client_send_ai_voice;
 void( entity client ) client_send_hud_target_kill;
+void() client_sendMissionName;
 
 //client command layer
 void( float track, float loop) client_playTrack;

@@ -354,6 +354,18 @@ void(float mode) client_sendGameMode={
   stuffcmd(self, cmd);
 };
 
+void() client_sendMissionName={
+  local string name;
+  name = strcat(world.message,"\n");
+  if( world.message ){
+  
+    WriteByte( MSG_ONE, SVC_TEMPENTITY);
+    WriteByte( MSG_ONE, TE_MISSION_NAME );
+    WriteString( MSG_ONE, name);
+  
+  }
+};
+
 /*
 commmand string: cmd mech setwep X Y
   X = WEAPON bitflag id

@@ -7,7 +7,7 @@ mod: 05/23/2019 - another refactor
 Overview: 
   responsible for building all units found in the game.
   This takes common/data/ and binds it to entities.
-  Setups up entity sub-pieces, and attaches weapons.
+  Sets up entity sub-pieces, and attaches weapons.
 */
 
 /*
@@ -276,7 +276,7 @@ void(void() data_ini) build_mech_unit={
   }
   
   //fall_dist = fall velocity, if exceeded, check for slam
-  self.fall_dist = MAX_VEHICLE_SIZE - self.vec_size;
+  self.fall_dist = self.vec_size - MAX_VEHICLE_SIZE;
   self.fall_dist = self.fall_dist * FALL_THRESHOLD;
   
   //fall_slam = fall velocity to check for damage
