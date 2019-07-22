@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 1/26/2018
 Overview: all the miscellaneous shared values between client and server
@@ -119,10 +119,10 @@ float WEAPON9 = 256;
 //     COMBAT STATS
 //============================
 float MAX_VEHICLE_SIZE = 4;
-float FALL_THRESHOLD = 150;  //quake has this set to 300
+float FALL_THRESHOLD = 200;
 float FALL_DMG_MULTIPLIER = 2;
 float FALL_CT_MULTIPLIER = 3;
-float FALL_KILL_MULTIPLIER = 3.5; 
+float FALL_KILL_MULTIPLIER = 3; 
 float FALL_DAMAGE_FRACTION = 0.2;
 float SHIELD_DELAY = 5; //game timer to pause before shields are brought backonline
 float EVADE_DRAIN_PERCENT = 0.75;  //reduce energyRate by this % when unit is Evading

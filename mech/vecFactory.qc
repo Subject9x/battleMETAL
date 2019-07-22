@@ -283,7 +283,7 @@ void(void() data_ini) build_mech_unit={
   self.fall_slam = self.fall_dist * FALL_DMG_MULTIPLIER;
   
   //fall_dmg = actual damage applied
-  self.fall_dmg = FALL_DAMAGE_FRACTION;
+  self.fall_dmg = (MAX_VEHICLE_SIZE - self.vec_size) / MAX_VEHICLE_SIZE ;
   
 };
 

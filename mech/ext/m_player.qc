@@ -196,11 +196,11 @@ void() PlayerPostThink = {
         t_damage( self, world, world, self.health, 0, self.origin, '0 0 0');
       }
       else{
-        local float legDmg, centerTorsoDmg;
         //T_Damage (self, world, world, 5); 
         //sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
         //self.deathtype = "falling";
-        legDmg = self.legs.max_health * self.fall_dmg;
+        local float legDmg, centerTorsoDmg;
+        legDmg = self.legs.max_health * (self.fall_dmg * FALL_DAMAGE_FRACTION);
         t_damage( self, world, world, legDmg, 0, self.legs.origin, '0 0 0');
         if( self.legs.health < (self.legs.max_health * 0.33) ){
           centerTorsoDmg = self.torsoCenter.max_health * self.fall_dmg;
