@@ -131,7 +131,7 @@ void() CSQC_Init =
   FONT_NUM_ROBOT_MEDIUM = loadfont("Roboto_Medium", "gfx/fonts/Roboto_Medium", "8 12 16 32", FONT_USER2, FALSE, FALSE);
   loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, FALSE, FALSE);
   loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
-  loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
+  FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
 };
 
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
@@ -365,8 +365,12 @@ CON_W = vid_conwidth = cvar("vid_conwidth");
   
   //put this last on the rendering order to make sure it 
   //plays above all
-  if(ANM_FILE_STATUS == 1){
+  if(ANM_FILE_STATUS == TRUE){
     anm_execute_frame();
+  }
+  
+  if( MISSION_NAME_ON == TRUE ){
+    client_event_mission_name_frame();
   }
   
   if( cvar("developer") ){
@@ -440,6 +444,9 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_TARG_KILL:
       te_targ_kill();
+      return TRUE;
+    case TE_MISSION_NAME:
+      client_event_mission_name( ReadString() );
       return TRUE;
   } 
 	return FALSE;

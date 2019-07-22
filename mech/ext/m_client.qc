@@ -184,7 +184,7 @@ void() PutClientInServer = {
   client_sendGameMode(gamemode);
 
   switch(gamemode){
-    case GAMEMODcockpitPAIGN:
+    case GAMEMODE_CAMPAIGN:
       if(world.model == "maps/start.bsp"){
         //pre-populate default save file
         savefile_default();
@@ -200,37 +200,38 @@ void() PutClientInServer = {
   }
 
   
-  if(self.data_type == DATA_POBS){
-    player_makeObserver();
-    
-    client_push_mapobjects();
-    client_sendAvailable_Mechs(SAVE_MECHS_LIST);
-    client_sendAvailableItems(SAVE_ITEMS_ALL);
-    client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
-    
-    if(!coop && !deathmatch){
-      self.movetype = MOVETYPE_NONE;
-      self.flags = self.flags - (self.flags & FL_FLY);
-      client_update_moveSpeed(0, 0, 0, "0","0");
-      client_update_viewBob("0", "0", "0");
-      client_update_modelBob("0", "0", "0");
-      self.stat_plr_stt = PLAYER_IN_MENU;
-    }
-    else{
-      self.stat_plr_stt = PLAYER_ACTIVE;
-    }
-    self.power_timer = 0;
-  }
-  else if(self.data_type == DATA_MECH){
-    self.trigOnSpawn = spot.trigOnSpawn;
-    self.trigOnDeath = spot.trigOnDeath;
-    self.trigOnAttack = spot.trigOnAttack;
-    self.trigOnDamage = spot.trigOnDamage;
-    self.trigOnPanic = spot.trigOnPanic;
-    self.trigOnTarget = spot.trigOnTarget;
-    player_makeMech();
-    self.count4 = 0;
-    client_sendMissionName();
+  switch( self.data_type ){
+    case DATA_POBS:
+      player_makeObserver();
+      
+      client_push_mapobjects();
+      client_sendAvailable_Mechs(SAVE_MECHS_LIST);
+      client_sendAvailableItems(SAVE_ITEMS_ALL);
+      client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
+      
+      if(!coop && !deathmatch){
+        self.movetype = MOVETYPE_NONE;
+        self.flags = self.flags - (self.flags & FL_FLY);
+        client_update_moveSpeed(0, 0, 0, "0","0");
+        client_update_viewBob("0", "0", "0");
+        client_update_modelBob("0", "0", "0");
+        self.stat_plr_stt = PLAYER_IN_MENU;
+      }
+      else{
+        self.stat_plr_stt = PLAYER_ACTIVE;
+      }
+      self.power_timer = 0;
+      break;
+    default:
+      self.trigOnSpawn = spot.trigOnSpawn;
+      self.trigOnDeath = spot.trigOnDeath;
+      self.trigOnAttack = spot.trigOnAttack;
+      self.trigOnDamage = spot.trigOnDamage;
+      self.trigOnPanic = spot.trigOnPanic;
+      self.trigOnTarget = spot.trigOnTarget;
+      player_makeMech();
+      self.count4 = 0;
+      break;
   }
 
   if (deathmatch || coop)

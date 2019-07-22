@@ -612,6 +612,12 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
   drawfont = drawfont_prev;
 };
 
+float( float desiredColor, float startColor, float colorRate ) gui_colorFadeTo={
+  local float newValue;
+
+  newValue = (desiredColor * colorRate) + (startColor * (1 - colorRate));
+  return newValue;
+};
 
 void(string msg, float val) cons_logAFloat={
   print(strcat(msg,":", ftos(val),"\n"));

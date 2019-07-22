@@ -265,7 +265,9 @@ void(string str, float tokens) client_ParseMechCommand={
       player_unmakeObserver();
       player_makeMech();
       spawnpoint_select();
+      
       client_playTrack( world.sounds, TRUE );
+      client_sendMissionName();
     }
     return;
   }
@@ -355,14 +357,12 @@ void(float mode) client_sendGameMode={
 };
 
 void() client_sendMissionName={
-  local string name;
-  name = strcat(world.message,"\n");
+  cons_logAString("client_sendMissionName()", world.message);  //DEBUG
   if( world.message ){
-  
+    msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY);
     WriteByte( MSG_ONE, TE_MISSION_NAME );
-    WriteString( MSG_ONE, name);
-  
+    WriteString( MSG_ONE, strcat(world.message,"\n"));
   }
 };
 
@@ -652,7 +652,13 @@ void() spawnpoint_select={
   self.origin = self.oldorigin = spot.origin + '0 0 12';
   
   self.angles = spot.angles;
-	self.fixangle = TRUE;	
+	self.fixangle = TRUE;
+  self.trigOnSpawn = spot.trigOnSpawn;
+  self.trigOnDeath = spot.trigOnDeath;
+  self.trigOnAttack = spot.trigOnAttack;
+  self.trigOnDamage = spot.trigOnDamage;
+  self.trigOnPanic = spot.trigOnPanic;
+  self.trigOnTarget = spot.trigOnTarget;
 };
 
 void() spawnpoint_Random={

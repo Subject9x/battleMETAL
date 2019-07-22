@@ -10,6 +10,7 @@ float FONT_NUM_ROBOT_LIGHT;
 float FONT_NUM_ROBOT_THIN;
 float FONT_NUM_ROBOT_REGULAR;
 float FONT_NUM_ROBOT_MEDIUM;
+float FONT_NUM_DYSTOPIAN;
 float drawfont_prev;
 
 //so, 'state' for these things is tracked by the proper entry being non-zero
@@ -107,6 +108,7 @@ float(float pct, float ox, float mx) gui_percentCustom;
 
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText;
 void(string tipMessage, vector targetSize, vector fontSize, string panelImage, vector cursorOffset, vector textColor, vector boxColor, float alph ) gui_toolTipMessage;
+float( float desiredColor, float startColor, float colorRate ) gui_colorFadeTo;
 
 //console logging
 void(string msg, float val) cons_logAFloat;

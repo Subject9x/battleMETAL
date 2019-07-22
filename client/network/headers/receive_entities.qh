@@ -3,6 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 3/13/2018
   mod: 11/13/2018
+  mod: 07/22/2019
 Overview: 
   Header for all client-related function calls. This covers
   client events like radar pings, player mech info, target info,
@@ -10,6 +11,15 @@ Overview:
 */
 
 //Globals
+float MISSION_NAME_TIME = 5;
+float MISSION_NAME_TIME_RATE; //time calls in the render_view method must be gated against the refresh-rate
+float MISSION_NAME_START;
+float MISSION_NAME_ON;
+float MISSION_NAME_ALPHA;
+float MISSION_NAME_STATE; //1 =  fade_in, 2 = normal, 3 = fade_out
+string MISSION_NAME;
+vector MISSION_NAME_ORG;
+vector MISSION_NAME_COLOR;
 
 //function headers
 void() client_get_info;
@@ -21,8 +31,10 @@ void() client_event_deploypoint;
 void() client_event_objective;
 void() client_event_boundary;
 void() client_event_targ_kill;
-void() client_event_mission_name;
 void() client_event_hazard_warn;
+
+void() client_event_mission_name_frame;
+void( string name ) client_event_mission_name;
 
 
 void() receive_ent_bindData;

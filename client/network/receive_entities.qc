@@ -2,10 +2,10 @@
 battleMETAL
 Author: Peter Roohr
 Date: 3/13/2018
-Overview: impl of all reception of sendent calls, got 
-tired of trying to scroll through them all in csmain.
-
-self scope for all is the ent being received
+Overview: 
+  + impl of all reception of sendent calls, got 
+  + tired of trying to scroll through them all in csmain.
+  + self scope for all is the ent being received
 */
 
 void( float wep, float delt ) client_get_weapon_delta;
@@ -97,7 +97,6 @@ void( float wep, float delt ) client_get_weapon_delta={
 */
 void() client_get_contact={
   local entity blip;
-  
   
   blip = spawn();
   
@@ -237,11 +236,89 @@ void() client_event_boundary={
 };
 
 /*
+  handles mission name if active
+*/
+void() client_event_mission_name_frame={
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_DYSTOPIAN;
+  
+  //state controller
+  switch( MISSION_NAME_STATE ){
+    case 1:
+      MISSION_NAME_COLOR_x = gui_colorFadeTo( CLR_DEF_WHITE_x, MISSION_NAME_COLOR_x, 0.004 );
+      MISSION_NAME_COLOR_y = gui_colorFadeTo( CLR_DEF_WHITE_y, MISSION_NAME_COLOR_y, 0.004 );
+      MISSION_NAME_COLOR_z = gui_colorFadeTo( CLR_DEF_WHITE_z, MISSION_NAME_COLOR_z, 0.004 );
+      if( time > MISSION_NAME_TIME_RATE ){
+        MISSION_NAME_ALPHA = MISSION_NAME_ALPHA + 0.01;
+        MISSION_NAME_TIME_RATE = time + 0.05;
+      }
+      if( time > MISSION_NAME_START ){
+        MISSION_NAME_START = time + (MISSION_NAME_TIME * 1.5);
+        MISSION_NAME_STATE = MISSION_NAME_STATE + 1;
+      }
+      break;
+    case 2:
+      if( time > MISSION_NAME_START ){
+        MISSION_NAME_STATE = MISSION_NAME_STATE + 1;
+        MISSION_NAME_START = time + MISSION_NAME_TIME;
+      }
+      break;
+    case 3:
+      MISSION_NAME_COLOR_x = gui_colorFadeTo( CLR_DEF_RED_x, MISSION_NAME_COLOR_x, 0.006 );
+      MISSION_NAME_COLOR_y = gui_colorFadeTo( CLR_DEF_RED_y, MISSION_NAME_COLOR_y, 0.006 );
+      MISSION_NAME_COLOR_z = gui_colorFadeTo( CLR_DEF_RED_z, MISSION_NAME_COLOR_z, 0.006 );
+      if( time > MISSION_NAME_TIME_RATE ){
+        MISSION_NAME_ALPHA = MISSION_NAME_ALPHA - 0.01;
+        MISSION_NAME_TIME_RATE = time + 0.05;
+      }
+      if( time > MISSION_NAME_START ){
+        MISSION_NAME_STATE = FALSE;
+      }
+      break;
+    default:
+      MISSION_NAME_ON = FALSE;
+      strunzone(MISSION_NAME);
+      drawfont = drawfont_prev;
+      return;
+  }
+  if( MISSION_NAME_ALPHA > 1 ){
+    MISSION_NAME_ALPHA = 1;
+  }
+  else if( MISSION_NAME_ALPHA < 0 ){
+    MISSION_NAME_ALPHA = 0;
+  }
+  
+  drawstring( MISSION_NAME_ORG, MISSION_NAME, '24 24 0', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
+  drawfont = drawfont_prev;
+};
+
+/*
   server Mapping = client_sendMissionName();
   receive map's mission name, and diplay it while the player boots up.
 */
-void() client_event_mission_name={
+void( string name ) client_event_mission_name={
+  local vector newOrg;
+  local float noNewLine;
+  local float nameLen;
   
+  MISSION_NAME_ON = TRUE;
+  MISSION_NAME_START = time + MISSION_NAME_TIME;
+  MISSION_NAME_STATE = 1;
+  MISSION_NAME_ALPHA = 0;
+  MISSION_NAME_COLOR = CLR_DEF_RED;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_DYSTOPIAN;
+    noNewLine = strstrofs( name, "\n", 0 );
+    MISSION_NAME = substring( name, 0, noNewLine);
+    MISSION_NAME = strzone( MISSION_NAME );
+    nameLen = stringwidth(MISSION_NAME, 0, '24 24 0');
+    nameLen = gui_percentXRaw( nameLen / 2 );
+    newOrg_x = VIEW_CTR_x - nameLen;
+    newOrg_y = VIEW_CTR_y - gui_percentYRaw( 64 );
+    MISSION_NAME_ORG = newOrg;
+  drawfont = drawfont_prev;
 };
 
 /*
