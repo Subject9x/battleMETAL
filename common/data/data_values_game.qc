@@ -54,7 +54,7 @@ string NEWLINE = "\n";
 //============================
 //   GAME MODES
 //============================
-float GAMEMODcockpitPAIGN = 1;
+float GAMEMODE_CAMPAIGN = 1;
 float GAMEMODE_COOP = 2;
 float GAMEMODE_DM = 3;
 float GAMEMODE_TEAMDM = 4;
@@ -133,7 +133,7 @@ float EVADE_DRAIN_PERCENT = 0.75;  //reduce energyRate by this % when unit is Ev
   float DMG_BAL = 1;  //ballstic damage
   float DMG_ENE = 2;  //energy damage
   float DMG_EXP = 4;  //explosive damage
-  float DMG_MSC = 8;  //piercing damage
+  float DMG_MSC = 8;  //used for equipment modules
 //Secondary Effect Types
   float EFF_PRC = 16; //dmg is doubled
   float EFF_RAM = 32; //dmg only affects shields

@@ -17,7 +17,7 @@ void() mh_world_ini={
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
   
-  cvar_set("gamemode", ftos(GAMEMODcockpitPAIGN));
+  cvar_set("gamemode", ftos(GAMEMODE_CAMPAIGN));
   if( coop && cvar("maxplayers") > 1){
     cvar_set("gamemode", ftos(GAMEMODE_COOP));
   }

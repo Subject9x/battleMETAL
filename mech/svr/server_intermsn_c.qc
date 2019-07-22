@@ -39,7 +39,7 @@ entity() FindIntermission={
 	return world;
 };
 void() GotoNextMap={
-  if( cvar("gamemode") == GAMEMODcockpitPAIGN){
+  if( cvar("gamemode") == GAMEMODE_CAMPAIGN){
     savefile_changemap(nextmap);
     savefile_append();
     savefile_save();
