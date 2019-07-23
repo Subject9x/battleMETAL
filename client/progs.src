@@ -119,6 +119,7 @@ util/headers/particle_sys.qh
   ui/menu/headers/ui_brief.qh
   ui/menu/headers/ui_deploy.qh
   ui/menu/headers/ui_objectives.qh
+  ui/menu/headers/ui_debrief.qh
 //================
 
 data/client_precache.qc
@@ -146,6 +147,7 @@ ui/hud/system_hud_sound.qc
   ui/menu/ui_brief.qc
   ui/menu/ui_deploy.qc
   ui/menu/ui_objectives.qc
+  ui/menu/ui_debrief.qc
 //=======================
 
 //EFFECTS================

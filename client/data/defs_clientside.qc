@@ -11,29 +11,23 @@ Overview:
 
 float PLAYER_ENTITYNUM;
 
-float CON_W;
-float CON_H;
-float CON_CW;
-float CON_CH;
-
 // protocol bytes
-float SVC_SETVIEWPORT = 5;
-float SVC_SETANGLES = 10;
+float SVC_SETVIEWPORT   = 5;
+float SVC_SETANGLES     = 10;
 float	SVC_TEMPENTITY		= 23;
 float	SVC_KILLEDMONSTER	= 27;
 float	SVC_FOUNDSECRET		= 28;
 float	SVC_INTERMISSION	= 30;
-float	SVC_FINALE			= 31;
-float	SVC_CDTRACK			= 32;
+float	SVC_FINALE			  = 31;
+float	SVC_CDTRACK			  = 32;
 float	SVC_SELLSCREEN		= 33;
 
 //ported over from server
-float	DEAD_NO					= 0;
+float	DEAD_NO				    = 0;
 float	DEAD_DYING				= 1;
-float	DEAD_DEAD				= 2;
-float	DEAD_RESPAWNABLE		= 3;
-float	DEAD_RESPAWNING			= 4; // dead, waiting for buttons to be released
-
+float	DEAD_DEAD				  = 2;
+float	DEAD_RESPAWNABLE	= 3;
+float	DEAD_RESPAWNING		= 4; // dead, waiting for buttons to be released
 
 .float player_state;
 .float stat_hit_dirs;
@@ -101,7 +95,6 @@ float WEAPON7_REL = 64;
 float WEAPON8_REL = 128;
 float WEAPON9_REL = 256;
 
-
 //Difficulty
 float SKILL_NOV = 0;
 float SKILL_REG = 1;
@@ -114,7 +107,7 @@ float RELOADING = 1;
 float WAITING = 2;
 float RECOIL = 4;
 
-//used for worldspaw, dictates unlocks to save file post-mission
+//used for worldspawn, dictates unlocks to save file post-mission
 .string inv_items;
 .string inv_mechs;
 

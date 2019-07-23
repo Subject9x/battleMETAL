@@ -1,8 +1,12 @@
 /*
-mech Mod
-Author: Peter Roohr
-Date: 8/28/2016
-Overview: header for handling level intermission and selection
+Quake 1**
+Author: iD Software
+Overview: 
+  Implementation of Intermission function header. Game mostly
+  modfies and extends existing quake code.
+  
+ ** - this has been modified to be incorporated into battleMETAL and is not compatible with
+      other code bases.
 */
 
 entity() FindIntermission={
@@ -39,6 +43,7 @@ entity() FindIntermission={
 	return world;
 };
 void() GotoNextMap={
+  //TODO - change to cvar("maxplayers") == 1
   if( cvar("gamemode") == GAMEMODE_CAMPAIGN){
     savefile_changemap(nextmap);
     savefile_append();

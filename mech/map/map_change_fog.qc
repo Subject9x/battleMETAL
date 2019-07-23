@@ -6,9 +6,9 @@ Overview:
   A Map Wrapper for the fog cvar. Allows a map to take control of the fog setting in a controllabe way. 
   This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
   
-  1 0.85 0.65 0.5 0.45 6000 10000 8000 2500
   fog cvar
-    density red green blue alpha mindist maxdist top fadedepth
+  density red green blue alpha mindist maxdist top fadedepth
+    1       0.85 0.65 0.5   0.45   6000   10000  8000   2500
   
 Inputs
   .fog_density = <float> [density] - new fog thickness
@@ -63,7 +63,7 @@ void() map_change_fog={
   self.movetype = MOVETYPE_NONE;
   self.use = map_changefog_use;
   self.touch = map_changefog_touch;
-  self.stat_wep_state = 1;
+  self.stat_wep_state = TRUE;
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, tempMin, tempMax);
   setorigin(self, self.origin);

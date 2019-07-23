@@ -41,24 +41,24 @@ void( entity deploy ) client_send_deploypoint;
 
 void( entity client, string voiceMessage ) client_send_ai_voice;
 void( entity client ) client_send_hud_target_kill;
-void() client_sendMissionName;
 
 //client command layer
-void( float track, float loop) client_playTrack;
-void(string cmd, float tokens) client_ParseMechCommand;
-void(string cmd, float tokens) client_setWeapon;
-void(string cmd, float tokens) client_setWeaponGroup;
 void() client_sendMissionFileName;
 void(string fileName) client_sendAnimaticFileName;
-void(string cmd, float tokens) client_setNavPoint;
-void() client_updateWeaponReloads;
+void() client_sendMissionName;
 void(string mechs) client_sendAvailable_Mechs;
 void(string itms) client_sendAvailableItems;
 void(float mode) client_sendGameMode;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
 void(entity client, float trackNum, float entFlags) client_sendMusic;
+void(entity client, float missionTime, float clientKills, float monsterTotal, float missionSuccessCheck) client_sendEndMission;
 
-
+void( float track, float loop) client_playTrack;
+void(string cmd, float tokens) client_ParseMechCommand;
+void(string cmd, float tokens) client_setWeapon;
+void(string cmd, float tokens) client_setWeaponGroup;
+void(string cmd, float tokens) client_setNavPoint;
+void() client_updateWeaponReloads;
 void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed;
 void(string bob, string cycle, string up) client_update_viewBob;
 void(string bobmodel, string side, string bmod_speed) client_update_modelBob;

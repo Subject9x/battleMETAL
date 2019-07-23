@@ -428,14 +428,16 @@ void(entity targ, entity attacker, float dmg_type) killed={
     self.takedamage = DAMAGE_NO;
     self.touch = SUB_Null;
     
-    /*if (!self.iscorpse){
+    if (self.solid != SOLID_CORPSE){
       // bump the monster counter
       if ( (self.flags & FL_MONSTER) ){
+        //TODO - send kill count
+        //TODO - if allied, send losses
         self.enemy = attacker;
         killed_monsters = killed_monsters + 1;
         WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
       }
-    }*/
+    }
     
     self.doobits = 0;
     

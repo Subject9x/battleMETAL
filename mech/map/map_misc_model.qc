@@ -7,16 +7,7 @@ Overview:
   Various 'misc model' entities, each unique for readability.
   
 Line 20 - MAP_TERRAIN_MODEL
-
-      
 */
-
-/*
-  
-*/
-void() map_terrain_model_tile={
-  
-};
 
 /*QUAKED map_terrain_model (1 .5 .25) (-16 -16 -16) (16 16 16)
   this is for injecting large 3D terrain meshes into a bsp file.
@@ -31,7 +22,6 @@ Inputs
   .spawnflags = <float> [flag] 2 - override alpha - ignores default
 */
 void() map_terrain_model={
-  //self.angles = '0 90 0'; //corrects for model orientation
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
   self.velocity = '0 0 0';

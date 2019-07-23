@@ -30,3 +30,7 @@ float TE_TARG_KILL = 101;
 
 //Other?
 float TE_MISSION_NAME = 102;
+float TE_HAZARD_SHIELD = 103;
+float TE_HAZARD_ENERGY = 104;
+float TE_HAZARD_ARMOR = 105;
+float TE_MISSION_END = 106;

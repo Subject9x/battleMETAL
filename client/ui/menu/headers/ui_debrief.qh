@@ -1,0 +1,32 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 07/23/2019
+Overview: 
+  Debriefing screen ( sure, score screen).
+  Occurs once the map has sent the PLAYER_INTERMSN.
+*/
+
+float MENU_DEBRIEF_status;
+
+float MENU_DEBRIEF_total_monsters;
+float MENU_DEBRIEF_total_kills;
+float MENU_DEBRIEF_total_losses;
+float MENU_DEBRIEF_objectives_primary_complete;
+
+float  MENU_DEBRIEF_time_elapsed;
+
+string MENU_DEBRIEF_unlocks_mechs;
+string MENU_DEBRIEF_unlocks_equip;
+
+//menu hooks
+void() menu_debriefListener_onClick;
+void() menu_debriefListener_onHover;
+void() menu_debriefListener_onDrag;
+
+//menu rendering
+void() menu_debrief_drawFrame;
+
+void(vector panelOffset) menu_debrief_objectives;
+void(vector panelOffset) menu_debrief_stats;
+void(vector panelOffset) menu_debrief_unlocks;

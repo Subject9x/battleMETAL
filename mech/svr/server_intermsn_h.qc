@@ -1,8 +1,11 @@
 /*
-mech Mod
-Author: Peter Roohr
-Date: 8/28/2016
-Overview: header for handling level intermission and selection
+Quake 1**
+Author: iD Software
+Overview: 
+  header for handling level intermission and selection
+
+** - this has been modified to be incorporated into battleMETAL and is not compatible with
+      other code bases.
 */
 
 entity() FindIntermission;

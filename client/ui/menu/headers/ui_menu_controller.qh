@@ -37,6 +37,8 @@ float MENU_HANGAR_ACTIVE = 2;
 float MENU_ARMING_ACTIVE = 3;
 float MENU_DEPLOY_ACTIVE = 4;
 float MENU_LAUNCH_ROLLOVER = 5;
+float MENU_DEBRIEF_ACTIVE = 6;
+
 vector MENU_BTN_LAUNCH_ORG;
 vector MENU_BTN_LAUNCH_SZ;
 
@@ -68,6 +70,7 @@ float LAUNCH_VALIDATION;
 float VALID_MECH = 1;
 float VALID_GRPS = 2;
 float VALID_NODE = 4;
+float VALID_LAUNCH = 8; //setpause looks like it needs at least frame+1 time to unpause, so we have to decouple player spawn server messages from launch validation
 
 //image defs
 string UI_DEF_BOX_512;

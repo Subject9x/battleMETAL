@@ -46,17 +46,19 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   //keyboard input
   if(inputEventType == INPUT_EVENT_KEYDOWN){
     if( (scanx == K_TAB) && (CLIENT_data_type == DATA_POBS) ){
-        if(MENU_ACTIVE){
-          MENU_ACTIVE = FALSE;
-          CLIENT_MENU_menu_choice = 0;
-          setcursormode(0);
-        }
-        else{
-          MENU_ACTIVE = TRUE;
-          CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
-          setcursormode(1);
-        }
-        return TRUE;
+      if(MENU_ACTIVE){
+        MENU_ACTIVE = FALSE;
+        CLIENT_MENU_menu_choice = 0;
+        setcursormode( 0 );
+        setpause( 0 );
+      }
+      else{
+        MENU_ACTIVE = TRUE;
+        CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
+        setcursormode( 1 );
+        setpause( 1 );
+      }
+      return TRUE;
     }
     else if(scanx == K_C){
       if(UI_OBJECTIVE_ACTIVE){
@@ -115,14 +117,14 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
           case MENU_DEPLOY_ACTIVE:
             menu_deployListener_onClick();
             break;
+          case MENU_DEBRIEF_ACTIVE:
+            menu_debriefListener_onClick();
+            break;
         }
-        menu_mainListener();
         return TRUE;
       }
-      else{
-        return FALSE;
-      }
     }
+    return FALSE;
   }
   else if( inputEventType == INPUT_EVENT_KEYUP ){
     if( scanx == K_MOUSE1 ){
@@ -147,17 +149,12 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         menu_mainListener();
         return TRUE;
       }
-      else{
-        return FALSE;
-      }
     }
+    return FALSE;
   } 
    
   if(MENU_ACTIVE){
     return TRUE;
-  }
-  else{
-    return FALSE;
   }
   return FALSE;
 };
@@ -167,30 +164,29 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   When player is 'dragging' the mouse 
 */
 void() handle_input_drag={
-    if( INPUT_mouse_state == MOUSE_DOWN ){
-      if( MOUSE_drag_timer < MOUSE_drag_max ){
-        MOUSE_drag_timer = MOUSE_drag_timer + MOUSE_drag_rate;
-      }
-      if( MOUSE_drag_timer >= MOUSE_drag_max){
-        INPUT_mouse_state_prev = MOUSE_DOWN;
-        INPUT_mouse_state = MOUSE_DRAG;
-        switch( CLIENT_MENU_menu_choice ){
-          case MENU_HANGAR_ACTIVE:
-            menu_hangarListener_onDrag();
-            break;
-          case MENU_BRIEF_ACTIVE:
-            menu_briefListener_onDrag();
-            break;
-          case MENU_ARMING_ACTIVE:
-            menu_armingListener_onDrag();
-            break;
-          case MENU_DEPLOY_ACTIVE:
-            menu_deployListener_onDrag();
-            break;
-        }
-        menu_mainListener();
-      } 
+  if( INPUT_mouse_state == MOUSE_DOWN ){
+    if( MOUSE_drag_timer < MOUSE_drag_max ){
+      MOUSE_drag_timer = MOUSE_drag_timer + MOUSE_drag_rate;
     }
+    if( MOUSE_drag_timer >= MOUSE_drag_max){
+      INPUT_mouse_state_prev = MOUSE_DOWN;
+      INPUT_mouse_state = MOUSE_DRAG;
+      switch( CLIENT_MENU_menu_choice ){
+        case MENU_HANGAR_ACTIVE:
+          menu_hangarListener_onDrag();
+          break;
+        case MENU_BRIEF_ACTIVE:
+          menu_briefListener_onDrag();
+          break;
+        case MENU_ARMING_ACTIVE:
+          menu_armingListener_onDrag();
+          break;
+        case MENU_DEPLOY_ACTIVE:
+          menu_deployListener_onDrag();
+          break;
+      }
+    } 
+  }
 };
 
 /*
@@ -212,6 +208,9 @@ void() handle_input_hover={
         break;
       case MENU_DEPLOY_ACTIVE:
         menu_deployListener_onHover();
+        break;
+      case MENU_DEBRIEF_ACTIVE:
+        menu_debriefListener_onHover();
         break;
     } 
   }

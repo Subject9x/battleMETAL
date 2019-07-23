@@ -356,8 +356,10 @@ void(float mode) client_sendGameMode={
   stuffcmd(self, cmd);
 };
 
+/*
+  client Mapping = client_event_mission_name();
+*/
 void() client_sendMissionName={
-  cons_logAString("client_sendMissionName()", world.message);  //DEBUG
   if( world.message ){
     msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY);
@@ -486,6 +488,24 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
   self = client;
     client_playTrack( trackNum, (entFlags & 2) );
   self = otemp;
+};
+
+/*
+  client Mapping = client_event_debrief_active();
+*/
+void(entity client, float missionTime, float clientKills, float monsterTotal, float missionSuccessCheck) client_sendEndMission={
+  local entity notSelf;
+  
+  notSelf = self;
+  self = client;
+    msg_entity = self;
+    WriteByte( MSG_ONE, SVC_TEMPENTITY );
+    WriteByte( MSG_ONE, TE_MISSION_END );
+    WriteByte( MSG_ONE, missionTime );
+    WriteByte( MSG_ONE, clientKills );
+    WriteByte( MSG_ONE, monsterTotal );
+    WriteByte( MSG_ONE, missionSuccessCheck );
+  self = notSelf;
 };
 
 void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed={

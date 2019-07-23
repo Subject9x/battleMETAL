@@ -31,10 +31,10 @@ void() client_event_deploypoint;
 void() client_event_objective;
 void() client_event_boundary;
 void() client_event_targ_kill;
-void() client_event_hazard_warn;
+void(float warnType) client_event_hazard_warn;
 
 void() client_event_mission_name_frame;
 void( string name ) client_event_mission_name;
-
+void(float missionTime, float clientKills, float monsterTotal, float missionSuccessCheck) client_event_debrief_active;
 
 void() receive_ent_bindData;

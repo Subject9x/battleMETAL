@@ -289,6 +289,7 @@ void() client_event_mission_name_frame={
     MISSION_NAME_ALPHA = 0;
   }
   
+  drawstring( MISSION_NAME_ORG, MISSION_NAME, '24 24 0', '1 1 1', MISSION_NAME_ALPHA, 0);
   drawstring( MISSION_NAME_ORG, MISSION_NAME, '24 24 0', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
   drawfont = drawfont_prev;
 };
@@ -322,9 +323,26 @@ void( string name ) client_event_mission_name={
 };
 
 /*
-
+  server Mapping = client_sendHazardWarn()
+  If player wanders though an environmental hazard field.
+  warnType is a bitflag value of types.
 */
-void() client_event_hazard_warn={
+void(float warnTypes) client_event_hazard_warn={
+  //TODO
+};
+
+/*
+  server Mapping = client_sendEndMission();
+  
+  receives end-mission data from server,
+  launches MENU_DEBRIEF screen.  
+*/
+void(float missiontTime, float clientKills, float monsterTotal, float missonSuccessCheck) client_event_debrief_active={
+
+  MENU_ACTIVE = 1;
+  CLIENT_MENU_menu_choice = MENU_DEBRIEF_ACTIVE;
+  setpause( 1 );
+  setcursormode( 1 );
 };
 
 void() client_event_targ_kill={

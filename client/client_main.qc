@@ -95,8 +95,6 @@ void() CSQC_Init =
   dynamic_precache();
   cs_precache();
   
-  SPRITE_deploy_point_FRAME = 1;
-  
   //clean up mapname global for file use
   tokenizebyseparator(mapname, "/", ".");
   MAP_NAME = argv(1);
@@ -311,12 +309,22 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   }
   else{
     if(CLIENT_player_state == PLAYER_IN_MENU){
-      if(!MENU_ACTIVE){
+      if( !MENU_ACTIVE && !(LAUNCH_VALIDATION & VALID_LAUNCH) ){
         MENU_ACTIVE = TRUE;
         CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
-        setcursormode(1);
+        setcursormode( 1 );
+        setpause( 1 );
       }
-    } 
+    }
+    if(CLIENT_player_state == PLAYER_INTERMSN){
+      if(!MENU_ACTIVE){
+        //this may be redundant, client_event_debrief_active() does this
+        MENU_ACTIVE = TRUE;
+        CLIENT_MENU_menu_choice = MENU_DEBRIEF_ACTIVE;
+        setcursormode( 1 );
+        setpause( 1 );
+      }
+    }
     if(UI_OBJECTIVE_ACTIVE){
       local float len;
       local vector og;
@@ -450,6 +458,9 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_MISSION_NAME:
       client_event_mission_name( ReadString() );
+      return TRUE;
+    case TE_MISSION_END:
+      client_event_debrief_active( ReadByte(), ReadByte(), ReadByte(), ReadByte() );
       return TRUE;
   } 
 	return FALSE;

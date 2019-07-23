@@ -14,8 +14,7 @@ Overview:
   renders the NavBar at the top, along with the chosen menu sub function
 */
 void() menu_handleFrame={
-  local vector mpos;
-  
+  local vector mpos; 
   cursorpos = getmousepos();
   
   //UI Theming
@@ -54,8 +53,15 @@ void() menu_handleFrame={
     case MENU_DEPLOY_ACTIVE:
       menu_deployDrawFrame();
       break;
+    case MENU_DEBRIEF_ACTIVE:
+      menu_debrief_drawFrame;
+      break;
   }
-  menu_navBar_drawFrame(VIEW_ORG);
+  if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
+    //debrief menu is bespoke, occuring after all other menus.
+    menu_navBar_drawFrame(VIEW_ORG);
+  }
+  
   if( toolTip.data_idx > FALSE ){
     gui_toolTipMessage(toolTip.description, toolTip.mins, toolTip.maxs, UI_DEF_BOX_512, gui_percentToPixelRawVec('12 0'), toolTip.angles, '0.85 0.85 0.85', 1 ); 
   }
@@ -108,38 +114,6 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
   }
   else{
     return 0;
-  }
-};
-
-void() mechAcceptButtonListener={
-  local entity hardpoint;
-  local float bit;
-  
-  if( menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ, FALSE) ){
-    if( (LAUNCH_VALIDATION & VALID_NODE) && (LAUNCH_VALIDATION & VALID_MECH) ){
-      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
-      cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
-     
-      bit = 1;
-      hardpoint = UI_HANGAR_DATA_mech.w_slot;
-      while( hardpoint ){
-        cl_setweapon(bit, hardpoint.data_idx);
-        bit = bit * 2;
-        hardpoint = hardpoint.w_slot;
-      }
-	  
-      cl_setweapongroup(1, CLIENT_MENU_nex_grp1);
-      cl_setweapongroup(2, CLIENT_MENU_nex_grp2);
-      cl_setweapongroup(3, CLIENT_MENU_nex_grp3);
-      cl_setweapongroup(4, CLIENT_MENU_nex_grp4);
-      cl_setweapongroup(5, CLIENT_MENU_nex_grp5);
-      cl_spawnmech();
-      MENU_ACTIVE = FALSE;
-      setcursormode(0);
-      CLIENT_MENU_nav_pnt = -1;
-      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
-      ui_data_load_hud( MECH_DATA_ID );
-    }
   }
 };
 
@@ -235,13 +209,6 @@ void(vector ofs) menu_navBar_drawFrame={
   gui_renderHighlightString("[DEPLOYMENT]", dpos, deploy_clr, '0.75 0.75 0.75', deploy_flt, fontSize, 1, 0) ;
 
   //LAUNCH Button
-  local vector launch_clr;
-  if( (LAUNCH_VALIDATION & VALID_MECH) && (LAUNCH_VALIDATION & VALID_NODE) ){
-    launch_clr = CLR_DEF_WEP_INRANGE;
-  }
-  else{
-    launch_clr = '0.25 0.25 0.25';
-  }
   rpos = nvpos;
   rpos_x = VIEW_MAX_x - gui_percentXRaw(138);
   lpos = rpos;
@@ -249,8 +216,8 @@ void(vector ofs) menu_navBar_drawFrame={
   lpos_y = (lpos_y + gui_percentYRaw(4.32));
   isz_x = gui_percentXRaw(stringwidth(">>[!LAUNCH!]>>", 0 , fontSizeSelect)) + gui_percentXRaw(12);
   isz_y = gui_percentYRaw(24);
-  gui_renderTintImage2(MENU_LAUNCH_ROLLOVER, rpos + gui_percentToPixelRawVec('6.4 0'), UI_DEF_BOX_256, isz, launch_clr, CLR_DEF_ARM_THREEQ, 1, 0);
-  gui_renderHighlightString(">>[LAUNCH]>>", lpos, launch_clr, CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, fontSizeSelect, 1, 0) ;
+  gui_renderTintImage2((LAUNCH_VALIDATION & (VALID_MECH | VALID_NODE)), rpos + gui_percentToPixelRawVec('6.4 0'), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, '0.25 0.25 0.25', 1, 0);
+  gui_renderHighlightString(">>[LAUNCH]>>", lpos, '0.85 0.85 0.85', CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, fontSizeSelect, 1, 0) ;
   MENU_BTN_LAUNCH_ORG = rpos + gui_percentToPixelRawVec('6.4  0');
   MENU_BTN_LAUNCH_SZ = isz;
   
@@ -271,17 +238,20 @@ void() navBarListener={
   local float itemId;
   
   if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.0097, 0.0109), gui_percentToPixel(0.075, 0.025), TRUE)){
+    //MENU - BRIEFING button
+   
+    //if previous menu was ARMING, save config
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
     }
     CLIENT_MENU_menu_choice = MENU_BRIEF_ACTIVE;
-	
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixel(0.0843, 0.0109), gui_percentToPixel(0.075, 0.025), TRUE)){
+    //MENU - HANGAR button
     if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
       data_mech_config_save( SELECT_MECH, CFG_INDEX ); //save current config to the player's chosen config slot
       if( (LAUNCH_VALIDATION & VALID_MECH) ){
-        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION& VALID_MECH);
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH));
       }
     }
     CLIENT_MENU_menu_choice = MENU_HANGAR_ACTIVE;
@@ -289,6 +259,7 @@ void() navBarListener={
     cl_get_mechs_sort();
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('203 10'), gui_percentToPixel(0.075, 0.025), TRUE)){
+    //MENU - ARMING button
     if(SELECT_MECH != 0){
       CLIENT_MENU_menu_choice = MENU_ARMING_ACTIVE;
       itemUnlockCounter = 0;
@@ -308,7 +279,8 @@ void() navBarListener={
     }
   }
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025), TRUE)){
-    if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS) ) ){
+    //MENU - DEPLOY button
+    if( (LAUNCH_VALIDATION & (VALID_MECH) ) ){
       local entity nav;
       local float itr, idx;
       
@@ -327,6 +299,7 @@ void() navBarListener={
         }
         itr = itr + 1;
       }
+      SPRITE_deploy_point_FRAME = 1;
       //this does assume there's at least 1 deploy point on the map for the player...
       DEPLOY_POINT_ID = 0;
       DEPLOY_POINT_END = idx - 1;
@@ -335,6 +308,43 @@ void() navBarListener={
       if( CLIENT_MENU_nav_pnt != -1 ){
         LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_NODE;
       }
+    }
+  }
+};
+
+void() mechAcceptButtonListener={
+  local entity hardpoint;
+  local float bit;
+  
+  if( menu_checkMouseInBounds(cursorpos, MENU_BTN_LAUNCH_ORG, MENU_BTN_LAUNCH_SZ, FALSE) ){
+    if( (LAUNCH_VALIDATION & (VALID_MECH | VALID_NODE)) ){
+      setpause( 0 );
+      setcursormode( 0 );
+      
+      cl_setspawnpoint( CLIENT_MENU_nav_pnt );
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION | VALID_LAUNCH;
+      
+      ui_data_load_hud( MECH_DATA_ID );
+      cl_setmech(CLIENT_MENU_sel_size, MECH_DATA_ID);
+      
+      bit = 1;
+      hardpoint = UI_HANGAR_DATA_mech.w_slot;
+      while( hardpoint ){
+        cl_setweapon(bit, hardpoint.data_idx);
+        bit = bit * 2;
+        hardpoint = hardpoint.w_slot;
+      }
+    
+      cl_setweapongroup(1, CLIENT_MENU_nex_grp1);
+      cl_setweapongroup(2, CLIENT_MENU_nex_grp2);
+      cl_setweapongroup(3, CLIENT_MENU_nex_grp3);
+      cl_setweapongroup(4, CLIENT_MENU_nex_grp4);
+      cl_setweapongroup(5, CLIENT_MENU_nex_grp5);
+      cl_spawnmech(); 
+      
+      CLIENT_start_time = time; //mark time when player started as mech.
+      CLIENT_MENU_nav_pnt = -1;
+      MENU_ACTIVE = FALSE;
     }
   }
 };

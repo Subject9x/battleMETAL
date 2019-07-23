@@ -2,9 +2,10 @@
 battleMETAL
 Author: Peter Roohr
 Date: 1/26/2018
-Overview: all the miscellaneous shared values between client and server
+mod: 07/23/2019
+Overview: 
+  all the miscellaneous shared values between client and server.
 */
-
 
 void( ) FRIK_FILE_precaches =
 {
@@ -40,8 +41,6 @@ void( ) FRIK_FILE_precaches =
     fclose(f);                                          // when the while loop is over (no lines left in file) close file with the handle f    
 	} 
 };
-
-
 //============================
 //   FILE PATHS           
 //============================
@@ -70,16 +69,16 @@ float WORLD_CAVE = 5;
 //============================
 //   PLAYER STATE ID's           
 //============================
-float PLAYER_DEAD = -1;
-float PLAYER_CONNECT = 0;
-float PLAYER_SPAWN = 1;
-float PLAYER_IN_MENU = 2;
-float PLAYER_POWERUP_BEGIN = 3;
-float PLAYER_POWERUP_END = 4;
-float PLAYER_ACTIVE = 5;
-float PLAYER_ANIM_STOP = 6;
-float PLAYER_SPRINT_ON = 7;
-float PLAYER_SPRINT_OFF = 8;
+float PLAYER_DEAD = -1;         // 
+float PLAYER_CONNECT = 0;       // Client just connected to server.
+float PLAYER_SPAWN = 1;         // Client has been initialized, and spawned in as observer.
+float PLAYER_IN_MENU = 2;       // Client is in the CSQC menu system.
+float PLAYER_POWERUP_BEGIN = 3; // Client has spawned into their mech, and the mech is powering up.
+float PLAYER_POWERUP_END = 4;   // Client mech has completed powerup sequence.
+float PLAYER_ACTIVE = 5;        // Client is controlling mech, and may move/fire freely.
+float PLAYER_ANIM_STOP = 6;     // Client told to stop playing animatic.
+float PLAYER_SPRINT_ON = 7;     // Client has engaged the 'sprint' button.
+float PLAYER_INTERMSN = 8;      // Client has entered an intermission event.
 //============================
 //         DATA_TYPE           
 //============================
@@ -99,10 +98,9 @@ float DATA_NAVP = 8;
 float DATA_OBJT = 9;
 float DATA_NODE = 10;
 float DATA_DEPL = 11;
-float DATA_PLR = 12;
-float DATA_WEAPON = 13;
-float DATA_INFO_START = 14; //used to send clientdata entity to csqc
-float DATA_INFO_COOP = 15;  //used as ID for info_start_coop
+float DATA_WEAPON = 12;
+float DATA_INFO_START = 13;//used to send clientdata entity to csqc
+float DATA_INFO_COOP = 14;  //used as ID for info_start_coop
 //============================
 //     WEAPON SLOT BITS           
 //============================
@@ -282,9 +280,6 @@ float LOCK_PLYR = 8;
 //============================
 float POWERUP_DEFAULT = 7;
 float POWERUP_DEBUG   = 0.01;
-float POWERUP_LIGHT   = 3;
-float POWERUP_MEDIUM  = 5;
-float POWERUP_HEAVY   = 7;
 
 //============================
 //     UNIT ACCURACY PROFILES

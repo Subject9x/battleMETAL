@@ -76,9 +76,7 @@ void() navSelectListener={
       }
     }
     else{
-      if( (LAUNCH_VALIDATION & VALID_NODE) ){
-        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
-      }
+      LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_NODE);
     }
   }
 };
