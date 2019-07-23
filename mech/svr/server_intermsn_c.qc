@@ -154,8 +154,9 @@ void() IntermissionThink={
 	ExitIntermission ();
 };
 void() execute_changelevel={
-  	local entity	pos;
-	intermission_running = 1;
+  local entity	pos;
+	
+  intermission_running = 1;
 	
 // enforce a wait time before allowing changelevel
 	if (deathmatch)
@@ -163,6 +164,7 @@ void() execute_changelevel={
 	else
 		intermission_exittime = time + 2;
 
+  //TODO - intermission track (probably just hangar track, eh?)
 	/*WriteByte (MSG_ALL, SVC_CDTRACK);
 	WriteByte (MSG_ALL, 3);*/
 	
@@ -172,24 +174,29 @@ void() execute_changelevel={
   this = self;
 	while (other != world)
 	{
-    if(other.data_type == DATA_MECH){
-      self = other;
-        player_unmakeMech();
-      self = this;
-    }
-		other.view_ofs = '0 0 0';
-		other.angles = other.v_angle = pos.mangle;
-		other.fixangle = TRUE;		// turn this way immediately
-		other.nextthink = time + 0.5;
-		other.takedamage = DAMAGE_NO;
-		other.solid = SOLID_NOT;
-		other.movetype = MOVETYPE_NONE;
-		other.modelindex = 0;
-		setorigin (other, pos.origin);
-		other = find (other, classname, "player");
+    self = other;
     
+    if(self.data_type == DATA_MECH){
+      player_unmakeMech();
+    }
+		self.view_ofs = '0 0 0';
+		self.angles = other.v_angle = pos.mangle;
+		self.fixangle = TRUE;		// turn this way immediately
+		self.nextthink = time + 0.5;
+		self.takedamage = DAMAGE_NO;
+		self.solid = SOLID_NOT;
+		self.movetype = MOVETYPE_NONE;
+		self.modelindex = 0;
+		setorigin (self, pos.origin);
+    self.stat_plr_stt = PLAYER_INTERMSN;
+    client_sendEndMission(self, time, 8, 23, 1) ;
+    this = self;
+		other = find (other, classname, "player");
+    //TODO update player state
+    //send intermission packet
   }
 	WriteByte (MSG_ALL, SVC_INTERMISSION);
+  
 };
 
 void() changelevel_touch={

@@ -316,15 +316,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         setpause( 1 );
       }
     }
-    if(CLIENT_player_state == PLAYER_INTERMSN){
-      if(!MENU_ACTIVE){
-        //this may be redundant, client_event_debrief_active() does this
-        MENU_ACTIVE = TRUE;
-        CLIENT_MENU_menu_choice = MENU_DEBRIEF_ACTIVE;
-        setcursormode( 1 );
-        setpause( 1 );
-      }
-    }
     if(UI_OBJECTIVE_ACTIVE){
       local float len;
       local vector og;

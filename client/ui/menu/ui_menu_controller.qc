@@ -54,7 +54,7 @@ void() menu_handleFrame={
       menu_deployDrawFrame();
       break;
     case MENU_DEBRIEF_ACTIVE:
-      menu_debrief_drawFrame;
+      menu_debrief_drawFrame();
       break;
   }
   if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
