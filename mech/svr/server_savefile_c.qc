@@ -13,21 +13,21 @@ Overview:
   appends new save data from mission to single-player save file
 */
 void() savefile_append={
-  if(world.inv_mechs != ""){
+  if(world.unlockMechs != ""){
     if(SAVE_MECHS_LIST != ""){
-      SAVE_MECHS_LIST = savefile_insert(world.inv_mechs, SAVE_MECHS_LIST);
+      SAVE_MECHS_LIST = savefile_insert(world.unlockMechs, SAVE_MECHS_LIST);
     }
     else{
-      SAVE_MECHS_LIST = strzone(world.inv_mechs);
+      SAVE_MECHS_LIST = strzone(world.unlockMechs);
     }
   }
   
-  if(world.inv_items != ""){
+  if(world.unlockEquip != ""){
     if(SAVE_ITEMS_ALL != ""){
-      SAVE_ITEMS_ALL = savefile_insert(world.inv_items, SAVE_ITEMS_ALL);
+      SAVE_ITEMS_ALL = savefile_insert(world.unlockEquip, SAVE_ITEMS_ALL);
     }
     else{
-      SAVE_ITEMS_ALL = strzone(world.inv_items);
+      SAVE_ITEMS_ALL = strzone(world.unlockEquip);
     }
   }
 };
@@ -129,17 +129,17 @@ void() savefile_default={
 
 //coop options
 void() mapfile_coop_load={
-  local string mapFile, file, line, contents;
+  local string mapFileName, file, line, contents;
   local float flannel, line_tag, argc;
   
   file = mapname;
-  mapFile = mapname;
+  mapFileName = mapname;
   
   if( world.mapFile ){
-    mapFile = world.mapFile;
+    mapFileName = world.mapFile;
   }
   
-  file = strcat(PATH_DATA_MAP, "/", file, "/", mapFile, SAVE_FILE_EXT);
+  file = strcat(PATH_DATA_MAP, "/", file, "/", mapFileName, SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);
@@ -167,17 +167,17 @@ void() mapfile_coop_load={
 //pvp options
 //scope this for the client
 void( float playerFaction ) mapfile_pvp_load={
-  local string mapFile, file, line, contents;
+  local string mapFileName, file, line, contents;
   local float flannel, line_tag, argc;
   
   file = mapname;
-  mapFile = mapname;
+  mapFileName = mapname;
   
   if( world.mapFile ){
-    mapFile = world.mapFile;
+    mapFileName = world.mapFile;
   }
   
-  file = strcat(PATH_DATA_MAP, "/", mapname, "/", mapFile, "_", ftos(playerFaction), SAVE_FILE_EXT);
+  file = strcat(PATH_DATA_MAP, "/", mapname, "/", mapFileName, "_", ftos(playerFaction), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
   if(flannel > -1){
     contents = fgets(flannel);
@@ -190,10 +190,10 @@ void( float playerFaction ) mapfile_pvp_load={
           
         }
         if( argv(1) == SAVE_FILE_MECH_LIST ){
-          client_sendAvailable_Mechs( argv(3) );
+          client_sendAvailable_Mechs( argv(3), FALSE );
         }
         if( argv(1) == SAVE_FILE_ITEMS ){
-          client_sendAvailableItems( argv(3) );
+          client_sendAvailableItems( argv(3), FALSE );
         }
       }
       line = fgets(flannel);

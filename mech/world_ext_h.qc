@@ -18,8 +18,12 @@ float TE_STOMP_TYPE;  //set by world type
 //EXTENSIONS
 .float client_num;
 
-.string missionFile;
-.string mapFile;
+.string missionFile;  //data/map_scripts/<map_name>/<map_name>.msn
+.string mapFile;      //data/map_scripts/<map_name>/<map_name>.sav
+
+.string unlockMechs;  //determines unlock mechs given to the player.
+.string unlockEquip;  //determines unlock equip given to the player.
+
 .entity particleCube; //used by mech/map/map_particlecube_effect.qc
 .vector wind;
 

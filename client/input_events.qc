@@ -46,7 +46,7 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
   //keyboard input
   if(inputEventType == INPUT_EVENT_KEYDOWN){
     if( (scanx == K_TAB) && (CLIENT_data_type == DATA_POBS) ){
-      if(MENU_ACTIVE && (CLIENT_player_state != PLAYER_INTERMSN)){
+      if( (CLIENT_player_state != PLAYER_INTERMSN) && MENU_ACTIVE ){
         MENU_ACTIVE = FALSE;
         CLIENT_MENU_menu_choice = 0;
         setcursormode( 0 );

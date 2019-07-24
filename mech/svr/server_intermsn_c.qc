@@ -177,30 +177,30 @@ void() execute_changelevel={
 	while (other != world)
 	{
     self = other;
-    
-    if(self.data_type == DATA_MECH){
-      player_unmakeMech();
-      player_makeObserver();
-    }
-		self.view_ofs = '0 0 0';
-		self.angles = other.v_angle = pos.mangle;
-		self.fixangle = TRUE;		// turn this way immediately
-		self.nextthink = time + 0.5;
-		self.takedamage = DAMAGE_NO;
-		self.solid = SOLID_NOT;
-		self.movetype = MOVETYPE_NONE;
-		self.modelindex = 0;
-		setorigin (self, pos.origin);
-    
-    client_push_mapobjects();
-    self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
-    client_sendEndMission(self, 1) ;
+      if(self.data_type == DATA_MECH){
+        player_unmakeMech();
+        player_makeObserver();
+      }
+      self.view_ofs = '0 0 0';
+      self.angles = other.v_angle = pos.mangle;
+      self.fixangle = TRUE;		// turn this way immediately
+      self.nextthink = time + 0.5;
+      self.takedamage = DAMAGE_NO;
+      self.solid = SOLID_NOT;
+      self.movetype = MOVETYPE_NONE;
+      self.modelindex = 0;
+      setorigin (self, pos.origin);
+      
+      client_push_mapobjects();
+      client_sendAvailable_Mechs( world.unlockMechs, TRUE );
+      client_sendAvailableItems( world.unlockEquip, TRUE );
+      self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
+      client_sendEndMission(self, 1) ;
     
     this = self;
 		other = find (other, classname, "player");
   }
 	WriteByte (MSG_ALL, SVC_INTERMISSION);
-  
 };
 
 void() changelevel_touch={
