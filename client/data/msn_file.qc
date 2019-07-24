@@ -99,8 +99,13 @@ void() msn_parsefile={
       }
 
       //objectives section
+      tobj = msn_mapobjid(tobj, argv(1), argv(token));  //somehow reading this second works
       msn_setobjdesc(tobj, argv(1), argv(token));
-      tobj = msn_mapobjid(argv(1), argv(token));  //somehow reading this second works
+      msn_setobj_type(tobj, argv(1), argv(token));
+    }
+    //checks for end-of-objective struct
+    if( (tobj > 0) && (line =="}")){
+      tobj = 0;
     }
     line = fgets(flannel);
   }
@@ -178,7 +183,7 @@ void(string line, string val) msn_settotalobjectives={
   }
 };
 
-float(string line, string val) msn_mapobjid={
+float(float currentObjId, string line, string val) msn_mapobjid={
   local float obj_id;
   if(line == MSN_FILE_OBJ_ID){
     obj_id = stof(val);
@@ -186,17 +191,25 @@ float(string line, string val) msn_mapobjid={
       return obj_id;
     }
     else{
-      return 0;
+      return currentObjId;
     }
   }
   else{
-    return 0;
+    return currentObjId;
   }
 };
 void(float obj_id, string line, string val) msn_setobjdesc={
   if(line == MSN_FILE_OBJ_DESC){
-    if(obj_id != 0){    
+    if(obj_id != 0){
       MSN_OBJ_DESC[obj_id] = strzone(val);
+    }
+  }
+};
+
+void( float obj_id, string line, string val) msn_setobj_type={
+  if(line == MSN_FILE_OBJ_TYPE){
+    if(obj_id != 0){
+      MSN_OBJ_TYPES[obj_id] = strzone(val);
     }
   }
 };

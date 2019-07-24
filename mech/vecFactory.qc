@@ -409,6 +409,17 @@ void(void() data_ini) build_mech_bot={
   if( self.hardpoint_cnt > 0 ){
     build_unit_weapon_list();
   }
+  switch( self.faction ){
+    case FACTION_PSC:
+      MISSION_TOTAL_PSC = MISSION_TOTAL_PSC + 1;
+      break;
+    case FACTION_SURVEST:
+      MISSION_TOTAL_SURVEST = MISSION_TOTAL_SURVEST + 1;
+      break;
+    case FACTION_MILITAR:
+      MISSION_TOTAL_MILITAR = MISSION_TOTAL_MILITAR + 1;
+      break;
+  }
 };
 
 void() build_unit_turret={
@@ -560,6 +571,18 @@ void(void() data_ini) build_vehicle_unit={
   }
    
   self.health = self.max_health;
+  
+  switch( self.faction ){
+    case FACTION_PSC:
+      MISSION_TOTAL_PSC = MISSION_TOTAL_PSC + 1;
+      break;
+    case FACTION_SURVEST:
+      MISSION_TOTAL_SURVEST = MISSION_TOTAL_SURVEST + 1;
+      break;
+    case FACTION_MILITAR:
+      MISSION_TOTAL_MILITAR = MISSION_TOTAL_MILITAR + 1;
+      break;
+  }
 };
 
 void( void() data_ini ) build_vtol_unit={

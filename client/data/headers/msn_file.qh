@@ -3,6 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 04/02/2017
 mod: 5/5/2017 - added void(string line, string val) msn_setresrv
+mod: 07/24/2019 - added objective type
 Overview: header for the mission file handler.
 */
 
@@ -24,6 +25,7 @@ string MSN_FILE_OBJS = "objtotal";
 string MSN_FILE_ANIM = "anim";
 string MSN_FILE_OBJ_ID = "objid";
 string MSN_FILE_OBJ_DESC = "objdesc";
+string MSN_FILE_OBJ_TYPE = "objtype";
 
 //file values
 string MSN_FILENAME;
@@ -39,11 +41,13 @@ string MSN_BRIEF;
 string MSN_INTEL;
 string MSN_ANIM;
 float MSN_OBJ;
+string MSN_OBJ_TYPE;
 
 float MSN_SFX_COUNT;
 .float MSN_SFX_TIME;
 
 string MSN_OBJ_DESC[10];
+string MSN_OBJ_TYPES[10];
 
 void() msn_getfile;
 void() msn_parsefile;
@@ -58,5 +62,6 @@ void(string line, string val) msn_setlocaltime;
 void(string line, string val) msn_setbrief;
 void(string line, string val) msn_setintel;
 void(string line, string val) msn_settotalobjectives;
-float(string line, string val) msn_mapobjid;
+float(float currentObjId, string line, string val) msn_mapobjid;
 void(float obj_id, string line, string val) msn_setobjdesc;
+void( float obj_id, string line, string val) msn_setobj_type;

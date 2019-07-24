@@ -51,7 +51,7 @@ void(string itms) client_sendAvailableItems;
 void(float mode) client_sendGameMode;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
 void(entity client, float trackNum, float entFlags) client_sendMusic;
-void(entity client, float missionTime, float clientKills, float monsterTotal, float missionSuccessCheck) client_sendEndMission;
+void(entity client, float missionSuccessCheck) client_sendEndMission;
 
 void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;

@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
      mod 3/10/2017
@@ -102,7 +102,6 @@ void() player_unmakeMech={
   self.accuracyMod = 0;
   self.stat_plr_stt = PLAYER_IN_MENU;
   self.stat_plr_fir = FIRE_GROUP;
-  self.stat_lck_stt = LOCK_NONE;
   self.stat_ctor_hp = 0;
   self.stat_rdr_mode = FALSE;
   self.stat_rdr_rng = 0;
@@ -110,4 +109,5 @@ void() player_unmakeMech={
   self.shield = 0;
   self.enemy = world;
   mech_clearWeaponGroups();
+  mech_cleanupMech();
 };

@@ -78,8 +78,6 @@ float DIR_SW  = 5;
 float DIR_W   = 6;
 float DIR_NW  = 7;
 
-//class vars
-
 //Armor Types
 float ARM_LIT = 2;  //light armor
 float ARM_MED = 4;  //heavy armor;
@@ -91,3 +89,12 @@ float ARM_RAD = 24;
 float FIRE_SINGLE = 1;
 float FIRE_GROUP = 2;
 float FIRE_CHAIN = 3;
+
+//MISSION STATS
+float MISSION_TOTAL_PSC;
+float MISSION_TOTAL_SURVEST;
+float MISSION_TOTAL_MILITAR;
+
+float MISSION_LOSSES_PSC;
+float MISSION_LOSSES_SURVEST;
+float MISSION_LOSSES_MILITAR;

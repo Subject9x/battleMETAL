@@ -153,9 +153,12 @@ void( entity objective ) client_send_objective={
   
   WriteByte( MSG_ONE, objective.data_idx); 
   
-  nactive = objective.isActive;
+  
   if( objective.faction != self.faction ){
     nactive = FALSE;
+  }
+  else{
+    nactive = objective.isActive;
   }
   WriteByte( MSG_ONE, nactive); 
   WriteByte( MSG_ONE, objective.state_1);
@@ -493,7 +496,7 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
 /*
   client Mapping = client_event_debrief_active();
 */
-void(entity client, float missionTime, float clientKills, float monsterTotal, float missionSuccessCheck) client_sendEndMission={
+void(entity client, float missionSuccessCheck) client_sendEndMission={
   local entity notSelf;
   
   notSelf = self;
@@ -501,10 +504,26 @@ void(entity client, float missionTime, float clientKills, float monsterTotal, fl
     msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY );
     WriteByte( MSG_ONE, TE_MISSION_END );
-    WriteByte( MSG_ONE, missionTime );
-    WriteByte( MSG_ONE, clientKills );
-    WriteByte( MSG_ONE, monsterTotal );
+    WriteByte( MSG_ONE, time );
+    WriteByte( MSG_ONE, self.frags );
     WriteByte( MSG_ONE, missionSuccessCheck );
+    WriteByte( MSG_ONE, MISSION_TOTAL_PSC );
+    WriteByte( MSG_ONE, MISSION_TOTAL_SURVEST );
+    WriteByte( MSG_ONE, MISSION_TOTAL_MILITAR );
+    switch( self.faction ){
+      case FACTION_PSC:
+        WriteByte( MSG_ONE, MISSION_LOSSES_MILITAR );
+        break;
+      case FACTION_SURVEST:
+        WriteByte( MSG_ONE, MISSION_LOSSES_MILITAR );
+        break;
+      case FACTION_MILITAR:
+        WriteByte( MSG_ONE, MISSION_LOSSES_MILITAR );
+        break;
+      default:
+        WriteByte( MSG_ONE, 0 );
+        break;
+    }
   self = notSelf;
 };
 

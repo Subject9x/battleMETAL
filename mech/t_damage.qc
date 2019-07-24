@@ -430,9 +430,23 @@ void(entity targ, entity attacker, float dmg_type) killed={
     
     if (self.solid != SOLID_CORPSE){
       // bump the monster counter
-      if ( (self.flags & FL_MONSTER) ){
+      if ( (self.flags & (FL_MONSTER | FL_UNIT)) ){
         //TODO - send kill count
         //TODO - if allied, send losses
+        switch( self.faction ){
+          case FACTION_PSC:
+            MISSION_LOSSES_PSC = MISSION_LOSSES_PSC + 1;
+            break;
+          case FACTION_SURVEST:
+            MISSION_LOSSES_SURVEST = MISSION_LOSSES_SURVEST + 1;
+            break;
+          case FACTION_MILITAR:
+            MISSION_LOSSES_MILITAR = MISSION_LOSSES_MILITAR + 1;
+            break;
+        }
+        if( (attacker.flags & FL_CLIENT) && (self.faction != attacker.faction) ){
+          attacker.frags = attacker.frags + 1;
+        }
         self.enemy = attacker;
         killed_monsters = killed_monsters + 1;
         WriteByte (MSG_ALL, SVC_KILLEDMONSTER);

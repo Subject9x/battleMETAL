@@ -213,7 +213,7 @@ void() client_event_objective={
   
   if( (prevState > FALSE) ){
     if( prevState == TRUE ){
-      if( (nexState == -1)  ){
+      if( nexState == -1 ){
         te_objective_failed();
       }
       if( nexState == 2 ){
@@ -337,28 +337,32 @@ void(float warnTypes) client_event_hazard_warn={
   receives end-mission data from server,
   launches MENU_DEBRIEF screen.  
 */
-void(float missiontTime, float clientKills, float monsterTotal, float missonSuccessCheck) client_event_debrief_active={
+void(float missionTime, float clientKills, float missonSuccessCheck, float pscTotal, float survestTotal, float militarTotal, float totalLosses ) client_event_debrief_active={
   
-  MENU_DEBRIEF_time_elapsed = CLIENT_start_time - missiontTime;
+  MENU_DEBRIEF_time_elapsed = CLIENT_start_time - missionTime;
   MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 1000;
   MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 60;
   
   MENU_DEBRIEF_total_kills = clientKills;
-  MENU_DEBRIEF_total_monsters = monsterTotal;
+  MENU_DEBRIEF_total_monsters = survestTotal + militarTotal;
+  MENU_DEBRIEF_total_allies = pscTotal;
   
   MENU_DEBRIEF_status = missonSuccessCheck;
   
+  MENU_DEBRIEF_total_losses = totalLosses;
+  
   if( MENU_DEBRIEF_status ){
-    MENU_DEBRIEF_data_mission_status = "Successful";
+    MENU_DEBRIEF_data_mission_status = "- Mission Successful -";
   }
   else{
-    MENU_DEBRIEF_data_mission_status = "Failed";
+    MENU_DEBRIEF_data_mission_status = "!- Mission Failed -!";
   }
   
   MENU_ACTIVE = 1;
   CLIENT_MENU_menu_choice = MENU_DEBRIEF_ACTIVE;
   setpause( 1 );
   setcursormode( 1 );
+  //start cd track
 };
 
 void() client_event_targ_kill={

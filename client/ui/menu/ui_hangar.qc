@@ -162,10 +162,10 @@ void(vector ofs) menu_hangar_MechHPoints={
   drawpic(nofs + gui_percentToPixelRawVec('18.5 32'), UI_DEF_BOX_512, gui_percentToPixelRawVec('236 38'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   drawpic(nofs + gui_percentToPixelRawVec('18.5 70'), UI_DEF_BOX_512, gui_percentToPixelRawVec('236 128'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   
-  tlen = gui_percentXRaw(stringwidth("-HARDPOINT DATA-", 0, '10 8 0'));
+  tlen = gui_percentXRaw(stringwidth("- Hardpoint Data -", 0, '10 8 0'));
   tofs_x = nofs_x + gui_percentXRaw(255/2) - (tlen/2);
   tofs_y = nofs_y + gui_percentYRaw(10);
-  drawstring(tofs, "-HARDPOINT DATA-", '10 8 0', CLR_DEF_WHITE, 1, 0);
+  drawstring(tofs, "-HardpointData -", '10 10 0', CLR_DEF_WHITE, 1, 0);
     
   if(SELECT_MECH > FALSE){
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
@@ -198,10 +198,10 @@ void(vector ofs) menu_hangar_MechList={
   
   drawpic(ofs + gui_percentToPixelRawVec('9.9 8'), UI_DEF_BOX_256_TALL, gui_percentToPixelRawVec('116 440'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
   
-  textLen = stringwidth( "-AVAILABLE METAL-", 0, '10 8 0');
+  textLen = stringwidth( "-Available Metal-", 0, '10 10 0');
   labelOfs = ofs + gui_percentToPixelRawVec('9.9 16');
   labelOfs_x = labelOfs_x + gui_percentXRaw( 116 / 2 ) - gui_percentXRaw( textLen / 2 );
-  drawstring(labelOfs, "-AVAILABLE METAL-", '10 8 0', '1 1 1', 1, 0);
+  drawstring(labelOfs, "-Available Metal-", '10 10 0', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
   
@@ -321,11 +321,11 @@ void(vector ofs) menu_hangar_MechInfo={
   nofs = ofs + gui_percentToPixelRawVec('125 32');
   drawpic(nofs, UI_DEF_BOX_256, gui_percentToPixelRawVec('250 180'), CLR_DEF_UI_HANGAR + '0.3 0.3 0.3', 1, 0);
 
-  slen = stringwidth("-METAL INFO-", 0 ,'10 10 0');
+  slen = stringwidth("-Metal Info-", 0 ,'10 10 0');
   labelOrg = nofs;
   labelOrg_x = labelOrg_x + gui_percentXRaw( 125 ) - gui_percentXRaw( slen / 2);
   labelOrg_y = labelOrg_y + gui_percentYRaw(8);
-  drawstring(labelOrg, "-METAL INFO-", '10 10 0', CLR_DEF_WHITE, 1, 0);
+  drawstring(labelOrg, "-Metal Info-", '10 10 0', CLR_DEF_WHITE, 1, 0);
   
   fontSize = fontSizeSmall;
     drawstring(nofs + gui_percentToPixelRawVec('8 23'), "Type:", fontSize, CLR_DEF_GRAY_H, 1, 0);

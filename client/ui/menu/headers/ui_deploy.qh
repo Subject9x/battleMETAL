@@ -19,7 +19,9 @@ float DEPLOY_POINT_END;
 //tooltips
   vector DEPLOY_HELP_NAV_MAP;
   vector DEPLOY_HELP_NAV_PICK;
-  
+
+  vector DEPLOY_BUTTON_NAV_NEXT_ORG;
+  vector DEPLOY_BUTTON_NAV_PREV_ORG;
 
 //main hook for menu system
 void() menu_deployDrawFrame;

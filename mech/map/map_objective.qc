@@ -55,22 +55,35 @@ void() map_objective_use={
   }
 };
 
+void() map_objective_touch={
+  if( self.isActive > 0 ){
+    if( (other.flags & FL_CLIENT) ){
+      if( other.faction == self.faction ){
+        activator = other;
+        map_objective_use();  //DEBUG - complete on-touch
+        self.touch = SUB_Null;
+      }
+    }
+  }
+};
+
 /*
   The heart of the Map Objective object.
   this is run every time + 0.1, checking isActive every time.
 */
 void() map_objective_th={
   local entity player;
-    
+  local entity oldThis;
+  
   if(self.isActive == 2){
     multi_trigger();
     player = findchainflags( flags, FL_CLIENT );
     while( player ){
       if( player.faction == self.faction ){
-        stemp = self;
+        oldThis = self;
         self = player;
-          client_send_objective( stemp );
-        self = stemp;
+          client_send_objective( oldThis );
+        self = oldThis;
       }
       player = player.chain;
     }
@@ -82,10 +95,10 @@ void() map_objective_th={
     player = findchainflags( flags, FL_CLIENT );
     while( player ){
       if( player.faction == self.faction ){
-        stemp = self;
+        oldThis = self;
         self = player;
-          client_send_objective( stemp );
-        self = stemp;
+          client_send_objective( oldThis );
+        self = oldThis;
       }
       player = player.chain;
     }
@@ -108,18 +121,24 @@ void() map_objective={
     self.solid = SOLID_TRIGGER;
     tempMax = self.maxs;
     tempMin = self.mins;
+    self.touch = map_objective_touch;
   }
   else{
     self.solid = SOLID_NOT;
   }
-  //self.classname = "data";
   self.flags = self.flags | FL_NODE;
   
   self.data_type = DATA_OBJT;
   self.movetype = MOVETYPE_NONE;
   
   setmodel(self, "q3mdl/testball.md3");
-  setsize(self, VEC_ORIGIN, VEC_ORIGIN);
+  
+  if( (self.spawnflags & 2) ){
+    setsize(self, tempMin, tempMax);
+  }
+  else{
+    setsize(self, VEC_ORIGIN, VEC_ORIGIN);
+  }
   setorigin(self, self.origin);
   
   self.use = map_objective_use;

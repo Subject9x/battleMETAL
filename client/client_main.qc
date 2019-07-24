@@ -306,6 +306,9 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     //HUD Highlight Boxes
     ui_renderHUD_Highlight_frame();
     ui_objective_frame(VIEW_ORG);
+    if( MISSION_NAME_ON == TRUE ){
+      client_event_mission_name_frame();
+    }
   }
   else{
     if(CLIENT_player_state == PLAYER_IN_MENU){
@@ -369,10 +372,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   //plays above all
   if(ANM_FILE_STATUS == TRUE){
     anm_execute_frame();
-  }
-  
-  if( MISSION_NAME_ON == TRUE ){
-    client_event_mission_name_frame();
   }
   
   if( cvar("developer") ){
@@ -451,7 +450,7 @@ float() CSQC_Parse_TempEntity =
       client_event_mission_name( ReadString() );
       return TRUE;
     case TE_MISSION_END:
-      client_event_debrief_active( ReadByte(), ReadByte(), ReadByte(), ReadByte() );
+      client_event_debrief_active( ReadByte(), ReadByte(), ReadByte(), ReadByte(), ReadByte(), ReadByte(), ReadByte() );
       return TRUE;
   } 
 	return FALSE;

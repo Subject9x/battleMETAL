@@ -10,6 +10,7 @@ Overview:
 float MENU_DEBRIEF_status;
 
 float MENU_DEBRIEF_total_monsters;
+float MENU_DEBRIEF_total_allies;
 float MENU_DEBRIEF_total_kills;
 float MENU_DEBRIEF_total_losses;
 float MENU_DEBRIEF_objectives_primary_complete;
@@ -30,6 +31,7 @@ void() menu_debriefListener_onDrag;
 void() menu_debrief_drawFrame;
 
 void(vector panelOffset) menu_debrief_header;
-void(vector panelOffset) menu_debrief_objectives;
+void(vector panelOffset) menu_debrief_objectives_primary;
+void(vector panelOffset) menu_debrief_objectives_secondary;
 void(vector panelOffset) menu_debrief_stats;
 void(vector panelOffset) menu_debrief_unlocks;

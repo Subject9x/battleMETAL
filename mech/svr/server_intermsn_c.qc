@@ -68,6 +68,7 @@ void() ExitIntermission={
 	intermission_exittime = time + 1;
 	intermission_running = intermission_running + 1;
 
+/**
 //
 // run some text if at the end of an episode
 //
@@ -140,6 +141,7 @@ void() ExitIntermission={
 		}
 		
 	}
+  */
 
 	GotoNextMap();
 };
@@ -178,6 +180,7 @@ void() execute_changelevel={
     
     if(self.data_type == DATA_MECH){
       player_unmakeMech();
+      player_makeObserver();
     }
 		self.view_ofs = '0 0 0';
 		self.angles = other.v_angle = pos.mangle;
@@ -188,12 +191,13 @@ void() execute_changelevel={
 		self.movetype = MOVETYPE_NONE;
 		self.modelindex = 0;
 		setorigin (self, pos.origin);
-    self.stat_plr_stt = PLAYER_INTERMSN;
-    client_sendEndMission(self, time, 8, 23, 1) ;
+    
+    client_push_mapobjects();
+    self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
+    client_sendEndMission(self, 1) ;
+    
     this = self;
 		other = find (other, classname, "player");
-    //TODO update player state
-    //send intermission packet
   }
 	WriteByte (MSG_ALL, SVC_INTERMISSION);
   

@@ -17,6 +17,15 @@ void() mh_world_ini={
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
   
+  //Mission unit stat totals
+  MISSION_TOTAL_PSC = 0;
+  MISSION_TOTAL_SURVEST = 0;
+  MISSION_TOTAL_MILITAR = 0;
+
+  MISSION_LOSSES_PSC = 0;
+  MISSION_LOSSES_SURVEST = 0;
+  MISSION_LOSSES_MILITAR = 0;
+  
   cvar_set("gamemode", ftos(GAMEMODE_CAMPAIGN));
   if( coop && cvar("maxplayers") > 1){
     cvar_set("gamemode", ftos(GAMEMODE_COOP));

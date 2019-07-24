@@ -199,7 +199,6 @@ void() PutClientInServer = {
       break;
   }
 
-  
   switch( self.data_type ){
     case DATA_POBS:
       player_makeObserver();

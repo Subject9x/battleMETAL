@@ -35,6 +35,6 @@ void(float warnType) client_event_hazard_warn;
 
 void() client_event_mission_name_frame;
 void( string name ) client_event_mission_name;
-void(float missionTime, float clientKills, float monsterTotal, float missionSuccessCheck) client_event_debrief_active;
+void(float missionTime, float clientKills, float pscTotal, float survestTotal, float militarTotal , float missonSuccessCheck, float totalLosses) client_event_debrief_active;
 
 void() receive_ent_bindData;
