@@ -135,8 +135,8 @@ void() mapfile_coop_load={
   file = mapname;
   mapFile = mapname;
   
-  if( world.map_file ){
-    mapFile = world.map_file;
+  if( world.mapFile ){
+    mapFile = world.mapFile;
   }
   
   file = strcat(PATH_DATA_MAP, "/", file, "/", mapFile, SAVE_FILE_EXT);
@@ -173,8 +173,8 @@ void( float playerFaction ) mapfile_pvp_load={
   file = mapname;
   mapFile = mapname;
   
-  if( world.map_file ){
-    mapFile = world.map_file;
+  if( world.mapFile ){
+    mapFile = world.mapFile;
   }
   
   file = strcat(PATH_DATA_MAP, "/", mapname, "/", mapFile, "_", ftos(playerFaction), SAVE_FILE_EXT);

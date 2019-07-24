@@ -431,11 +431,11 @@ void() client_sendMissionFileName={
   local string cmd, msnFile;
   
   msnFile = mapname;
-  if( world.msn_file ){
-    msnFile = world.msn_file;
+  if( world.missionFile ){
+    msnFile = world.missionFile;
   }
   
-  cmd = strcat("mech msn_file ", msnFile, "\n");
+  cmd = strcat("mech missionFile ", msnFile, "\n");
   stuffcmd(self, cmd);
 };
 

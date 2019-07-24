@@ -11,7 +11,7 @@ Overview:
   state
   
 Inputs
-  .data_idx =  <float> [objective id] - must match a number in the msn_file
+  .data_idx =  <float> [objective id] - must match a number in the missionFile
   .isActive = <float> [enum]  0 = hidden/inactive 
                               1 = active
                               2 = complete

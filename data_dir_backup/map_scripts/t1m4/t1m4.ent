@@ -4,9 +4,9 @@
 //==================
 */
 {
-"map_file" "t1m4"
+"mapFile" "t1m4"
 "classname" "worldspawn"
-"msn_file" "t1m4.dat"
+"missionFile" "t1m4.dat"
 "fog" "1 0.85 0.65 0.5 0.45 6000 10000 8000 2500"
 "faction" "1"
 "sounds" "3"

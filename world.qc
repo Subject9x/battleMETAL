@@ -22,9 +22,9 @@ Only used for the world entity.
   This affects things like environmental smoke puffs, possibly lighting, and fog?
 
 [map scripts]
-  "map_file"
+  "mapFile"
     <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.sav
-  "msn_file"
+  "missionFile"
     <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
 
 //COSMETICS

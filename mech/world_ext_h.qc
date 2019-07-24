@@ -18,8 +18,8 @@ float TE_STOMP_TYPE;  //set by world type
 //EXTENSIONS
 .float client_num;
 
-.string msn_file;
-.string map_file;
+.string missionFile;
+.string mapFile;
 .entity particleCube; //used by mech/map/map_particlecube_effect.qc
 .vector wind;
 

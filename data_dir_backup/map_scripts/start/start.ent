@@ -1,7 +1,7 @@
 {
 "classname" "worldspawn"
 "message" "The cold rise from sleep"
-"msn_file" "start.dat"
+"missionFile" "start.dat"
 "faction" "1"
 }
 {

@@ -819,9 +819,9 @@ Only used for the world entity.
   This affects things like environmental smoke puffs, possibly lighting, and fog?
 
 [map scripts]
-  "map_file"
+  "mapFile"
     <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.sav
-  "msn_file"
+  "missionFile"
     <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
 
 //COSMETICS
@@ -1512,7 +1512,7 @@ REMOVE_FIRSTUSE 8 - remove after first countdown
   state
   
 -------- KEYS -------- 
-.data_idx =  <float> [objective id] - must match a number in the msn_file
+.data_idx =  <float> [objective id] - must match a number in the missionFile
 .isActive = <float> [enum]  0 = hidden/inactive 
                             1 = active
                             2 = complete
@@ -1558,7 +1558,7 @@ The script schema can be found there too.
 The Map_Animatic object 
 
 -------- KEYS --------
-.msn_file = <string> [file] - the .anim file to be loaded from /data/anim/
+.missionFile = <string> [file] - the .anim file to be loaded from /data/anim/
 .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
 .count1 = <float> [freeze time] - defaults to 15 sec if not defined, use with spawnflags[32]
 .target = <string> [ent] - fire this trigger when done

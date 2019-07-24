@@ -11,7 +11,7 @@ Overview:
   The Map_Animatic object 
 
 Inputs
-  .msn_file = <string> [file] - the .anim file to be loaded from /data/anim/
+  .missionFile = <string> [file] - the .anim file to be loaded from /data/anim/
   .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
   .count1 = <float> [freeze time] - defaults to 15 sec if not defined, use with spawnflags[32]
   .target = <string> [ent] - fire this trigger when done
@@ -50,7 +50,7 @@ void() animatic_event_execute={
           self.velocity = '0 0 0';
           self.avelocity = '0 0 0';
         }
-        client_sendAnimaticFileName(this.msn_file);
+        client_sendAnimaticFileName(this.missionFile);
       self = this;
       client = client.chain;
     }
