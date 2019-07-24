@@ -1,10 +1,10 @@
 /*
-mech Mod
-Author: Peter Roohr
-Date: 8/27/2016
-Overview: storage for map ents, i guess.
-I pulled these out of client.qc, what they were doing there I have 
-no idea;
+Quake 1**
+Author: iD software
+Overview: 
+  storage for map ents, i guess.
+  I pulled these out of client.qc, what they were doing there I have 
+    no idea;
 */
 
 /*QUAKED info_player_observer_start (1 0 0) (-16 -16 -24) (16 16 24)

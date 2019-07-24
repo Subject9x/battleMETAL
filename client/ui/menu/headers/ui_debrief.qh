@@ -18,6 +18,8 @@ float  MENU_DEBRIEF_time_elapsed;
 
 string MENU_DEBRIEF_unlocks_mechs;
 string MENU_DEBRIEF_unlocks_equip;
+string MENU_DEBRIEF_data_mission_status;
+
 
 //menu hooks
 void() menu_debriefListener_onClick;
@@ -27,6 +29,7 @@ void() menu_debriefListener_onDrag;
 //menu rendering
 void() menu_debrief_drawFrame;
 
+void(vector panelOffset) menu_debrief_header;
 void(vector panelOffset) menu_debrief_objectives;
 void(vector panelOffset) menu_debrief_stats;
 void(vector panelOffset) menu_debrief_unlocks;

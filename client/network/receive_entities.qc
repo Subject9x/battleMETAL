@@ -338,7 +338,23 @@ void(float warnTypes) client_event_hazard_warn={
   launches MENU_DEBRIEF screen.  
 */
 void(float missiontTime, float clientKills, float monsterTotal, float missonSuccessCheck) client_event_debrief_active={
-
+  
+  MENU_DEBRIEF_time_elapsed = CLIENT_start_time - missiontTime;
+  MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 1000;
+  MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 60;
+  
+  MENU_DEBRIEF_total_kills = clientKills;
+  MENU_DEBRIEF_total_monsters = monsterTotal;
+  
+  MENU_DEBRIEF_status = missonSuccessCheck;
+  
+  if( MENU_DEBRIEF_status ){
+    MENU_DEBRIEF_data_mission_status = "Successful";
+  }
+  else{
+    MENU_DEBRIEF_data_mission_status = "Failed";
+  }
+  
   MENU_ACTIVE = 1;
   CLIENT_MENU_menu_choice = MENU_DEBRIEF_ACTIVE;
   setpause( 1 );
