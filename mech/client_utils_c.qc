@@ -294,6 +294,8 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   
   if(argv(1) == "nextmission"){
+    cons_logAString("nextmission", argv(2));
+    cons_logAString("nextmission", argv(3));
     client_setMission(str, tokens);
     return;
   }

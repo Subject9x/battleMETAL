@@ -71,9 +71,8 @@ void() map_objective_mission_conclude_th={
   }
   
   objective = self;
-  
-  player = findchainflags( flags, FL_CLIENT );
-  while( player ){
+  player = find (world, classname, "player");
+  while( player != world ){
     self = player;
       self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
       if(self.data_type == DATA_MECH){
@@ -84,7 +83,7 @@ void() map_objective_mission_conclude_th={
       self.view_ofs = '0 0 0';
       self.angles = self.v_angle = self.angles;
       self.fixangle = TRUE;		// turn this way immediately
-      self.nextthink = time + 0.5;
+      //self.nextthink = time + 0.5;
       self.takedamage = DAMAGE_NO;
       self.solid = SOLID_NOT;
       self.movetype = MOVETYPE_NONE;
@@ -101,13 +100,13 @@ void() map_objective_mission_conclude_th={
       else{
         te_mission_lose();
       }
-      client_sendEndMission(self, successCheck);
-      
-    self = objective;
-    player = player.chain;
+      client_sendEndMission(player, successCheck);
+      cons_logAFloat("loop check", 1); //DEBUG
+    player = find (player, classname, "player");
   }
-  
-  self.think = SUB_Remove;
+  self = objective;
+	WriteByte (MSG_ALL, SVC_INTERMISSION);
+  self.think = map_objective_th;
   self.nextthink = time + 2;
 };
 
@@ -158,23 +157,26 @@ void() map_objective_th={
   local entity oldThis;
   
   //objective achieved
+  oldThis = self;
   if(self.isActive == 2){
     multi_trigger();
-    player = findchainflags( flags, FL_CLIENT );
-    while( player ){
+    player = find (world, classname, "player");
+    while( player != world){
       if( player.faction == self.faction ){
-        oldThis = self;
         self = player;
           client_send_objective( oldThis );
         self = oldThis;
       }
-      player = player.chain;
+      player = find (player, classname, "player");
     }
     self.isActive = 0;
     if( (self.spawnflags & 8) ){
       MISSION_STATUS = TRUE;
+        
+      intermission_running = 1;
+      intermission_exittime = time + 2;
       self.think = map_objective_mission_conclude_th;
-      self.nextthink = time + 4;
+      self.nextthink = time + 2;
       return;
     }
     return;
@@ -184,21 +186,20 @@ void() map_objective_th={
   if( self.isActive == -1 ){
     //objective failed!
     trigger_event( self.enemy, trigOnDeath );
-    player = findchainflags( flags, FL_CLIENT );
-    while( player ){
+    player = find (world, classname, "player");
+    while( player != world ){
       if( player.faction == self.faction ){
-        oldThis = self;
         self = player;
           client_send_objective( oldThis );
         self = oldThis;
       }
-      player = player.chain;
+      player = find (player, classname, "player");
     }
     self.isActive = 0;
     if( (self.spawnflags & 4) ){
       MISSION_STATUS = FALSE;
       self.think = map_objective_mission_conclude_th;
-      self.nextthink = time + 4;
+      self.nextthink = time + 2;
       return;
     }
     return;
