@@ -96,7 +96,7 @@ util/headers/input_events.qh
 
 data/headers/data_api.qh
 data/headers/ui_data.qh
-data/headers/missionFile.qh
+data/headers/msn_file.qh
 
 network/headers/client_globals.qh
 network/headers/server_localcmd.qh
@@ -126,7 +126,7 @@ data/client_precache.qc
 data/data_system.qc
 data/data_api.qc
 data/ui_data.qc
-data/missionFile.qc
+data/msn_file.qc
 
 ui/anim.qc
 ui/gui_api.qc

@@ -2,10 +2,14 @@
 battleMETAL
 Author: Peter Roohr
 Date: 3/8/2017
+mod: 07/25/2019
 Overview: class file for the client -> server command layer
 
 */
 
+/*
+  Setter functions, pipes client data up to server.
+*/
 void(float val) cl_set_movespeedkey={
   cvar_set("cl_movespeedkey", ftos(val));
 };
@@ -42,6 +46,15 @@ void(float nav_id) cl_setspawnpoint={
 };
 
 
+void(float nextMissionBool) cl_set_mission={
+  local string cmd;
+  cmd = strcat("cmd mech nextmission", ftos(nextMissionBool),"\n");
+  localcmd(cmd);
+};
+
+/*
+  Getter functions, receives stuffcmd()'s from server.
+*/
 void(string fileName) cl_get_msnfile={
   MSN_FILENAME = strzone(fileName);
   msn_getfile();

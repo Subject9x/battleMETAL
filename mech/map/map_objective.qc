@@ -3,6 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 03/25/2017
 mod: 11/16/2017
+mod: 07/25/2019
 Overview: 
   An Objective a specific map object.
   Map Objectives are named triggers that are sent to the client for interaction.
@@ -18,19 +19,100 @@ Inputs
                               -1 = failed
   .faction = <float> faction for this objective
   .target = <string> [targetname] - fire THIS trigger when Objective is COMPLETE, isActive == 2
+  .trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
   .state_1 = <float> [enum] - determines which SFX to play when 'completed'
                     1 = primary 
                     2 = secondary
                     3 = tertiary
    .count = <float> [sum] - only complete objective when count is hit;
-   .trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
+   
+   .map = map to go to if MISSION_WIN.
+   .mapFile = map to go to if MISSION_LOSE
    
    .spawnflags = <float> [flag] 1 - START_OFF
    .spawnflags = <float> [flag] 2 - ALLOW TRIGGER TOUCH
+   .spawnflags = <float> [flag] 4 - MISSION_LOSE
+   .spawnflags = <float> [flag] 8 - MISSION_WIN
 */
 
+void() map_objective_th;
+
 /*
+  Only if MISSION_LOSE or MISSION_WIN.
   
+    Change - MISSION_STATUS? 1:0.
+  
+    put clients into INTERMISSION.
+  
+    set objective states to client.
+  
+    change clients to observers.
+    
+    if MISSION_WIN
+      nextmap -> .map
+      send unlocks to client.
+  
+    if MISSION_LOSE
+      nextmap -> .mapFile
+*/
+void() map_objective_mission_conclude_th={
+  local entity player;
+  local entity objective;
+  local float successCheck;
+  local string toMap;
+  
+  if( MISSION_STATUS ){
+    successCheck = TRUE;
+    nextmap = self.map;
+  }
+  else{
+    successCheck = FALSE;
+    nextmap = self.mapFile;
+  }
+  
+  objective = self;
+  
+  player = findchainflags( flags, FL_CLIENT );
+  while( player ){
+    self = player;
+      self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
+      if(self.data_type == DATA_MECH){
+        player_unmakeMech();
+        player_makeObserver();
+      }
+      //taken from execute_changelevel()
+      self.view_ofs = '0 0 0';
+      self.angles = self.v_angle = self.angles;
+      self.fixangle = TRUE;		// turn this way immediately
+      self.nextthink = time + 0.5;
+      self.takedamage = DAMAGE_NO;
+      self.solid = SOLID_NOT;
+      self.movetype = MOVETYPE_NONE;
+      self.modelindex = 0;
+      setorigin (self, self.origin);
+      //------------------------------
+      
+      client_push_mapobjects();
+      if( successCheck ){
+        //only send unlocks if player won mission
+        client_sendMissionUnlocks();
+        te_mission_win();
+      }
+      else{
+        te_mission_lose();
+      }
+      client_sendEndMission(self, successCheck);
+      
+    self = objective;
+    player = player.chain;
+  }
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 2;
+};
+
+/*
+  called by other entities during trigger call.
 */
 void() map_objective_use={
   self.enemy = activator;
@@ -75,6 +157,7 @@ void() map_objective_th={
   local entity player;
   local entity oldThis;
   
+  //objective achieved
   if(self.isActive == 2){
     multi_trigger();
     player = findchainflags( flags, FL_CLIENT );
@@ -88,10 +171,19 @@ void() map_objective_th={
       player = player.chain;
     }
     self.isActive = 0;
+    if( (self.spawnflags & 8) ){
+      MISSION_STATUS = TRUE;
+      self.think = map_objective_mission_conclude_th;
+      self.nextthink = time + 4;
+      return;
+    }
     return;
   }
+  
+  //objective failed.
   if( self.isActive == -1 ){
     //objective failed!
+    trigger_event( self.enemy, trigOnDeath );
     player = findchainflags( flags, FL_CLIENT );
     while( player ){
       if( player.faction == self.faction ){
@@ -103,7 +195,12 @@ void() map_objective_th={
       player = player.chain;
     }
     self.isActive = 0;
-    trigger_event( self.enemy, trigOnDeath ) ;
+    if( (self.spawnflags & 4) ){
+      MISSION_STATUS = FALSE;
+      self.think = map_objective_mission_conclude_th;
+      self.nextthink = time + 4;
+      return;
+    }
     return;
   }
   self.think = map_objective_th;
@@ -117,6 +214,7 @@ void() map_objective={
   local vector tempMin;
   local vector tempMax;
   
+  //touchable
   if( (self.spawnflags & 2) ){
     self.solid = SOLID_TRIGGER;
     tempMax = self.maxs;
@@ -133,6 +231,7 @@ void() map_objective={
   
   setmodel(self, "q3mdl/testball.md3");
   
+  //touchable
   if( (self.spawnflags & 2) ){
     setsize(self, tempMin, tempMax);
   }
@@ -145,6 +244,7 @@ void() map_objective={
   self.think = map_objective_th;
   
   self.isActive = 1;
+  //start off
   if( (self.spawnflags & 1) ){
     self.isActive = 0;
     return;

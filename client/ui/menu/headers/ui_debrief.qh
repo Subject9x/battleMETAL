@@ -21,6 +21,8 @@ string MENU_DEBRIEF_unlocks_mechs;
 string MENU_DEBRIEF_unlocks_equip;
 string MENU_DEBRIEF_data_mission_status;
 
+//menu globals
+vector MENU_DEBRIEF_BUTTON_ORG_mission;
 
 //menu hooks
 void() menu_debriefListener_onClick;

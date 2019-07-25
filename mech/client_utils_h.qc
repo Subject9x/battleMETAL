@@ -59,6 +59,8 @@ void(string cmd, float tokens) client_ParseMechCommand;
 void(string cmd, float tokens) client_setWeapon;
 void(string cmd, float tokens) client_setWeaponGroup;
 void(string cmd, float tokens) client_setNavPoint;
+void(string cmd, float tokens) client_setMission;
+
 void() client_updateWeaponReloads;
 void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed;
 void(string bob, string cycle, string up) client_update_viewBob;

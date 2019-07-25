@@ -43,12 +43,6 @@ entity() FindIntermission={
 	return world;
 };
 void() GotoNextMap={
-  //TODO - change to cvar("maxplayers") == 1
-  if( cvar("gamemode") == GAMEMODE_CAMPAIGN){
-    savefile_changemap(nextmap);
-    savefile_append();
-    savefile_save();
-  }
   if (cvar("samelevel")){	// if samelevel is set, stay on same level
 		changelevel (mapname);
 	}

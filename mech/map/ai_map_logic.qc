@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 3/2/2018
 Overview: ai objects used for map logic

@@ -5,12 +5,16 @@ Date: 07/23/2019
 Overview: 
   Debriefing screen ( sure, score screen).
   Occurs once the map has sent the PLAYER_INTERMSN.
+  this is generally triggered by player death or mission end.
 */
 
 //menu hooks
 void() menu_debriefListener_onClick={
   //next/retry mission button
-  
+  if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), FALSE) ){
+    setpause( 0 );
+    cl_set_mission( MENU_DEBRIEF_status );
+  }
 };
 
 void() menu_debriefListener_onHover={
@@ -58,12 +62,20 @@ void(vector panelOffset) menu_debrief_header={
   nextMissionOrg_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw(138);//106 accounts for pesky 10px margin
   nextMissionOrg_y = gui_percentYRaw(6);
   drawpic( nextMissionOrg, UI_DEF_BOX_256, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
+  MENU_DEBRIEF_BUTTON_ORG_mission = nextMissionOrg;
   
   //TODO - what to do with FAILED missions?
-  nextMissionLen = stringwidth( "[Next Mission]", 0, '18 14');
+  local string missionStatus;
+  if( MENU_DEBRIEF_status ){
+    missionStatus = "[Next Mission]";
+  }
+  else{
+    missionStatus = "<< Retry ";
+  }
+  nextMissionLen = stringwidth( missionStatus, 0, '18 14');
   nextMissionLabelOrg_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw( nextMissionLen / 2) - gui_percentXRaw(138/2);  //106 accounts for pesky 10px margin
   nextMissionLabelOrg_y = gui_percentYRaw(10);
-  drawstring( nextMissionLabelOrg, "[Next Mission]", '18 14', '1 1 1', 1, 0);
+  drawstring( nextMissionLabelOrg, missionStatus, '18 14', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
 };

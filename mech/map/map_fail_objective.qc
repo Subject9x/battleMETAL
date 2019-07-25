@@ -8,7 +8,7 @@ Overview:
   This should be used sparingly, they clean themsleves up after firing.
   
 Inputs
-  .target = <string> [objective targetname] - objective to trigger.
+  .target = <string> [objective targetname] - objective to 'fail'.
   .mins = <vector> [lower half of bounding box]
   .maxs = <vector> [upper half of bounding box] - use both of these with spawnflags[2]
   
@@ -28,27 +28,23 @@ void() map_fail_objective_use={
   remove(self);
 };
 
-
 /*QUAKED
 */
 void() map_fail_objective={
   local vector tempMin;
   local vector tempMax;
   
-  setmodel( self, "q3mdl/testball.md3" );
   self.movetype = MOVETYPE_NONE;
   if( (self.spawnflags & 2) ){
+    setmodel( self, self.model);
     //trigger is touchable
     self.solid = SOLID_TRIGGER;
-    tempMin = self.mins;
-    tempMax = self.maxs;
-    setsize( self, tempMin, tempMax );
+    setsize( self, self.mins, self.maxs );
   }
   else{
+    setmodel( self, "q3mdl/testball.md3" );
     self.solid = SOLID_NOT;
     setsize( self, VEC_ORIGIN, VEC_ORIGIN );
   }
   setorigin( self, self.origin );
-  
-  
 };

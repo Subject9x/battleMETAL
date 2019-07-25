@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
 mod: 11/16/2018
@@ -8,7 +8,7 @@ Overview: function extensions to world.qc
 
 //GLOBALS
 float CLIENTS;
-
+float MISSION_STATUS;     //used to track whether player WON or LOST the current mission.
 entity WeatherDominator;  //global weather controlling entity.
 vector WINDDIR; //these get set by worldspawn but are here because 
 void() WeatherDominator_think;
