@@ -230,6 +230,60 @@ void() ui_data_clear_item2={
   }
 };
 
+//difference here is we dont load config data
+float(float mechId) ui_data_load_mech_info={
+  local float idx; 
+  
+  if( UI_HANGAR_DATA_mech.data_idx > 0){
+    ui_data_clear_mechdata();
+  }
+  
+  data_get_client_mech_( UI_HANGAR_DATA_mech, mechId );
+  UI_HANGAR_DATA_mech.data_idx = mechId;
+  
+  MECH_DATA_ID = UI_HANGAR_DATA_mech.data_idx;
+  MECH_DATA_ABR = UI_HANGAR_DATA_mech.abbrev;
+  MECH_DATA_NAME = UI_HANGAR_DATA_mech.vec_name;
+  MECH_DATA_SIZE = UI_HANGAR_DATA_mech.vec_size;
+  MECH_DATA_TECH = UI_HANGAR_DATA_mech.techLevel;
+  MECH_DATA_ICON = UI_HANGAR_DATA_mech.icon;
+  MECH_DATA_ENMAX = UI_HANGAR_DATA_mech.energyMax;
+  MECH_DATA_ENRATE = UI_HANGAR_DATA_mech.energyRate;
+  MECH_DATA_SHMAX = UI_HANGAR_DATA_mech.shieldMax;
+  MECH_DATA_SHRATE = UI_HANGAR_DATA_mech.shieldRate;
+  MECH_DATA_HPOINTS = UI_HANGAR_DATA_mech.hardpoint_cnt;
+  MECH_DATA_SPEEDF = UI_HANGAR_DATA_mech.data_speed_forward;
+  MECH_DATA_SPEEDS = UI_HANGAR_DATA_mech.data_speed_strafe;
+  MECH_DATA_SPEEDB = UI_HANGAR_DATA_mech.data_speed_backward;
+  MECH_DATA_ACCEL = UI_HANGAR_DATA_mech.data_speed_accel;
+  MECH_DATA_HPCT = UI_HANGAR_DATA_mech.max_health;
+  MECH_DATA_HPST = UI_HANGAR_DATA_mech.torsoLeft.max_health;
+  MECH_DATA_HPAR = UI_HANGAR_DATA_mech.armLeft.max_health;
+  MECH_DATA_HPLG = UI_HANGAR_DATA_mech.legs.max_health;
+  MECH_DATA_RAD = UI_HANGAR_DATA_mech.radar_range;
+  MECH_DATA_DESC = UI_HANGAR_DATA_mech.description;
+  
+  local entity hardpoint;
+  local float itr;
+  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  itr = 1;
+  while( hardpoint ){
+    local entity parentPart;
+    local vector partOffset;
+    
+    partOffset = hardpoint.c_ofs;
+    //TODO - migjht be source of hardpoint type bug
+    if( MECH_DATA_STOCK[itr] > 0){
+      hardpoint.data_idx = MECH_DATA_STOCK[itr];
+      data_get_client_item_( hardpoint, MECH_DATA_STOCK[itr] );
+    }
+    itr = itr + 1;
+    hardpoint = hardpoint.w_slot;
+  }
+  
+  return TRUE;
+};
+
 float(float id) ui_data_load_mech={
   local float flannel, line_tag, line_val;
   local string file, contents, line;

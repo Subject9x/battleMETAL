@@ -290,8 +290,6 @@ void(vector panelOffset) menu_debrief_stats={
   drawstring( thisOrg + gui_percentToPixelRawVec('6 72'), "Mission Time:", '14 14', CLR_DEF_GRAY_H, 1, 0);
   drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), sprintf("%000.2f",ftos(MENU_DEBRIEF_time_elapsed)), '16 16', '1 1 1', 1, 0);
   
-  
-  
   drawfont = drawfont_prev;
 };
 
@@ -316,51 +314,22 @@ void(vector panelOffset) menu_debrief_unlocks={
   //unlocks label
   local float unlocksLabelLen;
   local vector unlocksLabelOrg;
-  unlocksLabelLen = stringwidth( "-New Equipment Unlocked-", 0, '10 10');
-  unlocksLabelOrg_x = thisOrg_x + gui_percentXRaw(6);
-  unlocksLabelOrg_x = unlocksLabelOrg_x + gui_percentXRaw( panelImageSize_x / 2);
-  unlocksLabelOrg_x = unlocksLabelOrg_x - gui_percentXRaw(12);
-  unlocksLabelOrg_x = unlocksLabelOrg_x - gui_percentXRaw( unlocksLabelLen / 2 );
+  unlocksLabelLen = stringwidth( "-New Weapons Unlocked-", 0, '10 10');
+  unlocksLabelOrg_x = thisOrg_x + gui_percentXRaw( panelImageSize_x / 2) - gui_percentXRaw( unlocksLabelLen / 2 );
   unlocksLabelOrg_y = thisOrg_y + gui_percentYRaw(6);
-  drawstring( unlocksLabelOrg, "-New Equipment Unlocked-", '10 10', CLR_DEF_GRAY_H, 1 , 0);
-  
-  //DEBUG - tokenize overlap with loading mech data!
+  drawstring( unlocksLabelOrg, "-New Weapons Unlocked-", '10 10', CLR_DEF_GRAY_H, 1 , 0);
+
+
   local float tokenId;
+  local float tokenItr;
   local float tokenMax;
   local string token;
   local float tokenValue;
-  //New Mechs
-  local float mechY;
-  local vector mechStartOrg;
-  local vector mechOrg;
-  mechStartOrg = thisOrg + gui_percentToPixelRawVec('0 220');
-  mechY = 0;
-  tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
-  tokenId = 0;
-  while( tokenId < tokenMax ){
-    token = argv(tokenId);
-    if( token != ""){
-      tokenValue = stof(token);
-
-      if( tokenValue != 0 ){
-        ui_data_load_mech( stof(token) );
-        mechOrg = mechStartOrg;
-        mechOrg_x = mechOrg_x + gui_percentXRaw( tokenId * 48 );
-        if( mechOrg_x > (thisOrg_x + panelImageSize_x) ){
-          mechY = mechY + 1;
-        }
-        mechOrg_y = mechOrg_y + gui_percentYRaw( mechY * 64 );
-        drawpic( mechOrg, MECH_DATA_ICON, '60 64', '1 1 1', 1, 0);
-      }
-    }
-    tokenId = tokenId + 1;
-  }
-    
+  tokenItr = 0;
   //New Weapons
   local float weaponY;
   local vector weaponStartOrg;
   local vector weaponOrg;
-  
   weaponStartOrg = thisOrg + gui_percentToPixelRawVec('6 24');
   weaponY = 0;
   tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
@@ -369,19 +338,100 @@ void(vector panelOffset) menu_debrief_unlocks={
     token = argv(tokenId);
     if( token != ""){
       tokenValue = stof(token);
-      data_get_client_item_( UI_ARMING_DATA_item_list, stof(token) );
-      weaponOrg = weaponStartOrg;
-      weaponOrg_x = weaponOrg_x + gui_percentXRaw( tokenId * 32 );
-      if( weaponOrg_x > (thisOrg_x + panelImageSize_x) ){
-        weaponY = weaponY + 1;
+      data_get_client_item_( UI_ARMING_DATA_item_list, tokenValue );
+      if( !(UI_ARMING_DATA_item_list.damageType & DMG_MSC) ){
+        weaponOrg = weaponStartOrg;
+        weaponOrg_x = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
+        if( weaponOrg_x > (thisOrg_x + panelImageSize_x) ){
+          weaponY = weaponY + 1;
+        }
+        weaponOrg_y = weaponOrg_y + gui_percentYRaw( weaponY * 32 );
+        drawpic( weaponOrg, UI_ARMING_DATA_item_list.icon, '28 28', '1 1 1', 1, 0);
+        tokenItr = tokenItr + 1;
       }
-      weaponOrg_y = weaponOrg_y + gui_percentYRaw( weaponY * 32 );
-      drawpic( weaponOrg, UI_ARMING_DATA_item_list.icon, '28 28', '1 1 1', 1, 0);
     }
     tokenId = tokenId + 1;
   }
+  if( weaponY == 0){
+    weaponY = weaponY + 1;
+  }
+ 
+  weaponY = gui_percentYRaw(weaponY * 32); //lock in y value
   
   //New Equipment
+  local vector equipLabelOrg;
+  local float equipLabelLen;
+  equipLabelLen = stringwidth( "-New Equipment Unlocked-", 0, '10 10 0');
+  equipLabelOrg_x = thisOrg_x + gui_percentXRaw(panelImageSize_x / 2) - gui_percentXRaw(equipLabelLen / 2); 
+  equipLabelOrg_y = thisOrg_y + weaponY + gui_percentYRaw(24);
+  drawstring( equipLabelOrg, "-New Equipment Unlocked-", '10 10', CLR_DEF_GRAY_H, 1, 0);
+  
+  local float equipmentY;
+  local vector equipmentStartOrg;
+  local vector equipmentOrg;
+  equipmentStartOrg_x = thisOrg_x + gui_percentXRaw(6);
+  equipmentStartOrg_y = equipLabelOrg_y + gui_percentYRaw(16);
+  equipmentY = 0;
+  tokenId = 0;
+  tokenItr = 0;
+  while( tokenId < tokenMax ){
+    token = argv(tokenId);
+    if( token != ""){
+      tokenValue = stof(token);
+      data_get_client_item_( UI_ARMING_DATA_item_list, tokenValue );
+      if( (UI_ARMING_DATA_item_list.damageType & DMG_MSC) ){
+        equipmentOrg = equipmentStartOrg;
+        equipmentOrg_x = equipmentOrg_x + gui_percentXRaw( tokenItr * 32 );
+        if( equipmentOrg_x > (thisOrg_x + panelImageSize_x) ){
+          equipmentY = equipmentY + 1;
+        }
+        equipmentOrg_y = equipmentOrg_y + gui_percentYRaw( equipmentY * 32 );
+        drawpic( equipmentOrg, UI_ARMING_DATA_item_list.icon, '28 28', '1 1 1', 1, 0);
+        tokenItr = tokenItr + 1;
+      }
+    }
+    tokenId = tokenId + 1;
+  }
+  if( equipmentY == 0){
+    equipmentY = equipmentY + 1;
+  }
+  equipmentY = gui_percentYRaw( equipmentY * 32);
+  
+  //New Mechs
+  local vector mechLabelOrg;
+  local float mechLabelLen;
+  mechLabelLen = stringwidth( "-New Metal Unlocked-", 0, '10 10 0');
+  mechLabelOrg_x = thisOrg_x + gui_percentXRaw(panelImageSize_x / 2) - gui_percentXRaw(mechLabelLen / 2); 
+  mechLabelOrg_y = equipLabelOrg_y + equipmentY + gui_percentYRaw(24);
+  drawstring( mechLabelOrg, "-New Metal Unlocked-", '10 10', CLR_DEF_GRAY_H, 1, 0);
+  
+  local float mechY;
+  local vector mechStartOrg;
+  local vector mechOrg;
+  mechStartOrg_x = thisOrg_x + gui_percentXRaw(6);
+  mechStartOrg_y = mechLabelOrg_y + gui_percentYRaw(16);
+  mechY = 0;
+  tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
+  tokenId = 0;
+  tokenItr = 0;
+  while( tokenId < tokenMax ){
+    token = argv(tokenId);
+    if( token != ""){
+      tokenValue = stof(token);
+      if( tokenValue != 0 ){
+        ui_data_load_mech_info( tokenValue );
+        mechOrg = mechStartOrg;
+        mechOrg_x = mechOrg_x + gui_percentXRaw( tokenItr * 60 );
+        if( mechOrg_x > (thisOrg_x + panelImageSize_x) ){
+          mechY = mechY + 1;
+        }
+        mechOrg_y = mechOrg_y + gui_percentYRaw( mechY * 64 );
+        drawpic( mechOrg, MECH_DATA_ICON, '60 64', '1 1 1', 1, 0);
+        tokenItr = tokenItr + 1;
+      }
+    }
+    tokenId = tokenId + 1;
+  }
   
   drawfont = drawfont_prev;
 };
