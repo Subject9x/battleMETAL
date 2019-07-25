@@ -192,8 +192,7 @@ void() execute_changelevel={
       setorigin (self, pos.origin);
       
       client_push_mapobjects();
-      client_sendAvailable_Mechs( world.unlockMechs, TRUE );
-      client_sendAvailableItems( world.unlockEquip, TRUE );
+      client_sendMissionUnlocks();
       self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
       client_sendEndMission(self, 1) ;
     

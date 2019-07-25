@@ -48,6 +48,7 @@ void(string fileName) client_sendAnimaticFileName;
 void() client_sendMissionName;
 void(string mechs) client_sendAvailable_Mechs;
 void(string itms) client_sendAvailableItems;
+void() client_sendMissionUnlocks;
 void(float mode) client_sendGameMode;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
 void(entity client, float trackNum, float entFlags) client_sendMusic;

@@ -25,69 +25,6 @@ void() ui_data_load_hudnames={
   fclose(f); 
 };
 
-
-void() ui_data_load_itemnames={
-  local float f, idx;
-  local string ln;
-  idx = 1;
-  f = fopen("ui/item/dir.meta", FILE_READ);
-  if (f != -1){ 
-    ln = fgets(f);
-    while( ln != "" ){
-      if( strstrofs(ln, "//", 0) == -1 ){
-        if(idx <= GAME_TOTAL_ITEMS){
-          ITEM_DATA_NAMES[idx] = strzone(ln);
-        }
-        idx = idx + 1;
-      }
-      ln = fgets(f);
-    } 
-  } 
-  fclose(f); 
-};
-
-void() ui_data_load_itemicons={
-  local float count;
-  count = 1;
-  while( count <= GAME_TOTAL_ITEMS) {
-    local string file, filename;
-    local float flannel;
-    filename = ITEM_DATA_NAMES[count];
-    if(filename != ""){
-      file = strcat("ui/item/", filename,".item");
-      flannel = fopen(file, FILE_READ);
-      if(flannel != -1){
-        local string line, ico;
-        line = fgets(flannel);
-        while( (line != "") ){
-          if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-            tokenizebyseparator(line, "  '","'"," : ", ",");
-            local string token, value;
-            token = argv(1);
-            value = argv(3);
-            if( token == "icon" ){
-              ico = value;
-            }
-          }
-          line = fgets(flannel);
-        }
-        
-        if( ico != "" ){
-          ITEM_DATA_ICONS[count] = strzone(ico);
-        }
-        else{
-          ITEM_DATA_ICONS[count] = strzone("");
-        }
-        fclose(flannel);
-      }
-      else{
-        ITEM_DATA_ICONS[count] = "";
-      }
-    }
-    count = count + 1;
-  }
-};
-
 //this is for sorting the mechs by size class in a clean way
 void() ui_data_load_mechsizes={
   local float count;
@@ -177,10 +114,10 @@ void( entity mechEntity ) ui_data_cleanup_mechlist_entity={
     next_hardpoint = mech_piece.w_slot;
     remove(mech_piece);
     MECH_DATA_STOCK[itr] = 0;
-	if( itr <= 5 ){
-      MECH_DATA_GRPS[itr] = 0;
-	}
-	itr = itr + 1;
+    if( itr <= 5 ){
+        MECH_DATA_GRPS[itr] = 0;
+    }
+    itr = itr + 1;
     mech_piece = next_hardpoint;
   }
   
@@ -298,7 +235,9 @@ float(float id) ui_data_load_mech={
   local string file, contents, line;
   local float idx; 
   
-  ui_data_clear_mechdata();
+  if( UI_HANGAR_DATA_mech.data_idx > 0){
+    ui_data_clear_mechdata();
+  }
   
   data_get_client_mech_( UI_HANGAR_DATA_mech, id );
   UI_HANGAR_DATA_mech.data_idx = id;
@@ -329,7 +268,7 @@ float(float id) ui_data_load_mech={
   flannel = fopen(file, FILE_READ);
   if(flannel == -1){
     cons_logAString("ERROR", strcat("File[", file,"] NOT FOUND")); 
-	fclose(flannel);
+    fclose(flannel);
     return FALSE;
   }
   
@@ -343,11 +282,11 @@ float(float id) ui_data_load_mech={
       value = argv(3);
       if( token != ""){
         if( strstrofs(token, "stock", 0) != -1 ){
-		  if( strstrofs(token, "hpt", 0) != -1 ){
+          if( strstrofs(token, "hpt", 0) != -1 ){
             tokenizebyseparator(token, "_");
             idx = stof(argv(2));
             MECH_DATA_STOCK[idx] = stof(value);
-		  }
+          }
           if( strstrofs(token, "grps",0) != -1 ){
             tokenizebyseparator(token, "_");
             idx = stof(argv(2));
@@ -365,15 +304,15 @@ float(float id) ui_data_load_mech={
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   itr = 1;
   while( hardpoint ){
-	local entity parentPart;
-	local vector partOffset;
-	
-	partOffset = hardpoint.c_ofs;
-	//TODO - migjht be source of hardpoint type bug
-	if( MECH_DATA_STOCK[itr] > 0){
-	  hardpoint.data_idx = MECH_DATA_STOCK[itr];
-	  data_get_client_item_( hardpoint, MECH_DATA_STOCK[itr] );
-	}
+    local entity parentPart;
+    local vector partOffset;
+    
+    partOffset = hardpoint.c_ofs;
+    //TODO - migjht be source of hardpoint type bug
+    if( MECH_DATA_STOCK[itr] > 0){
+      hardpoint.data_idx = MECH_DATA_STOCK[itr];
+      data_get_client_item_( hardpoint, MECH_DATA_STOCK[itr] );
+    }
     itr = itr + 1;
     hardpoint = hardpoint.w_slot;
   }
@@ -392,7 +331,6 @@ float( float id ) ui_data_load_hud={
     return FALSE;
   }
   contents = fgets(flannel);
-  //tokenizebyseparator(contents, "{", ",", "}");
   uid = 0;
   line = fgets(flannel);
   while( (line != "") ){ 

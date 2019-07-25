@@ -10,7 +10,6 @@ string MECH_DATA_NAMES[256];
 string HUD_DATA_NAMES[256];
 
 string ITEM_DATA_ICONS[256];
-string ITEM_DATA_NAMES[256];
 
 //MECH DATA FILE
 float   MECH_DATA_ID;
@@ -73,8 +72,6 @@ void() ui_data_load_mechsizes;
 void() ui_data_load_hudnames;
 float(float id) ui_data_load_mech;
 float( float id ) ui_data_load_hud;
-void() ui_data_load_itemnames;
-void() ui_data_load_itemicons;
 float(float id) ui_date_load_item1;
 float(float id) ui_date_load_item2;
 

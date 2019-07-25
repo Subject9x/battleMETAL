@@ -71,13 +71,15 @@ void() cl_get_mechs_sort={
   mechListItem = spawn();
   itr = 0;
   
-  while( itr < UNLOCKED_MECHS_TOTAL){
+  while( itr < 24){
     mechId = UNLOCKED_MECHS[itr];
-    data_get_client_mech_( mechListItem, mechId );
-    if( mechListItem.data_idx ){
-      MECH_DATA_SIZES[mechId] = mechListItem.vec_size;
-      MECH_DATA_NAMES[mechId] = mechListItem.vec_name;
-      ui_data_cleanup_mechlist_entity( mechListItem );
+    if( mechId > 0 ){
+      data_get_client_mech_( mechListItem, mechId );
+      if( mechListItem.data_idx ){
+        MECH_DATA_SIZES[mechId] = mechListItem.vec_size;
+        MECH_DATA_NAMES[mechId] = mechListItem.vec_name;
+        ui_data_cleanup_mechlist_entity( mechListItem );
+      }
     }
     itr = itr + 1;
   }
@@ -93,22 +95,19 @@ void(string mech_data) cl_get_mechs_all={
   
   tokens = tokenizebyseparator(mech_data, " ",",");
   itrTokens = 0;
-  itrUnlocks = 0;
   
   //TODO - possible duplication error
   while(itrTokens <= tokens){
     if( argv(itrTokens) != "" ){
       mechId = stof( argv(itrTokens) );
       if(mechId > 0){
-        //order of items doesn't really matter
-        UNLOCKED_MECHS[itrUnlocks] = mechId;
-        itrUnlocks = itrUnlocks + 1;
+        UNLOCKED_MECHS[mechId] = mechId;
       }
     }
     itrTokens = itrTokens + 1;
   }
   //we store the total for headache reduction later in UI code.
-  UNLOCKED_MECHS_TOTAL = itrUnlocks;
+  UNLOCKED_MECHS_TOTAL = 24;
 };
 
 void(string item_data) cl_get_items_all={
@@ -118,21 +117,57 @@ void(string item_data) cl_get_items_all={
   
   tokens = tokenizebyseparator(item_data, " ",",");
   itrTokens = 0;
-  itrUnlocks = 1;
   
   while(itrTokens <= tokens){
     if( argv(itrTokens) != "" ){
       itemId = stof( argv(itrTokens) );
       if(itemId > 0){
         //order of items doesn't really matter
-        UNLOCKED_ITEMS[itrUnlocks] = itemId;
-        itrUnlocks = itrUnlocks + 1;
+        UNLOCKED_ITEMS[itemId] = itemId;
       }
     }
     itrTokens = itrTokens + 1;
   }
   //we store the total for headache reduction later in UI code.
-  UNLOCKED_ITEMS_TOTAL = itrUnlocks;
+  UNLOCKED_ITEMS_TOTAL = 24;
+};
+
+void(string unlockData) cl_unlock_stuff={
+  local string item;
+  local float tokens;
+  local float tokenItr;
+  local float itemCounter;
+  
+  tokenizebyseparator( unlockData, "[", "]");
+  MENU_DEBRIEF_unlocks_mechs = strzone( argv(1) );
+  MENU_DEBRIEF_unlocks_equip = strzone( argv(3) );
+  
+  tokenItr = 0;
+  itemCounter = 0;
+  //mech list is blank
+  if( argv(1) != "" ){
+    tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
+    while( tokenItr < tokens ){
+      item = strzone(argv(tokenItr));  
+      itemCounter = stof(item);
+      UNLOCKED_MECHS[itemCounter] = itemCounter;
+      strunzone(item);
+      tokenItr = tokenItr + 1;
+    }
+  }
+
+  tokenItr = 0;
+  itemCounter = 0;
+  if( argv(3) != "" ){
+    tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
+    while( tokenItr < tokens ){
+      item = strzone(argv(tokenItr));
+      itemCounter = stof(item);
+      UNLOCKED_ITEMS[itemCounter] = itemCounter;
+      strunzone(item);
+      tokenItr = tokenItr + 1;
+    }
+  }
 };
 
 /*

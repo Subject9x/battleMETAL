@@ -201,7 +201,7 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
   local vector objectiveStatusOrg;
   local float objectiveStatusLen;
   
-  listStartOrg = thisOrg + gui_percentToPixelRawVec('6 20');
+  listStartOrg = thisOrg + gui_percentToPixelRawVec('6 8');
   list_index = 1;
   show_index = 0;
   line_return = 0;
@@ -310,7 +310,7 @@ void(vector panelOffset) menu_debrief_unlocks={
   thisOrg_x = thisOrg_x + gui_percentXRaw(10);
   panelImageSize_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw( VIEW_CTR_x);
   panelImageSize_x = panelImageSize_x - gui_percentXRaw(20);
-  panelImageSize_y = gui_percentYRaw( 256 );
+  panelImageSize_y = gui_percentYRaw( 300 );
   drawpic(thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, 1, 0);
   
   //unlocks label
@@ -324,11 +324,62 @@ void(vector panelOffset) menu_debrief_unlocks={
   unlocksLabelOrg_y = thisOrg_y + gui_percentYRaw(6);
   drawstring( unlocksLabelOrg, "-New Equipment Unlocked-", '10 10', CLR_DEF_GRAY_H, 1 , 0);
   
+  //DEBUG - tokenize overlap with loading mech data!
+  local float tokenId;
+  local float tokenMax;
+  local string token;
+  local float tokenValue;
   //New Mechs
-    //TODO unlocks
-  
+  local float mechY;
+  local vector mechStartOrg;
+  local vector mechOrg;
+  mechStartOrg = thisOrg + gui_percentToPixelRawVec('0 220');
+  mechY = 0;
+  tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
+  tokenId = 0;
+  while( tokenId < tokenMax ){
+    token = argv(tokenId);
+    if( token != ""){
+      tokenValue = stof(token);
+
+      if( tokenValue != 0 ){
+        ui_data_load_mech( stof(token) );
+        mechOrg = mechStartOrg;
+        mechOrg_x = mechOrg_x + gui_percentXRaw( tokenId * 48 );
+        if( mechOrg_x > (thisOrg_x + panelImageSize_x) ){
+          mechY = mechY + 1;
+        }
+        mechOrg_y = mechOrg_y + gui_percentYRaw( mechY * 64 );
+        drawpic( mechOrg, MECH_DATA_ICON, '60 64', '1 1 1', 1, 0);
+      }
+    }
+    tokenId = tokenId + 1;
+  }
     
   //New Weapons
+  local float weaponY;
+  local vector weaponStartOrg;
+  local vector weaponOrg;
+  
+  weaponStartOrg = thisOrg + gui_percentToPixelRawVec('6 24');
+  weaponY = 0;
+  tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
+  tokenId = 0;
+  while( tokenId < tokenMax ){
+    token = argv(tokenId);
+    if( token != ""){
+      tokenValue = stof(token);
+      data_get_client_item_( UI_ARMING_DATA_item_list, stof(token) );
+      weaponOrg = weaponStartOrg;
+      weaponOrg_x = weaponOrg_x + gui_percentXRaw( tokenId * 32 );
+      if( weaponOrg_x > (thisOrg_x + panelImageSize_x) ){
+        weaponY = weaponY + 1;
+      }
+      weaponOrg_y = weaponOrg_y + gui_percentYRaw( weaponY * 32 );
+      drawpic( weaponOrg, UI_ARMING_DATA_item_list.icon, '28 28', '1 1 1', 1, 0);
+    }
+    tokenId = tokenId + 1;
+  }
   
   //New Equipment
   

@@ -118,8 +118,6 @@ void() CSQC_Init =
   
   //ui data from text files /data/ui/
   ui_data_load_mechsizes();
-  ui_data_load_itemnames();
-  ui_data_load_itemicons();
   ui_data_load_hudnames();
 
   //loadfont(string fontname, string fontmaps, string sizes, float slot, float fix_scale, float fix_voffset)
@@ -479,6 +477,9 @@ void(string s) CSQC_Parse_StuffCmd =
     }
     else if(argv(1) == "gamemode"){
       cvar_set("gamemode", argv(2));
+    }
+    else if(argv(1) == "unlock"){
+      cl_unlock_stuff(s);
     }
   }
   else{

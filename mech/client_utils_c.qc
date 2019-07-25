@@ -353,6 +353,12 @@ void(string itms) client_sendAvailableItems={
   stuffcmd(self, cmd);
 };
 
+void() client_sendMissionUnlocks={
+  local string cmd;
+  cmd = strcat("mech unlock mechs [", world.unlockMechs,"] items [", world.unlockEquip, "]", "\n");
+  stuffcmd(self, cmd);
+};
+
 void(float mode) client_sendGameMode={
   local string cmd;
   cmd = strcat("mech gamemode ", ftos(mode),"\n");
