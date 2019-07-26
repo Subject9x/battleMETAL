@@ -49,7 +49,6 @@ Overview:
 .float fall_dist; //distance fallen to trigger 'stumble'
 .float fall_slam; //distance fallen to trigger leg damage
 .float fall_dmg;  //damage increments when falling
-.vector previousVel;
 
 .float power_timer; //used for power up
 .float power_timer_segment; //used for power up | radar lock progress

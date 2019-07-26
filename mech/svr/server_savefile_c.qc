@@ -190,10 +190,10 @@ void( float playerFaction ) mapfile_pvp_load={
           
         }
         if( argv(1) == SAVE_FILE_MECH_LIST ){
-          client_sendAvailable_Mechs( argv(3), FALSE );
+          client_sendAvailable_Mechs( argv(3) );
         }
         if( argv(1) == SAVE_FILE_ITEMS ){
-          client_sendAvailableItems( argv(3), FALSE );
+          client_sendAvailableItems( argv(3) );
         }
       }
       line = fgets(flannel);

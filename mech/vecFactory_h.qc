@@ -28,4 +28,3 @@ void( void() data_ini ) build_vtol_unit;
 
 //turret assembly
 void(void() data_ini) build_turret_unit;
-void() build_turret_top;

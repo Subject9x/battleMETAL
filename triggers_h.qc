@@ -1,11 +1,13 @@
 /*
-mech Mod
-Author: Peter Roohr
-Date: 11/18/2017
+Quake 1**
+Author: iD Software
 Overview: time to parse trigger functions to their own header file.
+
+** - this has been modified to be incorporated into battleMETAL and is not compatible with
+      other code bases.
 */
 //TRIGGER CONST
-entity stemp, otemp, s, old;
+entity stemp, otemp, s;
 
 float	SPAWNFLAG_NOMESSAGE = 1;
 float	SPAWNFLAG_NOTOUCH = 1;
@@ -71,5 +73,4 @@ void() trigger_push_touch;
 void() trigger_push;
 void() trigger_monsterjump;
 
-void() trigger_highlighthud;
 void() trigger_activate_node;

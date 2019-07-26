@@ -22,7 +22,6 @@ void() touch_mechPiece;
 void() building_burn_th;
 void() building_burn;
 void() building_die_removeFire;
-void() building_think;
 void() building_die;
 
 void() ctrl_updateTank;

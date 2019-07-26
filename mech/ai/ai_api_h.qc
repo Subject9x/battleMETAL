@@ -104,8 +104,6 @@ float() ai_pilot_yaw_mod;
 float() ai_turret_yaw_mod;
 float() ai_pilot_armor_mod;
 float() ai_pilot_shield_mod;
-void() ai_pilot_mech_armor;
-void() ai_pilot_vec_armor;
 float(float rank) ai_pilot_action_mod;
 float(float rank) ai_pilot_attack_interval;
 float( float rank, float damg) ai_pilot_mod_damage;

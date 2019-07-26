@@ -33,7 +33,6 @@ void() data_projectile_ini_emp_={
 
 void() data_projectile_emp_think_={
 
-  local float dist;
   local float explode;
   explode = FALSE;
   if(time > self.w_firetime){

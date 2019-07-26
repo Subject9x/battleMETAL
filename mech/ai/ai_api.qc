@@ -304,7 +304,7 @@ void( entity ally, entity targ, float override ) ai_give_target={
 
 vector(entity wep) ai_attack_trace={
   local entity cam;
-  local vector lead, cam_ofs;
+  local vector lead;
   lead = '1 1 1';
   if( self.enemy ){
     lead = self.enemy.origin - (self.enemy.velocity * self.ai_leading);
@@ -370,12 +370,10 @@ void() ai_ranged_attack={
   How does the AI react to being shot?
 */
 float(entity bot, entity attacker) ai_damage_react={
-  local entity this, friend;
   local float my_hp;
   local float enemy_hp, enemy_size;
   local float atk_hp, atk_size;
-  local float engage;
-  
+
   if( (self.flags & FL_DISARMED) ){
     ai_call_for_help( attacker );
     return FALSE;
@@ -477,7 +475,7 @@ float(entity wep) ai_attack_blockcheck={
 entity() ai_node_pick_rand={
   local entity anode;
   local float clr, total, pick;
-  local string name, grpid;
+  local string grpid;
   
   if( self.target ){
     anode = find(world, targetname, self.target);

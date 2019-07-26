@@ -18,7 +18,6 @@ void( float estate ) ai_turret_set_state={
 */
 void() ai_turret_control={
   local entity turretOwner;
-  local float turMax, turMin;
   if( (self.torsoCenter) ){
     turretOwner = self;
     self = self.torsoCenter;
@@ -67,7 +66,7 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
 
 void() ai_leg_control={
   local entity legOwner;
-  local vector am;
+  
   legOwner = self;
   if( (self.legs) ){
       self = self.legs;

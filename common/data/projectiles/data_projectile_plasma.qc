@@ -45,8 +45,6 @@ void() data_projectile_plasma_burn_ini_={
 };
 
 void() data_projectile_plasma_burn_th={
-  local entity e;
-  
   if( (self.enemy.deadflag > DEAD_NO) || (self.cockpit.deadflag > DEAD_NO) ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;

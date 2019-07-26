@@ -5,6 +5,9 @@ Overview:
   storage for map ents, i guess.
   I pulled these out of client.qc, what they were doing there I have 
     no idea;
+    
+** - this has been modified to be incorporated into battleMETAL and is not compatible with
+      other code bases.
 */
 
 /*QUAKED info_player_observer_start (1 0 0) (-16 -16 -24) (16 16 24)

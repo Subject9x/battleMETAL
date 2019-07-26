@@ -49,7 +49,7 @@ void() data_ini_equip_target_module_={
 
 #ifndef CSQC
 void() target_module_upgrade_={
-  local float lock, acc_n, acc_x;
+  local float lock;
   
   //stats cached here for restore on equip death
   self.w_firetime = self.owner.w_firetime;

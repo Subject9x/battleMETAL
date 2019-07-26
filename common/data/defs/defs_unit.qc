@@ -29,7 +29,6 @@ Overview:
 //Weapon Spread Mechanics
 .vector spreadDefault;
 .float accuracyMod;
-.float accuracyAdj;
 .float accuracy; 
 .float radar_time;
 .float radar_range;
@@ -54,10 +53,5 @@ Overview:
 .entity torsoRight;
 .entity armRight;  //arms can be optional
 
-.string ui_hud_image;	//client-side, display this as the background hud image
-.string ui_menu_icon;	//client-side, display this image in the hangar
-
 .float isActive;
-.float nav_name;
-
 .float ai_attack_chance;

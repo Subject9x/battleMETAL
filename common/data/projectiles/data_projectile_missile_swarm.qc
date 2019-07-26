@@ -45,7 +45,7 @@ void() data_projectile_missile_swarm_touch={
 };
 
 void() data_projectile_missile_swarm_think={
-  local vector lorg, dir, olddir, nuv;
+  local vector lorg, dir, olddir;
   local float turnrate;
 
   turnrate = 0.9;//0.15 turn rate increased to make up for longer intervals

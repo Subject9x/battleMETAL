@@ -32,7 +32,6 @@ void() data_projectile_ini_ion_={
 
 void() data_projectile_ion_think_={
 
-  local float dist;
   local float explode;
   explode = FALSE;
   if(time > self.w_firetime){

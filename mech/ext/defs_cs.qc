@@ -17,17 +17,11 @@ float AS_FLOAT = 8;
 .float stat_plr_camz;
 
 .float stat_legs_hp;
-.float stat_legs_am;
 .float stat_ctor_hp;
-.float stat_ctor_am;
 .float stat_ltor_hp;
-.float stat_ltor_am;
 .float stat_rtor_hp;
-.float stat_rtor_am;
 .float stat_larm_hp;
-.float stat_larm_am;
 .float stat_rarm_hp;
-.float stat_rarm_am;
 .float stat_cofs_x;
 .float stat_cofs_y;
 .float stat_cofs_z;

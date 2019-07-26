@@ -26,14 +26,11 @@ Overview
 .string w_name;       //label for weapon, need to keep 'classname' reserved for actual class
 .float w_proj;       //pointer to projectile entity data
 .float w_firerate;
-.float w_firemod;     //used for modifying fire rate;
-.float w_firemoddur;  //duration of effect;
 .float w_firetime;
 .float w_currentammo;
 .float w_clipsize;
 .float w_isready;
 .float w_group;     //weapon group, only 1-3 - SET BY PARENT
-.vector fx_origin;
 .float w_range;
 .float w_isburst;   //ugh
 .float w_state;   //double ugh
