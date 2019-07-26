@@ -565,8 +565,8 @@ void() ai_lock_on={
       if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
         self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
       } 
-      if( (self.enemy.stat_lck_stt & LOCK_PLYR) ){
-        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLYR);
+      if( (self.enemy.stat_lck_stt & LOCK_PLAYER) ){
+        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLAYER);
       }
     }
     

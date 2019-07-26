@@ -303,7 +303,11 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     
     //HUD Highlight Boxes
     ui_renderHUD_Highlight_frame();
+    
+    //Player has toggled 'Objectives' menu while in-mission.
     ui_objective_frame(VIEW_ORG);
+    
+    //Map has a .message value, and it's currently active for rendering
     if( MISSION_NAME_ON == TRUE ){
       client_event_mission_name_frame();
     }
@@ -453,8 +457,14 @@ float() CSQC_Parse_TempEntity =
   } 
 	return FALSE;
 };
-//TODO - mechs are no longer stored by id + size, rather just id, so, refactor this
-// if string is interesting, deal with it, otherwise pass it to localcmd() and let engine parse it (note: will not be executed immediately).
+/*
+  (Darkplaces)
+  if string is interesting, deal with it, otherwise pass it to localcmd() and let engine parse it (note: will not be executed immediately).
+
+  (battleMETAL)
+  All low-speed Client/Server commands go here, mostly stuff dealing with menu commands reaching the 
+  server.
+*/
 void(string s) CSQC_Parse_StuffCmd =
 {
   local float argc;

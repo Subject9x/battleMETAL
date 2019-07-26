@@ -273,7 +273,7 @@ float STAT_PLR_NAME = 104;
 float LOCK_NONE = 1;
 float LOCK_TARG_START = 2;
 float LOCK_TARG_HAS = 4;
-float LOCK_PLYR = 8;
+float LOCK_PLAYER = 8;
 
 //============================
 //     PLAYER POWER UP TIME  

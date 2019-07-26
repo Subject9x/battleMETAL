@@ -17,7 +17,7 @@ float CLIENT_start_time;
 float CLIENT_data_type;
 float CLIENT_data_idx;
 float CLIENT_faction;
-float CLIENT_stat_lck_stt;
+float CLIENT_stat_lock_state;
 float CLIENT_stat_rdr_mode;
 float CLIENT_stat_rdr_mode_prev;
 float CLIENT_stat_hit_dirs;
@@ -47,6 +47,7 @@ float CLIENT_stat_w9_id;
 
 vector CLIENT_entorg;
 float CLIENT_radar_range;
+float CLIENT_lockon_time;
 
 float CLIENT_energy;
 float CLIENT_shield;

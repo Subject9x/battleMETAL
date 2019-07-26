@@ -1122,25 +1122,25 @@ void() data_hud_frame={
   //CROSSHAIR AND DETAILS
   hud_renderDirectionHit(CLIENT_stat_hit_dirs);
   if( (CLIENT_flags & FL_NOSHOOT) ){
-    //rad_bld.png
     hud_renderCrosshairDisabled();
   }
   else{
+    hud_lock_frame();
     switch( cvar("crosshair") ){
       case 1:
-        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
         break;
       case 2:
-        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
         break;
       case 3:
-        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
         break;
       case 4:
-        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
         break;
       case 5:
-        hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lck_stt, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
         break;
       default:
         //no crosshair? bold move
@@ -1192,6 +1192,48 @@ void() hud_renderCrosshairDisabled={
 };
 
 /*
+  received lock start event, setup controller
+*/
+void(float lockTime) hud_lock_control_start={
+  HUD_LOCK_TIME_START = time;
+  HUD_LOCK_TIME_END = time + lockTime;
+  HUD_LOCK_STEP_RATE = lockTime / 100;
+  
+  HUD_LOCK_ALPHA = 0.01;
+  
+  HUD_LOCK_SIZE = 2;
+  HUD_LOCK_ALPHA_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
+  HUD_LOCK_SIZE_RATE = 1 * (HUD_LOCK_STEP_RATE / lockTime);
+  HUD_LOCK_COLOR = CLR_DEF_RET_GETLOCK;
+};
+
+/*
+  per-frame function for hud lock state.
+*/ 
+void() hud_lock_frame={
+  //cases
+    //1) started lock
+    if( !(HUD_LOCK_STATE_PREV & (LOCK_TARG_START | LOCK_TARG_HAS)) ){
+      if( (CLIENT_stat_lock_state & LOCK_TARG_START) ){
+        hud_lock_control_start( MECH_DATA_LOCKON ); 
+      }
+    }
+  //2) just acquired lock
+  if( (CLIENT_stat_lock_state & LOCK_TARG_START) ){
+    if( (time > HUD_LOCK_STEP) && (time < HUD_LOCK_TIME_END) ){
+      HUD_LOCK_ALPHA = HUD_LOCK_ALPHA + HUD_LOCK_ALPHA_RATE;
+      HUD_LOCK_SIZE = HUD_LOCK_SIZE - HUD_LOCK_SIZE_RATE;
+      HUD_LOCK_STEP = time + HUD_LOCK_STEP_RATE;
+    }
+  }
+  else if( (CLIENT_stat_lock_state & LOCK_TARG_HAS) && (HUD_LOCK_STATE_PREV & LOCK_TARG_START) ){
+    HUD_LOCK_ALPHA = 1;
+    HUD_LOCK_COLOR = CLR_DEF_RET_HASLOCK;
+  }
+  HUD_LOCK_STATE_PREV = CLIENT_stat_lock_state;
+};
+
+/*
   I have no regrets for these
   yes its a bespoke function for each crosshair style...because a generic system for
   crosshairs was egregious - ha.
@@ -1200,8 +1242,6 @@ void() hud_renderCrosshairDisabled={
   Crosshair Type 1
 */
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair1={
-  local float lockAlpha;
-  local vector lockColor;
   local float hitAlpha;
   local vector hitColor;
   
@@ -1218,7 +1258,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   local vector pipTop;
   local vector pipBottom;
   
-  lockAlpha = HUD_ALPHA;
   hitColor = HUD_COLOR_DEF;
   hitAlpha = HUD_ALPHA;
   
@@ -1264,19 +1303,10 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 
   //lock on indicators
   if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('34 34');
+    lockSize = gui_percentToPixelRawVec('34 34') * HUD_LOCK_SIZE;
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    lockColor = CLR_DEF_RET_GETLOCK;
-    lockAlpha = lockAlpha + 0.18;
-    if( (lockval & LOCK_TARG_HAS) ){
-      lockColor = CLR_DEF_RET_HASLOCK;
-      lockAlpha = lockAlpha + 0.05;
-    }
-    if( lockAlpha > 1 ){
-      lockAlpha = 1;
-    }
-    drawpic(lockCenter, "gfx/hud/ret/crosshair1_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+    drawpic(lockCenter, "gfx/hud/ret/crosshair1_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
   }
 }; 
 
@@ -1284,8 +1314,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   Crosshair Type 2
 */
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair2={
-  local float lockAlpha;
-  local vector lockColor;
   local float hitAlpha;
   local vector hitColor;
   
@@ -1302,7 +1330,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   local vector pipTop;
   local vector pipBottom;
   
-  lockAlpha = HUD_ALPHA;
   hitColor = HUD_COLOR_DEF;
   hitAlpha = HUD_ALPHA;
   
@@ -1348,19 +1375,10 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 
   //lock on indicators
   if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('34 34');
+    lockSize = gui_percentToPixelRawVec('34 34') * HUD_LOCK_SIZE;
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    lockColor = CLR_DEF_RET_GETLOCK;
-    lockAlpha = lockAlpha + 0.18;
-    if( (lockval & LOCK_TARG_HAS) ){
-      lockColor = CLR_DEF_RET_HASLOCK;
-      lockAlpha = lockAlpha + 0.05;
-    }
-    if( lockAlpha > 1 ){
-      lockAlpha = 1;
-    }
-    drawpic(lockCenter, "gfx/hud/ret/crosshair2_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+    drawpic(lockCenter, "gfx/hud/ret/crosshair2_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
   }
 };
 
@@ -1368,8 +1386,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   Crosshair Type 3
 */
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair3={
-  local float lockAlpha;
-  local vector lockColor;
   local float hitAlpha;
   local vector hitColor;
   
@@ -1382,8 +1398,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   local vector lockCenter;
   local vector pipLeft;
   local vector hitCenter;
-  
-  lockAlpha = HUD_ALPHA;
   
   imgSize = gui_percentToPixelRawVec('28 28');
   pipSizeH = gui_percentToPixelRawVec('34 34');
@@ -1402,19 +1416,10 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   
   //lock on indicators  
   if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('36 36');
+    lockSize = gui_percentToPixelRawVec('36 36') * HUD_LOCK_SIZE;
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    lockColor = CLR_DEF_RET_GETLOCK;
-    lockAlpha = lockAlpha + 0.18;
-    if( (lockval & LOCK_TARG_HAS) ){
-      lockColor = CLR_DEF_RET_HASLOCK;
-      lockAlpha = lockAlpha + 0.05;
-    }
-    if( lockAlpha > 1 ){
-      lockAlpha = 1;
-    }
-    drawpic(lockCenter, "gfx/hud/ret/crosshair3_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+    drawpic(lockCenter, "gfx/hud/ret/crosshair3_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
   }
   
   if( (hitdirection & STAT_HIT_TRG) ){
@@ -1437,8 +1442,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   Crosshair Type 4
 */
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4={
-  local float lockAlpha;
-  local vector lockColor;
   local float hitAlpha;
   local vector hitColor;
   
@@ -1451,8 +1454,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   local vector lockCenter;
   local vector pipLeft;
   local vector hitCenter;
-  
-  lockAlpha = 0.65;
   
   imgSize = gui_percentToPixelRawVec('32 32');
   pipSizeH = gui_percentToPixelRawVec('34 34');
@@ -1470,19 +1471,10 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   
   //lock on indicators  
   if( (lockval & LOCK_TARG_START) || (lockval & LOCK_TARG_HAS) ){
-    lockSize = gui_percentToPixelRawVec('36 36');
+    lockSize = gui_percentToPixelRawVec('36 36') * HUD_LOCK_SIZE;
     lockCenter_x = VIEW_CTR_x - lockSize_x / 2;
     lockCenter_y = VIEW_CTR_y - lockSize_y / 2;
-    lockColor = CLR_DEF_RET_GETLOCK;
-    lockAlpha = lockAlpha + 0.18;
-    if( (lockval & LOCK_TARG_HAS) ){
-      lockColor = CLR_DEF_RET_HASLOCK;
-      lockAlpha = lockAlpha + 0.1;
-    }
-    if( lockAlpha > 1 ){
-      lockAlpha = 1;
-    }
-    drawpic(lockCenter, "gfx/hud/ret/crosshair4_lock.png", lockSize, lockColor, lockAlpha, DRAWFLAG_NORMAL);
+    drawpic(lockCenter, "gfx/hud/ret/crosshair4_lock.png", lockSize, HUD_LOCK_COLOR, HUD_LOCK_ALPHA, DRAWFLAG_NORMAL);
   }
 };
 

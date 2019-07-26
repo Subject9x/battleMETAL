@@ -24,11 +24,11 @@ float TE_MISSION_WIN = 96;
 float TE_MISSION_LOSE = 97;
 float TE_NAV_REACH = 98;
 float TE_MSN_BOUND = 99;
+//======================
 
 float TE_AI_VOICE = 100;
 float TE_TARG_KILL = 101;
 
-//Other?
 float TE_MISSION_NAME = 102;
 float TE_HAZARD_SHIELD = 103;
 float TE_HAZARD_ENERGY = 104;

@@ -90,6 +90,7 @@ void() ui_data_clear_mechdata={
   MECH_DATA_HPAR = 0;
   MECH_DATA_HPLG = 0;
   MECH_DATA_RAD = 0;
+  MECH_DATA_LOCKON = 0;
   if( MECH_DATA_DESC != "" ){
     MECH_DATA_DESC = "";
   }
@@ -261,6 +262,7 @@ float(float mechId) ui_data_load_mech_info={
   MECH_DATA_HPAR = UI_HANGAR_DATA_mech.armLeft.max_health;
   MECH_DATA_HPLG = UI_HANGAR_DATA_mech.legs.max_health;
   MECH_DATA_RAD = UI_HANGAR_DATA_mech.radar_range;
+  MECH_DATA_LOCKON = UI_HANGAR_DATA_mech.w_firetime;
   MECH_DATA_DESC = UI_HANGAR_DATA_mech.description;
   
   local entity hardpoint;
@@ -316,6 +318,7 @@ float(float id) ui_data_load_mech={
   MECH_DATA_HPAR = UI_HANGAR_DATA_mech.armLeft.max_health;
   MECH_DATA_HPLG = UI_HANGAR_DATA_mech.legs.max_health;
   MECH_DATA_RAD = UI_HANGAR_DATA_mech.radar_range;
+  MECH_DATA_LOCKON = UI_HANGAR_DATA_mech.w_firetime;
   MECH_DATA_DESC = UI_HANGAR_DATA_mech.description;
 
   file = strcat(PATH_DATA_UI, "/vec/mech/", UI_HANGAR_DATA_mech.vec_name,".unit");

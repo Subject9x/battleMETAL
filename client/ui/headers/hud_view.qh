@@ -50,6 +50,17 @@ float HUD_UID_ARM_TARG_BLD  = 16;
   float HUD_ALPHA_RATE;
   float HUD_ALPHA_INC;
   
+  vector HUD_LOCK_COLOR;
+  float HUD_LOCK_STATE_PREV;
+  float HUD_LOCK_ALPHA;
+  float HUD_LOCK_ALPHA_RATE;
+  float HUD_LOCK_SIZE;
+  float HUD_LOCK_SIZE_RATE;
+  float HUD_LOCK_TIME_START;
+  float HUD_LOCK_TIME_END;
+  float HUD_LOCK_STEP;  //timer step function
+  float HUD_LOCK_STEP_RATE;
+  
 //==========================================
 
 //HUD Text Data Arrays======================
@@ -96,6 +107,9 @@ string HUD_TARGET_BOX;
 
 entity HUD_DATA_weapon;
 
+void(float lockTime) hud_lock_control_start;
+void() hud_lock_frame;
+
 void() hud_renderCrosshairDisabled;
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs;
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair1; //I have no regrets for these
@@ -103,6 +117,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair3;
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4;
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair5;
+
 void(float hitDirBit) hud_renderDirectionHit;
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection;
 void(vector pos, float algn) hud_renderPitchIndicator;

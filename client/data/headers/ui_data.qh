@@ -32,6 +32,7 @@ float   MECH_DATA_HPST;
 float   MECH_DATA_HPAR;
 float   MECH_DATA_HPLG;
 float   MECH_DATA_RAD;
+float   MECH_DATA_LOCKON;
 string  MECH_DATA_DESC;
 
 float   MECH_DATA_STOCK[10];
