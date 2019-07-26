@@ -294,8 +294,6 @@ void(string str, float tokens) client_ParseMechCommand={
   }
   
   if(argv(1) == "nextmission"){
-    cons_logAString("nextmission", argv(2));
-    cons_logAString("nextmission", argv(3));
     client_setMission(str, tokens);
     return;
   }
@@ -323,7 +321,7 @@ void(string str, float tokens) client_ParseMechCommand={
 
 void(string cmd, float tokens) client_setMission={
   self.stat_plr_stt = PLAYER_ACTIVE;
-  
+  self.view_ofs = '0 0 1';
   if( cvar("gamemode") == GAMEMODE_CAMPAIGN){
     savefile_changemap(nextmap);
     savefile_append();

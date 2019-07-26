@@ -178,6 +178,7 @@ void() execute_changelevel={
       self.view_ofs = '0 0 0';
       self.angles = other.v_angle = pos.mangle;
       self.fixangle = TRUE;		// turn this way immediately
+      self.think = SUB_Null;
       self.nextthink = time + 0.5;
       self.takedamage = DAMAGE_NO;
       self.solid = SOLID_NOT;

@@ -62,10 +62,18 @@ void() map_objective_mission_conclude_th={
   local string toMap;
   
   if( MISSION_STATUS ){
+    if( !self.map || (self.map == "")){
+      objerror( "map_objective missing .map field.");
+      return;
+    }
     successCheck = TRUE;
     nextmap = self.map;
   }
   else{
+    if( !self.mapFile || (self.mapFile == "")){
+      objerror( "map_objective missing .mapFile field.");
+      return;
+    }
     successCheck = FALSE;
     nextmap = self.mapFile;
   }
@@ -73,24 +81,26 @@ void() map_objective_mission_conclude_th={
   objective = self;
   player = find (world, classname, "player");
   while( player != world ){
-    self = player;
-      self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
-      if(self.data_type == DATA_MECH){
+      player.stat_plr_stt = PLAYER_INTERMSN;  //TEST
+      if(player.data_type == DATA_MECH){
         player_unmakeMech();
         player_makeObserver();
       }
       //taken from execute_changelevel()
-      self.view_ofs = '0 0 0';
-      self.angles = self.v_angle = self.angles;
-      self.fixangle = TRUE;		// turn this way immediately
-      //self.nextthink = time + 0.5;
-      self.takedamage = DAMAGE_NO;
-      self.solid = SOLID_NOT;
-      self.movetype = MOVETYPE_NONE;
-      self.modelindex = 0;
-      setorigin (self, self.origin);
+      player.view_ofs = '0 0 0';
+      player.angles = player.v_angle = player.angles;
+      player.fixangle = TRUE;		// turn this way immediately
+      player.think = SUB_Null;  //I guess this was an animation thing originall? (q1)
+      player.nextthink = time + 0.5;
+      player.takedamage = DAMAGE_NO;
+      player.solid = SOLID_NOT;
+      player.movetype = MOVETYPE_NONE;
+      player.modelindex = 0;
+      setorigin (player, self.origin);
+      coredump();
       //------------------------------
       
+      self = player;
       client_push_mapobjects();
       if( successCheck ){
         //only send unlocks if player won mission
@@ -101,7 +111,6 @@ void() map_objective_mission_conclude_th={
         te_mission_lose();
       }
       client_sendEndMission(player, successCheck);
-      cons_logAFloat("loop check", 1); //DEBUG
     player = find (player, classname, "player");
   }
   self = objective;
@@ -172,11 +181,10 @@ void() map_objective_th={
     self.isActive = 0;
     if( (self.spawnflags & 8) ){
       MISSION_STATUS = TRUE;
-        
       intermission_running = 1;
       intermission_exittime = time + 2;
       self.think = map_objective_mission_conclude_th;
-      self.nextthink = time + 2;
+      self.nextthink = time + 4;
       return;
     }
     return;
@@ -198,8 +206,10 @@ void() map_objective_th={
     self.isActive = 0;
     if( (self.spawnflags & 4) ){
       MISSION_STATUS = FALSE;
+      intermission_running = 1;
+      intermission_exittime = time + 2;
       self.think = map_objective_mission_conclude_th;
-      self.nextthink = time + 2;
+      self.nextthink = time + 4;
       return;
     }
     return;
