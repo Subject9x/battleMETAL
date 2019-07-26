@@ -1,9 +1,0 @@
-//faction 1 unlocks file for map t1m6
-{
-  'mission' : foo,
-  'light' : 1,
-  'medium' : 2,
-  'heavy' : 3,
-  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 20,
-  'points' : 0,
-}

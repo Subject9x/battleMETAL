@@ -620,7 +620,6 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
     targZbottom = targSizeZ;
   }
   
-
   if(faction1 == faction2){
     factionColor = CLR_DEF_IIF_FRIEND;
   }
@@ -875,8 +874,11 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
   local float guide;
   local float guideRad;
   local float warnArrow;
-  
+    
   if( time < HUD_WARN_MARK ){
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_LIGHT;
+    
     warnMsg = "[RETURN TO MISSION ZONE]";
     warnLen = stringwidth( warnMsg, 0, '12 12 0');
     warnLen = gui_percentXRaw( warnLen );
@@ -914,6 +916,7 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
     
     drawstring(warnPos, warnMsg, '12 12 0', CLR_DEF_IFF_ENEMY, 0.9, 0);
     drawpic(warnArrowPos, warnImg, warnImgSize, CLR_DEF_IFF_ENEMY, 0.9, DRAWFLAG_NORMAL); 
+    drawfont = drawfont_prev;
   }
 };
 

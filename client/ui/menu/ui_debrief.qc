@@ -442,7 +442,7 @@ void(vector panelOffset) menu_debrief_unlocks={
     if( token != ""){
       tokenValue = stof(token);
       if( tokenValue != 0 ){
-        ui_data_load_mech_info( tokenValue );
+        ui_data_load_mech_info( tokenValue, UI_HANGAR_DATA_mech );
         mechOrg = mechStartOrg;
         widthWrapCheck = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
         if( widthWrapCheck < widthWrap ){

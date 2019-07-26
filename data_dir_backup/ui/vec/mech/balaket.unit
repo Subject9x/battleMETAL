@@ -2,45 +2,6 @@
 //messing with this without knowing what you're doing WILL blow up your game
 //BACK UP BEFORE MODIFYING
 {
-  'id'      : 1,
-  'abbr'    : BLK,
-  'name'    : Balaket,
-  'size'    : 1,
-  'tech'    : 1,
-  'icon'    : gfx/ui/hgr_blk.png,
-  'energyMax'  : 400,
-  'energyRate' : 4,
-  'shieldMax'  : 300,
-  'shieldRate' : 2,
-  'hpoints' : 3,
-  'fspeed'  : 225,
-  'sspeed'  : 175,
-  'bspeed'  : 150,
-  'accel'   : 1.5,
-  'hp_ct'   : 500,
-  'hp_st'   : 375,
-  'hp_am'   : 350,
-  'hp_lg'   : 700,
-  'radrng'  : 7000,
-  
-  //hardpoint info
-  'hpt_types_1'  : 3,
-  'hpt_types_2'  : 3,
-  'hpt_types_3'  : 135,
-  
-  'hpt_size_1'   : 1,
-  'hpt_size_2'   : 1,
-  'hpt_size_3'   : 3,
- 
-  //hardpoint ui data block
-  'hpt_arm_1' : 43 -30 0,
-  'hpt_arm_2' : -75 -30 0,
-  'hpt_arm_3' : -12 -90 0,
-  
-  'hpt_hang_1'  : 43 -30 0,
-  'hpt_hang_2'  : -55 -30 0,
-  'hpt_hang_3'  : 2 -73 0,
-  
   //stock loadout
   'hpt_stock_1'  : 3,
   'hpt_stock_2'  : 3,

@@ -72,7 +72,7 @@ string ITEM2_DATA_DESC;
 void() ui_data_load_mechsizes;
 void() ui_data_load_hudnames;
 float(float id) ui_data_load_mech;
-float(float mechId) ui_data_load_mech_info;
+float(float mechId, entity listEntity ) ui_data_load_mech_info;
 float( float id ) ui_data_load_hud;
 float(float id) ui_date_load_item1;
 float(float id) ui_date_load_item2;

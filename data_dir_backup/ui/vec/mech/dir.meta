@@ -1,8 +1,0 @@
-//DO NOT DELETE
-//MODIFY AT YOUR OWN RISK
-//  this is a proto meta file, CSQC loads this in to create the index of mechs
-//    their ID's are mapped to their names for file-finding reasons
-//    THE ORDER MATTERS, first mech becomes ID = 1 !
-Balaket
-Matok
-Monitor

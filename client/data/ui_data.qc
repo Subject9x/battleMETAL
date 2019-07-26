@@ -2,6 +2,7 @@
 battleMETAL
 Author: Peter Roohr
 Date: 6/26/2018
+mod: 07/26/2019
 Overview: refactor ui data to file loading, impl
 */
 
@@ -29,38 +30,13 @@ void() ui_data_load_hudnames={
 void() ui_data_load_mechsizes={
   local float count;
   count = 1;
-  while( count <= 256) {
-    local string file, filename;
-    local float flannel;
-    filename = MECH_DATA_NAMES[count];
-    if(filename != ""){
-      file = strcat("ui/vec/mech/", filename,".unit");
-      flannel = fopen(file, FILE_READ);
-      if(flannel != -1){
-        local string line;
-        local float sizzle;
-        line = fgets(flannel);
-        while( (line != "") ){
-          if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
-            tokenizebyseparator(line, "  '","'"," : ", ",");
-            local string token, value;
-            token = argv(1);
-            value = argv(3);
-            if( token == "size" ){
-              sizzle = stof(value);
-            }
-          }
-          line = fgets(flannel);
-        }
-        MECH_DATA_SIZES[count] = sizzle;
-        fclose(flannel);
-      }
-      else{
-        MECH_DATA_SIZES[count] = 0;
-      }
-    }
+    //TODO - mech limit magic numbers
+  while( count <= 3) {
+    ui_data_load_mech_info( count, UI_HANGAR_DATA_mech_list );
+    MECH_DATA_SIZES[count] = MECH_DATA_SIZE;
     count = count + 1;
   }
+  ui_data_cleanup_mechlist_entity( UI_HANGAR_DATA_mech_list );
 };
 //the easy part is the clearing function
 void() ui_data_clear_mechdata={
@@ -232,42 +208,42 @@ void() ui_data_clear_item2={
 };
 
 //difference here is we dont load config data
-float(float mechId) ui_data_load_mech_info={
+float(float mechId, entity listEntity) ui_data_load_mech_info={
   local float idx; 
   
-  if( UI_HANGAR_DATA_mech.data_idx > 0){
+  if( listEntity.data_idx > 0){
     ui_data_clear_mechdata();
   }
   
-  data_get_client_mech_( UI_HANGAR_DATA_mech, mechId );
-  UI_HANGAR_DATA_mech.data_idx = mechId;
+  data_get_client_mech_( listEntity, mechId );
+  listEntity.data_idx = mechId;
   
-  MECH_DATA_ID = UI_HANGAR_DATA_mech.data_idx;
-  MECH_DATA_ABR = UI_HANGAR_DATA_mech.abbrev;
-  MECH_DATA_NAME = UI_HANGAR_DATA_mech.vec_name;
-  MECH_DATA_SIZE = UI_HANGAR_DATA_mech.vec_size;
-  MECH_DATA_TECH = UI_HANGAR_DATA_mech.techLevel;
-  MECH_DATA_ICON = UI_HANGAR_DATA_mech.icon;
-  MECH_DATA_ENMAX = UI_HANGAR_DATA_mech.energyMax;
-  MECH_DATA_ENRATE = UI_HANGAR_DATA_mech.energyRate;
-  MECH_DATA_SHMAX = UI_HANGAR_DATA_mech.shieldMax;
-  MECH_DATA_SHRATE = UI_HANGAR_DATA_mech.shieldRate;
-  MECH_DATA_HPOINTS = UI_HANGAR_DATA_mech.hardpoint_cnt;
-  MECH_DATA_SPEEDF = UI_HANGAR_DATA_mech.data_speed_forward;
-  MECH_DATA_SPEEDS = UI_HANGAR_DATA_mech.data_speed_strafe;
-  MECH_DATA_SPEEDB = UI_HANGAR_DATA_mech.data_speed_backward;
-  MECH_DATA_ACCEL = UI_HANGAR_DATA_mech.data_speed_accel;
-  MECH_DATA_HPCT = UI_HANGAR_DATA_mech.max_health;
-  MECH_DATA_HPST = UI_HANGAR_DATA_mech.torsoLeft.max_health;
-  MECH_DATA_HPAR = UI_HANGAR_DATA_mech.armLeft.max_health;
-  MECH_DATA_HPLG = UI_HANGAR_DATA_mech.legs.max_health;
-  MECH_DATA_RAD = UI_HANGAR_DATA_mech.radar_range;
-  MECH_DATA_LOCKON = UI_HANGAR_DATA_mech.w_firetime;
-  MECH_DATA_DESC = UI_HANGAR_DATA_mech.description;
+  MECH_DATA_ID = listEntity.data_idx;
+  MECH_DATA_ABR = listEntity.abbrev;
+  MECH_DATA_NAME = listEntity.vec_name;
+  MECH_DATA_SIZE = listEntity.vec_size;
+  MECH_DATA_TECH = listEntity.techLevel;
+  MECH_DATA_ICON = listEntity.icon;
+  MECH_DATA_ENMAX = listEntity.energyMax;
+  MECH_DATA_ENRATE = listEntity.energyRate;
+  MECH_DATA_SHMAX = listEntity.shieldMax;
+  MECH_DATA_SHRATE = listEntity.shieldRate;
+  MECH_DATA_HPOINTS = listEntity.hardpoint_cnt;
+  MECH_DATA_SPEEDF = listEntity.data_speed_forward;
+  MECH_DATA_SPEEDS = listEntity.data_speed_strafe;
+  MECH_DATA_SPEEDB = listEntity.data_speed_backward;
+  MECH_DATA_ACCEL = listEntity.data_speed_accel;
+  MECH_DATA_HPCT = listEntity.max_health;
+  MECH_DATA_HPST = listEntity.torsoLeft.max_health;
+  MECH_DATA_HPAR = listEntity.armLeft.max_health;
+  MECH_DATA_HPLG = listEntity.legs.max_health;
+  MECH_DATA_RAD = listEntity.radar_range;
+  MECH_DATA_LOCKON = listEntity.w_firetime;
+  MECH_DATA_DESC = listEntity.description;
   
   local entity hardpoint;
   local float itr;
-  hardpoint = UI_HANGAR_DATA_mech.w_slot;
+  hardpoint = listEntity.w_slot;
   itr = 1;
   while( hardpoint ){
     local entity parentPart;

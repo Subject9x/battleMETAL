@@ -1,0 +1,19 @@
+mech data file
+//messing with this without knowing what you're doing WILL blow up your game
+//BACK UP BEFORE MODIFYING
+{
+  //stock loadout
+  'hpt_stock_1'  : 1,
+  'hpt_stock_2'  : 1,
+  'hpt_stock_3'  : 3,
+  'hpt_stock_4'  : 3,
+  'hpt_stock_5'  : 8,
+  
+  //stock grouping
+  'grps_stock_1' : 15,
+  'grps_stock_2' : 16,
+  'grps_stock_3' : 0,
+  'grps_stock_4' : 0,
+  'grps_stock_5' : 0,
+  'desc'  : The MATOK was the second-generation combat mech that Federal Military churned out as the threat of AUTHOR was increasing. MATOKs are the main stay of Federal squadrons today, found in almost every  deployment and any combat. | | A dangerous generalist, the MATOK is design to engage targets head on with a slew of direct-fire power and large reactor recharge capacity. | | MATOK operators have to remember not to get surrounded though, the MATOK's defensive capabilities are not as strong as its defense. Its speed is also a problem against more agile targets.~
+}
