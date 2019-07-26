@@ -6,20 +6,6 @@ Overview:
   Every map can have a wind direction and velocity that affects VFX like sparks and smoke.
   This map object is to allow the map to alter this value.
   This is NEVER a touchable map object!
-  
-  world.v_angle = win direction
-  world.data_speed_forward = wind speed
-  
-Inputs
-  .c_ofs = <vector> [wind direction] - the 3d direction of the new wind
-  .data_velocity = <float> [wind speed] - speed of wind in given direction
-  .data_lifetime = <float> - time to live, use with spawnflags[2]
-  .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-  .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
-  .spawnflags = <float> [flag] 2 - lifetime
-  .spawnflags = <float> [flag] 4 - reactivate after countdown
-  .spawnflags = <float> [flag] 8 - remove after first countdown
-  .spawnflags = <float> [flag] 16 - restore original wind values
 */
 
 void() map_change_wind_new;
@@ -28,7 +14,7 @@ void() map_change_wind_revert={
   self.isActive = FALSE;
   if( (self.spawnflags & 16) ){
     //revert to original
-    WINDDIR = self.c_alt_ofs;
+    WeatherDominator.wind = self.c_alt_ofs;
   }
   
   if( (self.spawnflags & 8) ){
@@ -47,10 +33,10 @@ void() map_change_wind_revert={
 void() map_change_wind_new={
   if( (self.spawnflags & 16) ){
     //cache old wind values
-    self.c_alt_ofs = WINDDIR;
+    self.c_alt_ofs = WeatherDominator.wind;
   }
 
-  WINDDIR = self.c_ofs;
+  WeatherDominator.wind = self.wind;
   
   self.think = map_change_wind_revert;
   self.nextthink = time + 0.1;
@@ -81,7 +67,24 @@ void() map_change_wind_use={
   }
 };
 
-/*QUAKED map_change_wind
+/*QUAKED map_change_wind (0.431 0.788 0.753) (-5 -5 -5) (5 5 5) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE RESTORE_WORLDVAL
+Every map can have a wind direction and velocity that affects VFX like sparks and smoke.
+This map object is to allow the map to alter this value.
+This is NEVER a touchable map object!
+
+world.v_angle = win direction
+world.m_fspeed = wind speed  
+-------- KEYS -------- 
+.wind = <vector> [wind direction] - the 3d direction of the new wind, Z = 'force'
+.data_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+RESTORE_WORLDVAL 16: restore original wind values
 */
 void() map_change_wind={
   local vector tempMin;
@@ -92,11 +95,12 @@ void() map_change_wind={
   
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
-  setmodel( self, "q3mdl/testball.md3" ); //DEBUG
-  setsize( self, tempMin, tempMax );
+  if( cvar("developer") ){
+    setmodel( self, "q3mdl/testball.md3" ); //DEBUG
+    setsize( self, tempMin, tempMax );
+  }
   setorigin( self, self.origin );
   
-  self.data_speed_forward = 0;
   self.c_alt_ofs = '0 0 0';
   self.use = map_change_wind_use;
   self.isActive = TRUE;

@@ -10,29 +10,6 @@ Overview:
   Map Objectives MUST map to an Objective ID in the Map's MSN File.
   These objects don't have to be anywhere specifically, they mostly just help hold game
   state
-  
-Inputs
-  .data_idx =  <float> [objective id] - must match a number in the missionFile
-  .isActive = <float> [enum]  0 = hidden/inactive 
-                              1 = active
-                              2 = complete
-                              -1 = failed
-  .faction = <float> faction for this objective
-  .target = <string> [targetname] - fire THIS trigger when Objective is COMPLETE, isActive == 2
-  .trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
-  .state_1 = <float> [enum] - determines which SFX to play when 'completed'
-                    1 = primary 
-                    2 = secondary
-                    3 = tertiary
-   .count = <float> [sum] - only complete objective when count is hit;
-   
-   .map = map to go to if MISSION_WIN.
-   .mapFile = map to go to if MISSION_LOSE
-   
-   .spawnflags = <float> [flag] 1 - START_OFF
-   .spawnflags = <float> [flag] 2 - ALLOW TRIGGER TOUCH
-   .spawnflags = <float> [flag] 4 - MISSION_LOSE
-   .spawnflags = <float> [flag] 8 - MISSION_WIN
 */
 
 void() map_objective_th;
@@ -81,6 +58,7 @@ void() map_objective_mission_conclude_th={
   objective = self;
   player = find (world, classname, "player");
   while( player != world ){
+      self = player;
       player.stat_plr_stt = PLAYER_INTERMSN;  //TEST
       if(player.data_type == DATA_MECH){
         player_unmakeMech();
@@ -97,10 +75,8 @@ void() map_objective_mission_conclude_th={
       player.movetype = MOVETYPE_NONE;
       player.modelindex = 0;
       setorigin (player, self.origin);
-      coredump();
       //------------------------------
       
-      self = player;
       client_push_mapobjects();
       if( successCheck ){
         //only send unlocks if player won mission
@@ -219,7 +195,34 @@ void() map_objective_th={
 };
 
 
-/*QUAKED map_objective (0.99 0.8 0) (-10 -10 -10) (10 10 10)
+/*QUAKED map_objective (0.431 0.788 0.753) (-12 -12 -12) (12 12 12) START_OFF ACTIVE_ONTOUCH MISSION_LOSE MISSION_WIN
+  An Objective a specific map object.
+  Map Objectives are named triggers that are sent to the client for interaction.
+  Map Objectives MUST map to an Objective ID in the Map's MSN File.
+  These objects don't have to be anywhere specifically, they mostly just help hold game
+  state
+  
+-------- KEYS -------- 
+.data_idx = must match a number in the msn_file
+.isActive = 0 = hidden/inactive 
+            1 = active
+            2 = complete
+           -1 = failed
+.faction = faction for this objective
+.target = fire THIS trigger when Objective is COMPLETE, isActive == 2
+.state_1 = determines which SFX to play when 'completed'
+                  1 = primary 
+                  2 = secondary
+                  3 = tertiary
+.count = only complete objective when count is hit;
+.trigOnDeath = fire this event when Objective is 'failed', isActive == -1;
+.map = next map if MISSION_WIN
+.mapFile = next map if MISSION_LOSE
+-------- SPAWNFLAGS --------
+START_OFF 1: 
+ACTIVE_ONTOUCH 2: allows player to touch, set mins and maxs
+MISSION_LOSE 4: when 'failed', fire-off end-mission logic
+MISSION_WIN 8: when 'complete' fire-off end-mission logic
 */
 void() map_objective={
   local vector tempMin;

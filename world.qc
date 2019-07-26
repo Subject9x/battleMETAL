@@ -8,56 +8,36 @@ void() main =
 };
 
 //=======================
-
 /*QUAKED worldspawn (0 0 0) ?
 Only used for the world entity.
 
-"worldtype"
-  <float> [enum]
+-------- KEYS --------
+.mapFile(NOT USED) <string> found in data/map_scripts/<map_name>/<map_name>.sav
+.missionFile(REQUIRED) <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
+
+.light default light level
+.message <string> - the in-game name of the level
+.sounds <float> [CD track number] - play this track during gameplay
+
+.wind <vector> initial wind direction
+
+.fog_density <float> 0 
+.fog_color <vector> [color] - RGB {0.001 - 1.0} colors of the fog
+.fog_alpha <float> [alpha] - {0.001 - 1.0} alpha transparency of the fog
+.fog_dist <vector> [min distance, max distance, height] - distances of the fog
+.fade <float> [fade depth] - units of fade transition from low alpha to opacity
+
+.worldtype <float> [enum]
     0: DESERT
     1: ICE
     2: CITY
     3: BADLANDS
     4: TUNDRA
   This affects things like environmental smoke puffs, possibly lighting, and fog?
-
-[map scripts]
-  "mapFile"
-    <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.sav
-  "missionFile"
-    <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
-
-//COSMETICS
-[lighting]
-  "light"
-   default light level
-[level name]
-  "message"
-    <string> - the in-game name of the level
-    
-[level music]
-  "sounds"
-    <float> [CD track number] - play this track during gameplay
-
-[wind]
-  "wind"
-    <vector> wind direction and speed
-    X Y Z = pitch, yaw, speed
-
-[fog]
-  "fog_density" "1"
-    <float> 
-  "fog_color"
-    <vector> [color] - RGB {0.001 - 1.0} colors of the fog
-  "fog_alpha"
-    <float> [alpha] - {0.001 - 1.0} alpha transparency of the fog
-  "fog_dist"
-    <vector> [min distance, max distance, height] - distances of the fog
-  "fade"
-    <float> [fade depth] - units of fade transition from low alpha to opacity
+-------- SPAWNFLAGS --------
+(none)
+-------- NOTES --------
 */
-
-//=======================
 void() worldspawn =
 {
 	skill = cvar("skill");

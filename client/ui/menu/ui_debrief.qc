@@ -12,7 +12,6 @@ Overview:
 void() menu_debriefListener_onClick={
   //next/retry mission button
   if( menu_checkMouseInBounds(cursorpos, MENU_DEBRIEF_BUTTON_ORG_mission, gui_percentToPixelRawVec('128 24'), FALSE) ){
-    MENU_ACTIVE = FALSE;
     setpause( 0 );
     cl_set_mission( MENU_DEBRIEF_status );
   }

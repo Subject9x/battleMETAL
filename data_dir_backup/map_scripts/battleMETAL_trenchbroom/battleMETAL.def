@@ -2,7 +2,7 @@
 // Peter Roohr
 // Entities.def for TrenchBroom/GTKRadiant 1.6
 // Version: Beta 1.0.0
-// Updated: 2019-01-29
+// Updated: 2019-07-25
 
 /*QUAKED map_terrain_model (0.75 0.2 0.75) (-16 -16 -16) (16 16 16)
 { model("models/dbg_player_scale_b.obj"); }
@@ -33,6 +33,7 @@ Use mangle instead of angle, so you can set pitch or roll as well as yaw.  'pitc
 */
 /*QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION
 When the player touches this, he gets sent to the map listed in the "map" variable.  Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display stats.
+  "isActive" : 1 == activate by touch, 0 = activate by remote
 */
 /*QUAKED info_player_start (1 0 0) (-16 -16 -24) (16 16 24)
 The normal starting point for a level.
@@ -809,50 +810,32 @@ Keys:
 /*QUAKED worldspawn (0 0 0) ?
 Only used for the world entity.
 
-"worldtype"
-  <float> [enum]
+-------- KEYS --------
+.mapFile(NOT USED) <string> found in data/map_scripts/<map_name>/<map_name>.sav
+.missionFile(REQUIRED) <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
+
+.light default light level
+.message <string> - the in-game name of the level
+.sounds <float> [CD track number] - play this track during gameplay
+
+.wind <vector> initial wind direction
+
+.fog_density <float> 0 
+.fog_color <vector> [color] - RGB {0.001 - 1.0} colors of the fog
+.fog_alpha <float> [alpha] - {0.001 - 1.0} alpha transparency of the fog
+.fog_dist <vector> [min distance, max distance, height] - distances of the fog
+.fade <float> [fade depth] - units of fade transition from low alpha to opacity
+
+.worldtype <float> [enum]
     0: DESERT
     1: ICE
     2: CITY
     3: BADLANDS
     4: TUNDRA
   This affects things like environmental smoke puffs, possibly lighting, and fog?
-
-[map scripts]
-  "mapFile"
-    <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.sav
-  "missionFile"
-    <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
-
-//COSMETICS
-[lighting]
-  "light"
-   default light level
-[level name]
-  "message"
-    <string> - the in-game name of the level
-    
-[level music]
-  "sounds"
-    <float> [CD track number] - play this track during gameplay
-
-[wind]
-  "c_ofs"
-    <vector> initial wind direction
-  "m_fspeed"
-    <float> initial wind speed
-
-[fog]
-  "fog_density" "1"
-    <float> 
-  "fog_color"
-    <vector> [color] - RGB {0.001 - 1.0} colors of the fog
-  "fog_alpha"
-    <float> [alpha] - {0.001 - 1.0} alpha transparency of the fog
-  "fog_dist"
-    <vector> [min distance, max distance, height] - distances of the fog
-  "fade"
-    <float> [fade depth] - units of fade transition from low alpha to opacity
+-------- SPAWNFLAGS --------
+(none)
+-------- NOTES --------
 */
 /*QUAKED func_xplowall (0 .5 .8) ? NoHeal SilverKey GoldKey
 
@@ -1001,7 +984,7 @@ Compiler-only entity that specifies the origin of a skybox (a wholly contained, 
 This is used to setup patrol and move paths for AI.
 For best results, place manually as close to ground as possible!
 -------- KEYS -------- 
-.i_faction = <float> [faction number]
+.faction = <float> [faction number]
 .targetname = <string> used by AI to find node
 .target = <string> should target another AI node to form a chain
 .trigOnDeath = <string> [target] trigger this item when node is removed
@@ -1012,30 +995,30 @@ For best results, place manually as close to ground as possible!
       AI_NODE_ATTACK = 3;
 
 -------- SPAWNFLAGS -------- 
-REMOVE_ONTOUCH 2 - removed when touched
-START_INACTIVE 4 - start with .isActive = FALSE
-INACTIVE_ONTOUCH 8 - shutoff when touched by AI
+REMOVE_ONTOUCH 2: removed when touched
+START_INACTIVE 4: start with .isActive = FALSE
+INACTIVE_ONTOUCH 8:  shutoff when touched by AI
 */
 
 
 /*QUAKED ai_change_faction (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
-changes the i_faction field of the targeted objects
+changes the faction field of the targeted objects
 
 -------- KEYS --------
-.i_faction    <float> [faction id] - the faction to set the target to
+.faction    <float> [faction id] - the faction to set the target to
 .group        <string> [group] objects with this groupId will be affected
 .target        <string> [targetname] objects with this targetname will be affected
 .targetname    <string> [targetname] - for being called by other objects
 .wait        <float> [time] - use with []2 for delay-after-being-called
 -------- SPAWNFLAGS -------- 
-START_OFF 1 - start inactive
-REMOVE_ONUSE 2 - removed after its first use.
-DELAY 4 - wait after fire before execution
+START_OFF 1: start inactive
+REMOVE_ONUSE 2: removed after its first use.
+DELAY 4: wait after fire before execution
 */
 
 
 /*QUAKED ai_change_rank (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
-changes the i_faction field of the targeted objects
+changes the faction field of the targeted objects
 
 -------- KEYS -------- 
 .group        <string> [group] objects with this groupId will be affected
@@ -1044,10 +1027,9 @@ changes the i_faction field of the targeted objects
 .ai_rank    <float> [rank] rank to change the targets ai_rank to.
 .wait        <float> [time] - use with []2 for delay-after-being-called
 -------- SPAWNFLAGS -------- 
-REMOVE_ONUSE 2 - removed after its first use.
-START_OFF 1 - start inactive
-REMOVE_ONUSE 2 - removed after its first use.
-DELAY 4 - wait after fire before execution
+START_OFF 1: start inactive
+REMOVE_ONUSE 2: removed after its first use.
+DELAY 4: wait after fire before execution
 */
 //for galaxy's sake, make sure all parens are closed without spaces!
 
@@ -1318,16 +1300,16 @@ DEBUG_MODE 32768: spawns but will not react to anything
   .c_ofs = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
   .dest1 = <vector> [speed] -if effect needs a velocity vector
   .count = <float> [particle amount] - total number of particles in the effect
-  .p_lifetime = <float> - time to live, use with spawnflags[2]
+  .data_lifetime = <float> - time to live, use with spawnflags[2]
   .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .count2 = <float> - speed, rate of particle cycle
   .count3 = <bool> - 0 = pointparticle, 1 = trailparticle
   .count4 = <float> - velocity multiplier
 -------- SPAWNFLAGS -------- 
-START_OFF 1 -  - only activated by trigger
-LIFETIME 2 - 
-REACTIVATE 4 - reactivate after countdown
-REMOVE_FIRSTUSE 8 - remove after first countdown
+START_OFF 1: only activated by trigger
+LIFETIME 2: 
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
 */
 //===========================================================
 //    battleMETAL  Map Objects
@@ -1337,7 +1319,7 @@ Nav Points are points of interest marked on Player maps.
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
 For best results, place manually as close to ground as possible!
 -------- KEYS -------- 
-i_faction: float defines which factions this Nav Point belongs to
+faction: float defines which factions this Nav Point belongs to
 data_idx: float enum  1 to 21, each must be unique because this determines the 'name' of the nav point client-side
 isActive: float enum  1 active unvisit active, faction hasn't visited that nav yet
                              2 active visit  active, faction has been here
@@ -1375,6 +1357,7 @@ Globals
 -------- SPAWNFLAGS -------- 
 REMOVE_ONTOUCH 1: remove on first touch
 */
+
 /*QUAKED map_change_music (0.431 0.788 0.753) (-3 -3 -3) (3 3 3) REMOVE_FIRSTUSE LOOP
 Primarily a map wrapper for the SVC_CDTRACK message, but also a manager of  it as well. 
 This map ent provides map-level control of the music playback code and sound channel. 
@@ -1389,7 +1372,6 @@ REMOVE_FIRSTUSE 1: remove on first fire
 LOOP 1: loop track
 */
 
-
 /*QUAKED map_change_wind (0.431 0.788 0.753) (-5 -5 -5) (5 5 5) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE RESTORE_WORLDVAL
 Every map can have a wind direction and velocity that affects VFX like sparks and smoke.
 This map object is to allow the map to alter this value.
@@ -1398,56 +1380,54 @@ This is NEVER a touchable map object!
 world.v_angle = win direction
 world.m_fspeed = wind speed  
 -------- KEYS -------- 
-.c_ofs = <vector> [wind direction] - the 3d direction of the new wind
-.p_velocity = <float> [wind speed] - speed of wind in given direction
-.p_lifetime = <float> - time to live, use with spawnflags[2]
+.wind = <vector> [wind direction] - the 3d direction of the new wind, Z = 'force'
+.data_lifetime = <float> - time to live, use with spawnflags[2]
 .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
 
 -------- SPAWNFLAGS -------- 
-START_OFF 1 - START_OFF - only activated by trigger
-LIFETIME 2 - lifetime
-REACTIVATE 4 - reactivate after countdown
-REMOVE_FIRSTUSE 8 - remove after first countdown
-RESTORE_WORLDVAL 16 - restore original wind values
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+RESTORE_WORLDVAL 16: restore original wind values
 */
 
 
-/*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH
+/*QUAKED madamageValue_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH
 A Damage Zone is an area that hurts all units within the zone.
   
 -------- KEYS -------- 
 .mins = <vector> lower bounds of box
 .maxs = <vector> upper bounds of box
 .targetname = <string> [targetname] - make triggerable
-.p_damage = <float> - amount of damage to impart
-.p_dmgtype = <float> [flag] 1 - NO_DMG SHIELDS
-.p_dmgtype = <float> [flag] 2 - NO_DMG ARMOR
-.p_dmgtype = <float> [flag] 4 - NO_DMG ENERGY
-.p_dmgtype = <float> [flag] 8 - NO_DMG SPEED
-.p_lifetime = <float> - time to live, use with spawnflags[2]
+.damageValue = <float> - amount of damage to impart
+.damageType = <float> [flag] 1 - NO_DMG SHIELDS
+.damageType = <float> [flag] 2 - NO_DMG ARMOR
+.damageType = <float> [flag] 4 - NO_DMG ENERGY
+.damageType = <float> [flag] 8 - NO_DMG SPEED
+.data_lifetime = <float> - time to live, use with spawnflags[2]
 .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
 
 -------- SPAWNFLAGS -------- 
-START_OFF 1 - START_OFF - only activated by trigger
-LIFETIME 2 - lifetime
-REACTIVATE 4 - reactivate after countdown
-REMOVE_FIRSTUSE 8 - remove after first countdown
-REMOVE_ONTOUCH 16 - remove on first touch
-ACTIVE_ONTOUCH 32 - activate on-touch
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
 */
 
 
 /*QUAKED map_deploy_point (0.431 0.788 0.753) (-12 -12 -12) (12 12 12)
 Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
-Deploy points can be tailored to specific i_factions, and can be activated/deactivated.
+Deploy points can be tailored to specific factions, and can be activated/deactivated.
 
 -------- KEYS -------- 
-.i_faction = <float> - Deploy Point only appears for this faction
+.faction = <float> - Deploy Point only appears for this faction
 .data_idx = <float> - number used for id and choosing clientside, MUST HAVE and MUST be unique across the map.
 .isActive = <float> [bool] - if active, allow players to spawn here.  
 .trigOnSpawn = <string> [target] - map object to fire when this is created
 */
-
 
 /*QUAKED map_fail_objective (0.431 0.788 0.753) (-8 -3 -8) (8 3 8) - ON_TOUCH
 Merely a necessary interstitial map object to set a Mission Objective to 'fail'.
@@ -1459,9 +1439,8 @@ This should be used sparingly, they clean themsleves up after firing.
 .maxs = <vector> [upper half of bounding box] - use both of these with spawnflags[2]
 
 -------- SPAWNFLAGS -------- 
-ON_TOUCH 2 - ALLOW TRIGGER TOUCH
+ON_TOUCH 2: ALLOW TRIGGER TOUCH
 */
-
 
 /*QUAKED map_hud_highlight (0.431 0.788 0.753) (-8 -8 -8) (8 8 8) START_OFF ON_TOUCH REMOVE_FINISH FACTION_ONLY DROPTOFLOOR FREEZE_PLAYER COOLDOWN CALL_BY_TRIGGER
   HUD Highlighting is a map event sent to chosen clients. This creates a colored box around a portion of the player's screen
@@ -1471,20 +1450,20 @@ ON_TOUCH 2 - ALLOW TRIGGER TOUCH
 .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
 .c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
 .color = <vector> [red, green, blue] - color of the box
-.i_faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
-.p_lifetime = <float> [time to draw] - amount of time to draw box for
+.faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+.data_lifetime = <float> [time to draw] - amount of time to draw box for
 
 .target = <string> [ent] - fire this trigger when done
 .wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
 -------- SPAWNFLAGS --------
-START_OFF 1 - will start as deactivated
-ON_TOUCH 2 - will react to being touched by a players
-REMOVE_FINISH 4 - will be removed when finished playing
-FACTION_ONLY 8 - only reacts to this i_faction
-DROPTOFLOOR 16 - object drops to floor for easier touch possibility
-FREEZE_PLAYER 32 - any players that trigger the Animatic are frozen in place
-COOLDOWN 64 - use .wait
-CALL_BY_TRIGGER 128 - must be used with START_OFF
+START_OFF 1: will start as deactivated
+ON_TOUCH 2: will react to being touched by a players
+REMOVE_FINISH 4: will be removed when finished playing
+FACTION_ONLY 8: only reacts to this faction
+DROPTOFLOOR 16: object drops to floor for easier touch possibility
+FREEZE_PLAYER 32: any players that trigger the Animatic are frozen in place
+COOLDOWN 64: use .wait
+CALL_BY_TRIGGER 128: must be used with START_OFF
 */
 
 
@@ -1494,17 +1473,17 @@ this is very powerful and mostly only used for FL_NOSHOOT
 
 -------- KEYS -------- 
 .comp_id = <float> [flags]  flags you want modified
-.p_dmgtype = <float> [flags] 1 - Affect FL_CLIENT ONLY
+.damageType = <float> [flags] 1 - Affect FL_CLIENT ONLY
 .delay = <float> delayed start
 
 -------- SPAWNFLAGS --------
-START_OFF 1 -  - only activated by trigger
-LIFETIME 2 - 
-REACTIVATE 4 - reactivate after countdown
-REMOVE_FIRSTUSE 8 - remove after first countdown
+START_OFF 1: only activated by trigger
+LIFETIME 2: 
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
 */
 
-/*QUAKED map_objective (0.431 0.788 0.753) (-12 -12 -12) (12 12 12) START_OFF ACTIVE_ONTOUCH
+/*QUAKED map_objective (0.431 0.788 0.753) (-12 -12 -12) (12 12 12) START_OFF ACTIVE_ONTOUCH MISSION_LOSE MISSION_WIN
   An Objective a specific map object.
   Map Objectives are named triggers that are sent to the client for interaction.
   Map Objectives MUST map to an Objective ID in the Map's MSN File.
@@ -1512,23 +1491,26 @@ REMOVE_FIRSTUSE 8 - remove after first countdown
   state
   
 -------- KEYS -------- 
-.data_idx =  <float> [objective id] - must match a number in the missionFile
-.isActive = <float> [enum]  0 = hidden/inactive 
-                            1 = active
-                            2 = complete
-                            -1 = failed
-.i_faction = <float> faction for this objective
-.target = <string> [targetname] - fire THIS trigger when Objective is COMPLETE, isActive == 2
-.state_1 = <float> [enum] - determines which SFX to play when 'completed'
+.data_idx = must match a number in the msn_file
+.isActive = 0 = hidden/inactive 
+            1 = active
+            2 = complete
+           -1 = failed
+.faction = faction for this objective
+.target = fire THIS trigger when Objective is COMPLETE, isActive == 2
+.state_1 = determines which SFX to play when 'completed'
                   1 = primary 
                   2 = secondary
                   3 = tertiary
-.count = <float> [sum] - only complete objective when count is hit;
-.trigOnDeath = <string> fire this event when Objective is 'failed', isActive == -1;
-
+.count = only complete objective when count is hit;
+.trigOnDeath = fire this event when Objective is 'failed', isActive == -1;
+.map = next map if MISSION_WIN
+.mapFile = next map if MISSION_LOSE
 -------- SPAWNFLAGS --------
-START_OFF 1 - 
-ACTIVE_ONTOUCH 2 - ALLOW TRIGGER TOUCH
+START_OFF 1: 
+ACTIVE_ONTOUCH 2: allows player to touch, set mins and maxs
+MISSION_LOSE 4: when 'failed', fire-off end-mission logic
+MISSION_WIN 8: when 'complete' fire-off end-mission logic
 */
 
 
@@ -1540,16 +1522,16 @@ Projectile Shooter that uses weapons-fire.
 .data_idx = <float> [weapon id] - the weapon to use
 .count = <float> [particle amount] - set a max number of shots
 .count3 = <float> [rate of fire] - interval to try next shot;
-.p_lifetime = <float> - time to live, use with spawnflags[2]
+.data_lifetime = <float> - time to live, use with spawnflags[2]
 .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
 
 -------- SPAWNFLAGS --------
-START_OFF 1 - START_OFF - only activated by trigger
-LIFETIME 2 - lifetime
-REACTIVATE 4 - reactivate after countdown
-REMOVE_FIRSTUSE 8 - remove after first countdown
-DRAW_MODEL 16 - draw the whole weapon model
-LIMITED_FIRE 32 - use limited number of shots
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+DRAW_MODEL 16: draw the whole weapon model
+LIMITED_FIRE 32: use limited number of shots
 */
 /*QUAKED map_animatic (0.7 0.5 0.3) (-10 -10 -16) (10 10 16) START_OFF ON_TOUCH REMOVE_FINISH FACTION_ONLY DROPTOFLOOR FREEZE_PLAYER COOLDOWN
 An 'Animatic' is a sequence of images and queued up sounds that are played back for players when the animatic is triggered.
@@ -1564,13 +1546,13 @@ The Map_Animatic object
 .target = <string> [ent] - fire this trigger when done
 .wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
 -------- SPAWNFLAGS --------
-START_OFF = 1 - will start as deactivated
-ON_TOUCH = 2 - will react to being touched by a players
-REMOVE_FINISH = 4 - will be removed when finished playing
-FACTION_ONLY = 8 - only reacts to this faction
-DROPTOFLOOR = 16 - object drops to floor for easier touch possibility
-FREEZE_PLAYER = 32 - any players that trigger the Animatic are frozen in place
-COOLDOWN = 64 - use .wait
+START_OFF 1: will start as deactivated
+ON_TOUCH 2: will react to being touched by a players
+REMOVE_FINISH 4: will be removed when finished playing
+FACTION_ONLY 8: only reacts to this faction
+DROPTOFLOOR 16: object drops to floor for easier touch possibility
+FREEZE_PLAYER 32: any players that trigger the Animatic are frozen in place
+COOLDOWN 64: use .wait
 */
 /*QUAKED func_mission_boundary (0.95 0.99 0) ?
 Defines the boundaries for a player, this will send warnings about leaving 
@@ -1590,7 +1572,7 @@ Doodad is static, BSP collision, non-interactive.
 .angles = <vector> directional angles
 
 -------- SPAWNFLAGS -------- 
-ANGLE_RANDOM = 1 - pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
+ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
 /*QUAKED doodad_rocks_desert_small_2 (0.431 0.788 0.753) (-32 -32 8) (32 32 64) ANGLE_RANDOM ? ? ? DROPTOFLOOR
 A 'small' desert rock, model #2.
@@ -1600,7 +1582,7 @@ Doodad is static, BSP collision, non-interactive.
 .angles = <vector> directional angles.
 
 -------- SPAWNFLAGS -------- 
-ANGLE_RANDOM = 1 - pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
+ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
 /*QUAKED doodad_rocks_desert_small_3 (0.431 0.788 0.753) (-32 -32 8) (32 32 64) ANGLE_RANDOM ? ? ? DROPTOFLOOR
 A 'small' desert rock, model #3.
@@ -1610,7 +1592,7 @@ Doodad is static, BSP collision, non-interactive.
 .angles = <vector> directional angles.
 
 -------- SPAWNFLAGS -------- 
-ANGLE_RANDOM = 1 - pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
+ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
 /*QUAKED doodad_rocks_desert_small_random (0.431 0.788 0.753) (-32 -32 8) (32 32 64) ANGLE_RANDOM ? ? ? DROPTOFLOOR 
 A 'small' desert rock, model is randomized 1-3.
@@ -1620,7 +1602,7 @@ Doodad is static, BSP collision, non-interactive.
 .angles = <vector> directional angles.
 
 -------- SPAWNFLAGS -------- 
-ANGLE_RANDOM = 1 - pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
+ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
 
 /*QUAKED doodad_urban_barrier_small (0.431 0.788 0.753) (-11.5 -3.5 0) (11.5 3.5 24) ANGLE_RANDOM DESTRUCTIBLE ? ? DROPTOFLOOR

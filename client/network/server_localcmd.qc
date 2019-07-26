@@ -45,7 +45,6 @@ void(float nav_id) cl_setspawnpoint={
   localcmd(cmd);
 };
 
-
 void(float nextMissionBool) cl_set_mission={
   local string cmd;
   cmd = strcat("cmd mech nextmission ", ftos(nextMissionBool),"\n");
