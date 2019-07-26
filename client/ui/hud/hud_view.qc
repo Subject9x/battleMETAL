@@ -604,45 +604,94 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
   RENDER TARGET PIPS OVER AN ORIGIN IN 3D SPACE
 */
 void(vector org, vector torg, float algn, float faction1, float faction2, float radRange) hud_renderTargetOverlay ={
-  local float height, dist;
-  local vector vpos, nofs, imgSize, aSize, factionColor;
-    if(faction1 == faction2){
-      factionColor = CLR_DEF_IIF_FRIEND;
-    }
-    else{
-      factionColor = CLR_DEF_IFF_ENEMY;
-    }
-    dist = vlen(org - torg);
-    dist = 1 - (dist / 2000);
-    imgSize = draw_getimagesize(HUD_TARGET_BOX);
-    imgSize = gui_percentToPixelRawVec(imgSize);
-    imgSize = imgSize + gui_percentToPixelRawVec('50 50');
+  local float dist;
+  local float targSizeX, targSizeY, targSizeZ, targZbottom;
+  local vector viewAngle;
+  local vector imgSize, factionColor;
+  
+  targSizeX = getstatf(STAT_PLR_ANG_X);
+  targSizeY = getstatf(STAT_PLR_ANG_Y); 
+  targSizeZ = getstatf(STAT_PLR_ANG_Z);
+  
+  if( targSizeZ < 1 ){
+    targZbottom = 0;
+  }
+  else{
+    targZbottom = targSizeZ;
+  }
+  
 
-    aSize_x = imgSize_x * dist;
-    if(aSize_x > imgSize_x){
-      aSize_x = imgSize_x;
-    }
-    else if(aSize_x < gui_percentXRaw(32)){
-      aSize_x = gui_percentXRaw(32);
-    }
-    
-    aSize_y = imgSize_y * dist;
-    if(aSize_y > imgSize_y){
-      aSize_y = imgSize_y;
-    }
-    else if(aSize_y < gui_percentYRaw(32)){
-      aSize_y = gui_percentYRaw(32);
-    }
-    
-    vpos = org;
-    vpos_z = vpos_z - CLIENT_target_vecsize;
-    nofs = cs_project(vpos);
-    if (nofs_z >= 0) {
-      nofs_x = nofs_x - (aSize_x / 2);
-      nofs_y = nofs_y - aSize_y;
-      nofs_z = 0;
-      gui_renderTintImage(TRUE, nofs, HUD_TARGET_BOX, aSize, factionColor, HUD_ALPHA, 0);
-    }
+  if(faction1 == faction2){
+    factionColor = CLR_DEF_IIF_FRIEND;
+  }
+  else{
+    factionColor = CLR_DEF_IFF_ENEMY;
+  }
+  dist = vlen(org - torg);
+  if( dist > radRange ){
+    dist = radRange;
+  }
+  dist = 1 * (dist / radRange);
+  
+  imgSize = draw_getimagesize(HUD_TARGET_BOX) * 0.5 ;
+  imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
+  
+  if( imgSize_x > gui_percentXRaw(24) ){
+    imgSize_x = gui_percentXRaw(24);
+  }
+  if(imgSize_x < gui_percentXRaw(10)){
+    imgSize_x = gui_percentXRaw(10);
+  }
+  if( imgSize_y > gui_percentYRaw(24) ){
+    imgSize_y = gui_percentYRaw(24);
+  }
+  if(imgSize_y < gui_percentYRaw(10)){
+    imgSize_y = gui_percentYRaw(10);
+  }
+  
+  viewAngle = input_angles;
+  viewAngle_x = viewAngle_x * -1;
+
+  makevectors(viewAngle);
+  local vector tl, tr, br, bl;
+  local vector c_tl, c_tr, c_br, c_bl;
+
+  tl = org + (v_right * (targSizeX * -1)) + (v_up * targSizeZ);
+  tr = org + (v_right * targSizeX) + (v_up * targSizeZ);
+  br = org + (v_right * targSizeX) + (v_up * (targZbottom * -1));
+  bl = org + (v_right * (targSizeX * -1)) + (v_up * (targZbottom * -1));
+ 
+  c_tl = cs_project(tl);
+  if (c_tl_z >= 0) {
+    c_tl_x = c_tl_x - (imgSize_x / 2);
+    c_tl_y = c_tl_y - (imgSize_y / 2);
+    c_tl_z = 0;
+    gui_renderTintImage(TRUE, c_tl, HUD_TARGET_BOX_TL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+
+  c_tr = cs_project(tr);
+  if (c_tr_z >= 0) {
+    c_tr_x = c_tr_x - (imgSize_x / 2);
+    c_tr_y = c_tr_y - (imgSize_y / 2);
+    c_tr_z = 0;
+    gui_renderTintImage(TRUE, c_tr, HUD_TARGET_BOX_TR, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+  
+  c_br = cs_project(br);
+  if (c_br_z >= 0) {
+    c_br_x = c_br_x - (imgSize_x / 2);
+    c_br_y = c_br_y - (imgSize_y / 2);
+    c_br_z = 0;
+    gui_renderTintImage(TRUE, c_br, HUD_TARGET_BOX_BR, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
+  
+  c_bl = cs_project(bl);
+  if (c_tl_z >= 0) {
+    c_bl_x = c_bl_x - (imgSize_x / 2);
+    c_bl_y = c_bl_y - (imgSize_y / 2);
+    c_bl_z = 0;
+    gui_renderTintImage(TRUE, c_bl, HUD_TARGET_BOX_BL, imgSize, factionColor, HUD_ALPHA + 0.25, 0);
+  }
 };
 
 /*

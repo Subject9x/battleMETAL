@@ -175,9 +175,6 @@ void() PlayerPostThink = {
     self.stat_cofs_x = self.origin_x;
     self.stat_cofs_y = self.origin_y;
     self.stat_cofs_z = self.origin_z;
-    self.stat_plr_ang_x = trace_endpos_x;
-    self.stat_plr_ang_y = trace_endpos_y;
-    self.stat_plr_ang_z = trace_endpos_z;
   }
   //========================================  
 

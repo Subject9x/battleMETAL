@@ -1,8 +1,9 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 1/26/2017
-Overview: necessary targeting and radar functions
+Overview: 
+  necessary targeting and radar functions
 */
 /*scope - self = unit making the target call*/
 
@@ -122,6 +123,9 @@ void() server_updateTargetInfo={
     self.stat_trg_face = -1;
     self.stat_trg_faction = -1;
     self.stat_trg_ent_id = -1;
+    self.stat_plr_ang_x = 0;
+    self.stat_plr_ang_y = 0;
+    self.stat_plr_ang_z = 0;
     if( (self.stat_lck_stt & LOCK_TARG_START)){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
     }
@@ -146,6 +150,10 @@ void() server_updateTargetInfo={
   self.stat_trg_ddflg = self.enemy.deadflag;
   self.stat_trg_dist = dst;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
+  
+  self.stat_plr_ang_x = self.enemy.maxs_x;
+  self.stat_plr_ang_y = self.enemy.maxs_y;
+  self.stat_plr_ang_z = self.enemy.maxs_z;
   
   //can only lock-on to enemy units
   if( self.enemy.faction != self.faction ){

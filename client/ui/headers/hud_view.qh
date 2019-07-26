@@ -99,6 +99,12 @@ string HUD_TRG_PIP_U;
 string HUD_DMG_PIP_H;
 
 string HUD_TARGET_BOX;
+string HUD_TARGET_BOX_TL;
+string HUD_TARGET_BOX_TR;
+string HUD_TARGET_BOX_BR;
+string HUD_TARGET_BOX_BL;
+
+
 
 .entity data;
 

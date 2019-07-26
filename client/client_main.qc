@@ -378,16 +378,12 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   
   if( cvar("developer") ){
     local vector viewspot, viewang, porg, pang, torg;
-    viewang_x = getstatf(STAT_PLR_ANG_X);
-    viewang_y = getstatf(STAT_PLR_ANG_Y);
-    viewang_z = getstatf(STAT_PLR_ANG_Z);
     viewspot_x =  getstatf(STAT_PLR_ORG_X);
     viewspot_y =  getstatf(STAT_PLR_ORG_Y);
     viewspot_z =  getstatf(STAT_PLR_ORG_Z);
     porg_x = pang_x = torg_x = VIEW_ORG_x;
     porg_y = pang_y = torg_y = VIEW_MAX_y;
     drawstring(porg + gui_percentToPixelRawVec('1 -30'), strcat("Player Origin: ", vtos(viewspot)), '8 8 0', '0.85 0.85 0.85', 1, 0);
-    drawstring(torg + gui_percentToPixelRawVec('1 -10'), strcat("Tag Origin: ", vtos( viewang )), '8 8 0', '0.85 0.85 0.85', 1, 0); 
   }
 };
 

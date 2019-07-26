@@ -262,9 +262,7 @@ float STAT_RAD_SWEEP = 91;
 float STAT_PLR_ANG_X = 100;
 float STAT_PLR_ANG_Y = 101;
 float STAT_PLR_ANG_Z = 102;
-
 float STAT_PLR_REP = 103; //remaining repair delta
-
 float STAT_PLR_NAME = 104;
 
 //============================
