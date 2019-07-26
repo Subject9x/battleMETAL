@@ -235,6 +235,16 @@ void() client_event_boundary={
   }
 };
 
+void() client_event_environment={
+  HUD_WARN_ENV_ON = ReadByte();
+  HUD_WARN_ENV_TYPES = ReadByte();
+  if( HUD_WARN_ENV_ON ){
+    if( time > HUD_WARN_ENV_MARK ){
+      HUD_WARN_ENV_MARK = time + HUD_WARN_ENV_TIME;
+      
+    }
+  }
+};
 /*
   handles mission name if active
 */

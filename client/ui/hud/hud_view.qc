@@ -920,6 +920,49 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
   }
 };
 
+/*
+  RENDER
+*/
+void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={
+  local string warnMessage;
+  local string warnShield
+  local string warnEnergy;
+  local string warnArmor;
+  
+  local float messageWidth;
+  
+  local vector warnMessageOrg;
+  local vector warnShieldOrg;
+  local vector warnEnergyOrg;
+  local vector warnArmorOrg;
+  
+  if( time < HUD_WARN_ENV_MARK ){
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+  
+    warnMessage = "!- Environment Damage -!";
+    messageWidth = stringwidth( warnMessage, 0, '18 18');
+    warnMessageOrg_x = orgCenter_x - gui_percentXRaw( messageWidth / 2 );
+    warnMessageOrg_y = orgCenter_y;
+    drawstring( warnMessageOrg, warnMessage, '18 18', CLR_DEF_ARM_HALF, labelAlpha );
+    
+    if( (dmgTypes & 1) ){
+    
+    }
+    
+    if( (dmgTypes & 2) ){
+    
+    }
+    
+    
+    if( (dmgTypes & 4) ){
+    
+    }
+    drawfont = drawfont_prev;
+  }
+  
+};
+
 vector( float wbit ) hud_data_weapon_info={
   local vector wep;
   switch( wbit ){
@@ -1206,8 +1249,8 @@ void() data_hud_frame={
   
   //repair sits above all
   hud_renderRepairValue(getstatf(STAT_PLR_REP));
-  
   hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
+  hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec('0 -200'), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
   
 };
 

@@ -450,6 +450,9 @@ float() CSQC_Parse_TempEntity =
     case TE_MISSION_END:
       client_event_debrief_active( ReadByte(), ReadByte(), ReadByte(), ReadByte(), ReadByte(), ReadByte(), ReadByte() );
       return TRUE;
+    case TE_ENV_WARN:
+      client_event_environment();
+      return TRUE;
   } 
 	return FALSE;
 };

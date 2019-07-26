@@ -45,6 +45,11 @@ float HUD_UID_ARM_TARG_BLD  = 16;
   float HUD_WARN_MARK;
   float HUD_WARN_TIME = 2;
   
+  float HUD_WARN_ENV_ON;
+  float HUD_WARN_ENV_MARK;
+  float HUD_WARN_ENV_TIME = 1;
+  float HUD_WARN_ENV_TYPES;
+  
   float HUD_ALPHA_TIME;
   float HUD_ALPHA_DELTA;
   float HUD_ALPHA_RATE;
@@ -104,8 +109,6 @@ string HUD_TARGET_BOX_TR;
 string HUD_TARGET_BOX_BR;
 string HUD_TARGET_BOX_BL;
 
-
-
 .entity data;
 
 .float prev_ang;
@@ -154,6 +157,7 @@ void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
 void(vector ofs, string targType, float algn) hud_renderTargetName;
 void(float delta) hud_renderRepairValue;
 void(float warnOn, float warnDir) hud_render_warningBounds;
+void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment;
 //new text-based hud system
 void( float uid, float targetId ) hud_data_renderTarget_Shield;
 vector( float wbit ) hud_data_weapon_info;

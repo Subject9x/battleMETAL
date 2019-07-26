@@ -205,7 +205,7 @@ void() map_damage_zone_touch={
 
   if( self.isActive ){
     if( (other.flags & FL_UNIT) ){
-    
+      
       //Zone Damage - SHIELDS
       if( (self.damageType & 1) ){
         other.shield = other.shield - self.damageValue;
@@ -239,6 +239,10 @@ void() map_damage_zone_touch={
         if( other.energy > other.energyMax ){
           other.energy = other.energyMax;
         }
+      }
+      
+      if( (other.flags & FL_CLIENT) ){
+        client_send_enviro_warning( other );
       }
       
       if( (self.damageType & 8) ){
