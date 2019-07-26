@@ -632,7 +632,7 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
   }
   dist = 1 * (dist / radRange);
   
-  imgSize = draw_getimagesize(HUD_TARGET_BOX) * 0.5 ;
+  imgSize = draw_getimagesize(HUD_TARGET_BOX_TL) * 0.5 ;
   imgSize = gui_percentToPixelRawVec(imgSize * dist) ;
   
   if( imgSize_x > gui_percentXRaw(24) ){
@@ -925,16 +925,12 @@ void(float warnOn, float warnDir) hud_render_warningBounds={
 */
 void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment={
   local string warnMessage;
-  local string warnShield
-  local string warnEnergy;
-  local string warnArmor;
+  local string warnTypes;
   
   local float messageWidth;
   
   local vector warnMessageOrg;
-  local vector warnShieldOrg;
-  local vector warnEnergyOrg;
-  local vector warnArmorOrg;
+  local vector warnTypesOrg;
   
   if( time < HUD_WARN_ENV_MARK ){
     drawfont_prev = drawfont;
@@ -946,18 +942,22 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
     warnMessageOrg_y = orgCenter_y;
     drawstring( warnMessageOrg, warnMessage, '18 18', CLR_DEF_ARM_HALF, labelAlpha );
     
+    warnTypes = "[";
     if( (dmgTypes & 1) ){
-    
+      warnTypes = strcat(warnTypes, " Shields ");
     }
-    
     if( (dmgTypes & 2) ){
-    
+      warnTypes = strcat(warnTypes, " Armor ");
     }
-    
-    
     if( (dmgTypes & 4) ){
-    
+      warnTypes = strcat(warnTypes, " Energy ");
     }
+    warnTypes = strcat(warnTypes, "]");
+    messageWidth = stringwidth( warnTypes, 0, '16 16' );
+    warnTypesOrg_x = orgCenter_x - gui_percentXRaw( messageWidth / 2 );
+    warnTypesOrg_y = warnMessageOrg_y + gui_percentYRaw(20);
+    drawstring( warnTypesOrg, warnTypes, '16 16', CLR_DEF_ARM_HALF, labelAlpha );
+    
     drawfont = drawfont_prev;
   }
   

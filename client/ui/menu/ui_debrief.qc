@@ -400,7 +400,7 @@ void(vector panelOffset) menu_debrief_unlocks={
       data_get_client_item_( UI_ARMING_DATA_item_list, tokenValue );
       if( (UI_ARMING_DATA_item_list.damageType & DMG_MSC) ){
         equipmentOrg = equipmentStartOrg;
-        widthWrapCheck = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
+        widthWrapCheck = equipmentOrg_x + gui_percentXRaw( tokenItr * 32 );
         if( widthWrapCheck < widthWrap ){
           equipmentStartOrg_x = widthWrapCheck;
         }
@@ -431,7 +431,7 @@ void(vector panelOffset) menu_debrief_unlocks={
   local float mechY;
   local vector mechStartOrg;
   local vector mechOrg;
-  mechStartOrg_x = thisOrg_x + gui_percentXRaw(6);
+  mechStartOrg_x = thisOrg_x + gui_percentXRaw(-2);
   mechStartOrg_y = mechLabelOrg_y + gui_percentYRaw(16);
   mechY = 0;
   tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
@@ -444,7 +444,7 @@ void(vector panelOffset) menu_debrief_unlocks={
       if( tokenValue != 0 ){
         ui_data_load_mech_info( tokenValue, UI_HANGAR_DATA_mech );
         mechOrg = mechStartOrg;
-        widthWrapCheck = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
+        widthWrapCheck = mechOrg_x + gui_percentXRaw( tokenItr * 46 );
         if( widthWrapCheck < widthWrap ){
           mechOrg_x = widthWrapCheck;
         }
