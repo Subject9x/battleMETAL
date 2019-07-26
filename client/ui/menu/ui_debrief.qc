@@ -337,6 +337,8 @@ void(vector panelOffset) menu_debrief_unlocks={
   local float tokenMax;
   local string token;
   local float tokenValue;
+  local float widthWrapCheck;
+  local float widthWrap;
   tokenItr = 0;
   //New Weapons
   local float weaponY;
@@ -346,6 +348,7 @@ void(vector panelOffset) menu_debrief_unlocks={
   weaponY = 0;
   tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
   tokenId = 0;
+  widthWrap = (weaponStartOrg_x + panelImageSize_x) - gui_percentXRaw(24);
   while( tokenId < tokenMax ){
     token = argv(tokenId);
     if( token != ""){
@@ -353,9 +356,13 @@ void(vector panelOffset) menu_debrief_unlocks={
       data_get_client_item_( UI_ARMING_DATA_item_list, tokenValue );
       if( !(UI_ARMING_DATA_item_list.damageType & DMG_MSC) ){
         weaponOrg = weaponStartOrg;
-        weaponOrg_x = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
-        if( weaponOrg_x > (thisOrg_x + panelImageSize_x) ){
+        widthWrapCheck = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
+        if( widthWrapCheck < widthWrap ){
+          weaponOrg_x = widthWrapCheck;
+        }
+        else{
           weaponY = weaponY + 1;
+          weaponOrg_x = weaponStartOrg_x;
         }
         weaponOrg_y = weaponOrg_y + gui_percentYRaw( weaponY * 32 );
         drawpic( weaponOrg, UI_ARMING_DATA_item_list.icon, '28 28', '1 1 1', 1, 0);
@@ -364,7 +371,7 @@ void(vector panelOffset) menu_debrief_unlocks={
     }
     tokenId = tokenId + 1;
   }
-  if( weaponY == 0){
+  if( weaponY < 1){
     weaponY = weaponY + 1;
   }
  
@@ -375,7 +382,7 @@ void(vector panelOffset) menu_debrief_unlocks={
   local float equipLabelLen;
   equipLabelLen = stringwidth( "-New Equipment Unlocked-", 0, '10 10 0');
   equipLabelOrg_x = thisOrg_x + gui_percentXRaw(panelImageSize_x / 2) - gui_percentXRaw(equipLabelLen / 2); 
-  equipLabelOrg_y = thisOrg_y + weaponY + gui_percentYRaw(24);
+  equipLabelOrg_y = weaponStartOrg_y + gui_percentYRaw(30) + weaponY ;
   drawstring( equipLabelOrg, "-New Equipment Unlocked-", '10 10', CLR_DEF_GRAY_H, 1, 0);
   
   local float equipmentY;
@@ -393,9 +400,13 @@ void(vector panelOffset) menu_debrief_unlocks={
       data_get_client_item_( UI_ARMING_DATA_item_list, tokenValue );
       if( (UI_ARMING_DATA_item_list.damageType & DMG_MSC) ){
         equipmentOrg = equipmentStartOrg;
-        equipmentOrg_x = equipmentOrg_x + gui_percentXRaw( tokenItr * 32 );
-        if( equipmentOrg_x > (thisOrg_x + panelImageSize_x) ){
+        widthWrapCheck = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
+        if( widthWrapCheck < widthWrap ){
+          equipmentStartOrg_x = widthWrapCheck;
+        }
+        else{
           equipmentY = equipmentY + 1;
+          equipmentOrg_x = equipmentStartOrg_x;
         }
         equipmentOrg_y = equipmentOrg_y + gui_percentYRaw( equipmentY * 32 );
         drawpic( equipmentOrg, UI_ARMING_DATA_item_list.icon, '28 28', '1 1 1', 1, 0);
@@ -404,7 +415,7 @@ void(vector panelOffset) menu_debrief_unlocks={
     }
     tokenId = tokenId + 1;
   }
-  if( equipmentY == 0){
+  if( equipmentY < 1){
     equipmentY = equipmentY + 1;
   }
   equipmentY = gui_percentYRaw( equipmentY * 32);
@@ -414,7 +425,7 @@ void(vector panelOffset) menu_debrief_unlocks={
   local float mechLabelLen;
   mechLabelLen = stringwidth( "-New Metal Unlocked-", 0, '10 10 0');
   mechLabelOrg_x = thisOrg_x + gui_percentXRaw(panelImageSize_x / 2) - gui_percentXRaw(mechLabelLen / 2); 
-  mechLabelOrg_y = equipLabelOrg_y + equipmentY + gui_percentYRaw(24);
+  mechLabelOrg_y = equipmentStartOrg_y + equipmentY + gui_percentYRaw(16);
   drawstring( mechLabelOrg, "-New Metal Unlocked-", '10 10', CLR_DEF_GRAY_H, 1, 0);
   
   local float mechY;
@@ -433,10 +444,15 @@ void(vector panelOffset) menu_debrief_unlocks={
       if( tokenValue != 0 ){
         ui_data_load_mech_info( tokenValue );
         mechOrg = mechStartOrg;
-        mechOrg_x = mechOrg_x + gui_percentXRaw( tokenItr * 60 );
-        if( mechOrg_x > (thisOrg_x + panelImageSize_x) ){
-          mechY = mechY + 1;
+        widthWrapCheck = weaponOrg_x + gui_percentXRaw( tokenItr * 32 );
+        if( widthWrapCheck < widthWrap ){
+          mechOrg_x = widthWrapCheck;
         }
+        else{
+          mechY = mechY + 1;
+          mechOrg_x = mechOrg_x;
+        }
+        
         mechOrg_y = mechOrg_y + gui_percentYRaw( mechY * 64 );
         drawpic( mechOrg, MECH_DATA_ICON, '60 64', '1 1 1', 1, 0);
         tokenItr = tokenItr + 1;
