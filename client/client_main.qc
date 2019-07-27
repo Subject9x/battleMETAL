@@ -115,7 +115,9 @@ void() CSQC_Init =
   UI_HANGAR_DATA_mech_list = spawn();
   
   MOUSE_drag_timer = 0;
-  
+  HUD_SHIELD_FLASH_TIME = 0;
+  HUD_SHIELD_FLASH_ON = FALSE;
+  HUD_SHIELD_FLASH = -1;
   //ui data from text files /data/ui/
   ui_data_load_mechsizes();
   ui_data_load_hudnames();

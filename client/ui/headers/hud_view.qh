@@ -66,6 +66,11 @@ float HUD_UID_ARM_TARG_BLD  = 16;
   float HUD_LOCK_STEP;  //timer step function
   float HUD_LOCK_STEP_RATE;
   
+  float HUD_SHIELD_FLASH_ON;
+  float HUD_SHIELD_FLASH_TIME;
+  float HUD_SHIELD_FLASH;
+  float HUD_SHIELD_FLASH_RATE = 0.15;
+  
 //==========================================
 
 //HUD Text Data Arrays======================

@@ -189,10 +189,38 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
 */
 void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderShield={
   local vector meterSize, label_org, shofs;
+  local vector meterColor;
+  
   meterSize = gui_percentToPixelRawVec(mSize);
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
-  gui_renderMeter(val, pos, meterSize, CLR_DEF_ARM_DED, gui_getColorForShield(val), HUD_ALPHA, 0, meterAxis, 0);
+ 
+  if( val <= 0 ){
+    if( !HUD_SHIELD_FLASH_ON ){
+      HUD_SHIELD_FLASH_ON = TRUE;
+    }
+  }
+  else{
+    HUD_SHIELD_FLASH_ON = FALSE;
+    meterColor = CLR_DEF_ARM_DED;
+  }
+  
+  if( HUD_SHIELD_FLASH_ON ){
+    if( time > HUD_SHIELD_FLASH_TIME ){
+      HUD_SHIELD_FLASH = HUD_SHIELD_FLASH * -1;
+      HUD_SHIELD_FLASH_TIME = time + HUD_SHIELD_FLASH_RATE;
+    }
+    if( HUD_SHIELD_FLASH == 1){
+      meterColor = CLR_DEF_RED;
+    }
+    else{
+      meterColor = CLR_DEF_ARM_DED;
+    }
+  }
+  
+  gui_renderMeter(val, pos, meterSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, meterAxis, 0);
+  
+  
   if(bool_label){
     label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, pos);
     drawfont_prev = drawfont;
