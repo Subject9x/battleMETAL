@@ -929,10 +929,18 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
   
   local float messageWidth;
   
+  local vector warnBoxOrg;
+  local vector warnBoxSize;
+  
   local vector warnMessageOrg;
   local vector warnTypesOrg;
   
   if( time < HUD_WARN_ENV_MARK ){
+    warnBoxSize = gui_percentToPixelRawVec('175 38');
+    warnBoxOrg_x = orgCenter_x - warnBoxSize_x / 2;
+    warnBoxOrg_y = orgCenter_y - gui_percentYRaw(2);
+    drawpic( warnBoxOrg, UI_DEF_BOX_256, warnBoxSize, '0.25 0.25 0.25', 1, 0);
+    
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
   
