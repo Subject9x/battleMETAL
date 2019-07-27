@@ -223,9 +223,9 @@ void( float overrideFlag ) world_export_realtimelights={
   local entity lights;
   
   developer = cvar("developer");
-  fileName = strcat("maps/rtexport/", mapname, ".rtlights");
+  fileName = strcat("/maps/rtexport/", mapname, ".rtlights");
   if( developer ){
-    cons_logAString("world_export_realtimelights()|[fileName]", fileName);  //DEBUG
+    cons_logAString("[INFO]-world_export_realtimelights()|[fileName]", fileName);  //DEBUG
   }
  
   fileExists = fopen(fileName, FILE_WRITE);
@@ -233,7 +233,7 @@ void( float overrideFlag ) world_export_realtimelights={
   //overrideFlag was false but file exists! so don't overwrite
   if( (fileExists == TRUE) && !overrideFlag ){
     if( developer ){
-      cons_logAString("world_export_realtimelights()|", "[WARN]: Failed to write rtlights file, overrideFlag = FALSE but file already exists!");  //DEBUG
+      cons_logAString("[WARN]-world_export_realtimelights()|", " Failed to write rtlights file, overrideFlag = FALSE but file already exists!");  //DEBUG
     }
     fclose(fileExists);
     return;
@@ -247,12 +247,12 @@ void( float overrideFlag ) world_export_realtimelights={
       lights = lights.chain;
     }
     if( developer ){
-      cons_logAString("world_export_realtimelights()", "[INFO]: Write complete.");  //DEBUG
+      cons_logAString("[INFO]-world_export_realtimelights()", "Write complete.");  //DEBUG
     }
   }
   else{
     if( developer ){
-      cons_logAString("world_export_realtimelights()", "[WARN]: No {realtime_light} entities found in map file.");  //DEBUG
+      cons_logAString("[WARN]-world_export_realtimelights()", "No {realtime_light} entities found in map file.");  //DEBUG
     }
   }
   fclose(fileExists);
@@ -278,7 +278,7 @@ void( entity light, float fileData ) world_export_realtimelights_write={
   lightData = strcat( lightData, " ", ftos(light.rtlMode), "\n");
   
   if( cvar("developer") ){
-    cons_logAString("[Writing RTLight Data]", lightData); //DEBUG
+    cons_logAString("[INOFO]-{Writing RTLight Data} ", lightData); //DEBUG
   }
   fputs(fileData, lightData);
 

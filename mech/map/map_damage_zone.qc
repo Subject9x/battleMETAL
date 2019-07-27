@@ -194,6 +194,7 @@ void() map_damage_zone_use={
 };
 
 void() map_damage_zone_touch={
+  local vector rpoint;
 
   if( (self.spawnflags & 32) ){
     if( !self.isActive ){
@@ -208,19 +209,22 @@ void() map_damage_zone_touch={
       
       //Zone Damage - SHIELDS
       if( (self.damageType & 1) ){
+        //shield damage is gated so as not to trigger an energy draining feedback loop
         other.shield = other.shield - self.damageValue;
         if( other.shield < 0 ){
           other.shield = 0;
         }
-        //realized damage can be inverted...
-        if( other.shield > other.shieldMax ){
-          other.shield = other.shieldMax;
-        }
+        other.shieldHitDelay = time + 3;
+        rpoint = randomvec();
+        rpoint_x = rpoint_x * (random() * other.maxs_x);
+        rpoint_y = rpoint_y * (random() * other.maxs_y);
+        rpoint_z = rpoint_z * (random() * other.maxs_z);
+        rpoint = other.origin + rpoint;
+        te_field_mineral(rpoint, normalize(rpoint - other.origin) * 25, 2);
       }
       
       //Zone Damage - ARMOR
       if( (self.damageType & 2) ){
-        local vector rpoint;
         rpoint = randomvec();
         rpoint_x = rpoint_x * (random() * self.maxs_x);
         rpoint_y = rpoint_y * (random() * self.maxs_y);
