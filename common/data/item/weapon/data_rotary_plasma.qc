@@ -24,7 +24,7 @@ void() data_ini_plasma_={
   self.energyRate = 1;
   
   self.w_range = 1000;
-  self.damageValue = 10.8;
+  self.damageValue = 4.5;//10.8;
   self.damageType = (DMG_BAL | EFF_PRC);
   
   self.techLevel = 3;

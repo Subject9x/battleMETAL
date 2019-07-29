@@ -214,13 +214,18 @@ void() map_damage_zone_touch={
         if( other.shield < 0 ){
           other.shield = 0;
         }
-        other.shieldHitDelay = time + 3;
+        if( time > other.shieldHitDelay ){
+          other.shieldHitDelay = time + 1;
+        }
+        else{
+          other.shieldHitDelay = time + 3;
+        }
         rpoint = randomvec();
         rpoint_x = rpoint_x * (random() * other.maxs_x);
         rpoint_y = rpoint_y * (random() * other.maxs_y);
         rpoint_z = rpoint_z * (random() * other.maxs_z);
         rpoint = other.origin + rpoint;
-        te_field_mineral(rpoint, normalize(rpoint - other.origin) * 25, 2);
+        te_field_mineral(rpoint, normalize(rpoint - other.origin) * 10, 0.5);
       }
       
       //Zone Damage - ARMOR
