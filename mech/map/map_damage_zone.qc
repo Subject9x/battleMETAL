@@ -92,7 +92,7 @@ void() map_damage_zone_particles_energy={
   local vector velocityOffset, particleOrigin, particleOffset;
   
   velocityOffset = self.origin + (v_up * 2);
-  te_particlecube( self.absmin, self.absmax, '0 0 0', floor(self.maxs_x / 48), 128, FALSE, 10); 
+  te_particlecube( self.absmin, self.absmax, '0 0 0', floor(self.maxs_x / 56), 128, FALSE, 10); 
   
   if( time > self.count1 ){
     self.count1 = time + (random() * 0.5);
