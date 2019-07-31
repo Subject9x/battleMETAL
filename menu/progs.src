@@ -1,17 +1,18 @@
 ../../menu.dat
-
+  ../common/ui/ui_color_constants.qc
+//HEADERS---------------
 defs/menudefs.qc
 defs/keycodes.qc
-defs/menu_h.qc
-defs/utils_h.qc
-defs/gui_api_h.qc
-defs/menu_gfx_h.qc
-defs/menu_api_h.qc
-  ../common/ui/ui_color_constants.qc
+defs/headers/menu.qh
+defs/headers/utils.qh
+defs/headers/gui_api.qh
+defs/headers/menu_gfx.qh
+defs/headers/menu_api.qh
+//=======================
 
-defs/utils_c.qc
-defs/gui_api_c.qc
-defs/menu_api_c.qc
+defs/utils.qc
+defs/gui_api.qc
+defs/menu_api.qc
 
 menu_main.qc
 
