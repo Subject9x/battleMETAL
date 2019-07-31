@@ -335,16 +335,18 @@ void(string str, float tokens) client_ParseMechCommand={
 void(string cmd, float tokens) client_setMission={
   self.stat_plr_stt = PLAYER_ACTIVE;
   self.view_ofs = '0 0 1';
-  if( cvar("gamemode") == GAMEMODE_CAMPAIGN){
-    savefile_changemap(nextmap);
-    savefile_append();
-    savefile_save();
-  }
-  if (cvar("samelevel")){	// if samelevel is set, stay on same level
-    changelevel (mapname);
-  }
-  else{  
+  if( argv(2) == "1" ){ 
+    //mission successful, next map
+    if( cvar("gamemode") == GAMEMODE_CAMPAIGN){
+      savefile_changemap(nextmap);
+      savefile_append();
+      savefile_save();
+    }
     changelevel (nextmap);  //possibly altered by map_objective objects.
+  }
+  else{
+    //mission failed
+    changelevel (mapname);
   }
 };
 /*

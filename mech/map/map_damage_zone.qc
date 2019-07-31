@@ -230,12 +230,14 @@ void() map_damage_zone_touch={
       
       //Zone Damage - ARMOR
       if( (self.damageType & 2) ){
-        rpoint = randomvec();
-        rpoint_x = rpoint_x * (random() * self.maxs_x);
-        rpoint_y = rpoint_y * (random() * self.maxs_y);
-        rpoint_z = rpoint_z * (random() * self.maxs_z);
-        rpoint = other.origin + rpoint;
-        t_damage(other, self, world, self.damageValue, 0, rpoint, '0 0 0');
+        if( (other.data_type == DATA_VEHC) || (other.data_type == DATA_MECH) ){
+          rpoint = randomvec();
+          rpoint_x = rpoint_x * (random() * self.maxs_x);
+          rpoint_y = rpoint_y * (random() * self.maxs_y);
+          rpoint_z = rpoint_z * (random() * self.maxs_z);
+          rpoint = other.origin + rpoint;
+          t_damage(other, self, world, self.damageValue, 0, rpoint, '0 0 0');        
+        }
       }
       
       //Zone Damage - ENERGY

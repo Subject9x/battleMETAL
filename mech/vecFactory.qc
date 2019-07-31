@@ -593,6 +593,7 @@ void( void() data_ini ) build_vtol_unit={
 void(void() data_ini) build_turret_unit={
 
   build_vehicle_unit( data_ini );
+  self.data_type = DATA_BLD;
 
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();

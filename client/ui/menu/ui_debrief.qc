@@ -27,7 +27,7 @@ void() menu_debrief_drawFrame={
   local vector topleftroot;
   topleftroot = VIEW_ORG;
 
-  drawpic(topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, 1, 0);
+  gui_renderTintImage2(MENU_DEBRIEF_status, topleftroot, UI_DEF_BOX_512, VIEW_MAX, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF - '0.15 0.15 0.15', 1, 0) ;  
   menu_debrief_header( topleftroot );
   menu_debrief_objectives_primary( topleftroot + gui_percentToPixelRawVec('10 32') );
   menu_debrief_objectives_secondary( topleftroot + gui_percentToPixelRawVec('10 272') );
@@ -94,7 +94,7 @@ void(vector panelOffset) menu_debrief_objectives_primary={
   thisOrg = panelOffset;
   panelImageSize_x = gui_percentXRaw(VIEW_CTR_x);
   panelImageSize_y = gui_percentYRaw(240);
-  drawpic(thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, 1, 0);
+  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
   
   //panel label
   local vector objectivesLabelOrg;
@@ -184,7 +184,7 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
   thisOrg = panelOffset;
   panelImageSize_x = gui_percentXRaw(VIEW_CTR_x);
   panelImageSize_y = gui_percentYRaw(160);
-  drawpic(thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, 1, 0);
+  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
   
   //panel label
   local vector objectivesLabelOrg;
@@ -277,7 +277,7 @@ void(vector panelOffset) menu_debrief_stats={
   panelImageSize_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw( VIEW_CTR_x);
   panelImageSize_x = panelImageSize_x - gui_percentXRaw(20);
   panelImageSize_y = gui_percentYRaw( 128 );
-  drawpic(thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, 1, 0);
+  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
 
   //stats label
   local float statsLabelLen;
@@ -321,7 +321,7 @@ void(vector panelOffset) menu_debrief_unlocks={
   panelImageSize_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw( VIEW_CTR_x);
   panelImageSize_x = panelImageSize_x - gui_percentXRaw(20);
   panelImageSize_y = gui_percentYRaw( 300 );
-  drawpic(thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, 1, 0);
+  gui_renderTintImage2(MENU_DEBRIEF_status, thisOrg, UI_DEF_BOX_512, panelImageSize, CLR_DEF_UI_DEPLOY, CLR_DEF_ARM_HALF, 1, 0) ; 
   
   //unlocks label
   local float unlocksLabelLen;

@@ -154,6 +154,7 @@ void() map_objective_th={
       }
       player = find (player, classname, "player");
     }
+    self = oldThis;
     self.isActive = 0;
     if( (self.spawnflags & 8) ){
       MISSION_STATUS = TRUE;
@@ -179,6 +180,7 @@ void() map_objective_th={
       }
       player = find (player, classname, "player");
     }
+    self = oldThis;
     self.isActive = 0;
     if( (self.spawnflags & 4) ){
       MISSION_STATUS = FALSE;

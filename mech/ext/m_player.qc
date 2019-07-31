@@ -255,6 +255,30 @@ void() PlayerDie={
       mech_player_die();
     }
   }
+  
+  //update objectives on player death.
+  local entity objtivs;
+  objtivs = findchainfloat( data_type, DATA_OBJT );
+  while( objtivs != world ){
+    if( objtivs.faction == self.faction ){
+      if( objtivs.isActive == 1 ){
+        //if objective is Active but incomplete, the mission is failed.
+        objtivs.isActive = -1;
+      }
+    }
+    objtivs = objtivs.chain;
+  }
+  client_push_mapobjects();
+  if( MISSION_STATUS ){        
+    //only send unlocks if player won mission
+    client_sendMissionUnlocks();
+    te_mission_win();
+  }
+  else{
+    te_mission_lose();
+  }
+  self.stat_plr_stt = PLAYER_INTERMSN;
+  client_sendEndMission(self, MISSION_STATUS ) ;
 };
 
 void() PlayerDead={
@@ -300,9 +324,12 @@ void() PlayerDeathThink={
   player_unmakeMech();
   mech_cleanupMech();
   player_makeObserver();
-  spawnpoint_select();
-  self.movetype = MOVETYPE_FLY;
-  self.flags = self.flags | FL_FLY;
+  if( cvar("deathmatch") || cvar("coop") ){
+    spawnpoint_select();
+    self.movetype = MOVETYPE_FLY;
+    self.flags = self.flags | FL_FLY;
+  }
+
   respawn();
 };
 

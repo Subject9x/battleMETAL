@@ -21,24 +21,24 @@ void() data_ini_equip_energy_battery_={
   self.w_clipsize = 1;
   self.reloadRate = 0;
   self.reloadMax = 0;
-  self.energyRate = 0.2;  // percent multiplier to unit's radar range
+  self.energyRate = 0.33;  // percent multiplier to unit's Energy Max
   
   self.w_range = 0;
   self.damageValue = 0;
-  self.damageType = (DMG_MSC);
+  self.damageType = DMG_MSC;
  
   self.techLevel = 2;
   self.i_size = 3;
   
   #ifdef CSQC
   self.abbrev = "ENBAT";
-  self.description = "+ Increases <Energy maximum> by 25%.";
+  self.description = "+ Increases <Energy maximum> by 33%.";
   self.icon = "gfx/ui/wep_icons/eqp_enbat.png";
   #endif
   
   #ifndef CSQC
-  self.w_attack = energy_battery_upgrade_;
   self.think = SUB_Null;
+  self.w_attack = energy_battery_upgrade_;
   self.unit_wep1 = energy_battery_remove_;
   self.model = "q3mdl/weapons/e_enbat.md3";
   self.w_isburst = FALSE;
