@@ -44,7 +44,7 @@ void() ctrl_updateCenterTorso={
           self.shield = self.shield + self.shieldRate;
           self.energy = self.energy - (self.shieldRate * 3);
           if(self.shield > self.shieldMax){
-            self.shield = self.shieldMax;
+            self.shield = self.shieldMax;B
           }
         }
       }

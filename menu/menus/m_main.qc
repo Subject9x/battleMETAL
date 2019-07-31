@@ -15,17 +15,15 @@ entity main_title;
 entity main_label;
 entity main_camp;
 entity main_training;
-entity main_multi;
 entity main_options;
 entity main_help;
-entity main_credits;
 entity main_quit;
 
 //Main Menu Constants
 string IMG_MAIN_TITLE  = "gfx/menu/main/main_title.png";
 string IMG_MAIN_LBL    = "gfx/menu/main/main_label.png";
 string IMG_MAIN_CAMP   = "gfx/menu/main/main_camp.png";
-string IMG_MAIN_TRAIN  = "gfx/menu/main/main_train.png"
+string IMG_MAIN_TRAIN  = "gfx/menu/main/main_train.png";
 string IMG_MAIN_MULTI  = "gfx/menu/main/main_multi.png";
 string IMG_MAIN_OPT    = "gfx/menu/main/main_opt.png";
 string IMG_MAIN_HELP   = "gfx/menu/main/main_help.png";

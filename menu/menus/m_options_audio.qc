@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/17/2018
 Overview: options - audio menu
@@ -141,7 +141,6 @@ float(float sndspeed) audio_speed_get={
 };
 
 void(float select) audio_speed_set={
-  local float val;
   switch(select){
     case  1:
       cvar_set("snd_speed", "16000");

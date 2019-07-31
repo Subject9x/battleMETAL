@@ -25,8 +25,6 @@ entity gameplay_datetime_lbl;
 entity gameplay_datetime_on;
 entity gameplay_datetime_off;
 
-entity gameplay_ret_lbl;
-
 entity gameplay_crosshair_lbl;
 entity gameplay_crosshair_nx;
 entity gameplay_crosshair_pr;

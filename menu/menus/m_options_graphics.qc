@@ -284,8 +284,6 @@ void() click_refreshieldRate_dn={
 };
 
 void() click_graphics_fullscreen_on={
-  local float flip;
-  
   if(!graphics_fullscreen_lbl.len){
     graphics_fullscreen_lbl.len = TRUE;
     graphics_fullscreen_on.drawme = FALSE;
@@ -298,8 +296,6 @@ void() click_graphics_fullscreen_on={
   graphics_fullscreen_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_graphics_fullscreen_off={
-  local float flip;
-  
   if(graphics_fullscreen_lbl.len){
     graphics_fullscreen_lbl.len = FALSE;
     graphics_fullscreen_off.drawme = FALSE;
@@ -313,8 +309,6 @@ void() click_graphics_fullscreen_off={
 };
 
 void() click_graphics_vsync_on={
-  local float flip;
-  
   if(!graphics_vsync_lbl.len){
     graphics_vsync_lbl.len = TRUE;
     graphics_vsync_on.drawme = FALSE;
@@ -327,8 +321,6 @@ void() click_graphics_vsync_on={
   graphics_vsync_lbl.color = CLR_DEF_ARM_OK;
 };
 void() click_graphics_vsync_off={
-  local float flip;
-  
   if(graphics_vsync_lbl.len){
     graphics_vsync_lbl.len = FALSE;
     graphics_vsync_off.drawme = FALSE;
@@ -402,8 +394,6 @@ void() click_graphics_texture_quality_less={
 };
 
 void() click_graphics_texture_compression_on={
-  local float flip;
-  
   if(!graphics_texture_compress_lbl.len){
     graphics_texture_compress_lbl.len = TRUE;
     graphics_texture_compress_on.drawme = FALSE;
@@ -416,8 +406,6 @@ void() click_graphics_texture_compression_on={
   graphics_texture_compress_lbl.color = CLR_DEF_GRAY_H;
 };
 void() click_graphics_texture_compression_off={
-  local float flip;
-  
   if(graphics_texture_compress_lbl.len){
     graphics_texture_compress_lbl.len = FALSE;
     graphics_texture_compress_off.drawme = FALSE;

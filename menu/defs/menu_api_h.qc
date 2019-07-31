@@ -40,12 +40,12 @@ float UI_FLAG_TXTFIELD_FUNC = 1024;
 .float menuId;
 .string image1;
 .float drawme;
-.void() predraw;
+//.void() predraw;
 .void(entity myself) draw;
 .void(entity myself) isclick;  //internal, runs when clicked, if onClick() defined, then will execute within
 .void(entity myself) ischange;
 .void() onClick;
-.void() onRollOver;
+//.void() onRollOver;
 .void() onChange;
 .string command;
 .float rolledover;
@@ -65,7 +65,7 @@ float(vector org, vector mpos, vector list_size, vector row_size, float max_item
 
 //new stuff
 void() menu_ini_txtfilter;
-void() menu_ini_keyfilter;
+//void() menu_ini_keyfilter;
 void() menu_scan_saves;
 void() menu_exit_togame;
 void(float menu_id) menu_clear_items;
@@ -73,14 +73,14 @@ float(float keynr, float uiFlags) menu_textfilter_validate;
 void(float keynr, float ascii) menu_do_textfield;
 void(float keynr, float ascii) menu_do_keybind;
 void(string bind_cmd) menu_keybind_change;
-string(float keynr) menu_keybind_get;
+//string(float keynr) menu_keybind_get;
 vector(string comd) menu_keybind_keyfor;
 float(vector vsize) menu_getvideo_modeid;
 string(float id) menu_getvideo_clean;
 
 string(float val) menu_float_bool;
 
-void() render_predraw;
+//void() render_predraw;
 void(entity btn) render_btn;
 void(entity btn) render_btn_txt;
 void(entity lbl) render_lbl_img;

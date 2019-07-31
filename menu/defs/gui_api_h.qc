@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 04/12/2018
 Overview: cloned gui_api from csqc
@@ -83,9 +83,9 @@ void(vector ofs, float bool, vector color1, vector color2, vector sz, float alph
 
 vector(float pcx, float pcy) gui_percentToPixel;
 
-float(float pcx) gui_percentX;
+//float(float pcx) gui_percentX;
 
-float(float pcy) gui_percentY;
+//float(float pcy) gui_percentY;
 
 float(float ang) anglemod;
 
