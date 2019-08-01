@@ -137,24 +137,26 @@ void( entity comp ) mech_player_compdie={
 };
 
 void() mech_player_cameradie={
-  self.view_ofs = '0 0 1';
   msg_entity = self;
-  //WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-  //WriteEntity(MSG_ONE, self);
-  self.weaponmodel = self.weaponmodel;
-  self.weaponframe = 1;
-  cons_logAString("self.weaponmodel", self.weaponmodel);  //DEBUG
+  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+  WriteEntity(MSG_ONE, self);
+  WriteByte(MSG_ONE, SVC_SETANGLES);
+  WriteAngle(MSG_ONE, self.angles_x);
+  WriteAngle(MSG_ONE, self.angles_y);
+  WriteAngle(MSG_ONE, self.angles_z);
 }
 
 void() mech_player_removecamera={
   if( self.cockpit != world ){
-    self.view_ofs = '0 0 1';
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self);
+    WriteByte(MSG_ONE, SVC_SETANGLES);
+    WriteAngle(MSG_ONE, self.angles_x);
+    WriteAngle(MSG_ONE, self.angles_y);
+    WriteAngle(MSG_ONE, self.angles_z);
   }
   remove(self.cockpit);
-  self.weaponmodel = "";
 };
 
 void(entity comp) mech_player_removecomp={

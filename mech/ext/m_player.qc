@@ -232,28 +232,27 @@ void() PlayerDie={
 		return;
 	}
 	if(self.data_type == DATA_MECH){
+    msg_entity = self;
+    WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+    WriteEntity(MSG_ONE, self);
     mech_clearWeaponGroups();
     mech_player_die();
-    mech_player_cameradie();
     client_push_player_info();
   }
   self.effects = 0;
   
-	self.view_ofs = '0 0 1';
 	self.deadflag = DEAD_DYING;
 	self.solid = SOLID_CORPSE;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 	self.movetype = MOVETYPE_TOSS;
   setsize(self, '-4 -4 -4', '4 4 4');
 	
-  //if (self.velocity_z < 10)
-  self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
+  if (self.velocity_z < 10)
+    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
   
 	self.angles_x = 0;
 	self.angles_z = 0;
   self.avelocity = '0 0 0';
-  
-  cons_logAString("PlayerDie()->self.weaponmodel", self.weaponmodel);  //DEBUG
   
   self.think = PlayerDieEnd;
   self.nextthink = time + 10;
@@ -330,7 +329,7 @@ void() PlayerDeathThink={
   //self.deadflag = DEAD_NO;
   player_unmakeMech();
   mech_cleanupMech();
-  //player_makeObserver();
+  player_makeObserver();
   if( cvar("deathmatch") || cvar("coop") ){
     spawnpoint_select();
     self.movetype = MOVETYPE_FLY;

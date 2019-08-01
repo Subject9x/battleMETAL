@@ -13,11 +13,11 @@ void() player_spawnAsObserver={
 
 void() player_makeObserver={
   self.data_type = DATA_POBS;
-  self.view_ofs = '0 0 1';
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
   util_setCollider(DAMAGE_NO, SOLID_TRIGGER, MOVETYPE_FLY);
   self.weaponmodel = "";
+  
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
@@ -35,7 +35,6 @@ void() player_unmakeObserver={
   }
   self.movetype = MOVETYPE_WALK;
   self.scale = 1;
-  self.view_ofs = '0 0 1';
 };
 
 void() player_makeVec={
@@ -55,6 +54,10 @@ void() player_makeMech={
   msg_entity = self;
   WriteByte(MSG_ONE, SVC_SETVIEWPORT);
   WriteEntity(MSG_ONE, self.cockpit);
+  WriteByte(MSG_ONE, SVC_SETANGLES);
+  WriteAngle(MSG_ONE, self.cockpit.angles_x);
+  WriteAngle(MSG_ONE, self.cockpit.angles_y);
+  WriteAngle(MSG_ONE, self.cockpit.angles_z);
   
   droptofloor();
   
