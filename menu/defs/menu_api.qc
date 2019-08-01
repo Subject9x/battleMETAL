@@ -338,7 +338,7 @@ void(entity btn) render_btn_txt={
 
 void(entity lbl) render_lbl_text={
   local entity this;
-  local vector org, sizzle, bclr;
+  local vector org, sizzle;
   if(lbl.drawme){
     this = self;
     self = lbl;
@@ -359,7 +359,7 @@ void(entity lbl) render_lbl_text={
 
 void(entity lbl) render_lbl_img={
   local entity this;
-  local vector org, sizzle, bclr;
+  local vector org, sizzle;
   
   if(lbl.drawme){
     this = self;
@@ -539,7 +539,7 @@ void() menu_scan_saves={
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
       local float line_count, line_tag;
-      local string line, save_name, save_num, map_name, map_title, contents;
+      local string line, save_name, save_num, map_name, contents;
       line_count = 0;
       contents = fgets(flannel);
       tokenizebyseparator(contents, "{", ",", "}");
@@ -751,7 +751,6 @@ vector(string comd) menu_keybind_keyfor={
 };
 
 void(string bind_cmd) menu_keybind_change={
-  local string bind;
   local vector keybound;
   local entity keybinds;
   

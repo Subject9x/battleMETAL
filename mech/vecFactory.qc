@@ -90,55 +90,55 @@ void() build_unit_weapon_list={
     weaponBuild = wslot;
     switch( weaponCount ){
       case 1:
-        build_unit_weapon( self.next_wepn1, self, WEAPON1_OK, WEAPON1_DD, WEAPON1_REL, stat_w1_id);
+        build_unit_weapon( self.next_wepn1, self, stat_w1_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w1_rel = 100;
         }
         break;
       case 2:
-        build_unit_weapon( self.next_wepn2, self, WEAPON2_OK, WEAPON2_DD, WEAPON2_REL, stat_w2_id);
+        build_unit_weapon( self.next_wepn2, self, stat_w2_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w2_rel = 100;
         }
         break;
       case 3:
-        build_unit_weapon( self.next_wepn3, self, WEAPON3_OK, WEAPON3_DD, WEAPON3_REL, stat_w3_id);
+        build_unit_weapon( self.next_wepn3, self, stat_w3_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w3_rel = 100;
         }
         break;
       case 4:
-        build_unit_weapon( self.next_wepn4, self, WEAPON4_OK, WEAPON4_DD, WEAPON4_REL, stat_w4_id);
+        build_unit_weapon( self.next_wepn4, self, stat_w4_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w4_rel = 100;
         }
         break;
       case 5:
-        build_unit_weapon( self.next_wepn5, self, WEAPON5_OK, WEAPON5_DD, WEAPON5_REL, stat_w5_id);
+        build_unit_weapon( self.next_wepn5, self, stat_w5_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w5_rel = 100;
         }
         break;
       case 6:
-        build_unit_weapon( self.next_wepn6, self, WEAPON6_OK, WEAPON6_DD, WEAPON6_REL, stat_w6_id);
+        build_unit_weapon( self.next_wepn6, self, stat_w6_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w6_rel = 100;
         }
         break;
       case 7:
-        build_unit_weapon( self.next_wepn7, self, WEAPON7_OK, WEAPON7_DD, WEAPON7_REL, stat_w7_id);
+        build_unit_weapon( self.next_wepn7, self, stat_w7_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w7_rel = 100;
         }
         break;
       case 8:
-        build_unit_weapon( self.next_wepn8, self, WEAPON8_OK, WEAPON8_DD, WEAPON8_REL, stat_w8_id);
+        build_unit_weapon( self.next_wepn8, self, stat_w8_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w8_rel = 100;
         }
         break;
       case 9:
-        build_unit_weapon( self.next_wepn9, self, WEAPON9_OK, WEAPON9_DD, WEAPON9_REL, stat_w9_id);
+        build_unit_weapon( self.next_wepn9, self, stat_w9_id);
         if( (self.flags & FL_CLIENT)){
           self.stat_w9_rel = 100;
         }
@@ -149,7 +149,7 @@ void() build_unit_weapon_list={
   }
 };
 
-void( float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon={
+void( float nex_wep, entity own, .float stat) build_unit_weapon={
   local entity this, partParent;
   local vector ofs;
   this = self;
@@ -198,10 +198,10 @@ void( float nex_wep, entity own, float state1, float state2, float state3, .floa
       }
     }
     self.th_die = ctrl_die_weapon;
-    self.state_1 = state1;
-    self.state_2 = state2;
-    self.stat_wep_rel = state3;
-    ctrl_weapon_addState(self, self.state_1);
+    //self.state_1 = state1;
+    //self.state_2 = state2;
+    //self.stat_wep_rel = state3;
+    //ctrl_weapon_addState(self, self.state_1);
   self = this;
 };
 

@@ -114,7 +114,6 @@ void() map_projectile_shooter={
     self.w_think = SUB_Null;
   }
   self.th_die = ctrl_die_weapon;
-  self.stat_wep_rel = WEAPON1_REL;
   
   //setmodel( self, self.c_model ); //gah, code can't correct for inverse pitch of model angle
   setsize( self, self.mins, self.maxs );

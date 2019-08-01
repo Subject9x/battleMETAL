@@ -57,8 +57,6 @@ entity controls_mouse_sense_more;
 entity controls_mouse_sense_less;
 
 entity controls_mouse_invert;
-entity controls_mouse_invert_more;
-entity controls_mouse_invert_less;
 
 entity controls_back;
 entity controls_accept;

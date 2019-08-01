@@ -137,7 +137,7 @@ void(float targdir, float plrFaction, float trgfaction, float dattype) hud_rende
 void(vector pos, float algn) hud_renderPitchIndicator;
 void(vector pos, float algn, float val) hud_renderReticleRange;
 void(vector pos, float algn, vector angle) hud_renderNavHeading;
-void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderShield;
+void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient) hud_renderShield;
 void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderEnergy;
 void(vector grpCtr, vector pos, float val, vector mSize, float lbl_algn, vector lbl_ofs, float meterAxis, string label) hud_renderArmorMeter;
 void(vector pos, float algn, float ct, float lt, float rt, float la, float ra, float lg) hud_renderArmorGraph;

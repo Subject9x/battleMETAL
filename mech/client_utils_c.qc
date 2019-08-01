@@ -14,6 +14,7 @@ void() client_push_player_info={
   local entity wep;
   local float enm;
   local float targShield;
+  local float weaponStateBit;
   
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
@@ -41,9 +42,17 @@ void() client_push_player_info={
     WriteByte( MSG_ONE, csqc_updateCompStat(self.armRight));
     
     WriteByte( MSG_ONE, self.hardpoint_cnt );
+    weaponStateBit = 1;
     wep = self.w_slot;
     while( wep ){
+      if( wep.deadflag == DEAD_NO ){
+        WriteByte(MSG_ONE, weaponStateBit);
+      }
+      else{
+        WriteByte(MSG_ONE, 0);
+      }
       WriteByte( MSG_ONE, wep.reloadValue );
+      weaponStateBit = weaponStateBit * 2;
       wep = wep.w_slot;
     }
     

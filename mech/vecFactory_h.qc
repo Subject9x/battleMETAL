@@ -1,14 +1,15 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/31/2016
 mod:  1/21/2017 - refactored due to new data value storage methods
+mod: 07/01/2019
 Overview: used to build vehicles for players, this is the header
 */
 //Basic unit assembly functions
 void() build_unit_camera;
 void(entity own) build_unit_component;
-void(float nex_wep, entity own, float state1, float state2, float state3, .float stat) build_unit_weapon;
+void(float nex_wep, entity own, .float stat) build_unit_weapon;
 void() build_unit_weapon_list;
 
 //mech-specific assembly functions

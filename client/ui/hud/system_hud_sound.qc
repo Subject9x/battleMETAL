@@ -132,7 +132,7 @@ void(float playerState) snd_hud_vfx_statelistener={
   }
   else if(CLIENT_player_state == PLAYER_ACTIVE){
     if(CRITBITS == 0){
-      CRITBITS = CRITBITS | 1 | 2 | 4 | 8 | 16 | 32;
+      CRITBITS = CRITBITS | (1 | 2 | 4 | 8 | 16 | 32);
     }
   }
 };
