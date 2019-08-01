@@ -78,6 +78,8 @@ void() build_unit_camera={
     self.angles = partParent.angles;
     self.v_angle = self.angles - partParent.angles;
   self = this;
+  unitPartList.partNext = cam;
+  unitPartList = cam;
 };
 
 void() build_unit_weapon_list={
@@ -320,6 +322,7 @@ void() build_mech_torsoCenter={
     self.v_angle = self.angles - this.angles;
     this.torsoCenter = self;
     self.colormod = '1 1 1';
+    self.th_die = ctrl_component_die;
   self = this;
 };
 
@@ -542,6 +545,7 @@ void(void() data_ini) build_vehicle_unit={
   self.evasionDrain = EVADE_DRAIN_PERCENT;
   
   unitPartList = self;
+  
   if( (self.flags & FL_TURRET) && (self.torsoCenter) ){
     build_unit_turret();
     self.torsoCenter.yaw_speed = self.turret_yaw_speed;
@@ -562,7 +566,6 @@ void(void() data_ini) build_vehicle_unit={
   if( (self.cockpit) ){
     build_unit_camera();
   }
-  
   
   if( self.hardpoint_cnt > 0 ){
     build_unit_weapon_list();

@@ -437,24 +437,24 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
   tsize = '10 10 0';
-  stat = "--PASSIVE--";
+  stat = "- PASSIVE -";
   colr = CLR_DEF_ENG_DED;
   if(status){
-    stat = "((ACTIVE))";
+    stat = "{ ACTIVE }";
     colr = CLR_DEF_ARM_HALF;
   }
-  lbl_len_stat = stringwidth("[MODE]", 0, tsize);
-  lbl_len_range = stringwidth("[RADIUS]", 0, tsize);
+  lbl_len_stat = stringwidth("[Mode]", 0, tsize);
+  lbl_len_range = stringwidth("[Range]", 0, tsize);
   
   morg = torg;
   morg_x = morg_x + gui_percentXRaw(lbl_len_stat + 4);
-  drawstring(torg, "[MODE]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag); 
+  drawstring(torg, "[Mode]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag); 
   drawstring(morg, stat, tsize, colr, HUD_ALPHA, flag);
   
   radorg = torg + gui_percentToPixelRawVec('0 12');
   rdorg = radorg;
   rdorg_x = rdorg_x + gui_percentXRaw(lbl_len_range + 4);
-  drawstring(radorg, "[RADIUS]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag);
+  drawstring(radorg, "[Range]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag);
   drawstring(rdorg, ftos(radius), tsize, colr, HUD_ALPHA, flag);
   
   drawfont = drawfont_prev;
@@ -481,14 +481,14 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   torg = gui_calcAlign(torg, algn);
   
   tsize = '10 10 0';
-  stat = "--PASSIVE--";
+  stat = "- PASSIVE -";
   colr = CLR_DEF_ENG_DED;
   if(status){
-    stat = "((ACTIVE))";
+    stat = "{ ACTIVE }";
     colr = CLR_DEF_ARM_HALF;
   }
-  lbl_len_stat = stringwidth("[MODE]", 0, tsize);
-  lbl_len_range = stringwidth("[RADIUS]", 0, tsize);
+  lbl_len_stat = stringwidth("[Mode]", 0, tsize);
+  lbl_len_range = stringwidth("[Range]", 0, tsize);
   stat_len = stringwidth(stat, 0, tsize);
   rad_len = stringwidth(ftos(radius), 0, tsize);
   
@@ -497,7 +497,7 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   morg = torg;
   morg_x = morg_x - gui_percentXRaw(stat_len / 2);
   morg_y = morg_y + gui_percentYRaw(12);
-  drawstring(sorg, "[MODE]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag); 
+  drawstring(sorg, "[Mode]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag); 
   drawstring(morg, stat, tsize, colr, HUD_ALPHA, flag);
   
   radorg = torg + gui_percentToPixelRawVec('0 24');
@@ -505,7 +505,7 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   rdorg = radorg;
   rdorg_x = rdorg_x + gui_percentXRaw(lbl_len_range / 2) - gui_percentXRaw(rad_len / 2);
   rdorg_y = rdorg_y + gui_percentYRaw(12);
-  drawstring(radorg, "[RADIUS]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag);
+  drawstring(radorg, "[Range]", tsize, HUD_COLOR_DEF, HUD_ALPHA, flag);
   drawstring(rdorg, ftos(radius), tsize, colr, HUD_ALPHA, flag);
   
   drawfont = drawfont_prev;
@@ -557,12 +557,14 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
     drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
-  ofs_x = imgSz_x / 2;
-  ofs_y = (imgSz_y * 2) + gui_percentYRaw(2);
-  metSize_x = imgSz_x;
-  metSize_y = gui_percentYRaw(20);
-  ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
-  gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+  if( wepState != CLR_DEF_TXT_CANTSELECT){
+    ofs_x = imgSz_x / 2;
+    ofs_y = (imgSz_y * 2) + gui_percentYRaw(2);
+    metSize_x = imgSz_x;
+    metSize_y = gui_percentYRaw(20);
+    ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
+    gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+  }
 };
 
 /*
@@ -609,12 +611,14 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
     drawpic(iofs, HUD_DATA_weapon.icon, imgSz, wepState, HUD_ALPHA, 0);
   }
   
-  ofs_x = imgSz_x / 2;
-  ofs_y = imgSz_y;
-  metSize_x = gui_percentXRaw(-20);
-  metSize_y = imgSz_y;
-  ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
-  gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+  if( wepState != CLR_DEF_TXT_CANTSELECT){
+    ofs_x = imgSz_x / 2;
+    ofs_y = imgSz_y;
+    metSize_x = gui_percentXRaw(-20);
+    metSize_y = imgSz_y;
+    ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
+    gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+  }
 };
 
 /*

@@ -1,5 +1,5 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/22/2016
 Refactor: 12/29/2018
@@ -51,6 +51,7 @@ void() leg_die1;
 void() leg_die2;
 void() leg_die3;
 void() leg_die4;
+
 void() leg_walk1;
 void() leg_walk2;
 void() leg_walk3;
@@ -68,7 +69,6 @@ void() leg_back5;
 void() leg_back6;
 void() leg_back7;
 void() leg_back8;
-
 
 void() bot_leg_stand1;
 void() bot_leg_die1;

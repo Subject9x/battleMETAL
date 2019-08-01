@@ -49,6 +49,8 @@ void()		CSQC_Shutdown;
 float(float evtype, float scanx, float chary, float devid)	CSQC_InputEvent;
 void(float w, float h, float m)		CSQC_UpdateView;
 float(string s)	CSQC_ConsoleCommand;
+void(float isnew) CSQC_Ent_Update;
+void() CSQC_Ent_Remove;
 float() CSQC_Parse_Event; //>.>
 
 
@@ -1297,9 +1299,6 @@ float log(float f) = #532;
 //description:
 //controls color of the entity, '0 0 0', is forced to be '1 1 1' (otherwise everything would be black), used for tinting objects, for instance using '1 0.6 0.4' on an ogre would give you an orange ogre (order is red green blue), note the colors can go up to '8 8 8' (8x as bright as normal).
 
-
-
-
 //FTE_CSQC_SKELETONOBJECTS
 //idea: Spike, LordHavoc
 //darkplaces implementation: LordHavoc
@@ -1547,4 +1546,3 @@ float checkpvs(vector viewpos, entity viewee) = #240;
 float() crandom;
 void() SUB_Null={};
 void() SUB_Remove={remove(self);};
-entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={};

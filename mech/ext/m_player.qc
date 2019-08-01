@@ -32,12 +32,12 @@ void() PlayerPreThink = {
 		//CheckWaterJump ();
 
   
-	if (self.deadflag >= DEAD_DEAD){
+	if (self.deadflag == DEAD_DEAD){
 		PlayerDeathThink ();
 		return;
 	}
 
-	if (self.deadflag == DEAD_DYING){
+	if (self.deadflag >= DEAD_DYING){
     return;	// dying, so do nothing
   }
   
@@ -231,34 +231,32 @@ void() PlayerDie={
 		bprint("warning: PlayerDie called twice\n");
 		return;
 	}
-  
-  //legacy stuff
-  //legacy_PlayerDie();
-
-	self.effects = 0;
+	if(self.data_type == DATA_MECH){
+    mech_clearWeaponGroups();
+    mech_player_die();
+    mech_player_cameradie();
+    client_push_player_info();
+  }
+  self.effects = 0;
   
 	self.view_ofs = '0 0 1';
 	self.deadflag = DEAD_DYING;
 	self.solid = SOLID_CORPSE;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 	self.movetype = MOVETYPE_TOSS;
-  setsize(self, '-8 -8 -8', '8 8 8');
+  setsize(self, '-4 -4 -4', '4 4 4');
 	
-  if (self.velocity_z < 10)
-		self.velocity_z = self.velocity_z + random()*300;
+  //if (self.velocity_z < 10)
+  self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
   
 	self.angles_x = 0;
 	self.angles_z = 0;
   self.avelocity = '0 0 0';
-  if(self.data_type != DATA_POBS){
-    mech_clearWeaponGroups();
-    if(self.data_type == DATA_MECH){
-      mech_player_die();
-    }
-  }
+  
+  cons_logAString("PlayerDie()->self.weaponmodel", self.weaponmodel);  //DEBUG
   
   self.think = PlayerDieEnd;
-  self.nextthink = time + 5;
+  self.nextthink = time + 10;
 };
 
 void() PlayerDieEnd={
@@ -284,7 +282,8 @@ void() PlayerDieEnd={
     te_mission_lose();
   }
   self.stat_plr_stt = PLAYER_INTERMSN;
-  client_sendEndMission(self, MISSION_STATUS ) ;
+  client_sendEndMission(self, MISSION_STATUS );
+  client_push_player_info();
   self.think = PlayerDead;
   self.nextthink = time + 0.1;
 };
@@ -292,9 +291,9 @@ void() PlayerDieEnd={
 void() PlayerDead={
 	self.nextthink = -1;
 	self.deadflag = DEAD_DEAD;
-  self.data_type = DATA_POBS;
 };
 
+//called in PlayerPreThink() when self.deadflag == DEAD_DEAD
 void() PlayerDeathThink={
 	local float		forward;
 	if ((self.flags & FL_ONGROUND)){
@@ -331,16 +330,19 @@ void() PlayerDeathThink={
   //self.deadflag = DEAD_NO;
   player_unmakeMech();
   mech_cleanupMech();
-  player_makeObserver();
+  //player_makeObserver();
   if( cvar("deathmatch") || cvar("coop") ){
     spawnpoint_select();
     self.movetype = MOVETYPE_FLY;
     self.flags = self.flags | FL_FLY;
   }
 
-  respawn();
+  if( cvar("coop") || cvar("deathmatch") ){
+    respawn();
+  }
 };
 
+//UNUSED
 void() PlayerJump={
  //local vector start, end;
 	

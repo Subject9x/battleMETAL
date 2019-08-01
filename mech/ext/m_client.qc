@@ -268,7 +268,6 @@ void() ClientKill = {
 
   if(self.data_type == DATA_MECH){
     self.data_type = DATA_POBS;
-    //self.frame = $ctorstand1;
     mech_clearWeaponGroups();
     mech_cleanupMech();
   }

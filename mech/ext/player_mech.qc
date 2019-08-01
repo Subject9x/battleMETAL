@@ -99,10 +99,6 @@ void() mech_cleanupMech={
 
 void() mech_player_die={
   local entity w_chain;
-  
-  if( (self.flags & FL_CLIENT) ){
-    mech_player_cameradie();
-  }
 
   w_chain = self.w_slot;
   while(w_chain){
@@ -143,18 +139,22 @@ void( entity comp ) mech_player_compdie={
 void() mech_player_cameradie={
   self.view_ofs = '0 0 1';
   msg_entity = self;
-  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-  WriteEntity(MSG_ONE, self);
+  //WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+  //WriteEntity(MSG_ONE, self);
+  self.weaponmodel = self.weaponmodel;
+  self.weaponframe = 1;
+  cons_logAString("self.weaponmodel", self.weaponmodel);  //DEBUG
 }
 
 void() mech_player_removecamera={
-  if( self.cockpit.classname ){
+  if( self.cockpit != world ){
     self.view_ofs = '0 0 1';
     msg_entity = self;
     WriteByte(MSG_ONE, SVC_SETVIEWPORT);
     WriteEntity(MSG_ONE, self);
-    remove(self.cockpit);
   }
+  remove(self.cockpit);
+  self.weaponmodel = "";
 };
 
 void(entity comp) mech_player_removecomp={

@@ -102,8 +102,8 @@ void() leg_back8=[$l_walk8, leg_back7]{
 
 
 void() leg_die1 = [$l_die1, leg_die2]{
-  self.movetype = MOVETYPE_BOUNCE;
-  self.solid = SOLID_BBOX;
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_CORPSE;
 };
 void() leg_die2 = [$l_die2, leg_die3]{};
 void() leg_die3 = [$l_die3, leg_die4]{};
@@ -198,7 +198,7 @@ void() player_movestart =
 {
   self.walkframe = 0;
   if(self.owner.velocity_x || self.owner.velocity_y){
-    leg_walk1();
+    leg_walk1(); 
   }else{
     leg_stand1();
   }

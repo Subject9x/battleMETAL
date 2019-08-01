@@ -100,7 +100,6 @@ void() player_unmakeMech={
   self.spreadDefault = '0 0 0';
   self.accuracy = 0;
   self.accuracyMod = 0;
-  self.stat_plr_stt = PLAYER_IN_MENU;
   self.stat_plr_fir = FIRE_GROUP;
   self.stat_ctor_hp = 0;
   self.stat_rdr_mode = FALSE;
@@ -109,5 +108,4 @@ void() player_unmakeMech={
   self.shield = 0;
   self.enemy = world;
   mech_clearWeaponGroups();
-  mech_cleanupMech();
 };
