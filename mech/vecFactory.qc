@@ -81,71 +81,76 @@ void() build_unit_camera={
 };
 
 void() build_unit_weapon_list={
-  local entity wslot;
+  local entity weaponMount;
   local float weaponCount;
-  
-  wslot = self.w_slot;
-  weaponCount = 1;
-  while( wslot ){
-    weaponBuild = wslot;
-    switch( weaponCount ){
-      case 1:
-        build_unit_weapon( self.next_wepn1, self, stat_w1_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w1_rel = 100;
-        }
-        break;
-      case 2:
-        build_unit_weapon( self.next_wepn2, self, stat_w2_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w2_rel = 100;
-        }
-        break;
-      case 3:
-        build_unit_weapon( self.next_wepn3, self, stat_w3_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w3_rel = 100;
-        }
-        break;
-      case 4:
-        build_unit_weapon( self.next_wepn4, self, stat_w4_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w4_rel = 100;
-        }
-        break;
-      case 5:
-        build_unit_weapon( self.next_wepn5, self, stat_w5_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w5_rel = 100;
-        }
-        break;
-      case 6:
-        build_unit_weapon( self.next_wepn6, self, stat_w6_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w6_rel = 100;
-        }
-        break;
-      case 7:
-        build_unit_weapon( self.next_wepn7, self, stat_w7_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w7_rel = 100;
-        }
-        break;
-      case 8:
-        build_unit_weapon( self.next_wepn8, self, stat_w8_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w8_rel = 100;
-        }
-        break;
-      case 9:
-        build_unit_weapon( self.next_wepn9, self, stat_w9_id);
-        if( (self.flags & FL_CLIENT)){
-          self.stat_w9_rel = 100;
-        }
-        break;
+
+  weaponMount = self.w_slot;
+  if( weaponMount ){
+    weaponCount = 1;
+    unitPartList.partNext = weaponMount;  //should be last piece added to unit, now we add weapons
+    unitPartList = weaponMount;
+    while( weaponMount ){
+      weaponBuild = weaponMount;
+      unitPartList.partNext = weaponMount;
+      switch( weaponCount ){
+        case 1:
+          build_unit_weapon( self.next_wepn1, self, stat_w1_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w1_rel = 100;
+          }
+          break;
+        case 2:
+          build_unit_weapon( self.next_wepn2, self, stat_w2_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w2_rel = 100;
+          }
+          break;
+        case 3:
+          build_unit_weapon( self.next_wepn3, self, stat_w3_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w3_rel = 100;
+          }
+          break;
+        case 4:
+          build_unit_weapon( self.next_wepn4, self, stat_w4_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w4_rel = 100;
+          }
+          break;
+        case 5:
+          build_unit_weapon( self.next_wepn5, self, stat_w5_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w5_rel = 100;
+          }
+          break;
+        case 6:
+          build_unit_weapon( self.next_wepn6, self, stat_w6_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w6_rel = 100;
+          }
+          break;
+        case 7:
+          build_unit_weapon( self.next_wepn7, self, stat_w7_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w7_rel = 100;
+          }
+          break;
+        case 8:
+          build_unit_weapon( self.next_wepn8, self, stat_w8_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w8_rel = 100;
+          }
+          break;
+        case 9:
+          build_unit_weapon( self.next_wepn9, self, stat_w9_id);
+          if( (self.flags & FL_CLIENT)){
+            self.stat_w9_rel = 100;
+          }
+          break;
+      }
+      weaponCount = weaponCount + 1;
+      weaponMount = weaponMount.w_slot;
     }
-    weaponCount = weaponCount + 1;
-    wslot = wslot.w_slot;
   }
 };
 
@@ -168,7 +173,7 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
   
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE; 
-    self.partTypeId = -2;
+    self.partTypeId = M_ITEM;
 
     if( (own.flags & FL_MONSTER) ){
       self.damageValue = ai_pilot_mod_damage( own.ai_rank, self.damageValue);
@@ -193,21 +198,17 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
     self.v_angle = self.angles - partParent.angles;
     
     if( (self.damageType & DMG_MSC) ){
+      //Fire Equipment 'upgrade' functions now
       if( self.w_attack ){
         self.w_attack();
       }
     }
     self.th_die = ctrl_die_weapon;
-    //self.state_1 = state1;
-    //self.state_2 = state2;
-    //self.stat_wep_rel = state3;
-    //ctrl_weapon_addState(self, self.state_1);
   self = this;
 };
 
 
 void(void() data_ini) build_mech_unit={
-  local entity part_chain;
   local vector tempMin, tempMax;
   
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
@@ -240,31 +241,31 @@ void(void() data_ini) build_mech_unit={
   self.shieldHitDelay = 0;
   self.chain_timer = time;
   self.lock_timer = 0;
-  part_chain = self;
+  unitPartList = self;
   if( self.torsoRight ){
     build_mech_torsoRight();
-    part_chain.partNext = self.torsoRight;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.torsoRight;
+    unitPartList = unitPartList.partNext;
   }
   if( self.torsoLeft ){
     build_mech_torsoLeft();
-    part_chain.partNext = self.torsoLeft;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.torsoLeft;
+    unitPartList = unitPartList.partNext;
   }
   if( self.armRight ){
     build_mech_armRight();
-    part_chain.partNext = self.armRight;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.armRight;
+    unitPartList = unitPartList.partNext;
   }
   if( self.armLeft ){
     build_mech_armLeft();
-    part_chain.partNext = self.armLeft;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.armLeft;
+    unitPartList = unitPartList.partNext;
   }
   if( self.legs ){
     build_mech_legs();
-    part_chain.partNext = self.legs;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.legs;
+    unitPartList = unitPartList.partNext;
   }
   
   if( self.cockpit ){
@@ -320,11 +321,9 @@ void() build_mech_torsoCenter={
     this.torsoCenter = self;
     self.colormod = '1 1 1';
   self = this;
-  ctor_stand();
 };
 
 void(void() data_ini) build_mech_bot={
-  local entity part_chain;
   local vector hmins, hmaxs;
   
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
@@ -348,37 +347,37 @@ void(void() data_ini) build_mech_bot={
   self.health = self.max_health;
   self.evasionDrain = EVADE_DRAIN_PERCENT;
   
-  part_chain = self;
+  unitPartList = self;
   
   build_unit_turret();
   self.torsoCenter.yaw_speed = self.turret_yaw_speed;
-  part_chain.partNext = self.torsoCenter;
-  part_chain = part_chain.partNext;
+  unitPartList.partNext = self.torsoCenter;
+  unitPartList = unitPartList.partNext;
   
   if( (self.torsoRight) ){
     build_mech_torsoRight();
-    part_chain.partNext = self.torsoRight;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.torsoRight;
+    unitPartList = unitPartList.partNext;
   }
   if( (self.torsoLeft) ){
     build_mech_torsoLeft();
-    part_chain.partNext = self.torsoLeft;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.torsoLeft;
+    unitPartList = unitPartList.partNext;
   }
   if( (self.armLeft) ){
     build_mech_armLeft();
-    part_chain.partNext = self.armLeft;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.armLeft;
+    unitPartList = unitPartList.partNext;
   }
   if( (self.armRight) ){
     build_mech_armRight();
-    part_chain.partNext = self.armRight;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.armRight;
+    unitPartList = unitPartList.partNext;
   }
   if( (self.legs) ){
     build_mech_legs();
-    part_chain.partNext = self.legs;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.legs;
+    unitPartList = unitPartList.partNext;
     self.legs.th_walk = leg_walk1;
     self.legs.th_run = leg_back1;
     self.legs.th_stand = leg_stand1;
@@ -517,7 +516,6 @@ void() build_mech_legs={
 };
 
 void(void() data_ini) build_vehicle_unit={
-  local entity part_chain;
   local vector hmins, hmaxs;
   
   self.data_type = DATA_VEHC;
@@ -543,23 +541,23 @@ void(void() data_ini) build_vehicle_unit={
   self.lock_timer = 0;
   self.evasionDrain = EVADE_DRAIN_PERCENT;
   
-  part_chain = self;
+  unitPartList = self;
   if( (self.flags & FL_TURRET) && (self.torsoCenter) ){
     build_unit_turret();
     self.torsoCenter.yaw_speed = self.turret_yaw_speed;
-    part_chain.partNext = self.torsoCenter;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.torsoCenter;
+    unitPartList = unitPartList.partNext;
   }
   
   if( (self.torsoRight) ){
     build_mech_torsoRight();
-    part_chain.partNext = self.torsoRight;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.torsoRight;
+    unitPartList = unitPartList.partNext;
   }
   if( (self.torsoLeft) ){
     build_mech_torsoLeft();
-    part_chain.partNext = self.torsoLeft;
-    part_chain = part_chain.partNext;
+    unitPartList.partNext = self.torsoLeft;
+    unitPartList = unitPartList.partNext;
   }
   if( (self.cockpit) ){
     build_unit_camera();

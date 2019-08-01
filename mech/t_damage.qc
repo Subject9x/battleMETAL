@@ -316,7 +316,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
       else{
         killed(dmgTrg, attacker, dmg_type);
-        return dmgTrg;
       }
     }
   }
@@ -335,23 +334,29 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
 entity(vector point, float rad, entity trg) t_find_part={
   
   local float cur_dist;
-  local entity  cprt, f_wep, toSender;
+  local entity  unitPart, f_wep, toSender;
   cur_dist = rad;
-  cprt = trg;
+  unitPart = trg;
   f_wep = trg;
-  while(cprt){
+  while(unitPart){
     local float diff;
-    if(cprt != trg){
-      diff = vlen(point - cprt.origin);
-      if(cprt.deadflag <= DEAD_NO){
+    if(unitPart != trg){
+      diff = vlen(point - unitPart.origin);
+      if(unitPart.deadflag <= DEAD_NO){
         if(diff < cur_dist){
           cur_dist = diff;
-          toSender = cprt;
+          toSender = unitPart;
         }
       }
     }
-    cprt = cprt.partNext;
+    unitPart = unitPart.partNext; //includes weapons to help increase granularity
   }
+  
+  //weapons can't be destroyed, BUT we can use their position to better find the closest mech piece.
+  if( toSender.partTypeId == M_ITEM ){
+    toSender = toSender.aiment;
+  }
+  
   //NOTE - perhaps only check for weapons when armor is below a certain threshold?
   /*f_wep = closestWeapon(trg, point, rad);
   if(f_wep != world){
@@ -373,7 +378,7 @@ entity(vector point, float rad, entity trg) t_find_part={
   return toSender;
 };
 
-entity(entity parent, vector org, float start_rad) closestWeapon={
+/*entity(entity parent, vector org, float start_rad) closestWeapon={
   local float cur_dist;
   local entity wep, toSender;
   cur_dist = start_rad;
@@ -395,7 +400,7 @@ entity(entity parent, vector org, float start_rad) closestWeapon={
     wep = parent;
   }
   return toSender;
-};
+};*/
 
 
 void(entity targ, entity attacker, float dmg_type) killed={

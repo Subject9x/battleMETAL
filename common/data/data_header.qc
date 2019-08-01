@@ -11,6 +11,7 @@ Overview:
   
 */
 
+entity unitPartList;  //used by vehicle factory to build full list of unit's parts as a chain.
 entity weaponList;  //used by data functions to populate weapon lists for units
 entity weaponBuild; //used by vehicle factory to build current weapon
 

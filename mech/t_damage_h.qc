@@ -17,4 +17,4 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis;
 
 void(entity targ, entity attacker, float dmg_type) killed;
 //float(entity targ, float dmg_amt, float dmg_type, float arm_type) damage_armor;
-entity(entity parent, vector org, float start_rad) closestWeapon;
+//entity(entity parent, vector org, float start_rad) closestWeapon;

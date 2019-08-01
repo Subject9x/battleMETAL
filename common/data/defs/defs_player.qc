@@ -14,6 +14,12 @@ Overview:
 .float max_armor; //why wasn't this ever included!?
 
 .float currentWeaponGroup;
+.float w_group1;
+.float w_group2;
+.float w_group3;
+.float w_group4;
+.float w_group5;
+//.float w_firemode;
 
 .string hud_bob;    //bob settings are important for dat immersion
 .string hud_bob_cycle;
@@ -23,22 +29,14 @@ Overview:
 .string hud_bob_side;
 .string hud_bob_speed;
 
-
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame
 
 .float	dmgtime; //pulled from client.qc
 //.float playermovestate, playermovebegin; //pulled from dpqc player.qc
 
-.float currentWeaponGroup;
-.float nextVecChoice;
 
-.float w_group1;
-.float w_group2;
-.float w_group3;
-.float w_group4;
-.float w_group5;
-//.float w_firemode;
+.float nextVecChoice;
 
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 

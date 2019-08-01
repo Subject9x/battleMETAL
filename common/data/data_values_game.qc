@@ -140,9 +140,19 @@ float EVADE_DRAIN_PERCENT = 0.75;  //reduce energyRate by this % when unit is Ev
   float EFF_ARC = 256;  //AI-ONLY: weapon has an arcing projectile
   float EFF_LOK = 512;  //AI-ONLY: weapon requires a target lock
 //============================
+//     GETSTAT() TYPES
+//============================
+float AS_STRING = 1;
+float AS_INT = 2;
+float AS_FLOAT_TRUNCATED = 2;
+float AS_FLOAT = 8;
+//============================
 //     SHARED STATS         
 //============================
 float RADAR_SWEEP = 2.5;
+
+.float stat_plr_stt;
+.float stat_trg_sh;
 
 .float stat_plr_camx;
 .float stat_plr_camy;
@@ -150,6 +160,7 @@ float RADAR_SWEEP = 2.5;
 .float stat_cofs_x;
 .float stat_cofs_y;
 .float stat_cofs_z;
+
 .float stat_w1_id;
 .float stat_w2_id;
 .float stat_w3_id;
@@ -159,6 +170,7 @@ float RADAR_SWEEP = 2.5;
 .float stat_w7_id;
 .float stat_w8_id;
 .float stat_w9_id;
+
 .float stat_w1_rel;
 .float stat_w2_rel;
 .float stat_w3_rel;
@@ -232,7 +244,7 @@ float STAT_TRG_LA_HP = 65;
 float STAT_TRG_RA_HP = 66;
 
 float TRG_VEC_SIZ = 67;
-float TRG_P_CLASS = 68;
+//float TRG_P_CLASS = 68;
 
 float STAT_WEP1_ID = 69;
 float STAT_WEP2_ID = 70;
@@ -272,6 +284,15 @@ float LOCK_NONE = 1;
 float LOCK_TARG_START = 2;
 float LOCK_TARG_HAS = 4;
 float LOCK_PLAYER = 8;
+
+//============================
+//     HIT DIRECTION FLAGS 
+//============================
+float STAT_HIT_CL = 1;
+float STAT_HIT_LF = 2;
+float STAT_HIT_RT = 4;
+float STAT_HIT_BK = 8;
+float STAT_HIT_TRG = 16;
 
 //============================
 //     PLAYER POWER UP TIME  

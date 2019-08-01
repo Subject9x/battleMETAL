@@ -1,11 +1,9 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/22/2016
 Overview: center torso animations
 */
-
-void() ctor_stand=[$ctorstand1, ctor_stand]{};
 
 void() ctor_die1 = [$ctorDie1, ctor_die2]{
 

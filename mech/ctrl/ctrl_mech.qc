@@ -104,15 +104,15 @@ void() ctrl_updateCenterTorso={
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1);
+        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, (0.25 + random() * 1));
         if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1.25);
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 1.5);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, (0.25 + random() * 1));
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, (0.5 + random() * 1));
           if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1.5);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 1.75);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, (0.5 + random() * 1));
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, (0.75 + random() * 1));
           }
         }
       }
@@ -122,7 +122,7 @@ void() ctrl_updateCenterTorso={
       if( partParent.deadflag <= DEAD_NO ){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
         spark = te_apply_wind( spark );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * WINDDIR_z, 1);
+        pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * WINDDIR_z, (0.33 + random() * 1));
       }
     }
     piece = piece.partNext;
@@ -177,7 +177,7 @@ void() ctrl_component_die={
 void() ctrl_component_burn={
   local vector spark;
   spark = te_apply_wind( self.origin );
-  pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - self.origin) * WINDDIR_z, self.vec_size * 1.5);
+  pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - self.origin) * WINDDIR_z, (0.25 + random() * (self.vec_size * 1.5)));
   self.think = ctrl_component_burn;
   self.nextthink = time + 0.1;
   if( time > self.ai_action_time ){

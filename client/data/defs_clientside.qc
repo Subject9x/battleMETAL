@@ -50,20 +50,6 @@ float MOUSE_drag_timer;
 float MOUSE_drag_rate = 0.005;
 float MOUSE_drag_max = 1;
 
-//hit direction bit flags
-float STAT_HIT_CL = 1;
-float STAT_HIT_LF = 2;
-float STAT_HIT_RT = 4;
-float STAT_HIT_BK = 8;
-float STAT_HIT_TRG = 16;
-
-//status floats specific components
-float COMP_OK = 5;
-float COMP_DMG = 6;
-float COMP_DYN = 7;
-float COMP_REL = 8;
-float COMP_RDY = 9;
-
 //Difficulty
 float SKILL_NOV = 0;
 float SKILL_REG = 1;
@@ -119,6 +105,7 @@ float M_LEG_L       = 6;
 float M_LEG_R       = 7;
 float M_ARM_LEFT    = 8;
 float M_ARM_RIGHT   = 9;
+float M_ITEM        = 10;
 
 //Armor Types
 float ARM_LIT = 2;  //light armor

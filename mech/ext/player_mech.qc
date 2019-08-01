@@ -74,7 +74,7 @@ void() mech_cleanupMech={
     if(lstp){
       lstp.w_slot = next;
     }
-    if(w_chain != world && ((!(w_chain.flags & FL_CLIENT)) || (!(w_chain.flags & FL_MONSTER)))){
+    if( w_chain != world && (w_chain.partTypeId == M_ITEM) ){
       remove(w_chain);
     }
     w_chain = next;
@@ -114,10 +114,11 @@ void() mech_player_die={
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
+  
   self.stat_ctor_hp = 0;
+  
   if( (self.flags & FL_CLIENT) ){
     mech_player_compdie(self.legs);
-    ctor_die1();
   }
 };
 

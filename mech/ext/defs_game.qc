@@ -64,6 +64,7 @@ float M_LEG_L       = 6;
 float M_LEG_R       = 7;
 float M_ARM_LEFT    = 8;
 float M_ARM_RIGHT   = 9;
+float M_ITEM        = 10;
 
 //direction values
 float DIR_N   = 0;

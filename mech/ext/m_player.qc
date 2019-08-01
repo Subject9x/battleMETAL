@@ -233,7 +233,7 @@ void() PlayerDie={
 	}
   
   //legacy stuff
-  legacy_PlayerDie();
+  //legacy_PlayerDie();
 
 	self.effects = 0;
   
@@ -242,6 +242,7 @@ void() PlayerDie={
 	self.solid = SOLID_CORPSE;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 	self.movetype = MOVETYPE_TOSS;
+  setsize(self, '-8 -8 -8', '8 8 8');
 	
   if (self.velocity_z < 10)
 		self.velocity_z = self.velocity_z + random()*300;
@@ -256,6 +257,11 @@ void() PlayerDie={
     }
   }
   
+  self.think = PlayerDieEnd;
+  self.nextthink = time + 5;
+};
+
+void() PlayerDieEnd={
   //update objectives on player death.
   local entity objtivs;
   objtivs = findchainfloat( data_type, DATA_OBJT );
@@ -279,6 +285,8 @@ void() PlayerDie={
   }
   self.stat_plr_stt = PLAYER_INTERMSN;
   client_sendEndMission(self, MISSION_STATUS ) ;
+  self.think = PlayerDead;
+  self.nextthink = time + 0.1;
 };
 
 void() PlayerDead={
