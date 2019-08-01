@@ -545,24 +545,24 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
     msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY );
     WriteByte( MSG_ONE, TE_MISSION_END );
-    WriteByte( MSG_ONE, time );
-    WriteByte( MSG_ONE, self.frags );
+    WriteLong( MSG_ONE, time );
+    WriteLong( MSG_ONE, self.frags );
     WriteByte( MSG_ONE, missionSuccessCheck );
-    WriteByte( MSG_ONE, MISSION_TOTAL_PSC );
-    WriteByte( MSG_ONE, MISSION_TOTAL_SURVEST );
-    WriteByte( MSG_ONE, MISSION_TOTAL_MILITAR );
+    WriteShort( MSG_ONE, MISSION_TOTAL_PSC );
+    WriteShort( MSG_ONE, MISSION_TOTAL_SURVEST );
+    WriteShort( MSG_ONE, MISSION_TOTAL_MILITAR );
     switch( self.faction ){
       case FACTION_PSC:
-        WriteByte( MSG_ONE, MISSION_LOSSES_MILITAR );
+        WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
         break;
       case FACTION_SURVEST:
-        WriteByte( MSG_ONE, MISSION_LOSSES_MILITAR );
+        WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
         break;
       case FACTION_MILITAR:
-        WriteByte( MSG_ONE, MISSION_LOSSES_MILITAR );
+        WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
         break;
       default:
-        WriteByte( MSG_ONE, 0 );
+        WriteShort( MSG_ONE, 0 );
         break;
     }
   self = notSelf;

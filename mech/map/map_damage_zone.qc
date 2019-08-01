@@ -236,6 +236,7 @@ void() map_damage_zone_touch={
           rpoint_y = rpoint_y * (random() * self.maxs_y);
           rpoint_z = rpoint_z * (random() * self.maxs_z);
           rpoint = other.origin + rpoint;
+          te_field_rad(rpoint, normalize(rpoint - self.origin) * 10, 0.5);
           t_damage(other, self, world, self.damageValue, 0, rpoint, '0 0 0');        
         }
       }
@@ -263,7 +264,7 @@ void() map_damage_zone_touch={
       if( (self.spawnflags & 16) ){
         //remove on first touch
         self.think = SUB_Remove;
-        self.nextthink = time + 0.001;
+        self.nextthink = time + 0.01;
       }
     }
   }

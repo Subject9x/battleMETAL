@@ -300,7 +300,7 @@ void(vector panelOffset) menu_debrief_stats={
   
   //Time taken
   drawstring( thisOrg + gui_percentToPixelRawVec('6 72'), "Mission Time:", '14 14', CLR_DEF_GRAY_H, 1, 0);
-  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), sprintf("%000.2f",ftos(MENU_DEBRIEF_time_elapsed)), '16 16', '1 1 1', 1, 0);
+  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), sprintf("%00.2f",ftos(MENU_DEBRIEF_time_elapsed)), '16 16', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
 };
@@ -393,6 +393,8 @@ void(vector panelOffset) menu_debrief_unlocks={
   equipmentY = 0;
   tokenId = 0;
   tokenItr = 0;
+  widthWrapCheck = 0;
+  widthWrap = (equipmentStartOrg_x + panelImageSize_x) - gui_percentXRaw(24);
   while( tokenId < tokenMax ){
     token = argv(tokenId);
     if( token != ""){
@@ -402,7 +404,7 @@ void(vector panelOffset) menu_debrief_unlocks={
         equipmentOrg = equipmentStartOrg;
         widthWrapCheck = equipmentOrg_x + gui_percentXRaw( tokenItr * 32 );
         if( widthWrapCheck < widthWrap ){
-          equipmentStartOrg_x = widthWrapCheck;
+          equipmentOrg_x = widthWrapCheck;
         }
         else{
           equipmentY = equipmentY + 1;
@@ -437,6 +439,8 @@ void(vector panelOffset) menu_debrief_unlocks={
   tokenMax = tokenizebyseparator( MENU_DEBRIEF_unlocks_mechs, " " );
   tokenId = 0;
   tokenItr = 0;
+  widthWrapCheck = 0;
+  widthWrap = (mechStartOrg_x + panelImageSize_x) - gui_percentXRaw(24);
   while( tokenId < tokenMax ){
     token = argv(tokenId);
     if( token != ""){

@@ -333,15 +333,6 @@ void( string name ) client_event_mission_name={
 };
 
 /*
-  server Mapping = client_sendHazardWarn()
-  If player wanders though an environmental hazard field.
-  warnType is a bitflag value of types.
-*/
-void(float warnTypes) client_event_hazard_warn={
-  //TODO
-};
-
-/*
   server Mapping = client_sendEndMission();
   
   receives end-mission data from server,
@@ -350,7 +341,7 @@ void(float warnTypes) client_event_hazard_warn={
 void(float missionTime, float clientKills, float missonSuccessCheck, float pscTotal, float survestTotal, float militarTotal, float totalLosses ) client_event_debrief_active={
   
   MENU_DEBRIEF_time_elapsed = CLIENT_start_time - missionTime;
-  MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / cvar("sys_ticrate");
+  MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 10;
   MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 60;
   
   MENU_DEBRIEF_total_kills = clientKills;

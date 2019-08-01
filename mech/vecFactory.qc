@@ -585,10 +585,12 @@ void(void() data_ini) build_vehicle_unit={
   }
 };
 
+//TODO - deprecated, needs rebuild
 void( void() data_ini ) build_vtol_unit={
   self.flags = self.flags | FL_FLY;
   build_vehicle_unit( data_ini );
 };
+//----------------------------------
 
 void(void() data_ini) build_turret_unit={
 
