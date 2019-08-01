@@ -1,5 +1,5 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/5/2016
 Overview: implementation for center torso updates
@@ -44,7 +44,7 @@ void() ctrl_updateCenterTorso={
           self.shield = self.shield + self.shieldRate;
           self.energy = self.energy - (self.shieldRate * 3);
           if(self.shield > self.shieldMax){
-            self.shield = self.shieldMax;B
+            self.shield = self.shieldMax;
           }
         }
       }

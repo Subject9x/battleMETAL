@@ -482,7 +482,7 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
           gui_renderTintImage(TRUE, listItemOffset + gui_percentToPixelRawVec('0 -1.44'), UI_BOX_SELECT, gui_percentToPixelRawVec('140.8 12'), CLR_DEF_ARM_OK, 1, 0);
         }
         if(!(CLIENT_MENU_sel_hrpnt_types & weaponType) || (UI_ARMING_DATA_item_list.i_size > CLIENT_MENU_sel_hrpnt_size)){
-          listItemColor = CLR_DEF_TXT_CANTSELET;
+          listItemColor = CLR_DEF_TXT_CANTSELECT;
         }
         listItemLabelLen = stringwidth( UI_ARMING_DATA_item_list.w_name, 0, '12 10');
         listItemLabelLen = listItemLabelLen / 2;

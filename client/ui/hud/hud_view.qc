@@ -187,7 +187,7 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
 /*
   RENDER SHIELD METER
 */
-void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderShield={
+void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient) hud_renderShield={
   local vector meterSize, label_org, shofs;
   local vector meterColor;
   
@@ -195,29 +195,32 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
  
-  if( val <= 0 ){
-    if( !HUD_SHIELD_FLASH_ON ){
-      HUD_SHIELD_FLASH_ON = TRUE;
-    }
-  }
-  else{
-    HUD_SHIELD_FLASH_ON = FALSE;
-    meterColor = CLR_DEF_ARM_DED;
-  }
-  
-  if( HUD_SHIELD_FLASH_ON ){
-    if( time > HUD_SHIELD_FLASH_TIME ){
-      HUD_SHIELD_FLASH = HUD_SHIELD_FLASH * -1;
-      HUD_SHIELD_FLASH_TIME = time + HUD_SHIELD_FLASH_RATE;
-    }
-    if( HUD_SHIELD_FLASH == 1){
-      meterColor = CLR_DEF_RED;
+  meterColor = CLR_DEF_ARM_DED;
+  if( isClient ){
+    if( val <= 0 ){
+      if( !HUD_SHIELD_FLASH_ON ){
+        HUD_SHIELD_FLASH_ON = TRUE;
+      }
     }
     else{
+      HUD_SHIELD_FLASH_ON = FALSE;
       meterColor = CLR_DEF_ARM_DED;
     }
+    
+    if( HUD_SHIELD_FLASH_ON ){
+      if( time > HUD_SHIELD_FLASH_TIME ){
+        HUD_SHIELD_FLASH = HUD_SHIELD_FLASH * -1;
+        HUD_SHIELD_FLASH_TIME = time + HUD_SHIELD_FLASH_RATE;
+      }
+      if( HUD_SHIELD_FLASH == 1){
+        meterColor = CLR_DEF_RED;
+      }
+      else{
+        meterColor = CLR_DEF_ARM_DED;
+      }
+    }
   }
-  
+
   gui_renderMeter(val, pos, meterSize, meterColor, gui_getColorForShield(val), HUD_ALPHA, 0, meterAxis, 0);
   
   
@@ -522,21 +525,29 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
   
-  wepState = CLR_DEF_WHITE;
-  if((wepGrp & w_bit)){
+  if( (CLIENT_weapon_state & w_bit) ){
     //weapon selected
-    wepState = CLR_DEF_ARM_OK;
-  }
-  if(w_rel < 100){
-    //weapon reloading
-    if((wepGrp & w_bit)){ 
-      wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
+    if( (wepGrp & w_bit) ){
+      wepState = CLR_DEF_ARM_OK; 
     }
     else{
-      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+      wepState = CLR_DEF_WHITE;  
+    }
+    
+    if(w_rel < 100){
+      //weapon reloading
+      if((wepGrp & w_bit)){ 
+        wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
+      }
+      else{
+        wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+      }
     }
   }
-  
+  else{
+    wepState = CLR_DEF_TXT_CANTSELECT;
+  }
+
   imgSz = gui_percentToPixelRawVec(imgSz);
   iofs_x = imgSz_x / 2;
   iofs_y = imgSz_y;
@@ -567,19 +578,27 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   torg = gui_percentToPixelRawVec(torg);
   torg = gui_calcAlign(torg, algn);
   
-  wepState = CLR_DEF_WHITE;
-  if( (wepGrp & w_bit) ){
+  if( (CLIENT_weapon_state & w_bit) ){
     //weapon selected
-    wepState = CLR_DEF_ARM_OK;
-  }
-  if(w_rel < 100){
-    //weapon reloading
-    if( (wepGrp & w_bit) ){ 
-      wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
+    if( (wepGrp & w_bit) ){
+      wepState = CLR_DEF_ARM_OK; 
     }
     else{
-      wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+      wepState = CLR_DEF_WHITE;  
     }
+    
+    if(w_rel < 100){
+      //weapon reloading
+      if((wepGrp & w_bit)){ 
+        wepState = CLR_DEF_ARM_OK - '0.4 0.4 0.4';
+      }
+      else{
+        wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
+      }
+    }
+  }
+  else{
+    wepState = CLR_DEF_TXT_CANTSELECT;
   }
   
   imgSz = gui_percentToPixelRawVec(imgSz);
@@ -623,7 +642,7 @@ void(vector org, vector torg, float algn, float val, float radRange, float tsize
     if (nofs_z >= 0) {
       nofs_x = nofs_x - (aSize_x / 2);
       nofs_z = 0;
-      hud_renderShield(nofs, 0, val, aSize, FALSE, 0, '0 0', AXIS_H);
+      hud_renderShield(nofs, 0, val, aSize, FALSE, 0, '0 0', AXIS_H, FALSE);
     }
   }
 };
@@ -1053,7 +1072,7 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
     lalign = UI_DATA_LABEL_ALIGN[uid];
     lblofs = UI_DATA_LABEL_OFS[uid];
     axis = UI_DATA_AXIS_FLAG[uid];
-    hud_renderShield(porg, algn, CLIENT_target_shield, vsize, lflag, lalign, lblofs, axis);
+    hud_renderShield(porg, algn, CLIENT_target_shield, vsize, lflag, lalign, lblofs, axis, FALSE);
   }
 };
 
@@ -1148,7 +1167,7 @@ void() data_hud_frame={
         lalign = UI_DATA_LABEL_ALIGN[uid];
         lblofs = UI_DATA_LABEL_OFS[uid];
         axis = UI_DATA_AXIS_FLAG[uid];
-        hud_renderShield(porg, algn, CLIENT_shield, vsize, lflag, lalign, lblofs, axis);
+        hud_renderShield(porg, algn, CLIENT_shield, vsize, lflag, lalign, lblofs, axis, TRUE);
         break;
       case HUD_UID_ARM_TARGET:  
         if( hasTarget ){
@@ -1172,7 +1191,7 @@ void() data_hud_frame={
           vsize = '32 32 0';  //default here
         }
         wep = hud_data_weapon_info( wbit );
-        hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, WEAPON1, wep_y);
+        hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
         break;
       case HUD_UID_WEP_TYPE2:    
         local vector wep;
@@ -1184,7 +1203,7 @@ void() data_hud_frame={
           vsize = '32 32 0';  //default here
         }
         wep = hud_data_weapon_info( wbit );
-        hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, WEAPON1, wep_y);
+        hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
         break;
       case HUD_UID_RADAR_TYPE1: 
         porg = UI_DATA_POS[uid]; 

@@ -270,12 +270,6 @@ void() ClientKill = {
     self.data_type = DATA_POBS;
     //self.frame = $ctorstand1;
     mech_clearWeaponGroups();
-    local entity wep;
-    wep = self.w_slot;
-    while(wep){
-      ctrl_weapon_clearState(wep, wep.state_1, wep.state_2);
-      wep = wep.w_slot;
-    }
     mech_cleanupMech();
   }
   self.solid = SOLID_CORPSE;

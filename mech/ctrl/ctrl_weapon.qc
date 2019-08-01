@@ -22,11 +22,11 @@ void(entity wep) ctrl_weapon_think={
     }  
     if( self.think ){
       self.think();
-        if(self.w_isready){
+        /*if(self.w_isready){
           ctrl_weapon_isReady(self, self.stat_wep_rel);
         }else{
           ctrl_weapon_isReload(self, self.stat_wep_rel);
-        }
+        }*/
       self.think = self.think;
     }
   self = weaponOwner;
@@ -208,32 +208,6 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
   }
 };
 
-//gross
-void(entity wep, float wstate) ctrl_weapon_addState={
-  if(!(wep.owner.stat_wep_state & wstate)){
-    wep.owner.stat_wep_state = wep.owner.stat_wep_state | wstate;
-  }
-};
-
-void(entity wep, float wstate) ctrl_weapon_subState={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & wstate);
-};
-
-void(entity wep, float state1, float state2) ctrl_weapon_clearState={
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state1);
-  wep.owner.stat_wep_state = wep.owner.stat_wep_state - (wep.owner.stat_wep_state & state2);
-};
-
-void(entity wep, float wstate) ctrl_weapon_isReload={
-  if(!(wep.owner.stat_wep_rel & wstate)){
-    wep.owner.stat_wep_rel = wep.owner.stat_wep_rel | wstate;
-  }
-};
-
-void(entity wep, float wstate) ctrl_weapon_isReady={
-  wep.owner.stat_wep_rel = wep.owner.stat_wep_rel - (wep.owner.stat_wep_rel & wstate);
-};
-
 void() ctrl_die_weapon={
   if(self.deadflag <= DEAD_NO){
     local entity oself;
@@ -248,8 +222,8 @@ void() ctrl_die_weapon={
       self.w_group = 0;
     }
     if((self.owner.flags & FL_CLIENT)){
-      ctrl_weapon_subState(self, self.state_1);
-      ctrl_weapon_addState(self, self.state_2);
+      //ctrl_weapon_subState(self, self.state_1);
+      //ctrl_weapon_addState(self, self.state_2);
     }
     
     self.w_attack = SUB_Null;
