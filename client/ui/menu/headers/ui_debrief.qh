@@ -27,7 +27,7 @@ vector MENU_DEBRIEF_BUTTON_ORG_mission;
 //menu hooks
 void() menu_debriefListener_onClick;
 void() menu_debriefListener_onHover;
-void() menu_debriefListener_onDrag;
+//void() menu_debriefListener_onDrag;
 
 //menu rendering
 void() menu_debrief_drawFrame;

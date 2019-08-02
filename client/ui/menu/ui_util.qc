@@ -119,7 +119,7 @@ void(string imageIcon, vector org, float selected) ui_renderHardPointGraphic={
 */
 void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   local vector pofs, hptNumOrg, hptSizeOrg;
-  local float hardpointSize;
+  local float localHardpointSize;
   local string hardpointLabel, hardpointSizeLabel;
   local float drawfontLocal;
   
@@ -138,14 +138,14 @@ void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
   
   drawstring(hptNumOrg, hardpointLabel, '12 12 0', CLR_DEF_RET_HASLOCK, 1, 0);
   
-  hardpointSize = sz;
-  hardpointSizeLabel = ftos(hardpointSize);
+  localHardpointSize = sz;
+  hardpointSizeLabel = ftos(localHardpointSize);
   hptSizeOrg = pofs + gui_percentToPixelRawVec('0 24');
   hptSizeOrg_x = hptSizeOrg_x + gui_percentXRaw(30 / 2) - gui_percentXRaw(stringwidth(hardpointLabel, 0, '14 14 0') / 2);
-  if( hardpointSize == 2 ){
+  if( localHardpointSize == 2 ){
     drawstring(hptSizeOrg, hardpointSizeLabel, '14 14 0', CLR_DEF_WHITE,1 , 0);
   }
-  else if( hardpointSize == 3){
+  else if( localHardpointSize == 3){
     drawstring(hptSizeOrg, hardpointSizeLabel, '14 14 0', CLR_DEF_WHITE,1 , 0);
   }
   else{

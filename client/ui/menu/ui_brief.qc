@@ -389,7 +389,7 @@ void(vector ofs) menu_briefIntelPanel={
   
   local vector helpOrg;
   helpOrg = bpos;
-  helpOrg_x = helpOrg_x + gui_percentToPixelRaw(377.6) - gui_percentXRaw(12); 
+  helpOrg_x = helpOrg_x + gui_percentXRaw(377.6) - gui_percentXRaw(12); 
   BRIEF_INTEL_HELP_ORG = helpOrg;
   drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
 };

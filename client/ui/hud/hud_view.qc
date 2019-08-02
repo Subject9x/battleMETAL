@@ -11,13 +11,13 @@ Overview:
 /*
   RENDER CROSSHAIRS - UNIVERSAL
 */
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs={
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshairs={
   //convergence
   local vector spr_h, hitclr, lckclr;
   local vector acc_left, acc_right, acc_up, acc_dn;
   local vector drift;
   
-  drift = gui_percentToPixelRaw( 8 * accuracy, 8 * accuracy );
+  drift = gui_percentToPixelRaw( 8 * unitAccuracy, 8 * unitAccuracy );
   
   acc_left = VIEW_CTR - gui_percentToPixelRawVec('11 1.5');
   acc_left_x = acc_left_x - drift_x;
@@ -826,12 +826,12 @@ void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav={
   displays a background image on the hud
   always draws from bottom left of screen UP
 */
-void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector tint) hud_HelmetImage={
+void(vector ofs, vector img_sz, string bimg, float valign, float setAlpha, vector tint) hud_HelmetImage={
   local vector nofs;
   
   nofs = gui_percentToPixelRawVec(ofs);
   nofs = gui_calcAlign(nofs, valign); 
-  drawpic(nofs, bimg, gui_percentToPixelRawVec(img_sz), tint, alpha, DRAWFLAG_NORMAL);  
+  drawpic(nofs, bimg, gui_percentToPixelRawVec(img_sz), tint, setAlpha, DRAWFLAG_NORMAL);  
 };
 
 /*
@@ -994,7 +994,7 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
     messageWidth = stringwidth( warnMessage, 0, '18 18');
     warnMessageOrg_x = orgCenter_x - gui_percentXRaw( messageWidth / 2 );
     warnMessageOrg_y = orgCenter_y;
-    drawstring( warnMessageOrg, warnMessage, '18 18', CLR_DEF_ARM_HALF, labelAlpha );
+    drawstring( warnMessageOrg, warnMessage, '18 18', CLR_DEF_ARM_HALF, labelAlpha, 0 );
     
     warnTypes = "[";
     if( (dmgTypes & 1) ){
@@ -1010,7 +1010,7 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
     messageWidth = stringwidth( warnTypes, 0, '16 16' );
     warnTypesOrg_x = orgCenter_x - gui_percentXRaw( messageWidth / 2 );
     warnTypesOrg_y = warnMessageOrg_y + gui_percentYRaw(20);
-    drawstring( warnTypesOrg, warnTypes, '16 16', CLR_DEF_ARM_HALF, labelAlpha );
+    drawstring( warnTypesOrg, warnTypes, '16 16', CLR_DEF_ARM_HALF, labelAlpha, 0 );
     
     drawfont = drawfont_prev;
   }
@@ -1081,7 +1081,7 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
 void() data_hud_frame={
   local float uid;
   local float hasTarget;
-  local float accuracy;
+  local float playerAccuracy;
   
   //Alpha fade-in of HUD as mech powers up.
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
@@ -1104,7 +1104,7 @@ void() data_hud_frame={
     }
   }
   
-  accuracy = getstatf(STAT_ACCURACY);
+  playerAccuracy = getstatf(STAT_ACCURACY);
   
   switch( cvar("cl_hud_color") ){
     case 1:
@@ -1132,16 +1132,18 @@ void() data_hud_frame={
   while( uid <= 32 ){
     local float objid, algn, lflag, lalign, axis, wbit;
     local vector porg, vsize, color1, lblofs;
-    local string icon;
+    local string localIcon;
+    local vector wep;
+    
     objid = UI_DATA_UIDS[uid];
     switch( objid ){
       case HUD_UID_IMG_HELM:
         porg = UI_DATA_POS[uid];
         vsize = UI_DATA_SIZE[uid];
-        icon = UI_DATA_IMG[uid];
+        localIcon = UI_DATA_IMG[uid];
         algn = UI_DATA_ALIGN[uid];
         color1 = UI_DATA_COLOR1[uid];
-        hud_HelmetImage(porg, vsize, icon, algn, 1, UI_DATA_COLOR1[uid]); 
+        hud_HelmetImage(porg, vsize, localIcon, algn, 1, UI_DATA_COLOR1[uid]); 
         break;
       case HUD_UID_ENERGY:
         porg = UI_DATA_POS[uid];
@@ -1181,7 +1183,6 @@ void() data_hud_frame={
         hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
         break;
       case HUD_UID_WEP_TYPE1:
-        local vector wep;
         porg = UI_DATA_POS[uid];
         algn = UI_DATA_ALIGN[uid];
         wbit = UI_DATA_WEPBIT[uid];
@@ -1192,8 +1193,7 @@ void() data_hud_frame={
         wep = hud_data_weapon_info( wbit );
         hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
         break;
-      case HUD_UID_WEP_TYPE2:    
-        local vector wep;
+      case HUD_UID_WEP_TYPE2:  
         porg = UI_DATA_POS[uid];
         algn = UI_DATA_ALIGN[uid];
         wbit = UI_DATA_WEPBIT[uid];
@@ -1277,19 +1277,19 @@ void() data_hud_frame={
     hud_lock_frame();
     switch( cvar("crosshair") ){
       case 1:
-        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair1( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
         break;
       case 2:
-        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair2( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
         break;
       case 3:
-        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair3( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
         break;
       case 4:
-        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair4( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
         break;
       case 5:
-        hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, accuracy, CLIENT_target_shield );
+        hud_renderCrosshair5( CLIENT_stat_hit_dirs, CLIENT_stat_lock_state, playerAccuracy, CLIENT_target_shield );
         break;
       default:
         //no crosshair? bold move
@@ -1390,7 +1390,7 @@ void() hud_lock_frame={
 /*
   Crosshair Type 1
 */
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair1={
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair1={
   local float hitAlpha;
   local vector hitColor;
   
@@ -1410,7 +1410,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   hitColor = HUD_COLOR_DEF;
   hitAlpha = HUD_ALPHA;
   
-  drift = gui_percentToPixelRaw( 8 * accuracy, 8 * accuracy );
+  drift = gui_percentToPixelRaw( 8 * unitAccuracy, 8 * unitAccuracy );
   imgSize = gui_percentToPixelRawVec('28 28');
   pipSizeH = gui_percentToPixelRawVec('8 3');
   pipSizeV = gui_percentToPixelRawVec('3 8');
@@ -1462,7 +1462,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 /*
   Crosshair Type 2
 */
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair2={
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair2={
   local float hitAlpha;
   local vector hitColor;
   
@@ -1482,7 +1482,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   hitColor = HUD_COLOR_DEF;
   hitAlpha = HUD_ALPHA;
   
-  drift = gui_percentToPixelRaw( 8 * accuracy, 8 * accuracy );
+  drift = gui_percentToPixelRaw( 8 * unitAccuracy, 8 * unitAccuracy );
   imgSize = gui_percentToPixelRawVec('28 28');
   pipSizeH = gui_percentToPixelRawVec('15 3');
   pipSizeV = gui_percentToPixelRawVec('3 15');
@@ -1534,7 +1534,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 /*
   Crosshair Type 3
 */
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair3={
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair3={
   local float hitAlpha;
   local vector hitColor;
   
@@ -1557,8 +1557,8 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   drawpic(imgCenter, "gfx/hud/ret/crosshair3.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   
   //accuracy pips
-  pipSizeH_x = pipSizeH_x * accuracy;
-  pipSizeH_y = pipSizeH_y * accuracy;
+  pipSizeH_x = pipSizeH_x * unitAccuracy;
+  pipSizeH_y = pipSizeH_y * unitAccuracy;
   pipLeft_x = VIEW_CTR_x - pipSizeH_x / 2;
   pipLeft_y = VIEW_CTR_y - pipSizeH_y / 2;
   drawpic(pipLeft, "gfx/hud/ret/crosshair3_r.png", pipSizeH, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);
@@ -1590,7 +1590,7 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 /*
   Crosshair Type 4
 */
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4={  
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair4={  
   local vector imgSize;
   local vector lockSize;
   local vector pipSizeH;
@@ -1607,8 +1607,8 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   imgCenter_y = VIEW_CTR_y - imgSize_y / 2;
   drawpic(imgCenter, "gfx/hud/ret/crosshair4.png", imgSize, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);  
   
-  pipSizeH_x = pipSizeH_x * accuracy;
-  pipSizeH_y = pipSizeH_y * accuracy;
+  pipSizeH_x = pipSizeH_x * unitAccuracy;
+  pipSizeH_y = pipSizeH_y * unitAccuracy;
   pipLeft_x = VIEW_CTR_x - pipSizeH_x / 2;
   pipLeft_y = VIEW_CTR_y - pipSizeH_y / 2;
   drawpic(pipLeft, "gfx/hud/ret/crosshair4_r.png", pipSizeH, HUD_COLOR_DEF, HUD_ALPHA, DRAWFLAG_NORMAL);
@@ -1625,6 +1625,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 /*
   Crosshair Type 5
 */
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair5={
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair5={
 
 };

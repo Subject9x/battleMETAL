@@ -9,8 +9,6 @@ float MECH_DATA_SIZES[256];
 string MECH_DATA_NAMES[256];
 string HUD_DATA_NAMES[256];
 
-string ITEM_DATA_ICONS[256];
-
 //MECH DATA FILE
 float   MECH_DATA_ID;
 string  MECH_DATA_ABR;

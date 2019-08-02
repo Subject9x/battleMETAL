@@ -51,7 +51,6 @@ float HUD_UID_ARM_TARG_BLD  = 16;
   float HUD_WARN_ENV_TYPES;
   
   float HUD_ALPHA_TIME;
-  float HUD_ALPHA_DELTA;
   float HUD_ALPHA_RATE;
   float HUD_ALPHA_INC;
   
@@ -114,23 +113,18 @@ string HUD_TARGET_BOX_TR;
 string HUD_TARGET_BOX_BR;
 string HUD_TARGET_BOX_BL;
 
-.entity data;
-
-.float prev_ang;
-.vector nav_ofs;
-
 entity HUD_DATA_weapon;
 
 void(float lockTime) hud_lock_control_start;
 void() hud_lock_frame;
 
 void() hud_renderCrosshairDisabled;
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs;
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair1; //I have no regrets for these
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair2;
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair3;
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4;
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair5;
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshairs;
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair1; //I have no regrets for these
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair2;
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair3;
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair4;
+void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hud_renderCrosshair5;
 
 void(float hitDirBit) hud_renderDirectionHit;
 void(float targdir, float plrFaction, float trgfaction, float dattype) hud_renderTargetDirection;
@@ -157,7 +151,7 @@ void(vector post, float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_M
 void(vector post, float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Vehc;
 void(vector post,float plr_fact, float e_fact, float e_alpha) hud_RenderRadar_Building;
 void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav;
-void(vector ofs, vector img_sz, string bimg, float valign, float alpha, vector clr) hud_HelmetImage;
+void(vector ofs, vector img_sz, string bimg, float valign, float setAlpha, vector clr) hud_HelmetImage;
 void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
 void(vector ofs, string targType, float algn) hud_renderTargetName;
 void(float delta) hud_renderRepairValue;

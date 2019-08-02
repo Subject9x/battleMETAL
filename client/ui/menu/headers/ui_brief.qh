@@ -30,7 +30,7 @@ void() menu_briefDrawFrame;
 void() menu_briefListener_onClick;
 void() menu_briefListener_onDrag;
 void() menu_briefListener_onHover;
-void() menu_briefListener_onKeyUp;
+//void() menu_briefListener_onKeyUp;
 
 //Listener hooks called by menu_deployListener
 //void() navpointListener;

@@ -151,6 +151,7 @@ float AS_FLOAT = 8;
 //============================
 float RADAR_SWEEP = 2.5;
 
+#ifndef CSQC
 .float stat_plr_stt;
 .float stat_trg_sh;
 
@@ -204,6 +205,7 @@ float RADAR_SWEEP = 2.5;
 .float stat_plr_ang_y;
 .float stat_plr_ang_z;
 .float stat_plr_rep;
+#endif
 //============================
 //     STAT CHANNELS         
 //============================

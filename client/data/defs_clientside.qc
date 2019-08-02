@@ -9,8 +9,6 @@ Overview:
   {entity} stuff vs defs_entity.qc
 */
 
-float PLAYER_ENTITYNUM;
-
 // protocol bytes
 float SVC_SETVIEWPORT   = 5;
 float SVC_SETANGLES     = 10;
@@ -30,9 +28,6 @@ float	DEAD_RESPAWNABLE	= 3;
 float	DEAD_RESPAWNING		= 4; // dead, waiting for buttons to be released
 
 .float player_state;
-.float stat_hit_dirs;
-.float target_entid;
-.vector target_origin;
 
 //input globals and constants
 float INPUT_EVENT_KEYDOWN = 0;
@@ -62,19 +57,6 @@ float RELOADING = 1;
 float WAITING = 2;
 float RECOIL = 4;
 
-.entity lst_p; //linked list parent
-
-//from world.qc
-entity lastspawn;
-void() InitBodyQue;
-void(entity ent) CopyToBodyQue;
-//======================
-
-//from client.qc
-string nextmap;
-float	intermission_running;
-float	intermission_exittime;
-//======================
 
 //direction values
 float DIR_N   = 0;
@@ -85,14 +67,6 @@ float DIR_S   = 4;
 float DIR_SW  = 5;
 float DIR_W   = 6;
 float DIR_NW  = 7;
-
-//used by ctrl_weapon_fireOffset
-vector FIRE_OFFSET;
-entity WEAPON_PARENT;
-entity FIRE_ENT;
-entity NEWSHOT;
-vector FIRE_ORIGIN;
-vector FIRE_ENDPOINT;
 
 //These should have been floats from the start
 //these are component id's (compid) for model pieces

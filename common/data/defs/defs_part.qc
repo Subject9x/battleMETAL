@@ -11,11 +11,14 @@ Overview:
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
 
+#ifndef CSQC
 .string c_model;
-.float partParentId;
-.float partTypeId;    //component_name,
-.vector c_ofs;
 .vector c_alt_ofs;    //useful alt offset
-.entity partNext;
+.entity partNext;     //chain entity of next part in unit's part list
+#endif
+
+.float partParentId;  //component id of PARENT
+.float partTypeId;    //component id
+.vector c_ofs;
 .float hardpointSize;
 .float hardpointType;

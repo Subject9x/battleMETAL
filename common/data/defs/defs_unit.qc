@@ -11,6 +11,19 @@ Overview:
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
 
+//SSQC only
+#ifndef CSQC
+.float shield;        //current amount of shields
+.float shieldHitDelay;//cool down before shield recharge begins
+
+.float accuracyMod;
+.float accuracy; 
+
+.float turret_yaw_speed;
+.float evasionDrain;
+.float ai_attack_chance;
+#endif
+
 .float data_idx;
 .float vec_size;
 .string vec_name;
@@ -21,15 +34,14 @@ Overview:
 .float energy;        //current amount
 .float energyRate;    //how much energy built per frame
 .float shieldMax;     //max shields
-.float shield;        //current amount of shields
+
 .float shieldRate;    //shield recharge rate
-.float shieldHitDelay;//cool down before shield recharge begins
 .float startupDelay; //time in game seconds for unit to activate after spawn.
+
 
 //Weapon Spread Mechanics
 .vector spreadDefault;
-.float accuracyMod;
-.float accuracy; 
+
 .float radar_time;
 .float radar_range;
 
@@ -39,10 +51,8 @@ Overview:
 .float data_speed_backward; //backward speed
 .float data_speed_accel;	//cl_speedkey acceleration factor
 
-.float turret_yaw_speed;
 .float pitchMin;
 .float pitchMax;
-.float evasionDrain;
 
 //Unit subcomponents
 .entity legs;
@@ -54,4 +64,3 @@ Overview:
 .entity armRight;  //arms can be optional
 
 .float isActive;
-.float ai_attack_chance;

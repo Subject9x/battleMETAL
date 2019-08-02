@@ -8,57 +8,13 @@ Overview:
   Extends {entity} with new vars for use around CSQC.
 */
 
-entity CLIENTDATA;
-
-.vector entorg;
-.entity client_data;
-.entity viewmodel;
-
-.float target_faction;
-.float target_vecsize;
-.float target_datatype;
-.float target_shield;
-
-.float timer_phys;
-.float timer_r;
-.vector origin_old;
-.vector origin_phys;       
-
-vector vPlayerOrigin;
-vector vPlayerOriginOld;
-vector vPlayerVelocity;
-
-.float renderflags;
-.float pmove_flags;
-
 //widget vars
-.float scale;
 .float drawme;
 .vector drawsize;
 .vector drawcolor1; //these are interpreted differently
-.vector drawcolor2; //depending on widget type :/
-.float value1; //lists are for suckers
-.float value2;
-.float value3;
-.float value4;
-.float value5;
-.float value6;
-
-//mech
-.float hp_ctor;
-.float hp_stor;
-.float hp_stor2;
-.float hp_arm;
-.float hp_arm2;
-.float hp_leg;
 
 //navpoint
-.float obj_status;
-.float controllingFaction;
 .float isActive;
 .float nav_name;
 .vector ui_org;
 .vector ui_size;
-
-//ai mech
-.string e_model;

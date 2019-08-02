@@ -41,7 +41,6 @@ string MSN_BRIEF;
 string MSN_INTEL;
 string MSN_ANIM;
 float MSN_OBJ;
-string MSN_OBJ_TYPE;
 
 float MSN_SFX_COUNT;
 .float MSN_SFX_TIME;

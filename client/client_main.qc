@@ -352,7 +352,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   }
   else{
     if(CLIENT_player_state >= PLAYER_POWERUP_BEGIN){
-      local float itr;
       itr = 0;
       while( itr <= 21 ){
         ui_renderNav( itr );

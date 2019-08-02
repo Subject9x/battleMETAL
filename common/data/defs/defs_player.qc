@@ -9,17 +9,8 @@ Overview:
 	
 	(yes, entity fields are on all entities, but this is for cleanliness and bookkeeping);
 */
-
+.entity w_slot;     //use this for teh linked list goodness
 .float data_type;
-.float max_armor; //why wasn't this ever included!?
-
-.float currentWeaponGroup;
-.float w_group1;
-.float w_group2;
-.float w_group3;
-.float w_group4;
-.float w_group5;
-//.float w_firemode;
 
 .string hud_bob;    //bob settings are important for dat immersion
 .string hud_bob_cycle;
@@ -29,20 +20,29 @@ Overview:
 .string hud_bob_side;
 .string hud_bob_speed;
 
+.float faction;   //which faction? consult table
+.float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
+.float i_size;
+
+#ifndef CSQC
+.float nextVecChoice;
+.float i_reserve; //how many reserve points does the unit cost?
+
+.float max_armor; //why wasn't this ever included!?
+
 .float was_hit; //used for hit direction calculation mostly
 .float hitdir_buffer; //used for hit direction, is cleared every frame
 
 .float	dmgtime; //pulled from client.qc
 //.float playermovestate, playermovebegin; //pulled from dpqc player.qc
 
-
-.float nextVecChoice;
-
-.float faction;   //which faction? consult table
-.float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
-.float i_reserve; //how many reserve points does the unit cost?
-.float i_size;
-.entity w_slot;     //use this for teh linked list goodness
+.float currentWeaponGroup;
+.float w_group1;
+.float w_group2;
+.float w_group3;
+.float w_group4;
+.float w_group5;
+//.float w_firemode;
 
 .float fall_dist; //distance fallen to trigger 'stumble'
 .float fall_slam; //distance fallen to trigger leg damage
@@ -67,3 +67,4 @@ Overview:
 .float next_wepn7;
 .float next_wepn8;
 .float next_wepn9;
+#endif

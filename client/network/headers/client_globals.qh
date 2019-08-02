@@ -48,7 +48,6 @@ float CLIENT_stat_w9_id;
 
 vector CLIENT_entorg;
 float CLIENT_radar_range;
-float CLIENT_lockon_time;
 
 float CLIENT_energy;
 float CLIENT_shield;

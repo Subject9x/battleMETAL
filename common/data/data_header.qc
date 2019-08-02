@@ -11,9 +11,13 @@ Overview:
   
 */
 
+#ifndef CSQC
 entity unitPartList;  //used by vehicle factory to build full list of unit's parts as a chain.
-entity weaponList;  //used by data functions to populate weapon lists for units
 entity weaponBuild; //used by vehicle factory to build current weapon
+.void() unit_ini;
+.void() unit_wep1;  //TODO - Refactor all references
+#endif
+entity weaponList;  //used by data functions to populate weapon lists for units
 
 /*
   called when building something with common/data info.
@@ -188,6 +192,3 @@ entity(float part, entity unit) util_getPartFromName={
       return unit;
   }
 };
-
-.void() unit_ini;
-.void() unit_wep1;  //TODO - Refactor all references

@@ -61,7 +61,6 @@ string TRQ3;
 float CRITBITS; //tracks sound playing for critical loss of mech parts
 
 void() snd_hud_vfx_frame;
-void() snd_hud_vfx_cleanqueue;
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue;
 void(string requestedSound, float cnt) snd_hud_trnsmsn_addtoqueue;
 

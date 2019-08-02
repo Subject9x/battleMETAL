@@ -25,6 +25,10 @@ void(string fileToOpen) anm_parseFile={
   local float flannel, argc, line_tag, frame_count;
   local string file, contents, line;
   
+  local vector org;
+  local vector siz;
+  local vector clr;
+
   file = strcat(PATH_DATA_ANIM, "/", fileToOpen);
   flannel = fopen( file, FILE_READ);
   contents = fgets(flannel);
@@ -61,12 +65,10 @@ void(string fileToOpen) anm_parseFile={
         ANM_FRAME_IMG[frame_count] = strzone(ANM_FRAME_IMG[frame_count]);
       }
       if( (argv(1) == ANM_FILE_TAG_POS) ){
-        local vector org;
         org = stov(argv(3));
         ANM_FRAME_POS[frame_count] = org;
       }
       if( (argv(1) == ANM_FILE_TAG_SIZE) ){
-        local vector siz;
         siz = stov(argv(3));
         ANM_FRAME_SIZE[frame_count] = siz;
       }
@@ -85,12 +87,10 @@ void(string fileToOpen) anm_parseFile={
         ANM_FRAME_ALPHA[frame_count] = stof(argv(3));
       }
       if( (argv(1) == ANM_FILE_TAG_COLOR) ){
-        local vector clr;
         clr = stov(argv(3));
         ANM_FRAME_COLOR[frame_count] = clr;
       }
       if( (argv(1) == ANM_FILE_TAG_TXT_CLR) ){
-        local vector clr;
         clr = stov(argv(3));
         ANM_FRAME_TXT_CLR[frame_count] = clr;
       }

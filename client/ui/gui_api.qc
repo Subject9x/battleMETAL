@@ -204,7 +204,7 @@ vector(float dmg_type) gui_colorForWeaponType={
   }
 };
 
-void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm_clr, float alpha, float flg) gui_renderTintImage2={
+void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm_clr, float setAlpha, float flg) gui_renderTintImage2={
   local vector clr;
   if(bool){
     clr = tnt_clr;
@@ -212,11 +212,11 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, vector nrm
   else{
     clr = nrm_clr;
   }
-  drawpic(org, img, i_sz, clr, alpha, flg);
+  drawpic(org, img, i_sz, clr, setAlpha, flg);
 };
 
 
-void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alpha, float flg) gui_renderTintImage={
+void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float setAlpha, float flg) gui_renderTintImage={
   local vector clr;
   if(bool){
     clr = tnt_clr;
@@ -224,7 +224,7 @@ void(float bool, vector org, string img, vector i_sz, vector tnt_clr, float alph
   else{
     clr = '1 1 1';
   }
-  drawpic(org, img, i_sz, clr, alpha, flg);
+  drawpic(org, img, i_sz, clr, setAlpha, flg);
 };
 
 
@@ -276,9 +276,10 @@ vector(float bits, float dead, float ok, float wrange, float prange) gui_getWepS
        return CLR_DEF_WHITE;
     }
   }
+  return CLR_DEF_ARM_DED;
 };
 
-void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha, float flg, float ax, float vdir) gui_renderMeter={
+void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float setAlpha, float flg, float ax, float vdir) gui_renderMeter={
   /*
     given target origin, meter size, current meter value
   */
@@ -286,7 +287,7 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha
   local vector norg, end;
   norg = gui_calcAxis(org, sz, ax);
   if(clr_bk_x > -1){
-    drawfill(norg, sz, clr_bk, alpha, flg);
+    drawfill(norg, sz, clr_bk, setAlpha, flg);
   }
   end = norg;
   perc = (val / 100);
@@ -301,7 +302,7 @@ void(float val, vector org, vector sz, vector clr_bk, vector clr_fr, float alpha
      diff = sz_x - adj;
      sz_x = sz_x - diff;
   }
-  drawfill(norg, sz, clr_fr, alpha, flg);
+  drawfill(norg, sz, clr_fr, setAlpha, flg);
 };
 
 /*
@@ -394,7 +395,7 @@ vector(vector vec, float scle) gui_scaleSize={
   return toSender;
 };
 
-void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalPip={
+void(vector ofs, float bit, float state1, vector color1, vector color2, vector sz, float setAlpha, float flg) gui_renderModalPip={
   local vector colorActual;
   if(bit & state1){
     colorActual = color1;
@@ -403,10 +404,10 @@ void(vector ofs, float bit, float state1, vector color1, vector color2, vector s
     colorActual = color2;
   }
   
-  drawfill(ofs, sz, colorActual, alpha, flg);
+  drawfill(ofs, sz, colorActual, setAlpha, flg);
 };
 
-void(vector ofs, float bool, vector color1, vector color2, vector sz, float alpha, float flg) gui_renderModalFill={
+void(vector ofs, float bool, vector color1, vector color2, vector sz, float setAlpha, float flg) gui_renderModalFill={
   local vector colorActual;
   if(bool){
     colorActual = color1;
@@ -414,13 +415,13 @@ void(vector ofs, float bool, vector color1, vector color2, vector sz, float alph
   else{
     colorActual = color2;
   }
-  drawfill(ofs, sz, colorActual, alpha, flg);
+  drawfill(ofs, sz, colorActual, setAlpha, flg);
 };
 
 /*
   Draws an image that occupies the entire screen size
 */
-void(string src_img, vector tintcolor, float alpha, float flg) gui_renderImageFullScreen={
+void(string src_img, vector tintcolor, float setAlpha, float flg) gui_renderImageFullScreen={
   local vector pnl_sz, img_sz, ofs, org;
   local float aln;
   
@@ -430,22 +431,22 @@ void(string src_img, vector tintcolor, float alpha, float flg) gui_renderImageFu
   pnl_sz_y = img_sz_y;
   ofs_y = ofs_y + pnl_sz_y;
   org = gui_calcAlign(ofs, aln);
-  drawpic(org, src_img, pnl_sz, tintcolor, alpha, flg);
+  drawpic(org, src_img, pnl_sz, tintcolor, setAlpha, flg);
 };
 
-void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float alpha, float flg) gui_renderHighlightString={
+void(string str, vector ofs, vector hclr, vector clr, float bool, vector sz, float setAlpha, float flg) gui_renderHighlightString={
 
   if(bool){
-    gui_renderString(str, ofs, hclr, sz, alpha, flg);
+    gui_renderString(str, ofs, hclr, sz, setAlpha, flg);
   }
   else{
-    gui_renderString(str, ofs, clr, sz, alpha, flg);
+    gui_renderString(str, ofs, clr, sz, setAlpha, flg);
   }
 };
 
 
-void(string str, vector ofs, vector color, vector sz, float alpha, float flg) gui_renderString={
-  drawstring(ofs, str, sz,color, alpha, flg);
+void(string str, vector ofs, vector color, vector sz, float setAlpha, float flg) gui_renderString={
+  drawstring(ofs, str, sz,color, setAlpha, flg);
 };
 
 void(string str, vector ofs, vector txt_sz, vector ln_sz, vector clr) gui_BoxOnLabel={
@@ -493,13 +494,13 @@ vector(vector sz) gui_getCenter={
 };
 
 
-void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) gui_renderImageReel={
+void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float setAlpha, float flg) gui_renderImageReel={
   local vector isz;
   isz = draw_getimagesize(src_img);
   clipSize_x = clipSize_x / isz_x;
   clipSize_y = clipSize_y / isz_y;
   isz = gui_scaleSize(isz, VIEW_SCALE);
-  drawsubpic(srcOrg, isz, src_img, percent, clipSize, clr, alpha, flg);
+  drawsubpic(srcOrg, isz, src_img, percent, clipSize, clr, setAlpha, flg);
   
 };
 
@@ -561,7 +562,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
         line_length = charlen;
       }
       charpos_y = textOrg_y + (line_row * (fsize_y + (fsize_y * 0.15)));
-      drawstring(charpos, toke, fsize, clr, alph);
+      drawstring(charpos, toke, fsize, clr, alph, 0);
     }
     else{
       line_row = line_row + 1;
@@ -603,8 +604,8 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
 	if( panelImage && (panelImage != "") ){
 		panelAdjust_x = targetSize_x * 0.025;
 		panelAdjust_y = targetSize_y * -0.075;
-		drawpic( toolTipOrigin + panelAdjust - gui_percentToPixelRawVec('2 2'), panelImage, targetSize + gui_percentToPixelRawVec('4 4'), panelColor - (panelColor * 0.85), alph + 0.25);
-		drawpic( toolTipOrigin + panelAdjust, panelImage, targetSize, panelColor, alph + 0.25);
+		drawpic( toolTipOrigin + panelAdjust - gui_percentToPixelRawVec('2 2'), panelImage, targetSize + gui_percentToPixelRawVec('4 4'), panelColor - (panelColor * 0.85), alph + 0.25, 0 );
+		drawpic( toolTipOrigin + panelAdjust, panelImage, targetSize, panelColor, alph + 0.25, 0 );
 	}
 	gui_wrapText( toolTipOrigin + panelAdjust, targetSize, tipMessage, fontSize, textColor, alph); 
   drawfont = drawfont_prev;

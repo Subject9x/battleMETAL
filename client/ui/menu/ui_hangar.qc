@@ -235,7 +235,7 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
   sofs = nofs;
   sofs_y = sofs_y + gui_percentYRaw(4);
   while(ui_lst_cnt <= 24){
-    local vector lofs, clr, iofs;
+    local vector lofs, iofs;
     local float nameLen;
     mechId = UNLOCKED_MECHS[ui_lst_cnt];
     if( mechId != 0){
