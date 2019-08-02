@@ -20,12 +20,13 @@ void() data_projectile_ini_plasma_={
   self.data_velocity = 1600;
   self.model = "q3mdl/proj/mdl_proj_rpc.md3";
   self.data_lifetime = 0.649;
+  self.alpha = 0.85;
   
   //cosmetics
   self.effects = (EF_NOSHADOW | EF_ADDITIVE);
   self.modelflags = 0;
   self.traileffectnum = particleeffectnum("TE_RPC_TRAIL");
-  self.think = SUB_Null;
+  self.think = data_projectile_plasma_think_;
 };
 
 void() data_projectile_plasma_burn_ini_={
@@ -41,7 +42,7 @@ void() data_projectile_plasma_burn_ini_={
   self.think = data_projectile_plasma_burn_th;
   self.nextthink = time + 0.01;
   self.data_lifetime = time + data_projectile_plasma_burn_time;
-  self.alpha = 0;
+  self.alpha = 0.67;
 };
 
 void() data_projectile_plasma_burn_th={
@@ -84,9 +85,8 @@ void() data_projectile_plasma_touch={
       newmis.enemy = other;
       newmis.cockpit = hit;
       newmis.damageValue = self.damageValue;
-      newmis.damageType = self.damageType;
+      newmis.damageType = self.damageType | EFF_PRC;
       newmis.owner = self.owner;
-      //setmodel(newmis, "q3mdl/testball.md3");
       setsize(newmis, '-1 -1 -1', '1 1 1');
       if( (other.data_type == DATA_MECH) ){
         setorigin(newmis, newmis.cockpit.origin);
@@ -94,7 +94,6 @@ void() data_projectile_plasma_touch={
       else{
         setorigin(newmis, self.origin);
       }
-      //newmis.effects = EF_NODRAW;
       newmis.think = data_projectile_plasma_burn_ini_;
       newmis.nextthink = time + 0.01; 
     }

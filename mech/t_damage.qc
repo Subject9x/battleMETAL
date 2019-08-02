@@ -323,58 +323,42 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
 };
 
 /*
-  2 jan 2017
-  quake c is beyond subtetly - its not worth the effort to really make this 
-  code nice. This func brute forces a search for the closest mech component
-  when a shot hits the player's main bbox.
-  
-  many a clever approach was attempted before I sank into exhaustion to use this.
-  :(
+  finds closest sub-entity
 */
 entity(vector point, float rad, entity trg) t_find_part={
   
   local float cur_dist;
-  local entity  unitPart, f_wep, toSender;
+  local float diff;
+  local entity  unitPart, toSender;
   cur_dist = rad;
   unitPart = trg;
-  f_wep = trg;
   while(unitPart){
-    local float diff;
-    if(unitPart != trg){
-      diff = vlen(point - unitPart.origin);
-      if(unitPart.deadflag <= DEAD_NO){
-        if(diff < cur_dist){
-          cur_dist = diff;
-          toSender = unitPart;
-        }
-      }
+    diff = vlen(point - unitPart.origin);
+    if(diff < cur_dist){
+      cur_dist = diff;
+      toSender = unitPart;
     }
     unitPart = unitPart.partNext; //includes weapons to help increase granularity
   }
-  
+
   //weapons can't be destroyed, BUT we can use their position to better find the closest mech piece.
-  if( toSender.partTypeId == M_ITEM ){
+  if( toSender.partTypeId == M_ITEM || toSender.partTypeId == M_CAMERA ){
     toSender = toSender.aiment;
   }
-  
-  //NOTE - perhaps only check for weapons when armor is below a certain threshold?
-  /*f_wep = closestWeapon(trg, point, rad);
-  if(f_wep != world){
-    if(f_wep != trg){
-      local float chk;
-      chk = vlen(point - f_wep.origin);
-      if(chk < cur_dist){
-        local entity part;
-        part = util_getPartFromName(f_wep.partParentId, trg);
-        if(part.health < (part.max_health / 3)){
-          toSender = f_wep;
-        }
-        else{
-          toSender = part;
-        }
-      }
+
+  //it's dumb, but unit heirarchy is only about 2 ents deep.
+  if( toSender.deadflag > DEAD_NO ){
+    toSender = toSender.aiment;
+    //2nd layer
+    if( toSender.deadflag > DEAD_NO ){
+      toSender = toSender.aiment;
     }
-  }*/
+  }
+
+  if( toSender.partTypeId == M_TOR_CENTER ){
+    toSender = trg;
+  }
+  
   return toSender;
 };
 

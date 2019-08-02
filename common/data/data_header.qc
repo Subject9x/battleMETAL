@@ -84,7 +84,7 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
 };
 
 void( vector thisPartOffset, entity partParent ) data_ini_camera_={
-  data_ini_unitPiece_( -1,  "q3mdl/testball.md3",  1, thisPartOffset, partParent, cockpit );
+  data_ini_unitPiece_( M_TOR_CENTER,  "q3mdl/testball.md3",  1, thisPartOffset, partParent, cockpit );
 };
 
 /*

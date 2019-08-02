@@ -56,6 +56,7 @@ float sv_gravity;
 //These should have been floats from the start
 //these are component id's (compid) for model pieces
 string MECH_PIECE    = "mech_piece";
+float M_CAMERA      = 1;
 float M_TOR_CENTER  = 2;
 float M_TOR_RIGHT   = 3;
 float M_TOR_LEFT    = 4;

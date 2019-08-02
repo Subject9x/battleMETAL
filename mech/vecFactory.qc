@@ -63,6 +63,7 @@ void() build_unit_camera={
   partParent = util_getPartFromName( cam.partParentId, this);
   
   self = cam;
+    self.partTypeId = M_CAMERA;
     self.classname = "camera";
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
     setmodel( self, "q3mdl/testball.md3");
