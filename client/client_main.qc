@@ -192,6 +192,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   //setproperty(VF_SIZE, vf_sz);   //set how wide the view is (full width)
   
   //VF_ORIGIN+VF_ANGLES+VF_AFOV+VF_MIN+VF_SIZE
+  
   setproperty(VF_ORIGIN, pmove_org);
   setproperty(VF_ANGLES, input_angles);
   setproperty(VF_FOV, fovvec);
@@ -253,7 +254,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         MENU_ACTIVE = FALSE;
         CLIENT_MENU_menu_choice = 0;
         setcursormode(0);
-        if( MECH_DATA_ID != CLIENT_data_idx){
+        if( MECH_DATA_ID != CLIENT_data_idx ){
           ui_data_load_mech(CLIENT_data_idx);
         }
       }

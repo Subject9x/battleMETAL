@@ -23,7 +23,9 @@ void() client_push_player_info={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_CLIENT_INFO );
-  
+
+  WriteByte( MSG_ONE, self.deadflag );
+
   WriteCoord( MSG_ONE, self.origin_x );
   WriteCoord( MSG_ONE, self.origin_y );
   WriteCoord( MSG_ONE, self.origin_z );

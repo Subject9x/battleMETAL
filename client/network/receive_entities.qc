@@ -17,7 +17,7 @@ void() client_get_info={
   //WARNING:
   //SVC_SETVIEW changes local_playerentum to Camera's Ent ID!
   //client = entitybyindex( getstati(STAT_PLR_ENT_ID) );
-
+  CLIENT_player_deadflag = ReadByte();
   CLIENT_entorg  = te_read_vector();
   CLIENT_radar_range  = ReadLong(); 
   CLIENT_data_type = getstati(STAT_PLR_DTYPE);

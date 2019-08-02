@@ -217,7 +217,6 @@ void() PlayerPostThink = {
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
   
-  
   if(self.data_type == DATA_MECH){
     self.stat_plr_camx = self.cockpit.c_ofs_x;
     self.stat_plr_camy = self.cockpit.c_ofs_y; 
@@ -232,12 +231,13 @@ void() PlayerDie={
 		return;
 	}
 	if(self.data_type == DATA_MECH){
-    msg_entity = self;
-    WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-    WriteEntity(MSG_ONE, self);
     mech_clearWeaponGroups();
     mech_player_die();
     client_push_player_info();
+    msg_entity = self;
+    WriteByte( MSG_ONE, SVC_SETVIEWPORT );
+    WriteEntity( MSG_ONE, self );
+    self.weaponmodel = "";
   }
   self.effects = 0;
   
@@ -248,10 +248,11 @@ void() PlayerDie={
   setsize(self, '-4 -4 -4', '4 4 4');
 	
   if (self.velocity_z < 10)
-    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 250));
+    self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 100));
   
 	self.angles_x = 0;
 	self.angles_z = 0;
+  self.angles_y = 0;
   self.avelocity = '0 0 0';
   
   self.think = PlayerDieEnd;
@@ -294,16 +295,6 @@ void() PlayerDead={
 
 //called in PlayerPreThink() when self.deadflag == DEAD_DEAD
 void() PlayerDeathThink={
-	local float		forward;
-	if ((self.flags & FL_ONGROUND)){
-		forward = vlen (self.velocity);
-		forward = forward - 20;
-		if (forward <= 0)
-			self.velocity = '0 0 0';
-		else	
-			self.velocity = forward * normalize(self.velocity);
-  }
-
 // wait for all buttons released
 	if (self.deadflag == DEAD_DEAD){
 		if (self.button2 || self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7)

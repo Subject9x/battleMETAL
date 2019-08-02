@@ -54,14 +54,10 @@ void() player_makeMech={
   msg_entity = self;
   WriteByte(MSG_ONE, SVC_SETVIEWPORT);
   WriteEntity(MSG_ONE, self.cockpit);
-  WriteByte(MSG_ONE, SVC_SETANGLES);
-  WriteAngle(MSG_ONE, self.cockpit.angles_x);
-  WriteAngle(MSG_ONE, self.cockpit.angles_y);
-  WriteAngle(MSG_ONE, self.cockpit.angles_z);
   
   droptofloor();
   
-  self.currentWeaponGroup = self.w_group1;  
+  self.currentWeaponGroup = self.w_group1;
   
   if( cvar("developer") ){
     self.power_timer = time + POWERUP_DEBUG;
