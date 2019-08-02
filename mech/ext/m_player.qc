@@ -164,7 +164,6 @@ void() PlayerPostThink = {
   }
   
   //DEBUG / DEV ONLY!
-  local vector v;
   if( cvar("developer") ){
     if(self.button0){
       makevectors(self.v_angle);

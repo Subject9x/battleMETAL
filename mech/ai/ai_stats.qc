@@ -57,7 +57,6 @@ void() ai_unit_ini_var={
 void(float rank) ai_pilot_ini_stats={
   local float mod_am;
   local float mod_sh;
-  local float mod_yaw;
     
   self.ai_fov = ai_pilot_field_of_view(rank);
   self.ai_view = ai_pilot_view_range(rank);

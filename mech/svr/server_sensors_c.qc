@@ -12,7 +12,7 @@ void() server_make_sweep={
   local float sweep, yaw, low, high;
   local entity blip;
   
-    
+  //TODO - split patterns by upgrade module
   //Radar 1 - 'circular sweep pattern'
   /*if( self.data_type != DATA_POBS ){
     //TODO - Magic numbers

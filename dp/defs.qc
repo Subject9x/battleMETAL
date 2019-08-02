@@ -1,8 +1,8 @@
 /*
-mech mod
-Author: Peter Roohr
-Date: 8/28/2016
-Overview: ran a diff on classic q1 defs.qc vs darkplaces defs.qc
+Darkplaces **
+
+
+** Overview: ran a diff on classic q1 defs.qc vs darkplaces defs.qc
 this is the outcome of that diff, only use is for this mod.
 */
 
@@ -700,7 +700,7 @@ void() SUB_Remove;
 void(entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 
 
-float (entity e, float healamount, float ignore) T_Heal; // health function
+//float (entity e, float healamount, float ignore) T_Heal; // health function
 
 float(entity targ, entity inflictor) CanDamage;
 
@@ -1084,10 +1084,10 @@ float CHAN_WEAPON2            = 7;
 .float keys_silver;
 .float keys_gold;
 
-.float(entity player, entity item) pickupevalfunc; // returns rating for item considering player's condition (don't pick up health if it's not needed, etc)
+//.float(entity player, entity item) pickupevalfunc; // returns rating for item considering player's condition (don't pick up health if it's not needed, etc)
 
 // called whenever damage is done, if not supplied there is no visible effect.
-.void(vector org, float bodydamage, float armordamage, vector vel, float damgtype) bleedfunc;
+//.void(vector org, float bodydamage, float armordamage, vector vel, float damgtype) bleedfunc;
 
 // several counters
 .float count1, count2, count3, count4, count5, count6, cnt1, cnt2;
@@ -1101,7 +1101,7 @@ float maxdecors;
 .float createdtime;
 
 //void(vector org, entity en, vector dir, float splattype, float importance) newbloodsplat;
-void(vector org, float bodydamage, float armordamage, vector vel, float damgtype) genericbleedfunc;
+//void(vector org, float bodydamage, float armordamage, vector vel, float damgtype) genericbleedfunc;
 
 // damage stuff
 
@@ -1147,5 +1147,5 @@ vector raddamage_lasthit;
 
 void(entity targ, entity attacker, string dmsg, float dtype, void(entity t, entity a, string m, float dtyp) obitfunc) ClientObituary;
 
-void() monster_death_use;
+//void() monster_death_use;
 

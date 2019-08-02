@@ -771,7 +771,6 @@ void() ai_gev_flank6={
 */
 void(entity attacker) ai_gev_panic1={
   local entity friend;
-  local float vis;
   
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )

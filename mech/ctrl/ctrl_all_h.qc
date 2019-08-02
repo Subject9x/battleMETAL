@@ -1,5 +1,5 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/1/2016
 mod - 1/15/2019 - a few refactors

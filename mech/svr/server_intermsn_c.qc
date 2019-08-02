@@ -198,7 +198,7 @@ void() execute_changelevel={
 };
 
 void() changelevel_touch={
-	local entity	pos;
+
 	if (other.classname != "player")
 		return;
 

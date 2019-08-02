@@ -806,7 +806,6 @@ void() ai_spg_charge4={
 */
 void(entity attacker) ai_spg_panic1={
   local entity friend;
-  local float vis;
   
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )

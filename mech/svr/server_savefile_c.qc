@@ -39,7 +39,7 @@ void(string mapNext) savefile_changemap={
 //checks to see if item is already on list
 string(string item, string source) savefile_insert={
   local string update, line;
-  local float com, tokens, itr;
+  local float tokens, itr;
   tokens = tokenizebyseparator(item, " ");
   update = "";
   line = strcat(" ", source);
@@ -72,7 +72,7 @@ string(string item, string source) savefile_insert={
 
 //functions
 void() savefile_load={
-  local float flannel, argc, line_tag, line_val, line_array, line_cntr;
+  local float flannel, argc, line_tag;
   local string file, contents, line;
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_READ);
@@ -99,7 +99,7 @@ void() savefile_load={
 
 void() savefile_save={
   local float flannel;
-  local string file, line;
+  local string file;
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
@@ -114,7 +114,7 @@ void() savefile_save={
 
 void() savefile_default={
   local float flannel;
-  local string file, line;
+  local string file;
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");

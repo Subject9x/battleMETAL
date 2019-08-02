@@ -36,7 +36,6 @@ void() map_objective_mission_conclude_th={
   local entity player;
   local entity objective;
   local float successCheck;
-  local string toMap;
   
   if( MISSION_STATUS ){
     if( !self.map || (self.map == "")){

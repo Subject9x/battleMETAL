@@ -1570,7 +1570,6 @@ void() ai_mech_sk_hunt16={
 */
 void(entity attacker) ai_mech_sk_panic1={
   local entity friend;
-  local float vis;
   
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )

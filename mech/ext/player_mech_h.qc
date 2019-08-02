@@ -1,5 +1,5 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/7/2016
 Overview: head for mech management functions

@@ -27,7 +27,7 @@ Inputs
 */
 
 void() map_damage_zone_particles_shields={
-  local vector velocityOffset, particleOrigin, particleOffset;
+  local vector velocityOffset, particleOffset;
   
   velocityOffset = self.origin + (v_up * 16);
   te_particlerain( self.absmin, self.absmax, normalize(velocityOffset - self.origin) * 50, floor(self.maxs_x / 84), 244); 
@@ -58,7 +58,7 @@ void() map_damage_zone_particles_shields={
 };
 
 void() map_damage_zone_particles_armor={
-  local vector velocityOffset, particleOrigin, particleOffset;
+  local vector velocityOffset, particleOffset;
   
   velocityOffset = self.origin + (v_up * 16);
   te_particlecube( self.absmin, self.absmax, normalize(velocityOffset - self.origin) * 5, floor(self.maxs_x / 32), 176, FALSE, 1); 

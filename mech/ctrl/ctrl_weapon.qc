@@ -22,11 +22,6 @@ void(entity wep) ctrl_weapon_think={
     }  
     if( self.think ){
       self.think();
-        /*if(self.w_isready){
-          ctrl_weapon_isReady(self, self.stat_wep_rel);
-        }else{
-          ctrl_weapon_isReload(self, self.stat_wep_rel);
-        }*/
       self.think = self.think;
     }
   self = weaponOwner;

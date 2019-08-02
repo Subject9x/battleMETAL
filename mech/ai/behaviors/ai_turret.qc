@@ -26,8 +26,7 @@ void() temp_chunk_burn={
   TH_DIE
 */
 void() ai_turret_die={
-  local vector new_org, vfx_org, v;
-  local string nmdl, cmdl;
+  local vector  v;
   
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;

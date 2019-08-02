@@ -31,8 +31,6 @@ void() map_fail_objective_use={
 /*QUAKED
 */
 void() map_fail_objective={
-  local vector tempMin;
-  local vector tempMax;
   
   self.movetype = MOVETYPE_NONE;
   if( (self.spawnflags & 2) ){

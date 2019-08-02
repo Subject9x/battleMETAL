@@ -58,10 +58,10 @@ void() ctrl_updateLegs={
 
 void() ctrl_dieLegs={
   local entity this;
+  local vector v1, v2;
+  
   newmis = spawn();
   this = self;
-    local vector v1, v2;
-    local float f1, f2, f3;
     v1 = this.owner.mins;
     v2 = this.owner.maxs;
     v1_z = v1_z - (v1_z / 2);

@@ -44,7 +44,10 @@ void( ) FRIK_FILE_precaches =
 //============================
 //   FILE PATHS           
 //============================
+#ifdef CSQC
 string MAP_NAME;  //strips mapname global of junk
+float UNLOCKED_MECHS[256];
+#endif
 string PATH_DATA_MAP = "map_scripts";
 string PATH_DATA_ANIM = "anim";
 string PATH_DATA_SAVE = "saves";
@@ -84,7 +87,6 @@ float PLAYER_INTERMSN = 8;      // Client has entered an intermission event.
 //============================
 float GAME_TOTAL_MECHS = 256; //how many distinct mechs the game should assume might exist for UI / unit data purposes
 float GAME_TOTAL_ITEMS = 64; //how many distinct mechs the game should assume might exist for UI / unit data purposes
-float UNLOCKED_MECHS[256];
   //don't mess with this really unless...no just don't mess with it.
 string DATA = "data";
 float DATA_POBS = 1; //player observer mode

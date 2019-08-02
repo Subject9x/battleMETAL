@@ -1,5 +1,5 @@
 /*
-mech mod
+battleMETAL
 Author: Peter Roohr
 Date: 5/10/2017
 Overview: definitions for terrains and their effects

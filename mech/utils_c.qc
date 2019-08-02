@@ -77,7 +77,7 @@ float(entity t) util_getMechHpAverage={
 
 float(entity t) util_getMechHpTotal={
   if(t != world){
-    local float total, cur;
+    local float total;
     total = t.max_health + (t.armLeft.max_health * 2) + (t.torsoLeft.max_health * 2) + t.legs.max_health;
     return total;
   }
@@ -97,7 +97,7 @@ float( float yee, float targAng, float buffer ) util_checkAngNotIdeal={
 };
 
 vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea={
-  local vector locus, probe, destin;
+  local vector locus;
   local float dist, side, dir, box;
   box = sz_max_x * 2;
   dist = box * util_roll_dice(4);
@@ -137,8 +137,9 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   
   adj = self.c_ofs + self.w_fire_ofs;
   src = self.owner.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);  
-  acc_x = (weaponSpread_x * playerAcc);
-  acc_y = (weaponSpread_y * playerAcc);
+  acc = weaponSpread;
+  acc_x = acc_x * playerAcc;
+  acc_y = acc_y * playerAcc;
   
   acc_x = acc_x * crandom();
   acc_y = acc_y * crandom();

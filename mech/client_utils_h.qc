@@ -5,9 +5,11 @@ Date: 8/27/2016
 Overview: client utility methods, pulled from client.qc
 this is the header.
 */
-float MSG_ENTITY = 5;
-.float(entity ent, float changedflags) SendEntity;
-.float SendFlags;
+
+// if ever the code want's to try THIS again :/
+//float MSG_ENTITY = 5;
+//.float(entity ent, float changedflags) SendEntity;
+//.float SendFlags;
 
 /*
   ENGINE CONSTANTS

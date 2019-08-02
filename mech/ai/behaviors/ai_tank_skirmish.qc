@@ -1385,7 +1385,6 @@ void() ai_tank_sk_hunt10={
 */
 void(entity attacker) ai_tank_sk_panic1={
   local entity friend;
-  local float vis;
   
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_updateTank )

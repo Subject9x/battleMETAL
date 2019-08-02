@@ -329,14 +329,14 @@ void() misc_explobox2 =
 float SPAWNFLAG_SUPERSPIKE	= 1;
 float SPAWNFLAG_LASER = 2;
 
-void(vector org, vector vec) LaunchLaser;
+//void(vector org, vector vec) LaunchLaser;
 
 void() spikeshooter_use =
 {
 	if (self.spawnflags & SPAWNFLAG_LASER)
 	{
 		sound (self, CHAN_VOICE, "enforcer/enfire.wav", 1, ATTN_NORM);
-		LaunchLaser (self.origin, self.movedir);
+		//LaunchLaser (self.origin, self.movedir);
 	}
 	else
 	{
@@ -480,8 +480,7 @@ void() bubble_remove =
 
 void() bubble_bob =
 {
-local float		rnd1, rnd2, rnd3;
-local vector	vtmp1, modi;
+  local float		rnd1, rnd2, rnd3;
 
 	self.cnt = self.cnt + 1;
 	if (self.cnt == 4)

@@ -25,7 +25,6 @@ Overview
 .float w_firerate;
 .float w_currentammo;
 .float w_isburst;   //ugh
-.float w_isready;
 .float w_state;   //double ugh
 .float ai_weaponEnergy; //current max energy cost.
 .float ai_attackPreviousEnergy; //cached every attack call, compared when new attack is made.
