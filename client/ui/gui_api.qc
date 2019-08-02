@@ -494,7 +494,7 @@ vector(vector sz) gui_getCenter={
 
 
 void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr, float alpha, float flg) gui_renderImageReel={
-  local vector isz, ratio, split_sz, split_org;
+  local vector isz;
   isz = draw_getimagesize(src_img);
   clipSize_x = clipSize_x / isz_x;
   clipSize_y = clipSize_y / isz_y;
@@ -521,7 +521,7 @@ void(float select, vector ofs, vector r_sz, vector ln_sz1, vector clr1, vector l
 */
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText={
   local float totes, token, line_row, line_length;
-  local vector vloc, varea, textOrg;
+  local vector varea, textOrg;
  
   varea = gui_percentToPixelRawVec(area);
   totes = tokenizebyseparator(text, " ");
@@ -532,7 +532,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   line_length = 0;
   while(token <= totes){
     local vector charpos;
-    local float charlen, line_len, pipe;
+    local float charlen, pipe;
     local string toke;
     
     toke = argv(token);
@@ -586,8 +586,6 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
 void(string tipMessage, vector targetSize, vector fontSize, string panelImage, vector cursorOffset, vector textColor, vector panelColor, float alph ) gui_toolTipMessage={
 	local vector toolTipOrigin;
 	local vector panelAdjust;
-	
-	local vector boundsCheck;
 	
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;

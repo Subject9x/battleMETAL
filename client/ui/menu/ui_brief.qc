@@ -329,7 +329,7 @@ void(vector ofs) menu_objIntelSwitchPanel={
   lists objectives in numbered order based on MSN_OBJ_DESC[] array order.
 */
 void(vector ofs) menu_briefObjectivePanel={
-  local vector bpos, tpos, lofs;
+  local vector bpos, lofs;
   local float lst_idx, eol, line_rtn;
   local vector objectiveOffset;
   local string desc;
@@ -374,7 +374,6 @@ void(vector ofs) menu_briefObjectivePanel={
 */
 void(vector ofs) menu_briefIntelPanel={
   local vector bpos;
-  local string intel;
   local vector fpos;
   
   drawfont_prev = drawfont;

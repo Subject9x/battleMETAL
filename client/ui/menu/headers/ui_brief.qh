@@ -33,7 +33,7 @@ void() menu_briefListener_onHover;
 void() menu_briefListener_onKeyUp;
 
 //Listener hooks called by menu_deployListener
-void() navpointListener;
+//void() navpointListener;
 void() objIntelSwitchListener;
 void() briefSoundListener;
 

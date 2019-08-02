@@ -380,7 +380,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   }
   
   if( cvar("developer") ){
-    local vector viewspot, viewang, porg, pang, torg;
+    local vector viewspot, porg, pang, torg;
     viewspot_x =  getstatf(STAT_PLR_ORG_X);
     viewspot_y =  getstatf(STAT_PLR_ORG_Y);
     viewspot_z =  getstatf(STAT_PLR_ORG_Z);

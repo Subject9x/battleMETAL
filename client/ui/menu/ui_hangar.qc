@@ -39,7 +39,7 @@ void() menu_hangarListener_onHover={
 };
 
 void() mechSelectListener={
-  local float found, vsiz;
+  local float found;
   
   if(menu_checkMouseInBounds(cursorpos, gui_percentToPixel(0.025, 0.0416), gui_percentToPixel(0.075, 0.4166), FALSE)){
     if(menu_checkMouseInBounds(cursorpos, MECHLIST_ORG_LIGHT, MECHLIST_SIZE_LIGHT, TRUE)){
@@ -89,11 +89,10 @@ void() menu_hangarDrawFrame={
 };
 
 void(vector ofs) menu_hangar_MechDisplay={
-  local vector nofs, hofs, mpos, i_sz, hardpointGraphCenter;
+  local vector nofs, hofs, i_sz, hardpointGraphCenter;
   local float hardpointItr;
   local entity hardpoint;
   local vector hardpointOffset;
-  local entity partParent;
   local vector hardpointCoord;
   local vector mechSize;
   local vector mechMins;
@@ -307,9 +306,8 @@ void(vector ofs, float mechSize, string listName, vector listNameColor, float me
 };
 
 void(vector ofs) menu_hangar_MechInfo={
-  local vector nofs, labelOrg, t_color;
+  local vector nofs, labelOrg;
   local float slen;
-  local string type;
   
   local vector fontSize, fontSizeSmall;
   
@@ -377,7 +375,6 @@ void(vector ofs) menu_hangar_MechInfo={
 //Displays the fluff text that describes this unit, mostly helpful to give the overall idea of the unit.
 void(vector ofs) menu_hangar_MechFluff={
   local vector nofs, fpos;
-  local float lne_idx, argc;
   
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;

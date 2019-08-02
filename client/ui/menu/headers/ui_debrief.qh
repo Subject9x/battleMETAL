@@ -13,7 +13,7 @@ float MENU_DEBRIEF_total_monsters;
 float MENU_DEBRIEF_total_allies;
 float MENU_DEBRIEF_total_kills;
 float MENU_DEBRIEF_total_losses;
-float MENU_DEBRIEF_objectives_primary_complete;
+//float MENU_DEBRIEF_objectives_primary_complete;
 
 float  MENU_DEBRIEF_time_elapsed;
 

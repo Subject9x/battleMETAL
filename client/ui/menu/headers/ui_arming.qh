@@ -21,7 +21,6 @@ float WEPLIST_ENE_ARR[8];
 float WEPLIST_EXP_ARR[8];
 float WEPLIST_MSC_ARR[8];
 
-float HARDPOINTS[10]; //somehow making this '10' fixed a bug with hardpoint #9
 float WEPBITS[9];
 
 float UI_TOTAL_WEAPONS = 24; //weapon id's
@@ -75,10 +74,7 @@ float WEPNLIST_CNT;
 // weapon group E
   float WEPNGRP_CNT_E;
   vector WEPNGRP_ORG_E;
-  vector WEPNGRP_SIZE_E;  
-
-//hardpoint count
-  float HARDPOINT_CNT;
+  vector WEPNGRP_SIZE_E;
   
 //energy draw group vals
 float GROUP_ENE_1;
@@ -98,7 +94,6 @@ void() menu_armingListener_onClick;
 void() weaponSelectListener;
 void() hardpointListener;
 void() weaponGroupPanelListener;
-void() assignToHardpointListener;
 void() selectNextConfig;
 void() selectPrevConfig;
 
@@ -122,7 +117,6 @@ void(vector ofs) menu_arming_WeaponGroupPanel;
 void(vector ofs) menu_arming_energydraw;
 void(vector ofs) menu_arming_WeaponInfo;
 void(vector ofs) menu_arming_WeaponInHardpoint;
-void(vector ofs) menu_arming_AssignToHardpoint_btn;
 void() menu_arming_DrawItemDragIcon;
 
 void() cleanHardPoints;

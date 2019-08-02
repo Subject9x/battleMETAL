@@ -13,7 +13,7 @@ Overview:
 */
 void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshairs={
   //convergence
-  local vector spr_w, spr_h, hitclr, lckclr;
+  local vector spr_h, hitclr, lckclr;
   local vector acc_left, acc_right, acc_up, acc_dn;
   local vector drift;
   
@@ -58,7 +58,6 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
   RENDER DIRECTIONAL HIT INDICATORS
 */
 void(float hitDirBit) hud_renderDirectionHit={
-  local float l_fade; 
   if( (hitDirBit & STAT_HIT_LF) ){
     local vector lorg;
     lorg_x = VIEW_ORG_x + gui_percentXRaw(4);
@@ -188,7 +187,7 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
   RENDER SHIELD METER
 */
 void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis, float isClient) hud_renderShield={
-  local vector meterSize, label_org, shofs;
+  local vector meterSize, label_org;
   local vector meterColor;
   
   meterSize = gui_percentToPixelRawVec(mSize);
@@ -237,7 +236,7 @@ void(vector pos, float algn, float val, vector mSize, float bool_label, float lb
   RENDER ENERGY METER
 */
 void(vector pos, float algn, float val, vector mSize, float bool_label, float lbl_algn, vector lbl_ofs, float meterAxis) hud_renderEnergy={
-  local vector meterSize, label_org, shofs;
+  local vector meterSize, label_org;
   meterSize = gui_percentToPixelRawVec(mSize);
   pos = gui_percentToPixelRawVec(pos);
   pos = gui_calcAlign(pos, algn);
@@ -297,10 +296,9 @@ void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, 
   RENDER ENTIRE RADAR PANEL
 */
 void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
-
-  local vector  map_size, sweepvec;
+  local vector  map_size;
   local entity blip;
-  local float sweep, rad, nav;
+  local float nav;
   
   RADAR_ORG = radarOrg;
   
@@ -517,7 +515,6 @@ void(vector torg, float algn, float status, float radius, float flag) hud_render
   Weapon Icon over the Reload bar
 */
 void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon={
-  local entity wep_dat;
   local vector iofs, ofs, metSize, wepState;
   
   data_get_client_item_( HUD_DATA_weapon, w_id );
@@ -572,7 +569,6 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   Weapon Icon is right to Reload Bar
 */
 void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bit, float w_rel) hud_renderWeapon2={
-  local entity wep_dat;
   local vector iofs, ofs, metSize, wepState;
   
   data_get_client_item_( HUD_DATA_weapon, w_id );
@@ -625,7 +621,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   RENDER A SHIELD METER IN 3d SPACE
 */
 void(vector org, vector torg, float algn, float val, float radRange, float tsize, vector mSize, float meterAxis) hud_renderShieldOverlay={
-  local float height, dist;
+  local float dist;
   local vector vpos, nofs, aSize;
   if(val > 0){
     dist = vlen(org - torg);
@@ -916,7 +912,6 @@ void(float delta) hud_renderRepairValue={
 
 void(float warnOn, float warnDir) hud_render_warningBounds={
   local vector warnPos;
-  local vector warnClr;
   local vector warnArrowPos;
   local vector warnImgSize;
   local string warnMsg;
@@ -1136,8 +1131,8 @@ void() data_hud_frame={
   uid = 1;
   while( uid <= 32 ){
     local float objid, algn, lflag, lalign, axis, wbit;
-    local vector porg, vsize, color1, color2, lblofs;
-    local string icon, label;
+    local vector porg, vsize, color1, lblofs;
+    local string icon;
     objid = UI_DATA_UIDS[uid];
     switch( objid ){
       case HUD_UID_IMG_HELM:
@@ -1595,19 +1590,14 @@ void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_re
 /*
   Crosshair Type 4
 */
-void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4={
-  local float hitAlpha;
-  local vector hitColor;
-  
+void(float hitdirection, float lockval, float accuracy, float trg_shield) hud_renderCrosshair4={  
   local vector imgSize;
   local vector lockSize;
   local vector pipSizeH;
-  local vector hitSize;
   
   local vector imgCenter;
   local vector lockCenter;
   local vector pipLeft;
-  local vector hitCenter;
   
   imgSize = gui_percentToPixelRawVec('32 32');
   pipSizeH = gui_percentToPixelRawVec('34 34');

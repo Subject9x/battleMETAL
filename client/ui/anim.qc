@@ -22,7 +22,7 @@ void(string fileToOpen) anm_getFile={
 };
 
 void(string fileToOpen) anm_parseFile={
-  local float flannel, argc, line_tag, line_val, frame_count;
+  local float flannel, argc, line_tag, frame_count;
   local string file, contents, line;
   
   file = strcat(PATH_DATA_ANIM, "/", fileToOpen);
@@ -174,7 +174,7 @@ void() anm_execute_frame={
       drawpic(org, ANM_FRAME_IMG[ANM_FRAME_CUR], siz, frm_color, ANM_FRAME_ALPHA_CUR, 0);
     } 
     if(ANM_FRAME_MSG[ANM_FRAME_CUR] != ""){
-      local vector txtpos, txtstart;
+      local vector txtstart;
       local string line;
       local float tokens, tcnt;
       txt_color = '1 1 1';

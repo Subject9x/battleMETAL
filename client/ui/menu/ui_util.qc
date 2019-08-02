@@ -98,7 +98,6 @@ void(entity clnt) ui_renderClientName={
   the Arming Menu.
 */
 void(string imageIcon, vector org, float selected) ui_renderHardPointGraphic={
-  local entity wep;
   local vector iorg;
   local vector noEditColorAdj;
   
@@ -119,7 +118,7 @@ void(string imageIcon, vector org, float selected) ui_renderHardPointGraphic={
   Displays Hardpoint data for the selected Mech.
 */
 void(vector org, float hpt_num, float types, float sz) ui_renderHardpointRow={
-  local vector pofs, iofs, szofs, hptNumOrg, hptSizeOrg;
+  local vector pofs, hptNumOrg, hptSizeOrg;
   local float hardpointSize;
   local string hardpointLabel, hardpointSizeLabel;
   local float drawfontLocal;
@@ -208,7 +207,7 @@ void() ui_renderHUD_Highlight_frame={
 };
 
 void( entity box ) ui_renderHUDHighlight={
-  local vector bx_pos, bx_sz, bx_clr, l1, l2, l3;
+  local vector bx_pos, bx_sz, l1, l2, l3;
   local float x,y;
   
   x = (0.1/100) * VIEW_MAX_x;

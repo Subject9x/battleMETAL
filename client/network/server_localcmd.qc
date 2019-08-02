@@ -77,7 +77,7 @@ void() cl_exit_animatic={
 
 //Setup dependent UI arrays based on the master UNLOCKED_MECHS array.
 void() cl_get_mechs_sort={
-  local float itr, mechId, mechSize;
+  local float itr, mechId;
   local entity mechListItem;
   
   mechListItem = spawn();
@@ -101,8 +101,7 @@ void() cl_get_mechs_sort={
 
 // all mech unlocks to same array
 void(string mech_data) cl_get_mechs_all={
-  local string val;
-  local float itrTokens, itrUnlocks, tokens;
+  local float itrTokens, tokens;
   local float mechId;
   
   tokens = tokenizebyseparator(mech_data, " ",",");
@@ -123,8 +122,7 @@ void(string mech_data) cl_get_mechs_all={
 };
 
 void(string item_data) cl_get_items_all={
-  local string val;
-  local float itrTokens, itrUnlocks, tokens;
+  local float itrTokens, tokens;
   local float itemId;
   
   tokens = tokenizebyseparator(item_data, " ",",");

@@ -281,7 +281,6 @@ void() navBarListener={
   else if(menu_checkMouseInBounds(cursorpos,  gui_percentToPixelRawVec('288 10'), gui_percentToPixel(0.075, 0.025), TRUE)){
     //MENU - DEPLOY button
     if( (LAUNCH_VALIDATION & (VALID_MECH) ) ){
-      local entity nav;
       local float itr, idx;
       
       if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){

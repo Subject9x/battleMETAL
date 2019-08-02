@@ -209,7 +209,6 @@ void() ui_data_clear_item2={
 
 //difference here is we dont load config data
 float(float mechId, entity listEntity) ui_data_load_mech_info={
-  local float idx; 
   
   if( listEntity.data_idx > 0){
     ui_data_clear_mechdata();
@@ -246,7 +245,6 @@ float(float mechId, entity listEntity) ui_data_load_mech_info={
   hardpoint = listEntity.w_slot;
   itr = 1;
   while( hardpoint ){
-    local entity parentPart;
     local vector partOffset;
     
     partOffset = hardpoint.c_ofs;
@@ -263,7 +261,7 @@ float(float mechId, entity listEntity) ui_data_load_mech_info={
 };
 
 float(float id) ui_data_load_mech={
-  local float flannel, line_tag, line_val;
+  local float flannel, line_tag;
   local string file, contents, line;
   local float idx; 
   
@@ -337,7 +335,6 @@ float(float id) ui_data_load_mech={
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   itr = 1;
   while( hardpoint ){
-    local entity parentPart;
     local vector partOffset;
     
     partOffset = hardpoint.c_ofs;
@@ -508,7 +505,7 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     CLIENT_MENU_nex_grp4 = DATA_CONFIG_BUFFER_GRPS[4];
     CLIENT_MENU_nex_grp5 = DATA_CONFIG_BUFFER_GRPS[5];
     itr = 1;
-	hardpoint = UI_HANGAR_DATA_mech.w_slot;
+    hardpoint = UI_HANGAR_DATA_mech.w_slot;
     while( hardpoint ){
 	  data_get_client_item_(hardpoint, DATA_CONFIG_BUFFER_WEPS[itr]);
       itr = itr + 1;

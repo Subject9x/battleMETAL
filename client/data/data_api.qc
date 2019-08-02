@@ -32,7 +32,7 @@ void() data_mech_config_clearBuffer={
 
 void( float mechId, float configNum ) data_mech_config_save={
   local float flannel, itr;
-  local string file, line, group;
+  local string file, group;
   
   local entity hardpoint;
   local string writeWeaponLine;
@@ -74,7 +74,7 @@ void( float mechId, float configNum ) data_mech_config_save={
 };
 
 float( float mechId, float configNum ) data_mech_config_load={
-  local float flannel, line_tag, line_val;
+  local float flannel, line_tag;
   local float idx;
   local string file, contents, line;
   
@@ -125,7 +125,7 @@ float( float mechId, float configNum ) data_mech_config_load={
   We don't really want too much messing around here.
 */
 float() data_mech_config_valid={
-  local float valid, itr;
+  local float itr;
   local entity hardpoint;
   local entity weaponEnt;
   local float weaponId;

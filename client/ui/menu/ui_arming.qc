@@ -80,7 +80,6 @@ void() menu_armingListener_onHover={
 
 void() menu_armingListener_onKeyUp={
   local entity hardpoint;
-  local vector hardpointOffset;
   local float weaponType;
   
   if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
@@ -176,9 +175,8 @@ void() weaponSelectListener={
 };
 
 void() hardpointListener={
-  local float hpnt, hlist, wepbit;
+  local float wepbit;
   local entity hardpoint;
-  local vector hardpointOffset;
   local float hardpointItr;
   local float weaponBitFlag;
   
@@ -315,13 +313,12 @@ void() menu_arming_drawFrame={
 };
 
 void(vector ofs) menu_arming_HardpointGraph={
-  local vector nofs, panelOffset, hofs, hardpointCenter, panelImageSize;
+  local vector nofs, panelOffset, hardpointCenter, panelImageSize;
   local entity hardpoint;
   local float hardpointItr;
   
   local vector mechSize, iconSize;
   local vector mechMins, iconMins;
-  local vector mechIconCenter;
   local vector mechIconOrg;
   local vector mechIconSize;
   local vector mechIconTopOffset;
@@ -443,7 +440,7 @@ void(vector ofs) menu_arming_WeaponList={
 };
 
 void(vector parentOffset, vector offsetAdjust, float weaponType, string listName, vector listNameColor) menu_arming_WeaponList_draw={
-  local vector nofs, labelOrg, clr;
+  local vector nofs, labelOrg;
   local float labelLen;
   local float lst_idx, act_idx;
   local float itemId;
@@ -925,7 +922,6 @@ string(float bit) getNameOfWepType={
 float(float grp) calc_energy_draw={
   local float energySubTotal, weaponGroupBit;
   local entity hardpoint;
-  local string formatMe;
   
   weaponGroupBit = 1;
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
