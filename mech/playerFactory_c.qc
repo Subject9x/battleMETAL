@@ -73,6 +73,7 @@ void() player_makeMech={
   client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
   client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
   client_update_viewPitch( self.pitchMin, self.pitchMax );
+  client_playTrack(world.sounds, TRUE);  //entering hangar menu
 };
 
 void() player_unmakeMech={

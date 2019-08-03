@@ -90,7 +90,7 @@ void(string requestedSound, float cnt) snd_hud_trnsmsn_addtoqueue={
   idx = cur = 0;
   
   //apparently have to account for the '/n' coming in from the server
-  pathLen = strlen(requestedSound);
+  //pathLen = strlen(requestedSound);
   termin = strstrofs(requestedSound, ".ogg",0);
   requestedSound = substring(requestedSound, 0, termin + 4 );
 

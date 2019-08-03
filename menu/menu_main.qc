@@ -19,7 +19,7 @@ void() m_init={
   
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){
-    cmd("cd", " play 6");
+    cmd("cd", " play 2");
     m_toggle(1);
   }
   MOUSE_TARGET = null_entity;

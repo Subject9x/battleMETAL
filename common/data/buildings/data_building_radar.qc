@@ -208,6 +208,8 @@ void() building_human_radar={
   self.nextthink = time + 1;
   self.wait = time;
   
+  ai_voice_ini( TRUE );
+  
   //allows RADAR to call a specific trigger when it spots something
   if( self.trigOnTarget ){
     if( self.delay == -1 ){

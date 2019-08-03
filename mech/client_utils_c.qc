@@ -44,20 +44,18 @@ void() client_push_player_info={
     WriteByte( MSG_ONE, csqc_updateCompStat(self.armRight));
     
     WriteByte( MSG_ONE, self.hardpoint_cnt );
-    weaponStateBit = 1;
-    wep = self.w_slot;
+    wep = self;
+    weaponStateBit = 0;
     while( wep ){
+      wep = wep.w_slot;
       if( wep.deadflag == DEAD_NO ){
-        WriteByte(MSG_ONE, weaponStateBit);
-      }
-      else{
-        WriteByte(MSG_ONE, 0);
+        weaponStateBit = weaponStateBit | wep.w_group;
       }
       WriteByte( MSG_ONE, wep.reloadValue );
-      weaponStateBit = weaponStateBit * 2;
-      wep = wep.w_slot;
     }
-    
+
+    WriteShort( MSG_ONE, weaponStateBit );
+
     enm = num_for_edict(self.enemy);
     WriteByte( MSG_ONE, enm );
     if( self.enemy != world ){
@@ -244,7 +242,11 @@ void() client_push_mapobjects={
   }
 };
 
-void( entity client, string voiceMessage ) client_send_ai_voice={
+/*
+  Sends an AI voice sample to play.
+  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
+*/
+void( entity client, string voiceMessage, float limiter) client_send_ai_voice={
   local entity this;
   
   if( voiceMessage != "" ){
@@ -254,6 +256,7 @@ void( entity client, string voiceMessage ) client_send_ai_voice={
     WriteByte( MSG_ONE, SVC_TEMPENTITY);
     WriteByte( MSG_ONE, TE_AI_VOICE );
     WriteString( MSG_ONE, strcat(voiceMessage,"\n"));
+    WriteByte( MSG_ONE, limiter );
     self = this;
   }
 };

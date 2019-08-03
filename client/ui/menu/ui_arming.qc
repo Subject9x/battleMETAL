@@ -849,11 +849,11 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   
   //VALUES-----------
   //damage
-  gui_renderMeter(((ITEM2_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + gui_percentToPixelRawVec('75 -2'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+  gui_renderMeter(((ITEM2_DATA_DMG * ITEM2_DATA_CLIP) / 600)*100, icol + gui_percentToPixelRawVec('75 -2'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
   drawstring(icol + gui_percentToPixelRawVec('112 -2'), sprintf("%0.2f", ITEM2_DATA_DMG * ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
   
   //en cost
-  gui_renderMeter((ITEM2_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('75 11'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM1_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+  gui_renderMeter((ITEM2_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('75 11'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM2_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
   drawstring(icol + gui_percentToPixelRawVec('112 11'), sprintf("%0.2f", ITEM2_DATA_EN), '14 14', '1 1 1', 1, 0);
   
   //range

@@ -158,9 +158,9 @@ void() build_unit_weapon_list={
 };
 
 void( float nex_wep, entity own, .float stat) build_unit_weapon={
-  local entity this, partParent;
+  local entity parentEntity, partParent;
   local vector ofs;
-  this = self;
+  parentEntity = self;
   
   self = weaponBuild;
     self.data_idx = own.stat = nex_wep;
@@ -207,7 +207,7 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
       }
     }
     self.th_die = ctrl_die_weapon;
-  self = this;
+  self = parentEntity;
 };
 
 

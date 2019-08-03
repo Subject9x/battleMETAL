@@ -92,6 +92,8 @@ entity AI_NODES[128];
 .string ai_voice_roger;
 .string ai_voice_help;
 
+void( float randomBool ) ai_voice_ini;
+
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 void() ai_promote;

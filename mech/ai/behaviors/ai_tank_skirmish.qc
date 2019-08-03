@@ -1505,22 +1505,10 @@ void() ai_tank_sk_panic10={
 */
 void() ai_tank_skirmish={
 
-  //DEBUG
-  self.ai_voice_dead = "sound/voice/bot/bot_dying.ogg";
-  self.ai_voice_warn=" sound/voice/bot/bot_warn.ogg";
-  self.ai_voice_spot="sound/voice/bot/bot_spotted.ogg";
-  self.ai_voice_huntStart="sound/voice/bot/bot_huntStart.ogg";
-  self.ai_voice_huntEnd="sound/voice/bot/bot_huntEnd.ogg";
-  self.ai_voice_dying="sound/voice/bot/bot_dying.ogg";
-  self.ai_voice_dead="sound/voice/bot/bot_dead.ogg";
-  self.ai_voice_kill="sound/voice/bot/bot_kill.ogg";
-  self.ai_voice_roger="sound/voice/bot/bot_roger.ogg";
-  self.ai_voice_help="sound/voice/bot/bot_help.ogg";
-  // /DEBUG
-
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
+  ai_voice_ini( TRUE );
   
   trigger_event( self, trigOnSpawn); //event interface
   

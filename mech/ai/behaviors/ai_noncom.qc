@@ -231,6 +231,7 @@ void() ai_noncom_tank={
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
+  ai_voice_ini( TRUE );
   
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );

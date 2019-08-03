@@ -441,7 +441,7 @@ float() CSQC_Parse_TempEntity =
       client_event_boundary();
       return TRUE;
     case TE_AI_VOICE:
-      snd_hud_trnsmsn_addtoqueue(ReadString(), 1);
+      snd_hud_trnsmsn_addtoqueue(ReadString(), ReadByte());
       return TRUE;
     case TE_TARG_KILL:
       te_targ_kill();

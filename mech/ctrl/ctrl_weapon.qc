@@ -187,7 +187,7 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       if( updateDelay > -1 ){
         self.nextthink = time + updateDelay;
       }
-      else if( updateDelay == -1 ){
+      else{
         self.nextthink = time + self.data_lifetime;
       }
       util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);

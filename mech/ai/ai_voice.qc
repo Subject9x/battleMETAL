@@ -6,6 +6,39 @@ Overview:
   Impl file for AI voice events
 */
 
+
+void( float randomBool ) ai_voice_ini={
+  local float randoVoice;
+  if( randomBool ){
+    randoVoice = random();
+    
+    if( randoVoice <= 0.5){
+      //VOICE  A
+      self.ai_voice_warn ="sound/voice/voiceA/voiceA_scanning.ogg";
+      self.ai_voice_spot ="sound/voice/voiceA/voiceA_spotted.ogg";
+      self.ai_voice_huntStart ="sound/voice/voiceA/voiceA_lostvis.ogg";
+      self.ai_voice_huntEnd ="sound/voice/voiceA/voiceA_spotted.ogg";
+      self.ai_voice_dying ="sound/voice/voiceA/voiceA_heavyfire.ogg";
+      self.ai_voice_dead ="sound/voice/voiceA/voiceA_die.ogg";
+      self.ai_voice_kill ="sound/voice/voiceA/voiceA_kill.ogg";
+      self.ai_voice_roger ="sound/voice/voiceA/voiceA_copy.ogg";
+      self.ai_voice_help ="sound/voice/voiceA/voiceA_backup.ogg";
+    }
+    else{
+      //VOICE  B
+      self.ai_voice_warn ="sound/voice/voiceB/voiceB_scanning.ogg";
+      self.ai_voice_spot ="sound/voice/voiceB/voiceB_spotted.ogg";
+      self.ai_voice_huntStart ="sound/voice/voiceB/voiceB_lostvis.ogg";
+      self.ai_voice_huntEnd ="sound/voice/voiceB/voiceB_spotted.ogg";
+      self.ai_voice_dying ="sound/voice/voiceB/voiceB_heavyfire.ogg";
+      self.ai_voice_dead ="sound/voice/voiceB/voiceB_die.ogg";
+      self.ai_voice_kill ="sound/voice/voiceB/voiceB_kill.ogg";
+      self.ai_voice_roger ="sound/voice/voiceB/voiceB_copy.ogg";
+      self.ai_voice_help ="sound/voice/voiceB/voiceB_backup.ogg";
+    }
+  }
+};
+
 void() ai_sfx_spotted={
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
@@ -17,7 +50,7 @@ void() ai_sfx_spotted={
         return;
       }
       self.voiceTime = time + 3;
-      client_send_ai_voice( self.enemy, self.ai_voice_spot );
+      client_send_ai_voice( self.enemy, self.ai_voice_spot, 2);
     } 
   }
 };
@@ -33,7 +66,7 @@ void() ai_sfx_warning={
         return;
       }
       self.voiceTime = time + 2;
-      client_send_ai_voice( self.enemy, self.ai_voice_warn );
+      client_send_ai_voice( self.enemy, self.ai_voice_warn, 3 );
     }
   }
 };
@@ -48,7 +81,7 @@ void() ai_sfx_huntStart={
       return;
     }
     self.voiceTime = time + 0.5;
-    client_send_ai_voice( self.enemy, self.ai_voice_huntStart );
+    client_send_ai_voice( self.enemy, self.ai_voice_huntStart, 2);
   }
 };
 
@@ -63,7 +96,7 @@ void() ai_sfx_huntEnd={
         return;
       }
       self.voiceTime = time + 1;
-      client_send_ai_voice( self.enemy, self.ai_voice_huntEnd );
+      client_send_ai_voice( self.enemy, self.ai_voice_huntEnd, 4);
     }
   }
 };
@@ -80,7 +113,7 @@ void() ai_sfx_dying={
     local entity clients;
     clients = findchainflags(flags, FL_CLIENT);
     while( clients ){
-      client_send_ai_voice( clients, self.ai_voice_dying );
+      client_send_ai_voice( clients, self.ai_voice_dying, 5);
       clients = clients.chain;
     }
     self.voiceTime = time + 4;
@@ -98,9 +131,10 @@ void() ai_sfx_dead={
   local entity clients;
   clients = findchainflags(flags, FL_CLIENT);
   while( clients ){
-    client_send_ai_voice( clients, self.ai_voice_dead );
+    client_send_ai_voice( clients, self.ai_voice_dead, 5);
     clients = clients.chain;
   }
+    self.voiceTime = time + 1;
 };
 
 void() ai_sfx_kill={
@@ -113,7 +147,7 @@ void() ai_sfx_kill={
         }
         return;
       }
-      client_send_ai_voice( self.enemy, self.ai_voice_kill );
+      client_send_ai_voice( self.enemy, self.ai_voice_kill, 3);
       self.voiceTime = time + 1;
     }
   }
@@ -132,7 +166,7 @@ void() ai_sfx_roger={
     local entity clients;
     clients = findchainflags(flags, FL_CLIENT);
     while( clients ){
-      client_send_ai_voice( clients, self.ai_voice_roger );
+      client_send_ai_voice( clients, self.ai_voice_roger, 3);
       clients = clients.chain;
     }
   }
@@ -151,9 +185,10 @@ void() ai_sfx_help={
     local entity clients;
     clients = findchainflags(flags, FL_CLIENT);
     while( clients ){
-      client_send_ai_voice( clients, self.ai_voice_help );
+      client_send_ai_voice( clients, self.ai_voice_help, 4);
       clients = clients.chain;
     }
+    self.voiceTime = time + 1;
   }
 };
 

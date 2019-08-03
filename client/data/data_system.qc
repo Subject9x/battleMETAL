@@ -150,7 +150,7 @@ void( entity item, float id ) data_get_client_item_={
   local entity this;
   this = self;
   self = item;
-	initialize_data_item_(id);
+    initialize_data_item_(id);
   self = this;
 };
 

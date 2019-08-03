@@ -62,15 +62,11 @@ void() data_ini_attack_missile_activeradar_={
     canFire = TRUE;
   }
   else{
-    if( self.owner.stat_rdr_mode == TRUE ){
-      //check for 'Active' Radar
-      if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
-        //check to see if owner has a target lock
-        canFire = TRUE;
-      }
-    }
+    if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
+      //check to see if owner has a target lock
+      canFire = TRUE;
+    }  
   }
-  
   
   if( canFire ){
     ctrl_weapon_updateAmmo( TRUE );
@@ -82,16 +78,18 @@ void() data_ini_attack_missile_activeradar_={
     arc = arc + (v_right * (crandom() * 20));
    
     start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
-    
+ 
     ctrl_weapon_make_projectile( 0.15 );
-    NEWSHOT.c_ofs = arc;
+    NEWSHOT.c_ofs = start;
     NEWSHOT.enemy = self.owner.enemy;
+    NEWSHOT.velocity = '0 0 0';
     NEWSHOT.velocity = normalize( arc - start );
-    NEWSHOT.velocity = NEWSHOT.velocity * 100;
+    NEWSHOT.velocity = NEWSHOT.velocity * 50;
     NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
+    NEWSHOT.w_isburst = time + 4; //use to track curving behavior
     setorigin(NEWSHOT, start);
-    
-    sound (NEWSHOT, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+    NEWSHOT = world;
+    sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
     pointparticles( particleeffectnum("TE_ARH_MUZZLE"), start, normalize(arc - start) * 1, 1);
   }
 };
