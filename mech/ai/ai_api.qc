@@ -112,6 +112,10 @@ void( entity t ) ai_call_for_help={
     }
     ally = ally.chain;
   }
+  
+  if( allies < self.ai_rank ){
+    //TODO - panic
+  }
 }; 
 
 float(entity t) ai_valid_target={

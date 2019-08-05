@@ -321,7 +321,7 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
       self.velocity = VelocityForDamage (100);
       self.avelocity_x = random()*150;
       self.avelocity_y = random()*150;
-      self.avelocity_z = random()*100;
+      self.avelocity_z = random()*200;
     }
     self.th_die = SUB_Remove;
     self.owner = notChunk.owner;

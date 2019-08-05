@@ -55,21 +55,27 @@ float( entity t, float hpMax ) util_getPieceHpForAverage{
 };
 
 float(entity t) util_getMechHpAverage={
+      local float total, cur;
   if(t != world){
-    local float total, cur;
-    total = t.max_health;
-    total = total + util_getPieceHpForAverage( t.armLeft, TRUE );
-    total = total + util_getPieceHpForAverage( t.armRight, TRUE  );
-    total = total + util_getPieceHpForAverage( t.torsoLeft, TRUE  );
-    total = total + util_getPieceHpForAverage( t.torsoRight, TRUE  );
-    total = total + util_getPieceHpForAverage( t.legs, TRUE  );
-    cur = t.health;
-    cur = cur + util_getPieceHpForAverage( t.armLeft, FALSE );
-    cur = cur + util_getPieceHpForAverage( t.armRight, FALSE  );
-    cur = cur + util_getPieceHpForAverage( t.torsoLeft, FALSE  );
-    cur = cur + util_getPieceHpForAverage( t.torsoRight, FALSE  );
-    cur = cur + util_getPieceHpForAverage( t.legs, FALSE  );
-    total = cur / total;
+    if( t.data_type == DATA_MECH ){
+      total = t.max_health;
+      total = total + util_getPieceHpForAverage( t.armLeft, TRUE );
+      total = total + util_getPieceHpForAverage( t.armRight, TRUE  );
+      total = total + util_getPieceHpForAverage( t.torsoLeft, TRUE  );
+      total = total + util_getPieceHpForAverage( t.torsoRight, TRUE  );
+      total = total + util_getPieceHpForAverage( t.legs, TRUE  );
+      cur = t.health;
+      cur = cur + util_getPieceHpForAverage( t.armLeft, FALSE );
+      cur = cur + util_getPieceHpForAverage( t.armRight, FALSE  );
+      cur = cur + util_getPieceHpForAverage( t.torsoLeft, FALSE  );
+      cur = cur + util_getPieceHpForAverage( t.torsoRight, FALSE  );
+      cur = cur + util_getPieceHpForAverage( t.legs, FALSE  );
+    }
+    else{
+      total = t.max_health;
+      cur = t.health;
+    }
+      total = cur / total;
     return total;
   }
   return FALSE;

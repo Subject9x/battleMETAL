@@ -289,7 +289,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if( (trg.flags & FL_MONSTER) ){
-    if( util_getMechHpAverage( trg ) < 0.25 ){
+    if( util_getMechHpAverage( trg ) <= 0.5 ){
       otherSelf = self;
       self = trg;
         ai_sfx_dying();
@@ -311,6 +311,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
             self = dmgTrg.owner;
               client_update_moveSpeed(dmgTrg.owner.data_speed_forward, dmgTrg.owner.data_speed_strafe, dmgTrg.owner.data_speed_backward, "1", "0"); 
             self = otherSelf;
+          }
+          else{
+            ai_sfx_help();
           }
         }
       }

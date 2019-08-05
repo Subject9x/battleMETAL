@@ -21,13 +21,13 @@ void() data_ini_electro_repeater_={
   self.data_idx = 8;
   self.w_name = "ESR";
   
-  self.w_clipsize = 20;
+  self.w_clipsize = 10; //20;
   self.reloadRate = 0.07;
   self.reloadMax = 5;
   self.energyRate =  200;
   
   self.w_range = 200;
-  self.damageValue = 25;
+  self.damageValue = 16;//25;
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;
@@ -81,7 +81,24 @@ void() data_ini_attack_electro_repeater_={
     }
     return;
   }
-  
   pointparticles( particleeffectnum("TE_ESR_IMPACT_DIRT"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+  
+  //double-tap
+  ctrl_weapon_fireOffset();
+  trailparticles( world, particleeffectnum("TE_ESR_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
+  if( pointcontents(FIRE_ENDPOINT) == CONTENT_SKY ){
+    return;
+  }
+  if( trace_ent.takedamage ){
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_ENE, FIRE_ENDPOINT, '0 0 0');
+    if( trace_ent.shield > 0 ){
+      pointparticles( particleeffectnum("TE_ESR_IMPACT_SHIELD"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+    }
+    else{
+       pointparticles( particleeffectnum("TE_ESR_IMPACT_ARMOR"), FIRE_ENDPOINT + v_up * 1, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1, 1);
+    }
+    return;
+  }
+  
 };
 #endif

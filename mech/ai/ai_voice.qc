@@ -49,7 +49,7 @@ void() ai_sfx_spotted={
         }
         return;
       }
-      self.voiceTime = time + 3;
+      self.voiceTime = time + 1;
       client_send_ai_voice( self.enemy, self.ai_voice_spot, 2);
     } 
   }
@@ -65,7 +65,7 @@ void() ai_sfx_warning={
         }
         return;
       }
-      self.voiceTime = time + 2;
+      self.voiceTime = time + 0.5;
       client_send_ai_voice( self.enemy, self.ai_voice_warn, 3 );
     }
   }
@@ -102,6 +102,7 @@ void() ai_sfx_huntEnd={
 };
 
 void() ai_sfx_dying={
+  local entity clients;
   if( time > self.voiceTime ){
     if( !self.ai_voice_dying ){
       if( cvar("developer") ){
@@ -110,17 +111,17 @@ void() ai_sfx_dying={
       }
       return;
     }
-    local entity clients;
     clients = findchainflags(flags, FL_CLIENT);
     while( clients ){
       client_send_ai_voice( clients, self.ai_voice_dying, 5);
       clients = clients.chain;
     }
-    self.voiceTime = time + 4;
+    self.voiceTime = time + 0.25;
   }
 };
 
 void() ai_sfx_dead={
+  local entity clients;
   if( !self.ai_voice_dead ){
     if( cvar("developer") ){
       cons_logAString(self.classname, "<missing 'ai_voice_dead' sound>"); 
@@ -128,13 +129,12 @@ void() ai_sfx_dead={
     }
     return;
   }
-  local entity clients;
   clients = findchainflags(flags, FL_CLIENT);
   while( clients ){
     client_send_ai_voice( clients, self.ai_voice_dead, 5);
     clients = clients.chain;
   }
-    self.voiceTime = time + 1;
+    self.voiceTime = time + 0.1;
 };
 
 void() ai_sfx_kill={
@@ -148,12 +148,13 @@ void() ai_sfx_kill={
         return;
       }
       client_send_ai_voice( self.enemy, self.ai_voice_kill, 3);
-      self.voiceTime = time + 1;
+      self.voiceTime = time + 0.33;
     }
   }
 };
 
 void() ai_sfx_roger={
+  local entity clients;
   if( time > self.voiceTime ){
     if( !self.ai_voice_roger ){
       if( cvar("developer") ){
@@ -162,8 +163,7 @@ void() ai_sfx_roger={
       }
       return;
     }
-    self.voiceTime = time + 1;
-    local entity clients;
+    self.voiceTime = time + 0.25;
     clients = findchainflags(flags, FL_CLIENT);
     while( clients ){
       client_send_ai_voice( clients, self.ai_voice_roger, 3);
@@ -173,6 +173,7 @@ void() ai_sfx_roger={
 };
 
 void() ai_sfx_help={
+  local entity clients;
   if( time > self.voiceTime ){
     if( !self.ai_voice_help ){
       if( cvar("developer") ){
@@ -181,14 +182,12 @@ void() ai_sfx_help={
       }
       return;
     }
-    self.voiceTime = time + 1;
-    local entity clients;
+    self.voiceTime = time + 0.25;
     clients = findchainflags(flags, FL_CLIENT);
     while( clients ){
       client_send_ai_voice( clients, self.ai_voice_help, 4);
       clients = clients.chain;
     }
-    self.voiceTime = time + 1;
   }
 };
 
