@@ -1175,7 +1175,7 @@ void() data_hud_frame={
       case HUD_UID_ARM_PLAYER: 
         porg = UI_DATA_POS[uid];
         algn = UI_DATA_ALIGN[uid];
-        hud_renderArmorGraph(porg, algn, CLIENT_hp_ctor, CLIENT_hp_stor, CLIENT_hp_stor2, CLIENT_hp_arm, CLIENT_hp_arm2, CLIENT_hp_leg);
+        hud_renderArmorGraph(porg, algn, CLIENT_health_center, CLIENT_health_torso_left, CLIENT_health_torso_right, CLIENT_health_arm_left, CLIENT_health_arm_right, CLIENT_health_legs);
         break;
       case HUD_UID_SHIELD_PLAYER: 
         porg = UI_DATA_POS[uid];

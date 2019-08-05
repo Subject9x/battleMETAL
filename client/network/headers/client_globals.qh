@@ -52,12 +52,12 @@ float CLIENT_radar_range;
 float CLIENT_energy;
 float CLIENT_shield;
 
-float CLIENT_hp_ctor;
-float CLIENT_hp_leg;
-float CLIENT_hp_stor;
-float CLIENT_hp_stor2;
-float CLIENT_hp_arm;
-float CLIENT_hp_arm2;
+float CLIENT_health_center;
+float CLIENT_health_legs;
+float CLIENT_health_torso_left;
+float CLIENT_health_torso_right;
+float CLIENT_health_arm_left;
+float CLIENT_health_arm_right;
 
 float CLIENT_hardpoint_cnt;
 

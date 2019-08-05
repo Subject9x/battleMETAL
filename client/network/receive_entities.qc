@@ -14,6 +14,12 @@ void() client_get_info={
   local float localDataType;
   local float wep;
   local float weaponDelta;
+  local float lastHealthCenter;
+  local float lastHealthLegs;
+  local float lastHealthTorsoLeft;
+  local float lastHealthTorsoRight;
+  local float lastHealthArmLeft;
+  local float lastHealthArmRight;
   
   //WARNING:
   //SVC_SETVIEW changes local_playerentum to Camera's Ent ID!
@@ -28,12 +34,26 @@ void() client_get_info={
     CLIENT_energy = ReadShort();
     CLIENT_shield = ReadShort();
     
-    CLIENT_hp_ctor = ReadByte(); 
-    CLIENT_hp_leg = ReadByte(); 
-    CLIENT_hp_stor = ReadByte(); 
-    CLIENT_hp_stor2 = ReadByte(); 
-    CLIENT_hp_arm = ReadByte(); 
-    CLIENT_hp_arm2 = ReadByte();
+    lastHealthCenter = CLIENT_health_center;
+    lastHealthLegs = CLIENT_health_legs;
+    lastHealthTorsoLeft = CLIENT_health_torso_left;
+    lastHealthTorsoRight = CLIENT_health_torso_right;
+    lastHealthArmLeft = CLIENT_health_arm_left;
+    lastHealthArmRight = CLIENT_health_arm_right;
+    
+    CLIENT_health_center = ReadByte(); 
+    CLIENT_health_legs = ReadByte(); 
+    CLIENT_health_torso_left = ReadByte(); 
+    CLIENT_health_torso_right = ReadByte(); 
+    CLIENT_health_arm_left = ReadByte(); 
+    CLIENT_health_arm_right = ReadByte();
+
+    if( lastHealthLegs > 0 && CLIENT_health_legs <= 0 ){
+      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRTILEG, 1);
+    }
+    //todo - finish
+     
+    
     
     CLIENT_hardpoint_cnt = ReadByte();
     wep = 0;

@@ -275,11 +275,11 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       }
     }
  
-    snd_hud_vfx_armlistener(CLIENT_hp_stor2, 1, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(CLIENT_hp_stor, 2, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(CLIENT_hp_arm2, 4, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(CLIENT_hp_arm, 8, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(CLIENT_hp_leg, 16, SND_HUD_VFX_CRITLEG);
+    snd_hud_vfx_armlistener(CLIENT_health_torso_right, 1, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(CLIENT_health_torso_left, 2, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(CLIENT_health_arm_right, 4, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(CLIENT_health_arm_left, 8, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(CLIENT_health_legs, 16, SND_HUD_VFX_CRITLEG);
     
     //HUD SOUND SYSTEM LISTENERS
     snd_hud_vfx_statelistener(CLIENT_player_state);
@@ -288,7 +288,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     snd_hud_vfx_targkill(CLIENT_stat_trg_ddflg);
     
     //HUD RENDER FRAME SYSTEM
-    if( CLIENT_hp_ctor > 0 ){
+    if( CLIENT_health_center > 0 ){
       data_hud_frame();
       
       if(CLIENT_player_state == PLAYER_SPRINT_ON){

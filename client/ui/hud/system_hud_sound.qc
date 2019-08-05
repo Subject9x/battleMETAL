@@ -181,10 +181,21 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
       if( (CRITBITS & bit) ){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 2); 
         snd_hud_vfx_addtoqueue(snd, 6);
+        if( bit == 4 ){
+          text_hud_message_critical_left_arm();
+        }
+        else{
+          text_hud_message_critical_right_arm();
+        }
         CRITBITS = CRITBITS - (CRITBITS & bit);
       }
     }
   }
+};
+
+void( string critSound, float limiter ) snd_hud_vfx_criticalHit={
+  snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 2); 
+  snd_hud_vfx_addtoqueue(snd, limiter);
 };
 
 //SFX
