@@ -57,7 +57,6 @@ float RELOADING = 1;
 float WAITING = 2;
 float RECOIL = 4;
 
-
 //direction values
 float DIR_N   = 0;
 float DIR_NE  = 1;

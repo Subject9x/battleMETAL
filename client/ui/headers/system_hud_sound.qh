@@ -30,7 +30,7 @@ string SND_HUD_VFX_MSN_FAL;
 string SND_HUD_VFX_OBJ_PRIME;
 string SND_HUD_VFX_OBJ_SECON;
 string SND_HUD_VFX_OBJ_THIRD;
-string SND_HUD_VFX_OBJ_FOURT;
+//string SND_HUD_VFX_OBJ_FOURT;
 
 //Sound Queue globals
 float SQSIZE; //set to 6
@@ -39,30 +39,26 @@ float STIME_NEXT;
 float VQSIZE;
 float SQUED;
 string SOUNDQUEUE[6]; //match this with SQSIZE / VQSIZE
-string SQ1;
-string SQ2;
-string SQ3;
-string SQ4;
-string SQ5;
-string SQ6;
+float SQ_LAST_IDX;    //index of last sound in array before 'null' values;
 
 //Transmission Queue - for AI voices
-float TRSIZE;
 float TRTIME;
 float TR_TIME_NEXT;
 float TQSIZE;
 float TQUED;
-string TRANSMISSIONQUEUE[3];
-string TRQ1;
-string TRQ2;
-string TRQ3;
+string TRANSMISSIONQUEUE[8];
+float TRANSMISSIONQUEUE_ENT[8]; //entity ID of speaker
 
+//Voice arrays
+string AI_VOICE_A[10];
+string AI_VOICE_B[10];
+string AI_VOICE_C[10];
 
 float CRITBITS; //tracks sound playing for critical loss of mech parts
 
 void() snd_hud_vfx_frame;
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue;
-void(string requestedSound, float cnt) snd_hud_trnsmsn_addtoqueue;
+void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_trnsmsn_addtoqueue;
 
 void(float playerState) snd_hud_vfx_statelistener;
 void(float lockstate) snd_hud_vfx_locklistener;

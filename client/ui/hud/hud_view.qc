@@ -1075,6 +1075,23 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
   }
 };
 
+void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message={
+  local vector messageOrigin;
+  local float width;
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+ 
+  messageOrigin = gui_percentToPixelRawVec(msgOrg);
+  
+  width = stringwidth( messageVal, 0, messageFont);
+  messageOrigin = gui_calcAlign(messageOrigin, labelAlign);
+  messageOrigin_x = messageOrigin_x - gui_percentXRaw( width / 2 );
+ 
+  drawstring(messageOrigin, messageVal, messageFont, HUD_COLOR_DEF, labelAlpha, 0);
+    
+  drawfont = drawfont_prev;
+};
 /*
   Main API call for new text-based HUD system
 */
@@ -1259,6 +1276,11 @@ void() data_hud_frame={
           }
         }
         break;
+      case HUD_UID_MESSAGE_BOX:
+        HUD_TXT_ORG = UI_DATA_POS[uid];
+        HUD_TXT_SIZE = UI_DATA_SIZE[uid];
+        HUD_TXT_ALIGN = UI_DATA_ALIGN[uid];
+        break;
     }
     uid = uid + 1;
   }
@@ -1296,6 +1318,8 @@ void() data_hud_frame={
         break;
     }
   }
+
+  text_hud_message_frame();
 
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
   hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);

@@ -352,7 +352,7 @@ float(float id) ui_data_load_mech={
 
 float( float id ) ui_data_load_hud={
   ui_data_clear_huddata();
-  local float flannel, line_tag, uid;
+  local float flannel, line_tag, hudElementItr;
   local string file, contents, line;
   file = strcat(PATH_DATA_UI, "/hud/", HUD_DATA_NAMES[id], ".hud");
   flannel = fopen(file, FILE_READ);
@@ -361,7 +361,7 @@ float( float id ) ui_data_load_hud={
     return FALSE;
   }
   contents = fgets(flannel);
-  uid = 0;
+  hudElementItr = 0;
   line = fgets(flannel);
   while( (line != "") ){ 
     if( (line != "{") && (line != "}") && (substring(line,0, 2) != "//") ){
@@ -371,55 +371,55 @@ float( float id ) ui_data_load_hud={
       value = argv(3);
       if( token != ""){
         if( token == "uid"){
-          UI_DATA_UIDS[uid] = stof(value);
+          //serves as master switch when iterating through hud elements
+          UI_DATA_UIDS[hudElementItr] = stof(value);
         }
         if( token == "pos"){
-          UI_DATA_POS[uid] = stov(value);
+          UI_DATA_POS[hudElementItr] = stov(value);
         }
         if( token == "size"){
-          UI_DATA_SIZE[uid] = stov(value);
+          UI_DATA_SIZE[hudElementItr] = stov(value);
         }
         if( token == "icon"){
-          UI_DATA_IMG[uid] = strzone(value);
+          UI_DATA_IMG[hudElementItr] = strzone(value);
         }
         if( token == "valign"){
-          UI_DATA_ALIGN[uid] = stof(value);
+          UI_DATA_ALIGN[hudElementItr] = stof(value);
         }
         if( token == "color1"){
-          UI_DATA_COLOR1[uid] = stov(value);
+          UI_DATA_COLOR1[hudElementItr] = stov(value);
         }
         if( token == "color2"){
-          UI_DATA_COLOR2[uid] = stov(value);
+          UI_DATA_COLOR2[hudElementItr] = stov(value);
         }
         if( token == "label"){
-          UI_DATA_LABEL[uid] = strzone(value);
+          UI_DATA_LABEL[hudElementItr] = strzone(value);
         }
         if( token == "lalign"){
-          UI_DATA_LABEL_ALIGN[uid] = stof(value);
+          UI_DATA_LABEL_ALIGN[hudElementItr] = stof(value);
         }
         if( token == "axis"){
-          UI_DATA_AXIS_FLAG[uid] = stof(value);
+          UI_DATA_AXIS_FLAG[hudElementItr] = stof(value);
         }
         if( token == "lblofs"){
-          UI_DATA_LABEL_OFS[uid] = stov(value);
+          UI_DATA_LABEL_OFS[hudElementItr] = stov(value);
         }
         if( token == "wbit"){
-          UI_DATA_WEPBIT[uid] = stof(value);
+          UI_DATA_WEPBIT[hudElementItr] = stof(value);
         }
         if( token == "lflag"){
-          UI_DATA_LABEL_FLAG[uid] = stof(value);
+          UI_DATA_LABEL_FLAG[hudElementItr] = stof(value);
         }
       }
     }
     if( line == "{" ){
-      uid = uid + 1;
+      hudElementItr = hudElementItr + 1;
     }
     line = fgets(flannel);
   }
   fclose(flannel);
   return TRUE;
 };
-
 
 float(float id) ui_date_load_item1={
   

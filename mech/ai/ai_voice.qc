@@ -6,6 +6,17 @@ Overview:
   Impl file for AI voice events
 */
 
+/*float AI_VOICE_DEAD       = 0;
+float AI_VOICE_DYING      = 1;
+float AI_VOICE_HELP       = 2;
+float AI_VOICE_HUNT_END   = 3;
+float AI_VOICE_HUNT_START = 4;
+float AI_VOICE_KILL       = 5;
+float AI_VOICE_NOSPOT     = 6;
+float AI_VOICE_ROGER      = 7;
+float AI_VOICE_SPOTTED    = 8;
+float AI_VOICE_WARN       = 9;
+*/
 
 void( float randomBool ) ai_voice_ini={
   local float randoVoice;
@@ -14,43 +25,31 @@ void( float randomBool ) ai_voice_ini={
     
     if( randoVoice <= 0.5){
       //VOICE  A
-      self.ai_voice_warn ="sound/voice/voiceA/voiceA_scanning.ogg";
-      self.ai_voice_spot ="sound/voice/voiceA/voiceA_spotted.ogg";
-      self.ai_voice_huntStart ="sound/voice/voiceA/voiceA_lostvis.ogg";
-      self.ai_voice_huntEnd ="sound/voice/voiceA/voiceA_spotted.ogg";
-      self.ai_voice_dying ="sound/voice/voiceA/voiceA_heavyfire.ogg";
-      self.ai_voice_dead ="sound/voice/voiceA/voiceA_die.ogg";
-      self.ai_voice_kill ="sound/voice/voiceA/voiceA_kill.ogg";
-      self.ai_voice_roger ="sound/voice/voiceA/voiceA_copy.ogg";
-      self.ai_voice_help ="sound/voice/voiceA/voiceA_backup.ogg";
+      self.ai_voice_group = AI_VOICE_GROUP_A;
     }
     else{
       //VOICE  B
-      self.ai_voice_warn ="sound/voice/voiceB/voiceB_scanning.ogg";
-      self.ai_voice_spot ="sound/voice/voiceB/voiceB_spotted.ogg";
-      self.ai_voice_huntStart ="sound/voice/voiceB/voiceB_lostvis.ogg";
-      self.ai_voice_huntEnd ="sound/voice/voiceB/voiceB_spotted.ogg";
-      self.ai_voice_dying ="sound/voice/voiceB/voiceB_heavyfire.ogg";
-      self.ai_voice_dead ="sound/voice/voiceB/voiceB_die.ogg";
-      self.ai_voice_kill ="sound/voice/voiceB/voiceB_kill.ogg";
-      self.ai_voice_roger ="sound/voice/voiceB/voiceB_copy.ogg";
-      self.ai_voice_help ="sound/voice/voiceB/voiceB_backup.ogg";
+      self.ai_voice_group = AI_VOICE_GROUP_B;
     }
+  }
+  else{
+    //VOICE DEBUG
+    self.ai_voice_group = AI_VOICE_GROUP_C;
   }
 };
 
 void() ai_sfx_spotted={
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
-      if( !self.ai_voice_spot ){
+      if( !self.ai_voice_group ){
         if( cvar("developer") ){
           cons_logAString(self.classname, "<missing 'spot' sound>"); 
           cons_logAString("ai says:", "target spotted!");
         }
         return;
       }
-      self.voiceTime = time + 1;
-      client_send_ai_voice( self.enemy, self.ai_voice_spot, 2);
+      self.voiceTime = time + 0.33;
+      client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_SPOTTED, 1);
     } 
   }
 };
@@ -58,105 +57,91 @@ void() ai_sfx_spotted={
 void() ai_sfx_warning={
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
-      if( !self.ai_voice_warn ){
+      if( !self.ai_voice_group ){
         if( cvar("developer") ){
           cons_logAString(self.classname, "<missing 'warn' sound>"); 
           cons_logAString("ai says", "I think I see something");
         }
         return;
       }
-      self.voiceTime = time + 0.5;
-      client_send_ai_voice( self.enemy, self.ai_voice_warn, 3 );
+      self.voiceTime = time + 0.33;
+      client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_WARN, 2);
     }
   }
 };
 
 void() ai_sfx_huntStart={
-  if( (self.enemy.flags & FL_CLIENT) ){
-    if( !self.ai_voice_huntStart ){
-      if( cvar("developer") ){
-        cons_logAString(self.classname, "<missing 'huntStart' sound>"); 
-        cons_logAString("ai says", "hunting my target");
-      }
-      return;
+  if( !self.ai_voice_group ){
+    if( cvar("developer") ){
+      cons_logAString(self.classname, "<missing 'huntStart' sound>"); 
+      cons_logAString("ai says", "hunting my target");
     }
-    self.voiceTime = time + 0.5;
-    client_send_ai_voice( self.enemy, self.ai_voice_huntStart, 2);
+    return;
   }
+  self.voiceTime = time + 0.5;
+  client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_START, 2);
 };
 
 void() ai_sfx_huntEnd={
   if( time > self.voiceTime ){
-    if( (self.enemy.flags & FL_CLIENT) ){
-      if( !self.ai_voice_huntEnd ){
-        if( cvar("developer") ){
-          cons_logAString(self.classname, "<missing 'huntEnd' sound>"); 
-          cons_logAString("ai says", "can't find target, ending hunt");
-        }
-        return;
+    if( !self.ai_voice_group ){
+      if( cvar("developer") ){
+        cons_logAString(self.classname, "<missing 'huntEnd' sound>"); 
+        cons_logAString("ai says", "can't find target, ending hunt");
       }
-      self.voiceTime = time + 1;
-      client_send_ai_voice( self.enemy, self.ai_voice_huntEnd, 4);
+      return;
     }
+    self.voiceTime = time + 1;
+    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_END, 1) ;
   }
 };
 
 void() ai_sfx_dying={
-  local entity clients;
   if( time > self.voiceTime ){
-    if( !self.ai_voice_dying ){
+    if( !self.ai_voice_group ){
       if( cvar("developer") ){
         cons_logAString(self.classname, "<missing 'ai_voice_dying' sound>"); 
         cons_logAString("ai says", "I'm DYING");
       }
       return;
     }
-    clients = findchainflags(flags, FL_CLIENT);
-    while( clients ){
-      client_send_ai_voice( clients, self.ai_voice_dying, 5);
-      clients = clients.chain;
-    }
-    self.voiceTime = time + 0.25;
+    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DYING, 2) ;
+    self.voiceTime = time + 0.1;
   }
 };
 
 void() ai_sfx_dead={
-  local entity clients;
-  if( !self.ai_voice_dead ){
+  if( !self.ai_voice_group ){
     if( cvar("developer") ){
       cons_logAString(self.classname, "<missing 'ai_voice_dead' sound>"); 
       cons_logAString("ai says", "IM DEAD");
     }
     return;
   }
-  clients = findchainflags(flags, FL_CLIENT);
-  while( clients ){
-    client_send_ai_voice( clients, self.ai_voice_dead, 5);
-    clients = clients.chain;
-  }
-    self.voiceTime = time + 0.1;
+  client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DEAD, 1) ;
+  self.voiceTime = time + 0.1;
 };
 
 void() ai_sfx_kill={
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
-      if( !self.ai_voice_kill ){
+      if( !self.ai_voice_group ){
         if( cvar("developer") ){
           cons_logAString(self.classname, "<missing 'kill' sound>"); 
           cons_logAString("ai says", "can't find target, ending hunt");
         }
         return;
       }
-      client_send_ai_voice( self.enemy, self.ai_voice_kill, 3);
+      
+      client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_KILL, 2);
       self.voiceTime = time + 0.33;
     }
   }
 };
 
 void() ai_sfx_roger={
-  local entity clients;
   if( time > self.voiceTime ){
-    if( !self.ai_voice_roger ){
+    if( !self.ai_voice_group ){
       if( cvar("developer") ){
         cons_logAString(self.classname, "<missing 'roger' sound>"); 
         cons_logAString("ai says", "hacknowledged!"); 
@@ -164,18 +149,13 @@ void() ai_sfx_roger={
       return;
     }
     self.voiceTime = time + 0.25;
-    clients = findchainflags(flags, FL_CLIENT);
-    while( clients ){
-      client_send_ai_voice( clients, self.ai_voice_roger, 3);
-      clients = clients.chain;
-    }
+    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_ROGER, 3);
   }
 };
 
 void() ai_sfx_help={
-  local entity clients;
   if( time > self.voiceTime ){
-    if( !self.ai_voice_help ){
+    if( !self.ai_voice_group ){
       if( cvar("developer") ){
         cons_logAString(self.classname, "<missing 'help' sound>"); 
         cons_logAString("ai says", "help me!"); 
@@ -183,11 +163,7 @@ void() ai_sfx_help={
       return;
     }
     self.voiceTime = time + 0.25;
-    clients = findchainflags(flags, FL_CLIENT);
-    while( clients ){
-      client_send_ai_voice( clients, self.ai_voice_help, 4);
-      clients = clients.chain;
-    }
+    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HELP, 3);
   }
 };
 

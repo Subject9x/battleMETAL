@@ -42,7 +42,8 @@ void( entity navpoint ) client_send_navpoint;
 void( entity objective ) client_send_objective;
 void( entity deploy ) client_send_deploypoint;
 
-void( entity client, string voiceMessage, float limiter) client_send_ai_voice;
+void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice;
+void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
 void( entity client ) client_send_hud_target_kill;
 
 //client command layer

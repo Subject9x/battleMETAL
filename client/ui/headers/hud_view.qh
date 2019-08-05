@@ -31,6 +31,7 @@ float HUD_UID_TARGET_NAME   = 13;
 float HUD_UID_TARGET_RANGE  = 14;
 float HUD_UID_ARM_TARG_VEC  = 15;
 float HUD_UID_ARM_TARG_BLD  = 16;
+float HUD_UID_MESSAGE_BOX   = 17;
 //==========================================
 
 
@@ -157,6 +158,7 @@ void(vector ofs, string targType, float algn) hud_renderTargetName;
 void(float delta) hud_renderRepairValue;
 void(float warnOn, float warnDir) hud_render_warningBounds;
 void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment;
+void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message;
 //new text-based hud system
 void( float uid, float targetId ) hud_data_renderTarget_Shield;
 vector( float wbit ) hud_data_weapon_info;

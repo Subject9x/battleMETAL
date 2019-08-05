@@ -13,12 +13,18 @@ void() snd_hud_vfx_frame={
   local float itr;
   local float prev;
   local float vol;
+  local string nextSound;
+  local float nextEnt;
   
   if(time > STIME_NEXT){
     if(SOUNDQUEUE[0] != "null"){
       sfx_len = soundlength(SOUNDQUEUE[0]);
       pointsound(pmove_org, SOUNDQUEUE[0], 1, ATTN_NONE);
       STIME_NEXT = time + sfx_len + 0.05;
+      //TODO - possibly pause AI voice playback until message is done?
+    }
+    else{
+      STIME_NEXT = time + 0.05;
     }
     itr = SQSIZE;
     while( itr > -1 ){
@@ -30,22 +36,33 @@ void() snd_hud_vfx_frame={
   }
   
   if( time > TR_TIME_NEXT ){
-    if(TRANSMISSIONQUEUE[0] != NULL_SOUND){
+    if( TRANSMISSIONQUEUE_ENT[0] > -1 ){
       sfx_len = soundlength(TRANSMISSIONQUEUE[0]);
       vol = 1;
       if( SOUNDQUEUE[0] != NULL_SOUND ){
-        vol = 0.65;
+        vol = 0.75; //dim volume for hud voice
       }
       pointsound(pmove_org, TRANSMISSIONQUEUE[0], vol, ATTN_NONE);
-      TR_TIME_NEXT = time + (sfx_len + 1);
-      strunzone(TRANSMISSIONQUEUE[0]);
+      TR_TIME_NEXT = time + sfx_len + 0.25;
       TRANSMISSIONQUEUE[0] = NULL_SOUND;
+      TRANSMISSIONQUEUE_ENT[0] = -1;
+    }
+    else{
+      TR_TIME_NEXT = time + 1;
+      TRANSMISSIONQUEUE[0] = NULL_SOUND;
+      TRANSMISSIONQUEUE_ENT[0] = -1;
     }
     itr = 1;
-    while( itr >= TQSIZE ){
+    while( itr < TQSIZE){
       prev = itr - 1;
-      TRANSMISSIONQUEUE[prev] = TRANSMISSIONQUEUE[itr];
+      nextSound = TRANSMISSIONQUEUE[itr];
+      nextEnt = TRANSMISSIONQUEUE_ENT[itr];
+      
+      TRANSMISSIONQUEUE[prev] = nextSound;
+      TRANSMISSIONQUEUE_ENT[prev] = nextEnt;
+      
       TRANSMISSIONQUEUE[itr] = NULL_SOUND;
+      TRANSMISSIONQUEUE_ENT[itr] = -1;
       itr = itr + 1;
     }
   }
@@ -82,41 +99,47 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
   SQUED = FALSE;
 };
 
-void(string requestedSound, float cnt) snd_hud_trnsmsn_addtoqueue={
-  local float idx, cur;
-  local float pathLen;
-  local float termin;
+/*
+  entityId is used to prevent flooding the player's radio buffer with just 1 unit hollering.
+*/  
+void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_trnsmsn_addtoqueue={
+  local float idx, cur, added;
+  local string requestedSoundValue;
   
   idx = cur = 0;
-  
-  //apparently have to account for the '/n' coming in from the server
-  //pathLen = strlen(requestedSound);
-  termin = strstrofs(requestedSound, ".ogg",0);
-  requestedSound = substring(requestedSound, 0, termin + 4 );
 
-  while(idx < TQSIZE){
-    if( (TRANSMISSIONQUEUE[idx] == requestedSound) || !(TRANSMISSIONQUEUE[idx] == NULL_SOUND) ){
+  switch( voiceGroup ){
+    case AI_VOICE_GROUP_A:
+      //TODO - voice group A
+      break;
+    case AI_VOICE_GROUP_B:
+      //TODO - voice group B
+      break;
+    default:
+      //C - debug / default
+      requestedSoundValue = AI_VOICE_C[voiceId];
+      break;
+  }
+
+  while(idx <= TQSIZE){
+    if( TRANSMISSIONQUEUE_ENT[idx] == entityId ){
       cur = cur + 1;
     }
     idx = idx + 1;
   }
-  if(cur >= cnt){
-    //dont add because count limit hit
-    return;
-  }
-  cur = 0;
-  idx = 0;
-  while(idx < TQSIZE){
-    if(TRANSMISSIONQUEUE[idx] == requestedSound){
-      cur = cur + 1;
-    }
-    if(TRANSMISSIONQUEUE[idx] == NULL_SOUND){
-      if(cur < cnt){
-        TRANSMISSIONQUEUE[idx] = strzone(requestedSound);
-        cur = cur + 1;
+  if(cur < limitCheck){
+    added = FALSE;
+    idx = 0;
+    while(idx <= TQSIZE){
+      if(TRANSMISSIONQUEUE[idx] == NULL_SOUND){
+        if( !added ){
+          TRANSMISSIONQUEUE[idx] = requestedSoundValue;
+          TRANSMISSIONQUEUE_ENT[idx] = entityId;
+          added = TRUE;
+        }
       }
+      idx = idx + 1;
     }
-    idx = idx + 1;
   }
 };
 
@@ -132,7 +155,7 @@ void(float playerState) snd_hud_vfx_statelistener={
   }
   else if(CLIENT_player_state == PLAYER_ACTIVE){
     if(CRITBITS == 0){
-      CRITBITS = CRITBITS | (1 | 2 | 4 | 8 | 16 | 32);
+      CRITBITS = CRITBITS | (1 | 2 | 4 | 8 | 16);
     }
   }
 };
@@ -156,8 +179,8 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
   if(self.player_state >= PLAYER_ACTIVE){
     if(amt <= 0){
       if( (CRITBITS & bit) ){
-        snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 3); 
-        snd_hud_vfx_addtoqueue(snd, 3);
+        snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 2); 
+        snd_hud_vfx_addtoqueue(snd, 6);
         CRITBITS = CRITBITS - (CRITBITS & bit);
       }
     }

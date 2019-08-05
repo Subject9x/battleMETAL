@@ -1,6 +1,7 @@
 // called during level initialization, before first entities are received, only world is valid at this point
 void() CSQC_Init =
 {
+  local float i, cnt;
   registercvar("gamemode", "0");
   registercvar("gametype", "0");
   registercommand("fog");
@@ -22,14 +23,20 @@ void() CSQC_Init =
   VQSIZE = 6;
   SQUED = FALSE;
   
-  TQSIZE = 3;
+  TQSIZE = 8;
   TRTIME = 0;
   TR_TIME_NEXT = 0;
   TQUED = FALSE;
   
-  TRANSMISSIONQUEUE[0] = strzone(NULL_SOUND);
-  TRANSMISSIONQUEUE[1] = strzone(NULL_SOUND);
-  TRANSMISSIONQUEUE[2] = strzone(NULL_SOUND);
+  TXT_QSIZE = 8;
+
+  i = 0;
+  while( i <= TQSIZE ){
+    TRANSMISSIONQUEUE[i] = NULL_SOUND;
+    TRANSMISSIONQUEUE_ENT[i] = -1;
+    MESSAGE_QUEUE[i] = NULL_SOUND;
+    i = i + 1;
+  }
   
   WEPBITS[0] = 1;
   WEPBITS[1] = 2;
@@ -43,8 +50,7 @@ void() CSQC_Init =
 
   SELECT_MECH = 0;
   LAUNCH_VALIDATION = 0; //set launch validation to 0 to prevent invalid deployments to game world
-  
-  local float i, cnt;
+
   //clear out and prepare the sound queue
   i = 1;
   while( i < VQSIZE ){
@@ -269,11 +275,11 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       }
     }
  
-    snd_hud_vfx_armlistener(CLIENT_hp_stor2, 2, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(CLIENT_hp_stor, 4, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(CLIENT_hp_arm2, 8, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(CLIENT_hp_arm, 16, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(CLIENT_hp_leg, 32, SND_HUD_VFX_CRITLEG);
+    snd_hud_vfx_armlistener(CLIENT_hp_stor2, 1, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(CLIENT_hp_stor, 2, SND_HUD_VFX_CRITTOR);
+    snd_hud_vfx_armlistener(CLIENT_hp_arm2, 4, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(CLIENT_hp_arm, 8, SND_HUD_VFX_CRITARM);
+    snd_hud_vfx_armlistener(CLIENT_hp_leg, 16, SND_HUD_VFX_CRITLEG);
     
     //HUD SOUND SYSTEM LISTENERS
     snd_hud_vfx_statelistener(CLIENT_player_state);
@@ -282,37 +288,39 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     snd_hud_vfx_targkill(CLIENT_stat_trg_ddflg);
     
     //HUD RENDER FRAME SYSTEM
-    data_hud_frame();
-    
-    if(CLIENT_player_state == PLAYER_SPRINT_ON){
-      local float slen;
-      local vector spos;
-      local string msg;
-      local vector msgClr;
-      if( cvar("cl_movespeedkey") > 1 ){
-        msg = "[EVASION ON]";
-        msgClr = CLR_DEF_RET_GETLOCK;
+    if( CLIENT_hp_ctor > 0 ){
+      data_hud_frame();
+      
+      if(CLIENT_player_state == PLAYER_SPRINT_ON){
+        local float slen;
+        local vector spos;
+        local string msg;
+        local vector msgClr;
+        if( cvar("cl_movespeedkey") > 1 ){
+          msg = "[EVASION ON]";
+          msgClr = CLR_DEF_RET_GETLOCK;
+        }
+        else{
+          msg = "[EVASION DISABLED]";
+          msgClr = CLR_DEF_RED;
+        }
+          slen = stringwidth(msg, 0, '12 10 0');
+        slen = gui_percentXRaw(slen);
+        spos_x = VIEW_CTR_x - slen / 2;
+        spos_y = VIEW_CTR_y + gui_percentYRaw(56);
+        drawstring(spos, msg, '12 10 0', msgClr, HUD_ALPHA, 0);
       }
-      else{
-        msg = "[EVASION DISABLED]";
-        msgClr = CLR_DEF_RED;
+      
+      //HUD Highlight Boxes
+      ui_renderHUD_Highlight_frame();
+      
+      //Player has toggled 'Objectives' menu while in-mission.
+      ui_objective_frame(VIEW_ORG);
+      
+      //Map has a .message value, and it's currently active for rendering
+      if( MISSION_NAME_ON == TRUE ){
+        client_event_mission_name_frame();
       }
-        slen = stringwidth(msg, 0, '12 10 0');
-      slen = gui_percentXRaw(slen);
-      spos_x = VIEW_CTR_x - slen / 2;
-      spos_y = VIEW_CTR_y + gui_percentYRaw(56);
-      drawstring(spos, msg, '12 10 0', msgClr, HUD_ALPHA, 0);
-    }
-    
-    //HUD Highlight Boxes
-    ui_renderHUD_Highlight_frame();
-    
-    //Player has toggled 'Objectives' menu while in-mission.
-    ui_objective_frame(VIEW_ORG);
-    
-    //Map has a .message value, and it's currently active for rendering
-    if( MISSION_NAME_ON == TRUE ){
-      client_event_mission_name_frame();
     }
   }
   else{
@@ -441,10 +449,11 @@ float() CSQC_Parse_TempEntity =
       client_event_boundary();
       return TRUE;
     case TE_AI_VOICE:
-      snd_hud_trnsmsn_addtoqueue(ReadString(), ReadByte());
+      snd_hud_trnsmsn_addtoqueue(ReadByte(), ReadByte(), ReadByte(), ReadLong());
       return TRUE;
     case TE_TARG_KILL:
       te_targ_kill();
+      text_hud_message_target_killed();
       return TRUE;
     case TE_MISSION_NAME:
       client_event_mission_name( ReadString() );

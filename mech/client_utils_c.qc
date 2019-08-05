@@ -242,23 +242,33 @@ void() client_push_mapobjects={
   }
 };
 
+
+
 /*
-  Sends an AI voice sample to play.
+  Sends an AI voice sample to play for a specific client
   limiter = total copies of 'voiceMessage' that can sit in the voice queue.
 */
-void( entity client, string voiceMessage, float limiter) client_send_ai_voice={
-  local entity this;
-  
-  if( voiceMessage != "" ){
-    this = self;
-    self = client;
-    msg_entity = self;
-    WriteByte( MSG_ONE, SVC_TEMPENTITY);
-    WriteByte( MSG_ONE, TE_AI_VOICE );
-    WriteString( MSG_ONE, strcat(voiceMessage,"\n"));
-    WriteByte( MSG_ONE, limiter );
-    self = this;
-  }
+void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY);
+  WriteByte( MSG_ONE, TE_AI_VOICE );
+  WriteByte( MSG_ONE, voiceGroup);
+  WriteByte( MSG_ONE, voiceId);
+  WriteByte( MSG_ONE, limiter );
+  WriteLong( MSG_ONE, num_for_edict(self) );
+};
+
+/*
+  Sends an AI voice sample to play to ALL Clients
+  limiter = total copies of 'voiceMessage' that can sit in the voice queue.
+*/
+void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all={
+  WriteByte( MSG_ALL, SVC_TEMPENTITY);
+  WriteByte( MSG_ALL, TE_AI_VOICE );
+  WriteByte( MSG_ALL, voiceGroup);
+  WriteByte( MSG_ALL, voiceId);
+  WriteByte( MSG_ALL, limiter );
+  WriteLong( MSG_ALL, num_for_edict(self) );
 };
 
 void( entity client ) client_send_hud_target_kill={

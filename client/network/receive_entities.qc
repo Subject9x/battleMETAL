@@ -13,8 +13,8 @@ void( float wep, float delt ) client_get_weapon_delta;
 void() client_get_info={
   local float localDataType;
   local float wep;
-  local float weaponBit;
   local float weaponDelta;
+  
   //WARNING:
   //SVC_SETVIEW changes local_playerentum to Camera's Ent ID!
   //client = entitybyindex( getstati(STAT_PLR_ENT_ID) );

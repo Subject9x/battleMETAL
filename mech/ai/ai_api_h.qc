@@ -82,15 +82,7 @@ entity AI_NODES[128];
 .entity ai_node_recall;
 
 .float voiceTime; //when next to say something
-.string ai_voice_warn;
-.string ai_voice_spot;
-.string ai_voice_huntStart;
-.string ai_voice_huntEnd;
-.string ai_voice_dying;
-.string ai_voice_dead;
-.string ai_voice_kill;
-.string ai_voice_roger;
-.string ai_voice_help;
+.float ai_voice_group;
 
 void( float randomBool ) ai_voice_ini;
 
