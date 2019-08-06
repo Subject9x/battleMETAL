@@ -49,25 +49,23 @@ void() client_get_info={
     CLIENT_health_arm_left = ReadByte(); 
     CLIENT_health_arm_right = ReadByte();
 
+
+
+
     if( lastHealthLegs > 0 && CLIENT_health_legs <= 0 ){
-      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITLEG, 1);
-      text_hud_message_critical_legs();
+      hud_event_critical_legs();
     }
     if( lastHealthTorsoLeft > 0 && CLIENT_health_torso_left <= 0 ){
-      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITTOR, 1);
-      text_hud_message_critical_left_torso();
+      hud_event_critical_left_torso();
     }
     if( lastHealthTorsoRight > 0 && CLIENT_health_torso_right <= 0 ){
-      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITTOR, 1);
-      text_hud_message_critical_right_torso();
+      hud_event_critical_right_torso();
     }
     if( lastHealthArmLeft > 0 && CLIENT_health_arm_left <= 0 ){
-      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITARM, 1);
-      text_hud_message_critical_left_arm();
+      hud_event_critical_left_arm();  
     }
     if( lastHealthArmRight > 0 && CLIENT_health_arm_right <= 0 ){
-      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITARM, 1);
-      text_hud_message_critical_right_arm();
+      hud_event_critical_right_arm();
     }
     
     CLIENT_hardpoint_cnt = ReadByte();
@@ -82,7 +80,7 @@ void() client_get_info={
     CLIENT_weapon_state = ReadLong();
     if( CLIENT_weapon_state != lastWeaponState ){
       if( CLIENT_player_state != PLAYER_POWERUP_BEGIN ){
-        text_hud_message_critical_weapon();
+        hud_event_critical_weapon();
       }
     }
     
@@ -231,7 +229,8 @@ void() client_event_navpoint={
   if( (prevState == TRUE) && (nexState == 2) ){
     //previous state was 'active unvisit' and next state is 'active and visit'
     //play sound
-    te_nav_reach();
+    //te_nav_reach();
+    hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );
   }
   if( (prevState == 2) && (nexState == 1) ){
     //previous state was 'active and visit' and next state is 'active unvisit'

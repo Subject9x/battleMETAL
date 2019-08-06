@@ -344,6 +344,7 @@ void() mechAcceptButtonListener={
       CLIENT_start_time = time; //mark time when player started as mech.
       CLIENT_MENU_nav_pnt = -1;
       MENU_ACTIVE = FALSE;
+      hud_event_powerup();
     }
   }
 };

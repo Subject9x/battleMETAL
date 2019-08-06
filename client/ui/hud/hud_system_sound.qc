@@ -2,7 +2,10 @@
 battleMETAL
 Author: Peter Roohr
 Date: 04/10/2017
-Overview: impl file for the hud sound system
+08/01/2019 - added aI voice queue, and some big refactoring.
+
+Overview: 
+  impl file for the hud sound system.
 */
 
 /*
@@ -185,12 +188,6 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
       if( (CRITBITS & bit) ){
         snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 2); 
         snd_hud_vfx_addtoqueue(snd, 6);
-        if( bit == 4 ){
-          text_hud_message_critical_left_arm();
-        }
-        else{
-          text_hud_message_critical_right_arm();
-        }
         CRITBITS = CRITBITS - (CRITBITS & bit);
       }
     }
@@ -205,21 +202,21 @@ void( string critSound, float limiter ) snd_hud_vfx_criticalHit={
 //SFX
 void() te_nav_reach={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
-  text_hud_message_nav_reached();
 };
 
 void() te_targ_kill={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL, 3);
-  text_hud_message_target_killed();
 };
 
 void( float type ) te_objective_complete={
   switch( type ){
     case 1:
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME, 1);
+      hud_event_objective_complete_prime();
       break;
     case 2:
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_SECON, 1);
+      hud_event_objective_complete_second();
       break;
     case 3:
       snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD, 1);
@@ -238,11 +235,9 @@ void() te_mission_lose={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
 };
 
-
 void() te_msn_boundary={
   
 };
-
 
 void(float mode) snd_hud_vfx_toggleradar={
   if(CLIENT_stat_rdr_mode_prev != mode){

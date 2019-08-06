@@ -27,14 +27,11 @@ void() CSQC_Init =
   TRTIME = 0;
   TR_TIME_NEXT = 0;
   TQUED = FALSE;
-  
-  TXT_QSIZE = 8;
 
   i = 0;
   while( i <= TQSIZE ){
     TRANSMISSIONQUEUE[i] = NULL_STRING;
     TRANSMISSIONQUEUE_ENT[i] = -1;
-    MESSAGE_QUEUE[i] = NULL_STRING;
     i = i + 1;
   }
   
@@ -434,10 +431,11 @@ float() CSQC_Parse_TempEntity =
       te_mission_win();
       return TRUE;
     case TE_MISSION_LOSE:
-      te_mission_lose();
+      hud_event_mission_complete();
       return TRUE;
     case TE_NAV_REACH:
-      te_nav_reach();
+      //te_nav_reach();
+      hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );
       return TRUE;
     case TE_MSN_BOUND:
       client_event_boundary();
@@ -446,7 +444,7 @@ float() CSQC_Parse_TempEntity =
       snd_hud_trnsmsn_addtoqueue(ReadByte(), ReadByte(), ReadByte(), ReadLong());
       return TRUE;
     case TE_TARG_KILL:
-      te_targ_kill();
+      hud_event_target_killed();
       return TRUE;
     case TE_MISSION_NAME:
       client_event_mission_name( ReadString() );

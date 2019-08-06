@@ -105,8 +105,8 @@ network/headers/receive_entities.qh
   ui/headers/gui_api.qh
   ui/headers/hud_view.qh
   ui/headers/anim.qh
-  ui/headers/system_hud_sound.qh
-  ui/headers/system_hud_message.qh
+  ui/headers/hud_system_sound.qh
+  ui/headers/hud_system_event.qh
 //================
 
 util/headers/particle_sys.qh
@@ -131,8 +131,8 @@ data/msn_file.qc
 ui/anim.qc
 ui/gui_api.qc
 ui/hud/hud_view.qc
-ui/hud/system_hud_sound.qc
-ui/hud/system_hud_message.qc
+ui/hud/hud_system_sound.qc
+ui/hud/hud_system_event.qc
 
 
 //Client / Server CMD===

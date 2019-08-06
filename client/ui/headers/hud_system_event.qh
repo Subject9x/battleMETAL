@@ -1,0 +1,78 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 08/06/2019
+Overview: 
+  Concatenating all HUD events into a single queue.
+  Functions will contain all that is needed for an event.
+*/
+
+//GLOBALS
+float HUD_EVENT_ID;
+//float HUD_EVENT_TIME;
+float HUD_EVENT_TIME_NEXT;
+float HUD_EVENT_SIZE = 8;
+float HUD_EVENTS[8];
+
+float HUD_EVENT_SOUND_START;
+
+vector HUD_TXT_ORG;
+vector HUD_TXT_SIZE;
+float HUD_TXT_ALIGN;
+
+//DEFS ID
+float HUD_EVENT_CRITICAL_LEGS = 1;
+float HUD_EVENT_CRITICAL_TORSO_LEFT = 2;
+float HUD_EVENT_CRITICAL_TORSO_RIGHT = 3;
+float HUD_EVENT_CRITICAL_ARM_LEFT = 4;
+float HUD_EVENT_CRITICAL_ARM_RIGHT = 5;
+
+float HUD_EVENT_POWERUP = 6;
+float HUD_EVENT_NAV_REACHED = 7;
+
+float HUD_EVENT_OBJECTIVE_COMPLETE_PRIME = 8;
+float HUD_EVENT_OBJECTIVE_COMPLETE_SECOND = 9;
+float HUD_EVENT_OBJECTIVE_FAILED = 10;
+
+float HUD_EVENT_MISSION_COMPLETE = 11;
+float HUD_EVENT_MISSION_FAILED = 12;
+float HUD_EVENT_TARGET_KILLED = 13;
+
+//DEFS MESSAGE STRINGS
+string HUD_TEXT_CRITICAL_LEGS = "Critical Hit: Legs";
+string HUD_TEXT_CRITICAL_TORSO_LEFT = "Critical Hit: Left Torso.";
+string HUD_TEXT_CRITICAL_TORSO_RIGHT = "Critical Hit: Right Torso.";
+string HUD_TEXT_CRITICAL_ARM_LEFT = "Critical Hit: Left Arm.";
+string HUD_TEXT_CRITICAL_ARM_RIGHT = "Critical Hit: Right Arm.";
+string HUD_TEXT_CRITICAL_WEAPON = "Critical Hit: Weapon Destroyed.";
+
+string HUD_TEXT_POWERUP = "Reactor Online. All Sytems nominal.";
+string HUD_TEXT_NAV_REACHED = "Nav Point reached.";
+
+string HUD_TEXT_OBJECTIVE_COMPLETE_PRIME = "Primary Objective complete.";
+string HUD_TEXT_OBJECTIVE_COMPLETE_SECOND = "Secondary Objective complete.";
+string HUD_TEXT_OBJECTIVE_FAILED = "Objective Failed.";
+
+string HUD_TEXT_MISSION_COMPLETE = "Mission Successful.";
+string HUD_TEXT_MISSION_FAILED = "Mission Failed.";
+string HUD_TEXT_TARGET_KILLED = "Target Destroyed.";
+
+//System Functions
+void() hud_event_frame;
+void( float eventAdd, float limitMax) hud_event_enqueue;
+
+//Event functions
+void() hud_event_critical_left_arm;
+void() hud_event_critical_right_arm;
+void() hud_event_critical_left_torso;
+void() hud_event_critical_right_torso;
+void() hud_event_critical_legs;
+void() hud_event_critical_weapon;
+void() hud_event_powerup;
+void() hud_event_nav_reached;
+void() hud_event_objective_complete_prime;
+void() hud_event_objective_complete_second;
+void() hud_event_objective_failed;
+void() hud_event_mission_complete;
+void() hud_event_mission_failed;
+void() hud_event_target_killed;

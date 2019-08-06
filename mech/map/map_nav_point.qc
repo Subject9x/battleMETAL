@@ -94,9 +94,10 @@ void() map_nav_point={
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   self.movetype = MOVETYPE_FLY;
-  //droptofloor();
+  droptofloor();
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
   self.use = nav_point_use;
   self.touch = nav_point_touch;
+  self.isActive = TRUE;
 };

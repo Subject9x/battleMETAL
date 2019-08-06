@@ -1078,7 +1078,7 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message={
   local vector messageOrigin;
   local float width;
-  
+
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
  
@@ -1321,9 +1321,6 @@ void() data_hud_frame={
         break;
     }
   }
-
-  text_hud_message_frame();
-
   hud_renderPitchIndicator('64 0', (VIEW_CTX | VIEW_CTY) );
   hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
@@ -1333,6 +1330,7 @@ void() data_hud_frame={
   hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
   
   hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
+  hud_event_frame();
 };
 
 /*

@@ -39,7 +39,7 @@ float STIME_NEXT;
 float VQSIZE;
 float SQUED;
 string SOUNDQUEUE[6]; //match this with SQSIZE / VQSIZE
-float SQ_LAST_IDX;    //index of last sound in array before 'null' values;
+//float SQ_LAST_IDX;    //index of last sound in array before 'null' values;
 
 //Transmission Queue - for AI voices
 float TRTIME;
