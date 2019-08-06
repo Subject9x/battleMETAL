@@ -425,13 +425,13 @@ float() CSQC_Parse_TempEntity =
       te_objective_complete( ReadByte() );
       return TRUE;
     case TE_OBJECTIVE_FAILED:
-      te_objective_failed();
+      hud_event_objective_failed();
       return TRUE;
     case TE_MISSION_WIN:
-      te_mission_win();
+      hud_event_mission_complete();
       return TRUE;
     case TE_MISSION_LOSE:
-      hud_event_mission_complete();
+      hud_event_mission_failed();
       return TRUE;
     case TE_NAV_REACH:
       //te_nav_reach();
