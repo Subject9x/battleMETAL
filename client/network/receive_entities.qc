@@ -14,6 +14,7 @@ void() client_get_info={
   local float localDataType;
   local float wep;
   local float weaponDelta;
+  local float lastWeaponState;
   local float lastHealthCenter;
   local float lastHealthLegs;
   local float lastHealthTorsoLeft;
@@ -49,23 +50,41 @@ void() client_get_info={
     CLIENT_health_arm_right = ReadByte();
 
     if( lastHealthLegs > 0 && CLIENT_health_legs <= 0 ){
-      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRTILEG, 1);
+      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITLEG, 1);
+      text_hud_message_critical_legs();
     }
-    //todo - finish
-     
-    
+    if( lastHealthTorsoLeft > 0 && CLIENT_health_torso_left <= 0 ){
+      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITTOR, 1);
+      text_hud_message_critical_left_torso();
+    }
+    if( lastHealthTorsoRight > 0 && CLIENT_health_torso_right <= 0 ){
+      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITTOR, 1);
+      text_hud_message_critical_right_torso();
+    }
+    if( lastHealthArmLeft > 0 && CLIENT_health_arm_left <= 0 ){
+      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITARM, 1);
+      text_hud_message_critical_left_arm();
+    }
+    if( lastHealthArmRight > 0 && CLIENT_health_arm_right <= 0 ){
+      snd_hud_vfx_criticalHit(SND_HUD_VFX_CRITARM, 1);
+      text_hud_message_critical_right_arm();
+    }
     
     CLIENT_hardpoint_cnt = ReadByte();
     wep = 0;
-    CLIENT_weapon_state = 0;
     while( wep <= CLIENT_hardpoint_cnt ){
       wep = wep + 1;
       weaponDelta = ReadByte();
       client_get_weapon_delta( wep, weaponDelta );
     }
 
-    CLIENT_weapon_state = ReadShort();
-
+    lastWeaponState = CLIENT_weapon_state;
+    CLIENT_weapon_state = ReadLong();
+    if( CLIENT_weapon_state != lastWeaponState ){
+      if( CLIENT_player_state != PLAYER_POWERUP_BEGIN ){
+        text_hud_message_critical_weapon();
+      }
+    }
     
     CLIENT_stat_trg_ent_id = ReadByte();
     if( CLIENT_stat_trg_ent_id != 0 ){

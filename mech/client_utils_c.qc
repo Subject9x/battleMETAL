@@ -54,7 +54,7 @@ void() client_push_player_info={
       WriteByte( MSG_ONE, wep.reloadValue );
     }
 
-    WriteShort( MSG_ONE, weaponStateBit );
+    WriteLong( MSG_ONE, weaponStateBit );
 
     enm = num_for_edict(self.enemy);
     WriteByte( MSG_ONE, enm );

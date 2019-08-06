@@ -255,6 +255,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if( (prevShields > 0) && (trg.shield <= 0) ){
     te_shield_explode( trg.origin, trg.vec_size );
+    if( (trg.flags & FL_MONSTER) ){
+      if( trg.ai_rank <= AI_RANK_REG ){
+        ai_sfx_dying();
+      }
+    }
   }
   
   if( !dmgAmt ){
@@ -288,16 +293,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
-  if( (trg.flags & FL_MONSTER) ){
-    if( util_getMechHpAverage( trg ) <= 0.5 ){
-      otherSelf = self;
-      self = trg;
-        ai_sfx_dying();
-        ai_call_for_help( attacker );
-      self = otherSelf;
-    }
-  }
-  
   if( dmgTrg.health <= 0 ){
     if( dmgTrg.th_die ){
       if( dmgTrg.partTypeId == M_LEGS ){
@@ -312,13 +307,20 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
               client_update_moveSpeed(dmgTrg.owner.data_speed_forward, dmgTrg.owner.data_speed_strafe, dmgTrg.owner.data_speed_backward, "1", "0"); 
             self = otherSelf;
           }
-          else{
-            ai_sfx_help();
-          }
         }
       }
       else{
         killed(dmgTrg, attacker, dmg_type);
+      }
+    }
+  }
+  else{
+    if( (trg.flags & FL_MONSTER) && trg.deadflag == DEAD_NO ){
+      if( util_getMechHpAverage( trg ) <= 0.5 ){
+        otherSelf = self;
+        self = trg;
+          ai_call_for_help( attacker );
+        self = otherSelf;
       }
     }
   }
@@ -334,12 +336,14 @@ entity(vector point, float rad, entity trg) t_find_part={
   local float diff;
   local entity  unitPart, toSender;
   cur_dist = rad;
-  unitPart = trg;
+  unitPart = trg.partNext;
   while(unitPart){
-    diff = vlen(point - unitPart.origin);
-    if(diff < cur_dist){
-      cur_dist = diff;
-      toSender = unitPart;
+    if( unitPart.partTypeId != M_ITEM && unitPart.partTypeId != M_CAMERA ){    
+      diff = vlen(point - unitPart.origin);
+      if(diff < cur_dist){
+        cur_dist = diff;
+        toSender = unitPart;
+      }
     }
     unitPart = unitPart.partNext; //includes weapons to help increase granularity
   }
@@ -453,9 +457,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
           client_send_hud_target_kill( note );
         }
         note = note.chain;
-      }
-      if( self.ai_rank > AI_RANK_REG ){
-        ai_call_for_help( attacker );
       }
     }
     

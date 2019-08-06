@@ -9,7 +9,7 @@ Overview: header file for the hud sound system
 float MUSICID;
 
 //sound precache
-string NULL_SOUND = "null";
+string NULL_STRING = "null";
 
 string SND_MCH_SFX_REACT;
 

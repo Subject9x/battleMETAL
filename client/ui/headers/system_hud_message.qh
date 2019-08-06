@@ -18,16 +18,6 @@ float TXT_TIME_NEXT;
 string MESSAGE_QUEUE[8];
 string HUD_MESSAGE;
 
-//Messages
-string HUD_MESSAGE_CRITICAL_HIT = "Critical hit:";
-string HUD_MESSAGE_TARGET_KILL = "Target destroyed";
-string HUD_MESSAGE_NAV_REACHED = "Nav point reached";
-string HUD_MESSAGE_OBJECTIVE_PRIME = "Primary Objective";
-string HUD_MESSAGE_OBJECTIVE_SECOND = "Secondary Objective";
-
-string HUD_MESSAGE_COMPLETE = "complete";
-string HUD_MESSAGE_FAIL = "failed";
-
 void() text_hud_message_frame;
 void( string textMessage, float limiter ) text_hud_message_enqueue;
 
@@ -37,6 +27,7 @@ void() text_hud_message_critical_left_torso;
 void() text_hud_message_critical_right_torso;
 void() text_hud_message_critical_legs;
 void() text_hud_message_critical_weapon;
+void() text_hud_message_powerup;
 void() text_hud_message_nav_reached;
 void() text_hud_message_objective_complete_prime;
 void() text_hud_message_objective_complete_second;

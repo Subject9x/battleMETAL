@@ -62,6 +62,7 @@ void() ai_gev_die={
   local vector v;
   local vector t;
   
+  ai_sfx_dead();
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_BOUNCE;
   self.solid = SOLID_BBOX;

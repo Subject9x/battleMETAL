@@ -17,6 +17,7 @@ void() ai_tank_sk_die={
   local vector v;
   local vector vel;
 
+  ai_sfx_dead();
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;

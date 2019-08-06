@@ -126,6 +126,28 @@ void() cs_precache={
   DAT_MTK_UI_IMG = precache_pic("gfx/ui/hgr_mtk.png",0);
   
   //STANDUP VOICES
+  AI_VOICE_A[0] = "sound/voice/voiceA/voiceA_die.ogg";
+  AI_VOICE_A[1] = "sound/voice/voiceA/voiceA_heavyfire.ogg";
+  AI_VOICE_A[2] = "sound/voice/voiceA/voiceA_backup.ogg";
+  AI_VOICE_A[3] = "sound/voice/voiceA/voiceA_scanning.ogg";
+  AI_VOICE_A[4] = "sound/voice/voiceA/voiceA_lostvis.ogg";
+  AI_VOICE_A[5] = "sound/voice/voiceA/voiceA_kill.ogg";
+  AI_VOICE_A[6] = "sound/voice/voiceA/voiceA_lostvis.ogg";
+  AI_VOICE_A[7] = "sound/voice/voiceA/voiceA_copy.ogg";
+  AI_VOICE_A[8] = "sound/voice/voiceA/voiceA_spotted.ogg";
+  AI_VOICE_A[9] = "sound/voice/voiceA/voiceA_scanning.ogg";
+  
+  AI_VOICE_B[0] = "sound/voice/voiceB/voiceB_die.ogg";
+  AI_VOICE_B[1] = "sound/voice/voiceB/voiceB_heavyfire.ogg";
+  AI_VOICE_B[2] = "sound/voice/voiceB/voiceB_backup.ogg";
+  AI_VOICE_B[3] = "sound/voice/voiceB/voiceB_scanning.ogg";
+  AI_VOICE_B[4] = "sound/voice/voiceB/voiceB_lostvis.ogg";
+  AI_VOICE_B[5] = "sound/voice/voiceB/voiceB_kill.ogg";
+  AI_VOICE_B[6] = "sound/voice/voiceB/voiceB_lostvis.ogg";
+  AI_VOICE_B[7] = "sound/voice/voiceB/voiceB_copy.ogg";
+  AI_VOICE_B[8] = "sound/voice/voiceB/voiceB_spotted.ogg";
+  AI_VOICE_B[9] = "sound/voice/voiceB/voiceB_scanning.ogg";
+  
   AI_VOICE_C[0] = "sound/voice/bot/bot_dead.ogg";
   AI_VOICE_C[1] = "sound/voice/bot/bot_dying.ogg";
   AI_VOICE_C[2] = "sound/voice/bot/bot_help.ogg";
@@ -136,8 +158,5 @@ void() cs_precache={
   AI_VOICE_C[7] = "sound/voice/bot/bot_roger.ogg";
   AI_VOICE_C[8] = "sound/voice/bot/bot_spotted.ogg";
   AI_VOICE_C[9] = "sound/voice/bot/bot_warn.ogg";
-  
- //AI_VOICE_B[8];
-    //TODO - fill out
-  //AI_VOICE_C[8];
+
 };

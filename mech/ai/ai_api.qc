@@ -97,6 +97,7 @@ void( entity t ) ai_call_for_help={
   local float allies;
   local entity ally;
   
+  allies = 0;
   ai_sfx_help();
   ally = findchainflags( flags, FL_MONSTER );
   while( ally ){
@@ -114,7 +115,9 @@ void( entity t ) ai_call_for_help={
   }
   
   if( allies < self.ai_rank ){
-    //TODO - panic
+    if( self.th_pain ){
+      self.th_pain();
+    }
   }
 }; 
 

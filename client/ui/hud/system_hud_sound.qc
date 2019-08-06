@@ -20,18 +20,21 @@ void() snd_hud_vfx_frame={
     if(SOUNDQUEUE[0] != "null"){
       sfx_len = soundlength(SOUNDQUEUE[0]);
       pointsound(pmove_org, SOUNDQUEUE[0], 1, ATTN_NONE);
-      STIME_NEXT = time + sfx_len + 0.05;
+      STIME_NEXT = time + sfx_len;
       //TODO - possibly pause AI voice playback until message is done?
     }
     else{
       STIME_NEXT = time + 0.05;
     }
-    itr = SQSIZE;
-    while( itr > -1 ){
+    itr = 1;
+    while( itr < SQSIZE){
       prev = itr - 1;
-      SOUNDQUEUE[prev] = SOUNDQUEUE[itr];
+      nextSound = SOUNDQUEUE[itr];
+    
+      SOUNDQUEUE[prev] = nextSound;  
       SOUNDQUEUE[itr] = "null";
-      itr = itr - 1;
+      
+      itr = itr + 1;
     }
   }
   
@@ -39,17 +42,17 @@ void() snd_hud_vfx_frame={
     if( TRANSMISSIONQUEUE_ENT[0] > -1 ){
       sfx_len = soundlength(TRANSMISSIONQUEUE[0]);
       vol = 1;
-      if( SOUNDQUEUE[0] != NULL_SOUND ){
-        vol = 0.75; //dim volume for hud voice
+      if( SOUNDQUEUE[0] != NULL_STRING ){
+        vol = 0.65; //dim volume for hud voice
       }
       pointsound(pmove_org, TRANSMISSIONQUEUE[0], vol, ATTN_NONE);
       TR_TIME_NEXT = time + sfx_len + 0.25;
-      TRANSMISSIONQUEUE[0] = NULL_SOUND;
+      TRANSMISSIONQUEUE[0] = NULL_STRING;
       TRANSMISSIONQUEUE_ENT[0] = -1;
     }
     else{
       TR_TIME_NEXT = time + 1;
-      TRANSMISSIONQUEUE[0] = NULL_SOUND;
+      TRANSMISSIONQUEUE[0] = NULL_STRING;
       TRANSMISSIONQUEUE_ENT[0] = -1;
     }
     itr = 1;
@@ -61,7 +64,7 @@ void() snd_hud_vfx_frame={
       TRANSMISSIONQUEUE[prev] = nextSound;
       TRANSMISSIONQUEUE_ENT[prev] = nextEnt;
       
-      TRANSMISSIONQUEUE[itr] = NULL_SOUND;
+      TRANSMISSIONQUEUE[itr] = NULL_STRING;
       TRANSMISSIONQUEUE_ENT[itr] = -1;
       itr = itr + 1;
     }
@@ -70,7 +73,7 @@ void() snd_hud_vfx_frame={
 
 //count == how many instances of 1 sound can be queued at a time
 void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
-  local float idx, cur;
+  local float idx, cur, added;
   idx = cur = 0;
   SQUED = FALSE;  
   while(idx < SQSIZE){
@@ -79,16 +82,27 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
     }
     idx = idx + 1;
   }
-  if(cur >= cnt){
-    return;
+
+  if( cur < cnt ){
+    idx = 1;
+    added = FALSE;
+    while(idx < SQSIZE){
+      if(SOUNDQUEUE[idx] == "null"){
+        if( !added ){
+          SOUNDQUEUE[idx] = requestedSound;
+          added = TRUE;
+        }
+      }
+      idx = idx + 1;
+    }
   }
-  cur = 0;
-  idx = 0;
+
+
   while(idx < SQSIZE){
     if(SOUNDQUEUE[idx] == requestedSound){
       cur = cur + 1;
     }
-    if(SOUNDQUEUE[idx] == NULL_SOUND){
+    if(SOUNDQUEUE[idx] == NULL_STRING){
       if(cur < cnt){
         SOUNDQUEUE[idx] = requestedSound;
         cur = cur + 1;
@@ -110,28 +124,27 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
 
   switch( voiceGroup ){
     case AI_VOICE_GROUP_A:
-      //TODO - voice group A
+      requestedSoundValue = AI_VOICE_A[voiceId];
       break;
     case AI_VOICE_GROUP_B:
-      //TODO - voice group B
+      requestedSoundValue = AI_VOICE_B[voiceId];
       break;
     default:
-      //C - debug / default
       requestedSoundValue = AI_VOICE_C[voiceId];
       break;
   }
 
   while(idx <= TQSIZE){
-    if( TRANSMISSIONQUEUE_ENT[idx] == entityId ){
+    if( TRANSMISSIONQUEUE[idx] == requestedSoundValue ){
       cur = cur + 1;
     }
     idx = idx + 1;
   }
   if(cur < limitCheck){
     added = FALSE;
-    idx = 0;
-    while(idx <= TQSIZE){
-      if(TRANSMISSIONQUEUE[idx] == NULL_SOUND){
+    idx = 1;
+    while(idx < TQSIZE){
+      if(TRANSMISSIONQUEUE[idx] == NULL_STRING){
         if( !added ){
           TRANSMISSIONQUEUE[idx] = requestedSoundValue;
           TRANSMISSIONQUEUE_ENT[idx] = entityId;
@@ -145,17 +158,8 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
 
 void(float playerState) snd_hud_vfx_statelistener={
   if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
-    if( CRITBITS < 0){
-      if( !cvar("developer") ){
-        snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
-      }
-      
-      CRITBITS = 0;    
-    }
-  }
-  else if(CLIENT_player_state == PLAYER_ACTIVE){
-    if(CRITBITS == 0){
-      CRITBITS = CRITBITS | (1 | 2 | 4 | 8 | 16);
+    if( !cvar("developer") ){
+      snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
     }
   }
 };
@@ -195,16 +199,18 @@ void(float amt, float bit, string snd) snd_hud_vfx_armlistener={
 
 void( string critSound, float limiter ) snd_hud_vfx_criticalHit={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_CRITTONE, 2); 
-  snd_hud_vfx_addtoqueue(snd, limiter);
+  snd_hud_vfx_addtoqueue(critSound, limiter);
 };
 
 //SFX
 void() te_nav_reach={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_NAVRECH, 3);
+  text_hud_message_nav_reached();
 };
 
 void() te_targ_kill={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL, 3);
+  text_hud_message_target_killed();
 };
 
 void( float type ) te_objective_complete={

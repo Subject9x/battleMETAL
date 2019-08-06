@@ -32,9 +32,9 @@ void() CSQC_Init =
 
   i = 0;
   while( i <= TQSIZE ){
-    TRANSMISSIONQUEUE[i] = NULL_SOUND;
+    TRANSMISSIONQUEUE[i] = NULL_STRING;
     TRANSMISSIONQUEUE_ENT[i] = -1;
-    MESSAGE_QUEUE[i] = NULL_SOUND;
+    MESSAGE_QUEUE[i] = NULL_STRING;
     i = i + 1;
   }
   
@@ -274,12 +274,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         itr = itr + 1;
       }
     }
- 
-    snd_hud_vfx_armlistener(CLIENT_health_torso_right, 1, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(CLIENT_health_torso_left, 2, SND_HUD_VFX_CRITTOR);
-    snd_hud_vfx_armlistener(CLIENT_health_arm_right, 4, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(CLIENT_health_arm_left, 8, SND_HUD_VFX_CRITARM);
-    snd_hud_vfx_armlistener(CLIENT_health_legs, 16, SND_HUD_VFX_CRITLEG);
     
     //HUD SOUND SYSTEM LISTENERS
     snd_hud_vfx_statelistener(CLIENT_player_state);
@@ -453,7 +447,6 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_TARG_KILL:
       te_targ_kill();
-      text_hud_message_target_killed();
       return TRUE;
     case TE_MISSION_NAME:
       client_event_mission_name( ReadString() );

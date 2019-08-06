@@ -1087,8 +1087,8 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
   width = stringwidth( messageVal, 0, messageFont);
   messageOrigin = gui_calcAlign(messageOrigin, labelAlign);
   messageOrigin_x = messageOrigin_x - gui_percentXRaw( width / 2 );
- 
-  drawstring(messageOrigin, messageVal, messageFont, HUD_COLOR_DEF, labelAlpha, 0);
+  
+  drawstring(messageOrigin, messageVal, messageFont, CLR_DEF_RED * 0.85, labelAlpha, 0);
     
   drawfont = drawfont_prev;
 };
@@ -1281,6 +1281,9 @@ void() data_hud_frame={
         HUD_TXT_SIZE = UI_DATA_SIZE[uid];
         HUD_TXT_ALIGN = UI_DATA_ALIGN[uid];
         break;
+      case HUD_UID_ENVIRO_BOX:
+        HUD_WARN_ENV_ORG = UI_DATA_POS[uid];
+        break;
     }
     uid = uid + 1;
   }
@@ -1328,8 +1331,8 @@ void() data_hud_frame={
   //repair sits above all
   hud_renderRepairValue(getstatf(STAT_PLR_REP));
   hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
-  hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec('0 -200'), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
   
+  hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
 };
 
 /*

@@ -32,6 +32,7 @@ float HUD_UID_TARGET_RANGE  = 14;
 float HUD_UID_ARM_TARG_VEC  = 15;
 float HUD_UID_ARM_TARG_BLD  = 16;
 float HUD_UID_MESSAGE_BOX   = 17;
+float HUD_UID_ENVIRO_BOX    = 18;
 //==========================================
 
 
@@ -50,6 +51,7 @@ float HUD_UID_MESSAGE_BOX   = 17;
   float HUD_WARN_ENV_MARK;
   float HUD_WARN_ENV_TIME = 1;
   float HUD_WARN_ENV_TYPES;
+  vector HUD_WARN_ENV_ORG;
   
   float HUD_ALPHA_TIME;
   float HUD_ALPHA_RATE;

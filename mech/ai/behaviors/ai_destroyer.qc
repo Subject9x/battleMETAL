@@ -19,6 +19,7 @@ void() ai_vec_dest_die={
   local vector vel;
   local vector v;
   
+  ai_sfx_dead();
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;

@@ -48,7 +48,7 @@ void() ai_sfx_spotted={
         }
         return;
       }
-      self.voiceTime = time + 0.33;
+      self.voiceTime = time + 0.2;
       client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_SPOTTED, 1);
     } 
   }
@@ -64,7 +64,7 @@ void() ai_sfx_warning={
         }
         return;
       }
-      self.voiceTime = time + 0.33;
+      self.voiceTime = time + 0.2;
       client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_WARN, 2);
     }
   }
@@ -78,8 +78,8 @@ void() ai_sfx_huntStart={
     }
     return;
   }
-  self.voiceTime = time + 0.5;
-  client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_START, 2);
+  self.voiceTime = time + 0.2;
+  client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_START, 1);
 };
 
 void() ai_sfx_huntEnd={
@@ -91,7 +91,7 @@ void() ai_sfx_huntEnd={
       }
       return;
     }
-    self.voiceTime = time + 1;
+    self.voiceTime = time + 0.5;
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_END, 1) ;
   }
 };
@@ -105,8 +105,8 @@ void() ai_sfx_dying={
       }
       return;
     }
-    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DYING, 2) ;
-    self.voiceTime = time + 0.1;
+    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DYING, 1) ;
+    self.voiceTime = time + 0.05;
   }
 };
 
@@ -133,7 +133,7 @@ void() ai_sfx_kill={
         return;
       }
       
-      client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_KILL, 2);
+      client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_KILL, 1);
       self.voiceTime = time + 0.33;
     }
   }
@@ -149,7 +149,7 @@ void() ai_sfx_roger={
       return;
     }
     self.voiceTime = time + 0.25;
-    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_ROGER, 3);
+    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_ROGER, 1);
   }
 };
 
@@ -163,7 +163,7 @@ void() ai_sfx_help={
       return;
     }
     self.voiceTime = time + 0.25;
-    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HELP, 3);
+    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HELP, 1);
   }
 };
 
