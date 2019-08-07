@@ -31,7 +31,6 @@ void() client_get_info={
   CLIENT_radar_range  = ReadLong();
   CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
 
-  lastDataType = localDataType;
   localDataType = ReadByte();
   if( localDataType == DATA_MECH ){
     CLIENT_energy = ReadShort();
