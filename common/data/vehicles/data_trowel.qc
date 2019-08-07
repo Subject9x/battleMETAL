@@ -35,7 +35,7 @@ void() data_ini_trowel_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 15;
+  self.data_speed_forward = 25;
   self.data_speed_strafe = 0;
   self.data_speed_backward = 10;
   self.data_speed_accel = 1;
