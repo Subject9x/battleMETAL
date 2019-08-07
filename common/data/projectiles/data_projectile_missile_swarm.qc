@@ -11,19 +11,20 @@ Overview:
 
 void() data_projectile_missile_swarm_touch;
 void() data_projectile_missile_swarm_think;
+void() data_projectile_missile_swarm_delay;
 
 void() data_projectile_ini_missile_swarm_={
   self.classname = "missile";
   self.touch = data_projectile_missile_swarm_touch;
-  self.data_velocity = 1600;
+  self.data_velocity = 800;
   self.model = "q3mdl/proj/mdl_proj_lgm.md3";
-  self.data_lifetime = 1.2;
+  self.data_lifetime = 3;
   
   //cosmetics
   self.effects = EF_NOSHADOW;
   self.modelflags = 0;
   self.traileffectnum = particleeffectnum("TE_SWRM_TRAIL");
-  self.think = data_projectile_missile_swarm_think;
+  self.think = data_projectile_missile_swarm_delay;
 };
 
 void() data_projectile_missile_swarm_touch={
@@ -45,37 +46,48 @@ void() data_projectile_missile_swarm_touch={
 };
 
 void() data_projectile_missile_swarm_think={
-  local vector lorg, dir, olddir;
-  local float turnrate;
-
-  turnrate = 0.9;//0.15 turn rate increased to make up for longer intervals
-  lorg = self.owner.laser_sight_org;
+	local vector	dir, vtemp;
   
-  if (lorg != '0 0 0'){
-    olddir = normalize(self.velocity);
-		dir = normalize(lorg - self.origin);
-    if (olddir_x - dir_x > turnrate)
-      dir_x = olddir_x - turnrate;
-    if (olddir_x - dir_x < -1 * turnrate)
-      dir_x = olddir_x + turnrate;
-    if (olddir_y - dir_y > turnrate)
-      dir_y = olddir_y - turnrate;
-    if (olddir_y - dir_y < -1 * turnrate)
-      dir_y = olddir_y + turnrate;
-    if (olddir_z - dir_z > turnrate)
-      dir_z = olddir_z - turnrate;
-    if (olddir_z - dir_z < -1 * turnrate)
-      dir_z = olddir_z + turnrate;
-    self.velocity = dir * self.data_velocity;
-		self.angles = vectoangles(self.velocity);
+	if (self.enemy.health < 1){
+    self.think = BecomeExplosion;
+    self.nextthink = time + 1 + random();
+		return;
 	}
+
+	if( self.enemy != world ){
+    makevectors(self.enemy.angles);
+    vtemp = self.enemy.origin + '0 0 10' + ((crandom() * self.enemy.maxs_x) * v_right) + (v_forward * (crandom() * self.enemy.maxs_x));
+    dir = normalize(vtemp - self.origin);
+    if( time > NEWSHOT.w_isburst ){
+      self.velocity = dir * self.data_velocity;
+    }
+    else{
+      self.velocity_x = dir_x * self.data_velocity;
+      self.velocity_y = dir_y * self.data_velocity;
+      self.velocity_z = dir_z * self.data_velocity / 4;
+    }
+    self.angles = vectoangles( self.velocity );
+	}
+  else{
+    self.velocity = self.angles * self.data_velocity;
+  }
+  
   if(time > self.data_lifetime){
     self.nextthink = time + 0.1;
     self.think = BecomeExplosion;
   }
   else{
-    self.nextthink = time + 0.2; //0.05
+    self.nextthink = time + 0.2;
     self.think = data_projectile_missile_swarm_think;
   }
+};
+
+void() data_projectile_missile_swarm_delay={
+  self.velocity = normalize( self.origin - self.c_ofs);
+  self.velocity = self.velocity * (self.data_velocity * 0.50);
+  self.angles = vectoangles(self.velocity);
+   
+  self.think = data_projectile_missile_swarm_think; 
+  self.nextthink = time + 1;
 };
 

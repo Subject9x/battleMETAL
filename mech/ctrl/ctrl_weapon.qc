@@ -188,6 +188,9 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       if( updateDelay > -1 ){
         self.nextthink = time + updateDelay;
       }
+      else{
+        self.nextthink = time + 0.1;
+      }
       util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
       util_setModel(self.model, 0, 0);
       setsize(self, '0 0 0', '0 0 0');
@@ -213,10 +216,6 @@ void() ctrl_die_weapon={
     if((oself.currentWeaponGroup & self.w_group)){
       oself.currentWeaponGroup = oself.currentWeaponGroup - (oself.currentWeaponGroup & self.w_group);
       self.w_group = 0;
-    }
-    if((self.owner.flags & FL_CLIENT)){
-      //ctrl_weapon_subState(self, self.state_1);
-      //ctrl_weapon_addState(self, self.state_2);
     }
     
     self.w_attack = SUB_Null;

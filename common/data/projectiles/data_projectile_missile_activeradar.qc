@@ -68,7 +68,6 @@ void() data_projectile_missile_activeradar_think={
   self.nextthink = time + 0.3;
 };
 
-//oh what I do for cosmetics
 void() data_projectile_missile_activeradar_delay={
   self.velocity = normalize( self.origin - self.c_ofs);
   self.velocity = self.velocity * (self.data_velocity * 0.33);
