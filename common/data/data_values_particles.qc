@@ -35,3 +35,5 @@ float TE_HAZARD_ENERGY = 104;
 float TE_HAZARD_ARMOR = 105;
 float TE_MISSION_END = 106;
 float TE_ENV_WARN = 107;
+
+float TE_CRITICAL_HIT = 108;

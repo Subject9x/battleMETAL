@@ -15,24 +15,26 @@ void() hud_event_frame={
   local float nextArrayValue;
   
   if( time > HUD_EVENT_TIME_NEXT ){
+    HUD_EVENT_ID = HUD_EVENTS[0];
+    if( HUD_EVENT_ID > 0 ){
+      HUD_EVENT_SOUND_START = FALSE;
+      HUD_EVENT_TIME_NEXT = time + 2.67;
+    }
+    else{
+      HUD_EVENT_TIME_NEXT = time + 0.1;
+    }
     arrIdx = 1;
     while( arrIdx < HUD_EVENT_SIZE ){
       prevArrIdx = arrIdx - 1;
       nextArrayValue = HUD_EVENTS[arrIdx];
       HUD_EVENTS[prevArrIdx] = nextArrayValue;
-      HUD_EVENTS[arrIdx] = 0;
+      HUD_EVENTS[arrIdx] = -1;
       arrIdx = arrIdx + 1;
-    }
-    HUD_EVENT_ID = HUD_EVENTS[0];
-    if( HUD_EVENT_ID > 0 ){
-      HUD_EVENT_SOUND_START = FALSE;
-      HUD_EVENT_TIME_NEXT = time + 1;
-    }
-    else{
-      HUD_EVENT_TIME_NEXT = time + 0.1;
     }
   }
   switch( HUD_EVENT_ID ){
+    default:
+      break;
     case HUD_EVENT_CRITICAL_LEGS:
       hud_event_critical_legs();
       break;
@@ -72,10 +74,6 @@ void() hud_event_frame={
     case HUD_EVENT_TARGET_KILLED:
       hud_event_target_killed();
       break;
-    default:
-      //do nothing
-  cons_logAFloat("HUD_EVENT_ID", HUD_EVENT_ID); //DEBUG
-      break;
   }
 };
 
@@ -95,7 +93,7 @@ void( float eventAdd, float limitMax) hud_event_enqueue={
       foundTotal = foundTotal + 1;
     }
     if( foundTotal < limitMax ){
-      if( arrayValue == 0 ){
+      if( arrayValue < 1){
         HUD_EVENTS[arrIdx] = eventAdd;
         foundTotal = foundTotal + 1;
       }

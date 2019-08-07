@@ -14,6 +14,7 @@ void() client_get_info={
   local float localDataType;
   local float wep;
   local float weaponDelta;
+  
   local float lastWeaponState;
   local float lastHealthCenter;
   local float lastHealthLegs;
@@ -27,9 +28,10 @@ void() client_get_info={
   //client = entitybyindex( getstati(STAT_PLR_ENT_ID) );
   CLIENT_player_deadflag = ReadByte();
   CLIENT_entorg  = te_read_vector();
-  CLIENT_radar_range  = ReadLong(); 
-  CLIENT_data_type = getstati(STAT_PLR_DTYPE);
-  
+  CLIENT_radar_range  = ReadLong();
+  CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
+
+  lastDataType = localDataType;
   localDataType = ReadByte();
   if( localDataType == DATA_MECH ){
     CLIENT_energy = ReadShort();
@@ -48,25 +50,6 @@ void() client_get_info={
     CLIENT_health_torso_right = ReadByte(); 
     CLIENT_health_arm_left = ReadByte(); 
     CLIENT_health_arm_right = ReadByte();
-
-
-
-
-    if( lastHealthLegs > 0 && CLIENT_health_legs <= 0 ){
-      hud_event_critical_legs();
-    }
-    if( lastHealthTorsoLeft > 0 && CLIENT_health_torso_left <= 0 ){
-      hud_event_critical_left_torso();
-    }
-    if( lastHealthTorsoRight > 0 && CLIENT_health_torso_right <= 0 ){
-      hud_event_critical_right_torso();
-    }
-    if( lastHealthArmLeft > 0 && CLIENT_health_arm_left <= 0 ){
-      hud_event_critical_left_arm();  
-    }
-    if( lastHealthArmRight > 0 && CLIENT_health_arm_right <= 0 ){
-      hud_event_critical_right_arm();
-    }
     
     CLIENT_hardpoint_cnt = ReadByte();
     wep = 0;
@@ -78,11 +61,6 @@ void() client_get_info={
 
     lastWeaponState = CLIENT_weapon_state;
     CLIENT_weapon_state = ReadLong();
-    if( CLIENT_weapon_state != lastWeaponState ){
-      if( CLIENT_player_state != PLAYER_POWERUP_BEGIN ){
-        hud_event_critical_weapon();
-      }
-    }
     
     CLIENT_stat_trg_ent_id = ReadByte();
     if( CLIENT_stat_trg_ent_id != 0 ){
@@ -189,8 +167,6 @@ void() receive_ent_bindData={
   }
   
   CLIENT_player_state = getstati( STAT_ARMOR );
-
-  CLIENT_data_type = getstati(STAT_PLR_DTYPE);
   CLIENT_data_idx = getstati(STAT_PLR_DIDX);
   CLIENT_faction = getstati( STAT_CELLS );
   CLIENT_stat_lock_state = getstati(STAT_LCK_STT);
@@ -290,6 +266,30 @@ void() client_event_environment={
     }
   }
 };
+
+void( float criticalsType ) client_event_critical_hit={
+  switch( criticalsType ){
+    case M_TOR_RIGHT:
+      hud_event_enqueue( HUD_EVENT_CRITICAL_TORSO_RIGHT, 1 );
+      break;
+    case M_TOR_LEFT:
+      hud_event_enqueue( HUD_EVENT_CRITICAL_TORSO_LEFT, 1 );
+      break;
+    case M_LEGS:
+      hud_event_enqueue( HUD_EVENT_CRITICAL_LEGS, 1 );
+      break;
+    case M_ARM_LEFT:
+      hud_event_enqueue( HUD_EVENT_CRITICAL_ARM_LEFT, 1 );
+      break;
+    case M_ARM_RIGHT:
+      hud_event_enqueue( HUD_EVENT_CRITICAL_ARM_RIGHT, 1 );
+      break;
+    case M_ITEM:
+      hud_event_enqueue( HUD_EVENT_CRITICAL_WEAPON, 1 );
+      break;
+  }
+};
+
 /*
   handles mission name if active
 */

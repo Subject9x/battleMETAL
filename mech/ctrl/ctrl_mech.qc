@@ -209,6 +209,9 @@ void() ctrl_component_die={
         self = this;
       }
     }
+    if( (self.owner.flags & FL_CLIENT) ){
+      client_send_critical_hit( self.owner );
+    }
   }
 };
 

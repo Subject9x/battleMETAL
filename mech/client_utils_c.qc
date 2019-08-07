@@ -242,7 +242,12 @@ void() client_push_mapobjects={
   }
 };
 
-
+void( entity client ) client_send_critical_hit={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY);
+  WriteByte( MSG_ONE, TE_CRITICAL_HIT );
+  WriteByte( MSG_ONE, self.partTypeId);
+};
 
 /*
   Sends an AI voice sample to play for a specific client

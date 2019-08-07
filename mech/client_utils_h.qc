@@ -37,6 +37,8 @@ void( entity targetClient ) client_push_hud_highlight;
 void( entity targetClient ) client_send_boundary_warning;
 void( entity targetClient ) client_send_enviro_warning;
 
+void( entity client ) client_send_critical_hit;
+
 void() client_push_mapobjects;
 void( entity navpoint ) client_send_navpoint;
 void( entity objective ) client_send_objective;

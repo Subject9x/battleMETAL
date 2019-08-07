@@ -54,6 +54,8 @@ void() CSQC_Init =
     SOUNDQUEUE[i] = "null";
     i = i + 1;
   }
+  HUD_EVENT_ID = -1;
+  HUD_EVENTS[0] = -1;
   //clear out and prepare mech lists
   cnt = 1;
   while(cnt <= GAME_TOTAL_MECHS){
@@ -61,6 +63,9 @@ void() CSQC_Init =
     MECHLIST_LIGHT_ARR[cnt] = 0;
     MECHLIST_MEDIUM_ARR[cnt] = 0;
     MECHLIST_HEAVY_ARR[cnt] = 0;
+    if( cnt <= HUD_EVENT_SIZE){
+      HUD_EVENTS[cnt] = -1;
+    }
     cnt = cnt + 1;
   }
   //clear out and prepare master weapon list
@@ -283,6 +288,8 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       data_hud_frame();
       
       if(CLIENT_player_state == PLAYER_SPRINT_ON){
+        drawfont_prev = drawfont;
+        drawfont = FONT_NUM_ROBOT_REGULAR;
         local float slen;
         local vector spos;
         local string msg;
@@ -295,11 +302,12 @@ void(float w, float h, float menushown) CSQC_UpdateView =
           msg = "[EVASION DISABLED]";
           msgClr = CLR_DEF_RED;
         }
-          slen = stringwidth(msg, 0, '12 10 0');
+          slen = stringwidth(msg, 0, '14 12 0');
         slen = gui_percentXRaw(slen);
         spos_x = VIEW_CTR_x - slen / 2;
         spos_y = VIEW_CTR_y + gui_percentYRaw(56);
-        drawstring(spos, msg, '12 10 0', msgClr, HUD_ALPHA, 0);
+        drawstring(spos, msg, '14 12 0', msgClr, HUD_ALPHA, 0);
+        drawfont_prev = drawfont;
       }
       
       //HUD Highlight Boxes
@@ -425,16 +433,15 @@ float() CSQC_Parse_TempEntity =
       te_objective_complete( ReadByte() );
       return TRUE;
     case TE_OBJECTIVE_FAILED:
-      hud_event_objective_failed();
+      hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1) ;
       return TRUE;
     case TE_MISSION_WIN:
-      hud_event_mission_complete();
+      hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1) ;
       return TRUE;
     case TE_MISSION_LOSE:
-      hud_event_mission_failed();
+      hud_event_enqueue( HUD_EVENT_MISSION_FAILED, 1) ;
       return TRUE;
     case TE_NAV_REACH:
-      //te_nav_reach();
       hud_event_enqueue( HUD_EVENT_NAV_REACHED, 1 );
       return TRUE;
     case TE_MSN_BOUND:
@@ -444,7 +451,7 @@ float() CSQC_Parse_TempEntity =
       snd_hud_trnsmsn_addtoqueue(ReadByte(), ReadByte(), ReadByte(), ReadLong());
       return TRUE;
     case TE_TARG_KILL:
-      hud_event_target_killed();
+      hud_event_enqueue( HUD_EVENT_TARGET_KILLED, 1) ;
       return TRUE;
     case TE_MISSION_NAME:
       client_event_mission_name( ReadString() );
@@ -454,6 +461,9 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_ENV_WARN:
       client_event_environment();
+      return TRUE;
+    case TE_CRITICAL_HIT:
+      client_event_critical_hit( ReadByte() );
       return TRUE;
   } 
 	return FALSE;

@@ -40,7 +40,7 @@ void() mh_world_ini={
   addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);
   addstat(STAT_PLR_ORG_Z, AS_FLOAT, stat_cofs_z);
   addstat(STAT_PLR_DIDX, AS_INT, data_idx);
-  addstat(STAT_PLR_DTYPE, AS_INT, data_type);
+  addstat(STAT_PLAYER_DATA_TYPE, AS_INT, data_type);
   addstat(STAT_PLR_RADMOD, AS_INT, stat_rdr_mode);
   addstat(STAT_LCK_STT, AS_INT, stat_lck_stt);
   addstat(STAT_PLR_HITDIR, AS_INT, stat_hit_dirs);

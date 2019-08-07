@@ -26,6 +26,8 @@ void() client_get_info;
 void() client_get_contact;
 void() client_get_hud_highlight;
 
+void( float criticalsType ) client_event_critical_hit;
+
 void() client_event_navpoint;
 void() client_event_deploypoint;
 void() client_event_objective;

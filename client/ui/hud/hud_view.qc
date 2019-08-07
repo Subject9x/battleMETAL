@@ -1078,7 +1078,7 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message={
   local vector messageOrigin;
   local float width;
-
+  
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
  
@@ -1088,7 +1088,7 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
   messageOrigin = gui_calcAlign(messageOrigin, labelAlign);
   messageOrigin_x = messageOrigin_x - gui_percentXRaw( width / 2 );
   
-  drawstring(messageOrigin, messageVal, messageFont, CLR_DEF_RED * 0.85, labelAlpha, 0);
+  drawstring(messageOrigin, messageVal, messageFont, CLR_DEF_RED * 0.85, 1, 0);
     
   drawfont = drawfont_prev;
 };
