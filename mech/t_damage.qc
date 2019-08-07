@@ -353,15 +353,6 @@ entity(vector point, float rad, entity trg) t_find_part={
     toSender = toSender.aiment;
   }
 
-  //it's dumb, but unit heirarchy is only about 2 ents deep.
-  if( toSender.deadflag > DEAD_NO ){
-    toSender = toSender.aiment;
-    //2nd layer
-    if( toSender.deadflag > DEAD_NO ){
-      toSender = toSender.aiment;
-    }
-  }
-
   if( toSender.partTypeId == M_TOR_CENTER ){
     toSender = trg;
   }

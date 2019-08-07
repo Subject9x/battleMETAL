@@ -35,9 +35,9 @@ void() data_ini_sorcerer_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 125;
+  self.data_speed_forward = 66;
   self.data_speed_strafe = 0;
-  self.data_speed_backward = 25;
+  self.data_speed_backward = 30;
   self.data_speed_accel = 1;
   #ifndef CSQC
   self.yaw_speed = 2.5;    //AI-only 
@@ -49,12 +49,12 @@ void() data_ini_sorcerer_={
   self.model = "q3mdl/vecs/sorcerer/mdl_sorcerer_chas.md3";
   
   //camera location
-  data_ini_camera_( '0 10 8', self );
+  data_ini_camera_( '0 15 8', self );
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_LEGS, '-10.5 5 -7', '0 0 90', 1, (DMG_EXP | DMG_MSC));
-  data_ini_unitHardpoint_2( M_LEGS, '10.5 5 -7', '0 0 90', 1, (DMG_EXP | DMG_MSC));
+  data_ini_unitHardpoint_1( M_LEGS, '-10.5 5 -7', '35 0 0', 1, (DMG_EXP | DMG_MSC));
+  data_ini_unitHardpoint_2( M_LEGS, '10.5 5 -7', '35 0 0', 1, (DMG_EXP | DMG_MSC));
 //=====================================
 
 //HUD DATA=============================

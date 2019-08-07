@@ -103,6 +103,7 @@ float( float rank, float damg) ai_pilot_mod_damage;
 vector( float rank, vector spread ) ai_pilot_accuracy;
 float( float rank, float lockOn ) ai_pilot_lock_time;
 void() ai_unit_ini_var;
+float() ai_pilot_minrange;
 void(float rank) ai_pilot_ini_stats;
 
 //AI NODES

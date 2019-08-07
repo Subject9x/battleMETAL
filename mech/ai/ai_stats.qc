@@ -412,3 +412,24 @@ float( float rank, float lockOn ) ai_pilot_lock_time={
   }
   return self.w_firetime;
 };
+
+/*
+  Finds acceptable minimum range of all AI's guns
+*/
+float() ai_pilot_minrange={
+  local entity weaponEnt;
+  local float minrange;
+  local float total;
+  
+  weaponEnt = self.w_slot;
+  while( weaponEnt ){
+    if( weaponEnt.deadflag == DEAD_NO ){
+      minrange = minrange + weaponEnt.w_range;
+      total = total + 1;
+    }
+    weaponEnt = weaponEnt.w_slot;
+  }
+  
+  minrange = minrange / total;
+  return minrange;
+};

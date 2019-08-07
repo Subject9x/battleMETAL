@@ -10,13 +10,16 @@ Overview:
 void() ctrl_updateTank={
   local entity cam;
   local entity wep;
-  local entity piece;
-  local entity partParent;
   local vector v1;
   local vector spark;
   local float hp;
   
   cam = self.cockpit;
+  
+  if( !(self.flags & FL_TURRET) ){
+    //Unit lacks a turret.
+    self.v_angle = self.angles;
+  }
   
   makevectors(self.v_angle);
   v1 = self.origin + (v_right * cam.c_ofs_x) + (v_up*cam.c_ofs_y) + (v_forward*cam.c_ofs_z);
@@ -51,32 +54,25 @@ void() ctrl_updateTank={
   }
   
   //damage-based cosmetics for unit component pieces
-  piece = self.partNext;
-  while( piece ){
-    if( piece.deadflag <= DEAD_NO ){
-      hp = piece.health / piece.max_health;
-      if( hp < 0.75){
-        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1);
-        if( hp < 0.5){
-          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1.25);
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 1.5);
-          if( hp < 0.25){
-            spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 1.5);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 1.75);
-          }
-        }
-      }
+  if( self.deadflag <= DEAD_NO ){
+    hp = self.health / self.max_health;
+    if( hp <= 0.75){
+      makevectors( self.angles );
+      spark = self.origin + (v_up * (self.maxs_z * 0.75));
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
     }
-    else{
-      partParent = util_getPartFromName(piece.partParentId, self); 
-      if( partParent.deadflag <= DEAD_NO ){
-        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5, 1);
-      }
+    else if( hp <= 0.5){
+      makevectors( self.angles );
+      spark = self.origin + (v_up * (self.maxs_z * 0.75));
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 1);
     }
-    piece = piece.partNext;
+    else if( hp <= 0.25){
+      makevectors( self.angles );
+      spark = self.origin + (v_up * (self.maxs_z * 0.75));
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - self.origin) * 5, 1);
+      pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - self.origin) * 5, 1);
+    }
   }
+
 };

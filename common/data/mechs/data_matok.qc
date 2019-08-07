@@ -73,11 +73,11 @@ void() data_ini_matok_={
 //=====================================
  
 //HARDPOINT DATA======================
-  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 90', 1, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 90', 1, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 90', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
+  data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 //=====================================
 
 //HUD Data=============================

@@ -26,13 +26,13 @@ void() data_ini_missile_laserguide_={
   
   self.w_range = 1000;
   self.damageValue = 275;
-  self.damageType = (DMG_EXP);
+  self.damageType = DMG_EXP | EFF_PTR;
 
   self.techLevel = 1;
   self.i_size = 1;
 
   #ifdef CSQC
-   self.abbrev = "MLGD";
+  self.abbrev = "MLGD";
   self.description = "+ Missile will follow your reticle. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.icon = "gfx/ui/wep_icons/wi_mlgd.png";  
   #endif 

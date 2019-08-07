@@ -35,9 +35,9 @@ void() data_ini_onnek_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 75;
+  self.data_speed_forward = 50;
   self.data_speed_strafe = 0;
-  self.data_speed_backward = 75;
+  self.data_speed_backward = 15;
   self.data_speed_accel = 1;
   #ifndef CSQC
   self.yaw_speed = 2;    //AI-only 
@@ -53,7 +53,7 @@ void() data_ini_onnek_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_LEGS, '7.25 3.5 12', '0 0 90', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_1( M_LEGS, '7.25 3.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
 //=====================================
 
 //HUD DATA=============================

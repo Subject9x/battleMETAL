@@ -155,7 +155,7 @@ entity( float radiius) ai_find_friend={
   while( ally ){
     if( (ally.flags & FL_UNIT) ){
       dist = vlen( ally.origin - self.origin );
-      if( dist <= rad ){
+      if( dist < rad ){
         rad = dist;
         if( ai_valid_target(ally) ){
           //heh, sloppy check for combat units
@@ -349,12 +349,12 @@ void() ai_ranged_attack={
       if(wep_chain.w_state == READY){
         if( (self.currentWeaponGroup & wep_chain.w_group) ){
           if( !ai_attack_blockcheck(wep_chain) ){
-            self = wep_chain;
-              if( ai_check_face(this.enemy, 0.95) ){
-                self.w_attack();
-                fired = fired + 1;
-              }
-            self = this;
+            if( ai_check_face(this.enemy, 0.95) ){
+              self = wep_chain;
+                  self.w_attack();
+                  fired = fired + 1;
+              self = this;
+            }
           }
         }
       }
@@ -398,7 +398,6 @@ float(entity bot, entity attacker) ai_damage_react={
       if( self.ai_rank < AI_RANK_VET ){
         if( util_getMechHpAverage(self) <= 0.25){
           if( random() <= 0.5 ){
-            
             self.th_pain( self.enemy );
           }
         }

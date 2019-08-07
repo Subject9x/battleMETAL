@@ -192,18 +192,22 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
     
     partParent = util_getPartFromName( self.partParentId, own );
     
-    self.punchangle = self.angles = '0 0 0';
+    self.angles_x = anglemod(partParent.angles_x + self.w_adj_ang_x);
+    self.angles_y = anglemod(partParent.angles_y + self.w_adj_ang_y);
+    self.angles_z = anglemod(partParent.angles_z + self.w_adj_ang_z);
+    
     self.aiment = partParent;
     self.owner = own;
     self.punchangle = partParent.angles;
     self.view_ofs = self.origin - partParent.origin;
-    self.angles = partParent.angles;
+    //self.angles = partParent.angles;
     self.v_angle = self.angles - partParent.angles;
     
     if( (self.damageType & DMG_MSC) ){
       //Fire Equipment 'upgrade' functions now
       if( self.w_attack ){
         self.w_attack();
+        self.w_attack = SUB_Null; //remove upgrade function
       }
     }
     self.th_die = ctrl_die_weapon;
@@ -423,6 +427,7 @@ void(void() data_ini) build_mech_bot={
       MISSION_TOTAL_MILITAR = MISSION_TOTAL_MILITAR + 1;
       break;
   }
+  self.ai_minrange = ai_pilot_minrange();
 };
 
 void() build_unit_turret={
@@ -585,6 +590,7 @@ void(void() data_ini) build_vehicle_unit={
       MISSION_TOTAL_MILITAR = MISSION_TOTAL_MILITAR + 1;
       break;
   }
+  self.ai_minrange = ai_pilot_minrange();
 };
 
 //TODO - deprecated, needs rebuild

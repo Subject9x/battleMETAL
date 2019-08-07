@@ -24,8 +24,8 @@ void() data_ini_plasma_={
   self.energyRate = 1;
   
   self.w_range = 1000;
-  self.damageValue = 4.5;//10.8;
-  self.damageType = (DMG_BAL | EFF_PRC);
+  self.damageValue = 4.5;
+  self.damageType = DMG_BAL;
   
   self.techLevel = 3;
   self.i_size = 2;
@@ -63,6 +63,6 @@ void() data_ini_attack_plasma_={
   pointparticles( particleeffectnum("TE_RPC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 2, 1);
   
   ctrl_weapon_make_projectile( -1 );
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  sound (self, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
 };
 #endif

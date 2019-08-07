@@ -60,7 +60,6 @@ void(entity wep) ctrl_weapon_think_ai={
         stackWeapon = FALSE;
       }
       else{
-
         if( time < self.ai_nextFireTime ){
           stackWeapon = FALSE;
         }
@@ -89,11 +88,13 @@ void(entity wep) ctrl_weapon_think_ai={
           
           if( stackWeapon ){
             if( weaponOwner.ai_rank > AI_RANK_REG ){
-              if( self.damageValue > 100 ){
-                //magic number describing high-damage attacks.
-                spreadRange = weaponOwner.spreadDefault_x + (weaponOwner.spreadDefault_x * 0.33);
-                if( weaponOwner.accuracy >= spreadRange ){
-                  stackWeapon = FALSE;
+              if( !(self.damageType & EFF_PTR) ){
+                if( self.damageValue > 100 && !(weaponOwner.stat_lck_stt & LOCK_TARG_HAS)){
+                  //magic number describing high-damage attacks.
+                  spreadRange = weaponOwner.spreadDefault_x + (weaponOwner.spreadDefault_x * 0.33);
+                  if( weaponOwner.accuracy >= spreadRange ){
+                    stackWeapon = FALSE;
+                  }
                 }
               }
             }
@@ -186,9 +187,6 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       self.angles = vectoangles(self.velocity);
       if( updateDelay > -1 ){
         self.nextthink = time + updateDelay;
-      }
-      else{
-        self.nextthink = time + self.data_lifetime;
       }
       util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
       util_setModel(self.model, 0, 0);

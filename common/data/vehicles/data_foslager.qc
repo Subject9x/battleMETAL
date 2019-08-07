@@ -35,9 +35,9 @@ void() data_ini_foslager_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 100;
+  self.data_speed_forward = 50;
   self.data_speed_strafe = 0;
-  self.data_speed_backward = 25;
+  self.data_speed_backward = 15;
   self.data_speed_accel = 1;
   #ifndef CSQC
   self.yaw_speed = 2.5;    //AI-only 
@@ -57,9 +57,9 @@ void() data_ini_foslager_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 11 2', '0 0 90', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 11.5 2.75', '0 0 90', 1, (DMG_BAL | DMG_ENE));
-  data_ini_unitHardpoint_3( M_LEGS, '-1.5 6 9', '0 0 90', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '1.5 11 2', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-5.1 11.5 2.75', '0 0 0', 1, (DMG_BAL | DMG_ENE));
+  data_ini_unitHardpoint_3( M_LEGS, '-1.5 6 9', '0 0 0', 1, (DMG_BAL | DMG_ENE));
 //=====================================
 
 //HUD DATA=============================

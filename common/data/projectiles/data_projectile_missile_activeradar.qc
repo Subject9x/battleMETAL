@@ -29,8 +29,8 @@ void() data_projectile_ini_missile_active_radar_={
 };
 
 void() data_projectile_missile_activeradar_think={
-	local vector	dir, vtemp, olddir;
-  local float turnrate;
+	local vector	dir, vtemp;
+  
 	if (self.enemy.health < 1){
     self.think = BecomeExplosion;
     self.nextthink = time + 1 + random();

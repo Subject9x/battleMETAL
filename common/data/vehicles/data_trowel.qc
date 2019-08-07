@@ -35,9 +35,9 @@ void() data_ini_trowel_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 100;
+  self.data_speed_forward = 15;
   self.data_speed_strafe = 0;
-  self.data_speed_backward = 50;
+  self.data_speed_backward = 10;
   self.data_speed_accel = 1;
   #ifndef CSQC
   self.yaw_speed = 0.75;    //AI-only 
@@ -57,8 +57,8 @@ void() data_ini_trowel_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.75 12 10.5', '0 0 90', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.75 16.75 10.5', '0 0 90', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.75 12 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.75 16.75 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
 //=====================================
 
 //HUD DATA=============================

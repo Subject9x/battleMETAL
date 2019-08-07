@@ -59,7 +59,7 @@ void() data_ini_attack_missile_swarm_={
   
   if( self.owner.stat_rdr_mode == TRUE ){
     //check for 'Active' Radar
-    if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
+    //if( (self.owner.stat_lck_stt & LOCK_TARG_HAS) ){
       //check to see if owner has a target lock
       ctrl_weapon_updateAmmo( TRUE );
     
@@ -90,7 +90,7 @@ void() data_ini_attack_missile_swarm_={
         }
         targs = targs.chain;
       }
-    }
+    //}
   }
 };
 #endif

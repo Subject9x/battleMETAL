@@ -27,7 +27,7 @@ void() data_ini_equip_turbo_charger_={
   
   self.w_range = 0;
   self.damageValue = 0;
-  self.damageType = (DMG_MSC);
+  self.damageType = DMG_MSC;
  
   self.techLevel = 2;
   self.i_size = 3;
