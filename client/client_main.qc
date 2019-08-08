@@ -465,6 +465,9 @@ float() CSQC_Parse_TempEntity =
     case TE_CRITICAL_HIT:
       client_event_critical_hit( ReadByte() );
       return TRUE;
+    case TE_MAPKEY_DATA:
+      client_event_get_mapkeyinfo( ReadByte(), ReadLong(), ReadLong(), ReadByte() ) ;
+      return TRUE;
   } 
 	return FALSE;
 };

@@ -262,6 +262,7 @@ void(vector ofs) menu_deploy_mechInfoPanel={
 void(vector ofs) menu_deploy_mapOverviewPanel={
   local vector mpos, iofs, map_size, unavailableOrg;
   local float itr, unavailableLen;
+  local entity mapKey;
   
   itr = 0;
   mpos_x = mpos_x + (VIEW_CTR_x - gui_percentXRaw(96));
@@ -299,11 +300,17 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       
         tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec('380 380'));
         
-        nlen = stringwidth(navname, 0, '6 6 0');
+        drawfont_prev = drawfont;
+        drawfont = FONT_NUM_ROBOT_LIGHT;
+        
+        nlen = stringwidth(navname, 0, '8 8 0');
         nofs_x = nofs_x - gui_percentXRaw((nlen/2));
         nofs_y = nofs_y - gui_percentYRaw(16);
-        gui_renderTintImage(TRUE, tofs + gui_percentToPixelRawVec('-6 -6'), UI_DEF_NAVPOINT, '12 12', CLR_DEF_WHITE, 1, 0) ;
-        drawstring(nofs, navname, '6 6 0', '1 1 1', 1, 0);
+        gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', CLR_DEF_ARM_OK, 1, 0) ;
+        
+        drawstring(nofs, navname, '8 8 0', CLR_DEF_ARM_OK, 1, 0);
+        
+        drawfont = drawfont_prev;
       }
     }
     local vector deployColor;
@@ -333,6 +340,20 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       drawline(1, lineOrg + gui_percentToPixelRawVec('0 4'), CLIENT_MENU_nav_ui_org + gui_percentToPixelRawVec('0 4'), '0.85 0.85 0', 0.75, 0);
     }
     itr = itr + 1;
+  }
+  
+  mapKey = mapKeyObject;
+  while( mapKey ){
+    nofs = gui_mapCoordToImgCoord(world.mins, map_size, mapKey.origin, iofs, gui_percentToPixelRawVec('380 380'));
+    switch( mapKey.data_type ){
+      case DATA_MAP_OBJ:
+        drawpic( nofs - gui_percentToPixelRawVec('8 8'), UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED, 1, 0);
+        break;
+      case DATA_BLD:
+        gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD, 1, 0);
+        break;
+    }
+    mapKey = mapKey.w_slot;
   }
 
   local vector helpOrg;
@@ -405,7 +426,7 @@ void(vector ofs) menu_deploy_mapKeyPanel={
   local vector hazardIconOrg;
   local vector hazardLabelOrg;
   hazardIconOrg = baseEnemyIconOrg + gui_percentToPixelRawVec('0 20');
-  drawpic( hazardIconOrg, UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_WHITE, 1, 0) ;
+  drawpic( hazardIconOrg, UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED - '0.15 0.075 0.075', 1, 0) ;
   hazardLabelOrg = hazardIconOrg + gui_percentToPixelRawVec('24 1');
   drawstring( hazardLabelOrg, "Environment Hazard", '14 14', '0.85 0.85 0.85', 1, 0);
 

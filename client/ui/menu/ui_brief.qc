@@ -239,11 +239,17 @@ void(vector ofs) menu_briefMapPanel={
     
       tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec(ui_msize_in));
       
-      nlen = stringwidth(navname, 0, '6 6 0');
+      drawfont_prev = drawfont;
+      drawfont = FONT_NUM_ROBOT_LIGHT;
+        
+      nlen = stringwidth(navname, 0, '10 10 0');
       nofs_x = nofs_x - gui_percentXRaw((nlen/2));
       nofs_y = nofs_y - gui_percentYRaw(16);
-      drawstring(nofs, navname, '6 6 0', '1 1 1', 1, 0);
-      gui_renderTintImage(TRUE, tofs + gui_percentToPixelRawVec('-6 -6'), UI_DEF_NAVPOINT, '12 12', CLR_DEF_WHITE, 1, 0) ;
+      gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', CLR_DEF_ARM_OK, 1, 0) ;
+        
+      drawstring(nofs, navname, '10 10 0', CLR_DEF_ARM_OK, 1, 0);
+        
+      drawfont = drawfont_prev;
     }
     itr = itr + 1;
   }

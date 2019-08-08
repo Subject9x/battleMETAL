@@ -596,6 +596,23 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
   self = notSelf;
 };
 
+void(entity client ) client_send_mapKeyObjects={
+  local entity objects;
+  
+  objects = findchainflags( spawnflags, 4194304);
+  while( objects ){
+    msg_entity = client;  
+    WriteByte( MSG_ONE, SVC_TEMPENTITY );
+    WriteByte( MSG_ONE, TE_MAPKEY_DATA );
+    WriteByte( MSG_ONE, objects.data_type );
+    WriteLong( MSG_ONE, objects.origin_x );
+    WriteLong( MSG_ONE, objects.origin_y );
+    WriteByte( MSG_ONE, objects.faction);
+    objects = objects.chain;
+  }
+};
+
+
 void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed={
   local string comd;
   

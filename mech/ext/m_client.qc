@@ -127,6 +127,7 @@ void() ClientConnect = {
   self.stat_plr_stt = PLAYER_SPAWN;
   
   client_push_player_info();
+  client_send_mapKeyObjects( self );
   
   if (intermission_running){
     ExitIntermission();

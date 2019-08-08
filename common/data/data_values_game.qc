@@ -103,6 +103,7 @@ float DATA_DEPL = 11;
 float DATA_WEAPON = 12;
 float DATA_INFO_START = 13;//used to send clientdata entity to csqc
 float DATA_INFO_COOP = 14;  //used as ID for info_start_coop
+float DATA_MAP_OBJ = 15; //meh, mostly for map objects (mapKeys :/ )
 //============================
 //     WEAPON SLOT BITS           
 //============================

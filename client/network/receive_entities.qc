@@ -407,11 +407,33 @@ void(float missionTime, float clientKills, float missonSuccessCheck, float pscTo
   CLIENT_MENU_menu_choice = MENU_DEBRIEF_ACTIVE;
   setpause( 1 );
   setcursormode( 1 );
-  //start cd track
 };
 
-void() client_event_targ_kill={
+/*
+  MapKeys are basically entities that have been given the SPAWNFLAG_MAPKEY value. This transmits
+  the entity's data_type, the server-origin, and the faction value (optional).
   
+  MapKeys are draw in the ui_deploy.qc menu for player reference.
+*/
+void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyFactionValue ) client_event_get_mapkeyinfo={
+  local entity newMapKey;
+  
+  newMapKey = spawn();
+  newMapKey.data_type = mapKeyTypeId;
+  newMapKey.origin_x = mapKeyCoordX;
+  newMapKey.origin_y = mapKeyCoordY;
+  newMapKey.origin_z = 0;
+  newMapKey.faction = mapKeyFactionValue;
+  
+  if( mapKeyObject ){
+    //build linked list backwards for later forward iteration.
+    newMapKey.w_slot = mapKeyObject;
+    mapKeyObject = newMapKey;
+  }
+  else{
+    //start chain
+    mapKeyObject = newMapKey;
+  }
 };
 
 void() client_map_cdtrack={

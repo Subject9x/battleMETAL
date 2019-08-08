@@ -319,6 +319,14 @@ void() map_damage_zone={
     self.isActive = FALSE;
     return;
   }
+  
+  if( (self.spawnflags & IT_QUAD) ){
+    //IF marked for mapKey, tag data_type as such.
+    self.data_type = DATA_MAP_OBJ;
+  }
+  else{
+    self.data_type = 0;
+  }
 
   if( (self.spawnflags & 2) ){
     //map needs the countdown timer  
