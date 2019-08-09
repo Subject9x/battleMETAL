@@ -2,7 +2,8 @@
 battleMETAL
 Author: Peter Roohr
 Date: 3/21/2018
-Overview: data file for the human repair bay
+Overview: 
+  data file for the human repair bay
 */
 
 void() building_repair_touch;
@@ -38,7 +39,7 @@ void() hrepair_rep = [0, hrepair_rep]{
       part = repairMe.partNext;
       lowHP = 99.99;
       while(part){
-        if(part.deadflag <= DEAD_NO){
+        if( part.deadflag <= DEAD_NO && (part.partTypeId != M_ITEM || part.partTypeId != M_CAMERA) ){
           local float hp;
           hp = csqc_updateCompStat(part);
           if( hp <= lowHP){
@@ -116,21 +117,13 @@ void() hrepair_die9 = [9, hrepair_die10]{
   ruins = spawn();
   ruins.solid = SOLID_CORPSE;
   ruins.movetype = MOVETYPE_NONE;
-  switch( self.vec_size ){
-    case 2:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_medium.obj"));
-      break;
-    case 3:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
-      break;
-    default:
-      setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_small.obj"));
-      break;
-  }
-  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
-  setorigin(ruins, self.origin);
+
+  setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
   ruins.vec_size = self.vec_size;
   ruins.angles = self.angles;
+  ruins.angles_y = anglemod( 45 + crandom() * 125);
+  setsize(ruins, ruins.mins, ruins.maxs * 0.75);
+  setorigin(ruins, self.origin);
   ruins.armLeft = te_building_fire_start( ruins );
   if( ruins.vec_size > 1 ){
     ruins.armRight = te_building_fire_start( ruins );
@@ -153,15 +146,20 @@ void() building_human_repair={
   util_setCollider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE) ;
   util_setHealthArmor(600, 600, 1, 100) ;
   setsize(self, '-53 -53 0', '53 53 40');
-  self.shield= 0;
+  self.shield = 0;
   self.shieldMax= 750;
   self.shieldRate= 1;
-  self.reloadValue = 2000;
+  
+  if( skill < SKILL_VET ){
+    self.reloadValue = 2000;
+  }
+  else{
+    self.reloadValue = 500;
+  }
   self.reloadRate = 1;
   self.reloadMax = 2000;
   self.deadflag = DEAD_NO;
   
-
   if( util_cornerSlopeCheck(self, 1) ){
     util_generateBuildingFoundation(self);
   }
@@ -171,6 +169,9 @@ void() building_human_repair={
   
   if(util_cornerSlopeCheck(self, 1)){
     util_generateBuildingFoundation(self);
+  }
+  else{
+    droptofloor();
   }
   makevectors(self.angles);
   self.c_ofs = self.origin + (v_forward * -20) + (v_up * 30) + (v_right * 4);
@@ -198,21 +199,12 @@ void() building_human_repair={
 };
 
 void() building_repair_touch={
-  if( vlen(other.origin - self.origin) <= 32){
-    if(self.owner.reloadValue > 0){
-      if(other.data_type == DATA_MECH){
-        if(other.faction == self.owner.faction){
+  if( self.owner.trigger_field == world ){
+    if(other.faction == self.owner.faction){
+      if( vlen(other.origin - self.origin) <= 32){
+        if(self.owner.reloadValue > 0){
           if(util_getMechHpAverage(other) < 1){
-            if( (other.flags & FL_CLIENT) ){
-              centerprint( other, "[Press 'E' to start REPAIR]\n");
-            }
-            if(other.repair_request){
-              self.owner.trigger_field = other;
-              other.velocity = '0 0 0';
-              other.avelocity = '0 0 0';
-              other.v_angle = self.owner.angles;
-              other.angles = self.owner.angles;
-            }
+            self.owner.trigger_field = other;
           }
         }
       }

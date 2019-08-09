@@ -540,6 +540,9 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
         wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
       }
     }
+    if( CLIENT_energy < HUD_DATA_weapon.energyMax ){
+      wepState = CLR_DEF_WEP_LOWENG;
+    }
   }
   else{
     wepState = CLR_DEF_TXT_CANTSELECT;
@@ -561,6 +564,9 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
     metSize_y = gui_percentYRaw(20);
     ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
     gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+  }
+  else{
+    drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
   }
 };
 
@@ -594,6 +600,9 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
         wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
       }
     }
+    if( CLIENT_energy < HUD_DATA_weapon.energyMax ){
+      wepState = CLR_DEF_WEP_LOWENG;
+    }
   }
   else{
     wepState = CLR_DEF_TXT_CANTSELECT;
@@ -614,6 +623,9 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
     metSize_y = imgSz_y;
     ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_CTY), torg); 
     gui_renderMeter(w_rel, ofs, metSize, CLR_DEF_ARM_DED, gui_getColorForArmor(w_rel), HUD_ALPHA, 0, AXIS_V, 0);
+  }
+  else{
+    drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
   }
 };
 
@@ -894,9 +906,9 @@ void(float delta) hud_renderRepairValue={
   local string str;
     
   if(delta > -1){
-    str = "[Repair Bay - Current Total]";
-    len = stringwidth(str, 0, '8 8 0');
-    vorg = gui_percentToPixelRawVec('128 12');
+    str = "Repair Bay - Energy Level";
+    len = stringwidth(str, 0, '14 14 0');
+    vorg = gui_percentToPixelRawVec('128 64');
     vorg = gui_calcAlign(vorg, (VIEW_CTX | VIEW_CTY));
     torg = vorg;
     torg_x = torg_x - gui_percentXRaw( len / 2 ) ;
@@ -905,7 +917,7 @@ void(float delta) hud_renderRepairValue={
     
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
-    drawstring(torg, str, '12 12 0', CLR_DEF_GRAY_H + '0.05 0.05 0.05', HUD_ALPHA, 0);
+    drawstring(torg, str, '14 14 0', CLR_DEF_GRAY_H + '0.05 0.05 0.05', HUD_ALPHA, 0);
     drawfont = drawfont_prev;
   }
 };

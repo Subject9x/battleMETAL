@@ -1,4 +1,10 @@
+/*
+Quake 1**
+author: iD Software
 
+** - this has been modified to be incorporated into battleMETAL and is not compatible with
+      other code bases.
+*/
 
 void() plat_center_touch;
 void() plat_outside_touch;
@@ -111,8 +117,9 @@ void() plat_crush =
 {
 //dprint ("plat_crush\n");
 
-	T_Damage (other, self, self, 1);
-	
+	//T_Damage (other, self, self, 1);
+	t_damage(other, self, self, 1, other.origin, '0 0 0');  //should plates be able to crush units?
+  
 	if (self.state == STATE_UP)
 		plat_go_down ();
 	else if (self.state == STATE_DOWN)

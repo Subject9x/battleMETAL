@@ -1,4 +1,8 @@
+/*
+Quake 1
+author: iD Software
 
+*/
 
 void() SUB_Null = {};
 

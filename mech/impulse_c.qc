@@ -125,15 +125,9 @@ void() ImpulseCommands ={
       }
     }
   } 
-  
-  if(self.impulse == IMP_REPAIR){
-    if(util_getMechHpAverage(self) < 1){
-      self.repair_request = TRUE;
-    }
-  }
+
 	self.impulse = 0;
 };
-
 
 void() ButtonCommands={
   if( self.button8 ){

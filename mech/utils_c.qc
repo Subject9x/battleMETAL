@@ -357,12 +357,12 @@ float(entity t, float tolerance) util_cornerSlopeCheck={
 
 void(entity t) util_generateBuildingFoundation={
   local vector v;
-  local entity this, n;
+  local entity notSelf, n;
   
   makevectors(t.angles);
   v = t.origin + (v_up * t.mins_z);
   n = spawn();
-  this = self;
+  notSelf = self;
   self = n;
     self.classname = "map_terrain";
     switch( t.vec_size ){
@@ -380,10 +380,10 @@ void(entity t) util_generateBuildingFoundation={
     self.solid = SOLID_NOT; //just for placement
     self.movetype = MOVETYPE_NONE;
     setsize(self, self.mins, self.maxs);
-    self.angles = t.angles;
+    //self.angles = t.angles;
     setorigin(self, v);
     self.solid = SOLID_BSP; //lock it in.
-  self = this;
+  self = notSelf;
 };
 
 /*
