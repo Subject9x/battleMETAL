@@ -281,7 +281,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     snd_hud_vfx_statelistener(CLIENT_player_state);
     snd_hud_vfx_enelistener(CLIENT_energy);
     snd_hud_vfx_toggleradar(CLIENT_stat_rdr_mode);
-    snd_hud_vfx_targkill(CLIENT_stat_trg_ddflg);
+    //snd_hud_vfx_targkill(CLIENT_stat_trg_ddflg);
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
@@ -467,6 +467,9 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_MAPKEY_DATA:
       client_event_get_mapkeyinfo( ReadByte(), ReadLong(), ReadLong(), ReadByte() ) ;
+      return TRUE;
+    case TE_POWERUP:
+      hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
       return TRUE;
   } 
 	return FALSE;

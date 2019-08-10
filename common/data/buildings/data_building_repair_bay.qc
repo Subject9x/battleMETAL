@@ -173,6 +173,7 @@ void() building_human_repair={
   else{
     droptofloor();
   }
+  
   makevectors(self.angles);
   self.c_ofs = self.origin + (v_forward * -20) + (v_up * 30) + (v_right * 4);
   local entity repairNode, this;

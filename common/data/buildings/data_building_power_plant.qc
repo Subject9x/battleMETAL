@@ -128,6 +128,9 @@ void() building_human_power={
   if( util_cornerSlopeCheck(self, 1) ){
     util_generateBuildingFoundation(self);
   }
+  else{
+    droptofloor();
+  }
   
   self.th_die = hpower_die;
   self.use = multi_trigger;

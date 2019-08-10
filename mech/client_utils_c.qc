@@ -284,6 +284,12 @@ void( entity client ) client_send_hud_target_kill={
   self = notClient;
 };
 
+void(entity client ) client_send_event_powerup={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_POWERUP );
+};
+
 /*
   client sends string 'cmd mech foo'
   where foo is the command, first parm must be 'mech'
@@ -308,8 +314,8 @@ void(string str, float tokens) client_ParseMechCommand={
   if(argv(1) == "spawn"){
     if(self.data_type == DATA_POBS){
       player_unmakeObserver();
-      player_makeMech();
       spawnpoint_select();
+      player_makeMech();
       
       client_playTrack( world.sounds, TRUE );
       client_sendMissionName();
@@ -777,6 +783,12 @@ void() spawnpoint_select={
   self.origin = self.oldorigin = spot.origin + '0 0 12';
   
   self.angles = spot.angles;
+  
+  //haha, cache angles for powerup sequence.
+  self.wind_x = 0;
+  self.wind_y = self.angles_y;
+  self.wind_z = self.angles_z;
+  
 	self.fixangle = TRUE;
   self.trigOnSpawn = spot.trigOnSpawn;
   self.trigOnDeath = spot.trigOnDeath;

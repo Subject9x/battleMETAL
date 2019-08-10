@@ -96,7 +96,7 @@ vector CLR_HUD_BLUE = '0.074 0.66 0.93';  //4
   vector CLR_DEF_ENE_FRT = '0.23 0.74 0.84';
   
 //weapon constants
-  vector CLR_DEF_WEP_LOWENG = '0.32 0.47 0.47'; //82, 122, 122
+  vector CLR_DEF_WEP_LOWENG = '0.22 0.37 0.37'; //82, 122, 122
 
 //group1 
 

@@ -94,6 +94,9 @@ void() building_human_fuel={
   if( util_cornerSlopeCheck(self, 1) ){
     util_generateBuildingFoundation(self);
   }
+  else{
+    droptofloor();
+  }
 
   self.th_die = hfuel_death1;
   self.use = multi_trigger;

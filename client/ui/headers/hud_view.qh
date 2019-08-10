@@ -37,6 +37,8 @@ float HUD_UID_ENVIRO_BOX    = 18;
 
 
 //HUD GLOBALS===============================
+  float HUD_ENERGY_ACTUAL;  //actual energy amount of player.
+  
   vector RADAR_VORG;
   vector RADAR_ORG;
   vector RADAR_VCENTER;

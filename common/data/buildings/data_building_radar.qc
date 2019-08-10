@@ -197,6 +197,9 @@ void() building_human_radar={
   if( util_cornerSlopeCheck(self, 1) ){
     util_generateBuildingFoundation(self);
   }
+  else{
+    droptofloor();
+  }
   self.th_walk = building_radar_patrol1;
   self.th_stand = building_radar_detect1;
   self.th_missile = building_radar_alert1;

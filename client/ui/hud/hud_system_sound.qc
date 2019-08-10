@@ -162,7 +162,7 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
 void(float playerState) snd_hud_vfx_statelistener={
   if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
     if( !cvar("developer") ){
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
+      //snd_hud_vfx_addtoqueue(SND_HUD_VFX_ONLINE, 1);
     }
   }
 };

@@ -371,7 +371,7 @@ void( string name ) client_event_mission_name={
     nameLen = stringwidth(MISSION_NAME, 0, '24 24 0');
     nameLen = gui_percentXRaw( nameLen / 2 );
     newOrg_x = VIEW_CTR_x - nameLen;
-    newOrg_y = VIEW_CTR_y - gui_percentYRaw( 64 );
+    newOrg_y = VIEW_CTR_y - gui_percentYRaw( 96 );
     MISSION_NAME_ORG = newOrg;
   drawfont = drawfont_prev;
 };

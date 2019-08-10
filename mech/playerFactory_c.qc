@@ -65,7 +65,7 @@ void() player_makeMech={
   else{
     self.power_timer = time + self.startupDelay;
   }
-  self.power_timer_segment = time + (self.startupDelay / 100 );
+  //self.power_timer_segment = time + (self.startupDelay / 100 ); not sure why this was needed
   self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
   
   client_push_player_info();
@@ -73,6 +73,7 @@ void() player_makeMech={
   client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
   client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
   client_update_viewPitch( self.pitchMin, self.pitchMax );
+  client_send_event_powerup();
   client_playTrack(world.sounds, TRUE);  //entering hangar menu
 };
 

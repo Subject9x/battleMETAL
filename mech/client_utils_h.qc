@@ -47,6 +47,7 @@ void( entity deploy ) client_send_deploypoint;
 void( entity client, float voiceGroup, float voiceId, float limiter) client_send_ai_voice;
 void( float voiceGroup, float voiceId, float limiter) client_send_ai_voice_all;
 void( entity client ) client_send_hud_target_kill;
+void(entity client ) client_send_event_powerup;
 
 //client command layer
 void() client_sendMissionFileName;
@@ -60,6 +61,7 @@ void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogD
 void(entity client, float trackNum, float entFlags) client_sendMusic;
 void(entity client, float missionSuccessCheck) client_sendEndMission;
 void(entity client ) client_send_mapKeyObjects;
+void(entity client ) client_send_event_powerup;
 
 void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;

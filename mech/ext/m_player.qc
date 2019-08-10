@@ -40,7 +40,12 @@ void() PlayerPreThink = {
 	if (self.deadflag >= DEAD_DYING){
     return;	// dying, so do nothing
   }
-  
+
+  if(time < self.power_timer){
+    PlayerPreThink_powerup();
+    return;
+  }
+
 	//if (self.button2){
 		//PlayerJump();
 	//}
@@ -87,23 +92,18 @@ void() PlayerPostThink = {
     return;
   }
 
+  if(time < self.power_timer){
+    PlayerPostThink_powerup();
+    return;
+  }
+    
   if(self.data_type != DATA_POBS){ 
     //power up sequence
-    if(time < self.power_timer){
-      if(self.movetype != MOVETYPE_NONE){
-        self.movetype = MOVETYPE_NONE;
-      }
-    }
-    if(time > self.power_timer_segment){
-      self.stat_plr_stt = PLAYER_POWERUP_END;
-    }
     if(time > self.power_timer){
-      if(self.stat_plr_stt == PLAYER_POWERUP_END){
-        self.power_timer = 0;
-        self.movetype = MOVETYPE_WALK;
-        self.stat_plr_stt = PLAYER_ACTIVE;
-      } 
-    }    
+      self.power_timer = 0;
+      self.stat_plr_stt = PLAYER_ACTIVE;
+    }
+    
     self.stat_hit_dirs =  self.hitdir_buffer;
     if(time >= self.w_proj){
       self.stat_hit_dirs = self.stat_hit_dirs  - (self.stat_hit_dirs  & STAT_HIT_TRG);
@@ -215,6 +215,63 @@ void() PlayerPostThink = {
  
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
+  
+  if(self.data_type == DATA_MECH){
+    self.stat_plr_camx = self.cockpit.c_ofs_x;
+    self.stat_plr_camy = self.cockpit.c_ofs_y; 
+    self.stat_plr_camz = self.cockpit.c_ofs_z;
+  }
+};
+
+
+void() PlayerPreThink_powerup={
+  self.angles = self.wind;
+  self.v_angle = self.wind;
+  if( (self.flags & FL_ONGROUND) ){
+    self.velocity = '0 0 0';
+    self.avelocity = '0 0 0';
+  }
+};
+
+void() PlayerPostThink_powerup={
+  self.angles = self.wind;
+  self.v_angle = self.wind;
+  if( (self.flags & FL_ONGROUND) ){
+    self.velocity = '0 0 0';
+    self.avelocity = '0 0 0';
+  }
+  makevectors(self.v_angle);
+  traceline(self.origin, self.origin + (v_forward * self.radar_range), FALSE,self);
+  self.stat_ret_dist = (self.radar_range * trace_fraction);
+  self.stat_plr_camx = self.cockpit.c_ofs_x;
+  self.stat_plr_camy = self.cockpit.c_ofs_y; 
+  self.stat_plr_camz = self.cockpit.c_ofs_z;
+
+  ctrl_update_mechplayer();
+  
+  local entity wep_chain;
+  wep_chain = self.w_slot;
+  while(wep_chain){
+    ctrl_weapon_think(wep_chain);
+    wep_chain = wep_chain.w_slot;
+  }
+  client_updateWeaponReloads();
+
+  //DEBUG / DEV ONLY!
+  if( cvar("developer") ){
+    if(self.button0){
+      makevectors(self.v_angle);
+      traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
+      self.c_ofs = trace_endpos;
+      //te_beam_esr(self.origin + (v_up * -4), trace_endpos);
+    }
+    self.stat_cofs_x = self.origin_x;
+    self.stat_cofs_y = self.origin_y;
+    self.stat_cofs_z = self.origin_z;
+  }
+
+  //after server processes everything, push data to client
+  client_push_player_info();
   
   if(self.data_type == DATA_MECH){
     self.stat_plr_camx = self.cockpit.c_ofs_x;

@@ -540,7 +540,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
         wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
       }
     }
-    if( CLIENT_energy < HUD_DATA_weapon.energyMax ){
+    if( HUD_ENERGY_ACTUAL < HUD_DATA_weapon.energyRate ){
       wepState = CLR_DEF_WEP_LOWENG;
     }
   }
@@ -568,6 +568,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
   else{
     drawpic(iofs, HUD_RAD_PIP_BLD, imgSz, CLR_DEF_RED - '0.25 0 0', HUD_ALPHA - 0.25, 0);
   }
+  
 };
 
 /*
@@ -600,7 +601,7 @@ void(vector torg, vector imgSz, float algn, float wepGrp, float w_id, float w_bi
         wepState = CLR_DEF_ARM_THREEQ - '0.5 0.5 0.5';
       }
     }
-    if( CLIENT_energy < HUD_DATA_weapon.energyMax ){
+    if( HUD_ENERGY_ACTUAL < HUD_DATA_weapon.energyRate ){
       wepState = CLR_DEF_WEP_LOWENG;
     }
   }
@@ -1111,7 +1112,9 @@ void() data_hud_frame={
   local float uid;
   local float hasTarget;
   local float playerAccuracy;
-  
+
+  HUD_ENERGY_ACTUAL = (CLIENT_energy / 100) * UI_HANGAR_DATA_mech.energyMax;
+
   //Alpha fade-in of HUD as mech powers up.
   if( CLIENT_player_state == PLAYER_POWERUP_BEGIN ){
     if(HUD_ALPHA_TIME <= 0){
@@ -1356,14 +1359,17 @@ void() hud_renderCrosshairDisabled={
   local float lblSize;
   
   local string lbl;
-  
-  lbl = "[FIRE CONTROL OVERRIDE]";
+
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+
+  lbl = "!- FIRE CONTROL OVERRIDE -!";
   
   stopSize = gui_percentToPixelRawVec('32 32');
   stopOrg_x = VIEW_CTR_x - (stopSize_x / 2);
   stopOrg_y = VIEW_CTR_y - (stopSize_y / 2);
 
-  lblSize = stringwidth(lbl, 0, '8 8 0');
+  lblSize = stringwidth(lbl, 0, '14 14 0');
   lblSize = gui_percentXRaw( lblSize );
   
   lblOrg_x = VIEW_CTR_x - (lblSize / 2);
@@ -1371,8 +1377,6 @@ void() hud_renderCrosshairDisabled={
   
   drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, 1, DRAWFLAG_NORMAL);  
   
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
   drawstring(lblOrg, lbl, '14 14 0', CLR_DEF_RED, 1, 0);
   drawfont = drawfont_prev;
 };

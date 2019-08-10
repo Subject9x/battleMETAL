@@ -50,11 +50,8 @@ void() map_noshoot_use={
     self.isActive = FALSE;
     local entity e;
     local float findFlags;
-    findFlags = FL_MONSTER;
-    if( (self.damageType) ){
-      findFlags = findFlags | FL_CLIENT;
-    }
-    e = findchainflags(flags, findFlags);
+    
+    e = findchainflags(flags, FL_CLIENT);
     while( e ){
       if( (e.flags & self.partTypeId) ){
         e.flags = e.flags - (e.flags & self.partTypeId);
@@ -91,6 +88,11 @@ void() map_noshoot_use={
 void() map_noshoot_touch={
   if( (other.flags & FL_CLIENT) ){
     self.use();
+    if( (self.spawnflags & 8) ){
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.01;
+      return;
+    }
   }
 };
 

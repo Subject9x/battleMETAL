@@ -38,3 +38,4 @@ float TE_ENV_WARN = 107;
 
 float TE_CRITICAL_HIT = 108;
 float TE_MAPKEY_DATA = 109;
+float TE_POWERUP = 110;

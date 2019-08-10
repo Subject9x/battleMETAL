@@ -118,7 +118,7 @@ void() plat_crush =
 //dprint ("plat_crush\n");
 
 	//T_Damage (other, self, self, 1);
-	t_damage(other, self, self, 1, other.origin, '0 0 0');  //should plates be able to crush units?
+	t_damage(other, self, self, 1, 0, other.origin, '0 0 0');  //should plates be able to crush units?
   
 	if (self.state == STATE_UP)
 		plat_go_down ();
