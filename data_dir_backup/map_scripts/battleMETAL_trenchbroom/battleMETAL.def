@@ -1036,7 +1036,7 @@ DELAY 4: wait after fire before execution
 //===========================================================
 //    battleMETAL Buildings Human
 //===========================================================
-/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - -
+/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/radar/radar.md3"); }
 Listening Post, has the ability to detect the player and alert friendly bots.
 -------- KEYS -------- 
@@ -1052,10 +1052,11 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - -
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
 Gives ALL FRIENDLY units a shield recharge boost IF they're in the radius.
@@ -1070,10 +1071,11 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - -
+/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
 Radius: 800units
@@ -1087,10 +1089,11 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - -
+/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/hangar/hangar.md3"); }
 Mostly just a decorating building, BUT
 you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
@@ -1104,10 +1107,11 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - -
+/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/repair/repair.md3"); }
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
@@ -1119,10 +1123,11 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - -
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/fueltank/fueltank.md3"); }
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
@@ -1134,6 +1139,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
@@ -1393,7 +1399,7 @@ RESTORE_WORLDVAL 16: restore original wind values
 */
 
 
-/*QUAKED madamageValue_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH
+/*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
 A Damage Zone is an area that hurts all units within the zone.
   
 -------- KEYS -------- 
@@ -1415,6 +1421,7 @@ REACTIVATE 4: reactivate after countdown
 REMOVE_FIRSTUSE 8: remove after first countdown
 REMOVE_ONTOUCH 16: remove on first touch
 ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
@@ -1442,9 +1449,11 @@ This should be used sparingly, they clean themsleves up after firing.
 ON_TOUCH 2: ALLOW TRIGGER TOUCH
 */
 
-/*QUAKED map_hud_highlight (0.431 0.788 0.753) (-8 -8 -8) (8 8 8) START_OFF ON_TOUCH REMOVE_FINISH FACTION_ONLY DROPTOFLOOR FREEZE_PLAYER COOLDOWN CALL_BY_TRIGGER
+/*QUAKED map_hud_highlight (0.431 0.788 0.753) (-8 -8 -8) (8 8 8) START_OFF ON_TOUCH REMOVE_FINISH FACTION_ONLY DROPTOFLOOR FREEZE_PLAYER COOLDOWN CALL_BY_TRIGGER MESSAGE_ONLY
   HUD Highlighting is a map event sent to chosen clients. This creates a colored box around a portion of the player's screen
   for a set amount of time. The use case is primarily for information and training purposes, but can be useful in other ways.
+  
+  MESSAGE_ONLY will just send a special event to show an info box;
   
 -------- KEYS -------- 
 .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
@@ -1464,12 +1473,13 @@ DROPTOFLOOR 16: object drops to floor for easier touch possibility
 FREEZE_PLAYER 32: any players that trigger the Animatic are frozen in place
 COOLDOWN 64: use .wait
 CALL_BY_TRIGGER 128: must be used with START_OFF
+MESSAGE_ONLY 256: only sends message as INFO box
 */
 
 
 /*QUAKED map_no_shoot (0.431 0.788 0.753) (-3 -3 -3) (3 3 3) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE
 A map object that modifies unit flags, controlling whether and for how long a unit has the given flags.
-this is very powerful and mostly only used for FL_NOSHOOT
+this is very powerful and mostly only used for FL_NOSHOOT 32768
 
 -------- KEYS -------- 
 .comp_id = <float> [flags]  flags you want modified

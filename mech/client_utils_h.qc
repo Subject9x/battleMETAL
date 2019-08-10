@@ -60,8 +60,9 @@ void(float mode) client_sendGameMode;
 void(entity client, float fogDense, vector fogColor, float fogAlpha, vector fogDist, float fogFade) client_sendFog;
 void(entity client, float trackNum, float entFlags) client_sendMusic;
 void(entity client, float missionSuccessCheck) client_sendEndMission;
-void(entity client ) client_send_mapKeyObjects;
-void(entity client ) client_send_event_powerup;
+void(entity client) client_send_mapKeyObjects;
+void(entity client) client_send_event_powerup;
+void(entity client, string theMessage, float messageLifetime) client_send_info_message;
 
 void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;

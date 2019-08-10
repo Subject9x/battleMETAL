@@ -5,26 +5,31 @@ Date: 11/17/2018
 Overview: 
   HUD Highlighting is a map event sent to chosen clients. This creates a colored box around a portion of the player's screen
   for a set amount of time. The use case is primarily for information and training purposes, but can be useful in other ways.
+  HUD Highlighting is a map event sent to chosen clients. This creates a colored box around a portion of the player's screen
+  for a set amount of time. The use case is primarily for information and training purposes, but can be useful in other ways.
   
+  MESSAGE_ONLY will just send a special event to show an info box;
+  
+-------- KEYS -------- 
+.movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
+.c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
+.color = <vector> [red, green, blue] - color of the box
+.faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+.data_lifetime = <float> [time to draw] - amount of time to draw box for
 
-Inputs
-  .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
-  .c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
-  .color = <vector> [red, green, blue] - color of the box
-  .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
-  .data_lifetime = <float> [time to draw] - amount of time to draw box for
-  
-  .target = <string> [ent] - fire this trigger when done
-  .wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
-  
-  .spawnflags = <float> [flag] 1 - START_OFF - will start as deactivated
-  .spawnflags = <float> [flag] 2 - ON_TOUCH - will react to being touched by a players
-  .spawnflags = <float> [flag] 4 - REMOVE_FINISH - will be removed when finished playing
-  .spawnflags = <float> [flag] 8 - FACTION_ONLY - only reacts to this faction
-  .spawnflags = <float> [flag] 16 - DROPTOFLOOR - object drops to floor for easier touch possibility
-  .spawnflags = <float> [flag] 32 - FREEZE_PLAYER - any players that trigger the Animatic are frozen in place
-  .spawnflags = <float> [flag] 64 - COOLDOWN - use .wait
-  .spawnflags = <float> [flag] 128 - Call by trigger, must be used with START_OFF
+.target = <string> [ent] - fire this trigger when done
+.wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
+
+-------- SPAWNFLAGS --------
+START_OFF 1: will start as deactivated
+ON_TOUCH 2: will react to being touched by a players
+REMOVE_FINISH 4: will be removed when finished playing
+FACTION_ONLY 8: only reacts to this faction
+DROPTOFLOOR 16: object drops to floor for easier touch possibility
+FREEZE_PLAYER 32: any players that trigger the Animatic are frozen in place
+COOLDOWN 64: use .wait
+CALL_BY_TRIGGER 128: must be used with START_OFF
+MESSAGE_ONLY 256: only sends message as INFO box
 */
 
 /*
@@ -37,7 +42,18 @@ void() highlight_hud_touch={
         return;
       }
     }
-    client_push_hud_highlight( other );
+    if( (self.spawnflags & 256) ){
+      if( self.message != "" ){
+        client_send_info_message( other, self.message, self.data_lifetime); 
+      }
+    }
+    else{
+      client_push_hud_highlight( other );
+      if( self.message != "" ){
+        client_send_info_message( other, self.message, self.data_lifetime); 
+      }
+    }
+    
     
     if( (self.spawnflags & 4) ){
       self.think = SUB_Remove;
@@ -70,7 +86,17 @@ void() map_hud_highlight_use={
           continue;
         }
       }
-      client_push_hud_highlight( client );
+      if( (self.spawnflags & 256) ){
+        if( self.message != "" ){
+          client_send_info_message( client, self.message, self.data_lifetime); 
+        }
+      }
+      else{
+        client_push_hud_highlight( client );
+        if( self.message != "" ){
+          client_send_info_message( client, self.message, self.data_lifetime); 
+        }
+      }
       client = client.chain;
     }
     if( client ){

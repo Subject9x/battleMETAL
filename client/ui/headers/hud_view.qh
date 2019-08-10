@@ -55,6 +55,13 @@ float HUD_UID_ENVIRO_BOX    = 18;
   float HUD_WARN_ENV_TYPES;
   vector HUD_WARN_ENV_ORG;
   
+  float HUD_INFO_ON;
+  float HUD_INFO_MARK;
+  float HUD_INFO_TIME = 1;
+  vector HUD_INFO_ORG;
+  vector HUD_INFO_SIZE;
+  string HUD_INFO_MSG;
+  
   float HUD_ALPHA_TIME;
   float HUD_ALPHA_RATE;
   float HUD_ALPHA_INC;
@@ -163,6 +170,8 @@ void(float delta) hud_renderRepairValue;
 void(float warnOn, float warnDir) hud_render_warningBounds;
 void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment;
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message;
+void() hud_render_info;
+
 //new text-based hud system
 void( float uid, float targetId ) hud_data_renderTarget_Shield;
 vector( float wbit ) hud_data_weapon_info;

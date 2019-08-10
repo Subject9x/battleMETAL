@@ -213,7 +213,7 @@ void( entity targetClient ) client_send_enviro_warning={
   self = targetClient;
   msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY);
-    WriteByte( MSG_ONE, TE_ENV_WARN);
+    WriteByte( MSG_ONE, TE_MSG_ENV_WARN);
     WriteByte( MSG_ONE, 1 );
     WriteByte( MSG_ONE, this.damageType );
   self = this;
@@ -288,6 +288,14 @@ void(entity client ) client_send_event_powerup={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_POWERUP );
+};
+
+void(entity client, string theMessage, float messageLifetime) client_send_info_message={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_MSG_INFO );
+  WriteString( MSG_ONE, theMessage );
+  WriteLong( MSG_ONE, messageLifetime );
 };
 
 /*

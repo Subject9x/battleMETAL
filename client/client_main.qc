@@ -459,7 +459,7 @@ float() CSQC_Parse_TempEntity =
     case TE_MISSION_END:
       client_event_debrief_active( ReadLong(), ReadLong(), ReadByte(), ReadShort(), ReadShort(), ReadShort(), ReadShort() );
       return TRUE;
-    case TE_ENV_WARN:
+    case TE_MSG_ENV_WARN:
       client_event_environment();
       return TRUE;
     case TE_CRITICAL_HIT:
@@ -470,6 +470,9 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_POWERUP:
       hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
+      return TRUE;
+    case TE_MSG_INFO:
+      client_event_info_box( ReadString(), CLR_DEF_TXT_GRAY_SMOOTH, ReadLong(), '14 14 0');
       return TRUE;
   } 
 	return FALSE;

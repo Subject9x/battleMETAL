@@ -377,6 +377,49 @@ void( string name ) client_event_mission_name={
 };
 
 /*
+  float HUD_INFO_ON;
+  float HUD_INFO_MARK;
+  float HUD_INFO_TIME = 1;
+  vector HUD_INFO_ORG;
+  vector HUD_INFO_SIZE;
+  string HUD_INFO_MSG;
+*/
+
+void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) client_event_info_box={
+  local float infoBoxY;
+  local string replace;
+  
+  cons_logAString("infoMessage"
+  
+  HUD_INFO_MARK = time + infoLifetime;
+  if( HUD_INFO_ON != TRUE ){
+    HUD_INFO_ON = TRUE;
+    HUD_INFO_MSG = strzone( infoMessage );
+  }
+  else{
+    if( HUD_INFO_MSG != infoMessage ){
+      //already on, override message
+      replace = HUD_INFO_MSG;
+      HUD_INFO_MSG = strzone( infoMessage );
+      strunzone(replace);
+    }
+  }
+  
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+
+  infoBoxY = gui_wrapText(VIEW_ORG, gui_percentToPixelRawVec('256 256'), HUD_INFO_MSG, fontSize, infoColor, 1) ;
+  HUD_INFO_SIZE_x = gui_percentXRaw( 256 );
+  HUD_INFO_SIZE_y = infoBoxY;
+  
+  HUD_INFO_ORG_x = VIEW_CTR_x - (HUD_INFO_SIZE_x / 2);
+  HUD_INFO_ORG_y = VIEW_CTR_y - (HUD_INFO_SIZE_y + gui_percentYRaw(32));
+  
+  drawfont = drawfont_prev;
+  
+};
+
+/*
   server Mapping = client_sendEndMission();
   
   receives end-mission data from server,
@@ -435,6 +478,7 @@ void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyFa
     mapKeyObject = newMapKey;
   }
 };
+
 
 void() client_map_cdtrack={
 

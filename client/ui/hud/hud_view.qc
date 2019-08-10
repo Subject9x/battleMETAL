@@ -1027,7 +1027,30 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
     
     drawfont = drawfont_prev;
   }
+};
+
+/*
+
+*/
+void() hud_render_info={
+  local vector infoOrg;
   
+  if( HUD_INFO_ON == TRUE ){
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
+    
+    infoOrg_x = VIEW_CTR_x - (HUD_INFO_SIZE_x / 2);
+    infoOrg_y = VIEW_CTR_y - (HUD_INFO_SIZE_y / 2);
+
+    drawpic( HUD_INFO_ORG, UI_DEF_BOX_512, HUD_INFO_SIZE, CLR_DEF_GRAY_H, 1, 0);
+    gui_wrapText(HUD_INFO_ORG, HUD_INFO_SIZE, HUD_INFO_MSG, '14 14 0', CLR_DEF_TXT_GRAY_SMOOTH, 1) ;
+    
+    drawfont = drawfont_prev;
+  }
+
+  if( time > HUD_INFO_MARK ){
+    HUD_INFO_ON = FALSE;
+  }
 };
 
 vector( float wbit ) hud_data_weapon_info={
@@ -1346,6 +1369,9 @@ void() data_hud_frame={
   
   hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
   hud_event_frame();
+  
+  hud_render_info();
+  
 };
 
 /*
@@ -1373,7 +1399,7 @@ void() hud_renderCrosshairDisabled={
   lblSize = gui_percentXRaw( lblSize );
   
   lblOrg_x = VIEW_CTR_x - (lblSize / 2);
-  lblOrg_y = VIEW_CTR_y - gui_percentYRaw( 40 );
+  lblOrg_y = VIEW_CTR_y - gui_percentYRaw( 32 );
   
   drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, 1, DRAWFLAG_NORMAL);  
   
