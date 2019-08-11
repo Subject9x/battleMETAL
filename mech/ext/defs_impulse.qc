@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
 Overview: defines all impulse numbers, prevents magic numbers for key definitions

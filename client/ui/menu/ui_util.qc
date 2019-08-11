@@ -24,6 +24,9 @@ void(float navid) ui_renderNav={
   local float nactive;
   local string navname;
 
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+
   nactive = NAVNAMES_ACTIVE[navid];
   navname = NAVNAMES[navid];
   
@@ -34,8 +37,8 @@ void(float navid) ui_renderNav={
     apos = cs_project(nofs);
     tofs = apos;
     if (apos_z >= 0) {
-      tofs_x -= stringwidth(navname, TRUE, '6 6') * 0.5; //align horizontally to centre
-      tofs_y = tofs_y - 14; //align vertically again
+      tofs_x -= stringwidth(navname, TRUE, '12 12') * 0.5; //align horizontally to centre
+      tofs_y = tofs_y - 24; //align vertically again
       tofs_z = 0;
       apos_z = 0;
       iofs = apos;
@@ -47,10 +50,11 @@ void(float navid) ui_renderNav={
       if( nactive == 2 ){
         colr = CLR_DEF_TXT_NONSELECT;
       }
-      drawstring(tofs, navname, '6 6', colr, 1, 0);
+      drawstring(tofs, navname, '12 12', colr, 1, 0);
       gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, 1, 0) ;
     }
   }
+  drawfont = drawfont_prev;
 };
 
 /*

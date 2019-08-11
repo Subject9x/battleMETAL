@@ -389,8 +389,6 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   local float infoBoxY;
   local string replace;
   
-  cons_logAString("infoMessage"
-  
   HUD_INFO_MARK = time + infoLifetime;
   if( HUD_INFO_ON != TRUE ){
     HUD_INFO_ON = TRUE;

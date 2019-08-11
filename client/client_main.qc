@@ -310,9 +310,13 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         drawfont_prev = drawfont;
       }
       
+      itr = 0;
+      while( itr <= 21 ){
+        ui_renderNav( itr );
+        itr = itr + 1;
+      }
       //HUD Highlight Boxes
       ui_renderHUD_Highlight_frame();
-      
       //Player has toggled 'Objectives' menu while in-mission.
       ui_objective_frame(VIEW_ORG);
       
@@ -358,13 +362,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     menu_handleFrame();
   }
   else{
-    if(CLIENT_player_state >= PLAYER_POWERUP_BEGIN){
-      itr = 0;
-      while( itr <= 21 ){
-        ui_renderNav( itr );
-        itr = itr + 1;
-      }
-
       //TODO - fix?
       /*local entity player;
       player = findchainflags(flags, FL_CLIENT);
@@ -376,7 +373,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         }
         player = player.chain;
       }*/
-    }
+    
   }
   
   //put this last on the rendering order to make sure it 

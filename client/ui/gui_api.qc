@@ -571,7 +571,7 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
     token = token + 1;
   }
   
-  return line_row * (fsize_y + (fsize_y * 0.15));
+  return (line_row+1) * (fsize_y + (fsize_y * 0.15));
 };
 
 /*

@@ -1033,15 +1033,11 @@ void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_rende
 
 */
 void() hud_render_info={
-  local vector infoOrg;
   
   if( HUD_INFO_ON == TRUE ){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
-    
-    infoOrg_x = VIEW_CTR_x - (HUD_INFO_SIZE_x / 2);
-    infoOrg_y = VIEW_CTR_y - (HUD_INFO_SIZE_y / 2);
-
+  
     drawpic( HUD_INFO_ORG, UI_DEF_BOX_512, HUD_INFO_SIZE, CLR_DEF_GRAY_H, 1, 0);
     gui_wrapText(HUD_INFO_ORG, HUD_INFO_SIZE, HUD_INFO_MSG, '14 14 0', CLR_DEF_TXT_GRAY_SMOOTH, 1) ;
     
