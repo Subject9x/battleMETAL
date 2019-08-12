@@ -1,4 +1,10 @@
+/*
+Quake 1**
+author: iD Software
 
+** - this has been modified to be incorporated into battleMETAL and is not compatible with
+      other code bases.
+*/
 
 /*
   a poor man's interface. Entities can sign up for the even system
@@ -36,8 +42,6 @@ void( entity active, .string event) trigger_event={
     self = hold;
   }
 };
-
-
 
 void() trigger_activate_node={
   
@@ -718,3 +722,71 @@ void() trigger_monsterjump =
 	self.touch = trigger_monsterjump_touch;
 };
 
+void() toggleweapons_touch={
+  if( (other.flags & FL_CLIENT) ){
+    if( (self.spawnflags & 16) ){
+      //DISABLE_ONLY
+      if( !(other.flags & FL_NOSHOOT) ){
+        other.flags = other.flags | FL_NOSHOOT;
+        if( (self.spawnflags & 64) ){
+          client_send_event_weapons( other, FALSE );
+        }
+      }
+      return;
+    }
+    if( (self.spawnflags & 32) ){
+      //ENABLY_ONLY
+      if( (other.flags & FL_NOSHOOT) ){
+        other.flags = other.flags - (other.flags & FL_NOSHOOT);
+        if( (self.spawnflags & 64) ){
+          client_send_event_weapons( other, TRUE );
+        }
+      }
+      return;
+    }
+  
+    if( time > self.delay ){
+      self.enemy = world;
+    }
+    if( self.enemy != other ){
+      self.delay = time + self.wait;
+      self.enemy = other;
+      if( (other.flags & FL_NOSHOOT) ){
+        other.flags = other.flags - (other.flags & FL_NOSHOOT);
+      }
+      else{
+        other.flags = other.flags | FL_NOSHOOT;
+      }
+      if( (self.spawnflags & 8) ){
+        self.think = SUB_Remove;
+        self.nextthink = time + 0.01;
+      }
+    }
+  }
+};
+
+/*QUAKED trigger_toggleweapons (.5 .5 .5) ? START_OFF LIFETIME REACTIVATE REMOVE DISABLE_ONLY ENABLY_ONLY NOTIFY
+  Toggles Player's ability to shoot stuff (or turns it on if it was off.)
+  FL_NOSHOOT
+  
+-------- KEYS -------- 
+  .wait = time between reactivations
+-------- SPAWNFLAGS --------
+START_OFF 1: <UNUSED>
+LIFETIME 2: <UNUSED>
+REACTIVATE 4: <UNUSED>
+REMOVE 8: remove on first-touch.
+DISABLE_ONLY 16: only disables player, adds FL_NOSHOOT
+ENABLY_ONLY 32: only re-enables player, removes FL_NOSHOOT
+NOTIFY 64: sends HUD event to touching player.
+*/
+void() trigger_toggleweapons={
+  InitTrigger ();
+  
+  self.touch = toggleweapons_touch;
+  
+  if( (self.spawnflags & 2) ){
+    self.think = SUB_Remove;
+    self.nextthink = time + self.data_lifetime;
+  }
+};

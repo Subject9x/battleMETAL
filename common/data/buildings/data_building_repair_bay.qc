@@ -7,6 +7,7 @@ Overview:
 */
 
 void() building_repair_touch;
+void() building_repair_node_think;  //cool down to prevent spam of notifications.
 
 void() hrepair_th = [0, hrepair_th]{
   if( self.trigger_field.takedamage >= DAMAGE_YES){
@@ -26,64 +27,75 @@ void() hrepair_th = [0, hrepair_th]{
 
 void() hrepair_rep = [0, hrepair_rep]{
   local float end_repair;
-  end_repair = TRUE;
-  if( vlen(self.trigger_field.origin - self.cockpit.origin) <= 16 ){
-    local entity repairMe,fix;  
-    repairMe = self.trigger_field;
-    if(csqc_updateCompStat(repairMe) < 100){
-      fix = repairMe;
-    }
-    else{
-      local entity part;
-      local float lowHP;
-      part = repairMe.partNext;
-      lowHP = 99.99;
-      while(part){
-        if( part.deadflag <= DEAD_NO && (part.partTypeId != M_ITEM || part.partTypeId != M_CAMERA) ){
-          local float hp;
-          hp = csqc_updateCompStat(part);
-          if( hp <= lowHP){
-            lowHP = hp;
-            fix = part;
-          }
-        }
-        part = part.partNext;
-      }
-    }
-    if(fix){
-      end_repair = FALSE;
-      local vector fx;
-      makevectors(self.angles);
-      fx = self.origin + (v_up * 75) + (v_forward * -24);
-      pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 3, 1);
-      pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
-      trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
+  local entity repairMe,fix;  
+  local entity part;
+  local float lowHP;
+  local float hp;
+  local vector fx;
+  fix = world;
   
-      fix.health = fix.health + self.reloadRate * 2;
-      self.reloadValue = self.reloadValue - (self.reloadRate * self.trigger_field.vec_size);
-      if(fix.health >= fix.max_health){
-        fix.health = fix.max_health;
-        if( fix.partTypeId == M_LEGS ){
-          if( (fix.flags & FL_DISARMED) ) {
-            fix.flags = fix.flags - (fix.flags & FL_DISARMED);
-            fix.owner.data_speed_forward = fix.data_speed_forward;
-            fix.owner.data_speed_backward = fix.data_speed_backward;
-            fix.owner.data_speed_strafe = fix.data_speed_strafe;
-            fix.owner.data_speed_accel = fix.data_speed_accel;
+  end_repair = TRUE;
+  
+  if( self.cockpit.attack_state == ST_WALK ){
+    if( vlen(self.trigger_field.origin - self.cockpit.origin) <= 32){
+      repairMe = self.trigger_field;
+      if(csqc_updateCompStat(repairMe) < 100){
+        fix = repairMe;
+      }
+      else{
+        part = repairMe.partNext;
+        lowHP = 99.99;
+        while(part){
+          if( part.deadflag <= DEAD_NO && (part.partTypeId != M_ITEM || part.partTypeId != M_CAMERA) ){
+            
+            hp = csqc_updateCompStat(part);
+            if( hp < lowHP){
+              lowHP = hp;
+              fix = part;
+            }
           }
+          part = part.partNext;
         }
       }
-      self.trigger_field.stat_plr_rep = (self.reloadValue / self.reloadMax);
+      if( fix != world){
+        end_repair = FALSE;
+        makevectors(self.angles);
+        fx = self.origin + (v_up * 75) + (v_forward * -24);
+        pointparticles( particleeffectnum("TE_REPAIR_MUZZLE"), fx, normalize( fix.origin - fx ) * 3, 1);
+        pointparticles( particleeffectnum("TE_REPAIR_IMPACT"), fix.origin, normalize( fix.origin - fx ) * -3, 1);
+        trailparticles( world, particleeffectnum("TE_REPAIR_RAIL"), fx, fix.origin);
+
+        fix.health = fix.health + (self.reloadRate * 2);
+        self.reloadValue = self.reloadValue - (self.reloadRate * (self.trigger_field.vec_size * 1.25));
+        if(fix.health >= fix.max_health){
+          fix.health = fix.max_health;
+          if( fix.partTypeId == M_LEGS ){
+            if( (fix.flags & FL_DISARMED) ) {
+              fix.flags = fix.flags - (fix.flags & FL_DISARMED);
+              fix.owner.data_speed_forward = fix.data_speed_forward;
+              fix.owner.data_speed_backward = fix.data_speed_backward;
+              fix.owner.data_speed_strafe = fix.data_speed_strafe;
+              fix.owner.data_speed_accel = fix.data_speed_accel;
+            }
+          }
+        }
+        self.trigger_field.stat_plr_rep = (self.reloadValue / self.reloadMax);
+      }
     }
   }
-  if(end_repair){
+
+  if(end_repair && self.cockpit.attack_state == ST_WALK ){
+    self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
     if( (self.trigger_field.flags & FL_CLIENT) ){
-      centerprint(self.trigger_field, "[Repairs complete]\n");
+      client_send_event_weapons( self.trigger_field, TRUE );
+      client_send_event_repairs( self.trigger_field, FALSE ) ;
     }
     self.trigger_field.stat_plr_rep = -1;
-    self.trigger_field.repair_request = FALSE;
     self.trigger_field = world;
     self.th_stand();
+    self.cockpit.think = building_repair_node_think;
+    self.cockpit.nextthink = time + 3;
+    self.cockpit.attack_state = ST_MELEE;
     return;
   }
 };
@@ -150,19 +162,18 @@ void() building_human_repair={
   self.shieldMax= 750;
   self.shieldRate= 1;
   
-  if( skill < SKILL_VET ){
-    self.reloadValue = 2000;
+  if( skill > SKILL_REG ){
+    self.reloadValue = 750;
+    self.reloadMax = 750;
+    self.reloadRate = 0.5;
   }
   else{
-    self.reloadValue = 500;
+    self.reloadValue = 2000;
+    self.reloadMax = 2000;
+    self.reloadRate = 1;
   }
-  self.reloadRate = 1;
-  self.reloadMax = 2000;
-  self.deadflag = DEAD_NO;
   
-  if( util_cornerSlopeCheck(self, 1) ){
-    util_generateBuildingFoundation(self);
-  }
+  self.deadflag = DEAD_NO;
   self.movetype = MOVETYPE_NONE;
   self.nextthink = time + 0.1;
   self.use = multi_trigger;
@@ -175,7 +186,7 @@ void() building_human_repair={
   }
   
   makevectors(self.angles);
-  self.c_ofs = self.origin + (v_forward * -20) + (v_up * 30) + (v_right * 4);
+  self.c_ofs = self.origin + (v_forward * -30) + (v_up * 30) + (v_right * 4);
   local entity repairNode, this;
   this  = self;
   repairNode = spawn();
@@ -190,7 +201,7 @@ void() building_human_repair={
     util_setCollider(FALSE, SOLID_TRIGGER, MOVETYPE_NONE) ;
     util_setHealthArmor(0, 0, 0, 0) ;
   self = this;
-  setsize(repairNode, '-16 -16 -24', '16 16 32');
+  setsize(repairNode, '-8 -8 -24', '8 8 32');
   setorigin(repairNode, this.c_ofs);
   
   self.th_die = hrepair_die;
@@ -202,10 +213,15 @@ void() building_human_repair={
 void() building_repair_touch={
   if( self.owner.trigger_field == world ){
     if(other.faction == self.owner.faction){
-      if( vlen(other.origin - self.origin) <= 32){
-        if(self.owner.reloadValue > 0){
-          if(util_getMechHpAverage(other) < 1){
+      if(self.owner.reloadValue > 0){
+        if(util_getMechHpAverage(other) < 1){
+          if( self.attack_state != ST_WALK ){
             self.owner.trigger_field = other;
+            other.flags = other.flags | FL_NOSHOOT;
+            client_send_event_weapons( self.owner.trigger_field, FALSE );
+            client_send_event_repairs( self.owner.trigger_field, TRUE );
+            self.touch = SUB_Null;
+            self.attack_state = ST_WALK;            
           }
         }
       }
@@ -213,6 +229,11 @@ void() building_repair_touch={
   }
   return;
 };
+
+void() building_repair_node_think={
+  self.touch = building_repair_touch;
+  self.attack_state = ST_STAND;
+};  //cool down to prevent spam of notifications.
 
 void() building_repair_die={
   self.cockpit.trigger_field = world;

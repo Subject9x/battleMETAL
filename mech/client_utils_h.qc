@@ -63,6 +63,8 @@ void(entity client, float missionSuccessCheck) client_sendEndMission;
 void(entity client) client_send_mapKeyObjects;
 void(entity client) client_send_event_powerup;
 void(entity client, string theMessage, float messageLifetime) client_send_info_message;
+void(entity client, float weaponsOnOff) client_send_event_weapons;
+void(entity client, float weaponsOnOff) client_send_event_repairs;
 
 void( float track, float loop) client_playTrack;
 void(string cmd, float tokens) client_ParseMechCommand;

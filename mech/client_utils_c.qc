@@ -290,6 +290,20 @@ void(entity client ) client_send_event_powerup={
   WriteByte( MSG_ONE, TE_POWERUP );
 };
 
+void(entity client, float weaponsOnOff) client_send_event_weapons={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_WEAPONS_ON );
+  WriteByte( MSG_ONE, weaponsOnOff );
+};
+
+void(entity client, float weaponsOnOff) client_send_event_repairs={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_REPAIRS_ON );
+  WriteByte( MSG_ONE, weaponsOnOff );
+};
+
 void(entity client, string theMessage, float messageLifetime) client_send_info_message={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
@@ -874,14 +888,12 @@ void() client_updateWeaponReloads={
 };
 
 float(entity piece) csqc_updateCompStat={
+  local float perc;
 
   if(piece){
-    if(piece.classname != "world"){
-      if(piece.health){
-        local float perc;
-        perc = (piece.health / piece.max_health)*100;
-        return perc;
-      }
+    if(piece.health){
+      perc = (piece.health / piece.max_health)*100;
+      return perc;
     }
   }
   return 0;

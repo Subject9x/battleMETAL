@@ -87,6 +87,11 @@ void() cs_precache={
   SND_HUD_VFX_OBJ_THIRD = precache_sound2("sound/comp/obj_terti.ogg");
   SND_HUD_VFX_MSN_WIN = precache_sound2("sound/comp/msn_success.ogg");
   SND_HUD_VFX_MSN_FAL = precache_sound2("sound/comp/msn_fail.ogg");
+  SND_HUD_VFX_WEAPONS_ON = precache_sound2("sound/comp/wep_online.ogg");
+  SND_HUD_VFX_WEAPONS_OFF = precache_sound2("sound/comp/wep_offline.ogg");
+  SND_HUD_VFX_REPAIRS_ON = precache_sound2("sound/comp/repair_on.ogg");
+  SND_HUD_VFX_REPAIRS_OFF = precache_sound2("sound/comp/repair_off.ogg");
+  
   
   //UI GRAPHICS
   UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png",8);

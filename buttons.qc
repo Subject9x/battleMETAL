@@ -1,3 +1,7 @@
+/*
+Quake 1
+author: iD Software
+*/
 // button and multiple button
 
 void() button_wait;

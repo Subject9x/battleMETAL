@@ -38,6 +38,12 @@ float HUD_EVENT_MISSION_COMPLETE = 12;
 float HUD_EVENT_MISSION_FAILED = 13;
 float HUD_EVENT_TARGET_KILLED = 14;
 
+float HUD_EVENT_WEAPONS_ON = 15;
+float HUD_EVENT_WEAPONS_OFF = 16;
+
+float HUD_EVENT_REPAIRS_ON = 17;
+float HUD_EVENT_REPAIRS_OFF = 18;
+
 //DEFS MESSAGE STRINGS
 string HUD_TEXT_CRITICAL_LEGS = "Critical Hit: Legs";
 string HUD_TEXT_CRITICAL_TORSO_LEFT = "Critical Hit: Left Torso.";
@@ -56,6 +62,12 @@ string HUD_TEXT_OBJECTIVE_FAILED = "Objective Failed.";
 string HUD_TEXT_MISSION_COMPLETE = "Mission Successful.";
 string HUD_TEXT_MISSION_FAILED = "Mission Failed.";
 string HUD_TEXT_TARGET_KILLED = "Target Destroyed.";
+
+string HUD_TEXT_WEAPONS_ON = "- Weapons: ONLINE -";
+string HUD_TEXT_WEAPONS_OFF = "!- Weapons: OFFLINE -!";
+
+string HUD_TEXT_REPAIRS_ON = "Initiating Repairs.";
+string HUD_TEXT_REPAIRS_OFF = "Repairs complete.";
 
 //System Functions
 void() hud_event_frame;
@@ -76,3 +88,7 @@ void() hud_event_objective_failed;
 void() hud_event_mission_complete;
 void() hud_event_mission_failed;
 void() hud_event_target_killed;
+void() hud_event_weapons_on;
+void() hud_event_weapons_off;
+void() hud_event_repairs_on;
+void() hud_event_repairs_off;

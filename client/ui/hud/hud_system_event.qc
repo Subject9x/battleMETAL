@@ -74,6 +74,18 @@ void() hud_event_frame={
     case HUD_EVENT_TARGET_KILLED:
       hud_event_target_killed();
       break;
+    case HUD_EVENT_WEAPONS_ON:
+      hud_event_weapons_on(); 
+      break;
+    case HUD_EVENT_WEAPONS_OFF:
+      hud_event_weapons_off();
+      break;
+    case HUD_EVENT_REPAIRS_ON:
+      hud_event_repairs_on();
+      break;
+    case HUD_EVENT_REPAIRS_OFF:
+      hud_event_repairs_off();
+      break;
   }
 };
 
@@ -219,4 +231,36 @@ void() hud_event_target_killed={
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL, 1);
   }
   hud_render_message( HUD_TXT_ORG, HUD_TEXT_TARGET_KILLED, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_weapons_on={
+  if( !HUD_EVENT_SOUND_START ){
+    HUD_EVENT_SOUND_START = TRUE;
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_WEAPONS_ON, 1);
+  }
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_WEAPONS_ON, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_weapons_off={
+  if( !HUD_EVENT_SOUND_START ){
+    HUD_EVENT_SOUND_START = TRUE;
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_WEAPONS_OFF, 1);
+  }
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_WEAPONS_OFF, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_repairs_on={
+  if( !HUD_EVENT_SOUND_START ){
+    HUD_EVENT_SOUND_START = TRUE;
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_REPAIRS_ON, 1);
+  }
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_REPAIRS_ON, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_repairs_off={
+  if( !HUD_EVENT_SOUND_START ){
+    HUD_EVENT_SOUND_START = TRUE;
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_REPAIRS_OFF, 1);
+  }
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_REPAIRS_OFF, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
 };

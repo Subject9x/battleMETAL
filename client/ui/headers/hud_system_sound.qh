@@ -32,6 +32,11 @@ string SND_HUD_VFX_OBJ_SECON;
 string SND_HUD_VFX_OBJ_THIRD;
 //string SND_HUD_VFX_OBJ_FOURT;
 
+string SND_HUD_VFX_WEAPONS_ON;
+string SND_HUD_VFX_WEAPONS_OFF;
+string SND_HUD_VFX_REPAIRS_ON;
+string SND_HUD_VFX_REPAIRS_OFF;
+
 //Sound Queue globals
 float SQSIZE; //set to 6
 float STIME;

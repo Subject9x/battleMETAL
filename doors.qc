@@ -1,4 +1,7 @@
-
+/*
+Quake 1
+author: iD Software
+*/
 float DOOR_START_OPEN = 1;
 float DOOR_DONT_LINK = 4;
 float DOOR_GOLD_KEY = 8;
