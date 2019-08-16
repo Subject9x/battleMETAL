@@ -27,7 +27,9 @@ void() data_projectile_ini_quantum_bit_={
 
 void() data_projectile_ini_quantum_bit_touch_={
 	if (pointcontents(self.origin) == CONTENT_SKY){
-		remove(self);
+		//remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
 		return;
 	}
   
@@ -36,10 +38,14 @@ void() data_projectile_ini_quantum_bit_touch_={
     if( other.shield > 0 ){
       pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
     }
-    remove(self);
+    //remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
     return;
   }  
   
   pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
-  remove(self);
+  //remove(self);
+    self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
 };

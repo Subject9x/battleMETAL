@@ -78,7 +78,7 @@ void() map_hud_highlight_use={
   
   if( self.isActive ){
     this = self;
-    client = findchainflags(flags, (FL_CLIENT));
+    client = findchainflags(flags, FL_CLIENT);
     while(client){
       //FACTION_ONLY setting
       if( (self.spawnflags & 8) ){

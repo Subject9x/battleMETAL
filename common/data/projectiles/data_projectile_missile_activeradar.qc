@@ -79,19 +79,25 @@ void() data_projectile_missile_activeradar_delay={
 
 void() data_projectile_missile_activeradar_touch={
 	if (pointcontents(self.origin) == CONTENT_SKY){
-		remove(self);
+		//remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
 		return;
 	}
 
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
-      remove(self);
+      //remove(self);
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.01;
       return;
     }
   }
 
   makevectors(self.angles);
   te_missile_explode(  self.origin + (v_up * -5), 1, '0.969 0.996 0.18', self.damageValue / 5, 1);
-  remove(self);
+  //remove(self);
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
 };

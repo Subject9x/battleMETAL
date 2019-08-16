@@ -73,7 +73,9 @@ void() data_projectile_plasma_touch={
   this = self;
   
   if (pointcontents(self.origin) == CONTENT_SKY){
-    remove(self);
+    //remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
     return;
   }
 
@@ -98,7 +100,9 @@ void() data_projectile_plasma_touch={
       newmis.nextthink = time + 0.01; 
     }
 	}
-  remove(self);
+  //remove(self);
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
 };
 
 void() data_projectile_plasma_think_={

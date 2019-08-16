@@ -48,7 +48,7 @@ void() ai_sfx_spotted={
         }
         return;
       }
-      self.voiceTime = time + 0.2;
+      self.voiceTime = time + (3 + (random() * 4));
       client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_SPOTTED, 1);
     } 
   }
@@ -64,7 +64,7 @@ void() ai_sfx_warning={
         }
         return;
       }
-      self.voiceTime = time + 0.2;
+      self.voiceTime = time + (0.67 + (random() * 2));
       client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_WARN, 2);
     }
   }
@@ -78,7 +78,7 @@ void() ai_sfx_huntStart={
     }
     return;
   }
-  self.voiceTime = time + 0.2;
+      self.voiceTime = time + (3 + (random() * 4));
   client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_START, 1);
 };
 
@@ -91,7 +91,7 @@ void() ai_sfx_huntEnd={
       }
       return;
     }
-    self.voiceTime = time + 0.5;
+      self.voiceTime = time + (3 + (random() * 4));
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_END, 1) ;
   }
 };
@@ -106,7 +106,7 @@ void() ai_sfx_dying={
       return;
     }
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DYING, 1) ;
-    self.voiceTime = time + 0.05;
+      self.voiceTime = time + (3 + (random() * 4));
   }
 };
 
@@ -119,7 +119,7 @@ void() ai_sfx_dead={
     return;
   }
   client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DEAD, 1) ;
-  self.voiceTime = time + 0.1;
+      self.voiceTime = time + (3 + (random() * 4));
 };
 
 void() ai_sfx_kill={
@@ -134,7 +134,7 @@ void() ai_sfx_kill={
       }
       
       client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_KILL, 1);
-      self.voiceTime = time + 0.33;
+      self.voiceTime = time + (3 + (random() * 4));
     }
   }
 };
@@ -148,7 +148,7 @@ void() ai_sfx_roger={
       }
       return;
     }
-    self.voiceTime = time + 0.25;
+      self.voiceTime = time + (3 + (random() * 4));
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_ROGER, 1);
   }
 };
@@ -162,7 +162,7 @@ void() ai_sfx_help={
       }
       return;
     }
-    self.voiceTime = time + 0.25;
+      self.voiceTime = time + (3 + (random() * 4));
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HELP, 1);
   }
 };

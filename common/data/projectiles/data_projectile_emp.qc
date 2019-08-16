@@ -97,7 +97,9 @@ void()data_prj_emp_explode={
 
 void() data_prj_emp_touch={
 	if( pointcontents(self.origin) == CONTENT_SKY ){
-		remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
+    //remove(self);
 		return;
 	}
  
@@ -111,7 +113,9 @@ void() data_prj_emp_touch={
       pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
     }
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-    remove(self);
+    //remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
     return;
   }
  

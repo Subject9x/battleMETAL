@@ -24,18 +24,23 @@ author: iD Software
 */
 void( entity active, .string event) trigger_event={
   local string oldTarget;
+  local string thisTarget;  //something something method arg stack
   local entity hold;
   
   hold = self;
   if( active != self ){
     self = active;
   }
-  if( hold.event ){
+  if( self.event ){
     oldTarget = self.target;
-    self.target = hold.event;
+    
+    thisTarget = self.event;
+    self.target = thisTarget;
     activator = self;
+
     SUB_UseTargets();
-    hold.event = string_null;  //fired once
+
+    self.event = string_null;  //fired once
     self.target = oldTarget;
   }
   if( active != self ){

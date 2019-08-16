@@ -411,7 +411,7 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   HUD_INFO_SIZE_y = infoBoxY;
   
   HUD_INFO_ORG_x = VIEW_CTR_x - (HUD_INFO_SIZE_x / 2);
-  HUD_INFO_ORG_y = VIEW_CTR_y - (HUD_INFO_SIZE_y + gui_percentYRaw(32));
+  HUD_INFO_ORG_y = VIEW_CTR_y - (HUD_INFO_SIZE_y + gui_percentYRaw(16));
   
   drawfont = drawfont_prev;
   

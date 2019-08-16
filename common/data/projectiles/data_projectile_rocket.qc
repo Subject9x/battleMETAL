@@ -27,7 +27,9 @@ void() data_projectile_ini_rocket_={
 
 void() data_prj_mis_touch={
 	if ( pointcontents(self.origin) == CONTENT_SKY){
-		remove(self);
+		//remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
 		return;
 	}
 
@@ -40,7 +42,9 @@ void() data_prj_mis_touch={
   }
   makevectors(self.angles);
   te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 5, 1);
-  remove(self);
+  //remove(self);
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
 };
 
 void() data_projectile_rocket_think_={

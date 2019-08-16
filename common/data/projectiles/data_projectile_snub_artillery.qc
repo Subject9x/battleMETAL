@@ -31,7 +31,9 @@ void() data_projectile_ini_snub_artillery_={
 void() data_projectile_snub_artillery_touch_={
   
   if( pointcontents(self.origin) == CONTENT_SKY ){
-    remove(self);
+    //remove(self);
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
     return;
   }
   
@@ -50,8 +52,11 @@ void() data_projectile_snub_artillery_touch_={
   data_projectile_snub_artillery_radiusDamage();
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
-  remove(self);
-  return;
+  
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
+  //remove(self);
+  //return;
 };
 
 void() data_projectile_snub_artillery_radiusDamage={
