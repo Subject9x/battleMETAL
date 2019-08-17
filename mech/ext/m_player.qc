@@ -312,7 +312,7 @@ void() PlayerDie={
   self.avelocity = '0 0 0';
   
   self.think = PlayerDieEnd;
-  self.nextthink = time + 10;
+  self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
 
 void() PlayerDieEnd={

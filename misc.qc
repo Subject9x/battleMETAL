@@ -81,14 +81,11 @@ None
 */
 void() realtime_light={
   self.classname = "realtime_light";
-  setmodel(self, "q3mdl/testball.md3");
-  setsize(self, '-4 -4 -4', '4 4 4');
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.alpha = 0;
   if( cvar("developer") ){
     self.alpha = 1;
-    self.color = '0 0.75 0.75';
   }
 };
 

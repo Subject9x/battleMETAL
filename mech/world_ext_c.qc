@@ -223,7 +223,7 @@ void( float overrideFlag ) world_export_realtimelights={
   local entity lights;
   
   developer = cvar("developer");
-  fileName = strcat("/maps/rtexport/", mapname, ".rtlights");
+  fileName = strcat("maps/rtexport/", mapname, ".rtlights");
   if( developer ){
     cons_logAString("[INFO]-world_export_realtimelights()|[fileName]", fileName);  //DEBUG
   }
@@ -260,26 +260,51 @@ void( float overrideFlag ) world_export_realtimelights={
 
 void( entity light, float fileData ) world_export_realtimelights_write={
   local string lightData;
-  lightData = "";
+  
   if( light.rtlShadows == TRUE){
-    lightData = strcat(lightData, "!"); 
+    //lightData = strcat(lightData, "!"); 
+    fputs(fileData, "!");
   }    
-  lightData = strcat( lightData, ftos(light.origin_x), " ", ftos(light.origin_y), " ", ftos(light.origin_z));
-  lightData = strcat( lightData, " ", ftos(light.rtlLight) );
-  lightData = strcat( lightData, " ", ftos(light.color_x)," ", ftos(light.color_y)," ", ftos(light.color_z) );
-  lightData = strcat( lightData, " ", ftos(light.rtlStyle) );
-  lightData = strcat( lightData, " \"", light.vec_name,"\" " );
-  lightData = strcat( lightData, " ", ftos(light.rtlCorona) );
-  lightData = strcat( lightData, " ", ftos(light.angles_x), " ", ftos(light.angles_y), " ", ftos(light.angles_z) );
-  lightData = strcat( lightData, " ", ftos(light.rtlCoronaSize) );
-  lightData = strcat( lightData, " ", ftos(light.rtlAmbient) );
-  lightData = strcat( lightData, " ", ftos(light.rtlDiffuse) );
-  lightData = strcat( lightData, " ", ftos(light.rtlSpecular) );
-  lightData = strcat( lightData, " ", ftos(light.rtlMode), "\n");
+  //lightData = strcat( lightData, ftos(light.origin_x), " ", ftos(light.origin_y), " ", ftos(light.origin_z));
+  fputs(fileData, strcat( ftos(light.origin_x), " ", ftos(light.origin_y), " ", ftos(light.origin_z)));
+  
+  //lightData = strcat( lightData, " ",  );
+  fputs(fileData, strcat( " ", ftos(light.rtlLight)));
+  
+  //lightData = strcat( lightData, " ", light.color_x," ", light.color_y," ", light.color_z );
+  fputs(fileData, strcat( " ", ftos(light.color_x), " ", ftos(light.color_y), " ", ftos(light.color_z)));
+  
+  //lightData = strcat( lightData, " ", ftos(light.rtlStyle) );
+  fputs(fileData, strcat( " ", ftos(light.rtlStyle)));
+  
+  //lightData = strcat( lightData, " \"", light.vec_name,"\" " );
+  fputs(fileData, strcat( " \"", light.vec_name,"\" "));
+  
+  //lightData = strcat( lightData, " ", ftos(light.rtlCorona) );
+  fputs(fileData, strcat( " ", ftos(light.rtlCorona)));
+  
+  //lightData = strcat( lightData, " ", ftos(light.angles_x), " ", ftos(light.angles_y), " ", ftos(light.angles_z) );
+  fputs(fileData, strcat( " ", ftos(light.angles_x), " ", ftos(light.angles_y), " ", ftos(light.angles_z) ));
+  
+  //lightData = strcat( lightData, " ", ftos(light.rtlCoronaSize) );
+  fputs(fileData, strcat( " ", ftos(light.rtlCoronaSize) ));
+  
+  //lightData = strcat( lightData, " ", ftos(light.rtlAmbient) );
+  fputs(fileData, strcat( " ", ftos(light.rtlAmbient) ));
+  
+  //lightData = strcat( lightData, " ", ftos(light.rtlDiffuse) );
+  fputs(fileData, strcat( " ", ftos(light.rtlDiffuse) ));
+  
+  //lightData = strcat( lightData, " ", ftos(light.rtlSpecular) );
+  fputs(fileData, strcat( " ", ftos(light.rtlSpecular) ));
+  
+  //lightData = strcat( lightData, " ", ftos(light.rtlMode), "\n");
+  fputs(fileData, strcat( " ", ftos(light.rtlMode), "\n"));
   
   if( cvar("developer") ){
-    cons_logAString("[INOFO]-{Writing RTLight Data} ", lightData); //DEBUG
+    cons_logAString("[INFO]-{Writing RTLight Data} ", lightData); //DEBUG
+    cons_logAString("[INFO]- light.color_x", ftos(light.color_x));  //DEBUG
   }
-  fputs(fileData, lightData);
+  //fputs(fileData, lightData);
 
 };

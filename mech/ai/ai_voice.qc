@@ -23,18 +23,21 @@ void( float randomBool ) ai_voice_ini={
   if( randomBool ){
     randoVoice = random();
     
-    if( randoVoice <= 0.5){
+    if( randoVoice <= 0.33 ){
       //VOICE  A
       self.ai_voice_group = AI_VOICE_GROUP_A;
     }
-    else{
+    else if( randoVoice <= 0.67 ){
       //VOICE  B
       self.ai_voice_group = AI_VOICE_GROUP_B;
+    }
+    else{
+      self.ai_voice_group = AI_VOICE_GROUP_C;
     }
   }
   else{
     //VOICE DEBUG
-    self.ai_voice_group = AI_VOICE_GROUP_C;
+    //self.ai_voice_group = AI_VOICE_GROUP_C;
   }
 };
 
