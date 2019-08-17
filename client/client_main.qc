@@ -316,7 +316,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         itr = itr + 1;
       }
       //HUD Highlight Boxes
-      ui_renderHUD_Highlight_frame();
+      hud_renderHighlight_frame();
       //Player has toggled 'Objectives' menu while in-mission.
       ui_objective_frame(VIEW_ORG);
       

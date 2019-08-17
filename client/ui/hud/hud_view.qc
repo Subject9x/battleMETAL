@@ -1126,6 +1126,38 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
     
   drawfont = drawfont_prev;
 };
+
+/*
+  Called when server sends a TE_ event to highlight a portion of the Player's screen.
+*/
+void() hud_renderHighlight_frame={
+  local entity boxes;
+  boxes = findchainfloat( data_idx, -3 );
+  while( boxes ){
+    local entity rem;
+    rem = boxes;
+    boxes = boxes.chain;
+    hud_renderHighlight( rem );
+    if( time > rem.drawme ){
+      remove( rem );
+    }
+  }
+};
+
+void( entity box ) hud_renderHighlight={
+  local vector bx_pos, bx_sz;
+  local float x,y;
+  
+  x = (0.1/100) * VIEW_MAX_x;
+  y = (0.1/100) * VIEW_MAX_y;
+  bx_pos_x = VIEW_ORG_x + ( VIEW_MAX_x * box.origin_x );
+  bx_pos_y = VIEW_ORG_y + ( VIEW_MAX_y * box.origin_y );
+  bx_sz_x = box.drawsize_x * VIEW_MAX_x;
+  bx_sz_y = box.drawsize_y * VIEW_MAX_y;
+  
+  drawpic( bx_pos, UI_DEF_BOX_256_THICK, bx_sz, box.drawcolor1, 0.75, 0);
+};
+
 /*
   Main API call for new text-based HUD system
 */

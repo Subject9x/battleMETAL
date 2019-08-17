@@ -194,46 +194,6 @@ void(float num, vector org) ui_renderHardPointNumber={
 };
 
 /*
-  Called when server sends a TE_ event to highlight a portion of the Player's screen.
-*/
-void() ui_renderHUD_Highlight_frame={
-  local entity boxes;
-  boxes = findchainfloat( data_idx, -3 );
-  while( boxes ){
-    local entity rem;
-    rem = boxes;
-    boxes = boxes.chain;
-    ui_renderHUDHighlight( rem );
-    if( time > rem.drawme ){
-      remove( rem );
-    }
-  }
-};
-
-void( entity box ) ui_renderHUDHighlight={
-  local vector bx_pos, bx_sz, l1, l2, l3;
-  local float x,y;
-  
-  x = (0.1/100) * VIEW_MAX_x;
-  y = (0.1/100) * VIEW_MAX_y;
-  bx_pos_x = VIEW_ORG_x + ( VIEW_MAX_x * box.origin_x );
-  bx_pos_y = VIEW_ORG_y + ( VIEW_MAX_y * box.origin_y );      
-  bx_sz_x = box.drawsize_x * VIEW_MAX_x;
-  bx_sz_y = box.drawsize_y * VIEW_MAX_y;
-  
-  l1_x = bx_pos_x + x;
-  l1_y = bx_pos_y + y;
-  l2_x = l1_x + x;
-  l2_y = l1_y + y;
-  l3_x = l2_x + x;
-  l3_y = l2_y + y;
-  gui_DrawRect (bx_pos, bx_sz, '2 1', box.drawcolor1);
-  gui_DrawRect (l1, bx_sz, '2 1', box.drawcolor1);
-  gui_DrawRect (l2, bx_sz, '1 2', box.drawcolor1);
-  gui_DrawRect (l3, bx_sz, '2 1', box.drawcolor1);
-};
-
-/*
 float SPRITE_deploy_point_FRAME;
 float SPRITE_deploy_point_FRAME_MAX;
 string SPRITE_deploy_point_FRAMES[3];

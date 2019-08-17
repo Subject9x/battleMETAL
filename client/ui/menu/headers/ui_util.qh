@@ -8,8 +8,6 @@ Overview:
   
 */
 
-void( entity box ) ui_renderHUDHighlight;
-void() ui_renderHUD_Highlight_frame;
 /**/
 void( string imageICon, vector org, float selected) ui_renderHardPointGraphic;
 void(float navid) ui_renderNav;

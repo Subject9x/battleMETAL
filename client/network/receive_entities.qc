@@ -141,13 +141,15 @@ void() client_get_contact={
 
 void() client_get_hud_highlight={
   local entity hfx;
-
+  local float t;
+  
   hfx = spawn();
   hfx.data_idx = -3;  //more hacks
   hfx.origin = te_read_vector();
   hfx.drawsize = te_read_vector();
   hfx.drawcolor1 = te_read_vector();
-  hfx.drawme = time + ReadShort();
+  t = ReadShort();
+  hfx.drawme = time + (t / 3);
   
 };
 
@@ -376,15 +378,6 @@ void( string name ) client_event_mission_name={
   drawfont = drawfont_prev;
 };
 
-/*
-  float HUD_INFO_ON;
-  float HUD_INFO_MARK;
-  float HUD_INFO_TIME = 1;
-  vector HUD_INFO_ORG;
-  vector HUD_INFO_SIZE;
-  string HUD_INFO_MSG;
-*/
-
 void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) client_event_info_box={
   local float infoBoxY;
   local string replace;
@@ -411,7 +404,7 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   HUD_INFO_SIZE_y = infoBoxY;
   
   HUD_INFO_ORG_x = VIEW_CTR_x - (HUD_INFO_SIZE_x / 2);
-  HUD_INFO_ORG_y = VIEW_CTR_y - (HUD_INFO_SIZE_y + gui_percentYRaw(16));
+  HUD_INFO_ORG_y = VIEW_CTR_y - (HUD_INFO_SIZE_y / 2);
   
   drawfont = drawfont_prev;
   

@@ -170,6 +170,9 @@ void(float delta) hud_renderRepairValue;
 void(float warnOn, float warnDir) hud_render_warningBounds;
 void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment;
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message;
+void( entity box ) hud_renderHighlight;
+void() hud_renderHighlight_frame;
+
 void() hud_render_info;
 
 //new text-based hud system
