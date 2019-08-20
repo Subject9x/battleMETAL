@@ -1,5 +1,5 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 9/3/2016
 Overview: I pulled the ImpulseCommands() function out to its own

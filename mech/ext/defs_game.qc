@@ -78,11 +78,11 @@ float DIR_W   = 6;
 float DIR_NW  = 7;
 
 //Armor Types
-float ARM_LIT = 2;  //light armor
+/*float ARM_LIT = 2;  //light armor
 float ARM_MED = 4;  //heavy armor;
 float ARM_HVY = 8;  //radiation armor
 float ARM_CER = 16; 
-float ARM_RAD = 24;
+float ARM_RAD = 24;*/
 
 //fire modes
 float FIRE_SINGLE = 1;
