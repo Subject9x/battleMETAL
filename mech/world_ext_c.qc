@@ -243,7 +243,7 @@ void( float overrideFlag ) world_export_realtimelights={
   lights = findchain(classname, "realtimelights_light");
   if( lights ){
     while(lights){
-      world_export_realtimelights_write( lights, fileExists , (lights.chain != world) );
+      world_export_realtimelights_write( lights, fileExists );
       lights = lights.chain;
     }
     if( developer ){
@@ -258,7 +258,7 @@ void( float overrideFlag ) world_export_realtimelights={
   fclose(fileExists);
 };
 
-void( entity light, float fileData, float endOfFile) world_export_realtimelights_write={
+void( entity light, float fileData ) world_export_realtimelights_write={
   local string lightData;
   
   if( light.rtlShadows == TRUE){
@@ -279,9 +279,7 @@ void( entity light, float fileData, float endOfFile) world_export_realtimelights
   if( lightData != "" ){
     fputs(fileData, lightData);
   }
-  if( !endOfFile ){
-    fputs(fileData, "\n");
-  }
+  fputs(fileData, "\n");  //INFO - .rtlights files ALWAYS end with a \n
   
   if( cvar("developer") ){
     cons_logAString("[INFO]-{Writing RTLight Data} ", "-line-"); //DEBUG

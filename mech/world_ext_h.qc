@@ -54,4 +54,4 @@ float( entity t ) world_calc_fog;
 */
 
 void( float overrideFlag ) world_export_realtimelights;
-void( entity light, float fileData, float endOfFile) world_export_realtimelights_write;
+void( entity light, float fileData ) world_export_realtimelights_write;
