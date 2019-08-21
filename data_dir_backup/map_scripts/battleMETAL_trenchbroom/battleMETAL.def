@@ -213,12 +213,12 @@ Keys:
 "speed"
  movement speed (default 100)
 */
-/*QUAKED realtime_light (0 0.75 0.75) (-8 -8 -8) (8 8 8)
+/*QUAKED realtimelights_light (0 0.75 0.75) (-8 -8 -8) (8 8 8)
 will be converted to rtlight file line on console command
 
 -------- KEYS --------
 .rtlShadows = <bool> use real-time shadows or not.
-.rtlLight = <float> radius of light.
+.rtlRadius = <float> radius of light.
 .color = <vector>[0-1] used to denote color of light.
 .rtlStyle = <float>[0-12] just like normal light style.
 .vec_name = <string> becomes Light's Cubemap image path.

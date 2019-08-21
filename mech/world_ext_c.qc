@@ -240,10 +240,10 @@ void( float overrideFlag ) world_export_realtimelights={
   }
   
   //if file doesnt exists
-  lights = findchain(classname, "realtimelights");
+  lights = findchain(classname, "realtimelights_light");
   if( lights ){
     while(lights){
-      world_export_realtimelights_write( lights, fileExists );
+      world_export_realtimelights_write( lights, fileExists , (lights.chain != world) );
       lights = lights.chain;
     }
     if( developer ){
@@ -252,30 +252,36 @@ void( float overrideFlag ) world_export_realtimelights={
   }
   else{
     if( developer ){
-      cons_logAString("[WARN]-world_export_realtimelights()", "No {realtimelights} entities found in map file.");  //DEBUG
+      cons_logAString("[WARN]-world_export_realtimelights()", "No {realtimelights_light} entities found in map file.");  //DEBUG
     }
   }
   fclose(fileExists);
 };
 
-void( entity light, float fileData ) world_export_realtimelights_write={
+void( entity light, float fileData, float endOfFile) world_export_realtimelights_write={
   local string lightData;
   
   if( light.rtlShadows == TRUE){
     fputs(fileData, "!");
   }    
-  fputs(fileData, strcat( ftos(light.origin_x), " ", ftos(light.origin_y), " ", ftos(light.origin_z)));
-  fputs(fileData, strcat( " ", ftos(light.rtlLight)));
-  fputs(fileData, strcat( " ", ftos(light.color_x), " ", ftos(light.color_y), " ", ftos(light.color_z)));
-  fputs(fileData, strcat( " ", ftos(light.rtlStyle)));
-  fputs(fileData, strcat( " \"", light.vec_name,"\" "));
-  fputs(fileData, strcat( " ", ftos(light.rtlCorona)));
-  fputs(fileData, strcat( " ", ftos(light.angles_x), " ", ftos(light.angles_y), " ", ftos(light.angles_z) ));
-  fputs(fileData, strcat( " ", ftos(light.rtlCoronaSize) ));
-  fputs(fileData, strcat( " ", ftos(light.rtlAmbient) ));
-  fputs(fileData, strcat( " ", ftos(light.rtlDiffuse) ));
-  fputs(fileData, strcat( " ", ftos(light.rtlSpecular) ));
-  fputs(fileData, strcat( " ", ftos(light.rtlMode), "\n"));
+  lightData = strcat( lightData, ftos(light.origin_x), " ", ftos(light.origin_y), " ", ftos(light.origin_z));
+  lightData = strcat( lightData, " ", ftos(light.rtlRadius) );
+  lightData = strcat( lightData, " ", ftos(light.color_x)," ", ftos(light.color_y)," ", ftos(light.color_z) );
+  lightData = strcat( lightData, " ", ftos(light.rtlStyle) );
+  lightData = strcat( lightData, " \"", light.vec_name,"\" " );
+  lightData = strcat( lightData, " ", ftos(light.rtlCorona) );
+  lightData = strcat( lightData, " ", ftos(light.angles_x), " ", ftos(light.angles_y), " ", ftos(light.angles_z) );
+  lightData = strcat( lightData, " ", ftos(light.rtlCoronaSize) );
+  lightData = strcat( lightData, " ", ftos(light.rtlAmbient) );
+  lightData = strcat( lightData, " ", ftos(light.rtlDiffuse) );
+  lightData = strcat( lightData, " ", ftos(light.rtlSpecular) );
+  lightData = strcat( lightData, " ", ftos(light.rtlMode));
+  if( lightData != "" ){
+    fputs(fileData, lightData);
+  }
+  if( !endOfFile ){
+    fputs(fileData, "\n");
+  }
   
   if( cvar("developer") ){
     cons_logAString("[INFO]-{Writing RTLight Data} ", "-line-"); //DEBUG

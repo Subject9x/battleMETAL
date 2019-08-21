@@ -35,7 +35,7 @@ float( entity t ) world_calc_fog;
 //RTLight converter system---------------------------------------------
 .float rtlShadows; //FALSE = write nothin | TRUE = write '!'
 //.vector rtlOrigin; -> light ent's .origin
-.float rtlLight;  //functionally equivalent to .light but doesn't trigger bsp light calc
+.float rtlRadius;  //functionally equivalent to .light but doesn't trigger bsp light calc
 //.vector color; -> already covered
 .float rtlStyle;
 //.string vec_name; -> write out as 'cubemap'
@@ -54,4 +54,4 @@ float( entity t ) world_calc_fog;
 */
 
 void( float overrideFlag ) world_export_realtimelights;
-void( entity light, float fileData ) world_export_realtimelights_write;
+void( entity light, float fileData, float endOfFile) world_export_realtimelights_write;

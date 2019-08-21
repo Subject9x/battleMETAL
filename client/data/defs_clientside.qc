@@ -82,7 +82,7 @@ float M_ARM_RIGHT   = 9;
 float M_ITEM        = 10;
 
 //Armor Types
-float ARM_LIT = 2;  //light armor
+/*float ARM_LIT = 2;  //light armor
 float ARM_MED = 4;  //heavy armor;
 float ARM_HVY = 8;  //radiation armor
 float ARM_CER = 16; 
