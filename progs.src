@@ -1,3 +1,7 @@
+//big refactor
+// main/headers
+// main/*/headers
+
 ../progs.dat
 
 dp/defs.qc          //original Quake defs, should always be first.
@@ -14,34 +18,34 @@ dp/dpextensions.qc  //DPExtensions that most of the magic work.
 subs_h.qc
 triggers_h.qc
 world_effectinfo_h.qc
-mech/ctrl/ctrl_all_h.qc
-mech/ctrl/ctrl_weapon_h.qc
+main/ctrl/ctrl_all_h.qc
+main/ctrl/ctrl_weapon_h.qc
 
 //Server Defs=====================
-  mech/ext/defs_game.qc
-  mech/ext/defs_cs.qc
-  mech/ext/defs_impulse.qc
-  mech/ext/defs_combat.qc
+  main/ext/defs_game.qc
+  main/ext/defs_cs.qc
+  main/ext/defs_impulse.qc
+  main/ext/defs_combat.qc
 //================================
 
 //battleMETAL Header Files===
-  mech/world_ext_h.qc
-  mech/client_utils_h.qc
-  mech/svr/server_parmops_h.qc
-  mech/svr/server_intermsn_h.qc
-  mech/svr/server_sensors_h.qc
-  mech/svr/server_savefile_h.qc
-  mech/utils_h.qc
-  mech/t_damage_h.qc
-  mech/ext/eng_client_h.qc
-  mech/ext/eng_player_h.qc
-  mech/playerFactory_h.qc
-  mech/vecFactory_h.qc
-  mech/models/models_h.qc
-  mech/impulse_h.qc
-  mech/ext/player_mech_h.qc
-  mech/ai/ai_api_h.qc
-  mech/map/triggers_map_h.qc
+  main/headers/world_ext.qh
+  main/headers/client_utils.qh
+  main/sv/headers/sv_parmops.qh
+  main/sv/headers/sv_intermsn.qh
+  main/sv/headers/sv_sensors.qh
+  main/sv/headers/sv_savefile.qh
+  main/headers/utils.qh
+  main/headers/t_damage.qh
+  main/ext/eng_client_h.qc
+  main/ext/eng_player_h.qc
+  main/headers/playerFactory.qh
+  main/headers/vecFactory.qh
+  main/models/models_h.qc
+  main/headers/impulse.qh
+  main/ext/player_mech_h.qc
+  main/ai/ai_api_h.qc
+  main/map/triggers_map_h.qc
 //==========================
 
 //Common Game Data================
@@ -126,50 +130,50 @@ mech/ctrl/ctrl_weapon_h.qc
   //-------------------------------
 //================================
   dp/subs.qc  
-  mech/data_system.qc
+  main/data_system.qc
 
 //Custom battleMETAL Functionality
   //AI Module---------------------
-  mech/ai/ai_stats.qc
-  mech/ai/ai_api.qc
-  mech/ai/ai_ctrl.qc
-  mech/ai/behaviors/ai_turret.qc
-  mech/ai/behaviors/ai_mech_skirmish.qc
-  mech/ai/behaviors/ai_mech_sniper.qc
-  mech/ai/behaviors/ai_destroyer.qc
-  mech/ai/behaviors/ai_tank_skirmish.qc
-  //mech/ai/behaviors/ai_noncom.qc TODO
-  //mech/ai/behaviors/ai_vtol.qc TODO
-  mech/ai/behaviors/ai_gev.qc
-  mech/ai/ai_nodes.qc
-  mech/ai/ai_voice.qc
+  main/ai/ai_stats.qc
+  main/ai/ai_api.qc
+  main/ai/ai_ctrl.qc
+  main/ai/behaviors/ai_turret.qc
+  main/ai/behaviors/ai_mech_skirmish.qc
+  main/ai/behaviors/ai_mech_sniper.qc
+  main/ai/behaviors/ai_destroyer.qc
+  main/ai/behaviors/ai_tank_skirmish.qc
+  //main/ai/behaviors/ai_noncom.qc TODO
+  //main/ai/behaviors/ai_vtol.qc TODO
+  main/ai/behaviors/ai_gev.qc
+  main/ai/ai_nodes.qc
+  main/ai/ai_voice.qc
   //-------------------------------
   
-  mech/t_damage.qc
+  main/t_damage.qc
   
   //Savefile and Mission Files-----
-  mech/svr/server_parmops_c.qc
-  mech/svr/server_intermsn_c.qc
-  mech/svr/server_sensors_c.qc
-  mech/svr/server_savefile_c.qc
+  main/sv/sv_parmops.qc
+  main/sv/sv_intermsn.qc
+  main/sv/sv_sensors.qc
+  main/sv/sv_savefile.qc
   //-------------------------------
   
-  mech/utils_c.qc
-  mech/playerFactory_c.qc
-  mech/svr/server_playermovement_c.qc
+  main/utils.qc
+  main/playerFactory.qc
+  main/sv/sv_playermovement.qc
   
-  mech/world_ext_c.qc
+  main/world_ext.qc
   
-  mech/client_utils_c.qc
+  main/client_utils.qc
   
-  mech/impulse_c.qc
+  main/impulse.qc
   
   //Model + Entity Controllers-----
-  mech/ctrl/ctrl_weapon.qc
-  mech/ctrl/ctrl_mech.qc
-  mech/ctrl/ctrl_legs.qc
-  mech/ctrl/ctrl_building.qc
-  mech/ctrl/ctrl_tank.qc
+  main/ctrl/ctrl_weapon.qc
+  main/ctrl/ctrl_mech.qc
+  main/ctrl/ctrl_legs.qc
+  main/ctrl/ctrl_building.qc
+  main/ctrl/ctrl_tank.qc
   //-------------------------------
 //==========================
 
@@ -179,18 +183,18 @@ buttons.qc
 triggers.qc
 
 //============================
-  mech/map_objects_c.qc
-  mech/ai/ai_units.qc
-  mech/ext/m_client.qc
-  mech/ext/m_player.qc
+  main/map_objects.qc
+  main/ai/ai_units.qc
+  main/ext/m_client.qc
+  main/ext/m_player.qc
  
-  mech/vecFactory.qc
+  main/vecFactory.qc
   //player types
-  mech/ext/player_mech.qc
+  main/ext/player_mech.qc
   
   //models quake c
-  mech/models/models_leg.qc
-  mech/models/models_ctor.qc
+  main/models/models_leg.qc
+  main/models/models_ctor.qc
   
   //effects
   world_effectinfo_c.qc
@@ -200,23 +204,23 @@ plats.qc
 misc.qc
 
 //Map Entities================
-  mech/map/triggers_map.qc
-  mech/map/map_change_fog.qc
-  mech/map/map_change_music.qc
-  mech/map/map_change_wind.qc
-  mech/map/map_damage_zone.qc
-  mech/map/map_deploy_point.qc
-  mech/map/map_nav_point.qc
-  mech/map/map_objective.qc
-  mech/map/map_misc_model.qc
-  mech/map/map_animatic.qc
-  mech/map/map_particles_debug.qc
-  mech/map/map_projectile_shooter.qc
-  mech/map/map_noshoot.qc
-  mech/map/map_fail_objective.qc
-  mech/map/map_hud_highlight.qc
-  mech/map/map_mission_boundary.qc
-  mech/map/map_scenery.qc
-  mech/map/map_particlecube_effect.qc
+  main/map/triggers_map.qc
+  main/map/map_change_fog.qc
+  main/map/map_change_music.qc
+  main/map/map_change_wind.qc
+  main/map/map_damage_zone.qc
+  main/map/map_deploy_point.qc
+  main/map/map_nav_point.qc
+  main/map/map_objective.qc
+  main/map/map_misc_model.qc
+  main/map/map_animatic.qc
+  main/map/map_particles_debug.qc
+  main/map/map_projectile_shooter.qc
+  main/map/map_noshoot.qc
+  main/map/map_fail_objective.qc
+  main/map/map_hud_highlight.qc
+  main/map/map_mission_boundary.qc
+  main/map/map_scenery.qc
+  main/map/map_particlecube_effect.qc
 //============================
 
