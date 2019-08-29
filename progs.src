@@ -15,9 +15,9 @@ dp/dpextensions.qc  //DPExtensions that most of the magic work.
   common/data/defs/defs_projectile.qc //all fields related to projectiles.
 //================================
 
-subs_h.qc
-triggers_h.qc
-world_effectinfo_h.qc
+qsrc/headers/subs.qh
+qsrc/headers/triggers.qh
+main/headers/effectinfo_api.qh
 main/ctrl/ctrl_all_h.qc
 main/ctrl/ctrl_weapon_h.qc
 
@@ -31,19 +31,19 @@ main/ctrl/ctrl_weapon_h.qc
 //battleMETAL Header Files===
   main/headers/world_ext.qh
   main/headers/client_utils.qh
+  main/headers/impulse.qh
   main/sv/headers/sv_parmops.qh
   main/sv/headers/sv_intermsn.qh
   main/sv/headers/sv_sensors.qh
   main/sv/headers/sv_savefile.qh
+  main/sv/headers/sv_client_api.qh
+  main/sv/headers/sv_player_api.qh
   main/headers/utils.qh
   main/headers/t_damage.qh
-  main/ext/eng_client_h.qc
-  main/ext/eng_player_h.qc
-  main/headers/playerFactory.qh
-  main/headers/vecFactory.qh
+  main/headers/entityFactory_player.qh
+  main/headers/entityFactory_vehicles.qh
   main/models/models_h.qc
-  main/headers/impulse.qh
-  main/ext/player_mech_h.qc
+  main/ext/headers/player_mech.qh
   main/ai/ai_api_h.qc
   main/map/triggers_map_h.qc
 //==========================
@@ -159,8 +159,10 @@ main/ctrl/ctrl_weapon_h.qc
   //-------------------------------
   
   main/utils.qc
-  main/playerFactory.qc
+  main/entityFactory_player.qc
   main/sv/sv_playermovement.qc
+  main/sv/sv_client_api.qc
+  main/sv/sv_player_api.qc
   
   main/world_ext.qc
   
@@ -177,18 +179,16 @@ main/ctrl/ctrl_weapon_h.qc
   //-------------------------------
 //==========================
 
-world.qc
-doors.qc
-buttons.qc
-triggers.qc
+qsrc/world.qc
+qsrc/doors.qc
+qsrc/buttons.qc
+qsrc/triggers.qc
 
 //============================
   main/map_objects.qc
   main/ai/ai_units.qc
-  main/ext/m_client.qc
-  main/ext/m_player.qc
  
-  main/vecFactory.qc
+  main/entityFactory_vehicles.qc
   //player types
   main/ext/player_mech.qc
   
@@ -197,11 +197,11 @@ triggers.qc
   main/models/models_ctor.qc
   
   //effects
-  world_effectinfo_c.qc
+  main/effectinfo_api.qc
 //============================
 
-plats.qc
-misc.qc
+qsrc/plats.qc
+qsrc/misc.qc
 
 //Map Entities================
   main/map/triggers_map.qc
