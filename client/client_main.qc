@@ -311,6 +311,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         drawfont_prev = drawfont;
       }
       
+      local float itr;
       itr = 0;
       while( itr <= 21 ){
         ui_renderNav( itr );  //TODO - refactor into HUD
