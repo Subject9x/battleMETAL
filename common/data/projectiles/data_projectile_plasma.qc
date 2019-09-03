@@ -56,6 +56,7 @@ void() data_projectile_plasma_burn_th={
   pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   
   if(time > self.data_lifetime){
+    self.touch = SUB_Null;
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
     return;
@@ -72,8 +73,8 @@ void() data_projectile_plasma_touch={
   
   this = self;
   
-  if (pointcontents(self.origin) == CONTENT_SKY){
-    //remove(self);
+  if (pointcontents(self.origin) == CONTENT_SKY){  
+    self.touch = SUB_Null;
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
     return;
@@ -100,7 +101,7 @@ void() data_projectile_plasma_touch={
       newmis.nextthink = time + 0.01; 
     }
 	}
-  //remove(self);
+  self.touch = SUB_Null;
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
 };

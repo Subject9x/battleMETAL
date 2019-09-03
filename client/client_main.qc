@@ -268,6 +268,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       }
     }
     //nav points are occluded by player 2D HUD so that the overlap doesn't interfere with reading the HUD
+    /*TODO - refactor
     if(CLIENT_player_state >= PLAYER_POWERUP_BEGIN){
       local float itr;
       itr = 0;
@@ -275,19 +276,19 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         ui_renderNav( itr );
         itr = itr + 1;
       }
-    }
+    }*/
     
     //HUD SOUND SYSTEM LISTENERS
     snd_hud_vfx_statelistener(CLIENT_player_state);
     snd_hud_vfx_enelistener(CLIENT_energy);
     snd_hud_vfx_toggleradar(CLIENT_stat_rdr_mode);
-    //snd_hud_vfx_targkill(CLIENT_stat_trg_ddflg);
     
     //HUD RENDER FRAME SYSTEM
     if( CLIENT_health_center > 0 ){
       data_hud_frame();
       
       if(CLIENT_player_state == PLAYER_SPRINT_ON){
+        //TODO - refactor into HUD
         drawfont_prev = drawfont;
         drawfont = FONT_NUM_ROBOT_REGULAR;
         local float slen;
@@ -312,7 +313,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
       
       itr = 0;
       while( itr <= 21 ){
-        ui_renderNav( itr );
+        ui_renderNav( itr );  //TODO - refactor into HUD
         itr = itr + 1;
       }
       //HUD Highlight Boxes

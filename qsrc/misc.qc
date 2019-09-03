@@ -86,19 +86,21 @@ void() realtimelights_light={
   self.alpha = 0;
   if( cvar("developer") ){
     self.alpha = 1;
+    setmodel(self, "q3mdl/testball.md3");
   }
 };
 
-/*QUAKED realtimelights_sunlight (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
+/*QUAKED realtimelights_sunlight (0 1 0) (-24 -24 -24) (24 24 24) START_OFF
 will be converted to rtlight file line on console command
 
 this is a series of realtime lights generated to mimic sunlight.
 given an .angles var,
-  this will generate the necessary realtimelights_light entites.
+  this will generate the necessary realtimelights_light entities.
 
 -------- KEYS --------
+.angles = <vector> direction of sunlight
 .rtlShadows = <bool> use real-time shadows or not.
-.rtlLight = <float> radius of light.
+.rtlRadius = <float> radius of light.
 .color = <vector>[0-1] used to denote color of light.
 .style = <string> same as Light ent.
 .vec_name = <string> becomes Light's Cubemap image path.
@@ -117,14 +119,94 @@ given an .angles var,
 None
 */
 void() realtimelights_sunlight={
+  local float dist;
+  local entity newLight;
+  local entity oldLight;
+  local vector newLightOrg;
+  
   self.classname = "realtimelights_light";
+  self.angles_x = 0;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.alpha = 0;
   if( cvar("developer") ){
     self.alpha = 1;
+    setmodel(self, "q3mdl/testball.md3");
+  }
+  
+  oldLight = self;  
+  /*
+    algorithm
+      - place in corner, give it a 90d axis to face
+      - have it face to other end
+      - it gets the box-size
+      - then creates rows / columns
+      
+  */
+  
+  local vector forwardEnd;
+  local vector sidewardEnd;
+  local float forwardLen;
+  local float sidewardLen;
+  
+  local float lengthMax;
+  local float widthMax;
+  
+  local float lengthItr;
+  local float widthItr;
+  
+  makevectors(self.angles);
+  dist = ceil((self.rtlRadius / 2) + (self.rtlRadius * self.rtlDiffuse));
+  forwardEnd = self.origin + (v_forward * 64000); //might be overkill
+  sidewardEnd = self.origin + (v_right * 64000); //same
+  
+  traceline( self.origin, forwardEnd, TRUE, world );
+  forwardEnd = trace_endpos;
+  
+  traceline( self.origin, sidewardEnd, TRUE, world );
+  sidewardEnd = trace_endpos;
+  
+  forwardLen = vlen( forwardEnd - self.origin );
+  sidewardLen = vlen( sidewardEnd - self.origin );
+  lengthMax = floor(forwardLen / dist);
+  widthMax = floor(sidewardLen / dist);
+  
+  lengthItr = lengthMax;
+  widthItr = widthMax;
+  
+  while( lengthItr > 0 ){
+    while( widthItr > 0 ){
+      newLight = spawn();
+      self = newLight;
+        realtimelights_light();
+        self.angles = '0 0 0';
+        newLightOrg = oldLight.origin + (v_forward * (lengthItr * dist)) + (v_right * (widthItr * dist));
+        
+        setorigin( self, newLightOrg );
+        
+        self.rtlShadows = oldLight.rtlShadows;
+        self.rtlRadius = oldLight.rtlRadius * ((lengthItr / lengthMax) + (widthItr / widthMax));
+        if( self.rtlRadius < (oldLight.rtlRadius * 0.25) ){
+          self.rtlRadius = oldLight.rtlRadius * 0.25;
+        }
+        self.color = oldLight.color;
+        self.style = oldLight.style;
+        self.vec_name = oldLight.vec_name;
+        self.rtlCorona = oldLight.rtlCorona;
+        self.rtlCoronaSize = oldLight.rtlCoronaSize;
+        self.rtlAmbient = oldLight.rtlAmbient;
+        self.rtlDiffuse = oldLight.rtlDiffuse;
+        self.rtlSpecular = oldLight.rtlSpecular;
+        self.rtlMode = oldLight.rtlMode;
+      self = oldLight;
+      
+      widthItr = widthItr - 1;
+    }
+    widthItr = widthMax;
+    lengthItr = lengthItr - 1;
   }
 };
+
 /*QUAKED light_fluoro (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
 Non-displayed light.
 Default light value is 300

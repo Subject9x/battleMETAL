@@ -223,7 +223,7 @@ void( float overrideFlag ) world_export_realtimelights={
   local entity lights;
   
   developer = cvar("developer");
-  fileName = strcat("maps/rtexport/", mapname, ".rtlights");
+  fileName = strcat("maps/", mapname, ".rtlights");
   if( developer ){
     cons_logAString("[INFO]-world_export_realtimelights()|[fileName]", fileName);  //DEBUG
   }
@@ -282,6 +282,6 @@ void( entity light, float fileData ) world_export_realtimelights_write={
   fputs(fileData, "\n");  //INFO - .rtlights files ALWAYS end with a \n
   
   if( cvar("developer") ){
-    cons_logAString("[INFO]-{Writing RTLight Data} ", "-line-"); //DEBUG
+    cons_log2Strings("[INFO]-{Writing RTLight Data} ", "-line-", "origin", vtos(light.origin)); //DEBUG
   }
 };

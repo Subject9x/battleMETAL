@@ -1429,11 +1429,11 @@ void() hud_renderCrosshairDisabled={
   lblSize = gui_percentXRaw( lblSize );
   
   lblOrg_x = VIEW_CTR_x - (lblSize / 2);
-  lblOrg_y = VIEW_CTR_y - gui_percentYRaw( 32 );
+  lblOrg_y = VIEW_CTR_y + gui_percentYRaw( 64 );
   
-  drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, 1, DRAWFLAG_NORMAL);  
+  drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, HUD_ALPHA - 0.15, DRAWFLAG_NORMAL);  
   
-  drawstring(lblOrg, lbl, '14 14 0', CLR_DEF_RED, 1, 0);
+  drawstring(lblOrg, lbl, '14 14 0', CLR_DEF_RED,  HUD_ALPHA - 0.15, 0);
   drawfont = drawfont_prev;
 };
 
