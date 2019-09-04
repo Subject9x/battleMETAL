@@ -57,7 +57,7 @@ void() light =
 };
 
 /*QUAKED realtimelights_light (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
-will be converted to rtlight file line on console command
++ will be converted to rtlight file line on console command "cmd mech rtexport"
 
 -------- KEYS --------
 .rtlShadows = <bool> use real-time shadows or not.
@@ -91,11 +91,11 @@ void() realtimelights_light={
 };
 
 /*QUAKED realtimelights_sunlight (0 1 0) (-24 -24 -24) (24 24 24) START_OFF
-will be converted to rtlight file line on console command
++ will be converted to rtlight file line on console command "cmd mech rtexport"
+This attempts to mimic sunlight in a volume using 2 realtimelights_light ents.
 
-this is a series of realtime lights generated to mimic sunlight.
-given an .angles var,
-  this will generate the necessary realtimelights_light entities.
+First realtimelights_light is ray-casted along angles to the boundary of the volume.
+Second realtimelights_light stays on this origin, and only has AMBIENT light.
 
 -------- KEYS --------
 .angles = <vector> direction of sunlight
@@ -132,10 +132,9 @@ void() realtimelights_sunlight={
       4D) Specular = 0
     5) win (thanks EMR)
   */
-  /*local float dist;
-  local entity newLight;
+  local vector traceEnd;
+  local entity sunLight;
   local entity oldLight;
-  local vector newLightOrg;
   
   self.classname = "realtimelights_light";
   self.angles_x = 0;
@@ -147,70 +146,37 @@ void() realtimelights_sunlight={
     setmodel(self, "q3mdl/testball.md3");
   }
   
-  oldLight = self;  
-  
-  local vector forwardEnd;
-  local vector sidewardEnd;
-  local float forwardLen;
-  local float sidewardLen;
-  
-  local float lengthMax;
-  local float widthMax;
-  
-  local float lengthItr;
-  local float widthItr;
-  
   makevectors(self.angles);
-  dist = ceil((self.rtlRadius / 2) + (self.rtlRadius * self.rtlDiffuse));
-  forwardEnd = self.origin + (v_forward * 64000); //might be overkill
-  sidewardEnd = self.origin + (v_right * 64000); //same
+  traceline( self.origin, self.origin + (v_forward * 640000), MOVE_WORLDONLY, self);
+  traceEnd = trace_endpos;
   
-  traceline( self.origin, forwardEnd, TRUE, world );
-  forwardEnd = trace_endpos;
+  sunLight = spawn();
+  self = sunLight;
+    realtimelights_light();
+    self.angles = '0 0 0';
+    setorigin( self, traceEnd );
+    self.rtlShadows = oldLight.rtlShadows;
+    self.rtlRadius = oldLight.rtlRadius;
+    self.color = oldLight.color;
+    self.style = oldLight.style;
+    self.vec_name = oldLight.vec_name;
+    self.rtlCorona = oldLight.rtlCorona;
+    self.rtlCoronaSize = oldLight.rtlCoronaSize;
+    self.rtlAmbient = oldLight.rtlAmbient;
+    self.rtlDiffuse = oldLight.rtlDiffuse;
+    self.rtlSpecular = oldLight.rtlSpecular;
+    self.rtlMode = oldLight.rtlMode;
+  self = oldLight;
   
-  traceline( self.origin, sidewardEnd, TRUE, world );
-  sidewardEnd = trace_endpos;
-  
-  forwardLen = vlen( forwardEnd - self.origin );
-  sidewardLen = vlen( sidewardEnd - self.origin );
-  lengthMax = floor(forwardLen / dist);
-  widthMax = floor(sidewardLen / dist);
-  
-  lengthItr = lengthMax;
-  widthItr = widthMax;
-  
-  while( lengthItr > 0 ){
-    while( widthItr > 0 ){
-      newLight = spawn();
-      self = newLight;
-        realtimelights_light();
-        self.angles = '0 0 0';
-        newLightOrg = oldLight.origin + (v_forward * (lengthItr * dist)) + (v_right * (widthItr * dist));
-        
-        setorigin( self, newLightOrg );
-        
-        self.rtlShadows = oldLight.rtlShadows;
-        self.rtlRadius = oldLight.rtlRadius * ((lengthItr / lengthMax) + (widthItr / widthMax));
-        if( self.rtlRadius < (oldLight.rtlRadius * 0.25) ){
-          self.rtlRadius = oldLight.rtlRadius * 0.25;
-        }
-        self.color = oldLight.color;
-        self.style = oldLight.style;
-        self.vec_name = oldLight.vec_name;
-        self.rtlCorona = oldLight.rtlCorona;
-        self.rtlCoronaSize = oldLight.rtlCoronaSize;
-        self.rtlAmbient = oldLight.rtlAmbient;
-        self.rtlDiffuse = oldLight.rtlDiffuse;
-        self.rtlSpecular = oldLight.rtlSpecular;
-        self.rtlMode = oldLight.rtlMode;
-      self = oldLight;
-      
-      widthItr = widthItr - 1;
-    }
-    widthItr = widthMax;
-    lengthItr = lengthItr - 1;
-  }*/
-  //terrible idea; don't use, newer idea in the pipeline -Roohr
+  //setup the 'ambient' light
+  self.rtlShadows = FALSE;
+  self.rtlCorona = FALSE;
+  self.rtlCoronaSize = FALSE;
+  self.rtlSpecular = FALSE;
+  self.rtlDiffuse = FALSE;
+  self.angles = '0 0 0';
+  self.vec_name = "";
+  realtimelights_light();
 };
 
 /*QUAKED light_fluoro (0 1 0) (-8 -8 -8) (8 8 8) START_OFF
@@ -412,9 +378,6 @@ void() misc_explobox =
 		remove(self);
 	}
 };
-
-
-
 
 /*QUAKED misc_explobox2 (0 .5 .8) (0 0 0) (32 32 64)
 Smaller exploding box, REGISTERED ONLY

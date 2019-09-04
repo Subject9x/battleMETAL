@@ -15,4 +15,3 @@ void() radarSweepAdv;
 
 void() sv_getTarget;
 void() sv_updateTargetInfo;
-void() sv_make_sweep;

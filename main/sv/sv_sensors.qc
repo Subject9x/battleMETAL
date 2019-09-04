@@ -127,7 +127,6 @@ void() sv_getTarget={
 
 /*scope - self = unit making the target call*/
 void() sv_updateTargetInfo={
-  local float isvis;
  
   if( !(ai_valid_target(self.enemy)) || (self.enemy.health <= 0) ){
     self.stat_trg_dataidx = -1;
