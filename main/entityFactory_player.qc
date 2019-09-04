@@ -50,10 +50,6 @@ void() player_makeMech={
   
   self.stat_rdr_mode = FALSE;
   self.stat_rdr_rng = self.radar_range;
-
-  msg_entity = self;
-  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
-  WriteEntity(MSG_ONE, self.cockpit);
   
   droptofloor();
   
@@ -75,6 +71,25 @@ void() player_makeMech={
   client_update_viewPitch( self.pitchMin, self.pitchMax );
   client_send_event_powerup();
   client_playTrack(world.sounds, TRUE);  //entering hangar menu
+  
+  //TODO - refactor/refine - this allows for composited HUD modeling, and EF_NOGUNBOB allows for sub-component HUD parts to not shake.
+  newmis = spawn();
+  newmis.movetype = MOVETYPE_NONE;
+  newmis.solid = SOLID_NOT;
+  newmis.viewmodelforclient = self;
+  newmis.owner = self;
+  newmis.alpha = 1;
+  setmodel(newmis, self.legs.model);
+  setsize(newmis, '0 0 0', '0 0 0');
+  setorigin(newmis, '0 0 0');
+  newmis.frame = self.weaponframe;
+  newmis.effects = EF_NOGUNBOB;
+  //newmis.nextthink = time;  //possibly optional
+  //newmis.think = SUB_Remove;
+  
+  msg_entity = self;
+  WriteByte(MSG_ONE, SVC_SETVIEWPORT);
+  WriteEntity(MSG_ONE, self.cockpit);
 };
 
 void() player_unmakeMech={
