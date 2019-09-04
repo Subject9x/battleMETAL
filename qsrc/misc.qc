@@ -119,6 +119,19 @@ given an .angles var,
 None
 */
 void() realtimelights_sunlight={
+  /*
+    fixed algorithm
+    1) this ent should be placed at the CENTER of the volume you want sunlight
+    2) given the angles of the entity, shoot a ray out to the sky texture
+    3) create rtlight at trace_endpos
+      3A) this rtLight has all the props you filled out for the _sunlight entity
+    4) create rtlight this origin, but with the following specific vals
+      4A) Shadows = NO
+      4B) Ambient = user-defined
+      4C) Diffuse = 0
+      4D) Specular = 0
+    5) win (thanks EMR)
+  */
   /*local float dist;
   local entity newLight;
   local entity oldLight;

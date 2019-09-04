@@ -118,13 +118,12 @@ void() PlayerPostThink = {
   }
   ButtonCommands();
   
-  server_make_sweep();
   self.stat_cofs_x = self.origin_x;
   self.stat_cofs_y = self.origin_y;
   self.stat_cofs_z = self.origin_z;
   
   //Update Target information
-  server_updateTargetInfo();
+  sv_updateTargetInfo();
   
 // do weapon stuff
   //STAT UPDATE   
@@ -160,6 +159,9 @@ void() PlayerPostThink = {
       if(util_getMechHpAverage(self) == 1){
         self.repair_request = FALSE;
       }
+    }
+    if( self.doRadarSweep ){
+      self.doRadarSweep();
     }
   }
   

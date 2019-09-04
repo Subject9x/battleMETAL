@@ -279,6 +279,8 @@ void(void() data_ini) build_mech_unit={
     build_unit_camera();
   }
   
+  self.doRadarSweep = radarSweepBasic;
+  
   if( self.hardpoint_cnt > 0 ){
     build_unit_weapon_list();
   }

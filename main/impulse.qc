@@ -110,7 +110,7 @@ void() ImpulseCommands ={
   }
 
   if(self.impulse == IMP_TARGET){
-    server_getTarget();
+    sv_getTarget();
   }
   
   if(self.impulse == IMP_RADAR){

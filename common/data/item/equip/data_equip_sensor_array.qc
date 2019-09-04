@@ -49,9 +49,11 @@ void() data_ini_equip_sensor_array_={
 void() sensor_array_upgrade_={
   self.energyMax = self.owner.radar_range;
   self.owner.radar_range  = self.owner.radar_range  + (self.owner.radar_range  * self.energyRate);
+  self.owner.doRadarSweep = radarSweepAdv;
 };
 
 void() sensor_array_remove_={
   self.owner.radar_range  = self.energyMax;
+  self.owner.doRadarSweep = radarSweepBasic;
 };
 #endif

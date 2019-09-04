@@ -8,85 +8,92 @@ Overview:
 */
 /*scope - self = unit making the target call*/
 
-
-void() server_make_sweep={
+/*
+  All player units have a basic circular sweep pattern for radar.
+  this sweeps in a circle around the player, whenever a unit is near the
+  sweep-line, the player is pinged on that unit.
+*/
+void() radarSweepBasic={
   local float sweep, yaw, low, high;
   local entity blip;
   
-  //TODO - split patterns by upgrade module
-  //Radar 1 - 'circular sweep pattern'
-  /*if( self.data_type != DATA_POBS ){
     //TODO - Magic numbers
-    self.radar_time = anglemod( self.radar_time + 6 );
+  self.radar_time = anglemod( self.radar_time + 6 );
 
-    sweep = self.radar_time;
-    low = anglemod( sweep - 5 );
-    high = anglemod( sweep + 1 );
-    
-    blip = findradius( self.origin, self.radar_range );
-    while( blip ){
-      if( (blip.flags & FL_MONSTER) || (blip.flags & FL_CLIENT) ){
-        if( blip != self ){
-          if( blip.deadflag <= DEAD_NO ){
-            yaw = vectoyaw( self.origin - blip.origin);
-            if( (yaw >= low) && (yaw <= high) ){
-              if( !self.stat_rdr_mode ){
-                traceline( self.origin, blip.origin, MOVE_NORMAL, self );
-                if( trace_ent == blip || trace_fraction == 1 ){
-                  client_push_radar_ping( blip );
-                }
-              }
-              else{
+  sweep = self.radar_time;
+  low = anglemod( sweep - 5 );
+  high = anglemod( sweep + 1 );
+  
+  blip = findradius( self.origin, self.radar_range );
+  while( blip ){
+    if( (blip.flags & FL_MONSTER) || (blip.flags & FL_CLIENT) ){
+      if( blip != self ){
+        if( blip.deadflag <= DEAD_NO ){
+          yaw = vectoyaw( self.origin - blip.origin);
+          if( (yaw >= low) && (yaw <= high) ){
+            if( !self.stat_rdr_mode ){
+              traceline( self.origin, blip.origin, MOVE_NORMAL, self );
+              if( trace_ent == blip || trace_fraction == 1 ){
                 client_push_radar_ping( blip );
               }
+            }
+            else{
+              client_push_radar_ping( blip );
             }
           }
         }
       }
-      blip = blip.chain;
     }
-  }*/
-  
-  
-  //Radar 2 - ALIENS - style
-  if( self.data_type != DATA_POBS ){
-    //TODO - Magic numbers
-    local float inv;
-    if( self.radar_time > self.radar_range ){
-      self.radar_time = 0;
-    }
-    inv = self.radar_range * 0.05;
-    self.radar_time = self.radar_time + inv;
-    
-    blip = findradius( self.origin, self.radar_range );
-    while( blip ){
-      if( (blip.flags & FL_MONSTER) || (blip.flags & FL_CLIENT) ){
-        if( blip != self ){
-          if( blip.deadflag <= DEAD_NO ){
-            local float dist;
-            dist = vlen( self.origin - blip.origin);
-          
-            if( (dist <= self.radar_time + inv / 2 ) && (dist >= self.radar_time - inv / 2) ){
-              if( !self.stat_rdr_mode ){
-                traceline( self.origin, blip.origin, MOVE_NORMAL, self );
-                if( trace_ent == blip || trace_fraction == 1 ){
-                  client_push_radar_ping( blip );
-                }
-              }
-              else{
-                client_push_radar_ping( blip );
-              }
-            }
-          }
-        }
-      }
-      blip = blip.chain;
-    }
+    blip = blip.chain;
   }
-  
 };
 
-void() server_getTarget={
+/*
+  Advanced radar is given if the player has mounted at least 
+  1 LSA module. The advanced radar pattern is a rapidly expanding
+  circle out from the player center. Every unit near the sweep line
+  is pinged, the 360 direction gives the player more info than 
+  the sweep pattern.
+*/
+void() radarSweepAdv={
+  //TODO - Magic numbers
+  local float inv;
+  local entity blip;
+  
+  if( self.radar_time > self.radar_range ){
+    self.radar_time = 0;
+  }
+  inv = self.radar_range * 0.05;
+  self.radar_time = self.radar_time + inv;
+  
+  blip = findradius( self.origin, self.radar_range );
+  while( blip ){
+    if( (blip.flags & FL_MONSTER) || (blip.flags & FL_CLIENT) ){
+      if( blip != self ){
+        if( blip.deadflag <= DEAD_NO ){
+          local float dist;
+          dist = vlen( self.origin - blip.origin);
+        
+          if( (dist <= self.radar_time + inv / 2 ) && (dist >= self.radar_time - inv / 2) ){
+            if( !self.stat_rdr_mode ){
+              traceline( self.origin, blip.origin, MOVE_NORMAL, self );
+              if( trace_ent == blip || trace_fraction == 1 ){
+                client_push_radar_ping( blip );
+              }
+            }
+            else{
+              client_push_radar_ping( blip );
+            }
+          }
+        }
+      }
+    }
+    blip = blip.chain;
+  }
+
+};
+
+void() sv_getTarget={
   local entity src;
   makevectors(self.v_angle);
   src = self;
@@ -119,7 +126,7 @@ void() server_getTarget={
 };
 
 /*scope - self = unit making the target call*/
-void() server_updateTargetInfo={
+void() sv_updateTargetInfo={
   local float isvis;
  
   if( !(ai_valid_target(self.enemy)) || (self.enemy.health <= 0) ){
