@@ -2,6 +2,7 @@
 battleMETAL
 Author: Peter Roohr
 Date: 1/26/2017
+mod: 9/3/2019
 Overview: 
   necessary targeting and radar functions
 */

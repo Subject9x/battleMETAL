@@ -89,6 +89,7 @@ main/ctrl/ctrl_weapon_h.qc
   
   //Buildings----------------------
   common/data/buildings/data_building_hangar_large.qc
+  common/data/buildings/data_building_hangar_med.qc
   common/data/buildings/data_building_radar.qc
   common/data/buildings/data_building_power_plant.qc
   common/data/buildings/data_building_shield_generator.qc

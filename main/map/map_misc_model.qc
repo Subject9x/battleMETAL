@@ -20,6 +20,7 @@ Inputs
   .count1 = <float> [alpha] - 0.001 - 1.0; defaults to '1'
   .c_ofs = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
   .spawnflags = <float> [flag] 2 - override alpha - ignores default
+  .spawnflags = <float> [flag] 4 - activate EF_NOSHADOW on model
 */
 void() map_terrain_model={
   self.movetype = MOVETYPE_NONE;
@@ -40,7 +41,10 @@ void() map_terrain_model={
   setorigin(self, self.origin);
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
-  //self.effects = EF_NOSHADOW;
+  
+  if( (self.spawnflags & 4) ){
+    self.effects = EF_NOSHADOW;  
+  }
 };
 
 

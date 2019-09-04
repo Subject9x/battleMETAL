@@ -119,7 +119,7 @@ given an .angles var,
 None
 */
 void() realtimelights_sunlight={
-  local float dist;
+  /*local float dist;
   local entity newLight;
   local entity oldLight;
   local vector newLightOrg;
@@ -135,14 +135,6 @@ void() realtimelights_sunlight={
   }
   
   oldLight = self;  
-  /*
-    algorithm
-      - place in corner, give it a 90d axis to face
-      - have it face to other end
-      - it gets the box-size
-      - then creates rows / columns
-      
-  */
   
   local vector forwardEnd;
   local vector sidewardEnd;
@@ -204,7 +196,8 @@ void() realtimelights_sunlight={
     }
     widthItr = widthMax;
     lengthItr = lengthItr - 1;
-  }
+  }*/
+  //terrible idea; don't use, newer idea in the pipeline -Roohr
 };
 
 /*QUAKED light_fluoro (0 1 0) (-8 -8 -8) (8 8 8) START_OFF

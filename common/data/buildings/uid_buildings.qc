@@ -20,3 +20,4 @@ float UI_BUILDING_power_plant = 3;
 float UI_BUILDING_hangar_large = 4;
 float UI_BUILDING_fuel_tank = 5;
 float UI_BUILDING_repair_bay = 6;
+float UI_BUILDING_hangar_med = 7;
