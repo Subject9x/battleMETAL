@@ -70,7 +70,7 @@ void() player_makeMech={
   client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
   client_update_viewPitch( self.pitchMin, self.pitchMax );
   client_send_event_powerup();
-  client_playTrack(world.sounds, TRUE);  //entering hangar menu
+  client_playTrack(world.sounds, TRUE);  //exiting hangar menu
   
   //TODO - refactor/refine - this allows for composited HUD modeling, and EF_NOGUNBOB allows for sub-component HUD parts to not shake.
   newmis = spawn();
@@ -79,7 +79,7 @@ void() player_makeMech={
   newmis.viewmodelforclient = self;
   newmis.owner = self;
   newmis.alpha = 1;
-  setmodel(newmis, self.legs.model);
+  setmodel(newmis,  "q3mdl/mechs/balaket/balaket_hud.obj");
   setsize(newmis, '0 0 0', '0 0 0');
   setorigin(newmis, '0 0 0');
   newmis.frame = self.weaponframe;

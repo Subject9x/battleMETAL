@@ -756,8 +756,48 @@ void(vector org, vector torg, float algn, float faction1, float faction2, float 
 /*
   RENDER A NAME OVER AN ORIGIN IN 3D SPACE
 */
-void(vector pos, float algn, string name) hud_renderNameOverlay={
+void() hud_renderNavOverlay={
+  local float itr;
+  local vector apos, tofs, iofs, i_sz, nofs, colr;
+  local float nactive;
+  local string navname;
+  
+  itr = 0;
+  while( itr < 21 ){
+    drawfont_prev = drawfont;
+    drawfont = FONT_NUM_ROBOT_REGULAR;
 
+    nactive = NAVNAMES_ACTIVE[itr];
+    navname = NAVNAMES[itr];
+    
+    if( nactive > 0 ){
+      i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
+      nofs = NAVNAMES_ORG[itr];
+      nofs_z = nofs_z + gui_percentYRaw(14);
+      apos = cs_project(nofs);
+      tofs = apos;
+      if (apos_z >= 0) {
+        tofs_x -= stringwidth(navname, TRUE, '12 12') * 0.5; //align horizontally to centre
+        tofs_y = tofs_y - 24; //align vertically again
+        tofs_z = 0;
+        apos_z = 0;
+        iofs = apos;
+        i_sz_x = i_sz_x / 4;
+        i_sz_y = i_sz_y / 4;
+        iofs_x = iofs_x - (i_sz_x/2);
+        iofs_y = iofs_y - (i_sz_y/2);
+        colr = CLR_DEF_WEP_INRANGE;
+        if( nactive == 2 ){
+          colr = CLR_DEF_TXT_NONSELECT;
+        }
+        drawstring(tofs, navname, '12 12', colr, 1, 0);
+        gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, 1, 0) ;
+      }
+    }
+    drawfont = drawfont_prev;
+  
+    itr = itr + 1;
+  }
 };
 
 /*
@@ -1213,6 +1253,9 @@ void() data_hud_frame={
   if( CLIENT_stat_trg_dataidx > 0 ){
     hasTarget = TRUE;
   }
+  
+  hud_renderNavOverlay();
+  
   uid = 1;
   while( uid <= 32 ){
     local float objid, algn, lflag, lalign, axis, wbit;
@@ -1228,7 +1271,7 @@ void() data_hud_frame={
         localIcon = UI_DATA_IMG[uid];
         algn = UI_DATA_ALIGN[uid];
         color1 = UI_DATA_COLOR1[uid];
-        hud_HelmetImage(porg, vsize, localIcon, algn, 1, UI_DATA_COLOR1[uid]); 
+       //hud_HelmetImage(porg, vsize, localIcon, algn, 1, UI_DATA_COLOR1[uid]); 
         break;
       case HUD_UID_ENERGY:
         porg = UI_DATA_POS[uid];
@@ -1399,7 +1442,7 @@ void() data_hud_frame={
   
   hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
   hud_event_frame();
-  
+ 
   hud_render_info();
   
 };

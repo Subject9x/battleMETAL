@@ -267,17 +267,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         }
       }
     }
-    //nav points are occluded by player 2D HUD so that the overlap doesn't interfere with reading the HUD
-    /*TODO - refactor
-    if(CLIENT_player_state >= PLAYER_POWERUP_BEGIN){
-      local float itr;
-      itr = 0;
-      while( itr <= 21 ){
-        ui_renderNav( itr );
-        itr = itr + 1;
-      }
-    }*/
-    
+
     //HUD SOUND SYSTEM LISTENERS
     snd_hud_vfx_statelistener(CLIENT_player_state);
     snd_hud_vfx_enelistener(CLIENT_energy);
@@ -310,15 +300,10 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         drawstring(spos, msg, '14 12 0', msgClr, HUD_ALPHA, 0);
         drawfont_prev = drawfont;
       }
-      
-      local float itr;
-      itr = 0;
-      while( itr <= 21 ){
-        ui_renderNav( itr );  //TODO - refactor into HUD
-        itr = itr + 1;
-      }
+
       //HUD Highlight Boxes
       hud_renderHighlight_frame();
+      
       //Player has toggled 'Objectives' menu while in-mission.
       ui_objective_frame(VIEW_ORG);
       

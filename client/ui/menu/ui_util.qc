@@ -10,54 +10,6 @@ Overview:
 */
 
 /*
-  Called by client_main.CSQC_UpdateView()
-  
-  this renders Nav point data in 3D game space.
-  
-  0 = nav either is not of same faction or not avaialable;
-  -1 = visited and removed
-  1 = active and unvisited
-  2 = active and visited
-*/
-void(float navid) ui_renderNav={
-  local vector apos, tofs, iofs, i_sz, nofs, colr;
-  local float nactive;
-  local string navname;
-
-  drawfont_prev = drawfont;
-  drawfont = FONT_NUM_ROBOT_REGULAR;
-
-  nactive = NAVNAMES_ACTIVE[navid];
-  navname = NAVNAMES[navid];
-  
-  if( nactive > 0 ){
-    i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
-    nofs = NAVNAMES_ORG[navid];
-    nofs_z = nofs_z + gui_percentYRaw(14);
-    apos = cs_project(nofs);
-    tofs = apos;
-    if (apos_z >= 0) {
-      tofs_x -= stringwidth(navname, TRUE, '12 12') * 0.5; //align horizontally to centre
-      tofs_y = tofs_y - 24; //align vertically again
-      tofs_z = 0;
-      apos_z = 0;
-      iofs = apos;
-      i_sz_x = i_sz_x / 4;
-      i_sz_y = i_sz_y / 4;
-      iofs_x = iofs_x - (i_sz_x/2);
-      iofs_y = iofs_y - (i_sz_y/2);
-      colr = CLR_DEF_WEP_INRANGE;
-      if( nactive == 2 ){
-        colr = CLR_DEF_TXT_NONSELECT;
-      }
-      drawstring(tofs, navname, '12 12', colr, 1, 0);
-      gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, 1, 0) ;
-    }
-  }
-  drawfont = drawfont_prev;
-};
-
-/*
   [pseudo-deprecated]
   Called by client_main.CSQC_UpdateView()
   
