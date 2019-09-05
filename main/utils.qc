@@ -90,18 +90,6 @@ float(entity t) util_getMechHpTotal={
   return FALSE;
 };
 
-
-float( float yee, float targAng, float buffer ) util_checkAngNotIdeal={
-  local float trg_low, trg_high;
-  trg_low = anglemod( targAng - buffer );
-  trg_high = anglemod( targAng + buffer );
-  
-  if( yee < trg_low || yee > trg_high ){
-    return TRUE;
-  }
-  return FALSE;
-};
-
 vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea={
   local vector locus;
   local float dist, side, dir, box;
@@ -120,7 +108,6 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
   traceline(centerpoint, locus, FALSE, self);
   return  trace_endpos;
 };
-
 
 //applies 'spread' to the endpos of a previous trace
 //spread values are taken as cumulatives - add all spread maximums together
@@ -384,33 +371,6 @@ void(entity t) util_generateBuildingFoundation={
     setorigin(self, v);
     self.solid = SOLID_BSP; //lock it in.
   self = notSelf;
-};
-
-/*
-  checks to see if a point is within bounds
-*/
-float(vector p, vector pmin, vector pmax) util_checkInBounds={
-
-  local vector ok;
-  ok = '0 0 0';
-
-  if((p_x > (pmin_x - 1)) && (p_x < (pmax_x + 1))){
-    ok_x = 1;
-  }
-  if((p_y > pmin_y - 1) && (p_y < pmax_y+1)){
-    ok_y = 1;
-  } 
-  if((p_z > pmin_z - 1) && (p_z < pmax_z+1)){
-    ok_z = 1;
-  }
-  
-  if((ok_x==1) && (ok_y==1) &&(ok_z==1)){
-    return TRUE;
-  }
-  else{
-    return FALSE;
-  }
-  
 };
  
 float(float v) anglemod =

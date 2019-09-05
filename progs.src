@@ -1,6 +1,6 @@
-//big refactor
-// main/headers
-// main/*/headers
+//battleMETAL
+//Peter Roohr
+//Mainfest file for PROGS.DAT (the server code module)
 
 ../progs.dat
 
@@ -18,18 +18,16 @@ dp/dpextensions.qc  //DPExtensions that most of the magic work.
 qsrc/headers/subs.qh
 qsrc/headers/triggers.qh
 main/headers/effectinfo_api.qh
-main/ctrl/ctrl_all_h.qc
-main/ctrl/ctrl_weapon_h.qc
+main/controllers/headers/controllers.qh
 
 //Server Defs=====================
-  main/ext/defs_game.qc
-  main/ext/defs_cs.qc
-  main/ext/defs_impulse.qc
-  main/ext/defs_combat.qc
+  main/extensions/ext_game.qc
+  main/extensions/ext_cs.qc
+  main/extensions/ext_impulse.qc
 //================================
 
 //battleMETAL Header Files===
-  main/headers/world_ext.qh
+  main/extensions/headers/ext_world.qh
   main/headers/client_utils.qh
   main/headers/impulse.qh
   main/sv/headers/sv_parmops.qh
@@ -43,8 +41,8 @@ main/ctrl/ctrl_weapon_h.qc
   main/headers/entityFactory_player.qh
   main/headers/entityFactory_vehicles.qh
   main/models/models_h.qc
-  main/ext/headers/player_mech.qh
-  main/ai/ai_api_h.qc
+  main/extensions/headers/ext_player.qh
+  main/ai/headers/ai_api.qh
   main/map/triggers_map_h.qc
 //==========================
 
@@ -165,18 +163,18 @@ main/ctrl/ctrl_weapon_h.qc
   main/sv/sv_client_api.qc
   main/sv/sv_player_api.qc
   
-  main/world_ext.qc
+  main/extensions/ext_world.qc
   
   main/client_utils.qc
   
   main/impulse.qc
   
   //Model + Entity Controllers-----
-  main/ctrl/ctrl_weapon.qc
-  main/ctrl/ctrl_mech.qc
-  main/ctrl/ctrl_legs.qc
-  main/ctrl/ctrl_building.qc
-  main/ctrl/ctrl_tank.qc
+  main/controllers/ctrl_weapon.qc
+  main/controllers/ctrl_mech.qc
+  main/controllers/ctrl_legs.qc
+  main/controllers/ctrl_building.qc
+  main/controllers/ctrl_tank.qc
   //-------------------------------
 //==========================
 
@@ -186,12 +184,12 @@ qsrc/buttons.qc
 qsrc/triggers.qc
 
 //============================
-  main/map_objects.qc
+  qsrc/info_player_ents.qc
   main/ai/ai_units.qc
  
   main/entityFactory_vehicles.qc
   //player types
-  main/ext/player_mech.qc
+  main/extensions/ext_player.qc
   
   //models quake c
   main/models/models_leg.qc

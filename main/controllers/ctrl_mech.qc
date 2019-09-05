@@ -5,6 +5,31 @@ Date: 9/5/2016
 Overview: implementation for center torso updates
 */
 
+void() ctrl_update_mechplayer={
+  local entity parent;
+  local entity wep;
+  parent = self;
+  
+  ctrl_updateCenterTorso();
+  if( (self.flags & FL_CLIENT) ){  
+    if( parent.legs.deadflag <= DEAD_NO ){
+      self = self.legs;
+        ctrl_updateLegs();
+      self = parent;
+    }
+  }
+  else{
+    self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
+    self.ai_weaponEnergy = 0;
+    self.currentWeaponGroup = 0;
+    wep = self.w_slot;
+    while(wep){
+      ctrl_weapon_think_ai(wep);
+      wep = wep.w_slot;
+    }
+  }
+};
+
 void() ctrl_updateCenterTorso={
   local float diff;
   local float mx, my;

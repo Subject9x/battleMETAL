@@ -131,9 +131,6 @@ void() PlayerPostThink = {
     makevectors(self.v_angle);
     traceline(self.origin, self.origin + (v_forward * self.radar_range), FALSE,self);
     self.stat_ret_dist = (self.radar_range * trace_fraction);
-    self.stat_plr_camx = self.cockpit.c_ofs_x;
-    self.stat_plr_camy = self.cockpit.c_ofs_y; 
-    self.stat_plr_camz = self.cockpit.c_ofs_z;
     //TODO notify target of lock
     /*if((self.stat_lck_stt & LOCK_TARG)){
       if(self.enemy != world){
@@ -194,9 +191,6 @@ void() PlayerPostThink = {
         t_damage( self, world, world, self.health, 0, self.origin, '0 0 0');
       }
       else{
-        //T_Damage (self, world, world, 5); 
-        //sound (self, CHAN_VOICE, "player/land2.wav", 1, ATTN_NORM);
-        //self.deathtype = "falling";
         local float legDmg, centerTorsoDmg;
         legDmg = self.legs.max_health * (self.fall_dmg * FALL_DAMAGE_FRACTION);
         t_damage( self, world, world, legDmg, 0, self.legs.origin, '0 0 0');
@@ -207,6 +201,7 @@ void() PlayerPostThink = {
       }
 		}
 		else{
+      //TODO
       //sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
     }
 		self.jump_flag = 0;
@@ -217,12 +212,6 @@ void() PlayerPostThink = {
  
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
-  
-  if(self.data_type == DATA_MECH){
-    self.stat_plr_camx = self.cockpit.c_ofs_x;
-    self.stat_plr_camy = self.cockpit.c_ofs_y; 
-    self.stat_plr_camz = self.cockpit.c_ofs_z;
-  }
 };
 
 
@@ -245,9 +234,6 @@ void() PlayerPostThink_powerup={
   makevectors(self.v_angle);
   traceline(self.origin, self.origin + (v_forward * self.radar_range), FALSE,self);
   self.stat_ret_dist = (self.radar_range * trace_fraction);
-  self.stat_plr_camx = self.cockpit.c_ofs_x;
-  self.stat_plr_camy = self.cockpit.c_ofs_y; 
-  self.stat_plr_camz = self.cockpit.c_ofs_z;
 
   ctrl_update_mechplayer();
   
@@ -274,12 +260,6 @@ void() PlayerPostThink_powerup={
 
   //after server processes everything, push data to client
   client_push_player_info();
-  
-  if(self.data_type == DATA_MECH){
-    self.stat_plr_camx = self.cockpit.c_ofs_x;
-    self.stat_plr_camy = self.cockpit.c_ofs_y; 
-    self.stat_plr_camz = self.cockpit.c_ofs_z;
-  }
 };
 
 

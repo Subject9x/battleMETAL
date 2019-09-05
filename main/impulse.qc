@@ -2,8 +2,10 @@
 battleMETAL
 Author: Peter Roohr
 Date: 9/3/2016
-Overview: I pulled the ImpulseCommands() function out to its own
-file....
+mod: 09/05/2019
+Overview: 
+  I pulled the ImpulseCommands() function out to its own
+  file....
 */
 
 //new commands
@@ -24,6 +26,12 @@ void() playerAttack={
   weaponGroup = 0;
   if(self.button0){
     weaponGroup = self.currentWeaponGroup;
+    if( self.stat_plr_fir == FIRE_CHAIN ){
+      self.currentWeaponGroup = self.currentWeaponGroup * 2;
+      if( self.currentWeaponGroup > 256 ){
+        self.currentWeaponGroup = 1;
+      }
+    }
   }
   else{
     if(self.button3)
@@ -183,5 +191,4 @@ void(float selector) mpls_groupFire={
       self.currentWeaponGroup = self.w_group5;
       break;
   }
-
 };

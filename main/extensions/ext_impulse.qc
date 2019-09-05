@@ -2,9 +2,10 @@
 battleMETAL
 Author: Peter Roohr
 Date: 8/27/2016
-Overview: defines all impulse numbers, prevents magic numbers for key definitions
+mod: 09/05/2019
+Overview: 
+defines all impulse numbers, prevents magic numbers for key definitions
 */
-
 
 float IMP_WGROUP1 = 1;  //weapon group change impulses
 float IMP_WGROUP2 = 2;
@@ -18,15 +19,15 @@ float IMP_GETNAV = 9;
 float IMP_FGROUP = 10; //toggle group fire
 float IMP_FCHAIN = 11; //toggle chain fire
 float IMP_SHIELD = 12; //toggle shield autocharge
-float IMP_SWEAPON1 = 13;
-float IMP_SWEAPON2 = 14;
-float IMP_SWEAPON3 = 15;
-float IMP_SWEAPON4 = 16;
-float IMP_SWEAPON5 = 17;
-float IMP_SWEAPON6 = 18;
-float IMP_SWEAPON7 = 19;
-float IMP_SWEAPON8 = 20;
-float IMP_SWEAPON9 = 21;
+float IMP_SELECT_WEAPON1 = 13;
+float IMP_SELECT_SWEAPON2 = 14;
+float IMP_SELECT_WEAPON3 = 15;
+float IMP_SELECT_WEAPON4 = 16;
+float IMP_SELECT_WEAPON5 = 17;
+float IMP_SELECT_WEAPON6 = 18;
+float IMP_SELECT_WEAPON7 = 19;
+float IMP_SELECT_WEAPON8 = 20;
+float IMP_SELECT_WEAPON9 = 21;
 float IMP_FSINGLE = 22;
 float IMP_WGROUP4 = 23;
 float IMP_WGROUP5 = 24;

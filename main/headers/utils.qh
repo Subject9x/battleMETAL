@@ -25,13 +25,10 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea;
 float(entity t) util_getMechHpAverage;
 float(entity t) util_getMechHpTotal;
 
-float( float yee, float targAng, float buffer ) util_checkAngNotIdeal;
-
 void(entity targ, entity src, vector ofs) util_setOffsetOrigin;
 void(string mdl_name, float skinNum, float ef_flags) util_setModel;
 void(float dmgMode, float solid_type, float move_type) util_setCollider;
 void(float hp, float max_hp, float arm_type, float arm_val) util_setHealthArmor;
-float(vector p, vector min, vector max) util_checkInBounds;
 float(entity trg) util_checkPointAngle;
 float(vector orig) util_checkPointAngleImpl;
 float(vector org) util_lockOnChoke;

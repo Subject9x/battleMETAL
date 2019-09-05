@@ -52,10 +52,6 @@ void() mh_world_ini={
   addstat(STAT_TRG_DATAIDX, AS_INT, stat_trg_dataidx);
   addstat(STAT_TRG_FACTION, AS_INT, stat_trg_faction);
   
-  addstat(STAT_CAM_ORG_X, AS_FLOAT, stat_plr_camx);
-  addstat(STAT_CAM_ORG_Y, AS_FLOAT, stat_plr_camy);
-  addstat(STAT_CAM_ORG_Z, AS_FLOAT, stat_plr_camz);
-  
   addstat(STAT_WEP1_ID, AS_INT, stat_w1_id);
   addstat(STAT_WEP2_ID, AS_INT, stat_w2_id);
   addstat(STAT_WEP3_ID, AS_INT, stat_w3_id);

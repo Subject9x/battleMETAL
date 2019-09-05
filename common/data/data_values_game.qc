@@ -160,9 +160,6 @@ float RADAR_SWEEP = 2.5;
 .float stat_plr_stt;
 .float stat_trg_sh;
 
-.float stat_plr_camx;
-.float stat_plr_camy;
-.float stat_plr_camz;
 .float stat_cofs_x;
 .float stat_cofs_y;
 .float stat_cofs_z;
@@ -222,9 +219,9 @@ float STAT_ACCURACY = 33;
 float STAT_TARG_EID = 35;
 float STAT_VID = 36;
 
-float STAT_CAM_ORG_X = 37;
-float STAT_CAM_ORG_Y = 38;
-float STAT_CAM_ORG_Z = 39;
+//float STAT_CAM_ORG_X = 37;
+//float STAT_CAM_ORG_Y = 38;
+//float STAT_CAM_ORG_Z = 39;
 
 float STAT_PLR_ORG_X = 40;
 float STAT_PLR_ORG_Y = 41;

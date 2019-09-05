@@ -2,12 +2,11 @@
 battleMETAL
 Author: Peter Roohr
 Date: 9/7/2016
-Overview: head for mech management functions
+Overview: 
+  head for mech management functions
 */
 
 void() mech_clearWeaponGroups;
-
-void() ctrl_update_mechplayer;
 
 void() mech_player_die;
 void() mech_player_cameradie;

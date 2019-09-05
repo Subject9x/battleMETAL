@@ -1,0 +1,42 @@
+/*
+battleMETAL
+Author: Peter Roohr
+Date: 9/1/2016
+mod - 1/15/2019 - a few refactors
+Overview: 
+  Controllers manage some state-level behavior for the target object.
+  these are separated from model-control (animation).
+  
+*/
+
+//Mech entity controllers
+void() ctrl_update_mechplayer;
+void() ctrl_updateCenterTorso;
+void() ctrl_updateLegs;
+void() ctrl_dieLegs;
+
+void() touch_mech;
+void() touch_mechPiece;
+
+//Building entity controllers
+void() building_burn_th;
+void() building_burn;
+void() building_die_removeFire;
+void() building_die;
+
+//Vehicle entity controllers
+void() ctrl_updateTank;
+
+//Generic entity controllers
+void() ctrl_die_weapon;
+void() ctrl_component_die;
+void() ctrl_component_burn;
+void() ctrl_component_drop;
+
+//Weapon/equip controllers
+void(entity wep) ctrl_weapon_think;
+void(entity wep) ctrl_weapon_think_ai;
+void() ctrl_weapon_fireOffset;
+void( float burstFire ) ctrl_weapon_updateAmmo;
+void( float updateDelay ) ctrl_weapon_make_projectile;
+float() ctrl_weapon_checkEnergy;
