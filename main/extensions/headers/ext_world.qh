@@ -23,6 +23,8 @@ float TE_STOMP_TYPE;  //set by world type
 
 .string unlockMechs;  //determines unlock mechs given to the player.
 .string unlockEquip;  //determines unlock equip given to the player.
+.string itemOverrideFile; //if present, send this file of items instead of normal save file
+.float ignoreSave;    //don't save at end of mission
 
 .entity particleCube; //used by mech/map/map_particlecube_effect.qc
 .vector wind;

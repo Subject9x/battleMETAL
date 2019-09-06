@@ -394,7 +394,7 @@ void(string cmd, float tokens) client_setMission={
   self.view_ofs = '0 0 1';
   if( argv(2) == "1" ){ 
     //mission successful, next map
-    if( cvar("gamemode") == GAMEMODE_CAMPAIGN){
+    if( !world.ignoreSave ){
       savefile_changemap(nextmap);
       savefile_append();
       savefile_save();

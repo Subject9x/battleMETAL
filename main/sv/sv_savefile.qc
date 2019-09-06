@@ -71,10 +71,15 @@ string(string item, string source) savefile_insert={
 };
 
 //functions
-void() savefile_load={
+void(float override) savefile_load={
   local float flannel, argc, line_tag;
   local string file, contents, line;
-  file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
+  if( override ){
+    file = strcat(PATH_DATA_MAP, "/", mapname, "/", world.itemOverrideFile, SAVE_FILE_EXT);
+  }
+  else{
+    file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
+  }
   flannel = fopen(file, FILE_READ);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{", ",", "}");

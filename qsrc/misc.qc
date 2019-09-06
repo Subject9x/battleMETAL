@@ -99,7 +99,6 @@ Second realtimelights_light stays on this origin, and only has AMBIENT light.
 
 -------- KEYS --------
 .angles = <vector> direction of sunlight
-.rtlShadows = <bool> use real-time shadows or not.
 .rtlRadius = <float> radius of light.
 .color = <vector>[0-1] used to denote color of light.
 .style = <string> same as Light ent.
@@ -135,8 +134,7 @@ void() realtimelights_sunlight={
   local vector traceEnd;
   local entity sunLight;
   local entity oldLight;
-  
-  self.classname = "realtimelights_light";
+
   self.angles_x = 0;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -150,30 +148,33 @@ void() realtimelights_sunlight={
   traceline( self.origin, self.origin + (v_forward * 640000), MOVE_WORLDONLY, self);
   traceEnd = trace_endpos;
   
+  oldLight = self;
+  
   sunLight = spawn();
+  sunLight.angles = '0 0 0';
+  sunLight.rtlShadows = 1;
+  sunLight.rtlRadius = self.rtlRadius;
+  sunLight.color = self.color;
+  sunLight.style = self.style;
+  sunLight.vec_name = self.vec_name;
+  sunLight.rtlCorona = self.rtlCorona;
+  sunLight.rtlCoronaSize = self.rtlCoronaSize;
+  sunLight.rtlAmbient = 0;
+  sunLight.rtlDiffuse = self.rtlDiffuse;
+  sunLight.rtlSpecular = self.rtlSpecular;
+  sunLight.rtlMode = self.rtlMode;
+  setorigin( sunLight, traceEnd );
   self = sunLight;
     realtimelights_light();
-    self.angles = '0 0 0';
-    setorigin( self, traceEnd );
-    self.rtlShadows = oldLight.rtlShadows;
-    self.rtlRadius = oldLight.rtlRadius;
-    self.color = oldLight.color;
-    self.style = oldLight.style;
-    self.vec_name = oldLight.vec_name;
-    self.rtlCorona = oldLight.rtlCorona;
-    self.rtlCoronaSize = oldLight.rtlCoronaSize;
-    self.rtlAmbient = oldLight.rtlAmbient;
-    self.rtlDiffuse = oldLight.rtlDiffuse;
-    self.rtlSpecular = oldLight.rtlSpecular;
-    self.rtlMode = oldLight.rtlMode;
   self = oldLight;
   
   //setup the 'ambient' light
-  self.rtlShadows = FALSE;
-  self.rtlCorona = FALSE;
-  self.rtlCoronaSize = FALSE;
-  self.rtlSpecular = FALSE;
-  self.rtlDiffuse = FALSE;
+  self.rtlAmbient = self.rtlAmbient * 0.75;
+  self.rtlShadows = 0;
+  self.rtlCorona = 0;
+  self.rtlCoronaSize = 0;
+  self.rtlSpecular = 0;
+  self.rtlDiffuse = 0;
   self.angles = '0 0 0';
   self.vec_name = "";
   realtimelights_light();

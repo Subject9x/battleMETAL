@@ -22,7 +22,9 @@ void(string str) SV_ParseClientCommand={
     client_ParseMechCommand(str, argc);
   }
   else if( argv(0) == "savegame"){
-    savefile_save();
+    if( !world.ignoreSave ){
+      savefile_save(FALSE);
+    }
   }
   else if( argv(0) == "loadgame"){
     savefile_load();
@@ -190,7 +192,13 @@ void() PutClientInServer = {
         //pre-populate default save file
         savefile_default();
       }
-      savefile_load();
+      if( world.itemOverrideFile != "" || world.itemOverrideFile ){
+        savefile_load( TRUE );
+      }
+      else{
+        savefile_load( FALSE );
+      }
+      
       break;
     case GAMEMODE_COOP:
       mapfile_coop_load();

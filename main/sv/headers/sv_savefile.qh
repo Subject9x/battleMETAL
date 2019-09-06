@@ -25,7 +25,7 @@ string SAVE_FILE_ITEMS = "items";
 string SAVE_FILES_POINTS = "points";
 
 //functions
-void() savefile_load; //single player only
+void(float override) savefile_load; //single player only
 void() savefile_save; //single player only
 void() savefile_default;  //single player, but initial start
 void() savefile_append;

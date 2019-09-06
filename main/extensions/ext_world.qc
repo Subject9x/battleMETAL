@@ -257,7 +257,7 @@ void( float overrideFlag ) world_export_realtimelights={
 void( entity light, float fileData ) world_export_realtimelights_write={
   local string lightData;
   
-  if( light.rtlShadows == TRUE){
+  if( light.rtlShadows == FALSE){
     fputs(fileData, "!");
   }    
   lightData = strcat( lightData, ftos(light.origin_x), " ", ftos(light.origin_y), " ", ftos(light.origin_z));
