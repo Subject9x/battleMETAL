@@ -42,3 +42,4 @@ float TE_POWERUP = 110;
 float TE_MSG_INFO = 111;
 float TE_WEAPONS_ON = 112;
 float TE_REPAIRS_ON = 113;
+float TE_FIREMODE = 114;

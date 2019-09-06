@@ -44,6 +44,9 @@ float HUD_EVENT_WEAPONS_OFF = 16;
 float HUD_EVENT_REPAIRS_ON = 17;
 float HUD_EVENT_REPAIRS_OFF = 18;
 
+float HUD_EVENT_FIREMODE_CHAIN = 19;
+float HUD_EVENT_FIREMODE_GROUP = 20;
+
 //DEFS MESSAGE STRINGS
 string HUD_TEXT_CRITICAL_LEGS = "Critical Hit: Legs";
 string HUD_TEXT_CRITICAL_TORSO_LEFT = "Critical Hit: Left Torso.";
@@ -69,6 +72,9 @@ string HUD_TEXT_WEAPONS_OFF = "!- Weapons: OFFLINE -!";
 string HUD_TEXT_REPAIRS_ON = "Initiating Repairs.";
 string HUD_TEXT_REPAIRS_OFF = "Repairs complete.";
 
+string HUD_TEXT_FIREMODE_CHAIN = "Chain-fire Engaged.";
+string HUD_TEXT_FIREMODE_GROUP = "Group-fire Engaged.";
+
 //System Functions
 void() hud_event_frame;
 void( float eventAdd, float limitMax) hud_event_enqueue;
@@ -92,3 +98,5 @@ void() hud_event_weapons_on;
 void() hud_event_weapons_off;
 void() hud_event_repairs_on;
 void() hud_event_repairs_off;
+void() hud_event_firemode_chain;
+void() hud_event_firemode_group;

@@ -474,6 +474,16 @@ float() CSQC_Parse_TempEntity =
         hud_event_enqueue( HUD_EVENT_REPAIRS_OFF, 1) ;
       }
       return TRUE;
+    case TE_FIREMODE:
+      local float mode;
+      mode = ReadByte();
+      if( mode == 0 ){
+        hud_event_enqueue( HUD_EVENT_FIREMODE_CHAIN, 1) ;
+      }
+      else if( mode == 1 ){
+        hud_event_enqueue( HUD_EVENT_FIREMODE_GROUP, 1) ;
+      }
+      return TRUE;
   } 
 	return FALSE;
 };

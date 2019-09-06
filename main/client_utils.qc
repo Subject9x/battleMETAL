@@ -304,6 +304,13 @@ void(entity client, float weaponsOnOff) client_send_event_repairs={
   WriteByte( MSG_ONE, weaponsOnOff );
 };
 
+void(entity client, float newFireMode) client_send_event_change_fire={
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_FIREMODE );
+  WriteByte( MSG_ONE, newFireMode );
+};
+
 void(entity client, string theMessage, float messageLifetime) client_send_info_message={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
@@ -639,7 +646,6 @@ void(entity client ) client_send_mapKeyObjects={
     objects = objects.chain;
   }
 };
-
 
 void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed={
   local string comd;

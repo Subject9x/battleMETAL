@@ -86,6 +86,12 @@ void() hud_event_frame={
     case HUD_EVENT_REPAIRS_OFF:
       hud_event_repairs_off();
       break;
+    case HUD_EVENT_FIREMODE_CHAIN:
+      hud_event_firemode_chain();
+      break;
+    case HUD_EVENT_FIREMODE_GROUP:
+      hud_event_firemode_group();
+      break;
   }
 };
 
@@ -263,4 +269,20 @@ void() hud_event_repairs_off={
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_REPAIRS_OFF, 1);
   }
   hud_render_message( HUD_TXT_ORG, HUD_TEXT_REPAIRS_OFF, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_firemode_chain={
+  if( !HUD_EVENT_SOUND_START ){
+    HUD_EVENT_SOUND_START = TRUE;
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_FIREMODE_CHAIN, 1);
+  }
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_FIREMODE_CHAIN, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_firemode_group={
+  if( !HUD_EVENT_SOUND_START ){
+    HUD_EVENT_SOUND_START = TRUE;
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_FIREMODE_GROUP, 1);
+  }
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_FIREMODE_GROUP, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
 };

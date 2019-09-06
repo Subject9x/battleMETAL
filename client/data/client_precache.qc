@@ -91,6 +91,8 @@ void() cs_precache={
   SND_HUD_VFX_WEAPONS_OFF = precache_sound2("sound/comp/wep_offline.ogg");
   SND_HUD_VFX_REPAIRS_ON = precache_sound2("sound/comp/repair_on.ogg");
   SND_HUD_VFX_REPAIRS_OFF = precache_sound2("sound/comp/repair_off.ogg");
+  SND_HUD_VFX_FIREMODE_CHAIN = precache_sound2("sound/comp/fire_chain.ogg");
+  SND_HUD_VFX_FIREMODE_GROUP = precache_sound2("sound/comp/fire_group.ogg");
   
   
   //UI GRAPHICS

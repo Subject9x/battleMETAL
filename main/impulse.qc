@@ -17,38 +17,45 @@ void() toggerRadar={};
 
 void() playerAttack={
   local entity wep_chain, oself;
-  local float wep_count, weaponGroup;
+  local float weaponGroup;
   
   if( (self.flags & FL_NOSHOOT) ){
     return;
   }
   
   weaponGroup = 0;
-  if(self.button0){
-    weaponGroup = self.currentWeaponGroup;
-    if( self.stat_plr_fir == FIRE_CHAIN ){
-      self.currentWeaponGroup = self.currentWeaponGroup * 2;
+  if( self.stat_plr_fir == FIRE_CHAIN ){
+    if( self.button0 || self.button3 ){
+      self.currentWeaponGroup = rint(self.currentWeaponGroup * 2);
       if( self.currentWeaponGroup > 256 ){
         self.currentWeaponGroup = 1;
       }
+      weaponGroup = self.currentWeaponGroup;
     }
   }
   else{
-    if(self.button3)
-      weaponGroup = weaponGroup | self.w_group1;
-    if(self.button4)
-      weaponGroup = weaponGroup | self.w_group2;
-    if(self.button5)
-      weaponGroup = weaponGroup | self.w_group3;
-    if(self.button6)
-      weaponGroup = weaponGroup | self.w_group4;
-    if(self.button7)
-      weaponGroup = weaponGroup | self.w_group5;
+    if(self.button0){
+
+    }
+    else{
+      if(self.button3)
+        weaponGroup = weaponGroup | self.w_group1;
+      if(self.button4)
+        weaponGroup = weaponGroup | self.w_group2;
+      if(self.button5)
+        weaponGroup = weaponGroup | self.w_group3;
+      if(self.button6)
+        weaponGroup = weaponGroup | self.w_group4;
+      if(self.button7)
+        weaponGroup = weaponGroup | self.w_group5;
+    }
   }
+  
+ 
+  
   
   oself = self;
   wep_chain = self.w_slot;
-  wep_count = wep_chain.w_group;
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
@@ -84,13 +91,19 @@ void() playerAttack={
 };
 
 void() ImpulseCommands ={
-    
+  local entity client;
+  client = self;
+  
   if(self.impulse == IMP_FGROUP){
     self.stat_plr_fir = FIRE_GROUP;
+    self.currentWeaponGroup = 0;
+    client = self;
+    client_send_event_change_fire(client, 1);
   }
   if(self.impulse == IMP_FCHAIN){
     self.stat_plr_fir = FIRE_CHAIN;
     self.currentWeaponGroup = 1;
+    client_send_event_change_fire(client, 0);
   }
   if(self.impulse == IMP_FSINGLE){
     self.stat_plr_fir = FIRE_SINGLE;
