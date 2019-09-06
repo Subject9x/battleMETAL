@@ -19,6 +19,7 @@ Overview:
 .string hud_bob_model;
 .string hud_bob_side;
 .string hud_bob_speed;
+.string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
 
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 

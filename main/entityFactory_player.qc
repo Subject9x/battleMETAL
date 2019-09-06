@@ -79,7 +79,7 @@ void() player_makeMech={
   newmis.viewmodelforclient = self;
   newmis.owner = self;
   newmis.alpha = 1;
-  setmodel(newmis,  "q3mdl/mechs/balaket/balaket_hud.obj");
+  setmodel(newmis, self.hud_model);
   setsize(newmis, '0 0 0', '0 0 0');
   setorigin(newmis, '0 0 0');
   newmis.frame = self.weaponframe;

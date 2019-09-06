@@ -24,7 +24,7 @@ Inputs
 */
 void() map_terrain_model={
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_NOT;
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
   self.takedamage = DAMAGE_NO;
@@ -39,6 +39,7 @@ void() map_terrain_model={
   setmodel(self, self.model);
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
+  self.solid = SOLID_BSP;
   
   if( (self.spawnflags & 4) ){
     self.effects = EF_NOSHADOW;  

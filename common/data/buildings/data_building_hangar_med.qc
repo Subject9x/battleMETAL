@@ -32,7 +32,7 @@ void() building_human_hangar_vehicle={
   self.th_die = building_die;
   self.use = multi_trigger;
   self.solid = SOLID_BSP;
-  util_setHealthArmor(500, 800, 1, 100) ;
+  util_setHealthArmor(500, 500, 1, 100) ;
   util_setModel( "q3mdl/buildings/hangar_vehicle/hangar_vehicle.md3", self.skin, 0) ;
   setsize(self, self.mins, self.maxs);
   self.movetype = MOVETYPE_NONE;

@@ -1265,6 +1265,7 @@ void() data_hud_frame={
     
     objid = UI_DATA_UIDS[uid];
     switch( objid ){
+      //TODO - remove background image
       case HUD_UID_IMG_HELM:
         porg = UI_DATA_POS[uid];
         vsize = UI_DATA_SIZE[uid];
