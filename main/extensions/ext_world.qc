@@ -281,3 +281,35 @@ void( entity light, float fileData ) world_export_realtimelights_write={
     cons_log2Strings("[INFO]-{Writing RTLight Data} ", "-line-", "origin", vtos(light.origin)); //DEBUG
   }
 };
+
+void( vector org, entity parent, vector colr, float stile, float pFlags, vector angl, float skinNum, float lightRadius) world_make_dlight={
+  local entity newLight;
+  newLight = spawn();
+  newLight.classname = "light";
+  newLight.owner = parent;
+  newLight.color = colr;
+  newLight.style = stile;
+  newLight.pflags = pFlags;
+  newLight.angles = angl;
+  newLight.skin = skinNum;
+  newLight.light_lev = lightRadius;
+  setorigin( newLight, org );
+  
+};
+
+void( entity parent ) world_remove_dlight={
+  local entity chaine;
+  local entity ref;
+  
+  chaine = findchainentity( owner, parent );
+  while( chaine ){
+    if( chaine.classname == "light" ){
+      ref = chaine;
+      chaine = chaine.chain;
+      remove(ref);
+    }
+    else{
+      chaine = chaine.chain;
+    }
+  }
+};

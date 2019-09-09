@@ -207,6 +207,16 @@ void() building_human_repair={
   self.th_die = hrepair_die;
   self.th_stand = hrepair_th;
   self.th_walk = hrepair_rep;
+  
+  local vector lightColor;
+  if( self.faction == FACTION_PSC ){
+    lightColor = '0.25 0.85 0.35';
+  }
+  else{
+    lightColor = '0.85 0.35 0.25';
+  }
+  world_make_dlight( (self.origin + (v_up * 10)), self,lightColor, 2, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '90 0 0', 0, 300); 
+  
   hrepair_th();
 };
 
