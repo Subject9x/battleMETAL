@@ -26,11 +26,14 @@ void() playerAttack={
   weaponGroup = 0;
   if( self.stat_plr_fir == FIRE_CHAIN ){
     if( self.button0 || self.button3 ){
-      self.currentWeaponGroup = rint(self.currentWeaponGroup * 2);
-      if( self.currentWeaponGroup > 256 ){
-        self.currentWeaponGroup = 1;
+      if( time > self.chainWeaponTimer ){
+        self.currentWeaponGroup = rint(self.currentWeaponGroup * 2);
+        if( self.currentWeaponGroup > 256 ){
+          self.currentWeaponGroup = 1;
+        }
+        weaponGroup = self.currentWeaponGroup;
+        self.chainWeaponTimer = time + 0.2;
       }
-      weaponGroup = self.currentWeaponGroup;
     }
   }
   else{
@@ -50,10 +53,6 @@ void() playerAttack={
         weaponGroup = weaponGroup | self.w_group5;
     }
   }
-  
- 
-  
-  
   oself = self;
   wep_chain = self.w_slot;
   while(wep_chain){

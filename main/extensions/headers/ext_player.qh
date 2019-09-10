@@ -6,6 +6,8 @@ Overview:
   head for mech management functions
 */
 
+.float chainWeaponTimer;
+
 void() mech_clearWeaponGroups;
 
 void() mech_player_die;
