@@ -96,11 +96,16 @@ void() hrepair_rep = [0, hrepair_rep]{
     self.cockpit.think = building_repair_node_think;
     self.cockpit.nextthink = time + 3;
     self.cockpit.attack_state = ST_MELEE;
+    
+    world_update_dlight( self, -1, '0.25 0.9 0.15', 50, 2, '-1 -1 -1');
+    
     return;
   }
 };
 
 void() hrepair_die = [0, hrepair_die1]{
+  world_remove_dlight( self );
+  
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
   
@@ -186,7 +191,7 @@ void() building_human_repair={
   }
   
   makevectors(self.angles);
-  self.c_ofs = self.origin + (v_forward * -30) + (v_up * 30) + (v_right * 4);
+  self.c_ofs = self.origin + (v_forward * -20) + (v_up * 30) + (v_right * 4);
   local entity repairNode, this;
   this  = self;
   repairNode = spawn();
@@ -213,9 +218,19 @@ void() building_human_repair={
     lightColor = '0.25 0.85 0.35';
   }
   else{
-    lightColor = '0.85 0.35 0.25';
+    lightColor = '0.95 0.25 0.15';
   }
-  world_make_dlight( (self.origin + (v_up * 10)), self,lightColor, 2, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '90 0 0', 0, 300); 
+  
+  //setup dlights
+  world_make_dlight( (self.origin + (v_up * 64) + (v_right * 32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50);
+  world_make_dlight( (self.origin + (v_up * 64) + (v_right * -28)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
+  world_make_dlight( (self.origin + (v_up * 64) + (v_right * 32) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
+  world_make_dlight( (self.origin + (v_up * 64) + (v_right * -28) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
+  
+  world_make_dlight( (self.origin + (v_up * 10) + (v_right * 24)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
+  world_make_dlight( (self.origin + (v_up * 10) + (v_right * -24)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
+  world_make_dlight( (self.origin + (v_up * 10) + (v_right * 24) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
+  world_make_dlight( (self.origin + (v_up * 10) + (v_right * -24) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
   
   hrepair_th();
 };
@@ -231,7 +246,8 @@ void() building_repair_touch={
             client_send_event_weapons( self.owner.trigger_field, FALSE );
             client_send_event_repairs( self.owner.trigger_field, TRUE );
             self.touch = SUB_Null;
-            self.attack_state = ST_WALK;            
+            self.attack_state = ST_WALK;
+            world_update_dlight( self, 1, '-1 -1 -1', 0, -1, '-1 -1 -1');            
           }
         }
       }

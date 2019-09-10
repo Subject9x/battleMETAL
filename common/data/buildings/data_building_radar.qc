@@ -211,6 +211,9 @@ void() building_human_radar={
   self.nextthink = time + 1;
   self.wait = time;
   
+  makevectors(self.angles);
+  world_make_dlight( (self.origin + (v_up * 38) + (v_forward * -15) + (v_right * 18)), self, 1, '1 0 0', 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 100);
+  
   ai_voice_ini( TRUE );
   
   //allows RADAR to call a specific trigger when it spots something

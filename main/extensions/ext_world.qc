@@ -282,7 +282,13 @@ void( entity light, float fileData ) world_export_realtimelights_write={
   }
 };
 
-void( vector org, entity parent, vector colr, float stile, float pFlags, vector angl, float skinNum, float lightRadius) world_make_dlight={
+
+/*
+  so, rolling with PFLAGS_FULLDYNAMIC, these things appear to be quite expensive, I'd recommend using them in a limited 
+  fashion. Maybe no more than a handful of lights per entity you want to attach them to, and definetly make sure they're
+  removed with their parent ent.
+*/
+void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angl, float skinNum, float lightRadius) world_make_dlight={
   local entity newLight;
   newLight = spawn();
   newLight.classname = "light";
@@ -293,6 +299,7 @@ void( vector org, entity parent, vector colr, float stile, float pFlags, vector 
   newLight.angles = angl;
   newLight.skin = skinNum;
   newLight.light_lev = lightRadius;
+  newLight.data_idx = id;
   setorigin( newLight, org );
   
 };
@@ -311,5 +318,35 @@ void( entity parent ) world_remove_dlight={
     else{
       chaine = chaine.chain;
     }
+  }
+};
+
+/*
+  send negative values to ignore changes, otherwise, 0 as a value will be used!
+*/
+void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight={
+  local entity myLight;
+  
+  myLight = findchainentity( owner, parent );
+  while( myLight ){
+    if( (lightId != -1) && ( myLight.data_idx != lightId) ){
+      continue;
+      //FIXME
+    }
+    else{
+      if( newColor != '-1 -1 -1' ){
+        myLight.color = newColor;
+      }
+      if( newRadius != -1 ){
+        myLight.light_lev = newRadius;
+      }
+      if( newStyle != -1 ){
+        myLight.style = newStyle;
+      }
+      if( newAngl != '-1 -1 -1' ){
+        myLight.angles = newAngl;
+      }
+    }
+    myLight = myLight.chain;
   }
 };

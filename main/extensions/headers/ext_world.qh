@@ -60,5 +60,6 @@ void( entity light, float fileData ) world_export_realtimelights_write;
 
 //dynamic lights (dlights)
 //extends classic lightmap lights into a more dynamic/controllable format.
-void( vector org, entity parent, vector colr, float stile, float pFlags, vector angles, float skinNum, float lightRadius ) world_make_dlight;
+void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angles, float skinNum, float lightRadius ) world_make_dlight;
 void( entity parent ) world_remove_dlight;
+void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight;

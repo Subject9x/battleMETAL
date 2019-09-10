@@ -14,6 +14,8 @@ void() building_die={
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
   
+  world_remove_dlight(self);
+  
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DEAD;
   self.solid = SOLID_CORPSE;
