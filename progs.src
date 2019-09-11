@@ -93,6 +93,7 @@ main/controllers/headers/controllers.qh
   common/data/buildings/data_building_shield_generator.qc
   common/data/buildings/data_building_fuel_tank.qc
   common/data/buildings/data_building_repair_bay.qc
+  common/data/buildings/data_building_guard_tower.qc
   //-------------------------------
   
   //Turrets------------------------
