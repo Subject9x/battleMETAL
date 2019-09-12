@@ -120,7 +120,31 @@ void() map_hud_highlight_use={
   self.isActive = TRUE;
 };
 
-/*QUAKED map_hud_highlight (.5 .5 .5) ?
+/*QUAKED map_hud_highlight (0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF ON_TOUCH REMOVE_FINISH FACTION_ONLY DROPTOFLOOR FREEZE_PLAYER COOLDOWN CALL_BY_TRIGGER MESSAGE_ONLY
+  HUD Highlighting is a map event sent to chosen clients. This creates a colored box around a portion of the player's screen
+  for a set amount of time. The use case is primarily for information and training purposes, but can be useful in other ways.
+  
+  MESSAGE_ONLY will just send a special event to show an info box;
+  
+-------- KEYS -------- 
+.movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
+.c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
+.color = <vector> [red, green, blue] - color of the box
+.faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+.data_lifetime = <float> [time to draw] - amount of time to draw box for
+
+.target = <string> [ent] - fire this trigger when done
+.wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
+-------- SPAWNFLAGS --------
+START_OFF 1: will start as deactivated
+ON_TOUCH 2: will react to being touched by a players
+REMOVE_FINISH 4: will be removed when finished playing
+FACTION_ONLY 8: only reacts to this faction
+DROPTOFLOOR 16: object drops to floor for easier touch possibility
+FREEZE_PLAYER 32: any players that trigger the Animatic are frozen in place
+COOLDOWN 64: use .wait
+CALL_BY_TRIGGER 128: must be used with START_OFF
+MESSAGE_ONLY 256: only sends message as INFO box
 */
 void() map_hud_highlight={
   local vector tempMax;

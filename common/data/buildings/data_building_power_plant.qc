@@ -103,7 +103,21 @@ void() hpower_th = [0, hpower_th]{
 }; 
 
 
-/*QUAKED building_human_power (.1 .1 .1) (-56 -56 0) (56 56 46)
+/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+{ model("models/buildings/reactor/reactor.md3"); }
+Generates energy to power ALL FRIENDLY buildings
+Radius: 800units
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_power={
   self.data_idx = UI_BUILDING_power_plant;

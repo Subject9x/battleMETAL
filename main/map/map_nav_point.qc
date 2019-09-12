@@ -6,21 +6,6 @@ mod: 11/15/2018
 Overview: 
   Nav Points are points of interest marked on Player maps. Players interact with them by visiting them, 
   which can then fire triggers to additional game logic. 
-
-Inputs
-  .faction = <float> - defines which factions this Nav Point belongs to
-  .data_idx = <float> [enum] - 1 to 21, each must be unique because this determines the 'name' of the nav point client-side
-  .isActive = <float> [enum] - 1 = active unvisit - active, faction hasn't visited that nav yet
-                               2 = active visit -  active, faction has been here
-                               0 = hidden - this means 'hidden from OTHER factions'
-                               -1 = inactive - hidden from EVERYONE
-  .target   = <string> [ent] - fire this map object when VISITED
-  .trigOnSpawn = <string> [ent] - fire this map object when ACTIVATED
-  .trigOnTarget = <string> [ent] - fire this OBJECTIVE when VISITED (special event channel for objectives)
-  .trigOnDeath = <string> [ent] - fire this ENTITY when NAV POINT isActive = FALSE off the use() function
-  
-  .spawnflags = <float> [flag] 2 - only updates 'visited' state per-client
-  .spawnflags = <float> [flag] 4 - deactivate after use
 */
 
 /*
@@ -80,7 +65,25 @@ void() nav_point_use={
   }
 };
 
-/*QUAKED map_nav_point (0.2 0.8 0.2) (-32 -32 -75) (32 32 1)
+/*QUAKED map_nav_point (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
+Nav Points are points of interest marked on Player maps. 
+Players interact with them by visiting them, which can then fire triggers to additional game logic.
+For best results, place manually as close to ground as possible!
+-------- KEYS -------- 
+faction: float defines which factions this Nav Point belongs to
+data_idx: float enum  1 to 21, each must be unique because this determines the 'name' of the nav point client-side
+isActive: float enum  1 active unvisit active, faction hasn't visited that nav yet
+                             2 active visit  active, faction has been here
+                             0 hidden  this means hidden from other factions
+                             -1 inactive  hidden from everyone
+trigOnSpawn:string ent  fire this map object when activated
+target: string ent  fire this map object when visited
+trigOnTarget: string ent fire this OBJECTIVE when visited (special event channel for objectives)
+trigOnDeath: string ent  fire this ENTITY when nav point isActive is false off the use function
+
+-------- SPAWNFLAGS -------- 
+VISIT_PER_CLIENT 2: only updates visited state per client
+OFF_AFTER_USE 4: deactivate after use
 */
 void() map_nav_point={
 

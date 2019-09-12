@@ -5,21 +5,6 @@ Date: 11/16/2018
 Overview: 
   Debugger for particle effects
   
-Inputs
-  .vec_name = <string> [effecinfo.txt name] - the particle effect to spawn
-  .c_ofs = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
-  .dest1 = <vector> [speed] -if effect needs a velocity vector
-  .count = <float> [particle amount] - total number of particles in the effect
-  .data_lifetime = <float> - time to live, use with spawnflags[2]
-  .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-  .count2 = <float> - speed, rate of particle cycle
-  .count3 = <bool> - 0 = pointparticle, 1 = trailparticle
-  .count4 = <float> - velocity multiplier
-  .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
-  .spawnflags = <float> [flag] 2 - lifetime
-  .spawnflags = <float> [flag] 4 - reactivate after countdown
-  .spawnflags = <float> [flag] 8 - remove after first countdown
-  .spawnflags = <float> [flag] 16 - restore original wind values
 */
 
 //TE_SMOKE_TEST
@@ -69,6 +54,25 @@ void() map_particle_ini={
   self.nextthink = time + self.count2;
 };
 
+/*QUAKED debug_particles (0.988 0.267 0.553) (-3 -3 -3) (3 3 3) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE
+  Debugger for particle effects
+  
+-------- KEYS -------- 
+  .vec_name = <string> [effecinfo.txt name] - the particle effect to spawn
+  .c_ofs = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
+  .dest1 = <vector> [speed] -if effect needs a velocity vector
+  .count = <float> [particle amount] - total number of particles in the effect
+  .data_lifetime = <float> - time to live, use with spawnflags[2]
+  .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+  .count2 = <float> - speed, rate of particle cycle
+  .count3 = <bool> - 0 = pointparticle, 1 = trailparticle
+  .count4 = <float> - velocity multiplier
+-------- SPAWNFLAGS -------- 
+START_OFF 1: only activated by trigger
+LIFETIME 2: 
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+*/
 void() debug_particles={
 
   map_particle_ini();

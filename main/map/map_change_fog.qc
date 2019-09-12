@@ -5,23 +5,6 @@ Date: 11/12/2018
 Overview: 
   A Map Wrapper for the fog cvar. Allows a map to take control of the fog setting in a controllabe way. 
   This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
-  
-  fog cvar
-  density red green blue alpha mindist maxdist top fadedepth
-    1       0.85 0.65 0.5   0.45   6000   10000  8000   2500
-  
-Inputs
-  .fog_density = <float> [density] - new fog thickness
-  .fog_color = <vector> [red, green, blue] - new color to transition to
-  .fog_alpha = <float> [alpha] - new alpha value
-  .fog_dist = <vector> [dist min, dist max, height] - new fog distance
-  .fade = <float> [fade depth] - transition time
-  spawnflag 1 - remove on first touch
-
-Globals
-  .stat_wep_state = <float> event -
-      0 = do nothing
-      1 = transition to new fog
 */
 
 void() map_changefog_touch={
@@ -50,7 +33,27 @@ void() map_changefog_use={
   }
 };
 
-/*QUAKED map_changefog (1 1 1) 
+/*QUAKED map_change_fog (0.431 0.788 0.753) (-4 -4 -4) (4 4 4) REMOVE_ONTOUCH
+A Map Wrapper for the fog cvar. Allows a map to take control of the fog setting in a controllabe way. 
+This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
+  
+fog cvar
+  density red green blue alpha mindist maxdist top fadedepth
+  
+-------- KEYS -------- 
+.fog_density = <float> [density] - new fog thickness
+.fog_color = <vector> [red, green, blue] - new color to transition to
+.fog_alpha = <float> [alpha] - new alpha value
+.fog_dist = <vector> [dist min, dist max, height] - new fog distance
+.fade = <float> [fade depth] - transition time
+
+Globals
+.stat_wep_state = <float> event
+    0 = do nothing
+    1 = transition to new fog
+    
+-------- SPAWNFLAGS -------- 
+REMOVE_ONTOUCH 1: remove on first touch
 */
 void() map_change_fog={
   local vector tempMin;

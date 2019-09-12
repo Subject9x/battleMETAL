@@ -136,7 +136,22 @@ void() hshield_th = [0, hshield_th]{
   building_burn();
 }
 
-/*QUAKED building_human_shield (.1 .1 .1) (-56 -56 0) (56 56 17.5)
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+{ model("models/buildings/shield/shield.md3"); }
+Shield Generator Building.
+Gives ALL FRIENDLY units a shield recharge boost IF they're in the radius.
+Radius: 1000units
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_shield={
   self.data_idx = UI_BUILDING_shield_generator;

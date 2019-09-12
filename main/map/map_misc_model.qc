@@ -9,18 +9,20 @@ Overview:
 Line 20 - MAP_TERRAIN_MODEL
 */
 
-/*QUAKED map_terrain_model (1 .5 .25) (-16 -16 -16) (16 16 16)
+/*QUAKED map_terrain_model (0.75 0.2 0.75) (-24 -24 -24) (24 24 24) - OVERRIDE_ALPHA EF_NOSHADOW
   this is for injecting large 3D terrain meshes into a bsp file.
   If a level needs large outdoor terrain pieces, but this right after worldspawn.
   It's origin is set to the world's, SOLID_BSP, MOVETYPE_NONE.
   It's non-damageable, and should never be removed unless there's an express purpose for doing so
-    
-Inputs
-  .model = <string> [file] - path to the model file
-  .count1 = <float> [alpha] - 0.001 - 1.0; defaults to '1'
-  .c_ofs = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
-  .spawnflags = <float> [flag] 2 - override alpha - ignores default
-  .spawnflags = <float> [flag] 4 - activate EF_NOSHADOW on model
+
+-------- KEYS --------
+.model = <string> [file] - path to the model file
+.count1 = <float> [alpha] - 0.001 - 1.0; defaults to '1'
+.c_ofs = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
+
+-------- SPAWNFLAGS --------
+OVERRIDE_ALPHA 2: overrides default alpha of '1'
+EF_NOSHADOW 4: puts effect-flag EF_NOSHADOW onto model
 */
 void() map_terrain_model={
   self.movetype = MOVETYPE_NONE;

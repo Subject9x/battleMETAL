@@ -259,10 +259,25 @@ void() ai_node_check={
   }
 };
 
-/*
-  QUAKED call
-  this is what the map script will actually call to create a node entity
-*/  
+/*QUAKED ai_node (0.988 0.976 0.267) (-10 -10 -18) (10 10 18) - REMOVE_ONTOUCH START_INACTIVE INACTIVE_ONTOUCH
+This is used to setup patrol and move paths for AI.
+For best results, place manually as close to ground as possible!
+-------- KEYS -------- 
+.faction = <float> [faction number]
+.targetname = <string> used by AI to find node
+.target = <string> should target another AI node to form a chain
+.trigOnDeath = <string> [target] trigger this item when node is removed
+.trigOnSpawn = <string> [target] trigger this item when node isActive = true;
+.data_idx = <float> [enum]
+      AI_NODE_PATROL = 1;
+      AI_NODE_DEFEND = 2;
+      AI_NODE_ATTACK = 3;
+
+-------- SPAWNFLAGS -------- 
+REMOVE_ONTOUCH 2: removed when touched
+START_INACTIVE 4: start with .isActive = FALSE
+INACTIVE_ONTOUCH 8:  shutoff when touched by AI
+*/
 void() ai_node={
   
   if ( !self.targetname ){

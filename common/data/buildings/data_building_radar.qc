@@ -160,7 +160,23 @@ void() building_radar_touch={
   }
 };
 
-/*QUAKED building_human_radar (.1 .1 .1) (-20 -20 0) (20 20 13)
+/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+{ model("models/buildings/radar/radar.md3"); }
+Listening Post, has the ability to detect the player and alert friendly bots.
+-------- KEYS -------- 
+.targetname : string, used for trigger calls from other ents
+.target : string name of ent to go to, usually a patrol node
+.trigOnSpawn:string target, fire this ENTITY when activated
+.trigOnDeath: string target, fire this ENTITY when killed
+.trigOnTarget: string target, fire this ENTITY when spotting a target
+.delay : float, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_radar={
   self.data_idx = UI_BUILDING_radar;

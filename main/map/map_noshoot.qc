@@ -7,18 +7,6 @@ Overview:
   has the given flags.
   
   this is very powerful and mostly only used for FL_NOSHOOT
-  
-Inputs
-  .partTypeId = <float> [flags]  flags you want modified
-  .damageType = <float> [flags] 1 - Affect FL_CLIENT ONLY
-  .delay = <float> delayed start
-  
-  .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
-  .spawnflags = <float> [flag] 2 - lifetime
-  .spawnflags = <float> [flag] 4 - reactivate after countdown
-  .spawnflags = <float> [flag] 8 - remove after first countdown
-  .spawnflags = <float> [flag] 16 - restore flags (generally for single use() )
-  
 */
 
 void() map_noshoot_th={
@@ -96,8 +84,20 @@ void() map_noshoot_touch={
   }
 };
 
+/*QUAKED map_no_shoot (0.431 0.788 0.753) (-10 -10 -10) (10 10 10) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE
+A map object that modifies unit flags, controlling whether and for how long a unit has the given flags.
+this is very powerful and mostly only used for FL_NOSHOOT 32768
 
-/*QUAKED map_noshoot () () ()
+-------- KEYS -------- 
+.comp_id = <float> [flags]  flags you want modified
+.damageType = <float> [flags] 1 - Affect FL_CLIENT ONLY
+.delay = <float> delayed start
+
+-------- SPAWNFLAGS --------
+START_OFF 1: only activated by trigger
+LIFETIME 2: 
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
 */
 void() map_no_shoot={
  

@@ -80,7 +80,7 @@ void() ai_change_rank_use={
   }
 };
 
-/*QUAKED ai_change_faction (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
+/*QUAKED ai_change_faction (0.988 0.976 0.267) (-16 -16 -16) (16 16 16) START_OFF REMOVE_ONUSE DELAY_FIRE
 changes the faction field of the targeted objects
 
 -------- KEYS --------
@@ -90,9 +90,9 @@ changes the faction field of the targeted objects
 .targetname    <string> [targetname] - for being called by other objects
 .wait        <float> [time] - use with []2 for delay-after-being-called
 -------- SPAWNFLAGS -------- 
-START_OFF 1 - start inactive
-REMOVE_ONUSE 2 - removed after its first use.
-DELAY 4 - wait after fire before execution
+START_OFF 1: start inactive
+REMOVE_ONUSE 2: removed after its first use.
+DELAY 4: wait after fire before execution
 */
 void() ai_change_faction={
   
@@ -107,7 +107,7 @@ void() ai_change_faction={
   self.isActive = TRUE;
 };
 
-/*QUAKED ai_change_rank (0.988 0.976 0.267) (-4 -4 -6) (4 4 6) START_OFF REMOVE_ONUSE DELAY_FIRE
+/*QUAKED ai_change_rank (0.988 0.976 0.267) (-16 -16 -16) (16 16 16) START_OFF REMOVE_ONUSE DELAY_FIRE
 changes the faction field of the targeted objects
 
 -------- KEYS -------- 
@@ -117,10 +117,9 @@ changes the faction field of the targeted objects
 .ai_rank    <float> [rank] rank to change the targets ai_rank to.
 .wait        <float> [time] - use with []2 for delay-after-being-called
 -------- SPAWNFLAGS -------- 
-REMOVE_ONUSE 2 - removed after its first use.
-START_OFF 1 - start inactive
-REMOVE_ONUSE 2 - removed after its first use.
-DELAY 4 - wait after fire before execution
+START_OFF 1: start inactive
+REMOVE_ONUSE 2: removed after its first use.
+DELAY 4: wait after fire before execution
 */
 void() ai_change_rank={
 

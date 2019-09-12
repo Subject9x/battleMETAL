@@ -17,6 +17,26 @@ void() guard_tower_die={
   building_die();
 };
 
+/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - LIGHTS_OFF IS_MAPKEY -
+{ model("models/buildings/towersmall/guardtower.md3"); }
+Listening Post, has the ability to detect the player and alert friendly bots.
+-------- KEYS -------- 
+.targetname : string, used for trigger calls from other ents
+.target : string name of ent to go to, usually a patrol node
+.trigOnSpawn:string target, fire this ENTITY when activated
+.trigOnDeath: string target, fire this ENTITY when killed
+.trigOnTarget: string target, fire this ENTITY when spotting a target
+.delay : float, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+.style : float, light style. OPTIONAL
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+LIGHTS_OFF 2097152: turns off lights from this building.
+*/
 void() building_guard_tower={
   self.data_idx = UI_BUILDING_guard_tower;
   self.data_type = DATA_BLD;

@@ -67,7 +67,7 @@ void() map_change_wind_use={
   }
 };
 
-/*QUAKED map_change_wind (0.431 0.788 0.753) (-5 -5 -5) (5 5 5) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE RESTORE_WORLDVAL
+/*QUAKED map_change_wind (0.431 0.788 0.753) (-12 -12 -12) (12 12 12) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE RESTORE_WORLDVAL
 Every map can have a wind direction and velocity that affects VFX like sparks and smoke.
 This map object is to allow the map to alter this value.
 This is NEVER a touchable map object!

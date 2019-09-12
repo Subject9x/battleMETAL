@@ -886,6 +886,31 @@ void() building_turret_ini={
   }
 };
 
+/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+*/
 void() building_turret_light_s={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_SURVEST;
@@ -911,6 +936,31 @@ void() building_turret_light_s={
   building_turret_ini();
 };
 
+/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+*/
 void() building_turret_light_m={
   self.nextVecChoice = UID_TURRET_light_turret;
   self.faction = FACTION_MILITAR;
@@ -936,6 +986,32 @@ void() building_turret_light_m={
   building_turret_ini();
 };
 
+
+/*QUAKED building_turret_missile_s (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+*/
 void() building_turret_missile_s={
   self.nextVecChoice = UID_TURRET_missile_turret;
   self.faction = FACTION_SURVEST;
@@ -961,6 +1037,31 @@ void() building_turret_missile_s={
   building_turret_ini();
 };
 
+/*QUAKED building_turret_missile_m (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+*/
 void() building_turret_missile_m={
   self.nextVecChoice = UID_TURRET_missile_turret;
   self.faction = FACTION_MILITAR;
@@ -985,6 +1086,32 @@ void() building_turret_missile_m={
   }
   building_turret_ini();
 };
+
+/*QUAKED building_turret_heavy_s(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+*/
 
 void() building_turret_heavy_s={
   self.nextVecChoice = UID_TURRET_heavy_turret;
@@ -1011,6 +1138,31 @@ void() building_turret_heavy_s={
   building_turret_ini();
 };
 
+/*QUAKED building_turret_heavy_m (0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+*/
 void() building_turret_heavy_m={
   self.nextVecChoice = UID_TURRET_heavy_turret;
   self.faction = FACTION_MILITAR;

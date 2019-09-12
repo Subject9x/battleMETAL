@@ -9,21 +9,6 @@ Overview:
   The script schema can be found there too.
   
   The Map_Animatic object 
-
-Inputs
-  .missionFile = <string> [file] - the .anim file to be loaded from /data/anim/
-  .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
-  .count1 = <float> [freeze time] - defaults to 15 sec if not defined, use with spawnflags[32]
-  .target = <string> [ent] - fire this trigger when done
-  .wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
-  
-  .spawnflags = <float> [flag] 1 - START_OFF - will start as deactivated
-  .spawnflags = <float> [flag] 2 - ON_TOUCH - will react to being touched by a players
-  .spawnflags = <float> [flag] 4 - REMOVE_FINISH - will be removed when finished playing
-  .spawnflags = <float> [flag] 8 - FACTION_ONLY - only reacts to this faction
-  .spawnflags = <float> [flag] 16 - DROPTOFLOOR - object drops to floor for easier touch possibility
-  .spawnflags = <float> [flag] 32 - FREEZE_PLAYER - any players that trigger the Animatic are frozen in place
-  .spawnflags = <float> [flag] 64 - COOLDOWN - use .wait
 */
 
 void() animatic_event_execute={
@@ -103,7 +88,27 @@ void() animatic_event_touch={
   }
 };
 
-/*QUAKED map_animatic (.7 .5 .3) (-5 -5 -5) (5 5 5) TOUCH FINISH_REMOVE FACTION_ONLY DROPTOFLOOR
+
+/*QUAKED map_animatic (0.7 0.5 0.3) (-10 -10 -16) (10 10 16) START_OFF ON_TOUCH REMOVE_FINISH FACTION_ONLY DROPTOFLOOR FREEZE_PLAYER COOLDOWN
+An 'Animatic' is a sequence of images and queued up sounds that are played back for players when the animatic is triggered.
+the script file for the Animatic is defined in /data/anim/<anim_name>.anim
+The script schema can be found there too.  
+The Map_Animatic object 
+
+-------- KEYS --------
+.missionFile = <string> [file] - the .anim file to be loaded from /data/anim/
+.faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
+.count1 = <float> [freeze time] - defaults to 15 sec if not defined, use with spawnflags[32]
+.target = <string> [ent] - fire this trigger when done
+.wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
+-------- SPAWNFLAGS --------
+START_OFF 1: will start as deactivated
+ON_TOUCH 2: will react to being touched by a players
+REMOVE_FINISH 4: will be removed when finished playing
+FACTION_ONLY 8: only reacts to this faction
+DROPTOFLOOR 16: object drops to floor for easier touch possibility
+FREEZE_PLAYER 32: any players that trigger the Animatic are frozen in place
+COOLDOWN 64: use .wait
 */
 void() map_animatic={
   local vector tempMin;

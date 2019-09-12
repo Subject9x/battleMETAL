@@ -28,7 +28,17 @@ void() map_fail_objective_use={
   remove(self);
 };
 
-/*QUAKED
+/*QUAKED map_fail_objective (0.431 0.788 0.753) (-16 -8 -16) (16 8 16) - ON_TOUCH
+Merely a necessary interstitial map object to set a Mission Objective to 'fail'.
+This should be used sparingly, they clean themsleves up after firing.
+
+-------- KEYS -------- 
+.target = <string> [objective targetname] - objective to trigger.
+.mins = <vector> [lower half of bounding box]
+.maxs = <vector> [upper half of bounding box] - use both of these with spawnflags[2]
+
+-------- SPAWNFLAGS -------- 
+ON_TOUCH 2: ALLOW TRIGGER TOUCH
 */
 void() map_fail_objective={
   

@@ -6,12 +6,6 @@ Overview:
   Mission Boundaries are an entity that warns the player they're walking out of the playable area.
   Usually these placed in front of killboxe (PSC takes a dim view to wayward DEAD_HANDS)
   
-  [INPUTS]
-    .ai_dir   <float> [angle] angle to point the player back to the mission area
-    
-  .spawnflags
-    none
-  
 */
 
 void() mission_boundary_touch={
@@ -37,6 +31,12 @@ void() mission_boundary_th={
   self.nextthink = time + 0.1;
 };
 
+
+/*QUAKED func_mission_boundary (0.95 0.99 0) ?
+Defines the boundaries for a player, this will send warnings about leaving 
+the mission area if player stays inside this bounds.
+usually pair this will a killbox if player wanders outside map.
+*/
 void() func_mission_boundary={
 
   InitTrigger();

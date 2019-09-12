@@ -8,22 +8,7 @@ Overview:
   HOW TO USE
     where ever you put 1 of the 'radical' textures, if you want that area to damage the player,
     then you place this entity over that textured spot.
-Inputs
-  .targetname = <string> [targetname] - make triggerable
-  .damageValue = <float> - amount of damage to impart
-  .damageType = <float> [flag] 1 - DMG SHIELDS
-  .damageType = <float> [flag] 2 - DMG ARMOR
-  .damageType = <float> [flag] 4 - DMG ENERGY
-  .damageType = <float> [flag] 8 - DMG SPEED
-  .vec_size = <float> amount of particles.
-  .data_lifetime = <float> - time to live, use with spawnflags[2]
-  .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-  .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
-  .spawnflags = <float> [flag] 2 - lifetime
-  .spawnflags = <float> [flag] 4 - reactivate after countdown
-  .spawnflags = <float> [flag] 8 - remove after first countdown
-  .spawnflags = <float> [flag] 16 - remove on first touch
-  .spawnflags = <float> [flag] 32 - activate on-touch
+
 */
 
 void() map_damage_zone_particles_shields={
@@ -270,7 +255,29 @@ void() map_damage_zone_touch={
   }
 };
 
-/*QUAKED map_damage_zone (1 1 1)
+/*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
+A Damage Zone is an area that hurts all units within the zone.
+  
+-------- KEYS -------- 
+.mins = <vector> lower bounds of box
+.maxs = <vector> upper bounds of box
+.targetname = <string> [targetname] - make triggerable
+.damageValue = <float> - amount of damage to impart
+.damageType = <float> [flag] 1 - NO_DMG SHIELDS
+.damageType = <float> [flag] 2 - NO_DMG ARMOR
+.damageType = <float> [flag] 4 - NO_DMG ENERGY
+.damageType = <float> [flag] 8 - NO_DMG SPEED
+.data_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() map_damage_zone={
   local vector tempMin;

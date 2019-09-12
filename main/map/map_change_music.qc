@@ -5,13 +5,8 @@ Date: 11/12/2018
 Overview: 
   Primarily a map wrapper for the SVC_CDTRACK message, but also a manager of  it as well. 
   This map ent provides map-level control of the music playback code and sound channel. 
-  It runs exlcusively on the CD tracks using a track number, so it is unable to process arbitrary sounds.
-  
-Inputs
-  .partTypeId = <float> [trackid] CD Track to play
-  .targetname = <string> [targetname] - make triggerable
-  .spawnflags 1 = <float> [flag] remove on first fire
-  .spawnflags 2 = <float> [flag] loop
+  It runs exclusively on the CD tracks using a track number, so it is unable to process arbitrary sounds.
+
 */
 
 void() map_changemusic_touch={
@@ -31,8 +26,18 @@ void() map_changemusic_use={
   }
 };
 
-/*QUAKED
+/*QUAKED map_change_music (0.431 0.788 0.753) (-12 -12 -12) (12 12 12) REMOVE_FIRSTUSE LOOP
+Primarily a map wrapper for the SVC_CDTRACK message, but also a manager of  it as well. 
+This map ent provides map-level control of the music playback code and sound channel. 
+It runs exlcusively on the CD tracks using a track number, so it is unable to process arbitrary sounds.
   
+-------- KEYS -------- 
+.comp_id = <float> [trackid] CD Track to play
+.targetname = <string> [targetname] - make triggerable
+
+-------- SPAWNFLAGS -------- 
+REMOVE_FIRSTUSE 1: remove on first fire
+LOOP 1: loop track
 */
 void() map_change_music={
   local vector tempMin;

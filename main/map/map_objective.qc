@@ -196,7 +196,7 @@ void() map_objective_th={
 };
 
 
-/*QUAKED map_objective (0.431 0.788 0.753) (-12 -12 -12) (12 12 12) START_OFF ACTIVE_ONTOUCH MISSION_LOSE MISSION_WIN
+/*QUAKED map_objective (0.431 0.788 0.753) (-16 -16 -16) (16 16 16) START_OFF ACTIVE_ONTOUCH MISSION_LOSE MISSION_WIN
   An Objective a specific map object.
   Map Objectives are named triggers that are sent to the client for interaction.
   Map Objectives MUST map to an Objective ID in the Map's MSN File.

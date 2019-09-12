@@ -6,19 +6,6 @@ Overview:
   Mostly for debug, but could be handy in-general.
   Projectile Shooter that uses weapons-fire.
   
-Inputs
-  .data_idx = <float> [weapon id] - the weapon to use
-  .count = <float> [particle amount] - set a max number of shots
-  .count3 = <float> [rate of fire] - interval to try next shot;
-  .data_lifetime = <float> - time to live, use with spawnflags[2]
-  .wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
-  
-  .spawnflags = <float> [flag] 1 - START_OFF - only activated by trigger
-  .spawnflags = <float> [flag] 2 - lifetime
-  .spawnflags = <float> [flag] 4 - reactivate after countdown
-  .spawnflags = <float> [flag] 8 - remove after first countdown
-  .spawnflags = <float> [flag] 16 - draw the whole weapon model
-  .spawnflags = <float> [flag] 32 - use limited number of shots
 */
 
 void() map_projectile_shooter_use={
@@ -84,7 +71,24 @@ void() map_projectile_shooter_think={
   }
 };
 
-/*QUAKED map_projectile_shooter (0.01 0.01 0.01)
+/*QUAKED map_projectile_shooter (0.8 0.45 0.25) (-10 -10 -10) (10 10 10) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE DRAW_MODEL LIMITED_FIRE
+Mostly for debug, but could be handy in-general.
+Projectile Shooter that uses weapons-fire.
+  
+-------- KEYS -------- 
+.data_idx = <float> [weapon id] - the weapon to use
+.count = <float> [particle amount] - set a max number of shots
+.count3 = <float> [rate of fire] - interval to try next shot;
+.data_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS --------
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+DRAW_MODEL 16: draw the whole weapon model
+LIMITED_FIRE 32: use limited number of shots
 */
 void() map_projectile_shooter={
   
