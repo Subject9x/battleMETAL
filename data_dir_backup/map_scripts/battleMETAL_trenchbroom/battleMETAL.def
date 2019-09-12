@@ -4,10 +4,20 @@
 // Version: Beta 1.0.0
 // Updated: 2019-07-25
 
-/*QUAKED map_terrain_model (0.75 0.2 0.75) (-16 -16 -16) (16 16 16)
-{ model("models/dbg_player_scale_b.obj"); }
+/*QUAKED map_terrain_model (0.75 0.2 0.75) (-16 -16 -16) (16 16 16) - OVERRIDE_ALPHA EF_NOSHADOW
+  this is for injecting large 3D terrain meshes into a bsp file.
+  If a level needs large outdoor terrain pieces, but this right after worldspawn.
+  It's origin is set to the world's, SOLID_BSP, MOVETYPE_NONE.
+  It's non-damageable, and should never be removed unless there's an express purpose for doing so
 
-ugly hack, change for each terrain? :L
+-------- KEYS --------
+.model = <string> [file] - path to the model file
+.count1 = <float> [alpha] - 0.001 - 1.0; defaults to '1'
+.c_ofs = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
+
+-------- SPAWNFLAGS --------
+OVERRIDE_ALPHA 2: overrides default alpha of '1'
+EF_NOSHADOW 4: puts effect-flag EF_NOSHADOW onto model
 */
 /*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8)
 Monsters will continue walking towards the next target corner.
@@ -213,7 +223,7 @@ Keys:
 "speed"
  movement speed (default 100)
 */
-/*QUAKED realtimelights_light (0 0.75 0.75) (-8 -8 -8) (8 8 8)
+/*QUAKED realtimelights_light (0 0.75 0.75) (-16 -16 -16) (16 16 16)
 will be converted to rtlight file line on console command
 
 -------- KEYS --------
@@ -221,6 +231,34 @@ will be converted to rtlight file line on console command
 .rtlRadius = <float> radius of light.
 .color = <vector>[0-1] used to denote color of light.
 .rtlStyle = <float>[0-12] just like normal light style.
+.vec_name = <string> becomes Light's Cubemap image path.
+.rtlCorona = <float> intensity of Corona.
+.angles = <vector> directional angles for Light, '0 0 0' is non-directional.
+.rtlCoronaSize = <float> size of corona
+.rtlAmbient = <float>[0-1] Ambient lighting effect.
+.rtlDiffuse = <float>[0-1] Diffuse lighting intensity.
+.rtlSpecular = <float>[01] Specular lighting intensity.
+.rtlMode = <enum>
+  0 = normalmode NO && realtimemode NO
+  1 = normalmode YES && realtimemode NO
+  2 = normalmode NO && realtimemode YES
+  3 = normalmode YES && realtimemode YES
+-------- SPAWNFLAGS --------
+None
+*/
+/*QUAKED realtimelights_sunlight (0 1 0) (-24 -24 -24) (24 24 24) START_OFF
+will be converted to rtlight file line on console command
+
+this is a series of realtime lights generated to mimic sunlight.
+given an .angles var,
+  this will generate the necessary realtimelights_light entities.
+
+-------- KEYS --------
+.angles = <vector> direction of sunlight
+.rtlShadows = <bool> use real-time shadows or not.
+.rtlRadius = <float> radius of light.
+.color = <vector>[0-1] used to denote color of light.
+.style = <string> same as Light ent.
 .vec_name = <string> becomes Light's Cubemap image path.
 .rtlCorona = <float> intensity of Corona.
 .angles = <vector> directional angles for Light, '0 0 0' is non-directional.
@@ -828,6 +866,8 @@ Only used for the world entity.
 -------- KEYS --------
 .mapFile(NOT USED) <string> found in data/map_scripts/<map_name>/<map_name>.sav
 .missionFile(REQUIRED) <string> mission briefing file, found in data/map_scripts/<map_name>/<map_name>.dat
+.itemOverrideFile <string> data/map_scripts/<map_name>/<file>.sav - if present, send this file of items instead of normal save file
+.ignoreSave <bool> don't save at end of mission
 
 .light default light level
 .message <string> - the in-game name of the level
@@ -1071,6 +1111,32 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
+
+
+/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - LIGHTS_OFF IS_MAPKEY -
+{ model("models/buildings/towersmall/guardtower.md3"); }
+Listening Post, has the ability to detect the player and alert friendly bots.
+-------- KEYS -------- 
+.targetname : string, used for trigger calls from other ents
+.target : string name of ent to go to, usually a patrol node
+.trigOnSpawn:string target, fire this ENTITY when activated
+.trigOnDeath: string target, fire this ENTITY when killed
+.trigOnTarget: string target, fire this ENTITY when spotting a target
+.delay : float, use with trigOnTarget, wait time between calls to trigOnTarget
+  -1 = fire trigOnTarget once
+.style : float, light style. OPTIONAL
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+LIGHTS_OFF 2097152: turns off lights from this building.
+*/
+
+
+
+
 /*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
@@ -1110,6 +1176,23 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 
 /*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/hangar/hangar.md3"); }
+Mostly just a decorating building, BUT
+you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+/*QUAKED building_human_hangar_vehicle (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+{ model("models/buildings/hangar_vec/hangar_vehicle.md3"); }
 Mostly just a decorating building, BUT
 you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
 -------- KEYS -------- 
