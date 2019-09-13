@@ -45,7 +45,7 @@ void() click_main_train={
   cmd("coop 0\n");
   cmd("campaign 1\n");
   menu_exit_togame();
-  cmd("map", " start.bsp\n"); //TODO - training map
+  cmd("map", " dbg_training\n"); //TODO - training map
 };
 
 void() click_main_multi={
