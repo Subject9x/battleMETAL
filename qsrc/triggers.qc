@@ -795,3 +795,38 @@ void() trigger_toggleweapons={
     self.nextthink = time + self.data_lifetime;
   }
 };
+
+
+void() trigger_stuffcmd_think={
+  
+  local string msg;
+  //tokenizebyseparator(mapname, "/", ".");
+  
+  stuffcmd( activator, self.message);
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
+};
+
+/*QUAKED trigger_stuffcmd (.5 .5 .5) (-8 -8 -8) (8 8 8)
+Stuffs the supplied commands into the client's console.
+Note: not touchable, must be targetted.
+fields:
+"targetname"
+ must be set
+"wait"
+ seconds between triggerings (.5 default)
+"message"
+ commands (such as "bf", use ; to separate commands)
+*/
+void() trigger_stuffcmd={
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  
+  if( self.targetname && self.message ){
+    self.use = trigger_stuffcmd_think;
+  }
+  else{
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+  }
+};

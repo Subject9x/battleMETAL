@@ -38,18 +38,10 @@ void() map_objective_mission_conclude_th={
   local float successCheck;
   
   if( MISSION_STATUS ){
-    if( !self.map || (self.map == "")){
-      objerror( "map_objective missing .map field.");
-      return;
-    }
     successCheck = TRUE;
     nextmap = self.map;
   }
   else{
-    if( !self.mapFile || (self.mapFile == "")){
-      objerror( "map_objective missing .mapFile field.");
-      return;
-    }
     successCheck = FALSE;
     nextmap = self.mapFile;
   }

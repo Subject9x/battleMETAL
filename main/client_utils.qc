@@ -406,6 +406,10 @@ void(string cmd, float tokens) client_setMission={
       savefile_append();
       savefile_save();
     }
+    if( !nextmap || nextmap == "" ){
+      stuffcmd(self, "disconnect;togglemenu;");
+      return;
+    }
     changelevel (nextmap);  //possibly altered by map_objective objects.
   }
   else{
