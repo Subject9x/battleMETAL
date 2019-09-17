@@ -35,6 +35,24 @@ void() hud_event_frame={
   switch( HUD_EVENT_ID ){
     default:
       break;
+    case HUD_EVENT_FIREMODE_CHAIN:
+      hud_event_firemode_chain();
+      break;
+    case HUD_EVENT_FIREMODE_GROUP:
+      hud_event_firemode_group();
+      break;
+    case HUD_EVENT_RADAR_ACTIVE:
+      hud_event_radar_active();
+      break;
+    case HUD_EVENT_RADAR_PASSIVE:
+      hud_event_radar_passive();
+      break;
+    case HUD_EVENT_POWERUP:
+      hud_event_powerup();
+      break;
+    case HUD_EVENT_NAV_REACHED:
+      hud_event_nav_reached();
+      break;
     case HUD_EVENT_CRITICAL_LEGS:
       hud_event_critical_legs();
       break;
@@ -49,12 +67,6 @@ void() hud_event_frame={
       break;
     case HUD_EVENT_CRITICAL_ARM_RIGHT:
       hud_event_critical_right_arm();
-      break;
-    case HUD_EVENT_POWERUP:
-      hud_event_powerup();
-      break;
-    case HUD_EVENT_NAV_REACHED:
-      hud_event_nav_reached();
       break;
     case HUD_EVENT_OBJECTIVE_COMPLETE_PRIME:
       hud_event_objective_complete_prime();
@@ -85,12 +97,6 @@ void() hud_event_frame={
       break;
     case HUD_EVENT_REPAIRS_OFF:
       hud_event_repairs_off();
-      break;
-    case HUD_EVENT_FIREMODE_CHAIN:
-      hud_event_firemode_chain();
-      break;
-    case HUD_EVENT_FIREMODE_GROUP:
-      hud_event_firemode_group();
       break;
   }
 };
@@ -285,4 +291,20 @@ void() hud_event_firemode_group={
     snd_hud_vfx_addtoqueue(SND_HUD_VFX_FIREMODE_GROUP, 1);
   }
   hud_render_message( HUD_TXT_ORG, HUD_TEXT_FIREMODE_GROUP, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_radar_active={
+  if( !HUD_EVENT_SOUND_START ){
+    HUD_EVENT_SOUND_START = TRUE;
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE, 1);
+  }
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_RADAR_ACTIVE, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
+};
+
+void() hud_event_radar_passive={
+  if( !HUD_EVENT_SOUND_START ){
+    HUD_EVENT_SOUND_START = TRUE;
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRPASSIVE, 1);
+  }
+  hud_render_message( HUD_TXT_ORG, HUD_TEXT_RADAR_PASSIVE, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
 };

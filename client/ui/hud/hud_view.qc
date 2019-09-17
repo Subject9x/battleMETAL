@@ -178,7 +178,7 @@ void(vector pos, float algn, vector angle) hud_renderNavHeading={
   drawfont_prev = drawfont;
   drawfont = FONT_NUM_ROBOT_REGULAR;
   
-  drawstring(pos, gui_angleToNav(angle_y), gui_percentToPixelRawVec('20 20'), HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drawstring(pos, gui_angleToNav(angle_y), gui_percentToPixelRawVec('32 32'), HUD_COLOR_DEF, HUD_ALPHA + 0.15, 0);
   
   drawfont = drawfont_prev;
 };
@@ -761,6 +761,12 @@ void() hud_renderNavOverlay={
   local vector apos, tofs, iofs, i_sz, nofs, colr;
   local float nactive;
   local string navname;
+  local float navDist;
+  local float distThreshold;
+  local float heat;
+  //TODO - render nav brightness / saturation according to distance from player
+  
+  distThreshold = CLIENT_radar_range * 4;
   
   itr = 0;
   while( itr < 21 ){
@@ -769,7 +775,6 @@ void() hud_renderNavOverlay={
 
     nactive = NAVNAMES_ACTIVE[itr];
     navname = NAVNAMES[itr];
-    
     if( nactive > 0 ){
       i_sz = draw_getimagesize(UI_DEF_NAVPOINT);
       nofs = NAVNAMES_ORG[itr];
@@ -786,10 +791,19 @@ void() hud_renderNavOverlay={
         i_sz_y = i_sz_y / 4;
         iofs_x = iofs_x - (i_sz_x/2);
         iofs_y = iofs_y - (i_sz_y/2);
-        colr = CLR_DEF_WEP_INRANGE;
+        
+        navDist = vlen( NAVNAMES_ORG[itr] - RADAR_ORG );
+        heat = (1 - floor( navDist / distThreshold )) * -1;
+        
+        
         if( nactive == 2 ){
           colr = CLR_DEF_TXT_NONSELECT;
         }
+        else{
+          colr = CLR_DEF_WEP_INRANGE;
+          colr = colr * heat;
+        }
+        
         drawstring(tofs, navname, '12 12', colr, 1, 0);
         gui_renderTintImage(TRUE, iofs, UI_DEF_NAVPOINT, i_sz, colr, 1, 0) ;
       }
@@ -1134,6 +1148,10 @@ vector( float wbit ) hud_data_weapon_info={
   return wep;
 };
 
+/*
+  Renders Target's shield meter on the main HUD, using
+  the data from the hud file.
+*/
 void( float uid, float targetId ) hud_data_renderTarget_Shield={
   local float algn, lflag, lalign, axis;
   local vector porg, vsize, lblofs;
@@ -1149,8 +1167,13 @@ void( float uid, float targetId ) hud_data_renderTarget_Shield={
   }
 };
 
+/*
+  Render HUD Message
+    draws a HUD event message sent from the server.
+*/
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message={
   local vector messageOrigin;
+  local vector boxOrgin;
   local float width;
   
   drawfont_prev = drawfont;
@@ -1161,6 +1184,10 @@ void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, flo
   width = stringwidth( messageVal, 0, messageFont);
   messageOrigin = gui_calcAlign(messageOrigin, labelAlign);
   messageOrigin_x = messageOrigin_x - gui_percentXRaw( width / 2 );
+  
+  boxOrgin_x = VIEW_CTR_x - gui_percentXRaw(128);
+  boxOrgin_y = messageOrigin_y - gui_percentYRaw(4);
+  drawpic( boxOrgin, UI_DEF_BOX_512, '256 24', '0.45 0.45 0.45', 1, 0);
   
   drawstring(messageOrigin, messageVal, messageFont, CLR_DEF_RED * 0.85, 1, 0);
     

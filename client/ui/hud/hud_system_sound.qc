@@ -243,10 +243,10 @@ void(float mode) snd_hud_vfx_toggleradar={
   if(CLIENT_stat_rdr_mode_prev != mode){
     CLIENT_stat_rdr_mode_prev = mode;
     if(mode){
-     snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRACTIVE, 3);
+      hud_event_enqueue(HUD_EVENT_RADAR_ACTIVE, 1); 
     }
     else{
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_RDRPASSIVE, 3); 
+      hud_event_enqueue(HUD_EVENT_RADAR_PASSIVE, 1); 
     }
   }
 };
