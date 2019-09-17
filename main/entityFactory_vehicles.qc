@@ -416,7 +416,9 @@ void(void() data_ini) build_mech_bot={
   self.data_speed_backward = self.data_speed_backward * AI_MECH_MOVE_FACTOR;
   
   if( self.hardpoint_cnt > 0 ){
-    build_unit_weapon_list();
+    if( !(self.spawnflags & AI_SPAWNFLAG_UNARMED) ){
+      build_unit_weapon_list();
+    }
   }
   switch( self.faction ){
     case FACTION_PSC:
@@ -576,7 +578,9 @@ void(void() data_ini) build_vehicle_unit={
   }
   
   if( self.hardpoint_cnt > 0 ){
-    build_unit_weapon_list();
+    if( !(self.spawnflags & AI_SPAWNFLAG_UNARMED) ){
+      build_unit_weapon_list();
+    }
   }
    
   self.health = self.max_health;

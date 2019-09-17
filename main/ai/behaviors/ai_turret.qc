@@ -34,6 +34,14 @@ void() ai_turret_die={
   self.solid = SOLID_CORPSE;
   self.colormod = '0.25 0.25 0.25';
   
+  //annoying that turret corpses block a lot of fire.
+  self.maxs_x = self.maxs_x * 0.33;
+  self.maxs_y = self.maxs_y * 0.33;
+  self.mins_x = self.mins_x * -1;
+  self.mins_y = self.mins_y * -1;
+  self.maxs_z = self.maxs_z * 0.67;
+  setsize(self, self.mins, self.maxs);
+  
   local entity w_chain;
   w_chain = self.w_slot;
   while(w_chain){

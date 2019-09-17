@@ -1073,7 +1073,9 @@ DELAY 4: wait after fire before execution
 
 
 /*QUAKED ai_change_rank (0.988 0.976 0.267) (-16 -16 -16) (16 16 16) START_OFF REMOVE_ONUSE DELAY_FIRE
-changes the faction field of the targeted objects
+changes the rank field of the targeted objects, this will then also execute a recalculation of
+that unit's stats using the ai_stats.qc functions. This is useful for adjusting level difficulty at
+runtime.
 
 -------- KEYS -------- 
 .group        <string> [group] objects with this groupId will be affected
@@ -1174,6 +1176,8 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
+
+
 /*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/hangar/hangar.md3"); }
 Mostly just a decorating building, BUT
@@ -1190,6 +1194,7 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
+
 
 
 
@@ -1211,6 +1216,8 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
+
+
 /*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
 { model("models/buildings/repair/repair.md3"); }
 -------- KEYS -------- 
@@ -1225,6 +1232,8 @@ NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
+
+
 
 
 /*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
@@ -1243,8 +1252,11 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
+
+
 /*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
+Light Turret, Survest Faction
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -1267,12 +1279,15 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
 */
 
 
 
 /*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
+Light Turret, MILITAR Faction
+NOTE: auto promotion x1 on-spawn!
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -1295,11 +1310,50 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio 
 */
+
+
+
+
+
+/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+Light Turret, PSC Faction
+NOTE: auto promotion x2 on-spawn!
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+
+
+
 
 
 /*QUAKED building_turret_missile_m (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
+Missile Turret, MILITAR Faction
+NOTE: auto promotion x1 on-spawn!
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -1322,11 +1376,16 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
+
 
 
 /*QUAKED building_turret_missile_s (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
+Missile Turret, Survest Faction
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -1349,12 +1408,49 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
+
+
+/*QUAKED building_turret_missile_p (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+Missile Turret, PSC Faction
+NOTE: auto promotion x2 on-spawn!
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+
+
 
 
 
 /*QUAKED building_turret_heavy_m (0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
+Heavy Turret, MILITAR Faction
+NOTE: auto promotion x1 on-spawn!
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -1377,11 +1473,13 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
 */
 
 
 /*QUAKED building_turret_heavy_s(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
+Heavy Turret, Survest Faction
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -1404,6 +1502,35 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+
+/*QUAKED building_turret_heavy_p(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+Heavy Turret, Survest Faction
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
 */
 
 //=================================================================================================
@@ -1761,7 +1888,7 @@ RANDOM_ANGLE 2: random yaw rotation
 //  SIZE: SMALL
 //  --------------------------------
 //
-/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED UNARMED
+/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED 
 { model("models/vecs/dunerunner/dunerunner_h.md3"); }
   Skill 0 | 1
     ATC | ATC
@@ -1799,10 +1926,11 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
-UNARMED 65536: skip weapon assignment entirely, give this unit no weapons.
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
-/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/dunerunner/dunerunner_m.md3"); }
   Skill 0 | 1
     LAS | ATC
@@ -1840,6 +1968,8 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
 //
@@ -1849,7 +1979,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 //  --------------------------------
 //
 
-/*QUAKED unit_foslager_h (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_foslager_h (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
   Skill 0 | 1
     MIS | LATC | LAS
@@ -1887,9 +2017,11 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
-/*QUAKED unit_foslager_m (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_foslager_m (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
   Skill 0 | 1
     ESR | LATC | LAS
@@ -1927,6 +2059,8 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
 //
@@ -1935,7 +2069,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 //  SIZE: HEAVY
 //  --------------------------------
 //
-/*QUAKED unit_trowel_m (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_trowel_m (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
   Skill 0 | 1
     ESR | ESR
@@ -1973,8 +2107,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_trowel_h (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_trowel_h (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
   Skill 0 | 1
     MIS | ION
@@ -2012,6 +2148,8 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
 //
@@ -2020,7 +2158,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_onnek_h (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_onnek_h (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
   Skill 0 | 1
     ION
@@ -2058,9 +2196,11 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
-/*QUAKED unit_onnek_m (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_onnek_m (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
   Skill 0 | 1
     PAC
@@ -2098,6 +2238,8 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
 //
@@ -2106,7 +2248,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_sorcerer_h (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_sorcerer_h (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
   Skill 0 | 1
     MIS | MIS
@@ -2144,9 +2286,11 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
-/*QUAKED unit_sorcerer_m (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_sorcerer_m (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
   Skill 0 | 1
     ARH | ARH
@@ -2184,12 +2328,14 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
 //
 //  METAL : BALAKET
 //
-/*QUAKED unit_balaket_sniper_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_balaket_sniper_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_h.md3"); }
   Skill 0 | 1
     ATC | ATC | LAS
@@ -2227,8 +2373,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_balaket_sniper_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_balaket_sniper_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_m.md3"); }
   Skill 0 | 1
     ATC | ATC | QRF
@@ -2266,8 +2414,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_balaket_brawl_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_balaket_brawl_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_h.md3"); }
   Skill 0 | 1
     FLAK | FLAK | ION
@@ -2305,8 +2455,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_balaket_brawl_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_balaket_brawl_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_m.md3"); }
   Skill 0 | 1
     LAS | LAS | RPC
@@ -2344,9 +2496,11 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
-/*QUAKED unit_balaket_brawl_p (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_balaket_brawl_p (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_p.md3"); }
   Skill 0 | 1
     LAS | LAS | RPC
@@ -2384,12 +2538,14 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
 //
 //  METAL : MATOK
 //
-/*QUAKED unit_matok_sniper_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_matok_sniper_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
   Skill 0 | 1
     ATC | ATC | FLAK | FLAK | ION
@@ -2427,8 +2583,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_matok_sniper_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_matok_sniper_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
   Skill 0 | 1
     LAS | LAS | QRF | FLAK | ION 
@@ -2466,8 +2624,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_matok_sniper_p (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_matok_sniper_p (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/matok/matok_p.md3"); }
   Skill 0 | 1
     LAS | LAS | QRF | FLAK | ION 
@@ -2505,8 +2665,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_matok_brawl_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_matok_brawl_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
   Skill 0 | 1
     ATC | FLAK | LAS | MIS | ION
@@ -2544,8 +2706,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_matok_brawl_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_matok_brawl_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
   Skill 0 | 1
     ATC | ATC | ESR | ION | MIS
@@ -2583,12 +2747,14 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
 
 //
 //  METAL : MONITOR
 //
-/*QUAKED unit_monitor_brawl_h (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_monitor_brawl_h (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
   Skill 0 | 1
     ATC | FLAK | ATC | FLAK | LAS | LAS | MIS | ARH | MIS
@@ -2626,8 +2792,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_monitor_brawl_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_monitor_brawl_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
   Skill 0 | 1
     FLAK | FLAK | FLAK | FLAK | RPC | EMP | MIS | MARH | MARH
@@ -2665,8 +2833,10 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_monitor_brawl_p (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED unit_monitor_brawl_p (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_p.md3"); }
   Skill 0 | 1
     FLAK | FLAK | FLAK | FLAK | RPC | EMP | MIS | MARH | MARH
@@ -2704,8 +2874,12 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_monitor_sniper_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED UNARMED
+
+
+/*QUAKED unit_monitor_sniper_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
   Skill 0 | 1
     LAS | ATC | LAS | ATC | PAC | QRF | MARH | ENBAT | ATGM
@@ -2743,4 +2917,6 @@ NO_ELITE 4096: remove from Elit Difficulty
 NO_DROP 8192: don't drop bot to the floor onspawn
 TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
 */

@@ -95,9 +95,13 @@ REMOVE_ONUSE 2: removed after its first use.
 DELAY 4: wait after fire before execution
 */
 void() ai_change_faction={
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
   
-  setsize( self, '-3 -3 -3', '3 3 3' );
-  setorigin( self, self.origin );
+  if( cvar("developer") ){
+    setsize( self, '-3 -3 -3', '3 3 3' );
+    setorigin( self, self.origin );
+  }
   self.use = ai_change_faction_use;
   
   if( (self.spawnflags & 1) ){
@@ -108,7 +112,9 @@ void() ai_change_faction={
 };
 
 /*QUAKED ai_change_rank (0.988 0.976 0.267) (-16 -16 -16) (16 16 16) START_OFF REMOVE_ONUSE DELAY_FIRE
-changes the faction field of the targeted objects
+changes the rank field of the targeted objects, this will then also execute a recalculation of
+that unit's stats using the ai_stats.qc functions. This is useful for adjusting level difficulty at
+runtime.
 
 -------- KEYS -------- 
 .group        <string> [group] objects with this groupId will be affected
@@ -122,9 +128,13 @@ REMOVE_ONUSE 2: removed after its first use.
 DELAY 4: wait after fire before execution
 */
 void() ai_change_rank={
-
-  setsize( self, '-3 -3 -3', '3 3 3' );
-  setorigin( self, self.origin );
+  self.solid = SOLID_NOT;
+  self.movetype = MOVETYPE_NONE;
+  
+  if( cvar("developer") ){
+    setsize( self, '-3 -3 -3', '3 3 3' );
+    setorigin( self, self.origin );
+  }
   self.use = ai_change_rank_use;
   
   if( (self.spawnflags & 1) ){
