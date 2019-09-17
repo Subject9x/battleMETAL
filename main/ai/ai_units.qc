@@ -1345,7 +1345,7 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
-void() building_turret_heavy_m={
+void() building_turret_heavy_p={
   self.nextVecChoice = UID_TURRET_heavy_turret;
   self.faction = FACTION_PSC;
   ai_promote();
