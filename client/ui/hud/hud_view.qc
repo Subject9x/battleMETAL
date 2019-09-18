@@ -793,8 +793,10 @@ void() hud_renderNavOverlay={
         iofs_y = iofs_y - (i_sz_y/2);
         
         navDist = vlen( NAVNAMES_ORG[itr] - RADAR_ORG );
-        heat = (1 - floor( navDist / distThreshold )) * -1;
-        
+        heat = (1 - ( navDist / distThreshold ));
+        if( heat < 0.33 ){
+          heat = 0.33;
+        }
         
         if( nactive == 2 ){
           colr = CLR_DEF_TXT_NONSELECT;

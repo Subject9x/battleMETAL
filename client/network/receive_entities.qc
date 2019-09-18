@@ -345,8 +345,8 @@ void() client_event_mission_name_frame={
     MISSION_NAME_ALPHA = 0;
   }
   
-  drawstring( MISSION_NAME_ORG, MISSION_NAME, '24 24 0', '1 1 1', MISSION_NAME_ALPHA, 0);
-  drawstring( MISSION_NAME_ORG, MISSION_NAME, '24 24 0', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
+  drawstring( MISSION_NAME_ORG, MISSION_NAME, '32 32 0', '1 1 1', MISSION_NAME_ALPHA, 0);
+  drawstring( MISSION_NAME_ORG, MISSION_NAME, '32 32 0', MISSION_NAME_COLOR, MISSION_NAME_ALPHA, 0);
   drawfont = drawfont_prev;
 };
 
@@ -370,7 +370,7 @@ void( string name ) client_event_mission_name={
     noNewLine = strstrofs( name, "\n", 0 );
     MISSION_NAME = substring( name, 0, noNewLine);
     MISSION_NAME = strzone( MISSION_NAME );
-    nameLen = stringwidth(MISSION_NAME, 0, '24 24 0');
+    nameLen = stringwidth(MISSION_NAME, 0, '32 32 0');
     nameLen = gui_percentXRaw( nameLen / 2 );
     newOrg_x = VIEW_CTR_x - nameLen;
     newOrg_y = VIEW_CTR_y - gui_percentYRaw( 96 );

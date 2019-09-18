@@ -196,6 +196,7 @@ void(vector ofs) menu_briefMissionText={
 void(vector ofs) menu_briefMapPanel={
   local vector mpos, ui_msize, ui_msize_in;
   local vector iofs, map_size;
+  local vector renderColor;
   local float itr;
   local string s;
   
@@ -227,6 +228,8 @@ void(vector ofs) menu_briefMapPanel={
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
 
+  renderColor  = CLR_DEF_ARM_OK - '0.27 0.27 0.27';
+
   while( itr <= 21 ){
     local vector navorg, nofs, tofs;
     local float nactive, nlen;
@@ -240,14 +243,14 @@ void(vector ofs) menu_briefMapPanel={
       tofs = nofs = gui_mapCoordToImgCoord(world.mins, map_size, navorg, iofs, gui_percentToPixelRawVec(ui_msize_in));
       
       drawfont_prev = drawfont;
-      drawfont = FONT_NUM_ROBOT_LIGHT;
+      drawfont = FONT_NUM_ROBOT_REGULAR;
         
-      nlen = stringwidth(navname, 0, '10 10 0');
+      nlen = stringwidth(navname, 0, '12 12 0');
       nofs_x = nofs_x - gui_percentXRaw((nlen/2));
-      nofs_y = nofs_y - gui_percentYRaw(16);
-      gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', CLR_DEF_ARM_OK, 1, 0) ;
+      nofs_y = nofs_y - gui_percentYRaw(18);
+      gui_renderTintImage(TRUE, tofs - gui_percentToPixelRawVec('8 8'), UI_DEF_NAVPOINT, '16 16', renderColor, 1, 0) ;
         
-      drawstring(nofs, navname, '10 10 0', CLR_DEF_ARM_OK, 1, 0);
+      drawstring(nofs, navname, '12 12 0', renderColor, 1, 0);
         
       drawfont = drawfont_prev;
     }
