@@ -85,7 +85,7 @@ void() ai_tank_sk_die1={
 void() ai_tank_sk_stand1;
 void() ai_tank_sk_patrol1;
 void() ai_tank_sk_fight_prep;
-
+void( entity attacker ) ai_tank_sk_react1;
 /*
   rotate in place to self.ideal_yaw
 */
@@ -362,6 +362,9 @@ void() ai_tank_sk_fight_prep={
   macro_ai_frame(ai_tank_sk_stand1)
 };
 
+/*
+  TH_WALK - Patrol
+*/
 void() ai_tank_sk_patrol1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
@@ -376,6 +379,9 @@ void() ai_tank_sk_patrol1={
   macro_ai_frame(ai_tank_sk_patrol1)
 };
 
+/*
+  TH_STAND - Stand1
+*/
 void() ai_tank_sk_stand1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
@@ -1502,6 +1508,82 @@ void() ai_tank_sk_panic10={
 };
 
 /*
+  TH_REACT - react to damage
+*/
+void( entity attacker ) ai_tank_sk_react1={
+  local float my_hp;
+  local float enemy_hp, enemy_size;
+  local float atk_hp, atk_size;
+
+  //AI has taken friendly fire
+  if( attacker.faction == self.faction ){
+    return;
+  }
+  
+  self.ai_react_buffer = time + self.ai_react_time;
+    
+  if( (self.flags & FL_DISARMED) ){
+    self.th_pain( attacker );
+    if( self.ai_rank > AI_RANK_REG ){
+      //TODO - call for help
+    }
+    return;
+  }
+  
+  //AI currently has no target
+  if( !self.enemy ){
+    self.enemy = attacker;
+    self.th_missile();
+    return;
+  }
+  
+  my_hp = util_getMechHpAverage(self);
+  
+
+  atk_hp = util_getMechHpAverage(attacker);
+  atk_size = attacker.vec_size;
+  
+  if( self.enemy ){
+    if( (attacker.flags & FL_CLIENT) ){
+      //prioritize players
+      self.oldenemy = self.enemy;
+      self.enemy = attacker;
+      self.th_missile();
+      return;
+    }
+    enemy_hp  = util_getMechHpAverage(self.enemy);
+    enemy_size = self.enemy.vec_size;
+    if( self.ai_rank > AI_RANK_REG ){
+      if( atk_hp < enemy_hp ){
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.th_missile();
+        return;
+      }
+      if( atk_size > enemy_size ){
+        if( atk_hp < enemy_hp ){
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.th_missile();
+          return;
+        }
+      }
+    }
+    else{
+      if( atk_size < enemy_size ){
+        //lesser bots usually panic
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.th_missile();
+        return;
+      }
+    }
+  }
+  //do nothing;
+  return;
+};
+
+/*
   AI SPAWN FUNCTION
 */
 void() ai_tank_skirmish={
@@ -1517,6 +1599,7 @@ void() ai_tank_skirmish={
   self.th_walk = ai_tank_sk_patrol1;
   self.th_missile = ai_tank_sk_fight_prep;
   self.th_pain = ai_tank_sk_panic1;
+  self.th_react = ai_tank_sk_react1;
   self.th_die = ai_tank_sk_die;
   self.touch = ai_touch;
   

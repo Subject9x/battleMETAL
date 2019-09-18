@@ -160,7 +160,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   local entity dmgTrg, dmgInflictor;
   local entity otherSelf, targ_act;
   local entity notTarg;
-  local float dmgAmt, prevShields;  
+  local float dmgAmt, prevShields;
   
   if( !trg.takedamage ){
     return trg;
@@ -233,22 +233,24 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( (trg.flags & FL_MONSTER) ){
     notTarg = self;
     self = dmgTrg;
-    if( self.data_type == DATA_BLD ){
-      if( self.data_idx == UI_BUILDING_radar ){
-        if( self.enemy != attacker ){
-          self.oldenemy = self.enemy;
-          self.enemy = attacker;
-          self.th_missile();
-          self.enemy = self.oldenemy;
-        }
-        else{
-          self.enemy = attacker;
-          self.th_missile();
-        }
+    if( self.data_idx == UI_BUILDING_radar ){
+      if( self.enemy != attacker ){
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.th_missile();
+        self.enemy = self.oldenemy;
+      }
+      else{
+        self.enemy = attacker;
+        self.th_missile();
       }
     }
     else{
-      ai_damage_react( dmgTrg, attacker );
+      if( self.th_react ){      
+        if( time > self.ai_react_buffer ){
+          self.th_react( attacker );
+        }
+      }
     }
     self = notTarg;
   }
@@ -256,7 +258,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( (prevShields > 0) && (trg.shield <= 0) ){
     te_shield_explode( trg.origin, trg.vec_size );
     if( (trg.flags & FL_MONSTER) ){
-      if( trg.ai_rank <= AI_RANK_REG ){
+      if( trg.ai_rank < AI_RANK_VET ){
         ai_sfx_dying();
       }
     }
@@ -266,7 +268,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
-  sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM);
+  sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons
   
   //the special hit-location calculator is only run for DATA_MECH units
   if(trg.data_type == DATA_MECH){
@@ -463,7 +465,6 @@ void(entity targ, entity attacker, float dmg_type) killed={
         }
       }
     }
-    //self.th_die();
     self.think = self.th_die;
     self.nextthink = time + 0.1;
   self = oself;

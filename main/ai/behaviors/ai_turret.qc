@@ -126,6 +126,7 @@ void() ai_turret_idle7;
 void() ai_turret_idle8;
 void() ai_turret_idle9;
 void() ai_turret_idle10;
+void( entity attacker ) ai_turret_react1
 
 void() ai_turret_patrol1={
   ai_update_accuracy( TRUE );
@@ -267,7 +268,7 @@ void() ai_turret_fight_prep={
       return;
     }
     if( enemy_vis == VIS_FAIL ){
-      if( enemy_range > self.ai_minrange ){
+      if( enemy_range >= AI_RANGE_L ){
         self.enemy = world;
         macro_ai_frame(ai_turret_patrol1)
         return;
@@ -529,9 +530,93 @@ void() ai_turret_hunt10={
       return;
     }
   }
+  
+  macro_ai_frame_count(ai_turret_hunt1)
+  
+  self.enemy = world; //dumps target
+  if( ai_valid_target( self.oldenemy ) ){
+    self.enemy = self.oldenemy;
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
+  }
+  
   ai_turret_set_state(TR_NORM);
   macro_ai_frame(ai_turret_patrol1)
 };
+
+/*
+  TH_REACT
+    what to do when hit by fire
+*/
+void( entity attacker ) ai_turret_react1={
+  local float my_hp;
+  local float enemy_hp, enemy_size;
+  local float atk_hp, atk_size;
+
+  //AI has taken friendly fire
+  if( attacker.faction == self.faction ){
+    return;
+  }
+ 
+  //TODO - have turret face shot origin FIRST, then fight_prep()
+ 
+  self.ai_react_buffer = time + self.ai_react_time;
+  
+  //AI currently has no target
+  if( !self.enemy ){
+    self.enemy = attacker;
+    self.th_missile();
+    return;
+  }
+  
+  my_hp = util_getMechHpAverage(self);
+  
+  atk_hp = util_getMechHpAverage(attacker);
+  atk_size = attacker.vec_size;
+  
+  if( self.enemy ){
+    if( (attacker.flags & FL_CLIENT) ){
+      //prioritize players
+      self.oldenemy = self.enemy;
+      self.enemy = attacker;
+      self.th_missile();
+      return;
+    }
+    enemy_hp  = util_getMechHpAverage(self.enemy);
+    enemy_size = self.enemy.vec_size;
+    if( self.ai_rank > AI_RANK_REG ){
+      if( atk_hp < enemy_hp ){
+        //high rank turrets will attack weaker targets (the smart move)
+        if( ai_check_face( attacker, self.ai_fov) ){
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.th_missile();
+          return;
+        }
+      }
+      if( atk_size > enemy_size ){
+        if( atk_hp < enemy_hp ){
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.th_missile();
+          return;
+        }
+      }
+    }
+    else{
+      if( atk_size > enemy_size ){
+        //lesser bots usually panic
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.th_missile();
+        return;
+      }
+    }
+  }
+  //do nothing;
+  return;
+};  
+
 
 /*
   Turret idles by rotating to a random heading
@@ -630,6 +715,7 @@ void() ai_turret={
   self.th_stand = ai_turret_patrol1;
   self.th_walk = ai_turret_idle1;
   self.th_missile = ai_turret_fight_prep;
+  self.th_react = ai_turret_react1;
   self.th_die = ai_turret_die;
   
   self.think = ai_turret_patrol1;

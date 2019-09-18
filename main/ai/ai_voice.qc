@@ -20,6 +20,11 @@ float AI_VOICE_WARN       = 9;
 
 void( float randomBool ) ai_voice_ini={
   local float randoVoice;
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_MUTED) ){
+    return;
+  }
+  
   if( randomBool ){
     randoVoice = random();
     

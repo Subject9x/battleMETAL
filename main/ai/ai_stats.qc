@@ -96,7 +96,26 @@ void(float rank) ai_pilot_ini_stats={
   self.data_speed_strafe = self.data_speed_strafe * AI_WALK_SPD;
   self.data_speed_backward = self.data_speed_backward * AI_WALK_SPD;
   
+  ai_pilot_react_cool();
+  
   world_get_fog();
+};
+
+void() ai_pilot_react_cool={
+  switch(self.ai_rank){
+    case AI_RANK_ACE:
+      self.ai_react_time = AI_REACT_ACE;
+      break;
+    case AI_RANK_VET:
+      self.ai_react_time = AI_REACT_VET;
+      break;
+    case AI_RANK_REG:
+      self.ai_react_time = AI_REACT_REG;
+      break;
+    case AI_RANK_ROK : 
+      self.ai_react_time = AI_REACT_ROK;
+      break;
+  }
 };
 
 float(float rank) ai_pilot_field_of_view={

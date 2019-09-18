@@ -223,8 +223,8 @@ void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high={
 
 
 void() te_shield_explode_th={
-  self.alpha = self.alpha - 0.015;
-  self.scale = self.scale + 0.01;
+  self.alpha = self.alpha - 0.012;
+  self.scale = self.scale + 0.015;
   self.think = te_shield_explode_th;
   if( self.alpha < 0.01 ){
     self.think = SUB_Remove;

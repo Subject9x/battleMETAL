@@ -69,6 +69,10 @@ float enemy_hunt;
 entity AI_NODES[128];
 
 //ENTITY VARS
+.void( entity attacker ) th_react;  //supplants ai_damage_react() call in t_damage();
+.float ai_react_buffer;             //prevents too many runs of th_react;
+.float ai_react_time;               //stat for react buffer
+
 .float ai_rank;
 .float ai_action_time;  //for executing action states
 .float ai_action_mod;   //how many times to repeat a frameset before adjusting
@@ -106,6 +110,7 @@ vector( float rank, vector spread ) ai_pilot_accuracy;
 float( float rank, float lockOn ) ai_pilot_lock_time;
 void() ai_unit_ini_var;
 float() ai_pilot_minrange;
+void() ai_pilot_react_cool;
 void(float rank) ai_pilot_ini_stats;
 
 //AI NODES

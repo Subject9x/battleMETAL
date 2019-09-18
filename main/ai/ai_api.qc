@@ -381,23 +381,31 @@ float(entity bot, entity attacker) ai_damage_react={
   local float enemy_hp, enemy_size;
   local float atk_hp, atk_size;
 
+  //AI has no guns, or lost all guns, call for help and panic!
   if( (self.flags & FL_DISARMED) ){
     ai_call_for_help( attacker );
+    self.th_pain( attacker );
     return FALSE;
   }
   
+  my_hp = util_getMechHpAverage(self);
+   
+  //AI has taken friendly fire
   if( attacker.faction == self.faction ){
+    if( my_hp <= 0.33 ){
+      self.th_pain( attacker );
+    }
     return FALSE;
   }
   
+  //AI currently has no target
   if( !self.enemy ){
     self.enemy = attacker;
-    self.th_missile();
     ai_sfx_spotted();
     if( self.th_pain ){
       if( self.ai_rank < AI_RANK_VET ){
-        if( util_getMechHpAverage(self) <= 0.25){
-          if( random() <= 0.5 ){
+        if( my_hp <= 0.25){
+          if( random() <= 0.75 ){
             self.th_pain( self.enemy );
           }
         }
@@ -406,7 +414,6 @@ float(entity bot, entity attacker) ai_damage_react={
     return TRUE;
   }
   
-  my_hp = util_getMechHpAverage(self);
   atk_hp = util_getMechHpAverage(attacker);
   atk_size = attacker.vec_size;
   
@@ -417,22 +424,15 @@ float(entity bot, entity attacker) ai_damage_react={
       if( atk_hp < enemy_hp ){
         if( ai_check_face( attacker, self.ai_fov) ){
           self.enemy = attacker;
-          self.th_missile();
           return TRUE;
         }
       }
       if( atk_size > enemy_size ){
         if( atk_hp < enemy_hp ){
           self.enemy = attacker;
-          self.th_missile();
           return TRUE;
         }
       }
-    }
-    if( ai_check_face( attacker, self.ai_fov) && !ai_check_face( self.enemy, self.ai_fov) ){
-      self.enemy = attacker;
-      self.th_missile();
-      return TRUE;
     }
   }
   return FALSE;
