@@ -80,14 +80,14 @@ void() light =
 None
 */
 void() realtimelights_light={
+  if( !cvar("developer") ){
+    remove(self);
+  }
   self.classname = "realtimelights_light";
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  self.alpha = 0;
-  if( cvar("developer") ){
-    self.alpha = 1;
-    setmodel(self, "q3mdl/testball.md3");
-  }
+  self.alpha = 1;
+  setmodel(self, "q3mdl/testball.md3");
 };
 
 /*QUAKED realtimelights_sunlight (0 1 0) (-24 -24 -24) (24 24 24) START_OFF
@@ -118,6 +118,9 @@ Second realtimelights_light stays on this origin, and only has AMBIENT light.
 None
 */
 void() realtimelights_sunlight={
+  if( !cvar("developer") ){
+    remove(self);
+  }
   /*
     fixed algorithm
     1) this ent should be placed at the CENTER of the volume you want sunlight
@@ -138,11 +141,8 @@ void() realtimelights_sunlight={
   self.angles_x = 0;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  self.alpha = 0;
-  if( cvar("developer") ){
-    self.alpha = 1;
-    setmodel(self, "q3mdl/testball.md3");
-  }
+  self.alpha = 1;
+  setmodel(self, "q3mdl/testball.md3");
   
   makevectors(self.angles);
   traceline( self.origin, self.origin + (v_forward * 640000), MOVE_WORLDONLY, self);

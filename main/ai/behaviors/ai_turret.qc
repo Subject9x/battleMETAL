@@ -126,7 +126,8 @@ void() ai_turret_idle7;
 void() ai_turret_idle8;
 void() ai_turret_idle9;
 void() ai_turret_idle10;
-void( entity attacker ) ai_turret_react1
+void( entity attacker ) ai_turret_react1;
+void() ai_turret_react2;
 
 void() ai_turret_patrol1={
   ai_update_accuracy( TRUE );
@@ -549,6 +550,9 @@ void() ai_turret_hunt10={
     what to do when hit by fire
 */
 void( entity attacker ) ai_turret_react1={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
   local float my_hp;
   local float enemy_hp, enemy_size;
   local float atk_hp, atk_size;
@@ -579,44 +583,62 @@ void( entity attacker ) ai_turret_react1={
       //prioritize players
       self.oldenemy = self.enemy;
       self.enemy = attacker;
-      self.th_missile();
+      self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+      macro_ai_frame(ai_turret_react2)
       return;
     }
-    enemy_hp  = util_getMechHpAverage(self.enemy);
-    enemy_size = self.enemy.vec_size;
-    if( self.ai_rank > AI_RANK_REG ){
-      if( atk_hp < enemy_hp ){
-        //high rank turrets will attack weaker targets (the smart move)
-        if( ai_check_face( attacker, self.ai_fov) ){
-          self.oldenemy = self.enemy;
-          self.enemy = attacker;
-          self.th_missile();
-          return;
-        }
-      }
-      if( atk_size > enemy_size ){
-        if( atk_hp < enemy_hp ){
-          self.oldenemy = self.enemy;
-          self.enemy = attacker;
-          self.th_missile();
-          return;
-        }
-      }
-    }
     else{
-      if( atk_size > enemy_size ){
-        //lesser bots usually panic
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        self.th_missile();
-        return;
+      enemy_hp  = util_getMechHpAverage(self.enemy);
+      enemy_size = self.enemy.vec_size;
+      if( self.ai_rank > AI_RANK_REG ){
+        if( atk_hp < enemy_hp ){
+          //high rank turrets will attack weaker targets (the smart move)
+          if( ai_check_face( attacker, self.ai_fov) ){
+            self.oldenemy = self.enemy;
+            self.enemy = attacker;
+            self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+            macro_ai_frame(ai_turret_react2)
+            return;
+          }
+        }
+        else if( atk_size > enemy_size ){
+          if( atk_hp < enemy_hp ){
+            self.oldenemy = self.enemy;
+            self.enemy = attacker;
+            self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+            ai_turret_set_state(TR_YAW);
+            macro_ai_frame(ai_turret_react2)
+            return;
+          }
+        }
+      }
+      else{
+        if( atk_size > enemy_size ){
+          //lesser bots usually panic
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+          macro_ai_frame(ai_turret_react2)
+          return;
+        }
       }
     }
   }
-  //do nothing;
-  return;
 };  
-
+void() ai_turret_react2={
+  ai_update_accuracy( TRUE );
+  macro_ai_update(ctrl_updateTank)
+  
+  local float angHigh, angLow;
+  angHigh = anglemod( self.torsoCenter.angles_y + 15 );
+  angLow = anglemod( self.torsoCenter.angles_y - 15 );
+  if( ai_check_face( self.enemy, self.ai_fov) ){
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
+  }
+  
+  macro_ai_frame(ai_turret_react2)
+};
 
 /*
   Turret idles by rotating to a random heading
