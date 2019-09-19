@@ -39,7 +39,7 @@ void() data_ini_equip_recharge_capacitor_={
   #ifndef CSQC
   self.w_attack = recharge_capacitor_upgrade_;
   self.think = SUB_Null;
-  self.unit_wep1 = recharge_capacitor_remove_;
+  self.item_remove_upgrade = recharge_capacitor_remove_;
   self.model = "q3mdl/weapons/e_recap.md3";
   self.w_isburst = FALSE;
   #endif

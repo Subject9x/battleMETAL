@@ -225,7 +225,7 @@ void() ctrl_die_weapon={
     
     if( (self.damageType & DMG_MSC) ){
       //weapon is equip, run death func which undoes the module's upgrades
-       self.unit_wep1();
+       self.item_remove_upgrade();
     }
   }
 };

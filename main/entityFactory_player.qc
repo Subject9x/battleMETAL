@@ -69,7 +69,7 @@ void() player_makeMech={
   client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
   client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
   client_update_viewPitch( self.pitchMin, self.pitchMax );
-  client_send_event_powerup();
+  client_send_event_powerup( self );
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
   
   //TODO - refactor/refine - this allows for composited HUD modeling, and EF_NOGUNBOB allows for sub-component HUD parts to not shake.
@@ -117,7 +117,6 @@ void() player_unmakeMech={
   self.accuracy = 0;
   self.accuracyMod = 0;
   self.stat_plr_fir = FIRE_GROUP;
-  self.stat_ctor_hp = 0;
   self.stat_rdr_mode = FALSE;
   self.stat_rdr_rng = 0;
   self.energy = 0;

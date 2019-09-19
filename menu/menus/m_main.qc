@@ -43,7 +43,6 @@ void() click_main_train={
   cvar_set("skill", "1");
   cmd("deathmatch 0\n");
   cmd("coop 0\n");
-  cmd("campaign 1\n");
   menu_exit_togame();
   cmd("map", " dbg_training\n"); //TODO - training map
 };

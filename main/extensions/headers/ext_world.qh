@@ -32,7 +32,6 @@ float TE_STOMP_TYPE;  //set by world type
 void() mh_world_ini;
 
 void() world_get_fog;
-float( entity t ) world_calc_fog;
 
 //RTLight converter system---------------------------------------------
 .float rtlShadows; //FALSE = write nothin | TRUE = write '!'

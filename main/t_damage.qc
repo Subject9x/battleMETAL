@@ -246,9 +246,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
     }
     else{
-      if( self.th_react ){      
-        if( time > self.ai_react_buffer ){
-          self.th_react( attacker );
+      if( attacker != self.enemy ){
+        if( self.th_react ){      
+          if( time > self.ai_react_buffer ){
+            self.th_react( attacker );
+          }
         }
       }
     }
@@ -256,12 +258,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if( (prevShields > 0) && (trg.shield <= 0) ){
-    te_shield_explode( trg.origin, trg.vec_size );
-    if( (trg.flags & FL_MONSTER) ){
-      if( trg.ai_rank < AI_RANK_VET ){
-        ai_sfx_dying();
-      }
-    }
+    te_shield_explode( trg.origin, trg.vec_size + 1 );
   }
   
   if( !dmgAmt ){
@@ -271,7 +268,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons
   
   //the special hit-location calculator is only run for DATA_MECH units
-  if(trg.data_type == DATA_MECH){
+  if( trg.data_type == DATA_MECH ){
     //filter out leg hits
     if(dmg_point_z < (trg.origin_z - 5)){
       dmgTrg = dmgTrg.legs;

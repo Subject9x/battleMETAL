@@ -2,7 +2,8 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 7/9/2018
-Overview: AI State equations
+Overview: 
+  AI State equations
 */
 
 /*
@@ -19,12 +20,6 @@ void() ai_unit_ini_var={
   self.shield = 0;
   self.shieldMax = 0;
   self.shieldRate = 0;
-  self.stat_legs_hp = 0;
-  self.stat_ctor_hp = 0;
-  self.stat_ltor_hp = 0;
-  self.stat_rtor_hp = 0;
-  self.stat_larm_hp = 0;
-  self.stat_rarm_hp = 0;
   
   self.radar_range = 0; 
   self.was_hit = FALSE;
@@ -237,6 +232,9 @@ float() ai_pilot_yaw_mod={
     case AI_RANK_ROK:
       yawspeed = yawspeed * AI_YAW_ROK;
       break;
+    default:
+      yawspeed = yawspeed * AI_YAW_REG;
+      break;
   }
   return yawspeed;
 };
@@ -254,6 +252,9 @@ float() ai_turret_yaw_mod={
       break;
     case AI_RANK_ROK:
       yawspeed = yawspeed * AI_YAW_ROK;
+      break;
+    default:
+      yawspeed = yawspeed * AI_YAW_REG;
       break;
   }
   return yawspeed;

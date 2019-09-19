@@ -120,7 +120,11 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
-    wepAim = normalize( self.owner.enemy.cockpit.origin - self.origin );
+    if( self.w_isburst )
+      wepAim = normalize( self.owner.laser_sight_org - self.origin );
+    else
+      wepAim = normalize( self.owner.enemy.cockpit.origin - self.origin );
+    
   }
   else{
     wepAim = normalize( self.owner.laser_sight_org - self.origin ); 

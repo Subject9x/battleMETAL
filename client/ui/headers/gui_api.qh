@@ -65,9 +65,6 @@ float PAT_SPH = 2;
 float PAT_BOX = 3;
 float HUD_ALPHA;
 
-//common ent vars
-.float data_idx;	//TODO: -> possibly a repeat -6/14/2019
-
 vector(vector vec, float scle) gui_scaleSize;
 vector(vector sz) gui_getCenter;
 vector(vector vec, float algn) gui_calcAlign;

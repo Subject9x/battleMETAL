@@ -39,7 +39,7 @@ void() data_ini_equip_target_module_={
   #ifndef CSQC
   self.spreadDefault = '0.25 0.15 0.25';  //upgrades Unit's accuracy
   self.w_attack = target_module_upgrade_;
-  self.unit_wep1 = target_module_remove_;
+  self.item_remove_upgrade = target_module_remove_;
   self.think = SUB_Null;
   self.w_isburst = FALSE;
   self.model = "q3mdl/weapons/e_atgm.md3";

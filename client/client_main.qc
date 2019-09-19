@@ -162,7 +162,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", ftos(1));
   }
-  //HUD_ALPHA = cvar("cl_hud_alpha");  - TODO - remove;
   
 	/*
   local vector vf_size;

@@ -23,11 +23,11 @@ void(string str) SV_ParseClientCommand={
   }
   else if( argv(0) == "savegame"){
     if( !world.ignoreSave ){
-      savefile_save(FALSE);
+      savefile_save();
     }
   }
   else if( argv(0) == "loadgame"){
-    savefile_load();
+    savefile_load(FALSE);
   }
   else{
     clientcommand(self, str);

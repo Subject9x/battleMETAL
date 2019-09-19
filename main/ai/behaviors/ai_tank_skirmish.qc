@@ -1514,67 +1514,91 @@ void( entity attacker ) ai_tank_sk_react1={
   local float my_hp;
   local float enemy_hp, enemy_size;
   local float atk_hp, atk_size;
+  local float react_vis;
+  local float react_face;
 
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
     return;
   }
-  
-  self.ai_react_buffer = time + self.ai_react_time;
     
   if( (self.flags & FL_DISARMED) ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
     self.th_pain( attacker );
-    if( self.ai_rank > AI_RANK_REG ){
-      //TODO - call for help
-    }
     return;
   }
   
   //AI currently has no target
   if( !self.enemy ){
+    self.ai_react_buffer = time + self.ai_react_time * 3;
     self.enemy = attacker;
     self.th_missile();
     return;
   }
   
   my_hp = util_getMechHpAverage(self);
-  
-
   atk_hp = util_getMechHpAverage(attacker);
   atk_size = attacker.vec_size;
+  react_vis = ai_check_vis(attacker);
+  react_face = ai_check_face(attacker, self.ai_fov);
   
-  if( self.enemy ){
-    if( (attacker.flags & FL_CLIENT) ){
-      //prioritize players
-      self.oldenemy = self.enemy;
-      self.enemy = attacker;
-      self.th_missile();
+  if( self.enemy ){  
+    if( react_vis == VIS_FAIL ){
+      self.ai_react_buffer = time + self.ai_react_time;
       return;
     }
-    enemy_hp  = util_getMechHpAverage(self.enemy);
+    if( (attacker.flags & FL_CLIENT) ){
+      //prioritize players
+      if( self.ai_rank > AI_RANK_REG ){
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.ai_react_buffer = time + self.ai_react_time * 2;
+        self.th_missile();
+        return;
+      }
+      if( react_face ){
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.ai_react_buffer = time + self.ai_react_time * 2;
+        self.th_missile();
+        return;
+      }
+      return;
+    }
+    enemy_hp = util_getMechHpAverage(self.enemy);
     enemy_size = self.enemy.vec_size;
     if( self.ai_rank > AI_RANK_REG ){
       if( atk_hp < enemy_hp ){
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        self.th_missile();
+        if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.ai_react_buffer = time + self.ai_react_time * 3;
+          self.th_missile();
+          return;
+        }
         return;
       }
       if( atk_size > enemy_size ){
         if( atk_hp < enemy_hp ){
           self.oldenemy = self.enemy;
           self.enemy = attacker;
+          self.ai_react_buffer = time + self.ai_react_time * 3;
           self.th_missile();
           return;
         }
+        return;
       }
     }
     else{
       if( atk_size < enemy_size ){
-        //lesser bots usually panic
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        self.th_missile();
+        if( react_face ){
+          //lesser bots usually panic
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.ai_react_buffer = time + self.ai_react_time * 3;
+          self.th_missile();
+          return;
+        }
         return;
       }
     }

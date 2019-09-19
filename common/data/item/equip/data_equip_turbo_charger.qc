@@ -35,7 +35,7 @@ void() data_ini_equip_turbo_charger_={
   #ifdef CSQC
   self.abbrev = "TCHR";
   self.description = "+ Increase <Evasion> speed by 20%. + Increase <Evasion> energy cost  by 13%.";
-  self.icon = "gfx/ui/wep_icons/eqp_tchr.png"; //TODO - new icon
+  self.icon = "gfx/ui/wep_icons/eqp_tchr.png";
   #endif
   
   #ifndef CSQC
@@ -43,7 +43,7 @@ void() data_ini_equip_turbo_charger_={
   self.model = "q3mdl/weapons/e_atgm.md3";  //TODO - new model
   self.w_attack = turbo_charger_upgrade_;
   self.think = SUB_Null;
-  self.unit_wep1 = turbo_charger_remove_;
+  self.item_remove_upgrade = turbo_charger_remove_;
   self.w_isburst = FALSE; 
   #endif
 };

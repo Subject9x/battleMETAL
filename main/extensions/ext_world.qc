@@ -9,7 +9,6 @@ Overview:
 */
 
 void() mh_world_ini={ 
-  registercvar("mechdev", "0", 1);
   registercvar("campaign", "0", 0); 
   registercvar("saveslot", "0", 1);
   registercvar("gamemode", "0", 0);
@@ -153,14 +152,6 @@ void() world_get_fog={
   self.fog_alpha = found.fog_alpha;
   self.fog_dist = found.fog_dist;
   self.fade = found.fade;
-};
-
-/*
-  used for adjusting line of sight based on target's fog settings.
-  the code keeps fog settings at the entity level
-*/
-float( entity t ) world_calc_fog={
-  return FALSE; //TODO - clarify
 };
 
 /*

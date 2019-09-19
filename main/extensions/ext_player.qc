@@ -86,8 +86,6 @@ void() mech_player_die={
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   
-  self.stat_ctor_hp = 0;
-  
   if( (self.flags & FL_CLIENT) ){
     mech_player_compdie(self.legs);
   }

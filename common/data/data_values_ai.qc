@@ -18,7 +18,7 @@ float AI_REACT_ACE = 2;
 //AI movement speed ratio 
 float AI_WALK_SPD = 0.075;
 float AI_RUN_FACTOR = 1.25;
-float AI_MECH_MOVE_FACTOR = 0.85; //mechs cannot move as fast as player
+float AI_MECH_MOVE_FACTOR = 0.75; //mechs cannot move as fast as player
 float AI_RUN_SPD = 0.2;
 
 //Radar post
@@ -71,15 +71,16 @@ float AI_VIEW_RANGE_VET = 1.25;
 float AI_VIEW_RANGE_ACE = 1.5;
 
 //Adjust yaw_speed
-float AI_YAW_ROK = 0.75;
-float AI_YAW_VET = 1.1;
-float AI_YAW_ACE = 1.2;
+float AI_YAW_ROK = 0.67;
+float AI_YAW_REG = 0.75;
+float AI_YAW_VET = 0.9;
+float AI_YAW_ACE = 1.1;
 
 //attack chances
-float AI_ATTACK_ROK  =  0.45;
-float AI_ATTACK_REG  =  0.25;
-float AI_ATTACK_VET  =  0.25;
-float AI_ATTACK_ACE  =  0.15;
+float AI_ATTACK_ROK  =  0.50;
+float AI_ATTACK_REG  =  0.35;
+float AI_ATTACK_VET  =  0.30;
+float AI_ATTACK_ACE  =  0.20;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
@@ -122,10 +123,10 @@ float AI_SHIELD_VET = 0.6;
 float AI_SHIELD_ACE = 0.8;
 
 //ai_leading ratings, how well an ai tracks a slippery target
-float AI_LEAD_ACE = 0.06;
-float AI_LEAD_VET = 0.1;
-float AI_LEAD_REG = 0.14;
-float AI_LEAD_ROK = 0.18;
+float AI_LEAD_ACE = 0.15;
+float AI_LEAD_VET = 0.25;
+float AI_LEAD_REG = 0.35;
+float AI_LEAD_ROK = 0.45;
 
 //common engage ranges
 float AI_RANGE_S = 400;
@@ -133,7 +134,7 @@ float AI_RANGE_M = 1000;
 float AI_RANGE_L = 1600;
 
 //Frameset counter, how many loops of a frame set
-float AI_REFLEX_ACE = 2;
-float AI_REFLEX_VET = 3;
-float AI_REFLEX_REG = 4;
-float AI_REFLEX_ROK = 5;
+float AI_REFLEX_ACE = 3;
+float AI_REFLEX_VET = 4;
+float AI_REFLEX_REG = 5;
+float AI_REFLEX_ROK = 6;

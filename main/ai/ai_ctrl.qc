@@ -309,7 +309,6 @@ float( entity targ ) ai_check_vis={
     return VIS_FAIL;     // sight line crossed contents
   }
   if ( trace_fraction == 1 ){
-    cons_logAFloat("trace_fraction", trace_fraction); //DEBUG
     return VIS_FRAC;
   }
   if( trace_ent.faction == self.faction ){

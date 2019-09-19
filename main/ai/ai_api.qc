@@ -116,7 +116,7 @@ void( entity t ) ai_call_for_help={
   
   if( allies < self.ai_rank ){
     if( self.th_pain ){
-      self.th_pain();
+      self.th_pain( self );
     }
   }
 }; 

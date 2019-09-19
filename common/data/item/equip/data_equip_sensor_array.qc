@@ -37,7 +37,7 @@ void() data_ini_equip_sensor_array_={
   #endif
   
   #ifndef
-  self.unit_wep1 = sensor_array_remove_;
+  self.item_remove_upgrade = sensor_array_remove_;
   self.w_attack = sensor_array_upgrade_;
   self.think = SUB_Null;
   self.w_isburst = FALSE;

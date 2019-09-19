@@ -36,7 +36,7 @@ void() data_ini_equip_shield_capacitor_={
   #endif
   
   #ifndef CSQC
-  self.unit_wep1 = shield_capacitor_remove_;
+  self.item_remove_upgrade = shield_capacitor_remove_;
   self.w_attack = shield_capacitor_upgrade_;
   self.think = SUB_Null;
   self.w_isburst = FALSE;

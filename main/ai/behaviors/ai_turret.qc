@@ -562,8 +562,6 @@ void( entity attacker ) ai_turret_react1={
     return;
   }
  
-  //TODO - have turret face shot origin FIRST, then fight_prep()
- 
   self.ai_react_buffer = time + self.ai_react_time;
   
   //AI currently has no target
@@ -578,12 +576,17 @@ void( entity attacker ) ai_turret_react1={
   atk_hp = util_getMechHpAverage(attacker);
   atk_size = attacker.vec_size;
   
-  if( self.enemy ){
+  if( self.enemy ){  
+    if( ai_check_vis(attacker) == VIS_FAIL ){
+      self.ai_react_buffer = time + self.ai_react_time;
+      return;
+    }
     if( (attacker.flags & FL_CLIENT) ){
       //prioritize players
       self.oldenemy = self.enemy;
       self.enemy = attacker;
       self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+      self.ai_react_buffer = time + self.ai_react_time * 3;
       macro_ai_frame(ai_turret_react2)
       return;
     }
@@ -597,18 +600,22 @@ void( entity attacker ) ai_turret_react1={
             self.oldenemy = self.enemy;
             self.enemy = attacker;
             self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+            self.ai_react_buffer = time + self.ai_react_time * 2;
             macro_ai_frame(ai_turret_react2)
             return;
           }
         }
         else if( atk_size > enemy_size ){
           if( atk_hp < enemy_hp ){
-            self.oldenemy = self.enemy;
-            self.enemy = attacker;
-            self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-            ai_turret_set_state(TR_YAW);
-            macro_ai_frame(ai_turret_react2)
-            return;
+            if( ai_check_face(attacker, self.ai_fov) ){
+              self.oldenemy = self.enemy;
+              self.enemy = attacker;
+              self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+              self.ai_react_buffer = time + self.ai_react_time * 2;
+              ai_turret_set_state(TR_YAW);
+              macro_ai_frame(ai_turret_react2)
+              return;
+            }
           }
         }
       }
@@ -618,8 +625,21 @@ void( entity attacker ) ai_turret_react1={
           self.oldenemy = self.enemy;
           self.enemy = attacker;
           self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+          self.ai_react_buffer = time + self.ai_react_time;
           macro_ai_frame(ai_turret_react2)
           return;
+        
+        }
+        else{
+          if( ai_check_face(attacker, self.ai_fov) ){
+            //lesser bots usually panic
+            self.oldenemy = self.enemy;
+            self.enemy = attacker;
+            self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+            self.ai_react_buffer = time + self.ai_react_time;
+            macro_ai_frame(ai_turret_react2)
+            return;
+          }
         }
       }
     }

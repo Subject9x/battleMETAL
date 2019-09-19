@@ -764,8 +764,7 @@ void() hud_renderNavOverlay={
   local float navDist;
   local float distThreshold;
   local float heat;
-  //TODO - render nav brightness / saturation according to distance from player
-  
+
   distThreshold = CLIENT_radar_range * 4;
   
   itr = 0;

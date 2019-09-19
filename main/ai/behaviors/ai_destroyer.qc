@@ -184,6 +184,7 @@ void() ai_spg_panic7;
 void() ai_spg_panic8;
 void() ai_spg_panic9;
 void() ai_spg_panic10;
+void( entity attacker ) ai_tank_sk_react1
 
 void() ai_spg_walk1={
   ai_update_accuracy( TRUE );
@@ -931,6 +932,166 @@ void() ai_spg_panic10={
 };
 
 /*
+  TH_REACT
+*/
+void( entity attacker ) ai_spg_react1={
+  local float my_hp;
+  local float enemy_hp, enemy_size;
+  local float atk_hp, atk_size;
+  local float react_vis;
+  local float react_face;
+  
+  //AI has taken friendly fire
+  if( attacker.faction == self.faction ){
+    return;
+  }
+    
+  if( (self.flags & FL_DISARMED) ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
+    self.th_pain( attacker );
+    return;
+  }
+  
+  react_face = ai_check_face(attacker, self.ai_fov);
+  
+  //AI currently has no target
+  if( !self.enemy ){
+    //unit is dying
+    if( my_hp < 0.33 ){
+      if( self.ai_rank > AI_RANK_REG ){
+        if( random() < 0.15 ){
+          self.th_pain(attacker);
+          self.ai_react_buffer = time + self.ai_react_time;
+          return;
+        }
+      }
+      else{
+        if( random() < 0.45 ){
+          self.th_pain(attacker);
+          self.ai_react_buffer = time + self.ai_react_time;
+          return;
+        }
+      }
+    }
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    self.enemy = attacker;
+    if( react_face ){
+      self.th_missile();
+      return;
+    }
+    if( self.ai_rank > AI_RANK_REG ){
+      //able pilots will fight
+      self.th_missile();
+      return;
+    }
+    //not so able pilots panic when enemy is in rear arc
+    self.th_pain(attacker);
+    return;
+  }
+  
+  my_hp = util_getMechHpAverage(self);
+  atk_hp = util_getMechHpAverage(attacker);
+  atk_size = attacker.vec_size;
+  react_vis = ai_check_vis(attacker);
+  
+  if( self.enemy ){  
+    if( react_vis == VIS_FAIL ){
+      if( my_hp < 0.33 ){
+        if( random() < 0.25 ){
+          self.th_pain(attacker);
+          self.ai_react_buffer = time + self.ai_react_time * 2;
+          return;
+        }
+      }
+      self.ai_react_buffer = time + self.ai_react_time;
+      return;
+    }
+    if( (attacker.flags & FL_CLIENT) ){
+      //prioritize players
+      if( self.ai_rank > AI_RANK_REG ){
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.ai_react_buffer = time + self.ai_react_time * 2;
+        self.th_missile();
+        return;
+      }
+      if( ai_check_range(attacker) <= AI_RANGE_S ){
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.th_pain(attacker);
+        self.ai_react_buffer = time + self.ai_react_time * 3;
+        return;
+      }
+      self.ai_react_buffer = time + self.ai_react_time * 2;
+      self.th_missile();
+      return;
+    }
+    enemy_hp = util_getMechHpAverage(self.enemy);
+    enemy_size = self.enemy.vec_size;
+    if( self.ai_rank > AI_RANK_REG ){
+      if( react_face ){
+        if( atk_hp > enemy_hp ){
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.ai_react_buffer = time + self.ai_react_time * 3;
+          self.th_missile();
+          return;
+        }
+        self.ai_react_buffer = time + self.ai_react_time * 2;
+        return;
+      }
+      if( atk_size > enemy_size ){
+        self.oldenemy = self.enemy;
+        self.enemy = attacker;
+        self.ai_react_buffer = time + self.ai_react_time * 2;
+        self.th_missile();
+        return;
+      }
+      self.ai_react_buffer = time + self.ai_react_time;
+      return;
+    }
+    else{
+      //TD is ok pilot
+      if( react_face ){
+        if( !ai_check_face(self.enemy, self.ai_fov) ){
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.ai_react_buffer = time + self.ai_react_time * 2;
+          self.th_missile();
+          return;
+        }
+        if( attacker.vec_size > self.enemy.vec_size ){
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.ai_react_buffer = time + self.ai_react_time * 2;
+          self.th_missile();
+          return;
+        }
+        self.ai_react_buffer = time + self.ai_react_time;
+        return;
+      }
+      //enemy in rear
+      if( react_face ){
+        if( atk_hp > my_hp ){
+          //bad pilot is bad
+          self.oldenemy = self.enemy;
+          self.enemy = attacker;
+          self.ai_react_buffer = time + self.ai_react_time * 2;
+          self.th_missile();
+          return;
+        }
+      }
+      //both new enemy, and old enemy aren't in front, panic?
+      self.th_pain(attacker);
+      self.ai_react_buffer = time + self.ai_react_time * 2;
+      return;
+    }
+  }
+  //do nothing;
+  return;
+};
+
+/*
   AI SPAWN FUNCTION
 */
 void() ai_vec_dest={
@@ -946,6 +1107,7 @@ void() ai_vec_dest={
   self.th_walk = ai_spg_patrol1;
   self.th_missile = ai_spg_fight_prep;
   self.th_pain = ai_spg_panic1;
+  self.th_react = ai_spg_react1;
   self.th_die = ai_vec_dest_die;
   self.touch = ai_touch;
 

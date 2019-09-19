@@ -1,10 +1,12 @@
 /*
-mech Mod
+battleMETAL
 Author: Peter Roohr
 Date: 4/14/2018
 Overview:
   menu definition file
   NEW GAME MENU
+  
+  WARNING - MULTIPLAYER DEPRECATED AT THIS TIME
 */
 
 //Main Menu Globals
@@ -25,7 +27,6 @@ string IMG_SETUP_TITLE  = "gfx/menu/setup/setup_title.png";
   localsound("sound/misc/menu2.wav");
 };*/
 void() click_setup_accept={
-  //TODO save changes
   menu_clear_items(M_STATE);
   m_multi_f();
 };
