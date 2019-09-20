@@ -20,9 +20,15 @@ void() ai_tank_sk_die={
   ai_sfx_dead();
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_CORPSE;
+  self.solid = SOLID_NOT;
   self.colormod = '0.33 0.33 0.33';
   self.attack_state = -1;
+  
+  self.maxs = self.maxs * 0.75;
+  self.mins_x = self.maxs_x * -1;
+  self.mins_y = self.maxs_y * -1;
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );

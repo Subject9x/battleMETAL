@@ -856,8 +856,18 @@ void(entity attacker) ai_gev_panic1={
     self.goalentity = self.movetarget;
   }
   else{
-    self.goalentity = world;
-    //would we really know the difference?
+    if( !ai_valid_target(self.enemy) ){
+      if( ai_valid_target(attacker) ){
+        self.enemy = attacker;
+        macro_ai_frame(ai_gev_fight_prep)
+        return;
+      }
+    }
+    if( ai_valid_target(attacker) ){
+      self.enemy = attacker;
+      macro_ai_frame(ai_gev_fight_prep)
+      return;
+    }
   }
   
   macro_ai_frame( ai_gev_panic2 )
@@ -1126,7 +1136,7 @@ void() ai_gev_hunt12={
     self.goalentity = self.ai_node_recall;
   }
   
-  macro_ai_frame_count(ai_tank_sk_hunt1)
+  macro_ai_frame_count(ai_gev_hunt1)
 
   ai_sfx_huntEnd();
   
@@ -1174,7 +1184,7 @@ void( entity attacker ) ai_gev_react1={
   }
     
   if( (self.flags & FL_DISARMED) ){
-    self.ai_react_buffer = time + self.ai_react_time * 2;
+    self.ai_react_buffer = time + self.ai_react_time;
     self.th_pain( attacker );
     return;
   }
@@ -1191,8 +1201,8 @@ void( entity attacker ) ai_gev_react1={
       if( self.ai_rank > AI_RANK_REG ){
         //-> hunt
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 4;
+        macro_ai_frame(ai_gev_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
       //pilot < reg
@@ -1201,15 +1211,13 @@ void( entity attacker ) ai_gev_react1={
         //panic
         self.enemy = attacker;
         self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 4;
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
-      //-> hunt   
     }
-    //!attacker facing
     self.enemy = attacker;
-    self.th_missile();
-    self.ai_react_buffer = time + self.ai_react_time * 4;
+    macro_ai_frame(ai_gev_fight_prep)
+    self.ai_react_buffer = time + self.ai_react_time;
     return; 
   }
   
@@ -1224,13 +1232,13 @@ void( entity attacker ) ai_gev_react1={
         //new enemy, hunt->
         self.oldenemy = self.enemy;
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 4;
+        macro_ai_frame(ai_gev_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return; 
       }
     }
     //otherwise, ignore
-    self.ai_react_buffer = time + self.ai_react_time * 4;
+    self.ai_react_buffer = time + self.ai_react_time * 2;
     return; 
   }
   //has enemy
@@ -1241,23 +1249,23 @@ void( entity attacker ) ai_gev_react1={
     if( self.ai_rank > AI_RANK_REG ){
       self.oldenemy = self.enemy;
       self.enemy = attacker;
-      self.th_missile();
-      self.ai_react_buffer = time + self.ai_react_time * 4;
+      macro_ai_frame(ai_gev_fight_prep)
+      self.ai_react_buffer = time + self.ai_react_time * 2;
       return; 
     }
     //average pilot still has health
     if( my_hp > 0.67 ){
       self.oldenemy = self.enemy;
       self.enemy = attacker;
-      self.th_missile();
-      self.ai_react_buffer = time + self.ai_react_time * 4;
+      macro_ai_frame(ai_gev_fight_prep)
+      self.ai_react_buffer = time + self.ai_react_time * 2;
       return; 
     }
     //otherwise panic
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.th_pain(attacker);
-    self.ai_react_buffer = time + self.ai_react_time * 2;
+    self.ai_react_buffer = time + self.ai_react_time;
     return; 
   }
   
@@ -1271,8 +1279,8 @@ void( entity attacker ) ai_gev_react1={
         //strike
         self.oldenemy = self.enemy;
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 4;
+        macro_ai_frame(ai_gev_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return; 
       }
       //weaker target is not closer, but its in facing
@@ -1280,8 +1288,8 @@ void( entity attacker ) ai_gev_react1={
         //strike
         self.oldenemy = self.enemy;
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 4;
+        macro_ai_frame(ai_gev_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
     }
@@ -1296,7 +1304,7 @@ void( entity attacker ) ai_gev_react1={
   if( my_hp <= 0.33 ){
     if( random() <= 0.5 ){
       self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time * 4;
+      self.ai_react_buffer = time + self.ai_react_time * 2;
       return;
     }
   }
@@ -1308,15 +1316,15 @@ void( entity attacker ) ai_gev_react1={
       //strike
       self.oldenemy = self.enemy;
       self.enemy = attacker;
-      self.th_missile();
-      self.ai_react_buffer = time + self.ai_react_time * 4;
+      macro_ai_frame(ai_gev_fight_prep)
+      self.ai_react_buffer = time + self.ai_react_time * 2;
       return;
     }
     //main target is in rear, attacker in front? maybe panic
     if( my_hp <= 0.33 ){
       if( random() <= 0.5 ){
         self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 4;
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
     }
@@ -1327,7 +1335,7 @@ void( entity attacker ) ai_gev_react1={
     if( my_hp <= 0.33 ){
       if( random() <= 0.75 ){
         self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 4;
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
     }
@@ -1336,8 +1344,8 @@ void( entity attacker ) ai_gev_react1={
       //strike
       self.oldenemy = self.enemy;
       self.enemy = attacker;
-      self.th_missile();
-      self.ai_react_buffer = time + self.ai_react_time * 4;
+      macro_ai_frame(ai_gev_fight_prep)
+      self.ai_react_buffer = time + self.ai_react_time * 2;
       return;
     }
   }

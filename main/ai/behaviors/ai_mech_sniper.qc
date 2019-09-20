@@ -1316,8 +1316,18 @@ void(entity attacker) ai_mech_sniper_panic1={
     self.goalentity = self.movetarget;
   }
   else{
-    self.goalentity = world;
-    //would we really know the difference?
+    if( !ai_valid_target(self.enemy) ){
+      if( ai_valid_target(attacker) ){
+        self.enemy = attacker;
+        macro_ai_frame(ai_mech_sniper_fight_prep)
+        return;
+      }
+    }
+    if( ai_valid_target(attacker) ){
+      self.enemy = attacker;
+      macro_ai_frame(ai_mech_sniper_fight_prep)
+      return;
+    }
   }
   
   macro_ai_frame( ai_mech_sniper_panic2 )
@@ -1487,32 +1497,18 @@ void( entity attacker ) ai_mech_sniper_react1={
     if( react_vis == VIS_FAIL ){
       //pilot above average
       if( self.ai_rank > AI_RANK_REG ){
-        //unit is dying
-        if( my_hp < 0.33 && random() <= 0.2){
-          self.th_pain(attacker);
-          self.ai_react_buffer = time + self.ai_react_time;
-          return;
-        }
-        self.ai_react_buffer = time + self.ai_react_time;
-        return;
-      }
-      //pilot is average
-      //unit is dying
-      if( my_hp < 0.33 && random() <= 0.45){
         self.th_pain(attacker);
         self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
-      self.ai_react_buffer = time + self.ai_react_time;
-      return;
     }
     //yes LoS on attacker
     //pilot above average
     if( self.ai_rank > AI_RANK_REG ){
       //attack
       self.enemy = attacker;
-      self.th_missile();
-      self.ai_react_buffer = time + self.ai_react_time * 3;
+      self.ai_react_buffer = time + self.ai_react_time;
+      macro_ai_frame(ai_mech_sniper_fight_prep)
       return;
     }
       //pilot is facing attacker.
@@ -1521,8 +1517,8 @@ void( entity attacker ) ai_mech_sniper_react1={
       if( ai_check_range(attacker) >= AI_RANGE_M ){
         //attack
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 3;
+        macro_ai_frame(ai_mech_sniper_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
       //otherwise, possible panic
@@ -1545,7 +1541,7 @@ void( entity attacker ) ai_mech_sniper_react1={
       }
       //attack
       self.enemy = attacker;
-      self.th_missile();
+      macro_ai_frame(ai_mech_sniper_fight_prep)
       self.ai_react_buffer = time + self.ai_react_time * 3;
       return;
     }
@@ -1574,9 +1570,10 @@ void( entity attacker ) ai_mech_sniper_react1={
       //attacker is weaker than target
       if( atk_hp < util_getMechHpAverage(self.enemy) ){
         //attack
+        self.oldenemy = self.enemy;
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 3;
+        macro_ai_frame(ai_mech_sniper_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time;
         return;
       }
     }
@@ -1585,16 +1582,18 @@ void( entity attacker ) ai_mech_sniper_react1={
       //attacker is weaker than target
       if( atk_hp < util_getMechHpAverage(self.enemy) ){
         //attack
+        self.oldenemy = self.enemy;
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 3;
+        macro_ai_frame(ai_mech_sniper_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
       if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
         //attack
+        self.oldenemy = self.enemy;
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 3;
+        macro_ai_frame(ai_mech_sniper_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
     }
@@ -1611,7 +1610,7 @@ void( entity attacker ) ai_mech_sniper_react1={
   //already has target
   //pilot is average
     //morale check
-  if( my_hp < 0.33 && random() <= 0.33){
+  if( my_hp < 0.33 && random() <= 0.2){
     self.th_pain(attacker);
     self.ai_react_buffer = time + self.ai_react_time * 2;
     return;
@@ -1621,9 +1620,10 @@ void( entity attacker ) ai_mech_sniper_react1={
     //attacker is weaker than target
     if( atk_hp < util_getMechHpAverage(self.enemy) ){
       //attack
+      self.oldenemy = self.enemy;
       self.enemy = attacker;
-      self.th_missile();
-      self.ai_react_buffer = time + self.ai_react_time * 3;
+      macro_ai_frame(ai_mech_sniper_fight_prep)
+      self.ai_react_buffer = time + self.ai_react_time * 2;
       return;
     }
   }
@@ -1631,14 +1631,9 @@ void( entity attacker ) ai_mech_sniper_react1={
   if( react_face && enemyFace ){
     if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
       //attack
+      self.oldenemy = self.enemy;
       self.enemy = attacker;
-      self.th_missile();
-      self.ai_react_buffer = time + self.ai_react_time * 3;
-      return;
-    }
-    //morale check
-    if( my_hp < 0.33 && random() <= 0.5){
-      self.th_pain(attacker);
+      macro_ai_frame(ai_mech_sniper_fight_prep)
       self.ai_react_buffer = time + self.ai_react_time * 2;
       return;
     }
@@ -1646,7 +1641,7 @@ void( entity attacker ) ai_mech_sniper_react1={
   //AI is completely flanked, panic
   if( my_hp < 0.33 && random() < 0.65 ){
     self.th_pain(attacker);
-    self.ai_react_buffer = time + self.ai_react_time * 3;
+    self.ai_react_buffer = time + self.ai_react_time;
     return;
   }
   self.ai_react_buffer = time + self.ai_react_time;

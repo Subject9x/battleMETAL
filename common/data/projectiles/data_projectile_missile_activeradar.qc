@@ -15,7 +15,7 @@ void() data_projectile_missile_activeradar_touch;
 
 void() data_projectile_ini_missile_active_radar_={
   self.classname = "prj_marh";
-  self.touch = data_projectile_missile_activeradar_touch;
+  //self.touch = data_projectile_missile_activeradar_touch;
   self.data_velocity = 650;
   self.model = "q3mdl/proj/mdl_proj_marh.md3";
   self.data_lifetime = 8;
@@ -30,6 +30,10 @@ void() data_projectile_ini_missile_active_radar_={
 
 void() data_projectile_missile_activeradar_think={
 	local vector	dir, vtemp;
+  
+  if( !self.touch ){
+    self.touch = data_projectile_missile_activeradar_touch;
+  }
   
 	if (self.enemy.health < 1){
     self.think = BecomeExplosion;
@@ -79,11 +83,14 @@ void() data_projectile_missile_activeradar_delay={
 
 void() data_projectile_missile_activeradar_touch={
 	if (pointcontents(self.origin) == CONTENT_SKY){
-		//remove(self);
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
 		return;
 	}
+  
+  if( other == self.owner ){
+    return;
+  }
 
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');

@@ -10,10 +10,10 @@ Overview: AI values that have been spun off from common/game
 //     AI STATS      
 //============================
 //AI TH_REACT cooldown
-float AI_REACT_ROK = 5;
-float AI_REACT_REG = 4;
-float AI_REACT_VET = 3;
-float AI_REACT_ACE = 2;
+float AI_REACT_ROK = 3;
+float AI_REACT_REG = 2;
+float AI_REACT_VET = 1;
+float AI_REACT_ACE = 0.5;
 
 //AI movement speed ratio 
 float AI_WALK_SPD = 0.075;

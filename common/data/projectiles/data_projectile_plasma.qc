@@ -92,7 +92,7 @@ void() data_projectile_plasma_touch={
       newmis.owner = self.owner;
       setsize(newmis, '-1 -1 -1', '1 1 1');
       if( (other.data_type == DATA_MECH) ){
-        setorigin(newmis, newmis.cockpit.origin);
+        setorigin(newmis, hit.origin);
       }
       else{
         setorigin(newmis, self.origin);
@@ -110,7 +110,9 @@ void() data_projectile_plasma_think_={
   self.think = data_projectile_plasma_think_;
   self.nextthink = time + 0.05;
   if( time > self.data_lifetime ){
-    self.think = BecomeExplosion;
+    pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
+    self.touch = SUB_Null;
+    self.think = SUB_Remove;
     self.nextthink = time + 0.05;
   }
 };

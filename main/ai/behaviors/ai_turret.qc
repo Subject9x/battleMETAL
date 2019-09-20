@@ -127,7 +127,6 @@ void() ai_turret_idle8;
 void() ai_turret_idle9;
 void() ai_turret_idle10;
 void( entity attacker ) ai_turret_react1;
-void() ai_turret_react2;
 
 void() ai_turret_patrol1={
   ai_update_accuracy( TRUE );
@@ -567,12 +566,11 @@ void( entity attacker ) ai_turret_react1={
   //AI currently has no target
   if( !self.enemy ){
     self.enemy = attacker;
-    self.th_missile();
+    macro_ai_frame(ai_turret_fight_prep)
     return;
   }
   
   my_hp = util_getMechHpAverage(self);
-  
   atk_hp = util_getMechHpAverage(attacker);
   atk_size = attacker.vec_size;
   
@@ -587,7 +585,7 @@ void( entity attacker ) ai_turret_react1={
       self.enemy = attacker;
       self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
       self.ai_react_buffer = time + self.ai_react_time * 3;
-      macro_ai_frame(ai_turret_react2)
+      macro_ai_frame(ai_turret_fight_prep)
       return;
     }
     else{
@@ -601,7 +599,7 @@ void( entity attacker ) ai_turret_react1={
             self.enemy = attacker;
             self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
             self.ai_react_buffer = time + self.ai_react_time * 2;
-            macro_ai_frame(ai_turret_react2)
+            macro_ai_frame(ai_turret_fight_prep)
             return;
           }
         }
@@ -613,7 +611,7 @@ void( entity attacker ) ai_turret_react1={
               self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
               self.ai_react_buffer = time + self.ai_react_time * 2;
               ai_turret_set_state(TR_YAW);
-              macro_ai_frame(ai_turret_react2)
+              macro_ai_frame(ai_turret_fight_prep)
               return;
             }
           }
@@ -626,9 +624,8 @@ void( entity attacker ) ai_turret_react1={
           self.enemy = attacker;
           self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
           self.ai_react_buffer = time + self.ai_react_time;
-          macro_ai_frame(ai_turret_react2)
+          macro_ai_frame(ai_turret_fight_prep)
           return;
-        
         }
         else{
           if( ai_check_face(attacker, self.ai_fov) ){
@@ -637,27 +634,13 @@ void( entity attacker ) ai_turret_react1={
             self.enemy = attacker;
             self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
             self.ai_react_buffer = time + self.ai_react_time;
-            macro_ai_frame(ai_turret_react2)
+            macro_ai_frame(ai_turret_fight_prep)
             return;
           }
         }
       }
     }
   }
-};  
-void() ai_turret_react2={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  local float angHigh, angLow;
-  angHigh = anglemod( self.torsoCenter.angles_y + 15 );
-  angLow = anglemod( self.torsoCenter.angles_y - 15 );
-  if( ai_check_face( self.enemy, self.ai_fov) ){
-    macro_ai_frame(ai_turret_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_turret_react2)
 };
 
 /*

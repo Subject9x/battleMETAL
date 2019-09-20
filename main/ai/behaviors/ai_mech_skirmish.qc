@@ -1126,7 +1126,7 @@ void() ai_mech_sk_flank1={
   dampen = 0;
   if( self.speed != self.lefty ){
     //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.7;
+    dampen = self.data_speed_strafe * 0.9;
   }
   
   ai_face_targ();
@@ -1148,7 +1148,7 @@ void() ai_mech_sk_flank2={
   dampen = 0;
   if( self.speed != self.lefty ){
     //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.6;
+    dampen = self.data_speed_strafe * 0.8;
   }
   
   ai_face_targ();
@@ -1166,7 +1166,7 @@ void() ai_mech_sk_flank3={
   dampen = 0;
   if( self.speed != self.lefty ){
     //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.5;
+    dampen = self.data_speed_strafe * 0.7;
   }
   
   ai_face_targ();
@@ -1187,7 +1187,7 @@ void() ai_mech_sk_flank4={
   dampen = 0;
   if( self.speed != self.lefty ){
     //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.4;
+    dampen = self.data_speed_strafe * 0.6;
   }
   
   ai_face_targ();
@@ -1204,7 +1204,7 @@ void() ai_mech_sk_flank5={
   dampen = 0;
   if( self.speed != self.lefty ){
     //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.3;
+    dampen = self.data_speed_strafe * 0.5;
   }
   
   ai_face_targ();
@@ -1221,7 +1221,7 @@ void() ai_mech_sk_flank6={
   dampen = 0;
   if( self.speed != self.lefty ){
     //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.2;
+    dampen = self.data_speed_strafe * 0.4;
   }
   
   ai_face_targ();
@@ -1239,7 +1239,7 @@ void() ai_mech_sk_flank7={
   dampen = 0;
   if( self.speed != self.lefty ){
     //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.1;
+    dampen = self.data_speed_strafe * 0.3;
   }
   
   ai_face_targ();
@@ -1256,8 +1256,15 @@ void() ai_mech_sk_flank8={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
+  local float dampen;
+  dampen = 0;
+  if( self.speed != self.lefty ){
+    //dampen jerk movement
+    dampen = self.data_speed_strafe * 0.2;
+  }
+  
   ai_face_targ();
-  walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe);
+  walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe - dampen);
   self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   
   macro_ai_frame(ai_mech_sk_flank9)
@@ -1266,8 +1273,15 @@ void() ai_mech_sk_flank9={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
+  local float dampen;
+  dampen = 0;
+  if( self.speed != self.lefty ){
+    //dampen jerk movement
+    dampen = self.data_speed_strafe * 0.1;
+  }
+  
   ai_face_targ();
-  walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe);
+  walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe - dampen);
   self.legs.angles_y = anglemod(self.angles_y + self.ai_dir);
   
   macro_ai_frame(ai_mech_sk_flank10)
@@ -1416,6 +1430,7 @@ void() ai_mech_sk_pivot4={
 void() ai_mech_sk_hunt1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+  self.attack_state = ST_HUNT;
   
   movetogoal( self.data_speed_forward );
   if( !ai_valid_target(self.enemy) ){
@@ -1655,8 +1670,18 @@ void(entity attacker) ai_mech_sk_panic1={
     self.goalentity = self.movetarget;
   }
   else{
-    self.goalentity = world;
-    //would we really know the difference?
+    if( !ai_valid_target(self.enemy) ){
+      if( ai_valid_target(attacker) ){
+        self.enemy = attacker;
+        macro_ai_frame(ai_mech_sk_fight_prep)
+        return;
+      }
+    }
+    if( ai_valid_target(attacker) ){
+      self.enemy = attacker;
+      macro_ai_frame(ai_mech_sk_fight_prep)
+      return;
+    }
   }
   
   macro_ai_frame( ai_mech_sk_panic2 )
@@ -1806,6 +1831,7 @@ void( entity attacker ) ai_mech_sk_react1={
   
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
+    self.ai_react_buffer = time + self.ai_react_time;
     return;
   }
   
@@ -1834,8 +1860,8 @@ void( entity attacker ) ai_mech_sk_react1={
         }
         //otherwise, attack
         self.enemy = attacker;
-        self.th_missile();
         self.ai_react_buffer = time + self.ai_react_time * 3;
+        macro_ai_frame(ai_mech_sk_fight_prep)
         return;
       }
       //pilot is average
@@ -1845,7 +1871,9 @@ void( entity attacker ) ai_mech_sk_react1={
         self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
-      self.ai_react_buffer = time + self.ai_react_time;
+      self.ai_react_buffer = time + self.ai_react_time * 2;
+      self.enemy = attacker;
+      macro_ai_frame(ai_mech_sk_pivot1)
       return;
     }
     //yes LoS on attacker
@@ -1853,8 +1881,8 @@ void( entity attacker ) ai_mech_sk_react1={
     if( self.ai_rank > AI_RANK_REG ){
       //attack
       self.enemy = attacker;
-      self.th_missile();
-      self.ai_react_buffer = time + self.ai_react_time * 3;
+      self.ai_react_buffer = time + self.ai_react_time;
+      macro_ai_frame(ai_mech_sk_fight_prep)
       return;
     }
       //pilot is facing attacker.
@@ -1863,8 +1891,8 @@ void( entity attacker ) ai_mech_sk_react1={
       if( ai_check_range(attacker) <= AI_RANGE_M ){
         //attack
         self.enemy = attacker;
-        self.th_missile();
-        self.ai_react_buffer = time + self.ai_react_time * 3;
+        macro_ai_frame(ai_mech_sk_fight_prep)
+        self.ai_react_buffer = time + self.ai_react_time * 2;
         return;
       }
       //otherwise, possible panic
@@ -1887,7 +1915,7 @@ void( entity attacker ) ai_mech_sk_react1={
       }
       //attack
       self.enemy = attacker;
-      self.th_missile();
+      macro_ai_frame(ai_mech_sk_fight_prep)
       self.ai_react_buffer = time + self.ai_react_time * 3;
       return;
     }
@@ -1917,10 +1945,12 @@ void( entity attacker ) ai_mech_sk_react1={
       if( atk_hp < util_getMechHpAverage(self.enemy) ){
         //attack
         self.enemy = attacker;
-        self.th_missile();
+        macro_ai_frame(ai_mech_sk_fight_prep)
         self.ai_react_buffer = time + self.ai_react_time * 3;
         return;
       }
+      self.ai_react_buffer = time + self.ai_react_time;
+      return;
     }
     //attacker and enemy are both in front
     if( react_face && enemyFace ){
@@ -1928,14 +1958,14 @@ void( entity attacker ) ai_mech_sk_react1={
       if( atk_hp < util_getMechHpAverage(self.enemy) ){
         //attack
         self.enemy = attacker;
-        self.th_missile();
+        macro_ai_frame(ai_mech_sk_fight_prep)
         self.ai_react_buffer = time + self.ai_react_time * 3;
         return;
       }
       if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
         //attack
         self.enemy = attacker;
-        self.th_missile();
+        macro_ai_frame(ai_mech_sk_fight_prep)
         self.ai_react_buffer = time + self.ai_react_time * 3;
         return;
       }
@@ -1964,7 +1994,7 @@ void( entity attacker ) ai_mech_sk_react1={
     if( atk_hp < util_getMechHpAverage(self.enemy) ){
       //attack
       self.enemy = attacker;
-      self.th_missile();
+      macro_ai_frame(ai_mech_sk_fight_prep)
       self.ai_react_buffer = time + self.ai_react_time * 3;
       return;
     }
@@ -1974,7 +2004,7 @@ void( entity attacker ) ai_mech_sk_react1={
     if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
       //attack
       self.enemy = attacker;
-      self.th_missile();
+      macro_ai_frame(ai_mech_sk_fight_prep)
       self.ai_react_buffer = time + self.ai_react_time * 3;
       return;
     }
