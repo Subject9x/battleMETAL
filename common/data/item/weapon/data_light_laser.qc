@@ -51,6 +51,7 @@ void() data_ini_light_laser_={
 
 #ifndef CSQC
 void() data_ini_attack_laser_={
+  local entity hit;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -69,8 +70,8 @@ void() data_ini_attack_laser_={
   }
   
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
-    if( trace_ent.shield <= 0 ){
+    hit = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
+    if( hit.shield < 0.01 ){
       pointparticles(particleeffectnum("TE_LAS_HIT"), FIRE_ENDPOINT , normalize( FIRE_ORIGIN - FIRE_ENDPOINT ), 1);
     }
     return;

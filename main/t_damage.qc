@@ -170,6 +170,10 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     return trg;
   }
   
+  if( trg.deadflag != DEAD_NO ){
+    return;
+  }
+  
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
@@ -274,13 +278,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       dmgTrg = dmgTrg.legs;
     }
     else{
-      local float irad;
-      irad = vlen(dmg_point - trg.origin);
-      targ_act = t_find_part(dmg_point, irad, dmgTrg);
-      if(targ_act != world){
-        if(targ_act.deadflag <= DEAD_NO){
-          dmgTrg = targ_act;
-        }
+      dmgTrg = t_find_part(dmg_point, dmgTrg.maxs_x, dmgTrg);
+      if( dmgTrg.deadflag != DEAD_NO ){
+        dmgTrg = dmgTrg.realowner;
+      }
+      if( dmgTrg.partTypeId == M_TOR_CENTER ){
+        dmgTrg = trg;
       }
     }
   }
@@ -330,33 +333,21 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   finds closest sub-entity
 */
 entity(vector point, float rad, entity trg) t_find_part={
-  
-  local float cur_dist;
-  local float diff;
-  local entity  unitPart, toSender;
-  cur_dist = rad;
-  unitPart = trg.partNext;
-  while(unitPart){
-    if( unitPart.partTypeId != M_ITEM && unitPart.partTypeId != M_CAMERA ){    
-      diff = vlen(point - unitPart.origin);
-      if(diff < cur_dist){
-        cur_dist = diff;
-        toSender = unitPart;
-      }
+  if( vlen(point - trg.torsoLeft.origin) < rad ){
+    if( vlen(point - trg.armLeft.origin) < rad ){
+      return trg.armLeft;
     }
-    unitPart = unitPart.partNext; //includes weapons to help increase granularity
+    return trg.torsoLeft;
   }
 
-  //weapons can't be destroyed, BUT we can use their position to better find the closest mech piece.
-  if( toSender.partTypeId == M_ITEM || toSender.partTypeId == M_CAMERA ){
-    toSender = toSender.aiment;
+  if( vlen(point - trg.torsoRight.origin) < rad ){
+    if( vlen(point - trg.armRight.origin) < rad ){
+      return trg.armRight;
+    }
+    return trg.torsoRight;
   }
 
-  if( toSender.partTypeId == M_TOR_CENTER ){
-    toSender = trg;
-  }
-  
-  return toSender;
+  return trg;
 };
 
 /*entity(entity parent, vector org, float start_rad) closestWeapon={

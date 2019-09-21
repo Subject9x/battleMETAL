@@ -42,7 +42,7 @@ void() data_projectile_plasma_burn_ini_={
   self.think = data_projectile_plasma_burn_th;
   self.nextthink = time + 0.01;
   self.data_lifetime = time + data_projectile_plasma_burn_time;
-  self.alpha = 0.67;
+  self.alpha = 0.75;
 };
 
 void() data_projectile_plasma_burn_th={
@@ -51,6 +51,13 @@ void() data_projectile_plasma_burn_th={
     self.nextthink = time + 0.01;
     return;
   }
+  
+  if( self.enemy.shield > 0 ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.01;
+    return;
+  }
+  
   t_damage(self.cockpit, self, self.owner, 2.5, self.damageType, self.cockpit.origin, '0 0 0');
 
   pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
@@ -69,9 +76,8 @@ void() data_projectile_plasma_burn_th={
 
 void() data_projectile_plasma_touch={
   local entity hit;
-  local entity this;
   
-  this = self;
+  self.touch = SUB_Null;
   
   if (pointcontents(self.origin) == CONTENT_SKY){  
     self.touch = SUB_Null;
@@ -80,40 +86,37 @@ void() data_projectile_plasma_touch={
     return;
   }
 
-  pointparticles( particleeffectnum("TE_RPC_HIT"), this.origin, '0 0 0', 1);
+  pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
   if(other.takedamage){
-    hit = t_damage(other, this, this.owner, this.damageValue, this.damageType, this.origin, '0 0 0');
+    hit = t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if(other.shield <= 0){
-      newmis = spawn();
-      newmis.enemy = other;
-      newmis.cockpit = hit;
-      newmis.damageValue = self.damageValue;
-      newmis.damageType = self.damageType | EFF_PRC;
-      newmis.owner = self.owner;
-      setsize(newmis, '-1 -1 -1', '1 1 1');
+      //newmis = spawn();
+      self.enemy = other;
+      self.cockpit = hit;
+      self.damageType = self.damageType | EFF_PRC;
+      self.damageValue = self.damageValue * 0.33;
+      setsize(self, '-1 -1 -1', '1 1 1');
       if( (other.data_type == DATA_MECH) ){
-        setorigin(newmis, hit.origin);
+        setorigin(self, hit.origin);
       }
-      else{
-        setorigin(newmis, self.origin);
-      }
-      newmis.think = data_projectile_plasma_burn_ini_;
-      newmis.nextthink = time + 0.01; 
+      self.think = data_projectile_plasma_burn_ini_;
+      self.nextthink = time + 0.01;
+      return;
     }
 	}
-  self.touch = SUB_Null;
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
 };
 
 void() data_projectile_plasma_think_={
-  self.think = data_projectile_plasma_think_;
-  self.nextthink = time + 0.05;
   if( time > self.data_lifetime ){
     pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
     self.touch = SUB_Null;
     self.think = SUB_Remove;
     self.nextthink = time + 0.05;
+    return;
   }
+  self.think = data_projectile_plasma_think_;
+  self.nextthink = time + 0.05;
 };
 

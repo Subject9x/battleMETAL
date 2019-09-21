@@ -82,6 +82,7 @@ None
 void() realtimelights_light={
   if( !cvar("developer") ){
     remove(self);
+    return;
   }
   self.classname = "realtimelights_light";
   self.movetype = MOVETYPE_NONE;
@@ -120,6 +121,7 @@ None
 void() realtimelights_sunlight={
   if( !cvar("developer") ){
     remove(self);
+    return;
   }
   /*
     fixed algorithm

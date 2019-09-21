@@ -53,6 +53,7 @@ void(entity own) build_unit_component={
   self.angles = follow.angles;
   self.v_angle = self.angles - follow.angles;
   self.th_die = ctrl_component_die;
+  self.realowner = follow;
   self.colormod = '1 1 1';
 };
 
@@ -79,8 +80,8 @@ void() build_unit_camera={
     self.angles = partParent.angles;
     self.v_angle = self.angles - partParent.angles;
   self = this;
-  unitPartList.partNext = cam;
-  unitPartList = cam;
+  //unitPartList.partNext = cam;
+  //unitPartList = cam;
 };
 
 void() build_unit_weapon_list={

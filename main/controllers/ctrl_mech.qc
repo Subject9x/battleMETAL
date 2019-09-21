@@ -158,7 +158,6 @@ void() ctrl_component_die={
   if(self.deadflag <= DEAD_NO){
     local entity piece;
     local entity this;
-    local vector bboxMin, bboxMax;
     piece = self;
     
     te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
@@ -169,48 +168,31 @@ void() ctrl_component_die={
     setsize(self, '0 0 0', '0 0 0');
     setorigin( self, self.origin );
     
-    bboxMin = self.owner.mins * 0.1;
-    bboxMax = self.owner.maxs * 0.1;
-    
     switch( self.partTypeId ){
       case M_TOR_LEFT:
-        bboxMax_x = self.owner.maxs_x - bboxMax_x;
-        bboxMax_y = self.owner.maxs_y - bboxMax_y;
-        bboxMax_z = self.owner.maxs_z;
-        bboxMin_x = self.owner.mins_x - bboxMin_x;
-        bboxMin_y = self.owner.mins_y - bboxMin_y;
-        bboxMin_z = self.owner.mins_z;
         killed(self.owner.armLeft, self, 0);
-        setsize( self.owner, bboxMin, bboxMax);
+        self.owner.armLeft.realowner = self.owner;
+        self.realowner = self.owner;
         break;
+        
       case M_TOR_RIGHT:
-        bboxMax_x = self.owner.maxs_x - bboxMax_x;
-        bboxMax_y = self.owner.maxs_y - bboxMax_y;
-        bboxMax_z = self.owner.maxs_z;
-        bboxMin_x = self.owner.mins_x - bboxMin_x;
-        bboxMin_y = self.owner.mins_y - bboxMin_y;
-        bboxMin_z = self.owner.mins_z;
         killed(self.owner.armRight, self, 0);
-        setsize( self.owner, bboxMin, bboxMax);
+        self.owner.armLeft.armRight = self.owner;
+        self.realowner = self.owner;
         break;
+        
       case M_ARM_LEFT:
-        bboxMax_x = self.owner.maxs_x - bboxMax_x;
-        bboxMax_y = self.owner.maxs_y - bboxMax_y;
-        bboxMax_z = self.owner.maxs_z;
-        bboxMin_x = self.owner.mins_x - bboxMin_x;
-        bboxMin_y = self.owner.mins_y - bboxMin_y;
-        bboxMin_z = self.owner.mins_z;
-        setsize( self.owner, bboxMin, bboxMax);
+        self.realowner = self.owner.torsoLeft;
+        if( self.owner.torsoLeft.deadflag != DEAD_NO ){
+          self.realowner = self.owner;
+        }
         break;
         
       case M_ARM_RIGHT:
-        bboxMax_x = self.owner.maxs_x - bboxMax_x;
-        bboxMax_y = self.owner.maxs_y - bboxMax_y;
-        bboxMax_z = self.owner.maxs_z;
-        bboxMin_x = self.owner.mins_x - bboxMin_x;
-        bboxMin_y = self.owner.mins_y - bboxMin_y;
-        bboxMin_z = self.owner.mins_z;
-        setsize( self.owner, bboxMin, bboxMax);
+        self.realowner = self.owner.torsoLeft;
+        if( self.owner.torsoRight.deadflag != DEAD_NO ){
+          self.realowner = self.owner;
+        }
         break;
     }
     
