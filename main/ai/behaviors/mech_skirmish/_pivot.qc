@@ -1,0 +1,121 @@
+/*
+battleMETAL 
+Author: Peter Roohr
+Date: 09/23/2018
+Overview: ai unit
+  Mech - Skirmisher
+  Behavior - Pivot
+    
+  Setup
+    
+*/
+/*
+  Mech attempts to pivot to its ideal_yaw
+*/
+void() ai_mech_sk_pivot1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+   
+  self.legs.attack_state = TR_NORM;
+    
+  ai_face_targ();
+  otemp = self;
+  self = self.legs;
+    bot_leg_pivot1();
+  self = otemp;
+  
+  macro_ai_frame(ai_mech_sk_pivot2)
+};
+void() ai_mech_sk_pivot2={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  ai_attack();
+  
+  macro_ai_frame(ai_mech_sk_pivot3)
+};
+void() ai_mech_sk_pivot3={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+    
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
+  
+  macro_ai_frame(ai_mech_sk_pivot4)
+};
+void() ai_mech_sk_pivot4={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+
+  macro_ai_frame(ai_mech_sk_pivot5)
+};
+void() ai_mech_sk_pivot5={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+ 
+  macro_ai_frame(ai_mech_sk_pivot6)
+};
+void() ai_mech_sk_pivot6={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  ai_attack();
+
+  macro_ai_frame(ai_mech_sk_pivot7)
+};
+void() ai_mech_sk_pivot7={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
+  
+  macro_ai_frame(ai_mech_sk_pivot8)
+};
+void() ai_mech_sk_pivot8={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sk_pivot9)
+};
+void() ai_mech_sk_pivot9={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame(ai_mech_sk_pivot10)
+};
+void() ai_mech_sk_pivot10={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  ai_attack();
+
+  
+  macro_ai_frame(ai_mech_sk_pivot11)
+};
+void() ai_mech_sk_pivot11={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ai_face_targ();
+  
+  macro_ai_frame_count(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_fight_prep)
+};

@@ -22,7 +22,6 @@ main/controllers/headers/controllers.qh
 
 //Server Defs=====================
   main/extensions/ext_game.qc
-  //main/extensions/ext_cs.qc
   main/extensions/ext_impulse.qc
 //================================
 
@@ -43,6 +42,11 @@ main/controllers/headers/controllers.qh
   main/models/models_h.qc
   main/extensions/headers/ext_player.qh
   main/ai/headers/ai_api.qh
+    main/ai/headers/ai_behavior_mech_skirmish.qh
+    main/ai/headers/ai_behavior_mech_sniper.qh
+    main/ai/headers/ai_behavior_tank_skirmish.qh
+    main/ai/headers/ai_behavior_tank_sniper.qh
+    main/ai/headers/ai_behavior_tank_gev.qh
   main/map/triggers_map_h.qc
 //==========================
 
@@ -138,13 +142,59 @@ main/controllers/headers/controllers.qh
   main/ai/ai_api.qc
   main/ai/ai_ctrl.qc
   main/ai/behaviors/ai_turret.qc
-  main/ai/behaviors/ai_mech_skirmish.qc
-  main/ai/behaviors/ai_mech_sniper.qc
-  main/ai/behaviors/ai_destroyer.qc
-  main/ai/behaviors/ai_tank_skirmish.qc
+  main/ai/behaviors/mech_skirmish/ai_mech_skirmish.qc
+    main/ai/behaviors/mech_skirmish/_charge.qc
+    main/ai/behaviors/mech_skirmish/_die.qc
+    main/ai/behaviors/mech_skirmish/_flank.qc
+    main/ai/behaviors/mech_skirmish/_hunt.qc
+    main/ai/behaviors/mech_skirmish/_panic.qc
+    main/ai/behaviors/mech_skirmish/_patrol.qc
+    main/ai/behaviors/mech_skirmish/_pivot.qc
+    main/ai/behaviors/mech_skirmish/_strafe.qc
+    
+  main/ai/behaviors/mech_sniper/ai_mech_sniper.qc
+    main/ai/behaviors/mech_sniper/_charge.qc
+    main/ai/behaviors/mech_sniper/_die.qc
+    main/ai/behaviors/mech_sniper/_melee.qc
+    main/ai/behaviors/mech_sniper/_panic.qc
+    main/ai/behaviors/mech_sniper/_patrol.qc
+    main/ai/behaviors/mech_sniper/_reverse.qc
+    main/ai/behaviors/mech_sniper/_rotate.qc
+    main/ai/behaviors/mech_sniper/_snipe.qc
+  
+  main/ai/behaviors/tank_gev/ai_gev.qc
+    main/ai/behaviors/tank_gev/_charge.qc
+    main/ai/behaviors/tank_gev/_die.qc
+    main/ai/behaviors/tank_gev/_flank.qc
+    main/ai/behaviors/tank_gev/_hunt.qc
+    main/ai/behaviors/tank_gev/_panic.qc
+    main/ai/behaviors/tank_gev/_rotate.qc
+    main/ai/behaviors/tank_gev/_strafe.qc
+  
+  main/ai/behaviors/tank_sniper/ai_destroyer.qc
+    main/ai/behaviors/tank_sniper/_charge.qc
+    main/ai/behaviors/tank_sniper/_die.qc
+    main/ai/behaviors/tank_sniper/_panic.qc
+    main/ai/behaviors/tank_sniper/_reverse.qc
+    main/ai/behaviors/tank_sniper/_rotate.qc
+    main/ai/behaviors/tank_sniper/_snipe.qc
+    main/ai/behaviors/tank_sniper/_strafe.qc
+  
+  main/ai/behaviors/tank_skirmish/ai_tank_skirmish.qc
+    main/ai/behaviors/tank_skirmish/_charge.qc
+    main/ai/behaviors/tank_skirmish/_die.qc
+    main/ai/behaviors/tank_skirmish/_flank.qc
+    main/ai/behaviors/tank_skirmish/_hunt.qc
+    main/ai/behaviors/tank_skirmish/_juke.qc
+    main/ai/behaviors/tank_skirmish/_panic.qc
+    main/ai/behaviors/tank_skirmish/_reverse.qc
+    main/ai/behaviors/tank_skirmish/_rotate.qc
+    main/ai/behaviors/tank_skirmish/_strafe.qc
+  
+  
   //main/ai/behaviors/ai_noncom.qc TODO
   //main/ai/behaviors/ai_vtol.qc TODO
-  main/ai/behaviors/ai_gev.qc
+  
   main/ai/ai_nodes.qc
   main/ai/ai_voice.qc
   //-------------------------------

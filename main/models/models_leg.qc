@@ -153,7 +153,6 @@ void() bot_leg_walk8 = [$l_walk8, bot_leg_walk1]{
 void() bot_leg_back1 = [$l_walk1, bot_leg_back8]{
   self.frame = $l_walk1;
 };
-
 void() bot_leg_back2 = [$l_walk2, bot_leg_back1]{
   self.frame = $l_walk2;
   te_foot_stomp( self.owner.origin, self.owner.angles, self.owner.vec_size, self.owner.mins, FALSE);
@@ -178,6 +177,39 @@ void() bot_leg_back8 = [$l_walk8, bot_leg_back7]{
   self.frame = $l_walk8;
 };
 
+void() bot_leg_pivot1 = [$l_walk7, bot_leg_pivot2]{
+  self.frame = $l_walk7;
+};
+void() bot_leg_pivot2 = [$l_walk6, bot_leg_pivot3]{
+  self.frame = $l_walk6;
+};
+void() bot_leg_pivot3 = [$l_walk5, bot_leg_pivot4]{
+  self.frame = $l_walk5;
+};
+void() bot_leg_pivot4 = [$l_walk4, bot_leg_pivot5]{
+  self.frame = $l_walk4;
+};
+void() bot_leg_pivot5 = [$l_walk3, bot_leg_pivot6]{
+  self.frame = $l_walk3;
+};
+void() bot_leg_pivot6 = [$l_walk2, bot_leg_pivot7]{
+  self.frame = $l_walk2;
+};
+void() bot_leg_pivot7 = [$l_walk3, bot_leg_pivot8]{
+  self.frame = $l_walk3;
+};
+void() bot_leg_pivot8 = [$l_walk4, bot_leg_pivot9]{
+  self.frame = $l_walk4;
+};
+void() bot_leg_pivot9 = [$l_walk5 bot_leg_pivot10]{
+  self.frame = $l_walk5;
+};
+void() bot_leg_pivot10 = [$l_walk6, bot_leg_pivot11]{
+  self.frame = $l_walk6;
+};
+void() bot_leg_pivot11 = [$l_walk7, bot_leg_pivot1]{
+  self.frame = $l_walk7;
+};
 /*
   Bot Leg death frames
 */

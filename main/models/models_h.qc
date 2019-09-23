@@ -91,6 +91,19 @@ void() bot_leg_back5;
 void() bot_leg_back6;
 void() bot_leg_back7;
 void() bot_leg_back8;
+
+void() bot_leg_pivot1;
+void() bot_leg_pivot2;
+void() bot_leg_pivot3;
+void() bot_leg_pivot4;
+void() bot_leg_pivot5;
+void() bot_leg_pivot6;
+void() bot_leg_pivot7;
+void() bot_leg_pivot8;
+void() bot_leg_pivot9;
+void() bot_leg_pivot10;
+void() bot_leg_pivot11;
+
 /*
   CENTER TORSO
 */
