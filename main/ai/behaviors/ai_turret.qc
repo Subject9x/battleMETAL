@@ -88,6 +88,7 @@ void() ai_turret_patrol7;
 void() ai_turret_patrol8;
 
 void() ai_turret_fight_prep;
+void() ai_turret_touch;
 
 void() ai_turret_rotate1;
 void() ai_turret_rotate2;
@@ -282,6 +283,26 @@ void() ai_turret_fight_prep={
   }
   
   macro_ai_frame(ai_turret_idle1)
+};
+
+void() ai_turret_touch={
+  local float touch_front;
+  
+  if( other.faction != self.faction ){
+    if( !ai_valid_target(self.enemy) ){
+      self.oldenemy = self.enemy;
+      self.enemy = other;
+      macro_ai_frame(ai_turret_fight_prep)
+      return; 
+    }
+    touch_front = ai_check_targ_infront( other, self.ai_fov, TRUE);
+    if( touch_front ){
+      self.oldenemy = self.enemy;
+      self.enemy = other;
+      macro_ai_frame(ai_turret_fight_prep)
+      return;
+    }
+  }
 };
 
 /*
@@ -548,99 +569,46 @@ void() ai_turret_hunt10={
   TH_REACT
     what to do when hit by fire
 */
-void( entity attacker ) ai_turret_react1={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  local float my_hp;
-  local float enemy_hp, enemy_size;
-  local float atk_hp, atk_size;
+void( entity attacker ) ai_turret_react1={  
+  local float enemyvis;
+  local float enemydist;
 
+  self.ai_react_buffer = time + self.ai_react_time;
+  
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
     return;
   }
- 
-  self.ai_react_buffer = time + self.ai_react_time;
-  
+
   //AI currently has no target
-  if( !self.enemy ){
+  if( ai_valid_target(self.enemy) == FALSE ){
+    self.ai_react_buffer = time + self.ai_react_time * 1.25;
     self.enemy = attacker;
     macro_ai_frame(ai_turret_fight_prep)
     return;
   }
   
-  my_hp = util_getMechHpAverage(self);
-  atk_hp = util_getMechHpAverage(attacker);
-  atk_size = attacker.vec_size;
-  
-  if( self.enemy ){  
-    if( ai_check_vis(attacker) == VIS_FAIL ){
-      self.ai_react_buffer = time + self.ai_react_time;
-      return;
-    }
-    if( (attacker.flags & FL_CLIENT) ){
-      //prioritize players
-      self.oldenemy = self.enemy;
-      self.enemy = attacker;
-      self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-      self.ai_react_buffer = time + self.ai_react_time * 3;
-      macro_ai_frame(ai_turret_fight_prep)
-      return;
-    }
-    else{
-      enemy_hp  = util_getMechHpAverage(self.enemy);
-      enemy_size = self.enemy.vec_size;
-      if( self.ai_rank > AI_RANK_REG ){
-        if( atk_hp < enemy_hp ){
-          //high rank turrets will attack weaker targets (the smart move)
-          if( ai_check_face( attacker, self.ai_fov) ){
-            self.oldenemy = self.enemy;
-            self.enemy = attacker;
-            self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-            self.ai_react_buffer = time + self.ai_react_time * 2;
-            macro_ai_frame(ai_turret_fight_prep)
-            return;
-          }
-        }
-        else if( atk_size > enemy_size ){
-          if( atk_hp < enemy_hp ){
-            if( ai_check_face(attacker, self.ai_fov) ){
-              self.oldenemy = self.enemy;
-              self.enemy = attacker;
-              self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-              self.ai_react_buffer = time + self.ai_react_time * 2;
-              ai_turret_set_state(TR_YAW);
-              macro_ai_frame(ai_turret_fight_prep)
-              return;
-            }
-          }
-        }
-      }
-      else{
-        if( atk_size > enemy_size ){
-          //lesser bots usually panic
-          self.oldenemy = self.enemy;
-          self.enemy = attacker;
-          self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-          self.ai_react_buffer = time + self.ai_react_time;
-          macro_ai_frame(ai_turret_fight_prep)
-          return;
-        }
-        else{
-          if( ai_check_face(attacker, self.ai_fov) ){
-            //lesser bots usually panic
-            self.oldenemy = self.enemy;
-            self.enemy = attacker;
-            self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-            self.ai_react_buffer = time + self.ai_react_time;
-            macro_ai_frame(ai_turret_fight_prep)
-            return;
-          }
-        }
-      }
-    }
+  enemyvis = ai_check_vis(self.enemy);
+  if( enemyvis == VIS_FAIL ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
   }
+  
+  if( ai_check_targ_infront( attacker, self.ai_fov) ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_turret_fight_prep)
+    return;
+  }
+  
+  
+  self.ai_react_buffer = time + self.ai_react_time * 2;
 };
 
 /*
@@ -742,6 +710,7 @@ void() ai_turret={
   self.th_missile = ai_turret_fight_prep;
   self.th_react = ai_turret_react1;
   self.th_die = ai_turret_die;
+  self.touch = ai_turret_touch;
   
   self.think = ai_turret_patrol1;
   self.nextthink = time + (random()*0.5); //spread out thinks

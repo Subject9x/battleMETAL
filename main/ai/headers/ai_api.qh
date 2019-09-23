@@ -139,6 +139,7 @@ void() ai_lock_on;
 float( entity t ) ai_line_of_sight;
 void( entity t) ai_call_for_help;
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
+float( float yawAng ) ai_check_move;
 
 //AI MAP FUNCS
 float( void() ai_to_make ) ai_unit_setup;
@@ -183,8 +184,6 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront;
 float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
-void() ai_move_turn;
-float( float angmod, float dist) ai_move;
 float( float angmod, float dist ) ai_yaw_move;
 void( float alt_low, float alt_max ) ai_fly_update;
 void( float move ) ai_update_accuracy;

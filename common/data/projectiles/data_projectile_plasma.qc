@@ -88,13 +88,12 @@ void() data_projectile_plasma_touch={
 
   pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
   if(other.takedamage){
-    hit = t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if(other.shield <= 0){
-      //newmis = spawn();
+      hit = t_damage(other, self, self.owner, 0.01, self.damageType, self.origin, '0 0 0');
       self.enemy = other;
       self.cockpit = hit;
       self.damageType = self.damageType | EFF_PRC;
-      self.damageValue = self.damageValue * 0.33;
+      self.damageValue = self.damageValue * 0.05;
       setsize(self, '-1 -1 -1', '1 1 1');
       if( (other.data_type == DATA_MECH) ){
         setorigin(self, hit.origin);
@@ -102,6 +101,9 @@ void() data_projectile_plasma_touch={
       self.think = data_projectile_plasma_burn_ini_;
       self.nextthink = time + 0.01;
       return;
+    }
+    else{
+      t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     }
 	}
   self.think = SUB_Remove;

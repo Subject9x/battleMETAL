@@ -651,7 +651,7 @@ void() ai_mech_sk_strafe1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  ai_move_turn();
+  ChangeYaw();
   self.legs.attack_state = TR_NORM;
   otemp = self;
   self = self.legs;
@@ -670,165 +670,239 @@ void() ai_mech_sk_strafe2={
   macro_ai_update(ctrl_update_mechplayer)
   
   local float dampen;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.5;
-   
-  walkmove( self.angles_y, self.data_speed_strafe - dampen);
+  dampen = 0.1;
+  if( self.speed == self.lefty )
+    dampen = 1;
+    
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  
-  macro_ai_frame(ai_mech_sk_strafe3)
+
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe3)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.4;
+  dampen = 0.2;
+  if( self.speed == self.lefty )
+    dampen = 1;
    
-  walkmove( self.angles_y, self.data_speed_strafe - dampen);
-  
-  macro_ai_frame(ai_mech_sk_strafe4)
+
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe4)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.3;
+  dampen = 0.2;
+  if( self.speed == self.lefty )
+    dampen = 1;
    
-  walkmove( self.angles_y, self.data_speed_strafe - dampen);
-  
-  macro_ai_frame(ai_mech_sk_strafe5)
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe5)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe5={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.2;
+  dampen = 0.4;
+  if( self.speed == self.lefty )
+    dampen = 1;
    
-  walkmove( self.angles_y, self.data_speed_strafe - dampen);
   ai_attack();
-  
-  macro_ai_frame(ai_mech_sk_strafe6)
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe6)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe6={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  if( self.speed != self.lefty )
-    dampen = self.data_speed_strafe * 0.1;
-   
-  walkmove( self.angles_y, self.data_speed_strafe - dampen);
+  dampen = 0.5;
+  if( self.speed == self.lefty )
+    dampen = 1;
   
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
-  
-  macro_ai_frame(ai_mech_sk_strafe7)
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe7)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe7={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-   
-  walkmove( self.angles_y, self.data_speed_strafe);
-  
-  macro_ai_frame(ai_mech_sk_strafe8)
+ 
+ local float dampen;
+  dampen = 0.6;
+  if( self.speed == self.lefty )
+    dampen = 1;
+
+  ai_attack();
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe8)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe8={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  walkmove( self.angles_y, self.data_speed_strafe);
-  
-  macro_ai_frame(ai_mech_sk_strafe9)
+  local float dampen;
+  dampen = 0.7;
+  if( self.speed == self.lefty )
+    dampen = 1;
+   
+  ai_attack();
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe9)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe9={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  walkmove( self.angles_y, self.data_speed_strafe);
+  local float dampen;
+  dampen = 0.7;
+  if( self.speed == self.lefty )
+    dampen = 1;
+   
   ai_attack();
-  
-  macro_ai_frame(ai_mech_sk_strafe10)
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe10)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe10={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-   
-  walkmove( self.angles_y, self.data_speed_strafe);
-    
+ 
+  local float dampen;
+  dampen = 0.8;
+  if( self.speed == self.lefty )
+    dampen = 1;
+  
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
-  
-  macro_ai_frame(ai_mech_sk_strafe11)
+ if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe11)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe11={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  walkmove( self.angles_y, self.data_speed_strafe);
-  
-  macro_ai_frame(ai_mech_sk_strafe12)
+  local float dampen;
+  dampen = 0.9;
+  if( self.speed == self.lefty )
+    dampen = 1;
+
+  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+    macro_ai_frame(ai_mech_sk_strafe12)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe12={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  walkmove( self.angles_y, self.data_speed_strafe);
-  
-  macro_ai_frame(ai_mech_sk_strafe13)
+  if( walkmove( self.angles_y, self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_strafe13)
+    return;
+  }
+
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe13={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  walkmove( self.angles_y, self.data_speed_strafe);
   ai_attack();
+  if( walkmove( self.angles_y, self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_strafe14)
+    return;
+  }
 
-  macro_ai_frame(ai_mech_sk_strafe14)
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe14={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  walkmove( self.angles_y, self.data_speed_strafe);
-  
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
-
-  macro_ai_frame(ai_mech_sk_strafe15)
+   
+  if( walkmove( self.angles_y, self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_strafe15)
+    return;
+  }
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe15={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  walkmove( self.angles_y, self.data_speed_strafe);
-  
-  macro_ai_frame(ai_mech_sk_strafe16)
+  if( walkmove( self.angles_y, self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_strafe16)
+    return;
+  }
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_strafe16={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  walkmove( self.angles_y, self.data_speed_strafe);
-
-  self.speed = self.lefty;
-  macro_ai_frame_count(ai_mech_sk_strafe1)
-  
-  if( random() < 0.67 ){
-    macro_ai_frame(ai_mech_sk_pivot1)
+  if( walkmove( self.angles_y, self.data_speed_strafe) ){  
+    self.speed = self.lefty;
+    macro_ai_frame_count(ai_mech_sk_strafe1)
+    
+    if( random() < 0.67 ){
+      macro_ai_frame(ai_mech_sk_pivot1)
+      return;
+    }
+    
+    macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  
-  macro_ai_frame(ai_mech_sk_fight_prep)
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 
 /*
@@ -1823,205 +1897,44 @@ void() ai_mech_sk_panic16={
   TH_REACT
 */
 void( entity attacker ) ai_mech_sk_react1={
-  local float my_hp;
-  local float atk_hp;
-  local float react_vis;
-  local float react_face;
-  local float enemyFace;
+  local float enemyvis;
+  local float enemydist;
+
+  self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
-    self.ai_react_buffer = time + self.ai_react_time;
-    return;
-  }
-  
-  if( (self.flags & FL_DISARMED) ){
-    self.ai_react_buffer = time + self.ai_react_time * 3;
-    self.th_pain( attacker );
     return;
   }
 
-  react_vis = ai_check_vis(attacker);
-  react_face = ai_check_face(attacker, self.ai_fov);
-  my_hp = util_getMechHpAverage(self);
-  atk_hp = util_getMechHpAverage(attacker);
-  
-  //no current target
-  if( !ai_valid_target(self.enemy) ){
-    //no LoS on attacker
-    if( react_vis == VIS_FAIL ){
-      //pilot above average
-      if( self.ai_rank > AI_RANK_REG ){
-        //unit is dying
-        if( my_hp < 0.33 && random() <= 0.15){
-          self.th_pain(attacker);
-          self.ai_react_buffer = time + self.ai_react_time;
-          return;
-        }
-        //otherwise, attack
-        self.enemy = attacker;
-        self.ai_react_buffer = time + self.ai_react_time * 3;
-        macro_ai_frame(ai_mech_sk_fight_prep)
-        return;
-      }
-      //pilot is average
-      //unit is dying
-      if( my_hp < 0.33 && random() <= 0.45){
-        self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      self.enemy = attacker;
-      macro_ai_frame(ai_mech_sk_pivot1)
-      return;
-    }
-    //yes LoS on attacker
-    //pilot above average
-    if( self.ai_rank > AI_RANK_REG ){
-      //attack
-      self.enemy = attacker;
-      self.ai_react_buffer = time + self.ai_react_time;
-      macro_ai_frame(ai_mech_sk_fight_prep)
-      return;
-    }
-      //pilot is facing attacker.
-    if( react_face ){
-      //attacker in relative close range
-      if( ai_check_range(attacker) <= AI_RANGE_M ){
-        //attack
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sk_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      //otherwise, possible panic
-      if( my_hp < 0.33 && random() <= 0.45){
-        self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      self.ai_react_buffer = time + self.ai_react_time;
-      return;
-    }
-    
-    //pilot is not facing attacker
-    if( ai_check_range(attacker) <= AI_RANGE_S ){
-      //panic check
-      if( my_hp < 0.33 && random() <= 0.45){
-        self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      //attack
-      self.enemy = attacker;
-      macro_ai_frame(ai_mech_sk_fight_prep)
-      self.ai_react_buffer = time + self.ai_react_time * 3;
-      return;
-    }
-    if( my_hp < 0.33 && random() < 0.75 ){
-      self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-    self.ai_react_buffer = time + self.ai_react_time;
+  //AI currently has no target
+  if( ai_valid_target(self.enemy) == FALSE ){
+    self.ai_react_buffer = time + self.ai_react_time * 1.25;
+    self.enemy = attacker;
+    macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
   
-  enemyFace = ai_check_face(self.enemy, self.ai_fov); 
-  
-  //already has target
-  //pilot is above average
-  if( self.ai_rank > AI_RANK_REG ){
-    //quick morale check
-    if( my_hp < 0.33 && random() <= 0.15){
-      self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-    //attacker is facing, and old enemy isnt
-    if( react_face && !enemyFace ){
-      //attacker is weaker than target
-      if( atk_hp < util_getMechHpAverage(self.enemy) ){
-        //attack
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sk_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time * 3;
-        return;
-      }
-      self.ai_react_buffer = time + self.ai_react_time;
-      return;
-    }
-    //attacker and enemy are both in front
-    if( react_face && enemyFace ){
-      //attacker is weaker than target
-      if( atk_hp < util_getMechHpAverage(self.enemy) ){
-        //attack
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sk_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time * 3;
-        return;
-      }
-      if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
-        //attack
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sk_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time * 3;
-        return;
-      }
-    }
-    //AI is completely flanked, even veteran pilots may panic
-    if( my_hp < 0.33 && random() < 0.33 ){
-      self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-    self.ai_react_buffer = time + self.ai_react_time;
-    return;
-  }
-  
-  //already has target
-  //pilot is average
-    //morale check
-  if( my_hp < 0.33 && random() <= 0.33){
-    self.th_pain(attacker);
-    self.ai_react_buffer = time + self.ai_react_time * 2;
-    return;
-  }
-  //attacker is facing, and old enemy isnt
-  if( react_face && !enemyFace ){
-    //attacker is weaker than target
-    if( atk_hp < util_getMechHpAverage(self.enemy) ){
-      //attack
-      self.enemy = attacker;
-      macro_ai_frame(ai_mech_sk_fight_prep)
-      self.ai_react_buffer = time + self.ai_react_time * 3;
-      return;
-    }
-  }
-  //attacker and enemy are both in front
-  if( react_face && enemyFace ){
-    if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
-      //attack
-      self.enemy = attacker;
-      macro_ai_frame(ai_mech_sk_fight_prep)
-      self.ai_react_buffer = time + self.ai_react_time * 3;
-      return;
-    }
-    //morale check
-    if( my_hp < 0.33 && random() <= 0.5){
-      self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-  }
-  //AI is completely flanked, panic
-  if( my_hp < 0.33 && random() < 0.65 ){
-    self.th_pain(attacker);
+  enemyvis = ai_check_vis(self.enemy);
+  if( enemyvis == VIS_FAIL ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  self.ai_react_buffer = time + self.ai_react_time;
+  
+  if( ai_check_targ_infront( attacker, self.ai_fov) ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_mech_sk_fight_prep)
+    return;
+  }
+  
+  self.ai_react_buffer = time + self.ai_react_time * 2;
 };
 /*
   AI SPAWN FUNCTION

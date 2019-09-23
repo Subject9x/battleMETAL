@@ -57,12 +57,12 @@ float AI_FOV_VET = 1.5;
 float AI_FOV_ACE = 1.75;
 
 //time interval between view sweeps
-float AI_VIEW_INTERVAL = 3;
+float AI_VIEW_INTERVAL = 2;
 //these are multipliers
-float AI_VIEW_ROK = 1.25;
+float AI_VIEW_ROK = 1.33;
 float AI_VIEW_REG = 1;
-float AI_VIEW_VET = 0.75;
-float AI_VIEW_ACE = 0.5;
+float AI_VIEW_VET = 0.67;
+float AI_VIEW_ACE = 0.33;
 
 //View Ranges, multipliers against ai.radar_range
 float AI_VIEW_RANGE_ROK = 0.85;

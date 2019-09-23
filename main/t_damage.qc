@@ -316,7 +316,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
     }
   }
-  else{
+  /*else{
     if( (trg.flags & FL_MONSTER) && trg.deadflag == DEAD_NO ){
       if( util_getMechHpAverage( trg ) <= 0.5 ){
         otherSelf = self;
@@ -325,7 +325,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
         self = otherSelf;
       }
     }
-  }
+  }*/
   return dmgTrg;
 };
 

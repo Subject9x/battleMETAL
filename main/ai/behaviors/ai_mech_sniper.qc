@@ -792,7 +792,7 @@ void() ai_mech_sniper_charge1={
   macro_ai_update(ctrl_update_mechplayer)
   
   self.ideal_yaw = self.ai_dir;
-  ai_move_turn(); 
+  ChangeYaw(); 
   otemp = self;
   self = self.legs;
     bot_leg_walk1();
@@ -806,7 +806,7 @@ void() ai_mech_sniper_charge2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   
   macro_ai_frame(ai_mech_sniper_charge3)
@@ -815,7 +815,7 @@ void() ai_mech_sniper_charge3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   
   macro_ai_frame(ai_mech_sniper_charge4)
@@ -824,7 +824,7 @@ void() ai_mech_sniper_charge4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   
   macro_ai_frame(ai_mech_sniper_charge5)
@@ -833,7 +833,7 @@ void() ai_mech_sniper_charge5={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   
   macro_ai_frame(ai_mech_sniper_charge6)
@@ -842,7 +842,7 @@ void() ai_mech_sniper_charge6={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   
   macro_ai_frame(ai_mech_sniper_charge7)
@@ -851,7 +851,7 @@ void() ai_mech_sniper_charge7={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
   
@@ -861,7 +861,7 @@ void() ai_mech_sniper_charge8={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   
   if( self.ai_rank > AI_RANK_REG ){
@@ -874,7 +874,7 @@ void() ai_mech_sniper_charge9={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
 
   macro_ai_frame(ai_mech_sniper_charge10)
@@ -883,7 +883,7 @@ void() ai_mech_sniper_charge10={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
 
   macro_ai_frame(ai_mech_sniper_charge11)
@@ -892,7 +892,7 @@ void() ai_mech_sniper_charge11={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
 
@@ -902,7 +902,7 @@ void() ai_mech_sniper_charge12={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
     
   if( self.ai_rank > AI_RANK_REG ){
@@ -915,7 +915,7 @@ void() ai_mech_sniper_charge13={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   
   macro_ai_frame(ai_mech_sniper_charge14)
@@ -924,7 +924,7 @@ void() ai_mech_sniper_charge14={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   
   macro_ai_frame(ai_mech_sniper_charge15)
@@ -933,7 +933,7 @@ void() ai_mech_sniper_charge15={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
   ai_attack();
 
@@ -943,7 +943,7 @@ void() ai_mech_sniper_charge16={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   walkmove( self.angles_y, self.data_speed_forward );
     
   if( self.ai_rank > AI_RANK_REG ){
@@ -1037,7 +1037,7 @@ void() ai_mech_sniper_turn1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_mech_sniper_turn2)
 };
@@ -1045,7 +1045,7 @@ void() ai_mech_sniper_turn2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_mech_sniper_turn3)
 };
@@ -1053,7 +1053,7 @@ void() ai_mech_sniper_turn3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_mech_sniper_turn4)
 };
@@ -1061,7 +1061,7 @@ void() ai_mech_sniper_turn4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   ai_attack();
   
   if( !ai_check_vis(self.enemy) ){
@@ -1161,7 +1161,7 @@ void() ai_mech_sniper_melee1={
   macro_ai_update(ctrl_update_mechplayer)
   
   self.ideal_yaw = self.ai_dir;
-  ai_move_turn();
+  ChangeYaw();
   ai_attack();
   
   macro_ai_frame(ai_mech_sniper_melee2)
@@ -1170,7 +1170,7 @@ void() ai_mech_sniper_melee2={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
     
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -1182,7 +1182,7 @@ void() ai_mech_sniper_melee3={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
 
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_mech_sniper_melee2)
 };
@@ -1190,7 +1190,7 @@ void() ai_mech_sniper_melee4={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_mech_sniper_melee2)
 };
@@ -1198,7 +1198,7 @@ void() ai_mech_sniper_melee5={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   ai_attack();
   
   macro_ai_frame(ai_mech_sniper_melee2)
@@ -1207,7 +1207,7 @@ void() ai_mech_sniper_melee6={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_move_turn();
+  ChangeYaw();
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
@@ -1469,182 +1469,43 @@ void() ai_mech_sniper_panic16={
   TH_REACT
 */
 void( entity attacker ) ai_mech_sniper_react1={
-  local float my_hp;
-  local float atk_hp;
-  local float react_vis;
-  local float react_face;
-  local float enemyFace;
+  local float enemyvis;
+  local float enemydist;
+
+  self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
     return;
   }
-  
-  if( (self.flags & FL_DISARMED) ){
-    self.ai_react_buffer = time + self.ai_react_time * 3;
-    self.th_pain( attacker );
-    return;
-  }
 
-  react_vis = ai_check_vis(attacker);
-  react_face = ai_check_face(attacker, self.ai_fov);
-  my_hp = util_getMechHpAverage(self);
-  atk_hp = util_getMechHpAverage(attacker);
-  
-  //no current target
-  if( !ai_valid_target(self.enemy) ){
-    //no LoS on attacker
-    if( react_vis == VIS_FAIL ){
-      //pilot above average
-      if( self.ai_rank > AI_RANK_REG ){
-        self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-    }
-    //yes LoS on attacker
-    //pilot above average
-    if( self.ai_rank > AI_RANK_REG ){
-      //attack
-      self.enemy = attacker;
-      self.ai_react_buffer = time + self.ai_react_time;
-      macro_ai_frame(ai_mech_sniper_fight_prep)
-      return;
-    }
-      //pilot is facing attacker.
-    if( react_face ){
-      //attacker in relative long range
-      if( ai_check_range(attacker) >= AI_RANGE_M ){
-        //attack
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sniper_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      //otherwise, possible panic
-      if( my_hp < 0.33 && random() <= 0.45){
-        self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      self.ai_react_buffer = time + self.ai_react_time;
-      return;
-    }
-    
-    //pilot is not facing attacker
-    if( ai_check_range(attacker) <= AI_RANGE_S ){
-      //panic check
-      if( my_hp < 0.33 && random() <= 0.45){
-        self.th_pain(attacker);
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      //attack
-      self.enemy = attacker;
-      macro_ai_frame(ai_mech_sniper_fight_prep)
-      self.ai_react_buffer = time + self.ai_react_time * 3;
-      return;
-    }
-    if( my_hp < 0.33 && random() < 0.75 ){
-      self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-    self.ai_react_buffer = time + self.ai_react_time;
+  //AI currently has no target
+  if( ai_valid_target(self.enemy) == FALSE ){
+    self.ai_react_buffer = time + self.ai_react_time * 1.25;
+    self.enemy = attacker;
+    macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
   
-  enemyFace = ai_check_face(self.enemy, self.ai_fov); 
-  
-  //already has target
-  //pilot is above average
-  if( self.ai_rank > AI_RANK_REG ){
-    //quick morale check
-    if( my_hp < 0.33 && random() <= 0.15){
-      self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-    //attacker is facing, and old enemy isnt
-    if( react_face && !enemyFace ){
-      //attacker is weaker than target
-      if( atk_hp < util_getMechHpAverage(self.enemy) ){
-        //attack
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sniper_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time;
-        return;
-      }
-    }
-    //attacker and enemy are both in front
-    if( react_face && enemyFace ){
-      //attacker is weaker than target
-      if( atk_hp < util_getMechHpAverage(self.enemy) ){
-        //attack
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sniper_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
-        //attack
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sniper_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-    }
-    //AI is completely flanked, even veteran pilots may panic
-    if( my_hp < 0.33 && random() < 0.33 ){
-      self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-    self.ai_react_buffer = time + self.ai_react_time;
+  enemyvis = ai_check_vis(self.enemy);
+  if( enemyvis == VIS_FAIL ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
   
-  //already has target
-  //pilot is average
-    //morale check
-  if( my_hp < 0.33 && random() <= 0.2){
-    self.th_pain(attacker);
-    self.ai_react_buffer = time + self.ai_react_time * 2;
+  if( ai_check_targ_infront( attacker, self.ai_fov) ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  //attacker is facing, and old enemy isnt
-  if( react_face && !enemyFace ){
-    //attacker is weaker than target
-    if( atk_hp < util_getMechHpAverage(self.enemy) ){
-      //attack
-      self.oldenemy = self.enemy;
-      self.enemy = attacker;
-      macro_ai_frame(ai_mech_sniper_fight_prep)
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-  }
-  //attacker and enemy are both in front
-  if( react_face && enemyFace ){
-    if( ai_check_range(attacker) < ai_check_range(self.enemy) ){
-      //attack
-      self.oldenemy = self.enemy;
-      self.enemy = attacker;
-      macro_ai_frame(ai_mech_sniper_fight_prep)
-      self.ai_react_buffer = time + self.ai_react_time * 2;
-      return;
-    }
-  }
-  //AI is completely flanked, panic
-  if( my_hp < 0.33 && random() < 0.65 ){
-    self.th_pain(attacker);
-    self.ai_react_buffer = time + self.ai_react_time;
-    return;
-  }
-  self.ai_react_buffer = time + self.ai_react_time;
+  
 };
 
 /*

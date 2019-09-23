@@ -64,6 +64,24 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
   
 };
 
+float( float yawAng ) ai_check_move={
+  local vector superV;
+  local entity base;
+  base = self;
+  if( self.data_type == DATA_MECH ){
+    base = self.legs;
+  }
+  superV_x = self.angles_x;
+  superV_y = yawAng;
+  superV_z = self.angles_y;
+  makevectors( superV );
+  traceline( base.origin, base.origin + (v_forward * 128), FALSE, self);
+  if( trace_ent ){
+    return FALSE;
+  }
+  return TRUE;
+};
+
 void() ai_leg_control={
   local entity legOwner;
   
@@ -111,23 +129,16 @@ void() ai_update={
   Primary Generic touch function for AI.
 */
 void() ai_touch={
-
   if( (other.flags & FL_NODE) ){
     //ignore nodes straight away, logic for these touches are in ai_nodes
     return;
   }
-
-  if( other.faction == self.faction ){
-    return;
-  }
-  
-  if( ai_valid_target(other) ){
-    if( !self.enemy ){
-      self.enemy = other;
-      self.th_missile();
-      return;
-    }
-    if( self.ai_rank < AI_RANK_VET ){
+  if( time > self.ai_react_buffer ){
+    self.ai_react_buffer = time + self.ai_react_time;
+    if( other.faction != self.faction ){
+      if( ai_valid_target(self.enemy) ){
+        return;
+      }
       self.enemy = other;
       self.th_missile();
       return;
@@ -156,18 +167,11 @@ void(float moveSpeed) ai_walkgoal={
   movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
 };
 
-void() ai_move_turn={
-  ChangeYaw();
-};
-
 void() ai_face_targ={
 	self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
 	ChangeYaw ();
 };
 
-float( float angmod, float dist) ai_move={
-  return walkmove( angmod, dist );
-};
 
 /*
 	Yaw moves use the AI's ideal_yaw
@@ -252,7 +256,6 @@ float(entity t, float ang) ai_check_face={
 	local vector	vang, vec;
 	local float		dot;
   
-  
   if( (self.flags & FL_TURRET) ){
     vang = self.torsoCenter.angles;
   }
@@ -319,10 +322,7 @@ float( entity targ ) ai_check_vis={
 };
 
 float() ai_attack={
-  if( self.enemy ){
-    self.button0 = 1;
-    return self.button0;
-  }
+  self.button0 = 1;
   return self.button0;
 };
 /*

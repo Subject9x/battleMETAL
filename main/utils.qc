@@ -45,17 +45,22 @@ float(float numOfSides) util_roll_dice={
 };
 
 float( entity t, float hpMax ) util_getPieceHpForAverage{
-  if( t ){
+  local float sendBack;
+  sendBack = 0;
+  if( t != world ){
     if( hpMax ){
-      return t.max_health;
+      sendBack = t.max_health;
     }
-    return t.health;
+    else{
+      sendBack = t.health;
+    }
   }
-  return 0;
+  return sendBack;
 };
 
 float(entity t) util_getMechHpAverage={
-      local float total, cur;
+  local float total, cur;
+  
   if(t != world){
     if( t.data_type == DATA_MECH ){
       total = t.max_health;
@@ -63,7 +68,7 @@ float(entity t) util_getMechHpAverage={
       total = total + util_getPieceHpForAverage( t.armRight, TRUE  );
       total = total + util_getPieceHpForAverage( t.torsoLeft, TRUE  );
       total = total + util_getPieceHpForAverage( t.torsoRight, TRUE  );
-      total = total + util_getPieceHpForAverage( t.legs, TRUE  );
+      total = total + util_getPieceHpForAverage( t.legs, TRUE );
       cur = t.health;
       cur = cur + util_getPieceHpForAverage( t.armLeft, FALSE );
       cur = cur + util_getPieceHpForAverage( t.armRight, FALSE  );
@@ -75,7 +80,7 @@ float(entity t) util_getMechHpAverage={
       total = t.max_health;
       cur = t.health;
     }
-      total = cur / total;
+    total = cur / total;
     return total;
   }
   return FALSE;

@@ -392,7 +392,7 @@ void() ai_spg_turn1={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_spg_turn2)
 };
@@ -400,7 +400,7 @@ void() ai_spg_turn2={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_spg_turn3)
 };
@@ -408,7 +408,7 @@ void() ai_spg_turn3={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
     
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -420,7 +420,7 @@ void() ai_spg_turn4={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
   
   ai_attack();
   
@@ -549,7 +549,7 @@ void() ai_spg_strafe1={
   self.ideal_yaw = self.ai_dir;
   //ok now its getting silly
   self.ai_action_time = ceil(self.ai_action_time * 1.5);
-  ai_move_turn();
+  ChangeYaw();
   ai_attack();
   
   macro_ai_frame(ai_spg_strafe2)
@@ -558,7 +558,7 @@ void() ai_spg_strafe2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
   ai_attack();
   
   macro_ai_frame(ai_spg_strafe3)
@@ -567,7 +567,7 @@ void() ai_spg_strafe3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
     
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -579,7 +579,7 @@ void() ai_spg_strafe4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_spg_strafe5)
 };
@@ -587,7 +587,7 @@ void() ai_spg_strafe5={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_spg_strafe6)
 };
@@ -595,7 +595,7 @@ void() ai_spg_strafe6={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  ai_move_turn();
+  ChangeYaw();
   
   macro_ai_frame(ai_spg_strafe7)
 };
@@ -861,7 +861,7 @@ void() ai_spg_panic2={
   
   if( (tyaw > high) || (tyaw < low) ){
     self.ideal_yaw = tyaw;
-    ai_move_turn();
+    ChangeYaw();
     macro_ai_frame( ai_spg_panic2 )
     return;
   }
@@ -951,146 +951,39 @@ void() ai_spg_panic10={
   TH_REACT
 */
 void( entity attacker ) ai_spg_react1={
-  local float my_hp;
-  local float enemy_hp, enemy_size;
-  local float atk_hp, atk_size;
-  local float react_vis;
-  local float react_face;
+  local float enemyvis;
+  local float enemydist;
+
+  self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
     return;
   }
-    
-  if( (self.flags & FL_DISARMED) ){
-    self.ai_react_buffer = time + self.ai_react_time * 2;
-    self.th_pain( attacker );
-    return;
-  }
-  
-  react_face = ai_check_face(attacker, self.ai_fov);
-  
+
   //AI currently has no target
-  if( !self.enemy ){
-    //unit is dying
-    if( my_hp < 0.15 ){
-      if( self.ai_rank > AI_RANK_REG ){
-        if( random() < 0.15 ){
-          self.th_pain(attacker);
-          self.ai_react_buffer = time + self.ai_react_time;
-          return;
-        }
-      }
-      else{
-        if( random() < 0.45 ){
-          self.th_pain(attacker);
-          self.ai_react_buffer = time + self.ai_react_time;
-          return;
-        }
-      }
-    }
-    self.ai_react_buffer = time + self.ai_react_time * 2;
+  if( ai_valid_target(self.enemy) == FALSE ){
+    self.ai_react_buffer = time + self.ai_react_time * 1.25;
     self.enemy = attacker;
     macro_ai_frame(ai_spg_fight_prep)
     return;
   }
   
-  my_hp = util_getMechHpAverage(self);
-  atk_hp = util_getMechHpAverage(attacker);
-  atk_size = attacker.vec_size;
-  react_vis = ai_check_vis(attacker);
+  enemyvis = ai_check_vis(self.enemy);
+  if( enemyvis == VIS_FAIL ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_spg_fight_prep)
+    return;
+  }
   
-  if( self.enemy ){  
-    if( react_vis == VIS_FAIL ){
-      self.ai_react_buffer = time + self.ai_react_time;
-      if( my_hp < 0.33 ){
-        if( random() < 0.25 ){
-          self.th_pain(attacker);
-          return;
-        }
-      }
-      return;
-    }
-    if( (attacker.flags & FL_CLIENT) ){
-      //prioritize players
-      if( self.ai_rank > AI_RANK_REG ){
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        macro_ai_frame(ai_spg_fight_prep)
-        return;
-      }
-      if( ai_check_range(attacker) <= AI_RANGE_S ){
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        macro_ai_frame(ai_spg_fight_prep)
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      self.ai_react_buffer = time + self.ai_react_time;
-      macro_ai_frame(ai_spg_fight_prep)
-      return;
-    }
-    enemy_hp = util_getMechHpAverage(self.enemy);
-    enemy_size = self.enemy.vec_size;
-    if( self.ai_rank > AI_RANK_REG ){
-      if( react_face ){
-        if( atk_hp > enemy_hp ){
-          self.oldenemy = self.enemy;
-          self.enemy = attacker;
-          self.ai_react_buffer = time + self.ai_react_time;
-          macro_ai_frame(ai_spg_fight_prep)
-          return;
-        }
-        self.ai_react_buffer = time + self.ai_react_time * 2;
-        return;
-      }
-      if( atk_size > enemy_size ){
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        self.ai_react_buffer = time + self.ai_react_time;
-        macro_ai_frame(ai_spg_fight_prep)
-        return;
-      }
-      self.ai_react_buffer = time + self.ai_react_time;
-      return;
-    }
-    else{
-      //TD is ok pilot
-      if( react_face ){
-        if( !ai_check_face(self.enemy, self.ai_fov) ){
-          self.oldenemy = self.enemy;
-          self.enemy = attacker;
-          self.ai_react_buffer = time + self.ai_react_time;
-          macro_ai_frame(ai_spg_fight_prep)
-          return;
-        }
-        if( attacker.vec_size > self.enemy.vec_size ){
-          self.oldenemy = self.enemy;
-          self.enemy = attacker;
-          self.ai_react_buffer = time + self.ai_react_time;
-          macro_ai_frame(ai_spg_fight_prep)
-          return;
-        }
-        self.ai_react_buffer = time + self.ai_react_time;
-        return;
-      }
-      //enemy in rear
-      if( react_face ){
-        if( atk_hp > my_hp ){
-          //bad pilot is bad
-          self.oldenemy = self.enemy;
-          self.enemy = attacker;
-          self.ai_react_buffer = time + self.ai_react_time;
-          macro_ai_frame(ai_spg_fight_prep)
-          return;
-        }
-      }
-      //both new enemy, and old enemy aren't in front, panic?
-      self.th_pain(attacker);
-      self.ai_react_buffer = time + self.ai_react_time;
-      return;
-    }
+  if( ai_check_targ_infront( attacker, self.ai_fov) ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_spg_fight_prep)
+    return;
   }
 };
 
