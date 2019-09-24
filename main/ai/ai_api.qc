@@ -2,7 +2,8 @@
 battleMETAL 
 Author: Peter Roohr
 Date: 7/9/2018
-Overview: Main Impl for AI API
+Overview: 
+  Main Impl for AI API
 */
 
 /*
@@ -72,7 +73,6 @@ float() ai_can_spawn={
 };
 
 float( entity t ) ai_line_of_sight={
-  //use FoV choke
   //check turret
   //return false if blocked by world
   //check for radar.
@@ -157,9 +157,9 @@ entity( float radiius) ai_find_friend={
       dist = vlen( ally.origin - self.origin );
       if( dist < rad ){
         rad = dist;
-        if( ai_valid_target(ally) ){
+        if( ally.w_slot != world ){
+          if( ai_valid_target(ally) ){
           //heh, sloppy check for combat units
-          if( ally.w_slot != world ){
             friend = ally;
           }
         }

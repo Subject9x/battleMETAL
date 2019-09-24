@@ -66,8 +66,10 @@ float enemy_infront;
 float enemy_range;
 float enemy_vis;
 float enemy_hunt;
+entity friend_blocker;
+float friend_blocker_dist;
 entity AI_NODES[128];
-
+float move_dampen;
 //ENTITY VARS
 .void( entity attacker ) th_react;  //supplants ai_damage_react() call in t_damage();
 .float ai_react_buffer;             //prevents too many runs of th_react;

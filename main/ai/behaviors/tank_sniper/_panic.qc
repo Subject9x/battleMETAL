@@ -7,12 +7,9 @@ Overview: ai unit
   Behavior - Sniper
   
   Setup
-    
-*/
-/*
-  th_pain == 'panic'
-  unit runs to its nearest node or ally
-  if either are lacking, it'll just run in a rando direction
+      th_pain == 'panic'
+    unit runs to its nearest node or ally
+    if either are lacking, it'll just run in a rando direction
 */
 void(entity attacker) ai_spg_panic1={
   local entity friend;
@@ -22,7 +19,8 @@ void(entity attacker) ai_spg_panic1={
   
   self.ai_dir = self.angles_y;
   friend = ai_find_friend( self.ai_view );
-  if( friend ){
+  if( friend ){        
+    ai_sfx_help();
     self.goalentity = friend;
   }
   else if( self.movetarget ){
@@ -159,8 +157,13 @@ void( entity attacker ) ai_spg_react1={
 
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
-    self.ai_react_buffer = time + self.ai_react_time * 1.25;
     self.enemy = attacker;
+    self.ai_react_buffer = time + self.ai_react_time * 1.25;
+    //Enemy fire is coming 'out of nowhere'
+    if( vlen(attacker.origin - self.origin) > self.ai_view ){
+      self.th_pain(attacker);
+      return;
+    }
     macro_ai_frame(ai_spg_fight_prep)
     return;
   }

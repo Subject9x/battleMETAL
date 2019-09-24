@@ -5,30 +5,31 @@ Date: 09/23/2018
 Overview: ai unit
   Tank - Destroyer
   Behavior - Sniper
+    maintain yaw to enemy
+    move backwards
   
   Setup
-    
-*/
-/*
-  maintain yaw to enemy
-  move backwards
+      
 */
 void() ai_spg_reverse1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
   ai_attack();
   
-  macro_ai_frame(ai_spg_reverse2)
+  if( walkmove( anglemod(self.angles_y - 180), self.data_speed_backward )){
+    macro_ai_frame(ai_spg_reverse2)
+    return;
+  }
+  macro_ai_frame(ai_spg_rotate1)
 };
 void() ai_spg_reverse2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
+  ai_face_targ();
   if( self.ai_rank > AI_RANK_REG ){
-    ai_face_targ();
     ai_attack();
   }
   walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
@@ -40,8 +41,8 @@ void() ai_spg_reverse3={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
   ai_attack();
+  walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
   
   macro_ai_frame(ai_spg_reverse4)
 };
@@ -49,13 +50,14 @@ void() ai_spg_reverse4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_face_targ();
-    ai_attack();
+  ai_attack();
+  ai_face_targ();
+  
+  if( walkmove( anglemod(self.angles_y - 180), self.data_speed_backward )){
+    macro_ai_frame(ai_spg_reverse5)
+    return;
   }
-  walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
-
-  macro_ai_frame(ai_spg_reverse5)
+  macro_ai_frame(ai_spg_rotate1)
 };
 void() ai_spg_reverse5={
   ai_update_accuracy( TRUE );
@@ -70,9 +72,8 @@ void() ai_spg_reverse6={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_face_targ();
-  }
+  ai_face_targ();
+
   walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
   
   macro_ai_frame(ai_spg_reverse7)
@@ -82,17 +83,18 @@ void() ai_spg_reverse7={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
-  
-  macro_ai_frame(ai_spg_reverse8)
+  if( walkmove( anglemod(self.angles_y - 180), self.data_speed_backward )){
+    macro_ai_frame(ai_spg_reverse8)
+    return;
+  }
+  macro_ai_frame(ai_spg_rotate1)
 };
 void() ai_spg_reverse8={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_face_targ();
-  }
+  ai_face_targ();
+  
   walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
 
   macro_ai_frame(ai_spg_reverse9)
@@ -110,10 +112,7 @@ void() ai_spg_reverse10={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
-  if( self.ai_rank > AI_RANK_REG ){
-    ai_face_targ();
-  }
-  walkmove( anglemod(self.angles_y - 180), self.data_speed_backward );
+  ai_face_targ();
   
   macro_ai_frame(ai_spg_fight_prep)
 };

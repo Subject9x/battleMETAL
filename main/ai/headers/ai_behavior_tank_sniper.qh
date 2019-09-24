@@ -17,10 +17,15 @@ void() ai_vec_dest_die1a;
   Macro rebuild
 */
 void() ai_spg_stand1;
-void() ai_spg_walk1;
 void() ai_spg_patrol1;
 void() ai_spg_fight_prep;
 void( entity attacker ) ai_spg_react1;
+
+float() ai_spg_move_check_reverse;
+float() ai_spg_move_check_strafe;
+float() ai_spg_move_check_charge;
+float() ai_spg_move_check_panic;
+
 /*
   rotate in place
 */
@@ -97,6 +102,11 @@ void() ai_spg_charge1;
 void() ai_spg_charge2;
 void() ai_spg_charge3;
 void() ai_spg_charge4;
+void() ai_spg_charge5;
+void() ai_spg_charge6;
+void() ai_spg_charge7;
+void() ai_spg_charge8;
+void() ai_spg_charge9;
 
 /*
   Panic

@@ -5,13 +5,11 @@ Date: 09/23/2018
 Overview: ai unit
   Tank - Destroyer
   Behavior - Sniper
+    rotate in place,
+    SPG's can dial their accuracy in when rotating
   
   Setup
     
-*/
-/*
-  rotate in place,
-  SPG's can dial their accuracy in when rotating
 */
 void() ai_spg_rotate1={
   ai_update_accuracy( FALSE );

@@ -31,19 +31,9 @@ void() ai_vec_dest={
   self.nextthink = time + random()*1; //spread out thinks
 };
 
-void() ai_spg_walk1={
-  ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_updateTank)
-  
-  if( ai_check_scan(self.stat_rdr_mode) ){
-    macro_ai_frame(ai_spg_fight_prep)
-    return;
-  }
-  
-  macro_ai_frame(ai_spg_walk1)
-};
-
-
+/*
+  TH_STAND
+*/
 void() ai_spg_stand1={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
@@ -62,6 +52,9 @@ void() ai_spg_stand1={
   macro_ai_frame(ai_spg_stand1)
 };
 
+/*
+  TH_WALK
+*/
 void() ai_spg_patrol1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
@@ -80,6 +73,10 @@ void() ai_spg_fight_prep={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
+  local float roll;
+  roll = random();
+  self.speed = self.lefty;
+  
   if( ai_valid_target(self.enemy) ){
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
@@ -90,8 +87,19 @@ void() ai_spg_fight_prep={
       if( enemy_range <= 200 ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
+            if( roll < 0.33 ){
+              //possibly charge astride the target
+              macro_ai_frame(ai_spg_charge1)
+              return;
+            }
             //rotate, go down fighting
             macro_ai_frame(ai_spg_rotate1)
+            return;
+          }
+          if( roll < 0.12 ){
+            //possibly charge astride the target
+
+            macro_ai_frame(ai_spg_charge1)
             return;
           }
           //reverse, worse shot overall
@@ -103,14 +111,20 @@ void() ai_spg_fight_prep={
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
             //snipe or strafe
-            if( random() < 0.4){
-              self.lefty = self.lefty * -1;
-              self.ai_dir = 35 + ceil(random() * 60);
-              self.ai_dir = self.ai_dir * self.lefty;
-              self.ai_dir = anglemod( self.angles_y + self.ai_dir );
+            if( roll < 0.4 ){
               macro_ai_frame(ai_spg_strafe1)
               return;
             }
+            if( roll < 0.1 ){
+              macro_ai_frame(ai_spg_charge1)
+              return;
+            }
+            macro_ai_frame(ai_spg_snipe1)
+            return;
+          }
+          if( roll < 0.33 ){
+            macro_ai_frame(ai_spg_strafe1)
+            return;
           }
           macro_ai_frame(ai_spg_snipe1)
           return;
@@ -119,22 +133,28 @@ void() ai_spg_fight_prep={
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
-            self.ai_action_time = ceil(self.ai_action_time * 1.25);
+            if( roll < 0.33 ){
+              macro_ai_frame(ai_spg_strafe1)
+              return;
+            }
+            macro_ai_frame(ai_spg_charge1)
+            return;
           }
-          else{
-            //creep forward halfheartedly
-            self.ai_action_time = ceil(self.ai_action_time / 1.25);
+          if( roll < 0.15 ){
+            macro_ai_frame(ai_spg_charge1)
+            return;
           }
-          macro_ai_frame(ai_spg_charge1)
+          macro_ai_frame(ai_spg_rotate1)
           return;
         }
       }
     }
     if( enemy_vis == VIS_FRN ){
-      self.lefty = self.lefty * -1;
-      self.ai_dir = 35 + ceil(random() * 60);
-      self.ai_dir = self.ai_dir * self.lefty;
-      self.ai_dir = anglemod( self.angles_y + self.ai_dir );
+      if( friend_blocker_dist < 200 ){
+        macro_ai_frame(ai_spg_reverse1)
+        return;
+      }
+      macro_ai_frame(ai_spg_strafe1)
       return;
     }
     //tank destroyers dont hunt
@@ -143,4 +163,23 @@ void() ai_spg_fight_prep={
   }
 
   macro_ai_frame(ai_spg_stand1)
+};
+
+/*
+  called by ai_spg_fight_prep() before attempting the maneuver
+*/
+float() ai_spg_move_check_reverse={
+  
+};
+
+float() ai_spg_move_check_strafe={
+
+};
+
+float() ai_spg_move_check_charge={
+
+};
+
+float() ai_spg_move_check_panic={
+
 };

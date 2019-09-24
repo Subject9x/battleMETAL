@@ -80,7 +80,7 @@ void(float rank) ai_pilot_ini_stats={
   self.w_firetime = ai_pilot_lock_time( rank, self.w_firetime );
   
   self.stat_rdr_mode = FALSE;
-  if( (self.spawnflags & AI_SPAWNFLAG_HASRADAR) ){
+  if( (self.spawnflags & AI_SPAWNFLAG_HASRADAR) || self.ai_rank > AI_RANK_REG ){
     self.stat_rdr_mode = TRUE;
   }
   

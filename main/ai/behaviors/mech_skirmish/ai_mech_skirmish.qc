@@ -147,6 +147,7 @@ void() ai_mech_sk_fight_prep={
         return;
       }
     }
+    
     if( enemy_vis == VIS_FRN ){
       if( rand < 0.33 ){
         self.lefty = self.lefty * -1;
@@ -161,6 +162,7 @@ void() ai_mech_sk_fight_prep={
       macro_ai_update(ai_mech_sk_flank1)
       return;
     }
+    
     if( enemy_vis == VIS_FAIL ){
       if( self.ai_rank > AI_RANK_REG ){
         if( util_getMechHpAverage(self) > 0.45){

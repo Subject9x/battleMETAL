@@ -75,11 +75,13 @@ float( float yawAng ) ai_check_move={
   superV_y = yawAng;
   superV_z = self.angles_y;
   makevectors( superV );
-  traceline( base.origin, base.origin + (v_forward * 128), FALSE, self);
-  if( trace_ent ){
+  traceline( base.origin, base.origin + (v_forward * 64), FALSE, self);
+  
+  if( trace_ent && trace_fraction <= 0.25){
     return FALSE;
   }
-  return TRUE;
+  
+  return trace_fraction;
 };
 
 void() ai_leg_control={
@@ -315,6 +317,8 @@ float( entity targ ) ai_check_vis={
     return VIS_FRAC;
   }
   if( trace_ent.faction == self.faction ){
+    friend_blocker = trace_ent;
+    friend_blocker_dist = vlen(friend_blocker.origin - self.origin);
     return VIS_FRN;
   }
   
@@ -323,7 +327,7 @@ float( entity targ ) ai_check_vis={
 
 float() ai_attack={
   self.button0 = 1;
-  return self.button0;
+  return 1;
 };
 /*
 ===================================================
