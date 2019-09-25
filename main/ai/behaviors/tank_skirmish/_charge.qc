@@ -7,13 +7,15 @@ Overview: ai unit
   Behavior - CHARGE
   
   Setup
-  
     self.ideal_yaw = enemy_yaw
     self.ai_dir = charge yaw
     self.lefty = 1 FORWARD || -1 BACKWARD
 */
 void() ai_tank_sk_enter_charge={
-
+  self.ai_dir = 0;
+  if( self.lefty == -1 ){
+    self.ai_dir = 180;
+  }
 };
 
 void() ai_tank_sk_charge1={

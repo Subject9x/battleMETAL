@@ -52,10 +52,10 @@ void() data_ini_onnek_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_LEGS, '7.25 2.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_1( M_LEGS, '7.25 1 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
   data_ini_unitHardpoint_2( M_LEGS, '7.25 3.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_3( M_LEGS, '7.25 4.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
-  data_ini_unitHardpoint_4( M_LEGS, '7.25 5.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_3( M_LEGS, '7.25 6 11', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_4( M_LEGS, '7.25 8.5 10', '0 0 0', 3, (DMG_ENE | DMG_BAL));
 //=====================================
 
 //HUD DATA=============================
