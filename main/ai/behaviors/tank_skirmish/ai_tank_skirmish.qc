@@ -39,6 +39,8 @@ void() ai_tank_sk_fight_prep={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  self.speed = self.lefty;
+  
   if( ai_valid_target(self.enemy)){
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
@@ -50,25 +52,17 @@ void() ai_tank_sk_fight_prep={
       if( enemy_range <= 200 ){
         if( enemy_infront){
           if( self.ai_rank > AI_RANK_REG ){
-            self.lefty = self.lefty * -1;
-            self.ai_dir = self.lefty * ( 25 + (random() * 30));
-            macro_ai_frame(ai_tank_sk_flank1)
+            macro_ai_frame(ai_tank_sk_enter_flank)
             return;
           }
-          self.lefty = self.lefty *-1;
-          self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-          self.ideal_yaw = anglemod( self.ideal_yaw + ( self.lefty * ( 30 + (random() * 30) + (random() * 30))));
-          macro_ai_frame(ai_tank_sk_strafe1)
+          macro_ai_frame(ai_tank_sk_enter_strafe)
           return;
         }
         if( self.ai_rank > AI_RANK_REG ){
           macro_ai_frame(ai_tank_sk_juke1)
           return;
         }
-        self.lefty = self.lefty * -1;
-        ai_face_targ();
-        self.ai_dir = anglemod( self.ideal_yaw + (45 * self.lefty));
-        macro_ai_frame(ai_tank_sk_reverse1)
+        macro_ai_frame(ai_tank_sk_enter_reverse)
         return;
       }
       
@@ -80,16 +74,11 @@ void() ai_tank_sk_fight_prep={
               macro_ai_frame(ai_tank_sk_charge1)
               return;
             }
-            self.lefty = self.lefty * -1;
-            self.ai_dir = self.lefty * ( 25 + (random() * 30));
-            macro_ai_frame(ai_tank_sk_flank1)
+            macro_ai_frame(ai_tank_sk_enter_flank)
             return;
           }
           if( random() < 0.25 ){
-            self.lefty = self.lefty *-1;
-            self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-            self.ideal_yaw = anglemod( self.ideal_yaw + ( self.lefty * ( 30 + (random() * 30) + (random() * 30))));
-            macro_ai_frame(ai_tank_sk_strafe1)
+            macro_ai_frame(ai_tank_sk_enter_strafe)
             return;
           }
           self.lefty = self.lefty * -1;
@@ -97,11 +86,8 @@ void() ai_tank_sk_fight_prep={
           return;
         }
         if( self.ai_rank > AI_RANK_REG ){
-          if( random() < 0.25 ){        
-            self.lefty = self.lefty * -1;
-            ai_face_targ();
-            self.ai_dir = anglemod( self.ideal_yaw + (45 * self.lefty));
-            macro_ai_frame(ai_tank_sk_reverse1)
+          if( random() < 0.25 ){       
+            macro_ai_frame(ai_tank_sk_enter_reverse)
             return;
           }
           macro_ai_frame(ai_tank_sk_juke1)
@@ -115,9 +101,7 @@ void() ai_tank_sk_fight_prep={
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront){
           if( self.ai_rank > AI_RANK_REG ){
-            self.lefty = self.lefty * -1;
-            self.ai_dir = self.lefty * ( 25 + (random() * 30));
-            macro_ai_frame(ai_tank_sk_flank1)
+            macro_ai_frame(ai_tank_sk_enter_flank)
             return;
           }
           self.lefty = self.lefty * -1;
@@ -134,10 +118,7 @@ void() ai_tank_sk_fight_prep={
       }
     }
     if( enemy_vis == VIS_FRN ){
-      self.lefty = self.lefty *-1;
-      self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-      self.ideal_yaw = anglemod( self.ideal_yaw + ( self.lefty * ( 30 + (random() * 30) + (random() * 30))));
-      macro_ai_frame(ai_tank_sk_strafe1)
+      macro_ai_frame(ai_tank_sk_enter_strafe)
       return;
     }
     if( enemy_vis == VIS_FAIL ){

@@ -3,18 +3,19 @@ battleMETAL
 Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
-  Tank - MBT
-  Behavior - Skirmish
+  Tank - Skirmish
+  Behavior - CHARGE
   
   Setup
-    
+  
+    self.ideal_yaw = enemy_yaw
+    self.ai_dir = charge yaw
+    self.lefty = 1 FORWARD || -1 BACKWARD
 */
-/*
-  CHARGE
-  self.ideal_yaw = enemy_yaw
-  self.ai_dir = charge yaw
-  self.lefty = 1 FORWARD || -1 BACKWARD
-*/
+void() ai_tank_sk_enter_charge={
+
+};
+
 void() ai_tank_sk_charge1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)

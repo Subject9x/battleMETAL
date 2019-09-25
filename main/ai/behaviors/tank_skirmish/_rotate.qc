@@ -3,7 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
-  Tank - MBT
+  Tank - Skirmish
   Behavior - Skirmish
   
   Setup

@@ -3,7 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
-  Tank - MBT
+  Tank - Skirmish
   Behavior - Skirmish
   
   Setup
@@ -13,6 +13,15 @@ Overview: ai unit
   Less advanced tanks will attempt to reverse turn 
   to face a foe behind them
 */
+
+void() ai_tank_sk_enter_reverse={
+  self.lefty = self.lefty * -1;
+  ai_face_targ();
+  self.ai_dir = anglemod( self.ideal_yaw + (45 * self.lefty));
+  
+  macro_ai_frame(ai_tank_sk_reverse1)
+};
+
 void() ai_tank_sk_reverse1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)

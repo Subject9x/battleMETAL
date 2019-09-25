@@ -3,18 +3,23 @@ battleMETAL
 Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
-  Tank - MBT
-  Behavior - Skirmish
+  Tank - Skirmish
+  Behavior - flank
+    tank attempts to move around the target
+    can rotate in motion
   
   Setup
+    self.ai_dir setup before running this with the offset
+    self.lefty = 1 LEFT || -1 RIGHT
     
 */
-/*
-  tank attempts to move around the target
-  can rotate in motion
-  self.ai_dir setup before running this with the offset
-  self.lefty = 1 LEFT || -1 RIGHT
-*/
+void() ai_tank_sk_enter_flank={
+  self.lefty = self.lefty * -1;
+  self.ai_dir = self.lefty * ( 25 + (random() * 30));
+  
+  macro_ai_frame(ai_tank_sk_flank1)
+};
+
 void() ai_tank_sk_flank1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)

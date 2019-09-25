@@ -23,8 +23,8 @@ void() data_ini_onnek_={
   setsize(self, '-25 -25 -10.25', '25 25 14');
   
 //ENERGY AND SHIELDS===================
-  self.energyMax = 400;
-  self.energyRate= 2;
+  self.energyMax = 1000;
+  self.energyRate= 4;
   self.shieldMax = 175;
   self.shieldRate= 0;
 //=====================================
@@ -40,8 +40,7 @@ void() data_ini_onnek_={
   self.data_speed_backward = 15;
   self.data_speed_accel = 1;
   #ifndef CSQC
-  self.yaw_speed = 2;    //AI-only 
-  //self.turret_yaw_speed = 3;//AI-only - but has no turret
+  self.yaw_speed = 2.5;    //AI-only 
   #endif
 //=====================================
  
@@ -53,7 +52,10 @@ void() data_ini_onnek_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_LEGS, '7.25 3.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_1( M_LEGS, '7.25 2.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_2( M_LEGS, '7.25 3.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_3( M_LEGS, '7.25 4.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_4( M_LEGS, '7.25 5.5 12', '0 0 0', 3, (DMG_ENE | DMG_BAL));
 //=====================================
 
 //HUD DATA=============================

@@ -19,6 +19,12 @@ void() ai_tank_sk_stand1;
 void() ai_tank_sk_patrol1;
 void() ai_tank_sk_fight_prep;
 void( entity attacker ) ai_tank_sk_react1;
+
+void() ai_tank_sk_enter_charge;
+void() ai_tank_sk_enter_flank;
+void() ai_tank_sk_enter_juke;
+void() ai_tank_sk_enter_reverse;
+void() ai_tank_sk_enter_strafe;
 /*
   rotate in place to self.ideal_yaw
 */

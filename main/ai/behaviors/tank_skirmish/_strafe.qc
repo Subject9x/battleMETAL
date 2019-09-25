@@ -3,17 +3,20 @@ battleMETAL
 Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
-  Tank - MBT
-  Behavior - Skirmish
+  Tank - Skirmish
+  Behavior - Strafe
   
   Setup
-    
+    self.ideal_yaw = 90deg to enemy_yaw - set before move
+    self.lefty = 1 FORWARD || -1 BACKWARD
 */
-/*
-  STRAFE
-  self.ideal_yaw = 90deg to enemy_yaw - set before move
-  self.lefty = 1 FORWARD || -1 BACKWARD
-*/
+void() ai_tank_sk_enter_strafe={
+  self.lefty = self.lefty *-1;
+  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+  self.ideal_yaw = anglemod( self.ideal_yaw + ( self.lefty * ( 30 + (random() * 30) + (random() * 30))));
+  macro_ai_frame(ai_tank_sk_strafe1)
+};
+
 //rotate to ideal_yaw, is loopable
 void() ai_tank_sk_strafe1={
   ai_update_accuracy( TRUE ); 

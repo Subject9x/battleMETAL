@@ -11,12 +11,17 @@ Overview: ai unit
     self.ai_dir = self.lefty * (35 + rand * 25)
     then apply to ideal_yaw
 */
+
+void() ai_spg_enter_charge={
+  self.lefty = self.lefty * -1;
+  self.ai_dir = self.lefty * (45 + random() * 25);
+  macro_ai_frame(ai_spg_charge1)
+};
+
 void() ai_spg_charge1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
-  
-  self.lefty = self.lefty * -1;
-  self.ai_dir = self.lefty * (45 + random() * 25);
+
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
   ChangeYaw();

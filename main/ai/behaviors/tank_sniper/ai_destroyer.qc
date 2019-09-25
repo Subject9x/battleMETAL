@@ -89,7 +89,7 @@ void() ai_spg_fight_prep={
           if( self.ai_rank > AI_RANK_REG ){
             if( roll < 0.33 ){
               //possibly charge astride the target
-              macro_ai_frame(ai_spg_charge1)
+              macro_ai_frame(ai_spg_enter_charge)
               return;
             }
             //rotate, go down fighting
@@ -99,7 +99,7 @@ void() ai_spg_fight_prep={
           if( roll < 0.12 ){
             //possibly charge astride the target
 
-            macro_ai_frame(ai_spg_charge1)
+            macro_ai_frame(ai_spg_enter_charge)
             return;
           }
           //reverse, worse shot overall
@@ -112,18 +112,18 @@ void() ai_spg_fight_prep={
           if( self.ai_rank > AI_RANK_REG ){
             //snipe or strafe
             if( roll < 0.4 ){
-              macro_ai_frame(ai_spg_strafe1)
+              macro_ai_frame(ai_spg_enter_strafe)
               return;
             }
             if( roll < 0.1 ){
-              macro_ai_frame(ai_spg_charge1)
+              macro_ai_frame(ai_spg_enter_charge)
               return;
             }
             macro_ai_frame(ai_spg_snipe1)
             return;
           }
           if( roll < 0.33 ){
-            macro_ai_frame(ai_spg_strafe1)
+            macro_ai_frame(ai_spg_enter_strafe)
             return;
           }
           macro_ai_frame(ai_spg_snipe1)
@@ -134,14 +134,14 @@ void() ai_spg_fight_prep={
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
             if( roll < 0.33 ){
-              macro_ai_frame(ai_spg_strafe1)
+              macro_ai_frame(ai_spg_enter_strafe)
               return;
             }
-            macro_ai_frame(ai_spg_charge1)
+            macro_ai_frame(ai_spg_enter_charge)
             return;
           }
           if( roll < 0.15 ){
-            macro_ai_frame(ai_spg_charge1)
+            macro_ai_frame(ai_spg_enter_charge)
             return;
           }
           macro_ai_frame(ai_spg_rotate1)
@@ -157,9 +157,7 @@ void() ai_spg_fight_prep={
       macro_ai_frame(ai_spg_strafe1)
       return;
     }
-    //tank destroyers dont hunt
-    macro_ai_frame(ai_spg_rotate1)
-    return; 
+    self.enemy = world;
   }
 
   macro_ai_frame(ai_spg_stand1)

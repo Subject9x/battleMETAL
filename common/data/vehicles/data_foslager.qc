@@ -40,9 +40,9 @@ void() data_ini_foslager_={
   self.data_speed_backward = 15;
   self.data_speed_accel = 1;
   #ifndef CSQC
-  self.yaw_speed = 2.5;    //AI-only 
-  self.turret_yaw_speed = 3;//AI-only
-  self.ai_angleLimits = '-45 45 0';
+  self.yaw_speed = 3.5;    //AI-only 
+  self.turret_yaw_speed = 3.75;//AI-only
+  self.ai_angleLimits = '-90 90 0';
   #endif
 //=====================================
  

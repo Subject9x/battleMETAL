@@ -3,7 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
-  Tank - MBT
+  Tank - Skirmish
   Behavior - Skirmish
   
   Setup
@@ -12,6 +12,11 @@ Overview: ai unit
 /*
   tank attempts to quickly turn around if enemy is behind it
 */
+
+void() ai_tank_sk_enter_juke={
+
+};
+
 void() ai_tank_sk_juke1={
   ai_update_accuracy(TRUE);
   macro_ai_update(ctrl_updateTank)

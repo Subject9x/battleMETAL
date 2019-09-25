@@ -14,10 +14,15 @@ Overview: ai unit
     self.ai_dir = self.ai_dir * self.lefty;
     self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
 */
-void() ai_spg_strafe1={
+
+void() ai_spg_enter_strafe={
   self.lefty = self.lefty * -1;
   self.ai_dir = 35 + random() * 60;
   self.ai_dir = self.ai_dir * self.lefty;
+
+  macro_ai_frame(ai_spg_strafe1);
+};
+void() ai_spg_strafe1={
   
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
