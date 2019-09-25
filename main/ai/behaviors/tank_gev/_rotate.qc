@@ -4,10 +4,11 @@ Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
   Tank - GEV
-  Behavior - Skirmish
-  
-  Setup
+  Behavior - Rotate
+    AI rotates in place to face target
     
+  Setup
+    none
 */
 void() ai_gev_rotate1={
   ai_update_accuracy( FALSE ); 

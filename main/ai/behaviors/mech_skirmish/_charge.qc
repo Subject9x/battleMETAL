@@ -5,15 +5,19 @@ Date: 09/23/2018
 Overview: ai unit
   Mech - Skirmisher
   Behavior - Charge
+    mech moves towards target, maintaining yaw at the target,
+    OR
+    mech moves away from target, maintaining yaw at the target
   
   Setup
-    
+    self.lefty = 1 Forward | -1 Backward
+    self.ideal_yaw = enemy yaw
 */
+void() ai_mech_sk_enter_charge={
+  
+  macro_ai_frame(ai_mech_sk_charge1)
+};
 
-/*
-  self.lefty = 1 Forward | -1 Backward
-  self.ideal_yaw = enemy yaw
-*/
 void() ai_mech_sk_charge1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)

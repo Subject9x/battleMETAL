@@ -7,24 +7,26 @@ Overview: ai unit
   Behavior - Strafe
   
   Setup
-    
+    move 90d to target
+    first adjusts to angle then walks that dir
+    self.ideal_yaw = enemy_yaw + mod
+    but bake it in
 */
-/*
-  move 90d to target
-  first adjusts to angle then walks that dir
-  self.ideal_yaw = enemy_yaw + mod
-  but bake it in
-*/
+void() ai_mech_sk_enter_strafe={
+  
+  self = self.legs;
+    bot_leg_walk1();
+  self = otemp;
+  self.legs.attack_state = TR_NORM;
+  macro_ai_frame(ai_mech_sk_strafe1)
+};
+
 void() ai_mech_sk_strafe1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
    
-  ChangeYaw();
-  self.legs.attack_state = TR_NORM;
+  //ChangeYaw();
   otemp = self;
-  self = self.legs;
-    bot_leg_walk1();
-  self = otemp;
   if( self.angles_y != self.ideal_yaw ){
     macro_ai_frame(ai_mech_sk_strafe1)
     return;

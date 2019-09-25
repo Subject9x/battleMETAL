@@ -78,10 +78,14 @@ void() ai_gev_patrol1={
 
 void() ai_gev_fight_prep={
   local entity nodeRecall;
+  local float roll;
+  
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
   self.speed = self.lefty;
+  
+  roll = random();
   
   if( ai_valid_target(self.enemy)){
     self.ai_action_time = self.ai_action_mod;
@@ -91,30 +95,20 @@ void() ai_gev_fight_prep={
     enemy_hunt = FALSE;
     
     if( enemy_vis == VIS_FRAC ){
+      //enemy is danger close
       if( enemy_range <= 200 ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
-            self.lefty = self.lefty * -1;
-            self.ai_dir = self.lefty * ( 50 + (random() * 30));
-            if( ai_check_move(anglemod(self.ideal_yaw + self.ai_dir)) ){
-              macro_ai_frame(ai_gev_flank1)
-              return;
-            }
-            self.lefty = self.lefty * -1;
-            self.ai_dir = self.ai_dir * -1;
-            if( ai_check_move(anglemod(self.ideal_yaw + self.ai_dir)) ){
-              macro_ai_frame(ai_gev_flank1)
-              return;
-            }
-            if( ai_check_move(anglemod(self.ideal_yaw + 180)) ){
+            self.lefty = 1;
+            if( roll < 0.6 ){
               self.lefty = -1;
-              macro_ai_frame(ai_gev_charge1)
+              macro_ai_frame(ai_gev_enter_flank)
               return;
-            }
-            macro_ai_frame(ai_gev_rotate1)
+            }       
+            macro_ai_frame(ai_gev_enter_flank)
             return;
           }
-          if( ai_check_move(anglemod(self.ideal_yaw + 180)) ){
+          if( roll > 0.6 ){
             self.lefty = -1;
             macro_ai_frame(ai_gev_charge1)
             return;
@@ -123,79 +117,79 @@ void() ai_gev_fight_prep={
           return;
         }
         if( self.ai_rank > AI_RANK_REG ){
-          if( ai_check_move(self.ideal_yaw) ){
-            self.lefty = 1;
-            macro_ai_frame(ai_gev_charge1)
-            return;
-          }
+          self.lefty = 1;
+          macro_ai_frame(ai_gev_enter_charge)
+          return;
         }
-        macro_ai_frame(ai_gev_rotate1)
+        macro_ai_frame(ai_gev_enter_strafe)
         return;
       }
       
+      //enemy is in prime combat range
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
-          if( random() < 0.4 ){
-            self.lefty = self.lefty * -1;
-          }
+          //AI is a decent pilot
           if( self.ai_rank > AI_RANK_REG ){
-            self.ai_dir = self.lefty * ( 50 + (random() * 30));
-            if( ai_check_move(anglemod(self.ideal_yaw + self.ai_dir)) ){
-              macro_ai_frame(ai_gev_flank1)
+            if( roll < 0.33 ){
+              macro_ai_frame(ai_gev_enter_flank)
               return;
             }
-            self.lefty = self.lefty * -1;
-            self.ai_dir = self.ai_dir * -1;
-            if( ai_check_move(anglemod(self.ideal_yaw + self.ai_dir)) ){
-              macro_ai_frame(ai_gev_flank1)
+            if( roll < 0.67 ){
+              macro_ai_frame(ai_gev_enter_strafe)
               return;
             }
-            macro_ai_frame(ai_gev_charge1)
+            self.lefty = -1;
+            macro_ai_frame(ai_gev_enter_charge)
             return;
           }
-          if( random() < 0.25 ){
-            if( random() < 0.6) {
-              self.lefty = -1;
-            }
-            if( ai_check_move(anglemod(self.ideal_yaw + self.ai_dir)) ){
-              self.ai_dir = self.lefty * ( 50 + (random() * 30));
-              macro_ai_frame(ai_gev_flank1)
+          if( roll < 0.33 ){
+              macro_ai_frame(ai_gev_enter_strafe)
               return;
-            }
-            if( ai_check_move(anglemod(self.ideal_yaw - self.ai_dir)) ){
-              self.ai_dir = self.lefty * ( 50 + (random() * 30));
-              self.lefty = self.lefty * -1;
-              macro_ai_frame(ai_gev_flank1)
-              return;
-            }
           }
-          self.ai_dir = anglemod( self.ideal_yaw + (90 * self.lefty));
-          if( ai_check_move(self.ai_dir) ){
-            macro_ai_frame(ai_gev_strafe1)
+          if( roll < 0.67 ){
+            self.lefty = -1;
+            macro_ai_frame(ai_gev_enter_charge)
             return;
           }
-         if( ai_check_move(anglemod(self.ai_dir - 180)) ){
-            self.lefty = self.lefty * -1;
-            macro_ai_frame(ai_gev_strafe1)
-            return;
-          }
+          macro_ai_frame(ai_gev_enter_flank)
+          return;
         }
-        macro_ai_frame(ai_gev_rotate1)
+        
+        if( self.ai_rank > AI_RANK_REG ){
+          if( roll < 0.33 ){
+            macro_ai_frame(ai_gev_enter_strafe)
+            return;
+          }
+          self.lefty = 1;
+          macro_ai_frame(ai_gev_enter_charge)
+          return;
+        }
+        if( roll < 0.33 ){
+          macro_ai_frame(ai_gev_enter_flank)
+          return;
+        }
+        self.lefty = -1;
+        macro_ai_frame(ai_gev_enter_charge)
         return;
       }
+      
+      //enemy is out of combat range
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
           if( ai_check_move(self.ideal_yaw) ){
-            macro_ai_frame(ai_gev_charge1)
+            self.lefty = 1;
+            macro_ai_frame(ai_gev_enter_charge)
             return;
           }
         }
-        macro_ai_frame(ai_gev_rotate1)
+        //dump target, find new one
+        self.enemy = world;
+        macro_ai_frame(ai_gev_stand1)
         return;
       }
     }
     if( enemy_vis == VIS_FRN ){
-      enemy_hunt = TRUE;
+      enemy_vis = VIS_FAIL;
     }
     if( enemy_vis == VIS_FAIL ){      
       if( self.ai_rank > AI_RANK_REG ){
@@ -212,7 +206,7 @@ void() ai_gev_fight_prep={
         }
       }
       if( util_getMechHpAverage(self.enemy) <= 0.25 ){
-          enemy_hunt = TRUE;
+        enemy_hunt = TRUE;
       }
     }
   }

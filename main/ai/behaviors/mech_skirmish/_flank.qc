@@ -12,6 +12,11 @@ Overview: ai unit
     self.ai_dir = self.lefty * (45 + random() * 60);
     self.ideal_yaw = enemy yaw + self.ai_dir
 */
+void() ai_mech_sk_enter_flank={
+
+  macro_ai_frame(ai_mech_sk_flank1)
+}:
+
 void() ai_mech_sk_flank1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
@@ -208,7 +213,6 @@ void() ai_mech_sk_flank8={
   ai_face_targ();
   self.legs.ai_dir = walkAng;
   
- 
   if( walkmove( walkAng, self.data_speed_strafe - dampen) ){
     macro_ai_frame(ai_mech_sk_flank9)
     return;

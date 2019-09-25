@@ -136,7 +136,6 @@ void() ai_tank_sk_panic10={
 */
 void( entity attacker ) ai_tank_sk_react1={
   local float enemyvis;
-  local float enemydist;
 
   self.ai_react_buffer = time + self.ai_react_time;
   
@@ -163,7 +162,7 @@ void( entity attacker ) ai_tank_sk_react1={
     return;
   }
   
-  if( ai_check_targ_infront( attacker, self.ai_fov) ){
+  if( ai_check_targ_infront( attacker, self.ai_fov, TRUE) ){
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );

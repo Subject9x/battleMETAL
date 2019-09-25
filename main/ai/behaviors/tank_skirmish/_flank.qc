@@ -212,5 +212,5 @@ void() ai_tank_sk_flank10={
     return;
   }
   
-  macro_ai_frame(ai_tank_sk_enter_reverse);
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };

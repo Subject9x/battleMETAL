@@ -146,7 +146,6 @@ void() ai_spg_panic10={
 */
 void( entity attacker ) ai_spg_react1={
   local float enemyvis;
-  local float enemydist;
 
   self.ai_react_buffer = time + self.ai_react_time;
   
@@ -177,7 +176,7 @@ void( entity attacker ) ai_spg_react1={
     return;
   }
   
-  if( ai_check_targ_infront( attacker, self.ai_fov) ){
+  if( ai_check_targ_infront( attacker, self.ai_fov, FALSE) ){
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.ai_react_buffer = time + self.ai_react_time * 3;

@@ -4,7 +4,7 @@ Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
   Tank - GEV
-  Behavior - Skirmish
+  Behavior - Death
   
   Setup
     

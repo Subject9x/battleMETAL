@@ -4,14 +4,11 @@ Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
   Tank - GEV
-  Behavior - Skirmish
-  
+  Behavior - Hunt
+    attempt to walkmove to target for a little bit
+    
   Setup
     
-*/
-/*
-  HUNT
-  attempt to walkmove to target for a little bit
 */
 void() ai_gev_hunt1={
   ai_turret_set_state( TR_NORM );

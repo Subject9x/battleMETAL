@@ -158,20 +158,20 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
-  local entity otherSelf, targ_act;
+  local entity otherSelf;
   local entity notTarg;
   local float dmgAmt, prevShields;
   
   if( !trg.takedamage ){
-    return trg;
+    return world;
   }
   
   if( (trg.flags & FL_GODMODE) ){
-    return trg;
+    return world;
   }
   
   if( trg.deadflag != DEAD_NO ){
-    return;
+    return world;
   }
   
   dmgTrg = trg;
@@ -182,10 +182,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   //reduce friendly fire damage on easier settings
   if(trg.faction == attacker.faction){
-    if( skill == 0 ){
-      return trg;
+    if( skill < 2 ){
+      dmgAmt = dmgAmt * 0.33;
     }
-    dmgAmt = dmgAmt / 2;
+    else if( skill == 2){
+      dmgAmt = dmgAmt * 0.67;
+    }
   }
   
   if( (trg.flags & FL_CLIENT) ){
@@ -316,16 +318,6 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
     }
   }
-  /*else{
-    if( (trg.flags & FL_MONSTER) && trg.deadflag == DEAD_NO ){
-      if( util_getMechHpAverage( trg ) <= 0.5 ){
-        otherSelf = self;
-        self = trg;
-          ai_call_for_help( attacker );
-        self = otherSelf;
-      }
-    }
-  }*/
   return dmgTrg;
 };
 

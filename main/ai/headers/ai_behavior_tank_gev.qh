@@ -22,6 +22,10 @@ void() ai_gev_patrol1;
 void() ai_gev_fight_prep;
 void( entity attacker ) ai_gev_react1;
 
+void() ai_gev_enter_flank;
+void() ai_gev_enter_charge;
+void() ai_gev_enter_strafe;
+
 /*
   FLANK
   self.ideal_yaw = rand45 to  enemy yaw

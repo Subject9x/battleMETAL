@@ -144,7 +144,12 @@ void() ai_spg_fight_prep={
             macro_ai_frame(ai_spg_enter_charge)
             return;
           }
-          macro_ai_frame(ai_spg_rotate1)
+          //tank destroyers don't hunt
+          if( self.movetarget ){
+            macro_ai_frame(ai_spg_patrol1)
+            return;
+          }
+          macro_ai_frame(ai_spg_stand1)
           return;
         }
       }
@@ -161,23 +166,4 @@ void() ai_spg_fight_prep={
   }
 
   macro_ai_frame(ai_spg_stand1)
-};
-
-/*
-  called by ai_spg_fight_prep() before attempting the maneuver
-*/
-float() ai_spg_move_check_reverse={
-  
-};
-
-float() ai_spg_move_check_strafe={
-
-};
-
-float() ai_spg_move_check_charge={
-
-};
-
-float() ai_spg_move_check_panic={
-
 };

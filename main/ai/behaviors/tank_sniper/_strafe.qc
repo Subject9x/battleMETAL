@@ -20,7 +20,7 @@ void() ai_spg_enter_strafe={
   self.ai_dir = 35 + random() * 60;
   self.ai_dir = self.ai_dir * self.lefty;
 
-  macro_ai_frame(ai_spg_strafe1);
+  macro_ai_frame(ai_spg_strafe1)
 };
 void() ai_spg_strafe1={
   

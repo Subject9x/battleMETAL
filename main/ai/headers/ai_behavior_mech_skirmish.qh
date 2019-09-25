@@ -19,8 +19,11 @@ void() ai_mech_sk_die2;
 
 void( entity attacker ) ai_mech_sk_react1;
 void() ai_mech_sk_fight_prep;
-
 void() ai_mech_sk_stand1;
+
+void() ai_mech_sk_enter_charge;
+void() ai_mech_sk_enter_flank;
+void() ai_mech_sk_enter_strafe;
 
 void() ai_mech_sk_patrol1;
 void() ai_mech_sk_patrol2;
