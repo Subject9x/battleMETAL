@@ -11,7 +11,7 @@ Overview: ai unit
     self.lefty = 1 FORWARD || -1 BACKWARD
 */
 void() ai_tank_sk_enter_strafe={
-  self.lefty = self.lefty *-1;
+  self.lefty = self.lefty * -1;
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   self.ideal_yaw = anglemod( self.ideal_yaw + ( self.lefty * ( 30 + (random() * 30) + (random() * 30))));
   macro_ai_frame(ai_tank_sk_strafe1)

@@ -6,7 +6,7 @@ Overview: ai unit
   Tank - Skirmish
   Behavior - flank
     tank attempts to move around the target
-    can rotate in motion
+    can rotate in motion, 
   
   Setup
     self.ai_dir setup before running this with the offset
@@ -15,7 +15,7 @@ Overview: ai unit
 */
 void() ai_tank_sk_enter_flank={
   self.lefty = self.lefty * -1;
-  self.ai_dir = self.lefty * ( 25 + (random() * 30));
+  self.ai_dir = self.lefty * ( 25 + (random() * 25));
   
   macro_ai_frame(ai_tank_sk_flank1)
 };
@@ -38,7 +38,7 @@ void() ai_tank_sk_flank1={
     macro_ai_frame(ai_tank_sk_flank2)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
   
 };
 void() ai_tank_sk_flank2={
@@ -62,7 +62,7 @@ void() ai_tank_sk_flank2={
     macro_ai_frame(ai_tank_sk_flank3)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };
 void() ai_tank_sk_flank3={
   ai_update_accuracy( TRUE );
@@ -80,7 +80,7 @@ void() ai_tank_sk_flank3={
     macro_ai_frame(ai_tank_sk_flank4)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };
 void() ai_tank_sk_flank4={
   ai_update_accuracy( TRUE );
@@ -98,7 +98,7 @@ void() ai_tank_sk_flank4={
     macro_ai_frame(ai_tank_sk_flank5)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };
 void() ai_tank_sk_flank5={
   ai_update_accuracy( TRUE );
@@ -118,7 +118,7 @@ void() ai_tank_sk_flank5={
     macro_ai_frame(ai_tank_sk_flank8)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };
 void() ai_tank_sk_flank6={
   ai_update_accuracy( TRUE );
@@ -141,7 +141,7 @@ void() ai_tank_sk_flank6={
     macro_ai_frame(ai_tank_sk_flank7)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };
 void() ai_tank_sk_flank7={
   ai_update_accuracy( TRUE );
@@ -159,7 +159,7 @@ void() ai_tank_sk_flank7={
     macro_ai_frame(ai_tank_sk_flank8)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };
 void() ai_tank_sk_flank8={
   ai_update_accuracy( TRUE );
@@ -177,7 +177,7 @@ void() ai_tank_sk_flank8={
     macro_ai_frame(ai_tank_sk_flank9)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };
 void() ai_tank_sk_flank9={
   ai_update_accuracy( TRUE );
@@ -195,7 +195,7 @@ void() ai_tank_sk_flank9={
     macro_ai_frame(ai_tank_sk_flank10)
     return;
   }
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_reverse)
 };
 void() ai_tank_sk_flank10={
   ai_update_accuracy( TRUE );
@@ -204,10 +204,13 @@ void() ai_tank_sk_flank10={
   self.ideal_yaw = vectoyaw( self.enemy.origin - self.origin );
   self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir );
   ChangeYaw();
-  walkmove( self.angles_y, self.data_speed_forward );
   
-  self.speed = self.lefty;
+  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+    self.speed = self.lefty;
+    macro_ai_frame_count(ai_tank_sk_flank1)
+    macro_ai_frame(ai_tank_sk_fight_prep)
+    return;
+  }
   
-  macro_ai_frame_count(ai_tank_sk_flank1)
-  macro_ai_frame(ai_tank_sk_fight_prep)
+  macro_ai_frame(ai_tank_sk_enter_reverse);
 };

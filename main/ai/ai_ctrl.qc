@@ -174,15 +174,6 @@ void() ai_face_targ={
 	ChangeYaw ();
 };
 
-
-/*
-	Yaw moves use the AI's ideal_yaw
-	stat when turning
-*/
-float( float angmod, float dist ) ai_yaw_move={
-  return walkmove( anglemod(self.ideal_yaw + angmod), dist );
-};
-
 /*
   rolled together all the flying code to a one-off call.
   this should be made everytime a flyer makes an engine-based move.

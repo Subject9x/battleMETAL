@@ -186,7 +186,6 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront;
 float(entity targ) ai_check_range;
 float(entity targ) ai_check_vis;
 float() ai_attack;
-float( float angmod, float dist ) ai_yaw_move;
 void( float alt_low, float alt_max ) ai_fly_update;
 void( float move ) ai_update_accuracy;
 //========================================

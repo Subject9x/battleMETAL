@@ -35,12 +35,13 @@ void() ai_tank_skirmish={
 
 void() ai_tank_sk_fight_prep={
   local entity nodeRecall;
+  local float roll;
   
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
   self.speed = self.lefty;
-  
+  roll = random();
   if( ai_valid_target(self.enemy)){
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
@@ -49,6 +50,7 @@ void() ai_tank_sk_fight_prep={
     enemy_hunt = FALSE;
     
     if( enemy_vis == VIS_FRAC){
+      //Enemy is danger-close, and getting stuck is now a risk
       if( enemy_range <= 200 ){
         if( enemy_infront){
           if( self.ai_rank > AI_RANK_REG ){
@@ -66,31 +68,86 @@ void() ai_tank_sk_fight_prep={
         return;
       }
       
+      //enemy is in the sweet spot
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront){
-          if( self.ai_rank > AI_RANK_REG ){
-            if( random() < 0.5 ){
-              self.lefty = self.lefty * -1;
-              macro_ai_frame(ai_tank_sk_charge1)
+          
+          //low yaw is its own case here
+          if( self.yaw_speed < 1.5 ){
+            //slow but skilled
+            if( self.ai_rank > AI_RANK_REG ){
+              if( roll < 0.33 ){
+                macro_ai_frame(ai_tank_sk_enter_flank)
+                return;
+              }
+              if( roll < 0.67 ){
+                self.lefty = 1;
+                macro_ai_frame(ai_tank_sk_enter_charge)
+                return;
+              }
+              self.lefty = -1;
+              macro_ai_frame(ai_tank_sk_enter_charge)
               return;
             }
-            macro_ai_frame(ai_tank_sk_enter_flank)
+            //else
+            if( roll < 0.6 ){
+              macro_ai_frame(ai_tank_sk_enter_flank)
+              return;
+            }
+            self.lefty = -1;
+            macro_ai_frame(ai_tank_sk_enter_charge)
             return;
           }
-          if( random() < 0.25 ){
+          
+          //a better yaw-speed
+          if( self.ai_rank > AI_RANK_REG ){
+            if( roll < 0.33 ){
+              macro_ai_frame(ai_tank_sk_enter_flank)
+              return;
+            }
+            if( roll < 0.67 ){
+              self.lefty = 1;
+              macro_ai_frame(ai_tank_sk_enter_juke)
+              return;
+            }
             macro_ai_frame(ai_tank_sk_enter_strafe)
             return;
           }
-          self.lefty = self.lefty * -1;
-          macro_ai_frame(ai_tank_sk_charge1)
+          if( roll < 0.33 ){
+            macro_ai_frame(ai_tank_sk_enter_juke)
+            return;
+          }
+          if( roll < 0.67 ){
+            self.lefty = 1;
+            macro_ai_frame(ai_tank_sk_enter_strafe)
+            return;
+          }
+          self.lefty = 1;
+          macro_ai_frame(ai_tank_sk_enter_charge)
+          return;
+        }
+        //Enemy is not in front
+        if( self.yaw_speed < 1.5 ){
+          //and this bot's slow
+          if( self.ai_rank > AI_RANK_REG ){
+            self.lefty = -1;
+            macro_ai_frame(ai_tank_sk_enter_charge)
+            return;
+          }
+          macro_ai_frame(ai_tank_sk_enter_reverse)
           return;
         }
         if( self.ai_rank > AI_RANK_REG ){
-          if( random() < 0.25 ){       
-            macro_ai_frame(ai_tank_sk_enter_reverse)
-            return;
-          }
-          macro_ai_frame(ai_tank_sk_juke1)
+          if( roll < 0.33 ){ 
+            macro_ai_frame(ai_tank_sk_juke1)
+            return; 
+          }     
+          macro_ai_frame(ai_tank_sk_enter_reverse)
+          return;
+        }
+        if( roll < 0.33 ){
+          self.lefty = 1;
+          macro_ai_frame(ai_tank_sk_enter_charge)
           return;
         }
         ai_face_targ();
@@ -98,28 +155,33 @@ void() ai_tank_sk_fight_prep={
         return;
       }
       
+      //enemy is at long-range
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront){
           if( self.ai_rank > AI_RANK_REG ){
-            macro_ai_frame(ai_tank_sk_enter_flank)
-            return;
+            if( self.yaw_speed > 1.5 ){
+              //interesting edge case: super low turn speed
+              macro_ai_frame(ai_tank_sk_enter_flank)
+              return;
+            }
           }
-          self.lefty = self.lefty * -1;
-          macro_ai_frame(ai_tank_sk_charge1)
-          return;
         }
-        if( self.ai_rank > AI_RANK_REG ){
-          macro_ai_frame(ai_tank_sk_juke1)
-          return;
-        }
-        ai_face_targ();
-        macro_ai_frame(ai_tank_sk_rotate1)
+        //priority is to get back into combat range
+        self.lefty = 1;
+        macro_ai_frame(ai_tank_sk_enter_charge)
         return;
       }
     }
+    
     if( enemy_vis == VIS_FRN ){
-      macro_ai_frame(ai_tank_sk_enter_strafe)
-      return;
+      if( self.ai_rank > AI_RANK_REG ){
+        enemy_hunt = TRUE;
+      }
+      else{
+        self.enemy = world;
+        macro_ai_frame(ai_tank_sk_stand1)
+        return;
+      }
     }
     if( enemy_vis == VIS_FAIL ){
       if( self.ai_rank > AI_RANK_REG ){
