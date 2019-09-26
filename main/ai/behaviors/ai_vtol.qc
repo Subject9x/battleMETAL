@@ -265,7 +265,7 @@ void() ai_vtol_missile_strafe={
 void() ai_vtol_hunt={
   
   if( ai_valid_target( self.enemy ) ){
-    ai_walkgoal( AI_RUN_SPD );
+    //ai_walkgoal( AI_RUN_SPD ); DEPRECATED
     if( ai_check_vis( self.enemy ) ){
       ai_next_state( ST_RUN );
       return;

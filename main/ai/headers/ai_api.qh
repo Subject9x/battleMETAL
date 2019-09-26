@@ -99,7 +99,7 @@ void( float randomBool ) ai_voice_ini;
 void() ai_promote;
 float(float rank) ai_pilot_field_of_view;
 float(float rank) ai_pilot_view_interval;
-float(float rank) ai_pilot_view_range;
+float() ai_pilot_view_range;
 float() ai_pilot_rating_leading;
 float() ai_pilot_yaw_mod;
 float() ai_turret_yaw_mod;
@@ -179,7 +179,6 @@ void( float estate ) ai_turret_set_state;
   Headers
 */
 float( float scan_mode) ai_check_scan;
-void(float speed) ai_walkgoal;
 void() ai_face_targ;
 float(entity targ, float ang_limit) ai_check_face;
 float(entity t, float ang, float useTurret) ai_check_targ_infront;

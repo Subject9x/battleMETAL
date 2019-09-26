@@ -54,7 +54,7 @@ void(float rank) ai_pilot_ini_stats={
   local float mod_sh;
     
   self.ai_fov = ai_pilot_field_of_view(rank);
-  self.ai_view = ai_pilot_view_range(rank);
+  self.ai_view = ai_pilot_view_range();
   self.ai_viewcheck = ai_pilot_view_interval(rank);
 
   mod_am = ai_pilot_armor_mod();
@@ -134,18 +134,23 @@ float(float rank) ai_pilot_field_of_view={
   return diff;
 };
 
-float(float rank) ai_pilot_view_range={
-  switch(rank){
+float() ai_pilot_view_range={
+  local float view;
+  switch(self.ai_rank){
     case AI_RANK_ACE:
-      return self.radar_range * AI_VIEW_RANGE_ACE;
+      view = self.radar_range * AI_VIEW_RANGE_ACE;
+      break;
     case AI_RANK_VET:
-      return self.radar_range * AI_VIEW_RANGE_VET;
+      view = self.radar_range * AI_VIEW_RANGE_VET;
+      break;
     case AI_RANK_REG:
-      return self.radar_range * AI_VIEW_RANGE_REG;
+      view = self.radar_range * AI_VIEW_RANGE_REG;
+      break;
     case AI_RANK_ROK:
-      return self.radar_range * AI_VIEW_RANGE_ROK;
+      view = self.radar_range * AI_VIEW_RANGE_ROK;
+      break;
   }
-  return 1;
+  return view;
 };
 
 /*

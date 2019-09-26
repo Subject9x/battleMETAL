@@ -196,7 +196,7 @@ void() building_human_radar={
   self.stat_rdr_mode = TRUE;
   self.radar_range = 2000;
   
-  ai_pilot_view_range( self.ai_rank );
+  ai_pilot_view_range();
   switch( self.ai_rank ){
     case AI_RANK_ROK:
       self.w_firetime = self.w_firetime * AI_POST_LOCK_ROK;

@@ -14,8 +14,7 @@ Overview: ai unit
 */
 void( entity attacker ) ai_mech_sk_react1={
   local float enemyvis;
-  local float enemydist;
-
+  
   self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
@@ -27,6 +26,8 @@ void( entity attacker ) ai_mech_sk_react1={
   if( ai_valid_target(self.enemy) == FALSE ){
     self.ai_react_buffer = time + self.ai_react_time * 1.25;
     self.enemy = attacker;
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.torsoCenter.attack_state = TR_TARG;
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
@@ -36,6 +37,7 @@ void( entity attacker ) ai_mech_sk_react1={
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.torsoCenter.attack_state = TR_TARG;
     self.ai_react_buffer = time + self.ai_react_time * 3;
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
@@ -45,6 +47,7 @@ void( entity attacker ) ai_mech_sk_react1={
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.torsoCenter.attack_state = TR_TARG;
     self.ai_react_buffer = time + self.ai_react_time * 3;
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;

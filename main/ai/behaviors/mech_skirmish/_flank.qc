@@ -13,7 +13,6 @@ Overview: ai unit
     self.ideal_yaw = enemy yaw + self.ai_dir
 */
 void() ai_mech_sk_enter_flank={
-  self.lefty = self.lefty * -1;
   self.ai_dir = self.lefty * (60 + (random() * 30));
   
   self.legs.attack_state = TR_NORM;
@@ -38,7 +37,7 @@ void() ai_mech_sk_flank1={
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank2={
   ai_update_accuracy( TRUE );
@@ -56,7 +55,7 @@ void() ai_mech_sk_flank2={
     macro_ai_frame(ai_mech_sk_flank3)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank3={
   ai_update_accuracy( TRUE );
@@ -77,7 +76,7 @@ void() ai_mech_sk_flank3={
     macro_ai_frame(ai_mech_sk_flank4)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank4={
   ai_update_accuracy( TRUE );
@@ -94,7 +93,7 @@ void() ai_mech_sk_flank4={
     macro_ai_frame(ai_mech_sk_flank5)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank5={
   ai_update_accuracy( TRUE );
@@ -111,7 +110,7 @@ void() ai_mech_sk_flank5={
     macro_ai_frame(ai_mech_sk_flank6)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank6={
   ai_update_accuracy( TRUE );
@@ -129,7 +128,7 @@ void() ai_mech_sk_flank6={
     macro_ai_frame(ai_mech_sk_flank7)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank7={
   ai_update_accuracy( TRUE );
@@ -149,7 +148,7 @@ void() ai_mech_sk_flank7={
     macro_ai_frame(ai_mech_sk_flank8)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank8={
   ai_update_accuracy( TRUE );
@@ -166,7 +165,7 @@ void() ai_mech_sk_flank8={
     macro_ai_frame(ai_mech_sk_flank9)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank9={
   ai_update_accuracy( TRUE );
@@ -183,7 +182,6 @@ void() ai_mech_sk_flank9={
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_flank10)
 };
 void() ai_mech_sk_flank10={
   ai_update_accuracy( TRUE );
@@ -197,7 +195,6 @@ void() ai_mech_sk_flank10={
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_flank11)
 };
 void() ai_mech_sk_flank11={
   ai_update_accuracy( TRUE );
@@ -224,6 +221,7 @@ void() ai_mech_sk_flank12={
     macro_ai_frame(ai_mech_sk_flank13)
     return;
   }
+  
 };
 void() ai_mech_sk_flank13={
   ai_update_accuracy( TRUE );
@@ -235,6 +233,7 @@ void() ai_mech_sk_flank13={
     macro_ai_frame(ai_mech_sk_flank14)
     return;
   }
+  
 };
 void() ai_mech_sk_flank14={
   ai_update_accuracy( TRUE );
@@ -247,6 +246,7 @@ void() ai_mech_sk_flank14={
     macro_ai_frame(ai_mech_sk_flank15)
     return;
   }
+  
 };
 void() ai_mech_sk_flank15={
   ai_update_accuracy( TRUE );
@@ -262,25 +262,21 @@ void() ai_mech_sk_flank15={
     macro_ai_frame(ai_mech_sk_flank16)
     return;
   }
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_flank16={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-
+  
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe);
-  self.legs.ai_dir = walkAng;
+  self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   
-  self.speed = self.lefty;
-  macro_ai_frame_count(ai_mech_sk_flank1)
-  
-  if( random() < 0.67 ){
-    macro_ai_frame(ai_mech_sk_pivot1)
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe) ){
+    self.speed = self.lefty;
+    macro_ai_frame_count(ai_mech_sk_flank1)
+    macro_ai_frame(ai_mech_sk_fight_prep)
     return;
-  } 
-  
-  macro_ai_frame(ai_mech_sk_fight_prep)
+  }
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };

@@ -337,7 +337,7 @@ void() build_mech_torsoCenter={
 void(void() data_ini) build_mech_bot={
   local vector hmins, hmaxs;
   
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER;
   
   data_ini();
   

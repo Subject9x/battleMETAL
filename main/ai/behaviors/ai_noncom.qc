@@ -40,7 +40,7 @@ void() ai_noncom_stand={
 };
 
 void() ai_noncom_walk={
-  ai_walkgoal( AI_WALK_SPD );
+  //ai_walkgoal( AI_WALK_SPD ); DEPRECATED
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
    // ai_next_state( ST_MISSILE );
@@ -127,7 +127,7 @@ void() ai_noncom_run_strafe={
  
   rng = vlen( self.goalentity.origin - self.origin );
   if( rng > 100 ){
-    ai_walkgoal( AI_RUN_SPD );
+    //ai_walkgoal( AI_RUN_SPD ); DEPRECATED
   }
   if( time > self.ai_action_time ){
    // ai_next_state( ST_RUN );
@@ -150,7 +150,7 @@ void() ai_noncom_run_charge={
 */
 void() ai_noncom_melee={
 
-  ai_walkgoal( AI_RUN_SPD );
+  //ai_walkgoal( AI_RUN_SPD ); DEPRECATED
 
   if( time > self.ai_action_time ){
     //ai_next_state( ST_WALK );

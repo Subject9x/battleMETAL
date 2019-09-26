@@ -65,12 +65,12 @@ void() ai_mech_sniper_stand1={
 };
 
 void() ai_mech_sniper_fight_prep={
-  local float rand;
-  rand = random();
+  local float roll;
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
   if( ai_valid_target(self.enemy) ){
+    roll = random();
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
@@ -80,19 +80,12 @@ void() ai_mech_sniper_fight_prep={
       if( enemy_range < 200 ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
-            self.lefty = self.lefty * -1;
-            self.ai_dir = (50 + ceil(random() * 60)) * self.lefty;
-            self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-            self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
-            macro_ai_frame(ai_mech_sniper_melee1)
+            macro_ai_frame(ai_mech_sniper_enter_melee)
             return;
           }
-          if( rand < 0.35 ){
-            self.lefty = self.lefty * -1;
-            self.ai_dir = (random() * 45) * 2;
-            self.ai_dir = self.ai_dir * self.lefty;
-            self.ai_dir = anglemod( self.angles_y + self.ai_dir );
-            macro_ai_frame(ai_mech_sniper_charge1)
+          if( roll < 0.35 ){
+            self.lefty = -1;
+            macro_ai_frame(ai_mech_sniper_enter_charge)
             return;
           }
           macro_ai_frame(ai_mech_sniper_reverse1)
@@ -108,57 +101,42 @@ void() ai_mech_sniper_fight_prep={
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
-            if( rand < 0.35 ){
+            if( roll < 0.35 ){
               macro_ai_frame(ai_mech_sniper_reverse1)
               return;
             }
-            if( rand < 0.67 ){
+            if( roll < 0.67 ){
               //melee
-              self.lefty = self.lefty * -1;
-              self.ai_dir = (50 + ceil(random() * 60)) * self.lefty;
-              self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-              self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
-              macro_ai_frame(ai_mech_sniper_melee1)
+              macro_ai_frame(ai_mech_sniper_enter_melee)
               return;
             }
           }
-          if( rand < 0.15 ){
+          if( roll < 0.15 ){
             macro_ai_frame(ai_mech_sniper_snipe1)
             return;
           }
-          if( rand < 0.3 ){
+          if( roll < 0.3 ){
             macro_ai_frame(ai_mech_sniper_reverse1)
             return;
           }
-          if( rand < 0.67 ){
-            self.lefty = self.lefty * -1;
-            self.ai_dir = (random() * 45) * 2;
-            self.ai_dir = self.ai_dir * self.lefty;
-            self.ai_dir = anglemod( self.angles_y + self.ai_dir );
-            macro_ai_frame(ai_mech_sniper_charge1)
+          if( roll < 0.67 ){
+            self.lefty = 1;
+            macro_ai_frame(ai_mech_sniper_enter_charge)
             return;
           }
           macro_ai_frame(ai_mech_sniper_rotate1)
           return;
         }
         if( self.ai_rank > AI_RANK_REG ){
-          if( rand < 0.2 ){
+          if( roll < 0.2 ){
             //melee
-            self.lefty = self.lefty * -1;
-            self.ai_dir = (50 + ceil(random() * 60)) * self.lefty;
-            self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-            self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
-            macro_ai_frame(ai_mech_sniper_melee1)
+            macro_ai_frame(ai_mech_sniper_enter_melee)
             return;
           }
-          self.lefty = self.lefty * -1;
-          self.ai_dir = (random() * 45) * 2;
-          self.ai_dir = self.ai_dir * self.lefty;
-          self.ai_dir = anglemod( self.angles_y + self.ai_dir );
-          macro_ai_frame(ai_mech_sniper_charge1)
+          macro_ai_frame(ai_mech_sniper_enter_charge)
           return;
         }
-        if( rand < 0.4 ){
+        if( roll < 0.4 ){
           macro_ai_frame(ai_mech_sniper_reverse1)
           return;
         }
@@ -167,16 +145,12 @@ void() ai_mech_sniper_fight_prep={
       }
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
-          rand = random();
-          if( rand < 0.35 ){
-            self.lefty = self.lefty * -1;
-            self.ai_dir = (random() * 45) * 2;
-            self.ai_dir = self.ai_dir * self.lefty;
-            self.ai_dir = anglemod( self.angles_y + self.ai_dir );
-            macro_ai_frame(ai_mech_sniper_charge1)
+          if( roll < 0.35 ){
+            self.lefty = 1;
+            macro_ai_frame(ai_mech_sniper_enter_charge)
             return;
           }
-          if( rand < 0.5 ){
+          if( roll < 0.5 ){
             macro_ai_frame(ai_mech_sniper_snipe1)
             return;
           }
@@ -188,11 +162,7 @@ void() ai_mech_sniper_fight_prep={
     if( enemy_vis == VIS_FRN ){
       if( self.ai_rank > AI_RANK_REG ){
         //melee
-        self.lefty = self.lefty * -1;
-        self.ai_dir = (50 + ceil(random() * 60)) * self.lefty;
-        self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-        self.ai_dir = anglemod( self.ideal_yaw + self.ai_dir );
-        macro_ai_frame(ai_mech_sniper_melee1)
+        macro_ai_frame(ai_mech_sniper_enter_melee)
         return;
       }
       macro_ai_frame(ai_mech_sniper_reverse1)

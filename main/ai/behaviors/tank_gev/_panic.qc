@@ -9,24 +9,6 @@ Overview: ai unit
   Setup
     
 */
-
-void() ai_gev_pain={
-  //TODO - finish
-  ai_update_accuracy( TRUE );
-  if( ai_valid_target( self.goalentity ) ){
-    self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-    ChangeYaw();
-    walkmove( self.ideal_yaw, self.data_speed_forward * AI_RUN_SPD);
-  }
-  
-  if( time > self.ai_action_time ){
-    //ai_next_state( ST_RUN );
-    return;
-  }
-  
-};
-
-
 /*
   th_pain == 'panic'
   unit runs to its nearest node or ally
@@ -165,6 +147,8 @@ void( entity attacker ) ai_gev_react1={
   if( ai_valid_target(self.enemy) == FALSE ){
     self.ai_react_buffer = time + self.ai_react_time * 1.25;
     self.enemy = attacker;
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.torsoCenter.attack_state = TR_TARG;
     macro_ai_frame(ai_gev_fight_prep)
     return;
   }
@@ -174,6 +158,7 @@ void( entity attacker ) ai_gev_react1={
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.torsoCenter.attack_state = TR_TARG;
     self.ai_react_buffer = time + self.ai_react_time * 3;
     macro_ai_frame(ai_gev_fight_prep)
     return;
@@ -183,6 +168,7 @@ void( entity attacker ) ai_gev_react1={
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+    self.torsoCenter.attack_state = TR_TARG;
     self.ai_react_buffer = time + self.ai_react_time * 3;
     macro_ai_frame(ai_gev_fight_prep)
     return;

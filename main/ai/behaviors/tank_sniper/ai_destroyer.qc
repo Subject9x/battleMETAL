@@ -14,6 +14,7 @@ void() ai_vec_dest={
 
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
+  self.spawnflags = self.spawnflags | AI_SPAWNFLAG_HASRADAR;
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
@@ -28,7 +29,7 @@ void() ai_vec_dest={
   self.touch = ai_touch;
 
   self.think = ai_setup_patrol;
-  self.nextthink = time + random()*1; //spread out thinks
+  self.nextthink = time + (random() * 1); //spread out thinks
 };
 
 /*
@@ -38,7 +39,7 @@ void() ai_spg_stand1={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
-  if( ai_check_scan(self.stat_rdr_mode) ){
+  if( ai_check_scan(self.stat_rdr_mode) ){ 
     macro_ai_frame(ai_spg_fight_prep)
     return;
   }
@@ -69,15 +70,18 @@ void() ai_spg_patrol1={
   macro_ai_frame(ai_spg_patrol1)
 };
 
+/*
+  FIGHT FILTER
+*/
 void() ai_spg_fight_prep={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
   local float roll;
-  roll = random();
   self.speed = self.lefty;
   
   if( ai_valid_target(self.enemy) ){
+    roll = random();
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
@@ -98,7 +102,6 @@ void() ai_spg_fight_prep={
           }
           if( roll < 0.12 ){
             //possibly charge astride the target
-
             macro_ai_frame(ai_spg_enter_charge)
             return;
           }
@@ -106,7 +109,24 @@ void() ai_spg_fight_prep={
           macro_ai_frame(ai_spg_reverse1)
           return;
         }
+        
+        if( self.ai_rank > AI_RANK_REG ){
+          if( roll < 0.33 ){
+            macro_ai_frame(ai_spg_enter_charge)
+            return;
+          }
+          macro_ai_frame(ai_spg_reverse1)
+          return;
+        }
+        if( roll <= 0.33 ){
+          macro_ai_frame(ai_spg_reverse1)
+          return;
+        }
+        macro_ai_frame(ai_spg_rotate1)
+        return;
       }
+      
+      
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
@@ -129,7 +149,31 @@ void() ai_spg_fight_prep={
           macro_ai_frame(ai_spg_snipe1)
           return;
         }
+        if( self.ai_rank > AI_RANK_REG ){
+          if( roll < 0.33 ){
+            macro_ai_frame(ai_spg_snipe1)
+            return;
+          }
+          if( roll < 0.67 ){
+            macro_ai_frame(ai_spg_enter_charge)
+            return;
+          }
+          macro_ai_frame(ai_spg_snipe1)
+          return;
+        }
+        if( roll < 0.33 ){
+          macro_ai_frame(ai_spg_enter_strafe)
+          return;
+        }
+        if( roll < 0.67 ){
+          macro_ai_frame(ai_spg_snipe1)
+          return;
+        }
+        macro_ai_frame(ai_spg_reverse1)
+        return;
       }
+      
+      
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
@@ -149,7 +193,15 @@ void() ai_spg_fight_prep={
             macro_ai_frame(ai_spg_patrol1)
             return;
           }
-          macro_ai_frame(ai_spg_stand1)
+          macro_ai_frame(ai_spg_enter_charge)
+          return;
+        }
+        if( self.ai_rank > AI_RANK_REG ){
+          macro_ai_frame(ai_spg_enter_charge)
+          return;
+        }         
+        if( self.movetarget ){
+          macro_ai_frame(ai_spg_patrol1)
           return;
         }
       }
@@ -159,11 +211,10 @@ void() ai_spg_fight_prep={
         macro_ai_frame(ai_spg_reverse1)
         return;
       }
-      macro_ai_frame(ai_spg_strafe1)
+      macro_ai_frame(ai_spg_enter_strafe)
       return;
     }
-    self.enemy = world;
   }
-
+  self.enemy = world;
   macro_ai_frame(ai_spg_stand1)
 };

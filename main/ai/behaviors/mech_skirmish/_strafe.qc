@@ -30,7 +30,6 @@ void() ai_mech_sk_strafe1={
   
   ChangeYaw();
   ai_attack();
-    
   if( self.angles_y != self.ideal_yaw ){
     macro_ai_frame(ai_mech_sk_strafe1)
     return;
@@ -48,7 +47,6 @@ void() ai_mech_sk_strafe2={
     dampen = dampen * 0.1;
   
   ChangeYaw();
-  
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
 
@@ -56,8 +54,8 @@ void() ai_mech_sk_strafe2={
     macro_ai_frame(ai_mech_sk_strafe3)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe3={
   ai_update_accuracy( TRUE );
@@ -69,13 +67,12 @@ void() ai_mech_sk_strafe3={
     dampen = dampen * 0.2;
 
   ChangeYaw();
-  
   if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe4)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe4={
   ai_update_accuracy( TRUE );
@@ -90,8 +87,8 @@ void() ai_mech_sk_strafe4={
     macro_ai_frame(ai_mech_sk_strafe5)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe5={
   ai_update_accuracy( TRUE );
@@ -107,8 +104,8 @@ void() ai_mech_sk_strafe5={
     macro_ai_frame(ai_mech_sk_strafe6)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe6={
   ai_update_accuracy( TRUE );
@@ -120,7 +117,6 @@ void() ai_mech_sk_strafe6={
     dampen = dampen * 0.5;
   
   ChangeYaw();
-  
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
@@ -128,8 +124,8 @@ void() ai_mech_sk_strafe6={
     macro_ai_frame(ai_mech_sk_strafe7)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe7={
   ai_update_accuracy( TRUE );
@@ -141,14 +137,13 @@ void() ai_mech_sk_strafe7={
     dampen = dampen * 0.6;
 
   ChangeYaw();
-  
   ai_attack();
   if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe8)
     return;
   }
 
-  macro_ai_frame(ai_mech_sk_pivot1)
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe8={
   ai_update_accuracy( TRUE );
@@ -164,8 +159,8 @@ void() ai_mech_sk_strafe8={
     macro_ai_frame(ai_mech_sk_strafe9)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe9={
   ai_update_accuracy( TRUE );
@@ -181,8 +176,8 @@ void() ai_mech_sk_strafe9={
     macro_ai_frame(ai_mech_sk_strafe10)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe10={
   ai_update_accuracy( TRUE );
@@ -194,16 +189,15 @@ void() ai_mech_sk_strafe10={
     dampen = dampen * 0.9;
   
   ChangeYaw();
-  
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
+  
  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe11)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe11={
   ai_update_accuracy( TRUE );
@@ -215,13 +209,12 @@ void() ai_mech_sk_strafe11={
     dampen = 1;
 
   ChangeYaw();
-  
   if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
     macro_ai_frame(ai_mech_sk_strafe12)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe12={
   ai_update_accuracy( TRUE );
@@ -231,8 +224,8 @@ void() ai_mech_sk_strafe12={
     macro_ai_frame(ai_mech_sk_strafe13)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe13={
   ai_update_accuracy( TRUE );
@@ -243,47 +236,46 @@ void() ai_mech_sk_strafe13={
     macro_ai_frame(ai_mech_sk_strafe14)
     return;
   }
-
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe14={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
   ChangeYaw();
-   
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
-   
+  
   if( walkmove( self.angles_y, self.data_speed_strafe) ){
     macro_ai_frame(ai_mech_sk_strafe15)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe15={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
   ChangeYaw();
-  
   if( walkmove( self.angles_y, self.data_speed_strafe) ){
     macro_ai_frame(ai_mech_sk_strafe16)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe16={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-
-   
+  
   if( walkmove( self.angles_y, self.data_speed_strafe) ){  
     self.speed = self.lefty;
     macro_ai_frame_count(ai_mech_sk_strafe1) 
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1)
+  
+  macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };

@@ -81,15 +81,18 @@ float( entity t ) ai_line_of_sight={
   
   trace = self;
   if( (self.flags & FL_TURRET) ){
-    trace = self.cockpit;
+    trace = self.torsoCenter;
   }
   
   traceline( trace.origin, t.origin, MOVE_WORLDONLY, self);
   
-  if( trace_fraction < 1 ){
-    return FALSE;
-  }
-  return TRUE;
+  if( trace_ent == t )
+    return TRUE;
+  
+  if( trace_fraction == TRUE)
+    return TRUE;
+  
+  return FALSE;
 };
 
 
@@ -129,14 +132,17 @@ float(entity t) ai_valid_target={
       val = FALSE;
     }
     else{
-      if( t.deadflag <= DEAD_NO ){
+      if( t.deadflag == DEAD_NO ){
         switch( t.data_type ){
           case DATA_VEHC:
-            val =  TRUE;
+            val = TRUE;
+            break;
           case DATA_BLD:
-            val =  TRUE;
+            val = TRUE;
+            break;
           case DATA_MECH:
-            val =  TRUE;
+            val = TRUE;
+            break;
         }
       }
     }
@@ -171,13 +177,12 @@ entity( float radiius) ai_find_friend={
 };
 
 float() ai_find_target_visual={
-  if( self.enemy ){
+  if( self.enemy.deadflag == DEAD_NO ){
     return FALSE;
   }
   local entity targ, found;
   local float rng, fog, fogLen, ndist;
-  
-  targ = findradius(self.origin, self.ai_view);
+
   rng =  self.ai_view;
   if( self.fog_alpha ){
     fogLen = self.fog_dist_y - self.fog_dist_x;
@@ -191,17 +196,20 @@ float() ai_find_target_visual={
     }
     rng = rng + fog;
   }
-
+  
+  targ = findradius(self.origin, rng);
   while( targ ){
-    if( targ != self ){
-      if( targ.faction != self.faction ){
-        if( ai_valid_target(targ) ){
-          if( ai_check_face(targ, self.ai_fov) ){
-            if( ai_check_vis(targ) ){
-              ndist = vlen(targ.origin - self.origin);
-              if(ndist < rng){
-                rng = ndist;
-                found = targ;
+    if( (targ.flags & FL_UNIT) ){
+      if( targ.deadflag == DEAD_NO ){
+        if( targ != self ){
+          if( targ.faction != self.faction ){
+            if( ai_check_face(targ, self.ai_fov) ){
+              if( ai_check_vis(targ) == VIS_FRAC ){
+                ndist = vlen(targ.origin - self.origin);
+                if(ndist < rng){
+                  rng = ndist;
+                  found = targ;
+                }
               }
             }
           }
@@ -216,7 +224,7 @@ float() ai_find_target_visual={
       if( self.stat_rdr_mode ){
         local entity ally;        
         ai_sfx_help();
-        ally = ai_find_friend( self.radar_range );
+        ally = ai_find_friend( self.ai_view );
         if( ally ){
           ai_give_target( ally, found, (ally.ai_rank <= self.ai_rank));
         }
@@ -239,30 +247,28 @@ float() ai_find_target_radar={
   local entity targ, found;
   local float rng, ndist, nrng;
   
-  targ = findchainflags(flags, FL_UNIT);
-  rng = self.radar_range;
+  targ = findradius(self.origin, self.ai_view);
+  rng = self.ai_view;
   while( targ ){
-    if( targ != self ){
-      if( targ.faction != self.faction ){
-        if( ai_valid_target(targ) ){
-          nrng = rng;
+    if( targ.faction != self.faction ){
+      if( (targ.flags & FL_UNIT) ){
+        if( targ.deadflag == DEAD_NO ){
           ndist = vlen(targ.origin - self.origin);
-          if( ndist <= rng ){
+          if( ndist < rng ){
             if( (targ.flags & FL_CLIENT) ){
-              if( !targ.stat_rdr_mode ){
-                if( ndist <= (nrng / 2 ) ){
+              if( targ.stat_rdr_mode == FALSE ){
+                if( ndist < (rng / 2 ) ){
                   if( ai_line_of_sight(targ) ){
-                    nrng = ndist;
+                    rng = ndist;
                     found = targ;
-                    
                   }
                 }
               }
             }
             else{
-              if(ndist < nrng){
+              if(ndist < rng){
                 if( ai_line_of_sight(targ) ){
-                  nrng = ndist;
+                  rng = ndist;
                   found = targ;
                 }
               }
@@ -278,7 +284,7 @@ float() ai_find_target_radar={
       if( self.stat_rdr_mode ){
         local entity ally;        
         ai_sfx_help();
-        ally = ai_find_friend( self.radar_range );
+        ally = ai_find_friend( self.ai_view );
         if( ally ){
           ai_give_target( ally, found, (ally.ai_rank <= self.ai_rank));
         }

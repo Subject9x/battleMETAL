@@ -142,7 +142,11 @@ void() ai_touch={
         return;
       }
       self.enemy = other;
-      self.th_missile();
+      if( (self.flags & FL_TURRET) )
+        self.torsoCenter.attack_state = TR_TARG;
+        
+      self.think = self.th_missile;
+      self.nextthink = time + 0.1;
       return;
     }
   }
@@ -155,18 +159,18 @@ void() ai_touch={
 ===================================================
 */
 float( float scan_mode) ai_check_scan={
+  local float scanned;
+  scanned = FALSE;
   if( time > self.ai_viewtime ){
     self.ai_viewtime = time + self.ai_viewcheck;
     if( scan_mode ){
-      return ai_find_target_radar();
+      scanned = ai_find_target_radar();
+      return scanned;
     }
-    return ai_find_target_visual();
+    scanned = ai_find_target_visual();
+    return scanned;
   }
-  return FALSE;
-};
-
-void(float moveSpeed) ai_walkgoal={
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
+  return scanned;
 };
 
 void() ai_face_targ={
@@ -379,7 +383,7 @@ void() ai_setup_patrol={
     }
   }
   self.pausetime = 99999999;
-  macro_ai_frame(self.th_stand)
+  self.think = self.th_stand;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = time + (7 + random() * 1); //spread out thinks
   }

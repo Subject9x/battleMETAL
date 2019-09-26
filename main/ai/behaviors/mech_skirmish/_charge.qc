@@ -295,8 +295,7 @@ void() ai_mech_sk_charge16={
   if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
     self.speed = self.lefty;
     macro_ai_frame_count(ai_mech_sk_strafe1)
-    
-    if( random() < 0.75 ){
+    if( self.lefty == -1 ){
       macro_ai_frame(ai_mech_sk_pivot1)
       return;
     }

@@ -151,6 +151,8 @@ main/controllers/headers/controllers.qh
     main/ai/behaviors/mech_skirmish/_patrol.qc
     main/ai/behaviors/mech_skirmish/_pivot.qc
     main/ai/behaviors/mech_skirmish/_strafe.qc
+    main/ai/behaviors/mech_skirmish/_standfight.qc
+    main/ai/behaviors/mech_skirmish/_reverse_adjust.qc
     
   main/ai/behaviors/mech_sniper/ai_mech_sniper.qc
     main/ai/behaviors/mech_sniper/_charge.qc

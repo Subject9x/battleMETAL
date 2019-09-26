@@ -44,7 +44,6 @@ void() ai_mech_sk_fight_prep={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   self.speed = self.lefty;
-  roll = random();
   
   if( (self.flags & FL_DISARMED) ){
     self.th_pain( world );
@@ -52,6 +51,7 @@ void() ai_mech_sk_fight_prep={
   }
   
   if( ai_valid_target(self.enemy) ){
+    roll = random();
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
@@ -63,51 +63,131 @@ void() ai_mech_sk_fight_prep={
         if( enemy_infront ){
           if( self.yaw_speed < 2 ){
             if( self.ai_rank > AI_RANK_REG ){
-              if( roll < 0.6 ){
-                self.lefty = -1;
-                macro_ai_frame(ai_mech_sk_enter_charge)
-                return;
-              }
-              
+              self.lefty = -1;
+              macro_ai_frame(ai_mech_sk_enter_charge)
+              return;
             }
+            macro_ai_frame(ai_mech_sk_pivot1)
+            return;
           }
           if( self.ai_rank > AI_RANK_REG ){
-          
+            self.lefty = self.lefty * -1;
+            macro_ai_frame(ai_mech_sk_enter_strafe)
+            return;
           }
-          
+          macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
+          return;
         }
-        
+        //enemy is behind the unit
+        if( self.yaw_speed < 2 ){
+          if( self.ai_rank > AI_RANK_REG ){
+            if( roll < 0.33 )
+              self.lefty = self.lefty * -1;
+
+            macro_ai_frame(ai_mech_sk_enter_strafe)
+            return;
+          }
+          self.lefty = 1;
+          macro_ai_frame(ai_mech_sk_enter_charge)
+          return;
+        }
         if( self.ai_rank > AI_RANK_REG ){
-            
+          self.lefty = self.lefty * -1;
+          macro_ai_frame(ai_mech_sk_enter_flank)
+          return;
         }
-      
+        self.lefty = 1;
+        macro_ai_frame(ai_mech_sk_enter_charge)
+        return;
       }
       
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
           if( self.yaw_speed < 2 ){
             if( self.ai_rank > AI_RANK_REG ){
-            
+              self.lefty = 1;
+              macro_ai_frame(ai_mech_sk_enter_charge)
+              return;
             }
+            macro_ai_frame(ai_mech_sk_enter_flank)
+            return;
           }
+          if( self.ai_rank > AI_RANK_REG ){
+            if( roll < 0.33 ){
+              self.lefty = self.lefty * -1;
+              macro_ai_frame(ai_mech_sk_enter_flank)
+              return;
+            }
+            if( roll < 0.67 ){
+              self.lefty = self.lefty * -1;
+              macro_ai_frame(ai_mech_sk_enter_charge)
+              return;
+            }
+            if( roll > 0.75 ){
+              self.lefty = self.lefty * -1;
+            }
+            macro_ai_frame(ai_mech_sk_enter_strafe)
+            return;
+          }
+          if( roll < 0.6 ){
+            self.lefty = self.lefty * -1;
+            macro_ai_frame(ai_mech_sk_enter_strafe)
+            return;
+          }
+          self.lefty = 1;
+          macro_ai_frame(ai_mech_sk_enter_charge)
+          return;
         }
         if( self.ai_rank > AI_RANK_REG ){
-            
+          if( roll < 0.6 ){
+            self.lefty = self.lefty * -1;
+            macro_ai_frame(ai_mech_sk_enter_flank)
+            return;
+          }
+          self.lefty = 1;
+          macro_ai_frame(ai_mech_sk_enter_charge)
+          return;
         }
+        if( roll < 0.33 ){
+          macro_ai_frame(ai_mech_sk_stand_fight1)
+          return;
+        }
+        if( roll < 0.6 ){
+          self.lefty = self.lefty * -1;
+          macro_ai_frame(ai_mech_sk_enter_strafe)
+          return;
+        }
+        self.lefty = self.lefty * -1;
+        macro_ai_frame(ai_mech_sk_enter_charge)
+        return;
       }
 
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
+          self.lefty = 1;
           macro_ai_update(ai_mech_sk_enter_charge)
           return;
         }
-        macro_ai_update(ai_mech_sk_enter_flank)
+        if( self.ai_rank > AI_RANK_REG ){
+          self.lefty = self.lefty * -1;
+          macro_ai_update(ai_mech_sk_enter_flank)
+          return;
+        }
+        self.lefty = -1;
+        macro_ai_update(ai_mech_sk_enter_charge)
         return;
       }
     }
     
     if( enemy_vis == VIS_FRN ){
-
+      if( self.ai_rank > AI_RANK_REG ){
+        self.lefty = self.lefty * -1;
+        macro_ai_update(ai_mech_sk_enter_flank)
+        return;
+      }
+      self.lefty = -1;
+      macro_ai_update(ai_mech_sk_enter_charge)
+      return;
     }
     
     if( enemy_vis == VIS_FAIL ){
@@ -158,16 +238,12 @@ void() ai_mech_sk_fight_prep={
 };
 
 void() ai_mech_sk_stand1={
-  local entity this;
-
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_update_mechplayer)
   
-  this = self;
-  self = this.legs;
-  self.attack_state = TR_YAW;
-    bot_leg_stand1();
-  self = this;
+  self.legs.attack_state = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_mech_sk_fight_prep)

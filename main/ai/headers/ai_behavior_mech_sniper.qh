@@ -21,6 +21,11 @@ void() ai_mech_sniper_walk1;
 void() ai_mech_sniper_stand1;
 void( entity attacker ) ai_mech_sniper_react1;
 
+void() ai_mech_sniper_enter_charge;
+void() ai_mech_sniper_enter_melee;
+void() ai_mech_sniper_enter_reverse;
+void() ai_mech_sniper_enter_snipe;
+
 void() ai_mech_sniper_patrol1;
 void() ai_mech_sniper_patrol2;
 void() ai_mech_sniper_patrol3;
@@ -37,7 +42,6 @@ void() ai_mech_sniper_patrol13;
 void() ai_mech_sniper_patrol14;
 void() ai_mech_sniper_patrol15;
 void() ai_mech_sniper_patrol16;
-
 
 void() ai_mech_sniper_reverse1;
 void() ai_mech_sniper_reverse2;

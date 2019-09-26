@@ -16,7 +16,7 @@ Overview:
 void() data_ini_heavy_turret_={
 
   self.data_idx = UID_TURRET_heavy_turret;  //
-  self.vec_size = 1;  //
+  self.vec_size = 2;  //
   self.vec_name = "Heavy Turret";
  
   self.max_health = 300;
@@ -54,8 +54,8 @@ void() data_ini_heavy_turret_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_TOR_CENTER, '-3.75 22 15', '0 0 90', 2, (DMG_EXP | DMG_ENE | DMG_MSC));
-  data_ini_unitHardpoint_2( M_TOR_CENTER, '3.75 22 15', '0 0 90', 2, (DMG_BAL | DMG_ENE | DMG_MSC));
+  data_ini_unitHardpoint_1( M_TOR_CENTER, '-3.75 22 15', '0 0 0', 2, (DMG_EXP | DMG_ENE | DMG_MSC));
+  data_ini_unitHardpoint_2( M_TOR_CENTER, '3.75 22 15', '0 0 0', 2, (DMG_BAL | DMG_ENE | DMG_MSC));
 //=====================================
 
 //HUD DATA=============================

@@ -15,14 +15,11 @@ Overview: ai unit
 void() ai_mech_sk_pivot1={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
-   
-  self.legs.attack_state = TR_NORM;
-    
+  
   ai_face_targ();
-  otemp = self;
-  self = self.legs;
-    bot_leg_pivot1();
-  self = otemp;
+  self.legs.attack_state = TR_NORM;
+  self.legs.think = bot_leg_pivot1;
+  self.legs.nextthink = time + 0.1;
   
   macro_ai_frame(ai_mech_sk_pivot2)
 };
@@ -115,6 +112,5 @@ void() ai_mech_sk_pivot11={
   ai_face_targ();
   
   macro_ai_frame_count(ai_mech_sk_pivot1)
-  
   macro_ai_frame(ai_mech_sk_fight_prep)
 };

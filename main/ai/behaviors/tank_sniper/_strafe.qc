@@ -131,6 +131,6 @@ void() ai_spg_strafe8={
   macro_ai_update(ctrl_updateTank)
   
   ai_attack();
-  
+  macro_ai_frame_count(ai_spg_strafe1)
   macro_ai_frame(ai_spg_fight_prep)
 };

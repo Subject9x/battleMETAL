@@ -157,7 +157,7 @@ void( entity attacker ) ai_spg_react1={
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
     self.enemy = attacker;
-    self.ai_react_buffer = time + self.ai_react_time * 1.25;
+    self.ai_react_buffer = time + self.ai_react_time * 2;
     //Enemy fire is coming 'out of nowhere'
     if( vlen(attacker.origin - self.origin) > self.ai_view ){
       self.th_pain(attacker);

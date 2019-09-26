@@ -21,9 +21,20 @@ void( entity attacker ) ai_mech_sk_react1;
 void() ai_mech_sk_fight_prep;
 void() ai_mech_sk_stand1;
 
+void() ai_mech_sk_stand_fight1;
+void() ai_mech_sk_stand_fight2;
+void() ai_mech_sk_stand_fight3;
+void() ai_mech_sk_stand_fight4;
+void() ai_mech_sk_stand_fight5;
+void() ai_mech_sk_stand_fight6;
+void() ai_mech_sk_stand_fight8;
+void() ai_mech_sk_stand_fight9;
+void() ai_mech_sk_stand_fight10;
+
 void() ai_mech_sk_enter_charge;
 void() ai_mech_sk_enter_flank;
 void() ai_mech_sk_enter_strafe;
+void() ai_mech_sk_enter_reverse_adjust;
 
 void() ai_mech_sk_patrol1;
 void() ai_mech_sk_patrol2;
@@ -114,6 +125,15 @@ void() ai_mech_sk_pivot8;
 void() ai_mech_sk_pivot9;
 void() ai_mech_sk_pivot10;
 void() ai_mech_sk_pivot11;
+
+void() ai_mech_sk_reverse_adjust1;
+void() ai_mech_sk_reverse_adjust2;
+void() ai_mech_sk_reverse_adjust3;
+void() ai_mech_sk_reverse_adjust4;
+void() ai_mech_sk_reverse_adjust5;
+void() ai_mech_sk_reverse_adjust6;
+void() ai_mech_sk_reverse_adjust7;
+void() ai_mech_sk_reverse_adjust8;
 
 void() ai_mech_sk_hunt1;
 void() ai_mech_sk_hunt2;
