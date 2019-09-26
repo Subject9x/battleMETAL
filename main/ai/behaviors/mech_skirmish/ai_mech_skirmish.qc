@@ -63,9 +63,18 @@ void() ai_mech_sk_fight_prep={
         if( enemy_infront ){
           if( self.yaw_speed < 2 ){
             if( self.ai_rank > AI_RANK_REG ){
-            
+              if( roll < 0.6 ){
+                self.lefty = -1;
+                macro_ai_frame(ai_mech_sk_enter_charge)
+                return;
+              }
+              
             }
           }
+          if( self.ai_rank > AI_RANK_REG ){
+          
+          }
+          
         }
         
         if( self.ai_rank > AI_RANK_REG ){
