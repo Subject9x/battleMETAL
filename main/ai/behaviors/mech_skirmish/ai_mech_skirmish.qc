@@ -39,10 +39,12 @@ void() ai_mech_skirmish={
 */
 void() ai_mech_sk_fight_prep={
   local entity nodeRecall;
+  local float roll;
   
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   self.speed = self.lefty;
+  roll = random();
   
   if( (self.flags & FL_DISARMED) ){
     self.th_pain( world );
@@ -59,108 +61,44 @@ void() ai_mech_sk_fight_prep={
     if( enemy_vis == VIS_FRAC ){
       if( enemy_range < 200 ){
         if( enemy_infront ){
-          if( random() < 0.6){
-            self.lefty = self.lefty * -1;
-          }
-          if( self.ai_rank > AI_RANK_REG ){
-            if( random() < 0.5){
-              self.lefty = self.lefty * -1;
-              self.ai_dir = self.lefty * (45 + (random() * 60));
-              macro_ai_update(ai_mech_sk_flank1)
-              return;
+          if( self.yaw_speed < 2 ){
+            if( self.ai_rank > AI_RANK_REG ){
+            
             }
-            self.ai_dir = self.lefty * (45 + (random() * 75));
-            self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-            self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
-            macro_ai_update(ai_mech_sk_strafe1)
-            return;
           }
-          if( random() < 0.25){
-            self.ai_dir = self.lefty * (25 + (random() * 45));
-            self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-            self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
-            macro_ai_update(ai_mech_sk_flank1)
-            return;
-          }
-          macro_ai_update(ai_mech_sk_charge1)
-          return;
         }
+        
         if( self.ai_rank > AI_RANK_REG ){
-          self.lefty = self.lefty * -1;
-          self.ai_dir = self.lefty * (45 + (random() * 75));
-          self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-          self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
-          macro_ai_update(ai_mech_sk_flank1)
-          return;
+            
         }
-        macro_ai_update(ai_mech_sk_pivot1)
-        return;
+      
       }
       
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
-          if( random() < 0.6){
-            self.lefty = self.lefty * -1;
-          }
-          if( self.ai_rank > AI_RANK_REG ){
-            local float rand;
-            rand = random();
-            if( rand < 0.25 ){
-              macro_ai_update(ai_mech_sk_charge1)
-              return;
+          if( self.yaw_speed < 2 ){
+            if( self.ai_rank > AI_RANK_REG ){
+            
             }
-            if( rand < 0.5 ){
-              self.ai_dir = self.lefty * (25 + (random() * 45));
-              self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-              self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
-              macro_ai_update(ai_mech_sk_flank1)
-              return;
-            }
-            self.ai_dir = self.lefty * (45 + (random() * 60));
-            macro_ai_update(ai_mech_sk_flank1)
-            return;
           }
-          self.ai_dir = self.lefty * (45 + (random() * 60));
-          macro_ai_update(ai_mech_sk_flank1)
-          return;
         }
         if( self.ai_rank > AI_RANK_REG ){
-          macro_ai_update(ai_mech_sk_charge1)
-          return;
+            
         }
-        macro_ai_update(ai_mech_sk_pivot1)
-        return;
       }
-      
-      if( random() < 0.6){
-        self.lefty = self.lefty * -1;
-      }
+
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
-          macro_ai_update(ai_mech_sk_charge1)
+          macro_ai_update(ai_mech_sk_enter_charge)
           return;
         }
-        self.ai_dir = self.lefty * (25 + (random() * 45));
-        self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-        self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
-        macro_ai_update(ai_mech_sk_flank1)
+        macro_ai_update(ai_mech_sk_enter_flank)
         return;
       }
     }
     
     if( enemy_vis == VIS_FRN ){
-      if( rand < 0.33 ){
-        self.lefty = self.lefty * -1;
-        self.ai_dir = self.lefty * (25 + (random() * 45));
-        self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-        self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
-        macro_ai_update(ai_mech_sk_strafe1)
-        return;
-      }
-      self.lefty = self.lefty * -1;
-      self.ai_dir = self.lefty * (45 + (random() * 60));
-      macro_ai_update(ai_mech_sk_flank1)
-      return;
+
     }
     
     if( enemy_vis == VIS_FAIL ){

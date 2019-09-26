@@ -13,34 +13,27 @@ Overview: ai unit
     self.ideal_yaw = enemy yaw + self.ai_dir
 */
 void() ai_mech_sk_enter_flank={
-
+  self.lefty = self.lefty * -1;
+  self.ai_dir = self.lefty * (60 + (random() * 30));
+  
+  self.legs.attack_state = TR_NORM;
+  self.legs.think = bot_leg_walk1;
+  self.legs.nextthink = time + 0.1;
+  
   macro_ai_frame(ai_mech_sk_flank1)
-}:
+};
 
 void() ai_mech_sk_flank1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
+  local float dampen;
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.1;
   
-  if( ai_check_move(walkAng) ){
-    local float dampen;
-    dampen = 0;
-    if( self.speed != self.lefty ){
-      //dampen jerk movement
-      dampen = self.data_speed_strafe * 0.9;
-    }
-    
-    ai_face_targ();
-    walkmove( walkAng, self.data_speed_strafe - dampen);
-    self.legs.ai_dir = walkAng;
-    self.legs.attack_state = TR_GOAL;
-    otemp = self;
-    self = self.legs;
-      bot_leg_walk1();
-    self = otemp;
-    
+  ai_face_targ();
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
     macro_ai_frame(ai_mech_sk_flank2)
     return;
   }
@@ -51,21 +44,15 @@ void() ai_mech_sk_flank2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-  
   local float dampen;
-  dampen = 0;
-  if( self.speed != self.lefty ){
-    //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.8;
-  }
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.2;
   
   ai_face_targ();
-  self.legs.ai_dir = walkAng;
   ai_attack();
   
-  if( walkmove( walkAng, self.data_speed_strafe - dampen) ){
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
     macro_ai_frame(ai_mech_sk_flank3)
     return;
   }
@@ -75,24 +62,18 @@ void() ai_mech_sk_flank3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
 
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-  
   local float dampen;
-  dampen = 0;
-  if( self.speed != self.lefty ){
-    //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.7;
-  }
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.3;
   
   ai_face_targ();
-  self.legs.ai_dir = walkAng;
     
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
   
-  if( walkmove( walkAng, self.data_speed_strafe - dampen) ){
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
     macro_ai_frame(ai_mech_sk_flank4)
     return;
   }
@@ -102,20 +83,14 @@ void() ai_mech_sk_flank4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-  
   local float dampen;
-  dampen = 0;
-  if( self.speed != self.lefty ){
-    //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.6;
-  }
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.4;
   
   ai_face_targ();
-  self.legs.ai_dir = walkAng;
   
-  if( walkmove( walkAng, self.data_speed_strafe - dampen) ){
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
     macro_ai_frame(ai_mech_sk_flank5)
     return;
   }
@@ -125,20 +100,14 @@ void() ai_mech_sk_flank5={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-  
   local float dampen;
-  dampen = 0;
-  if( self.speed != self.lefty ){
-    //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.5;
-  }
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.5;
   
   ai_face_targ();
-  self.legs.ai_dir = walkAng;
   
-  if( walkmove( walkAng, self.data_speed_strafe - dampen) ){
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
     macro_ai_frame(ai_mech_sk_flank6)
     return;
   }
@@ -148,21 +117,15 @@ void() ai_mech_sk_flank6={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-  
   local float dampen;
-  dampen = 0;
-  if( self.speed != self.lefty ){
-    //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.4;
-  }
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.6;
   
   ai_face_targ();
-  self.legs.ai_dir = walkAng;
   ai_attack();
   
-  if( walkmove( walkAng, self.data_speed_strafe - dampen) ){
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
     macro_ai_frame(ai_mech_sk_flank7)
     return;
   }
@@ -172,25 +135,17 @@ void() ai_mech_sk_flank7={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-  
   local float dampen;
-  dampen = 0;
-  if( self.speed != self.lefty ){
-    //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.3;
-  }
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.7;
   
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe - dampen);
-  self.legs.ai_dir = walkAng;
-    
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
   
-  if( walkmove( walkAng, self.data_speed_strafe - dampen) ){
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
     macro_ai_frame(ai_mech_sk_flank8)
     return;
   }
@@ -199,21 +154,15 @@ void() ai_mech_sk_flank7={
 void() ai_mech_sk_flank8={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-
+  
   local float dampen;
-  dampen = 0;
-  if( self.speed != self.lefty ){
-    //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.2;
-  }
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.8;
   
   ai_face_targ();
-  self.legs.ai_dir = walkAng;
   
-  if( walkmove( walkAng, self.data_speed_strafe - dampen) ){
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
     macro_ai_frame(ai_mech_sk_flank9)
     return;
   }
@@ -222,110 +171,97 @@ void() ai_mech_sk_flank8={
 void() ai_mech_sk_flank9={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
 
   local float dampen;
-  dampen = 0;
-  if( self.speed != self.lefty ){
-    //dampen jerk movement
-    dampen = self.data_speed_strafe * 0.1;
-  }
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.9;
   
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe - dampen);
-  self.legs.ai_dir = walkAng;
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
+    macro_ai_frame(ai_mech_sk_flank10)
+    return;
+  }
   
   macro_ai_frame(ai_mech_sk_flank10)
 };
 void() ai_mech_sk_flank10={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
-
+  
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe);
-  self.legs.ai_dir = walkAng;
   ai_attack();
+  
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_flank11)
+    return;
+  }
   
   macro_ai_frame(ai_mech_sk_flank11)
 };
 void() ai_mech_sk_flank11={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
 
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe);
-  self.legs.ai_dir = walkAng;
-    
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
   
-  macro_ai_frame(ai_mech_sk_flank12)
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_flank12)
+    return;
+  }
+  
 };
 void() ai_mech_sk_flank12={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
 
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe);
-  self.legs.ai_dir = walkAng;
   
-  macro_ai_frame(ai_mech_sk_flank13)
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_flank13)
+    return;
+  }
 };
 void() ai_mech_sk_flank13={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
 
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe);
-  self.legs.ai_dir = walkAng;
-  
-  macro_ai_frame(ai_mech_sk_flank14)
+
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_flank14)
+    return;
+  }
 };
 void() ai_mech_sk_flank14={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
 
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe);
-  self.legs.ai_dir = walkAng;
   ai_attack();
 
-  macro_ai_frame(ai_mech_sk_flank15)
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_flank15)
+    return;
+  }
 };
 void() ai_mech_sk_flank15={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-    
-  local float walkAng;
-  walkAng = anglemod(self.angles_y + self.ai_dir);
+
 
   ai_face_targ();
-  walkmove( walkAng, self.data_speed_strafe);
-  self.legs.ai_dir = walkAng;
-    
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
 
-  macro_ai_frame(ai_mech_sk_flank16)
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_strafe) ){
+    macro_ai_frame(ai_mech_sk_flank16)
+    return;
+  }
 };
 void() ai_mech_sk_flank16={
   ai_update_accuracy( TRUE );

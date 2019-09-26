@@ -13,26 +13,29 @@ Overview: ai unit
     but bake it in
 */
 void() ai_mech_sk_enter_strafe={
-  
-  self = self.legs;
-    bot_leg_walk1();
-  self = otemp;
+  self.ai_dir = self.lefty * (25 + random() * 60);
+  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+  self.ideal_yaw = anglemod( self.ideal_yaw + self.ai_dir);
+
   self.legs.attack_state = TR_NORM;
+  self.legs.think = bot_leg_walk1;
+  self.legs.nextthink = time + 0.1;
+  
   macro_ai_frame(ai_mech_sk_strafe1)
 };
 
 void() ai_mech_sk_strafe1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-   
-  //ChangeYaw();
-  otemp = self;
+  
+  ChangeYaw();
+  ai_attack();
+    
   if( self.angles_y != self.ideal_yaw ){
     macro_ai_frame(ai_mech_sk_strafe1)
     return;
   }
-
-  ai_attack();
+  
   macro_ai_frame(ai_mech_sk_strafe2)
 };
 void() ai_mech_sk_strafe2={
@@ -40,14 +43,16 @@ void() ai_mech_sk_strafe2={
   macro_ai_update(ctrl_update_mechplayer)
   
   local float dampen;
-  dampen = 0.1;
-  if( self.speed == self.lefty )
-    dampen = 1;
-    
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.1;
+  
+  ChangeYaw();
+  
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
 
-  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe3)
     return;
   }
@@ -59,12 +64,13 @@ void() ai_mech_sk_strafe3={
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  dampen = 0.2;
-  if( self.speed == self.lefty )
-    dampen = 1;
-   
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.2;
 
-  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+  ChangeYaw();
+  
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe4)
     return;
   }
@@ -76,11 +82,11 @@ void() ai_mech_sk_strafe4={
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  dampen = 0.2;
-  if( self.speed == self.lefty )
-    dampen = 1;
-   
-  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.3;
+  
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe5)
     return;
   }
@@ -92,12 +98,12 @@ void() ai_mech_sk_strafe5={
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  dampen = 0.4;
-  if( self.speed == self.lefty )
-    dampen = 1;
-   
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.4;
+  
   ai_attack();
-  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe6)
     return;
   }
@@ -109,14 +115,16 @@ void() ai_mech_sk_strafe6={
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  dampen = 0.5;
-  if( self.speed == self.lefty )
-    dampen = 1;
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.5;
+  
+  ChangeYaw();
   
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
-  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe7)
     return;
   }
@@ -128,12 +136,14 @@ void() ai_mech_sk_strafe7={
   macro_ai_update(ctrl_update_mechplayer)
  
  local float dampen;
-  dampen = 0.6;
-  if( self.speed == self.lefty )
-    dampen = 1;
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.6;
 
+  ChangeYaw();
+  
   ai_attack();
-  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe8)
     return;
   }
@@ -145,12 +155,12 @@ void() ai_mech_sk_strafe8={
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  dampen = 0.7;
-  if( self.speed == self.lefty )
-    dampen = 1;
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.7;
    
   ai_attack();
-  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe9)
     return;
   }
@@ -162,12 +172,12 @@ void() ai_mech_sk_strafe9={
   macro_ai_update(ctrl_update_mechplayer)
    
   local float dampen;
-  dampen = 0.7;
-  if( self.speed == self.lefty )
-    dampen = 1;
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.8;
    
   ai_attack();
-  if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe10)
     return;
   }
@@ -179,14 +189,16 @@ void() ai_mech_sk_strafe10={
   macro_ai_update(ctrl_update_mechplayer)
  
   local float dampen;
-  dampen = 0.8;
-  if( self.speed == self.lefty )
-    dampen = 1;
+  dampen = self.data_speed_strafe;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.9;
+  
+  ChangeYaw();
   
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
- if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
+ if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_strafe11)
     return;
   }
@@ -202,6 +214,8 @@ void() ai_mech_sk_strafe11={
   if( self.speed == self.lefty )
     dampen = 1;
 
+  ChangeYaw();
+  
   if( walkmove( self.angles_y, self.data_speed_strafe * dampen) ){
     macro_ai_frame(ai_mech_sk_strafe12)
     return;
@@ -212,7 +226,7 @@ void() ai_mech_sk_strafe11={
 void() ai_mech_sk_strafe12={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-   
+
   if( walkmove( self.angles_y, self.data_speed_strafe) ){
     macro_ai_frame(ai_mech_sk_strafe13)
     return;
@@ -223,7 +237,7 @@ void() ai_mech_sk_strafe12={
 void() ai_mech_sk_strafe13={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-   
+
   ai_attack();
   if( walkmove( self.angles_y, self.data_speed_strafe) ){
     macro_ai_frame(ai_mech_sk_strafe14)
@@ -235,6 +249,8 @@ void() ai_mech_sk_strafe13={
 void() ai_mech_sk_strafe14={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+  
+  ChangeYaw();
    
   if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
@@ -249,7 +265,9 @@ void() ai_mech_sk_strafe14={
 void() ai_mech_sk_strafe15={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
-   
+  
+  ChangeYaw();
+  
   if( walkmove( self.angles_y, self.data_speed_strafe) ){
     macro_ai_frame(ai_mech_sk_strafe16)
     return;
@@ -259,16 +277,11 @@ void() ai_mech_sk_strafe15={
 void() ai_mech_sk_strafe16={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+
    
   if( walkmove( self.angles_y, self.data_speed_strafe) ){  
     self.speed = self.lefty;
-    macro_ai_frame_count(ai_mech_sk_strafe1)
-    
-    if( random() < 0.67 ){
-      macro_ai_frame(ai_mech_sk_pivot1)
-      return;
-    }
-    
+    macro_ai_frame_count(ai_mech_sk_strafe1) 
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }

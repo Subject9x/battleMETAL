@@ -73,7 +73,7 @@ void() ai_tank_sk_fight_prep={
         if( enemy_infront){
           
           //low yaw is its own case here
-          if( self.yaw_speed < 1.5 ){
+          if( self.yaw_speed < 2 ){
             //slow but skilled
             if( self.ai_rank > AI_RANK_REG ){
               if( roll < 0.33 ){
@@ -90,11 +90,16 @@ void() ai_tank_sk_fight_prep={
               return;
             }
             //else
-            if( roll < 0.6 ){
+            if( roll < 0.33 ){
+              self.lefty = -1;
+              macro_ai_frame(ai_tank_sk_enter_charge)
+              return;
+            }
+            if( roll < 0.67 ){
               macro_ai_frame(ai_tank_sk_enter_flank)
               return;
             }
-            self.lefty = -1;
+            self.lefty = 1;
             macro_ai_frame(ai_tank_sk_enter_charge)
             return;
           }

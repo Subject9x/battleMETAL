@@ -105,7 +105,6 @@ void() ai_mech_sk_pivot10={
   
   ai_face_targ();
   ai_attack();
-
   
   macro_ai_frame(ai_mech_sk_pivot11)
 };
