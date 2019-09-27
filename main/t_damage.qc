@@ -252,9 +252,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
     }
     else{
-      if( attacker != self.enemy ){
-        if( self.th_react ){      
-          if( time > self.ai_react_buffer ){
+      if( attacker != dmgTrg.enemy ){
+        if( dmgTrg.th_react ){      
+          if( time > dmgTrg.ai_react_buffer ){
             self.th_react( attacker );
           }
         }

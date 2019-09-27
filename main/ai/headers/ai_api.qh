@@ -98,7 +98,7 @@ void( float randomBool ) ai_voice_ini;
 //AI STATISTICS - ai_stats.qc
 void() ai_promote;
 float(float rank) ai_pilot_field_of_view;
-float(float rank) ai_pilot_view_interval;
+float() ai_pilot_view_interval;
 float() ai_pilot_view_range;
 float() ai_pilot_rating_leading;
 float() ai_pilot_yaw_mod;
@@ -153,7 +153,6 @@ void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, fl
 void() ai_touch;
 void() ai_setup_patrol;
 entity() ai_node_pick_rand
-float(entity bot, entity attacker) ai_damage_react;
 
 //AI VOICE STUFF
 void() ai_sfx_spotted;

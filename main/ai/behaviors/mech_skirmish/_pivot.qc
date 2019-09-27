@@ -110,7 +110,7 @@ void() ai_mech_sk_pivot11={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  
+
   macro_ai_frame_count(ai_mech_sk_pivot1)
   macro_ai_frame(ai_mech_sk_fight_prep)
 };

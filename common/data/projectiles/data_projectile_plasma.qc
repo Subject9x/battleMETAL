@@ -58,7 +58,7 @@ void() data_projectile_plasma_burn_th={
     return;
   }
   
-  t_damage(self.cockpit, self, self.owner, 2.5, self.damageType, self.cockpit.origin, '0 0 0');
+  t_damage(self.cockpit, self, self.owner, self.damageValue, self.damageType, self.cockpit.origin, '0 0 0');
 
   pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   

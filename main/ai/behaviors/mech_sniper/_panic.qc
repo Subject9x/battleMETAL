@@ -183,15 +183,14 @@ void() ai_mech_sniper_panic16={
 */
 void( entity attacker ) ai_mech_sniper_react1={
   local float enemyvis;
-  local float enemydist;
-
-  self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
     return;
   }
-
+  
+  self.ai_react_buffer = time + self.ai_react_time;
+  
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
     self.ai_react_buffer = time + self.ai_react_time * 1.25;
@@ -213,7 +212,7 @@ void( entity attacker ) ai_mech_sniper_react1={
     return;
   }
   
-  if( ai_check_targ_infront( attacker, self.ai_fov) ){
+  if( ai_check_targ_infront( attacker, self.ai_fov, TRUE) ){
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );

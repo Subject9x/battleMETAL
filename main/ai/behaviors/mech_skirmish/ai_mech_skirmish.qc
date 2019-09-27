@@ -44,19 +44,18 @@ void() ai_mech_sk_fight_prep={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   self.speed = self.lefty;
-  
+      
   if( (self.flags & FL_DISARMED) ){
     self.th_pain( world );
     return;
   }
-  
-  if( ai_valid_target(self.enemy) ){
+  enemy_hunt = FALSE;
+  if( self.enemy ){
     roll = random();
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
     enemy_range = ai_check_range( self.enemy );
     enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-    enemy_hunt = FALSE;
     
     if( enemy_vis == VIS_FRAC ){
       if( enemy_range < 200 ){
@@ -205,7 +204,7 @@ void() ai_mech_sk_fight_prep={
         }
       }
       if( util_getMechHpAverage(self.enemy) <= 0.25 ){
-          enemy_hunt = TRUE;
+        enemy_hunt = TRUE;
       }
     }
   }
@@ -234,16 +233,15 @@ void() ai_mech_sk_fight_prep={
     macro_ai_frame(ai_mech_sk_patrol1)
     return;
   }
+  self.legs.attack_state = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_stand1)
 };
 
 void() ai_mech_sk_stand1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_update_mechplayer)
-  
-  self.legs.attack_state = TR_YAW;
-  self.legs.think = bot_leg_stand1;
-  self.legs.nextthink = time + 0.1;
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_mech_sk_fight_prep)

@@ -81,16 +81,14 @@ float( entity t ) ai_line_of_sight={
   
   trace = self;
   if( (self.flags & FL_TURRET) ){
-    trace = self.torsoCenter;
+    trace = self.cockpit;
   }
   
   traceline( trace.origin, t.origin, MOVE_WORLDONLY, self);
   
-  if( trace_ent == t )
+  if( trace_fraction >= 0.8){
     return TRUE;
-  
-  if( trace_fraction == TRUE)
-    return TRUE;
+  }
   
   return FALSE;
 };
@@ -133,16 +131,11 @@ float(entity t) ai_valid_target={
     }
     else{
       if( t.deadflag == DEAD_NO ){
-        switch( t.data_type ){
-          case DATA_VEHC:
-            val = TRUE;
-            break;
-          case DATA_BLD:
-            val = TRUE;
-            break;
-          case DATA_MECH:
-            val = TRUE;
-            break;
+        if( (t.flags & FL_MONSTER) ){
+          val = TRUE;
+        }
+        if( (t.flags & FL_CLIENT) ){
+          val = TRUE;
         }
       }
     }
@@ -177,7 +170,7 @@ entity( float radiius) ai_find_friend={
 };
 
 float() ai_find_target_visual={
-  if( self.enemy.deadflag == DEAD_NO ){
+  if( !(self.flags & FL_UNIT) ){
     return FALSE;
   }
   local entity targ, found;
@@ -357,8 +350,8 @@ void() ai_ranged_attack={
           if( !ai_attack_blockcheck(wep_chain) ){
             if( ai_check_face(this.enemy, 0.95) ){
               self = wep_chain;
-                  self.w_attack();
-                  fired = fired + 1;
+                self.w_attack();
+                fired = fired + 1;
               self = this;
             }
           }
@@ -378,72 +371,6 @@ void() ai_ranged_attack={
     wep_chain = wep_chain.w_slot;
   }
 };
-
-/*
-  How does the AI react to being shot?
-*/
-float(entity bot, entity attacker) ai_damage_react={
-  local float my_hp;
-  local float enemy_hp, enemy_size;
-  local float atk_hp, atk_size;
-
-  //AI has no guns, or lost all guns, call for help and panic!
-  if( (self.flags & FL_DISARMED) ){
-    ai_call_for_help( attacker );
-    self.th_pain( attacker );
-    return FALSE;
-  }
-  
-  my_hp = util_getMechHpAverage(self);
-   
-  //AI has taken friendly fire
-  if( attacker.faction == self.faction ){
-    if( my_hp <= 0.33 ){
-      self.th_pain( attacker );
-    }
-    return FALSE;
-  }
-  
-  //AI currently has no target
-  if( !self.enemy ){
-    self.enemy = attacker;
-    ai_sfx_spotted();
-    if( self.th_pain ){
-      if( self.ai_rank < AI_RANK_VET ){
-        if( my_hp <= 0.25){
-          if( random() <= 0.75 ){
-            self.th_pain( self.enemy );
-          }
-        }
-      }
-    }
-    return TRUE;
-  }
-  
-  atk_hp = util_getMechHpAverage(attacker);
-  atk_size = attacker.vec_size;
-  
-  if( self.enemy ){
-    enemy_hp  = util_getMechHpAverage(self.enemy);
-    enemy_size = self.enemy.vec_size;
-    if( self.ai_rank > AI_RANK_REG ){
-      if( atk_hp < enemy_hp ){
-        if( ai_check_face( attacker, self.ai_fov) ){
-          self.enemy = attacker;
-          return TRUE;
-        }
-      }
-      if( atk_size > enemy_size ){
-        if( atk_hp < enemy_hp ){
-          self.enemy = attacker;
-          return TRUE;
-        }
-      }
-    }
-  }
-  return FALSE;
-};
-
 
 /*
   Don't fire if the weapon's barrel is blocked by things like:

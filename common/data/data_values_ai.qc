@@ -77,10 +77,10 @@ float AI_YAW_VET = 0.9;
 float AI_YAW_ACE = 1.1;
 
 //attack chances
-float AI_ATTACK_ROK  =  0.50;
-float AI_ATTACK_REG  =  0.35;
-float AI_ATTACK_VET  =  0.30;
-float AI_ATTACK_ACE  =  0.20;
+float AI_ATTACK_ROK = 0.50;
+float AI_ATTACK_REG = 0.35;
+float AI_ATTACK_VET = 0.30;
+float AI_ATTACK_ACE = 0.20;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;

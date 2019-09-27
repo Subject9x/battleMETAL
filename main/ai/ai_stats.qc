@@ -55,7 +55,7 @@ void(float rank) ai_pilot_ini_stats={
     
   self.ai_fov = ai_pilot_field_of_view(rank);
   self.ai_view = ai_pilot_view_range();
-  self.ai_viewcheck = ai_pilot_view_interval(rank);
+  self.ai_viewcheck = ai_pilot_view_interval();
 
   mod_am = ai_pilot_armor_mod();
   self.max_health = self.health = self.health * mod_am; 
@@ -181,10 +181,10 @@ float( float rank, float damg) ai_pilot_mod_damage={
   return percent;
 };
 
-float(float rank) ai_pilot_view_interval={
+float() ai_pilot_view_interval={
   local float mod;
   mod = AI_VIEW_INTERVAL;
-  switch(rank){
+  switch(self.ai_rank){
     case AI_RANK_ACE:
       mod = mod * AI_VIEW_ACE;
       break;

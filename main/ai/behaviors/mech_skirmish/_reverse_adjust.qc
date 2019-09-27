@@ -44,13 +44,14 @@ void() ai_mech_sk_reverse_adjust1={
   dampen = self.data_speed_backward;
   if( self.speed != self.lefty )
     dampen = dampen * 0.1;
-    
+  
   ChangeYaw();
-  if( walkmove( self.ai_dir, dampen ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sk_reverse_adjust2)
     return;
   }
-  macro_ai_frame(ai_mech_sk_pivot1);
+  self.ai_action_time = self.ai_action_mod;
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 
 void() ai_mech_sk_reverse_adjust2={
@@ -61,14 +62,15 @@ void() ai_mech_sk_reverse_adjust2={
   dampen = self.data_speed_backward;
   if( self.speed != self.lefty )
     dampen = dampen * 0.2;
-    
+  
   ChangeYaw();
   if( walkmove( self.ai_dir, dampen ) ){
     macro_ai_frame(ai_mech_sk_reverse_adjust3)
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_pivot1);
+  self.ai_action_time = self.ai_action_mod;
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 
 void() ai_mech_sk_reverse_adjust3={
@@ -81,12 +83,13 @@ void() ai_mech_sk_reverse_adjust3={
     dampen = dampen * 0.3;
   
   ChangeYaw();
-  if( walkmove( self.ai_dir, dampen) ){
+  if( walkmove( self.angles_y, dampen) ){
     macro_ai_frame(ai_mech_sk_reverse_adjust4)
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_pivot1);
+  self.ai_action_time = self.ai_action_mod;
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 
 void() ai_mech_sk_reverse_adjust4={
@@ -99,12 +102,13 @@ void() ai_mech_sk_reverse_adjust4={
     dampen = dampen * 0.4;
   
   ChangeYaw();
-  if( walkmove( self.ai_dir, dampen ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sk_reverse_adjust5)
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_pivot1);
+  self.ai_action_time = self.ai_action_mod;
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 
 void() ai_mech_sk_reverse_adjust5={
@@ -117,12 +121,13 @@ void() ai_mech_sk_reverse_adjust5={
     dampen = dampen * 0.5;
   
   ChangeYaw();
-  if( walkmove( self.ai_dir, dampen ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sk_reverse_adjust6)
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_pivot1);
+  self.ai_action_time = self.ai_action_mod;
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 
 void() ai_mech_sk_reverse_adjust6={
@@ -135,12 +140,13 @@ void() ai_mech_sk_reverse_adjust6={
     dampen = dampen * 0.6;
   
   ChangeYaw();
-  if( walkmove( self.ai_dir, dampen ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sk_reverse_adjust7)
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_pivot1);
+  self.ai_action_time = self.ai_action_mod;
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 
 void() ai_mech_sk_reverse_adjust7={
@@ -153,12 +159,12 @@ void() ai_mech_sk_reverse_adjust7={
     dampen = dampen * 0.7;
 
   ChangeYaw();
-  if( walkmove( self.ai_dir, dampen ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sk_reverse_adjust8)
     return;
   }
-  
-  macro_ai_frame(ai_mech_sk_pivot1);
+  self.ai_action_time = self.ai_action_mod;
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
 
 void() ai_mech_sk_reverse_adjust8={
@@ -171,12 +177,13 @@ void() ai_mech_sk_reverse_adjust8={
     dampen = dampen * 0.8;
 
   ChangeYaw();
-  if( walkmove( self.ai_dir, dampen ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     self.speed = self.lefty;
     macro_ai_frame_count(ai_mech_sk_reverse_adjust1)
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
   
-  macro_ai_frame(ai_mech_sk_pivot1);
+  self.ai_action_time = self.ai_action_mod;
+  macro_ai_frame(ai_mech_sk_pivot1)
 };
