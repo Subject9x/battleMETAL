@@ -136,14 +136,13 @@ void() ai_tank_sk_panic10={
 */
 void( entity attacker ) ai_tank_sk_react1={
   local float enemyvis;
-
-  self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
     return;
   }
-
+  self.ai_react_buffer = time + self.ai_react_time;
+  
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
     self.ai_react_buffer = time + self.ai_react_time * 1.25;

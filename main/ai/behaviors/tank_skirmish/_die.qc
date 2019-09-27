@@ -72,7 +72,7 @@ void() ai_tank_sk_die={
 void() ai_tank_sk_die1={
 
   self.deadflag = DEAD_DEAD;
-
+  self.solid = SOLID_CORPSE;
   te_smoke_test(self.origin, 2);
   
   self.think = ai_tank_sk_die1;

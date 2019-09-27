@@ -87,6 +87,8 @@ void() ai_tank_sk_strafe5;
 void() ai_tank_sk_strafe6;
 void() ai_tank_sk_strafe7;
 void() ai_tank_sk_strafe8;
+void() ai_tank_sk_strafe9;
+void() ai_tank_sk_strafe10;
 
 /*
   tank attempts to quickly turn around if enemy is behind it

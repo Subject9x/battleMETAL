@@ -23,6 +23,11 @@ void() ai_tank_sk_charge1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
 
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.1;
+
   ai_face_targ();
   
   local float ang;
@@ -32,21 +37,26 @@ void() ai_tank_sk_charge1={
     ai_attack();
   }
   
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge2)
     return;
   }
-
+  
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_charge2={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.2;
+
   local float ang;
   ang = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge3)
     return;
   }
@@ -57,10 +67,15 @@ void() ai_tank_sk_charge3={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
 
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.3;
+
   local float ang;
   ang = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge4)
     return;
   }
@@ -71,6 +86,11 @@ void() ai_tank_sk_charge4={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.4;
+
   ai_face_targ();
   
   local float ang;
@@ -78,7 +98,7 @@ void() ai_tank_sk_charge4={
   
   ai_attack();
   
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge5)
     return;
   }
@@ -89,10 +109,15 @@ void() ai_tank_sk_charge5={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.5;
+
   local float ang;
   ang = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge6)
     return;
   }
@@ -103,12 +128,17 @@ void() ai_tank_sk_charge6={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.6;
+
   ai_face_targ();
   
   local float ang;
   ang = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge7)
     return;
   }
@@ -119,12 +149,17 @@ void() ai_tank_sk_charge7={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.7;
+
   local float ang;
   ang = anglemod(self.angles_y + self.ai_dir);
   
   ai_attack();
 
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge8)
     return;
   }
@@ -135,6 +170,11 @@ void() ai_tank_sk_charge8={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.8;
+
   ai_face_targ();
   
   local float ang;
@@ -144,7 +184,7 @@ void() ai_tank_sk_charge8={
     ai_attack();
   }
   
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge9)
     return;
   }
@@ -156,11 +196,16 @@ void() ai_tank_sk_charge9={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed = self.lefty )
+    dampen = dampen * 0.9;
+
   ai_face_targ();
   local float ang;
   ang = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove(ang, self.data_speed_forward) ){
+  if( walkmove(ang, dampen) ){
     macro_ai_frame(ai_tank_sk_charge10)
     return;
   }

@@ -39,7 +39,6 @@ void() ai_tank_sk_flank1={
     return;
   }
   macro_ai_frame(ai_tank_sk_enter_reverse)
-  
 };
 void() ai_tank_sk_flank2={
   ai_update_accuracy( TRUE );

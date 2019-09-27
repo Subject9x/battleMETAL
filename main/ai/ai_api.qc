@@ -170,7 +170,7 @@ entity( float radiius) ai_find_friend={
 };
 
 float() ai_find_target_visual={
-  if( !(self.flags & FL_UNIT) ){
+  if( (self.enemy.flags & FL_UNIT) ){
     return FALSE;
   }
   local entity targ, found;
