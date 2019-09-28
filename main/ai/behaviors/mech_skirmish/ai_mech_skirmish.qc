@@ -214,7 +214,7 @@ void() ai_mech_sk_fight_prep={
       nodeRecall = node_recall_setup();
       self.ai_node_recall = nodeRecall;
       self.goalentity = self.enemy;
-        self.ai_action_time = (0 - self.ai_action_mod) * -1;
+      self.ai_action_time = (0 - self.ai_action_mod) * -1;
       if( self.stat_rdr_mode ){
         self.ai_action_time = ceil(self.ai_action_time * 6);
       }

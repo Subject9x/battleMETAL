@@ -48,9 +48,8 @@ void() ai_mech_sniper_snipe5={
   
   ai_face_targ();
     
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   macro_ai_frame(ai_mech_sniper_snipe6)
 };
@@ -69,9 +68,8 @@ void() ai_mech_sniper_snipe7={
   
   ai_face_targ();
     
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   macro_ai_frame(ai_mech_sniper_snipe8)
 };

@@ -25,7 +25,7 @@ void() ai_tank_sk_charge1={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.1;
 
   ai_face_targ();
@@ -50,7 +50,7 @@ void() ai_tank_sk_charge2={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.2;
 
   local float ang;
@@ -69,7 +69,7 @@ void() ai_tank_sk_charge3={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.3;
 
   local float ang;
@@ -88,7 +88,7 @@ void() ai_tank_sk_charge4={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.4;
 
   ai_face_targ();
@@ -111,7 +111,7 @@ void() ai_tank_sk_charge5={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.5;
 
   local float ang;
@@ -130,7 +130,7 @@ void() ai_tank_sk_charge6={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.6;
 
   ai_face_targ();
@@ -151,7 +151,7 @@ void() ai_tank_sk_charge7={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.7;
 
   local float ang;
@@ -172,7 +172,7 @@ void() ai_tank_sk_charge8={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.8;
 
   ai_face_targ();
@@ -198,7 +198,7 @@ void() ai_tank_sk_charge9={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed = self.lefty )
+  if( self.speed == self.lefty )
     dampen = dampen * 0.9;
 
   ai_face_targ();
@@ -220,6 +220,7 @@ void() ai_tank_sk_charge10={
   ang = anglemod(self.angles_y + self.ai_dir);
   
   if( walkmove( ang, self.data_speed_forward ) ){
+    self.speed = self.lefty;
     macro_ai_frame_count(ai_tank_sk_charge1)
     macro_ai_frame(ai_tank_sk_fight_prep)
     return;

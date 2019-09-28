@@ -175,6 +175,7 @@ void() ai_tank_sk_juke10={
   ai_attack();
   
   if( walkmove( self.angles_y, self.data_speed_forward * AI_RUN_FACTOR ) ){
+    self.speed = self.lefty;
     macro_ai_frame_count(ai_tank_sk_juke1)
     macro_ai_frame(ai_tank_sk_fight_prep)
     return;

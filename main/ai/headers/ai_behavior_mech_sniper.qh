@@ -118,6 +118,8 @@ void() ai_mech_sniper_melee11;
 void() ai_mech_sniper_melee12;
 void() ai_mech_sniper_melee13;
 void() ai_mech_sniper_melee14;
+void() ai_mech_sniper_melee15;
+void() ai_mech_sniper_melee16;
 
 /*
   th_pain

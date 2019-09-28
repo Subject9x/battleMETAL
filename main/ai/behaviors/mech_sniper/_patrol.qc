@@ -5,14 +5,14 @@ Date: 09/23/2018
 Overview: ai unit
   Mech - Sniper
   Behavior - Patrol
-  
+    Patrol frames,
+  16 for frame binding at 2 ai : 1 leg anim frame
   Setup
     
 */
-/* 
-  Patrol frames,
-  16 for frame binding at 2 ai : 1 leg anim frame
-*/
+void() ai_mech_sniper_enter_patrol={
+  
+}
 void() ai_mech_sniper_patrol1={
   local entity this;
   

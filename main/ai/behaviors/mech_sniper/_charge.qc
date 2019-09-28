@@ -8,14 +8,16 @@ Overview: ai unit
     charges in direction of self.ai_dir
     
   Setup
-    
 */
 void() ai_mech_sniper_enter_charge={
-  self.lefty = self.lefty * -1;
+  if( random() < 0.6 )
+    self.lefty = self.lefty * -1; 
+  
   self.ai_dir = (random() * 45) * 2;
   self.ai_dir = self.ai_dir * self.lefty;
   self.ai_dir = anglemod( self.angles_y + self.ai_dir );
-    
+  self.ideal_yaw = self.ai_dir;
+  
   self.legs.attack_state = TR_NORM;
   self.legs.think = bot_leg_walk1;
   self.legs.nextthink = time + 0.1;
@@ -27,10 +29,14 @@ void() ai_mech_sniper_charge1={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  self.ideal_yaw = self.ai_dir;
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.1;
+
   ChangeYaw(); 
 
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge2)
     return;
   }  
@@ -45,11 +51,14 @@ void() ai_mech_sniper_charge1={
 void() ai_mech_sniper_charge2={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+    
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.2;
   
   ChangeYaw();
-  walkmove( self.angles_y, self.data_speed_forward );
-  
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge3)
     return;
   }  
@@ -64,9 +73,14 @@ void() ai_mech_sniper_charge2={
 void() ai_mech_sniper_charge3={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+    
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.3;
   
   ChangeYaw();
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge4)
     return;
   }  
@@ -81,9 +95,14 @@ void() ai_mech_sniper_charge3={
 void() ai_mech_sniper_charge4={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+    
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.4;
   
   ChangeYaw();
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge5)
     return;
   }  
@@ -98,9 +117,14 @@ void() ai_mech_sniper_charge4={
 void() ai_mech_sniper_charge5={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+    
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.5;
   
   ChangeYaw();
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge6)
     return;
   }  
@@ -115,11 +139,14 @@ void() ai_mech_sniper_charge5={
 void() ai_mech_sniper_charge6={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+    
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.6;
   
   ChangeYaw();
-  walkmove( self.angles_y, self.data_speed_forward );
-  
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge7)
     return;
   }  
@@ -134,11 +161,16 @@ void() ai_mech_sniper_charge6={
 void() ai_mech_sniper_charge7={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+    
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.7;
   
   ChangeYaw();
   ai_attack();
   
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge8)
     return;
   }  
@@ -153,13 +185,17 @@ void() ai_mech_sniper_charge7={
 void() ai_mech_sniper_charge8={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+    
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.8;
   
   ChangeYaw();
-    if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
 
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge9)
     return;
   }  
@@ -174,9 +210,14 @@ void() ai_mech_sniper_charge8={
 void() ai_mech_sniper_charge9={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
+    
+  local float dampen;
+  dampen = self.data_speed_forward;
+  if( self.speed != self.lefty )
+    dampen = dampen * 0.9;
   
   ChangeYaw();
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge10)
     return;
   }  
@@ -229,9 +270,8 @@ void() ai_mech_sniper_charge12={
   macro_ai_update(ctrl_update_mechplayer)
   
   ChangeYaw(); 
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   if( walkmove( self.angles_y, self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sniper_charge13)
@@ -303,11 +343,11 @@ void() ai_mech_sniper_charge16={
   macro_ai_update(ctrl_update_mechplayer)
   
   ChangeYaw();
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   if( walkmove( self.angles_y, self.data_speed_forward ) ){
+    self.speed = self.lefty;
     macro_ai_frame_count(ai_mech_sniper_charge1)
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;

@@ -45,8 +45,6 @@ void() ai_mech_sk_charge1={
     macro_ai_frame(ai_mech_sk_charge2)
     return;
   }
-  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge2={
@@ -65,7 +63,6 @@ void() ai_mech_sk_charge2={
     macro_ai_frame(ai_mech_sk_charge3)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge3={
@@ -86,7 +83,6 @@ void() ai_mech_sk_charge3={
     macro_ai_frame(ai_mech_sk_charge4)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge4={
@@ -104,7 +100,6 @@ void() ai_mech_sk_charge4={
     macro_ai_frame(ai_mech_sk_charge5)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge5={
@@ -122,7 +117,6 @@ void() ai_mech_sk_charge5={
     macro_ai_frame(ai_mech_sk_charge6)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge6={
@@ -141,7 +135,6 @@ void() ai_mech_sk_charge6={
     macro_ai_frame(ai_mech_sk_charge7)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge7={
@@ -162,7 +155,6 @@ void() ai_mech_sk_charge7={
     macro_ai_frame(ai_mech_sk_charge8)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge8={
@@ -180,7 +172,6 @@ void() ai_mech_sk_charge8={
     macro_ai_frame(ai_mech_sk_charge9)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge9={
@@ -198,7 +189,6 @@ void() ai_mech_sk_charge9={
     macro_ai_frame(ai_mech_sk_charge10)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge10={
@@ -216,8 +206,7 @@ void() ai_mech_sk_charge10={
   if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge11)
     return;
-  }  
-  self.ai_action_time = self.ai_action_mod;
+  } 
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge11={
@@ -238,7 +227,6 @@ void() ai_mech_sk_charge11={
     macro_ai_frame(ai_mech_sk_charge12)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge12={
@@ -255,7 +243,6 @@ void() ai_mech_sk_charge12={
     macro_ai_frame(ai_mech_sk_charge13)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge13={
@@ -268,7 +255,6 @@ void() ai_mech_sk_charge13={
     macro_ai_frame(ai_mech_sk_charge14)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge14={
@@ -282,7 +268,6 @@ void() ai_mech_sk_charge14={
     macro_ai_frame(ai_mech_sk_charge15)
     return;
   }  
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge15={
@@ -298,8 +283,7 @@ void() ai_mech_sk_charge15={
   if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge16)
     return;
-  }  
-  self.ai_action_time = self.ai_action_mod;
+  }
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge16={
@@ -318,7 +302,5 @@ void() ai_mech_sk_charge16={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-    
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_pivot1)
 };

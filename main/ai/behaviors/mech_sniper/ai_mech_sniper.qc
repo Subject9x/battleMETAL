@@ -88,11 +88,11 @@ void() ai_mech_sniper_fight_prep={
             macro_ai_frame(ai_mech_sniper_enter_charge)
             return;
           }
-          macro_ai_frame(ai_mech_sniper_reverse1)
+          macro_ai_frame(ai_mech_sniper_enter_reverse)
           return;
         }
         if( self.ai_rank > AI_RANK_REG ){
-          macro_ai_frame(ai_mech_sniper_reverse1)
+          macro_ai_frame(ai_mech_sniper_enter_reverse)
           return;
         }
         macro_ai_frame(ai_mech_sniper_rotate1)
@@ -102,7 +102,7 @@ void() ai_mech_sniper_fight_prep={
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
             if( roll < 0.35 ){
-              macro_ai_frame(ai_mech_sniper_reverse1)
+              macro_ai_frame(ai_mech_sniper_enter_reverse)
               return;
             }
             if( roll < 0.67 ){
@@ -116,7 +116,7 @@ void() ai_mech_sniper_fight_prep={
             return;
           }
           if( roll < 0.3 ){
-            macro_ai_frame(ai_mech_sniper_reverse1)
+            macro_ai_frame(ai_mech_sniper_enter_reverse)
             return;
           }
           if( roll < 0.67 ){
@@ -137,7 +137,7 @@ void() ai_mech_sniper_fight_prep={
           return;
         }
         if( roll < 0.4 ){
-          macro_ai_frame(ai_mech_sniper_reverse1)
+          macro_ai_frame(ai_mech_sniper_enter_reverse)
           return;
         }
         macro_ai_frame(ai_mech_sniper_rotate1)
@@ -165,7 +165,7 @@ void() ai_mech_sniper_fight_prep={
         macro_ai_frame(ai_mech_sniper_enter_melee)
         return;
       }
-      macro_ai_frame(ai_mech_sniper_reverse1)
+      macro_ai_frame(ai_mech_sniper_enter_reverse)
       return;
     }
     self.enemy = world;

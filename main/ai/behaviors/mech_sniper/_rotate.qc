@@ -7,18 +7,15 @@ Overview: ai unit
   Behavior - Rotate
   
   Setup
-    
+    Mech Sniper rotates to face target
 */
-/*
-  Mech Sniper rotates to face target
-*/  
 void() ai_mech_sniper_rotate1={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
   self.legs.attack_state = TR_NORM;
-  
+
   macro_ai_frame(ai_mech_sniper_rotate2)
 };
 void() ai_mech_sniper_rotate2={
@@ -44,9 +41,8 @@ void() ai_mech_sniper_rotate4={
   
   ai_face_targ();
     
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   macro_ai_frame(ai_mech_sniper_rotate5)
 };
@@ -122,6 +118,7 @@ void() ai_mech_sniper_turn4={
   if( !ai_check_vis(self.enemy) ){
     self.enemy = world;
     macro_ai_frame(ai_mech_sniper_patrol1)
+    return;
   }
   
   macro_ai_frame_count(ai_mech_sniper_turn1)
