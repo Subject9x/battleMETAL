@@ -80,15 +80,15 @@ float( entity t ) ai_line_of_sight={
   local entity trace;
   
   trace = self;
-  if( (self.flags & FL_TURRET) ){
+  if( (self.flags & FL_TURRET) )
     trace = self.cockpit;
-  }
   
-  traceline( trace.origin, t.origin, MOVE_WORLDONLY, self);
+  makevectors( self.angles );
+  traceline( trace.origin +(v_up * 16), t.origin, MOVE_NORMAL, self);
+  //realized the terrain model is an entity, and not a brush model, thus itll never be 'world'
   
-  if( trace_fraction >= 0.8){
+  if( trace_fraction > 0.8)
     return TRUE;
-  }
   
   return FALSE;
 };
@@ -248,22 +248,18 @@ float() ai_find_target_radar={
         if( targ.deadflag == DEAD_NO ){
           ndist = vlen(targ.origin - self.origin);
           if( ndist < rng ){
-            if( (targ.flags & FL_CLIENT) ){
-              if( targ.stat_rdr_mode == FALSE ){
-                if( ndist < (rng / 2 ) ){
-                  if( ai_line_of_sight(targ) ){
-                    rng = ndist;
-                    found = targ;
-                  }
-                }
-              }
-            }
-            else{
-              if(ndist < rng){
+            if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == TRUE ){
+              if( ndist < (rng / 2) ){
                 if( ai_line_of_sight(targ) ){
                   rng = ndist;
                   found = targ;
                 }
+              }
+            }
+            else{
+              if( ai_line_of_sight(targ) ){
+                rng = ndist;
+                found = targ;
               }
             }
           }

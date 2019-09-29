@@ -49,9 +49,8 @@ void() ai_gev_flank2={
 
   ai_face_targ();
     
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   if( walkmove( anglemod(self.ideal_yaw + self.ai_dir), vel ) ){
     macro_ai_frame(ai_gev_flank3)
@@ -127,9 +126,9 @@ void() ai_gev_flank6={
     vel = vel * 0.6;
 
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
+
   if( walkmove( anglemod(self.ideal_yaw + self.ai_dir), vel ) ){
     macro_ai_frame(ai_gev_flank7)
     return;
@@ -148,9 +147,9 @@ void() ai_gev_flank7={
     vel = vel * 0.7;
 
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
+
   if( walkmove( anglemod(self.ideal_yaw + self.ai_dir), vel ) ){
     macro_ai_frame(ai_gev_flank8)
     return;
@@ -169,9 +168,9 @@ void() ai_gev_flank8={
     vel = vel * 0.8;
 
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
+
 
   if( walkmove( anglemod(self.ideal_yaw + self.ai_dir), vel ) ){
     macro_ai_frame(ai_gev_flank9)
@@ -191,9 +190,9 @@ void() ai_gev_flank9={
     vel = vel * 0.9;
 
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
+
   if( walkmove( anglemod(self.ideal_yaw + self.ai_dir), vel ) ){
     self.speed = self.lefty;
     macro_ai_frame_count(ai_gev_strafe1)

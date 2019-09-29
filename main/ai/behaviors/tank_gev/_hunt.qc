@@ -10,6 +10,10 @@ Overview: ai unit
   Setup
     
 */
+void() ai_gev_enter_hunt={
+  self.speed = 0.1;
+};
+
 void() ai_gev_hunt1={
   ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 
@@ -207,6 +211,7 @@ void() ai_gev_hunt12={
     self.goalentity = self.ai_node_recall;
     self.ai_action_time = (0 - self.ai_action_mod) * -1;
     self.ai_action_time = ceil(self.ai_action_time * 4);
+    self.speed = 0.1;
     macro_ai_frame(ai_gev_hunt1)
     return;
   }

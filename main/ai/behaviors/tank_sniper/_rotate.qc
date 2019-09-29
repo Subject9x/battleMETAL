@@ -49,9 +49,8 @@ void() ai_spg_rotate5={
   
   ai_face_targ();
   
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   macro_ai_frame(ai_spg_rotate6)
 };
@@ -70,9 +69,8 @@ void() ai_spg_rotate7={
   
   ai_face_targ();
   
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   macro_ai_frame(ai_spg_rotate8)
 };
@@ -82,7 +80,7 @@ void() ai_spg_rotate8={
   
   ai_face_targ();
   ai_attack();
-  
+    
   macro_ai_frame(ai_spg_fight_prep)
 };
 

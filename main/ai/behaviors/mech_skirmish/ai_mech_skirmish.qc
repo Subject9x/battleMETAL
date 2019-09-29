@@ -243,6 +243,10 @@ void() ai_mech_sk_stand1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_update_mechplayer)
   
+  self.legs.attack_state = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
+  
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;

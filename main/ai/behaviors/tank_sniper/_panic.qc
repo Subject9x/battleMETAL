@@ -4,12 +4,13 @@ Author: Peter Roohr
 Date: 09/23/2018
 Overview: ai unit
   Tank - Destroyer
-  Behavior - Sniper
-  
-  Setup
-      th_pain == 'panic'
+  Behavior - Panic
+    th_pain == 'panic'
     unit runs to its nearest node or ally
     if either are lacking, it'll just run in a rando direction
+    
+  Setup
+
 */
 void(entity attacker) ai_spg_panic1={
   local entity friend;

@@ -65,9 +65,13 @@ void() ai_spg_patrol1={
     return;
   }
   
-  movetogoal( self.data_speed_forward );
-  
-  macro_ai_frame(ai_spg_patrol1)
+  if( time > self.pausetime ){
+    if( self.movetarget ){
+      macro_ai_frame(ai_spg_patrol1)
+      return;
+    }
+  }
+  macro_ai_frame(ai_spg_stand1)
 };
 
 /*
@@ -185,36 +189,40 @@ void() ai_spg_fight_prep={
             return;
           }
           if( roll < 0.15 ){
+        cons_logAFloat("enemy_infront outta range -> ai_spg_enter_charge", 1);// DEBUG
             macro_ai_frame(ai_spg_enter_charge)
             return;
           }
+        cons_logAFloat("enemy_infront outta range -> ai_spg_patrol1", 1);// DEBUG
           //tank destroyers don't hunt
-          if( self.movetarget ){
-            macro_ai_frame(ai_spg_patrol1)
-            return;
-          }
-          macro_ai_frame(ai_spg_enter_charge)
-          return;
-        }
-        if( self.ai_rank > AI_RANK_REG ){
-          macro_ai_frame(ai_spg_enter_charge)
-          return;
-        }         
-        if( self.movetarget ){
           macro_ai_frame(ai_spg_patrol1)
           return;
         }
+        
+        if( self.ai_rank > AI_RANK_REG ){
+        cons_logAFloat("!enemy_infront outta range -> ai_spg_enter_charge", 1);// DEBUG
+          macro_ai_frame(ai_spg_enter_charge)
+          return;
+        }
+        cons_logAFloat("!enemy_infront  outta range -> ai_spg_patrol1", 1);// DEBUG
+        macro_ai_frame(ai_spg_patrol1)
+        return;
       }
     }
+    
     if( enemy_vis == VIS_FRN ){
       if( friend_blocker_dist < 200 ){
         macro_ai_frame(ai_spg_reverse1)
         return;
       }
-      macro_ai_frame(ai_spg_enter_strafe)
+      if( friend_blocker_dist <= self.ai_minrange ){
+        macro_ai_frame(ai_spg_enter_strafe)
+        return;
+      }
+      macro_ai_frame(ai_spg_rotate1)
       return;
     }
   }
   self.enemy = world;
-  macro_ai_frame(ai_spg_stand1)
+  macro_ai_frame(ai_spg_patrol1)
 };
