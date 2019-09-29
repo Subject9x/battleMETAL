@@ -59,9 +59,8 @@ void() map_particlecube_effect_think={
   makevectors( playerMove );
   playerOffsetOrigin = self.owner.origin + (v_forward * (self.maxs_x * 0.5) );
   cubeLen = vlen( playerOffsetOrigin - self.origin);
-  if( cubeLen > self.maxs_x ){
+  if( cubeLen > self.maxs_x )
     setorigin( self, self.owner.origin + (v_forward * (self.maxs_x * 0.9)) ) ; 
-  }
   
   particleVelocity = te_apply_wind( self.origin );
   particleVelocity = normalize( particleVelocity - self.origin );
@@ -146,9 +145,8 @@ void() map_particlecube_effect={
   setsize( self, tempMin, tempMax );
   setorigin( self, self.origin);
   
-  if( !(self.spawnflags & 2) ){
+  if( !(self.spawnflags & 2) )
     self.count3 = 999999999;  //worked for iD, right?
-  }
 
   self.touch = map_particlecube_effect_touch;
 };

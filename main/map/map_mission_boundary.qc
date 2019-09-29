@@ -11,9 +11,8 @@ Overview:
 void() mission_boundary_touch={
   
   if( (other.flags & FL_CLIENT) ){
-    if( self.isActive ){
+    if( self.isActive )
       client_send_boundary_warning( other );
-    }
   }    
   if( (other.flags & FL_MONSTER) ){
     //find shortest way out -> back up?

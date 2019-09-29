@@ -109,14 +109,13 @@ void() map_projectile_shooter={
   
   if( (self.flags & FL_MONSTER) ){
     self.damageValue = ai_pilot_mod_damage( skill, self.damageValue);
-    if(self.w_clipsize > 1){
+    if(self.w_clipsize > 1)
       self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
-    }
   }
 
-  if( (self.damageType & DMG_MSC) ){
+  if( (self.damageType & DMG_MSC) )
     self.w_think = SUB_Null;
-  }
+  
   self.th_die = ctrl_die_weapon;
   
   //setmodel( self, self.c_model ); //gah, code can't correct for inverse pitch of model angle
@@ -135,22 +134,19 @@ void() map_projectile_shooter={
   
   //validate limited-use
   if( (self.spawnflags & 32) ){
-    if( !self.count ){
+    if( !self.count )
       self.spawnflags = self.spawnflags - (self.spawnflags & 32);
-    }
   }
   
   //validate reactivate timer
   if( (self.spawnflags & 4) ){
-    if( !self.wait ){
+    if( !self.wait )
       self.spawnflags = self.spawnflags - (self.spawnflags & 4);
-    }
   }
   
   //default interval
-  if( !self.count3 ){
+  if( !self.count3 )
     self.count3 = 0.05;
-  }
   
   if( (self.spawnflags & 1) ){
     //START_OFF

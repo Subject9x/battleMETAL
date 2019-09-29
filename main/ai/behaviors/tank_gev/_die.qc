@@ -64,13 +64,15 @@ void() ai_gev_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
+  
   mech_player_compdie(self.cockpit);
-  if( (self.flags & FL_TURRET) ){
+  
+  if( (self.flags & FL_TURRET) )
     mech_player_compdie(self.torsoCenter);
-  }
-  if( self.ai_node_recall ){
+  
+  if( self.ai_node_recall )
     remove(self.ai_node_recall);
-  }
+  
   
   t_y = self.ideal_yaw;
   

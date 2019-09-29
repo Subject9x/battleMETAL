@@ -507,9 +507,9 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     itr = 1;
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     while( hardpoint ){
-	  data_get_client_item_(hardpoint, DATA_CONFIG_BUFFER_WEPS[itr]);
+      data_get_client_item_(hardpoint, DATA_CONFIG_BUFFER_WEPS[itr]);
       itr = itr + 1;
-	  hardpoint = hardpoint.w_slot;
+      hardpoint = hardpoint.w_slot;
     }
     GROUP_ENE_1 = calc_energy_draw(CLIENT_MENU_nex_grp1);
     GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);

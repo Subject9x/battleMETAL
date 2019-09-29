@@ -17,10 +17,9 @@ void() nav_point_touch={
   local entity that;
   
   if(self.isActive == TRUE){
-    if( !(other.flags & FL_CLIENT) ){
-      //nav points are a player-only thing
+    //nav points are a player-only thing
+    if( !(other.flags & FL_CLIENT) )
       return;
-    }
     if( other.faction == self.faction ){
       self.enemy = other;
       self.isActive = 2;
@@ -34,12 +33,11 @@ void() nav_point_touch={
       trigger_event( that, trigOnTarget );
       
       //multi_trigger();
-      if( (self.spawnflags & 2) ){
+      if( (self.spawnflags & 2) )
         self.isActive = 1;
-      }
-      if( (self.spawnflags & 4) ){
+      
+      if( (self.spawnflags & 4) )
         self.isActive = -1;
-      }
     }
   }
 };
@@ -88,9 +86,10 @@ OFF_AFTER_USE 4: deactivate after use
 void() map_nav_point={
 
   self.flags = self.flags | FL_NODE;
-  if( !cvar("developer") ){
-    self.effects = self.effects | EF_NODRAW;
-  }
+  self.effects = self.effects | EF_NOSHADOW;
+  if( !cvar("developer") )
+    self.alpha = 0;
+  
   self.data_type = DATA_NAVP;
   
   setmodel(self, "q3mdl/testball.md3");

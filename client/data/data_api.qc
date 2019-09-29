@@ -105,7 +105,12 @@ float( float mechId, float configNum ) data_mech_config_load={
         if( strstrofs(token, "hpt",0) != -1 ){
           tokenizebyseparator(token, "_");
           idx = stof(argv(1));
-          DATA_CONFIG_BUFFER_WEPS[idx] = stof(value);
+          if( UNLOCKED_ITEMS[idx] > 0 ){
+            DATA_CONFIG_BUFFER_WEPS[idx] = stof(value);
+          }
+          else{
+            DATA_CONFIG_BUFFER_WEPS[idx] = 0;
+          }
         }
         if( strstrofs(token, "group",0) != -1 ){
           tokenizebyseparator(token, "_");

@@ -43,6 +43,8 @@ void() node_setup={
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-10 -10 -18','10 10 18');
   
+  self.alpha = 0;
+  self.effects = self.effects | EF_NOSHADOW;
   //only render nodes when debugging
   //DEBUG
   if( cvar("developer" ) ){
@@ -56,18 +58,13 @@ void() node_setup={
         break;
     }
   }
-  else{
-    self.alpha = 0;
-    self.effects = self.effects | EF_NODRAW;
-  }
   
   trigger_event( self, trigOnSpawn );
-  if( !self.pausetime ){
+  if( !self.pausetime )
     self.pausetime = ((4 - skill) * -1) * 1.65; 
-  }
-  if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
+
+  if( (self.spawnflags & NODE_SPAWN_INACTIVE) )
     self.isActive = FALSE;
-  }
 };
 
 /*
@@ -123,7 +120,6 @@ void() node_patrol_touch={
       if( self.faction == other.faction ){
         if( self.target ){
           node = find (world, targetname, self.target);
-          
           if( node ){
             self = other;
               self.target = thisNode.target;
@@ -178,18 +174,15 @@ void() node_touch={
   
   if( (other.flags & FL_MONSTER) ){
     
-    if( ai_valid_target(other.enemy) ){
+    if( ai_valid_target(other.enemy) )
       return;
-    }
      
-    if( other.movetarget != self ){
+    if( other.movetarget != self )
       return;
-    }
-
-    if( (self.ai_node_recall.flags & FL_NODE) ){
-      //AI is currently chasing down a target / or resetting
+  
+    //AI is currently chasing down a target / or resetting
+    if( (self.ai_node_recall.flags & FL_NODE) )
       return;
-    }
     
     switch( self.data_idx ){
       case AI_NODE_PATROL:

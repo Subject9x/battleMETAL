@@ -8,9 +8,8 @@ Overview: ai objects used for map logic
 void() ai_change_faction_use={
   local entity e;
   if( (self.spawnflags & 4) ){
-    if( time < self.nextthink){
+    if( time < self.nextthink)
       return;
-    }
     self.think = ai_change_rank_use;
     self.nextthink = time + self.delay;
     return;
@@ -24,9 +23,8 @@ void() ai_change_faction_use={
   }
   if(self.target){
     e = find(world, targetname, self.target);
-    if(e){
+    if(e)
       e.faction = self.faction;
-    }
   }
   if( (self.spawnflags & 2) ){
     self.think = SUB_Remove;
@@ -37,9 +35,8 @@ void() ai_change_faction_use={
 void() ai_change_rank_use={
   local entity e, this;
   if( (self.spawnflags & 4) ){
-    if( time < self.nextthink){
+    if( time < self.nextthink)
       return;
-    }
     self.think = ai_change_rank_use;
     self.nextthink = time + self.delay;
     return;

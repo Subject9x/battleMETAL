@@ -50,15 +50,14 @@ void() map_trigger_highlighthud={
   map_initTrigger ();
   self.noise = "misc/talk.wav";
   self.solid = SOLID_TRIGGER;
-  if (!self.wait){
+  if (!self.wait)
 		self.wait = 0.2;
-  }
+  
   self.use = multi_use;
   self.touch = highlight_hud_touch;
   if (self.nextthink > time)
-	{
-		return;		// allready been triggered
-	}
+    return;		// allready been triggered
+	
 };
 
 void() map_trigger_multiple={
@@ -118,6 +117,7 @@ void() map_trigger_secret={
 	self.wait = -1;
 	if (!self.message)
 		self.message = "You found a secret area!";
+    
 	if (!self.sounds)
 		self.sounds = 1;
 	
@@ -139,9 +139,8 @@ void() map_trigger_counter={
   map_initTrigger();
 	
   self.wait = -1;
-	if ( !self.count ){
+	if ( !self.count )
 		self.count = 2;  
-  }
 
 	self.use = counter_use;
 };
@@ -228,13 +227,12 @@ void() map_func_rain={
   self.w_think = func_snow_think;
   self.use = func_particle_cube_use;
   
-  if( self.trigOnSpawn ){
-	trigger_event( self, trigOnSpawn );
-  }
+  if( self.trigOnSpawn )
+    trigger_event( self, trigOnSpawn );
   
-  if( (self.spawnflags & 1) ){
-	return;
-  }
+  if( (self.spawnflags & 1) )
+    return;
+    
   self.think = self.use;
   self.nextthink = time + 0.1;
 };

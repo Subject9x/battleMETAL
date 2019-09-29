@@ -43,9 +43,8 @@ void() map_terrain_model={
   setorigin(self, self.origin);
   self.solid = SOLID_BSP;
   
-  if( (self.spawnflags & 4) ){
-    self.effects = EF_NOSHADOW;  
-  }
+  if( (self.spawnflags & 4) )
+    self.effects = EF_NOSHADOW;
 };
 
 
@@ -91,10 +90,10 @@ void() map_misc_model_solid={
   self.avelocity = '0 0 0';
   self.takedamage = DAMAGE_NO;
   self.alpha = TRUE;
-  if( (self.spawnflags & 2) ){
-    //override alpha 
+  
+  //override alpha 
+  if( (self.spawnflags & 2) )
     self.alpha = self.count1;
-  }
   
   precache_model(self.model);
   setmodel(self, self.model);

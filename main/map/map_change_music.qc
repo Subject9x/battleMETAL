@@ -43,12 +43,11 @@ void() map_change_music={
   local vector tempMin;
   local vector tempMax;
   
-  if( !self.mins ){
+  if( !self.mins )
     self.mins = VEC_ORIGIN;
-  }
-  if( !self.maxs ){
+  
+  if( !self.maxs )
     self.mins = VEC_ORIGIN;
-  }
   
   tempMax = self.maxs;
   tempMin = self.mins;
@@ -60,5 +59,4 @@ void() map_change_music={
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, tempMin, tempMax);
   setorigin(self, self.origin);
-
 };

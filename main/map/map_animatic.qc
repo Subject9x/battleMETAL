@@ -20,10 +20,9 @@ void() animatic_event_execute={
     client = findchainflags(flags, (FL_CLIENT));
     while(client){
       //FACTION_ONLY setting
-      if( (self.spawnflags & 8) ){
+      if( (self.spawnflags & 8) )
         if(self.faction != client.faction){
           continue;
-        }
       }
       self = client;
         self.count1 = self.stat_plr_stt;
@@ -65,10 +64,10 @@ void() animatic_event_use={
   else{
     self.isActive = TRUE;
     
-    if( (self.spawnflags & 2) ){
-      //wait for touch event
+    //wait for touch event
+    if( (self.spawnflags & 2) )
       return;
-    }
+    
     self.think = animatic_event_execute;
     self.nextthink = time + 0.01;
   }
@@ -81,9 +80,8 @@ void() animatic_event_touch={
   if( (other.flags & FL_CLIENT) ){
     if( time > self.dmgtime){
       self.dmgtime = time + 120; //2 minute cool down on refiring anims
-      if(self.isActive){
+      if(self.isActive)
         animatic_event_execute();
-      }
     }
   }
 };
@@ -123,9 +121,8 @@ void() map_animatic={
   setmodel(self, "q3mdl/testball.md3"); //DEBUG
   
   self.alpha = 0;
-  if( cvar("developer") ){
+  if( cvar("developer") )
     self.alpha = 1;
-  }
   
   //touchable check
   if( (self.spawnflags & 2) ){
@@ -149,26 +146,22 @@ void() map_animatic={
   }
   
   self.isActive = TRUE;
-  if( (self.spawnflags & 1) ){
-    //START_OFF
+  //START_OFF
+  if( (self.spawnflags & 1) )
     self.isActive = FALSE;
-  }
   
   if( (self.spawnflags & 32) ){
-    if( !self.count1 ) {
-      //set default freeze time
+    //set default freeze time
+    if( !self.count1 )
       self.count1 = 15;
-    }
   }
 
   if( (self.spawnflags & 64) ){
-    if( !self.wait ){
-      //no default for cooldown behavior;
+    //no default for cooldown behavior;
+    if( !self.wait )
       self.spawnflags = self.spawnflags - (self.spawnflags & 64);
-    }
   }
   
-  if( (self.spawnflags & 1) ){
+  if( (self.spawnflags & 1) )
     self.touch = animatic_event_touch;
-  }
 };

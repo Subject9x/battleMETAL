@@ -113,9 +113,8 @@ void() map_no_shoot={
 
   //default wait
   if( (self.spawnflags & 4) ){
-    if( !self.wait ){
+    if( !self.wait )
       self.wait = 10;
-    }
   }
   
   //START_OFF

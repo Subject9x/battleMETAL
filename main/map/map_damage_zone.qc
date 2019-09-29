@@ -56,9 +56,8 @@ void() map_damage_zone_particles_armor={
     particleOffset_y = random() * (self.maxs_z / 2);
     
     particleOffset = self.origin + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
-    if( random() < 0.2){
+    if( random() < 0.2)
       te_field_rad(particleOffset, normalize(velocityOffset - self.origin) * 4, 1);
-    }
     
     te_field_rad_light(particleOffset, 1);
     if( self.maxs_x > 256){
@@ -115,17 +114,14 @@ void() map_damage_zone_cool;
 void() map_damage_zone_think={
   
   makevectors(self.angles);
-  if( (self.damageType & 1) ){
+  if( (self.damageType & 1) )
     map_damage_zone_particles_shields();
-  }
   
-  if( (self.damageType & 2) ){
+  if( (self.damageType & 2) )
     map_damage_zone_particles_armor();
-  }
   
-  if( (self.damageType & 4) ){
+  if( (self.damageType & 4) )
     map_damage_zone_particles_energy();
-  }
   
   if( (self.spawnflags & 8) ){
     //spawnflags 8 = remove after first lifetime countdown
@@ -161,9 +157,8 @@ void() map_damage_zone_use={
 
   if( (self.spawnflags & 4) ){
     //prevents mutli-activation if in cooldown
-    if( time < self.nextthink ){
+    if( time < self.nextthink )
       return;
-    }
   }
   
   if( !self.isActive ){
@@ -191,14 +186,12 @@ void() map_damage_zone_touch={
 
   if( self.isActive ){
     if( (other.flags & FL_UNIT) ){
-      
       //Zone Damage - SHIELDS
       if( (self.damageType & 1) ){
         //shield damage is gated so as not to trigger an energy draining feedback loop
         other.shield = other.shield - self.damageValue;
-        if( other.shield < 0 ){
+        if( other.shield < 0 )
           other.shield = 0;
-        }
         if( time > other.shieldHitDelay ){
           other.shieldHitDelay = time + 1;
         }
@@ -229,18 +222,15 @@ void() map_damage_zone_touch={
       //Zone Damage - ENERGY
       if( (self.damageType & 4) ){
         other.energy = other.energy - self.damageValue;
-        if( other.energy < 0 ){
+        if( other.energy < 0 )
           other.energy = 0;
-        }
         //realized damageValue can be inverted...
-        if( other.energy > other.energyMax ){
+        if( other.energy > other.energyMax )
           other.energy = other.energyMax;
-        }
       }
       
-      if( (other.flags & FL_CLIENT) ){
+      if( (other.flags & FL_CLIENT) )
         client_send_enviro_warning( other );
-      }
       
       if( (self.damageType & 8) ){
         //TODO - impact speed?
@@ -285,12 +275,11 @@ void() map_damage_zone={
   
   self.isActive = TRUE;
   
-  if( !self.mins ){
+  if( !self.mins )
     self.mins = VEC_HULL_MIN;
-  }
-  if( !self.maxs ){
+  
+  if( !self.maxs )
     self.mins = VEC_HULL_MAX;
-  }
   
   tempMin = self.mins;
   tempMax = self.maxs;
@@ -310,15 +299,13 @@ void() map_damage_zone={
   }
   
   if( (self.spawnflags & 2) ){
-    if( !self.data_lifetime ){
+    if( !self.data_lifetime )
       self.spawnflags = self.spawnflags - (self.spawnflags & 2);
-    }
   }
   
   if( (self.spawnflags & 4) ){
-    if( !self.wait ){
+    if( !self.wait )
       self.spawnflags = self.spawnflags - (self.spawnflags & 4);
-    }
   }
   
   if( (self.spawnflags & 1) ){

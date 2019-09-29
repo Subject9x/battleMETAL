@@ -113,6 +113,9 @@ void(float vec_id) initialize_data_turret_={
 */
 void(float wep_id) initialize_data_item_={ 
   switch(wep_id){
+    case 0:
+      data_ini_empty_weapon_();
+      return;
     case UID_ITEM_light_autocannon:
       data_ini_light_atc_();
       return;
