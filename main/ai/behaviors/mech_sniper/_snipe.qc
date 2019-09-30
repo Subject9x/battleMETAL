@@ -15,6 +15,10 @@ void() ai_mech_sniper_snipe1={
   
   ai_face_targ();
   
+  self.legs.attack_state = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
+  
   macro_ai_frame(ai_mech_sniper_snipe2)
 };
 void() ai_mech_sniper_snipe2={

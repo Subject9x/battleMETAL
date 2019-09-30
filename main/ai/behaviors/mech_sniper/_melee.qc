@@ -84,7 +84,8 @@ void() ai_mech_sniper_melee7={
   if( self.speed != self.lefty )
     dampen = dampen * 0.1;
     
-  self.legs.attack_state = TR_NORM;
+  self.legs.attack_state = TR_GOAL;
+  self.legs.ai_dir = self.ai_dir;
   self.legs.think = bot_leg_walk1;
   self.legs.nextthink = time + 0.1;
   

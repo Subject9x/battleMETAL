@@ -392,6 +392,7 @@ void(void() data_ini) build_mech_bot={
     self.legs.th_walk = leg_walk1;
     self.legs.th_run = leg_back1;
     self.legs.th_stand = leg_stand1;
+    self.legs.th_die = bot_leg_die1;
     self.legs.movetype = MOVETYPE_NONE;
     self.legs.yaw_speed = self.yaw_speed * 1.5;
     self.legs.attack_state = TR_NORM;

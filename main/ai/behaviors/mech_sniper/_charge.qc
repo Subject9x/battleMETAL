@@ -39,7 +39,8 @@ void() ai_mech_sniper_charge1={
   if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_mech_sniper_charge2)
     return;
-  }  
+  }
+  
   local float roll;
   roll = random();
   if( roll < 0.6 ){

@@ -29,7 +29,7 @@ void() ai_mech_sk_enter_reverse_adjust={
   self.ideal_yaw = anglemod(self.ai_dir + 180);
   
   self.legs.ai_dir = self.ideal_yaw;
-  self.legs.attack_state = TR_GOAL;
+  self.legs.attack_state = TR_NORM;
   self.legs.think = bot_leg_back1;
   self.legs.nextthink = time + 0.1;
   

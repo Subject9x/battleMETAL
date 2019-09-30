@@ -17,14 +17,15 @@ void() ai_mech_sk_enter_charge={
   if( self.lefty == -1 ){
     self.ai_dir = 180;
     self.legs.think = bot_leg_back1;
-    self.legs.attack_state = TR_NORM;
+    self.legs.attack_state = TR_GOAL;
   }
   else{
     self.ai_dir = 0;
     self.legs.think = bot_leg_walk1;
-    self.legs.attack_state = TR_NORM;
+    self.legs.attack_state = TR_GOAL;
   }
   
+  self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   self.legs.nextthink = time + 0.1;
   
   macro_ai_frame(ai_mech_sk_charge1)
@@ -40,11 +41,17 @@ void() ai_mech_sk_charge1={
     dampen = dampen * 0.1;
   
   ai_face_targ();
+   
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen ) ){
+  if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge2)
     return;
   }
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge2={
@@ -58,11 +65,17 @@ void() ai_mech_sk_charge2={
     
   ai_face_targ();
   ai_attack();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen ) ){
+  if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge3)
     return;
   }  
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge3={
@@ -75,14 +88,20 @@ void() ai_mech_sk_charge3={
     dampen = dampen * 0.3;
     
   ai_face_targ();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen ) ){
+  
+  if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge4)
     return;
   }  
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge4={
@@ -95,11 +114,17 @@ void() ai_mech_sk_charge4={
     dampen = dampen * 0.4;
     
   ai_face_targ();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen ) ){
+  if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge5)
     return;
-  }  
+  } 
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1; 
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge5={
@@ -112,11 +137,17 @@ void() ai_mech_sk_charge5={
     dampen = dampen * 0.5;
     
   ai_face_targ();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen ) ){
+  if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge6)
     return;
   }  
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge6={
@@ -130,11 +161,17 @@ void() ai_mech_sk_charge6={
     
   ai_face_targ();
   ai_attack();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen ) ){
+  if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge7)
     return;
   }  
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge7={
@@ -147,14 +184,19 @@ void() ai_mech_sk_charge7={
     dampen = dampen * 0.7;
     
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
-
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen ) ){
+   
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
+  
+  if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge8)
     return;
-  }  
+  } 
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1; 
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge8={
@@ -167,11 +209,17 @@ void() ai_mech_sk_charge8={
     dampen = dampen * 0.8;
     
   ai_face_targ();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen) ){
+  if( walkmove( goalAngle, dampen) ){
     macro_ai_frame(ai_mech_sk_charge9)
     return;
   }  
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge9={
@@ -184,11 +232,17 @@ void() ai_mech_sk_charge9={
     dampen = dampen * 0.9;
     
   ai_face_targ();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), dampen ) ){
+  if( walkmove( goalAngle, dampen ) ){
     macro_ai_frame(ai_mech_sk_charge10)
     return;
-  }  
+  } 
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1; 
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge10={
@@ -202,11 +256,17 @@ void() ai_mech_sk_charge10={
     
   ai_face_targ();
   ai_attack();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
+  if( walkmove( goalAngle, self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge11)
     return;
   } 
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge11={
@@ -219,14 +279,20 @@ void() ai_mech_sk_charge11={
     dampen = dampen * 0.1;
     
   ai_face_targ();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
+    
+  if( walkmove( goalAngle, self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge12)
     return;
-  }  
+  } 
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1; 
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge12={
@@ -238,11 +304,18 @@ void() ai_mech_sk_charge12={
   if( self.speed != self.lefty )
     dampen = dampen * 0.1;
     
-  ai_face_targ();
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
+  ai_face_targ();   
+ 
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
+  
+  if( walkmove( goalAngle, self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge13)
     return;
   }  
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge13={
@@ -250,11 +323,17 @@ void() ai_mech_sk_charge13={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();  
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
+  if( walkmove( goalAngle, self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge14)
     return;
   }  
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge14={
@@ -263,11 +342,17 @@ void() ai_mech_sk_charge14={
   
   ai_face_targ();
   ai_attack();
+     
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
+  if( walkmove( goalAngle, self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge15)
     return;
-  }  
+  }
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge15={
@@ -276,22 +361,31 @@ void() ai_mech_sk_charge15={
   
   ai_face_targ();  
   
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
+  
+  if( walkmove( goalAngle, self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge16)
     return;
   }
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };
 void() ai_mech_sk_charge16={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ai_face_targ();
-  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_forward ) ){
+  ai_face_targ();   
+
+  local float goalAngle;
+  goalAngle = anglemod(self.angles_y + self.ai_dir);
+  
+  if( walkmove( goalAngle, self.data_speed_forward ) ){
     self.speed = self.lefty;
     macro_ai_frame_count(ai_mech_sk_charge11)
     if( self.lefty == -1 ){  
@@ -302,5 +396,8 @@ void() ai_mech_sk_charge16={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
+  self.legs.ai_dir = TR_YAW;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame(ai_mech_sk_pivot1)
 };

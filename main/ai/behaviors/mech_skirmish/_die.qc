@@ -21,8 +21,10 @@ void() ai_mech_sk_die={
   ai_sfx_dead();
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_CORPSE;
+  self.solid = SOLID_NOT;
   self.colormod = '0.05 0.05 0.05';
+  self.scale = 0.01;
+  self.alpha = 0.01;
   self.attack_state = -1;
   
   droptofloor();
@@ -37,15 +39,12 @@ void() ai_mech_sk_die={
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
-  mech_player_compdie(self.legs);
   mech_player_compdie(self.cockpit);
-  
+
+  self.legs.think = self.legs.th_die;
+  self.legs.nextthink = time + 0.05;
   if( self.ai_node_recall )
     remove(self.ai_node_recall);
-  
-  self.legs.attack_state = TR_YAW;
-  self.legs.think = bot_leg_die1;
-  self.legs.nextthink = time + 0.1;
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );

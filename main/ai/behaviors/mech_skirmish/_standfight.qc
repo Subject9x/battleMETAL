@@ -86,6 +86,7 @@ void() ai_mech_sk_stand_fight10={
 
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-
+    
+  macro_ai_frame_count(ai_mech_sk_stand_fight1)
   macro_ai_frame(ai_mech_sk_fight_prep)
 };

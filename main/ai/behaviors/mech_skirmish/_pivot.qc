@@ -38,9 +38,8 @@ void() ai_mech_sk_pivot3={
   
   ai_face_targ();
     
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   macro_ai_frame(ai_mech_sk_pivot4)
 };
@@ -74,9 +73,8 @@ void() ai_mech_sk_pivot7={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG ){
+  if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  }
   
   macro_ai_frame(ai_mech_sk_pivot8)
 };

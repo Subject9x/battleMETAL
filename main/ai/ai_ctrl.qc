@@ -127,25 +127,12 @@ void() ai_update={
   Primary Generic touch function for AI.
 */
 void() ai_touch={
-  if( (other.flags & FL_NODE) ){
     //ignore nodes straight away, logic for these touches are in ai_nodes
+  if( (other.flags & FL_NODE) )
     return;
-  }
-  if( time > self.ai_react_buffer ){
-    self.ai_react_buffer = time + self.ai_react_time;
-    if( other.faction != self.faction ){
-      if( ai_valid_target(self.enemy) )
-        return;
  
-      self.enemy = other;
-      if( (self.flags & FL_TURRET) )
-        self.torsoCenter.attack_state = TR_TARG;
-        
-      self.think = self.th_missile;
-      self.nextthink = time + 0.1;
-      return;
-    }
-  }
+  if( time > self.ai_react_buffer )
+    self.th_react( other );
 };
 
 /*
@@ -189,9 +176,8 @@ void( float alt_low, float alt_max) ai_fly_update={
   traceline( self.origin, delta, MOVE_NOMONSTERS, self);
   dist = vlen( trace_endpos - self.origin );
   
-  if( dist <= alt_low ){
+  if( dist <= alt_low )
     fdir = 1;
-  }
   
   if( fdir == FALSE ){
     delta = self.origin + (v_up * 10000);
@@ -272,9 +258,9 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
   
   vang = self.angles;
   if( (self.flags & FL_TURRET) ){
-    if( useTurret )
+    if( useTurret ){
       vang = self.torsoCenter.angles;
-
+    }
   }
   
   makevectors ( vang );

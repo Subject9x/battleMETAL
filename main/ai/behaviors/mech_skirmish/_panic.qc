@@ -19,7 +19,10 @@ void( entity attacker ) ai_mech_sk_react1={
   if( attacker.faction == self.faction )
     return;
   
-  
+  if( attacker == self.enemy ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
+    return;
+  }
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
     self.ai_react_buffer = time + self.ai_react_time * 5;

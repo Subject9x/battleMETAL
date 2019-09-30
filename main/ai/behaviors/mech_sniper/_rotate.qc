@@ -14,8 +14,11 @@ void() ai_mech_sniper_rotate1={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
+  
   self.legs.attack_state = TR_NORM;
-
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
+  
   macro_ai_frame(ai_mech_sniper_rotate2)
 };
 void() ai_mech_sniper_rotate2={

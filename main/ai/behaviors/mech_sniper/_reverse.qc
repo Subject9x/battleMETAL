@@ -10,14 +10,14 @@ Overview: ai unit
   Setup
 */
 void() ai_mech_sniper_enter_reverse={
-  if( random() < 0.6 ){
+  if( random() < 0.6 )
     self.lefty = self.lefty * -1;
-  }
+  
   self.ai_dir = 90 + (random() * 180);
   self.ai_dir = self.ai_dir * self.lefty;
   
-  self.legs.attack_state = TR_YAW;
-  self.legs.think = bot_leg_back1;
+  self.legs.attack_state = TR_NORM;
+  self.legs.think = bot_leg_stand1;
   self.legs.nextthink = time + 0.1;
   
   macro_ai_frame(ai_mech_sniper_reverse1)
@@ -65,6 +65,9 @@ void() ai_mech_sniper_reverse5={
   ai_face_targ();
   ai_attack();
   
+  self.legs.think = bot_leg_back1;
+  self.legs.nextthink = time + 0.1;
+  
   if( walkmove( anglemod(self.angles_y + self.ai_dir ), self.data_speed_backward ) ){
     macro_ai_frame(ai_mech_sniper_reverse6)
     return;
@@ -78,10 +81,8 @@ void() ai_mech_sniper_reverse6={
   ai_face_targ();
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  
-  self.legs.ai_dir = anglemod(self.angles_y + 180);  
-  
-  if( walkmove( anglemod(self.angles_y + 180), self.data_speed_backward ) ){
+
+  if( walkmove( anglemod(self.angles_y + self.ai_dir), self.data_speed_backward ) ){
     macro_ai_frame(ai_mech_sniper_reverse7)
     return;
   }
@@ -92,8 +93,7 @@ void() ai_mech_sniper_reverse7={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.legs.ai_dir = anglemod(self.angles_y + 180);
-  
+
   if( walkmove( anglemod(self.angles_y + self.ai_dir ), self.data_speed_backward ) ){
     macro_ai_frame(ai_mech_sniper_reverse8)
     return;
@@ -105,8 +105,7 @@ void() ai_mech_sniper_reverse8={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.legs.ai_dir = anglemod(self.angles_y + 180);
-  
+
   if( walkmove( anglemod(self.angles_y + self.ai_dir ), self.data_speed_backward ) ){
     macro_ai_frame(ai_mech_sniper_reverse9)
     return;
@@ -119,8 +118,7 @@ void() ai_mech_sniper_reverse9={
   
   ai_face_targ();
   ai_attack();
-  self.legs.ai_dir = anglemod(self.angles_y + 180);
-  
+
   if( walkmove( anglemod(self.angles_y + self.ai_dir ), self.data_speed_backward ) ){
     macro_ai_frame(ai_mech_sniper_reverse10)
     return;
@@ -132,7 +130,6 @@ void() ai_mech_sniper_reverse10={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.legs.ai_dir = anglemod(self.angles_y + 180); 
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
   
@@ -147,8 +144,7 @@ void() ai_mech_sniper_reverse11={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.legs.ai_dir = anglemod(self.angles_y + 180);
- 
+
   if( walkmove( anglemod(self.angles_y + self.ai_dir ), self.data_speed_backward ) ){
     macro_ai_frame(ai_mech_sniper_reverse12)
     return;
@@ -160,8 +156,7 @@ void() ai_mech_sniper_reverse12={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
-  self.legs.ai_dir = anglemod(self.angles_y + 180);
-  
+
   if( walkmove( anglemod(self.angles_y + self.ai_dir ), self.data_speed_backward ) ){
     macro_ai_frame(ai_mech_sniper_reverse13)
     return;

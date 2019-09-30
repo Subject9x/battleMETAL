@@ -19,8 +19,10 @@ void() ai_mech_sniper_die={
   ai_sfx_dead();
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_CORPSE;
+  self.solid = SOLID_NOT;
   self.colormod = '0.05 0.05 0.05';
+  self.scale = 0.01;
+  self.alpha = 0.01;
   self.attack_state = -1;
   
   droptofloor();
@@ -37,19 +39,17 @@ void() ai_mech_sniper_die={
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   mech_player_compdie(self.cockpit);
-  
-  self.legs.think = bot_leg_die1;
-  self.legs.nextthink = time + 0.1;
-  
+  mech_player_compdie(self.legs);
+
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
   
   self.think = ai_mech_sniper_die1;
   self.ai_action_time = time + 300;
   //basically overkill damage will just remove the mech (nice and clean)
-  if( self.health <= (self.max_health / 1.5) ){
+  if( self.health <= (self.max_health / 1.5) )
     self.think = ai_mech_sniper_die2;
-  }
+
   self.nextthink = time + 0.1;
   
   makevectors( self.torsoCenter.angles );
