@@ -210,16 +210,53 @@ void() bot_leg_pivot10 = [$l_walk6, bot_leg_pivot11]{
 void() bot_leg_pivot11 = [$l_walk7, bot_leg_pivot1]{
   self.frame = $l_walk7;
 };
+
+
+void() leg_die_touch={
+  if( other == world || other.classname == "map_terrain_model" ){
+    self.touch = SUB_Null;
+    self.solid = SOLID_NOT;
+    self.movetype = MOVETYPE_NONE;
+    return;
+  }
+  if( other.vec_size ){
+    self.touch = SUB_Null;
+    self.solid = SOLID_NOT;
+    self.movetype = MOVETYPE_NONE;
+    self.think = BecomeExplosion;
+    self.nextthink = time + 0.1;
+    return;
+  }
+};
 /*
   Bot Leg death frames
 */
-void() bot_leg_die1 = [$l_die1, leg_die2]{
-  self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_BBOX;
+void() bot_leg_die1 = [$l_die1, bot_leg_die2]{
+  self.frame = $l_stand1;
+  self.movetype = MOVETYPE_BOUNCE;
+  self.solid = SOLID_CORPSE;
+  self.mins = self.owner.mins;
+  self.mins_z = self.owner.mins_z / 2;
+  self.maxs = self.owner.maxs;
+  self.maxs_z = self.owner.mins_z / -1;
+  self.maxs = self.maxs * 0.85;
+  self.mins = self.mins * 0.85;
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
 };
-void() bot_leg_die2 = [$l_die2, bot_leg_die3]{};
+void() bot_leg_die2 = [$l_die2, bot_leg_die3]{
+  local vector fall;
+  makevectors(self.angles);
+  fall = self.origin + (v_forward * 32) + (v_right * (crandom() * 8)) + (v_up * 4);
+  fall = normalize(fall - self.origin);
+  self.velocity = fall * 4;
+};
 void() bot_leg_die3 = [$l_die3, bot_leg_die4]{};
-void() bot_leg_die4 = [$l_die4, bot_leg_die4]{
+void() bot_leg_die4 = [$l_die3, bot_leg_die5]{};
+void() bot_leg_die5 = [$l_die3, bot_leg_die6]{};
+void() bot_leg_die6 = [$l_die3, bot_leg_die7]{};
+void() bot_leg_die7 = [$l_die3, bot_leg_die8]{};
+void() bot_leg_die8 = {
   
   self.deadflag = DEAD_DEAD;
   self.think = SUB_Remove;

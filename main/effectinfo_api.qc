@@ -54,7 +54,7 @@ entity( entity targetBuilding ) te_building_fire_start={
 };
 
 //TE_SMOKE_TEST
-void(vector org, float total) te_smoke_test={
+void(vector org, float total) te_smoke={
   local vector smoke;
   smoke = te_apply_wind( org );
   pointparticles(particleeffectnum("SMOKE_TEST"), org , normalize(smoke - org) * WINDDIR_z, total);
@@ -152,13 +152,18 @@ void() te_flame_th={
       self.think = SUB_Remove;
     }
   }
+  //ownerFlag variable, tie this cheaply to an owner and remove when owner is removed.
+  if( !self.owner || self.owner == world ){
+    self.think = SUB_Remove;
+  }
   self.nextthink = time + self.count2;
 };
 
-void( vector org, vector angl, float total, float lifetime, float ticrate) te_small_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_small_flame_start={
   local entity fire;
   
   fire = spawn();
+  fire.classname = "TE_FIRE";
   fire.w_firetime = ticrate;
   fire.movetype = MOVETYPE_NONE;
   fire.solid = SOLID_NOT;
@@ -167,13 +172,16 @@ void( vector org, vector angl, float total, float lifetime, float ticrate) te_sm
   fire.nextthink = time + fire.w_firetime;
   fire.count = total;
   fire.vec_name = "TE_FIRE_1";
-  if( lifetime > 0 ){
+  if( lifetime > 0 )
     fire.data_lifetime = time + lifetime;
-  }
+    
+  if( ownerFlag )
+    fire.owner = ownerFlag;
+    
   setorigin( fire, org );
 };
 
-void( vector org, vector angl, float total, float lifetime, float ticrate) te_med_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_med_flame_start={
   local entity fire;
   
   fire = spawn();
@@ -185,13 +193,15 @@ void( vector org, vector angl, float total, float lifetime, float ticrate) te_me
   fire.nextthink = time + fire.w_firetime;
   fire.count = total;
   fire.vec_name = "TE_FIRE_2";
-  if( lifetime > 0 ){
+  if( lifetime > 0 )
     fire.data_lifetime = time + lifetime;
-  }
+  
+  if( ownerFlag )
+    fire.owner = ownerFlag;
   setorigin( fire, org );
 };
 
-void( vector org, vector angl, float total, float lifetime, float ticrate) te_big_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_big_flame_start={
   local entity fire;
   
   fire = spawn();
@@ -203,9 +213,11 @@ void( vector org, vector angl, float total, float lifetime, float ticrate) te_bi
   fire.nextthink = time + fire.w_firetime;
   fire.count = total;
   fire.vec_name = "TE_FIRE_3";
-  if( lifetime > 0 ){
+  if( lifetime > 0 )
     fire.data_lifetime = time + lifetime;
-  }
+  
+  if( ownerFlag )
+    fire.owner = ownerFlag;
   setorigin( fire, org );
 };
 
@@ -331,6 +343,7 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
     setorigin(self, notChunk.origin);
     self.touch = touch_mechPiece;
     self.think = ctrl_component_burn;
+    self.traileffectnum = particleeffectnum("TE_MECHPIECE_DEAD_BURN");
     self.nextthink = time + (random() * 1);
     self.ai_action_time = time + (random() * (self.owner.vec_size * 4824));
     self.colormod = notChunk.colormod;

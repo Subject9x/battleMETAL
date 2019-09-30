@@ -31,16 +31,15 @@ void() ai_mech_sniper_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
+  mech_player_compdie(self.torsoCenter);
   mech_player_compdie(self.torsoLeft);
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   mech_player_compdie(self.cockpit);
   
-  otemp = self;
-  self = self.legs;
-    bot_leg_die1();
-  self = otemp;
+  self.legs.think = bot_leg_die1;
+  self.legs.nextthink = time + 0.1;
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
@@ -48,7 +47,7 @@ void() ai_mech_sniper_die={
   self.think = ai_mech_sniper_die1;
   self.ai_action_time = time + 300;
   //basically overkill damage will just remove the mech (nice and clean)
-  if( self.health <= (self.max_health / 1.5) * -1 ){
+  if( self.health <= (self.max_health / 1.5) ){
     self.think = ai_mech_sniper_die2;
   }
   self.nextthink = time + 0.1;
@@ -58,13 +57,13 @@ void() ai_mech_sniper_die={
   forg = self.origin + (v_up * (self.maxs_y / 2) ) + (v_forward * (self.mins_x / 1.5));
   switch( self.vec_size ){
     case 2:
-      te_med_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20); 
+      te_med_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
     case 3:
-      te_big_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20); 
+      te_big_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
     default:
-      te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20); 
+      te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
   }
 };
@@ -74,9 +73,9 @@ void() ai_mech_sniper_die={
 */
 void() ai_mech_sniper_die1={
 
-  te_smoke_test(self.origin, 3);
-  te_smoke_test(self.torsoLeft.origin, 1);
-  te_smoke_test(self.torsoRight.origin, 1);
+  te_smoke(self.origin, 3);
+  te_smoke(self.torsoLeft.origin, 1);
+  te_smoke(self.torsoRight.origin, 1);
   
   self.think = ai_mech_sniper_die1;
   if( time > self.ai_action_time ){

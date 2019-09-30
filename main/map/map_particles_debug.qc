@@ -9,7 +9,7 @@ Overview:
 
 //TE_SMOKE_TEST
 void() debug_smoke={
-  te_smoke_test(self.origin, self.count);
+  te_smoke(self.origin, self.count);
 };
 
 /*

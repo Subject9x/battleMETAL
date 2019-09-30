@@ -13,7 +13,6 @@ Overview: ai unit
 void() ai_tank_sk_die={
   local entity w_chain;
   local vector v;
-  local vector vel;
 
   ai_sfx_dead();
   self.deadflag = DEAD_DYING;
@@ -26,7 +25,9 @@ void() ai_tank_sk_die={
   self.mins_x = self.maxs_x * -1;
   self.mins_y = self.maxs_y * -1;
   setsize(self, self.mins, self.maxs);
-  setorigin(self, self.origin);
+  makevectors( self.angles );  
+  setorigin(self, self.origin - (v_up * self.maxs_z * 0.67) );
+  
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
@@ -53,16 +54,15 @@ void() ai_tank_sk_die={
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
   
-  vel = self.origin + (v_up * self.vec_size);
   switch( self.vec_size ){
     case 2:
-      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 20, world); 
       break;
     case 3:
-      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20, world); 
       break;
     default:
-      te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20); 
+      te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20, world); 
       break;
   }
   
@@ -72,8 +72,7 @@ void() ai_tank_sk_die={
 void() ai_tank_sk_die1={
 
   self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_CORPSE;
-  te_smoke_test(self.origin, 2);
+  te_smoke(self.origin, 2);
   
   self.think = ai_tank_sk_die1;
   if ( time > self.ai_action_time ){

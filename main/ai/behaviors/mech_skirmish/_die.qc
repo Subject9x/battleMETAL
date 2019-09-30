@@ -32,6 +32,7 @@ void() ai_mech_sk_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
+  mech_player_compdie(self.torsoCenter);
   mech_player_compdie(self.torsoLeft);
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.armLeft);
@@ -39,15 +40,12 @@ void() ai_mech_sk_die={
   mech_player_compdie(self.legs);
   mech_player_compdie(self.cockpit);
   
-  if( self.ai_node_recall ){
+  if( self.ai_node_recall )
     remove(self.ai_node_recall);
-  }
   
-  this = self;
-  self = self.legs;
-    self.attack_state = TR_YAW;
-    bot_leg_die1();
-  self = this;
+  self.legs.attack_state = TR_YAW;
+  self.legs.think = bot_leg_die1;
+  self.legs.nextthink = time + 0.1;
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
@@ -61,13 +59,13 @@ void() ai_mech_sk_die={
   forg = self.origin + (v_up * (self.maxs_y / 2) ) + (v_forward * (self.mins_x / 1.5));
   switch( self.vec_size ){
     case 2:
-      te_med_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20); 
+      te_med_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
     case 3:
-      te_big_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20); 
+      te_big_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
     default:
-      te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20); 
+      te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
   }
 };
@@ -76,8 +74,8 @@ void() ai_mech_sk_die={
   smoking wreck
 */
 void() ai_mech_sk_die1={
-  te_smoke_test(self.torsoLeft.origin, 1);
-  te_smoke_test(self.torsoRight.origin, 1);
+  te_smoke(self.torsoLeft.origin, 1);
+  te_smoke(self.torsoRight.origin, 1);
   
   self.think = ai_mech_sk_die1;
   if( time > self.ai_action_time ){

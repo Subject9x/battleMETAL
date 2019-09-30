@@ -16,7 +16,7 @@ void() temp_chunk_burn={
     self.think = SUB_Remove;
   }
   else{  
-    te_smoke_test(self.origin, 3);
+    te_smoke(self.origin, 3);
     self.think = temp_chunk_burn;
   }
 	self.nextthink = time + 0.1;
@@ -32,7 +32,7 @@ void() ai_turret_die={
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_CORPSE;
-  self.colormod = '0.25 0.25 0.25';
+  self.colormod = '0.33 0.33 0.33';
   
   //annoying that turret corpses block a lot of fire.
   self.maxs_x = self.maxs_x * 0.33;
@@ -57,7 +57,7 @@ void() ai_turret_die={
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, 360, self.vec_size / 20); 
+  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, 360, self.vec_size / 20, world); 
   
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;
@@ -69,7 +69,6 @@ void() ai_turret_die_burn={
   self.nextthink = time + 0.1;
   
   if ( time > self.ai_action_time ){
-   
     self.think = BecomeExplosion;
     self.nextthink = time + 0.01;
   }

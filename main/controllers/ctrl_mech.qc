@@ -236,7 +236,6 @@ void() ctrl_component_burn={
   }
 };
 
-
 void() ctrl_component_drop={
 
   self.think = SUB_Remove;

@@ -6,9 +6,8 @@ Overview: AI Controller functions, ported mainly from Quake 1
 */
 
 void( float estate ) ai_turret_set_state={
-  if( (self.torsoCenter) ) {
+  if( (self.torsoCenter) )
     self.torsoCenter.attack_state = estate;
-  }
 };
 
 /*
@@ -56,9 +55,8 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
     return angleMin; //turret rotation lockout.
   }
   else {
-    if( (angleMin <= angleOfTarget) || (angleOfTarget <= angleMax) ){
+    if( (angleMin <= angleOfTarget) || (angleOfTarget <= angleMax) )
       return angleOfTarget;
-    }
     return angleMax; //turret rotation lockout.
   }
   
@@ -77,9 +75,8 @@ float( float yawAng ) ai_check_move={
   makevectors( superV );
   traceline( base.origin, base.origin + (v_forward * 64), FALSE, self);
   
-  if( trace_ent && trace_fraction <= 0.25){
+  if( trace_ent && trace_fraction <= 0.25)
     return FALSE;
-  }
   
   return trace_fraction;
 };
@@ -119,9 +116,8 @@ void() ai_update={
   }
   else{ 
     self.enemy = world;
-    if( self.torsoCenter.attack_state != TR_YAW ){
+    if( self.torsoCenter.attack_state != TR_YAW )
       ai_turret_set_state( TR_NORM );
-    }
   }
   ai_ranged_attack();
   self.button0 = 0;
@@ -138,9 +134,9 @@ void() ai_touch={
   if( time > self.ai_react_buffer ){
     self.ai_react_buffer = time + self.ai_react_time;
     if( other.faction != self.faction ){
-      if( ai_valid_target(self.enemy) ){
+      if( ai_valid_target(self.enemy) )
         return;
-      }
+ 
       self.enemy = other;
       if( (self.flags & FL_TURRET) )
         self.torsoCenter.attack_state = TR_TARG;
@@ -202,9 +198,8 @@ void( float alt_low, float alt_max) ai_fly_update={
     traceline( self.origin, delta, MOVE_NOMONSTERS, self);
     dist = vlen( trace_endpos - self.origin );
     
-    if( dist <= alt_max ){
+    if( dist <= alt_max )
       fdir = -1;
-    }
   }
   
   if( fdir != 0 ){
@@ -232,17 +227,15 @@ void( float move ) ai_update_accuracy={
     //unit is moving, increase spread factor
     rate = rate - self.accuracyMod;
     self.accuracy = self.accuracy + rate;
-    if( self.accuracy > self.spreadDefault_y ){
+    if( self.accuracy > self.spreadDefault_y )
       self.accuracy = self.spreadDefault_y;
-    }
   }
   else{
     //standing still, lessen the spread
     rate = rate + self.accuracyMod;
     self.accuracy = self.accuracy - (rate * 2);
-    if( self.accuracy < self.spreadDefault_x ){
+    if( self.accuracy < self.spreadDefault_x )
       self.accuracy = self.spreadDefault_x;
-    }
   }
 };
 
@@ -264,9 +257,9 @@ float(entity t, float ang) ai_check_face={
 	vec = normalize (t.origin - self.origin);
 	dot = vec * v_forward;
   
-	if ( dot >= ang){
+	if ( dot >= ang)
 		return TRUE;
-	}
+
 	return FALSE;
 };
 
@@ -279,18 +272,18 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
   
   vang = self.angles;
   if( (self.flags & FL_TURRET) ){
-    if( useTurret ){
+    if( useTurret )
       vang = self.torsoCenter.angles;
-    }
+
   }
   
   makevectors ( vang );
 	vec = normalize (t.origin - self.origin);
 	dot = vec * v_forward;
   
-	if ( dot >= ang){
+	if ( dot >= ang)
 		return TRUE;
-	}
+
 	return FALSE;
 };
 
@@ -305,12 +298,12 @@ float( entity targ ) ai_check_vis={
   spot2 = targ.origin;
   traceline (spot1, spot2, TRUE, self); // see through other monsters
 
-  if ( trace_inopen && trace_inwater ){
+  if ( trace_inopen && trace_inwater )
     return VIS_FAIL;     // sight line crossed contents
-  }
-  if ( trace_fraction == 1 ){
+  
+  if ( trace_fraction == 1 )
     return VIS_FRAC;
-  }
+
   if( trace_ent.faction == self.faction ){
     friend_blocker = trace_ent;
     friend_blocker_dist = vlen(friend_blocker.origin - self.origin);
