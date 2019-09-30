@@ -9,6 +9,7 @@ Overview:
 */
 
 float UID_ITEM_EMPTY = -1;
+float UID_ITEM_NULL = 0;
 //-----WEAPONS-----------
 float UID_ITEM_light_autocannon  = 1;
 float UID_ITEM_emp   = 2;

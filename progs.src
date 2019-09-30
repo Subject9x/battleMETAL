@@ -124,6 +124,7 @@ main/controllers/headers/controllers.qh
   //-------------------------------
   
   //Items--------------------------
+  common/data/item/equip/data_equip_null.qc
   common/data/item/equip/data_equip_shield_capacitor.qc
   common/data/item/equip/data_equip_energy_battery.qc
   common/data/item/equip/data_equip_recharge_capacitor.qc

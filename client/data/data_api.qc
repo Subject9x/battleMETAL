@@ -105,12 +105,7 @@ float( float mechId, float configNum ) data_mech_config_load={
         if( strstrofs(token, "hpt",0) != -1 ){
           tokenizebyseparator(token, "_");
           idx = stof(argv(1));
-          if( UNLOCKED_ITEMS[idx] > 0 ){
-            DATA_CONFIG_BUFFER_WEPS[idx] = stof(value);
-          }
-          else{
-            DATA_CONFIG_BUFFER_WEPS[idx] = 0;
-          }
+          DATA_CONFIG_BUFFER_WEPS[idx] = stof(value);
         }
         if( strstrofs(token, "group",0) != -1 ){
           tokenizebyseparator(token, "_");
@@ -130,14 +125,14 @@ float( float mechId, float configNum ) data_mech_config_load={
   We don't really want too much messing around here.
 */
 float() data_mech_config_valid={
-  local float itr;
+  local float itr, itemItr, unlocked;
   local entity hardpoint;
   local entity weaponEnt;
   local float weaponId;
-  
+  unlocked = FALSE;
   hardpoint = UI_HANGAR_DATA_mech.w_slot;
   weaponEnt = spawn();
-  itr = 1;
+  itr = itemItr = 1;
   while( hardpoint ){
     weaponId = DATA_CONFIG_BUFFER_WEPS[itr];
     if( weaponId > 0 ){
@@ -151,6 +146,22 @@ float() data_mech_config_valid={
         cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Size mismatch");  //DEBUG
         remove(weaponEnt);
         return FALSE;
+      }
+        cons_logAFloat("hardpoint", itr); //DEBUG
+      itemItr = 1;
+      unlocked = FALSE;
+      while( itemItr < UNLOCKED_ITEMS_TOTAL ){
+        cons_logAFloat("itemItr", itemItr); //DEBUG
+        cons_logAFloat("unlocked weapon", UNLOCKED_ITEMS[itemItr]); //DEBUG
+        cons_logAFloat("weaponId", weaponId); //DEBUG
+        
+        if( weaponId == UNLOCKED_ITEMS[itemItr] ){
+          unlocked = TRUE;
+        }
+        itemItr = itemItr + 1;
+      }
+      if( !unlocked ){
+        DATA_CONFIG_BUFFER_WEPS[itr] = 0;
       }
     }
     itr = itr + 1;

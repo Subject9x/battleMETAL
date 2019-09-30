@@ -168,7 +168,7 @@ void() weaponSelectListener={
     found = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_MSC, 0);
     found = WEPLIST_MSC_ARR[found];
   }
-  if(found  > 0){
+  if(found > 0){
     CLIENT_MENU_sel_list_wep = found;
     ui_date_load_item1(CLIENT_MENU_sel_list_wep);
   }
