@@ -147,14 +147,9 @@ float() data_mech_config_valid={
         remove(weaponEnt);
         return FALSE;
       }
-        cons_logAFloat("hardpoint", itr); //DEBUG
       itemItr = 1;
       unlocked = FALSE;
       while( itemItr < UNLOCKED_ITEMS_TOTAL ){
-        cons_logAFloat("itemItr", itemItr); //DEBUG
-        cons_logAFloat("unlocked weapon", UNLOCKED_ITEMS[itemItr]); //DEBUG
-        cons_logAFloat("weaponId", weaponId); //DEBUG
-        
         if( weaponId == UNLOCKED_ITEMS[itemItr] ){
           unlocked = TRUE;
         }

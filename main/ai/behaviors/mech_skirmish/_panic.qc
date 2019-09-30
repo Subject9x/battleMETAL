@@ -14,9 +14,7 @@ Overview: ai unit
 */
 void( entity attacker ) ai_mech_sk_react1={
   local float enemyvis;
-
-
-    
+  
   //AI has taken friendly fire
   if( attacker.faction == self.faction ){
     return;
@@ -26,7 +24,7 @@ void( entity attacker ) ai_mech_sk_react1={
   
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
-    self.ai_react_buffer = time + self.ai_react_time * 1.25;
+    self.ai_react_buffer = time + self.ai_react_time * 10;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.torsoCenter.attack_state = TR_TARG;
@@ -40,17 +38,17 @@ void( entity attacker ) ai_mech_sk_react1={
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.torsoCenter.attack_state = TR_TARG;
-    self.ai_react_buffer = time + self.ai_react_time * 3;
+    self.ai_react_buffer = time + self.ai_react_time * 10;
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
   
-  if( ai_check_targ_infront( attacker, self.ai_fov, TRUE) ){
+  if( ai_check_targ_infront( attacker, self.ai_fov, TRUE) && enemyvis != VIS_FRAC ){
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.torsoCenter.attack_state = TR_TARG;
-    self.ai_react_buffer = time + self.ai_react_time * 3;
+    self.ai_react_buffer = time + self.ai_react_time * 10;
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }

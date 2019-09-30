@@ -49,7 +49,7 @@ void() ai_spg_stand1={
       return;
     }
   }
-  
+
   macro_ai_frame(ai_spg_stand1)
 };
 
@@ -71,6 +71,11 @@ void() ai_spg_patrol1={
       return;
     }
   }
+  if( ai_valid_target(self.enemy) ){
+    macro_ai_frame(ai_spg_fight_prep)
+    return;
+  }
+  
   macro_ai_frame(ai_spg_stand1)
 };
 
@@ -189,23 +194,19 @@ void() ai_spg_fight_prep={
             return;
           }
           if( roll < 0.15 ){
-        cons_logAFloat("enemy_infront outta range -> ai_spg_enter_charge", 1); //DEBUG
             macro_ai_frame(ai_spg_enter_charge)
             return;
           }
-        cons_logAFloat("enemy_infront outta range -> ai_spg_patrol1", 1); //DEBUG
           //tank destroyers don't hunt
-          macro_ai_frame(ai_spg_patrol1)
+          macro_ai_frame(ai_spg_rotate1)
           return;
         }
         
         if( self.ai_rank > AI_RANK_REG ){
-        cons_logAFloat("!enemy_infront outta range -> ai_spg_enter_charge", 1); //DEBUG
           macro_ai_frame(ai_spg_enter_charge)
           return;
         }
-        cons_logAFloat("!enemy_infront  outta range -> ai_spg_patrol1", 1); //DEBUG
-        macro_ai_frame(ai_spg_patrol1)
+        macro_ai_frame(ai_spg_rotate1)
         return;
       }
     }

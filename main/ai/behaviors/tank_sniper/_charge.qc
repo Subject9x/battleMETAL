@@ -58,7 +58,7 @@ void() ai_spg_charge2={
   ai_attack();
   
   if( walkmove( self.angles_y, dampen ) ){  
-    macro_ai_frame_count(ai_spg_charge3)
+    macro_ai_frame(ai_spg_charge3)
     return;
   }
   self.ai_action_time = self.ai_action_mod;
@@ -79,7 +79,7 @@ void() ai_spg_charge3={
   ChangeYaw();
   
   if( walkmove( self.angles_y, dampen ) ){  
-    macro_ai_frame_count(ai_spg_charge4)
+    macro_ai_frame(ai_spg_charge4)
     return;
   }
   self.ai_action_time = self.ai_action_mod;
@@ -100,7 +100,7 @@ void() ai_spg_charge4={
   ChangeYaw();
   
   if( walkmove( self.angles_y, dampen ) ){  
-    macro_ai_frame_count(ai_spg_charge5)
+    macro_ai_frame(ai_spg_charge5)
     return;
   }
   self.ai_action_time = self.ai_action_mod;
@@ -121,7 +121,7 @@ void() ai_spg_charge5={
   ChangeYaw();
   
   if( walkmove( self.angles_y, dampen ) ){  
-    macro_ai_frame_count(ai_spg_charge6)
+    macro_ai_frame(ai_spg_charge6)
     return;
   }
   self.ai_action_time = self.ai_action_mod;
@@ -142,7 +142,7 @@ void() ai_spg_charge6={
   ChangeYaw();
   
   if( walkmove( self.angles_y, dampen ) ){  
-    macro_ai_frame_count(ai_spg_charge7)
+    macro_ai_frame(ai_spg_charge7)
     return;
   }
   self.ai_action_time = self.ai_action_mod;
@@ -163,7 +163,7 @@ void() ai_spg_charge7={
   ChangeYaw();
   
   if( walkmove( self.angles_y, dampen ) ){  
-    macro_ai_frame_count(ai_spg_charge8)
+    macro_ai_frame(ai_spg_charge8)
     return;
   }
   self.ai_action_time = self.ai_action_mod;
@@ -184,7 +184,7 @@ void() ai_spg_charge8={
   ChangeYaw();
   
   if( walkmove( self.angles_y, dampen ) ){  
-    macro_ai_frame_count(ai_spg_charge9)
+    macro_ai_frame(ai_spg_charge9)
     return;
   }
   self.ai_action_time = self.ai_action_mod;
