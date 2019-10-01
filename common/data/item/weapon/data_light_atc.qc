@@ -58,26 +58,23 @@ void() data_ini_attack_latc_={
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   
-  if( vlen(FIRE_ENDPOINT - FIRE_ORIGIN) > 100 ){
+  if( vlen(FIRE_ENDPOINT - FIRE_ORIGIN) > 100 )
     pointparticles( particleeffectnum("TE_ATC_TRACER"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 1400, 1);
-  }
   
-  if( (trace_dphitcontents & DPCONTENTS_SKY) ){
+  if( (trace_dphitcontents & DPCONTENTS_SKY) )
     return;
-  }  
   
   if( !trace_ent.takedamage ){
-    if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) ){
+    if( (trace_dphitcontents & DPCONTENTS_SOLID) || (trace_dphitcontents & DPCONTENTS_OPAQUE) )
       pointparticles( particleeffectnum("TE_ATC_DIRT"), FIRE_ENDPOINT + (v_up *1), normalize( (FIRE_ENDPOINT + (v_up *1)) - FIRE_ENDPOINT ) * 20, 1);
-    }
+    
     return;
   }
   
   if( trace_ent ){
     t_damage(trace_ent, self, FIRE_ENT, self.damageValue, DMG_BAL, FIRE_ENDPOINT, '0 0 0');    
-    if( trace_ent.shield <= 0 ){ 
+    if( trace_ent.shield <= 0 )
       pointparticles( particleeffectnum("TE_ATC_ARMOR"), FIRE_ENDPOINT + v_forward * -3, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 3);
-    }
   }
 };
 #endif

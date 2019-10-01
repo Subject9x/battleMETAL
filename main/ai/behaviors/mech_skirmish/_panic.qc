@@ -14,13 +14,13 @@ Overview: ai unit
 */
 void( entity attacker ) ai_mech_sk_react1={
   local float enemyvis;
-  
+
   //AI has taken friendly fire
   if( attacker.faction == self.faction )
     return;
   
   if( attacker == self.enemy ){
-    self.ai_react_buffer = time + self.ai_react_time * 2;
+    self.ai_react_buffer = time + self.ai_react_time * 5;
     return;
   }
   //AI currently has no target

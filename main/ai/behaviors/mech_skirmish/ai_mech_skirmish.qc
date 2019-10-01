@@ -40,7 +40,7 @@ void() ai_mech_skirmish={
 void() ai_mech_sk_fight_prep={
   local entity nodeRecall;
   local float roll;
-  
+
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   self.speed = self.lefty;
@@ -49,8 +49,9 @@ void() ai_mech_sk_fight_prep={
     self.th_pain( world );
     return;
   }
+
   enemy_hunt = FALSE;
-  if( self.enemy ){
+  if( ai_valid_target(self.enemy) ){
     roll = random();
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
@@ -82,7 +83,6 @@ void() ai_mech_sk_fight_prep={
           if( self.ai_rank > AI_RANK_REG ){
             if( roll < 0.33 )
               self.lefty = self.lefty * -1;
-
             macro_ai_frame(ai_mech_sk_enter_strafe)
             return;
           }

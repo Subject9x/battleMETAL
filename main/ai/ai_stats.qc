@@ -39,9 +39,9 @@ void() ai_unit_ini_var={
   self.ai_minrange = 0;
   self.ai_hunt_total = -1;
   self.lefty = 1;
-  if( random() > 0.5 ){
+  if( random() > 0.5 )
     self.lefty = -1;
-  }
+
   self.pausetime = time;
 };
 
@@ -68,21 +68,20 @@ void(float rank) ai_pilot_ini_stats={
   mod_sh = ai_pilot_shield_mod();
   self.shieldMax = self.shield = self.shield * mod_sh;
   
-  if(self.yaw_speed){
+  if(self.yaw_speed)
     self.yaw_speed = ai_pilot_yaw_mod();
-  }
-  if(self.turret_yaw_speed){
+
+  if(self.turret_yaw_speed)
     self.turret_yaw_speed = ai_turret_yaw_mod();
-  }
+
   self.ai_leading = ai_pilot_rating_leading();
   self.spreadDefault = ai_pilot_accuracy( rank, self.spreadDefault );
   self.accuracy = self.spreadDefault_y;
   self.w_firetime = ai_pilot_lock_time( rank, self.w_firetime );
   
   self.stat_rdr_mode = FALSE;
-  if( (self.spawnflags & AI_SPAWNFLAG_HASRADAR) || self.ai_rank > AI_RANK_REG ){
+  if( (self.spawnflags & AI_SPAWNFLAG_HASRADAR) || self.ai_rank > AI_RANK_REG )
     self.stat_rdr_mode = TRUE;
-  }
   
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( rank );
   self.ai_attack_chance = ai_pilot_attack_interval( rank );

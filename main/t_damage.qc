@@ -21,9 +21,8 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   damage = dmg_amt;
   shields = targ.shield;
   
-  if( (dmgtype & EFF_STX) ){
+  if( (dmgtype & EFF_STX) )
     return t_damage_ene( targ, inflictor, damage );
-  }
   
   if( shields > 0 ){
     damage = damage - (damage / 2 );
@@ -31,9 +30,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
     damage = 0;
   }
   else{
-    if( (dmgtype & EFF_PRC) ){
+    if( (dmgtype & EFF_PRC) )
       damage = damage * 2;
-    }
+      
     if( (dmgtype * EFF_RAM) ){
       crit = 0.25;
       crit = crit + ((3 - skill) / 10);
@@ -41,15 +40,14 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
       if( (targ.flags & FL_CLIENT) ) {
         crit = crit / 1.25;
       }
-      if( random() <= crit ){
+      if( random() <= crit )
         damage = damage * 1.5;
-      }
     }
   }
   
-  if( shields < 0 ){
+  if( shields < 0 )
     shields = 0;
-  }
+  
   targ.shield = shields;
   
   return damage;
@@ -86,9 +84,8 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     if( (targ.flags & FL_CLIENT) ) {
       crit = crit / 1.25;
     }
-    if( random() <= crit ){
+    if( random() <= crit )
       damage = damage * 1.75;
-    }
   }
   if( (dmgtype & EFF_PRC) ){
     mod = damage * 0.25;
@@ -111,9 +108,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   targ.shield = shields;
  
   //EFF_STX only affects shields;
-  if( (dmgtype & EFF_STX) ){
+  if( (dmgtype & EFF_STX) )
     damage = 0;
-  }
+  
   return damage;
 };
 /*
@@ -146,13 +143,11 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
     if( (targ.flags & FL_CLIENT) ) {
       crit = crit / 1.25;
     }
-    if( random() <= crit ){
+    if( random() <= crit )
       damage = damage * 1.25;
-    }
   }
   
   targ.shield = shields;
-  
   return damage;
 };
 
@@ -162,17 +157,14 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   local entity notTarg;
   local float dmgAmt, prevShields;
   
-  if( !trg.takedamage ){
+  if( !trg.takedamage )
     return world;
-  }
   
-  if( (trg.flags & FL_GODMODE) ){
+  if( (trg.flags & FL_GODMODE) )
     return world;
-  }
   
-  if( trg.deadflag != DEAD_NO ){
+  if( trg.deadflag != DEAD_NO )
     return world;
-  }
   
   dmgTrg = trg;
   dmgInflictor = inflictor;
@@ -239,7 +231,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( (trg.flags & FL_MONSTER) ){
     notTarg = self;
     self = dmgTrg;
-    if( self.data_idx == UI_BUILDING_radar ){
+    if( self.data_idx == UI_BUILDING_radar && self.data_type == DATA_BLD ){
       if( self.enemy != attacker ){
         self.oldenemy = self.enemy;
         self.enemy = attacker;
@@ -252,20 +244,17 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
     }
     else{
-      if( attacker != dmgTrg.enemy ){
-        if( dmgTrg.th_react ){      
-          if( time > dmgTrg.ai_react_buffer ){
-            self.th_react( attacker );
-          }
+      if( self.th_react ){  
+        if( time > self.ai_react_buffer ){
+          self.th_react( attacker );
         }
       }
     }
     self = notTarg;
   }
   
-  if( (prevShields > 0) && (trg.shield <= 0) ){
+  if( (prevShields > 0) && (trg.shield <= 0) )
     te_shield_explode( trg.origin, trg.vec_size + 1 );
-  }
   
   if( !dmgAmt ){
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
@@ -281,12 +270,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
     else{
       dmgTrg = t_find_part(dmg_point, dmgTrg.maxs_x, dmgTrg);
-      if( dmgTrg.deadflag != DEAD_NO ){
+      if( dmgTrg.deadflag != DEAD_NO )
         dmgTrg = dmgTrg.realowner;
-      }
-      if( dmgTrg.partTypeId == M_TOR_CENTER ){
+      
+      if( dmgTrg.partTypeId == M_TOR_CENTER )
         dmgTrg = trg;
-      }
     }
   }
   
@@ -325,19 +313,17 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   finds closest sub-entity
 */
 entity(vector point, float rad, entity trg) t_find_part={
-  if( vlen(point - trg.torsoLeft.origin) < rad ){
-    if( vlen(point - trg.armLeft.origin) < rad ){
-      return trg.armLeft;
-    }
+  if( vlen(point - trg.torsoLeft.origin) < rad )
     return trg.torsoLeft;
-  }
 
-  if( vlen(point - trg.torsoRight.origin) < rad ){
-    if( vlen(point - trg.armRight.origin) < rad ){
-      return trg.armRight;
-    }
+  if( vlen(point - trg.armLeft.origin) < rad )
+    return trg.armLeft;
+
+  if( vlen(point - trg.torsoRight.origin) < rad )
     return trg.torsoRight;
-  }
+  
+  if( vlen(point - trg.armRight.origin) < rad )
+    return trg.armRight;
 
   return trg;
 };
