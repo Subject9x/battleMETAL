@@ -13,7 +13,6 @@ Overview: ai unit
   Mech attempts to pivot to its ideal_yaw
 */
 void() ai_mech_sk_pivot1={
-  cons_logAFloat("ai_mech_sk_pivot1", 1);  //DEBUG
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_update_mechplayer)
   

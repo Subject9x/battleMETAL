@@ -35,12 +35,13 @@ float(float numOfSides) util_roll_dice={
   local float roll;
   roll = ( (1 + crandom()) * numOfSides);
   roll = ceil(roll);
-  if(roll < 0){
+  
+  if(roll < 0)
     roll = roll * -1;
-  }
-  if(roll == 0){
+  
+  if(roll == 0)
     roll = 1;
-  }
+  
   return roll;
 };
 
@@ -87,8 +88,8 @@ float(entity t) util_getMechHpAverage={
 };
 
 float(entity t) util_getMechHpTotal={
+  local float total;
   if(t != world){
-    local float total;
     total = t.max_health + (t.armLeft.max_health * 2) + (t.torsoLeft.max_health * 2) + t.legs.max_health;
     return total;
   }
@@ -98,20 +99,22 @@ float(entity t) util_getMechHpTotal={
 vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea={
   local vector locus;
   local float dist, side, dir, box;
+  
   box = sz_max_x * 2;
   dist = box * util_roll_dice(4);
   side = util_roll_dice(2);
   dir = util_roll_dice(2);
-  if(side == 1){
+  
+  if(side == 1)
     side = -1;
-  }
-  if(dir == 1){
+  
+  if(dir == 1)
     dir = -1;
-  }
+  
   makevectors(facing);
   locus = centerpoint + (v_forward * (dir * dist) ) + (v_right * (side * dist) );
   traceline(centerpoint, locus, FALSE, self);
-  return  trace_endpos;
+  return trace_endpos;
 };
 
 //applies 'spread' to the endpos of a previous trace
@@ -122,14 +125,21 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   local vector src;
   local vector acc;
   local vector adj;
+  local vector targVel;
+  
+  targVel = '0 0 0';
+  if( (self.owner.enemy.flags & FL_CLIENT) )
+    targVel = self.owner.enemy.velocity;
   
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
-    if( self.w_isburst )
-      wepAim = normalize( self.owner.laser_sight_org - self.origin );
-    else
-      wepAim = normalize( self.owner.enemy.cockpit.origin - self.origin );
-    
+    if( self.w_isburst ){
+      wepAim = self.owner.laser_sight_org - (targVel * self.owner.ai_leading);
+    }
+    else{
+      wepAim = self.owner.enemy.cockpit.origin - (targVel * self.owner.ai_leading);
+    }
+    wepAim = normalize(wepAim - self.origin);
   }
   else{
     wepAim = normalize( self.owner.laser_sight_org - self.origin ); 

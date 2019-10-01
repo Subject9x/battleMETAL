@@ -32,12 +32,8 @@ void() mech_cleanupMech={
   mech_player_removecomp(self.armRight);
   if(self.legs){
     if(self.legs != world && self.legs.owner == self){
-      local entity this;
-      this = self;
-      self = self.legs;
-        self.think = leg_die1;
-        self.nextthink = time + 0.1;
-      self = this;
+      self.legs.think = leg_die1;
+      self.legs.nextthink = time + 0.1;
       mech_player_removecomp(self.legs);
     }
   }
@@ -46,12 +42,12 @@ void() mech_cleanupMech={
   while(w_chain){
     next = w_chain.w_slot;
     lstp = w_chain.lst_p;
-    if(lstp){
+    if(lstp)
       lstp.w_slot = next;
-    }
-    if( w_chain != world && (w_chain.partTypeId == M_ITEM) ){
+    
+    if( w_chain != world && (w_chain.partTypeId == M_ITEM) )
       remove(w_chain);
-    }
+
     w_chain = next;
   }
   if( (self.flags & FL_CLIENT) ){
@@ -86,25 +82,18 @@ void() mech_player_die={
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   
-  if( (self.flags & FL_CLIENT) ){
+  if( (self.flags & FL_CLIENT) )
     mech_player_compdie(self.legs);
-  }
 };
 
 void( entity comp ) mech_player_compdie={
+  local entity this;
   if( comp.model ){
     if( (comp != world) && (comp.owner == self) ){
-      local entity this;
-      this = self;
-      self = comp;
-        if(self.th_die){
-          self.th_die();
-        }
-        else{
-          self.think = SUB_Remove;
-          self.nextthink = time + 0.1;
-        }
-      self = this;
+      comp.think = SUB_Remove;
+      if(comp.th_die)
+        comp.think = comp.th_die;
+      comp.nextthink = time + 0.025;
     }
   }
 };

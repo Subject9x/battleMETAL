@@ -2,7 +2,8 @@
 battleMETAL
 Author: Peter Roohr
 Date: 9/5/2016
-Overview: implementation for center torso updates
+Overview: 
+  implementation for center torso updates
 */
 
 void() ctrl_update_mechplayer={
@@ -101,20 +102,20 @@ void() ctrl_updateCenterTorso={
       }
       rate = rate - self.accuracyMod;
       self.accuracy = self.accuracy + rate;
-      if( self.accuracy > self.spreadDefault_y ){
+      if( self.accuracy > self.spreadDefault_y )
         self.accuracy = self.spreadDefault_y;
-      }
+      
     }
     if( (my == 0) && (mx == 0) ){
       //standing still, lessen the spread
-      if( self.stat_rdr_mode ){
+      if( self.stat_rdr_mode )
         rate = rate + (rate * 0.25);
-      }
+      
       rate = rate + self.accuracyMod;
       self.accuracy = self.accuracy - rate;
-      if( self.accuracy < self.spreadDefault_x ){
+      if( self.accuracy < self.spreadDefault_x )
         self.accuracy = self.spreadDefault_x;
-      }
+      
     }
   }
   
@@ -155,7 +156,7 @@ void() ctrl_updateCenterTorso={
 };
 
 void() ctrl_component_die={
-  if(self.deadflag <= DEAD_NO){
+  if( self.deadflag <= DEAD_NO ){
     local entity piece;
     local entity this;
     piece = self;
@@ -183,25 +184,25 @@ void() ctrl_component_die={
         
       case M_ARM_LEFT:
         self.realowner = self.owner.torsoLeft;
-        if( self.owner.torsoLeft.deadflag != DEAD_NO ){
+        if( self.owner.torsoLeft.deadflag != DEAD_NO )
           self.realowner = self.owner;
-        }
+        
         break;
         
       case M_ARM_RIGHT:
         self.realowner = self.owner.torsoLeft;
-        if( self.owner.torsoRight.deadflag != DEAD_NO ){
+        if( self.owner.torsoRight.deadflag != DEAD_NO )
           self.realowner = self.owner;
-        }
+
         break;
     }
     
     local entity c;
     c = self.owner.w_slot;
     while(c){
-      if(c.partParentId == self.partTypeId){
+      if(c.partParentId == self.partTypeId)
         killed(c, self, 0);
-      }
+      
       c = c.w_slot;
     }
     
@@ -216,9 +217,8 @@ void() ctrl_component_die={
         self = this;
       }
     }
-    if( (self.owner.flags & FL_CLIENT) ){
+    if( (self.owner.flags & FL_CLIENT) )
       client_send_critical_hit( self.owner );
-    }
   }
 };
 
@@ -237,61 +237,13 @@ void() ctrl_component_burn={
 };
 
 void() ctrl_component_drop={
-
   self.think = SUB_Remove;
   self.nextthink = self.ai_action_time;
 };
 
-void() touch_mech={
-  if(other == world){
-    return;
-  }
-  if( (other.flags & FL_CLIENT) || (other.flags & FL_MONSTER) ){
-    local float dif;
-    dif = self.vec_size - other.vec_size;
-    if(dif == 2){
-      if(other.data_type == DATA_VEHC){
-        t_damage(other, self, self, other.max_health, DMG_BAL, other.origin, '0 0 0');
-      }
-      else{
-        t_damage(other, self, self, self.max_health * 0.15, DMG_BAL, other.origin, '0 0 0');
-      }
-    }
-    else if(dif == 1){
-      if(other.data_type == DATA_VEHC){
-        t_damage(other, self, self, other.max_health , DMG_BAL, other.origin, '0 0 0');
-      }
-      else{
-        t_damage(other, self, self, self.max_health*0.15, DMG_BAL, other.origin, '0 0 0');
-      }
-    
-    }
-    else if(dif == 0){
-      if(other.data_type == DATA_VEHC){
-        t_damage(other, self, self, other.max_health / 4, DMG_BAL, other.origin, '0 0 0');
-      }
-    }
-    else if(dif == -1){
-      if(other.data_type != DATA_VEHC){
-        t_damage(self, other, other, other.max_health / 1.5, DMG_BAL, self.origin, '0 0 0');
-      }
-    }
-    else if(dif == -2){
-      if(other.data_type != DATA_VEHC){
-        t_damage(self, other, other, other.max_health / 2, DMG_BAL, self.origin, '0 0 0');
-      }
-    }
-  }
-};
-
 void() touch_mechPiece={
-  if(other == world){
-    return;
+  if( other.data_type ){
+    self.damageValue = random() * 25;  
+    BecomeExplosion();
   }
-  if( other.classname == MECH_PIECE ){
-    return;
-  }
-  
-  BecomeExplosion();
-  
 };

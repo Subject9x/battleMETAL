@@ -37,9 +37,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
       crit = 0.25;
       crit = crit + ((3 - skill) / 10);
       crit = crit + ((3 - targ.vec_size) / 10);
-      if( (targ.flags & FL_CLIENT) ) {
+      if( (targ.flags & FL_CLIENT) )
         crit = crit / 1.25;
-      }
+
       if( random() <= crit )
         damage = damage * 1.5;
     }
@@ -81,9 +81,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     crit = 0.25;
     crit = crit + ((3 - skill) / 10);
     crit = crit + ((3 - targ.vec_size) / 10);
-    if( (targ.flags & FL_CLIENT) ) {
+    if( (targ.flags & FL_CLIENT) )
       crit = crit / 1.25;
-    }
+    
     if( random() <= crit )
       damage = damage * 1.75;
   }
@@ -231,23 +231,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( (trg.flags & FL_MONSTER) ){
     notTarg = self;
     self = dmgTrg;
-    if( self.data_idx == UI_BUILDING_radar && self.data_type == DATA_BLD ){
-      if( self.enemy != attacker ){
-        self.oldenemy = self.enemy;
-        self.enemy = attacker;
-        self.th_missile();
-        self.enemy = self.oldenemy;
-      }
-      else{
-        self.enemy = attacker;
-        self.th_missile();
-      }
-    }
-    else{
-      if( self.th_react ){  
-        if( time > self.ai_react_buffer ){
-          self.th_react( attacker );
-        }
+    if( self.th_react ){  
+      if( time > self.ai_react_buffer ){
+        self.th_react( attacker );
       }
     }
     self = notTarg;
@@ -313,17 +299,17 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   finds closest sub-entity
 */
 entity(vector point, float rad, entity trg) t_find_part={
-  if( vlen(point - trg.torsoLeft.origin) < rad )
-    return trg.torsoLeft;
-
   if( vlen(point - trg.armLeft.origin) < rad )
     return trg.armLeft;
-
-  if( vlen(point - trg.torsoRight.origin) < rad )
-    return trg.torsoRight;
   
   if( vlen(point - trg.armRight.origin) < rad )
     return trg.armRight;
+  
+  if( vlen(point - trg.torsoLeft.origin) < rad )
+    return trg.torsoLeft;
+  
+  if( vlen(point - trg.torsoRight.origin) < rad )
+    return trg.torsoRight;
 
   return trg;
 };
@@ -363,13 +349,10 @@ void(entity targ, entity attacker, float dmg_type) killed={
     // in the kill messages etc.
     // infact I've never seen a case where the number shows,
     // always hidden by the score bar stuff.
-     if (self.health < -99){
-      self.health = -99;              // don't let sbar look bad if a player - not Roohr
-     }
-    //if (self.health > 0 ){
-     // self.health = 0;
-    //}
-    
+    // don't let sbar look bad if a player - not Roohr
+     if (self.health < -99)
+      self.health = -99;              
+
     if(!self.data_type){
       if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
         self.th_die();
@@ -397,9 +380,8 @@ void(entity targ, entity attacker, float dmg_type) killed={
             MISSION_LOSSES_MILITAR = MISSION_LOSSES_MILITAR + 1;
             break;
         }
-        if( (attacker.flags & FL_CLIENT) && (self.faction != attacker.faction) ){
+        if( (attacker.flags & FL_CLIENT) && (self.faction != attacker.faction) )
           attacker.frags = attacker.frags + 1;
-        }
         self.enemy = attacker;
         killed_monsters = killed_monsters + 1;
         WriteByte (MSG_ALL, SVC_KILLEDMONSTER);

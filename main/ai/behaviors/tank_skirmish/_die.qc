@@ -20,7 +20,7 @@ void() ai_tank_sk_die={
   self.solid = SOLID_NOT;
   self.colormod = '0.33 0.33 0.33';
   self.attack_state = -1;
-  
+  self.enemy = world;
   self.maxs = self.maxs * 0.75;
   self.mins_x = self.maxs_x * -1;
   self.mins_y = self.maxs_y * -1;
@@ -43,9 +43,8 @@ void() ai_tank_sk_die={
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.torsoCenter);
   
-  if( self.ai_node_recall ){
+  if( self.ai_node_recall )
     remove(self.ai_node_recall);
-  }
   
   self.think = ai_tank_sk_die1;
   self.ai_action_time = time + 600;

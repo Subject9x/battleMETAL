@@ -66,9 +66,9 @@ float( float yawAng ) ai_check_move={
   local vector superV;
   local entity base;
   base = self;
-  if( self.data_type == DATA_MECH ){
+  if( self.data_type == DATA_MECH )
     base = self.legs;
-  }
+
   superV_x = self.angles_x;
   superV_y = yawAng;
   superV_z = self.angles_y;
@@ -109,6 +109,9 @@ void() ai_leg_control={
   refer to macro macro_ai_
 */
 void() ai_update={
+  if( !(self.flags & FL_ONGROUND) )
+    droptofloor();
+  
   if( ai_valid_target( self.enemy ) ){
     ai_turret_set_state( TR_TARG );
     self.stat_trg_dist = vlen(self.enemy.origin - self.origin);

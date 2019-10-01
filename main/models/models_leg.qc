@@ -103,7 +103,7 @@ void() leg_back8=[$l_walk8, leg_back7]{
 
 void() leg_die1 = [$l_die1, leg_die2]{
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_CORPSE;
+  self.solid = SOLID_NOT;
 };
 void() leg_die2 = [$l_die2, leg_die3]{};
 void() leg_die3 = [$l_die3, leg_die4]{};
@@ -233,16 +233,6 @@ void() leg_die_touch={
 */
 void() bot_leg_die1 = [1, bot_leg_die2]{
   self.frame = $l_stand1;
-  self.movetype = MOVETYPE_BOUNCE;
-  self.solid = SOLID_NOT;
-  self.mins = self.owner.mins;
-  self.mins_z = self.owner.mins_z / 2;
-  self.maxs = self.owner.maxs;
-  self.maxs_z = self.owner.mins_z / -1;
-  self.maxs = self.maxs * 0.67;
-  self.mins = self.mins * 0.67;
-  setsize(self, self.mins, self.maxs);
-  setorigin(self, self.origin);
   
   local vector fall;
   makevectors(self.angles);
@@ -251,15 +241,14 @@ void() bot_leg_die1 = [1, bot_leg_die2]{
   self.velocity = fall * 8;
   self.avelocity = fall * 32;
 };
-void() bot_leg_die2 = [1, bot_leg_die3]{
+void() bot_leg_die2 = [2, bot_leg_die3]{
   self.solid = SOLID_BBOX;
 };
-void() bot_leg_die3 = [1, bot_leg_die4]{};
-void() bot_leg_die4 = [1, bot_leg_die5]{};
-void() bot_leg_die5 = [1, bot_leg_die6]{};
-void() bot_leg_die6 = [1, bot_leg_die7]{
-};
-void() bot_leg_die7 = [$l_die3, bot_leg_die8]{};
+void() bot_leg_die3 = [3, bot_leg_die4]{};
+void() bot_leg_die4 = [4, bot_leg_die5]{};
+void() bot_leg_die5 = [5, bot_leg_die6]{};
+void() bot_leg_die6 = [6, bot_leg_die7]{};
+void() bot_leg_die7 = [7, bot_leg_die8]{};
 void() bot_leg_die8 = {
   
   self.solid = SOLID_NOT;

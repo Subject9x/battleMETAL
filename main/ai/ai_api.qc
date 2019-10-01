@@ -18,54 +18,45 @@ float() ai_can_spawn={
   yesWecan = TRUE;
   gameMode = cvar("gamemode");
   
-  if( self.nextVecChoice <= 0 ){
+  if( self.nextVecChoice <= 0 )
     return FALSE;
-  }
   
   if( (self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
-    if( !coop && !deathmatch && !teamplay ){
+    if( !coop && !deathmatch && !teamplay )
       yesWecan = FALSE;
-    }
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_COOP) ){
-    if( coop && !deathmatch ){
+    if( coop && !deathmatch )
       yesWecan = FALSE;
-    }
   }
 
   if( (self.spawnflags & AI_SPAWNFLAG_DM) ){
-    if( !coop && deathmatch ){
+    if( !coop && deathmatch )
       yesWecan = FALSE;
-    }
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
-    if( deathmatch && teamplay ){
+    if( deathmatch && teamplay )
       yesWecan = FALSE;
-    }
   }
   
   switch( skill ){
     case SKILL_NOV:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NONOV) ){
+      if ( (self.spawnflags & AI_SPAWNFLAG_NONOV) )
         yesWecan = FALSE;
-      }
       break;
     case SKILL_REG:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOREG) ){
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOREG) )
         yesWecan = FALSE;
-      }
       break;
     case SKILL_VET:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOVET) ){
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOVET) )
         yesWecan = FALSE;
-      }
       break;
     case SKILL_ELT:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOELT) ){
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOELT) )
         yesWecan = FALSE;
-      }
       break;
   }
 
@@ -105,7 +96,7 @@ void( entity t ) ai_call_for_help={
     if( ai_valid_target(ally) ){
       if( vlen( ally.origin - self.origin ) <= self.ai_view ){
         if( ally != self ){
-          if( (ally.flags & FL_UNIT) && !(ally.flags & FL_DISARMED)){
+          if( !(ally.flags & FL_DISARMED)){
             ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
             allies = allies + 1;
           }
@@ -117,31 +108,18 @@ void( entity t ) ai_call_for_help={
   
   if( allies < self.ai_rank ){
     if( self.th_pain ){
-      self.th_pain( self );
+      self.th_pain( world );
     }
   }
 }; 
 
-float(entity t) ai_valid_target={
-  local float val;
-  val = FALSE;
-  if ( t ){
-    if( (t.flags & FL_NOTARGET) ){
-      val = FALSE;
-    }
-    else{
-      if( t.deadflag == DEAD_NO ){
-        if( (t.flags & FL_MONSTER) ){
-          val = TRUE;
-        }
-        if( (t.flags & FL_CLIENT) ){
-          val = TRUE;
-        }
-      }
+float(entity t) ai_valid_target={  
+  if( (t.flags & FL_UNIT)&& t.deadflag == DEAD_NO ){
+    if( t != self ){
+      return 1;
     }
   }
-  
-  return val;
+  return 0;
 };
 
 entity( float radiius) ai_find_friend={
@@ -152,15 +130,36 @@ entity( float radiius) ai_find_friend={
   
   ally = findchainfloat( faction, self.faction );
   while( ally ){
-    if( (ally.flags & FL_UNIT) ){
+    if( ai_valid_target(ally) ){
       dist = vlen( ally.origin - self.origin );
       if( dist < rad ){
         rad = dist;
-        if( ally.w_slot != world ){
-          if( ai_valid_target(ally) ){
-          //heh, sloppy check for combat units
-            friend = ally;
-          }
+        friend = ally;
+      }
+    }
+    ally = ally.chain;
+  }
+  return friend;
+};
+
+/*
+  ai_find_friend() but we look for the friend furthest away.
+*/
+entity( float startSmallRadius ) ai_find_friend_farthest={
+  local entity ally, friend;
+  local float dist, rad;
+  
+  rad = startSmallRadius;
+  
+  ally = findchainfloat( faction, self.faction );
+  while( ally ){
+    if( ai_valid_target(ally) ){
+      if( !(ally.flags & FL_DISARMED) ){
+        //oh and the potential friend needs to offer something in protection.
+        dist = vlen( ally.origin - self.origin );
+        if( dist > rad ){
+          rad = dist;
+          friend = ally;
         }
       }
     }
@@ -170,40 +169,35 @@ entity( float radiius) ai_find_friend={
 };
 
 float() ai_find_target_visual={
-  if( (self.enemy.flags & FL_UNIT) ){
+  if( ai_valid_target(self.enemy) )
     return FALSE;
-  }
+
   local entity targ, found;
+  local entity ally; 
   local float rng, fog, fogLen, ndist;
 
   rng =  self.ai_view;
   if( self.fog_alpha ){
     fogLen = self.fog_dist_y - self.fog_dist_x;
-    
     fog = self.fog_alpha * self.fog_density;
     fog = fog * fogLen;
-    
     rng = self.ai_view - fogLen;
-    if( rng < AI_RANGE_S ){
+    if( rng < AI_RANGE_S )
       rng = AI_RANGE_S;
-    }
+ 
     rng = rng + fog;
   }
   
   targ = findradius(self.origin, rng);
   while( targ ){
-    if( (targ.flags & FL_UNIT) ){
-      if( targ.deadflag == DEAD_NO ){
-        if( targ != self ){
-          if( targ.faction != self.faction ){
-            if( ai_check_face(targ, self.ai_fov) ){
-              if( ai_check_vis(targ) == VIS_FRAC ){
-                ndist = vlen(targ.origin - self.origin);
-                if(ndist < rng){
-                  rng = ndist;
-                  found = targ;
-                }
-              }
+    if( targ.faction != self.faction ){
+      if( ai_valid_target(targ) ){
+        if( ai_check_face(targ, self.ai_fov) ){
+          if( ai_check_vis(targ) == VIS_FRAC ){
+            ndist = vlen(targ.origin - self.origin);
+            if(ndist < rng){
+              rng = ndist;
+              found = targ;
             }
           }
         }
@@ -214,8 +208,7 @@ float() ai_find_target_visual={
 
   if( found ){
     if( (self.flags & FL_DISARMED) ){
-      if( self.stat_rdr_mode ){
-        local entity ally;        
+      if( self.stat_rdr_mode ){       
         ai_sfx_help();
         ally = ai_find_friend( self.ai_view );
         if( ally ){
@@ -234,44 +227,42 @@ float() ai_find_target_visual={
 };
 
 float() ai_find_target_radar={
-  if( self.enemy ){
+  if( ai_valid_target(self.enemy) )
     return FALSE;
-  }
+
   local entity targ, found;
   local float rng, ndist, nrng;
+  local entity ally; 
   
   targ = findradius(self.origin, self.ai_view);
   rng = self.ai_view;
   while( targ ){
     if( targ.faction != self.faction ){
-      if( (targ.flags & FL_UNIT) ){
-        if( targ.deadflag == DEAD_NO ){
-          ndist = vlen(targ.origin - self.origin);
-          if( ndist < rng ){
-            if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == TRUE ){
-              if( ndist < (rng / 2) ){
-                if( ai_line_of_sight(targ) ){
-                  rng = ndist;
-                  found = targ;
-                }
-              }
-            }
-            else{
+      if( ai_valid_target(targ) ){
+        ndist = vlen(targ.origin - self.origin);
+        if( ndist < rng ){
+          if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == TRUE ){
+            if( ndist < (rng / 2) ){
               if( ai_line_of_sight(targ) ){
                 rng = ndist;
                 found = targ;
               }
             }
           }
-        }
+          else{
+            if( ai_line_of_sight(targ) ){
+              rng = ndist;
+              found = targ;
+            }
+          }
+        }      
       }
     }
     targ = targ.chain;
   }
   if( found ){
     if( (self.flags & FL_DISARMED) ){
-      if( self.stat_rdr_mode ){
-        local entity ally;        
+      if( self.stat_rdr_mode ){       
         ai_sfx_help();
         ally = ai_find_friend( self.ai_view );
         if( ally ){
@@ -291,33 +282,16 @@ float() ai_find_target_radar={
 
 void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
-  if( !ally.th_missile ){
+  if( !ally.th_missile )
     return;
-  }
+
   this = self;
   if( !ai_valid_target(ally.enemy) || override){
     self = ally;
-      self.enemy = this.enemy;
       ai_sfx_roger();
-      self.th_missile();
+      self.th_react( this.enemy );
     self = this;
   }
-};
-
-vector(entity wep) ai_attack_trace={
-  local entity cam;
-  local vector lead;
-  lead = '1 1 1';
-  if( self.enemy ){
-    lead = self.enemy.origin - (self.enemy.velocity * self.ai_leading);
-    lead = normalize(lead - self.origin);
-  }
-  cam = self.cockpit;
-  
-  makevectors(self.v_angle); 
-  traceline (cam.origin + v_forward * 1, self.origin + (lead * wep.w_range), FALSE, self);
-  
-  return trace_endpos;
 };
 
 /*
@@ -386,20 +360,19 @@ float(entity wep) ai_attack_blockcheck={
   viewpont = normalize(self.enemy.origin - self.cockpit.origin);
   makevectors( vang );
   traceline (self.cockpit.origin + v_forward * 1, self.cockpit.origin + viewpont*wep.w_range, FALSE, self);
-  if( (wep.damageType & EFF_ARC) ){
+  if( (wep.damageType & EFF_ARC) )
     return FALSE; // arcing attacks don't need LoS
-  }
+
   
-  if(trace_ent == world){
+  if(trace_ent == world)
     return TRUE;
-  }
-  if( trace_ent.faction == self.faction ){
-    return TRUE;
-  }
   
-  if( (viewpont * v_forward) <= 0.95 ){
+  if( trace_ent.faction == self.faction )
     return TRUE;
-  }
+  
+  if( (viewpont * v_forward) <= 0.95 )
+    return TRUE;
+  
 
   return FALSE;
 };
@@ -455,9 +428,9 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
   to the total energy cost of ALL its energy weapons.
 */  
 float(entity wep) ai_attack_checkEne={
-  if( self.energy >= self.ai_weaponEnergy ){
+  if( self.energy >= self.ai_weaponEnergy )
     return TRUE;
-  }
+  
   return FALSE;
 };
 
@@ -466,9 +439,9 @@ float(entity wep) ai_attack_checkEne={
   it can be
 */
 float( float bestAccuracy ) ai_wait_for_shot={
-  if( self.accuracy <= bestAccuracy ){
+  if( self.accuracy <= bestAccuracy )
     return TRUE;
-  }
+  
   return FALSE;
 };
 
@@ -494,17 +467,16 @@ void() ai_lock_on={
       }
     }
     else{
-      if( (self.stat_lck_stt & LOCK_TARG_START) ){
+      if( (self.stat_lck_stt & LOCK_TARG_START) )
         self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
-      }
-      if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
+      
+      if( (self.stat_lck_stt & LOCK_TARG_HAS) )
         self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
-      } 
-      if( (self.enemy.stat_lck_stt & LOCK_PLAYER) ){
+      
+      if( (self.enemy.stat_lck_stt & LOCK_PLAYER) )
         self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLAYER);
-      }
+      
     }
-    
   }
 };
 
@@ -521,9 +493,8 @@ void() ai_lock_on={
 */
 float( void() ai_to_make ) ai_unit_setup={
 
-  if( !self.nextVecChoice ){
+  if( !self.nextVecChoice )
     self.nextVecChoice = 1;
-  }
   
   if( (self.spawnflags & AI_SPAWNFLAG_TRIGGERME) && (self.targetname) ){
     //checking the targetname is mostly for validation
@@ -581,31 +552,31 @@ void() ai_unit_make_multi={
   choices.
 */
 void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons={
-  if( !self.next_wepn1 ){
+  if( !self.next_wepn1 )
     self.next_wepn1 = wep1;
-  }
-  if( !self.next_wepn2 ){
+  
+  if( !self.next_wepn2 )
     self.next_wepn2 = wep2;
-  }
-  if( !self.next_wepn3 ){
+  
+  if( !self.next_wepn3 )
     self.next_wepn3 = wep3;
-  }
-  if( !self.next_wepn4 ){
+  
+  if( !self.next_wepn4 )
     self.next_wepn4 = wep4;
-  }
-  if( !self.next_wepn5 ){
+  
+  if( !self.next_wepn5 )
     self.next_wepn5 = wep5;
-  }
-  if( !self.next_wepn6 ){
+  
+  if( !self.next_wepn6 )
     self.next_wepn6 = wep6;
-  }
-  if( !self.next_wepn7 ){
+  
+  if( !self.next_wepn7 )
     self.next_wepn7 = wep7;
-  }
-  if( !self.next_wepn8 ){
+  
+  if( !self.next_wepn8 )
     self.next_wepn8 = wep8;
-  }
-  if( !self.next_wepn9 ){
+  
+  if( !self.next_wepn9 )
     self.next_wepn9 = wep9;
-  }
+  
 }; 

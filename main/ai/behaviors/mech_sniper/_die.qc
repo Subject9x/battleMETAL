@@ -24,6 +24,7 @@ void() ai_mech_sniper_die={
   self.scale = 0.01;
   self.alpha = 0.01;
   self.attack_state = -1;
+  self.enemy = world;
   
   droptofloor();
   
@@ -39,7 +40,6 @@ void() ai_mech_sniper_die={
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   mech_player_compdie(self.cockpit);
-  mech_player_compdie(self.legs);
 
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
@@ -66,6 +66,8 @@ void() ai_mech_sniper_die={
       te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
   }
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin(self, self.origin);
 };
 
 /*

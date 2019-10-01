@@ -5,14 +5,12 @@ Date: 09/23/2018
 Overview: ai unit
   Tank - Skirmish
   Behavior - Skirmish
+    th_pain == 'panic'
+    unit runs to its nearest node or ally
+    if either are lacking, it'll just run in a rando direction
   
   Setup
     
-*/
-/*
-  th_pain == 'panic'
-  unit runs to its nearest node or ally
-  if either are lacking, it'll just run in a rando direction
 */
 void(entity attacker) ai_tank_sk_panic1={
   local entity friend;
@@ -21,7 +19,7 @@ void(entity attacker) ai_tank_sk_panic1={
   macro_ai_update( ctrl_updateTank )
   
   self.ai_dir = self.angles_y;
-  friend = ai_find_friend( self.ai_view );
+  friend = ai_find_friend_farthest( self.ai_view * 0.5 );
   if( friend ){
     self.goalentity = friend;
   }
@@ -29,8 +27,8 @@ void(entity attacker) ai_tank_sk_panic1={
     self.goalentity = self.movetarget;
   }
   else{
-    self.goalentity = world;
-    //would we really know the difference?
+    self.th_react( attacker );
+    return;
   }
   
   macro_ai_frame( ai_tank_sk_panic2 )

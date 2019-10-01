@@ -64,10 +64,9 @@ void() data_ini_attack_quantum_={
   local vector prtclRail_end;
   local vector prtclSpark_org;
   
-  if( !ctrl_weapon_checkEnergy() ){
+  if( !ctrl_weapon_checkEnergy() )
     return;
-  }
-  
+
   ctrl_weapon_fireOffset();  
   
   ctrl_weapon_updateAmmo( FALSE );
@@ -84,19 +83,19 @@ void() data_ini_attack_quantum_={
   if( self.data_ini_projectile ){
     qbits = DAT_QRFL_QBITS;
     while(qbits > 0){
-      ctrl_weapon_make_projectile( -1 );
-        rando = randomvec();
-        rando_x = hitZone_x + (hitMin_x - rando_x * hitMin_x) + (hitMax_x + random() * hitMax_x);
-        rando_y = hitZone_y + (hitMin_y - rando_y * hitMin_y) + (hitMax_y + random() * hitMax_y);
-        rando_z = hitZone_z + (hitMin_z - rando_z * hitMin_z) + (hitMax_z + random() * hitMax_z);
-        NEWSHOT.velocity = normalize(hitZone - rando);
-        NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
-        NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
-        if(pointcontents(rando) != CONTENT_SOLID){
-          setsize(NEWSHOT, '0 0 0', '0 0 0');
-          setorigin(NEWSHOT, rando);
-          qbits = qbits - 1;
-        }
+      ctrl_weapon_make_projectile( 5 );
+      rando = randomvec();
+      rando_x = hitZone_x + (hitMin_x - rando_x * hitMin_x) + (hitMax_x + random() * hitMax_x);
+      rando_y = hitZone_y + (hitMin_y - rando_y * hitMin_y) + (hitMax_y + random() * hitMax_y);
+      rando_z = hitZone_z + (hitMin_z - rando_z * hitMin_z) + (hitMax_z + random() * hitMax_z);
+      NEWSHOT.velocity = normalize(hitZone - rando);
+      NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
+      NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
+      if(pointcontents(rando) != CONTENT_SOLID){
+        setsize(NEWSHOT, '0 0 0', '0 0 0');
+        setorigin(NEWSHOT, rando);
+        qbits = qbits - 1;
+      }
     }
   }
 

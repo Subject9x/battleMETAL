@@ -21,7 +21,7 @@ void(entity attacker) ai_mech_sniper_panic1={
   macro_ai_update( ctrl_update_mechplayer )
   
   self.ai_dir = self.angles_y;
-  friend = ai_find_friend( self.ai_view );
+  friend = ai_find_friend_farthest( self.ai_view * 0.5 );
   if( friend ){
     self.goalentity = friend;
   }
@@ -29,20 +29,11 @@ void(entity attacker) ai_mech_sniper_panic1={
     self.goalentity = self.movetarget;
   }
   else{
-    if( !ai_valid_target(self.enemy) ){
-      if( ai_valid_target(attacker) ){
-        self.enemy = attacker;
-        macro_ai_frame(ai_mech_sniper_fight_prep)
-        return;
-      }
-    }
-    if( ai_valid_target(attacker) ){
-      self.enemy = attacker;
-      macro_ai_frame(ai_mech_sniper_fight_prep)
-      return;
-    }
+    self.th_react( attacker );
+    return;
   }
   
+  self.legs.attack_state = TR_NORM;
   macro_ai_frame( ai_mech_sniper_panic2 )
 };
 void() ai_mech_sniper_panic2={

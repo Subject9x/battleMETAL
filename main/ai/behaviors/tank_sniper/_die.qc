@@ -22,7 +22,7 @@ void() ai_vec_dest_die={
   self.solid = SOLID_NOT;
   self.colormod = '0.33 0.33 0.33';
   self.attack_state = -1;
-  
+  self.enemy = world;
   self.maxs = self.maxs * 0.75;
   self.mins_x = self.maxs_x * -1;
   self.mins_y = self.maxs_y * -1;

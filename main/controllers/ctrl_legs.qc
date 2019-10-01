@@ -58,22 +58,39 @@ void() ctrl_updateLegs={
 
 
 void() ctrl_dieLegs={
+
+  te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
+  te_mech_piece_explode( self, self.origin, self.angles, self.owner.velocity, self.model, self.skin );
+  self.health = 0;
+  self.deadflag = DEAD_DEAD;
+  self.effects = EF_NODRAW;
+  setsize(self, '0 0 0', '0 0 0');
+  setorigin( self, self.origin );
+
   local entity this;
-  local vector v1, v2;
-  
   newmis = spawn();
   this = self;
-    v1 = this.owner.mins;
-    v2 = this.owner.maxs;
-    v1_z = v1_z - (v1_z / 2);
-    v2_z = v2_z - (v2_z / 2);
-    v1_x = v1_y = v1_x - (v1_x / 2);
-    v2_x = v2_y = v2_x - (v2_x / 2);
-    setsize(self, v1, v2);
-    setmodel(self, this.model);
-    setorigin(self, this.origin);
-    self.frame = this.walkframe;
+    self.movetype = MOVETYPE_BOUNCE;
+    self.solid = SOLID_NOT;
+    self.owner = this.owner;
     self.touch = touch_mechPiece;
-    leg_die1();
+    self.skin = this.skin;
+    setmodel(self, this.model);
+    self.frame = this.frame;
+    self.mins = self.owner.mins;
+    self.mins_z = self.owner.mins_z / 2;
+    self.maxs = self.owner.maxs;
+    self.maxs_z = self.owner.mins_z / -1;
+    self.maxs = self.maxs * 0.67;
+    self.mins = self.mins * 0.67;
+    setsize(self, self.mins, self.maxs);
+    setorigin(self, self.origin);
+  
+    if( (self.owner.flags & FL_CLIENT) ){
+      leg_die1();
+    }
+    else{
+      bot_leg_die1();
+    }
   self = this;
 };

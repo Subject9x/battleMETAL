@@ -19,27 +19,16 @@ void(entity attacker) ai_spg_panic1={
   macro_ai_update( ctrl_updateTank )
   
   self.ai_dir = self.angles_y;
-  friend = ai_find_friend( self.ai_view );
-  if( friend ){        
-    ai_sfx_help();
+  friend = ai_find_friend_farthest( self.ai_view * 0.5 );
+  if( friend ){
     self.goalentity = friend;
   }
   else if( self.movetarget ){
     self.goalentity = self.movetarget;
   }
   else{
-    if( !ai_valid_target(self.enemy) ){
-      if( ai_valid_target(attacker) ){
-        self.enemy = attacker;
-        macro_ai_frame(ai_spg_fight_prep)
-        return;
-      }
-    }
-    if( ai_valid_target(attacker) ){
-      self.enemy = attacker;
-      macro_ai_frame(ai_spg_fight_prep)
-      return;
-    }
+    self.th_react( attacker );
+    return;
   }
   
   macro_ai_frame( ai_spg_panic2 )
@@ -161,7 +150,7 @@ void( entity attacker ) ai_spg_react1={
     self.ai_react_buffer = time + self.ai_react_time * 2;
     //Enemy fire is coming 'out of nowhere'
     if( vlen(attacker.origin - self.origin) > self.ai_view ){
-      self.th_pain(attacker);
+      macro_ai_frame(ai_spg_panic1)
       return;
     }
     macro_ai_frame(ai_spg_fight_prep)

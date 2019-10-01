@@ -574,14 +574,15 @@ void( entity attacker ) ai_turret_react1={
   self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
-  if( attacker.faction == self.faction ){
+  if( attacker.faction == self.faction )
     return;
-  }
 
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
-    self.ai_react_buffer = time + self.ai_react_time * 1.25;
+    self.ai_react_buffer = time + self.ai_react_time * 5;
     self.enemy = attacker;
+    self.torsoCenter.ai_dir = TR_TARG;
+    self.torsoCenter.enemy = self.enemy;
     macro_ai_frame(ai_turret_fight_prep)
     return;
   }
@@ -591,7 +592,7 @@ void( entity attacker ) ai_turret_react1={
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-    self.ai_react_buffer = time + self.ai_react_time * 3;
+    self.ai_react_buffer = time + self.ai_react_time * 5;
     macro_ai_frame(ai_turret_fight_prep)
     return;
   }
@@ -600,7 +601,7 @@ void( entity attacker ) ai_turret_react1={
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-    self.ai_react_buffer = time + self.ai_react_time * 3;
+    self.ai_react_buffer = time + self.ai_react_time * 5;
     macro_ai_frame(ai_turret_fight_prep)
     return;
   }

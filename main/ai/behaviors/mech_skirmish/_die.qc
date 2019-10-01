@@ -26,6 +26,7 @@ void() ai_mech_sk_die={
   self.scale = 0.01;
   self.alpha = 0.01;
   self.attack_state = -1;
+  self.enemy = world;
   
   droptofloor();
   
@@ -51,7 +52,7 @@ void() ai_mech_sk_die={
   
   self.think = ai_mech_sk_die1;
   self.ai_action_time = time + 600;
-  self.nextthink = time + 0.1;
+  self.nextthink = time + 0.05;
   
   makevectors( self.torsoCenter.angles );
   vel = self.origin + (v_up * 2);
@@ -67,19 +68,19 @@ void() ai_mech_sk_die={
       te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
   }
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin(self, self.origin);
 };
 
 /*
   smoking wreck
 */
 void() ai_mech_sk_die1={
-  te_smoke(self.torsoLeft.origin, 1);
-  te_smoke(self.torsoRight.origin, 1);
-  
+ 
   self.think = ai_mech_sk_die1;
-  if( time > self.ai_action_time ){
+  if( time > self.ai_action_time )
     self.think = ai_mech_sk_die2;
-  } 
+ 
   self.nextthink = time + 0.1;
 };
 

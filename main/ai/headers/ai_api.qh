@@ -137,7 +137,7 @@ float() ai_can_spawn;
 float() ai_find_target_visual;
 float() ai_find_target_radar;
 entity( float radiius ) ai_find_friend;
-vector(entity wep) ai_attack_trace;
+entity( float startSmallRadius ) ai_find_friend_farthest;
 void() ai_ranged_attack;
 float(entity wep) ai_attack_blockcheck;
 float(entity t) ai_valid_target;

@@ -11,6 +11,7 @@ Overview: ai unit
 */
 void() ai_gev_die1={
   self.deadflag = DEAD_DEAD;
+  
   te_smoke(self.origin, 4) ;
   
   self.think = ai_gev_die1;
@@ -54,6 +55,7 @@ void() ai_gev_die={
   self.colormod = '0.33 0.33 0.33'; 
   setsize(self, self.mins * 0.35, self.maxs * 0.35);
   setorigin(self, self.origin);
+  self.enemy = world;
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );

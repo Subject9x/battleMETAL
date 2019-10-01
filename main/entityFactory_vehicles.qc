@@ -389,30 +389,29 @@ void(void() data_ini) build_mech_bot={
     build_mech_legs();
     unitPartList.partNext = self.legs;
     unitPartList = unitPartList.partNext;
-    self.legs.th_walk = leg_walk1;
-    self.legs.th_run = leg_back1;
-    self.legs.th_stand = leg_stand1;
+    self.legs.th_walk = bot_leg_walk1;
+    self.legs.th_run = bot_leg_back1;
+    self.legs.th_stand = bot_leg_stand1;
     self.legs.th_die = bot_leg_die1;
     self.legs.movetype = MOVETYPE_NONE;
-    self.legs.yaw_speed = self.yaw_speed * 1.5;
+    self.legs.yaw_speed = self.yaw_speed * 2.5;
     self.legs.attack_state = TR_NORM;
-    self.ai_dir = self.angles_y;
+    self.legs.ai_dir = self.angles_y;
   }
   
-  if( (self.cockpit) ){
+  if( (self.cockpit) )
     build_unit_camera();
-  }
   
   //speed limits for AI because they change directions instantly :/
-  if( self.data_speed_forward > 175 ){
-    self.data_speed_forward = 175;
-  }
-  if( self.data_speed_strafe > 175 ){
-    self.data_speed_strafe = 175;
-  }
-  if( self.data_speed_backward > 175 ){
-    self.data_speed_backward = 175;
-  }
+  if( self.data_speed_forward > 200 )
+    self.data_speed_forward = 200;
+  
+  if( self.data_speed_strafe > 200 )
+    self.data_speed_strafe = 200;
+  
+  if( self.data_speed_backward > 200 )
+    self.data_speed_backward = 200;
+  
   self.data_speed_forward = self.data_speed_forward * AI_MECH_MOVE_FACTOR;
   self.data_speed_strafe = self.data_speed_strafe * AI_MECH_MOVE_FACTOR;
   self.data_speed_backward = self.data_speed_backward * AI_MECH_MOVE_FACTOR;
@@ -498,10 +497,9 @@ void() build_mech_legs={
     self.classname = MECH_PIECE;
     self.walkframe = 1;
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
-    if( (this.flags & FL_CLIENT) ){
-      util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+    if( (this.flags & FL_CLIENT) )
       self.aiment = this;
-    }
+      
     util_setModel(self.model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
     util_setOffsetOrigin(self, this, self.c_ofs);
@@ -510,8 +508,7 @@ void() build_mech_legs={
     self.view_ofs = self.origin - this.origin;
     self.angles = this.angles;
     self.v_angle = self.angles - this.angles; 
-    
-    self.th_die = ctrl_dieLegs;
+
     self.laser_sight_org = '0 0 0';
     self.laser_sight_timer = time + 0.5; 
     self.w_firerate = 0; //used to track data_speed_accel changes
@@ -522,10 +519,8 @@ void() build_mech_legs={
     self.data_speed_forward = this.data_speed_forward;
     self.data_speed_backward = this.data_speed_backward;
     self.data_speed_strafe = this.data_speed_strafe;
-    self.data_speed_accel = this.data_speed_accel;
-    if( this.data_type == DATA_MECH ){
-      leg_stand1();
-    }
+    self.data_speed_accel = this.data_speed_accel;  
+    leg_stand1();
     self.colormod = '1 1 1';
   self = this;
 };

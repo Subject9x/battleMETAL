@@ -134,7 +134,7 @@ float AI_RANGE_M = 1000;
 float AI_RANGE_L = 1600;
 
 //Frameset counter, how many loops of a frame set
-float AI_REFLEX_ACE = 3;
-float AI_REFLEX_VET = 4;
-float AI_REFLEX_REG = 5;
-float AI_REFLEX_ROK = 6;
+float AI_REFLEX_ACE = 1.5;
+float AI_REFLEX_VET = 2.5;
+float AI_REFLEX_REG = 3.5;
+float AI_REFLEX_ROK = 4.5;
