@@ -19,6 +19,9 @@ void() ai_mech_sk_die={
   local vector forg;
   
   ai_sfx_dead();
+  self.th_react = SUB_Null;
+  self.th_pain = SUB_Null;
+  self.th_missile = SUB_Null;
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -27,7 +30,8 @@ void() ai_mech_sk_die={
   self.alpha = 0.01;
   self.attack_state = -1;
   self.enemy = world;
-  
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin(self, self.origin);
   droptofloor();
   
   w_chain = self.w_slot;
@@ -35,15 +39,10 @@ void() ai_mech_sk_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.torsoCenter);
-  mech_player_compdie(self.torsoLeft);
-  mech_player_compdie(self.torsoRight);
-  mech_player_compdie(self.armLeft);
-  mech_player_compdie(self.armRight);
-  mech_player_compdie(self.cockpit);
-
+  
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
+
   if( self.ai_node_recall )
     remove(self.ai_node_recall);
   
@@ -68,8 +67,12 @@ void() ai_mech_sk_die={
       te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
   }
-  setsize(self, '-1 -1 -1', '1 1 1');
-  setorigin(self, self.origin);
+  mech_player_compdie(self.torsoCenter);
+  mech_player_compdie(self.torsoLeft);
+  mech_player_compdie(self.torsoRight);
+  mech_player_compdie(self.armLeft);
+  mech_player_compdie(self.armRight);
+  mech_player_compdie(self.cockpit);
 };
 
 /*

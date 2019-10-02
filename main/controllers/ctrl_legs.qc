@@ -60,37 +60,45 @@ void() ctrl_updateLegs={
 void() ctrl_dieLegs={
 
   te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
-  te_mech_piece_explode( self, self.origin, self.angles, self.owner.velocity, self.model, self.skin );
-  self.health = 0;
-  self.deadflag = DEAD_DEAD;
-  self.effects = EF_NODRAW;
-  setsize(self, '0 0 0', '0 0 0');
-  setorigin( self, self.origin );
+
 
   local entity this;
   newmis = spawn();
   this = self;
+  self = newmis;
     self.movetype = MOVETYPE_BOUNCE;
-    self.solid = SOLID_NOT;
+    self.solid = SOLID_BBOX;
     self.owner = this.owner;
     self.touch = touch_mechPiece;
     self.skin = this.skin;
-    setmodel(self, this.model);
     self.frame = this.frame;
+    self.walkframe = this.walkframe;
     self.mins = self.owner.mins;
     self.mins_z = self.owner.mins_z / 2;
     self.maxs = self.owner.maxs;
     self.maxs_z = self.owner.mins_z / -1;
     self.maxs = self.maxs * 0.67;
     self.mins = self.mins * 0.67;
-    setsize(self, self.mins, self.maxs);
-    setorigin(self, self.origin);
+    self.angles = this.angles;
+    self.velocity = '0 0 0';
+    setmodel(self, this.model);
+    setsize(self, this.mins, this.maxs);
+    setorigin(self, this.origin);
   
-    if( (self.owner.flags & FL_CLIENT) ){
+    if( (this.owner.flags & FL_CLIENT) ){
       leg_die1();
     }
     else{
       bot_leg_die1();
     }
   self = this;
+  
+  self.health = 0;
+  self.deadflag = DEAD_DEAD;
+  self.effects = EF_NODRAW;
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.alpha = 0;
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin( self, self.origin );
 };

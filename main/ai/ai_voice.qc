@@ -127,7 +127,7 @@ void() ai_sfx_dead={
     return;
   }
   client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DEAD, 1) ;
-      self.voiceTime = time + (3 + (random() * 4));
+  self.voiceTime = time + (3 + (random() * 4));
 };
 
 void() ai_sfx_kill={

@@ -204,16 +204,24 @@ float() ai_pilot_view_interval={
   reduce action_timer by this amount
 */
 float(float rank) ai_pilot_action_mod={
+  local float actionTime;
+  local float slow;
+  slow = self.data_speed_forward + self.data_speed_backward + self.data_speed_strafe;
+  slow = slow - 600;
+  slow = slow * -1;
+  slow = slow / 100;
   switch(rank){
     case AI_RANK_ACE:
-      return AI_REFLEX_ACE;
+      actionTime = AI_REFLEX_ACE;
     case AI_RANK_VET:
-      return AI_REFLEX_VET;
+      actionTime = AI_REFLEX_VET;
     case AI_RANK_ROK:
-      return AI_REFLEX_ROK;
+      actionTime = AI_REFLEX_ROK;
     default:
-      return AI_REFLEX_REG;
+      actionTime = AI_REFLEX_REG;
   }
+  actionTime = actionTime + slow;
+  return actionTime;
 };
 
 /*

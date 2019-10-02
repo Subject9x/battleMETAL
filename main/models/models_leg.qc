@@ -236,19 +236,18 @@ void() bot_leg_die1 = [1, bot_leg_die2]{
   
   local vector fall;
   makevectors(self.angles);
-  fall = self.origin + (v_forward * 128) + (v_right * (crandom() * 32)) + (v_up * 128);
+  fall = self.origin + (v_forward * 128) + (v_right * (crandom() * 32)) + (v_up * 64);
   fall = normalize(fall - self.origin);
   self.velocity = fall * 8;
   self.avelocity = fall * 32;
 };
 void() bot_leg_die2 = [2, bot_leg_die3]{
-  self.solid = SOLID_BBOX;
 };
 void() bot_leg_die3 = [3, bot_leg_die4]{};
-void() bot_leg_die4 = [4, bot_leg_die5]{};
-void() bot_leg_die5 = [5, bot_leg_die6]{};
-void() bot_leg_die6 = [6, bot_leg_die7]{};
-void() bot_leg_die7 = [7, bot_leg_die8]{};
+void() bot_leg_die4 = [3, bot_leg_die5]{};
+void() bot_leg_die5 = [3, bot_leg_die6]{};
+void() bot_leg_die6 = [3, bot_leg_die7]{};
+void() bot_leg_die7 = [3, bot_leg_die8]{};
 void() bot_leg_die8 = {
   
   self.solid = SOLID_NOT;

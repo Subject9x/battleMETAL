@@ -413,8 +413,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
         }
       }
     }
-    self.think = self.th_die;
-    self.nextthink = time + 0.1;
+    self.th_die();
   self = oself;
 };
 

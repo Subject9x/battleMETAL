@@ -9,12 +9,14 @@ Overview: ai unit
   Setup
     
 */
-
 void() ai_tank_sk_die={
   local entity w_chain;
   local vector v;
-
+  
   ai_sfx_dead();
+  self.th_react = SUB_Null;
+  self.th_pain = SUB_Null;
+  self.th_missile = SUB_Null;
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -28,10 +30,8 @@ void() ai_tank_sk_die={
   makevectors( self.angles );  
   setorigin(self, self.origin - (v_up * self.maxs_z * 0.67) );
   
-  
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
-  ai_sfx_dead();
 
   w_chain = self.w_slot;
   while(w_chain){
@@ -41,14 +41,15 @@ void() ai_tank_sk_die={
   mech_player_compdie(self.cockpit);
   mech_player_compdie(self.torsoLeft);
   mech_player_compdie(self.torsoRight);
-  mech_player_compdie(self.torsoCenter);
+  mech_player_compdie(self.torsoCenter);  
+
   
-  if( self.ai_node_recall )
+  if( self.ai_node_recall ){
     remove(self.ai_node_recall);
+  }
   
-  self.think = ai_tank_sk_die1;
   self.ai_action_time = time + 600;
-  
+
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
@@ -64,12 +65,12 @@ void() ai_tank_sk_die={
       te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20, world); 
       break;
   }
-  
+
+  self.think = ai_tank_sk_die1;
   self.nextthink = time + 0.1;
 };
 
 void() ai_tank_sk_die1={
-
   self.deadflag = DEAD_DEAD;
   te_smoke(self.origin, 2);
   

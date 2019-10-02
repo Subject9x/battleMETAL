@@ -49,6 +49,9 @@ void() ai_gev_die={
   local vector t;
   
   ai_sfx_dead();
+  self.th_react = SUB_Null;
+  self.th_pain = SUB_Null;
+  self.th_missile = SUB_Null;
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_BOUNCE;
   self.solid = SOLID_BBOX;
@@ -59,7 +62,6 @@ void() ai_gev_die={
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
-  ai_sfx_dead();
  
   w_chain = self.w_slot;
   while(w_chain){

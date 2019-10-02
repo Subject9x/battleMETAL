@@ -25,7 +25,8 @@ void() ai_mech_sniper_die={
   self.alpha = 0.01;
   self.attack_state = -1;
   self.enemy = world;
-  
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin(self, self.origin);
   droptofloor();
   
   local entity w_chain;
@@ -34,13 +35,10 @@ void() ai_mech_sniper_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  mech_player_compdie(self.torsoCenter);
-  mech_player_compdie(self.torsoLeft);
-  mech_player_compdie(self.torsoRight);
-  mech_player_compdie(self.armLeft);
-  mech_player_compdie(self.armRight);
-  mech_player_compdie(self.cockpit);
-
+    
+  self.legs.think = self.legs.th_die;
+  self.legs.nextthink = time + 0.05;
+  
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
   
@@ -66,8 +64,13 @@ void() ai_mech_sniper_die={
       te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
   }
-  setsize(self, '-1 -1 -1', '1 1 1');
-  setorigin(self, self.origin);
+  
+  mech_player_compdie(self.torsoCenter);
+  mech_player_compdie(self.torsoLeft);
+  mech_player_compdie(self.torsoRight);
+  mech_player_compdie(self.armLeft);
+  mech_player_compdie(self.armRight);
+  mech_player_compdie(self.cockpit);
 };
 
 /*

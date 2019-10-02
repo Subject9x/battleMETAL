@@ -91,8 +91,9 @@ void( entity comp ) mech_player_compdie={
   if( comp.model ){
     if( (comp != world) && (comp.owner == self) ){
       comp.think = SUB_Remove;
-      if(comp.th_die)
+      if(comp.th_die){
         comp.think = comp.th_die;
+      }
       comp.nextthink = time + 0.025;
     }
   }

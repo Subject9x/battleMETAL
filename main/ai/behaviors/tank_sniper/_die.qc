@@ -9,14 +9,14 @@ Overview: ai unit
   Setup
     
 */
-/*
-  TH_DIE Main
-*/
 void() ai_vec_dest_die={
   local entity w_chain;
   local vector v;
   
   ai_sfx_dead();
+  self.th_react = SUB_Null;
+  self.th_pain = SUB_Null;
+  self.th_missile = SUB_Null;
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
