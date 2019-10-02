@@ -37,7 +37,7 @@ void() ai_tank_sk_reverse1={
     macro_ai_frame(ai_tank_sk_reverse2)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+  
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse2={
@@ -57,7 +57,7 @@ void() ai_tank_sk_reverse2={
     macro_ai_frame(ai_tank_sk_reverse3)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse3={
@@ -74,7 +74,7 @@ void() ai_tank_sk_reverse3={
     macro_ai_frame(ai_tank_sk_reverse4)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse4={
@@ -91,7 +91,7 @@ void() ai_tank_sk_reverse4={
     macro_ai_frame(ai_tank_sk_reverse5)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse5={
@@ -110,7 +110,7 @@ void() ai_tank_sk_reverse5={
     macro_ai_frame(ai_tank_sk_reverse6)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse6={
@@ -130,7 +130,7 @@ void() ai_tank_sk_reverse6={
     macro_ai_frame(ai_tank_sk_reverse7)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse7={
@@ -147,7 +147,7 @@ void() ai_tank_sk_reverse7={
     macro_ai_frame(ai_tank_sk_reverse8)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse8={
@@ -164,7 +164,7 @@ void() ai_tank_sk_reverse8={
     macro_ai_frame(ai_tank_sk_reverse9)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse9={
@@ -183,7 +183,7 @@ void() ai_tank_sk_reverse9={
     macro_ai_frame(ai_tank_sk_reverse10)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse10={
@@ -198,7 +198,7 @@ void() ai_tank_sk_reverse10={
     macro_ai_frame(ai_tank_sk_reverse11)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse11={
@@ -210,7 +210,7 @@ void() ai_tank_sk_reverse11={
     macro_ai_frame(ai_tank_sk_reverse12)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_tank_sk_rotate1)
 };
 void() ai_tank_sk_reverse12={
@@ -224,6 +224,5 @@ void() ai_tank_sk_reverse12={
     macro_ai_frame(ai_tank_sk_fight_prep)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_tank_sk_rotate1)
 };

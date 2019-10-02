@@ -55,7 +55,6 @@ void() ai_mech_sk_strafe2={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe3={
@@ -72,7 +71,6 @@ void() ai_mech_sk_strafe3={
     macro_ai_frame(ai_mech_sk_strafe4)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe4={
@@ -89,7 +87,6 @@ void() ai_mech_sk_strafe4={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe5={
@@ -106,8 +103,7 @@ void() ai_mech_sk_strafe5={
     macro_ai_frame(ai_mech_sk_strafe6)
     return;
   }
-  
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe6={
@@ -128,7 +124,6 @@ void() ai_mech_sk_strafe6={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe7={
@@ -147,7 +142,6 @@ void() ai_mech_sk_strafe7={
     return;
   }
 
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe8={
@@ -165,7 +159,6 @@ void() ai_mech_sk_strafe8={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe9={
@@ -183,7 +176,6 @@ void() ai_mech_sk_strafe9={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe10={
@@ -204,7 +196,6 @@ void() ai_mech_sk_strafe10={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe11={
@@ -222,7 +213,6 @@ void() ai_mech_sk_strafe11={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe12={
@@ -234,7 +224,6 @@ void() ai_mech_sk_strafe12={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe13={
@@ -246,8 +235,7 @@ void() ai_mech_sk_strafe13={
     macro_ai_frame(ai_mech_sk_strafe14)
     return;
   }
-  
-  self.ai_action_time = self.ai_action_mod;
+
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe14={
@@ -263,7 +251,6 @@ void() ai_mech_sk_strafe14={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe15={
@@ -276,7 +263,6 @@ void() ai_mech_sk_strafe15={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };
 void() ai_mech_sk_strafe16={
@@ -290,6 +276,5 @@ void() ai_mech_sk_strafe16={
     return;
   }
   
-  self.ai_action_time = self.ai_action_mod;
   macro_ai_frame(ai_mech_sk_enter_reverse_adjust)
 };

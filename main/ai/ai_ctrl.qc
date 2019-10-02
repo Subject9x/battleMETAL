@@ -109,9 +109,9 @@ void() ai_leg_control={
   refer to macro macro_ai_
 */
 void() ai_update={
-  if( !(self.flags & FL_ONGROUND) )
+  if( !(self.flags & FL_ONGROUND) ){
     droptofloor();
-  
+  }
   if( ai_valid_target( self.enemy ) ){
     ai_turret_set_state( TR_TARG );
     self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
@@ -119,8 +119,9 @@ void() ai_update={
   }
   else{ 
     self.enemy = world;
-    if( self.torsoCenter.attack_state != TR_YAW )
+    if( self.torsoCenter.attack_state != TR_YAW ){
       ai_turret_set_state( TR_NORM );
+    }
   }
   ai_ranged_attack();
   self.button0 = 0;
@@ -131,11 +132,12 @@ void() ai_update={
 */
 void() ai_touch={
     //ignore nodes straight away, logic for these touches are in ai_nodes
-  if( (other.flags & FL_NODE) )
+  if( (other.flags & FL_NODE) ){
     return;
- 
-  if( time > self.ai_react_buffer )
+  }
+  if( time > self.ai_react_buffer ){
     self.th_react( other );
+  }
 };
 
 /*
@@ -216,15 +218,17 @@ void( float move ) ai_update_accuracy={
     //unit is moving, increase spread factor
     rate = rate - self.accuracyMod;
     self.accuracy = self.accuracy + rate;
-    if( self.accuracy > self.spreadDefault_y )
+    if( self.accuracy > self.spreadDefault_y ){
       self.accuracy = self.spreadDefault_y;
+    }
   }
   else{
     //standing still, lessen the spread
     rate = rate + self.accuracyMod;
     self.accuracy = self.accuracy - (rate * 2);
-    if( self.accuracy < self.spreadDefault_x )
+    if( self.accuracy < self.spreadDefault_x ){
       self.accuracy = self.spreadDefault_x;
+    }
   }
 };
 

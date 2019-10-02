@@ -49,7 +49,6 @@ void() ctrl_updateLegs={
           leg_back4();
         }
       }
-      
       self.angles =  nextDirs;
       self.v_angle = self.angles;
     }
@@ -58,7 +57,6 @@ void() ctrl_updateLegs={
 
 
 void() ctrl_dieLegs={
-  cons_logAFloat("ctrl_dieLegs", 1);
   local entity newLegs;
   te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
 
@@ -68,6 +66,7 @@ void() ctrl_dieLegs={
   newLegs.angles = self.owner.angles;
   newLegs.mins = self.c_ofs;
   newLegs.maxs = self.c_alt_ofs;
+  setorigin(newLegs, self.origin);
   setmodel(newLegs, self.model);
 
   if( (self.owner.flags & FL_CLIENT) ){

@@ -324,8 +324,6 @@ entity(vector point, float rad, entity trg) t_find_part={
     radi = vlen(point - trg.armRight.origin);
   }
   if( part.deadflag == DEAD_DEAD ){
-    cons_logAFloat("part.partTypeId", part.partTypeId); //DEBUG
-    cons_logAFloat("part.realowner", part.realowner.partTypeId);
     part = part.realowner;
   }
   return part;

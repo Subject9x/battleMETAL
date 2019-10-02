@@ -17,6 +17,7 @@ void() ai_mech_sk_pivot1={
   macro_ai_update(ctrl_update_mechplayer)
   
   ai_face_targ();
+  
   self.legs.attack_state = TR_NORM;
   self.legs.think = bot_leg_pivot1;
   self.legs.nextthink = time + 0.1;
