@@ -17,6 +17,9 @@ void() ai_mech_sniper_die={
   local vector forg;
   
   ai_sfx_dead();
+  self.th_react = SUB_Null;
+  self.th_pain = SUB_Null;
+  self.th_missile = SUB_Null;
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
@@ -25,9 +28,7 @@ void() ai_mech_sniper_die={
   self.alpha = 0.01;
   self.attack_state = -1;
   self.enemy = world;
-  setsize(self, '-1 -1 -1', '1 1 1');
-  setorigin(self, self.origin);
-  droptofloor();
+  self.oldenemy = world;
   
   local entity w_chain;
   w_chain = self.w_slot;
@@ -35,21 +36,15 @@ void() ai_mech_sniper_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-    
+  
+  self.legs.c_ofs = self.mins;
+  self.legs.c_alt_ofs = self.maxs;
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
-  
-  self.think = ai_mech_sniper_die1;
-  self.ai_action_time = time + 300;
-  //basically overkill damage will just remove the mech (nice and clean)
-  if( self.health <= (self.max_health / 1.5) )
-    self.think = ai_mech_sniper_die2;
 
-  self.nextthink = time + 0.1;
-  
   makevectors( self.torsoCenter.angles );
   vel = self.origin + (v_up * 2);
   forg = self.origin + (v_up * (self.maxs_y / 2) ) + (v_forward * (self.mins_x / 1.5));
@@ -65,28 +60,18 @@ void() ai_mech_sniper_die={
       break;
   }
   
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin(self, self.origin);
+  droptofloor();
   mech_player_compdie(self.torsoCenter);
   mech_player_compdie(self.torsoLeft);
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   mech_player_compdie(self.cockpit);
-};
-
-/*
-  smoking wreck
-*/
-void() ai_mech_sniper_die1={
-
-  te_smoke(self.origin, 3);
-  te_smoke(self.torsoLeft.origin, 1);
-  te_smoke(self.torsoRight.origin, 1);
   
-  self.think = ai_mech_sniper_die1;
-  if( time > self.ai_action_time ){
-    self.think = ai_mech_sniper_die2;
-  } 
-  self.nextthink = time + 0.1;
+  self.think = ai_mech_sniper_die2;
+  self.nextthink = time + 2;
 };
 
 //explode

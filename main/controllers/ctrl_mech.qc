@@ -13,7 +13,7 @@ void() ctrl_update_mechplayer={
   
   ctrl_updateCenterTorso();
   if( (self.flags & FL_CLIENT) ){  
-    if( parent.legs.deadflag <= DEAD_NO ){
+    if( self.legs.deadflag == DEAD_NO ){
       self = self.legs;
         ctrl_updateLegs();
       self = parent;
@@ -156,69 +156,92 @@ void() ctrl_updateCenterTorso={
 };
 
 void() ctrl_component_die={
+  local entity piece;
+  local entity this;
+  local entity c;
   if( self.deadflag <= DEAD_NO ){
-    local entity piece;
-    local entity this;
     piece = self;
     
-    te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
-    te_mech_piece_explode( piece, piece.origin, piece.angles, self.owner.velocity, piece.model, piece.skin );
+    te_missile_explode( piece.origin, piece.owner.vec_size, '1 0.25 0.75', random() * (piece.vec_size * 1.5), 2); 
+    te_mech_piece_explode( piece, piece.origin, piece.angles, piece.owner.velocity, piece.model, piece.skin );
 
     self.deadflag = DEAD_DEAD;
     self.effects = EF_NODRAW;
-    setsize(self, '0 0 0', '0 0 0');
+    self.health = 0;
     setorigin( self, self.origin );
     
-    switch( self.partTypeId ){
-      case M_TOR_LEFT:
-        killed(self.owner.armLeft, self, 0);
-        self.owner.armLeft.realowner = self.owner;
-        self.realowner = self.owner;
-        break;
-        
-      case M_TOR_RIGHT:
-        killed(self.owner.armRight, self, 0);
-        self.owner.armLeft.armRight = self.owner;
-        self.realowner = self.owner;
-        break;
-        
-      case M_ARM_LEFT:
-        self.realowner = self.owner.torsoLeft;
-        if( self.owner.torsoLeft.deadflag != DEAD_NO )
-          self.realowner = self.owner;
-        
-        break;
-        
-      case M_ARM_RIGHT:
-        self.realowner = self.owner.torsoLeft;
-        if( self.owner.torsoRight.deadflag != DEAD_NO )
-          self.realowner = self.owner;
-
-        break;
+    if( self.partTypeId == M_TOR_LEFT ){
+      self.owner.armLeft.think = self.owner.armLeft.th_die;
+      self.owner.armLeft.nextthink = time + 0.05;
+      self.owner.armLeft.realowner = self.owner;
+    }
+    else if( self.partTypeId == M_TOR_RIGHT ){
+      self.owner.armRight.think = self.owner.armRight.th_die;
+      self.owner.armRight.nextthink = time + 0.05;
+      self.owner.armRight.realowner = self.owner;
     }
     
-    local entity c;
     c = self.owner.w_slot;
     while(c){
-      if(c.partParentId == self.partTypeId)
-        killed(c, self, 0);
-      
+      if(c.partParentId == self.partTypeId){
+        c.think = c.th_die;
+        c.nextthink = time + 0.1;
+      }
       c = c.w_slot;
     }
     
-    self.health = 0;
-    
     if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
-      if( self.owner.th_pain ){
+      if( self.owner.th_pain && self.owner.health > 0){
         //if the bot loses all guns, have it panic
         this = self;
-        self = self.owner;
-          self.th_pain( self.owner.enemy );
+        self = this.owner;
+          self.th_pain( self.enemy );
         self = this;
       }
     }
-    if( (self.owner.flags & FL_CLIENT) )
+    if( (self.owner.flags & FL_CLIENT) ){
       client_send_critical_hit( self.owner );
+    }
+  }
+};
+
+void() ctrl_arm_die={    
+  local entity piece;
+  local entity this;
+  local entity c;
+  if( self.deadflag == DEAD_NO ){
+    piece = self;
+    
+    te_missile_explode( piece.origin, piece.owner.vec_size, '1 0.25 0.75', random() * (piece.vec_size * 1.5), 2); 
+    te_mech_piece_explode( piece, piece.origin, piece.angles, piece.owner.velocity, piece.model, piece.skin );
+
+    self.deadflag = DEAD_DEAD;
+    self.effects = EF_NODRAW;    
+    self.health = 0;
+    setsize(self, '0 0 0', '0 0 0');
+    setorigin( self, self.origin );
+
+    c = self.owner.w_slot;
+    while(c){
+      if(c.partParentId == self.partTypeId){
+        c.think = c.th_die;
+        c.nextthink = time + 0.1;
+      }
+      c = c.w_slot;
+    }
+    
+    if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
+      if( self.owner.th_pain && self.owner.health > 0){
+        //if the bot loses all guns, have it panic
+        this = self;
+        self = this.owner;
+          self.th_pain( self.enemy );
+        self = this;
+      }
+    }
+    if( (self.owner.flags & FL_CLIENT) ){
+      client_send_critical_hit( self.owner );
+    }
   }
 };
 
@@ -242,8 +265,10 @@ void() ctrl_component_drop={
 };
 
 void() touch_mechPiece={
-  if( other.data_type ){
+  if( (other.flags & FL_UNIT) ){
     self.damageValue = random() * 25;  
     BecomeExplosion();
+    self.touch = SUB_Null;
+    return;
   }
 };

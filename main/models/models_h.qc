@@ -76,12 +76,6 @@ void() leg_die_touch;
 void() bot_leg_die1;
 void() bot_leg_die2;
 void() bot_leg_die3;
-void() bot_leg_die4;
-void() bot_leg_die5;
-void() bot_leg_die6;
-void() bot_leg_die7;
-void() bot_leg_die8;
-
 
 void() bot_leg_walk1;
 void() bot_leg_walk2;

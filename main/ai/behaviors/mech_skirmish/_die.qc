@@ -39,7 +39,9 @@ void() ai_mech_sk_die={
     mech_player_compdie(w_chain);
     w_chain = w_chain.w_slot;
   }
-  
+
+  self.legs.c_ofs = self.mins;
+  self.legs.c_alt_ofs = self.maxs;
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
 
@@ -48,10 +50,6 @@ void() ai_mech_sk_die={
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
-  
-  self.think = ai_mech_sk_die1;
-  self.ai_action_time = time + 600;
-  self.nextthink = time + 0.05;
   
   makevectors( self.torsoCenter.angles );
   vel = self.origin + (v_up * 2);
@@ -67,24 +65,19 @@ void() ai_mech_sk_die={
       te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
       break;
   }
+  
+  setsize(self, '-1 -1 -1', '1 1 1');
+  setorigin(self, self.origin);
+  droptofloor();
   mech_player_compdie(self.torsoCenter);
   mech_player_compdie(self.torsoLeft);
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   mech_player_compdie(self.cockpit);
-};
-
-/*
-  smoking wreck
-*/
-void() ai_mech_sk_die1={
- 
-  self.think = ai_mech_sk_die1;
-  if( time > self.ai_action_time )
-    self.think = ai_mech_sk_die2;
- 
-  self.nextthink = time + 0.1;
+  
+  self.think = ai_mech_sk_die2;
+  self.nextthink = time + 2;
 };
 
 //explode

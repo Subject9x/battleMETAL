@@ -140,9 +140,8 @@ void( entity attacker ) ai_spg_react1={
   self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
-  if( attacker.faction == self.faction ){
+  if( attacker.faction == self.faction )
     return;
-  }
 
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){

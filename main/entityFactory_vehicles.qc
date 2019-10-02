@@ -53,6 +53,9 @@ void(entity own) build_unit_component={
   self.angles = follow.angles;
   self.v_angle = self.angles - follow.angles;
   self.th_die = ctrl_component_die;
+  if( self.partTypeId == M_ARM_RIGHT || self.partTypeId == M_ARM_LEFT ){
+    self.th_die = ctrl_arm_die;
+  }
   self.realowner = follow;
   self.colormod = '1 1 1';
 };
@@ -392,7 +395,6 @@ void(void() data_ini) build_mech_bot={
     self.legs.th_walk = bot_leg_walk1;
     self.legs.th_run = bot_leg_back1;
     self.legs.th_stand = bot_leg_stand1;
-    self.legs.th_die = ctrl_dieLegs;
     self.legs.movetype = MOVETYPE_NONE;
     self.legs.yaw_speed = self.yaw_speed * 2.5;
     self.legs.attack_state = TR_NORM;
@@ -514,7 +516,7 @@ void() build_mech_legs={
     self.w_firerate = 0; //used to track data_speed_accel changes
     self.th_stand = leg_stand1;
     self.th_walk = leg_walk1;
-    self.th_die = leg_die1;
+    self.th_die = ctrl_dieLegs;
     //we pack the unit's original speed values here, to allow us to restore them if the unit repairs its legs
     self.data_speed_forward = this.data_speed_forward;
     self.data_speed_backward = this.data_speed_backward;

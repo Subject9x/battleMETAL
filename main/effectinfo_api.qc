@@ -347,6 +347,7 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
     self.nextthink = time + (random() * 1);
     self.ai_action_time = time + (random() * (self.owner.vec_size * 4824));
     self.colormod = notChunk.colormod;
+    self.gravity = 0.67;
     localVel = normalize(self.origin - self.owner.origin) * 10;
     localVel_z = localVel_z + 50;
     te_debris( self.origin, self.angles, normalize(self.origin - self.owner.origin) * 5, self.owner.vec_size * 2, self.owner.vec_size);

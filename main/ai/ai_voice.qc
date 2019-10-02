@@ -119,15 +119,19 @@ void() ai_sfx_dying={
 };
 
 void() ai_sfx_dead={
-  if( !self.ai_voice_group ){
-    if( cvar("developer") ){
-      cons_logAString(self.classname, "<missing 'ai_voice_dead' sound>"); 
-      cons_logAString("ai says", "IM DEAD");
+  if( time > self.voiceTime ){
+    if( !self.ai_voice_group ){
+      if( cvar("developer") ){
+        cons_logAString(self.classname, "<missing 'ai_voice_dead' sound>"); 
+        cons_logAString("ai says", "IM DEAD");
+      }
+      return;
     }
-    return;
+    if( random() < 0.33 ){
+      client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DEAD, 1) ;
+      self.voiceTime = time + (3 + (random() * 4));    
+    }
   }
-  client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DEAD, 1) ;
-  self.voiceTime = time + (3 + (random() * 4));
 };
 
 void() ai_sfx_kill={

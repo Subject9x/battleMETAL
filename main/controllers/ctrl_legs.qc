@@ -58,40 +58,25 @@ void() ctrl_updateLegs={
 
 
 void() ctrl_dieLegs={
-
+  cons_logAFloat("ctrl_dieLegs", 1);
+  local entity newLegs;
   te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
 
+  newLegs = spawn();
+  newLegs.vec_size = self.owner.vec_size;
+  newLegs.skin = self.skin;
+  newLegs.angles = self.owner.angles;
+  newLegs.mins = self.c_ofs;
+  newLegs.maxs = self.c_alt_ofs;
+  setmodel(newLegs, self.model);
 
-  local entity this;
-  newmis = spawn();
-  this = self;
-  self = newmis;
-    self.movetype = MOVETYPE_BOUNCE;
-    self.solid = SOLID_BBOX;
-    self.owner = this.owner;
-    self.touch = touch_mechPiece;
-    self.skin = this.skin;
-    self.frame = this.frame;
-    self.walkframe = this.walkframe;
-    self.mins = self.owner.mins;
-    self.mins_z = self.owner.mins_z / 2;
-    self.maxs = self.owner.maxs;
-    self.maxs_z = self.owner.mins_z / -1;
-    self.maxs = self.maxs * 0.67;
-    self.mins = self.mins * 0.67;
-    self.angles = this.angles;
-    self.velocity = '0 0 0';
-    setmodel(self, this.model);
-    setsize(self, this.mins, this.maxs);
-    setorigin(self, this.origin);
-  
-    if( (this.owner.flags & FL_CLIENT) ){
-      leg_die1();
-    }
-    else{
-      bot_leg_die1();
-    }
-  self = this;
+  if( (self.owner.flags & FL_CLIENT) ){
+    newLegs.think = leg_die1;
+  }
+  else{
+    newLegs.think = bot_leg_die1;
+  }
+  newLegs.nextthink = time + 0.1;
   
   self.health = 0;
   self.deadflag = DEAD_DEAD;
@@ -101,4 +86,6 @@ void() ctrl_dieLegs={
   self.alpha = 0;
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin( self, self.origin );
+  self.think = SUB_Remove;
+  self.nextthink = time + 3;
 };

@@ -5,7 +5,7 @@ Date: 09/23/2018
 Overview: ai unit
   Mech - Skirmisher
   Behavior - Panic/React
-    TH_REACT
+    TH_REACT, TH_PAIN
   Setup
     
 */
@@ -21,7 +21,7 @@ void( entity attacker ) ai_mech_sk_react1={
     return;
   }
   //AI currently has no target
-  if( ai_valid_target(self.enemy) == FALSE ){
+  if( !ai_valid_target(self.enemy) ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
@@ -51,7 +51,7 @@ void( entity attacker ) ai_mech_sk_react1={
     return;
   }
   
-  self.ai_react_buffer = time + self.ai_react_time * 2;
+  self.ai_react_buffer = time + self.ai_react_time;
 };
 
 /*

@@ -20,7 +20,7 @@ void( entity unitLegs ) anim_leg_control={
 /*
   Client Leg Animations - Stand
 */
-void() leg_stand1 = [$l_stand1, leg_stand1]{
+void() leg_stand1= [$l_stand1, leg_stand1]{
   self.frame = $l_stand1;
 };
 
@@ -231,29 +231,55 @@ void() leg_die_touch={
 /*
   Bot Leg death frames
 */
-void() bot_leg_die1 = [1, bot_leg_die2]{
-  self.frame = $l_stand1;
+void() bot_leg_die1={
+  self.mins = self.mins * 0.67;
+  self.mins_z = self.mins_z / 4;
+  self.maxs = self.maxs * 0.67;
+  self.maxs_z = self.mins_z / -4;
+  
+  self.frame = 1;
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  
+  setsize(self, self.mins, self.maxs);
+  setorigin(self, self.origin);
+  
+  self.think = bot_leg_die2;
+  self.nextthink = time + 0.1;
+};
+void() bot_leg_die2={
+  self.frame = rint(1 + random() * 3);
   
   local vector fall;
   makevectors(self.angles);
-  fall = self.origin + (v_forward * 128) + (v_right * (crandom() * 32)) + (v_up * 64);
-  fall = normalize(fall - self.origin);
-  self.velocity = fall * 8;
-  self.avelocity = fall * 32;
+  fall = self.origin + (v_forward * (crandom() * 256)) + (v_right * (crandom() * 256)) + (v_up * 128);
+  self.velocity =  normalize(self.origin - fall);
+  self.avelocity = self.velocity * 2;
+  self.movetype = MOVETYPE_BOUNCE;
+  self.solid = SOLID_BBOX;
+  self.think = bot_leg_die3;
+  self.nextthink = time + 2;
 };
-void() bot_leg_die2 = [2, bot_leg_die3]{
-};
-void() bot_leg_die3 = [3, bot_leg_die4]{};
-void() bot_leg_die4 = [3, bot_leg_die5]{};
-void() bot_leg_die5 = [3, bot_leg_die6]{};
-void() bot_leg_die6 = [3, bot_leg_die7]{};
-void() bot_leg_die7 = [3, bot_leg_die8]{};
-void() bot_leg_die8 = {
-  
+void() bot_leg_die3={
+  self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
+  setsize(self, '-4 -4 -4', '4 4 4');
+  setorigin(self, self.origin);
   self.deadflag = DEAD_DEAD;
   self.think = SUB_Remove;
   self.nextthink = time + 7200;
+  makevectors(self.angles);
+  switch( self.vec_size ){
+    case 2:
+      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, 3800, self.vec_size / 20, world); 
+      break;
+    case 3:
+      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles,  self.vec_size, 3800, self.vec_size / 20, world); 
+      break;
+    default:
+      te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles,  self.vec_size, 3800, self.vec_size / 20, world); 
+      break;
+  }
 };
 
 void() player_movestart =

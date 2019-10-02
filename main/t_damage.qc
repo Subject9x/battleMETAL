@@ -239,8 +239,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = notTarg;
   }
   
-  if( (prevShields > 0) && (trg.shield <= 0) )
+  if( (prevShields > 0) && (trg.shield <= 0) ){
     te_shield_explode( trg.origin, trg.vec_size + 1 );
+  }
   
   if( !dmgAmt ){
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
@@ -252,15 +253,17 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   if( trg.data_type == DATA_MECH ){
     //filter out leg hits
     if(dmg_point_z < (trg.origin_z - 5)){
-      dmgTrg = dmgTrg.legs;
+      if( dmgTrg.legs.deadflag != DEAD_DEAD ){
+        dmgTrg = dmgTrg.legs;
+      }
+      if( dmg_point_z > (trg.origin_z - trg.mins_z / 2) ){
+        //shot was close enough to mid-point, even though legs are dead
+        dmgTrg = t_find_part(dmg_point, dmgTrg.maxs_x, dmgTrg);
+      }
+      //miss
     }
     else{
       dmgTrg = t_find_part(dmg_point, dmgTrg.maxs_x, dmgTrg);
-      if( dmgTrg.deadflag != DEAD_NO )
-        dmgTrg = dmgTrg.realowner;
-      
-      if( dmgTrg.partTypeId == M_TOR_CENTER )
-        dmgTrg = trg;
     }
   }
   
@@ -299,22 +302,37 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   finds closest sub-entity
 */
 entity(vector point, float rad, entity trg) t_find_part={
-  if( vlen(point - trg.armLeft.origin) < rad )
-    return trg.armLeft;
+  local entity part;
+  local float radi;
+  part = trg;
+  radi = rad;
   
-  if( vlen(point - trg.armRight.origin) < rad )
-    return trg.armRight;
-  
-  if( vlen(point - trg.torsoLeft.origin) < rad )
-    return trg.torsoLeft;
-  
-  if( vlen(point - trg.torsoRight.origin) < rad )
-    return trg.torsoRight;
-
-  return trg;
+  if( vlen(point - trg.torsoLeft.origin) < radi ){
+    part = trg.torsoLeft;
+    radi = vlen(point - trg.torsoLeft.origin);
+  }
+  if( vlen(point - trg.armLeft.origin) < radi ){
+    part = trg.armLeft;
+    radi = vlen(point - trg.armLeft.origin);
+  }
+  if( vlen(point - trg.torsoRight.origin) < radi ){
+    part = trg.torsoRight;
+    radi = vlen(point - trg.torsoRight.origin);
+  }
+  if( vlen(point - trg.armRight.origin) < radi ){
+    part = trg.armRight;
+    radi = vlen(point - trg.armRight.origin);
+  }
+  if( part.deadflag == DEAD_DEAD ){
+    cons_logAFloat("part.partTypeId", part.partTypeId); //DEBUG
+    cons_logAFloat("part.realowner", part.realowner.partTypeId);
+    part = part.realowner;
+  }
+  return part;
 };
 
-/*entity(entity parent, vector org, float start_rad) closestWeapon={
+/*
+entity(entity parent, vector org, float start_rad) closestWeapon={
   local float cur_dist;
   local entity wep, toSender;
   cur_dist = start_rad;
@@ -336,14 +354,23 @@ entity(vector point, float rad, entity trg) t_find_part={
     wep = parent;
   }
   return toSender;
-};*/
+};
+*/
 
 
 void(entity targ, entity attacker, float dmg_type) killed={
-  local entity oself;
+  local entity thisOldSelf;
   
-  oself = self;
+  thisOldSelf = self;
   self = targ;
+    if( targ.partTypeId != FALSE ){
+      self.enemy = attacker;
+      self.takedamage = DAMAGE_NO;
+      self.touch = SUB_Null;
+      self.th_die();
+      self = thisOldSelf;
+      return;
+    }
     // I honestly don't care if it shows a strange number,
     // and disabling this means I can check for worse damage
     // in the kill messages etc.
@@ -356,36 +383,33 @@ void(entity targ, entity attacker, float dmg_type) killed={
     if(!self.data_type){
       if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
         self.th_die();
-        self = oself;
+        self = thisOldSelf;
         return;
       }
     }
 
     self.enemy = attacker;
-    
     self.takedamage = DAMAGE_NO;
     self.touch = SUB_Null;
     
-    if (self.solid != SOLID_CORPSE){
-      // bump the monster counter
-      if ( (self.flags & (FL_MONSTER | FL_UNIT)) ){
-        switch( self.faction ){
-          case FACTION_PSC:
-            MISSION_LOSSES_PSC = MISSION_LOSSES_PSC + 1;
-            break;
-          case FACTION_SURVEST:
-            MISSION_LOSSES_SURVEST = MISSION_LOSSES_SURVEST + 1;
-            break;
-          case FACTION_MILITAR:
-            MISSION_LOSSES_MILITAR = MISSION_LOSSES_MILITAR + 1;
-            break;
-        }
-        if( (attacker.flags & FL_CLIENT) && (self.faction != attacker.faction) )
-          attacker.frags = attacker.frags + 1;
-        self.enemy = attacker;
-        killed_monsters = killed_monsters + 1;
-        WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
+    // bump the monster counter
+    if ( (self.flags & (FL_MONSTER | FL_UNIT)) ){
+      switch( self.faction ){
+        case FACTION_PSC:
+          MISSION_LOSSES_PSC = MISSION_LOSSES_PSC + 1;
+          break;
+        case FACTION_SURVEST:
+          MISSION_LOSSES_SURVEST = MISSION_LOSSES_SURVEST + 1;
+          break;
+        case FACTION_MILITAR:
+          MISSION_LOSSES_MILITAR = MISSION_LOSSES_MILITAR + 1;
+          break;
       }
+      if( (attacker.flags & FL_CLIENT) && (self.faction != attacker.faction) )
+        attacker.frags = attacker.frags + 1;
+      self.enemy = attacker;
+      killed_monsters = killed_monsters + 1;
+      WriteByte (MSG_ALL, SVC_KILLEDMONSTER);
     }
     
     self.doobits = 0;
@@ -400,21 +424,8 @@ void(entity targ, entity attacker, float dmg_type) killed={
         note = note.chain;
       }
     }
-    
-    if( (self.classname == MECH_PIECE) && (self.partTypeId != -1) ){
-      local entity wep;
-      wep = self.owner;
-      while(wep){
-        wep = wep.w_slot;
-        if(wep.partParentId == self.partTypeId){
-          if(wep.deadflag <= DEAD_NO){
-            killed(wep, attacker, 0);      
-          }
-        }
-      }
-    }
     self.th_die();
-  self = oself;
+  self = thisOldSelf;
 };
 
 

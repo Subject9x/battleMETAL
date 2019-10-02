@@ -5,14 +5,11 @@ Date: 09/23/2018
 Overview: ai unit
   Mech - Sniper
   Behavior - Panic/React
-  
+    th_pain == 'panic'
+    unit runs to its nearest node or ally
+    if either are lacking, it'll just run in a rando direction
   Setup
     
-*/
-/*
-  th_pain == 'panic'
-  unit runs to its nearest node or ally
-  if either are lacking, it'll just run in a rando direction
 */
 void(entity attacker) ai_mech_sniper_panic1={
   local entity friend;
@@ -180,11 +177,13 @@ void( entity attacker ) ai_mech_sniper_react1={
     return;
   }
   
-  self.ai_react_buffer = time + self.ai_react_time;
-  
+  if( attacker == self.enemy ){
+    self.ai_react_buffer = time + self.ai_react_time * 5;
+    return;
+  }
   //AI currently has no target
-  if( ai_valid_target(self.enemy) == FALSE ){
-    self.ai_react_buffer = time + self.ai_react_time * 1.25;
+  if( !ai_valid_target(self.enemy) ){
+    self.ai_react_buffer = time + self.ai_react_time * 5;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.torsoCenter.attack_state = TR_TARG;
@@ -212,5 +211,5 @@ void( entity attacker ) ai_mech_sniper_react1={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  
+  self.ai_react_buffer = time + self.ai_react_time;
 };
