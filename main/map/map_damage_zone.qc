@@ -290,13 +290,9 @@ void() map_damage_zone={
   self.think = map_damage_zone_think;
   self.count1 = time + (random() * 0.5);
   
-  //setmodel( self, "q3mdl/testball.md3" ); //DEBUG
+  util_MapDeveloperMarker();
   setsize( self, tempMin, tempMax );
   setorigin( self, self.origin );
-  
-  if( !cvar("developer") ){
-    //self.effects = self.effects | EF_NODRAW;
-  }
   
   if( (self.spawnflags & 2) ){
     if( !self.data_lifetime )

@@ -86,13 +86,11 @@ OFF_AFTER_USE 4: deactivate after use
 void() map_nav_point={
 
   self.flags = self.flags | FL_NODE;
-  self.effects = self.effects | EF_NOSHADOW;
-  if( !cvar("developer") )
-    self.alpha = 0;
-  
+
   self.data_type = DATA_NAVP;
   
-  setmodel(self, "q3mdl/testball.md3");
+  util_MapDeveloperMarker();
+  
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   self.movetype = MOVETYPE_FLY;

@@ -107,7 +107,7 @@ void() map_no_shoot={
   self.use = map_noshoot_use;
   self.isActive = TRUE;
   
-  setmodel(self, "q3mdl/testball.md3");
+  util_MapDeveloperMarker();
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
 

@@ -50,7 +50,7 @@ void() map_fail_objective={
     setsize( self, self.mins, self.maxs );
   }
   else{
-    setmodel( self, "q3mdl/testball.md3" );
+    util_MapDeveloperMarker();
     self.solid = SOLID_NOT;
     setsize( self, VEC_ORIGIN, VEC_ORIGIN );
   }

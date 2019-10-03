@@ -118,7 +118,8 @@ void() map_projectile_shooter={
   
   self.th_die = ctrl_die_weapon;
   
-  //setmodel( self, self.c_model ); //gah, code can't correct for inverse pitch of model angle
+  util_MapDeveloperMarker();
+    
   setsize( self, self.mins, self.maxs );
   setorigin( self, self.origin );
   

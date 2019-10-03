@@ -118,11 +118,7 @@ void() map_animatic={
   self.movetype = MOVETYPE_NONE;
   self.use = animatic_event_use;
   
-  setmodel(self, "q3mdl/testball.md3"); //DEBUG
-  
-  self.alpha = 0;
-  if( cvar("developer") )
-    self.alpha = 1;
+  util_MapDeveloperMarker();
   
   //touchable check
   if( (self.spawnflags & 2) ){

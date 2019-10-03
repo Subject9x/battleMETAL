@@ -7,8 +7,6 @@ Overview: ai unit
   Tank - GEV
   Behavior - Skirmish
 */
-
-
 /*
   AI SPAWN FUNCTION
 */

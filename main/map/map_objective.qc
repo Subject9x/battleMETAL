@@ -236,7 +236,7 @@ void() map_objective={
   self.data_type = DATA_OBJT;
   self.movetype = MOVETYPE_NONE;
   
-  setmodel(self, "q3mdl/testball.md3");
+  util_MapDeveloperMarker();
   
   //touchable
   if( (self.spawnflags & 2) ){

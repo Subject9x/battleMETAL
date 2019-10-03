@@ -8,8 +8,6 @@ Date: 8/27/2016
 Overview: utility functions for mod, header
 */
 
-
-
 //console logging==========================================================
 void(string msg, float val) cons_logAFloat;
 void(string msg, vector v1) cons_logAVector;
@@ -48,5 +46,7 @@ void(entity t) util_generateBuildingFoundation;
 vector(vector angl, vector org, float zAdjust) util_dropToGround;
 
 vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_pointNearBoxEdge;
+
+void() util_MapDeveloperMarker;
 
 void() BecomeExplosion;

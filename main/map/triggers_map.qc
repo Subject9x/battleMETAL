@@ -17,8 +17,9 @@ void() map_initTrigger={
 	  if (self.angles != '0 0 0')
 		SetMovedir ();
 	self.solid = SOLID_TRIGGER;
-	//setmodel (self, self.model);	// set size and link into world
-	//self.effects = self.effects | EF_NODRAW;
+  
+  util_MapDeveloperMarker();
+  
   setsize(self, self.mins, self.maxs);
   setorigin(self, self.origin);
   self.movetype = MOVETYPE_NONE;

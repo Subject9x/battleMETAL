@@ -138,12 +138,7 @@ void(vector pos, float algn) hud_renderPitchIndicator={
   ofs = gui_calcAlignCustom(ofs, (VIEW_CTX | VIEW_TOP), pos);
   gui_renderMeter(perc, ofs, gui_percentToPixelRawVec('4 26'), '-1 0 0', HUD_COLOR_DEF, HUD_ALPHA, 0, AXIS_V, 0);
   drawfill( (ofs - gui_percentToPixelRawVec('0 0') ), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);
-  drawfill( (ofs + gui_percentToPixelRawVec('0 52') ), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);
-
-  if( cvar("developer") ){
-    drawstring(gui_percentToPixelRawVec('100 250'), ftos(input_angles_x), '12 10', HUD_COLOR_DEF, HUD_ALPHA, 0);
-  }
-  
+  drawfill( (ofs + gui_percentToPixelRawVec('0 52') ), gui_percentToPixelRawVec('8 1'), HUD_COLOR_DEF, HUD_ALPHA, 0);  
 };
 
 /*

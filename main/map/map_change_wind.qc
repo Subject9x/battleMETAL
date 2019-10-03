@@ -91,10 +91,9 @@ void() map_change_wind={
   
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
-  if( cvar("developer") ){
-    setmodel( self, "q3mdl/testball.md3" ); //DEBUG
-    setsize( self, tempMin, tempMax );
-  }
+  util_MapDeveloperMarker();
+  
+  setsize( self, tempMin, tempMax );
   setorigin( self, self.origin );
   
   self.c_alt_ofs = '0 0 0';

@@ -146,7 +146,7 @@ void() map_hud_highlight={
 
   self.noise = "misc/talk.wav"; //TODO
   
-  setmodel( self, "q3mdl/testball.md3" );
+  util_MapDeveloperMarker();
   
   //touchable check
   if( (self.spawnflags & 2) ){

@@ -67,7 +67,9 @@ void() map_change_fog={
   self.use = map_changefog_use;
   self.touch = map_changefog_touch;
   self.stat_wep_state = TRUE;
-  setmodel(self, "q3mdl/testball.md3");
+  
+  util_MapDeveloperMarker();
+  
   setsize(self, tempMin, tempMax);
   setorigin(self, self.origin);
 };

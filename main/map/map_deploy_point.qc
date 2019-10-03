@@ -35,7 +35,7 @@ void() map_deploy_point={
   self.data_type = DATA_DEPL;
   self.flags = self.flags | FL_NODE;
   
-  setmodel(self, "q3mdl/testball.md3");
+  util_MapDeveloperMarker();
   setorigin( self, self.origin );
   
   self.movetype = MOVETYPE_NONE;

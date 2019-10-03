@@ -56,7 +56,9 @@ void() map_change_music={
   self.movetype = MOVETYPE_NONE;
   self.use = map_changemusic_use;
   self.touch = map_changemusic_touch;
-  setmodel(self, "q3mdl/testball.md3");
+  
+  util_MapDeveloperMarker();
+  
   setsize(self, tempMin, tempMax);
   setorigin(self, self.origin);
 };

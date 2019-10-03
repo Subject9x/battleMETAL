@@ -95,10 +95,11 @@ void() ai_change_faction={
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   
-  if( cvar("developer") ){
-    setsize( self, '-3 -3 -3', '3 3 3' );
-    setorigin( self, self.origin );
-  }
+  util_MapDeveloperMarker();
+  
+  setsize( self, '-3 -3 -3', '3 3 3' );
+  setorigin( self, self.origin );
+  
   self.use = ai_change_faction_use;
   
   if( (self.spawnflags & 1) ){
@@ -128,10 +129,11 @@ void() ai_change_rank={
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
   
-  if( cvar("developer") ){
-    setsize( self, '-3 -3 -3', '3 3 3' );
-    setorigin( self, self.origin );
-  }
+  util_MapDeveloperMarker();
+ 
+  setsize( self, '-3 -3 -3', '3 3 3' );
+  setorigin( self, self.origin );
+ 
   self.use = ai_change_rank_use;
   
   if( (self.spawnflags & 1) ){

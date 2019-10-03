@@ -44,7 +44,9 @@ void() map_particle_ini={
 
   self.solid = SOLID_NOT;
   self.movetype = MOVETYPE_NONE;
-  setmodel( self, "q3mdl/testball.md3" ); //DEBUG
+  
+  util_MapDeveloperMarker();
+  
   setsize( self, VEC_ORIGIN, VEC_ORIGIN );
   setorigin( self, self.origin );
   

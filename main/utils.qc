@@ -456,3 +456,18 @@ void() BecomeExplosion={
   self.think = SUB_Remove;
 	self.nextthink = time + 0.1;
 };
+
+/*
+  Used for map dev, marks out map objects when cvar("developer") = TRUE,
+*/
+void() util_MapDeveloperMarker={
+  if( cvar("developer") ){
+    self.alpha = 0.85;
+    self.scale = 1;
+  }
+  else{
+    self.alpha = 0.01;
+    self.scale = 0.01;
+  }
+  self.effects = self.effects | EF_NOSHADOW;
+};
