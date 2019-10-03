@@ -23,12 +23,11 @@ void() ai_tank_sk_die={
   self.colormod = '0.33 0.33 0.33';
   self.attack_state = -1;
   self.enemy = world;
-  self.maxs = self.maxs * 0.75;
-  self.mins_x = self.maxs_x * -1;
-  self.mins_y = self.maxs_y * -1;
+  self.maxs = self.maxs * 0.85;
+  self.mins = self.mins * 0.85;
   setsize(self, self.mins, self.maxs);
   makevectors( self.angles );  
-  setorigin(self, self.origin - (v_up * self.maxs_z * 0.67) );
+  setorigin(self, self.origin - (v_up * self.maxs_z * 0.15) );
   
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
@@ -43,7 +42,6 @@ void() ai_tank_sk_die={
   mech_player_compdie(self.torsoRight);
   mech_player_compdie(self.torsoCenter);  
 
-  
   if( self.ai_node_recall ){
     remove(self.ai_node_recall);
   }
@@ -56,13 +54,13 @@ void() ai_tank_sk_die={
   
   switch( self.vec_size ){
     case 2:
-      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 20, world); 
+      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 20, -1); 
       break;
     case 3:
-      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20, world); 
+      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20, -1); 
       break;
     default:
-      te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20, world); 
+      te_small_flame_start( self.origin + (v_up * (self.maxs_y /2)), self.angles,  self.vec_size, self.vec_size * 1000, self.vec_size / 20, -1); 
       break;
   }
 

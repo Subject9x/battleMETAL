@@ -191,20 +191,21 @@ void() ai_mech_sk_fight_prep={
     
     if( enemy_vis == VIS_FAIL ){
       if( self.ai_rank > AI_RANK_REG ){
-        if( util_getMechHpAverage(self) > 0.45)
+        if( util_getMechHpAverage(self) > 0.45){
           enemy_hunt = TRUE;
-        
-        if( util_getMechHpAverage(self.enemy) <= 0.25 )
+        }
+        if( util_getMechHpAverage(self.enemy) <= 0.25 ){
           enemy_hunt = TRUE;
+        }
       }
       if( util_getMechHpAverage(self) > 0.75 ){
-        if( self.enemy.vec_size < self.vec_size )
+        if( self.enemy.vec_size < self.vec_size ){
           enemy_hunt = TRUE;
-        
+        }
       }
-      if( util_getMechHpAverage(self.enemy) <= 0.25 )
+      if( util_getMechHpAverage(self.enemy) <= 0.25 ){
         enemy_hunt = TRUE;
-      
+      }
     }
   }
   if( enemy_hunt ){
@@ -227,15 +228,14 @@ void() ai_mech_sk_fight_prep={
     macro_ai_frame(ai_mech_sk_hunt1)
     return;
   }
+
   if( self.movetarget ){
     self.goalentity = self.movetarget;
     macro_ai_frame(ai_mech_sk_patrol1)
     return;
   }
-  self.legs.attack_state = TR_YAW;
-  self.legs.think = bot_leg_stand1;
-  self.legs.nextthink = time + 0.1;
-  macro_ai_frame(ai_mech_sk_stand1)
+
+  macro_ai_frame(ai_mech_sk_enter_stand)
 };
 
 void() ai_mech_sk_stand1={
@@ -247,11 +247,23 @@ void() ai_mech_sk_stand1={
     return;
   }
   
-  if( time > self.pausetime ){
-    if( self.movetarget ){
+  if( self.movetarget ){
+    if( time > self.pausetime ){
       macro_ai_frame(ai_mech_sk_patrol1)
       return;
     }
   }
+  macro_ai_frame(ai_mech_sk_stand1)
+};
+
+void() ai_mech_sk_enter_stand={
+  ai_update_accuracy( FALSE ); 
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  self.legs.ai_dir = self.legs.angles_y;
+  self.legs.attack_state = TR_NORM;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
+  
   macro_ai_frame(ai_mech_sk_stand1)
 };

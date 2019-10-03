@@ -16,6 +16,9 @@ void() ai_gev_rotate1={
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_gev_rotate2)
 };
@@ -25,7 +28,8 @@ void() ai_gev_rotate2={
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
-
+  ai_attack();
+  
   macro_ai_frame(ai_gev_rotate3)
 };
 void() ai_gev_rotate3={
@@ -34,6 +38,9 @@ void() ai_gev_rotate3={
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
   ai_face_targ();
+  if( self.ai_rank > AI_RANK_REG ){
+    ai_attack();
+  }
   
   macro_ai_frame(ai_gev_rotate4)
 };

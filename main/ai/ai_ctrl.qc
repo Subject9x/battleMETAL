@@ -62,35 +62,16 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
   
 };
 
-float( float yawAng ) ai_check_move={
-  local vector superV;
-  local entity base;
-  base = self;
-  if( self.data_type == DATA_MECH )
-    base = self.legs;
-
-  superV_x = self.angles_x;
-  superV_y = yawAng;
-  superV_z = self.angles_y;
-  makevectors( superV );
-  traceline( base.origin, base.origin + (v_forward * 64), FALSE, self);
-  
-  if( trace_ent && trace_fraction <= 0.25)
-    return FALSE;
-  
-  return trace_fraction;
-};
-
 void() ai_leg_control={
   local entity legOwner;
   
   legOwner = self;
   if( (self.legs) ){
       self = self.legs;
-      util_setOffsetOrigin(self, legOwner, self.c_ofs);
+      util_setOffsetOrigin(self, self.owner, self.c_ofs);
       switch( self.attack_state ){
         case TR_NORM:
-          self.ideal_yaw = legOwner.angles_y;
+          self.ideal_yaw = self.owner.angles_y;
           break;
         case TR_GOAL:
           self.ideal_yaw = self.ai_dir;
@@ -109,9 +90,6 @@ void() ai_leg_control={
   refer to macro macro_ai_
 */
 void() ai_update={
-  if( !(self.flags & FL_ONGROUND) ){
-    droptofloor();
-  }
   if( ai_valid_target( self.enemy ) ){
     ai_turret_set_state( TR_TARG );
     self.stat_trg_dist = vlen(self.enemy.origin - self.origin);
@@ -119,12 +97,13 @@ void() ai_update={
   }
   else{ 
     self.enemy = world;
+    self.button0 = FALSE;
     if( self.torsoCenter.attack_state != TR_YAW ){
-      ai_turret_set_state( TR_NORM );
+      ai_turret_set_state( TR_YAW );
     }
   }
   ai_ranged_attack();
-  self.button0 = 0;
+  self.button0 = FALSE;
 };
 
 /*
@@ -250,9 +229,10 @@ float(entity t, float ang) ai_check_face={
 	vec = normalize (t.origin - self.origin);
 	dot = vec * v_forward;
   
-	if ( dot >= ang)
+	if ( dot >= ang){
 		return TRUE;
-
+  }
+  
 	return FALSE;
 };
 
@@ -274,9 +254,10 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
 	vec = normalize (t.origin - self.origin);
 	dot = vec * v_forward;
   
-	if ( dot >= ang)
+	if ( dot >= ang){
 		return TRUE;
-
+  }
+  
 	return FALSE;
 };
 

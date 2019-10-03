@@ -19,8 +19,8 @@ void() data_ini_monitor_={
   self.vec_name = "Monitor";
  
   self.max_health = 1200;
-  self.mins = '-22 -22 -44';
-  self.maxs = '22 22 28';
+  self.mins = '-26 -26 -44';
+  self.maxs = '26 26 28';
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 700;

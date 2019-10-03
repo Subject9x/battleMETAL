@@ -57,7 +57,7 @@ void() ai_turret_die={
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, 360, self.vec_size / 20, world); 
+  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, 360, self.vec_size / 20, 360); 
   
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;
@@ -574,9 +574,9 @@ void( entity attacker ) ai_turret_react1={
   self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire
-  if( attacker.faction == self.faction )
+  if( attacker.faction == self.faction ){
     return;
-
+  }
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
     self.ai_react_buffer = time + self.ai_react_time * 5;

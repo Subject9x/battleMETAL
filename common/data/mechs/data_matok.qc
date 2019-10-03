@@ -19,8 +19,8 @@ void() data_ini_matok_={
   self.vec_name = "Matok";
  
   self.max_health = 650;
-  self.mins = '-17 -17 -40';
-  self.maxs = '17 17 22';
+  self.mins = '-20 -20 -40';
+  self.maxs = '20 20 22';
   
 //ENERGY AND SHIELDS===================
   self.energyMax   = 800;

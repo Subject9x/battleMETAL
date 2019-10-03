@@ -19,8 +19,8 @@ void() data_ini_balaket_={
   self.vec_name = "Balaket";
  
   self.max_health = 500;
-  self.mins = '-14 -14 -35';
-  self.maxs = '14 14 16';
+  self.mins = '-18 -18 -35';
+  self.maxs = '18 18 16';
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 400;

@@ -38,7 +38,7 @@ void() ai_gev_strafe1={
     macro_ai_frame(ai_gev_strafe2)
     return;
   }
-  
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_strafe2={
   ai_update_accuracy( TRUE ); 

@@ -152,14 +152,15 @@ void() te_flame_th={
       self.think = SUB_Remove;
     }
   }
-  //ownerFlag variable, tie this cheaply to an owner and remove when owner is removed.
-  if( !self.owner || self.owner == world ){
-    self.think = SUB_Remove;
+  if( self.health > 0 ){
+    if( time > self.health ){
+      self.think = SUB_Remove;
+    }
   }
   self.nextthink = time + self.count2;
 };
 
-void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_small_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_small_flame_start={
   local entity fire;
   
   fire = spawn();
@@ -175,13 +176,13 @@ void( vector org, vector angl, float total, float lifetime, float ticrate, entit
   if( lifetime > 0 )
     fire.data_lifetime = time + lifetime;
     
-  if( ownerFlag )
-    fire.owner = ownerFlag;
-    
+  if( ownerLifetime > 0){
+    fire.health = time + ownerLifetime;
+  }
   setorigin( fire, org );
 };
 
-void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_med_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_med_flame_start={
   local entity fire;
   
   fire = spawn();
@@ -196,12 +197,13 @@ void( vector org, vector angl, float total, float lifetime, float ticrate, entit
   if( lifetime > 0 )
     fire.data_lifetime = time + lifetime;
   
-  if( ownerFlag )
-    fire.owner = ownerFlag;
+  if( ownerLifetime > 0 ){
+    fire.health = time + ownerLifetime;
+  }
   setorigin( fire, org );
 };
 
-void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_big_flame_start={
+void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_big_flame_start={
   local entity fire;
   
   fire = spawn();
@@ -216,8 +218,9 @@ void( vector org, vector angl, float total, float lifetime, float ticrate, entit
   if( lifetime > 0 )
     fire.data_lifetime = time + lifetime;
   
-  if( ownerFlag )
-    fire.owner = ownerFlag;
+  if( ownerLifetime > 0 ){
+    fire.health = time + ownerLifetime;
+  }
   setorigin( fire, org );
 };
 
@@ -337,7 +340,7 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
     }
     self.th_die = SUB_Remove;
     self.owner = notChunk.owner;
-    util_setCollider(DAMAGE_AIM, SOLID_CORPSE, MOVETYPE_BOUNCE);
+    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_BOUNCE);
     util_setModel(modl, skinNum, 0);
     setsize(self, '-4 -4 -4', '4 4 4');
     setorigin(self, notChunk.origin);

@@ -359,21 +359,17 @@ float(entity wep) ai_attack_blockcheck={
   
   viewpont = normalize(self.enemy.origin - self.cockpit.origin);
   makevectors( vang );
-  traceline (self.cockpit.origin + v_forward * 1, self.cockpit.origin + viewpont*wep.w_range, FALSE, self);
-  if( (wep.damageType & EFF_ARC) )
-    return FALSE; // arcing attacks don't need LoS
+  traceline (self.cockpit.origin + v_forward * 1, self.cockpit.origin + viewpont*wep.w_range, (wep.damageType & EFF_ARC), self);
 
-  
-  if(trace_ent == world)
+  if(trace_ent == world){
     return TRUE;
-  
-  if( trace_ent.faction == self.faction )
+  }
+  if( trace_ent.faction == self.faction ){
     return TRUE;
-  
-  if( (viewpont * v_forward) <= 0.95 )
+  }
+  if( (viewpont * v_forward) <= 0.95 ){
     return TRUE;
-  
-
+  }
   return FALSE;
 };
 

@@ -45,21 +45,6 @@ void() ai_mech_sniper_die={
   //fire triggers when dead
   trigger_event( self, trigOnDeath );
 
-  makevectors( self.torsoCenter.angles );
-  vel = self.origin + (v_up * 2);
-  forg = self.origin + (v_up * (self.maxs_y / 2) ) + (v_forward * (self.mins_x / 1.5));
-  switch( self.vec_size ){
-    case 2:
-      te_med_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
-      break;
-    case 3:
-      te_big_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
-      break;
-    default:
-      te_small_flame_start( forg, self.angles, self.vec_size, 600, self.vec_size / 20, world); 
-      break;
-  }
-  
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);
   droptofloor();

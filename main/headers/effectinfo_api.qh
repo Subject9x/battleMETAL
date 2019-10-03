@@ -16,9 +16,9 @@ void( vector org, vector angl, vector vel, float total, float debrType) te_debri
 
 void( vector org, vector angl, vector vel, float total) te_unit_dust;
 
-void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_small_flame_start;
-void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_med_flame_start;
-void( vector org, vector angl, float total, float lifetime, float ticrate, entity ownerFlag ) te_big_flame_start;
+void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_small_flame_start;
+void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_med_flame_start;
+void( vector org, vector angl, float total, float lifetime, float ticrate, float ownerLifetime ) te_big_flame_start;
 
 void( vector org, vector angl, float hitDmg, float total) te_shield_hit_high;
 void( vector org, float vecSize ) te_shield_explode;

@@ -189,22 +189,34 @@ void() ai_tank_sk_fight_prep={
       }
     }
     if( enemy_vis == VIS_FAIL ){
-      if( self.ai_rank > AI_RANK_REG ){
-        if( util_getMechHpAverage(self) > 0.45){
-          enemy_hunt = TRUE;
+      if( enemy_range < 200 ){
+        ai_face_targ();
+        macro_ai_frame(ai_tank_sk_rotate1)
+        return;
+      }
+      if( enemy_range <= self.ai_minrange ){
+        self.enemy = world;
+        macro_ai_frame(ai_tank_sk_stand1)
+        return;
+      }
+      if( enemy_range > self.ai_minrange ){
+        if( self.ai_rank > AI_RANK_REG ){
+          if( util_getMechHpAverage(self) > 0.45){
+            enemy_hunt = TRUE;
+          }
+          if( util_getMechHpAverage(self.enemy) <= 0.25 ){
+            enemy_hunt = TRUE;
+          }
+        }
+        if( util_getMechHpAverage(self) > 0.75 ){
+          if( self.enemy.vec_size < self.vec_size ){
+            enemy_hunt = TRUE;
+          }
         }
         if( util_getMechHpAverage(self.enemy) <= 0.25 ){
-          enemy_hunt = TRUE;
-        }
-      }
-      if( util_getMechHpAverage(self) > 0.75 ){
-        if( self.enemy.vec_size < self.vec_size ){
-          enemy_hunt = TRUE;
-        }
-      }
-      if( util_getMechHpAverage(self.enemy) <= 0.25 ){
-        if( self.enemy.vec_size < self.vec_size ){
-          enemy_hunt = TRUE;
+          if( self.enemy.vec_size < self.vec_size ){
+            enemy_hunt = TRUE;
+          }
         }
       }
     }

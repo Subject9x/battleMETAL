@@ -30,13 +30,13 @@ void() ai_gev_touch_death={
     vel = self.origin + (v_up * 2);
     switch( self.vec_size ){
       case 2:
-        te_med_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50, world); 
+        te_med_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50, -1); 
         break;
       case 3:
-        te_big_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50, world); 
+        te_big_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50, -1); 
         break;
       default:
-        te_small_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50, world); 
+        te_small_flame_start( self.origin + (v_up * (self.maxs_y / 1.5)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 50, -1); 
         break;
     }
     self.touch = SUB_Null;
@@ -54,7 +54,7 @@ void() ai_gev_die={
   self.th_missile = SUB_Null;
   self.deadflag = DEAD_DYING;
   self.movetype = MOVETYPE_BOUNCE;
-  self.solid = SOLID_BBOX;
+  self.solid = SOLID_NOT;
   self.colormod = '0.33 0.33 0.33'; 
   setsize(self, self.mins * 0.35, self.maxs * 0.35);
   setorigin(self, self.origin);
@@ -76,7 +76,6 @@ void() ai_gev_die={
   
   if( self.ai_node_recall )
     remove(self.ai_node_recall);
-  
   
   t_y = self.ideal_yaw;
   

@@ -176,11 +176,9 @@ void() ai_gev_fight_prep={
       //enemy is out of combat range
       if( enemy_range > self.ai_minrange ){
         if( enemy_infront ){
-          if( ai_check_move(self.ideal_yaw) ){
-            self.lefty = 1;
-            macro_ai_frame(ai_gev_enter_charge)
-            return;
-          }
+          self.lefty = 1;
+          macro_ai_frame(ai_gev_enter_charge)
+          return;
         }
         //dump target, find new one
         self.enemy = world;

@@ -35,9 +35,11 @@ void() ai_gev_charge1={
   ai_face_targ();
   ai_attack();
   
-  walkmove( self.ai_dir, dampen );
-
-  macro_ai_frame(ai_gev_charge2)
+  if( walkmove( self.ai_dir, dampen ) ){
+    macro_ai_frame(ai_gev_charge2)
+    return;
+  }
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_charge2={
   ai_update_accuracy( TRUE ); 
@@ -55,9 +57,11 @@ void() ai_gev_charge2={
     ai_attack();
   }
   
-  walkmove( self.ai_dir, dampen );
-  
-  macro_ai_frame(ai_gev_charge3)
+  if( walkmove( self.ai_dir, dampen ) ){
+    macro_ai_frame(ai_gev_charge3)
+    return;
+  }
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_charge3={
   ai_update_accuracy( TRUE ); 
@@ -71,10 +75,11 @@ void() ai_gev_charge3={
 
   ai_face_targ();
 
-
-  walkmove( self.ai_dir, dampen );
-  
-  macro_ai_frame(ai_gev_charge4)
+  if( walkmove( self.ai_dir, dampen ) ){
+    macro_ai_frame(ai_gev_charge4)
+    return;
+  }
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_charge4={
   ai_update_accuracy( TRUE ); 
@@ -87,10 +92,12 @@ void() ai_gev_charge4={
     dampen = dampen * 0.4;
   
   ai_face_targ();
-  
-  walkmove( self.ai_dir, dampen );
 
-  macro_ai_frame(ai_gev_charge5)
+  if( walkmove( self.ai_dir, dampen ) ){
+    macro_ai_frame(ai_gev_charge5)
+    return;
+  }
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_charge5={
   ai_update_accuracy( TRUE ); 
@@ -105,10 +112,11 @@ void() ai_gev_charge5={
   ai_face_targ();  
   ai_attack();
   
-  walkmove( self.ai_dir, dampen );
-  
-
-  macro_ai_frame(ai_gev_charge6)
+  if( walkmove( self.ai_dir, dampen ) ){
+    macro_ai_frame(ai_gev_charge6)
+    return;
+  }
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_charge6={
   ai_update_accuracy( TRUE ); 
@@ -123,9 +131,11 @@ void() ai_gev_charge6={
   ai_face_targ();     
   ai_attack();
   
-  walkmove( self.ai_dir, dampen );
-  
-  macro_ai_frame(ai_gev_charge7)
+  if( walkmove( self.ai_dir, dampen ) ){
+    macro_ai_frame(ai_gev_charge7)
+    return;
+  }
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_charge7={
   ai_update_accuracy( TRUE ); 
@@ -140,9 +150,11 @@ void() ai_gev_charge7={
   ai_face_targ();
   ai_attack();
   
-  walkmove( self.ai_dir, dampen );
-
-  macro_ai_frame(ai_gev_charge8)
+  if( walkmove( self.ai_dir, dampen ) ){
+    macro_ai_frame(ai_gev_charge8)
+    return;
+  }
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_charge8={
   ai_update_accuracy( TRUE ); 
@@ -157,9 +169,11 @@ void() ai_gev_charge8={
   ai_face_targ();
   ai_attack();
   
-  walkmove( self.ai_dir, dampen );
-
-  macro_ai_frame(ai_gev_charge9)
+  if( walkmove( self.ai_dir, dampen ) ){
+    macro_ai_frame(ai_gev_charge9)
+    return;
+  }
+  macro_ai_frame(ai_gev_rotate1)
 };
 void() ai_gev_charge9={
   ai_update_accuracy( TRUE ); 
@@ -173,19 +187,11 @@ void() ai_gev_charge9={
 
   ai_face_targ();
   
-  walkmove( self.ai_dir, dampen );
-  
-  self.speed = self.lefty;
-  macro_ai_frame_count(ai_gev_charge1)
-  
-  if( ai_check_face( self.enemy, self.ai_fov )){
-    if( (self.lefty > 0) && (self.ai_rank > AI_RANK_REG )){
-      if( random() < 0.45){
-        macro_ai_frame(ai_gev_charge1)
-        return;
-      }
-    }
+  if( walkmove( self.ai_dir, dampen ) ){
+    self.speed = self.lefty;
+    macro_ai_frame_count(ai_gev_charge1)
+    macro_ai_frame(ai_gev_fight_prep)
+    return;
   }
-  
-  macro_ai_frame(ai_gev_fight_prep)
+  macro_ai_frame(ai_gev_rotate1)
 };
