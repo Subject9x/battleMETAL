@@ -16,6 +16,7 @@ void() data_projectile_plasma_burn_th;
 void() data_projectile_plasma_think_;
 
 void() data_projectile_ini_plasma_={
+  self.classname = "missile";
   self.touch = data_projectile_plasma_touch;
   self.data_velocity = 1600;
   self.model = "q3mdl/proj/mdl_proj_rpc.md3";

@@ -9,10 +9,6 @@ Overview:
       other code bases.
 */
 void() PlayerPreThink = {
-  //local	float	mspeed, aspeed;
-	//local	float	r;
-  //local entity oself;
-
 	if (intermission_running)
 	{
 		IntermissionThink ();	// otherwise a button could be missed between

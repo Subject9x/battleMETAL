@@ -12,6 +12,50 @@ Overview: ai unit
   Setup
 
 */
+/*
+  TH_REACT
+*/
+void( entity attacker ) ai_spg_react1={
+  local float enemyvis;
+  if( !attacker ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
+    return;
+  }
+  
+  //AI has taken friendly fire
+  if( attacker.faction == self.faction )
+    return;
+
+  //AI currently has no target
+  if( ai_valid_target(self.enemy) == FALSE ){
+    self.enemy = attacker;
+    self.ai_react_buffer = time + self.ai_react_time * 2;
+    //Enemy fire is coming 'out of nowhere'
+    if( vlen(attacker.origin - self.origin) > self.ai_view ){
+      macro_ai_frame(ai_spg_panic1)
+      return;
+    }
+    macro_ai_frame(ai_spg_fight_prep)
+    return;
+  }
+  
+  enemyvis = ai_check_vis(self.enemy);
+  if( enemyvis == VIS_FAIL ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_spg_fight_prep)
+    return;
+  }
+  
+  if( ai_check_targ_infront( attacker, self.ai_fov, FALSE) ){
+    self.oldenemy = self.enemy;
+    self.enemy = attacker;
+    self.ai_react_buffer = time + self.ai_react_time * 3;
+    macro_ai_frame(ai_spg_fight_prep)
+    return;
+  }
+};
 void(entity attacker) ai_spg_panic1={
   local entity friend;
   
@@ -129,47 +173,4 @@ void() ai_spg_panic10={
   }
   
   macro_ai_frame( ai_spg_stand1 )
-};
-
-/*
-  TH_REACT
-*/
-void( entity attacker ) ai_spg_react1={
-  local float enemyvis;
-
-  self.ai_react_buffer = time + self.ai_react_time;
-  
-  //AI has taken friendly fire
-  if( attacker.faction == self.faction )
-    return;
-
-  //AI currently has no target
-  if( ai_valid_target(self.enemy) == FALSE ){
-    self.enemy = attacker;
-    self.ai_react_buffer = time + self.ai_react_time * 2;
-    //Enemy fire is coming 'out of nowhere'
-    if( vlen(attacker.origin - self.origin) > self.ai_view ){
-      macro_ai_frame(ai_spg_panic1)
-      return;
-    }
-    macro_ai_frame(ai_spg_fight_prep)
-    return;
-  }
-  
-  enemyvis = ai_check_vis(self.enemy);
-  if( enemyvis == VIS_FAIL ){
-    self.oldenemy = self.enemy;
-    self.enemy = attacker;
-    self.ai_react_buffer = time + self.ai_react_time * 3;
-    macro_ai_frame(ai_spg_fight_prep)
-    return;
-  }
-  
-  if( ai_check_targ_infront( attacker, self.ai_fov, FALSE) ){
-    self.oldenemy = self.enemy;
-    self.enemy = attacker;
-    self.ai_react_buffer = time + self.ai_react_time * 3;
-    macro_ai_frame(ai_spg_fight_prep)
-    return;
-  }
 };

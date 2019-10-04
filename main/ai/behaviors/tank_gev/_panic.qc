@@ -124,6 +124,10 @@ void() ai_gev_panic10={
 void( entity attacker ) ai_gev_react1={
   local float enemyvis;
 
+  if( !attacker ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
+    return;
+  }
   self.ai_react_buffer = time + self.ai_react_time;
   
   //AI has taken friendly fire

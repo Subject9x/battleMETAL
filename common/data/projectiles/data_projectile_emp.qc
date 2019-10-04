@@ -16,7 +16,7 @@ float DAT_PRJ_EMP_PROXYRAD    = 200;
 float DAT_PRJ_EMP_EXPRAD      = 300;
 
 void() data_projectile_ini_emp_={
-  self.classname = "prj_emp";
+  self.classname = "missile";
   self.touch = data_prj_emp_touch;
   self.data_idx = 0;
   self.data_velocity = 1500;

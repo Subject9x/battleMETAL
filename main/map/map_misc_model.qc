@@ -43,8 +43,9 @@ void() map_terrain_model={
   setorigin(self, self.origin);
   self.solid = SOLID_BSP;
   
-  if( (self.spawnflags & 4) )
+  if( (self.spawnflags & 4) ){
     self.effects = EF_NOSHADOW;
+  }
 };
 
 

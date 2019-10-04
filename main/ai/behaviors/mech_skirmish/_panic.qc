@@ -12,6 +12,11 @@ Overview: ai unit
 void( entity attacker ) ai_mech_sk_react1={
   local float enemyvis;
 
+  if( !attacker ){
+    self.ai_react_buffer = time + self.ai_react_time * 2;
+    return;
+  }
+  
   //AI has taken friendly fire
   if( attacker.faction == self.faction )
     return;

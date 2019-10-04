@@ -11,7 +11,7 @@ Overview:
 void() data_projectile_ini_quantum_bit_touch_;
 
 void() data_projectile_ini_quantum_bit_={
-  self.classname = "prj_qrfl";
+  self.classname = "missile";
   self.touch = data_projectile_ini_quantum_bit_touch_;
   self.data_idx = 0;
   self.data_velocity = 200;

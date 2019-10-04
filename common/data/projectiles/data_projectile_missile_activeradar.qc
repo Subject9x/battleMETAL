@@ -14,7 +14,7 @@ void() data_projectile_missile_activeradar_delay;
 void() data_projectile_missile_activeradar_touch;
 
 void() data_projectile_ini_missile_active_radar_={
-  self.classname = "prj_marh";
+  self.classname = "missile";
   //self.touch = data_projectile_missile_activeradar_touch;
   self.data_velocity = 650;
   self.model = "q3mdl/proj/mdl_proj_marh.md3";
