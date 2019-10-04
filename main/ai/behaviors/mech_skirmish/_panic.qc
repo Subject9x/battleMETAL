@@ -23,6 +23,9 @@ void( entity attacker ) ai_mech_sk_react1={
   
   if( attacker == self.enemy ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
+    if( self.attack_state != ST_HUNT ){
+      macro_ai_frame(ai_mech_sk_fight_prep)
+    }
     return;
   }
   //AI currently has no target
@@ -46,7 +49,7 @@ void( entity attacker ) ai_mech_sk_react1={
     return;
   }
   
-  if( ai_check_targ_infront( attacker, self.ai_fov, TRUE) && enemyvis != VIS_FRAC ){
+  if( ai_check_targ_infront( attacker, self.ai_fov, TRUE) && (enemyvis != VIS_FRAC) ){
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );

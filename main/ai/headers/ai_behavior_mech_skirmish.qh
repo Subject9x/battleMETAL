@@ -136,6 +136,7 @@ void() ai_mech_sk_reverse_adjust6;
 void() ai_mech_sk_reverse_adjust7;
 void() ai_mech_sk_reverse_adjust8;
 
+void() ai_mech_sk_enter_hunt;
 void() ai_mech_sk_hunt1;
 void() ai_mech_sk_hunt2;
 void() ai_mech_sk_hunt3;

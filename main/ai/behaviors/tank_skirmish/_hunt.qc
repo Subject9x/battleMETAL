@@ -5,13 +5,13 @@ Date: 09/23/2018
 Overview: ai unit
   Tank - Skirmish
   Behavior - Skirmish
-  
+    hunting behavior
   Setup
     
 */
-/*
-  hunting behavior
-*/
+void() ai_tank_sk_enter_hunt={
+
+};
 void() ai_tank_sk_hunt1={
   ai_turret_set_state( TR_NORM );
   ai_update_accuracy( TRUE ); 

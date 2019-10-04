@@ -40,7 +40,7 @@ void() node_setup={
   self.touch = node_touch;  
   self.isActive = TRUE;
   
-  setmodel(self, "q3mdl/testball.md3");
+  util_MapDeveloperMarker();
   setsize(self, '-10 -10 -18','10 10 18');
   
   self.alpha = 0;
@@ -99,6 +99,7 @@ void() node_recall_touch={
           }
         }
       self = this;
+      self.touch = SUB_Null;
       self.think = SUB_Remove;
       self.nextthink = time + 0.001;
     }

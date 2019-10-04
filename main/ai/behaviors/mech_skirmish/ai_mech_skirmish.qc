@@ -38,7 +38,6 @@ void() ai_mech_skirmish={
   Fight Prep is like the big combat-logic filter, TH_SCRUTINIZER? 
 */
 void() ai_mech_sk_fight_prep={
-  local entity nodeRecall;
   local float roll;
 
   ai_update_accuracy( FALSE );
@@ -210,18 +209,7 @@ void() ai_mech_sk_fight_prep={
   }
   if( enemy_hunt ){
     if( !self.ai_node_recall ){
-      ai_sfx_huntStart();
-      nodeRecall = node_recall_setup();
-      self.ai_node_recall = nodeRecall;
-      self.goalentity = self.enemy;
-      self.ai_action_time = (0 - self.ai_action_mod) * -1;
-      if( self.stat_rdr_mode ){
-        self.ai_action_time = ceil(self.ai_action_time * 6);
-      }
-      else{
-        self.ai_action_time = ceil(self.ai_action_time * 4);
-      }
-      macro_ai_frame(ai_mech_sk_hunt1)
+      macro_ai_frame(ai_mech_sk_enter_hunt)
       return;
     }
     self.goalentity = self.ai_node_recall;
