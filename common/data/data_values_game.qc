@@ -137,13 +137,14 @@ float EVADE_DRAIN_PERCENT = 0.75;  //reduce energyRate by this % when unit is Ev
   float DMG_MSC = 8;  //used for equipment modules
 //Secondary Effect Types
   float EFF_PRC = 16; //dmg is doubled
-  float EFF_RAM = 32; //dmg only affects shields
-  float EFF_STX = 64; //dmg only affects energy
+  float EFF_RAM = 32; //DMG_ENE + RAM = feedback damage onto target.
+  float EFF_STX = 64; //damage only affects shields.
   float EFF_ENE = 128; //weapon draws energy (client-side flag, really)
   
   float EFF_ARC = 256;  //AI-ONLY: weapon has an arcing projectile
   float EFF_LOK = 512;  //AI-ONLY: weapon requires a target lock
   float EFF_PTR = 1024; //AI-ONLY: weapon follow's unit's laser-dot, so it ignores accuracy mechanics
+  float EFF_SHD = 2048; //for when you want Shield crits but not just shield-only damage of EFF_STX (see light_laser)
 //============================
 //     GETSTAT() TYPES
 //============================

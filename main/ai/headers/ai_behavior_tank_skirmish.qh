@@ -32,6 +32,7 @@ void() ai_tank_sk_enter_strafe;
 /*
   rotate in place to self.ideal_yaw
 */
+void() ai_tank_sk_enter_rotate;
 void() ai_tank_sk_rotate1;
 void() ai_tank_sk_rotate2;
 void() ai_tank_sk_rotate3;

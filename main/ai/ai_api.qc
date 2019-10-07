@@ -302,7 +302,7 @@ void() ai_ranged_attack={
   local entity wep_chain, this;
   local float fired;
   local vector diff;
-  
+
   self.ai_weaponEnergy = 0;
   this = self;
   wep_chain = self.w_slot;     

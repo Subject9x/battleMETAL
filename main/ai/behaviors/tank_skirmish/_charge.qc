@@ -25,7 +25,7 @@ void() ai_tank_sk_charge1={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.1;
 
   ai_face_targ();
@@ -42,7 +42,7 @@ void() ai_tank_sk_charge1={
     return;
   }
   
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };
 void() ai_tank_sk_charge2={
   ai_update_accuracy( TRUE ); 
@@ -50,7 +50,7 @@ void() ai_tank_sk_charge2={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.2;
 
   local float ang;
@@ -61,7 +61,7 @@ void() ai_tank_sk_charge2={
     return;
   }
 
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };
 void() ai_tank_sk_charge3={
   ai_update_accuracy( TRUE ); 
@@ -69,7 +69,7 @@ void() ai_tank_sk_charge3={
 
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.3;
 
   local float ang;
@@ -80,7 +80,7 @@ void() ai_tank_sk_charge3={
     return;
   }
 
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };
 void() ai_tank_sk_charge4={
   ai_update_accuracy( TRUE ); 
@@ -88,7 +88,7 @@ void() ai_tank_sk_charge4={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.4;
 
   ai_face_targ();
@@ -103,7 +103,7 @@ void() ai_tank_sk_charge4={
     return;
   }
 
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };
 void() ai_tank_sk_charge5={
   ai_update_accuracy( TRUE ); 
@@ -111,7 +111,7 @@ void() ai_tank_sk_charge5={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.5;
 
   local float ang;
@@ -122,7 +122,7 @@ void() ai_tank_sk_charge5={
     return;
   }
 
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };
 void() ai_tank_sk_charge6={
   ai_update_accuracy( TRUE ); 
@@ -130,7 +130,7 @@ void() ai_tank_sk_charge6={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.6;
 
   ai_face_targ();
@@ -143,7 +143,7 @@ void() ai_tank_sk_charge6={
     return;
   }
 
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };
 void() ai_tank_sk_charge7={
   ai_update_accuracy( TRUE ); 
@@ -151,7 +151,7 @@ void() ai_tank_sk_charge7={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.7;
 
   local float ang;
@@ -164,7 +164,7 @@ void() ai_tank_sk_charge7={
     return;
   }
 
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };
 void() ai_tank_sk_charge8={
   ai_update_accuracy( TRUE ); 
@@ -172,7 +172,7 @@ void() ai_tank_sk_charge8={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.8;
 
   ai_face_targ();
@@ -189,7 +189,7 @@ void() ai_tank_sk_charge8={
     return;
   }
 
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
   
 };
 void() ai_tank_sk_charge9={
@@ -198,7 +198,7 @@ void() ai_tank_sk_charge9={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed == self.lefty )
+  if( self.speed != self.lefty )
     dampen = dampen * 0.9;
 
   ai_face_targ();
@@ -210,7 +210,7 @@ void() ai_tank_sk_charge9={
     return;
   }
 
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };
 void() ai_tank_sk_charge10={
   ai_update_accuracy( TRUE ); 
@@ -231,5 +231,5 @@ void() ai_tank_sk_charge10={
     return;
   }
   
-  macro_ai_frame(ai_tank_sk_rotate1)
+  macro_ai_frame(ai_tank_sk_enter_rotate)
 };

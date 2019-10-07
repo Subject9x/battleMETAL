@@ -17,6 +17,7 @@ Overview: ai unit
 */
 void( entity attacker ) ai_spg_react1={
   local float enemyvis;
+  
   if( !attacker ){
     self.ai_react_buffer = time + self.ai_react_time * 2;
     return;
@@ -26,6 +27,12 @@ void( entity attacker ) ai_spg_react1={
   if( attacker.faction == self.faction )
     return;
 
+  if( attacker == self.enemy ){
+    self.ai_react_buffer = time + self.ai_react_time * 5;
+    return;
+  }
+
+  cons_logAFloat("ai_spg_react1", 1);  //DEBUG
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
     self.enemy = attacker;

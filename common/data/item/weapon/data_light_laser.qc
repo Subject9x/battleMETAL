@@ -26,7 +26,7 @@ void() data_ini_light_laser_={
 
   self.w_range = 2000;
   self.damageValue = 10;
-  self.damageType = (DMG_ENE | EFF_STX);
+  self.damageType = (DMG_ENE | EFF_SHD);
 
   self.techLevel = 1;
   self.i_size = 1;

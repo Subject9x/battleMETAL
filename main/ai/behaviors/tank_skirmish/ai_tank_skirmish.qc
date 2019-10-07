@@ -80,12 +80,10 @@ void() ai_tank_sk_fight_prep={
                 macro_ai_frame(ai_tank_sk_enter_flank)
                 return;
               }
+              self.lefty = -1;
               if( roll < 0.67 ){
                 self.lefty = 1;
-                macro_ai_frame(ai_tank_sk_enter_charge)
-                return;
               }
-              self.lefty = -1;
               macro_ai_frame(ai_tank_sk_enter_charge)
               return;
             }
@@ -155,8 +153,7 @@ void() ai_tank_sk_fight_prep={
           macro_ai_frame(ai_tank_sk_enter_charge)
           return;
         }
-        ai_face_targ();
-        macro_ai_frame(ai_tank_sk_rotate1)
+        macro_ai_frame(ai_tank_sk_enter_rotate)
         return;
       }
       
@@ -190,8 +187,7 @@ void() ai_tank_sk_fight_prep={
     }
     if( enemy_vis == VIS_FAIL ){
       if( enemy_range < 200 ){
-        ai_face_targ();
-        macro_ai_frame(ai_tank_sk_rotate1)
+        macro_ai_frame(ai_tank_sk_enter_rotate)
         return;
       }
       if( self.stat_rdr_mode ){

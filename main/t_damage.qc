@@ -77,7 +77,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   
   damage = damage + ( damage * 0.5);
   
-  if( (dmgtype & EFF_STX) ){
+  if( (dmgtype & EFF_STX) || (dmgtype & EFF_SHD) ){
     crit = 0.25;
     crit = crit + ((3 - skill) / 10);
     crit = crit + ((3 - targ.vec_size) / 10);
@@ -92,7 +92,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     shields = shields - mod;
     damage = damage - mod;
   }
-  else {
+  else{
     shields = shields - damage;
     if( shields < 0 ){
       if( (dmgtype & EFF_RAM) ){

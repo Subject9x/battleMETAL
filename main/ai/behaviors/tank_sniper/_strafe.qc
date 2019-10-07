@@ -16,6 +16,7 @@ Overview: ai unit
 */
 
 void() ai_spg_enter_strafe={
+  cons_logAFloat("ai_spg_enter_strafe", 1);  //DEBUG
   self.lefty = self.lefty * -1;
   self.ai_dir = 35 + random() * 60;
   self.ai_dir = self.ai_dir * self.lefty;

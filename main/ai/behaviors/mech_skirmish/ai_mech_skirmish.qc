@@ -235,8 +235,7 @@ void() ai_mech_sk_stand1={
     macro_ai_frame(ai_mech_sniper_turn1)
     return;
   }
-  
-  cons_logAFloat("ai_mech_sk_stand1 BOTTOM", 1);  //DEBUG
+
   macro_ai_frame(ai_mech_sk_stand1)
 };
 

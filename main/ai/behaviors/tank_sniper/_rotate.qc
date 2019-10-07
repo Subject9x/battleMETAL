@@ -12,7 +12,8 @@ Overview: ai unit
     
 */
 void() ai_spg_rotate1={
-  ai_update_accuracy( FALSE );
+  cons_logAFloat("ai_spg_rotate1", 1);  //DEBUG
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
@@ -20,7 +21,7 @@ void() ai_spg_rotate1={
   macro_ai_frame(ai_spg_rotate2)
 };
 void() ai_spg_rotate2={
-  ai_update_accuracy( FALSE );
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
@@ -28,7 +29,7 @@ void() ai_spg_rotate2={
   macro_ai_frame(ai_spg_rotate3)
 };
 void() ai_spg_rotate3={
-  ai_update_accuracy( FALSE );
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
@@ -36,7 +37,7 @@ void() ai_spg_rotate3={
   macro_ai_frame(ai_spg_rotate4)
 };
 void() ai_spg_rotate4={
-  ai_update_accuracy( FALSE );
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
@@ -44,10 +45,11 @@ void() ai_spg_rotate4={
   macro_ai_frame(ai_spg_rotate5)
 };
 void() ai_spg_rotate5={
-  ai_update_accuracy( FALSE );
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
+  ai_attack();
   
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
@@ -79,8 +81,9 @@ void() ai_spg_rotate8={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  ai_attack();
-    
+  if( self.ai_rank > AI_RANK_REG )
+    ai_attack();
+  
   macro_ai_frame(ai_spg_fight_prep)
 };
 
@@ -88,7 +91,8 @@ void() ai_spg_rotate8={
   Turn in place, to ideal_yaw
 */
 void() ai_spg_turn1={
-  ai_update_accuracy( FALSE );
+  cons_logAFloat("ai_spg_turn1", 1);  //DEBUG
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ChangeYaw();
@@ -96,7 +100,7 @@ void() ai_spg_turn1={
   macro_ai_frame(ai_spg_turn2)
 };
 void() ai_spg_turn2={
-  ai_update_accuracy( FALSE );
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ChangeYaw();
@@ -104,7 +108,7 @@ void() ai_spg_turn2={
   macro_ai_frame(ai_spg_turn3)
 };
 void() ai_spg_turn3={
-  ai_update_accuracy( FALSE );
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
   ChangeYaw();

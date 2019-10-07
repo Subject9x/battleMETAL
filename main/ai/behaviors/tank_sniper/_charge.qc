@@ -13,12 +13,18 @@ Overview: ai unit
 */
 
 void() ai_spg_enter_charge={
-  self.lefty = self.lefty * -1;
+  cons_logAFloat("ai_spg_enter_charge", 1);  //DEBUG
+  
+  if( random() < 0.33 ){
+    self.lefty = self.lefty * -1;
+  }
+
   self.ai_dir = self.lefty * (45 + random() * 25);
   macro_ai_frame(ai_spg_charge1)
 };
 
 void() ai_spg_charge1={
+  cons_logAFloat("ai_spg_charge1", 1);  //DEBUG
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
 
@@ -35,11 +41,11 @@ void() ai_spg_charge1={
     ai_attack();
   
   if( walkmove( self.angles_y, dampen ) ){  
-    macro_ai_frame_count(ai_spg_charge2)
+    macro_ai_frame(ai_spg_charge2)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  
+  macro_ai_frame(ai_spg_reverse1)
 };
 
 void() ai_spg_charge2={
@@ -56,13 +62,12 @@ void() ai_spg_charge2={
   ChangeYaw();
   
   ai_attack();
-  
-  if( walkmove( self.angles_y, dampen ) ){  
+
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_spg_charge3)
     return;
   }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  macro_ai_frame(ai_spg_reverse1)
 };
 
 void() ai_spg_charge3={
@@ -78,12 +83,11 @@ void() ai_spg_charge3={
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
   ChangeYaw();
   
-  if( walkmove( self.angles_y, dampen ) ){  
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_spg_charge4)
     return;
-  }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  } 
+  macro_ai_frame(ai_spg_reverse1)
 };
 
 void() ai_spg_charge4={
@@ -99,12 +103,11 @@ void() ai_spg_charge4={
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
   ChangeYaw();
   
-  if( walkmove( self.angles_y, dampen ) ){  
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_spg_charge5)
     return;
-  }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  } 
+  macro_ai_frame(ai_spg_reverse1)
 };
 
 void() ai_spg_charge5={
@@ -120,12 +123,11 @@ void() ai_spg_charge5={
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
   ChangeYaw();
   
-  if( walkmove( self.angles_y, dampen ) ){  
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_spg_charge6)
     return;
-  }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  } 
+  macro_ai_frame(ai_spg_reverse1)
 };
 
 void() ai_spg_charge6={
@@ -141,12 +143,11 @@ void() ai_spg_charge6={
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
   ChangeYaw();
   
-  if( walkmove( self.angles_y, dampen ) ){  
+  if( walkmove( self.angles_y, dampen ) ){
     macro_ai_frame(ai_spg_charge7)
     return;
-  }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  } 
+  macro_ai_frame(ai_spg_reverse1)
 };
 
 void() ai_spg_charge7={
@@ -162,12 +163,11 @@ void() ai_spg_charge7={
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
   ChangeYaw();
   
-  if( walkmove( self.angles_y, dampen ) ){  
+  if( walkmove( self.angles_y, dampen ) ){ 
     macro_ai_frame(ai_spg_charge8)
     return;
-  }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  } 
+  macro_ai_frame(ai_spg_reverse1)
 };
 
 void() ai_spg_charge8={
@@ -186,9 +186,8 @@ void() ai_spg_charge8={
   if( walkmove( self.angles_y, dampen ) ){  
     macro_ai_frame(ai_spg_charge9)
     return;
-  }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  } 
+  macro_ai_frame(ai_spg_reverse1)
 };
 
 void() ai_spg_charge9={
@@ -204,11 +203,11 @@ void() ai_spg_charge9={
   self.ideal_yaw = anglemod(self.ideal_yaw + self.ai_dir);
   ChangeYaw();
   
-  if( walkmove( self.angles_y, dampen ) ){  
+  if( walkmove( self.angles_y, dampen ) ){ 
+    self.speed = self.lefty;
     macro_ai_frame_count(ai_spg_charge1)
     macro_ai_frame(ai_spg_fight_prep)
     return;
-  }
-  self.ai_action_time = self.ai_action_mod;
-  macro_ai_frame(ai_spg_rotate1)
+  } 
+  macro_ai_frame(ai_spg_reverse1)
 };

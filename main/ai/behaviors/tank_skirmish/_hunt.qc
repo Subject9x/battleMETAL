@@ -10,7 +10,6 @@ Overview: ai unit
     
 */
 void() ai_tank_sk_enter_hunt={
-
   local entity nodeRecall;
   self.attack_state = ST_HUNT;
   ai_sfx_huntStart();

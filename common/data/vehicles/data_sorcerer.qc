@@ -36,7 +36,7 @@ void() data_ini_sorcerer_={
 
 //SPEED================================
   self.data_speed_forward = 66;
-  self.data_speed_strafe = 0;
+  self.data_speed_strafe = 40;
   self.data_speed_backward = 30;
   self.data_speed_accel = 1;
   #ifndef CSQC

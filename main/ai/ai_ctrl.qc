@@ -390,21 +390,25 @@ float( entity targ ) ai_check_vis={
   spot2 = targ.origin;
   traceline (spot1, spot2, FALSE, self);
   
-  if ( trace_inopen && trace_inwater ){
-    return VIS_FAIL;     // sight line crossed contents
-  }
-  if ( trace_fraction == 1 ){
+  if( trace_ent == targ )
     return VIS_FRAC;
-  }
+  
+  
+  if ( trace_inopen && trace_inwater )
+    return VIS_FAIL;     // sight line crossed contents
+  
+  if ( trace_fraction == 1 )
+    return VIS_FRAC;
+  
   if( trace_ent.faction == self.faction ){
     friend_blocker = trace_ent;
     friend_blocker_dist = vlen(friend_blocker.origin - self.origin);
     return VIS_FRN;
   }
   
-  if( trace_fraction >= 0.9 && (trace_ent.flags & FL_UNIT) ){
+  if( trace_fraction >= 0.9 && (trace_ent.flags & FL_UNIT) )
     return VIS_FRAC;
-  }
+  
   return VIS_FAIL;
 };
 

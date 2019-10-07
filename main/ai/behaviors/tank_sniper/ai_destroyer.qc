@@ -36,6 +36,7 @@ void() ai_vec_dest={
   TH_STAND
 */
 void() ai_spg_stand1={
+  cons_logAFloat("ai_spg_stand1", 1);  //DEBUG
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
@@ -44,7 +45,7 @@ void() ai_spg_stand1={
     return;
   }
   if( time > self.pausetime ){
-    if( self.movetarget ){
+    if( (self.movetarget) ){
       macro_ai_frame(ai_spg_patrol1)
       return;
     }
@@ -57,15 +58,11 @@ void() ai_spg_stand1={
   TH_WALK
 */
 void() ai_spg_patrol1={
+  cons_logAFloat("ai_spg_patrol1", 1);  //DEBUG
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
   
   if( ai_check_scan( self.stat_rdr_mode ) ){    
-    macro_ai_frame(ai_spg_fight_prep)
-    return;
-  }
-  
-  if( ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_spg_fight_prep)
     return;
   }
@@ -77,13 +74,13 @@ void() ai_spg_patrol1={
   }
   
   if( time > self.pausetime ){
-    if( self.movetarget ){
+    if( (self.movetarget) ){
       macro_ai_frame(ai_spg_patrol1)
       return;
     }
   }
   
-  macro_ai_frame(ai_spg_patrol1)
+  macro_ai_frame(ai_spg_stand1)
 };
 
 void() ai_spg_enter_patrol={
@@ -95,6 +92,7 @@ void() ai_spg_enter_patrol={
   FIGHT FILTER
 */
 void() ai_spg_fight_prep={
+  cons_logAFloat("ai_spg_fight_prep", 1);  //DEBUG
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
@@ -112,7 +110,7 @@ void() ai_spg_fight_prep={
       if( enemy_range <= 200 ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
-            if( roll < 0.33 ){
+            if( roll < 0.6 ){
               //possibly charge astride the target
               macro_ai_frame(ai_spg_enter_charge)
               return;
@@ -121,7 +119,7 @@ void() ai_spg_fight_prep={
             macro_ai_frame(ai_spg_rotate1)
             return;
           }
-          if( roll < 0.12 ){
+          if( roll < 0.33 ){
             //possibly charge astride the target
             macro_ai_frame(ai_spg_enter_charge)
             return;
@@ -132,7 +130,7 @@ void() ai_spg_fight_prep={
         }
         
         if( self.ai_rank > AI_RANK_REG ){
-          if( roll < 0.33 ){
+          if( roll < 0.45 ){
             macro_ai_frame(ai_spg_enter_charge)
             return;
           }
@@ -140,10 +138,10 @@ void() ai_spg_fight_prep={
           return;
         }
         if( roll <= 0.33 ){
-          macro_ai_frame(ai_spg_reverse1)
+          macro_ai_frame(ai_spg_rotate1)
           return;
         }
-        macro_ai_frame(ai_spg_rotate1)
+        macro_ai_frame(ai_spg_reverse1)
         return;
       }
       
@@ -152,18 +150,18 @@ void() ai_spg_fight_prep={
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){
             //snipe or strafe
-            if( roll < 0.4 ){
+            if( roll < 0.1 ){
               macro_ai_frame(ai_spg_enter_strafe)
               return;
             }
-            if( roll < 0.1 ){
+            if( roll < 0.2 ){
               macro_ai_frame(ai_spg_enter_charge)
               return;
             }
             macro_ai_frame(ai_spg_snipe1)
             return;
           }
-          if( roll < 0.33 ){
+          if( roll < 0.1 ){
             macro_ai_frame(ai_spg_enter_strafe)
             return;
           }
@@ -171,11 +169,7 @@ void() ai_spg_fight_prep={
           return;
         }
         if( self.ai_rank > AI_RANK_REG ){
-          if( roll < 0.33 ){
-            macro_ai_frame(ai_spg_snipe1)
-            return;
-          }
-          if( roll < 0.67 ){
+          if( roll < 0.2 ){
             macro_ai_frame(ai_spg_enter_charge)
             return;
           }
