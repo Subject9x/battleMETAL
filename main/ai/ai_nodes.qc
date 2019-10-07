@@ -38,7 +38,6 @@ void() node_setup={
   self.data_type = DATA_NODE;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
-  self.touch = node_touch;  
   self.isActive = TRUE;
   
   util_MapDeveloperMarker();
@@ -62,149 +61,6 @@ void() node_setup={
     self.pausetime = ((4 - skill) * -1) * 1.65; 
   }
   if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
-    self.isActive = FALSE;
-  }
-};
-
-/*
-  recallNode's are spawned instantly on switching to hunt state,
-  therefore, delay the node's touch function assignment to give the
-  bot a chance to move away from recallNode's origin
-*/
-void() node_recall_delay={
-  self.isActive = TRUE;
-};
-
-void() node_recall_touch={
-  local entity this;
-  if( (other == self.owner) && (self.owner.deadflag == DEAD_NO) ){
-    if( other.goalentity == self ){
-      this = self;
-      self = other;
-        self.ai_node_recall = world;
-        if( ai_check_vis( self.enemy ) ){
-          self.th_missile();
-        }
-        else{
-          self.enemy = world;
-          ai_turret_set_state( TR_NORM );
-          if( self.movetarget ){
-            self.goalentity = self.movetarget;
-            self.ideal_yaw = vectoyaw( self.goalentity.origin - self.origin );
-            self.th_walk();
-          }
-          else{
-            self.th_stand();
-          }
-        }
-      self = this;
-      self.touch = SUB_Null;
-      self.think = SUB_Remove;
-      self.nextthink = time + 0.001;
-    }
-  }
-};
-
-/*
-  touch function that defines a node as a Patrol Node
-  this will set the touchee's movetarget to self.target
-  and send it on its way.
-*/
-void() node_patrol_touch={
-  local entity node;
-  local entity thisNode;
-  thisNode = self;
-    
-  if( (other.flags & (FL_UNIT | FL_MONSTER)) ){
-    if( time > other.pausetime ){ 
-      if( self.faction == other.faction ){
-        if( self.target ){
-          node = find (world, targetname, self.target);
-          if( node ){
-            self = other;
-              self.target = thisNode.target;
-              self.goalentity = self.movetarget = node;
-              self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
-             
-              macro_ai_frame(  self.th_walk )
-              if( thisNode.pausetime ){
-                self.pausetime = thisNode.pausetime;
-                self.pausetime = self.pausetime + (self.pausetime * (self.ai_action_mod / 10));
-                self.pausetime = self.pausetime + time;
-                if( self.th_stand ){
-                  macro_ai_frame( self.th_stand )
-                }
-              }
-          }
-          else{
-            self = other;
-            if( self.th_stand ){
-              self.th_stand();
-            }
-          }
-        }
-        else{
-          self = other;
-          if( self.th_stand ){
-            self.th_stand();
-          }
-        }
-      }
-    }
-    self = thisNode;
-  }
-};
-
-void() node_defend_touch={
-  
-};
-
-void() node_attack_touch={
-  
-};
-
-/*
-  node touch function is generic with a switch for a specific type
-  they are required to be isActive, and to have a data_idx > 0;
-*/
-void() node_touch={
-  if( !self.isActive ){
-    return;
-  }
-  
-  if( (other.flags & FL_MONSTER) ){
-    
-    if( ai_valid_target(other.enemy) )
-      return;
-     
-    if( other.movetarget != self )
-      return;
-  
-    //AI is currently chasing down a target / or resetting
-    if( (self.ai_node_recall.flags & FL_NODE) )
-      return;
-    
-    switch( self.data_idx ){
-      case AI_NODE_PATROL:
-        //node_patrol_touch();
-        break;
-      case AI_NODE_DEFEND:
-        //TODO - defend node behavior?
-        break;
-      case AI_NODE_ATTACK:
-        //TODO - attack node behavior?
-        break;
-      case AI_NODE_RECALL:
-        //node_recall_touch();
-        break;
-    }
-  }
-  
-  if( (self.spawnflags & NODE_SPAWN_REMOVEONTOUCH) ){
-    trigger_event( world, trigOnDeath );
-    remove( self );
-  }
-  if( (self.spawnflags & NODE_SPAWN_INACTIVEONTOUCH) ){
     self.isActive = FALSE;
   }
 };
@@ -234,8 +90,6 @@ entity() node_recall_setup={
       self.target = theBot.movetarget.targetname;
     }
     self.owner = theBot;
-    self.think = node_recall_delay;//see node_recall_delay_touch
-    self.nextthink = time + 1.5;
   self = theBot;
   
   return theNode;
