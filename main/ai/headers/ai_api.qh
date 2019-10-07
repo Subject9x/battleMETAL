@@ -125,6 +125,11 @@ void(float rank) ai_pilot_ini_stats;
 
 //AI NODES
 void() node_setup;
+void() node_touch;
+void() node_patrol_touch;
+void() node_defend_touch;
+void() node_attack_touch;
+void() node_recall_touch;
 entity() node_recall_setup;
 
 //AI UTILS - 
