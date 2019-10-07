@@ -22,7 +22,7 @@ void() ai_mech_sniper={
     
   trigger_event( self, trigOnSpawn); //event interface
   
-  self.th_stand = ai_mech_sniper_stand1;
+  self.th_stand = ai_mech_sniper_enter_stand;
   self.th_walk = ai_mech_sniper_patrol1;
   self.th_missile = ai_mech_sniper_fight_prep;
   self.th_pain = ai_mech_sniper_panic1;
@@ -59,6 +59,26 @@ void() ai_mech_sniper_stand1={
       return;
     }
   }
+  
+  if( random() < 0.25 ){
+    self.ideal_yaw = (random() * self.ai_angleLimits_x) * -1;
+    self.ideal_yaw = self.ideal_yaw + self.ai_angleLimits_y;
+    self.ideal_yaw = self.ideal_yaw * crandom();
+    self.ideal_yaw = anglemod( self.angles_y + self.ideal_yaw);
+    macro_ai_frame(ai_mech_sniper_turn1)
+    return;
+  }
+  
+  macro_ai_frame(ai_mech_sniper_stand1)
+};
+
+void() ai_mech_sniper_enter_stand={
+  self.legs.ai_dir = self.legs.angles_y;
+  self.legs.attack_state = TR_NORM;
+  self.legs.think = bot_leg_stand1;
+  self.legs.nextthink = time + 0.1;
+  
+  self.torsoCenter.attack_state = TR_NORM;
   
   macro_ai_frame(ai_mech_sniper_stand1)
 };

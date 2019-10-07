@@ -111,7 +111,7 @@ void() ai_gev_panic10={
   }
   
   if( self.movetarget ){
-    macro_ai_frame( ai_gev_patrol1 )
+    macro_ai_frame( ai_gev_enter_patrol )
     return;
   }
   

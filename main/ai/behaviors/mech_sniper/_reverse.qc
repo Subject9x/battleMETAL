@@ -67,6 +67,7 @@ void() ai_mech_sniper_reverse5={
   
   self.legs.think = bot_leg_back1;
   self.legs.nextthink = time + 0.1;
+  local float moveAng;
   
   if( walkmove( anglemod(self.angles_y + self.ai_dir ), self.data_speed_backward ) ){
     macro_ai_frame(ai_mech_sniper_reverse6)

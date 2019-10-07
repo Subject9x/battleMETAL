@@ -192,7 +192,7 @@ void() PutClientInServer = {
         //pre-populate default save file
         savefile_default();
       }
-      if( world.itemOverrideFile != "" || world.itemOverrideFile ){
+      if( world.itemOverrideFile && world.itemOverrideFile != "" ){
         savefile_load( TRUE );
       }
       else{

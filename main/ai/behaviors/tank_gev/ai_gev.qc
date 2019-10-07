@@ -20,7 +20,7 @@ void() ai_gev={
   trigger_event( self, trigOnSpawn ); //event interface
  
   self.th_stand = ai_gev_stand1;
-  self.th_walk = ai_gev_patrol1;
+  self.th_walk = ai_gev_enter_patrol;
   self.th_pain = ai_gev_panic1;
   self.th_missile = ai_gev_fight_prep;
   self.th_pain = ai_gev_panic1;
@@ -30,6 +30,34 @@ void() ai_gev={
   
   self.think = ai_setup_patrol;
   self.nextthink = time + (random()*0.9); //spread out thinks
+};
+
+void() ai_gev_enter_patrol1={
+  ai_update_accuracy( FALSE ); 
+  macro_ai_update(ctrl_updateTank)
+  
+  self.goalentity = self.movetarget;
+  self.torsoCenter.attack_state = TR_GOAL;
+  
+  macro_ai_frame(ai_gev_patrol1)
+};
+
+void() ai_gev_patrol1={
+  ai_update_accuracy( TRUE ); 
+  macro_ai_update(ctrl_updateTank)
+  te_unit_dust( self.origin, self.angles, self.velocity, 1);
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_gev_fight_prep)
+    return;
+  }
+  
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_gev_stand1, ai_gev_patrol1 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_gev_stand1)
+  }
 };
 
 void() ai_gev_stand1={
@@ -43,7 +71,7 @@ void() ai_gev_stand1={
   }
   if( time > self.pausetime ){
     if( self.movetarget ){
-      macro_ai_frame(ai_gev_patrol1)
+      macro_ai_frame(ai_gev_enter_patrol1)
       return;
     }
   }
@@ -57,21 +85,6 @@ void() ai_gev_walk1={
   te_unit_dust( self.origin, self.angles, self.velocity, 1 );
   
   macro_ai_frame(ai_gev_walk1)
-};
-
-void() ai_gev_patrol1={
-  ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_updateTank)
-  te_unit_dust( self.origin, self.angles, self.velocity, 1);
-  
-  if( ai_check_scan( self.stat_rdr_mode ) ){
-    macro_ai_frame(ai_gev_fight_prep)
-    return;
-  }
-  
-  movetogoal( self.data_speed_forward );
-  
-  macro_ai_frame(ai_gev_patrol1)
 };
 
 void() ai_gev_fight_prep={
@@ -188,47 +201,21 @@ void() ai_gev_fight_prep={
       enemy_vis = VIS_FAIL;
     }
     if( enemy_vis == VIS_FAIL ){      
-      if( self.ai_rank > AI_RANK_REG ){
-        if( util_getMechHpAverage(self) > 0.45){
-          enemy_hunt = TRUE;
-        }
-        if( util_getMechHpAverage(self.enemy) <= 0.25 ){
-          enemy_hunt = TRUE;
-        }
-      }
-      if( util_getMechHpAverage(self) > 0.75 ){
-        if( self.enemy.vec_size < self.vec_size ){
-          enemy_hunt = TRUE;
-        }
-      }
-      if( util_getMechHpAverage(self.enemy) <= 0.25 ){
+      if( self.stat_rdr_mode ){
         enemy_hunt = TRUE;
       }
     }
   }
   if( enemy_hunt ){
-    if( !self.ai_node_recall ){
-      ai_sfx_huntStart();
-      nodeRecall = node_recall_setup();
-      self.ai_node_recall = nodeRecall;
-      self.goalentity = self.enemy;
-        self.ai_action_time = (0 - self.ai_action_mod) * -1;
-      if( self.stat_rdr_mode ){
-        self.ai_action_time = ceil(self.ai_action_time * 4);
-      }
-      else{
-        self.ai_action_time = ceil(self.ai_action_time * 2);
-      }
-      macro_ai_frame(ai_gev_hunt1)
+    if(  self.ai_node_recall == world || !(self.ai_node_recall) ){
+      macro_ai_frame(ai_gev_enter_hunt)
       return;
     }
-    self.goalentity = self.ai_node_recall;
-    macro_ai_frame(ai_gev_hunt1)
+    macro_ai_frame(ai_gev_enter_recall)
     return;
   }
   if( self.movetarget ){
-    self.goalentity = self.movetarget;
-    macro_ai_frame(ai_gev_patrol1)
+    macro_ai_frame(ai_gev_enter_patrol1)
     return;
   }
   macro_ai_frame(ai_gev_stand1)

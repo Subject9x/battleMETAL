@@ -157,6 +157,11 @@ void() ai_unit_make_trigger;
 void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons;
 
 //AI CONTROL - ai_ctrl.qc 
+float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic;
+float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic
+float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vis;
+float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame;
+
 void() ai_touch;
 void() ai_setup_patrol;
 entity() ai_node_pick_rand

@@ -115,6 +115,7 @@ void() ai_mech_sk_strafe14;
 void() ai_mech_sk_strafe15;
 void() ai_mech_sk_strafe16;
 
+void() ai_mech_sk_rotate1;
 void() ai_mech_sk_pivot1;
 void() ai_mech_sk_pivot2;
 void() ai_mech_sk_pivot3;
@@ -153,6 +154,24 @@ void() ai_mech_sk_hunt13;
 void() ai_mech_sk_hunt14;
 void() ai_mech_sk_hunt15;
 void() ai_mech_sk_hunt16;
+
+void() ai_mech_sk_enter_recall;
+void() ai_mech_sk_recall1;
+void() ai_mech_sk_recall2;
+void() ai_mech_sk_recall3;
+void() ai_mech_sk_recall4;
+void() ai_mech_sk_recall5;
+void() ai_mech_sk_recall6;
+void() ai_mech_sk_recall7;
+void() ai_mech_sk_recall8;
+void() ai_mech_sk_recall9;
+void() ai_mech_sk_recall10;
+void() ai_mech_sk_recall11;
+void() ai_mech_sk_recall12;
+void() ai_mech_sk_recall13;
+void() ai_mech_sk_recall14;
+void() ai_mech_sk_recall15;
+void() ai_mech_sk_recall16;
 
 void(entity attacker) ai_mech_sk_panic1;
 void() ai_mech_sk_panic2;

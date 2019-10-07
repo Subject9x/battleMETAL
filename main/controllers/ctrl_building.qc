@@ -18,7 +18,7 @@ void() building_die={
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DEAD;
-  self.solid = SOLID_CORPSE;
+  self.solid = SOLID_NOT;
   
   building_die_removeFire();
   
@@ -27,7 +27,7 @@ void() building_die={
   
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_CORPSE;
+  ruins.solid = SOLID_BSP;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

@@ -11,6 +11,7 @@ Overview: data file for building
 void() hpower_die = [0, hpower_die1]{
   local entity head;
   head = findradius(self.origin, 800);
+  self.deadflag = DEAD_DYING;
   while(head){
     //if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
     if( head.data_type == DATA_MECH ){
@@ -46,9 +47,10 @@ void() hpower_die8 = [8, hpower_die9]{
 void() hpower_die9 = [9, hpower_die10]{
   te_object_explode( '0.75 0.75 0.6' );
   te_object_explode( '0.75 0.75 0.6' );
+  self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_CORPSE;
+  ruins.solid = SOLID_BSP;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

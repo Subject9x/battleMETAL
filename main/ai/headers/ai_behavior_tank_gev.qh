@@ -9,14 +9,11 @@ Overview: ai unit
   Setup
     
 */
-
-/*
-  GEV Macro Rebuild
-*/
 void() ai_gev_die;
 void() ai_gev_stand1;
 void() ai_gev_walk1;
 
+void() ai_gev_enter_patrol;
 void() ai_gev_patrol1;
 
 void() ai_gev_fight_prep;
@@ -104,6 +101,7 @@ void() ai_gev_panic10;
   HUNT
   attempt to walkmove to target for a little bit
 */
+void() ai_gev_enter_hunt;
 void() ai_gev_hunt1;
 void() ai_gev_hunt2;
 void() ai_gev_hunt3;
@@ -116,3 +114,15 @@ void() ai_gev_hunt9;
 void() ai_gev_hunt10;
 void() ai_gev_hunt11;
 void() ai_gev_hunt12;
+
+void() ai_gev_enter_recall;
+void() ai_gev_recall1;
+void() ai_gev_recall2;
+void() ai_gev_recall3;
+void() ai_gev_recall4;
+void() ai_gev_recall5;
+void() ai_gev_recall6;
+void() ai_gev_recall7;
+void() ai_gev_recall8;
+void() ai_gev_recall9;
+void() ai_gev_recall10;

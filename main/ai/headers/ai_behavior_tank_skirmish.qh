@@ -16,9 +16,13 @@ void() ai_tank_sk_die1;
   Tank Macro Rebuild
 */
 void() ai_tank_sk_stand1;
+void() ai_tank_sk_enter_patrol;
 void() ai_tank_sk_patrol1;
 void() ai_tank_sk_fight_prep;
 void( entity attacker ) ai_tank_sk_react1;
+
+void() ai_tank_sk_enter_hunt;
+void() ai_tank_sk_enter_recall;
 
 void() ai_tank_sk_enter_charge;
 void() ai_tank_sk_enter_flank;
@@ -134,6 +138,17 @@ void() ai_tank_sk_hunt7;
 void() ai_tank_sk_hunt8;
 void() ai_tank_sk_hunt9;
 void() ai_tank_sk_hunt10;
+
+void() ai_tank_sk_recall1;
+void() ai_tank_sk_recall2;
+void() ai_tank_sk_recall3;
+void() ai_tank_sk_recall4;
+void() ai_tank_sk_recall5;
+void() ai_tank_sk_recall6;
+void() ai_tank_sk_recall7;
+void() ai_tank_sk_recall8;
+void() ai_tank_sk_recall9;
+void() ai_tank_sk_recall10;
 
 /*
   th_pain == 'panic'

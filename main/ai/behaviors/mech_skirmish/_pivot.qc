@@ -5,12 +5,9 @@ Date: 09/23/2018
 Overview: ai unit
   Mech - Skirmisher
   Behavior - Pivot
-    
+    Mech attempts to pivot to its ideal_yaw   
   Setup
     
-*/
-/*
-  Mech attempts to pivot to its ideal_yaw
 */
 void() ai_mech_sk_pivot1={
   ai_update_accuracy( FALSE );
@@ -112,4 +109,15 @@ void() ai_mech_sk_pivot11={
 
   macro_ai_frame_count(ai_mech_sk_pivot1)
   macro_ai_frame(ai_mech_sk_fight_prep)
+};
+
+void() ai_mech_sk_rotate1={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_update_mechplayer)
+  
+  ChangeYaw();
+  if( self.angles_y == self.ideal_yaw ){
+    macro_ai_frame(ai_mech_sk_stand1)
+  }
+  macro_ai_frame(ai_mech_sk_rotate1)
 };

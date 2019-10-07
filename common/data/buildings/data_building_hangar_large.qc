@@ -34,7 +34,7 @@ void() building_human_hangar={
   self.data_idx = UI_BUILDING_hangar_large;
   self.data_type = DATA_BLD;
   self.vec_name = "Large Hangar";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
   
   self.takedamage = DAMAGE_AIM;

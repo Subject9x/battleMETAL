@@ -36,19 +36,17 @@ void() node_setup={
   self.flags = FL_NODE;
   self.classname = "ai_node";
   self.data_type = DATA_NODE;
-  self.solid = SOLID_TRIGGER;
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
   self.touch = node_touch;  
   self.isActive = TRUE;
   
   util_MapDeveloperMarker();
   setsize(self, '-10 -10 -18','10 10 18');
-  
-  self.alpha = 0;
-  self.effects = self.effects | EF_NOSHADOW;
+  setorigin(self, self.origin);
   //only render nodes when debugging
   //DEBUG
   if( cvar("developer" ) ){
-    self.alpha = 1;
     switch( self.data_idx ){
       case AI_NODE_PATROL:
         self.color = '1 1 0';
@@ -60,11 +58,12 @@ void() node_setup={
   }
   
   trigger_event( self, trigOnSpawn );
-  if( !self.pausetime )
+  if( !self.pausetime ){
     self.pausetime = ((4 - skill) * -1) * 1.65; 
-
-  if( (self.spawnflags & NODE_SPAWN_INACTIVE) )
+  }
+  if( (self.spawnflags & NODE_SPAWN_INACTIVE) ){
     self.isActive = FALSE;
+  }
 };
 
 /*
@@ -116,7 +115,7 @@ void() node_patrol_touch={
   local entity thisNode;
   thisNode = self;
     
-  if( (other.flags & (FL_UNIT)) ){
+  if( (other.flags & (FL_UNIT | FL_MONSTER)) ){
     if( time > other.pausetime ){ 
       if( self.faction == other.faction ){
         if( self.target ){
@@ -187,7 +186,7 @@ void() node_touch={
     
     switch( self.data_idx ){
       case AI_NODE_PATROL:
-        node_patrol_touch();
+        //node_patrol_touch();
         break;
       case AI_NODE_DEFEND:
         //TODO - defend node behavior?
@@ -196,7 +195,7 @@ void() node_touch={
         //TODO - attack node behavior?
         break;
       case AI_NODE_RECALL:
-        node_recall_touch();
+        //node_recall_touch();
         break;
     }
   }
@@ -228,7 +227,7 @@ entity() node_recall_setup={
     node_setup();
     makevectors( theBot.angles );
     nodeOrg = theBot.origin + (v_up * theBot.mins_z) + (v_forward * (self.mins_x + 10));
-    traceline( nodeOrg, nodeOrg + (v_up * 18), TRUE, theBot);
+    traceline( nodeOrg, nodeOrg + (v_up * 18), MOVE_NORMAL, theBot);
     setorigin( self, trace_endpos );
     self.targetname = strzone(strcat("node_recall_for_", ftos(num_for_edict(theBot))));
     if( theBot.movetarget ){
@@ -242,12 +241,14 @@ entity() node_recall_setup={
   return theNode;
 };
 
-
 void() ai_node_check={
   local entity nodeCheck;
   if( self.target ){
     nodeCheck = find(world, targetname, self.target );
     if( !nodeCheck ){
+      if( cvar("developer") ){
+        cons_log2Strings("node", self.targetname, "can't find target of", self.target);  //DEBUG
+      }
       self.target = "";
     }
   }
@@ -276,8 +277,6 @@ void() ai_node={
   
   if ( !self.targetname ){
 		objerror ("node - missing targetname");
-    remove(self);
-    return;
   }
   node_setup();
   self.think = ai_node_check;

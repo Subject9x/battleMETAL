@@ -37,6 +37,7 @@ void() hshield_die8 = [8, hshield_die9]{
   te_object_explode( '0.5 1 0.05' );};
 void() hshield_die9 = [9, hshield_die10]{
   te_object_explode( '0.75 1 0.05' );
+  self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
   ruins.solid = SOLID_CORPSE;
@@ -158,7 +159,7 @@ void() building_human_shield={
   self.data_type = DATA_BLD;
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.data_type = DATA_BLD;
   util_setModel("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;

@@ -39,8 +39,9 @@ void() hfuel_death10 = [10, hfuel_death11]{
 
   te_object_explode( '1 0.75 0' ); 
   local entity ruins;
+  self.deadflag = DEAD_DEAD;
   ruins = spawn();
-  ruins.solid = SOLID_CORPSE;
+  ruins.solid = SOLID_BSP;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:
@@ -92,7 +93,7 @@ void() building_human_fuel={
   self.data_idx = UI_BUILDING_fuel_tank;
   self.data_type = DATA_BLD;
   self.vec_name = "Fuel Tank";
-  self.flags = self.flags | FL_MONSTER;
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 2;
   util_setModel("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;

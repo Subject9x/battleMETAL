@@ -13,6 +13,7 @@ void() ai_mech_sk_stand_fight1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_update_mechplayer)
   
+  self.torsoCenter.attack_state = TR_TARG;
   self.legs.attack_state = TR_YAW;
   self.legs.think = bot_leg_stand1;
   self.legs.nextthink = time + 0.1;

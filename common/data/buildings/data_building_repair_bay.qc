@@ -111,7 +111,7 @@ void() hrepair_die = [0, hrepair_die1]{
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
-  self.solid = SOLID_CORPSE;
+  self.solid = SOLID_BSP;
   building_die_removeFire();
   
 };
@@ -130,9 +130,10 @@ void() hrepair_die8 = [8, hrepair_die9]{};
 void() hrepair_die9 = [9, hrepair_die10]{
   te_object_explode( '0.75 0.75 0.6' );
   
+  self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_CORPSE;
+  ruins.solid = SOLID_BSP;
   ruins.movetype = MOVETYPE_NONE;
 
   setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));
@@ -171,7 +172,7 @@ void() building_human_repair={
   self.data_idx = UI_BUILDING_repair_bay;
   self.data_type = DATA_BLD;
   self.vec_name = "Repair Bay";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
   util_setModel("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE) ;

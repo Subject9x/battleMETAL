@@ -29,141 +29,164 @@ void(entity attacker) ai_mech_sniper_panic1={
     self.th_react( attacker );
     return;
   }
-  
+  self.torsoCenter.attack_state = TR_NORM;
   self.legs.attack_state = TR_NORM;
+  self.legs.think = bot_leg_walk1;
+  self.legs.nextthink = time + 0.1;
   macro_ai_frame( ai_mech_sniper_panic2 )
+  
 };
 void() ai_mech_sniper_panic2={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
-
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
   
-  macro_ai_frame( ai_mech_sniper_panic3 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic3 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic3={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic4 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic4 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic4={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic5 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic5 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic5={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic6 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic6 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic6 ={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
- 
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-
-  macro_ai_frame( ai_mech_sniper_panic7 )
+  
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic7 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic7={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic8 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic8 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic8={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic9 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic9 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic9={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic10 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic10 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic10={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic11 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic11 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic11={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic12 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic12 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic12={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic13 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic13 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic13={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic14 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic14 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic14={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic15 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic15 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic15={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  macro_ai_frame( ai_mech_sniper_panic16 )
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_panic16 ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
+  }
 };
 void() ai_mech_sniper_panic16={
   ai_update_accuracy( TRUE );
   macro_ai_update( ctrl_update_mechplayer )
   
-  macro_ai_frame_count( ai_mech_sniper_panic1 )
-  
-  movetogoal( self.data_speed_forward * AI_RUN_FACTOR );
-  
-  if( ai_valid_target(self.enemy) ){
-    macro_ai_frame( ai_mech_sniper_fight_prep )
-    return;
+  macro_ai_frame_count( ai_mech_sk_panic1 )
+
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward / 2, ai_mech_sniper_fight_prep, ai_mech_sniper_enter_stand ); 
+  if( !moveCheck ){
+    macro_ai_frame( ai_mech_sniper_enter_stand )
   }
-  
-  if( self.movetarget ){
-    macro_ai_frame( ai_mech_sniper_patrol1 )
-    return;
-  }
-  
-  macro_ai_frame( ai_mech_sniper_stand1 )
 };
 
 /*

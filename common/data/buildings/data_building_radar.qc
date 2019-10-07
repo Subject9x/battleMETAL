@@ -184,7 +184,7 @@ void() building_human_radar={
   self.ai_rank = skill;
   self.w_firetime = AI_POST_SPOT_TIME;
   self.vec_name = "Listening Post";
-  self.flags = (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
   util_setModel("q3mdl/buildings/radar/mdl_bld_h_radar.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;

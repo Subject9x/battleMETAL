@@ -21,6 +21,7 @@ void() ai_spg_patrol1;
 void() ai_spg_fight_prep;
 void( entity attacker ) ai_spg_react1;
 
+void() ai_spg_enter_patrol;
 void() ai_spg_enter_charge;
 void() ai_spg_enter_strafe;
 

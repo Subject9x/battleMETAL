@@ -17,13 +17,12 @@ void() ai_mech_sk_enter_charge={
   if( self.lefty == -1 ){
     self.ai_dir = 180;
     self.legs.think = bot_leg_back1;
-    self.legs.attack_state = TR_GOAL;
   }
   else{
     self.ai_dir = 0;
     self.legs.think = bot_leg_walk1;
-    self.legs.attack_state = TR_GOAL;
   }
+  self.legs.attack_state = TR_NORM;
   
   self.legs.ai_dir = anglemod(self.angles_y + self.ai_dir);
   self.legs.nextthink = time + 0.1;

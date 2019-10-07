@@ -22,7 +22,7 @@ void() ai_mech_skirmish={
   
   trigger_event( self, trigOnSpawn); //event interface
     
-  self.th_stand = ai_mech_sk_stand1;
+  self.th_stand = ai_mech_sk_enter_stand;
   self.th_walk = ai_mech_sk_patrol1;
   self.th_missile = ai_mech_sk_fight_prep;
   self.th_pain = ai_mech_sk_panic1;
@@ -178,42 +178,27 @@ void() ai_mech_sk_fight_prep={
     }
     
     if( enemy_vis == VIS_FRN ){
+      self.lefty = self.lefty * -1;
       if( self.ai_rank > AI_RANK_REG ){
-        self.lefty = self.lefty * -1;
         macro_ai_update(ai_mech_sk_enter_flank)
         return;
       }
-      self.lefty = -1;
       macro_ai_update(ai_mech_sk_enter_charge)
       return;
     }
     
     if( enemy_vis == VIS_FAIL ){
-      if( self.ai_rank > AI_RANK_REG ){
-        if( util_getMechHpAverage(self) > 0.45){
-          enemy_hunt = TRUE;
-        }
-        if( util_getMechHpAverage(self.enemy) <= 0.25 ){
-          enemy_hunt = TRUE;
-        }
-      }
-      if( util_getMechHpAverage(self) > 0.75 ){
-        if( self.enemy.vec_size < self.vec_size ){
-          enemy_hunt = TRUE;
-        }
-      }
-      if( util_getMechHpAverage(self.enemy) <= 0.25 ){
+      if( self.ai_rank > AI_RANK_REG || self.stat_rdr_mode > 0){
         enemy_hunt = TRUE;
       }
     }
   }
   if( enemy_hunt ){
-    if( !self.ai_node_recall ){
+    if(  self.ai_node_recall == world || !(self.ai_node_recall) ){
       macro_ai_frame(ai_mech_sk_enter_hunt)
       return;
     }
-    self.goalentity = self.ai_node_recall;
-    macro_ai_frame(ai_mech_sk_hunt1)
+    macro_ai_frame(ai_mech_sk_enter_recall)
     return;
   }
 
@@ -235,12 +220,23 @@ void() ai_mech_sk_stand1={
     return;
   }
   
-  if( self.movetarget ){
+  if( self.movetarget != world ){
     if( time > self.pausetime ){
       macro_ai_frame(ai_mech_sk_patrol1)
       return;
     }
   }
+  
+  if( random() < 0.25 ){
+    self.ideal_yaw = (random() * self.ai_angleLimits_x) * -1;
+    self.ideal_yaw = self.ideal_yaw + self.ai_angleLimits_y;
+    self.ideal_yaw = self.ideal_yaw * crandom();
+    self.ideal_yaw = anglemod( self.angles_y + self.ideal_yaw);
+    macro_ai_frame(ai_mech_sniper_turn1)
+    return;
+  }
+  
+  cons_logAFloat("ai_mech_sk_stand1 BOTTOM", 1);  //DEBUG
   macro_ai_frame(ai_mech_sk_stand1)
 };
 
@@ -248,10 +244,11 @@ void() ai_mech_sk_enter_stand={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_update_mechplayer)
   
-  self.legs.ai_dir = self.legs.angles_y;
+  self.torsoCenter.attack_state = TR_NORM;
   self.legs.attack_state = TR_NORM;
   self.legs.think = bot_leg_stand1;
   self.legs.nextthink = time + 0.1;
+  self.goalentity = world;
   
   macro_ai_frame(ai_mech_sk_stand1)
 };

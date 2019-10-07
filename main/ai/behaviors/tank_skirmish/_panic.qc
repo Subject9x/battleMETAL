@@ -122,7 +122,7 @@ void() ai_tank_sk_panic10={
   }
   
   if( self.movetarget ){
-    macro_ai_frame( ai_tank_sk_patrol1 )
+    macro_ai_frame( ai_tank_sk_enter_patrol )
     return;
   }
   

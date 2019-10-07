@@ -462,7 +462,7 @@ void() BecomeExplosion={
 */
 void() util_MapDeveloperMarker={
   if( cvar("developer") ){
-    self.alpha = 0.85;
+    self.alpha = 0.9;
     self.scale = 1;
   }
   else{

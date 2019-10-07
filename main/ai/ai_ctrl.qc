@@ -17,6 +17,7 @@ void( float estate ) ai_turret_set_state={
 */
 void() ai_turret_control={
   local entity turretOwner;
+  local float ang;
   if( (self.torsoCenter) ){
     turretOwner = self;
     self = self.torsoCenter;
@@ -26,17 +27,18 @@ void() ai_turret_control={
           self.ideal_yaw = turretOwner.angles_y;
           break;
         case TR_TARG:
-          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.origin );
+          self.ideal_yaw = vectoyaw( turretOwner.enemy.origin - self.owner.origin );
           break;
         case TR_GOAL:
-          self.ideal_yaw = vectoyaw( turretOwner.goalentity.origin - self.origin );
+          self.ideal_yaw = vectoyaw( turretOwner.goalentity.origin - self.owner.origin );
           break;
         case TR_YAW:
           self.ideal_yaw = self.ai_dir;
           break;
       }
       //run check to see if ideal_yaw is within unit's max rotation limits.
-      self.ideal_yaw = ai_check_turret_yaw( self.ideal_yaw, turretOwner.angles_y, turretOwner.ai_angleLimits_x, turretOwner.ai_angleLimits_y);
+      ang = ai_check_turret_yaw( self.ideal_yaw, turretOwner.angles_y, turretOwner.ai_angleLimits_x, turretOwner.ai_angleLimits_y);
+      self.ideal_yaw = ang;
       ChangeYaw(); 
       self.v_angle = self.angles;
     self = turretOwner;
@@ -55,8 +57,9 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
     return angleMin; //turret rotation lockout.
   }
   else {
-    if( (angleMin <= angleOfTarget) || (angleOfTarget <= angleMax) )
+    if( (angleMin <= angleOfTarget) || (angleOfTarget <= angleMax) ){
       return angleOfTarget;
+    }
     return angleMax; //turret rotation lockout.
   }
   
@@ -73,8 +76,11 @@ void() ai_leg_control={
         case TR_NORM:
           self.ideal_yaw = self.owner.angles_y;
           break;
-        case TR_GOAL:
+        case TR_TARG:
           self.ideal_yaw = self.ai_dir;
+          break;
+        case TR_GOAL:
+          self.ideal_yaw = vectoyaw(self.owner.goalentity.origin - self.origin);
           break;
         case TR_YAW:
           self.ideal_yaw = self.angles_y;
@@ -84,6 +90,14 @@ void() ai_leg_control={
       self.v_angle = self.angles;
     self = legOwner;
   }
+};
+
+float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame={
+  if( walkmove( moveAngle, moveSpeed ) ){
+    macro_ai_frame(nextFrameFunc)
+    return TRUE;
+  }
+  return FALSE;
 };
 
 /*
@@ -98,9 +112,6 @@ void() ai_update={
   else{ 
     self.enemy = world;
     self.button0 = FALSE;
-    if( self.torsoCenter.attack_state != TR_YAW ){
-      ai_turret_set_state( TR_YAW );
-    }
   }
   ai_ranged_attack();
   self.button0 = FALSE;
@@ -117,6 +128,113 @@ void() ai_touch={
   if( time > self.ai_react_buffer ){
     self.th_react( other );
   }
+};
+
+/*
+  processes 1 frame of AI logic for moving towards a patrol node;
+  the return value is used to check if entire frame should return early.
+  
+*/
+float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic={
+  local entity nextNode;
+  
+  if( self.goalentity.classname == "ai_node" ){
+    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+    ChangeYaw();
+    if( !walkmove( self.angles_y, self.data_speed_forward) ){
+      movetogoal( self.data_speed_forward );
+    }
+    //AI has reached node
+    if( vlen(self.goalentity.origin - self.origin) <= AI_NODE_DISTANCE ){
+      if( self.goalentity.pausetime ){
+        self.pausetime = self.goalentity.pausetime;
+        self.pausetime = self.pausetime + (self.pausetime * (self.ai_action_mod / 10));
+        self.pausetime = self.pausetime + time;
+      }
+      if( self.goalentity.target ){
+        nextNode = find(world, targetname, self.goalentity.target);
+        self.movetarget = nextNode;
+      }
+      else{
+        self.movetarget = world;
+        self.goalentity = world;
+      }
+      self.goalentity = self.movetarget;
+      if( time < self.pausetime ){
+        macro_ai_frame(pauseFrameFunc)
+        return TRUE;
+      }
+    }
+    macro_ai_frame(nextFrameFunc)
+    return TRUE;
+  }
+  return FALSE;
+};
+
+/*
+  processes 1 frame of AI logic for moving towards recall node;
+  the return value is used to check if entir frame should return early.
+  
+*/
+float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
+  //moving to recall node
+  if( self.goalentity && self.goalentity != world ){
+    self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin );
+    ChangeYaw();
+    if( !walkmove(self.angles_y, moveSpeed) ){
+      movetogoal( moveSpeed );
+    }
+    //reached the recall node
+    if( vlen(self.goalentity.origin - self.origin) <= AI_NODE_DISTANCE ){
+      remove(self.ai_node_recall);
+    }
+    else{
+      //keep moving to node
+      macro_ai_frame(nextFrameFunc)
+      return TRUE;
+    }
+  }
+  return FALSE;
+};
+
+/*
+  in 1 AI frame of hunting, check to see if AI can spot its target.
+*/
+float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vis={
+  if( ai_check_vis(self.enemy) == VIS_FRAC ){
+    if( ai_check_range(self.enemy) < AI_RANGE_M / 2 ){
+      remove(self.ai_node_recall);
+      self.ai_node_recall = world;
+      self.attack_state = 0;
+      macro_ai_frame(frameFuncOnSpot)
+      return TRUE;
+    }
+    if( ai_check_range(self.enemy) > AI_RANGE_L ){
+      self.attack_state = 0;
+      macro_ai_frame(frameFuncRangeOut)
+      return TRUE;
+    }
+  }
+  return FALSE;
+};
+
+/*
+  a single frame of hunting logic,
+  moveSpeed = self.<speed> to move at.
+  nextFrameFunc = the AI frame to do.
+  pauseFrameFunc = the end / fail frame to go to.
+*/
+void( float moveSpeed, void() nextFrameFunc, void() pauseFrameFunc ) ai_hunt_logic={
+  self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+  ChangeYaw();
+  if( !walkmove( self.angles_y, moveSpeed ) ){
+    movetogoal( moveSpeed );
+  }
+  if( vlen(self.goalentity.origin - self.origin) > AI_NODE_DISTANCE ){
+    macro_ai_frame(nextFrameFunc)
+    return;
+  }
+  macro_ai_frame(pauseFrameFunc)
 };
 
 /*
@@ -270,20 +388,23 @@ float( entity targ ) ai_check_vis={
   
   spot1 = self.origin;
   spot2 = targ.origin;
-  traceline (spot1, spot2, TRUE, self); // see through other monsters
-
-  if ( trace_inopen && trace_inwater )
-    return VIS_FAIL;     // sight line crossed contents
+  traceline (spot1, spot2, FALSE, self);
   
-  if ( trace_fraction == 1 )
+  if ( trace_inopen && trace_inwater ){
+    return VIS_FAIL;     // sight line crossed contents
+  }
+  if ( trace_fraction == 1 ){
     return VIS_FRAC;
-
+  }
   if( trace_ent.faction == self.faction ){
     friend_blocker = trace_ent;
     friend_blocker_dist = vlen(friend_blocker.origin - self.origin);
     return VIS_FRN;
   }
   
+  if( trace_fraction >= 0.9 && (trace_ent.flags & FL_UNIT) ){
+    return VIS_FRAC;
+  }
   return VIS_FAIL;
 };
 
@@ -338,7 +459,7 @@ void() ai_setup_patrol={
       if( spot2 ){
         self.goalentity = self.movetarget = spot2;
         self.ideal_yaw = vectoyaw( spot2.origin - self.origin);
-        macro_ai_frame(self.th_walk)
+        self.think = self.th_walk;
         if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
           self.nextthink = time + (7 + random() * 1); //spread out thinks
         }

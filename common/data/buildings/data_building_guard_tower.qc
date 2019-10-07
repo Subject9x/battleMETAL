@@ -41,7 +41,7 @@ void() building_guard_tower={
   self.data_idx = UI_BUILDING_guard_tower;
   self.data_type = DATA_BLD;
   self.vec_name = "Guard Tower";
-  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
+  self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
   util_setModel("q3mdl/buildings/towersmall/guardtower.obj", self.skin, 0);
   util_setCollider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE);

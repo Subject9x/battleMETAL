@@ -10,29 +10,30 @@ Overview: ai unit
   Setup
     
 */
-void() ai_mech_sk_patrol1={
-  ai_update_accuracy( TRUE ); 
+void() ai_mech_sk_patrol1={ 
+  ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
 
-  self.legs.ideal_yaw = self.angles_y;
-  self.legs.attack_state = TR_NORM;
+  self.goalentity = self.movetarget;
+  self.legs.attack_state = TR_GOAL;
   self.legs.think = bot_leg_walk1;
   self.legs.nextthink = time + 0.1;
+  
+  self.torsoCenter.attack_state = TR_GOAL;
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol2)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol2 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
 };
-void() ai_mech_sk_patrol2={
+void() ai_mech_sk_patrol2={ 
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -41,13 +42,13 @@ void() ai_mech_sk_patrol2={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol3)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol3 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
 void() ai_mech_sk_patrol3={
   ai_update_accuracy( TRUE );
@@ -58,15 +59,15 @@ void() ai_mech_sk_patrol3={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol4)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol4 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
-void() ai_mech_sk_patrol4={
+void() ai_mech_sk_patrol4={ 
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -75,15 +76,15 @@ void() ai_mech_sk_patrol4={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol5)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol5 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
-void() ai_mech_sk_patrol5={
+void() ai_mech_sk_patrol5={ 
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -92,13 +93,13 @@ void() ai_mech_sk_patrol5={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol6)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol6 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
 void() ai_mech_sk_patrol6={
   ai_update_accuracy( TRUE );
@@ -109,13 +110,13 @@ void() ai_mech_sk_patrol6={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol7)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol7 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
 void() ai_mech_sk_patrol7={
   ai_update_accuracy( TRUE );
@@ -126,15 +127,15 @@ void() ai_mech_sk_patrol7={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol8)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol8 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
-void() ai_mech_sk_patrol8={
+void() ai_mech_sk_patrol8={ 
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -143,15 +144,15 @@ void() ai_mech_sk_patrol8={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol9)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol9 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
-void() ai_mech_sk_patrol9={
+void() ai_mech_sk_patrol9={ 
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -160,13 +161,13 @@ void() ai_mech_sk_patrol9={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol10)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol10 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
 void() ai_mech_sk_patrol10={
   ai_update_accuracy( TRUE );
@@ -176,14 +177,13 @@ void() ai_mech_sk_patrol10={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol11)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol11 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
 void() ai_mech_sk_patrol11={
   ai_update_accuracy( TRUE );
@@ -194,15 +194,15 @@ void() ai_mech_sk_patrol11={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol12)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol12 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
-void() ai_mech_sk_patrol12={
+void() ai_mech_sk_patrol12={ 
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -211,15 +211,15 @@ void() ai_mech_sk_patrol12={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol13)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol13 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
-void() ai_mech_sk_patrol13={
+void() ai_mech_sk_patrol13={ 
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -228,13 +228,13 @@ void() ai_mech_sk_patrol13={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol14)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol14 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
 void() ai_mech_sk_patrol14={
   ai_update_accuracy( TRUE );
@@ -245,13 +245,13 @@ void() ai_mech_sk_patrol14={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol15)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol15 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
+
 };
 void() ai_mech_sk_patrol15={
   ai_update_accuracy( TRUE );
@@ -262,15 +262,14 @@ void() ai_mech_sk_patrol15={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    movetogoal( self.data_speed_forward );
-    macro_ai_frame(ai_mech_sk_patrol16)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol16 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
 };
-void() ai_mech_sk_patrol16={
+void() ai_mech_sk_patrol16={ 
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
@@ -279,10 +278,10 @@ void() ai_mech_sk_patrol16={
     return;
   }
   
-  if( self.goalentity && self.goalentity != world ){
-    macro_ai_frame(ai_mech_sk_patrol1)
-    return;
+  //node is still valid
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol1 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_mech_sk_enter_stand)
   }
-  
-  macro_ai_frame(ai_mech_sk_enter_stand)
 };

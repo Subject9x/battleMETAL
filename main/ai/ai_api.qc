@@ -114,7 +114,7 @@ void( entity t ) ai_call_for_help={
 }; 
 
 float(entity t) ai_valid_target={  
-  if( (t.flags & FL_UNIT)&& t.deadflag == DEAD_NO ){
+  if( (t.flags & FL_UNIT) && t.deadflag == DEAD_NO ){
     if( t != self ){
       return 1;
     }
@@ -190,8 +190,8 @@ float() ai_find_target_visual={
   
   targ = findradius(self.origin, rng);
   while( targ ){
-    if( targ.faction != self.faction ){
-      if( ai_valid_target(targ) ){
+    if( ai_valid_target(targ) ){
+      if( targ.faction != self.faction ){
         if( ai_check_face(targ, self.ai_fov) ){
           if( ai_check_vis(targ) == VIS_FRAC ){
             ndist = vlen(targ.origin - self.origin);
@@ -237,8 +237,8 @@ float() ai_find_target_radar={
   targ = findradius(self.origin, self.ai_view);
   rng = self.ai_view;
   while( targ ){
-    if( targ.faction != self.faction ){
-      if( ai_valid_target(targ) ){
+    if( ai_valid_target(targ) ){
+      if( targ.faction != self.faction ){
         ndist = vlen(targ.origin - self.origin);
         if( ndist < rng ){
           if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == TRUE ){

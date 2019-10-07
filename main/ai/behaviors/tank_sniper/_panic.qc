@@ -168,7 +168,7 @@ void() ai_spg_panic10={
   }
   
   if( self.movetarget ){
-    macro_ai_frame( ai_spg_patrol1 )
+    macro_ai_frame( ai_spg_enter_patrol )
     return;
   }
   

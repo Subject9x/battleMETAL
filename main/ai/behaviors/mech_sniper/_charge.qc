@@ -33,11 +33,10 @@ void() ai_mech_sniper_charge1={
   dampen = self.data_speed_forward;
   if( self.speed != self.lefty )
     dampen = dampen * 0.1;
-
-  ChangeYaw(); 
-
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge2)
+    
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge2 ); 
+  if( moveCheck ){
     return;
   }
   
@@ -58,11 +57,12 @@ void() ai_mech_sniper_charge2={
   if( self.speed != self.lefty )
     dampen = dampen * 0.2;
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge3)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge3 ); 
+  if( moveCheck ){
     return;
-  }  
+  }
+  
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -80,11 +80,11 @@ void() ai_mech_sniper_charge3={
   if( self.speed != self.lefty )
     dampen = dampen * 0.3;
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge4)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge4 ); 
+  if( moveCheck ){
     return;
-  }  
+  } 
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -102,11 +102,11 @@ void() ai_mech_sniper_charge4={
   if( self.speed != self.lefty )
     dampen = dampen * 0.4;
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge5)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge5 ); 
+  if( moveCheck ){
     return;
-  }  
+  }
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -124,11 +124,11 @@ void() ai_mech_sniper_charge5={
   if( self.speed != self.lefty )
     dampen = dampen * 0.5;
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge6)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge6 ); 
+  if( moveCheck ){
     return;
-  }  
+  } 
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -146,11 +146,11 @@ void() ai_mech_sniper_charge6={
   if( self.speed != self.lefty )
     dampen = dampen * 0.6;
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge7)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge7 ); 
+  if( moveCheck ){
     return;
-  }  
+  }
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -171,10 +171,11 @@ void() ai_mech_sniper_charge7={
   ChangeYaw();
   ai_attack();
   
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge8)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge8 ); 
+  if( moveCheck ){
     return;
-  }  
+  }
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -196,10 +197,11 @@ void() ai_mech_sniper_charge8={
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
 
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge9)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge9 ); 
+  if( moveCheck ){
     return;
-  }  
+  } 
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -217,11 +219,11 @@ void() ai_mech_sniper_charge9={
   if( self.speed != self.lefty )
     dampen = dampen * 0.9;
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_charge10)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_charge10 ); 
+  if( moveCheck ){
     return;
-  }  
+  }
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -234,11 +236,11 @@ void() ai_mech_sniper_charge10={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
-    macro_ai_frame(ai_mech_sniper_charge11)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge11 ); 
+  if( moveCheck ){
     return;
-  }  
+  } 
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -254,10 +256,11 @@ void() ai_mech_sniper_charge11={
   ChangeYaw();
   ai_attack();
   
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
-    macro_ai_frame(ai_mech_sniper_charge12)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge12 ); 
+  if( moveCheck ){
     return;
-  }  
+  }
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -270,14 +273,16 @@ void() ai_mech_sniper_charge12={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ChangeYaw(); 
-  if( self.ai_rank > AI_RANK_REG )
+  if( self.ai_rank > AI_RANK_REG ){
+    ChangeYaw(); 
     ai_attack();
+  }
   
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
-    macro_ai_frame(ai_mech_sniper_charge13)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge13 ); 
+  if( moveCheck ){
     return;
-  }  
+  } 
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -290,11 +295,11 @@ void() ai_mech_sniper_charge13={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
-    macro_ai_frame(ai_mech_sniper_charge14)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge14 ); 
+  if( moveCheck ){
     return;
-  }  
+  } 
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -307,11 +312,11 @@ void() ai_mech_sniper_charge14={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ChangeYaw();
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
-    macro_ai_frame(ai_mech_sniper_charge15)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge15 ); 
+  if( moveCheck ){
     return;
-  }  
+  } 
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -327,10 +332,11 @@ void() ai_mech_sniper_charge15={
   ChangeYaw();
   ai_attack();
   
-  if( walkmove( self.angles_y, self.data_speed_forward ) ){
-    macro_ai_frame(ai_mech_sniper_charge16)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge16 ); 
+  if( moveCheck ){
     return;
-  }  
+  } 
   local float roll;
   roll = random();
   if( roll < 0.6 ){
@@ -343,9 +349,10 @@ void() ai_mech_sniper_charge16={
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_update_mechplayer)
   
-  ChangeYaw();
-  if( self.ai_rank > AI_RANK_REG )
+  if( self.ai_rank > AI_RANK_REG ){
+    ChangeYaw();
     ai_attack();
+  }
   
   if( walkmove( self.angles_y, self.data_speed_forward ) ){
     self.speed = self.lefty;

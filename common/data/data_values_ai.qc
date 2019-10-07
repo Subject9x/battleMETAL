@@ -134,7 +134,10 @@ float AI_RANGE_M = 1000;
 float AI_RANGE_L = 1600;
 
 //Frameset counter, how many loops of a frame set
-float AI_REFLEX_ACE = 1.5;
-float AI_REFLEX_VET = 2.5;
-float AI_REFLEX_REG = 3.5;
-float AI_REFLEX_ROK = 4.5;
+float AI_REFLEX_ACE = 1;
+float AI_REFLEX_VET = 2;
+float AI_REFLEX_REG = 2;
+float AI_REFLEX_ROK = 3;
+
+//Patrol Node Chec Range
+float AI_NODE_DISTANCE = 100;

@@ -21,7 +21,7 @@ void() ai_vec_dest={
   trigger_event( self, trigOnSpawn ); //event interface
   
   self.th_stand = ai_spg_stand1;
-  self.th_walk = ai_spg_patrol1;
+  self.th_walk = ai_spg_enter_patrol;
   self.th_missile = ai_spg_fight_prep;
   self.th_pain = ai_spg_panic1;
   self.th_react = ai_spg_react1;
@@ -65,18 +65,30 @@ void() ai_spg_patrol1={
     return;
   }
   
+  if( ai_valid_target(self.enemy) ){
+    macro_ai_frame(ai_spg_fight_prep)
+    return;
+  }
+  
+  local float moveCheck;
+  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_spg_stand1, ai_spg_patrol1 );
+  if( !moveCheck ){
+    macro_ai_frame(ai_spg_stand1)
+  }
+  
   if( time > self.pausetime ){
     if( self.movetarget ){
       macro_ai_frame(ai_spg_patrol1)
       return;
     }
   }
-  if( ai_valid_target(self.enemy) ){
-    macro_ai_frame(ai_spg_fight_prep)
-    return;
-  }
   
-  macro_ai_frame(ai_spg_stand1)
+  macro_ai_frame(ai_spg_patrol1)
+};
+
+void() ai_spg_enter_patrol={
+  self.goalentity = self.movetarget;
+   macro_ai_frame(ai_spg_patrol1)
 };
 
 /*
@@ -225,5 +237,5 @@ void() ai_spg_fight_prep={
     }
   }
   self.enemy = world;
-  macro_ai_frame(ai_spg_patrol1)
+  macro_ai_frame(ai_spg_enter_patrol)
 };

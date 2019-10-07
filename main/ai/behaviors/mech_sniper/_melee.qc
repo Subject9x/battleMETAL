@@ -84,13 +84,14 @@ void() ai_mech_sniper_melee7={
   if( self.speed != self.lefty )
     dampen = dampen * 0.1;
     
-  self.legs.attack_state = TR_GOAL;
+  self.legs.attack_state = TR_TARG;
   self.legs.ai_dir = self.ai_dir;
   self.legs.think = bot_leg_walk1;
   self.legs.nextthink = time + 0.1;
   
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee8)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee8 ); 
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
@@ -104,8 +105,9 @@ void() ai_mech_sniper_melee8={
   if( self.speed != self.lefty )
     dampen = dampen * 0.2;
   
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee9)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee9 ); 
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
@@ -119,8 +121,9 @@ void() ai_mech_sniper_melee9={
   if( self.speed != self.lefty )
     dampen = dampen * 0.3;
   
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee10)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee10 ); 
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
@@ -136,8 +139,9 @@ void() ai_mech_sniper_melee10={
   
   ai_attack();
   
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee11)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee11 ); 
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
@@ -154,8 +158,9 @@ void() ai_mech_sniper_melee11={
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
   
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee12)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee12 ); 
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
@@ -169,8 +174,9 @@ void() ai_mech_sniper_melee12={
   if( self.speed != self.lefty )
     dampen = dampen * 0.6;
   
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee13)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee13 ); 
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
@@ -184,8 +190,9 @@ void() ai_mech_sniper_melee13={
   if( self.speed != self.lefty )
     dampen = dampen * 0.7;
   
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee14)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee14 ); 
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
@@ -200,8 +207,9 @@ void() ai_mech_sniper_melee14={
     dampen = dampen * 0.8;
   
   ai_attack();
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee15)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee15 ); 
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
@@ -216,8 +224,9 @@ void() ai_mech_sniper_melee15={
     dampen = dampen * 0.9;
   
   ai_attack();
-  if( walkmove( self.ai_dir, dampen ) ){
-    macro_ai_frame(ai_mech_sniper_melee16)
+  local float moveCheck;
+  moveCheck = ai_move_frame( self.ai_dir, dampen, ai_mech_sniper_melee16 );
+  if( moveCheck ){
     return;
   }
   macro_ai_frame(ai_mech_sniper_rotate1)
