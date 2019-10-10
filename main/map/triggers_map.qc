@@ -229,7 +229,7 @@ void() map_func_rain={
   self.use = func_particle_cube_use;
   
   if( self.trigOnSpawn )
-    trigger_event( self, trigOnSpawn );
+    trigger_event( self, self.trigOnSpawn );
   
   if( (self.spawnflags & 1) )
     return;

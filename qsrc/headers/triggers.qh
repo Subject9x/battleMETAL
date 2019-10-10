@@ -29,7 +29,7 @@ float PUSH_ONCE = 1;
 .string trigOnPanic;
 .string trigOnTarget;
 
-void( entity active, .string event ) trigger_event;
+void( entity active, string event ) trigger_event;
 
 //TRIGGER UTILS
 void() multi_wait;
@@ -72,5 +72,3 @@ void() trigger_hurt;
 void() trigger_push_touch;
 void() trigger_push;
 void() trigger_monsterjump;
-
-void() trigger_activate_node;

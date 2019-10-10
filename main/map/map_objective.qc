@@ -161,7 +161,7 @@ void() map_objective_th={
   //objective failed.
   if( self.isActive == -1 ){
     //objective failed!
-    trigger_event( self.enemy, trigOnDeath );
+    trigger_event( self.enemy, self.trigOnDeath );
     player = find (world, classname, "player");
     while( player != world ){
       if( player.faction == self.faction ){

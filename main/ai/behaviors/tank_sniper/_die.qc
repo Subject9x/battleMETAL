@@ -37,7 +37,7 @@ void() ai_vec_dest_die={
   mech_player_compdie(self.cockpit);
   
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
 
   self.think = ai_vec_dest_die1;
   self.ai_action_time = time + 600;

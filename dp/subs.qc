@@ -240,7 +240,7 @@ void() SUB_UseTargets =
 {
 
 	local entity t, act;
-
+  local entity tempSelf, tempOther;
 //
 // check for a delay
 //
@@ -290,14 +290,14 @@ void() SUB_UseTargets =
 			t = find(t, targetname, self.target);
 			if (!t)
 				return;
-			stemp = self;
-			otemp = other;
+			tempSelf = self;
+			tempOther = other;
 			self = t;
-			other = stemp;
+			other = tempSelf;
 			if (self.use)
         self.use ();
-			self = stemp;
-			other = otemp;
+			self = tempSelf;
+			other = tempOther;
 			activator = act;
 		} while ( 1 );
 	}

@@ -58,7 +58,7 @@ void() map_misc_model_static={
 
 void() map_misc_model_solid_die={
 
-  trigger_event( activator, trigOnDeath );
+  trigger_event( activator, self.trigOnDeath );
 
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;

@@ -19,7 +19,7 @@ void() ai_tank_skirmish={
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
-  trigger_event( self, trigOnSpawn); //event interface
+  trigger_event( self, self.trigOnSpawn); //event interface
   
   self.th_stand = ai_tank_sk_stand1;
   self.th_walk = ai_tank_sk_enter_patrol;

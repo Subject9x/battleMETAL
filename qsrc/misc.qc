@@ -821,12 +821,12 @@ void() func_rain_think={
 	
 	if( (self.spawnflags & 2) ){
 		if( time > self.data_lifetime ){
-		  if( self.trigOnDeath ){
-			trigger_event( self, trigOnDeath );
-		  }
-		  if( (self.spawnflags & 64) ){
-			remove(self);
-		  }
+		  if( self.trigOnDeath )
+        trigger_event( self, self.trigOnDeath );
+		  
+		  if( (self.spawnflags & 64) )
+        remove(self);
+        
 		  return;
 		}
 	}
@@ -863,13 +863,12 @@ void() func_rain={
   self.w_think = func_rain_think;
   self.use = func_particle_cube_use;
   
-  if( self.trigOnSpawn ){
-    trigger_event( self, trigOnSpawn );
-  }
+  if( self.trigOnSpawn )
+    trigger_event( self, self.trigOnSpawn );
   
-  if( (self.spawnflags & 1) ){
+  if( (self.spawnflags & 1) )
     return;
-  }
+  
   
   self.use();
 };
@@ -889,12 +888,12 @@ void() func_snow_think={
 	
 	if( (self.spawnflags & 2) ){
 		if( time > self.data_lifetime ){
-		  if( self.trigOnDeath ){
-			trigger_event( self, trigOnDeath );
-		  }
-		  if( (self.spawnflags & 64) ){
-			remove(self);
-		  }
+		  if( self.trigOnDeath )
+        trigger_event( self, self.trigOnDeath );
+      
+		  if( (self.spawnflags & 64) )
+        remove(self);
+		  
 		  return;
 		}
 	}
@@ -931,13 +930,11 @@ void() func_snow={
   self.w_think = func_snow_think;
   self.use = func_particle_cube_use;
   
-  if( self.trigOnSpawn ){
-	trigger_event( self, trigOnSpawn );
-  }
+  if( self.trigOnSpawn )
+    trigger_event( self, self.trigOnSpawn );
   
-  if( (self.spawnflags & 1) ){
-	return;
-  }
+  if( (self.spawnflags & 1) )
+    return;
   
   self.use();
 };

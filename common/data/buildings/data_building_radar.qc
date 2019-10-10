@@ -53,7 +53,7 @@ void() building_radar_detect1=[0, building_radar_detect1]{
     self.th_missile();
     if( self.trigOnTarget ){
       if( time > self.wait ){
-        trigger_event( self, trigOnTarget );
+        trigger_event( self, self.trigOnTarget );
         self.wait = time + self.delay;
       }
     }

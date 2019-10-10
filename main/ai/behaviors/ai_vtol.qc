@@ -314,7 +314,7 @@ void() ai_vtol_die={
   }
   
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
   
   self.touch = ai_vtol_crash;
   
@@ -359,7 +359,7 @@ void() ai_vtol={
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
   }
-  trigger_event( self, trigOnSpawn); //event interface
+  trigger_event( self, self.trigOnSpawn); //event interface
   
   self.th_stand = ai_vtol_stand;
   self.th_walk = ai_vtol_walk;

@@ -21,13 +21,13 @@ void(float mech_id) initialize_data_mech_={
   //guess the mech id's should just be flat
   switch(mech_id){
     case UID_MECH_balaket:
-      build_mech_unit(data_ini_balaket_);
+      build_mech_unit( data_ini_balaket_ );
       return;
     case UID_MECH_matok:
-      build_mech_unit(data_ini_matok_);
+      build_mech_unit( data_ini_matok_ );
       return;
     case UID_MECH_monitor:
-      build_mech_unit(data_ini_monitor_);
+      build_mech_unit( data_ini_monitor_ );
       return;
     default :
       cons_logAFloat("Error: failed to build mech with id", mech_id);
@@ -88,13 +88,13 @@ void(float vec_id) initialize_data_turret_={
   
   switch(vec_id){
     case UID_TURRET_light_turret:
-      build_turret_unit(data_ini_light_turret_);
+      build_turret_unit( data_ini_light_turret_ );
       return;
     case UID_TURRET_missile_turret:
-      build_turret_unit(data_ini_missile_turret_);
+      build_turret_unit( data_ini_missile_turret_ );
       return;
     case UID_TURRET_heavy_turret:
-      build_turret_unit(data_ini_heavy_turret_);
+      build_turret_unit( data_ini_heavy_turret_ );
       return;
     default:
       cons_logAFloat("Error: failed to build turret with id", vec_id);

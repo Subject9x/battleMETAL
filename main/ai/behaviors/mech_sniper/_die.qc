@@ -43,7 +43,7 @@ void() ai_mech_sniper_die={
   self.legs.nextthink = time + 0.05;
   
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
 
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);

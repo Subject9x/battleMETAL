@@ -10,7 +10,7 @@ Overview: ai nodes
 void() node_use={
   if( !self.isActive ){
     self.isActive = TRUE;
-    trigger_event( self, trigOnSpawn );
+    trigger_event( self, self.trigOnSpawn );
   }
 };
 
@@ -30,7 +30,7 @@ void() node_setup={
   setsize(self, '-10 -10 -18','10 10 18');
   setorigin(self, self.origin);
   
-  trigger_event( self, trigOnSpawn );
+  trigger_event( self, self.trigOnSpawn );
   if( !self.pausetime ){
     self.pausetime = ((4 - skill) * -1) * 1.65; 
   }

@@ -30,7 +30,7 @@ void() nav_point_touch={
       that = other;
       
       // trigOnTarget is used specifically here to trigger an objective
-      trigger_event( that, trigOnTarget );
+      trigger_event( that, self.trigOnTarget );
       
       //multi_trigger();
       if( (self.spawnflags & 2) )
@@ -50,7 +50,7 @@ void() nav_point_touch={
 void() nav_point_use={
   //nav point is inactive, activate
   if( !self.isActive ){
-    trigger_event( activator, trigOnSpawn );
+    trigger_event( activator, self.trigOnSpawn );
     self.isActive = TRUE;
     return;
   }
@@ -58,7 +58,7 @@ void() nav_point_use={
   if( self.isActive > FALSE ){
     //deactivate signal
     self.isActive = FALSE;
-    trigger_event( other, trigOnDeath );
+    trigger_event( other, self.trigOnDeath );
     return;
   }
 };

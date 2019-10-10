@@ -49,7 +49,7 @@ void() ai_mech_sk_die={
     remove(self.ai_node_recall);
   
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
   
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin(self, self.origin);

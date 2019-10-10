@@ -12,7 +12,7 @@ mod: 07/15/2019
 
 void() building_die={
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
   
   world_remove_dlight(self);
   

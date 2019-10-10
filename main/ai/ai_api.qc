@@ -478,16 +478,19 @@ void() ai_lock_on={
 
 //AI MAP FUNCS
 /*
-    called by any AI unit that needs to spawn onto the map.
-    This function delegates HOW the AI should be spawned based on its starting parameters.
-    
-    if the AI is to be triggered by another object, then postpone full ini into the use() function
-    if the AI is a multiple - count > 0, as in, 'create multiples', then delegate to ai_unit_make_multi()
-    if the AI count is < 0 but there's a delay param, then delay ini for that amount of time
-    else
-    fall-through and create the ai
+  called by any AI unit that needs to spawn onto the map.
+  This function delegates HOW the AI should be spawned based on its starting parameters.
+  
+  if the AI is to be triggered by another object, then postpone full ini into the use() function
+  if the AI is a multiple - count > 0, as in, 'create multiples', then delegate to ai_unit_make_multi()
+  if the AI count is < 0 but there's a delay param, then delay ini for that amount of time
+  else
+  fall-through and create the ai
 */
 float( void() ai_to_make ) ai_unit_setup={
+  
+  if( !(self.wait) )
+    self.wait = 0.05;
 
   if( !self.nextVecChoice )
     self.nextVecChoice = 1;
@@ -519,9 +522,8 @@ float( void() ai_to_make ) ai_unit_setup={
 };
 
 void() ai_unit_make_trigger={
-  self.use = multi_trigger;
   self.think = self.unit_ini;
-  self.nextthink = time + self.delay;
+  self.nextthink = time + self.wait;
 };
 
 void() ai_unit_make_multi={

@@ -112,10 +112,10 @@ void() sv_getTarget={
         self.lock_timer = time + (self.w_firetime *1.75);
       }
       if( self.enemy.trigOnTarget ){
-        trigger_event( self.enemy, trigOnTarget );
+        trigger_event( self.enemy, self.trigOnTarget );
       }
       else{
-        trigger_event( self, trigOnTarget );
+        trigger_event( self, self.trigOnTarget );
       }
     }
   }

@@ -212,7 +212,7 @@ void() ai_noncom_die={
   self.attack_state = -1;
   
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
 
   self.think = BecomeExplosion;
   self.nextthink = time + 2;
@@ -236,7 +236,7 @@ void() ai_noncom_tank={
   if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
     ai_node_pick_rand( self.target );
   }
-  trigger_event( self, trigOnSpawn); //event interface
+  trigger_event( self, self.trigOnSpawn); //event interface
    
   ai_setup_patrol();
   

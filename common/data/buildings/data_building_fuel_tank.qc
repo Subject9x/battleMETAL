@@ -11,7 +11,7 @@ Overview: data file for building
 //Death Animation
 void() hfuel_death1 = [1, hfuel_death2]{
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;

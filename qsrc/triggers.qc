@@ -22,34 +22,30 @@ author: iD Software
     fires the SUB_UseTargets() function (thus firing target triggers)
   then reloads the original .target value, and returns.
 */
-void( entity active, .string event) trigger_event={
+void( entity active, string event) trigger_event={
   local string oldTarget;
   local string thisTarget;  //something something method arg stack
   local entity hold;
-  
+  traceon();  //DEBUG
   hold = self;
   if( active != self ){
     self = active;
   }
-  if( self.event ){
+  if( event != "" ){
     oldTarget = self.target;
     
-    thisTarget = self.event;
+    thisTarget = event;
     self.target = thisTarget;
-    activator = self;
+    activator = self.enemy;
 
     SUB_UseTargets();
-
-    self.event = string_null;  //fired once
+    
     self.target = oldTarget;
   }
   if( active != self ){
     self = hold;
   }
-};
-
-void() trigger_activate_node={
-  
+  traceoff();  //DEBUG
 };
 
 void() trigger_reactivate =
@@ -177,6 +173,7 @@ void() trigger_multiple =
 	
 	if (!self.wait)
 		self.wait = 0.2;
+  
 	self.use = multi_use;
 
 	InitTrigger ();

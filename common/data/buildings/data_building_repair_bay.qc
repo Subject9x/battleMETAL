@@ -107,7 +107,7 @@ void() hrepair_die = [0, hrepair_die1]{
   world_remove_dlight( self );
   
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;

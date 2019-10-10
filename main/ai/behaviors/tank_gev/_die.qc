@@ -61,7 +61,7 @@ void() ai_gev_die={
   self.enemy = world;
   
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
  
   w_chain = self.w_slot;
   while(w_chain){

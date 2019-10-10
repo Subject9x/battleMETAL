@@ -52,7 +52,7 @@ void() ai_turret_die={
   mech_player_compdie(self.torsoCenter);
   
   //fire triggers when dead
-  trigger_event( self, trigOnDeath );
+  trigger_event( self, self.trigOnDeath );
 
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
@@ -700,7 +700,7 @@ void() ai_turret={
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
-  trigger_event( self, trigOnSpawn); //event interface
+  trigger_event( self, self.trigOnSpawn); //event interface
   
   self.spreadDefault = ACCURACY_LOWTECH;
 

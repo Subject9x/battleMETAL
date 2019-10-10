@@ -44,5 +44,5 @@ void() map_deploy_point={
   self.think = deploy_point_th;
   self.nextthink = time + 0.1;
   
-  trigger_event( self, trigOnSpawn );
+  trigger_event( self, self.trigOnSpawn );
 }
