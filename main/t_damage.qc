@@ -239,11 +239,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = notTarg;
   }
   
-  if( (prevShields > 0) && (trg.shield <= 0) ){
+  if( (prevShields > 0) && (trg.shield <= 0) )
     te_shield_explode( trg.origin, trg.vec_size + 1 );
-  }
   
-  if( !dmgAmt ){
+  
+  if( dmgAmt <= 0 ){
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }

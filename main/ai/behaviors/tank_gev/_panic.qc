@@ -136,12 +136,11 @@ void( entity attacker ) ai_gev_react1={
   }
 
   //AI currently has no target
-  if( ai_valid_target(self.enemy) == FALSE ){
-    self.ai_react_buffer = time + self.ai_react_time * 1.25;
+  if( !ai_valid_target(self.enemy) ){
+    self.ai_react_buffer = time + self.ai_react_time * 3;
     self.enemy = attacker;
-    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
     self.torsoCenter.attack_state = TR_TARG;
-    macro_ai_frame(ai_gev_fight_prep)
+    macro_ai_frame(ai_gev_rotate1)
     return;
   }
   

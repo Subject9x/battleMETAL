@@ -122,11 +122,12 @@ void() ai_update={
 */
 void() ai_touch={
     //ignore nodes straight away, logic for these touches are in ai_nodes
-  if( (other.flags & FL_NODE) ){
+  if( (other.flags & FL_NODE) )
     return;
-  }
+  
   if( time > self.ai_react_buffer ){
     self.th_react( other );
+    return;
   }
 };
 

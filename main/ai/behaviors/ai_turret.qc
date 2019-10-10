@@ -578,7 +578,7 @@ void( entity attacker ) ai_turret_react1={
     return;
   }
   //AI currently has no target
-  if( ai_valid_target(self.enemy) == FALSE ){
+  if( (!ai_valid_target(self.enemy)) ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = TR_TARG;
