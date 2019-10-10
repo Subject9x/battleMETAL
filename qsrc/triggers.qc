@@ -25,27 +25,17 @@ author: iD Software
 void( entity active, string event) trigger_event={
   local string oldTarget;
   local string thisTarget;  //something something method arg stack
-  local entity hold;
-  traceon();  //DEBUG
-  hold = self;
-  if( active != self ){
-    self = active;
-  }
+  
   if( event != "" ){
     oldTarget = self.target;
     
     thisTarget = event;
     self.target = thisTarget;
-    activator = self.enemy;
-
+    activator = active;
     SUB_UseTargets();
     
     self.target = oldTarget;
-  }
-  if( active != self ){
-    self = hold;
-  }
-  traceoff();  //DEBUG
+  }  
 };
 
 void() trigger_reactivate =

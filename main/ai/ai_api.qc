@@ -489,10 +489,10 @@ void() ai_lock_on={
 */
 float( void() ai_to_make ) ai_unit_setup={
   
-  if( !(self.wait) )
+  if( (!self.wait) )
     self.wait = 0.05;
 
-  if( !self.nextVecChoice )
+  if( (!self.nextVecChoice) )
     self.nextVecChoice = 1;
   
   if( (self.spawnflags & AI_SPAWNFLAG_TRIGGERME) && (self.targetname) ){

@@ -58,12 +58,17 @@ void(float rank) ai_pilot_ini_stats={
   self.ai_viewcheck = ai_pilot_view_interval();
 
   mod_am = ai_pilot_armor_mod();
-  self.max_health = self.health = self.health * mod_am; 
-  self.legs.max_health = self.legs.health = self.legs.health * mod_am; 
-  self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * mod_am; 
-  self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * mod_am; 
-  self.armRight.max_health = self.armRight.health = self.armRight.health * mod_am; 
-  self.armLeft.max_health = self.armLeft.health = self.armLeft.health * mod_am;
+  self.max_health = self.health = self.health * mod_am;
+  if( (self.legs) )
+    self.legs.max_health = self.legs.health = self.legs.health * mod_am; 
+  if( (self.torsoLeft) )
+    self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * mod_am; 
+  if( (self.torsoRight) )
+    self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * mod_am; 
+  if( (self.armRight) )
+    self.armRight.max_health = self.armRight.health = self.armRight.health * mod_am; 
+  if( (self.armLeft) )
+    self.armLeft.max_health = self.armLeft.health = self.armLeft.health * mod_am;
   
   mod_sh = ai_pilot_shield_mod();
   self.shieldMax = self.shield = self.shield * mod_sh;
