@@ -133,7 +133,7 @@ void() hrepair_die9 = [9, hrepair_die10]{
   self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_BSP;
+  ruins.solid = SOLID_BBOX;
   ruins.movetype = MOVETYPE_NONE;
 
   setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));

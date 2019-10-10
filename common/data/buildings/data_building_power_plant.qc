@@ -50,7 +50,7 @@ void() hpower_die9 = [9, hpower_die10]{
   self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_BSP;
+  ruins.solid = SOLID_BBOX;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

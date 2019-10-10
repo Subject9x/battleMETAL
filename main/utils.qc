@@ -126,6 +126,8 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   local vector acc;
   local vector adj;
   local vector targVel;
+  local vector buildingOffset;
+  local entity aiTarget;
   
   targVel = '0 0 0';
   if( (self.owner.enemy.flags & FL_CLIENT) )
@@ -137,7 +139,14 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
       wepAim = self.owner.laser_sight_org - (targVel * self.owner.ai_leading);
     }
     else{
-      wepAim = self.owner.enemy.cockpit.origin - (targVel * self.owner.ai_leading);
+      if( self.owner.enemy.data_type == DATA_BLD ){
+        buildingOffset = self.owner.enemy.origin;
+        buildingOffset_z = buildingOffset_z + (self.owner.enemy.size_z / 2);
+        wepAim = buildingOffset- (targVel * self.owner.ai_leading);
+      }
+      else{
+        wepAim = self.owner.enemy.cockpit.origin - (targVel * self.owner.ai_leading);
+      }
     }
     wepAim = normalize(wepAim - self.origin);
   }

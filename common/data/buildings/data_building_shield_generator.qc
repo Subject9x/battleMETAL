@@ -40,7 +40,7 @@ void() hshield_die9 = [9, hshield_die10]{
   self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_CORPSE;
+  ruins.solid = SOLID_BBOX;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

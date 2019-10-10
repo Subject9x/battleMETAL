@@ -16,7 +16,7 @@ Overview:
 void() scenery_obj={
   self.classname = "scenery";
   self.movetype = MOVETYPE_NONE;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_BBOX;
   self.model = precache_model(self.model);
   setmodel( self, self.model );
   setsize( self, self.mins, self.maxs );

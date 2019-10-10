@@ -118,6 +118,7 @@ void() ai_mech_sk_rotate1={
   ChangeYaw();
   if( self.angles_y == self.ideal_yaw ){
     macro_ai_frame(ai_mech_sk_stand1)
+    return;
   }
   macro_ai_frame(ai_mech_sk_rotate1)
 };

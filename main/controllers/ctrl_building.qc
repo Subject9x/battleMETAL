@@ -27,7 +27,7 @@ void() building_die={
   
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_BSP;
+  ruins.solid = SOLID_BBOX;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

@@ -227,12 +227,12 @@ void() ai_mech_sk_stand1={
     }
   }
   
-  if( random() < 0.25 ){
-    self.ideal_yaw = (random() * self.ai_angleLimits_x) * -1;
+  if( random() <= 0.1 ){
+    self.ideal_yaw = (crandom() * self.ai_angleLimits_x);
     self.ideal_yaw = self.ideal_yaw + self.ai_angleLimits_y;
     self.ideal_yaw = self.ideal_yaw * crandom();
     self.ideal_yaw = anglemod( self.angles_y + self.ideal_yaw);
-    macro_ai_frame(ai_mech_sniper_turn1)
+    macro_ai_frame(ai_mech_sk_rotate1)
     return;
   }
 

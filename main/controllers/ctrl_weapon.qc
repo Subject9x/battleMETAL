@@ -80,7 +80,7 @@ void(entity wep) ctrl_weapon_think_ai={
           if( stackWeapon ){
             //If Weapon is a shield-breaked (eff-stx), only fire if the target has any amount of shielding worth breaking.
             if( (self.damageType & EFF_STX) ){
-              if( self.damageValue > (weaponOwner.enemy.shieldMax * 0.1) ){
+              if( self.damageValue >= (weaponOwner.enemy.shield * 1.25) ){
                 stackWeapon = FALSE;
               }
             }

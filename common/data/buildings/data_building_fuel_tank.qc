@@ -41,7 +41,7 @@ void() hfuel_death10 = [10, hfuel_death11]{
   local entity ruins;
   self.deadflag = DEAD_DEAD;
   ruins = spawn();
-  ruins.solid = SOLID_BSP;
+  ruins.solid = SOLID_BBOX;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

@@ -8,8 +8,8 @@
   this is for injecting large 3D terrain meshes into a bsp file.
   If a level needs large outdoor terrain pieces, but this right after worldspawn.
   It's origin is set to the world's, SOLID_BSP, MOVETYPE_NONE.
-  It's non-damageable, and should never be removed unless there's an express purpose for doing so
-
+  It's non-damageable, and should never be removed unless there's an express purpose for doing so.
+  place at minimum Z that the terrain starts at (ie, the floor).
 -------- KEYS --------
 .model = <string> [file] - path to the model file
 .count1 = <float> [alpha] - 0.001 - 1.0; defaults to '1'
@@ -18,9 +18,6 @@
 -------- SPAWNFLAGS --------
 OVERRIDE_ALPHA 2: overrides default alpha of '1'
 EF_NOSHADOW 4: puts effect-flag EF_NOSHADOW onto model
-*/
-/*QUAKED path_corner (0.5 0.3 0) (-8 -8 -8) (8 8 8)
-Monsters will continue walking towards the next target corner.
 */
 /*QUAKED func_button (0 .5 .8) ?
 When a button is touched, it moves some distance in the direction of it's angle, triggers all of it's targets, waits some time, then returns to it's original position where it can be triggered again.
