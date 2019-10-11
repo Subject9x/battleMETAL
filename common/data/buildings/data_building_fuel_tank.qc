@@ -11,7 +11,7 @@ Overview: data file for building
 //Death Animation
 void() hfuel_death1 = [1, hfuel_death2]{
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
@@ -65,7 +65,13 @@ void() hfuel_death10 = [10, hfuel_death11]{
   }
 };
 void() hfuel_death11 = [11, hfuel_death12]{};
-void() hfuel_death12 = [12, BecomeExplosion]{};
+void() hfuel_death12 = [12, SUB_Remove]{
+  makevectors( self.angles );
+  te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
+  cons_logAFloat("hfuel_death12", -1);  //DEBUG
+  
+  sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
+};
 
 void() building_human_fuel_th={
   

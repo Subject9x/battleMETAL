@@ -490,15 +490,18 @@ void() ai_lock_on={
 float( void() ai_to_make ) ai_unit_setup={
   
   if( (!self.wait) )
-    self.wait = 0.05;
+    self.wait = 1;
 
-  if( (!self.nextVecChoice) )
-    self.nextVecChoice = 1;
+  if( (!self.nextVecChoice) ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.05;
+    return FALSE;
+  }
   
   if( (self.spawnflags & AI_SPAWNFLAG_TRIGGERME) && (self.targetname) ){
     //checking the targetname is mostly for validation
     self.use = ai_unit_make_trigger;
-    self.unit_ini = ai_to_make;
+    self.think = ai_to_make;
     //allows for multiple spawn even on the 'trigger only' setting
     self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
     return FALSE;
@@ -522,7 +525,6 @@ float( void() ai_to_make ) ai_unit_setup={
 };
 
 void() ai_unit_make_trigger={
-  self.think = self.unit_ini;
   self.nextthink = time + self.wait;
 };
 

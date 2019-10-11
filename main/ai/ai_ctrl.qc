@@ -448,16 +448,16 @@ void() ai_setup_patrol={
     }
     else{
       spot = self;
-      setorigin( self, spot.origin);
+      setorigin( self, self.origin);
     }
     if( spot ){
       droptofloor();
-      if( (self.flags & FL_TURRET) ){
+      if( (self.flags & FL_TURRET) )
         util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.c_ofs);
-      }
-      if( self.legs ){
+    	
+      if( self.legs )
         util_setOffsetOrigin(self.legs, self, self.legs.c_ofs);
-      }  
+    	
     }
     if( spot.target ){
       spot2 = find(world, targetname, spot.target);
@@ -478,7 +478,7 @@ void() ai_setup_patrol={
   self.pausetime = 99999999;
   self.think = self.th_stand;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-    self.nextthink = time + (7 + random() * 1); //spread out thinks
+    self.nextthink = time + ( (self.vec_size * 2) + random() * 1); //spread out thinks
   }
   else{
     self.nextthink = time + (random() * 0.1);

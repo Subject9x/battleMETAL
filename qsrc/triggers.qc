@@ -26,16 +26,18 @@ void( entity active, string event) trigger_event={
   local string oldTarget;
   local string thisTarget;  //something something method arg stack
   
-  if( event != "" ){
-    oldTarget = self.target;
-    
-    thisTarget = event;
-    self.target = thisTarget;
-    activator = active;
-    SUB_UseTargets();
-    
-    self.target = oldTarget;
-  }  
+  if( !event || active == world )
+    return;
+  
+  oldTarget = self.target;
+  
+  thisTarget = event;
+  self.target = thisTarget;
+  activator = active;
+  SUB_UseTargets();
+  
+  self.target = oldTarget;
+  
 };
 
 void() trigger_reactivate =

@@ -54,15 +54,18 @@ void() building_die={
 void() building_die_removeFire={
   //remove fire effects
   if( self.armLeft ){
-    remove( self.armLeft );
+    self.armLeft.think = SUB_Remove;
+    self.armLeft.nextthink = time + 0.1;
   }
   
   if( self.armRight ){
-    remove( self.armRight );
+    self.armRight.think = SUB_Remove;
+    self.armRight.nextthink = time + 0.1;
   }
   
   if( self.torsoLeft ){
-    remove( self.torsoLeft );
+    self.torsoLeft.think = SUB_Remove;
+    self.torsoLeft.nextthink = time + 0.1;
   }
 };
 

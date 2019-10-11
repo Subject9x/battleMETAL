@@ -29,10 +29,10 @@ void() ai_gev={
   self.touch = ai_touch;
   
   self.think = ai_setup_patrol;
-  self.nextthink = time + (random()*0.9); //spread out thinks
+  self.nextthink = time + (random() * 1); //spread out thinks
 };
 
-void() ai_gev_enter_patrol1={
+void() ai_gev_enter_patrol={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -71,7 +71,7 @@ void() ai_gev_stand1={
   }
   if( time > self.pausetime ){
     if( self.movetarget ){
-      macro_ai_frame(ai_gev_enter_patrol1)
+      macro_ai_frame(ai_gev_enter_patrol)
       return;
     }
   }
@@ -207,7 +207,7 @@ void() ai_gev_fight_prep={
     }
   }
   if( enemy_hunt ){
-    if(  self.ai_node_recall == world || !(self.ai_node_recall) ){
+    if( self.ai_node_recall == world || !(self.ai_node_recall) ){
       macro_ai_frame(ai_gev_enter_hunt)
       return;
     }
@@ -215,7 +215,7 @@ void() ai_gev_fight_prep={
     return;
   }
   if( self.movetarget ){
-    macro_ai_frame(ai_gev_enter_patrol1)
+    macro_ai_frame(ai_gev_enter_patrol)
     return;
   }
   macro_ai_frame(ai_gev_stand1)
