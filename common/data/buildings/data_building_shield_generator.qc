@@ -9,6 +9,7 @@ Overview: data file for building
 */
 void() hshield_die = [0, hshield_die1]{
   local entity head;
+  self.solid = SOLID_NOT;
   head = findradius(self.origin, 400);
   while(head){
     if(head.data_type == DATA_MECH){
@@ -40,7 +41,7 @@ void() hshield_die9 = [9, hshield_die10]{
   self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_BBOX;
+  ruins.solid = SOLID_NOT;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

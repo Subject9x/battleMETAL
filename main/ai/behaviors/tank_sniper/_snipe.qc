@@ -14,7 +14,6 @@ Overview: ai unit
 */
 void() ai_spg_snipe1={
   ai_sfx_kill();
-  cons_logAFloat("ai_spg_snipe1", 1);  //DEBUG
   self.accuracyMod = self.spreadDefault_z * 0.67;
   ai_update_accuracy( FALSE );
   self.accuracyMod = 0;

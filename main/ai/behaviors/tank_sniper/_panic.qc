@@ -32,7 +32,6 @@ void( entity attacker ) ai_spg_react1={
     return;
   }
 
-  cons_logAFloat("ai_spg_react1", 1);  //DEBUG
   //AI currently has no target
   if( ai_valid_target(self.enemy) == FALSE ){
     self.enemy = attacker;

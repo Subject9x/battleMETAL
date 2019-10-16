@@ -111,7 +111,7 @@ void() hrepair_die = [0, hrepair_die1]{
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_NOT;
   building_die_removeFire();
   
 };
@@ -133,7 +133,7 @@ void() hrepair_die9 = [9, hrepair_die10]{
   self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_BBOX;
+  ruins.solid = SOLID_NOT;
   ruins.movetype = MOVETYPE_NONE;
 
   setmodel(ruins, precache_model("q3mdl/map/ruins/ruin_large.obj"));

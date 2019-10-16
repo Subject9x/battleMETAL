@@ -21,6 +21,9 @@ void() scenery_obj={
   setmodel( self, self.model );
   setsize( self, self.mins, self.maxs );
   setorigin( self, self.origin );
+  if( (self.spawnflags & 16) ){
+    droptofloor();
+  }
 };
 
 
@@ -32,6 +35,8 @@ void() doodad_rocks_desert_small_1={
     self.angles_z = self.angles_z + (5 + (crandom() * 5) );
   }
   scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin + (v_up * -24));
 };
 void() doodad_rocks_desert_small_2={
   self.model = "q3mdl/map/rocks/rock2.obj";
@@ -41,6 +46,8 @@ void() doodad_rocks_desert_small_2={
     self.angles_z = self.angles_z + (5 + (crandom() * 5) );
   }
   scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin + (v_up * -24));
 };
 void() doodad_rocks_desert_small_3={
   self.model = "q3mdl/map/rocks/rock3.obj";
@@ -50,6 +57,8 @@ void() doodad_rocks_desert_small_3={
     self.angles_z = self.angles_z + (5 + (crandom() * 5) );
   }
   scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin + (v_up * -12));
 };
 
 void() doodad_rocks_desert_small_random={

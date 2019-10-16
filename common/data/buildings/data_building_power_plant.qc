@@ -10,6 +10,7 @@ Overview: data file for building
 
 void() hpower_die = [0, hpower_die1]{
   local entity head;
+  self.solid = SOLID_NOT;
   head = findradius(self.origin, 800);
   self.deadflag = DEAD_DYING;
   while(head){
@@ -50,7 +51,7 @@ void() hpower_die9 = [9, hpower_die10]{
   self.deadflag = DEAD_DEAD;
   local entity ruins;
   ruins = spawn();
-  ruins.solid = SOLID_BBOX;
+  ruins.solid = SOLID_NOT;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

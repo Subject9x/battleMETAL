@@ -6,11 +6,12 @@ Overview: ai objects used for map logic
 */
 
 void() ai_change_faction_use={
+  cons_logAFloat("ai_change_faction_use", 1); //DEBUG
   local entity e;
   if( (self.spawnflags & 4) ){
     if( time < self.nextthink)
       return;
-    self.think = ai_change_rank_use;
+    self.think = ai_change_faction_use;
     self.nextthink = time + self.delay;
     return;
   }
@@ -22,9 +23,16 @@ void() ai_change_faction_use={
     }
   }
   if(self.target){
-    e = find(world, targetname, self.target);
-    if(e)
-      e.faction = self.faction;
+  cons_logAString("self.target",self.target); //DEBUG
+    e = world;
+		do{
+			e = find(e, targetname, self.target);
+			if (!e)
+				return;
+      cons_logAFloat("e.faction", e.faction); //DEBUG
+			e.faction = self.faction;
+      cons_logAFloat("e.faction", e.faction); //DEBUG
+		} while ( 1 );
   }
   if( (self.spawnflags & 2) ){
     self.think = SUB_Remove;
@@ -50,7 +58,7 @@ void() ai_change_rank_use={
         if (!self.yaw_speed){
           local float m;
           m = ai_pilot_yaw_mod();
-          self.yaw_speed = ai_pilot_yaw_mod()
+          self.yaw_speed = ai_pilot_yaw_mod();
         }
         self.ai_leading = ai_pilot_rating_leading();
       self = this;
@@ -96,7 +104,6 @@ void() ai_change_faction={
   self.movetype = MOVETYPE_NONE;
   
   util_MapDeveloperMarker();
-  
   setsize( self, '-3 -3 -3', '3 3 3' );
   setorigin( self, self.origin );
   

@@ -13,8 +13,6 @@ Overview: ai unit
 */
 
 void() ai_spg_enter_charge={
-  cons_logAFloat("ai_spg_enter_charge", 1);  //DEBUG
-  
   if( random() < 0.33 ){
     self.lefty = self.lefty * -1;
   }
@@ -24,7 +22,6 @@ void() ai_spg_enter_charge={
 };
 
 void() ai_spg_charge1={
-  cons_logAFloat("ai_spg_charge1", 1);  //DEBUG
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
 

@@ -15,7 +15,7 @@ void() hfuel_death1 = [1, hfuel_death2]{
   
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DYING;
-
+  self.solid = SOLID_NOT;
   te_object_explode( '1 0.75 0' );
   
   building_die_removeFire();
@@ -40,8 +40,9 @@ void() hfuel_death10 = [10, hfuel_death11]{
   te_object_explode( '1 0.75 0' ); 
   local entity ruins;
   self.deadflag = DEAD_DEAD;
+  self.solid = SOLID_NOT;
   ruins = spawn();
-  ruins.solid = SOLID_BBOX;
+  ruins.solid = SOLID_NOT;
   ruins.movetype = MOVETYPE_NONE;
   switch( self.vec_size ){
     case 2:

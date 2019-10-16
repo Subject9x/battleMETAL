@@ -36,7 +36,6 @@ void() ai_vec_dest={
   TH_STAND
 */
 void() ai_spg_stand1={
-  cons_logAFloat("ai_spg_stand1", 1);  //DEBUG
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
@@ -58,7 +57,6 @@ void() ai_spg_stand1={
   TH_WALK
 */
 void() ai_spg_patrol1={
-  cons_logAFloat("ai_spg_patrol1", 1);  //DEBUG
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -92,7 +90,6 @@ void() ai_spg_enter_patrol={
   FIGHT FILTER
 */
 void() ai_spg_fight_prep={
-  cons_logAFloat("ai_spg_fight_prep", 1);  //DEBUG
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   

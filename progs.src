@@ -278,5 +278,6 @@ qsrc/misc.qc
   main/map/map_mission_boundary.qc
   main/map/map_scenery.qc
   main/map/map_particlecube_effect.qc
+  main/map/ai_map_logic.qc
 //============================
 
