@@ -140,4 +140,4 @@ float AI_REFLEX_REG = 2;
 float AI_REFLEX_ROK = 3;
 
 //Patrol Node Chec Range
-float AI_NODE_DISTANCE = 100;
+float AI_NODE_DISTANCE = 67;

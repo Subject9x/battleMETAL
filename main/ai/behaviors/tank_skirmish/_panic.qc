@@ -30,7 +30,6 @@ void( entity attacker ) ai_tank_sk_react1={
   
   //AI currently has no target
   if( !ai_valid_target(self.enemy) ){
-    cons_logAFloat("ai_tank_sk_react1", 1); //DEBUG
     self.ai_react_buffer = time + self.ai_react_time * 3;
     self.enemy = attacker;
     self.torsoCenter.attack_state = TR_TARG;

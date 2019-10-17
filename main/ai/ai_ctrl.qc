@@ -435,7 +435,7 @@ void() ai_setup_patrol={
       angl = self.angles_y * DEG2RAD;
       px = cos(angl);
       py = sin(angl);
-      org_z = self.origin_z + 1;
+      org_z = self.origin_z + self.maxs_z;
       org_x = spot.origin_x - px * (random() * self.maxs_x * 3);
       org_y = spot.origin_y - py * (random() * self.maxs_y * 3);
       

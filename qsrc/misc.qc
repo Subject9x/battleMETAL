@@ -140,7 +140,6 @@ void() realtimelights_sunlight={
   local entity sunLight;
   local entity oldLight;
 
-  self.angles_x = 0;
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_NOT;
   self.alpha = 1;

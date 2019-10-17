@@ -12,7 +12,6 @@ Overview: ai unit
     
 */
 void() ai_spg_rotate1={
-  cons_logAFloat("ai_spg_rotate1", 1);  //DEBUG
   ai_update_accuracy( TRUE );
   macro_ai_update(ctrl_updateTank)
   
