@@ -69,7 +69,6 @@ void() hfuel_death11 = [11, hfuel_death12]{};
 void() hfuel_death12 = [12, SUB_Remove]{
   makevectors( self.angles );
   te_missile_explode( self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
-  cons_logAFloat("hfuel_death12", -1);  //DEBUG
   
   sound(self, CHAN_VOICE, "sound/fx_boom.ogg", 1 , ATTN_NORM);
 };
@@ -103,7 +102,7 @@ void() building_human_fuel={
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 2;
   util_setModel("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(75, 75, 1, 100) ;
   setsize(self, '-20 -20 0', '20 20 40');
   self.shield= 0;

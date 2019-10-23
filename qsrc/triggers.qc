@@ -787,10 +787,6 @@ void() trigger_toggleweapons={
 
 
 void() trigger_stuffcmd_think={
-  
-  local string msg;
-  //tokenizebyseparator(mapname, "/", ".");
-  
   stuffcmd( activator, self.message);
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;

@@ -87,7 +87,6 @@ void() mech_player_die={
 };
 
 void( entity comp ) mech_player_compdie={
-  local entity this;
   if( comp.model ){
     if( (comp != world) && (comp.owner == self) ){
       comp.think = SUB_Remove;
