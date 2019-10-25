@@ -4,19 +4,21 @@ Author: Peter Roohr
 Date: 1/15/2019
 Overview: 
   Impl file for AI voice events
+  
+ref: Globals
+AI_VOICE_DEAD       = 0;
+AI_VOICE_DYING      = 1;
+AI_VOICE_HELP       = 2;
+AI_VOICE_HUNT_END   = 3;
+AI_VOICE_HUNT_START = 4;
+AI_VOICE_KILL       = 5;
+AI_VOICE_NOSPOT     = 6;
+AI_VOICE_ROGER      = 7;
+AI_VOICE_SPOTTED    = 8;
+AI_VOICE_WARN       = 9;
 */
 
-/*float AI_VOICE_DEAD       = 0;
-float AI_VOICE_DYING      = 1;
-float AI_VOICE_HELP       = 2;
-float AI_VOICE_HUNT_END   = 3;
-float AI_VOICE_HUNT_START = 4;
-float AI_VOICE_KILL       = 5;
-float AI_VOICE_NOSPOT     = 6;
-float AI_VOICE_ROGER      = 7;
-float AI_VOICE_SPOTTED    = 8;
-float AI_VOICE_WARN       = 9;
-*/
+float AI_VOICE_TIME = 6;
 
 void( float randomBool ) ai_voice_ini={
   local float randoVoice;
@@ -28,11 +30,11 @@ void( float randomBool ) ai_voice_ini={
   if( randomBool ){
     randoVoice = random();
     
-    if( randoVoice <= 0.33 ){
+    if( randoVoice <= 0.4 ){
       //VOICE  A
       self.ai_voice_group = AI_VOICE_GROUP_A;
     }
-    else if( randoVoice <= 0.67 ){
+    else if( randoVoice <= 0.7 ){
       //VOICE  B
       self.ai_voice_group = AI_VOICE_GROUP_B;
     }
@@ -56,7 +58,7 @@ void() ai_sfx_spotted={
         }
         return;
       }
-      self.voiceTime = time + (3 + (random() * 4));
+      self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
       client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_SPOTTED, 1);
     } 
   }
@@ -72,7 +74,7 @@ void() ai_sfx_warning={
         }
         return;
       }
-      self.voiceTime = time + (0.67 + (random() * 2));
+      self.voiceTime = time + (0.67 + (random() * AI_VOICE_TIME));
       client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_WARN, 2);
     }
   }
@@ -86,7 +88,7 @@ void() ai_sfx_huntStart={
     }
     return;
   }
-      self.voiceTime = time + (3 + (random() * 4));
+  self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
   client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_START, 1);
 };
 
@@ -99,7 +101,7 @@ void() ai_sfx_huntEnd={
       }
       return;
     }
-      self.voiceTime = time + (3 + (random() * 4));
+    self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_END, 1) ;
   }
 };
@@ -114,7 +116,7 @@ void() ai_sfx_dying={
       return;
     }
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DYING, 1) ;
-      self.voiceTime = time + (3 + (random() * 4));
+    self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
   }
 };
 
@@ -129,7 +131,7 @@ void() ai_sfx_dead={
     }
     if( random() < 0.33 ){
       client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_DEAD, 1) ;
-      self.voiceTime = time + (3 + (random() * 4));    
+      self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));    
     }
   }
 };
@@ -144,9 +146,8 @@ void() ai_sfx_kill={
         }
         return;
       }
-      
       client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_KILL, 1);
-      self.voiceTime = time + (3 + (random() * 4));
+      self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
     }
   }
 };
@@ -160,7 +161,7 @@ void() ai_sfx_roger={
       }
       return;
     }
-      self.voiceTime = time + (3 + (random() * 4));
+    self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_ROGER, 1);
   }
 };
@@ -174,7 +175,7 @@ void() ai_sfx_help={
       }
       return;
     }
-      self.voiceTime = time + (3 + (random() * 4));
+    self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
     client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HELP, 1);
   }
 };
