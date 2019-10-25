@@ -71,7 +71,7 @@ void() data_ini_attack_laser_={
   
   if( trace_ent.takedamage ){
     hit = t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
-    if( hit.shield < 0.01 ){
+    if( hit.shield <= 0 ){
       pointparticles(particleeffectnum("TE_LAS_HIT"), FIRE_ENDPOINT , normalize( FIRE_ORIGIN - FIRE_ENDPOINT ), 1);
     }
     return;
