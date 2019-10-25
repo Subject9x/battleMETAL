@@ -503,7 +503,7 @@ float( void() ai_to_make ) ai_unit_setup={
     self.use = ai_unit_make_trigger;
     self.think = ai_to_make;
     //allows for multiple spawn even on the 'trigger only' setting
-    self.spawnflags = self.spawnflags - AI_SPAWNFLAG_TRIGGERME;
+    self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
     return FALSE;
   }
   if( (self.delay > 0) && ( !(self.count) || (self.count < 1) ) ){
@@ -525,6 +525,12 @@ float( void() ai_to_make ) ai_unit_setup={
 };
 
 void() ai_unit_make_trigger={
+  if( self.count > 0 ){
+    self.use = multi_trigger;
+    self.unit_ini = self.think;
+    self.think = ai_unit_make_multi;
+    
+  }
   self.nextthink = time + self.wait;
 };
 
@@ -537,12 +543,15 @@ void() ai_unit_make_multi={
     self = newmis;
       self.unit_ini();
       self.use = multi_trigger;
+      self.targetname = "";
     self = stemp;
     self.count = self.count - 1;
     self.nextthink = time + self.count1;
     self.think = ai_unit_make_multi;
     return;
   }
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
 };
 
 /*

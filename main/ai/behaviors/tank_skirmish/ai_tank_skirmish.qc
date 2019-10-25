@@ -34,7 +34,6 @@ void() ai_tank_skirmish={
 };
 
 void() ai_tank_sk_fight_prep={
-  local entity nodeRecall;
   local float roll;
   
   ai_update_accuracy( TRUE ); 

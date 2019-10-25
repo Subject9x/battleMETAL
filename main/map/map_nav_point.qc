@@ -30,7 +30,7 @@ void() nav_point_touch={
       that = other;
       
       // trigOnTarget is used specifically here to trigger an objective
-      trigger_event( that, self.trigOnTarget );
+      trigger_event( that, self.target );
       
       //multi_trigger();
       if( (self.spawnflags & 2) )

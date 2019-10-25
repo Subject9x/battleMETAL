@@ -899,12 +899,10 @@ void() client_updateWeaponReloads={
 
 float(entity piece) csqc_updateCompStat={
   local float perc;
-
-  if(piece){
-    if(piece.health){
-      perc = (piece.health / piece.max_health)*100;
-      return perc;
-    }
+  perc = 0;
+  if( piece && piece.health > 0 ){
+    perc = (piece.health / piece.max_health)*100;
+    return perc;
   }
-  return 0;
+  return perc;
 };

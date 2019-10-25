@@ -51,7 +51,7 @@ void() ai_gev_patrol1={
     macro_ai_frame(ai_gev_fight_prep)
     return;
   }
-  
+
   //node is still valid
   local float moveCheck;
   moveCheck = ai_patrol_logic( self.data_speed_forward, ai_gev_stand1, ai_gev_patrol1 );
@@ -69,8 +69,9 @@ void() ai_gev_stand1={
     macro_ai_frame(ai_gev_fight_prep)
     return;
   }
-  if( time > self.pausetime ){
-    if( self.movetarget ){
+  
+  if( self.movetarget ){
+    if( time > self.pausetime ){
       macro_ai_frame(ai_gev_enter_patrol)
       return;
     }
