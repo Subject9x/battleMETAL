@@ -89,7 +89,6 @@ void() ai_gev_walk1={
 };
 
 void() ai_gev_fight_prep={
-  local entity nodeRecall;
   local float roll;
   
   ai_update_accuracy( TRUE ); 

@@ -12,7 +12,6 @@ Overview:
 void() ai_vec_dest_die;
 void() ai_vec_dest_die1;
 void() ai_vec_dest_die1a;
-void() ai_vec_dest_die_touch;
 /*
   Macro rebuild
 */

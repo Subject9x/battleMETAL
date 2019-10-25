@@ -28,6 +28,7 @@ void() ai_tank_sk_die={
   setsize(self, self.mins, self.maxs);
   makevectors( self.angles );  
   setorigin(self, self.origin - (v_up * self.maxs_z * 0.15) );
+  droptofloor();
   
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );

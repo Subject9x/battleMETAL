@@ -47,6 +47,7 @@ void() ai_gev_die={
   local entity w_chain;
   local vector v;
   local vector t;
+  t = '0 0 0';
   
   ai_sfx_dead();
   self.th_react = SUB_Null;

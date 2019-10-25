@@ -231,7 +231,7 @@ float() ai_find_target_radar={
     return FALSE;
 
   local entity targ, found;
-  local float rng, ndist, nrng;
+  local float rng, ndist;
   local entity ally; 
   
   targ = findradius(self.origin, self.ai_view);

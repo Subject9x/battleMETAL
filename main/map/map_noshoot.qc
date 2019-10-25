@@ -37,7 +37,6 @@ void() map_noshoot_use={
   if( self.isActive ){
     self.isActive = FALSE;
     local entity e;
-    local float findFlags;
     
     e = findchainflags(flags, FL_CLIENT);
     while( e ){

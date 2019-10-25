@@ -28,6 +28,7 @@ void() ai_vec_dest_die={
   setsize(self, self.mins, self.maxs);
   makevectors( self.angles );  
   setorigin(self, self.origin - (v_up * self.maxs_z * 0.15) );
+  droptofloor();
   
   w_chain = self.w_slot;
   while(w_chain){

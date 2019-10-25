@@ -13,10 +13,7 @@ Overview: ai unit
   TH_DIE
 */ 
 void() ai_mech_sk_die={
-  local entity this;
   local entity w_chain;
-  local vector vel;
-  local vector forg;
   
   ai_sfx_dead();
   self.th_react = SUB_Null;

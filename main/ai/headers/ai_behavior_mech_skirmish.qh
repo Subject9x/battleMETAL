@@ -10,7 +10,6 @@ Overview:
 void() ai_mech_skirmish;
 
 void() ai_mech_sk_die;
-void() ai_mech_sk_die1;
 void() ai_mech_sk_die2;
 
 /*

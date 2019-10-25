@@ -10,7 +10,6 @@ Overview:
 */
 
 void() ai_mech_sniper_die;
-void() ai_mech_sniper_die1;
 void() ai_mech_sniper_die2;
 
 /*
@@ -25,7 +24,6 @@ void( entity attacker ) ai_mech_sniper_react1;
 void() ai_mech_sniper_enter_charge;
 void() ai_mech_sniper_enter_melee;
 void() ai_mech_sniper_enter_reverse;
-void() ai_mech_sniper_enter_snipe;
 
 void() ai_mech_sniper_patrol1;
 void() ai_mech_sniper_patrol2;

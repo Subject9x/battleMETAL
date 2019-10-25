@@ -13,9 +13,6 @@ Overview: ai unit
   TH_DIE
 */ 
 void() ai_mech_sniper_die={
-  local vector vel;
-  local vector forg;
-  
   ai_sfx_dead();
   self.th_react = SUB_Null;
   self.th_pain = SUB_Null;
