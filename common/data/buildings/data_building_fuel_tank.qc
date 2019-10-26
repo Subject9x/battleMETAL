@@ -110,7 +110,7 @@ void() building_human_fuel={
   self.shieldRate = 1;
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  if( util_cornerSlopeCheck(self, 1) ){
+  if( util_cornerSlopeCheck(self, 0.95) ){
     util_generateBuildingFoundation(self);
   }
   else{

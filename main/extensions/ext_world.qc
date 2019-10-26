@@ -142,6 +142,7 @@ void() world_get_fog={
         found = theFog;
       }
     }
+    theFog = theFog.chain;
   }
   
   if( !found ){

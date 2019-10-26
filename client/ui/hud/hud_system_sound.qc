@@ -125,6 +125,10 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
   
   idx = cur = 0;
 
+  if( CLIENT_data_type != DATA_MECH ){
+    return;
+  }
+
   switch( voiceGroup ){
     case AI_VOICE_GROUP_A:
       requestedSoundValue = AI_VOICE_A[voiceId];

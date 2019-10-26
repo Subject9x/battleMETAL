@@ -18,7 +18,7 @@ AI_VOICE_SPOTTED    = 8;
 AI_VOICE_WARN       = 9;
 */
 
-float AI_VOICE_TIME = 6;
+float AI_VOICE_TIME = 12;
 
 void( float randomBool ) ai_voice_ini={
   local float randoVoice;

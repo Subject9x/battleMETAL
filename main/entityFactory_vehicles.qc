@@ -613,7 +613,7 @@ void(void() data_ini) build_turret_unit={
   setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
   droptofloor();
   
-  if(util_cornerSlopeCheck(self, 1)){
+  if(util_cornerSlopeCheck(self,0.95)){
     util_generateBuildingFoundation(self);
   }
 };

@@ -198,7 +198,7 @@ void() building_human_repair={
   self.nextthink = time + 0.1;
   self.use = multi_trigger;
   
-  if(util_cornerSlopeCheck(self, 1)){
+  if(util_cornerSlopeCheck(self, 0.95)){
     util_generateBuildingFoundation(self);
   }
   else{

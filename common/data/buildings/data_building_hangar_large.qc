@@ -52,7 +52,7 @@ void() building_human_hangar={
   setsize(self, self.mins, self.maxs);
   self.movetype = MOVETYPE_NONE;
   
-  if( util_cornerSlopeCheck(self, 1) ){
+  if( util_cornerSlopeCheck(self, 0.95) ){
     util_generateBuildingFoundation(self);
   }
   else{

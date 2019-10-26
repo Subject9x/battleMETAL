@@ -58,7 +58,7 @@ void() building_guard_tower={
   self.think = guard_tower_think;
   self.nextthink = time + 0.1;
   
-  if( util_cornerSlopeCheck(self, 1) ){
+  if( util_cornerSlopeCheck(self, 0.95) ){
     util_generateBuildingFoundation(self);
   }
   else{
