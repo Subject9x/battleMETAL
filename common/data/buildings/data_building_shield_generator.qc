@@ -163,7 +163,7 @@ void() building_human_shield={
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.data_type = DATA_BLD;
   util_setModel("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(500, 500, 1, 100) ;
   setsize(self, '-56 -56 0', '56 56 17.5');
   self.shield= 0;

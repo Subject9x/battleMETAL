@@ -7,7 +7,6 @@ Overview: data file for building
 
 
 void() building_human_hangar_th={
-  
   building_burn();
   self.think = building_human_hangar_th;
   self.nextthink = time + 0.1;
@@ -46,10 +45,10 @@ void() building_human_hangar={
   
   self.th_die = building_die;
   self.use = multi_trigger;
-  self.solid = SOLID_BSP;
+  self.solid = SOLID_SLIDEBOX;
   util_setHealthArmor(800, 800, 1, 100) ;
   util_setModel( "q3mdl/buildings/hangar/mdl_bld_h_hangar_l.md3", self.skin, 0) ;
-  setsize(self, self.mins, self.maxs);
+  setsize(self, '-68 -84 0', '68 84 88');
   self.movetype = MOVETYPE_NONE;
   
   if( util_cornerSlopeCheck(self, 0.95) ){

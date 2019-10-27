@@ -44,7 +44,7 @@ void() building_guard_tower={
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
   util_setModel("q3mdl/buildings/towersmall/guardtower.obj", self.skin, 0);
-  util_setCollider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE);
+  util_setCollider(DAMAGE_YES, SOLID_SLIDEBOX, MOVETYPE_NONE);
   util_setHealthArmor(200, 200, 1, 100);
   setsize(self, '-24 -24 0', '24 24 48');
   self.shield = 0;

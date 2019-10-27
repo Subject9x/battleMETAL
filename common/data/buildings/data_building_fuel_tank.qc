@@ -102,9 +102,9 @@ void() building_human_fuel={
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 2;
   util_setModel("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(75, 75, 1, 100) ;
-  setsize(self, '-20 -20 0', '20 20 40');
+  setsize(self, '-40 -40 0', '40 40 64');
   self.shield= 0;
   self.shieldMax= 100;
   self.shieldRate = 1;

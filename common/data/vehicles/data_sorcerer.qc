@@ -20,7 +20,7 @@ void() data_ini_sorcerer_={
   self.vec_name = "Sorcerer";
  
   self.max_health = 250;
-  setsize(self, '-20 -20 -11', '20 20 20');
+  setsize(self, '-20 -20 -11', '20 20 26');
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 300;

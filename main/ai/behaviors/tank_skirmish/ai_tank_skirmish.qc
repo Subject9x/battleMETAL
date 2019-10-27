@@ -30,7 +30,7 @@ void() ai_tank_skirmish={
   self.touch = ai_touch;
   
   self.think = ai_setup_patrol;
-  self.nextthink = time + (random()*0.9); //spread out thinks
+  self.nextthink = time + (random() * 0.9); //spread out thinks
 };
 
 void() ai_tank_sk_fight_prep={
@@ -233,7 +233,7 @@ void() ai_tank_sk_patrol1={
   //node is still valid
   local float moveCheck;
   moveCheck = ai_patrol_logic( self.data_speed_forward, ai_tank_sk_stand1, ai_tank_sk_patrol1 );
-  if( !moveCheck ){
+  if( moveCheck == FALSE ){
     macro_ai_frame(ai_tank_sk_stand1)
   }
 };

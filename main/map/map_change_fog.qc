@@ -33,7 +33,7 @@ void() map_changefog_use={
   }
 };
 
-/*QUAKED map_change_fog (0.431 0.788 0.753) (-4 -4 -4) (4 4 4) REMOVE_ONTOUCH
+/*QUAKED map_change_fog (0.431 0.788 0.753) (-16 -16 -32) (16 16 32) REMOVE_ONTOUCH
 A Map Wrapper for the fog cvar. Allows a map to take control of the fog setting in a controllabe way. 
 This allows for fog transitions between parts of the map enabling better execution of game atmosphere.
   
@@ -70,6 +70,6 @@ void() map_change_fog={
   
   util_MapDeveloperMarker();
   
-  setsize(self, tempMin, tempMax);
+  setsize(self, '-16 -16 -32', '16 16 32');
   setorigin(self, self.origin);
 };

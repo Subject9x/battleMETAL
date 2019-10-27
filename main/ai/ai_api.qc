@@ -526,25 +526,32 @@ float( void() ai_to_make ) ai_unit_setup={
 
 void() ai_unit_make_trigger={
   if( self.count > 0 ){
-    self.use = multi_trigger;
+    self.use = SUB_Null;
     self.unit_ini = self.think;
     self.think = ai_unit_make_multi;
-    
+    self.nextthink = time + 0.1;
+    return;
   }
   self.nextthink = time + self.wait;
 };
 
 void() ai_unit_make_multi={
+  local entity cleanEnt, mainEnt;
   if( self.count > 0 ){
-    newmis = spawn();
-    copyentity( self, newmis );
-    newmis.unit_ini = self.unit_ini;
-    stemp = self;
-    self = newmis;
-      self.unit_ini();
-      self.use = multi_trigger;
+    cleanEnt = spawn();
+    copyentity( self, cleanEnt );
+    cleanEnt.unit_ini = self.unit_ini;
+    mainEnt = self;
+    self = cleanEnt;
+      self.classname = mainEnt.classname;
+      setorigin(self, self.origin);
+      self.angles = self.angles;
       self.targetname = "";
-    self = stemp;
+      self.target = mainEnt.target;
+      self.unit_ini();
+      self.think = self.unit_ini;
+      self.nextthink = time + 0.01;
+    self = mainEnt;
     self.count = self.count - 1;
     self.nextthink = time + self.count1;
     self.think = ai_unit_make_multi;

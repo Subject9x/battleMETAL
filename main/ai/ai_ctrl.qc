@@ -125,9 +125,20 @@ void() ai_touch={
   if( (other.flags & FL_NODE) )
     return;
   
-  if( time > self.ai_react_buffer ){
-    self.th_react( other );
-    return;
+  if( other.faction != self.faction ){
+    if( ai_check_targ_infront( other, self.ai_fov, FALSE) ){
+      if( time > self.ai_react_buffer ){
+        self.oldenemy = self.enemy;
+        self.enemy = other;
+        if( (self.flags & FL_TURRET) ){
+          self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+          self.torsoCenter.attack_state = TR_TARG;
+        }
+        self.ai_react_buffer = time + self.ai_react_time * 3;
+        self.th_missile();
+        return;
+      }
+    }
   }
 };
 
@@ -146,7 +157,7 @@ float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_
       movetogoal( self.data_speed_forward );
     }
     //AI has reached node
-    if( vlen(self.goalentity.origin - self.origin) <= AI_NODE_DISTANCE ){
+    if( vlen(self.goalentity.origin - self.origin) <= (random() * AI_NODE_DISTANCE) ){
       if( self.goalentity.pausetime ){
         self.pausetime = self.goalentity.pausetime;
         self.pausetime = self.pausetime + (self.pausetime * (self.ai_action_mod / 10));
@@ -445,22 +456,23 @@ void() ai_setup_patrol={
       else{
         setorigin( self, spot.origin);
       }
+      droptofloor();
     }
     else{
       spot = self;
       setorigin( self, self.origin);
+      droptofloor();
     }
     if( spot ){
-      droptofloor();
       if( (self.flags & FL_TURRET) )
         util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.c_ofs);
     	
       if( self.legs )
         util_setOffsetOrigin(self.legs, self, self.legs.c_ofs);
-    	
     }
     if( spot.target ){
       spot2 = find(world, targetname, spot.target);
+      cons_logAString("spot.target", spot.target);  //DEBUG
       if( spot2 ){
         self.goalentity = self.movetarget = spot2;
         self.ideal_yaw = vectoyaw( spot2.origin - self.origin);
@@ -469,7 +481,7 @@ void() ai_setup_patrol={
           self.nextthink = time + (7 + random() * 1); //spread out thinks
         }
         else{
-          self.nextthink = time + (random() * 0.1);
+          self.nextthink = time + (random() * 1);
         }
         return;
       }

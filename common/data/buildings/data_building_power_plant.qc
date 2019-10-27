@@ -129,7 +129,7 @@ void() building_human_power={
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
   util_setModel("q3mdl/buildings/power_plant/mdl_bld_h_power.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(1200, 1200, 1, 100);
   setsize(self, '-75 -75 0', '75 75 26');
   self.shield= 0;

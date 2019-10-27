@@ -187,7 +187,7 @@ void() building_human_radar={
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
   util_setModel("q3mdl/buildings/radar/mdl_bld_h_radar.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_BSP, MOVETYPE_NONE) ;
+  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(100, 100, 1, 100) ;
   setsize(self, '-20 -20 0', '20 20 26');
   self.shield = 0;
