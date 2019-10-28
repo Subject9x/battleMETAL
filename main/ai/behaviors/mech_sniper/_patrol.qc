@@ -10,9 +10,6 @@ Overview: ai unit
   Setup
     
 */
-void() ai_mech_sniper_enter_patrol={
-  
-}
 void() ai_mech_sniper_patrol1={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_update_mechplayer)

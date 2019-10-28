@@ -243,6 +243,17 @@ qsrc/triggers.qc
 //============================
   qsrc/info_player_ents.qc
   main/ai/ai_units.qc
+  main/map/map_unit_dunerunner.qc
+  main/map/map_unit_foslager.qc
+  main/map/map_unit_onnek.qc
+  main/map/map_unit_trowel.qc
+  
+  main/map/map_unit_balaket_brawl.qc
+  main/map/map_unit_balaket_sniper.qc
+  main/map/map_unit_matok_brawl.qc
+  main/map/map_unit_matok_sniper.qc
+  main/map/map_unit_monitor_brawl.qc
+  main/map/map_unit_monitor_sniper.qc
  
   main/entityFactory_vehicles.qc
   //player types

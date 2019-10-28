@@ -14,6 +14,10 @@ Overview: ai unit
 */
 void() ai_tank_skirmish={
 
+  if( ai_unit_setup(ai_tank_skirmish) ){
+    return;
+  }
+
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);

@@ -12,6 +12,10 @@ Overview: ai unit
 */
 void() ai_vec_dest={
 
+  if( ai_unit_setup(ai_vec_dest) ){
+    return;
+  }
+
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   self.spawnflags = self.spawnflags | AI_SPAWNFLAG_HASRADAR;

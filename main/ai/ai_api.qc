@@ -482,115 +482,37 @@ void() ai_lock_on={
   This function delegates HOW the AI should be spawned based on its starting parameters.
   
   if the AI is to be triggered by another object, then postpone full ini into the use() function
-  if the AI is a multiple - count > 0, as in, 'create multiples', then delegate to ai_unit_make_multi()
-  if the AI count is < 0 but there's a delay param, then delay ini for that amount of time
   else
   fall-through and create the ai
 */
-float( void() ai_to_make ) ai_unit_setup={
+float( void() ai_ini ) ai_unit_setup={
   
-  if( (!self.wait) )
-    self.wait = 1;
-
+  self.wait = 1;
+  if( self.delay > 0 ){
+    //defaults the wait value in case map didnt specify
+    self.wait = self.delay;
+  }
   if( (!self.nextVecChoice) ){
+    //safety check
     self.think = SUB_Remove;
     self.nextthink = time + 0.05;
-    return FALSE;
+    return TRUE;
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_TRIGGERME) && (self.targetname) ){
     //checking the targetname is mostly for validation
     self.use = ai_unit_make_trigger;
-    self.think = ai_to_make;
-    //allows for multiple spawn even on the 'trigger only' setting
+    self.think = ai_ini;
     self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
-    return FALSE;
-  }
-  if( (self.delay > 0) && ( (!self.count) || (self.count < 1) ) ){
-    //this is a delayed one-off
-    self.use = multi_trigger;
-    self.nextthink = time + self.delay;
-    self.think = ai_to_make;
-    return FALSE;
-  }
-  if( self.count > 1 ){
-    
-    self.use = multi_trigger;
-    self.unit_ini = ai_to_make;
-    self.nextthink = time + self.count1; //baked in automatically
-    self.think = ai_unit_make_multi;
-    return FALSE;
+    return TRUE;
   }
   //fall-through, AI is cleared to happen
-  return TRUE;
+  self.use = multi_trigger;
+  return FALSE;
 };
 
 void() ai_unit_make_trigger={
-  if( self.count > 1 ){
-    self.use = SUB_Null;
-    self.unit_ini = self.think;
-    self.think = ai_unit_make_multi;
-  }
   self.nextthink = time + self.wait;
-};
-
-void() ai_unit_stage_multi={
-  self.unit_ini = self.owner.unit_ini;
-  self.use = SUB_Null;
-  self.nextVecChoice = self.owner.nextVecChoice;
-  self.faction = self.owner.faction;
-  self.ai_rank = self.owner.ai_rank;
-  self.next_wepn1 = self.owner.next_wepn1;
-  self.next_wepn2 = self.owner.next_wepn2;
-  self.next_wepn3 = self.owner.next_wepn3;
-  self.next_wepn4 = self.owner.next_wepn4;
-  self.next_wepn5 = self.owner.next_wepn5;
-  self.next_wepn6 = self.owner.next_wepn6;
-  self.next_wepn7 = self.owner.next_wepn7;
-  self.next_wepn8 = self.owner.next_wepn8;
-  self.next_wepn9 = self.owner.next_wepn9;
-  self.spreadDefault = self.owner.spreadDefault;
-  
-  self.flags = self.owner.flags;
-  if( !(self.owner.flags & FL_TURRET) ){
-    self.flags = self.flags - (self.flags & FL_TURRET);
-  }
-  self.spawnflags = self.owner.spawnflags;
-  
-  self.nextVecChoice =  self.owner.nextVecChoice;
-  self.classname =  self.owner.classname;
-  self.target = self.owner.target;
-  self.targetname = self.owner.targetname;
-  self.group = self.owner.group;
-  if( self.group == "test" ){
-    cons_logAString("class", self.classname); //DEBUG
-    cons_logAString("target", self.target); //DEBUG
-  }
-  self.angles = self.owner.angles;
-  setorigin(self, self.owner.origin);
-  
-  self.owner = world;
-  
-  self.think = self.unit_ini;
-  self.nextthink = time + 0.01;
-};
-
-void() ai_unit_make_multi={
-  local entity cleanEnt, thisEnt;
-  if( self.count > 1 ){
-    thisEnt = self;
-    cleanEnt = spawn();
-    cleanEnt.owner = self;
-    cleanEnt.think = ai_unit_stage_multi;
-    cleanEnt.nextthink = time + 0.01;
-    
-    self.count = self.count - 1;
-    self.think = ai_unit_make_multi;
-    self.nextthink = time + self.count1 + 1;
-    return;
-  }
-  self.think = self.unit_ini;
-  self.nextthink = time + 0.1;
 };
 
 /*
@@ -600,31 +522,31 @@ void() ai_unit_make_multi={
   choices.
 */
 void( float wep1, float wep2, float wep3, float wep4, float wep5, float wep6, float wep7, float wep8, float wep9) ai_ini_weapons={
-  if( !self.next_wepn1 )
+  if( !self.next_wepn1 ){
     self.next_wepn1 = wep1;
-  
-  if( !self.next_wepn2 )
+  }
+  if( !self.next_wepn2 ){
     self.next_wepn2 = wep2;
-  
-  if( !self.next_wepn3 )
+  }
+  if( !self.next_wepn3 ){
     self.next_wepn3 = wep3;
-  
-  if( !self.next_wepn4 )
+  }
+  if( !self.next_wepn4 ){
     self.next_wepn4 = wep4;
-  
-  if( !self.next_wepn5 )
+  }
+  if( !self.next_wepn5 ){
     self.next_wepn5 = wep5;
-  
-  if( !self.next_wepn6 )
+  }
+  if( !self.next_wepn6 ){
     self.next_wepn6 = wep6;
-  
-  if( !self.next_wepn7 )
+  }
+  if( !self.next_wepn7 ){
     self.next_wepn7 = wep7;
-  
-  if( !self.next_wepn8 )
+  }
+  if( !self.next_wepn8 ){
     self.next_wepn8 = wep8;
-  
-  if( !self.next_wepn9 )
+  }
+  if( !self.next_wepn9 ){
     self.next_wepn9 = wep9;
-  
+  }
 }; 

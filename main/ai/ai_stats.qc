@@ -39,9 +39,9 @@ void() ai_unit_ini_var={
   self.ai_minrange = 0;
   self.ai_hunt_total = -1;
   self.lefty = 1;
-  if( random() > 0.5 )
+  if( random() > 0.5 ){
     self.lefty = -1;
-
+  }
   self.pausetime = time;
 };
 

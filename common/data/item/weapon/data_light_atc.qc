@@ -18,13 +18,13 @@ void() data_ini_light_atc_={
   self.data_idx = 1;  
   self.w_name = "Light Autocannon";
   
-  self.w_clipsize = 1;
-  self.reloadRate = 0.2;
-  self.reloadMax = 0.2;
+  self.w_clipsize = 3;     //0.2 - 10/07/2019
+  self.reloadRate = 0.075;  //0.2 - 10/07/2019
+  self.reloadMax = 1.15;      //0.2 - 10/07/2019
   self.energyRate = 0;
   
   self.w_range = 1800;
-  self.damageValue = 3.5;
+  self.damageValue = 6.67;   //3.5 - 10/07/2019
   self.damageType = DMG_BAL;
 
   self.techLevel = 1;
@@ -53,7 +53,7 @@ void() data_ini_attack_latc_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( FALSE );
+  ctrl_weapon_updateAmmo( TRUE );
   
   pointparticles( particleeffectnum("TE_ATC_MUZZLE"), FIRE_ORIGIN, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 4, 1);
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);

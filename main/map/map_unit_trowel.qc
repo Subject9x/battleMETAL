@@ -1,0 +1,74 @@
+/*
+battleMETAL 
+Author: Peter Roohr
+Date: 10/28/2019
+Overview:
+  broke unit map instances down by unit for readability.
+
+  UNIT: TROWEL
+  TYPE: TANK
+  SIZE: HEAVY
+  --------------------------------
+*/
+void() unit_trowel_m={
+  
+  self.nextVecChoice = UID_VEHICLE_trowel;
+  self.faction = FACTION_MILITAR;
+   
+  self.flags = self.flags | FL_TURRET;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      ai_ini_weapons( UID_ITEM_electro_repeater, UID_ITEM_snub_artillery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SNIPER;
+      ai_ini_weapons( UID_ITEM_particle_cannon, UID_ITEM_snub_artillery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      ai_ini_weapons( UID_ITEM_electro_repeater, UID_ITEM_electro_repeater, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      break;
+  }
+  self.think = ai_tank_skirmish;
+  self.nextthink = time + 0.05;
+};
+
+void() unit_trowel_h={
+
+  self.nextVecChoice = UID_VEHICLE_trowel;
+  self.faction = FACTION_SURVEST;
+   
+  self.flags = self.flags | FL_TURRET;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+
+  ai_promote();
+  switch( self.ai_rank ){
+    case 2:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      ai_ini_weapons( UID_ITEM_rotary_plasma, UID_ITEM_ion_coil, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      break;
+    case 3:
+      self.spreadDefault = ACCURACY_SNIPER;
+      ai_ini_weapons( UID_ITEM_snub_artillery, UID_ITEM_emp, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      break;
+    default:
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      ai_ini_weapons( UID_ITEM_rocket_launcher, UID_ITEM_ion_coil, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      break;
+  }
+  
+  self.think = ai_tank_skirmish;
+  self.nextthink = time + 0.05;
+};

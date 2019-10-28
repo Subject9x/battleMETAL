@@ -12,9 +12,6 @@ Overview:
 void() ai_mech_sniper_die;
 void() ai_mech_sniper_die2;
 
-/*
-  macro rebuild
-*/
 void() ai_mech_sniper_fight_prep;
 void() ai_mech_sniper_walk1;
 void() ai_mech_sniper_stand1;

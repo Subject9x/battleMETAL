@@ -11,8 +11,8 @@ Overview:
       small AoE when shields are gone
 */
 #ifndef CSQC
-float DAT_FLAK_SHRAP_TOTAL= 14;
-vector DAT_FLAK_SHRAP_SPREAD = '0.3 0.3 64';
+float DAT_FLAK_SHRAP_TOTAL    = 14;
+vector DAT_FLAK_SHRAP_SPREAD  = '0.3 0.3 64';
 float DAT_PRJ_FLAK_PROXYRAD   = 45;
 float DAT_PRJ_FLAK_EXPRAD     = 50;
 
@@ -24,9 +24,9 @@ void() data_ini_flak_cannon_={
   self.data_idx = 12;  
   self.w_name = "Flak Cannon";
   
-  self.w_clipsize = 1;
-  self.reloadRate = 0.3;
-  self.reloadMax = 0.3;
+  self.w_clipsize = 1;    //1 - 10/07/2019
+  self.reloadRate = 0.5; //0.3 - 10/07/2019
+  self.reloadMax = 0.5;  //0.3 - 10/07/2019
   self.energyRate = 0;
   
   self.w_range = 2000;
@@ -56,7 +56,9 @@ void() data_ini_flak_cannon_={
 
 #ifndef CSQC
 void() data_ini_attack_flak_={
-
+  local float totes;
+  local float shieldDamage;
+  
   ctrl_weapon_fireOffset();
 
   ctrl_weapon_updateAmmo( FALSE );
@@ -79,10 +81,10 @@ void() data_ini_attack_flak_={
     return;
   }
   if(trace_ent && trace_ent != world){
-    local float totes;
     totes = DAT_FLAK_SHRAP_TOTAL;
+    shieldDamage = (self.damageValue * totes) / 2;
     if(trace_ent.shield > 0){
-      t_damage(trace_ent, self, self.owner, self.damageValue * totes, self.damageType, trace_endpos, '0 0 0');
+      t_damage(trace_ent, self, self.owner, shieldDamage, self.damageType, trace_endpos, '0 0 0');
     }
     else{
       local vector shotpoint;

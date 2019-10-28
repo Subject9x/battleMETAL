@@ -153,7 +153,7 @@ float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_
   if( self.goalentity.classname == "ai_node" ){
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
     ChangeYaw();
-    if( !walkmove( self.angles_y, self.data_speed_forward) ){
+    if( walkmove( self.angles_y, self.data_speed_forward) == FALSE ){
       movetogoal( self.data_speed_forward );
     }
     //AI has reached node
@@ -436,62 +436,60 @@ float() ai_attack={
   Rebuild of ai_walk_setup using AI macro frame functions
 */
 void() ai_setup_patrol={
-  local entity spot, spot2;
+  local entity node;
   local vector org;
   local float angl, px, py;
   
   if( self.target ){
-    if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
-      spot = ai_node_pick_rand();     
+    node = find(world, targetname, self.target);
+    if( !node ){
+      cons_logAFloat("->ai_setup_patrol()->FAIL", -1);  //DEBUG
+      //error handling - target but missing the entity.
+      self.think = self.th_stand;
+      self.nextthink = time + (random() * 0.5);
+      if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+        self.nextthink = self.nextthink + (self.vec_size * 2);
+      }
+      return;
+    }
+    if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){
+      node = ai_node_pick_rand();  //make sure that nodes have a .group set   
       angl = self.angles_y * DEG2RAD;
       px = cos(angl);
       py = sin(angl);
       org_z = self.origin_z + self.maxs_z;
-      org_x = spot.origin_x - px * (random() * self.maxs_x * 3);
-      org_y = spot.origin_y - py * (random() * self.maxs_y * 3);
+      org_x = node.origin_x - px * (random() * self.maxs_x * 3);
+      org_y = node.origin_y - py * (random() * self.maxs_y * 3);
       
       if( (pointcontents(org) != CONTENT_SOLID) && (pointcontents(org) != CONTENT_EMPTY) && (pointcontents(org) != CONTENT_SKY) ){
         setorigin( self, org );
       }
       else{
-        setorigin( self, spot.origin);
-      }
-      droptofloor();
-    }
-    else{
-      spot = self;
-      setorigin( self, self.origin);
-      droptofloor();
-    }
-    if( spot ){
-      if( (self.flags & FL_TURRET) )
-        util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.c_ofs);
-    	
-      if( self.legs )
-        util_setOffsetOrigin(self.legs, self, self.legs.c_ofs);
-    }
-    if( spot.target ){
-      spot2 = find(world, targetname, spot.target);
-      if( spot2 ){
-        self.goalentity = self.movetarget = spot2;
-        self.ideal_yaw = vectoyaw( spot2.origin - self.origin);
-        self.think = self.th_walk;
-        if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-          self.nextthink = time + (7 + random() * 1); //spread out thinks
-        }
-        else{
-          self.nextthink = time + (random() * 1);
-        }
-        return;
+        setorigin( self, node.origin);
       }
     }
+    self.target = node.targetname;
+    self.movetarget = node;
+    self.goalentity = node;
+    self.ideal_yaw = vectoyaw( node.origin - self.origin);
+    droptofloor(); 
+    if( (self.flags & FL_TURRET) ){
+      util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.c_ofs);
+    }
+    if( self.legs ){
+      util_setOffsetOrigin(self.legs, self, self.legs.c_ofs);
+    }
+    self.th_walk();
+    if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+      self.nextthink = self.nextthink + 7;
+    }
+      cons_logAFloat("->ai_setup_patrol()->th_walk", -1);  //DEBUG
+    return;
   }
-  self.pausetime = 99999999;
   self.think = self.th_stand;
+  self.nextthink = time + (random() * 0.5);
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-    self.nextthink = time + ( (self.vec_size * 2) + random() * 1); //spread out thinks
+    self.nextthink = self.nextthink + (self.vec_size * 2);
   }
-  else{
-    self.nextthink = time + (random() * 0.1);
-  }
+      cons_logAFloat("->ai_setup_patrol()->th_stand", -1);  //DEBUG
 };

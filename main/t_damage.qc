@@ -182,12 +182,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
-  if( (trg.flags & FL_CLIENT) ){
+  //if( (trg.flags & FL_CLIENT) ){
     trg.dmg_inflictor = inflictor;
     if(trg.was_hit < time){
       trg.was_hit = time + 1;
     }
-  }
+ // }
   //calculate hit time and angle
   util_chekPointToHitDir(trg, dmg_point);
   
@@ -247,6 +247,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
+  
   sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons
   
   //the special hit-location calculator is only run for DATA_MECH units

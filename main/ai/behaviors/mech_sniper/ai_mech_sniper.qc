@@ -15,6 +15,10 @@ Overview: ai unit
 */
 void() ai_mech_sniper={
 
+  if( ai_unit_setup(ai_mech_sniper) ){
+    return;
+  }
+
   ai_unit_ini_var();
   initialize_data_mech_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
@@ -53,8 +57,8 @@ void() ai_mech_sniper_stand1={
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
-  if( time > self.pausetime ){
-    if( self.movetarget ){
+  if( self.movetarget != world ){
+    if( time > self.pausetime ){
       macro_ai_frame(ai_mech_sniper_patrol1)
       return;
     }

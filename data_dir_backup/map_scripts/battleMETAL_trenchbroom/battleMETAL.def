@@ -1904,8 +1904,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -1946,8 +1945,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -1995,8 +1993,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2037,8 +2034,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2085,8 +2081,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2126,8 +2121,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2174,8 +2168,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2216,8 +2209,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2264,8 +2256,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2306,8 +2297,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2351,8 +2341,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2392,8 +2381,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2433,8 +2421,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2474,8 +2461,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2516,8 +2502,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2561,8 +2546,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2602,8 +2586,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2643,8 +2626,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2684,8 +2666,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2725,8 +2706,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2770,8 +2750,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2811,8 +2790,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2852,8 +2830,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
@@ -2895,8 +2872,7 @@ trigOnSpawn:string ent, fire this ENTITY when activated.
 trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
 trigOnDeath: string target, fire this ENTITY when killed.
 delay: float, wait T game seconds before spawning this unit.
-count: float, spawn this many copies of this unit.
-  count1: float, time interval between spawns
+
 -------- SPAWNFLAGS -------- 
 NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode

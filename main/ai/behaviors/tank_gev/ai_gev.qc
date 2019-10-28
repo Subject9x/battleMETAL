@@ -12,6 +12,10 @@ Overview: ai unit
 */
 void() ai_gev={  
 
+  if( ai_unit_setup(ai_gev) ){
+    return;
+  }
+
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
