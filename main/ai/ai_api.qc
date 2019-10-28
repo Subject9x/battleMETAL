@@ -506,14 +506,15 @@ float( void() ai_to_make ) ai_unit_setup={
     self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
     return FALSE;
   }
-  if( (self.delay > 0) && ( !(self.count) || (self.count < 1) ) ){
+  if( (self.delay > 0) && ( (!self.count) || (self.count < 1) ) ){
     //this is a delayed one-off
     self.use = multi_trigger;
     self.nextthink = time + self.delay;
     self.think = ai_to_make;
     return FALSE;
   }
-  if( self.count > 0 ){
+  if( self.count > 1 ){
+    
     self.use = multi_trigger;
     self.unit_ini = ai_to_make;
     self.nextthink = time + self.count1; //baked in automatically
@@ -525,39 +526,70 @@ float( void() ai_to_make ) ai_unit_setup={
 };
 
 void() ai_unit_make_trigger={
-  if( self.count > 0 ){
+  if( self.count > 1 ){
     self.use = SUB_Null;
     self.unit_ini = self.think;
     self.think = ai_unit_make_multi;
-    self.nextthink = time + 0.1;
-    return;
   }
   self.nextthink = time + self.wait;
 };
 
+void() ai_unit_stage_multi={
+  self.unit_ini = self.owner.unit_ini;
+  self.use = SUB_Null;
+  self.nextVecChoice = self.owner.nextVecChoice;
+  self.faction = self.owner.faction;
+  self.ai_rank = self.owner.ai_rank;
+  self.next_wepn1 = self.owner.next_wepn1;
+  self.next_wepn2 = self.owner.next_wepn2;
+  self.next_wepn3 = self.owner.next_wepn3;
+  self.next_wepn4 = self.owner.next_wepn4;
+  self.next_wepn5 = self.owner.next_wepn5;
+  self.next_wepn6 = self.owner.next_wepn6;
+  self.next_wepn7 = self.owner.next_wepn7;
+  self.next_wepn8 = self.owner.next_wepn8;
+  self.next_wepn9 = self.owner.next_wepn9;
+  self.spreadDefault = self.owner.spreadDefault;
+  
+  self.flags = self.owner.flags;
+  if( !(self.owner.flags & FL_TURRET) ){
+    self.flags = self.flags - (self.flags & FL_TURRET);
+  }
+  self.spawnflags = self.owner.spawnflags;
+  
+  self.nextVecChoice =  self.owner.nextVecChoice;
+  self.classname =  self.owner.classname;
+  self.target = self.owner.target;
+  self.targetname = self.owner.targetname;
+  self.group = self.owner.group;
+  if( self.group == "test" ){
+    cons_logAString("class", self.classname); //DEBUG
+    cons_logAString("target", self.target); //DEBUG
+  }
+  self.angles = self.owner.angles;
+  setorigin(self, self.owner.origin);
+  
+  self.owner = world;
+  
+  self.think = self.unit_ini;
+  self.nextthink = time + 0.01;
+};
+
 void() ai_unit_make_multi={
-  local entity cleanEnt, mainEnt;
-  if( self.count > 0 ){
+  local entity cleanEnt, thisEnt;
+  if( self.count > 1 ){
+    thisEnt = self;
     cleanEnt = spawn();
-    copyentity( self, cleanEnt );
-    cleanEnt.unit_ini = self.unit_ini;
-    mainEnt = self;
-    self = cleanEnt;
-      self.classname = mainEnt.classname;
-      setorigin(self, self.origin);
-      self.angles = self.angles;
-      self.targetname = "";
-      self.target = mainEnt.target;
-      self.unit_ini();
-      self.think = self.unit_ini;
-      self.nextthink = time + 0.01;
-    self = mainEnt;
+    cleanEnt.owner = self;
+    cleanEnt.think = ai_unit_stage_multi;
+    cleanEnt.nextthink = time + 0.01;
+    
     self.count = self.count - 1;
-    self.nextthink = time + self.count1;
     self.think = ai_unit_make_multi;
+    self.nextthink = time + self.count1 + 1;
     return;
   }
-  self.think = SUB_Remove;
+  self.think = self.unit_ini;
   self.nextthink = time + 0.1;
 };
 

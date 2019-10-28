@@ -472,7 +472,6 @@ void() ai_setup_patrol={
     }
     if( spot.target ){
       spot2 = find(world, targetname, spot.target);
-      cons_logAString("spot.target", spot.target);  //DEBUG
       if( spot2 ){
         self.goalentity = self.movetarget = spot2;
         self.ideal_yaw = vectoyaw( spot2.origin - self.origin);

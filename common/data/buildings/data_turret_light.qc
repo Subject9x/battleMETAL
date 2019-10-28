@@ -20,7 +20,7 @@ void() data_ini_light_turret_={
   self.vec_name = "Light Turret";
  
   self.max_health = 100;
-  setsize(self, '-20 -20 -6', '20 20 13');
+  setsize(self, '-20 -20 -6', '20 20 24');
   
 //ENERGY AND SHIELDS===================
   self.energyMax  = 100;

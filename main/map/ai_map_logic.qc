@@ -38,6 +38,7 @@ void() ai_change_faction_use={
 
 void() ai_change_rank_use={
   local entity e, this;
+  local float m;
   if( (self.spawnflags & 4) ){
     if( time < self.nextthink)
       return;
@@ -52,7 +53,6 @@ void() ai_change_rank_use={
       self = e;
         self.ai_rank = this.ai_rank;
         if (!self.yaw_speed){
-          local float m;
           m = ai_pilot_yaw_mod();
           self.yaw_speed = ai_pilot_yaw_mod();
         }
@@ -67,7 +67,6 @@ void() ai_change_rank_use={
       self = e;
         self.ai_rank = this.ai_rank;
         if (!self.yaw_speed){
-          local float m;
           m = ai_pilot_yaw_mod();
           self.yaw_speed = ai_pilot_yaw_mod();
         }

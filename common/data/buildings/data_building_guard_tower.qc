@@ -46,7 +46,7 @@ void() building_guard_tower={
   util_setModel("q3mdl/buildings/towersmall/guardtower.obj", self.skin, 0);
   util_setCollider(DAMAGE_YES, SOLID_SLIDEBOX, MOVETYPE_NONE);
   util_setHealthArmor(200, 200, 1, 100);
-  setsize(self, '-24 -24 0', '24 24 48');
+  setsize(self, '-22 -22 0', '22 22 40');
   self.shield = 0;
   self.shieldMax = 100;
   self.shieldRate = 1;

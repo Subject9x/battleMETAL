@@ -16,7 +16,7 @@ void() temp_chunk_burn={
     self.think = SUB_Remove;
   }
   else{  
-    te_smoke(self.origin, 3);
+    te_smoke(self.origin, 1);
     self.think = temp_chunk_burn;
   }
 	self.nextthink = time + 0.1;

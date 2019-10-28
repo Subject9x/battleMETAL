@@ -165,7 +165,7 @@ void() building_human_shield={
   util_setModel("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
   util_setHealthArmor(500, 500, 1, 100) ;
-  setsize(self, '-56 -56 0', '56 56 17.5');
+  setsize(self, '-48 -48 0', '48 48 32');
   self.shield= 0;
   self.shieldMax= 1000;
   self.shieldRate= 1;

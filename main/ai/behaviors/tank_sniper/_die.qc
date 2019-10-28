@@ -49,13 +49,13 @@ void() ai_vec_dest_die={
   
   switch( self.vec_size ){
     case 2:
-      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 20, 600); 
+      te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, rint(self.vec_size / 2), self.vec_size * 1000, self.vec_size / 20, 600); 
       break;
     case 3:
-      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 20, 600); 
+      te_big_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, rint(self.vec_size / 2), self.vec_size * 1000, self.vec_size / 20, 600); 
       break;
     default:
-      te_small_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, self.vec_size * 1000, self.vec_size / 20, 600); 
+      te_small_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, rint(self.vec_size / 2), self.vec_size * 1000, self.vec_size / 20, 600); 
       break;
   }
   
@@ -67,7 +67,7 @@ void() ai_vec_dest_die={
 */
 void() ai_vec_dest_die1={
   self.deadflag = DEAD_DEAD;
-  te_smoke(self.origin, 2);
+  te_smoke(self.origin, 1);
   self.think = ai_vec_dest_die1;
   if ( time > self.ai_action_time ){
     self.think = ai_vec_dest_die1a;

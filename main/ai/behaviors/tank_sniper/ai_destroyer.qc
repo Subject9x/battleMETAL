@@ -43,8 +43,8 @@ void() ai_spg_stand1={
     macro_ai_frame(ai_spg_fight_prep)
     return;
   }
-  if( time > self.pausetime ){
-    if( (self.movetarget) ){
+  if( (self.movetarget) ){
+    if( time > self.pausetime ){
       macro_ai_frame(ai_spg_patrol1)
       return;
     }
