@@ -458,7 +458,7 @@ void(string itms) client_sendAvailableItems={
 
 void() client_sendMissionUnlocks={
   local string cmd;
-  cmd = strcat("mech unlock mechs [", world.unlockMechs,"] items [", world.unlockEquip, "]", "\n");
+  cmd = strcat("mech unlock mechs [", MAP_UNLOCK_MECHS,"] items [", MAP_UNLOCK_EQUIP, "]", "\n");
   stuffcmd(self, cmd);
 };
 

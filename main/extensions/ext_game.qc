@@ -92,3 +92,6 @@ float MISSION_LOSSES_SURVEST;
 float MISSION_LOSSES_MILITAR;
 
 float GAME_TIME_TO_DEBRIEF = 3.33;
+
+string MAP_UNLOCK_MECHS;  //quakeC abhors modifying world
+string MAP_UNLOCK_EQUIP;

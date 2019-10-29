@@ -115,6 +115,8 @@ void() mh_world_ini={
   WeatherDominator.think = WeatherDominator_think;
   WeatherDominator.nextthink = time + (random() * 0.085);
   
+  MAP_UNLOCK_MECHS = world.unlockMechs;
+  MAP_UNLOCK_EQUIP = world.unlockEquip;
 };
 
 /*

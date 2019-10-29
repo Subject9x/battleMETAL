@@ -290,5 +290,6 @@ qsrc/misc.qc
   main/map/map_scenery.qc
   main/map/map_particlecube_effect.qc
   main/map/ai_map_logic.qc
+  main/map/map_unlock_items.qc
 //============================
 
