@@ -12,10 +12,8 @@ Overview: ai unit
 */
 void() ai_gev={  
 
-  if( ai_unit_setup(ai_gev) ){
-    return;
-  }
-
+  macro_ai_setup(ai_gev)
+  
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
@@ -32,8 +30,8 @@ void() ai_gev={
   self.th_die = ai_gev_die;
   self.touch = ai_touch;
   
-  self.think = ai_setup_patrol;
-  self.nextthink = time + (random() * 1); //spread out thinks
+  ai_setup_patrol();
+  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 
 void() ai_gev_enter_patrol={
@@ -56,12 +54,7 @@ void() ai_gev_patrol1={
     return;
   }
 
-  //node is still valid
-  local float moveCheck;
-  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_gev_stand1, ai_gev_patrol1 );
-  if( !moveCheck ){
-    macro_ai_frame(ai_gev_stand1)
-  }
+  macro_ai_patrol(self.data_speed_forward, ai_gev_stand1, ai_gev_patrol1)
 };
 
 void() ai_gev_stand1={

@@ -463,15 +463,15 @@ void() ai_lock_on={
       }
     }
     else{
-      if( (self.stat_lck_stt & LOCK_TARG_START) )
+      if( (self.stat_lck_stt & LOCK_TARG_START) ){
         self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
-      
-      if( (self.stat_lck_stt & LOCK_TARG_HAS) )
+      }
+      if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
         self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
-      
-      if( (self.enemy.stat_lck_stt & LOCK_PLAYER) )
+      }
+      if( (self.enemy.stat_lck_stt & LOCK_PLAYER) ){
         self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLAYER);
-      
+      }
     }
   }
 };
@@ -484,7 +484,9 @@ void() ai_lock_on={
   if the AI is to be triggered by another object, then postpone full ini into the use() function
   else
   fall-through and create the ai
-*/
+
+  now macro_ai_setup - Roohr
+
 float( void() ai_ini ) ai_unit_setup={
   
   self.wait = 1;
@@ -510,6 +512,7 @@ float( void() ai_ini ) ai_unit_setup={
   self.use = multi_trigger;
   return FALSE;
 };
+*/
 
 void() ai_unit_make_trigger={
   self.nextthink = time + self.wait;

@@ -15,10 +15,8 @@ Overview: ai unit
 */
 void() ai_mech_sniper={
 
-  if( ai_unit_setup(ai_mech_sniper) ){
-    return;
-  }
-
+  macro_ai_setup(ai_mech_sniper)
+  
   ai_unit_ini_var();
   initialize_data_mech_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
@@ -34,8 +32,8 @@ void() ai_mech_sniper={
   self.th_die = ai_mech_sniper_die;
   self.touch = ai_touch;
   
-  self.think = ai_setup_patrol;
-  self.nextthink = time + (random()*0.9); //spread out thinks
+  ai_setup_patrol();
+  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 
 void() ai_mech_sniper_walk1={

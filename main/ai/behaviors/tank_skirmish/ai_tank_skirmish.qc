@@ -14,9 +14,7 @@ Overview: ai unit
 */
 void() ai_tank_skirmish={
 
-  if( ai_unit_setup(ai_tank_skirmish) ){
-    return;
-  }
+  macro_ai_setup(ai_tank_skirmish)
 
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
@@ -33,8 +31,8 @@ void() ai_tank_skirmish={
   self.th_die = ai_tank_sk_die;
   self.touch = ai_touch;
   
-  self.think = ai_setup_patrol;
-  self.nextthink = time + (random() * 0.9); //spread out thinks
+  ai_setup_patrol();
+  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 
 void() ai_tank_sk_fight_prep={
@@ -228,18 +226,13 @@ void() ai_tank_sk_enter_patrol={
 void() ai_tank_sk_patrol1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
-  
+ 
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_tank_sk_fight_prep)
     return;
   }
   
-  //node is still valid
-  local float moveCheck;
-  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_tank_sk_stand1, ai_tank_sk_patrol1 );
-  if( moveCheck == FALSE ){
-    macro_ai_frame(ai_tank_sk_stand1)
-  }
+  macro_ai_patrol(self.data_speed_forward, ai_tank_sk_stand1, ai_tank_sk_patrol1)
 };
 
 /*

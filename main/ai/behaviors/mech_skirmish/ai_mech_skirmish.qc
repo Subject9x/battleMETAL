@@ -15,9 +15,7 @@ Overview: ai unit
 */
 void() ai_mech_skirmish={
 
-  if( ai_unit_setup(ai_mech_skirmish) ){
-    return;
-  }
+  macro_ai_setup(ai_mech_skirmish)
 
   ai_unit_ini_var();
   initialize_data_mech_( self.nextVecChoice );
@@ -34,8 +32,8 @@ void() ai_mech_skirmish={
   self.th_die = ai_mech_sk_die;
   self.touch = ai_touch;
 
-  self.think = ai_setup_patrol;
-  self.nextthink = time + (random() * 1); //spread out thinks
+  ai_setup_patrol();
+  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 
 /*

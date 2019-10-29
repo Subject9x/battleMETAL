@@ -12,9 +12,7 @@ Overview: ai unit
 */
 void() ai_vec_dest={
 
-  if( ai_unit_setup(ai_vec_dest) ){
-    return;
-  }
+  macro_ai_setup(ai_vec_dest)
 
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
@@ -32,8 +30,8 @@ void() ai_vec_dest={
   self.th_die = ai_vec_dest_die;
   self.touch = ai_touch;
 
-  self.think = ai_setup_patrol;
-  self.nextthink = time + (random() * 1); //spread out thinks
+  ai_setup_patrol();
+  self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 
 /*
@@ -69,20 +67,7 @@ void() ai_spg_patrol1={
     return;
   }
   
-  local float moveCheck;
-  moveCheck = ai_patrol_logic( self.data_speed_forward, ai_spg_stand1, ai_spg_patrol1 );
-  if( !moveCheck ){
-    macro_ai_frame(ai_spg_stand1)
-  }
-  
-  if( time > self.pausetime ){
-    if( (self.movetarget) ){
-      macro_ai_frame(ai_spg_patrol1)
-      return;
-    }
-  }
-  
-  macro_ai_frame(ai_spg_stand1)
+  macro_ai_patrol(self.data_speed_forward, ai_spg_stand1, ai_spg_patrol1)
 };
 
 void() ai_spg_enter_patrol={

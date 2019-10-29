@@ -35,7 +35,7 @@ void() data_ini_onnek_={
 //=====================================
 
 //SPEED================================
-  self.data_speed_forward = 50;
+  self.data_speed_forward = 33;
   self.data_speed_strafe = 20;
   self.data_speed_backward = 15;
   self.data_speed_accel = 1;

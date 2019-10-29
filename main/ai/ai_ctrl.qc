@@ -146,7 +146,8 @@ void() ai_touch={
   processes 1 frame of AI logic for moving towards a patrol node;
   the return value is used to check if entire frame should return early.
   
-*/
+  turned into macro_ai_patrol in ai_api.qh - Roohr
+  
 float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_logic={
   local entity nextNode;
   
@@ -169,7 +170,6 @@ float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_
       }
       else{
         self.movetarget = world;
-        self.goalentity = world;
       }
       self.goalentity = self.movetarget;
       if( time < self.pausetime ){
@@ -181,6 +181,12 @@ float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_
     return TRUE;
   }
   return FALSE;
+};
+*/
+
+void() ai_face_goal={
+  self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin);
+  ChangeYaw();
 };
 
 /*

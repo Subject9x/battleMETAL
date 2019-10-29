@@ -111,8 +111,7 @@ void() building_turret_ini={
     return;
   }
   
-  self.unit_ini = ai_turret;
-  self.think = ai_unit_setup;
+  self.think = ai_turret;
   self.nextthink = time + 0.05;
 };
 

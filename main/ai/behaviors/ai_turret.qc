@@ -695,6 +695,8 @@ void() ai_turret_idle10={
 */
 void() ai_turret={
   
+  macro_ai_setup(ai_turret)
+  
   ai_unit_ini_var();
   initialize_data_turret_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
