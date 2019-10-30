@@ -57,7 +57,7 @@ float AI_FOV_VET = 1.5;
 float AI_FOV_ACE = 1.75;
 
 //time interval between view sweeps
-float AI_VIEW_INTERVAL = 2;
+float AI_VIEW_INTERVAL = 1;
 //these are multipliers
 float AI_VIEW_ROK = 1.33;
 float AI_VIEW_REG = 1;

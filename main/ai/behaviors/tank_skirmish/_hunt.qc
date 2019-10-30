@@ -9,6 +9,56 @@ Overview: ai unit
   Setup
     
 */
+
+/*
+  Sentry mode - AI pauses, and turns to face a random angle wont stop until achieving that angle`
+*/
+void() ai_tank_sk_enter_sentry={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_updateTank)
+  
+  self.torsoCenter.attack_state = TR_YAW;
+  self.torsoCenter.ai_dir = anglemod( self.torsoCenter.angles_y + (crandom() * self.ai_angleLimits_y));
+  if( self.torsoCenter.ai_dir > self.angles_y ){
+    self.ideal_yaw = anglemod(self.angles_y + self.torsoCenter.ideal_yaw / 2);
+  }
+  else if(self.torsoCenter.ai_dir < self.angles_y){
+    self.ideal_yaw = anglemod(self.angles_y - self.torsoCenter.ideal_yaw / 2);
+  }
+  macro_ai_frame(ai_tank_sk_sentry)
+};
+void() ai_tank_sk_sentry={
+  ai_update_accuracy(FALSE);
+  macro_ai_update(ctrl_updateTank)
+  
+  ChangeYaw();
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_tank_sk_fight_prep)
+    return;
+  }
+  
+  if(self.torsoCenter.angles_y == self.torsoCenter.ideal_yaw){
+    self.ai_action_time = (4 - self.ai_rank + 1) * 4;
+    macro_ai_frame(ai_tank_sk_sentry_hold)
+    return;
+  }
+  
+  macro_ai_frame(ai_tank_sk_sentry)
+};
+
+void() ai_tank_sk_sentry_hold={
+  ai_update_accuracy(FALSE);
+  macro_ai_update(ctrl_updateTank)
+  
+  if( ai_check_scan( self.stat_rdr_mode ) ){
+    macro_ai_frame(ai_tank_sk_fight_prep)
+    return;
+  }
+  
+  macro_ai_frame_count(ai_tank_sk_sentry_hold)
+  macro_ai_frame(ai_tank_sk_enter_sentry)
+};
+
 void() ai_tank_sk_enter_hunt={
   local entity nodeRecall;
   self.attack_state = ST_HUNT;

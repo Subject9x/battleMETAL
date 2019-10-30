@@ -180,6 +180,7 @@ float( float moveSpeed, void() pauseFrameFunc, void() nextFrameFunc ) ai_patrol_
     macro_ai_frame(nextFrameFunc)
     return TRUE;
   }
+  macro_ai_frame(pauseFrameFunc)
   return FALSE;
 };
 */
@@ -449,7 +450,6 @@ void() ai_setup_patrol={
   if( self.target ){
     node = find(world, targetname, self.target);
     if( !node ){
-      cons_logAFloat("->ai_setup_patrol()->FAIL", -1);  //DEBUG
       //error handling - target but missing the entity.
       self.think = self.th_stand;
       self.nextthink = time + (random() * 0.5);
@@ -489,7 +489,6 @@ void() ai_setup_patrol={
     if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
       self.nextthink = self.nextthink + 7;
     }
-      cons_logAFloat("->ai_setup_patrol()->th_walk", -1);  //DEBUG
     return;
   }
   self.think = self.th_stand;
@@ -497,5 +496,4 @@ void() ai_setup_patrol={
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = self.nextthink + (self.vec_size * 2);
   }
-      cons_logAFloat("->ai_setup_patrol()->th_stand", -1);  //DEBUG
 };

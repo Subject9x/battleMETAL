@@ -29,6 +29,10 @@ void() ai_tank_sk_enter_flank;
 void() ai_tank_sk_enter_juke;
 void() ai_tank_sk_enter_reverse;
 void() ai_tank_sk_enter_strafe;
+void() ai_tank_sk_enter_sentry;
+
+void() ai_tank_sk_sentry;
+void() ai_tank_sk_sentry_hold;
 /*
   rotate in place to self.ideal_yaw
 */

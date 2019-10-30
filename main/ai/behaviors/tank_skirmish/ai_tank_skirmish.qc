@@ -232,7 +232,7 @@ void() ai_tank_sk_patrol1={
     return;
   }
   
-  macro_ai_patrol(self.data_speed_forward, ai_tank_sk_stand1, ai_tank_sk_patrol1)
+  macro_ai_patrol(self.data_speed_forward, ai_tank_sk_enter_sentry, ai_tank_sk_patrol1)
 };
 
 /*
@@ -254,5 +254,5 @@ void() ai_tank_sk_stand1={
     }
   }
   
-  macro_ai_frame(ai_tank_sk_stand1)
+  macro_ai_frame(ai_tank_sk_enter_sentry)
 };
