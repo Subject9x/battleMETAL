@@ -55,6 +55,16 @@ void() map_unlock_item_use={
 };
 
 /*QUAKED map_unlock_items (-32 -32 -64) (32 32 64) - ONTOUCH
+  will provide unlocked mechs and items to player.
+  + format is space-separated values
+  + each value is the UID of the mech or item.
+-------- KEYS -------- 
+.targetname = <string> call by trigger.
+.target = <string> will fire other triggers after being used.
+.unlockMechs = <string> 
+.unlockEquip = <string>
+-------- SPAWNFLAGS --------
+ONTOUCH 2 : will fire ontouch instead of by targetname.
 */
 void() map_unlock_items={
   util_MapDeveloperMarker();
