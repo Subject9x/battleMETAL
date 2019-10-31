@@ -20,9 +20,9 @@ void() data_ini_light_laser_={
   self.w_name = "Light Laser";
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.6;
-  self.reloadMax = 0.6;
-  self.energyRate =  6.67;
+  self.reloadRate = 0.75;
+  self.reloadMax = 0.75;
+  self.energyRate = 15;
 
   self.w_range = 2000;
   self.damageValue = 10;

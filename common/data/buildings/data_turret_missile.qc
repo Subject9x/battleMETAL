@@ -15,11 +15,11 @@ Overview:
 */
 void() data_ini_missile_turret_={
 
-  self.data_idx = UID_TURRET_missile_turret;  //
-  self.vec_size = 1;  //
+  self.data_idx = UID_TURRET_missile_turret;
+  self.vec_size = 1;
   self.vec_name = "Missile Turret";
  
-  self.max_health = 200;
+  self.max_health = 400;
   setsize(self, '-20 -20 -13', '20 20 20');
   
 //ENERGY AND SHIELDS===================

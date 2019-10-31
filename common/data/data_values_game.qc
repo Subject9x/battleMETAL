@@ -126,7 +126,7 @@ float FALL_CT_MULTIPLIER = 3;
 float FALL_KILL_MULTIPLIER = 3; 
 float FALL_DAMAGE_FRACTION = 0.2;
 float SHIELD_DELAY = 5; //game timer to pause before shields are brought backonline
-float EVADE_DRAIN_PERCENT = 0.75;  //reduce energyRate by this % when unit is Evading
+float EVADE_DRAIN_PERCENT = 0.25;  //reduce energyRate by this % when unit is Evading
 //============================
 //     WEAPON FLAGS
 //============================

@@ -245,7 +245,7 @@ void(void() data_ini) build_mech_unit={
   self.energy = self.energyMax;
   self.shield = self.shieldMax;
   self.health = self.max_health;
-  self.evasionDrain = EVADE_DRAIN_PERCENT;
+  self.evasionDrain = (4 - self.vec_size) / 10 + EVADE_DRAIN_PERCENT;
   
   setsize(self, tempMin, tempMax);
   

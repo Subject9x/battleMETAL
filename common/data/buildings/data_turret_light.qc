@@ -15,11 +15,11 @@ Overview:
 */
 void() data_ini_light_turret_={
 
-  self.data_idx = UID_TURRET_light_turret;  //
-  self.vec_size = 1;  //
+  self.data_idx = UID_TURRET_light_turret;
+  self.vec_size = 1;
   self.vec_name = "Light Turret";
  
-  self.max_health = 100;
+  self.max_health = 300;
   setsize(self, '-20 -20 -6', '20 20 24');
   
 //ENERGY AND SHIELDS===================
