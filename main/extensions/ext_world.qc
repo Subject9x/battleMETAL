@@ -24,14 +24,6 @@ void() mh_world_ini={
   MISSION_LOSSES_PSC = 0;
   MISSION_LOSSES_SURVEST = 0;
   MISSION_LOSSES_MILITAR = 0;
-  
-  cvar_set("gamemode", ftos(GAMEMODE_CAMPAIGN));
-  if( coop && cvar("maxplayers") > 1){
-    cvar_set("gamemode", ftos(GAMEMODE_COOP));
-  }
-  if( deathmatch && cvar("maxplayers") > 1){
-    cvar_set("gamemode", ftos(GAMEMODE_DM));
-  }
 
   //oh my
   addstat( STAT_PLR_NAME, AS_STRING, netname);

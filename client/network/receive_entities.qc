@@ -439,6 +439,7 @@ void(float missionTime, float clientKills, float missonSuccessCheck, float pscTo
   
   MENU_ACTIVE = 1;
   CLIENT_MENU_menu_choice = MENU_DEBRIEF_ACTIVE;
+  CLIENT_player_state = PLAYER_IN_MENU;
   setpause( 1 );
   setcursormode( 1 );
 };

@@ -186,26 +186,26 @@ void() PutClientInServer = {
   client_sendMissionFileName();
   client_sendGameMode(gamemode);
 
-  switch(gamemode){
-    case GAMEMODE_CAMPAIGN:
-      if(world.model == "maps/start.bsp"){
-        //pre-populate default save file
-        savefile_default();
-      }
-      if( world.itemOverrideFile && world.itemOverrideFile != "" ){
-        savefile_load( TRUE );
-      }
-      else{
-        savefile_load( FALSE );
-      }
-      
-      break;
-    case GAMEMODE_COOP:
-      mapfile_coop_load();
-      break;
-    case GAMEMODE_DM:
-      mapfile_pvp_load(self.faction);
-      break;
+  if( !cvar("coop") && !cvar("deathmatch") ){
+  client_sendGameMode(GAMEMODE_CAMPAIGN);
+    if(world.model == "maps/o1m1.bsp"){
+      //pre-populate default save file
+      savefile_default();
+    }
+    if( world.itemOverrideFile && world.itemOverrideFile != "" ){
+      savefile_load( TRUE );
+    }
+    else{
+      savefile_load( FALSE );
+    }
+  }
+  else if ( cvar("coop") && !cvar("deathmatch") ){
+  client_sendGameMode(GAMEMODE_COOP);
+    mapfile_coop_load();
+  }
+  else{
+    mapfile_pvp_load(self.faction);
+  client_sendGameMode(GAMEMODE_DM);
   }
 
   switch( self.data_type ){

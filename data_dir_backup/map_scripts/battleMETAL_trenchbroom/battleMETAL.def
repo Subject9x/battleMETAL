@@ -1761,7 +1761,7 @@ MISSION_LOSE 4: when 'failed', fire-off end-mission logic
 MISSION_WIN 8: when 'complete' fire-off end-mission logic
 */
 
-/*QUAKED map_unlock_items (-32 -32 -64) (32 32 64) - ONTOUCH
+/*QUAKED map_unlock_items (0.753 0.788 0.431) (-32 -32 -64) (32 32 64) - ONTOUCH
   will provide unlocked mechs and items to player.
   + format is space-separated values
   + each value is the UID of the mech or item.

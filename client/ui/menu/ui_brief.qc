@@ -228,7 +228,7 @@ void(vector ofs) menu_briefMapPanel={
   map_size_x = ((world.mins_x*-1) + world.maxs_x);
   map_size_y = ((world.mins_y*-1) + world.maxs_y);
 
-  renderColor  = CLR_DEF_ARM_OK - '0.27 0.27 0.27';
+  renderColor  = CLR_DEF_GREEN - '0.1 0.1 0.1';
 
   while( itr <= 21 ){
     local vector navorg, nofs, tofs;
