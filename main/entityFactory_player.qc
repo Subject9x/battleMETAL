@@ -6,16 +6,11 @@ Date: 8/27/2016
 Overview: header for player type factory
 */
 
-void() player_spawnAsObserver={
-
-};
-
-
 void() player_makeObserver={
   self.data_type = DATA_POBS;
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
-  util_setCollider(DAMAGE_NO, SOLID_TRIGGER, MOVETYPE_FLY);
+  util_setCollider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY);
   self.weaponmodel = "";
   
   setmodel(self, "q3mdl/testball.md3");
@@ -26,13 +21,13 @@ void() player_makeObserver={
   client_update_modelBob("0", "0", "0");
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
-  self.stat_plr_stt = PLAYER_IN_MENU;
+  self.view_ofs = '0 0 1';
 };
 
 void() player_unmakeObserver={
-  if( (self.flags & FL_FLY) ){
+  if( (self.flags & FL_FLY) )
     self.flags = self.flags - (self.flags & FL_FLY);
-  }
+  
   self.movetype = MOVETYPE_WALK;
   self.scale = 1;
 };

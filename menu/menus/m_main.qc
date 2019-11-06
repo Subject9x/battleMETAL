@@ -44,7 +44,7 @@ void() click_main_train={
   cmd("deathmatch 0\n");
   cmd("coop 0\n");
   menu_exit_togame();
-  cmd("map", " dbg_training\n"); //TODO - training map
+  cmd("map", " training\n"); //TODO - training map
 };
 
 void() click_main_multi={

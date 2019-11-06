@@ -80,6 +80,12 @@ void() client_get_info={
   }
 };
 
+void() client_get_info_thin={
+  CLIENT_player_deadflag = ReadByte();
+  CLIENT_entorg  = te_read_vector();
+  CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
+};
+
 void( float wep, float delt ) client_get_weapon_delta={
   switch( wep ){
     case 1:
@@ -166,7 +172,6 @@ void() receive_ent_bindData={
     }
     CLIENT_netname = strzone( name );
   }
-  
   CLIENT_player_state = getstati( STAT_ARMOR );
   CLIENT_data_idx = getstati(STAT_PLR_DIDX);
   CLIENT_faction = getstati( STAT_CELLS );

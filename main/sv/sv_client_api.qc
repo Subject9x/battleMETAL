@@ -200,12 +200,12 @@ void() PutClientInServer = {
     }
   }
   else if ( cvar("coop") && !cvar("deathmatch") ){
-  client_sendGameMode(GAMEMODE_COOP);
+    client_sendGameMode(GAMEMODE_COOP);
     mapfile_coop_load();
   }
   else{
     mapfile_pvp_load(self.faction);
-  client_sendGameMode(GAMEMODE_DM);
+    client_sendGameMode(GAMEMODE_DM);
   }
 
   switch( self.data_type ){
@@ -223,7 +223,12 @@ void() PutClientInServer = {
         client_update_moveSpeed(0, 0, 0, "0","0");
         client_update_viewBob("0", "0", "0");
         client_update_modelBob("0", "0", "0");
-        self.stat_plr_stt = PLAYER_IN_MENU;
+        if( world.animaticOnly ){
+          self.stat_plr_stt = PLAYER_INTERMSN;
+        }
+        else{
+          self.stat_plr_stt = PLAYER_IN_MENU;
+        }
       }
       else{
         self.stat_plr_stt = PLAYER_ACTIVE;

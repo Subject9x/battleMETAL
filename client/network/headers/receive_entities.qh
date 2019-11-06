@@ -26,6 +26,7 @@ entity lastMapKeyObject; //pointer for last sync'd map object
 
 //function headers
 void() client_get_info;
+void() client_get_info_thin;
 void() client_get_contact;
 void() client_get_hud_highlight;
 

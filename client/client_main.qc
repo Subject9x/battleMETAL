@@ -161,7 +161,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
 { 
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
-    cvar_set("r_shadow_realtime_world", ftos(1));
+    cvar_set("r_shadow_realtime_world", "1");
   }
   
 	/*
@@ -243,7 +243,6 @@ void(float w, float h, float menushown) CSQC_UpdateView =
   //PLAYER_ENTITYNUM = getstati(STAT_PLR_ENT_ID); //this is ridiculous
 
   receive_ent_bindData();
-  
 	// force switch to 2D polygon drawing in case we want to do any polygons before we draw pics and strings
 	// FIXME: engine should have a drawflag for 3D and another for 2D (also would be nice to have 3D drawstring and drawpic)
 	//drawstring('0 0 0', "", '1 1 0', '1 1 1', 0, 0);
@@ -397,6 +396,9 @@ float() CSQC_Parse_TempEntity =
   switch( id ){
     case TE_CLIENT_INFO:
       client_get_info();
+      return TRUE;
+    case TE_CLIENT_INFO_THIN:
+      client_get_info_thin();
       return TRUE;
     case TE_CLIENT_PING:
       client_get_contact();

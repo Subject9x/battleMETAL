@@ -85,7 +85,26 @@ void() client_push_player_info={
     }
   }
 };
+/*
+  sends just player state and stuff
+*/
+void() client_push_player_info_thin={
+  self.ammo_rockets = self.flags;
+  self.ammo_cells = self.faction;
+  self.armorvalue = self.stat_plr_stt;
 
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_CLIENT_INFO_THIN);
+
+  WriteByte( MSG_ONE, self.deadflag );
+
+  WriteCoord( MSG_ONE, self.origin_x );
+  WriteCoord( MSG_ONE, self.origin_y );
+  WriteCoord( MSG_ONE, self.origin_z );
+  
+  WriteByte( MSG_ONE, self.data_type ); //sync integrity
+}
 void( entity targetClient ) server_push_player_info={
   local entity this;
   this = self;
@@ -606,6 +625,7 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
 */
 void(entity client, float missionSuccessCheck) client_sendEndMission={
   local entity notSelf;
+  self.armorvalue = self.stat_plr_stt = PLAYER_INTERMSN;
   
   notSelf = self;
   self = client;

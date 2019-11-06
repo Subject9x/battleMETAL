@@ -9,8 +9,11 @@ Overview:
       other code bases.
 */
 void() PlayerPreThink = {
-	if (intermission_running)
-	{
+  if( self.stat_plr_stt == PLAYER_INTERMSN ){
+    client_push_player_info_thin();
+  }
+  
+	if (intermission_running){
 		IntermissionThink ();	// otherwise a button could be missed between
 		return;					// the think tics
 	}
@@ -69,6 +72,9 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
+  if( self.stat_plr_stt == PLAYER_INTERMSN ){
+    client_push_player_info_thin();
+  }
   //can't stop mech players with cutscenes, instead use triggered clipping objects
   //in map - roohr
   if( (self.stat_plr_stt == PLAYER_ANIM_STOP) && (self.data_type == DATA_POBS)){

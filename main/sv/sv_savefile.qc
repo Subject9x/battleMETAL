@@ -125,11 +125,19 @@ void() savefile_default={
   fputs(flannel, "{\n");
   fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
   fputs(flannel, "  'mission' : start,\n");
-  fputs(flannel, "  'mechs' : 1 2 3,\n");
-  fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
+  if( cvar("developer") ){
+    fputs(flannel, "  'mechs' : 1 2 3,\n");
+    fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
+  }
+  else{
+    fputs(flannel, "  'mechs' : 1,\n");
+    fputs(flannel, "  'items' : 1 3,\n");
+  }
+  
   fputs(flannel, "  'points' : ,\n");
   fputs(flannel, "}");
   fclose(flannel);
+  
 };
 
 //coop options

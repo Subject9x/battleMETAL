@@ -50,11 +50,6 @@ void() map_objective_mission_conclude_th={
   player = find (world, classname, "player");
   while( player != world ){
       self = player;
-      player.stat_plr_stt = PLAYER_INTERMSN;  //TEST
-      if(player.data_type == DATA_MECH){
-        player_unmakeMech();
-        player_makeObserver();
-      }
       //taken from execute_changelevel()
       player.view_ofs = '0 0 0';
       player.angles = player.v_angle = player.angles;
@@ -76,6 +71,11 @@ void() map_objective_mission_conclude_th={
       }
       else{
         te_mission_lose();
+      }
+      player.stat_plr_stt = PLAYER_INTERMSN;  //TEST
+      if(player.data_type == DATA_MECH){
+        player_unmakeMech();
+        player_makeObserver();
       }
       client_sendEndMission(player, successCheck);
     player = find (player, classname, "player");

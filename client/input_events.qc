@@ -17,7 +17,7 @@ Overview:
 */
 
 float(float inputEventType, float scanx, float chary, float devid) handle_input={
-  CLIENT_player_state = getstatf(STAT_PLR_STT);
+  CLIENT_player_state = getstati(STAT_ARMOR);
   
 //console override-----
   if(inputEventType == INPUT_EVENT_KEYDOWN){
