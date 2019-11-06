@@ -13,7 +13,47 @@ Overview:
 */
 
 void() map_objective_th;
-
+void() map_objective_mission_end_th={
+local entity player;
+  local entity objective;
+  local float successCheck;
+	WriteByte (MSG_ALL, SVC_INTERMISSION);
+  
+  if( MISSION_STATUS ){
+    successCheck = TRUE;
+  }
+  else{
+    successCheck = FALSE;
+  }
+  
+  objective = self;
+  player = find (world, classname, "player");
+  while( player != world ){
+    self = player;
+      //taken from execute_changelevel()
+      player.view_ofs = '0 0 0';
+      player.angles = player.v_angle = player.angles;
+      player.fixangle = TRUE;		// turn this way immediately
+      player.think = SUB_Null;  //I guess this was an animation thing originall? (q1)
+      player.nextthink = time + 0.5;
+      player.takedamage = DAMAGE_NO;
+      player.solid = SOLID_NOT;
+      player.movetype = MOVETYPE_NONE;
+      player.modelindex = 0;
+      setorigin (player, self.origin);
+      //------------------------------
+      client_sendEndMission(player, successCheck);
+      if(player.data_type == DATA_MECH){
+        player_unmakeMech();
+        player_makeObserver();
+      }
+    player = find (player, classname, "player");
+  }
+  self = objective;
+	WriteByte (MSG_ALL, SVC_INTERMISSION);
+  self.think = SUB_Remove;
+  self.nextthink = time + 2;
+};
 /*
   Only if MISSION_LOSE or MISSION_WIN.
   
@@ -49,20 +89,7 @@ void() map_objective_mission_conclude_th={
   objective = self;
   player = find (world, classname, "player");
   while( player != world ){
-      self = player;
-      //taken from execute_changelevel()
-      player.view_ofs = '0 0 0';
-      player.angles = player.v_angle = player.angles;
-      player.fixangle = TRUE;		// turn this way immediately
-      player.think = SUB_Null;  //I guess this was an animation thing originall? (q1)
-      player.nextthink = time + 0.5;
-      player.takedamage = DAMAGE_NO;
-      player.solid = SOLID_NOT;
-      player.movetype = MOVETYPE_NONE;
-      player.modelindex = 0;
-      setorigin (player, self.origin);
-      //------------------------------
-      
+      self = player;      
       client_push_mapobjects();
       if( successCheck ){
         //only send unlocks if player won mission
@@ -72,19 +99,13 @@ void() map_objective_mission_conclude_th={
       else{
         te_mission_lose();
       }
-      player.stat_plr_stt = PLAYER_INTERMSN;  //TEST
-      if(player.data_type == DATA_MECH){
-        player_unmakeMech();
-        player_makeObserver();
-      }
-      client_sendEndMission(player, successCheck);
     player = find (player, classname, "player");
   }
   self = objective;
-	WriteByte (MSG_ALL, SVC_INTERMISSION);
-  self.think = map_objective_th;
-  self.nextthink = time + 2;
+  self.think = map_objective_mission_end_th;
+  self.nextthink = time + 4;
 };
+
 
 /*
   called by other entities during trigger call.
@@ -117,7 +138,7 @@ void() map_objective_touch={
     if( (other.flags & FL_CLIENT) ){
       if( other.faction == self.faction ){
         activator = other;
-        map_objective_use();  //DEBUG - complete on-touch
+        map_objective_use();
         self.touch = SUB_Null;
       }
     }
@@ -152,7 +173,7 @@ void() map_objective_th={
       intermission_running = 1;
       intermission_exittime = time + 2;
       self.think = map_objective_mission_conclude_th;
-      self.nextthink = time + 4;
+      self.nextthink = time + 1;
       return;
     }
     return;
@@ -178,7 +199,7 @@ void() map_objective_th={
       intermission_running = 1;
       intermission_exittime = time + 2;
       self.think = map_objective_mission_conclude_th;
-      self.nextthink = time + 4;
+      self.nextthink = time + 1;
       return;
     }
     return;

@@ -100,7 +100,6 @@ void(string requestedSound, float cnt) snd_hud_vfx_addtoqueue={
     }
   }
 
-
   while(idx < SQSIZE){
     if(SOUNDQUEUE[idx] == requestedSound){
       cur = cur + 1;

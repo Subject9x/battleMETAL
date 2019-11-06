@@ -289,7 +289,7 @@ void(float w, float h, float menushown) CSQC_UpdateView =
           msgClr = CLR_DEF_RET_GETLOCK;
         }
         else{
-          msg = "[EVASION DISABLED]";
+          msg = "!- EVASION OFFLINE -!";
           msgClr = CLR_DEF_RED;
         }
           slen = stringwidth(msg, 0, '14 12 0');
