@@ -31,7 +31,9 @@ void() nav_point_touch={
       
       // trigOnTarget is used specifically here to trigger an objective
       trigger_event( that, self.target );
-      
+      self.effects = self.effects - ( self.effects &(EF_DOUBLESIDED | EF_NOSHADOW | EF_FULLBRIGHT)); 
+      self.alpha = 0.1;
+      self.colormod = '0.33 0.33 0.33';
       //multi_trigger();
       if( (self.spawnflags & 2) )
         self.isActive = 1;
@@ -63,6 +65,14 @@ void() nav_point_use={
   }
 };
 
+void() map_nav_point_th={
+
+  self.angles_y = anglemod(self.angles_y + 1);
+
+  self.think = map_nav_point_th;
+  self.nextthink = time + 0.1;
+};
+
 /*QUAKED map_nav_point (0.431 0.788 0.753) (-32 -32 -75) (32 32 1) - VISIT_PER_CLIENT OFF_AFTER_USE
 Nav Points are points of interest marked on Player maps. 
 Players interact with them by visiting them, which can then fire triggers to additional game logic.
@@ -89,15 +99,21 @@ void() map_nav_point={
 
   self.data_type = DATA_NAVP;
   
-  util_MapDeveloperMarker();
+  precache_model("q3mdl/map/nav_point.obj");
+  setmodel(self, "q3mdl/map/nav_point.obj");
   
   setsize( self, '-32 -32 -75', '32 32 1' ); // this is to make sure nav points
   setorigin( self, self.origin );                   // end up somewhere a player can reach
   self.movetype = MOVETYPE_FLY;
   droptofloor();
+  self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT); 
+  self.alpha = 0.2;
+  self.colormod = '0 1 0';
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;
   self.use = nav_point_use;
   self.touch = nav_point_touch;
   self.isActive = TRUE;
+  self.think = map_nav_point_th;
+  self.nextthink = time + 0.1;
 };

@@ -19,8 +19,8 @@ void() data_ini_matok_={
   self.vec_name = "Matok";
  
   self.max_health = 650;
-  self.mins = '-20 -20 -40';
-  self.maxs = '20 20 22';
+  self.mins = '-18 -18 -40';
+  self.maxs = '18 18 22';
   
 //ENERGY AND SHIELDS===================
   self.energyMax   = 800;
@@ -54,16 +54,16 @@ void() data_ini_matok_={
   data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0' );
  
   //left torso
-  data_ini_torso_left_( "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1.5' );
+  data_ini_torso_left_( "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1' );
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1.5' );
+  data_ini_torso_right_( "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1' );
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-15 11 0' );
- 
+  data_ini_arm_left_( "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-16 7 3' );
+
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/matok/matok_arm_r.md3", 675, '15 11 0' );
+  data_ini_arm_right_( "q3mdl/mechs/matok/matok_arm_r.md3", 675, '16 7 3' );
 
   //legs
   data_ini_legs_( "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0' );

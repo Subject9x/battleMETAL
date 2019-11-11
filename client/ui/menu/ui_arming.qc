@@ -423,7 +423,7 @@ void(vector ofs) menu_arming_HardpointGraph={
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(276) - gui_percentXRaw(12);
   ARMING_HELP_HARDPOINT_GRAPH = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 void(vector ofs) menu_arming_WeaponList={
@@ -622,7 +622,7 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(150) - gui_percentXRaw(12);
   ARMING_HELP_WEAPON_GROUPS = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 void(vector ofs) menu_arming_energydraw={
@@ -677,7 +677,7 @@ void(vector ofs) menu_arming_energydraw={
   helpOrg = ofs;
   helpOrg_x = ofs_x + gui_percentXRaw(126) - gui_percentXRaw(12);
   ARMING_HELP_ENERGY_GROUPS = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 void(vector ofs) menu_arming_WeaponInfo={
@@ -768,7 +768,7 @@ void(vector ofs) menu_arming_WeaponInfo={
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(195) - gui_percentXRaw(12);
   ARMING_HELP_LIST_WEAPON = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 /* DEPRECATED for now
@@ -877,7 +877,7 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(195) - gui_percentXRaw(12);
   ARMING_HELP_HARDPOINT_WEAPON = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 void() menu_arming_DrawItemDragIcon={

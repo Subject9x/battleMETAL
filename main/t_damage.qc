@@ -75,7 +75,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     return damage;
   }
   
-  damage = damage + ( damage * 0.5);
+  damage = damage + ( damage * 0.33);
   
   if( (dmgtype & EFF_STX) || (dmgtype & EFF_SHD) ){
     crit = 0.25;
@@ -177,7 +177,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     if( skill < 2 ){
       dmgAmt = dmgAmt * 0.33;
     }
-    else if( skill == 2){
+    else if( skill > 1){
       dmgAmt = dmgAmt * 0.67;
     }
   }
@@ -308,23 +308,23 @@ entity(vector point, float rad, entity trg) t_find_part={
   part = trg;
   radi = rad;
   
-  if( vlen(point - trg.torsoLeft.origin) < radi ){
-    part = trg.torsoLeft;
-    radi = vlen(point - trg.torsoLeft.origin);
-  }
   if( vlen(point - trg.armLeft.origin) < radi ){
     part = trg.armLeft;
     radi = vlen(point - trg.armLeft.origin);
-  }
-  if( vlen(point - trg.torsoRight.origin) < radi ){
-    part = trg.torsoRight;
-    radi = vlen(point - trg.torsoRight.origin);
   }
   if( vlen(point - trg.armRight.origin) < radi ){
     part = trg.armRight;
     radi = vlen(point - trg.armRight.origin);
   }
-  if( part.deadflag == DEAD_DEAD ){
+  if( vlen(point - trg.torsoLeft.origin) < radi ){
+    part = trg.torsoLeft;
+    radi = vlen(point - trg.torsoLeft.origin);
+  }
+  if( vlen(point - trg.torsoRight.origin) < radi ){
+    part = trg.torsoRight;
+    radi = vlen(point - trg.torsoRight.origin);
+  }
+  if( part.deadflag > DEAD_NO ){
     part = part.realowner;
   }
   return part;

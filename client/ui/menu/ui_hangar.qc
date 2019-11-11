@@ -145,7 +145,7 @@ void(vector ofs) menu_hangar_MechDisplay={
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(250) - gui_percentXRaw(12);
   HANGAR_HELP_GRAPH = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 void(vector ofs) menu_hangar_MechHPoints={
@@ -185,7 +185,7 @@ void(vector ofs) menu_hangar_MechHPoints={
   helpOrg_x = nofs_x + gui_percentXRaw(260) - gui_percentXRaw(12);
   helpOrg_y = nofs_y + gui_percentYRaw(12);
   HANGAR_HELP_HARDPOINT_LIST = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 void(vector ofs) menu_hangar_MechList={

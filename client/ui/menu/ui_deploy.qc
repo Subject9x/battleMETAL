@@ -204,7 +204,7 @@ void(vector ofs) menu_deploy_navInfoPanel={
   helpOrg = panelOrg + gui_percentToPixelRawVec('0 -2');
   helpOrg_x = helpOrg_x + gui_percentXRaw(211) - gui_percentXRaw(12);
   DEPLOY_HELP_NAV_PICK = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 void(vector ofs) menu_deploy_mechInfoPanel={  
@@ -362,7 +362,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   helpOrg = mpos;
   helpOrg_x = helpOrg_x + gui_percentXRaw(405) - gui_percentXRaw(12);
   DEPLOY_HELP_NAV_MAP = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 
   if( (cvar("coop")) || (cvar("deathmatch")) ){
     local entity player;

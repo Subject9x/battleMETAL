@@ -53,17 +53,17 @@ void() data_ini_monitor_={
   //center torso
   data_ini_torso_center_(  "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0' );
  
-  //left torso
-  data_ini_torso_left_( "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 15.5 0' );
+  //left tors
+  data_ini_torso_left_( "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 11 -0.5' );
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/monitor/monitor_tor_r.md3", 1200, '11.5 15.5 0' );
+  data_ini_torso_right_( "q3mdl/mechs/monitor/monitor_tor_r.md3", 1200, '11.5 11 -0.5' );
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/monitor/monitor_arm_l.md3", 1000, '-18 13 -1' );
+  data_ini_arm_left_( "q3mdl/mechs/monitor/monitor_arm_l.md3", 1000, '-18 9 3.5' );
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/monitor/monitor_arm_r.md3", 1000, '18 13 -1' );
+  data_ini_arm_right_( "q3mdl/mechs/monitor/monitor_arm_r.md3", 1000, '18 9 3.5' );
    
   //legs
   data_ini_legs_( "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0' );

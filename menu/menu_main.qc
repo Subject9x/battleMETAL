@@ -19,7 +19,7 @@ void() m_init={
   
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){
-    cmd("cd", " play 2");
+    cmd("cd play 2");
     m_toggle(1);
   }
   MOUSE_TARGET = null_entity;
@@ -224,6 +224,9 @@ void(float mode) m_toggle={
     if(clientstate() == CS_CONNECTED){
       //todo - in-game main menu
     }
+    if(clientstate() == CS_DISCONNECTED){
+      cmd("cd play 2");
+    }
     m_main_f();
   }
   else{
@@ -234,6 +237,9 @@ void(float mode) m_toggle={
     DRAW_MOUSE = FALSE;
     M_STATE = M_NONE;
     setkeydest(KEY_GAME);
+    if(clientstate() == CS_DISCONNECTED){
+      cmd("cd play 2");
+    }
   }
 };
 

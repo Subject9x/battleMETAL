@@ -143,7 +143,7 @@ void(vector ofs) menu_briefMissionInfo={
   helpOrg = ofs;
   helpOrg_x = helpOrg_x + gui_percentXRaw(231);
   BRIEF_MISSION_HELP_ORG = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 void(vector ofs) menu_briefPlaySound={
@@ -261,7 +261,7 @@ void(vector ofs) menu_briefMapPanel={
   helpOrg = mpos;
   helpOrg_x = (helpOrg_x + ui_msize_x) - gui_percentXRaw(12);
   BRIEF_MAP_HELP_ORG = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 /*
@@ -303,7 +303,7 @@ void(vector ofs) menu_objIntelSwitchPanel={
   OBJ_BTN_ORG = bpos + gui_percentToPixelRawVec('0 4');
   OBJ_BTN_SZ = isz;
 
-  gui_renderTintImage(odraw, bpos + gui_percentToPixelRawVec('0 4'), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderTintImage(odraw, bpos + gui_percentToPixelRawVec('0 4'), UI_DEF_BOX_256_BTN, isz, CLR_DEF_WEP_INRANGE, 1, 0) ;
   gui_renderHighlightString("[OBJECTIVES]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', odraw, fontSize, 1, 0) ;
   
   if( idraw && !odraw ){
@@ -326,7 +326,7 @@ void(vector ofs) menu_objIntelSwitchPanel={
   
   INT_BTN_ORG = intelPos + gui_percentToPixelRawVec('-6 4');
   INT_BTN_SZ = intelSize;
-  gui_renderTintImage(idraw, intelPos + gui_percentToPixelRawVec('0 4'), UI_DEF_BOX_256, intelSize, CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderTintImage(idraw, intelPos + gui_percentToPixelRawVec('0 4'), UI_DEF_BOX_256_BTN, intelSize, CLR_DEF_WEP_INRANGE, 1, 0) ;
   gui_renderHighlightString("[INTEL]", intelLabelPos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', idraw, fontSize, 1, 0) ;
   
   drawfont = drawfont_prev;
@@ -374,7 +374,7 @@ void(vector ofs) menu_briefObjectivePanel={
   helpOrg = bpos;
   helpOrg_x = helpOrg_x + gui_percentXRaw(377.6) - gui_percentXRaw(12);
   BRIEF_OBJECTIVE_HELP_ORG = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };
 
 /*
@@ -400,5 +400,5 @@ void(vector ofs) menu_briefIntelPanel={
   helpOrg = bpos;
   helpOrg_x = helpOrg_x + gui_percentXRaw(377.6) - gui_percentXRaw(12); 
   BRIEF_INTEL_HELP_ORG = helpOrg;
-  drawpic( helpOrg, UI_HELP_IMG, gui_percentToPixelRawVec('12 12'), '1 1 1', 1, 0);
+  gui_renderTooltipIcon( helpOrg) ;
 };

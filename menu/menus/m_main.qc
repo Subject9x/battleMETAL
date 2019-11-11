@@ -43,8 +43,9 @@ void() click_main_train={
   cvar_set("skill", "1");
   cmd("deathmatch 0\n");
   cmd("coop 0\n");
+  cmd("maxplayers 1\n");
   menu_exit_togame();
-  cmd("map", " training\n"); //TODO - training map
+  cmd("map", " training_only\n"); //TODO - training map
 };
 
 void() click_main_multi={

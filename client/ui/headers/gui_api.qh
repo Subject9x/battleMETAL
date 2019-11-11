@@ -104,6 +104,7 @@ float(float pct, float ox, float mx) gui_percentCustom;
 
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText;
 void(string tipMessage, vector targetSize, vector fontSize, string panelImage, vector cursorOffset, vector textColor, vector boxColor, float alph ) gui_toolTipMessage;
+void( vector tipOrg ) gui_renderTooltipIcon;
 float( float desiredColor, float startColor, float colorRate ) gui_colorFadeTo;
 
 //console logging

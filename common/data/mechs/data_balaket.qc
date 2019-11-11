@@ -60,10 +60,10 @@ void() data_ini_balaket_={
   data_ini_torso_right_( "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5');
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-12.1 7 -3');
+  data_ini_arm_left_( "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-12.1 3.5 -3');
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '12.1 7 -3');
+  data_ini_arm_right_( "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '12.1 3.5 -3');
    
   //legs      
   data_ini_legs_( "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');

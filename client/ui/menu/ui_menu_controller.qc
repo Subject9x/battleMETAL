@@ -130,7 +130,7 @@ void(vector ofs) menu_navBar_drawFrame={
   fontSizeDeselect = '14 10 0';
   
   //BRIEFING SCREEN Button
-  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), nvpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('96 24'), CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), nvpos, UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec('96 24'), CLR_DEF_WEP_INRANGE, 1, 0) ;
   if( CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE ){
     fontSize = fontSizeSelect;
   }
@@ -144,7 +144,7 @@ void(vector ofs) menu_navBar_drawFrame={
   gui_renderHighlightString("[BRIEFING]", tpos, CLR_DEF_WEP_INRANGE, '0.75 0.75 0.75', (CLIENT_MENU_menu_choice == MENU_BRIEF_ACTIVE), fontSize, 1, 0) ;
   
   //HANGAR SCREEN Button
-  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256, gui_percentToPixelRawVec('96 24'), CLR_DEF_WEP_INRANGE, 1, 0) ;
+  gui_renderTintImage((CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE), (nvpos+gui_percentToPixel(0.075, 0)), UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec('96 24'), CLR_DEF_WEP_INRANGE, 1, 0) ;
   hpos = nvpos + gui_percentToPixelRawVec('96 0');
   if( CLIENT_MENU_menu_choice == MENU_HANGAR_ACTIVE ){
     fontSize = fontSizeSelect;
@@ -171,7 +171,7 @@ void(vector ofs) menu_navBar_drawFrame={
     arming_clr = '0.25 0.25 0.25';
     arming_flt =  TRUE;
   }
-  gui_renderTintImage(arming_flt, (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256, gui_percentToPixelRawVec('96 24'), arming_clr, 1, 0) ;
+  gui_renderTintImage(arming_flt, (nvpos+gui_percentToPixelRawVec('192 0')), UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec('96 24'), arming_clr, 1, 0) ;
   apos = nvpos + gui_percentToPixelRawVec('192 0');
   if( CLIENT_MENU_menu_choice == MENU_ARMING_ACTIVE ){
     fontSize = fontSizeSelect;
@@ -195,7 +195,7 @@ void(vector ofs) menu_navBar_drawFrame={
     deploy_clr =  '0.25 0.25 0.25';
     deploy_flt = TRUE;
   }
-  gui_renderTintImage(deploy_flt, (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256, gui_percentToPixelRawVec('128 24'), deploy_clr, 1, 0) ;
+  gui_renderTintImage(deploy_flt, (nvpos+gui_percentToPixelRawVec('288 0')),UI_DEF_BOX_256_BTN, gui_percentToPixelRawVec('128 24'), deploy_clr, 1, 0) ;
   dpos = nvpos + gui_percentToPixelRawVec('288 0');
   if( CLIENT_MENU_menu_choice == MENU_DEPLOY_ACTIVE ){
     fontSize = fontSizeSelect;
@@ -216,7 +216,7 @@ void(vector ofs) menu_navBar_drawFrame={
   lpos_y = (lpos_y + gui_percentYRaw(4.32));
   isz_x = gui_percentXRaw(stringwidth(">>[!LAUNCH!]>>", 0 , fontSizeSelect)) + gui_percentXRaw(12);
   isz_y = gui_percentYRaw(24);
-  gui_renderTintImage2((LAUNCH_VALIDATION & (VALID_MECH | VALID_NODE)), rpos + gui_percentToPixelRawVec('6.4 0'), UI_DEF_BOX_256, isz, CLR_DEF_WEP_INRANGE, '0.25 0.25 0.25', 1, 0);
+  gui_renderTintImage2((LAUNCH_VALIDATION & (VALID_MECH | VALID_NODE)), rpos + gui_percentToPixelRawVec('6.4 0'), UI_DEF_BOX_256_BTN, isz, CLR_DEF_WEP_INRANGE, '0.25 0.25 0.25', 1, 0);
   gui_renderHighlightString(">>[LAUNCH]>>", lpos, '0.85 0.85 0.85', CLR_DEF_ARM_THREEQ, MENU_LAUNCH_ROLLOVER, fontSizeSelect, 1, 0) ;
   MENU_BTN_LAUNCH_ORG = rpos + gui_percentToPixelRawVec('6.4  0');
   MENU_BTN_LAUNCH_SZ = isz;

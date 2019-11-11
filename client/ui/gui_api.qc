@@ -611,6 +611,13 @@ void(string tipMessage, vector targetSize, vector fontSize, string panelImage, v
   drawfont = drawfont_prev;
 };
 
+/*
+  Simply renders a tooltip help box, enforcing global styling standard.
+*/
+void( vector tipOrg ) gui_renderTooltipIcon={
+  drawpic( tipOrg, UI_HELP_IMG, gui_percentToPixelRawVec('14 14'), CLR_DEF_RET_HASLOCK, 1, 0);
+};
+
 float( float desiredColor, float startColor, float colorRate ) gui_colorFadeTo={
   local float newValue;
 
