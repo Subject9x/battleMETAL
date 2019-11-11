@@ -105,29 +105,26 @@ entity AI_NODES[128];
 .float voiceTime; //when next to say something
 .float ai_voice_group;
 
+.float helpTime;  //prevents flooding of help calls
+.float helpTimeDelay;
+
 void( float randomBool ) ai_voice_ini;
 
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 void() ai_promote;
-float(float rank) ai_pilot_field_of_view;
-float() ai_pilot_view_interval;
-float() ai_pilot_view_range;
-float() ai_pilot_rating_leading;
-float() ai_pilot_yaw_mod;
-float() ai_turret_yaw_mod;
 float() ai_pilot_armor_mod;
 float() ai_pilot_shield_mod;
-float(float rank) ai_pilot_action_mod;
-float(float rank) ai_pilot_attack_interval;
 float( float rank, float damg) ai_pilot_mod_damage;
 vector( float rank, vector spread ) ai_pilot_accuracy;
-float( float rank, float lockOn ) ai_pilot_lock_time;
 void() ai_unit_ini_var;
 float() ai_pilot_minrange;
-void() ai_pilot_react_cool;
 void(float rank) ai_pilot_ini_stats;
-
+float( float rank ) ai_pilot_action_mod;
+void() ai_pilot_ini_rok;
+void() ai_pilot_ini_reg;
+void() ai_pilot_ini_vet;
+void() ai_pilot_ini_ace;
 //AI NODES
 void() node_setup;
 entity() node_recall_setup;

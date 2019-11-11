@@ -70,6 +70,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
 
   if( shields <= 0 ){
     if( (dmgtype & EFF_ENE) ){
+      //EFF_ENE only affects shields, no shields means damage is LOST
       return 0;
     }
     return damage;

@@ -96,7 +96,7 @@ void( entity t ) ai_call_for_help={
     if( ai_valid_target(ally) ){
       if( vlen( ally.origin - self.origin ) <= self.ai_view ){
         if( ally != self ){
-          if( !(ally.flags & FL_DISARMED)){
+          if( !(ally.flags & FL_DISARMED) ){
             ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
             allies = allies + 1;
           }
@@ -108,7 +108,7 @@ void( entity t ) ai_call_for_help={
   
   if( allies < self.ai_rank ){
     if( self.th_pain ){
-      self.th_pain( world );
+      self.th_pain( t );
     }
   }
 }; 
@@ -282,16 +282,20 @@ float() ai_find_target_radar={
 
 void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
-  if( !ally.th_missile )
+  local float validTarg;
+  
+  if( !(ally.th_missile) ){
     return;
-
+  }
+  
   this = self;
-  if( !ai_valid_target(ally.enemy) || override){
+  validTarg = ai_valid_target(ally.enemy);
+  if( !validTarg || override){
     self = ally;
       ai_sfx_roger();
-      self.th_react( this.enemy );
-    self = this;
+      self.th_missile();
   }
+  self = this;
 };
 
 /*

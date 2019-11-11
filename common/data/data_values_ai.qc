@@ -24,6 +24,7 @@ float AI_RUN_SPD = 0.2;
 //Radar post
 float AI_POST_SWEEP_SIZE = 6;
 float AI_POST_SPOT_TIME = 24;
+
 //lock on time modifiers for Radar Post
 float AI_POST_LOCK_ROK = 2;
 float AI_POST_LOCK_REG = 1;
@@ -141,3 +142,9 @@ float AI_REFLEX_ROK = 3;
 
 //Patrol Node Chec Range
 float AI_NODE_DISTANCE = 67;
+
+//Help call cooldowns
+float AI_HELP_COOL_ROK = 7;
+float AI_HELP_COOL_REG = 5;
+float AI_HELP_COOL_VET = 3;
+float AI_HELP_COOL_ACE = 1;

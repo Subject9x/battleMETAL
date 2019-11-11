@@ -52,11 +52,6 @@ void() ai_change_rank_use={
     while(e){
       self = e;
         self.ai_rank = this.ai_rank;
-        if (!self.yaw_speed){
-          m = ai_pilot_yaw_mod();
-          self.yaw_speed = ai_pilot_yaw_mod();
-        }
-        self.ai_leading = ai_pilot_rating_leading();
       self = this;
       e = e.chain;
     }
@@ -66,11 +61,6 @@ void() ai_change_rank_use={
     if(e){
       self = e;
         self.ai_rank = this.ai_rank;
-        if (!self.yaw_speed){
-          m = ai_pilot_yaw_mod();
-          self.yaw_speed = ai_pilot_yaw_mod();
-        }
-        self.ai_leading = ai_pilot_rating_leading();
       self = this;
     }
   }

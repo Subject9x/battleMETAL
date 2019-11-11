@@ -194,17 +194,20 @@ void() building_human_radar={
   self.shieldMax = 150;
   self.shieldRate = 1;
   self.stat_rdr_mode = TRUE;
-  self.radar_range = 2000;
+  self.radar_range = 2000; 
   
-  ai_pilot_view_range();
+  self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;
   switch( self.ai_rank ){
     case AI_RANK_ROK:
+      self.ai_view = self.radar_range * AI_VIEW_RANGE_ROK;
       self.w_firetime = self.w_firetime * AI_POST_LOCK_ROK;
       break;
     case AI_RANK_VET:
+      self.ai_view = self.radar_range * AI_VIEW_RANGE_VET;
       self.w_firetime = self.w_firetime * AI_POST_LOCK_VET;
       break;
     case AI_RANK_ACE:
+      self.ai_view = self.radar_range * AI_VIEW_RANGE_ACE;
       self.w_firetime = self.w_firetime * AI_POST_LOCK_ACE;
       break;
   }
