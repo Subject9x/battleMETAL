@@ -26,7 +26,6 @@ void() scenery_obj={
   }
 };
 
-
 void() doodad_rocks_desert_small_1={
   self.model = "q3mdl/map/rocks/rock1t.obj";
   if( (self.spawnflags & 1)) {
@@ -74,6 +73,42 @@ void() doodad_rocks_desert_small_random={
       return;
   }
 };
+
+void() doodad_ruins_urban_small={
+  self.model = "q3mdl/map/ruins/ruin_small.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (1 + (crandom() * 3) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (1 + (crandom() * 3) );
+  }
+  scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin);
+};
+void() doodad_ruins_urban_medium={
+  self.model = "q3mdl/map/ruins/ruin_medium.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (1 + (crandom() * 3) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (1 + (crandom() * 3) );
+  }
+  scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin);
+};
+void() doodad_ruins_urban_large={
+  self.model = "q3mdl/map/ruins/ruin_large.obj";
+  if( (self.spawnflags & 1)) {
+    self.angles_x = self.angles_x + (1 + (crandom() * 3) );
+    self.angles_y = self.angles_y + (25 + (crandom() * 180) );
+    self.angles_z = self.angles_z + (1 + (crandom() * 3) );
+  }
+  scenery_obj();
+  makevectors(self.angles);
+  setorigin( self, self.origin );
+};
+
+
 
 void() doodad_urban_barrier_small_touch={
   local vector crunchVel;

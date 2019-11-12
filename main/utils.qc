@@ -394,7 +394,6 @@ void(entity t) util_generateBuildingFoundation={
     self.solid = SOLID_NOT; //just for placement
     self.movetype = MOVETYPE_NONE;
     setsize(self, self.mins, self.maxs);
-    //self.angles = t.angles;
     setorigin(self, v);
     self.solid = SOLID_BSP; //lock it in.
   self = notSelf;

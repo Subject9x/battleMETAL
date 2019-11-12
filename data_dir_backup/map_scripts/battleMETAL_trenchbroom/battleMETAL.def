@@ -1875,6 +1875,34 @@ Doodad is static, BSP collision, non-interactive.
 ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
 */
 
+/*QUAKED doodad_ruins_urban_small (0.431 0.788 0.753) (-32 -32 0) (32 32 48) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+urban ruins - small size
+Doodad is static, non-interactive.
+-------- KEYS -------- 
+.angles = <vector> directional angles
+
+-------- SPAWNFLAGS -------- 
+ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
+*/
+/*QUAKED doodad_ruins_urban_medium (0.431 0.788 0.753) (-48 -48 0) (48 48 64) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+urban ruins - medium size
+Doodad is static, non-interactive.
+-------- KEYS -------- 
+.angles = <vector> directional angles
+
+-------- SPAWNFLAGS -------- 
+ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
+*/
+/*QUAKED doodad_ruins_urban_large (0.431 0.788 0.753) (-68 -84 0) (68 84 88) ANGLE_RANDOM ? ? ? DROPTOFLOOR
+urban ruins - large size
+Doodad is static, non-interactive.
+-------- KEYS -------- 
+.angles = <vector> directional angles
+
+-------- SPAWNFLAGS -------- 
+ANGLE_RANDOM 1: pitch/roll angles LIGHTLY randomized and yaw is HEAVILY randomized.
+*/
+
 /*QUAKED doodad_urban_barrier_small (0.431 0.788 0.753) (-11.5 -3.5 0) (11.5 3.5 24) ANGLE_RANDOM DESTRUCTIBLE ? ? DROPTOFLOOR
 A 'small' concrete barrier
 Where 'small' = about the size of the Foslager tank
