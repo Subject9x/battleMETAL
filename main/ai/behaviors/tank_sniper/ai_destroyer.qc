@@ -130,8 +130,7 @@ void() ai_spg_fight_prep={
         macro_ai_frame(ai_spg_reverse1)
         return;
       }
-      
-      
+
       if( enemy_range <= self.ai_minrange ){
         if( enemy_infront ){
           if( self.ai_rank > AI_RANK_REG ){

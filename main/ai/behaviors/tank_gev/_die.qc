@@ -104,4 +104,5 @@ void() ai_gev_die={
   self.ai_action_time = time + (random() * 500);
   self.attack_state = -1;
   self.touch = ai_gev_touch_death;
+  ai_alert_close( self.enemy );
 };

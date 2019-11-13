@@ -52,6 +52,8 @@ void() ai_mech_sniper_die={
   mech_player_compdie(self.armRight);
   mech_player_compdie(self.cockpit);
   
+  ai_alert_close( self.enemy );
+  
   self.think = ai_mech_sniper_die2;
   self.nextthink = time + 2;
 };

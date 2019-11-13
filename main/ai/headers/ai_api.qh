@@ -125,6 +125,7 @@ void() ai_pilot_ini_rok;
 void() ai_pilot_ini_reg;
 void() ai_pilot_ini_vet;
 void() ai_pilot_ini_ace;
+
 //AI NODES
 void() node_setup;
 entity() node_recall_setup;
@@ -145,6 +146,7 @@ float( float bestAccuracy ) ai_wait_for_shot;
 void() ai_lock_on;
 float( entity t ) ai_line_of_sight;
 void( entity t) ai_call_for_help;
+void( entity t) ai_alert_close;
 float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai_check_turret_yaw;
 
 //AI MAP FUNCS

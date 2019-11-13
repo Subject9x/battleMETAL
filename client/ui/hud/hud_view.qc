@@ -385,6 +385,7 @@ void( entity blip, float plrFaction, float radRange) hud_renderRadarContact={
 void( vector navOrg, float navState, float radRange ) hud_renderRadarNav={
   local vector hudorg, colr;
   local float ang, entAngle, entAngleRadian, radDist, draw;
+  local float alph;
 
   radDist = vlen( navOrg - RADAR_ORG) / radRange * 1.5;
   
@@ -406,10 +407,12 @@ void( vector navOrg, float navState, float radRange ) hud_renderRadarNav={
   }
   if( draw ){
     colr = CLR_DEF_ARM_OK;
+    alph = HUD_ALPHA;
     if( navState == 2 ){
       colr = CLR_DEF_TXT_NONSELECT;
+      alph = '0.33 0.33 0.33';
     }
-    drawpic(hudorg - gui_percentToPixelRawVec('3 3'), UI_DEF_NAVPOINT, gui_percentToPixelRawVec('10 10'), colr, HUD_ALPHA, 0);
+    drawpic(hudorg - gui_percentToPixelRawVec('3 3'), UI_DEF_NAVPOINT, gui_percentToPixelRawVec('10 10'), colr, alph, 0);
   }
 };
 /*

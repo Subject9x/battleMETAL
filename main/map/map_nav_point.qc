@@ -32,7 +32,7 @@ void() nav_point_touch={
       // trigOnTarget is used specifically here to trigger an objective
       trigger_event( that, self.target );
       self.effects = self.effects - ( self.effects &(EF_DOUBLESIDED | EF_NOSHADOW | EF_FULLBRIGHT)); 
-      self.alpha = 0.1;
+      self.alpha = 0.2;
       self.colormod = '0.33 0.33 0.33';
       //multi_trigger();
       if( (self.spawnflags & 2) )
@@ -107,7 +107,7 @@ void() map_nav_point={
   self.movetype = MOVETYPE_FLY;
   droptofloor();
   self.effects = self.effects | (EF_DOUBLESIDED | EF_NOSHADOW | EF_NODEPTHTEST | EF_FULLBRIGHT); 
-  self.alpha = 0.2;
+  self.alpha = 0.33;
   self.colormod = '0 1 0';
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_TRIGGER;

@@ -89,6 +89,11 @@ void( entity t ) ai_call_for_help={
   local float allies;
   local entity ally;
   
+  if( time < self.helpTime ){
+    return;
+  }
+  self.helpTime = time + self.helpTimeDelay;
+  
   allies = 0;
   ai_sfx_help();
   ally = findchainflags( flags, FL_MONSTER );
@@ -140,6 +145,22 @@ entity( float radiius) ai_find_friend={
     ally = ally.chain;
   }
   return friend;
+};
+
+
+void( entity t) ai_alert_close={
+  
+  local entity ally;
+  ai_sfx_help();
+  ally = findchainfloat( faction, self.faction );
+  while( ally ){
+    if( ai_valid_target(ally) ){
+      if( vlen( ally.origin - self.origin ) <= AI_RANGE_M ){
+        ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
+      }
+    }
+    ally = ally.chain;
+  }
 };
 
 /*

@@ -21,8 +21,10 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
   damage = dmg_amt;
   shields = targ.shield;
   
-  if( (dmgtype & EFF_STX) )
-    return t_damage_ene( targ, inflictor, damage );
+  if( (dmgtype & EFF_STX) ){
+    damage = t_damage_ene( targ, inflictor, damage );
+    return damage;
+  }
   
   if( shields > 0 ){
     damage = damage - (damage / 2 );
@@ -34,20 +36,21 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
       damage = damage * 2;
       
     if( (dmgtype * EFF_RAM) ){
-      crit = 0.25;
-      crit = crit + ((3 - skill) / 10);
-      crit = crit + ((3 - targ.vec_size) / 10);
-      if( (targ.flags & FL_CLIENT) )
+      if( (targ.flags & FL_CLIENT) ){
+        crit = 0.25;
+        crit = crit + ((3 - skill) / 10);
+        crit = crit + ((3 - targ.vec_size) / 10);
         crit = crit / 1.25;
-
-      if( random() <= crit )
-        damage = damage * 1.5;
+        if( random() <= crit ){
+          damage = damage * 1.5;
+        }
+      }
     }
   }
   
-  if( shields < 0 )
+  if( shields < 0 ){
     shields = 0;
-  
+  }
   targ.shield = shields;
   
   return damage;
@@ -76,17 +79,19 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     return damage;
   }
   
-  damage = damage + ( damage * 0.33);
+  //energy is automatically a little better at shields.
+  damage = damage + ( damage * 0.16);
   
   if( (dmgtype & EFF_STX) || (dmgtype & EFF_SHD) ){
-    crit = 0.25;
-    crit = crit + ((3 - skill) / 10);
-    crit = crit + ((3 - targ.vec_size) / 10);
-    if( (targ.flags & FL_CLIENT) )
+    if( (targ.flags & FL_CLIENT) ){
+      crit = 0.25;
+      crit = crit + ((3 - skill) / 10);
+      crit = crit + ((3 - targ.vec_size) / 10);
       crit = crit / 1.25;
-    
-    if( random() <= crit )
-      damage = damage * 1.75;
+      if( random() <= crit ){
+        damage = damage * 1.75;
+      }
+    }
   }
   if( (dmgtype & EFF_PRC) ){
     mod = damage * 0.25;
@@ -105,13 +110,19 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
       }
       shields = 0;
     }  
-  }  
+  }
+  
+  if( shields <= 0 ){
+    shields = 0;
+    damage = 0;
+  }
+  
   targ.shield = shields;
  
   //EFF_STX only affects shields;
-  if( (dmgtype & EFF_STX) )
+  if( (dmgtype & EFF_STX) ){
     damage = 0;
-  
+  }
   return damage;
 };
 /*
@@ -158,15 +169,15 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   local entity notTarg;
   local float dmgAmt, prevShields;
   
-  if( !trg.takedamage )
+  if( !trg.takedamage ){
     return world;
-  
-  if( (trg.flags & FL_GODMODE) )
+  }
+  if( (trg.flags & FL_GODMODE) ){
     return world;
-  
-  if( trg.deadflag != DEAD_NO )
+  }
+  if( trg.deadflag != DEAD_NO ){
     return world;
-  
+  }
   dmgTrg = trg;
   dmgInflictor = inflictor;
   dmgAmt = dmg_amt;
@@ -183,12 +194,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     }
   }
   
-  //if( (trg.flags & FL_CLIENT) ){
-    trg.dmg_inflictor = inflictor;
-    if(trg.was_hit < time){
-      trg.was_hit = time + 1;
-    }
- // }
+  trg.dmg_inflictor = inflictor;
+  if(trg.was_hit < time){
+    trg.was_hit = time + 1;
+  }
+
   //calculate hit time and angle
   util_chekPointToHitDir(trg, dmg_point);
   
@@ -237,6 +247,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
         self.th_react( attacker );
       }
     }
+    if( self.ai_rank > AI_RANK_REG ){
+      if( self.shield < (self.shieldMax / 2) ){
+        ai_call_for_help(attacker);
+      }
+    }
     self = notTarg;
   }
   
@@ -273,6 +288,15 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     dmgTrg.health = dmgTrg.health - dmgAmt;
     if( dmgTrg.health < 0){
       dmgTrg.health = 0;
+    }
+  }
+  
+  if( (dmgTrg.flags & FL_MONSTER) && dmgTrg.data_type != DATA_BLD ){    
+    if( util_getMechHpAverage(dmgTrg) < 0.6){
+      notTarg = self;
+      self = dmgTrg;
+        ai_call_for_help( attacker );
+      self = notTarg;
     }
   }
   
@@ -377,7 +401,7 @@ void(entity targ, entity attacker, float dmg_type) killed={
     // infact I've never seen a case where the number shows,
     // always hidden by the score bar stuff.
     // don't let sbar look bad if a player - not Roohr
-     if (self.health < -99)
+    if (self.health < -99)
       self.health = -99;              
 
     if(!self.data_type){

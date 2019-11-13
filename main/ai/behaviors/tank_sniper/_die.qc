@@ -42,8 +42,9 @@ void() ai_vec_dest_die={
 
   self.think = ai_vec_dest_die1;
   self.ai_action_time = time + 600;
+
+  ai_alert_close( self.enemy );
   
- 
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
   

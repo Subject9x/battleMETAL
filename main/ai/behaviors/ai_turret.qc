@@ -61,6 +61,8 @@ void() ai_turret_die={
   
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;
+  
+  ai_call_for_help( self.enemy );
 };
 
 void() ai_turret_die_burn={  

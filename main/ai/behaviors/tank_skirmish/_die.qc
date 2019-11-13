@@ -46,9 +46,10 @@ void() ai_tank_sk_die={
   if( self.ai_node_recall ){
     remove(self.ai_node_recall);
   }
-  
   self.ai_action_time = time + 600;
 
+  ai_alert_close( self.enemy );
+  
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
