@@ -56,6 +56,8 @@ void() data_ini_heavy_turret_={
 //HARDPOINTS==========================
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-3.75 22 15', '0 0 0', 2, (DMG_EXP | DMG_ENE | DMG_MSC));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '3.75 22 15', '0 0 0', 2, (DMG_BAL | DMG_ENE | DMG_MSC));
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '3.75 18 0', '90 0 0', 3, DMG_MSC);
+  data_ini_unitHardpoint_4( M_TOR_CENTER, '3.75 18 0', '90 0 0', 3, DMG_MSC);
 //=====================================
 
 //HUD DATA=============================

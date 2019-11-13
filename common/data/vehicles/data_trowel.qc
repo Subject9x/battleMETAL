@@ -59,6 +59,7 @@ void() data_ini_trowel_={
 //HARDPOINTS==========================
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-4.75 12 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '-4.75 16.75 10.5', '0 0 0', 3, (DMG_ENE | DMG_BAL));
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '-3 -8 10.5', '-90 0 0', 3, (DMG_ENE | DMG_BAL));
 //=====================================
 
 //HUD DATA=============================

@@ -255,6 +255,10 @@ qsrc/triggers.qc
   main/map/map_unit_monitor_brawl.qc
   main/map/map_unit_monitor_sniper.qc
  
+  main/map/map_turret_light.qc
+  main/map/map_turret_heavy.qc
+  main/map/map_turret_missile.qc
+ 
   main/entityFactory_vehicles.qc
   //player types
   main/extensions/ext_player.qc

@@ -103,8 +103,10 @@ void() ai_sfx_huntEnd={
       }
       return;
     }
-    self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
-    client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_END, 1) ;
+    if( (self.enemy.flags & FL_CLIENT) ){
+      self.voiceTime = time + (AI_VOICE_TIME + (random() * 4));
+      client_send_ai_voice_all( self.ai_voice_group, AI_VOICE_HUNT_END, 1) ;
+    }
   }
 };
 

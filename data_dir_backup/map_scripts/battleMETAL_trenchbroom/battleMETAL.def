@@ -2,7 +2,6 @@
 // Peter Roohr
 // Entities.def for TrenchBroom/GTKRadiant 1.6
 // Version: Beta 1.0.0
-// Updated: 2019-07-25
 
 /*QUAKED map_terrain_model (0.75 0.2 0.75) (-24 -24 -24) (24 24 24) - OVERRIDE_ALPHA EF_NOSHADOW
   this is for injecting large 3D terrain meshes into a bsp file.
@@ -1350,6 +1349,171 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
 
+//-------------------ZAPPER  --------------------------------
+/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_light_militar_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_light_psc_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+
+//-------------------GUNNER  --------------------------------
+/*QUAKED building_turret_light_survest_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_light_militar_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_light_psc_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
 
 
 
@@ -1449,6 +1613,90 @@ MUTE_ME 65536: ai doesn't use voice/radio
 
 
 
+//-------------------LOBBER  --------------------------------
+/*QUAKED building_turret_missile_survest_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+LOBBER - mostly missile firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_missile_militar_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+LOBBER - mostly missile firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_missile_psc_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+LOBBER - mostly missile firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+
+
 
 
 /*QUAKED building_turret_heavy_m (0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
@@ -1512,6 +1760,172 @@ MUTE_ME 65536: ai doesn't use voice/radio
 /*QUAKED building_turret_heavy_p(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 Heavy Turret, Survest Faction
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+
+//-------------------ZAPPER  --------------------------------
+/*QUAKED building_turret_heavy_survest_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_heavy_militar_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_heavy_psc_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+
+//-------------------GUNNER  --------------------------------
+/*QUAKED building_turret_heavy_survest_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_heavy_militar_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents
+target : string name of ent to go to, usually a patrol node
+trigOnSpawn:string ent, fire this ENTITY when activated
+trigOnDeath: string target, fire this ENTITY when killed
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+*/
+/*QUAKED building_turret_heavy_psc_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+{ model("models/buildings/turret/turret.md3"); }
+GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
 target : string name of ent to go to, usually a patrol node
@@ -2106,6 +2520,140 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
+//-------------------ZAPPER  --------------------------------
+/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/foslager/foslager_h.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/foslager/foslager_m.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+//-------------------GUNNER  --------------------------------
+/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/foslager/foslager_h.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/foslager/foslager_m.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
 
 //
 //  UNIT: TROWEL
@@ -2165,6 +2713,142 @@ UNARMED 131072: skip weapons-build step for unit.
   Skill 3
     SFGA | EMP
     MARKSMAN
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------ZAPPER  --------------------------------
+/*QUAKED unit_trowel_miliar_zapper (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/trowel/trowel_m.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_trowel_survest_zapper (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/trowel/trowel_h.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------GUNNER  --------------------------------
+/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/trowel/trowel_m.md3"); }
+//-------------------GUNNER  --------------------------------
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/trowel/trowel_h.md3"); }
+//-------------------GUNNER  --------------------------------
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -2286,6 +2970,210 @@ MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
 
+//-------------------ZAPPER  --------------------------------
+/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/onnek/onnek_h.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/onnek/onnek_m.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------GUNNER  --------------------------------
+/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/onnek/onnek_h.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/onnek/onnek_m.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------LOBBER  --------------------------------
+/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/onnek/onnek_h.md3"); }
+LOBBER - mostly missile firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/onnek/onnek_m.md3"); }
+LOBBER - mostly missile firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
 //
 //  UNIT: SORCERER
 //  TYPE: MISSILE TANK
@@ -2333,7 +3221,6 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-
 /*QUAKED unit_sorcerer_m (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
   Skill 0 | 1
@@ -2345,6 +3232,74 @@ UNARMED 131072: skip weapons-build step for unit.
   Skill 3
     SWRM | SWRM
     SNIPER
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------LOBBER  --------------------------------
+/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/sorcerer/sorcerer_h.md3"); }
+LOBBER - mostly missile firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/vecs/sorcerer/sorcerer_m.md3"); }
+LOBBER - mostly missile firepower
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -2712,6 +3667,74 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
+//-------------------ZAPPER  --------------------------------
+/*QUAKED unit_matok_militar_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/matok/matok_m.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_matok_survest_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/matok/matok_h.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
 /*QUAKED unit_matok_brawl_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
   Skill 0 | 1
@@ -2764,6 +3787,108 @@ UNARMED 131072: skip weapons-build step for unit.
   Skill 3
     QRF | LAS | RPC | RPC | EMP
     MARKSMAN
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------GUNNER  --------------------------------
+/*QUAKED unit_matok_militar_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/matok/matok_m.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+/*QUAKED unit_matok_survest_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/matok/matok_h.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+//-------------------LOBBER  --------------------------------
+/*QUAKED unit_matok_survest_lobber (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/matok/matok_h.md3"); }
+LOBBER - mostly missile firepower
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.
@@ -2922,6 +4047,109 @@ MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
 
+//-------------------ZAPPER  --------------------------------
+/*QUAKED unit_monitor_militar_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/monitor/monitor_m.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------GUNNER  --------------------------------
+/*QUAKED unit_monitor_militar_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/monitor/monitor_m.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+//-------------------LOBBER  --------------------------------
+/*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/monitor/monitor_s.md3"); }
+LOBBER - mostly missile firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
 
 /*QUAKED unit_monitor_sniper_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
@@ -2934,6 +4162,111 @@ UNARMED 131072: skip weapons-build step for unit.
   Skill 3
     LAS | LAS | LAS | LAS | LGM | LGM | ENBAT | ATGM | HSEM
     SNIPER
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------ZAPPER  --------------------------------
+/*QUAKED unit_monitor_survest_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/monitor/monitor_h.md3"); }
+ZAPPER - focuses on shield breaking
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------GUNNER  --------------------------------
+/*QUAKED unit_monitor_survest_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/monitor/monitor_h.md3"); }
+GUNNER - bad at shields, good on firepower
+-------- KEYS -------- 
+targetname : string, used for trigger calls from other ents.
+  TRIGGER_ME must have targetname to work.
+target : string name of ent to go to, usually a patrol node.
+trigOnSpawn:string ent, fire this ENTITY when activated.
+trigOnTarget: string ent, fire this OBJECTIVE when visited (special event channel for objectives).
+trigOnDeath: string target, fire this ENTITY when killed.
+delay: float, wait T game seconds before spawning this unit.
+count: float, spawn this many copies of this unit.
+  count1: float, time interval between spawns
+-------- SPAWNFLAGS -------- 
+NO_CAMPAIGN 1: remove from campaign mode
+NO_COOP 2: remove from co-op mode
+NO_DM 4: remove from DeathMatch
+NO_TDM 8: remove from Team DeathMatch
+COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
+RANDOM_START 32: start on random node if AI has patrol path
+HAS_RADAR 64: radar is expensive to use, use sparingly
+PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_NOVICE 512: remove from Novice Difficulty
+NO_REGULAR 1024: remove from Regular Difficulty
+NO_VETERAN 2048: remove from Veteran Difficulty
+NO_ELITE 4096: remove from Elit Difficulty
+NO_DROP 8192: don't drop bot to the floor onspawn
+TRIGGER_ME 16384: ai only spawns when triggered
+DEBUG_MODE 32768: spawns but will not react to anything
+MUTE_ME 65536: ai doesn't use voice/radio
+UNARMED 131072: skip weapons-build step for unit.
+*/
+
+//-------------------LOBBER  --------------------------------
+/*QUAKED unit_monitor_militar_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+{ model("models/mechs/monitor/monitor_m.md3"); }
+LOBBER - mostly missile firepower
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
   TRIGGER_ME must have targetname to work.

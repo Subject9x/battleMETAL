@@ -99,3 +99,64 @@ void() unit_matok_sniper_p={
   self.think = ai_mech_sniper;
   self.nextthink = time + 0.05;
 };
+
+//-------------------ZAPPER  --------------------------------
+void() unit_matok_militar_zapper={
+  self.faction = FACTION_MILITAR;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    default:
+      ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_particle_cannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    case 2:
+      ai_ini_weapons( UID_ITEM_quantum_rifle, UID_ITEM_quantum_rifle, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
+    case 3:
+      ai_ini_weapons( UID_ITEM_quantum_rifle, UID_ITEM_quantum_rifle, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
+  }
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_matok;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+
+  self.think = ai_mech_sniper;
+  self.nextthink = time + 0.05;
+};
+
+void() unit_matok_survest_zapper={
+  self.faction = FACTION_SURVEST;
+  
+  ai_promote();
+  switch( self.ai_rank ){
+    default:
+      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_ion_coil, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SKIRMISH;
+      break;
+    case 2:
+      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_ion_coil, UID_ITEM_ion_coil, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_MARKSMAN;
+      break;
+    case 3:
+      ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_ion_coil, UID_ITEM_ion_coil, UID_ITEM_energy_battery,  UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      self.spreadDefault = ACCURACY_SNIPER;
+      break;
+  }
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_matok;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+
+  self.think = ai_mech_sniper;
+  self.nextthink = time + 0.05;
+};

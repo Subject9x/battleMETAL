@@ -56,6 +56,8 @@ void() data_ini_missile_turret_={
 //HARDPOINTS==========================
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-9 17 11', '0 0 90', 2, DMG_EXP);
   data_ini_unitHardpoint_2( M_TOR_CENTER, '9 17 11', '0 0 90', 2, DMG_EXP);
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '9 17 2', '90 0 90', 2, DMG_MSC);
+  data_ini_unitHardpoint_4( M_TOR_CENTER, '-9 17 2', '90 0 90', 2, DMG_MSC);
 //=====================================
 
 //HUD DATA=============================
