@@ -19,7 +19,7 @@ void() data_ini_dunerunner_={
   self.vec_size = 1;  //
   self.vec_name = "Dunerunner";
  
-  self.max_health = 100;
+  self.max_health = 133;
   setsize(self, '-16 -16 -10', '16 16 26');
   
 //ENERGY AND SHIELDS===================

@@ -23,10 +23,10 @@ float AI_RUN_SPD = 0.2;
 
 //Radar post
 float AI_POST_SWEEP_SIZE = 6;
-float AI_POST_SPOT_TIME = 24;
+float AI_POST_SPOT_TIME = 18;
 
 //lock on time modifiers for Radar Post
-float AI_POST_LOCK_ROK = 2;
+float AI_POST_LOCK_ROK = 1.25;
 float AI_POST_LOCK_REG = 1;
 float AI_POST_LOCK_VET = 0.75;
 float AI_POST_LOCK_ACE = 0.5;
@@ -38,19 +38,19 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.1;
-float AI_DMG_SKILL_REG = 0.2;
-float AI_DMG_SKILL_VET = 0.3;
-float AI_DMG_SKILL_ACE = 0.4;
+float AI_DMG_SKILL_ROK = 0.2;
+float AI_DMG_SKILL_REG = 0.3;
+float AI_DMG_SKILL_VET = 0.4;
+float AI_DMG_SKILL_ACE = 0.5;
 
 //DAMAGE DETUNING - Specific AI stats
-float AI_DMG_ROK = 0.025;
-float AI_DMG_REG = 0.05;
-float AI_DMG_VET = 0.075;
-float AI_DMG_ACE = 0.1;
+float AI_DMG_ROK = 0.05;
+float AI_DMG_REG = 0.075;
+float AI_DMG_VET = 0.1;
+float AI_DMG_ACE = 0.15;
 
 //Field of View as normalized dot product
-float AI_FOV     = 0.5;
+float AI_FOV     = 0.67;
 //these are multipliers
 float AI_FOV_ROK = 0.75;
 float AI_FOV_REG = 1.25;
@@ -72,37 +72,37 @@ float AI_VIEW_RANGE_VET = 1.25;
 float AI_VIEW_RANGE_ACE = 1.5;
 
 //Adjust yaw_speed
-float AI_YAW_ROK = 0.67;
-float AI_YAW_REG = 0.75;
-float AI_YAW_VET = 0.9;
-float AI_YAW_ACE = 1.1;
+float AI_YAW_ROK = 0.75;
+float AI_YAW_REG = 0.9;
+float AI_YAW_VET = 1.05;
+float AI_YAW_ACE = 1.2;
 
 //attack chances
-float AI_ATTACK_ROK = 0.50;
-float AI_ATTACK_REG = 0.35;
-float AI_ATTACK_VET = 0.30;
-float AI_ATTACK_ACE = 0.20;
+float AI_ATTACK_ROK = 0.4;
+float AI_ATTACK_REG = 0.3;
+float AI_ATTACK_VET = 0.2;
+float AI_ATTACK_ACE = 0.1;
 
 //WEAPON TWEAKS
 float AI_WEAPON_RPS_MOD = 1500;
 
 //Minimum convergence modifier
-float AI_CNV_MIN_ROK  = 3.5;
-float AI_CNV_MIN_REG  = 3;
-float AI_CNV_MIN_VET  = 2.5;
-float AI_CNV_MIN_ACE  = 2;
+float AI_CNV_MIN_ROK  = 3;
+float AI_CNV_MIN_REG  = 2.5;
+float AI_CNV_MIN_VET  = 2;
+float AI_CNV_MIN_ACE  = 1.;
 
 //Maximum convergence modifier
-float AI_CNV_MAX_ROK  = 7;
-float AI_CNV_MAX_REG  = 6;
-float AI_CNV_MAX_VET  = 5;
-float AI_CNV_MAX_ACE  = 4;
+float AI_CNV_MAX_ROK  = 6;
+float AI_CNV_MAX_REG  = 5;
+float AI_CNV_MAX_VET  = 4;
+float AI_CNV_MAX_ACE  = 3;
 
 //Convergence Rate modifier
-float AI_CNV_RATE_ROK  = 0.05;
-float AI_CNV_RATE_REG  = 0.1;
-float AI_CNV_RATE_VET  = 0.15;
-float AI_CNV_RATE_ACE  = 0.2;
+float AI_CNV_RATE_ROK  = 0.1;
+float AI_CNV_RATE_REG  = 0.15;
+float AI_CNV_RATE_VET  = 0.2;
+float AI_CNV_RATE_ACE  = 0.25;
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
@@ -124,10 +124,10 @@ float AI_SHIELD_VET = 0.6;
 float AI_SHIELD_ACE = 0.8;
 
 //ai_leading ratings, how well an ai tracks a slippery target
-float AI_LEAD_ACE = 0.15;
-float AI_LEAD_VET = 0.25;
-float AI_LEAD_REG = 0.35;
-float AI_LEAD_ROK = 0.45;
+float AI_LEAD_ACE = 0.35;
+float AI_LEAD_VET = 0.45;
+float AI_LEAD_REG = 0.55;
+float AI_LEAD_ROK = 0.65;
 
 //common engage ranges
 float AI_RANGE_S = 400;

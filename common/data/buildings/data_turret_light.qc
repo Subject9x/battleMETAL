@@ -19,19 +19,19 @@ void() data_ini_light_turret_={
   self.vec_size = 1;
   self.vec_name = "Light Turret";
  
-  self.max_health = 300;
+  self.max_health = 399;
   setsize(self, '-20 -20 -6', '20 20 24');
   
 //ENERGY AND SHIELDS===================
-  self.energyMax  = 100;
-  self.energyRate = 0.25;
+  self.energyMax  = 200;
+  self.energyRate = 0.75;
   self.shieldMax  = 100;
   self.shieldRate = 0.25;
 //=====================================
  
 //RADAR================================
-  self.radar_range = 1000;
-  self.w_firetime = 10;  //lock-on time in seconds
+  self.radar_range = 750;
+  self.w_firetime = 7;  //lock-on time in seconds
 //=====================================
 
 //SPEED================================

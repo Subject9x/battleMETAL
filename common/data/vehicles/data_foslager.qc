@@ -19,7 +19,7 @@ void() data_ini_foslager_={
   self.vec_size = 2;  //
   self.vec_name = "Foslager";
  
-  self.max_health = 200;
+  self.max_health = 266;
   setsize(self, '-20 -20 -8', '20 20 26');
   
 //ENERGY AND SHIELDS===================
