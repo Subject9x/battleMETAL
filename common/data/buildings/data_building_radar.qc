@@ -160,7 +160,7 @@ void() building_radar_touch={
   }
 };
 
-/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/radar/radar.md3"); }
 Listening Post, has the ability to detect the player and alert friendly bots.
 -------- KEYS -------- 
@@ -176,6 +176,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_radar={
@@ -213,12 +214,15 @@ void() building_human_radar={
   }
   
   self.deadflag = DEAD_NO;  
-  if( util_cornerSlopeCheck(self, 0.95) ){
-    util_generateBuildingFoundation(self);
+  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+    if( util_cornerSlopeCheck(self, 0.95) ){
+      util_generateBuildingFoundation(self);
+    }
+    else{
+      droptofloor();
+    }
   }
-  else{
-    droptofloor();
-  }
+  
   self.th_walk = building_radar_patrol1;
   self.th_stand = building_radar_detect1;
   self.th_missile = building_radar_alert1;

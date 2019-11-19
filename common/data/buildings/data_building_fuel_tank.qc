@@ -81,7 +81,7 @@ void() building_human_fuel_th={
   self.nextthink = self.nextthink + random()*0.5;
 };
 
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/fueltank/fueltank.md3"); }
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
@@ -93,6 +93,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_fuel={
@@ -110,11 +111,14 @@ void() building_human_fuel={
   self.shieldRate = 1;
   self.scale = 1;
   self.deadflag = DEAD_NO;
-  if( util_cornerSlopeCheck(self, 0.95) ){
-    util_generateBuildingFoundation(self);
-  }
-  else{
-    droptofloor();
+
+  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+    if( util_cornerSlopeCheck(self, 0.95) ){
+      util_generateBuildingFoundation(self);
+    }
+    else{
+      droptofloor();
+    }
   }
 
   self.th_die = hfuel_death1;

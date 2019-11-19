@@ -5,14 +5,13 @@ Date: 5/10/2017
 Overview: data file for building
 */
 
-
 void() building_human_hangar_th={
   building_burn();
   self.think = building_human_hangar_th;
   self.nextthink = time + 0.1;
 };
 
-/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/hangar/hangar.md3"); }
 Mostly just a decorating building, BUT
 you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
@@ -26,6 +25,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_hangar={
@@ -51,11 +51,13 @@ void() building_human_hangar={
   setsize(self, '-68 -84 0', '68 84 88');
   self.movetype = MOVETYPE_NONE;
   
-  if( util_cornerSlopeCheck(self, 0.95) ){
-    util_generateBuildingFoundation(self);
-  }
-  else{
-    droptofloor();
+  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+    if( util_cornerSlopeCheck(self, 0.95) ){
+      util_generateBuildingFoundation(self);
+    }
+    else{
+      droptofloor();
+    }
   }
   
   self.think = building_human_hangar_th;

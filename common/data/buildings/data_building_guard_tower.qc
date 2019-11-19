@@ -17,7 +17,7 @@ void() guard_tower_die={
   building_die();
 };
 
-/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - LIGHTS_OFF IS_MAPKEY -
+/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - LIGHTS_OFF IS_MAPKEY -
 { model("models/buildings/towersmall/guardtower.md3"); }
 Listening Post, has the ability to detect the player and alert friendly bots.
 -------- KEYS -------- 
@@ -34,6 +34,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 LIGHTS_OFF 2097152: turns off lights from this building.
 */
@@ -58,11 +59,13 @@ void() building_guard_tower={
   self.think = guard_tower_think;
   self.nextthink = time + 0.1;
   
-  if( util_cornerSlopeCheck(self, 0.95) ){
-    util_generateBuildingFoundation(self);
-  }
-  else{
-    droptofloor();
+  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+    if( util_cornerSlopeCheck(self, 0.95) ){
+      util_generateBuildingFoundation(self);
+    }
+    else{
+      droptofloor();
+    }
   }
   
   if( !(self.spawnflags & 2097152) ){

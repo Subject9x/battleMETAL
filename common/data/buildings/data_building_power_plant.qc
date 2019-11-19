@@ -106,7 +106,7 @@ void() hpower_th = [0, hpower_th]{
 }; 
 
 
-/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
 Radius: 800units
@@ -120,6 +120,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_power={
@@ -142,11 +143,13 @@ void() building_human_power={
   self.scale = 1;
   self.deadflag = DEAD_NO;
   
-  if( util_cornerSlopeCheck(self, 0.95) ){
-    util_generateBuildingFoundation(self);
-  }
-  else{
-    droptofloor();
+  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+    if( util_cornerSlopeCheck(self, 0.95) ){
+      util_generateBuildingFoundation(self);
+    }
+    else{
+      droptofloor();
+    }
   }
   
   self.th_die = hpower_die;

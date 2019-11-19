@@ -314,7 +314,8 @@ void(float hp, float max_hp, float arm_type, float arm_val) util_setHealthArmor=
 */
 float(entity t, float tolerance) util_cornerSlopeCheck={
   local vector start, c1,c2,c3,c4, check;
-  local float distanceCheck, comparator;
+  local vector down;
+  local float distanceCheck, comparator, hold;
   
   makevectors(t.angles);
   start = t.origin + (v_up * self.mins_z);
@@ -322,45 +323,50 @@ float(entity t, float tolerance) util_cornerSlopeCheck={
   c2 = start + (v_forward * self.mins_x) + (v_right * self.maxs_y);
   c3 = start + (v_forward * self.mins_x) + (v_right * self.mins_y);
   c4 = start + (v_forward * self.maxs_x) + (v_right * self.mins_y);
+  distanceCheck = 0;
   
-  traceline(c1, c1 + (v_up * -1000), FALSE, t);
-  if( trace_plane_normal_z < tolerance){
-    distanceCheck = vlen( ( c1 + (v_up * -1000)) - c1 );
+  /*
+  corner check
+    if distance under the corner is greater than 5 units, mark the corner
+    
+  */
+  down = v_up * -4000;
+  traceline(c1, c1 + down, FALSE, t);
+  if( vlen(trace_endpos - c1) > tolerance ){
+    distanceCheck = distanceCheck + 1;
+    comparator = vlen(trace_endpos - c1);
+  }
+  
+  traceline(c2, c2 + down, FALSE, t);
+  if( vlen(trace_endpos - c2) > tolerance ){
+    distanceCheck = distanceCheck + 1;
+    hold = vlen(trace_endpos - c2);
+    if( hold < comparator ){
+      comparator = hold;
+    }
+  }
+  
+  traceline(c3, c3 + down, FALSE, t);
+  if( vlen(trace_endpos - c3) > tolerance ){
+    distanceCheck = distanceCheck + 1;
+    hold = vlen(trace_endpos - c3);
+    if( hold < comparator ){
+      comparator = hold;
+    }
+  }
+  
+  traceline(c4, c4 + down, FALSE, t);
+  if( vlen(trace_endpos - c4) > tolerance ){
+    distanceCheck = distanceCheck + 1;
+    hold = vlen(trace_endpos - c4);
+    if( hold < comparator ){
+      comparator = hold;
+    }
+  }
+  
+  if( distanceCheck > 0 ){
+    traceline(self.origin, self.origin + (v_up * (comparator * -1)), FALSE, self);
     check = trace_endpos;
-  }
-  
-  traceline(c2, c2 + (v_up * -1000), FALSE, t);
-  if( trace_plane_normal_z < tolerance){
-    comparator = vlen( ( c2 + (v_up * -1000)) - c2 );
-    if( comparator < distanceCheck ){
-      distanceCheck = comparator;
-      check = trace_endpos;
-    }
-  }
-  
-  traceline(c3, c3 + (v_up * -1000), FALSE, t);
-  if( trace_plane_normal_z < tolerance){
-    comparator = vlen( ( c3 + (v_up * -1000)) - c3 );
-    if( comparator < distanceCheck ){
-      distanceCheck = comparator;
-      check = trace_endpos;
-    }
-  }
-  
-  traceline(c4, c4 + (v_up * -1000), FALSE, t);
-  if( trace_plane_normal_z < tolerance){
-    comparator = vlen( ( c4 + (v_up * -1000)) - c4 );
-    if( comparator < distanceCheck ){
-      distanceCheck = comparator;
-      check = trace_endpos;
-    }
-  }
-  
-  if( check ){
-    local float d;
-    d = distanceCheck;
-    check_x = t.origin_x;
-    check_y = t.origin_y;
     check = check + (v_up * (self.mins_z *-1) );
     setorigin( self, check );
     return TRUE;

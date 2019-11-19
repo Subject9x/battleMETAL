@@ -409,15 +409,17 @@ float( entity targ ) ai_check_vis={
   spot2 = targ.origin;
   traceline (spot1, spot2, FALSE, self);
   
-  if( trace_ent == targ )
+  if( trace_ent == targ ){
     return VIS_FRAC;
+  }
   
-  
-  if ( trace_inopen && trace_inwater )
+  if ( trace_inopen && trace_inwater ){
     return VIS_FAIL;     // sight line crossed contents
+  }
   
-  if ( trace_fraction == 1 )
+  if ( trace_fraction == 1 ){
     return VIS_FRAC;
+  }
   
   if( trace_ent.faction == self.faction ){
     friend_blocker = trace_ent;
@@ -435,6 +437,44 @@ float() ai_attack={
   self.button0 = 1;
   return 1;
 };
+
+/*
+  finds a random spot offset from goalentity to move to,
+  this alleviates issue of bots traffic jamming at terminal patrol nodes.
+*/
+void() ai_goal_offset_node={
+  local float itr;
+  local float angl;
+  local float testDist;
+  local vector facing;
+  local vector testAngle;
+  local vector finalDest;
+  itr = 5;
+  testDist = 200;
+  facing = vectoangles( self.goalentity.origin - self.origin );
+  angl = anglemod( facing_y - 92.5 );
+  testAngle_x = self.angles_x;
+  testAngle_z = self.angles_z;
+  
+  while( itr > 0 ){
+    testAngle_y = angl;
+    makevectors( testAngle );
+    traceline( self.origin, self.origin + (v_forward * 100), TRUE, self);
+    if( (pointcontents(trace_endpos) != CONTENT_SOLID) && (pointcontents(trace_endpos) != CONTENT_EMPTY) && (pointcontents(trace_endpos) != CONTENT_SKY) ){
+      if( vlen( trace_endpos - self.origin ) < testDist ){
+        testDist = vlen( trace_endpos - self.origin );
+        finalDest = trace_endpos;
+      }
+    }
+    angl = anglemod( angl + 33 );
+    itr = itr - 1;
+  }
+  if( finalDest != '0 0 0' ){
+    self.dest = finalDest;
+  }
+};
+
+
 /*
 ===================================================
 */

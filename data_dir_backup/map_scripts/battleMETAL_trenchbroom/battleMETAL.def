@@ -1096,7 +1096,7 @@ DELAY 4: wait after fire before execution
 //===========================================================
 //    battleMETAL Buildings Human
 //===========================================================
-/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/radar/radar.md3"); }
 Listening Post, has the ability to detect the player and alert friendly bots.
 -------- KEYS -------- 
@@ -1112,13 +1112,14 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NO_DROP 8192: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - LIGHTS_OFF IS_MAPKEY -
+/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - LIGHTS_OFF IS_MAPKEY -
 { model("models/buildings/towersmall/guardtower.md3"); }
 Listening Post, has the ability to detect the player and alert friendly bots.
 -------- KEYS -------- 
@@ -1135,6 +1136,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NO_DROP 8192: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 LIGHTS_OFF 2097152: turns off lights from this building.
 */
@@ -1142,7 +1144,7 @@ LIGHTS_OFF 2097152: turns off lights from this building.
 
 
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
 Gives ALL FRIENDLY units a shield recharge boost IF they're in the radius.
@@ -1157,11 +1159,12 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NO_DROP 8192: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
 Radius: 800units
@@ -1175,13 +1178,14 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NO_DROP 8192: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/hangar/hangar.md3"); }
 Mostly just a decorating building, BUT
 you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
@@ -1195,13 +1199,14 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NO_DROP 8192: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_hangar_vehicle (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_hangar_vehicle (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/hangar_vec/hangar_vehicle.md3"); }
 Mostly just a decorating building, BUT
 you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
@@ -1215,13 +1220,14 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NO_DROP 8192: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/repair/repair.md3"); }
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
@@ -1233,13 +1239,14 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NO_DROP 8192: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/fueltank/fueltank.md3"); }
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
@@ -1251,6 +1258,7 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
+NO_DROP 8192: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
@@ -4118,7 +4126,7 @@ UNARMED 131072: skip weapons-build step for unit.
 */
 //-------------------LOBBER  --------------------------------
 /*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
-{ model("models/mechs/monitor/monitor_s.md3"); }
+{ model("models/mechs/monitor/monitor_h.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents.
