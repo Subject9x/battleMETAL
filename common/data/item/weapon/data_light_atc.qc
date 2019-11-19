@@ -18,13 +18,13 @@ void() data_ini_light_atc_={
   self.data_idx = 1;  
   self.w_name = "Light Autocannon";
   
-  self.w_clipsize = 3;     //0.2 - 10/07/2019
-  self.reloadRate = 0.075;  //0.2 - 10/07/2019
-  self.reloadMax = 1.15;      //0.2 - 10/07/2019
+  self.w_clipsize = 3;
+  self.reloadRate = 0.075;
+  self.reloadMax = 1.15;
   self.energyRate = 0;
   
   self.w_range = 1800;
-  self.damageValue = 6.67;   //3.5 - 10/07/2019
+  self.damageValue = 5;
   self.damageType = DMG_BAL;
 
   self.techLevel = 1;

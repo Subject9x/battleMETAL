@@ -19,19 +19,19 @@ void() data_ini_heavy_turret_={
   self.vec_size = 2;
   self.vec_name = "Heavy Turret";
  
-  self.max_health = 500;
+  self.max_health = 665;
   setsize(self, '-28 -28 -16', '28 28 28');
   
 //ENERGY AND SHIELDS===================
   self.energyMax  = 400;
-  self.energyRate = 2;
+  self.energyRate = 1;
   self.shieldMax  = 150;
   self.shieldRate = 0.25;
 //=====================================
  
 //RADAR================================
-  self.radar_range = 750;
-  self.w_firetime = 3;  //lock-on time in seconds
+  self.radar_range = 1000;
+  self.w_firetime = 2;  //lock-on time in seconds
 //=====================================
 
 //SPEED================================
@@ -56,8 +56,8 @@ void() data_ini_heavy_turret_={
 //HARDPOINTS==========================
   data_ini_unitHardpoint_1( M_TOR_CENTER, '-3.75 22 15', '0 0 0', 2, (DMG_EXP | DMG_ENE | DMG_MSC));
   data_ini_unitHardpoint_2( M_TOR_CENTER, '3.75 22 15', '0 0 0', 2, (DMG_BAL | DMG_ENE | DMG_MSC));
-  data_ini_unitHardpoint_3( M_TOR_CENTER, '3.75 18 0', '90 0 0', 3, DMG_MSC);
-  data_ini_unitHardpoint_4( M_TOR_CENTER, '3.75 18 0', '90 0 0', 3, DMG_MSC);
+  data_ini_unitHardpoint_3( M_TOR_CENTER, '3.75 26 0', '90 0 0', 3, DMG_MSC);
+  data_ini_unitHardpoint_4( M_TOR_CENTER, '3.75 26 0', '90 0 0', 3, DMG_MSC);
 //=====================================
 
 //HUD DATA=============================

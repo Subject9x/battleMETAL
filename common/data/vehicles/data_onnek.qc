@@ -19,7 +19,7 @@ void() data_ini_onnek_={
   self.vec_size = 2;  //
   self.vec_name = "Onnek";
  
-  self.max_health = 300;
+  self.max_health = 399;
   setsize(self, '-25 -25 -10.25', '25 25 28');
   
 //ENERGY AND SHIELDS===================
@@ -30,7 +30,7 @@ void() data_ini_onnek_={
 //=====================================
  
 //RADAR================================
-  self.radar_range = 2000;
+  self.radar_range = 1500;
   self.w_firetime = 6;  //lock-on time in seconds
 //=====================================
 

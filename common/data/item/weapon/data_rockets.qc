@@ -24,8 +24,8 @@ void() data_ini_rockets_={
   self.energyRate = 0;
   
   self.w_range = 400;
-  self.damageValue = 75;
-  self.damageType = (DMG_EXP);
+  self.damageValue = 50;
+  self.damageType = DMG_EXP;
   
   self.techLevel = 1;
   self.i_size = 1;

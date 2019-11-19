@@ -19,7 +19,7 @@ void() data_ini_trowel_={
   self.vec_size = 3;  //
   self.vec_name = "Trowel";
  
-  self.max_health = 400;
+  self.max_health = 532;
   setsize(self, '-30 -30 -7.75', '30 30 36');
   
 //ENERGY AND SHIELDS===================
