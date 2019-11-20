@@ -500,18 +500,17 @@ void() ai_setup_patrol={
     }
     if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){
       node = ai_node_pick_rand();  //make sure that nodes have a .group set   
-      angl = self.angles_y * DEG2RAD;
+      angl = anglemod(random() * self.angles_y * 2) * DEG2RAD;
       px = cos(angl);
       py = sin(angl);
-      org_z = self.origin_z + self.maxs_z;
-      org_x = node.origin_x - px * (random() * self.maxs_x * 3);
-      org_y = node.origin_y - py * (random() * self.maxs_y * 3);
-      
-      if( (pointcontents(org) != CONTENT_SOLID) && (pointcontents(org) != CONTENT_EMPTY) && (pointcontents(org) != CONTENT_SKY) ){
-        setorigin( self, org );
+      org_z = self.origin_z + self.maxs_z * 3;
+      org_x = node.origin_x - px * (crandom() * self.maxs_x * 4);
+      org_y = node.origin_y - py * (crandom() * self.maxs_x * 4);
+      if( (pointcontents(org) == CONTENT_SOLID) || (pointcontents(org) == CONTENT_EMPTY) && (pointcontents(org) == CONTENT_SKY) ){
+        setorigin( self, node.origin);
       }
       else{
-        setorigin( self, node.origin);
+        setorigin( self, org );
       }
     }
     self.target = node.targetname;

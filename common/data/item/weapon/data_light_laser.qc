@@ -13,7 +13,7 @@ Overview:
 #ifndef CSQC
 void() data_ini_attack_laser_;
 #endif
-
+ 
 void() data_ini_light_laser_={
   
   self.data_idx = 3;

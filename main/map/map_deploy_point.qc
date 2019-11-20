@@ -44,5 +44,9 @@ void() map_deploy_point={
   self.think = deploy_point_th;
   self.nextthink = time + 0.1;
   
+  if( !(self.isActive) ){
+    self.isActive = TRUE;
+  }
+  
   trigger_event( self, self.trigOnSpawn );
 }

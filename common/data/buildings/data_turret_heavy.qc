@@ -24,7 +24,7 @@ void() data_ini_heavy_turret_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax  = 400;
-  self.energyRate = 1;
+  self.energyRate = 1.67;
   self.shieldMax  = 150;
   self.shieldRate = 0.25;
 //=====================================

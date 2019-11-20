@@ -23,8 +23,8 @@ void() data_ini_foslager_={
   setsize(self, '-20 -20 -8', '20 20 26');
   
 //ENERGY AND SHIELDS===================
-  self.energyMax = 250;
-  self.energyRate= 1.2;
+  self.energyMax = 400;
+  self.energyRate= 2;
   self.shieldMax = 100;
   self.shieldRate= 0;
 //=====================================

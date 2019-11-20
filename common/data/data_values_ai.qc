@@ -38,10 +38,10 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.2;
-float AI_DMG_SKILL_REG = 0.3;
-float AI_DMG_SKILL_VET = 0.4;
-float AI_DMG_SKILL_ACE = 0.5;
+float AI_DMG_SKILL_ROK = 0.5;
+float AI_DMG_SKILL_REG = 0.6;
+float AI_DMG_SKILL_VET = 0.7;
+float AI_DMG_SKILL_ACE = 0.8;
 
 //DAMAGE DETUNING - Specific AI stats
 float AI_DMG_ROK = 0.05;
@@ -66,7 +66,7 @@ float AI_VIEW_VET = 0.67;
 float AI_VIEW_ACE = 0.33;
 
 //View Ranges, multipliers against ai.radar_range
-float AI_VIEW_RANGE_ROK = 0.85;
+float AI_VIEW_RANGE_ROK = 0.75;
 float AI_VIEW_RANGE_REG = 1;
 float AI_VIEW_RANGE_VET = 1.25;
 float AI_VIEW_RANGE_ACE = 1.5;
@@ -87,34 +87,34 @@ float AI_ATTACK_ACE = 0.1;
 float AI_WEAPON_RPS_MOD = 1500;
 
 //Minimum convergence modifier
-float AI_CNV_MIN_ROK  = 3;
-float AI_CNV_MIN_REG  = 2.5;
-float AI_CNV_MIN_VET  = 2;
-float AI_CNV_MIN_ACE  = 1.;
+float AI_CNV_MIN_ROK  = 2;
+float AI_CNV_MIN_REG  = 1.5;
+float AI_CNV_MIN_VET  = 1;
+float AI_CNV_MIN_ACE  = 0.5;
 
 //Maximum convergence modifier
-float AI_CNV_MAX_ROK  = 6;
-float AI_CNV_MAX_REG  = 5;
-float AI_CNV_MAX_VET  = 4;
-float AI_CNV_MAX_ACE  = 3;
+float AI_CNV_MAX_ROK  = 4;
+float AI_CNV_MAX_REG  = 3;
+float AI_CNV_MAX_VET  = 2.5;
+float AI_CNV_MAX_ACE  = 1;
 
 //Convergence Rate modifier
-float AI_CNV_RATE_ROK  = 0.1;
-float AI_CNV_RATE_REG  = 0.15;
-float AI_CNV_RATE_VET  = 0.2;
-float AI_CNV_RATE_ACE  = 0.25;
+float AI_CNV_RATE_ROK  = 0.15;
+float AI_CNV_RATE_REG  = 0.2;
+float AI_CNV_RATE_VET  = 0.25;
+float AI_CNV_RATE_ACE  = 0.3;
 
 //armor based on difficulty
 //hp = hp * AI_ARMOR
 float AI_ARMOR_EASY =  0.5;
-float AI_ARMOR_MEDM =  1;
-float AI_ARMOR_HARD =  1.25;
-float AI_ARMOR_NIGHT = 1.35;
+float AI_ARMOR_MEDM =  0.75;
+float AI_ARMOR_HARD =  1;
+float AI_ARMOR_NIGHT = 1.25;
 
-float AI_ARMOR_MECH_EASY = 0.3;
-float AI_ARMOR_MECH_MEDM = 0.4;
-float AI_ARMOR_MECH_HARD = 0.5;
-float AI_ARMOR_MECH_NIGHT = 0.6;
+float AI_ARMOR_MECH_EASY = 0.2;
+float AI_ARMOR_MECH_MEDM = 0.3;
+float AI_ARMOR_MECH_HARD = 0.4;
+float AI_ARMOR_MECH_NIGHT = 0.5;
 
 //shield based on difficulty
 //shield = shield * AI_SHIELD
