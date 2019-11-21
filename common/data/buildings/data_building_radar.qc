@@ -189,7 +189,7 @@ void() building_human_radar={
   self.vec_size = 1;
   util_setModel("q3mdl/buildings/radar/mdl_bld_h_radar.md3", self.skin, 0) ;
   util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
-  util_setHealthArmor(100, 100, 1, 100) ;
+  util_setHealthArmor(100, 100, 1, 100);
   setsize(self, '-20 -20 0', '20 20 26');
   self.shield = 0;
   self.shieldMax = 150;
@@ -215,7 +215,7 @@ void() building_human_radar={
   
   self.deadflag = DEAD_NO;  
   if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
-    if( util_cornerSlopeCheck(self, 0.95) ){
+    if( util_cornerSlopeCheck(self, 4) ){
       util_generateBuildingFoundation(self);
     }
     else{

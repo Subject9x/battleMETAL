@@ -420,33 +420,6 @@ Keys:
 /*QUAKED func_illusionary (0 .5 .8) ?
 A simple entity that looks solid but lets you walk through it.
 */
-/*QUAKED func_episodegate (0 .5 .8) ? E1 E2 E3 E4
-This bmodel will appear if the episode has allready been completed, so players can't reenter it.
-*/
-/*QUAKED func_bossgate (0 .5 .8) ?
-This bmodel appears unless players have all of the episode sigils.
-*/
-/*QUAKED ambient_suck_wind (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED ambient_drone (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED ambient_flouro_buzz (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED ambient_drip (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED ambient_comp_hum (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED ambient_thunder (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED ambient_light_buzz (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED ambient_swamp1 (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED ambient_swamp2 (0.3 0.1 0.6) (-10 -10 -8) (10 10 8)
-*/
-/*QUAKED misc_noisemaker (1 0.5 0) (-10 -10 -10) (10 10 10)
-For optimzation testing, starts a lot of sounds.
-*/
 /*QUAKED func_plat (0 .5 .8) ? PLAT_LOW_TRIGGER
 speed	default 150
 
@@ -895,102 +868,6 @@ Only used for the world entity.
 (none)
 -------- NOTES --------
 */
-/*QUAKED func_xplowall (0 .5 .8) ? NoHeal SilverKey GoldKey
-
-Normally you must do enough damage
-in one blast to break the wall.
-
-Flags:
-"NoHeal"
- progressive damage will break
- this wall.
-"SilverKey"
- will break if touched by player
- with silver key.
-"GoldKey"
- will break if touched by player
- with gold key.
-
-Keys:
-"targetname"
- will break if targeted.
-"target"
- will trigger when destroyed.
-"health"
- if health is -1 then can only be
- broken by targeting and keys,
- default 100
- (close pipebomb will break).
-"dmg"
- explosions do this much radius
- damage if set.
-"count"
- how many pieces of debris
- (releases this much debris
-  total, some every explosion)
- (default is 5, -1 for no debris)
-"count2"
- how many explosions
- (will release debris with none)
- (default is 3, use -1 for none)
-"delay"
- time between explosions
- default: 0.1
-"wait"
- time before respawning
- (default is no respawn)
- (this time is counted from the
-  last explosion)
-"style"
- type of debris,
- hard to describe these:
-0) red
-1) yellow
-2) green
-3) blue
-4) brown
-5) biege
-6) rock
-*/
-/*QUAKED func_wallchunk (0 .5 .8) ?
-wall chunk, destroyed by damage.
-
-you must do enough damage
-in one blast to break the wall.
-
-simply a nice effect,
-used in Dark Places maps.
-
-make a hole in the wall,
-cover it with a
-func_wallchunk,
-set the style for debris,
-and you've got a wall that
-gets damaged in a fight.
-
-actually just a simplified
-func_xplowall.
-
-normally 3 pieces of debris.
-set count to a dif # if you
-like.
-no explosions.
-
-Keys:
-"count"
- how many pieces of debris.
- default is 3.
-"style"
- type of debris,
- hard to describe these:
-0) red
-1) yellow
-2) green
-3) blue
-4) brown
-5) biege
-6) rock
-*/
 /*QUAKED func_group (0.6 0.6 1.0) ?
 This is not an entity as such. It is strictly an editor utility to group world brushes and patches together for convenience (selecting, moving, copying, etc). You cannot group entities with this.
 -------- KEYS --------
@@ -1357,6 +1234,8 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
 
+
+
 //-------------------ZAPPER  --------------------------------
 /*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
@@ -1385,6 +1264,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_light_militar_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
@@ -1412,6 +1293,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_light_psc_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
@@ -1439,6 +1322,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 
 //-------------------GUNNER  --------------------------------
 /*QUAKED building_turret_light_survest_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
@@ -1468,6 +1353,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_light_militar_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
@@ -1495,6 +1382,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_light_psc_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
@@ -1649,6 +1538,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_missile_militar_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 LOBBER - mostly missile firepower
@@ -1676,6 +1567,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_missile_psc_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 LOBBER - mostly missile firepower
@@ -1765,6 +1658,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
 
+
 /*QUAKED building_turret_heavy_p(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 Heavy Turret, Survest Faction
@@ -1792,6 +1686,7 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
 
 //-------------------ZAPPER  --------------------------------
 /*QUAKED building_turret_heavy_survest_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
@@ -1821,6 +1716,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_heavy_militar_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
@@ -1848,6 +1745,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_heavy_psc_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
@@ -1875,6 +1774,7 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
 
 //-------------------GUNNER  --------------------------------
 /*QUAKED building_turret_heavy_survest_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
@@ -1904,6 +1804,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_heavy_militar_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
@@ -1931,6 +1833,8 @@ TRIGGER_ME 16384: ai only spawns when triggered
 DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
+
+
 /*QUAKED building_turret_heavy_psc_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
@@ -1959,6 +1863,8 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 */
 
+
+
 //=================================================================================================
 //===========================================================
 //    battleMETAL  Debug Objects
@@ -1982,6 +1888,10 @@ LIFETIME 2:
 REACTIVATE 4: reactivate after countdown
 REMOVE_FIRSTUSE 8: remove after first countdown
 */
+
+
+
+
 //===========================================================
 //    battleMETAL  Map Objects
 //===========================================================
@@ -2246,11 +2156,18 @@ DROPTOFLOOR 16: object drops to floor for easier touch possibility
 FREEZE_PLAYER 32: any players that trigger the Animatic are frozen in place
 COOLDOWN 64: use .wait
 */
+
+
+
 /*QUAKED func_mission_boundary (0.95 0.99 0) ?
 Defines the boundaries for a player, this will send warnings about leaving 
 the mission area if player stays inside this bounds.
 usually pair this will a killbox if player wanders outside map.
 */
+
+
+
+
 //=================================================================================================
 //===========================================================
 //    battleMETAL  Misc Objects
@@ -2345,6 +2262,9 @@ data_idx: float tpye 0 3 - which model to load
 RANDOM_TYPE 1: randomizes between 1 and 4
 RANDOM_ANGLE 2: random yaw rotation
 */
+
+
+
 //===========================================================
 //    battleMETAL AI Units
 //===========================================================

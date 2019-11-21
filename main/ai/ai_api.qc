@@ -119,8 +119,8 @@ void( entity t ) ai_call_for_help={
 }; 
 
 float(entity t) ai_valid_target={  
-  if( (t.flags & FL_UNIT) && (t.deadflag == DEAD_NO) ){
-    if( t != self ){
+  if( t != self ){
+    if( (t.flags & FL_UNIT) && (t.deadflag == DEAD_NO) ){
       return TRUE;
     }
   }
@@ -152,10 +152,10 @@ void( entity t) ai_alert_close={
   
   local entity ally;
   ai_sfx_help();
-  ally = findchainfloat( faction, self.faction );
+  ally = findradius( self.origin, self.ai_view );
   while( ally ){
-    if( ai_valid_target(ally) ){
-      if( vlen( ally.origin - self.origin ) <= AI_RANGE_M ){
+    if( ally.faction ==  self.faction ){
+      if( ai_valid_target(ally) ){
         ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
       }
     }
@@ -190,22 +190,23 @@ entity( float startSmallRadius ) ai_find_friend_farthest={
 };
 
 float() ai_find_target_visual={
-  if( ai_valid_target(self.enemy) )
-    return FALSE;
-
   local entity targ, found;
   local entity ally; 
   local float rng, fog, fogLen, ndist;
 
+  if( ai_valid_target(self.enemy) ){
+    return FALSE;
+  }
+    
   rng =  self.ai_view;
   if( self.fog_alpha ){
     fogLen = self.fog_dist_y - self.fog_dist_x;
     fog = self.fog_alpha * self.fog_density;
     fog = fog * fogLen;
     rng = self.ai_view - fogLen;
-    if( rng < AI_RANGE_S )
+    if( rng < AI_RANGE_S ){
       rng = AI_RANGE_S;
- 
+    }
     rng = rng + fog;
   }
   
@@ -311,10 +312,16 @@ void( entity ally, entity targ, float override ) ai_give_target={
   
   this = self;
   validTarg = ai_valid_target(ally.enemy);
-  if( !validTarg || override){
+  if( validTarg ){
     self = ally;
-      ai_sfx_roger();
+    if( override ){
+      self.enemy = ally.enemy;
       self.th_missile();
+      ai_sfx_roger();
+    }
+    else{
+      self.th_react(ally.enemy);
+    }
   }
   self = this;
 };
@@ -435,6 +442,49 @@ entity() ai_node_pick_rand={
   return anode;
 };
 
+
+/*
+  finds a random spot offset from goalentity to move to,
+  this alleviates issue of bots traffic jamming at terminal patrol nodes.
+*/
+entity() ai_goal_offset_node={
+  local vector angl;
+  local float incr;
+  local float tests;
+  local float testLen;
+  local float checkLen;
+  local vector offsetNodeOrg;
+  local entity offsetNode;
+  
+  angl = self.angles;
+  angl_y = anglemod(self.angles_y - 99);
+  incr = 33;
+  tests = 1;
+  checkLen = 250;
+  while( tests < 7 ){
+    angl_y = anglemod( angl + (incr * tests) );
+    makevectors(angl);
+    traceline(self.origin, self.origin + (v_forward * 200), FALSE, self);
+    if( pointcontents(trace_endpos) == 0 || pointcontents(trace_endpos) == CONTENT_WATER){
+      testLen = vlen(trace_endpos - self.origin);
+      if( testLen < checkLen && testLen > 33 ){
+        checkLen = testLen;
+        offsetNodeOrg = trace_endpos;
+      }
+    }
+    tests = tests + 1;
+  }
+  if( checkLen == 250 ){
+    return offsetNode;
+  }
+  offsetNode = spawn();
+  offsetNode.classname = "ai_node";
+  offsetNode.data_idx = (random() * 50) + (random() * 33);
+  setorigin(offsetNode, offsetNodeOrg);
+  return offsetNode;
+};
+
+
 void(float dst, float grp, float bracket) ai_wep_group_track={
   if( dst <= bracket ){
     self.currentWeaponGroup = self.currentWeaponGroup | grp;
@@ -449,9 +499,9 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
   to the total energy cost of ALL its energy weapons.
 */  
 float(entity wep) ai_attack_checkEne={
-  if( self.energy >= self.ai_weaponEnergy )
+  if( self.energy >= self.ai_weaponEnergy ){
     return TRUE;
-  
+  }
   return FALSE;
 };
 

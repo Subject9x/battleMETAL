@@ -439,43 +439,6 @@ float() ai_attack={
 };
 
 /*
-  finds a random spot offset from goalentity to move to,
-  this alleviates issue of bots traffic jamming at terminal patrol nodes.
-*/
-void() ai_goal_offset_node={
-  local float itr;
-  local float angl;
-  local float testDist;
-  local vector facing;
-  local vector testAngle;
-  local vector finalDest;
-  itr = 5;
-  testDist = 200;
-  facing = vectoangles( self.goalentity.origin - self.origin );
-  angl = anglemod( facing_y - 92.5 );
-  testAngle_x = self.angles_x;
-  testAngle_z = self.angles_z;
-  
-  while( itr > 0 ){
-    testAngle_y = angl;
-    makevectors( testAngle );
-    traceline( self.origin, self.origin + (v_forward * 100), TRUE, self);
-    if( (pointcontents(trace_endpos) != CONTENT_SOLID) && (pointcontents(trace_endpos) != CONTENT_EMPTY) && (pointcontents(trace_endpos) != CONTENT_SKY) ){
-      if( vlen( trace_endpos - self.origin ) < testDist ){
-        testDist = vlen( trace_endpos - self.origin );
-        finalDest = trace_endpos;
-      }
-    }
-    angl = anglemod( angl + 33 );
-    itr = itr - 1;
-  }
-  if( finalDest != '0 0 0' ){
-    self.dest = finalDest;
-  }
-};
-
-
-/*
 ===================================================
 */
 
@@ -485,7 +448,7 @@ void() ai_goal_offset_node={
 void() ai_setup_patrol={
   local entity node;
   local vector org;
-  local float angl, px, py;
+  local float angl, px, py, dlen;
   
   if( self.target ){
     node = find(world, targetname, self.target);
@@ -494,18 +457,19 @@ void() ai_setup_patrol={
       self.think = self.th_stand;
       self.nextthink = time + (random() * 0.5);
       if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-        self.nextthink = self.nextthink + (self.vec_size * 2);
+        self.nextthink = self.nextthink + 7;
       }
       return;
     }
     if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){
       node = ai_node_pick_rand();  //make sure that nodes have a .group set   
-      angl = anglemod(random() * self.angles_y * 2) * DEG2RAD;
+      angl = anglemod(random() * 360) * DEG2RAD;
       px = cos(angl);
       py = sin(angl);
-      org_z = self.origin_z + self.maxs_z * 3;
-      org_x = node.origin_x - px * (crandom() * self.maxs_x * 4);
-      org_y = node.origin_y - py * (crandom() * self.maxs_x * 4);
+      dlen = crandom() * self.maxs_x * 4;
+      org_z = self.origin_z + self.maxs_z * 2;
+      org_x = node.origin_x - px * dlen;
+      org_y = node.origin_y - py * dlen;
       if( (pointcontents(org) == CONTENT_SOLID) || (pointcontents(org) == CONTENT_EMPTY) && (pointcontents(org) == CONTENT_SKY) ){
         setorigin( self, node.origin);
       }
@@ -533,6 +497,6 @@ void() ai_setup_patrol={
   self.think = self.th_stand;
   self.nextthink = time + (random() * 0.5);
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-    self.nextthink = self.nextthink + (self.vec_size * 2);
+    self.nextthink = self.nextthink + 7;
   }
 };
