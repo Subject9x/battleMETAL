@@ -143,8 +143,8 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
 
 void() te_flame_th={
   
-  self.c_alt_ofs = te_apply_wind( self.origin );
-  pointparticles( particleeffectnum(self.vec_name), self.origin, normalize(self.c_alt_ofs - self.origin) * WINDDIR_z, self.count);
+  self.compAltOffset = te_apply_wind( self.origin );
+  pointparticles( particleeffectnum(self.vec_name), self.origin, normalize(self.compAltOffset - self.origin) * WINDDIR_z, self.count);
 
   self.think = te_flame_th;
   if( self.data_lifetime > 0 ){

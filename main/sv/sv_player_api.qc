@@ -169,7 +169,7 @@ void() PlayerPostThink = {
     if(self.button0){
       makevectors(self.v_angle);
       traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
-      self.c_ofs = trace_endpos;
+      self.compOffset = trace_endpos;
       //te_beam_esr(self.origin + (v_up * -4), trace_endpos);
     }
     self.stat_cofs_x = self.origin_x;
@@ -252,7 +252,7 @@ void() PlayerPostThink_powerup={
     if(self.button0){
       makevectors(self.v_angle);
       traceline(self.origin, self.origin + (v_forward * 10000), TRUE, self);
-      self.c_ofs = trace_endpos;
+      self.compOffset = trace_endpos;
       //te_beam_esr(self.origin + (v_up * -4), trace_endpos);
     }
     self.stat_cofs_x = self.origin_x;

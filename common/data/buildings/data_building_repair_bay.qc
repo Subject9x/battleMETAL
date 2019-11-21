@@ -209,7 +209,7 @@ void() building_human_repair={
   }
   
   makevectors(self.angles);
-  self.c_ofs = self.origin + (v_forward * -20) + (v_up * 30) + (v_right * 4);
+  self.compOffset = self.origin + (v_forward * -20) + (v_up * 30) + (v_right * 4);
   local entity repairNode, this;
   this  = self;
   repairNode = spawn();
@@ -225,7 +225,7 @@ void() building_human_repair={
     util_setHealthArmor(0, 0, 0, 0) ;
   self = this;
   setsize(repairNode, '-8 -8 -24', '8 8 32');
-  setorigin(repairNode, this.c_ofs);
+  setorigin(repairNode, this.compOffset);
   
   self.th_die = hrepair_die;
   self.th_stand = hrepair_th;

@@ -12,7 +12,7 @@ Overview:
   
 -------- KEYS -------- 
 .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
-.c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
+.compOffset = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
 .color = <vector> [red, green, blue] - color of the box
 .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
 .data_lifetime = <float> [time to draw] - amount of time to draw box for
@@ -122,7 +122,7 @@ void() map_hud_highlight_use={
   
 -------- KEYS -------- 
 .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
-.c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
+.compOffset = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
 .color = <vector> [red, green, blue] - color of the box
 .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
 .data_lifetime = <float> [time to draw] - amount of time to draw box for

@@ -14,7 +14,7 @@ void() map_change_wind_revert={
   self.isActive = FALSE;
   //revert to original
   if( (self.spawnflags & 16) )
-    WeatherDominator.wind = self.c_alt_ofs;
+    WeatherDominator.wind = self.compAltOffset;
   
   if( (self.spawnflags & 8) ){
     //we're done here.
@@ -32,7 +32,7 @@ void() map_change_wind_revert={
 void() map_change_wind_new={
   //cache old wind values
   if( (self.spawnflags & 16) )
-    self.c_alt_ofs = WeatherDominator.wind;
+    self.compAltOffset = WeatherDominator.wind;
   
 
   WeatherDominator.wind = self.wind;
@@ -96,7 +96,7 @@ void() map_change_wind={
   setsize( self, tempMin, tempMax );
   setorigin( self, self.origin );
   
-  self.c_alt_ofs = '0 0 0';
+  self.compAltOffset = '0 0 0';
   self.use = map_change_wind_use;
   self.isActive = TRUE;
   if( (self.spawnflags & 1) ){

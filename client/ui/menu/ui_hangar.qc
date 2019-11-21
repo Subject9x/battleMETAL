@@ -126,7 +126,7 @@ void(vector ofs) menu_hangar_MechDisplay={
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-      hardpointOffset = hardpoint.c_ofs;
+      hardpointOffset = hardpoint.compOffset;
       hardpointOffset_x = hardpointOffset_x * 0.65;
       hardpointOffset_y = hardpointOffset_y * 0.49; 
       hardpointCoord = gui_mapCoordToImgCoord( mechMins, mechSize, hardpointOffset, hofs, gui_percentToPixelRawVec('250 250') );

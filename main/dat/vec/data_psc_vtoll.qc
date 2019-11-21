@@ -50,15 +50,15 @@ void() data_PSC_VTOLL_ini={
 
 void() data_PSC_VTOLL_cam={  
   self.partParentId = M_TOR_CENTER;
-  self.c_ofs = '0 0 24';
-  self.c_alt_ofs = '0 0 0';
+  self.compOffset = '0 0 24';
+  self.compAltOffset = '0 0 0';
 };
 
 void() data_PSC_VTOLL_wep1={  
   self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = DAT_PSC_VTOLL_WEP1_OFFSET;
-  self.c_alt_ofs = '0 0 0';
+  self.compOffset = DAT_PSC_VTOLL_WEP1_OFFSET;
+  self.compAltOffset = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON1;
 };
@@ -66,8 +66,8 @@ void() data_PSC_VTOLL_wep1={
 void() data_PSC_VTOLL_wep2={  
   self.partParentId = M_TOR_CENTER;
   self.data_idx = 0; //consult weapon idx table!
-  self.c_ofs = DAT_PSC_VTOLL_WEP2_OFFSET;
-  self.c_alt_ofs = '0 0 0';
+  self.compOffset = DAT_PSC_VTOLL_WEP2_OFFSET;
+  self.compAltOffset = '0 0 0';
   self.w_adj_ang = '0 0 90';
   self.w_group = WEAPON2;
 };

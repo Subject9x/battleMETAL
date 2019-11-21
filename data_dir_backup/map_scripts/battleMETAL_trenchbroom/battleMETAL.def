@@ -12,7 +12,7 @@
 -------- KEYS --------
 .model = <string> [file] - path to the model file
 .count1 = <float> [alpha] - 0.001 - 1.0; defaults to '1'
-.c_ofs = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
+.compOffset = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
 
 -------- SPAWNFLAGS --------
 OVERRIDE_ALPHA 2: overrides default alpha of '1'
@@ -1874,7 +1874,7 @@ MUTE_ME 65536: ai doesn't use voice/radio
   
 -------- KEYS -------- 
   .vec_name = <string> [effecinfo.txt name] - the particle effect to spawn
-  .c_ofs = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
+  .compOffset = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
   .dest1 = <vector> [speed] -if effect needs a velocity vector
   .count = <float> [particle amount] - total number of particles in the effect
   .data_lifetime = <float> - time to live, use with spawnflags[2]
@@ -2034,7 +2034,7 @@ ON_TOUCH 2: ALLOW TRIGGER TOUCH
   
 -------- KEYS -------- 
 .movedir = <vector> [screen position] - X\Y coords on client screen to draw box, given in %'s 0.001 - 1.0
-.c_ofs = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
+.compOffset = <vector> [box size] - X\Y size of box to be drawn, given in %'s 0.001 - 1.0
 .color = <vector> [red, green, blue] - color of the box
 .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
 .data_lifetime = <float> [time to draw] - amount of time to draw box for

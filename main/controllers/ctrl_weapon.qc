@@ -135,7 +135,7 @@ float() ctrl_weapon_checkEnergy={
 
 void() ctrl_weapon_fireOffset={
   FIRE_ENT = self.owner; 
-  FIRE_OFFSET = self.c_ofs + self.w_fire_ofs + self.c_alt_ofs;    //complete offset from player origin
+  FIRE_OFFSET = self.compOffset + self.wepFireOffset + self.compAltOffset;    //complete offset from player origin
   if( self.aiment ){
     WEAPON_PARENT = self.aiment;
   }

@@ -247,7 +247,7 @@ float(float mechId, entity listEntity) ui_data_load_mech_info={
   while( hardpoint ){
     local vector partOffset;
     
-    partOffset = hardpoint.c_ofs;
+    partOffset = hardpoint.compOffset;
     //TODO - migjht be source of hardpoint type bug
     if( MECH_DATA_STOCK[itr] > 0){
       hardpoint.data_idx = MECH_DATA_STOCK[itr];
@@ -337,7 +337,7 @@ float(float id) ui_data_load_mech={
   while( hardpoint ){
     local vector partOffset;
     
-    partOffset = hardpoint.c_ofs;
+    partOffset = hardpoint.compOffset;
     //TODO - migjht be source of hardpoint type bug
     if( MECH_DATA_STOCK[itr] > 0){
       hardpoint.data_idx = MECH_DATA_STOCK[itr];

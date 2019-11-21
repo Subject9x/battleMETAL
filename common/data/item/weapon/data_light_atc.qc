@@ -42,7 +42,7 @@ void() data_ini_light_atc_={
   self.think = default_weapon_think;
   self.w_isburst = FALSE;
   self.burstRate = 1;
-  self.w_fire_ofs = '0 0.5 5';
+  self.wepFireOffset = '0 0.5 5';
   self.fire_sound = "sound/weapons/atc_fire.ogg";
   self.model = "q3mdl/weapons/w_atc.md3";
   #endif

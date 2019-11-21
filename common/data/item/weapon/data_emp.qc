@@ -40,7 +40,7 @@ void() data_ini_emp_={
   #ifndef CSQC
   self.w_isburst = FALSE;
   self.burstRate = 0;
-  self.w_fire_ofs = '0 0.1 7';
+  self.wepFireOffset = '0 0.1 7';
   self.fire_sound = "sound/weapons/emp_fire.ogg";
   self.model = "q3mdl/weapons/w_emp.md3";
   self.w_attack = data_ini_attack_emp_;

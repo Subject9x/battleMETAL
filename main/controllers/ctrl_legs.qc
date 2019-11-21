@@ -16,7 +16,7 @@ void() ctrl_updateLegs={
     if((self.owner.movement_x == 0) && (self.owner.movement_y == 0)){
       self.movetype = MOVETYPE_NONE;
       makevectors(self.owner.angles);
-      adj = self.owner.origin + (v_up * self.c_ofs_y) + (v_right * self.c_ofs_x) + (v_forward * self.c_ofs_z);
+      adj = self.owner.origin + (v_up * self.compOffset_y) + (v_right * self.compOffset_x) + (v_forward * self.compOffset_z);
       setorigin(self, adj);
       if( self.ai_dir != 0 ){
         self.ai_dir = 0;  // animation switch -> 'stand'
@@ -64,8 +64,8 @@ void() ctrl_dieLegs={
   newLegs.vec_size = self.owner.vec_size;
   newLegs.skin = self.skin;
   newLegs.angles = self.owner.angles;
-  newLegs.mins = self.c_ofs;
-  newLegs.maxs = self.c_alt_ofs;
+  newLegs.mins = self.compOffset;
+  newLegs.maxs = self.compAltOffset;
   setorigin(newLegs, self.origin);
   setmodel(newLegs, self.model);
 

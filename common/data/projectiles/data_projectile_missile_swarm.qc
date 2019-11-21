@@ -89,7 +89,7 @@ void() data_projectile_missile_swarm_think={
 };
 
 void() data_projectile_missile_swarm_delay={
-  self.velocity = normalize( self.origin - self.c_ofs);
+  self.velocity = normalize( self.origin - self.compOffset);
   self.velocity = self.velocity * (self.data_velocity * 0.50);
   self.angles = vectoangles(self.velocity);
    

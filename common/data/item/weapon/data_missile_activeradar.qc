@@ -41,7 +41,7 @@ void() data_ini_missile_activeradar_={
   self.spreadDefault = '0.03 0.03 0';
   self.w_isburst = FALSE;
   self.burstRate = 1;
-  self.w_fire_ofs = '0 0 2';
+  self.wepFireOffset = '0 0 2';
   self.fire_sound = "sound/weapons/mis_fire.ogg";
   self.model = "q3mdl/weapons/w_arh.md3";
   self.w_attack = data_ini_attack_missile_activeradar_;
@@ -80,7 +80,7 @@ void() data_ini_attack_missile_activeradar_={
     start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
  
     ctrl_weapon_make_projectile( 0.15 );
-    NEWSHOT.c_ofs = start;
+    NEWSHOT.compOffset = start;
     NEWSHOT.enemy = self.owner.enemy;
     NEWSHOT.velocity = '0 0 0';
     NEWSHOT.velocity = normalize( arc - start );

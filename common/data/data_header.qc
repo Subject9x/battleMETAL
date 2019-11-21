@@ -31,7 +31,8 @@ void( float partId, string modelPath, float maxHp, vector partOffset, entity par
   piece.partParentId = parentPart.partTypeId;
   piece.max_health = piece.health = maxHp;
   piece.model = modelPath;
-  piece.c_ofs = partOffset;
+  piece.compOffset = partOffset;
+  piece.hitOffset = '0 0 0';
   self.partSlot = piece;
   piece.owner = self;
 };
@@ -71,7 +72,7 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
       self.data_idx = 0;
       self.w_group = weaponBit;
       self.partParentId = parentPartID;
-      self.c_ofs = pointOffsetVec;
+      self.compOffset = pointOffsetVec;
       self.w_adj_ang = adjustAngleVec;
       self.owner = notItem;
       self.hardpointSize = newHardPointSizeVal;

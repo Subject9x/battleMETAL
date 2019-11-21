@@ -24,7 +24,7 @@ void() data_projectile_ini_missile_active_radar_={
   self.effects = EF_NOSHADOW;
   self.modelflags = 0;
   self.traileffectnum = particleeffectnum("TE_ARH_TRAIL");
-  self.c_ofs = '0 0 0';
+  self.compOffset = '0 0 0';
   self.think = data_projectile_missile_activeradar_delay;
 };
 
@@ -73,7 +73,7 @@ void() data_projectile_missile_activeradar_think={
 };
 
 void() data_projectile_missile_activeradar_delay={
-  self.velocity = normalize( self.origin - self.c_ofs);
+  self.velocity = normalize( self.origin - self.compOffset);
   self.velocity = self.velocity * (self.data_velocity * 0.33);
   self.angles = vectoangles(self.velocity);
    

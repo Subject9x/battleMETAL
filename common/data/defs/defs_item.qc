@@ -20,7 +20,7 @@ Overview
 .float burstRate; //percentage of reloadRate to use for burst-fire intervals.
 .float state_1;
 .float state_2;
-.vector w_fire_ofs;     //offset for proj. origin
+.vector wepFireOffset;     //offset for proj. origin
 .float w_proj;       //pointer to projectile entity data
 .float w_firerate;
 .float w_currentammo;

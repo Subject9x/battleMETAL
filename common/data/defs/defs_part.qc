@@ -13,12 +13,13 @@ Overview:
 
 #ifndef CSQC
 .string c_model;
-.vector c_alt_ofs;    //useful alt offset
+.vector compAltOffset;    //useful alt offset
 .entity partNext;     //chain entity of next part in unit's part list
 #endif
 
 .float partParentId;  //component id of PARENT
 .float partTypeId;    //component id
-.vector c_ofs;
+.vector compOffset;
+.vector hitOffset;    //used for t_damage calcs, its compOffset without the 'depth' (Z) field.
 .float hardpointSize;
 .float hardpointType;

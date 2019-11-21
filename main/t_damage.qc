@@ -333,21 +333,21 @@ entity(vector point, float rad, entity trg) t_find_part={
   part = trg;
   radi = rad;
   
-  if( vlen(point - trg.armLeft.origin) < radi ){
+  if( vlen(point - trg.armLeft.hitOffset) < radi ){
     part = trg.armLeft;
-    radi = vlen(point - trg.armLeft.origin);
+    radi = vlen(point - trg.armLeft.hitOffset);
   }
-  if( vlen(point - trg.armRight.origin) < radi ){
+  if( vlen(point - trg.armRight.hitOffset) < radi ){
     part = trg.armRight;
-    radi = vlen(point - trg.armRight.origin);
+    radi = vlen(point - trg.armRight.hitOffset);
   }
-  if( vlen(point - trg.torsoLeft.origin) < radi ){
+  if( vlen(point - trg.torsoLeft.hitOffset) < radi ){
     part = trg.torsoLeft;
-    radi = vlen(point - trg.torsoLeft.origin);
+    radi = vlen(point - trg.torsoLeft.hitOffset);
   }
-  if( vlen(point - trg.torsoRight.origin) < radi ){
+  if( vlen(point - trg.torsoRight.hitOffset) < radi ){
     part = trg.torsoRight;
-    radi = vlen(point - trg.torsoRight.origin);
+    radi = vlen(point - trg.torsoRight.hitOffset);
   }
   if( part.deadflag > DEAD_NO ){
     part = part.realowner;

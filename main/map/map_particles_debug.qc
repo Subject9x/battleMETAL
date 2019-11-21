@@ -27,7 +27,7 @@ void() map_particle_debug_th={
   vdir = self.origin + (v_up * self.dest1_y) + (v_forward * self.dest1_z)+ (v_right * self.dest1_x);
   pvel = normalize( vdir - self.origin) * self.count4;
   if( self.count3 ){
-    trailparticles( self, particleeffectnum(self.vec_name), self.origin + (v_up * self.c_ofs_y) + (v_forward * self.c_ofs_z) + (v_right * self.c_ofs_x), pvel , self.count);
+    trailparticles( self, particleeffectnum(self.vec_name), self.origin + (v_up * self.compOffset_y) + (v_forward * self.compOffset_z) + (v_right * self.compOffset_x), pvel , self.count);
   }
   else{
     pointparticles( particleeffectnum(self.vec_name), self.origin, pvel, self.count);
@@ -61,7 +61,7 @@ void() map_particle_ini={
   
 -------- KEYS -------- 
   .vec_name = <string> [effecinfo.txt name] - the particle effect to spawn
-  .c_ofs = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
+  .compOffset = <vector> [endpoint] - if effect needs an endpoint, the origin of effect is the map object's origin
   .dest1 = <vector> [speed] -if effect needs a velocity vector
   .count = <float> [particle amount] - total number of particles in the effect
   .data_lifetime = <float> - time to live, use with spawnflags[2]

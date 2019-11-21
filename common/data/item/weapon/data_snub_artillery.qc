@@ -43,7 +43,7 @@ void() data_ini_snub_artillery_={
   self.w_attack = data_ini_attack_snub_artillery_;
   self.think = default_weapon_think;
   self.data_ini_projectile = data_projectile_ini_snub_artillery_;
-  self.w_fire_ofs = '0 0 9';
+  self.wepFireOffset = '0 0 9';
   self.fire_sound = "sound/fx_boom.ogg";
   self.model = "q3mdl/weapons/w_sfga.md3";
   #endif

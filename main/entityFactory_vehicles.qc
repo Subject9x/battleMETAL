@@ -23,7 +23,7 @@ Overview:
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
   util_setModel(self.c_model, own.skin, 0);
   setsize(self, '-1 -1 -1', '1 1 1');
-  util_setOffsetOrigin(self, own, self.c_ofs);
+  util_setOffsetOrigin(self, own, self.compOffset);
   self.owner = own;
   //self.aiment = follow;
   //self.punchangle = follow.angles;
@@ -45,7 +45,7 @@ void(entity own) build_unit_component={
   util_setModel(self.model, own.skin, 0);
   
   setsize(self, '-1 -1 -1', '1 1 1');
-  util_setOffsetOrigin(self, own, self.c_ofs);
+  util_setOffsetOrigin(self, own, self.compOffset);
   self.owner = own;
   self.aiment = follow;
   self.punchangle = follow.angles;
@@ -72,7 +72,7 @@ void() build_unit_camera={
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
     setmodel( self, "q3mdl/testball.md3");
     setsize(self, '-1 -1 -1', '1 1 1');
-    util_setOffsetOrigin(self, this, self.c_ofs);
+    util_setOffsetOrigin(self, this, self.compOffset);
     
     self.scale = 0.001;
     
@@ -83,8 +83,6 @@ void() build_unit_camera={
     self.angles = partParent.angles;
     self.v_angle = self.angles - partParent.angles;
   self = this;
-  //unitPartList.partNext = cam;
-  //unitPartList = cam;
 };
 
 void() build_unit_weapon_list={
@@ -191,7 +189,7 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
     util_setModel(self.model, 0, 0);
     setsize(self, '-1 -1 -1','1 1 1');
-    ofs = self.c_ofs + self.c_alt_ofs;
+    ofs = self.compOffset + self.compAltOffset;
     util_setOffsetOrigin(self, own, ofs);
     
     partParent = util_getPartFromName( self.partParentId, own );
@@ -446,7 +444,7 @@ void() build_unit_turret={
     util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
     util_setModel(self.model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
-    util_setOffsetOrigin(self, this, self.c_ofs);
+    util_setOffsetOrigin(self, this, self.compOffset);
     self.angles = this.angles;
     self.owner = this;
     self.th_die = ctrl_component_die;
@@ -504,7 +502,7 @@ void() build_mech_legs={
       
     util_setModel(self.model, this.skin, 0);
     setsize(self, '-1 -1 -1','1 1 1');
-    util_setOffsetOrigin(self, this, self.c_ofs);
+    util_setOffsetOrigin(self, this, self.compOffset);
     self.owner = this;
     self.punchangle = this.angles;
     self.view_ofs = self.origin - this.origin;

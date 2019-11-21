@@ -18,7 +18,7 @@ Line 20 - MAP_TERRAIN_MODEL
 -------- KEYS --------
 .model = <string> [file] - path to the model file
 .count1 = <float> [alpha] - 0.001 - 1.0; defaults to '1'
-.c_ofs = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
+.compOffset = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
 
 -------- SPAWNFLAGS --------
 OVERRIDE_ALPHA 2: overrides default alpha of '1'
@@ -70,7 +70,7 @@ void() map_misc_model_solid_die={
 Inputs
   .model = <string> [file] - path to the model file
   .count1 = <float> [alpha] - 0.001 - 1.0; defaults to '1'
-  .c_ofs = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
+  .compOffset = <vector> [Red Green Blue] - color definition 0.0 - 1.0 for each color
   .takedamage = <float> [enum] - allows for taking damage, defaul is 0
                                 1 = yes but bounce projectiles
                                 2 = yes, and trigger projectiles hits

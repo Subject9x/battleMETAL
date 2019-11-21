@@ -455,14 +455,14 @@ entity() ai_goal_offset_node={
   local float checkLen;
   local vector offsetNodeOrg;
   local entity offsetNode;
-  
+  cons_logAFloat("ai_goal_offset_node()", 1); //DEBUG
   angl = self.angles;
   angl_y = anglemod(self.angles_y - 99);
   incr = 33;
   tests = 1;
   checkLen = 250;
   while( tests < 7 ){
-    angl_y = anglemod( angl + (incr * tests) );
+    angl_y = anglemod( angl_y + (incr * tests) );
     makevectors(angl);
     traceline(self.origin, self.origin + (v_forward * 200), FALSE, self);
     if( pointcontents(trace_endpos) == 0 || pointcontents(trace_endpos) == CONTENT_WATER){
@@ -475,12 +475,15 @@ entity() ai_goal_offset_node={
     tests = tests + 1;
   }
   if( checkLen == 250 ){
-    return offsetNode;
+    cons_logAFloat("ai_goal_offset_node()->no offset node", -1);  //DEBUG
+    return world;
   }
   offsetNode = spawn();
   offsetNode.classname = "ai_node";
-  offsetNode.data_idx = (random() * 50) + (random() * 33);
+  offsetNode.ai_rank = (random() * 50) + (random() * 33);
+  setsize(offsetNode, '-16 -16 -32', '16 16 32');
   setorigin(offsetNode, offsetNodeOrg);
+  cons_logAVector("ai_goal_offset_node()->offsetNodeOrg", offsetNodeOrg);  //DEBUG
   return offsetNode;
 };
 

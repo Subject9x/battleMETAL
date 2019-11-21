@@ -139,9 +139,9 @@ void( entity targetClient ) client_push_hud_highlight={
     WriteCoord( MSG_ONE, this.movedir_y );
     WriteCoord( MSG_ONE, this.movedir_z );
     
-    WriteCoord( MSG_ONE, this.c_ofs_x );
-    WriteCoord( MSG_ONE, this.c_ofs_y );
-    WriteCoord( MSG_ONE, this.c_ofs_z );
+    WriteCoord( MSG_ONE, this.compOffset_x );
+    WriteCoord( MSG_ONE, this.compOffset_y );
+    WriteCoord( MSG_ONE, this.compOffset_z );
     
     WriteCoord( MSG_ONE, this.color_x );
     WriteCoord( MSG_ONE, this.color_y );

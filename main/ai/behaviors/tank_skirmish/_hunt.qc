@@ -31,7 +31,6 @@ void() ai_tank_sk_sentry={
   ai_update_accuracy(FALSE);
   macro_ai_update(ctrl_updateTank)
   
-  ChangeYaw();
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_tank_sk_fight_prep)
     return;

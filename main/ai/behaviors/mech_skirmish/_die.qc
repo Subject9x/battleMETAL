@@ -37,8 +37,8 @@ void() ai_mech_sk_die={
     w_chain = w_chain.w_slot;
   }
 
-  self.legs.c_ofs = self.mins;
-  self.legs.c_alt_ofs = self.maxs;
+  self.legs.compOffset = self.mins;
+  self.legs.compAltOffset = self.maxs;
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
 

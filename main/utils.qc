@@ -155,7 +155,7 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
  
   makevectors( viewAngle );
   
-  adj = self.c_ofs + self.w_fire_ofs;
+  adj = self.compOffset + self.wepFireOffset;
   src = self.owner.origin + (v_forward * adj_z) + (v_right * adj_x) + (v_up * adj_y);  
   acc = weaponSpread;
   acc_x = acc_x * playerAcc;

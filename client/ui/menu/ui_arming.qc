@@ -360,7 +360,7 @@ void(vector ofs) menu_arming_HardpointGraph={
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
-      hardpointCoord = gui_mapCoordToImgCoord( mechMins,  mechSize, hardpoint.c_ofs * 0.75, panelOffset, panelImageSize );
+      hardpointCoord = gui_mapCoordToImgCoord( mechMins,  mechSize, hardpoint.compOffset * 0.75, panelOffset, panelImageSize );
       hardpoint.ui_org = hardpointCoord - gui_percentToPixelRawVec('17 17');
      
       ui_renderHardPointNumber( hardpointItr, hardpointCoord );

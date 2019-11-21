@@ -35,7 +35,7 @@ void() data_ini_empty_weapon_={
   self.think = SUB_Null;
   self.w_isburst = FALSE;
   self.burstRate = 1;
-  self.w_fire_ofs = '0 0 0 ';
+  self.wepFireOffset = '0 0 0 ';
   self.fire_sound = "";
   self.model = "";
   #endif

@@ -53,15 +53,15 @@ void() target_module_upgrade_={
   
   //stats cached here for restore on equip death
   self.w_firetime = self.owner.w_firetime;
-  self.w_fire_ofs = self.owner.spreadDefault;
-  self.accuracyMod = self.spreadDefault_z * self.w_fire_ofs_z;
+  self.wepFireOffset = self.owner.spreadDefault;
+  self.accuracyMod = self.spreadDefault_z * self.wepFireOffset_z;
   self.owner.accuracyMod = self.owner.accuracyMod + self.accuracyMod;
   self.owner.spreadDefault_x = self.owner.spreadDefault_x - (self.owner.spreadDefault_x * self.spreadDefault_x);
   self.owner.spreadDefault_y = self.owner.spreadDefault_y - (self.owner.spreadDefault_y * self.spreadDefault_y);
   self.owner.spreadDefault_z = self.owner.spreadDefault_z - (self.owner.spreadDefault_z * self.spreadDefault_z);
   
   lock = self.owner.w_firetime;
-  lock = lock - (lock * self.w_fire_ofs_z);
+  lock = lock - (lock * self.wepFireOffset_z);
   if(lock < 0){
     lock = 0.01;
   }
@@ -70,7 +70,7 @@ void() target_module_upgrade_={
 
 void() target_module_remove_={
   self.owner.w_firetime = self.w_firetime;
-  self.owner.spreadDefault = self.w_fire_ofs;
+  self.owner.spreadDefault = self.wepFireOffset;
   self.owner.accuracyMod = self.owner.accuracyMod - self.accuracyMod;
 };
 #endif

@@ -70,8 +70,8 @@ void() building_die_removeFire={
 };
 
 void() building_burn_th={
-  self.c_alt_ofs = te_apply_wind( self.origin );
-  pointparticles( self.damageValue, self.origin, normalize(self.c_alt_ofs - self.origin) * WINDDIR_z, self.count);
+  self.compAltOffset = te_apply_wind( self.origin );
+  pointparticles( self.damageValue, self.origin, normalize(self.compAltOffset - self.origin) * WINDDIR_z, self.count);
   self.think = building_burn_th;
   self.nextthink = time + 0.1;
 };

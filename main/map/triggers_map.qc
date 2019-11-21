@@ -43,8 +43,8 @@ void() map_trigger_changelevel={
 
 /*
   self.fx_origin = screen position (in percent)
-  self.c_alt_ofs = screen size (in percent );
-  self.c_ofs = color
+  self.compAltOffset = screen size (in percent );
+  self.compOffset = color
   self.dmgtime = time to show up
 */
 void() map_trigger_highlighthud={

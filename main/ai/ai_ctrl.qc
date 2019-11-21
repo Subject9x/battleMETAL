@@ -21,7 +21,7 @@ void() ai_turret_control={
   if( (self.torsoCenter) ){
     turretOwner = self;
     self = self.torsoCenter;
-      util_setOffsetOrigin(self, turretOwner, self.c_ofs);
+      util_setOffsetOrigin(self, turretOwner, self.compOffset);
       switch( self.attack_state ){
         case TR_NORM:
           self.ideal_yaw = turretOwner.angles_y;
@@ -71,7 +71,7 @@ void() ai_leg_control={
   legOwner = self;
   if( (self.legs) ){
       self = self.legs;
-      util_setOffsetOrigin(self, self.owner, self.c_ofs);
+      util_setOffsetOrigin(self, self.owner, self.compOffset);
       switch( self.attack_state ){
         case TR_NORM:
           self.ideal_yaw = self.owner.angles_y;
@@ -483,10 +483,10 @@ void() ai_setup_patrol={
     self.ideal_yaw = vectoyaw( node.origin - self.origin);
     droptofloor(); 
     if( (self.flags & FL_TURRET) ){
-      util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.c_ofs);
+      util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
     }
     if( self.legs ){
-      util_setOffsetOrigin(self.legs, self, self.legs.c_ofs);
+      util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
     }
     self.th_walk();
     if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
