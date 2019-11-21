@@ -21,7 +21,7 @@ void() deploy_point_th={
   self.nextthink = time + 0.5;
 };
 
-/*QUAKED map_deploy_point (0.431 0.788 0.753) (-12 -12 -12) (12 12 12)
+/*QUAKED map_deploy_point (0.753 0.788 0.431) (-26 -26 -44) (26 26 28)
 Deploy Points are like a subset of info_player_start. They're bespoke spawn points for players.
 Deploy points can be tailored to specific factions, and can be activated/deactivated.
 

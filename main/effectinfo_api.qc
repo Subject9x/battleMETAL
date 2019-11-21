@@ -125,16 +125,16 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
       partcle = particleeffectnum("TE_DUST_DESERT");
       break;
     case 1:
-      partcle = particleeffectnum("SMOKE_TEST");
+      partcle = particleeffectnum("TE_DUST_ICE");
       break;
     case 2: 
-      partcle = particleeffectnum("SMOKE_TEST");
+      partcle = particleeffectnum("TE_DUST_URBAN");
       break;
     case 3:
-      partcle = particleeffectnum("SMOKE_TEST");
+      partcle = particleeffectnum("TE_DUST_BADLANDS");
       break;
     case 4:
-      partcle = particleeffectnum("SMOKE_TEST");
+      partcle = particleeffectnum("TE_DUST_TUNDRA");
       break;
   }
   

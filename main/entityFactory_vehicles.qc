@@ -610,10 +610,12 @@ void(void() data_ini) build_turret_unit={
   build_vehicle_unit( data_ini );
   self.data_type = DATA_BLD;
 
-  setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
-  droptofloor();
-  
-  if(util_cornerSlopeCheck(self,0.95)){
-    util_generateBuildingFoundation(self);
+  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+    setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
+    droptofloor();
+    
+    if(util_cornerSlopeCheck(self, 2)){
+      util_generateBuildingFoundation(self);
+    }
   }
 };

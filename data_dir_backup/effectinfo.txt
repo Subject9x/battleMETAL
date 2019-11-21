@@ -1358,10 +1358,10 @@ gravity -0.005
     
   //TE_ION_TRAIL - LIGHT
     effect TE_ION_TRAIL
-    lightradius 10
-    lightradiusfade 50
+    lightradius 50
+    lightradiusfade 25
     lightcolor 0.827 0.345 0.969
-    lightshadow 0.25
+    lightshadow 0.1
   
   //TE_ION_EXPL - SMOKE PUFF RED
     effect TE_ION_EXPL
@@ -1585,6 +1585,15 @@ gravity -0.005
     gravity -0.075
     originjitter 0.5 0.5 0
     velocityjitter 2 2 2
+    
+  //TE_RPC_HIT - GREEN SMOKE RISE ON HIT
+    effect TE_RPC_HIT 
+    lightradius 100
+    lightradiusfade 10
+    lighttime 0.05
+    lightcolor 0 1 0
+    lightshadow 0.25
+    notunderwater
 
   //TE_RPC_BURN - GREEN RISING SMOKE
     effect TE_RPC_BURN
@@ -1615,6 +1624,15 @@ gravity -0.005
     originjitter 0.5 0.5 00.5
     velocityjitter 2 2 2
     stretchfactor 8
+  
+  //TE_RPC_BURN - GREEN LIGHT
+    effect TE_RPC_BURN 
+    lightradius 25
+    lightradiusfade 10
+    lighttime 0.05
+    lightcolor 0 1 0
+    lightshadow 0.25
+    notunderwater
 //==========================================
 
 
@@ -1911,19 +1929,19 @@ gravity -0.005
     
   //TE_ARH_TRAIL - SMOKE
     effect TE_ARH_TRAIL
-    count 7
+    count 3
     type smoke
     blend alpha
     color 0x848484 0xBDBDBD
     tex 8 15
     size 0.1 0.15
-    sizeincrease 0.1
+    sizeincrease 0.25
     alpha 64 96 16
     originjitter 0.1 0.1 0.1
     velocityjitter 1 1 1
     gravity -0.0001
-    stretchfactor 6
-    trailspacing 6
+    stretchfactor 2
+    trailspacing 4
 
 //==========================================
 
@@ -2060,7 +2078,7 @@ gravity -0.005
   lightradius 25
   lightradiusfade 100
   lightcolor 0.875 0.227 0.004
-  lightshadow 0.4
+  lightshadow 0.2
   notunderwater
   
   //TE_MECHPIECE_DEAD_BURN - Smoke
@@ -2121,14 +2139,14 @@ gravity -0.005
   tex 33 33
   size 2 3
   sizeincrease 1
-  alpha 96 128 75
+  alpha 96 128 120
 
   //TE_SHIELD_HIT_HIGH - BLUE LIGHT
   effect TE_SHIELD_HIT_HIGH
   lightradius 50
   lightradiusfade 100
   lightcolor 0 1 1
-  lightshadow 0.1
+  lightshadow 0.05
   notunderwater
 
 //==========================================
@@ -2651,17 +2669,17 @@ velocitymultiplier 1
 
 //TE_DUST_DESERT==================================
 effect TE_DUST_DESERT
-count 2
+count 0.33
 type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50
-tex 43 45
-size 1 2
-sizeincrease 1
-alpha 128 240 128
+tex 0 7
+size 4 5
+sizeincrease 2
+alpha 128 256 48
 originjitter 8 8 1
 velocityjitter 1 1 -6
-velocitymultiplier 2
+velocitymultiplier 2 
 //==========================================
 
 
@@ -2933,7 +2951,7 @@ velocitymultiplier 2
 //MINERAL FIELD===========================
    //TE_FIELD_MINERAL - splash up
     effect TE_FIELD_MINERAL
-    count 4
+    count 2
     type spark
     blend alpha
     color 0x00BFFF 0xA9F5F2
@@ -3020,7 +3038,7 @@ velocitymultiplier 2
 
   //TE_FIELD_QUANTUM - light
     effect TE_FIELD_QUANTUM_LIGHT
-    count 1
+    countabsolute 1
     lightradius 300
     lightradiusfade 75 
     lightcolor 1 0.1 0.45

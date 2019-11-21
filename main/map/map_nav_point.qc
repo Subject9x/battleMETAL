@@ -33,13 +33,15 @@ void() nav_point_touch={
       trigger_event( that, self.target );
       self.effects = self.effects - ( self.effects &(EF_DOUBLESIDED | EF_NOSHADOW | EF_FULLBRIGHT)); 
       self.alpha = 0.2;
-      self.colormod = '0.33 0.33 0.33';
+      self.colormod = '0.15 0.15 0.15';
       //multi_trigger();
       if( (self.spawnflags & 2) )
         self.isActive = 1;
       
       if( (self.spawnflags & 4) )
         self.isActive = -1;
+        
+      self.solid = SOLID_NOT;
     }
   }
 };
