@@ -43,7 +43,7 @@ void() ai_mech_sk_fight_prep={
   local float roll;
 
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   self.speed = self.lefty;
       
   if( (self.flags & FL_DISARMED) ){
@@ -215,7 +215,7 @@ void() ai_mech_sk_fight_prep={
 
 void() ai_mech_sk_stand1={
   ai_update_accuracy( FALSE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( ai_check_scan( self.stat_rdr_mode ) ){
     macro_ai_frame(ai_mech_sk_fight_prep)
@@ -244,7 +244,7 @@ void() ai_mech_sk_stand1={
 
 void() ai_mech_sk_enter_stand={
   ai_update_accuracy( FALSE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   self.torsoCenter.attack_state = TR_NORM;
   self.legs.attack_state = TR_NORM;

@@ -26,6 +26,11 @@ void() temp_chunk_burn={
   TH_DIE
 */
 void() ai_turret_die={
+
+  if( self.deadflag >= DEAD_DYING ){
+    return; //double play prevention
+  }
+  
   local vector  v;
   ai_sfx_dead();
   

@@ -51,7 +51,7 @@ void() data_ini_matok_={
 //MECH COMPONENTS====================
   
   //center torso
-  data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0' );
+  data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', '0 6 0' );
  
   //left torso
   data_ini_torso_left_( "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1' );

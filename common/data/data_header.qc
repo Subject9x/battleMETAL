@@ -38,8 +38,9 @@ void( float partId, string modelPath, float maxHp, vector partOffset, entity par
 };
 
 //just some syntactic sugar wrappings
-void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_center_={
+void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset ) data_ini_torso_center_={
   data_ini_unitPiece_( M_TOR_CENTER, pathToModel, healthMax, offsetOrigin, self, torsoCenter );
+  self.compAltOffset = altOffset;
 };
 
 void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_right_={

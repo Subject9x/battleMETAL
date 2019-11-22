@@ -196,6 +196,7 @@ void() ai_face_goal={
   
 */
 float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
+  local entity handOff;
   //moving to recall node
   if( self.goalentity && self.goalentity != world ){
     self.ideal_yaw = vectoyaw(self.goalentity.origin - self.origin );
@@ -205,7 +206,10 @@ float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
     }
     //reached the recall node
     if( vlen(self.goalentity.origin - self.origin) <= AI_NODE_DISTANCE ){
-      remove(self.ai_node_recall);
+      self.goalentity = world;
+      handOff = self.ai_node_recall;
+      self.ai_node_recall = world;
+      remove(handOff);
     }
     else{
       //keep moving to node

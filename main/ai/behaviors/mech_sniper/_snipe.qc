@@ -11,7 +11,7 @@ Overview: ai unit
 */
 void() ai_mech_sniper_snipe1={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   
@@ -23,7 +23,7 @@ void() ai_mech_sniper_snipe1={
 };
 void() ai_mech_sniper_snipe2={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   
@@ -31,7 +31,7 @@ void() ai_mech_sniper_snipe2={
 };
 void() ai_mech_sniper_snipe3={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   
@@ -39,7 +39,7 @@ void() ai_mech_sniper_snipe3={
 };
 void() ai_mech_sniper_snipe4={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();
@@ -48,7 +48,7 @@ void() ai_mech_sniper_snipe4={
 };
 void() ai_mech_sniper_snipe5={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
     
@@ -59,7 +59,7 @@ void() ai_mech_sniper_snipe5={
 };
 void() ai_mech_sniper_snipe6={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();
@@ -68,7 +68,7 @@ void() ai_mech_sniper_snipe6={
 };
 void() ai_mech_sniper_snipe7={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
     
@@ -79,7 +79,7 @@ void() ai_mech_sniper_snipe7={
 };
 void() ai_mech_sniper_snipe8={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();

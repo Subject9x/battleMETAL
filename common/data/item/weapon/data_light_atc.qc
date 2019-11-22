@@ -24,7 +24,7 @@ void() data_ini_light_atc_={
   self.energyRate = 0;
   
   self.w_range = 1800;
-  self.damageValue = 5;
+  self.damageValue = 6.67;
   self.damageType = DMG_BAL;
 
   self.techLevel = 1;

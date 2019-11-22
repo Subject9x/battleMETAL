@@ -27,7 +27,7 @@ void() ai_mech_sniper_enter_charge={
 
 void() ai_mech_sniper_charge1={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_forward;
@@ -50,7 +50,7 @@ void() ai_mech_sniper_charge1={
 };
 void() ai_mech_sniper_charge2={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -73,7 +73,7 @@ void() ai_mech_sniper_charge2={
 };
 void() ai_mech_sniper_charge3={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -95,7 +95,7 @@ void() ai_mech_sniper_charge3={
 };
 void() ai_mech_sniper_charge4={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -117,7 +117,7 @@ void() ai_mech_sniper_charge4={
 };
 void() ai_mech_sniper_charge5={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -139,7 +139,7 @@ void() ai_mech_sniper_charge5={
 };
 void() ai_mech_sniper_charge6={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -161,7 +161,7 @@ void() ai_mech_sniper_charge6={
 };
 void() ai_mech_sniper_charge7={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -186,7 +186,7 @@ void() ai_mech_sniper_charge7={
 };
 void() ai_mech_sniper_charge8={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -212,7 +212,7 @@ void() ai_mech_sniper_charge8={
 };
 void() ai_mech_sniper_charge9={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -234,7 +234,7 @@ void() ai_mech_sniper_charge9={
 };
 void() ai_mech_sniper_charge10={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float moveCheck;
   moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge11 ); 
@@ -251,7 +251,7 @@ void() ai_mech_sniper_charge10={
 };
 void() ai_mech_sniper_charge11={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();
   ai_attack();
@@ -271,7 +271,7 @@ void() ai_mech_sniper_charge11={
 };
 void() ai_mech_sniper_charge12={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( self.ai_rank > AI_RANK_REG ){
     ChangeYaw(); 
@@ -293,7 +293,7 @@ void() ai_mech_sniper_charge12={
 };
 void() ai_mech_sniper_charge13={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float moveCheck;
   moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge14 ); 
@@ -310,7 +310,7 @@ void() ai_mech_sniper_charge13={
 };
 void() ai_mech_sniper_charge14={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float moveCheck;
   moveCheck = ai_move_frame( self.ai_dir, self.data_speed_forward, ai_mech_sniper_charge15 ); 
@@ -327,7 +327,7 @@ void() ai_mech_sniper_charge14={
 };
 void() ai_mech_sniper_charge15={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();
   ai_attack();
@@ -347,7 +347,7 @@ void() ai_mech_sniper_charge15={
 };
 void() ai_mech_sniper_charge16={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( self.ai_rank > AI_RANK_REG ){
     ChangeYaw();

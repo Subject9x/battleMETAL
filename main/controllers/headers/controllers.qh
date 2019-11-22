@@ -11,7 +11,9 @@ Overview:
 
 //Mech entity controllers
 void() ctrl_update_mechplayer;
+void() ai_ctrl_update_mechplayer;
 void() ctrl_updateCenterTorso;
+void() ai_ctrl_updateCenterTorso;
 void() ctrl_updateLegs;
 void() ctrl_dieLegs;
 

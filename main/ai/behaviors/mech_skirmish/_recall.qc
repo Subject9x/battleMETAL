@@ -24,7 +24,7 @@ void() ai_mech_sk_enter_recall={
 };
 void() ai_mech_sk_recall1={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
  
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall2);
@@ -35,7 +35,7 @@ void() ai_mech_sk_recall1={
 };
 void() ai_mech_sk_recall2={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall3);
@@ -46,7 +46,7 @@ void() ai_mech_sk_recall2={
 };
 void() ai_mech_sk_recall3={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall4);
@@ -57,7 +57,7 @@ void() ai_mech_sk_recall3={
 };
 void() ai_mech_sk_recall4={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall5);
@@ -68,7 +68,7 @@ void() ai_mech_sk_recall4={
 };
 void() ai_mech_sk_recall5={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall6);
@@ -79,7 +79,7 @@ void() ai_mech_sk_recall5={
 };
 void() ai_mech_sk_recall6={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall7);
@@ -90,7 +90,7 @@ void() ai_mech_sk_recall6={
 };
 void() ai_mech_sk_recall7={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall8);
@@ -101,7 +101,7 @@ void() ai_mech_sk_recall7={
 };
 void() ai_mech_sk_recall8={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall9);
@@ -112,7 +112,7 @@ void() ai_mech_sk_recall8={
 };
 void() ai_mech_sk_recall9={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall10);
@@ -123,7 +123,7 @@ void() ai_mech_sk_recall9={
 };
 void() ai_mech_sk_recall10={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall11);
@@ -134,7 +134,7 @@ void() ai_mech_sk_recall10={
 };
 void() ai_mech_sk_recall11={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall12);
@@ -145,7 +145,7 @@ void() ai_mech_sk_recall11={
 };
 void() ai_mech_sk_recall12={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall13);
@@ -156,7 +156,7 @@ void() ai_mech_sk_recall12={
 };
 void() ai_mech_sk_recall13={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall14);
@@ -167,7 +167,7 @@ void() ai_mech_sk_recall13={
 };
 void() ai_mech_sk_recall14={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall15);
@@ -178,7 +178,7 @@ void() ai_mech_sk_recall14={
 };
 void() ai_mech_sk_recall15={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall16);
@@ -189,7 +189,7 @@ void() ai_mech_sk_recall15={
 };
 void() ai_mech_sk_recall16={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float recallCheck;
   recallCheck = ai_recall_logic( self.data_speed_forward, ai_mech_sk_recall1);

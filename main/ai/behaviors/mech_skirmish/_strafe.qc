@@ -26,7 +26,7 @@ void() ai_mech_sk_enter_strafe={
 
 void() ai_mech_sk_strafe1={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();
   ai_attack();
@@ -39,7 +39,7 @@ void() ai_mech_sk_strafe1={
 };
 void() ai_mech_sk_strafe2={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -59,7 +59,7 @@ void() ai_mech_sk_strafe2={
 };
 void() ai_mech_sk_strafe3={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
    
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -75,7 +75,7 @@ void() ai_mech_sk_strafe3={
 };
 void() ai_mech_sk_strafe4={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
    
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -91,7 +91,7 @@ void() ai_mech_sk_strafe4={
 };
 void() ai_mech_sk_strafe5={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
    
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -108,7 +108,7 @@ void() ai_mech_sk_strafe5={
 };
 void() ai_mech_sk_strafe6={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
    
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -128,7 +128,7 @@ void() ai_mech_sk_strafe6={
 };
 void() ai_mech_sk_strafe7={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
  
  local float dampen;
   dampen = self.data_speed_strafe;
@@ -146,7 +146,7 @@ void() ai_mech_sk_strafe7={
 };
 void() ai_mech_sk_strafe8={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
    
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -163,7 +163,7 @@ void() ai_mech_sk_strafe8={
 };
 void() ai_mech_sk_strafe9={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
    
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -180,7 +180,7 @@ void() ai_mech_sk_strafe9={
 };
 void() ai_mech_sk_strafe10={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
  
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -200,7 +200,7 @@ void() ai_mech_sk_strafe10={
 };
 void() ai_mech_sk_strafe11={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
    
   local float dampen;
   dampen = 0.9;
@@ -217,7 +217,7 @@ void() ai_mech_sk_strafe11={
 };
 void() ai_mech_sk_strafe12={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   if( walkmove( self.angles_y, self.data_speed_strafe) ){
     macro_ai_frame(ai_mech_sk_strafe13)
@@ -228,7 +228,7 @@ void() ai_mech_sk_strafe12={
 };
 void() ai_mech_sk_strafe13={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_attack();
   if( walkmove( self.angles_y, self.data_speed_strafe) ){
@@ -240,7 +240,7 @@ void() ai_mech_sk_strafe13={
 };
 void() ai_mech_sk_strafe14={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();
   if( self.ai_rank > AI_RANK_REG )
@@ -255,7 +255,7 @@ void() ai_mech_sk_strafe14={
 };
 void() ai_mech_sk_strafe15={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();
   if( walkmove( self.angles_y, self.data_speed_strafe) ){
@@ -267,7 +267,7 @@ void() ai_mech_sk_strafe15={
 };
 void() ai_mech_sk_strafe16={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( walkmove( self.angles_y, self.data_speed_strafe) ){  
     self.speed = self.lefty;

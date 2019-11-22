@@ -37,7 +37,7 @@ void() ai_mech_sk_enter_hunt={
 };
 void() ai_mech_sk_hunt1={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();
@@ -57,7 +57,7 @@ void() ai_mech_sk_hunt1={
 };
 void() ai_mech_sk_hunt2={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_attack();
   
@@ -74,7 +74,7 @@ void() ai_mech_sk_hunt2={
 };
 void() ai_mech_sk_hunt3={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_mech_sk_enter_recall)
@@ -90,7 +90,7 @@ void() ai_mech_sk_hunt3={
 };
 void() ai_mech_sk_hunt4={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_mech_sk_enter_recall)
@@ -106,7 +106,7 @@ void() ai_mech_sk_hunt4={
 };
 void() ai_mech_sk_hunt5={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_attack();
 
@@ -124,7 +124,7 @@ void() ai_mech_sk_hunt5={
 };
 void() ai_mech_sk_hunt6={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_attack();
 
@@ -142,7 +142,7 @@ void() ai_mech_sk_hunt6={
 };
 void() ai_mech_sk_hunt7={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_mech_sk_enter_recall)
@@ -158,7 +158,7 @@ void() ai_mech_sk_hunt7={
 };
 void() ai_mech_sk_hunt8={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( !ai_valid_target(self.enemy) ){
     self.speed = self.data_speed_forward;
@@ -175,7 +175,7 @@ void() ai_mech_sk_hunt8={
 };
 void() ai_mech_sk_hunt9={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_attack();
   
@@ -193,7 +193,7 @@ void() ai_mech_sk_hunt9={
 };
 void() ai_mech_sk_hunt10={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_attack();
   
@@ -211,7 +211,7 @@ void() ai_mech_sk_hunt10={
 };
 void() ai_mech_sk_hunt11={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_mech_sk_enter_recall)
@@ -227,7 +227,7 @@ void() ai_mech_sk_hunt11={
 };
 void() ai_mech_sk_hunt12={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_mech_sk_enter_recall)
@@ -243,7 +243,7 @@ void() ai_mech_sk_hunt12={
 };
 void() ai_mech_sk_hunt13={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_attack();
   
@@ -261,7 +261,7 @@ void() ai_mech_sk_hunt13={
 };
 void() ai_mech_sk_hunt14={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_attack();  
 
@@ -279,7 +279,7 @@ void() ai_mech_sk_hunt14={
 };
 void() ai_mech_sk_hunt15={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_mech_sk_enter_recall)
@@ -296,7 +296,7 @@ void() ai_mech_sk_hunt15={
 };
 void() ai_mech_sk_hunt16={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   if( !ai_valid_target(self.enemy) ){
     macro_ai_frame(ai_mech_sk_enter_recall)

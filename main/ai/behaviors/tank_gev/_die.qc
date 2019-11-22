@@ -49,6 +49,10 @@ void() ai_gev_die={
   local vector t;
   t = '0 0 0';
   
+  if( self.deadflag >= DEAD_DYING ){
+    return; //double play prevention
+  }
+  
   ai_sfx_dead();
   self.th_react = SUB_Null;
   self.th_pain = SUB_Null;

@@ -8,26 +8,110 @@ Overview:
 
 void() ctrl_update_mechplayer={
   local entity parent;
-  local entity wep;
+  local entity wep;  
+  local entity piece;
+  local float hp;
+  local vector spark;
+  local entity partParent;
+  
   parent = self;
   
   ctrl_updateCenterTorso();
-  if( (self.flags & FL_CLIENT) ){  
-    if( self.legs.deadflag == DEAD_NO ){
-      self = self.legs;
-        ctrl_updateLegs();
-      self = parent;
-    }
+  
+  if( self.legs.deadflag == DEAD_NO ){
+    self = self.legs;
+      ctrl_updateLegs();
+    self = parent;
   }
-  else{
-    self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
-    self.ai_weaponEnergy = 0;
-    self.currentWeaponGroup = 0;
-    wep = self.w_slot;
-    while(wep){
-      ctrl_weapon_think_ai(wep);
-      wep = wep.w_slot;
+  
+  //damage-based cosmetics for unit component pieces
+  self.torsoCenter.hitOffset = self.origin + (v_right * piece.compAltOffset_x) + (v_up * piece.compAltOffset_y);
+  piece = self.partNext;
+  while( piece ){
+    if( piece.classname == MECH_PIECE ){
+      piece.hitOffset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
+      if( piece.deadflag <= DEAD_NO ){
+        hp = piece.health / piece.max_health;
+        if( hp < 0.75){
+          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+          if( hp < 0.5){
+            spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+            if( hp < 0.25){
+              spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+            }
+          }
+        }
+      }
+      else{
+        partParent = util_getPartFromName(piece.partParentId, self); 
+        if( partParent.deadflag <= DEAD_NO ){
+          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+          spark = te_apply_wind( spark );
+          pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+        }
+      }
     }
+    piece = piece.partNext;
+  }
+};
+
+void() ai_ctrl_update_mechplayer={
+  local entity parent;
+  local entity wep;
+  local entity piece;
+  local float hp;
+  local vector spark;
+  local entity partParent;
+  
+  parent = self;
+  ai_ctrl_updateCenterTorso();
+  
+  self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
+  self.ai_weaponEnergy = 0;
+  self.currentWeaponGroup = 0;
+  wep = self.w_slot;
+  while(wep){
+    ctrl_weapon_think_ai(wep);
+    wep = wep.w_slot;
+  }
+  //damage-based cosmetics for unit component pieces
+
+  piece = self.partNext;
+  while( piece ){
+    if( piece.classname == MECH_PIECE ){
+      piece.hitOffset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
+      if( piece.deadflag <= DEAD_NO ){
+        hp = piece.health / piece.max_health;
+        if( hp < 0.75){
+          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
+          if( hp < 0.5){
+            spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 0.5);
+            if( hp < 0.25){
+              spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
+              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 0.5);
+            }
+          }
+        }
+      }
+      else{
+        partParent = util_getPartFromName(piece.partParentId, self); 
+        if( partParent.deadflag <= DEAD_NO ){
+          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+          spark = te_apply_wind( spark );
+          pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * WINDDIR_z, 0.5);
+        }
+      }
+    }
+    piece = piece.partNext;
   }
 };
 
@@ -37,20 +121,11 @@ void() ctrl_updateCenterTorso={
   local float rate;
   local entity cam;
   local vector v1;
-  
-  if( (self.flags & FL_CLIENT) ){
-    if( time > self.laser_sight_timer ){
-      makevectors(self.v_angle);
-      v1 = self.cockpit.origin;
-      traceline(v1, v1 + v_forward*10000, FALSE, self);
-      self.laser_sight_org = trace_endpos;
-      self.laser_sight_timer = time + 0.05;
-    }
-  }
-  else{
+
+  if( time > self.laser_sight_timer ){
     makevectors(self.v_angle);
-    v1 = self.origin + (v_right * cam.compOffset_x) + (v_up*cam.compOffset_y) + (v_forward*cam.compOffset_z);
-    traceline(v1, v1 + v_forward * 10000, FALSE, self);
+    v1 = self.cockpit.origin;
+    traceline(v1, v1 + v_forward*10000, FALSE, self);
     self.laser_sight_org = trace_endpos;
     self.laser_sight_timer = time + 0.05;
   }
@@ -83,78 +158,80 @@ void() ctrl_updateCenterTorso={
     }
   }
   
-  if((self.flags & FL_CLIENT)){
-    mx = self.movement_x;
-    if(mx < 0){
-      mx = mx * -1;
-    }
-    
-    my = self.movement_y;
-    if(my < 0){
-      my = my * -1;
-    }
-    rate = self.spreadDefault_z;
-    //accuracy / spread mechanics
-    if( (my != 0) || (mx != 0) ) {
-      //unit is moving, increase spread factor
-      if( !self.stat_rdr_mode ){
-        rate = rate + ( rate * 0.5 );
-      }
-      rate = rate - self.accuracyMod;
-      self.accuracy = self.accuracy + rate;
-      if( self.accuracy > self.spreadDefault_y ){
-        self.accuracy = self.spreadDefault_y;
-      }
-    }
-    if( (my == 0) && (mx == 0) ){
-      //standing still, lessen the spread
-      if( self.stat_rdr_mode ){
-        rate = rate + (rate * 0.25);
-      }
-      rate = rate + self.accuracyMod;
-      self.accuracy = self.accuracy - rate;
-      if( self.accuracy < self.spreadDefault_x ){
-        self.accuracy = self.spreadDefault_x;
-      }
-    }
+  mx = self.movement_x;
+  if(mx < 0){
+    mx = mx * -1;
   }
   
-  //damage-based cosmetics for unit component pieces
-  local entity piece;
-  local float hp;
-  local vector spark;
-  local entity partParent;
-  piece = self.partNext;
-  while( piece ){
-    if( piece.classname == MECH_PIECE ){
-      piece.hitOffset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
-      if( piece.deadflag <= DEAD_NO ){
-        hp = piece.health / piece.max_health;
-        if( hp < 0.75){
-          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
-          if( hp < 0.5){
-            spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 0.5);
-            if( hp < 0.25){
-              spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
-              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 0.5);
-            }
+  my = self.movement_y;
+  if(my < 0){
+    my = my * -1;
+  }
+  rate = self.spreadDefault_z;
+  //accuracy / spread mechanics
+  if( (my != 0) || (mx != 0) ) {
+    //unit is moving, increase spread factor
+    if( !self.stat_rdr_mode ){
+      rate = rate + ( rate * 0.5 );
+    }
+    rate = rate - self.accuracyMod;
+    self.accuracy = self.accuracy + rate;
+    if( self.accuracy > self.spreadDefault_y ){
+      self.accuracy = self.spreadDefault_y;
+    }
+  }
+  if( (my == 0) && (mx == 0) ){
+    //standing still, lessen the spread
+    if( self.stat_rdr_mode ){
+      rate = rate + (rate * 0.25);
+    }
+    rate = rate + self.accuracyMod;
+    self.accuracy = self.accuracy - rate;
+    if( self.accuracy < self.spreadDefault_x ){
+      self.accuracy = self.spreadDefault_x;
+    }
+  }
+};
+
+void() ai_ctrl_updateCenterTorso={
+  local float diff;
+  local float mx, my;
+  local float rate;
+  local entity cam;
+  local vector v1;
+
+  makevectors(self.torsoCenter.angles);
+  v1 = self.origin + (v_right * cam.compOffset_x) + (v_up*cam.compOffset_y) + (v_forward*cam.compOffset_z);
+  traceline(v1, v1 + v_forward * 10000, FALSE, self);
+  self.laser_sight_org = trace_endpos;
+  self.laser_sight_timer = time + 0.05;
+    
+  if( time > self.count4 ){
+    self.count4 = time + 0.1;
+    if( self.energy > -1 ){
+      diff = self.energyRate;
+      if( self.stat_plr_stt == PLAYER_SPRINT_ON ){
+        diff = diff * self.evasionDrain;
+      }
+      self.energy = self.energy + diff;
+    }  
+    if(self.shield < self.shieldMax){
+      if(time > self.shieldHitDelay){
+        if(self.energy > 0){
+          self.shield = self.shield + self.shieldRate;
+          self.energy = self.energy - (self.shieldRate * 3);
+          if(self.shield > self.shieldMax){
+            self.shield = self.shieldMax;
           }
         }
       }
-      else{
-        partParent = util_getPartFromName(piece.partParentId, self); 
-        if( partParent.deadflag <= DEAD_NO ){
-          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          spark = te_apply_wind( spark );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * WINDDIR_z, 0.5);
-        }
-      }
     }
-    piece = piece.partNext;
+    if(self.energy < 0){
+      self.energy = 0;
+    }
+    else if(self.energy > self.energyMax){
+      self.energy = self.energyMax;
+    }
   }
 };
 

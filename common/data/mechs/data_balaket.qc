@@ -51,7 +51,7 @@ void() data_ini_balaket_={
 //MECH COMPONENTS====================
   
   //center torso
-  data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0' );
+  data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );
  
   //left torso
   data_ini_torso_left_( "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5');

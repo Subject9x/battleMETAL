@@ -123,7 +123,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   if( (dmgtype & EFF_STX) ){
     damage = 0;
   }
-  return damage;
+  return 0;
 };
 /*
 Explosive Damage
@@ -349,6 +349,7 @@ entity(vector point, float rad, entity trg) t_find_part={
     part = trg.torsoRight;
     radi = vlen(point - trg.torsoRight.hitOffset);
   }
+
   if( part.deadflag > DEAD_NO ){
     part = part.realowner;
   }

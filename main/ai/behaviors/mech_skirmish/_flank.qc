@@ -25,7 +25,7 @@ void() ai_mech_sk_enter_flank={
 
 void() ai_mech_sk_flank1={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -49,7 +49,7 @@ void() ai_mech_sk_flank1={
 };
 void() ai_mech_sk_flank2={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -74,7 +74,7 @@ void() ai_mech_sk_flank2={
 };
 void() ai_mech_sk_flank3={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -101,7 +101,7 @@ void() ai_mech_sk_flank3={
 };
 void() ai_mech_sk_flank4={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -125,7 +125,7 @@ void() ai_mech_sk_flank4={
 };
 void() ai_mech_sk_flank5={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -149,7 +149,7 @@ void() ai_mech_sk_flank5={
 };
 void() ai_mech_sk_flank6={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -174,7 +174,7 @@ void() ai_mech_sk_flank6={
 };
 void() ai_mech_sk_flank7={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -200,7 +200,7 @@ void() ai_mech_sk_flank7={
 };
 void() ai_mech_sk_flank8={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -224,7 +224,7 @@ void() ai_mech_sk_flank8={
 };
 void() ai_mech_sk_flank9={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -248,7 +248,7 @@ void() ai_mech_sk_flank9={
 };
 void() ai_mech_sk_flank10={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();
@@ -268,7 +268,7 @@ void() ai_mech_sk_flank10={
 };
 void() ai_mech_sk_flank11={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_face_targ();
   if( self.ai_rank > AI_RANK_REG )
@@ -289,7 +289,7 @@ void() ai_mech_sk_flank11={
 };
 void() ai_mech_sk_flank12={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_face_targ();
         
@@ -308,7 +308,7 @@ void() ai_mech_sk_flank12={
 };
 void() ai_mech_sk_flank13={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_face_targ();
       
@@ -327,7 +327,7 @@ void() ai_mech_sk_flank13={
 };
 void() ai_mech_sk_flank14={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ai_face_targ();
   ai_attack();
@@ -347,7 +347,7 @@ void() ai_mech_sk_flank14={
 };
 void() ai_mech_sk_flank15={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
 
   ai_face_targ();
@@ -369,7 +369,7 @@ void() ai_mech_sk_flank15={
 };
 void() ai_mech_sk_flank16={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
       

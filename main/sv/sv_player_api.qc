@@ -276,8 +276,7 @@ void() PlayerDie={
     client_push_player_info();
     msg_entity = self;
     WriteByte( MSG_ONE, SVC_SETVIEWPORT );
-    WriteEntity( MSG_ONE, self );
-    self.weaponmodel = "";
+    WriteEntity( MSG_ONE, self );    
   }
   self.effects = 0;
   
@@ -299,7 +298,9 @@ void() PlayerDie={
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
 
-void() PlayerDieEnd={
+void() PlayerDieEnd={  
+  player_makeObserver();
+  self.movetype = MOVETYPE_NONE;
   //update objectives on player death.
   local entity objtivs;
   objtivs = findchainfloat( data_type, DATA_OBJT );

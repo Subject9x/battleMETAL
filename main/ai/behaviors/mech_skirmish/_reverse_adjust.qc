@@ -38,7 +38,7 @@ void() ai_mech_sk_enter_reverse_adjust={
 
 void() ai_mech_sk_reverse_adjust1={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_backward;
@@ -56,7 +56,7 @@ void() ai_mech_sk_reverse_adjust1={
 
 void() ai_mech_sk_reverse_adjust2={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_backward;
@@ -74,7 +74,7 @@ void() ai_mech_sk_reverse_adjust2={
 
 void() ai_mech_sk_reverse_adjust3={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_backward;
@@ -92,7 +92,7 @@ void() ai_mech_sk_reverse_adjust3={
 
 void() ai_mech_sk_reverse_adjust4={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_backward;
@@ -110,7 +110,7 @@ void() ai_mech_sk_reverse_adjust4={
 
 void() ai_mech_sk_reverse_adjust5={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_backward;
@@ -128,7 +128,7 @@ void() ai_mech_sk_reverse_adjust5={
 
 void() ai_mech_sk_reverse_adjust6={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_backward;
@@ -146,7 +146,7 @@ void() ai_mech_sk_reverse_adjust6={
 
 void() ai_mech_sk_reverse_adjust7={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_backward;
@@ -164,7 +164,7 @@ void() ai_mech_sk_reverse_adjust7={
 
 void() ai_mech_sk_reverse_adjust8={
   ai_update_accuracy( TRUE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   local float dampen;
   dampen = self.data_speed_backward;

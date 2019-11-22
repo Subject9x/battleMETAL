@@ -32,7 +32,7 @@ void() ai_mech_sk_enter_charge={
 
 void() ai_mech_sk_charge1={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_forward;
@@ -55,7 +55,7 @@ void() ai_mech_sk_charge1={
 };
 void() ai_mech_sk_charge2={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -79,7 +79,7 @@ void() ai_mech_sk_charge2={
 };
 void() ai_mech_sk_charge3={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -105,7 +105,7 @@ void() ai_mech_sk_charge3={
 };
 void() ai_mech_sk_charge4={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -128,7 +128,7 @@ void() ai_mech_sk_charge4={
 };
 void() ai_mech_sk_charge5={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -151,7 +151,7 @@ void() ai_mech_sk_charge5={
 };
 void() ai_mech_sk_charge6={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -175,7 +175,7 @@ void() ai_mech_sk_charge6={
 };
 void() ai_mech_sk_charge7={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -200,7 +200,7 @@ void() ai_mech_sk_charge7={
 };
 void() ai_mech_sk_charge8={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -223,7 +223,7 @@ void() ai_mech_sk_charge8={
 };
 void() ai_mech_sk_charge9={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -246,7 +246,7 @@ void() ai_mech_sk_charge9={
 };
 void() ai_mech_sk_charge10={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -270,7 +270,7 @@ void() ai_mech_sk_charge10={
 };
 void() ai_mech_sk_charge11={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -296,7 +296,7 @@ void() ai_mech_sk_charge11={
 };
 void() ai_mech_sk_charge12={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_forward;
@@ -319,7 +319,7 @@ void() ai_mech_sk_charge12={
 };
 void() ai_mech_sk_charge13={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();  
      
@@ -337,7 +337,7 @@ void() ai_mech_sk_charge13={
 };
 void() ai_mech_sk_charge14={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();
@@ -356,7 +356,7 @@ void() ai_mech_sk_charge14={
 };
 void() ai_mech_sk_charge15={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();  
   
@@ -377,7 +377,7 @@ void() ai_mech_sk_charge15={
 };
 void() ai_mech_sk_charge16={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();   
 

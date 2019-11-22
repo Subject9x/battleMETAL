@@ -51,7 +51,7 @@ void() data_ini_monitor_={
 //MECH COMPONENTS====================
   
   //center torso
-  data_ini_torso_center_(  "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0' );
+  data_ini_torso_center_(  "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0', '0 6 0' );
  
   //left tors
   data_ini_torso_left_( "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 11 -0.5' );

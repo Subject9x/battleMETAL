@@ -13,6 +13,10 @@ void() ai_tank_sk_die={
   local entity w_chain;
   local vector v;
   
+  if( self.deadflag >= DEAD_DYING ){
+    return; //double play prevention
+  }
+  
   ai_sfx_dead();
   self.th_react = SUB_Null;
   self.th_pain = SUB_Null;

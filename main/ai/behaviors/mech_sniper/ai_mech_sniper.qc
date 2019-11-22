@@ -38,14 +38,14 @@ void() ai_mech_sniper={
 
 void() ai_mech_sniper_walk1={
   ai_update_accuracy( FALSE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   macro_ai_frame(ai_mech_sniper_walk1)
 };
 
 void() ai_mech_sniper_stand1={
   ai_update_accuracy( FALSE ); 
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   self.legs.attack_state = TR_YAW;
   self.legs.think = bot_leg_stand1;
@@ -88,7 +88,7 @@ void() ai_mech_sniper_enter_stand={
 void() ai_mech_sniper_fight_prep={
   local float roll;
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( ai_valid_target(self.enemy) ){
     roll = random();

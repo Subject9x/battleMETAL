@@ -22,7 +22,7 @@ void() ai_mech_sniper_enter_melee={
 
 void() ai_mech_sniper_melee1={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   self.ideal_yaw = self.ai_dir;
   ChangeYaw();
@@ -32,7 +32,7 @@ void() ai_mech_sniper_melee1={
 };
 void() ai_mech_sniper_melee2={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();    
   if( self.ai_rank > AI_RANK_REG )
@@ -42,7 +42,7 @@ void() ai_mech_sniper_melee2={
 };
 void() ai_mech_sniper_melee3={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
 
   ChangeYaw();
   
@@ -50,7 +50,7 @@ void() ai_mech_sniper_melee3={
 };
 void() ai_mech_sniper_melee4={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();
   
@@ -58,7 +58,7 @@ void() ai_mech_sniper_melee4={
 };
 void() ai_mech_sniper_melee5={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();
   ai_attack();
@@ -67,7 +67,7 @@ void() ai_mech_sniper_melee5={
 };
 void() ai_mech_sniper_melee6={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ChangeYaw();
   if( self.ai_rank > AI_RANK_REG )
@@ -77,7 +77,7 @@ void() ai_mech_sniper_melee6={
 };
 void() ai_mech_sniper_melee7={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -98,7 +98,7 @@ void() ai_mech_sniper_melee7={
 };
 void() ai_mech_sniper_melee8={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -114,7 +114,7 @@ void() ai_mech_sniper_melee8={
 };
 void() ai_mech_sniper_melee9={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -130,7 +130,7 @@ void() ai_mech_sniper_melee9={
 };
 void() ai_mech_sniper_melee10={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -148,7 +148,7 @@ void() ai_mech_sniper_melee10={
 };
 void() ai_mech_sniper_melee11={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
        
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -167,7 +167,7 @@ void() ai_mech_sniper_melee11={
 };
 void() ai_mech_sniper_melee12={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -183,7 +183,7 @@ void() ai_mech_sniper_melee12={
 };
 void() ai_mech_sniper_melee13={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -199,7 +199,7 @@ void() ai_mech_sniper_melee13={
 };
 void() ai_mech_sniper_melee14={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -216,7 +216,7 @@ void() ai_mech_sniper_melee14={
 };
 void() ai_mech_sniper_melee15={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
     
   local float dampen;
   dampen = self.data_speed_strafe;
@@ -233,7 +233,7 @@ void() ai_mech_sniper_melee15={
 };
 void() ai_mech_sniper_melee16={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();

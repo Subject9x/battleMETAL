@@ -24,7 +24,7 @@ void() ai_mech_sniper_enter_reverse={
 };
 void() ai_mech_sniper_reverse1={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();
@@ -33,7 +33,7 @@ void() ai_mech_sniper_reverse1={
 };
 void() ai_mech_sniper_reverse2={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
     
@@ -44,7 +44,7 @@ void() ai_mech_sniper_reverse2={
 };
 void() ai_mech_sniper_reverse3={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   
@@ -52,7 +52,7 @@ void() ai_mech_sniper_reverse3={
 };
 void() ai_mech_sniper_reverse4={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   
@@ -60,7 +60,7 @@ void() ai_mech_sniper_reverse4={
 };
 void() ai_mech_sniper_reverse5={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();
@@ -76,7 +76,7 @@ void() ai_mech_sniper_reverse5={
 };
 void() ai_mech_sniper_reverse6={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   if( self.ai_rank > AI_RANK_REG )
@@ -90,7 +90,7 @@ void() ai_mech_sniper_reverse6={
 };
 void() ai_mech_sniper_reverse7={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
 
@@ -102,7 +102,7 @@ void() ai_mech_sniper_reverse7={
 };
 void() ai_mech_sniper_reverse8={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
 
@@ -114,7 +114,7 @@ void() ai_mech_sniper_reverse8={
 };
 void() ai_mech_sniper_reverse9={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   ai_attack();
@@ -127,7 +127,7 @@ void() ai_mech_sniper_reverse9={
 };
 void() ai_mech_sniper_reverse10={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
   if( self.ai_rank > AI_RANK_REG )
@@ -141,7 +141,7 @@ void() ai_mech_sniper_reverse10={
 };
 void() ai_mech_sniper_reverse11={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
 
@@ -153,7 +153,7 @@ void() ai_mech_sniper_reverse11={
 };
 void() ai_mech_sniper_reverse12={
   ai_update_accuracy( TRUE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   ai_face_targ();
 
@@ -166,7 +166,7 @@ void() ai_mech_sniper_reverse12={
 };
 void() ai_mech_sniper_reverse13={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
  
   ai_attack();
   
@@ -174,7 +174,7 @@ void() ai_mech_sniper_reverse13={
 };
 void() ai_mech_sniper_reverse14={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   if( self.ai_rank > AI_RANK_REG )
     ai_attack();
@@ -183,13 +183,13 @@ void() ai_mech_sniper_reverse14={
 };
 void() ai_mech_sniper_reverse15={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   macro_ai_frame(ai_mech_sniper_reverse16)
 };
 void() ai_mech_sniper_reverse16={
   ai_update_accuracy( FALSE );
-  macro_ai_update(ctrl_update_mechplayer)
+  macro_ai_update(ai_ctrl_update_mechplayer)
   
   macro_ai_frame(ai_mech_sniper_fight_prep)
 };

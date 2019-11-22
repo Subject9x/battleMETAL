@@ -65,7 +65,7 @@ void(entity attacker) ai_mech_sk_panic1={
   local entity friend;
   
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   self.ai_dir = self.angles_y;
   friend = ai_find_friend_farthest( self.ai_view * 0.5 );
@@ -88,91 +88,91 @@ void(entity attacker) ai_mech_sk_panic1={
 };
 void() ai_mech_sk_panic2={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic3)
 };
 void() ai_mech_sk_panic3={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic4)
 };
 void() ai_mech_sk_panic4={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic5)
 };
 void() ai_mech_sk_panic5={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic6)
 };
 void() ai_mech_sk_panic6 ={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic7)
 };
 void() ai_mech_sk_panic7={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic8)
 };
 void() ai_mech_sk_panic8={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic9)
 };
 void() ai_mech_sk_panic9={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic10)
 };
 void() ai_mech_sk_panic10={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic11)
 };
 void() ai_mech_sk_panic11={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic12)
 };
 void() ai_mech_sk_panic12={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic13)
 };
 void() ai_mech_sk_panic13={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic14)
 };
 void() ai_mech_sk_panic14={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic15)
 };
 void() ai_mech_sk_panic15={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_fight_prep, ai_mech_sk_panic16)
 };
 void() ai_mech_sk_panic16={
   ai_update_accuracy( TRUE );
-  macro_ai_update( ctrl_update_mechplayer )
+  macro_ai_update( ai_ctrl_update_mechplayer )
   
   macro_ai_frame_count( ai_mech_sk_panic1 )
 
