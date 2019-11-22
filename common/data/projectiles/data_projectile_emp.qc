@@ -74,6 +74,8 @@ void() data_projectile_emp_think_={
 };
 
 void()data_prj_emp_explode={
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
   
   local entity lst;
   lst = findradius(self.origin, DAT_PRJ_EMP_EXPRAD);
@@ -96,10 +98,11 @@ void()data_prj_emp_explode={
 };
 
 void() data_prj_emp_touch={
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
 	if( pointcontents(self.origin) == CONTENT_SKY ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
-    //remove(self);
 		return;
 	}
  
@@ -113,7 +116,6 @@ void() data_prj_emp_touch={
       pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
     }
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-    //remove(self);
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
     return;

@@ -36,11 +36,15 @@ void() data_projectile_missile_activeradar_think={
   }
   
 	if (self.enemy.health < 1){
+    self.solid = SOLID_NOT;
+    self.touch = SUB_Null;
     self.think = BecomeExplosion;
     self.nextthink = time + 1 + random();
 		return;
 	}
   if(self.enemy == world){
+    self.solid = SOLID_NOT;
+    self.touch = SUB_Null;
     self.think = BecomeExplosion;
     self.nextthink = time + 1 + random();
     return;
@@ -82,6 +86,8 @@ void() data_projectile_missile_activeradar_delay={
 };
 
 void() data_projectile_missile_activeradar_touch={
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
 	if (pointcontents(self.origin) == CONTENT_SKY){
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;

@@ -32,7 +32,7 @@ void() playerAttack={
           self.currentWeaponGroup = 1;
         }
         weaponGroup = self.currentWeaponGroup;
-        self.chainWeaponTimer = time + 0.2;
+        self.chainWeaponTimer = time + CHAIN_FIRE_INTERVAL;
       }
     }
   }

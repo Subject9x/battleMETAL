@@ -39,6 +39,7 @@ void() data_projectile_ini_quantum_bit_touch_={
       pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
 
     self.touch = SUB_Null;
+    self.solid = SOLID_NOT;
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
     return;
@@ -46,6 +47,7 @@ void() data_projectile_ini_quantum_bit_touch_={
   
   pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
   self.touch = SUB_Null;
+  self.solid = SOLID_NOT;
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
 };

@@ -65,6 +65,7 @@ void() data_projectile_plasma_burn_th={
   
   if(time > self.data_lifetime){
     self.touch = SUB_Null;
+    self.solid = SOLID_NOT;
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
     return;
@@ -107,6 +108,7 @@ void() data_projectile_plasma_touch={
       t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     }
 	}
+  self.solid = SOLID_NOT;
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
 };

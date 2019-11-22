@@ -53,10 +53,10 @@ void() data_projectile_snub_artillery_touch_={
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
   
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
-  //remove(self);
-  //return;
 };
 
 void() data_projectile_snub_artillery_radiusDamage={
