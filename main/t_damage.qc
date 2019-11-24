@@ -430,8 +430,9 @@ void(entity targ, entity attacker, float dmg_type) killed={
           MISSION_LOSSES_MILITAR = MISSION_LOSSES_MILITAR + 1;
           break;
       }
-      if( (attacker.flags & FL_CLIENT) && (self.faction != attacker.faction) )
+      if( (attacker.flags & FL_CLIENT) && (self.faction != attacker.faction) ){
         attacker.frags = attacker.frags + 1;
+      }
       self.enemy = attacker;
       killed_monsters = killed_monsters + 1;
       WriteByte (MSG_ALL, SVC_KILLEDMONSTER);

@@ -28,7 +28,7 @@ void() data_ini_plasma_={
   self.damageType = DMG_BAL;
   
   self.techLevel = 3;
-  self.i_size = 2;
+  self.equipSize = 2;
   
   #ifdef CSQC  
   self.abbrev = "RPC";

@@ -29,7 +29,7 @@ void() data_ini_ion_={
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
 
   self.techLevel = 1;
-  self.i_size = 2;
+  self.equipSize = 2;
   
   #ifdef CSQC
   self.abbrev = "ION";

@@ -271,7 +271,7 @@ void() navBarListener={
 		  
           //lists are stateful, so we offload the data we care about to clunky arrays.
           data_WeaponNames[itemId] = UI_ARMING_DATA_item_list.w_name;
-          data_WeaponSize[itemId] = UI_ARMING_DATA_item_list.i_size;
+          data_WeaponSize[itemId] = UI_ARMING_DATA_item_list.equipSize;
           data_WeaponType[itemId] = UI_ARMING_DATA_item_list.damageType;
         }
         itemUnlockCounter = itemUnlockCounter + 1;

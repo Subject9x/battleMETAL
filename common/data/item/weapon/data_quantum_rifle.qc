@@ -31,7 +31,7 @@ void() data_ini_quantum_={
   self.damageType = (DMG_BAL | EFF_STX | EFF_ENE);
   
   self.techLevel = 2;
-  self.i_size = 1;
+  self.equipSize = 1;
  
   #ifdef CSQC
   self.abbrev = "QRF";

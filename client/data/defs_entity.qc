@@ -17,4 +17,4 @@ Overview:
 .float isActive;
 .float nav_name;
 .vector ui_org;
-.vector ui_size;
+.vector uequipSize;

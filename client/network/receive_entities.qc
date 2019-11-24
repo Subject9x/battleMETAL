@@ -230,26 +230,37 @@ void() client_event_deploypoint={
   DEPLOY_POINTS_ORG[depid] = te_read_vector();
 };
 
-void() client_event_objective={
-  local float objid, prevState, nexState, type;
-  
-  objid = ReadByte();
-  prevState = OBJECTIVES[objid];
-  nexState = ReadByte();
+void() client_event_objective_win={ 
+  local float objectiveId, objectiveStatus, type;
+  objectiveId = ReadByte();
+  objectiveStatus = ReadShort();
   type = ReadByte();
+  OBJECTIVES[objectiveId] = objectiveStatus;
   
-  if( (prevState > FALSE) ){
-    if( prevState == TRUE ){
-      if( nexState == -1 ){
-        te_objective_failed();
-      }
-      if( nexState == 2 ){
-       te_objective_complete( type );
-      }
-    }
+  if( objectiveStatus != 2 ){
+    return;
   }
   
-  OBJECTIVES[objid] = nexState;
+  switch( type ){
+    case 1:
+      hud_event_objective_complete_prime();
+      break;
+    case 2:
+      hud_event_objective_complete_second();
+      break;
+    case 3:
+      hud_event_objective_complete_second();
+      break;
+  }
+};
+
+void() client_event_objective_fail={
+  local float objectiveId, objectiveStatus;
+  objectiveId = ReadByte();
+  objectiveStatus = ReadShort();
+  OBJECTIVES[objectiveId] = objectiveStatus;
+
+  hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1) ;
 };
 
 void() client_event_boundary={

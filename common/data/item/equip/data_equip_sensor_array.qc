@@ -28,7 +28,7 @@ void() data_ini_equip_sensor_array_={
   self.damageType = (DMG_MSC);
   
   self.techLevel = 1;
-  self.i_size = 1;
+  self.equipSize = 1;
   
   #ifdef CSQC
   self.abbrev = "LSAR";

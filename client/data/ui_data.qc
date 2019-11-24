@@ -437,7 +437,7 @@ float(float id) ui_date_load_item1={
   ITEM1_DATA_EN = UI_ARMING_DATA_item_a.energyRate;
   ITEM1_DATA_RANGE = UI_ARMING_DATA_item_a.w_range;
   ITEM1_DATA_CLIP = UI_ARMING_DATA_item_a.w_clipsize;
-  ITEM1_DATA_SIZE = UI_ARMING_DATA_item_a.i_size;
+  ITEM1_DATA_SIZE = UI_ARMING_DATA_item_a.equipSize;
   ITEM1_DATA_TECH = UI_ARMING_DATA_item_a.techLevel;
   ITEM1_DATA_DESC = UI_ARMING_DATA_item_a.description;
 
@@ -460,7 +460,7 @@ float(float id) ui_date_load_item2={
   ITEM2_DATA_EN = UI_ARMING_DATA_item_b.energyRate;
   ITEM2_DATA_RANGE = UI_ARMING_DATA_item_b.w_range;
   ITEM2_DATA_CLIP = UI_ARMING_DATA_item_b.w_clipsize;
-  ITEM2_DATA_SIZE = UI_ARMING_DATA_item_b.i_size;
+  ITEM2_DATA_SIZE = UI_ARMING_DATA_item_b.equipSize;
   ITEM2_DATA_TECH = UI_ARMING_DATA_item_b.techLevel;
   ITEM2_DATA_DESC = UI_ARMING_DATA_item_b.description;
   

@@ -421,19 +421,6 @@ void() te_targ_kill={
   WriteByte( MSG_ONE, TE_TARG_KILL );
 };
 
-void(float type) te_objective_complete={
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_OBJECTIVE_COMPLETE );
-  WriteByte( MSG_ONE, type );
-};
-
-void() te_objective_failed={
-  msg_entity = self;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE, TE_OBJECTIVE_FAILED );
-};
-
 void() te_mission_win={
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );

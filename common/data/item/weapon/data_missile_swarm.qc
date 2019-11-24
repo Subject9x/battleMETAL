@@ -31,7 +31,7 @@ void() data_ini_missile_swarm_={
   self.damageType = DMG_EXP | EFF_ARC | EFF_PTR;
  
   self.techLevel = 3;
-  self.i_size = 2;
+  self.equipSize = 2;
 
   #ifdef CSQC
   self.abbrev = "SWRM";

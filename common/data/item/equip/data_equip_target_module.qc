@@ -28,7 +28,7 @@ void() data_ini_equip_target_module_={
   self.damageType = (DMG_MSC);
 
   self.techLevel = 1;
-  self.i_size = 2;
+  self.equipSize = 2;
   
   #ifdef CSQC
   self.abbrev = "ATGM";

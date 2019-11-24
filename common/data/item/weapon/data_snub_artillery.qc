@@ -28,7 +28,7 @@ void() data_ini_snub_artillery_={
   self.damageType = (DMG_BAL | EFF_ARC);
 
   self.techLevel = 2;
-  self.i_size = 3;
+  self.equipSize = 3;
 
   #ifdef CSQC
   self.abbrev = "SFGA";

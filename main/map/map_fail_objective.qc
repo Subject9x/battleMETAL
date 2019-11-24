@@ -18,14 +18,15 @@ Inputs
 void() map_fail_objective_use={
   local entity obj;
   
-  obj = find(world, targetname, self.target);
-  if( obj ){
-    obj.isActive = -1;
+  obj = findchain( targetname, self.target );
+  while( obj ){
+    if( obj.classname == "map_objective" ){
+      obj.isActive = -1;
+    }
+    obj = obj.chain;
   }
-  else{
-    dprint( strcat("Objective ", self.target, " not found!\n") ); //DEBUG
-  }
-  remove(self);
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.1;
 };
 
 /*QUAKED map_fail_objective (0.431 0.788 0.753) (-16 -8 -16) (16 8 16) - ON_TOUCH
@@ -54,5 +55,6 @@ void() map_fail_objective={
     self.solid = SOLID_NOT;
     setsize( self, VEC_ORIGIN, VEC_ORIGIN );
   }
+  self.use = map_fail_objective_use;
   setorigin( self, self.origin );
 };

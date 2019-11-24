@@ -29,7 +29,7 @@ void() data_ini_emp_={
   self.damageType = (DMG_ENE | EFF_STX | EFF_ENE);
   
   self.techLevel = 2;
-  self.i_size = 3;
+  self.equipSize = 3;
   
   #ifdef CSQC
   self.abbrev = "EMP";

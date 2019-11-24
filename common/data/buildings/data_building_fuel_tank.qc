@@ -10,6 +10,10 @@ Overview: data file for building
 
 //Death Animation
 void() hfuel_death1 = [1, hfuel_death2]{
+  
+  if( self.deadflag > DEAD_NO ){
+    return;
+  }
   //fire triggers when dead
   trigger_event( self.enemy, self.trigOnDeath );
   

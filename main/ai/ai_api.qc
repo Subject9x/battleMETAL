@@ -455,7 +455,6 @@ entity() ai_goal_offset_node={
   local float checkLen;
   local vector offsetNodeOrg;
   local entity offsetNode;
-  cons_logAFloat("ai_goal_offset_node()", 1); //DEBUG
   angl = self.angles;
   angl_y = anglemod(self.angles_y - 99);
   incr = 33;

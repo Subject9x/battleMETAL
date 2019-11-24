@@ -124,22 +124,24 @@ void(string mech_data) cl_get_mechs_all={
 void(string item_data) cl_get_items_all={
   local float itrTokens, tokens;
   local float itemId;
-  
+  local float total;
+
   tokens = tokenizebyseparator(item_data, " ",",");
   itrTokens = 0;
-  
-  while(itrTokens <= tokens){
+  total = 1;
+  while(itrTokens < tokens + 1){
     if( argv(itrTokens) != "" ){
       itemId = stof( argv(itrTokens) );
       if(itemId > 0){
         //order of items doesn't really matter
         UNLOCKED_ITEMS[itemId] = itemId;
+        total = total + 1;
       }
     }
     itrTokens = itrTokens + 1;
   }
   //we store the total for headache reduction later in UI code.
-  UNLOCKED_ITEMS_TOTAL = 24;
+  UNLOCKED_ITEMS_TOTAL = total;
 };
 
 void(string unlockData) cl_unlock_stuff={
@@ -167,7 +169,7 @@ void(string unlockData) cl_unlock_stuff={
   }
 
   tokenItr = 0;
-  itemCounter = 0;
+  itemCounter = 1;
   if( argv(3) != "" ){
     tokens = tokenizebyseparator( MENU_DEBRIEF_unlocks_equip, " " );
     while( tokenItr < tokens ){

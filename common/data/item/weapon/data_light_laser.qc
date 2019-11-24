@@ -20,8 +20,8 @@ void() data_ini_light_laser_={
   self.w_name = "Light Laser";
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.75;
-  self.reloadMax = 0.75;
+  self.reloadRate = 0.85;
+  self.reloadMax = 0.85;
   self.energyRate = 15;
 
   self.w_range = 2000;
@@ -29,7 +29,7 @@ void() data_ini_light_laser_={
   self.damageType = (DMG_ENE | EFF_SHD);
 
   self.techLevel = 1;
-  self.i_size = 1;
+  self.equipSize = 1;
 
   #ifdef CSQC
   self.abbrev = "LAS";

@@ -142,7 +142,7 @@ float() data_mech_config_valid={
         remove(weaponEnt);
         return FALSE;
       }
-      if( (weaponEnt.i_size != 0) && (weaponEnt.i_size > hardpoint.hardpointSize) ){
+      if( (weaponEnt.equipSize != 0) && (weaponEnt.equipSize > hardpoint.hardpointSize) ){
         cons_logAString("data_mech_config_valid", "FAILED - Hardpoint Size mismatch");  //DEBUG
         remove(weaponEnt);
         return FALSE;

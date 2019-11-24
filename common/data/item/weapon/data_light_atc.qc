@@ -28,7 +28,7 @@ void() data_ini_light_atc_={
   self.damageType = DMG_BAL;
 
   self.techLevel = 1;
-  self.i_size = 1;
+  self.equipSize = 1;
   
   #ifdef CSQC  
   self.abbrev = "ATC";

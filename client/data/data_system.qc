@@ -82,70 +82,70 @@ void(float wep_id) initialize_data_item_={
   switch(wep_id){
     case 0:
       data_ini_empty_weapon_();
-      return;
+      break;
     case UID_ITEM_light_autocannon:
       data_ini_light_atc_();
-      return;
+      break;
     case UID_ITEM_emp:
       data_ini_emp_();
-      return;
+      break;
     case UID_ITEM_light_laser:
       data_ini_light_laser_();
-      return;
+      break;
     case UID_ITEM_rocket_launcher:
       data_ini_rockets_();
-      return;
+      break;
     case UID_ITEM_quantum_rifle:
       data_ini_quantum_();
-      return;
+      break;
     case UID_ITEM_rotary_plasma:
       data_ini_plasma_();
-      return;
+      break;
     case UID_ITEM_particle_cannon:
       data_ini_particle_cannon_();
-      return;
+      break;
     case UID_ITEM_electro_repeater:
       data_ini_electro_repeater_();
-      return;
+      break;
     case UID_ITEM_missile_laserguide:
       data_ini_missile_laserguide_();
-      return;
+      break;
     case UID_ITEM_missile_activeradar:
       data_ini_missile_activeradar_();
-      return;
+      break;
     case UID_ITEM_snub_artillery:
       data_ini_snub_artillery_();
-      return;
+      break;
     case UID_ITEM_flak:
       data_ini_flak_cannon_();
-      return;
+      break;
     case UID_ITEM_ion_coil:
       data_ini_ion_();
-      return;
+      break;
     case UID_ITEM_missile_swarm:
       data_ini_missile_swarm_();
-      return;
+      break;
     case UID_ITEM_target_module:
       data_ini_equip_target_module_();
-      return;
+      break;
     case UID_ITEM_energy_battery:
       data_ini_equip_energy_battery_();
-      return;
+      break;
     case UID_ITEM_shield_emitter:
       data_ini_equip_shield_emitter_();
-      return;
+      break;
     case UID_ITEM_large_sensors:
       data_ini_equip_sensor_array_();
-      return;
+      break;
     case UID_ITEM_shield_capacitor:
       data_ini_equip_shield_capacitor_();
-      return;
+      break;
     case UID_ITEM_recharge_capacitor:
       data_ini_equip_recharge_capacitor_();
-      return;
+      break;
     case UID_ITEM_turbo_charger:
       data_ini_equip_turbo_charger_();
-      return;
+      break;
   }
 };
 

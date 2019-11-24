@@ -11,8 +11,12 @@ mod: 07/15/2019
 */
 
 void() building_die={
+  
+  if( self.deadflag > DEAD_NO){
+    return;
+  }
   //fire triggers when dead
-  trigger_event( self, self.trigOnDeath );
+  trigger_event( self.enemy, self.trigOnDeath );
   
   world_remove_dlight(self);
   

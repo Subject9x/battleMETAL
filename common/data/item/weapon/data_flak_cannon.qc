@@ -25,8 +25,8 @@ void() data_ini_flak_cannon_={
   self.w_name = "Flak Cannon";
   
   self.w_clipsize = 1;    //1 - 10/07/2019
-  self.reloadRate = 0.5; //0.3 - 10/07/2019
-  self.reloadMax = 0.5;  //0.3 - 10/07/2019
+  self.reloadRate = 0.67; //0.3 - 10/07/2019
+  self.reloadMax = 0.67;  //0.3 - 10/07/2019
   self.energyRate = 0;
   
   self.w_range = 2000;
@@ -34,7 +34,7 @@ void() data_ini_flak_cannon_={
   self.damageType = DMG_BAL;
   
   self.techLevel = 1;
-  self.i_size = 1;
+  self.equipSize = 1;
   
   #ifdef CSQC
   self.abbrev = "FLAK";

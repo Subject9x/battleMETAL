@@ -89,7 +89,7 @@ void() menu_armingListener_onKeyUp={
       while( hardpoint ){
         if(menu_checkMouseInBounds(cursorpos, hardpoint.ui_org, gui_percentToPixelRawVec('28 28'), FALSE)){
           weaponType = UI_ARMING_item_drag.damageType;
-          if( (UI_ARMING_item_drag.i_size <= hardpoint.hardpointSize) ){
+          if( (UI_ARMING_item_drag.equipSize <= hardpoint.hardpointSize) ){
             if( (weaponType & hardpoint.hardpointType) ){
               data_get_client_item_( hardpoint, UI_ARMING_item_drag.data_idx );
               ui_date_load_item1(UI_ARMING_item_drag.data_idx);
@@ -467,7 +467,6 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
     local float listItemLabelLen;
     
     itemId = UNLOCKED_ITEMS[lst_idx];
-    
     if( itemId != 0){
       data_get_client_item_( UI_ARMING_DATA_item_list, itemId );
       if( (UI_ARMING_DATA_item_list.damageType & weaponType) ){
@@ -478,7 +477,7 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
           listItemColor = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, listItemOffset + gui_percentToPixelRawVec('0 -1.44'), UI_BOX_SELECT, gui_percentToPixelRawVec('140.8 12'), CLR_DEF_ARM_OK, 1, 0);
         }
-        if(!(CLIENT_MENU_sel_hrpnt_types & weaponType) || (UI_ARMING_DATA_item_list.i_size > CLIENT_MENU_sel_hrpnt_size)){
+        if(!(CLIENT_MENU_sel_hrpnt_types & weaponType) || (UI_ARMING_DATA_item_list.equipSize > CLIENT_MENU_sel_hrpnt_size)){
           listItemColor = CLR_DEF_TXT_CANTSELECT;
         }
         listItemLabelLen = stringwidth( UI_ARMING_DATA_item_list.w_name, 0, '12 10');

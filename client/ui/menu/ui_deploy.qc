@@ -61,7 +61,7 @@ void() navSelectListener={
     nav = findchainfloat(data_type, DATA_DEPL);
     while(nav){
       if(nav.isActive){
-        if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.ui_size, TRUE)){
+        if(menu_checkMouseInBounds(cursorpos, nav.ui_org, nav.uequipSize, TRUE)){
           CLIENT_MENU_nav_pnt = nav.nav_name;
         }
         else{

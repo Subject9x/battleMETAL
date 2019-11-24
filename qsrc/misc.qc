@@ -170,6 +170,7 @@ void() realtimelights_sunlight={
   self = oldLight;
   
   //setup the 'ambient' light
+  self.rtlRadius = self.rtlRadius * 1.25;
   self.rtlAmbient = self.rtlAmbient * 0.75;
   self.rtlShadows = 0;
   self.rtlCorona = 0;

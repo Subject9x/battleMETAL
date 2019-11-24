@@ -31,7 +31,7 @@ void() data_ini_particle_cannon_={
   self.damageType = (DMG_ENE | EFF_PRC);
  
   self.techLevel = 3;
-  self.i_size = 3;
+  self.equipSize = 3;
   
   #ifdef CSQC
   self.abbrev = "PAC";

@@ -26,8 +26,9 @@ void( entity active, string event) trigger_event={
   local string oldTarget;
   local string thisTarget;  //something something method arg stack
   
-  if( !event || active == world )
+  if( !event || active == world ){
     return;
+  }
   
   oldTarget = self.target;
   

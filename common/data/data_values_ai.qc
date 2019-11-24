@@ -38,16 +38,10 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.5;
-float AI_DMG_SKILL_REG = 0.6;
-float AI_DMG_SKILL_VET = 0.7;
-float AI_DMG_SKILL_ACE = 0.8;
-
-//DAMAGE DETUNING - Specific AI stats
-float AI_DMG_ROK = 0.05;
-float AI_DMG_REG = 0.075;
-float AI_DMG_VET = 0.1;
-float AI_DMG_ACE = 0.15;
+float AI_DMG_SKILL_ROK = 0.7;
+float AI_DMG_SKILL_REG = 0.8;
+float AI_DMG_SKILL_VET = 0.9;
+float AI_DMG_SKILL_ACE = 1;
 
 //Field of View as normalized dot product
 float AI_FOV     = 0.67;
@@ -72,10 +66,10 @@ float AI_VIEW_RANGE_VET = 1.25;
 float AI_VIEW_RANGE_ACE = 1.5;
 
 //Adjust yaw_speed
-float AI_YAW_ROK = 0.75;
-float AI_YAW_REG = 0.9;
-float AI_YAW_VET = 1.05;
-float AI_YAW_ACE = 1.2;
+float AI_YAW_ROK = 0.85;
+float AI_YAW_REG = 1;
+float AI_YAW_VET = 1.1;
+float AI_YAW_ACE = 1.15;
 
 //attack chances
 float AI_ATTACK_ROK = 0.4;
@@ -93,9 +87,9 @@ float AI_CNV_MIN_VET  = 1;
 float AI_CNV_MIN_ACE  = 0.5;
 
 //Maximum convergence modifier
-float AI_CNV_MAX_ROK  = 4;
-float AI_CNV_MAX_REG  = 3;
-float AI_CNV_MAX_VET  = 2.5;
+float AI_CNV_MAX_ROK  = 2.5;
+float AI_CNV_MAX_REG  = 2;
+float AI_CNV_MAX_VET  = 1.5;
 float AI_CNV_MAX_ACE  = 1;
 
 //Convergence Rate modifier
@@ -124,10 +118,10 @@ float AI_SHIELD_VET = 0.6;
 float AI_SHIELD_ACE = 0.8;
 
 //ai_leading ratings, how well an ai tracks a slippery target
-float AI_LEAD_ACE = 0.35;
-float AI_LEAD_VET = 0.45;
-float AI_LEAD_REG = 0.55;
-float AI_LEAD_ROK = 0.65;
+float AI_LEAD_ACE = 0.3;
+float AI_LEAD_VET = 0.35;
+float AI_LEAD_REG = 0.4;
+float AI_LEAD_ROK = 0.45;
 
 //common engage ranges
 float AI_RANGE_S = 400;

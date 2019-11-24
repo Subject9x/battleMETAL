@@ -215,7 +215,7 @@ void() hud_event_objective_complete_second={
 void() hud_event_objective_failed={
   if( !HUD_EVENT_SOUND_START ){
     HUD_EVENT_SOUND_START = TRUE;
-    snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
+    snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_FAIL, 1);
   }
   hud_render_message( HUD_TXT_ORG, HUD_TEXT_OBJECTIVE_FAILED, HUD_TXT_SIZE, HUD_ALPHA, HUD_TXT_ALIGN);
 };

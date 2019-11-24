@@ -174,22 +174,22 @@ void( entity navpoint ) client_send_navpoint={
 };
 
 void( entity objective ) client_send_objective={
-  msg_entity = self;
-  local float nactive;
-  WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  WriteByte( MSG_ONE,  TE_EVT_OBJ);
-  
-  WriteByte( MSG_ONE, objective.data_idx); 
-  
-  
   if( objective.faction != self.faction ){
-    nactive = FALSE;
+    return;
+  }
+  msg_entity = self;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  if( objective.isActive > -1 ){
+    WriteByte( MSG_ONE,  TE_OBJECTIVE_COMPLETE);  
+    WriteByte( MSG_ONE, objective.data_idx);
+    WriteShort( MSG_ONE, objective.isActive); 
+    WriteByte( MSG_ONE, objective.state_1);
   }
   else{
-    nactive = objective.isActive;
+    WriteByte( MSG_ONE,  TE_OBJECTIVE_FAILED);  
+    WriteShort( MSG_ONE, objective.data_idx);
+    WriteByte( MSG_ONE, objective.isActive);
   }
-  WriteByte( MSG_ONE, nactive); 
-  WriteByte( MSG_ONE, objective.state_1);
 };
 
 void( entity deploy ) client_send_deploypoint={

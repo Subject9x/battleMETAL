@@ -31,7 +31,7 @@ void() data_ini_electro_repeater_={
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;
-  self.i_size = 2;
+  self.equipSize = 2;
 
   #ifdef CSQC  
   self.abbrev = "ESR";

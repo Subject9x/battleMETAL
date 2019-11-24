@@ -176,16 +176,16 @@ float( float rank, float damg) ai_pilot_mod_damage={
   local float percent;
   switch( rank ){
     case SKILL_NOV:
-      percent = AI_DMG_SKILL_ROK + AI_DMG_ROK;
+      percent = AI_DMG_SKILL_ROK ;
       break;
     case SKILL_REG:
-      percent = AI_DMG_SKILL_REG + AI_DMG_REG;
+      percent = AI_DMG_SKILL_REG;
       break;
     case SKILL_VET:
-      percent = AI_DMG_SKILL_VET + AI_DMG_VET;
+      percent = AI_DMG_SKILL_VET;
       break;
     case SKILL_ELT:
-      percent = AI_DMG_SKILL_ACE + AI_DMG_ACE;
+      percent = AI_DMG_SKILL_ACE;
       break;
   }
   percent = damg * percent;

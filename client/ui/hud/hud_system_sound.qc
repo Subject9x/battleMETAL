@@ -211,25 +211,6 @@ void() te_targ_kill={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_TARGKILL, 3);
 };
 
-void( float type ) te_objective_complete={
-  switch( type ){
-    case 1:
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_PRIME, 1);
-      hud_event_objective_complete_prime();
-      break;
-    case 2:
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_SECON, 1);
-      hud_event_objective_complete_second();
-      break;
-    case 3:
-      snd_hud_vfx_addtoqueue(SND_HUD_VFX_OBJ_THIRD, 1);
-      break;
-  }
-};
-void() te_objective_failed={
-  snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_FAL, 1);
-};
-
 void() te_mission_win={
   snd_hud_vfx_addtoqueue(SND_HUD_VFX_MSN_WIN, 1);
 };

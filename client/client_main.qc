@@ -406,9 +406,6 @@ float() CSQC_Parse_TempEntity =
     case TE_UI_BOX:
       client_get_hud_highlight();
       return TRUE;
-    case TE_EVT_OBJ:
-      client_event_objective();
-      return TRUE;
     case TE_EVT_NAV:
       client_event_navpoint();
       return TRUE;
@@ -416,10 +413,10 @@ float() CSQC_Parse_TempEntity =
       client_event_deploypoint();
       return TRUE;
     case TE_OBJECTIVE_COMPLETE:
-      te_objective_complete( ReadByte() );
+      client_event_objective_win();
       return TRUE;
     case TE_OBJECTIVE_FAILED:
-      hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1) ;
+      client_event_objective_fail();
       return TRUE;
     case TE_MISSION_WIN:
       hud_event_enqueue( HUD_EVENT_MISSION_COMPLETE, 1) ;

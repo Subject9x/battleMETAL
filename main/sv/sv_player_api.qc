@@ -299,7 +299,7 @@ void() PlayerDie={
 };
 
 void() PlayerDieEnd={  
-  player_makeObserver();
+
   self.movetype = MOVETYPE_NONE;
   //update objectives on player death.
   local entity objtivs;

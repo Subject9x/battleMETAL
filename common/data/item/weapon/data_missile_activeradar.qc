@@ -29,7 +29,7 @@ void() data_ini_missile_activeradar_={
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;
-  self.i_size = 3;
+  self.equipSize = 3;
   
   #ifdef CSQC  
   self.abbrev = "MARH";

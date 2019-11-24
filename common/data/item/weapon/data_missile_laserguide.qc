@@ -29,7 +29,7 @@ void() data_ini_missile_laserguide_={
   self.damageType = DMG_EXP | EFF_PTR;
 
   self.techLevel = 1;
-  self.i_size = 1;
+  self.equipSize = 1;
 
   #ifdef CSQC
   self.abbrev = "MLGD";

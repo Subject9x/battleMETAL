@@ -154,9 +154,9 @@ void() map_objective_th={
   local entity oldThis;
   
   //objective achieved
-  oldThis = self;
   if(self.isActive == 2){
     multi_trigger();
+    oldThis = self;
     player = find (world, classname, "player");
     while( player != world){
       if( player.faction == self.faction ){
@@ -183,14 +183,15 @@ void() map_objective_th={
   if( self.isActive == -1 ){
     //objective failed!
     trigger_event( self.enemy, self.trigOnDeath );
-    player = find (world, classname, "player");
+    oldThis = self;
+    player = findchain(classname, "player");
     while( player != world ){
       if( player.faction == self.faction ){
         self = player;
           client_send_objective( oldThis );
         self = oldThis;
       }
-      player = find (player, classname, "player");
+      player = player.chain;
     }
     self = oldThis;
     self.isActive = 0;

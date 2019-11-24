@@ -28,7 +28,7 @@ void() data_ini_equip_energy_battery_={
   self.damageType = DMG_MSC;
  
   self.techLevel = 2;
-  self.i_size = 3;
+  self.equipSize = 3;
   
   #ifdef CSQC
   self.abbrev = "ENBAT";

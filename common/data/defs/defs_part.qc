@@ -13,10 +13,10 @@ Overview:
 
 #ifndef CSQC
 .string c_model;
-.vector compAltOffset;    //useful alt offset
 .entity partNext;     //chain entity of next part in unit's part list
 #endif
 
+.vector compAltOffset;    //useful alt offset
 .float partParentId;  //component id of PARENT
 .float partTypeId;    //component id
 .vector compOffset;

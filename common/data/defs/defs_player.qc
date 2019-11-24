@@ -23,7 +23,7 @@ Overview:
 
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 
-.float i_size;
+.float equipSize;
 
 #ifndef CSQC
 .float nextVecChoice;

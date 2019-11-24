@@ -21,7 +21,7 @@ void() data_ini_empty_weapon_={
   self.damageType = 0;
 
   self.techLevel = 1;
-  self.i_size = 1;
+  self.equipSize = 1;
   
   #ifdef CSQC  
   self.abbrev = "NON";

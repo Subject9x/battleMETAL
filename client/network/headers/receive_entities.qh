@@ -34,7 +34,8 @@ void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyRi
 void( float criticalsType ) client_event_critical_hit;
 void() client_event_navpoint;
 void() client_event_deploypoint;
-void() client_event_objective;
+void() client_event_objective_win;
+void() client_event_objective_fail;
 void() client_event_boundary;
 void() client_event_environment;
 void( string name ) client_event_mission_name;
