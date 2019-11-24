@@ -70,6 +70,13 @@ float WORLD_TUNDRA = 3;
 float WORLD_ICE = 4;
 float WORLD_CAVE = 5;
 //============================
+//   OBJECTIVE STATE
+//============================
+float OBJECTIVE_DISABLE = 0;
+float OBJECTIVE_ACTIVE = 1;
+float OBJECTIVE_FAIL = 3;
+float OBJECTIVE_WIN = 2;
+//============================
 //   PLAYER STATE ID's           
 //============================
 float PLAYER_DEAD = -1;         // 

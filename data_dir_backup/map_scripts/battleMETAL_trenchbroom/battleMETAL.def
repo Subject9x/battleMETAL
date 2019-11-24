@@ -1878,7 +1878,7 @@ MUTE_ME 65536: ai doesn't use voice/radio
   .dest1 = <vector> [speed] -if effect needs a velocity vector
   .count = <float> [particle amount] - total number of particles in the effect
   .data_lifetime = <float> - time to live, use with spawnflags[2]
-  .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+  .aState = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .count2 = <float> - speed, rate of particle cycle
   .count3 = <bool> - 0 = pointparticle, 1 = trailparticle
   .count4 = <float> - velocity multiplier
@@ -2085,7 +2085,7 @@ REMOVE_FIRSTUSE 8: remove after first countdown
            -1 = failed
 .faction = faction for this objective
 .target = fire THIS trigger when Objective is COMPLETE, isActive == 2
-.state_1 = determines which SFX to play when 'completed'
+.aState = determines which SFX to play when 'completed'
                   1 = primary 
                   2 = secondary
                   3 = tertiary
@@ -2131,6 +2131,34 @@ REACTIVATE 4: reactivate after countdown
 REMOVE_FIRSTUSE 8: remove after first countdown
 DRAW_MODEL 16: draw the whole weapon model
 LIMITED_FIRE 32: use limited number of shots
+*/
+
+
+/*QUAKED map_particlecube_effect (.9 .9 .9) (-32 -32 -16) (32 32 16) START_OFF LIFETIME DELAY INTERVAL USE_WIND VARIABLE_COUNT REMOVE
+This is to turn the effect on/off/update.
+
+-------- KEYS --------
+.data_idx = <float> [type] - type of particle effect 
+    1 = particlecube
+    2 = te_particlerain
+    3 = te_particlesnow
+.compOffset = <vector> - cube minimum bounds
+.compAltOffset = <vector> - cube maximum bounds - set these if you want a specific cube size, otherwise, go off brush size
+.velocity = <vector> - velocity of the particles: -Z is downward, +Z can be used for upward flowing particles.
+.count = <float> - how many particles.
+.count1 = <float> - color, in 8bit (why?)
+.jump_flag = <float> - gravityflag for te_particlecube.
+.count2 = <float> - velocity jitter for te_particlecube;
+.count3 = <float> - use with LIFETIME spawnflag.
+.sound = <string> - name of sound to play- TODO - implement
+-------- SPAWNFLAGS --------
+START_OFF 1 : Requires targetname and a trigger call.
+LIFETIME 2 : Func is turned off after .data_lifetime game seconds.
+DELAY 4 : wait .delay game seconds after being activated to begin.
+INTERVAL 8 : fluctuate between on-and-off.
+USE_WIND 16 :rain will be affected by map's WIND values.
+VARIABLE_COUNT 32 : .count will be subject to slight randomization.
+REMOVE 64 : remove on touch
 */
 
 

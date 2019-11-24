@@ -21,7 +21,7 @@ void() map_fail_objective_use={
   obj = findchain( targetname, self.target );
   while( obj ){
     if( obj.classname == "map_objective" ){
-      obj.isActive = -1;
+      obj.isActive = OBJECTIVE_FAIL;
     }
     obj = obj.chain;
   }

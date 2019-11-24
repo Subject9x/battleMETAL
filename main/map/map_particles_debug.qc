@@ -65,7 +65,7 @@ void() map_particle_ini={
   .dest1 = <vector> [speed] -if effect needs a velocity vector
   .count = <float> [particle amount] - total number of particles in the effect
   .data_lifetime = <float> - time to live, use with spawnflags[2]
-  .state_1 = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+  .aState = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
   .count2 = <float> - speed, rate of particle cycle
   .count3 = <bool> - 0 = pointparticle, 1 = trailparticle
   .count4 = <float> - velocity multiplier

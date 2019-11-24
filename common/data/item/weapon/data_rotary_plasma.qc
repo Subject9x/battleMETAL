@@ -19,12 +19,12 @@ void() data_ini_plasma_={
   self.w_name = "Rotary Plasma Chamber";
   
   self.w_clipsize = 6;
-  self.reloadRate = 0.15;
+  self.reloadRate = 0.18;
   self.reloadMax = 5;
   self.energyRate = 1;
   
   self.w_range = 1000;
-  self.damageValue = 4.5;
+  self.damageValue = 10;
   self.damageType = DMG_BAL;
   
   self.techLevel = 3;

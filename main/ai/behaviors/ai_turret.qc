@@ -62,7 +62,7 @@ void() ai_turret_die={
   makevectors( self.angles );
   v = self.origin + (v_up * 2);
   te_debris( self.origin, self.angles, normalize( v - self.origin) * 100, (random() * self.vec_size) + 5, self.vec_size - 1);
-  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, self.vec_size, 360, self.vec_size / 20, 360); 
+  te_med_flame_start( self.origin + (v_up * (self.maxs_y / 2)), self.angles, 1, 240, 0.67, 360); 
   
   self.think = ai_turret_die_burn;
   self.ai_action_time = time + 360;
@@ -707,7 +707,7 @@ void() ai_turret={
   ai_unit_ini_var();
   initialize_data_turret_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
-  ai_voice_ini( TRUE );
+  //ai_voice_ini( TRUE ); Turrets are mute
   
   trigger_event( self, self.trigOnSpawn); //event interface
   

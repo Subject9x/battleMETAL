@@ -127,37 +127,38 @@ void(vector panelOffset) menu_debrief_objectives_primary={
   list_index = 1;
   show_index = 0;
   line_return = 0;
+  objectiveOffset = listStartOrg;
+  objectiveOffset_y = objectiveOffset_y + line_return + (show_index * gui_percentYRaw(16));
   endOfLine = TRUE;
   while(endOfLine){
-    objectiveOffset = listStartOrg;
-    objectiveOffset_y = objectiveOffset_y + gui_percentYRaw(line_return) + ( (list_index - 1) * gui_percentYRaw(18));
     objectiveType = MSN_OBJ_TYPES[list_index];
-    
+
     if( objectiveType == "primary" ){
       objectiveStatus = OBJECTIVES[list_index];
-      if( objectiveStatus != FALSE ){
+      if( objectiveStatus != OBJECTIVE_DISABLE ){
         show_index = show_index + 1;
         objectiveDesc = MSN_OBJ_DESC[list_index];
         
         drawstring( objectiveOffset, strcat(ftos(show_index),")"), '12 12', CLR_DEF_GRAY_H, 1, 0);
         line_return = gui_wrapText(objectiveOffset + gui_percentToPixelRawVec('12 0'), '225 150', objectiveDesc, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
         
-        if( objectiveStatus == 2 ){
+        if( objectiveStatus == OBJECTIVE_WIN ){
           objectiveStatusLabel = "Complete";
           objectiveColor = CLR_DEF_ARM_OK;
         }
-        else if( objectiveStatus == 1 ){
+        else if( objectiveStatus == OBJECTIVE_ACTIVE ){
           objectiveStatusLabel = "Incomplete";
-          objectiveColor = CLR_DEF_TXT_NONSELECT;
+          objectiveColor = CLR_DEF_TXT_NONSELECT - '0.1 0.1 0.1';
         }
-        else if( objectiveStatus == -1 ){
+        else if( objectiveStatus == OBJECTIVE_FAIL ){
           objectiveStatusLabel = "Failed";
           objectiveColor = CLR_DEF_ARM_ONEQ;
         }
-        objectiveStatusLen = stringwidth( objectiveStatusLabel, 0, '12 12');
+        objectiveStatusLen = stringwidth( objectiveStatusLabel, 0, '16 16');
         objectiveStatusOrg_x = (objectiveOffset_x + panelImageSize_x) - gui_percentXRaw(54 + (objectiveStatusLen / 2));
         objectiveStatusOrg_y = objectiveOffset_y;
-        drawstring(objectiveStatusOrg, objectiveStatusLabel, '12 12', objectiveColor, 1, 0);
+        drawstring(objectiveStatusOrg, objectiveStatusLabel, '16 16', objectiveColor, 1, 0);
+        objectiveOffset_y = objectiveOffset_y + line_return + gui_percentYRaw(12);
       }
     }
 
@@ -217,37 +218,38 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
   list_index = 1;
   show_index = 0;
   line_return = 0;
+  objectiveOffset = listStartOrg;
+  objectiveOffset_y = objectiveOffset_y + line_return + (show_index * gui_percentYRaw(16));
   endOfLine = TRUE;
   while(endOfLine){
-    objectiveOffset = listStartOrg;
-    objectiveOffset_y = objectiveOffset_y + gui_percentYRaw(line_return) + ( (list_index - 1) * gui_percentYRaw(18));
     objectiveType = MSN_OBJ_TYPES[list_index];
     
     if( objectiveType == "secondary" ){
       objectiveStatus = OBJECTIVES[list_index];
-      if( objectiveStatus != FALSE ){
+      if( objectiveStatus != OBJECTIVE_DISABLE ){
         show_index = show_index + 1;
         objectiveDesc = MSN_OBJ_DESC[list_index];
         
         drawstring( objectiveOffset, strcat(ftos(show_index),")"), '12 12', CLR_DEF_GRAY_H, 1, 0);
         line_return = gui_wrapText(objectiveOffset + gui_percentToPixelRawVec('12 0'), '225 150', objectiveDesc, '12 12 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
         
-        if( objectiveStatus == 2 ){
+        if( objectiveStatus == OBJECTIVE_WIN ){
           objectiveStatusLabel = "Complete";
           objectiveColor = CLR_DEF_ARM_OK;
         }
-        else if( objectiveStatus == 1 ){
+        else if( objectiveStatus == OBJECTIVE_ACTIVE ){
           objectiveStatusLabel = "Incomplete";
           objectiveColor = CLR_DEF_TXT_NONSELECT;
         }
-        else if( objectiveStatus == -1 ){
+        else if( objectiveStatus == OBJECTIVE_FAIL ){
           objectiveStatusLabel = "Failed";
           objectiveColor = CLR_DEF_ARM_ONEQ;
         }
-        objectiveStatusLen = stringwidth( objectiveStatusLabel, 0, '12 12');
+        objectiveStatusLen = stringwidth( objectiveStatusLabel, 0, '16 16');
         objectiveStatusOrg_x = (objectiveOffset_x + panelImageSize_x) - gui_percentXRaw(64 + (objectiveStatusLen / 2));
         objectiveStatusOrg_y = objectiveOffset_y;
-        drawstring(objectiveStatusOrg, objectiveStatusLabel, '12 12', objectiveColor, 1, 0);
+        drawstring(objectiveStatusOrg, objectiveStatusLabel, '16 16', objectiveColor, 1, 0);
+        objectiveOffset_y = objectiveOffset_y + line_return + gui_percentYRaw(12);
       }
     }
 

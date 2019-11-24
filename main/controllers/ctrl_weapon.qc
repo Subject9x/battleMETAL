@@ -160,7 +160,7 @@ void( float burstFire ) ctrl_weapon_updateAmmo={
   }
   else{
     if( (FIRE_ENT.flags & FL_MONSTER) ){
-      self.w_firetime = time + (self.reloadRate / self.burstRate) * 2.25;
+      self.w_firetime = time + (self.reloadRate / self.burstRate) * 1.67;
     }
     else{
       self.w_firetime = time + self.reloadRate / self.burstRate;

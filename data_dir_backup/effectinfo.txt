@@ -2187,27 +2187,10 @@ velocitymultiplier 1
   originjitter 0.25 0.25 -8
   velocityjitter 1 1 1
   velocitymultiplier 2
-  
-  //TE_FIRE_SMALL - FLAME
-  effect TE_FIRE_1
-  count 1
-  type spark
-  blend alpha
-  orientation spark
-  color 0xe0e0d1 0xf5f5f0
-  tex 37 39
-  size 1 3
-  sizeincrease -0.25
-  alpha 128 128 96
-  gravity -0.005
-  originjitter 1 1 0
-  velocityjitter 1 1 1
-  velocitymultiplier 1
-  stretchfactor 4
-  
+    
   //TE_FIRE_SMALL - HOT SMOKE
   effect TE_FIRE_1
-  count 0.075
+  count 0.045
   type smoke
   blend alpha
   color 0xDF7401 0xB43104
@@ -2215,18 +2198,34 @@ velocitymultiplier 1
   size 1 2
   sizeincrease 0.25
   alpha 16 32 4
-  time 2 3
   gravity -0.006
   originjitter 0.25 0.25 0.25
   velocityjitter 1 1 0
   velocitymultiplier 2
   
+  //TE_FIRE_SMALL - FLAME
+  effect TE_FIRE_1
+  count 0.33
+  type spark
+  blend alpha
+  orientation spark
+  color 0xe0e0d1 0xf5f5f0
+  tex 37 39
+  size 1 3
+  sizeincrease -0.25
+  alpha 133 200 133
+  gravity -0.005
+  originjitter 1 1 0
+  velocityjitter 1 1 1
+  velocitymultiplier 1
+  stretchfactor 3
+  
   //TE_FIRE_SMALL - LIGHT
   effect TE_FIRE_1
-  lightradius 75
+  lightradius 33
   lightradiusfade 200
   lightcolor 0.996 0.392 0.18
-  lightshadow 0.5
+  lightshadow 0.33
   notunderwater
   
 //=================================================
@@ -2245,38 +2244,15 @@ velocitymultiplier 1
   tex 8 15
   size 4 5
   sizeincrease 1
-  alpha 128 200 16
+  alpha 128 200 64
   gravity -0.005
   originjitter 0.25 0.25 -8
   velocityjitter 1 1 1
   velocitymultiplier 1.75
   
-  //TE_FIRE_MED - LIGHT
-  effect TE_FIRE_2
-  lightradius 100
-  lightradiusfade 250
-  lightcolor 0.996 0.392 0.18
-  lightshadow 0.5
-  notunderwater
-  
-  //TE_FIRE_MED - FLAME
-  effect TE_FIRE_2
-  count 1
-  type smoke
-  blend alpha
-  color 0xe0e0d1 0xf5f5f0
-  tex 37 39
-  size 2.5 4.5
-  sizeincrease -0.25
-  alpha 128 128 96
-  gravity -0.005
-  originjitter 3 3 2
-  velocityjitter 2 2 2
-  velocitymultiplier 2
-  
   //TE_FIRE_MED - HOT SMOKE
   effect TE_FIRE_2
-  count 0.075
+  count 0.045
   type smoke
   blend alpha
   color 0xDF7401 0xB43104
@@ -2284,27 +2260,50 @@ velocitymultiplier 1
   size 3 4
   sizeincrease 0.5
   alpha 64 96 8
-  time 4 5
+  time 2 3
   gravity -0.006
   originjitter 0.25 0.25 0.25
   velocityjitter 2 2 2
   velocitymultiplier 1.75
   
+  //TE_FIRE_MED - LIGHT
+  effect TE_FIRE_2
+  lightradius 67
+  lightradiusfade 200
+  lightcolor 0.996 0.392 0.18
+  lightshadow 0.33
+  notunderwater
+  
+  //TE_FIRE_MED - FLAME
+  effect TE_FIRE_2
+  count 0.33
+  type smoke
+  blend alpha
+  color 0xe0e0d1 0xf5f5f0
+  tex 37 39
+  size 3.5 4.5
+  sizeincrease -4
+  alpha 167 233 133
+  gravity -0.005
+  originjitter 3 3 2
+  velocityjitter 2 2 2
+  velocitymultiplier 2
+  
   //TE_FIRE_MED - SPARKS
   effect TE_FIRE_2
-  count 2
+  count 0.5
   type spark
   blend alpha
   orientation spark
   color 0xFF8000 0xFF8000
   tex 38 38
   size 0.05 0.1
-  alpha 256 512 256
+  alpha 256 512 450
   originjitter 6 6 6
   velocityjitter 2 2 2
   velocitymultiplier 10
-  stretchfactor 2
-  airfriction 1
+  stretchfactor 1
+  airfriction 2
   
 //=================================================
 
@@ -2321,7 +2320,7 @@ velocitymultiplier 1
   tex 8 15
   size 6 7
   sizeincrease 1.5
-  alpha 128 200 16
+  alpha 128 200 96
   gravity -0.005
   originjitter 0.25 0.25 -8
   velocityjitter 1 1 1
@@ -2329,22 +2328,22 @@ velocitymultiplier 1
   
   //TE_FIRE_BIG - LIGHT
   effect TE_FIRE_3
-  lightradius 150
-  lightradiusfade 350
+  lightradius 100
+  lightradiusfade 200
   lightcolor 0.996 0.392 0.18
-  lightshadow 0.5
+  lightshadow 0.33
   notunderwater
   
   //TE_FIRE_BIG - FLAME
   effect TE_FIRE_3
-  count 2
+  count 0.5
   type smoke
   blend alpha
   color 0xe0e0d1 0xf5f5f0
   tex 37 39
   size 4.5 5.5
   sizeincrease -0.5
-  alpha 128 128 96
+  alpha 167 200 133
   gravity -0.0025
   originjitter 6 6 6
   velocityjitter 3 3 3
@@ -2352,15 +2351,14 @@ velocitymultiplier 1
   
   //TE_FIRE_BIG - HOT SMOKE
   effect TE_FIRE_3
-  count 0.075
+  count 0.045
   type smoke
   blend alpha
   color 0xDF7401 0xB43104
   tex 8 17
   size 4 5
   sizeincrease 0.75
-  alpha 100 150 16
-  time 4 5
+  alpha 100 150 64
   gravity -0.006
   originjitter 0.25 0.25 0.25
   velocityjitter 2 2 2
@@ -2368,14 +2366,14 @@ velocitymultiplier 1
   
   //TE_FIRE_BIG - SPARKS
   effect TE_FIRE_3
-  count 3
+  count 1
   type spark
   blend alpha
   orientation spark
   color 0xFF8000 0xFF8000
   tex 38 38
   size 0.05 0.1
-  alpha 256 512 256
+  alpha 256 512 450
   originjitter 8 8 8
   velocityjitter 4 4 4
   velocitymultiplier 10

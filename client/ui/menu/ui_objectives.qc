@@ -16,26 +16,28 @@ void(vector org) ui_objective_frame={
     lst_idx = 1;
     itr = 0; 
     torg = org + gui_percentToPixelRawVec('16 128');
-    drawstring(torg, "[OBJECTIVES]", '14 14 0', CLR_DEF_ARM_OK, HUD_ALPHA, 0);
+    drawstring(torg, "[OBJECTIVES]", '14 14 0', HUD_COLOR_DEF, 0.9, 0);
     while( itr <= 32 ){
       local float complete;
       local vector line, colr;
       local string obj;
       
       complete = OBJECTIVES[itr];
-      if( complete != FALSE ){
-        line = torg;
-        line_y = line_y + (lst_idx * 16);
-        obj = strcat(ftos(lst_idx),") ",MSN_OBJ_DESC[lst_idx]); 
-        colr = CLR_DEF_GRAY_H;
-        if( complete == -1 ){
-          colr = CLR_DEF_ARM_DED;
+      if( complete < 254 ){
+        if( complete != FALSE ){
+          line = torg;
+          line_y = line_y + (lst_idx * 16);
+          obj = strcat(ftos(lst_idx),") ",MSN_OBJ_DESC[lst_idx]); 
+          colr = HUD_COLOR_DEF;
+          if( complete == OBJECTIVE_FAIL ){
+            colr = CLR_DEF_RED;
+          }
+          if( complete == OBJECTIVE_WIN ){
+            colr = CLR_DEF_ARM_OK;
+          }
+          drawstring(line, obj, '12 12 0', colr, 0.9, 0);
+          lst_idx = lst_idx + 1;
         }
-        if( complete == 2 ){
-          colr = CLR_DEF_ARM_OK;
-        }
-        drawstring(line, obj, '12 12 0', colr, HUD_ALPHA, 0);
-        lst_idx = lst_idx + 1;
       }
       itr = itr + 1;
     }

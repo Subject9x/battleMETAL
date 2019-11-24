@@ -51,35 +51,39 @@ Inputs
   checks owner's position, update particleCube origin as necessary.
 */
 void() map_particlecube_effect_think={
-  local float cubeLen;
+  local float cubeLen, amount;
   local vector playerMove, playerOffsetOrigin, particleVelocity;
 
-  
   playerMove = vectoangles( self.owner.velocity );
   makevectors( playerMove );
   playerOffsetOrigin = self.owner.origin + (v_forward * (self.maxs_x * 0.5) );
   cubeLen = vlen( playerOffsetOrigin - self.origin);
-  if( cubeLen > self.maxs_x )
+  if( cubeLen > self.maxs_x ){
     setorigin( self, self.owner.origin + (v_forward * (self.maxs_x * 0.9)) ) ; 
-  
+  }
   particleVelocity = te_apply_wind( self.origin );
   particleVelocity = normalize( particleVelocity - self.origin );
   particleVelocity_z = self.velocity_z;
   
+  amount = self.count;
+  if( (self.spawnflags & 32) ){
+    amount = random() * amount;
+  }
+  
   switch( self.data_idx ){
     case 1:
-      te_particlerain(self.absmin, self.absmax, particleVelocity, self.count, self.count1);
+      te_particlerain(self.absmin, self.absmax, particleVelocity, amount, self.count1);
       break;
     case 2:
-      te_particlesnow(self.absmin, self.absmax, particleVelocity, self.count, self.count1);
+      te_particlesnow(self.absmin, self.absmax, particleVelocity, amount, self.count1);
       break;
     default:
-      te_particlecube(self.absmin, self.absmax, particleVelocity, self.count, self.count1, self.jump_flag, self.count2);
+      te_particlecube(self.absmin, self.absmax, particleVelocity, amount, self.count1, self.jump_flag, self.count2);
       break;
   }
   
   
-  self.nextthink = time + 0.025;
+  self.nextthink = time + 0.1;
   self.think = map_particlecube_effect_think;
 
   //LIFETIME
@@ -107,17 +111,17 @@ void() map_particlecube_effect_touch={
       self.movetype = MOVETYPE_NONE;
       self.solid = SOLID_NOT;
       self.data_idx = trigger.data_idx;
-      self.mins = trigger.mins;
+      self.mins = trigger.compOffset;
       self.mins_z = other.mins_z; //might be a problem
-      self.maxs = trigger.maxs;
+      self.maxs = trigger.compAltOffset;
       self.velocity = trigger.velocity;
       self.count = trigger.count;
       self.count1 = trigger.count1;
       self.jump_flag = trigger.jump_flag;
       self.count2 = trigger.count2;
       self.count3 = time + trigger.count3;
-
-      setsize(self, trigger.mins, trigger.maxs);
+      self.spawnflags = trigger.spawnflags;
+      setsize(self, self.mins, self.maxs);
       setorigin(self, other.origin);
       self.think = map_particlecube_effect_think;
       self.nextthink = time + 0.1;
@@ -131,22 +135,17 @@ void() map_particlecube_effect_touch={
   }
 };
 
-/*QUAKED (.9 .9 .9) 
+/*QUAKED (.9 .9 .9) (-32 -32 -16) (32 32 16)
 This is to turn the effect on/off/update.
 */
 void() map_particlecube_effect={
-  local vector tempMin, tempMax;
-  
-  tempMin = self.mins;
-  tempMax = self.maxs;
-  
   self.solid = SOLID_TRIGGER;
   self.movetype = MOVETYPE_NONE;
-  setsize( self, tempMin, tempMax );
+  setsize( self, '-32 -32 -16', '32 32 16' );
   setorigin( self, self.origin);
   
-  if( !(self.spawnflags & 2) )
+  if( !(self.spawnflags & 2) ){
     self.count3 = 999999999;  //worked for iD, right?
-
+  }
   self.touch = map_particlecube_effect_touch;
 };

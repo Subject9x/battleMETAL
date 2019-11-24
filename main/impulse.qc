@@ -109,18 +109,18 @@ void() ImpulseCommands ={
   }
   
   if(self.impulse == IMP_PRVWGRP){
-    self.state_1 = self.state_1 - 1;
-    if(self.state_1 < 1){
-      self.state_1 = 5;
+    self.aState = self.aState - 1;
+    if(self.aState < 1){
+      self.aState = 5;
     }
-    mpls_groupFire(self.state_1);
+    mpls_groupFire(self.aState);
   }
   if(self.impulse == IMP_NEXWGRP){
-    self.state_1 = self.state_1 + 1;
-    if(self.state_1 > 5){
-      self.state_1 = 1;
+    self.aState = self.aState + 1;
+    if(self.aState > 5){
+      self.aState = 1;
     }
-    mpls_groupFire(self.state_1);
+    mpls_groupFire(self.aState);
   }
 
   if(self.stat_plr_fir == FIRE_SINGLE){
@@ -173,31 +173,31 @@ void() mpls_singleFire={
 void(float selector) mpls_groupFire={
   switch(selector){
     case 1:
-      self.state_1 = 1;
+      self.aState = 1;
       centerprint(self, "[Weapon Group 1]");
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group1;
       break;
     case 2:
-      self.state_1 = 2;
+      self.aState = 2;
       centerprint(self, "[Weapon Group 2]");
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group2;
       break;
     case 3:
-      self.state_1 = 3;
+      self.aState = 3;
       centerprint(self, "[Weapon Group 3]");
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group3;
       break;
     case 4:
-      self.state_1 = 4;
+      self.aState = 4;
       centerprint(self, "[Weapon Group 4]");
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group4;
       break;
     case 5:
-      self.state_1 = 5;
+      self.aState = 5;
       centerprint(self, "[Weapon Group 5]");
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group5;

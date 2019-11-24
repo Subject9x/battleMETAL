@@ -16,6 +16,7 @@ void() map_objective_th;
 void() map_objective_mission_end_th={
 local entity player;
   local entity objective;
+  local entity playerStart;
   local float successCheck;
 	WriteByte (MSG_ALL, SVC_INTERMISSION);
   
@@ -27,6 +28,7 @@ local entity player;
   }
   
   objective = self;
+  playerStart = find(world, classname, "info_player_start");
   player = find (world, classname, "player");
   while( player != world ){
     self = player;
@@ -40,13 +42,13 @@ local entity player;
       player.solid = SOLID_NOT;
       player.movetype = MOVETYPE_NONE;
       player.modelindex = 0;
-      setorigin (player, self.origin);
       //------------------------------
       client_sendEndMission(player, successCheck);
       if(player.data_type == DATA_MECH){
         player_unmakeMech();
         player_makeObserver();
       }
+      setorigin (player, playerStart.origin);
     player = find (player, classname, "player");
   }
   self = objective;
@@ -112,29 +114,37 @@ void() map_objective_mission_conclude_th={
 */
 void() map_objective_use={
   self.enemy = activator;
-  if( self.isActive ){
+  if( self.isActive == OBJECTIVE_ACTIVE){
     if( self.count ){
       //Objective counter adjust
       self.count1 = self.count1 + 1;
       if( self.count1 >= self.count ){
         //Objective counter hit, send to 'complete' status
-        self.isActive = 2;
+        if( (self.spawnflags & 4) ){
+          self.isActive = OBJECTIVE_FAIL;
+          return;
+        }
+        self.isActive = OBJECTIVE_WIN;
       }
       return;
     }
     //no counter, regular Objective 'complete'
-    self.isActive = 2;
+    if( (self.spawnflags & 4) ){
+      self.isActive = OBJECTIVE_FAIL;
+      return;
+    }
+    self.isActive = OBJECTIVE_WIN;
     return;
   }
   //objective wasn't activated, and now it will be
-  if( self.isActive > -1 ){
+  if( self.isActive != OBJECTIVE_FAIL ){
     //don't reactivate failed objectives
-    self.isActive = 1;
+    self.isActive = OBJECTIVE_ACTIVE;
   }
 };
 
 void() map_objective_touch={
-  if( self.isActive > 0 ){
+  if( self.isActive > OBJECTIVE_DISABLE ){
     if( (other.flags & FL_CLIENT) ){
       if( other.faction == self.faction ){
         activator = other;
@@ -154,7 +164,7 @@ void() map_objective_th={
   local entity oldThis;
   
   //objective achieved
-  if(self.isActive == 2){
+  if(self.isActive == OBJECTIVE_WIN){
     multi_trigger();
     oldThis = self;
     player = find (world, classname, "player");
@@ -167,24 +177,23 @@ void() map_objective_th={
       player = find (player, classname, "player");
     }
     self = oldThis;
-    self.isActive = 0;
     if( (self.spawnflags & 8) ){
       MISSION_STATUS = TRUE;
       intermission_running = 1;
       intermission_exittime = time + 2;
       self.think = map_objective_mission_conclude_th;
-      self.nextthink = time + 1;
+      self.nextthink = time + 3;
       return;
     }
     return;
   }
   
   //objective failed.
-  if( self.isActive == -1 ){
+  if( self.isActive == OBJECTIVE_FAIL ){
     //objective failed!
-    trigger_event( self.enemy, self.trigOnDeath );
-    oldThis = self;
     player = findchain(classname, "player");
+    trigger_event( player, self.trigOnDeath );
+    oldThis = self;
     while( player != world ){
       if( player.faction == self.faction ){
         self = player;
@@ -194,13 +203,12 @@ void() map_objective_th={
       player = player.chain;
     }
     self = oldThis;
-    self.isActive = 0;
     if( (self.spawnflags & 4) ){
       MISSION_STATUS = FALSE;
       intermission_running = 1;
       intermission_exittime = time + 2;
       self.think = map_objective_mission_conclude_th;
-      self.nextthink = time + 1;
+      self.nextthink = time + 3;
       return;
     }
     return;
@@ -225,7 +233,7 @@ void() map_objective_th={
            -1 = failed
 .faction = faction for this objective
 .target = fire THIS trigger when Objective is COMPLETE, isActive == 2
-.state_1 = determines which SFX to play when 'completed'
+.aState = determines which SFX to play when 'completed'
                   1 = primary 
                   2 = secondary
                   3 = tertiary
@@ -272,12 +280,17 @@ void() map_objective={
   self.use = map_objective_use;
   self.think = map_objective_th;
   
-  self.isActive = 1;
+  self.isActive = OBJECTIVE_ACTIVE;
   //start off
   if( (self.spawnflags & 1) ){
-    self.isActive = 0;
+    self.isActive = OBJECTIVE_DISABLE;
     return;
   }
-  
+  if( (self.spawnflags & 4) ){
+    self.aState = 254;
+  }
+  if( (self.spawnflags & 8) ){
+    self.aState = 255;
+  }
   self.nextthink = time + 0.1;
 }

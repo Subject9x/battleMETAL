@@ -61,14 +61,12 @@ void() ctrl_update_mechplayer={
 };
 
 void() ai_ctrl_update_mechplayer={
-  local entity parent;
   local entity wep;
   local entity piece;
   local float hp;
   local vector spark;
   local entity partParent;
   
-  parent = self;
   ai_ctrl_updateCenterTorso();
   
   self.ai_attackPreviousEnergy = self.ai_weaponEnergy;
@@ -80,7 +78,7 @@ void() ai_ctrl_update_mechplayer={
     wep = wep.w_slot;
   }
   //damage-based cosmetics for unit component pieces
-
+  self.torsoCenter.hitOffset = self.origin + (v_right * piece.compAltOffset_x) + (v_up * piece.compAltOffset_y);
   piece = self.partNext;
   while( piece ){
     if( piece.classname == MECH_PIECE ){

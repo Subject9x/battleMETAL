@@ -177,18 +177,23 @@ void( entity objective ) client_send_objective={
   if( objective.faction != self.faction ){
     return;
   }
+  //MISSION WIN -> aState == 255
+  //MISSION FAIL -> aState == 254
+  if( objective.aState > 253 ){
+    return;
+  }
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  if( objective.isActive > -1 ){
-    WriteByte( MSG_ONE,  TE_OBJECTIVE_COMPLETE);  
+  if( objective.isActive != OBJECTIVE_FAIL){
+    WriteByte( MSG_ONE, TE_OBJECTIVE_COMPLETE);  
     WriteByte( MSG_ONE, objective.data_idx);
-    WriteShort( MSG_ONE, objective.isActive); 
-    WriteByte( MSG_ONE, objective.state_1);
+    WriteByte( MSG_ONE, objective.isActive); 
+    WriteByte( MSG_ONE, objective.aState);
   }
   else{
-    WriteByte( MSG_ONE,  TE_OBJECTIVE_FAILED);  
-    WriteShort( MSG_ONE, objective.data_idx);
-    WriteByte( MSG_ONE, objective.isActive);
+    WriteByte( MSG_ONE, TE_OBJECTIVE_FAILED);  
+    WriteByte( MSG_ONE, objective.data_idx);
+    WriteByte( MSG_ONE, objective.isActive); 
   }
 };
 
@@ -248,13 +253,13 @@ void() client_push_mapobjects={
   while( obj ){
     switch( obj.data_type ){
       case DATA_DEPL:
-          client_send_deploypoint( obj );
+        client_send_deploypoint( obj );
         break;
       case DATA_NAVP:
-          client_send_navpoint( obj );
+        client_send_navpoint( obj );
         break;
       case DATA_OBJT:
-          client_send_objective( obj );
+        client_send_objective( obj );
         break;
     }
     obj = obj.chain;

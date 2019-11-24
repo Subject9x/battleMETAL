@@ -18,7 +18,7 @@ Overview
 .void() w_think;     //implementable update function
 .string fire_sound;
 .float burstRate; //percentage of reloadRate to use for burst-fire intervals.
-.float state_1;
+.float aState;
 .float state_2;
 .vector wepFireOffset;     //offset for proj. origin
 .float w_proj;       //pointer to projectile entity data

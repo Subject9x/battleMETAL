@@ -233,23 +233,22 @@ void() client_event_deploypoint={
 void() client_event_objective_win={ 
   local float objectiveId, objectiveStatus, type;
   objectiveId = ReadByte();
-  objectiveStatus = ReadShort();
+  objectiveStatus = ReadByte();
   type = ReadByte();
   OBJECTIVES[objectiveId] = objectiveStatus;
-  
-  if( objectiveStatus != 2 ){
+
+  if( objectiveStatus != OBJECTIVE_WIN ){
     return;
-  }
-  
+  }  
   switch( type ){
     case 1:
-      hud_event_objective_complete_prime();
+      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_PRIME, 1 ); 
       break;
     case 2:
-      hud_event_objective_complete_second();
+      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_SECOND, 1 ); 
       break;
     case 3:
-      hud_event_objective_complete_second();
+      hud_event_enqueue( HUD_EVENT_OBJECTIVE_COMPLETE_SECOND, 1 ); 
       break;
   }
 };
@@ -257,9 +256,8 @@ void() client_event_objective_win={
 void() client_event_objective_fail={
   local float objectiveId, objectiveStatus;
   objectiveId = ReadByte();
-  objectiveStatus = ReadShort();
+  objectiveStatus = ReadByte();
   OBJECTIVES[objectiveId] = objectiveStatus;
-
   hud_event_enqueue( HUD_EVENT_OBJECTIVE_FAILED, 1) ;
 };
 
@@ -279,7 +277,6 @@ void() client_event_environment={
   if( HUD_WARN_ENV_ON ){
     if( time > HUD_WARN_ENV_MARK ){
       HUD_WARN_ENV_MARK = time + HUD_WARN_ENV_TIME;
-      
     }
   }
 };
