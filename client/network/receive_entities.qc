@@ -432,10 +432,10 @@ void(string infoMessage, vector infoColor, float infoLifetime, vector fontSize) 
   launches MENU_DEBRIEF screen.  
 */
 void(float missionTime, float clientKills, float missonSuccessCheck, float pscTotal, float survestTotal, float militarTotal, float totalLosses ) client_event_debrief_active={
-  
-  MENU_DEBRIEF_time_elapsed = CLIENT_start_time - missionTime;
-  MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 10;
-  MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 60;
+  MISSION_TIME_END = missionTime;
+  MENU_DEBRIEF_time_elapsed = (MISSION_TIME_END - MISSION_TIME_START);
+  MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 100;
+  //MENU_DEBRIEF_time_elapsed = MENU_DEBRIEF_time_elapsed / 60;
   
   MENU_DEBRIEF_total_kills = clientKills;
   MENU_DEBRIEF_total_monsters = survestTotal + militarTotal;

@@ -839,6 +839,10 @@ Only used for the world entity.
 
 .itemOverrideFile <string> data/map_scripts/<map_name>/<file>.sav - if present, send this file of items instead of normal save file
 
+.unlockMechs = <string> a space-separated list of mech UIDs
+
+.unlockEquip = <string>a space-separated list of item UIDs
+
 .ignoreSave <bool> don't save at end of mission
 
 .animaticOnly <bool> only play an animatic (make sure to set one up, including level switch)
@@ -2107,8 +2111,8 @@ MISSION_WIN 8: when 'complete' fire-off end-mission logic
 -------- KEYS -------- 
 .targetname = <string> call by trigger.
 .target = <string> will fire other triggers after being used.
-.unlockMechs = <string> 
-.unlockEquip = <string>
+.unlockMechs = <string> a space-separated list of mech UIDs
+.unlockEquip = <string>a space-separated list of item UIDs
 -------- SPAWNFLAGS --------
 ONTOUCH 2 : will fire ontouch instead of by targetname.
 */

@@ -13,7 +13,6 @@ float CLIENT_flags;
 string CLIENT_netname;
 float CLIENT_player_state;
 float CLIENT_player_deadflag;
-float CLIENT_start_time;
 
 float CLIENT_data_type;
 float CLIENT_data_idx;

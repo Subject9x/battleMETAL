@@ -340,8 +340,7 @@ void() mechAcceptButtonListener={
       cl_setweapongroup(4, CLIENT_MENU_nex_grp4);
       cl_setweapongroup(5, CLIENT_MENU_nex_grp5);
       cl_spawnmech(); 
-      
-      CLIENT_start_time = time; //mark time when player started as mech.
+
       CLIENT_MENU_nav_pnt = -1;
       MENU_ACTIVE = FALSE;
     }

@@ -176,7 +176,6 @@ void() map_objective_th={
       }
       player = find (player, classname, "player");
     }
-    self = oldThis;
     if( (self.spawnflags & 8) ){
       MISSION_STATUS = TRUE;
       intermission_running = 1;
@@ -202,7 +201,6 @@ void() map_objective_th={
       }
       player = player.chain;
     }
-    self = oldThis;
     if( (self.spawnflags & 4) ){
       MISSION_STATUS = FALSE;
       intermission_running = 1;

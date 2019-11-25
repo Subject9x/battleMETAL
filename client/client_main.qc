@@ -453,6 +453,7 @@ float() CSQC_Parse_TempEntity =
       return TRUE;
     case TE_POWERUP:
       hud_event_enqueue( HUD_EVENT_POWERUP, 1) ;
+      MISSION_TIME_START = ReadLong();
       return TRUE;
     case TE_MSG_INFO:
       client_event_info_box( ReadString(), CLR_DEF_TXT_GRAY_SMOOTH, ReadLong(), '14 14 0');

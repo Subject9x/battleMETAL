@@ -74,8 +74,9 @@ float WORLD_CAVE = 5;
 //============================
 float OBJECTIVE_DISABLE = 0;
 float OBJECTIVE_ACTIVE = 1;
-float OBJECTIVE_FAIL = 3;
 float OBJECTIVE_WIN = 2;
+float OBJECTIVE_COMPLETE = 3;
+float OBJECTIVE_FAIL = 4;
 //============================
 //   PLAYER STATE ID's           
 //============================

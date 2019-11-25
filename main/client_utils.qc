@@ -181,16 +181,16 @@ void( entity objective ) client_send_objective={
   }
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
-  if( objective.isActive != OBJECTIVE_FAIL){
+  if( objective.isActive == OBJECTIVE_FAIL){
+    WriteByte( MSG_ONE, TE_OBJECTIVE_FAILED);  
+    WriteByte( MSG_ONE, objective.data_idx);
+    WriteByte( MSG_ONE, objective.isActive); 
+  }
+  else{
     WriteByte( MSG_ONE, TE_OBJECTIVE_COMPLETE);  
     WriteByte( MSG_ONE, objective.data_idx);
     WriteByte( MSG_ONE, objective.isActive); 
     WriteByte( MSG_ONE, objective.aState);
-  }
-  else{
-    WriteByte( MSG_ONE, TE_OBJECTIVE_FAILED);  
-    WriteByte( MSG_ONE, objective.data_idx);
-    WriteByte( MSG_ONE, objective.isActive); 
   }
 };
 
@@ -309,6 +309,7 @@ void(entity client ) client_send_event_powerup={
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_POWERUP );
+  WriteLong( MSG_ONE, time );
 };
 
 void(entity client, float weaponsOnOff) client_send_event_weapons={

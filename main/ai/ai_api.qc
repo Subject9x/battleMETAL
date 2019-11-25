@@ -474,7 +474,7 @@ entity() ai_goal_offset_node={
     tests = tests + 1;
   }
   if( checkLen == 250 ){
-    cons_logAFloat("ai_goal_offset_node()->no offset node", -1);  //DEBUG
+    //cons_logAFloat("ai_goal_offset_node()->no offset node", -1);  //DEBUG
     return world;
   }
   offsetNode = spawn();
@@ -482,7 +482,7 @@ entity() ai_goal_offset_node={
   offsetNode.ai_rank = (random() * 50) + (random() * 33);
   setsize(offsetNode, '-16 -16 -32', '16 16 32');
   setorigin(offsetNode, offsetNodeOrg);
-  cons_logAVector("ai_goal_offset_node()->offsetNodeOrg", offsetNodeOrg);  //DEBUG
+ //cons_logAVector("ai_goal_offset_node()->offsetNodeOrg", offsetNodeOrg);  //DEBUG
   return offsetNode;
 };
 

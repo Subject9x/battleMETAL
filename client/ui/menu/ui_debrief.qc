@@ -61,7 +61,7 @@ void(vector panelOffset) menu_debrief_header={
   
   nextMissionOrg_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw(138);//106 accounts for pesky 10px margin
   nextMissionOrg_y = gui_percentYRaw(6);
-  drawpic( nextMissionOrg, UI_DEF_BOX_256, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
+  drawpic( nextMissionOrg, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
   MENU_DEBRIEF_BUTTON_ORG_mission = nextMissionOrg;
   
   //TODO - what to do with FAILED missions?
@@ -302,7 +302,7 @@ void(vector panelOffset) menu_debrief_stats={
   
   //Time taken
   drawstring( thisOrg + gui_percentToPixelRawVec('6 72'), "Mission Time:", '14 14', CLR_DEF_GRAY_H, 1, 0);
-  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), sprintf("%00.2f",ftos(MENU_DEBRIEF_time_elapsed)), '16 16', '1 1 1', 1, 0);
+  drawstring( thisOrg + gui_percentToPixelRawVec('96 72'), sprintf("%00.2f",MENU_DEBRIEF_time_elapsed), '16 16', '1 1 1', 1, 0);
   
   drawfont = drawfont_prev;
 };

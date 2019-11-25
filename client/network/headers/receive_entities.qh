@@ -21,6 +21,9 @@ string MISSION_NAME;
 vector MISSION_NAME_ORG;
 vector MISSION_NAME_COLOR;
 
+float MISSION_TIME_START;
+float MISSION_TIME_END;
+
 entity mapKeyObject;
 entity lastMapKeyObject; //pointer for last sync'd map object
 
