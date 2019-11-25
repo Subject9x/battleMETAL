@@ -54,13 +54,11 @@ void() mechSelectListener={
       found = listListener(MECHLIST_ORG_HEAVY, cursorpos, MECHLIST_SIZE_HEAVY, gui_percentToPixel(0.0703, 0.0166), MECHLIST_CNT_HEAVY, 0);
       found = MECHLIST_HEAVY_VAL[found];
     }
-    
     if(found > FALSE){
-
       if( (LAUNCH_VALIDATION & VALID_MECH) ){
-        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & VALID_MECH) ;
+        LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE)) ;
       }
-      if(found != CLIENT_MENU_sel_mech){
+      if( found != CLIENT_MENU_sel_mech ){
         ui_mech_config_switch( found, 0 );
       }
 

@@ -103,7 +103,7 @@ void() sv_getTarget={
 
   traceline(src.origin, src.origin + (v_forward * self.stat_rdr_rng), MOVE_NORMAL, self);
   if( ai_valid_target(trace_ent) ){
-    if( (trace_ent.flags & FL_CLIENT) || (trace_ent.flags & FL_MONSTER) ){
+    if( ai_valid_target(trace_ent) ){
       self.enemy = trace_ent;
       if(self.stat_rdr_mode){
         self.lock_timer = time + self.w_firetime;
@@ -147,11 +147,6 @@ void() sv_updateTargetInfo={
     return;
   }
   
-  self.stat_trg_ent_id = num_for_edict(self.enemy);
-  self.stat_trg_dataidx = self.enemy.data_idx;
-  self.stat_trg_dat = self.enemy.data_type;
-  self.stat_trg_faction = self.enemy.faction;
-
   local float dst;
   dst = vlen( self.enemy.origin - self.origin );
   if(dst > self.stat_rdr_rng){
@@ -159,10 +154,13 @@ void() sv_updateTargetInfo={
     return;
   }
   
+  self.stat_trg_ent_id = num_for_edict(self.enemy);
+  self.stat_trg_dataidx = self.enemy.data_idx;
+  self.stat_trg_dat = self.enemy.data_type;
+  self.stat_trg_faction = self.enemy.faction;  
   self.stat_trg_ddflg = self.enemy.deadflag;
   self.stat_trg_dist = dst;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
-  
   self.addStat_targetSize_x = self.enemy.maxs_x;
   self.addStat_targetSize_y = self.enemy.maxs_y;
   self.addStat_targetSize_z = self.enemy.maxs_z;

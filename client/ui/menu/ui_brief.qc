@@ -351,13 +351,12 @@ void(vector ofs) menu_briefObjectivePanel={
   drawpic(bpos, UI_DEF_BOX_256, gui_percentToPixelRawVec('377.6 192'), CLR_DEF_UI_BRIEF + '0.2 0.2 0.2', 1, 0);
   
   lofs = bpos + gui_percentToPixelRawVec('12 24');
-  eol = TRUE;
   lst_idx = 1;
   line_rtn = 0;
+  objectiveOffset_x = lofs_x + gui_percentXRaw(2);
+  objectiveOffset_y = lofs_y + line_rtn + gui_percentYRaw(3);
+  eol = TRUE;
   while(eol){
-    objectiveOffset = lofs;
-    objectiveOffset_y = objectiveOffset_y + gui_percentYRaw(line_rtn) + ( (lst_idx - 1) * gui_percentYRaw(14));
-    
     desc = MSN_OBJ_DESC[lst_idx];
     text = strcat( ftos(lst_idx),") ", desc);
     line_rtn = gui_wrapText(objectiveOffset, '350 150', text, '12 10 0', CLR_DEF_TXT_GRAY_SMOOTH, 1);
@@ -366,6 +365,7 @@ void(vector ofs) menu_briefObjectivePanel={
       eol = FALSE;
     }
     lst_idx = lst_idx + 1;
+    objectiveOffset_y = objectiveOffset_y + line_rtn + gui_percentYRaw(12);
   }
   
   drawfont = drawfont_prev;

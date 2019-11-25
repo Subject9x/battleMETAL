@@ -45,7 +45,7 @@ void() CSQC_Init =
   WEPBITS[7] = 128;
   WEPBITS[8] = 256;
 
-  SELECT_MECH = 0;
+  SELECT_MECH = CLIENT_MENU_sel_mech = 0;
   LAUNCH_VALIDATION = 0; //set launch validation to 0 to prevent invalid deployments to game world
 
   //clear out and prepare the sound queue
@@ -127,6 +127,7 @@ void() CSQC_Init =
   HUD_SHIELD_FLASH_TIME = 0;
   HUD_SHIELD_FLASH_ON = FALSE;
   HUD_SHIELD_FLASH = -1;
+  
   //ui data from text files /data/ui/
   ui_data_load_mechsizes();
   ui_data_load_hudnames();
