@@ -148,7 +148,9 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
             //menu_deployListener_onKeyUp();
             break;
         }
-        menu_mainListener();
+        if( CLIENT_MENU_menu_choice != MENU_DEBRIEF_ACTIVE ){
+          menu_mainListener();
+        }
         return TRUE;
       }
     }

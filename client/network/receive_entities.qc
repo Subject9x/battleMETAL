@@ -61,9 +61,11 @@ void() client_get_info={
     lastWeaponState = CLIENT_weapon_state;
     CLIENT_weapon_state = ReadLong();
     
-    CLIENT_stat_trg_ent_id = ReadByte();
+    CLIENT_stat_trg_ent_id = ReadLong();
     if( CLIENT_stat_trg_ent_id != 0 ){
-      CLIENT_target_origin = te_read_vector();
+      CLIENT_target_origin_x = ReadCoord();
+      CLIENT_target_origin_y = ReadCoord();
+      CLIENT_target_origin_z = ReadCoord();
       CLIENT_target_shield = ReadByte();
       CLIENT_stat_trg_ct_hp = ReadByte();
       CLIENT_stat_trg_lg_hp = ReadByte();
@@ -82,7 +84,7 @@ void() client_get_info={
 
 void() client_get_info_thin={
   CLIENT_player_deadflag = ReadByte();
-  CLIENT_entorg  = te_read_vector();
+  CLIENT_entorg = te_read_vector();
   CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
 };
 

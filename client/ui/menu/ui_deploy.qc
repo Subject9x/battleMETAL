@@ -185,7 +185,7 @@ void(vector ofs) menu_deploy_navInfoPanel={
   
   local vector deployColor;
   if(CLIENT_MENU_nav_pnt > -1){
-    deployLabel = gui_getNavName(CLIENT_MENU_nav_pnt);
+    deployLabel = strcat("Point [",ftos(CLIENT_MENU_nav_pnt),"]");
     deployColor = CLR_DEF_GREEN;
   }
   else{

@@ -14,8 +14,8 @@ Overview:
 */
 void() data_ini_matok_={
 
-  self.data_idx = UID_MECH_matok;  //
-  self.vec_size = 2;  //
+  self.data_idx = UID_MECH_matok;
+  self.vec_size = 2;
   self.vec_name = "Matok";
  
   self.max_health = 650;

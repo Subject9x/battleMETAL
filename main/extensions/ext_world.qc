@@ -59,9 +59,9 @@ void() mh_world_ini={
   
   addstat(STAT_ACCURACY, AS_FLOAT, accuracy);
  
-  addstat(STAT_PLR_ANG_X, AS_FLOAT, stat_plr_ang_x);
-  addstat(STAT_PLR_ANG_Y, AS_FLOAT, stat_plr_ang_y);
-  addstat(STAT_PLR_ANG_Z, AS_FLOAT, stat_plr_ang_z);
+  addstat(ADDSTAT_TARGETSIZE_X, AS_FLOAT, addStat_targetSize_x);
+  addstat(ADDSTAT_TARGETSIZE_Y, AS_FLOAT, addStat_targetSize_y);
+  addstat(ADDSTAT_TARGETSIZE_Z, AS_FLOAT, addStat_targetSize_z);
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
   addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);

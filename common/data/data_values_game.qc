@@ -212,9 +212,9 @@ float RADAR_SWEEP = 2.5;
 .float stat_trg_ddflg;
 .float stat_ret_dist;
 
-.float stat_plr_ang_x;
-.float stat_plr_ang_y;
-.float stat_plr_ang_z;
+.float addStat_targetSize_x;
+.float addStat_targetSize_y;
+.float addStat_targetSize_z;
 .float stat_plr_rep;
 #endif
 //============================
@@ -277,16 +277,16 @@ float STAT_NAV_DIR = 81;
 float STAT_PLR_FIR = 83;
 float STAT_LCK_STT = 84;
 float STAT_PLR_PTC = 85;
-float STAT_PLR_ANG = 86;
+//float ADDSTAT_TARGETSIZE = 86;
 float STAT_TRG_DDFLG = 87;
-float STAT_TRG_ORGX = 88;
-float STAT_TRG_ORGY = 89;
-float STAT_TRG_ORGZ = 90;
+//float STAT_TRG_ORGX = 88;
+//float STAT_TRG_ORGY = 89;
+//float STAT_TRG_ORGZ = 90;
 
 float STAT_RAD_SWEEP = 91;
-float STAT_PLR_ANG_X = 100;
-float STAT_PLR_ANG_Y = 101;
-float STAT_PLR_ANG_Z = 102;
+float ADDSTAT_TARGETSIZE_X = 100;
+float ADDSTAT_TARGETSIZE_Y = 101;
+float ADDSTAT_TARGETSIZE_Z = 102;
 float STAT_PLR_REP = 103; //remaining repair delta
 float STAT_PLR_NAME = 104;
 

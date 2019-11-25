@@ -19,7 +19,6 @@ void() client_push_player_info={
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
   self.armorvalue = self.stat_plr_stt;
-
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_CLIENT_INFO );
@@ -53,12 +52,10 @@ void() client_push_player_info={
       }
       WriteByte( MSG_ONE, wep.reloadValue );
     }
-
     WriteLong( MSG_ONE, weaponStateBit );
-
-    enm = num_for_edict(self.enemy);
-    WriteByte( MSG_ONE, enm );
-    if( self.enemy != world ){
+    
+    WriteLong( MSG_ONE, self.stat_trg_ent_id );
+    if( self.stat_trg_ent_id != 0 ){
       WriteCoord( MSG_ONE, self.enemy.origin_x );
       WriteCoord( MSG_ONE, self.enemy.origin_y );
       WriteCoord( MSG_ONE, self.enemy.origin_z );
@@ -77,7 +74,7 @@ void() client_push_player_info={
       WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.torsoRight));
       WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armLeft));
       WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armRight));
-      WriteShort( MSG_ONE, self.enemy.maxs_y * 2 );
+      WriteShort( MSG_ONE, self.enemy.maxs_z * 2 );
       if( self.enemy.netname == "" ){
         self.enemy.netname = self.enemy.vec_name;
       }
@@ -629,35 +626,31 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
   client Mapping = client_event_debrief_active();
 */
 void(entity client, float missionSuccessCheck) client_sendEndMission={
-  local entity notSelf;
-  self.armorvalue = self.stat_plr_stt = PLAYER_INTERMSN;
-  
-  notSelf = self;
-  self = client;
-    msg_entity = self;
-    WriteByte( MSG_ONE, SVC_TEMPENTITY );
-    WriteByte( MSG_ONE, TE_MISSION_END );
-    WriteLong( MSG_ONE, time );
-    WriteLong( MSG_ONE, self.frags );
-    WriteByte( MSG_ONE, missionSuccessCheck );
-    WriteShort( MSG_ONE, MISSION_TOTAL_PSC );
-    WriteShort( MSG_ONE, MISSION_TOTAL_SURVEST );
-    WriteShort( MSG_ONE, MISSION_TOTAL_MILITAR );
-    switch( self.faction ){
-      case FACTION_PSC:
-        WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
-        break;
-      case FACTION_SURVEST:
-        WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
-        break;
-      case FACTION_MILITAR:
-        WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
-        break;
-      default:
-        WriteShort( MSG_ONE, 0 );
-        break;
-    }
-  self = notSelf;
+
+  client.armorvalue = client.stat_plr_stt = PLAYER_INTERMSN;
+  msg_entity = client;
+  WriteByte( MSG_ONE, SVC_TEMPENTITY );
+  WriteByte( MSG_ONE, TE_MISSION_END );
+  WriteLong( MSG_ONE, time );
+  WriteLong( MSG_ONE, client.frags );
+  WriteByte( MSG_ONE, missionSuccessCheck );
+  WriteShort( MSG_ONE, MISSION_TOTAL_PSC );
+  WriteShort( MSG_ONE, MISSION_TOTAL_SURVEST );
+  WriteShort( MSG_ONE, MISSION_TOTAL_MILITAR );
+  switch( client.faction ){
+    case FACTION_PSC:
+      WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
+      break;
+    case FACTION_SURVEST:
+      WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
+      break;
+    case FACTION_MILITAR:
+      WriteShort( MSG_ONE, MISSION_LOSSES_MILITAR );
+      break;
+    default:
+      WriteShort( MSG_ONE, 0 );
+      break;
+  }
 };
 
 void(entity client ) client_send_mapKeyObjects={

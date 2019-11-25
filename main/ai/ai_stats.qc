@@ -233,7 +233,7 @@ float() ai_pilot_armor_mod={
   else{
     switch( self.ai_rank ){
       case SKILL_NOV:
-    return AI_ARMOR_EASY;
+        return AI_ARMOR_EASY;
       case SKILL_VET:
         return AI_ARMOR_HARD;
       case SKILL_ELT:

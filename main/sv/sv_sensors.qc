@@ -129,15 +129,15 @@ void() sv_getTarget={
 void() sv_updateTargetInfo={
  
   if( !(ai_valid_target(self.enemy)) || (self.enemy.health <= 0) ){
-    self.stat_trg_dataidx = -1;
-    self.stat_trg_ddflg = -1;
-    self.stat_trg_dist = -1;
-    self.stat_trg_face = -1;
-    self.stat_trg_faction = -1;
-    self.stat_trg_ent_id = -1;
-    self.stat_plr_ang_x = 0;
-    self.stat_plr_ang_y = 0;
-    self.stat_plr_ang_z = 0;
+    self.stat_trg_dataidx = 0;
+    self.stat_trg_ddflg = -6;
+    self.stat_trg_dist = 0;
+    self.stat_trg_face = 0;
+    self.stat_trg_faction = 0;
+    self.stat_trg_ent_id = -0;
+    self.addStat_targetSize_x = 0;
+    self.addStat_targetSize_y = 0;
+    self.addStat_targetSize_z = 0;
     if( (self.stat_lck_stt & LOCK_TARG_START)){
       self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
     }
@@ -163,9 +163,9 @@ void() sv_updateTargetInfo={
   self.stat_trg_dist = dst;
   self.stat_trg_face = util_checkPointAngle(self.enemy);
   
-  self.stat_plr_ang_x = self.enemy.maxs_x;
-  self.stat_plr_ang_y = self.enemy.maxs_y;
-  self.stat_plr_ang_z = self.enemy.maxs_z;
+  self.addStat_targetSize_x = self.enemy.maxs_x;
+  self.addStat_targetSize_y = self.enemy.maxs_y;
+  self.addStat_targetSize_z = self.enemy.maxs_z;
   
   //can only lock-on to enemy units
   if( self.enemy.faction != self.faction ){

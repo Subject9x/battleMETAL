@@ -9,14 +9,23 @@ Overview:
       other code bases.
 */
 void() PlayerPreThink = {
-  if( self.stat_plr_stt == PLAYER_INTERMSN ){
-    client_push_player_info_thin();
+	if (self.deadflag == DEAD_DEAD){
+		PlayerDeathThink ();
+		return;
+	}
+	if (self.deadflag >= DEAD_DYING){
+    return;	// dying, so do nothing
   }
   
+
 	if (intermission_running){
 		IntermissionThink ();	// otherwise a button could be missed between
 		return;					// the think tics
 	}
+  
+  if( self.stat_plr_stt == PLAYER_INTERMSN ){
+    client_push_player_info_thin();
+  }
   
 	if (self.view_ofs == '0 0 0'){
   	return;		// intermission or finale
@@ -29,16 +38,6 @@ void() PlayerPreThink = {
 
 	//if (self.waterlevel == 2)
 		//CheckWaterJump ();
-
-  
-	if (self.deadflag == DEAD_DEAD){
-		PlayerDeathThink ();
-		return;
-	}
-
-	if (self.deadflag >= DEAD_DYING){
-    return;	// dying, so do nothing
-  }
 
   if(time < self.power_timer){
     PlayerPreThink_powerup();
@@ -72,6 +71,10 @@ void() PlayerPreThink = {
 };
 
 void() PlayerPostThink = {
+  if (self.deadflag >= DEAD_DYING){
+    return;
+  }
+
   if( self.stat_plr_stt == PLAYER_INTERMSN ){
     client_push_player_info_thin();
   }
@@ -90,9 +93,6 @@ void() PlayerPostThink = {
 		return;		// intermission or finale
   }
     
-	if (self.deadflag >= DEAD_DYING){
-    return;
-  }
 
   if(time < self.power_timer){
     PlayerPostThink_powerup();
@@ -212,8 +212,9 @@ void() PlayerPostThink = {
   //after server processes everything, push data to client
   client_push_player_info();
  
-	if (!(self.flags & FL_ONGROUND))
+	if (!(self.flags & FL_ONGROUND)){
 		self.jump_flag = self.velocity_z;
+  }
 };
 
 
@@ -286,33 +287,16 @@ void() PlayerDie={
 	self.movetype = MOVETYPE_TOSS;
   setsize(self, '-4 -4 -4', '4 4 4');
 	
-  if (self.velocity_z < 10)
+  if (self.velocity_z < 10){
     self.velocity_z = self.velocity_z + (random() * ((4 - self.vec_size) * 100));
+  }
   
 	self.angles_x = 0;
 	self.angles_z = 0;
   self.angles_y = 0;
   self.avelocity = '0 0 0';
   
-  self.think = PlayerDieEnd;
-  self.nextthink = time + GAME_TIME_TO_DEBRIEF;
-};
-
-void() PlayerDieEnd={  
-
-  self.movetype = MOVETYPE_NONE;
   //update objectives on player death.
-  local entity objtivs;
-  objtivs = findchainfloat( data_type, DATA_OBJT );
-  while( objtivs != world ){
-    if( objtivs.faction == self.faction ){
-      if( objtivs.isActive == 1 ){
-        //if objective is Active but incomplete, the mission is failed.
-        objtivs.isActive = -1;
-      }
-    }
-    objtivs = objtivs.chain;
-  }
   client_push_mapobjects();
   if( MISSION_STATUS ){        
     //only send unlocks if player won mission
@@ -322,9 +306,17 @@ void() PlayerDieEnd={
   else{
     te_mission_lose();
   }
+  
+  self.think = PlayerDieEnd;
+  self.nextthink = time + GAME_TIME_TO_DEBRIEF;
+};
+
+void() PlayerDieEnd={
+  self.movetype = MOVETYPE_NONE;
   self.stat_plr_stt = PLAYER_INTERMSN;
   client_sendEndMission(self, MISSION_STATUS );
   client_push_player_info();
+  
   self.think = PlayerDead;
   self.nextthink = time + 0.1;
 };
@@ -338,8 +330,9 @@ void() PlayerDead={
 void() PlayerDeathThink={
 // wait for all buttons released
 	if (self.deadflag == DEAD_DEAD){
-		if (self.button2 || self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7)
+		if (self.button2 || self.button0 || self.button3 || self.button4 || self.button5 || self.button6 || self.button7){
 			return;
+    }
 		self.deadflag = DEAD_RESPAWNABLE;
 		return;
 	}

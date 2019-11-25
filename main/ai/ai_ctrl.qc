@@ -431,8 +431,9 @@ float( entity targ ) ai_check_vis={
     return VIS_FRN;
   }
   
-  if( trace_fraction >= 0.9 && (trace_ent.flags & FL_UNIT) )
+  if( trace_fraction >= 0.9 && (trace_ent.flags & FL_UNIT) ){
     return VIS_FRAC;
+  }
   
   return VIS_FAIL;
 };
@@ -498,8 +499,8 @@ void() ai_setup_patrol={
     }
     return;
   }
-  self.think = self.th_stand;
-  self.nextthink = time + (random() * 0.5);
+  self.th_stand();
+  self.nextthink = time + 0.1;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = self.nextthink + 7;
   }
