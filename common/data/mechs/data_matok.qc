@@ -54,16 +54,16 @@ void() data_ini_matok_={
   data_ini_torso_center_( "q3mdl/mechs/matok/matok_tor_c.md3", 650, '0 0 0', '0 6 0' );
  
   //left torso
-  data_ini_torso_left_( "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1', '-10 12.25 0' );
+  data_ini_torso_left_( "q3mdl/mechs/matok/matok_tor_l.md3", 600, '-10 12.25 1', '-8 12.25 0' );
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1', '10 12.25 0' );
+  data_ini_torso_right_( "q3mdl/mechs/matok/matok_tor_r.md3", 600, '10 12.25 1', '8 12.25 0' );
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-16 7 3', '-16 7 0' );
+  data_ini_arm_left_( "q3mdl/mechs/matok/matok_arm_l.md3", 675, '-16 7 3', '-14 7 0' );
 
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/matok/matok_arm_r.md3", 675, '16 7 3', '16 7 0' );
+  data_ini_arm_right_( "q3mdl/mechs/matok/matok_arm_r.md3", 675, '16 7 3', '14 7 0' );
 
   //legs
   data_ini_legs_( "q3mdl/mechs/matok/matok_legs.md3", 900, '0 -12 0' );

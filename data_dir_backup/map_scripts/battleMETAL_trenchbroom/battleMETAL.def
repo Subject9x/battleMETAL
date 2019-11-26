@@ -588,6 +588,34 @@ Keys:
  killed by this.
  default: " got in the way"
 */
+
+
+
+/*QUAKED func_damage_zone (0.8 0.45 0.25) ? START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
+A Damage Zone is an area that hurts all units within the zone.
+  
+-------- KEYS -------- 
+.targetname = <string> [targetname] - make triggerable
+.damageValue = <float> - amount of damage to impart
+.damageType = <float> [flag] 1 - NO_DMG SHIELDS
+.damageType = <float> [flag] 2 - NO_DMG ARMOR
+.damageType = <float> [flag] 4 - NO_DMG ENERGY
+.damageType = <float> [flag] 8 - NO_DMG SPEED
+.data_lifetime = <float> - time to live, use with spawnflags[2]
+.wait = <float> - recharge delay - how long to wait before reactivating, use with spawnflags[4]
+
+-------- SPAWNFLAGS -------- 
+START_OFF 1: START_OFF - only activated by trigger
+LIFETIME 2: lifetime
+REACTIVATE 4: reactivate after countdown
+REMOVE_FIRSTUSE 8: remove after first countdown
+REMOVE_ONTOUCH 16: remove on first touch
+ACTIVE_ONTOUCH 32: activate on-touch
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
+*/
+
+
+
 /*QUAKED trigger_shake (1 .5 0) ? PLAYERONLY SILENT STARTON TOGGLE
 any player touching this feels an earthquake.
 
@@ -1978,6 +2006,8 @@ RESTORE_WORLDVAL 16: restore original wind values
 */
 
 
+
+
 /*QUAKED map_damage_zone (0.8 0.45 0.25) (-8 -8 -8) (8 8 8) START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
 A Damage Zone is an area that hurts all units within the zone.
   
@@ -2002,6 +2032,8 @@ REMOVE_ONTOUCH 16: remove on first touch
 ACTIVE_ONTOUCH 32: activate on-touch
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
+
+
 
 
 /*QUAKED map_deploy_point (1 0.45 0.2) (-26 -26 -44) (26 26 28)

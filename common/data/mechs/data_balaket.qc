@@ -54,16 +54,16 @@ void() data_ini_balaket_={
   data_ini_torso_center_( "q3mdl/mechs/balaket/balaket_tor_c.md3", 500, '0 0 0', '0 3 0' );
  
   //left torso
-  data_ini_torso_left_( "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', '-7.5 5.5 0');
+  data_ini_torso_left_( "q3mdl/mechs/balaket/balaket_tor_l.md3", 375, '-7.5 5.5 -2.5', '-5.5 5.5 0');
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', '7.5 5.5 0');
+  data_ini_torso_right_( "q3mdl/mechs/balaket/balaket_tor_r.md3", 375, '7.5 5.5 -2.5', '5.5 5.5 0');
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-12.1 3.5 -3', '-12.1 3.5 0');
+  data_ini_arm_left_( "q3mdl/mechs/balaket/balaket_arm_l.md3", 350, '-12.1 3.5 -3', '-10.1 3.5 0');
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '12.1 3.5 -3', '12.1 3.5 0');
+  data_ini_arm_right_( "q3mdl/mechs/balaket/balaket_arm_r.md3", 350, '12.1 3.5 -3', '10.1 3.5 0');
    
   //legs      
   data_ini_legs_( "q3mdl/mechs/balaket/balaket_legs.md3", 700, '0 -16 0');
