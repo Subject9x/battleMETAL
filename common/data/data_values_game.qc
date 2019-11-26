@@ -70,6 +70,20 @@ float WORLD_TUNDRA = 3;
 float WORLD_ICE = 4;
 float WORLD_CAVE = 5;
 //============================
+//   PARTICLE CUBE DENSITY RATIO - .Maxs_x / _VALUE
+//============================
+float SHIELD_SMALL = 84;
+float SHIELD_MEDIUM = 200;
+float SHIELD_LARGE = 400;
+
+float RAD_SMALL = 64;
+float RAD_MEDIUM = 128;
+float RAD_LARGE = 256;
+
+float QUAN_SMALL = 256;
+float QUAN_MEDIUM = 512;
+float QUAN_LARGE = 1024;
+//============================
 //   OBJECTIVE STATE
 //============================
 float OBJECTIVE_DISABLE = 0;

@@ -2389,7 +2389,7 @@ velocitymultiplier 1
 //SMALL DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_SMALL - SMOKE
     effect TE_DEBRIS_TRAIL_SMALL
-    count 5
+    count 2
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -2435,7 +2435,7 @@ velocitymultiplier 1
 //MED DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_MED - SMOKE
     effect TE_DEBRIS_TRAIL_MED
-    count 5
+    count 3
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -2481,7 +2481,7 @@ velocitymultiplier 1
 //BIG DEBRIS EFFECT==================================
   //TE_DEBRIS_TRAIL_BIG - SMOKE
     effect TE_DEBRIS_TRAIL_BIG
-    count 5
+    count 3
     type alphastatic
     blend alpha
     color 0x151515 0x2E2E2E
@@ -2667,14 +2667,14 @@ velocitymultiplier 1
 
 //TE_DUST_DESERT==================================
 effect TE_DUST_DESERT
-count 0.33
+count 1
 type smoke
 blend alpha
 color 0xD0B98E 0x7B6C50
 tex 0 7
 size 4 5
 sizeincrease 2
-alpha 128 256 48
+alpha 128 256 64
 originjitter 8 8 1
 velocityjitter 1 1 -6
 velocitymultiplier 2 

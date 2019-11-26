@@ -21,7 +21,7 @@ Overview:
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
   util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(self.c_model, own.skin, 0);
+  util_setModel(self.modelPath, own.skin, 0);
   setsize(self, '-1 -1 -1', '1 1 1');
   util_setOffsetOrigin(self, own, self.compOffset);
   self.owner = own;

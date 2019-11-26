@@ -22,16 +22,21 @@ void() m_init={
     cmd("cd play 2");
     m_toggle(1);
   }
+  cons_logAFloat("clientstate()", clientstate()); //DEBUG
   MOUSE_TARGET = null_entity;
   TEXTFIELD_TARGET = null_entity;
   KEYBIND_TARGET = null_entity;
   UI_INPUT_ACTIVE = FALSE;
   UI_KEYBIND_ACTIVE = FALSE;
   SUB_MENU = FALSE;
-  
-  FONT_NUM_ROBOT_THIN = loadfont( "robot_thin", "gfx/fonts/Roboto_Thin", "6 8 10 12 14 18", FONT_USER, FALSE, FALSE);
-  FONT_NUM_ROBOT_LIGHT = loadfont( "robot_light", "gfx/fonts/Roboto_Light", "6 8 10 12 14 18",  FONT_USER+1, FALSE, FALSE);
-  FONT_NUM_ROBOT_REGULAR = loadfont( "robot_regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 14 18", FONT_USER+2, FALSE, FALSE);
+    
+  FONT_NUM_ROBOT_LIGHT = loadfont("Roboto_Light", "gfx/fonts/Roboto_Light", "8 12 16 32", FONT_USER, FALSE, FALSE);
+  FONT_NUM_ROBOT_THIN = loadfont("Roboto_Thin", "gfx/fonts/Roboto_Thin", "8 12 16 32", FONT_USER1, FALSE, FALSE);
+  FONT_NUM_ROBOT_REGULAR = loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "8 12 16 32", FONT_USER2, FALSE, FALSE);
+  FONT_NUM_ROBOT_MEDIUM = loadfont("Roboto_Medium", "gfx/fonts/Roboto_Medium", "8 12 16 32", FONT_USER2, FALSE, FALSE);
+  loadfont("Roboto-Light", "gfx/fonts/Roboto_Light", "6 8 10 12 16", FONT_DEFAULT, FALSE, FALSE);
+  loadfont("Roboto_Regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 16", FONT_CONSOLE, FALSE, FALSE);
+  FONT_NUM_DYSTOPIAN = loadfont("Dystopian_Future", "gfx/fonts/Dystopian_Future", "6 8 10 12 16", FONT_USER3, FALSE, FALSE);
   
   //setup textfield key filter;
   menu_ini_txtfilter();
@@ -227,6 +232,9 @@ void(float mode) m_toggle={
     if(clientstate() == CS_DISCONNECTED){
       cmd("cd play 2");
     }
+    FONT_NUM_ROBOT_THIN = loadfont( "robot_thin", "gfx/fonts/Roboto_Thin", "6 8 10 12 14 18", FONT_USER, FALSE, FALSE);
+    FONT_NUM_ROBOT_LIGHT = loadfont( "robot_light", "gfx/fonts/Roboto_Light", "6 8 10 12 14 18",  FONT_USER+1, FALSE, FALSE);
+    FONT_NUM_ROBOT_REGULAR = loadfont( "robot_regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 14 18", FONT_USER+2, FALSE, FALSE);
     m_main_f();
   }
   else{

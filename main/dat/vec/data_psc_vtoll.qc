@@ -31,7 +31,7 @@ void() data_PSC_VTOLL_ini={
   self.partTypeId = M_TOR_CENTER;
   self.health = 1;
   self.max_health = 1;
-  self.c_model = "";
+  self.modelPath = "";
   
   self.energy= DAT_PSC_VTOLL_ENERGY_MAX;
   self.energyMax= DAT_PSC_VTOLL_ENERGY_MAX;
@@ -39,7 +39,7 @@ void() data_PSC_VTOLL_ini={
   self.shieldMax= DAT_PSC_VTOLL_SHIELD_MAX;
   self.shieldRate= DAT_PSC_VTOLL_SHIELD_RATE;
   self.yaw_speed = DAT_PSC_VTOLL_YAW_SPEED;
-  self.c_model = DAT_PSC_VTOLL_MODEL;
+  self.modelPath = DAT_PSC_VTOLL_MODEL;
   self.data_speed_forward = DAT_PSC_VTOLL_FSPEED;
   self.data_speed_strafe = DAT_PSC_VTOLL_SSPEED;
   self.data_speed_backward = DAT_PSC_VTOLL_BSPEED;

@@ -62,8 +62,7 @@ void() map_particlecube_effect_think={
     setorigin( self, self.owner.origin + (v_forward * (self.maxs_x * 0.9)) ) ; 
   }
   particleVelocity = te_apply_wind( self.origin );
-  particleVelocity = normalize( particleVelocity - self.origin );
-  particleVelocity_z = self.velocity_z;
+  particleVelocity = normalize( particleVelocity - self.origin ) * WINDDIR_z;
   
   amount = self.count;
   if( (self.spawnflags & 32) ){

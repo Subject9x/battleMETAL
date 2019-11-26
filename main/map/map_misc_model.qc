@@ -52,11 +52,11 @@ void() map_terrain_model={
 /*
   
 */
-void() map_misc_model_static={
+void() map_mismodelPath_static={
 
 };
 
-void() map_misc_model_solid_die={
+void() map_mismodelPath_solid_die={
 
   trigger_event( activator, self.trigOnDeath );
 
@@ -64,7 +64,7 @@ void() map_misc_model_solid_die={
   self.nextthink = time + 0.1;
 };
 
-/*QUAKED map_misc_model_solid 
+/*QUAKED map_mismodelPath_solid 
   misc model with SOLID_BSP.
     
 Inputs
@@ -84,7 +84,7 @@ Inputs
   .spawnflags = <float> [flag] 32 - activate on-touch
   
 */
-void() map_misc_model_solid={
+void() map_mismodelPath_solid={
   self.movetype = MOVETYPE_NONE;
   self.solid = SOLID_BSP;
   self.velocity = '0 0 0';
@@ -105,6 +105,6 @@ void() map_misc_model_solid={
 /*
   A model on the map that is destructible
 */
-void() map_misc_model_break={
+void() map_mismodelPath_break={
 
 };

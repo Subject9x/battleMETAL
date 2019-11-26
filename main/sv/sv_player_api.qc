@@ -306,7 +306,7 @@ void() PlayerDie={
   else{
     te_mission_lose();
   }
-  
+
   self.think = PlayerDieEnd;
   self.nextthink = time + GAME_TIME_TO_DEBRIEF;
 };
@@ -316,6 +316,11 @@ void() PlayerDieEnd={
   self.stat_plr_stt = PLAYER_INTERMSN;
   client_sendEndMission(self, MISSION_STATUS );
   client_push_player_info();
+  local entity start;
+  start = find(world, classname, "info_player_start");
+  if( start ){
+    setorigin( self, start.origin);
+  }
   
   self.think = PlayerDead;
   self.nextthink = time + 0.1;

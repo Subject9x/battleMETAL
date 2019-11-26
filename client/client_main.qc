@@ -145,6 +145,7 @@ void() CSQC_Init =
 // called on level shutdown (disconnect, level change, quit, loading a saved game, etc)
 void() CSQC_Shutdown =
 {
+  
   localcmd("cd stop\n");
 };
 

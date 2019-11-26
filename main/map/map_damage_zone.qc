@@ -15,7 +15,7 @@ void() map_damage_zone_particles_shields={
   local vector velocityOffset, particleOffset;
   
   velocityOffset = self.dest + (v_up * 16);
-  te_particlerain( self.absmin, self.absmax, normalize(velocityOffset - self.dest) * 50, floor(self.compAltOffset_x / 84), 244); 
+  te_particlerain( self.absmin, self.absmax, normalize(velocityOffset - self.dest) * 50, floor(self.compAltOffset_x / self.count), 244); 
 
   if( time > self.count1 ){
     self.count1 = time + (random() * 0.5);
@@ -46,7 +46,7 @@ void() map_damage_zone_particles_armor={
   local vector velocityOffset, particleOffset;
   
   velocityOffset = self.dest + (v_up * 16);
-  te_particlecube( self.absmin, self.absmax, normalize(velocityOffset - self.dest) * 5, floor(self.compAltOffset_x / 32), 176, FALSE, 1); 
+  te_particlecube( self.absmin, self.absmax, normalize(velocityOffset - self.dest) * 5, floor(self.compAltOffset_x / self.count), 176, FALSE, 1); 
 
   if( time > self.count1 ){
     self.count1 = time + (random() * 0.5);
@@ -76,7 +76,7 @@ void() map_damage_zone_particles_energy={
   local vector velocityOffset, particleOrigin, particleOffset;
   
   velocityOffset = self.dest + (v_up * 2);
-  te_particlecube( self.absmin, self.absmax, '0 0 0', floor(self.compAltOffset_x / 56), 128, FALSE, 10); 
+  te_particlecube( self.absmin, self.absmax, '0 0 0', floor(self.compAltOffset_x / self.count), 128, FALSE, 10); 
   
   if( time > self.count1 ){
     self.count1 = time + (random() * 0.5);
@@ -299,6 +299,40 @@ void() map_damage_zone={
   self.compAltOffset = self.maxs;
   self.compOffset = self.mins;
   
+  //volume limiter to prevent render choke, this will default to the LAST damageType in the flag value, but if you're already blending, you probably dont' care.
+  if( (self.damageType & 1) ){
+    if( self.maxs_x <= 128 ){
+      self.count = SHIELD_SMALL;
+    }
+    else if( self.maxs_x <= 256 ){
+      self.count = SHIELD_MEDIUM;
+    }
+    else{
+      self.count = SHIELD_LARGE;
+    }
+  }
+  if( (self.damageType & 2) ){
+    if( self.maxs_x <= 128 ){
+      self.count = RAD_SMALL;
+    }
+    else if( self.maxs_x <= 256 ){
+      self.count = RAD_MEDIUM;
+    }
+    else{
+      self.count = RAD_LARGE;
+    }
+  }
+  if( (self.damageType & 4) ){
+    if( self.maxs_x <= 128 ){
+      self.count = QUAN_SMALL;
+    }
+    else if( self.maxs_x <= 256 ){
+      self.count = QUAN_MEDIUM;
+    }
+    else{
+      self.count = QUAN_LARGE;
+    }
+  }
   
   
   if( (self.spawnflags & 2) ){
@@ -356,6 +390,40 @@ void() func_damage_zone={
   if( (self.spawnflags & 4) ){
     if( !self.wait ){
       self.spawnflags = self.spawnflags - (self.spawnflags & 4);
+    }
+  }
+    //volume limiter to prevent render choke, this will default to the LAST damageType in the flag value, but if you're already blending, you probably dont' care.
+  if( (self.damageType & 1) ){
+    if( self.maxs_x <= 128 ){
+      self.count = SHIELD_SMALL;
+    }
+    else if( self.maxs_x <= 256 ){
+      self.count = SHIELD_MEDIUM;
+    }
+    else{
+      self.count = SHIELD_LARGE;
+    }
+  }
+  if( (self.damageType & 2) ){
+    if( self.maxs_x <= 128 ){
+      self.count = RAD_SMALL;
+    }
+    else if( self.maxs_x <= 256 ){
+      self.count = RAD_MEDIUM;
+    }
+    else{
+      self.count = RAD_LARGE;
+    }
+  }
+  if( (self.damageType & 4) ){
+    if( self.maxs_x <= 128 ){
+      self.count = QUAN_SMALL;
+    }
+    else if( self.maxs_x <= 256 ){
+      self.count = QUAN_MEDIUM;
+    }
+    else{
+      self.count = QUAN_LARGE;
     }
   }
   

@@ -184,6 +184,7 @@ void() click_audio_sfx_off={
   audio_sfx_vol_lbl.label = strzone(ftos(floor(audio_sfx_vol_lbl.len)));
   audio_sfx_up.drawme = FALSE;
   audio_sfx_dn.drawme = FALSE;
+  cmd("cd play 2");
 };
 
 void() click_sfx_up={
@@ -198,6 +199,9 @@ void() click_sfx_up={
   strunzone(audio_sfx_vol_lbl.label);
   audio_sfx_vol_lbl.label = strzone(ftos(floor(audio_sfx_vol_lbl.len * 10)));
   audio_sfx_dn.drawme = TRUE;
+  cvar_set("volume", ftos(audio_sfx_vol_lbl.len));
+  cmd("saveconfig\n");
+  
 };
 void() click_sfx_dn={
   local float level;
@@ -211,6 +215,8 @@ void() click_sfx_dn={
   strunzone(audio_sfx_vol_lbl.label);
   audio_sfx_vol_lbl.label = strzone(ftos(floor(audio_sfx_vol_lbl.len * 10)));
   audio_sfx_up.drawme = TRUE;
+  cvar_set("volume", ftos(audio_sfx_vol_lbl.len));
+  cmd("saveconfig\n");
 };
 
 void() click_audio_music_on={
@@ -251,6 +257,8 @@ void() click_music_up={
   strunzone(audio_music_vol_lbl.label);
   audio_music_vol_lbl.label = strzone(ftos(floor(audio_music_vol_lbl.len * 10)));
   audio_music_dn.drawme = TRUE;
+  cvar_set("bgmvolume", ftos(audio_music_vol_lbl.len));
+  cmd("saveconfig\n");
 };
 void() click_music_dn={
   local float level;
@@ -264,6 +272,8 @@ void() click_music_dn={
   strunzone(audio_music_vol_lbl.label);
   audio_music_vol_lbl.label = strzone(ftos(floor(audio_music_vol_lbl.len * 10)));
   audio_music_up.drawme = TRUE;
+  cvar_set("bgmvolume", ftos(audio_music_vol_lbl.len));
+  cmd("saveconfig\n");
 };
 
 void() click_speakers_more={

@@ -12,7 +12,7 @@ Overview:
 */
 
 #ifndef CSQC
-.string c_model;
+.string modelPath;
 .entity partNext;     //chain entity of next part in unit's part list
 #endif
 

@@ -125,7 +125,7 @@ void() map_projectile_shooter={
   
   if( (self.spawnflags & 16) ){
     newmis = spawn();
-    setmodel( newmis, self.c_model );
+    setmodel( newmis, self.modelPath );
     setsize( newmis, VEC_ORIGIN, VEC_ORIGIN );
     setorigin( newmis, self.origin );
     newmis.angles = self.angles;

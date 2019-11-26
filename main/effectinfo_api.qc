@@ -118,7 +118,7 @@ void( vector org, vector angl, vector vel, float total) te_unit_dust={
   makevectors(self.angles);
   torg = org + (v_up * (self.mins_z / 1.5) ) + (v_forward * (self.mins_x / 4));
   dir = te_apply_wind( torg );
-  dir = normalize( dir - vel ) * WINDDIR_z;
+  dir = normalize( dir - org ) * WINDDIR_z;
   
   switch( world.worldtype ){
     default:

@@ -130,17 +130,39 @@ float SLIST_TEST_NOTSTARTSWITH	= 9;
 float SLIST_MASK_AND = 0;
 float SLIST_MASK_OR  = 512;
 
-// font stuff
-float FONT_DEFAULT     = 0;
-float FONT_CONSOLE     = 1;
-float FONT_SBAR        = 2;
-float FONT_NOTIFY      = 3;
-float FONT_CHAT        = 4;
-float FONT_CENTERPRINT = 5;
-float FONT_INFOBAR     = 6;
-float FONT_MENU        = 7;
-float FONT_USER        = 8; // add to this the index, like FONT_USER+3 = user3. At least 8 of them are supported.
-float drawfont;
+//DP_GFX_FONTS
+//idea: Blub\0, divVerent
+//darkplaces implementation: Blub\0
+//console commands:
+//  loadfont fontname fontmaps size1 size2 ...
+//   A font can simply be gfx/tgafile (freetype fonts doent need extension), 
+//   or alternatively you can specify multiple fonts and faces
+//   Like this: gfx/vera-sans:2,gfx/fallback:1
+//   to load face 2 of the font gfx/vera-sans and use face 1
+//   of gfx/fallback as fallback font
+//   You can also specify a list of font sizes to load, like this:
+//   loadfont console gfx/conchars,gfx/fallback 8 12 16 24 32
+//   In many cases, 8 12 16 24 32 should be a good choice.
+//   for slots see:
+//constant definitions:
+float drawfont;            // set it before drawstring()/drawchar() calls
+float FONT_DEFAULT = 0;    // 'default'
+float FONT_CONSOLE = 1;    // 'console', REALLY should be fixed width (ls!)
+float FONT_SBAR = 2;       // 'sbar', used on hud, must be fixed width
+float FONT_NOTIFY = 3;     // 'notify', used on sprint/bprint
+float FONT_CHAT = 4;       // 'chat'
+float FONT_CENTERPRINT = 5;// 'centerprint'
+float FONT_INFOBAR = 6;    // 'infobar'
+float FONT_MENU = 7;       // 'menu', should be fixed width
+float FONT_USER = 8;      // 'user0', userdefined fonts
+float FONT_USER1 = 9;      // 'user1', userdefined fonts
+float FONT_USER2 = 10;     // 'user2', userdefined fonts
+float FONT_USER3 = 11;     // 'user3', userdefined fonts
+float FONT_USER4 = 12;     // 'user4', userdefined fonts
+float FONT_USER5 = 13;     // 'user5', userdefined fonts
+float FONT_USER6 = 14;     // 'user6', userdefined fonts
+float FONT_USER7 = 15;     // 'user7' slot, userdefined fonts
+
 
 /* not supported at the moment
 ///////////////////////////

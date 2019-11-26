@@ -367,7 +367,6 @@ void(string str, float tokens) client_ParseMechCommand={
       player_unmakeObserver();
       spawnpoint_select();
       player_makeMech();
-      
       client_playTrack( world.sounds, TRUE );
       client_sendMissionName();
     }
