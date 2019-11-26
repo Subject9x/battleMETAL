@@ -29,7 +29,7 @@ void() ctrl_update_mechplayer={
   piece = self.partNext;
   while( piece ){
     if( piece.classname == MECH_PIECE ){
-      piece.hitOffset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
+      piece.hitOffset = self.origin + (v_right * piece.compAltOffset_x) + (v_up * piece.compAltOffset_y);
       if( piece.deadflag <= DEAD_NO ){
         hp = piece.health / piece.max_health;
         if( hp < 0.75){
@@ -82,7 +82,7 @@ void() ai_ctrl_update_mechplayer={
   piece = self.partNext;
   while( piece ){
     if( piece.classname == MECH_PIECE ){
-      piece.hitOffset = self.origin + (v_right * piece.compOffset_x) + (v_up * piece.compOffset_y);
+      piece.hitOffset = self.origin + (v_right * piece.compAltOffset_x) + (v_up * piece.compAltOffset_y);
       if( piece.deadflag <= DEAD_NO ){
         hp = piece.health / piece.max_health;
         if( hp < 0.75){

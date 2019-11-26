@@ -43,24 +43,28 @@ void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset
   self.compAltOffset = altOffset;
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_right_={
+void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset  ) data_ini_torso_right_={
   data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoRight );
+  self.compAltOffset = altOffset;
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_torso_left_={
+void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset  ) data_ini_torso_left_={
   data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoLeft );
+  self.compAltOffset = altOffset;
 };
 
 void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_legs_={
   data_ini_unitPiece_( M_LEGS, pathToModel, healthMax, offsetOrigin, self, legs );
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_arm_left_={
+void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset  ) data_ini_arm_left_={
   data_ini_unitPiece_( M_ARM_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoLeft, armLeft );
+  self.compAltOffset = altOffset;
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_arm_right_={
+void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset  ) data_ini_arm_right_={
   data_ini_unitPiece_( M_ARM_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoRight, armRight );
+  self.compAltOffset = altOffset;
 };
 
 void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjustAngleVec, float newHardPointSizeVal, float newHardPointTypeVal ) data_ini_unitHardpoint_={
