@@ -459,7 +459,11 @@ void() ai_setup_patrol={
     node = find(world, targetname, self.target);
     if( !node ){
       //error handling - target but missing the entity.
-      self.think = self.th_stand;
+      self.th_stand();
+      if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
+        self.think = SUB_Null;
+        return;
+      }
       self.nextthink = time + (random() * 0.5);
       if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
         self.nextthink = self.nextthink + 7;
@@ -494,12 +498,20 @@ void() ai_setup_patrol={
       util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
     }
     self.th_walk();
+    if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
+      self.think = SUB_Null;
+      return;
+    }
     if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
       self.nextthink = self.nextthink + 7;
     }
     return;
   }
   self.th_stand();
+  if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
+    self.think = SUB_Null;
+    return;
+  }
   self.nextthink = time + 0.1;
   if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
     self.nextthink = self.nextthink + 7;

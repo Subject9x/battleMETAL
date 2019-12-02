@@ -160,7 +160,8 @@ float(float evtype, float scanx, float chary, float devid) CSQC_InputEvent = {
 
 // the most important function in CSQC...
 void(float w, float h, float menushown) CSQC_UpdateView =
-{ 
+{
+
   //oh this is an ugly hack
   if( !cvar("r_shadow_realtime_world") ){
     cvar_set("r_shadow_realtime_world", "1");

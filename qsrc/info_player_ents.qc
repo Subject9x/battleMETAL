@@ -17,17 +17,32 @@ void() info_player_observer_start={
   
 };
 
+//if intermission has a target, look at it.
+void() info_intermission_check={
+  local entity targ;
+  targ = find(world, targetname, self.target);
+  if( targ ){
+    self.mangle = vectoangles(targ.origin - self.origin);
+    self.mangle_x = self.mangle_x * -1;
+  }
+};
+
 /*QUAKED info_intermission (1 0.5 0.5) (-16 -16 -16) (16 16 16)
 This is the camera point for the intermission.
 Use mangle instead of angle, so you can set pitch or roll as well as yaw.  'pitch roll yaw'
 */
 void() info_intermission =
 {
+  if( self.target ){
+    self.think = info_intermission_check;
+    self.nextthink = time + 0.05;
+  }
 };
 
 /*QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION
 When the player touches this, he gets sent to the map listed in the "map" variable.  Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display stats.
   "isActive" : 1 == activate by touch, 0 = activate by remote
+  "count" : <float> count in game seconds till intermission is over;
 */
 void() trigger_changelevel =
 {

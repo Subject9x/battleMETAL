@@ -43,11 +43,13 @@ entity() FindIntermission={
 	return world;
 };
 void() GotoNextMap={
-  if (cvar("samelevel")){	// if samelevel is set, stay on same level
-		changelevel (mapname);
-	}
-  else{  
-		changelevel (nextmap);
+  if( time > self.count ){
+    if (cvar("samelevel")){	// if samelevel is set, stay on same level
+      changelevel (mapname);
+    }
+    else{  
+      changelevel (nextmap);
+    }  
   }
 };
 
@@ -156,13 +158,13 @@ void() execute_changelevel={
 	
 // enforce a wait time before allowing changelevel
 	if (deathmatch)
-		intermission_exittime = time + 5;
+		intermission_exittime = time + self.count;
 	else
-		intermission_exittime = time + 2;
+		intermission_exittime = time + self.count;
 
   //TODO - intermission track (probably just hangar track, eh?)
-	/*WriteByte (MSG_ALL, SVC_CDTRACK);
-	WriteByte (MSG_ALL, 3);*/
+	WriteByte (MSG_ALL, SVC_CDTRACK);
+	WriteByte (MSG_ALL, 2);
 	
 	pos = FindIntermission ();
 	other = find (world, classname, "player");
@@ -176,21 +178,20 @@ void() execute_changelevel={
         player_makeObserver();
       }
       self.view_ofs = '0 0 0';
-      self.angles = other.v_angle = pos.mangle;
+      self.flags = self.flags - FL_FLY;
+      self.angles = self.v_angle = pos.mangle;
       self.fixangle = TRUE;		// turn this way immediately
-      self.think = SUB_Null;
-      self.nextthink = time + 0.5;
       self.takedamage = DAMAGE_NO;
       self.solid = SOLID_NOT;
       self.movetype = MOVETYPE_NONE;
       self.modelindex = 0;
       setorigin (self, pos.origin);
-      
-      client_push_mapobjects();
-      client_sendMissionUnlocks();
-      self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
-      client_sendEndMission(self, 1) ;
-    
+      if( world.animaticOnly == FALSE ){
+        self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
+        client_push_mapobjects();
+        client_sendMissionUnlocks();
+        client_sendEndMission(self, 1) ;
+      }
     this = self;
 		other = find (other, classname, "player");
   }

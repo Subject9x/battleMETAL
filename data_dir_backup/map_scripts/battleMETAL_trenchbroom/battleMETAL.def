@@ -36,10 +36,14 @@ When a button is touched, it moves some distance in the direction of it's angle,
 /*QUAKED info_intermission (1 0.5 0.5) (-16 -16 -16) (16 16 16)
 This is the camera point for the intermission.
 Use mangle instead of angle, so you can set pitch or roll as well as yaw.  'pitch roll yaw'
+-------- KEYS --------
+.target = <string> look at something for the intermission.
 */
 /*QUAKED trigger_changelevel (0.5 0.5 0.5) ? NO_INTERMISSION
 When the player touches this, he gets sent to the map listed in the "map" variable.  Unless the NO_INTERMISSION flag is set, the view will go to the info_intermission spot and display stats.
-  "isActive" : 1 == activate by touch, 0 = activate by remote
+-------- KEYS -------- 
+"isActive" : 1 = activate by touch, 0 = activate by remote
+"count" : <float> count in game seconds till intermission is over;
 */
 /*QUAKED info_player_start (1 0 0) (-16 -16 -24) (16 16 24)
 The normal starting point for a level.
@@ -909,7 +913,7 @@ None
 -------- NOTES --------
 The TAB key can be used to flip through the component pieces of a selected func_group entity, isolating individual components.
 */
-/*QUAKED mismodelPath (1 .5 .25) (-16 -16 -16) (16 16 16)
+/*QUAKED misc_model (1 .5 .25) (-16 -16 -16) (16 16 16)
 Place a model in the map.
 If target is set it follows the path defined by the target path_corner ents.
 noise and noise1 then define the noises to play during movement.

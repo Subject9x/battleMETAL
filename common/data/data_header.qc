@@ -24,13 +24,13 @@ entity weaponList;  //used by data functions to populate weapon lists for units
   instantiates the target object and populates it with
   parameter values.
 */
-void( float partId, string modelPath, float maxHp, vector partOffset, entity parentPart, .entity partSlot ) data_ini_unitPiece_={
+void( float partId, string pathToModel, float maxHp, vector partOffset, entity parentPart, .entity partSlot ) data_ini_unitPiece_={
   local entity piece;
   piece = spawn();
   piece.partTypeId = partId;
   piece.partParentId = parentPart.partTypeId;
   piece.max_health = piece.health = maxHp;
-  piece.model = modelPath;
+  piece.model = pathToModel;
   piece.compOffset = partOffset;
   piece.hitOffset = '0 0 0';
   self.partSlot = piece;

@@ -17,11 +17,15 @@ void() PlayerPreThink = {
     return;	// dying, so do nothing
   }
   
-
 	if (intermission_running){
 		IntermissionThink ();	// otherwise a button could be missed between
 		return;					// the think tics
 	}
+  
+  if(self.view_ofs == '0 0 0'){
+    return;
+  }
+  
   
   if( self.stat_plr_stt == PLAYER_INTERMSN ){
     client_push_player_info_thin();
@@ -74,10 +78,11 @@ void() PlayerPostThink = {
   if (self.deadflag >= DEAD_DYING){
     return;
   }
-
-  if( self.stat_plr_stt == PLAYER_INTERMSN ){
-    client_push_player_info_thin();
+  
+  if (intermission_running){
+		return;		// intermission or finale
   }
+  
   //can't stop mech players with cutscenes, instead use triggered clipping objects
   //in map - roohr
   if( (self.stat_plr_stt == PLAYER_ANIM_STOP) && (self.data_type == DATA_POBS)){
@@ -88,12 +93,11 @@ void() PlayerPostThink = {
       self.avelocity = '0 0 0';
     }
   }
-
-  if (self.view_ofs == '0 0 0'){
-		return;		// intermission or finale
+  
+  if( self.stat_plr_stt == PLAYER_INTERMSN ){
+    client_push_player_info_thin();
   }
-    
-
+  
   if(time < self.power_timer){
     PlayerPostThink_powerup();
     return;
