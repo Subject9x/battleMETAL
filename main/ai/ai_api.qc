@@ -13,53 +13,58 @@ Overview:
 */
 float() ai_can_spawn={
   local float yesWecan;
-  local float gameMode;
   
   yesWecan = TRUE;
-  gameMode = cvar("gamemode");
   
-  if( self.nextVecChoice <= 0 )
+  if( self.nextVecChoice < 1 ){
     return FALSE;
-  
+  }
   if( (self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
-    if( !coop && !deathmatch && !teamplay )
+    if( !coop && !deathmatch && !teamplay ){
       yesWecan = FALSE;
+    }
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_COOP) ){
-    if( coop && !deathmatch )
+    if( coop && !deathmatch ){
       yesWecan = FALSE;
+    }
   }
 
   if( (self.spawnflags & AI_SPAWNFLAG_DM) ){
-    if( !coop && deathmatch )
+    if( !coop && deathmatch ){
       yesWecan = FALSE;
+     }
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
-    if( deathmatch && teamplay )
+    if( deathmatch && teamplay ){
       yesWecan = FALSE;
+    }
   }
   
   switch( skill ){
     case SKILL_NOV:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NONOV) )
+      if ( (self.spawnflags & AI_SPAWNFLAG_NONOV) ){
         yesWecan = FALSE;
+      }
       break;
     case SKILL_REG:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOREG) )
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOREG) ){
         yesWecan = FALSE;
+      }
       break;
     case SKILL_VET:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOVET) )
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOVET) ){
         yesWecan = FALSE;
+      }
       break;
     case SKILL_ELT:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOELT) )
+      if ( (self.spawnflags & AI_SPAWNFLAG_NOELT) ){
         yesWecan = FALSE;
+      }
       break;
   }
-
   return yesWecan;
 };
 
@@ -71,16 +76,16 @@ float( entity t ) ai_line_of_sight={
   local entity trace;
   
   trace = self;
-  if( (self.flags & FL_TURRET) )
+  if( (self.flags & FL_TURRET) ){
     trace = self.cockpit;
-  
+  }
   makevectors( self.angles );
   traceline( trace.origin +(v_up * 16), t.origin, MOVE_NORMAL, self);
   //realized the terrain model is an entity, and not a brush model, thus itll never be 'world'
   
-  if( trace_fraction > 0.8)
+  if( trace_fraction > 0.8){
     return TRUE;
-  
+  }
   return FALSE;
 };
 
@@ -249,9 +254,9 @@ float() ai_find_target_visual={
 };
 
 float() ai_find_target_radar={
-  if( ai_valid_target(self.enemy) )
+  if( ai_valid_target(self.enemy) ){
     return FALSE;
-
+  }
   local entity targ, found;
   local float rng, ndist;
   local entity ally; 
@@ -512,9 +517,9 @@ float(entity wep) ai_attack_checkEne={
   it can be
 */
 float( float bestAccuracy ) ai_wait_for_shot={
-  if( self.accuracy <= bestAccuracy )
+  if( self.accuracy <= bestAccuracy ){
     return TRUE;
-  
+  }
   return FALSE;
 };
 

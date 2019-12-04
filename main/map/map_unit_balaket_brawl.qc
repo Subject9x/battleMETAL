@@ -12,7 +12,13 @@ Overview:
 */
 void() unit_balaket_brawl_h={
   self.faction = FACTION_SURVEST;
+  self.nextVecChoice = UID_MECH_balaket;
   
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+
   ai_promote();
   switch( self.ai_rank ){
     case 2:
@@ -30,21 +36,20 @@ void() unit_balaket_brawl_h={
   }
   
   self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_balaket;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
   self.think = ai_mech_skirmish;
   self.nextthink = time + 0.05;
 };
 
 void() unit_balaket_brawl_m={
   self.faction = FACTION_MILITAR;
+  self.nextVecChoice = UID_MECH_balaket;
   
   ai_promote();
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
   switch( self.ai_rank ){
     case 2:
       ai_ini_weapons( UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_electro_repeater, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
@@ -61,21 +66,20 @@ void() unit_balaket_brawl_m={
   }
   
   self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_balaket;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
   self.think = ai_mech_skirmish;
   self.nextthink = time + 0.05;
 };
 
 void() unit_balaket_brawl_p={
   self.faction = FACTION_PSC;
+  self.nextVecChoice = UID_MECH_balaket;
   
   ai_promote();
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
+  
   switch( self.ai_rank ){
     case 2:
       ai_ini_weapons( UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_electro_repeater, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
@@ -92,13 +96,6 @@ void() unit_balaket_brawl_p={
   }
   
   self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_balaket;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-  
   self.think = ai_mech_skirmish;
   self.nextthink = time + 0.05;
 };

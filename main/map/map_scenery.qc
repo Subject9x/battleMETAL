@@ -82,6 +82,7 @@ void() doodad_ruins_urban_small={
     self.angles_z = self.angles_z + (1 + (crandom() * 3) );
   }
   scenery_obj();
+  self.solid = SOLID_NOT;
   makevectors(self.angles);
   setorigin( self, self.origin);
 };
@@ -93,6 +94,7 @@ void() doodad_ruins_urban_medium={
     self.angles_z = self.angles_z + (1 + (crandom() * 3) );
   }
   scenery_obj();
+  self.solid = SOLID_NOT;
   makevectors(self.angles);
   setorigin( self, self.origin);
 };
@@ -104,6 +106,7 @@ void() doodad_ruins_urban_large={
     self.angles_z = self.angles_z + (1 + (crandom() * 3) );
   }
   scenery_obj();
+  self.solid = SOLID_NOT;
   makevectors(self.angles);
   setorigin( self, self.origin );
 };

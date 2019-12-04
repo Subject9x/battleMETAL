@@ -331,15 +331,51 @@ void() counter_use =
 	multi_trigger ();
 };
 
-/*QUAKED trigger_counter (.5 .5 .5) ? nomessage
+/*QUAKED trigger_counter (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT
 Acts as an intermediary for an action that takes multiple inputs.
 
 If nomessage is not set, t will print "1 more.. " etc when triggered and "sequence complete" when finished.
 
 After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
+
+-------- SPAWNFLAGS --------
+nomessage 1
+NO_EASY 2 : 
+NO_NORM 4 :
+NO_HARD 8 :
+NO_NIGHT 16 :
 */
 void() trigger_counter =
 {
+  //remove based on skill
+  //I use this for wave-based maps to 'dynamically' change wave kill counts.
+  switch(skill){
+    default:
+      if( (self.spawnflags & 2) ){
+        remove(self);
+        return;
+      }
+      break;
+    case 1:
+      if( (self.spawnflags & 4) ){
+        remove(self);
+        return;
+      }
+      break;
+    case 2:
+      if( (self.spawnflags & 8) ){
+        remove(self);
+        return;
+      }
+      break;
+    case 3:
+      if( (self.spawnflags & 16) ){
+        remove(self);
+        return;
+      }
+      break;
+  }
+
 	self.wait = -1;
 	if (!self.count)
 		self.count = 2;
@@ -815,4 +851,88 @@ void() trigger_stuffcmd={
     self.think = SUB_Remove;
     self.nextthink = time + 0.1;
   }
+};
+
+
+void() trigger_timer_activate={
+	if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0){
+    if( self.message ){
+      centerprint(activator, self.message);
+    }
+  }
+	self.enemy = activator;
+	multi_trigger ();
+};
+void() trigger_timer_use={
+  if( self.wait < 0 ){
+    //prevent multiple calls
+    return;
+  }
+  
+  self.wait = -1;
+  self.think = trigger_timer_activate;
+  self.nextthink = time + self.delay;
+};
+/*QUAKED trigger_timer (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT
+Waits for .delay game seconds before firing .target
+
+After the timer expires, it will fire all of it's targets and remove itself.
+-------- KEYS -------- 
+.delay = <float> game seconds to count before firing.
+.message = <string> message to display on end of countdown.
+
+-------- SPAWNFLAGS --------
+nomessage 1
+NO_EASY 2 : 
+NO_NORM 4 :
+NO_HARD 8 :
+NO_NIGHT 16 :
+START_ON 32 : starts when map starts.
+*/
+void() trigger_timer =
+{
+  //remove based on skill
+  //I use this for wave-based maps to 'dynamically' change wave kill counts.
+  switch(skill){
+    default:
+      if( (self.spawnflags & 2) ){
+        remove(self);
+        return;
+      }
+      break;
+    case 1:
+      if( (self.spawnflags & 4) ){
+        remove(self);
+        return;
+      }
+      break;
+    case 2:
+      if( (self.spawnflags & 8) ){
+        remove(self);
+        return;
+      }
+      break;
+    case 3:
+      if( (self.spawnflags & 16) ){
+        remove(self);
+        return;
+      }
+      break;
+  }
+
+  if( !self.delay ){
+   dprint("trigger_timer missing delay value\n");
+   remove(self);
+   return;
+  }
+  
+  if( (self.spawnflags & 32) ){
+    self.wait = -1;
+    self.think = trigger_timer_activate;
+    self.nextthink = time + self.delay;
+    return;
+  }
+  
+  self.wait = 1;
+	self.use = trigger_timer_use;
 };

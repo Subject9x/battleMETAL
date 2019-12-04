@@ -11,7 +11,6 @@ Overview: ai unit
   AI SPAWN FUNCTION
 */
 void() ai_vec_dest={
-
   macro_ai_setup(ai_vec_dest)
 
   ai_unit_ini_var();
