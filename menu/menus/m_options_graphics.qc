@@ -97,11 +97,11 @@ string(float val) graphics_get_detail={
 string(float val) graphics_get_gx={
   local string lbl;
   switch(val){
-    case 0:
+    default:
       lbl = "CUSTOM";
       break;
     case 1:
-      lbl = "FLARES";
+      lbl = "LOW";
       break;
     case 2:
       lbl = "NORMAL";
@@ -110,7 +110,7 @@ string(float val) graphics_get_gx={
       lbl = "HIGH";
       break;
     case 4:
-      lbl = "FULL";
+      lbl = "MAX";
       break;
   }
   return lbl;
@@ -118,33 +118,72 @@ string(float val) graphics_get_gx={
 
 void(float level) graphics_effects_set={
   local string cvars;
-  if(level == 1){
-    cvars = "data/cache/settings/graphics_low.cvl";
-  }
-  else if(level == 2){
-   cvars = "data/cache/settings/graphics_medium.cvl";
-  }
-  else if(level == 3){
-    cvars = "data/cache/settings/graphics_high.cvl";
+  switch(level){
+    default:
+      cvars = "data/cache/settings/lighting_low.cvl";
+      break;
+    case 2:
+      cvars = "data/cache/settings/lighting_normal.cvl"; 
+      break;
+    case 3:
+      cvars = "data/cache/settings/lighting_high.cvl";
+      break;
+    case 4:
+      cvars = "data/cache/settings/lighting_max.cvl";
+      break;
   }
   menu_execute_cvar_list(cvars);
 };
 
 void(float level) graphics_gfx_set={
   local string cvars;
-  if(level == 1){
-    cvars = "data/cache/settings/lighting_flares.cvl";
+  switch(level){
+    default:
+      cvars = "data/cache/settings/lighting_low.cvl";
+      break;
+    case 2:
+      cvars = "data/cache/settings/lighting_normal.cvl"; 
+      break;
+    case 3:
+      cvars = "data/cache/settings/lighting_high.cvl";
+      break;
+    case 4:
+      cvars = "data/cache/settings/lighting_max.cvl";
+      break;
   }
-  else if(level == 2){
-   cvars = "data/cache/settings/lighting_normal.cvl";
+  menu_execute_cvar_list(cvars);
+};
+
+string(float level) graphics_set_texture_quality_label={
+  switch(level){
+    case 4:
+      return "VERY LOW";
+    case 3:
+      return "LOW";
+    case 2:
+      return "PERFORMANCE";
+    case 1:
+      return "NORMAL";
+    case 0:
+      return "ULTRA";
   }
-  else if(level == 3){
-    cvars = "data/cache/settings/lighting_high.cvl";
+  return "NORMAL";
+};
+
+string(float level) graphics_set_aa_value={
+  switch(level){
+    case 16:
+      return "VERY HIGH";
+    case 8:
+      return "HIGH";
+    case 4:
+      return "NORMAL";
+    case 2:
+      return "LOW";
+    case 1:
+      return "VERY LOW";
   }
-  else if(level == 3){
-    cvars = "data/cache/settings/lighting_full.cvl";
-  }
-  //menu_execute_cvar_list(cvars);
+  return "NORMAL";
 };
 
 //graphics callbacks
@@ -162,7 +201,6 @@ void() click_graphics_resolution_less={
   graphics_resolution_lbl.len = vid;
   strunzone(graphics_resolution_aspect_lbl.label);
   graphics_resolution_aspect_lbl.label = strzone(VID_RESO_NAME[vid]);
-
 };
 void() click_graphics_resolution_more={
   local float vid;
@@ -193,22 +231,23 @@ void() click_graphics_bits_more={
 
 void() click_graphics_aa_more={
   local float sampl;
-  sampl = stof(graphics_aa_lbl.label);
+  sampl = graphics_aa_lbl.len;
   sampl = sampl * 2;
-  if(sampl >= 32){
-    sampl = 32;
+  if(sampl >= 16){
+    sampl = 16;
     graphics_aa_more.drawme = FALSE;
   }
   if( !graphics_aa_less.drawme ){
     graphics_aa_less.drawme = TRUE;
   }
+  graphics_aa_lbl.len = sampl;
   strunzone(graphics_aa_lbl.label); 
   graphics_aa_lbl.label = strzone(ftos(sampl));
 };
 void() click_graphics_aa_less={
   local float sampl;
-  sampl = stof(graphics_aa_lbl.label);
-  sampl = sampl * 0.5;
+  sampl = graphics_aa_lbl.len;
+  sampl = rint(sampl / 2);
   if(sampl <= 1){
     sampl = 1;
     graphics_aa_less.drawme = FALSE;
@@ -216,6 +255,7 @@ void() click_graphics_aa_less={
   if( !graphics_aa_more.drawme ){
     graphics_aa_more.drawme = TRUE;
   }
+  graphics_aa_lbl.len = sampl;
   strunzone(graphics_aa_lbl.label); 
   graphics_aa_lbl.label = strzone(ftos(sampl));
 };
@@ -366,7 +406,7 @@ void() click_graphics_aniso_less={
 
 void() click_graphics_texture_quality_more={
   local float sampl;
-  sampl = stof(graphics_texture_quality_lbl.label);
+  sampl = graphics_texture_quality_lbl.len;
   sampl = sampl - 1;
   if(sampl <= 0){
     sampl = 0;
@@ -375,22 +415,24 @@ void() click_graphics_texture_quality_more={
   if( !graphics_texture_quality_less.drawme ){
     graphics_texture_quality_less.drawme = TRUE;
   }
-  strunzone(graphics_texture_quality_lbl.label); 
-  graphics_texture_quality_lbl.label = strzone(ftos(sampl));
+  graphics_texture_quality_lbl.len = sampl;
+  strunzone(graphics_texture_quality_lbl.label);
+  graphics_texture_quality_lbl.label = strzone( graphics_set_texture_quality_label(sampl));
 };
 void() click_graphics_texture_quality_less={
   local float sampl;
-  sampl = stof(graphics_texture_quality_lbl.label);
+  sampl = graphics_texture_quality_lbl.len;
   sampl = sampl + 1;
   if(sampl >= 4){
     sampl = 4;
     graphics_texture_quality_less.drawme = FALSE;
   }
+  graphics_texture_quality_lbl.len = sampl;
   if( !graphics_texture_quality_more.drawme ){
     graphics_texture_quality_more.drawme = TRUE;
   }
-  strunzone(graphics_texture_quality_lbl.label); 
-  graphics_texture_quality_lbl.label = strzone(ftos(sampl));
+  strunzone(graphics_texture_quality_lbl.label);
+  graphics_texture_quality_lbl.label = strzone( graphics_set_texture_quality_label(sampl));
 };
 
 void() click_graphics_texture_compression_on={
@@ -640,13 +682,16 @@ void() m_graphics_i={
   
   //anti-alias
   graphics_aa_lbl = lbl_text('150 162', '14 14 0', strzone(ftos(cvar("vid_samples"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_aa_lbl.len = cvar("vid_samples");
   graphics_aa_more = btn_img_callback('165 162 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_aa_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_aa_less = btn_img_callback('140 162 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_aa_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  if(graphics_aa_lbl.label == "32"){
+  if(graphics_aa_lbl.len >= 32){
+    graphics_aa_lbl.len = 16;
     graphics_aa_more.drawme = FALSE;
   }
-  else if(graphics_aa_lbl.label == "1"){
+  else if(graphics_aa_lbl.len <= 1){
+    graphics_aa_lbl.len = 1;
     graphics_aa_less.drawme = FALSE;
   }
   
@@ -724,15 +769,14 @@ void() m_graphics_i={
   }
   
   //texture
-  graphics_texture_quality_lbl = lbl_text('150 282', '14 14 0', strzone(ftos(cvar("gl_picmip"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
-  graphics_texture_quality_more = btn_img_callback('164 282 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_texture_quality_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_texture_quality_lbl = lbl_text('150 282', '14 14 0', strzone( graphics_set_texture_quality_label(cvar("gl_picmip"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
+  graphics_texture_quality_more = btn_img_callback('238 282 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_texture_quality_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   graphics_texture_quality_less = btn_img_callback('140 282 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_texture_quality_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   
-  if(graphics_texture_quality_lbl.label == "0"){
-    
+  if(graphics_texture_quality_lbl.len == 0){
     graphics_texture_quality_more.drawme = FALSE;
   }
-  else if(graphics_texture_quality_lbl.label == "4"){
+  else if(graphics_texture_quality_lbl.len == 4){
     graphics_texture_quality_less.drawme = FALSE;
   }
 
