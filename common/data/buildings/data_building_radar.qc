@@ -193,7 +193,7 @@ void() building_human_radar={
   setsize(self, '-20 -20 0', '20 20 26');
   self.shield = 0;
   self.shieldMax = 150;
-  self.shieldRate = 1;
+  self.shieldRate = 0.15;
   self.stat_rdr_mode = TRUE;
   self.radar_range = 2000; 
   

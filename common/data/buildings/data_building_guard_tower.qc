@@ -49,8 +49,8 @@ void() building_guard_tower={
   util_setHealthArmor(200, 200, 1, 100);
   setsize(self, '-22 -22 0', '22 22 40');
   self.shield = 0;
-  self.shieldMax = 100;
-  self.shieldRate = 1;
+  self.shieldMax = 50;
+  self.shieldRate = 0.1;
   
   self.deadflag = DEAD_NO;
   self.movetype = MOVETYPE_NONE;

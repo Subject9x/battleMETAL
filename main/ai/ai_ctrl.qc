@@ -122,9 +122,9 @@ void() ai_update={
 */
 void() ai_touch={
     //ignore nodes straight away, logic for these touches are in ai_nodes
-  if( (other.flags & FL_NODE) )
+  if( (other.flags & FL_NODE) ){
     return;
-  
+  }
   if( other.faction != self.faction ){
     if( ai_check_targ_infront( other, self.ai_fov, FALSE) ){
       if( time > self.ai_react_buffer ){

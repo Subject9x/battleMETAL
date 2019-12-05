@@ -111,8 +111,8 @@ void() building_human_fuel={
   util_setHealthArmor(75, 75, 1, 100) ;
   setsize(self, '-40 -40 0', '40 40 64');
   self.shield= 0;
-  self.shieldMax= 100;
-  self.shieldRate = 1;
+  self.shieldMax = 150;
+  self.shieldRate = 0.15;
   self.scale = 1;
   self.deadflag = DEAD_NO;
 

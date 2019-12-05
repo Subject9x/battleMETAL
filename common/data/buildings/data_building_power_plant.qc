@@ -134,8 +134,8 @@ void() building_human_power={
   util_setHealthArmor(1200, 1200, 1, 100);
   setsize(self, '-75 -75 0', '75 75 26');
   self.shield= 0;
-  self.shieldMax = 600;
-  self.shieldRate = 1;
+  self.shieldMax = 300;
+  self.shieldRate = 0.67;
   self.energy= 0;
   self.energyMax= 4000;
   self.energyRate= 4;

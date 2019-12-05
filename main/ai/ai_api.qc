@@ -14,54 +14,52 @@ Overview:
 float() ai_can_spawn={
   local float yesWecan;
   
-  yesWecan = TRUE;
-  
   if( self.nextVecChoice < 1 ){
     return FALSE;
   }
   if( (self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
     if( !coop && !deathmatch && !teamplay ){
-      yesWecan = FALSE;
+      return FALSE;
     }
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_COOP) ){
     if( coop && !deathmatch ){
-      yesWecan = FALSE;
+      return FALSE;
     }
   }
 
   if( (self.spawnflags & AI_SPAWNFLAG_DM) ){
     if( !coop && deathmatch ){
-      yesWecan = FALSE;
+      return FALSE;
      }
   }
   
   if( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
     if( deathmatch && teamplay ){
-      yesWecan = FALSE;
+      return FALSE;
     }
   }
   
   switch( skill ){
     case SKILL_NOV:
       if ( (self.spawnflags & AI_SPAWNFLAG_NONOV) ){
-        yesWecan = FALSE;
+        return FALSE;
       }
       break;
     case SKILL_REG:
       if ( (self.spawnflags & AI_SPAWNFLAG_NOREG) ){
-        yesWecan = FALSE;
+        return FALSE;
       }
       break;
     case SKILL_VET:
       if ( (self.spawnflags & AI_SPAWNFLAG_NOVET) ){
-        yesWecan = FALSE;
+        return FALSE;
       }
       break;
     case SKILL_ELT:
       if ( (self.spawnflags & AI_SPAWNFLAG_NOELT) ){
-        yesWecan = FALSE;
+        return FALSE;
       }
       break;
   }

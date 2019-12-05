@@ -180,8 +180,8 @@ void() building_human_repair={
   util_setHealthArmor(600, 600, 1, 100) ;
   setsize(self, '-53 -53 0', '53 53 40');
   self.shield = 0;
-  self.shieldMax= 750;
-  self.shieldRate= 1;
+  self.shieldMax = 250;
+  self.shieldRate = 0.33;
   
   if( skill > SKILL_REG ){
     self.reloadValue = 750;
