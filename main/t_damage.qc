@@ -255,9 +255,9 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     self = notTarg;
   }
   
-  if( (prevShields > 0) && (trg.shield <= 0) )
+  if( (prevShields > 0) && (trg.shield <= 0) ){
     te_shield_explode( trg.origin, trg.vec_size + 1 );
-  
+  }
   
   if( dmgAmt <= 0 ){
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
@@ -275,12 +275,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
       }
       if( dmg_point_z > (trg.origin_z - trg.mins_z / 2) ){
         //shot was close enough to mid-point, even though legs are dead
-        dmgTrg = t_find_part(dmg_point, dmgTrg.maxs_x, dmgTrg);
+        dmgTrg = t_find_part(dmg_point, dmgTrg);
       }
       //miss
     }
     else{
-      dmgTrg = t_find_part(dmg_point, dmgTrg.maxs_x, dmgTrg);
+      dmgTrg = t_find_part(dmg_point, dmgTrg);
     }
   }
   
@@ -327,25 +327,26 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
 /*
   finds closest sub-entity
 */
-entity(vector point, float rad, entity trg) t_find_part={
+entity(vector point, entity trg) t_find_part={
   local entity part;
   local float radi;
-  part = trg;
-  radi = rad;
   
-  if( vlen(point - trg.armLeft.hitOffset) < radi ){
+  part = trg;
+  radi = vlen(trg.torsoCenter.hitOffset - point);
+    
+  if( vlen(trg.armLeft.hitOffset - point ) < radi ){
     part = trg.armLeft;
     radi = vlen(point - trg.armLeft.hitOffset);
   }
-  if( vlen(point - trg.armRight.hitOffset) < radi ){
+  if( vlen(trg.armRight.hitOffset - point ) < radi ){
     part = trg.armRight;
     radi = vlen(point - trg.armRight.hitOffset);
   }
-  if( vlen(point - trg.torsoLeft.hitOffset) < radi ){
+  if( vlen(trg.torsoLeft.hitOffset - point ) < radi ){
     part = trg.torsoLeft;
     radi = vlen(point - trg.torsoLeft.hitOffset);
   }
-  if( vlen(point - trg.torsoRight.hitOffset) < radi ){
+  if( vlen(trg.torsoRight.hitOffset - point ) < radi ){
     part = trg.torsoRight;
     radi = vlen(point - trg.torsoRight.hitOffset);
   }
@@ -402,9 +403,10 @@ void(entity targ, entity attacker, float dmg_type) killed={
     // infact I've never seen a case where the number shows,
     // always hidden by the score bar stuff.
     // don't let sbar look bad if a player - not Roohr
-    if (self.health < -99)
+    if (self.health < -99){
       self.health = -99;              
-
+    }
+    
     if(!self.data_type){
       if (self.movetype == MOVETYPE_PUSH || self.movetype == MOVETYPE_NONE){	// doors, triggers, etc
         self.th_die();

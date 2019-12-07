@@ -37,9 +37,7 @@ void() unit_dunerunner_h={
       ai_ini_weapons( UID_ITEM_light_autocannon, UID_ITEM_light_autocannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-
-  self.think = ai_gev;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_gev)
 };
 
 void() unit_dunerunner_m={
@@ -69,7 +67,5 @@ void() unit_dunerunner_m={
       ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_autocannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-      
-  self.think = ai_gev;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_gev)
 };

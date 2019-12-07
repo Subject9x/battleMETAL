@@ -37,8 +37,7 @@ void() ai_turret_control={
           break;
       }
       //run check to see if ideal_yaw is within unit's max rotation limits.
-      ang = ai_check_turret_yaw( self.ideal_yaw, turretOwner.angles_y, turretOwner.ai_angleLimits_x, turretOwner.ai_angleLimits_y);
-      self.ideal_yaw = ang;
+      self.ideal_yaw = ai_check_turret_yaw( self.ideal_yaw, turretOwner.angles_y, turretOwner.ai_angleLimits_x, turretOwner.ai_angleLimits_y);
       ChangeYaw(); 
       self.v_angle = self.angles;
     self = turretOwner;
@@ -301,16 +300,17 @@ void( float alt_low, float alt_max) ai_fly_update={
   traceline( self.origin, delta, MOVE_NOMONSTERS, self);
   dist = vlen( trace_endpos - self.origin );
   
-  if( dist <= alt_low )
+  if( dist <= alt_low ){
     fdir = 1;
-  
+  }
   if( fdir == FALSE ){
     delta = self.origin + (v_up * 10000);
     traceline( self.origin, delta, MOVE_NOMONSTERS, self);
     dist = vlen( trace_endpos - self.origin );
     
-    if( dist <= alt_max )
+    if( dist <= alt_max ){
       fdir = -1;
+    }
   }
   
   if( fdir != 0 ){
@@ -452,19 +452,22 @@ float() ai_attack={
 */
 void() ai_setup_patrol={
   local entity node;
-  local vector org;
+  local vector newOrg;
   local float angl, px, py, dlen;
   
-  if( self.target ){
-    node = find(world, targetname, self.target);
+  if( (self.target) && self.target != "" ){
+    if( lastNode.targetname != self.target ){
+      node = find(world, targetname, self.target);
+    }
     if( !node ){
+      lastNode = node;
       //error handling - target but missing the entity.
-      self.th_stand();
+      self.think = self.th_stand;
       if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
         self.think = SUB_Null;
         return;
       }
-      self.nextthink = time + (random() * 0.5);
+      self.nextthink = time + (random() * 2);
       if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
         self.nextthink = self.nextthink + 7;
       }
@@ -476,44 +479,48 @@ void() ai_setup_patrol={
       px = cos(angl);
       py = sin(angl);
       dlen = crandom() * self.maxs_x * 4;
-      org_z = self.origin_z + self.maxs_z * 2;
-      org_x = node.origin_x - px * dlen;
-      org_y = node.origin_y - py * dlen;
-      if( (pointcontents(org) == CONTENT_SOLID) || (pointcontents(org) == CONTENT_EMPTY) && (pointcontents(org) == CONTENT_SKY) ){
+      newOrg_z = self.origin_z + self.maxs_z * 2;
+      newOrg_x = node.origin_x - px * dlen;
+      newOrg_y = node.origin_y - py * dlen;
+      if( (pointcontents(newOrg) == CONTENT_SOLID) || (pointcontents(newOrg) == CONTENT_EMPTY) && (pointcontents(newOrg) == CONTENT_SKY) ){
         setorigin( self, node.origin);
       }
       else{
-        setorigin( self, org );
+        setorigin( self, newOrg );
       }
     }
     self.target = node.targetname;
     self.movetarget = node;
     self.goalentity = node;
-    self.ideal_yaw = vectoyaw( node.origin - self.origin);
-    droptofloor(); 
+    self.ideal_yaw = vectoyaw( node.origin - self.origin );
+    dropToFloorCorners();
     if( (self.flags & FL_TURRET) ){
       util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
     }
     if( self.legs ){
       util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
     }
-    self.th_walk();
+    self.think = self.th_walk;
     if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
       self.think = SUB_Null;
       return;
     }
+    self.nextthink = time + (random() * 2);
+    if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+      self.think = self.th_stand;
+      self.nextthink = self.nextthink + 7;
+      return;
+    }
+  }
+  else{
+    self.think = self.th_stand;
+    if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
+      self.think = SUB_Null;
+      return;
+    }
+    self.nextthink = time + (random() * 2);
     if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
       self.nextthink = self.nextthink + 7;
-    }
-    return;
-  }
-  self.th_stand();
-  if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
-    self.think = SUB_Null;
-    return;
-  }
-  self.nextthink = time + 0.1;
-  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
-    self.nextthink = self.nextthink + 7;
+    } 
   }
 };

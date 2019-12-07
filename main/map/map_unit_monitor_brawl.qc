@@ -12,6 +12,13 @@ Overview:
 */
 void() unit_monitor_brawl_h={
   self.faction = FACTION_SURVEST;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_monitor;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -28,20 +35,18 @@ void() unit_monitor_brawl_h={
       self.spreadDefault = ACCURACY_PRIMITVE;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_monitor;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_skirmish)
 };
 
 void() unit_monitor_brawl_m={
   self.faction = FACTION_MILITAR;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_monitor;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -58,20 +63,18 @@ void() unit_monitor_brawl_m={
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_monitor;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_skirmish)
 };
 
 void() unit_monitor_brawl_p={
   self.faction = FACTION_PSC;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_monitor;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -88,21 +91,19 @@ void() unit_monitor_brawl_p={
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_monitor;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_skirmish)
 };
 
 //-------------------ZAPPER  --------------------------------
 void() unit_monitor_militar_zapper={
   self.faction = FACTION_MILITAR;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_monitor;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -119,6 +120,12 @@ void() unit_monitor_militar_zapper={
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }
+  macro_ai_setup(ai_mech_skirmish)
+};
+
+//-------------------GUNNER  --------------------------------
+void() unit_monitor_militar_gunner={
+  self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
@@ -126,14 +133,6 @@ void() unit_monitor_militar_zapper={
     remove(self);
     return;
   }
-
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
-};
-
-//-------------------GUNNER  --------------------------------
-void() unit_monitor_militar_gunner={
-  self.faction = FACTION_MILITAR;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -150,6 +149,13 @@ void() unit_monitor_militar_gunner={
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }
+  macro_ai_setup(ai_mech_skirmish)
+};
+
+
+//-------------------LOBBER  --------------------------------
+void() unit_monitor_survest_lobber={
+  self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
@@ -157,15 +163,6 @@ void() unit_monitor_militar_gunner={
     remove(self);
     return;
   }
-
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
-};
-
-
-//-------------------LOBBER  --------------------------------
-void() unit_monitor_survest_lobber={
-  self.faction = FACTION_SURVEST;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -182,14 +179,5 @@ void() unit_monitor_survest_lobber={
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_monitor;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_skirmish)
 };

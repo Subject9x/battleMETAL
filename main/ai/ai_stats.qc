@@ -54,16 +54,21 @@ void(float rank) ai_pilot_ini_stats={
 
   mod_am = ai_pilot_armor_mod();
   self.max_health = self.health = self.health * mod_am;
-  if( (self.legs) )
-    self.legs.max_health = self.legs.health = self.legs.health * mod_am; 
-  if( (self.torsoLeft) )
-    self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * mod_am; 
-  if( (self.torsoRight) )
-    self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * mod_am; 
-  if( (self.armRight) )
-    self.armRight.max_health = self.armRight.health = self.armRight.health * mod_am; 
-  if( (self.armLeft) )
+  if( (self.legs) ){
+    self.legs.max_health = self.legs.health = self.legs.health * mod_am;
+  }
+  if( (self.torsoLeft) ){
+    self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * mod_am;
+  }
+  if( (self.torsoRight) ){
+    self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * mod_am;
+  } 
+  if( (self.armRight) ){
+    self.armRight.max_health = self.armRight.health = self.armRight.health * mod_am;
+  } 
+  if( (self.armLeft) ){
     self.armLeft.max_health = self.armLeft.health = self.armLeft.health * mod_am;
+  }
  
   self.spreadDefault = ai_pilot_accuracy( rank, self.spreadDefault );
   self.accuracy = self.spreadDefault_y;
@@ -176,7 +181,7 @@ float( float rank, float damg) ai_pilot_mod_damage={
   local float percent;
   switch( rank ){
     case SKILL_NOV:
-      percent = AI_DMG_SKILL_ROK ;
+      percent = AI_DMG_SKILL_ROK;
       break;
     case SKILL_REG:
       percent = AI_DMG_SKILL_REG;

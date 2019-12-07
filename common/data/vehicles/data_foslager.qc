@@ -50,7 +50,7 @@ void() data_ini_foslager_={
   self.model = "q3mdl/vecs/foslager/mdl_foslager_chas.md3";
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/foslager/mdl_foslager_tur.md3", 1, '0 10.25 -3.75', self, torsoCenter);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/foslager/mdl_foslager_tur.md3", 1, '0 10.25 -3.75', self, torsoCenter, '0 0 0');
   
   //camera location
   data_ini_camera_( '0 15 0', self.torsoCenter );

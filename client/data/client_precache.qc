@@ -10,7 +10,7 @@ void() dynamic_precache =
 {
 	local float f;                                      // file handle, basically assigns a number to whatever file is open
 	local string ln;                                    // ln = line of the file being read
-	f = fopen(strcat("data/cache/precache_client.txt") , FILE_READ);        // opens "system/precache.txt" to be read
+	f = fopen(strcat("cache/precache_client.txt") , FILE_READ);        // opens "system/precache.txt" to be read
 	if (f != -1)                                        // if f = -1 then the file could not be found
 	{ 
 		ln = fgets(f);                              // this line sets ln to the string read from the file with the file handle of f

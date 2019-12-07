@@ -13,8 +13,9 @@ Overview:
 void() unit_balaket_brawl_h={
   self.faction = FACTION_SURVEST;
   self.nextVecChoice = UID_MECH_balaket;
-  
-  if( ai_can_spawn() == FALSE ){
+  self.flags = FL_TURRET;  //enforced for a mech
+
+  if( !ai_can_spawn() ){
     remove(self);
     return;
   }
@@ -35,21 +36,20 @@ void() unit_balaket_brawl_h={
       break;
   }
   
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_skirmish)
 };
 
 void() unit_balaket_brawl_m={
   self.faction = FACTION_MILITAR;
   self.nextVecChoice = UID_MECH_balaket;
-  
-  ai_promote();
+  self.flags = FL_TURRET;  //enforced for a mech
+    
   if( !ai_can_spawn() ){
     remove(self);
     return;
   }
   
+  ai_promote();
   switch( self.ai_rank ){
     case 2:
       ai_ini_weapons( UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_electro_repeater, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
@@ -65,14 +65,13 @@ void() unit_balaket_brawl_m={
       break;
   }
   
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_skirmish)
 };
 
 void() unit_balaket_brawl_p={
   self.faction = FACTION_PSC;
   self.nextVecChoice = UID_MECH_balaket;
+  self.flags = FL_TURRET;  //enforced for a mech
   
   ai_promote();
   if( !ai_can_spawn() ){
@@ -93,9 +92,6 @@ void() unit_balaket_brawl_p={
       ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_rotary_plasma, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
-  }
-  
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.think = ai_mech_skirmish;
-  self.nextthink = time + 0.05;
+  }  
+  macro_ai_setup(ai_mech_skirmish)
 };

@@ -247,6 +247,7 @@ qsrc/triggers.qc
   main/map/map_unit_foslager.qc
   main/map/map_unit_onnek.qc
   main/map/map_unit_trowel.qc
+  main/map/map_unit_sorcerer.qc
   
   main/map/map_unit_balaket_brawl.qc
   main/map/map_unit_balaket_sniper.qc

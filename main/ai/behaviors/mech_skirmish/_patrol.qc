@@ -26,7 +26,7 @@ void() ai_mech_sk_patrol1={
     return;
   }
   
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol2)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol2)
 };
 void() ai_mech_sk_patrol2={ 
   ai_update_accuracy( TRUE );
@@ -37,7 +37,7 @@ void() ai_mech_sk_patrol2={
     return;
   }
   
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol3)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol3)
 };
 void() ai_mech_sk_patrol3={
   ai_update_accuracy( TRUE );
@@ -47,7 +47,7 @@ void() ai_mech_sk_patrol3={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol4)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol4)
 };
 void() ai_mech_sk_patrol4={ 
   ai_update_accuracy( TRUE );
@@ -57,7 +57,7 @@ void() ai_mech_sk_patrol4={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol5)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol5)
 };
 void() ai_mech_sk_patrol5={ 
   ai_update_accuracy( TRUE );
@@ -67,7 +67,7 @@ void() ai_mech_sk_patrol5={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol6)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol6)
 };
 void() ai_mech_sk_patrol6={
   ai_update_accuracy( TRUE );
@@ -77,7 +77,7 @@ void() ai_mech_sk_patrol6={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol7)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol7)
 };
 void() ai_mech_sk_patrol7={
   ai_update_accuracy( TRUE );
@@ -87,7 +87,7 @@ void() ai_mech_sk_patrol7={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol8)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol8)
 };
 void() ai_mech_sk_patrol8={ 
   ai_update_accuracy( TRUE );
@@ -97,7 +97,7 @@ void() ai_mech_sk_patrol8={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol9)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol9)
 };
 void() ai_mech_sk_patrol9={ 
   ai_update_accuracy( TRUE );
@@ -107,7 +107,7 @@ void() ai_mech_sk_patrol9={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol10)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol10)
 };
 void() ai_mech_sk_patrol10={
   ai_update_accuracy( TRUE );
@@ -117,7 +117,7 @@ void() ai_mech_sk_patrol10={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol11)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol11)
 };
 void() ai_mech_sk_patrol11={
   ai_update_accuracy( TRUE );
@@ -127,7 +127,7 @@ void() ai_mech_sk_patrol11={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol12)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol12)
 };
 void() ai_mech_sk_patrol12={ 
   ai_update_accuracy( TRUE );
@@ -137,7 +137,7 @@ void() ai_mech_sk_patrol12={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol13)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol13)
 };
 void() ai_mech_sk_patrol13={ 
   ai_update_accuracy( TRUE );
@@ -147,7 +147,7 @@ void() ai_mech_sk_patrol13={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol14)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol14)
 };
 void() ai_mech_sk_patrol14={
   ai_update_accuracy( TRUE );
@@ -157,7 +157,7 @@ void() ai_mech_sk_patrol14={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol15)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol15)
 };
 void() ai_mech_sk_patrol15={
   ai_update_accuracy( TRUE );
@@ -167,7 +167,7 @@ void() ai_mech_sk_patrol15={
     macro_ai_frame(ai_mech_sk_fight_prep)
     return;
   }
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol16)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol16)
 };
 void() ai_mech_sk_patrol16={ 
   ai_update_accuracy( TRUE );
@@ -178,5 +178,5 @@ void() ai_mech_sk_patrol16={
     return;
   }
   
-  macro_ai_patrol(self.data_speed_forward, ai_mech_sk_enter_stand, ai_mech_sk_patrol1)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_mech_sk_enter_stand, ai_mech_sk_patrol1)
 };

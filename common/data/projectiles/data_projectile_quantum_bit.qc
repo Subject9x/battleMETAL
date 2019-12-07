@@ -26,28 +26,21 @@ void() data_projectile_ini_quantum_bit_={
 };
 
 void() data_projectile_ini_quantum_bit_touch_={
+  self.touch = SUB_Null;
+  self.solid = SOLID_NOT;
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
 	if (pointcontents(self.origin) == CONTENT_SKY){
-		self.touch = SUB_Null;
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
 		return;
 	}
   
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-    if( other.shield > 0 )
+    if( other.shield > 0 ){
       pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
-
-    self.touch = SUB_Null;
-    self.solid = SOLID_NOT;
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
+    }
     return;
   }  
   
   pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
-  self.touch = SUB_Null;
-  self.solid = SOLID_NOT;
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.01;
 };

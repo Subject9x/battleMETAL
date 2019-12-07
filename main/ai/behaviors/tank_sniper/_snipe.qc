@@ -145,9 +145,9 @@ void() ai_spg_snipe13={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG )
+  if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
- 
+  }
   macro_ai_frame(ai_spg_snipe14)
 };
 void() ai_spg_snipe14={

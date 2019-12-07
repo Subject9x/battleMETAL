@@ -1,5 +1,5 @@
 
-void() InitBodyQue;
+//void() InitBodyQue;
 
 void() main =
 {
@@ -43,7 +43,7 @@ void() worldspawn =
 	skill = cvar("skill");
   world.data_idx = -1;
 	lastspawn = world;
-	InitBodyQue ();
+	//InitBodyQue ();
   cvar_set("sv_maxspeed", "800"); //allows faster units
   
   CLIENTS = 0;
@@ -128,7 +128,7 @@ BODY QUE
 ==============================================================================
 */
 
-entity	bodyque_head;
+/*entity	bodyque_head;
 
 void() bodyque =
 {	// just here so spawn functions don't complain after the world
@@ -167,5 +167,5 @@ void(entity ent) CopyToBodyQue =
 	setsize (bodyque_head, ent.mins, ent.maxs);
 	bodyque_head = bodyque_head.owner;
 };
-
+*/
 

@@ -26,17 +26,22 @@ void( entity active, string event) trigger_event={
   local string oldTarget;
   local string thisTarget;  //something something method arg stack
   
-  if( !event || active == world ){
+  if( !event ){
     return;
   }
+  if( !active ){
+    activator = world;
+  }
+  else{
+    activator = active;
+  }
+  
+  log_me(event);  //DEBUG
   
   oldTarget = self.target;
-  
   thisTarget = event;
   self.target = thisTarget;
-  activator = active;
   SUB_UseTargets();
-  
   self.target = oldTarget;
   
 };
@@ -855,30 +860,30 @@ void() trigger_stuffcmd={
 
 
 void() trigger_timer_activate={
-	if (activator.classname == "player" && (self.spawnflags & SPAWNFLAG_NOMESSAGE) == 0){
+	if (activator.classname == "player" && !(self.spawnflags & SPAWNFLAG_NOMESSAGE)){
     if( self.message ){
       centerprint(activator, self.message);
     }
   }
 	self.enemy = activator;
-	multi_trigger ();
+	multi_trigger();
 };
 void() trigger_timer_use={
-  if( self.wait < 0 ){
+  if( self.isActive < 0 ){
     //prevent multiple calls
     return;
   }
   
-  self.wait = -1;
+  self.isActive = -1;
   self.think = trigger_timer_activate;
-  self.nextthink = time + self.delay;
+  self.nextthink = time + self.count;
 };
 /*QUAKED trigger_timer (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT
-Waits for .delay game seconds before firing .target
+Waits for .count game seconds before firing .target
 
 After the timer expires, it will fire all of it's targets and remove itself.
 -------- KEYS -------- 
-.delay = <float> game seconds to count before firing.
+.count = <float> game seconds to count before firing.
 .message = <string> message to display on end of countdown.
 
 -------- SPAWNFLAGS --------
@@ -920,19 +925,19 @@ void() trigger_timer =
       break;
   }
 
-  if( !self.delay ){
-   dprint("trigger_timer missing delay value\n");
+  if( !self.count ){
+   dprint("trigger_timer missing count value\n");
    remove(self);
    return;
   }
-  
+  self.delay = 0; // multi_trigger issue.
   if( (self.spawnflags & 32) ){
-    self.wait = -1;
+    self.isActive = -1;
     self.think = trigger_timer_activate;
-    self.nextthink = time + self.delay;
+    self.nextthink = time + self.count;
     return;
   }
   
-  self.wait = 1;
+  self.isActive = 1;
 	self.use = trigger_timer_use;
 };

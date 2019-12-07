@@ -6,64 +6,59 @@ Overview:
   Main Impl for AI API
 */
 
+
+
 /*
   Go through spawn flags
   Check Game Mode and Difficulty Skill
   remove AI if they're flagged to not be in a category; 
 */
 float() ai_can_spawn={
-  local float yesWecan;
+  local float canSpawn;
+  canSpawn = TRUE;
   
   if( self.nextVecChoice < 1 ){
-    return FALSE;
+    canSpawn =  FALSE;
   }
-  if( (self.spawnflags & AI_SPAWNFLAG_CAMPAIGN) ){
-    if( !coop && !deathmatch && !teamplay ){
-      return FALSE;
+  
+  if( (self.spawnflags & AI_SPAWNFLAG_NOCAMPAIGN) ){
+    if( !coop && !deathmatch && (teamplay == FALSE)){
+      canSpawn =  FALSE;
     }
   }
   
-  if( (self.spawnflags & AI_SPAWNFLAG_COOP) ){
+  if( (self.spawnflags & AI_SPAWNFLAG_NOCOOP) ){
     if( coop && !deathmatch ){
-      return FALSE;
+      canSpawn =  FALSE;
     }
   }
 
-  if( (self.spawnflags & AI_SPAWNFLAG_DM) ){
+  if( (self.spawnflags & AI_SPAWNFLAG_NODM) ){
     if( !coop && deathmatch ){
-      return FALSE;
+      canSpawn =  FALSE;
      }
   }
   
-  if( (self.spawnflags & AI_SPAWNFLAG_TDM) ){
-    if( deathmatch && teamplay ){
-      return FALSE;
+  if( (self.spawnflags & AI_SPAWNFLAG_NOTDM) ){
+    if( deathmatch && (teamplay == FALSE) ){
+      canSpawn =  FALSE;
     }
   }
-  
-  switch( skill ){
-    case SKILL_NOV:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NONOV) ){
-        return FALSE;
-      }
-      break;
-    case SKILL_REG:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOREG) ){
-        return FALSE;
-      }
-      break;
-    case SKILL_VET:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOVET) ){
-        return FALSE;
-      }
-      break;
-    case SKILL_ELT:
-      if ( (self.spawnflags & AI_SPAWNFLAG_NOELT) ){
-        return FALSE;
-      }
-      break;
+
+  if ( cvar("skill") == 0 && (self.spawnflags & AI_SPAWNFLAG_NONOV) ){
+    canSpawn = FALSE;
   }
-  return yesWecan;
+  if ( cvar("skill") == 1 && (self.spawnflags & AI_SPAWNFLAG_NOREG) ){
+    canSpawn = FALSE;
+  }
+  if ( cvar("skill") == 2 && (self.spawnflags & AI_SPAWNFLAG_NOVET) ){
+    canSpawn = FALSE;
+  }
+  if ( cvar("skill") == 3 && (self.spawnflags & AI_SPAWNFLAG_NOELT) ){
+    canSpawn = FALSE;
+  }
+  
+  return canSpawn;
 };
 
 float( entity t ) ai_line_of_sight={
@@ -213,13 +208,20 @@ float() ai_find_target_visual={
     rng = rng + fog;
   }
   
+  selfSensorOrg_x = self.origin_x;
+  selfSensorOrg_y = self.origin_y;
+  selfSensorOrg_z = 0;
+  
   targ = findradius(self.origin, rng);
   while( targ ){
     if( ai_valid_target(targ) ){
       if( targ.faction != self.faction ){
         if( ai_check_face(targ, self.ai_fov) ){
           if( ai_check_vis(targ) == VIS_FRAC ){
-            ndist = vlen(targ.origin - self.origin);
+            enemySensorOrg_x = targ.origin_x;
+            enemySensorOrg_y = targ.origin_y;
+            enemySensorOrg_z = 0;
+            ndist = vlen(enemySensorOrg - selfSensorOrg);
             if(ndist < rng){
               rng = ndist;
               found = targ;
@@ -259,12 +261,19 @@ float() ai_find_target_radar={
   local float rng, ndist;
   local entity ally; 
   
+  selfSensorOrg_x = self.origin_x;
+  selfSensorOrg_y = self.origin_y;
+  selfSensorOrg_z = 0;
+  
   targ = findradius(self.origin, self.ai_view);
   rng = self.ai_view;
   while( targ ){
     if( ai_valid_target(targ) ){
       if( targ.faction != self.faction ){
-        ndist = vlen(targ.origin - self.origin);
+        enemySensorOrg_x = targ.origin_x;
+        enemySensorOrg_y = targ.origin_y;
+        enemySensorOrg_z = 0;
+        ndist = vlen(enemySensorOrg - selfSensorOrg);
         if( ndist < rng ){
           if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == TRUE ){
             if( ndist < (rng / 2) ){
@@ -477,7 +486,6 @@ entity() ai_goal_offset_node={
     tests = tests + 1;
   }
   if( checkLen == 250 ){
-    //cons_logAFloat("ai_goal_offset_node()->no offset node", -1);  //DEBUG
     return world;
   }
   offsetNode = spawn();
@@ -485,7 +493,6 @@ entity() ai_goal_offset_node={
   offsetNode.ai_rank = (random() * 50) + (random() * 33);
   setsize(offsetNode, '-16 -16 -32', '16 16 32');
   setorigin(offsetNode, offsetNodeOrg);
- //cons_logAVector("ai_goal_offset_node()->offsetNodeOrg", offsetNodeOrg);  //DEBUG
   return offsetNode;
 };
 
@@ -595,7 +602,12 @@ float( void() ai_ini ) ai_unit_setup={
 */
 
 void() ai_unit_make_trigger={
+  self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
+  self.use = SUB_Null;  //triggered
+  self.think = self.unit_ini;
+  self.unit_ini = SUB_Null;
   self.nextthink = time + self.wait;
+  trigger_event( find(world, classname, "player"), self.trigOnSpawn ); //event interface
 };
 
 /*

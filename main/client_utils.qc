@@ -713,7 +713,7 @@ void(float p_min, float p_max) client_update_viewPitch={
 void() respawn={ 
   if (coop){
 		// make a copy of the dead body for appearances sake
-    CopyToBodyQue (self);
+    //CopyToBodyQue (self);
     //
 		// get the spawn parms as they were at level start
 		//setspawnparms (self);
@@ -726,7 +726,7 @@ void() respawn={
 	}
 	else if (deathmatch){
 		// make a copy of the dead body for appearances sake
-    CopyToBodyQue (self);
+    //CopyToBodyQue (self);
 
 		// set default spawn parms
 		SetNewParms ();

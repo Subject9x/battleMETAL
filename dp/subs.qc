@@ -254,6 +254,7 @@ void() SUB_UseTargets =
 		t.message = self.message;
 		t.killtarget = self.killtarget;
 		t.target = self.target;
+    log_me("SUB_UseTargets self.delay");
 		return;
 	}
 
@@ -283,7 +284,7 @@ void() SUB_UseTargets =
 //
 // fire targets
 //
-	if (self.target){
+	/*if (self.target){
 		act = activator;
 		t = world;
 		do{
@@ -300,7 +301,25 @@ void() SUB_UseTargets =
 			other = tempOther;
 			activator = act;
 		} while ( 1 );
-	}
+	}*/
+  // guess this needed updating too.
+  if( self.target ){
+    act = activator;
+    t = findchain( targetname, self.target);
+    while(t){
+      tempSelf = self;
+      tempOther = other;
+      self = t;
+      other = tempSelf;
+      if (self.use){
+        self.use ();
+      }
+      self = tempSelf;
+      other = tempOther;
+      activator = act;
+      t = t.chain;
+    }
+  }
 };
 
 

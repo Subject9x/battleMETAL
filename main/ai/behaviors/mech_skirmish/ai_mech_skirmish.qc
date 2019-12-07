@@ -14,15 +14,10 @@ Overview: ai unit
   AI SPAWN FUNCTION
 */
 void() ai_mech_skirmish={
-
-  macro_ai_setup(ai_mech_skirmish)
-
   ai_unit_ini_var();
   initialize_data_mech_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
-  
-  trigger_event( self, self.trigOnSpawn); //event interface
     
   self.th_stand = ai_mech_sk_enter_stand;
   self.th_walk = ai_mech_sk_patrol1;
@@ -33,6 +28,7 @@ void() ai_mech_skirmish={
   self.touch = ai_touch;
 
   ai_setup_patrol();
+  
   self.nextthink = self.nextthink + random() * 0.5; //spread out thinks
 };
 

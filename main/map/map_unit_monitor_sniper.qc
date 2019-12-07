@@ -8,6 +8,13 @@ Overview:
 */
 void() unit_monitor_sniper_m={  
   self.faction = FACTION_MILITAR;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_monitor;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -24,7 +31,12 @@ void() unit_monitor_sniper_m={
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }
-  
+  macro_ai_setup(ai_mech_sniper)
+};
+
+//-------------------ZAPPER  --------------------------------
+void() unit_monitor_survest_zapper={  
+  self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
@@ -32,14 +44,6 @@ void() unit_monitor_sniper_m={
     remove(self);
     return;
   }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
-};
-
-//-------------------ZAPPER  --------------------------------
-void() unit_monitor_survest_zapper={  
-  self.faction = FACTION_SURVEST;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -56,7 +60,12 @@ void() unit_monitor_survest_zapper={
       self.spreadDefault = ACCURACY_SNIPER;
       break;
   }
-  
+  macro_ai_setup(ai_mech_sniper)
+};
+
+//-------------------GUNNER  --------------------------------
+void() unit_monitor_survest_gunner={  
+  self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
@@ -64,14 +73,6 @@ void() unit_monitor_survest_zapper={
     remove(self);
     return;
   }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
-};
-
-//-------------------GUNNER  --------------------------------
-void() unit_monitor_survest_gunner={  
-  self.faction = FACTION_SURVEST;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -88,7 +89,12 @@ void() unit_monitor_survest_gunner={
       self.spreadDefault = ACCURACY_SNIPER;
       break;
   }
-  
+  macro_ai_setup(ai_mech_sniper)
+};
+
+//-------------------LOBBER  --------------------------------
+void() unit_monitor_militar_lobber={  
+  self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
@@ -96,14 +102,6 @@ void() unit_monitor_survest_gunner={
     remove(self);
     return;
   }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
-};
-
-//-------------------LOBBER  --------------------------------
-void() unit_monitor_militar_lobber={  
-  self.faction = FACTION_MILITAR;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -120,15 +118,5 @@ void() unit_monitor_militar_lobber={
       self.spreadDefault = ACCURACY_SNIPER;
       break;
   }
-  
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_monitor;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_sniper)
 };

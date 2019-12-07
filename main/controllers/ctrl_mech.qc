@@ -25,11 +25,15 @@ void() ctrl_update_mechplayer={
   }
   
   //damage-based cosmetics for unit component pieces
-  self.torsoCenter.hitOffset = self.origin + (v_right * piece.compAltOffset_x) + (v_up * piece.compAltOffset_y);
   piece = self.partNext;
+  self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y);
+  self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y);
+  self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y);
+  self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
+  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
+  
   while( piece ){
     if( piece.classname == MECH_PIECE ){
-      piece.hitOffset = self.origin + (v_right * piece.compAltOffset_x) + (v_up * piece.compAltOffset_y);
       if( piece.deadflag <= DEAD_NO ){
         hp = piece.health / piece.max_health;
         if( hp < 0.75){
@@ -78,11 +82,15 @@ void() ai_ctrl_update_mechplayer={
     wep = wep.w_slot;
   }
   //damage-based cosmetics for unit component pieces
-  self.torsoCenter.hitOffset = self.origin + (v_right * piece.compAltOffset_x) + (v_up * piece.compAltOffset_y);
+  self.torsoLeft.hitOffset = self.origin + (v_right * self.torsoLeft.compAltOffset_x) + (v_up * self.torsoLeft.compAltOffset_y);
+  self.torsoRight.hitOffset = self.origin + (v_right * self.torsoRight.compAltOffset_x) + (v_up * self.torsoRight.compAltOffset_y);
+  self.armRight.hitOffset = self.origin + (v_right * self.armRight.compAltOffset_x) + (v_up * self.armRight.compAltOffset_y);
+  self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
+  self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
+  
   piece = self.partNext;
   while( piece ){
     if( piece.classname == MECH_PIECE ){
-      piece.hitOffset = self.origin + (v_right * piece.compAltOffset_x) + (v_up * piece.compAltOffset_y);
       if( piece.deadflag <= DEAD_NO ){
         hp = piece.health / piece.max_health;
         if( hp < 0.75){

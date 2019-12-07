@@ -41,11 +41,12 @@ void(entity own) build_unit_component={
   follow = util_getPartFromName( self.partParentId, own );
   self.deadflag = DEAD_NO;
   self.classname = MECH_PIECE; 
-  util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-  util_setModel(self.model, own.skin, 0);
   
+  macro_set_collider(DAMAGE_NO,SOLID_NOT,MOVETYPE_FOLLOW)
+  macro_set_model(self.model, own.skin, 0)
   setsize(self, '-1 -1 -1', '1 1 1');
-  util_setOffsetOrigin(self, own, self.compOffset);
+  macro_set_offset(own,self.compOffset)
+  
   self.owner = own;
   self.aiment = follow;
   self.punchangle = follow.angles;
@@ -69,7 +70,7 @@ void() build_unit_camera={
   self = cam;
     self.partTypeId = M_CAMERA;
     self.classname = "camera";
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
+    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
     setmodel( self, "q3mdl/testball.md3");
     setsize(self, '-1 -1 -1', '1 1 1');
     util_setOffsetOrigin(self, this, self.compOffset);
@@ -186,11 +187,11 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
         self.w_firerate = self.w_firerate * AI_WEAPON_RPS_MOD;
       }
     }
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.model, 0, 0);
+    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
     setsize(self, '-1 -1 -1','1 1 1');
+    macro_set_model(self.model, 0, 0)
     ofs = self.compOffset + self.compAltOffset;
-    util_setOffsetOrigin(self, own, ofs);
+    macro_set_offset(own, ofs)
     
     partParent = util_getPartFromName( self.partParentId, own );
     
@@ -202,7 +203,6 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
     self.owner = own;
     self.punchangle = partParent.angles;
     self.view_ofs = self.origin - partParent.origin;
-    //self.angles = partParent.angles;
     self.v_angle = self.angles - partParent.angles;
     
     if( (self.damageType & DMG_MSC) ){
@@ -217,7 +217,7 @@ void( float nex_wep, entity own, .float stat) build_unit_weapon={
 };
 
 
-void(void() data_ini) build_mech_unit={
+void() build_mech_unit={
   local vector tempMin, tempMax;
   
   //Darkplaces needs md3 .skin files to increment at exactly _0.skin, _1.skin
@@ -230,11 +230,10 @@ void(void() data_ini) build_mech_unit={
   self.flags = self.flags | FL_UNIT;
   
   if( !(self.flags & FL_CLIENT) ){
-    build_mech_bot( data_ini );
+    build_mech_bot();
     return;
   }
-  
-  data_ini();
+
   tempMin = self.mins;
   tempMax = self.maxs;
   
@@ -243,7 +242,7 @@ void(void() data_ini) build_mech_unit={
   self.energy = self.energyMax;
   self.shield = self.shieldMax;
   self.health = self.max_health;
-  self.evasionDrain = (4 - self.vec_size) / 10 + EVADE_DRAIN_PERCENT;
+  self.evasionDrain = (4 - self.vec_size) / 6.7 + EVADE_DRAIN_PERCENT;
   
   setsize(self, tempMin, tempMax);
   
@@ -304,24 +303,24 @@ void() build_mech_torsoCenter={
   local vector hmins, hmaxs;
 
   if( (self.flags & FL_CLIENT) ){
-    util_setCollider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_WALK);
+    macro_set_collider(DAMAGE_AIM, SOLID_BBOX, MOVETYPE_WALK)
   }
   else{
-    util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
+    macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
   }
   
   hmins = self.mins;
   hmaxs = self.maxs;
-  util_setModel("q3mdl/testball.md3", 0, 0);
+  macro_set_model("q3mdl/testball.md3", 0, 0)
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
   this = self;
   self = self.torsoCenter;
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW);
-    util_setModel(self.model, this.skin, 0);
+    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
+    macro_set_model(self.model, this.skin, 0)
     setsize(self, '-1 -1 -1','1 1 1');
-    util_setOffsetOrigin(self, this, '0 0 0');
+    macro_set_offset(this,'0 0 0')
     self.punchangle = self.angles = '0 0 0';
     self.aiment = this;
     self.owner = this;
@@ -335,18 +334,16 @@ void() build_mech_torsoCenter={
   self = this;
 };
 
-void(void() data_ini) build_mech_bot={
+void() build_mech_bot={
   local vector hmins, hmaxs;
   
   self.flags = self.flags | FL_MONSTER;
   
-  data_ini();
-  
   hmaxs = self.maxs;
   hmins = self.mins;
   
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
-  util_setModel("q3mdl/testball.md3", self.skin, 0);
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
+  macro_set_model("q3mdl/testball.md3", self.skin, 0)
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
@@ -399,19 +396,19 @@ void(void() data_ini) build_mech_bot={
     self.legs.ai_dir = self.angles_y;
   }
   
-  if( (self.cockpit) )
+  if( (self.cockpit) ){
     build_unit_camera();
-  
+  }
   //speed limits for AI because they change directions instantly :/
-  if( self.data_speed_forward > 200 )
+  if( self.data_speed_forward > 200 ){
     self.data_speed_forward = 200;
-  
-  if( self.data_speed_strafe > 200 )
+  }
+  if( self.data_speed_strafe > 200 ){
     self.data_speed_strafe = 200;
-  
-  if( self.data_speed_backward > 200 )
+  }
+  if( self.data_speed_backward > 200 ){
     self.data_speed_backward = 200;
-  
+  }
   self.data_speed_forward = self.data_speed_forward * AI_MECH_MOVE_FACTOR;
   self.data_speed_strafe = self.data_speed_strafe * AI_MECH_MOVE_FACTOR;
   self.data_speed_backward = self.data_speed_backward * AI_MECH_MOVE_FACTOR;
@@ -441,10 +438,10 @@ void() build_unit_turret={
   self = self.torsoCenter;
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE; 
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
-    util_setModel(self.model, this.skin, 0);
+    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
+    macro_set_model(self.model, this.skin, 0)
     setsize(self, '-1 -1 -1','1 1 1');
-    util_setOffsetOrigin(self, this, self.compOffset);
+    macro_set_offset(this, self.compOffset)
     self.angles = this.angles;
     self.owner = this;
     self.th_die = ctrl_component_die;
@@ -496,13 +493,13 @@ void() build_mech_legs={
     self.deadflag = DEAD_NO;
     self.classname = MECH_PIECE;
     self.walkframe = 1;
-    util_setCollider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE);
-    if( (this.flags & FL_CLIENT) )
+    macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
+    if( (this.flags & FL_CLIENT) ){
       self.aiment = this;
-      
-    util_setModel(self.model, this.skin, 0);
+    }
+    macro_set_model(self.model, this.skin, 0)
     setsize(self, '-1 -1 -1','1 1 1');
-    util_setOffsetOrigin(self, this, self.compOffset);
+    macro_set_offset(this, self.compOffset)
     self.owner = this;
     self.punchangle = this.angles;
     self.view_ofs = self.origin - this.origin;
@@ -525,13 +522,11 @@ void() build_mech_legs={
   self = this;
 };
 
-void(void() data_ini) build_vehicle_unit={
+void() build_vehicle_unit={
   local vector hmins, hmaxs;
   
   self.data_type = DATA_VEHC;
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
-  
-  data_ini();
   
   hmaxs = self.maxs;
   hmins = self.mins;
@@ -541,8 +536,8 @@ void(void() data_ini) build_vehicle_unit={
   if( self.skin < 0 ){
     self.skin = 0;
   }
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP);
-  util_setModel(self.model, self.skin, 0);
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_STEP)
+  macro_set_model(self.model, self.skin, 0)
   setsize( self, hmins, hmaxs );
   
   self.alpha = 1;
@@ -599,13 +594,13 @@ void(void() data_ini) build_vehicle_unit={
 //TODO - deprecated, needs rebuild
 void( void() data_ini ) build_vtol_unit={
   self.flags = self.flags | FL_FLY;
-  build_vehicle_unit( data_ini );
+  build_vehicle_unit();
 };
 //----------------------------------
 
-void(void() data_ini) build_turret_unit={
+void() build_turret_unit={
 
-  build_vehicle_unit( data_ini );
+  build_vehicle_unit();
   self.data_type = DATA_BLD;
 
   if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){

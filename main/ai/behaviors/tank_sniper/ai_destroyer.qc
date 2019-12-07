@@ -11,15 +11,11 @@ Overview: ai unit
   AI SPAWN FUNCTION
 */
 void() ai_vec_dest={
-  macro_ai_setup(ai_vec_dest)
-
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   self.spawnflags = self.spawnflags | AI_SPAWNFLAG_HASRADAR;
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
-  
-  trigger_event( self, self.trigOnSpawn ); //event interface
   
   self.th_stand = ai_spg_stand1;
   self.th_walk = ai_spg_enter_patrol;

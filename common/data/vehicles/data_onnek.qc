@@ -20,7 +20,7 @@ void() data_ini_onnek_={
   self.vec_name = "Onnek";
  
   self.max_health = 399;
-  setsize(self, '-25 -25 -10.25', '25 25 28');
+  setsize(self, '-30 -30 -10.25', '30 30 28');
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 1000;

@@ -37,8 +37,7 @@ void() unit_trowel_m={
       ai_ini_weapons( UID_ITEM_electro_repeater, UID_ITEM_electro_repeater, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 void() unit_trowel_h={
@@ -68,9 +67,7 @@ void() unit_trowel_h={
       ai_ini_weapons( UID_ITEM_rocket_launcher, UID_ITEM_ion_coil, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 //-------------------ZAPPER  --------------------------------
@@ -101,16 +98,14 @@ void() unit_trowel_militar_zapper={
       ai_ini_weapons( UID_ITEM_ion_coil, UID_ITEM_emp, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 void() unit_trowel_survest_zapper={
-
   self.nextVecChoice = UID_VEHICLE_trowel;
   self.faction = FACTION_SURVEST;
-   
   self.flags = self.flags | FL_TURRET;
+  self.spawnflags = rint(self.spawnflags);
   
   if( !ai_can_spawn() ){
     remove(self);
@@ -132,9 +127,7 @@ void() unit_trowel_survest_zapper={
       ai_ini_weapons( UID_ITEM_emp, UID_ITEM_EMPTY, UID_ITEM_recharge_capacitor, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 //-------------------GUNNER  --------------------------------
@@ -165,8 +158,7 @@ void() unit_trowel_militar_gunner={
       ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_snub_artillery, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 void() unit_trowel_survest_gunner={
@@ -196,7 +188,5 @@ void() unit_trowel_survest_gunner={
       ai_ini_weapons( UID_ITEM_electro_repeater, UID_ITEM_rotary_plasma, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };

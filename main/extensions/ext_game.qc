@@ -14,12 +14,6 @@ entity NEWSHOT;
 vector FIRE_ORIGIN;
 vector FIRE_ENDPOINT;
 
-//Difficulty
-float SKILL_NOV = 0;
-float SKILL_REG = 1;
-float SKILL_VET = 2;
-float SKILL_ELT = 3;
-
 //WEAPON FIRE STATUS
 float READY = 0;
 float RELOADING = 1;
@@ -30,8 +24,8 @@ float RECOIL = 4;
 
 //from world.qc
 entity lastspawn;
-void() InitBodyQue;
-void(entity ent) CopyToBodyQue;
+//void() InitBodyQue;
+//void(entity ent) CopyToBodyQue;
 //======================
 
 //from client.qc

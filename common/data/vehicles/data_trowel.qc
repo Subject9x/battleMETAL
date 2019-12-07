@@ -20,7 +20,7 @@ void() data_ini_trowel_={
   self.vec_name = "Trowel";
  
   self.max_health = 532;
-  setsize(self, '-30 -30 -7.75', '30 30 36');
+  setsize(self, '-32 -32 -7.75', '32 32 36');
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 700;
@@ -50,7 +50,7 @@ void() data_ini_trowel_={
   self.model = "q3mdl/vecs/trowel/mdl_trowel_chas.md3";
   
   //tank turret`
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', self, torsoCenter ); 
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/trowel/mdl_trowel_tur.md3", 1, '0 13.5 0', self, torsoCenter, '0 0 0'); 
   
   //camera location
   data_ini_camera_( '0 18 10', self.torsoCenter );

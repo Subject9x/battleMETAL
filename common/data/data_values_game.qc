@@ -11,7 +11,7 @@ void( ) FRIK_FILE_precaches =
 {
 	local float f;                                      // file handle, basically assigns a number to whatever file is open
 	local string ln;                                    // ln = line of the file being read
-	f = fopen("data/cache/precache_server.txt" , FILE_READ);        // opens "system/precache.txt" to be read
+	f = fopen("cache/precache_server.txt" , FILE_READ);        // opens "data/precache.txt" to be read
 	if (f != -1){                                        // if f = -1 then the file could not be found
 		ln = fgets(f);                              // this line sets ln to the string read from the file with the file handle of f
     
@@ -60,6 +60,13 @@ float GAMEMODE_CAMPAIGN = 1;
 float GAMEMODE_COOP = 2;
 float GAMEMODE_DM = 3;
 float GAMEMODE_TEAMDM = 4;
+//============================
+//   GAME DIFFICULTY
+//============================
+float SKILL_NOV = 0;
+float SKILL_REG = 1;
+float SKILL_VET = 2;
+float SKILL_ELT = 3;
 //============================
 //   WORLD TYPES
 //============================

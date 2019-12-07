@@ -39,8 +39,7 @@ void() unit_onnek_h={
       ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 void() unit_onnek_m={
@@ -68,8 +67,7 @@ void() unit_onnek_m={
       ai_ini_weapons( UID_ITEM_particle_cannon, UID_ITEM_particle_cannon, UID_ITEM_recharge_capacitor, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 //-------------------ZAPPER  --------------------------------
@@ -101,8 +99,7 @@ void() unit_onnek_militar_zapper={
       ai_ini_weapons( UID_ITEM_ion_coil, UID_ITEM_EMPTY, UID_ITEM_target_module, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 void() unit_onnek_survest_zapper={
@@ -133,8 +130,7 @@ void() unit_onnek_survest_zapper={
       ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_ion_coil, UID_ITEM_EMPTY, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 //-------------------GUNNER  --------------------------------
@@ -166,8 +162,7 @@ void() unit_onnek_militar_gunner={
       ai_ini_weapons( UID_ITEM_flak, UID_ITEM_flak, UID_ITEM_target_module, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 void() unit_onnek_survest_gunner={
@@ -198,8 +193,7 @@ void() unit_onnek_survest_gunner={
       ai_ini_weapons( UID_ITEM_light_autocannon, UID_ITEM_light_autocannon, UID_ITEM_target_module, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 //-------------------LOBBER --------------------------------
@@ -231,8 +225,7 @@ void() unit_onnek_militar_lobber={
       ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_missile_laserguide, UID_ITEM_target_module, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 void() unit_onnek_survest_lobber={
@@ -263,6 +256,5 @@ void() unit_onnek_survest_lobber={
       ai_ini_weapons( UID_ITEM_EMPTY, UID_ITEM_missile_laserguide, UID_ITEM_EMPTY, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };

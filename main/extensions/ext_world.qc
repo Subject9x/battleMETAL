@@ -277,7 +277,7 @@ void( entity light, float fileData ) world_export_realtimelights_write={
 void( vector org, entity parent, float id, vector colr, float stile, float pFlags, vector angl, float skinNum, float lightRadius) world_make_dlight={
   local entity newLight;
   newLight = spawn();
-  newLight.classname = "light";
+  newLight.classname = "dynamicLight";
   newLight.owner = parent;
   newLight.color = colr;
   newLight.style = stile;
@@ -287,7 +287,8 @@ void( vector org, entity parent, float id, vector colr, float stile, float pFlag
   newLight.light_lev = lightRadius;
   newLight.data_idx = id;
   setorigin( newLight, org );
-  
+  newLight.think = SUB_Null;
+  newLight.nextthink = time + 0.1;
 };
 
 void( entity parent ) world_remove_dlight={
@@ -296,7 +297,7 @@ void( entity parent ) world_remove_dlight={
   
   chaine = findchainentity( owner, parent );
   while( chaine ){
-    if( chaine.classname == "light" ){
+    if( chaine.classname == "dynamicLight" ){
       ref = chaine;
       chaine = chaine.chain;
       remove(ref);

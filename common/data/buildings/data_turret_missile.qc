@@ -47,7 +47,7 @@ void() data_ini_missile_turret_={
   self.model = "q3mdl/buildings/turret_missile/mdl_turret_missile_base.obj";
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3", 1, '0 -12 0', self, torsoCenter); 
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/buildings/turret_missile/mdl_turret_missile_turret.md3", 1, '0 -12 0', self, torsoCenter, '0 0 0'); 
   
   //camera location
   data_ini_camera_( '0 20 8', self.torsoCenter );

@@ -154,6 +154,29 @@ void() hrepair_die11 = [11, BecomeExplosion]{
   te_object_explode( '0.75 0.75 0.6' );
 };
 
+void() repair_light_up={
+  local vector lightColor;
+  if( self.faction == FACTION_PSC ){
+    lightColor = '0.25 0.85 0.35';
+  }
+  else{
+    lightColor = '0.95 0.25 0.15';
+  }
+  
+  //setup dlights
+  world_make_dlight( (self.origin + (v_up * 64) + (v_right * 32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50);
+  world_make_dlight( (self.origin + (v_up * 64) + (v_right * -28)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
+  world_make_dlight( (self.origin + (v_up * 64) + (v_right * 32) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
+  world_make_dlight( (self.origin + (v_up * 64) + (v_right * -28) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
+  
+  world_make_dlight( (self.origin + (v_up * 10) + (v_right * 24)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
+  world_make_dlight( (self.origin + (v_up * 10) + (v_right * -24)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
+  world_make_dlight( (self.origin + (v_up * 10) + (v_right * 24) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
+  world_make_dlight( (self.origin + (v_up * 10) + (v_right * -24) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
+  self.think = hrepair_th;
+  self.nextthink = time + 0.1;
+};
+
 /*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - - IS_MAPKEY -
 { model("models/buildings/repair/repair.md3"); }
 -------- KEYS -------- 
@@ -175,8 +198,8 @@ void() building_human_repair={
   self.vec_name = "Repair Bay";
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
-  util_setModel("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE) ;
+  macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
+  macro_set_model("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, 0)
   util_setHealthArmor(600, 600, 1, 100) ;
   setsize(self, '-53 -53 0', '53 53 40');
   self.shield = 0;
@@ -230,27 +253,9 @@ void() building_human_repair={
   self.th_die = hrepair_die;
   self.th_stand = hrepair_th;
   self.th_walk = hrepair_rep;
-  
-  local vector lightColor;
-  if( self.faction == FACTION_PSC ){
-    lightColor = '0.25 0.85 0.35';
-  }
-  else{
-    lightColor = '0.95 0.25 0.15';
-  }
-  
-  //setup dlights
-  world_make_dlight( (self.origin + (v_up * 64) + (v_right * 32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50);
-  world_make_dlight( (self.origin + (v_up * 64) + (v_right * -28)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
-  world_make_dlight( (self.origin + (v_up * 64) + (v_right * 32) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
-  world_make_dlight( (self.origin + (v_up * 64) + (v_right * -28) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 50); 
-  
-  world_make_dlight( (self.origin + (v_up * 10) + (v_right * 24)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
-  world_make_dlight( (self.origin + (v_up * 10) + (v_right * -24)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
-  world_make_dlight( (self.origin + (v_up * 10) + (v_right * 24) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
-  world_make_dlight( (self.origin + (v_up * 10) + (v_right * -24) + (v_forward * -32)), self, 1, lightColor, 2, PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW, '0 0 0', 0, 75); 
-  
-  hrepair_th();
+    
+  self.think = repair_light_up;
+  self.nextthink = time + 1;
 };
 
 void() building_repair_touch={

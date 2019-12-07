@@ -16,6 +16,18 @@ void() guard_tower_die={
   
   building_die();
 };
+void() guard_tower_lightup={
+  local vector lightOrg;
+  makevectors(self.angles);
+  lightOrg = self.origin + (v_up * 36);
+  world_make_dlight( (lightOrg + (v_forward * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
+  world_make_dlight( (lightOrg + (v_forward * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
+  world_make_dlight( (lightOrg + (v_right * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
+  world_make_dlight( (lightOrg + (v_right * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
+  self.think = guard_tower_think;
+  self.nextthink = time + 0.1;
+}
+
 
 /*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NODROP - - - - - - - LIGHTS_OFF IS_MAPKEY -
 { model("models/buildings/towersmall/guardtower.md3"); }
@@ -42,10 +54,10 @@ void() building_guard_tower={
   self.data_idx = UI_BUILDING_guard_tower;
   self.data_type = DATA_BLD;
   self.vec_name = "Guard Tower";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 1;
-  util_setModel("q3mdl/buildings/towersmall/guardtower.obj", self.skin, 0);
-  util_setCollider(DAMAGE_YES, SOLID_SLIDEBOX, MOVETYPE_NONE);
+  macro_set_collider(DAMAGE_YES, SOLID_SLIDEBOX, MOVETYPE_NONE)
+  macro_set_model("q3mdl/buildings/towersmall/guardtower.obj", self.skin,0)
   util_setHealthArmor(200, 200, 1, 100);
   setsize(self, '-22 -22 0', '22 22 40');
   self.shield = 0;
@@ -72,13 +84,7 @@ void() building_guard_tower={
     if( !self.style ){
       self.style = 0;
     }
-    local vector lightOrg;
-    makevectors(self.angles);
-    lightOrg = self.origin + (v_up * 36);
-    world_make_dlight( (lightOrg + (v_forward * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-    world_make_dlight( (lightOrg + (v_forward * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-    world_make_dlight( (lightOrg + (v_right * 18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-    world_make_dlight( (lightOrg + (v_right * -18)), self, 1, '0.85 0.8 0.2', self.style, (PFLAGS_FULLDYNAMIC | PFLAGS_NOSHADOW), '-45 0 0', 0, 66);
-    
+    self.think = guard_tower_lightup;
+    self.nextthink = time + 1;
   }
 };

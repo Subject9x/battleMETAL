@@ -59,18 +59,18 @@ void() data_projectile_missile_laserguide_think={
   if (lorg != '0 0 0'){
     olddir = normalize(self.velocity);
 		dir = normalize(lorg - self.origin);
-    if (olddir_x - dir_x > turnrate)
-      dir_x = olddir_x - turnrate;
-    if (olddir_x - dir_x < -1 * turnrate)
-      dir_x = olddir_x + turnrate;
-    if (olddir_y - dir_y > turnrate)
-      dir_y = olddir_y - turnrate;
-    if (olddir_y - dir_y < -1 * turnrate)
-      dir_y = olddir_y + turnrate;
-    if (olddir_z - dir_z > turnrate)
-      dir_z = olddir_z - turnrate;
-    if (olddir_z - dir_z < -1 * turnrate)
-      dir_z = olddir_z + turnrate;
+    if (olddir_x - dir_x > turnrate){
+      dir_x = olddir_x - turnrate;}
+    if (olddir_x - dir_x < -1 * turnrate){
+      dir_x = olddir_x + turnrate;}
+    if (olddir_y - dir_y > turnrate){
+      dir_y = olddir_y - turnrate;}
+    if (olddir_y - dir_y < -1 * turnrate){
+      dir_y = olddir_y + turnrate;}
+    if (olddir_z - dir_z > turnrate){
+      dir_z = olddir_z - turnrate;}
+    if (olddir_z - dir_z < -1 * turnrate){
+      dir_z = olddir_z + turnrate;}
     self.velocity = dir * self.data_velocity;
 		self.angles = vectoangles(self.velocity);
 	}

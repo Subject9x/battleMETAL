@@ -12,6 +12,13 @@ Overview:
 */
 void() unit_matok_sniper_h={
   self.faction = FACTION_SURVEST;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_matok;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -28,20 +35,18 @@ void() unit_matok_sniper_h={
       self.spreadDefault = ACCURACY_SKIRMISH;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_matok;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_sniper)
 };
 
 void() unit_matok_sniper_m={
   self.faction = FACTION_MILITAR;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_matok;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -58,20 +63,18 @@ void() unit_matok_sniper_m={
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_matok;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_sniper)
 };
 
 void() unit_matok_sniper_p={
   self.faction = FACTION_PSC;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_matok;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -88,21 +91,19 @@ void() unit_matok_sniper_p={
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_matok;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_sniper)
 };
 
 //-------------------ZAPPER  --------------------------------
 void() unit_matok_militar_zapper={
   self.faction = FACTION_MILITAR;
+  self.flags = FL_TURRET;  //enforced for a mech
+  self.nextVecChoice = UID_MECH_matok;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -119,6 +120,11 @@ void() unit_matok_militar_zapper={
       self.spreadDefault = ACCURACY_SNIPER;
       break;
   }
+  macro_ai_setup(ai_mech_sniper)
+};
+
+void() unit_matok_survest_zapper={
+  self.faction = FACTION_SURVEST;
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
   
@@ -126,13 +132,6 @@ void() unit_matok_militar_zapper={
     remove(self);
     return;
   }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
-};
-
-void() unit_matok_survest_zapper={
-  self.faction = FACTION_SURVEST;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -149,14 +148,5 @@ void() unit_matok_survest_zapper={
       self.spreadDefault = ACCURACY_SNIPER;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech
-  self.nextVecChoice = UID_MECH_matok;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_sniper)
 };

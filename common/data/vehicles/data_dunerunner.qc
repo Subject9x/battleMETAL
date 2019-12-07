@@ -50,7 +50,7 @@ void() data_ini_dunerunner_={
   self.model = "q3mdl/vecs/dunerunner/mdl_dunrun_chas.md3";
   
   //tank turret
-  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', self, torsoCenter);
+  data_ini_unitPiece_( M_TOR_CENTER, "q3mdl/vecs/dunerunner/mdl_dunrun_tur.md3", 1, '0 5.35 1.25', self, torsoCenter, '0 0 0');
   
   //camera location
   data_ini_camera_( '0 8 0', self.torsoCenter );

@@ -17,23 +17,24 @@ Overview:
 void(float mech_id) initialize_data_mech_={
   weaponList = self;  //prepare to build unit's weapon list
   self.hardpoint_cnt = 0;
-  
+
   //guess the mech id's should just be flat
   switch(mech_id){
     case UID_MECH_balaket:
-      build_mech_unit( data_ini_balaket_ );
-      return;
+      data_ini_balaket_();
+      break;
     case UID_MECH_matok:
-      build_mech_unit( data_ini_matok_ );
-      return;
+      data_ini_matok_();
+      break;
     case UID_MECH_monitor:
-      build_mech_unit( data_ini_monitor_ );
-      return;
+      data_ini_monitor_();
+      break;
     default :
-      cons_logAFloat("Error: failed to build mech with id", mech_id);
+      dprint(strcat("Error: failed to build mech with id", ftos(mech_id),"\n"));
       remove(self);
       return;
   }
+  build_mech_unit();
 };
 
 /*
@@ -49,28 +50,29 @@ void(float vec_id) initialize_data_vehicle_={
   
   switch(vec_id){
     case UID_VEHICLE_onnek:
-      build_vehicle_unit( data_ini_onnek_ );
-      return;
+      data_ini_onnek_();
+      break;
     case UID_VEHICLE_foslager:
-      build_vehicle_unit( data_ini_foslager_ );
-      return;
+      data_ini_foslager_();
+      break;
     case UID_VEHICLE_trowel:
-      build_vehicle_unit( data_ini_trowel_ );
-      return;
+      data_ini_trowel_();
+      break;
     case UID_VEHICLE_dunerunner:
-      build_vehicle_unit( data_ini_dunerunner_ );
-      return;
+      data_ini_dunerunner_();
+      break;
     case UID_VEHICLE_sorcerer:
-      build_vehicle_unit( data_ini_sorcerer_ );
-      return;
+      data_ini_sorcerer_();
+      break;
     //case ID_VEC_PSC_VTOL_L:
       //build_vtol_unit( data_PSC_VTOLL_ini );
       //break;
     default :
-      cons_logAFloat("Error: failed to build vehicle with id", vec_id);
+      dprint(strcat("Error: failed to build vehicle with id", ftos(vec_id)),"\n");
       remove(self);
       return;
   }
+  build_vehicle_unit();
 };
 
 
@@ -88,19 +90,20 @@ void(float vec_id) initialize_data_turret_={
   
   switch(vec_id){
     case UID_TURRET_light_turret:
-      build_turret_unit( data_ini_light_turret_ );
-      return;
+      data_ini_light_turret_();
+      break;
     case UID_TURRET_missile_turret:
-      build_turret_unit( data_ini_missile_turret_ );
-      return;
+      data_ini_missile_turret_();
+      break;
     case UID_TURRET_heavy_turret:
-      build_turret_unit( data_ini_heavy_turret_ );
-      return;
+      data_ini_heavy_turret_();
+      break;
     default:
       cons_logAFloat("Error: failed to build turret with id", vec_id);
       remove(self);
       return;
   }
+  build_turret_unit();
 };
 
 

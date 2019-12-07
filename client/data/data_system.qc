@@ -16,16 +16,16 @@ void(float mech_id) initialize_data_mech_={
   switch(mech_id){
     case UID_MECH_balaket:
       data_ini_balaket_();
-      return;
+      break;
     case UID_MECH_matok:
       data_ini_matok_();
-      return;
+      break;
     case UID_MECH_monitor:
       data_ini_monitor_();
-      return;
+      break;
     default :
       cons_logAFloat("Error: failed to build mech with id", mech_id);
-      return;
+      break;
   }
 };
 
@@ -36,19 +36,19 @@ void(float vec_id) initialize_data_vehicle_={
   switch(vec_id){
     case UID_VEHICLE_onnek:
        data_ini_onnek_();
-      return;
+      break;
     case UID_VEHICLE_foslager:
        data_ini_foslager_();
-      return;
+      break;
     case UID_VEHICLE_trowel:
        data_ini_trowel_();
-      return;
+      break;
     case UID_VEHICLE_dunerunner:
        data_ini_dunerunner_();
-      return;
+      break;
     case UID_VEHICLE_sorcerer:
        data_ini_sorcerer_();
-      return;
+      break;
     //case ID_VEC_PSC_VTOL_L:
       //build_vtol_unit( data_PSC_VTOLL_ini );
       //break;
@@ -65,13 +65,13 @@ void(float vec_id) initialize_data_turret_={
   switch(vec_id){
     case UID_TURRET_light_turret:
       data_ini_light_turret_();
-      return;
+      break;
     case UID_TURRET_missile_turret:
       data_ini_missile_turret_();
-      return;
+      break;
     case UID_TURRET_heavy_turret:
       data_ini_heavy_turret_();
-      return;
+      break;
     default:
       cons_logAFloat("Error: failed to build turret with id", vec_id);
       return;

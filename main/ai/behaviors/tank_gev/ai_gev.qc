@@ -11,16 +11,11 @@ Overview: ai unit
   AI SPAWN FUNCTION
 */
 void() ai_gev={  
-
-  macro_ai_setup(ai_gev)
-  
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
-  
-  trigger_event( self, self.trigOnSpawn ); //event interface
- 
+
   self.th_stand = ai_gev_stand1;
   self.th_walk = ai_gev_enter_patrol;
   self.th_pain = ai_gev_panic1;
@@ -54,7 +49,7 @@ void() ai_gev_patrol1={
     return;
   }
 
-  macro_ai_patrol(self.data_speed_forward, ai_gev_stand1, ai_gev_patrol1)
+  macro_ai_patrol(self.data_speed_forward / 2, ai_gev_stand1, ai_gev_patrol1)
 };
 
 void() ai_gev_stand1={

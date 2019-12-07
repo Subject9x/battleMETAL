@@ -24,7 +24,7 @@ entity weaponList;  //used by data functions to populate weapon lists for units
   instantiates the target object and populates it with
   parameter values.
 */
-void( float partId, string pathToModel, float maxHp, vector partOffset, entity parentPart, .entity partSlot ) data_ini_unitPiece_={
+void( float partId, string pathToModel, float maxHp, vector partOffset, entity parentPart, .entity partSlot, vector altOffsett ) data_ini_unitPiece_={
   local entity piece;
   piece = spawn();
   piece.partTypeId = partId;
@@ -33,38 +33,34 @@ void( float partId, string pathToModel, float maxHp, vector partOffset, entity p
   piece.model = pathToModel;
   piece.compOffset = partOffset;
   piece.hitOffset = '0 0 0';
+  piece.compAltOffset = altOffsett;
   self.partSlot = piece;
   piece.owner = self;
 };
 
 //just some syntactic sugar wrappings
-void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset ) data_ini_torso_center_={
-  data_ini_unitPiece_( M_TOR_CENTER, pathToModel, healthMax, offsetOrigin, self, torsoCenter );
-  self.compAltOffset = altOffset;
+void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_center_={
+  data_ini_unitPiece_( M_TOR_CENTER, pathToModel, healthMax, offsetOrigin, self, torsoCenter, altOffset);
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset  ) data_ini_torso_right_={
-  data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoRight );
-  self.compAltOffset = altOffset;
+void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_right_={
+  data_ini_unitPiece_( M_TOR_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoRight, altOffset);
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset  ) data_ini_torso_left_={
-  data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoLeft );
-  self.compAltOffset = altOffset;
+void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_torso_left_={
+  data_ini_unitPiece_( M_TOR_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoCenter, torsoLeft, altOffset);
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin ) data_ini_legs_={
+void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
   data_ini_unitPiece_( M_LEGS, pathToModel, healthMax, offsetOrigin, self, legs );
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset  ) data_ini_arm_left_={
-  data_ini_unitPiece_( M_ARM_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoLeft, armLeft );
-  self.compAltOffset = altOffset;
+void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_left_={
+  data_ini_unitPiece_( M_ARM_LEFT, pathToModel, healthMax, offsetOrigin, self.torsoLeft, armLeft, altOffset);
 };
 
-void( string pathToModel, float healthMax, vector offsetOrigin, vector altOffset  ) data_ini_arm_right_={
-  data_ini_unitPiece_( M_ARM_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoRight, armRight );
-  self.compAltOffset = altOffset;
+void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_right_={
+  data_ini_unitPiece_( M_ARM_RIGHT, pathToModel, healthMax, offsetOrigin, self.torsoRight, armRight, altOffset);
 };
 
 void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjustAngleVec, float newHardPointSizeVal, float newHardPointTypeVal ) data_ini_unitHardpoint_={
@@ -90,7 +86,7 @@ void( float weaponBit, float parentPartID, vector pointOffsetVec , vector adjust
 };
 
 void( vector thisPartOffset, entity partParent ) data_ini_camera_={
-  data_ini_unitPiece_( M_TOR_CENTER,  "q3mdl/testball.md3",  1, thisPartOffset, partParent, cockpit );
+  data_ini_unitPiece_( M_TOR_CENTER,  "q3mdl/testball.md3",  1, thisPartOffset, partParent, cockpit, '0 0 0');
 };
 
 /*

@@ -280,7 +280,7 @@ void(entity targ, entity src, vector ofs) util_setOffsetOrigin={
 
 
 void(string mdl_name, float skinNum, float ef_flags) util_setModel={
-  string path;
+  local string path;
   self.effects = self.effects | ef_flags;
   self.skin = skinNum;
   path = precache_model2( mdl_name );
@@ -373,6 +373,67 @@ float(entity t, float tolerance) util_cornerSlopeCheck={
   }
   
   return FALSE;
+};
+
+
+void() dropToFloorCorners={
+  local vector c1,c2,c3,c4, check;
+  local vector down;
+  local float distanceCheck, comparator, hold;
+  
+  makevectors(self.angles);
+  c1 = self.origin + (v_up * self.mins_z) + (v_forward * self.maxs_x) + (v_right * self.maxs_y);
+  c2 = self.origin + (v_up * self.mins_z) + (v_forward * self.mins_x) + (v_right * self.maxs_y);
+  c3 = self.origin + (v_up * self.mins_z) + (v_forward * self.mins_x) + (v_right * self.mins_y);
+  c4 = self.origin + (v_up * self.mins_z) + (v_forward * self.maxs_x) + (v_right * self.mins_y);
+  distanceCheck = 0;
+  
+  /*
+  corner check
+    if distance under the corner is greater than 5 units, mark the corner
+    
+  */
+  down = v_up * -4000;
+  traceline(c1, c1 + down, FALSE, self);
+  if( vlen(trace_endpos - c1) > 0 ){
+    distanceCheck = distanceCheck + 1;
+    comparator = vlen(trace_endpos - c1);
+  }
+  
+  traceline(c2, c2 + down, FALSE, self);
+  if( vlen(trace_endpos - c2) > 0 ){
+    distanceCheck = distanceCheck + 1;
+    hold = vlen(trace_endpos - c2);
+    if( hold < comparator ){
+      comparator = hold;
+    }
+  }
+  
+  traceline(c3, c3 + down, FALSE, self);
+  if( vlen(trace_endpos - c3) > 0 ){
+    distanceCheck = distanceCheck + 1;
+    hold = vlen(trace_endpos - c3);
+    if( hold < comparator ){
+      comparator = hold;
+    }
+  }
+  
+  traceline(c4, c4 + down, FALSE,  self);
+  if( vlen(trace_endpos - c4) > 0 ){
+    distanceCheck = distanceCheck + 1;
+    hold = vlen(trace_endpos - c4);
+    if( hold < comparator ){
+      comparator = hold;
+    }
+  }
+  
+  if( distanceCheck > 0 ){
+    traceline(self.origin, self.origin + (v_up * (comparator * -1)), FALSE, self);
+    check = trace_endpos;
+    check = check + (v_up * (self.mins_z *-1) );
+    setorigin( self, check );
+    droptofloor();
+  }
 };
 
 void(entity t) util_generateBuildingFoundation={

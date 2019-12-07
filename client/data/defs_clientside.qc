@@ -45,12 +45,6 @@ float MOUSE_drag_timer;
 float MOUSE_drag_rate = 0.005;
 float MOUSE_drag_max = 1;
 
-//Difficulty
-float SKILL_NOV = 0;
-float SKILL_REG = 1;
-float SKILL_VET = 2;
-float SKILL_ELT = 3;
-
 //WEAPON FIRE STATUS
 float READY = 0;
 float RELOADING = 1;

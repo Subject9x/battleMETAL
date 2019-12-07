@@ -16,6 +16,18 @@ void(string msg, string s1) cons_logAString;
 void(string msg, float val, string split, float val2) cons_log2Float;
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
+
+//super DEBUG - remove when no longer needed
+void(string reason) log_me={
+  local float logThis;
+  logThis = fopen("log.txt", FILE_APPEND);
+  fputs(logThis, "\n");
+  fputs(logThis, strcat(self.classname,"\n"));
+  fputs(logThis, strcat(ftos(self.spawnflags),"\n"));
+  fputs(logThis, strcat(vtos(self.origin),"\n"));
+  fputs(logThis, strcat(reason,"\n"));
+  fclose(logThis);
+};
 //=========================================================================
 
 vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea;
@@ -50,3 +62,10 @@ vector( vector entOrg, vector entAng, vector entMins, vector entMaxs ) util_poin
 void() util_MapDeveloperMarker;
 
 void() BecomeExplosion;
+
+void() dropToFloorCorners;
+
+#define macro_set_model(mdlName,skinNum,EFlags) local string path;self.effects = self.effects | EFlags;self.skin = skinNum;path = precache_model2( mdlName );setmodel(self, path);
+#define macro_set_collider(dmgMode,solidType,moveType) self.takedamage=dmgMode;self.solid=solidType;self.movetype=moveType;
+#define macro_set_offset(entitySrc,offSet) local vector next;local vector macOffset=offSet;makevectors(entitySrc.angles);next=entitySrc.origin+(v_up*macOffset_y)+(v_right*macOffset_x)+(v_forward*macOffset_z);setorigin(self, next);
+

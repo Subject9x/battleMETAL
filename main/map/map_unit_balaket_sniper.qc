@@ -12,6 +12,13 @@ Overview:
 */
 void() unit_balaket_sniper_h={
   self.faction = FACTION_SURVEST;
+  self.flags = FL_TURRET;  //enforced for a mech   
+  self.nextVecChoice = UID_MECH_balaket;
+  
+  if( !ai_can_spawn() ){
+    remove(self);
+    return;
+  }
   
   ai_promote();
   switch( self.ai_rank ){
@@ -28,6 +35,11 @@ void() unit_balaket_sniper_h={
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
+  macro_ai_setup(ai_mech_sniper)
+};
+
+void() unit_balaket_sniper_m={
+  self.faction = FACTION_MILITAR;
   self.flags = FL_TURRET;  //enforced for a mech   
   self.nextVecChoice = UID_MECH_balaket;
   
@@ -35,13 +47,6 @@ void() unit_balaket_sniper_h={
     remove(self);
     return;
   }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
-};
-
-void() unit_balaket_sniper_m={
-  self.faction = FACTION_MILITAR;
   
   ai_promote();
   switch( self.ai_rank ){
@@ -58,14 +63,5 @@ void() unit_balaket_sniper_m={
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
   }
-  self.flags = FL_TURRET;  //enforced for a mech   
-  self.nextVecChoice = UID_MECH_balaket;
-  
-  if( !ai_can_spawn() ){
-    remove(self);
-    return;
-  }
-
-  self.think = ai_mech_sniper;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_mech_sniper)
 };

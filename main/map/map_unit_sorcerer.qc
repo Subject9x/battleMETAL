@@ -35,9 +35,7 @@ void() unit_sorcerer_h={
       ai_ini_weapons( UID_ITEM_missile_laserguide, UID_ITEM_missile_laserguide, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 void() unit_sorcerer_m={
@@ -65,14 +63,11 @@ void() unit_sorcerer_m={
       ai_ini_weapons( UID_ITEM_missile_swarm, UID_ITEM_missile_swarm, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 //-------------------LOBBER  --------------------------------
 void() unit_sorcerer_survest_lobber={
-
   self.nextVecChoice = UID_VEHICLE_sorcerer;
   self.faction = FACTION_SURVEST;
    
@@ -96,9 +91,7 @@ void() unit_sorcerer_survest_lobber={
       ai_ini_weapons( UID_ITEM_missile_activeradar, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };
 
 void() unit_sorcerer_militar_lobber={
@@ -126,7 +119,5 @@ void() unit_sorcerer_militar_lobber={
       ai_ini_weapons( UID_ITEM_missile_activeradar, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  
-  self.think = ai_vec_dest;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_vec_dest)
 };

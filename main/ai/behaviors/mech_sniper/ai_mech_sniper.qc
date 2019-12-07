@@ -14,15 +14,10 @@ Overview: ai unit
   AI SPAWN FUNCTION
 */
 void() ai_mech_sniper={
-
-  macro_ai_setup(ai_mech_sniper)
-  
   ai_unit_ini_var();
   initialize_data_mech_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
-    
-  trigger_event( self, self.trigOnSpawn); //event interface
   
   self.th_stand = ai_mech_sniper_enter_stand;
   self.th_walk = ai_mech_sniper_patrol1;

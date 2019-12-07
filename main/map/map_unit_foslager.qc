@@ -37,8 +37,7 @@ void() unit_foslager_h={
       ai_ini_weapons( UID_ITEM_rocket_launcher, UID_ITEM_light_laser, UID_ITEM_light_autocannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 void() unit_foslager_m={
@@ -68,8 +67,7 @@ void() unit_foslager_m={
       ai_ini_weapons( UID_ITEM_electro_repeater, UID_ITEM_light_autocannon, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 //-------------------ZAPPER  --------------------------------
@@ -100,8 +98,7 @@ void() unit_foslager_survest_zapper={
       ai_ini_weapons( UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 void() unit_foslager_militar_zapper={
@@ -131,8 +128,7 @@ void() unit_foslager_militar_zapper={
       ai_ini_weapons( UID_ITEM_quantum_rifle, UID_ITEM_light_laser, UID_ITEM_light_laser, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 //-------------------GUNNER  --------------------------------
@@ -163,8 +159,7 @@ void() unit_foslager_survest_gunner={
       ai_ini_weapons( UID_ITEM_flak, UID_ITEM_light_autocannon, UID_ITEM_light_autocannon, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
 
 void() unit_foslager_militar_gunner={
@@ -194,6 +189,5 @@ void() unit_foslager_militar_gunner={
       ai_ini_weapons( UID_ITEM_rotary_plasma, UID_ITEM_light_autocannon, UID_ITEM_target_module, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       break;
   }
-  self.think = ai_tank_skirmish;
-  self.nextthink = time + 0.05;
+  macro_ai_setup(ai_tank_skirmish)
 };
