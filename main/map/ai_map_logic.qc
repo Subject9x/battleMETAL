@@ -134,3 +134,79 @@ void() ai_change_rank={
   }
   self.isActive = TRUE;
 };
+
+
+entity lastDestination;
+vector lastDestinationUp;
+vector lastDestinationRight;
+vector lastDestinationForward;
+
+entity lastTeleTarg;
+
+void() tele_source_touch={
+  local vector newOrg;
+  local entity shortTemp, shortOther;
+  if( (other.flags & FL_UNIT) && other.faction == self.faction ){
+    if( lastDestination.targetname != self.target ){
+      lastDestination = find(world, targetname, self.target);
+      makevectors(lastDestination.angles);
+      lastDestinationUp = v_up;
+      lastDestinationRight = v_right;
+      lastDestinationForward = v_forward;
+    }
+    newOrg = lastDestination.origin;
+    newOrg = newOrg + (lastDestinationForward * (other.maxs_x * 2));
+    setorigin(other, newOrg);
+    if( lastDestination.target ){
+      if( lastTeleTarg.targetname != lastDestination.target ){
+        lastTeleTarg = find(world, targetname, lastDestination.target);
+      }
+      if( (lastTeleTarg.flags & FL_NODE) ){
+        shortTemp = self;
+        shortOther = other;
+        self = shortOther;
+          self.target = strzone(lastTeleTarg.targetname);
+          self.movetarget = lastTeleTarg;
+          self.goalentity = self.movetarget;
+          macro_ai_frame(self.th_walk)
+        self = shortTemp;
+      }
+    }
+  }
+};
+
+/*QUAKED ai_teleportarium_source (0.33 0.33 0.33) (-24 -24 -12) (24 24 12)
++ teleports bots on-touch to the destination
++ this method preserves the bot offset from origin of THIS.
++ bot must have matching faction id.
+-------- KEYS -------- 
+.faction = <float> faction id.
+
+*/
+void() ai_teleportarium_source={
+  if( !self.target ){
+    dprint("ERROR: ai_teleportarium_source, missing target destination, removing!\n");
+    remove(self);
+    return;
+  }
+  self.touch = tele_source_touch;
+  self.solid = SOLID_TRIGGER;
+  setsize(self, '-24 -24 -12', '24 24 12');
+  setorigin(self, self.origin);
+};
+
+/*QUAKED ai_teleportarium_dest (0.33 0.33 0.33) (-24 -24 -12) (24 24 12)
+  destination of teleportarium
+-------- KEYS -------- 
+.angles = <vector> facing of destination.
+.target = <string> use this as a .target for post-teleport.
+*/
+void() ai_teleportarium_dest={
+  if( !self.targetname ){
+    dprint("ERROR: ai_teleportarium_dest, missing targetname, removing!\n");
+    remove(self);
+    return;
+  }
+  setsize(self, '-24 -24 -12', '24 24 12');
+  setorigin(self, self.origin);
+};

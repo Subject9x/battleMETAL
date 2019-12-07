@@ -595,7 +595,7 @@ Keys:
 
 
 
-/*QUAKED func_damage_zone (0.8 0.45 0.25) ? START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY -
+/*QUAKED func_damage_zone (0.8 0.45 0.25) ? START_OFF LIFETIME REACTIVATE REMOVE_FIRSTUSE REMOVE_ONTOUCH ACTIVE_ONTOUCH - - - - - - - - - - - - - - - - IS_MAPKEY
 A Damage Zone is an area that hurts all units within the zone.
   
 -------- KEYS -------- 
@@ -1027,6 +1027,22 @@ START_OFF 1: start inactive
 REMOVE_ONUSE 2: removed after its first use.
 DELAY 4: wait after fire before execution
 */
+
+/*QUAKED ai_teleportarium_source (0.33 0.33 0.33) (-24 -24 -12) (24 24 12)
++ teleports bots on-touch to the destination
++ this method preserves the bot offset from origin of THIS.
++ bot must have matching faction id.
+-------- KEYS -------- 
+.faction = <float> faction id.
+.group = <string> use this as a .target for post-teleport.
+*/
+/*QUAKED ai_teleportarium_dest (0.33 0.33 0.33) (-24 -24 -12) (24 24 12)
+  destination of teleportarium
+-------- KEYS -------- 
+.angles = <vector> facing of destination.
+*/
+
+
 //for galaxy's sake, make sure all parens are closed without spaces!
 
 //===========================================================
@@ -2365,7 +2381,7 @@ RANDOM_ANGLE 2: random yaw rotation
 //  SIZE: SMALL
 //  --------------------------------
 //
-/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED 
+/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/dunerunner/dunerunner_h.md3"); }
   Skill 0 | 1
     ATC | ATC
@@ -2680,7 +2696,7 @@ UNARMED 131072: skip weapons-build step for unit.
 //  SIZE: HEAVY
 //  --------------------------------
 //
-/*QUAKED unit_trowel_m (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_m (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
   Skill 0 | 1
     ESR | ESR
@@ -2721,7 +2737,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_trowel_h (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_h (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
   Skill 0 | 1
     MIS | ION
@@ -2764,7 +2780,7 @@ UNARMED 131072: skip weapons-build step for unit.
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_trowel_miliar_zapper (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_miliar_zapper (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2797,7 +2813,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_trowel_survest_zapper (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_survest_zapper (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2832,7 +2848,7 @@ UNARMED 131072: skip weapons-build step for unit.
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
 //-------------------GUNNER  --------------------------------
 -------- KEYS -------- 
@@ -2865,7 +2881,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-30 -30 -7.75) (30 30 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
 //-------------------GUNNER  --------------------------------
 -------- KEYS -------- 
@@ -2905,7 +2921,7 @@ UNARMED 131072: skip weapons-build step for unit.
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_onnek_h (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_h (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
   Skill 0 | 1
     ION
@@ -2947,7 +2963,7 @@ MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
 
-/*QUAKED unit_onnek_m (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_m (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
   Skill 0 | 1
     PAC
@@ -2990,7 +3006,7 @@ UNARMED 131072: skip weapons-build step for unit.
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -3023,7 +3039,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -3058,7 +3074,7 @@ UNARMED 131072: skip weapons-build step for unit.
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -3091,7 +3107,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -3126,7 +3142,7 @@ UNARMED 131072: skip weapons-build step for unit.
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-25 -25 -10.25) (25 25 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -3159,7 +3175,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-25 -25 -10.25) (25 25 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -3199,7 +3215,7 @@ UNARMED 131072: skip weapons-build step for unit.
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_sorcerer_h (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_h (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
   Skill 0 | 1
     MIS | MIS
@@ -3240,7 +3256,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_sorcerer_m (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_m (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
   Skill 0 | 1
     ARH | ARH
@@ -3283,7 +3299,7 @@ UNARMED 131072: skip weapons-build step for unit.
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -3316,7 +3332,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-20 -20 -11) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
