@@ -320,8 +320,15 @@ float	IT_INVULNERABILITY		= 1048576;
 float	IT_SUIT					= 2097152;
 float	IT_QUAD					= 4194304;
 
-// point content values
+//WARNING: these are tightly couple to C-Code!
+//sv_main.c -> Line 3714 : static qboolean SVVM_load_edict(prvm_prog_t *prog, prvm_edict_t *ent)
+//which AUTOMATICALLY checks these spawnflags 
+float	SPAWNFLAG_NOT_EASY = 256;
+float	SPAWNFLAG_NOT_MEDIUM = 512;
+float	SPAWNFLAG_NOT_HARD = 1024;
+float	SPAWNFLAG_NOT_DEATHMATCH = 2048;
 
+// point content values
 float	CONTENT_EMPTY			= -1;
 float	CONTENT_SOLID			= -2;
 float	CONTENT_WATER			= -3;
@@ -381,7 +388,6 @@ float	ATTN_IDLE		= 2;
 float	ATTN_STATIC		= 3;
 
 // update types
-
 float	UPDATE_GENERAL	= 0;
 float	UPDATE_STATIC	= 1;
 float	UPDATE_BINARY	= 2;

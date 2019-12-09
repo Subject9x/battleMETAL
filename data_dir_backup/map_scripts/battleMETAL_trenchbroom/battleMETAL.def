@@ -978,7 +978,7 @@ DELAY 4: wait after fire before execution
 //===========================================================
 //    battleMETAL Buildings Human
 //===========================================================
-/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_radar (0 0 1) (-20 -20 0) (20 20 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/radar/radar.md3"); }
 Listening Post, has the ability to detect the player and alert friendly bots.
 -------- KEYS -------- 
@@ -994,14 +994,22 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NO_DROP 8192: don't drop bot to the floor onspawn
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - LIGHTS_OFF IS_MAPKEY -
+/*QUAKED building_guard_tower (0 0 1) (-24 -24 0) (24 24 48) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY LIGHTS_OFF
 { model("models/buildings/towersmall/guardtower.md3"); }
 Listening Post, has the ability to detect the player and alert friendly bots.
 -------- KEYS -------- 
@@ -1018,15 +1026,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NO_DROP 8192: don't drop bot to the floor onspawn
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
-LIGHTS_OFF 2097152: turns off lights from this building.
+LIGHTS_OFF 8388736: don't spawn lights with guard tower.
 */
 
 
 
 
-/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_shield (0.2 0.8 0.2) (-56 -56 0) (56 56 17.5) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/shield/shield.md3"); }
 Shield Generator Building.
 Gives ALL FRIENDLY units a shield recharge boost IF they're in the radius.
@@ -1041,12 +1057,20 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NO_DROP 8192: don't drop bot to the floor onspawn
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_power (0.074 0.66 0.93) (-75 -75 0) (75 75 26) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/reactor/reactor.md3"); }
 Generates energy to power ALL FRIENDLY buildings
 Radius: 800units
@@ -1060,14 +1084,22 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NO_DROP 8192: don't drop bot to the floor onspawn
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_hangar (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/hangar/hangar.md3"); }
 Mostly just a decorating building, BUT
 you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
@@ -1081,14 +1113,22 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NO_DROP 8192: don't drop bot to the floor onspawn
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_hangar_vehicle (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_hangar_vehicle (0 0 1) (-72 -72 0) (72 72 80) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/hangar_vec/hangar_vehicle.md3"); }
 Mostly just a decorating building, BUT
 you can target an ai_spawner and when the hangar is attacked, it'll trigger the spawner
@@ -1102,14 +1142,22 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NO_DROP 8192: don't drop bot to the floor onspawn
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_repair (0 0 1) (-53 -53 0) (53 53 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/repair/repair.md3"); }
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
@@ -1121,14 +1169,22 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NO_DROP 8192: don't drop bot to the floor onspawn
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - - NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP - - - - - - - - IS_MAPKEY -
+/*QUAKED building_human_fuel (0.0 0.0 1.0) (-40 -40 0) (40 40 40) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - - DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE - - NO_DROP - - - IS_MAPKEY
 { model("models/buildings/fueltank/fueltank.md3"); }
 -------- KEYS -------- 
 targetname : string, used for trigger calls from other ents
@@ -1140,14 +1196,22 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-NO_DROP 8192: don't drop bot to the floor onspawn
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+NO_DROP 262144: don't drop bot to the floor onspawn
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_s (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, Survest Faction
 -------- KEYS -------- 
@@ -1160,24 +1224,24 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
-/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_m (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, MILITAR Faction
 NOTE: auto promotion x1 on-spawn!
@@ -1191,26 +1255,26 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio 
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
 
-/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_p (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Light Turret, PSC Faction
 NOTE: auto promotion x2 on-spawn!
@@ -1224,25 +1288,25 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_survest_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1255,23 +1319,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_light_militar_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_militar_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1284,23 +1348,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_light_psc_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_psc_zapper (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1313,25 +1377,25 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED building_turret_light_survest_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_survest_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1344,23 +1408,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_light_militar_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_militar_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1373,23 +1437,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_light_psc_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_light_psc_gunner (0.0 0.0 1.0) (-20 -20 -6) (20 20 13) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1402,25 +1466,25 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_turret_missile_m (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_missile_m (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Missile Turret, MILITAR Faction
 NOTE: auto promotion x1 on-spawn!
@@ -1434,26 +1498,26 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
 
-/*QUAKED building_turret_missile_s (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_missile_s (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Missile Turret, Survest Faction
 -------- KEYS -------- 
@@ -1466,25 +1530,25 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_turret_missile_p (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_missile_p (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Missile Turret, PSC Faction
 NOTE: auto promotion x2 on-spawn!
@@ -1498,25 +1562,25 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED building_turret_missile_survest_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_missile_survest_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -1529,23 +1593,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_missile_militar_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_missile_militar_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -1558,23 +1622,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_missile_psc_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_missile_psc_lobber (0.0 0.0 1.0) (-20 -20 -13) (20 20 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -1587,25 +1651,25 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 
 
-/*QUAKED building_turret_heavy_m (0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_m (0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Heavy Turret, MILITAR Faction
 NOTE: auto promotion x1 on-spawn!
@@ -1619,23 +1683,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_heavy_s(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_s(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Heavy Turret, Survest Faction
 -------- KEYS -------- 
@@ -1648,23 +1712,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_heavy_p(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_p(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 Heavy Turret, Survest Faction
 -------- KEYS -------- 
@@ -1677,24 +1741,24 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED building_turret_heavy_survest_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_survest_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1707,23 +1771,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_heavy_militar_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_militar_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1736,23 +1800,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_heavy_psc_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_psc_zapper(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -1765,24 +1829,24 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED building_turret_heavy_survest_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_survest_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1795,23 +1859,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_heavy_militar_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_militar_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1824,23 +1888,23 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
-/*QUAKED building_turret_heavy_psc_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START - - PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE UNARMED
+/*QUAKED building_turret_heavy_psc_gunner(0.0 0.0 1.0) (-28 -28 -16) (28 28 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM - - - DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP - - - IS_MAPKEY
 { model("models/buildings/turret/turret.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -1853,19 +1917,19 @@ NO_CAMPAIGN 1: remove from campaign mode
 NO_COOP 2: remove from co-op mode
 NO_DM 4: remove from DeathMatch
 NO_TDM 8: remove from Team DeathMatch
-COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
-RANDOM_START 32: start on random node if AI has patrol path
-HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
+DEBUG_MODE 128: don't react to world.
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
 
@@ -2311,7 +2375,7 @@ RANDOM_ANGLE 2: random yaw rotation
 //  SIZE: SMALL
 //  --------------------------------
 //
-/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_dunerunner_h (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/dunerunner/dunerunner_h.md3"); }
   Skill 0 | 1
     ATC | ATC
@@ -2340,20 +2404,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
-/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_dunerunner_m (1 0 0.75) (-20 -20 -10) (20 20 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/dunerunner/dunerunner_m.md3"); }
   Skill 0 | 1
     LAS | ATC
@@ -2382,17 +2450,21 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //
@@ -2402,7 +2474,7 @@ UNARMED 131072: skip weapons-build step for unit.
 //  --------------------------------
 //
 
-/*QUAKED unit_foslager_h (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_h (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
   Skill 0 | 1
     MIS | LATC | LAS
@@ -2431,20 +2503,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
-/*QUAKED unit_foslager_m (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_m (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
   Skill 0 | 1
     ESR | LATC | LAS
@@ -2473,20 +2549,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2507,19 +2587,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2540,20 +2624,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -2574,19 +2662,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -2607,17 +2699,21 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //
@@ -2626,7 +2722,7 @@ UNARMED 131072: skip weapons-build step for unit.
 //  SIZE: HEAVY
 //  --------------------------------
 //
-/*QUAKED unit_trowel_m (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_m (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
   Skill 0 | 1
     ESR | ESR
@@ -2655,19 +2751,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_trowel_h (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_h (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
   Skill 0 | 1
     MIS | ION
@@ -2696,21 +2796,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_trowel_miliar_zapper (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_miliar_zapper (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2731,19 +2835,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_trowel_survest_zapper (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_survest_zapper (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2764,21 +2872,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_militar_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_m.md3"); }
 //-------------------GUNNER  --------------------------------
 -------- KEYS -------- 
@@ -2799,19 +2911,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_trowel_survest_gunner (1 0 0.75) (-32 -32 -7.75) (32 32 20) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/trowel/trowel_h.md3"); }
 //-------------------GUNNER  --------------------------------
 -------- KEYS -------- 
@@ -2832,17 +2948,21 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //
@@ -2851,7 +2971,7 @@ UNARMED 131072: skip weapons-build step for unit.
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_onnek_h (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_h (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
   Skill 0 | 1
     ION
@@ -2880,20 +3000,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
-/*QUAKED unit_onnek_m (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_m (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
   Skill 0 | 1
     PAC
@@ -2922,21 +3046,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2957,19 +3085,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_zapper (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2990,21 +3122,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -3025,19 +3161,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_gunner (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -3058,21 +3198,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_survest_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_h.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -3093,19 +3237,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_onnek_militar_lobber (1 0 0.75) (-30 -30 -10.25) (30 30 14)  NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/onnek/onnek_m.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -3126,17 +3274,21 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //
@@ -3145,7 +3297,7 @@ UNARMED 131072: skip weapons-build step for unit.
 //  SIZE: MEDIUM
 //  --------------------------------
 //
-/*QUAKED unit_sorcerer_h (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_h (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
   Skill 0 | 1
     MIS | MIS
@@ -3174,19 +3326,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_sorcerer_m (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_m (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
   Skill 0 | 1
     ARH | ARH
@@ -3215,21 +3371,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_survest_lobber (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_h.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -3250,19 +3410,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_sorcerer_militar_lobber (1 0 0.75) (-22 -22 -11) (22 22 14) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/vecs/sorcerer/sorcerer_m.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -3283,23 +3447,27 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //
 //  METAL : BALAKET
 //
-/*QUAKED unit_balaket_sniper_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_balaket_sniper_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_h.md3"); }
   Skill 0 | 1
     ATC | ATC | LAS
@@ -3328,19 +3496,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_balaket_sniper_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_balaket_sniper_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_m.md3"); }
   Skill 0 | 1
     ATC | ATC | QRF
@@ -3369,19 +3541,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_balaket_brawl_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_balaket_brawl_h (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_h.md3"); }
   Skill 0 | 1
     FLAK | FLAK | ION
@@ -3410,19 +3586,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_balaket_brawl_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_balaket_brawl_m (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_m.md3"); }
   Skill 0 | 1
     LAS | LAS | RPC
@@ -3451,20 +3631,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
-/*QUAKED unit_balaket_brawl_p (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_balaket_brawl_p (1 0 1) (-14 -14 -35) (14 14 16) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/balaket/balaket_p.md3"); }
   Skill 0 | 1
     LAS | LAS | RPC
@@ -3493,23 +3677,27 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //
 //  METAL : MATOK
 //
-/*QUAKED unit_matok_sniper_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_sniper_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
   Skill 0 | 1
     ATC | ATC | FLAK | FLAK | ION
@@ -3538,19 +3726,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_matok_sniper_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_sniper_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
   Skill 0 | 1
     LAS | LAS | QRF | FLAK | ION 
@@ -3579,19 +3771,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_matok_sniper_p (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_sniper_p (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_p.md3"); }
   Skill 0 | 1
     LAS | LAS | QRF | FLAK | ION 
@@ -3620,20 +3816,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_matok_militar_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_militar_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -3654,19 +3854,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_matok_survest_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_zapper (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -3687,20 +3891,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
-/*QUAKED unit_matok_brawl_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_brawl_h (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
   Skill 0 | 1
     ATC | FLAK | LAS | MIS | ION
@@ -3729,19 +3937,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_matok_brawl_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_brawl_m (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
   Skill 0 | 1
     ATC | ATC | ESR | ION | MIS
@@ -3770,21 +3982,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_matok_militar_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_militar_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_m.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -3805,19 +4021,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_matok_survest_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_gunner (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -3838,20 +4058,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_matok_survest_lobber (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_matok_survest_lobber (1 0 1) (-17 -17 -40) (17 17 22) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/matok/matok_h.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -3872,23 +4096,27 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //
 //  METAL : MONITOR
 //
-/*QUAKED unit_monitor_brawl_h (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_brawl_h (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
   Skill 0 | 1
     ATC | FLAK | ATC | FLAK | LAS | LAS | MIS | ARH | MIS
@@ -3917,19 +4145,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_monitor_brawl_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_brawl_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
   Skill 0 | 1
     FLAK | FLAK | FLAK | FLAK | RPC | EMP | MIS | MARH | MARH
@@ -3958,19 +4190,23 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
-/*QUAKED unit_monitor_brawl_p (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_brawl_p (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_p.md3"); }
   Skill 0 | 1
     FLAK | FLAK | FLAK | FLAK | RPC | EMP | MIS | MARH | MARH
@@ -3999,21 +4235,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_monitor_militar_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -4034,21 +4274,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_monitor_militar_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -4069,20 +4313,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_survest_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -4103,20 +4351,24 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
-/*QUAKED unit_monitor_sniper_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_sniper_m (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
   Skill 0 | 1
     LAS | ATC | LAS | ATC | PAC | QRF | MARH | ENBAT | ATGM
@@ -4145,21 +4397,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_monitor_survest_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_survest_zapper (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -4180,21 +4436,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_monitor_survest_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_survest_gunner (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_h.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -4215,21 +4475,25 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
 
 //-------------------LOBBER  --------------------------------
-/*QUAKED unit_monitor_militar_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_monitor_militar_lobber (1 0 1) (-22 -22 -44) (22 22 28) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR DEBUG_MODE DO_NOT_USE DO_NOT_USE DO_NOT_USE DO_NOT_USE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE PROMOTE DEMOTE NO_DROP TRIGGER_ME MUTE_ME UNARMED
 { model("models/mechs/monitor/monitor_m.md3"); }
 LOBBER - mostly missile firepower
 -------- KEYS -------- 
@@ -4250,15 +4514,19 @@ NO_TDM 8: remove from Team DeathMatch
 COLD_START 16: countdown before activating, on-spawn, bot will ignore friendly help calls
 RANDOM_START 32: start on random node if AI has patrol path
 HAS_RADAR 64: radar is expensive to use, use sparingly
-PROMOTE 128: AI rank is set by skill, this spawnflag bumps it up by 1
-DEMOTE 256: AI rank is set by skill, this spawnflag debuffs it up by 1
-NO_NOVICE 512: remove from Novice Difficulty
-NO_REGULAR 1024: remove from Regular Difficulty
-NO_VETERAN 2048: remove from Veteran Difficulty
-NO_ELITE 4096: remove from Elit Difficulty
-NO_DROP 8192: don't drop bot to the floor onspawn
-TRIGGER_ME 16384: ai only spawns when triggered
-DEBUG_MODE 32768: spawns but will not react to anything
-MUTE_ME 65536: ai doesn't use voice/radio
-UNARMED 131072: skip weapons-build step for unit.
+DEBUG_MODE 128: AI rank is set by skill, this spawnflag bumps it up by 1
+DO_NOT_USE 256: engine-linked value SPAWNFLAG_NOT_EASY
+DO_NOT_USE 512: engine-linked value SPAWNFLAG_NOT_MEDIUM
+DO_NOT_USE 1024: engine-linked value SPAWNFLAG_NOT_HARD
+DO_NOT_USE 2048: engine-linked value SPAWNFLAG_NOT_DEATHMATCH
+NO_NOVICE 4096: remove from Novice Difficulty
+NO_REGULAR 8192: remove from Regular Difficulty
+NO_VETERAN 16384: remove from Veteran Difficulty
+NO_ELITE 32768: remove from Elit Difficulty
+PROMOTE 65536: AI rank is set by skill, this spawnflag bumps it up by 1
+DEMOTE 131072: AI rank is set by skill, this spawnflag debuffs it up by 1
+NO_DROP 262144: don't drop bot to the floor onspawn
+TRIGGER_ME 524288: ai only spawns when triggered
+MUTE_ME 1048576: ai ignores sending voice effects / radio sounds.
+UNARMED 2097152: ai spawns with no weapons, skip build_weapons() factory step;
 */
