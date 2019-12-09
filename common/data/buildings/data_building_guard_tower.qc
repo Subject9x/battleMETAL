@@ -53,6 +53,15 @@ LIGHTS_OFF 2097152: turns off lights from this building.
 void() building_guard_tower={
   self.data_idx = UI_BUILDING_guard_tower;
   self.data_type = DATA_BLD;
+  self.nextVecChoice = self.data_idx;
+  self.spawnflags = self.spawnflags;
+  
+  if( ai_can_spawn() == FALSE ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
+    return;
+  }
+
   self.vec_name = "Guard Tower";
   self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 1;
@@ -71,7 +80,8 @@ void() building_guard_tower={
   self.think = guard_tower_think;
   self.nextthink = time + 0.1;
   
-  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+  if( !(self.spawnflags & NO_DROP) ){
+    self.spawnflags = self.spawnflags - NO_DROP;
     if( util_cornerSlopeCheck(self, 0.95) ){
       util_generateBuildingFoundation(self);
     }

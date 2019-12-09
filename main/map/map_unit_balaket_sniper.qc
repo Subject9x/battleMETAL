@@ -15,7 +15,7 @@ void() unit_balaket_sniper_h={
   self.flags = FL_TURRET;  //enforced for a mech   
   self.nextVecChoice = UID_MECH_balaket;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -43,7 +43,7 @@ void() unit_balaket_sniper_m={
   self.flags = FL_TURRET;  //enforced for a mech   
   self.nextVecChoice = UID_MECH_balaket;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

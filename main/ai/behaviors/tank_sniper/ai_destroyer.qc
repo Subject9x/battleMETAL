@@ -13,7 +13,7 @@ Overview: ai unit
 void() ai_vec_dest={
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
-  self.spawnflags = self.spawnflags | AI_SPAWNFLAG_HASRADAR;
+  self.spawnflags = self.spawnflags | HAS_RADAR;
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   

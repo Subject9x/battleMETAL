@@ -10,13 +10,18 @@ void() player_makeObserver={
   self.data_type = DATA_POBS;
   self.flags = self.flags | FL_FLY;
   util_setHealthArmor(1,1,1,0);
-  util_setCollider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY);
+  macro_set_collider(DAMAGE_NO, SOLID_SLIDEBOX, MOVETYPE_FLY)
   self.weaponmodel = "";
   
   setmodel(self, "q3mdl/testball.md3");
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
-  client_update_moveSpeed(200, 200, 200, "3","0");
+  if( cvar("developer") ){
+    client_update_moveSpeed(800, 800, 500, "3","0");
+  }
+  else{
+    client_update_moveSpeed(200, 200, 200, "3","0");
+  }
   client_update_viewBob("0", "0", "0");
   client_update_modelBob("0", "0", "0");
   self.stat_wep_state = 0;
@@ -25,9 +30,9 @@ void() player_makeObserver={
 };
 
 void() player_unmakeObserver={
-  if( (self.flags & FL_FLY) )
+  if( (self.flags & FL_FLY) ){
     self.flags = self.flags - (self.flags & FL_FLY);
-  
+  }
   self.movetype = MOVETYPE_WALK;
   self.scale = 1;
 };

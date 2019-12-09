@@ -23,7 +23,7 @@ float AI_VOICE_TIME = 16;
 void( float randomBool ) ai_voice_ini={
   local float randoVoice;
   
-  if( (self.spawnflags & AI_SPAWNFLAG_MUTED) ){
+  if( (self.spawnflags & MUTE_ME) ){
     return;
   }
   

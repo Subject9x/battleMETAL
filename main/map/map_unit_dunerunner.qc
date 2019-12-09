@@ -17,7 +17,7 @@ void() unit_dunerunner_h={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -47,7 +47,7 @@ void() unit_dunerunner_m={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

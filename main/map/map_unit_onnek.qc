@@ -15,7 +15,7 @@ void() unit_onnek_h={
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_SURVEST;
 
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -47,7 +47,7 @@ void() unit_onnek_m={
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_MILITAR;
    
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -76,7 +76,7 @@ void() unit_onnek_militar_zapper={
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_MILITAR;
    
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -107,7 +107,7 @@ void() unit_onnek_survest_zapper={
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_SURVEST;
    
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -139,7 +139,7 @@ void() unit_onnek_militar_gunner={
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_MILITAR;
    
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -170,7 +170,7 @@ void() unit_onnek_survest_gunner={
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_SURVEST;
    
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -202,7 +202,7 @@ void() unit_onnek_militar_lobber={
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_MILITAR;
    
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -233,7 +233,7 @@ void() unit_onnek_survest_lobber={
   self.nextVecChoice = UID_VEHICLE_onnek;
   self.faction = FACTION_SURVEST;
    
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

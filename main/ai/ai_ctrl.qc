@@ -134,7 +134,7 @@ void() ai_touch={
           self.torsoCenter.attack_state = TR_TARG;
         }
         self.ai_react_buffer = time + self.ai_react_time * 3;
-        self.th_missile();
+        macro_ai_frame(self.th_missile)
         return;
       }
     }
@@ -463,17 +463,19 @@ void() ai_setup_patrol={
       lastNode = node;
       //error handling - target but missing the entity.
       self.think = self.th_stand;
-      if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
+      if( (self.spawnflags & DEBUG_MODE) ){
         self.think = SUB_Null;
         return;
       }
       self.nextthink = time + (random() * 2);
-      if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+      if( (self.spawnflags & COLD_START) ){
+        self.spawnflags = self.spawnflags - COLD_START;
         self.nextthink = self.nextthink + 7;
       }
       return;
     }
-    if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){
+    if( (self.spawnflags & RANDOM_START) ){
+      self.spawnflags = self.spawnflags - RANDOM_START;
       node = ai_node_pick_rand();  //make sure that nodes have a .group set   
       angl = anglemod(random() * 360) * DEG2RAD;
       px = cos(angl);
@@ -501,12 +503,13 @@ void() ai_setup_patrol={
       util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
     }
     self.think = self.th_walk;
-    if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
+    if( (self.spawnflags & DEBUG_MODE) ){
       self.think = SUB_Null;
       return;
     }
     self.nextthink = time + (random() * 2);
-    if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+    if( (self.spawnflags & COLD_START) ){
+      self.spawnflags = self.spawnflags - COLD_START;
       self.think = self.th_stand;
       self.nextthink = self.nextthink + 7;
       return;
@@ -514,12 +517,13 @@ void() ai_setup_patrol={
   }
   else{
     self.think = self.th_stand;
-    if( (self.spawnflags & AI_SPAWNFLAG_DEBUG) ){
+    if( (self.spawnflags & DEBUG_MODE) ){
       self.think = SUB_Null;
       return;
     }
     self.nextthink = time + (random() * 2);
-    if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+    if( (self.spawnflags & COLD_START) ){
+      self.spawnflags = self.spawnflags - COLD_START;
       self.nextthink = self.nextthink + 7;
     } 
   }

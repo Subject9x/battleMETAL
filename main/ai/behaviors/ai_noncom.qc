@@ -233,7 +233,7 @@ void() ai_noncom_tank={
   ai_pilot_ini_stats(self.ai_rank);
   ai_voice_ini( TRUE );
   
-  if( (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART) ){ 
+  if( (self.spawnflags & RANDOM_START) ){ 
     ai_node_pick_rand( self.target );
   }
   trigger_event( self, self.trigOnSpawn); //event interface
@@ -246,7 +246,7 @@ void() ai_noncom_tank={
  
   
   self.think = ai_noncom_th;
-  if( (self.spawnflags & AI_SPAWNFLAG_COLDSTART) ){
+  if( (self.spawnflags & COLD_START) ){
     self.nextthink = time + (7 + random()* 1); //spread out thinks
   }
   else{

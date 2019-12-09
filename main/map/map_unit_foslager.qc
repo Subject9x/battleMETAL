@@ -17,7 +17,7 @@ void() unit_foslager_h={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -47,7 +47,7 @@ void() unit_foslager_m={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -78,7 +78,7 @@ void() unit_foslager_survest_zapper={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -108,7 +108,7 @@ void() unit_foslager_militar_zapper={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -139,7 +139,7 @@ void() unit_foslager_survest_gunner={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -169,7 +169,7 @@ void() unit_foslager_militar_gunner={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

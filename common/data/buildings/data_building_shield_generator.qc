@@ -176,7 +176,7 @@ void() building_human_shield={
   self.scale = 1;
   self.deadflag = DEAD_NO;
   
-  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+  if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 0.95) ){
       util_generateBuildingFoundation(self);
     }

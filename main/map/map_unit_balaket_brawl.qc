@@ -15,7 +15,7 @@ void() unit_balaket_brawl_h={
   self.nextVecChoice = UID_MECH_balaket;
   self.flags = FL_TURRET;  //enforced for a mech
 
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -44,7 +44,7 @@ void() unit_balaket_brawl_m={
   self.nextVecChoice = UID_MECH_balaket;
   self.flags = FL_TURRET;  //enforced for a mech
     
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -74,7 +74,7 @@ void() unit_balaket_brawl_p={
   self.flags = FL_TURRET;  //enforced for a mech
   
   ai_promote();
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

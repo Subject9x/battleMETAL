@@ -13,7 +13,7 @@ Overview: AI Unit impl
 ==============================
 */
 void() unit_hs_truck_cargo={
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     objerror ("ai_unit - outside of game mode");
     return;
@@ -27,7 +27,7 @@ void() unit_hs_truck_cargo={
 };
 
 void() unit_hs_truck_hab={
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     objerror ("ai_unit - outside of game mode");
     return;
@@ -41,7 +41,7 @@ void() unit_hs_truck_hab={
 };
 
 void() unit_hs_truck_const={
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     objerror ("ai_unit - outside of game mode");
     return;
@@ -55,7 +55,7 @@ void() unit_hs_truck_const={
 };
 
 void() unit_hs_dozer={
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     objerror ("ai_unit - outside of game mode");
     return;
@@ -69,7 +69,7 @@ void() unit_hs_dozer={
 };
 
 void() unit_hs_loader={
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     objerror ("ai_unit - outside of game mode");
     return;
@@ -83,7 +83,7 @@ void() unit_hs_loader={
 };
 
 void() unit_hs_excavat={
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     objerror ("ai_unit - outside of game mode");
     return;
@@ -106,7 +106,7 @@ void() building_turret_ini={
   self.flags = FL_TURRET;  //enforced for a mech
   self.skin = 1;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

@@ -11,7 +11,7 @@ Overview:
 #define macro_ai_frame(next_func) if((self.flags&FL_TURRET)){ai_turret_control();}if(self.legs){ai_leg_control();} self.think=next_func; self.nextthink=time+0.05;
 
 //given the ctrl_ update_func, check DEBUG state, and deadflag state, then run global ai_update() function.
-#define macro_ai_update(update_func) update_func(); if(!(self.spawnflags&AI_SPAWNFLAG_DEBUG)){if(!self.deadflag){ai_update();}}
+#define macro_ai_update(update_func) update_func(); if(!(self.spawnflags&DEBUG_MODE)){if(!self.deadflag){ai_update();}}
 
 //set ai_action_time, this will loop back to the ai_frame you want to until ai_action_time = 0
 #define macro_ai_frame_count(repeat_frame) if( self.ai_action_time > 0 ){self.ai_action_time = self.ai_action_time - 1;macro_ai_frame(repeat_frame) return;}
@@ -24,30 +24,30 @@ Overview:
 //#define macro_ai_patrol(speed,pauseFunc,nextFunc) local entity nextNode;if(self.goalentity.classname=="ai_node"){ai_face_goal();if(!walkmove(self.angles_y,speed)){movetogoal(self.data_speed_forward);}if(vlen(self.goalentity.origin-self.origin)<=(random()*AI_NODE_DISTANCE)){if(self.goalentity.pausetime){self.pausetime=self.goalentity.pausetime;self.pausetime=self.pausetime+(self.pausetime*(self.ai_action_mod/10));self.pausetime = self.pausetime+time;}if(self.goalentity.target){nextNode=find(world,targetname,self.goalentity.target);self.movetarget=nextNode;}else{self.movetarget=world;}self.goalentity=self.movetarget;if(time<self.pausetime){macro_ai_frame(pauseFunc) return;}} macro_ai_frame(nextFunc) return;} macro_ai_frame(pauseFunc)
 #define macro_ai_patrol(speed,pauseFunc,nextFunc) local entity nextNode;if(self.goalentity.classname=="ai_node"){ai_face_goal();if(walkmove(self.angles_y,speed)==FALSE){movetogoal(self.data_speed_forward);}if(vlen(self.goalentity.origin-self.origin)<=(random()*AI_NODE_DISTANCE)){if(self.goalentity.pausetime){self.pausetime=self.goalentity.pausetime;self.pausetime=self.pausetime+(self.pausetime*(self.ai_action_mod/10));self.pausetime = self.pausetime+time;}if(self.goalentity.target){nextNode=find(world,targetname,self.goalentity.target);self.movetarget=nextNode;}else{if(self.goalentity.ai_rank>0){self.movetarget=world;self.goalentity.think=SUB_Remove;self.goalentity.nextthink=time+0.1;}else{self.movetarget=ai_goal_offset_node();}} self.goalentity=self.movetarget;if(time<self.pausetime){macro_ai_frame(pauseFunc) return;}} macro_ai_frame(nextFunc) return;} macro_ai_frame(pauseFunc)
 
-#define macro_ai_setup(iniFunc) if(!(self.nextVecChoice)||self.nextVecChoice<=0){self.think=SUB_Remove;self.nextthink=time+0.05;return;}if((self.spawnflags&AI_SPAWNFLAG_TRIGGERME)&&(self.targetname)){self.wait=1;if(self.delay>0){self.wait=self.delay;self.delay=0;}self.use=ai_unit_make_trigger;self.unit_ini=iniFunc;}else{self.think=iniFunc;self.nextthink=time+0.05;}
+#define macro_ai_setup(iniFunc) if(!(self.nextVecChoice)||self.nextVecChoice<=0){self.think=SUB_Remove;self.nextthink=time+0.05;return;}if((self.spawnflags&TRIGGER_ME)&&(self.targetname)){self.wait=1;if(self.delay>0){self.wait=self.delay;self.delay=0;}self.use=ai_unit_make_trigger;self.unit_ini=iniFunc;}else{self.think=iniFunc;self.nextthink=time+0.05;}
 
 //CONSTANTS
-float AI_SPAWNFLAG_NOCAMPAIGN     = 1;    //remove from campaign mode
-float AI_SPAWNFLAG_NOCOOP         = 2;    //remove from co-op mode
-float AI_SPAWNFLAG_NODM           = 4;    //remove from DeathMatch
-float AI_SPAWNFLAG_NOTDM          = 8;    //remove from Team DeathMatch
-float AI_SPAWNFLAG_COLDSTART    = 16;   //on-spawn, bot will ignore friendly help calls
-float AI_SPAWNFLAG_RANDDOMSTART = 32;   //start on random node if AI has patrol path
-float AI_SPAWNFLAG_HASRADAR     = 64;   //radar is expensive to use, use sparingly
+float NO_CAMPAIGN = 1;    //remove from campaign mode
+float NO_COOP = 2;    //remove from co-op mode
+float NO_DM = 4;    //remove from DeathMatch
+float NO_TDM = 8;    //remove from Team DeathMatch
+float COLD_START = 16;   //on-spawn, bot will ignore friendly help calls
+float RANDOM_START = 32;   //start on random node if AI has patrol path
+float HAS_RADAR = 64;   //radar is expensive to use, use sparingly
                                         //generally this is for mech units
                                         
-float AI_SPAWNFLAG_PROMOTE      = 128;  //AI rank is set by skill, this spawnflag bumps it up by 1
-float AI_SPAWNFLAG_DEMOTE       = 256;  //AI rank is set by skill, this spawnflag debuffs it up by 1
-float AI_SPAWNFLAG_NONOV        = 512;  //remove from Novice Difficulty
-float AI_SPAWNFLAG_NOREG        = 1024;  //remove from Regular Difficulty
-float AI_SPAWNFLAG_NOVET        = 2048; //remove from Veteran Difficulty
-float AI_SPAWNFLAG_NOELT        = 4096; //remove from Elit Difficulty
-float AI_SPAWNFLAG_NODROP       = 8192; //don't drop bot to the floor onspawn
+float PROMOTE = 128;  //AI rank is set by skill, this spawnflag bumps it up by 1
+float DEMOTE = 256;  //AI rank is set by skill, this spawnflag debuffs it up by 1
+float NO_NOVICE = 512;  //remove from Novice Difficulty
+float NO_REGULAR = 1024;  //remove from Regular Difficulty
+float NO_VETERAN = 2048; //remove from Veteran Difficulty
+float NO_ELITE = 4096; //remove from Elit Difficulty
+float NO_DROP = 8192; //don't drop bot to the floor onspawn
 
-float AI_SPAWNFLAG_TRIGGERME    = 16384; //ai only spawns when triggered
-float AI_SPAWNFLAG_DEBUG        = 32768;  //dont do anything
-float AI_SPAWNFLAG_MUTED        = 65536;  //ai ignores sending voice effects / radio sounds.
-float AI_SPAWNFLAG_UNARMED      = 131072; //ai spawns with no weapons, skip build_weapons() factory step;
+float TRIGGER_ME = 16384; //ai only spawns when triggered
+float DEBUG_MODE = 32768;  //dont do anything
+float MUTE_ME = 65536;  //ai ignores sending voice effects / radio sounds.
+float UNARMED = 131072; //ai spawns with no weapons, skip build_weapons() factory step;
 
 //AI STATE CONSTANTS
 float ST_STAND              = 1;  //th_stand

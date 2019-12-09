@@ -36,8 +36,6 @@ void( entity active, string event) trigger_event={
     activator = active;
   }
   
-  log_me(event);  //DEBUG
-  
   oldTarget = self.target;
   thisTarget = event;
   self.target = thisTarget;
@@ -382,9 +380,9 @@ void() trigger_counter =
   }
 
 	self.wait = -1;
-	if (!self.count)
+	if (!self.count){
 		self.count = 2;
-
+  }
 	self.use = counter_use;
 };
 

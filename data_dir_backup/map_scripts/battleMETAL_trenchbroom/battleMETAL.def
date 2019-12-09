@@ -149,52 +149,7 @@ If a secret door has a targetname, it will only be opened by it's botton or trig
 2) metal
 3) base
 */
-/*QUAKED trigger_forcefield (1 .5 0) ? PLAYERONLY SILENT STARTOFF TOGGLE WALL
-anything touching this can be pushed away,
-can be blocked, and can be hurt.
 
-when targeted it will flash off/on
-see STARTOFF, TOGGLE and delay
-
-flags:
-"PLAYERONLY"
- only affects players, still flashes
- on monsters, but no effect.
-"SILENT"
- no hum or push sound.
-"STARTOFF"
- works in reverse, normally off, on when targeted.
-"TOGGLE"
- switches on/off when targeted.
-"WALL"
- is totally solid when on.
-
-keys:
-"dmg"
- amount of damage to do when touched, default 0
-"delay"
- how long it will stay switched when
- targeted, ignored with TOGGLE.
-"speed"
- how much force, default 0
-"targetname"
- guess (flashes when targeted)
-"target"
- triggered on touch
-*/
-/*QUAKED func_invisiblewall (0 .5 .8) ? STARTOFF
-invisible wall,
-toggles on/off when triggered.
-
-better than invisible walls
-made with CLIP texture
-as bullets etc can't go
-through this.
-
-Flags:
-"STARTOFF"
- uh, guess...
-*/
 /*QUAKED noclass (0 0 0) (-8 -8 -8) (8 8 8)
 prints a warning message when spawned
 */
@@ -618,31 +573,6 @@ ACTIVE_ONTOUCH 32: activate on-touch
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 
-
-
-/*QUAKED trigger_shake (1 .5 0) ? PLAYERONLY SILENT STARTON TOGGLE
-any player touching this feels an earthquake.
-
-when targeted it will flash on/off
-see STARTON, TOGGLE and delay
-
-flags:
-"PLAYERONLY"
- only affects players.
-"SILENT"
- no sound.
-"STARTON"
- works in reverse, normally on, off when targeted.
-"TOGGLE"
- switches on/off when targeted.
-
-keys:
-"delay"
- how long it will stay switched when
- targeted, ignored with TOGGLE.
-"targetname"
- guess (flashes/toggles when targeted)
-*/
 /*QUAKED effect_spinningspotlight (0 1 0) (-8 -8 -8) (8 8 8)
 A spinning spot light,
 nifty disco like effects or anything
@@ -1034,12 +964,12 @@ DELAY 4: wait after fire before execution
 + bot must have matching faction id.
 -------- KEYS -------- 
 .faction = <float> faction id.
-.group = <string> use this as a .target for post-teleport.
 */
 /*QUAKED ai_teleportarium_dest (0.33 0.33 0.33) (-24 -24 -12) (24 24 12)
   destination of teleportarium
 -------- KEYS -------- 
 .angles = <vector> facing of destination.
+.target = <string> use this as a .target for post-teleport.
 */
 
 
@@ -2472,7 +2402,7 @@ UNARMED 131072: skip weapons-build step for unit.
 //  --------------------------------
 //
 
-/*QUAKED unit_foslager_h (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_h (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
   Skill 0 | 1
     MIS | LATC | LAS
@@ -2514,7 +2444,7 @@ MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
 
-/*QUAKED unit_foslager_m (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_m (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
   Skill 0 | 1
     ESR | LATC | LAS
@@ -2556,7 +2486,7 @@ MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
 //-------------------ZAPPER  --------------------------------
-/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_survest_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2589,7 +2519,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_militar_zapper (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
 ZAPPER - focuses on shield breaking
 -------- KEYS -------- 
@@ -2623,7 +2553,7 @@ MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
 //-------------------GUNNER  --------------------------------
-/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_survest_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_h.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 
@@ -2656,7 +2586,7 @@ DEBUG_MODE 32768: spawns but will not react to anything
 MUTE_ME 65536: ai doesn't use voice/radio
 UNARMED 131072: skip weapons-build step for unit.
 */
-/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-20 -20 -8) (20 20 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
+/*QUAKED unit_foslager_militar_gunner (1 0 0.75) (-22 -22 -8) (22 22 12) NO_CAMPAIGN NO_COOP NO_DM NO_TDM COLD_START RANDOM_START HAS_RADAR PROMOTE DEMOTE NO_NOVICE NO_REGULAR NO_VETERAN NO_ELITE NO_DROP TRIGGER_ME DEBUG_MODE MUTE_ME UNARMED
 { model("models/vecs/foslager/foslager_m.md3"); }
 GUNNER - bad at shields, good on firepower
 -------- KEYS -------- 

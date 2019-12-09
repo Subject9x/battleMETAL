@@ -214,7 +214,7 @@ void() building_human_radar={
   }
   
   self.deadflag = DEAD_NO;  
-  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+  if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 4) ){
       util_generateBuildingFoundation(self);
     }

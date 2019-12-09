@@ -11,7 +11,7 @@ void() unit_monitor_sniper_m={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -40,7 +40,7 @@ void() unit_monitor_survest_zapper={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -69,7 +69,7 @@ void() unit_monitor_survest_gunner={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -98,7 +98,7 @@ void() unit_monitor_militar_lobber={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_monitor;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

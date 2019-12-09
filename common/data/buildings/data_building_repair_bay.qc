@@ -222,7 +222,7 @@ void() building_human_repair={
   self.nextthink = time + 0.1;
   self.use = multi_trigger;
   
-  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+  if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 0.95) ){
       util_generateBuildingFoundation(self);
     }

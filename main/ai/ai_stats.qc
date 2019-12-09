@@ -74,7 +74,7 @@ void(float rank) ai_pilot_ini_stats={
   self.accuracy = self.spreadDefault_y;
   
   self.stat_rdr_mode = FALSE;
-  if( (self.spawnflags & AI_SPAWNFLAG_HASRADAR) || self.ai_rank > AI_RANK_REG )
+  if( (self.spawnflags & HAS_RADAR) || self.ai_rank > AI_RANK_REG )
     self.stat_rdr_mode = TRUE;
   
   self.data_speed_forward = self.data_speed_forward * AI_WALK_SPD;
@@ -251,17 +251,19 @@ float() ai_pilot_armor_mod={
 
 void() ai_promote={
   self.ai_rank = skill;
-  if( (self.spawnflags & AI_SPAWNFLAG_PROMOTE) ){
+  if( (self.spawnflags & PROMOTE) ){
     self.ai_rank = self.ai_rank + 1;
     if( self.ai_rank > SKILL_ELT ){
       self.ai_rank = SKILL_ELT;
     }
+    self.spawnflags = self.spawnflags - PROMOTE;
   }
-  if( (self.spawnflags & AI_SPAWNFLAG_DEMOTE) ){
+  if( (self.spawnflags & DEMOTE) ){
     self.ai_rank = self.ai_rank - 1;
     if( self.ai_rank < SKILL_NOV ){
       self.ai_rank = SKILL_NOV;
     }
+    self.spawnflags = self.spawnflags - DEMOTE;
   }
 };
 

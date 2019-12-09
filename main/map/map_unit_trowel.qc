@@ -17,7 +17,7 @@ void() unit_trowel_m={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -47,7 +47,7 @@ void() unit_trowel_h={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -78,7 +78,7 @@ void() unit_trowel_militar_zapper={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -105,10 +105,10 @@ void() unit_trowel_survest_zapper={
   self.nextVecChoice = UID_VEHICLE_trowel;
   self.faction = FACTION_SURVEST;
   self.flags = self.flags | FL_TURRET;
-  self.spawnflags = rint(self.spawnflags);
   
-  if( !ai_can_spawn() ){
-    remove(self);
+  if( ai_can_spawn() == FALSE ){
+    self.think = SUB_Remove;
+    self.nextthink = time + 0.1;
     return;
   }
 
@@ -138,7 +138,7 @@ void() unit_trowel_militar_gunner={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -168,7 +168,7 @@ void() unit_trowel_survest_gunner={
    
   self.flags = self.flags | FL_TURRET;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

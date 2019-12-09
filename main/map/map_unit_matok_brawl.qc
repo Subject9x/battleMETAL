@@ -15,7 +15,7 @@ void() unit_matok_brawl_h={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -42,7 +42,7 @@ void() unit_matok_brawl_m={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -73,7 +73,7 @@ void() unit_matok_militar_gunner={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -100,7 +100,7 @@ void() unit_matok_survest_gunner={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }
@@ -129,7 +129,7 @@ void() unit_matok_survest_lobber={
   self.flags = FL_TURRET;  //enforced for a mech
   self.nextVecChoice = UID_MECH_matok;
   
-  if( !ai_can_spawn() ){
+  if( ai_can_spawn() == FALSE ){
     remove(self);
     return;
   }

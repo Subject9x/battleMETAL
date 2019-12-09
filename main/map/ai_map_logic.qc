@@ -157,6 +157,7 @@ void() tele_source_touch={
     newOrg = lastDestination.origin;
     newOrg = newOrg + (lastDestinationForward * (other.maxs_x * 2));
     setorigin(other, newOrg);
+    other.flags = other.flags - other.flags & FL_ONGROUND;
     if( lastDestination.target ){
       if( lastTeleTarg.targetname != lastDestination.target ){
         lastTeleTarg = find(world, targetname, lastDestination.target);
@@ -181,7 +182,6 @@ void() tele_source_touch={
 + bot must have matching faction id.
 -------- KEYS -------- 
 .faction = <float> faction id.
-
 */
 void() ai_teleportarium_source={
   if( !self.target ){

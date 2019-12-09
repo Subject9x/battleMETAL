@@ -51,7 +51,7 @@ void() building_human_hangar={
   setsize(self, '-68 -84 0', '68 84 88');
   self.movetype = MOVETYPE_NONE;
   
-  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+  if( !(self.spawnflags & NO_DROP) ){
     if( util_cornerSlopeCheck(self, 0.95) ){
       util_generateBuildingFoundation(self);
     }

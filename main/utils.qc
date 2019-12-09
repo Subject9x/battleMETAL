@@ -36,12 +36,12 @@ float(float numOfSides) util_roll_dice={
   roll = ( (1 + crandom()) * numOfSides);
   roll = ceil(roll);
   
-  if(roll < 0)
+  if(roll < 0){
     roll = roll * -1;
-  
-  if(roll == 0)
+  }
+  if(roll == 0){
     roll = 1;
-  
+  }
   return roll;
 };
 
@@ -105,12 +105,12 @@ vector(vector facing, vector centerpoint, vector sz_max) util_findOpenSpawnArea=
   side = util_roll_dice(2);
   dir = util_roll_dice(2);
   
-  if(side == 1)
+  if(side == 1){
     side = -1;
-  
-  if(dir == 1)
+  }
+  if(dir == 1){
     dir = -1;
-  
+  }
   makevectors(facing);
   locus = centerpoint + (v_forward * (dir * dist) ) + (v_right * (side * dist) );
   traceline(centerpoint, locus, FALSE, self);

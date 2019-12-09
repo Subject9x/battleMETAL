@@ -13,52 +13,60 @@ Overview:
   Check Game Mode and Difficulty Skill
   remove AI if they're flagged to not be in a category; 
 */
-float() ai_can_spawn={
-  local float canSpawn;
-  canSpawn = TRUE;
+float() ai_can_spawn={  
   
+  if( self.data_type == DATA_BLD && self.data_idx <= 0 ){
+    return FALSE;
+  }
   if( self.nextVecChoice < 1 ){
-    canSpawn =  FALSE;
+    return FALSE;
   }
   
-  if( (self.spawnflags & AI_SPAWNFLAG_NOCAMPAIGN) ){
-    if( !coop && !deathmatch && (teamplay == FALSE)){
-      canSpawn =  FALSE;
+  if( (skill == 0) && (self.spawnflags & NO_NOVICE) ){
+    log_me("NO_NOVICE");
+    return FALSE;
+  }
+  if( (skill == 1) && (self.spawnflags & NO_REGULAR) ){
+  log_me("NO_REGULAR");
+    return FALSE;
+  }
+  if( (skill == 2) && (self.spawnflags & NO_VETERAN) ){
+  log_me("NO_VETERAN");
+    return FALSE;
+  }
+  if( (skill == 3) && (self.spawnflags & NO_ELITE) ){
+  log_me("NO_ELITE");
+    return FALSE;
+  }
+  
+  if( (self.spawnflags & NO_CAMPAIGN) ){
+    if( !coop && !deathmatch && (teamplay == 0)){
+      return FALSE;
     }
   }
   
-  if( (self.spawnflags & AI_SPAWNFLAG_NOCOOP) ){
+  if( (self.spawnflags & NO_COOP) ){
     if( coop && !deathmatch ){
-      canSpawn =  FALSE;
+      return FALSE;
     }
   }
 
-  if( (self.spawnflags & AI_SPAWNFLAG_NODM) ){
+  if( (self.spawnflags & NO_DM) ){
     if( !coop && deathmatch ){
-      canSpawn =  FALSE;
+      return FALSE;
      }
   }
   
-  if( (self.spawnflags & AI_SPAWNFLAG_NOTDM) ){
-    if( deathmatch && (teamplay == FALSE) ){
-      canSpawn =  FALSE;
+  if( (self.spawnflags & NO_TDM) ){
+    if( deathmatch && (teamplay == 0) ){
+      return FALSE;
     }
   }
 
-  if ( cvar("skill") == 0 && (self.spawnflags & AI_SPAWNFLAG_NONOV) ){
-    canSpawn = FALSE;
-  }
-  if ( cvar("skill") == 1 && (self.spawnflags & AI_SPAWNFLAG_NOREG) ){
-    canSpawn = FALSE;
-  }
-  if ( cvar("skill") == 2 && (self.spawnflags & AI_SPAWNFLAG_NOVET) ){
-    canSpawn = FALSE;
-  }
-  if ( cvar("skill") == 3 && (self.spawnflags & AI_SPAWNFLAG_NOELT) ){
-    canSpawn = FALSE;
-  }
-  
-  return canSpawn;
+  log_me(strcat("ai_can_spawn()->spawnflags=", ftos(self.spawnflags)));  //DEBUG
+  log_me(strcat("ai_can_spawn()->skill value=", ftos(cvar("skill"))));  //DEBUG
+  log_me(strcat("ai_can_spawn()->canSpawn=", "1"));  //DEBUG
+  return TRUE;
 };
 
 float( entity t ) ai_line_of_sight={
@@ -329,6 +337,7 @@ void( entity ally, entity targ, float override ) ai_give_target={
     if( override ){
       self.enemy = ally.enemy;
       self.th_missile();
+      macro_ai_frame(self.th_missile)
       ai_sfx_roger();
     }
     else{
@@ -418,7 +427,7 @@ float(entity wep) ai_attack_blockcheck={
 };
 
 /*
-  Only used for AI_SPAWNFLAG_RANDDOMSTART
+  Only used for RANDOM_START
 */
 entity() ai_node_pick_rand={
   local entity anode;
@@ -448,7 +457,7 @@ entity() ai_node_pick_rand={
       }
     }
     else{
-      self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_RANDDOMSTART);
+      self.spawnflags = self.spawnflags - self.spawnflags & RANDOM_START;
     }
   }
   return anode;
@@ -502,7 +511,7 @@ void(float dst, float grp, float bracket) ai_wep_group_track={
     self.currentWeaponGroup = self.currentWeaponGroup | grp;
   }
   else{
-    self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & grp);
+    self.currentWeaponGroup = self.currentWeaponGroup - self.currentWeaponGroup & grp;
   }
 };
 
@@ -544,20 +553,20 @@ void() ai_lock_on={
       }
       if( time > self.lock_timer ){
         if( !(self.stat_lck_stt & LOCK_TARG_HAS) ){
-          self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
+          self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG_START;
           self.stat_lck_stt = self.stat_lck_stt | LOCK_TARG_HAS;
         }
       }
     }
     else{
       if( (self.stat_lck_stt & LOCK_TARG_START) ){
-        self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_START);
+        self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG_START;
       }
       if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
-        self.stat_lck_stt = self.stat_lck_stt - (self.stat_lck_stt & LOCK_TARG_HAS);
+        self.stat_lck_stt = self.stat_lck_stt - LOCK_TARG_HAS;
       }
       if( (self.enemy.stat_lck_stt & LOCK_PLAYER) ){
-        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLAYER);
+        self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - LOCK_PLAYER;
       }
     }
   }
@@ -588,11 +597,11 @@ float( void() ai_ini ) ai_unit_setup={
     return TRUE;
   }
   
-  if( (self.spawnflags & AI_SPAWNFLAG_TRIGGERME) && (self.targetname) ){
+  if( (self.spawnflags & TRIGGER_ME) && (self.targetname) ){
     //checking the targetname is mostly for validation
     self.use = ai_unit_make_trigger;
     self.think = ai_ini;
-    self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
+    self.spawnflags = self.spawnflags - (self.spawnflags & TRIGGER_ME);
     return TRUE;
   }
   //fall-through, AI is cleared to happen
@@ -602,11 +611,11 @@ float( void() ai_ini ) ai_unit_setup={
 */
 
 void() ai_unit_make_trigger={
-  self.spawnflags = self.spawnflags - (self.spawnflags & AI_SPAWNFLAG_TRIGGERME);
+  self.spawnflags = self.spawnflags - TRIGGER_ME;
   self.use = SUB_Null;  //triggered
   self.think = self.unit_ini;
+  self.nextthink = time + self.wait + (random() * 1);
   self.unit_ini = SUB_Null;
-  self.nextthink = time + self.wait;
   trigger_event( find(world, classname, "player"), self.trigOnSpawn ); //event interface
 };
 

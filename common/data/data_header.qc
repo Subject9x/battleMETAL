@@ -52,7 +52,7 @@ void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset)
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin) data_ini_legs_={
-  data_ini_unitPiece_( M_LEGS, pathToModel, healthMax, offsetOrigin, self, legs );
+  data_ini_unitPiece_( M_LEGS, pathToModel, healthMax, offsetOrigin, self, legs, '0 0 0');
 };
 
 void(string pathToModel, float healthMax, vector offsetOrigin, vector altOffset) data_ini_arm_left_={

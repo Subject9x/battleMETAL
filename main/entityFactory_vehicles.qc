@@ -414,7 +414,7 @@ void() build_mech_bot={
   self.data_speed_backward = self.data_speed_backward * AI_MECH_MOVE_FACTOR;
   
   if( self.hardpoint_cnt > 0 ){
-    if( !(self.spawnflags & AI_SPAWNFLAG_UNARMED) ){
+    if( !(self.spawnflags & UNARMED) ){
       build_unit_weapon_list();
     }
   }
@@ -570,7 +570,7 @@ void() build_vehicle_unit={
   }
   
   if( self.hardpoint_cnt > 0 ){
-    if( !(self.spawnflags & AI_SPAWNFLAG_UNARMED) ){
+    if( !(self.spawnflags & UNARMED) ){
       build_unit_weapon_list();
     }
   }
@@ -603,10 +603,10 @@ void() build_turret_unit={
   build_vehicle_unit();
   self.data_type = DATA_BLD;
 
-  if( !(self.spawnflags & AI_SPAWNFLAG_NODROP) ){
+  if( !(self.spawnflags & NO_DROP) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
     droptofloor();
-    
+    self.spawnflags = self.spawnflags - NO_DROP;
     if(util_cornerSlopeCheck(self, 2)){
       util_generateBuildingFoundation(self);
     }
