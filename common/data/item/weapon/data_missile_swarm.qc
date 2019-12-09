@@ -65,36 +65,39 @@ void() data_ini_attack_missile_swarm_={
       
       local entity targs;
       maxtarg = DATA_SWARM_MAX_TARGETS;
-      targs = findradius(self.origin, self.w_range);
-      while(targs){
-        if( maxtarg > 0 ){
-          if(targs.deadflag == DEAD_NO){
-            if( (ai_check_face(targs, 0.7)) && (targs != self.owner) ){
-              if( (targs.flags & FL_MONSTER) || (targs.flags & FL_CLIENT) ){
-                if( targs.faction != self.owner.faction){
-                  maxtarg = maxtarg - 1;
-                  ctrl_weapon_make_projectile( 0.2 );
-                  
-                  arc = FIRE_ORIGIN + (v_forward * (200 + (crandom() * 20)));
-                  arc = arc + (v_up * (133 + (crandom() * 67))) + (v_right * (crandom() * 67));
-                  start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
-                  NEWSHOT.enemy = targs;
-                  NEWSHOT.compOffset = start;
-                  NEWSHOT.velocity = '0 0 0';
-                  NEWSHOT.velocity = normalize( arc - start );
-                  NEWSHOT.velocity = NEWSHOT.velocity * 50;
-                  NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
-                  NEWSHOT.w_isburst = time + 2; //use to track curving behavior
-                  setorigin(NEWSHOT, start);
-                  sound (NEWSHOT, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
-                  pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), self.origin, normalize( targs.origin - FIRE_ORIGIN ) * 3, 1);
-                  NEWSHOT = world;
-                }
-              }
-            }
-          }
+      for(targs = findradius(self.origin, self.w_range); targs != world; targs = targs.chain){
+        if( maxtarg <= 0 ){
+          continue;
         }
-        targs = targs.chain;
+        if( targs.deadflag > DEAD_NO ){
+          continue;
+        }
+        if( !ai_check_face(targs, 0.7) || (targs == self.owner) ){
+          continue;
+        }
+        if( !(targs.flags & FL_MONSTER) || !(targs.flags & FL_CLIENT) ){
+          continue;
+        }
+        if( targs.faction == self.owner.faction){
+          continue;
+        }
+        maxtarg = maxtarg - 1;
+        ctrl_weapon_make_projectile( 0.2 );
+        
+        arc = FIRE_ORIGIN + (v_forward * (200 + (crandom() * 20)));
+        arc = arc + (v_up * (133 + (crandom() * 67))) + (v_right * (crandom() * 67));
+        start = FIRE_ORIGIN + (v_forward * 0.75) + ((crandom() * 1.25) * v_right) + (v_up * (crandom() * 1.5));
+        NEWSHOT.enemy = targs;
+        NEWSHOT.compOffset = start;
+        NEWSHOT.velocity = '0 0 0';
+        NEWSHOT.velocity = normalize( arc - start );
+        NEWSHOT.velocity = NEWSHOT.velocity * 50;
+        NEWSHOT.angles = vectoangles( NEWSHOT.velocity );
+        NEWSHOT.w_isburst = time + 2; //use to track curving behavior
+        setorigin(NEWSHOT, start);
+        sound (NEWSHOT, CHAN_AUTO, self.fire_sound, 1, ATTN_NORM);
+        pointparticles( particleeffectnum("TE_SWRM_MUZZLE"), self.origin, normalize( targs.origin - FIRE_ORIGIN ) * 3, 1);
+        NEWSHOT = world;
       }
   }
 };

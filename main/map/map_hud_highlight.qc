@@ -79,17 +79,20 @@ void() map_hud_highlight_use={
     while(client){
       //FACTION_ONLY setting
       if( (self.spawnflags & 8) ){
-        if(self.faction != client.faction)
+        if(self.faction != client.faction){
           continue;
+        }
       }
       if( (self.spawnflags & 256) ){
-        if( self.message != "" )
+        if( self.message != "" ){
           client_send_info_message( client, self.message, self.data_lifetime);
+        }
       }
       else{
         client_push_hud_highlight( client );
-        if( self.message != "" )
+        if( self.message != "" ){
           client_send_info_message( client, self.message, self.data_lifetime);
+        }
       }
       client = client.chain;
     }

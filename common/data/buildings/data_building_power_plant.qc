@@ -92,15 +92,17 @@ void() hpower_th = [0, hpower_th]{
   //power friendly local buildings
   local entity t;
   t = findchainfloat(data_type, DATA_BLD);
-  while(t){
-    if(t.faction == self.faction){
-      if(t != self){
-        if(vlen(t.origin - self.origin) <= 800){
-          t.energyRate = self.energyRate;
-        }
-      }
+  for( t = findchainfloat(data_type, DATA_BLD); t != world; t = t.chain){
+    if(t.faction != self.faction){
+      continue;
     }
-    t = t.chain;
+    if(t != self){
+      continue;
+    }
+    if(vlen(t.origin - self.origin) > 800){
+      continue;
+    }
+    t.energyRate = self.energyRate;
   }
   building_burn();
 }; 

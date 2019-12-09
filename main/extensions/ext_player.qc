@@ -42,12 +42,12 @@ void() mech_cleanupMech={
   while(w_chain){
     next = w_chain.w_slot;
     lstp = w_chain.lst_p;
-    if(lstp)
+    if(lstp){
       lstp.w_slot = next;
-    
-    if( w_chain != world && (w_chain.partTypeId == M_ITEM) )
+    }
+    if( w_chain != world && (w_chain.partTypeId == M_ITEM) ){
       remove(w_chain);
-
+    }
     w_chain = next;
   }
   if( (self.flags & FL_CLIENT) ){
@@ -82,8 +82,9 @@ void() mech_player_die={
   mech_player_compdie(self.armLeft);
   mech_player_compdie(self.armRight);
   
-  if( (self.flags & FL_CLIENT) )
+  if( (self.flags & FL_CLIENT) ){
     mech_player_compdie(self.legs);
+  }
 };
 
 void( entity comp ) mech_player_compdie={

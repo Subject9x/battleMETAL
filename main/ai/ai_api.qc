@@ -102,19 +102,21 @@ void( entity t ) ai_call_for_help={
   
   allies = 0;
   ai_sfx_help();
-  ally = findchainflags( flags, FL_MONSTER );
-  while( ally ){
-    if( ai_valid_target(ally) ){
-      if( vlen( ally.origin - self.origin ) <= self.ai_view ){
-        if( ally != self ){
-          if( !(ally.flags & FL_DISARMED) ){
-            ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
-            allies = allies + 1;
-          }
-        }
-      }
+  for(ally=findchainflags(flags, FL_MONSTER); ally != world; ally = ally.chain){
+    if( !ai_valid_target(ally) ){
+      continue;
     }
-    ally = ally.chain;
+    if( vlen( ally.origin - self.origin ) > self.ai_view ){
+      continue;
+    }
+    if( ally == self ){
+      continue;
+    }
+    if( (ally.flags & FL_DISARMED) ){
+      continue;
+    }
+    ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
+    allies = allies + 1;
   }
   
   if( allies < self.ai_rank ){
@@ -139,16 +141,16 @@ entity( float radiius) ai_find_friend={
   
   rad = radiius;
   
-  ally = findchainfloat( faction, self.faction );
-  while( ally ){
-    if( ai_valid_target(ally) ){
-      dist = vlen( ally.origin - self.origin );
-      if( dist < rad ){
-        rad = dist;
-        friend = ally;
-      }
+  for(ally = findchainfloat(faction,self.faction); ally != world; ally = ally.chain){
+    if( !ai_valid_target(ally) ){
+      continue;
     }
-    ally = ally.chain;
+    dist = vlen( ally.origin - self.origin );
+    if( dist > rad ){
+      continue;
+    }
+    rad = dist;
+    friend = ally;
   }
   return friend;
 };
@@ -158,14 +160,14 @@ void( entity t) ai_alert_close={
   
   local entity ally;
   ai_sfx_help();
-  ally = findradius( self.origin, self.ai_view );
-  while( ally ){
-    if( ally.faction ==  self.faction ){
-      if( ai_valid_target(ally) ){
-        ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
-      }
+  for(ally = findradius(self.origin, self.ai_view); ally != world; ally = ally.chain){
+    if( ally.faction != self.faction ){
+      continue;
     }
-    ally = ally.chain;
+    if( !ai_valid_target(ally) ){
+      continue;
+    }
+    ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
   }
 };
 
@@ -177,20 +179,21 @@ entity( float startSmallRadius ) ai_find_friend_farthest={
   local float dist, rad;
   
   rad = startSmallRadius;
-  
-  ally = findchainfloat( faction, self.faction );
-  while( ally ){
-    if( ai_valid_target(ally) ){
-      if( !(ally.flags & FL_DISARMED) ){
-        //oh and the potential friend needs to offer something in protection.
-        dist = vlen( ally.origin - self.origin );
-        if( dist > rad ){
-          rad = dist;
-          friend = ally;
-        }
-      }
+
+  for(ally=findchainfloat(faction, self.faction); ally != world; ally = ally.chain){
+    if( !ai_valid_target(ally) ){
+      continue;
     }
-    ally = ally.chain;
+    //oh and the potential friend needs to offer something in protection.
+    if( (ally.flags & FL_DISARMED) ){
+      continue;
+    }
+    dist = vlen( ally.origin - self.origin );
+    if( dist < rad ){
+      continue;
+    }
+    rad = dist;
+    friend = ally;
   }
   return friend;
 };
@@ -221,24 +224,28 @@ float() ai_find_target_visual={
   selfSensorOrg_z = 0;
   
   targ = findradius(self.origin, rng);
-  while( targ ){
-    if( ai_valid_target(targ) ){
-      if( targ.faction != self.faction ){
-        if( ai_check_face(targ, self.ai_fov) ){
-          if( ai_check_vis(targ) == VIS_FRAC ){
-            enemySensorOrg_x = targ.origin_x;
-            enemySensorOrg_y = targ.origin_y;
-            enemySensorOrg_z = 0;
-            ndist = vlen(enemySensorOrg - selfSensorOrg);
-            if(ndist < rng){
-              rng = ndist;
-              found = targ;
-            }
-          }
-        }
-      }
+  for(targ = findradius(self.origin, rng); targ !=world; targ = targ.chain){ 
+    if( !ai_valid_target(targ) ){
+      continue;
     }
-    targ = targ.chain;
+    if( targ.faction == self.faction ){
+      continue;
+    }
+    if( !ai_check_face(targ, self.ai_fov) ){
+      continue;
+    }
+    if( ai_check_vis(targ) != VIS_FRAC ){
+      continue;
+    }
+    enemySensorOrg_x = targ.origin_x;
+    enemySensorOrg_y = targ.origin_y;
+    enemySensorOrg_z = 0;
+    ndist = vlen(enemySensorOrg - selfSensorOrg);
+    if(ndist > rng){
+      continue;
+    }
+    rng = ndist;
+    found = targ;
   }
 
   if( found ){
@@ -273,34 +280,37 @@ float() ai_find_target_radar={
   selfSensorOrg_y = self.origin_y;
   selfSensorOrg_z = 0;
   
-  targ = findradius(self.origin, self.ai_view);
   rng = self.ai_view;
-  while( targ ){
-    if( ai_valid_target(targ) ){
-      if( targ.faction != self.faction ){
-        enemySensorOrg_x = targ.origin_x;
-        enemySensorOrg_y = targ.origin_y;
-        enemySensorOrg_z = 0;
-        ndist = vlen(enemySensorOrg - selfSensorOrg);
-        if( ndist < rng ){
-          if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == TRUE ){
-            if( ndist < (rng / 2) ){
-              if( ai_line_of_sight(targ) ){
-                rng = ndist;
-                found = targ;
-              }
-            }
-          }
-          else{
-            if( ai_line_of_sight(targ) ){
-              rng = ndist;
-              found = targ;
-            }
-          }
-        }      
+  for(targ = findradius(self.origin, self.ai_view); targ != world; targ = targ.chain){
+    if( !ai_valid_target(targ) ){
+      continue;
+    }
+    if( targ.faction == self.faction ){
+      continue;
+    }
+    enemySensorOrg_x = targ.origin_x;
+    enemySensorOrg_y = targ.origin_y;
+    enemySensorOrg_z = 0;
+    ndist = vlen(enemySensorOrg - selfSensorOrg);
+    if( ndist > rng ){
+      continue;
+    }
+    if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == TRUE ){
+      if( ndist > (rng / 2) ){
+        continue;
+      }
+      if( !ai_line_of_sight(targ) ){
+        continue;
       }
     }
-    targ = targ.chain;
+    else{
+      if( !ai_line_of_sight(targ) ){
+        continue;
+      }
+    }
+  
+    rng = ndist;
+    found = targ;
   }
   if( found ){
     if( (self.flags & FL_DISARMED) ){

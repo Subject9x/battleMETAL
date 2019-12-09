@@ -114,19 +114,21 @@ void() building_radar_patrol1=[0, building_radar_patrol1]{
 void() building_radar_alert1=[0, building_radar_alert1]{
   local entity ally, this;
   this = self;
-  ally = findchainfloat( faction, self.faction );
   ai_sfx_help();
-  while( ally ){
-    if( vlen( ally.origin - self.origin ) <= (self.radar_range / 2) ){
-      if( ai_valid_target(ally) ){
-        if( ally != self ){        
-          if( (ally.flags & FL_UNIT) && !(ally.flags & FL_DISARMED)){
-            ai_give_target( ally, self.enemy, ( self.ai_rank > AI_RANK_REG ));
-          }
-        }
-      }
+  for( ally = findchainfloat(faction, self.faction); ally != world; ally = ally.chain){
+    if( vlen( ally.origin - self.origin ) > (self.radar_range / 2) ){
+      continue;
     }
-    ally = ally.chain;
+    if( !ai_valid_target(ally) ){
+      continue;
+    }
+    if( ally == self ){        
+      continue;
+    }
+    if( !(ally.flags & FL_UNIT) || (ally.flags & FL_DISARMED)){
+      continue;
+    }
+    ai_give_target( ally, self.enemy, ( self.ai_rank > AI_RANK_REG ));
   }
   self.enemy = world;
   self.th_walk();

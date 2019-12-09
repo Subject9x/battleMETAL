@@ -21,7 +21,7 @@ void() ai_turret_control={
   if( (self.torsoCenter) ){
     turretOwner = self;
     self = self.torsoCenter;
-      util_setOffsetOrigin(self, turretOwner, self.compOffset);
+      macro_set_offset(turretOwner, self.compOffset)
       switch( self.attack_state ){
         case TR_NORM:
           self.ideal_yaw = turretOwner.angles_y;
@@ -70,7 +70,7 @@ void() ai_leg_control={
   legOwner = self;
   if( (self.legs) ){
       self = self.legs;
-      util_setOffsetOrigin(self, self.owner, self.compOffset);
+      macro_set_offset(self.owner, self.compOffset)
       switch( self.attack_state ){
         case TR_NORM:
           self.ideal_yaw = self.owner.angles_y;

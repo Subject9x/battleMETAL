@@ -41,7 +41,7 @@ void() map_noshoot_use={
     e = findchainflags(flags, FL_CLIENT);
     while( e ){
       if( (e.flags & self.partTypeId) ){
-        e.flags = e.flags - (e.flags & self.partTypeId);
+        e.flags = e.flags - e.flags & self.partTypeId;
       }
       else{
         //simple revert code

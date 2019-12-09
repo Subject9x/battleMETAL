@@ -24,27 +24,28 @@ void() radarSweepBasic={
   low = anglemod( sweep - 5 );
   high = anglemod( sweep + 1 );
   
-  blip = findradius( self.origin, self.radar_range );
-  while( blip ){
-    if( (blip.flags & FL_MONSTER) || (blip.flags & FL_CLIENT) ){
-      if( blip != self ){
-        if( blip.deadflag <= DEAD_NO ){
-          yaw = vectoyaw( self.origin - blip.origin);
-          if( (yaw >= low) && (yaw <= high) ){
-            if( !self.stat_rdr_mode ){
-              traceline( self.origin, blip.origin, MOVE_NORMAL, self );
-              if( trace_ent == blip || trace_fraction == 1 ){
-                client_push_radar_ping( blip );
-              }
-            }
-            else{
-              client_push_radar_ping( blip );
-            }
-          }
-        }
+  for(blip = findradius(self.origin, self.radar_range); blip != world; blip = blip.chain){
+    if( !(blip.flags & FL_MONSTER) || !(blip.flags & FL_CLIENT) ){
+      continue;
+    }
+    if( blip == self ){
+      continue;
+    }
+    if( blip.deadflag > DEAD_NO ){ 
+      continue;
+    }
+        
+    yaw = vectoyaw( self.origin - blip.origin);
+    if( (yaw < low) || (yaw > high) ){
+      continue;
+    }
+    if( !self.stat_rdr_mode ){
+      traceline( self.origin, blip.origin, MOVE_NORMAL, self );
+      if( trace_ent != blip || trace_fraction != 1 ){
+        continue;
       }
     }
-    blip = blip.chain;
+    client_push_radar_ping( blip );
   }
 };
 
@@ -66,31 +67,31 @@ void() radarSweepAdv={
   inv = self.radar_range * 0.05;
   self.radar_time = self.radar_time + inv;
   
-  blip = findradius( self.origin, self.radar_range );
-  while( blip ){
-    if( (blip.flags & FL_MONSTER) || (blip.flags & FL_CLIENT) ){
-      if( blip != self ){
-        if( blip.deadflag <= DEAD_NO ){
-          local float dist;
-          dist = vlen( self.origin - blip.origin);
-        
-          if( (dist <= self.radar_time + inv / 2 ) && (dist >= self.radar_time - inv / 2) ){
-            if( !self.stat_rdr_mode ){
-              traceline( self.origin, blip.origin, MOVE_NORMAL, self );
-              if( trace_ent == blip || trace_fraction == 1 ){
-                client_push_radar_ping( blip );
-              }
-            }
-            else{
-              client_push_radar_ping( blip );
-            }
-          }
-        }
+  
+  for(blip = findradius( self.origin, self.radar_range ); blip != world;  blip = blip.chain){
+    if( !(blip.flags & FL_MONSTER) || !(blip.flags & FL_CLIENT) ){
+      continue;
+    }
+    if( blip == self ){
+      continue;
+    }
+    if( blip.deadflag > DEAD_NO ){
+      continue;
+    }
+    local float dist;
+    dist = vlen( self.origin - blip.origin);
+  
+    if( (dist > self.radar_time + inv / 2 ) && (dist < self.radar_time - inv / 2) ){
+      continue;
+    }
+    if( !self.stat_rdr_mode ){
+      traceline( self.origin, blip.origin, MOVE_NORMAL, self );
+      if( trace_ent != blip || trace_fraction != 1 ){
+        continue;
       }
     }
-    blip = blip.chain;
+    client_push_radar_ping( blip );
   }
-
 };
 
 void() sv_getTarget={

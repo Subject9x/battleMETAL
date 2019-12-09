@@ -35,7 +35,7 @@ float COLD_START = 16;   //on-spawn, bot will ignore friendly help calls
 float RANDOM_START = 32;   //start on random node if AI has patrol path
 float HAS_RADAR = 64;   //radar is expensive to use, use sparingly
                                         //generally this is for mech units
-float DEBUG_MODE = 128 //dont do anything
+float DEBUG_MODE = 128; //dont do anything
 float NO_NOVICE = 4096;  //remove from Novice Difficulty
 float NO_REGULAR = 8192; //remove from Regular Difficulty
 float NO_VETERAN = 16384; //remove from Veteran Difficulty

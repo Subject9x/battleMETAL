@@ -58,6 +58,27 @@ void() ctrl_updateLegs={
 
 void() ctrl_dieLegs={
   local entity newLegs;
+  //leg critical hit
+  if( self.owner.deadflag == DEAD_NO ){
+    //leg critical hit event.
+    if( !(self.flags & FL_DISARMED) ){
+      if( self.health <= 0 ){
+        self.flags = self.flags | FL_DISARMED;
+        self.owner.data_speed_forward = self.owner.data_speed_forward / 2;
+        self.owner.data_speed_strafe = self.owner.data_speed_strafe / 2;
+        self.owner.data_speed_backward = self.owner.data_speed_backward / 2;
+        if( (self.owner.flags & FL_CLIENT) ){
+          newLegs = self;
+          self = self.owner;
+            client_update_moveSpeed(self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, "1", "0"); 
+          self = newLegs;
+        }
+      }
+    }
+    return;
+  }
+
+  local entity newLegs;
   te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
 
   newLegs = spawn();

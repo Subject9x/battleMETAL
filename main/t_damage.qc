@@ -165,7 +165,6 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
 
 entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_type, vector dmg_point, vector force) t_damage={
   local entity dmgTrg, dmgInflictor;
-  local entity otherSelf;
   local entity notTarg;
   local float dmgAmt, prevShields;
   
@@ -260,9 +259,12 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if( dmgAmt <= 0 ){
+    trg.dmg_save = (dmgAmt * -1);
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
+  trg.dmg_save = 1;
+  trg.dmg_take =  dmgAmt;
   
   sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons
   
@@ -302,23 +304,7 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   
   if( dmgTrg.health <= 0 ){
     if( dmgTrg.th_die ){
-      if( dmgTrg.partTypeId == M_LEGS ){
-        if( !(dmgTrg.flags & FL_DISARMED) ){
-          dmgTrg.owner.data_speed_forward = dmgTrg.owner.data_speed_forward / 2;
-          dmgTrg.owner.data_speed_strafe = dmgTrg.owner.data_speed_strafe / 2;
-          dmgTrg.owner.data_speed_backward = dmgTrg.owner.data_speed_backward / 2;
-          dmgTrg.flags = dmgTrg.flags | FL_DISARMED;
-          if( (dmgTrg.owner.flags & FL_CLIENT) ){
-            otherSelf = self;
-            self = dmgTrg.owner;
-              client_update_moveSpeed(dmgTrg.owner.data_speed_forward, dmgTrg.owner.data_speed_strafe, dmgTrg.owner.data_speed_backward, "1", "0"); 
-            self = otherSelf;
-          }
-        }
-      }
-      else{
-        killed(dmgTrg, attacker, dmg_type);
-      }
+      killed(dmgTrg, attacker, dmg_type);
     }
   }
   return dmgTrg;
