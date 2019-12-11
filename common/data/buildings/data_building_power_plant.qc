@@ -11,10 +11,11 @@ Overview: data file for building
 void() hpower_die = [0, hpower_die1]{
   local entity head;
   self.solid = SOLID_NOT;
-  head = findradius(self.origin, 800);
+  
   self.deadflag = DEAD_DYING;
-  while(head){
-    //if( (head.data_type == DATA_MECH) || (head.data_type == DATA_MECH_AI) ){
+  
+  head = findradius(self.origin, 800);
+  for( head = findradius(self.origin, 800); head != world; head = head.chain ){
     if( head.data_type == DATA_MECH ){
       head.energy = head.energy + 100;
       if(head.energy > head.energyMax){
@@ -28,7 +29,6 @@ void() hpower_die = [0, hpower_die1]{
         }
       }
     }
-    head = head.chain;
   }
 
   te_object_explode( '0.75 0.75 0.6' );
@@ -96,7 +96,7 @@ void() hpower_th = [0, hpower_th]{
     if(t.faction != self.faction){
       continue;
     }
-    if(t != self){
+    if(t == self){
       continue;
     }
     if(vlen(t.origin - self.origin) > 800){

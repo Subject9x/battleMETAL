@@ -606,7 +606,6 @@ void() build_turret_unit={
   if( !(self.spawnflags & NO_DROP) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));
     droptofloor();
-    self.spawnflags = self.spawnflags - NO_DROP;
     if(util_cornerSlopeCheck(self, 2)){
       util_generateBuildingFoundation(self);
     }

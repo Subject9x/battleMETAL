@@ -75,28 +75,32 @@ void() building_radar_patrol1=[0, building_radar_patrol1]{
   low = anglemod( sweep - AI_POST_SWEEP_SIZE / 2 );
   high = anglemod( sweep + AI_POST_SWEEP_SIZE / 2 );
   
-  blip = findradius( self.origin, self.radar_range );
-  while( blip ){
-    if( blip.deadflag <= DEAD_NO ){
-      if( (blip.flags & FL_CLIENT) ){
-        if( blip.data_type == DATA_MECH ){
-          if( blip.faction != self.faction ){
-            rng = self.radar_range;
-            //target player is running PASSIVE radar
-            if( blip.stat_rdr_mode == FALSE){
-              rng = self.radar_range / 2;
-            }
-            yaw = vectoyaw( self.origin - blip.origin);
-            if( (yaw >= low) && (yaw <= high) ){
-              if( vlen( blip.origin - self.origin ) <= rng ){
-                found = blip;
-              }
-            }
-          }
-        }
-      }
+  for( blip = findradius( self.origin, self.radar_range ); blip != world; blip = blip.chain ){
+    if( blip.deadflag > DEAD_NO ){
+      continue;
     }
-    blip = blip.chain;
+    if( !(blip.flags & FL_CLIENT) ){
+      continue;
+    }    
+    if( blip.data_type != DATA_MECH ){
+      continue;
+    }
+    if( blip.faction == self.faction ){
+      continue;
+    }
+    rng = self.radar_range;
+    //target player is running PASSIVE radar
+    if( blip.stat_rdr_mode == FALSE){
+      rng = self.radar_range / 2;
+    }
+    yaw = vectoyaw( self.origin - blip.origin);
+    if( (yaw < low) || (yaw > high) ){
+      continue;
+    }
+    if( vlen( blip.origin - self.origin ) > rng ){
+      continue;
+    }
+    found = blip;
   }
   
   if( found != world){

@@ -36,7 +36,7 @@ void() building_human_hangar_vehicle={
   self.data_idx = UI_BUILDING_hangar_med;
   self.data_type = DATA_BLD;
   self.vec_name = "Vehicle Hangar";
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   self.vec_size = 2;
   
   self.takedamage = DAMAGE_AIM;

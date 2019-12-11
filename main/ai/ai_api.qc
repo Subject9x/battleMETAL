@@ -23,19 +23,15 @@ float() ai_can_spawn={
   }
   
   if( (skill == 0) && (self.spawnflags & NO_NOVICE) ){
-    log_me("NO_NOVICE");
     return FALSE;
   }
   if( (skill == 1) && (self.spawnflags & NO_REGULAR) ){
-  log_me("NO_REGULAR");
     return FALSE;
   }
   if( (skill == 2) && (self.spawnflags & NO_VETERAN) ){
-  log_me("NO_VETERAN");
     return FALSE;
   }
   if( (skill == 3) && (self.spawnflags & NO_ELITE) ){
-  log_me("NO_ELITE");
     return FALSE;
   }
   
@@ -63,9 +59,6 @@ float() ai_can_spawn={
     }
   }
 
-  log_me(strcat("ai_can_spawn()->spawnflags=", ftos(self.spawnflags)));  //DEBUG
-  log_me(strcat("ai_can_spawn()->skill value=", ftos(cvar("skill"))));  //DEBUG
-  log_me(strcat("ai_can_spawn()->canSpawn=", "1"));  //DEBUG
   return TRUE;
 };
 

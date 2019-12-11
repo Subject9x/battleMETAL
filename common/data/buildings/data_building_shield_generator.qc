@@ -70,7 +70,9 @@ void() hshield_die11 = [11, BecomeExplosion]{};
 
 void() hshield_th = [0, hshield_th]{
   local entity t, p;
-
+  local float dist;
+  local float mod;
+ 
   self.energy = self.energy + self.energyRate;
   if(self.energy > self.energyMax){
     self.energy = self.energyMax;
@@ -88,52 +90,53 @@ void() hshield_th = [0, hshield_th]{
     }
   }
 
-  t = findchainflags(flags, FL_MONSTER);
-  while(t){
-    if(t.faction == self.faction){
-      if(t != self){
-        local float dist;
-        dist = vlen(t.origin - self.origin);
-        if(dist <= 1000){
-          if(self.energy > 0){
-            if( time > t.shieldHitDelay){
-              if(t.shield < t.shieldMax){
-                local float mod;
-                mod = self.shieldRate / 2;
-                t.shield = t.shield + mod;
-                self.energy = self.energy - mod;
-                if(t.shield > t.shieldMax){
-                  t.shield = t.shieldMax;
-                }
-              }
-            }
-          }
-        }
-      }
+  for(t = findchainflags(flags, FL_MONSTER); t != world; t = t.chain ){
+
+    if( t == self ){
+      continue;
     }
-    t = t.chain;
+   
+    dist = vlen(t.origin - self.origin);
+    if(dist > 1000){
+      continue;
+    }
+    if( self.energy <= 0 ){
+      continue;
+    }
+    if( time < t.shieldHitDelay ){
+      continue;
+    }
+    if( t.shield > t.shieldMax ){
+      continue;
+    }
+    mod = self.shieldRate / 2;
+    t.shield = t.shield + mod;
+    self.energy = self.energy - mod;
+    if(t.shield > t.shieldMax){
+      t.shield = t.shieldMax;
+    }
   }
   
-  p = findchainflags(flags, FL_CLIENT);
-  while(p){
-    if(p.faction == self.faction){
-      local float pdist;
-      pdist = vlen(t.origin - self.origin);
-      if(pdist <= 1000){
-        if(self.energy > 0){
-          if(p.shield < p.shieldMax){
-            local float pmod;
-            pmod = self.shieldRate;
-            p.shield = p.shield + pmod;
-            self.energy = self.energy - pmod;
-            if(p.shield > p.shieldMax){
-              p.shield = p.shieldMax;
-            }
-          }
-        }
-      }
+  for(p = findchainflags(flags, FL_CLIENT); p != world; p = p.chain ){
+    if(p.faction != self.faction){
+      continue;
     }
-    p = p.chain;
+    dist = vlen(p.origin - self.origin);
+    if(dist > 1000){
+      continue;
+    }
+    if( self.energy <= 0 ){
+      continue;
+    }
+    if( p.shield > p.shieldMax ){
+      continue;
+    } 
+    mod = self.shieldRate;
+    p.shield = p.shield + mod;
+    self.energy = self.energy - mod;
+    if(p.shield > p.shieldMax){
+      p.shield = p.shieldMax;
+    } 
   }
   building_burn();
 }
@@ -164,12 +167,12 @@ void() building_human_shield={
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.data_type = DATA_BLD;
   util_setModel("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
   util_setHealthArmor(500, 500, 1, 100) ;
   setsize(self, '-48 -48 0', '48 48 32');
-  self.shield= 0;
+  self.shield = 0;
   self.shieldMax = 500;
-  self.shieldRate = 1;
+  self.shieldRate = 0.45;
   self.energy = 0;
   self.energyRate = 0;
   self.energyMax = 2000;

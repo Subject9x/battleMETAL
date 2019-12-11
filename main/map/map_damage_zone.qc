@@ -275,12 +275,12 @@ void() map_damage_zone={
   
   self.isActive = TRUE;
   
-  if( !self.mins )
+  if( !self.mins ){
     self.mins = VEC_HULL_MIN;
-  
-  if( !self.maxs )
+  }
+  if( !self.maxs ){
     self.mins = VEC_HULL_MAX;
-  
+  }
   tempMin = self.mins;
   tempMax = self.maxs;
   
@@ -336,13 +336,15 @@ void() map_damage_zone={
   
   
   if( (self.spawnflags & 2) ){
-    if( !self.data_lifetime )
+    if( !self.data_lifetime ){
       self.spawnflags = self.spawnflags - (self.spawnflags & 2);
+      }
   }
   
   if( (self.spawnflags & 4) ){
-    if( !self.wait )
+    if( !self.wait ){
       self.spawnflags = self.spawnflags - (self.spawnflags & 4);
+      }
   }
   
   if( (self.spawnflags & 1) ){

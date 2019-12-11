@@ -117,7 +117,6 @@ void() building_human_fuel={
   self.deadflag = DEAD_NO;
 
   if( !(self.spawnflags & NO_DROP) ){
-    self.spawnflags = self.spawnflags - NO_DROP;
     if( util_cornerSlopeCheck(self, 0.95) ){
       util_generateBuildingFoundation(self);
     }

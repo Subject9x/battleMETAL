@@ -22,7 +22,7 @@ void(string str) SV_ParseClientCommand={
     client_ParseMechCommand(str, argc);
   }
   else if( argv(0) == "savegame"){
-    if( !world.ignoreSave ){
+    if( world.ignoreSave == FALSE ){
       savefile_save();
     }
   }

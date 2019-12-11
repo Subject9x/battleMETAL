@@ -246,8 +246,8 @@ void( entity targetClient ) client_send_enviro_warning={
 */
 void() client_push_mapobjects={
   local entity obj;
-  obj = findchainflags( flags, FL_NODE );
-  while( obj ){
+  
+  for(obj = findchainflags( flags, FL_NODE ); obj != world; obj = obj.chain){
     switch( obj.data_type ){
       case DATA_DEPL:
         client_send_deploypoint( obj );
@@ -259,7 +259,6 @@ void() client_push_mapobjects={
         client_send_objective( obj );
         break;
     }
-    obj = obj.chain;
   }
 };
 
@@ -493,7 +492,7 @@ void(float mode) client_sendGameMode={
   client Mapping = client_event_mission_name();
 */
 void() client_sendMissionName={
-  if( world.message ){
+  if( world.message != "" ){
     msg_entity = self;
     WriteByte( MSG_ONE, SVC_TEMPENTITY);
     WriteByte( MSG_ONE, TE_MISSION_NAME );
@@ -561,7 +560,7 @@ void() client_sendMissionFileName={
   local string cmd, msnFile;
   
   msnFile = mapname;
-  if( world.missionFile ){
+  if( world.missionFile != "" ){
     msnFile = world.missionFile;
   }
   
@@ -579,16 +578,17 @@ void(string cmd, float tokens) client_setNavPoint={
   local float nav_id;
   local entity nav;
   nav_id = stof(argv(2));
-  nav = findchainfloat(data_type, DATA_DEPL);
-  while(nav){
-    if(nav.isActive){
-      if(nav.faction == self.faction){
-        if(nav.data_idx == nav_id){
-          self.goalentity = nav;
-        }
-      }
+  for( nav = findchainfloat(data_type, DATA_DEPL); nav != world; nav = nav.chain){
+    if(!nav.isActive){
+      continue;
     }
-    nav = nav.chain;
+    if(nav.faction != self.faction){
+      continue;
+    }
+    if(nav.data_idx != nav_id){
+      continue;
+    }
+    self.goalentity = nav;
   }
 };
 
@@ -655,17 +655,15 @@ void(entity client, float missionSuccessCheck) client_sendEndMission={
 
 void(entity client ) client_send_mapKeyObjects={
   local entity objects;
-  
-  objects = findchainflags( spawnflags, 4194304);
-  while( objects ){
-    msg_entity = client;  
+
+  for(objects = findchainflags(spawnflags, IT_QUAD); objects != world; objects = objects.chain){
+    msg_entity = client;
     WriteByte( MSG_ONE, SVC_TEMPENTITY );
     WriteByte( MSG_ONE, TE_MAPKEY_DATA );
     WriteByte( MSG_ONE, objects.data_type );
     WriteLong( MSG_ONE, objects.origin_x );
     WriteLong( MSG_ONE, objects.origin_y );
     WriteByte( MSG_ONE, objects.faction);
-    objects = objects.chain;
   }
 };
 
