@@ -24,9 +24,9 @@ void( entity attacker ) ai_spg_react1={
   }
   
   //AI has taken friendly fire
-  if( attacker.faction == self.faction )
+  if( attacker.faction == self.faction ){
     return;
-
+  }
   if( attacker == self.enemy ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
     return;
@@ -54,7 +54,7 @@ void( entity attacker ) ai_spg_react1={
     return;
   }
   
-  if( ai_check_targ_infront( attacker, self.ai_fov, FALSE) ){
+  if( ai_check_targ_infront( attacker, self.ai_fov, (self.flags & FL_TURRET)) ){
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.ai_react_buffer = time + self.ai_react_time * 3;

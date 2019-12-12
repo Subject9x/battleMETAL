@@ -63,7 +63,7 @@ void() ai_noncom_run={
     local entity friend;
     
     enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = ai_check_range( self.enemy );
+    enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
     
     friend = ai_find_friend( AI_RANGE_L );

@@ -94,7 +94,7 @@ void() ai_gev_fight_prep={
   if( ai_valid_target(self.enemy)){
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = ai_check_range( self.enemy );
+    enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
     enemy_hunt = FALSE;
     

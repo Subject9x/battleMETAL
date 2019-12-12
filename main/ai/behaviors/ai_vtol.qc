@@ -57,7 +57,7 @@ void() ai_vtol_run={
   self.attack_finished = 0;
   if( ai_valid_target( self.enemy ) ){
     enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = ai_check_range( self.enemy );
+    enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
     
     if( enemy_vis ){

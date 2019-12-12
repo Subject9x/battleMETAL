@@ -57,23 +57,29 @@ float() ai_can_spawn={
   return TRUE;
 };
 
+/*
+  Line of Sight is calculated from the AI's camera entity.
+*/
 float( entity t ) ai_line_of_sight={
-  //check turret
-  //return false if blocked by world
-  //check for radar.
-  
   local entity trace;
   
-  trace = self;
-  if( (self.flags & FL_TURRET) ){
-    trace = self.cockpit;
-  }
-  makevectors( self.angles );
-  traceline( trace.origin +(v_up * 16), t.origin, MOVE_NORMAL, self);
+  trace = self.cockpit;
+  traceline( trace.origin, t.origin, MOVE_NORMAL, self);
   //realized the terrain model is an entity, and not a brush model, thus itll never be 'world'
   
-  if( trace_fraction > 0.8){
+  if( trace_ent == t ){
     return TRUE;
+  }
+  
+  if( trace_ent.data_idx && trace_ent != t ){
+    if( vlen(t.origin - self.origin) < AI_RANGE_S ){
+      if( trace_ent.maxs_z <= t.maxs_z ){
+        return TRUE;
+      }
+      if( self.stat_rdr_mode == TRUE ){
+        return TRUE;
+      }
+    }
   }
   return FALSE;
 };
@@ -201,8 +207,8 @@ float() ai_find_target_visual={
     fog = self.fog_alpha * self.fog_density;
     fog = fog * fogLen;
     rng = self.ai_view - fogLen;
-    if( rng < AI_RANGE_S ){
-      rng = AI_RANGE_S;
+    if( rng < AI_RANGE_M ){
+      rng = AI_RANGE_M;
     }
     rng = rng + fog;
   }
@@ -211,7 +217,7 @@ float() ai_find_target_visual={
   selfSensorOrg_y = self.origin_y;
   selfSensorOrg_z = 0;
   
-  for(targ = findradius(self.origin, rng); targ !=world; targ = targ.chain){ 
+  for(targ = findradius(self.origin, rng); targ != world; targ = targ.chain){ 
     if( !ai_valid_target(targ) ){
       continue;
     }
@@ -220,6 +226,11 @@ float() ai_find_target_visual={
     }
     if( !ai_check_face(targ, self.ai_fov) ){
       continue;
+    }
+    if( (self.flags & FL_TURRET) ){
+      if( !ai_check_targ_infront( self.enemy, self.ai_fov, TRUE)){
+        continue;
+      }
     }
     if( ai_check_vis(targ) != VIS_FRAC ){
       continue;
@@ -282,20 +293,14 @@ float() ai_find_target_radar={
     if( ndist > rng ){
       continue;
     }
-    if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == TRUE ){
+    if( (targ.flags & FL_CLIENT) && targ.stat_rdr_mode == FALSE ){
       if( ndist > (rng / 2) ){
         continue;
       }
-      if( !ai_line_of_sight(targ) ){
-        continue;
-      }
     }
-    else{
-      if( !ai_line_of_sight(targ) ){
-        continue;
-      }
+    if( !ai_line_of_sight(targ) ){
+      continue;
     }
-  
     rng = ndist;
     found = targ;
   }

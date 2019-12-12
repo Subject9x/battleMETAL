@@ -90,7 +90,7 @@ void() ai_mech_sniper_fight_prep={
     roll = random();
     self.ai_action_time = self.ai_action_mod;
     enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = ai_check_range( self.enemy );
+    enemy_range = self.stat_trg_dist;
     enemy_infront = ai_check_face( self.enemy, self.ai_fov );
     
     if( enemy_vis == VIS_FRAC ){

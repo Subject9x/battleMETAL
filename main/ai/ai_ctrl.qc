@@ -234,14 +234,14 @@ float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
 */
 float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vis={
   if( ai_check_vis(self.enemy) == VIS_FRAC ){
-    if( ai_check_range(self.enemy) < AI_RANGE_M / 2 ){
+    if( self.stat_trg_dist < AI_RANGE_M / 2 ){
       remove(self.ai_node_recall);
       self.ai_node_recall = world;
       self.attack_state = 0;
       macro_ai_frame(frameFuncOnSpot)
       return TRUE;
     }
-    if( ai_check_range(self.enemy) > AI_RANGE_L ){
+    if( self.stat_trg_dist > AI_RANGE_L ){
       self.attack_state = 0;
       macro_ai_frame(frameFuncRangeOut)
       return TRUE;
@@ -395,10 +395,8 @@ float(entity t, float ang, float useTurret) ai_check_targ_infront={
 	local float		dot;
   
   vang = self.angles;
-  if( (self.flags & FL_TURRET) ){
-    if( useTurret ){
-      vang = self.torsoCenter.angles;
-    }
+  if( useTurret ){
+    vang = self.torsoCenter.angles;
   }
   
   makevectors ( vang );
@@ -419,7 +417,7 @@ float(entity t) ai_check_range={
 float( entity targ ) ai_check_vis={
   local vector	spot1, spot2;
   
-  spot1 = self.origin;
+  spot1 = self.cockpit.origin;
   spot2 = targ.origin;
   traceline (spot1, spot2, FALSE, self);
   
@@ -437,14 +435,18 @@ float( entity targ ) ai_check_vis={
   
   if( trace_ent.faction == self.faction ){
     friend_blocker = trace_ent;
-    friend_blocker_dist = vlen(friend_blocker.origin - self.origin);
+    friend_blocker_dist = vlen(friend_blocker.origin - spot1);
     return VIS_FRN;
   }
   
-  if( trace_fraction >= 0.9 && (trace_ent.flags & FL_UNIT) ){
-    return VIS_FRAC;
+  if( trace_ent.data_idx ){
+    if( trace_fraction >= 0.9 ){
+      return VIS_FRAC;
+    }
+    if( targ.maxs_z > trace_ent.maxs_z && vlen(spot2 - spot1) <= AI_RANGE_S ){
+      return VIS_FRAC;
+    }
   }
-  
   return VIS_FAIL;
 };
 

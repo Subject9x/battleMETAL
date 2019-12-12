@@ -170,7 +170,7 @@ void( entity attacker ) ai_mech_sniper_react1={
     return;
   }
   
-  if( ai_check_targ_infront( attacker, self.ai_fov, TRUE) ){
+  if( ai_check_targ_infront( attacker, self.ai_fov, (self.flags & FL_TURRET)) ){
     self.oldenemy = self.enemy;
     self.enemy = attacker;
     self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );

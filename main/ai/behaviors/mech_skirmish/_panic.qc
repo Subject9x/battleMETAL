@@ -18,9 +18,9 @@ void( entity attacker ) ai_mech_sk_react1={
   }
   
   //AI has taken friendly fire
-  if( attacker.faction == self.faction )
+  if( attacker.faction == self.faction ){
     return;
-  
+  }
   if( attacker == self.enemy ){
     self.ai_react_buffer = time + self.ai_react_time * 5;
     if( self.attack_state != ST_HUNT ){
