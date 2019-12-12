@@ -120,23 +120,33 @@ void() ai_update={
   Primary Generic touch function for AI.
 */
 void() ai_touch={
-    //ignore nodes straight away, logic for these touches are in ai_nodes
-  if( (other.flags & FL_NODE) ){
+  local float enemyFront;
+  local float otherFront;
+  local entity thisEnemy;
+    //ignore environment
+  if( !(other.flags & FL_UNIT) ){
     return;
   }
+  enemyFront = ai_check_targ_infront( other, self.ai_fov, (self.flags & FL_TURRET) ); 
+  otherFront = ai_check_targ_infront( other, self.ai_fov, (self.flags & FL_TURRET) );
   if( other.faction != self.faction ){
-    if( ai_check_targ_infront( other, self.ai_fov, FALSE) ){
-      if( time > self.ai_react_buffer ){
-        self.oldenemy = self.enemy;
-        self.enemy = other;
-        if( (self.flags & FL_TURRET) ){
-          self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
-          self.torsoCenter.attack_state = TR_TARG;
-        }
-        self.ai_react_buffer = time + self.ai_react_time * 3;
-        macro_ai_frame(self.th_missile)
-        return;
+    if( ai_valid_target(self.enemy) ){
+      if( !enemyFront && otherFront ){
+        thisEnemy = other;
       }
+    }
+    else{
+      thisEnemy = other;
+    }
+    if( time > self.ai_react_buffer ){
+      self.enemy = other;
+      if( (self.flags & FL_TURRET) ){
+        self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.torsoCenter.origin );
+        self.torsoCenter.attack_state = TR_TARG;
+      }
+      self.ai_react_buffer = time + self.ai_react_time * 2;
+      macro_ai_frame(self.th_missile)
+      return;
     }
   }
 };
@@ -443,6 +453,39 @@ float() ai_attack={
   return 1;
 };
 
+void() ai_patrol_turn={
+  if( self.ideal_yaw < anglemod(self.angles_y-90) || self.ideal_yaw < anglemod(self.angles_y+90) ){
+    macro_ai_frame(self.th_rotate)
+  }
+};
+
+void() ai_rotate_mech={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ai_ctrl_update_mechplayer)
+  
+  ChangeYaw();
+  if( self.angles_y == self.ideal_yaw ){
+    macro_ai_frame_count(ai_rotate_mech)
+    macro_ai_frame(self.th_stand)
+    return;
+  }
+  macro_ai_frame(ai_rotate_mech)
+};
+
+
+void() ai_rotate_tank={
+  ai_update_accuracy( FALSE );
+  macro_ai_update(ctrl_updateTank)
+  
+  ChangeYaw();
+  if( self.angles_y == self.ideal_yaw ){
+    macro_ai_frame_count(ai_rotate_tank)
+    macro_ai_frame(self.th_stand)
+    return;
+  }
+  macro_ai_frame(ai_rotate_tank)
+};
+
 /*
 ===================================================
 */
@@ -495,11 +538,17 @@ void() ai_setup_patrol={
     self.movetarget = node;
     self.goalentity = node;
     self.ideal_yaw = vectoyaw( node.origin - self.origin );
-    dropToFloorCorners();
+    
+    if( (self.spawnflags & NO_DROP) ){
+      self.flags = self.flags - (self.flags & FL_ONGROUND);
+    }
+    else{
+      dropToFloorCorners();
+    }
     if( (self.flags & FL_TURRET) ){
       util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);
     }
-    if( self.legs ){
+    if( self.legs != world ){
       util_setOffsetOrigin(self.legs, self, self.legs.compOffset);
     }
     self.think = self.th_walk;

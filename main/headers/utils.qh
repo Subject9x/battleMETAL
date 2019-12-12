@@ -17,7 +17,7 @@ void(string msg, float val, string split, float val2) cons_log2Float;
 void(string msg, vector v1, string split, vector v2) cons_log2Vectors;
 void(string msg, string s1, string split, string s2) cons_log2Strings;
 
-//super DEBUG - remove when no longer needed
+//super DEBUG - use sparingly cause dat file I/O cost
 void(string reason) log_me={
   local float logThis;
   logThis = fopen("log.txt", FILE_APPEND);

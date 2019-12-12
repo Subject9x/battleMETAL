@@ -254,7 +254,6 @@ void() SUB_UseTargets =
 		t.message = self.message;
 		t.killtarget = self.killtarget;
 		t.target = self.target;
-    log_me("SUB_UseTargets self.delay");
 		return;
 	}
 

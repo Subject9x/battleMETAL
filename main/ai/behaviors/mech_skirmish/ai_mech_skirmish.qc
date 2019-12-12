@@ -25,6 +25,7 @@ void() ai_mech_skirmish={
   self.th_pain = ai_mech_sk_panic1;
   self.th_react = ai_mech_sk_react1;
   self.th_die = ai_mech_sk_die;
+  self.th_rotate = ai_rotate_mech;
   self.touch = ai_touch;
 
   ai_setup_patrol();

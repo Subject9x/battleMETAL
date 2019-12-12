@@ -30,8 +30,14 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_hangar={
 
-  self.data_idx = UI_BUILDING_hangar_large;
+  self.data_idx = self.nextVecChoice = UI_BUILDING_hangar_large;
   self.data_type = DATA_BLD;
+
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+
   self.vec_name = "Large Hangar";
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;

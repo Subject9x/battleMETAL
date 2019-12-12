@@ -319,10 +319,10 @@ float(entity t, float tolerance) util_cornerSlopeCheck={
   
   makevectors(t.angles);
   start = t.origin + (v_up * self.mins_z);
-  c1 = start + (v_forward * self.maxs_x) + (v_right * self.maxs_y);
-  c2 = start + (v_forward * self.mins_x) + (v_right * self.maxs_y);
-  c3 = start + (v_forward * self.mins_x) + (v_right * self.mins_y);
-  c4 = start + (v_forward * self.maxs_x) + (v_right * self.mins_y);
+  c1 = start + (v_right * self.maxs_x) + (v_forward * self.maxs_y);
+  c2 = start + (v_right * self.mins_x) + (v_forward * self.maxs_y);
+  c3 = start + (v_right * self.mins_x) + (v_forward * self.mins_y);
+  c4 = start + (v_right * self.maxs_x) + (v_forward * self.mins_y);
   distanceCheck = 0;
   
   /*
@@ -382,10 +382,10 @@ void() dropToFloorCorners={
   local float distanceCheck, comparator, hold;
   
   makevectors(self.angles);
-  c1 = self.origin + (v_up * self.mins_z) + (v_forward * self.maxs_x) + (v_right * self.maxs_y);
-  c2 = self.origin + (v_up * self.mins_z) + (v_forward * self.mins_x) + (v_right * self.maxs_y);
-  c3 = self.origin + (v_up * self.mins_z) + (v_forward * self.mins_x) + (v_right * self.mins_y);
-  c4 = self.origin + (v_up * self.mins_z) + (v_forward * self.maxs_x) + (v_right * self.mins_y);
+  c1 = self.origin + (v_up * (self.mins_z - 8)) + (v_right * self.maxs_x) + (v_forward * self.maxs_y);
+  c2 = self.origin + (v_up * (self.mins_z - 8)) + (v_right * self.mins_x) + (v_forward * self.maxs_y);
+  c3 = self.origin + (v_up * (self.mins_z - 8)) + (v_right * self.mins_x) + (v_forward * self.mins_y);
+  c4 = self.origin + (v_up * (self.mins_z - 8)) + (v_right * self.maxs_x) + (v_forward * self.mins_y);
   distanceCheck = 0;
   
   /*
@@ -394,13 +394,13 @@ void() dropToFloorCorners={
     
   */
   down = v_up * -4000;
-  traceline(c1, c1 + down, FALSE, self);
+  traceline(c1, c1 + down, MOVE_NORMAL, self);
   if( vlen(trace_endpos - c1) > 0 ){
     distanceCheck = distanceCheck + 1;
     comparator = vlen(trace_endpos - c1);
   }
   
-  traceline(c2, c2 + down, FALSE, self);
+  traceline(c2, c2 + down, MOVE_NORMAL, self);
   if( vlen(trace_endpos - c2) > 0 ){
     distanceCheck = distanceCheck + 1;
     hold = vlen(trace_endpos - c2);
@@ -409,7 +409,7 @@ void() dropToFloorCorners={
     }
   }
   
-  traceline(c3, c3 + down, FALSE, self);
+  traceline(c3, c3 + down, MOVE_NORMAL, self);
   if( vlen(trace_endpos - c3) > 0 ){
     distanceCheck = distanceCheck + 1;
     hold = vlen(trace_endpos - c3);
@@ -418,7 +418,7 @@ void() dropToFloorCorners={
     }
   }
   
-  traceline(c4, c4 + down, FALSE,  self);
+  traceline(c4, c4 + down, MOVE_NORMAL,  self);
   if( vlen(trace_endpos - c4) > 0 ){
     distanceCheck = distanceCheck + 1;
     hold = vlen(trace_endpos - c4);
@@ -428,11 +428,10 @@ void() dropToFloorCorners={
   }
   
   if( distanceCheck > 0 ){
-    traceline(self.origin, self.origin + (v_up * (comparator * -1)), FALSE, self);
+    traceline(self.origin, self.origin + (v_up * (comparator * -1)), MOVE_NORMAL, self);
     check = trace_endpos;
     check = check + (v_up * (self.mins_z *-1) );
     setorigin( self, check );
-    droptofloor();
   }
 };
 

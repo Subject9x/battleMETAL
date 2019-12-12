@@ -51,7 +51,7 @@ IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 LIGHTS_OFF 2097152: turns off lights from this building.
 */
 void() building_guard_tower={
-  self.data_idx = UI_BUILDING_guard_tower;
+  self.data_idx = self.nextVecChoice = UI_BUILDING_guard_tower;
   self.data_type = DATA_BLD;
   self.nextVecChoice = self.data_idx;
 

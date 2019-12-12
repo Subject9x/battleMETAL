@@ -32,35 +32,36 @@ void() ctrl_update_mechplayer={
   self.armLeft.hitOffset = self.origin + (v_right * self.armLeft.compAltOffset_x) + (v_up * self.armLeft.compAltOffset_y);
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
-  while( piece ){
-    if( piece.classname == MECH_PIECE ){
-      if( piece.deadflag <= DEAD_NO ){
-        hp = piece.health / piece.max_health;
-        if( hp < 0.75){
+  for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
+    if( piece.classname != MECH_PIECE ){
+      continue;
+    }
+    if( piece.deadflag <= DEAD_NO ){
+      hp = piece.health / piece.max_health;
+      if( hp < 0.75){
+        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+        if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
           pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
-          if( hp < 0.5){
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+          if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
             pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
-            if( hp < 0.25){
-              spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
-              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
-            }
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
           }
         }
       }
-      else{
-        partParent = util_getPartFromName(piece.partParentId, self); 
-        if( partParent.deadflag <= DEAD_NO ){
-          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          spark = te_apply_wind( spark );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
-        }
-      }
     }
-    piece = piece.partNext;
+    else{
+      partParent = util_getPartFromName(piece.partParentId, self); 
+      if( partParent.deadflag > DEAD_NO ){
+        continue;
+      }
+      spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+      spark = te_apply_wind( spark );
+      pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+    }
   }
 };
 
@@ -89,35 +90,36 @@ void() ai_ctrl_update_mechplayer={
   self.torsoCenter.hitOffset = self.origin + (v_right * self.torsoCenter.compAltOffset_x) + (v_up * self.torsoCenter.compAltOffset_y);
   
   piece = self.partNext;
-  while( piece ){
-    if( piece.classname == MECH_PIECE ){
-      if( piece.deadflag <= DEAD_NO ){
-        hp = piece.health / piece.max_health;
-        if( hp < 0.75){
+  for(piece = self.partNext; piece.owner == self; piece = piece.partNext){
+    if( piece.classname != MECH_PIECE ){
+      continue;
+    }
+    if( piece.deadflag <= DEAD_NO ){
+      hp = piece.health / piece.max_health;
+      if( hp < 0.75){
+        spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+        if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
-          if( hp < 0.5){
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+          if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 0.5);
-            if( hp < 0.25){
-              spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5, 0.5);
-              pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5, 0.5);
-            }
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
           }
         }
       }
-      else{
-        partParent = util_getPartFromName(piece.partParentId, self); 
-        if( partParent.deadflag <= DEAD_NO ){
-          spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          spark = te_apply_wind( spark );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * WINDDIR_z, 0.5);
-        }
-      }
     }
-    piece = piece.partNext;
+    else{
+      partParent = util_getPartFromName(piece.partParentId, self); 
+      if( partParent.deadflag > DEAD_NO ){
+        continue;
+      }
+      spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
+      spark = te_apply_wind( spark );
+      pointparticles( particleeffectnum("TE_MECHPIECE_DEAD_BURN"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+    }
   }
 };
 

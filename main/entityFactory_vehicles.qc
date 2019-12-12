@@ -73,8 +73,7 @@ void() build_unit_camera={
     macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_FOLLOW)
     setmodel( self, "q3mdl/testball.md3");
     setsize(self, '-1 -1 -1', '1 1 1');
-    util_setOffsetOrigin(self, this, self.compOffset);
-    
+    macro_set_offset(this, self.compOffset)
     self.scale = 0.001;
     
     self.aiment = partParent;
@@ -440,7 +439,7 @@ void() build_unit_turret={
     self.classname = MECH_PIECE; 
     macro_set_collider(DAMAGE_NO, SOLID_NOT, MOVETYPE_NONE)
     macro_set_model(self.model, this.skin, 0)
-    setsize(self, '-1 -1 -1','1 1 1');
+    setsize(self, self.mins, self.maxs);
     macro_set_offset(this, self.compOffset)
     self.angles = this.angles;
     self.owner = this;

@@ -126,13 +126,18 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_power={
-  self.data_idx = UI_BUILDING_power_plant;
+  self.data_idx = self.nextVecChoice = UI_BUILDING_power_plant;
   self.data_type = DATA_BLD;
+
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
   self.vec_name = "Power Generator";
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 3;
-  util_setModel("q3mdl/buildings/power_plant/mdl_bld_h_power.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
+  macro_set_model("q3mdl/buildings/power_plant/mdl_bld_h_power.md3", self.skin, 0) 
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
   util_setHealthArmor(1200, 1200, 1, 100);
   setsize(self, '-75 -75 0', '75 75 26');
   self.shield= 0;

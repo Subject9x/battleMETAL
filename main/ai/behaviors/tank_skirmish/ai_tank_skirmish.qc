@@ -24,6 +24,7 @@ void() ai_tank_skirmish={
   self.th_pain = ai_tank_sk_panic1;
   self.th_react = ai_tank_sk_react1;
   self.th_die = ai_tank_sk_die;
+  self.th_rotate = ai_rotate_tank;
   self.touch = ai_touch;
   
   ai_setup_patrol();

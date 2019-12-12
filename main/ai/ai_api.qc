@@ -6,18 +6,13 @@ Overview:
   Main Impl for AI API
 */
 
-
-
 /*
   Go through spawn flags
   Check Game Mode and Difficulty Skill
   remove AI if they're flagged to not be in a category; 
 */
 float() ai_can_spawn={  
-  
-  if( self.data_type == DATA_BLD && self.data_idx <= 0 ){
-    return FALSE;
-  }
+
   if( self.nextVecChoice < 1 ){
     return FALSE;
   }
@@ -160,7 +155,7 @@ void( entity t) ai_alert_close={
     if( !ai_valid_target(ally) ){
       continue;
     }
-    ai_give_target( ally, t, (self.ai_rank <= ally.ai_rank) );
+    ai_give_target( ally, t, (self.ai_rank >= ally.ai_rank) );
   }
 };
 
@@ -216,7 +211,6 @@ float() ai_find_target_visual={
   selfSensorOrg_y = self.origin_y;
   selfSensorOrg_z = 0;
   
-  targ = findradius(self.origin, rng);
   for(targ = findradius(self.origin, rng); targ !=world; targ = targ.chain){ 
     if( !ai_valid_target(targ) ){
       continue;

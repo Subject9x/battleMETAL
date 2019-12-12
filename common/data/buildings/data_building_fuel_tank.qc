@@ -101,13 +101,19 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_fuel={
-  self.data_idx = UI_BUILDING_fuel_tank;
+  self.data_idx = self.nextVecChoice = UI_BUILDING_fuel_tank;
   self.data_type = DATA_BLD;
+
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+
   self.vec_name = "Fuel Tank";
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 2;
-  util_setModel("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
+  macro_set_model("q3mdl/buildings/fueltank/mdl_bld_h_fuel.md3", self.skin, 0)
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
   util_setHealthArmor(75, 75, 1, 100) ;
   setsize(self, '-40 -40 0', '40 40 64');
   self.shield= 0;

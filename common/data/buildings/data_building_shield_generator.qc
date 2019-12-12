@@ -9,16 +9,16 @@ Overview: data file for building
 */
 void() hshield_die = [0, hshield_die1]{
   local entity head;
+  
   self.solid = SOLID_NOT;
-  head = findradius(self.origin, 400);
-  while(head){
-    if(head.data_type == DATA_MECH){
-      head.shield = head.shield + 250;
-      if(head.shield > head.shieldMax){
-        head.shield = head.shieldMax;
-      }
+  for(head = findradius(self.origin, 400); head != world; head = head.chain){
+    if( head.data_type != DATA_MECH ){
+      continue;
     }
-    head = head.chain;
+    head.shield = head.shield + 250;
+    if(head.shield > head.shieldMax){
+      head.shield = head.shieldMax;
+    }
   }
   
   building_die();
@@ -160,13 +160,18 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_shield={
-  self.data_idx = UI_BUILDING_shield_generator;
+  self.data_idx = self.nextVecChoice = UI_BUILDING_shield_generator;
   self.data_type = DATA_BLD;
+  
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
-  self.data_type = DATA_BLD;
-  util_setModel("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0) ;
+  
+  macro_set_model("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0)
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
   util_setHealthArmor(500, 500, 1, 100) ;
   setsize(self, '-48 -48 0', '48 48 32');

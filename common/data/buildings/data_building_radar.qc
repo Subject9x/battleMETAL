@@ -186,15 +186,21 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_radar={
-  self.data_idx = UI_BUILDING_radar;
+  self.data_idx = self.nextVecChoice = UI_BUILDING_radar;
   self.data_type = DATA_BLD;
+
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+
   self.ai_rank = skill;
   self.w_firetime = AI_POST_SPOT_TIME;
   self.vec_name = "Listening Post";
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
   self.vec_size = 1;
-  util_setModel("q3mdl/buildings/radar/mdl_bld_h_radar.md3", self.skin, 0) ;
-  util_setCollider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE) ;
+  macro_set_model("q3mdl/buildings/radar/mdl_bld_h_radar.md3", self.skin, 0)
+  macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
   util_setHealthArmor(100, 100, 1, 100);
   setsize(self, '-20 -20 0', '20 20 26');
   self.shield = 0;
@@ -241,8 +247,14 @@ void() building_human_radar={
   self.wait = time;
   
   makevectors(self.angles);
-  world_make_dlight( (self.origin + (v_up * 38) + (v_forward * -15) + (v_right * 18)), self, 1, '1 0 0', 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 100);
   
+  if( self.faction == FACTION_PSC ){
+    world_make_dlight( (self.origin + (v_up * 38) + (v_forward * -15) + (v_right * 18)), self, 1, '0 1 0', 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 100);
+  }
+  else{
+    world_make_dlight( (self.origin + (v_up * 38) + (v_forward * -15) + (v_right * 18)), self, 1, '1 0 0', 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 100);
+  }
+
   ai_voice_ini( TRUE );
   
   //allows RADAR to call a specific trigger when it spots something

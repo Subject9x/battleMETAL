@@ -23,6 +23,7 @@ void() ai_gev={
   self.th_pain = ai_gev_panic1;
   self.th_react = ai_gev_react1;
   self.th_die = ai_gev_die;
+  self.th_rotate = ai_rotate_tank;
   self.touch = ai_touch;
   
   ai_setup_patrol();

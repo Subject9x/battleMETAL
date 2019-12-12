@@ -23,6 +23,7 @@ void() ai_vec_dest={
   self.th_pain = ai_spg_panic1;
   self.th_react = ai_spg_react1;
   self.th_die = ai_vec_dest_die;
+  self.th_rotate = ai_rotate_tank;
   self.touch = ai_touch;
 
   ai_setup_patrol();

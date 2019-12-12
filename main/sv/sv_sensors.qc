@@ -25,7 +25,7 @@ void() radarSweepBasic={
   high = anglemod( sweep + 1 );
   
   for(blip = findradius(self.origin, self.radar_range); blip != world; blip = blip.chain){
-    if( !(blip.flags & FL_MONSTER) || !(blip.flags & FL_CLIENT) ){
+    if( !(blip.flags &  FL_UNIT) ){
       continue;
     }
     if( blip == self ){
@@ -36,16 +36,15 @@ void() radarSweepBasic={
     }
         
     yaw = vectoyaw( self.origin - blip.origin);
-    if( (yaw < low) || (yaw > high) ){
-      continue;
-    }
-    if( !self.stat_rdr_mode ){
-      traceline( self.origin, blip.origin, MOVE_NORMAL, self );
-      if( trace_ent != blip || trace_fraction != 1 ){
-        continue;
+    if( (yaw >= low) && (yaw <= high) ){
+      if( self.stat_rdr_mode < TRUE){
+        traceline( self.origin, blip.origin, MOVE_NORMAL, self );
+        if( trace_ent != blip || trace_fraction != 1 ){
+          continue;
+        }
       }
+      client_push_radar_ping( blip );
     }
-    client_push_radar_ping( blip );
   }
 };
 
@@ -60,6 +59,7 @@ void() radarSweepAdv={
   //TODO - Magic numbers
   local float inv;
   local entity blip;
+  local float dist;
   
   if( self.radar_time > self.radar_range ){
     self.radar_time = 0;
@@ -78,7 +78,6 @@ void() radarSweepAdv={
     if( blip.deadflag > DEAD_NO ){
       continue;
     }
-    local float dist;
     dist = vlen( self.origin - blip.origin);
   
     if( (dist > self.radar_time + inv / 2 ) && (dist < self.radar_time - inv / 2) ){
@@ -197,6 +196,5 @@ void() sv_updateTargetInfo={
         self.enemy.stat_lck_stt = self.enemy.stat_lck_stt - (self.enemy.stat_lck_stt & LOCK_PLAYER);
       }
     }
-    
   }
 };

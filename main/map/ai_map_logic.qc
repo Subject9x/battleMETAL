@@ -144,9 +144,15 @@ vector lastDestinationForward;
 entity lastTeleTarg;
 
 void() tele_source_touch={
-  local vector newOrg;
   local entity shortTemp, shortOther;
+  
+  local vector testAngle;
+  local vector testSpot;
+  local float angleCount;
+  local float testDistance;
+  local float checkDist;
   if( (other.flags & FL_UNIT) && other.faction == self.faction ){
+    other.solid = SOLID_NOT;
     if( lastDestination.targetname != self.target ){
       lastDestination = find(world, targetname, self.target);
       makevectors(lastDestination.angles);
@@ -154,10 +160,29 @@ void() tele_source_touch={
       lastDestinationRight = v_right;
       lastDestinationForward = v_forward;
     }
-    newOrg = lastDestination.origin;
-    newOrg = newOrg + (lastDestinationForward * (other.maxs_x * 2));
-    setorigin(other, newOrg);
+    checkDist = 32;
+    testAngle_y = anglemod(lastDestination.angles_y + angleCount * 90);
+    testAngle_x = lastDestination.angles_x;
+    testAngle_z = lastDestination.angles_z;
+    for(angleCount = 1; angleCount < 5; angleCount = angleCount + 1){
+      testAngle_y = anglemod(testAngle_y + 90);
+      makevectors(testAngle);
+      traceline(lastDestination.origin, lastDestination.origin + (v_forward * (other.maxs_x * 3)) + (v_up * -256), MOVE_NORMAL, self);
+      testDistance = vlen(trace_endpos - lastDestination.origin);
+      if( testDistance >= checkDist ){
+        checkDist = testDistance;
+        testSpot = trace_endpos;
+      }
+    }
+    //traceline(lastDestination.origin, lastDestination.origin + (v_forward * (checkDist - other.maxs_x / 2)), MOVE_NORMAL, self);
+    if( testSpot == '0 0 0' ){
+      testSpot = self.origin;
+    }
+    traceline( testSpot, testSpot + (v_up * (other.maxs_z * 3)) - (v_forward * (other.maxs_x * 0.5)), MOVE_NORMAL, other);
+    setorigin(other, trace_endpos);
+    other.angles = lastDestination.angles;
     other.flags = other.flags - other.flags & FL_ONGROUND;
+    other.solid = SOLID_SLIDEBOX;
     if( lastDestination.target ){
       if( lastTeleTarg.targetname != lastDestination.target ){
         lastTeleTarg = find(world, targetname, lastDestination.target);

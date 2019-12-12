@@ -193,10 +193,18 @@ NODROP 8192: doesnt run droptofloor logic, starts exactly where placed.
 IS_MAPKEY 4194304: mark's this entity on player's briefing map.
 */
 void() building_human_repair={
-  self.data_idx = UI_BUILDING_repair_bay;
+  self.data_idx = self.nextVecChoice = UI_BUILDING_repair_bay;
   self.data_type = DATA_BLD;
-  self.vec_name = "Repair Bay";
   self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.deadflag = DEAD_NO;
+  self.movetype = MOVETYPE_NONE;
+  
+  if( ai_can_spawn() == FALSE ){
+    remove(self);
+    return;
+  }
+
+  self.vec_name = "Repair Bay";
   self.vec_size = 3;
   macro_set_collider(DAMAGE_YES, SOLID_BSP, MOVETYPE_NONE)
   macro_set_model("q3mdl/buildings/repair_bay/mdl_repair_bay.md3", self.skin, 0)
@@ -216,9 +224,7 @@ void() building_human_repair={
     self.reloadMax = 2000;
     self.reloadRate = 1;
   }
-  
-  self.deadflag = DEAD_NO;
-  self.movetype = MOVETYPE_NONE;
+
   self.nextthink = time + 0.1;
   self.use = multi_trigger;
   
