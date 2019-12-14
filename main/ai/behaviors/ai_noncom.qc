@@ -24,7 +24,7 @@ void() ai_noncom_th;
 
 void() ai_noncom_stand={
   
-  if( ai_check_scan( self.stat_rdr_mode ) ){
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     //ai_next_state( ST_MISSILE );
     return;
   }
@@ -42,7 +42,7 @@ void() ai_noncom_stand={
 void() ai_noncom_walk={
   //ai_walkgoal( AI_WALK_SPD ); DEPRECATED
   
-  if( ai_check_scan( self.stat_rdr_mode ) ){
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
    // ai_next_state( ST_MISSILE );
     return;
   }

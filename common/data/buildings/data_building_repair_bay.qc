@@ -256,6 +256,9 @@ void() building_human_repair={
   setsize(repairNode, '-8 -8 -24', '8 8 32');
   setorigin(repairNode, this.compOffset);
   
+  makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
+  
   self.th_die = hrepair_die;
   self.th_stand = hrepair_th;
   self.th_walk = hrepair_rep;

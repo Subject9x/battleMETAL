@@ -102,7 +102,7 @@ void(float rank) ai_pilot_ini_stats={
 void() ai_pilot_ini_rok={
   self.helpTimeDelay = AI_HELP_COOL_ROK;
   self.ai_react_time = AI_REACT_ROK;
-  self.ai_fov = AI_FOV * AI_FOV_ROK;
+  self.ai_fov = AI_FOV_ROK;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_ROK;
   self.ai_viewcheck = AI_VIEW_INTERVAL * AI_VIEW_ROK;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_ROK );
@@ -120,7 +120,7 @@ void() ai_pilot_ini_rok={
 void() ai_pilot_ini_reg={
   self.helpTimeDelay = AI_HELP_COOL_REG;
   self.ai_react_time = AI_REACT_REG;
-  self.ai_fov = AI_FOV * AI_FOV_REG;
+  self.ai_fov = AI_FOV_REG;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;
   self.ai_viewcheck = AI_VIEW_INTERVAL * AI_VIEW_REG;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_REG );
@@ -139,7 +139,7 @@ void() ai_pilot_ini_reg={
 void() ai_pilot_ini_vet={
   self.helpTimeDelay = AI_HELP_COOL_VET;
   self.ai_react_time = AI_REACT_VET;
-  self.ai_fov = AI_FOV * AI_FOV_VET;
+  self.ai_fov = AI_FOV_VET;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_VET;
   self.ai_viewcheck = AI_VIEW_INTERVAL * AI_VIEW_VET;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_VET );
@@ -157,7 +157,7 @@ void() ai_pilot_ini_vet={
 void() ai_pilot_ini_ace={
   self.helpTimeDelay = AI_HELP_COOL_ACE;
   self.ai_react_time = AI_REACT_ACE;
-  self.ai_fov = AI_FOV * AI_FOV_ACE;
+  self.ai_fov = AI_FOV_ACE;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_ACE;
   self.ai_viewcheck = AI_VIEW_INTERVAL * AI_VIEW_ACE;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_ACE );

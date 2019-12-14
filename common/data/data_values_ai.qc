@@ -20,6 +20,7 @@ float AI_WALK_SPD = 0.075;
 float AI_RUN_FACTOR = 1.25;
 float AI_MECH_MOVE_FACTOR = 0.75; //mechs cannot move as fast as player
 float AI_RUN_SPD = 0.2;
+float AI_PATROL_SPEED_LIMIT = 100; //units going full speed on patrol so far is rough on game balance.
 
 //Radar post
 float AI_POST_SWEEP_SIZE = 6;
@@ -44,15 +45,15 @@ float AI_DMG_SKILL_VET = 0.9;
 float AI_DMG_SKILL_ACE = 1;
 
 //Field of View as normalized dot product
-float AI_FOV     = 0.67;
+// 0.0 ~ 90d from center
 //these are multipliers
-float AI_FOV_ROK = 0.75;
-float AI_FOV_REG = 1.25;
-float AI_FOV_VET = 1.5;
-float AI_FOV_ACE = 1.75;
+float AI_FOV_ROK = 0.72;
+float AI_FOV_REG = 0.48;
+float AI_FOV_VET = 0.24;
+float AI_FOV_ACE = 0;
 
 //time interval between view sweeps
-float AI_VIEW_INTERVAL = 1;
+float AI_VIEW_INTERVAL = 0.75;
 //these are multipliers
 float AI_VIEW_ROK = 1.33;
 float AI_VIEW_REG = 1;

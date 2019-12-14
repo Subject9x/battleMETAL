@@ -247,6 +247,7 @@ void() building_human_radar={
   self.wait = time;
   
   makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
   if( self.faction == FACTION_PSC ){
     world_make_dlight( (self.origin + (v_up * 38) + (v_forward * -15) + (v_right * 18)), self, 1, '0 1 0', 2, PFLAGS_FULLDYNAMIC, '-90 0 0', 0, 100);

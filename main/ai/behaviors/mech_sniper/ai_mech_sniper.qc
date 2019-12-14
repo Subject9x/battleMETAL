@@ -47,7 +47,7 @@ void() ai_mech_sniper_stand1={
   self.legs.think = bot_leg_stand1;
   self.legs.nextthink = time + 0.1;
   
-  if( ai_check_scan( self.stat_rdr_mode ) ){
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     macro_ai_frame(ai_mech_sniper_fight_prep)
     return;
   }
@@ -86,111 +86,120 @@ void() ai_mech_sniper_fight_prep={
   ai_update_accuracy( FALSE );
   macro_ai_update(ai_ctrl_update_mechplayer)
   
-  if( ai_valid_target(self.enemy) ){
-    roll = random();
-    self.ai_action_time = self.ai_action_mod;
-    enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = self.stat_trg_dist;
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
-    
-    if( enemy_vis == VIS_FRAC ){
-      if( enemy_range < 200 ){
-        if( enemy_infront ){
-          if( self.ai_rank > AI_RANK_REG ){
-            macro_ai_frame(ai_mech_sniper_enter_melee)
-            return;
-          }
-          if( roll < 0.35 ){
-            self.lefty = -1;
-            macro_ai_frame(ai_mech_sniper_enter_charge)
-            return;
-          }
-          macro_ai_frame(ai_mech_sniper_enter_reverse)
-          return;
-        }
+  if( !ai_valid_target(self.enemy) ){
+    macro_ai_frame(self.th_stand)
+    return;
+  } 
+  
+  if( (self.flags & FL_DISARMED) ){
+    self.th_pain( world );
+    return;
+  }
+
+  
+  roll = random();
+  self.ai_action_time = self.ai_action_mod;
+  enemy_vis = ai_check_vis( self.enemy );
+  enemy_range = self.stat_trg_dist;
+  enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+  
+  if( enemy_vis == VIS_FRAC ){
+    if( enemy_range < 200 ){
+      if( enemy_infront ){
         if( self.ai_rank > AI_RANK_REG ){
-          macro_ai_frame(ai_mech_sniper_enter_reverse)
+          macro_ai_frame(ai_mech_sniper_enter_melee)
           return;
         }
-        macro_ai_frame(ai_mech_sniper_rotate1)
+        if( roll < 0.35 ){
+          self.lefty = -1;
+          macro_ai_frame(ai_mech_sniper_enter_charge)
+          return;
+        }
+        macro_ai_frame(ai_mech_sniper_enter_reverse)
         return;
       }
-      if( enemy_range <= self.ai_minrange ){
-        if( enemy_infront ){
-          if( self.ai_rank > AI_RANK_REG ){
-            if( roll < 0.35 ){
-              macro_ai_frame(ai_mech_sniper_enter_reverse)
-              return;
-            }
-            if( roll < 0.67 ){
-              //melee
-              macro_ai_frame(ai_mech_sniper_enter_melee)
-              return;
-            }
-          }
-          if( roll < 0.15 ){
-            macro_ai_frame(ai_mech_sniper_snipe1)
-            return;
-          }
-          if( roll < 0.3 ){
+      if( self.ai_rank > AI_RANK_REG ){
+        macro_ai_frame(ai_mech_sniper_enter_reverse)
+        return;
+      }
+      macro_ai_frame(ai_mech_sniper_rotate1)
+      return;
+    }
+    if( enemy_range <= self.ai_minrange ){
+      if( enemy_infront ){
+        if( self.ai_rank > AI_RANK_REG ){
+          if( roll < 0.35 ){
             macro_ai_frame(ai_mech_sniper_enter_reverse)
             return;
           }
           if( roll < 0.67 ){
-            self.lefty = 1;
-            macro_ai_frame(ai_mech_sniper_enter_charge)
-            return;
-          }
-          macro_ai_frame(ai_mech_sniper_rotate1)
-          return;
-        }
-        if( self.ai_rank > AI_RANK_REG ){
-          if( roll < 0.2 ){
             //melee
             macro_ai_frame(ai_mech_sniper_enter_melee)
             return;
           }
-          macro_ai_frame(ai_mech_sniper_enter_charge)
+        }
+        if( roll < 0.15 ){
+          macro_ai_frame(ai_mech_sniper_snipe1)
           return;
         }
-        if( roll < 0.4 ){
+        if( roll < 0.3 ){
           macro_ai_frame(ai_mech_sniper_enter_reverse)
           return;
         }
-        macro_ai_frame(ai_mech_sniper_rotate1)
-        return;
-      }
-      if( enemy_range > self.ai_minrange ){
-        if( enemy_infront ){
-          if( roll < 0.35 ){
-            self.lefty = 1;
-            macro_ai_frame(ai_mech_sniper_enter_charge)
-            return;
-          }
-          if( roll < 0.5 ){
-            macro_ai_frame(ai_mech_sniper_snipe1)
-            return;
-          }
+        if( roll < 0.67 ){
+          self.lefty = 1;
+          macro_ai_frame(ai_mech_sniper_enter_charge)
+          return;
         }
         macro_ai_frame(ai_mech_sniper_rotate1)
         return;
       }
-    }
-    if( enemy_vis == VIS_FRN ){
       if( self.ai_rank > AI_RANK_REG ){
-        //melee
-        macro_ai_frame(ai_mech_sniper_enter_melee)
+        if( roll < 0.2 ){
+          //melee
+          macro_ai_frame(ai_mech_sniper_enter_melee)
+          return;
+        }
+        macro_ai_frame(ai_mech_sniper_enter_charge)
         return;
       }
-      macro_ai_frame(ai_mech_sniper_enter_reverse)
+      if( roll < 0.4 ){
+        macro_ai_frame(ai_mech_sniper_enter_reverse)
+        return;
+      }
+      macro_ai_frame(ai_mech_sniper_rotate1)
       return;
     }
-    self.enemy = world;
-    //snipers don't hunt, snapshot last known yaw
-    self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
-    macro_ai_frame(ai_mech_sniper_turn1)
+    if( enemy_range > self.ai_minrange ){
+      if( enemy_infront ){
+        if( roll < 0.35 ){
+          self.lefty = 1;
+          macro_ai_frame(ai_mech_sniper_enter_charge)
+          return;
+        }
+        if( roll < 0.5 ){
+          macro_ai_frame(ai_mech_sniper_snipe1)
+          return;
+        }
+      }
+      macro_ai_frame(ai_mech_sniper_rotate1)
+      return;
+    }
+  }
+  if( enemy_vis == VIS_FRN ){
+    if( self.ai_rank > AI_RANK_REG ){
+      //melee
+      macro_ai_frame(ai_mech_sniper_enter_melee)
+      return;
+    }
+    macro_ai_frame(ai_mech_sniper_enter_reverse)
     return;
   }
+  self.enemy = world;
+  //snipers don't hunt, snapshot last known yaw
+  self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
+  macro_ai_frame(ai_mech_sniper_turn1)
+  return;
   
   macro_ai_frame(ai_mech_sniper_patrol1)
 };

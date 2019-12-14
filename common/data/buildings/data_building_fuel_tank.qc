@@ -130,6 +130,8 @@ void() building_human_fuel={
       droptofloor();
     }
   }
+  makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
 
   self.th_die = hfuel_death1;
   self.use = multi_trigger;

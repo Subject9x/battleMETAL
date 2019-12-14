@@ -158,6 +158,8 @@ void() building_human_power={
       droptofloor();
     }
   }
+  makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
   self.th_die = hpower_die;
   self.use = multi_trigger;

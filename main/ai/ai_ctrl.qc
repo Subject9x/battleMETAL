@@ -114,6 +114,7 @@ void() ai_update={
   }
   ai_ranged_attack();
   self.button0 = FALSE;
+  
 };
 
 /*
@@ -127,7 +128,8 @@ void() ai_touch={
   if( !(other.flags & FL_UNIT) ){
     return;
   }
-  enemyFront = ai_check_targ_infront( other, self.ai_fov, (self.flags & FL_TURRET) ); 
+  
+  enemyFront = ai_check_targ_infront( self.enemy, self.ai_fov, (self.flags & FL_TURRET) ); 
   otherFront = ai_check_targ_infront( other, self.ai_fov, (self.flags & FL_TURRET) );
   if( other.faction != self.faction ){
     if( ai_valid_target(self.enemy) ){
@@ -145,7 +147,6 @@ void() ai_touch={
         self.torsoCenter.attack_state = TR_TARG;
       }
       self.ai_react_buffer = time + self.ai_react_time * 2;
-      macro_ai_frame(self.th_missile)
       return;
     }
   }
@@ -282,10 +283,10 @@ float( float scan_mode) ai_check_scan={
     self.ai_viewtime = time + self.ai_viewcheck;
     if( scan_mode ){
       scanned = ai_find_target_radar();
-      return scanned;
     }
-    scanned = ai_find_target_visual();
-    return scanned;
+    else{
+      scanned = ai_find_target_visual();
+    }
   }
   return scanned;
 };
@@ -416,11 +417,19 @@ float(entity t) ai_check_range={
 
 float( entity targ ) ai_check_vis={
   local vector	spot1, spot2;
+  local float targDist;
+  local float blockZ;
   
   spot1 = self.cockpit.origin;
-  spot2 = targ.origin;
-  traceline (spot1, spot2, FALSE, self);
+  if( targ.data_type == DATA_BLD ){
+    spot2 = targ.hitOffset;
+  }
+  else{
+    spot2 = targ.origin;
+  }
   
+  traceline (spot1, spot2, FALSE, self);
+
   if( trace_ent == targ ){
     return VIS_FRAC;
   }
@@ -438,12 +447,10 @@ float( entity targ ) ai_check_vis={
     friend_blocker_dist = vlen(friend_blocker.origin - spot1);
     return VIS_FRN;
   }
-  
+  targDist = vlen(spot2 - spot1);
   if( trace_ent.data_idx ){
-    if( trace_fraction >= 0.9 ){
-      return VIS_FRAC;
-    }
-    if( targ.maxs_z > trace_ent.maxs_z && vlen(spot2 - spot1) <= AI_RANGE_S ){
+    blockZ = trace_ent.maxs_z * 1.67;
+    if( (targ.maxs_z > blockZ ) && (targDist <= AI_RANGE_M ) ){
       return VIS_FRAC;
     }
   }

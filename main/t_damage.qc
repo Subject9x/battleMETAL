@@ -259,12 +259,17 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
   }
   
   if( dmgAmt <= 0 ){
-    trg.dmg_save = (dmgAmt * -1);
+    if( (trg.flags & FL_CLIENT) ){
+      trg.cockpit.dmg_save = ceil(trg.shield - dmg_amt);
+    }
     te_shield_hit_high( dmg_point, normalize( dmg_point - trg.origin), dmg_amt, random() * dmg_amt);
     return trg;
   }
-  trg.dmg_save = 1;
-  trg.dmg_take =  dmgAmt;
+  
+  if( (trg.flags & FL_CLIENT) ){
+    trg.cockpit.dmg_take = trg.dmg_take + dmgAmt;
+  }
+  
   
   sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons
   
@@ -430,12 +435,11 @@ void(entity targ, entity attacker, float dmg_type) killed={
     
     if( (self.flags & FL_UNIT) || (self.data_type == DATA_BLD) ){      
       local entity note;
-      note = findchainflags(flags, FL_CLIENT);
-      while( note ){
-        if( note.enemy == self ){
-          client_send_hud_target_kill( note );
+      for(note = findchainflags(flags, FL_CLIENT); note != world; note = note.chain){
+        if( note.enemy != self ){
+          continue;
         }
-        note = note.chain;
+        client_send_hud_target_kill( note );
       }
     }
     self.th_die();

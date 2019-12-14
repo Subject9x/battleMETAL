@@ -31,7 +31,7 @@ void() ai_tank_sk_sentry={
   ai_update_accuracy(FALSE);
   macro_ai_update(ctrl_updateTank)
   
-  if( ai_check_scan( self.stat_rdr_mode ) ){
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     macro_ai_frame(ai_tank_sk_fight_prep)
     return;
   }
@@ -49,7 +49,7 @@ void() ai_tank_sk_sentry_hold={
   ai_update_accuracy(FALSE);
   macro_ai_update(ctrl_updateTank)
   
-  if( ai_check_scan( self.stat_rdr_mode ) ){
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     macro_ai_frame(ai_tank_sk_fight_prep)
     return;
   }

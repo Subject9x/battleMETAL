@@ -169,7 +169,7 @@ void() building_human_shield={
   }
   self.vec_name = "Shield Generator";
   self.vec_size = 2;
-  self.flags = self.flags | FL_MONSTER | FL_UNIT;
+  self.flags = self.flags | (FL_MONSTER | FL_UNIT);
   
   macro_set_model("q3mdl/buildings/shield_gen/mdl_bld_h_shield.md3", self.skin, 0)
   macro_set_collider(DAMAGE_AIM, SOLID_SLIDEBOX, MOVETYPE_NONE)
@@ -193,6 +193,8 @@ void() building_human_shield={
     }
   }
   
+  makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   self.th_die = hshield_die;
   self.use = multi_trigger;
   hshield_th();

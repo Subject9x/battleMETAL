@@ -22,7 +22,6 @@ void() m_init={
     cmd("cd play 2");
     m_toggle(1);
   }
-  cons_logAFloat("clientstate()", clientstate()); //DEBUG
   MOUSE_TARGET = null_entity;
   TEXTFIELD_TARGET = null_entity;
   KEYBIND_TARGET = null_entity;

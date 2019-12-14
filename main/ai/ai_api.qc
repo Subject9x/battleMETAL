@@ -212,27 +212,15 @@ float() ai_find_target_visual={
     }
     rng = rng + fog;
   }
-  
   selfSensorOrg_x = self.origin_x;
   selfSensorOrg_y = self.origin_y;
   selfSensorOrg_z = 0;
   
   for(targ = findradius(self.origin, rng); targ != world; targ = targ.chain){ 
-    if( !ai_valid_target(targ) ){
-      continue;
-    }
     if( targ.faction == self.faction ){
       continue;
     }
-    if( !ai_check_face(targ, self.ai_fov) ){
-      continue;
-    }
-    if( (self.flags & FL_TURRET) ){
-      if( !ai_check_targ_infront( self.enemy, self.ai_fov, TRUE)){
-        continue;
-      }
-    }
-    if( ai_check_vis(targ) != VIS_FRAC ){
+    if( ai_valid_target(targ) == FALSE ){
       continue;
     }
     enemySensorOrg_x = targ.origin_x;
@@ -242,11 +230,23 @@ float() ai_find_target_visual={
     if(ndist > rng){
       continue;
     }
+    if( ai_check_vis(targ) != VIS_FRAC ){
+      continue;
+    }
+    if( ai_check_face(targ, self.ai_fov) == FALSE){
+      continue;
+    }
+    if( (self.flags & FL_TURRET) ){
+      if( !ai_check_targ_infront( targ, self.ai_fov, TRUE)){
+        continue;
+      }
+    }
+
     rng = ndist;
     found = targ;
   }
 
-  if( found ){
+  if( found != world){
     if( (self.flags & FL_DISARMED) ){
       if( self.stat_rdr_mode ){       
         ai_sfx_help();
@@ -360,7 +360,6 @@ void() ai_ranged_attack={
 
   self.ai_weaponEnergy = 0;
   this = self;
-  wep_chain = self.w_slot;     
   self.v_angle = self.angles;
   if( (self.flags & FL_TURRET) ){
     //if the AI has a turret, use the turret's angles for Line of Sight offset origins.
@@ -368,32 +367,38 @@ void() ai_ranged_attack={
     diff = vectoangles( self.enemy.origin - self.cockpit.origin);
     self.v_angle_x = diff_x * -1; //still correcting for age-old pitch bug
   }
-  while(wep_chain){
+  
+  for( wep_chain = self.w_slot; wep_chain.owner == self; wep_chain = wep_chain.w_slot){
     if(self.button0){
-      if(wep_chain.w_state == READY){
-        if( (self.currentWeaponGroup & wep_chain.w_group) ){
-          if( !ai_attack_blockcheck(wep_chain) ){
-            if( ai_check_face(this.enemy, 0.95) ){
-              self = wep_chain;
-                self.w_attack();
-                fired = fired + 1;
-              self = this;
-            }
-          }
-        }
+      if(wep_chain.w_state != READY){
+        continue;
       }
+      if( !(self.currentWeaponGroup & wep_chain.w_group) ){
+        continue;
+      }
+      if( ai_attack_blockcheck(wep_chain) ){
+        continue;
+      }
+      if( !ai_check_face(this.enemy, 0.95) ){
+        continue;
+      }
+      self = wep_chain;
+        self.w_attack();
+        fired = fired + 1;
+      self = this;
     }
     else{
       //Weapon has a bust-fire mode, and has been fired at least once, run through the burst.
-      if(wep_chain.w_isburst == TRUE){
-        if(wep_chain.w_state == READY){
-          self = wep_chain;
-            self.w_attack();
-          self = this;
-        }
+      if(wep_chain.w_isburst != TRUE){
+        continue;
       }
+      if(wep_chain.w_state != READY){
+        continue;
+      }
+      self = wep_chain;
+        self.w_attack();
+      self = this;
     }
-    wep_chain = wep_chain.w_slot;
   }
 };
 
@@ -412,7 +417,13 @@ float(entity wep) ai_attack_blockcheck={
     vang = self.angles;
   }
   
-  viewpont = normalize(self.enemy.origin - self.cockpit.origin);
+  if( self.enemy.data_type == DATA_BLD ){
+    viewpont = normalize(self.enemy.hitOffset - self.cockpit.origin);
+  }
+  else{
+    viewpont = normalize(self.enemy.origin - self.cockpit.origin);
+  }
+  
   makevectors( vang );
   traceline (self.cockpit.origin + v_forward * 1, self.cockpit.origin + viewpont*wep.w_range, (wep.damageType & EFF_ARC), self);
 

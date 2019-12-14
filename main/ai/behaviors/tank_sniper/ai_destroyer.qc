@@ -58,7 +58,7 @@ void() ai_spg_patrol1={
   ai_update_accuracy( FALSE ); 
   macro_ai_update(ctrl_updateTank)
   
-  if( ai_check_scan( self.stat_rdr_mode ) ){    
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){    
     macro_ai_frame(ai_spg_fight_prep)
     return;
   }
@@ -78,78 +78,72 @@ void() ai_spg_fight_prep={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
+  if( !ai_valid_target(self.enemy) ){
+    macro_ai_frame(self.th_stand)
+    return;
+  } 
+  
+  if( (self.flags & FL_DISARMED) ){
+    self.th_pain( world );
+    return;
+  }
+  
   local float roll;
   self.speed = self.lefty;
   
-  if( ai_valid_target(self.enemy) ){
-    roll = random();
-    self.ai_action_time = self.ai_action_mod;
-    enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = self.stat_trg_dist;
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
-    
-    if( enemy_vis == VIS_FRAC ){
-      if( enemy_range <= 200 ){
-        if( enemy_infront ){
-          if( self.ai_rank > AI_RANK_REG ){
-            if( roll < 0.6 ){
-              //possibly charge astride the target
-              macro_ai_frame(ai_spg_enter_charge)
-              return;
-            }
-            //rotate, go down fighting
-            macro_ai_frame(ai_spg_rotate1)
-            return;
-          }
-          if( roll < 0.33 ){
+  roll = random();
+  self.ai_action_time = self.ai_action_mod;
+  enemy_vis = ai_check_vis( self.enemy );
+  enemy_range = self.stat_trg_dist;
+  enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+  
+  if( enemy_vis == VIS_FRAC ){
+    if( enemy_range <= 200 ){
+      if( enemy_infront ){
+        if( self.ai_rank > AI_RANK_REG ){
+          if( roll < 0.6 ){
             //possibly charge astride the target
             macro_ai_frame(ai_spg_enter_charge)
             return;
           }
-          //reverse, worse shot overall
-          macro_ai_frame(ai_spg_reverse1)
-          return;
-        }
-        
-        if( self.ai_rank > AI_RANK_REG ){
-          if( roll < 0.45 ){
-            macro_ai_frame(ai_spg_enter_charge)
-            return;
-          }
-          macro_ai_frame(ai_spg_reverse1)
-          return;
-        }
-        if( roll <= 0.33 ){
+          //rotate, go down fighting
           macro_ai_frame(ai_spg_rotate1)
+          return;
+        }
+        if( roll < 0.33 ){
+          //possibly charge astride the target
+          macro_ai_frame(ai_spg_enter_charge)
+          return;
+        }
+        //reverse, worse shot overall
+        macro_ai_frame(ai_spg_reverse1)
+        return;
+      }
+      
+      if( self.ai_rank > AI_RANK_REG ){
+        if( roll < 0.45 ){
+          macro_ai_frame(ai_spg_enter_charge)
           return;
         }
         macro_ai_frame(ai_spg_reverse1)
         return;
       }
+      if( roll <= 0.33 ){
+        macro_ai_frame(ai_spg_rotate1)
+        return;
+      }
+      macro_ai_frame(ai_spg_reverse1)
+      return;
+    }
 
-      if( enemy_range <= self.ai_minrange ){
-        if( enemy_infront ){
-          if( self.ai_rank > AI_RANK_REG ){
-            //snipe or strafe
-            if( roll < 0.1 ){
-              macro_ai_frame(ai_spg_enter_strafe)
-              return;
-            }
-            if( roll < 0.2 ){
-              macro_ai_frame(ai_spg_enter_charge)
-              return;
-            }
-            macro_ai_frame(ai_spg_snipe1)
-            return;
-          }
+    if( enemy_range <= self.ai_minrange ){
+      if( enemy_infront ){
+        if( self.ai_rank > AI_RANK_REG ){
+          //snipe or strafe
           if( roll < 0.1 ){
             macro_ai_frame(ai_spg_enter_strafe)
             return;
           }
-          macro_ai_frame(ai_spg_snipe1)
-          return;
-        }
-        if( self.ai_rank > AI_RANK_REG ){
           if( roll < 0.2 ){
             macro_ai_frame(ai_spg_enter_charge)
             return;
@@ -157,60 +151,75 @@ void() ai_spg_fight_prep={
           macro_ai_frame(ai_spg_snipe1)
           return;
         }
-        if( roll < 0.33 ){
+        if( roll < 0.1 ){
           macro_ai_frame(ai_spg_enter_strafe)
           return;
         }
-        if( roll < 0.67 ){
-          macro_ai_frame(ai_spg_snipe1)
-          return;
-        }
-        macro_ai_frame(ai_spg_reverse1)
+        macro_ai_frame(ai_spg_snipe1)
         return;
       }
-      
-      
-      if( enemy_range > self.ai_minrange ){
-        if( enemy_infront ){
-          if( self.ai_rank > AI_RANK_REG ){
-            if( roll < 0.33 ){
-              macro_ai_frame(ai_spg_enter_strafe)
-              return;
-            }
-            macro_ai_frame(ai_spg_enter_charge)
-            return;
-          }
-          if( roll < 0.15 ){
-            macro_ai_frame(ai_spg_enter_charge)
-            return;
-          }
-          //tank destroyers don't hunt
-          macro_ai_frame(ai_spg_rotate1)
-          return;
-        }
-        
-        if( self.ai_rank > AI_RANK_REG ){
+      if( self.ai_rank > AI_RANK_REG ){
+        if( roll < 0.2 ){
           macro_ai_frame(ai_spg_enter_charge)
           return;
         }
+        macro_ai_frame(ai_spg_snipe1)
+        return;
+      }
+      if( roll < 0.33 ){
+        macro_ai_frame(ai_spg_enter_strafe)
+        return;
+      }
+      if( roll < 0.67 ){
+        macro_ai_frame(ai_spg_snipe1)
+        return;
+      }
+      macro_ai_frame(ai_spg_reverse1)
+      return;
+    }
+    
+    
+    if( enemy_range > self.ai_minrange ){
+      if( enemy_infront ){
+        if( self.ai_rank > AI_RANK_REG ){
+          if( roll < 0.33 ){
+            macro_ai_frame(ai_spg_enter_strafe)
+            return;
+          }
+          macro_ai_frame(ai_spg_enter_charge)
+          return;
+        }
+        if( roll < 0.15 ){
+          macro_ai_frame(ai_spg_enter_charge)
+          return;
+        }
+        //tank destroyers don't hunt
         macro_ai_frame(ai_spg_rotate1)
         return;
       }
-    }
-    
-    if( enemy_vis == VIS_FRN ){
-      if( friend_blocker_dist < 200 ){
-        macro_ai_frame(ai_spg_reverse1)
-        return;
-      }
-      if( friend_blocker_dist <= self.ai_minrange ){
-        macro_ai_frame(ai_spg_enter_strafe)
+      
+      if( self.ai_rank > AI_RANK_REG ){
+        macro_ai_frame(ai_spg_enter_charge)
         return;
       }
       macro_ai_frame(ai_spg_rotate1)
       return;
     }
   }
+  
+  if( enemy_vis == VIS_FRN ){
+    if( friend_blocker_dist < 200 ){
+      macro_ai_frame(ai_spg_reverse1)
+      return;
+    }
+    if( friend_blocker_dist <= self.ai_minrange ){
+      macro_ai_frame(ai_spg_enter_strafe)
+      return;
+    }
+    macro_ai_frame(ai_spg_rotate1)
+    return;
+  }
+
   self.enemy = world;
   macro_ai_frame(ai_spg_enter_patrol)
 };

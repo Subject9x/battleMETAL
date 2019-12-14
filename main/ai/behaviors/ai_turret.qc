@@ -250,42 +250,45 @@ void() ai_turret_fight_prep={
   ai_update_accuracy( FALSE );
   macro_ai_update(ctrl_updateTank)
   
-  if( ai_valid_target(self.enemy) ){
-    self.ai_action_time = self.ai_action_mod;
-    enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = self.stat_trg_dist;
-    enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
-    
-    if( enemy_vis == VIS_FRAC ){
-      if( enemy_range <= self.ai_minrange ){
-        if( enemy_infront ){
-          macro_ai_frame(ai_turret_combat1)
-          return;
-        }
-        macro_ai_update(ai_turret_rotate1)
+  if( !ai_valid_target(self.enemy) ){
+    macro_ai_frame(self.th_stand)
+    return;
+  } 
+  
+  self.ai_action_time = self.ai_action_mod;
+  enemy_vis = ai_check_vis( self.enemy );
+  enemy_range = self.stat_trg_dist;
+  enemy_infront = ai_check_targ_infront( self.enemy, self.ai_fov, TRUE);
+  
+  if( enemy_vis == VIS_FRAC ){
+    if( enemy_range <= self.ai_minrange ){
+      if( enemy_infront ){
+        macro_ai_frame(ai_turret_combat1)
         return;
       }
-      if( enemy_range > self.ai_minrange ){
-        macro_ai_update(ai_turret_rotate1)
-        return;
-      }
-    }
-    if( enemy_vis == VIS_FRN ){
       macro_ai_update(ai_turret_rotate1)
       return;
     }
-    if( enemy_vis == VIS_FAIL ){
-      if( enemy_range >= AI_RANGE_L ){
-        self.enemy = world;
-        macro_ai_frame(ai_turret_patrol1)
-        return;
-      }
-      ai_turret_set_state( TR_YAW );
-      self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.origin );
-      ai_sfx_huntStart();
-      macro_ai_frame(ai_turret_hunt1)
+    if( enemy_range > self.ai_minrange ){
+      macro_ai_update(ai_turret_rotate1)
       return;
     }
+  }
+  if( enemy_vis == VIS_FRN ){
+    macro_ai_update(ai_turret_rotate1)
+    return;
+  }
+  if( enemy_vis == VIS_FAIL ){
+    if( enemy_range >= AI_RANGE_L ){
+      self.enemy = world;
+      macro_ai_frame(ai_turret_patrol1)
+      return;
+    }
+    ai_turret_set_state( TR_YAW );
+    self.torsoCenter.ai_dir = vectoyaw( self.enemy.origin - self.origin );
+    ai_sfx_huntStart();
+    macro_ai_frame(ai_turret_hunt1)
+    return;
   }
   
   macro_ai_frame(ai_turret_idle1)

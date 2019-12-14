@@ -429,6 +429,12 @@ void() build_mech_bot={
       break;
   }
   self.ai_minrange = ai_pilot_minrange();
+  if( self.data_speed_forward > AI_PATROL_SPEED_LIMIT ){
+    self.ai_patrol_speed = AI_PATROL_SPEED_LIMIT;
+  }
+  else{
+    self.ai_patrol_speed = self.data_speed_forward;
+  }
 };
 
 void() build_unit_turret={
@@ -588,6 +594,12 @@ void() build_vehicle_unit={
       break;
   }
   self.ai_minrange = ai_pilot_minrange();
+  if( self.data_speed_forward > AI_PATROL_SPEED_LIMIT ){
+    self.ai_patrol_speed = AI_PATROL_SPEED_LIMIT;
+  }
+  else{
+    self.ai_patrol_speed = self.data_speed_forward;
+  }
 };
 
 //TODO - deprecated, needs rebuild
@@ -601,6 +613,8 @@ void() build_turret_unit={
 
   build_vehicle_unit();
   self.data_type = DATA_BLD;
+    
+  setorigin(self, self.origin);
 
   if( !(self.spawnflags & NO_DROP) ){
     setorigin(self, util_dropToGround(self.angles, self.origin, (self.mins_z + 4)));

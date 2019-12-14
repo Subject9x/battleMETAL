@@ -103,7 +103,7 @@ entity lastNode;        //minor optimization
 .float ai_hunt_total;   //current number of hunt nodes
 .float ai_dir;          //chassis facing vs .angles
 .entity ai_node_recall;
-
+.float ai_patrol_speed; //a fraction of forward speed for any unit speed > 100
 .float voiceTime; //when next to say something
 .float ai_voice_group;
 

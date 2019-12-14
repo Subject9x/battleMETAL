@@ -129,9 +129,9 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   local vector buildingOffset;
   
   targVel = '0 0 0';
-  if( (self.owner.enemy.flags & FL_CLIENT) )
+  if( (self.owner.enemy.flags & FL_CLIENT) ){
     targVel = self.owner.enemy.velocity;
-  
+  }
   //weaponSpread
   if( (self.owner.flags & FL_MONSTER) ){
     if( self.w_isburst ){
@@ -139,12 +139,10 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
     }
     else{
       if( self.owner.enemy.data_type == DATA_BLD ){
-        buildingOffset = self.owner.enemy.origin;
-        buildingOffset_z = buildingOffset_z + (self.owner.enemy.size_z / 2);
-        wepAim = buildingOffset- (targVel * self.owner.ai_leading);
+        wepAim = self.owner.enemy.hitOffset - (targVel * self.owner.ai_leading);
       }
       else{
-        wepAim = self.owner.enemy.cockpit.origin - (targVel * self.owner.ai_leading);
+        wepAim = self.owner.enemy.origin - (targVel * self.owner.ai_leading);
       }
     }
     wepAim = normalize(wepAim - self.origin);

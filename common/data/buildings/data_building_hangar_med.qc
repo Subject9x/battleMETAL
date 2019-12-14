@@ -68,6 +68,8 @@ void() building_human_hangar_vehicle={
       droptofloor();
     }
   }
+  makevectors(self.angles);
+  self.hitOffset = self.origin + (v_up * self.maxs_z * 0.67);
   
   self.think = building_human_hangar_vec_th;
   self.nextthink = time + (random() * 0.1);

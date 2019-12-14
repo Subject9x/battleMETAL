@@ -581,7 +581,7 @@ void() building_turret_heavy_p={
   ai_promote();
   switch( self.ai_rank ){
     case 1:
-      ai_ini_weapons( UID_ITEM_emp, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons( UID_ITEM_emp, UID_ITEM_light_laser, UID_ITEM_large_sensors, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_LOWTECH;
       break;
     case 2:
@@ -593,7 +593,7 @@ void() building_turret_heavy_p={
       self.spreadDefault = ACCURACY_MARKSMAN;
       break;
     default:
-      ai_ini_weapons( UID_ITEM_emp, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
+      ai_ini_weapons( UID_ITEM_emp, UID_ITEM_light_autocannon, UID_ITEM_energy_battery, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY, UID_ITEM_EMPTY);
       self.spreadDefault = ACCURACY_PRIMITVE;
       break;
   }

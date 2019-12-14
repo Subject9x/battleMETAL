@@ -115,6 +115,7 @@ void() map_objective_mission_conclude_th={
 void() map_objective_use={
   self.enemy = activator;
   if( self.isActive == OBJECTIVE_ACTIVE){
+    SUB_UseTargets();
     if( self.count ){
       //Objective counter adjust
       self.count1 = self.count1 + 1;
@@ -165,7 +166,6 @@ void() map_objective_th={
   
   //objective achieved
   if(self.isActive == OBJECTIVE_WIN){
-    multi_trigger();
     oldThis = self;
     player = find (world, classname, "player");
     while( player != world){

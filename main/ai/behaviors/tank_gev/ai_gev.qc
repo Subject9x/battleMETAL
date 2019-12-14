@@ -45,7 +45,7 @@ void() ai_gev_patrol1={
   macro_ai_update(ctrl_updateTank)
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
-  if( ai_check_scan( self.stat_rdr_mode ) ){
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     macro_ai_frame(ai_gev_fight_prep)
     return;
   }
@@ -58,7 +58,7 @@ void() ai_gev_stand1={
   macro_ai_update(ctrl_updateTank)
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
   
-  if( ai_check_scan( self.stat_rdr_mode ) ){
+  if( ai_check_scan( self.stat_rdr_mode ) == TRUE ){
     macro_ai_frame(ai_gev_fight_prep)
     return;
   }
@@ -87,118 +87,126 @@ void() ai_gev_fight_prep={
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
+ 
+ if( !ai_valid_target(self.enemy) ){
+    macro_ai_frame(self.th_stand)
+    return;
+  } 
+      
+  if( (self.flags & FL_DISARMED) ){
+    self.th_pain( world );
+    return;
+  }  
+  
   self.speed = self.lefty;
-  
   roll = random();
+  self.ai_action_time = self.ai_action_mod;
+  enemy_vis = ai_check_vis( self.enemy );
+  enemy_range = self.stat_trg_dist;
+  enemy_infront = ai_check_face( self.enemy, self.ai_fov );
+  enemy_hunt = FALSE;
   
-  if( ai_valid_target(self.enemy)){
-    self.ai_action_time = self.ai_action_mod;
-    enemy_vis = ai_check_vis( self.enemy );
-    enemy_range = self.stat_trg_dist;
-    enemy_infront = ai_check_face( self.enemy, self.ai_fov );
-    enemy_hunt = FALSE;
-    
-    if( enemy_vis == VIS_FRAC ){
-      //enemy is danger close
-      if( enemy_range <= 200 ){
-        if( enemy_infront ){
-          if( self.ai_rank > AI_RANK_REG ){
-            self.lefty = 1;
-            if( roll < 0.6 ){
-              self.lefty = -1;
-              macro_ai_frame(ai_gev_enter_flank)
-              return;
-            }       
-            macro_ai_frame(ai_gev_enter_flank)
-            return;
-          }
-          if( roll > 0.6 ){
-            self.lefty = -1;
-            macro_ai_frame(ai_gev_charge1)
-            return;
-          }
-          macro_ai_frame(ai_gev_rotate1)
-          return;
-        }
+  if( enemy_vis == VIS_FRAC ){
+    //enemy is danger close
+    if( enemy_range <= 200 ){
+      if( enemy_infront ){
         if( self.ai_rank > AI_RANK_REG ){
           self.lefty = 1;
-          macro_ai_frame(ai_gev_enter_charge)
-          return;
-        }
-        macro_ai_frame(ai_gev_enter_strafe)
-        return;
-      }
-      
-      //enemy is in prime combat range
-      if( enemy_range <= self.ai_minrange ){
-        if( enemy_infront ){
-          //AI is a decent pilot
-          if( self.ai_rank > AI_RANK_REG ){
-            if( roll < 0.33 ){
-              macro_ai_frame(ai_gev_enter_flank)
-              return;
-            }
-            if( roll < 0.67 ){
-              macro_ai_frame(ai_gev_enter_strafe)
-              return;
-            }
+          if( roll < 0.6 ){
             self.lefty = -1;
-            macro_ai_frame(ai_gev_enter_charge)
+            macro_ai_frame(ai_gev_enter_flank)
             return;
-          }
-          if( roll < 0.33 ){
-              macro_ai_frame(ai_gev_enter_strafe)
-              return;
-          }
-          if( roll < 0.67 ){
-            self.lefty = -1;
-            macro_ai_frame(ai_gev_enter_charge)
-            return;
-          }
+          }       
           macro_ai_frame(ai_gev_enter_flank)
           return;
         }
-        
+        if( roll > 0.6 ){
+          self.lefty = -1;
+          macro_ai_frame(ai_gev_charge1)
+          return;
+        }
+        macro_ai_frame(ai_gev_rotate1)
+        return;
+      }
+      if( self.ai_rank > AI_RANK_REG ){
+        self.lefty = 1;
+        macro_ai_frame(ai_gev_enter_charge)
+        return;
+      }
+      macro_ai_frame(ai_gev_enter_strafe)
+      return;
+    }
+    
+    //enemy is in prime combat range
+    if( enemy_range <= self.ai_minrange ){
+      if( enemy_infront ){
+        //AI is a decent pilot
         if( self.ai_rank > AI_RANK_REG ){
           if( roll < 0.33 ){
+            macro_ai_frame(ai_gev_enter_flank)
+            return;
+          }
+          if( roll < 0.67 ){
             macro_ai_frame(ai_gev_enter_strafe)
             return;
           }
-          self.lefty = 1;
+          self.lefty = -1;
           macro_ai_frame(ai_gev_enter_charge)
           return;
         }
         if( roll < 0.33 ){
-          macro_ai_frame(ai_gev_enter_flank)
-          return;
+            macro_ai_frame(ai_gev_enter_strafe)
+            return;
         }
-        self.lefty = -1;
-        macro_ai_frame(ai_gev_enter_charge)
-        return;
-      }
-      
-      //enemy is out of combat range
-      if( enemy_range > self.ai_minrange ){
-        if( enemy_infront ){
-          self.lefty = 1;
+        if( roll < 0.67 ){
+          self.lefty = -1;
           macro_ai_frame(ai_gev_enter_charge)
           return;
         }
-        //dump target, find new one
-        self.enemy = world;
-        macro_ai_frame(ai_gev_stand1)
+        macro_ai_frame(ai_gev_enter_flank)
         return;
       }
-    }
-    if( enemy_vis == VIS_FRN ){
-      enemy_vis = VIS_FAIL;
-    }
-    if( enemy_vis == VIS_FAIL ){      
-      if( self.stat_rdr_mode ){
-        enemy_hunt = TRUE;
+      
+      if( self.ai_rank > AI_RANK_REG ){
+        if( roll < 0.33 ){
+          macro_ai_frame(ai_gev_enter_strafe)
+          return;
+        }
+        self.lefty = 1;
+        macro_ai_frame(ai_gev_enter_charge)
+        return;
       }
+      if( roll < 0.33 ){
+        macro_ai_frame(ai_gev_enter_flank)
+        return;
+      }
+      self.lefty = -1;
+      macro_ai_frame(ai_gev_enter_charge)
+      return;
+    }
+    
+    //enemy is out of combat range
+    if( enemy_range > self.ai_minrange ){
+      if( enemy_infront ){
+        self.lefty = 1;
+        macro_ai_frame(ai_gev_enter_charge)
+        return;
+      }
+      //dump target, find new one
+      self.enemy = world;
+      macro_ai_frame(ai_gev_stand1)
+      return;
     }
   }
+  if( enemy_vis == VIS_FRN ){
+    enemy_vis = VIS_FAIL;
+  }
+  if( enemy_vis == VIS_FAIL ){      
+    if( self.stat_rdr_mode ){
+      enemy_hunt = TRUE;
+    }
+  }
+  
   if( enemy_hunt ){
     if( self.ai_node_recall == world || !(self.ai_node_recall) ){
       macro_ai_frame(ai_gev_enter_hunt)

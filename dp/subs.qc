@@ -304,6 +304,7 @@ void() SUB_UseTargets =
   // guess this needed updating too.
   if( self.target ){
     act = activator;
+    t = world;
     for(t = findchain( targetname, self.target); t != world; t = t.chain){
       tempSelf = self;
       tempOther = other;
