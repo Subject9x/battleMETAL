@@ -299,10 +299,10 @@ After the counter has been triggered "count" times (default 2), it will fire all
 
 -------- SPAWNFLAGS --------
 nomessage 1
-NO_EASY 2 : 
-NO_NORM 4 :
-NO_HARD 8 :
-NO_NIGHT 16 :
+NO_EASY 2 : remove when skill = 0
+NO_NORM 4 : remove when skill = 1
+NO_HARD 8 : remove when skill = 2
+NO_NIGHT 16 : remove when skill = 3
 */
 void() trigger_counter =
 {

@@ -17,9 +17,10 @@ float UI_INPUT_FILTER_MAX = 84;
 float UI_INPUT_FILTER[UI_INPUT_FILTER_MAX];  //filter out these chars;
 float UI_KEYBIND_ACTIVE;
 
-vector VID_RESO_SIZE[56];
-vector VID_RESO_HALF[56];
-string VID_RESO_NAME[56];
+vector VID_RESO_SIZE[36];
+vector VID_RESO_HALF[36];
+string VID_RESO_NAME[36];
+float VID_RESO_TOTAL;
 
 //UI ELEMENT FLAGS
 float UI_FLAG_NOLABEL     = 1;  //don't render label
@@ -178,31 +179,32 @@ string(float typ) map_list_getmap ={
   poll the display device for achievable ratios, so here we are :|
 */
 void() menu_ini_display_constants={
-  	local float f, itr;
+  local vector vsize, vasize;
+  local float f, itr;
 	local string ln, found;
   found = "";
   itr = 0;
   f = fopen("data/cache/precache_resolutions.txt", FILE_READ);
-	if (f != -1){ 
-		ln = fgets(f); 
-		while(ln != ""){ 
-			if(strstrofs(ln, "//",0) == -1){
+  if (f != -1){ 
+    ln = fgets(f); 
+    do{
+      if(strstrofs(ln, "//",0) == -1){
         tokenizebyseparator(ln, ",");
-        local vector vsize, vasize;
+        VID_RESO_NAME[itr] = strzone(argv(0));
         vsize_x = stof(argv(1));
         vsize_y = stof(argv(2));
-        vsize_z = stof(argv(5));
         vasize_x = stof(argv(3));
         vasize_y = stof(argv(4));
+        vsize_z = stof(argv(5));
         VID_RESO_SIZE[itr] = vsize;
         VID_RESO_HALF[itr] = vasize;
-        VID_RESO_NAME[itr] = strzone(argv(0));
 			}
       itr = itr + 1;
 			ln = fgets(f);
-		} 
+		}while(ln != "");
 	} 
 	fclose(f);
+  VID_RESO_TOTAL = itr;
 };
 
 void(string filename) menu_execute_cvar_list={

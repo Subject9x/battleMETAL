@@ -392,7 +392,7 @@ void(vector ofs) menu_arming_HardpointGraph={
   drawpic(BTN_CFG_N, HUD_TRG_PIP_R, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);
   
   lctr = nofs + pctr;
-  lctr_y = lctr_y + pctr_y - gui_percentYRaw(32);
+  lctr_y = lctr_y + pctr_y - gui_percentYRaw(42);
   
   local string cfg, warn;
   local float len;
@@ -402,20 +402,29 @@ void(vector ofs) menu_arming_HardpointGraph={
   //this is quite hilarious
   cfg = NAVNAMES[CFG_INDEX];
   colr = CLR_DEF_ARM_OK;
+  warnOrg = lctr;
   if( CFG_INDEX == 0 ){
     cfg = "DEFAULT";
     colr = CLR_DEF_ARM_HALF;
-    warnOrg = lctr;
     warn = "!-Cannot modify Default-!";
-    len = stringwidth(warn, 0, '14 12 0');
+    len = stringwidth(warn, 0, '12 12 0');
     warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
-    warnOrg_y = warnOrg_y - gui_percentYRaw( -10 );
-    drawstring(warnOrg, warn, '14 12 0', '1 0.15 0.15' , 1, 0);
+    warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
+    drawstring(warnOrg, warn, '12 12 0', '1 0.15 0.15' , 1, 0);
   }
+  else{
+    colr = CLR_DEF_ARM_OK;
+    warn = "[Click-and-hold Weapons to Modify]";
+    len = stringwidth(warn, 0, '12 12 0');
+    warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
+    warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
+  }
+  drawstring(warnOrg, warn, '12 12 0', colr , 1, 0);
+  
   cfg = strcat("Loadout: ", cfg);
-  len = stringwidth(cfg, 0, '12 10 0');
+  len = stringwidth(cfg, 0, '18 16 0');
   lctr_x = lctr_x - gui_percentXRaw( len / 2 );
-  drawstring(lctr, cfg, '12 10 0', colr, 1, 0);
+  drawstring(lctr, cfg, '18 16 0', colr, 1, 0);
   
   drawfont = drawfont_prev;
   

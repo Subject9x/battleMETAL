@@ -785,12 +785,17 @@ string(float id) menu_getvideo_clean={
 
 float(vector vsize) menu_getvideo_modeid={
   local float itr, found;
+  local vector compRes;
   itr = 1;
-  while( itr <= 56){
-    if( VID_RESO_SIZE[itr] == vsize ){  
-      found = itr;
+  compRes_x = vsize_x * 2;
+  compRes_y = vsize_y * 2;
+  compRes_z = vsize_z;
+  
+  for( itr = 0; itr < VID_RESO_TOTAL; itr = itr + 1){
+    if( VID_RESO_SIZE[itr] != compRes ){  
+      continue;
     }
-    itr = itr + 1;
+    found = itr;
   }
   return found;
 };

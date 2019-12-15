@@ -623,18 +623,21 @@ sounds
 set "message" to text string
 */
 /*QUAKED trigger_counter (.5 .5 .5) ? nomessage NO_EASY NO_NORM NO_HARD NO_NIGHT
+when triggered, count is subtracted by 1.
+
 Acts as an intermediary for an action that takes multiple inputs.
 
 If nomessage is not set, t will print "1 more.. " etc when triggered and "sequence complete" when finished.
 
 After the counter has been triggered "count" times (default 2), it will fire all of it's targets and remove itself.
+note: triggers ON use() where .count = '0', so your ideal total should actually be N - 1.
 
 -------- SPAWNFLAGS --------
 nomessage 1
-NO_EASY 2 : 
-NO_NORM 4 :
-NO_HARD 8 :
-NO_NIGHT 16 :
+NO_EASY 2 : remove when skill = 0
+NO_NORM 4 : remove when skill = 1
+NO_HARD 8 : remove when skill = 2
+NO_NIGHT 16 : remove when skill = 3
 */
 /*QUAKED info_teleport_destination (.5 .5 .5) (-8 -8 -8) (8 8 32)
 This is the destination
