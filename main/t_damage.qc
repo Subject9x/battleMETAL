@@ -266,9 +266,11 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     return trg;
   }
   
-  if( (trg.flags & FL_CLIENT) ){
-    trg.cockpit.dmg_take = trg.dmg_take + dmgAmt;
-  }
+  //ideally I'd love to use this feature, but it makes the cockpit .weaponmodel disappear and I don't feel like fixing
+  //it right now. - Roohr
+  /*if( (trg.flags & FL_CLIENT) ){
+    trg.dmg_take = trg.dmg_take + dmgAmt;
+  }*/
   
   
   sound (dmgTrg, CHAN_BODY, "sound/fx_armorhit.ogg", 1, ATTN_NORM); //TODO - shift to specific weapons
