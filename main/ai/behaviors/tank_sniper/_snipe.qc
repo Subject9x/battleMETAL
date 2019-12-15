@@ -168,6 +168,7 @@ void() ai_spg_snipe15={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
+  
   ai_attack();
  
   macro_ai_frame(ai_spg_snipe16)
@@ -179,7 +180,7 @@ void() ai_spg_snipe16={
   macro_ai_update(ctrl_updateTank)
   
   ai_face_targ();
-  ai_attack();
+  macro_ai_frame_count(ai_spg_snipe16)
   
   macro_ai_frame(ai_spg_fight_prep)
 };

@@ -23,6 +23,7 @@ void() building_die={
   self.takedamage = DAMAGE_NO;
   self.deadflag = DEAD_DEAD;
   self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
   
   building_die_removeFire();
   

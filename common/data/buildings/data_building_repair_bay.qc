@@ -47,7 +47,6 @@ void() hrepair_rep = [0, hrepair_rep]{
         lowHP = 99.99;
         while(part){
           if( part.deadflag <= DEAD_NO && (part.partTypeId != M_ITEM || part.partTypeId != M_CAMERA) ){
-            
             hp = csqc_updateCompStat(part);
             if( hp < lowHP){
               lowHP = hp;

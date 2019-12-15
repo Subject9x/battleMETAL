@@ -61,7 +61,7 @@
     type beam
     blend add
     orientation beam
-    color 0x65A8A3 0xAACFCC
+    color 0x33CCCC 0x66FFFF
     tex 60 60
     size 0.4 0.5
     alpha 512 1024 64
@@ -73,17 +73,19 @@
   
   //TE_ESR_RAIL - RAIL PARTICLES
     effect TE_ESR_RAIL
-    count 1
-    type smoke
+    count 0.33
+    type spark
     blend alpha
     orientation spark
     color 0x65A8A3 0xAACFCC
     tex 34 34
-    size 0.75 1
+    size 0.05 0.1
+    sizeincrease -1
     alpha 512 512 2048
-    originjitter 1 1 1
-    velocityjitter 0.25 0.25 0.25
-    velocitymultiplier 0
+    originjitter 0.13 0.13 0.13
+    velocityjitter 4 4 0
+    velocitymultiplier 1
+    stretchfactor 10
     notunderwater
     trailspacing 1
     bounce -1

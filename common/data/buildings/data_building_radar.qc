@@ -132,7 +132,7 @@ void() building_radar_alert1=[0, building_radar_alert1]{
     if( !(ally.flags & FL_UNIT) || (ally.flags & FL_DISARMED)){
       continue;
     }
-    ai_give_target( ally, self.enemy, ( self.ai_rank > AI_RANK_REG ));
+    ai_give_target( ally, self.enemy, (self.ai_rank > AI_RANK_REG));
   }
   self.enemy = world;
   self.th_walk();

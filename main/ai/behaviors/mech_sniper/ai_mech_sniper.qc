@@ -200,6 +200,4 @@ void() ai_mech_sniper_fight_prep={
   self.ideal_yaw = vectoyaw(self.enemy.origin - self.origin);
   macro_ai_frame(ai_mech_sniper_turn1)
   return;
-  
-  macro_ai_frame(ai_mech_sniper_patrol1)
 };

@@ -17,13 +17,11 @@ Inputs
 
 void() map_fail_objective_use={
   local entity obj;
-  
-  obj = findchain( targetname, self.target );
-  while( obj ){
-    if( obj.classname == "map_objective" ){
-      obj.isActive = OBJECTIVE_FAIL;
+  for( obj = findchain(targetname, self.target); obj != world; obj = obj.chain ){
+    if( obj.classname != "map_objective" ){
+      continue;
     }
-    obj = obj.chain;
+    obj.isActive = OBJECTIVE_FAIL;
   }
   self.think = SUB_Remove;
   self.nextthink = time + 0.1;
