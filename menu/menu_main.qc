@@ -142,10 +142,12 @@ void(float width, float height) m_draw={
   VIEW_ACT_z = cvar("vid_pixelheight");
   
   if( (clientstate() == CS_CONNECTED) && (getkeydest() == KEY_MENU) ){
-    local vector p;
-    p = VIEW_MAX;
-    p_z = 0;
-    drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.9, 0);
+    if( !isdemo() ){
+      local vector p;
+      p = VIEW_MAX;
+      p_z = 0;
+      drawpic('0 0', "gfx/ui/box_512.png", p, '0.231 0.27 0.32', 0.75, 0);      
+    }
   }
   
   //draw the selected Menu_d() function
@@ -212,7 +214,6 @@ void(float width, float height) m_draw={
   drawstring('48 14', ftos(VIEW_MAX_y), '8 8 0', '1 1 1', 1, 0);
   drawstring('4 24', strcat("mouse : ", ftos(MOUSE_DOWN)), '8 8 0', '1 1 1', 1, 0);
   drawstring('4 34', strcat("target : ", MOUSE_TARGET.classname), '8 8 0', '1 1 1', 1, 0);*/
-
 };
 
 /*
@@ -229,7 +230,10 @@ void(float mode) m_toggle={
       //todo - in-game main menu
     }
     if(clientstate() == CS_DISCONNECTED){
-      cmd("cd play 2");
+      cmd("cd play 2\n");
+      if( !isdemo() ){
+          cmd("startdemos start\n");
+      }
     }
     FONT_NUM_ROBOT_THIN = loadfont( "robot_thin", "gfx/fonts/Roboto_Thin", "6 8 10 12 14 18", FONT_USER, FALSE, FALSE);
     FONT_NUM_ROBOT_LIGHT = loadfont( "robot_light", "gfx/fonts/Roboto_Light", "6 8 10 12 14 18",  FONT_USER+1, FALSE, FALSE);

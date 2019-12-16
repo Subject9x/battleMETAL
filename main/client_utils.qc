@@ -426,8 +426,8 @@ void(string cmd, float tokens) client_setMission={
       savefile_append();
       savefile_save();
     }
-    if( !nextmap || nextmap == "" ){
-      stuffcmd(self, "disconnect;togglemenu;cd play 2;");
+    if( nextmap == "" ){
+      stuffcmd(self, "disconnect;togglemenu;cd play 2;\n");
       return;
     }
     changelevel (nextmap);  //possibly altered by map_objective objects.

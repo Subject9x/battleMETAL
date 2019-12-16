@@ -369,7 +369,7 @@ void() click_audio_save={
   if( isdemo() && (clientstate() == CS_CONNECTED) ){
     cmd("disconnect\n");
    // cmd("snd_restart\n");
-    cmd("playdemo demo1\n");
+    cmd("startdemos demo1\n");
   }
   click_audio_back();
 };

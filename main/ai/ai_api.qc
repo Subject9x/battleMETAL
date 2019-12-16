@@ -328,7 +328,7 @@ void( entity ally, entity targ, float override ) ai_give_target={
   local entity this;
   local float validTarg;
   
-  if( !(ally.th_missile) ){
+  if( !ally.th_missile ){
     return;
   }
   
@@ -338,12 +338,13 @@ void( entity ally, entity targ, float override ) ai_give_target={
     self = ally;
     if( override ){
       self.enemy = ally.enemy;
-      self.th_missile();
       macro_ai_frame(self.th_missile)
       ai_sfx_roger();
     }
     else{
-      self.th_react(ally.enemy);
+      if( self.th_react ){
+        self.th_react(ally.enemy);
+      }
     }
   }
   self = this;

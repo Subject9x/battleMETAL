@@ -18,15 +18,16 @@ local entity player;
   local entity objective;
   local entity playerStart;
   local float successCheck;
-	WriteByte (MSG_ALL, SVC_INTERMISSION);
   
   if( MISSION_STATUS ){
     successCheck = TRUE;
+    nextmap = strzone(self.map);
   }
   else{
     successCheck = FALSE;
+    nextmap = strzone(self.mapFile);
   }
-  
+
   objective = self;
   playerStart = find(world, classname, "info_player_start");
   player = find (world, classname, "player");
@@ -81,11 +82,9 @@ void() map_objective_mission_conclude_th={
   
   if( MISSION_STATUS ){
     successCheck = TRUE;
-    nextmap = self.map;
   }
   else{
     successCheck = FALSE;
-    nextmap = self.mapFile;
   }
   
   objective = self;
@@ -104,6 +103,7 @@ void() map_objective_mission_conclude_th={
     player = find (player, classname, "player");
   }
   self = objective;
+  
   self.think = map_objective_mission_end_th;
   self.nextthink = time + 4;
 };
