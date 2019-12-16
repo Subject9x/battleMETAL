@@ -21,7 +21,6 @@ vector( vector startOrg ) te_apply_wind={
 void(string gibname, float dm) ThrowGib =
 {
 	local	entity new;
-
 	new = spawn();
 	new.origin = self.origin;
 	setmodel (new, gibname);
@@ -173,9 +172,9 @@ void( vector org, vector angl, float total, float lifetime, float ticrate, float
   fire.nextthink = time + fire.w_firetime;
   fire.count = total;
   fire.vec_name = "TE_FIRE_1";
-  if( lifetime > 0 )
+  if( lifetime > 0 ){
     fire.data_lifetime = time + lifetime;
-    
+  }
   if( ownerLifetime > 0){
     fire.health = time + ownerLifetime;
   }
@@ -194,9 +193,9 @@ void( vector org, vector angl, float total, float lifetime, float ticrate, float
   fire.nextthink = time + fire.w_firetime;
   fire.count = total;
   fire.vec_name = "TE_FIRE_2";
-  if( lifetime > 0 )
+  if( lifetime > 0 ){
     fire.data_lifetime = time + lifetime;
-  
+  }
   if( ownerLifetime > 0 ){
     fire.health = time + ownerLifetime;
   }

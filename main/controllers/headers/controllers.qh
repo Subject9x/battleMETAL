@@ -16,6 +16,7 @@ void() ctrl_updateCenterTorso;
 void() ai_ctrl_updateCenterTorso;
 void() ctrl_updateLegs;
 void() ctrl_dieLegs;
+void() ctrlPlayerMechTouch;
 
 void() touch_mech;
 void() touch_mechPiece;

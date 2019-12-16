@@ -267,26 +267,31 @@ void() building_human_repair={
 };
 
 void() building_repair_touch={
-  if( other.flags & FL_CLIENT ){
-    if( self.owner.trigger_field == world ){
-      if(other.faction == self.owner.faction){
-        if(self.owner.reloadValue > 0){
-          if(util_getMechHpAverage(other) < 1){
-            if( self.attack_state != ST_WALK ){
-              self.owner.trigger_field = other;
-              other.flags = other.flags | FL_NOSHOOT;
-              client_send_event_weapons( self.owner.trigger_field, FALSE );
-              client_send_event_repairs( self.owner.trigger_field, TRUE );
-              self.touch = SUB_Null;
-              self.attack_state = ST_WALK;
-              world_update_dlight( self, 1, '-1 -1 -1', 0, -1, '-1 -1 -1');            
-            }
-          }
-        }
-      }
-    }
+  if( !(other.flags & FL_CLIENT) ){
+    return;
   }
-  return;
+  if( self.owner.trigger_field != world ){
+    return;
+  }
+  if(other.faction != self.owner.faction){
+    return;
+  }
+  if(self.owner.reloadValue <= 0){
+    return;
+  }
+  if(util_getMechHpAverage(other) >= 1){
+    return;
+  }
+  if( self.attack_state == ST_WALK ){
+    return;
+  }
+  self.owner.trigger_field = other;
+  other.flags = other.flags | FL_NOSHOOT;
+  client_send_event_weapons( self.owner.trigger_field, FALSE );
+  client_send_event_repairs( self.owner.trigger_field, TRUE );
+  self.touch = SUB_Null;
+  self.attack_state = ST_WALK;
+  world_update_dlight( self, 1, '-1 -1 -1', 0, -1, '-1 -1 -1');            
 };
 
 void() building_repair_node_think={

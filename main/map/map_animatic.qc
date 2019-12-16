@@ -25,9 +25,9 @@ void() animatic_event_execute={
           continue;
       }
       self = client;
-        self.count1 = self.stat_plr_stt;
+        self.count1 = self.playerState;
         if( (this.spawnflags & 32) ){
-          self.stat_plr_stt = PLAYER_ANIM_STOP;
+          self.playerState = PLAYER_ANIM_STOP;
           self.count2 = time + this.count1;
           self.count3 = self.movetype;
           self.movetype = MOVETYPE_NONE;

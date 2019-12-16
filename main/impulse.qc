@@ -58,7 +58,7 @@ void() playerAttack={
   while(wep_chain){
     local float wgrp;
     wgrp = wep_chain.w_group;
-    if( (weaponGroup > 0) && ( (self.stat_plr_stt == PLAYER_ACTIVE) || (self.stat_plr_stt == PLAYER_SPRINT_ON) )){
+    if( (weaponGroup > 0) && ( (self.playerState == PLAYER_ACTIVE) || (self.playerState == PLAYER_SPRINT_ON) )){
       if( (weaponGroup& wgrp) ){
         if(wep_chain.w_state == READY){
           self = wep_chain;
@@ -152,8 +152,8 @@ void() ImpulseCommands ={
 void() ButtonCommands={
   if( self.button8 ){
     if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
-      if( self.stat_plr_stt == PLAYER_ACTIVE ){
-        self.stat_plr_stt = PLAYER_SPRINT_ON;
+      if( self.playerState == PLAYER_ACTIVE ){
+        self.playerState = PLAYER_SPRINT_ON;
         client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);
       }
     }

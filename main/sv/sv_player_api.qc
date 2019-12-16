@@ -27,7 +27,7 @@ void() PlayerPreThink = {
   }
   
   
-  if( self.stat_plr_stt == PLAYER_INTERMSN ){
+  if( self.playerState == PLAYER_INTERMSN ){
     client_push_player_info_thin();
   }
   
@@ -59,8 +59,8 @@ void() PlayerPreThink = {
 		self.velocity = '0 0 0';
     
   if( !self.button8 ){
-    if( self.stat_plr_stt == PLAYER_SPRINT_ON){
-      self.stat_plr_stt = PLAYER_ACTIVE;
+    if( self.playerState == PLAYER_SPRINT_ON){
+      self.playerState = PLAYER_ACTIVE;
       client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
     }
   }
@@ -85,16 +85,16 @@ void() PlayerPostThink = {
   
   //can't stop mech players with cutscenes, instead use triggered clipping objects
   //in map - roohr
-  if( (self.stat_plr_stt == PLAYER_ANIM_STOP) && (self.data_type == DATA_POBS)){
+  if( (self.playerState == PLAYER_ANIM_STOP) && (self.data_type == DATA_POBS)){
     if( time >= self.count2){
-      self.stat_plr_stt = self.count1;
+      self.playerState = self.count1;
       self.movetype = self.count3;
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
     }
   }
   
-  if( self.stat_plr_stt == PLAYER_INTERMSN ){
+  if( self.playerState == PLAYER_INTERMSN ){
     client_push_player_info_thin();
   }
   
@@ -107,7 +107,7 @@ void() PlayerPostThink = {
     //power up sequence
     if(time > self.power_timer){
       self.power_timer = 0;
-      self.stat_plr_stt = PLAYER_ACTIVE;
+      self.playerState = PLAYER_ACTIVE;
     }
     
     self.stat_hit_dirs =  self.hitdir_buffer;
@@ -317,7 +317,7 @@ void() PlayerDie={
 
 void() PlayerDieEnd={
   self.movetype = MOVETYPE_NONE;
-  self.stat_plr_stt = PLAYER_INTERMSN;
+  self.playerState = PLAYER_INTERMSN;
   client_sendEndMission(self, MISSION_STATUS );
   client_push_player_info();
   local entity start;

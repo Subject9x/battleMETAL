@@ -47,6 +47,7 @@ void() player_makeMech={
   self.data_idx = self.nextVecChoice;
   
   initialize_data_mech_( self.nextVecChoice );
+  self.touch = ctrlPlayerMechTouch;
   
   self.stat_rdr_mode = FALSE;
   self.stat_rdr_rng = self.radar_range;
@@ -62,7 +63,7 @@ void() player_makeMech={
     self.power_timer = time + self.startupDelay;
   }
   //self.power_timer_segment = time + (self.startupDelay / 100 ); not sure why this was needed
-  self.stat_plr_stt = PLAYER_POWERUP_BEGIN;
+  self.playerState = PLAYER_POWERUP_BEGIN;
   
   client_push_player_info();
   client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);

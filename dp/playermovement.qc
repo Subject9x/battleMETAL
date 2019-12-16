@@ -16,12 +16,12 @@ void() SV_PlayerPhysics =
 	local float wishspeed, f;
   
 	// this is the first function run each frame, so do bot think here
-	if (clienttype(self) == CLIENTTYPE_BOT)
+	if (clienttype(self) == CLIENTTYPE_BOT){
 		havocbot_think();
-
-	if (self.movetype == MOVETYPE_NONE)
+  }
+	if (self.movetype == MOVETYPE_NONE){
 		return;
-
+  }
 	if (time != lastclientthink)
 	{
 		lastclientthink = time;

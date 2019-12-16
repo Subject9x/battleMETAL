@@ -191,8 +191,8 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
       else{
         self.nextthink = time + 0.1;
       }
-      util_setCollider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE);
-      util_setModel(self.model, 0, 0);
+      macro_set_collider(0, SOLID_BBOX, MOVETYPE_FLYMISSILE)
+      macro_set_model(self.model, 0, 0)
       setsize(self, '0 0 0', '0 0 0');
       setorigin(self, FIRE_ORIGIN);
     self = theWeapon;
@@ -206,15 +206,17 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
 
 void() ctrl_die_weapon={
   if(self.deadflag <= DEAD_NO){
-    local entity oself;
+    /*local entity oself;
     oself = self;
     newmis = spawn();
     self = newmis;
       setorigin(newmis, oself.origin);
       BecomeExplosion();//TODO - replace with te_explosion
-    self = oself;
-    if((oself.currentWeaponGroup & self.w_group)){
-      oself.currentWeaponGroup = oself.currentWeaponGroup - (oself.currentWeaponGroup & self.w_group);
+    self = oself;*/
+    te_missile_explode( self.origin, 1, '0.33 0.67 0.99', 1, 1);
+    
+    if((self.currentWeaponGroup & self.w_group)){
+      self.currentWeaponGroup = self.currentWeaponGroup - (self.currentWeaponGroup & self.w_group);
       self.w_group = 0;
     }
     

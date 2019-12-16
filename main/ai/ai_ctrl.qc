@@ -68,7 +68,7 @@ void() ai_leg_control={
   local entity legOwner;
   
   legOwner = self;
-  if( (self.legs) ){
+  if( self.legs ){
       self = self.legs;
       macro_set_offset(self.owner, self.compOffset)
       switch( self.attack_state ){

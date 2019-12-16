@@ -142,7 +142,7 @@ void() ctrl_updateCenterTorso={
     self.count4 = time + 0.1;
     if( self.energy > -1 ){
       diff = self.energyRate;
-      if( self.stat_plr_stt == PLAYER_SPRINT_ON ){
+      if( self.playerState == PLAYER_SPRINT_ON ){
         diff = diff * self.evasionDrain;
       }
       self.energy = self.energy + diff;
@@ -218,7 +218,7 @@ void() ai_ctrl_updateCenterTorso={
     self.count4 = time + 0.1;
     if( self.energy > -1 ){
       diff = self.energyRate;
-      if( self.stat_plr_stt == PLAYER_SPRINT_ON ){
+      if( self.playerState == PLAYER_SPRINT_ON ){
         diff = diff * self.evasionDrain;
       }
       self.energy = self.energy + diff;
@@ -309,13 +309,12 @@ void() ctrl_arm_die={
     setsize(self, '0 0 0', '0 0 0');
     setorigin( self, self.origin );
 
-    c = self.owner.w_slot;
-    while(c){
-      if(c.partParentId == self.partTypeId){
-        c.think = c.th_die;
-        c.nextthink = time + 0.1;
+    for( c = self.owner.w_slot; c.owner == self.owner; c = c.w_slot){
+      if(c.partParentId != self.partTypeId){
+        continue;
       }
-      c = c.w_slot;
+      c.think = c.th_die;
+      c.nextthink = time + 0.1;
     }
     
     if((self.owner.flags & (FL_MONSTER | FL_DISARMED))){
@@ -333,6 +332,47 @@ void() ctrl_arm_die={
   }
 };
 
+void() ctrlPlayerMechTouch={
+  local float currentVel;
+  local float rammage;
+  local float feedback;
+  local vector ramVel;
+  local float velMod;
+  if( other.takedamage < DAMAGE_YES ){
+    return;
+  }
+  if( !(other.flags & FL_UNIT) ){
+    return;
+  }
+  if( other.data_type == DATA_BLD ){
+    return;
+  }
+
+  //Ram damage....rammage? RAMMAGE
+  if( self.playerState == PLAYER_SPRINT_ON ){
+		makevectors(self.v_angle_y * '0 1 0');
+    ramVel = v_forward * self.velocity_x + v_right * self.velocity_y;
+		currentVel = vlen(ramVel);
+    if( currentVel < self.data_speed_forward ){
+      return;
+    }
+    cons_logAFloat("ctrlPlayerMechTouch()->ramVel", vlen(self.velocity));//DEBUG
+    rammage = self.vec_size * currentVel;
+    rammage = ;
+    t_damage( other, self.legs, self, rammage, 0, self.legs.origin, '0 0 0');
+    
+    feedback = fabs(other.vec_size - self.vec_size) / 50;
+    feedback = feedback * self.legs.max_health;
+    t_damage( self, other, other, feedback, 0, self.legs.origin, '0 0 0');
+    cons_logAFloat("ctrlPlayerMechTouch()->rammage", rammage);//DEBUG
+    cons_logAFloat("ctrlPlayerMechTouch()->feedback", feedback);//DEBUG
+    self.playerState = PLAYER_ACTIVE;
+    self.velocity_x = 0;
+    self.velocity_y = 0;
+    self.movement = '0 0 0';
+  }
+};
+
 void() ctrl_component_burn={
   local vector spark;
   spark = te_apply_wind( self.origin );
@@ -342,7 +382,7 @@ void() ctrl_component_burn={
   if( time > self.ai_action_time ){
     self.think = ctrl_component_drop;
     self.nextthink = time + 0.1;
-    self.ai_action_time = time + 7200;
+    self.ai_action_time = time + 300;  //burn for 5min
     return;
   }
 };

@@ -18,7 +18,7 @@ void() client_push_player_info={
   
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
-  self.armorvalue = self.stat_plr_stt;
+  self.armorvalue = self.playerState;
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_CLIENT_INFO );
@@ -88,7 +88,7 @@ void() client_push_player_info={
 void() client_push_player_info_thin={
   self.ammo_rockets = self.flags;
   self.ammo_cells = self.faction;
-  self.armorvalue = self.stat_plr_stt;
+  self.armorvalue = self.playerState;
 
   msg_entity = self;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
@@ -402,7 +402,7 @@ void(string str, float tokens) client_ParseMechCommand={
   
   //player wants to skip an animatic
   if( argv(1) == "exitanim" ){
-    if( self.stat_plr_stt == PLAYER_ANIM_STOP) {
+    if( self.playerState == PLAYER_ANIM_STOP) {
       self.count2 = 0;
       self.velocity = '0 0 0';
       self.avelocity = '0 0 0';
@@ -417,7 +417,7 @@ void(string str, float tokens) client_ParseMechCommand={
 };  
 
 void(string cmd, float tokens) client_setMission={
-  self.stat_plr_stt = PLAYER_ACTIVE;
+  self.playerState = PLAYER_ACTIVE;
   self.view_ofs = '0 0 1';
   if( argv(2) == "1" ){ 
     //mission successful, next map
@@ -627,7 +627,7 @@ void(entity client, float trackNum, float entFlags) client_sendMusic={
 */
 void(entity client, float missionSuccessCheck) client_sendEndMission={
 
-  client.armorvalue = client.stat_plr_stt = PLAYER_INTERMSN;
+  client.armorvalue = client.playerState = PLAYER_INTERMSN;
   msg_entity = client;
   WriteByte( MSG_ONE, SVC_TEMPENTITY );
   WriteByte( MSG_ONE, TE_MISSION_END );

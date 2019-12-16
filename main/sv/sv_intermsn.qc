@@ -187,7 +187,7 @@ void() execute_changelevel={
       self.modelindex = 0;
       setorigin (self, pos.origin);
       if( world.animaticOnly == FALSE ){
-        self.stat_plr_stt = PLAYER_INTERMSN;  //TEST
+        self.playerState = PLAYER_INTERMSN;  //TEST
         client_push_mapobjects();
         client_sendMissionUnlocks();
         client_sendEndMission(self, 1) ;

@@ -116,7 +116,7 @@ void() ClientConnect = {
   self.next_wepn8 = -1;
   self.next_wepn9 = -1;
   self.repair_request = 0;
-  self.stat_plr_stt = PLAYER_CONNECT;
+  self.playerState = PLAYER_CONNECT;
   self.i_reserve = world.i_reserve;
   self.enemy = world; //explicit assignment here
   
@@ -126,7 +126,7 @@ void() ClientConnect = {
   
   CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
   self.client_num = CLIENTS;  //book keeping for multiplayer
-  self.stat_plr_stt = PLAYER_SPAWN;
+  self.playerState = PLAYER_SPAWN;
   
   client_push_player_info();
   client_send_mapKeyObjects( self );
@@ -224,14 +224,14 @@ void() PutClientInServer = {
         client_update_viewBob("0", "0", "0");
         client_update_modelBob("0", "0", "0");
         if( world.animaticOnly ){
-          self.stat_plr_stt = PLAYER_INTERMSN;
+          self.playerState = PLAYER_INTERMSN;
         }
         else{
-          self.stat_plr_stt = PLAYER_IN_MENU;
+          self.playerState = PLAYER_IN_MENU;
         }
       }
       else{
-        self.stat_plr_stt = PLAYER_ACTIVE;
+        self.playerState = PLAYER_ACTIVE;
       }
       self.power_timer = 0;
       break;
