@@ -123,7 +123,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   if( (dmgtype & EFF_STX) ){
     damage = 0;
   }
-  return 0;
+  return damage;
 };
 /*
 Explosive Damage

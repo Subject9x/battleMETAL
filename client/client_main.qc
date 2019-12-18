@@ -258,7 +258,8 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     localcmd(strcat("stopsound", "\n"));
   }
   
-  if(CLIENT_data_type == DATA_MECH){  
+  if(CLIENT_data_type == DATA_MECH){
+    
     if(MENU_ACTIVE){
       if(CLIENT_player_state == PLAYER_POWERUP_BEGIN){
         MENU_ACTIVE = FALSE;
@@ -351,18 +352,17 @@ void(float w, float h, float menushown) CSQC_UpdateView =
     menu_handleFrame();
   }
   else{
-      //TODO - fix?
-      /*local entity player;
-      player = findchainflags(flags, FL_CLIENT);
-      while(player){
-        if( (player.data_type != DATA_POBS) ){
-          if(player.netname != self.netname){
-            ui_renderClientName(player);
-          }
+    //multiplayer out of the question for now
+    /*local entity player;
+    player = findchainflags(flags, FL_CLIENT);
+    while(player){
+      if( (player.data_type != DATA_POBS) ){
+        if(player.netname != self.netname){
+          ui_renderClientName(player);
         }
-        player = player.chain;
-      }*/
-    
+      }
+      player = player.chain;
+    }*/
   }
   
   //put this last on the rendering order to make sure it 

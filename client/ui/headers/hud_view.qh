@@ -82,6 +82,7 @@ float HUD_UID_ENVIRO_BOX    = 18;
   float HUD_SHIELD_FLASH;
   float HUD_SHIELD_FLASH_RATE = 0.15;
   
+  float HUD_ZOOM_ACTIVE;
 //==========================================
 
 //HUD Text Data Arrays======================

@@ -31,7 +31,7 @@ void() data_projectile_ini_snub_artillery_={
 void() data_projectile_snub_artillery_touch_={
   
   if( pointcontents(self.origin) == CONTENT_SKY ){
-    //remove(self);
+    self.touch = SUB_Null;
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
     return;
@@ -45,6 +45,7 @@ void() data_projectile_snub_artillery_touch_={
     }else{
       te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 7, 1);
     }
+    self.touch = SUB_Null;
     remove(self);
     return;
   }
@@ -63,17 +64,16 @@ void() data_projectile_snub_artillery_radiusDamage={
   local entity radiusTarg;
   local float d, dmg_act;
         
-  radiusTarg = findradius(self.origin, self.w_range);
-  while(radiusTarg){
-    if( (radiusTarg.flags & FL_UNIT) ){
-      if( CanDamage( radiusTarg, self )){
-        d = vlen(radiusTarg.origin - self.origin);
-        d = d / self.w_range;
-        dmg_act = self.damageValue - (self.damageValue * d);
-        t_damage(radiusTarg, self, self.owner, dmg_act, self.damageType, trace_endpos, '0 0 0');
-      } 
+  for(radiusTarg = findradius(self.origin, self.w_range); radiusTarg != world; radiusTarg = radiusTarg.chain){
+    if( !(radiusTarg.flags & FL_UNIT) ){
+      continue;
     }
-    radiusTarg = radiusTarg.chain;
+    if( !CanDamage( radiusTarg, self )){
+      continue;
+    }
+    d = vlen(radiusTarg.origin - self.origin);
+    d = d / self.w_range;
+    dmg_act = self.damageValue - (self.damageValue * d);
+    t_damage(radiusTarg, self, self.owner, dmg_act, self.damageType, trace_endpos, '0 0 0');
   }
-
 };

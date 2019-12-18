@@ -70,7 +70,7 @@ void() ctrl_dieLegs={
         if( (self.owner.flags & FL_CLIENT) ){
           newLegs = self;
           self = self.owner;
-            client_update_moveSpeed(self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, "1", "0"); 
+            client_update_moveSpeed(self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, "1", "0");
           self = newLegs;
         }
       }
@@ -78,7 +78,6 @@ void() ctrl_dieLegs={
     return;
   }
 
-  local entity newLegs;
   te_missile_explode( self.origin, self.owner.vec_size, '1 0.25 0.75', random() * (self.vec_size * 1.5), 2); 
 
   newLegs = spawn();
@@ -106,6 +105,4 @@ void() ctrl_dieLegs={
   self.alpha = 0;
   setsize(self, '-1 -1 -1', '1 1 1');
   setorigin( self, self.origin );
-  self.think = SUB_Remove;
-  self.nextthink = time + 3;
 };

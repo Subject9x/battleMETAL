@@ -40,14 +40,14 @@ void() ctrl_update_mechplayer={
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
         if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
           if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
             pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
           }
         }
@@ -98,14 +98,14 @@ void() ai_ctrl_update_mechplayer={
       hp = piece.health / piece.max_health;
       if( hp < 0.75){
         spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+        pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
         if( hp < 0.5){
           spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
-          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
+          pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
           if( hp < 0.25){
             spark = piece.origin + ( randomvec() * (random() * piece.maxs_x - piece.mins_x) );
-            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5* WINDDIR_z, 1);
+            pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
             pointparticles( particleeffectnum("TE_MECHPIECE_DAMAGE_HOT"), spark, normalize( spark - piece.origin) * 5 * WINDDIR_z, 1);
           }
         }

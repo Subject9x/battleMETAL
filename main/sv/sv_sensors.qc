@@ -38,7 +38,8 @@ void() radarSweepBasic={
     yaw = vectoyaw( self.origin - blip.origin);
     if( (yaw >= low) && (yaw <= high) ){
       if( self.stat_rdr_mode < TRUE){
-        traceline( self.origin, blip.origin, MOVE_NORMAL, self );
+        makevectors(self.v_angle);
+        traceline( self.origin + (v_up * (self.maxs_z / 2)), blip.origin, MOVE_NORMAL, self );
         if( trace_ent != blip || trace_fraction != 1 ){
           continue;
         }
@@ -132,7 +133,7 @@ void() sv_updateTargetInfo={
     self.stat_trg_dataidx = 0;
     self.stat_trg_ddflg = -6;
     self.stat_trg_dist = 0;
-    self.stat_trg_face = 0;
+    self.stat_trg_face = -1;
     self.stat_trg_faction = 0;
     self.stat_trg_ent_id = -0;
     self.addStat_targetSize_x = 0;

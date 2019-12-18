@@ -292,6 +292,7 @@ void(vector vorg, float algn, float ct, float lt, float rt, float la, float ra, 
 */
 void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRange, float radarMode, vector siz) hud_renderRadar={
   local vector  map_size;
+  local vector radarLineLeft, radarLineRight;
   local entity blip;
   local float nav;
   
@@ -308,6 +309,17 @@ void(vector vorg, float algn, float plrFaction, vector radarOrg, float radarRang
   RADAR_VCENTER_y = RADAR_VORG_y + (RADAR_VSIZE_y / 2);
   
   drawpic(RADAR_VCENTER - gui_percentToPixelRawVec('3 3'), HUD_RAD_PIP_MCH, gui_percentToPixelRawVec('6 6'), CLR_DEF_WHITE, HUD_ALPHA, 0);
+  
+  radarLineLeft_x = RADAR_VSIZE_x / 2.25;
+  radarLineLeft_x = radarLineLeft_x * -1;
+  radarLineLeft_y = RADAR_VSIZE_x / 2.25;
+  radarLineLeft_y = radarLineLeft_y * -1;
+  
+  radarLineRight = radarLineLeft;
+  radarLineRight_x = radarLineRight_x * -1;
+  drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('-3 0'), RADAR_VCENTER + radarLineLeft, CLR_DEF_WHITE, HUD_ALPHA, 0);
+  drawline(1, RADAR_VCENTER + gui_percentToPixelRawVec('3 0'), RADAR_VCENTER + radarLineRight, CLR_DEF_WHITE, HUD_ALPHA, 0);
+  
   
   blip = findchainfloat( data_idx, -2 );
   while( blip ){
@@ -1281,7 +1293,7 @@ void() data_hud_frame={
   }
   
   hud_renderNavOverlay();
-  
+
   uid = 1;
   while( uid <= 32 ){
     local float objid, algn, lflag, lalign, axis, wbit;
@@ -1292,88 +1304,108 @@ void() data_hud_frame={
     objid = UI_DATA_UIDS[uid];
     switch( objid ){
       //TODO - remove background image
-      case HUD_UID_IMG_HELM:
+      /*case HUD_UID_IMG_HELM:
         porg = UI_DATA_POS[uid];
         vsize = UI_DATA_SIZE[uid];
         localIcon = UI_DATA_IMG[uid];
         algn = UI_DATA_ALIGN[uid];
         color1 = UI_DATA_COLOR1[uid];
        //hud_HelmetImage(porg, vsize, localIcon, algn, 1, UI_DATA_COLOR1[uid]); 
-        break;
+        break;*/
       case HUD_UID_ENERGY:
-        porg = UI_DATA_POS[uid];
-        vsize = UI_DATA_SIZE[uid];
-        algn = UI_DATA_ALIGN[uid];
-        lflag = UI_DATA_LABEL_FLAG[uid];
-        lalign = UI_DATA_LABEL_ALIGN[uid];
-        lblofs = UI_DATA_LABEL_OFS[uid];
-        axis = UI_DATA_AXIS_FLAG[uid];
-        hud_renderEnergy(porg, algn, CLIENT_energy, vsize, lflag, lalign, lblofs, axis);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid];
+          vsize = UI_DATA_SIZE[uid];
+          algn = UI_DATA_ALIGN[uid];
+          lflag = UI_DATA_LABEL_FLAG[uid];
+          lalign = UI_DATA_LABEL_ALIGN[uid];
+          lblofs = UI_DATA_LABEL_OFS[uid];
+          axis = UI_DATA_AXIS_FLAG[uid];
+          hud_renderEnergy(porg, algn, CLIENT_energy, vsize, lflag, lalign, lblofs, axis);
+        }
         break;
       case HUD_UID_ARM_PLAYER: 
-        porg = UI_DATA_POS[uid];
-        algn = UI_DATA_ALIGN[uid];
-        hud_renderArmorGraph(porg, algn, CLIENT_health_center, CLIENT_health_torso_left, CLIENT_health_torso_right, CLIENT_health_arm_left, CLIENT_health_arm_right, CLIENT_health_legs);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid];
+          algn = UI_DATA_ALIGN[uid];
+          hud_renderArmorGraph(porg, algn, CLIENT_health_center, CLIENT_health_torso_left, CLIENT_health_torso_right, CLIENT_health_arm_left, CLIENT_health_arm_right, CLIENT_health_legs);
+        }
         break;
       case HUD_UID_SHIELD_PLAYER: 
-        porg = UI_DATA_POS[uid];
-        vsize = UI_DATA_SIZE[uid];
-        algn = UI_DATA_ALIGN[uid];
-        lflag = UI_DATA_LABEL_FLAG[uid];
-        lalign = UI_DATA_LABEL_ALIGN[uid];
-        lblofs = UI_DATA_LABEL_OFS[uid];
-        axis = UI_DATA_AXIS_FLAG[uid];
-        hud_renderShield(porg, algn, CLIENT_shield, vsize, lflag, lalign, lblofs, axis, TRUE);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid];
+          vsize = UI_DATA_SIZE[uid];
+          algn = UI_DATA_ALIGN[uid];
+          lflag = UI_DATA_LABEL_FLAG[uid];
+          lalign = UI_DATA_LABEL_ALIGN[uid];
+          lblofs = UI_DATA_LABEL_OFS[uid];
+          axis = UI_DATA_AXIS_FLAG[uid];
+          hud_renderShield(porg, algn, CLIENT_shield, vsize, lflag, lalign, lblofs, axis, TRUE);
+        }
         break;
-      case HUD_UID_ARM_TARGET:  
-        if( hasTarget ){
-          if( CLIENT_target_datatype == DATA_MECH ){
-            porg = UI_DATA_POS[uid];
-            algn = UI_DATA_ALIGN[uid];
-            hud_renderArmorGraph(porg, algn, CLIENT_stat_trg_ct_hp, CLIENT_stat_trg_lt_hp, CLIENT_stat_trg_rt_hp, CLIENT_stat_trg_la_hp, CLIENT_stat_trg_ra_hp, CLIENT_stat_trg_lg_hp);
+      case HUD_UID_ARM_TARGET:
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          if( hasTarget ){
+            if( CLIENT_target_datatype == DATA_MECH ){
+              porg = UI_DATA_POS[uid];
+              algn = UI_DATA_ALIGN[uid];
+              hud_renderArmorGraph(porg, algn, CLIENT_stat_trg_ct_hp, CLIENT_stat_trg_lt_hp, CLIENT_stat_trg_rt_hp, CLIENT_stat_trg_la_hp, CLIENT_stat_trg_ra_hp, CLIENT_stat_trg_lg_hp);
+            }
           }
         }
         break;
       case HUD_UID_SHIELD_TARGET: 
-        hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          hud_data_renderTarget_Shield( uid, CLIENT_stat_trg_dataidx );
+        }
         break;
       case HUD_UID_WEP_TYPE1:
-        porg = UI_DATA_POS[uid];
-        algn = UI_DATA_ALIGN[uid];
-        wbit = UI_DATA_WEPBIT[uid];
-        vsize = UI_DATA_SIZE[uid];
-        if( vsize == '0 0 0' ){
-          vsize = '32 32 0';  //default here
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid];
+          algn = UI_DATA_ALIGN[uid];
+          wbit = UI_DATA_WEPBIT[uid];
+          vsize = UI_DATA_SIZE[uid];
+          if( vsize == '0 0 0' ){
+            vsize = '32 32 0';  //default here
+          }
+          wep = hud_data_weapon_info( wbit );
+          hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
         }
-        wep = hud_data_weapon_info( wbit );
-        hud_renderWeapon(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
         break;
       case HUD_UID_WEP_TYPE2:  
-        porg = UI_DATA_POS[uid];
-        algn = UI_DATA_ALIGN[uid];
-        wbit = UI_DATA_WEPBIT[uid];
-        vsize = UI_DATA_SIZE[uid];
-        if( vsize == '0 0 0' ){
-          vsize = '32 32 0';  //default here
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid];
+          algn = UI_DATA_ALIGN[uid];
+          wbit = UI_DATA_WEPBIT[uid];
+          vsize = UI_DATA_SIZE[uid];
+          if( vsize == '0 0 0' ){
+            vsize = '32 32 0';  //default here
+          }
+          wep = hud_data_weapon_info( wbit );
+          hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
         }
-        wep = hud_data_weapon_info( wbit );
-        hud_renderWeapon2(porg, vsize, algn, CLIENT_currentWeaponGroup, wep_x, wbit, wep_y);
         break;
       case HUD_UID_RADAR_TYPE1: 
-        porg = UI_DATA_POS[uid]; 
-        algn = UI_DATA_ALIGN[uid];  
-        hud_renderRadarStatus1(porg, algn, CLIENT_stat_rdr_mode, CLIENT_radar_range, 0);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid]; 
+          algn = UI_DATA_ALIGN[uid];  
+          hud_renderRadarStatus1(porg, algn, CLIENT_stat_rdr_mode, CLIENT_radar_range, 0);
+        }
         break;
       case HUD_UID_RADAR_TYPE2: 
-        porg = UI_DATA_POS[uid]; 
-        algn = UI_DATA_ALIGN[uid]; 
-        hud_renderRadarStatus2(porg, algn, CLIENT_stat_rdr_mode, CLIENT_radar_range, 0);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid]; 
+          algn = UI_DATA_ALIGN[uid]; 
+          hud_renderRadarStatus2(porg, algn, CLIENT_stat_rdr_mode, CLIENT_radar_range, 0);
+        }
         break;
       case HUD_UID_RADAR_GRAPH: 
-        porg = UI_DATA_POS[uid]; 
-        algn = UI_DATA_ALIGN[uid];
-        vsize = UI_DATA_SIZE[uid];
-        hud_renderRadar(porg, algn, CLIENT_faction, pmove_org, CLIENT_radar_range, CLIENT_stat_rdr_mode, vsize);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid]; 
+          algn = UI_DATA_ALIGN[uid];
+          vsize = UI_DATA_SIZE[uid];
+          hud_renderRadar(porg, algn, CLIENT_faction, pmove_org, CLIENT_radar_range, CLIENT_stat_rdr_mode, vsize);
+        }
         break;
       case HUD_UID_NAV:      
         porg = UI_DATA_POS[uid]; 
@@ -1381,36 +1413,44 @@ void() data_hud_frame={
         hud_renderNavHeading( porg, algn, input_angles);
         break;
       case HUD_UID_TARGET_NAME:
-        if( hasTarget){
-          porg = UI_DATA_POS[uid]; 
-          algn = UI_DATA_ALIGN[uid];
-          hud_renderTargetName(porg, CLIENT_w_icon, algn);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          if( hasTarget){
+            porg = UI_DATA_POS[uid]; 
+            algn = UI_DATA_ALIGN[uid];
+            hud_renderTargetName(porg, CLIENT_w_icon, algn);
+          }
         }
         break;
       case HUD_UID_TARGET_RANGE:
-        if( hasTarget ){
-          porg = UI_DATA_POS[uid]; 
-          algn = UI_DATA_ALIGN[uid];
-          hud_renderTargetRange(porg, CLIENT_target_origin, pmove_org, algn);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          if( hasTarget ){
+            porg = UI_DATA_POS[uid]; 
+            algn = UI_DATA_ALIGN[uid];
+            hud_renderTargetRange(porg, CLIENT_target_origin, pmove_org, algn);
+          }
         }
         break;
       case HUD_UID_ARM_TARG_VEC:  
-        if( hasTarget ){ 
-          if( CLIENT_target_datatype == DATA_VEHC ){
-            porg = UI_DATA_POS[uid];
-            algn = UI_DATA_ALIGN[uid];
-            vsize = UI_DATA_SIZE[uid];
-            hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          if( hasTarget ){ 
+            if( CLIENT_target_datatype == DATA_VEHC ){
+              porg = UI_DATA_POS[uid];
+              algn = UI_DATA_ALIGN[uid];
+              vsize = UI_DATA_SIZE[uid];
+              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
+            }
           }
         }
         break;
       case HUD_UID_ARM_TARG_BLD:
-        if( hasTarget ){
-          if( CLIENT_target_datatype == DATA_BLD ){
-            porg = UI_DATA_POS[uid];
-            algn = UI_DATA_ALIGN[uid];
-            vsize = UI_DATA_SIZE[uid];
-            hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          if( hasTarget ){
+            if( CLIENT_target_datatype == DATA_BLD ){
+              porg = UI_DATA_POS[uid];
+              algn = UI_DATA_ALIGN[uid];
+              vsize = UI_DATA_SIZE[uid];
+              hud_renderArmorBuilding(porg, algn, vsize, CLIENT_stat_trg_ct_hp);
+            }
           }
         }
         break;
@@ -1420,7 +1460,9 @@ void() data_hud_frame={
         HUD_TXT_ALIGN = UI_DATA_ALIGN[uid];
         break;
       case HUD_UID_ENVIRO_BOX:
-        HUD_WARN_ENV_ORG = UI_DATA_POS[uid];
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          HUD_WARN_ENV_ORG = UI_DATA_POS[uid];
+        }
         break;
     }
     uid = uid + 1;

@@ -2036,10 +2036,10 @@ gravity -0.005
   originjitter 5 5 5
   velocityoffset 5 5 5
   velocityjitter 2 2 2
-  velocitymultiplier 15
+  velocitymultiplier 4
   gravity 0.25
   stretchfactor 2
-  airfriction 4
+  airfriction 2
   bounce 1
   
   //TE_MECHPIECE_DAMAGE - RISING SMOKE
@@ -2069,10 +2069,10 @@ gravity -0.005
   originjitter 5 5 5
   velocityoffset 1 1 1
   velocityjitter 2 2 2
-  velocitymultiplier 10
+  velocitymultiplier 4
   gravity 0.25
   stretchfactor 2
-  airfriction 4
+  airfriction 2
   bounce 1
   
   //TE_MECHPIECE_DEAD_BURN - Light

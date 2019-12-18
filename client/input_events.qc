@@ -74,6 +74,11 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
     else if(scanx == K_SHIFT){
       return FALSE;
     }
+    else if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
+      //good lord....
+      HUD_ZOOM_ACTIVE = TRUE;
+      return FALSE;
+    }
   }
   else if(inputEventType == INPUT_EVENT_MOUSE_POS){
     if(MENU_ACTIVE){
@@ -153,6 +158,11 @@ float(float inputEventType, float scanx, float chary, float devid) handle_input=
         }
         return TRUE;
       }
+    }
+    else if( strstrofs(findkeysforcommand("+button9", 0), ftos(scanx),0) != -1 ){
+      //good lord....
+      HUD_ZOOM_ACTIVE = FALSE;
+      return FALSE;
     }
     return FALSE;
   } 

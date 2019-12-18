@@ -37,27 +37,30 @@ void() data_projectile_emp_think_={
   explode = FALSE;
   if(time > self.w_firetime){
     local entity proxy;
-    proxy = findradius(self.origin, DAT_PRJ_EMP_PROXYRAD);
-    while(proxy){
-      if(proxy.takedamage){
-        traceline(self.origin, proxy.origin, FALSE, self.owner);
-        if(trace_ent){
-          local entity f;
-          if(trace_ent.partTypeId > 0){
-            f = trace_ent.owner;
-          }
-          else{
-            f = trace_ent;
-          }
-          local float ln;
-          ln = vlen(trace_endpos - self.origin);
-          if(ln <= DAT_PRJ_EMP_PROXYRAD){
-            explode = TRUE;
-          }
-        }
+    for(proxy = findradius(self.origin, DAT_PRJ_EMP_PROXYRAD); proxy != world; proxy = proxy.chain){
+      if( explode ){
+        continue;
       }
-    
-      proxy = proxy.chain;
+      if(proxy.takedamage <= 0){
+        continue;
+      }
+      traceline(self.origin, proxy.origin, FALSE, self.owner);
+      if(trace_ent == world){
+        continue;
+      }
+      local entity f;
+      if(trace_ent.partTypeId > 0){
+        f = trace_ent.owner;
+      }
+      else{
+        f = trace_ent;
+      }
+      local float ln;
+      ln = vlen(trace_endpos - self.origin);
+      if(ln > DAT_PRJ_EMP_PROXYRAD){
+        continue;
+      }
+      explode = TRUE;
     }
   }
   
@@ -78,19 +81,20 @@ void()data_prj_emp_explode={
   self.touch = SUB_Null;
   
   local entity lst;
-  lst = findradius(self.origin, DAT_PRJ_EMP_EXPRAD);
-  while(lst){
-    if(lst.takedamage){
-      traceline(self.origin, lst.origin, FALSE, self.owner);
-      if(trace_ent){
-        local float ln;
-        ln = vlen(trace_endpos - self.origin);
-        if(ln <= DAT_PRJ_EMP_EXPRAD){
-          t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-        }
-      }
+  for(lst = findradius(self.origin, DAT_PRJ_EMP_EXPRAD); lst != world; lst = lst.chain){
+    if(lst.takedamage <= 0){
+      continue;
     }
-    lst = lst.chain;
+    traceline(self.origin, lst.origin, FALSE, self.owner);
+    if(trace_ent == world){
+      continue;
+    }
+    local float ln;
+    ln = vlen(trace_endpos - self.origin);
+    if(ln > DAT_PRJ_EMP_EXPRAD){
+      continue;
+    }
+    t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
   }
   pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
   self.think = SUB_Remove;

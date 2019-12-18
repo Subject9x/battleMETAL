@@ -66,29 +66,26 @@ float(float angleOfTarget, float facingAngle, float limitMin, float limitMax) ai
 
 void() ai_leg_control={
   local entity legOwner;
-  
   legOwner = self;
-  if( self.legs ){
-      self = self.legs;
-      macro_set_offset(self.owner, self.compOffset)
-      switch( self.attack_state ){
-        case TR_NORM:
-          self.ideal_yaw = self.owner.angles_y;
-          break;
-        case TR_TARG:
-          self.ideal_yaw = self.ai_dir;
-          break;
-        case TR_GOAL:
-          self.ideal_yaw = vectoyaw(self.owner.goalentity.origin - self.origin);
-          break;
-        case TR_YAW:
-          self.ideal_yaw = self.angles_y;
-          break;
-      }
-      ChangeYaw();
-      self.v_angle = self.angles;
-    self = legOwner;
-  }
+  self = self.legs;
+    macro_set_offset(self.owner, self.compOffset)
+    switch( self.attack_state ){
+      case TR_NORM:
+        self.ideal_yaw = self.owner.angles_y;
+        break;
+      case TR_TARG:
+        self.ideal_yaw = self.ai_dir;
+        break;
+      case TR_GOAL:
+        self.ideal_yaw = vectoyaw(self.owner.goalentity.origin - self.origin);
+        break;
+      case TR_YAW:
+        self.ideal_yaw = self.angles_y;
+        break;
+    }
+    ChangeYaw();
+    self.v_angle = self.angles;
+  self = legOwner;
 };
 
 float( float moveAngle, float moveSpeed, void() nextFrameFunc ) ai_move_frame={

@@ -75,10 +75,12 @@ void() client_push_player_info={
       WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armLeft));
       WriteByte( MSG_ONE, csqc_updateCompStat(self.enemy.armRight));
       WriteShort( MSG_ONE, self.enemy.maxs_z * 2 );
-      if( self.enemy.netname == "" ){
-        self.enemy.netname = self.enemy.vec_name;
+      if( self.enemy.netname != "" ){
+        WriteString( MSG_ONE, self.enemy.netname );
       }
-      WriteString( MSG_ONE, self.enemy.netname );
+      else{
+        WriteString( MSG_ONE, self.enemy.vec_name );
+      }
     }
   }
 };

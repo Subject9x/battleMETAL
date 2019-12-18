@@ -27,7 +27,7 @@ void() data_projectile_ini_rocket_={
 
 void() data_prj_mis_touch={
 	if ( pointcontents(self.origin) == CONTENT_SKY){
-		//remove(self);
+    self.touch = SUB_Null;
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
 		return;
@@ -36,6 +36,7 @@ void() data_prj_mis_touch={
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
+      self.touch = SUB_Null;
       remove(self);
       return;
     }

@@ -46,9 +46,9 @@ void() ai_mech_sk_die={
   self.legs.think = self.legs.th_die;
   self.legs.nextthink = time + 0.05;
 
-  if( self.ai_node_recall )
+  if( self.ai_node_recall ){
     remove(self.ai_node_recall);
-  
+  }
   //fire triggers when dead
   trigger_event( self, self.trigOnDeath );
   
