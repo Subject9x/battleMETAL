@@ -140,11 +140,11 @@ void() ImpulseCommands ={
     }
   } 
 
-  if(self.impulse == IMP_SLIDE ){
+  if(self.impulse == IMP_SLIDE){
     if( time > self.ramCool ){
-      if( self.ramUp != 0 ){
-        self.ramCharge = time + self.ramUp / 2;
-        self.velocity_z = self.velocity_z + 50;
+      if( self.ramUp >= self.ramUpMax ){
+        self.ramCharge = time + (self.ramUp / 2);
+        self.velocity_z = self.velocity_z + 25;
         self.ramPower = self.movement * self.data_speed_accel;
         self.ramAngle_y = self.v_angle_y;
       }

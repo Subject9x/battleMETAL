@@ -1,4 +1,5 @@
 // called during level initialization, before first entities are received, only world is valid at this point
+// called during level initialization, before first entities are received, only world is valid at this point
 void() CSQC_Init =
 {
   local float i, cnt;
@@ -291,12 +292,16 @@ void(float w, float h, float menushown) CSQC_UpdateView =
         if( cvar("cl_movespeedkey") > 1 ){
           msg = "[EVASION ON]";
           msgClr = CLR_DEF_RET_GETLOCK;
+          if( getstatf(STAT_RAM) >= getstatf(STAT_RAM_MAX) ){
+            msg = "[RAM-SHOCKS READY]";
+            msgClr = CLR_DEF_RED;
+          }
         }
         else{
           msg = "!- EVASION OFFLINE -!";
           msgClr = CLR_DEF_RED;
         }
-          slen = stringwidth(msg, 0, '14 12 0');
+         slen = stringwidth(msg, 0, '14 12 0');
         slen = gui_percentXRaw(slen);
         spos_x = VIEW_CTR_x - slen / 2;
         spos_y = VIEW_CTR_y + gui_percentYRaw(56);

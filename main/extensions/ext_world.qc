@@ -26,6 +26,8 @@ void() mh_world_ini={
   MISSION_LOSSES_MILITAR = 0;
 
   //oh my
+  addstat(STAT_RAM, AS_FLOAT, ramUp);
+  addstat(STAT_RAM_MAX, AS_FLOAT, ramUpMax);
   addstat( STAT_PLR_NAME, AS_STRING, netname);
   addstat(STAT_PLR_ORG_X, AS_FLOAT, stat_cofs_x);
   addstat(STAT_PLR_ORG_Y, AS_FLOAT, stat_cofs_y);

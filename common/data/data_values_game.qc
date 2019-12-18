@@ -245,12 +245,12 @@ float RADAR_SWEEP = 2.5;
 //float STAT_OBS_FACTION = 32;
 
 float STAT_ACCURACY = 33;
-//float STAT_SPREADY = 34;
+float STAT_RAM = 34;
 
 float STAT_TARG_EID = 35;
 float STAT_VID = 36;
 
-//float STAT_CAM_ORG_X = 37;
+float STAT_RAM_MAX = 37;
 //float STAT_CAM_ORG_Y = 38;
 //float STAT_CAM_ORG_Z = 39;
 
