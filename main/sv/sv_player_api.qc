@@ -59,9 +59,12 @@ void() PlayerPreThink = {
 		self.velocity = '0 0 0';
     
   if( !self.button8 ){
-    if( self.playerState == PLAYER_SPRINT_ON){
+    if( self.playerState == PLAYER_SPRINT_ON ){
       self.playerState = PLAYER_ACTIVE;
       client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
+      if( time > self.ramCharge ){
+        self.ramAngle_y = self.v_angle_y;
+      }
     }
   }
   if( !self.button9 ){
@@ -212,13 +215,23 @@ void() PlayerPostThink = {
     }
 		self.jump_flag = 0;
 	}
-
+  if( self.playerState == PLAYER_SPRINT_ON  && time > self.ramUp ){
+    if(self.movement_x > 0 && self.movement_y == 0 ){
+      if( self.ramUp < self.ramUpMax ){
+        self.ramUp = self.ramUp + (cvar("sys_ticrate") * 3);
+      }
+    }
+    else{
+      self.ramUp = 0;
+    }
+  }
   //after server processes everything, push data to client
   client_push_player_info();
  
 	if (!(self.flags & FL_ONGROUND)){
 		self.jump_flag = self.velocity_z;
   }
+
 };
 
 

@@ -68,4 +68,11 @@ Overview:
 .float next_wepn7;
 .float next_wepn8;
 .float next_wepn9;
+
+.vector ramAngle;
+.float ramCharge;
+.float ramCool;
+.vector ramPower;
+.float ramUp;
+.float ramUpMax;
 #endif

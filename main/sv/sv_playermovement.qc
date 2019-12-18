@@ -156,6 +156,71 @@ void() SV_PlayerPhysics =
 				self.velocity = self.velocity + wishdir * min(f, sv_accelerate * frametime * wishspeed);
 		}
 	}
+  else if( time < self.ramCharge ){
+    local float stopSpeedSlide;
+    local float frictionSlide;
+    local float accelerationSlide;
+    local vector traceNorm;
+    local float hitStop;
+    
+		/*makevectors(self.ramAngle);
+    traceline(self.legs.origin, self.legs.origin + (v_up * (self.mins_z / 1.75)) + (v_forward * self.maxs_x), MOVE_NORMAL, self);
+    trailparticles(world, particleeffectnum("TE_LAS_RAIL"), self.legs.origin, self.legs.origin + (v_up * (self.mins_z / 1.75)) + (v_forward * self.maxs_x));
+    traceNorm_x = 0 - trace_plane_normal_x;
+    traceNorm_y = 0 - trace_plane_normal_y;
+    traceNorm = vectoangles(traceNorm);
+    cons_logAVector("traceNorm", traceNorm); //DEBUG
+    self.v_angle = traceNorm;
+    if( trace_fraction != 1) {
+      if( trace_ent == world ){
+        hitStop = TRUE;
+      }
+      else if( trace_ent.data_type != DATA_VEHC ){
+        hitStop = TRUE;
+      }
+    }*/
+    if(time >= self.ramCharge){
+      hitStop = TRUE;
+    }
+    if( hitStop ){      
+      self.ramCharge = time;
+      self.ramCool = time + self.ramUp;
+      return;
+    }
+    
+    stopSpeedSlide = self.vec_size;
+    frictionSlide = 0.5;
+    accelerationSlide = sv_accelerate;
+		//ramming
+    self.movement = '0 0 0';
+		makevectors(self.ramAngle_y * '0 1 0');
+		wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y + v_up * (self.vec_size * -100);
+		// friction
+		if (self.velocity_x || self.velocity_y)
+		{
+			v = self.velocity;
+			//v_z = 0;
+			f = vlen(v);
+			if (f < stopSpeedSlide)
+				f = 1 - frametime * (stopSpeedSlide / f) * frictionSlide;
+			else
+				f = 1 - frametime * frictionSlide;
+			if (f > 0)
+				self.velocity = self.velocity * f;
+			else
+				self.velocity = '0 0 0';
+		}
+		// acceleration
+		wishdir = normalize(wishvel);
+		wishspeed = vlen(wishvel);
+		if (wishspeed > (self.data_speed_forward * (self.data_speed_accel + 1)))
+			wishspeed = self.data_speed_forward * (self.data_speed_accel + 1);
+
+    f = wishspeed - (self.velocity * wishdir);
+    if (f > 0){
+      self.velocity = self.velocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);
+    }
+  }
 	else if (self.flags & FL_ONGROUND)
 	{
 		// walking

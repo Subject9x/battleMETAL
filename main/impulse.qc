@@ -122,13 +122,7 @@ void() ImpulseCommands ={
     }
     mpls_groupFire(self.aState);
   }
-
-  if(self.stat_plr_fir == FIRE_SINGLE){
-    //mpls_singleFire();
-  }
-  if(self.stat_plr_fir == FIRE_GROUP){
-  }
-
+  
   if(self.impulse == IMP_TARGET){
     sv_getTarget();
   }
@@ -146,6 +140,17 @@ void() ImpulseCommands ={
     }
   } 
 
+  if(self.impulse == IMP_SLIDE ){
+    if( time > self.ramCool ){
+      if( self.ramUp != 0 ){
+        self.ramCharge = time + self.ramUp / 2;
+        self.velocity_z = self.velocity_z + 50;
+        self.ramPower = self.movement * self.data_speed_accel;
+        self.ramAngle_y = self.v_angle_y;
+      }
+    }
+  }
+
 	self.impulse = 0;
 };
 
@@ -153,8 +158,10 @@ void() ButtonCommands={
   if( self.button8 ){
     if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
       if( self.playerState == PLAYER_ACTIVE ){
+        self.ramAngle_y = self.v_angle_y;
         self.playerState = PLAYER_SPRINT_ON;
         client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);
+        
       }
     }
   }
@@ -164,10 +171,6 @@ void() ButtonCommands={
       self.viewzoom = self.viewzoom - 0.25;
     }
   }
-};
-
-void() mpls_singleFire={
-
 };
 
 void(float selector) mpls_groupFire={

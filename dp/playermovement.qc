@@ -197,6 +197,28 @@ void() SV_PlayerPhysics =
 				self.velocity = self.velocity + wishdir * min(f, accel * frametime * wishspeed);
 		}
 	}
+  else if( !(self.flags & FL_ONGROUND) && time < self.ramFade_x ){
+    cons_logAVector("ramming speed!", 1);  //DEBUG
+    //ramming speed!
+    makevectors(self.ramAngle);
+		wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y;
+    wishdir = normalize(self.ramPower);
+    wishspeed = vlen(self.ramPower);
+    if( wishspeed > sv_maxairspeed ){
+      wishspeed = sv_maxairspeed;
+    }
+    if( time >= self.teleport_time ){
+      f = wishspeed - (self.velocity * wishdir);
+      if (f > 0){
+        self.velocity = self.velocity + wishdir * min(f, 1 * frametime * wishspeed);
+      }
+    }
+    //self.ramPower = self.ramPower - self.ramFade;
+    if( time > self.ramFade_x){
+      self.ramCool = time + (self.vec_size * 2);
+      self.movetype = MOVETYPE_WALK;
+    }
+  }
 	else
 	{
 		// airborn

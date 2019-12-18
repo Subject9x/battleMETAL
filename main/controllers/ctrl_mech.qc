@@ -335,42 +335,51 @@ void() ctrl_arm_die={
 void() ctrlPlayerMechTouch={
   local float currentVel;
   local float rammage;
-  local float feedback;
-  local vector ramVel;
-  local float velMod;
+  local float feedbackDmgType;
+  local float dot;
+  local entity dead;
+  
+  //Ram damage....rammage? RAMMAGE
+  if( time > self.ramCharge ){
+    return;
+  }
   if( other.takedamage < DAMAGE_YES ){
     return;
   }
   if( !(other.flags & FL_UNIT) ){
     return;
   }
-  if( other.data_type == DATA_BLD ){
+  
+  if( other.data_type != DATA_VEHC ){
+    self.ramCharge = time;
+    self.ramCool = time + self.ramUp;
     return;
   }
-
-  //Ram damage....rammage? RAMMAGE
-  if( self.playerState == PLAYER_SPRINT_ON ){
-		makevectors(self.v_angle_y * '0 1 0');
-    ramVel = v_forward * self.velocity_x + v_right * self.velocity_y;
-		currentVel = vlen(ramVel);
-    if( currentVel < self.data_speed_forward ){
-      return;
-    }
-    cons_logAFloat("ctrlPlayerMechTouch()->ramVel", vlen(self.velocity));//DEBUG
-    rammage = self.vec_size * currentVel;
-    rammage = ;
-    t_damage( other, self.legs, self, rammage, 0, self.legs.origin, '0 0 0');
-    
-    feedback = fabs(other.vec_size - self.vec_size) / 50;
-    feedback = feedback * self.legs.max_health;
-    t_damage( self, other, other, feedback, 0, self.legs.origin, '0 0 0');
-    cons_logAFloat("ctrlPlayerMechTouch()->rammage", rammage);//DEBUG
-    cons_logAFloat("ctrlPlayerMechTouch()->feedback", feedback);//DEBUG
-    self.playerState = PLAYER_ACTIVE;
-    self.velocity_x = 0;
-    self.velocity_y = 0;
-    self.movement = '0 0 0';
+  makevectors ( self.ramAngle );
+  dot = normalize (other.origin - self.origin) * v_forward;
+	if( dot < 0.75 ){
+		return;
   }
+  rammage = max(self.vec_size, other.vec_size) + self.ramUp;
+  rammage = rammage / 15;
+  rammage = other.max_health * rammage;
+  dead = t_damage(other, self, self, rammage, DMG_BAL, self.legs.origin, '0 0 0');
+  
+  if( self.shield <= 0 ){
+    rammage = max(self.vec_size, dead.vec_size);
+    if( rammage > self.vec_size ){
+      rammage = rammage - self.vec_size;
+      t_damage(self, self, self, rammage / 2, 0, self.legs.origin, '0 0 0');
+    }
+  }
+  
+  if( dead.deadflag < DEAD_NO ){
+    self.velocity_z = other.maxs_z * 1.33;
+    self.ramCharge = time;
+    self.ramCool = time + self.ramUp / 2;
+    return;
+  }
+  
 };
 
 void() ctrl_component_burn={
