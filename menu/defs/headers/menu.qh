@@ -38,6 +38,7 @@ float M_RESET   = 20;
 float M_MODS    = 21;
 float M_HELP    = 22;
 float M_CREDITS  = 23;
+float M_NEWSAVE = 24;
 
 float drawfont_prev;
 float FONT_NUM_ROBOT_LIGHT;
@@ -72,9 +73,11 @@ void() m_credits_i;
 
 void() m_main_f;
 void() m_camp_f;
-  void() m_newg_f;
+  void() m_newsave_f;
+    void() m_newg_f;
   void() m_load_f;
   void() m_save_f;
+  
 void() m_multi_f;
   void() m_setup_f;
   void() m_host_f;
@@ -91,7 +94,8 @@ void() m_credits_f;
   
 void() m_main_d;
 void() m_camp_d;
-  void() m_newg_d;
+  void() m_newsave_d;
+    void() m_newg_d;
   void() m_load_d;
   void() m_save_d;
 void() m_multi_d;
@@ -109,7 +113,8 @@ void() m_credits_d;
 
 void(float ky, float ascii) m_main_k;
 void(float ky, float ascii) m_camp_k;
-  void(float ky, float ascii) m_newg_k;
+  void(float ky, float ascii) m_newsave_k;
+    void(float ky, float ascii) m_newg_k;
   void(float ky, float ascii) m_load_k;
   void(float ky, float ascii) m_save_k;
 void(float ky, float ascii) m_multi_k;

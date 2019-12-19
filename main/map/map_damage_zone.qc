@@ -56,9 +56,9 @@ void() map_damage_zone_particles_armor={
     particleOffset_y = random() * (self.compAltOffset_z / 2);
     
     particleOffset = self.dest + (v_right * particleOffset_x) + (v_forward * particleOffset_z) + (v_up * particleOffset_y);
-    if( random() < 0.2)
+    if( random() < 0.2){
       te_field_rad(particleOffset, normalize(velocityOffset - self.dest) * 4, 1);
-    
+    }
     te_field_rad_light(particleOffset, 1);
     if( self.compAltOffset_x > 256){
       te_field_rad_light(particleOffset, 1);
@@ -222,16 +222,18 @@ void() map_damage_zone_touch={
       //Zone Damage - ENERGY
       if( (self.damageType & 4) ){
         other.energy = other.energy - self.damageValue;
-        if( other.energy < 0 )
+        if( other.energy < 0 ){
           other.energy = 0;
+         }
         //realized damageValue can be inverted...
-        if( other.energy > other.energyMax )
+        if( other.energy > other.energyMax ){
           other.energy = other.energyMax;
+        }
       }
       
-      if( (other.flags & FL_CLIENT) )
+      if( (other.flags & FL_CLIENT) ){
         client_send_enviro_warning( other );
-      
+      }
       if( (self.damageType & 8) ){
         //TODO - impact speed?
       }

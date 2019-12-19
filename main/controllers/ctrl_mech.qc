@@ -355,9 +355,9 @@ void() ctrlPlayerMechTouch={
     self.ramCool = time + self.ramUp;
     return;
   }
-  makevectors ( self.ramAngle );
+  makevectors ( self.velocity );
   dot = normalize (other.origin - self.origin) * v_forward;
-	if( dot < 0.67 ){
+	if( dot < 0.6 ){
 		return;
   }
   rammage = max(self.vec_size, other.vec_size) + self.ramUp;

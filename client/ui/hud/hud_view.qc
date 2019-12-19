@@ -58,18 +58,30 @@ void(float hitdirection, float lockval, float unitAccuracy, float trg_shield) hu
   RENDER DIRECTIONAL HIT INDICATORS
 */
 void(float hitDirBit) hud_renderDirectionHit={
+  local vector icoSize;
+  local vector orgLeft;
+  local vector orgRight;
+  local vector hitColor;
+  icoSize_x = gui_percentXRaw(24);
+  icoSize_y = gui_percentYRaw(VIEW_MAX_y * 0.67);
+  orgLeft_y = orgRight_y = VIEW_ORG_y + (VIEW_MAX_y * 0.15);
+  
+  
+  if( CLIENT_shield > 0 ){
+    hitColor = CLR_HUD_DMG_SHIELD;
+  }
+  else{
+    hitColor = CLR_HUD_DMG_ARMOR;
+  }
+  
   if( (hitDirBit & STAT_HIT_LF) ){
-    local vector lorg;
-    lorg_x = VIEW_ORG_x + gui_percentXRaw(4);
-    lorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
-    gui_renderTintImage(TRUE, lorg, HUD_DMG_PIP_H, gui_percentToPixelRawVec('16 128'), '0.85 0.1 0.1', HUD_ALPHA, 0);
+    orgLeft_x = VIEW_ORG_x + gui_percentXRaw(1);
+    gui_renderTintImage(TRUE, orgLeft, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
   }
   
   if( (hitDirBit & STAT_HIT_RT) ){
-    local vector rorg;
-    rorg_x = VIEW_MAX_x - gui_percentXRaw(18);
-    rorg_y = VIEW_ORG_y + (VIEW_MAX_y / 2);
-    gui_renderTintImage(TRUE, rorg, HUD_DMG_PIP_H, gui_percentToPixelRawVec('16 128'), '0.85 0.1 0.1', HUD_ALPHA, 0);
+    orgRight_x = VIEW_MAX_x - gui_percentXRaw(24);
+    gui_renderTintImage(TRUE, orgRight, HUD_DMG_PIP_H, icoSize, hitColor, max(HUD_ALPHA / 2, 0.67), 0);
   }
 };
 
@@ -1505,12 +1517,13 @@ void() data_hud_frame={
   hud_renderTargetDirection(CLIENT_stat_trg_face, CLIENT_faction, CLIENT_target_faction, CLIENT_target_datatype);
   hud_renderReticleRange('0 -24', (VIEW_CTX | VIEW_CTY), CLIENT_stat_ret_dist) ;
   
-  //repair sits above all
-  hud_renderRepairValue(getstatf(STAT_PLR_REP));
-  hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
-  
-  hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
-  hud_event_frame();
+  if( !HUD_ZOOM_ACTIVE ){
+    //repair sits above all
+    hud_renderRepairValue(getstatf(STAT_PLR_REP));
+    hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
+    hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
+    hud_event_frame();
+  }
  
   hud_render_info();
   

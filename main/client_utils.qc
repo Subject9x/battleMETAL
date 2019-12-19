@@ -672,11 +672,12 @@ void(entity client ) client_send_mapKeyObjects={
 void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed={
   local string comd;
   
-  comd = strcat("cl_forwardspeed ", ftos(fwd), " \n ");
-  comd = strcat( comd, strcat("cl_sidespeed ", ftos(side), " \n ") );
-  comd = strcat( comd, strcat("cl_backspeed ", ftos(bck), " \n ") );
-  comd = strcat( comd, strcat("cl_movespeedkey ", accel, " \n ") );
-  comd = strcat( comd, strcat("cl_rollangle ", roll, " \n") );
+  msg_entity = self;
+  comd = strcat("cl_forwardspeed ", ftos(fwd), "\n");
+  comd = strcat( comd, strcat("cl_sidespeed ", ftos(side), "\n") );
+  comd = strcat( comd, strcat("cl_backspeed ", ftos(bck), "\n") );
+  comd = strcat( comd, strcat("cl_movespeedkey ", accel, "\n") );
+  comd = strcat( comd, strcat("cl_rollangle ", roll, "\n") );
   
   stuffcmd(self, comd);
 };

@@ -43,6 +43,10 @@ vector CLR_HUD_ORANGE = '0.93 0.5 0.07';  //2
 vector CLR_HUD_PURPLE = '0.66 0.074 0.93';//3
 vector CLR_HUD_BLUE = '0.074 0.66 0.93';  //4
 
+//Damage direction indicators
+vector CLR_HUD_DMG_ARMOR = '0.9 0.2 0.2';
+vector CLR_HUD_DMG_SHIELD = '0.2 0.9 0.2';
+
 //armor constants
   //fine
   vector CLR_DEF_ARM_OK= '0.2 0.8 0.2';

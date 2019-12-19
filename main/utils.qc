@@ -189,7 +189,7 @@ float(vector orig) util_checkPointAngleImpl ={
 	local vector	vec;
 	local float		f_dot, s_dot;
 	
-	makevectors (self.angles);
+	makevectors (self.v_angle);
 	vec = normalize (orig - self.origin);
 	f_dot = vec * v_forward;
   s_dot = vec * v_right;
@@ -238,34 +238,29 @@ float(vector orig) util_lockOnChoke={
 };
 
 void(entity ent, vector pnt) util_chekPointToHitDir={
-  local entity this;
-  local float hit_ang;
+  local float hitAngle, sideAngle;
+  local vector normVec;
   
-  this = self;
-  self = ent;
-  hit_ang = util_checkPointAngleImpl(pnt);
-  
-  switch( hit_ang ){
-    case 1:
-      if( (self.hitdir_buffer & STAT_HIT_RT) == FALSE ){
-        self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_RT;
-      }
-      break;
-    case 2:
-      if( (self.hitdir_buffer & STAT_HIT_RT) == FALSE ){
-        self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_RT;
-      }
-      if( (self.hitdir_buffer & STAT_HIT_LF) == FALSE  ){
-        self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_LF;
-      }
-      break;
-    default:
-      if( (self.hitdir_buffer & STAT_HIT_LF) == FALSE ){
-        self.hitdir_buffer = self.hitdir_buffer | STAT_HIT_LF;
-      }
-      break;
+  makevectors(ent.v_angle);
+  normVec = normalize(pnt - ent.origin);
+  hitAngle = normVec * v_forward;
+
+  if( hitAngle <= 0 ){
+    //rear hit
+    ent.hitdir_buffer = ent.hitdir_buffer | (STAT_HIT_LF | STAT_HIT_RT);
+    return;
   }
-  self = this;
+  sideAngle = normVec * v_right;
+  cons_logAFloat("sangle", sideAngle);  //DEBUG
+  if( hitAngle < 0.7 && hitAngle > 0 ){
+    //side shot
+    if( sideAngle > 0.3 && sideAngle <= 0.6){
+      ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_RT;
+    }
+    else if(sideAngle <= -0.6 && sideAngle > -1){
+      ent.hitdir_buffer = ent.hitdir_buffer | STAT_HIT_LF; 
+    }
+  }
 };
 
 

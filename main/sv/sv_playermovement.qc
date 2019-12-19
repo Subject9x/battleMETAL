@@ -194,12 +194,12 @@ void() SV_PlayerPhysics =
 		//ramming
     self.movement = '0 0 0';
 		makevectors(self.ramAngle_y * '0 1 0');
-		wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y + v_up * (self.vec_size * -100);
+		wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y + v_up * self.ramPower_z;
 		// friction
-		if (self.velocity_x || self.velocity_y)
+		/*if (self.velocity_x || self.velocity_y)
 		{
 			v = self.velocity;
-			//v_z = 0;
+			v_z = 0;
 			f = vlen(v);
 			if (f < stopSpeedSlide)
 				f = 1 - frametime * (stopSpeedSlide / f) * frictionSlide;
@@ -209,13 +209,13 @@ void() SV_PlayerPhysics =
 				self.velocity = self.velocity * f;
 			else
 				self.velocity = '0 0 0';
-		}
+		}*/
 		// acceleration
 		wishdir = normalize(wishvel);
 		wishspeed = vlen(wishvel);
-		if (wishspeed > (self.data_speed_forward * (self.data_speed_accel + 1)))
-			wishspeed = self.data_speed_forward * (self.data_speed_accel + 1);
-
+		if (wishspeed > (self.data_speed_forward * (self.data_speed_accel * 2))){
+			wishspeed = self.data_speed_forward * (self.data_speed_accel * 2);
+    }
     f = wishspeed - (self.velocity * wishdir);
     if (f > 0){
       self.velocity = self.velocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);

@@ -144,8 +144,9 @@ void() ImpulseCommands ={
     if( time > self.ramCool ){
       if( self.ramUp >= self.ramUpMax ){
         self.ramCharge = time + (self.ramUp / 2);
-        self.velocity_z = self.velocity_z + 25;
-        self.ramPower = self.movement * self.data_speed_accel;
+        self.ramPower_x = self.data_speed_forward * (self.data_speed_accel * 2);
+        self.ramPower_y = 0;
+        self.ramPower_z = -15;
         self.ramAngle_y = self.v_angle_y;
       }
     }
@@ -160,8 +161,7 @@ void() ButtonCommands={
       if( self.playerState == PLAYER_ACTIVE ){
         self.ramAngle_y = self.v_angle_y;
         self.playerState = PLAYER_SPRINT_ON;
-        client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);
-        
+        client_update_moveSpeed(self.data_speed_forward * self.data_speed_accel, self.data_speed_strafe * self.data_speed_accel, self.data_speed_backward * self.data_speed_accel, ftos(self.data_speed_accel), self.hud_rollangle);        
       }
     }
   }

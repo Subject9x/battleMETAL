@@ -64,13 +64,13 @@ void() ctrl_dieLegs={
     if( !(self.flags & FL_DISARMED) ){
       if( self.health <= 0 ){
         self.flags = self.flags | FL_DISARMED;
+        newLegs = self;
         self.owner.data_speed_forward = self.owner.data_speed_forward / 2;
         self.owner.data_speed_strafe = self.owner.data_speed_strafe / 2;
         self.owner.data_speed_backward = self.owner.data_speed_backward / 2;
         if( (self.owner.flags & FL_CLIENT) ){
-          newLegs = self;
           self = self.owner;
-            client_update_moveSpeed(self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, "1", "0");
+            client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, "1", "0");
           self = newLegs;
         }
       }

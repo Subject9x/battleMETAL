@@ -21,7 +21,7 @@ string IMG_CAMP_SAVE    = "gfx/menu/save_btn.png";
 //button callbacks
 void() click_camp_new ={
   menu_clear_items(M_STATE);
-  m_newg_f();
+  m_newsave_f();
 };
 
 void() click_camp_load = {

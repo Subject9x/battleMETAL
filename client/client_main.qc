@@ -301,11 +301,11 @@ void(float w, float h, float menushown) CSQC_UpdateView =
           msg = "!- EVASION OFFLINE -!";
           msgClr = CLR_DEF_RED;
         }
-         slen = stringwidth(msg, 0, '14 12 0');
+         slen = stringwidth(msg, 0, '16 14 0');
         slen = gui_percentXRaw(slen);
         spos_x = VIEW_CTR_x - slen / 2;
         spos_y = VIEW_CTR_y + gui_percentYRaw(56);
-        drawstring(spos, msg, '14 12 0', msgClr, HUD_ALPHA, 0);
+        drawstring(spos, msg, '16 14 0', msgClr, max(HUD_ALPHA + 0.33, 0.8), 0);
         drawfont_prev = drawfont;
       }
 
@@ -543,6 +543,7 @@ void(string s) CSQC_Parse_StuffCmd =
       localcmd(s);
     }
     else{
+      cons_logAString("localcmd:", s);  //DEBUG
       localcmd(s);
     }
   }
