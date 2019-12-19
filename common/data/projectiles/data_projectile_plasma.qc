@@ -90,11 +90,14 @@ void() data_projectile_plasma_touch={
 
   pointparticles( particleeffectnum("TE_RPC_HIT"), self.origin, '0 0 0', 1);
   if(other.takedamage){
-    if(other.shield <= 0){
+    if(other.shield > 0){
+      t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
+    }
+    else{
       hit = t_damage(other, self, self.owner, 0.01, self.damageType, self.origin, '0 0 0');
       self.enemy = other;
       self.cockpit = hit;
-      self.damageType = self.damageType | EFF_PRC;
+      self.damageType = (DMG_BAL | EFF_RAM | EFF_PRC);
       self.damageValue = self.damageValue * 0.05;
       setsize(self, '-1 -1 -1', '1 1 1');
       if( (other.data_type == DATA_MECH) ){
@@ -103,9 +106,6 @@ void() data_projectile_plasma_touch={
       self.think = data_projectile_plasma_burn_ini_;
       self.nextthink = time + 0.01;
       return;
-    }
-    else{
-      t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     }
 	}
   self.solid = SOLID_NOT;
