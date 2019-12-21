@@ -80,7 +80,7 @@ void() menu_armingListener_onHover={
 void() menu_armingListener_onKeyUp={
   local entity hardpoint;
   local float weaponType;
-  
+  UI_ARMING_weaponclick = FALSE;
   if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
     if( (UI_ARMING_item_drag.data_idx > 0) && (CFG_INDEX > 0) ){
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
@@ -121,9 +121,6 @@ void() weaponDragListener={
     if( UI_ARMING_weaponclick == TRUE ){
       UI_ARMING_item_drag.damageType = 0;
       data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
-    }
-    else{
-      ui_data_clear_item1();
     }
   }
 };
