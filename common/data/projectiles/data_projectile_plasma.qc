@@ -31,10 +31,6 @@ void() data_projectile_ini_plasma_={
 };
 
 void() data_projectile_plasma_burn_ini_={
-  self.movetype = MOVETYPE_FOLLOW;
-  self.solid = SOLID_NOT;
-  self.velocity = '0 0 0';
-  self.avelocity = '0 0 0';
   self.aiment = self.cockpit;
   self.punchangle = self.cockpit.angles;
   self.view_ofs = self.origin - self.cockpit.origin;
@@ -47,7 +43,7 @@ void() data_projectile_plasma_burn_ini_={
 };
 
 void() data_projectile_plasma_burn_th={
-  if( (self.enemy.deadflag > DEAD_NO) || (self.cockpit.deadflag > DEAD_NO) ){
+  if( self.enemy.deadflag > DEAD_NO || self.cockpit.deadflag > DEAD_NO ){
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
     return;
@@ -59,8 +55,7 @@ void() data_projectile_plasma_burn_th={
     return;
   }
   
-  t_damage(self.cockpit, self, self.owner, self.damageValue, self.damageType, self.cockpit.origin, '0 0 0');
-
+  t_damage(self.enemy, self, self.owner, self.damageValue, self.damageType, self.cockpit.origin, '0 0 0');
   pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   
   if(time > self.data_lifetime){
@@ -80,9 +75,9 @@ void() data_projectile_plasma_touch={
   local entity hit;
   
   self.touch = SUB_Null;
+  self.solid = SOLID_NOT;
   
   if (pointcontents(self.origin) == CONTENT_SKY){  
-    self.touch = SUB_Null;
     self.think = SUB_Remove;
     self.nextthink = time + 0.01;
     return;
@@ -97,18 +92,20 @@ void() data_projectile_plasma_touch={
       hit = t_damage(other, self, self.owner, 0.01, self.damageType, self.origin, '0 0 0');
       self.enemy = other;
       self.cockpit = hit;
-      self.damageType = (DMG_BAL | EFF_RAM | EFF_PRC);
-      self.damageValue = self.damageValue * 0.05;
+      self.damageType = 0 | (DMG_BAL | EFF_RAM | EFF_PRC);
+      self.damageValue = self.damageValue * 0.1;
       setsize(self, '-1 -1 -1', '1 1 1');
-      if( (other.data_type == DATA_MECH) ){
-        setorigin(self, hit.origin);
+      if( other != hit ){
+        setorigin(self, self.origin);
       }
+      self.movetype = MOVETYPE_FOLLOW;
+      self.velocity = '0 0 0';
+      self.avelocity = '0 0 0';
       self.think = data_projectile_plasma_burn_ini_;
       self.nextthink = time + 0.01;
       return;
     }
 	}
-  self.solid = SOLID_NOT;
   self.think = SUB_Remove;
   self.nextthink = time + 0.01;
 };

@@ -36,7 +36,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_bal={
       damage = damage * 2;
       
     if( (dmgtype * EFF_RAM) ){
-      if( (targ.flags & FL_CLIENT) ){
+      if( (self.owner.flags & FL_CLIENT) ){
         crit = 0.25;
         crit = crit + ((3 - skill) / 10);
         crit = crit + ((3 - targ.vec_size) / 10);
@@ -83,7 +83,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   damage = damage + ( damage * 0.16);
   
   if( (dmgtype & EFF_STX) || (dmgtype & EFF_SHD) ){
-    if( (targ.flags & FL_CLIENT) ){
+    if( (self.owner.flags & FL_CLIENT) ){
       crit = 0.25;
       crit = crit + ((3 - skill) / 10);
       crit = crit + ((3 - targ.vec_size) / 10);
@@ -114,6 +114,8 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
   
   if( shields <= 0 ){
     shields = 0;
+  }
+  else{
     damage = 0;
   }
   
@@ -155,8 +157,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_mis={
     if( (targ.flags & FL_CLIENT) ) {
       crit = crit / 1.25;
     }
-    if( random() <= crit )
+    if( random() <= crit ){
       damage = damage * 1.25;
+    }
   }
   
   targ.shield = shields;
