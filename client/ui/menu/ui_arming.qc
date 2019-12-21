@@ -75,7 +75,6 @@ void() menu_armingListener_onHover={
   }
   
   toolTip.data_idx = FALSE;
-  
 };
 
 void() menu_armingListener_onKeyUp={
@@ -118,12 +117,15 @@ void() menu_armingListener_onKeyUp={
 };
 
 void() weaponDragListener={
-  
   if( INPUT_mouse_state == MOUSE_DRAG ){
-    UI_ARMING_item_drag.damageType = 0;
-    data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
+    if( UI_ARMING_weaponclick == TRUE ){
+      UI_ARMING_item_drag.damageType = 0;
+      data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
+    }
+    else{
+      ui_data_clear_item1();
+    }
   }
-
 };
 
 //DEPRECATED for now but leaving for reference
@@ -153,18 +155,22 @@ void() weaponSelectListener={
   local float found;
   found = listListener(WEPNLIST_ORG, cursorpos, WEPNLIST_SIZE, gui_percentToPixelRawVec('96 13.92'), WEPNLIST_CNT, 0);
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_BAL, WEPNLIST_SIZE_BAL, TRUE)){
+    UI_ARMING_weaponclick = TRUE;
     found = listListener(WEPNLIST_ORG_BAL, cursorpos, WEPNLIST_SIZE_BAL, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_BAL, 0);
     found = WEPLIST_BAL_ARR[found];
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_ENE, WEPNLIST_SIZE_ENE, TRUE)){
+    UI_ARMING_weaponclick = TRUE;
     found = listListener(WEPNLIST_ORG_ENE, cursorpos, WEPNLIST_SIZE_ENE, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_ENE, 0);
     found = WEPLIST_ENE_ARR[found];
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_EXP, WEPNLIST_SIZE_EXP, TRUE)){
+    UI_ARMING_weaponclick = TRUE;
     found = listListener(WEPNLIST_ORG_EXP, cursorpos, WEPNLIST_SIZE_EXP, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_EXP, 0);
     found = WEPLIST_EXP_ARR[found];
   }
   if(menu_checkMouseInBounds(cursorpos, WEPNLIST_ORG_MSC, WEPNLIST_SIZE_MSC, TRUE)){
+    UI_ARMING_weaponclick = TRUE;
     found = listListener(WEPNLIST_ORG_MSC, cursorpos, WEPNLIST_SIZE_MSC, gui_percentToPixelRawVec('90 14'), WEPNLIST_CNT_MSC, 0);
     found = WEPLIST_MSC_ARR[found];
   }

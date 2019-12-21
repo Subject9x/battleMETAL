@@ -13,6 +13,8 @@ entity UI_ARMING_DATA_item_list;	//pointer for weapon list operations
 
 entity UI_ARMING_item_drag;
 
+float UI_ARMING_weaponclick;  //registers that the click was on a weapon for icon-dragging
+
 float UNLOCKED_ITEMS[24];	//populated by server call
 float UNLOCKED_ITEMS_TOTAL;
 

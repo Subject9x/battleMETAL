@@ -42,8 +42,8 @@ float MOUSE_UP = FALSE;
 float MOUSE_DRAG = 2;
 
 float MOUSE_drag_timer;
-float MOUSE_drag_rate = 0.005;
-float MOUSE_drag_max = 1;
+float MOUSE_drag_rate = 0.1;
+float MOUSE_drag_max = 0.5;
 
 //WEAPON FIRE STATUS
 float READY = 0;
