@@ -333,11 +333,9 @@ void() ctrl_arm_die={
 };
 
 void() ctrlPlayerMechTouch={
-  local float currentVel;
-  local float rammage;
-  local float feedbackDmgType;
   local float dot;
   local entity dead;
+  local vector vec;
   
   //Ram damage....rammage? RAMMAGE
   if( time > self.ramCharge ){
@@ -353,23 +351,24 @@ void() ctrlPlayerMechTouch={
   if( other.data_type != DATA_VEHC ){
     self.ramCharge = time;
     self.ramCool = time + self.ramUp;
+    self.velocity = '0 0 0';
     return;
   }
-  makevectors ( self.velocity );
-  dot = normalize (other.origin - self.origin) * v_forward;
-	if( dot < 0.6 ){
-		return;
-  }
-  rammage = max(self.vec_size, other.vec_size) + self.ramUp;
-  rammage = rammage / 15;
-  rammage = other.max_health * rammage;
-  dead = t_damage(other, self, self, rammage, DMG_BAL, self.legs.origin, '0 0 0');
+  makevectors ( self.ramAngle );
+  dot = normalize (self.origin - other.origin);
+  dot = dot * v_forward;
   
-  if( self.shield <= 0 ){
-    rammage = max(self.vec_size, dead.vec_size);
-    if( rammage > self.vec_size ){
-      rammage = rammage - self.vec_size;
-      t_damage(self, self, self, rammage / 2, 0, self.legs.origin, '0 0 0');
+	if( dot < 0.6 ){
+    t_damage(other, self, self, other.max_health * 0.15, 0, self.legs.origin, '0 0 0');
+    return;
+  }  
+  
+  if( other.shield <= 0 ){
+    if( self.vec_size > other.vec_size ){
+      t_damage(other, self, self, other.max_health * 0.5 , 0, self.legs.origin, '0 0 0');
+    }
+    else{
+      t_damage(other, self, self, other.max_health * 0.33, 0, self.legs.origin, '0 0 0');
     }
   }
   

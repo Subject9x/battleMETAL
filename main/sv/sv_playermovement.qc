@@ -160,25 +160,8 @@ void() SV_PlayerPhysics =
     local float stopSpeedSlide;
     local float frictionSlide;
     local float accelerationSlide;
-    local vector traceNorm;
     local float hitStop;
-    
-		/*makevectors(self.ramAngle);
-    traceline(self.legs.origin, self.legs.origin + (v_up * (self.mins_z / 1.75)) + (v_forward * self.maxs_x), MOVE_NORMAL, self);
-    trailparticles(world, particleeffectnum("TE_LAS_RAIL"), self.legs.origin, self.legs.origin + (v_up * (self.mins_z / 1.75)) + (v_forward * self.maxs_x));
-    traceNorm_x = 0 - trace_plane_normal_x;
-    traceNorm_y = 0 - trace_plane_normal_y;
-    traceNorm = vectoangles(traceNorm);
-    cons_logAVector("traceNorm", traceNorm); //DEBUG
-    self.v_angle = traceNorm;
-    if( trace_fraction != 1) {
-      if( trace_ent == world ){
-        hitStop = TRUE;
-      }
-      else if( trace_ent.data_type != DATA_VEHC ){
-        hitStop = TRUE;
-      }
-    }*/
+
     if(time >= self.ramCharge){
       hitStop = TRUE;
     }
@@ -194,7 +177,8 @@ void() SV_PlayerPhysics =
 		//ramming
     self.movement = '0 0 0';
 		makevectors(self.ramAngle_y * '0 1 0');
-		wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y + v_up * self.ramPower_z;
+    traceline(self.origin, self.origin + (v_up * (self.mins_z * 1.25)), MOVE_NORMAL, self);
+		wishvel = v_forward * self.ramPower_x + v_right * self.ramPower_y;
 		// friction
 		/*if (self.velocity_x || self.velocity_y)
 		{
@@ -216,10 +200,12 @@ void() SV_PlayerPhysics =
 		if (wishspeed > (self.data_speed_forward * (self.data_speed_accel * 2))){
 			wishspeed = self.data_speed_forward * (self.data_speed_accel * 2);
     }
-    f = wishspeed - (self.velocity * wishdir);
+    f = wishspeed - (self.ramVelocity * wishdir);
     if (f > 0){
-      self.velocity = self.velocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);
+      self.ramVelocity = self.ramVelocity + wishdir * min(f, accelerationSlide * frametime * wishspeed);
     }
+    self.velocity = self.ramVelocity;
+    self.velocity_z = self.velocity_z + (self.ramPower_x * -0.5);
   }
 	else if (self.flags & FL_ONGROUND)
 	{

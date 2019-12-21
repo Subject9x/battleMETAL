@@ -27,7 +27,7 @@ string IMG_NEW_ELITE  = "gfx/menu/newgame/new_elite.png";
 //don't have to put them in a header, and they can be 'somewhat' flexibily generated
 void() click_newg_back={
   menu_clear_items(M_STATE);
-  m_camp_f();
+  m_newsave_f();
   localsound("sound/misc/menu2.wav");
 };
 

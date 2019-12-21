@@ -13,7 +13,9 @@ on how to use menu.dat.
 //Main Menu Globals
 entity main_title;
 entity main_label;
+entity main_leave;
 entity main_camp;
+entity main_backto;
 entity main_training;
 entity main_options;
 entity main_help;
@@ -21,6 +23,7 @@ entity main_quit;
 
 //Main Menu Constants
 string IMG_MAIN_TITLE  = "gfx/menu/main/main_title.png";
+string IMG_MAIN_PAUSE  = "gfx/pause.png";
 string IMG_MAIN_LBL    = "gfx/menu/main/main_label.png";
 string IMG_MAIN_CAMP   = "gfx/menu/main/main_camp.png";
 string IMG_MAIN_TRAIN  = "gfx/menu/main/main_train.png";
@@ -29,6 +32,12 @@ string IMG_MAIN_OPT    = "gfx/menu/main/main_opt.png";
 string IMG_MAIN_HELP   = "gfx/menu/main/main_help.png";
 string IMG_MAIN_QUIT   = "gfx/menu/main/main_quit.png";
 
+string IMG_MAIN_LEAVE = "gfx/menu/quit_mission.png";
+string IMG_MAIN_EXIT = "gfx/menu/exit_game.png";
+
+float MAIN_MISSION;
+string IMG_TITLE;
+string IMG_QUIT;
 //Main callbacks
 //because we define these right before the menu functions are defined, we 
 //don't have to put them in a header, and they can be 'somewhat' flexibily generated
@@ -40,6 +49,9 @@ void() click_main_camp={
 };
 
 void() click_main_train={
+  menu_clear_items(M_STATE);
+  M_STATE = M_MAIN;
+  m_main_f();
   cvar_set("skill", "1");
   cmd("deathmatch 0\n");
   cmd("coop 0\n");
@@ -72,16 +84,45 @@ void() click_main_credits={
   m_credits_f();
 };
 
+void() click_main_leave={
+  menu_clear_items(M_STATE);
+  M_STATE = M_MAIN;
+  m_main_f();
+  cmd("disconnect\n");
+  cmd("stardemos start\n");
+  cmd("demos\n");
+};
+
 // ini functions
 void() m_main_i={
-  main_title = lbl_img('10 50', '1 1 0', IMG_MAIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
-  main_label = lbl_img('10 100', '1 1 0', IMG_MAIN_LBL, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
-  main_camp = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_CAMP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_camp, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  main_training = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_TRAIN, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_train, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
- //main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '0.25 0.25 0.25', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  main_options = btn_img_callback('10 170 0', '1 1 0', IMG_MAIN_OPT, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_options, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  main_help = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
-  main_quit = btn_img_callback('10 209 0', '1 1 0', IMG_MAIN_QUIT, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_quit, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  local vector orgOptions;
+  local vector orgQuit;
+  
+  if( !isdemo() && clientstate() == CS_CONNECTED ){
+    MAIN_MISSION = TRUE;
+    main_leave = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_LEAVE, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_leave, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    IMG_TITLE = IMG_MAIN_PAUSE;
+    orgOptions = '10 151 0';
+    IMG_QUIT = IMG_MAIN_EXIT;
+    orgQuit = '10 170 0';
+  }
+  else{
+    MAIN_MISSION = FALSE;
+    IMG_TITLE = IMG_MAIN_LBL;
+    main_title = lbl_img('10 50', '1 1 0', IMG_MAIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
+    main_camp = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_CAMP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_camp, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_training = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_TRAIN, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_train, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  //main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '0.25 0.25 0.25', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    orgOptions = '10 170 0';
+    main_help = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    
+    IMG_QUIT = IMG_MAIN_QUIT;
+    orgQuit = '10 209 0';
+  }
+  
+  main_label = lbl_img('10 100', '1 1 0', IMG_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
+  main_options = btn_img_callback(orgOptions, '1 1 0', IMG_MAIN_OPT, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_options, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  main_quit = btn_img_callback(orgQuit, '1 1 0', IMG_QUIT, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_quit, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
 /*

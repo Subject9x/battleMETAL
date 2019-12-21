@@ -73,6 +73,7 @@ Overview:
 .float ramCharge;
 .float ramCool;
 .vector ramPower;
+.vector ramVelocity;
 .float ramUp;
 .float ramUpMax;
 #endif

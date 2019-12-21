@@ -46,7 +46,9 @@ void() m_load_i={
   start = '10 150';
 
   local float itr;
+  local float actual;
   itr = 0;
+  actual = 1;
   
   if(GAME_SAVES[itr] != ""){
     load_list = btn_text_callback(start,'14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
@@ -56,10 +58,13 @@ void() m_load_i={
       while (itr < GAME_SAVES_MAX ){
         local entity list;
         local vector next;
-        next = start;
-        next_y = next_y + (itr * 20);
-        list = btn_text_callback(next, '14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
-        list.data_bind = itr; //databind
+        if( GAME_SAVES_DRAWNAME[itr] != "- NEW SAVE SLOT -" ){
+          next = start;
+          next_y = next_y + (actual * 20);
+          list = btn_text_callback(next, '14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);
+          list.data_bind = itr; //databind
+          actual = actual + 1;
+        }
         itr = itr + 1;
       }
     }

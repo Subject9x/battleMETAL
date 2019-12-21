@@ -147,6 +147,7 @@ void() ImpulseCommands ={
         self.ramPower_x = self.data_speed_forward * (self.data_speed_accel * 2);
         self.ramPower_y = 0;
         self.ramPower_z = -15;
+        self.ramVelocity = self.velocity;
         self.ramAngle_y = self.v_angle_y;
       }
     }

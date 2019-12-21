@@ -543,7 +543,6 @@ void(string s) CSQC_Parse_StuffCmd =
       localcmd(s);
     }
     else{
-      cons_logAString("localcmd:", s);  //DEBUG
       localcmd(s);
     }
   }
