@@ -19,7 +19,6 @@ void() m_init={
   
   VIEW_SCALE = 0.35;
   if(clientstate() == CS_DISCONNECTED){
-    cmd("cd play 2");
     m_toggle(1);
   }
   MOUSE_TARGET = null_entity;
@@ -225,39 +224,28 @@ void(float width, float height) m_draw={
 /*
   Quake C api hook - called, I believe when 'togglemenu' console command is invoked
 */
-void(float mode) m_toggle={
-  
-  if ( (getkeydest() != KEY_MENU && getkeydest() != KEY_MENU_GRABBED) || M_STATE != M_MAIN ){
-    if(mode == 0){
-      // the menu is off, and we want it off
-      return; 
-    }
-    if(clientstate() == CS_CONNECTED){
-      //todo - in-game main menu
-    }
-    if(clientstate() == CS_DISCONNECTED){
-      cmd("cd play 2\n");
-      if( !isdemo() ){
-          cmd("startdemos start\n");
-      }
-    }
-    FONT_NUM_ROBOT_THIN = loadfont( "robot_thin", "gfx/fonts/Roboto_Thin", "6 8 10 12 14 18", FONT_USER, FALSE, FALSE);
-    FONT_NUM_ROBOT_LIGHT = loadfont( "robot_light", "gfx/fonts/Roboto_Light", "6 8 10 12 14 18",  FONT_USER+1, FALSE, FALSE);
-    FONT_NUM_ROBOT_REGULAR = loadfont( "robot_regular", "gfx/fonts/Roboto_Regular", "6 8 10 12 14 18", FONT_USER+2, FALSE, FALSE);
+void(float mode) m_toggle={  
+  if( isdemo() ){
+    setkeydest(KEY_MENU);
+    MAIN_MISSION = FALSE;
+    menu_clear_items(M_MAIN); 
     m_main_f();
+    return;
   }
-  else{
-    if(mode == 1){
-      // the menu is on, and we want it on
-      return; 
-    }   
-    DRAW_MOUSE = FALSE;
-    M_STATE = M_NONE;
-    setkeydest(KEY_GAME);
-    if(clientstate() == CS_DISCONNECTED){
-      cmd("cd play 2");
-    }
+  
+  if( clientstate() == CS_DISCONNECTED ){
+    setkeydest(KEY_MENU);
+    MAIN_MISSION = FALSE;
+    menu_clear_items(M_MAIN); 
+    m_main_f();
+    cmd("startdemos", " start\n");
+    return;
   }
+
+  setkeydest(KEY_MENU);
+  MAIN_MISSION = TRUE;
+  menu_clear_items(M_MAIN); 
+  m_main_f();
 };
 
 /*

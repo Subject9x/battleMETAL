@@ -184,7 +184,6 @@ void() click_audio_sfx_off={
   audio_sfx_vol_lbl.label = strzone(ftos(floor(audio_sfx_vol_lbl.len)));
   audio_sfx_up.drawme = FALSE;
   audio_sfx_dn.drawme = FALSE;
-  cmd("cd play 2");
 };
 
 void() click_sfx_up={
@@ -361,16 +360,7 @@ void() click_audio_save={
   audio_speed_set(audio_quality_lbl.len);
   
   cmd("saveconfig\n");
-  
-  if( !isdemo() && (clientstate() != CS_CONNECTED)){
-    //cmd("snd_restart\n");
-  }  
-  
-  if( isdemo() && (clientstate() == CS_CONNECTED) ){
-    cmd("disconnect\n");
-   // cmd("snd_restart\n");
-    cmd("startdemos demo1\n");
-  }
+
   click_audio_back();
 };
 

@@ -40,6 +40,8 @@ float M_HELP    = 22;
 float M_CREDITS  = 23;
 float M_NEWSAVE = 24;
 
+float MAIN_MISSION;
+
 float drawfont_prev;
 float FONT_NUM_ROBOT_LIGHT;
 float FONT_NUM_ROBOT_THIN;
