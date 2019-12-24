@@ -38,6 +38,7 @@ entity controls_backward;
 entity controls_strafe_left;
 entity controls_strafe_right;
 entity controls_sprint;
+entity controls_ram;
 
 //piloting
 entity controls_radar;
@@ -165,7 +166,9 @@ void() txt_control_bind_straferight={
 void() txt_control_bind_sprint={
   menu_keybind_change ("+button8");
 };
-
+void() txt_control_bind_ram={
+  menu_keybind_change("impulse 27");
+};
 void() txt_control_bind_radar={
   menu_keybind_change ("impulse 8");
 };
@@ -202,11 +205,11 @@ void() click_controls_accept={
 void() m_controls_i={
   controls_title = lbl_img('10 10', '1 1 0', IMG_CONTROLS_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, (UI_FLAG_SIZE_IMG) );
   
-  controls_mouse_sense = lbl_text('178 78', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, 0);
+  controls_mouse_sense = lbl_text('108 78', '14 14 0', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, 0);
   controls_mouse_sense.len = cvar("sensitivity");
   controls_mouse_sense.label = strzone(ftos(controls_mouse_sense.len));
-  controls_mouse_sense_more = btn_img_callback('204 77', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_sense_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  controls_mouse_sense_less = btn_img_callback('167 77', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_sense_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_mouse_sense_more = btn_img_callback('134 77', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_sense_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_mouse_sense_less = btn_img_callback('97 77', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_sense_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(controls_mouse_sense.len == 1){
     controls_mouse_sense_less.drawme = FALSE;
@@ -215,10 +218,10 @@ void() m_controls_i={
     controls_mouse_sense_more.drawme = FALSE;
   }
   
-  controls_mouse_invert = lbl_text('178 98', '14 14', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, 0);
+  controls_mouse_invert = lbl_text('108 98', '14 14', " ", CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, 1, 0);
   controls_mouse_invert.len = cvar("m_pitch");
-  controls_mouse_invert_on = btn_img_callback('204 97', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_invert_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  controls_mouse_invert_off = btn_img_callback('167 97', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_invert_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_mouse_invert_on = btn_img_callback('134 97', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_invert_on, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_mouse_invert_off = btn_img_callback('97 97', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_control_mouse_invert_off, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
   if(controls_mouse_invert.len < 0){
     controls_mouse_invert.label = strzone("ON");
@@ -230,63 +233,65 @@ void() m_controls_i={
   }
   
   //combat
-  controls_target = inp_keybindfield('167 118', '14 14 0', txt_control_bind_target, "impulse 7", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_target = inp_keybindfield('97 118', '14 14 0', txt_control_bind_target, "impulse 7", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_fire_group = inp_keybindfield('167 138', '14 14 0', txt_control_bind_fire, "+button0", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_fire_group = inp_keybindfield('97 138', '14 14 0', txt_control_bind_fire, "+button0", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
    
-  controls_fire_group1 = inp_keybindfield('167 158', '14 14 0', txt_control_bind_fire_grp1, "+button3", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_fire_group1 = inp_keybindfield('97 158', '14 14 0', txt_control_bind_fire_grp1, "+button3", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  controls_fire_group2 = inp_keybindfield('167 178', '14 14 0', txt_control_bind_fire_grp2, "+button4", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_fire_group2 = inp_keybindfield('97 178', '14 14 0', txt_control_bind_fire_grp2, "+button4", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  controls_fire_group3 = inp_keybindfield('167 198', '14 14 0', txt_control_bind_fire_grp3, "+button5", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_fire_group3 = inp_keybindfield('97 198', '14 14 0', txt_control_bind_fire_grp3, "+button5", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_fire_group4 = inp_keybindfield('167 218', '14 14 0', txt_control_bind_fire_grp4, "+button6", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_fire_group4 = inp_keybindfield('97 218', '14 14 0', txt_control_bind_fire_grp4, "+button6", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  controls_fire_group5 = inp_keybindfield('167 238', '14 14 0', txt_control_bind_fire_grp5, "+button7", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_fire_group5 = inp_keybindfield('97 238', '14 14 0', txt_control_bind_fire_grp5, "+button7", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_group_next = inp_keybindfield('167 258', '14 14 0', txt_control_bind_grp_nxt, "impulse 4", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_group_next = inp_keybindfield('97 258', '14 14 0', txt_control_bind_grp_nxt, "impulse 4", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_group_prev = inp_keybindfield('167 278', '14 14 0', txt_control_bind_grp_prv, "impulse 5", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_group_prev = inp_keybindfield('97 278', '14 14 0', txt_control_bind_grp_prv, "impulse 5", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_select_group1 = inp_keybindfield('167 298', '14 14 0', txt_control_bind_sel_grp1, "impulse 1", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_select_group1 = inp_keybindfield('97 298', '14 14 0', txt_control_bind_sel_grp1, "impulse 1", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_select_group2 = inp_keybindfield('167 318', '14 14 0', txt_control_bind_sel_grp2, "impulse 2", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_select_group2 = inp_keybindfield('97 318', '14 14 0', txt_control_bind_sel_grp2, "impulse 2", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_select_group3 = inp_keybindfield('167 338', '14 14 0', txt_control_bind_sel_grp3, "impulse 3", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_select_group3 = inp_keybindfield('97 338', '14 14 0', txt_control_bind_sel_grp3, "impulse 3", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_select_group4 = inp_keybindfield('167 358', '14 14 0', txt_control_bind_sel_grp4, "impulse 23", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_select_group4 = inp_keybindfield('97 358', '14 14 0', txt_control_bind_sel_grp4, "impulse 23", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  controls_select_group5 = inp_keybindfield('167 378', '14 14 0', txt_control_bind_sel_grp5, "impulse 24", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_select_group5 = inp_keybindfield('97 378', '14 14 0', txt_control_bind_sel_grp5, "impulse 24", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   //piloting
-  controls_radar = inp_keybindfield('400 78', '14 14 0', txt_control_bind_radar, "impulse 8", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_radar = inp_keybindfield('310 78', '14 14 0', txt_control_bind_radar, "impulse 8", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_navs = inp_keybindfield('400 98', '14 14 0', txt_control_bind_nav, "impulse 9", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_navs = inp_keybindfield('310 98', '14 14 0', txt_control_bind_nav, "impulse 9", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  controls_objectives = inp_keybindfield('400 118', '14 14 0', txt_control_bind_obj, "impulse 25", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_objectives = inp_keybindfield('310 118', '14 14 0', txt_control_bind_obj, "impulse 25", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
  
-  controls_repair = inp_keybindfield('400 138', '14 14 0', txt_control_bind_repair, "impulse 26", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_repair = inp_keybindfield('310 138', '14 14 0', txt_control_bind_repair, "impulse 26", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_chat_team = inp_keybindfield('400 158', '14 14 0', txt_control_bind_chat_team, "messagemode2", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_chat_team = inp_keybindfield('310 158', '14 14 0', txt_control_bind_chat_team, "messagemode2", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_chat_all = inp_keybindfield('400 178', '14 14 0', txt_control_bind_chat_all, "messagemode", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_chat_all = inp_keybindfield('310 178', '14 14 0', txt_control_bind_chat_all, "messagemode", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  controls_zoom = inp_keybindfield('400 198', '14 14 0', txt_control_bind_zoom, "+button9", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_zoom = inp_keybindfield('310 198', '14 14 0', txt_control_bind_zoom, "+button9", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
   
   //movement
-  controls_forward = inp_keybindfield('400 235', '14 14 0', txt_control_bind_forward, "+forward", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_forward = inp_keybindfield('310 235', '14 14 0', txt_control_bind_forward, "+forward", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_backward = inp_keybindfield('400 255', '14 14 0', txt_control_bind_backward, "+back", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_backward = inp_keybindfield('310 255', '14 14 0', txt_control_bind_backward, "+back", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_strafe_left = inp_keybindfield('400 275', '14 14 0', txt_control_bind_strafeleft, "+moveleft", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_strafe_left = inp_keybindfield('310 275', '14 14 0', txt_control_bind_strafeleft, "+moveleft", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
-  controls_strafe_right = inp_keybindfield('400 295', '14 14 0', txt_control_bind_straferight, "+moveright", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_strafe_right = inp_keybindfield('310 295', '14 14 0', txt_control_bind_straferight, "+moveright", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
   
-  controls_sprint = inp_keybindfield('400 315', '14 14 0', txt_control_bind_sprint, "+button8", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  controls_sprint = inp_keybindfield('310 315', '14 14 0', txt_control_bind_sprint, "+button8", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
 
+  controls_ram = inp_keybindfield('310 335', '14 14 0', txt_control_bind_ram, "impulse 27", M_OPTIONS_CONTROLS, CLR_DEF_WHITE, CLR_DEF_ARM_THREEQ, 1, (UI_FLAG_TXTFIELD_NUM | UI_FLAG_TXTFIELD_SPEC | UI_FLAG_TXTFIELD_LOW | UI_FLAG_TXTFIELD_MOUSE | UI_FLAG_TXTFIELD_FUNC));
+  
   controls_back = btn_img_callback('25 415', '56 12', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_controls_back, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  controls_accept = btn_img_callback('285 415', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_controls_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  controls_accept = btn_img_callback('255 415', '70 12', IMG_BTN_ACPT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_CONTROLS, click_controls_accept, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 };
 
 /*
@@ -316,41 +321,42 @@ void() m_controls_d={
   gui_renderString("Controls - click a key to change it. Hit <ESC> to cancel.", titleOrg, '1 1 1', '16 16 0', 1, 0);
   
   //combat
-  gui_renderString("-Combat-", gui_percentToPixelRawVec('116 60'), CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
-    gui_renderString("Mouse Sensitivity:", gui_percentToPixelRawVec('80 79'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Invert Mouse:", gui_percentToPixelRawVec('99 99'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Acquire Target:", gui_percentToPixelRawVec('93 119'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Fire Select Group:", gui_percentToPixelRawVec('81 139'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Fire Group 1:", gui_percentToPixelRawVec('102 159'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Fire Group 2:", gui_percentToPixelRawVec('102 179'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Fire Group 3:", gui_percentToPixelRawVec('102 199'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Fire Group 4:", gui_percentToPixelRawVec('102 219'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Fire Group 5:", gui_percentToPixelRawVec('102 239'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Next Weapon Group:", gui_percentToPixelRawVec('69 259'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Prev Weapon Group:", gui_percentToPixelRawVec('69 279'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Select Group 1:", gui_percentToPixelRawVec('92 299'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Select Group 2:", gui_percentToPixelRawVec('92 319'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Select Group 3:", gui_percentToPixelRawVec('92 339'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Select Group 4:", gui_percentToPixelRawVec('92 359'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Select Group 5:", gui_percentToPixelRawVec('92 379'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("-Combat-", gui_percentToPixelRawVec('46 60'), CLR_DEF_ARM_THREEQ, '16 16 0', 1, 0);
+    gui_renderString("Mouse Sensitivity:", gui_percentToPixelRawVec('10 79'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Invert Mouse:", gui_percentToPixelRawVec('29 99'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Acquire Target:", gui_percentToPixelRawVec('23 119'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Fire Select Group:", gui_percentToPixelRawVec('11 139'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Fire Group 1:", gui_percentToPixelRawVec('32 159'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Fire Group 2:", gui_percentToPixelRawVec('32 179'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Fire Group 3:", gui_percentToPixelRawVec('32 199'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Fire Group 4:", gui_percentToPixelRawVec('32 219'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Fire Group 5:", gui_percentToPixelRawVec('32 239'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Next Weapon Group:", gui_percentToPixelRawVec('0 259'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Prev Weapon Group:", gui_percentToPixelRawVec('0 279'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Select Group 1:", gui_percentToPixelRawVec('22 299'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Select Group 2:", gui_percentToPixelRawVec('22 319'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Select Group 3:", gui_percentToPixelRawVec('22 339'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Select Group 4:", gui_percentToPixelRawVec('22 359'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Select Group 5:", gui_percentToPixelRawVec('22 379'), CLR_DEF_WHITE, '12 12 0', 1, 0);
   
   //controls
-  gui_renderString("-Piloting-", gui_percentToPixelRawVec('345 60'), CLR_DEF_IIF_FRIEND_BLD, '16 16 0', 1, 0);
-    gui_renderString("Toggle RADAR:", gui_percentToPixelRawVec('323 79'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Show Navs:", gui_percentToPixelRawVec('339 99'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Display Objectives:", gui_percentToPixelRawVec('306 119'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Engage Repair Bay:", gui_percentToPixelRawVec('305 139'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Chat Team:", gui_percentToPixelRawVec('340 159'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Chat All:", gui_percentToPixelRawVec('351 179'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Optical Zoom:", gui_percentToPixelRawVec('329 199'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("-Piloting-", gui_percentToPixelRawVec('255 60'), CLR_DEF_IIF_FRIEND_BLD, '16 16 0', 1, 0);
+    gui_renderString("Toggle RADAR:", gui_percentToPixelRawVec('233 79'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Show Navs:", gui_percentToPixelRawVec('249 99'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Display Objectives:", gui_percentToPixelRawVec('216 119'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Engage Repair Bay:", gui_percentToPixelRawVec('215 139'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Chat Team:", gui_percentToPixelRawVec('250 159'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Chat All:", gui_percentToPixelRawVec('261 179'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Optical Zoom:", gui_percentToPixelRawVec('239 199'), CLR_DEF_WHITE, '12 12 0', 1, 0);
   
   //movement
-  gui_renderString("-Movement-", gui_percentToPixelRawVec('330 220'), CLR_DEF_GREEN, '16 16 0', 1, 0);
-    gui_renderString("Forward :", gui_percentToPixelRawVec('350 236'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Backward :", gui_percentToPixelRawVec('343 256'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Strafe Left :", gui_percentToPixelRawVec('340 276'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Strafe Right :", gui_percentToPixelRawVec('334 296'), CLR_DEF_WHITE, '12 12 0', 1, 0);
-    gui_renderString("Engage Sprint :", gui_percentToPixelRawVec('326 316'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+  gui_renderString("-Movement-", gui_percentToPixelRawVec('240 220'), CLR_DEF_GREEN, '16 16 0', 1, 0);
+    gui_renderString("Forward :", gui_percentToPixelRawVec('260 236'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Backward :", gui_percentToPixelRawVec('253 256'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Strafe Left :", gui_percentToPixelRawVec('250 276'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Strafe Right :", gui_percentToPixelRawVec('244 296'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Engage Sprint :", gui_percentToPixelRawVec('236 316'), CLR_DEF_WHITE, '12 12 0', 1, 0);
+    gui_renderString("Ram Attack :", gui_percentToPixelRawVec('236 336'), CLR_DEF_WHITE, '12 12 0', 1, 0);
 
   drawfont = drawfont_prev;
   
