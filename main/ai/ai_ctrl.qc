@@ -497,11 +497,14 @@ void() ai_rotate_tank={
 */
 
 /*
-  Rebuild of ai_walk_setup using AI macro frame functions
+  Rebuild of ai_walk_setup using AI macro frame functions,
+  allows for random node to spawn at.
 */
 void() ai_setup_patrol={
   local entity node;
   local vector newOrg;
+  local vector traceAngle;
+  local vector newOrgTop;
   local float angl, px, py, dlen;
   
   if( (self.target) && self.target != "" ){
@@ -524,21 +527,41 @@ void() ai_setup_patrol={
       return;
     }
     if( (self.spawnflags & RANDOM_START) ){
-      self.spawnflags = self.spawnflags - RANDOM_START;
-      node = ai_node_pick_rand();  //make sure that nodes have a .group set   
-      angl = anglemod(random() * 360) * DEG2RAD;
-      px = cos(angl);
-      py = sin(angl);
-      dlen = crandom() * self.maxs_x * 4;
-      newOrg_z = self.origin_z + self.maxs_z * 2;
-      newOrg_x = node.origin_x - px * dlen;
-      newOrg_y = node.origin_y - py * dlen;
-      if( (pointcontents(newOrg) == CONTENT_SOLID) || (pointcontents(newOrg) == CONTENT_EMPTY) && (pointcontents(newOrg) == CONTENT_SKY) ){
-        setorigin( self, node.origin);
+      node = ai_node_pick_rand();  //make sure that nodes have a .group set 
+      if( node == lastNode ){
+        self.think = ai_setup_patrol;
+        self.nextthink = time + 0.1;
+        return;
       }
-      else{
-        setorigin( self, newOrg );
+      node.ai_dir = node.ai_dir + 1;
+      angl = anglemod( (node.ai_dir * 45) + (crandom() * 15)) * DEG2RAD;
+      node.angles_y = angl;
+      makevectors(node.angles);
+      traceline( node.origin, node.origin + (v_up * (self.maxs_z * 2)), MOVE_HITMODEL, self);
+      traceline( trace_endpos, trace_endpos + (v_forward * dlen), MOVE_HITMODEL, self);
+      traceline( trace_endpos, trace_endpos + (v_up * -1024), MOVE_NORMAL, self);
+      newOrg = trace_endpos;
+      traceline( node.origin, newOrg, MOVE_NORMAL, self);
+      traceAngle = vectoangles(newOrg - node.origin);
+      
+      if( trace_fraction <= 0.33 && traceAngle_x >= 75 ){
+        self.think = ai_setup_patrol;
+        self.nextthink = time + 0.1;
+        return;
       }
+      if( pointcontents(newOrg) != CONTENT_EMPTY ){
+        self.think = ai_setup_patrol;
+        self.nextthink = time + 0.1;
+        return;
+      }
+      if( trace_ent != world && trace_ent.classname != "map_terrain_model" && (trace_ent.flags & FL_UNIT)){
+        self.think = ai_setup_patrol;
+        self.nextthink = time + 0.1;
+        return;
+      }
+      self.spawnflags = self.spawnflags - self.spawnflags & RANDOM_START;
+      self.flags = self.flags - self.flags & FL_ONGROUND;
+      setorigin( self, newOrg + (v_up * self.maxs_z) );
     }
     self.target = node.targetname;
     self.movetarget = node;

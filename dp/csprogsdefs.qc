@@ -426,7 +426,7 @@ void(entity e) eprint = #31;
 // settrace optional
 float(float yaw, float dist, float settrace) walkmove = #32;
 
-float() droptofloor = #34;
+float() droptofloor = #34;	// TRUE if landed on floor, 256 unit distance limit!
 void(float style, string value) lightstyle = #35;
 float(float v) rint = #36;
 float(float v) floor = #37;
