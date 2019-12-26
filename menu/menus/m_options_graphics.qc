@@ -123,22 +123,22 @@ void(float level) graphics_effects_set={
   local string cvars;
   switch(level){
     default:
-      cvars = "data/cache/settings/lighting_low.cvl";
+      cvars = "data/cache/settings/graphics_medium.cvl";
       break;
     case 2:
-      cvars = "data/cache/settings/lighting_normal.cvl"; 
+      cvars = "data/cache/settings/graphics_low.cvl"; 
       break;
     case 3:
-      cvars = "data/cache/settings/lighting_high.cvl";
+      cvars = "data/cache/settings/graphics_medium.cvl";
       break;
     case 4:
-      cvars = "data/cache/settings/lighting_max.cvl";
+      cvars = "data/cache/settings/graphics_high.cvl";
       break;
   }
   menu_execute_cvar_list(cvars);
 };
 
-void(float level) graphics_gfx_set={
+void(float level) graphics_light_set={
   local string cvars;
   switch(level){
     default:
@@ -505,7 +505,7 @@ void() click_graphics_effects_less={
   }
 };
 
-void() click_graphics_gfx_more={
+void() click_graphics_light_more={
   local float level;
   level = graphics_gfx_lbl.len;
   level = level + 1;
@@ -517,7 +517,7 @@ void() click_graphics_gfx_more={
     graphics_gfx_more.drawme = FALSE;
   }
   if(level != 0){
-    graphics_effects_set(level);
+    graphics_light_set(level);
   }
   strunzone(graphics_gfx_lbl.label);
   graphics_gfx_lbl.label = strzone(graphics_get_gx(level));
@@ -526,7 +526,7 @@ void() click_graphics_gfx_more={
     graphics_gfx_less.drawme = TRUE;
   }
 };
-void() click_graphics_gfx_less={
+void() click_graphics_light_less={
   local float level;
   level = graphics_gfx_lbl.len;
   level = level - 1;
@@ -536,7 +536,7 @@ void() click_graphics_gfx_less={
     graphics_gfx_custom.drawme = TRUE;
   }
   if(level != 0){
-    graphics_effects_set(level);
+    graphics_light_set(level);
   }
   strunzone(graphics_gfx_lbl.label);
   graphics_gfx_lbl.label = strzone(graphics_get_gx(level));
@@ -821,8 +821,8 @@ void() m_graphics_i={
    //gfx / lighting
   graphics_gfx_lbl = lbl_text('345 165', '14 14 0', strzone(graphics_get_gx(cvar("saved2"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, 1, 0);
   graphics_gfx_lbl.len = cvar("saved2");
-  graphics_gfx_more = btn_img_callback('400 165 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
-  graphics_gfx_less = btn_img_callback('320 165 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_gfx_more = btn_img_callback('400 165 0', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_light_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  graphics_gfx_less = btn_img_callback('320 165 0', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_light_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
    
   graphics_gfx_custom = btn_text_callback('320 180', '14 14', "[Click to Customize]", (VIEW_CTX | VIEW_CTY), M_OPTIONS_GRAPHICS, click_graphics_gfx, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   graphics_gfx_custom.drawme = FALSE;
