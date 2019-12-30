@@ -485,8 +485,3 @@ void( float mapKeyTypeId, float mapKeyCoordX, float mapKeyCoordY, float mapKeyFa
     mapKeyObject = newMapKey;
   }
 };
-
-
-void() client_map_cdtrack={
-
-};

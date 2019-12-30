@@ -618,7 +618,7 @@ void() build_turret_unit={
 
   build_vehicle_unit();
   self.data_type = DATA_BLD;
-    
+  self.hitOffset = self.origin + (v_up * (self.maxs_z * 0.85));
   setorigin(self, self.origin);
 
   if( !(self.spawnflags & NO_DROP) ){

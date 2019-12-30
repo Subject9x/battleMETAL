@@ -68,10 +68,10 @@ void() ai_tank_sk_enter_hunt={
   
   self.ai_action_time = (0 - self.ai_action_mod) * -1;
   if( self.stat_rdr_mode ){
-    self.ai_action_time = ceil(self.ai_action_time * 6);
+    self.ai_action_time = ceil(self.ai_action_time * 4);
   }
   else{
-    self.ai_action_time = ceil(self.ai_action_time * 4);
+    self.ai_action_time = ceil(self.ai_action_time * 2);
   }
   
   self.speed = self.data_speed_forward / 2;

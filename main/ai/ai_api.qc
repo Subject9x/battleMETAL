@@ -339,7 +339,9 @@ void( entity ally, entity targ, float override ) ai_give_target={
     if( override ){
       self.enemy = ally.enemy;
       macro_ai_frame(self.th_missile)
-      ai_sfx_roger();
+      if( (this.enemy.flags & FL_CLIENT) ){
+        ai_sfx_roger();
+      }
     }
     else{
       if( self.th_react ){

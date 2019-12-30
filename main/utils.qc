@@ -387,13 +387,13 @@ void() dropToFloorCorners={
     
   */
   down = v_up * -4000;
-  traceline(c1, c1 + down, MOVE_NORMAL, self);
+  traceline(c1, c1 + down, MOVE_HITMODEL, self);
   if( vlen(trace_endpos - c1) > 0 ){
     distanceCheck = distanceCheck + 1;
     comparator = vlen(trace_endpos - c1);
   }
   
-  traceline(c2, c2 + down, MOVE_NORMAL, self);
+  traceline(c2, c2 + down, MOVE_HITMODEL, self);
   if( vlen(trace_endpos - c2) > 0 ){
     distanceCheck = distanceCheck + 1;
     hold = vlen(trace_endpos - c2);
@@ -402,7 +402,7 @@ void() dropToFloorCorners={
     }
   }
   
-  traceline(c3, c3 + down, MOVE_NORMAL, self);
+  traceline(c3, c3 + down, MOVE_HITMODEL, self);
   if( vlen(trace_endpos - c3) > 0 ){
     distanceCheck = distanceCheck + 1;
     hold = vlen(trace_endpos - c3);
@@ -411,7 +411,7 @@ void() dropToFloorCorners={
     }
   }
   
-  traceline(c4, c4 + down, MOVE_NORMAL,  self);
+  traceline(c4, c4 + down, MOVE_HITMODEL,  self);
   if( vlen(trace_endpos - c4) > 0 ){
     distanceCheck = distanceCheck + 1;
     hold = vlen(trace_endpos - c4);
@@ -421,7 +421,7 @@ void() dropToFloorCorners={
   }
   
   if( distanceCheck > 0 ){
-    traceline(self.origin, self.origin + (v_up * (comparator * -1)), MOVE_NORMAL, self);
+    traceline(self.origin, self.origin + (v_up * (comparator * -1)), MOVE_HITMODEL, self);
     check = trace_endpos;
     check = check + (v_up * (self.mins_z *-1) );
     setorigin( self, check );

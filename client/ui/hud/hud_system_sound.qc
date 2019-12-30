@@ -141,24 +141,25 @@ void(float voiceGroup, float voiceId, float limitCheck, float entityId) snd_hud_
   }
 
   while(idx <= TQSIZE){
-    if( TRANSMISSIONQUEUE[idx] == requestedSoundValue ){
+    if( TRANSMISSIONQUEUE[idx] == requestedSoundValue || TRANSMISSIONQUEUE_ENT[idx] == entityId){
       cur = cur + 1;
     }
     idx = idx + 1;
   }
-  if(cur < limitCheck){
-    added = FALSE;
-    idx = 1;
-    while(idx < TQSIZE){
-      if(TRANSMISSIONQUEUE[idx] == NULL_STRING){
-        if( !added ){
-          TRANSMISSIONQUEUE[idx] = requestedSoundValue;
-          TRANSMISSIONQUEUE_ENT[idx] = entityId;
-          added = TRUE;
-        }
+  if(cur > limitCheck){
+    return;
+  }
+  added = FALSE;
+  idx = 1;
+  while(idx < TQSIZE){
+    if(TRANSMISSIONQUEUE[idx] == NULL_STRING){
+      if( !added ){
+        TRANSMISSIONQUEUE[idx] = requestedSoundValue;
+        TRANSMISSIONQUEUE_ENT[idx] = entityId;
+        added = TRUE;
       }
-      idx = idx + 1;
     }
+    idx = idx + 1;
   }
 };
 

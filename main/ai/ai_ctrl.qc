@@ -231,21 +231,23 @@ float( float moveSpeed, void() nextFrameFunc ) ai_recall_logic={
   in 1 AI frame of hunting, check to see if AI can spot its target.
 */
 float( void() frameFuncOnSpot, void() frameFuncRangeOut ) ai_hunt_logic_enemy_vis={
-  if( ai_check_vis(self.enemy) == VIS_FRAC ){
-    if( self.stat_trg_dist < AI_RANGE_M / 2 ){
-      remove(self.ai_node_recall);
-      self.ai_node_recall = world;
-      self.attack_state = 0;
-      macro_ai_frame(frameFuncOnSpot)
-      return TRUE;
-    }
-    if( self.stat_trg_dist > AI_RANGE_L ){
-      self.attack_state = 0;
-      macro_ai_frame(frameFuncRangeOut)
-      return TRUE;
-    }
+  local float enemyVis;
+  enemyVis = ai_check_vis(self.enemy);
+  if( enemyVis != VIS_FRAC && enemyVis != VIS_FRN ){
+    return FALSE;
   }
-  return FALSE;
+  if( self.stat_trg_dist < AI_RANGE_M ){
+    remove(self.ai_node_recall);
+    self.ai_node_recall = world;
+    self.attack_state = 0;
+    macro_ai_frame(frameFuncOnSpot)
+    return TRUE;
+  }
+  if( self.stat_trg_dist >= AI_RANGE_M ){
+    self.attack_state = 0;
+    macro_ai_frame(frameFuncRangeOut)
+    return TRUE;
+  }
 };
 
 /*
@@ -422,7 +424,7 @@ float( entity targ ) ai_check_vis={
     spot2 = targ.hitOffset;
   }
   else{
-    spot2 = targ.origin;
+    spot2 = targ.cockpit.origin;
   }
   
   traceline (spot1, spot2, FALSE, self);
@@ -431,14 +433,13 @@ float( entity targ ) ai_check_vis={
     return VIS_FRAC;
   }
   
-  if ( trace_inopen && trace_inwater ){
-    return VIS_FAIL;     // sight line crossed contents
-  }
-  
   if ( trace_fraction == 1 ){
     return VIS_FRAC;
   }
   
+  if ( trace_inopen && trace_inwater ){
+    return VIS_FAIL;     // sight line crossed contents
+  }
   if( trace_ent.faction == self.faction ){
     friend_blocker = trace_ent;
     friend_blocker_dist = vlen(friend_blocker.origin - spot1);
@@ -537,31 +538,36 @@ void() ai_setup_patrol={
       angl = anglemod( (node.ai_dir * 45) + (crandom() * 15)) * DEG2RAD;
       node.angles_y = angl;
       makevectors(node.angles);
-      traceline( node.origin, node.origin + (v_up * (self.maxs_z * 2)), MOVE_HITMODEL, self);
-      traceline( trace_endpos, trace_endpos + (v_forward * dlen), MOVE_HITMODEL, self);
-      traceline( trace_endpos, trace_endpos + (v_up * -1024), MOVE_NORMAL, self);
+      traceline( node.origin, node.origin + (v_up * (self.maxs_z * 4)), MOVE_NORMAL, self);
+      traceline( trace_endpos, trace_endpos + (v_forward * (self.maxs_x * 4)), MOVE_HITMODEL, self);
+      //traceline( trace_endpos, trace_endpos + (v_up * -1024), MOVE_NORMAL, self);
+      tracebox(trace_endpos, self.mins, self.maxs, trace_endpos + (v_up * -1024), MOVE_NORMAL, self);  
       newOrg = trace_endpos;
+      newOrg = newOrg + (v_up * self.maxs_z);
+      newOrg = newOrg - (v_up * self.mins_z);
       traceline( node.origin, newOrg, MOVE_NORMAL, self);
       traceAngle = vectoangles(newOrg - node.origin);
       
       if( trace_fraction <= 0.33 && traceAngle_x >= 75 ){
+        node.ai_dir = node.ai_dir + 1;
         self.think = ai_setup_patrol;
         self.nextthink = time + 0.1;
         return;
       }
       if( pointcontents(newOrg) != CONTENT_EMPTY ){
+        node.ai_dir = node.ai_dir + 1;
         self.think = ai_setup_patrol;
         self.nextthink = time + 0.1;
         return;
       }
       if( trace_ent != world && trace_ent.classname != "map_terrain_model" && (trace_ent.flags & FL_UNIT)){
+        node.ai_dir = node.ai_dir + 1;
         self.think = ai_setup_patrol;
         self.nextthink = time + 0.1;
         return;
       }
       self.spawnflags = self.spawnflags - self.spawnflags & RANDOM_START;
-      self.flags = self.flags - self.flags & FL_ONGROUND;
-      setorigin( self, newOrg + (v_up * self.maxs_z) );
+      setorigin( self, newOrg);
     }
     self.target = node.targetname;
     self.movetarget = node;
@@ -572,7 +578,7 @@ void() ai_setup_patrol={
       self.flags = self.flags - (self.flags & FL_ONGROUND);
     }
     else{
-      dropToFloorCorners();
+        droptofloor();
     }
     if( (self.flags & FL_TURRET) ){
       util_setOffsetOrigin(self.torsoCenter, self, self.torsoCenter.compOffset);

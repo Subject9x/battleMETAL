@@ -9,6 +9,8 @@ Overview: AI values that have been spun off from common/game
 //============================
 //     AI STATS      
 //============================
+float AI_VOICE_TIME = 32;
+
 //AI TH_REACT cooldown
 float AI_REACT_ROK = 5;
 float AI_REACT_REG = 4;
