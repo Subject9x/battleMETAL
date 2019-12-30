@@ -5,6 +5,17 @@ Date: 4/17/2018
 mod: 07/19/2019
 Overview: 
   credits menu class file.
+  + Personnel Credits
+
+  + Website Credits
+    -> iD Software
+    -> LordHavoc / Darkplaces
+    -> InsideQC
+    -> QuakeOne
+    -> Trenchbroom / Krsistian Duske
+  +Info Links
+    -> game website
+    -> 
 */
 
 //credits Globals

@@ -108,6 +108,9 @@ void(float keynr, float ascii) m_keydown={
     case M_NEWSAVE:
       m_newsave_k(keynr, ascii);
       break;
+    case M_HELP:
+      m_help_k(keynr, ascii);
+      break;
   }
   if(keynr == K_MOUSE1){
     MOUSE_DOWN = TRUE;
@@ -209,6 +212,9 @@ void(float width, float height) m_draw={
       break;
     case M_NEWSAVE:
       m_newsave_d();
+      break;
+    case M_HELP:
+      m_help_d();
       break;
   }
 

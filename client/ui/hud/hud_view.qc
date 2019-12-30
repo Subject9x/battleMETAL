@@ -1546,7 +1546,7 @@ void() hud_renderCrosshairDisabled={
 
   lbl = "!- FIRE CONTROL OVERRIDE -!";
   
-  stopSize = gui_percentToPixelRawVec('32 32');
+  stopSize = gui_percentToPixelRawVec('24 24');
   stopOrg_x = VIEW_CTR_x - (stopSize_x / 2);
   stopOrg_y = VIEW_CTR_y - (stopSize_y / 2);
 
@@ -1554,7 +1554,7 @@ void() hud_renderCrosshairDisabled={
   lblSize = gui_percentXRaw( lblSize );
   
   lblOrg_x = VIEW_CTR_x - (lblSize / 2);
-  lblOrg_y = VIEW_CTR_y + gui_percentYRaw( 64 );
+  lblOrg_y = VIEW_CTR_y - gui_percentYRaw( 32 );
   
   drawpic(stopOrg, "gfx/hud/rad_bld.png", stopSize, CLR_DEF_RED, HUD_ALPHA - 0.15, DRAWFLAG_NORMAL);  
   

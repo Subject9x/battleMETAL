@@ -19,6 +19,7 @@ entity main_backto;
 entity main_training;
 entity main_options;
 entity main_help;
+entity main_credits;
 entity main_quit;
 
 //Main Menu Constants
@@ -37,6 +38,7 @@ string IMG_MAIN_EXIT = "gfx/menu/exit_game.png";
 
 string IMG_TITLE;
 string IMG_QUIT;
+
 //Main callbacks
 //because we define these right before the menu functions are defined, we 
 //don't have to put them in a header, and they can be 'somewhat' flexibily generated
@@ -44,7 +46,6 @@ void() click_main_camp={
   menu_clear_items(M_STATE);
   M_STATE = M_SINGLE;
   m_camp_f();
-  //cons_logAFloat("click_main_camp->M_STATE", M_STATE);  //DEBUG
 };
 
 void() click_main_train={
@@ -56,7 +57,7 @@ void() click_main_train={
   cmd("coop 0\n");
   cmd("maxplayers 1\n");
   menu_exit_togame();
-  cmd("map", " training_only\n"); //TODO - training map
+  cmd("map", " training_only\n");
 };
 
 void() click_main_multi={
@@ -75,6 +76,12 @@ void() click_main_options={
   menu_clear_items(M_STATE);
   M_STATE = M_OPTIONS;
   m_options_f();
+};
+
+void() click_main_help={
+  menu_clear_items(M_STATE);
+  M_STATE = M_HELP;
+  m_help_f();
 };
 
 void() click_main_credits={
@@ -118,9 +125,11 @@ void() m_main_i={
     main_training = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_TRAIN, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_train, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   //main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '0.25 0.25 0.25', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     orgOptions = '10 170 0';
-    main_help = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_help = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_help, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    
+    main_credits = btn_img_callback('10 209 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     IMG_QUIT = IMG_MAIN_QUIT;
-    orgQuit = '10 209 0';
+    orgQuit = '10 228 0';
   }
   
   main_label = lbl_img('10 100', labelSize, IMG_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, mainTitleFlag );

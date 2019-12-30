@@ -38,3 +38,4 @@ menu_main.qc
     menus/m_options_gameplay.qc
     
   menus/m_credits.qc
+  menus/m_help.qc
