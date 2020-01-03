@@ -31,6 +31,7 @@ string IMG_MAIN_TRAIN  = "gfx/menu/main/main_train.png";
 string IMG_MAIN_MULTI  = "gfx/menu/main/main_multi.png";
 string IMG_MAIN_OPT    = "gfx/menu/main/main_opt.png";
 string IMG_MAIN_HELP   = "gfx/menu/main/main_help.png";
+string IMG_MAIN_CREDITS   = "gfx/menu/main/main_credits.png";
 string IMG_MAIN_QUIT   = "gfx/menu/main/main_quit.png";
 
 string IMG_MAIN_LEAVE = "gfx/menu/quit_mission.png";
@@ -120,14 +121,14 @@ void() m_main_i={
     IMG_TITLE = IMG_MAIN_LBL;
     labelSize = '1 1 0';
     mainTitleFlag = UI_FLAG_SIZE_IMG;
-    main_title = lbl_img('10 50', '1 1 0', IMG_MAIN_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
+    main_title = lbl_img('10 50', '1 1 0', IMG_MAIN_TITLE, '1.5 0.75 0.35', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, (UI_FLAG_SIZE_IMG) );
     main_camp = btn_img_callback('10 132 0', '1 1 0', IMG_MAIN_CAMP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_camp, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     main_training = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_TRAIN, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_train, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   //main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '0.25 0.25 0.25', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     orgOptions = '10 170 0';
     main_help = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_help, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     
-    main_credits = btn_img_callback('10 209 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+    main_credits = btn_img_callback('10 209 0', '1 1 0', IMG_MAIN_CREDITS, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     IMG_QUIT = IMG_MAIN_QUIT;
     orgQuit = '10 228 0';
   }

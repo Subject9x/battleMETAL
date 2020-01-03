@@ -86,6 +86,7 @@ void(entity btn) render_btn;
 void(entity btn) render_btn_txt;
 void(entity lbl) render_lbl_img;
 void(entity lbl) render_lbl_text;
+void(entity pnl) render_txt_pnl;
 
 void(entity txt) render_textfield;
 void(entity txt) render_bindfield;
@@ -100,6 +101,8 @@ entity(vector org, vector siz, string img1, float algn, float menu_id, string co
 
 entity(vector org, vector siz, float charlen, void()  onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_textfield;
 entity(vector org, vector siz, void() onchange, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield;
+
+entity(vector org, vector siz, string txt, vector clr, float algn, float menu_id, float alph, float flgs) text_panel;
 
 void() m_sys_doclick; //called by all menus to process widget clicks
 void() btn_noclick={};  //simple null function

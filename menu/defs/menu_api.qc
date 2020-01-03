@@ -151,6 +151,29 @@ entity(vector org, vector siz, string img1, float algn, float menu_id, void() cl
   return newBtn;
 };
 
+entity(vector org, vector siz, string txt, vector clr, float algn, float menu_id, float alph, float flgs) text_panel={
+  local entity elbl, this;
+  
+  this = self;
+  elbl = new_ui_elm();
+  self = elbl;
+    self.classname = "label";
+    self.menuId = menu_id;
+    self.origin = org;
+    self.size = siz;
+    self.label = txt;
+    self.draw = render_txt_pnl;
+    self.flags = flgs;
+    self.align = algn;
+    self.alpha = alph;
+    self.color = clr;
+    self.subid = FALSE;
+  self = this;
+  
+  return elbl;
+};
+
+
 /*
   Text-only button
   NOTE - IF using Flag UI_FLAG_SIZE_IMG
@@ -375,6 +398,19 @@ void(entity lbl) render_lbl_img={
       if(self.image1 != ""){
         drawpic(org, self.image1, sizzle, self.color, self.alpha, 0);
       }
+    self = this;
+  }
+};
+
+void(entity pnl) render_txt_pnl={
+  local entity this;
+  local vector org, sizzle;
+  if(pnl.drawme){
+    this = self;
+    self = pnl;
+      org = gui_percentToPixelRawVec(self.origin);      
+      sizzle = gui_percentToPixelRawVec(self.size);
+      gui_wrapText(org, sizzle, self.label, '11 11', self.color, self.alpha);
     self = this;
   }
 };

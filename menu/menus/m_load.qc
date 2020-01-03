@@ -12,7 +12,7 @@ entity load_back;
 entity load_list;
 
 //load Constants
-string IMG_LOAD_TITLE   = "gfx/menu/load/load_title.png";
+string IMG_LOAD_TITLE = "gfx/menu/load/load_title.png";
 
 //button callbacks
 void() click_load_back={

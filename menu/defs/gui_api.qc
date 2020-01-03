@@ -330,51 +330,57 @@ void(vector srcOrg, vector percent, string src_img, vector clipSize, vector clr,
   see ui_brief_c.menu_briefObjectivePanel() for a use-case
 */
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText={
-  local float totes, token, line_cnt, line_rtn;
-  local vector varea, torg;
-  local string line;
+  local float totes, token, line_row, line_length;
+  local vector varea, textOrg;
  
   varea = gui_percentToPixelRawVec(area);
   totes = tokenizebyseparator(text, " ");
   
   token = 0;
-  line = "";
-  torg = loc;
-  line_cnt = 1;
-  line_rtn = 1;
+  textOrg = loc;
+  line_row = 0;
+  line_length = 0;
   while(token <= totes){
     local vector charpos;
-    local float charlen;
+    local float charlen, pipe;
     local string toke;
+    
     toke = argv(token);
-    if(toke == "|"){
+    
+    if( toke == "|" ){
       //code can't seem to understand '\n' character read in from a strzone'd string, so use '|' for line breaks on external strings
       toke = "\n";
     }
+    pipe = strstrofs(toke, "\n", 0);
+    if( pipe != -1 ){
+      toke = substring(toke, pipe, strlen(toke));
+    }
     if(toke != "\n"){
-      if( (token > 0) || (line_rtn == 0) ){
-        toke = strcat(" ", toke);
+      if( toke == "+" ){
+        //make lists?
+        line_row = line_row + 1;
+        line_length = 0;
       }
+      toke = strcat(toke, " ");
       charlen = stringwidth(toke, 0, fsize);
-      charpos_x = torg_x + line_rtn + gui_percentXRaw(fsize_x);
-      line_rtn = line_rtn + gui_percentXRaw(charlen);
-      if( line_rtn > varea_x ){
-        charpos_x = torg_x;
-        line_cnt = line_cnt + 1;
-        line_rtn = charlen;
+      charpos_x = textOrg_x + line_length;
+      line_length = line_length + gui_percentXRaw(charlen);
+      if( line_length > varea_x ){
+        charpos_x = textOrg_x;
+        line_row = line_row + 1;
+        line_length = charlen;
       }
+      charpos_y = textOrg_y + (line_row * (fsize_y + (fsize_y * 0.15)));
+      drawstring(charpos, toke, fsize, clr, alph, 0);
     }
     else{
-      line_cnt = line_cnt + 1;
-      line_rtn = 0;
-    }
-    if( (toke != "\n") ){
-      charpos_y = torg_y + (line_cnt * fsize_y);
-      drawstring(charpos, toke, fsize, clr, alph, 0);
+      line_row = line_row + 1;
+      line_length = 0;
     }
     token = token + 1;
   }
-  return line_cnt * fsize_y;
+  
+  return (line_row+1) * (fsize_y + (fsize_y * 0.15));
 };
 
 /*

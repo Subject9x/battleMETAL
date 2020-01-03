@@ -25,8 +25,8 @@ void() data_ini_monitor_={
 //ENERGY AND SHIELDS===================
   self.energyMax = 700;
   self.energyRate= 3;
-  self.shieldMax = 600;
-  self.shieldRate= 0.7;
+  self.shieldMax = 300;
+  self.shieldRate= 1.67;
   self.startupDelay = 9;
 //=====================================
  
@@ -51,19 +51,19 @@ void() data_ini_monitor_={
 //MECH COMPONENTS====================
   
   //center torso
-  data_ini_torso_center_(  "q3mdl/mechs/monitor/monitor_tor_c.md3", 1200, '0 0 0', '0 6 0' );
+  data_ini_torso_center_(  "q3mdl/mechs/monitor/monitor_tor_c.md3", 1300, '0 0 0', '0 6 0' );
  
   //left tors
-  data_ini_torso_left_( "q3mdl/mechs/monitor/monitor_tor_l.md3", 1200, '-11.5 11 -0.5', '-9.5 11 0' );
+  data_ini_torso_left_( "q3mdl/mechs/monitor/monitor_tor_l.md3", 1300, '-11.5 11 -0.5', '-9.5 11 0' );
  
   //right torso
-  data_ini_torso_right_( "q3mdl/mechs/monitor/monitor_tor_r.md3", 1200, '11.5 11 -0.5', '8.5 11 0' );
+  data_ini_torso_right_( "q3mdl/mechs/monitor/monitor_tor_r.md3", 1300, '11.5 11 -0.5', '8.5 11 0' );
  
   //left arm
-  data_ini_arm_left_( "q3mdl/mechs/monitor/monitor_arm_l.md3", 1000, '-18 9 3.5', '-16 9 0' );
+  data_ini_arm_left_( "q3mdl/mechs/monitor/monitor_arm_l.md3", 1100, '-18 9 3.5', '-16 9 0' );
  
   //right arm
-  data_ini_arm_right_( "q3mdl/mechs/monitor/monitor_arm_r.md3", 1000, '18 9 3.5', '16 9 0' );
+  data_ini_arm_right_( "q3mdl/mechs/monitor/monitor_arm_r.md3", 1100, '18 9 3.5', '16 9 0' );
    
   //legs
   data_ini_legs_( "q3mdl/mechs/monitor/monitor_legs.md3", 1500, '0 -22 0' );
