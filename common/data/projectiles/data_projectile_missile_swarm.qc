@@ -78,10 +78,8 @@ void() data_projectile_missile_swarm_think={
   }
   
   if(time > self.data_lifetime){
-    self.solid = SOLID_NOT;
-    self.touch = SUB_Null;
+    self.think = ctrl_missile_dud;
     self.nextthink = time + 0.1;
-    self.think = BecomeExplosion;
   }
   else{
     self.nextthink = time + 0.2;

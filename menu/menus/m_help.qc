@@ -26,6 +26,7 @@ entity help_menus_deploy;
 entity help_menus_hud;
 
 entity help_start_overview;
+entity help_start_contact;
 
 entity help_config_overview;
 entity help_config_adv;
@@ -102,7 +103,6 @@ void() click_help_enter_hud={
 //api
 void() m_help_f={
   DRAW_MOUSE = TRUE;
-  M_STATE = M_HELP;
   HELP_MENU_CHOICE = HELP_MENU_MAIN;
   setkeydest(KEY_MENU);
   m_help_i();
@@ -124,7 +124,7 @@ void() m_help_i={
     
     //Starting
     help_start_overview = text_panel('115 10', '500 100', "GETTING STARTED | To launch a new game, simply do Main Menu -> Campaign -> New Game -> then choose a Save Slot. | battleMETAL uses numbered Save Slots to save your progress during gameplay. | | You can run the Training map at any time from the Main Menu to refresh yourself on the gameplay. | | To load an existing saved game, simply go Main Menu -> Campaign -> Load. | | Mission Menus | During a mission, you will interact with 4 primary menus before you launch into the action. | In this HELP section, there's an overview for each Menu to assist you in navigating them. | Further helpful info can be found using the tooltips on each menu, look for the golden box with the question mark [?] and roll your mouse over it.", CLR_DEF_TXT_HIGHLIGHT, 0, M_HELP, 1, 0);
-    
+    help_start_contact = text_panel('115 225', '500 100', "HELP AND RESOURCES | | Bug Reports:  send email to battleMETAL.qa@gmail.com | | Website:  http://battleMETAL.net | | Source Code:  https://github.com/Subject9x/battleMETAL", CLR_DEF_TXT_HIGHLIGHT, 0, M_HELP, 1, 0);
     //Config
     help_config_overview = text_panel('115 10', '500 100', "Here is a quick index of all the configuration you may adjust for your install of battleMETAL. | | CONTROLS (Main->Options->Controls) + Configure any and all in-game keybindings. + Change a binding by clicking a key, which will then go ORANGE, press the new key and you're all set. | | GRAPHICS (Main->Options->GRAPHICS) + Adjust all the game's graphical settings in this set of menus. + Clicking ACCEPT will immediately apply and save the settings you changed. | | AUDIO (Main->Options->Audio) + Adjust Audio settings for the game here. + You can ONLY change the ADVANCED settings from the Main Menu. + Advanced Settings may auto adjust your Speaker Mode based on what it detects.", CLR_DEF_TXT_HIGHLIGHT, 0, M_HELP, 1, 0);
     help_config_adv = text_panel('115 250', '500 100', "ADVANCED SETTINGS | + You can bring down the Developer Console at any time using the tilde ` key. + All your config settings are saved to the file battleMETAL/id1/config.cfg + You can add your own custom config at game startup by modifying either the battleMETAL/id1/default.cfg OR /autoexec.cfg files.", CLR_DEF_TXT_HIGHLIGHT, 0, M_HELP, 1, 0);
@@ -149,9 +149,11 @@ void() m_help_i={
     help_deploy_title = lbl_text('115 320', '14 14 0', "The Deploy Screen", CLR_DEF_TXT_HIGHLIGHT, 0, M_HELP, 1, 0);
     help_deploy_text = text_panel('115 335', '500 100', "Final screen before entering a mission, here you will choose your Deploy Point. + (A) Last minute data about the mission before you launch. + (B) Choose your Deploy Point. This will determine WHERE you start in the mission, once you have chosen a point, the LAUNCH button will light up! + (C) Last minute reminder of WHICH selected mech you will be piloting in the mission. + (D) Map Key - defines the meaning of various map points of interest, such as hazards, or enemy bases. + (E) Tactical Map - just like the Briefing screen. A YELLOW line will show you which Deploy Point you have SELECTED. ", CLR_DEF_TXT_GRAY_SMOOTH, 0, M_HELP, 1, 0);
     
+    //HUD
+    
     //sub menu wiring
     help_start_overview.subid = HELP_MENU_START;
-    
+    help_start_contact.subid = HELP_MENU_START;
     
     help_config_overview.subid = HELP_MENU_CONFIG;
     help_config_adv.subid = HELP_MENU_CONFIG;
@@ -172,9 +174,9 @@ void() m_help_i={
     help_deploy_title.subid = HELP_MENU_DEPLOY;
     help_deploy_text.subid = HELP_MENU_DEPLOY;
 
-    help_hud_img.subid = HELP_MENU_HUD;
-    help_hud_title.subid = HELP_MENU_HUD;
-    help_hud_text.subid = HELP_MENU_HUD;
+    //help_hud_img.subid = HELP_MENU_HUD;
+    //help_hud_title.subid = HELP_MENU_HUD;
+    //help_hud_text.subid = HELP_MENU_HUD;
 };
 
 void() m_help_d={

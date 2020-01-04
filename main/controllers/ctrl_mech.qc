@@ -151,7 +151,7 @@ void() ctrl_updateCenterTorso={
       if(time > self.shieldHitDelay){
         if(self.energy > 0){
           self.shield = self.shield + self.shieldRate;
-          self.energy = self.energy - (self.shieldRate * 3);
+          self.energy = self.energy - self.shieldRate;
           if(self.shield > self.shieldMax){
             self.shield = self.shieldMax;
           }

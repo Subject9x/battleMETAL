@@ -104,6 +104,7 @@ void() click_main_leave={
 // ini functions
 void() m_main_i={
   local vector orgOptions;
+  local vector orgHelp;
   local vector orgQuit;
   local vector labelSize;
   local float mainTitleFlag;
@@ -114,8 +115,9 @@ void() m_main_i={
     labelSize = '160 24 0';
     mainTitleFlag = 0;
     orgOptions = '10 151 0';
+    orgHelp = '10 170 0';
     IMG_QUIT = IMG_MAIN_EXIT;
-    orgQuit = '10 170 0';
+    orgQuit = '10 189 0';
   }
   else{
     IMG_TITLE = IMG_MAIN_LBL;
@@ -126,7 +128,7 @@ void() m_main_i={
     main_training = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_TRAIN, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_train, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   //main_multi = btn_img_callback('10 151 0', '1 1 0', IMG_MAIN_MULTI, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_multi, '0.25 0.25 0.25', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     orgOptions = '10 170 0';
-    main_help = btn_img_callback('10 189 0', '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_help, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+   orgHelp = '10 189 0';
     
     main_credits = btn_img_callback('10 209 0', '1 1 0', IMG_MAIN_CREDITS, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_credits, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
     IMG_QUIT = IMG_MAIN_QUIT;
@@ -135,6 +137,7 @@ void() m_main_i={
   
   main_label = lbl_img('10 100', labelSize, IMG_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_MAIN, 1, mainTitleFlag );
   main_options = btn_img_callback(orgOptions, '1 1 0', IMG_MAIN_OPT, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_options, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  main_help = btn_img_callback(orgHelp, '1 1 0', IMG_MAIN_HELP, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_help, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   main_quit = btn_img_callback(orgQuit, '1 1 0', IMG_QUIT, (VIEW_CTX | VIEW_CTY), M_MAIN, click_main_quit, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 

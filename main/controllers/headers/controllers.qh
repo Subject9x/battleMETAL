@@ -44,3 +44,5 @@ void() ctrl_weapon_fireOffset;
 void( float burstFire ) ctrl_weapon_updateAmmo;
 void( float updateDelay ) ctrl_weapon_make_projectile;
 float() ctrl_weapon_checkEnergy;
+void() ctrl_missile_dud;
+void() ctrl_missile_dud_touch;

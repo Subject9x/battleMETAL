@@ -172,6 +172,16 @@ void() ButtonCommands={
       self.viewzoom = self.viewzoom - 0.25;
     }
   }
+  
+  if(self.button10){
+    if( self.shield < self.shieldMax ){
+      self.shield = self.shield + self.shieldRate * 0.67;
+      self.energy = self.energy - (self.shieldRate * 1.33);
+      if( self.energy < 0 ){
+        self.energy = 0;
+      }
+    }
+  }
 };
 
 void(float selector) mpls_groupFire={

@@ -10,6 +10,8 @@ Overview:
 
 void() data_prj_mis_touch;
 void() data_projectile_rocket_think_;
+void() data_projectile_rocket_dud;
+void() data_projectile_rocket_dud_touch;
 
 void() data_projectile_ini_rocket_={
   self.classname = "missile";
@@ -54,8 +56,7 @@ void() data_projectile_rocket_think_={
   self.think = data_projectile_rocket_think_;
   self.nextthink = time + 0.05;
   if( time > self.data_lifetime ){
-    self.think = BecomeExplosion;
-    self.nextthink = time + 0.05;
+    self.think = ctrl_missile_dud;
+    self.nextthink = time + 0.01;
   }
 };
-

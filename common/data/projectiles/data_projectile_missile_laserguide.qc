@@ -75,8 +75,8 @@ void() data_projectile_missile_laserguide_think={
 		self.angles = vectoangles(self.velocity);
 	}
   if(time > self.data_lifetime){
+    self.think = ctrl_missile_dud;
     self.nextthink = time + 0.1;
-    self.think = BecomeExplosion;
   }
   else{
     self.nextthink = time + 0.2; //0.05

@@ -206,13 +206,6 @@ void( float updateDelay ) ctrl_weapon_make_projectile={
 
 void() ctrl_die_weapon={
   if(self.deadflag <= DEAD_NO){
-    /*local entity oself;
-    oself = self;
-    newmis = spawn();
-    self = newmis;
-      setorigin(newmis, oself.origin);
-      BecomeExplosion();//TODO - replace with te_explosion
-    self = oself;*/
     te_missile_explode( self.origin, 1, '0.33 0.67 0.99', 1, 1);
     
     if((self.currentWeaponGroup & self.w_group)){
@@ -231,5 +224,35 @@ void() ctrl_die_weapon={
         self.item_remove_upgrade();      
       }
     }
+  }
+};
+
+/*
+  Dud missiles - edge case, fail state.
+    When a missile misses its target, and its lifetime expires.
+    
+    missiles becomes dud, falls to ground over arc, dealing a fraction of damage
+*/
+void() ctrl_missile_dud={
+  self.movetype = MOVETYPE_TOSS;
+  self.gravity = 0.33;
+  self.traileffectnum = 0;
+  self.velocity = self.velocity * 0.67;
+  self.angles = vectoangles(self.velocity);
+  self.touch = ctrl_missile_dud_touch;
+  self.think = SUB_Remove;
+  self.nextthink = time + 10;
+};
+
+void() ctrl_missile_dud_touch={
+  self.solid = SOLID_NOT;
+  self.touch = SUB_Null;
+  self.think = SUB_Remove;
+  self.nextthink = time + 0.01;
+	if ( pointcontents(self.origin) == CONTENT_SKY){
+		return;
+	}
+  if(other.takedamage){
+    t_damage(other, self, self.owner, self.damageValue * 0.05, DMG_BAL, self.origin, '0 0 0');
   }
 };
