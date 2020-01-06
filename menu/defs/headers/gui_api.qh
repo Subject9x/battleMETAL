@@ -83,10 +83,6 @@ void(vector ofs, float bool, vector color1, vector color2, vector sz, float alph
 
 vector(float pcx, float pcy) gui_percentToPixel;
 
-//float(float pcx) gui_percentX;
-
-//float(float pcy) gui_percentY;
-
 float(float ang) anglemod;
 
 vector(float pcx, float pcy) gui_percentToPixelRaw;
@@ -102,3 +98,5 @@ vector(vector pct, vector org_size, vector dest_size) gui_percentCustomVec;
 float(float pct, float ox, float mx) gui_percentCustom;
 
 float(vector loc, vector area, string text, vector fsize, vector clr, float alph) gui_wrapText;
+
+string(float checkSkill) gui_skillAsString;

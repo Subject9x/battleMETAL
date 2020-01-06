@@ -574,7 +574,7 @@ void() menu_scan_saves={
     fname = strcat("saves/save_", ftos(itr), ".sav");
     flannel = fopen(fname, FILE_READ);
     if(flannel != -1){
-      local float line_count, line_tag;
+      local float line_count, line_tag, save_skill;
       local string line, save_name, save_num, map_name, contents;
       line_count = 0;
       contents = fgets(flannel);
@@ -589,17 +589,22 @@ void() menu_scan_saves={
           if( argv(1) == "mission" ){
             map_name = argv(3);
           }
+          if( argv(1) == "skill" ){
+            save_skill = stof(argv(3));
+          }
         }
         line = fgets(flannel);
       }
       fclose(flannel);
-      save_name = strcat("[SAVE ", save_num,"]  ", map_name);
+      save_name = strcat("[SAVE ", save_num,"]  ", map_name, " - ", gui_skillAsString(save_skill));
       GAME_SAVES[itr] = strzone(fname);
       GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
+      GAME_SAVES_SKILL[itr] = save_skill;
     }
     else{
       GAME_SAVES[itr] = strzone(" ");
       GAME_SAVES_DRAWNAME[itr] = strzone("- NEW SAVE SLOT -");
+      GAME_SAVES_SKILL[itr] = 0;
     }
     itr = itr + 1;
   }

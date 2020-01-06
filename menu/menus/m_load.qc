@@ -30,6 +30,7 @@ void() click_load_loadgame={
     cvar_set("gamemode", ftos(1));
     cvar_set("coop", ftos(0));
     cvar_set("deathmatch", ftos(0));
+    cvar_set("skill", ftos(GAME_SAVES_SKILL[self.data_bind]));
     tokenizebyseparator(GAME_SAVES_DRAWNAME[self.data_bind], "  ");
     
     cmd("map ", strcat(argv(1),"\n"));
@@ -58,7 +59,7 @@ void() m_load_i={
       while (itr < GAME_SAVES_MAX ){
         local entity list;
         local vector next;
-        if( GAME_SAVES_DRAWNAME[itr] != "- NEW SAVE SLOT -" ){
+        if( GAME_SAVES_DRAWNAME[itr] != "- EMPTY SAVE -" ){
           next = start;
           next_y = next_y + (actual * 20);
           list = btn_text_callback(next, '14 14 0', GAME_SAVES_DRAWNAME[itr], 0, M_LOAD, click_load_loadgame, CLR_DEF_WHITE, CLR_DEF_GREEN, 1, UI_FLAG_SIZE_IMG);

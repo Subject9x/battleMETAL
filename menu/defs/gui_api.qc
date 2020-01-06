@@ -383,6 +383,25 @@ float(vector loc, vector area, string text, vector fsize, vector clr, float alph
   return (line_row+1) * (fsize_y + (fsize_y * 0.15));
 };
 
+string(float checkSkill) gui_skillAsString={
+  local string s;
+  switch(checkSkill){
+    default:
+      s = "Recruit";
+      break;
+    case 1:
+      s = "Regular";
+      break;
+    case 2:
+      s = "Veteran";
+      break;
+    case 3:
+      s = "Ace";
+      break;
+  }
+  return s;
+};
+
 /*
   UNUSED BUT HERE IF NEEDED
 */
