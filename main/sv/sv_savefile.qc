@@ -113,6 +113,7 @@ void() savefile_save={
   fputs(flannel, strcat("  'mechs' : ", SAVE_MECHS_LIST, ",\n"));
   fputs(flannel, strcat("  'items' : ", SAVE_ITEMS_ALL, ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
+  fputs(flannel, strcat("  'skill' : ", ftos(skill), "\n"));
   fputs(flannel, "}");
   fclose(flannel);
 }; 
@@ -135,6 +136,7 @@ void() savefile_default={
   }
   
   fputs(flannel, "  'points' : ,\n");
+  fputs(flannel, strcat("  'skill' : ", ftos(skill), "\n"));
   fputs(flannel, "}");
   fclose(flannel);
   
