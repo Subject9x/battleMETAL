@@ -250,7 +250,7 @@ entity(vector org, vector siz, float charlen, void() onchange, float algn, float
   return newtxt;
 };
 
-entity(vector org, vector siz, void() onchange, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield={
+entity(vector org, vector siz, void() onchange, string lblText, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield={
   local entity newtxt, this;
   this = self;
   newtxt = inp_textfield(org, siz, 0, onchange, 0, menu_id, clr, hclr, alph, flgs);
@@ -262,6 +262,7 @@ entity(vector org, vector siz, void() onchange, string ini_bind_cmd, float menu_
     bind = menu_keybind_keyfor(self.data_text);
     self.len = bind_x;
     self.label = "";
+    self.image1 = lblText;
     self.draw = render_bindfield;
     self.isclick = bindfld_isclick;
     self.ischange = bindfld_ischange;
@@ -458,6 +459,9 @@ void(entity txt) render_textfield={
 
 void(entity txt) render_bindfield={
   local entity this;
+  local vector org, sizzle, bclr;
+  local vector actionOrg;
+  
   if(txt.drawme){
     this = self;
     self = txt;
@@ -467,14 +471,25 @@ void(entity txt) render_bindfield={
         self.label = keynumtostring(self.len);
       }
       
-      local vector org, sizzle, bclr;
-      org = gui_percentToPixelRawVec(self.origin);
+      
+      if( self.image1 != "" ){
+        drawfont = drawfont_prev;
+        drawfont = FONT_NUM_ROBOT_REGULAR;
+        actionOrg_x = stringwidth(self.image1, 0, self.size - (self.size * 0.15));
+        actionOrg_x = gui_percentXRaw(actionOrg_x);
+        actionOrg_x = self.origin_x + actionOrg_x;
+        actionOrg_y = self.origin_y;
+        drawfont = drawfont_prev;
+      }
+      else{
+        actionOrg = gui_percentToPixelRawVec(self.origin);
+      }
       sizzle_x = stringwidth(self.label, 0, self.size);
       sizzle_y = self.size_y;
       sizzle = gui_percentToPixelRawVec(sizzle);
       
       bclr = self.color;
-      if(menu_checkMouseInBounds(VIEW_MPOS, org, sizzle)){
+      if(menu_checkMouseInBounds(VIEW_MPOS, actionOrg, sizzle)){
         MOUSE_TARGET = self;
         if( self.rolledover == FALSE){ 
           localsound("sound/misc/menu3.wav");
@@ -495,8 +510,14 @@ void(entity txt) render_bindfield={
       if( (KEYBIND_TARGET == self) && (UI_KEYBIND_ACTIVE) ){
         bclr = CLR_DEF_ARM_THREEQ;
       }
-
-      drawstring(org, self.label, self.size, bclr, self.alpha, 0);
+      
+      drawfont = drawfont_prev;
+      drawfont = FONT_NUM_ROBOT_REGULAR;
+        drawstring(self.origin, self.image1, self.size - (self.size * 0.15), self.color + '0.15 0.15 0.15', self.alpha + 0.15, 0); 
+      drawfont = drawfont_prev;
+      
+      drawpic(actionOrg - gui_percentToPixelRawVec('2 2'), "gfx/ui/box_256.png", sizzle + gui_percentToPixelRawVec('4 2'), bclr - '0.5 0.5 0.5', 1, 0);
+      drawstring(actionOrg, self.label, self.size, bclr, self.alpha, 0);
     self = this;
   }
 };

@@ -101,7 +101,7 @@ entity(vector org, vector siz, string txt, float algn, float menu_id, void() cli
 entity(vector org, vector siz, string img1, float algn, float menu_id, string commd, vector clr, vector hclr, float alph, float flgs) btn_img_command;
 
 entity(vector org, vector siz, float charlen, void()  onchange, float algn, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_textfield;
-entity(vector org, vector siz, void() onchange, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield;
+entity(vector org, vector siz, void() onchange, string lblText, string ini_bind_cmd, float menu_id, vector clr, vector hclr, float alph, float flgs) inp_keybindfield;
 
 entity(vector org, vector siz, string txt, vector clr, float algn, float menu_id, float alph, float flgs) text_panel;
 
