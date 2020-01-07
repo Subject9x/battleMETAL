@@ -171,11 +171,11 @@ void(vector ofs) menu_deploy_navInfoPanel={
   drawstring(panelLabelOrg, "-Select Drop Point-", '10 10 0', '1 1 1', 1, 0);
 
   drawstring(panelOrg + gui_percentToPixelRawVec('190 12'), "Next", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawpic(panelOrg + gui_percentToPixelRawVec('188 20'), HUD_TRG_PIP_R, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
+  drawpic(panelOrg + gui_percentToPixelRawVec('188 20'), UI_BTN_ARR_RIGHT, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
   DEPLOY_BUTTON_NAV_NEXT_ORG = panelOrg + gui_percentToPixelRawVec('188 20');
   
   drawstring(panelOrg + gui_percentToPixelRawVec('8 12'), "Prev", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawpic(panelOrg + gui_percentToPixelRawVec('6 20'), HUD_TRG_PIP_L, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
+  drawpic(panelOrg + gui_percentToPixelRawVec('6 20'), UI_BTN_ARR_LEFT, gui_percentToPixelRawVec('20 44'), '1 1 1', 1, 0);
   DEPLOY_BUTTON_NAV_PREV_ORG = panelOrg + gui_percentToPixelRawVec('6 20');
 
   //current spawn point

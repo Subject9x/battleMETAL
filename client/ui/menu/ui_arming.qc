@@ -388,11 +388,11 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   BTN_CFG_P = pbtn + gui_percentToPixelRawVec('8 -32');
   drawstring(pbtn + gui_percentToPixelRawVec('8 -44'), "PREV", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawpic(BTN_CFG_P, HUD_TRG_PIP_L, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);      
+  drawpic(BTN_CFG_P, UI_BTN_ARR_LEFT, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);      
   
   BTN_CFG_N = nbtn + gui_percentToPixelRawVec('-2 -32');
   drawstring(nbtn + gui_percentToPixelRawVec('-4 -44'), "NEXT", '10 10 0', CLR_DEF_ARM_HALF, 1, 0);
-  drawpic(BTN_CFG_N, HUD_TRG_PIP_R, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);
+  drawpic(BTN_CFG_N, UI_BTN_ARR_RIGHT, gui_percentToPixelRawVec('24 32'), CLR_DEF_ARM_THREEQ, 1, 0);
   
   lctr = nofs + pctr;
   lctr_y = lctr_y + pctr_y - gui_percentYRaw(42);

@@ -106,6 +106,9 @@ void() cs_precache={
   UI_DEF_BOX_256_BTN = precache_pic("gfx/ui/box_256_btn.png",8);
   UI_DEF_BOX_64 = precache_pic("gfx/ui/box_64.png",8);
   UI_DEF_REC_64 = precache_pic("gfx/ui/box_64_rec.png",8);
+  UI_BTN_ARR_RIGHT = precache_pic("gfx/ui/btn_arr_right.png",8);
+  UI_BTN_ARR_LEFT = precache_pic("gfx/ui/btn_arr_left.png",8);
+  
   //HUD_TARGET_BOX = precache_pic("gfx/hud/target_box.png",0);
   HUD_TARGET_BOX = precache_pic("gfx/hud/target_box_a.png",0);
   
