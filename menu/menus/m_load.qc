@@ -23,17 +23,19 @@ void() click_load_back={
 };
 
 void() click_load_loadgame={
+  local string mapName;
+  
   if( GAME_SAVES_DRAWNAME[self.data_bind] != "- NEW SAVE SLOT -"){
     menu_clear_items(M_STATE);
-    menu_exit_togame();
     cvar_set("saveslot", ftos(self.data_bind));
     cvar_set("gamemode", ftos(1));
     cvar_set("coop", ftos(0));
     cvar_set("deathmatch", ftos(0));
     cvar_set("skill", ftos(GAME_SAVES_SKILL[self.data_bind]));
     tokenizebyseparator(GAME_SAVES_DRAWNAME[self.data_bind], "  ");
-    
-    cmd("map ", strcat(argv(1),"\n"));
+    menu_exit_togame();
+    mapName = strcat(argv(1),"\n");
+    cmd(strcat("map ", mapName));
   }
 };
 

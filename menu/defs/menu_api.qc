@@ -596,7 +596,7 @@ void() menu_scan_saves={
         line = fgets(flannel);
       }
       fclose(flannel);
-      save_name = strcat("[SAVE ", save_num,"]  ", map_name, " - ", gui_skillAsString(save_skill));
+      save_name = strcat("[SAVE ", save_num,"]  ", map_name, "  ","-","  ", gui_skillAsString(save_skill));
       GAME_SAVES[itr] = strzone(fname);
       GAME_SAVES_DRAWNAME[itr] = strzone(save_name);
       GAME_SAVES_SKILL[itr] = save_skill;
