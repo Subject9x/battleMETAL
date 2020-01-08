@@ -36,9 +36,9 @@ void() ai_mech_sk_charge1={
   
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.1;
-  
+  }
   ai_face_targ();
    
   local float goalAngle;
@@ -59,9 +59,10 @@ void() ai_mech_sk_charge2={
     
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.2;
-    
+  }
+  
   ai_face_targ();
   ai_attack();
      
@@ -83,9 +84,9 @@ void() ai_mech_sk_charge3={
     
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.3;
-    
+  }
   ai_face_targ();
      
   local float goalAngle;
@@ -109,9 +110,9 @@ void() ai_mech_sk_charge4={
     
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.4;
-    
+  }
   ai_face_targ();
      
   local float goalAngle;
@@ -132,9 +133,9 @@ void() ai_mech_sk_charge5={
     
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.5;
-    
+  }
   ai_face_targ();
      
   local float goalAngle;
@@ -155,9 +156,9 @@ void() ai_mech_sk_charge6={
     
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.6;
-    
+  }  
   ai_face_targ();
   ai_attack();
      
@@ -179,13 +180,13 @@ void() ai_mech_sk_charge7={
     
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.7;
-    
+  }  
   ai_face_targ();
-  if( self.ai_rank > AI_RANK_REG )
+  if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
-   
+  }
   local float goalAngle;
   goalAngle = anglemod(self.angles_y + self.ai_dir);
   
@@ -204,9 +205,9 @@ void() ai_mech_sk_charge8={
     
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.8;
-    
+  }
   ai_face_targ();
      
   local float goalAngle;
@@ -227,9 +228,9 @@ void() ai_mech_sk_charge9={
     
   local float dampen;
   dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
+  if( self.speed != self.lefty ){
     dampen = dampen * 0.9;
-    
+  }
   ai_face_targ();
      
   local float goalAngle;
@@ -247,11 +248,6 @@ void() ai_mech_sk_charge9={
 void() ai_mech_sk_charge10={
   ai_update_accuracy( TRUE );
   macro_ai_update(ai_ctrl_update_mechplayer)
-    
-  local float dampen;
-  dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.1;
     
   ai_face_targ();
   ai_attack();
@@ -271,20 +267,15 @@ void() ai_mech_sk_charge10={
 void() ai_mech_sk_charge11={
   ai_update_accuracy( TRUE );
   macro_ai_update(ai_ctrl_update_mechplayer)
-    
-  local float dampen;
-  dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.1;
-    
+  
   ai_face_targ();
      
   local float goalAngle;
   goalAngle = anglemod(self.angles_y + self.ai_dir);
   
-  if( self.ai_rank > AI_RANK_REG )
+  if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
-    
+  }
   if( walkmove( goalAngle, self.data_speed_forward ) ){
     macro_ai_frame(ai_mech_sk_charge12)
     return;
@@ -297,11 +288,6 @@ void() ai_mech_sk_charge11={
 void() ai_mech_sk_charge12={
   ai_update_accuracy( TRUE );
   macro_ai_update(ai_ctrl_update_mechplayer)
-    
-  local float dampen;
-  dampen = self.data_speed_forward;
-  if( self.speed != self.lefty )
-    dampen = dampen * 0.1;
     
   ai_face_targ();   
  
@@ -360,9 +346,9 @@ void() ai_mech_sk_charge15={
   
   ai_face_targ();  
   
-  if( self.ai_rank > AI_RANK_REG )
+  if{( self.ai_rank > AI_RANK_REG )
     ai_attack();
-  
+  }
   local float goalAngle;
   goalAngle = anglemod(self.angles_y + self.ai_dir);
   
