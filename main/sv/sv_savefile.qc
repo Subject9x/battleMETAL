@@ -113,7 +113,7 @@ void() savefile_save={
   fputs(flannel, strcat("  'mechs' : ", SAVE_MECHS_LIST, ",\n"));
   fputs(flannel, strcat("  'items' : ", SAVE_ITEMS_ALL, ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
-  fputs(flannel, strcat("  'skill' : ", ftos(skill), "\n"));
+  fputs(flannel, strcat("  'skill' : ", ftos(skill), ",\n"));
   fputs(flannel, "}");
   fclose(flannel);
 }; 
@@ -125,7 +125,7 @@ void() savefile_default={
   flannel = fopen(file, FILE_WRITE);
   fputs(flannel, "{\n");
   fputs(flannel, strcat("  'save' : ", cvar_string("saveslot"), ",\n"));
-  fputs(flannel, "  'mission' : start,\n");
+  fputs(flannel, "  'mission' : o1m1,\n");
   if( cvar("developer") ){
     fputs(flannel, "  'mechs' : 1 2 3,\n");
     fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
@@ -136,7 +136,7 @@ void() savefile_default={
   }
   
   fputs(flannel, "  'points' : ,\n");
-  fputs(flannel, strcat("  'skill' : ", ftos(skill), "\n"));
+  fputs(flannel, strcat("  'skill' : ", ftos(skill), ",\n"));
   fputs(flannel, "}");
   fclose(flannel);
   
