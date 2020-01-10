@@ -27,7 +27,7 @@ string ANM_FILE_TAG_COLOR = "color";
 string ANM_FILE_TAG_TXT_CLR = "text_color";
 
 float ANM_FRAME_MAX = 20; //this is here for reference, but if modified, MODIFY THE FOLLOWING ARRAY LIMITS!
-float ANM_FRAME_SLICE = 0.1; //used for alpha blending timer
+float ANM_FRAME_SLICE = 0.3; //used for alpha blending timer
 
 float ANM_FILE_STATUS;
 float ANM_FRAME_TOTAL;

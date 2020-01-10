@@ -355,8 +355,8 @@ void() ctrlPlayerMechTouch={
     return;
   }
   makevectors ( self.ramAngle );
-  dot = normalize (self.origin - other.origin);
-  dot = dot * v_forward;
+  vec = normalize (self.origin - other.origin);
+  dot = vec * v_forward;
   
 	if( dot < 0.6 ){
     t_damage(other, self, self, other.max_health * 0.15, 0, self.legs.origin, '0 0 0');

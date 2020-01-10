@@ -47,12 +47,14 @@ void() data_ini_equip_shield_emitter_={
 
 #ifndef CSQC
 void() shield_emitter_upgrade_={
-
+  self.shieldRateMod = self.owner.shieldRateMod;
+  self.owner.shieldRateMod = 1.2;
   self.energyMax = self.owner.shieldRate;
   self.owner.shieldRate  = self.owner.shieldRate + (self.owner.shieldRate  * self.energyRate);
 };
 
 void() shield_emitter_remove_={
+  self.owner.shieldRateMod = self.shieldRateMod;
   self.owner.shieldRate = self.energyMax;
 };
 #endif

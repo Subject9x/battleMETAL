@@ -66,10 +66,10 @@ void(string fileName) cl_get_animfile={
 };
 
 void() cl_exit_animatic={
+  local string cmd;    
   if( ANM_FILE_STATUS == 1 ){
     //animation is playing;
     anm_cleanup();
-    local string cmd;    
     cmd = "cmd mech exitanim\n";
     localcmd(cmd);
   }

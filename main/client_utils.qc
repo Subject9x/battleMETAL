@@ -404,11 +404,25 @@ void(string str, float tokens) client_ParseMechCommand={
   
   //player wants to skip an animatic
   if( argv(1) == "exitanim" ){
-    if( self.playerState == PLAYER_ANIM_STOP) {
-      self.count2 = 0;
-      self.velocity = '0 0 0';
-      self.avelocity = '0 0 0';
+    self.count2 = 0;
+    self.velocity = '0 0 0';
+    self.avelocity = '0 0 0';
+    if( self.animId != world ){
+      if( self.animId.target != "" ){
+        local entity trigTarg;
+        trigTarg = find(world, targetname, self.animId.target );
+        if( trigTarg ){
+          if( trigTarg.use ){
+            local entity notTrig;
+            notTrig = self;
+            self = trigTarg;
+              trigTarg.use();
+            self = notTrig;
+          }
+        }
+      }
     }
+    
     return;
   }
   

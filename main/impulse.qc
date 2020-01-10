@@ -175,8 +175,8 @@ void() ButtonCommands={
   
   if(self.button10){
     if( self.shield < self.shieldMax ){
-      self.shield = self.shield + self.shieldRate * 0.67;
-      self.energy = self.energy - (self.shieldRate * 1.33);
+      self.shield = self.shield + (self.shieldRate * 0.67);
+      self.energy = self.energy - (self.shieldRate * self.shieldRateMod);
       if( self.energy < 0 ){
         self.energy = 0;
       }

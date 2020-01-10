@@ -60,6 +60,11 @@ void() turbo_charger_upgrade_={
     module = self;
     self = module.owner;
       client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, ftos(self.owner.data_speed_accel), self.owner.hud_rollangle);  
+      self.ramUpMax = 4 - self.vec_size;
+      self.ramUpMax = self.ramUpMax / 10;
+      self.ramUpMax = self.data_speed_forward * self.ramUpMax;
+      self.ramUpMax = self.data_speed_forward - self.ramUpMax;
+      self.ramUpMax = self.ramUpMax / 24;
     self = module;
   }
 };
@@ -72,6 +77,11 @@ void() turbo_charger_remove_={
     module = self;
     self = module.owner;
       client_update_moveSpeed( self.owner.data_speed_forward, self.owner.data_speed_strafe, self.owner.data_speed_backward, ftos(self.owner.data_speed_accel), self.owner.hud_rollangle);  
+      self.ramUpMax = 4 - self.vec_size;
+      self.ramUpMax = self.ramUpMax / 10;
+      self.ramUpMax = self.data_speed_forward * self.ramUpMax;
+      self.ramUpMax = self.data_speed_forward - self.ramUpMax;
+      self.ramUpMax = self.ramUpMax / 33;
     self = module;
   }
 };

@@ -10,8 +10,6 @@ Overview:
 
 void() data_prj_mis_touch;
 void() data_projectile_rocket_think_;
-void() data_projectile_rocket_dud;
-void() data_projectile_rocket_dud_touch;
 
 void() data_projectile_ini_rocket_={
   self.classname = "missile";

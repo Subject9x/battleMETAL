@@ -11,6 +11,22 @@ Overview:
   The Map_Animatic object 
 */
 
+void() animatic_event_trigger={
+  SUB_UseTargets();
+      //Set to remove when complete
+    if( (self.spawnflags & 4) ){
+      self.think = SUB_Remove;
+      self.nextthink = time + 0.05;
+      return;
+    }
+    
+    if( (self.spawnflags & 64) ){
+      self.think = self.use;
+      self.nextthink = time + self.wait;
+      return;
+    }
+};
+
 void() animatic_event_execute={
   local entity client;
   local entity this;
@@ -20,9 +36,10 @@ void() animatic_event_execute={
     client = findchainflags(flags, (FL_CLIENT));
     while(client){
       //FACTION_ONLY setting
-      if( (self.spawnflags & 8) )
+      if( (self.spawnflags & 8) ){
         if(self.faction != client.faction){
           continue;
+        }
       }
       self = client;
         self.count1 = self.playerState;
@@ -35,9 +52,17 @@ void() animatic_event_execute={
           self.avelocity = '0 0 0';
         }
         client_sendAnimaticFileName(this.missionFile);
+        self.animId = this;
       self = this;
       client = client.chain;
     }
+    
+    if( self.count2 > 0 ){
+      self.think = animatic_event_trigger;
+      self.nextthink = time + self.count2;
+      return;
+    }
+    
     //Set to remove when complete
     if( (self.spawnflags & 4) ){
       self.think = SUB_Remove;
@@ -97,6 +122,7 @@ The Map_Animatic object
 .missionFile = <string> [file] - the .anim file to be loaded from /data/anim/
 .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
 .count1 = <float> [freeze time] - defaults to 15 sec if not defined, use with spawnflags[32]
+.count2 = <float> fire trigger after X seconds.
 .target = <string> [ent] - fire this trigger when done
 .wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
 -------- SPAWNFLAGS --------

@@ -346,7 +346,7 @@ void() ai_mech_sk_charge15={
   
   ai_face_targ();  
   
-  if{( self.ai_rank > AI_RANK_REG )
+  if( self.ai_rank > AI_RANK_REG ){
     ai_attack();
   }
   local float goalAngle;

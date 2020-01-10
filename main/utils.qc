@@ -126,7 +126,6 @@ vector( vector viewAngle, float idealRange, vector weaponSpread, float playerAcc
   local vector acc;
   local vector adj;
   local vector targVel;
-  local vector buildingOffset;
   
   targVel = '0 0 0';
   if( (self.owner.enemy.flags & FL_CLIENT) ){

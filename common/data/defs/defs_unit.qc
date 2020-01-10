@@ -34,8 +34,8 @@ Overview:
 .float energy;        //current amount
 .float energyRate;    //how much energy built per frame
 .float shieldMax;     //max shields
-
 .float shieldRate;    //shield recharge rate
+.float shieldRateMod; //field for modules.
 .float startupDelay; //time in game seconds for unit to activate after spawn.
 
 

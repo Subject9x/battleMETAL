@@ -2243,14 +2243,16 @@ REMOVE 64 : remove on touch
 An 'Animatic' is a sequence of images and queued up sounds that are played back for players when the animatic is triggered.
 the script file for the Animatic is defined in /data/anim/<anim_name>.anim
 The script schema can be found there too.  
-The Map_Animatic object 
+Player can SKIP this animatic IF there's an appropriate trigger_changelevel.
 
 -------- KEYS --------
 .missionFile = <string> [file] - the .anim file to be loaded from /data/anim/
 .faction = <float> [faction] - OPTIONAL - use with .spawnflags[8]
 .count1 = <float> [freeze time] - defaults to 15 sec if not defined, use with spawnflags[32]
+.count2 = <float> fire trigger after X seconds.
 .target = <string> [ent] - fire this trigger when done
 .wait = <float> [cooldown] - how long to wait before reactivating, spawnflags[64]
+.target = <string> thing to trigger when player skips (spacebar) or .count2 runs out.
 -------- SPAWNFLAGS --------
 START_OFF 1: will start as deactivated
 ON_TOUCH 2: will react to being touched by a players

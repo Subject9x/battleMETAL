@@ -239,13 +239,18 @@ so that the level can do a map switch without needing
 to touch the changelevel trigger
 */
 void() changelevel_use={
+  if( world.animaticOnly ){
+    nextmap = self.map;
+		GotoNextMap();
+		return;
+  }
   if ((cvar("noexit") == 1) || ((cvar("noexit") == 2) && (mapname != "start")))
 	{
 		T_Damage (other, self, self, 50000);
 		return;
 	}
   
-  	if (coop || deathmatch)
+  if (coop || deathmatch)
 	{
 		bprint (other.netname);
 		bprint (" exited the level\n");

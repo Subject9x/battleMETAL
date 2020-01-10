@@ -122,7 +122,12 @@ void() ClientConnect = {
   
   self.stat_plr_rep = -1;
   
-  client_playTrack(3, TRUE);  //entering hangar menu
+  if( world.animaticOnly == FALSE) {
+    client_playTrack(3, TRUE);  //entering hangar menu
+  }
+  else{
+    client_playTrack(world.sounds, TRUE);  //entering hangar menu
+  }
   
   CLIENTS = CLIENTS + 1;  //book keeping for multiplayer
   self.client_num = CLIENTS;  //book keeping for multiplayer

@@ -37,7 +37,7 @@ void() click_newg_launch={
   cmd("coop 0\n");
   cmd("cd stop\n");
   menu_exit_togame();
-  cmd("map", " training\n");
+  cmd("map", " anim1\n");
 };
 
 void() click_newg_novice={
