@@ -197,11 +197,13 @@ void() PutClientInServer = {
       //pre-populate default save file
       savefile_default();
     }
-    if( world.itemOverrideFile && world.itemOverrideFile != "" ){
-      savefile_load( TRUE );
-    }
-    else{
-      savefile_load( FALSE );
+    if( world.animaticOnly == FALSE ){
+      if( world.itemOverrideFile != "" ){
+        savefile_load( TRUE );
+      }
+      else{
+        savefile_load( FALSE );
+      }    
     }
   }
   else if ( cvar("coop") && !cvar("deathmatch") ){

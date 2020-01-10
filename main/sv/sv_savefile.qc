@@ -73,13 +73,23 @@ string(string item, string source) savefile_insert={
 //functions
 void(float override) savefile_load={
   local float flannel, argc, line_tag;
-  local string file, contents, line;
+  local string file, contents, line, map_name;
+  local float hasExt;
+  
   if( override ){
-    file = strcat(PATH_DATA_MAP, "/", mapname, "/", world.itemOverrideFile, SAVE_FILE_EXT);
+    hasExt = strstrofs(mapname, ".bsp",0);
+    if( hasExt != -1 ){
+      map_name = substring(mapname,0, hasExt);
+    }
+    else{
+      map_name = mapname;
+    }
+    file = strcat(PATH_DATA_MAP, "/", map_name, "/", world.itemOverrideFile, SAVE_FILE_EXT);
   }
   else{
     file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
   }
+  
   flannel = fopen(file, FILE_READ);
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{", ",", "}");
