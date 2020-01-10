@@ -103,22 +103,24 @@ void() cl_get_mechs_sort={
 void(string mech_data) cl_get_mechs_all={
   local float itrTokens, tokens;
   local float mechId;
+  local float total;
   
   tokens = tokenizebyseparator(mech_data, " ",",");
   itrTokens = 0;
-  
+  total = 1;
   //TODO - possible duplication error
   while(itrTokens <= tokens){
     if( argv(itrTokens) != "" ){
       mechId = stof( argv(itrTokens) );
       if(mechId > 0){
-        UNLOCKED_MECHS[mechId] = mechId;
+        UNLOCKED_MECHS[total] = mechId;
+        total = total + 1;
       }
     }
     itrTokens = itrTokens + 1;
   }
   //we store the total for headache reduction later in UI code.
-  UNLOCKED_MECHS_TOTAL = 24;
+  UNLOCKED_MECHS_TOTAL = total;
 };
 
 void(string item_data) cl_get_items_all={
@@ -134,7 +136,7 @@ void(string item_data) cl_get_items_all={
       itemId = stof( argv(itrTokens) );
       if(itemId > 0){
         //order of items doesn't really matter
-        UNLOCKED_ITEMS[itemId] = itemId;
+        UNLOCKED_ITEMS[total] = itemId;
         total = total + 1;
       }
     }

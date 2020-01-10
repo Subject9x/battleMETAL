@@ -13,21 +13,21 @@ Overview:
   appends new save data from mission to single-player save file
 */
 void() savefile_append={
-  if(world.unlockMechs != ""){
+  if(MAP_UNLOCK_MECHS != ""){
     if(SAVE_MECHS_LIST != ""){
-      SAVE_MECHS_LIST = savefile_insert(world.unlockMechs, SAVE_MECHS_LIST);
+      SAVE_MECHS_LIST = savefile_insert(MAP_UNLOCK_MECHS, SAVE_MECHS_LIST);
     }
     else{
-      SAVE_MECHS_LIST = strzone(world.unlockMechs);
+      SAVE_MECHS_LIST = strzone(MAP_UNLOCK_MECHS);
     }
   }
   
-  if(world.unlockEquip != ""){
+  if(MAP_UNLOCK_EQUIP != ""){
     if(SAVE_ITEMS_ALL != ""){
-      SAVE_ITEMS_ALL = savefile_insert(world.unlockEquip, SAVE_ITEMS_ALL);
+      SAVE_ITEMS_ALL = savefile_insert(MAP_UNLOCK_EQUIP, SAVE_ITEMS_ALL);
     }
     else{
-      SAVE_ITEMS_ALL = strzone(world.unlockEquip);
+      SAVE_ITEMS_ALL = strzone(MAP_UNLOCK_EQUIP);
     }
   }
 };

@@ -439,7 +439,6 @@ void(string cmd, float tokens) client_setMission={
     //mission successful, next map
     if( !world.ignoreSave ){
       savefile_changemap(nextmap);
-      savefile_append();
       savefile_save();
     }
     if( nextmap == "" ){

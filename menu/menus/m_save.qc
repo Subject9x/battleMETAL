@@ -32,7 +32,6 @@ void() click_save_savegame={
 // ini function, called by '_f' function as a setup func
 void() m_save_i={
   save_title = lbl_img('10 100', '1 1 0', IMG_SAVE_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_SAVE, 1, (UI_FLAG_SIZE_IMG) );
- 
   save_back = btn_img_callback('10 132 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_SAVE, click_load_back, '1 1 1', '0 1 0', 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
   
   local vector start;

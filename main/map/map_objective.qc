@@ -95,6 +95,9 @@ void() map_objective_mission_conclude_th={
       if( successCheck ){
         //only send unlocks if player won mission
         client_sendMissionUnlocks();
+        if( !world.ignoreSave ){
+          savefile_append();    
+        }
         te_mission_win();
       }
       else{
