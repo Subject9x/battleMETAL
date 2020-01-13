@@ -228,13 +228,8 @@ entity(entity trg, entity inflictor, entity attacker, float dmg_amt, float dmg_t
     IE it doesn't make sense (to the designer) that shield delay is the same whether hit by an autocannon or an EMP blast.
   */
   trg.shieldHitDelay = trg.shieldHitDelay + (4 - trg.vec_size); //simulates larger reactor size on larger units.
-  trg.shieldHitDelay = trg.shieldHitDelay + (3 - skill);        //easier game modes have shorter recharge delays.
-  if( trg.shield <= FALSE ){
-    trg.shieldHitDelay = trg.shieldHitDelay + (trg.shieldHitDelay * 3); //easier to disable shields that are already down.
-  }
-  else{
-    trg.shieldHitDelay = trg.shieldHitDelay * 2;
-  }
+  //trg.shieldHitDelay = trg.shieldHitDelay + (3 - skill);        //easier game modes have shorter recharge delays. (may no longer be needed - Roohr)
+  trg.shieldHitDelay = trg.shieldHitDelay * 1.33;
   trg.shieldHitDelay = trg.shieldHitDelay / 100;
   trg.shieldHitDelay = trg.shieldHitDelay + (dmg_amt / 500);  
   trg.shieldHitDelay = time + (trg.shieldHitDelay + SHIELD_DELAY);

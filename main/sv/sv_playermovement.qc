@@ -167,6 +167,7 @@ void() SV_PlayerPhysics =
     }
     if( hitStop ){      
       self.ramCharge = time;
+      self.ramUp = 0;
       self.ramCool = time + self.ramUp;
       return;
     }

@@ -14,6 +14,10 @@ void() ai_gev={
   ai_unit_ini_var();
   initialize_data_vehicle_( self.nextVecChoice );
   ai_pilot_ini_stats(self.ai_rank);
+  
+  if( self.vec_size < 3 ){
+    self.spawnflags = self.spawnflags | MUTE_ME;
+  }
   ai_voice_ini( TRUE );
 
   self.th_stand = ai_gev_stand1;

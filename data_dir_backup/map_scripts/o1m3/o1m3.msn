@@ -1,0 +1,36 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o1m2/o1m2.png'
+  'name'  : 'Operation Stolen Ground'
+  'type'  : 'Base Defense'
+  'points' : '1'
+  'sector' : 'Badlands'
+  'location' : 'Stormside Edge'
+  'time' : '33;12;09;72'
+  'brief' : 'PSC has concluded that hostile forces must be AUTHOR units masquerading as previously friendly units. AUTHOR, a dangerous AI, is capable of such deception. DEAD_HANDS acquired this current firebase for subsequent operations, and !AUTHOR units are attempting to take it back. | | PSC orders this DEAD_HAND to defend the base at all costs. If base can be held, PSC will be able to begin manufacturing new metals and equipment, therefore this base is vital to PSC`s overall strategy to annihilate AUTHOR.'
+  'intel' : 'Enemy believed to have massed into 3 primary Assault Groups. | | Each group is a mix of tanks and metals. | | Combat in Low-light conditions expected. | | Recommended Defense Package - 1x Monitor metal. | | A Repair Bay may also be available.'
+  'objtotal' : '4'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Defend CORE base buildings from attacking forces.'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Defeat first Assault Group.'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Defeat second Assault Group.'
+}
+{
+  'objid' : '4'
+  'objtype': 'primary'
+  'objdesc' : 'Defeat third Assault Group.'
+}

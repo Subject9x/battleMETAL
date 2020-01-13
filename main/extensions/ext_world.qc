@@ -67,6 +67,8 @@ void() mh_world_ini={
   
   addstat(STAT_PLR_REP, AS_INT, stat_plr_rep);
   addstat(STAT_RAD_SWEEP, AS_FLOAT, radar_time);
+  
+  addstat(STAT_RAM_VALUE, AS_FLOAT, ramTracker);
 
   switch( world.worldtype ){
     case 1:

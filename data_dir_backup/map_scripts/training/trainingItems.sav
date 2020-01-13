@@ -1,0 +1,7 @@
+//faction 1 unlocks file for map t1m6
+{
+  'mission' : foo,
+  'mechs' : 1,
+  'items' : 1 3 13,
+  'points' : 0,
+}

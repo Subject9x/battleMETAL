@@ -1,0 +1,41 @@
+//mission info section
+{
+//img stored in data/map_scripts/
+  'img' : 'o1m1/o1m1.png'
+  'name'  : 'OP-CODE 1 Exec'
+  'type'  : 'Recon'
+  'points' : '1'
+  'sector' : 'Habzone Outskirts'
+  'location' : 'Commercia Band 1'
+  'time' : '04;12;37;91'
+  'brief' : 'Perimetra System Control, hereafter referenced as PSC, is now online following OP-CODE 1 protocol. PSC was activated at 15:36 equatorial time after failing to receive stand down request within the time window. PSC has detected multiple atomic detonations across the Habitable region and a 90% drop in commercial transmission volume. PSC using Validator Policy 4 has determined that Human command has been eliminated in possible First Strike Scenario. | | PSC is now standing by for new information. To acquire this intelligence, PSC is bringing its rapid-response nodes out of cold storage. Welcome, DEAD_HAND. Arise from your slumber, know that the souls of your nation forgive you for what you must do...'
+  'intel' : 'PSC lacks necessary data to provide accurate prediction models for weapons and equipment. | PSC recommends lightest possible metal node to reduce material risk at this crucial juncture. | | Engaging Hostile Forces is not advised at this time.'
+  'objtotal' : '5'
+  'anim' : ''
+}
+// objectives section
+{
+  'objid' : '1'
+  'objtype': 'primary'
+  'objdesc' : 'Reach (Nav) Alpha'
+}
+{
+  'objid' : '2'
+  'objtype': 'primary'
+  'objdesc' : 'Reach (Nav) Beta'
+}
+{
+  'objid' : '3'
+  'objtype': 'primary'
+  'objdesc' : 'Reach (Nav) Delta'
+}
+{
+  'objid' : '4'
+  'objtype': 'primary'
+  'objdesc' : 'Reach (Nav) Epsilon'
+}
+{
+  'objid' : '5'
+  'objtype': 'primary'
+  'objdesc' : 'Escape to (Nav) Gamma'
+}

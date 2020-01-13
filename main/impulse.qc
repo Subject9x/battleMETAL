@@ -140,7 +140,7 @@ void() ImpulseCommands ={
     }
   } 
 
-  if(self.impulse == IMP_SLIDE){
+  if(self.impulse == IMP_SLIDE){    
     if( time > self.ramCool ){
       if( self.ramUp >= self.ramUpMax ){
         self.ramCharge = time + (self.ramUp / 2);
@@ -149,14 +149,24 @@ void() ImpulseCommands ={
         self.ramPower_z = -15;
         self.ramVelocity = self.velocity;
         self.ramAngle_y = self.v_angle_y;
+        self.ramTracker = self.ramCharge;
       }
+    }
+    else{
+      self.ramUp = 0;
     }
   }
 
 	self.impulse = 0;
 };
 
+/*
+  Button commands are hold-on, off actions useful for input-over-time actions.
+  they use a smaller palette of buttons defined in defs/ dpdefs
+  .button0 - .button16
+*/
 void() ButtonCommands={
+  //action mapping: +sprint 
   if( self.button8 ){
     if( self.energy > 0 && !(self.legs.flags & FL_DISARMED)){
       if( self.playerState == PLAYER_ACTIVE ){
@@ -167,15 +177,17 @@ void() ButtonCommands={
     }
   }
   
+  //action mapping: +zoom / -zoom
   if( self.button9 ){
     if( self.viewzoom > 0.25 ){
       self.viewzoom = self.viewzoom - 0.25;
     }
   }
   
+  //action mapping: +regen
   if(self.button10){
     if( self.shield < self.shieldMax ){
-      self.shield = self.shield + (self.shieldRate * 0.67);
+      self.shield = self.shield + (self.shieldRate * 0.55);
       self.energy = self.energy - (self.shieldRate * self.shieldRateMod);
       if( self.energy < 0 ){
         self.energy = 0;

@@ -15,6 +15,9 @@ void() ai_vec_dest={
   initialize_data_vehicle_( self.nextVecChoice );
   self.spawnflags = self.spawnflags | HAS_RADAR;
   ai_pilot_ini_stats(self.ai_rank);
+  if( self.vec_size < 3 ){
+     self.spawnflags = self.spawnflags | MUTE_ME;
+  }
   ai_voice_ini( TRUE );
   
   self.th_stand = ai_spg_stand1;

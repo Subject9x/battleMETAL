@@ -227,6 +227,21 @@ void() PlayerPostThink = {
       }
     }
   }
+  if( time <= self.ramCharge ){
+    self.ramTracker = 256;
+  }
+  else if( time <= self.ramCool ){
+    self.ramUp = 0;
+    self.ramTracker = 255;
+  }
+  else{
+    self.ramTracker = (self.ramUp / self.ramUpMax) * 100;
+    if(self.ramTracker > 100 ){
+      self.ramTracker = 100;
+    }
+  }
+  
+  
   //after server processes everything, push data to client
   client_push_player_info();
  

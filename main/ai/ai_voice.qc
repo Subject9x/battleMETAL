@@ -46,6 +46,9 @@ void( float randomBool ) ai_voice_ini={
 };
 
 void() ai_sfx_spotted={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
       if( !self.ai_voice_group ){
@@ -62,6 +65,9 @@ void() ai_sfx_spotted={
 };
 
 void() ai_sfx_warning={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
       if( !self.ai_voice_group ){
@@ -71,13 +77,16 @@ void() ai_sfx_warning={
         }
         return;
       }
-      self.voiceTime = time + (0.67 + (random() * AI_VOICE_TIME));
+      self.voiceTime = time + ((AI_VOICE_TIME / 2) + (random() * AI_VOICE_TIME));
       client_send_ai_voice( self.enemy, self.ai_voice_group, AI_VOICE_WARN, 2);
     }
   }
 };
 
 void() ai_sfx_huntStart={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( !self.ai_voice_group ){
     if( cvar("developer") ){
       cons_logAString(self.classname, "<missing 'huntStart' sound>"); 
@@ -92,6 +101,9 @@ void() ai_sfx_huntStart={
 };
 
 void() ai_sfx_huntEnd={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( time > self.voiceTime ){
     if( !self.ai_voice_group ){
       if( cvar("developer") ){
@@ -108,6 +120,9 @@ void() ai_sfx_huntEnd={
 };
 
 void() ai_sfx_dying={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( time > self.voiceTime ){
     if( !self.ai_voice_group ){
       if( cvar("developer") ){
@@ -122,6 +137,9 @@ void() ai_sfx_dying={
 };
 
 void() ai_sfx_dead={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( time > self.voiceTime ){
     if( !self.ai_voice_group ){
       if( cvar("developer") ){
@@ -138,6 +156,9 @@ void() ai_sfx_dead={
 };
 
 void() ai_sfx_kill={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( time > self.voiceTime ){
     if( (self.enemy.flags & FL_CLIENT) ){
       if( !self.ai_voice_group ){
@@ -154,6 +175,9 @@ void() ai_sfx_kill={
 };
 
 void() ai_sfx_roger={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( time > self.voiceTime ){
     if( !self.ai_voice_group ){
       if( cvar("developer") ){
@@ -168,6 +192,9 @@ void() ai_sfx_roger={
 };
 
 void() ai_sfx_help={
+  if( (self.spawnflags & MUTE_ME) ){
+    return;
+  }
   if( time > self.voiceTime ){
     if( !self.ai_voice_group ){
       if( cvar("developer") ){

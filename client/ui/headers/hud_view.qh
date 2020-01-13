@@ -33,6 +33,7 @@ float HUD_UID_ARM_TARG_VEC  = 15;
 float HUD_UID_ARM_TARG_BLD  = 16;
 float HUD_UID_MESSAGE_BOX   = 17;
 float HUD_UID_ENVIRO_BOX    = 18;
+float HUD_UID_RAM_METER     = 19;
 //==========================================
 
 
@@ -171,6 +172,7 @@ void(float delta) hud_renderRepairValue;
 void(float warnOn, float warnDir) hud_render_warningBounds;
 void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment;
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message;
+void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram;
 void( entity box ) hud_renderHighlight;
 void() hud_renderHighlight_frame;
 

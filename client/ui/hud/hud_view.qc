@@ -1248,6 +1248,49 @@ void( entity box ) hud_renderHighlight={
   drawpic( bx_pos, UI_DEF_BOX_256_THICK, bx_sz, box.drawcolor1, 0.75, 0);
 };
 
+
+void(vector ramOrg, vector ramSize, float ramValue, float ramAlign, float meterAxis, vector lbl_ofs, float lbl_algn) hud_render_ram={
+  local vector meterSize, label_org, ramPos;
+  local vector ramColor;
+  local string ramLabel;
+  
+  meterSize = gui_percentToPixelRawVec(ramSize);
+  ramPos = gui_percentToPixelRawVec(ramOrg);
+  ramPos = gui_calcAlign(ramPos, ramAlign);
+  
+  if( CLIENT_player_state == PLAYER_SPRINT_ON ){
+    ramLabel = "SPRINT";
+    ramColor = gui_getColorForArmor(ramValue);
+    if(ramValue > 100 ){
+      ramValue = 100;
+    }
+  }
+  else if( ramValue == 256 ){
+    ramLabel = "RAM!";
+    ramColor =  '0.9 0.1 0.1';
+    ramValue = 100;
+  }
+  else if( ramValue == 255 ){
+    ramLabel = "----";
+    ramColor =  '0.15 0.15 0.15';
+    ramValue = 100;
+  }
+  else{
+    ramLabel = "READY";
+    ramColor = HUD_COLOR_DEF;
+    ramValue = 0;
+  }
+  
+  gui_renderMeter(ramValue, ramPos, meterSize, HUD_COLOR_DEF - '0.5 0.5 0.5', ramColor, HUD_ALPHA, 0, meterAxis, 0);
+
+  label_org = gui_calcAlignCustom(gui_percentToPixelRawVec(lbl_ofs), lbl_algn, ramPos);
+  drawfont_prev = drawfont;
+  drawfont = FONT_NUM_ROBOT_REGULAR;
+    drawstring(label_org, ramLabel, '8 6 0', HUD_COLOR_DEF, HUD_ALPHA, 0);
+  drawfont = drawfont_prev;
+
+};
+
 /*
   Main API call for new text-based HUD system
 */
@@ -1475,6 +1518,15 @@ void() data_hud_frame={
         if( HUD_ZOOM_ACTIVE == FALSE){
           HUD_WARN_ENV_ORG = UI_DATA_POS[uid];
         }
+        break;
+      case HUD_UID_RAM_METER:
+        porg = UI_DATA_POS[uid];
+        vsize = UI_DATA_SIZE[uid];
+        algn = UI_DATA_ALIGN[uid];
+        lalign = UI_DATA_LABEL_ALIGN[uid];
+        lblofs = UI_DATA_LABEL_OFS[uid];
+        axis = UI_DATA_AXIS_FLAG[uid];
+        hud_render_ram(porg, vsize, getstatf(STAT_RAM_VALUE), algn, axis, lblofs, lalign);
         break;
     }
     uid = uid + 1;

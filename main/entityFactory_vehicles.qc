@@ -301,6 +301,7 @@ void() build_mech_unit={
   self.ramUpMax = self.data_speed_forward * self.ramUpMax;
   self.ramUpMax = self.data_speed_forward - self.ramUpMax;
   self.ramUpMax = self.ramUpMax / 33;
+  self.ramUp = 0;
 };
 
 void() build_mech_torsoCenter={

@@ -37,6 +37,8 @@ Overview:
 .float	dmgtime; //pulled from client.qc
 //.float playermovestate, playermovebegin; //pulled from dpqc player.qc
 
+.float ramTracker;
+
 .entity animId; //entity id of animation sent to the player, used for skip event->fire trigger case.
 
 .float currentWeaponGroup;
