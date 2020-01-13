@@ -241,6 +241,8 @@ void() ai_gev_hunt11={
   ai_hunt_logic( self.speed, ai_gev_hunt12, ai_gev_enter_recall );
 };
 void() ai_gev_hunt12={
+  macro_ai_frame_count(ai_gev_hunt1)
+  
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   te_unit_dust( self.origin, self.angles, self.velocity, 1);
@@ -262,6 +264,6 @@ void() ai_gev_hunt12={
       movetogoal( self.speed  );
     }
   }
-  macro_ai_frame_count(ai_gev_hunt1)
+  
   macro_ai_frame(ai_gev_enter_recall)
 };

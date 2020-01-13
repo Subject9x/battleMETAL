@@ -92,7 +92,7 @@ void() ai_tank_sk_hunt1={
     macro_ai_frame(ai_tank_sk_enter_recall)
     return;
   }
-  
+
   local float huntVisCheck;
   huntVisCheck = ai_hunt_logic_enemy_vis( ai_tank_sk_fight_prep, ai_tank_sk_enter_recall );
   if( huntVisCheck == TRUE ){
@@ -116,7 +116,7 @@ void() ai_tank_sk_hunt2={
     return;
   }
   
-  ai_hunt_logic( self.speed, ai_tank_sk_hunt2, ai_tank_sk_enter_recall );
+  ai_hunt_logic( self.speed, ai_tank_sk_hunt3, ai_tank_sk_enter_recall );
 };
 void() ai_tank_sk_hunt3={
   ai_update_accuracy( TRUE ); 
@@ -133,7 +133,7 @@ void() ai_tank_sk_hunt3={
     return;
   }
   
-  ai_hunt_logic( self.speed, ai_tank_sk_hunt2, ai_tank_sk_enter_recall );
+  ai_hunt_logic( self.speed, ai_tank_sk_hunt4, ai_tank_sk_enter_recall );
 };
 void() ai_tank_sk_hunt4={
   ai_update_accuracy( TRUE ); 
@@ -150,7 +150,7 @@ void() ai_tank_sk_hunt4={
     return;
   }
   
-  ai_hunt_logic( self.speed, ai_tank_sk_hunt2, ai_tank_sk_enter_recall );
+  ai_hunt_logic( self.speed, ai_tank_sk_hunt5, ai_tank_sk_enter_recall );
 };
 void() ai_tank_sk_hunt5={
   ai_update_accuracy( TRUE ); 
@@ -167,7 +167,7 @@ void() ai_tank_sk_hunt5={
     return;
   }
   
-  ai_hunt_logic( self.speed, ai_tank_sk_hunt2, ai_tank_sk_enter_recall );
+  ai_hunt_logic( self.speed, ai_tank_sk_hunt6, ai_tank_sk_enter_recall );
 };
 void() ai_tank_sk_hunt6={
   ai_update_accuracy( TRUE ); 
@@ -184,7 +184,7 @@ void() ai_tank_sk_hunt6={
     return;
   }
   
-  ai_hunt_logic( self.speed, ai_tank_sk_hunt2, ai_tank_sk_enter_recall );
+  ai_hunt_logic( self.speed, ai_tank_sk_hunt7, ai_tank_sk_enter_recall );
 };
 void() ai_tank_sk_hunt7={
   ai_update_accuracy( TRUE ); 
@@ -201,7 +201,7 @@ void() ai_tank_sk_hunt7={
     return;
   }
   
-  ai_hunt_logic( self.speed, ai_tank_sk_hunt2, ai_tank_sk_enter_recall );
+  ai_hunt_logic( self.speed, ai_tank_sk_hunt8, ai_tank_sk_enter_recall );
 };
 void() ai_tank_sk_hunt8={
   ai_update_accuracy( TRUE ); 
@@ -218,7 +218,7 @@ void() ai_tank_sk_hunt8={
     return;
   }
   
-  ai_hunt_logic( self.speed, ai_tank_sk_hunt2, ai_tank_sk_enter_recall );
+  ai_hunt_logic( self.speed, ai_tank_sk_hunt9, ai_tank_sk_enter_recall );
 };
 void() ai_tank_sk_hunt9={
   ai_update_accuracy( TRUE ); 
@@ -235,9 +235,11 @@ void() ai_tank_sk_hunt9={
     return;
   }
   
-  ai_hunt_logic( self.speed, ai_tank_sk_hunt2, ai_tank_sk_enter_recall );
+  ai_hunt_logic( self.speed, ai_tank_sk_hunt10, ai_tank_sk_enter_recall );
 };
 void() ai_tank_sk_hunt10={
+  macro_ai_frame_count(ai_tank_sk_hunt1) 
+
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ctrl_updateTank)
   
@@ -258,6 +260,6 @@ void() ai_tank_sk_hunt10={
       movetogoal( self.speed  );
     }
   }
-  macro_ai_frame_count(ai_tank_sk_hunt1)
+
   macro_ai_frame(ai_tank_sk_enter_recall)
 };

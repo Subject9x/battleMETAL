@@ -13,6 +13,7 @@ void() ai_gev_enter_recall={
   ai_turret_set_state( TR_NORM );
   ai_sfx_huntEnd();
   self.enemy = world;
+  self.goalentity = self.ai_node_recall;
   
   macro_ai_frame(ai_gev_recall1)
 };

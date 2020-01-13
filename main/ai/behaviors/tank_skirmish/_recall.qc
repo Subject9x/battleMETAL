@@ -11,7 +11,8 @@ Overview: ai unit
 void() ai_tank_sk_enter_recall={
   self.torsoCenter.attack_state = TR_GOAL;
   ai_sfx_huntEnd();
-  self.goalentity = self.enemy;
+  self.enemy = world;
+  self.goalentity = self.ai_node_recall;
   
   macro_ai_frame(ai_tank_sk_recall1)
 };

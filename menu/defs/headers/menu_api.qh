@@ -130,7 +130,7 @@ void() dynamic_precache =
       if( ln != "" && substring(ln,0, 2) != "//" ){ 
         if(strstrofs(ln, ".png",0) != -1)   // this checks if the file extension is .png for a sound file
         {
-          precache_pic(ln, 0);
+          precache_pic(ln, 8);
           dprint(strcat("loaded menu img : ", ln, "\n"));  //DEBUG
         }
       }

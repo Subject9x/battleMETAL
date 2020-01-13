@@ -47,7 +47,6 @@ void() ai_tank_sk_fight_prep={
     return;
   }
 
-  
   self.speed = self.lefty;
   roll = random();
   

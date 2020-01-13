@@ -97,12 +97,12 @@ void() cs_precache={
   
   
   //UI GRAPHICS
-  UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png",8);
-  UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png",8);
-  UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png",8);
-  UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",8);
-  UI_DEF_BOX_256_BOX = precache_pic("gfx/ui/box_256_select.png",8);
-  UI_DEF_BOX_256_THICK = precache_pic("gfx/ui/box_256_select_wide.png",8);
+  UI_CURSOR_IMG = precache_pic("gfx/ui/ui_cursor.png", 8);
+  UI_DEF_BOX_512 = precache_pic("gfx/ui/box_512.png", 0);
+  UI_DEF_BOX_256 = precache_pic("gfx/ui/box_256.png", 0);
+  UI_DEF_BOX_256_TALL = precache_pic("gfx/ui/box_256_tall.png",0);
+  UI_DEF_BOX_256_BOX = precache_pic("gfx/ui/box_256_select.png", 0);
+  UI_DEF_BOX_256_THICK = precache_pic("gfx/ui/box_256_select_wide.png", 0);
   UI_DEF_BOX_256_BTN = precache_pic("gfx/ui/box_256_btn.png",8);
   UI_DEF_BOX_64 = precache_pic("gfx/ui/box_64.png",8);
   UI_DEF_REC_64 = precache_pic("gfx/ui/box_64_rec.png",8);

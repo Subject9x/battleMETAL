@@ -295,6 +295,8 @@ void() ai_mech_sk_hunt15={
   ai_hunt_logic( self.speed, ai_mech_sk_hunt16, ai_mech_sk_enter_recall );
 };
 void() ai_mech_sk_hunt16={
+  macro_ai_frame_count(ai_mech_sk_hunt1)
+  
   ai_update_accuracy( TRUE ); 
   macro_ai_update(ai_ctrl_update_mechplayer)
 
@@ -315,6 +317,6 @@ void() ai_mech_sk_hunt16={
       movetogoal( self.speed  );
     }
   }
-  macro_ai_frame_count(ai_mech_sk_hunt1)
+
   macro_ai_frame(ai_mech_sk_enter_recall)
 };
