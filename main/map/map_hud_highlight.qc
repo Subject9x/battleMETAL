@@ -38,17 +38,20 @@ MESSAGE_ONLY 256: only sends message as INFO box
 void() highlight_hud_touch={
   if( (other.flags & FL_CLIENT) ){
     if( (self.spawnflags & 8) ){
-      if( other.faction != self.faction )
+      if( other.faction != self.faction ){
         return;
+      }
     }
     if( (self.spawnflags & 256) ){
-      if( self.message != "" )
+      if( self.message != "" ){
         client_send_info_message( other, self.message, self.data_lifetime);
+      }
     }
     else{
       client_push_hud_highlight( other );
-      if( self.message != "" )
+      if( self.message != "" ){
         client_send_info_message( other, self.message, self.data_lifetime);
+      }
     }
     
     
@@ -179,9 +182,10 @@ void() map_hud_highlight={
   self.use = map_hud_highlight_use;
   
   self.isActive = TRUE;
-  if( (self.spawnflags & 1) )
+  if( (self.spawnflags & 1) ){
     self.isActive = FALSE;
-
-  if (self.nextthink > time)
+  }
+  if (self.nextthink > time){
     return; // already been triggered
+  }
 };

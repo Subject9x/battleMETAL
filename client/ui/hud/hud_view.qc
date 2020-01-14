@@ -1358,15 +1358,6 @@ void() data_hud_frame={
     
     objid = UI_DATA_UIDS[uid];
     switch( objid ){
-      //TODO - remove background image
-      /*case HUD_UID_IMG_HELM:
-        porg = UI_DATA_POS[uid];
-        vsize = UI_DATA_SIZE[uid];
-        localIcon = UI_DATA_IMG[uid];
-        algn = UI_DATA_ALIGN[uid];
-        color1 = UI_DATA_COLOR1[uid];
-       //hud_HelmetImage(porg, vsize, localIcon, algn, 1, UI_DATA_COLOR1[uid]); 
-        break;*/
       case HUD_UID_ENERGY:
         if( HUD_ZOOM_ACTIVE == FALSE){
           porg = UI_DATA_POS[uid];
