@@ -1511,13 +1511,15 @@ void() data_hud_frame={
         }
         break;
       case HUD_UID_RAM_METER:
-        porg = UI_DATA_POS[uid];
-        vsize = UI_DATA_SIZE[uid];
-        algn = UI_DATA_ALIGN[uid];
-        lalign = UI_DATA_LABEL_ALIGN[uid];
-        lblofs = UI_DATA_LABEL_OFS[uid];
-        axis = UI_DATA_AXIS_FLAG[uid];
-        hud_render_ram(porg, vsize, getstatf(STAT_RAM_VALUE), algn, axis, lblofs, lalign);
+        if( HUD_ZOOM_ACTIVE == FALSE){
+          porg = UI_DATA_POS[uid];
+          vsize = UI_DATA_SIZE[uid];
+          algn = UI_DATA_ALIGN[uid];
+          lalign = UI_DATA_LABEL_ALIGN[uid];
+          lblofs = UI_DATA_LABEL_OFS[uid];
+          axis = UI_DATA_AXIS_FLAG[uid];
+          hud_render_ram(porg, vsize, getstatf(STAT_RAM_VALUE), algn, axis, lblofs, lalign);
+        }
         break;
     }
     uid = uid + 1;

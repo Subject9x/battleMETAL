@@ -133,12 +133,15 @@ void() anm_execute_frame={
       pointsound(pmove_org, ANM_FRAME_SND[ANM_FRAME_CUR], 1, ATTN_NONE);
     }
     ANM_FRAME_TIME = time + ANM_FRAME_TIM[ANM_FRAME_CUR];
-    
+    if(ANM_META_DATA[2] != ""){
+      drawpic('0 0', ANM_META_DATA[2] , VIEW_MAX, '1 1 1', 1, 0); 
+    }
     local float frameSlice;
     frameSlice = ANM_FRAME_TIM[ANM_FRAME_CUR] * ANM_FRAME_SLICE;
     ANM_FRAME_CUR_FADE_START = time + frameSlice;
     ANM_FRAME_CUR_FADE_END = time + (ANM_FRAME_TIM[ANM_FRAME_CUR] - frameSlice);
     ANM_FRAME_CUR_FADE_RATE = (ANM_FRAME_ALPHA[ANM_FRAME_CUR] * frameSlice) / ANM_FRAME_TIM[ANM_FRAME_CUR];
+    
   }
   else{
     local vector siz, org, frm_color, txt_color;
