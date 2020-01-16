@@ -137,7 +137,16 @@ void(float width, float height) m_draw={
   VIEW_ORG = '0 0';
   VIEW_MAX_x = cvar("vid_conwidth");
   VIEW_MAX_y = cvar("vid_conheight");
-  VIEW_MAX_z = cvar("vid_pixelheight");
+  
+  if(VIEW_MAX_x < 640){
+    cvar_set("vid_conwidth", "640");
+    VIEW_MAX_x = 640;
+  }
+  
+  if(VIEW_MAX_y < 480){
+    cvar_set("vid_conheight", "480");
+    VIEW_MAX_y = 480;
+  }
   
   VIEW_CTR_x = VIEW_MAX_x / 2;
   VIEW_CTR_y = VIEW_MAX_y / 2;
