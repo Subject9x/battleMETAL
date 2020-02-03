@@ -8,7 +8,7 @@
   'sector' : 'Badlands'
   'location' : 'Stormside Edge'
   'time' : '26;23;19;95'
-  'brief' : 'PSC local forces within the HabZone have been deleted by enemy atomic strikes. | | PSC is still unspooling concurrent data feeds to further assess the situation. AUTHOR`s presence has not been found thus far, yet human casualties are mounting and combat units are in open warfare. Prime Directives of PSC confirm that DEAD_HANDs are to eliminate all resistance. | | This DEAD_HAND is ordered to recon the badlands for new bases to acquire.'
+  'brief' : 'PSC has determined that hostile force strength greater than anticipated. Only 58% of rapid-response nodes survived enemy contact and escaped the cold-storage facilities. | | PSC will escalate to OP-CODE 3. | | PSC requires this DEAD_HAND to scour the nearby sector of enemy units. Eliminate all resistance with prejudice. Take care to preserve enemy base structures for future operations. | | We have only begun to strike back.'
   'intel' : 'Drone LIDAR reports this sector consists of uneven ground; flat areas broken up by small gullies and rock ridges. | | There is a chasm on the edge of the zone and the DEAD_HAND should avoid falling into it. | | Enemy resistance is medium and dispersed over a wide area; Bases are defended but plenty of room to maneuver.'
   'objtotal' : '4'
   'anim' : ''
