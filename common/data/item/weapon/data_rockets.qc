@@ -60,17 +60,8 @@ void() data_ini_attack_rockets_={
   self.owner.punchangle_y = -3 + crandom() * -4;
   pointparticles( particleeffectnum("TE_MIS_MUZZLE"), FIRE_ORIGIN + (v_forward * 1), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1);
   
-  if( vlen(FIRE_ENDPOINT - FIRE_ORIGIN) <= 100){
-    trailparticles(self, particleeffectnum("TE_MIS_TRAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
-    makevectors(self.angles);
-    te_missile_explode(  FIRE_ENDPOINT + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 5, 1);
-    if( other.takedamage >= DAMAGE_YES){
-      t_damage(other, self, self.owner, self.damageValue, self.damageType, FIRE_ENDPOINT, '0 0 0');
-    }
-  }
-  else{
-    ctrl_weapon_make_projectile( 0.01 );
-  }
+  ctrl_weapon_make_projectile( 0.01 );
+  
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
 };
 #endif
