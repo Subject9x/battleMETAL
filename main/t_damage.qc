@@ -94,7 +94,7 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     }
   }
   if( (dmgtype & EFF_PRC) ){
-    mod = damage * 0.25;
+    mod = damage * 0.15;
     shields = shields - mod;
     damage = damage - mod;
   }
@@ -116,7 +116,9 @@ float( entity targ, entity inflictor, float dmg_amt ) t_damage_ene={
     shields = 0;
   }
   else{
-    damage = 0;
+    if( !(dmgtype & EFF_PRC) ){
+      damage = 0;
+    }    
   }
   
   targ.shield = shields;
