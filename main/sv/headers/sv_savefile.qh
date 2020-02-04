@@ -23,6 +23,7 @@ string SAVE_FILE_MSN_NAME = "mission";
 string SAVE_FILE_MECH_LIST = "mechs";
 string SAVE_FILE_ITEMS = "items";
 string SAVE_FILES_POINTS = "points";
+string SAVE_FILE_NEWGAME = "newgame";
 
 //functions
 void(float override) savefile_load; //single player only

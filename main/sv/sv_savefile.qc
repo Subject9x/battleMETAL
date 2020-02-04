@@ -91,6 +91,10 @@ void(float override) savefile_load={
   }
   
   flannel = fopen(file, FILE_READ);
+  if( flannel == -1 ){
+    FLAG_NEWGAME = 1;
+    return;
+  }
   contents = fgets(flannel);
   argc = tokenizebyseparator(contents, "{", ",", "}");
   line = fgets(flannel);
@@ -100,11 +104,14 @@ void(float override) savefile_load={
       if( argv(1) == SAVE_FILE_MSN_NAME) {
         SAVE_MAP = strzone(argv(3));
       }
-	  if( argv(1) == SAVE_FILE_MECH_LIST ){
-        SAVE_MECHS_LIST = strzone(argv(3));
-	  }
+      if( argv(1) == SAVE_FILE_MECH_LIST ){
+          SAVE_MECHS_LIST = strzone(argv(3));
+      }
       if( argv(1) == SAVE_FILE_ITEMS ){
         SAVE_ITEMS_ALL = strzone(argv(3));
+      }
+      if( argv(1) == SAVE_FILE_NEWGAME ){
+        FLAG_NEWGAME = stof(argv(3));
       }
     }
     line = fgets(flannel);
@@ -124,6 +131,11 @@ void() savefile_save={
   fputs(flannel, strcat("  'items' : ", SAVE_ITEMS_ALL, ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, strcat("  'skill' : ", ftos(skill), ",\n"));
+  if( strstrofs(mapname, "anim3") != -1 ){
+    if( strstrofs(nextmap, "o1m1") != -1){
+      fputs(flannel, strcat("  'newgame' : ", ftos(0), ",\n"));
+    }
+  }
   fputs(flannel, "}");
   fclose(flannel);
 }; 
@@ -147,6 +159,7 @@ void() savefile_default={
   
   fputs(flannel, "  'points' : ,\n");
   fputs(flannel, strcat("  'skill' : ", ftos(skill), ",\n"));
+  fputs(flannel, "  'newgame': 1,\n");
   fputs(flannel, "}");
   fclose(flannel);
   
