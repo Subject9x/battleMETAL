@@ -1,0 +1,72 @@
+{
+  'music'   : 12,
+  'nomusic' : 0,
+  'backimg' : gfx/anim/anim1/a1fb.png,
+  'trans'   : ,
+}
+{
+  'image' : gfx/anim/anim1/a1f1.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 15,
+}
+{
+  'image' : gfx/anim/anim1/a1f2.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 25,
+}
+{
+  'image' : gfx/anim/anim1/a1f3.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 20,
+}
+{
+  'image' : gfx/anim/anim1/a1f4.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 20,
+}
+{
+  'image' : gfx/anim/anim1/a1f5.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 25,
+}
+{
+  'image' : gfx/anim/anim1/a1f6.png,
+  'pos'   : 0 0 0,
+  'size'  : 1 1,
+  'sound' : ,
+  'text'  : ,
+  'alpha' : 1,
+  'color' : 1 1 1,
+  'text_color' : 0 0 0,
+  'time'  : 30,
+}

@@ -53,6 +53,7 @@ string PATH_DATA_ANIM = "anim";
 string PATH_DATA_SAVE = "saves";
 string PATH_DATA_UI = "ui";
 string NEWLINE = "\n";
+float FLAG_NEWGAME;
 //============================
 //   GAME MODES
 //============================

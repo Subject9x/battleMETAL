@@ -347,7 +347,7 @@ void( entity source, vector org, vector angl, vector vel, string modl, float ski
     self.think = ctrl_component_burn;
     self.traileffectnum = particleeffectnum("TE_MECHPIECE_DEAD_BURN");
     self.nextthink = time + (random() * 1);
-    self.ai_action_time = time + (random() * (self.owner.vec_size * 4824));
+    self.ai_action_time = time + (random() * (self.owner.vec_size * 120));
     self.colormod = notChunk.colormod;
     self.gravity = 0.67;
     localVel = normalize(self.origin - self.owner.origin) * 10;
