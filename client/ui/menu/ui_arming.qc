@@ -328,6 +328,8 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   local vector hardpointCoord;
   
+  local float allowed;
+  
   nofs = ofs + gui_percentToPixelRawVec('10 8');
   panelOffset = nofs + gui_percentToPixelRawVec('4 4');
   panelImageSize = gui_percentToPixelRawVec('270 236');
@@ -363,11 +365,23 @@ void(vector ofs) menu_arming_HardpointGraph={
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
+      allowed = TRUE;
       hardpointCoord = gui_mapCoordToImgCoord( mechMins,  mechSize, hardpoint.compOffset * 0.75, panelOffset, panelImageSize );
       hardpoint.ui_org = hardpointCoord - gui_percentToPixelRawVec('17 17');
      
+      if( INPUT_mouse_state == MOUSE_DRAG ){
+        if( hardpoint.hardpointSize < UI_ARMING_item_drag.equipSize || !(UI_ARMING_item_drag.damageType & hardpoint.hardpointType) ){
+          allowed = FALSE;
+        }
+      }
+     
       ui_renderHardPointNumber( hardpointItr, hardpointCoord );
-      ui_renderHardPointGraphic( hardpoint.icon,  hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
+      ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr), allowed );
+
+      if( !allowed ){
+        drawpic( hardpoint.ui_org, HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('28 28'), CLR_DEF_RED, 0.85, 0);
+      }
+
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }

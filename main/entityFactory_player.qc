@@ -91,6 +91,8 @@ void() player_makeMech={
   msg_entity = self;
   WriteByte(MSG_ONE, SVC_SETVIEWPORT);
   WriteEntity(MSG_ONE, self.cockpit);
+  self.stat_rdr_mode = 1;
+  self.stat_rdr_rng = self.radar_range * 2;
 };
 
 void() player_unmakeMech={

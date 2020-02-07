@@ -276,6 +276,10 @@ void() building_repair_touch={
   if(other.faction != self.owner.faction){
     return;
   }
+  other.energy = other.energy + (other.energyRate * 0.45);
+  if( other.energy > other.energyMax ){
+    other.energy = other.energyMax;
+  }
   if(self.owner.reloadValue <= 0){
     return;
   }

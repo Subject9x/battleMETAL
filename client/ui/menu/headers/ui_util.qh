@@ -9,7 +9,7 @@ Overview:
 */
 
 /**/
-void( string imageICon, vector org, float selected) ui_renderHardPointGraphic;
+void( string imageICon, vector org, float selected, float allow) ui_renderHardPointGraphic;
 void(float navid) ui_renderNav;
 void(entity clnt) ui_renderClientName;
 void(float num, vector org) ui_renderHardPointNumber;

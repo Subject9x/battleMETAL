@@ -161,7 +161,7 @@ void() savefile_default={
   }
   else{
     fputs(flannel, "  'mechs' : 1,\n");
-    fputs(flannel, "  'items' : 1 3,\n");
+    fputs(flannel, "  'items' : 1 3 4 8 12 16 18 21,\n");
   }
   
   fputs(flannel, "  'points' : ,\n");
