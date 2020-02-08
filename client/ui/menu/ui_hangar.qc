@@ -59,7 +59,7 @@ void() mechSelectListener={
         LAUNCH_VALIDATION = LAUNCH_VALIDATION - (LAUNCH_VALIDATION & (VALID_MECH | VALID_GRPS | VALID_NODE)) ;
       }
       if( found != CLIENT_MENU_sel_mech ){
-        ui_mech_config_switch( found, 0 );
+        ui_mech_config_switch( found, 1 );
       }
 
       if( !(LAUNCH_VALIDATION & VALID_MECH) ){

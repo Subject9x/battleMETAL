@@ -111,7 +111,7 @@ void() CSQC_Init =
   MAP_NAME = strzone(MAP_NAME);
   
   DEPLOY_CNT = 0;
-  CFG_INDEX = 0;
+  CFG_INDEX = 1;
   CFG_INDEX_PREV = CFG_INDEX;
 
   toolTip = spawn();

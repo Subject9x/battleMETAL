@@ -434,7 +434,7 @@ void( vector navOrg, float navState, float radRange ) hud_renderRadarNav={
     alph = HUD_ALPHA;
     if( navState == 2 ){
       colr = CLR_DEF_TXT_NONSELECT;
-      alph = '0.33 0.33 0.33';
+      alph = 0.33;
     }
     drawpic(hudorg - gui_percentToPixelRawVec('3 3'), UI_DEF_NAVPOINT, gui_percentToPixelRawVec('10 10'), colr, alph, 0);
   }

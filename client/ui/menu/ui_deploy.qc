@@ -352,7 +352,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         drawpic( nofs - gui_percentToPixelRawVec('8 8'), UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED, 1, 0);
         break;
       case DATA_BLD:
-        gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD, 1, 0);
+        gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD + '0.15 0.15 0.15', 1, 0);
         break;
     }
     mapKey = mapKey.w_slot;
@@ -378,6 +378,10 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       player = player.chain;
     }
   }
+  
+  //draw compass
+  drawpic(DEPLOY_MAP_ORG + gui_percentToPixelRawVec('190 190') - gui_percentToPixelRawVec('24 24'), UI_COMPASS, gui_percentToPixelRawVec('48 48'), '1 1 1',0.85, 0);
+  
 };
 
 void(vector ofs) menu_deploy_mapKeyPanel={

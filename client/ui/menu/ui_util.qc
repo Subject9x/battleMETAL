@@ -58,9 +58,6 @@ void(string imageIcon, vector org, float selected, float allow) ui_renderHardPoi
   local vector noEditColorAdj;
   local float allowAlpha;
   
-  if( CFG_INDEX == 0 ){
-    noEditColorAdj = '0.4 0.4 0.4';
-  }
   if( imageIcon != ""){
     if(selected){
       iorg = org - gui_percentToPixelRawVec('2 2');

@@ -17,22 +17,22 @@
 {
   'objid' : '1'
   'objtype': 'primary'
-  'objdesc' : 'Reach (Nav) Alpha'
+  'objdesc' : 'Activate allied METALS by reaching (Nav) Alpha'
 }
 {
   'objid' : '2'
   'objtype': 'primary'
-  'objdesc' : 'Reach (Nav) Beta'
+  'objdesc' : 'Activate allied METALS by reaching (Nav) Beta'
 }
 {
   'objid' : '3'
   'objtype': 'primary'
-  'objdesc' : 'Reach (Nav) Delta'
+  'objdesc' : 'Activate allied METALS by reaching (Nav) Delta'
 }
 {
   'objid' : '4'
   'objtype': 'primary'
-  'objdesc' : 'Reach (Nav) Epsilon'
+  'objdesc' : 'Activate allied METALS by reaching (Nav) Epsilon'
 }
 {
   'objid' : '5'

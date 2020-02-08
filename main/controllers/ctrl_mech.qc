@@ -135,7 +135,7 @@ void() ctrl_updateCenterTorso={
     v1 = self.cockpit.origin;
     traceline(v1, v1 + v_forward*10000, FALSE, self);
     self.laser_sight_org = trace_endpos;
-    self.laser_sight_timer = time + 0.05;
+    self.laser_sight_timer = time + 0.1;
   }
 
   if( time > self.count4 ){

@@ -81,8 +81,10 @@ void() menu_armingListener_onKeyUp={
   local entity hardpoint;
   local float weaponType;
   UI_ARMING_weaponclick = FALSE;
+  UI_ARMING_hardpoint_click = FALSE;
+  
   if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
-    if( (UI_ARMING_item_drag.data_idx > 0) && (CFG_INDEX > 0) ){
+    if( UI_ARMING_item_drag.data_idx > 0 ){
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
       
       while( hardpoint ){
@@ -113,7 +115,6 @@ void() menu_armingListener_onKeyUp={
       UI_ARMING_item_drag.icon = "";
     }
   }
-
 };
 
 void() weaponDragListener={
@@ -121,6 +122,13 @@ void() weaponDragListener={
     if( UI_ARMING_weaponclick == TRUE ){
       UI_ARMING_item_drag.damageType = 0;
       data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
+    }
+    if( UI_ARMING_hardpoint_click == TRUE ){
+      if( UI_ARMING_hardpoint.data_idx != 0 ){
+        data_get_client_item_( UI_ARMING_hardpoint, 0);
+      }
+      UI_ARMING_item_drag.damageType = 0;
+      data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_wep);
     }
   }
 };
@@ -196,7 +204,9 @@ void() hardpointListener={
           CLIENT_MENU_sel_hrpnt_types = hardpoint.hardpointType;
           CLIENT_MENU_sel_hrpnt = hardpointItr;
           CLIENT_MENU_sel_wep = hardpoint.data_idx;
-          ui_date_load_item2(CLIENT_MENU_sel_wep);
+          UI_ARMING_hardpoint_click = TRUE;
+          UI_ARMING_hardpoint = hardpoint;
+          ui_date_load_item2(CLIENT_MENU_sel_wep); 
         }
         
         hardpointItr = hardpointItr + 1;
@@ -268,7 +278,7 @@ void() selectNextConfig={
     CFG_INDEX_PREV = CFG_INDEX;
     CFG_INDEX = CFG_INDEX + 1;
     if( CFG_INDEX > 6 ){
-      CFG_INDEX = 0;
+      CFG_INDEX = 1;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
       if( DATA_CONFIG_BUFFER_NAME != "" ){
@@ -283,7 +293,7 @@ void() selectPrevConfig={
   if(menu_checkMouseInBounds(cursorpos, BTN_CFG_P, gui_percentToPixelRawVec('20 38'), TRUE )){
     CFG_INDEX_PREV = CFG_INDEX;
     CFG_INDEX = CFG_INDEX - 1;
-    if( CFG_INDEX < 0 ){
+    if( CFG_INDEX < 1 ){
       CFG_INDEX = 6;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
@@ -370,18 +380,24 @@ void(vector ofs) menu_arming_HardpointGraph={
       hardpoint.ui_org = hardpointCoord - gui_percentToPixelRawVec('17 17');
      
       if( INPUT_mouse_state == MOUSE_DRAG ){
-        if( hardpoint.hardpointSize < UI_ARMING_item_drag.equipSize || !(UI_ARMING_item_drag.damageType & hardpoint.hardpointType) ){
-          allowed = FALSE;
+        if( UI_ARMING_item_drag.data_idx > 0 ){      
+          if( hardpoint.hardpointSize < UI_ARMING_item_drag.equipSize || !(UI_ARMING_item_drag.damageType & hardpoint.hardpointType) ){
+            allowed = FALSE;
+          }
         }
       }
      
-      ui_renderHardPointNumber( hardpointItr, hardpointCoord );
       ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr), allowed );
 
       if( !allowed ){
         drawpic( hardpoint.ui_org, HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('28 28'), CLR_DEF_RED, 0.85, 0);
       }
-
+      
+      if( INPUT_mouse_state == MOUSE_DRAG ){
+        if( UI_ARMING_item_drag.data_idx > 0 ){  
+          ui_renderHardPointNumber( hardpointItr, hardpointCoord );
+        }
+      }
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
@@ -418,24 +434,12 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   //this is quite hilarious
   cfg = NAVNAMES[CFG_INDEX];
-  colr = CLR_DEF_ARM_OK;
   warnOrg = lctr;
-  if( CFG_INDEX == 0 ){
-    cfg = "DEFAULT";
-    colr = CLR_DEF_ARM_HALF;
-    warn = "!-Cannot modify Default-!";
-    len = stringwidth(warn, 0, '12 12 0');
-    warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
-    warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
-    drawstring(warnOrg, warn, '12 12 0', '1 0.15 0.15' , 1, 0);
-  }
-  else{
-    colr = CLR_DEF_ARM_OK;
-    warn = "[Click-and-hold Weapons to Modify]";
-    len = stringwidth(warn, 0, '12 12 0');
-    warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
-    warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
-  }
+  colr = CLR_DEF_ARM_OK;
+  warn = "[Click-and-hold Weapons to Modify]";
+  len = stringwidth(warn, 0, '12 12 0');
+  warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
+  warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
   drawstring(warnOrg, warn, '12 12 0', colr , 1, 0);
   
   cfg = strcat("Loadout: ", cfg);

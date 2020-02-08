@@ -17,20 +17,20 @@
 {
   'objid' : '1'
   'objtype': 'primary'
-  'objdesc' : '(Nav) Alpha - ONLY destroy hostile units and towers. IGNORE Base structure.'
+  'objdesc' : 'Capture enemy fuel tanks at (Nav) Alpha, destroy hostile units and towers.'
 }
 {
   'objid' : '2'
   'objtype': 'primary'
-  'objdesc' : '(Nav) Beta - destroy everything.'
+  'objdesc' : 'Eliminate any resistance at (Nav) Beta.'
 }
 {
   'objid' : '3'
   'objtype': 'primary'
-  'objdesc' : '(Nav) Delta - ONLY destroy hostile units and towers. IGNORE Base structure.'
+  'objdesc' : 'Capture base at (Nav) Delta, destroy hostile vehicles and towers.'
 }
 {
   'objid' : '4'
   'objtype': 'primary'
-  'objdesc' : '(Nav) Epsilon - destroy everything.'
+  'objdesc' : 'Clear (Nav) Epsilon of enemy reserve forces.'
 }

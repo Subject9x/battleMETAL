@@ -58,7 +58,7 @@ string HUD_TEXT_CRITICAL_ARM_LEFT = "Critical Hit: Left Arm.";
 string HUD_TEXT_CRITICAL_ARM_RIGHT = "Critical Hit: Right Arm.";
 string HUD_TEXT_CRITICAL_WEAPON = "Critical Hit: Weapon Destroyed.";
 
-string HUD_TEXT_POWERUP = "Reactor Online. All Sytems nominal.";
+string HUD_TEXT_POWERUP = "Reactor Online. All Systems nominal.";
 string HUD_TEXT_NAV_REACHED = "Nav Point reached.";
 
 string HUD_TEXT_OBJECTIVE_COMPLETE_PRIME = "Primary Objective complete.";

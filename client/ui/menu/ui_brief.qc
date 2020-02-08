@@ -256,12 +256,16 @@ void(vector ofs) menu_briefMapPanel={
     }
     itr = itr + 1;
   }
-   
+  
+  //draw compass
+  drawpic(iofs + (gui_percentToPixelRawVec(ui_msize_in) * 0.5) - gui_percentToPixelRawVec('24 24'), UI_COMPASS, gui_percentToPixelRawVec('48 48'), '1 1 1',0.9, 0);
+  
   local vector helpOrg;
   helpOrg = mpos;
   helpOrg_x = (helpOrg_x + ui_msize_x) - gui_percentXRaw(12);
   BRIEF_MAP_HELP_ORG = helpOrg;
   gui_renderTooltipIcon( helpOrg) ;
+  
 };
 
 /*

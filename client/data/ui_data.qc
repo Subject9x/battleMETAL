@@ -472,10 +472,7 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
   local entity hardpoint;
   
   if( CLIENT_MENU_sel_mech > 0 ){
-    if( CFG_INDEX_PREV > 0 ){
-      //prevents overriding Config 0 - the default config for each mech
-      data_mech_config_save( CLIENT_MENU_sel_mech, CFG_INDEX_PREV );
-    }
+    data_mech_config_save( CLIENT_MENU_sel_mech, CFG_INDEX_PREV );
     data_mech_config_clearBuffer();
   }
   

@@ -122,7 +122,7 @@ void(float override) savefile_load={
 void() savefile_save={
   local float flannel;
   local string file;
-  if( strstrofs(nextmap, "anim") != -1 ){
+  if( strstrofs(nextmap, "anim", 0) != -1 ){
     return;
   }
   file = strcat(PATH_DATA_SAVE, "/", SAVE_FILE_NAME, cvar_string("saveslot"), SAVE_FILE_EXT);
@@ -132,8 +132,8 @@ void() savefile_save={
   fputs(flannel, strcat("  'mission' : ", SAVE_MAP, ",\n"));
   fputs(flannel, strcat("  'points' : ", ftos(1), ",\n"));
   fputs(flannel, strcat("  'skill' : ", ftos(skill), ",\n"));
-  if( strstrofs(mapname, "o1m3") != -1 ){
-    if( strstrofs(nextmap, "anim") != -1){
+  if( strstrofs(mapname, "o1m3", 0) != -1 ){
+    if( strstrofs(nextmap, "anim", 0) != -1){
       fputs(flannel, strcat("  'newgame' : ", ftos(0), ",\n"));
       fputs(flannel, "  'mechs' : 1 2 3,\n");
       fputs(flannel, "  'items' : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21,\n");
