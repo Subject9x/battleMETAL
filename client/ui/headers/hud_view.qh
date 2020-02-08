@@ -168,7 +168,7 @@ void(vector post, float isOn, vector fac_clr) hud_RenderRadar_Nav;
 void(vector ofs, vector img_sz, string bimg, float valign, float setAlpha, vector clr) hud_HelmetImage;
 void(vector ofs, vector torg, vector porg, float algn) hud_renderTargetRange;
 void(vector ofs, string targType, float algn) hud_renderTargetName;
-void(float delta) hud_renderRepairValue;
+void() hud_renderRepairValue;
 void(float warnOn, float warnDir) hud_render_warningBounds;
 void(float warnOn, vector orgCenter, float dmgTypes, float labelAlpha) hud_render_warningEnvironment;
 void(vector msgOrg, string messageVal, vector messageFont, float labelAlpha, float labelAlign) hud_render_message;

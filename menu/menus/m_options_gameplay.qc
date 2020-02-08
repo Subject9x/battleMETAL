@@ -37,6 +37,10 @@ entity gameplay_hudcolor_lbl;
 entity gameplay_hudcolor_nx;
 entity gameplay_hudcolor_pr;
 
+entity gameplay_hud_sway_less;
+entity gameplay_hud_sway_more;
+entity gameplay_hud_sway_set;
+
 entity gameplay_back;
 
 //gameplay constants

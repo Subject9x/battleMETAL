@@ -199,7 +199,6 @@ void() PutClientInServer = {
     if(world.model == "maps/o1m1.bsp"){
       //pre-populate default save file
       savefile_load( FALSE );
-      cons_logAFloat("newgame", FLAG_NEWGAME);  //DEBUG
       if( FLAG_NEWGAME == TRUE ){
         savefile_default();
         savefile_load( FALSE );

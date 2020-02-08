@@ -978,26 +978,24 @@ void(vector ofs, string targType, float algn) hud_renderTargetName={
   drawfont = drawfont_prev;
 };
 
-void(float delta) hud_renderRepairValue={
+void() hud_renderRepairValue={
   local vector vorg, torg;
   local float len;
   local string str;
     
-  if(delta > -1){
+  if(CLIENT_repair_value > -1){
     drawfont_prev = drawfont;
     drawfont = FONT_NUM_ROBOT_REGULAR;
     
-    str = "Repair Bay - Energy Level";
+    str = "Repair Bay - current energy";
     len = stringwidth(str, 0, '14 14 0');
     vorg_x = VIEW_CTR_x - gui_percentXRaw(128);
-    vorg_y = VIEW_CTR_y - gui_percentYRaw(40);
+    vorg_y = VIEW_CTR_y - gui_percentYRaw(64);
     torg = vorg;
     torg_x = VIEW_CTR_x - gui_percentXRaw( len / 2 ) ;
     torg_y = torg_y - gui_percentYRaw(16);
-    gui_renderMeter((delta * 100), vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA, 0, AXIS_H, 0);
-    
-
-    drawstring(torg, str, '14 14 0', CLR_DEF_ENG_OK, HUD_ALPHA, 0);
+    gui_renderMeter(CLIENT_repair_value, vorg, gui_percentToPixelRawVec('256 24'), CLR_DEF_ENG_DED, CLR_DEF_ENG_OK, HUD_ALPHA + 0.33, 0, AXIS_H, 0);
+    drawstring(torg, str, '14 14 0', HUD_COLOR_DEF, HUD_ALPHA + 0.33, 0);
     drawfont = drawfont_prev;
   }
 };
@@ -1564,7 +1562,7 @@ void() data_hud_frame={
   
   if( !HUD_ZOOM_ACTIVE ){
     //repair sits above all
-    hud_renderRepairValue(getstatf(STAT_PLR_REP));
+    hud_renderRepairValue();
     hud_render_warningBounds( HUD_WARN_ON, HUD_WARN_DIR );
     hud_render_warningEnvironment( HUD_WARN_ENV_ON, VIEW_CTR + gui_percentToPixelRawVec(HUD_WARN_ENV_ORG), HUD_WARN_ENV_TYPES, HUD_ALPHA + 0.25 );
     hud_event_frame();

@@ -30,7 +30,8 @@ void() client_get_info={
   CLIENT_entorg  = te_read_vector();
   CLIENT_radar_range  = ReadLong();
   CLIENT_data_type = getstati(STAT_PLAYER_DATA_TYPE);
-
+  CLIENT_repair_value = getstati(STAT_PLR_REP);
+  
   localDataType = ReadByte();
   if( localDataType == DATA_MECH ){
     CLIENT_energy = ReadShort();
