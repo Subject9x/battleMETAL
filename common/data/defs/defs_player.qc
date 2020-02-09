@@ -12,13 +12,13 @@ Overview:
 .entity w_slot;     //use this for teh linked list goodness
 .float data_type;
 
-.string hud_bob;    //bob settings are important for dat immersion
-.string hud_bob_cycle;
-.string hud_bob_up;  
-.string hud_rollangle;
-.string hud_bob_model;
-.string hud_bob_side;
-.string hud_bob_speed;
+.float hud_bob;    //bob settings are important for dat immersion
+.float hud_bob_cycle;
+.float hud_bob_up;  
+.float hud_rollangle;
+.float hud_bob_model;
+.float hud_bob_side;
+.float hud_bob_speed;
 .string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
 .float hud_mode;  //sway mode
 

@@ -70,7 +70,7 @@ void() ctrl_dieLegs={
         self.owner.data_speed_backward = self.owner.data_speed_backward / 2;
         if( (self.owner.flags & FL_CLIENT) ){
           self = self.owner;
-            client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, "1", "0");
+            client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, "1", 0);
           self = newLegs;
         }
       }

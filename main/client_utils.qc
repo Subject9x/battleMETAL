@@ -682,7 +682,7 @@ void(entity client ) client_send_mapKeyObjects={
   }
 };
 
-void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed={
+void(float fwd, float side, float bck, string accel, float roll) client_update_moveSpeed={
   local string comd;
   
   msg_entity = self;
@@ -690,26 +690,26 @@ void(float fwd, float side, float bck, string accel, string roll) client_update_
   comd = strcat( comd, strcat("cl_sidespeed ", ftos(side), "\n") );
   comd = strcat( comd, strcat("cl_backspeed ", ftos(bck), "\n") );
   comd = strcat( comd, strcat("cl_movespeedkey ", accel, "\n") );
-  comd = strcat( comd, strcat("cl_rollangle ", roll, "\n") );
+  comd = strcat( comd, strcat("cl_rollangle ",  ftos(roll), "\n") );
   
   stuffcmd(self, comd);
 };
 
-void(string bob, string cycle, string up) client_update_viewBob={
+void(float bob, float cycle, float up) client_update_viewBob={
   local string comd;
   
-  comd = strcat("cl_bob ", bob, " \n ");
-  comd = strcat(comd, "cl_bobcycle ", cycle, " \n ");
-  comd = strcat(comd, "cl_bobup ", up, " \n");
+  comd = strcat("cl_bob ", ftos(bob), " \n ");
+  comd = strcat(comd, "cl_bobcycle ",  ftos(cycle), " \n ");
+  comd = strcat(comd, "cl_bobup ",  ftos(up), " \n");
   
   stuffcmd(self, comd );
 };
-void(string bobmodel, string side, string bmod_speed) client_update_modelBob={
+void(float bobmodel, float side, float bmod_speed) client_update_modelBob={
   local string comd;
   
-  comd = strcat("cl_bobmodel ", bobmodel,  " \n ");
-  comd = strcat(comd, "cl_bobmodel_side ", side,  " \n ");
-  comd = strcat(comd, "cl_bobmodel_speed ", bmod_speed,  " \n");
+  comd = strcat("cl_bobmodel ", ftos(bobmodel),  " \n ");
+  comd = strcat(comd, "cl_bobmodel_side ", ftos(side),  " \n ");
+  comd = strcat(comd, "cl_bobmodel_speed ", ftos(bmod_speed),  " \n");
   
   stuffcmd(self, comd );
 };

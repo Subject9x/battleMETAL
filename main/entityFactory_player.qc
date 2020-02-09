@@ -17,13 +17,13 @@ void() player_makeObserver={
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
   if( cvar("developer") ){
-    client_update_moveSpeed(800, 800, 500, "3","0");
+    client_update_moveSpeed(800, 800, 500, "3", 0);
   }
   else{
-    client_update_moveSpeed(200, 200, 200, "3","0");
+    client_update_moveSpeed(200, 200, 200, "3", 0);
   }
-  client_update_viewBob("0", "0", "0");
-  client_update_modelBob("0", "0", "0");
+  client_update_viewBob(0, 0, 0);
+  client_update_modelBob(0, 0, 0);
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
   self.view_ofs = '0 0 1';
@@ -87,8 +87,8 @@ void() player_makeMech={
   self.hud_mode = cvar("cl_hud_sway");
   if( self.hud_mode == 0 ){
     newmis.effects = EF_NOGUNBOB;
-    client_update_viewBob("0", "0", "0");
-    client_update_modelBob( "0",  "0",  "0");
+    client_update_viewBob( 0, 0, 0);
+    client_update_modelBob( 0, 0, 0);
   }
   else if( self.hud_mode < 2 ){
     newmis.effects = EF_NOGUNBOB;
@@ -96,11 +96,9 @@ void() player_makeMech={
     client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
   }
   else{
-    client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
-    client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
+    client_update_viewBob(self.hud_bob, self.hud_bob_cycle / 2, self.hud_bob_up / 4);
+    client_update_modelBob(self.hud_bob_model, self.hud_bob_side / 2, self.hud_bob_speed);
   }
-  //newmis.nextthink = time;  //possibly optional
-  //newmis.think = SUB_Remove;
   
   msg_entity = self;
   WriteByte(MSG_ONE, SVC_SETVIEWPORT);
