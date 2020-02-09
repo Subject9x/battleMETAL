@@ -258,7 +258,10 @@ void(vector ofs) menu_briefMapPanel={
   }
   
   //draw compass
-  drawpic(iofs + (gui_percentToPixelRawVec(ui_msize_in) * 0.5) - gui_percentToPixelRawVec('24 24'), UI_COMPASS, gui_percentToPixelRawVec('48 48'), '1 1 1',0.9, 0);
+  local vector compass;
+  compass = iofs;
+  compass_y = compass_y + gui_percentYRaw(ui_msize_in_y) - gui_percentYRaw(64);
+  drawpic(compass, UI_COMPASS, gui_percentToPixelRawVec('64 64'), '0.75 1 1', 0.75, 0);
   
   local vector helpOrg;
   helpOrg = mpos;

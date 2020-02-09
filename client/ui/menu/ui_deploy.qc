@@ -41,7 +41,7 @@ void() menu_deployListener_onHover={
     return;
   }
   
-    if( menu_checkMouseInBounds( cursorpos, DEPLOY_HELP_NAV_PICK, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds( cursorpos, DEPLOY_HELP_NAV_PICK, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_DEPLOY_ACTIVE;
     toolTip.mins = gui_percentToPixelRawVec('256 64 0');
     toolTip.description = "<Deploy> points are where you will start the mission. Clicking <| and |> will select different <Deploy> points on the map.";
@@ -380,7 +380,10 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
   }
   
   //draw compass
-  drawpic(DEPLOY_MAP_ORG + gui_percentToPixelRawVec('190 190') - gui_percentToPixelRawVec('24 24'), UI_COMPASS, gui_percentToPixelRawVec('48 48'), '1 1 1',0.85, 0);
+  local vector compass;
+  compass = DEPLOY_MAP_ORG;
+  compass_y = compass_y + gui_percentYRaw(380) - gui_percentYRaw(64);
+  drawpic(compass, UI_COMPASS, gui_percentToPixelRawVec('64 64'), '0.75 1 1', 0.9, 0);
   
 };
 
