@@ -90,6 +90,17 @@ string( float id)gameplay_crosshair_img={
   }
 };
 
+string( float val ) gameplay_hud_sway_mode={
+  switch(val){
+    default:
+      return "OFF";
+    case 1:
+      return "LOW";
+    case 2:
+      return "FULL";
+  }
+};
+
 //gameplay callbacks
 void() click_gameplay_fov_more={
   local float val;
@@ -258,6 +269,27 @@ void() click_gameplay_hudcolor_pr={
   gameplay_hudcolor_nx.drawme = TRUE;
 };
 
+void() click_gameplay_hudsway_less={
+  gameplay_hud_sway_set.len = gameplay_hud_sway_set.len - 1;
+  if( gameplay_hud_sway_set.len < 0 ){
+    gameplay_hud_sway_set.len = 0;
+  }
+  strunzone(gameplay_hud_sway_set.label);
+  gameplay_hud_sway_set.label = strzone(gameplay_hud_sway_mode(gameplay_hud_sway_set.len));
+  cvar_set("cl_hud_sway", ftos(gameplay_hud_sway_set.len));
+  
+};
+void() click_gameplay_hudsway_more={
+  gameplay_hud_sway_set.len = gameplay_hud_sway_set.len + 1;
+  if( gameplay_hud_sway_set.len > 2 ){
+    gameplay_hud_sway_set.len = 2;
+  }
+  strunzone(gameplay_hud_sway_set.label);
+  gameplay_hud_sway_set.label = strzone(gameplay_hud_sway_mode(gameplay_hud_sway_set.len));
+  cvar_set("cl_hud_sway", ftos(gameplay_hud_sway_set.len));
+  
+};
+
 // ini function, called by '_f' function as a setup func
 void() m_gameplay_i={
   gameplay_title = lbl_img('10 100', '1 1 0', IMG_OPTION_TITLE, '1 1 1', (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, (UI_FLAG_SIZE_IMG) );
@@ -329,7 +361,12 @@ void() m_gameplay_i={
   gameplay_hudcolor_nx = btn_img_callback('245 242', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_nx, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
   gameplay_hudcolor_pr = btn_img_callback('176 242', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudcolor_pr, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
 
-  gameplay_back = btn_img_callback('10 263 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
+  gameplay_hud_sway_set = lbl_text('190 263', '14 14 0', strzone(gameplay_hud_sway_mode(cvar("cl_hud_sway"))), CLR_DEF_WHITE, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, 1, 0);
+  gameplay_hud_sway_set.len = cvar("cl_hud_sway");
+  gameplay_hud_sway_more = btn_img_callback('220 263', '8 12', UI_IMG_ARW_RGT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_more, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+  gameplay_hud_sway_less = btn_img_callback('176 263', '8 12', UI_IMG_ARW_LFT, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_hudsway_less, '1 1 1', '0 1 0', 1, UI_FLAG_NOLABEL);
+
+  gameplay_back = btn_img_callback('10 285 0', '1 1 0', IMG_BTN_BACK, (VIEW_CTX | VIEW_CTY), M_OPTIONS_GAMEPLAY, click_gameplay_back, '1 1 1', CLR_DEF_GREEN, 1, (UI_FLAG_NOLABEL | UI_FLAG_SIZE_IMG));
 };
 
 /*
@@ -355,6 +392,7 @@ void() m_gameplay_d={
   gui_renderString("Crosshair Style:", gui_percentToPixelRawVec('83 197'), CLR_DEF_WHITE, '14 14 0', 1, 0);
   gui_renderString("HUD Alpha:", gui_percentToPixelRawVec('108 221'), CLR_DEF_WHITE, '14 14 0', 1, 0);
   gui_renderString("HUD Color:", gui_percentToPixelRawVec('108 243'), CLR_DEF_WHITE, '14 14 0', 1, 0);
+  gui_renderString("HUD Sway Mode:", gui_percentToPixelRawVec('74 263'), CLR_DEF_WHITE, '14 14 0', 1, 0);
 
   crossColor_x = cvar("crosshair_color_red");
   crossColor_y = cvar("crosshair_color_green");
@@ -379,6 +417,7 @@ void(float key, float ascii) m_gameplay_k={
   
   switch(key){
     case K_ESCAPE:
+      cmd("saveconfig\n");
       localsound("sound/misc/menu2.wav");
       menu_clear_items(M_STATE);
       M_STATE = M_OPTIONS;

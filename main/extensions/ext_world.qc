@@ -15,6 +15,7 @@ void() mh_world_ini={
   registercvar("gametype", "0", 0);
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
+  registercvar("cl_hud_sway", "0", 1);
   
   //Mission unit stat totals
   MISSION_TOTAL_PSC = 0;

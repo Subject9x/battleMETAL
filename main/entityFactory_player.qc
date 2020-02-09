@@ -67,8 +67,8 @@ void() player_makeMech={
   
   client_push_player_info();
   client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
-  client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
-  client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
+
+  
   client_update_viewPitch( self.pitchMin, self.pitchMax );
   client_send_event_powerup( self );
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
@@ -84,7 +84,21 @@ void() player_makeMech={
   setsize(newmis, '0 0 0', '0 0 0');
   setorigin(newmis, '0 0 0');
   newmis.frame = self.weaponframe;
-  newmis.effects = EF_NOGUNBOB;
+  self.hud_mode = cvar("cl_hud_sway");
+  if( self.hud_mode == 0 ){
+    newmis.effects = EF_NOGUNBOB;
+    client_update_viewBob("0", "0", "0");
+    client_update_modelBob( "0",  "0",  "0");
+  }
+  else if( self.hud_mode < 2 ){
+    newmis.effects = EF_NOGUNBOB;
+    client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
+    client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
+  }
+  else{
+    client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
+    client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
+  }
   //newmis.nextthink = time;  //possibly optional
   //newmis.think = SUB_Remove;
   
