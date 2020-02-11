@@ -23,11 +23,11 @@ void() data_ini_quantum_={
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
-  self.reloadMax = 5;
-  self.energyRate = 10;
+  self.reloadMax = 3;
+  self.energyRate = 0;
   
   self.w_range = 2000;
-  self.damageValue = 10;
+  self.damageValue = 5;
   self.damageType = (DMG_BAL | EFF_STX | EFF_ENE);
   
   self.techLevel = 2;
@@ -63,9 +63,6 @@ void() data_ini_attack_quantum_={
   local vector prtclRail_org;
   local vector prtclRail_end;
   local vector prtclSpark_org;
-  
-  if( !ctrl_weapon_checkEnergy() )
-    return;
 
   ctrl_weapon_fireOffset();  
   
@@ -76,26 +73,25 @@ void() data_ini_attack_quantum_={
   hitMin = '-25 -25 -25';
   if( trace_ent.takedamage ){
     hitZone = trace_ent.origin;
-    hitMin = trace_ent.mins * 2;
-    hitMax = trace_ent.maxs * 2;
+    hitMax = trace_ent.maxs * 4;
   }
 
   if( self.data_ini_projectile ){
     qbits = DAT_QRFL_QBITS;
-    while(qbits > 0){
-      ctrl_weapon_make_projectile( 5 );
+    for( qbits = DAT_QRFL_QBITS; qbits > 0; qbits = qbits - 1){
       rando = randomvec();
-      rando_x = hitZone_x + (hitMin_x - rando_x * hitMin_x) + (hitMax_x + random() * hitMax_x);
-      rando_y = hitZone_y + (hitMin_y - rando_y * hitMin_y) + (hitMax_y + random() * hitMax_y);
-      rando_z = hitZone_z + (hitMin_z - rando_z * hitMin_z) + (hitMax_z + random() * hitMax_z);
+      rando_x = hitZone_x + (hitMax_x * crandom()) * 3;
+      rando_y = hitZone_y + (hitMax_y * crandom()) * 2;
+      rando_z = hitZone_z + (hitMax_z * crandom()) * 3;
+      if(pointcontents(rando) < CONTENT_EMPTY){
+        continue;
+      }
+      ctrl_weapon_make_projectile( 5 );
       NEWSHOT.velocity = normalize(hitZone - rando);
       NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
       NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
-      if(pointcontents(rando) != CONTENT_SOLID){
-        setsize(NEWSHOT, '0 0 0', '0 0 0');
-        setorigin(NEWSHOT, rando);
-        qbits = qbits - 1;
-      }
+      setsize(NEWSHOT, '0 0 0', '0 0 0');
+      setorigin(NEWSHOT, rando);
     }
   }
 

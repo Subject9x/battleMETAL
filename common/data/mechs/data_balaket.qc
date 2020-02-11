@@ -14,8 +14,8 @@ Overview:
 */
 void() data_ini_balaket_={
 
-  self.data_idx = UID_MECH_balaket;  //
-  self.vec_size = 1;  //
+  self.data_idx = UID_MECH_balaket;
+  self.vec_size = 1;
   self.vec_name = "Balaket";
  
   self.max_health = 500;
@@ -24,15 +24,15 @@ void() data_ini_balaket_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 400;
-  self.energyRate= 3.5;
+  self.energyRate= 3.75;
   self.shieldMax = 400;
-  self.shieldRate= 2.33;
+  self.shieldRate= 2.75;
   self.startupDelay = 5;
 //=====================================
  
 //RADAR================================
   self.radar_range = 1500;
-  self.w_firetime = 6;  //lock-on time in seconds
+  self.w_firetime = 4.5;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_SKIRMISH;
 //=====================================
 
@@ -42,8 +42,8 @@ void() data_ini_balaket_={
   self.data_speed_backward = 150;
   self.data_speed_accel = 1.5;
   #ifndef CSQC
-  self.yaw_speed = 2.75;    //AI-only 
-  self.turret_yaw_speed = 3;//AI-only
+  self.yaw_speed = 3.25;    // AI-only 
+  self.turret_yaw_speed = 3.75;// AI-only
   self.ai_angleLimits = '-125 125 0';
   #endif
 //=====================================
@@ -73,8 +73,8 @@ void() data_ini_balaket_={
 //=====================================
  
 //HARDPOINTS==========================
-  data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', 1, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 1, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_1( M_ARM_LEFT, '-12.2 0.5 0.5', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_2( M_ARM_RIGHT, '12.2 0.5 0.5', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_3( M_TOR_CENTER, '-2 10.5 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );
 //=====================================
 

@@ -31,9 +31,7 @@ void() data_projectile_ini_snub_artillery_={
 void() data_projectile_snub_artillery_touch_={
   
   if( pointcontents(self.origin) == CONTENT_SKY ){
-    self.touch = SUB_Null;
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
+    remove(self);
     return;
   }
   
@@ -45,7 +43,6 @@ void() data_projectile_snub_artillery_touch_={
     }else{
       te_missile_explode(  self.origin + (v_up * -5), 1, '0.99 0.6 0.18', self.damageValue / 7, 1);
     }
-    self.touch = SUB_Null;
     remove(self);
     return;
   }
@@ -54,10 +51,7 @@ void() data_projectile_snub_artillery_touch_={
   self.velocity = '0 0 0';
   self.avelocity = '0 0 0';
   
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.01;
+  remove(self);
 };
 
 void() data_projectile_snub_artillery_radiusDamage={

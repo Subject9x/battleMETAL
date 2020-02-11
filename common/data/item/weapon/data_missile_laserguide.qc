@@ -22,7 +22,7 @@ void() data_ini_missile_laserguide_={
   self.w_clipsize = 1;
   self.reloadRate = 0.22;
   self.reloadMax = 8;
-  self.energyRate = 5;
+  self.energyRate = 0;
   
   self.w_range = 1000;
   self.damageValue = 275;

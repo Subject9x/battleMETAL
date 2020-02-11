@@ -22,7 +22,7 @@ void() data_ini_emp_={
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
   self.reloadMax = 6;
-  self.energyRate = 266.7;
+  self.energyRate = 250;
   
   self.w_range = 1700;
   self.damageValue = 400;
