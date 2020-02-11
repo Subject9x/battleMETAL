@@ -30,10 +30,17 @@ void() data_ini_equip_target_module_={
   self.techLevel = 1;
   self.equipSize = 1;
   
-  #ifdef CSQC
-  self.abbrev = "ATGM";
-  self.description = "+ Decrease <Lock-on> time by 25%. + Increase <Convergence> recovery by 20%.";
-  self.icon = "gfx/ui/wep_icons/eqp_atgm.png";
+  #ifdef CSQC    
+    self.w_clipsize = -1;
+    self.reloadRate = -1;
+    self.reloadMax = -1;
+    self.energyRate = -1;
+    self.w_range = -1;
+    self.damageValue = -1;
+    self.techLevel = -1;
+    self.abbrev = "ATGM";
+    self.description = "+ Decrease <Lock-on> time by 25%. + Increase <Convergence> recovery by 20%.";
+    self.icon = "gfx/ui/wep_icons/eqp_atgm.png";
   #endif
   
   #ifndef CSQC

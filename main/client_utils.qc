@@ -704,12 +704,13 @@ void(float bob, float cycle, float up) client_update_viewBob={
   
   stuffcmd(self, comd );
 };
-void(float bobmodel, float side, float bmod_speed) client_update_modelBob={
+void(float bobmodel, float side, float bmod_speed, float bmod_up) client_update_modelBob={
   local string comd;
   
   comd = strcat("cl_bobmodel ", ftos(bobmodel),  " \n ");
   comd = strcat(comd, "cl_bobmodel_side ", ftos(side),  " \n ");
   comd = strcat(comd, "cl_bobmodel_speed ", ftos(bmod_speed),  " \n");
+  comd = strcat(comd, "cl_bobmodel_up ", ftos(bmod_up), " \n");
   
   stuffcmd(self, comd );
 };

@@ -10,10 +10,11 @@ Overview:
       low accuracy
       small AoE when shields are gone
 */
-#ifndef CSQC
 float DAT_FLAK_SHRAP_TOTAL    = 10;
+#ifndef CSQC
 vector DAT_FLAK_SHRAP_SPREAD  = '0.2 0.2 64';
-
+float DAT_PRJ_FLAK_PROXYRAD   = 45;
+float DAT_PRJ_FLAK_EXPRAD     = 50;
 void() data_ini_attack_flak_;
 #endif
 
@@ -35,6 +36,7 @@ void() data_ini_flak_cannon_={
   self.equipSize = 1;
   
   #ifdef CSQC
+  self.damageValue = self.damageValue * DAT_FLAK_SHRAP_TOTAL;
   self.abbrev = "FLAK";
   self.description = "+ Instant-impact weapon. + Shotgun Damage pattern when Target has no <shields>. + 8 sub-munitions.";
   self.icon = "gfx/ui/wep_icons/wi_flak.png";

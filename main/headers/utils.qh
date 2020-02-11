@@ -65,6 +65,8 @@ void() BecomeExplosion;
 
 void() dropToFloorCorners;
 
+void() util_updateViewBob;
+
 #define macro_set_model(mdlName,skinNum,EFlags) local string path;self.effects = self.effects | EFlags;self.skin = skinNum;path = precache_model2( mdlName );setmodel(self, path);
 #define macro_set_collider(dmgMode,solidType,moveType) self.takedamage=dmgMode;self.solid=solidType;self.movetype=moveType;
 #define macro_set_offset(entitySrc,offSet) local vector next;local vector macOffset=offSet;makevectors(entitySrc.angles);next=entitySrc.origin+(v_up*macOffset_y)+(v_right*macOffset_x)+(v_forward*macOffset_z);setorigin(self, next);

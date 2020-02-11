@@ -90,6 +90,7 @@ void() data_ini_balaket_={
   self.hud_bob_model = 1;
   self.hud_bob_side = 0.09;
   self.hud_bob_speed = 6;
+  self.hud_bob_model_up = 0.1;
 //====================================
 
 //UI Data=============================

@@ -23,7 +23,7 @@ void() player_makeObserver={
     client_update_moveSpeed(200, 200, 200, "3", 0);
   }
   client_update_viewBob(0, 0, 0);
-  client_update_modelBob(0, 0, 0);
+  client_update_modelBob(0, 0, 0, 0);
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
   self.view_ofs = '0 0 1';
@@ -85,20 +85,7 @@ void() player_makeMech={
   setorigin(newmis, '0 0 0');
   newmis.frame = self.weaponframe;
   self.hud_mode = cvar("cl_hud_sway");
-  if( self.hud_mode == 0 ){
-    newmis.effects = EF_NOGUNBOB;
-    client_update_viewBob( 0, 0, 0);
-    client_update_modelBob( 0, 0, 0);
-  }
-  else if( self.hud_mode < 2 ){
-    newmis.effects = EF_NOGUNBOB;
-    client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
-    client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
-  }
-  else{
-    client_update_viewBob(self.hud_bob, self.hud_bob_cycle / 2, self.hud_bob_up / 4);
-    client_update_modelBob(self.hud_bob_model, self.hud_bob_side / 2, self.hud_bob_speed);
-  }
+  util_updateViewBob();
   
   msg_entity = self;
   WriteByte(MSG_ONE, SVC_SETVIEWPORT);

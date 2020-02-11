@@ -18,6 +18,7 @@ Overview:
 .float hud_rollangle;
 .float hud_bob_model;
 .float hud_bob_side;
+.float hud_bob_model_up;
 .float hud_bob_speed;
 .string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
 .float hud_mode;  //sway mode

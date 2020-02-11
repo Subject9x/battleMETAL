@@ -96,6 +96,7 @@ void() data_ini_monitor_={
   self.hud_bob_model = 1;
   self.hud_bob_side = 0.65;
   self.hud_bob_speed = 3.85;
+  self.hud_bob_model_up = 0.15;
 //====================================
 
 //UI Data=============================

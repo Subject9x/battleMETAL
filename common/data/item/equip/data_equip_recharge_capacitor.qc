@@ -31,9 +31,16 @@ void() data_ini_equip_recharge_capacitor_={
   self.equipSize = 3;
 
   #ifdef CSQC
-  self.abbrev = "RECAP";
-  self.description = "+ Increases <Energy recharge> rate by 20%.";
-  self.icon = "gfx/ui/wep_icons/eqp_recap.png";
+    self.w_clipsize = -1;
+    self.reloadRate = -1;
+    self.reloadMax = -1;
+    self.energyRate = -1;
+    self.w_range = -1;
+    self.damageValue = -1;
+    self.techLevel = -1;
+    self.abbrev = "RECAP";
+    self.description = "+ Increases <Energy recharge> rate by 20%.";
+    self.icon = "gfx/ui/wep_icons/eqp_recap.png";
   #endif
   
   #ifndef CSQC

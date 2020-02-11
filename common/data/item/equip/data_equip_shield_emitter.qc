@@ -29,10 +29,17 @@ void() data_ini_equip_shield_emitter_={
   self.techLevel = 2;
   self.equipSize = 2;
   
-  #ifdef CSQC
-  self.abbrev = "HSEM";
-  self.description = "+ Increases <Shield recharge> by 50%.";
-  self.icon = "gfx/ui/wep_icons/eqp_hsem.png";
+  #ifdef CSQC    
+    self.w_clipsize = -1;
+    self.reloadRate = -1;
+    self.reloadMax = -1;
+    self.energyRate = -1;
+    self.w_range = -1;
+    self.damageValue = -1;
+    self.techLevel = -1;
+    self.abbrev = "HSEM";
+    self.description = "+ Increases <Shield recharge> by 50%.";
+    self.icon = "gfx/ui/wep_icons/eqp_hsem.png";
   #endif
   
   #ifndef CSQC
