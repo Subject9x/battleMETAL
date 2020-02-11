@@ -51,6 +51,8 @@ float CLIENT_radar_range;
 float CLIENT_energy;
 float CLIENT_shield;
 
+float CLIENT_repair_value;
+
 float CLIENT_health_center;
 float CLIENT_health_legs;
 float CLIENT_health_torso_left;

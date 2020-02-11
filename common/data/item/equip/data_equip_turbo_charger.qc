@@ -32,10 +32,17 @@ void() data_ini_equip_turbo_charger_={
   self.techLevel = 2;
   self.equipSize = 3;
   
-  #ifdef CSQC
-  self.abbrev = "TCHR";
-  self.description = "+ Increase <Evasion> speed by 20%. + Increase <Evasion> energy cost  by 13%.";
-  self.icon = "gfx/ui/wep_icons/eqp_tchr.png";
+  #ifdef CSQC    
+    self.w_clipsize = -1;
+    self.reloadRate = -1;
+    self.reloadMax = -1;
+    self.energyRate = -1;
+    self.w_range = -1;
+    self.damageValue = -1;
+    self.techLevel = -1;
+    self.abbrev = "TCHR";
+    self.description = "+ Increase <Evasion> speed by 20%. + Increase <Evasion> energy cost  by 13%.";
+    self.icon = "gfx/ui/wep_icons/eqp_tchr.png";
   #endif
   
   #ifndef CSQC

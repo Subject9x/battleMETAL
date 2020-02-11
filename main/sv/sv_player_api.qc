@@ -75,6 +75,7 @@ void() PlayerPreThink = {
       self.viewzoom = 1;
     }
   }
+  
 };
 
 void() PlayerPostThink = {
@@ -107,6 +108,11 @@ void() PlayerPostThink = {
   }
     
   if(self.data_type != DATA_POBS){ 
+    local float hudSwayCheck;
+    hudSwayCheck = cvar("cl_hud_sway");
+    if( self.hud_mode != hudSwayCheck ){
+      util_updateViewBob();
+    }
     //power up sequence
     if(time > self.power_timer){
       self.power_timer = 0;
@@ -138,8 +144,9 @@ void() PlayerPostThink = {
   //STAT UPDATE   
   if( self.data_type == DATA_MECH ){
     makevectors(self.v_angle);
-    traceline(self.origin, self.origin + (v_forward * self.radar_range), FALSE,self);
-    self.stat_ret_dist = (self.radar_range * trace_fraction);
+    traceline(self.origin, self.origin + (v_forward * self.stat_rdr_rng), FALSE,self);
+    self.stat_ret_dist = (self.stat_rdr_rng * trace_fraction);
+    
     //TODO notify target of lock
     /*if((self.stat_lck_stt & LOCK_TARG)){
       if(self.enemy != world){

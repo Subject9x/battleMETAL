@@ -85,13 +85,14 @@ void() data_ini_matok_={
   self.pitchMin = -45;
   self.weaponmodel = "q3mdl/mechs/matok/matok_hud.md3";
   self.hud_model = "q3mdl/mechs/matok/matok_hud.obj";
-  self.hud_rollangle = "2.25";
-  self.hud_bob = "0.0008";
-  self.hud_bob_cycle =  "0.5";
-  self.hud_bob_up = "0.5";
-  self.hud_bob_model = "1";
-  self.hud_bob_side = "0.35";
-  self.hud_bob_speed = "6.55";
+  self.hud_rollangle = 2.25;
+  self.hud_bob = 0.0008;
+  self.hud_bob_cycle = 0.5;
+  self.hud_bob_up = 0.5;
+  self.hud_bob_model = 1;
+  self.hud_bob_side = 0.35;
+  self.hud_bob_speed = 6.55;
+  self.hud_bob_model_up = 0.1;
 //====================================
 
 //UI Data=============================

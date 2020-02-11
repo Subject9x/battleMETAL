@@ -82,6 +82,7 @@ string UI_DEF_BOX_64;
 string UI_DEF_REC_64;
 string UI_BTN_ARR_RIGHT;
 string UI_BTN_ARR_LEFT;
+string UI_COMPASS;
 string UI_DEF_NAVPOINT;
 string UI_DEF_DEPLOYPOINT;
 string UI_HANGAR_BOX;

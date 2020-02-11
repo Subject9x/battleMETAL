@@ -41,7 +41,7 @@ void() menu_deployListener_onHover={
     return;
   }
   
-    if( menu_checkMouseInBounds( cursorpos, DEPLOY_HELP_NAV_PICK, gui_percentToPixelRawVec('12 12'), FALSE) ){
+  if( menu_checkMouseInBounds( cursorpos, DEPLOY_HELP_NAV_PICK, gui_percentToPixelRawVec('12 12'), FALSE) ){
     toolTip.data_idx = MENU_DEPLOY_ACTIVE;
     toolTip.mins = gui_percentToPixelRawVec('256 64 0');
     toolTip.description = "<Deploy> points are where you will start the mission. Clicking <| and |> will select different <Deploy> points on the map.";
@@ -352,7 +352,7 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
         drawpic( nofs - gui_percentToPixelRawVec('8 8'), UI_DEF_REC_64, gui_percentToPixelRawVec('16 16'), CLR_DEF_RED, 1, 0);
         break;
       case DATA_BLD:
-        gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD, 1, 0);
+        gui_renderTintImage2((CLIENT_faction == mapKey.faction), nofs - gui_percentToPixelRawVec('8 8'), HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('16 16'), CLR_DEF_IIF_FRIEND_BLD, CLR_DEF_IFF_ENEMY_BLD + '0.15 0.15 0.15', 1, 0);
         break;
     }
     mapKey = mapKey.w_slot;
@@ -378,6 +378,13 @@ void(vector ofs) menu_deploy_mapOverviewPanel={
       player = player.chain;
     }
   }
+  
+  //draw compass
+  local vector compass;
+  compass = DEPLOY_MAP_ORG;
+  compass_y = compass_y + gui_percentYRaw(380) - gui_percentYRaw(64);
+  drawpic(compass, UI_COMPASS, gui_percentToPixelRawVec('64 64'), '0.75 1 1', 0.9, 0);
+  
 };
 
 void(vector ofs) menu_deploy_mapKeyPanel={

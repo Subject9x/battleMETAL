@@ -14,6 +14,8 @@ entity UI_ARMING_DATA_item_list;	//pointer for weapon list operations
 entity UI_ARMING_item_drag;
 
 float UI_ARMING_weaponclick;  //registers that the click was on a weapon for icon-dragging
+float UI_ARMING_hardpoint_click;
+entity UI_ARMING_hardpoint;
 
 float UNLOCKED_ITEMS[24];	//populated by server call
 float UNLOCKED_ITEMS_TOTAL;
@@ -33,7 +35,6 @@ float UI_TOTAL_WEAPONS = 24; //weapon id's
   vector ARMING_HELP_ENERGY_GROUPS;
   vector ARMING_HELP_LIST_WEAPON;
   vector ARMING_HELP_HARDPOINT_WEAPON;
-  
 
 vector WEPNLIST_ORG;
 vector WEPNLIST_SIZE;

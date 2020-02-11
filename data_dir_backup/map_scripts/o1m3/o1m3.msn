@@ -9,7 +9,7 @@
   'location' : 'Stormside Edge'
   'time' : '33;12;09;72'
   'brief' : 'Exquisite job in acquiring this enemy firebase. PSC has however detected aggressor movements in the adjoining sector. We calculate odds of a counter-attack by local enemy forces at 87% probability. | PSC notes that many nodes on the response network still need activating. This particular base will allow us to secure more nodes in the system to increase our area of operations. | | PSC reports that other DEAD_HANDs have begun eliminating enemy command sites and personnel. | | The enemy will pay for breaking faith with the Compact.'
-  'intel' : 'Enemy believed to have massed into 3 primary Assault Groups. | | Each group is a mix of tanks and metals. | | Combat in Low-light conditions expected. | | Recommended Defense Package - 1x Monitor metal. | | A Repair Bay may also be available.'
+  'intel' : 'Enemy believed to have massed into 3 primary assault Groups. | | Each group is a mix of tanks and metals. | | Combat in Low-light conditions expected. | | Recommended Defense Package - 1x Monitor metal. | | A Repair Bay may also be available.'
   'objtotal' : '4'
   'anim' : ''
 }
@@ -17,20 +17,20 @@
 {
   'objid' : '1'
   'objtype': 'primary'
-  'objdesc' : 'Defend CORE base buildings from attacking forces.'
+  'objdesc' : 'Protect all base structures at (NAV) Alpha.'
 }
 {
   'objid' : '2'
   'objtype': 'primary'
-  'objdesc' : 'Defeat first Assault Group.'
+  'objdesc' : 'Defeat first wave.'
 }
 {
   'objid' : '3'
   'objtype': 'primary'
-  'objdesc' : 'Defeat second Assault Group.'
+  'objdesc' : 'Defeat second wave.'
 }
 {
   'objid' : '4'
   'objtype': 'primary'
-  'objdesc' : 'Defeat third Assault Group.'
+  'objdesc' : 'Defeat third wave.'
 }

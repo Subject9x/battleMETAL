@@ -53,24 +53,44 @@ void() data_projectile_missile_laserguide_think={
   local vector lorg, dir, olddir;
   local float turnrate;
 
-  turnrate = 0.9;//0.15 turn rate increased to make up for longer intervals
+  
+  if( self.owner.stat_rdr_mode == TRUE ){
+    turnrate = 0.75;
+  }
+  else{
+    turnrate = 0.9;
+  }
+  
   lorg = self.owner.laser_sight_org;
+  
+  if( vlen(self.enemy.origin - lorg) <= 200 ){
+    turnrate = turnrate - 0.2;
+    if( (self.stat_lck_stt & LOCK_TARG_HAS) ){
+      turnrate = turnrate - 0.1;
+    }
+  }
   
   if (lorg != '0 0 0'){
     olddir = normalize(self.velocity);
 		dir = normalize(lorg - self.origin);
     if (olddir_x - dir_x > turnrate){
-      dir_x = olddir_x - turnrate;}
+      dir_x = olddir_x - turnrate;
+    }
     if (olddir_x - dir_x < -1 * turnrate){
-      dir_x = olddir_x + turnrate;}
+      dir_x = olddir_x + turnrate;
+    }
     if (olddir_y - dir_y > turnrate){
-      dir_y = olddir_y - turnrate;}
+      dir_y = olddir_y - turnrate;
+    }
     if (olddir_y - dir_y < -1 * turnrate){
-      dir_y = olddir_y + turnrate;}
+      dir_y = olddir_y + turnrate;
+    }
     if (olddir_z - dir_z > turnrate){
-      dir_z = olddir_z - turnrate;}
+      dir_z = olddir_z - turnrate;
+    }
     if (olddir_z - dir_z < -1 * turnrate){
-      dir_z = olddir_z + turnrate;}
+      dir_z = olddir_z + turnrate;
+    }
     self.velocity = dir * self.data_velocity;
 		self.angles = vectoangles(self.velocity);
 	}
@@ -79,7 +99,7 @@ void() data_projectile_missile_laserguide_think={
     self.nextthink = time + 0.1;
   }
   else{
-    self.nextthink = time + 0.2; //0.05
+    self.nextthink = time + 0.2;
     self.think = data_projectile_missile_laserguide_think;
   }
 };

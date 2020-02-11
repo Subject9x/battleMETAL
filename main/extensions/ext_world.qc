@@ -15,6 +15,7 @@ void() mh_world_ini={
   registercvar("gametype", "0", 0);
   registercvar("cl_hud_alpha", "1", 1);
   registercvar("cl_hud_color", "0", 1);
+  registercvar("cl_hud_sway", "0", 1);
   
   //Mission unit stat totals
   MISSION_TOTAL_PSC = 0;
@@ -318,13 +319,8 @@ void( entity parent ) world_remove_dlight={
 void( entity parent, float lightId, vector newColor, float newRadius, float newStyle, vector newAngl) world_update_dlight={
   local entity myLight;
   
-  myLight = findchainentity( owner, parent );
-  while( myLight ){
-    if( (lightId != -1) && ( myLight.data_idx != lightId) ){
-      continue;
-      //FIXME
-    }
-    else{
+  for( myLight = findchainentity( owner, parent ); myLight != world; myLight = myLight.chain){
+    if( lightId == -1 && myLight.data_idx == lightId ){
       if( newColor != '-1 -1 -1' ){
         myLight.color = newColor;
       }
@@ -338,6 +334,5 @@ void( entity parent, float lightId, vector newColor, float newRadius, float newS
         myLight.angles = newAngl;
       }
     }
-    myLight = myLight.chain;
   }
 };

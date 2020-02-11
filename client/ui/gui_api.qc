@@ -20,25 +20,25 @@ string(float anglee) gui_angleToNav={
     return "N";
   }
   else if(anglee >= 22.5 && anglee < 67.5){
-    return "NE";  
+    return "NW";  
   }
   else if(anglee >= 67.5 && anglee < 112.5){
-    return "E";  
+    return "W";  
   }
   else if(anglee >= 112.5 && anglee < 157){
-    return "ES"; 
+    return "SW"; 
   }
   else if(anglee >= 157 && anglee < 202){
     return "S";
   }
   else if(anglee >= 202 && anglee < 247){
-    return "SW";  
+    return "SE";  
   }
   else if(anglee >= 247 && anglee < 292){
-    return "W";  
+    return "E";  
   }
   else if(anglee >= 292 && anglee < 337.5){
-    return "NW"; 
+    return "NE"; 
   }
   else{
     return "?";

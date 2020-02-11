@@ -17,13 +17,13 @@ void() player_makeObserver={
   setsize(self, '-4 -4 -4', '4 4 4');
   self.scale = 0.005;
   if( cvar("developer") ){
-    client_update_moveSpeed(800, 800, 500, "3","0");
+    client_update_moveSpeed(800, 800, 500, "3", 0);
   }
   else{
-    client_update_moveSpeed(200, 200, 200, "3","0");
+    client_update_moveSpeed(200, 200, 200, "3", 0);
   }
-  client_update_viewBob("0", "0", "0");
-  client_update_modelBob("0", "0", "0");
+  client_update_viewBob(0, 0, 0);
+  client_update_modelBob(0, 0, 0, 0);
   self.stat_wep_state = 0;
   self.stat_wep_rel = 0;
   self.view_ofs = '0 0 1';
@@ -67,8 +67,8 @@ void() player_makeMech={
   
   client_push_player_info();
   client_update_moveSpeed(self.data_speed_forward, self.data_speed_strafe, self.data_speed_backward, ftos(self.data_speed_accel), self.hud_rollangle);
-  client_update_viewBob(self.hud_bob, self.hud_bob_cycle, self.hud_bob_up);
-  client_update_modelBob(self.hud_bob_model, self.hud_bob_side, self.hud_bob_speed);
+
+  
   client_update_viewPitch( self.pitchMin, self.pitchMax );
   client_send_event_powerup( self );
   client_playTrack(world.sounds, TRUE);  //exiting hangar menu
@@ -84,13 +84,14 @@ void() player_makeMech={
   setsize(newmis, '0 0 0', '0 0 0');
   setorigin(newmis, '0 0 0');
   newmis.frame = self.weaponframe;
-  newmis.effects = EF_NOGUNBOB;
-  //newmis.nextthink = time;  //possibly optional
-  //newmis.think = SUB_Remove;
+  self.hud_mode = cvar("cl_hud_sway");
+  util_updateViewBob();
   
   msg_entity = self;
   WriteByte(MSG_ONE, SVC_SETVIEWPORT);
   WriteEntity(MSG_ONE, self.cockpit);
+  self.stat_rdr_mode = 1;
+  self.stat_rdr_rng = self.radar_range * 2;
 };
 
 void() player_unmakeMech={

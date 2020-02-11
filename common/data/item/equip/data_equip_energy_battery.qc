@@ -31,9 +31,16 @@ void() data_ini_equip_energy_battery_={
   self.equipSize = 3;
   
   #ifdef CSQC
-  self.abbrev = "ENBAT";
-  self.description = "+ Increases <Energy maximum> by 33%.";
-  self.icon = "gfx/ui/wep_icons/eqp_enbat.png";
+    self.w_clipsize = -1;
+    self.reloadRate = -1;
+    self.reloadMax = -1;
+    self.energyRate = -1;
+    self.w_range = -1;
+    self.damageValue = -1;
+    self.techLevel = -1;
+    self.abbrev = "ENBAT";
+    self.description = "+ Increases <Energy maximum> by 33%.";
+    self.icon = "gfx/ui/wep_icons/eqp_enbat.png";
   #endif
   
   #ifndef CSQC

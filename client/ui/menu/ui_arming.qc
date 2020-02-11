@@ -81,8 +81,10 @@ void() menu_armingListener_onKeyUp={
   local entity hardpoint;
   local float weaponType;
   UI_ARMING_weaponclick = FALSE;
+  UI_ARMING_hardpoint_click = FALSE;
+  
   if( (INPUT_mouse_state == MOUSE_UP) && (INPUT_mouse_state_prev != MOUSE_DOWN) ){
-    if( (UI_ARMING_item_drag.data_idx > 0) && (CFG_INDEX > 0) ){
+    if( UI_ARMING_item_drag.data_idx > 0 ){
       hardpoint = UI_HANGAR_DATA_mech.w_slot;
       
       while( hardpoint ){
@@ -113,7 +115,6 @@ void() menu_armingListener_onKeyUp={
       UI_ARMING_item_drag.icon = "";
     }
   }
-
 };
 
 void() weaponDragListener={
@@ -121,6 +122,13 @@ void() weaponDragListener={
     if( UI_ARMING_weaponclick == TRUE ){
       UI_ARMING_item_drag.damageType = 0;
       data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_list_wep);
+    }
+    if( UI_ARMING_hardpoint_click == TRUE ){
+      if( UI_ARMING_hardpoint.data_idx != 0 ){
+        data_get_client_item_( UI_ARMING_hardpoint, 0);
+      }
+      UI_ARMING_item_drag.damageType = 0;
+      data_get_client_item_( UI_ARMING_item_drag, CLIENT_MENU_sel_wep);
     }
   }
 };
@@ -196,7 +204,9 @@ void() hardpointListener={
           CLIENT_MENU_sel_hrpnt_types = hardpoint.hardpointType;
           CLIENT_MENU_sel_hrpnt = hardpointItr;
           CLIENT_MENU_sel_wep = hardpoint.data_idx;
-          ui_date_load_item2(CLIENT_MENU_sel_wep);
+          UI_ARMING_hardpoint_click = TRUE;
+          UI_ARMING_hardpoint = hardpoint;
+          ui_date_load_item2(CLIENT_MENU_sel_wep); 
         }
         
         hardpointItr = hardpointItr + 1;
@@ -268,7 +278,7 @@ void() selectNextConfig={
     CFG_INDEX_PREV = CFG_INDEX;
     CFG_INDEX = CFG_INDEX + 1;
     if( CFG_INDEX > 6 ){
-      CFG_INDEX = 0;
+      CFG_INDEX = 1;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
       if( DATA_CONFIG_BUFFER_NAME != "" ){
@@ -283,7 +293,7 @@ void() selectPrevConfig={
   if(menu_checkMouseInBounds(cursorpos, BTN_CFG_P, gui_percentToPixelRawVec('20 38'), TRUE )){
     CFG_INDEX_PREV = CFG_INDEX;
     CFG_INDEX = CFG_INDEX - 1;
-    if( CFG_INDEX < 0 ){
+    if( CFG_INDEX < 1 ){
       CFG_INDEX = 6;
     }
     if( !ui_mech_config_switch( MECH_DATA_ID, CFG_INDEX ) ){
@@ -328,6 +338,8 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   local vector hardpointCoord;
   
+  local float allowed;
+  
   nofs = ofs + gui_percentToPixelRawVec('10 8');
   panelOffset = nofs + gui_percentToPixelRawVec('4 4');
   panelImageSize = gui_percentToPixelRawVec('270 236');
@@ -363,11 +375,29 @@ void(vector ofs) menu_arming_HardpointGraph={
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     hardpointItr = 1;
     while( hardpoint ){
+      allowed = TRUE;
       hardpointCoord = gui_mapCoordToImgCoord( mechMins,  mechSize, hardpoint.compOffset * 0.75, panelOffset, panelImageSize );
       hardpoint.ui_org = hardpointCoord - gui_percentToPixelRawVec('17 17');
      
-      ui_renderHardPointNumber( hardpointItr, hardpointCoord );
-      ui_renderHardPointGraphic( hardpoint.icon,  hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr) );
+      if( INPUT_mouse_state == MOUSE_DRAG ){
+        if( UI_ARMING_item_drag.data_idx > 0 ){      
+          if( hardpoint.hardpointSize < UI_ARMING_item_drag.equipSize || !(UI_ARMING_item_drag.damageType & hardpoint.hardpointType) ){
+            allowed = FALSE;
+          }
+        }
+      }
+     
+      ui_renderHardPointGraphic( hardpoint.icon, hardpoint.ui_org, (CLIENT_MENU_sel_hrpnt == hardpointItr), allowed );
+
+      if( !allowed ){
+        drawpic( hardpoint.ui_org, HUD_RAD_PIP_BLD, gui_percentToPixelRawVec('28 28'), CLR_DEF_RED, 0.85, 0);
+      }
+      
+      if( INPUT_mouse_state == MOUSE_DRAG ){
+        if( UI_ARMING_item_drag.data_idx > 0 ){  
+          ui_renderHardPointNumber( hardpointItr, hardpointCoord );
+        }
+      }
       hardpointItr = hardpointItr + 1;
       hardpoint = hardpoint.w_slot;
     }
@@ -404,24 +434,12 @@ void(vector ofs) menu_arming_HardpointGraph={
   
   //this is quite hilarious
   cfg = NAVNAMES[CFG_INDEX];
-  colr = CLR_DEF_ARM_OK;
   warnOrg = lctr;
-  if( CFG_INDEX == 0 ){
-    cfg = "DEFAULT";
-    colr = CLR_DEF_ARM_HALF;
-    warn = "!-Cannot modify Default-!";
-    len = stringwidth(warn, 0, '12 12 0');
-    warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
-    warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
-    drawstring(warnOrg, warn, '12 12 0', '1 0.15 0.15' , 1, 0);
-  }
-  else{
-    colr = CLR_DEF_ARM_OK;
-    warn = "[Click-and-hold Weapons to Modify]";
-    len = stringwidth(warn, 0, '12 12 0');
-    warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
-    warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
-  }
+  colr = CLR_DEF_ARM_OK;
+  warn = "[Click-and-hold Weapons to Modify]";
+  len = stringwidth(warn, 0, '12 12 0');
+  warnOrg_x = warnOrg_x - gui_percentXRaw( len / 2 );
+  warnOrg_y = warnOrg_y - gui_percentYRaw( -16 );
   drawstring(warnOrg, warn, '12 12 0', colr , 1, 0);
   
   cfg = strcat("Loadout: ", cfg);
@@ -489,9 +507,9 @@ void(vector parentOffset, vector offsetAdjust, float weaponType, string listName
           listItemColor = CLR_DEF_TXT_HIGHLIGHT;
           gui_renderTintImage(TRUE, listItemOffset + gui_percentToPixelRawVec('0 -1.44'), UI_BOX_SELECT, gui_percentToPixelRawVec('140.8 12'), CLR_DEF_ARM_OK, 1, 0);
         }
-        if(!(CLIENT_MENU_sel_hrpnt_types & weaponType) || (UI_ARMING_DATA_item_list.equipSize > CLIENT_MENU_sel_hrpnt_size)){
-          listItemColor = CLR_DEF_TXT_CANTSELECT;
-        }
+        //if(!(CLIENT_MENU_sel_hrpnt_types & weaponType) || (UI_ARMING_DATA_item_list.equipSize > CLIENT_MENU_sel_hrpnt_size)){
+        //  listItemColor = CLR_DEF_TXT_CANTSELECT;
+        //}
         listItemLabelLen = stringwidth( UI_ARMING_DATA_item_list.w_name, 0, '12 10');
         listItemLabelLen = listItemLabelLen / 2;
         listItemLabelOrg = listItemOffset;
@@ -727,52 +745,59 @@ void(vector ofs) menu_arming_WeaponInfo={
   local vector icol;
   icol = nofs + gui_percentToPixelRawVec('8 42');
   
-  //LABELS---------
-  //damage
-  drawstring(icol, "Total Damage:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+  if( ITEM1_DATA_DMG > -1 ){
+    //damage
+    drawstring(icol, "Total Damage:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    gui_renderMeter(((ITEM1_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + gui_percentToPixelRawVec('75 -2'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 -2'), sprintf("%0.2f", ITEM1_DATA_DMG * ITEM1_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+  
+  if(ITEM1_DATA_EN > -1 ){
+    //en cost
+    drawstring(icol, "Energy Cost:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    if( ITEM1_DATA_EN > 0 ){
+      gui_renderMeter((ITEM1_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('75 0'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM1_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+      drawstring(icol + gui_percentToPixelRawVec('112 0'), sprintf("%0.2f", ITEM1_DATA_EN), '14 14', '1 1 1', 1, 0);
+    }
+    else{
+      drawstring(icol + gui_percentToPixelRawVec('112 0'), "NONE", '14 14', CLR_DEF_ARM_OK, 1, 0);
+    }
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+  
+  if(ITEM1_DATA_RANGE > -1 ){
+    //range
+    drawstring(icol, "Max Range:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM1_DATA_RANGE), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+  
+  if(ITEM1_DATA_CLIP > -1 ){
+    //clip
+    drawstring(icol, "Clip size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM1_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+  
+  if(ITEM1_DATA_SIZE > -1 ){
+    //reload
+    drawstring(icol,"Hardpoint Size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM1_DATA_SIZE), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
 
-  //en cost
-  drawstring(icol + gui_percentToPixelRawVec('0 12'), "Energy Cost:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+  if(ITEM1_DATA_TECH > -1 ){
+    //tech
+    drawstring(icol, "Tech Level:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM1_DATA_TECH), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
   
-  //range
-  drawstring(icol + gui_percentToPixelRawVec('0 26'), "Max Range:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //clip
-  drawstring(icol + gui_percentToPixelRawVec('0 40'), "Clip size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //reload
-  drawstring(icol + gui_percentToPixelRawVec('0 54'),"Hardpoint Size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //tech
-  drawstring(icol + gui_percentToPixelRawVec('0 68'), "Tech Level:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //desc
-  drawstring(icol + gui_percentToPixelRawVec('0 82'), "Info:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //VALUES-----------
-  //damage
-  gui_renderMeter(((ITEM1_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + gui_percentToPixelRawVec('75 -2'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-  drawstring(icol + gui_percentToPixelRawVec('112 -2'), sprintf("%0.2f", ITEM1_DATA_DMG * ITEM1_DATA_CLIP), '14 14', '1 1 1', 1, 0);
-  
-  //en cost
-  gui_renderMeter((ITEM1_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('75 11'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM1_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
-  drawstring(icol + gui_percentToPixelRawVec('112 11'), sprintf("%0.2f", ITEM1_DATA_EN), '14 14', '1 1 1', 1, 0);
-  
-  //range
-  drawstring(icol + gui_percentToPixelRawVec('112 25'), ftos(ITEM1_DATA_RANGE), '14 14', '1 1 1', 1, 0);
-  
-  //clip
-  drawstring(icol + gui_percentToPixelRawVec('112 39'), ftos(ITEM1_DATA_CLIP), '14 14', '1 1 1', 1, 0);
-  
-  //reload
-  drawstring(icol + gui_percentToPixelRawVec('112 53'), ftos(ITEM1_DATA_SIZE), '14 14', '1 1 1', 1, 0);
-  
-  //tech
-  drawstring(icol + gui_percentToPixelRawVec('112 67'), ftos(ITEM1_DATA_TECH), '14 14', '1 1 1', 1, 0);
-  
-  //desc
-  if( ITEM1_DATA_DESC != "" ){ 
-    gui_wrapText(icol + gui_percentToPixelRawVec('0 81'), '187 130', ITEM1_DATA_DESC, '12 10 0', '1 1 1', 1);
+  if(ITEM1_DATA_DESC != "" ){
+    //desc
+    drawstring(icol, "Info:", '10 8 0', CLR_DEF_GRAY_H, 1, 0); 
+    gui_wrapText(icol, '187 130', ITEM1_DATA_DESC, '12 10 0', '1 1 1', 1);
   }
   
   local vector helpOrg;
@@ -836,54 +861,61 @@ void(vector ofs) menu_arming_WeaponInHardpoint={
   local vector icol;
   icol = nofs + gui_percentToPixelRawVec('8 42');
   
-  //LABELS---------
-  //damage
-  drawstring(icol, "Total Damage:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-
-  //en cost
-  drawstring(icol + gui_percentToPixelRawVec('0 12'), "Energy Cost:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //range
-  drawstring(icol + gui_percentToPixelRawVec('0 26'), "Max Range:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //clip
-  drawstring(icol + gui_percentToPixelRawVec('0 40'), "Clip size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //reload
-  drawstring(icol + gui_percentToPixelRawVec('0 54'),"Hardpoint Size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //tech
-  drawstring(icol + gui_percentToPixelRawVec('0 68'), "Tech Level:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //desc
-  drawstring(icol + gui_percentToPixelRawVec('0 82'), "Info:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
-  
-  //VALUES-----------
-  //damage
-  gui_renderMeter(((ITEM2_DATA_DMG * ITEM2_DATA_CLIP) / 600)*100, icol + gui_percentToPixelRawVec('75 -2'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
-  drawstring(icol + gui_percentToPixelRawVec('112 -2'), sprintf("%0.2f", ITEM2_DATA_DMG * ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
-  
-  //en cost
-  gui_renderMeter((ITEM2_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('75 11'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM2_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
-  drawstring(icol + gui_percentToPixelRawVec('112 11'), sprintf("%0.2f", ITEM2_DATA_EN), '14 14', '1 1 1', 1, 0);
-  
-  //range
-  drawstring(icol + gui_percentToPixelRawVec('112 25'), ftos(ITEM2_DATA_RANGE), '14 14', '1 1 1', 1, 0);
-  
-  //clip
-  drawstring(icol + gui_percentToPixelRawVec('112 39'), ftos(ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
-  
-  //reload
-  drawstring(icol + gui_percentToPixelRawVec('112 53'), ftos(ITEM2_DATA_SIZE), '14 14', '1 1 1', 1, 0);
-  
-  //tech
-  drawstring(icol + gui_percentToPixelRawVec('112 67'), ftos(ITEM2_DATA_TECH), '14 14', '1 1 1', 1, 0);
-  
-  //desc
-  if( ITEM2_DATA_DESC != "" ){ 
-    gui_wrapText(icol + gui_percentToPixelRawVec('0 81'), '187 130', ITEM2_DATA_DESC, '12 10 0', '1 1 1', 1);
+  if( ITEM2_DATA_DMG > -1 ){
+    //damage
+    drawstring(icol, "Total Damage:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    gui_renderMeter(((ITEM2_DATA_DMG * ITEM1_DATA_CLIP) / 600)*100, icol + gui_percentToPixelRawVec('75 -2'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, CLR_DEF_ARM_OK, 1, 0, AXIS_H, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 -2'), sprintf("%0.2f", ITEM2_DATA_DMG * ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
   }
   
+  if(ITEM2_DATA_EN > -1 ){
+    //en cost
+    drawstring(icol, "Energy Cost:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    if( ITEM1_DATA_EN > 0 ){
+      gui_renderMeter((ITEM2_DATA_EN / 500)*100, icol + gui_percentToPixelRawVec('75 0'), gui_percentToPixelRawVec('32 12'), CLR_DEF_ARM_DED, gui_getColorForArmor(100 - (ITEM2_DATA_EN / 500)*100), 1, 0, AXIS_H, 0);
+      drawstring(icol + gui_percentToPixelRawVec('112 0'), sprintf("%0.2f", ITEM2_DATA_EN), '14 14', '1 1 1', 1, 0);
+    }
+    else{
+      drawstring(icol + gui_percentToPixelRawVec('112 0'), "NONE", '14 14', CLR_DEF_ARM_OK, 1, 0);
+    }
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+  
+  if(ITEM2_DATA_RANGE > -1 ){
+    //range
+    drawstring(icol, "Max Range:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM2_DATA_RANGE), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+  
+  if(ITEM2_DATA_CLIP > -1 ){
+    //clip
+    drawstring(icol, "Clip size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM2_DATA_CLIP), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+  
+  if(ITEM2_DATA_SIZE > -1 ){
+    //reload
+    drawstring(icol,"Hardpoint Size:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM2_DATA_SIZE), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+
+  if(ITEM2_DATA_TECH > -1 ){
+    //tech
+    drawstring(icol, "Tech Level:", '10 8 0', CLR_DEF_GRAY_H, 1, 0);
+    drawstring(icol + gui_percentToPixelRawVec('112 0'), ftos(ITEM2_DATA_TECH), '14 14', '1 1 1', 1, 0);
+    icol = icol + gui_percentToPixelRawVec('0 12');
+  }
+  
+  if(ITEM2_DATA_DESC != "" ){
+    //desc
+    drawstring(icol, "Info:", '10 8 0', CLR_DEF_GRAY_H, 1, 0); 
+    gui_wrapText(icol, '187 130', ITEM2_DATA_DESC, '12 10 0', '1 1 1', 1);
+  }
+
   local vector helpOrg;
   helpOrg = nofs;
   helpOrg_x = nofs_x + gui_percentXRaw(195) - gui_percentXRaw(12);

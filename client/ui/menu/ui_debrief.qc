@@ -59,7 +59,7 @@ void(vector panelOffset) menu_debrief_header={
   local vector nextMissionLabelOrg;
   local float nextMissionLen;
   
-  nextMissionOrg_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw(138);//106 accounts for pesky 10px margin
+  nextMissionOrg_x = VIEW_MAX_x - gui_percentXRaw(138);//106 accounts for pesky 10px margin
   nextMissionOrg_y = gui_percentYRaw(6);
   drawpic( nextMissionOrg, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
   MENU_DEBRIEF_BUTTON_ORG_mission = nextMissionOrg;

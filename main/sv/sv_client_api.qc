@@ -199,7 +199,6 @@ void() PutClientInServer = {
     if(world.model == "maps/o1m1.bsp"){
       //pre-populate default save file
       savefile_load( FALSE );
-      cons_logAFloat("newgame", FLAG_NEWGAME);  //DEBUG
       if( FLAG_NEWGAME == TRUE ){
         savefile_default();
         savefile_load( FALSE );
@@ -235,9 +234,9 @@ void() PutClientInServer = {
       if(!coop && !deathmatch){
         self.movetype = MOVETYPE_NONE;
         self.flags = self.flags - (self.flags & FL_FLY);
-        client_update_moveSpeed(0, 0, 0, "0","0");
-        client_update_viewBob("0", "0", "0");
-        client_update_modelBob("0", "0", "0");
+        client_update_moveSpeed(0, 0, 0, "0", 0);
+        client_update_viewBob( 0, 0, 0 );
+        client_update_modelBob( 0, 0, 0, 0 );
         if( world.animaticOnly ){
           self.playerState = PLAYER_INTERMSN;
         }

@@ -78,16 +78,24 @@ void() hrepair_rep = [0, hrepair_rep]{
             }
           }
         }
-        self.trigger_field.stat_plr_rep = (self.reloadValue / self.reloadMax);
+        //really dumb fix, sorry
+        if( (fix.owner.flags & FL_CLIENT) ){
+          fix.owner.stat_plr_rep = (self.reloadValue / self.reloadMax) * 100;
+        }
+        else{
+          fix.stat_plr_rep = (self.reloadValue / self.reloadMax) * 100;
+        }
       }
     }
   }
 
   if(end_repair && self.cockpit.attack_state == ST_WALK ){
-    self.trigger_field.flags = self.trigger_field.flags - (self.trigger_field.flags & FL_NOSHOOT);
-    if( (self.trigger_field.flags & FL_CLIENT) ){
-      client_send_event_weapons( self.trigger_field, TRUE );
-      client_send_event_repairs( self.trigger_field, FALSE ) ;
+    client_send_event_repairs( self.trigger_field, FALSE ) ;
+    if( self.startupDelay == FL_NOSHOOT ){
+      self.trigger_field.flags = self.trigger_field.flags - FL_NOSHOOT;
+      if( (self.trigger_field.flags & FL_CLIENT) ){
+        client_send_event_weapons( self.trigger_field, TRUE );
+      }
     }
     self.trigger_field.stat_plr_rep = -1;
     self.trigger_field = world;
@@ -96,8 +104,7 @@ void() hrepair_rep = [0, hrepair_rep]{
     self.cockpit.nextthink = time + 3;
     self.cockpit.attack_state = ST_MELEE;
     
-    world_update_dlight( self, -1, '0.25 0.9 0.15', 50, 2, '-1 -1 -1');
-    
+    world_update_dlight( self, -1, '0.25 0.9 0.15', 50, 2, '-1 -1 -1'); 
     return;
   }
 };
@@ -216,12 +223,12 @@ void() building_human_repair={
   if( skill > SKILL_REG ){
     self.reloadValue = 750;
     self.reloadMax = 750;
-    self.reloadRate = 0.5;
+    self.reloadRate = 0.4;
   }
   else{
-    self.reloadValue = 2000;
-    self.reloadMax = 2000;
-    self.reloadRate = 1;
+    self.reloadValue = 1250;
+    self.reloadMax = 1250;
+    self.reloadRate = 0.75;
   }
 
   self.nextthink = time + 0.1;
@@ -276,6 +283,10 @@ void() building_repair_touch={
   if(other.faction != self.owner.faction){
     return;
   }
+  other.energy = other.energy + (other.energyRate * 0.45);
+  if( other.energy > other.energyMax ){
+    other.energy = other.energyMax;
+  }
   if(self.owner.reloadValue <= 0){
     return;
   }
@@ -286,8 +297,12 @@ void() building_repair_touch={
     return;
   }
   self.owner.trigger_field = other;
-  other.flags = other.flags | FL_NOSHOOT;
-  client_send_event_weapons( self.owner.trigger_field, FALSE );
+  
+  if( !(other.flags & FL_NOSHOOT) ){
+    other.flags = other.flags | FL_NOSHOOT;
+    self.startupDelay = FL_NOSHOOT;
+    client_send_event_weapons( self.owner.trigger_field, FALSE );
+  }
   client_send_event_repairs( self.owner.trigger_field, TRUE );
   self.touch = SUB_Null;
   self.attack_state = ST_WALK;

@@ -76,7 +76,7 @@ void(string cmd, float tokens) client_setNavPoint;
 void(string cmd, float tokens) client_setMission;
 
 void() client_updateWeaponReloads;
-void(float fwd, float side, float bck, string accel, string roll) client_update_moveSpeed;
-void(string bob, string cycle, string up) client_update_viewBob;
-void(string bobmodel, string side, string bmod_speed) client_update_modelBob;
+void(float fwd, float side, float bck, string accel, float roll) client_update_moveSpeed;
+void(float bob, float cycle, float up) client_update_viewBob;
+void(float bobmodel, float side, float bmod_speed, float bmod_up) client_update_modelBob;
 void(float p_max, float p_min) client_update_viewPitch;

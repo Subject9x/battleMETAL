@@ -19,8 +19,8 @@ void() data_ini_monitor_={
   self.vec_name = "Monitor";
  
   self.max_health = 1200;
-  self.mins = '-26 -26 -44';
-  self.maxs = '26 26 28';
+  self.mins = '-22 -22 -44';
+  self.maxs = '22 22 24';
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 700;
@@ -89,13 +89,14 @@ void() data_ini_monitor_={
   self.pitchMin = -25;
   self.weaponmodel = "q3mdl/mechs/monitor/monitor_hud.md3";
   self.hud_model = "q3mdl/mechs/monitor/monitor_hud.obj";
-  self.hud_rollangle = "2.25";
-  self.hud_bob = "0.03";
-  self.hud_bob_cycle =  "0.85";
-  self.hud_bob_up = "0.5";
-  self.hud_bob_model = "1";
-  self.hud_bob_side = "0.65";
-  self.hud_bob_speed = "3.85";
+  self.hud_rollangle = 2.25;
+  self.hud_bob = 0.03;
+  self.hud_bob_cycle = 0.85;
+  self.hud_bob_up = 0.5;
+  self.hud_bob_model = 1;
+  self.hud_bob_side = 0.65;
+  self.hud_bob_speed = 3.85;
+  self.hud_bob_model_up = 0.15;
 //====================================
 
 //UI Data=============================

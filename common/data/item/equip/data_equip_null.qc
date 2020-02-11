@@ -24,9 +24,17 @@ void() data_ini_empty_weapon_={
   self.equipSize = 1;
   
   #ifdef CSQC  
-  self.abbrev = "NON";
-  self.description = "+ this weapon slot is Empty.";
-  self.icon = "gfx/ui/wep_icons/eqp_empty.png";
+    self.w_clipsize = -1;
+    self.reloadRate = -1;
+    self.reloadMax = -1;
+    self.energyRate = -1;
+    self.w_range = -1;
+    self.damageValue = -1;
+    self.damageType = 0;
+    self.techLevel = -1;
+    self.abbrev = "NON";
+    self.description = "+ this weapon slot is Empty.";
+    self.icon = "gfx/ui/wep_icons/eqp_empty.png";
   #endif
   
   #ifndef CSQC  
