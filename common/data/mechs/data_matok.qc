@@ -92,6 +92,7 @@ void() data_ini_matok_={
   self.hud_bob_model = 1;
   self.hud_bob_side = 0.35;
   self.hud_bob_speed = 6.55;
+  self.hud_bob_model_up = 0.1;
 //====================================
 
 //UI Data=============================
