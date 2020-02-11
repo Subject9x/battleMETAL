@@ -5,6 +5,7 @@ void() main =
 {
 	dprint ("main function\n");
 	skill = cvar("skill");
+  precache_sound2("sound/demon/dland2.wav");
 };
 
 //=======================
