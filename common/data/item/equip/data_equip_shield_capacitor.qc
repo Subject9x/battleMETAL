@@ -29,10 +29,17 @@ void() data_ini_equip_shield_capacitor_={
   self.techLevel = 3;
   self.equipSize = 2;
   
-  #ifdef CSQC
-  self.abbrev = "SCAP";
-  self.description = "+ Increases <Shield Maximum> by 15%.";
-  self.icon = "gfx/ui/wep_icons/eqp_lscap.png";
+  #ifdef CSQC    
+    self.w_clipsize = -1;
+    self.reloadRate = -1;
+    self.reloadMax = -1;
+    self.energyRate = -1;
+    self.w_range = -1;
+    self.damageValue = -1;
+    self.techLevel = -1;
+    self.abbrev = "SCAP";
+    self.description = "+ Increases <Shield Maximum> by 15%.";
+    self.icon = "gfx/ui/wep_icons/eqp_lscap.png";
   #endif
   
   #ifndef CSQC
