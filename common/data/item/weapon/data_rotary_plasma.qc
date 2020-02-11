@@ -21,7 +21,7 @@ void() data_ini_plasma_={
   self.w_clipsize = 6;
   self.reloadRate = 0.18;
   self.reloadMax = 5;
-  self.energyRate = 1;
+  self.energyRate = 0;
   
   self.w_range = 1000;
   self.damageValue = 10;

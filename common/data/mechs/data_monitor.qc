@@ -14,8 +14,8 @@ Overview:
 */
 void() data_ini_monitor_={
 
-  self.data_idx = UID_MECH_monitor;  //
-  self.vec_size = 3;  //
+  self.data_idx = UID_MECH_monitor;
+  self.vec_size = 3;
   self.vec_name = "Monitor";
  
   self.max_health = 1200;
@@ -23,16 +23,16 @@ void() data_ini_monitor_={
   self.maxs = '22 22 24';
   
 //ENERGY AND SHIELDS===================
-  self.energyMax = 700;
-  self.energyRate= 3;
+  self.energyMax = 600;
+  self.energyRate= 3.5;
   self.shieldMax = 300;
-  self.shieldRate= 1.67;
+  self.shieldRate= 2.33;
   self.startupDelay = 9;
 //=====================================
  
 //RADAR================================
   self.radar_range = 750;
-  self.w_firetime = 8;  //lock-on time in seconds
+  self.w_firetime = 6;  // lock-on time in seconds
   self.spreadDefault = ACCURACY_LOWTECH;
 //=====================================
 
@@ -42,8 +42,8 @@ void() data_ini_monitor_={
   self.data_speed_backward = 85;
   self.data_speed_accel = 2;
   #ifndef CSQC
-  self.yaw_speed = 1;    //AI-only 
-  self.turret_yaw_speed = 1;//AI-only
+  self.yaw_speed = 1.75;    // AI-only 
+  self.turret_yaw_speed = 2;// AI-only
   self.ai_angleLimits = '-75 75 0';
   #endif
 //=====================================
@@ -51,7 +51,7 @@ void() data_ini_monitor_={
 //MECH COMPONENTS====================
   
   //center torso
-  data_ini_torso_center_(  "q3mdl/mechs/monitor/monitor_tor_c.md3", 1300, '0 0 0', '0 6 0' );
+  data_ini_torso_center_( "q3mdl/mechs/monitor/monitor_tor_c.md3", 1300, '0 0 0', '0 6 0' );
  
   //left tors
   data_ini_torso_left_( "q3mdl/mechs/monitor/monitor_tor_l.md3", 1300, '-11.5 11 -0.5', '-9.5 11 0' );

@@ -97,17 +97,14 @@ void()data_prj_emp_explode={
     t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
   }
   pointparticles( particleeffectnum("TE_EMP_EXPL"), self.origin, '0 0 0', 1);
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.1;
+remove(self);
 };
 
 void() data_prj_emp_touch={
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
+
 	if( pointcontents(self.origin) == CONTENT_SKY ){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
-		return;
+    remove(self);
+    return;
 	}
  
   self.traileffectnum = FALSE;
@@ -120,8 +117,7 @@ void() data_prj_emp_touch={
       pointparticles( particleeffectnum("TE_ION_IMPACT_ARMOR"), self.origin, '0 0 0', 1);
     }
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
+    remove(self);
     return;
   }
  

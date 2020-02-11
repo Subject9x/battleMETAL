@@ -246,13 +246,11 @@ void() ctrl_missile_dud={
 
 void() ctrl_missile_dud_touch={
   self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.01;
 	if ( pointcontents(self.origin) == CONTENT_SKY){
 		return;
 	}
   if(other.takedamage){
-    t_damage(other, self, self.owner, self.damageValue * 0.05, DMG_BAL, self.origin, '0 0 0');
+    t_damage(other, self, self.owner, self.damageValue * 0.05, self.damageType, self.origin, '0 0 0');
   }
+  remove(self);
 };

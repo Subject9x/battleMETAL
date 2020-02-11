@@ -28,7 +28,7 @@ void() data_ini_equip_target_module_={
   self.damageType = (DMG_MSC);
 
   self.techLevel = 1;
-  self.equipSize = 2;
+  self.equipSize = 1;
   
   #ifdef CSQC    
     self.w_clipsize = -1;
@@ -39,12 +39,12 @@ void() data_ini_equip_target_module_={
     self.damageValue = -1;
     self.techLevel = -1;
     self.abbrev = "ATGM";
-    self.description = "+ Decrease <Lock-on> time by 20%. + Increase <Convergence> recovery by 15%.";
+    self.description = "+ Decrease <Lock-on> time by 25%. + Increase <Convergence> recovery by 20%.";
     self.icon = "gfx/ui/wep_icons/eqp_atgm.png";
   #endif
   
   #ifndef CSQC
-  self.spreadDefault = '0.25 0.15 0.25';  //upgrades Unit's accuracy
+  self.spreadDefault = '0.25 0.20 0.25';  //upgrades Unit's accuracy
   self.w_attack = target_module_upgrade_;
   self.item_remove_upgrade = target_module_remove_;
   self.think = SUB_Null;

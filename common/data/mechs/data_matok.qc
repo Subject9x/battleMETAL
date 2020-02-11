@@ -24,15 +24,15 @@ void() data_ini_matok_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax   = 800;
-  self.energyRate  = 4.25;
+  self.energyRate  = 4.35;
   self.shieldMax   = 600;
-  self.shieldRate  = 2;
+  self.shieldRate  = 2.5;
   self.startupDelay = 7;
 //=====================================
  
 //RADAR================================
   self.radar_range = 1200;
-  self.w_firetime = 4;  //lock-on time in seconds
+  self.w_firetime = 3;  //lock-on time in seconds
   self.spreadDefault = ACCURACY_MARKSMAN;
 //=====================================
 
@@ -42,8 +42,8 @@ void() data_ini_matok_={
   self.data_speed_backward = 90;
   self.data_speed_accel = 1.5;
   #ifndef CSQC
-  self.yaw_speed = 2.5;    //AI-only 
-  self.turret_yaw_speed = 2.5;//AI-only
+  self.yaw_speed = 2.75;    // AI-only 
+  self.turret_yaw_speed = 3.25;// AI-only
   self.ai_angleLimits = '-100 100 0';
   #endif
 //=====================================
@@ -73,8 +73,8 @@ void() data_ini_matok_={
 //=====================================
  
 //HARDPOINT DATA======================
-  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE) );
-  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE) );
+  data_ini_unitHardpoint_1( M_TOR_RIGHT, '9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
+  data_ini_unitHardpoint_2( M_TOR_LEFT, '-9.25 8.65 10', '0 0 0', 1, (DMG_BAL | DMG_ENE | DMG_MSC) );
   data_ini_unitHardpoint_3( M_ARM_RIGHT, '19.25 2.1 2.25', '0 0 90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_4( M_ARM_LEFT, '-19.25 2.1 2.25', '0 0 -90', 2, (DMG_BAL | DMG_ENE) );
   data_ini_unitHardpoint_5( M_TOR_CENTER, '0 20 0', '0 0 0', 3, (DMG_BAL | DMG_ENE | DMG_EXP | DMG_MSC) );

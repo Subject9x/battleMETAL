@@ -44,14 +44,12 @@ void() data_projectile_plasma_burn_ini_={
 
 void() data_projectile_plasma_burn_th={
   if( self.enemy.deadflag > DEAD_NO || self.cockpit.deadflag > DEAD_NO ){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
+    remove(self);
     return;
   }
   
   if( self.enemy.shield > 0 ){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
+    remove(self);
     return;
   }
   
@@ -59,10 +57,7 @@ void() data_projectile_plasma_burn_th={
   pointparticles( particleeffectnum("TE_RPC_BURN"), self.origin, '0 0 0', 1);
   
   if(time > self.data_lifetime){
-    self.touch = SUB_Null;
-    self.solid = SOLID_NOT;
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.1;
+    remove(self);
     return;
   }
 

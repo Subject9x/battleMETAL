@@ -18,13 +18,13 @@ void() data_ini_rockets_={
   self.data_idx = 4;  
   self.w_name = "Rocket Launcher";
   
-  self.w_clipsize = 6;
-  self.reloadRate = 0.22;
-  self.reloadMax = 8;
+  self.w_clipsize = 1;
+  self.reloadRate = 1;
+  self.reloadMax = 1;
   self.energyRate = 0;
   
   self.w_range = 400;
-  self.damageValue = 65;
+  self.damageValue = 38;
   self.damageType = DMG_EXP;
   
   self.techLevel = 1;
@@ -32,7 +32,8 @@ void() data_ini_rockets_={
   
   #ifdef CSQC
   self.abbrev = "RCK";
-  self.description = "+ Burst fires whole clip. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+  //self.description = "+ Burst fires whole clip. + Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
+  self.description = "+ Does NOT require <Active Radar>. + Does NOT require <Target Lock>.";
   self.icon = "gfx/ui/wep_icons/wi_rck.png";  
   #endif 
   
@@ -54,7 +55,7 @@ void() data_ini_attack_rockets_={
 
   ctrl_weapon_fireOffset();
 
-  ctrl_weapon_updateAmmo( TRUE );
+  ctrl_weapon_updateAmmo( FALSE );
    
   self.owner.punchangle_x = -2 + crandom() * -2;
   self.owner.punchangle_y = -3 + crandom() * -4;
