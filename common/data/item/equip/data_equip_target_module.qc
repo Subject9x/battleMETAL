@@ -21,7 +21,7 @@ void() data_ini_equip_target_module_={
   self.w_clipsize = 1;
   self.reloadRate = 0;
   self.reloadMax = 0;
-  self.energyRate = 0.2;
+  self.energyRate = 0.25;
   
   self.w_range = 0;
   self.damageValue = 0;
