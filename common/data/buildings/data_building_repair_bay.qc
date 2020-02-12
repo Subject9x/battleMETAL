@@ -300,7 +300,7 @@ void() building_repair_touch={
   
   if( !(other.flags & FL_NOSHOOT) ){
     other.flags = other.flags | FL_NOSHOOT;
-    self.startupDelay = FL_NOSHOOT;
+    self.owner.startupDelay = FL_NOSHOOT;
     client_send_event_weapons( self.owner.trigger_field, FALSE );
   }
   client_send_event_repairs( self.owner.trigger_field, TRUE );

@@ -21,13 +21,13 @@ void() data_ini_electro_repeater_={
   self.data_idx = 8;
   self.w_name = "ESR";
   
-  self.w_clipsize = 10; //20;
+  self.w_clipsize = 10;
   self.reloadRate = 0.07;
   self.reloadMax = 5;
   self.energyRate =  200;
   
   self.w_range = 200;
-  self.damageValue = 16;//25;
+  self.damageValue = 16;
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;

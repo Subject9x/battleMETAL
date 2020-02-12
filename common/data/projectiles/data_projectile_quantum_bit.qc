@@ -14,7 +14,7 @@ void() data_projectile_ini_quantum_bit_={
   self.classname = "missile";
   self.touch = data_projectile_ini_quantum_bit_touch_;
   self.data_idx = 0;
-  self.data_velocity = 200;
+  self.data_velocity = 300;
   self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
   self.data_lifetime = 4;
   
@@ -26,11 +26,9 @@ void() data_projectile_ini_quantum_bit_={
 };
 
 void() data_projectile_ini_quantum_bit_touch_={
-  self.touch = SUB_Null;
-  self.solid = SOLID_NOT;
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.01;
-	if (pointcontents(self.origin) == CONTENT_SKY){
+	if (pointcontents(self.origin) == CONTENT_SKY || pointcontents(self.origin) == CONTENT_SOLID){
+    self.traileffectnum = 0;
+    remove(self);
 		return;
 	}
   
@@ -39,8 +37,12 @@ void() data_projectile_ini_quantum_bit_touch_={
     if( other.shield > 0 ){
       pointparticles( particleeffectnum("TE_QRFL_IMPACT_SHIELD"), self.origin, self.velocity, 1);
     }
+    self.traileffectnum = 0;
+    remove(self);
     return;
   }  
   
   pointparticles( particleeffectnum("TE_QRFL_QBIT_IMPACT"), self.origin, self.velocity, 1);
+    self.traileffectnum = 0;
+  remove(self);
 };

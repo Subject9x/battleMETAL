@@ -24,7 +24,7 @@ void() data_ini_particle_cannon_={
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
   self.reloadMax = 8;
-  self.energyRate =  333.33;
+  self.energyRate = 300;
 
   self.w_range = 2000;
   self.damageValue = 250;
@@ -35,7 +35,7 @@ void() data_ini_particle_cannon_={
   
   #ifdef CSQC
   self.abbrev = "PAC";
-  self.description = "+ Instant-impact weapon. + Ignores 75% of Target's <shields>.";
+  self.description = "+ Instant-impact weapon. + Ignores 75% of Target's CURRENT <shields value>.";
   self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
   #endif 
   

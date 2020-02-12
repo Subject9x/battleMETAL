@@ -20,12 +20,12 @@ void() data_ini_missile_activeradar_={
   self.w_name = "Missile - Active Radar";
   
   self.w_clipsize = 10;
-  self.reloadRate = 0.28;
-  self.reloadMax = 7;
+  self.reloadRate = 0.24;
+  self.reloadMax = 5.5;
   self.energyRate = 0;
   
   self.w_range = 1500;
-  self.damageValue = 7;
+  self.damageValue = 15;
   self.damageType = (DMG_EXP | EFF_ARC | EFF_LOK);
  
   self.techLevel = 2;

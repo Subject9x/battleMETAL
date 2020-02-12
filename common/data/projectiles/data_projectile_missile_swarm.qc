@@ -28,26 +28,21 @@ void() data_projectile_ini_missile_swarm_={
 };
 
 void() data_projectile_missile_swarm_touch={
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
 	if (pointcontents(self.origin) == CONTENT_SKY){
-    self.think = SUB_Remove;
-    self.nextthink = time + 0.01;
+    remove(self);
 		return;
 	}
 
   if(other.takedamage){
     t_damage(other, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
     if( other.shield > 0 ){
-      self.think = SUB_Remove;
-      self.nextthink = time + 0.01; 
+      remove(self);
       return;
     }
   }
   makevectors(self.angles);
   te_missile_explode(  self.origin + (v_up * -5),  1, '0.663 0.886 0.953', self.damageValue / 5, 1);
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.01;
+  remove(self);
 };
 
 void() data_projectile_missile_swarm_think={

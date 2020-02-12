@@ -76,9 +76,6 @@ void() data_projectile_ion_think_={
 };
 
 void()data_projectile_ion_explode={
-  self.solid = SOLID_NOT;
-  self.touch = SUB_Null;
-  
   local entity lst;
   for(lst = findradius(self.origin, DAT_PRJ_ION_EXPRAD); lst != world; lst = lst.chain){
     if(lst.takedamage <= 0){
@@ -96,8 +93,7 @@ void()data_projectile_ion_explode={
     t_damage(lst, self, self.owner, self.damageValue, self.damageType, self.origin, '0 0 0');
   }
   pointparticles( particleeffectnum("TE_ION_EXPL"), self.origin, '0 0 0', 1);
-  self.think = SUB_Remove;
-  self.nextthink = time + 0.001;
+  remove(self);
 };
 
 void() data_projectile_ion_touch={
