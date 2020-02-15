@@ -22,6 +22,7 @@ Overview:
 .float hud_bob_speed;
 .string hud_model;  //where .viewweapon is the cockpit struts model, hud_model is the computer boxes
 .float hud_mode;  //sway mode
+.entity hud_ent;  //fixes sway mode set bug
 
 .float faction;   //which faction? consult table
 .float techLevel; //what is the appropriate tech level of the unit? this is also used for levels 

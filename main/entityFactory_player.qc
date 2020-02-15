@@ -85,6 +85,7 @@ void() player_makeMech={
   setorigin(newmis, '0 0 0');
   newmis.frame = self.weaponframe;
   self.hud_mode = cvar("cl_hud_sway");
+  self.hud_ent = newmis;
   util_updateViewBob();
   
   msg_entity = self;
