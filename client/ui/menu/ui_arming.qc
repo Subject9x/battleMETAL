@@ -223,9 +223,8 @@ void() weaponGroupPanelListener={
   if(menu_checkMouseInBounds(cursorpos, WEPNGRP_ORG_A, WEPNGRP_SIZE_A, TRUE)){
     found = listListener(WEPNGRP_ORG_A, cursorpos, WEPNGRP_SIZE_A, gui_percentToPixelRawVec('18.56 20'), WEPNGRP_CNT_A, 0);
     found = WEPBITS[found];
-    if((CLIENT_MENU_nex_grp1 & found)){
+    if((CLIENT_MENU_nex_grp1 & found) ){
       CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 - (CLIENT_MENU_nex_grp1 & found);
-      
     }else{
       CLIENT_MENU_nex_grp1 = CLIENT_MENU_nex_grp1 | found;
     }
@@ -622,11 +621,14 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     if( hardpoint.icon != "" ){
       drawpic(lofs + gui_percentToPixelRawVec('16 -8'), hardpoint.icon, gui_percentToPixelRawVec('20 20'), '1 1 1', 1,0);
     }
-    gui_renderTintImage((CLIENT_MENU_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((CLIENT_MENU_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((CLIENT_MENU_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
-    gui_renderTintImage((CLIENT_MENU_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+    if( !(hardpoint.damageType & DMG_MSC) ){    
+      gui_renderTintImage((CLIENT_MENU_nex_grp1 & bit),  lofs + gui_percentToPixelRawVec('40 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+      gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+      gui_renderTintImage((CLIENT_MENU_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+      gui_renderTintImage((CLIENT_MENU_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+      gui_renderTintImage((CLIENT_MENU_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
+    }
+    
     bit = bit * 2;
     lst_idx = lst_idx + 1;
     hardpoint = hardpoint.w_slot;
