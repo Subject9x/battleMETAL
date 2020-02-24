@@ -360,15 +360,30 @@ void() play_teleport =
 
 	v = random() * 5;
 	if (v < 1)
+	{
+        precache_sound ("misc/r_tele1.wav");
 		tmpstr = "misc/r_tele1.wav";
+	}
 	else if (v < 2)
+	{
+        precache_sound ("misc/r_tele2.wav");
 		tmpstr = "misc/r_tele2.wav";
+	}
 	else if (v < 3)
+	{
+        precache_sound ("misc/r_tele3.wav");
 		tmpstr = "misc/r_tele3.wav";
+	}
 	else if (v < 4)
+	{
+        precache_sound ("misc/r_tele4.wav");
 		tmpstr = "misc/r_tele4.wav";
+	}
 	else
+	{
+        precache_sound ("misc/r_tele5.wav");
 		tmpstr = "misc/r_tele5.wav";
+	}
 
 	sound (self, CHAN_VOICE, tmpstr, 1, ATTN_NORM);
 	remove (self);
