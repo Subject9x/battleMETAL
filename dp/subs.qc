@@ -265,6 +265,7 @@ void() SUB_UseTargets =
 		if (activator.flags & FL_CLIENT)
 			centerprint (activator, self.message);
 		if (!self.noise)
+            precache_sound ("misc/talk.wav");
 			sound (activator, CHAN_VOICE, "misc/talk.wav", 1, ATTN_NORM);
 	}
 
