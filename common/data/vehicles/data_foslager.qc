@@ -19,7 +19,7 @@ void() data_ini_foslager_={
   self.vec_size = 2;  //
   self.vec_name = "Foslager";
  
-  self.max_health = 266;
+  self.max_health = 233;
   setsize(self, '-22 -22 -8', '22 22 26');
   
 //ENERGY AND SHIELDS===================
@@ -42,7 +42,7 @@ void() data_ini_foslager_={
   #ifndef CSQC
   self.yaw_speed = 3.5;    //AI-only 
   self.turret_yaw_speed = 3.75;//AI-only
-  self.ai_angleLimits = '-110 110 0';
+  self.ai_angleLimits = '-160 160 0';
   #endif
 //=====================================
  

@@ -19,7 +19,7 @@ void() data_ini_trowel_={
   self.vec_size = 3;  //
   self.vec_name = "Trowel";
  
-  self.max_health = 532;
+  self.max_health = 465;
   setsize(self, '-32 -32 -7.75', '32 32 36');
   
 //ENERGY AND SHIELDS===================
@@ -42,7 +42,7 @@ void() data_ini_trowel_={
   #ifndef CSQC
   self.yaw_speed = 1;    //AI-only 
   self.turret_yaw_speed = 1.5;//AI-only
-  self.ai_angleLimits = '-110 110 0';
+  self.ai_angleLimits = '-125 125 0';
   #endif
 //=====================================
  

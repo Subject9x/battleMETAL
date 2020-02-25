@@ -15,11 +15,11 @@ Overview:
 */
 void() data_ini_dunerunner_={
 
-  self.data_idx = UID_VEHICLE_dunerunner;  //
-  self.vec_size = 1;  //
+  self.data_idx = UID_VEHICLE_dunerunner;
+  self.vec_size = 1;
   self.vec_name = "Dunerunner";
  
-  self.max_health = 133;
+  self.max_health = 115;
   setsize(self, '-16 -16 -10', '16 16 26');
   
 //ENERGY AND SHIELDS===================
@@ -42,7 +42,7 @@ void() data_ini_dunerunner_={
   #ifndef CSQC
   self.yaw_speed = 5;    //AI-only 
   self.turret_yaw_speed = 4;//AI-only
-  self.ai_angleLimits = '-125 125 0';
+  self.ai_angleLimits = '-360 360 0';
   #endif
 //=====================================
  

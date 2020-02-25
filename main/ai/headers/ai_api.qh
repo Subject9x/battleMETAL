@@ -115,8 +115,6 @@ void( float randomBool ) ai_voice_ini;
 //Stat Equations
 //AI STATISTICS - ai_stats.qc
 void() ai_promote;
-float() ai_pilot_armor_mod;
-float() ai_pilot_shield_mod;
 float( float rank, float damg) ai_pilot_mod_damage;
 vector( float rank, vector spread ) ai_pilot_accuracy;
 void() ai_unit_ini_var;
