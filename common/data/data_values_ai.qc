@@ -73,8 +73,6 @@ float AI_VIEW_RANGE_VET = 1.25;
 float AI_VIEW_RANGE_ACE = 1.5;
 
 //Adjust yaw_speed
-float AI_YAW_ROK = 0.85;
-float AI_YAW_REG = 1;
 float AI_YAW_VET = 1.1;
 float AI_YAW_ACE = 1.15;
 

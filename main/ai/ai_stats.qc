@@ -113,12 +113,6 @@ void() ai_pilot_ini_rok={
   self.ai_view = self.radar_range * AI_VIEW_RANGE_ROK;
   self.ai_viewcheck = AI_VIEW_ROK;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_ROK );
-  if(self.yaw_speed){
-    self.yaw_speed = self.yaw_speed * AI_YAW_ROK;
-  }
-  if(self.turret_yaw_speed){
-    self.turret_yaw_speed = self.turret_yaw_speed * AI_YAW_ROK;
-  }
   self.ai_leading = AI_LEAD_ROK;
   self.ai_attack_chance = 0.05 + AI_ATTACK_ROK;
   self.w_firetime = self.w_firetime * 2;
@@ -130,12 +124,6 @@ void() ai_pilot_ini_reg={
   self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;
   self.ai_viewcheck = AI_VIEW_REG;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_REG );
-  if(self.yaw_speed){
-    self.yaw_speed = self.yaw_speed * AI_YAW_REG;
-  }
-  if(self.turret_yaw_speed){
-    self.turret_yaw_speed = self.turret_yaw_speed * AI_YAW_REG;
-  }
   self.ai_leading = AI_LEAD_REG;
   self.ai_attack_chance = 0.1 + AI_ATTACK_REG;
   self.w_firetime = self.w_firetime * 1;
