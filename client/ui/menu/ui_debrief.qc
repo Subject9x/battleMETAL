@@ -59,7 +59,7 @@ void(vector panelOffset) menu_debrief_header={
   local vector nextMissionLabelOrg;
   local float nextMissionLen;
   
-  nextMissionOrg_x = VIEW_MAX_x - gui_percentXRaw(138);//106 accounts for pesky 10px margin
+  nextMissionOrg_x = VIEW_MAX_x - gui_percentXRaw(138);
   nextMissionOrg_y = gui_percentYRaw(6);
   drawpic( nextMissionOrg, UI_DEF_BOX_256_BOX, gui_percentToPixelRawVec('128 24'), CLR_DEF_GRAY_H, 1, 0);
   MENU_DEBRIEF_BUTTON_ORG_mission = nextMissionOrg;
@@ -73,7 +73,7 @@ void(vector panelOffset) menu_debrief_header={
     missionStatus = "<< Retry ";
   }
   nextMissionLen = stringwidth( missionStatus, 0, '18 14');
-  nextMissionLabelOrg_x = gui_percentXRaw(VIEW_MAX_x) - gui_percentXRaw( nextMissionLen / 2) - gui_percentXRaw(138/2);  //106 accounts for pesky 10px margin
+  nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(16);
   nextMissionLabelOrg_y = gui_percentYRaw(10);
   drawstring( nextMissionLabelOrg, missionStatus, '18 14', '1 1 1', 1, 0);
   
@@ -214,7 +214,7 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
   local vector objectiveStatusOrg;
   local float objectiveStatusLen;
   
-  listStartOrg = thisOrg + gui_percentToPixelRawVec('6 8');
+  listStartOrg = thisOrg + gui_percentToPixelRawVec('6 20');
   list_index = 1;
   show_index = 0;
   line_return = 0;
@@ -246,7 +246,7 @@ void(vector panelOffset) menu_debrief_objectives_secondary={
           objectiveColor = CLR_DEF_ARM_ONEQ;
         }
         objectiveStatusLen = stringwidth( objectiveStatusLabel, 0, '16 16');
-        objectiveStatusOrg_x = (objectiveOffset_x + panelImageSize_x) - gui_percentXRaw(64 + (objectiveStatusLen / 2));
+        objectiveStatusOrg_x = (objectiveOffset_x + panelImageSize_x) - gui_percentXRaw(54 + (objectiveStatusLen / 2));
         objectiveStatusOrg_y = objectiveOffset_y;
         drawstring(objectiveStatusOrg, objectiveStatusLabel, '16 16', objectiveColor, 1, 0);
         objectiveOffset_y = objectiveOffset_y + line_return + gui_percentYRaw(12);
@@ -469,3 +469,5 @@ void(vector panelOffset) menu_debrief_unlocks={
   
   drawfont = drawfont_prev;
 };
+
+
