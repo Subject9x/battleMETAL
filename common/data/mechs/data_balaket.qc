@@ -24,9 +24,9 @@ void() data_ini_balaket_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 400;
-  self.energyRate= 3.75;
+  self.energyRate= 4.0;
   self.shieldMax = 400;
-  self.shieldRate= 2.75;
+  self.shieldRate= 3;
   self.startupDelay = 5;
 //=====================================
  

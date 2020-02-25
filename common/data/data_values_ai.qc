@@ -12,6 +12,10 @@ Overview: AI values that have been spun off from common/game
 //============================
 float AI_VOICE_TIME = 32;
 
+//this works to balance AI mech stats vs player mech stats.
+float AI_ADJUST_ENERGY = 0.75;
+float AI_ADJUST_SHIELD = 0.75;
+
 //AI TH_REACT cooldown
 float AI_REACT_ROK = 4;
 float AI_REACT_REG = 3;
@@ -42,10 +46,10 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.65;
-float AI_DMG_SKILL_REG = 0.75;
-float AI_DMG_SKILL_VET = 0.85;
-float AI_DMG_SKILL_ACE = 0.95;
+float AI_DMG_SKILL_ROK = 0.55;
+float AI_DMG_SKILL_REG = 0.65;
+float AI_DMG_SKILL_VET = 0.75;
+float AI_DMG_SKILL_ACE = 0.85;
 
 //Field of View as normalized dot product
 // 0.0 ~ 90d from center

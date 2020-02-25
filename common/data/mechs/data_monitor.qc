@@ -24,9 +24,9 @@ void() data_ini_monitor_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 600;
-  self.energyRate= 3.5;
+  self.energyRate= 3.85;
   self.shieldMax = 300;
-  self.shieldRate= 2.33;
+  self.shieldRate= 2.75;
   self.startupDelay = 9;
 //=====================================
  

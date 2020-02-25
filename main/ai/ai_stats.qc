@@ -70,6 +70,9 @@ void(float rank) ai_pilot_ini_stats={
   
   }
   
+  self.energyRate = self.energyRate * AI_ADJUST_ENERGY;
+  self.shieldRate = self.shieldRate * AI_ADJUST_SHIELD;
+  
   if( self.data_type == DATA_MECH ){
     self.shieldMax = self.shield = self.shield * AI_SHIELD_MECH;
   }
