@@ -11,7 +11,7 @@ Overview:
       Affects shields only
 */
 #ifndef CSQC
-float DAT_QRFL_QBITS = 8; 
+float DAT_QRFL_QBITS = 10; 
 
 void() data_ini_attack_quantum_;
 #endif
@@ -27,19 +27,20 @@ void() data_ini_quantum_={
   self.energyRate = 0;
   
   self.w_range = 2000;
-  self.damageValue = 5;
-  self.damageType = (DMG_BAL | EFF_STX | EFF_ENE);
+  self.damageValue = 7;
+  self.damageType = (DMG_BAL | EFF_PRC);
   
   self.techLevel = 2;
   self.equipSize = 1;
  
   #ifdef CSQC
   self.abbrev = "QRF";
-  self.description = "+ Damages Shields ONLY. + Instant-impact weapon. + 8 sub-munitions. + sub-munitions home on impact spot.";
+  self.description = "+ Instant-impact weapon. + Initial damage on-hit. + 8 sub-munitions. + sub-munitions home on impact spot.";
   self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
   #endif 
   
   #ifndef CSQC
+  self.damageValue = (DAT_QRFL_QBITS * self.damage) / 3 + 15;
   self.spreadDefault = '0.005 0.005 0';
   self.w_isburst = FALSE;
   self.burstRate = 0;
@@ -74,10 +75,18 @@ void() data_ini_attack_quantum_={
   if( trace_ent.takedamage ){
     hitZone = trace_ent.origin;
     hitMax = trace_ent.maxs * 4;
+    if( (self.owner.flags & FL_CLIENT) ){
+      t_damage(trace_ent, self, FIRE_ENT, 15, self.damageType, FIRE_ENDPOINT, '0 0 0');    
+    }
   }
-
   if( self.data_ini_projectile ){
-    qbits = DAT_QRFL_QBITS;
+    if( (self.owner.flags & FL_CLIENT) ){
+      qbits = DAT_QRFL_QBITS;
+    }
+    else{
+      qbits = rint(DAT_QRFL_QBITS * 0.33);
+    }
+    
     for( qbits = DAT_QRFL_QBITS; qbits > 0; qbits = qbits - 1){
       rando = randomvec();
       rando_x = hitZone_x + (hitMax_x * crandom()) * 3;
@@ -86,7 +95,7 @@ void() data_ini_attack_quantum_={
       if(pointcontents(rando) < CONTENT_EMPTY){
         continue;
       }
-      ctrl_weapon_make_projectile( 5 );
+      ctrl_weapon_make_projectile( 6 );
       NEWSHOT.velocity = normalize(hitZone - rando);
       NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
       NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
