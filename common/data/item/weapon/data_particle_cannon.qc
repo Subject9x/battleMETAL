@@ -7,7 +7,6 @@ Overview:
     Particle Cannon
       Range - Long
       Consumes Energy
-      Pierces Shields
       High Damage
       Single shot
       hit scan
@@ -23,19 +22,19 @@ void() data_ini_particle_cannon_={
   
   self.w_clipsize = 1;
   self.reloadRate = 0.1;
-  self.reloadMax = 8;
-  self.energyRate = 300;
+  self.reloadMax = 9;
+  self.energyRate = 250;
 
   self.w_range = 2000;
   self.damageValue = 250;
-  self.damageType = (DMG_ENE | EFF_PRC);
+  self.damageType = DMG_ENE;
  
   self.techLevel = 3;
   self.equipSize = 3;
   
   #ifdef CSQC
   self.abbrev = "PAC";
-  self.description = "+ Instant-impact weapon. + Ignores 75% of Target's CURRENT <shields value>.";
+  self.description = "+ Instant-impact weapon. + Damage ignores shields. + Target shields reduced by 15% of its max when hit.";
   self.icon = "gfx/ui/wep_icons/wi_pac.png"; 
   #endif 
   
@@ -53,6 +52,8 @@ void() data_ini_particle_cannon_={
 
 #ifndef CSQC
 void() data_ini_attack_particle_cannon_={
+  local vector strikePoint;
+  local float oldShields;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -66,19 +67,28 @@ void() data_ini_attack_particle_cannon_={
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   
   trailparticles( world, particleeffectnum("TE_PAC_RAIL"), FIRE_ORIGIN, FIRE_ENDPOINT);
-
+  
+  strikePoint = FIRE_ENDPOINT + (v_forward * -5);
+  
   if( trace_ent.takedamage ){
-    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
     if( trace_ent.shield > 0 ){
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), FIRE_ENDPOINT + (v_forward * -5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), FIRE_ENDPOINT + (v_forward * -5), '0 0 0', 1);
+      trace_ent.shield = trace_ent.shield - (trace_ent.shieldMax * 0.15);
+      if( trace_ent.shield < 0 ){
+        trace_ent.shield = 0;
+      }
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_SHIELD_POINT"), strikePoint, '0 0 0', 1);
     }
     else{
-      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"), FIRE_ENDPOINT + (v_forward * -5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+      pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"),strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
     }
+    strikePoint = trace_ent.shield;
+    trace_ent.shield = 0;
+    t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
+    trace_ent.shield = oldShields;
     return;
   }
   
-  pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), FIRE_ENDPOINT + (v_forward * -5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
+  pointparticles( particleeffectnum("TE_PAC_IMPACT_GROUND"), strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
 };
 #endif
