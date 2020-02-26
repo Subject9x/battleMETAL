@@ -82,7 +82,7 @@ void() data_ini_attack_particle_cannon_={
     else{
       pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"),strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
     }
-    strikePoint = trace_ent.shield;
+    oldShields = trace_ent.shield;
     trace_ent.shield = 0;
     t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
     trace_ent.shield = oldShields;

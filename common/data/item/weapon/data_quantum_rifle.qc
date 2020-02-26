@@ -40,7 +40,7 @@ void() data_ini_quantum_={
   #endif 
   
   #ifndef CSQC
-  self.damageValue = (DAT_QRFL_QBITS * self.damage) / 3 + 15;
+  self.damageValue = (DAT_QRFL_QBITS * self.damageValue) / 3 + 15;
   self.spreadDefault = '0.005 0.005 0';
   self.w_isburst = FALSE;
   self.burstRate = 0;
