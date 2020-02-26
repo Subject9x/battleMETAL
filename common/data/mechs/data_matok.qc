@@ -24,7 +24,7 @@ void() data_ini_matok_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax   = 800;
-  self.energyRate  = 4.6;
+  self.energyRate  = 4.85;
   self.shieldMax   = 600;
   self.shieldRate  = 3.33;
   self.startupDelay = 7;
