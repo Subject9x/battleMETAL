@@ -57,7 +57,6 @@ void(vector panelOffset) menu_debrief_header={
   //Next Mission Button
   local vector nextMissionOrg;
   local vector nextMissionLabelOrg;
-  local float nextMissionLen;
   
   nextMissionOrg_x = VIEW_MAX_x - gui_percentXRaw(138);
   nextMissionOrg_y = gui_percentYRaw(6);
@@ -68,12 +67,12 @@ void(vector panelOffset) menu_debrief_header={
   local string missionStatus;
   if( MENU_DEBRIEF_status ){
     missionStatus = "[Next Mission]";
+    nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(16);
   }
   else{
     missionStatus = "<< Retry ";
+    nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(32);
   }
-  nextMissionLen = stringwidth( missionStatus, 0, '18 14');
-  nextMissionLabelOrg_x = nextMissionOrg_x + gui_percentXRaw(16);
   nextMissionLabelOrg_y = gui_percentYRaw(10);
   drawstring( nextMissionLabelOrg, missionStatus, '18 14', '1 1 1', 1, 0);
   
