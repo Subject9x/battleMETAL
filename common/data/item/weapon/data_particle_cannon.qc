@@ -54,6 +54,7 @@ void() data_ini_particle_cannon_={
 void() data_ini_attack_particle_cannon_={
   local vector strikePoint;
   local float oldShields;
+  local entity thisTarget;
   
   if( !ctrl_weapon_checkEnergy() ){
     return;
@@ -82,10 +83,13 @@ void() data_ini_attack_particle_cannon_={
     else{
       pointparticles( particleeffectnum("TE_PAC_IMPACT_ARMOR"),strikePoint, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * -4, 1);
     }
-    oldShields = trace_ent.shield;
-    trace_ent.shield = 0;
+    thisTarget = trace_ent;
+    oldShields = thisTarget.shield;
+    thisTarget.shield = 0;
     t_damage(trace_ent, self, FIRE_ENT, self.damageValue, self.damageType, FIRE_ENDPOINT + (v_forward*3), '0 0 0');
-    trace_ent.shield = oldShields;
+    if( oldShields > 0 &&  thisTarget.deadflag <= DEAD_NO ){
+      thisTarget.shield = oldShields;
+    }
     return;
   }
   

@@ -24,12 +24,12 @@ void() data_ini_electro_repeater_={
   self.w_name = "ESR";
   
   self.w_clipsize = 1;
-  self.reloadRate = 0.5;
-  self.reloadMax = 0.5;
-  self.energyRate = 40;
+  self.reloadRate = 0.23;
+  self.reloadMax = 0.23;
+  self.energyRate = 18;
   
   self.w_range = 450;
-  self.damageValue = 60;
+  self.damageValue = 7;
   self.damageType = DMG_ENE;
 
   self.techLevel = 2;
@@ -42,7 +42,7 @@ void() data_ini_electro_repeater_={
   #endif
   
   #ifndef CSQC
-  self.spreadDefault = '0.1 0.1 0';
+  self.spreadDefault = '0.15 0.2 0';
   self.w_isburst = FALSE;
   self.burstRate = 0;
   self.wepFireOffset = '0 0 6'; 

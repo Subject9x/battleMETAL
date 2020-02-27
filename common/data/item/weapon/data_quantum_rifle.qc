@@ -10,9 +10,10 @@ Overview:
       Submunitions
       Affects shields only
 */
-#ifndef CSQC
+
 float DAT_QRFL_QBITS = 10; 
 
+#ifndef CSQC
 void() data_ini_attack_quantum_;
 #endif
 
@@ -27,20 +28,20 @@ void() data_ini_quantum_={
   self.energyRate = 0;
   
   self.w_range = 2000;
-  self.damageValue = 7;
-  self.damageType = (DMG_BAL | EFF_PRC);
+  self.damageValue = 4;
+  self.damageType = DMG_BAL;
   
   self.techLevel = 2;
   self.equipSize = 1;
  
   #ifdef CSQC
+  self.damageValue = (DAT_QRFL_QBITS * self.damageValue) / 3 + 15;
   self.abbrev = "QRF";
   self.description = "+ Instant-impact weapon. + Initial damage on-hit. + 8 sub-munitions. + sub-munitions home on impact spot.";
   self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
   #endif 
   
   #ifndef CSQC
-  self.damageValue = (DAT_QRFL_QBITS * self.damageValue) / 3 + 15;
   self.spreadDefault = '0.005 0.005 0';
   self.w_isburst = FALSE;
   self.burstRate = 0;
@@ -72,9 +73,21 @@ void() data_ini_attack_quantum_={
   hitZone = FIRE_ENDPOINT;
   hitMax = '25 25 25';
   hitMin = '-25 -25 -25';
+  
+  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
+  prtclRail_org = FIRE_ORIGIN + (v_forward * 2);
+  prtclRail_end = FIRE_ORIGIN + (v_forward * 48);
+  prtclSpark_org = FIRE_ORIGIN + (v_forward * 22);
+  
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1);
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1);
+  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1);
+  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5));
+  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5));
+  
   if( trace_ent.takedamage ){
     hitZone = trace_ent.origin;
-    hitMax = trace_ent.maxs * 4;
+    hitMax = trace_ent.maxs * 3;
     if( (self.owner.flags & FL_CLIENT) ){
       t_damage(trace_ent, self, FIRE_ENT, 15, self.damageType, FIRE_ENDPOINT, '0 0 0');    
     }
@@ -103,16 +116,5 @@ void() data_ini_attack_quantum_={
       setorigin(NEWSHOT, rando);
     }
   }
-
-  sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
-  prtclRail_org = FIRE_ORIGIN + (v_forward * 2);
-  prtclRail_end = FIRE_ORIGIN + (v_forward * 48);
-  prtclSpark_org = FIRE_ORIGIN + (v_forward * 22);
-  
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE"), prtclRail_org, normalize( FIRE_ENDPOINT - FIRE_ORIGIN ), 1);
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org + (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1);
-  pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1);
-  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5));
-  trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5));
 };
 #endif
