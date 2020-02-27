@@ -19,7 +19,7 @@ void() data_ini_heavy_turret_={
   self.vec_size = 2;
   self.vec_name = "Heavy Turret";
  
-  self.max_health = 665;
+  self.max_health = 581;
   setsize(self, '-28 -28 -16', '28 28 28');
   
 //ENERGY AND SHIELDS===================

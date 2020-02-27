@@ -14,7 +14,7 @@ void() data_projectile_ini_quantum_bit_={
   self.classname = "missile";
   self.touch = data_projectile_ini_quantum_bit_touch_;
   self.data_idx = 0;
-  self.data_velocity = 300;
+  self.data_velocity = 275;
   self.model = "q3mdl/proj/mdl_proj_qrfl.md3";
   self.data_lifetime = 4;
   
@@ -23,6 +23,7 @@ void() data_projectile_ini_quantum_bit_={
   self.modelflags = 0;
   self.traileffectnum = particleeffectnum("TE_QRFL_QBIT_TRAIL");
   self.think = SUB_Remove;
+  self.damageType = self.damageType | EFF_SHD;
 };
 
 void() data_projectile_ini_quantum_bit_touch_={

@@ -24,9 +24,9 @@ void() data_ini_matok_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax   = 800;
-  self.energyRate  = 4.35;
+  self.energyRate  = 4.85;
   self.shieldMax   = 600;
-  self.shieldRate  = 2.5;
+  self.shieldRate  = 3.33;
   self.startupDelay = 7;
 //=====================================
  
@@ -42,9 +42,9 @@ void() data_ini_matok_={
   self.data_speed_backward = 90;
   self.data_speed_accel = 1.5;
   #ifndef CSQC
-  self.yaw_speed = 2.75;    // AI-only 
-  self.turret_yaw_speed = 3.25;// AI-only
-  self.ai_angleLimits = '-100 100 0';
+  self.yaw_speed = 3;    // AI-only 
+  self.turret_yaw_speed = 3.5;// AI-only
+  self.ai_angleLimits = '-125 125 0';
   #endif
 //=====================================
  

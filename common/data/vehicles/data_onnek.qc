@@ -19,7 +19,7 @@ void() data_ini_onnek_={
   self.vec_size = 2;  //
   self.vec_name = "Onnek";
  
-  self.max_health = 399;
+  self.max_health = 350;
   setsize(self, '-30 -30 -10.25', '30 30 28');
   
 //ENERGY AND SHIELDS===================

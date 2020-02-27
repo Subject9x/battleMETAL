@@ -3,6 +3,7 @@ battleMETAL
 Author: Peter Roohr
 Date: 8/30/2018
 Mod: 02/11/2019
+Mod: 02/25/2019
 Overview: AI values that have been spun off from common/game
 */
 
@@ -11,11 +12,15 @@ Overview: AI values that have been spun off from common/game
 //============================
 float AI_VOICE_TIME = 32;
 
+//this works to balance AI mech stats vs player mech stats.
+float AI_ADJUST_ENERGY = 0.75;
+float AI_ADJUST_SHIELD = 0.75;
+
 //AI TH_REACT cooldown
-float AI_REACT_ROK = 5;
-float AI_REACT_REG = 4;
-float AI_REACT_VET = 3;
-float AI_REACT_ACE = 2;
+float AI_REACT_ROK = 4;
+float AI_REACT_REG = 3;
+float AI_REACT_VET = 2;
+float AI_REACT_ACE = 1;
 
 //AI movement speed ratio 
 float AI_WALK_SPD = 0.075;
@@ -41,26 +46,25 @@ float AI_RANK_REG = 1;  //regular
 float AI_RANK_ROK = 0;  //rookie
 
 //DAMAGE DETUNING - Game Difficulty
-float AI_DMG_SKILL_ROK = 0.7;
-float AI_DMG_SKILL_REG = 0.8;
-float AI_DMG_SKILL_VET = 0.9;
-float AI_DMG_SKILL_ACE = 1;
+float AI_DMG_SKILL_ROK = 0.55;
+float AI_DMG_SKILL_REG = 0.65;
+float AI_DMG_SKILL_VET = 0.75;
+float AI_DMG_SKILL_ACE = 0.85;
 
 //Field of View as normalized dot product
 // 0.0 ~ 90d from center
 //these are multipliers
-float AI_FOV_ROK = 0.72;
-float AI_FOV_REG = 0.48;
-float AI_FOV_VET = 0.24;
+float AI_FOV_ROK = 0.50;
+float AI_FOV_REG = 0.35;
+float AI_FOV_VET = 0.2;
 float AI_FOV_ACE = 0;
 
 //time interval between view sweeps
-float AI_VIEW_INTERVAL = 0.75;
 //these are multipliers
-float AI_VIEW_ROK = 1.33;
-float AI_VIEW_REG = 1;
-float AI_VIEW_VET = 0.67;
-float AI_VIEW_ACE = 0.33;
+float AI_VIEW_ROK = 1;
+float AI_VIEW_REG = 0.85;
+float AI_VIEW_VET = 0.65;
+float AI_VIEW_ACE = 0.45;
 
 //View Ranges, multipliers against ai.radar_range
 float AI_VIEW_RANGE_ROK = 0.75;
@@ -69,15 +73,13 @@ float AI_VIEW_RANGE_VET = 1.25;
 float AI_VIEW_RANGE_ACE = 1.5;
 
 //Adjust yaw_speed
-float AI_YAW_ROK = 0.85;
-float AI_YAW_REG = 1;
 float AI_YAW_VET = 1.1;
 float AI_YAW_ACE = 1.15;
 
 //attack chances
-float AI_ATTACK_ROK = 0.4;
-float AI_ATTACK_REG = 0.3;
-float AI_ATTACK_VET = 0.2;
+float AI_ATTACK_ROK = 0.3;
+float AI_ATTACK_REG = 0.25;
+float AI_ATTACK_VET = 0.15;
 float AI_ATTACK_ACE = 0.1;
 
 //WEAPON TWEAKS
@@ -101,24 +103,15 @@ float AI_CNV_RATE_REG  = 0.2;
 float AI_CNV_RATE_VET  = 0.25;
 float AI_CNV_RATE_ACE  = 0.3;
 
-//armor based on difficulty
+//Armor Values
 //hp = hp * AI_ARMOR
-float AI_ARMOR_EASY =  0.5;
-float AI_ARMOR_MEDM =  0.75;
-float AI_ARMOR_HARD =  1;
-float AI_ARMOR_NIGHT = 1.25;
+//AI mechs share initial stats with the player, so we have to detune them now.
+float AI_ARMOR_MECH = 0.67;
 
-float AI_ARMOR_MECH_EASY = 0.2;
-float AI_ARMOR_MECH_MEDM = 0.3;
-float AI_ARMOR_MECH_HARD = 0.4;
-float AI_ARMOR_MECH_NIGHT = 0.5;
-
-//shield based on difficulty
+//Shield Values
 //shield = shield * AI_SHIELD
-float AI_SHIELD_ROK = 0.2;
-float AI_SHIELD_REG = 0.4;
-float AI_SHIELD_VET = 0.6;
-float AI_SHIELD_ACE = 0.8;
+//AI mechs share initial stats with player, so we have to detune them now.
+float AI_SHIELD_MECH = 0.85;
 
 //ai_leading ratings, how well an ai tracks a slippery target
 float AI_LEAD_ACE = 0.3;
@@ -132,8 +125,8 @@ float AI_RANGE_M = 1000;
 float AI_RANGE_L = 1600;
 
 //Frameset counter, how many loops of a frame set
-float AI_REFLEX_ACE = 1;
-float AI_REFLEX_VET = 2;
+float AI_REFLEX_ACE = 0;
+float AI_REFLEX_VET = 1;
 float AI_REFLEX_REG = 2;
 float AI_REFLEX_ROK = 3;
 

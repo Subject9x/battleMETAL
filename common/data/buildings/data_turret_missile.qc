@@ -19,7 +19,7 @@ void() data_ini_missile_turret_={
   self.vec_size = 1;
   self.vec_name = "Missile Turret";
  
-  self.max_health = 532;
+  self.max_health = 465;
   setsize(self, '-20 -20 -13', '20 20 20');
   
 //ENERGY AND SHIELDS===================

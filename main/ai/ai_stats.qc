@@ -50,24 +50,31 @@ void() ai_unit_ini_var={
   initialize all ai pilot stats, cleans up the ini for any ai unit
 */
 void(float rank) ai_pilot_ini_stats={
-  local float mod_am;
 
-  mod_am = ai_pilot_armor_mod();
-  self.max_health = self.health = self.health * mod_am;
-  if( (self.legs) ){
-    self.legs.max_health = self.legs.health = self.legs.health * mod_am;
+  if( self.data_type == DATA_MECH ){
+    if( (self.legs) ){
+      self.legs.max_health = self.legs.health = self.legs.health * AI_ARMOR_MECH;
+    }
+    if( (self.torsoLeft) ){
+      self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * AI_ARMOR_MECH;
+    }
+    if( (self.torsoRight) ){
+      self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * AI_ARMOR_MECH;
+    } 
+    if( (self.armRight) ){
+      self.armRight.max_health = self.armRight.health = self.armRight.health * AI_ARMOR_MECH;
+    } 
+    if( (self.armLeft) ){
+      self.armLeft.max_health = self.armLeft.health = self.armLeft.health * AI_ARMOR_MECH;
+    }
+  
   }
-  if( (self.torsoLeft) ){
-    self.torsoLeft.max_health = self.torsoLeft.health = self.torsoLeft.health * mod_am;
-  }
-  if( (self.torsoRight) ){
-    self.torsoRight.max_health = self.torsoRight.health = self.torsoRight.health * mod_am;
-  } 
-  if( (self.armRight) ){
-    self.armRight.max_health = self.armRight.health = self.armRight.health * mod_am;
-  } 
-  if( (self.armLeft) ){
-    self.armLeft.max_health = self.armLeft.health = self.armLeft.health * mod_am;
+  
+  self.energyRate = self.energyRate * AI_ADJUST_ENERGY;
+  self.shieldRate = self.shieldRate * AI_ADJUST_SHIELD;
+  
+  if( self.data_type == DATA_MECH ){
+    self.shieldMax = self.shield = self.shield * AI_SHIELD_MECH;
   }
  
   self.spreadDefault = ai_pilot_accuracy( rank, self.spreadDefault );
@@ -104,16 +111,9 @@ void() ai_pilot_ini_rok={
   self.ai_react_time = AI_REACT_ROK;
   self.ai_fov = AI_FOV_ROK;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_ROK;
-  self.ai_viewcheck = AI_VIEW_INTERVAL * AI_VIEW_ROK;
+  self.ai_viewcheck = AI_VIEW_ROK;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_ROK );
-  if(self.yaw_speed){
-    self.yaw_speed = self.yaw_speed * AI_YAW_ROK;
-  }
-  if(self.turret_yaw_speed){
-    self.turret_yaw_speed = self.turret_yaw_speed * AI_YAW_ROK;
-  }
   self.ai_leading = AI_LEAD_ROK;
-  self.shieldMax = self.shield = self.shield * AI_SHIELD_ROK;
   self.ai_attack_chance = 0.05 + AI_ATTACK_ROK;
   self.w_firetime = self.w_firetime * 2;
 };
@@ -122,16 +122,9 @@ void() ai_pilot_ini_reg={
   self.ai_react_time = AI_REACT_REG;
   self.ai_fov = AI_FOV_REG;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_REG;
-  self.ai_viewcheck = AI_VIEW_INTERVAL * AI_VIEW_REG;
+  self.ai_viewcheck = AI_VIEW_REG;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_REG );
-  if(self.yaw_speed){
-    self.yaw_speed = self.yaw_speed * AI_YAW_REG;
-  }
-  if(self.turret_yaw_speed){
-    self.turret_yaw_speed = self.turret_yaw_speed * AI_YAW_REG;
-  }
   self.ai_leading = AI_LEAD_REG;
-  self.shieldMax = self.shield = self.shield * AI_SHIELD_REG;
   self.ai_attack_chance = 0.1 + AI_ATTACK_REG;
   self.w_firetime = self.w_firetime * 1;
 
@@ -141,7 +134,7 @@ void() ai_pilot_ini_vet={
   self.ai_react_time = AI_REACT_VET;
   self.ai_fov = AI_FOV_VET;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_VET;
-  self.ai_viewcheck = AI_VIEW_INTERVAL * AI_VIEW_VET;
+  self.ai_viewcheck = AI_VIEW_VET;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_VET );
   if(self.yaw_speed){
     self.yaw_speed = self.yaw_speed * AI_YAW_VET;
@@ -150,7 +143,6 @@ void() ai_pilot_ini_vet={
     self.turret_yaw_speed = self.turret_yaw_speed * AI_YAW_VET;
   }
   self.ai_leading = AI_LEAD_VET;
-  self.shieldMax = self.shield = self.shield * AI_SHIELD_VET;
   self.ai_attack_chance = 0.2 + AI_ATTACK_VET;
   self.w_firetime = self.w_firetime * 0.75;
 };
@@ -159,7 +151,7 @@ void() ai_pilot_ini_ace={
   self.ai_react_time = AI_REACT_ACE;
   self.ai_fov = AI_FOV_ACE;
   self.ai_view = self.radar_range * AI_VIEW_RANGE_ACE;
-  self.ai_viewcheck = AI_VIEW_INTERVAL * AI_VIEW_ACE;
+  self.ai_viewcheck = AI_VIEW_ACE;
   self.ai_action_mod = self.ai_action_time = ai_pilot_action_mod( AI_REFLEX_ACE );
   if(self.yaw_speed){
     self.yaw_speed = self.yaw_speed * AI_YAW_ACE;
@@ -168,7 +160,6 @@ void() ai_pilot_ini_ace={
     self.turret_yaw_speed = self.turret_yaw_speed * AI_YAW_ACE;
   }
   self.ai_leading = AI_LEAD_ACE;
-  self.shieldMax = self.shield = self.shield * AI_SHIELD_ACE;
   self.ai_attack_chance = 0.3 + AI_ATTACK_ACE;
   self.w_firetime = self.w_firetime * 0.6;
 };
@@ -214,40 +205,6 @@ float(float rank) ai_pilot_action_mod={
   actionTime = rank + slow;
   return actionTime;
 };
-
-/*
-  Armor amounts for AI units is modified by the game's skill
-  rating. Easier skill modes mean each AI has less armor.
-  Mechs are a special case because health-wise they're like 5 vhicles combined
-  into 1 unit...
-*/
-float() ai_pilot_armor_mod={
-
-  if( self.data_type == DATA_MECH ){
-    switch( self.ai_rank ){
-      case SKILL_NOV:
-        return AI_ARMOR_MECH_EASY;
-      case SKILL_VET:
-        return AI_ARMOR_MECH_HARD;
-      case SKILL_ELT:
-        return AI_ARMOR_MECH_NIGHT;
-      default:
-        return AI_ARMOR_MECH_MEDM;
-    }
-  }
-  else{
-    switch( self.ai_rank ){
-      case SKILL_NOV:
-        return AI_ARMOR_EASY;
-      case SKILL_VET:
-        return AI_ARMOR_HARD;
-      case SKILL_ELT:
-        return AI_ARMOR_NIGHT;
-      default:
-        return AI_ARMOR_MECH_MEDM;
-    }
-  }
-}
 
 void() ai_promote={
   self.ai_rank = skill;

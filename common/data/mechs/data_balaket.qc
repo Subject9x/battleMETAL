@@ -24,9 +24,9 @@ void() data_ini_balaket_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 400;
-  self.energyRate= 3.75;
+  self.energyRate= 4.0;
   self.shieldMax = 400;
-  self.shieldRate= 2.75;
+  self.shieldRate= 3;
   self.startupDelay = 5;
 //=====================================
  
@@ -42,9 +42,9 @@ void() data_ini_balaket_={
   self.data_speed_backward = 150;
   self.data_speed_accel = 1.5;
   #ifndef CSQC
-  self.yaw_speed = 3.25;    // AI-only 
-  self.turret_yaw_speed = 3.75;// AI-only
-  self.ai_angleLimits = '-125 125 0';
+  self.yaw_speed = 3.75;    // AI-only 
+  self.turret_yaw_speed = 4.25;// AI-only
+  self.ai_angleLimits = '-135 135 0';
   #endif
 //=====================================
  

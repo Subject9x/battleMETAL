@@ -24,9 +24,9 @@ void() data_ini_monitor_={
   
 //ENERGY AND SHIELDS===================
   self.energyMax = 600;
-  self.energyRate= 3.5;
+  self.energyRate= 3.85;
   self.shieldMax = 300;
-  self.shieldRate= 2.33;
+  self.shieldRate= 2.75;
   self.startupDelay = 9;
 //=====================================
  
@@ -42,9 +42,9 @@ void() data_ini_monitor_={
   self.data_speed_backward = 85;
   self.data_speed_accel = 2;
   #ifndef CSQC
-  self.yaw_speed = 1.75;    // AI-only 
-  self.turret_yaw_speed = 2;// AI-only
-  self.ai_angleLimits = '-75 75 0';
+  self.yaw_speed = 2;    // AI-only 
+  self.turret_yaw_speed = 2.75;// AI-only
+  self.ai_angleLimits = '-100 100 0';
   #endif
 //=====================================
  

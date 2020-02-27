@@ -10,9 +10,10 @@ Overview:
       Submunitions
       Affects shields only
 */
-#ifndef CSQC
-float DAT_QRFL_QBITS = 8; 
 
+float DAT_QRFL_QBITS = 10; 
+
+#ifndef CSQC
 void() data_ini_attack_quantum_;
 #endif
 
@@ -27,15 +28,16 @@ void() data_ini_quantum_={
   self.energyRate = 0;
   
   self.w_range = 2000;
-  self.damageValue = 5;
-  self.damageType = (DMG_BAL | EFF_STX | EFF_ENE);
+  self.damageValue = 4;
+  self.damageType = DMG_BAL;
   
   self.techLevel = 2;
   self.equipSize = 1;
  
   #ifdef CSQC
+  self.damageValue = (DAT_QRFL_QBITS * self.damageValue) / 3 + 15;
   self.abbrev = "QRF";
-  self.description = "+ Damages Shields ONLY. + Instant-impact weapon. + 8 sub-munitions. + sub-munitions home on impact spot.";
+  self.description = "+ Instant-impact weapon. + Initial damage on-hit. + 8 sub-munitions. + sub-munitions home on impact spot.";
   self.icon = "gfx/ui/wep_icons/wi_qrf.png"; 
   #endif 
   
@@ -71,30 +73,7 @@ void() data_ini_attack_quantum_={
   hitZone = FIRE_ENDPOINT;
   hitMax = '25 25 25';
   hitMin = '-25 -25 -25';
-  if( trace_ent.takedamage ){
-    hitZone = trace_ent.origin;
-    hitMax = trace_ent.maxs * 4;
-  }
-
-  if( self.data_ini_projectile ){
-    qbits = DAT_QRFL_QBITS;
-    for( qbits = DAT_QRFL_QBITS; qbits > 0; qbits = qbits - 1){
-      rando = randomvec();
-      rando_x = hitZone_x + (hitMax_x * crandom()) * 3;
-      rando_y = hitZone_y + (hitMax_y * crandom()) * 2;
-      rando_z = hitZone_z + (hitMax_z * crandom()) * 3;
-      if(pointcontents(rando) < CONTENT_EMPTY){
-        continue;
-      }
-      ctrl_weapon_make_projectile( 5 );
-      NEWSHOT.velocity = normalize(hitZone - rando);
-      NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
-      NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
-      setsize(NEWSHOT, '0 0 0', '0 0 0');
-      setorigin(NEWSHOT, rando);
-    }
-  }
-
+  
   sound (self, CHAN_ITEM, self.fire_sound, 1, ATTN_NORM);
   prtclRail_org = FIRE_ORIGIN + (v_forward * 2);
   prtclRail_end = FIRE_ORIGIN + (v_forward * 48);
@@ -105,5 +84,37 @@ void() data_ini_attack_quantum_={
   pointparticles( particleeffectnum("TE_QRFL_MUZZLE_SPARK"), prtclSpark_org - (v_right * 0.5), normalize( FIRE_ENDPOINT - FIRE_ORIGIN ) * 30, 1);
   trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org + (v_right * 0.5), prtclRail_end + (v_right * 0.5));
   trailparticles( self, particleeffectnum("TE_QRFL_MUZZLE_RAIL"), prtclRail_org - (v_right * 0.5), prtclRail_end - (v_right * 0.5));
+  
+  if( trace_ent.takedamage ){
+    hitZone = trace_ent.origin;
+    hitMax = trace_ent.maxs * 3;
+    if( (self.owner.flags & FL_CLIENT) ){
+      t_damage(trace_ent, self, FIRE_ENT, 15, self.damageType, FIRE_ENDPOINT, '0 0 0');    
+    }
+  }
+  if( self.data_ini_projectile ){
+    if( (self.owner.flags & FL_CLIENT) ){
+      qbits = DAT_QRFL_QBITS;
+    }
+    else{
+      qbits = rint(DAT_QRFL_QBITS * 0.33);
+    }
+    
+    for( qbits = DAT_QRFL_QBITS; qbits > 0; qbits = qbits - 1){
+      rando = randomvec();
+      rando_x = hitZone_x + (hitMax_x * crandom()) * 3;
+      rando_y = hitZone_y + (hitMax_y * crandom()) * 2;
+      rando_z = hitZone_z + (hitMax_z * crandom()) * 3;
+      if(pointcontents(rando) < CONTENT_EMPTY){
+        continue;
+      }
+      ctrl_weapon_make_projectile( 6 );
+      NEWSHOT.velocity = normalize(hitZone - rando);
+      NEWSHOT.velocity = NEWSHOT.velocity * NEWSHOT.data_velocity;
+      NEWSHOT.angles = vectoangles(NEWSHOT.velocity);
+      setsize(NEWSHOT, '0 0 0', '0 0 0');
+      setorigin(NEWSHOT, rando);
+    }
+  }
 };
 #endif
