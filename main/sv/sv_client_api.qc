@@ -195,7 +195,7 @@ void() PutClientInServer = {
   client_sendGameMode(gamemode);
 
   if( !cvar("coop") && !cvar("deathmatch") ){
-  client_sendGameMode(GAMEMODE_CAMPAIGN);
+    client_sendGameMode(GAMEMODE_CAMPAIGN);
     if(world.model == "maps/o1m1.bsp"){
       //pre-populate default save file
       savefile_load( FALSE );
@@ -227,8 +227,10 @@ void() PutClientInServer = {
       player_makeObserver();
       
       client_push_mapobjects();
-      client_sendAvailable_Mechs(SAVE_MECHS_LIST);
-      client_sendAvailableItems(SAVE_ITEMS_ALL);
+      if( !coop && !deathmatch ){
+        client_sendAvailable_Mechs(SAVE_MECHS_LIST);
+        client_sendAvailableItems(SAVE_ITEMS_ALL);
+      }
       client_sendFog(self, world.fog_density, world.fog_color, world.fog_alpha, world.fog_dist, world.fade);
       
       if(!coop && !deathmatch){
