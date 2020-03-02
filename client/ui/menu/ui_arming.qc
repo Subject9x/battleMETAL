@@ -590,7 +590,6 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
     drawstring(col_b - gui_percentToPixelRawVec('-4 12'), "2", '10 10 0', '1 1 1', 1, 0);
     drawstring(col_c - gui_percentToPixelRawVec('-4 12'), "3", '10 10 0', '1 1 1', 1, 0);
     drawstring(col_d - gui_percentToPixelRawVec('-4 12'), "4", '10 10 0', '1 1 1', 1, 0);
-    drawstring(col_e - gui_percentToPixelRawVec('-4 12'), "5", '10 10 0', '1 1 1', 1, 0);
   drawfont = drawfont_prev;
   
   lst_idx = 1;
@@ -614,7 +613,6 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
       gui_renderTintImage((CLIENT_MENU_nex_grp2 & bit),  lofs + gui_percentToPixelRawVec('60 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
       gui_renderTintImage((CLIENT_MENU_nex_grp3 & bit),  lofs + gui_percentToPixelRawVec('80 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
       gui_renderTintImage((CLIENT_MENU_nex_grp4 & bit),  lofs + gui_percentToPixelRawVec('100 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
-      gui_renderTintImage((CLIENT_MENU_nex_grp5 & bit),  lofs + gui_percentToPixelRawVec('120 -3'), UI_DEF_BOX_256, groupButtonSize, CLR_DEF_ARM_OK, 1, 0);
     }
     
     bit = bit * 2;
@@ -626,16 +624,14 @@ void(vector ofs) menu_arming_WeaponGroupPanel={
   WEPNGRP_CNT_B = lst_idx;
   WEPNGRP_CNT_C = lst_idx;
   WEPNGRP_CNT_D = lst_idx;
-  WEPNGRP_CNT_E = lst_idx;
   
   WEPNGRP_ORG_A = col_a;
   WEPNGRP_ORG_B = col_b;
   WEPNGRP_ORG_C = col_c;
   WEPNGRP_ORG_D = col_d;
-  WEPNGRP_ORG_E = col_e;
   
-  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = WEPNGRP_SIZE_D_x = WEPNGRP_SIZE_E_x = groupButtonSize_x;
-  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = WEPNGRP_SIZE_D_y = WEPNGRP_SIZE_E_y = gui_percentYRaw((lst_idx - 1) * 20);
+  WEPNGRP_SIZE_A_x = WEPNGRP_SIZE_B_x = WEPNGRP_SIZE_C_x = WEPNGRP_SIZE_D_x = groupButtonSize_x;
+  WEPNGRP_SIZE_A_y = WEPNGRP_SIZE_B_y = WEPNGRP_SIZE_C_y = WEPNGRP_SIZE_D_y = gui_percentYRaw((lst_idx - 1) * 20);
   
   local vector helpOrg;
   helpOrg = nofs;

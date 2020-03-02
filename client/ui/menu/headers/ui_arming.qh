@@ -74,11 +74,6 @@ float WEPNLIST_CNT;
   vector WEPNGRP_ORG_D;
   vector WEPNGRP_SIZE_D;
   
-// weapon group E
-  float WEPNGRP_CNT_E;
-  vector WEPNGRP_ORG_E;
-  vector WEPNGRP_SIZE_E;
-  
 //energy draw group vals
 float GROUP_ENE_1;
 float GROUP_ENE_2;

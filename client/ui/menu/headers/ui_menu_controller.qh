@@ -58,7 +58,6 @@ float CLIENT_MENU_nex_grp1;
 float CLIENT_MENU_nex_grp2;
 float CLIENT_MENU_nex_grp3;
 float CLIENT_MENU_nex_grp4;
-float CLIENT_MENU_nex_grp5;
 //
 
 string MISSION_OBJECTIVES[12];

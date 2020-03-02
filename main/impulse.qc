@@ -38,7 +38,7 @@ void() playerAttack={
   }
   else{
     if(self.button0){
-
+      weaponGroup = self.currentWeaponGroup;  
     }
     else{
       if(self.button3)
@@ -102,6 +102,27 @@ void() ImpulseCommands ={
     self.currentWeaponGroup = 1;
     client_send_event_change_fire(client, 0);
   }
+  
+  if(self.impulse == IMP_WGROUP1){
+    if( self.stat_plr_fir == FIRE_GROUP ){
+      self.currentWeaponGroup = self.w_group1;
+    }
+  }
+  if(self.impulse == IMP_WGROUP2){
+    if( self.stat_plr_fir == FIRE_GROUP ){
+      self.currentWeaponGroup = self.w_group2;
+    }
+  }
+  if(self.impulse == IMP_WGROUP3){
+    if( self.stat_plr_fir == FIRE_GROUP ){
+      self.currentWeaponGroup = self.w_group3;
+    }
+  }
+  if(self.impulse == IMP_WGROUP4){
+    if( self.stat_plr_fir == FIRE_GROUP ){
+      self.currentWeaponGroup = self.w_group4;
+    }
+  }
   if(self.impulse == IMP_FSINGLE){
     self.stat_plr_fir = FIRE_SINGLE;
   }
@@ -120,6 +141,7 @@ void() ImpulseCommands ={
     }
     mpls_groupFire(self.aState);
   }
+  
   
   if(self.impulse == IMP_TARGET){
     sv_getTarget();
