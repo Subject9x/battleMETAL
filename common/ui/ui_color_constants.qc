@@ -18,6 +18,7 @@ vector CLR_DEF_RED = '1 0 0';
 vector CLR_DEF_GREEN = '0 1 0';
 vector CLR_DEF_BLUE = '0 0 1';
 
+vector CLR_DEF_GREEN_OK = '0 0.8 0.25';
 //UI Theming
 vector CLR_DEF_UI_BRIEF;
 vector CLR_DEF_UI_HANGAR;

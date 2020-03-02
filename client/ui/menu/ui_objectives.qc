@@ -31,9 +31,11 @@ void(vector org) ui_objective_frame={
           colr = HUD_COLOR_DEF;
           if( complete == OBJECTIVE_FAIL ){
             colr = CLR_DEF_RED;
+            obj = strcat(obj, " !FAILED!");
           }
           if( complete == OBJECTIVE_WIN ){
-            colr = CLR_DEF_ARM_OK;
+            colr = CLR_DEF_GREEN_OK;
+            obj = strcat(obj, " [COMPLETE]");
           }
           drawstring(line, obj, '12 12 0', colr, 0.9, 0);
           lst_idx = lst_idx + 1;
