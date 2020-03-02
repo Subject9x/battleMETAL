@@ -395,13 +395,13 @@ void() click_graphics_aniso_more={
 void() click_graphics_aniso_less={
   local float sampl;
   sampl = graphics_aniso_lbl.len;
-  sampl = sampl * 0.5;
-  if(sampl <= 1){
-    sampl = 16;
-    graphics_aniso_more.drawme = FALSE;
+  sampl = sampl / 2;
+  if(sampl <= 2){
+    sampl = 2;
+    graphics_aniso_less.drawme = FALSE;
   }
-  if( !graphics_aa_more.drawme ){
-    graphics_aa_more.drawme = TRUE;
+  if( !graphics_aniso_more.drawme ){
+    graphics_aniso_more.drawme = TRUE;
   }
   graphics_aniso_lbl.len = sampl;
   strunzone(graphics_aniso_lbl.label); 
@@ -656,6 +656,7 @@ void() click_graphics_accept={
   cvar_set("saved2", ftos(graphics_gfx_lbl.len));
   
   cmd("saveconfig\n");
+  cmd("loadconfig\n");
   cmd("vid_restart\n");
 };
 
@@ -772,7 +773,7 @@ void() m_graphics_i={
   if(graphics_aniso_lbl.len == 32){
     graphics_aniso_more.drawme = FALSE;
   }
-  else if(graphics_aniso_lbl.len == 1){
+  else if(graphics_aniso_lbl.len == 2){
     graphics_aniso_less.drawme = FALSE;
   }
   
