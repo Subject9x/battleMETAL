@@ -335,7 +335,6 @@ void() mechAcceptButtonListener={
       cl_setweapongroup(2, CLIENT_MENU_nex_grp2);
       cl_setweapongroup(3, CLIENT_MENU_nex_grp3);
       cl_setweapongroup(4, CLIENT_MENU_nex_grp4);
-      cl_setweapongroup(5, CLIENT_MENU_nex_grp5);
       cl_spawnmech(); 
 
       CLIENT_MENU_nav_pnt = -1;

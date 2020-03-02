@@ -66,7 +66,6 @@ void( float mechId, float configNum ) data_mech_config_save={
   group = strcat( "  'group_", ftos(4), "' : ", ftos(CLIENT_MENU_nex_grp4), ",\n");
   fputs(flannel, group);
   
-  group = strcat( "  'group_", ftos(5), "' : ", ftos(CLIENT_MENU_nex_grp5), ",\n");
   fputs(flannel, group);
   
   fputs(flannel, "}");

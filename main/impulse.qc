@@ -38,7 +38,7 @@ void() playerAttack={
   }
   else{
     if(self.button0){
-
+      weaponGroup = self.currentWeaponGroup;  
     }
     else{
       if(self.button3)
@@ -49,8 +49,6 @@ void() playerAttack={
         weaponGroup = weaponGroup | self.w_group3;
       if(self.button6)
         weaponGroup = weaponGroup | self.w_group4;
-      if(self.button7)
-        weaponGroup = weaponGroup | self.w_group5;
     }
   }
   oself = self;
@@ -104,6 +102,27 @@ void() ImpulseCommands ={
     self.currentWeaponGroup = 1;
     client_send_event_change_fire(client, 0);
   }
+  
+  if(self.impulse == IMP_WGROUP1){
+    if( self.stat_plr_fir == FIRE_GROUP ){
+      self.currentWeaponGroup = self.w_group1;
+    }
+  }
+  if(self.impulse == IMP_WGROUP2){
+    if( self.stat_plr_fir == FIRE_GROUP ){
+      self.currentWeaponGroup = self.w_group2;
+    }
+  }
+  if(self.impulse == IMP_WGROUP3){
+    if( self.stat_plr_fir == FIRE_GROUP ){
+      self.currentWeaponGroup = self.w_group3;
+    }
+  }
+  if(self.impulse == IMP_WGROUP4){
+    if( self.stat_plr_fir == FIRE_GROUP ){
+      self.currentWeaponGroup = self.w_group4;
+    }
+  }
   if(self.impulse == IMP_FSINGLE){
     self.stat_plr_fir = FIRE_SINGLE;
   }
@@ -122,6 +141,7 @@ void() ImpulseCommands ={
     }
     mpls_groupFire(self.aState);
   }
+  
   
   if(self.impulse == IMP_TARGET){
     sv_getTarget();
@@ -221,12 +241,6 @@ void(float selector) mpls_groupFire={
       centerprint(self, "[Weapon Group 4]");
       self.currentWeaponGroup = 0;
       self.currentWeaponGroup = self.w_group4;
-      break;
-    case 5:
-      self.aState = 5;
-      centerprint(self, "[Weapon Group 5]");
-      self.currentWeaponGroup = 0;
-      self.currentWeaponGroup = self.w_group5;
       break;
   }
 };

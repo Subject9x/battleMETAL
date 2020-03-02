@@ -14,7 +14,6 @@ void() mech_clearWeaponGroups={
   self.w_group2 = 0;
   self.w_group3 = 0;
   self.w_group4 = 0;
-  self.w_group5 = 0;
   self.currentWeaponGroup = 0;
 };
 

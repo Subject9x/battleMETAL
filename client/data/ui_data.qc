@@ -500,7 +500,6 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     CLIENT_MENU_nex_grp2 = DATA_CONFIG_BUFFER_GRPS[2];
     CLIENT_MENU_nex_grp3 = DATA_CONFIG_BUFFER_GRPS[3];
     CLIENT_MENU_nex_grp4 = DATA_CONFIG_BUFFER_GRPS[4];
-    CLIENT_MENU_nex_grp5 = DATA_CONFIG_BUFFER_GRPS[5];
     itr = 1;
     hardpoint = UI_HANGAR_DATA_mech.w_slot;
     while( hardpoint ){
@@ -512,7 +511,5 @@ float( float mechId, float fileNum ) ui_mech_config_switch={
     GROUP_ENE_2 = calc_energy_draw(CLIENT_MENU_nex_grp2);
     GROUP_ENE_3 = calc_energy_draw(CLIENT_MENU_nex_grp3);
     GROUP_ENE_4 = calc_energy_draw(CLIENT_MENU_nex_grp4);
-    GROUP_ENE_5 = calc_energy_draw(CLIENT_MENU_nex_grp5);
   }
-
 };
